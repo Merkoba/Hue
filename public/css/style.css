@@ -74,6 +74,13 @@ body
 {
 	max-width: 44vw;
 	text-align: center;
+	padding-top: 0.1em;
+	padding-bottom: 0.1em;
+}
+
+#image_uploader
+{
+	cursor: pointer;
 }
 
 #chat_area_parent

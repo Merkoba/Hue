@@ -1728,16 +1728,19 @@ function update_chat(uname, msg)
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
-		var fmsg = $("<div title='" + date + "' class='msg chat_message'>* <span class='chat_uname' onclick='add_to_input(\"" + uname + "\")'></span> <span class='" + contclasses + "'></span> *</div><div>&nbsp;</div>");
-		$($(fmsg).find('.chat_uname').get(0)).text(uname).urlize();
+		var fmsg = $("<div title='" + date + "' class='msg chat_message'>* <span class='chat_uname'></span> <span class='" + contclasses + "'></span> *</div><div>&nbsp;</div>");
 		$($(fmsg).find('.chat_content').get(0)).text(msg.substr(4)).urlize();
 	}
 	else
 	{
-		var fmsg = $("<div title='" + date + "' class='msg chat_message'><b><span class='chat_uname' onclick='add_to_input(\"" + uname + "\")'></span>:</b>&nbsp;&nbsp;<span class='" + contclasses + "'></span></div><div>&nbsp;</div>");
-		$($(fmsg).find('.chat_uname').get(0)).text(uname).urlize();
+		var fmsg = $("<div title='" + date + "' class='msg chat_message'><b><span class='chat_uname'></span>:</b>&nbsp;&nbsp;<span class='" + contclasses + "'></span></div><div>&nbsp;</div>");
 		$($(fmsg).find('.chat_content').get(0)).text(msg).urlize();
 	}
+	
+	$($(fmsg).find('.chat_uname').get(0)).text(uname).click(function()
+	{
+		add_to_input(uname);
+	});
 
 	add_to_chat(fmsg);
 
@@ -1838,7 +1841,16 @@ function start_image_events()
 
 		if(image_uploader !== '' && image_url !== default_image_url)
 		{
-			$('#image_info').text('uploaded by ' + image_uploader);
+			$('#image_uploader').text('uploaded by ' + image_uploader);
+			
+			$('#image_uploader').off('click').click(function()
+			{
+				add_to_input(image_uploader);
+			});
+		}
+		else
+		{
+			$('#image_uploader').text('');
 		}
 	});
 
