@@ -1,0 +1,462 @@
+@font-face 
+{
+    font-family: comic;
+    src: url(comicsans.ttf);
+}
+
+body, html
+{
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	font-family: comic;
+	background-color: white;
+	overflow: hidden;
+}
+
+body 
+{
+	background-image: url("/img/loading.jpg");
+	background-repeat: repeat;
+}
+
+#header
+{
+	height: 2em;
+	width: 100%;
+	background-color: black;
+	z-index: 9999999;
+	opacity: 0.9;
+	white-space: nowrap;
+	text-align: center;
+}
+
+.header_item
+{
+	padding-top: 0.25em;
+	display: inline-block;
+}
+
+#toggle_stream
+{
+	cursor: pointer;
+}
+
+#chat_main
+{
+	height: 100%;
+	width: 50%;
+	float: left;
+}
+
+#media
+{
+	display: flex;
+	position: relative;
+	float: right;
+	background-color: black;
+	justify-content: center;
+	align-items: center;
+	width: 50%;
+	height: calc(100% - 2em);
+	opacity: 0.9;
+	flex-direction: column;
+}
+
+#media img
+{
+	max-height: calc(100vh - 4em);
+	max-width: 44vw;
+	cursor: pointer;
+}
+
+#image_info
+{
+	max-width: 44vw;
+	text-align: center;
+}
+
+#chat_area_parent
+{
+	position: relative;
+	max-width: 100%;
+	width: 100%;
+    top: 2em;
+	bottom: 2em;
+}
+
+#chat_area
+{
+	position: fixed;
+	width: 50%;
+	max-width: 50%;
+	overflow-x: none;
+	overflow-y: auto;
+	background-color: black;
+	top: 2em;
+    bottom: 2em;
+    opacity: 0.9;
+}
+
+#input
+{
+	position: absolute;
+	max-width: 100%;
+	width: 50%;
+	height: 2em;
+	bottom: 0;
+	color: white;
+	font-size: 1em;
+	background-color: black;
+	border: 0px solid black;
+	padding-left: 5px;
+	outline: none;
+	opacity: 0.9;
+	font-family:inherit;
+}
+
+#scroll_notice
+{
+	visibility: hidden;
+	position: absolute;
+	max-width: 50%;
+	width: 50%;
+	bottom: 2em;
+	color: white;
+	height: 2em;
+	font-size: 1em;
+	background-color: #393939;
+	border: 0px solid #2D2D2D;
+	outline: none;
+	opacity: 0.8;
+	text-op
+	font-family:inherit;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+#scroll_notice:hover 
+{ 
+    background-color: #474747;
+}
+
+#colorpicker
+{
+	position: fixed;
+	top: 0px;
+	left: 0px;
+}
+
+.sp-replacer
+{
+	z-index: 99999;
+	top: 0px;
+	left: 0px;
+	position: fixed;
+}
+
+.chat_message
+{
+	padding-left: 5px;
+	clear: both;
+	color: white;
+	word-break: break-word;
+	font-size: 1.6em;
+	display: inline-block;
+}
+
+.announcement
+{
+	padding-left: 5px;
+	clear: both;
+	color: grey;
+	word-break: break-word;
+	display: inline-block;
+}
+
+.announcement_small
+{
+	font-size: 1em;
+}
+
+.announcement_big
+{
+	font-size: 1.4em;
+}
+
+.chat_uname 
+{
+	cursor: pointer;
+}
+
+a.chat:link, a.chat:visited, a.chat:hover 
+{
+    color: white;
+    text-decoration: underline;
+}
+
+.clear
+{
+	clear: both;
+}
+
+#test_image
+{
+	display: none;
+}
+
+.unselectable
+{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#usercount
+{
+	padding-left: 0.3em;
+	cursor: pointer;
+}
+
+#userlist
+{
+	background-color: white;
+	position:absolute;
+	display: none;
+	left:0; right:0;
+	top:0; bottom:0;
+	margin:auto;
+	max-width:20em;
+	max-height: 40%;
+	overflow-y:auto;
+	overflow-x:hidden;
+	z-index: 99999999999999;
+	text-align: center;
+	padding: 1em;
+}
+
+#roomlist
+{
+	background-color: white;
+	position:absolute;
+	display: none;
+	left:0; right:0;
+	top:0; bottom:0;
+	margin:auto;
+	max-width:40em;
+	max-height: 40%;
+	overflow-y:auto;
+	overflow-x:hidden;
+	z-index: 99999999999999;
+	text-align: center;
+	padding: 1em;
+}
+
+#played
+{
+	background-color: white;
+	position:absolute;
+	display: none;
+	left:0; right:0;
+	top:0; bottom:0;
+	margin:auto;
+	max-width:27em;
+	max-height: 40%;
+	overflow-y:auto;
+	overflow-x:hidden;
+	z-index: 99999999999999;
+	text-align: center;
+	padding: 1em;
+}
+
+.played_item 
+{
+	padding-top: 0.7em;
+	padding-bottom: 0.7em;
+	word-break: break-word;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.pititle
+{
+	font-size: 1.6em;
+	font-style: italic;
+}
+
+.piartist
+{
+	font-size: 1.2em;
+}
+
+#menu
+{
+	background-color: white;
+	position:absolute;
+	display: none;
+	left:0; right:0;
+	top:0; bottom:0;
+	margin:auto;
+	max-width:22em;
+	max-height: 40%;
+	overflow-y:auto;
+	overflow-x:hidden;
+	z-index: 99999999999999;
+	text-align: center;
+	padding: 1em;
+}
+
+.menu_item 
+{
+	font-size: 1.6em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	cursor: pointer;
+	display: inline-block;
+}
+
+.menu_item_smaller
+{
+	font-size: 1.1em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	cursor: pointer;
+	display: inline-block;
+}
+
+#menu_smaller_container
+{
+	padding-top: 0.8em;
+	padding-bottom: 0.8em;
+}
+
+#createroom_menu
+{
+	background-color: white;
+	position:absolute;
+	display: none;
+	left:0; right:0;
+	top:0; bottom:0;
+	margin:auto;
+	max-width:22em;
+	max-height: 40%;
+	overflow-y:auto;
+	overflow-x:hidden;
+	z-index: 99999999999999;
+	text-align: center;
+	padding: 1em;
+}
+
+#createroom_input
+{
+	width: 99%;
+	font-size: 1.6em;
+	text-align:center;
+}
+
+#overlay
+{
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	position: fixed;
+	z-index: 999999999999;
+	background-color: rgba(0, 0, 0, 0.7);
+	display: none;
+}
+
+.userlist_item
+{
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	cursor: pointer;
+	display: inline-block;
+}
+
+.ui_item_priv
+{
+	font-size: 1.1em;
+	padding-right: 0.7em;
+}
+
+.ui_item_nick
+{
+	font-size: 1.6em;
+}
+
+.roomlist_item
+{
+	padding-top: 0.8em;
+	padding-bottom: 0.8em;
+	cursor: pointer;
+	display: inline-block;
+	width: 90%;
+}
+
+.roomlist_name
+{
+	font-size: 1.6em;
+	text-decoration: underline;
+}
+
+.roomlist_topic
+{
+	font-size: 1.6em;
+}
+
+.roomlist_count
+{
+	font-size: 1.1em;
+	padding-left: 1em;
+}
+
+.roomlist_filler
+{
+	font-size: 1.1em;
+	padding-right: 1em;
+	opacity: 0;
+}
+
+#volume_area
+{
+	cursor: pointer;
+}
+
+#now_playing_area
+{
+	cursor: pointer;
+	display: none;
+}
+
+.icon
+{
+	height: 100%;
+	padding-left: 0.3em;
+	padding-right: 0.3em;
+}
+
+#main_menu
+{
+	cursor: pointer;
+}
+
+.ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y 
+{
+	width: 0px;
+}
+
+.dotted
+{
+	border-bottom: 1px dotted;
+}
+
+.dash
+{
+	border: 1px dashed;
+}

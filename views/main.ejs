@@ -1,0 +1,107 @@
+<html>
+	<head>
+		<title><%= id %></title> 
+		<script src="/js/jquery.js"></script>
+		<script src="/js/color-thief.js"></script>
+		<script src="/js/dropzone.js"></script>
+		<script src="/js/dateformat.js"></script>
+		<script src="/js/perfect-scrollbar.js"></script>
+		<link rel="stylesheet" type="text/css" href="/css/perfect-scrollbar.css" />
+        <script type="text/javascript" src="/js/contextmenu/contextmenu.js"></script>
+        <script src="/js/contextmenu/position.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+
+		<script src="/js/base.js?ver=378"></script>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=66" />
+
+        <link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="/js/contextmenu/contextmenu.css"> 
+
+		<script>
+			$(function()
+			{
+				room = "<%= id %>";
+			    init();
+			})
+		</script>
+	</head>
+	<body>
+
+		<audio id='audio' autoplay> </audio>
+
+		<div id='header'>
+			<i id='main_menu' class='header_item unselectable icon fa fa-th-large' onclick='show_menu()'></i>
+			<span class='header_item'>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+			<span class='unselectable header_item' id='usercount' onclick='show_userlist()'></span>
+			<span class='header_item'>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+			<span class='unselectable header_item' id='toggle_stream' onclick='toggle_stream()'>Start Radio</span> 
+			<span class='unselectable' id='volume_area'>
+				<span class='header_item'>&nbsp;&nbsp;|&nbsp;&nbsp; 
+				<i class='header_item unselectable icon fa fa-minus' onclick='volume_decrease()'></i>
+				<span onclick='volume_decrease()'>Volume:&nbsp;</span></span>
+				<span class='header_item' id='volume' onclick='volume_increase()'>100%</span>
+				<i class='header_item unselectable icon fa fa-plus' onclick='volume_increase()'></i>
+			</span>
+			<span id="now_playing_area" onclick="show_played()">
+				<span class='header_item'>&nbsp;&nbsp;|&nbsp;&nbsp; Now Playing:&nbsp;</span>
+				<span class='header_item' id='now_playing'></span>
+			</span>
+		</div>
+
+		<div id='chat_main'>
+
+			<div id='chat_area_parent'>
+				<div id='chat_area'></div>
+			</div>
+
+			<div id='scroll_notice' onclick='goto_bottom(true)'>Go To Bottom</div>
+
+			<input id='input' type='text'>
+
+		</div>
+
+		<div id='media' class='unselectable' draggable='false'>
+			<img id='media_image' draggable='false'>
+			<div id='image_info'></div>
+		</div>
+
+		<img id='test_image'>
+
+		<div id='overlay' onclick='hide_boxes()'></div>
+
+		<div id='userlist'></div>
+		
+		<div id='roomlist'></div>
+
+		<div id='played'><br></div>
+
+		<div id='menu'>
+
+			<div class='menu_item' onclick="request_roomlist()">Public Rooms</div><br>
+			<div class='menu_item' onclick='show_createroom_menu()'>Create Room</div><br>
+			<div class='menu_item' onclick='copy_room_url()'>Copy Room URL</div>
+
+			<div id='menu_smaller_container'>
+				<span class='menu_item_smaller' onclick='clear_chat();hide_boxes()'>Clear</span>&nbsp;|&nbsp;
+				<span class='menu_item_smaller' onclick='show_status();hide_boxes()'>Status</span>&nbsp;|&nbsp;
+				<span class='menu_item_smaller' onclick='help();hide_boxes()'>Help</span>
+			</div>
+
+		</div>
+
+		<div id='createroom_menu'>
+
+			<br>
+
+			<input id='createroom_input' placeholder="Pick A Name">
+
+			<br><br> Or <br>
+
+			<div class='menu_item' onclick='random_room()'>Random Name</div><br>
+
+		</div>
+
+		<audio id='pup' src='/audio/pup.ogg'></audio>
+
+	</body>
+</html>
