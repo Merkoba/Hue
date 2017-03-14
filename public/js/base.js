@@ -634,7 +634,7 @@ function update_userlist()
 
 		nicknames.push(item[0]);
 
-		var h = $("<div class='userlist_item' onclick='add_to_input(\"" + item[0] + "\"); hide_boxes()'><span class='ui_item_priv'></span><span class='ui_item_nick'></span></div><br>");
+		var h = $("<div class='userlist_item'><span class='ui_item_priv'></span><span class='ui_item_nick'></span></div><br>");
 
 		if(item[1] === 'admin')
 		{
@@ -654,7 +654,14 @@ function update_userlist()
 		}
 
 		$($(h).find('.ui_item_priv').get(0)).text(p);
-		$($(h).find('.ui_item_nick').get(0)).text(item[0]);
+		$($(h).find('.ui_item_nick').get(0)).text(item[0])
+
+		$(h).click({nickname:item[0]}, function(event)
+		{
+			add_to_input(event.data.nickname); 
+			hide_boxes();
+		});
+
 		s = s.add(h);
 	}
 
@@ -1130,11 +1137,11 @@ function update_roomlist(roomlist)
 	for(var i=0; i<roomlist.length; i++)
 	{
 		var c = "<span class='roomlist_filler'></span><span class='roomlist_name'></span><span class='roomlist_count'></span><div class='roomlist_topic'></div>";
-		var h = $("<div class='roomlist_item' onclick='goto_room(\"" + roomlist[i][0] + "\", false)'>" + c + "</div><br>")
+		var h = $("<div class='roomlist_item'>" + c + "</div><br>")
 
 		$($(h).find('.roomlist_name').get(0)).text(roomlist[i][0]);
 
-		if(roomlist[i][0] == room)
+		if(roomlist[i][0] === room)
 		{
 			var t = "(" + roomlist[i][2] + ") *";		
 		}
@@ -1145,6 +1152,11 @@ function update_roomlist(roomlist)
 
 		$($(h).find('.roomlist_count').get(0)).text(t);		
 		$($(h).find('.roomlist_filler').get(0)).text(t);
+
+		$(h).click({room:roomlist[i][0]}, function(event)
+		{
+			goto_room(event.data.room, false);
+		});
 
 		if(roomlist[i][1].length > 0)
 		{
@@ -1737,9 +1749,9 @@ function update_chat(uname, msg)
 		$($(fmsg).find('.chat_content').get(0)).text(msg).urlize();
 	}
 	
-	$($(fmsg).find('.chat_uname').get(0)).text(uname).click(function()
+	$($(fmsg).find('.chat_uname').get(0)).text(uname).click({uname:uname}, function(event)
 	{
-		add_to_input(uname);
+		add_to_input(event.data.uname);
 	});
 
 	add_to_chat(fmsg);
@@ -1842,11 +1854,6 @@ function start_image_events()
 		if(image_uploader !== '' && image_url !== default_image_url)
 		{
 			$('#image_uploader').text('uploaded by ' + image_uploader);
-			
-			$('#image_uploader').off('click').click(function()
-			{
-				add_to_input(image_uploader);
-			});
 		}
 		else
 		{
@@ -1866,6 +1873,11 @@ function start_image_events()
 	$('#test_image')[0].addEventListener('load', function() 
 	{
 		emit_pasted($('#test_image').attr('src'));
+	});
+
+	$('#image_uploader').click(function()
+	{
+		add_to_input(image_uploader);
 	});
 }
 
