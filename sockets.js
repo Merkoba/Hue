@@ -410,7 +410,7 @@ module.exports = function (io)
 			{
 		    	if(userinfo.password == '')
 		    	{
-		    		userinfo.password = get_random_key();
+		    		userinfo.password = get_random_ukey();
 
 		    		socket.emit('update', {room:socket.room, type:'reserved', password:userinfo.password});
 
@@ -446,7 +446,7 @@ module.exports = function (io)
 
 		    	get_userinfo(data.username, function(userinfo)
 		    	{
-			    	if(userinfo.password != '' && userinfo.password == data.password)
+			    	if(userinfo.password !== '' && userinfo.password === data.password)
 			    	{
 
 			    		var sockets = io.sockets.adapter.rooms[socket.room].sockets;
@@ -1332,6 +1332,19 @@ module.exports = function (io)
 		}
 
 		return "_okey_" + Date.now() + text;
+	}
+
+	function get_random_ukey()
+	{
+	    var text = "";
+	    var possible = "ABCDEFGHIJKLMnopqrstuvwxyz012345";
+
+	    for(var i=0; i < 12; i++)
+	    {
+	    	text += possible.charAt(Math.floor(Math.random() * possible.length));
+	    }
+
+	    return "_ukey_" + Date.now() + text;
 	}
 
 	function replace_key(priv, okey, keys)
