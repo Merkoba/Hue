@@ -54,7 +54,7 @@ module.exports = function (io)
 		}
 		catch(err)
 		{
-			console.log(err);
+			console.error(err);
 		}
 
 		socket.on('join_room', function (data) 
@@ -65,7 +65,7 @@ module.exports = function (io)
 			}
 			catch(err)
 			{
-				console.log(err);
+				console.error(err);
 			}
 		});
 
@@ -77,7 +77,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -89,7 +89,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -101,7 +101,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -113,7 +113,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -125,7 +125,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -137,7 +137,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -149,7 +149,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -161,7 +161,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -173,7 +173,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -185,7 +185,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -197,7 +197,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -209,7 +209,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -221,7 +221,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -233,7 +233,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -245,7 +245,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -257,7 +257,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -269,7 +269,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -281,7 +281,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -293,7 +293,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -305,7 +305,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -317,7 +317,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -329,7 +329,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -341,7 +341,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -353,7 +353,7 @@ module.exports = function (io)
 	    	}
 	    	catch(err)
 	    	{
-	    		console.log(err);
+	    		console.error(err);
 	    	}
     	});
 
@@ -365,7 +365,7 @@ module.exports = function (io)
     		}
     		catch(err)
     		{
-    			console.log(err);
+    			console.error(err);
     		}
     	});
 	});
