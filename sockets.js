@@ -48,136 +48,325 @@ module.exports = function (io)
 
 	io.on("connection", function(socket)
 	{
-		connection(socket);
+		try
+		{
+			connection(socket);
+		}
+		catch(err)
+		{
+			console.log(err);
+		}
 
 		socket.on('join_room', function (data) 
 		{
-		    join_room(socket, data);
+			try
+			{
+		    	join_room(socket, data);
+			}
+			catch(err)
+			{
+				console.log(err);
+			}
 		});
 
 	    socket.on('sendchat', function (data) 
 	    {
-	    	sendchat(socket, data);
+	    	try
+	    	{
+	    		sendchat(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('pasted', function (data) 
 	    {
-	    	pasted(socket, data);
+	    	try
+	    	{
+	    		pasted(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('uploading', function (data) 
 	    {
-	    	uploading(socket, data);
+	    	try
+	    	{
+	    		uploading(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('uploaded', function (data) 
 	    {
-	    	uploaded(socket, data);
+	    	try
+	    	{
+	    		uploaded(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('username_change', function (data) 
 	    {
-	    	username_change(socket, data);
+	    	try
+	    	{
+	    		username_change(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('username_reserve', function (data) 
 	    {
-	    	username_reserve(socket, data);
+	    	try
+	    	{
+	    		username_reserve(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('username_recover', function (data) 
 	    {
-	    	username_recover(socket, data);
+	    	try
+	    	{
+	    		username_recover(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('topic_change', function (data) 
 	    {
-	    	topic_change(socket, data);
+	    	try
+	    	{
+	    		topic_change(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('roomlist', function (data) 
 	    {
-	    	roomlist(socket, data);
+	    	try
+	    	{
+	    		roomlist(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('heartbeat', function (data) 
 	    {
-	    	heartbeat(socket, data);
+	    	try
+	    	{
+	    		heartbeat(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('claim_room', function (data) 
 	    {
-	    	claim_room(socket, data);
+	    	try
+	    	{
+	    		claim_room(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('voice', function (data) 
 	    {
-	    	voice(socket, data);
+	    	try
+	    	{
+	    		voice(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('op', function (data) 
 	    {
-	    	op(socket, data);
+	    	try
+	    	{
+	    		op(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('admin', function (data) 
 	    {
-	    	admin(socket, data);
+	    	try
+	    	{
+	    		admin(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('strip', function (data) 
 	    {
-	    	strip(socket, data);
+	    	try
+	    	{
+	    		strip(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('ban', function (data) 
 	    {
-	    	ban(socket, data);
+	    	try
+	    	{
+	    		ban(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('unbanall', function (data) 
 	    {
-	    	unbanall(socket, data);
+	    	try
+	    	{
+	    		unbanall(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('unbanlast', function (data) 
 	    {
-	    	unbanlast(socket, data);
+	    	try
+	    	{
+	    		unbanlast(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('bannedcount', function (data) 
 	    {
-	    	bannedcount(socket, data);
+	    	try
+	    	{
+	    		bannedcount(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('kick', function (data) 
 	    {
-	    	kick(socket, data);
+	    	try
+	    	{
+	    		kick(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('change_mode', function (data) 
 	    {
-	    	change_mode(socket, data);
+	    	try
+	    	{
+	    		change_mode(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('make_private', function (data) 
 	    {
-	    	make_private(socket, data);
+	    	try
+	    	{
+	    		make_private(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('make_public', function (data) 
 	    {
-	    	make_public(socket, data);
+	    	try
+	    	{
+	    		make_public(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
 	    socket.on('change_radiosrc', function (data) 
 	    {
-	    	change_radiosrc(socket, data);
+	    	try
+	    	{
+	    		change_radiosrc(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.log(err);
+	    	}
     	});
 
     	socket.on('disconnect', function()
     	{
-    		disconnect(socket);
+    		try
+    		{
+    			disconnect(socket);
+    		}
+    		catch(err)
+    		{
+    			console.log(err);
+    		}
     	});
 	});
 
@@ -199,6 +388,18 @@ module.exports = function (io)
 	{
 		get_roominfo(data.room, {}, function(info)
 	    {
+	    	if(data.username === undefined || data.room === undefined || data.key === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
+	    	if(data.username.length === 0 || data.room.length === 0)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
 		    var bans = info.bans.split(';');
 
 		   	socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress;
@@ -251,6 +452,18 @@ module.exports = function (io)
 	{
 		if(socket.username !== undefined)
 		{
+			if(data.msg === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
+	    	if(data.msg.length === 0)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
 			get_roominfo(socket.room, {mode:true}, function(info)
 			{
 	    		if(info.mode > 2)
@@ -270,6 +483,18 @@ module.exports = function (io)
 	{
 		if(socket.username !== undefined)
 		{
+			if(data.image_url === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
+	    	if(data.image_url.length === 0)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
 			get_roominfo(socket.room, {mode:true}, function(info)
 			{
 				if(info.mode > 1)
@@ -333,6 +558,12 @@ module.exports = function (io)
 	{
 		if(socket.username !== undefined)
 		{
+			if(data.image_file === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
 			get_roominfo(socket.room, {mode:true}, function(info)
 			{
 				if(info.mode > 1)
@@ -376,6 +607,18 @@ module.exports = function (io)
 	{
 		if(socket.username !== undefined)
 		{
+			if(data.username === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
+	    	if(data.username.length === 0)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
 			get_roominfo(socket.room, {mode:true}, function(info)
 			{
 	    		if(info.mode > 2)
@@ -429,6 +672,18 @@ module.exports = function (io)
 	{
 		if(socket.username !== undefined)
 		{
+			if(data.username === undefined || data.password === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
+	    	if(data.username.length === 0 || data.password.length === 0)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
 			get_roominfo(socket.room, {mode:true}, function(info)
 			{
 				if(info.mode > 2)
@@ -483,6 +738,18 @@ module.exports = function (io)
 	{
 		if(socket.username !== undefined)
 		{
+			if(data.topic === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
+	    	if(data.topic.length === 0)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
 	    	get_roominfo(socket.room, {topic:true}, function(info)
 	    	{
 		    	if(socket.priv !== 'admin' && socket.priv !== 'op')
@@ -526,7 +793,7 @@ module.exports = function (io)
 	{
     	if(socket.username !== undefined)
     	{
-    		if(socket.room == "main" && data.pass != secretpass)
+    		if(socket.room === "main" && data.pass !== secretpass)
     		{
     			return false;
     		}
@@ -563,6 +830,18 @@ module.exports = function (io)
 	{
 		if(socket.username !== undefined)
 		{
+			if(data.username === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
+	    	if(data.username.length === 0)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
 			if(socket.username === data.username)
 			{
 				return false;
@@ -616,6 +895,18 @@ module.exports = function (io)
 	{
 		if(socket.username !== undefined)
 		{
+			if(data.username === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
+	    	if(data.username.length === 0)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
 			get_roominfo(socket.room, {keys:true}, function(info)
 			{
 				if(socket.priv === 'admin')
@@ -658,6 +949,18 @@ module.exports = function (io)
 	{
 		if(socket.username !== undefined)
 		{
+			if(data.username === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
+	    	if(data.username.length === 0)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
 			get_roominfo(socket.room, {keys:true}, function(info)
 			{
 				if(socket.priv === 'admin')
@@ -700,6 +1003,18 @@ module.exports = function (io)
 	{
     	if(socket.username !== undefined)
     	{
+			if(data.username === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
+	    	if(data.username.length === 0)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }   
+		     		
     		if(socket.username === data.username)
     		{
     			return false;
@@ -753,6 +1068,18 @@ module.exports = function (io)
 	{
     	if(socket.username !== undefined)
     	{
+    		if(data.username === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
+	    	if(data.username.length === 0)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
     		get_roominfo(socket.room, {bans:true, keys:true}, function(info)
     		{
 	    		if(socket.priv === 'admin' || socket.priv === 'op')
@@ -919,6 +1246,18 @@ module.exports = function (io)
 	{
     	if(socket.username !== undefined)
     	{
+			if(data.username === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
+	    	if(data.username.length === 0)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
     		if(socket.priv === 'admin' || socket.priv === 'op')
     		{
 				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets);
@@ -953,6 +1292,12 @@ module.exports = function (io)
 	{
     	if(socket.username !== undefined)
     	{
+    		if(data.mode === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
     		get_roominfo(socket.room, {mode:true}, function(info)
     		{
     			if(socket.priv === 'admin' || socket.priv === 'op')
@@ -1020,6 +1365,18 @@ module.exports = function (io)
 	{
     	if(socket.username !== undefined)
     	{
+			if(data.src === undefined)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
+	    	if(data.src.length === 0)
+		    {
+	    		socket.disconnect();
+	    		return false;
+		    }
+
     		get_roominfo(socket.room, {radiosrc:true}, function(info)
     		{
     			if(socket.priv === 'admin' || socket.priv === 'op')

@@ -38,9 +38,9 @@ var connections = 0;
 var afk_timer;
 var afk = false;
 var alert_mode = 0;
-var site_root = 'http://hue.merkoba.com/';
-var default_radiosrc = 'http://hue.merkoba.com:8765/hue.ogg';
-var default_radioinfo = 'http://hue.merkoba.com:8765/status-json.xsl';
+var site_root = 'https://hue.merkoba.com/';
+var default_radiosrc = 'https://hue.merkoba.com:8765/hue.ogg';
+var default_radioinfo = 'https://hue.merkoba.com:8765/status-json.xsl';
 var default_image_url = '/img/default.gif';
 
 function init()
