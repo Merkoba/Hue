@@ -38,6 +38,7 @@ var connections = 0;
 var afk_timer;
 var afk = false;
 var alert_mode = 0;
+var alert_timer;
 var site_root = 'https://hue.merkoba.com/';
 var default_radiosrc = 'https://hue.merkoba.com:8765/hue.ogg';
 var default_radioinfo = 'https://hue.merkoba.com:8765/status-json.xsl';
@@ -2767,32 +2768,38 @@ function change_volume_command(arg)
 
 function alert_title()
 {
-	if(document.hidden)
-	{
-		if(alert_mode === 0)
+	alert_timer = setTimeout(function()
+	{ 
+		if(document.hidden)
 		{
-			document.title = '(*) ' + document.title;
-			alert_mode = 1;
+			if(alert_mode === 0)
+			{
+				document.title = '(*) ' + document.title;
+				alert_mode = 1;
+			}
 		}
-	}
+	}, 1000);
 }
 
 function alert_title2()
 {
-	if(document.hidden)
+	alert_timer = setTimeout(function()
 	{
-		if(alert_mode === 1)
+		if(document.hidden)
 		{
-			document.title = document.title.substring(4);
-		}
+			if(alert_mode === 1)
+			{
+				document.title = document.title.substring(4);
+			}
 
-		if(alert_mode !== 2)
-		{
-			document.title = '(!) ' + document.title;
-		}
+			if(alert_mode !== 2)
+			{
+				document.title = '(!) ' + document.title;
+			}
 
-		alert_mode = 2;
-	}
+			alert_mode = 2;
+		}
+	}, 1000);	
 }
 
 function remove_alert_title()
@@ -2830,6 +2837,11 @@ function activate_window_visibility_listener()
 			if(afk_timer !== undefined)
 			{
 				clearTimeout(afk_timer);
+			}
+
+			if(alert_timer !== undefined)
+			{
+				clearTimeout(alert_timer);
 			}
 
 			afk = false;
