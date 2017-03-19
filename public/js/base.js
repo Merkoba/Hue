@@ -1097,6 +1097,40 @@ function start_main_menu_context_menu()
 			},
 			cmenu3: 
 			{
+				name: "Privs",
+				visible: function(key, opt)
+				{ 
+					if(priv !== 'admin' && priv !== 'op')
+					{
+						return false;
+					}
+					else
+					{
+						return true;
+					}
+				},				
+				items: 
+				{
+					cp1: 
+					{
+						name: "Remove All Voices",
+						callback: function(key, opt)
+						{
+							remove_voices();
+						}						
+					},
+					cp2: 
+					{
+						name: "Remove All Ops",
+						callback: function(key, opt)
+						{
+							remove_ops();
+						}						
+					}
+				}
+			},
+			cmenu4: 
+			{
 				name: "Bans",
 				visible: function(key, opt)
 				{ 
