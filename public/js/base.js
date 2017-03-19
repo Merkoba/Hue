@@ -1785,10 +1785,23 @@ function resize_events()
 {
 	$(window).resize(function()
 	{
-		update_scrollbar();
-		goto_bottom(true);
+		resize_timer();
 	})
 }
+
+var resize_timer = (function() 
+{
+	var timer; 
+	return function(msg, options) 
+	{
+		clearTimeout(timer);
+		timer = setTimeout(function() 
+		{
+			update_scrollbar();
+			goto_bottom(true);
+		}, 350);
+	};
+})();
 
 function update_scrollbar()
 {
