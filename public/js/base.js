@@ -1757,7 +1757,7 @@ function scroll_events()
 var scroll_timer = (function() 
 {
 	var timer; 
-	return function(msg, options) 
+	return function() 
 	{
 		clearTimeout(timer);
 		timer = setTimeout(function() 
@@ -1792,7 +1792,7 @@ function resize_events()
 var resize_timer = (function() 
 {
 	var timer; 
-	return function(msg, options) 
+	return function() 
 	{
 		clearTimeout(timer);
 		timer = setTimeout(function() 
