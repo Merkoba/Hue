@@ -111,7 +111,7 @@ function help()
 	chat_announce('', '', '/status: Shows information about you and the room.', 'small');
 	chat_announce('', '', '/clear: Clears all messages from the chat.', 'small');
 	chat_announce('', '', '/me x: Makes a message in third person.', 'small');
-	chat_announce('', '', '/help: Shows basic features.', 'small');
+	chat_announce('', '', '/help: Shows this message.', 'small');
 	chat_announce('', '', '/help2: Shows additional features.', 'small');
 	chat_announce('', '', '/help3: Shows administration features.', 'small');
 }
@@ -144,6 +144,8 @@ function help3()
 	chat_announce('', '', '/op x: Gives op to a user. Ops can do anything an admin can do except more high level commands.', 'small');
 	chat_announce('', '', '/admin x: Gives admin to a user. This gives a user the same rights as the original admin.', 'small');
 	chat_announce('', '', '/strip x: Removes all privileges from a user.', 'small');
+	chat_announce('', '', '/removevoices: Removes all privileges from voiced users.', 'small');
+	chat_announce('', '', '/removeops: Removes all privileges from op\'d users.', 'small');
 	chat_announce('', '', '/private: Room doesn\'t appear in the public room list.', 'small');
 	chat_announce('', '', '/public: Room appears in the public room list.', 'small');
 	chat_announce('', '', '/radio x: Changes the radio source. It will try to automatically fetch metadata from Icecast2 servers. If x is \'default\' it changes to the default radio.', 'small');
@@ -394,6 +396,14 @@ function start_socket()
 		{
 			announce_strip(data);
 		}
+		if(data.type === 'announce_removedvoices')
+		{
+			announce_removedvoices(data);
+		}
+		if(data.type === 'announce_removedops')
+		{
+			announce_removedops(data);
+		}
 		if(data.type === 'announce_unbanall')
 		{
 			announce_unbanall(data);
@@ -424,6 +434,10 @@ function start_socket()
 		if(data.type === 'forbiddenuser')
 		{
 			forbiddenuser();
+		}
+		if(data.type === 'nothingtochange')
+		{
+			chat_announce('[', ']', "There was nothing to change", 'small');
 		}
 		if(data.type === 'isalready')
 		{
@@ -612,7 +626,33 @@ function replace_claim_userlist(uname)
 		}
 		else
 		{
-			userlist[i][1] = '';
+			userlist[i][1] = 'z';
+		}
+	}
+
+	update_userlist();
+}
+
+function remove_voices_userlist()
+{
+	for(var i=0; i<userlist.length; i++)
+	{
+		if(userlist[i][1] === 'voice')
+		{
+			userlist[i][1] = 'z';
+		}
+	}
+
+	update_userlist();
+}
+
+function remove_ops_userlist()
+{
+	for(var i=0; i<userlist.length; i++)
+	{
+		if(userlist[i][1] === 'op')
+		{
+			userlist[i][1] = 'z';
 		}
 	}
 
@@ -2101,6 +2141,16 @@ function send_to_chat()
 				var arg = msg.substr(7,14).trim();
 				strip(arg);
 			}
+			else if(oiEquals(lmsg, '/removevoices'))
+			{
+				var arg = msg.substr(7,14).trim();
+				remove_voices();
+			}
+			else if(oiEquals(lmsg, '/removeops'))
+			{
+				var arg = msg.substr(7,14).trim();
+				remove_ops();
+			}
 			else if(oiStartsWith(lmsg, '/ban'))
 			{
 				var arg = msg.substr(5,14).trim();
@@ -2268,7 +2318,7 @@ function change_topic(dtopic)
 	}
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small');
+		chat_announce('[', ']', "You are not a room operator or admin", 'small');
 	}
 }
 
@@ -2287,7 +2337,7 @@ function topicadd(arg)
 	}
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small');
+		chat_announce('[', ']', "You are not a room operator or admin", 'small');
 	}
 }
 
@@ -2334,7 +2384,7 @@ function topictrim(n)
 	}
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small');
+		chat_announce('[', ']', "You are not a room operator or admin", 'small');
 	}
 }
 
@@ -3193,7 +3243,7 @@ function change_mode(m)
 	}
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small');
+		chat_announce('[', ']', "You are not a room operator or admin", 'small');
 	}
 }
 
@@ -3316,7 +3366,7 @@ function voice(nck)
 	}
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small');
+		chat_announce('[', ']', "You are not a room operator or admin", 'small');
 	}
 }
 
@@ -3393,7 +3443,7 @@ function strip(nck)
 	}
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small');
+		chat_announce('[', ']', "You are not a room operator or admin", 'small');
 	}
 }
 
@@ -3430,7 +3480,7 @@ function stripped()
 		}
 	}
 
-	room_key = undefined;
+	room_key = '';
 	priv = '';
 	set_mode(mode);
 }
@@ -3556,7 +3606,7 @@ function make_private()
 	}
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small');
+		chat_announce('[', ']', "You are not a room operator or admin", 'small');
 	}
 }
 
@@ -3574,7 +3624,7 @@ function make_public()
 	}
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small');
+		chat_announce('[', ']', "You are not a room operator or admin", 'small');
 	}
 }
 
@@ -3655,7 +3705,7 @@ function change_radiosrc(src)
 	}
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small');
+		chat_announce('[', ']', "You are not a room operator or admin", 'small');
 	}
 }
 
@@ -3718,7 +3768,7 @@ function ban(nck)
 	}
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small');
+		chat_announce('[', ']', "You are not a room operator or admin", 'small');
 	}
 }
 
@@ -3730,7 +3780,7 @@ function unbanall()
 	}
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small');
+		chat_announce('[', ']', "You are not a room operator or admin", 'small');
 	}
 }
 
@@ -3742,7 +3792,7 @@ function unbanlast()
 	}
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small');
+		chat_announce('[', ']', "You are not a room operator or admin", 'small');
 	}
 }
 
@@ -3785,7 +3835,7 @@ function kick(nck)
 	}
 	else 
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small');
+		chat_announce('[', ']', "You are not a room operator or admin", 'small');
 	}
 }
 
@@ -3854,4 +3904,64 @@ function search_in(site, q)
 	{
 		window.open('https://www.youtube.com/results?search_query=' + q, '_blank');
 	}
+}
+
+function remove_voices()
+{
+	if(priv !== 'admin' && priv !== 'op')
+	{
+		chat_announce('[', ']', "You are not a room operator or admin", 'small');
+		return false;
+	}
+
+	socket.emit('remove_voices', {});
+}
+
+function remove_ops()
+{
+	if(priv !== 'admin')
+	{
+		chat_announce('[', ']', "You are not a room admin", 'small');
+		return false;
+	}
+
+	socket.emit('remove_ops', {});
+}
+
+function announce_removedvoices(data)
+{
+    if(username === data.username)
+	{
+		chat_announce('~', '~', 'You removed all voices', 'small');
+	}
+	else
+	{
+		chat_announce('~', '~', data.username + ' removed all voices', 'small');
+	}
+
+	if(priv === 'voice')
+	{
+		stripped();
+	}
+
+	remove_voices_userlist();
+}
+
+function announce_removedops(data)
+{
+    if(username === data.username)
+	{
+		chat_announce('~', '~', 'You removed all ops', 'small');
+	}
+	else
+	{
+		chat_announce('~', '~', data.username + ' removed all ops', 'small');
+	}
+
+	if(priv === 'op')
+	{
+		stripped();
+	}
+
+	remove_ops_userlist();
 }

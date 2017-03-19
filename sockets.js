@@ -249,6 +249,30 @@ module.exports = function (io)
 	    	}
     	});
 
+	    socket.on('remove_voices', function (data) 
+	    {
+	    	try
+	    	{
+	    		remove_voices(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.error(err);
+	    	}
+    	});
+
+	    socket.on('remove_ops', function (data) 
+	    {
+	    	try
+	    	{
+	    		remove_ops(socket, data);
+	    	}
+	    	catch(err)
+	    	{
+	    		console.error(err);
+	    	}
+    	});
+
 	    socket.on('ban', function (data) 
 	    {
 	    	try
@@ -1060,6 +1084,96 @@ module.exports = function (io)
     					}
     				}
     			}
+    		});
+    	}		
+	}
+
+	function remove_voices(socket, data)
+	{
+    	if(socket.username !== undefined)
+    	{
+    		get_roominfo(socket.room, {keys:true}, function(info)
+    		{
+	    		if(socket.priv === 'admin' || socket.priv === 'op')
+	    		{
+	    			var key_array = info.keys.split(';');
+
+					var filtered_array = key_array.filter(function(item) 
+					{
+
+						return item.indexOf('_vkey_') !== 0;
+
+					});
+
+					if(key_array.length === filtered_array.length)
+					{
+    					socket.emit('update', {room:socket.room, type:'nothingtochange'});
+    					return false;
+					}
+
+					info.keys = filtered_array.join(';');
+
+    				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets);
+
+    				for(var i=0; i < ids.length; i++)
+    				{
+    					var socc = io.sockets.connected[ids[i]];
+
+    					if(socc.priv === 'voice')
+    					{
+    						socc.priv = '';
+    					}
+    				}
+    				
+					io.sockets.in(socket.room).emit('update', {type:'announce_removedvoices', username:socket.username});
+
+    				db.collection('rooms').update({_id:info._id}, {$set:{keys:info.keys}});
+	    		}
+    		});
+    	}		
+	}
+
+	function remove_ops(socket, data)
+	{
+    	if(socket.username !== undefined)
+    	{
+    		get_roominfo(socket.room, {keys:true}, function(info)
+    		{
+	    		if(socket.priv === 'admin')
+	    		{
+	    			var key_array = info.keys.split(';');
+
+					var filtered_array = key_array.filter(function(item) 
+					{
+
+						return item.indexOf('_okey_') !== 0;
+
+					});
+
+					if(key_array.length === filtered_array.length)
+					{
+    					socket.emit('update', {room:socket.room, type:'nothingtochange'});
+    					return false;
+					}
+
+					info.keys = filtered_array.join(';');
+
+    				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets);
+
+    				for(var i=0; i < ids.length; i++)
+    				{
+    					var socc = io.sockets.connected[ids[i]];
+
+    					if(socc.priv === 'op')
+    					{
+    						socc.priv = '';
+    					}
+    				}
+    				
+					io.sockets.in(socket.room).emit('update', {type:'announce_removedops', username:socket.username});
+
+    				db.collection('rooms').update({_id:info._id}, {$set:{keys:info.keys}});
+	    		}
     		});
     	}		
 	}
