@@ -127,9 +127,9 @@ function help2()
 	chat_announce('', '', 'Clicking on a nickname sends it to the input.', 'small');
 	chat_announce('', '', '/reserve: Reserves current nickname to be recoverable later.', 'small');
 	chat_announce('', '', '/recover x: Recovers reserved nickname in case someone else is using it.', 'small');
-	chat_announce('', '', '/startradio: Starts the radio radio. An alternative to clicking the button in the top bar.', 'small');
-	chat_announce('', '', '/stopradio: Stops the radio radio. An alternative to clicking the button in the top bar.', 'small');
-	chat_announce('', '', '/volume x: Changes the volume of the radio radio. An alternative to clicking the buttons in the top bar.', 'small');
+	chat_announce('', '', '/startradio: Starts the radio. An alternative to clicking the button in the top bar.', 'small');
+	chat_announce('', '', '/stopradio: Stops the radio. An alternative to clicking the button in the top bar.', 'small');
+	chat_announce('', '', '/volume x: Changes the volume of the radio. An alternative to clicking the buttons in the top bar.', 'small');
 }
 
 function help3()
