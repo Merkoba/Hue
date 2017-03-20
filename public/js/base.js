@@ -127,9 +127,9 @@ function help2()
 	chat_announce('', '', 'Clicking on a nickname sends it to the input.', 'small');
 	chat_announce('', '', '/reserve: Reserves current nickname to be recoverable later.', 'small');
 	chat_announce('', '', '/recover x: Recovers reserved nickname in case someone else is using it.', 'small');
-	chat_announce('', '', '/startradio: Starts the radio stream. An alternative to clicking the button in the top bar.', 'small');
-	chat_announce('', '', '/stopradio: Stops the radio stream. An alternative to clicking the button in the top bar.', 'small');
-	chat_announce('', '', '/volume x: Changes the volume of the radio stream. An alternative to clicking the buttons in the top bar.', 'small');
+	chat_announce('', '', '/startradio: Starts the radio radio. An alternative to clicking the button in the top bar.', 'small');
+	chat_announce('', '', '/stopradio: Stops the radio radio. An alternative to clicking the button in the top bar.', 'small');
+	chat_announce('', '', '/volume x: Changes the volume of the radio radio. An alternative to clicking the buttons in the top bar.', 'small');
 }
 
 function help3()
@@ -530,7 +530,7 @@ function setup_radio(src)
 
 	}
 
-	get_stream_metadata();
+	get_radio_metadata();
 }
 
 function update_usercount(usercount)
@@ -2307,11 +2307,11 @@ function send_to_chat()
 			}
 			else if(oiEquals(lmsg, '/stopradio'))
 			{
-				stop_stream();
+				stop_radio();
 			}
 			else if(oiEquals(lmsg, '/startradio'))
 			{
-				start_stream();
+				start_radio();
 			}
 			else if(oiStartsWith(lmsg, '/volume'))
 			{
@@ -2578,7 +2578,7 @@ function emit_pasted(url)
 	socket.emit('pasted', {image_url:url});
 }
 
-function get_stream_metadata()
+function get_radio_metadata()
 {
 	if(get_metadata)
 	{
@@ -2727,7 +2727,7 @@ function show_nowplaying()
 	$('#now_playing_area').css('display', 'inline-block');
 }
 
-function start_stream()
+function start_radio()
 {
 	if(radiosrc)
 	{
@@ -2737,24 +2737,28 @@ function start_stream()
 	{
 		$('#audio').attr('src', default_radiosrc);
 	}
-	$('#toggle_stream').html('Stop Radio');
+
+	$('#playing_icon').css('display', 'inline-block');
+
+	$('#toggle_radio_text').html('Stop Radio');
 }
 
-function stop_stream()
+function stop_radio()
 {
 	$('#audio').attr('src', '');
-	$('#toggle_stream').html('Start Radio');
+	$('#playing_icon').css('display', 'none');
+	$('#toggle_radio_text').html('Start Radio');
 }
 
-function toggle_stream()
+function toggle_radio()
 {
-	if($('#toggle_stream').html() == 'Stop Radio')
+	if($('#toggle_radio_text').html() === 'Stop Radio')
 	{
-		stop_stream();
+		stop_radio();
 	}
 	else
 	{
-		start_stream();		
+		start_radio();		
 	}
 }
 
@@ -2764,7 +2768,7 @@ function start_metadata_loop()
 	{
 		if(get_metadata)
 		{
-			get_stream_metadata();
+			get_radio_metadata();
 		}
 		else
 		{
@@ -3760,9 +3764,9 @@ function changed_radiosrc(data)
 {
 	setup_radio(data.src);
 
-	if($('#toggle_stream').html() == 'Stop Radio')
+	if($('#toggle_radio_text').html() === 'Stop Radio')
 	{
-		start_stream()
+		start_radio();
 	}
 
 	if(data.src == '')

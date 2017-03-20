@@ -37,9 +37,14 @@ body
 	display: inline-block;
 }
 
-#toggle_stream
+#toggle_radio
 {
 	cursor: pointer;
+}
+
+#playing_icon
+{
+	display: none;
 }
 
 #chat_main
