@@ -108,8 +108,6 @@ function help()
 	chat_announce('', '', 'Change it by dropping an image file anywhere on the page.', 'small');
 	chat_announce('', '', '/nick x: Used to change your current nickname.', 'small');
 	chat_announce('', '', '/goto x: Goes to a certain room.', 'small');
-	chat_announce('', '', '/status: Shows information about you and the room.', 'small');
-	chat_announce('', '', '/clear: Clears all messages from the chat.', 'small');
 	chat_announce('', '', '/me x: Makes a message in third person.', 'small');
 	chat_announce('', '', '/help: Shows this message.', 'small');
 	chat_announce('', '', '/help2: Shows additional features.', 'small');
@@ -120,6 +118,8 @@ function help2()
 {
 	chat_announce('', '', 'Additional Features:', 'small');
 	chat_announce('', '', 'Escape clears the input or closes popups.', 'small');
+	chat_announce('', '', 'Shift + Escape or /clear clears all messages from the chat.', 'small');
+	chat_announce('', '', 'Shift + Enter or /status shows information about you and the room.', 'small');
 	chat_announce('', '', 'Up arrow scrolls up the chat.', 'small');
 	chat_announce('', '', 'Down arrow scrolls down the chat.', 'small');
 	chat_announce('', '', 'Shift + up arrow loads your last message in the input.', 'small');
@@ -1552,6 +1552,13 @@ function activate_key_detection()
 
 		if(e.key === "Enter")
 		{
+			if(e.shiftKey)
+			{
+				show_status();
+				e.preventDefault();
+				return;
+			}
+
 			send_to_chat();
 			e.preventDefault();
 			return;
@@ -1599,7 +1606,13 @@ function activate_key_detection()
 
 		else if(e.key === "Escape")
 		{
-			if($('#overlay').css('display') === 'block')
+			if(e.shiftKey)
+			{
+				clear_chat();
+				e.preventDefault();
+				return;
+			}
+			else if($('#overlay').css('display') === 'block')
 			{
 				hide_boxes();
 				e.preventDefault();
@@ -2954,11 +2967,10 @@ function activate_window_visibility_listener()
 				change_when_focused = false;
 				change();
 			}
-
 		}
 		else
 		{
-			afk_timer = setTimeout(function(){ afk = true }, 300000);
+			afk_timer = setTimeout(function(){ afk = true }, 120000);
 
 			$('.dash_container').remove();
 
