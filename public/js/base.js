@@ -119,7 +119,7 @@ function help2()
 	chat_announce('', '', 'Additional Features:', 'small');
 	chat_announce('', '', 'Escape clears the input or closes popups.', 'small');
 	chat_announce('', '', 'Shift + Escape or /clear clears all messages from the chat.', 'small');
-	chat_announce('', '', 'Shift + Enter or /status shows information about you and the room.', 'small');
+	chat_announce('', '', 'Shift + Tab or /status shows information about you and the room.', 'small');
 	chat_announce('', '', 'Up arrow scrolls up the chat.', 'small');
 	chat_announce('', '', 'Down arrow scrolls down the chat.', 'small');
 	chat_announce('', '', 'Shift + up arrow loads your last message in the input.', 'small');
@@ -130,6 +130,7 @@ function help2()
 	chat_announce('', '', '/startradio: Starts the radio. An alternative to clicking the button in the top bar.', 'small');
 	chat_announce('', '', '/stopradio: Stops the radio. An alternative to clicking the button in the top bar.', 'small');
 	chat_announce('', '', '/volume x: Changes the volume of the radio. An alternative to clicking the buttons in the top bar.', 'small');
+	chat_announce('', '', 'Shift + Enter toggles the radio.', 'small');
 }
 
 function help3()
