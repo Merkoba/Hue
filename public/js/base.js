@@ -483,13 +483,11 @@ function start_socket()
 		}
 		if(data.type === 'kicked')
 		{
-			removefrom_userlist(data.username);
-			chat_announce('--', '--', data.username + ' was kicked by ' + data.info1, 'small');
+			kicked(data);
 		}
 		if(data.type === 'banned')
 		{
-			removefrom_userlist(data.username);
-			chat_announce('--', '--', data.username + ' was banned by ' + data.info1, 'small');
+			banned(data);
 		}
 	});
 }
@@ -4041,4 +4039,32 @@ function announce_removedops(data)
 	}
 
 	remove_ops_userlist();
+}
+
+function kicked(data)
+{
+	removefrom_userlist(data.username);
+
+	if(username === data.info1)
+	{
+		chat_announce('--', '--', data.username + ' was kicked by you', 'small');
+	}
+	else
+	{
+		chat_announce('--', '--', data.username + ' was kicked by ' + data.info1, 'small');
+	}
+}
+
+function banned(data)
+{
+	removefrom_userlist(data.username);
+
+	if(username === data.info1)
+	{
+		chat_announce('--', '--', data.username + ' was banned by you', 'small');
+	}
+	else
+	{
+		chat_announce('--', '--', data.username + ' was banned by ' + data.info1, 'small');
+	}
 }

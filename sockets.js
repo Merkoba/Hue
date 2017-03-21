@@ -1257,8 +1257,6 @@ module.exports = function (io)
 										continue;
 									}
 
-									io.to(ids[j]).emit('update', {type:'redirect', location:'/the street'});
-
 									sokk.priv = '';
 
 									if(sokk.key !== '')
@@ -1269,7 +1267,10 @@ module.exports = function (io)
 
 		    						sokk.bannd = true;
 		    						sokk.info1 = socket.username;
-		    						sokk.disconnect();
+
+									io.to(ids[j]).emit('update', {type:'redirect', location:'/the street'});
+
+		    						setTimeout(do_disconnect, 2000, sokk);
     							}
     						}
 
@@ -1388,12 +1389,14 @@ module.exports = function (io)
 							return false;
 						}
 
-						io.to(ids[i]).emit('update', {type:'redirect', location:'/the street'});
 						socc.priv = '';
 						socc.key = '';
 						socc.kickd = true;
 						socc.info1 = socket.username;
-						socc.disconnect();
+						
+						io.to(ids[i]).emit('update', {type:'redirect', location:'/the street'});
+
+		    			setTimeout(do_disconnect, 2000, socc);
 
 						break;
 					}
@@ -1518,6 +1521,11 @@ module.exports = function (io)
     			}
     		});
     	}		
+	}
+
+	function do_disconnect(socc)
+	{
+		socc.disconnect();
 	}
 
 	function disconnect(socket)
