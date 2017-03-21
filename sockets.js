@@ -1107,7 +1107,7 @@ module.exports = function (io)
 
 					if(key_array.length === filtered_array.length)
 					{
-    					socket.emit('update', {room:socket.room, type:'nothingtochange'});
+    					socket.emit('update', {room:socket.room, type:'nothingtoremove'});
     					return false;
 					}
 
@@ -1152,7 +1152,7 @@ module.exports = function (io)
 
 					if(key_array.length === filtered_array.length)
 					{
-    					socket.emit('update', {room:socket.room, type:'nothingtochange'});
+    					socket.emit('update', {room:socket.room, type:'nothingtoremove'});
     					return false;
 					}
 

@@ -435,9 +435,9 @@ function start_socket()
 		{
 			forbiddenuser();
 		}
-		if(data.type === 'nothingtochange')
+		if(data.type === 'nothingtoremove')
 		{
-			chat_announce('[', ']', "There was nothing to change", 'small');
+			chat_announce('[', ']', "There was nothing to remove", 'small');
 		}
 		if(data.type === 'isalready')
 		{
@@ -1509,6 +1509,13 @@ function activate_key_detection()
 
 			if(e.key === "Enter")
 			{
+				if(e.shiftKey)
+				{
+					toggle_radio();
+					e.preventDefault();
+					return;
+				}
+
 				var arg = $('#createroom_input').val().substr(0, 35).trim();
 
 				if(arg.length > 0)
@@ -1554,7 +1561,7 @@ function activate_key_detection()
 		{
 			if(e.shiftKey)
 			{
-				show_status();
+				toggle_radio();
 				e.preventDefault();
 				return;
 			}
@@ -1628,6 +1635,12 @@ function activate_key_detection()
 
 		else if(e.key === "Tab")
 		{
+			if(e.shiftKey)
+			{
+				show_status();
+				e.preventDefault();
+			}
+
 			if(input.value.length > 0)
 			{
 				tabbed();
