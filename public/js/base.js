@@ -126,10 +126,10 @@ function help2()
 	chat_announce('', '', 'Shift + down arrow goes to the bottom of the chat.', 'small');
 	chat_announce('', '', 'Clicking on a nickname sends it to the input.', 'small');
 	chat_announce('', '', '/reserve: Reserves current nickname to be recoverable later.', 'small');
-	chat_announce('', '', '/recover x: Recovers reserved nickname in case someone else is using it.', 'small');
-	chat_announce('', '', '/startradio: Starts the radio. An alternative to clicking the button in the top bar.', 'small');
-	chat_announce('', '', '/stopradio: Stops the radio. An alternative to clicking the button in the top bar.', 'small');
-	chat_announce('', '', '/volume x: Changes the volume of the radio. An alternative to clicking the buttons in the top bar.', 'small');
+	chat_announce('', '', '/recover x: Recovers reserved nickname in case someone else in the room is using it.', 'small');
+	chat_announce('', '', '/startradio: Starts the radio.', 'small');
+	chat_announce('', '', '/stopradio: Stops the radio.', 'small');
+	chat_announce('', '', '/volume x: Changes the volume of the radio.', 'small');
 	chat_announce('', '', 'Shift + Enter toggles the radio.', 'small');
 }
 
