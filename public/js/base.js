@@ -40,7 +40,7 @@ var afk = false;
 var alert_mode = 0;
 var alert_timer;
 var site_root = 'https://hue.merkoba.com/';
-var default_radiosrc = 'https://hue.merkoba.com:8765/hue.ogg';
+var default_radiosrc = 'https://hue.merkoba.com:8765/hue';
 var default_radioinfo = 'https://hue.merkoba.com:8765/status-json.xsl';
 var default_image_url = '/img/default.gif';
 
@@ -2617,76 +2617,74 @@ function get_radio_metadata()
 			{
 				try
 				{
-					data.icestats.source
+					if(Array.isArray(data.icestats.source))
+					{
+						for(var i=0; i<data.icestats.source.length; i++)
+						{
+							var source = data.icestats.source[i];
+
+							if(source.listenurl.indexOf(radiosrc.split('/').pop()) !== -1)
+							{
+								break;
+							}
+						}
+					}
+
+					else if(data.icestats.source.listenurl.indexOf(radiosrc.split('/').pop()) !== -1)
+					{
+						var source = data.icestats.source;
+					}
+
+					else
+					{
+						show_playing_file();
+						return false;
+					}
+
+					if(source === undefined || source.artist === undefined || source.title === undefined)
+					{
+						show_playing_file();
+						return false;
+					}
+
+					var s = source.title + " - " + source.artist;
+
+					var q = '"' + source.title + '" by "' + source.artist + '"';
+					
+					$('#now_playing').text(s);
+
+					$('#now_playing_area').data('q', q);
+
+					if(played[played.length - 1] !== s)
+					{
+						var date = dateFormat(Date.now(), "dddd, mmmm dS, yyyy, h:MM:ss TT");
+						
+						var pi = "<span class='pititle'></span><br><span class='piartist'></span>";
+						
+						h = $("<div title='" + date + "' class='played_item'>" + pi + "</div><br>");
+						
+						$($(h).find('.pititle').get(0)).text(source.title);
+						$($(h).find('.piartist').get(0)).text("by " + source.artist);
+
+						$(h).data('q', q);
+
+						$(h).click(function()
+						{
+							search_in('google', $(this).data('q'));
+						});
+						
+						$('#played').prepend(h);
+
+						push_played(s);
+					}
+						
+					show_nowplaying();
 				}
 				catch(err)
 				{
 					show_playing_file();
 					return false;
 				}
-
-				if(Array.isArray(data.icestats.source))
-				{
-					for(var i=0; i<data.icestats.source.length; i++)
-					{
-						var source = data.icestats.source[i];
-
-						if(source.listenurl.indexOf(radiosrc.split('/').pop()) !== -1)
-						{
-							break;
-						}
-					}
-				}
-
-				else if(data.icestats.source.listenurl.indexOf(radiosrc.split('/').pop()) !== -1)
-				{
-					var source = data.icestats.source;
-				}
-
-				else
-				{
-					show_playing_file();
-					return false;
-				}
-
-				if(source === undefined || source.artist === undefined || source.title === undefined)
-				{
-					show_playing_file();
-					return false;
-				}
-
-				var s = source.title + " - " + source.artist;
-
-				var q = '"' + source.title + '" by "' + source.artist + '"';
-				
-				$('#now_playing').text(s);
-
-				$('#now_playing_area').data('q', q);
-
-				if(played[played.length - 1] !== s)
-				{
-					var date = dateFormat(Date.now(), "dddd, mmmm dS, yyyy, h:MM:ss TT");
-					
-					var pi = "<span class='pititle'></span><br><span class='piartist'></span>";
-					
-					h = $("<div title='" + date + "' class='played_item'>" + pi + "</div><br>");
-					
-					$($(h).find('.pititle').get(0)).text(source.title);
-					$($(h).find('.piartist').get(0)).text("by " + source.artist);
-
-					$(h).data('q', q);
-
-					$(h).click(function()
-					{
-						search_in('google', $(this).data('q'));
-					});
-					
-					$('#played').prepend(h);
-
-					push_played(s);
-				}
-					
-				show_nowplaying();
 
 			}).fail(function(err, status) 
 			{
