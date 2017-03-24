@@ -499,6 +499,8 @@ module.exports = function (io)
 	    		}
 
 				socket.broadcast.in(socket.room).emit('update', {type:'chat_msg', username:socket.username, msg:clean_string2(data.msg).substring(0, 1200)});
+
+				db.collection('rooms').update({_id:info._id}, {$set:{modified:Date.now()}});
 			});
 		}
 	}
@@ -1664,7 +1666,7 @@ module.exports = function (io)
 
 	function get_roomlist(callback)
 	{
-		if(last_roomlist === undefined || (Date.now() - roomlist_lastget > 120000))
+		if(last_roomlist === undefined || (Date.now() - roomlist_lastget > 300000))
 		{
 		    var rooms = [];
 
