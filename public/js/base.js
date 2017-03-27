@@ -364,7 +364,11 @@ function start_socket()
 		if(data.type === 'userjoin')
 		{
 			addto_userlist(data.username, data.priv);
-			chat_announce('--', '--', data.username + ' has joined', 'small');
+
+			if(mode < 3 || (data.priv === 'admin' || data.priv === 'op' || data.priv === 'voice'))
+			{
+				chat_announce('--', '--', data.username + ' has joined', 'small');
+			}
 		}
 		if(data.type === 'roomlist')
 		{
@@ -481,7 +485,11 @@ function start_socket()
 		if(data.type === 'disconnection')
 		{		
 			removefrom_userlist(data.username);
-			chat_announce('--', '--', data.username + ' has left', 'small');
+
+			if(mode < 3 || (data.priv === 'admin' || data.priv === 'op' || data.priv === 'voice'))
+			{
+				chat_announce('--', '--', data.username + ' has left', 'small');
+			}
 		}
 		if(data.type === 'kicked')
 		{

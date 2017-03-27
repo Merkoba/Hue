@@ -1547,7 +1547,7 @@ module.exports = function (io)
 				var type = 'disconnection';
 			}
 
-			io.sockets.in(socket.room).emit('update', {type:type, username:socket.username, usercount:get_usercount(socket.room), info1:socket.info1})	
+			io.sockets.in(socket.room).emit('update', {type:type, username:socket.username, usercount:get_usercount(socket.room), info1:socket.info1, priv:socket.priv})	
 		}		
 	}
 
