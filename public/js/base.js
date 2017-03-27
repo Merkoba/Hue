@@ -1798,7 +1798,14 @@ function replace_tabbed(word)
 	
 	if(uname !== "")
 	{
-		input.value = replaceBetween(input.value, tabbed_start, tabbed_end, uname + ' ');
+		if(input.value[tabbed_end] === ' ')
+		{
+			input.value = replaceBetween(input.value, tabbed_start, tabbed_end, uname);
+		}
+		else
+		{
+			input.value = replaceBetween(input.value, tabbed_start, tabbed_end, uname + ' ');
+		}
 
 		var pos = tabbed_start + uname.length;
 
