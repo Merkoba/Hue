@@ -1798,9 +1798,7 @@ function replace_tabbed(word)
 	
 	if(uname !== "")
 	{
-		var s = input.value.trim();
-
-		input.value = replaceBetween(s, tabbed_start, tabbed_end, uname + ' ').replace(/\s+/g, ' ');
+		input.value = replaceBetween(input.value, tabbed_start, tabbed_end, uname + ' ').replace(/\s+/g, ' ');
 
 		var pos = tabbed_start + uname.length;
 
