@@ -28,7 +28,7 @@ var claimed = false;
 var msgcount = 0;
 var get_metadata;
 var no_meta_count;
-var tabbed_usernames = [];
+var tabbed_list = [];
 var tabbed_word = "";
 var tabbed_start = 0;
 var tabbed_end = 0;
@@ -39,6 +39,7 @@ var afk_timer;
 var afk = false;
 var alert_mode = 0;
 var alert_timer;
+var commands = [];
 var site_root = 'https://hue.merkoba.com/';
 var default_radiosrc = 'https://hue.merkoba.com:8765/hue';
 var default_radioinfo = 'https://hue.merkoba.com:8765/status-json.xsl';
@@ -61,6 +62,7 @@ function init()
 	main_menu_events();
 	scroll_events();
 	resize_events();
+	register_commands();
 	start_socket();
 }
 
@@ -1678,7 +1680,7 @@ function input_click_events()
 
 function clear_tabbed()
 {
-	tabbed_usernames = [];
+	tabbed_list = [];
 	tabbed_word = "";
 	tabbed_start = 0;
 	tabbed_end = 0;
@@ -1713,9 +1715,9 @@ function get_closest_username(word)
 		{
 			has = true;
 
-			if(tabbed_usernames.indexOf(pw) === -1)
+			if(tabbed_list.indexOf(pw) === -1)
 			{
-				tabbed_usernames.push(pw);
+				tabbed_list.push(pw);
 				return nicknames[i];
 			}
 		}
@@ -1723,8 +1725,39 @@ function get_closest_username(word)
 
 	if(has)
 	{
-		tabbed_usernames = [];
+		tabbed_list = [];
 		return get_closest_username(word);
+	}
+
+	return "";
+}
+
+function get_closest_command(word)
+{
+	word = word.toLowerCase();
+
+	var has = false;
+
+	for(var i=0; i<commands.length; i++)
+	{
+		var pw = commands[i];
+
+		if(pw.startsWith(word))
+		{
+			has = true;
+
+			if(tabbed_list.indexOf(pw) === -1)
+			{
+				tabbed_list.push(pw);
+				return commands[i];
+			}
+		}
+	}
+
+	if(has)
+	{
+		tabbed_list = [];
+		return get_closest_command(word);
 	}
 
 	return "";
@@ -1739,8 +1772,8 @@ function tabbed()
 	}
 
 	var split = input.selectionStart;
-	var a = input.value.substring(0, split).match(/[^ \/]*$/)[0];
-	var b = input.value.substring(split).match(/^[^ \/]*/)[0];
+	var a = input.value.substring(0, split).match(/[^ ]*$/)[0];
+	var b = input.value.substring(split).match(/^[^ ]*/)[0];
 	var word = a + b;
 	tabbed_start = split - a.length;
 	tabbed_end = split + b.length;
@@ -1754,7 +1787,14 @@ function tabbed()
 
 function replace_tabbed(word)
 {
-	var uname = get_closest_username(word);
+	if(word[0] === '/')
+	{
+		var uname = get_closest_command(word);
+	}
+	else
+	{
+		var uname = get_closest_username(word);
+	}
 	
 	if(uname !== "")
 	{
@@ -2124,6 +2164,46 @@ function msg_is_ok(msg)
 	}
 }
 
+function register_commands()
+{
+	commands.push('/nick');
+	commands.push('/clear');
+	commands.push('/claim');
+	commands.push('/reclaim');
+	commands.push('/mode');
+	commands.push('/voice');
+	commands.push('/op');
+	commands.push('/admin');
+	commands.push('/strip');
+	commands.push('/removevoices');
+	commands.push('/removeops');
+	commands.push('/ban');
+	commands.push('/unbanall');
+	commands.push('/unbanlast');
+	commands.push('/bannedcount');
+	commands.push('/kick');
+	commands.push('/private');
+	commands.push('/public');
+	commands.push('/radio');
+	commands.push('/public');
+	commands.push('/privacy');
+	commands.push('/reserve');
+	commands.push('/recover');
+	commands.push('/status');
+	commands.push('/topic');
+	commands.push('/topicadd');
+	commands.push('/topictrim');
+	commands.push('/topic');
+	commands.push('/room');
+	commands.push('/goto');
+	commands.push('/help3');
+	commands.push('/help2');
+	commands.push('/help');
+	commands.push('/stopradio');
+	commands.push('/startradio');
+	commands.push('/volume');
+}
+
 function send_to_chat()
 {
 	msg = clean_string2($('#input').val()).substring(0,1200);
@@ -2258,7 +2338,7 @@ function send_to_chat()
 				var arg = msg.substr(7, 200).trim();
 				change_radiosrc(arg);
 			}
-			else if(msg == '/radio')
+			else if(oiEquals(lmsg, '/radio'))
 			{
 				show_radiosrc();
 			}
