@@ -662,7 +662,7 @@ module.exports = function (io)
 		    		if(usernames[i] == socket.username)
 		    		{
 		    			var old_username = usernames[i];
-		    			socket.username = make_username_unique(clean_string2(data.username.substring(0, 14)), usernames);
+		    			socket.username = make_username_unique(clean_string4(data.username.substring(0, 14)), usernames);
 		    			io.sockets.in(socket.room).emit('update', {type:'new_username', username:socket.username, old_username:old_username});
 		    			return;
 		    		}
@@ -1756,12 +1756,22 @@ module.exports = function (io)
 
 	function clean_string(s)
 	{
-		return s.replace(/</g, '').trim().replace(/\s+/g, ' ');
+		return s.replace(/</g, '').replace(/\s+/g, ' ').trim();
 	}
 
 	function clean_string2(s)
 	{
-		return s.trim().replace(/\s+/g, ' ');
+		return s.replace(/\s+/g, ' ').trim();
+	}
+
+	function clean_string3(s)
+	{ 
+	   return s.replace(/[\\"']/g, '');
+	} 
+
+	function clean_string4(s)
+	{
+		return s.replace(/[\s+\//]/g, ' ').trim();
 	}
 
 	function get_random_int(min, max)

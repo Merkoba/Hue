@@ -75,7 +75,7 @@ function get_username()
 		var keep_naming = true;
 		while(keep_naming)
 		{
-			username = clean_string2(prompt('Pick your nickname').substring(0, 14));
+			username = clean_string4(prompt('Pick your nickname').substring(0, 14));
 			if(username === null || username.length < 1 || username.indexOf('<') !== -1)
 			{
 				keep_naming = true;
@@ -2122,18 +2122,23 @@ function chat_announce(brk1, brk2, msg, size, dotted=false)
 
 function clean_string(s)
 {
-	return s.replace(/</g, '').trim().replace(/\s+/g, ' ');
+	return s.replace(/</g, '').replace(/\s+/g, ' ').trim();
 }
 
 function clean_string2(s)
 {
-	return s.trim().replace(/\s+/g, ' ');
+	return s.replace(/\s+/g, ' ').trim();
 }
 
 function clean_string3(s)
 { 
    return s.replace(/[\\"']/g, '');
 } 
+
+function clean_string4(s)
+{
+	return s.replace(/[\s+\//]/g, ' ').trim();
+}
 
 function chat_urlize(msg)
 {
@@ -2621,6 +2626,8 @@ function change_nickname(nck)
 {
 	if(can_text)
 	{
+		nck = clean_string4(nck);
+		
 		if(nck.length > 0 && nck.length <= 15)
 		{
 			if(nck === username)
