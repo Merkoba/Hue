@@ -466,7 +466,7 @@ module.exports = function (io)
 		    	}
 		    }
 
-	    	socket.username = make_username_unique((clean_string2(data.username.substring(0, 14))), get_usernames(socket.room));
+	    	socket.username = make_username_unique((clean_string4(data.username.substring(0, 14))), get_usernames(socket.room));
 	    	socket.emit('update', {room:socket.room, type:'username', username:socket.username, image_url:info.image_url, image_uploader:info.image_uploader, topic:info.topic, userlist:get_userlist(socket.room), priv:socket.priv, mode:info.mode, public:info.public, radiosrc:info.radiosrc, claimed:info.claimed});
 	    	socket.broadcast.in(socket.room).emit('update', {type:'userjoin', usercount:get_usercount(socket.room), username:socket.username, priv:socket.priv});
 	    });
