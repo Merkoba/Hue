@@ -2171,6 +2171,7 @@ function msg_is_ok(msg)
 
 function register_commands()
 {
+	commands.push('/me');
 	commands.push('/nick');
 	commands.push('/clear');
 	commands.push('/claim');
