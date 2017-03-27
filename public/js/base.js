@@ -2137,7 +2137,7 @@ function clean_string3(s)
 
 function clean_string4(s)
 {
-	return s.replace(/[\s+\//]/g, ' ').trim();
+	return s.replace(/\/+/g, '').replace(/\s+/g, ' ').trim();
 }
 
 function chat_urlize(msg)
