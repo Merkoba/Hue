@@ -2294,37 +2294,35 @@ function send_to_chat()
 			}
 			else if(oiStartsWith(lmsg, '/voice'))
 			{
-				var arg = msg.substr(7,14).trim();
+				var arg = msg.substr(7,20).trim();
 				voice(arg);
 			}
 			else if(oiStartsWith(lmsg, '/op'))
 			{
-				var arg = msg.substr(4,14).trim();
+				var arg = msg.substr(4,20).trim();
 				op(arg);
 			}
 			else if(oiStartsWith(lmsg, '/admin'))
 			{
-				var arg = msg.substr(7,14).trim();
+				var arg = msg.substr(7,20).trim();
 				admin(arg);
 			}
 			else if(oiStartsWith(lmsg, '/strip'))
 			{
-				var arg = msg.substr(7,14).trim();
+				var arg = msg.substr(7,20).trim();
 				strip(arg);
 			}
 			else if(oiEquals(lmsg, '/removevoices'))
 			{
-				var arg = msg.substr(7,14).trim();
 				remove_voices();
 			}
 			else if(oiEquals(lmsg, '/removeops'))
 			{
-				var arg = msg.substr(7,14).trim();
 				remove_ops();
 			}
 			else if(oiStartsWith(lmsg, '/ban'))
 			{
-				var arg = msg.substr(5,14).trim();
+				var arg = msg.substr(5,20).trim();
 				ban(arg);
 			}
 			else if(oiEquals(lmsg, '/unbanall'))
@@ -2341,7 +2339,8 @@ function send_to_chat()
 			}
 			else if(oiStartsWith(lmsg, '/kick'))
 			{
-				var arg = msg.substr(6,14).trim();
+				var arg = msg.substr(6,20).trim();
+				console.log(arg);
 				kick(arg);
 			}
 			else if(oiEquals(lmsg, '/private'))
@@ -2375,7 +2374,7 @@ function send_to_chat()
 			}
 			else if(oiStartsWith(lmsg, '/recover'))
 			{	
-				var arg = msg.substr(9, 14)
+				var arg = msg.substr(9, 20)
 				recover(arg);
 			}
 			else if(oiEquals(lmsg, '/status'))
