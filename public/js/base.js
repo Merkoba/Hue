@@ -2259,7 +2259,7 @@ function send_to_chat()
 
 			if(oiStartsWith(lmsg, '/nick'))
 			{
-				var arg = msg.substr(6,14).trim();
+				var arg = msg.substr(6,14);
 				change_nickname(arg);
 			}
 			else if(oiEquals(lmsg, '/nick'))
@@ -2642,6 +2642,8 @@ function change_nickname(nck)
 				return false;
 			}
 
+			localStorage.setItem('username', nck);
+
 			socket.emit('username_change', {username:nck});
 		}
 	}
@@ -2657,7 +2659,6 @@ function new_username(data)
 	{
 		username = data.username;
 		chat_announce('~', '~', 'You are now known as ' + username, 'small');
-		localStorage.setItem('username', username);
 	}
 	else
 	{
