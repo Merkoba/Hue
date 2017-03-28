@@ -2340,7 +2340,6 @@ function send_to_chat()
 			else if(oiStartsWith(lmsg, '/kick'))
 			{
 				var arg = msg.substr(6,20).trim();
-				console.log(arg);
 				kick(arg);
 			}
 			else if(oiEquals(lmsg, '/private'))
