@@ -1886,15 +1886,37 @@ module.exports = function (io)
 		return skeys.join(';');
 	}
 
+	function word_generator(pattern) 
+	{
+		var possibleC = "BCDFGHJKLMNPQRSTVWXZ";
+		var possibleV = "AEIOUY";
+
+		var pIndex = pattern.length;
+		var res = new Array(pIndex);
+		while (pIndex--) 
+		{
+		  res[pIndex] = pattern[pIndex]
+			.replace(/v/,randomCharacter(possibleV))
+			.replace(/c/,randomCharacter(possibleC));
+		}
+
+		function randomCharacter(bucket) 
+		{
+		var res = bucket.charAt(Math.floor(Math.random() * bucket.length));
+		  return res;
+		}   
+		return res.join("").toLowerCase();
+	}	
+
 	function make_username_unique(username, usernames)
 	{
-		var keep_going = true;
-		var matched = false;
-		while(keep_going)
+		for(var i=0; i<5; i++)
 		{
-			for(var i = 0; i < usernames.length; i++)
+			var matched = false;
+
+			for(var j = 0; j < usernames.length; j++)
 			{
-				if(usernames[i] === username)
+				if(usernames[j] === username)
 				{
 					matched = true;
 					break;
@@ -1902,15 +1924,19 @@ module.exports = function (io)
 			}
 			if(matched)
 			{
+				if(i === 4)
+				{
+					return make_username_unique(word_generator('cvcvcvcv'), usernames);
+				}
+
 				username = username + get_random_int(2, 9);
-				keep_going = true;
-				matched = false;
 			}
 			else
 			{
-				keep_going = false;
+				break;
 			}
 		}
+
 		return username;
 	}
 

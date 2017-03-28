@@ -2634,7 +2634,7 @@ function change_nickname(nck)
 	{
 		nck = clean_string4(nck);
 		
-		if(nck.length > 0 && nck.length <= 15)
+		if(nck.length > 0 && nck.length <= 20)
 		{
 			if(nck === username)
 			{
@@ -3151,7 +3151,7 @@ function word_generator(pattern)
 	  return res;
 	}   
 	return res.join("").toLowerCase();
-};
+}
 
 function goto_room(id, sametab)
 {
@@ -3505,7 +3505,7 @@ function voice(nck)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(nck.length > 0 && nck.length <= 15)
+		if(nck.length > 0 && nck.length <= 20)
 		{
 			if(nck === username)
 			{
@@ -3582,7 +3582,7 @@ function strip(nck)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(nck.length > 0 && nck.length <= 15)
+		if(nck.length > 0 && nck.length <= 20)
 		{
 			if(nck === username)
 			{
@@ -3698,7 +3698,7 @@ function admin(nck)
 {
 	if(priv === 'admin')
 	{
-		if(nck.length > 0 && nck.length <= 15)
+		if(nck.length > 0 && nck.length <= 20)
 		{
 			if(nck === username)
 			{
@@ -3733,7 +3733,7 @@ function op(nck)
 {
 	if(priv === 'admin')
 	{
-		if(nck.length > 0 && nck.length <= 15)
+		if(nck.length > 0 && nck.length <= 20)
 		{
 			if(nck === username)
 			{
@@ -3913,7 +3913,7 @@ function ban(nck)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(nck.length > 0 && nck.length <= 15)
+		if(nck.length > 0 && nck.length <= 20)
 		{
 			if(nck === username)
 			{
@@ -3980,7 +3980,7 @@ function kick(nck)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(nck.length > 0 && nck.length <= 15)
+		if(nck.length > 0 && nck.length <= 20)
 		{
 			if(nck === username)
 			{
