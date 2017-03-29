@@ -127,6 +127,7 @@ function help2()
 	chat_announce('', '', 'Shift + up arrow loads your last message in the input.', 'small');
 	chat_announce('', '', 'Shift + down arrow goes to the bottom of the chat.', 'small');
 	chat_announce('', '', 'Clicking on a nickname sends it to the input.', 'small');
+	chat_announce('', '', 'Tab completes usernames and commands.', 'small');
 	chat_announce('', '', '/reserve: Reserves current nickname to be recoverable later.', 'small');
 	chat_announce('', '', '/recover x: Recovers reserved nickname in case someone else in the room is using it.', 'small');
 	chat_announce('', '', '/startradio: Starts the radio.', 'small');

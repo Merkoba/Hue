@@ -1914,7 +1914,7 @@ module.exports = function (io)
 		{
 			var matched = false;
 
-			for(var j = 0; j < usernames.length; j++)
+			for(var j=0; j < usernames.length; j++)
 			{
 				if(usernames[j] === username)
 				{
