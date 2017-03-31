@@ -1,5 +1,6 @@
 var public;
 var room;
+var usernames;
 var username;
 var font_color = '#ffffff';
 var background_color = '#000000';
@@ -68,15 +69,56 @@ function init()
 
 function get_username()
 {
-	username = localStorage.getItem('username');
+	var uname;
 
-	if(username === null)
+	if(localStorage["usernames"])
+	{
+		usernames = JSON.parse(localStorage.getItem("usernames"));
+	}
+	else
+	{
+		usernames = [];
+	}
+
+	if(typeof usernames === "object" && usernames.length > 0)
+	{
+
+	}
+	else
+	{
+		usernames = [];
+	}
+
+	for(var i=0; i<usernames.length; i++)
+	{
+		if(usernames[i][0] === room)
+		{
+			uname = usernames[i][1];
+			break;
+		}
+	}
+
+	if(uname === undefined)
+	{
+		for(var i=0; i<usernames.length; i++)
+		{
+			if(usernames[i][0] === '/default')
+			{
+				uname = usernames[i][1];
+				break;
+			}
+		}
+	}
+
+	if(uname === undefined)
 	{
 		var keep_naming = true;
+
 		while(keep_naming)
 		{
-			username = clean_string4(prompt('Pick your nickname').substring(0, 14));
-			if(username === null || username.length < 1 || username.indexOf('<') !== -1)
+			uname = clean_string4(prompt('Pick your nickname').substring(0, 14));
+
+			if(uname === null || uname.length < 1 || uname.indexOf('<') !== -1)
 			{
 				keep_naming = true;
 			}
@@ -86,8 +128,50 @@ function get_username()
 			}
 		}
 
-		localStorage.setItem('username', username);
+		save_username(uname);
+		save_default_username(uname);
+
 	}
+	
+	username = uname;
+}
+
+function save_username(uname)
+{
+	if(typeof usernames === "object" && usernames.length > 0)
+	{
+		for(var i=0; i<usernames.length; i++)
+		{
+			if(usernames[i][0] === room)
+			{
+				usernames.splice(i, 1);
+				break;
+			}
+		}	
+	}
+
+	usernames.push([room, uname])
+
+	localStorage.setItem('usernames', JSON.stringify(usernames));
+}
+
+function save_default_username(uname)
+{
+	if(typeof usernames === "object" && usernames.length > 0)
+	{
+		for(var i=0; i<usernames.length; i++)
+		{
+			if(usernames[i][0] === '/default')
+			{
+				usernames.splice(i, 1);
+				break;
+			}
+		}	
+	}
+
+	usernames.push(['/default', uname])
+
+	localStorage.setItem('usernames', JSON.stringify(usernames));
 }
 
 function show_intro()
@@ -108,7 +192,7 @@ function help()
 	chat_announce('', '', 'Change the image on the right by pasting an image url.', 'small');
 	chat_announce('', '', 'Change it by clicking on the current image.', 'small');
 	chat_announce('', '', 'Change it by dropping an image file anywhere on the page.', 'small');
-	chat_announce('', '', '/nick x: Used to change your current nickname.', 'small');
+	chat_announce('', '', '/nick x: Used to change your nickname in the current room.', 'small');
 	chat_announce('', '', '/goto x: Goes to a certain room.', 'small');
 	chat_announce('', '', '/me x: Makes a message in third person.', 'small');
 	chat_announce('', '', '/help: Shows this message.', 'small');
@@ -128,6 +212,7 @@ function help2()
 	chat_announce('', '', 'Shift + down arrow goes to the bottom of the chat.', 'small');
 	chat_announce('', '', 'Clicking on a nickname sends it to the input.', 'small');
 	chat_announce('', '', 'Tab completes usernames and commands.', 'small');
+	chat_announce('', '', '/defnick x: Changes your default nickname for rooms you visit for the first time.', 'small');
 	chat_announce('', '', '/reserve: Reserves current nickname to be recoverable later.', 'small');
 	chat_announce('', '', '/recover x: Recovers reserved nickname in case someone else in the room is using it.', 'small');
 	chat_announce('', '', '/startradio: Starts the radio.', 'small');
@@ -2187,6 +2272,7 @@ function register_commands()
 {
 	commands.push('/me');
 	commands.push('/nick');
+	commands.push('/defnick');
 	commands.push('/clear');
 	commands.push('/claim');
 	commands.push('/reclaim');
@@ -2266,6 +2352,15 @@ function send_to_chat()
 			else if(oiEquals(lmsg, '/nick'))
 			{
 				show_nickname();
+			}
+			else if(oiStartsWith(lmsg, '/defnick'))
+			{
+				var arg = msg.substr(9,14);
+				change_default_nickname(arg);
+			}
+			else if(oiEquals(lmsg, '/defnick'))
+			{
+				show_default_nickname();
 			}
 			else if(oiEquals(lmsg, '/clear'))
 			{
@@ -2643,7 +2738,7 @@ function change_nickname(nck)
 				return false;
 			}
 
-			localStorage.setItem('username', nck);
+			save_username(nck);
 
 			socket.emit('username_change', {username:nck});
 		}
@@ -2652,6 +2747,12 @@ function change_nickname(nck)
 	{
 		chat_announce('[', ']', "You can't do that in the current room mode", 'small');
 	}
+}
+
+function change_default_nickname(nck)
+{
+	save_default_username(nck);
+	chat_announce('[', ']', "Default nickname changed to " + nck, 'small');
 }
 
 function new_username(data)
@@ -3296,6 +3397,7 @@ function save_key(key)
 			if(room_keys[i][0] == room)
 			{
 				room_keys.splice(i, 1);
+				break;
 			}
 		}	
 	}
@@ -3330,7 +3432,7 @@ function get_user_password(nck)
 {
 	for(var i=0; i<user_passwords.length; i++)
 	{
-		if(user_passwords[i][0] == nck)
+		if(user_passwords[i][0] === nck)
 		{
 			return user_passwords[i][1];
 		}
@@ -3343,9 +3445,10 @@ function save_password(password)
 	{
 		for(var i=0; i<user_passwords.length; i++)
 		{
-			if(user_passwords[i][0] == username)
+			if(user_passwords[i][0] === username)
 			{
 				user_passwords.splice(i, 1);
+				break;
 			}
 		}	
 	}
@@ -3646,10 +3749,11 @@ function stripped()
 	{
 		for(var i=0; i<room_keys.length; i++)
 		{
-			if(room_keys[i][0] == room)
+			if(room_keys[i][0] === room)
 			{
 				room_keys.splice(i, 1);
 				localStorage.setItem('room_keys', JSON.stringify(room_keys));
+				break;
 			}
 		}
 	}
