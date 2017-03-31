@@ -2761,7 +2761,7 @@ function show_default_nickname()
 	{
 		if(usernames[i][0] === '/default')
 		{
-			chat_announce('[', ']', 'Default nickname: ' + usernames[i][1], 'small');
+			chat_announce('[', ']', 'Default Nickname: ' + usernames[i][1], 'small');
 			break;
 		}
 	}
