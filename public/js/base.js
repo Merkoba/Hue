@@ -2755,6 +2755,18 @@ function change_default_nickname(nck)
 	chat_announce('[', ']', "Default nickname changed to " + nck, 'small');
 }
 
+function show_default_nickname()
+{
+	for(var i=0; i<usernames.length; i++)
+	{
+		if(usernames[i][0] === '/default')
+		{
+			chat_announce('[', ']', 'Default nickname: ' + usernames[i][1], 'small');
+			break;
+		}
+	}
+}
+
 function new_username(data)
 {
 	if(username === data.old_username)
