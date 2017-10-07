@@ -70,7 +70,7 @@ body
 
 #media img
 {
-	max-height: calc(100vh - 4em);
+	max-height: calc(100vh - 8em);
 	max-width: 44vw;
 	cursor: pointer;
 }
