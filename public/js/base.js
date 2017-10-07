@@ -936,7 +936,7 @@ function start_nickname_context_menu()
 				items: {
 					bansure: 
 					{
-						name: "I'm sure", callback: function(key, opt)
+						name: "I'm Sure", callback: function(key, opt)
 						{
 							var arg = $(this).text();
 							ban(arg);
@@ -960,7 +960,7 @@ function start_nickname_context_menu()
 				items: {
 					adminsure: 
 					{
-						name: "I'm sure", callback: function(key, opt)
+						name: "I'm Sure", callback: function(key, opt)
 						{
 							var arg = $(this).text();
 							admin(arg);
@@ -1224,7 +1224,7 @@ function start_main_menu_context_menu()
 						items: {
 							rmvoicessure: 
 							{
-								name: "I'm sure", callback: function(key, opt)
+								name: "I'm Sure", callback: function(key, opt)
 								{
 									remove_voices();
 								}					
@@ -1237,7 +1237,7 @@ function start_main_menu_context_menu()
 						items: {
 							rmopssure: 
 							{
-								name: "I'm sure", callback: function(key, opt)
+								name: "I'm Sure", callback: function(key, opt)
 								{
 									remove_ops();
 								}					
@@ -1276,7 +1276,7 @@ function start_main_menu_context_menu()
 						items: {
 							unbanlastsure: 
 							{
-								name: "I'm sure", callback: function(key, opt)
+								name: "I'm Sure", callback: function(key, opt)
 								{
 									unbanlast();
 								}					
@@ -1289,7 +1289,7 @@ function start_main_menu_context_menu()
 						items: {
 							unbanallsure: 
 							{
-								name: "I'm sure", callback: function(key, opt)
+								name: "I'm Sure", callback: function(key, opt)
 								{
 									unbanall();
 								}					
