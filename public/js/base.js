@@ -848,7 +848,7 @@ function start_nickname_context_menu()
 		selector: ".ui_item_nick, .chat_uname",
 		animation: {duration: 250, hide: 'fadeOut'},
 		items: {
-			cmenu1: {
+			cmvoice: {
 				name: "Voice", callback: function(key, opt)
 				{
 					var arg = $(this).text();
@@ -866,7 +866,7 @@ function start_nickname_context_menu()
 					}
 				}            
 			},
-			cmenu2: {
+			cmop: {
 				name: "Op", callback: function(key, opt)
 				{
 					var arg = $(this).text();
@@ -884,25 +884,7 @@ function start_nickname_context_menu()
 					}
 				} 
 			},
-			cmenu3: {
-				name: "Admin", callback: function(key, opt)
-				{
-					var arg = $(this).text();
-					admin(arg);
-				},
-				visible: function(key, opt)
-				{ 
-					if(priv !== 'admin')
-					{
-						return false;
-					}
-					else
-					{
-						return true;
-					}
-				} 
-			},
-			cmenu4: {
+			cmstrip: {
 				name: "Strip", callback: function(key, opt)
 				{
 					var arg = $(this).text();
@@ -920,7 +902,7 @@ function start_nickname_context_menu()
 					}
 				} 
 			},
-			cmenu5: {
+			cmkick: {
 				name: "Kick", callback: function(key, opt)
 				{
 					var arg = $(this).text();
@@ -938,12 +920,8 @@ function start_nickname_context_menu()
 					}
 				} 
 			},
-			cmenu6: {
-				name: "Ban", callback: function(key, opt)
-				{
-					var arg = $(this).text();
-					ban(arg);
-				},
+			cmban: {
+				name: "Ban",
 				visible: function(key, opt)
 				{ 
 					if(priv !== 'admin' && priv !== 'op')
@@ -954,8 +932,42 @@ function start_nickname_context_menu()
 					{
 						return true;
 					}
-				} 
+				},
+				items: {
+					bansure: 
+					{
+						name: "I'm sure", callback: function(key, opt)
+						{
+							var arg = $(this).text();
+							ban(arg);
+						}					
+					}
+				}				
 			},
+			cmadmin: {
+				name: "Admin",
+				visible: function(key, opt)
+				{ 
+					if(priv !== 'admin')
+					{
+						return false;
+					}
+					else
+					{
+						return true;
+					}
+				},
+				items: {
+					adminsure: 
+					{
+						name: "I'm sure", callback: function(key, opt)
+						{
+							var arg = $(this).text();
+							admin(arg);
+						}					
+					}
+				}
+			},			
 		}
 	});
 }
@@ -966,7 +978,7 @@ function start_main_menu_context_menu()
 		selector: "#main_menu",
 		animation: {duration: 250, hide: 'fadeOut'},
 		items: {
-			cmenu1: {
+			cmmode: {
 				name: "Mode", 
 				visible: function(key, opt)
 				{ 
@@ -1096,7 +1108,7 @@ function start_main_menu_context_menu()
 					}
 				}
 			},
-			cmenu2: 
+			cmprivacy: 
 			{
 				name: "Privacy", 
 				visible: function(key, opt)
@@ -1190,7 +1202,7 @@ function start_main_menu_context_menu()
 					}
 				}
 			},
-			cmenu3: 
+			cmprivs: 
 			{
 				name: "Privs",
 				visible: function(key, opt)
@@ -1209,22 +1221,32 @@ function start_main_menu_context_menu()
 					cp1: 
 					{
 						name: "Remove All Voices",
-						callback: function(key, opt)
-						{
-							remove_voices();
-						}						
+						items: {
+							rmvoicessure: 
+							{
+								name: "I'm sure", callback: function(key, opt)
+								{
+									remove_voices();
+								}					
+							}
+						}											
 					},
 					cp2: 
 					{
 						name: "Remove All Ops",
-						callback: function(key, opt)
-						{
-							remove_ops();
-						}						
+						items: {
+							rmopssure: 
+							{
+								name: "I'm sure", callback: function(key, opt)
+								{
+									remove_ops();
+								}					
+							}
+						}												
 					}
 				}
 			},
-			cmenu4: 
+			cmbans: 
 			{
 				name: "Bans",
 				visible: function(key, opt)
@@ -1251,18 +1273,28 @@ function start_main_menu_context_menu()
 					cb2: 
 					{
 						name: "Unban Last",
-						callback: function(key, opt)
-						{
-							unbanlast();
-						}						
+						items: {
+							unbanlastsure: 
+							{
+								name: "I'm sure", callback: function(key, opt)
+								{
+									unbanlast();
+								}					
+							}
+						}											
 					},
 					cb3: 
 					{
 						name: "Unban All",
-						callback: function(key, opt)
-						{
-							unbanall();
-						}						
+						items: {
+							unbanallsure: 
+							{
+								name: "I'm sure", callback: function(key, opt)
+								{
+									unbanall();
+								}					
+							}
+						}												
 					}
 				}
 			}
