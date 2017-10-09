@@ -1755,11 +1755,11 @@ module.exports = function(io)
 
 	function get_roomlist(callback)
 	{
-		if(last_roomlist === undefined || (Date.now() - roomlist_lastget > 300000))
+		if(last_roomlist === undefined || (Date.now() - roomlist_lastget > 120000))
 		{
 		    var rooms = []
 
-		    var md = Date.now() - 86400000
+		    var md = Date.now() - 172800000
 
 			db.collection('rooms').find({claimed:true, public:true, modified:{$gt:md}}).toArray(function(err, results)
 			{
