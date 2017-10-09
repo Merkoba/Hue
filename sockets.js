@@ -27,7 +27,7 @@ mongo.connect('mongodb://localhost:27017/hue', function(err,database)
 	}
 })
 
-module.exports = function (io) 
+module.exports = function(io) 
 {
 	antiSpam.init(
 	{
@@ -522,12 +522,20 @@ module.exports = function (io)
 
 			get_roominfo(socket.room, {mode:true}, function(info)
 			{
-	    		if(info.mode > 2)
+	    		if(info.mode === 3)
 	    		{
 	    			if(socket.priv !== 'admin' && socket.priv !== 'op' && socket.priv !== 'voice')
 	    			{
 	    				return false
 	    			}
+	    		}
+
+	    		else if(info.mode === 5)
+	    		{
+	    			if(socket.priv !== 'admin' && socket.priv !== 'op')
+	    			{
+	    				return false
+	    			}	    			
 	    		}
 
 				socket.broadcast.in(socket.room).emit('update', {type:'chat_msg', username:socket.username, msg:clean_string2(data.msg).substring(0, 1200)})
@@ -555,13 +563,21 @@ module.exports = function (io)
 
 			get_roominfo(socket.room, {mode:true}, function(info)
 			{
-				if(info.mode > 1)
+				if(info.mode === 2 || info.mode === 3)
 				{
 					if(socket.priv !== 'admin' && socket.priv !== 'op' && socket.priv !== 'voice')
 					{
 						return false
 					}
-				}	    		
+				}
+
+				else if(info.mode === 4 || info.mode === 5)
+				{
+					if(socket.priv !== 'admin' && socket.priv !== 'op')
+					{
+						return false
+					}					
+				}    		
 
 				data.image_url = data.image_url.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
 
@@ -600,13 +616,21 @@ module.exports = function (io)
     	{
     		get_roominfo(socket.room, {mode:true}, function(info)
     		{
-	    		if(info.mode > 1)
-	    		{
-	    			if(socket.priv !== 'admin' && socket.priv !== 'op' && socket.priv !== 'voice')
-	    			{
-	    				return false
-	    			}
-	    		}
+				if(info.mode === 2 || info.mode === 3)
+				{
+					if(socket.priv !== 'admin' && socket.priv !== 'op' && socket.priv !== 'voice')
+					{
+						return false
+					}
+				}
+
+				else if(info.mode === 4 || info.mode === 5)
+				{
+					if(socket.priv !== 'admin' && socket.priv !== 'op')
+					{
+						return false
+					}					
+				}
 
 	    		socket.broadcast.in(socket.room).emit('update', {type:'uploading', username:socket.username})
     		})
@@ -625,12 +649,20 @@ module.exports = function (io)
 
 			get_roominfo(socket.room, {mode:true}, function(info)
 			{
-				if(info.mode > 1)
+				if(info.mode === 2 || info.mode === 3)
 				{
 					if(socket.priv !== 'admin' && socket.priv !== 'op' && socket.priv !== 'voice')
 					{
 						return false
 					}
+				}
+
+				else if(info.mode === 4 || info.mode === 5)
+				{
+					if(socket.priv !== 'admin' && socket.priv !== 'op')
+					{
+						return false
+					}					
 				}
 
 				if(data.image_file.toString('ascii').length / 1000 > 5555)
@@ -681,9 +713,17 @@ module.exports = function (io)
 
 			get_roominfo(socket.room, {mode:true}, function(info)
 			{
-	    		if(info.mode > 2)
+	    		if(info.mode === 3)
 	    		{
 	    			if(socket.priv !== 'admin' && socket.priv !== 'op' && socket.priv !== 'voice')
+	    			{
+	    				return false
+	    			}
+	    		}
+
+	    		else if(info.mode === 5)
+	    		{
+	    			if(socket.priv !== 'admin' && socket.priv !== 'op')
 	    			{
 	    				return false
 	    			}
@@ -746,9 +786,17 @@ module.exports = function (io)
 
 			get_roominfo(socket.room, {mode:true}, function(info)
 			{
-				if(info.mode > 2)
+				if(info.mode === 3)
 				{
 					if(socket.priv !== 'admin' && socket.priv !== 'op' && socket.priv !== 'voice')
+					{
+						return false
+					}
+				}
+
+				if(info.mode === 5)
+				{
+					if(socket.priv !== 'admin' && socket.priv !== 'op')
 					{
 						return false
 					}
@@ -1458,7 +1506,7 @@ module.exports = function (io)
     		{
     			if(socket.priv === 'admin' || socket.priv === 'op')
     			{
-    				var amodes = [1,2,3]
+    				var amodes = [1, 2, 3, 4, 5]
 
     				if(!isNaN(data.mode))
     				{
@@ -1719,7 +1767,7 @@ module.exports = function (io)
 				{
 					var room = results[i]
 
-					rooms.push([room.name, room.topic.substring(0,140), get_usercount(room.name)])
+					rooms.push([room.name, room.topic.substring(0, 140), get_usercount(room.name)])
 				}
 
 				rooms.sort(compare_roomlist).splice(50)
