@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title><%= id %></title> 
+		<title><%= room %></title> 
 		<script src="/js/jquery.js"></script>
 		<script src="/js/color-thief.js"></script>
 		<script src="/js/dropzone.js"></script>
@@ -11,8 +11,8 @@
         <script src="/js/contextmenu/position.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 
-		<script src="/js/base.js?ver=418"></script>
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=69" />
+		<script src="/js/base.js?ver=424"></script>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=70" />
 
         <link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="/js/contextmenu/contextmenu.css"> 
@@ -20,8 +20,20 @@
 		<script>
 			$(function()
 			{
-				room = "<%= id %>";
-			    init();
+				room = "<%= room %>"
+				site_root = "<%= site_root %>"
+				main_room = "<%= main_room %>"
+				default_image_url = "<%= default_image_url %>"
+				default_radiosrc = "<%= default_radiosrc %>"
+				default_radioinfo = "<%= default_radioinfo %>"
+				check_metadata_interval_duration = <%= check_metadata_interval_duration %>
+				chat_crop_limit = <%= chat_crop_limit %>
+				max_input_length = <%= max_input_length %>
+				max_topic_length = <%= max_topic_length %>
+				afk_timeout_duration = <%= afk_timeout_duration %>
+				heartbeat_interval = <%= heartbeat_interval %>
+
+			    init()
 			})
 		</script>
 	</head>

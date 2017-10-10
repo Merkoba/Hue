@@ -1,4 +1,4 @@
-var public
+var is_public
 var room
 var usernames
 var username
@@ -19,9 +19,10 @@ var userlist = []
 var nicknames = []
 var user_passwords
 var priv = ''
-var mode
-var can_upload = false
-var can_text = false
+var upload_permission
+var chat_permission
+var can_upload
+var can_chat
 var change_when_focused = false
 var radiosrc = ''
 var radioinfo = ''
@@ -41,10 +42,6 @@ var afk = false
 var alert_mode = 0
 var alert_timer
 var commands = []
-var site_root = 'https://hue.merkoba.com/'
-var default_radiosrc = 'https://hue.merkoba.com:8765/hue'
-var default_radioinfo = 'https://hue.merkoba.com:8765/status-json.xsl'
-var default_image_url = '/img/default.gif'
 
 function init()
 {
@@ -228,11 +225,12 @@ function help3()
 	chat_announce('', '', 'Administration Features:', 'small')
 	chat_announce('', '', '/claim: Requests administration of the room. If it hasn\'t been claimed, user gets the ownership.', 'small')
 	chat_announce('', '', '/reclaim: Reclaims the room if you\'re already an admin. Removes all given privileges to other users.', 'small')
-	chat_announce('', '', '/mode 1: There are no restrictions.', 'small')
-	chat_announce('', '', '/mode 2: Only voiced users and up can upload images.', 'small')
-	chat_announce('', '', '/mode 3: Only voiced users and up can upload images or write text.', 'small')
-	chat_announce('', '', '/mode 4: Only ops and up can upload images.', 'small')
-	chat_announce('', '', '/mode 5: Only ops and up can upload images or write text.', 'small')
+	chat_announce('', '', '/upload_permission 1: Anyone can upload images.', 'small')
+	chat_announce('', '', '/upload_permission 2: Only voiced users and up can upload images.', 'small')
+	chat_announce('', '', '/upload_permission 3: Only ops and up can upload images.', 'small')
+	chat_announce('', '', '/chat_permission 1: Anyone can chat.', 'small')
+	chat_announce('', '', '/chat_permission 2: Only voiced users and up can chat.', 'small')
+	chat_announce('', '', '/chat_permission 3: Only ops and up can chat.', 'small')
 	chat_announce('', '', '/voice x: Gives voice to a user.', 'small')
 	chat_announce('', '', '/op x: Gives op to a user. Ops can do anything an admin can do except more high level commands.', 'small')
 	chat_announce('', '', '/admin x: Gives admin to a user. This gives a user the same rights as the original admin.', 'small')
@@ -258,9 +256,9 @@ function show_status()
 	show_room()
 	show_nickname()
 	show_topic2()
-	show_mode()
 	show_radiosrc()
 	show_priv()
+	show_permissions()
 	show_public()
 }
 
@@ -268,7 +266,7 @@ function show_public()
 {
 	if(claimed)
 	{
-		if(public)
+		if(is_public)
 		{
 			chat_announce('[', ']', 'This room is public', 'small')
 		}
@@ -277,11 +275,6 @@ function show_public()
 		{
 			chat_announce('[', ']', 'This room is private', 'small')
 		}
-	}
-
-	else
-	{
-		chat_announce('[', ']', "This room isn't claimed", 'small')
 	}
 }
 
@@ -340,9 +333,75 @@ function show_topic2()
 function check_priv(data)
 {
 	priv = data.priv
-	set_mode(data.mode)
-	show_mode()
 	show_priv()
+	upload_permission = data.upload_permission
+	chat_permission = data.chat_permission
+	check_permissions()
+	show_permissions()
+}
+
+function check_permissions()
+{
+	can_upload = check_upload_permission(priv)
+	can_chat = check_chat_permission(priv)
+}
+
+function check_upload_permission(priv)
+{
+	if(upload_permission === 1)
+	{
+		return true
+	}
+
+	else if(upload_permission === 2)
+	{
+		if(priv === "admin" || priv === "op" || priv === "voice")
+		{
+			return true
+		}
+	}
+
+	else if(upload_permission === 3)
+	{
+		if(priv === "admin" || priv === "op")
+		{
+			return true
+		}	
+	}
+
+	else
+	{
+		return false
+	}	
+}
+
+function check_chat_permission(priv)
+{
+	if(chat_permission === 1)
+	{
+		return true
+	}
+
+	else if(chat_permission === 2)
+	{
+		if(priv === "admin" || priv === "op" || priv === "voice")
+		{
+			return true
+		}
+	}
+
+	else if(chat_permission === 3)
+	{
+		if(priv === "admin" || priv === "op")
+		{
+			return true
+		}	
+	}
+
+	else
+	{
+		return false
+	}	
 }
 
 function show_priv(data)
@@ -360,11 +419,6 @@ function show_priv(data)
 	else if(priv === 'op')
 	{
 		chat_announce('[', ']', 'You are an op in this room', 'small')
-	}
-
-	else
-	{
-		chat_announce('[', ']', 'You have no privileges in this room', 'small')
 	}
 }
 
@@ -416,7 +470,7 @@ function start_socket()
 			userlist = data.userlist
 			update_userlist()
 			update_topic(data.topic)
-			public = data.public
+			is_public = data.public
 			change()
 
 			if(connections === 1)
@@ -452,11 +506,6 @@ function start_socket()
 			chat_announce('', '', data.msg, 'small')
 		}
 
-		else if(data.type === 'uploading')
-		{
-			chat_announce('<<', '>>', data.username + ' uploaded an image', 'small')
-		}
-
 		else if(data.type === 'connection_lost')
 		{
 			window.location = window.location
@@ -466,6 +515,7 @@ function start_socket()
 		{
 			image_url = data.image_url
 			image_uploader = data.image_uploader
+			announce_uploaded_image(data)			
 			change()
 		}
 
@@ -473,7 +523,7 @@ function start_socket()
 		{
 			addto_userlist(data.username, data.priv)
 
-			if(mode < 3 || (data.priv === 'admin' || data.priv === 'op' || data.priv === 'voice'))
+			if(check_chat_permission(data.priv))
 			{
 				chat_announce('--', '--', data.username + ' has joined', 'small')
 			}
@@ -495,9 +545,14 @@ function start_socket()
 			announce_topic_change(data)
 		}
 
-		else if(data.type === 'mode_change')
+		else if(data.type === 'upload_permission_change')
 		{
-			announce_mode_change(data)
+			announce_upload_permission_change(data)
+		}
+
+		else if(data.type === 'chat_permission_change')
+		{
+			announce_chat_permission_change(data)
 		}
 
 		else if(data.type === 'announce_voice')
@@ -622,7 +677,7 @@ function start_socket()
 		{		
 			removefrom_userlist(data.username)
 
-			if(mode < 3 || (data.priv === 'admin' || data.priv === 'op' || data.priv === 'voice'))
+			if(check_chat_permission(data.priv))
 			{
 				chat_announce('--', '--', data.username + ' has left', 'small')
 			}
@@ -650,7 +705,7 @@ function start_heartbeat()
 		}
 
 		socket.emit('heartbeat', {})
-	}, 10000)
+	}, heartbeat_interval)
 }
 
 function setup_radio(src)
@@ -1051,9 +1106,9 @@ function start_main_menu_context_menu()
 		animation: {duration: 250, hide: 'fadeOut'},
 		items: 
 		{
-			cmmode: 
+			ctpmodes: 
 			{
-				name: "Mode", 
+				name: "Chat Permission", 
 				visible: function(key, opt)
 				{ 
 					if(priv !== 'admin' && priv !== 'op')
@@ -1068,12 +1123,12 @@ function start_main_menu_context_menu()
 				},				
 				items: 
 				{
-					cmode1: 
+					ctpmode1: 
 					{
-						name: "Mode 1",
+						name: "1. Anyone Can Chat",
 						visible: function(key, opt)
 						{ 
-							if(mode === 1)
+							if(chat_permission === 1)
 							{
 								return false
 							}
@@ -1085,15 +1140,15 @@ function start_main_menu_context_menu()
 						},
 						callback: function(key, opt)
 						{
-							change_mode(1)
+							change_chat_permission(1)
 						}
 					},
-					cmode1b: 
+					ctpmode1b: 
 					{
-						name: "Mode 1 *",
+						name: "1. Anyone Can Chat *",
 						visible: function(key, opt)
 						{ 
-							if(mode !== 1)
+							if(chat_permission !== 1)
 							{
 								return false
 							}
@@ -1105,15 +1160,15 @@ function start_main_menu_context_menu()
 						},
 						callback: function(key, opt)
 						{
-							change_mode(1)
+							change_chat_permission(1)
 						}
 					},
-					cmode2: 
+					ctpmode2: 
 					{
-						name: "Mode 2",
+						name: "2. Voiced Users And Up Can Chat",
 						visible: function(key, opt)
 						{ 
-							if(mode === 2)
+							if(chat_permission === 2)
 							{
 								return false
 							}
@@ -1125,15 +1180,15 @@ function start_main_menu_context_menu()
 						},
 						callback: function(key, opt)
 						{
-							change_mode(2)
+							change_chat_permission(2)
 						}
 					},
-					cmode2b: 
+					ctpmode2b: 
 					{
-						name: "Mode 2 *",
+						name: "2. Voiced Users And Up Can Chat *",
 						visible: function(key, opt)
 						{ 
-							if(mode !== 2)
+							if(chat_permission !== 2)
 							{
 								return false
 							}
@@ -1145,15 +1200,15 @@ function start_main_menu_context_menu()
 						},
 						callback: function(key, opt)
 						{
-							change_mode(2)
+							change_chat_permission(2)
 						} 
 					},
-					cmode3: 
+					ctpmode3: 
 					{
-						name: "Mode 3",
+						name: "3. Ops And Up Can Chat",
 						visible: function(key, opt)
 						{ 
-							if(mode === 3)
+							if(chat_permission === 3)
 							{
 								return false
 							}
@@ -1165,15 +1220,15 @@ function start_main_menu_context_menu()
 						},
 						callback: function(key, opt)
 						{
-							change_mode(3)
+							change_chat_permission(3)
 						}						
 					},
-					cmode3b: 
+					ctpmode3b: 
 					{
-						name: "Mode 3 *",
+						name: "3. Ops And Up Can Chat *",
 						visible: function(key, opt)
 						{ 
-							if(mode !== 3)
+							if(chat_permission !== 3)
 							{
 								return false
 							}
@@ -1185,91 +1240,150 @@ function start_main_menu_context_menu()
 						},
 						callback: function(key, opt)
 						{
-							change_mode(3)
-						}						
-					},
-					cmode4: 
-					{
-						name: "Mode 4",
-						visible: function(key, opt)
-						{ 
-							if(mode === 4)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_mode(4)
-						}						
-					},
-					cmode4b: 
-					{
-						name: "Mode 4 *",
-						visible: function(key, opt)
-						{ 
-							if(mode !== 4)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_mode(4)
-						}						
-					},
-					cmode5: 
-					{
-						name: "Mode 5",
-						visible: function(key, opt)
-						{ 
-							if(mode === 5)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_mode(5)
-						}						
-					},
-					cmode5b: 
-					{
-						name: "Mode 5 *",
-						visible: function(key, opt)
-						{ 
-							if(mode !== 5)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_mode(5)
+							change_chat_permission(3)
 						}						
 					}
 				}
 			},
+			uppmodes: 
+			{
+				name: "Upload Permission", 
+				visible: function(key, opt)
+				{ 
+					if(priv !== 'admin' && priv !== 'op')
+					{
+						return false
+					}
+
+					else
+					{
+						return true
+					}
+				},				
+				items: 
+				{
+					uppmode1: 
+					{
+						name: "1. Anyone Can Upload Images",
+						visible: function(key, opt)
+						{ 
+							if(upload_permission === 1)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_upload_permission(1)
+						}
+					},
+					uppmode1b: 
+					{
+						name: "1. Anyone Can Upload Images *",
+						visible: function(key, opt)
+						{ 
+							if(upload_permission !== 1)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_upload_permission(1)
+						}
+					},
+					uppmode2: 
+					{
+						name: "2. Voiced Users And Up Can Upload Images",
+						visible: function(key, opt)
+						{ 
+							if(upload_permission === 2)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_upload_permission(2)
+						}
+					},
+					uppmode2b: 
+					{
+						name: "2. Voiced Users And Up Can Upload Images *",
+						visible: function(key, opt)
+						{ 
+							if(upload_permission !== 2)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_upload_permission(2)
+						} 
+					},
+					uppmode3: 
+					{
+						name: "3. Ops And Up Can Upload Images",
+						visible: function(key, opt)
+						{ 
+							if(upload_permission === 3)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_upload_permission(3)
+						}						
+					},
+					uppmode3b: 
+					{
+						name: "3. Ops And Up Can Upload Images *",
+						visible: function(key, opt)
+						{ 
+							if(upload_permission !== 3)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_upload_permission(3)
+						}						
+					}
+				}
+			},			
 			cmprivacy: 
 			{
 				name: "Privacy", 
@@ -1292,7 +1406,7 @@ function start_main_menu_context_menu()
 						name: "Public",
 						visible: function(key, opt)
 						{ 
-							if(public)
+							if(is_public)
 							{
 								return false
 							}
@@ -1312,7 +1426,7 @@ function start_main_menu_context_menu()
 						name: "Public *",
 						visible: function(key, opt)
 						{ 
-							if(!public)
+							if(!is_public)
 							{
 								return false
 							}
@@ -1332,7 +1446,7 @@ function start_main_menu_context_menu()
 						name: "Private",
 						visible: function(key, opt)
 						{ 
-							if(!public)
+							if(!is_public)
 							{
 								return false
 							}
@@ -1352,7 +1466,7 @@ function start_main_menu_context_menu()
 						name: "Private *",
 						visible: function(key, opt)
 						{ 
-							if(public)
+							if(is_public)
 							{
 								return false
 							}
@@ -1721,7 +1835,7 @@ function start_dropzone()
 	{
 		if(!can_upload)
 		{
-			chat_announce('[', ']', "You can't upload images in the current room mode", 'small')
+			chat_announce('[', ']', "You don't have permission to upload images", 'small')
 			dropzone.files = []
 			return false
 		}
@@ -1756,9 +1870,8 @@ function start_dropzone()
 		fr.addEventListener("loadend", function() 
 		{
 		  dropzone.files = []
-		  socket.emit('uploading', {})
-		  chat_announce('<<', '>>', 'You uploaded an image', 'small')
 		  socket.emit("uploaded", {image_file:fr.result, name:file.name})
+		  chat_announce("[", "]", "uploading...", "small")
 		})
 
 		fr.readAsArrayBuffer(file)
@@ -1879,7 +1992,7 @@ function activate_key_detection()
 				return
 			}
 
-			var msg = clean_string2($('#input').val()).substring(0,1200)
+			var msg = clean_string2($('#input').val()).substring(0, max_input_length)
 
 			send_to_chat(msg)
 
@@ -2275,7 +2388,7 @@ function add_msgcount()
 {
 	msgcount += 1
 
-	if(msgcount > 2000)
+	if(msgcount > chat_crop_limit)
 	{
 		var els = $('#chat_area').children()
 
@@ -2514,7 +2627,7 @@ jQuery.fn.urlize = function()
 
 function msg_is_ok(msg)
 {
-	if(msg.length > 0 && msg.length <= 1200)
+	if(msg.length > 0 && msg.length <= max_input_length)
 	{
 		return true
 	}
@@ -2533,7 +2646,10 @@ function register_commands()
 	commands.push('/clear')
 	commands.push('/claim')
 	commands.push('/reclaim')
-	commands.push('/mode')
+	commands.push('/upload_permission')
+	commands.push('/chat_permission')
+	commands.push('/permissions')
+	commands.push('/priv')
 	commands.push('/voice')
 	commands.push('/op')
 	commands.push('/admin')
@@ -2548,7 +2664,6 @@ function register_commands()
 	commands.push('/private')
 	commands.push('/public')
 	commands.push('/radio')
-	commands.push('/public')
 	commands.push('/privacy')
 	commands.push('/reserve')
 	commands.push('/recover')
@@ -2556,7 +2671,6 @@ function register_commands()
 	commands.push('/topic')
 	commands.push('/topicadd')
 	commands.push('/topictrim')
-	commands.push('/topic')
 	commands.push('/room')
 	commands.push('/goto')
 	commands.push('/help3')
@@ -2643,15 +2757,26 @@ function send_to_chat(msg)
 				reclaim_room()
 			}
 
-			else if(oiStartsWith(lmsg, '/mode'))
+			else if(oiStartsWith(lmsg, '/upload_permission'))
 			{
-				var arg = msg.substr(6,2).trim()
-				change_mode(arg)
+				var arg = msg.substr(19,2).trim()
+				change_upload_permission(arg)
 			}
 
-			else if(oiEquals(lmsg, '/mode'))
+			else if(oiStartsWith(lmsg, '/chat_permission'))
 			{
-				show_mode()
+				var arg = msg.substr(17,2).trim()
+				change_chat_permission(arg)
+			}
+
+			else if(oiEquals(lmsg, '/permissions'))
+			{
+				show_permissions()
+			}
+
+			else if(oiEquals(lmsg, '/priv'))
+			{
+				show_priv()
 			}
 
 			else if(oiStartsWith(lmsg, '/voice'))
@@ -2764,7 +2889,8 @@ function send_to_chat(msg)
 
 			else if(oiStartsWith(lmsg, '/topic'))
 			{
-				var arg = msg.substr(7, 400)
+				var arg = msg.substr(7, max_topic_length)
+
 				if(arg.length > 0)
 				{
 					change_topic(arg)
@@ -2773,7 +2899,7 @@ function send_to_chat(msg)
 
 			else if(oiStartsWith(lmsg, '/topicadd'))
 			{
-				var arg = msg.substr(10, 397 - topic.length).trim()
+				var arg = msg.substr(10, (max_topic_length - 3) - topic.length).trim()
 				topicadd(arg)
 			}
 
@@ -2853,16 +2979,15 @@ function send_to_chat(msg)
 				self_check_images(msg)
 			}
 
-			if(can_text)
+			if(can_chat)
 			{
-				if(msg.length > 0 && msg.length <= 1200)
 				update_chat(username, msg)	
 				socket.emit('sendchat', {msg:msg})
 			}
 
 			else
 			{
-				chat_announce('[', ']', "You can't write text in the current room mode", 'small')
+				chat_announce('[', ']', "You don't have permission to chat", 'small')
 			}
 		}
 	}
@@ -2895,7 +3020,7 @@ function topicadd(arg)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(arg.length > 0 && (topic.length + arg.length + 3) <= 400)
+		if(arg.length > 0 && (topic.length + arg.length + 3) <= 1200)
 		{
 			change_topic(topic + ' - ' + arg)
 		}
@@ -3042,7 +3167,7 @@ function announce_topic_change(data)
 
 function change_nickname(nck)
 {
-	if(can_text)
+	if(can_chat)
 	{
 		nck = clean_string4(nck)
 		
@@ -3062,7 +3187,7 @@ function change_nickname(nck)
 
 	else
 	{
-		chat_announce('[', ']', "You can't do that in the current room mode", 'small')
+		chat_announce('[', ']', "You don't have permission to do that", 'small')
 	}
 }
 
@@ -3343,7 +3468,7 @@ function start_metadata_loop()
 				no_meta_count = 0
 			}
 		}
-	}, 12000)
+	}, check_metadata_interval_duration)
 }
 
 function start_volume_scroll()
@@ -3530,7 +3655,7 @@ function activate_window_visibility_listener()
 
 		else
 		{
-			afk_timer = setTimeout(function(){ afk = true }, 120000)
+			afk_timer = setTimeout(function(){afk = true}, afk_timeout_duration)
 
 			$('.dash_container').remove()
 
@@ -3547,7 +3672,7 @@ function random_room()
 
 function copy_room_url()
 {
-	if(room == 'main')
+	if(room === main_room)
 	{
 		var r = ''
 	}
@@ -3653,8 +3778,8 @@ function clear_chat()
 
 	show_intro()
 	show_topic()
-	show_mode()
 	show_priv()
+	show_permissions()
 	show_public()
 	scroll_timer()
 
@@ -3679,7 +3804,7 @@ function update_topic(t)
 
 function claim_room(arg)
 {
-	if(room === 'main' && arg === '')
+	if(room === main_room && arg === '')
 	{
 		chat_announce('[', ']', "This room can\'t be claimed", 'small')
 		return false
@@ -3845,33 +3970,33 @@ function change_priv(key)
 		priv = 'voice'
 	}
 
-	set_mode(mode)
+	check_permissions()
 }
 
-function change_mode(m)
+function change_upload_permission(m)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(m == mode)
-		{
-			chat_announce('[', ']', "Room is already set at mode " + m, 'small')
-			return false
-		}
-
-		var amodes = [1, 2, 3, 4, 5]
+		var amodes = [1, 2, 3]
 
 		if(!isNaN(m))
 		{
 			m = parseInt(m)
 
+			if(m === upload_permission)
+			{
+				chat_announce('[', ']', "Upload permission is already " + m, 'small')
+				return false
+			}			
+
 			if(amodes.indexOf(m) !== -1)
 			{
-				socket.emit('change_mode', {mode:m})
+				socket.emit('change_upload_permission', {upload_permission:m})
 			}
 
 			else
 			{
-				chat_announce('[', ']', "That mode does not exist", 'small')
+				chat_announce('[', ']', "That permission does not exist", 'small')
 			}
 		}
 
@@ -3887,131 +4012,129 @@ function change_mode(m)
 	}
 }
 
-function announce_mode_change(data)
+function change_chat_permission(m)
+{
+	if(priv === 'admin' || priv === 'op')
+	{
+		var amodes = [1, 2, 3]
+
+		if(!isNaN(m))
+		{
+			m = parseInt(m)
+
+			if(m === chat_permission)
+			{
+				chat_announce('[', ']', "Chat permission is already " + m, 'small')
+				return false
+			}			
+
+			if(amodes.indexOf(m) !== -1)
+			{
+				socket.emit('change_chat_permission', {chat_permission:m})
+			}
+
+			else
+			{
+				chat_announce('[', ']', "That permission does not exist", 'small')
+			}
+		}
+
+		else
+		{
+			chat_announce('[', ']', "Argument must be a number", 'small')
+		}
+	}
+
+	else
+	{
+		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+	}
+}
+
+function announce_upload_permission_change(data)
 {
 	var s = ""
 
 	if(username === data.username)
 	{
-		var d = "You changed the mode to "
+		var d = "You changed the upload permission to "
 	}
 
 	else
 	{
-		var d = data.username + " changed the mode to "
+		var d = data.username + " changed the upload permission to "
 	}
 
-	if(data.mode == 1 && mode != 1)
+	if(data.upload_permission === 1 && upload_permission !== 1)
 	{
-		s = d + "1. There are no restrictions"
+		s = d + "1. Anyone can upload images"
 	}
 
-	else if(data.mode == 2 && mode != 2)
+	else if(data.upload_permission === 2 && upload_permission !== 2)
 	{
 		s = d + "2. Only voiced users and up can upload images"
 	}
 
-	else if(data.mode == 3 && mode != 3)
+	else if(data.upload_permission === 3 && upload_permission !== 3)
 	{
-		s = d + "3. Only voiced users and up can upload images or write text"
-	}
-
-	else if(data.mode == 4 && mode != 4)
-	{
-		s = d + "4. Only ops and up can upload images"
-	}
-
-	else if(data.mode == 5 && mode != 5)
-	{
-		s = d + "5. Only ops and up can upload images or write text"
+		s = d + "3. Only ops and up can upload images"
 	}
 
 	if(s.length > 0)
 	{
-		set_mode(data.mode)
+		upload_permission = data.upload_permission
+		can_upload = check_upload_permission(priv)
 		chat_announce('~', '~', s, 'small')
 	}
 }
 
-function show_mode()
+function announce_chat_permission_change(data)
 {
-	if(mode == 1)
+	var s = ""
+
+	if(username === data.username)
 	{
-		var s = "Room is set to mode 1. There are no restrictions"
+		var d = "You changed the chat permission to "
 	}
 
-	else if(mode == 2)
+	else
 	{
-		var s = "Room is set to mode 2. Only voiced users and up can upload images"
+		var d = data.username + " changed the chat permission to "
 	}
 
-	else if(mode == 3)
+	if(data.chat_permission === 1 && chat_permission !== 1)
 	{
-		var s = "Room is set to mode 3. Only voiced users and up can upload images or write text"
+		s = d + "1. Anyone can chat"
 	}
 
-	else if(mode == 4)
+	else if(data.chat_permission === 2 && chat_permission !== 2)
 	{
-		var s = "Room is set to mode 4. Only ops and up can upload images"
+		s = d + "2. Only voiced users and up can chat"
 	}
 
-	else if(mode == 5)
+	else if(data.chat_permission === 3 && chat_permission !== 3)
 	{
-		var s = "Room is set to mode 5. Only ops and up can upload images or write text"
+		s = d + "3. Only ops and up can chat"
 	}
 
-	chat_announce('[', ']', s, 'small')
+	if(s.length > 0)
+	{
+		chat_permission = data.chat_permission
+		can_chat = check_chat_permission(priv)
+		chat_announce('~', '~', s, 'small')
+	}
 }
 
-function set_mode(m)
+function show_permissions()
 {
-	mode = m
-
-	can_upload = false
-	can_text = false
-
-	if(mode === 1)
+	if(can_chat)
 	{
-		can_upload = true
-		can_text = true
+		chat_announce('[', ']', "You have chat permission", 'small')
 	}
 
-	else if(mode === 2)
+	if(can_upload)
 	{
-		can_text = true
-
-		if(priv === 'admin' || priv === 'op' || priv === 'voice')
-		{
-			can_upload = true
-		}
-	}
-
-	else if(mode === 3)
-	{
-		if(priv === 'admin' || priv === 'op' || priv === 'voice')
-		{
-			can_upload = true
-			can_text = true
-		}
-	}
-
-	else if(mode === 4)
-	{
-		can_text = true
-
-		if(priv === 'admin' || priv === 'op')
-		{
-			can_upload = true
-		}
-	}
-
-	else if(mode === 5)
-	{
-		if(priv === 'admin' || priv === 'op')
-		{
-			can_upload = true
-			can_text = true
-		}
+		chat_announce('[', ']', "You have upload permission", 'small')
 	}
 }
 
@@ -4054,6 +4177,19 @@ function voice(nck)
 	else
 	{
 		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+	}
+}
+
+function announce_uploaded_image(data)
+{
+	if(username === data.image_uploader)
+	{
+		chat_announce('<<', '>>', 'You uploaded an image', 'small')		
+	}
+
+	else
+	{
+		chat_announce('<<', '>>', data.image_uploader + ' uploaded an image', 'small')		
 	}
 }
 
@@ -4177,7 +4313,7 @@ function stripped()
 
 	room_key = ''
 	priv = ''
-	set_mode(mode)
+	check_permissions()
 }
 
 function announce_claim(data)
@@ -4193,7 +4329,7 @@ function announce_claim(data)
 	{
 		priv = ""
 		save_key("")
-		set_mode(mode)
+		check_permissions()
 		chat_announce('~', '~', data.username + ' has claimed this room', 'small')
 	}
 	
@@ -4296,7 +4432,7 @@ function make_private()
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(!public)
+		if(!is_public)
 		{
 			chat_announce('[', ']', "Room is already private", 'small')
 			return false
@@ -4315,7 +4451,7 @@ function make_public()
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(public)
+		if(is_public)
 		{
 			chat_announce('[', ']', "Room is already public", 'small')
 			return false
@@ -4332,7 +4468,7 @@ function make_public()
 
 function made_private(data)
 {
-	public = false
+	is_public = false
 
 	if(data.username === username)
 	{
@@ -4351,7 +4487,7 @@ function made_private(data)
 
 function made_public(data)
 {
-	public = true 
+	is_public = true 
 
 	if(data.username === username)
 	{
@@ -4381,9 +4517,9 @@ function reserved(data)
 
 function recover(nck)
 {
-	if(!can_text)
+	if(!can_chat)
 	{
-		chat_announce('[', ']', "You can't do that in the current room mode", 'small')
+		chat_announce('[', ']', "You don't have permission to do that", 'small')
 		return false
 	}
 

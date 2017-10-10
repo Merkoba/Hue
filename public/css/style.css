@@ -244,7 +244,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 	top:0; bottom:0;
 	margin:auto;
 	max-width:20em;
-	max-height: 40%;
+	max-height: 50%;
 	overflow-y:auto;
 	overflow-x:hidden;
 	z-index: 99999999999999;
@@ -261,7 +261,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 	top:0; bottom:0;
 	margin:auto;
 	max-width:40em;
-	max-height: 40%;
+	max-height: 50%;
 	overflow-y:auto;
 	overflow-x:hidden;
 	z-index: 99999999999999;
@@ -278,7 +278,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 	top:0; bottom:0;
 	margin:auto;
 	max-width:27em;
-	max-height: 40%;
+	max-height: 50%;
 	overflow-y:auto;
 	overflow-x:hidden;
 	z-index: 99999999999999;
@@ -315,7 +315,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 	top:0; bottom:0;
 	margin:auto;
 	max-width:22em;
-	max-height: 40%;
+	max-height: 50%;
 	overflow-y:auto;
 	overflow-x:hidden;
 	z-index: 99999999999999;
@@ -356,7 +356,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 	top:0; bottom:0;
 	margin:auto;
 	max-width:22em;
-	max-height: 40%;
+	max-height: 50%;
 	overflow-y:auto;
 	overflow-x:hidden;
 	z-index: 99999999999999;
