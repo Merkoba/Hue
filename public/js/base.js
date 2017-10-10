@@ -1125,7 +1125,7 @@ function start_main_menu_context_menu()
 				{
 					ctpmode1: 
 					{
-						name: "1. Anyone Can Chat",
+						name: "1. Anyone",
 						visible: function(key, opt)
 						{ 
 							if(chat_permission === 1)
@@ -1145,7 +1145,7 @@ function start_main_menu_context_menu()
 					},
 					ctpmode1b: 
 					{
-						name: "1. Anyone Can Chat *",
+						name: "1. Anyone *",
 						visible: function(key, opt)
 						{ 
 							if(chat_permission !== 1)
@@ -1165,7 +1165,7 @@ function start_main_menu_context_menu()
 					},
 					ctpmode2: 
 					{
-						name: "2. Voiced Users And Up Can Chat",
+						name: "2. Voiced Users And Up",
 						visible: function(key, opt)
 						{ 
 							if(chat_permission === 2)
@@ -1185,7 +1185,7 @@ function start_main_menu_context_menu()
 					},
 					ctpmode2b: 
 					{
-						name: "2. Voiced Users And Up Can Chat *",
+						name: "2. Voiced Users And Up *",
 						visible: function(key, opt)
 						{ 
 							if(chat_permission !== 2)
@@ -1205,7 +1205,7 @@ function start_main_menu_context_menu()
 					},
 					ctpmode3: 
 					{
-						name: "3. Ops And Up Can Chat",
+						name: "3. Ops And Up",
 						visible: function(key, opt)
 						{ 
 							if(chat_permission === 3)
@@ -1225,7 +1225,7 @@ function start_main_menu_context_menu()
 					},
 					ctpmode3b: 
 					{
-						name: "3. Ops And Up Can Chat *",
+						name: "3. Ops And Up *",
 						visible: function(key, opt)
 						{ 
 							if(chat_permission !== 3)
@@ -1264,7 +1264,7 @@ function start_main_menu_context_menu()
 				{
 					uppmode1: 
 					{
-						name: "1. Anyone Can Upload Images",
+						name: "1. Anyone",
 						visible: function(key, opt)
 						{ 
 							if(upload_permission === 1)
@@ -1284,7 +1284,7 @@ function start_main_menu_context_menu()
 					},
 					uppmode1b: 
 					{
-						name: "1. Anyone Can Upload Images *",
+						name: "1. Anyone *",
 						visible: function(key, opt)
 						{ 
 							if(upload_permission !== 1)
@@ -1304,7 +1304,7 @@ function start_main_menu_context_menu()
 					},
 					uppmode2: 
 					{
-						name: "2. Voiced Users And Up Can Upload Images",
+						name: "2. Voiced Users And Up",
 						visible: function(key, opt)
 						{ 
 							if(upload_permission === 2)
@@ -1324,7 +1324,7 @@ function start_main_menu_context_menu()
 					},
 					uppmode2b: 
 					{
-						name: "2. Voiced Users And Up Can Upload Images *",
+						name: "2. Voiced Users And Up *",
 						visible: function(key, opt)
 						{ 
 							if(upload_permission !== 2)
@@ -1344,7 +1344,7 @@ function start_main_menu_context_menu()
 					},
 					uppmode3: 
 					{
-						name: "3. Ops And Up Can Upload Images",
+						name: "3. Ops And Up",
 						visible: function(key, opt)
 						{ 
 							if(upload_permission === 3)
@@ -1364,7 +1364,7 @@ function start_main_menu_context_menu()
 					},
 					uppmode3b: 
 					{
-						name: "3. Ops And Up Can Upload Images *",
+						name: "3. Ops And Up *",
 						visible: function(key, opt)
 						{ 
 							if(upload_permission !== 3)
