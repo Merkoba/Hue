@@ -1,7 +1,7 @@
 @font-face 
 {
-    font-family: comic;
-    src: url(comicsans.ttf);
+    font-family: consolas;
+    src: url(consolas.ttf);
 }
 
 body, html
@@ -9,7 +9,7 @@ body, html
 	height: 100%;
 	width: 100%;
 	margin: 0px;
-	font-family: comic;
+	font-family: consolas;
 	background-color: white;
 	overflow: hidden;
 }
@@ -79,8 +79,7 @@ body
 {
 	max-width: 44vw;
 	text-align: center;
-	padding-top: 0.1em;
-	padding-bottom: 0.1em;
+	padding-top: 0.2em;
 }
 
 #image_uploader
@@ -175,7 +174,7 @@ body
 	clear: both;
 	color: white;
 	word-break: break-word;
-	font-size: 1.6em;
+	font-size: 1.4em;
 	display: inline-block;
 }
 
@@ -243,7 +242,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 	left:0; right:0;
 	top:0; bottom:0;
 	margin:auto;
-	max-width:20em;
+	max-width:22em;
 	max-height: 50%;
 	overflow-y:auto;
 	overflow-x:hidden;
@@ -260,7 +259,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 	left:0; right:0;
 	top:0; bottom:0;
 	margin:auto;
-	max-width:40em;
+	max-width:30em;
 	max-height: 50%;
 	overflow-y:auto;
 	overflow-x:hidden;
@@ -277,7 +276,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 	left:0; right:0;
 	top:0; bottom:0;
 	margin:auto;
-	max-width:27em;
+	max-width:30em;
 	max-height: 50%;
 	overflow-y:auto;
 	overflow-x:hidden;
@@ -297,7 +296,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 
 .pititle
 {
-	font-size: 1.6em;
+	font-size: 1.4em;
 	font-style: italic;
 }
 
@@ -325,7 +324,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 
 .menu_item 
 {
-	font-size: 1.6em;
+	font-size: 1.4em;
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	cursor: pointer;
@@ -367,7 +366,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 #createroom_input
 {
 	width: 99%;
-	font-size: 1.6em;
+	font-size: 1.4em;
 	text-align:center;
 }
 
@@ -399,7 +398,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 
 .ui_item_nick
 {
-	font-size: 1.6em;
+	font-size: 1.4em;
 }
 
 .roomlist_item
@@ -413,13 +412,13 @@ a.chat:link, a.chat:visited, a.chat:hover
 
 .roomlist_name
 {
-	font-size: 1.6em;
+	font-size: 1.4em;
 	text-decoration: underline;
 }
 
 .roomlist_topic
 {
-	font-size: 1.6em;
+	font-size: 1.4em;
 }
 
 .roomlist_count
@@ -471,4 +470,9 @@ a.chat:link, a.chat:visited, a.chat:hover
 .dash
 {
 	border: 1px dashed;
+}
+
+.sep1
+{
+	font-size: 0.8em;
 }

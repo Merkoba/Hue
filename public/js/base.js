@@ -2341,12 +2341,12 @@ function update_chat(uname, msg)
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
-		var fmsg = $("<div title='" + date + "' class='msg chat_message'>* <span class='chat_uname'></span> <span class='" + contclasses + "'></span> *</div><div>&nbsp</div>")
+		var fmsg = $("<div title='" + date + "' class='msg chat_message'>* <span class='chat_uname'></span> <span class='" + contclasses + "'></span> *</div><div class='sep1'>&nbsp</div>")
 		$($(fmsg).find('.chat_content').get(0)).text(msg.substr(4)).urlize()
 	}
 	else
 	{
-		var fmsg = $("<div title='" + date + "' class='msg chat_message'><b><span class='chat_uname'></span>:</b>&nbsp&nbsp<span class='" + contclasses + "'></span></div><div>&nbsp</div>")
+		var fmsg = $("<div title='" + date + "' class='msg chat_message'><b><span class='chat_uname'></span>:</b>&nbsp&nbsp<span class='" + contclasses + "'></span></div><div class='sep1'>&nbsp</div>")
 		$($(fmsg).find('.chat_content').get(0)).text(msg).urlize()
 	}
 	
@@ -2375,7 +2375,7 @@ function add_to_chat(msg)
 	{
 		if($('.dash').length === 0 && (started || connections > 1))
 		{
-			chat_area.append("<div class='dash_container'><hr class='dash'><div>&nbsp</div></div>")
+			chat_area.append("<div class='dash_container'><hr class='dash'><div class='sep1'>&nbsp</div></div>")
 
 			$('.dash').css('color', font_color)
 		}
@@ -2554,13 +2554,13 @@ function chat_announce(brk1, brk2, msg, size, dotted=false)
 	
 	if(typeof dotted === "string")
 	{
-		var fmsg = $("<div title='" + date + "' class='msg announcement announcement_" + size + "'>" + brk1 + " <span class='" + contclasses + "'></span><span class='dotted'></span> " + brk2 + "</div><div>&nbsp</div>")
+		var fmsg = $("<div title='" + date + "' class='msg announcement announcement_" + size + "'>" + brk1 + " <span class='" + contclasses + "'></span><span class='dotted'></span> " + brk2 + "</div><div class='sep1'>&nbsp</div>")
 		$($(fmsg).find('.dotted').get(0)).text(dotted).urlize()
 	}
 
 	else
 	{
-		var fmsg = $("<div title='" + date + "' class='msg announcement announcement_" + size + "'>" + brk1 + " <span class='" + contclasses + "'></span> " + brk2 + "</div><div>&nbsp</div>")
+		var fmsg = $("<div title='" + date + "' class='msg announcement announcement_" + size + "'>" + brk1 + " <span class='" + contclasses + "'></span> " + brk2 + "</div><div class='sep1'>&nbsp</div>")
 	}
 
 	$($(fmsg).find('.announcement_content').get(0)).text(msg).urlize()
@@ -3737,22 +3737,14 @@ function goto_room(id, sametab)
 {
 	hide_boxes()
 
-	if(id != room)
+	if(sametab)
 	{
-		if(sametab)
-		{
-			window.location = '/' + id
-		}
-
-		else
-		{
-			window.open('/' + id, '_blank')
-		}	
+		window.location = '/' + id
 	}
 
 	else
 	{
-		chat_announce('[', ']', "You're already in that room", 'small')
+		window.open('/' + id, '_blank')
 	}
 }
 
