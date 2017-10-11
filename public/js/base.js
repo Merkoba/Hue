@@ -2456,7 +2456,7 @@ function start_image_events()
 
 		if(image_uploader !== '' && image_url !== default_image_url)
 		{
-			$('#image_uploader').text('uploaded by ' + image_uploader)
+			$('#image_uploader').text('Uploaded by ' + image_uploader)
 		}
 
 		else
