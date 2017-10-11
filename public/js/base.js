@@ -1871,7 +1871,7 @@ function start_dropzone()
 		{
 		  dropzone.files = []
 		  socket.emit("uploaded", {image_file:fr.result, name:file.name})
-		  chat_announce("[", "]", "uploading...", "small")
+		  chat_announce("[", "]", "Uploading...", "small")
 		})
 
 		fr.readAsArrayBuffer(file)
@@ -3260,6 +3260,7 @@ function goto_bottom(force)
 
 function emit_pasted(url)
 {
+	chat_announce("[", "]", "Uploading...", "small")	
 	socket.emit('pasted', {image_url:url})
 }
 
@@ -3737,14 +3738,24 @@ function goto_room(id, sametab)
 {
 	hide_boxes()
 
-	if(sametab)
+	if(id !== main_room)
 	{
-		window.location = '/' + id
+		var nroom = '/' + id
 	}
 
 	else
 	{
-		window.open('/' + id, '_blank')
+		var nroom = '/'
+	}
+
+	if(sametab)
+	{
+		window.location = nroom
+	}
+
+	else
+	{
+		window.open(nroom, '_blank')
 	}
 }
 

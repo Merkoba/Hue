@@ -26,7 +26,7 @@ body
 	width: 100%;
 	background-color: black;
 	z-index: 9999999;
-	opacity: 0.9;
+	opacity: 0.95;
 	white-space: nowrap;
 	text-align: center;
 }
@@ -64,7 +64,7 @@ body
 	align-items: center;
 	width: 50%;
 	height: calc(100% - 2em);
-	opacity: 0.9;
+	opacity: 0.95;
 	flex-direction: column;
 }
 
@@ -99,20 +99,22 @@ body
 #chat_area
 {
 	position: fixed;
-	width: 50%;
+	padding-left: 25px;
+	width:calc(50% - 25px);
 	max-width: 50%;
 	overflow-x: none;
 	overflow-y: auto;
 	background-color: black;
 	top: 2em;
     bottom: 2em;
-    opacity: 0.9;
+    opacity: 0.95;
 }
 
 #input
 {
 	position: absolute;
 	max-width: 100%;
+	padding-left: 30px;
 	width: 50%;
 	height: 2em;
 	bottom: 0;
@@ -120,9 +122,8 @@ body
 	font-size: 1em;
 	background-color: black;
 	border: 0px solid black;
-	padding-left: 5px;
 	outline: none;
-	opacity: 0.9;
+	opacity: 0.95;
 	font-family:inherit;
 }
 
@@ -131,7 +132,8 @@ body
 	visibility: hidden;
 	position: absolute;
 	max-width: 50%;
-	width: 50%;
+	left: 25px;
+	width:calc(50% - 25px);	
 	bottom: 2em;
 	color: white;
 	height: 2em;
