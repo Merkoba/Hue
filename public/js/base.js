@@ -259,6 +259,8 @@ function show_status()
 	show_topic2()
 	show_radiosrc()
 	show_priv()
+	show_chat_permission()
+	show_upload_permission()
 	show_permissions()
 	show_public()
 }
@@ -2764,9 +2766,19 @@ function send_to_chat(msg)
 				change_upload_permission(arg)
 			}
 
+			else if(oiEquals(lmsg, '/upload_permission'))
+			{
+				show_upload_permission(arg)
+			}
+
 			else if(oiStartsWith(lmsg, '/chat_permission'))
 			{
 				change_chat_permission(arg)
+			}
+
+			else if(oiEquals(lmsg, '/chat_permission'))
+			{
+				show_chat_permission(arg)
 			}
 
 			else if(oiEquals(lmsg, '/permissions'))
@@ -4136,6 +4148,16 @@ function announce_chat_permission_change(data)
 		can_chat = check_chat_permission(priv)
 		chat_announce('~', '~', s, 'small')
 	}
+}
+
+function show_upload_permission()
+{
+	chat_announce('[', ']', "Upload permission: " + upload_permission, 'small')
+}
+
+function show_chat_permission()
+{
+	chat_announce('[', ']', "Chat permission: " + chat_permission, 'small')
 }
 
 function show_permissions()
