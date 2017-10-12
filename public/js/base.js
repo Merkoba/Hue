@@ -42,6 +42,7 @@ var afk = false
 var alert_mode = 0
 var alert_timer
 var commands = []
+var perfect_scrollbar
 
 function init()
 {
@@ -115,7 +116,7 @@ function get_username()
 
 		while(keep_naming)
 		{
-			uname = clean_string4(prompt('Pick your nickname').substring(0, 14))
+			uname = clean_string4(prompt('Pick your nickname').substring(0, max_username_length))
 
 			if(uname === null || uname.length < 1 || uname.indexOf('<') !== -1)
 			{
@@ -1646,7 +1647,7 @@ function update_roomlist(roomlist)
 
 		$(h).click({room:roomlist[i][0]}, function(event)
 		{
-			goto_room(event.data.room, false)
+			goto_room(event.data.room)
 		})
 
 		if(roomlist[i][1].length > 0)
@@ -1871,7 +1872,7 @@ function start_dropzone()
 		{
 		  dropzone.files = []
 		  socket.emit("uploaded", {image_file:fr.result, name:file.name})
-		  chat_announce("[", "]", "Uploading...", "small")
+		  chat_announce("[", "]", "Uploading", "small")
 		})
 
 		fr.readAsArrayBuffer(file)
@@ -1941,7 +1942,7 @@ function activate_key_detection()
 					return
 				}
 
-				var arg = $('#createroom_input').val().substr(0, 35).trim()
+				var arg = $('#createroom_input').val().substr(0, max_roomname_length).trim()
 
 				if(arg.length > 0)
 				{
@@ -1992,9 +1993,7 @@ function activate_key_detection()
 				return
 			}
 
-			var msg = clean_string2($('#input').val()).substring(0, max_input_length)
-
-			send_to_chat(msg)
+			send_to_chat($('#input').val())
 
 			e.preventDefault()
 
@@ -2095,6 +2094,8 @@ function input_history_up()
 	var v = input_history[input_history.length - input_history_index]
 
 	$('#input').val(v)
+	
+	$('#input')[0].scrollLeft = $('#input')[0].scrollWidth;
 
 	input_history_index += 1
 
@@ -2318,7 +2319,7 @@ var resize_timer = (function()
 
 function update_scrollbar()
 {
-	$('#chat_area').perfectScrollbar('update')
+	perfect_scrollbar.update()
 }
 
 function update_chat(uname, msg)
@@ -2433,7 +2434,7 @@ function start_image_events()
 			$('#chat_area').css('background-color', background_color)
 			$('#media').css('background-color', background_color)
 			$('#input').css('background-color', background_color)
-			$('.ps-scrollbar-y').css('background-color', background_color)
+			$('.ps__thumb-y').css('background-color', background_color)
 			$('.header_item').css('color', font_color)
 			$('.chat_message').css('color', font_color)
 			$('.announcement').css('color', font_color)
@@ -2592,7 +2593,7 @@ function clean_string3(s)
 
 function clean_string4(s)
 {
-	return s.replace(/\/+/g, '').replace(/\s+/g, ' ').trim()
+	return s.replace(/[^a-z0-9\-_\s]+/gi, "").replace(/\s+/g, " ").trim()
 }
 
 function chat_urlize(msg)
@@ -2683,6 +2684,8 @@ function register_commands()
 
 function send_to_chat(msg)
 {
+	msg = clean_string2(msg.substring(0, max_input_length))
+
 	if(msg_is_ok(msg))
 	{
 		input_history_index = 1
@@ -2712,11 +2715,12 @@ function send_to_chat(msg)
 			if(a.length > 1)
 			{
 				lmsg += ' '
+
+				var arg = msg.substring(lmsg.length)
 			}
 
 			if(oiStartsWith(lmsg, '/nick'))
 			{
-				var arg = msg.substr(6,14)
 				change_nickname(arg)
 			}
 
@@ -2727,7 +2731,6 @@ function send_to_chat(msg)
 
 			else if(oiStartsWith(lmsg, '/defnick'))
 			{
-				var arg = msg.substr(9,14)
 				change_default_nickname(arg)
 			}
 
@@ -2743,13 +2746,12 @@ function send_to_chat(msg)
 
 			else if(oiStartsWith(lmsg, '/claim'))
 			{
-				var arg = msg.substr(7,40).trim()
 				claim_room(arg)
 			}
 
 			else if(oiEquals(lmsg, '/claim'))
 			{
-				claim_room('')
+				claim_room()
 			}
 
 			else if(oiEquals(lmsg, '/reclaim'))
@@ -2759,13 +2761,11 @@ function send_to_chat(msg)
 
 			else if(oiStartsWith(lmsg, '/upload_permission'))
 			{
-				var arg = msg.substr(19,2).trim()
 				change_upload_permission(arg)
 			}
 
 			else if(oiStartsWith(lmsg, '/chat_permission'))
 			{
-				var arg = msg.substr(17,2).trim()
 				change_chat_permission(arg)
 			}
 
@@ -2781,25 +2781,21 @@ function send_to_chat(msg)
 
 			else if(oiStartsWith(lmsg, '/voice'))
 			{
-				var arg = msg.substr(7,20).trim()
 				voice(arg)
 			}
 
 			else if(oiStartsWith(lmsg, '/op'))
 			{
-				var arg = msg.substr(4,20).trim()
 				op(arg)
 			}
 
 			else if(oiStartsWith(lmsg, '/admin'))
 			{
-				var arg = msg.substr(7,20).trim()
 				admin(arg)
 			}
 
 			else if(oiStartsWith(lmsg, '/strip'))
 			{
-				var arg = msg.substr(7,20).trim()
 				strip(arg)
 			}
 
@@ -2815,7 +2811,6 @@ function send_to_chat(msg)
 
 			else if(oiStartsWith(lmsg, '/ban'))
 			{
-				var arg = msg.substr(5,20).trim()
 				ban(arg)
 			}
 
@@ -2836,7 +2831,6 @@ function send_to_chat(msg)
 
 			else if(oiStartsWith(lmsg, '/kick'))
 			{
-				var arg = msg.substr(6,20).trim()
 				kick(arg)
 			}
 
@@ -2852,7 +2846,6 @@ function send_to_chat(msg)
 
 			else if(oiStartsWith(lmsg, '/radio'))
 			{
-				var arg = msg.substr(7, 200).trim()
 				change_radiosrc(arg)
 			}
 
@@ -2878,7 +2871,6 @@ function send_to_chat(msg)
 
 			else if(oiStartsWith(lmsg, '/recover'))
 			{	
-				var arg = msg.substr(9, 20)
 				recover(arg)
 			}
 
@@ -2889,23 +2881,16 @@ function send_to_chat(msg)
 
 			else if(oiStartsWith(lmsg, '/topic'))
 			{
-				var arg = msg.substr(7, max_topic_length)
-
-				if(arg.length > 0)
-				{
-					change_topic(arg)
-				}
+				change_topic(arg)
 			}
 
 			else if(oiStartsWith(lmsg, '/topicadd'))
 			{
-				var arg = msg.substr(10, (max_topic_length - 3) - topic.length).trim()
 				topicadd(arg)
 			}
 
 			else if(oiStartsWith(lmsg, '/topictrim'))
 			{
-				var arg = msg.substr(11, 11)
 				topictrim(arg)
 			}
 
@@ -2926,8 +2911,7 @@ function send_to_chat(msg)
 
 			else if(oiStartsWith(lmsg, '/goto'))
 			{
-				arg = msg.substr(6, 35).trim()
-				goto_room(arg, false)
+				goto_room(arg)
 			}
 
 			else if(oiEquals(lmsg, '/help3'))
@@ -2957,7 +2941,6 @@ function send_to_chat(msg)
 
 			else if(oiStartsWith(lmsg, '/volume'))
 			{
-				arg = msg.substr(8,5).trim()
 				change_volume_command(arg)
 			}
 
@@ -2999,14 +2982,19 @@ function change_topic(dtopic)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(topic != dtopic)
-		{
-			socket.emit('topic_change', {topic:dtopic})
-		}
+		dtopic = clean_string2(dtopic.substring(0, max_topic_length))
 
-		else
+		if(dtopic.length > 0)
 		{
-			chat_announce('[', ']', "Topic is already set to that", 'small')
+			if(topic != dtopic)
+			{
+				socket.emit('topic_change', {topic:dtopic})
+			}
+
+			else
+			{
+				chat_announce('[', ']', "Topic is already set to that", 'small')
+			}
 		}
 	}
 
@@ -3020,7 +3008,7 @@ function topicadd(arg)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(arg.length > 0 && (topic.length + arg.length + 3) <= 1200)
+		if(arg.length > 0 && (topic.length + arg.length + 3) <= max_topic_length)
 		{
 			change_topic(topic + ' - ' + arg)
 		}
@@ -3169,9 +3157,9 @@ function change_nickname(nck)
 {
 	if(can_chat)
 	{
-		nck = clean_string4(nck)
+		nck = clean_string4(nck.substring(0, max_username_length))
 		
-		if(nck.length > 0 && nck.length <= 20)
+		if(nck.length > 0)
 		{
 			if(nck === username)
 			{
@@ -3193,8 +3181,13 @@ function change_nickname(nck)
 
 function change_default_nickname(nck)
 {
-	save_default_username(nck)
-	chat_announce('[', ']', "Default nickname changed to " + nck, 'small')
+	nck = clean_string4(nck.substring(0, max_username_length))
+	
+	if(nck.length > 0)
+	{
+		save_default_username(nck)
+		chat_announce('[', ']', "Default nickname changed to " + nck, 'small')
+	}
 }
 
 function show_default_nickname()
@@ -3230,9 +3223,10 @@ function start_chat()
 	$('#chat_area').append('<br><br><br><div class="clear">&nbsp</div>')
 	$('#input').focus()
 
-	$('#chat_area').perfectScrollbar(
+	perfect_scrollbar = new PerfectScrollbar("#chat_area",
 	{
-		minScrollbarLength: 50
+		minScrollbarLength: 50,
+		suppressScrollX: true
 	})
 
 	goto_bottom(true)
@@ -3260,7 +3254,7 @@ function goto_bottom(force)
 
 function emit_pasted(url)
 {
-	chat_announce("[", "]", "Uploading...", "small")	
+	chat_announce("[", "]", "Uploading", "small")	
 	socket.emit('pasted', {image_url:url})
 }
 
@@ -3617,12 +3611,12 @@ function update_topic_title()
 
 		if(i != -1)
 		{
-			document.title = (document.title.split(' - ')[0] + ' - ' + topic.substr(0,140))
+			document.title = (document.title.split(' - ')[0] + ' - ' + topic.substr(0, 140))
 		}
 
 		else
 		{
-			document.title = document.title + ' - ' + topic.substr(0,140)
+			document.title = document.title + ' - ' + topic.substr(0, 140)
 		}
 	}
 }
@@ -3668,7 +3662,7 @@ function activate_window_visibility_listener()
 function random_room()
 {
 	var id = word_generator('cvcvcv')
-	goto_room(id, false)
+	goto_room(id)
 }
 
 function copy_room_url()
@@ -3734,8 +3728,10 @@ function word_generator(pattern)
 	return res.join("").toLowerCase()
 }
 
-function goto_room(id, sametab)
+function goto_room(id, sametab=false)
 {
+	id = clean_string4(id.substring(0, max_roomname_length))
+
 	hide_boxes()
 
 	if(id !== main_room)
@@ -3805,8 +3801,10 @@ function update_topic(t)
 	update_topic_title()
 }
 
-function claim_room(arg)
+function claim_room(arg="")
 {
+	arg = arg.substring(0, 200)
+
 	if(room === main_room && arg === '')
 	{
 		chat_announce('[', ']', "This room can\'t be claimed", 'small')
@@ -4145,7 +4143,7 @@ function voice(nck)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(nck.length > 0 && nck.length <= 20)
+		if(nck.length > 0 && nck.length <= max_username_length)
 		{
 			if(nck === username)
 			{
@@ -4240,7 +4238,7 @@ function strip(nck)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(nck.length > 0 && nck.length <= 20)
+		if(nck.length > 0 && nck.length <= max_username_length)
 		{
 			if(nck === username)
 			{
@@ -4363,7 +4361,7 @@ function admin(nck)
 {
 	if(priv === 'admin')
 	{
-		if(nck.length > 0 && nck.length <= 20)
+		if(nck.length > 0 && nck.length <= max_username_length)
 		{
 			if(nck === username)
 			{
@@ -4399,7 +4397,7 @@ function op(nck)
 {
 	if(priv === 'admin')
 	{
-		if(nck.length > 0 && nck.length <= 20)
+		if(nck.length > 0 && nck.length <= max_username_length)
 		{
 			if(nck === username)
 			{
@@ -4532,6 +4530,8 @@ function recover(nck)
 		return false
 	}
 
+	nck = clean_string4(nck.substring(0, max_username_length))
+
 	var passwd = get_user_password(nck)
 
 	if(passwd === undefined)
@@ -4549,7 +4549,7 @@ function change_radiosrc(src)
 	{
 		src = clean_string2(src)
 
-		if(src.length > 0)
+		if(src.length > 0 && src.length <= max_radiosrc_length)
 		{
 			socket.emit('change_radiosrc', {src:src})
 		}
@@ -4595,7 +4595,7 @@ function ban(nck)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(nck.length > 0 && nck.length <= 20)
+		if(nck.length > 0 && nck.length <= max_username_length)
 		{
 			if(nck === username)
 			{
@@ -4665,7 +4665,7 @@ function kick(nck)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(nck.length > 0 && nck.length <= 20)
+		if(nck.length > 0 && nck.length <= max_username_length)
 		{
 			if(nck === username)
 			{

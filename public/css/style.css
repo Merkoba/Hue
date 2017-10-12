@@ -172,20 +172,24 @@ body
 
 .chat_message
 {
+	max-width: 98%;
 	padding-left: 5px;
 	clear: both;
 	color: white;
-	word-break: break-word;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
 	font-size: 1.4em;
 	display: inline-block;
 }
 
 .announcement
 {
+	max-width: 98%;
 	padding-left: 5px;
 	clear: both;
 	color: grey;
-	word-break: break-word;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
 	display: inline-block;
 }
 
@@ -291,7 +295,8 @@ a.chat:link, a.chat:visited, a.chat:hover
 {
 	padding-top: 0.7em;
 	padding-bottom: 0.7em;
-	word-break: break-word;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
 	display: inline-block;
 	cursor: pointer;
 }
@@ -467,6 +472,11 @@ a.chat:link, a.chat:visited, a.chat:hover
 .dotted
 {
 	border-bottom: 1px dotted;
+}
+
+.dash_container
+{
+	max-width: 98%;
 }
 
 .dash

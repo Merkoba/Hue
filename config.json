@@ -12,8 +12,17 @@
 	"chat_crop_limit": 2000,
 	"max_input_length": 1250,
 	"max_topic_length": 1200,
+	"max_username_length": 20,
+	"max_roomname_length": 50,
+	"max_radiosrc_length": 200,
 	"afk_timeout_duration": 120000,
 	"roomlist_cache": 120000,
 	"roomlist_max_inactivity": 172800000,
-	"heartbeat_interval": 10000
+	"heartbeat_interval": 10000,
+	"antispam_banTime": 30,
+	"antispam_kickThreshold": 20,
+	"antispam_kickTimesBeforeBan": 1,
+	"antispam_banning": true,
+	"antispam_heartBeatStale": 40,
+	"antispam_heartBeatCheck": 4
 }

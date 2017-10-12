@@ -27,13 +27,13 @@ module.exports = function(io)
 {
 	antiSpam.init(
 	{
-		banTime:            30,         // Ban time in minutes 
-		kickThreshold:      20,         // User gets kicked after this many spam score 
-		kickTimesBeforeBan: 1,          // User gets banned after this many kicks 
-		banning:            true,       // Uses temp IP banning after kickTimesBeforeBan 
-		heartBeatStale:     40,         // Removes a heartbeat after this many seconds 
-		heartBeatCheck:     4,          // Checks a heartbeat per this many seconds 
-		io:                 io,         // Bind the socket.io variable 
+		banTime: config.antispam_banTime, // Ban time in minutes 
+		kickThreshold: config.antispam_kickThreshold, // User gets kicked after this many spam score 
+		kickTimesBeforeBan: config.antispam_kickTimesBeforeBan, // User gets banned after this many kicks 
+		banning: config.antispam_banning, // Uses temp IP banning after kickTimesBeforeBan 
+		heartBeatStale: config.antispam_heartBeatStale, // Removes a heartbeat after this many seconds 
+		heartBeatCheck: config.antispam_heartBeatCheck, // Checks a heartbeat per this many seconds 
+		io: io // Bind the socket.io variable 
 	})
 
 	antiSpam.event.on('ban', function(socket, data)
@@ -436,20 +436,44 @@ module.exports = function(io)
 
 	function join_room(socket, data)
 	{
+    	if(data.username === undefined || data.room === undefined || data.key === undefined)
+	    {
+    		socket.disconnect()
+    		return false
+	    }
+
+    	if(data.username.length === 0 || data.room.length === 0)
+	    {
+    		socket.disconnect()
+    		return false
+	    }
+
+	    if(data.username.length > config.max_username_length)
+	    {
+	    	socket.disconnect()
+	    	return false
+	    }
+
+	    if(data.room.length > config.max_roomname_length)
+	    {
+	    	socket.disconnect()
+	    	return false
+	    }
+
+	    if(data.room.length !== clean_string4(data.room).length)
+	    {
+	    	socket.disconnect()
+	    	return false
+	    }
+
+	    if(data.room.length !== clean_string4(data.room).length)
+	    {
+	    	socket.disconnect()
+	    	return false
+	    }
+
 		get_roominfo(data.room, {}, function(info)
 	    {
-	    	if(data.username === undefined || data.room === undefined || data.key === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
-
-	    	if(data.username.length === 0 || data.room.length === 0)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
-
 		    var bans = info.bans.split(';')
 
 		   	socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
@@ -494,7 +518,7 @@ module.exports = function(io)
 		    	}
 		    }
 
-	    	socket.username = make_username_unique((clean_string4(data.username.substring(0, 14))), get_usernames(socket.room))
+	    	socket.username = make_username_unique(data.username, get_usernames(socket.room))
 	    	socket.emit('update', {room:socket.room, type:'username', username:socket.username, image_url:info.image_url, image_uploader:info.image_uploader, topic:info.topic, userlist:get_userlist(socket.room), priv:socket.priv, upload_permission:info.upload_permission, chat_permission:info.chat_permission, public:info.public, radiosrc:info.radiosrc, claimed:info.claimed})
 	    	socket.broadcast.in(socket.room).emit('update', {type:'userjoin', usercount:get_usercount(socket.room), username:socket.username, priv:socket.priv})
 	    })
@@ -516,6 +540,18 @@ module.exports = function(io)
 	    		return false
 		    }
 
+		    if(data.msg.length > config.max_input_length)
+		    {
+		    	socket.disconnect()
+		    	return
+		    }
+
+		    if(data.msg.length !== clean_string2(data.msg).length)
+		    {
+		    	socket.disconnect()
+		    	return
+		    }
+
 			get_roominfo(socket.room, {chat_permission:true}, function(info)
 			{
 	    		if(!check_permission(info.chat_permission, socket.priv))
@@ -523,7 +559,7 @@ module.exports = function(io)
 	    			return false
 	    		}
 
-				socket.broadcast.in(socket.room).emit('update', {type:'chat_msg', username:socket.username, msg:clean_string2(data.msg).substring(0, config.max_input_length)})
+				socket.broadcast.in(socket.room).emit('update', {type:'chat_msg', username:socket.username, msg:data.msg})
 
 				db.collection('rooms').update({_id:info._id}, {$set:{modified:Date.now()}})
 			})
@@ -545,6 +581,12 @@ module.exports = function(io)
 	    		socket.disconnect()
 	    		return false
 		    }
+
+		    if(data.image_url.length > config.max_input_length)
+		    {
+		    	socket.disconnect()
+		    	return false
+		    }		    
 
 			get_roominfo(socket.room, {upload_permission:true}, function(info)
 			{
@@ -606,7 +648,7 @@ module.exports = function(io)
 					return false
 				}
 
-				data.name = data.name.replace(/\s/g,'')
+				data.name = data.name.replace(/\s/g, '')
 
 				var clean = check_image_url(data.name)
 
@@ -647,6 +689,18 @@ module.exports = function(io)
 	    		return false
 		    }
 
+		    if(data.username.length > config.max_username_length)
+		    {
+		    	socket.disconnect()
+		    	return false
+		    }
+
+		    if(data.username.length !== clean_string4(data.username).length)
+		    {
+		    	socket.disconnect()
+		    	return false
+		    }
+
 			get_roominfo(socket.room, {chat_permission:true}, function(info)
 			{
 	    		if(!check_permission(info.chat_permission, socket.priv))
@@ -661,7 +715,7 @@ module.exports = function(io)
 		    		if(usernames[i] == socket.username)
 		    		{
 		    			var old_username = usernames[i]
-		    			socket.username = make_username_unique(clean_string4(data.username.substring(0, 14)), usernames)
+		    			socket.username = make_username_unique(data.username, usernames)
 		    			io.sockets.in(socket.room).emit('update', {type:'new_username', username:socket.username, old_username:old_username})
 		    			return
 		    		}
@@ -725,7 +779,6 @@ module.exports = function(io)
 		    	{
 			    	if(userinfo.password !== '' && userinfo.password === data.password)
 			    	{
-
 			    		var sockets = io.sockets.adapter.rooms[socket.room].sockets
 
 			    		var keys = Object.keys(sockets)
@@ -773,6 +826,18 @@ module.exports = function(io)
 	    		return false
 		    }
 
+		    if(data.topic.length > config.max_topic_length)
+		    {
+		    	socket.disconnect()
+		    	return false
+		    }
+
+		    if(data.topic.length !== clean_string2(data.topic).length)
+		    {
+		    	socket.disconnect()
+		    	return false
+		    }
+
 	    	get_roominfo(socket.room, {topic:true}, function(info)
 	    	{
 		    	if(socket.priv !== 'admin' && socket.priv !== 'op')
@@ -780,9 +845,9 @@ module.exports = function(io)
 		    		return false
 		    	}
 
-		    	var new_topic = clean_string2(data.topic).substring(0, config.max_topic_length)
+		    	var new_topic = data.topic
 
-		    	if(new_topic.length > 0 && new_topic != info.topic)
+		    	if(new_topic !== info.topic)
 		    	{
 			    	info.topic = new_topic
 			    	io.sockets.in(socket.room).emit('update', {type:'topic_change', username:socket.username, topic:info.topic})
@@ -1538,25 +1603,29 @@ module.exports = function(io)
 	    		return false
 		    }
 
+		    if(data.src.length > config.max_radiosrc_length)
+		    {
+		    	socket.disconnect()
+		    	return false
+		    }
+
     		get_roominfo(socket.room, {radiosrc:true}, function(info)
     		{
     			if(socket.priv === 'admin' || socket.priv === 'op')
     			{
-    				var src = clean_string2(data.src).substring(0, 200)
-
-    				if(src.length == 0)
+    				if(data.src.length == 0)
     				{
     					return false
     				}
 
-    				if(src === 'default')
+    				if(data.src === 'default')
     				{
     					info.radiosrc = ''
     				}
 
     				else
     				{
-	    				info.radiosrc = src
+	    				info.radiosrc = data.src
     				}
 
 					io.sockets.in(socket.room).emit('update', {type:'changed_radiosrc', username:socket.username, src:info.radiosrc})
@@ -1914,7 +1983,7 @@ module.exports = function(io)
 
 	function clean_string4(s)
 	{
-		return s.replace(/\/+/g, '').replace(/\s+/g, ' ').trim()
+		return s.replace(/[^a-z0-9\-_\s]+/gi, "").replace(/\s+/g, " ").trim()
 	}
 
 	function get_random_int(min, max)
@@ -2104,10 +2173,15 @@ module.exports = function(io)
 			{
 				if(i === 4)
 				{
-					return make_username_unique(word_generator('cvcvcvcv'), usernames)
+					return make_username_unique(word_generator('cvcvcv'), usernames)
 				}
 
 				username = username + get_random_int(2, 9)
+
+				if(username.length > config.max_username_length)
+				{
+					username = username.substring(0, parseInt(config.max_username_length / 2))
+				}
 			}
 
 			else

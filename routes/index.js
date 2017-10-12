@@ -13,6 +13,9 @@ c.check_metadata_interval_duration = config.check_metadata_interval_duration
 c.chat_crop_limit = config.chat_crop_limit
 c.max_input_length = config.max_input_length
 c.max_topic_length = config.max_topic_length
+c.max_username_length = config.max_username_length
+c.max_roomname_length = config.max_roomname_length
+c.max_radiosrc_length = config.max_radiosrc_length
 c.afk_timeout_duration = config.afk_timeout_duration
 c.heartbeat_interval = config.heartbeat_interval
 
@@ -24,7 +27,7 @@ router.get('/', function(req, res, next)
 
 router.get('/:id', function(req, res, next) 
 {
-    c.room = req.params.id.substr(0, 35).replace(/[<>"'\\\/]/g, '').trim()
+    c.room = req.params.id.substr(0, config.max_roomname_length).replace(/[^a-z0-9\-_\s]+/gi, "").replace(/\s+/g, " ").trim()
 	res.render('main', c)
 })
 
