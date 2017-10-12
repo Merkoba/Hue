@@ -3008,15 +3008,27 @@ function topicadd(arg)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(arg.length > 0 && (topic.length + arg.length + 3) <= max_topic_length)
+		if(arg.length === 0)
 		{
-			change_topic(topic + ' - ' + arg)
+			return
+		}
+
+		var ntopic = topic + ' - '
+
+		if(ntopic.length < max_topic_length)
+		{
+			ntopic += arg
 		}
 
 		else
 		{
 			chat_announce('[', ']', "There is no more room to add that to the topic", 'small')
+			return
 		}
+
+		ntopic = ntopic.substring(0, max_topic_length)
+
+		change_topic(ntopic)
 	}
 
 	else
@@ -4299,19 +4311,6 @@ function announce_strip(data)
 
 function stripped()
 {
-	if(typeof room_keys === "object" && room_keys.length > 0)
-	{
-		for(var i=0; i<room_keys.length; i++)
-		{
-			if(room_keys[i][0] === room)
-			{
-				room_keys.splice(i, 1)
-				localStorage.setItem('room_keys', JSON.stringify(room_keys))
-				break
-			}
-		}
-	}
-
 	room_key = ''
 	priv = ''
 	check_permissions()
@@ -4329,7 +4328,6 @@ function announce_claim(data)
 	else
 	{
 		priv = ""
-		save_key("")
 		check_permissions()
 		chat_announce('~', '~', data.username + ' has claimed this room', 'small')
 	}
