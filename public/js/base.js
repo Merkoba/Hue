@@ -1851,7 +1851,7 @@ function start_dropzone()
 
 		var size = file.size / 1024
 
-		if(size > 5555)
+		if(size > max_image_size)
 		{
 			dropzone.files = []
 			chat_announce('[', ']', "File is too big", 'small')

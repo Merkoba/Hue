@@ -1,29 +1,29 @@
-var fs = require('fs')
-var path = require("path")
-var shell = require('shelljs/global')
+const fs = require('fs')
+const path = require("path")
+const shell = require('shelljs/global')
 const antiSpam  = require('socket-anti-spam')
-var mongo = require('mongodb')
-var config = require('./config.json')
-var secretpass = config.secretpass
+const mongo = require('mongodb')
+const config = require('./config.json')
+const images_root = path.join(__dirname, config.images_directory)
+
+var db
 var last_roomlist
 var roomlist_lastget = 0
-var images_root = path.join(__dirname, config.images_directory)
-var db
 
-mongo.connect(config.mongodb_path, function(err,database) 
+mongo.connect(config.mongodb_path, function(err, database) 
 {
-    if(err) 
-	{ 
+	if(err)
+	{
 		console.error(err) 
 	}
 
 	else
 	{
-    	db = database
+		db = database
 	}
 })
 
-module.exports = function(io) 
+module.exports = function(io)
 {
 	antiSpam.init(
 	{
@@ -601,13 +601,13 @@ module.exports = function(io)
 
 				if(clean)
 				{
-					var fname = Date.now() + '_' + get_random_int(0, 1000) + '.' + data.image_url.split('.').pop(-1)
+					var fname = socket.room.replace(/\s+/g, "-") + '_' + Date.now() + '_' + get_random_int(0, 1000) + '.' + data.image_url.split('.').pop(-1)
 					
 					exec('wget -O ' + images_root + '/' + fname + ' -q \"' + data.image_url + '\"', function(status, output) 
 					{
 						exec('stat --printf="%s" ' + images_root + '/' + fname, function(status, output) 
 						{
-							if(parseInt(output) / 1000 <= 5555)
+							if(parseInt(output) / 1000 <= config.max_image_size)
 							{
 								change_image(socket.room, fname, socket.username)
 							}
@@ -643,7 +643,7 @@ module.exports = function(io)
 					return false
 				}
 
-				if(data.image_file.toString('ascii').length / 1000 > 5555)
+				if(data.image_file.toString('ascii').length / 1000 > config.max_image_size)
 				{
 					return false
 				}
@@ -654,7 +654,7 @@ module.exports = function(io)
 
 				if(clean)
 				{
-					var fname = Date.now() + '_' + get_random_int(0, 1000) + '.' + data.name.split('.').pop(-1)
+					var fname = socket.room.replace(/\s+/g, "-") + '_' + Date.now() + '_' + get_random_int(0, 1000) + '.' + data.name.split('.').pop(-1)
 
 					fs.writeFile(images_root + '/' + fname, data.image_file, function (err,data) 
 					{
@@ -881,14 +881,14 @@ module.exports = function(io)
 	{
     	if(socket.username !== undefined)
     	{
-    		if(socket.room === config.main_room && data.pass !== secretpass)
+    		if(socket.room === config.main_room && data.pass !== config.secretpass)
     		{
     			return false
     		}
 
     		get_roominfo(socket.room, {claimed:true}, function(info)
     		{
-	    		if(!info.claimed || data.pass === secretpass || socket.priv === 'admin')
+	    		if(!info.claimed || data.pass === config.secretpass || socket.priv === 'admin')
 	    		{
 	    			socket.key = get_random_key()
 
@@ -1927,12 +1927,11 @@ module.exports = function(io)
 
 	function change_image(room, fname, uploader)
 	{
-		var pth = '/img/' + fname
-		
 		get_roominfo(room, {image_url:true}, function(info)
 		{
 			if(info.image_url.indexOf(config.default_image_name) === -1)
 			{
+				console.log(1)
 				var rname = info.image_url.split('_')[0].split('/').pop()
 
 				exec("find " + images_root + " -maxdepth 1 -type f -name '" + rname + "_*' -not -name '" + fname + "' -delete", function(status, output)
@@ -1941,13 +1940,15 @@ module.exports = function(io)
 				})
 			}
 
+			var pth = config.public_images_location + fname
+
 			info.image_url = pth
 			info.image_uploader = uploader
 			io.sockets.in(room).emit('update', {type:'image_change', image_url:info.image_url, image_uploader:info.image_uploader})
 				
 			db.collection('rooms').update({_id:info._id}, {$set:{image_url:info.image_url, image_uploader:info.image_uploader, modified:Date.now()}})
-		})
-	}
+		})		
+	}	
 
 	function check_image_url(uri)
 	{
