@@ -3025,7 +3025,7 @@ function topicadd(arg)
 			return
 		}
 
-		var ntopic = topic + ' - '
+		var ntopic = topic + ' | '
 
 		if(ntopic.length < max_topic_length)
 		{
