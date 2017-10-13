@@ -2099,6 +2099,16 @@ function activate_key_detection()
 	})
 }
 
+function change_input(s, to_end=true)
+{
+	$("#input").val(s)
+
+	if(to_end)
+	{
+		input_to_end()
+	}
+}
+
 function input_to_end()
 {
 	$('#input')[0].scrollLeft = $('#input')[0].scrollWidth;	
@@ -2138,8 +2148,7 @@ function input_history_change(direction)
 		var v = input_history[input_history_index]
 	}
 
-	$('#input').val(v)
-	input_to_end()
+	change_input(v)
 }
 
 function input_click_events()
@@ -2460,19 +2469,21 @@ function start_image_events()
 	{
 		try 
 		{
-			var rgb = colorThief.getColor(this)
+			var colors = colorThief.getPalette(this, 2)
 
-			background_color = rgbToHex(rgb)
+			background_color = rgbToHex(colors[0])
+			font_color = computeTextColor(colors[0])
 
-			font_color = computeTextColor(rgb)
+			background_color2 = rgbToHex(colors[1])
+			font_color2 = computeTextColor(colors[1])
 
 			$('body').css('background-color', background_color)
-			$('#header').css('background-color', background_color)
+			$('#header').css('background-color', background_color2)
 			$('#chat_area').css('background-color', background_color)
 			$('#media').css('background-color', background_color)
 			$('#input').css('background-color', background_color)
 			$('.ps__thumb-y').css('background-color', background_color)
-			$('.header_item').css('color', font_color)
+			$('.header_item').css('color', font_color2)
 			$('.chat_message').css('color', font_color)
 			$('.announcement').css('color', font_color)
 			$('.dash').css('color', font_color)
@@ -2494,7 +2505,9 @@ function start_image_events()
 
 		if(image_uploader !== '' && image_url !== default_image_url)
 		{
-			$('#image_uploader').text('Uploaded by ' + image_uploader)
+			var title = 'Uploaded by ' + image_uploader
+
+			$(this).prop('title', title)
 		}
 
 		else
@@ -3143,8 +3156,7 @@ function topictrim(n)
 
 function topicedit()
 {
-	$("#input").val("/topic " + topic)
-	input_to_end()
+	change_input("/topic " + topic)
 }
 
 function announce_topic_change(data)

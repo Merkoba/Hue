@@ -75,18 +75,6 @@ body
 	cursor: pointer;
 }
 
-#image_info
-{
-	max-width: 44vw;
-	text-align: center;
-	padding-top: 0.2em;
-}
-
-#image_uploader
-{
-	cursor: pointer;
-}
-
 #chat_area_parent
 {
 	position: relative;
