@@ -11,7 +11,7 @@ var dropzone
 var colorThief
 var played = []
 var input_history = []
-var input_history_index = 1
+var input_history_index = 0
 var usercount
 var room_keys
 var room_key = ''
@@ -1828,7 +1828,7 @@ function start_dropzone()
 	{ 
 		url: "/",
 		maxFiles: 1,
-		maxFilesize: 5.5,
+		maxFilesize: max_image_size / 1000,
 		autoProcessQueue: false,
 		clickable: '#media_image',
 		acceptedFiles: "image/jpeg,image/png,image/gif"
@@ -1995,10 +1995,17 @@ function activate_key_detection()
 				return
 			}
 
-			send_to_chat($('#input').val())
+			if($("#input").val().length === 0)
+			{
+				goto_bottom(true)
+			}
+
+			else
+			{
+				send_to_chat($('#input').val())
+			}
 
 			e.preventDefault()
-
 			return
 		}
 
@@ -2006,13 +2013,13 @@ function activate_key_detection()
 		{
 			if(e.shiftKey)
 			{
-				input_history_up()
+				var $ch = $('#chat_area')
+				$ch.scrollTop($ch.scrollTop() - 100)
 			}
 
 			else
 			{
-				var $ch = $('#chat_area')
-				$ch.scrollTop($ch.scrollTop() - 100)
+				input_history_change("up")
 			}
 
 			e.preventDefault()
@@ -2022,11 +2029,6 @@ function activate_key_detection()
 		else if(e.key === "ArrowDown")
 		{	
 			if(e.shiftKey)
-			{
-				goto_bottom(true)
-			}
-
-			else
 			{
 				var $ch = $('#chat_area')
 				var max = $ch.prop('scrollHeight') - $ch.innerHeight()
@@ -2040,6 +2042,11 @@ function activate_key_detection()
 				{
 					$ch.scrollTop($ch.scrollTop() + 100)
 				}
+			}
+
+			else
+			{
+				input_history_change("down")
 			}
 
 			e.preventDefault()
@@ -2091,20 +2098,47 @@ function activate_key_detection()
 	})
 }
 
-function input_history_up()
+function input_to_end()
 {
-	var v = input_history[input_history.length - input_history_index]
+	$('#input')[0].scrollLeft = $('#input')[0].scrollWidth;	
+}
+
+function input_history_change(direction)
+{
+	if(direction === "up")
+	{
+		input_history_index -= 1
+
+		if(input_history_index === -2)
+		{
+			input_history_index = input_history.length - 1
+		}
+
+		else if(input_history_index === -1)
+		{
+			$("#input").val("")
+			return
+		}
+
+		var v = input_history[input_history_index]
+	}
+
+	else
+	{
+		input_history_index += 1
+
+		if(input_history_index === input_history.length)
+		{
+			$("#input").val("")
+			input_history_index = -1
+			return
+		}
+
+		var v = input_history[input_history_index]
+	}
 
 	$('#input').val(v)
-	
-	$('#input')[0].scrollLeft = $('#input')[0].scrollWidth;
-
-	input_history_index += 1
-
-	if(input_history_index > input_history.length)
-	{
-		input_history_index = 1
-	}
+	input_to_end()
 }
 
 function input_click_events()
@@ -2674,6 +2708,7 @@ function register_commands()
 	commands.push('/topic')
 	commands.push('/topicadd')
 	commands.push('/topictrim')
+	commands.push('/topicedit')
 	commands.push('/room')
 	commands.push('/goto')
 	commands.push('/help3')
@@ -2690,7 +2725,7 @@ function send_to_chat(msg)
 
 	if(msg_is_ok(msg))
 	{
-		input_history_index = 1
+		input_history_index = -1
 
 		for(var i=0; i<input_history.length; i++)
 		{
@@ -2701,7 +2736,7 @@ function send_to_chat(msg)
 			}
 		}
 
-		if(input_history.length > 5)
+		if(input_history.length > max_input_history_items)
 		{
 			input_history.shift()
 		}
@@ -2911,6 +2946,12 @@ function send_to_chat(msg)
 				topictrim(1)
 			}
 
+			else if(oiEquals(lmsg, '/topicedit'))
+			{
+				topicedit()
+				return
+			}
+
 			else if(oiEquals(lmsg, '/topic'))
 			{
 				show_topic2()
@@ -3097,6 +3138,12 @@ function topictrim(n)
 	{
 		chat_announce('[', ']', "You are not a room operator or admin", 'small')
 	}
+}
+
+function topicedit()
+{
+	$("#input").val("/topic " + topic)
+	input_to_end()
 }
 
 function announce_topic_change(data)
