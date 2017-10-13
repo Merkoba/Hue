@@ -519,8 +519,32 @@ module.exports = function(io)
 		    }
 
 	    	socket.username = make_username_unique(data.username, get_usernames(socket.room))
-	    	socket.emit('update', {room:socket.room, type:'username', username:socket.username, image_url:info.image_url, image_uploader:info.image_uploader, topic:info.topic, userlist:get_userlist(socket.room), priv:socket.priv, upload_permission:info.upload_permission, chat_permission:info.chat_permission, public:info.public, radiosrc:info.radiosrc, claimed:info.claimed})
-	    	socket.broadcast.in(socket.room).emit('update', {type:'userjoin', usercount:get_usercount(socket.room), username:socket.username, priv:socket.priv})
+	    	
+	    	socket.emit('update', 
+	    	{
+	    		type:'username', 
+	    		room:socket.room, 
+	    		username:socket.username, 
+	    		image_url:info.image_url, 
+	    		image_uploader:info.image_uploader, 
+	    		topic:info.topic, 
+	    		topic_setter:info.topic_setter, 
+	    		userlist:get_userlist(socket.room), 
+	    		priv:socket.priv, 
+	    		upload_permission:info.upload_permission, 
+	    		chat_permission:info.chat_permission, 
+	    		public:info.public, 
+	    		radiosrc:info.radiosrc, 
+	    		claimed:info.claimed
+	    	})
+
+	    	socket.broadcast.in(socket.room).emit('update', 
+			{
+				type:'userjoin', 
+				usercount:get_usercount(socket.room), 
+				username:socket.username, 
+				priv:socket.priv
+			})
 	    })
 	}
 
@@ -850,9 +874,10 @@ module.exports = function(io)
 		    	if(new_topic !== info.topic)
 		    	{
 			    	info.topic = new_topic
-			    	io.sockets.in(socket.room).emit('update', {type:'topic_change', username:socket.username, topic:info.topic})
+
+			    	io.sockets.in(socket.room).emit('update', {type:'topic_change', username:socket.username, topic:info.topic, topic_setter:socket.username})
 			    	
-					db.collection('rooms').update({_id:info._id}, {$set:{topic:info.topic, modified:Date.now()}})
+					db.collection('rooms').update({_id:info._id}, {$set:{topic:info.topic, topic_setter:socket.username, modified:Date.now()}})
 		    	}
 	    	})
 		}		
@@ -1683,7 +1708,7 @@ module.exports = function(io)
 
 	function get_roominfo(room, fields, callback)
 	{
-		var version = 1
+		var version = 2
 
 		if(Object.keys(fields).length > 0)
 		{
@@ -1701,6 +1726,7 @@ module.exports = function(io)
 					image_url: '',
 					image_uploader: '',
 					topic: '',
+					topic_setter: '',
 					claimed: false,
 					keys: '',
 					upload_permission: 1,
@@ -1736,6 +1762,11 @@ module.exports = function(io)
 					if(roominfo.topic === undefined || typeof roominfo.topic !== "string")
 					{
 						roominfo.topic = ""
+					}
+					
+					if(roominfo.topic_setter === undefined || typeof roominfo.topic_setter !== "string")
+					{
+						roominfo.topic_setter = ""
 					}
 					
 					if(roominfo.claimed === undefined || typeof roominfo.claimed !== "boolean")

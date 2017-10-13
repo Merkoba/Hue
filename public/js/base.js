@@ -7,6 +7,7 @@ var background_color = '#000000'
 var image_url = ''
 var image_uploader = ''
 var topic = ''
+var topic_setter = ''
 var dropzone
 var colorThief
 var played = []
@@ -296,7 +297,15 @@ function show_topic()
 {
 	if(topic)
 	{
-		chat_announce('', '', 'Topic: ' + topic, 'big')
+		if(topic_setter !== "")
+		{
+			chat_announce('', '', 'Topic: ' + topic, 'big', false, "Set by " + topic_setter)
+		}
+
+		else
+		{
+			chat_announce('', '', 'Topic: ' + topic, 'big')
+		}
 	}
 
 	else 
@@ -473,7 +482,7 @@ function start_socket()
 			setup_radio(data.radiosrc)
 			userlist = data.userlist
 			update_userlist()
-			update_topic(data.topic)
+			update_topic(data.topic, data.topic_setter)
 			is_public = data.public
 			change()
 
@@ -2391,9 +2400,10 @@ function update_chat(uname, msg)
 		var fmsg = $("<div title='" + date + "' class='msg chat_message'>* <span class='chat_uname'></span> <span class='" + contclasses + "'></span> *</div><div class='sep1'>&nbsp</div>")
 		$($(fmsg).find('.chat_content').get(0)).text(msg.substr(4)).urlize()
 	}
+
 	else
 	{
-		var fmsg = $("<div title='" + date + "' class='msg chat_message'><b><span class='chat_uname'></span>:</b>&nbsp&nbsp<span class='" + contclasses + "'></span></div><div class='sep1'>&nbsp</div>")
+		var fmsg = $("<div title='" + date + "' class='msg chat_message'><b><span class='chat_uname'></span>:</b>&nbsp<span class='" + contclasses + "'></span></div><div class='sep1'>&nbsp</div>")
 		$($(fmsg).find('.chat_content').get(0)).text(msg).urlize()
 	}
 	
@@ -2579,7 +2589,7 @@ function componentToHex(c)
 	return hex.length == 1 ? "0" + hex : hex
 }
 
-function chat_announce(brk1, brk2, msg, size, dotted=false)
+function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 {
 	var date = dateFormat(Date.now(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
 
@@ -2593,16 +2603,26 @@ function chat_announce(brk1, brk2, msg, size, dotted=false)
 
 		alert_title2()
 	}
+
+	if(title)
+	{
+		var t = title + " | " + date
+	}
+
+	else
+	{
+		var t = date
+	}
 	
 	if(typeof dotted === "string")
 	{
-		var fmsg = $("<div title='" + date + "' class='msg announcement announcement_" + size + "'>" + brk1 + " <span class='" + contclasses + "'></span><span class='dotted'></span> " + brk2 + "</div><div class='sep1'>&nbsp</div>")
+		var fmsg = $("<div title='" + t + "' class='msg announcement announcement_" + size + "'>" + brk1 + " <span class='" + contclasses + "'></span><span class='dotted'></span> " + brk2 + "</div><div class='sep1'>&nbsp</div>")
 		$($(fmsg).find('.dotted').get(0)).text(dotted).urlize()
 	}
 
 	else
 	{
-		var fmsg = $("<div title='" + date + "' class='msg announcement announcement_" + size + "'>" + brk1 + " <span class='" + contclasses + "'></span> " + brk2 + "</div><div class='sep1'>&nbsp</div>")
+		var fmsg = $("<div title='" + t + "' class='msg announcement announcement_" + size + "'>" + brk1 + " <span class='" + contclasses + "'></span> " + brk2 + "</div><div class='sep1'>&nbsp</div>")
 	}
 
 	$($(fmsg).find('.announcement_content').get(0)).text(msg).urlize()
@@ -3216,7 +3236,7 @@ function announce_topic_change(data)
 			}
 		}
 
-		update_topic(data.topic)
+		update_topic(data.topic, data.topic_setter)
 	}
 }
 
@@ -3862,9 +3882,10 @@ function add_to_input(what)
 	$('#input').val($('#input').val() + what + ' ').focus()
 }
 
-function update_topic(t)
+function update_topic(t, setter)
 {
 	topic = t
+	topic_setter = setter
 	update_topic_title()
 }
 
