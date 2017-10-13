@@ -244,6 +244,7 @@ function help3()
 	chat_announce('', '', '/topic x: Changes the topic of the room.', 'small')
 	chat_announce('', '', '/topicadd x: Adds text to the current topic.', 'small')
 	chat_announce('', '', '/topictrim x: Removes added text to topic, where the optional x is the number of trims you want to do.', 'small')
+	chat_announce('', '', '/topicedit: Puts the topic in the input, ready to be edited.', 'small')
 	chat_announce('', '', '/ban x: Bans a user from the room.', 'small')
 	chat_announce('', '', '/unbanlast: Unbans the latest banned user.', 'small')
 	chat_announce('', '', '/unbanall: Removes all bans.', 'small')
@@ -2736,7 +2737,7 @@ function send_to_chat(msg)
 			}
 		}
 
-		if(input_history.length > max_input_history_items)
+		if(input_history.length >= max_input_history_items)
 		{
 			input_history.shift()
 		}
