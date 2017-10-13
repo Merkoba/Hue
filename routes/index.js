@@ -16,7 +16,10 @@ c.max_topic_length = config.max_topic_length
 c.max_username_length = config.max_username_length
 c.max_roomname_length = config.max_roomname_length
 c.max_radiosrc_length = config.max_radiosrc_length
+c.max_title_topic_length = config.max_title_topic_length
 c.max_image_size = config.max_image_size
+c.topic_separator = config.topic_separator
+c.title_topic_separator = config.title_topic_separator
 c.afk_timeout_duration = config.afk_timeout_duration
 c.heartbeat_interval = config.heartbeat_interval
 

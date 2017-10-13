@@ -1894,7 +1894,7 @@ module.exports = function(io)
 				{
 					var room = results[i]
 
-					rooms.push([room.name, room.topic.substring(0, 140), get_usercount(room.name)])
+					rooms.push([room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room.name)])
 				}
 
 				rooms.sort(compare_roomlist).splice(50)

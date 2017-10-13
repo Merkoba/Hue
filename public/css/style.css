@@ -177,7 +177,7 @@ body
 	clear: both;
 	color: white;
 	overflow-wrap: break-word;
-	word-wrap: break-word;
+	word-break: break-word;
 	font-size: 1.4em;
 	display: inline-block;
 }
@@ -189,7 +189,7 @@ body
 	clear: both;
 	color: grey;
 	overflow-wrap: break-word;
-	word-wrap: break-word;
+	word-break: break-word;
 	display: inline-block;
 }
 
@@ -293,12 +293,12 @@ a.chat:link, a.chat:visited, a.chat:hover
 
 .played_item 
 {
-	padding-top: 0.7em;
-	padding-bottom: 0.7em;
-	overflow-wrap: break-word;
-	word-wrap: break-word;
+	padding-top: 1em;
+	padding-bottom: 1em;
 	display: inline-block;
 	cursor: pointer;
+	overflow-wrap: break-word;
+	word-break: break-word;
 }
 
 .pititle
@@ -309,6 +309,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 
 .piartist
 {
+	padding-top:0.3em;
 	font-size: 1.2em;
 }
 
@@ -395,6 +396,8 @@ a.chat:link, a.chat:visited, a.chat:hover
 	padding-bottom: 0.5em;
 	cursor: pointer;
 	display: inline-block;
+	overflow-wrap: break-word;
+	word-break: break-word;	
 }
 
 .ui_item_priv
@@ -405,16 +408,18 @@ a.chat:link, a.chat:visited, a.chat:hover
 
 .ui_item_nick
 {
-	font-size: 1.4em;
+	font-size: 1.4em;	
 }
 
 .roomlist_item
 {
-	padding-top: 0.8em;
-	padding-bottom: 0.8em;
+	padding-top: 1em;
+	padding-bottom: 1em;
 	cursor: pointer;
 	display: inline-block;
 	width: 90%;
+	overflow-wrap: break-word;
+	word-break: break-word;	
 }
 
 .roomlist_name

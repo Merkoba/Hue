@@ -3025,7 +3025,7 @@ function topicadd(arg)
 			return
 		}
 
-		var ntopic = topic + ' | '
+		var ntopic = topic + topic_separator
 
 		if(ntopic.length < max_topic_length)
 		{
@@ -3053,7 +3053,7 @@ function topictrim(n)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		var split = topic.split(' - ')
+		var split = topic.split(topic_separator)
 
 		if(split.length > 1)
 		{
@@ -3078,7 +3078,7 @@ function topictrim(n)
 
 			if(split.length > 1)
 			{
-				var t = split.slice(0, -n).join(' - ')
+				var t = split.slice(0, -n).join(topic_separator)
 
 				if(t.length > 0)
 				{
@@ -3117,7 +3117,7 @@ function announce_topic_change(data)
 			
 		if(data.username === username)
 		{
-			if(data.topic.startsWith(topic + ' - '))
+			if(data.topic.startsWith(topic + topic_separator))
 			{
 				if(highlight)
 				{
@@ -3126,7 +3126,7 @@ function announce_topic_change(data)
 
 				else
 				{
-					chat_announce('~', '~', 'You added to the topic: ' + topic + ' - ', 'small', data.topic.substr(topic.length + 3))
+					chat_announce('~', '~', 'You added to the topic: ' + topic + topic_separator, 'small', data.topic.substr(topic.length + 3))
 				}
 			}
 
@@ -3146,7 +3146,7 @@ function announce_topic_change(data)
 
 		else
 		{
-			if(data.topic.startsWith(topic + ' - '))
+			if(data.topic.startsWith(topic + topic_separator))
 			{
 				if(highlight)
 				{
@@ -3155,7 +3155,7 @@ function announce_topic_change(data)
 
 				else
 				{
-					chat_announce('~', '~', data.username + ' added to the topic: ' + topic + ' - ', 'small', data.topic.substr(topic.length + 3))
+					chat_announce('~', '~', data.username + ' added to the topic: ' + topic + topic_separator, 'small', data.topic.substr(topic.length + 3))
 				}
 			}
 
@@ -3338,7 +3338,7 @@ function get_radio_metadata()
 					{
 						var date = dateFormat(Date.now(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
 						
-						var pi = "<span class='pititle'></span><br><span class='piartist'></span>"
+						var pi = "<div class='pititle'></div><div class='piartist'></div>"
 						
 						h = $("<div title='" + date + "' class='played_item'>" + pi + "</div><br>")
 						
@@ -3631,16 +3631,16 @@ function update_topic_title()
 {
 	if(topic != '')
 	{
-		var i = document.title.indexOf(' - ')
+		var i = document.title.indexOf(title_topic_separator)
 
-		if(i != -1)
+		if(i !== -1)
 		{
-			document.title = (document.title.split(' - ')[0] + ' - ' + topic.substr(0, 140))
+			document.title = (document.title.split(title_topic_separator)[0] + title_topic_separator + topic.substr(0, max_title_topic_length))
 		}
 
 		else
 		{
-			document.title = document.title + ' - ' + topic.substr(0, 140)
+			document.title = document.title + title_topic_separator + topic.substr(0, max_title_topic_length)
 		}
 	}
 }
