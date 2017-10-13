@@ -199,6 +199,7 @@ body
 a.chat:link, a.chat:visited, a.chat:hover 
 {
     text-decoration: underline;
+    color: inherit;
 }
 
 .clear

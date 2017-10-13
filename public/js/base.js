@@ -2634,11 +2634,6 @@ function clean_string4(s)
 	return s.replace(/[^a-z0-9\-_\s]+/gi, "").replace(/\s+/g, " ").trim()
 }
 
-function chat_urlize(msg)
-{
-	return msg.replace(/[^\s"\\]+\.\w{2,}[^\s"\\]*/g, '<a class="chat" target="_blank" href="$&">$&</a>')
-}
-
 jQuery.fn.urlize = function() 
 {
 	if(this.length > 0) 
