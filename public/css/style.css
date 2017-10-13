@@ -25,6 +25,7 @@ body
 	height: 2em;
 	width: 100%;
 	background-color: black;
+	color: white;
 	z-index: 9999999;
 	opacity: 0.95;
 	white-space: nowrap;
@@ -93,6 +94,7 @@ body
 	overflow-x: none;
 	overflow-y: auto;
 	background-color: black;
+	color: white;
 	top: 2em;
     bottom: 2em;
     opacity: 0.95;
@@ -106,9 +108,9 @@ body
 	width: 50%;
 	height: 2em;
 	bottom: 0;
-	color: white;
 	font-size: 1em;
 	background-color: black;
+	color: white;
 	border: 0px solid black;
 	outline: none;
 	opacity: 0.95;
@@ -123,10 +125,10 @@ body
 	left: 25px;
 	width:calc(50% - 25px);	
 	bottom: 2em;
-	color: white;
 	height: 2em;
 	font-size: 1em;
 	background-color: #393939;
+	color: white;
 	border: 0px solid #2D2D2D;
 	outline: none;
 	opacity: 0.9;
@@ -163,7 +165,6 @@ body
 	max-width: 98%;
 	padding-left: 5px;
 	clear: both;
-	color: white;
 	overflow-wrap: break-word;
 	word-break: break-word;
 	font-size: 1.4em;
@@ -175,7 +176,6 @@ body
 	max-width: 98%;
 	padding-left: 5px;
 	clear: both;
-	color: grey;
 	overflow-wrap: break-word;
 	word-break: break-word;
 	display: inline-block;
@@ -198,7 +198,6 @@ body
 
 a.chat:link, a.chat:visited, a.chat:hover 
 {
-    color: white;
     text-decoration: underline;
 }
 

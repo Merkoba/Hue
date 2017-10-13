@@ -2406,9 +2406,6 @@ function update_chat(uname, msg)
 
 	add_msgcount()
 
-	$('.chat_message').css('color', font_color)
-	$('a').css('color', font_color)
-
 	goto_bottom(false)
 
 	alert_title()
@@ -2423,8 +2420,6 @@ function add_to_chat(msg)
 		if($('.dash').length === 0 && (started || connections > 1))
 		{
 			chat_area.append("<div class='dash_container'><hr class='dash'><div class='sep1'>&nbsp</div></div>")
-
-			$('.dash').css('color', font_color)
 		}
 	}
 
@@ -2483,13 +2478,9 @@ function start_image_events()
 			$('#media').css('background-color', background_color)
 			$('#input').css('background-color', background_color)
 			$('.ps__thumb-y').css('background-color', background_color)
-			$('.header_item').css('color', font_color2)
-			$('.chat_message').css('color', font_color)
-			$('.announcement').css('color', font_color)
-			$('.dash').css('color', font_color)
-			$('a').css('color', font_color)
+			$('#chat_area').css('color', font_color)
+			$('#header').css('color', font_color2)
 			$('#input').css('color', font_color)
-			$('#image_info').css('color', font_color)
 	
 			$('body').css('background-image', 'url(' + image_url + ')') 
 
@@ -2619,9 +2610,6 @@ function chat_announce(brk1, brk2, msg, size, dotted=false)
 	add_to_chat(fmsg)
 
 	add_msgcount()
-
-	$('.announcement').css('color', font_color)
-	$('a').css('color', font_color)
 
 	goto_bottom(false)
 }
