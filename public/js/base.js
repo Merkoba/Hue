@@ -303,12 +303,12 @@ function show_topic()
 	{
 		if(claimed)
 		{
-			chat_announce('', '', 'Topic: Room claimed. There is no topic set', 'big')
+			chat_announce('', '', 'Topic: ' + default_topic_claimed, 'big')
 		}
 
 		else
 		{
-			chat_announce('', '', 'Topic: Use /claim to get admin rights to this room', 'big')
+			chat_announce('', '', 'Topic: ' + default_topic, 'big')
 		}
 	}
 }
@@ -324,12 +324,12 @@ function show_topic2()
 	{
 		if(claimed)
 		{
-			chat_announce('[', ']', 'Topic: Room claimed. There is no topic set', 'small')
+			chat_announce('[', ']', 'Topic: ' + default_topic_claimed, 'small')
 		}
 
 		else
 		{
-			chat_announce('[', ']', 'Topic: Use /claim to get admin rights to this room', 'small')
+			chat_announce('[', ']', 'Topic: ' + default_topic, 'small')
 		}
 	}
 }

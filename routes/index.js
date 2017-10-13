@@ -21,6 +21,8 @@ c.max_input_history_items = config.max_input_history_items
 c.max_image_size = config.max_image_size
 c.topic_separator = config.topic_separator
 c.title_topic_separator = config.title_topic_separator
+c.default_topic = config.default_topic
+c.default_topic_claimed = config.default_topic_claimed
 c.afk_timeout_duration = config.afk_timeout_duration
 c.heartbeat_interval = config.heartbeat_interval
 
