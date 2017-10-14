@@ -425,13 +425,13 @@ a.chat:link, a.chat:visited, a.chat:hover
 .roomlist_count
 {
 	font-size: 1.1em;
-	padding-left: 1em;
+	padding-left: 0.7em;
 }
 
 .roomlist_filler
 {
 	font-size: 1.1em;
-	padding-right: 1em;
+	padding-right: 0.7em;
 	opacity: 0;
 }
 
