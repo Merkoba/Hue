@@ -651,6 +651,11 @@ function start_socket()
 			announce_claim(data)
 		}
 
+		else if(data.type === 'announce_unclaim')
+		{
+			announce_unclaim(data)
+		}
+
 		else if(data.type === 'made_private')
 		{
 			made_private(data)
@@ -849,6 +854,16 @@ function replace_claim_userlist(uname)
 		{
 			userlist[i][1] = 'z'
 		}
+	}
+
+	update_userlist()
+}
+
+function remove_privs_userlist()
+{
+	for(var i=0; i<userlist.length; i++)
+	{
+		userlist[i][1] = 'z'
 	}
 
 	update_userlist()
@@ -1529,6 +1544,18 @@ function start_main_menu_context_menu()
 					cp2: 
 					{
 						name: "Remove All Ops",
+						visible: function(key, opt)
+						{ 
+							if(priv !== 'admin')
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},						
 						items: {
 							rmopssure: 
 							{
@@ -1870,9 +1897,9 @@ function start_dropzone()
 
 		var name = file.name
 
-		var ext = name.split('.').pop()
+		var ext = name.split('.').pop().toLowerCase()
 
-		if(ext !== 'jpg' && ext !== 'png' && ext !== 'jpeg' && ext !== 'gif' && ext !== 'JPG' && ext !== 'PNG' && ext !== 'JPEG' && ext !== 'GIF')
+		if(ext !== 'jpg' && ext !== 'png' && ext !== 'jpeg' && ext !== 'gif')
 		{
 			dropzone.files = []
 			return false
@@ -1883,41 +1910,18 @@ function start_dropzone()
 		fr.addEventListener("loadend", function() 
 		{
 		  dropzone.files = []
-		  socket.emit("uploaded", {image_file:fr.result, name:file.name})
+
+		  socket.emit("uploaded", 
+		  {
+		  	image_file:fr.result, 
+		  	name:file.name
+		  })
+
 		  chat_announce("[", "]", "Uploading", "small")
 		})
 
 		fr.readAsArrayBuffer(file)
 	})
-}
-
-function base64toBlob(b64Data, contentType, sliceSize) 
-{
-	contentType = contentType || ''
-	sliceSize = sliceSize || 512
-
-	var byteCharacters = atob(b64Data)
-	var byteArrays = []
-
-	for(var offset=0; offset<byteCharacters.length; offset+=sliceSize) 
-	{
-		var slice = byteCharacters.slice(offset, offset + sliceSize)
-
-		var byteNumbers = new Array(slice.length)
-
-		for(var i=0; i<slice.length; i++) 
-		{
-			byteNumbers[i] = slice.charCodeAt(i)
-		}
-
-		var byteArray = new Uint8Array(byteNumbers)
-
-		byteArrays.push(byteArray)
-	}
-
-	var blob = new Blob(byteArrays, {type: contentType})
-
-	return blob
 }
 
 function copypaste_events()
@@ -2460,7 +2464,9 @@ function self_check_images(msg)
 	{
 		var url = words[i].replace(/\.gifv/g,'.gif')
 
-		if(words[i].indexOf('.jpg') !== -1 || words[i].indexOf('.png') !== -1 || words[i].indexOf('.jpeg') !== -1 || words[i].indexOf('.gif') !== -1 || words[i].indexOf('.JPG') !== -1 || words[i].indexOf('.PNG') !== -1 || words[i].indexOf('.JPEG') !== -1 || words[i].indexOf('.GIF') !== -1)
+		var word = words[i].toLowerCase()
+
+		if(word.indexOf('.jpg') !== -1 || word.indexOf('.png') !== -1 || word.indexOf('.jpeg') !== -1 || word.indexOf('.gif') !== -1)
 		{
 			$('#test_image').attr('src', url.split('?')[0])
 			return
@@ -2700,6 +2706,7 @@ function register_commands()
 	commands.push('/clear')
 	commands.push('/claim')
 	commands.push('/reclaim')
+	commands.push('/unclaim')
 	commands.push('/upload_permission')
 	commands.push('/chat_permission')
 	commands.push('/permissions')
@@ -2811,6 +2818,11 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/reclaim'))
 			{
 				reclaim_room()
+			}
+
+			else if(oiEquals(lmsg, '/unclaim'))
+			{
+				unclaim_room()
 			}
 
 			else if(oiStartsWith(lmsg, '/upload_permission'))
@@ -3925,6 +3937,23 @@ function reclaim_room()
 	socket.emit('claim_room', {pass:''})
 }
 
+function unclaim_room()
+{
+	if(!claimed)
+	{
+		chat_announce('[', ']', "Room hasn\'t been claimed yet", 'small')
+		return false
+	}
+
+	if(priv !== 'admin')
+	{
+		chat_announce('[', ']', "You are not a room admin", 'small')
+		return false
+	}
+
+	socket.emit('unclaim_room', {})
+}
+
 function get_keys()
 {
 	if(localStorage["room_keys"])
@@ -4419,6 +4448,44 @@ function announce_claim(data)
 	}
 	
 	replace_claim_userlist(data.username)
+}
+
+function announce_unclaim(data)
+{
+	if(username === data.username)
+	{
+		chat_announce('~', '~', 'You unclaimed the room', 'small')
+	}
+
+	else
+	{
+		priv = ""
+		chat_announce('~', '~', data.username + ' unclaimed the room', 'small')
+	}
+
+	claimed = false
+	priv = ""
+	upload_permission = 1
+	chat_permission = 1
+	is_public = true
+
+	update_topic("", "")
+
+	check_permissions()
+
+	remove_privs_userlist()
+
+	if(radiosrc !== "")
+
+	if(radiosrc !== default_radiosrc)
+	{
+		setup_radio("")
+
+		if($('#toggle_radio_text').html() === 'Stop Radio')
+		{
+			start_radio()
+		}
+	}
 }
 
 function announce_admin(data)
