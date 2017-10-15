@@ -449,6 +449,8 @@ a.chat:link, a.chat:visited, a.chat:hover
 	height: 100%;
 	padding-left: 0.3em;
 	padding-right: 0.3em;
+	position: relative;
+	top: 0.07em;
 }
 
 #main_menu
