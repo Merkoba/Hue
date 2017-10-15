@@ -743,7 +743,7 @@ function setup_radio(src)
 		radioinfo = default_radioinfo
 	}
 
-	else 
+	else
 	{
 		radiosrc = src
 		
@@ -1007,7 +1007,7 @@ function start_nickname_context_menu()
 				{
 					var arg = $(this).text()
 					voice(arg)
-				},       
+				},
 				visible: function(key, opt)
 				{ 
 					if(priv !== 'admin' && priv !== 'op')
@@ -1019,7 +1019,7 @@ function start_nickname_context_menu()
 					{
 						return true
 					}
-				}            
+				}
 			},
 			cmop: {
 				name: "Op", callback: function(key, opt)
@@ -1915,15 +1915,15 @@ function start_dropzone()
 
 		fr.addEventListener("loadend", function() 
 		{
-		  dropzone.files = []
+			dropzone.files = []
 
-		  socket.emit("uploaded", 
-		  {
-		  	image_file:fr.result, 
-		  	name:file.name
-		  })
+			socket.emit("uploaded", 
+			{
+				image_file:fr.result, 
+				name:file.name
+			})
 
-		  chat_announce("[", "]", "Uploading", "small")
+			chat_announce("[", "]", "Uploading", "small")
 		})
 
 		fr.readAsArrayBuffer(file)
@@ -2657,9 +2657,9 @@ function clean_string2(s)
 }
 
 function clean_string3(s)
-{ 
-   return s.replace(/[\\"']/g, '')
-} 
+{
+	return s.replace(/[\\"']/g, '')
+}
 
 function clean_string4(s)
 {
@@ -3696,7 +3696,7 @@ function alert_title2()
 
 			alert_mode = 2
 		}
-	}, 1000)	
+	}, 1000)
 }
 
 function remove_alert_title()
@@ -4957,7 +4957,7 @@ function remove_ops()
 
 function announce_removedvoices(data)
 {
-    if(username === data.username)
+	if(username === data.username)
 	{
 		chat_announce('~', '~', 'You removed all voices', 'small')
 	}
@@ -4977,7 +4977,7 @@ function announce_removedvoices(data)
 
 function announce_removedops(data)
 {
-    if(username === data.username)
+	if(username === data.username)
 	{
 		chat_announce('~', '~', 'You removed all ops', 'small')
 	}

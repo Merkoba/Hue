@@ -59,7 +59,7 @@ module.exports = function(io)
 		{
 			try
 			{
-		    	join_room(socket, data)
+				join_room(socket, data)
 			}
 
 			catch(err)
@@ -68,369 +68,369 @@ module.exports = function(io)
 			}
 		})
 
-	    socket.on('sendchat', function(data) 
-	    {
-	    	try
-	    	{
-	    		sendchat(socket, data)
-	    	}
+		socket.on('sendchat', function(data) 
+		{
+			try
+			{
+				sendchat(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('pasted', function(data) 
-	    {
-	    	try
-	    	{
-	    		pasted(socket, data)
-	    	}
+		socket.on('pasted', function(data) 
+		{
+			try
+			{
+				pasted(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('uploaded', function(data) 
-	    {
-	    	try
-	    	{
-	    		uploaded(socket, data)
-	    	}
+		socket.on('uploaded', function(data) 
+		{
+			try
+			{
+				uploaded(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('username_change', function(data) 
-	    {
-	    	try
-	    	{
-	    		username_change(socket, data)
-	    	}
+		socket.on('username_change', function(data) 
+		{
+			try
+			{
+				username_change(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('username_reserve', function(data) 
-	    {
-	    	try
-	    	{
-	    		username_reserve(socket, data)
-	    	}
+		socket.on('username_reserve', function(data) 
+		{
+			try
+			{
+				username_reserve(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('username_recover', function(data) 
-	    {
-	    	try
-	    	{
-	    		username_recover(socket, data)
-	    	}
+		socket.on('username_recover', function(data) 
+		{
+			try
+			{
+				username_recover(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('topic_change', function(data) 
-	    {
-	    	try
-	    	{
-	    		topic_change(socket, data)
-	    	}
+		socket.on('topic_change', function(data) 
+		{
+			try
+			{
+				topic_change(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('roomlist', function(data) 
-	    {
-	    	try
-	    	{
-	    		roomlist(socket, data)
-	    	}
+		socket.on('roomlist', function(data) 
+		{
+			try
+			{
+				roomlist(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('heartbeat', function(data) 
-	    {
-	    	try
-	    	{
-	    		heartbeat(socket, data)
-	    	}
+		socket.on('heartbeat', function(data) 
+		{
+			try
+			{
+				heartbeat(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('claim_room', function(data) 
-	    {
-	    	try
-	    	{
-	    		claim_room(socket, data)
-	    	}
+		socket.on('claim_room', function(data) 
+		{
+			try
+			{
+				claim_room(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('unclaim_room', function(data) 
-	    {
-	    	try
-	    	{
-	    		unclaim_room(socket, data)
-	    	}
+		socket.on('unclaim_room', function(data) 
+		{
+			try
+			{
+				unclaim_room(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('voice', function(data) 
-	    {
-	    	try
-	    	{
-	    		voice(socket, data)
-	    	}
+		socket.on('voice', function(data) 
+		{
+			try
+			{
+				voice(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('op', function(data) 
-	    {
-	    	try
-	    	{
-	    		op(socket, data)
-	    	}
+		socket.on('op', function(data) 
+		{
+			try
+			{
+				op(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('admin', function(data) 
-	    {
-	    	try
-	    	{
-	    		admin(socket, data)
-	    	}
+		socket.on('admin', function(data) 
+		{
+			try
+			{
+				admin(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('strip', function(data) 
-	    {
-	    	try
-	    	{
-	    		strip(socket, data)
-	    	}
+		socket.on('strip', function(data) 
+		{
+			try
+			{
+				strip(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('remove_voices', function(data) 
-	    {
-	    	try
-	    	{
-	    		remove_voices(socket, data)
-	    	}
+		socket.on('remove_voices', function(data) 
+		{
+			try
+			{
+				remove_voices(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('remove_ops', function(data) 
-	    {
-	    	try
-	    	{
-	    		remove_ops(socket, data)
-	    	}
+		socket.on('remove_ops', function(data) 
+		{
+			try
+			{
+				remove_ops(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('ban', function(data) 
-	    {
-	    	try
-	    	{
-	    		ban(socket, data)
-	    	}
+		socket.on('ban', function(data) 
+		{
+			try
+			{
+				ban(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('unbanall', function(data) 
-	    {
-	    	try
-	    	{
-	    		unbanall(socket, data)
-	    	}
+		socket.on('unbanall', function(data) 
+		{
+			try
+			{
+				unbanall(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('unbanlast', function(data) 
-	    {
-	    	try
-	    	{
-	    		unbanlast(socket, data)
-	    	}
+		socket.on('unbanlast', function(data) 
+		{
+			try
+			{
+				unbanlast(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('bannedcount', function(data) 
-	    {
-	    	try
-	    	{
-	    		bannedcount(socket, data)
-	    	}
+		socket.on('bannedcount', function(data) 
+		{
+			try
+			{
+				bannedcount(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('kick', function(data) 
-	    {
-	    	try
-	    	{
-	    		kick(socket, data)
-	    	}
+		socket.on('kick', function(data) 
+		{
+			try
+			{
+				kick(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('change_upload_permission', function(data) 
-	    {
-	    	try
-	    	{
-	    		change_upload_permission(socket, data)
-	    	}
+		socket.on('change_upload_permission', function(data) 
+		{
+			try
+			{
+				change_upload_permission(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('change_chat_permission', function(data) 
-	    {
-	    	try
-	    	{
-	    		change_chat_permission(socket, data)
-	    	}
+		socket.on('change_chat_permission', function(data) 
+		{
+			try
+			{
+				change_chat_permission(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('make_private', function(data) 
-	    {
-	    	try
-	    	{
-	    		make_private(socket, data)
-	    	}
+		socket.on('make_private', function(data) 
+		{
+			try
+			{
+				make_private(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('make_public', function(data) 
-	    {
-	    	try
-	    	{
-	    		make_public(socket, data)
-	    	}
+		socket.on('make_public', function(data) 
+		{
+			try
+			{
+				make_public(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-	    socket.on('change_radiosrc', function(data) 
-	    {
-	    	try
-	    	{
-	    		change_radiosrc(socket, data)
-	    	}
+		socket.on('change_radiosrc', function(data) 
+		{
+			try
+			{
+				change_radiosrc(socket, data)
+			}
 
-	    	catch(err)
-	    	{
-	    		console.error(err)
-	    	}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 
-    	socket.on('disconnect', function()
-    	{
-    		try
-    		{
-    			disconnect(socket)
-    		}
+		socket.on('disconnect', function()
+		{
+			try
+			{
+				disconnect(socket)
+			}
 
-    		catch(err)
-    		{
-    			console.error(err)
-    		}
-    	})
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
 	})
 
 	// Socket Functions
@@ -449,70 +449,70 @@ module.exports = function(io)
 
 	function join_room(socket, data)
 	{
-    	if(data.username === undefined || data.room === undefined || data.key === undefined)
-	    {
-    		socket.disconnect()
-    		return false
-	    }
+		if(data.username === undefined || data.room === undefined || data.key === undefined)
+		{
+			socket.disconnect()
+			return false
+		}
 
-    	if(data.username.length === 0 || data.room.length === 0)
-	    {
-    		socket.disconnect()
-    		return false
-	    }
+		if(data.username.length === 0 || data.room.length === 0)
+		{
+			socket.disconnect()
+			return false
+		}
 
-	    if(data.username.length > config.max_username_length)
-	    {
-	    	socket.disconnect()
-	    	return false
-	    }
+		if(data.username.length > config.max_username_length)
+		{
+			socket.disconnect()
+			return false
+		}
 
-	    if(data.room.length > config.max_roomname_length)
-	    {
-	    	socket.disconnect()
-	    	return false
-	    }
+		if(data.room.length > config.max_roomname_length)
+		{
+			socket.disconnect()
+			return false
+		}
 
-	    if(data.room.length !== clean_string4(data.room).length)
-	    {
-	    	socket.disconnect()
-	    	return false
-	    }
+		if(data.room.length !== clean_string4(data.room).length)
+		{
+			socket.disconnect()
+			return false
+		}
 
-	    if(data.room.length !== clean_string4(data.room).length)
-	    {
-	    	socket.disconnect()
-	    	return false
-	    }
+		if(data.room.length !== clean_string4(data.room).length)
+		{
+			socket.disconnect()
+			return false
+		}
 
 		get_roominfo(data.room, {}, function(info)
-	    {
-		    var bans = info.bans.split(';')
+		{
+			var bans = info.bans.split(';')
 
-		   	socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
+			socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
 
-		    for(var i=0; i<bans.length; i++)
-		    {
-		    	if(bans[i] === socket.ip)
-		    	{
-		    		socket.disconnect()
-		    		return false
-		    	}
-		    }
+			for(var i=0; i<bans.length; i++)
+			{
+				if(bans[i] === socket.ip)
+				{
+					socket.disconnect()
+					return false
+				}
+			}
 
 			socket.room = data.room
-		    socket.join(socket.room)
+			socket.join(socket.room)
 
-		    socket.priv = ''
-		    socket.key = ''
+			socket.priv = ''
+			socket.key = ''
 
-		    if(info.keys !== '' && data.key !== '')
-		    {
-		    	var skeys = info.keys.split(';')
+			if(info.keys !== '' && data.key !== '')
+			{
+				var skeys = info.keys.split(';')
 
-		    	if(skeys.indexOf(data.key) !== -1)
-		    	{
-		    		socket.key = data.key
+				if(skeys.indexOf(data.key) !== -1)
+				{
+					socket.key = data.key
 
 					if(data.key.startsWith('_key_'))
 					{
@@ -528,37 +528,37 @@ module.exports = function(io)
 					{
 						socket.priv = 'voice'
 					}
-		    	}
-		    }
+				}
+			}
 
-	    	socket.username = make_username_unique(data.username, get_usernames(socket.room))
-	    	
-	    	socket.emit('update', 
-	    	{
-	    		type:'username', 
-	    		room:socket.room, 
-	    		username:socket.username, 
-	    		image_url:info.image_url, 
-	    		image_uploader:info.image_uploader, 
-	    		topic:info.topic, 
-	    		topic_setter:info.topic_setter, 
-	    		userlist:get_userlist(socket.room), 
-	    		priv:socket.priv, 
-	    		upload_permission:info.upload_permission, 
-	    		chat_permission:info.chat_permission, 
-	    		public:info.public, 
-	    		radiosrc:info.radiosrc, 
-	    		claimed:info.claimed
-	    	})
+			socket.username = make_username_unique(data.username, get_usernames(socket.room))
+			
+			socket.emit('update', 
+			{
+				type:'username', 
+				room:socket.room, 
+				username:socket.username, 
+				image_url:info.image_url, 
+				image_uploader:info.image_uploader, 
+				topic:info.topic, 
+				topic_setter:info.topic_setter, 
+				userlist:get_userlist(socket.room), 
+				priv:socket.priv, 
+				upload_permission:info.upload_permission, 
+				chat_permission:info.chat_permission, 
+				public:info.public, 
+				radiosrc:info.radiosrc, 
+				claimed:info.claimed
+			})
 
-	    	socket.broadcast.in(socket.room).emit('update', 
+			socket.broadcast.in(socket.room).emit('update', 
 			{
 				type:'userjoin', 
 				usercount:get_usercount(socket.room), 
 				username:socket.username, 
 				priv:socket.priv
 			})
-	    })
+		})
 	}
 
 	function sendchat(socket, data)
@@ -566,35 +566,35 @@ module.exports = function(io)
 		if(socket.username !== undefined)
 		{
 			if(data.msg === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			{
+				socket.disconnect()
+				return false
+			}
 
-	    	if(data.msg.length === 0)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			if(data.msg.length === 0)
+			{
+				socket.disconnect()
+				return false
+			}
 
-		    if(data.msg.length > config.max_input_length)
-		    {
-		    	socket.disconnect()
-		    	return
-		    }
+			if(data.msg.length > config.max_input_length)
+			{
+				socket.disconnect()
+				return
+			}
 
-		    if(data.msg.length !== clean_string2(data.msg).length)
-		    {
-		    	socket.disconnect()
-		    	return
-		    }
+			if(data.msg.length !== clean_string2(data.msg).length)
+			{
+				socket.disconnect()
+				return
+			}
 
 			get_roominfo(socket.room, {chat_permission:true}, function(info)
 			{
-	    		if(!check_permission(info.chat_permission, socket.priv))
-	    		{
-	    			return false
-	    		}
+				if(!check_permission(info.chat_permission, socket.priv))
+				{
+					return false
+				}
 
 				socket.broadcast.in(socket.room).emit('update', {type:'chat_msg', username:socket.username, msg:data.msg})
 
@@ -608,29 +608,29 @@ module.exports = function(io)
 		if(socket.username !== undefined)
 		{
 			if(data.image_url === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			{
+				socket.disconnect()
+				return false
+			}
 
-	    	if(data.image_url.length === 0)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			if(data.image_url.length === 0)
+			{
+				socket.disconnect()
+				return false
+			}
 
-		    if(data.image_url.length > config.max_input_length)
-		    {
-		    	socket.disconnect()
-		    	return false
-		    }		    
+			if(data.image_url.length > config.max_input_length)
+			{
+				socket.disconnect()
+				return false
+			}		    
 
 			get_roominfo(socket.room, {upload_permission:true}, function(info)
 			{
 				if(!check_permission(info.upload_permission, socket.priv))
 				{
 					return false
-				}   		
+				}	
 
 				data.image_url = data.image_url.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
 
@@ -651,20 +651,20 @@ module.exports = function(io)
 								change_image(socket.room, fname, socket.username)
 							}
 
-							else 
+							else
 							{
 								exec("rm -f " + images_root + '/' + fname, function(status, output) 
 								{
 
 								})
 
-    							socket.emit('update', {room:socket.room, type:'upload_error'})								
+								socket.emit('update', {room:socket.room, type:'upload_error'})								
 							}
 						})
 					})
 				}
 			})
-		}		
+		}
 	}
 
 	function uploaded(socket, data)
@@ -672,10 +672,10 @@ module.exports = function(io)
 		if(socket.username !== undefined)
 		{
 			if(data.image_file === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			{
+				socket.disconnect()
+				return false
+			}
 
 			get_roominfo(socket.room, {upload_permission:true}, function(info)
 			{
@@ -688,7 +688,7 @@ module.exports = function(io)
 
 				if(size === 0 || (size > config.max_image_size))
 				{
-    				socket.emit('update', {room:socket.room, type:'upload_error'})													
+					socket.emit('update', {room:socket.room, type:'upload_error'})													
 					return false
 				}
 
@@ -704,12 +704,12 @@ module.exports = function(io)
 					{
 						if(err) 
 						{
-    						socket.emit('update', {room:socket.room, type:'upload_error'})
+							socket.emit('update', {room:socket.room, type:'upload_error'})
 						}
 
 						else 
 						{
-		    				change_image(socket.room, fname, socket.username)
+							change_image(socket.room, fname, socket.username)
 						}
 					})
 				}
@@ -722,48 +722,48 @@ module.exports = function(io)
 		if(socket.username !== undefined)
 		{
 			if(data.username === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			{
+				socket.disconnect()
+				return false
+			}
 
-	    	if(data.username.length === 0)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			if(data.username.length === 0)
+			{
+				socket.disconnect()
+				return false
+			}
 
-		    if(data.username.length > config.max_username_length)
-		    {
-		    	socket.disconnect()
-		    	return false
-		    }
+			if(data.username.length > config.max_username_length)
+			{
+				socket.disconnect()
+				return false
+			}
 
-		    if(data.username.length !== clean_string4(data.username).length)
-		    {
-		    	socket.disconnect()
-		    	return false
-		    }
+			if(data.username.length !== clean_string4(data.username).length)
+			{
+				socket.disconnect()
+				return false
+			}
 
 			get_roominfo(socket.room, {chat_permission:true}, function(info)
 			{
-	    		if(!check_permission(info.chat_permission, socket.priv))
-	    		{
-	    			return false
-	    		}
+				if(!check_permission(info.chat_permission, socket.priv))
+				{
+					return false
+				}
 
-		    	var usernames = get_usernames(socket.room)
+				var usernames = get_usernames(socket.room)
 
-		    	for(var i=0; i<usernames.length; i++)
-		    	{
-		    		if(usernames[i] == socket.username)
-		    		{
-		    			var old_username = usernames[i]
-		    			socket.username = make_username_unique(data.username, usernames)
-		    			io.sockets.in(socket.room).emit('update', {type:'new_username', username:socket.username, old_username:old_username})
-		    			return
-		    		}
-		    	}
+				for(var i=0; i<usernames.length; i++)
+				{
+					if(usernames[i] == socket.username)
+					{
+						var old_username = usernames[i]
+						socket.username = make_username_unique(data.username, usernames)
+						io.sockets.in(socket.room).emit('update', {type:'new_username', username:socket.username, old_username:old_username})
+						return
+					}
+				}
 			})
 		}		
 	}
@@ -774,19 +774,19 @@ module.exports = function(io)
 		{
 			get_userinfo(socket.username, function(userinfo)
 			{
-		    	if(userinfo.password == '')
-		    	{
-		    		userinfo.password = get_random_ukey()
+				if(userinfo.password == '')
+				{
+					userinfo.password = get_random_ukey()
 
-		    		socket.emit('update', {room:socket.room, type:'reserved', password:userinfo.password})
+					socket.emit('update', {room:socket.room, type:'reserved', password:userinfo.password})
 
-		    		db.collection('users').update({_id:userinfo._id}, {$set:{password:userinfo.password}})
-		    	}
+					db.collection('users').update({_id:userinfo._id}, {$set:{password:userinfo.password}})
+				}
 
-		    	else
-		    	{
-		    		socket.emit('update', {room:socket.room, type:'alreadyreserved'})
-		    	}
+				else
+				{
+					socket.emit('update', {room:socket.room, type:'alreadyreserved'})
+				}
 			})
 		}		
 	}
@@ -796,16 +796,16 @@ module.exports = function(io)
 		if(socket.username !== undefined)
 		{
 			if(data.username === undefined || data.password === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			{
+				socket.disconnect()
+				return false
+			}
 
-	    	if(data.username.length === 0 || data.password.length === 0)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			if(data.username.length === 0 || data.password.length === 0)
+			{
+				socket.disconnect()
+				return false
+			}
 
 			get_roominfo(socket.room, {chat_permission:true}, function(info)
 			{
@@ -819,37 +819,37 @@ module.exports = function(io)
 					return false
 				}
 
-		    	get_userinfo(data.username, function(userinfo)
-		    	{
-			    	if(userinfo.password !== '' && userinfo.password === data.password)
-			    	{
-			    		var sockets = io.sockets.adapter.rooms[socket.room].sockets
+				get_userinfo(data.username, function(userinfo)
+				{
+					if(userinfo.password !== '' && userinfo.password === data.password)
+					{
+						var sockets = io.sockets.adapter.rooms[socket.room].sockets
 
-			    		var keys = Object.keys(sockets)
+						var keys = Object.keys(sockets)
 
-			    		for(var i=0; i<keys.length; i++)
-			    		{
-			    			var sckt = io.sockets.connected[keys[i]]
+						for(var i=0; i<keys.length; i++)
+						{
+							var sckt = io.sockets.connected[keys[i]]
 
-			    			if(sckt.username === data.username)
-			    			{
-			    				sckt.username = make_username_unique('user', get_usernames(socket.room))
-			    				io.sockets.in(socket.room).emit('update', {type:'new_username', username:sckt.username, old_username:data.username})
-			    				break
-			    			}
-			    		}
+							if(sckt.username === data.username)
+							{
+								sckt.username = make_username_unique('user', get_usernames(socket.room))
+								io.sockets.in(socket.room).emit('update', {type:'new_username', username:sckt.username, old_username:data.username})
+								break
+							}
+						}
 
-		    			var old_username = socket.username
-		    			socket.username = data.username
+						var old_username = socket.username
+						socket.username = data.username
 
-			    		io.sockets.in(socket.room).emit('update', {type:'new_username', username:socket.username, old_username:old_username})
-			    	}
+						io.sockets.in(socket.room).emit('update', {type:'new_username', username:socket.username, old_username:old_username})
+					}
 
-			    	else
-			    	{
-			    		socket.emit('update', {room:socket.room, type:'couldnotrecover'})
-			    	}	
-		    	})
+					else
+					{
+						socket.emit('update', {room:socket.room, type:'couldnotrecover'})
+					}	
+				})
 			})
 		}		
 	}
@@ -858,116 +858,116 @@ module.exports = function(io)
 	{
 		if(socket.username !== undefined)
 		{
-	    	if(socket.priv !== 'admin' && socket.priv !== 'op')
-	    	{
-	    		return false
-	    	}
+			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			{
+				return false
+			}
 
 			if(data.topic === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			{
+				socket.disconnect()
+				return false
+			}
 
-	    	if(data.topic.length === 0)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			if(data.topic.length === 0)
+			{
+				socket.disconnect()
+				return false
+			}
 
-		    if(data.topic.length > config.max_topic_length)
-		    {
-		    	socket.disconnect()
-		    	return false
-		    }
+			if(data.topic.length > config.max_topic_length)
+			{
+				socket.disconnect()
+				return false
+			}
 
-		    if(data.topic.length !== clean_string2(data.topic).length)
-		    {
-		    	socket.disconnect()
-		    	return false
-		    }
+			if(data.topic.length !== clean_string2(data.topic).length)
+			{
+				socket.disconnect()
+				return false
+			}
 
-	    	get_roominfo(socket.room, {topic:true}, function(info)
-	    	{
-		    	var new_topic = data.topic
+			get_roominfo(socket.room, {topic:true}, function(info)
+			{
+				var new_topic = data.topic
 
-		    	if(new_topic !== info.topic)
-		    	{
-			    	info.topic = new_topic
+				if(new_topic !== info.topic)
+				{
+					info.topic = new_topic
 
-			    	io.sockets.in(socket.room).emit('update', {type:'topic_change', username:socket.username, topic:info.topic, topic_setter:socket.username})
-			    	
+					io.sockets.in(socket.room).emit('update', {type:'topic_change', username:socket.username, topic:info.topic, topic_setter:socket.username})
+					
 					db.collection('rooms').update({_id:info._id}, {$set:{topic:info.topic, topic_setter:socket.username, modified:Date.now()}})
-		    	}
-	    	})
+				}
+			})
 		}		
 	}
 
 	function roomlist(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
-    		get_roomlist(function(rooms)
-    		{
-	    		socket.emit('update', {room:socket.room, type:'roomlist', roomlist:rooms})
-    		})
-    	}		
+		if(socket.username !== undefined)
+		{
+			get_roomlist(function(rooms)
+			{
+				socket.emit('update', {room:socket.room, type:'roomlist', roomlist:rooms})
+			})
+		}		
 	}
 
 	function heartbeat(socket, data)
 	{
-    	if(socket.username === undefined)
-    	{
+		if(socket.username === undefined)
+		{
 			socket.emit('update', {room:socket.room, type:'connection_lost'})
-    	}		
+		}		
 	}
 
 	function claim_room(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
-    		if(socket.room === config.main_room && data.pass !== config.secretpass)
-    		{
-    			return false
-    		}
+		if(socket.username !== undefined)
+		{
+			if(socket.room === config.main_room && data.pass !== config.secretpass)
+			{
+				return false
+			}
 
-    		get_roominfo(socket.room, {claimed:true}, function(info)
-    		{
-	    		if(!info.claimed || data.pass === config.secretpass || socket.priv === 'admin')
-	    		{
-	    			socket.key = get_random_key()
+			get_roominfo(socket.room, {claimed:true}, function(info)
+			{
+				if(!info.claimed || data.pass === config.secretpass || socket.priv === 'admin')
+				{
+					socket.key = get_random_key()
 
-    				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
+					var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
 
-    				for(var i=0; i<ids.length; i++)
-    				{
-    					var socc = io.sockets.connected[ids[i]]
-    					socc.priv = ''
-    				}
+					for(var i=0; i<ids.length; i++)
+					{
+						var socc = io.sockets.connected[ids[i]]
+						socc.priv = ''
+					}
 
-    				socket.priv = 'admin'
-    				
-    				socket.emit('update', {room:socket.room, type:'get_key', key:socket.key})
+					socket.priv = 'admin'
+					
+					socket.emit('update', {room:socket.room, type:'get_key', key:socket.key})
 
 					io.sockets.in(socket.room).emit('update', {type:'announce_claim', username:socket.username})
 
-    				db.collection('rooms').update({_id:info._id}, {$set:{keys:socket.key, claimed:true, modified:Date.now()}})
-	    		}
-    		})
-    	}		
+					db.collection('rooms').update({_id:info._id}, {$set:{keys:socket.key, claimed:true, modified:Date.now()}})
+				}
+			})
+		}		
 	}
 
 	function unclaim_room(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
-    		if(socket.priv !== 'admin')
-    		{
-    			return false
-    		}
+		if(socket.username !== undefined)
+		{
+			if(socket.priv !== 'admin')
+			{
+				return false
+			}
 
-    		get_roominfo(socket.room, {claimed:true}, function(info)
-    		{
+			get_roominfo(socket.room, {claimed:true}, function(info)
+			{
 				io.sockets.in(socket.room).emit('update', {type:'announce_unclaim', username:socket.username})
 
 				db.collection('rooms').update({_id:info._id}, {$set:
@@ -983,8 +983,8 @@ module.exports = function(io)
 					public:true,
 					modified:Date.now()
 				}})
-	    	})
-    	}		
+			})
+		}		
 	}
 
 	function voice(socket, data)
@@ -997,16 +997,16 @@ module.exports = function(io)
 			}
 
 			if(data.username === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			{
+				socket.disconnect()
+				return false
+			}
 
-	    	if(data.username.length === 0)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			if(data.username.length === 0)
+			{
+				socket.disconnect()
+				return false
+			}
 
 			if(socket.username === data.username)
 			{
@@ -1064,16 +1064,16 @@ module.exports = function(io)
 			}
 
 			if(data.username === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			{
+				socket.disconnect()
+				return false
+			}
 
-	    	if(data.username.length === 0)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			if(data.username.length === 0)
+			{
+				socket.disconnect()
+				return false
+			}
 
 			get_roominfo(socket.room, {keys:true}, function(info)
 			{
@@ -1120,16 +1120,16 @@ module.exports = function(io)
 			}
 
 			if(data.username === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			{
+				socket.disconnect()
+				return false
+			}
 
-	    	if(data.username.length === 0)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			if(data.username.length === 0)
+			{
+				socket.disconnect()
+				return false
+			}
 
 			get_roominfo(socket.room, {keys:true}, function(info)
 			{
@@ -1168,32 +1168,32 @@ module.exports = function(io)
 
 	function strip(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
-    		if(socket.priv !== 'admin' && socket.priv !== 'op')
+		if(socket.username !== undefined)
+		{
+			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
 				return false
 			}
 
 			if(data.username === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			{
+				socket.disconnect()
+				return false
+			}
 
-	    	if(data.username.length === 0)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }   
-		     		
-    		if(socket.username === data.username)
-    		{
-    			return false
-    		}
+			if(data.username.length === 0)
+			{
+				socket.disconnect()
+				return false
+			}
+					
+			if(socket.username === data.username)
+			{
+				return false
+			}
 
-    		get_roominfo(socket.room, {keys:true}, function(info)
-    		{
+			get_roominfo(socket.room, {keys:true}, function(info)
+			{
 				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
 
 				for(var i=0; i<ids.length; i++)
@@ -1229,21 +1229,21 @@ module.exports = function(io)
 						break
 					}
 				}
-    		})
-    	}		
+			})
+		}		
 	}
 
 	function remove_voices(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
+		if(socket.username !== undefined)
+		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
 				return false
 			}
 
-    		get_roominfo(socket.room, {keys:true}, function(info)
-    		{
+			get_roominfo(socket.room, {keys:true}, function(info)
+			{
 				var key_array = info.keys.split(';')
 
 				var filtered_array = key_array.filter(function(item) 
@@ -1274,21 +1274,21 @@ module.exports = function(io)
 				io.sockets.in(socket.room).emit('update', {type:'announce_removedvoices', username:socket.username})
 
 				db.collection('rooms').update({_id:info._id}, {$set:{keys:info.keys}})
-    		})
-    	}		
+			})
+		}		
 	}
 
 	function remove_ops(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
+		if(socket.username !== undefined)
+		{
 			if(socket.priv !== 'admin')
 			{
 				return false
 			}
 
-    		get_roominfo(socket.room, {keys:true}, function(info)
-    		{
+			get_roominfo(socket.room, {keys:true}, function(info)
+			{
 				var key_array = info.keys.split(';')
 
 				var filtered_array = key_array.filter(function(item) 
@@ -1319,33 +1319,33 @@ module.exports = function(io)
 				io.sockets.in(socket.room).emit('update', {type:'announce_removedops', username:socket.username})
 
 				db.collection('rooms').update({_id:info._id}, {$set:{keys:info.keys}})
-    		})
-    	}		
+			})
+		}
 	}
 
 	function ban(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
-    		if(socket.priv !== 'admin' && socket.priv !== 'op')
+		if(socket.username !== undefined)
+		{
+			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
 				return false
 			}
 
-    		if(data.username === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			if(data.username === undefined)
+			{
+				socket.disconnect()
+				return false
+			}
 
-	    	if(data.username.length === 0)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			if(data.username.length === 0)
+			{
+				socket.disconnect()
+				return false
+			}
 
-    		get_roominfo(socket.room, {bans:true, keys:true}, function(info)
-    		{
+			get_roominfo(socket.room, {bans:true, keys:true}, function(info)
+			{
 				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
 
 				for(var i=0; i<ids.length; i++)
@@ -1414,12 +1414,12 @@ module.exports = function(io)
 									sokk.key = ''
 								}
 
-	    						sokk.bannd = true
-	    						sokk.info1 = socket.username
+								sokk.bannd = true
+								sokk.info1 = socket.username
 
 								io.to(ids[j]).emit('update', {type:'redirect', location:'/the street'})
 
-	    						setTimeout(do_disconnect, 2000, sokk)
+								setTimeout(do_disconnect, 2000, sokk)
 							}
 						}
 
@@ -1428,8 +1428,8 @@ module.exports = function(io)
 						break
 					}
 				}
-    		})
-    	}		
+			})
+		}		
 	}
 
 	function unbanall(socket, data)
@@ -1462,78 +1462,78 @@ module.exports = function(io)
 
 	function unbanlast(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
+		if(socket.username !== undefined)
+		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
 				return false
 			}
 
-    		get_roominfo(socket.room, {bans:true}, function(info)
-    		{
+			get_roominfo(socket.room, {bans:true}, function(info)
+			{
 				if(info.bans !== '')
-    			{
-    				info.bans = info.bans.split(';').slice(0,-1).join(';')
+				{
+					info.bans = info.bans.split(';').slice(0,-1).join(';')
 
 					io.sockets.in(socket.room).emit('update', {type:'announce_unbanlast', username:socket.username})
 					
 					db.collection('rooms').update({_id:info._id}, {$set:{bans:info.bans}})
-    			}
+				}
 
-    			else
-    			{
+				else
+				{
 					socket.emit('update', {room:socket.room, type:'nothingtounban'})
-    			}
-    		})
-    	}		
+				}
+			})
+		}		
 	}
 
 	function bannedcount(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
+		if(socket.username !== undefined)
+		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
 				return false
 			}
 
-    		get_roominfo(socket.room, {bans:true}, function(info)
-    		{
+			get_roominfo(socket.room, {bans:true}, function(info)
+			{
 				if(info.bans === '')
-    			{
-    				var count = 0
-    			}
+				{
+					var count = 0
+				}
 
-    			else
-    			{
-    				var count = info.bans.split(';').length
-    			}
+				else
+				{
+					var count = info.bans.split(';').length
+				}
 
 				socket.emit('update', {room:socket.room, type:'get_bannedcount', count:count})
-    		})
-    	}		
+			})
+		}		
 	}
 
 	function kick(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
+		if(socket.username !== undefined)
+		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
 				return false
 			}
 
 			if(data.username === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			{
+				socket.disconnect()
+				return false
+			}
 
-	    	if(data.username.length === 0)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			if(data.username.length === 0)
+			{
+				socket.disconnect()
+				return false
+			}
 
 			var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
 
@@ -1556,41 +1556,41 @@ module.exports = function(io)
 					
 					io.to(ids[i]).emit('update', {type:'redirect', location:'/the street'})
 
-	    			setTimeout(do_disconnect, 2000, socc)
+					setTimeout(do_disconnect, 2000, socc)
 
 					break
 				}
 			}
-    	}		
+		}		
 	}
 
 	function change_upload_permission(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
+		if(socket.username !== undefined)
+		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
 				return false
 			}
 
-    		if(data.upload_permission === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			if(data.upload_permission === undefined)
+			{
+				socket.disconnect()
+				return false
+			}
 
-    		get_roominfo(socket.room, {upload_permission:true}, function(info)
-    		{
-				var amodes = [1, 2, 3]   				
+			get_roominfo(socket.room, {upload_permission:true}, function(info)
+			{
+				var amodes = [1, 2, 3]
 
 				if(!isNaN(data.upload_permission))
 				{
 					var m = parseInt(data.upload_permission)
 
-    				if(m === info.upload_permission)
-    				{
-    					return false
-    				}     					
+					if(m === info.upload_permission)
+					{
+						return false
+					}
 
 					if(amodes.indexOf(m) != -1)
 					{
@@ -1600,37 +1600,37 @@ module.exports = function(io)
 						db.collection('rooms').update({_id:info._id}, {$set:{upload_permission:info.upload_permission}})
 					}
 				}
-    		})
-    	}		
+			})
+		}
 	}
 
 	function change_chat_permission(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
+		if(socket.username !== undefined)
+		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
 				return false
 			}
 
-    		if(data.chat_permission === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			if(data.chat_permission === undefined)
+			{
+				socket.disconnect()
+				return false
+			}
 
-    		get_roominfo(socket.room, {chat_permission:true}, function(info)
-    		{
+			get_roominfo(socket.room, {chat_permission:true}, function(info)
+			{
 				var amodes = [1, 2, 3]
 
 				if(!isNaN(data.chat_permission))
 				{
 					var m = parseInt(data.chat_permission)
 
-    				if(m === info.chat_permission)
-    				{
-    					return false
-    				}     					
+					if(m === info.chat_permission)
+					{
+						return false
+					}				
 
 					if(amodes.indexOf(m) != -1)
 					{
@@ -1640,84 +1640,84 @@ module.exports = function(io)
 						db.collection('rooms').update({_id:info._id}, {$set:{chat_permission:info.chat_permission}})
 					}
 				}
-    		})
-    	}		
+			})
+		}
 	}
 
 	function make_private(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
+		if(socket.username !== undefined)
+		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
 				return false
 			}
 
-    		get_roominfo(socket.room, {public:true}, function(info)
-    		{
+			get_roominfo(socket.room, {public:true}, function(info)
+			{
 				if(info.public)
 				{
 					io.sockets.in(socket.room).emit('update', {type:'made_private', username:socket.username})
-    				info.public = false
+					info.public = false
 
-    				db.collection('rooms').update({_id:info._id}, {$set:{public:info.public}})
+					db.collection('rooms').update({_id:info._id}, {$set:{public:info.public}})
 				}
-    		})
-    	}
+			})
+		}
 	}
 
 	function make_public(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
+		if(socket.username !== undefined)
+		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
 				socket.disconnect()
 				return false
 			}
 
-    		get_roominfo(socket.room, {public:true}, function(info)
-    		{
+			get_roominfo(socket.room, {public:true}, function(info)
+			{
 				if(!info.public)
 				{
 					io.sockets.in(socket.room).emit('update', {type:'made_public', username:socket.username})
-    				info.public = true
+					info.public = true
 
-    				db.collection('rooms').update({_id:info._id}, {$set:{public:info.public}})
+					db.collection('rooms').update({_id:info._id}, {$set:{public:info.public}})
 				}
-    		})
-    	}
+			})
+		}
 	}
 
 	function change_radiosrc(socket, data)
 	{
-    	if(socket.username !== undefined)
-    	{
+		if(socket.username !== undefined)
+		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
 				return false
 			}
 
 			if(data.src === undefined)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			{
+				socket.disconnect()
+				return false
+			}
 
-	    	if(data.src.length === 0)
-		    {
-	    		socket.disconnect()
-	    		return false
-		    }
+			if(data.src.length === 0)
+			{
+				socket.disconnect()
+				return false
+			}
 
-		    if(data.src.length > config.max_radiosrc_length)
-		    {
-		    	socket.disconnect()
-		    	return false
-		    }
+			if(data.src.length > config.max_radiosrc_length)
+			{
+				socket.disconnect()
+				return false
+			}
 
-    		get_roominfo(socket.room, {radiosrc:true}, function(info)
-    		{
+			get_roominfo(socket.room, {radiosrc:true}, function(info)
+			{
 				if(data.src.length == 0)
 				{
 					return false
@@ -1730,14 +1730,14 @@ module.exports = function(io)
 
 				else
 				{
-    				info.radiosrc = data.src
+					info.radiosrc = data.src
 				}
 
 				io.sockets.in(socket.room).emit('update', {type:'changed_radiosrc', username:socket.username, src:info.radiosrc})
 
 				db.collection('rooms').update({_id:info._id}, {$set:{radiosrc:info.radiosrc}})
-    		})
-    	}		
+			})
+		}
 	}
 
 	function do_disconnect(socc)
@@ -1751,7 +1751,7 @@ module.exports = function(io)
 		{
 			if(socket.kickd)
 			{
-		   		var type = 'kicked'
+				var type = 'kicked'
 			}
 
 			else if(socket.bannd)
@@ -1765,7 +1765,7 @@ module.exports = function(io)
 			}
 
 			io.sockets.in(socket.room).emit('update', {type:type, username:socket.username, usercount:get_usercount(socket.room), info1:socket.info1, priv:socket.priv})	
-		}		
+		}
 	}
 
 	// Helper Functions
@@ -1779,7 +1779,7 @@ module.exports = function(io)
 
 		if(a[2] > b[2])
 		{
-	    	return -1
+			return -1
 		}
 
 		return 0
@@ -1933,8 +1933,8 @@ module.exports = function(io)
 
 					userinfo.version = version
 
-			    	db.collection('users').update({_id:userinfo._id}, {$set:userinfo})
-			    }
+					db.collection('users').update({_id:userinfo._id}, {$set:userinfo})
+				}
 			}
 
 			callback(userinfo)
@@ -1994,9 +1994,9 @@ module.exports = function(io)
 	{
 		if(last_roomlist === undefined || (Date.now() - roomlist_lastget > config.roomlist_cache))
 		{
-		    var rooms = []
+			var rooms = []
 
-		    var md = Date.now() - config.roomlist_max_inactivity
+			var md = Date.now() - config.roomlist_max_inactivity
 
 			db.collection('rooms').find({claimed:true, public:true, modified:{$gt:md}}).toArray(function(err, results)
 			{
@@ -2056,8 +2056,8 @@ module.exports = function(io)
 			io.sockets.in(room).emit('update', {type:'image_change', image_url:info.image_url, image_uploader:info.image_uploader})
 				
 			db.collection('rooms').update({_id:info._id}, {$set:{image_url:info.image_url, image_uploader:info.image_uploader, modified:Date.now()}})
-		})		
-	}	
+		})
+	}
 
 	function check_image_url(uri)
 	{
@@ -2087,9 +2087,9 @@ module.exports = function(io)
 	}
 
 	function clean_string3(s)
-	{ 
-	   return s.replace(/[\\"']/g, '')
-	} 
+	{
+		return s.replace(/[\\"']/g, '')
+	}
 
 	function clean_string4(s)
 	{
@@ -2098,20 +2098,20 @@ module.exports = function(io)
 
 	function get_random_int(min, max)
 	{
-	    return Math.floor(Math.random() * (max-min+1) + min)
+		return Math.floor(Math.random() * (max-min+1) + min)
 	}
 
 	function get_random_key()
 	{
-	    var text = ""
-	    var possible = "ABCDEFGHIJKLMnopqrstuvwxyz012345"
+		var text = ""
+		var possible = "ABCDEFGHIJKLMnopqrstuvwxyz012345"
 
-	    for(var i=0; i < 12; i++)
-	    {
-	    	text += possible.charAt(Math.floor(Math.random() * possible.length))
-	    }
+		for(var i=0; i < 12; i++)
+		{
+			text += possible.charAt(Math.floor(Math.random() * possible.length))
+		}
 
-	    return "_key_" + Date.now() + text
+		return "_key_" + Date.now() + text
 	}
 
 	function get_random_vkey()
@@ -2149,15 +2149,15 @@ module.exports = function(io)
 
 	function get_random_ukey()
 	{
-	    var text = ""
-	    var possible = "ABCDEFGHIJKLMnopqrstuvwxyz012345"
+		var text = ""
+		var possible = "ABCDEFGHIJKLMnopqrstuvwxyz012345"
 
-	    for(var i=0; i<12; i++)
-	    {
-	    	text += possible.charAt(Math.floor(Math.random() * possible.length))
-	    }
+		for(var i=0; i<12; i++)
+		{
+			text += possible.charAt(Math.floor(Math.random() * possible.length))
+		}
 
-	    return "_ukey_" + Date.now() + text
+		return "_ukey_" + Date.now() + text
 	}
 
 	function replace_key(priv, okey, keys)
@@ -2259,7 +2259,7 @@ module.exports = function(io)
 		{
 			var res = bucket.charAt(Math.floor(Math.random() * bucket.length))
 			return res
-		} 
+		}
 
 		return res.join("").toLowerCase()
 	}	

@@ -28,13 +28,13 @@ c.heartbeat_interval = config.heartbeat_interval
 
 router.get('/', function(req, res, next) 
 {
-    c.room = config.main_room
+	c.room = config.main_room
 	res.render('main', c)
 })
 
 router.get('/:id', function(req, res, next) 
 {
-    c.room = req.params.id.substr(0, config.max_roomname_length).replace(/[^a-z0-9\-_\s]+/gi, "").replace(/\s+/g, " ").trim()
+	c.room = req.params.id.substr(0, config.max_roomname_length).replace(/[^a-z0-9\-_\s]+/gi, "").replace(/\s+/g, " ").trim()
 	res.render('main', c)
 })
 
