@@ -2527,11 +2527,21 @@ function start_image_events()
 		{
 			var colors = colorThief.getPalette(this, 2)
 
-			background_color = rgbToHex(colors[0])
-			font_color = computeTextColor(colors[0])
+			if(colors === null)
+			{
+				image_url = default_image_url
+				change()
+				return
+			}
 
-			background_color2 = rgbToHex(colors[1])
-			font_color2 = computeTextColor(colors[1])
+			var color1 = colors[0]
+			var color2 = colors[1]
+
+			background_color = `rgb(${color1[0]}, ${color1[1]}, ${color1[2]})`
+			font_color = computeTextColor(color1)
+
+			background_color2 = `rgb(${color2[0]}, ${color2[1]}, ${color2[2]})`
+			font_color2 = computeTextColor(color2)
 
 			$('body').css('background-color', background_color)
 			$('#header').css('background-color', background_color2)
@@ -2627,17 +2637,6 @@ function computeTextColor(rgb)
 	var L = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
 
 	return (L > 0.179) ? '#000000' : '#ffffff'
-}
-
-function rgbToHex(rgb) 
-{
-	return "#" + ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1)
-}
-
-function componentToHex(c) 
-{
-	var hex = c.toString(16)
-	return hex.length == 1 ? "0" + hex : hex
 }
 
 function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
