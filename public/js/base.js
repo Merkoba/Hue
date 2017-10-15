@@ -1930,18 +1930,57 @@ function start_dropzone()
 	})
 }
 
+function is_textbox(element) 
+{
+	var tag_name = element.tagName.toLowerCase()
+
+	if (tag_name === 'textarea') return true
+	if (tag_name !== 'input') return false
+
+	var type = element.getAttribute('type').toLowerCase(),
+
+	input_types = 
+	[
+		'text', 
+		'password', 
+		'number', 
+		'email', 
+		'tel', 
+		'url', 
+		'search', 
+		'date', 
+		'datetime', 
+		'datetime-local', 
+		'time', 
+		'month', 
+		'week'
+	]
+
+	return input_types.indexOf(type) !== -1
+}
+
 function copypaste_events()
 {
 	$(document).bind('copy', function(e) 
 	{
-		if(window.getSelection().toString() != "")
+		if(window.getSelection().toString() !== "")
 		{
 			pup()
 
 			setTimeout(function()
 			{
-				window.getSelection().removeAllRanges()
-				$('#input').focus()
+				if(is_textbox(document.activeElement))
+				{
+					se = document.activeElement.selectionEnd
+					document.activeElement.setSelectionRange(se, se)
+				}
+
+				else
+				{
+					window.getSelection().removeAllRanges()
+					$('#input').focus()
+				}
+
 			}, 200)
 		}
 	}) 
@@ -2130,7 +2169,7 @@ function change_input(s, to_end=true)
 
 function input_to_end()
 {
-	$('#input')[0].scrollLeft = $('#input')[0].scrollWidth;	
+	$('#input')[0].scrollLeft = $('#input')[0].scrollWidth
 }
 
 function input_history_change(direction)
@@ -3783,14 +3822,27 @@ function copy_room_url()
 	}
 
 	var url = site_root + r
-	var textareaEl = document.createElement('textarea')
-	document.body.appendChild(textareaEl)
-	textareaEl.value = url
-	textareaEl.select()
-	document.execCommand('copy')
-	document.body.removeChild(textareaEl)
+
+	url = url.replace(/\s+/g, "%20")
+
+	copy_string(url)
+
 	pup()
+
 	hide_boxes()
+}
+
+function copy_string(s)
+{
+	var textareaEl = document.createElement('textarea')
+
+	document.body.appendChild(textareaEl)
+
+	textareaEl.value = s
+	textareaEl.select()
+
+	document.execCommand('copy')
+	document.body.removeChild(textareaEl)	
 }
 
 function pup()
