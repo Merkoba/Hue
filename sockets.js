@@ -640,11 +640,13 @@ module.exports = function(io)
 				{
 					var fname = socket.room.replace(/\s+/g, "-") + '_' + Date.now() + '_' + get_random_int(0, 1000) + '.' + data.image_url.split('.').pop(-1)
 					
-					exec('wget -O ' + images_root + '/' + fname + ' -q \"' + data.image_url + '\"', function(status, output) 
+					exec('wget -O ' + images_root + '/' + fname + ' -q \"' + data.image_url + '\"', function(status, output)
 					{
 						exec('stat --printf="%s" ' + images_root + '/' + fname, function(status, output) 
 						{
-							if(parseInt(output) / 1000 <= config.max_image_size)
+							output = parseInt(output)
+
+							if(output > 0 && (output / 1000 <= config.max_image_size))
 							{
 								change_image(socket.room, fname, socket.username)
 							}
@@ -655,6 +657,8 @@ module.exports = function(io)
 								{
 
 								})
+
+    							socket.emit('update', {room:socket.room, type:'upload_error'})								
 							}
 						})
 					})
@@ -680,8 +684,11 @@ module.exports = function(io)
 					return false
 				}
 
-				if(data.image_file.toString('ascii').length / 1000 > config.max_image_size)
+				var size = data.image_file.toString('ascii').length / 1000
+
+				if(size === 0 || (size > config.max_image_size))
 				{
+    				socket.emit('update', {room:socket.room, type:'upload_error'})													
 					return false
 				}
 
@@ -697,7 +704,7 @@ module.exports = function(io)
 					{
 						if(err) 
 						{
-
+    						socket.emit('update', {room:socket.room, type:'upload_error'})
 						}
 
 						else 

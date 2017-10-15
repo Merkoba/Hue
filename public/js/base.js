@@ -554,6 +554,11 @@ function start_socket()
 			change_priv(data.key)
 		}
 
+		else if(data.type === 'upload_error')
+		{
+			show_upload_error()
+		}
+
 		else if(data.type === 'topic_change')
 		{
 			announce_topic_change(data)
@@ -4307,6 +4312,11 @@ function voice(nck)
 	{
 		chat_announce('[', ']', "You are not a room operator or admin", 'small')
 	}
+}
+
+function show_upload_error()
+{
+	chat_announce('[', ']', "The image could not be uploaded", 'small')	
 }
 
 function announce_uploaded_image(data)
