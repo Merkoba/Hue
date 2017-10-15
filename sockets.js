@@ -2007,7 +2007,7 @@ module.exports = function(io)
 					rooms.push([room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room.name)])
 				}
 
-				rooms.sort(compare_roomlist).splice(50)
+				rooms.sort(compare_roomlist).splice(config.max_roomlist_items)
 
 				last_roomlist = rooms
 				roomlist_lastget = Date.now()

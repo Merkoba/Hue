@@ -20,6 +20,7 @@
 	"max_username_length": 20,
 	"max_roomname_length": 50,
 	"max_radiosrc_length": 200,
+	"max_roomlist_items": 50,
 	"max_roomlist_topic_length": 140,
 	"max_title_topic_length": 140,
 	"max_radiosrc_length": 200,
