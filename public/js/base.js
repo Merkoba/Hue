@@ -217,7 +217,7 @@ function help2()
 	chat_announce('', '', '/reserve: Reserves current nickname to be recoverable later.', 'small')
 	chat_announce('', '', '/recover x: Recovers reserved nickname in case someone else in the room is using it.', 'small')
 	chat_announce('', '', '/priv: Shows information regarding privileges and permissions.', 'small')
-	chat_announce('', '', '/list: Shows the user list. An alternative to the user list window.', 'small')
+	chat_announce('', '', '/users: Shows the user list. An alternative to the user list window.', 'small')
 	chat_announce('', '', '/crew: Shows a list of users that have either admin or op privileges.', 'small')
 	chat_announce('', '', '/startradio: Starts the radio.', 'small')
 	chat_announce('', '', '/stopradio: Stops the radio.', 'small')
@@ -2790,7 +2790,7 @@ function register_commands()
 	commands.push('/upload_permission')
 	commands.push('/chat_permission')
 	commands.push('/crew')
-	commands.push('/list')
+	commands.push('/users')
 	commands.push('/priv')
 	commands.push('/voice')
 	commands.push('/op')
@@ -2931,9 +2931,9 @@ function send_to_chat(msg)
 				show_crew()
 			}
 
-			else if(oiEquals(lmsg, '/list'))
+			else if(oiEquals(lmsg, '/users'))
 			{
-				show_list()
+				show_users()
 			}
 
 			else if(oiEquals(lmsg, '/priv'))
@@ -4384,7 +4384,7 @@ function show_crew()
 	}
 }
 
-function show_list()
+function show_users()
 {
 	var s = ""
 
@@ -4400,7 +4400,7 @@ function show_list()
 	{
 		s = s.slice(0, -2)
 
-		chat_announce('[', ']', `List: ${s}`, 'small')
+		chat_announce('[', ']', `Users: ${s}`, 'small')
 	}
 }
 
