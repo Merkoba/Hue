@@ -9,7 +9,7 @@ var image_uploader = ''
 var topic = ''
 var topic_setter = ''
 var dropzone
-var colorThief
+var ccolor
 var played = []
 var input_history = []
 var input_history_index = 0
@@ -49,7 +49,7 @@ function init()
 {
 	get_username()
 	start_image_events()
-	colorThief = new ColorThief()
+	ccolor = CountColor()
 	start_dropzone()
 	start_volume_scroll()
 	initial_volume()
@@ -2561,7 +2561,7 @@ function start_image_events()
 	{
 		try 
 		{
-			var colors = colorThief.getPalette(this, 2)
+			var colors = ccolor.get_colors(this, 1)
 
 			if(colors === null)
 			{
@@ -2571,22 +2571,18 @@ function start_image_events()
 			}
 
 			var color1 = colors[0]
-			var color2 = colors[1]
 
 			background_color = `rgb(${color1[0]}, ${color1[1]}, ${color1[2]})`
 			font_color = computeTextColor(color1)
 
-			background_color2 = `rgb(${color2[0]}, ${color2[1]}, ${color2[2]})`
-			font_color2 = computeTextColor(color2)
-
 			$('body').css('background-color', background_color)
-			$('#header').css('background-color', background_color2)
+			$('#header').css('background-color', background_color)
 			$('#chat_area').css('background-color', background_color)
 			$('#media').css('background-color', background_color)
 			$('#input').css('background-color', background_color)
 			$('.ps__thumb-y').css('background-color', background_color)
 			$('#chat_area').css('color', font_color)
-			$('#header').css('color', font_color2)
+			$('#header').css('color', font_color)
 			$('#input').css('color', font_color)
 	
 			$('body').css('background-image', 'url(' + image_url + ')') 
