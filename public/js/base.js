@@ -216,6 +216,9 @@ function help2()
 	chat_announce('', '', '/defnick x: Changes your default nickname for rooms you visit for the first time.', 'small')
 	chat_announce('', '', '/reserve: Reserves current nickname to be recoverable later.', 'small')
 	chat_announce('', '', '/recover x: Recovers reserved nickname in case someone else in the room is using it.', 'small')
+	chat_announce('', '', '/priv: Shows information regarding privileges and permissions.', 'small')
+	chat_announce('', '', '/list: Shows the user list. An alternative to the user list window.', 'small')
+	chat_announce('', '', '/crew: Shows a list of users that have either admin or op privileges.', 'small')
 	chat_announce('', '', '/startradio: Starts the radio.', 'small')
 	chat_announce('', '', '/stopradio: Stops the radio.', 'small')
 	chat_announce('', '', '/volume x: Changes the volume of the radio.', 'small')
@@ -262,9 +265,6 @@ function show_status()
 	show_topic2()
 	show_radiosrc()
 	show_priv()
-	show_chat_permission()
-	show_upload_permission()
-	show_permissions()
 	show_public()
 }
 
@@ -347,11 +347,10 @@ function show_topic2()
 function check_priv(data)
 {
 	priv = data.priv
-	show_priv()
 	upload_permission = data.upload_permission
 	chat_permission = data.chat_permission
 	check_permissions()
-	show_permissions()
+	show_priv()
 }
 
 function check_permissions()
@@ -425,14 +424,44 @@ function show_priv(data)
 		chat_announce('[', ']', 'You are an admin in this room', 'small')
 	}
 
+	else if(priv === 'op')
+	{
+		chat_announce('[', ']', 'You are an op in this room', 'small')
+	}
+
 	else if(priv === 'voice')
 	{
 		chat_announce('[', ']', 'You have voice in this room', 'small')
 	}
 
-	else if(priv === 'op')
+	if(priv === 'admin' || priv === 'op')
 	{
-		chat_announce('[', ']', 'You are an op in this room', 'small')
+		show_chat_permission()
+		show_upload_permission()
+	}
+
+	else
+	{
+		var ps = 0
+
+		if(can_chat)
+		{
+			chat_announce('[', ']', "You have chat permission", 'small')
+
+			ps += 1
+		}
+
+		if(can_upload)
+		{
+			chat_announce('[', ']', "You have upload permission", 'small')
+
+			ps += 1
+		}
+
+		if(ps === 0)
+		{
+			chat_announce('[', ']', "You cannot interact", 'small')
+		}
 	}
 }
 
@@ -901,6 +930,31 @@ function remove_ops_userlist()
 	update_userlist()
 }
 
+function priv_tag(p)
+{
+	if(p === 'admin')
+	{
+		var s = '[A]'
+	}
+
+	else if(p === 'op')
+	{
+		var s = '[O]'
+	}
+
+	else if(p === 'voice')
+	{
+		var s = '[V]'
+	}
+
+	else
+	{
+		var s = ''
+	}
+
+	return s
+}
+
 function update_userlist()
 {	
 	var s = $()
@@ -919,25 +973,7 @@ function update_userlist()
 
 		var h = $("<div class='userlist_item'><span class='ui_item_priv'></span><span class='ui_item_nick'></span></div><br>")
 
-		if(item[1] === 'admin')
-		{
-			var p = '[A]'
-		}
-
-		else if(item[1] === 'op')
-		{
-			var p = '[O]'
-		}
-
-		else if(item[1] === 'voice')
-		{
-			var p = '[V]'
-		}
-
-		else
-		{
-			var p = ''
-		}
+		var p = priv_tag(item[1])
 
 		$($(h).find('.ui_item_priv').get(0)).text(p)
 		$($(h).find('.ui_item_nick').get(0)).text(item[0])
@@ -2753,7 +2789,8 @@ function register_commands()
 	commands.push('/unclaim')
 	commands.push('/upload_permission')
 	commands.push('/chat_permission')
-	commands.push('/permissions')
+	commands.push('/crew')
+	commands.push('/list')
 	commands.push('/priv')
 	commands.push('/voice')
 	commands.push('/op')
@@ -2889,9 +2926,14 @@ function send_to_chat(msg)
 				show_chat_permission(arg)
 			}
 
-			else if(oiEquals(lmsg, '/permissions'))
+			else if(oiEquals(lmsg, '/crew'))
 			{
-				show_permissions()
+				show_crew()
+			}
+
+			else if(oiEquals(lmsg, '/list'))
+			{
+				show_list()
 			}
 
 			else if(oiEquals(lmsg, '/priv'))
@@ -3934,7 +3976,6 @@ function clear_chat()
 	show_intro()
 	show_topic()
 	show_priv()
-	show_permissions()
 	show_public()
 	scroll_timer()
 
@@ -4310,16 +4351,56 @@ function show_chat_permission()
 	chat_announce('[', ']', "Chat permission: " + chat_permission, 'small')
 }
 
-function show_permissions()
+function big_letter(s)
 {
-	if(can_chat)
+	return s.toUpperCase()[0]
+}
+
+function show_crew()
+{
+	var s = ""
+
+	for(var user of userlist)
 	{
-		chat_announce('[', ']', "You have chat permission", 'small')
+		var nick = user[0]
+		var priv = user[1]
+
+		if(priv === "admin" || priv === "op")
+		{
+			s += `${priv_tag(priv)} ${nick}, `
+		}
+
+		else
+		{
+			break
+		}
 	}
 
-	if(can_upload)
+	if(s.length > 0)
 	{
-		chat_announce('[', ']', "You have upload permission", 'small')
+		s = s.slice(0, -2)
+
+		chat_announce('[', ']', `Crew: ${s}`, 'small')
+	}
+}
+
+function show_list()
+{
+	var s = ""
+
+	for(var user of userlist)
+	{	
+		var nick = user[0]
+		var priv = user[1]
+
+		s += `${priv_tag(priv)} ${nick}, `
+	}
+
+	if(s.length > 0)
+	{
+		s = s.slice(0, -2)
+
+		chat_announce('[', ']', `List: ${s}`, 'small')
 	}
 }
 
