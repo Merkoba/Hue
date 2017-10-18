@@ -1,3 +1,4 @@
+var ls_settings = "settings_v1"
 var settings
 var is_public
 var room
@@ -5191,40 +5192,52 @@ function start_msg()
 
 function get_settings()
 {
-	if(localStorage["settings"])
+	var changed = false
+
+	if(localStorage[ls_settings])
 	{
-		settings = JSON.parse(localStorage.getItem("settings"))
+		settings = JSON.parse(localStorage.getItem(ls_settings))
 	}
 
 	else
 	{
 		settings = {}
+		changed = true
 	}
 
 	if(settings.background_image === undefined)
 	{
 		settings.background_image = true
+		changed = true
 	}
 	
 	if(settings.header_contrast === undefined)
 	{
 		settings.header_contrast = false
+		changed = true
 	}
 
 	if(settings.input_contrast === undefined)
 	{
 		settings.input_contrast = false
+		changed = true
 	}
 
 	if(settings.modal_color === undefined)
 	{
 		settings.modal_color = "default"
+		changed = true
+	}
+
+	if(changed)
+	{
+		save_settings()
 	}
 }
 
 function save_settings(key)
 {
-	localStorage.setItem('settings', JSON.stringify(settings))
+	localStorage.setItem(ls_settings, JSON.stringify(settings))
 }
 
 function start_settings()
