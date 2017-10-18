@@ -5127,6 +5127,14 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		after_show: function()
+		{
+			update_modal_scrollbar("menu")
+		},
+		after_set: function()
+		{
+			update_modal_scrollbar("menu")
+		},	
 		after_close: function()
 		{
 			focus_input()
@@ -5140,6 +5148,11 @@ function start_msg()
 		after_show: function()
 		{
 			crm = true
+			update_modal_scrollbar("create-room")			
+		},
+		after_set: function()
+		{
+			update_modal_scrollbar("create-room")
 		},
 		after_close: function()
 		{
@@ -5154,7 +5167,15 @@ function start_msg()
 		id: "settings",
 		class: msg_class,
 		show_effect: "none",
-		close_effect: "none"
+		close_effect: "none",
+		after_show: function()
+		{
+			update_modal_scrollbar("settings")
+		},
+		after_set: function()
+		{
+			update_modal_scrollbar("settings")
+		}
 	})
 
 	msg_userlist = Msg(
@@ -5163,10 +5184,18 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		after_show: function()
+		{
+			update_modal_scrollbar("userlist")
+		},
+		after_set: function()
+		{
+			update_modal_scrollbar("userlist")
+		},
 		after_close: function()
 		{
 			focus_input()
-		}		
+		}
 	})
 
 	msg_roomlist = Msg(
@@ -5174,7 +5203,15 @@ function start_msg()
 		id: "roomlist",
 		class: msg_class,
 		show_effect: "none",
-		close_effect: "none"	
+		close_effect: "none",
+		after_show: function()
+		{
+			update_modal_scrollbar("roomlist")
+		},
+		after_set: function()
+		{
+			update_modal_scrollbar("roomlist")
+		}
 	})
 
 	msg_played = Msg(
@@ -5183,10 +5220,18 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		after_show: function()
+		{
+			update_modal_scrollbar("played")
+		},
+		after_set: function()
+		{
+			update_modal_scrollbar("played")
+		},
 		after_close: function()
 		{
 			focus_input()
-		}		
+		}
 	})
 
 	msg_menu.set(template_menu())
@@ -5195,6 +5240,28 @@ function start_msg()
 	msg_userlist.set(template_userlist())
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
+
+	start_modal_scrollbar("menu")
+	start_modal_scrollbar("create-room")
+	start_modal_scrollbar("settings")
+	start_modal_scrollbar("userlist")
+	start_modal_scrollbar("roomlist")
+	start_modal_scrollbar("played")
+}
+
+function start_modal_scrollbar(s)
+{
+	$(`#Msg-content-container-${s}`).niceScroll
+	({
+		autohidemode: false,
+		cursorcolor: "grey",
+		cursorborder: "0px solid #grey"
+	})	
+}
+
+function update_modal_scrollbar(s)
+{
+	$(`#Msg-content-container-${s}`).getNiceScroll().resize()	
 }
 
 function get_settings()
@@ -5434,9 +5501,18 @@ function start_storageui()
 			class: msg_menu.options.class,
 			show_effect: "none",
 			close_effect: "none",
+			after_create: function()
+			{
+				start_modal_scrollbar("storageui")
+			},
 			after_show: function()
 			{
 				sto = true
+				update_modal_scrollbar("storageui")
+			},
+			after_set: function()
+			{
+				update_modal_scrollbar("storageui")
 			},
 			after_close: function()
 			{
@@ -5444,6 +5520,7 @@ function start_storageui()
 			}
 		})
 	})
+
 }
 
 function show_data()
