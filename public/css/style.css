@@ -14,20 +14,26 @@ body, html
 	overflow: hidden;
 }
 
-body 
+#background_image 
 {
+	position: fixed;
+	left:0; right:0;
+	top:0; bottom:0;
+	margin: auto;
+	width: 200%;
+	height: 200%;
 	background-image: url("/img/loading.jpg");
 	background-repeat: repeat;
 }
 
 #header
 {
+	position: relative;
 	height: 2em;
 	width: 100%;
 	background-color: black;
 	color: white;
 	z-index: 9999999;
-	opacity: 0.95;
 	white-space: nowrap;
 	text-align: center;
 }
@@ -65,7 +71,6 @@ body
 	align-items: center;
 	width: 50%;
 	height: calc(100% - 2em);
-	opacity: 0.95;
 	flex-direction: column;
 }
 
@@ -97,23 +102,25 @@ body
 	color: white;
 	top: 2em;
 	bottom: 2em;
-	opacity: 0.95;
+}
+
+#input_container
+{
+	position: absolute;
+	bottom: 0;
+	width: 50%;
 }
 
 #input
 {
-	position: absolute;
-	max-width: 100%;
-	padding-left: 30px;
-	width: 50%;
+	width: calc(100% - 30px);
+	margin-left: 30px;
 	height: 2em;
-	bottom: 0;
 	font-size: 1em;
 	background-color: black;
 	color: white;
 	border: 0px solid black;
 	outline: none;
-	opacity: 0.95;
 	font-family:inherit;
 }
 
@@ -228,53 +235,17 @@ a.chat:link, a.chat:visited, a.chat:hover
 
 #userlist
 {
-	background-color: white;
-	position:absolute;
-	display: none;
-	left:0; right:0;
-	top:0; bottom:0;
-	margin:auto;
-	max-width:22em;
-	max-height: 50%;
-	overflow-y:auto;
-	overflow-x:hidden;
-	z-index: 99999999999999;
-	text-align: center;
-	padding: 1em;
+
 }
 
 #roomlist
 {
-	background-color: white;
-	position:absolute;
-	display: none;
-	left:0; right:0;
-	top:0; bottom:0;
-	margin:auto;
-	max-width:30em;
-	max-height: 50%;
-	overflow-y:auto;
-	overflow-x:hidden;
-	z-index: 99999999999999;
-	text-align: center;
-	padding: 1em;
+
 }
 
 #played
 {
-	background-color: white;
-	position:absolute;
-	display: none;
-	left:0; right:0;
-	top:0; bottom:0;
-	margin:auto;
-	max-width:30em;
-	max-height: 50%;
-	overflow-y:auto;
-	overflow-x:hidden;
-	z-index: 99999999999999;
-	text-align: center;
-	padding: 1em;
+
 }
 
 .played_item 
@@ -299,30 +270,12 @@ a.chat:link, a.chat:visited, a.chat:hover
 	font-size: 1.2em;
 }
 
-#menu
-{
-	background-color: white;
-	position:absolute;
-	display: none;
-	left:0; right:0;
-	top:0; bottom:0;
-	margin:auto;
-	max-width:22em;
-	max-height: 50%;
-	overflow-y:auto;
-	overflow-x:hidden;
-	z-index: 99999999999999;
-	text-align: center;
-	padding: 1em;
-}
-
 .menu_item 
 {
 	font-size: 1.4em;
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	cursor: pointer;
-	display: inline-block;
 }
 
 .menu_item_smaller
@@ -340,40 +293,12 @@ a.chat:link, a.chat:visited, a.chat:hover
 	padding-bottom: 0.8em;
 }
 
-#createroom_menu
-{
-	background-color: white;
-	position:absolute;
-	display: none;
-	left:0; right:0;
-	top:0; bottom:0;
-	margin:auto;
-	max-width:22em;
-	max-height: 50%;
-	overflow-y:auto;
-	overflow-x:hidden;
-	z-index: 99999999999999;
-	text-align: center;
-	padding: 1em;
-}
-
-#createroom_input
+#create_room_input
 {
 	width: 99%;
 	font-size: 1.4em;
 	text-align:center;
-}
-
-#overlay
-{
-	height: 100%;
-	width: 100%;
-	top: 0;
-	left: 0;
-	position: fixed;
-	z-index: 999999999999;
-	background-color: rgba(0, 0, 0, 0.7);
-	display: none;
+	border: 1px solid grey;
 }
 
 .userlist_item
@@ -481,4 +406,56 @@ a.chat:link, a.chat:visited, a.chat:hover
 .sep1
 {
 	font-size: 0.8em;
+}
+
+.setting_title
+{
+	font-size: 1.4em;
+	padding-bottom: 0.5em;
+}
+
+.setting_checkbox
+{
+	width: 1.8em;
+	height: 1.8em;
+}
+
+.Msg-content
+{
+	font-size: 1em !important;
+}
+
+.Msg-window
+{
+	height: 50% !important;
+}
+
+#Msg-window-menu
+{
+	width: 22em !important;
+}
+
+#Msg-window-create-room
+{
+	width: 22em !important;
+}
+
+#Msg-window-settings
+{
+	width: 22em !important;
+}
+
+#Msg-window-userlist
+{
+	width: 22em !important;
+}
+
+#Msg-window-roomlist
+{
+	width: 30em !important;
+}
+
+#Msg-window-played
+{
+	width: 30em !important;
 }

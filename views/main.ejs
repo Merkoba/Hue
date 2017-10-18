@@ -2,7 +2,9 @@
 	<head>
 		<title><%= room %></title> 
 		<script src="/js/jquery.js"></script>
+		<script src="/js/handlebars.js"></script>
 		<script src="/js/colorlib.js"></script>
+		<script src="/js/msg.min.js"></script>
 		<script src="/js/dropzone.js"></script>
 		<script src="/js/dateformat.js"></script>
 		<script src="/js/perfect-scrollbar.min.js"></script>
@@ -51,6 +53,8 @@
 
 		<audio id='audio' autoplay> </audio>
 
+		<div id='background_image'></div>
+
 		<div id='header'>
 			<i id='main_menu' class='header_item unselectable icon fa fa-th-large' onclick='show_menu()'></i>
 			<span class='header_item'>&nbsp;|&nbsp;</span>
@@ -81,7 +85,9 @@
 
 			<div id='scroll_notice' onclick='goto_bottom(true)'>Go To Bottom</div>
 
-			<input id='input' type='text'>
+			<div id='input_container'>
+				<input id='input' type='text'>
+			</div>
 
 		</div>
 
@@ -93,37 +99,78 @@
 
 		<div id='overlay' onclick='hide_boxes()'></div>
 
-		<div id='userlist'></div>
-		
-		<div id='roomlist'></div>
+		<script id='template_menu' type='text/x-handlebars-template'>
+			<div id='menu'>
 
-		<div id='played'><br></div>
+				<div class='menu_item' onclick="request_roomlist()">Public Rooms</div>
+				<div class='menu_item' onclick='show_create_room()'>Go To Room</div>
+				<div class='menu_item' onclick='show_settings()'>Settings</div>
 
-		<div id='menu'>
+				<div id='menu_smaller_container'>
 
-			<div class='menu_item' onclick="request_roomlist()">Public Rooms</div><br>
-			<div class='menu_item' onclick='show_createroom_menu()'>Go To Room</div><br>
-			<div class='menu_item' onclick='copy_room_url()'>Copy Room URL</div>
+					<div class='menu_item_smaller' onclick='copy_room_url()'>Copy Room URL</div>
 
-			<div id='menu_smaller_container'>
-				<span class='menu_item_smaller' onclick='clear_chat();hide_boxes()'>Clear</span>&nbsp;|&nbsp;
-				<span class='menu_item_smaller' onclick='show_status();hide_boxes()'>Status</span>&nbsp;|&nbsp;
-				<span class='menu_item_smaller' onclick='help();hide_boxes()'>Help</span>
+					<br>
+
+					<span class='menu_item_smaller' onclick='clear_chat();hide_boxes()'>Clear</span>
+
+					&nbsp;|&nbsp;
+
+					<span class='menu_item_smaller' onclick='show_status();hide_boxes()'>Status</span>
+
+					&nbsp;|&nbsp;
+
+					<span class='menu_item_smaller' onclick='help();hide_boxes()'>Help</span>
+
+				</div>
+
 			</div>
+		</script>
 
-		</div>
+		<script id='template_create_room' type='text/x-handlebars-template'>
+			<div id='create_room'>
 
-		<div id='createroom_menu'>
+				<br>
 
-			<br>
+				<input id='create_room_input' placeholder="Name" type="text">
 
-			<input id='createroom_input' placeholder="Name" type="text">
+				<br><br> Or <br>
 
-			<br><br> Or <br>
+				<div class='menu_item' onclick='random_room()'>Random Name</div><br>
 
-			<div class='menu_item' onclick='random_room()'>Random Name</div><br>
+			</div>
+		</script>
 
-		</div>
+		<script id='template_settings' type='text/x-handlebars-template'>
+			<div id='create_settings'>
+				<br>
+
+				<div class="setting_title">Background Image</div>
+				<input class="setting_checkbox" id="setting_background_image" type="checkbox">
+
+				<br><br><br>
+
+				<div class="setting_title">Header Contrast</div>
+				<input class="setting_checkbox" id="setting_header_contrast" type="checkbox">
+
+				<br><br><br>
+
+				<div class="setting_title">Input Contrast</div>
+				<input class="setting_checkbox" id="setting_input_contrast" type="checkbox">
+			</div>
+		</script>
+
+		<script id='template_userlist' type='text/x-handlebars-template'>
+			<div id='userlist'></div>
+		</script>		
+		
+		<script id='template_roomlist' type='text/x-handlebars-template'>
+			<div id='roomlist'></div>
+		</script>		
+		
+		<script id='template_played' type='text/x-handlebars-template'>
+			<div id='played'><br></div>
+		</script>		
 
 		<audio id='pup' src='/audio/pup.ogg'></audio>
 

@@ -1,15 +1,14 @@
+var settings
 var is_public
 var room
 var usernames
 var username
-var font_color = '#ffffff'
-var background_color = '#000000'
 var image_url = ''
 var image_uploader = ''
 var topic = ''
 var topic_setter = ''
 var dropzone
-var ccolor
+var colorlib = ColorLib()
 var played = []
 var input_history = []
 var input_history_index = 0
@@ -44,12 +43,24 @@ var alert_mode = 0
 var alert_timer
 var commands = []
 var perfect_scrollbar
+var template_menu
+var template_create_room
+var template_userlist
+var template_roomlist
+var template_played
+var msg_menu
+var msg_create_room
+var msg_settings
+var msg_userlist
+var msg_roomlist
+var msg_played
 
 function init()
 {
 	get_username()
+	compile_templates()
+	start_msg()
 	start_image_events()
-	ccolor = CountColor()
 	start_dropzone()
 	start_volume_scroll()
 	initial_volume()
@@ -63,6 +74,7 @@ function init()
 	scroll_events()
 	resize_events()
 	register_commands()
+	start_settings()
 	start_socket()
 }
 
@@ -183,6 +195,16 @@ function show_intro()
 function show_reconnected()
 {
 	chat_announce('--', '--', 'Reconnected', 'small')
+}
+
+function compile_templates()
+{
+	template_menu = Handlebars.compile($('#template_menu').html())
+	template_create_room = Handlebars.compile($('#template_create_room').html())
+	template_settings = Handlebars.compile($('#template_settings').html())
+	template_userlist = Handlebars.compile($('#template_userlist').html())
+	template_roomlist = Handlebars.compile($('#template_roomlist').html())
+	template_played = Handlebars.compile($('#template_played').html())
 }
 
 function help()
@@ -1700,6 +1722,11 @@ function start_played_context_menu()
 	})
 }
 
+function request_roomlist()
+{
+	socket.emit("roomlist", {})
+}
+
 function update_roomlist(roomlist)
 {	
 	var s = $()
@@ -1751,154 +1778,39 @@ function update_roomlist(roomlist)
 	$('#roomlist').html(s)
 }
 
-function hide_overlay()
+function show_menu()
 {
-	$('#overlay').css('display', 'none')
+	msg_menu.show()
 }
 
-function show_overlay()
+function show_create_room()
 {
-	$('#overlay').css('display', 'block')
+	msg_create_room.show()
 }
 
-function hide_boxes()
+function show_settings()
 {
-	hide_userlist()
-	hide_played()
-	hide_menu()
-	hide_roomlist()
-	hide_createroom_menu()
-}
-
-function hide_userlist()
-{
-	$('#userlist').css('display', 'none')
-	hide_overlay()
-}
-
-function hide_roomlist()
-{
-	$('#roomlist').css('display', 'none')
-	hide_overlay()
-}
-
-function request_roomlist()
-{
-	socket.emit("roomlist", {})
+	msg_settings.show()
 }
 
 function show_userlist()
 {
-	$('#userlist').css('display', 'block')
-	$('#userlist').scrollTop(0)
-	show_overlay()
+	msg_userlist.show()
 }
 
 function show_roomlist()
 {
-	hide_menu()
-	$('#roomlist').css('display', 'block')
-	$('#roomlist').scrollTop(0)
-	show_overlay()
-}
-
-function toggle_userlist()
-{
-	if($('#userlist').css('display') === 'none')
-	{
-		show_userlist()
-	}
-
-	else 
-	{
-		hide_userlist()
-	}
-}
-
-function hide_played()
-{
-	$('#played').css('display', 'none')
-	hide_overlay()
+	msg_roomlist.show()
 }
 
 function show_played()
 {
-	$('#played').css('display', 'block')
-	$('#played').scrollTop(0)
-	show_overlay()
+	msg_played.show()
 }
 
-function toggle_played()
+function hide_boxes()
 {
-	if($('#played').css('display') === 'none')
-	{
-		show_played()
-	}
-
-	else 
-	{
-		hide_played()
-	}
-}
-
-function hide_menu()
-{
-	$('#menu').css('display', 'none')
-	hide_overlay()
-}
-
-function show_menu()
-{
-	$('#menu').css('display', 'block')
-	$('#menu').scrollTop(0)
-	show_overlay()
-}
-
-function toggle_menu()
-{
-	if($('#menu').css('display') === 'none')
-	{
-		show_menu()
-	}
-
-	else 
-	{
-		hide_menu()
-	}
-}
-
-function hide_createroom_menu()
-{
-	$('#createroom_input').val('')
-	$('#createroom_menu').css('display', 'none')
-	hide_overlay()
-	crm = false
-}
-
-function show_createroom_menu()
-{
-	hide_menu()
-
-	$('#createroom_menu').css('display', 'block').scrollTop(0)
-
-	$('#createroom_input').focus()
-
-	show_overlay()
-
-	crm = true
-}
-
-function toggle_createroom_menu()
-{
-	if($('#createroom_menu').css('display') === 'none')
-	{
-		show_createroom_menu()
-	}
-
-	else 
-	{
-		hide_createroom_menu()
-	}
+	msg_menu.close_all()
 }
 
 function start_dropzone()
@@ -1915,6 +1827,8 @@ function start_dropzone()
 
 	dropzone.on("addedfile", function(file) 
 	{
+		focus_input()
+
 		if(!can_upload)
 		{
 			chat_announce('[', ']', "You don't have permission to upload images", 'small')
@@ -2014,7 +1928,7 @@ function copypaste_events()
 				else
 				{
 					window.getSelection().removeAllRanges()
-					$('#input').focus()
+					focus_input()
 				}
 
 			}, 200)
@@ -2028,7 +1942,7 @@ function activate_key_detection()
 	{	
 		if(crm)
 		{
-			$('#createroom_input').focus()
+			$('#create_room_input').focus()
 
 			if(e.key === "Enter")
 			{
@@ -2039,12 +1953,12 @@ function activate_key_detection()
 					return
 				}
 
-				var arg = $('#createroom_input').val().substr(0, max_roomname_length).trim()
+				var arg = $('#create_room_input').val().substr(0, max_roomname_length).trim()
 
 				if(arg.length > 0)
 				{
 					goto_room(arg)
-					hide_createroom_menu()
+					hide_create_room_menu()
 					e.preventDefault()
 				}
 
@@ -2053,7 +1967,7 @@ function activate_key_detection()
 
 			else if(e.key === "Escape")
 			{
-				if($('#createroom_input').val() === '')
+				if($('#create_room_input').val() === '')
 				{
 					hide_boxes()
 					e.preventDefault()
@@ -2062,7 +1976,7 @@ function activate_key_detection()
 
 				else
 				{
-					$('#createroom_input').val('')
+					$('#create_room_input').val('')
 					e.preventDefault()
 					return
 				}
@@ -2079,7 +1993,7 @@ function activate_key_detection()
 			}
 		}
 
-		$('#input').focus()
+		focus_input()
 
 		if(e.key === "Enter")
 		{
@@ -2157,7 +2071,7 @@ function activate_key_detection()
 				return
 			}
 
-			else if($('#overlay').css('display') === 'block')
+			else if(msg_menu.any_open())
 			{
 				hide_boxes()
 				e.preventDefault()
@@ -2201,6 +2115,11 @@ function change_input(s, to_end=true)
 	{
 		input_to_end()
 	}
+}
+
+function focus_input()
+{
+	$("#input").focus()
 }
 
 function input_to_end()
@@ -2561,7 +2480,7 @@ function start_image_events()
 	{
 		try 
 		{
-			var colors = ccolor.get_colors(this, 1)
+			var colors = colorlib.get_dominant(this, 1)
 
 			if(colors === null)
 			{
@@ -2572,30 +2491,73 @@ function start_image_events()
 
 			var color1 = colors[0]
 
-			background_color = `rgb(${color1[0]}, ${color1[1]}, ${color1[2]})`
-			font_color = computeTextColor(color1)
+			var background_color = colorlib.array_to_rgb(color1)
+			var font_color = colorlib.get_proper_font(color1)
+
+			var color2 = colorlib.get_lighter_or_darker(color1, 40)
+			
+			var background_color2 = colorlib.array_to_rgb(color2)
+			var font_color2 = colorlib.get_proper_font(color2)
+
+			if(settings.header_contrast)
+			{
+				var header_bg_color = background_color2
+				var header_font_color = font_color2
+			}
+
+			else
+			{
+				var header_bg_color = background_color
+				var header_font_color = font_color
+			}
+
+			if(settings.input_contrast)
+			{
+				var input_bg_color = background_color2
+				var input_font_color = font_color2
+			}
+
+			else
+			{
+				var input_bg_color = background_color
+				var input_font_color = font_color
+			}
 
 			$('body').css('background-color', background_color)
-			$('#header').css('background-color', background_color)
+			$('#header').css('background-color', header_bg_color)
+			$('#header').css('color', header_font_color)
 			$('#chat_area').css('background-color', background_color)
-			$('#media').css('background-color', background_color)
-			$('#input').css('background-color', background_color)
-			$('.ps__thumb-y').css('background-color', background_color)
 			$('#chat_area').css('color', font_color)
-			$('#header').css('color', font_color)
-			$('#input').css('color', font_color)
+			$('#input_container').css('background-color', background_color)
+			$('#input').css('background-color', input_bg_color)
+			$('#input').css('color', input_font_color)
+			$('#media').css('background-color', background_color)
+			$('.ps__thumb-y').css('background-color', background_color)
 	
-			$('body').css('background-image', 'url(' + image_url + ')') 
+			$('#background_image').css('background-image', 'url(' + image_url + ')') 
 
-			if($('body').css('background-repeat') === 'repeat')
+			if($('#background_image').css('background-repeat') === 'repeat')
 			{
-				$('body').css('background-size', 'cover')          
-				$('body').css('background-repeat', 'no-repeat')
-				$('body').css('background-position', 'center center')  
+				$('#background_image').css('background-size', 'cover')          
+				$('#background_image').css('background-repeat', 'no-repeat')
+				$('#background_image').css('background-position', 'center center')  
+			}
+
+			if(settings.background_image)
+			{
+				set_opacity(0.95)
+			}
+
+			else
+			{
+				set_opacity(1)
 			}
 		}
 
-		catch(err){}
+		catch(err)
+		{
+			console.error(err)
+		}
 
 		if(image_uploader !== '' && image_url !== default_image_url)
 		{
@@ -2630,6 +2592,15 @@ function start_image_events()
 	})
 }
 
+function set_opacity(o)
+{
+	$("#header").css("opacity", o)
+	$("#media").css("opacity", o)
+	$("#chat_area").css("opacity", o)
+	$("#input_container").css("opacity", o)
+	$("#input").css("opacity", o)
+}
+
 function change()
 {
 	if(started)
@@ -2644,31 +2615,6 @@ function change()
 	}
 	
 	$('#media_image').attr('src', image_url)
-}
-
-function computeTextColor(rgb) 
-{
-	var r = rgb[0]
-	var g = rgb[1]
-	var b = rgb[2]
-	var uicolors = [r / 255, g / 255, b / 255]
-
-	var c = uicolors.map((c) => 
-	{
-		if (c <= 0.03928) 
-		{
-			return c / 12.92
-		} 
-
-		else 
-		{
-			return Math.pow((c + 0.055) / 1.055,2.4)
-		}
-	})
-
-	var L = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
-
-	return (L > 0.179) ? '#000000' : '#ffffff'
 }
 
 function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
@@ -3402,7 +3348,8 @@ function new_username(data)
 function start_chat()
 {
 	$('#chat_area').append('<br><br><br><div class="clear">&nbsp</div>')
-	$('#input').focus()
+
+	focus_input()
 
 	perfect_scrollbar = new PerfectScrollbar("#chat_area",
 	{
@@ -5150,5 +5097,174 @@ function banned(data)
 	else
 	{
 		chat_announce('--', '--', data.username + ' was banned by ' + data.info1, 'small')
+	}
+}
+
+function start_msg()
+{
+	msg_menu = Msg(
+	{
+		id: "menu",
+		show_effect: "none",
+		close_effect: "none",
+		after_close: function()
+		{
+			focus_input()
+		}
+	})
+
+	msg_create_room = Msg(
+	{
+		id: "create-room",
+		after_show: function()
+		{
+			crm = true
+		},
+		after_close: function()
+		{
+			crm = false
+		},
+		show_effect: "none",
+		close_effect: "none"
+	})
+
+	msg_settings = Msg(
+	{
+		id: "settings",
+		show_effect: "none",
+		close_effect: "none"
+	})
+
+	msg_userlist = Msg(
+	{
+		id: "userlist",
+		show_effect: "none",
+		close_effect: "none",
+		after_close: function()
+		{
+			focus_input()
+		}		
+	})
+
+	msg_roomlist = Msg(
+	{
+		id: "roomlist",
+		show_effect: "none",
+		close_effect: "none"	
+	})
+
+	msg_played = Msg(
+	{
+		id: "played",
+		show_effect: "none",
+		close_effect: "none",
+		after_close: function()
+		{
+			focus_input()
+		}		
+	})
+
+	msg_menu.set(template_menu())
+	msg_create_room.set(template_create_room())
+	msg_settings.set(template_settings())
+	msg_userlist.set(template_userlist())
+	msg_roomlist.set(template_roomlist())
+	msg_played.set(template_played())
+}
+
+function get_settings()
+{
+	if(localStorage["settings"])
+	{
+		settings = JSON.parse(localStorage.getItem("settings"))
+	}
+
+	else
+	{
+		settings = 
+		{
+			background_image: true,
+			header_contrast: false,
+			input_contrast: false
+		}
+	}
+}
+
+function save_settings(key)
+{
+	localStorage.setItem('settings', JSON.stringify(settings))
+}
+
+function start_settings()
+{
+	get_settings()
+
+	if(settings.background_image)
+	{
+		$("#setting_background_image").prop("checked", true)
+	}
+
+	else
+	{
+		$("#setting_background_image").prop("checked", false)
+	}
+
+	$("#setting_background_image").change(function()
+	{
+		settings.background_image = $("#setting_background_image").prop("checked")
+		save_settings()
+		change()
+	})
+
+	if(settings.header_contrast)
+	{
+		$("#setting_header_contrast").prop("checked", true)
+	}
+
+	else
+	{
+		$("#setting_header_contrast").prop("checked", false)
+	}
+
+	$("#setting_header_contrast").change(function()
+	{
+		settings.header_contrast = $("#setting_header_contrast").prop("checked")
+		save_settings()
+		change()
+	})
+
+	if(settings.input_contrast)
+	{
+		$("#setting_input_contrast").prop("checked", true)
+		input_contrast_fix()
+	}
+
+	else
+	{
+		$("#setting_input_contrast").prop("checked", false)
+		input_contrast_fix()
+	}
+
+	$("#setting_input_contrast").change(function()
+	{
+		settings.input_contrast = $("#setting_input_contrast").prop("checked")
+		save_settings()
+		input_contrast_fix()
+		change()
+	})
+}
+
+function input_contrast_fix()
+{
+	if(settings.input_contrast)
+	{
+		$("#input").css("padding-left", "10px")
+		$("#input").css("padding-right", "10px")
+	}
+
+	else
+	{
+		$("#input").css("padding-left", 0)
+		$("#input").css("padding-right", 0)
 	}
 }
