@@ -4,7 +4,7 @@
 		<script src="/js/jquery.js"></script>
 		<script src="/js/handlebars.js"></script>
 		<script src="/js/colorlib.js"></script>
-		<script src="/js/msg.min.js"></script>
+		<script src="/js/msg.min.js?v=2"></script>
 		<script src="/js/dropzone.js"></script>
 		<script src="/js/dateformat.js"></script>
 		<script src="/js/perfect-scrollbar.min.js"></script>
@@ -13,8 +13,8 @@
 		<script src="/js/contextmenu/jquery.ui.position.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 
-		<script src="/js/base.js?ver=457"></script>
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=88" />
+		<script src="/js/base.js?ver=459"></script>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=90" />
 
 		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
@@ -32,6 +32,7 @@
 				title_topic_separator = "<%= title_topic_separator %>"
 				default_topic = "<%= default_topic %>"
 				default_topic_claimed = "<%= default_topic_claimed %>"
+				default_modal_color = "<%= default_modal_color %>"
 				check_metadata_interval_duration = <%= check_metadata_interval_duration %>
 				general_opacity = <%= general_opacity %>
 				color_contrast_amount = <%= color_contrast_amount %>
@@ -159,6 +160,23 @@
 
 				<div class="setting_title">Input Contrast</div>
 				<input class="setting_checkbox" id="setting_input_contrast" type="checkbox">
+
+				<br><br><br>
+
+				<div class="setting_title">Modal Color</div>
+
+				<select id='setting_modal_color'>
+
+					<option value='default'>White</option>
+					<option value='red'>Red</option>
+					<option value='green'>Green</option>
+					<option value='blue'>Blue</option>
+					<option value='black'>Black</option>
+
+				</select>
+
+				<br><br>	
+				
 			</div>
 		</script>
 

@@ -138,7 +138,6 @@ body, html
 	color: white;
 	border: 0px solid #2D2D2D;
 	outline: none;
-	text-op
 	font-family:inherit;
 	display: flex;
 	align-items: center;
@@ -415,8 +414,8 @@ a.chat:link, a.chat:visited, a.chat:hover
 
 .setting_checkbox
 {
-	width: 1.8em;
-	height: 1.8em;
+	width: 1.5em;
+	height: 1.5em;
 }
 
 .Msg-content

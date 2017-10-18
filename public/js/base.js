@@ -59,7 +59,9 @@ function init()
 {
 	get_username()
 	compile_templates()
+	get_settings()
 	start_msg()
+	start_settings()
 	start_image_events()
 	start_dropzone()
 	start_volume_scroll()
@@ -74,7 +76,6 @@ function init()
 	scroll_events()
 	resize_events()
 	register_commands()
-	start_settings()
 	start_socket()
 }
 
@@ -5102,8 +5103,19 @@ function banned(data)
 
 function start_msg()
 {
+	if(settings.modal_color)
+	{
+		var msg_class = settings.modal_color
+	}
+
+	else
+	{
+		var msg_class = default_modal_color
+	}
+
 	msg_menu = Msg(
 	{
+		class: msg_class,
 		id: "menu",
 		show_effect: "none",
 		close_effect: "none",
@@ -5115,6 +5127,7 @@ function start_msg()
 
 	msg_create_room = Msg(
 	{
+		class: msg_class,
 		id: "create-room",
 		after_show: function()
 		{
@@ -5130,6 +5143,7 @@ function start_msg()
 
 	msg_settings = Msg(
 	{
+		class: msg_class,
 		id: "settings",
 		show_effect: "none",
 		close_effect: "none"
@@ -5137,6 +5151,7 @@ function start_msg()
 
 	msg_userlist = Msg(
 	{
+		class: msg_class,
 		id: "userlist",
 		show_effect: "none",
 		close_effect: "none",
@@ -5148,6 +5163,7 @@ function start_msg()
 
 	msg_roomlist = Msg(
 	{
+		class: msg_class,
 		id: "roomlist",
 		show_effect: "none",
 		close_effect: "none"	
@@ -5155,6 +5171,7 @@ function start_msg()
 
 	msg_played = Msg(
 	{
+		class: msg_class,
 		id: "played",
 		show_effect: "none",
 		close_effect: "none",
@@ -5181,12 +5198,27 @@ function get_settings()
 
 	else
 	{
-		settings = 
-		{
-			background_image: true,
-			header_contrast: false,
-			input_contrast: false
-		}
+		settings = {}
+	}
+
+	if(settings.background_image === undefined)
+	{
+		settings.background_image = true
+	}
+	
+	if(settings.header_contrast === undefined)
+	{
+		settings.header_contrast = false
+	}
+
+	if(settings.input_contrast === undefined)
+	{
+		settings.input_contrast = false
+	}
+
+	if(settings.modal_color === undefined)
+	{
+		settings.modal_color = "default"
 	}
 }
 
@@ -5197,8 +5229,6 @@ function save_settings(key)
 
 function start_settings()
 {
-	get_settings()
-
 	if(settings.background_image)
 	{
 		$("#setting_background_image").prop("checked", true)
@@ -5212,8 +5242,8 @@ function start_settings()
 	$("#setting_background_image").change(function()
 	{
 		settings.background_image = $("#setting_background_image").prop("checked")
-		save_settings()
 		change()
+		save_settings()
 	})
 
 	if(settings.header_contrast)
@@ -5229,8 +5259,8 @@ function start_settings()
 	$("#setting_header_contrast").change(function()
 	{
 		settings.header_contrast = $("#setting_header_contrast").prop("checked")
-		save_settings()
 		change()
+		save_settings()
 	})
 
 	if(settings.input_contrast)
@@ -5248,9 +5278,24 @@ function start_settings()
 	$("#setting_input_contrast").change(function()
 	{
 		settings.input_contrast = $("#setting_input_contrast").prop("checked")
-		save_settings()
 		input_contrast_fix()
 		change()
+		save_settings()
+	})
+
+	$('#setting_modal_color').find('option').each(function()
+	{
+		if($(this).val() === settings.modal_color)
+		{
+			$(this).prop('selected', true)
+		}
+	})
+
+	$("#setting_modal_color").change(function()
+	{
+		settings.modal_color = $('#setting_modal_color option:selected').val()
+		change_modal_color(settings.modal_color)
+		save_settings()
 	})
 }
 
@@ -5266,5 +5311,13 @@ function input_contrast_fix()
 	{
 		$("#input").css("padding-left", 0)
 		$("#input").css("padding-right", 0)
+	}
+}
+
+function change_modal_color(color)
+{
+	for(var ins of msg_menu.instances())
+	{
+		ins.change_class(color)
 	}
 }
