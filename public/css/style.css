@@ -231,21 +231,6 @@ a.chat:link, a.chat:visited, a.chat:hover
 	cursor: pointer;
 }
 
-#userlist
-{
-
-}
-
-#roomlist
-{
-
-}
-
-#played
-{
-
-}
-
 .played_item 
 {
 	padding-top: 1em;
@@ -456,4 +441,25 @@ a.chat:link, a.chat:visited, a.chat:hover
 #Msg-window-played
 {
 	width: 30em !important;
+}
+
+#Msg-window-storageui
+{
+	width: 45em !important;
+}
+
+#Msg-content-storageui
+{
+	font-size: 20px !important;
+}
+
+.StorageUI-area
+{
+	width: 32em !important;
+}
+
+.StorageUI-checkbox
+{
+	width: 1.5em !important;
+	height: 1.5em !important;
 }

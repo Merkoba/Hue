@@ -774,13 +774,13 @@ module.exports = function(io)
 		{
 			get_userinfo(socket.username, function(userinfo)
 			{
-				if(userinfo.password == '')
+				if(userinfo.key == '')
 				{
-					userinfo.password = get_random_ukey()
+					userinfo.key = get_random_ukey()
 
-					socket.emit('update', {room:socket.room, type:'reserved', password:userinfo.password})
+					socket.emit('update', {room:socket.room, type:'reserved', key:userinfo.key})
 
-					db.collection('users').update({_id:userinfo._id}, {$set:{password:userinfo.password}})
+					db.collection('users').update({_id:userinfo._id}, {$set:{key:userinfo.key}})
 				}
 
 				else
@@ -795,13 +795,13 @@ module.exports = function(io)
 	{
 		if(socket.username !== undefined)
 		{
-			if(data.username === undefined || data.password === undefined)
+			if(data.username === undefined || data.key === undefined)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			if(data.username.length === 0 || data.password.length === 0)
+			if(data.username.length === 0 || data.key.length === 0)
 			{
 				socket.disconnect()
 				return false
@@ -821,7 +821,7 @@ module.exports = function(io)
 
 				get_userinfo(data.username, function(userinfo)
 				{
-					if(userinfo.password !== '' && userinfo.password === data.password)
+					if(userinfo.key !== '' && userinfo.key === data.key)
 					{
 						var sockets = io.sockets.adapter.rooms[socket.room].sockets
 
@@ -1901,7 +1901,7 @@ module.exports = function(io)
 
 	function get_userinfo(username, callback)
 	{
-		var version = 1	
+		var version = 2
 
 		db.collection('users').findOne({username:username}, function(err, userinfo)
 		{
@@ -1911,7 +1911,7 @@ module.exports = function(io)
 				{
 					version: version,
 					username: username,
-					password: ''
+					key: ''
 				}
 
 				db.collection('users').insertOne(userinfo)
@@ -1926,9 +1926,9 @@ module.exports = function(io)
 						userinfo.username = username
 					}
 
-					if(userinfo.password === undefined || typeof userinfo.password !== "string")
+					if(userinfo.key === undefined || typeof userinfo.key !== "string")
 					{
-						userinfo.password = ""
+						userinfo.key = ""
 					}
 
 					userinfo.version = version

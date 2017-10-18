@@ -2,7 +2,6 @@ var ls_settings = "settings_v1"
 var settings
 var is_public
 var room
-var usernames
 var username
 var image_url = ''
 var image_uploader = ''
@@ -17,8 +16,9 @@ var usercount
 var room_keys
 var room_key = ''
 var userlist = []
+var user_keys
 var nicknames = []
-var user_passwords
+var room_nicknames
 var priv = ''
 var upload_permission
 var chat_permission
@@ -36,6 +36,7 @@ var tabbed_word = ""
 var tabbed_start = 0
 var tabbed_end = 0
 var crm = false
+var sto = false
 var started = false
 var connections = 0
 var afk_timer
@@ -43,7 +44,7 @@ var afk = false
 var alert_mode = 0
 var alert_timer
 var commands = []
-var perfect_scrollbar
+var chat_scrollbar
 var template_menu
 var template_create_room
 var template_userlist
@@ -58,18 +59,19 @@ var msg_played
 
 function init()
 {
-	get_username()
+	get_nickname()
 	compile_templates()
 	get_settings()
 	start_msg()
 	start_settings()
+	start_storageui()
 	start_image_events()
 	start_dropzone()
 	start_volume_scroll()
 	initial_volume()
 	activate_window_visibility_listener()
 	start_chat()
-	get_keys()
+	get_room_keys()
 	activate_key_detection()
 	input_click_events()
 	copypaste_events()
@@ -80,46 +82,41 @@ function init()
 	start_socket()
 }
 
-function get_username()
+function get_room_nicknames()
 {
+	if(localStorage["room_nicknames"])
+	{
+		room_nicknames = JSON.parse(localStorage.getItem("room_nicknames"))
+	}
+
+	else
+	{
+		room_nicknames = []
+	}	
+}
+
+function get_nickname()
+{
+	get_room_nicknames()
+
 	var uname
 
-	if(localStorage["usernames"])
+	for(var i=0; i<room_nicknames.length; i++)
 	{
-		usernames = JSON.parse(localStorage.getItem("usernames"))
-	}
-
-	else
-	{
-		usernames = []
-	}
-
-	if(typeof usernames === "object" && usernames.length > 0)
-	{
-
-	}
-
-	else
-	{
-		usernames = []
-	}
-
-	for(var i=0; i<usernames.length; i++)
-	{
-		if(usernames[i][0] === room)
+		if(room_nicknames[i][0] === room)
 		{
-			uname = usernames[i][1]
+			uname = room_nicknames[i][1]
 			break
 		}
 	}
 
 	if(uname === undefined)
 	{
-		for(var i=0; i<usernames.length; i++)
+		for(var i=0; i<room_nicknames.length; i++)
 		{
-			if(usernames[i][0] === '/default')
+			if(room_nicknames[i][0] === '/default')
 			{
-				uname = usernames[i][1]
+				uname = room_nicknames[i][1]
 				break
 			}
 		}
@@ -144,49 +141,49 @@ function get_username()
 			}
 		}
 
-		save_username(uname)
-		save_default_username(uname)
+		save_room_nickname(uname)
+		save_default_nickname(uname)
 	}
 	
 	username = uname
 }
 
-function save_username(uname)
+function save_room_nickname(uname)
 {
-	if(typeof usernames === "object" && usernames.length > 0)
+	if(typeof room_nicknames === "object" && room_nicknames.length > 0)
 	{
-		for(var i=0; i<usernames.length; i++)
+		for(var i=0; i<room_nicknames.length; i++)
 		{
-			if(usernames[i][0] === room)
+			if(room_nicknames[i][0] === room)
 			{
-				usernames.splice(i, 1)
+				room_nicknames.splice(i, 1)
 				break
 			}
 		}	
 	}
 
-	usernames.push([room, uname])
+	room_nicknames.push([room, uname])
 
-	localStorage.setItem('usernames', JSON.stringify(usernames))
+	localStorage.setItem('room_nicknames', JSON.stringify(room_nicknames))
 }
 
-function save_default_username(uname)
+function save_default_nickname(uname)
 {
-	if(typeof usernames === "object" && usernames.length > 0)
+	if(typeof room_nicknames === "object" && room_nicknames.length > 0)
 	{
-		for(var i=0; i<usernames.length; i++)
+		for(var i=0; i<room_nicknames.length; i++)
 		{
-			if(usernames[i][0] === '/default')
+			if(room_nicknames[i][0] === '/default')
 			{
-				usernames.splice(i, 1)
+				room_nicknames.splice(i, 1)
 				break
 			}
 		}	
 	}
 
-	usernames.push(['/default', uname])
+	room_nicknames.push(['/default', uname])
 
-	localStorage.setItem('usernames', JSON.stringify(usernames))
+	localStorage.setItem('room_nicknames', JSON.stringify(room_nicknames))
 }
 
 function show_intro()
@@ -236,7 +233,7 @@ function help2()
 	chat_announce('', '', 'Shift + up arrow loads your last message in the input.', 'small')
 	chat_announce('', '', 'Shift + down arrow goes to the bottom of the chat.', 'small')
 	chat_announce('', '', 'Clicking on a nickname sends it to the input.', 'small')
-	chat_announce('', '', 'Tab completes usernames and commands.', 'small')
+	chat_announce('', '', 'Tab completes nicknames and commands.', 'small')
 	chat_announce('', '', '/defnick x: Changes your default nickname for rooms you visit for the first time.', 'small')
 	chat_announce('', '', '/reserve: Reserves current nickname to be recoverable later.', 'small')
 	chat_announce('', '', '/recover x: Recovers reserved nickname in case someone else in the room is using it.', 'small')
@@ -547,7 +544,7 @@ function start_socket()
 				check_priv(data)
 				show_public()
 				check_firstime()
-				get_passwords()
+				get_user_keys()
 				start_nickname_context_menu()
 				start_main_menu_context_menu()
 				start_played_context_menu()
@@ -575,7 +572,7 @@ function start_socket()
 
 		else if(data.type === 'connection_lost')
 		{
-			window.location = window.location
+			refresh()
 		}
 
 		else if(data.type === 'image_change')
@@ -778,7 +775,7 @@ function start_heartbeat()
 	{
 		if(!socket.connected)
 		{
-			window.location = window.location
+			refresh()
 		}
 
 		socket.emit('heartbeat', {})
@@ -1995,6 +1992,11 @@ function activate_key_detection()
 			}
 		}
 
+		if(sto)
+		{
+			return
+		}
+
 		focus_input()
 
 		if(e.key === "Enter")
@@ -2380,7 +2382,7 @@ var resize_timer = (function()
 
 function update_scrollbar()
 {
-	perfect_scrollbar.update()
+	chat_scrollbar.update()
 }
 
 function update_chat(uname, msg)
@@ -3296,7 +3298,7 @@ function change_nickname(nck)
 				return false
 			}
 
-			save_username(nck)
+			save_room_nickname(nck)
 
 			socket.emit('username_change', {username:nck})
 		}
@@ -3314,18 +3316,18 @@ function change_default_nickname(nck)
 	
 	if(nck.length > 0)
 	{
-		save_default_username(nck)
+		save_default_nickname(nck)
 		chat_announce('[', ']', "Default nickname changed to " + nck, 'small')
 	}
 }
 
 function show_default_nickname()
 {
-	for(var i=0; i<usernames.length; i++)
+	for(var i=0; i<room_nicknames.length; i++)
 	{
-		if(usernames[i][0] === '/default')
+		if(room_nicknames[i][0] === '/default')
 		{
-			chat_announce('[', ']', 'Default Nickname: ' + usernames[i][1], 'small')
+			chat_announce('[', ']', 'Default Nickname: ' + room_nicknames[i][1], 'small')
 			break
 		}
 	}
@@ -3353,7 +3355,7 @@ function start_chat()
 
 	focus_input()
 
-	perfect_scrollbar = new PerfectScrollbar("#chat_area",
+	chat_scrollbar = new PerfectScrollbar("#chat_area",
 	{
 		minScrollbarLength: 50,
 		suppressScrollX: true
@@ -3898,6 +3900,11 @@ function goto_room(id, sametab=false)
 	}
 }
 
+function refresh()
+{
+	window.location = window.location
+}
+
 function initial_volume()
 {
 	var volume = localStorage.getItem('volume')
@@ -3997,7 +4004,7 @@ function unclaim_room()
 	socket.emit('unclaim_room', {})
 }
 
-function get_keys()
+function get_room_keys()
 {
 	if(localStorage["room_keys"])
 	{
@@ -4027,7 +4034,7 @@ function get_keys()
 	}
 }
 
-function save_key(key)
+function save_room_key(key)
 {
 	room_key = key
 
@@ -4048,57 +4055,57 @@ function save_key(key)
 	localStorage.setItem('room_keys', JSON.stringify(room_keys))
 }
 
-function get_passwords()
+function get_user_keys()
 {
-	if(localStorage["user_passwords"])
+	if(localStorage["user_keys"])
 	{
-		user_passwords = JSON.parse(localStorage.getItem("user_passwords"))
+		user_keys = JSON.parse(localStorage.getItem("user_keys"))
 	}
 
 	else
 	{
-		user_passwords = []
+		user_keys = []
 	}
 
-	if(typeof user_passwords === "object" && user_passwords.length > 0)
+	if(typeof user_keys === "object" && user_keys.length > 0)
 	{
 
 	}
 
 	else
 	{
-		user_passwords = []
+		user_keys = []
 	}
 }
 
-function get_user_password(nck)
+function get_user_key(nck)
 {
-	for(var i=0; i<user_passwords.length; i++)
+	for(var i=0; i<user_keys.length; i++)
 	{
-		if(user_passwords[i][0] === nck)
+		if(user_keys[i][0] === nck)
 		{
-			return user_passwords[i][1]
+			return user_keys[i][1]
 		}
 	}
 }
 
-function save_password(password)
+function save_user_key(key)
 {
-	if(typeof user_passwords === "object" && user_passwords.length > 0)
+	if(typeof user_keys === "object" && user_keys.length > 0)
 	{
-		for(var i=0; i<user_passwords.length; i++)
+		for(var i=0; i<user_keys.length; i++)
 		{
-			if(user_passwords[i][0] === username)
+			if(user_keys[i][0] === username)
 			{
-				user_passwords.splice(i, 1)
+				user_keys.splice(i, 1)
 				break
 			}
 		}	
 	}
 
-	user_passwords.push([username, password])
+	user_keys.push([username, key])
 
-	localStorage.setItem('user_passwords', JSON.stringify(user_passwords))
+	localStorage.setItem('user_keys', JSON.stringify(user_keys))
 }
 
 function check_firstime()
@@ -4112,7 +4119,7 @@ function check_firstime()
 
 function change_priv(key)
 {
-	save_key(key)
+	save_room_key(key)
 
 	room_key = key
 
@@ -4752,7 +4759,7 @@ function reserve()
 function reserved(data)
 {
 	chat_announce('[', ']', 'You have reserved ' + username, 'small')
-	save_password(data.password)
+	save_user_key(data.key)
 }
 
 function recover(nck)
@@ -4771,15 +4778,15 @@ function recover(nck)
 
 	nck = clean_string4(nck.substring(0, max_username_length))
 
-	var passwd = get_user_password(nck)
+	var key = get_user_key(nck)
 
-	if(passwd === undefined)
+	if(key === undefined)
 	{
 		chat_announce('[', ']', "You don't seem to own that nickname", 'small')
 		return false
 	}
 
-	socket.emit('username_recover', {username:nck, password:passwd})
+	socket.emit('username_recover', {username:nck, key:key})
 }
 
 function change_radiosrc(src)
@@ -5116,8 +5123,8 @@ function start_msg()
 
 	msg_menu = Msg(
 	{
-		class: msg_class,
 		id: "menu",
+		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
 		after_close: function()
@@ -5128,8 +5135,8 @@ function start_msg()
 
 	msg_create_room = Msg(
 	{
-		class: msg_class,
 		id: "create-room",
+		class: msg_class,
 		after_show: function()
 		{
 			crm = true
@@ -5144,16 +5151,16 @@ function start_msg()
 
 	msg_settings = Msg(
 	{
-		class: msg_class,
 		id: "settings",
+		class: msg_class,
 		show_effect: "none",
 		close_effect: "none"
 	})
 
 	msg_userlist = Msg(
 	{
-		class: msg_class,
 		id: "userlist",
+		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
 		after_close: function()
@@ -5164,16 +5171,16 @@ function start_msg()
 
 	msg_roomlist = Msg(
 	{
-		class: msg_class,
 		id: "roomlist",
+		class: msg_class,
 		show_effect: "none",
 		close_effect: "none"	
 	})
 
 	msg_played = Msg(
 	{
-		class: msg_class,
 		id: "played",
+		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
 		after_close: function()
@@ -5333,4 +5340,113 @@ function change_modal_color(color)
 	{
 		ins.change_class(color)
 	}
+}
+
+function start_storageui()
+{
+	storageui = StorageUI(
+	{
+		items:
+		[
+			{
+				name: "Room Nicknames",
+				ls_name: "room_nicknames",
+				on_save: function(item)
+				{
+					localStorage.setItem(item.ls_name, item.value)
+					get_room_nicknames()
+					pup()
+				},
+				on_reset: function(item)
+				{
+					localStorage.removeItem(item.ls_name)
+					get_room_nicknames()
+					pup()					
+				},
+				on_copied: function(item)
+				{
+					pup()
+				}
+			},
+			{
+				name: "Room Keys",
+				ls_name: "room_keys",
+				on_save: function(item)
+				{
+					localStorage.setItem(item.ls_name, item.value)
+					get_room_keys()
+					pup()
+				},
+				on_reset: function(item)
+				{
+					localStorage.removeItem(item.ls_name)
+					get_room_keys()
+				},
+				on_copied: function(item)
+				{
+					pup()
+				}
+			},
+			{
+				name: "User Keys",
+				ls_name: "user_keys",
+				on_save: function(item)
+				{
+					localStorage.setItem(item.ls_name, item.value)
+					get_user_keys()
+					pup()
+				},
+				on_reset: function(item)
+				{
+					localStorage.removeItem(item.ls_name)
+					get_user_keys()
+					pup()
+				},
+				on_copied: function(item)
+				{
+					pup()
+				}
+			},
+			{
+				name: "Settings",
+				ls_name: ls_settings,
+				on_save: function(item)
+				{
+					localStorage.setItem(item.ls_name, item.value)
+					get_settings()
+					pup()
+				},
+				on_reset: function(item)
+				{
+					localStorage.removeItem(item.ls_name)
+					get_settings()
+					pup()					
+				},
+				on_copied: function(item)
+				{
+					pup()
+				}
+			}
+		],
+		msg: Msg
+		({
+			id: "storageui",
+			class: msg_menu.options.class,
+			show_effect: "none",
+			close_effect: "none",
+			after_show: function()
+			{
+				sto = true
+			},
+			after_close: function()
+			{
+				sto = false
+			}
+		})
+	})
+}
+
+function show_data()
+{
+	storageui.menu()
 }
