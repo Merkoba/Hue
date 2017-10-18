@@ -2494,7 +2494,7 @@ function start_image_events()
 			var background_color = colorlib.array_to_rgb(color1)
 			var font_color = colorlib.get_proper_font(color1)
 
-			var color2 = colorlib.get_lighter_or_darker(color1, 40)
+			var color2 = colorlib.get_lighter_or_darker(color1, color_contrast_amount)
 			
 			var background_color2 = colorlib.array_to_rgb(color2)
 			var font_color2 = colorlib.get_proper_font(color2)
@@ -2545,7 +2545,7 @@ function start_image_events()
 
 			if(settings.background_image)
 			{
-				set_opacity(0.95)
+				set_opacity(general_opacity)
 			}
 
 			else
