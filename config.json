@@ -29,6 +29,8 @@
 	"max_radiosrc_length": 200,
 	"max_image_size": 5555,
 	"max_input_history_items": 50,
+	"small_keyboard_scroll": 100,
+	"big_keyboard_scroll": 200,
 	"afk_timeout_duration": 120000,
 	"roomlist_cache": 120000,
 	"roomlist_max_inactivity": 172800000,

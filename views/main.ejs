@@ -3,7 +3,7 @@
 		<title><%= room %></title> 
 		<script src="/js/jquery.js"></script>
 		<script src="/js/handlebars.js"></script>
-		<script src="/js/colorlib.js"></script>
+		<script src="/js/colorlib.js?v=2"></script>
 		<script src="/js/msg.min.js?v=2"></script>
 		<script src="/js/storageui.min.js?v=2"></script>
 		<script src="/js/dropzone.js"></script>
@@ -15,8 +15,8 @@
 		<script src="/js/contextmenu/jquery.ui.position.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 
-		<script src="/js/base.js?ver=465"></script>
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=92" />
+		<script src="/js/base.js?ver=467"></script>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=93" />
 
 		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
@@ -46,6 +46,8 @@
 				max_username_length = <%= max_username_length %>
 				max_radiosrc_length = <%= max_radiosrc_length %>
 				max_input_history_items = <%= max_input_history_items %>
+				small_keyboard_scroll = <%= small_keyboard_scroll %>
+				big_keyboard_scroll = <%= big_keyboard_scroll %>
 				max_image_size = <%= max_image_size %>
 				afk_timeout_duration = <%= afk_timeout_duration %>
 				heartbeat_interval = <%= heartbeat_interval %>
@@ -153,17 +155,22 @@
 				<div class="setting_title">Background Image</div>
 				<input class="setting_checkbox" id="setting_background_image" type="checkbox">
 
-				<br><br><br>
+				<div class='spacer1'></div>
+
+				<div class="setting_title">Custom Scrollbars</div>
+				<input class="setting_checkbox" id="setting_custom_scrollbars" type="checkbox">
+
+				<div class='spacer1'></div>
 
 				<div class="setting_title">Header Contrast</div>
 				<input class="setting_checkbox" id="setting_header_contrast" type="checkbox">
 
-				<br><br><br>
+				<div class='spacer1'></div>
 
 				<div class="setting_title">Input Contrast</div>
 				<input class="setting_checkbox" id="setting_input_contrast" type="checkbox">
 
-				<br><br><br>
+				<div class='spacer1'></div>
 
 				<div class="setting_title">Modal Color</div>
 
@@ -177,7 +184,7 @@
 
 				</select>
 
-				<br><br><br>
+				<div class='spacer1'></div>
 
 				<div class='menu_item' onclick='show_data()'>+ Storage Manager</div>
 				

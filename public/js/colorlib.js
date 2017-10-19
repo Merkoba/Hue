@@ -209,6 +209,13 @@ var ColorLib = (function()
 			return `rgb(${array[0]}, ${array[1]}, ${array[2]})`			
 		}
 
+		instance.rgb_to_array = function(array)
+		{
+			var split = array.replace("rgb(", "").replace(")", "").split(",")
+			
+			return split.map(x => parseInt(x))
+		}
+
 		instance.check_array = function(array)
 		{
 			for(var i=0; i<array.length; i++)

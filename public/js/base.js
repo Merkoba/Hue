@@ -63,7 +63,8 @@ function init()
 	compile_templates()
 	get_settings()
 	start_msg()
-	start_settings()
+	start_settings_state()
+	start_settings_listeners()
 	start_storageui()
 	start_image_events()
 	start_dropzone()
@@ -79,6 +80,7 @@ function init()
 	scroll_events()
 	resize_events()
 	register_commands()
+	setup_scrollbars()
 	start_socket()
 }
 
@@ -1698,21 +1700,21 @@ function start_played_context_menu()
 		{
 			cmenu1: 
 			{
-				name: "Search in Google", callback: function(key, opt)
+				name: "Search on Google", callback: function(key, opt)
 				{
 					search_in('google', $(this).data('q'))
 				}
 			},
 			cmenu2: 
 			{
-				name: "Search in SoundCloud", callback: function(key, opt)
+				name: "Search on SoundCloud", callback: function(key, opt)
 				{
 					search_in('soundcloud', $(this).data('q'))
 				}         
 			},
 			cmenu3: 
 			{
-				name: "Search in YouTube", callback: function(key, opt)
+				name: "Search on YouTube", callback: function(key, opt)
 				{
 					search_in('youtube', $(this).data('q'))
 				}
@@ -1938,7 +1940,7 @@ function copypaste_events()
 function activate_key_detection()
 {
 	$(document).keydown(function(e)
-	{	
+	{
 		if(crm)
 		{
 			$('#create_room_input').focus()
@@ -2026,8 +2028,7 @@ function activate_key_detection()
 		{
 			if(e.shiftKey)
 			{
-				var $ch = $('#chat_area')
-				$ch.scrollTop($ch.scrollTop() - 100)
+				scroll_up(small_keyboard_scroll)
 			}
 
 			else
@@ -2043,18 +2044,7 @@ function activate_key_detection()
 		{	
 			if(e.shiftKey)
 			{
-				var $ch = $('#chat_area')
-				var max = $ch.prop('scrollHeight') - $ch.innerHeight()
-
-				if(max - $ch.scrollTop < 100)
-				{
-					$ch.scrollTop(max + 10)
-				}
-
-				else
-				{
-					$ch.scrollTop($ch.scrollTop() + 100)
-				}
+				scroll_down(small_keyboard_scroll)
 			}
 
 			else
@@ -2064,6 +2054,20 @@ function activate_key_detection()
 
 			e.preventDefault()
 			return
+		}
+
+		else if(e.key === "PageUp")
+		{
+			scroll_up(big_keyboard_scroll)
+			e.preventDefault()
+			return			
+		}
+
+		else if(e.key === "PageDown")
+		{
+			scroll_down(big_keyboard_scroll)
+			e.preventDefault()
+			return			
 		}
 
 		else if(e.key === "Escape")
@@ -2109,6 +2113,28 @@ function activate_key_detection()
 
 		clear_tabbed()
 	})
+}
+
+function scroll_up(n)
+{
+	var $ch = $('#chat_area')
+	$ch.scrollTop($ch.scrollTop() - n)
+}
+
+function scroll_down(n)
+{
+	var $ch = $('#chat_area')
+	var max = $ch.prop('scrollHeight') - $ch.innerHeight()
+
+	if(max - $ch.scrollTop < n)
+	{
+		$ch.scrollTop(max + 10)
+	}
+
+	else
+	{
+		$ch.scrollTop($ch.scrollTop() + n)
+	}
 }
 
 function change_input(s, to_end=true)
@@ -2374,15 +2400,99 @@ var resize_timer = (function()
 
 		timer = setTimeout(function() 
 		{
-			update_scrollbar()
+			update_chat_scrollbar()
 			goto_bottom(true)
 		}, 350)
 	}
 })()
 
-function update_scrollbar()
+function setup_scrollbars()
 {
-	chat_scrollbar.update()
+	remove_chat_scrollbar()
+	remove_modal_scrollbars()
+
+	if(settings.custom_scrollbars)
+	{
+		start_chat_scrollbar()
+		start_modal_scrollbars()		
+	}
+}
+
+function start_chat_scrollbar()
+{
+	chat_scrollbar = new PerfectScrollbar("#chat_area",
+	{
+		minScrollbarLength: 50,
+		suppressScrollX: true
+	})
+}
+
+function remove_chat_scrollbar()
+{
+	if(chat_scrollbar !== undefined)
+	{
+		if(chat_scrollbar.element !== null)
+		{
+			chat_scrollbar.destroy()
+		}
+	}
+}
+
+function update_chat_scrollbar()
+{
+	if(chat_scrollbar !== undefined)
+	{
+		if(chat_scrollbar.element !== null)
+		{
+			chat_scrollbar.update()
+		}
+	}	
+}
+
+function start_modal_scrollbars()
+{
+	var msg_color = colorlib.rgb_to_array($("#Msg-window-menu").css("background-color"))
+	var color = colorlib.array_to_rgb(colorlib.get_lighter_or_darker(msg_color, 80))
+
+	start_modal_scrollbar("menu", color)
+	start_modal_scrollbar("create-room", color)
+	start_modal_scrollbar("settings", color)
+	start_modal_scrollbar("userlist", color)
+	start_modal_scrollbar("roomlist", color)
+	start_modal_scrollbar("played", color)	
+	start_modal_scrollbar("storageui", color)	
+}
+
+function remove_modal_scrollbars()
+{
+	remove_modal_scrollbar("menu")
+	remove_modal_scrollbar("create-room")
+	remove_modal_scrollbar("settings")
+	remove_modal_scrollbar("userlist")
+	remove_modal_scrollbar("roomlist")
+	remove_modal_scrollbar("played")
+	remove_modal_scrollbar("storageui")
+}
+
+function start_modal_scrollbar(s, color)
+{
+	$(`#Msg-content-container-${s}`).niceScroll
+	({
+		autohidemode: false,
+		cursorcolor: color,
+		cursorborder: "0px solid white",
+		cursordragontouch: true
+	})	
+}
+
+function remove_modal_scrollbar(s)
+{
+	$(`#Msg-content-container-${s}`).getNiceScroll().remove()
+}
+
+function update_modal_scrollbar(s)
+{
+	$(`#Msg-content-container-${s}`).getNiceScroll().resize()	
 }
 
 function update_chat(uname, msg)
@@ -2456,7 +2566,7 @@ function add_msgcount()
 
 		els.slice(0, msgcount).remove()
 
-		update_scrollbar()
+		update_chat_scrollbar()
 	}
 }
 
@@ -3355,12 +3465,6 @@ function start_chat()
 
 	focus_input()
 
-	chat_scrollbar = new PerfectScrollbar("#chat_area",
-	{
-		minScrollbarLength: 50,
-		suppressScrollX: true
-	})
-
 	goto_bottom(true)
 }
 
@@ -3786,7 +3890,7 @@ function activate_window_visibility_listener()
 
 			$('.dash_container').remove()
 
-			update_scrollbar()
+			update_chat_scrollbar()
 		}
 	}, false)
 }
@@ -5240,28 +5344,6 @@ function start_msg()
 	msg_userlist.set(template_userlist())
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
-
-	start_modal_scrollbar("menu")
-	start_modal_scrollbar("create-room")
-	start_modal_scrollbar("settings")
-	start_modal_scrollbar("userlist")
-	start_modal_scrollbar("roomlist")
-	start_modal_scrollbar("played")
-}
-
-function start_modal_scrollbar(s)
-{
-	$(`#Msg-content-container-${s}`).niceScroll
-	({
-		autohidemode: false,
-		cursorcolor: "grey",
-		cursorborder: "0px solid #grey"
-	})	
-}
-
-function update_modal_scrollbar(s)
-{
-	$(`#Msg-content-container-${s}`).getNiceScroll().resize()	
 }
 
 function get_settings()
@@ -5303,6 +5385,12 @@ function get_settings()
 		changed = true
 	}
 
+	if(settings.custom_scrollbars === undefined)
+	{
+		settings.custom_scrollbars = true
+		changed = true
+	}
+
 	if(changed)
 	{
 		save_settings()
@@ -5314,18 +5402,28 @@ function save_settings(key)
 	localStorage.setItem(ls_settings, JSON.stringify(settings))
 }
 
-function start_settings()
+function start_settings_state()
 {
-	if(settings.background_image)
-	{
-		$("#setting_background_image").prop("checked", true)
-	}
+	$("#setting_background_image").prop("checked", settings.background_image)
 
-	else
-	{
-		$("#setting_background_image").prop("checked", false)
-	}
+	$("#setting_header_contrast").prop("checked", settings.header_contrast)
+	
+	$("#setting_input_contrast").prop("checked", settings.input_contrast)
+	input_contrast_fix()
 
+	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
+
+	$('#setting_modal_color').find('option').each(function()
+	{
+		if($(this).val() === settings.modal_color)
+		{
+			$(this).prop('selected', true)
+		}
+	})
+}
+
+function start_settings_listeners()
+{
 	$("#setting_background_image").change(function()
 	{
 		settings.background_image = $("#setting_background_image").prop("checked")
@@ -5333,34 +5431,12 @@ function start_settings()
 		save_settings()
 	})
 
-	if(settings.header_contrast)
-	{
-		$("#setting_header_contrast").prop("checked", true)
-	}
-
-	else
-	{
-		$("#setting_header_contrast").prop("checked", false)
-	}
-
 	$("#setting_header_contrast").change(function()
 	{
 		settings.header_contrast = $("#setting_header_contrast").prop("checked")
 		change()
 		save_settings()
 	})
-
-	if(settings.input_contrast)
-	{
-		$("#setting_input_contrast").prop("checked", true)
-		input_contrast_fix()
-	}
-
-	else
-	{
-		$("#setting_input_contrast").prop("checked", false)
-		input_contrast_fix()
-	}
 
 	$("#setting_input_contrast").change(function()
 	{
@@ -5370,18 +5446,20 @@ function start_settings()
 		save_settings()
 	})
 
-	$('#setting_modal_color').find('option').each(function()
+	$("#setting_custom_scrollbars").change(function()
 	{
-		if($(this).val() === settings.modal_color)
-		{
-			$(this).prop('selected', true)
-		}
+		settings.custom_scrollbars = $("#setting_custom_scrollbars").prop("checked")
+		change()
+		setup_scrollbars()
+		save_settings()
 	})
 
 	$("#setting_modal_color").change(function()
 	{
 		settings.modal_color = $('#setting_modal_color option:selected').val()
 		change_modal_color(settings.modal_color)
+		remove_modal_scrollbars()
+		start_modal_scrollbars()		
 		save_settings()
 	})
 }
@@ -5421,13 +5499,13 @@ function start_storageui()
 				on_save: function(item)
 				{
 					localStorage.setItem(item.ls_name, item.value)
-					get_room_nicknames()
+					reload_room_nicknames()
 					pup()
 				},
 				on_reset: function(item)
 				{
 					localStorage.removeItem(item.ls_name)
-					get_room_nicknames()
+					reload_room_nicknames()
 					pup()					
 				},
 				on_copied: function(item)
@@ -5441,13 +5519,13 @@ function start_storageui()
 				on_save: function(item)
 				{
 					localStorage.setItem(item.ls_name, item.value)
-					get_room_keys()
+					reload_room_keys()
 					pup()
 				},
 				on_reset: function(item)
 				{
 					localStorage.removeItem(item.ls_name)
-					get_room_keys()
+					reload_room_keys()
 				},
 				on_copied: function(item)
 				{
@@ -5460,13 +5538,13 @@ function start_storageui()
 				on_save: function(item)
 				{
 					localStorage.setItem(item.ls_name, item.value)
-					get_user_keys()
+					reload_user_keys()
 					pup()
 				},
 				on_reset: function(item)
 				{
 					localStorage.removeItem(item.ls_name)
-					get_user_keys()
+					reload_user_keys()
 					pup()
 				},
 				on_copied: function(item)
@@ -5480,13 +5558,13 @@ function start_storageui()
 				on_save: function(item)
 				{
 					localStorage.setItem(item.ls_name, item.value)
-					get_settings()
+					reload_settings()
 					pup()
 				},
 				on_reset: function(item)
 				{
 					localStorage.removeItem(item.ls_name)
-					get_settings()
+					reload_settings()
 					pup()					
 				},
 				on_copied: function(item)
@@ -5501,10 +5579,6 @@ function start_storageui()
 			class: msg_menu.options.class,
 			show_effect: "none",
 			close_effect: "none",
-			after_create: function()
-			{
-				start_modal_scrollbar("storageui")
-			},
 			after_show: function()
 			{
 				sto = true
@@ -5521,9 +5595,34 @@ function start_storageui()
 		})
 	})
 
+	storageui.params.msg.create()
 }
 
 function show_data()
 {
 	storageui.menu()
+}
+
+function reload_room_nicknames()
+{
+	get_room_nicknames()
+}
+
+function reload_room_keys()
+{
+	get_room_keys()
+}
+
+function reload_user_keys()
+{
+	get_user_keys()
+}
+
+function reload_settings()
+{
+	get_settings()
+	start_settings_state()
+	change_modal_color(settings.modal_color)
+	setup_scrollbars()
+	change()
 }
