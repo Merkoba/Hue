@@ -5347,7 +5347,10 @@ function start_msg()
 		close_effect: "none",
 		after_create: function()
 		{
-			start_modal_scrollbar("info")
+			if(settings.custom_scrollbars)
+			{
+				start_modal_scrollbar("info")
+			}
 		},
 		after_show: function()
 		{
@@ -5604,16 +5607,21 @@ function start_storageui()
 			close_effect: "none",
 			after_create: function()
 			{
-				start_modal_scrollbar("storageui")
+				if(settings.custom_scrollbars)
+				{
+					start_modal_scrollbar("storageui")
+				}
 			},
 			after_show: function()
 			{
 				sto = true
 				update_modal_scrollbar("storageui")
-
 				storageui_interval = setInterval(function()
 				{
-					update_modal_scrollbar("storageui")
+					if(settings.custom_scrollbars)
+					{
+						update_modal_scrollbar("storageui")
+					}
 				}, 1000)
 			},
 			after_set: function()
