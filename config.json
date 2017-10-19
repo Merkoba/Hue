@@ -17,7 +17,6 @@
 	"check_metadata_interval_duration": 12000,
 	"general_opacity": 0.95,
 	"color_contrast_amount": 40,
-	"color_contrast_amount2": 80,
 	"chat_crop_limit": 2000,
 	"max_input_length": 1250,
 	"max_topic_length": 1200,

@@ -50,6 +50,7 @@ var template_create_room
 var template_userlist
 var template_roomlist
 var template_played
+var storageui_interval
 var msg_menu
 var msg_create_room
 var msg_settings
@@ -2458,45 +2459,31 @@ function update_chat_scrollbar()
 		{
 			chat_scrollbar.update()
 		}
-	}	
-}
-
-function get_modal_scrollbar_color()
-{
-	var msg_color = colorlib.rgb_to_array($("#Msg-window-menu").css("background-color"))
-	return colorlib.array_to_rgb(colorlib.get_lighter_or_darker(msg_color, color_contrast_amount2))
+	}
 }
 
 function start_modal_scrollbars()
 {
-	var color = get_modal_scrollbar_color()
-
-	start_modal_scrollbar("menu", color)
-	start_modal_scrollbar("create-room", color)
-	start_modal_scrollbar("settings", color)
-	start_modal_scrollbar("userlist", color)
-	start_modal_scrollbar("roomlist", color)
-	start_modal_scrollbar("played", color)	
-	start_modal_scrollbar("storageui", color)	
+	for(var instance of msg_menu.instances())
+	{
+		start_modal_scrollbar(instance.options.id)
+	}
 }
 
 function remove_modal_scrollbars()
 {
-	remove_modal_scrollbar("menu")
-	remove_modal_scrollbar("create-room")
-	remove_modal_scrollbar("settings")
-	remove_modal_scrollbar("userlist")
-	remove_modal_scrollbar("roomlist")
-	remove_modal_scrollbar("played")
-	remove_modal_scrollbar("storageui")
+	for(var instance of msg_menu.instances())
+	{
+		remove_modal_scrollbar(instance.options.id)
+	}
 }
 
-function start_modal_scrollbar(s, color)
+function start_modal_scrollbar(s)
 {
 	$(`#Msg-content-container-${s}`).niceScroll
 	({
 		autohidemode: false,
-		cursorcolor: color,
+		cursorcolor: "#AFAFAF",
 		cursorborder: "0px solid white",
 		enablekeyboard: false
 	})
@@ -5358,6 +5345,10 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		after_create: function()
+		{
+			start_modal_scrollbar("info")
+		},
 		after_show: function()
 		{
 			update_modal_scrollbar("info")
@@ -5483,17 +5474,15 @@ function start_settings_listeners()
 	$("#setting_custom_scrollbars").change(function()
 	{
 		settings.custom_scrollbars = $("#setting_custom_scrollbars").prop("checked")
-		change()
 		setup_scrollbars()
+		change()
 		save_settings()
 	})
 
 	$("#setting_modal_color").change(function()
 	{
 		settings.modal_color = $('#setting_modal_color option:selected').val()
-		change_modal_color(settings.modal_color)
-		remove_modal_scrollbars()
-		start_modal_scrollbars()		
+		change_modal_color(settings.modal_color)		
 		save_settings()
 	})
 }
@@ -5615,36 +5604,26 @@ function start_storageui()
 			close_effect: "none",
 			after_create: function()
 			{
-				start_modal_scrollbar("storageui", get_modal_scrollbar_color())
+				start_modal_scrollbar("storageui")
 			},
 			after_show: function()
 			{
 				sto = true
 				update_modal_scrollbar("storageui")
+
+				storageui_interval = setInterval(function()
+				{
+					update_modal_scrollbar("storageui")
+				}, 1000)
 			},
 			after_set: function()
 			{
-				$("#Msg-content-storageui").unbind("mousedown")
-				$("#Msg-content-storageui").unbind("mouseup")
-
-				$("#Msg-content-storageui").on("mousedown", function()
-				{
-					storageui_height = $(this).height()
-				})
-
-				$("#Msg-content-storageui").on("mouseup", function()
-				{
-					if(storageui_height !== $(this).height())
-					{
-						update_modal_scrollbar("storageui")
-					}
-				})
-
 				update_modal_scrollbar("storageui")
 			},
 			after_close: function()
 			{
 				sto = false
+				clearInterval(storageui_interval)
 			}
 		})
 	})

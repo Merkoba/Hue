@@ -12,7 +12,6 @@ c.default_radioinfo = config.default_radioinfo
 c.check_metadata_interval_duration = config.check_metadata_interval_duration
 c.general_opacity = config.general_opacity
 c.color_contrast_amount = config.color_contrast_amount
-c.color_contrast_amount2 = config.color_contrast_amount2
 c.default_modal_color = config.default_modal_color
 c.chat_crop_limit = config.chat_crop_limit
 c.max_input_length = config.max_input_length
