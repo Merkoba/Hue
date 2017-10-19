@@ -1005,7 +1005,7 @@ function update_userlist()
 		$(h).click({nickname:item[0]}, function(event)
 		{
 			add_to_input(event.data.nickname) 
-			hide_boxes()
+			msg_userlist.close()
 		})
 
 		s = s.add(h)
@@ -1810,11 +1810,6 @@ function show_played()
 	msg_played.show()
 }
 
-function hide_boxes()
-{
-	msg_menu.close_all()
-}
-
 function start_dropzone()
 {
 	dropzone = new Dropzone("body", 
@@ -1965,23 +1960,6 @@ function activate_key_detection()
 				}
 
 				return
-			}
-
-			else if(e.key === "Escape")
-			{
-				if($('#create_room_input').val() === '')
-				{
-					hide_boxes()
-					e.preventDefault()
-					return
-				}
-
-				else
-				{
-					$('#create_room_input').val('')
-					e.preventDefault()
-					return
-				}
 			}			
 
 			return
@@ -3955,7 +3933,7 @@ function copy_room_url()
 
 	pup()
 
-	hide_boxes()
+	msg_menu.close()
 }
 
 function copy_string(s)
@@ -4015,7 +3993,8 @@ function goto_room(id, sametab=false)
 {
 	id = clean_string4(id.substring(0, max_roomname_length))
 
-	hide_boxes()
+	msg_create_room.close()
+	msg_menu.close()
 
 	if(id !== main_room)
 	{
@@ -5285,6 +5264,7 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		clear_editables: true,
 		after_show: function()
 		{
 			crm = true
