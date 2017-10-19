@@ -15,8 +15,8 @@
 		<script src="/js/contextmenu/jquery.ui.position.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 
-		<script src="/js/base.js?ver=467"></script>
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=93" />
+		<script src="/js/base.js?ver=470"></script>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=94" />
 
 		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
@@ -38,6 +38,7 @@
 				check_metadata_interval_duration = <%= check_metadata_interval_duration %>
 				general_opacity = <%= general_opacity %>
 				color_contrast_amount = <%= color_contrast_amount %>
+				color_contrast_amount2 = <%= color_contrast_amount2 %>
 				chat_crop_limit = <%= chat_crop_limit %>
 				max_input_length = <%= max_input_length %>
 				max_topic_length = <%= max_topic_length %>
@@ -115,9 +116,13 @@
 
 				<div id='menu_smaller_container'>
 
+					<div class='menu_item_smaller' onclick='show_history()'>History</div>
+
+					<div class='spacer2'></div>
+
 					<div class='menu_item_smaller' onclick='copy_room_url()'>Copy Room URL</div>
 
-					<br>
+					<div class='spacer2'></div>
 
 					<span class='menu_item_smaller' onclick='clear_chat();hide_boxes()'>Clear</span>
 
@@ -130,6 +135,8 @@
 					<span class='menu_item_smaller' onclick='help();hide_boxes()'>Help</span>
 
 				</div>
+
+				<div class='spacer3'></div>
 
 			</div>
 		</script>

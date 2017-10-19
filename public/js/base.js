@@ -56,6 +56,7 @@ var msg_settings
 var msg_userlist
 var msg_roomlist
 var msg_played
+var msg_info
 
 function init()
 {
@@ -230,10 +231,9 @@ function help2()
 	chat_announce('', '', 'Escape clears the input or closes popups.', 'small')
 	chat_announce('', '', 'Shift + Escape or /clear clears all messages from the chat.', 'small')
 	chat_announce('', '', 'Shift + Tab or /status shows information about you and the room.', 'small')
-	chat_announce('', '', 'Up arrow scrolls up the chat.', 'small')
-	chat_announce('', '', 'Down arrow scrolls down the chat.', 'small')
-	chat_announce('', '', 'Shift + up arrow loads your last message in the input.', 'small')
-	chat_announce('', '', 'Shift + down arrow goes to the bottom of the chat.', 'small')
+	chat_announce('', '', 'Up and Down Arrows cycle through the input history.', 'small')
+	chat_announce('', '', 'Shift + Up Arrow and Shift + Down Arrow or Page Up and Page down make the chat scroll.', 'small')
+	chat_announce('', '', 'Enter without text in the input scrolls to the bottom of the chat.', 'small')
 	chat_announce('', '', 'Clicking on a nickname sends it to the input.', 'small')
 	chat_announce('', '', 'Tab completes nicknames and commands.', 'small')
 	chat_announce('', '', '/defnick x: Changes your default nickname for rooms you visit for the first time.', 'small')
@@ -242,6 +242,7 @@ function help2()
 	chat_announce('', '', '/priv: Shows information regarding privileges and permissions.', 'small')
 	chat_announce('', '', '/users: Shows the user list. An alternative to the user list window.', 'small')
 	chat_announce('', '', '/crew: Shows a list of users that have either admin or op privileges.', 'small')
+	chat_announce('', '', '/history: Shows the input history.', 'small')
 	chat_announce('', '', '/startradio: Starts the radio.', 'small')
 	chat_announce('', '', '/stopradio: Stops the radio.', 'small')
 	chat_announce('', '', '/volume x: Changes the volume of the radio.', 'small')
@@ -2072,23 +2073,18 @@ function activate_key_detection()
 
 		else if(e.key === "Escape")
 		{
-			if(e.shiftKey)
+			if(!msg_menu.any_open())
 			{
-				clear_chat()
-				e.preventDefault()
-				return
-			}
+				if(e.shiftKey)
+				{
+					clear_chat()
+				}
 
-			else if(msg_menu.any_open())
-			{
-				hide_boxes()
-				e.preventDefault()
-				return 
-			}
+				else
+				{
+					clear_input()
+				}
 
-			else
-			{
-				clear_input()
 				e.preventDefault()
 				return
 			}
@@ -2157,6 +2153,27 @@ function input_to_end()
 	$('#input')[0].scrollLeft = $('#input')[0].scrollWidth
 }
 
+function add_to_history(msg)
+{
+	input_history_index = -1
+
+	for(var i=0; i<input_history.length; i++)
+	{
+		if(input_history[i] === msg)
+		{
+			input_history.splice(i, 1)
+			break
+		}
+	}
+
+	if(input_history.length >= max_input_history_items)
+	{
+		input_history.shift()
+	}
+
+	input_history.push([msg, get_date()])	
+}
+
 function input_history_change(direction)
 {
 	if(direction === "up")
@@ -2174,7 +2191,7 @@ function input_history_change(direction)
 			return
 		}
 
-		var v = input_history[input_history_index]
+		var v = input_history[input_history_index][0]
 	}
 
 	else
@@ -2188,10 +2205,27 @@ function input_history_change(direction)
 			return
 		}
 
-		var v = input_history[input_history_index]
+		var v = input_history[input_history_index][0]
 	}
 
 	change_input(v)
+}
+
+function show_history()
+{
+	var s = ""
+
+	for(var item of input_history.slice().reverse())
+	{
+		s += `<div title='${item[1]}' class='show_history_item'>${item[0]}</div>`
+	}
+
+	if(s === "")
+	{
+		s = "[ Messages or commands you type will appear here ]"
+	}
+
+	show_info(s)
 }
 
 function input_click_events()
@@ -2449,10 +2483,15 @@ function update_chat_scrollbar()
 	}	
 }
 
-function start_modal_scrollbars()
+function get_modal_scrollbar_color()
 {
 	var msg_color = colorlib.rgb_to_array($("#Msg-window-menu").css("background-color"))
-	var color = colorlib.array_to_rgb(colorlib.get_lighter_or_darker(msg_color, 80))
+	return colorlib.array_to_rgb(colorlib.get_lighter_or_darker(msg_color, color_contrast_amount2))
+}
+
+function start_modal_scrollbars()
+{
+	var color = get_modal_scrollbar_color()
 
 	start_modal_scrollbar("menu", color)
 	start_modal_scrollbar("create-room", color)
@@ -2481,8 +2520,8 @@ function start_modal_scrollbar(s, color)
 		autohidemode: false,
 		cursorcolor: color,
 		cursorborder: "0px solid white",
-		cursordragontouch: true
-	})	
+		enablekeyboard: false
+	})
 }
 
 function remove_modal_scrollbar(s)
@@ -2495,10 +2534,13 @@ function update_modal_scrollbar(s)
 	$(`#Msg-content-container-${s}`).getNiceScroll().resize()	
 }
 
+function get_date()
+{
+	return dateFormat(Date.now(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
+}
+
 function update_chat(uname, msg)
 {
-	var date = dateFormat(Date.now(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
-
 	var contclasses = "chat_content"
 
 	if(uname !== username)
@@ -2512,6 +2554,8 @@ function update_chat(uname, msg)
 			alert_title2()
 		}
 	}
+
+	var date = get_date()
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
@@ -2878,6 +2922,7 @@ function register_commands()
 	commands.push('/stopradio')
 	commands.push('/startradio')
 	commands.push('/volume')
+	commands.push('/history')
 }
 
 function send_to_chat(msg)
@@ -2886,23 +2931,7 @@ function send_to_chat(msg)
 
 	if(msg_is_ok(msg))
 	{
-		input_history_index = -1
-
-		for(var i=0; i<input_history.length; i++)
-		{
-			if(input_history[i] === msg)
-			{
-				input_history.splice(i, 1)
-				break
-			}
-		}
-
-		if(input_history.length >= max_input_history_items)
-		{
-			input_history.shift()
-		}
-
-		input_history.push(msg)
+		add_to_history(msg)
 
 		if(msg[0] === '/' && !msg.startsWith('/me ') && !msg.startsWith('/em ') && !msg.startsWith('//'))
 		{
@@ -3167,6 +3196,11 @@ function send_to_chat(msg)
 			{
 				change_volume_command(arg)
 			}
+
+			else if(oiEquals(lmsg, '/history'))
+			{
+				show_history()
+			}			
 
 			else
 			{
@@ -5249,6 +5283,8 @@ function start_msg()
 	{
 		id: "create-room",
 		class: msg_class,
+		show_effect: "none",
+		close_effect: "none",
 		after_show: function()
 		{
 			crm = true
@@ -5261,9 +5297,7 @@ function start_msg()
 		after_close: function()
 		{
 			crm = false
-		},
-		show_effect: "none",
-		close_effect: "none"
+		}
 	})
 
 	msg_settings = Msg(
@@ -5331,6 +5365,26 @@ function start_msg()
 		after_set: function()
 		{
 			update_modal_scrollbar("played")
+		},
+		after_close: function()
+		{
+			focus_input()
+		}
+	})
+
+	msg_info = Msg(
+	{
+		id: "info",
+		class: msg_class,
+		show_effect: "none",
+		close_effect: "none",
+		after_show: function()
+		{
+			update_modal_scrollbar("info")
+		},
+		after_set: function()
+		{
+			update_modal_scrollbar("info")
 		},
 		after_close: function()
 		{
@@ -5579,6 +5633,10 @@ function start_storageui()
 			class: msg_menu.options.class,
 			show_effect: "none",
 			close_effect: "none",
+			after_create: function()
+			{
+				start_modal_scrollbar("storageui", get_modal_scrollbar_color())
+			},
 			after_show: function()
 			{
 				sto = true
@@ -5586,6 +5644,22 @@ function start_storageui()
 			},
 			after_set: function()
 			{
+				$("#Msg-content-storageui").unbind("mousedown")
+				$("#Msg-content-storageui").unbind("mouseup")
+
+				$("#Msg-content-storageui").on("mousedown", function()
+				{
+					storageui_height = $(this).height()
+				})
+
+				$("#Msg-content-storageui").on("mouseup", function()
+				{
+					if(storageui_height !== $(this).height())
+					{
+						update_modal_scrollbar("storageui")
+					}
+				})
+
 				update_modal_scrollbar("storageui")
 			},
 			after_close: function()
@@ -5594,8 +5668,6 @@ function start_storageui()
 			}
 		})
 	})
-
-	storageui.params.msg.create()
 }
 
 function show_data()
@@ -5625,4 +5697,9 @@ function reload_settings()
 	change_modal_color(settings.modal_color)
 	setup_scrollbars()
 	change()
+}
+
+function show_info(s)
+{
+	msg_info.set_or_show(s)
 }

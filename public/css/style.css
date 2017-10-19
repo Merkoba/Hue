@@ -403,6 +403,18 @@ a.chat:link, a.chat:visited, a.chat:hover
 	padding-bottom: 1.1em;
 }
 
+.spacer2
+{
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+}
+
+.spacer3
+{
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
 .setting_checkbox
 {
 	width: 1.5em;
@@ -412,11 +424,6 @@ a.chat:link, a.chat:visited, a.chat:hover
 .Msg-content
 {
 	font-size: 1em !important;
-}
-
-.Msg-window
-{
-	height: 50% !important;
 }
 
 #Msg-window-menu
@@ -449,11 +456,6 @@ a.chat:link, a.chat:visited, a.chat:hover
 	width: 30em !important;
 }
 
-#Msg-window-storageui
-{
-	width: 45em !important;
-}
-
 #Msg-content-storageui
 {
 	font-size: 20px !important;
@@ -470,7 +472,16 @@ a.chat:link, a.chat:visited, a.chat:hover
 	height: 1.5em !important;
 }
 
-#chat_scrollbar .nicescroll-cursors
+#Msg-window-info
 {
-	background-color: green !important;
+	height: auto !important;
+}
+
+.show_history_item
+{
+	font-size: 1.4em;
+	padding-top: 0.6em;
+	padding-bottom: 0.6em;
+	padding-left: 2em;
+	padding-right: 2em;
 }
