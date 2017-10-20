@@ -1,2 +1,6 @@
 /node_modules/*
 /backups/*
+
+/public/img/*
+!/public/img/default.gif
+!/public/img/loading.jpg

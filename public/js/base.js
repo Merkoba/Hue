@@ -5222,7 +5222,7 @@ function start_msg()
 		},	
 		after_close: function()
 		{
-			focus_input()
+			on_modal_close()
 		}
 	})
 
@@ -5245,6 +5245,7 @@ function start_msg()
 		after_close: function()
 		{
 			crm = false
+			on_modal_close()
 		}
 	})
 
@@ -5261,6 +5262,10 @@ function start_msg()
 		after_set: function()
 		{
 			update_modal_scrollbar("settings")
+		},
+		after_close: function()
+		{
+			on_modal_close()
 		}
 	})
 
@@ -5280,7 +5285,7 @@ function start_msg()
 		},
 		after_close: function()
 		{
-			focus_input()
+			on_modal_close()
 		}
 	})
 
@@ -5297,6 +5302,10 @@ function start_msg()
 		after_set: function()
 		{
 			update_modal_scrollbar("roomlist")
+		},
+		after_close: function()
+		{
+			on_modal_close()
 		}
 	})
 
@@ -5316,7 +5325,7 @@ function start_msg()
 		},
 		after_close: function()
 		{
-			focus_input()
+			on_modal_close()
 		}
 	})
 
@@ -5336,7 +5345,7 @@ function start_msg()
 		},
 		after_close: function()
 		{
-			focus_input()
+			on_modal_close()
 		}
 	})
 
@@ -5347,6 +5356,14 @@ function start_msg()
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
 	msg_info.set(template_info())
+}
+
+function on_modal_close()
+{
+	if(!msg_menu.any_open())
+	{
+		focus_input()
+	}
 }
 
 function change_modal_color(color)
@@ -5626,6 +5643,7 @@ function start_storageui()
 			{
 				sto = false
 				clearInterval(storageui_interval)
+				on_modal_close()
 			}
 		})
 	})
