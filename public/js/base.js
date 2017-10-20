@@ -539,12 +539,12 @@ function start_socket()
 			update_userlist()
 			update_topic(data.topic, data.topic_setter)
 			is_public = data.public
+			check_priv(data)
 			change()
 
 			if(connections === 1)
 			{
 				setup_opacity()
-				check_priv(data)
 				clear_chat()
 				check_firstime()
 				get_user_keys()
@@ -2143,7 +2143,7 @@ function add_to_history(msg)
 		}
 	}
 
-	if(input_history.length >= max_input_history_items)
+	if(input_history.length >= history_crop_limit)
 	{
 		input_history.shift()
 	}
