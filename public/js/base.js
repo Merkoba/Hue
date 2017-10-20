@@ -4003,6 +4003,7 @@ function clear_chat()
 	show_priv()
 	show_public()
 	scroll_timer()
+	focus_input()
 }
 
 function clear_input()
