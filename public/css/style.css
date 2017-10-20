@@ -508,4 +508,5 @@ a.chat:link, a.chat:visited, a.chat:hover
 	padding-bottom: 0.6em;
 	padding-left: 2em;
 	padding-right: 2em;
+	cursor: pointer;
 }

@@ -18,8 +18,8 @@
 		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
 
-		<script src="/js/base.js?ver=474"></script>
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=95" />
+		<script src="/js/base.js?ver=475"></script>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=96" />
 
 		<script>
 			$(function()
@@ -39,6 +39,7 @@
 				general_opacity = <%= general_opacity %>
 				color_contrast_amount = <%= color_contrast_amount %>
 				chat_crop_limit = <%= chat_crop_limit %>
+				played_crop_limit = <%= played_crop_limit %>
 				max_input_length = <%= max_input_length %>
 				max_topic_length = <%= max_topic_length %>
 				max_title_topic_length = <%= max_title_topic_length %>
@@ -210,6 +211,10 @@
 		
 		<script id='template_played' type='text/x-handlebars-template'>
 			<div id='played'><br></div>
+		</script>
+
+		<script id='template_info' type='text/x-handlebars-template'>
+			<div id='info'><br></div>
 		</script>		
 
 		<audio id='pup' src='/audio/pup.ogg'></audio>

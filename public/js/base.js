@@ -50,6 +50,7 @@ var template_create_room
 var template_userlist
 var template_roomlist
 var template_played
+var template_info
 var storageui_interval
 var msg_menu
 var msg_create_room
@@ -73,7 +74,6 @@ function init()
 	start_volume_scroll()
 	initial_volume()
 	activate_window_visibility_listener()
-	start_chat()
 	get_room_keys()
 	activate_key_detection()
 	input_click_events()
@@ -208,6 +208,7 @@ function compile_templates()
 	template_userlist = Handlebars.compile($('#template_userlist').html())
 	template_roomlist = Handlebars.compile($('#template_roomlist').html())
 	template_played = Handlebars.compile($('#template_played').html())
+	template_info = Handlebars.compile($('#template_info').html())
 }
 
 function help()
@@ -375,7 +376,6 @@ function check_priv(data)
 	upload_permission = data.upload_permission
 	chat_permission = data.chat_permission
 	check_permissions()
-	show_priv()
 }
 
 function check_permissions()
@@ -543,10 +543,17 @@ function start_socket()
 
 			if(connections === 1)
 			{
-				show_intro()
-				show_topic()
 				check_priv(data)
-				show_public()
+				start_chat()
+				check_firstime()
+				get_user_keys()
+				start_nickname_context_menu()
+				start_main_menu_context_menu()
+				start_played_context_menu()
+				start_metadata_loop()
+				start_heartbeat()
+
+				start_chat()
 				check_firstime()
 				get_user_keys()
 				start_nickname_context_menu()
@@ -1000,13 +1007,13 @@ function update_userlist()
 
 		var p = priv_tag(item[1])
 
-		$($(h).find('.ui_item_priv').get(0)).text(p)
-		$($(h).find('.ui_item_nick').get(0)).text(item[0])
+		h.find('.ui_item_priv').eq(0).text(p)
+		h.find('.ui_item_nick').eq(0).text(item[0])
 
-		$(h).click({nickname:item[0]}, function(event)
+		h.click({nickname:item[0]}, function(event)
 		{
 			add_to_input(event.data.nickname) 
-			msg_userlist.close()
+			close_all_modals()
 		})
 
 		s = s.add(h)
@@ -1741,7 +1748,7 @@ function update_roomlist(roomlist)
 		var c = "<span class='roomlist_filler'></span><span class='roomlist_name'></span><span class='roomlist_count'></span><div class='roomlist_topic'></div>"
 		var h = $("<div class='roomlist_item'>" + c + "</div><br>")
 
-		$($(h).find('.roomlist_name').get(0)).text(roomlist[i][0])
+		h.find('.roomlist_name').eq(0).text(roomlist[i][0])
 
 		if(roomlist[i][0] === room)
 		{
@@ -1753,10 +1760,10 @@ function update_roomlist(roomlist)
 			var t = "(" + roomlist[i][2] + ")"
 		}
 
-		$($(h).find('.roomlist_count').get(0)).text(t)		
-		$($(h).find('.roomlist_filler').get(0)).text(t)
+		h.find('.roomlist_count').eq(0).text(t)		
+		h.find('.roomlist_filler').eq(0).text(t)
 
-		$(h).click({room:roomlist[i][0]}, function(event)
+		h.click({room:roomlist[i][0]}, function(event)
 		{
 			goto_room(event.data.room)
 		})
@@ -1771,7 +1778,7 @@ function update_roomlist(roomlist)
 			var topic = 'No topic set'
 		}
 
-		$($(h).find('.roomlist_topic').get(0)).text(topic)
+		h.find('.roomlist_topic').eq(0).text(topic)
 
 		s = s.add(h)
 	}
@@ -1956,7 +1963,6 @@ function activate_key_detection()
 				if(arg.length > 0)
 				{
 					goto_room(arg)
-					hide_create_room_menu()
 					e.preventDefault()
 				}
 
@@ -2192,16 +2198,31 @@ function input_history_change(direction)
 
 function show_history()
 {
-	var s = ""
-
-	for(var item of input_history.slice().reverse())
+	if(input_history.length > 0)
 	{
-		s += `<div title='${item[1]}' class='show_history_item'>${item[0]}</div>`
+		var s = $("<div></div>")
+
+		for(var item of input_history.slice().reverse())
+		{
+			var h = $(`<div title='${item[1]}' class='show_history_item'></div>`)
+
+			h.text(item[0])
+
+			h.click({text:item[0]}, function(event)
+			{
+				change_input(event.data.text)
+				close_all_modals()
+			})
+
+			s.append(h)
+		}
+
+		s = s[0]
 	}
 
-	if(s === "")
+	else
 	{
-		s = "[ Messages or commands you type will appear here ]"
+		var s = "[ Messages or commands you type will appear here ]"		
 	}
 
 	show_info(s)
@@ -2413,7 +2434,6 @@ var resize_timer = (function()
 
 		timer = setTimeout(function() 
 		{
-			update_chat_scrollbar()
 			goto_bottom(true)
 		}, 350)
 	}
@@ -2447,17 +2467,6 @@ function remove_chat_scrollbar()
 		if(chat_scrollbar.element !== null)
 		{
 			chat_scrollbar.destroy()
-		}
-	}
-}
-
-function update_chat_scrollbar()
-{
-	if(chat_scrollbar !== undefined)
-	{
-		if(chat_scrollbar.element !== null)
-		{
-			chat_scrollbar.update()
 		}
 	}
 }
@@ -2525,16 +2534,16 @@ function update_chat(uname, msg)
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
 		var fmsg = $("<div title='" + date + "' class='msg chat_message'>* <span class='chat_uname'></span> <span class='" + contclasses + "'></span> *</div><div class='sep1'>&nbsp</div>")
-		$($(fmsg).find('.chat_content').get(0)).text(msg.substr(4)).urlize()
+		$(fmsg).find('.chat_content').eq(0).text(msg.substr(4)).urlize()
 	}
 
 	else
 	{
 		var fmsg = $("<div title='" + date + "' class='msg chat_message'><b><span class='chat_uname'></span>:</b>&nbsp<span class='" + contclasses + "'></span></div><div class='sep1'>&nbsp</div>")
-		$($(fmsg).find('.chat_content').get(0)).text(msg).urlize()
+		$(fmsg).find('.chat_content').eq(0).text(msg).urlize()
 	}
 	
-	$($(fmsg).find('.chat_uname').get(0)).text(uname).click({uname:uname}, function(event)
+	$(fmsg).find('.chat_uname').eq(0).text(uname).click({uname:uname}, function(event)
 	{
 		add_to_input(event.data.uname)
 	})
@@ -2568,14 +2577,9 @@ function add_msgcount()
 	msgcount += 1
 
 	if(msgcount > chat_crop_limit)
-	{
-		var els = $('#chat_area').children()
-
-		msgcount = els.length / 2
-
-		els.slice(0, msgcount).remove()
-
-		update_chat_scrollbar()
+	{	
+		var els = $('#chat_area').children()	
+		els.slice(0, 2).remove()
 	}
 }
 
@@ -2767,7 +2771,7 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 	if(typeof dotted === "string")
 	{
 		var fmsg = $("<div title='" + t + "' class='msg announcement announcement_" + size + "'>" + brk1 + " <span class='" + contclasses + "'></span><span class='dotted'></span> " + brk2 + "</div><div class='sep1'>&nbsp</div>")
-		$($(fmsg).find('.dotted').get(0)).text(dotted).urlize()
+		$(fmsg).find('.dotted').eq(0).text(dotted).urlize()
 	}
 
 	else
@@ -2775,7 +2779,7 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 		var fmsg = $("<div title='" + t + "' class='msg announcement announcement_" + size + "'>" + brk1 + " <span class='" + contclasses + "'></span> " + brk2 + "</div><div class='sep1'>&nbsp</div>")
 	}
 
-	$($(fmsg).find('.announcement_content').get(0)).text(msg).urlize()
+	$(fmsg).find('.announcement_content').eq(0).text(msg).urlize()
 
 	add_to_chat(fmsg)
 
@@ -3459,10 +3463,8 @@ function new_username(data)
 
 function start_chat()
 {
-	$('#chat_area').append('<br><br><br><div class="clear">&nbsp</div>')
-
+	clear_chat()
 	focus_input()
-
 	goto_bottom(true)
 }
 
@@ -3502,7 +3504,7 @@ function get_radio_metadata()
 			{
 
 			},
-			function(data) 
+			function(data)
 			{
 				try
 				{
@@ -3536,38 +3538,7 @@ function get_radio_metadata()
 						return false
 					}
 
-					var s = source.title + " - " + source.artist
-
-					var q = '"' + source.title + '" by "' + source.artist + '"'
-					
-					$('#now_playing').text(s)
-
-					$('#now_playing_area').data('q', q)
-
-					if(played[played.length - 1] !== s)
-					{
-						var date = dateFormat(Date.now(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
-						
-						var pi = "<div class='pititle'></div><div class='piartist'></div>"
-						
-						h = $("<div title='" + date + "' class='played_item'>" + pi + "</div><br>")
-						
-						$($(h).find('.pititle').get(0)).text(source.title)
-						$($(h).find('.piartist').get(0)).text("by " + source.artist)
-
-						$(h).data('q', q)
-
-						$(h).click(function()
-						{
-							search_in('google', $(this).data('q'))
-						})
-						
-						$('#played').prepend(h)
-
-						push_played(s)
-					}
-						
-					show_nowplaying()
+					push_played(source.title, source.artist)
 				}
 
 				catch(err)
@@ -3610,25 +3581,47 @@ function show_playing_file()
 	}
 }
 
-function push_played(pi)
+function push_played(title, artist)
 {
-	played.push(pi)
+	var s = title + " - " + artist
 
-	if(played.length >= 200)
+	var q = '"' + title + '" by "' + artist + '"'
+	
+	$('#now_playing').text(s)
+
+	$('#now_playing_area').data('q', q)
+
+	if(played[played.length - 1] !== s)
 	{
-		played.splice(0, 100)
+		var date = dateFormat(Date.now(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
+		
+		var pi = "<div class='pititle'></div><div class='piartist'></div>"
+		
+		h = $("<div title='" + date + "' class='played_item'>" + pi + "</div><br>")
+		
+		$(h).find('.pititle').eq(0).text(title)
+		$(h).find('.piartist').eq(0).text("by " + artist)
 
-		var els = $('#played').children()
+		$(h).data('q', q)
 
-		els.slice(els.length / 2).remove()
-
-		$('#played').append('<br>')
-
-		if(!$($('#played').children().get($('#played').children().length - 2)).is("br"))
+		$(h).click(function()
 		{
-			$('#played').append('<br>')
+			search_in('google', $(this).data('q'))
+		})
+		
+		$('#played').prepend(h)
+
+		played.push(s)
+
+		if(played.length > played_crop_limit)
+		{
+			var els = $('#played').children()
+			els.slice(els.length - 3, els.length - 1).remove()
+			played.splice(0, 1)
 		}
 	}
+		
+	show_nowplaying()					
 }
 
 function hide_nowplaying()
@@ -3887,8 +3880,6 @@ function activate_window_visibility_listener()
 			afk_timer = setTimeout(function(){afk = true}, afk_timeout_duration)
 
 			$('.dash_container').remove()
-
-			update_chat_scrollbar()
 		}
 	}, false)
 }
@@ -3919,7 +3910,7 @@ function copy_room_url()
 
 	pup()
 
-	msg_menu.close()
+	close_all_modals()
 }
 
 function copy_string(s)
@@ -3977,10 +3968,9 @@ function word_generator(pattern)
 
 function goto_room(id, sametab=false)
 {
-	id = clean_string4(id.substring(0, max_roomname_length))
+	close_all_modals()
 
-	msg_create_room.close()
-	msg_menu.close()
+	id = clean_string4(id.substring(0, max_roomname_length))
 
 	if(id !== main_room)
 	{
@@ -4026,15 +4016,15 @@ function initial_volume()
 
 function clear_chat()
 {
-	$('#chat_area').html('<br><br><br><div class="clear">&nbsp</div>')
+	$('#chat_area').html('<div class="clear">&nbsp<br><br><br><br></div>')
+
+	msgcount = 0
 
 	show_intro()
 	show_topic()
 	show_priv()
 	show_public()
 	scroll_timer()
-
-	msgcount = 0
 }
 
 function clear_input()
@@ -5344,13 +5334,6 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
-		after_create: function()
-		{
-			if(settings.custom_scrollbars)
-			{
-				start_modal_scrollbar("info")
-			}
-		},
 		after_show: function()
 		{
 			update_modal_scrollbar("info")
@@ -5371,6 +5354,20 @@ function start_msg()
 	msg_userlist.set(template_userlist())
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
+	msg_info.set(template_info())
+}
+
+function change_modal_color(color)
+{
+	for(var ins of msg_menu.instances())
+	{
+		ins.change_class(color)
+	}
+}
+
+function close_all_modals()
+{
+	msg_menu.close_all()
 }
 
 function get_settings()
@@ -5501,14 +5498,6 @@ function input_contrast_fix()
 	{
 		$("#input").css("padding-left", 0)
 		$("#input").css("padding-right", 0)
-	}
-}
-
-function change_modal_color(color)
-{
-	for(var ins of msg_menu.instances())
-	{
-		ins.change_class(color)
 	}
 }
 

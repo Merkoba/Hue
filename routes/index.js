@@ -14,6 +14,7 @@ c.general_opacity = config.general_opacity
 c.color_contrast_amount = config.color_contrast_amount
 c.default_modal_color = config.default_modal_color
 c.chat_crop_limit = config.chat_crop_limit
+c.played_crop_limit = config.played_crop_limit
 c.max_input_length = config.max_input_length
 c.max_topic_length = config.max_topic_length
 c.max_username_length = config.max_username_length
