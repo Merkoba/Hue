@@ -5212,13 +5212,13 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
-		after_show: function()
+		after_show: function(instance)
 		{
-			update_modal_scrollbar("menu")
+			on_modal_set_or_show(instance)
 		},
-		after_set: function()
+		after_set: function(instance)
 		{
-			update_modal_scrollbar("menu")
+			on_modal_set_or_show(instance)
 		},	
 		after_close: function()
 		{
@@ -5233,14 +5233,14 @@ function start_msg()
 		show_effect: "none",
 		close_effect: "none",
 		clear_editables: true,
-		after_show: function()
+		after_show: function(instance)
 		{
 			crm = true
-			update_modal_scrollbar("create-room")			
+			on_modal_set_or_show(instance)
 		},
-		after_set: function()
+		after_set: function(instance)
 		{
-			update_modal_scrollbar("create-room")
+			on_modal_set_or_show(instance)
 		},
 		after_close: function()
 		{
@@ -5255,13 +5255,13 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
-		after_show: function()
+		after_show: function(instance)
 		{
-			update_modal_scrollbar("settings")
+			on_modal_set_or_show(instance)
 		},
-		after_set: function()
+		after_set: function(instance)
 		{
-			update_modal_scrollbar("settings")
+			on_modal_set_or_show(instance)
 		},
 		after_close: function()
 		{
@@ -5275,13 +5275,13 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
-		after_show: function()
+		after_show: function(instance)
 		{
-			update_modal_scrollbar("userlist")
+			on_modal_set_or_show(instance)
 		},
-		after_set: function()
+		after_set: function(instance)
 		{
-			update_modal_scrollbar("userlist")
+			on_modal_set_or_show(instance)
 		},
 		after_close: function()
 		{
@@ -5295,13 +5295,13 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
-		after_show: function()
+		after_show: function(instance)
 		{
-			update_modal_scrollbar("roomlist")
+			on_modal_set_or_show(instance)
 		},
-		after_set: function()
+		after_set: function(instance)
 		{
-			update_modal_scrollbar("roomlist")
+			on_modal_set_or_show(instance)
 		},
 		after_close: function()
 		{
@@ -5315,13 +5315,13 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
-		after_show: function()
+		after_show: function(instance)
 		{
-			update_modal_scrollbar("played")
+			on_modal_set_or_show(instance)
 		},
-		after_set: function()
+		after_set: function(instance)
 		{
-			update_modal_scrollbar("played")
+			on_modal_set_or_show(instance)
 		},
 		after_close: function()
 		{
@@ -5335,13 +5335,13 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
-		after_show: function()
+		after_show: function(instance)
 		{
-			update_modal_scrollbar("info")
+			on_modal_set_or_show(instance)
 		},
-		after_set: function()
+		after_set: function(instance)
 		{
-			update_modal_scrollbar("info")
+			on_modal_set_or_show(instance)
 		},
 		after_close: function()
 		{
@@ -5356,6 +5356,11 @@ function start_msg()
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
 	msg_info.set(template_info())
+}
+
+function on_modal_set_or_show(instance)
+{
+	update_modal_scrollbar(instance.options.id)
 }
 
 function on_modal_close()
@@ -5623,10 +5628,10 @@ function start_storageui()
 					start_modal_scrollbar("storageui")
 				}
 			},
-			after_show: function()
+			after_show: function(instance)
 			{
 				sto = true
-				update_modal_scrollbar("storageui")
+
 				storageui_interval = setInterval(function()
 				{
 					if(settings.custom_scrollbars)
@@ -5634,10 +5639,12 @@ function start_storageui()
 						update_modal_scrollbar("storageui")
 					}
 				}, 1000)
+
+				on_modal_set_or_show(instance)
 			},
-			after_set: function()
+			after_set: function(instance)
 			{
-				update_modal_scrollbar("storageui")
+				on_modal_set_or_show(instance)
 			},
 			after_close: function()
 			{
