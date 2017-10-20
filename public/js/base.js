@@ -5574,16 +5574,11 @@ function start_storageui()
 				ls_name: "room_nicknames",
 				on_save: function(item)
 				{
-					localStorage.setItem(item.ls_name, item.value)
-					reload_room_nicknames()
-					storageui.view()
-					pup()
+					on_storageui_save(item)
 				},
 				on_reset: function(item)
 				{
-					localStorage.removeItem(item.ls_name)
-					reload_room_nicknames()
-					pup()					
+					on_storageui_save(item, true)				
 				},
 				on_copied: function(item)
 				{
@@ -5595,16 +5590,11 @@ function start_storageui()
 				ls_name: "room_keys",
 				on_save: function(item)
 				{
-					localStorage.setItem(item.ls_name, item.value)
-					reload_room_keys()
-					storageui.view()
-					pup()
+					on_storageui_save(item)
 				},
 				on_reset: function(item)
 				{
-					localStorage.removeItem(item.ls_name)
-					reload_room_keys()
-					pup()					
+					on_storageui_save(item, true)					
 				},
 				on_copied: function(item)
 				{
@@ -5616,16 +5606,11 @@ function start_storageui()
 				ls_name: "user_keys",
 				on_save: function(item)
 				{
-					localStorage.setItem(item.ls_name, item.value)
-					reload_user_keys()
-					storageui.view()
-					pup()
+					on_storageui_save(item)
 				},
 				on_reset: function(item)
 				{
-					localStorage.removeItem(item.ls_name)
-					reload_user_keys()
-					pup()
+					on_storageui_save(item, true)
 				},
 				on_copied: function(item)
 				{
@@ -5637,16 +5622,11 @@ function start_storageui()
 				ls_name: ls_settings,
 				on_save: function(item)
 				{
-					localStorage.setItem(item.ls_name, item.value)
-					reload_settings()
-					storageui.view()
-					pup()
+					on_storageui_save(item)
 				},
 				on_reset: function(item)
 				{
-					localStorage.removeItem(item.ls_name)
-					reload_settings()
-					pup()					
+					on_storageui_save(item, true)					
 				},
 				on_copied: function(item)
 				{
@@ -5654,6 +5634,10 @@ function start_storageui()
 				}
 			}
 		],
+		after_reset: function()
+		{
+			pup()
+		},
 		msg: Msg
 		({
 			id: "storageui",
@@ -5694,6 +5678,46 @@ function start_storageui()
 		})
 	})
 }
+
+function on_storageui_save(item, reset=false)
+{
+	if(reset)
+	{
+		localStorage.removeItem(item.ls_name)
+	}
+
+	else
+	{
+		localStorage.setItem(item.ls_name, item.value)
+	}
+
+	if(item.ls_name === "room_nicknames")
+	{
+		reload_room_nicknames()
+	}
+
+	else if(item.ls_name === 'room_keys')
+	{
+		reload_room_keys()
+	}
+
+	else if(item.ls_name === "user_keys")
+	{
+		reload_user_keys()
+	}
+
+	else if(item.ls_name === ls_settings)
+	{
+		reload_settings()
+	}
+
+	if(!reset)
+	{
+		storageui.view()
+		pup()
+	}
+}
+
 
 function show_data()
 {
