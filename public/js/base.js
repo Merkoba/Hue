@@ -5240,6 +5240,7 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		clear_editables: true,
 		after_create: function(instance)
 		{
 			after_modal_create(instance)
@@ -5293,6 +5294,7 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		clear_editables: true,
 		after_create: function(instance)
 		{
 			after_modal_create(instance)
@@ -5318,6 +5320,7 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		clear_editables: true,
 		after_create: function(instance)
 		{
 			after_modal_create(instance)
@@ -5343,6 +5346,7 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		clear_editables: true,
 		after_create: function(instance)
 		{
 			after_modal_create(instance)
@@ -5368,6 +5372,7 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		clear_editables: true,
 		after_create: function(instance)
 		{
 			after_modal_create(instance)
@@ -5393,6 +5398,7 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		clear_editables: true,
 		after_create: function(instance)
 		{
 			after_modal_create(instance)
@@ -5418,6 +5424,7 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		clear_editables: true,
 		after_create: function(instance)
 		{
 			after_modal_create(instance)
