@@ -36,7 +36,6 @@ var tabbed_word = ""
 var tabbed_start = 0
 var tabbed_end = 0
 var crm = false
-var sto = false
 var modal_open = false
 var started = false
 var connections = 0
@@ -60,6 +59,7 @@ var msg_userlist
 var msg_roomlist
 var msg_played
 var msg_info
+var msg_storageui
 
 function init()
 {
@@ -83,7 +83,7 @@ function init()
 	scroll_events()
 	resize_events()
 	register_commands()
-	setup_scrollbars()
+	start_chat_scrollbar()
 	start_socket()
 }
 
@@ -5234,12 +5234,16 @@ function start_msg()
 		var msg_class = default_modal_color
 	}
 
-	msg_menu = Msg(
-	{
+	msg_menu = Msg
+	({
 		id: "menu",
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		after_create: function(instance)
+		{
+			after_modal_create(instance)
+		},
 		after_show: function(instance)
 		{
 			after_modal_show(instance)
@@ -5249,19 +5253,23 @@ function start_msg()
 		{
 			after_modal_set_or_show(instance)
 		},	
-		after_close: function()
+		after_close: function(instance)
 		{
-			after_modal_close()
+			after_modal_close(instance)
 		}
 	})
 
-	msg_create_room = Msg(
-	{
+	msg_create_room = Msg
+	({
 		id: "create-room",
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
 		clear_editables: true,
+		after_create: function(instance)
+		{
+			after_modal_create(instance)
+		},		
 		after_show: function(instance)
 		{
 			crm = true
@@ -5272,19 +5280,23 @@ function start_msg()
 		{
 			after_modal_set_or_show(instance)
 		},
-		after_close: function()
+		after_close: function(instance)
 		{
 			crm = false
-			after_modal_close()
+			after_modal_close(instance)
 		}
 	})
 
-	msg_settings = Msg(
-	{
+	msg_settings = Msg
+	({
 		id: "settings",
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		after_create: function(instance)
+		{
+			after_modal_create(instance)
+		},		
 		after_show: function(instance)
 		{
 			after_modal_show(instance)
@@ -5294,18 +5306,22 @@ function start_msg()
 		{
 			after_modal_set_or_show(instance)
 		},
-		after_close: function()
+		after_close: function(instance)
 		{
-			after_modal_close()
+			after_modal_close(instance)
 		}
 	})
 
-	msg_userlist = Msg(
-	{
+	msg_userlist = Msg
+	({
 		id: "userlist",
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		after_create: function(instance)
+		{
+			after_modal_create(instance)
+		},		
 		after_show: function(instance)
 		{
 			after_modal_show(instance)
@@ -5315,18 +5331,22 @@ function start_msg()
 		{
 			after_modal_set_or_show(instance)
 		},
-		after_close: function()
+		after_close: function(instance)
 		{
-			after_modal_close()
+			after_modal_close(instance)
 		}
 	})
 
-	msg_roomlist = Msg(
-	{
+	msg_roomlist = Msg
+	({
 		id: "roomlist",
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		after_create: function(instance)
+		{
+			after_modal_create(instance)
+		},		
 		after_show: function(instance)
 		{
 			after_modal_show(instance)
@@ -5336,18 +5356,22 @@ function start_msg()
 		{
 			after_modal_set_or_show(instance)
 		},
-		after_close: function()
+		after_close: function(instance)
 		{
-			after_modal_close()
+			after_modal_close(instance)
 		}
 	})
 
-	msg_played = Msg(
-	{
+	msg_played = Msg
+	({
 		id: "played",
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		after_create: function(instance)
+		{
+			after_modal_create(instance)
+		},		
 		after_show: function(instance)
 		{
 			after_modal_show(instance)
@@ -5357,18 +5381,22 @@ function start_msg()
 		{
 			after_modal_set_or_show(instance)
 		},
-		after_close: function()
+		after_close: function(instance)
 		{
-			after_modal_close()
+			after_modal_close(instance)
 		}
 	})
 
-	msg_info = Msg(
-	{
+	msg_info = Msg
+	({
 		id: "info",
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
+		after_create: function(instance)
+		{
+			after_modal_create(instance)
+		},		
 		after_show: function(instance)
 		{
 			after_modal_show(instance)
@@ -5378,11 +5406,45 @@ function start_msg()
 		{
 			after_modal_set_or_show(instance)
 		},
-		after_close: function()
+		after_close: function(instance)
 		{
-			after_modal_close()
+			after_modal_close(instance)
 		}
 	})
+
+	msg_storageui = Msg
+	({
+		id: "storageui",
+		class: msg_class,
+		show_effect: "none",
+		close_effect: "none",
+		after_create: function(instance)
+		{
+			after_modal_create(instance)
+		},
+		after_show: function(instance)
+		{
+			storageui_interval = setInterval(function()
+			{
+				if(settings.custom_scrollbars)
+				{
+					update_modal_scrollbar("storageui")
+				}
+			}, 1000)
+
+			after_modal_show(instance)
+			after_modal_set_or_show(instance)
+		},
+		after_set: function(instance)
+		{
+			after_modal_set_or_show(instance)
+		},
+		after_close: function(instance)
+		{
+			clearInterval(storageui_interval)
+			after_modal_close(instance)
+		}
+	})	
 
 	msg_menu.set(template_menu())
 	msg_create_room.set(template_create_room())
@@ -5391,6 +5453,14 @@ function start_msg()
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
 	msg_info.set(template_info())
+}
+
+function after_modal_create(instance)
+{
+	if(settings.custom_scrollbars)
+	{
+		start_modal_scrollbar(instance.options.id)
+	}	
 }
 
 function after_modal_show(instance)
@@ -5403,7 +5473,7 @@ function after_modal_set_or_show(instance)
 	update_modal_scrollbar(instance.options.id)
 }
 
-function after_modal_close()
+function after_modal_close(instance)
 {
 	if(!msg_menu.any_open())
 	{
@@ -5652,45 +5722,7 @@ function start_storageui()
 		{
 			pup()
 		},
-		msg: Msg
-		({
-			id: "storageui",
-			class: msg_menu.options.class,
-			show_effect: "none",
-			close_effect: "none",
-			after_create: function()
-			{
-				if(settings.custom_scrollbars)
-				{
-					start_modal_scrollbar("storageui")
-				}
-			},
-			after_show: function(instance)
-			{
-				sto = true
-
-				storageui_interval = setInterval(function()
-				{
-					if(settings.custom_scrollbars)
-					{
-						update_modal_scrollbar("storageui")
-					}
-				}, 1000)
-
-				after_modal_show(instance)
-				after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				after_modal_set_or_show(instance)
-			},
-			after_close: function()
-			{
-				sto = false
-				clearInterval(storageui_interval)
-				after_modal_close()
-			}
-		})
+		msg: msg_storageui
 	})
 }
 
