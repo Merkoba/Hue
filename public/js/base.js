@@ -2655,7 +2655,6 @@ function start_image_events()
 			$('#input').css('background-color', input_bg_color)
 			$('#input').css('color', input_font_color)
 			$('#media').css('background-color', background_color)
-			$('.ps__thumb-y').css('background-color', background_color)
 	
 			$('#background_image').css('background-image', 'url(' + image_url + ')') 
 

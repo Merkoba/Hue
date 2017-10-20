@@ -366,9 +366,33 @@ a.chat:link, a.chat:visited, a.chat:hover
 	cursor: pointer;
 }
 
-.ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y 
+.ps__thumb-y
 {
-	width: 0px;
+	width: 6px !important;
+	transition: initial !important;
+	background-color: transparent !important;
+}
+
+.ps__rail-y,
+.ps__rail-y:hover,
+.ps__rail-y:focus
+{
+	width: 10px !important;
+	transition: initial !important;
+}
+
+.ps--scrolling-y .ps__rail-y 
+{
+	width: 10px !important;
+	background-color: #eee !important;
+}
+
+.ps__rail-y:hover .ps__thumb-y,
+.ps__rail-y:focus .ps__thumb-y,
+.ps--scrolling-y .ps__thumb-y 
+{
+	width: 6px !important;
+	background-color: #999 !important;
 }
 
 .dotted
