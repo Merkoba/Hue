@@ -90,7 +90,16 @@ function get_room_nicknames()
 {
 	if(localStorage["room_nicknames"])
 	{
-		room_nicknames = JSON.parse(localStorage.getItem("room_nicknames"))
+		try
+		{
+			room_nicknames = JSON.parse(localStorage.getItem("room_nicknames"))
+		}
+
+		catch(err)
+		{
+			localStorage.removeItem("room_nicknames")
+			room_nicknames = []
+		}
 	}
 
 	else
@@ -4093,7 +4102,16 @@ function get_room_keys()
 {
 	if(localStorage["room_keys"])
 	{
-		room_keys = JSON.parse(localStorage.getItem("room_keys"))
+		try
+		{
+			room_keys = JSON.parse(localStorage.getItem("room_keys"))
+		}
+
+		catch(err)
+		{
+			localStorage.removeItem("room_keys")
+			room_keys = []
+		}
 	}
 
 	else
@@ -4144,7 +4162,16 @@ function get_user_keys()
 {
 	if(localStorage["user_keys"])
 	{
-		user_keys = JSON.parse(localStorage.getItem("user_keys"))
+		try
+		{
+			user_keys = JSON.parse(localStorage.getItem("user_keys"))
+		}
+
+		catch(err)
+		{
+			localStorage.removeItem("user_keys")
+			user_keys = []
+		}		
 	}
 
 	else
@@ -5390,13 +5417,21 @@ function get_settings()
 
 	if(localStorage[ls_settings])
 	{
-		settings = JSON.parse(localStorage.getItem(ls_settings))
+		try
+		{
+			settings = JSON.parse(localStorage.getItem(ls_settings))
+		}
+
+		catch(err)
+		{
+			localStorage.removeItem(ls_settings)
+			settings = {}
+		}			
 	}
 
 	else
 	{
 		settings = {}
-		changed = true
 	}
 
 	if(settings.background_image === undefined)
@@ -5489,7 +5524,6 @@ function start_settings_listeners()
 	{
 		settings.custom_scrollbars = $("#setting_custom_scrollbars").prop("checked")
 		setup_scrollbars()
-		change()
 		save_settings()
 	})
 
@@ -5542,6 +5576,7 @@ function start_storageui()
 				{
 					localStorage.setItem(item.ls_name, item.value)
 					reload_room_nicknames()
+					storageui.view()
 					pup()
 				},
 				on_reset: function(item)
@@ -5562,12 +5597,14 @@ function start_storageui()
 				{
 					localStorage.setItem(item.ls_name, item.value)
 					reload_room_keys()
+					storageui.view()
 					pup()
 				},
 				on_reset: function(item)
 				{
 					localStorage.removeItem(item.ls_name)
 					reload_room_keys()
+					pup()					
 				},
 				on_copied: function(item)
 				{
@@ -5581,6 +5618,7 @@ function start_storageui()
 				{
 					localStorage.setItem(item.ls_name, item.value)
 					reload_user_keys()
+					storageui.view()
 					pup()
 				},
 				on_reset: function(item)
@@ -5601,6 +5639,7 @@ function start_storageui()
 				{
 					localStorage.setItem(item.ls_name, item.value)
 					reload_settings()
+					storageui.view()
 					pup()
 				},
 				on_reset: function(item)
@@ -5683,6 +5722,7 @@ function reload_settings()
 	change_modal_color(settings.modal_color)
 	setup_scrollbars()
 	change()
+	setup_opacity()
 }
 
 function show_info(s)
