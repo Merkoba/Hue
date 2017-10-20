@@ -2426,6 +2426,7 @@ var resize_timer = (function()
 
 		timer = setTimeout(function() 
 		{
+			update_chat_scrollbar()			
 			goto_bottom(true)
 		}, 350)
 	}
@@ -2459,6 +2460,17 @@ function remove_chat_scrollbar()
 		if(chat_scrollbar.element !== null)
 		{
 			chat_scrollbar.destroy()
+		}
+	}
+}
+
+function update_chat_scrollbar()
+{
+	if(chat_scrollbar !== undefined)
+	{
+		if(chat_scrollbar.element !== null)
+		{
+			chat_scrollbar.update()
 		}
 	}
 }
@@ -2572,6 +2584,7 @@ function add_msgcount()
 	{	
 		var els = $('#chat_area').children()	
 		els.slice(0, 2).remove()
+		update_chat_scrollbar()
 	}
 }
 
@@ -3856,8 +3869,8 @@ function activate_window_visibility_listener()
 		else
 		{
 			afk_timer = setTimeout(function(){afk = true}, afk_timeout_duration)
-
 			$('.dash_container').remove()
+			update_chat_scrollbar()
 		}
 	}, false)
 }
