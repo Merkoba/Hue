@@ -543,17 +543,9 @@ function start_socket()
 
 			if(connections === 1)
 			{
+				setup_opacity()
 				check_priv(data)
-				start_chat()
-				check_firstime()
-				get_user_keys()
-				start_nickname_context_menu()
-				start_main_menu_context_menu()
-				start_played_context_menu()
-				start_metadata_loop()
-				start_heartbeat()
-
-				start_chat()
+				clear_chat()
 				check_firstime()
 				get_user_keys()
 				start_nickname_context_menu()
@@ -2659,24 +2651,17 @@ function start_image_events()
 			$('#input').css('background-color', input_bg_color)
 			$('#input').css('color', input_font_color)
 			$('#media').css('background-color', background_color)
-	
-			$('#background_image').css('background-image', 'url(' + image_url + ')') 
-
-			if($('#background_image').css('background-repeat') === 'repeat')
-			{
-				$('#background_image').css('background-size', 'cover')          
-				$('#background_image').css('background-repeat', 'no-repeat')
-				$('#background_image').css('background-position', 'center center')  
-			}
 
 			if(settings.background_image)
 			{
-				set_opacity(general_opacity)
-			}
+				$('#background_image').css('background-image', 'url(' + image_url + ')') 
 
-			else
-			{
-				set_opacity(1)
+				if($('#background_image').css('background-repeat') === 'repeat')
+				{
+					$('#background_image').css('background-size', 'cover')          
+					$('#background_image').css('background-repeat', 'no-repeat')
+					$('#background_image').css('background-position', 'center center')  
+				}
 			}
 		}
 
@@ -3459,13 +3444,6 @@ function new_username(data)
 	}
 
 	replace_nick_in_userlist(data.old_username, data.username)
-}
-
-function start_chat()
-{
-	clear_chat()
-	focus_input()
-	goto_bottom(true)
 }
 
 function goto_bottom(force)
@@ -5452,6 +5430,7 @@ function start_settings_listeners()
 	{
 		settings.background_image = $("#setting_background_image").prop("checked")
 		change()
+		setup_opacity()
 		save_settings()
 	})
 
@@ -5498,6 +5477,19 @@ function input_contrast_fix()
 	{
 		$("#input").css("padding-left", 0)
 		$("#input").css("padding-right", 0)
+	}
+}
+
+function setup_opacity()
+{
+	if(settings.background_image)
+	{
+		set_opacity(general_opacity)
+	}
+
+	else
+	{
+		set_opacity(1)
 	}
 }
 
