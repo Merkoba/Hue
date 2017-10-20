@@ -37,6 +37,7 @@ var tabbed_start = 0
 var tabbed_end = 0
 var crm = false
 var sto = false
+var modal_open = false
 var started = false
 var connections = 0
 var afk_timer
@@ -1973,17 +1974,17 @@ function activate_key_detection()
 			return
 		}
 
+		if(modal_open)
+		{
+			return
+		}
+
 		if(e.ctrlKey)
 		{
-			if(window.getSelection().toString() != "")
+			if(window.getSelection().toString() !== "")
 			{
 				return
 			}
-		}
-
-		if(sto)
-		{
-			return
 		}
 
 		focus_input()
@@ -5241,15 +5242,16 @@ function start_msg()
 		close_effect: "none",
 		after_show: function(instance)
 		{
-			on_modal_set_or_show(instance)
+			after_modal_show(instance)
+			after_modal_set_or_show(instance)
 		},
 		after_set: function(instance)
 		{
-			on_modal_set_or_show(instance)
+			after_modal_set_or_show(instance)
 		},	
 		after_close: function()
 		{
-			on_modal_close()
+			after_modal_close()
 		}
 	})
 
@@ -5263,16 +5265,17 @@ function start_msg()
 		after_show: function(instance)
 		{
 			crm = true
-			on_modal_set_or_show(instance)
+			after_modal_show(instance)
+			after_modal_set_or_show(instance)
 		},
 		after_set: function(instance)
 		{
-			on_modal_set_or_show(instance)
+			after_modal_set_or_show(instance)
 		},
 		after_close: function()
 		{
 			crm = false
-			on_modal_close()
+			after_modal_close()
 		}
 	})
 
@@ -5284,15 +5287,16 @@ function start_msg()
 		close_effect: "none",
 		after_show: function(instance)
 		{
-			on_modal_set_or_show(instance)
+			after_modal_show(instance)
+			after_modal_set_or_show(instance)
 		},
 		after_set: function(instance)
 		{
-			on_modal_set_or_show(instance)
+			after_modal_set_or_show(instance)
 		},
 		after_close: function()
 		{
-			on_modal_close()
+			after_modal_close()
 		}
 	})
 
@@ -5304,15 +5308,16 @@ function start_msg()
 		close_effect: "none",
 		after_show: function(instance)
 		{
-			on_modal_set_or_show(instance)
+			after_modal_show(instance)
+			after_modal_set_or_show(instance)
 		},
 		after_set: function(instance)
 		{
-			on_modal_set_or_show(instance)
+			after_modal_set_or_show(instance)
 		},
 		after_close: function()
 		{
-			on_modal_close()
+			after_modal_close()
 		}
 	})
 
@@ -5324,15 +5329,16 @@ function start_msg()
 		close_effect: "none",
 		after_show: function(instance)
 		{
-			on_modal_set_or_show(instance)
+			after_modal_show(instance)
+			after_modal_set_or_show(instance)
 		},
 		after_set: function(instance)
 		{
-			on_modal_set_or_show(instance)
+			after_modal_set_or_show(instance)
 		},
 		after_close: function()
 		{
-			on_modal_close()
+			after_modal_close()
 		}
 	})
 
@@ -5344,15 +5350,16 @@ function start_msg()
 		close_effect: "none",
 		after_show: function(instance)
 		{
-			on_modal_set_or_show(instance)
+			after_modal_show(instance)
+			after_modal_set_or_show(instance)
 		},
 		after_set: function(instance)
 		{
-			on_modal_set_or_show(instance)
+			after_modal_set_or_show(instance)
 		},
 		after_close: function()
 		{
-			on_modal_close()
+			after_modal_close()
 		}
 	})
 
@@ -5364,15 +5371,16 @@ function start_msg()
 		close_effect: "none",
 		after_show: function(instance)
 		{
-			on_modal_set_or_show(instance)
+			after_modal_show(instance)
+			after_modal_set_or_show(instance)
 		},
 		after_set: function(instance)
 		{
-			on_modal_set_or_show(instance)
+			after_modal_set_or_show(instance)
 		},
 		after_close: function()
 		{
-			on_modal_close()
+			after_modal_close()
 		}
 	})
 
@@ -5385,15 +5393,21 @@ function start_msg()
 	msg_info.set(template_info())
 }
 
-function on_modal_set_or_show(instance)
+function after_modal_show(instance)
+{
+	modal_open = true
+}
+
+function after_modal_set_or_show(instance)
 {
 	update_modal_scrollbar(instance.options.id)
 }
 
-function on_modal_close()
+function after_modal_close()
 {
 	if(!msg_menu.any_open())
 	{
+		modal_open = false
 		focus_input()
 	}
 }
@@ -5663,17 +5677,18 @@ function start_storageui()
 					}
 				}, 1000)
 
-				on_modal_set_or_show(instance)
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
 			},
 			after_set: function(instance)
 			{
-				on_modal_set_or_show(instance)
+				after_modal_set_or_show(instance)
 			},
 			after_close: function()
 			{
 				sto = false
 				clearInterval(storageui_interval)
-				on_modal_close()
+				after_modal_close()
 			}
 		})
 	})
