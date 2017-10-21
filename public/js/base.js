@@ -5234,224 +5234,224 @@ function start_msg()
 		var msg_class = default_modal_color
 	}
 
-	msg_menu = Msg
-	({
-		id: "menu",
+	var common = 
+	{
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
-		clear_editables: true,
-		after_create: function(instance)
+		clear_editables: true	
+	}
+
+	msg_menu = Msg
+	(
+		Object.assign({}, common,
 		{
-			after_modal_create(instance)
-		},
-		after_show: function(instance)
-		{
-			after_modal_show(instance)
-			after_modal_set_or_show(instance)
-		},
-		after_set: function(instance)
-		{
-			after_modal_set_or_show(instance)
-		},	
-		after_close: function(instance)
-		{
-			after_modal_close(instance)
-		}
-	})
+			id: "menu",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+			}
+		})
+	)
 
 	msg_create_room = Msg
-	({
-		id: "create-room",
-		class: msg_class,
-		show_effect: "none",
-		close_effect: "none",
-		clear_editables: true,
-		after_create: function(instance)
-		{
-			after_modal_create(instance)
-		},		
-		after_show: function(instance)
-		{
-			crm = true
-			after_modal_show(instance)
-			after_modal_set_or_show(instance)
-		},
-		after_set: function(instance)
-		{
-			after_modal_set_or_show(instance)
-		},
-		after_close: function(instance)
-		{
-			crm = false
-			after_modal_close(instance)
-		}
-	})
+	(
+		Object.assign({}, common,
+		{	
+			id: "create-room",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				crm = true
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				crm = false
+				after_modal_close(instance)
+			}
+		})
+	)
 
 	msg_settings = Msg
-	({
-		id: "settings",
-		class: msg_class,
-		show_effect: "none",
-		close_effect: "none",
-		clear_editables: true,
-		after_create: function(instance)
-		{
-			after_modal_create(instance)
-		},		
-		after_show: function(instance)
-		{
-			after_modal_show(instance)
-			after_modal_set_or_show(instance)
-		},
-		after_set: function(instance)
-		{
-			after_modal_set_or_show(instance)
-		},
-		after_close: function(instance)
-		{
-			after_modal_close(instance)
-		}
-	})
+	(
+		Object.assign({}, common,
+		{		
+			id: "settings",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+			}
+		})
+	)
 
 	msg_userlist = Msg
-	({
-		id: "userlist",
-		class: msg_class,
-		show_effect: "none",
-		close_effect: "none",
-		clear_editables: true,
-		after_create: function(instance)
-		{
-			after_modal_create(instance)
-		},		
-		after_show: function(instance)
-		{
-			after_modal_show(instance)
-			after_modal_set_or_show(instance)
-		},
-		after_set: function(instance)
-		{
-			after_modal_set_or_show(instance)
-		},
-		after_close: function(instance)
-		{
-			after_modal_close(instance)
-		}
-	})
+	(
+		Object.assign({}, common,
+		{		
+			id: "userlist",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+			}
+		})
+	)
 
 	msg_roomlist = Msg
-	({
-		id: "roomlist",
-		class: msg_class,
-		show_effect: "none",
-		close_effect: "none",
-		clear_editables: true,
-		after_create: function(instance)
+	(
+		Object.assign({}, common,
 		{
-			after_modal_create(instance)
-		},		
-		after_show: function(instance)
-		{
-			after_modal_show(instance)
-			after_modal_set_or_show(instance)
-		},
-		after_set: function(instance)
-		{
-			after_modal_set_or_show(instance)
-		},
-		after_close: function(instance)
-		{
-			after_modal_close(instance)
-		}
-	})
+			id: "roomlist",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+			}
+		})
+	)
 
 	msg_played = Msg
-	({
-		id: "played",
-		class: msg_class,
-		show_effect: "none",
-		close_effect: "none",
-		clear_editables: true,
-		after_create: function(instance)
+	(
+		Object.assign({}, common,
 		{
-			after_modal_create(instance)
-		},		
-		after_show: function(instance)
-		{
-			after_modal_show(instance)
-			after_modal_set_or_show(instance)
-		},
-		after_set: function(instance)
-		{
-			after_modal_set_or_show(instance)
-		},
-		after_close: function(instance)
-		{
-			after_modal_close(instance)
-		}
-	})
+			id: "played",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+			}
+		})
+	)
 
 	msg_info = Msg
-	({
-		id: "info",
-		class: msg_class,
-		show_effect: "none",
-		close_effect: "none",
-		clear_editables: true,
-		after_create: function(instance)
+	(
+		Object.assign({}, common,
 		{
-			after_modal_create(instance)
-		},		
-		after_show: function(instance)
-		{
-			after_modal_show(instance)
-			after_modal_set_or_show(instance)
-		},
-		after_set: function(instance)
-		{
-			after_modal_set_or_show(instance)
-		},
-		after_close: function(instance)
-		{
-			after_modal_close(instance)
-		}
-	})
+			id: "info",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+			}
+		})
+	)
 
 	msg_storageui = Msg
-	({
-		id: "storageui",
-		class: msg_class,
-		show_effect: "none",
-		close_effect: "none",
-		clear_editables: true,
-		after_create: function(instance)
+	(
+		Object.assign({}, common,
 		{
-			after_modal_create(instance)
-		},
-		after_show: function(instance)
-		{
-			storageui_interval = setInterval(function()
+			id: "storageui",
+			after_create: function(instance)
 			{
-				if(settings.custom_scrollbars)
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				storageui_interval = setInterval(function()
 				{
-					update_modal_scrollbar("storageui")
-				}
-			}, 1000)
+					if(settings.custom_scrollbars)
+					{
+						update_modal_scrollbar("storageui")
+					}
+				}, 1000)
 
-			after_modal_show(instance)
-			after_modal_set_or_show(instance)
-		},
-		after_set: function(instance)
-		{
-			after_modal_set_or_show(instance)
-		},
-		after_close: function(instance)
-		{
-			clearInterval(storageui_interval)
-			after_modal_close(instance)
-		}
-	})	
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				clearInterval(storageui_interval)
+				after_modal_close(instance)
+			}
+		})
+	)	
 
 	msg_menu.set(template_menu())
 	msg_create_room.set(template_create_room())
