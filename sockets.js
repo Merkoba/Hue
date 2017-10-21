@@ -133,6 +133,19 @@ module.exports = function(io)
 			}
 		})
 
+		socket.on('username_unreserve', function(data) 
+		{
+			try
+			{
+				username_unreserve(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
 		socket.on('username_recover', function(data) 
 		{
 			try
@@ -772,6 +785,12 @@ module.exports = function(io)
 	{
 		if(socket.username !== undefined)
 		{
+			if(data.key === undefined)
+			{
+				socket.disconnect()
+				return false
+			}
+
 			get_userinfo(socket.username, function(userinfo)
 			{
 				if(userinfo.key === '' || userinfo.key === data.key || data.pass === config.secretpass)
@@ -796,6 +815,35 @@ module.exports = function(io)
 				else
 				{
 					socket.emit('update', {room:socket.room, type:'alreadyreserved'})
+				}
+			})
+		}
+	}
+
+	function username_unreserve(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(data.key === undefined)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			get_userinfo(socket.username, function(userinfo)
+			{
+				if(userinfo.key !== '' && userinfo.key === data.key)
+				{
+					userinfo.key = ''
+
+					socket.emit('update', {room:socket.room, type:'unreserved', username:userinfo.username})
+
+					db.collection('users').update({_id:userinfo._id}, {$set:{key:userinfo.key}})
+				}
+
+				else
+				{
+					socket.emit('update', {room:socket.room, type:'couldnotrecover'})
 				}
 			})
 		}

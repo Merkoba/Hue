@@ -1,5 +1,8 @@
 var socket
-var ls_settings = "settings_v1"
+var ls_room_nicknames = "room_nicknames_v2"
+var ls_room_keys = "room_keys_v2"
+var ls_user_keys = "user_keys_v2"
+var ls_settings = "settings_v2"
 var settings
 var is_public
 var room
@@ -14,12 +17,8 @@ var played = []
 var input_history = []
 var input_history_index = 0
 var usercount
-var room_keys
-var room_key = ''
 var userlist = []
-var user_keys
 var nicknames = []
-var room_nicknames
 var priv = ''
 var upload_permission
 var chat_permission
@@ -76,7 +75,6 @@ function init()
 	start_volume_scroll()
 	initial_volume()
 	activate_window_visibility_listener()
-	get_room_keys()
 	activate_key_detection()
 	input_click_events()
 	copypaste_events()
@@ -90,51 +88,42 @@ function init()
 
 function get_room_nicknames()
 {
-	if(localStorage["room_nicknames"])
+	if(localStorage[ls_room_nicknames])
 	{
 		try
 		{
-			room_nicknames = JSON.parse(localStorage.getItem("room_nicknames"))
+			room_nicknames = JSON.parse(localStorage.getItem(ls_room_nicknames))
 		}
 
 		catch(err)
 		{
-			localStorage.removeItem("room_nicknames")
-			room_nicknames = []
+			localStorage.removeItem(ls_room_nicknames)
+			room_nicknames = {}
 		}
 	}
 
 	else
 	{
-		room_nicknames = []
-	}	
+		room_nicknames = {}
+	}
+
+	return room_nicknames
+}
+
+function save_room_nicknames()
+{
+	localStorage.setItem(ls_room_nicknames, JSON.stringify(room_nicknames))
 }
 
 function get_nickname()
 {
-	get_room_nicknames()
+	var room_nicknames = get_room_nicknames()
 
-	var uname
-
-	for(var i=0; i<room_nicknames.length; i++)
-	{
-		if(room_nicknames[i][0] === room)
-		{
-			uname = room_nicknames[i][1]
-			break
-		}
-	}
+	var uname = room_nicknames[room]
 
 	if(uname === undefined)
 	{
-		for(var i=0; i<room_nicknames.length; i++)
-		{
-			if(room_nicknames[i][0] === '/default')
-			{
-				uname = room_nicknames[i][1]
-				break
-			}
-		}
+		uname = room_nicknames['/default']
 	}
 
 	if(uname === undefined)
@@ -165,40 +154,20 @@ function get_nickname()
 
 function save_room_nickname(uname)
 {
-	if(typeof room_nicknames === "object" && room_nicknames.length > 0)
-	{
-		for(var i=0; i<room_nicknames.length; i++)
-		{
-			if(room_nicknames[i][0] === room)
-			{
-				room_nicknames.splice(i, 1)
-				break
-			}
-		}	
-	}
+	var room_nicknames = get_room_nicknames()
 
-	room_nicknames.push([room, uname])
+	room_nicknames[room] = uname
 
-	localStorage.setItem('room_nicknames', JSON.stringify(room_nicknames))
+	save_room_nicknames(room_nicknames)
 }
 
 function save_default_nickname(uname)
 {
-	if(typeof room_nicknames === "object" && room_nicknames.length > 0)
-	{
-		for(var i=0; i<room_nicknames.length; i++)
-		{
-			if(room_nicknames[i][0] === '/default')
-			{
-				room_nicknames.splice(i, 1)
-				break
-			}
-		}	
-	}
+	var room_nicknames = get_room_nicknames()
 
-	room_nicknames.push(['/default', uname])
+	room_nicknames['/default'] = uname
 
-	localStorage.setItem('room_nicknames', JSON.stringify(room_nicknames))
+	save_room_nicknames(room_nicknames)
 }
 
 function show_intro()
@@ -512,7 +481,7 @@ function start_socket()
 
 	socket.on('connect', function() 
 	{
-		socket.emit('join_room', {room:room, username:username, key:room_key})
+		socket.emit('join_room', {room:room, username:username, key:get_room_key()})
 	})
 
 	socket.on('update', function(data) 
@@ -558,7 +527,6 @@ function start_socket()
 				setup_opacity()
 				clear_chat()
 				check_firstime()
-				get_user_keys()
 				start_nickname_context_menu()
 				start_main_menu_context_menu()
 				start_played_context_menu()
@@ -744,6 +712,11 @@ function start_socket()
 		else if(data.type === 'reserved')
 		{
 			reserved(data)
+		}
+
+		else if(data.type === 'unreserved')
+		{
+			unreserved(data)
 		}
 
 		else if(data.type === 'alreadyreserved')
@@ -2790,16 +2763,26 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 	{
 		var t = date
 	}
+
+	if(brk1 !== "")
+	{
+		brk1 = `${brk1}&nbsp;`
+	}
+
+	if(brk2 !== "")
+	{
+		brk2 = `&nbsp;${brk2}`
+	}
 	
 	if(typeof dotted === "string")
 	{
-		var fmsg = $(`<div title='${t}' class='msg announcement announcement_${size}'>${brk1}&nbsp;<span class='${contclasses}'></span><span class='dotted'></span>&nbsp;${brk2}</div><div class='sep1'>&nbsp</div>`)
+		var fmsg = $(`<div title='${t}' class='msg announcement announcement_${size}'>${brk1}<span class='${contclasses}'></span><span class='dotted'></span>${brk2}</div><div class='sep1'>&nbsp</div>`)
 		$(fmsg).find('.dotted').eq(0).text(dotted).urlize()
 	}
 
 	else
 	{
-		var fmsg = $(`<div title='${t}' class='msg announcement announcement_${size}'>${brk1}&nbsp;<span class='${contclasses}'></span>&nbsp;${brk2}</div><div class='sep1'>&nbsp</div>`)
+		var fmsg = $(`<div title='${t}' class='msg announcement announcement_${size}'>${brk1}<span class='${contclasses}'></span>${brk2}</div><div class='sep1'>&nbsp</div>`)
 	}
 
 	$(fmsg).find('.announcement_content').eq(0).text(msg).urlize()
@@ -2898,6 +2881,7 @@ function register_commands()
 	commands.push('/radio')
 	commands.push('/privacy')
 	commands.push('/reserve')
+	commands.push('/unreserve')
 	commands.push('/recover')
 	commands.push('/status')
 	commands.push('/topic')
@@ -3109,6 +3093,11 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/reserve'))
 			{
 				reserve()
+			}
+
+			else if(oiEquals(lmsg, '/unreserve'))
+			{
+				unreserve()
 			}
 
 			else if(oiStartsWith(lmsg, '/recover'))
@@ -3462,14 +3451,9 @@ function change_default_nickname(nck)
 
 function show_default_nickname()
 {
-	for(var i=0; i<room_nicknames.length; i++)
-	{
-		if(room_nicknames[i][0] === '/default')
-		{
-			chat_announce('[', ']', `Default Nickname: ${room_nicknames[i][1]}`, 'small')
-			break
-		}
-	}
+	var room_nicknames = get_room_nicknames()
+
+	chat_announce('[', ']', `Default Nickname: ${room_nicknames['/default']}`, 'small')
 }
 
 function new_username(data)
@@ -4122,126 +4106,111 @@ function unclaim_room()
 
 function get_room_keys()
 {
-	if(localStorage["room_keys"])
+	if(localStorage[ls_room_keys])
 	{
 		try
 		{
-			room_keys = JSON.parse(localStorage.getItem("room_keys"))
+			room_keys = JSON.parse(localStorage.getItem(ls_room_keys))
 		}
 
 		catch(err)
 		{
-			localStorage.removeItem("room_keys")
-			room_keys = []
+			localStorage.removeItem(ls_room_keys)
+			room_keys = {}
 		}
 	}
 
 	else
 	{
-		room_keys = []
+		room_keys = {}
 	}
 
-	if(typeof room_keys === "object" && room_keys.length > 0)
+	return room_keys
+}
+
+function save_room_keys(room_keys)
+{
+	localStorage.setItem(ls_room_keys, JSON.stringify(room_keys))	
+}
+
+function get_room_key()
+{
+	var key = get_room_keys()[room]
+
+	if(key === undefined)
 	{
-		for(var i=0; i<room_keys.length; i++)
-		{
-			if(room_keys[i][0] == room)
-			{
-				room_key = room_keys[i][1]
-				return
-			}
-		}
+		key = ""
 	}
 
-	else
-	{
-		room_keys = []
-	}
+	return key
 }
 
 function save_room_key(key)
 {
-	room_key = key
+	var room_keys = get_room_keys()
 
-	if(typeof room_keys === "object" && room_keys.length > 0)
-	{
-		for(var i=0; i<room_keys.length; i++)
-		{
-			if(room_keys[i][0] == room)
-			{
-				room_keys.splice(i, 1)
-				break
-			}
-		}	
-	}
+	room_keys[room] = key
 
-	room_keys.push([room, key])
-
-	localStorage.setItem('room_keys', JSON.stringify(room_keys))
+	save_room_keys(room_keys)
 }
 
 function get_user_keys()
 {
-	if(localStorage["user_keys"])
+	if(localStorage[ls_user_keys])
 	{
 		try
 		{
-			user_keys = JSON.parse(localStorage.getItem("user_keys"))
+			user_keys = JSON.parse(localStorage.getItem(ls_user_keys))
 		}
 
 		catch(err)
 		{
-			localStorage.removeItem("user_keys")
-			user_keys = []
+			localStorage.removeItem(ls_user_keys)
+			user_keys = {}
 		}		
 	}
 
 	else
 	{
-		user_keys = []
+		user_keys = {}
 	}
 
-	if(typeof user_keys === "object" && user_keys.length > 0)
-	{
+	return user_keys
+}
 
-	}
-
-	else
-	{
-		user_keys = []
-	}
+function save_user_keys(user_keys)
+{
+	localStorage.setItem(ls_user_keys, JSON.stringify(user_keys))	
 }
 
 function get_user_key(nck)
 {
-	for(var i=0; i<user_keys.length; i++)
+	var key = get_user_keys()[nck]
+
+	if(key === undefined)
 	{
-		if(user_keys[i][0] === nck)
-		{
-			return user_keys[i][1]
-		}
+		key = ""
 	}
 
-	return ''
+	return key
 }
 
 function save_user_key(key)
 {
-	if(typeof user_keys === "object" && user_keys.length > 0)
-	{
-		for(var i=0; i<user_keys.length; i++)
-		{
-			if(user_keys[i][0] === username)
-			{
-				user_keys.splice(i, 1)
-				break
-			}
-		}	
-	}
+	var user_keys = get_user_keys()
 
-	user_keys.push([username, key])
+	user_keys[username] = key
 
-	localStorage.setItem('user_keys', JSON.stringify(user_keys))
+	save_user_keys(user_keys)
+}
+
+function remove_user_key()
+{
+	var user_keys = get_user_keys()
+
+	delete user_keys[username]
+
+	save_user_keys(user_keys)
 }
 
 function check_firstime()
@@ -4257,19 +4226,17 @@ function change_priv(key)
 {
 	save_room_key(key)
 
-	room_key = key
-
-	if(room_key.startsWith('_key_'))
+	if(key.startsWith('_key_'))
 	{
 		priv = 'admin'
 	}
 
-	else if(room_key.startsWith('_okey_'))
+	else if(key.startsWith('_okey_'))
 	{
 		priv = 'op'
 	}
 
-	else if(room_key.startsWith('_vkey_'))
+	else if(key.startsWith('_vkey_'))
 	{
 		priv = 'voice'
 	}
@@ -4657,7 +4624,6 @@ function announce_strip(data)
 
 function stripped()
 {
-	room_key = ''
 	priv = ''
 	check_permissions()
 }
@@ -4931,6 +4897,25 @@ function reserved(data)
 	save_user_key(data.key)
 }
 
+function unreserve()
+{
+	var key = get_user_key(username)
+
+	if(key === '')
+	{
+		chat_announce('[', ']', "You don't seem to own that nickname", 'small')
+		return false
+	}
+
+	socket.emit('username_unreserve', {key:get_user_key(username)})
+}
+
+function unreserved(data)
+{
+	chat_announce('[', ']', `You have unreserved ${data.username}`, 'small')
+	remove_user_key()
+}
+
 function recover(nck)
 {
 	if(!can_chat)
@@ -4949,11 +4934,13 @@ function recover(nck)
 
 	var key = get_user_key(nck)
 
-	if(key === undefined)
+	if(key === '')
 	{
 		chat_announce('[', ']', "You don't seem to own that nickname", 'small')
 		return false
 	}
+
+	save_room_nickname(nck)	
 
 	socket.emit('username_recover', {username:nck, key:key})
 }
@@ -5718,7 +5705,7 @@ function start_storageui()
 		[
 			{
 				name: "Room Nicknames",
-				ls_name: "room_nicknames",
+				ls_name: ls_room_nicknames,
 				on_save: function(item)
 				{
 					on_storageui_save(item)
@@ -5734,7 +5721,7 @@ function start_storageui()
 			},
 			{
 				name: "Room Keys",
-				ls_name: "room_keys",
+				ls_name: ls_room_keys,
 				on_save: function(item)
 				{
 					on_storageui_save(item)
@@ -5750,7 +5737,7 @@ function start_storageui()
 			},
 			{
 				name: "User Keys",
-				ls_name: "user_keys",
+				ls_name: ls_user_keys,
 				on_save: function(item)
 				{
 					on_storageui_save(item)
@@ -5801,29 +5788,14 @@ function on_storageui_save(item, reset=false)
 		localStorage.setItem(item.ls_name, item.value)
 	}
 
-	if(item.ls_name === "room_nicknames")
-	{
-		reload_room_nicknames()
-	}
-
-	else if(item.ls_name === 'room_keys')
-	{
-		reload_room_keys()
-	}
-
-	else if(item.ls_name === "user_keys")
-	{
-		reload_user_keys()
-	}
-
-	else if(item.ls_name === ls_settings)
+	if(item.ls_name === ls_settings)
 	{
 		reload_settings()
+		storageui.view()
 	}
 
 	if(!reset)
 	{
-		storageui.view()
 		pup()
 	}
 }
@@ -5831,21 +5803,6 @@ function on_storageui_save(item, reset=false)
 function show_data()
 {
 	storageui.menu()
-}
-
-function reload_room_nicknames()
-{
-	get_room_nicknames()
-}
-
-function reload_room_keys()
-{
-	get_room_keys()
-}
-
-function reload_user_keys()
-{
-	get_user_keys()
 }
 
 function reload_settings()
