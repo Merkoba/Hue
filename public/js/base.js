@@ -203,7 +203,7 @@ function save_default_nickname(uname)
 
 function show_intro()
 {
-	chat_announce('', '', 'Welcome to ' + room + ', ' + username, 'big')
+	chat_announce('', '', `Welcome to ${room}, ${username}`, 'big')
 }
 
 function show_reconnected()
@@ -323,12 +323,12 @@ function show_public()
 
 function show_room()
 {
-	chat_announce('[', ']', 'Room: ' + room, 'small')
+	chat_announce('[', ']', `Room: ${room}`, 'small')
 }
 
 function show_radiosrc()
 {
-	chat_announce('[', ']', 'Radio: ' + radiosrc, 'small')
+	chat_announce('[', ']', `Radio: ${radiosrc}`, 'small')
 }
 
 function show_topic()
@@ -337,12 +337,12 @@ function show_topic()
 	{
 		if(topic_setter !== "")
 		{
-			chat_announce('', '', 'Topic: ' + topic, 'big', false, "Set by " + topic_setter)
+			chat_announce('', '', `Topic: ${topic}`, 'big', false, `Set by ${topic_setter}`)
 		}
 
 		else
 		{
-			chat_announce('', '', 'Topic: ' + topic, 'big')
+			chat_announce('', '', `Topic: ${topic}`, 'big')
 		}
 	}
 
@@ -350,12 +350,12 @@ function show_topic()
 	{
 		if(claimed)
 		{
-			chat_announce('', '', 'Topic: ' + default_topic_claimed, 'big')
+			chat_announce('', '', `Topic: ${default_topic_claimed}`, 'big')
 		}
 
 		else
 		{
-			chat_announce('', '', 'Topic: ' + default_topic, 'big')
+			chat_announce('', '', `Topic: ${default_topic}`, 'big')
 		}
 	}
 }
@@ -364,19 +364,19 @@ function show_topic2()
 {
 	if(topic)
 	{
-		chat_announce('[', ']', 'Topic: ' + topic, 'small')
+		chat_announce('[', ']', `Topic: ${topic}`, 'small')
 	}
 
 	else
 	{
 		if(claimed)
 		{
-			chat_announce('[', ']', 'Topic: ' + default_topic_claimed, 'small')
+			chat_announce('[', ']', `Topic: ${default_topic_claimed}`, 'small')
 		}
 
 		else
 		{
-			chat_announce('[', ']', 'Topic: ' + default_topic, 'small')
+			chat_announce('[', ']', `Topic: ${default_topic}`, 'small')
 		}
 	}
 }
@@ -503,7 +503,7 @@ function show_priv(data)
 
 function show_nickname()
 {
-	chat_announce('[', ']', 'Nickname: ' + username, 'small')
+	chat_announce('[', ']', `Nickname: ${username}`, 'small')
 }
 
 function start_socket()
@@ -603,7 +603,7 @@ function start_socket()
 
 			if(check_chat_permission(data.priv))
 			{
-				chat_announce('--', '--', data.username + ' has joined', 'small')
+				chat_announce('--', '--', `${data.username} has joined`, 'small')
 			}
 		}
 
@@ -682,12 +682,12 @@ function start_socket()
 		{
 			if(data.count == 1)
 			{
-				chat_announce('[', ']', "There is " + data.count + " user banned", 'small')
+				chat_announce('[', ']', `There is ${data.count} user banned`, 'small')
 			}
 
 			else
 			{
-				chat_announce('[', ']', "There are " + data.count + " users banned", 'small')
+				chat_announce('[', ']', `There are ${data.count} users banned`, 'small')
 			}
 		}
 
@@ -748,7 +748,7 @@ function start_socket()
 
 		else if(data.type === 'alreadyreserved')
 		{
-			chat_announce('[', ']', username + " is already reserved", 'small')
+			chat_announce('[', ']', `${username} is already reserved`, 'small')
 		}
 
 		else if(data.type === 'couldnotrecover')
@@ -767,7 +767,7 @@ function start_socket()
 
 			if(check_chat_permission(data.priv))
 			{
-				chat_announce('--', '--', data.username + ' has left', 'small')
+				chat_announce('--', '--', `${data.username} has left`, 'small')
 			}
 		}
 
@@ -813,12 +813,12 @@ function setup_radio(src)
 		
 		if(radiosrc.slice(-1) == '/')
 		{
-			radioinfo = src.slice(0, -1).split('/').slice(0, -1).join('/') + '/status-json.xsl'
+			radioinfo = `${src.slice(0, -1).split('/').slice(0, -1).join('/')}/status-json.xsl`
 		}
 
 		else
 		{
-			radioinfo = src.split('/').slice(0, -1).join('/') + '/status-json.xsl'
+			radioinfo = `${src.split('/').slice(0, -1).join('/')}/status-json.xsl`
 		}
 
 	}
@@ -830,12 +830,12 @@ function update_usercount(usercount)
 {
 	if(usercount == 1)
 	{
-		var s = usercount + ' User Online'
+		var s = `${usercount} User Online`
 	}
 
 	else 
 	{
-		var s = usercount + ' Users Online'
+		var s = `${usercount} Users Online`
 	}
 
 	$('#usercount').html(s)
@@ -1069,11 +1069,14 @@ function compare_userlist(a, b)
 
 function start_nickname_context_menu()
 {
-	$.contextMenu({
+	$.contextMenu(
+	{
 		selector: ".ui_item_nick, .chat_uname",
 		animation: {duration: 250, hide: 'fadeOut'},
-		items: {
-			cmvoice: {
+		items: 
+		{
+			cmvoice: 
+			{
 				name: "Voice", callback: function(key, opt)
 				{
 					var arg = $(this).text()
@@ -1092,7 +1095,8 @@ function start_nickname_context_menu()
 					}
 				}
 			},
-			cmop: {
+			cmop: 
+			{
 				name: "Op", callback: function(key, opt)
 				{
 					var arg = $(this).text()
@@ -1111,7 +1115,8 @@ function start_nickname_context_menu()
 					}
 				} 
 			},
-			cmstrip: {
+			cmstrip: 
+			{
 				name: "Strip", callback: function(key, opt)
 				{
 					var arg = $(this).text()
@@ -1130,7 +1135,8 @@ function start_nickname_context_menu()
 					}
 				} 
 			},
-			cmkick: {
+			cmkick: 
+			{
 				name: "Kick", callback: function(key, opt)
 				{
 					var arg = $(this).text()
@@ -1149,7 +1155,8 @@ function start_nickname_context_menu()
 					}
 				} 
 			},
-			cmban: {
+			cmban: 
+			{
 				name: "Ban",
 				visible: function(key, opt)
 				{ 
@@ -1163,7 +1170,8 @@ function start_nickname_context_menu()
 						return true
 					}
 				},
-				items: {
+				items: 
+				{
 					bansure: 
 					{
 						name: "I'm Sure", callback: function(key, opt)
@@ -1174,7 +1182,8 @@ function start_nickname_context_menu()
 					}
 				}				
 			},
-			cmadmin: {
+			cmadmin: 
+			{
 				name: "Admin",
 				visible: function(key, opt)
 				{ 
@@ -1188,7 +1197,8 @@ function start_nickname_context_menu()
 						return true
 					}
 				},
-				items: {
+				items: 
+				{
 					adminsure: 
 					{
 						name: "I'm Sure", callback: function(key, opt)
@@ -1198,7 +1208,7 @@ function start_nickname_context_menu()
 						}					
 					}
 				}
-			},			
+			}			
 		}
 	})
 }
@@ -1608,7 +1618,8 @@ function start_main_menu_context_menu()
 					cp1: 
 					{
 						name: "Remove All Voices",
-						items: {
+						items: 
+						{
 							rmvoicessure: 
 							{
 								name: "I'm Sure", callback: function(key, opt)
@@ -1633,7 +1644,8 @@ function start_main_menu_context_menu()
 								return true
 							}
 						},						
-						items: {
+						items: 
+						{
 							rmopssure: 
 							{
 								name: "I'm Sure", callback: function(key, opt)
@@ -1673,7 +1685,8 @@ function start_main_menu_context_menu()
 					cb2: 
 					{
 						name: "Unban Last",
-						items: {
+						items: 
+						{
 							unbanlastsure: 
 							{
 								name: "I'm Sure", callback: function(key, opt)
@@ -1686,7 +1699,8 @@ function start_main_menu_context_menu()
 					cb3: 
 					{
 						name: "Unban All",
-						items: {
+						items: 
+						{
 							unbanallsure: 
 							{
 								name: "I'm Sure", callback: function(key, opt)
@@ -1749,18 +1763,18 @@ function update_roomlist(roomlist)
 	for(var i=0; i<roomlist.length; i++)
 	{
 		var c = "<span class='roomlist_filler'></span><span class='roomlist_name'></span><span class='roomlist_count'></span><div class='roomlist_topic'></div>"
-		var h = $("<div class='roomlist_item'>" + c + "</div><br>")
+		var h = $(`<div class='roomlist_item'>${c}</div><br>`)
 
 		h.find('.roomlist_name').eq(0).text(roomlist[i][0])
 
 		if(roomlist[i][0] === room)
 		{
-			var t = "(" + roomlist[i][2] + ") *"		
+			var t = `(${roomlist[i][2]}) *`		
 		}
 
 		else
 		{
-			var t = "(" + roomlist[i][2] + ")"
+			var t = `(${roomlist[i][2]})`
 		}
 
 		h.find('.roomlist_count').eq(0).text(t)		
@@ -2259,7 +2273,7 @@ function oiEquals(str, what)
 
 function oiStartsWith(str, what) 
 {
-	return str.valueOf().startsWith(what.split('').sort().join('') + ' ')
+	return str.valueOf().startsWith(`${what.split('').sort().join('')} `)
 }
 
 function get_closest_username(word)
@@ -2368,7 +2382,7 @@ function replace_tabbed(word)
 
 		else
 		{
-			input.value = replaceBetween(input.value, tabbed_start, tabbed_end, uname + ' ')
+			input.value = replaceBetween(input.value, tabbed_start, tabbed_end, `${uname} `)
 		}
 
 		var pos = tabbed_start + uname.length
@@ -2548,13 +2562,13 @@ function update_chat(uname, msg)
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
-		var fmsg = $("<div title='" + date + "' class='msg chat_message'>* <span class='chat_uname'></span> <span class='" + contclasses + "'></span> *</div><div class='sep1'>&nbsp</div>")
+		var fmsg = $(`<div title='${date}' class='msg chat_message'>* <span class='chat_uname'></span> <span class='${contclasses}'></span> *</div><div class='sep1'>&nbsp</div>`)
 		$(fmsg).find('.chat_content').eq(0).text(msg.substr(4)).urlize()
 	}
 
 	else
 	{
-		var fmsg = $("<div title='" + date + "' class='msg chat_message'><b><span class='chat_uname'></span>:</b>&nbsp<span class='" + contclasses + "'></span></div><div class='sep1'>&nbsp</div>")
+		var fmsg = $(`<div title='${date}' class='msg chat_message'><b><span class='chat_uname'></span>:</b>&nbsp<span class='${contclasses}'></span></div><div class='sep1'>&nbsp</div>`)
 		$(fmsg).find('.chat_content').eq(0).text(msg).urlize()
 	}
 	
@@ -2678,7 +2692,7 @@ function start_image_events()
 
 			if(settings.background_image)
 			{
-				$('#background_image').css('background-image', 'url(' + image_url + ')') 
+				$('#background_image').css('background-image', `url(${image_url})`) 
 
 				if($('#background_image').css('background-repeat') === 'repeat')
 				{
@@ -2696,7 +2710,7 @@ function start_image_events()
 
 		if(image_uploader !== '' && image_url !== default_image_url)
 		{
-			var title = 'Uploaded by ' + image_uploader
+			var title = `Uploaded by ${image_uploader}`
 
 			$(this).prop('title', title)
 		}
@@ -2769,7 +2783,7 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 
 	if(title)
 	{
-		var t = title + " | " + date
+		var t = `${title} | ${date}`
 	}
 
 	else
@@ -2779,13 +2793,13 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 	
 	if(typeof dotted === "string")
 	{
-		var fmsg = $("<div title='" + t + "' class='msg announcement announcement_" + size + "'>" + brk1 + " <span class='" + contclasses + "'></span><span class='dotted'></span> " + brk2 + "</div><div class='sep1'>&nbsp</div>")
+		var fmsg = $(`<div title='${t}' class='msg announcement announcement_${size}'>${brk1}&nbsp;<span class='${contclasses}'></span><span class='dotted'></span>&nbsp;${brk2}</div><div class='sep1'>&nbsp</div>`)
 		$(fmsg).find('.dotted').eq(0).text(dotted).urlize()
 	}
 
 	else
 	{
-		var fmsg = $("<div title='" + t + "' class='msg announcement announcement_" + size + "'>" + brk1 + " <span class='" + contclasses + "'></span> " + brk2 + "</div><div class='sep1'>&nbsp</div>")
+		var fmsg = $(`<div title='${t}' class='msg announcement announcement_${size}'>${brk1}&nbsp;<span class='${contclasses}'></span>&nbsp;${brk2}</div><div class='sep1'>&nbsp</div>`)
 	}
 
 	$(fmsg).find('.announcement_content').eq(0).text(msg).urlize()
@@ -2832,11 +2846,10 @@ jQuery.fn.urlize = function()
 				for(var i=0; i<list.length; i++) 
 				{
 					var prot = list[i].indexOf('http://') === 0 || list[i].indexOf('https://') === 0 ? '' : 'http://'
-					x = x.replace(list[i], "<a class='chat' target='_blank' href='" + prot + list[i] + "'>"+ list[i] + "</a>")
+					x = x.replace(list[i], `<a class='chat' target='_blank' href='${prot}${list[i]}'>${list[i]}</a>`)
 				}
 
 			}
-
 			$(obj).html(x)
 		})
 	}
@@ -3088,6 +3101,11 @@ function send_to_chat(msg)
 				show_public()
 			}
 
+			else if(oiStartsWith(lmsg, '/reserve'))
+			{
+				reserve(arg)
+			}
+
 			else if(oiEquals(lmsg, '/reserve'))
 			{
 				reserve()
@@ -3324,7 +3342,7 @@ function topictrim(n)
 
 function topicedit()
 {
-	change_input("/topic " + topic)
+	change_input(`/topic ${topic}`)
 }
 
 function announce_topic_change(data)
@@ -3349,12 +3367,12 @@ function announce_topic_change(data)
 			{
 				if(highlight)
 				{
-					chat_announce('~', '~', 'You added to the topic: ' + data.topic, 'small', highlight)
+					chat_announce('~', '~', `You added to the topic: ${data.topic}`, 'small', highlight)
 				}
 
 				else
 				{
-					chat_announce('~', '~', 'You added to the topic: ' + topic + topic_separator, 'small', data.topic.substr(topic.length + 3))
+					chat_announce('~', '~', `You added to the topic: ${topic + topic_separator}`, 'small', data.topic.substr(topic.length + 3))
 				}
 			}
 
@@ -3362,12 +3380,12 @@ function announce_topic_change(data)
 			{
 				if(topic.startsWith(data.topic))
 				{
-					chat_announce('~', '~', 'You trimmed the topic to: ' + data.topic, 'small', highlight)				
+					chat_announce('~', '~', `You trimmed the topic to: ${data.topic}`, 'small', highlight)				
 				}
 
 				else
 				{
-					chat_announce('~', '~', 'You changed the topic to: ' + data.topic, 'small', highlight)				
+					chat_announce('~', '~', `You changed the topic to: ${data.topic}`, 'small', highlight)				
 				}
 			}
 		}
@@ -3378,12 +3396,12 @@ function announce_topic_change(data)
 			{
 				if(highlight)
 				{
-					chat_announce('~', '~', data.username + ' added to the topic: ' + data.topic, 'small', highlight)
+					chat_announce('~', '~', `${data.username} added to the topic: ${data.topic}`, 'small', highlight)
 				}
 
 				else
 				{
-					chat_announce('~', '~', data.username + ' added to the topic: ' + topic + topic_separator, 'small', data.topic.substr(topic.length + 3))
+					chat_announce('~', '~', `${data.username} added to the topic: ${topic + topic_separator}`, 'small', data.topic.substr(topic.length + 3))
 				}
 			}
 
@@ -3391,12 +3409,12 @@ function announce_topic_change(data)
 			{
 				if(topic.startsWith(data.topic))
 				{
-					chat_announce('~', '~', data.username + ' trimmed the topic to: ' + data.topic, 'small', highlight)				
+					chat_announce('~', '~', `${data.username} trimmed the topic to: ${data.topic}`, 'small', highlight)				
 				}
 
 				else
 				{
-					chat_announce('~', '~', data.username + ' changed the topic to: ' + data.topic, 'small', highlight)
+					chat_announce('~', '~', `${data.username} changed the topic to: ${data.topic}`, 'small', highlight)
 				}
 			}
 		}
@@ -3438,7 +3456,7 @@ function change_default_nickname(nck)
 	if(nck.length > 0)
 	{
 		save_default_nickname(nck)
-		chat_announce('[', ']', "Default nickname changed to " + nck, 'small')
+		chat_announce('[', ']', `Default nickname changed to ${nck}`, 'small')
 	}
 }
 
@@ -3448,7 +3466,7 @@ function show_default_nickname()
 	{
 		if(room_nicknames[i][0] === '/default')
 		{
-			chat_announce('[', ']', 'Default Nickname: ' + room_nicknames[i][1], 'small')
+			chat_announce('[', ']', `Default Nickname: ${room_nicknames[i][1]}`, 'small')
 			break
 		}
 	}
@@ -3459,12 +3477,12 @@ function new_username(data)
 	if(username === data.old_username)
 	{
 		username = data.username
-		chat_announce('~', '~', 'You are now known as ' + username, 'small')
+		chat_announce('~', '~', `You are now known as ${username}`, 'small')
 	}
 
 	else
 	{
-		chat_announce('~', '~', data.old_username + ' is now known as ' + data.username, 'small')
+		chat_announce('~', '~', `${data.old_username} is now known as ${data.username}`, 'small')
 	}
 
 	replace_nick_in_userlist(data.old_username, data.username)
@@ -3585,9 +3603,9 @@ function show_playing_file()
 
 function push_played(title, artist)
 {
-	var s = title + " - " + artist
+	var s = `${title} - ${artist}`
 
-	var q = '"' + title + '" by "' + artist + '"'
+	var q = `"${title}" by "${artist}"`
 	
 	$('#now_playing').text(s)
 
@@ -3599,10 +3617,10 @@ function push_played(title, artist)
 		
 		var pi = "<div class='pititle'></div><div class='piartist'></div>"
 		
-		h = $("<div title='" + date + "' class='played_item'>" + pi + "</div><br>")
+		h = $(`<div title='${date}' class='played_item'>${pi}</div><br>`)
 		
 		$(h).find('.pititle').eq(0).text(title)
-		$(h).find('.piartist').eq(0).text("by " + artist)
+		$(h).find('.piartist').eq(0).text(`by ${artist}`)
 
 		$(h).data('q', q)
 
@@ -3723,7 +3741,9 @@ function set_volume(nv, save=true)
 
 	$('#pup')[0].volume = nv
 
-	$('#volume').text(parseInt(Math.round((nv * 100))) + '%')
+	var vt = parseInt(Math.round((nv * 100)))
+
+	$('#volume').text(`${vt} %`)
 
 	if(save)
 	{
@@ -3795,7 +3815,7 @@ function alert_title()
 		{
 			if(alert_mode === 0)
 			{
-				document.title = '(*) ' + document.title
+				document.title = `(*) ${document.title}`
 				alert_mode = 1
 			}
 		}
@@ -3815,7 +3835,7 @@ function alert_title2()
 
 			if(alert_mode !== 2)
 			{
-				document.title = '(!) ' + document.title
+				document.title = `(!) ${document.title}`
 			}
 
 			alert_mode = 2
@@ -3976,7 +3996,7 @@ function goto_room(id, sametab=false)
 
 	if(id !== main_room)
 	{
-		var nroom = '/' + id
+		var nroom = `/${id}`
 	}
 
 	else
@@ -4037,7 +4057,7 @@ function clear_input()
 
 function add_to_input(what)
 {
-	$('#input').val($('#input').val() + what + ' ').focus()
+	$('#input').val(`${$('#input').val() + what} `).focus()
 }
 
 function update_topic(t, setter)
@@ -4201,6 +4221,8 @@ function get_user_key(nck)
 			return user_keys[i][1]
 		}
 	}
+
+	return ''
 }
 
 function save_user_key(key)
@@ -4267,7 +4289,7 @@ function change_upload_permission(m)
 
 			if(m === upload_permission)
 			{
-				chat_announce('[', ']', "Upload permission is already " + m, 'small')
+				chat_announce('[', ']', `Upload permission is already ${m}`, 'small')
 				return false
 			}			
 
@@ -4306,7 +4328,7 @@ function change_chat_permission(m)
 
 			if(m === chat_permission)
 			{
-				chat_announce('[', ']', "Chat permission is already " + m, 'small')
+				chat_announce('[', ']', `Chat permission is already ${m}`, 'small')
 				return false
 			}			
 
@@ -4339,27 +4361,27 @@ function announce_upload_permission_change(data)
 
 	if(username === data.username)
 	{
-		var d = "You changed the upload permission to "
+		var d = "You changed the upload permission to"
 	}
 
 	else
 	{
-		var d = data.username + " changed the upload permission to "
+		var d = `${data.username} changed the upload permission to`
 	}
 
 	if(data.upload_permission === 1 && upload_permission !== 1)
 	{
-		s = d + "1. Anyone can upload images"
+		s = `${d} 1. Anyone can upload images`
 	}
 
 	else if(data.upload_permission === 2 && upload_permission !== 2)
 	{
-		s = d + "2. Only voiced users and up can upload images"
+		s = `${d} 2. Only voiced users and up can upload images`
 	}
 
 	else if(data.upload_permission === 3 && upload_permission !== 3)
 	{
-		s = d + "3. Only ops and up can upload images"
+		s = `${d} 3. Only ops and up can upload images`
 	}
 
 	if(s.length > 0)
@@ -4376,27 +4398,27 @@ function announce_chat_permission_change(data)
 
 	if(username === data.username)
 	{
-		var d = "You changed the chat permission to "
+		var d = "You changed the chat permission to"
 	}
 
 	else
 	{
-		var d = data.username + " changed the chat permission to "
+		var d = `${data.username} changed the chat permission to`
 	}
 
 	if(data.chat_permission === 1 && chat_permission !== 1)
 	{
-		s = d + "1. Anyone can chat"
+		s = `${d} 1. Anyone can chat`
 	}
 
 	else if(data.chat_permission === 2 && chat_permission !== 2)
 	{
-		s = d + "2. Only voiced users and up can chat"
+		s = `${d} 2. Only voiced users and up can chat`
 	}
 
 	else if(data.chat_permission === 3 && chat_permission !== 3)
 	{
-		s = d + "3. Only ops and up can chat"
+		s = `${d} 3. Only ops and up can chat`
 	}
 
 	if(s.length > 0)
@@ -4409,12 +4431,12 @@ function announce_chat_permission_change(data)
 
 function show_upload_permission()
 {
-	chat_announce('[', ']', "Upload permission: " + upload_permission, 'small')
+	chat_announce('[', ']', `Upload permission: ${upload_permission}`, 'small')
 }
 
 function show_chat_permission()
 {
-	chat_announce('[', ']', "Chat permission: " + chat_permission, 'small')
+	chat_announce('[', ']', `Chat permission: ${chat_permission}`, 'small')
 }
 
 function big_letter(s)
@@ -4526,7 +4548,7 @@ function announce_uploaded_image(data)
 
 	else
 	{
-		chat_announce('<<', '>>', data.image_uploader + ' uploaded an image', 'small')		
+		chat_announce('<<', '>>', `${data.image_uploader} uploaded an image`, 'small')		
 	}
 }
 
@@ -4534,17 +4556,17 @@ function announce_voice(data)
 {
 	if(username === data.username2)
 	{
-		chat_announce('~', '~', data.username1 + ' gave you voice', 'small', true)
+		chat_announce('~', '~', `${data.username1} gave you voice`, 'small', true)
 	}
 
 	else if(username === data.username1)
 	{
-		chat_announce('~', '~', 'You gave voice to ' + data.username2, 'small')
+		chat_announce('~', '~', `You gave voice to ${data.username2}`, 'small')
 	}
 
 	else
 	{
-		chat_announce('~', '~', data.username1 + ' gave voice to ' + data.username2, 'small')
+		chat_announce('~', '~', `${data.username1} gave voice to ${data.username2}`, 'small')
 	}
 
 	replace_priv_in_userlist(data.username2, 'voice')
@@ -4554,17 +4576,17 @@ function announce_op(data)
 {
 	if(username === data.username2)
 	{
-		chat_announce('~', '~', data.username1 + ' gave you op', 'small', true)
+		chat_announce('~', '~', `${data.username1} gave you op`, 'small', true)
 	}
 
 	else if(username === data.username1)
 	{
-		chat_announce('~', '~', 'You gave op to ' + data.username2, 'small')
+		chat_announce('~', '~', `You gave op to ${data.username2}`, 'small')
 	}
 
 	else
 	{
-		chat_announce('~', '~', data.username1 + ' gave op to ' + data.username2, 'small')
+		chat_announce('~', '~', `${data.username1} gave op to ${data.username2}`, 'small')
 	}
 
 	replace_priv_in_userlist(data.username2, 'op')
@@ -4617,17 +4639,17 @@ function announce_strip(data)
 	if(username === data.username2)
 	{
 		stripped()
-		chat_announce('~', '~', data.username1 + ' removed all privileges from you', 'small', true)
+		chat_announce('~', '~', `${data.username1} removed all privileges from you`, 'small', true)
 	}
 
 	else if(username === data.username1)
 	{
-		chat_announce('~', '~', 'You removed all privileges from ' + data.username2, 'small')
+		chat_announce('~', '~', `You removed all privileges from ${data.username2}`, 'small')
 	}
 
 	else
 	{
-		chat_announce('~', '~', data.username1 + ' removed all privileges from ' + data.username2, 'small')
+		chat_announce('~', '~', `${data.username1} removed all privileges from ${data.username2}`, 'small')
 	}
 
 	replace_priv_in_userlist(data.username2, '')
@@ -4646,14 +4668,38 @@ function announce_claim(data)
 
 	if(username === data.username)
 	{
-		chat_announce('~', '~', 'You have claimed this room. Check /help3 to learn about admin commands', 'small')
+		var who = "you"
 	}
 
 	else
 	{
+		var who = data.username
+	}
+
+	if(data.updated)
+	{
+		var s = `The room has been reclaimed by ${who}. All previous associated keys are now invalid`
+	}
+
+	else
+	{
+		if(username === data.username)
+		{
+			var s = 'You have claimed this room. Check /help3 to learn about admin commands'
+		}
+
+		else
+		{
+			var s = `${data.username} has claimed this room`
+		}		
+	}
+
+	chat_announce('~', '~', s, 'small')
+
+	if(username !== data.username)
+	{
 		priv = ""
 		check_permissions()
-		chat_announce('~', '~', data.username + ' has claimed this room', 'small')
 	}
 	
 	replace_claim_userlist(data.username)
@@ -4669,7 +4715,7 @@ function announce_unclaim(data)
 	else
 	{
 		priv = ""
-		chat_announce('~', '~', data.username + ' unclaimed the room', 'small')
+		chat_announce('~', '~', `${data.username} unclaimed the room`, 'small')
 	}
 
 	claimed = false
@@ -4701,17 +4747,17 @@ function announce_admin(data)
 {
 	if(username === data.username2)
 	{
-		chat_announce('~', '~', data.username1 + ' gave you admin', 'small', true)
+		chat_announce('~', '~', `${data.username1} gave you admin`, 'small', true)
 	}
 
 	else if(username === data.username1)
 	{
-		chat_announce('~', '~', 'You gave admin to ' + data.username2, 'small')
+		chat_announce('~', '~', `You gave admin to ${data.username2}`, 'small')
 	}
 
 	else
 	{
-		chat_announce('~', '~', data.username1 + ' gave admin to ' + data.username2, 'small')
+		chat_announce('~', '~', `${data.username1} gave admin to ${data.username2}`, 'small')
 	}
 
 	replace_priv_in_userlist(data.username2, 'admin')
@@ -4838,7 +4884,7 @@ function made_private(data)
 
 	else
 	{
-		var s = data.username + ' made the room private'
+		var s = `${data.username} made the room private`
 	}
 
 	s += ". The room won't appear in the public room list"
@@ -4857,7 +4903,7 @@ function made_public(data)
 
 	else
 	{
-		var s = data.username + ' made the room public'
+		var s = `${data.username} made the room public`
 	}
 
 	s += ". The room will appear in the public room list"
@@ -4865,14 +4911,23 @@ function made_public(data)
 	chat_announce('~', '~', s, 'small')
 }
 
-function reserve()
+function reserve(pass="")
 {
-	socket.emit('username_reserve', {})
+	socket.emit('username_reserve', {pass:pass, key:get_user_key(username)})
 }
 
 function reserved(data)
 {
-	chat_announce('[', ']', 'You have reserved ' + username, 'small')
+	if(data.updated)
+	{
+		chat_announce('[', ']', 'You already had this username reserved. The key was updated with a new one', 'small')
+	}
+
+	else
+	{
+		chat_announce('[', ']', `You have reserved ${data.username}`, 'small')
+	}
+
 	save_user_key(data.key)
 }
 
@@ -4942,12 +4997,12 @@ function changed_radiosrc(data)
 
 	if(data.username === username)
 	{
-		chat_announce('~', '~', 'You changed the radio to ' + name, 'small')		
+		chat_announce('~', '~', `You changed the radio to ${name}`, 'small')		
 	}
 
 	else
 	{
-		chat_announce('~', '~', data.username + ' changed the radio to ' + name, 'small')
+		chat_announce('~', '~', `${data.username} changed the radio to ${name}`, 'small')
 	}
 }
 
@@ -5066,7 +5121,7 @@ function announce_unbanall(data)
 
 	else
 	{
-		chat_announce('~', '~', data.username + ' unbanned all banned users', 'small')
+		chat_announce('~', '~', `${data.username} unbanned all banned users`, 'small')
 	}
 }
 
@@ -5079,7 +5134,7 @@ function announce_unbanlast(data)
 
 	else
 	{
-		chat_announce('~', '~', data.username + ' unbanned the latest banned user', 'small')
+		chat_announce('~', '~', `${data.username} unbanned the latest banned user`, 'small')
 	}
 }
 
@@ -5087,22 +5142,22 @@ function isalready(who, what)
 {
 	if(what === 'voice')
 	{
-		chat_announce('[', ']', who + " already has voice", 'small')
+		chat_announce('[', ']', `${who} already has voice`, 'small')
 	}
 
 	else if(what === 'op')
 	{
-		chat_announce('[', ']', who + " is already an op", 'small')
+		chat_announce('[', ']', `${who} is already an op`, 'small')
 	}
 
 	else if(what === 'admin')
 	{
-		chat_announce('[', ']', who + " is already an admin", 'small')
+		chat_announce('[', ']', `${who} is already an admin`, 'small')
 	}
 
 	else if(what === '')
 	{
-		chat_announce('[', ']', who + " already has no privileges", 'small')
+		chat_announce('[', ']', `${who} already has no privileges`, 'small')
 	}
 }
 
@@ -5117,17 +5172,17 @@ function search_in(site, q)
 
 	if(site === 'google')
 	{
-		window.open('https://www.google.com/search?q=' + q, '_blank')
+		window.open(`https://www.google.com/search?q=${q}`, '_blank')
 	}
 
 	else if(site === 'soundcloud')
 	{
-		window.open('https://soundcloud.com/search?q=' + q, '_blank')
+		window.open(`https://soundcloud.com/search?q=${q}`, '_blank')
 	}
 
 	else if(site === 'youtube')
 	{
-		window.open('https://www.youtube.com/results?search_query=' + q, '_blank')
+		window.open(`https://www.youtube.com/results?search_query=${q}`, '_blank')
 	}
 }
 
@@ -5162,7 +5217,7 @@ function announce_removedvoices(data)
 
 	else
 	{
-		chat_announce('~', '~', data.username + ' removed all voices', 'small')
+		chat_announce('~', '~', `${data.username} removed all voices`, 'small')
 	}
 
 	if(priv === 'voice')
@@ -5182,7 +5237,7 @@ function announce_removedops(data)
 
 	else
 	{
-		chat_announce('~', '~', data.username + ' removed all ops', 'small')
+		chat_announce('~', '~', `${data.username} removed all ops`, 'small')
 	}
 
 	if(priv === 'op')
@@ -5199,12 +5254,12 @@ function kicked(data)
 
 	if(username === data.info1)
 	{
-		chat_announce('--', '--', data.username + ' was kicked by you', 'small')
+		chat_announce('--', '--', `${data.username} was kicked by you`, 'small')
 	}
 
 	else
 	{
-		chat_announce('--', '--', data.username + ' was kicked by ' + data.info1, 'small')
+		chat_announce('--', '--', `${data.username} was kicked by ${data.info1}`, 'small')
 	}
 }
 
@@ -5214,12 +5269,12 @@ function banned(data)
 
 	if(username === data.info1)
 	{
-		chat_announce('--', '--', data.username + ' was banned by you', 'small')
+		chat_announce('--', '--', `${data.username} was banned by you`, 'small')
 	}
 
 	else
 	{
-		chat_announce('--', '--', data.username + ' was banned by ' + data.info1, 'small')
+		chat_announce('--', '--', `${data.username} was banned by ${data.info1}`, 'small')
 	}
 }
 
@@ -5772,7 +5827,6 @@ function on_storageui_save(item, reset=false)
 		pup()
 	}
 }
-
 
 function show_data()
 {

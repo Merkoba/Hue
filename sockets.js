@@ -765,7 +765,7 @@ module.exports = function(io)
 					}
 				}
 			})
-		}		
+		}
 	}
 
 	function username_reserve(socket, data)
@@ -774,11 +774,21 @@ module.exports = function(io)
 		{
 			get_userinfo(socket.username, function(userinfo)
 			{
-				if(userinfo.key == '')
+				if(userinfo.key === '' || userinfo.key === data.key || data.pass === config.secretpass)
 				{
+					if(userinfo.key !== '' && userinfo.key === data.key)
+					{
+						var updated = true
+					}
+
+					else
+					{
+						var updated = false
+					}
+
 					userinfo.key = get_random_ukey()
 
-					socket.emit('update', {room:socket.room, type:'reserved', key:userinfo.key})
+					socket.emit('update', {room:socket.room, type:'reserved', username:userinfo.username, key:userinfo.key, updated:updated})
 
 					db.collection('users').update({_id:userinfo._id}, {$set:{key:userinfo.key}})
 				}
@@ -788,7 +798,7 @@ module.exports = function(io)
 					socket.emit('update', {room:socket.room, type:'alreadyreserved'})
 				}
 			})
-		}		
+		}
 	}
 
 	function username_recover(socket, data)
@@ -851,7 +861,7 @@ module.exports = function(io)
 					}	
 				})
 			})
-		}		
+		}
 	}
 
 	function topic_change(socket, data)
@@ -900,7 +910,7 @@ module.exports = function(io)
 					db.collection('rooms').update({_id:info._id}, {$set:{topic:info.topic, topic_setter:socket.username, modified:Date.now()}})
 				}
 			})
-		}		
+		}
 	}
 
 	function roomlist(socket, data)
@@ -933,9 +943,19 @@ module.exports = function(io)
 
 			get_roominfo(socket.room, {claimed:true}, function(info)
 			{
-				if(!info.claimed || data.pass === config.secretpass || socket.priv === 'admin')
+				if(!info.claimed || socket.priv === 'admin' || data.pass === config.secretpass)
 				{
 					socket.key = get_random_key()
+
+					if(socket.priv === 'admin')
+					{
+						var updated = true
+					}
+
+					else
+					{
+						var updated = false
+					}	
 
 					var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
 
@@ -949,7 +969,7 @@ module.exports = function(io)
 					
 					socket.emit('update', {room:socket.room, type:'get_key', key:socket.key})
 
-					io.sockets.in(socket.room).emit('update', {type:'announce_claim', username:socket.username})
+					io.sockets.in(socket.room).emit('update', {type:'announce_claim', username:socket.username, updated:updated})
 
 					db.collection('rooms').update({_id:info._id}, {$set:{keys:socket.key, claimed:true, modified:Date.now()}})
 				}
