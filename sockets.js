@@ -1036,6 +1036,14 @@ module.exports = function(io)
 
 			get_roominfo(socket.room, {claimed:true}, function(info)
 			{
+				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
+
+				for(var i=0; i<ids.length; i++)
+				{
+					var socc = io.sockets.connected[ids[i]]
+					socc.priv = ''
+				}
+
 				io.sockets.in(socket.room).emit('update', {type:'announce_unclaim', username:socket.username})
 
 				db.collection('rooms').update({_id:info._id}, {$set:
