@@ -1,3 +1,4 @@
+var socket
 var ls_settings = "settings_v1"
 var settings
 var is_public
@@ -2566,7 +2567,7 @@ function update_chat(uname, msg)
 
 	add_msgcount()
 
-	goto_bottom(false)
+	goto_bottom()
 
 	alert_title()
 }
@@ -2793,7 +2794,7 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 
 	add_msgcount()
 
-	goto_bottom(false)
+	goto_bottom()
 }
 
 function clean_string(s)
@@ -3469,7 +3470,7 @@ function new_username(data)
 	replace_nick_in_userlist(data.old_username, data.username)
 }
 
-function goto_bottom(force)
+function goto_bottom(force=false)
 {
 	var $ch = $("#chat_area")
 	var max = $ch.prop('scrollHeight') - $ch.innerHeight()
@@ -4025,7 +4026,7 @@ function clear_chat()
 	show_topic()
 	show_priv()
 	show_public()
-	scroll_timer()
+	goto_bottom(true)
 	focus_input()
 }
 
