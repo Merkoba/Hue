@@ -86,33 +86,53 @@ function init()
 	start_socket()
 }
 
-function get_room_nicknames()
+function get_local_storage(ls_name)
 {
-	if(localStorage[ls_room_nicknames])
+	if(localStorage[ls_name])
 	{
 		try
 		{
-			room_nicknames = JSON.parse(localStorage.getItem(ls_room_nicknames))
+			var obj = JSON.parse(localStorage.getItem(ls_name))
 		}
 
 		catch(err)
 		{
-			localStorage.removeItem(ls_room_nicknames)
-			room_nicknames = {}
+			localStorage.removeItem(ls_name)
+			var obj = {}
 		}
 	}
 
 	else
 	{
-		room_nicknames = {}
+		var obj = {}
 	}
 
-	return room_nicknames
+	return obj	
 }
 
-function save_room_nicknames()
+function save_local_storage(ls_name, obj)
 {
-	localStorage.setItem(ls_room_nicknames, JSON.stringify(room_nicknames))
+	if(typeof obj !== "string")
+	{
+		obj = JSON.stringify(obj)
+	}
+
+	localStorage.setItem(ls_name, obj)
+}
+
+function remove_local_storage(ls_name)
+{
+	localStorage.removeItem(ls_name)	
+}
+
+function get_room_nicknames()
+{
+	return get_local_storage(ls_room_nicknames)
+}
+
+function save_room_nicknames(room_nicknames)
+{
+	save_local_storage(ls_room_nicknames, room_nicknames)
 }
 
 function get_nickname()
@@ -219,7 +239,8 @@ function help2()
 	chat_announce('', '', 'Clicking on a nickname sends it to the input.', 'small')
 	chat_announce('', '', 'Tab completes nicknames and commands.', 'small')
 	chat_announce('', '', '/defnick x: Changes your default nickname for rooms you visit for the first time.', 'small')
-	chat_announce('', '', '/reserve: Reserves current nickname to be recoverable later.', 'small')
+	chat_announce('', '', '/reserve: Reserves current nickname to be recoverable later. If called again it changes the key with a new one.', 'small')
+	chat_announce('', '', '/unreserve: Makes a nickname available again.', 'small')
 	chat_announce('', '', '/recover x: Recovers reserved nickname in case someone else in the room is using it.', 'small')
 	chat_announce('', '', '/priv: Shows information regarding privileges and permissions.', 'small')
 	chat_announce('', '', '/users: Shows the user list. An alternative to the user list window.', 'small')
@@ -2447,7 +2468,8 @@ function start_chat_scrollbar()
 	chat_scrollbar = new PerfectScrollbar("#chat_area",
 	{
 		minScrollbarLength: 50,
-		suppressScrollX: true
+		suppressScrollX: true,
+		scrollingThreshold: 2000
 	})
 }
 
@@ -2493,10 +2515,12 @@ function start_modal_scrollbar(s)
 {
 	$(`#Msg-content-container-${s}`).niceScroll
 	({
+		zindex: 9999999,
 		autohidemode: false,
 		cursorcolor: "#AFAFAF",
 		cursorborder: "0px solid white",
-		enablekeyboard: false
+		enablekeyboard: false,
+		cursorwidth: "7px"	
 	})
 }
 
@@ -4106,31 +4130,12 @@ function unclaim_room()
 
 function get_room_keys()
 {
-	if(localStorage[ls_room_keys])
-	{
-		try
-		{
-			room_keys = JSON.parse(localStorage.getItem(ls_room_keys))
-		}
-
-		catch(err)
-		{
-			localStorage.removeItem(ls_room_keys)
-			room_keys = {}
-		}
-	}
-
-	else
-	{
-		room_keys = {}
-	}
-
-	return room_keys
+	return get_local_storage(ls_room_keys)
 }
 
 function save_room_keys(room_keys)
 {
-	localStorage.setItem(ls_room_keys, JSON.stringify(room_keys))	
+	save_local_storage(ls_room_keys, room_keys)
 }
 
 function get_room_key()
@@ -4156,31 +4161,12 @@ function save_room_key(key)
 
 function get_user_keys()
 {
-	if(localStorage[ls_user_keys])
-	{
-		try
-		{
-			user_keys = JSON.parse(localStorage.getItem(ls_user_keys))
-		}
-
-		catch(err)
-		{
-			localStorage.removeItem(ls_user_keys)
-			user_keys = {}
-		}		
-	}
-
-	else
-	{
-		user_keys = {}
-	}
-
-	return user_keys
+	return get_local_storage(ls_user_keys)
 }
 
 function save_user_keys(user_keys)
 {
-	localStorage.setItem(ls_user_keys, JSON.stringify(user_keys))	
+	save_local_storage(ls_user_keys, user_keys)
 }
 
 function get_user_key(nck)
@@ -5549,24 +5535,7 @@ function get_settings()
 {
 	var changed = false
 
-	if(localStorage[ls_settings])
-	{
-		try
-		{
-			settings = JSON.parse(localStorage.getItem(ls_settings))
-		}
-
-		catch(err)
-		{
-			localStorage.removeItem(ls_settings)
-			settings = {}
-		}			
-	}
-
-	else
-	{
-		settings = {}
-	}
+	settings = get_local_storage(ls_settings)
 
 	if(settings.background_image === undefined)
 	{
@@ -5604,9 +5573,9 @@ function get_settings()
 	}
 }
 
-function save_settings(key)
+function save_settings()
 {
-	localStorage.setItem(ls_settings, JSON.stringify(settings))
+	save_local_storage(ls_settings, settings)
 }
 
 function start_settings_state()
@@ -5780,12 +5749,12 @@ function on_storageui_save(item, reset=false)
 {
 	if(reset)
 	{
-		localStorage.removeItem(item.ls_name)
+		remove_local_storage(item.ls_name)
 	}
 
 	else
 	{
-		localStorage.setItem(item.ls_name, item.value)
+		save_local_storage(item.ls_name, item.value)
 	}
 
 	if(item.ls_name === ls_settings)
