@@ -9,9 +9,7 @@ Requirements:
 
 There's not much to do. 
 
-Just put the files in the directory you want it work and call "npm install". 
-
-That should install all necesary packages. 
+Just put the files in the directory you want it work and call "npm install". That should install all necesary packages. 
 
 You will also need MongoDB installed in your computer, and for everything to work correctly Hue should be running in a Linux environment as it depends on some Linux calls like rm, wget, stat and find.
 
