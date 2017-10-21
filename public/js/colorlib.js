@@ -214,25 +214,42 @@ var ColorLib = (function()
 		{
 			if(Array.isArray(array[0]))
 			{
+				var rgb = []
+
 				for(let i=0; i<array.length; i++)
 				{
-					array[i] = `rgb(${array[i][0]}, ${array[i][1]}, ${array[i][2]})`
+					rgb[i] = `rgb(${array[i][0]}, ${array[i][1]}, ${array[i][2]})`
 				}
 			}
 
 			else
 			{
-				array = `rgb(${array[0]}, ${array[1]}, ${array[2]})`
+				var rgb = `rgb(${array[0]}, ${array[1]}, ${array[2]})`
 			}
 
-			return array
+			return rgb
 		}
 
-		instance.rgb_to_array = function(array)
+		instance.rgb_to_array = function(rgb)
 		{
-			var split = array.replace("rgb(", "").replace(")", "").split(",")
-			
-			return split.map(x => parseInt(x))
+			if(Array.isArray(rgb))
+			{
+				var array = []
+
+				for(let i=0; i<rgb.length; i++)
+				{
+					var split = rgb[i].replace("rgb(", "").replace(")", "").split(",")
+					array[i] = split.map(x => parseInt(x))
+				}
+			}
+
+			else
+			{
+				var split = rgb.replace("rgb(", "").replace(")", "").split(",")
+				var array = split.map(x => parseInt(x))
+			}
+
+			return array					
 		}
 
 		instance.check_array = function(array)
