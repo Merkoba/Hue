@@ -2146,7 +2146,7 @@ function add_to_history(msg)
 
 	for(var i=0; i<input_history.length; i++)
 	{
-		if(input_history[i] === msg)
+		if(input_history[i][0] === msg)
 		{
 			input_history.splice(i, 1)
 			break
