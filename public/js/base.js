@@ -2921,6 +2921,8 @@ function register_commands()
 	commands.push('/startradio')
 	commands.push('/volume')
 	commands.push('/history')
+
+	commands.sort()
 }
 
 function send_to_chat(msg)
