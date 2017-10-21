@@ -107,7 +107,7 @@ var ColorLib = (function()
 				last_p = palette[i]
 			}
 
-			return palette
+			return instance.array_to_rgb(palette)
 		}
 
 		instance.get_lighter_or_darker = function(rgb, amount=20)
@@ -127,13 +127,15 @@ var ColorLib = (function()
 
 		instance.get_lighter = function(rgb, amount=20)
 		{
+			rgb = instance.check_rgb(rgb)
+
 			var new_rgb = []
 
 			new_rgb[0] = rgb[0] + amount
 			new_rgb[1] = rgb[1] + amount
 			new_rgb[2] = rgb[2] + amount
 
-			for(var i=0; i<new_rgb.length; i++)
+			for(let i=0; i<new_rgb.length; i++)
 			{
 				if(new_rgb[i] > 255)
 				{
@@ -141,22 +143,26 @@ var ColorLib = (function()
 				}
 			}
 
-			return instance.check_array(new_rgb)
+			return instance.array_to_rgb(instance.check_array(new_rgb))
 		}
 
 		instance.get_darker = function(rgb, amount=20)
 		{
+			rgb = instance.check_rgb(rgb)
+
 			var new_rgb = []
 
 			new_rgb[0] = rgb[0] - amount
 			new_rgb[1] = rgb[1] - amount
 			new_rgb[2] = rgb[2] - amount
 
-			return instance.check_array(new_rgb)
+			return instance.array_to_rgb(instance.check_array(new_rgb))
 		}
 
 		instance.is_light = function(rgb)
 		{
+			rgb = instance.check_rgb(rgb)
+
 			var r = rgb[0]
 			var g = rgb[1]
 			var b = rgb[2]
@@ -206,7 +212,20 @@ var ColorLib = (function()
 
 		instance.array_to_rgb = function(array)
 		{
-			return `rgb(${array[0]}, ${array[1]}, ${array[2]})`			
+			if(Array.isArray(array[0]))
+			{
+				for(let i=0; i<array.length; i++)
+				{
+					array[i] = `rgb(${array[i][0]}, ${array[i][1]}, ${array[i][2]})`
+				}
+			}
+
+			else
+			{
+				array = `rgb(${array[0]}, ${array[1]}, ${array[2]})`
+			}
+
+			return array
 		}
 
 		instance.rgb_to_array = function(array)
@@ -218,7 +237,7 @@ var ColorLib = (function()
 
 		instance.check_array = function(array)
 		{
-			for(var i=0; i<array.length; i++)
+			for(let i=0; i<array.length; i++)
 			{
 				if(array[i] < 0)
 				{
@@ -232,6 +251,16 @@ var ColorLib = (function()
 			}
 
 			return array
+		}
+
+		instance.check_rgb = function(rgb)
+		{
+			if(!Array.isArray(rgb))
+			{
+				rgb = instance.rgb_to_array(rgb)
+			}
+
+			return rgb		
 		}
 
 		return instance

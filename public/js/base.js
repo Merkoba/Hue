@@ -2633,12 +2633,12 @@ function start_image_events()
 
 			var color1 = colors[0]
 
-			var background_color = colorlib.array_to_rgb(color1)
+			var background_color = color1
 			var font_color = colorlib.get_proper_font(color1)
 
 			var color2 = colorlib.get_lighter_or_darker(color1, color_contrast_amount)
 			
-			var background_color2 = colorlib.array_to_rgb(color2)
+			var background_color2 = color2
 			var font_color2 = colorlib.get_proper_font(color2)
 
 			if(settings.header_contrast)
