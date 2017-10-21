@@ -98,13 +98,13 @@ function get_local_storage(ls_name)
 		catch(err)
 		{
 			localStorage.removeItem(ls_name)
-			var obj = {}
+			var obj = null
 		}
 	}
 
 	else
 	{
-		var obj = {}
+		var obj = null
 	}
 
 	return obj	
@@ -127,7 +127,14 @@ function remove_local_storage(ls_name)
 
 function get_room_nicknames()
 {
-	return get_local_storage(ls_room_nicknames)
+	var obj = get_local_storage(ls_room_nicknames)
+
+	if(obj === null)
+	{
+		obj = {}
+	}
+
+	return obj
 }
 
 function save_room_nicknames(room_nicknames)
@@ -2596,6 +2603,8 @@ function add_to_chat(msg)
 	}
 
 	chat_area.append(msg)
+
+	update_chat_scrollbar()
 }
 
 function add_msgcount()
@@ -3757,7 +3766,7 @@ function set_volume(nv, save=true)
 
 	if(save)
 	{
-		localStorage.setItem('volume', nv)
+		save_local_storage('volume', nv)
 	}
 }
 
@@ -4032,12 +4041,12 @@ function refresh()
 
 function initial_volume()
 {
-	var volume = localStorage.getItem('volume')
+	var volume = get_local_storage('volume')
 
 	if(volume == null)
 	{
 		set_volume(0.8)
-		localStorage.setItem('volume', 0.8)
+		save_local_storage('volume', 0.8)
 	}
 
 	else
@@ -4132,7 +4141,14 @@ function unclaim_room()
 
 function get_room_keys()
 {
-	return get_local_storage(ls_room_keys)
+	var obj = get_local_storage(ls_room_keys)
+
+	if(obj === null)
+	{
+		obj = {}
+	}
+
+	return obj	
 }
 
 function save_room_keys(room_keys)
@@ -4163,7 +4179,14 @@ function save_room_key(key)
 
 function get_user_keys()
 {
-	return get_local_storage(ls_user_keys)
+	var obj = get_local_storage(ls_user_keys)
+
+	if(obj === null)
+	{
+		obj = {}
+	}
+
+	return obj	
 }
 
 function save_user_keys(user_keys)
@@ -4203,10 +4226,10 @@ function remove_user_key()
 
 function check_firstime()
 {
-	if(!localStorage["firstime"])
+	if(get_local_storage('firstime') === null)
 	{
 		help()
-		localStorage.setItem('firstime', false)
+		save_local_storage('firstime', false)
 	}
 }
 
@@ -5538,6 +5561,11 @@ function get_settings()
 	var changed = false
 
 	settings = get_local_storage(ls_settings)
+
+	if(settings === null)
+	{
+		settings = {}
+	}
 
 	if(settings.background_image === undefined)
 	{
