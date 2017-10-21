@@ -15,7 +15,7 @@ You will also need MongoDB installed in your computer, and for everything to wor
 
 There is no need create database tables, all of that is done automatically, MongoDB just needs to be installed and running.
 
-Most configuration is done in config.json found in the root directory.
+Most configuration is done in the config.json file found in the root directory.
 
 To run it locally you first have to start 'mongod' then go to the bin directory and run 'node www start'.
 
