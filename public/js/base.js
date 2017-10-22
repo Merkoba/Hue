@@ -250,9 +250,9 @@ function help2()
 	chat_announce('', '', '/unreserve: Makes a nickname available again.', 'small')
 	chat_announce('', '', '/recover x: Recovers reserved nickname in case someone else in the room is using it.', 'small')
 	chat_announce('', '', '/priv: Shows information regarding privileges and permissions.', 'small')
-	chat_announce('', '', '/users: Shows the user list. An alternative to the user list window.', 'small')
-	chat_announce('', '', '/crew: Shows a list of users that have either admin or op privileges.', 'small')
-	chat_announce('', '', '/history: Shows the input history.', 'small')
+	chat_announce('', '', '/users: Shows the user list. An alternative to the user list window. Accepts an argument as a filter.', 'small')
+	chat_announce('', '', '/crew: Shows a list of users that have either admin or op privileges. Accepts an argument as a filter.', 'small')
+	chat_announce('', '', '/history: Shows the input history. Accepts an argument as a filter.', 'small')
 	chat_announce('', '', '/startradio: Starts the radio.', 'small')
 	chat_announce('', '', '/stopradio: Stops the radio.', 'small')
 	chat_announce('', '', '/volume x: Changes the volume of the radio.', 'small')
@@ -2219,7 +2219,7 @@ function input_history_change(direction)
 	change_input(v)
 }
 
-function show_history()
+function show_history(filter=false)
 {
 	if(input_history.length > 0)
 	{
@@ -2227,14 +2227,25 @@ function show_history()
 
 		for(var item of input_history.slice().reverse())
 		{
+			if(filter)
+			{
+				if(item[0].toLowerCase().indexOf(filter.toLowerCase()) === -1)
+				{
+					continue
+				}
+			}
+
 			var h = $(`<div title='${item[1]}' class='show_history_item'></div>`)
 
-			h.text(item[0])
+			h.text(item[0]).urlize()
 
 			h.click({text:item[0]}, function(event)
 			{
-				change_input(event.data.text)
-				close_all_modals()
+				if($(this).find('a').length === 0)
+				{
+					change_input(event.data.text)
+					close_all_modals()
+				}
 			})
 
 			s.append(h)
@@ -2869,8 +2880,8 @@ jQuery.fn.urlize = function()
 					var prot = list[i].indexOf('http://') === 0 || list[i].indexOf('https://') === 0 ? '' : 'http://'
 					x = x.replace(list[i], `<a class='chat' target='_blank' href='${prot}${list[i]}'>${list[i]}</a>`)
 				}
-
 			}
+
 			$(obj).html(x)
 		})
 	}
@@ -3012,7 +3023,7 @@ function send_to_chat(msg)
 
 			else if(oiEquals(lmsg, '/upload_permission'))
 			{
-				show_upload_permission(arg)
+				show_upload_permission()
 			}
 
 			else if(oiStartsWith(lmsg, '/chat_permission'))
@@ -3022,7 +3033,7 @@ function send_to_chat(msg)
 
 			else if(oiEquals(lmsg, '/chat_permission'))
 			{
-				show_chat_permission(arg)
+				show_chat_permission()
 			}
 
 			else if(oiEquals(lmsg, '/crew'))
@@ -3030,9 +3041,19 @@ function send_to_chat(msg)
 				show_crew()
 			}
 
+			else if(oiStartsWith(lmsg, '/crew'))
+			{
+				show_crew(arg)
+			}
+
 			else if(oiEquals(lmsg, '/users'))
 			{
 				show_users()
+			}
+
+			else if(oiStartsWith(lmsg, '/users'))
+			{
+				show_users(arg)
 			}
 
 			else if(oiEquals(lmsg, '/priv'))
@@ -3224,6 +3245,11 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/history'))
 			{
 				show_history()
+			}
+
+			else if(oiStartsWith(lmsg, '/history'))
+			{
+				show_history(arg)
 			}			
 
 			else
@@ -4427,7 +4453,7 @@ function big_letter(s)
 	return s.toUpperCase()[0]
 }
 
-function show_crew()
+function show_crew(filter=false)
 {
 	var s = ""
 
@@ -4435,6 +4461,14 @@ function show_crew()
 	{
 		var nick = user[0]
 		var priv = user[1]
+
+		if(filter)
+		{
+			if(nick.toLowerCase().indexOf(filter.toLowerCase()) === -1)
+			{
+				continue
+			}
+		}		
 
 		if(priv === "admin" || priv === "op")
 		{
@@ -4455,7 +4489,7 @@ function show_crew()
 	}
 }
 
-function show_users()
+function show_users(filter=false)
 {
 	var s = ""
 
@@ -4463,6 +4497,14 @@ function show_users()
 	{	
 		var nick = user[0]
 		var priv = user[1]
+
+		if(filter)
+		{
+			if(nick.toLowerCase().indexOf(filter.toLowerCase()) === -1)
+			{
+				continue
+			}
+		}
 
 		s += `${priv_tag(priv)} ${nick}, `
 	}
