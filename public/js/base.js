@@ -503,13 +503,18 @@ function show_nickname()
 	chat_announce('[', ']', `Nickname: ${username}`, 'small')
 }
 
+function socket_emit(dest, obj)
+{
+	socket.emit(dest, obj)	
+}
+
 function start_socket()
 {
 	socket = io('/')
 
 	socket.on('connect', function() 
 	{
-		socket.emit('join_room', {room:room, username:username, key:get_room_key()})
+		socket_emit('join_room', {room:room, username:username, key:get_room_key()})
 	})
 
 	socket.on('update', function(data) 
@@ -793,7 +798,7 @@ function start_heartbeat()
 			refresh()
 		}
 
-		socket.emit('heartbeat', {})
+		socket_emit('heartbeat', {})
 	}, heartbeat_interval)
 }
 
@@ -1752,7 +1757,7 @@ function start_played_context_menu()
 
 function request_roomlist()
 {
-	socket.emit("roomlist", {})
+	socket_emit("roomlist", {})
 }
 
 function update_roomlist(roomlist)
@@ -1890,7 +1895,7 @@ function start_dropzone()
 		{
 			dropzone.files = []
 
-			socket.emit("uploaded", 
+			socket_emit("uploaded", 
 			{
 				image_file:fr.result, 
 				name:file.name
@@ -3242,7 +3247,7 @@ function send_to_chat(msg)
 			if(can_chat)
 			{
 				update_chat(username, msg)	
-				socket.emit('sendchat', {msg:msg})
+				socket_emit('sendchat', {msg:msg})
 			}
 
 			else
@@ -3265,7 +3270,7 @@ function change_topic(dtopic)
 		{
 			if(topic != dtopic)
 			{
-				socket.emit('topic_change', {topic:dtopic})
+				socket_emit('topic_change', {topic:dtopic})
 			}
 
 			else
@@ -3463,7 +3468,7 @@ function change_nickname(nck)
 
 			save_room_nickname(nck)
 
-			socket.emit('username_change', {username:nck})
+			socket_emit('username_change', {username:nck})
 		}
 	}
 
@@ -3530,7 +3535,7 @@ function goto_bottom(force=false)
 function emit_pasted(url)
 {
 	chat_announce("[", "]", "Uploading", "small")	
-	socket.emit('pasted', {image_url:url})
+	socket_emit('pasted', {image_url:url})
 }
 
 function get_radio_metadata()
@@ -4102,7 +4107,7 @@ function claim_room(arg="")
 		return false
 	}
 
-	socket.emit('claim_room', {pass:arg})
+	socket_emit('claim_room', {pass:arg})
 }
 
 function reclaim_room()
@@ -4119,7 +4124,7 @@ function reclaim_room()
 		return false
 	}
 
-	socket.emit('claim_room', {pass:''})
+	socket_emit('claim_room', {pass:''})
 }
 
 function unclaim_room()
@@ -4136,7 +4141,7 @@ function unclaim_room()
 		return false
 	}
 
-	socket.emit('unclaim_room', {})
+	socket_emit('unclaim_room', {})
 }
 
 function get_room_keys()
@@ -4273,7 +4278,7 @@ function change_upload_permission(m)
 
 			if(amodes.indexOf(m) !== -1)
 			{
-				socket.emit('change_upload_permission', {upload_permission:m})
+				socket_emit('change_upload_permission', {upload_permission:m})
 			}
 
 			else
@@ -4312,7 +4317,7 @@ function change_chat_permission(m)
 
 			if(amodes.indexOf(m) !== -1)
 			{
-				socket.emit('change_chat_permission', {chat_permission:m})
+				socket_emit('change_chat_permission', {chat_permission:m})
 			}
 
 			else
@@ -4502,7 +4507,7 @@ function voice(nck)
 				return false
 			}
 
-			socket.emit('voice', {username:nck})
+			socket_emit('voice', {username:nck})
 		}
 	}
 
@@ -4602,7 +4607,7 @@ function strip(nck)
 				return false
 			}
 
-			socket.emit('strip', {username:nck})
+			socket_emit('strip', {username:nck})
 		}
 	}
 
@@ -4766,7 +4771,7 @@ function admin(nck)
 				return false
 			}
 
-			socket.emit('admin', {username:nck})
+			socket_emit('admin', {username:nck})
 		}
 	}
 
@@ -4802,7 +4807,7 @@ function op(nck)
 				return false
 			}
 
-			socket.emit('op', {username:nck})
+			socket_emit('op', {username:nck})
 		}
 	}
 
@@ -4822,7 +4827,7 @@ function make_private()
 			return false
 		}
 
-		socket.emit('make_private', {})
+		socket_emit('make_private', {})
 	}
 
 	else
@@ -4841,7 +4846,7 @@ function make_public()
 			return false
 		}
 
-		socket.emit('make_public', {})
+		socket_emit('make_public', {})
 	}
 
 	else
@@ -4890,7 +4895,7 @@ function made_public(data)
 
 function reserve(pass="")
 {
-	socket.emit('username_reserve', {pass:pass, key:get_user_key(username)})
+	socket_emit('username_reserve', {pass:pass, key:get_user_key(username)})
 }
 
 function reserved(data)
@@ -4918,7 +4923,7 @@ function unreserve()
 		return false
 	}
 
-	socket.emit('username_unreserve', {key:get_user_key(username)})
+	socket_emit('username_unreserve', {key:get_user_key(username)})
 }
 
 function unreserved(data)
@@ -4953,7 +4958,7 @@ function recover(nck)
 
 	save_room_nickname(nck)	
 
-	socket.emit('username_recover', {username:nck, key:key})
+	socket_emit('username_recover', {username:nck, key:key})
 }
 
 function change_radiosrc(src)
@@ -4964,7 +4969,7 @@ function change_radiosrc(src)
 
 		if(src.length > 0 && src.length <= max_radiosrc_length)
 		{
-			socket.emit('change_radiosrc', {src:src})
+			socket_emit('change_radiosrc', {src:src})
 		}
 	}
 
@@ -5030,7 +5035,7 @@ function ban(nck)
 				return false
 			}
 
-			socket.emit('ban', {username:nck})
+			socket_emit('ban', {username:nck})
 		}
 	}
 
@@ -5044,7 +5049,7 @@ function unbanall()
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		socket.emit('unbanall', {})
+		socket_emit('unbanall', {})
 	}
 
 	else
@@ -5057,7 +5062,7 @@ function unbanlast()
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		socket.emit('unbanlast', {})
+		socket_emit('unbanlast', {})
 	}
 
 	else
@@ -5070,7 +5075,7 @@ function bannedcount()
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		socket.emit('bannedcount', {})
+		socket_emit('bannedcount', {})
 	}
 }
 
@@ -5100,7 +5105,7 @@ function kick(nck)
 				return false
 			}
 
-			socket.emit('kick', {username:nck})
+			socket_emit('kick', {username:nck})
 		}
 	}
 
@@ -5192,7 +5197,7 @@ function remove_voices()
 		return false
 	}
 
-	socket.emit('remove_voices', {})
+	socket_emit('remove_voices', {})
 }
 
 function remove_ops()
@@ -5203,7 +5208,7 @@ function remove_ops()
 		return false
 	}
 
-	socket.emit('remove_ops', {})
+	socket_emit('remove_ops', {})
 }
 
 function announce_removedvoices(data)
