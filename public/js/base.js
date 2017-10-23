@@ -60,6 +60,9 @@ var msg_roomlist
 var msg_played
 var msg_info
 var msg_storageui
+var played_filtered = false
+var userlist_filtered = false
+var roomlist_filter_string = ""
 
 function init()
 {
@@ -70,6 +73,7 @@ function init()
 	start_settings_state()
 	start_settings_listeners()
 	start_storageui()
+	start_filters()
 	start_image_events()
 	start_dropzone()
 	start_volume_scroll()
@@ -250,9 +254,10 @@ function help2()
 	chat_announce('', '', '/unreserve: Makes a nickname available again.', 'small')
 	chat_announce('', '', '/recover x: Recovers reserved nickname in case someone else in the room is using it.', 'small')
 	chat_announce('', '', '/priv: Shows information regarding privileges and permissions.', 'small')
-	chat_announce('', '', '/users: Shows the user list. An alternative to the user list window. Accepts an argument as a filter.', 'small')
-	chat_announce('', '', '/crew: Shows a list of users that have either admin or op privileges. Accepts an argument as a filter.', 'small')
-	chat_announce('', '', '/history: Shows the input history. Accepts an argument as a filter.', 'small')
+	chat_announce('', '', '/users: Shows the user list. Accepts a filter as an argument.', 'small')
+	chat_announce('', '', '/rooms: Shows the room list. Accepts a filter as an argument.', 'small')
+	chat_announce('', '', '/played: Shows the list of songs played. Accepts a filter as an argument.', 'small')
+	chat_announce('', '', '/history: Shows the input history. Accepts a filter as an argument.', 'small')
 	chat_announce('', '', '/startradio: Starts the radio.', 'small')
 	chat_announce('', '', '/stopradio: Stops the radio.', 'small')
 	chat_announce('', '', '/volume x: Changes the volume of the radio.', 'small')
@@ -1012,11 +1017,19 @@ function update_userlist()
 
 		nicknames.push(item[0])
 
-		var h = $("<div class='userlist_item'><span class='ui_item_priv'></span><span class='ui_item_nick'></span></div><br>")
+		var h = $("<div class='userlist_item'><span class='ui_item_priv'></span><span class='ui_item_nick'></span></div>")
 
 		var p = priv_tag(item[1])
 
-		h.find('.ui_item_priv').eq(0).text(p)
+		var pel = h.find('.ui_item_priv').eq(0)
+
+		pel.text(p)
+
+		if(p === "")
+		{
+			pel.css("padding-right", 0)
+		}
+
 		h.find('.ui_item_nick').eq(0).text(item[0])
 
 		h.click({nickname:item[0]}, function(event)
@@ -1028,11 +1041,14 @@ function update_userlist()
 		s = s.add(h)
 	}
 
-	s = s.add('<br>')
-
 	update_usercount(userlist.length)
 
 	$('#userlist').html(s)
+
+	if(userlist_filtered)
+	{
+		do_userlist_filter()
+	}	
 }
 
 function compare_userlist(a, b) 
@@ -1755,21 +1771,25 @@ function start_played_context_menu()
 	})
 }
 
-function request_roomlist()
+function request_roomlist(filter="")
 {
+	roomlist_filter_string = filter
+
 	socket_emit("roomlist", {})
 }
 
 function update_roomlist(roomlist)
 {	
+	$("#roomlist_filter").val(roomlist_filter_string)
+
 	var s = $()
 
 	s = s.add()
 
 	for(var i=0; i<roomlist.length; i++)
 	{
-		var c = "<span class='roomlist_filler'></span><span class='roomlist_name'></span><span class='roomlist_count'></span><div class='roomlist_topic'></div>"
-		var h = $(`<div class='roomlist_item'>${c}</div><br>`)
+		var c = "<span class='roomlist_name'></span><span class='roomlist_count'></span><div class='roomlist_topic'></div>"
+		var h = $(`<div class='roomlist_item'>${c}</div>`)
 
 		h.find('.roomlist_name').eq(0).text(roomlist[i][0])
 
@@ -1784,7 +1804,6 @@ function update_roomlist(roomlist)
 		}
 
 		h.find('.roomlist_count').eq(0).text(t)		
-		h.find('.roomlist_filler').eq(0).text(t)
 
 		h.click({room:roomlist[i][0]}, function(event)
 		{
@@ -1806,9 +1825,12 @@ function update_roomlist(roomlist)
 		s = s.add(h)
 	}
 
-	s = s.add('<br>')
-
 	$('#roomlist').html(s)
+
+	if(roomlist_filter_string !== "")
+	{
+		do_roomlist_filter()
+	}	
 }
 
 function show_menu()
@@ -1826,9 +1848,16 @@ function show_settings()
 	msg_settings.show()
 }
 
-function show_userlist()
+function show_userlist(filter=false)
 {
-	msg_userlist.show()
+	msg_userlist.show(function()
+	{
+		if(filter)
+		{
+			$("#userlist_filter").val(filter)
+			do_userlist_filter()
+		}
+	})
 }
 
 function show_roomlist()
@@ -1836,9 +1865,16 @@ function show_roomlist()
 	msg_roomlist.show()
 }
 
-function show_played()
+function show_played(filter=false)
 {
-	msg_played.show()
+	msg_played.show(function()
+	{
+		if(filter)
+		{
+			$("#played_filter").val(filter)
+			do_played_filter()
+		}
+	})
 }
 
 function start_dropzone()
@@ -2156,6 +2192,11 @@ function focus_input()
 	$("#input").focus()
 }
 
+function blur_input()
+{
+	$("#input").blur()
+}
+
 function input_to_end()
 {
 	$('#input')[0].scrollLeft = $('#input')[0].scrollWidth
@@ -2223,18 +2264,24 @@ function show_history(filter=false)
 {
 	if(input_history.length > 0)
 	{
-		var s = $("<div></div>")
+		if(filter)
+		{
+			sfilter = `value='${filter}'`
+		}
+
+		else
+		{
+			sfilter = ''
+		}
+
+		var c = $("<div></div>")
+
+		var s = $(`<input type='text' id='history_filter' class='filter_input' placeholder='Filter' ${sfilter}><div class='spacer3'></div>`)
+
+		var s2 = $("<div></div>")
 
 		for(var item of input_history.slice().reverse())
 		{
-			if(filter)
-			{
-				if(item[0].toLowerCase().indexOf(filter.toLowerCase()) === -1)
-				{
-					continue
-				}
-			}
-
 			var h = $(`<div title='${item[1]}' class='show_history_item'></div>`)
 
 			h.text(item[0]).urlize()
@@ -2248,18 +2295,33 @@ function show_history(filter=false)
 				}
 			})
 
-			s.append(h)
+			s2.append(h)
 		}
 
-		s = s[0]
+		s = s.add(s2)
+
+		c = c.append(s)
+
+		c = c[0]
+
+		show_info(c, function()
+		{
+			$("#history_filter").on("input", function()
+			{
+				history_filter_timer()
+			})
+
+			if(filter)
+			{
+				do_history_filter()
+			}
+		})
 	}
 
 	else
 	{
-		var s = "[ Messages or commands you type will appear here ]"		
+		show_info("[ Messages or commands you type will appear here ]")
 	}
-
-	show_info(s)
 }
 
 function input_click_events()
@@ -2542,7 +2604,7 @@ function start_modal_scrollbar(s)
 		autohidemode: false,
 		cursorcolor: "#AFAFAF",
 		cursorborder: "0px solid white",
-		enablekeyboard: false,
+		// enablekeyboard: false,
 		cursorwidth: "7px"	
 	})
 }
@@ -2911,8 +2973,9 @@ function register_commands()
 	commands.push('/unclaim')
 	commands.push('/upload_permission')
 	commands.push('/chat_permission')
-	commands.push('/crew')
 	commands.push('/users')
+	commands.push('/rooms')
+	commands.push('/played')
 	commands.push('/priv')
 	commands.push('/voice')
 	commands.push('/op')
@@ -3036,24 +3099,34 @@ function send_to_chat(msg)
 				show_chat_permission()
 			}
 
-			else if(oiEquals(lmsg, '/crew'))
-			{
-				show_crew()
-			}
-
-			else if(oiStartsWith(lmsg, '/crew'))
-			{
-				show_crew(arg)
-			}
-
 			else if(oiEquals(lmsg, '/users'))
 			{
-				show_users()
+				show_userlist()
 			}
 
 			else if(oiStartsWith(lmsg, '/users'))
 			{
-				show_users(arg)
+				show_userlist(arg)
+			}
+
+			else if(oiEquals(lmsg, '/rooms'))
+			{
+				request_roomlist()
+			}
+
+			else if(oiStartsWith(lmsg, '/rooms'))
+			{
+				request_roomlist(arg)
+			}
+
+			else if(oiEquals(lmsg, '/played'))
+			{
+				show_played()
+			}
+
+			else if(oiStartsWith(lmsg, '/played'))
+			{
+				show_played(arg)
 			}
 
 			else if(oiEquals(lmsg, '/priv'))
@@ -3565,67 +3638,65 @@ function emit_pasted(url)
 }
 
 function get_radio_metadata()
-{
-	if(get_metadata)
+{	
+	try
 	{
-		try
+		$.get(radioinfo,
 		{
-			$.get(radioinfo,
-			{
 
-			},
-			function(data)
+		},
+		function(data)
+		{
+			try
 			{
-				try
+				if(Array.isArray(data.icestats.source))
 				{
-					if(Array.isArray(data.icestats.source))
+					for(var i=0; i<data.icestats.source.length; i++)
 					{
-						for(var i=0; i<data.icestats.source.length; i++)
-						{
-							var source = data.icestats.source[i]
+						var source = data.icestats.source[i]
 
-							if(source.listenurl.indexOf(radiosrc.split('/').pop()) !== -1)
-							{
-								break
-							}
+						if(source.listenurl.indexOf(radiosrc.split('/').pop()) !== -1)
+						{
+							break
 						}
 					}
-
-					else if(data.icestats.source.listenurl.indexOf(radiosrc.split('/').pop()) !== -1)
-					{
-						var source = data.icestats.source
-					}
-
-					else
-					{
-						show_playing_file()
-						return false
-					}
-
-					if(source === undefined || source.artist === undefined || source.title === undefined)
-					{
-						show_playing_file()
-						return false
-					}
-
-					push_played(source.title, source.artist)
 				}
 
-				catch(err)
+				else if(data.icestats.source.listenurl.indexOf(radiosrc.split('/').pop()) !== -1)
+				{
+					var source = data.icestats.source
+				}
+
+				else
 				{
 					show_playing_file()
 					return false
 				}
 
-			}).fail(function(err, status) 
+				if(source === undefined || source.artist === undefined || source.title === undefined)
+				{
+					show_playing_file()
+					return false
+				}
+
+				push_played(source.title, source.artist)
+			}
+
+			catch(err)
 			{
 				show_playing_file()
-			})
-		}
-		catch(err)
+				return false
+			}
+
+		}).fail(function(err, status) 
 		{
 			show_playing_file()
-		}
+		})
+	}
+
+	catch(err)
+	{
+		show_playing_file()
 	}
 }
 
@@ -3667,14 +3738,14 @@ function push_played(title, artist)
 		
 		var pi = "<div class='pititle'></div><div class='piartist'></div>"
 		
-		h = $(`<div title='${date}' class='played_item'>${pi}</div><br>`)
+		h = $(`<div title='${date}' class='played_item'>${pi}</div>`)
 		
-		$(h).find('.pititle').eq(0).text(title)
-		$(h).find('.piartist').eq(0).text(`by ${artist}`)
+		h.find('.pititle').eq(0).text(title)
+		h.find('.piartist').eq(0).text(`by ${artist}`)
 
-		$(h).data('q', q)
+		h.data('q', q)
 
-		$(h).click(function()
+		h.click(function()
 		{
 			search_in('google', $(this).data('q'))
 		})
@@ -3686,8 +3757,14 @@ function push_played(title, artist)
 		if(played.length > played_crop_limit)
 		{
 			var els = $('#played').children()
-			els.slice(els.length - 3, els.length - 1).remove()
+			els.slice(els.length - 1, els.length).remove()
 			played.splice(0, 1)
+			update_modal_scrollbar("played")
+		}
+
+		if(played_filtered)
+		{
+			do_played_filter()
 		}
 	}
 		
@@ -3754,7 +3831,7 @@ function start_metadata_loop()
 		{
 			no_meta_count += 1
 
-			if(no_meta_count > 20)
+			if(no_meta_count > max_no_meta_count)
 			{
 				get_metadata = true
 				no_meta_count = 0
@@ -4453,45 +4530,14 @@ function big_letter(s)
 	return s.toUpperCase()[0]
 }
 
-function show_crew(filter=false)
-{
-	var s = ""
-
-	for(var user of userlist)
-	{
-		var nick = user[0]
-		var priv = user[1]
-
-		if(filter)
-		{
-			if(nick.toLowerCase().indexOf(filter.toLowerCase()) === -1)
-			{
-				continue
-			}
-		}		
-
-		if(priv === "admin" || priv === "op")
-		{
-			s += `${priv_tag(priv)} ${nick}, `
-		}
-
-		else
-		{
-			break
-		}
-	}
-
-	if(s.length > 0)
-	{
-		s = s.slice(0, -2)
-
-		chat_announce('[', ']', `Crew: ${s}`, 'small')
-	}
-}
-
 function show_users(filter=false)
 {
 	var s = ""
+
+	if(filter)
+	{
+		filter = filter.toLowerCase()
+	}	
 
 	for(var user of userlist)
 	{	
@@ -4500,7 +4546,7 @@ function show_users(filter=false)
 
 		if(filter)
 		{
-			if(nick.toLowerCase().indexOf(filter.toLowerCase()) === -1)
+			if(nick.toLowerCase().indexOf(filter) === -1)
 			{
 				continue
 			}
@@ -5340,7 +5386,7 @@ function start_msg()
 		class: msg_class,
 		show_effect: "none",
 		close_effect: "none",
-		clear_editables: true	
+		clear_editables: true
 	}
 
 	msg_menu = Msg
@@ -5382,6 +5428,7 @@ function start_msg()
 				crm = true
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
+				$("#create_room_input").focus()
 			},
 			after_set: function(instance)
 			{
@@ -5441,6 +5488,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
+				reset_userlist_filter()
 			}
 		})
 	)
@@ -5491,6 +5539,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
+				reset_played_filter()
 			}
 		})
 	)
@@ -5511,7 +5560,7 @@ function start_msg()
 			},
 			after_set: function(instance)
 			{
-				after_modal_set_or_show(instance)
+				after_modal_set_or_show(instance)				
 			},
 			after_close: function(instance)
 			{
@@ -5574,6 +5623,7 @@ function after_modal_create(instance)
 function after_modal_show(instance)
 {
 	modal_open = true
+	blur_input()
 }
 
 function after_modal_set_or_show(instance)
@@ -5861,7 +5911,280 @@ function reload_settings()
 	setup_opacity()
 }
 
-function show_info(s)
+function show_info(s, callback=false)
 {
-	msg_info.set_or_show(s)
+	if(callback)
+	{
+		msg_info.set_or_show(s, function()
+		{
+			callback()
+		})
+	}
+
+	else
+	{
+		msg_info.set_or_show(s)
+	}
+}
+
+var played_filter_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			do_played_filter()
+		}, 350)
+	}
+})()
+
+var userlist_filter_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			do_userlist_filter()
+		}, 350)
+	}
+})()
+
+var roomlist_filter_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			do_roomlist_filter()
+		}, 350)
+	}
+})()
+
+var history_filter_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			do_history_filter()
+		}, 350)
+	}
+})()
+
+function start_filters()
+{
+	$("#played_filter").on("input", function()
+	{
+		played_filter_timer()
+	})
+
+	$("#userlist_filter").on("input", function()
+	{
+		userlist_filter_timer()
+	})
+
+	$("#roomlist_filter").on("input", function()
+	{
+		roomlist_filter_timer()
+	})
+}
+
+function do_played_filter()
+{
+	var filter = $("#played_filter").val().trim().toLowerCase()
+
+	if(filter !== "")
+	{
+		played_filtered = true
+
+		$(".played_item").each(function()
+		{
+			$(this).css("display", "block")
+
+			var title = $(this).find(".pititle").eq(0).text()
+			var artist = $(this).find(".piartist").eq(0).text()
+
+			var include = false
+
+			if(title.toLowerCase().indexOf(filter) !== -1)
+			{
+				include = true
+			}
+
+			else if(artist.toLowerCase().indexOf(filter) !== -1)
+			{
+				include = true
+			}
+
+			if(!include)
+			{
+				$(this).css("display", "none")
+			}
+		})
+	}
+
+	else
+	{
+		played_filtered = false
+
+		$(".played_item").each(function()
+		{
+			$(this).css("display", "block")
+		})
+	}
+
+	update_modal_scrollbar("played")	
+}
+
+function reset_played_filter()
+{
+	$("#played_filter").val("")
+	do_played_filter()
+}
+
+function do_userlist_filter()
+{
+	var filter = $("#userlist_filter").val().trim().toLowerCase()
+
+	if(filter !== "")
+	{
+		userlist_filtered = true
+
+		$(".userlist_item").each(function()
+		{
+			$(this).css("display", "block")
+
+			var nick = $(this).find(".ui_item_nick").eq(0).text()
+
+			var include = false
+
+			if(nick.toLowerCase().indexOf(filter) !== -1)
+			{
+				include = true
+			}
+
+			if(!include)
+			{
+				$(this).css("display", "none")
+			}
+		})
+	}
+
+	else
+	{
+		userlist_filtered = false
+
+		$(".userlist_item").each(function()
+		{
+			$(this).css("display", "block")
+		})
+	}
+
+	update_modal_scrollbar("userlist")
+}
+
+function do_roomlist_filter()
+{
+	var filter = $("#roomlist_filter").val().trim().toLowerCase()
+
+	if(filter !== "")
+	{
+		roomlist_filtered = true
+
+		$(".roomlist_item").each(function()
+		{
+			$(this).css("display", "block")
+
+			var name = $(this).find(".roomlist_name").eq(0).text()
+			var topic = $(this).find(".roomlist_topic").eq(0).text()
+
+			var include = false
+
+			if(name.toLowerCase().indexOf(filter) !== -1)
+			{
+				include = true
+			}
+
+			else if(topic.toLowerCase().indexOf(filter) !== -1)
+			{
+				include = true
+			}
+
+			if(!include)
+			{
+				$(this).css("display", "none")
+			}
+		})
+	}
+
+	else
+	{
+		roomlist_filtered = false
+
+		$(".roomlist_item").each(function()
+		{
+			$(this).css("display", "block")
+		})
+	}
+
+	update_modal_scrollbar("roomlist")
+}
+
+function reset_userlist_filter()
+{
+	$("#userlist_filter").val("")
+	do_userlist_filter()
+}
+
+function do_history_filter()
+{
+	var filter = $("#history_filter").val().trim().toLowerCase()
+
+	if(filter !== "")
+	{
+		$(".show_history_item").each(function()
+		{
+			$(this).css("display", "block")
+
+			var text = $(this).text()
+
+			var include = false
+
+			if(text.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
+			{
+				include = true
+			}
+
+			if(!include)
+			{
+				$(this).css("display", "none")
+			}
+		})
+	}
+
+	else
+	{
+		$(".show_history_item").each(function()
+		{
+			$(this).css("display", "block")
+		})
+	}
+
+	update_modal_scrollbar("info")	
 }

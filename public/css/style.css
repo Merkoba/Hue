@@ -17,8 +17,8 @@ body, html
 #background_image 
 {
 	position: fixed;
-	left:0; right:0;
-	top:0; bottom:0;
+	left: 0; right: 0;
+	top: 0; bottom: 0;
 	margin: auto;
 	width: 200%;
 	height: 200%;
@@ -94,7 +94,7 @@ body, html
 {
 	position: fixed;
 	padding-left: 30px;
-	width:calc(50% - 30px);
+	width: calc(50% - 30px);
 	max-width: 50%;
 	overflow-x: none;
 	overflow-y: auto;
@@ -130,7 +130,7 @@ body, html
 	position: absolute;
 	max-width: 50%;
 	left: 30px;
-	width:calc(50% - 30px);	
+	width: calc(50% - 30px);	
 	bottom: 2em;
 	height: 2em;
 	font-size: 1em;
@@ -138,7 +138,7 @@ body, html
 	color: white;
 	border: 0px solid #2D2D2D;
 	outline: none;
-	font-family:inherit;
+	font-family: inherit;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -231,11 +231,10 @@ a.chat:link, a.chat:visited, a.chat:hover
 	cursor: pointer;
 }
 
-.played_item 
+.played_item
 {
 	padding-top: 1em;
 	padding-bottom: 1em;
-	display: inline-block;
 	cursor: pointer;
 	overflow-wrap: break-word;
 	word-break: break-word;
@@ -249,7 +248,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 
 .piartist
 {
-	padding-top:0.3em;
+	padding-top: 0.3em;
 	font-size: 1.2em;
 }
 
@@ -280,7 +279,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 {
 	width: 99%;
 	font-size: 1.4em;
-	text-align:center;
+	text-align: center;
 	border: 1px solid grey;
 }
 
@@ -289,7 +288,6 @@ a.chat:link, a.chat:visited, a.chat:hover
 	padding-top: 0.7em;
 	padding-bottom: 0.7em;
 	cursor: pointer;
-	display: inline-block;
 	overflow-wrap: break-word;
 	word-break: break-word;	
 }
@@ -310,8 +308,6 @@ a.chat:link, a.chat:visited, a.chat:hover
 	padding-top: 1em;
 	padding-bottom: 1em;
 	cursor: pointer;
-	display: inline-block;
-	width: 90%;
 	overflow-wrap: break-word;
 	word-break: break-word;	
 }
@@ -319,26 +315,18 @@ a.chat:link, a.chat:visited, a.chat:hover
 .roomlist_name
 {
 	font-size: 1.4em;
-	text-decoration: underline;
 }
 
 .roomlist_topic
 {
 	padding-top: 0.3em;
-	font-size: 1.4em;
+	font-size: 1.2em;
 }
 
 .roomlist_count
 {
 	font-size: 1.1em;
-	padding-left: 0.7em;
-}
-
-.roomlist_filler
-{
-	font-size: 1.1em;
-	padding-right: 0.7em;
-	opacity: 0;
+	padding-left: 0.5em;
 }
 
 #volume_area
@@ -509,4 +497,32 @@ a.chat:link, a.chat:visited, a.chat:hover
 	padding-left: 2em;
 	padding-right: 2em;
 	cursor: pointer;
+}
+
+.filter_input
+{
+	width: 10em;
+	border: 1px solid grey;
+	font-size: 1.4em;
+	text-align: center;
+}
+
+#played_filter
+{
+	width: 14em;
+}
+
+#roomlist_filter
+{
+	width: 14em;
+}
+
+#userlist_filter
+{
+	width: 10em;
+}
+
+#history_filter
+{
+	width: 99%;
 }

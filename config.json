@@ -29,6 +29,7 @@
 	"max_roomlist_topic_length": 140,
 	"max_title_topic_length": 140,
 	"max_radiosrc_length": 200,
+	"max_no_meta_count": 10,
 	"max_image_size": 5555,
 	"small_keyboard_scroll": 100,
 	"big_keyboard_scroll": 200,

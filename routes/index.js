@@ -22,6 +22,7 @@ c.max_username_length = config.max_username_length
 c.max_roomname_length = config.max_roomname_length
 c.max_radiosrc_length = config.max_radiosrc_length
 c.max_title_topic_length = config.max_title_topic_length
+c.max_no_meta_count = config.max_no_meta_count
 c.small_keyboard_scroll = config.small_keyboard_scroll
 c.big_keyboard_scroll = config.big_keyboard_scroll
 c.max_image_size = config.max_image_size

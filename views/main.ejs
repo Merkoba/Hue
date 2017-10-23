@@ -4,7 +4,7 @@
 		<script src="/js/jquery.js"></script>
 		<script src="/js/handlebars.js"></script>
 		<script src="/js/colorlib.js?v=4"></script>
-		<script src="/js/msg.min.js?v=3"></script>
+		<script src="/js/msg.min.js?v=4"></script>
 		<script src="/js/storageui.min.js?v=2"></script>
 		<script src="/js/dropzone.js"></script>
 		<script src="/js/dateformat.js"></script>
@@ -18,8 +18,8 @@
 		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
 
-		<script src="/js/base.js?ver=502"></script>
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=97" />
+		<script src="/js/base.js?ver=504"></script>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=99" />
 
 		<script>
 			$(function()
@@ -47,6 +47,7 @@
 				max_roomname_length = <%= max_roomname_length %>
 				max_username_length = <%= max_username_length %>
 				max_radiosrc_length = <%= max_radiosrc_length %>
+				max_no_meta_count = <%= max_no_meta_count %>
 				small_keyboard_scroll = <%= small_keyboard_scroll %>
 				big_keyboard_scroll = <%= big_keyboard_scroll %>
 				max_image_size = <%= max_image_size %>
@@ -200,15 +201,21 @@
 		</script>
 
 		<script id='template_userlist' type='text/x-handlebars-template'>
+			<input type="text" id="userlist_filter" class="filter_input" placeholder="Filter">
+			<div class='spacer3'></div>
 			<div id='userlist'></div>
 		</script>		
 		
 		<script id='template_roomlist' type='text/x-handlebars-template'>
+			<input type="text" id="roomlist_filter" class="filter_input" placeholder="Filter">
+			<div class='spacer3'></div>			
 			<div id='roomlist'></div>
 		</script>		
 		
 		<script id='template_played' type='text/x-handlebars-template'>
-			<div id='played'><br></div>
+			<input type="text" id="played_filter" class="filter_input" placeholder="Filter">
+			<div class='spacer3'></div>
+			<div id='played'></div>
 		</script>
 
 		<script id='template_info' type='text/x-handlebars-template'>
