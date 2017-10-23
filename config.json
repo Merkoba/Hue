@@ -6,6 +6,7 @@
 	"public_images_location": "/img/",
 	"default_image_name": "default.gif",
 	"default_image_url": "/img/default.gif",
+	"loading_image_url": "/img/loading.jpg",
 	"default_radiosrc": "https://hue.merkoba.com:8765/hue",
 	"default_radioinfo": "https://hue.merkoba.com:8765/status-json.xsl",
 	"mongodb_path": "mongodb://localhost:27017/hue",

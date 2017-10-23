@@ -60,13 +60,23 @@ var msg_roomlist
 var msg_played
 var msg_info
 var msg_storageui
+var msg_nickname_picker
 var played_filtered = false
 var userlist_filtered = false
 var roomlist_filter_string = ""
+var picking_nickname = true
 
 function init()
 {
+	activate_key_detection()
 	get_nickname()
+}
+
+function init2()
+{
+	picking_nickname = false
+	start_loading_image()
+	make_main_container_visible()
 	compile_templates()
 	get_settings()
 	start_msg()
@@ -79,7 +89,6 @@ function init()
 	start_volume_scroll()
 	initial_volume()
 	activate_window_visibility_listener()
-	activate_key_detection()
 	input_click_events()
 	copypaste_events()
 	main_menu_events()
@@ -88,6 +97,16 @@ function init()
 	register_commands()
 	start_chat_scrollbar()
 	start_socket()
+}
+
+function make_main_container_visible()
+{
+	$("#main_container").css("display", "initial")	
+}
+
+function start_loading_image()
+{
+	$("#background_image").css("background-image", `url('${loading_image_url}')`)
 }
 
 function get_local_storage(ls_name)
@@ -159,28 +178,52 @@ function get_nickname()
 
 	if(uname === undefined)
 	{
-		var keep_naming = true
+		start_nickname_picker()
+	}
 
-		while(keep_naming)
-		{
-			uname = clean_string4(prompt('Pick your nickname').substring(0, max_username_length))
+	else
+	{
+		username = uname
 
-			if(uname === null || uname.length < 1 || uname.indexOf('<') !== -1)
-			{
-				keep_naming = true
-			}
+		init2()
+	}
+}
 
-			else
-			{
-				keep_naming = false
-			}
-		}
+function start_nickname_picker()
+{
+	msg_nickname_picker = Msg(
+	{
+		id: "nickname-picker",
+		class: "black",
+		show_effect: "fade",
+		close_effect: "fade",
+		show_effect_duration: [800, 800],
+		close_effect_duration: [800, 800],
+		window_x: "none",
+		close_on_escape: false,
+		close_on_overlay_click: false
+	})
 
+	var s = "<div id='pick_nickname_welcome'>Welcome</div><div id='pick_nickname_info'>Pick a nickname to begin</div><input type='text' id='pick_nickname_input'>"
+
+	msg_nickname_picker.show(s, function()
+	{
+		$("#pick_nickname_input").focus()
+	})	
+}
+
+function check_nickname()
+{
+	var uname = clean_string4($("#pick_nickname_input").val().substring(0, max_username_length))
+	
+	if(uname.length !== 0)
+	{
+		username = uname
 		save_room_nickname(uname)
 		save_default_nickname(uname)
+		msg_nickname_picker.close()
+		init2()
 	}
-	
-	username = uname
 }
 
 function save_room_nickname(uname)
@@ -1095,6 +1138,7 @@ function start_nickname_context_menu()
 	{
 		selector: ".ui_item_nick, .chat_uname",
 		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
 		items: 
 		{
 			cmvoice: 
@@ -1241,6 +1285,7 @@ function start_main_menu_context_menu()
 	{
 		selector: "#main_menu",
 		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,		
 		items: 
 		{
 			ctpmodes: 
@@ -1744,6 +1789,7 @@ function start_played_context_menu()
 	{
 		selector: ".played_item, #now_playing_area",
 		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,		
 		items: 
 		{
 			cmenu1: 
@@ -2004,6 +2050,19 @@ function activate_key_detection()
 {
 	$(document).keydown(function(e)
 	{
+		if(picking_nickname)
+		{
+			$('#pick_nickname_input').focus()
+
+			if(e.key === "Enter")
+			{
+				check_nickname()
+				e.preventDefault()
+			}
+
+			return
+		}
+
 		if(crm)
 		{
 			$('#create_room_input').focus()
@@ -2299,9 +2358,7 @@ function show_history(filter=false)
 		}
 
 		s = s.add(s2)
-
-		c = c.append(s)
-
+		c.append(s)
 		c = c[0]
 
 		show_info(c, function()
@@ -2320,7 +2377,7 @@ function show_history(filter=false)
 
 	else
 	{
-		show_info("[ Messages or commands you type will appear here ]")
+		show_info("Messages or commands you type will appear here")
 	}
 }
 
@@ -2776,7 +2833,7 @@ function start_image_events()
 
 			if(settings.background_image)
 			{
-				$('#background_image').css('background-image', `url(${image_url})`) 
+				$('#background_image').css('background-image', `url('${image_url}')`) 
 
 				if($('#background_image').css('background-repeat') === 'repeat')
 				{
@@ -2976,6 +3033,7 @@ function register_commands()
 	commands.push('/users')
 	commands.push('/rooms')
 	commands.push('/played')
+	commands.push('/search')
 	commands.push('/priv')
 	commands.push('/voice')
 	commands.push('/op')
@@ -3127,6 +3185,16 @@ function send_to_chat(msg)
 			else if(oiStartsWith(lmsg, '/played'))
 			{
 				show_played(arg)
+			}
+
+			else if(oiEquals(lmsg, '/search'))
+			{
+				chat_search()
+			}			
+
+			else if(oiStartsWith(lmsg, '/search'))
+			{
+				chat_search(arg)
 			}
 
 			else if(oiEquals(lmsg, '/priv'))
@@ -4163,6 +4231,145 @@ function initial_volume()
 	}
 }
 
+var search_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			chat_search($("#search_filter").val())
+		}, 350)
+	}
+})()
+
+function create_search_container()
+{
+	var c = $("<div></div>")
+
+	var s = $(`<input type='text' id='search_filter' class='filter_input' placeholder='Search'><div class='spacer3'></div>`)
+	
+	var s2 = $("<div id='search_container'></div>")
+
+	s = s.add(s2)
+
+	c.append(s)
+
+	c = c[0]
+
+	show_info(c, function()
+	{
+		$("#search_filter").on("input", function()
+		{
+			search_timer()
+		})
+	})	
+}
+
+function chat_search(filter=false)
+{
+	if($("#search_container").length === 0)
+	{
+		create_search_container()
+	}
+
+	if(filter !== "" && !msg_info.is_open())
+	{
+		msg_info.show()
+	}
+
+	$("#search_filter").focus()
+
+	if(filter)
+	{
+		sfilter = filter
+	}
+
+	else
+	{
+		sfilter = ''
+	}
+
+	$("#search_filter").val(sfilter)
+
+	if(!filter)
+	{
+		$("#search_container").html("Search for chat messages")
+		update_modal_scrollbar("info")		
+		return
+	}
+
+	filter = filter.trim().toLowerCase()
+
+	var c = $("<div></div>")
+
+	if($(".chat_message").length > 0)
+	{
+		$(".chat_message").each(function()
+		{
+			var huname = $(this).find('.chat_uname').eq(0)
+			var hcontent = $(this).find('.chat_content').eq(0)
+
+			var uname = huname.text()
+			var content = hcontent.text()
+
+			var show = false
+
+			if(uname.toLowerCase().indexOf(filter) !== -1)
+			{
+				show = true
+			}
+
+			else if(content.toLowerCase().indexOf(filter) !== -1)
+			{
+				show = true
+			}
+
+			if(show)
+			{
+				var cn = $("<div class='search_result_item'><div class='search_result_uname'></div><div class='search_result_content'></div>")
+
+				cn.find(".search_result_uname").eq(0).append(huname.clone())
+				cn.find(".search_result_content").eq(0).append(hcontent.clone())
+
+				cn.prop("title", $(this).prop("title")).click(function()
+				{
+					if($(this).find('a').length === 0)
+					{
+						var ss = ""
+
+						ss += $(this).find(".chat_uname").eq(0).text()
+						ss += " said: "
+						ss += `"${$(this).find(".chat_content").eq(0).text()}"`
+
+						change_input(ss)
+						close_all_modals()
+					}
+				})
+
+				c.append(cn)
+			}
+		})
+	}
+
+	if(c.find(".search_result_item").length === 0)
+	{
+		c = "No results"
+	}
+
+	else
+	{
+		c = c[0]
+	}
+	
+	$("#search_container").html(c)
+
+	update_modal_scrollbar("info")
+}
+
 function clear_chat()
 {
 	$('#chat_area').html('<div class="clear">&nbsp<br><br><br><br></div>')
@@ -4528,39 +4735,6 @@ function show_chat_permission()
 function big_letter(s)
 {
 	return s.toUpperCase()[0]
-}
-
-function show_users(filter=false)
-{
-	var s = ""
-
-	if(filter)
-	{
-		filter = filter.toLowerCase()
-	}	
-
-	for(var user of userlist)
-	{	
-		var nick = user[0]
-		var priv = user[1]
-
-		if(filter)
-		{
-			if(nick.toLowerCase().indexOf(filter) === -1)
-			{
-				continue
-			}
-		}
-
-		s += `${priv_tag(priv)} ${nick}, `
-	}
-
-	if(s.length > 0)
-	{
-		s = s.slice(0, -2)
-
-		chat_announce('[', ']', `Users: ${s}`, 'small')
-	}
 }
 
 function voice(nck)

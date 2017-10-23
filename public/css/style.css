@@ -14,6 +14,11 @@ body, html
 	overflow: hidden;
 }
 
+#main_container
+{
+	display: none;
+}
+
 #background_image 
 {
 	position: fixed;
@@ -22,7 +27,6 @@ body, html
 	margin: auto;
 	width: 200%;
 	height: 200%;
-	background-image: url("/img/loading.jpg");
 	background-repeat: repeat;
 }
 
@@ -106,6 +110,7 @@ body, html
 
 #input_container
 {
+	background-color: black;	
 	position: absolute;
 	bottom: 0;
 	width: 50%;
@@ -525,4 +530,53 @@ a.chat:link, a.chat:visited, a.chat:hover
 #history_filter
 {
 	width: 99%;
+}
+
+#search_filter
+{
+	width: 14em;
+}
+
+.search_result_item
+{
+	padding-top: 1em;
+	padding-bottom: 1em;
+	cursor: pointer;
+}
+
+.search_result_uname
+{
+	font-size: 1.4em;
+	font-weight: bold;
+	padding-bottom: 0.3em;
+}
+
+.search_result_content
+{
+	font-size: 1.4em;
+}
+
+#pick_nickname_welcome
+{
+	font-size: 1.4em;
+	padding-bottom: 0.3em;
+}
+
+#pick_nickname_info
+{
+	font-size: 1.2em;
+	padding-bottom: 1em;
+}
+
+#pick_nickname_input
+{
+	font-size: 1.4em;
+	border: 1px solid grey;
+	text-align: center;
+}
+
+#Msg-overlay-nickname-picker
+{
+	width: 10em;
+	background-color: grey;
 }

@@ -7,6 +7,7 @@ var c = {}
 c.site_root = config.site_root
 c.main_room = config.main_room
 c.default_image_url = config.default_image_url
+c.loading_image_url = config.loading_image_url
 c.default_radiosrc = config.default_radiosrc
 c.default_radioinfo = config.default_radioinfo
 c.check_metadata_interval_duration = config.check_metadata_interval_duration
