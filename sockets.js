@@ -1872,7 +1872,7 @@ module.exports = function(io)
 
 	function get_roominfo(room, fields, callback)
 	{
-		var version = 3
+		var version = 5
 
 		if(Object.keys(fields).length > 0)
 		{
@@ -1889,6 +1889,7 @@ module.exports = function(io)
 					name: room,
 					image_url: '',
 					image_uploader: '',
+					image_size: 0,
 					topic: '',
 					topic_setter: '',
 					claimed: false,
@@ -1923,7 +1924,7 @@ module.exports = function(io)
 						roominfo.image_uploader = ""
 					}
 					
-					if(roominfo.image_size === undefined || typeof roominfo.image_size !== number)
+					if(roominfo.image_size === undefined || typeof roominfo.image_size !== "number")
 					{
 						roominfo.image_size = 0
 					}
