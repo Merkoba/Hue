@@ -1,5 +1,6 @@
 const fs = require('fs')
-const path = require("path")
+const path = require('path')
+const {exec} = require('child_process')
 const shell = require('shelljs/global')
 const antiSpam  = require('socket-anti-spam')
 const mongo = require('mongodb')
@@ -548,28 +549,29 @@ module.exports = function(io)
 			
 			socket.emit('update', 
 			{
-				type:'username', 
-				room:socket.room, 
-				username:socket.username, 
-				image_url:info.image_url, 
-				image_uploader:info.image_uploader, 
-				topic:info.topic, 
-				topic_setter:info.topic_setter, 
-				userlist:get_userlist(socket.room), 
-				priv:socket.priv, 
-				upload_permission:info.upload_permission, 
-				chat_permission:info.chat_permission, 
-				public:info.public, 
-				radiosrc:info.radiosrc, 
-				claimed:info.claimed
+				type: 'username', 
+				room: socket.room, 
+				username: socket.username, 
+				image_url: info.image_url, 
+				image_uploader: info.image_uploader, 
+				image_size: info.image_size, 
+				topic: info.topic, 
+				topic_setter: info.topic_setter,
+				userlist: get_userlist(socket.room), 
+				priv: socket.priv, 
+				upload_permission: info.upload_permission, 
+				chat_permission: info.chat_permission, 
+				public: info.public, 
+				radiosrc: info.radiosrc, 
+				claimed: info.claimed
 			})
 
 			socket.broadcast.in(socket.room).emit('update', 
 			{
-				type:'userjoin', 
-				usercount:get_usercount(socket.room), 
-				username:socket.username, 
-				priv:socket.priv
+				type: 'userjoin', 
+				usercount: get_usercount(socket.room), 
+				username: socket.username, 
+				priv: socket.priv
 			})
 		})
 	}
@@ -651,22 +653,22 @@ module.exports = function(io)
 
 				if(clean)
 				{
-					var fname = socket.room.replace(/\s+/g, "-") + '_' + Date.now() + '_' + get_random_int(0, 1000) + '.' + data.image_url.split('.').pop(-1)
+					var fname = `${socket.room.replace(/\s+/g, "-")}_${Date.now()}_${get_random_int(0, 1000)}.${data.image_url.split('.').pop(-1)}`
 					
-					exec('wget -O ' + images_root + '/' + fname + ' -q \"' + data.image_url + '\"', function(status, output)
+					exec(`wget -O ${images_root}/${fname} -q "${data.image_url}"`, function(status, output)
 					{
-						exec('stat --printf="%s" ' + images_root + '/' + fname, function(status, output) 
+						exec(`stat -c '%s' ${images_root}/${fname}`, function(status, output) 
 						{
-							output = parseInt(output)
+							output = parseInt(output) / 1024
 
-							if(output > 0 && (output / 1000 <= config.max_image_size))
+							if(output > 0 && (output <= config.max_image_size))
 							{
-								change_image(socket.room, fname, socket.username)
+								change_image(socket.room, fname, socket.username, output)
 							}
 
 							else
 							{
-								exec("rm -f " + images_root + '/' + fname, function(status, output) 
+								exec(`rm -f ${images_root}/${fname}`, function(status, output) 
 								{
 
 								})
@@ -697,7 +699,7 @@ module.exports = function(io)
 					return false
 				}
 
-				var size = data.image_file.toString('ascii').length / 1000
+				var size = data.image_file.toString('ascii').length / 1024
 
 				if(size === 0 || (size > config.max_image_size))
 				{
@@ -711,7 +713,7 @@ module.exports = function(io)
 
 				if(clean)
 				{
-					var fname = socket.room.replace(/\s+/g, "-") + '_' + Date.now() + '_' + get_random_int(0, 1000) + '.' + data.name.split('.').pop(-1)
+					var fname = `${socket.room.replace(/\s+/g, "-")}_${Date.now()}_${get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
 
 					fs.writeFile(images_root + '/' + fname, data.image_file, function (err,data) 
 					{
@@ -722,7 +724,7 @@ module.exports = function(io)
 
 						else 
 						{
-							change_image(socket.room, fname, socket.username)
+							change_image(socket.room, fname, socket.username, size)
 						}
 					})
 				}
@@ -1840,7 +1842,14 @@ module.exports = function(io)
 				var type = 'disconnection'
 			}
 
-			io.sockets.in(socket.room).emit('update', {type:type, username:socket.username, usercount:get_usercount(socket.room), info1:socket.info1, priv:socket.priv})	
+			io.sockets.in(socket.room).emit('update', 
+			{
+				type:type,
+				username:socket.username, 
+				usercount:get_usercount(socket.room), 
+				info1:socket.info1, 
+				priv:socket.priv
+			})	
 		}
 	}
 
@@ -1863,7 +1872,7 @@ module.exports = function(io)
 
 	function get_roominfo(room, fields, callback)
 	{
-		var version = 2
+		var version = 3
 
 		if(Object.keys(fields).length > 0)
 		{
@@ -1912,6 +1921,11 @@ module.exports = function(io)
 					if(roominfo.image_uploader === undefined || typeof roominfo.image_uploader !== "string")
 					{
 						roominfo.image_uploader = ""
+					}
+					
+					if(roominfo.image_size === undefined || typeof roominfo.image_size !== number)
+					{
+						roominfo.image_size = 0
 					}
 					
 					if(roominfo.topic === undefined || typeof roominfo.topic !== "string")
@@ -2111,7 +2125,7 @@ module.exports = function(io)
 		}
 	}
 
-	function change_image(room, fname, uploader)
+	function change_image(room, fname, uploader, size)
 	{
 		get_roominfo(room, {image_url:true}, function(info)
 		{
@@ -2119,7 +2133,7 @@ module.exports = function(io)
 			{
 				var rname = info.image_url.split('_')[0].split('/').pop()
 
-				exec("find " + images_root + " -maxdepth 1 -type f -name '" + rname + "_*' -not -name '" + fname + "' -delete", function(status, output)
+				exec(`find ${images_root} -maxdepth 1 -type f -name "${rname}_*" -not -name "${fname}" -delete`, function(status, output)
 				{
 				
 				})
@@ -2129,9 +2143,23 @@ module.exports = function(io)
 
 			info.image_url = pth
 			info.image_uploader = uploader
-			io.sockets.in(room).emit('update', {type:'image_change', image_url:info.image_url, image_uploader:info.image_uploader})
+			info.image_size = size			
+
+			io.sockets.in(room).emit('update', 
+			{
+				type:'image_change',
+				image_url:info.image_url, 
+				image_uploader:info.image_uploader, 
+				image_size:info.image_size
+			})
 				
-			db.collection('rooms').update({_id:info._id}, {$set:{image_url:info.image_url, image_uploader:info.image_uploader, modified:Date.now()}})
+			db.collection('rooms').update({_id:info._id}, {$set:
+			{
+				image_url:info.image_url, 
+				image_uploader:info.image_uploader, 
+				image_size:info.image_size, 
+				modified:Date.now()
+			}})
 		})
 	}
 

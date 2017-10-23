@@ -9,6 +9,7 @@ var room
 var username
 var image_url = ''
 var image_uploader = ''
+var image_size = 0
 var topic = ''
 var topic_setter = ''
 var dropzone
@@ -591,10 +592,8 @@ function start_socket()
 				image_url = data.image_url
 			}
 
-			if(data.image_uploader !== undefined)
-			{
-				image_uploader = data.image_uploader
-			}
+			image_uploader = data.image_uploader
+			image_size = data.image_size
 
 			claimed = data.claimed
 			setup_radio(data.radiosrc)
@@ -644,7 +643,8 @@ function start_socket()
 		{
 			image_url = data.image_url
 			image_uploader = data.image_uploader
-			announce_uploaded_image(data)			
+			image_size = data.image_size
+			announce_uploaded_image(data)
 			change()
 		}
 
@@ -2851,16 +2851,11 @@ function start_image_events()
 			console.error(err)
 		}
 
-		if(image_uploader !== '' && image_url !== default_image_url)
+		if(image_url !== default_image_url)
 		{
-			var title = `Uploaded by ${image_uploader} | ${get_date()}`
+			var title = `Uploader: ${image_uploader} | Size: ${get_size_string(image_size)} | ${get_date()}`
 
 			$(this).prop('title', title)
-		}
-
-		else
-		{
-			$('#image_uploader').text('')
 		}
 	})
 
@@ -2877,11 +2872,16 @@ function start_image_events()
 	{
 		emit_pasted($('#test_image').attr('src'))
 	})
+}
 
-	$('#image_uploader').click(function()
-	{
-		add_to_input(image_uploader)
-	})
+function round_number(n, places)
+{
+	Math.round(places * 100 + Number.EPSILON) / 100
+}
+
+function get_size_string(size)
+{
+	return `${parseFloat(size / 1024).toFixed(2)} MB`
 }
 
 function set_opacity(o)
