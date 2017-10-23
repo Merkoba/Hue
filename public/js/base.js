@@ -2874,11 +2874,6 @@ function start_image_events()
 	})
 }
 
-function round_number(n, places)
-{
-	Math.round(places * 100 + Number.EPSILON) / 100
-}
-
 function get_size_string(size)
 {
 	return `${parseFloat(size / 1024).toFixed(2)} MB`
