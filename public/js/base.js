@@ -292,6 +292,7 @@ function help2()
 	chat_announce('', '', 'Enter without text in the input scrolls to the bottom of the chat.', 'small')
 	chat_announce('', '', 'Clicking on a nickname sends it to the input.', 'small')
 	chat_announce('', '', 'Tab completes nicknames and commands.', 'small')
+	chat_announce('', '', 'Shift + Enter toggles the radio.', 'small')
 	chat_announce('', '', '/defnick x: Changes your default nickname for rooms you visit for the first time.', 'small')
 	chat_announce('', '', '/reserve: Reserves current nickname to be recoverable later. If called again it changes the key with a new one.', 'small')
 	chat_announce('', '', '/unreserve: Makes a nickname available again.', 'small')
@@ -305,7 +306,7 @@ function help2()
 	chat_announce('', '', '/startradio: Starts the radio.', 'small')
 	chat_announce('', '', '/stopradio: Stops the radio.', 'small')
 	chat_announce('', '', '/volume x: Changes the volume of the radio.', 'small')
-	chat_announce('', '', 'Shift + Enter toggles the radio.', 'small')
+	chat_announce('', '', 'Note: Dates shown when hovering some items show the time when the item was placed on the screen.', 'small')
 }
 
 function help3()
@@ -2852,7 +2853,7 @@ function start_image_events()
 
 		if(image_uploader !== '' && image_url !== default_image_url)
 		{
-			var title = `Uploaded by ${image_uploader}`
+			var title = `Uploaded by ${image_uploader} | ${get_date()}`
 
 			$(this).prop('title', title)
 		}
@@ -2910,7 +2911,7 @@ function change()
 
 function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 {
-	var date = dateFormat(Date.now(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
+	var date = get_date()
 
 	var contclasses = "announcement_content"
 
@@ -3803,7 +3804,7 @@ function push_played(title, artist)
 
 	if(played[played.length - 1] !== s)
 	{
-		var date = dateFormat(Date.now(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
+		var date = get_date()
 		
 		var pi = "<div class='pititle'></div><div class='piartist'></div>"
 		
