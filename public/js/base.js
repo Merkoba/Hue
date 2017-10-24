@@ -1087,7 +1087,9 @@ function update_userlist()
 	if(userlist_filtered)
 	{
 		do_userlist_filter()
-	}	
+	}
+
+	update_modal_scrollbar("userlist")
 }
 
 function compare_userlist(a, b) 
@@ -1872,7 +1874,9 @@ function update_roomlist(roomlist)
 	if(roomlist_filter_string !== "")
 	{
 		do_roomlist_filter()
-	}	
+	}
+
+	update_modal_scrollbar("roomlist")
 }
 
 function show_menu()
@@ -3832,13 +3836,14 @@ function push_played(title, artist)
 			var els = $('#played').children()
 			els.slice(els.length - 1, els.length).remove()
 			played.splice(0, 1)
-			update_modal_scrollbar("played")
 		}
 
 		if(played_filtered)
 		{
 			do_played_filter()
 		}
+		
+		update_modal_scrollbar("played")
 	}
 		
 	show_nowplaying()					
