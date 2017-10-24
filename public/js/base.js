@@ -5762,7 +5762,7 @@ function start_msg()
 				after_modal_close(instance)
 			}
 		})
-	)	
+	)
 
 	msg_menu.set(template_menu())
 	msg_create_room.set(template_create_room())

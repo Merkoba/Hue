@@ -38,8 +38,15 @@ body, html
 	background-color: black;
 	color: white;
 	z-index: 9999999;
-	white-space: nowrap;
+}
+
+#header_items
+{
+	width: 80%;
+	margin: 0 auto;
 	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 .header_item

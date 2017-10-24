@@ -21,7 +21,7 @@
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
 
 		<script src="/js/base.js?ver=518"></script>
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=101" />
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=102" />
 
 		<script>
 			$(function()
@@ -71,25 +71,29 @@
 
 			<div id='header'>
 
-				<i id='main_menu' class='header_item unselectable icon fa fa-th-large' onclick='show_menu()'></i>
-				<span class='header_item'>&nbsp;|&nbsp;</span>
-				<span class='unselectable header_item' id='usercount' onclick='show_userlist()'></span>
-				<span class='header_item'>&nbsp;|&nbsp;</span>
-				<span class='unselectable header_item anime' id='toggle_radio' onclick='toggle_radio()'>
-					<i class='icon fa fa-volume-up' id='playing_icon'></i>
-					<span id='toggle_radio_text'>Start Radio</span>
-				</span> 
-				<span class='unselectable' id='volume_area'>
-					<span class='header_item'>&nbsp;|&nbsp;
-					<i class='header_item unselectable icon fa fa-minus' onclick='volume_decrease()'></i>
-					<span onclick='volume_decrease()'>Volume:</span></span>
-					<span class='header_item' id='volume' onclick='volume_increase()'>100%</span>
-					<i class='header_item unselectable icon fa fa-plus' onclick='volume_increase()'></i>
-				</span>
-				<span id="now_playing_area" onclick="show_played()">
-					<span class='header_item'>&nbsp;|&nbsp; Now Playing:</span>
-					<span class='header_item' id='now_playing'></span>
-				</span>
+				<div id='header_items'>
+
+					<i id='main_menu' class='header_item unselectable icon fa fa-th-large' onclick='show_menu()'></i>
+					<span class='header_item'>&nbsp;|&nbsp;</span>
+					<span class='unselectable header_item' id='usercount' onclick='show_userlist()'></span>
+					<span class='header_item'>&nbsp;|&nbsp;</span>
+					<span class='unselectable header_item anime' id='toggle_radio' onclick='toggle_radio()'>
+						<i class='icon fa fa-volume-up' id='playing_icon'></i>
+						<span id='toggle_radio_text'>Start Radio</span>
+					</span> 
+					<span class='unselectable' id='volume_area'>
+						<span class='header_item'>&nbsp;|&nbsp;
+						<i class='header_item unselectable icon fa fa-minus' onclick='volume_decrease()'></i>
+						<span onclick='volume_decrease()'>Volume:</span></span>
+						<span class='header_item' id='volume' onclick='volume_increase()'>100%</span>
+						<i class='header_item unselectable icon fa fa-plus' onclick='volume_increase()'></i>
+					</span>
+					<span id="now_playing_area" onclick="show_played()">
+						<span class='header_item'>&nbsp;|&nbsp; Now Playing:</span>
+						<span class='header_item' id='now_playing'></span>
+					</span>
+
+				</div>
 
 			</div>
 
