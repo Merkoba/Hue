@@ -53,7 +53,6 @@ var template_create_room
 var template_userlist
 var template_roomlist
 var template_played
-var template_info
 var storageui_interval
 var msg_menu
 var msg_create_room
@@ -265,7 +264,6 @@ function compile_templates()
 	template_userlist = Handlebars.compile($('#template_userlist').html())
 	template_roomlist = Handlebars.compile($('#template_roomlist').html())
 	template_played = Handlebars.compile($('#template_played').html())
-	template_info = Handlebars.compile($('#template_info').html())
 }
 
 function help()
@@ -5772,7 +5770,6 @@ function start_msg()
 	msg_userlist.set(template_userlist())
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
-	msg_info.set(template_info())
 }
 
 function after_modal_create(instance)
