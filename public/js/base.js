@@ -10,6 +10,7 @@ var username
 var image_url = ''
 var image_uploader = ''
 var image_size = 0
+var image_date = ''
 var topic = ''
 var topic_setter = ''
 var topic_date = ''
@@ -577,7 +578,7 @@ function start_socket()
 			setup_radio(data.radiosrc)
 			userlist = data.userlist
 			update_userlist()
-			update_topic(data.topic, data.topic_setter, data.topic_date)
+			set_topic_info(data)
 			is_public = data.public
 			check_priv(data)
 			change()
@@ -3602,7 +3603,7 @@ function announce_topic_change(data)
 			}
 		}
 
-		update_topic(data.topic, data.topic_setter, data.topic_date)
+		set_topic_info(data)
 	}
 }
 
@@ -4381,11 +4382,21 @@ function add_to_input(what)
 	$('#input').val(`${$('#input').val() + what} `).focus()
 }
 
-function update_topic(t, setter, date)
+function set_topic_info(data)
 {
-	topic = t
-	topic_setter = setter
-	topic_date = nice_date(date)
+	if(!data)
+	{
+		data = {}
+		
+		data.topic = ""
+		data.topic_setter = ""
+		data.topic_date = ""
+	}
+
+	topic = data.topic
+	topic_setter = topic.topic_setter
+	topic_date = nice_date(topic.topic_date)
+
 	update_topic_title()
 }
 
@@ -4956,7 +4967,7 @@ function announce_unclaim(data)
 	chat_permission = 1
 	is_public = true
 
-	update_topic("", "", "")
+	set_topic_info(false)
 
 	check_permissions()
 
