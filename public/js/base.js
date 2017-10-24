@@ -28,8 +28,10 @@ var chat_permission
 var can_upload
 var can_chat
 var change_when_focused = false
-var radiosrc = ''
-var radioinfo = ''
+var radio_source = ''
+var radio_metadata = ''
+var radio_setter = ''
+var radio_date = ''
 var claimed = false
 var msgcount = 0
 var get_metadata
@@ -348,7 +350,7 @@ function show_status()
 	show_room()
 	show_nickname()
 	show_topic()
-	show_radiosrc()
+	show_radio_source()
 	show_priv()
 	show_public()
 }
@@ -374,9 +376,9 @@ function show_room()
 	chat_announce('[', ']', `Room: ${room}`, 'small')
 }
 
-function show_radiosrc()
+function show_radio_source()
 {
-	chat_announce('[', ']', `Radio: ${radiosrc}`, 'small')
+	chat_announce('[', ']', `Radio: ${radio_source}`, 'small', false, `Setter: ${radio_setter} | ${radio_date}`)
 }
 
 function show_topic(size="small")
@@ -573,7 +575,7 @@ function start_socket()
 			username = data.username
 			set_image_info(data)
 			claimed = data.claimed
-			setup_radio(data.radiosrc)
+			set_radio_info(data)
 			userlist = data.userlist
 			update_userlist()
 			set_topic_info(data)
@@ -762,9 +764,9 @@ function start_socket()
 			made_public(data)
 		}
 
-		else if(data.type === 'changed_radiosrc')
+		else if(data.type === 'changed_radio_source')
 		{
-			changed_radiosrc(data)
+			changed_radio_source(data)
 		}
 
 		else if(data.type === 'reserved')
@@ -827,32 +829,34 @@ function start_heartbeat()
 	}, heartbeat_interval)
 }
 
-function setup_radio(src)
+function set_radio_info(data)
 {
 	get_metadata = true
+
 	no_meta_count = 0
 
-	if(src == '')
+	if(data.radio_source == '')
 	{
-		radiosrc = default_radiosrc
-		radioinfo = default_radioinfo
+		radio_source = default_radio_source
 	}
 
 	else
 	{
-		radiosrc = src
-		
-		if(radiosrc.slice(-1) == '/')
-		{
-			radioinfo = `${src.slice(0, -1).split('/').slice(0, -1).join('/')}/status-json.xsl`
-		}
-
-		else
-		{
-			radioinfo = `${src.split('/').slice(0, -1).join('/')}/status-json.xsl`
-		}
-
+		radio_source = data.radio_source
 	}
+
+	if(radio_source.slice(-1) == '/')
+	{
+		radio_metadata = `${radio_source.slice(0, -1).split('/').slice(0, -1).join('/')}/status-json.xsl`
+	}
+
+	else
+	{
+		radio_metadata = `${radio_source.split('/').slice(0, -1).join('/')}/status-json.xsl`
+	}
+
+	radio_setter = data.radio_setter
+	radio_date = nice_date(data.radio_date)
 
 	get_radio_metadata()
 }
@@ -3255,12 +3259,12 @@ function send_to_chat(msg)
 
 			else if(oiStartsWith(lmsg, '/radio'))
 			{
-				change_radiosrc(arg)
+				change_radio_source(arg)
 			}
 
 			else if(oiEquals(lmsg, '/radio'))
 			{
-				show_radiosrc()
+				show_radio_source()
 			}
 
 			else if(oiEquals(lmsg, '/public'))
@@ -3533,7 +3537,7 @@ function announce_topic_change(data)
 	{
 		var highlight = false
 
-		if(data.username !== username)
+		if(data.topic_setter !== username)
 		{
 			var regex = new RegExp("\\b" + username + "\\b")
 
@@ -3543,7 +3547,7 @@ function announce_topic_change(data)
 			}
 		}
 			
-		if(data.username === username)
+		if(data.topic_setter === username)
 		{
 			if(data.topic.startsWith(topic + topic_separator))
 			{
@@ -3578,12 +3582,12 @@ function announce_topic_change(data)
 			{
 				if(highlight)
 				{
-					chat_announce('~', '~', `${data.username} added to the topic: ${data.topic}`, 'small', highlight)
+					chat_announce('~', '~', `${data.topic_setter} added to the topic: ${data.topic}`, 'small', highlight)
 				}
 
 				else
 				{
-					chat_announce('~', '~', `${data.username} added to the topic: ${topic + topic_separator}`, 'small', data.topic.substr(topic.length + 3))
+					chat_announce('~', '~', `${data.topic_setter} added to the topic: ${topic + topic_separator}`, 'small', data.topic.substr(topic.length + 3))
 				}
 			}
 
@@ -3591,12 +3595,12 @@ function announce_topic_change(data)
 			{
 				if(topic.startsWith(data.topic))
 				{
-					chat_announce('~', '~', `${data.username} trimmed the topic to: ${data.topic}`, 'small', highlight)
+					chat_announce('~', '~', `${data.topic_setter} trimmed the topic to: ${data.topic}`, 'small', highlight)
 				}
 
 				else
 				{
-					chat_announce('~', '~', `${data.username} changed the topic to: ${data.topic}`, 'small', highlight)
+					chat_announce('~', '~', `${data.topic_setter} changed the topic to: ${data.topic}`, 'small', highlight)
 				}
 			}
 		}
@@ -3695,7 +3699,7 @@ function get_radio_metadata()
 {	
 	try
 	{
-		$.get(radioinfo,
+		$.get(radio_metadata,
 		{
 
 		},
@@ -3709,14 +3713,14 @@ function get_radio_metadata()
 					{
 						var source = data.icestats.source[i]
 
-						if(source.listenurl.indexOf(radiosrc.split('/').pop()) !== -1)
+						if(source.listenurl.indexOf(radio_source.split('/').pop()) !== -1)
 						{
 							break
 						}
 					}
 				}
 
-				else if(data.icestats.source.listenurl.indexOf(radiosrc.split('/').pop()) !== -1)
+				else if(data.icestats.source.listenurl.indexOf(radio_source.split('/').pop()) !== -1)
 				{
 					var source = data.icestats.source
 				}
@@ -3758,7 +3762,7 @@ function show_playing_file()
 {
 	get_metadata = false
 	
-	var s = radiosrc.split('/')
+	var s = radio_source.split('/')
 
 	if(s.length > 1)
 	{
@@ -3837,14 +3841,14 @@ function show_nowplaying()
 
 function start_radio()
 {
-	if(radiosrc)
+	if(radio_source)
 	{
-		$('#audio').attr('src', radiosrc)
+		$('#audio').attr('src', radio_source)
 	}
 
 	else
 	{
-		$('#audio').attr('src', default_radiosrc)
+		$('#audio').attr('src', default_radio_source)
 	}
 
 	$('#playing_icon').css('display', 'inline-block')
@@ -4384,16 +4388,17 @@ function set_topic_info(data)
 {
 	if(!data)
 	{
-		data = {}
-
-		data.topic = ""
-		data.topic_setter = ""
-		data.topic_date = ""
+		topic = ""
+		topic_setter = ""
+		topic_date = ""
 	}
 
-	topic = data.topic
-	topic_setter = data.topic_setter
-	topic_date = nice_date(data.topic_date)
+	else
+	{
+		topic = data.topic
+		topic_setter = data.topic_setter
+		topic_date = nice_date(data.topic_date)
+	}
 
 	update_topic_title()
 }
@@ -4971,11 +4976,11 @@ function announce_unclaim(data)
 
 	remove_privs_userlist()
 
-	if(radiosrc !== "")
+	if(radio_source !== "")
 
-	if(radiosrc !== default_radiosrc)
+	if(radio_source !== default_radio_source)
 	{
-		setup_radio("")
+		set_radio_info(false)
 
 		if($('#toggle_radio_text').html() === 'Stop Radio')
 		{
@@ -5220,15 +5225,15 @@ function recover(nck)
 	socket_emit('username_recover', {username:nck, key:key})
 }
 
-function change_radiosrc(src)
+function change_radio_source(src)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
 		src = clean_string2(src)
 
-		if(src.length > 0 && src.length <= max_radiosrc_length)
+		if(src.length > 0 && src.length <= max_radio_source_length)
 		{
-			socket_emit('change_radiosrc', {src:src})
+			socket_emit('change_radio_source', {src:src})
 		}
 	}
 
@@ -5238,33 +5243,33 @@ function change_radiosrc(src)
 	}
 }
 
-function changed_radiosrc(data)
+function changed_radio_source(data)
 {
-	setup_radio(data.src)
+	set_radio_info(data)
 
 	if($('#toggle_radio_text').html() === 'Stop Radio')
 	{
 		start_radio()
 	}
 
-	if(data.src == '')
+	if(data.radio_source == '')
 	{
 		var name = 'default'
 	}
 
 	else
 	{
-		var name = data.src
+		var name = data.radio_source
 	}
 
-	if(data.username === username)
+	if(data.radio_setter === username)
 	{
 		chat_announce('~', '~', `You changed the radio to ${name}`, 'small')		
 	}
 
 	else
 	{
-		chat_announce('~', '~', `${data.username} changed the radio to ${name}`, 'small')
+		chat_announce('~', '~', `${data.radio_setter} changed the radio to ${name}`, 'small')
 	}
 }
 

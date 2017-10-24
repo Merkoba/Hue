@@ -420,11 +420,11 @@ module.exports = function(io)
 			}
 		})
 
-		socket.on('change_radiosrc', function(data) 
+		socket.on('change_radio_source', function(data) 
 		{
 			try
 			{
-				change_radiosrc(socket, data)
+				change_radio_source(socket, data)
 			}
 
 			catch(err)
@@ -564,15 +564,17 @@ module.exports = function(io)
 				upload_permission: info.upload_permission, 
 				chat_permission: info.chat_permission, 
 				public: info.public, 
-				radiosrc: info.radiosrc, 
+				radio_source: info.radio_source, 
+				radio_setter: info.radio_setter, 
+				radio_date: info.radio_date, 
 				claimed: info.claimed
 			})
 
-			socket.broadcast.in(socket.room).emit('update', 
+			socket.broadcast.in(socket.room).emit('update',
 			{
-				type: 'userjoin', 
-				usercount: get_usercount(socket.room), 
-				username: socket.username, 
+				type: 'userjoin',
+				usercount: get_usercount(socket.room),
+				username: socket.username,
 				priv: socket.priv
 			})
 		})
@@ -962,7 +964,6 @@ module.exports = function(io)
 					io.sockets.in(socket.room).emit('update', 
 					{
 						type: 'topic_change',
-						username: info.topic_setter,
 						topic: info.topic,
 						topic_setter: info.topic_setter,
 						topic_date: info.topic_date
@@ -1073,7 +1074,7 @@ module.exports = function(io)
 					topic_setter:'',
 					upload_permission:1,
 					chat_permission:1,
-					radiosrc:'',
+					radio_source:'',
 					bans:'',
 					public:true,
 					modified:Date.now()
@@ -1784,7 +1785,7 @@ module.exports = function(io)
 		}
 	}
 
-	function change_radiosrc(socket, data)
+	function change_radio_source(socket, data)
 	{
 		if(socket.username !== undefined)
 		{
@@ -1805,13 +1806,13 @@ module.exports = function(io)
 				return false
 			}
 
-			if(data.src.length > config.max_radiosrc_length)
+			if(data.src.length > config.max_radio_source_length)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			get_roominfo(socket.room, {radiosrc:true}, function(info)
+			get_roominfo(socket.room, {radio_source:true}, function(info)
 			{
 				if(data.src.length == 0)
 				{
@@ -1820,17 +1821,32 @@ module.exports = function(io)
 
 				if(data.src === 'default')
 				{
-					info.radiosrc = ''
+					info.radio_source = ''
 				}
 
 				else
 				{
-					info.radiosrc = data.src
+					info.radio_source = data.src
 				}
 
-				io.sockets.in(socket.room).emit('update', {type:'changed_radiosrc', username:socket.username, src:info.radiosrc})
+				info.radio_setter = socket.username
+				info.radio_date = Date.now()
 
-				db.collection('rooms').update({_id:info._id}, {$set:{radiosrc:info.radiosrc}})
+				io.sockets.in(socket.room).emit('update', 
+				{
+					type: 'changed_radio_source', 
+					radio_source: info.radio_source,
+					radio_setter: info.radio_setter,
+					radio_date: info.radio_date
+				})
+
+				db.collection('rooms').update({_id:info._id}, {$set:
+				{
+					radio_source: info.radio_source,
+					radio_setter: info.radio_setter,
+					radio_date: info.radio_date,
+					modified: Date.now()
+				}})
 			})
 		}
 	}
@@ -1889,7 +1905,7 @@ module.exports = function(io)
 
 	function get_roominfo(room, fields, callback)
 	{
-		var version = 6
+		var version = 8
 
 		if(Object.keys(fields).length > 0)
 		{
@@ -1915,7 +1931,9 @@ module.exports = function(io)
 					keys: '',
 					upload_permission: 1,
 					chat_permission: 1,
-					radiosrc: '',
+					radio_source: '',
+					radio_setter: '',
+					radio_date: 0,
 					bans: '',
 					modified: 0,
 					public: true
@@ -1988,9 +2006,19 @@ module.exports = function(io)
 						roominfo.chat_permission = 1
 					}
 					
-					if(roominfo.radiosrc === undefined || typeof roominfo.radiosrc !== "string")
+					if(roominfo.radio_source === undefined || typeof roominfo.radio_source !== "string")
 					{
-						roominfo.radiosrc = ""
+						roominfo.radio_source = ""
+					}
+					
+					if(roominfo.radio_setter === undefined || typeof roominfo.radio_setter !== "string")
+					{
+						roominfo.radio_setter = ""
+					}
+					
+					if(roominfo.radio_date === undefined || typeof roominfo.radio_date !== "number")
+					{
+						roominfo.radio_date = 0
 					}
 					
 					if(roominfo.bans === undefined || typeof roominfo.bans !== "string")

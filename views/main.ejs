@@ -2,7 +2,7 @@
 
 	<head>
 
-		<title><%= room %></title> 
+		<title><%= vars.room %></title> 
 		<script src="/js/jquery.js"></script>
 		<script src="/js/handlebars.js"></script>
 		<script src="/js/colorlib.js?v=4"></script>
@@ -20,42 +20,30 @@
 		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
 
-		<script src="/js/base.js?ver=518"></script>
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=102" />
+		<script src="/js/base.js?ver=519"></script>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=103" />
 
 		<script>
 			$(function()
 			{
-				room = "<%= room %>"
-				site_root = "<%= site_root %>"
-				main_room = "<%= main_room %>"
-				default_image_url = "<%= default_image_url %>"
-				loading_image_url = "<%= loading_image_url %>"
-				default_radiosrc = "<%= default_radiosrc %>"
-				default_radioinfo = "<%= default_radioinfo %>"
-				topic_separator = "<%= topic_separator %>"
-				title_topic_separator = "<%= title_topic_separator %>"
-				default_topic = "<%= default_topic %>"
-				default_topic_claimed = "<%= default_topic_claimed %>"
-				default_modal_color = "<%= default_modal_color %>"
-				check_metadata_interval_duration = <%= check_metadata_interval_duration %>
-				general_opacity = <%= general_opacity %>
-				color_contrast_amount = <%= color_contrast_amount %>
-				chat_crop_limit = <%= chat_crop_limit %>
-				history_crop_limit = <%= history_crop_limit %>
-				played_crop_limit = <%= played_crop_limit %>
-				max_input_length = <%= max_input_length %>
-				max_topic_length = <%= max_topic_length %>
-				max_title_topic_length = <%= max_title_topic_length %>
-				max_roomname_length = <%= max_roomname_length %>
-				max_username_length = <%= max_username_length %>
-				max_radiosrc_length = <%= max_radiosrc_length %>
-				max_no_meta_count = <%= max_no_meta_count %>
-				small_keyboard_scroll = <%= small_keyboard_scroll %>
-				big_keyboard_scroll = <%= big_keyboard_scroll %>
-				max_image_size = <%= max_image_size %>
-				afk_timeout_duration = <%= afk_timeout_duration %>
-				heartbeat_interval = <%= heartbeat_interval %>
+				<% 
+					for(var key in vars)
+					{
+						var v = vars[key]
+
+						%><%-key%> = <%
+
+						if(typeof v === "string")
+						{
+							%>"<%-v%>"; <% 
+						}
+
+						else
+						{
+							%><%-v%>; <%
+						}
+					}
+				%>
 
 				init()
 			})
