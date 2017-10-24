@@ -202,6 +202,7 @@ body, html
 .chat_uname 
 {
 	cursor: pointer;
+	white-space: nowrap;
 }
 
 a.chat:link, a.chat:visited, a.chat:hover 

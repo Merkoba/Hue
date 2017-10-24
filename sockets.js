@@ -555,8 +555,10 @@ module.exports = function(io)
 				image_url: info.image_url, 
 				image_uploader: info.image_uploader, 
 				image_size: info.image_size, 
+				image_date: info.image_date, 
 				topic: info.topic, 
 				topic_setter: info.topic_setter,
+				topic_date: info.topic_date,
 				userlist: get_userlist(socket.room), 
 				priv: socket.priv, 
 				upload_permission: info.upload_permission, 
@@ -954,10 +956,25 @@ module.exports = function(io)
 				if(new_topic !== info.topic)
 				{
 					info.topic = new_topic
+					info.topic_setter = socket.username
+					info.topic_date = Date.now()
 
-					io.sockets.in(socket.room).emit('update', {type:'topic_change', username:socket.username, topic:info.topic, topic_setter:socket.username})
+					io.sockets.in(socket.room).emit('update', 
+					{
+						type: 'topic_change',
+						username: info.topic_setter,
+						topic: info.topic,
+						topic_setter: info.topic_setter,
+						topic_date: info.topic_date
+					})
 					
-					db.collection('rooms').update({_id:info._id}, {$set:{topic:info.topic, topic_setter:socket.username, modified:Date.now()}})
+					db.collection('rooms').update({_id:info._id}, {$set:
+					{
+						topic: info.topic,
+						topic_setter: info.topic_setter,
+						topic_date: info.topic_date,
+						modified: Date.now()
+					}})
 				}
 			})
 		}
@@ -1844,11 +1861,11 @@ module.exports = function(io)
 
 			io.sockets.in(socket.room).emit('update', 
 			{
-				type:type,
-				username:socket.username, 
-				usercount:get_usercount(socket.room), 
-				info1:socket.info1, 
-				priv:socket.priv
+				type: type,
+				username: socket.username, 
+				usercount: get_usercount(socket.room), 
+				info1: socket.info1, 
+				priv: socket.priv
 			})	
 		}
 	}
@@ -1872,7 +1889,7 @@ module.exports = function(io)
 
 	function get_roominfo(room, fields, callback)
 	{
-		var version = 5
+		var version = 6
 
 		if(Object.keys(fields).length > 0)
 		{
@@ -1890,8 +1907,10 @@ module.exports = function(io)
 					image_url: '',
 					image_uploader: '',
 					image_size: 0,
+					image_date: 0,
 					topic: '',
 					topic_setter: '',
+					topic_date: 0,
 					claimed: false,
 					keys: '',
 					upload_permission: 1,
@@ -1929,6 +1948,11 @@ module.exports = function(io)
 						roominfo.image_size = 0
 					}
 					
+					if(roominfo.image_date === undefined || typeof roominfo.image_date !== "number")
+					{
+						roominfo.image_date = 0
+					}
+					
 					if(roominfo.topic === undefined || typeof roominfo.topic !== "string")
 					{
 						roominfo.topic = ""
@@ -1937,6 +1961,11 @@ module.exports = function(io)
 					if(roominfo.topic_setter === undefined || typeof roominfo.topic_setter !== "string")
 					{
 						roominfo.topic_setter = ""
+					}
+					
+					if(roominfo.topic_date === undefined || typeof roominfo.topic_date !== "number")
+					{
+						roominfo.topic_date = 0
 					}
 					
 					if(roominfo.claimed === undefined || typeof roominfo.claimed !== "boolean")
@@ -2144,22 +2173,25 @@ module.exports = function(io)
 
 			info.image_url = pth
 			info.image_uploader = uploader
-			info.image_size = size			
+			info.image_size = size
+			info.image_date = Date.now()	
 
 			io.sockets.in(room).emit('update', 
 			{
-				type:'image_change',
-				image_url:info.image_url, 
-				image_uploader:info.image_uploader, 
-				image_size:info.image_size
+				type: 'image_change',
+				image_url: info.image_url, 
+				image_uploader: info.image_uploader, 
+				image_size: info.image_size,
+				image_date: info.image_date
 			})
 				
 			db.collection('rooms').update({_id:info._id}, {$set:
 			{
-				image_url:info.image_url, 
-				image_uploader:info.image_uploader, 
-				image_size:info.image_size, 
-				modified:Date.now()
+				image_url: info.image_url, 
+				image_uploader: info.image_uploader, 
+				image_size: info.image_size, 
+				image_date: info.image_date,
+				modified: Date.now()
 			}})
 		})
 	}

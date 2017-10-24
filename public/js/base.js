@@ -12,6 +12,7 @@ var image_uploader = ''
 var image_size = 0
 var topic = ''
 var topic_setter = ''
+var topic_date = ''
 var dropzone
 var colorlib = ColorLib()
 var played = []
@@ -347,7 +348,7 @@ function show_status()
 {
 	show_room()
 	show_nickname()
-	show_topic2()
+	show_topic()
 	show_radiosrc()
 	show_priv()
 	show_public()
@@ -379,18 +380,30 @@ function show_radiosrc()
 	chat_announce('[', ']', `Radio: ${radiosrc}`, 'small')
 }
 
-function show_topic()
+function show_topic(size="small")
 {
+	if(size === "small")
+	{
+		var brk1 = "["
+		var brk2 = "]"
+	}
+
+	else
+	{
+		var brk1 = ""
+		var brk2 = ""
+	}
+
 	if(topic)
 	{
 		if(topic_setter !== "")
 		{
-			chat_announce('', '', `Topic: ${topic}`, 'big', false, `Set by ${topic_setter}`)
+			chat_announce(brk1, brk2, `Topic: ${topic}`, size, false, `Setter: ${topic_setter} | ${topic_date}`)
 		}
 
 		else
 		{
-			chat_announce('', '', `Topic: ${topic}`, 'big')
+			chat_announce(brk1, brk2, `Topic: ${topic}`, size)
 		}
 	}
 
@@ -398,33 +411,12 @@ function show_topic()
 	{
 		if(claimed)
 		{
-			chat_announce('', '', `Topic: ${default_topic_claimed}`, 'big')
+			chat_announce(brk1, brk2, `Topic: ${default_topic_claimed}`, size)
 		}
 
 		else
 		{
-			chat_announce('', '', `Topic: ${default_topic}`, 'big')
-		}
-	}
-}
-
-function show_topic2()
-{
-	if(topic)
-	{
-		chat_announce('[', ']', `Topic: ${topic}`, 'small')
-	}
-
-	else
-	{
-		if(claimed)
-		{
-			chat_announce('[', ']', `Topic: ${default_topic_claimed}`, 'small')
-		}
-
-		else
-		{
-			chat_announce('[', ']', `Topic: ${default_topic}`, 'small')
+			chat_announce(brk1, brk2, `Topic: ${default_topic}`, size)
 		}
 	}
 }
@@ -579,27 +571,13 @@ function start_socket()
 		{
 			started = false
 			connections += 1
-
 			username = data.username
-
-			if(data.image_url === '' || data.image_url === undefined)
-			{
-				image_url = default_image_url
-			}
-
-			else
-			{
-				image_url = data.image_url
-			}
-
-			image_uploader = data.image_uploader
-			image_size = data.image_size
-
+			set_image_info(data)
 			claimed = data.claimed
 			setup_radio(data.radiosrc)
 			userlist = data.userlist
 			update_userlist()
-			update_topic(data.topic, data.topic_setter)
+			update_topic(data.topic, data.topic_setter, data.topic_date)
 			is_public = data.public
 			check_priv(data)
 			change()
@@ -641,9 +619,7 @@ function start_socket()
 
 		else if(data.type === 'image_change')
 		{
-			image_url = data.image_url
-			image_uploader = data.image_uploader
-			image_size = data.image_size
+			set_image_info(data)
 			announce_uploaded_image(data)
 			change()
 		}
@@ -2281,7 +2257,7 @@ function add_to_history(msg)
 		input_history.shift()
 	}
 
-	input_history.push([msg, get_date()])	
+	input_history.push([msg, nice_date()])	
 }
 
 function input_history_change(direction)
@@ -2663,7 +2639,6 @@ function start_modal_scrollbar(s)
 		autohidemode: false,
 		cursorcolor: "#AFAFAF",
 		cursorborder: "0px solid white",
-		// enablekeyboard: false,
 		cursorwidth: "7px"	
 	})
 }
@@ -2678,9 +2653,9 @@ function update_modal_scrollbar(s)
 	$(`#Msg-content-container-${s}`).getNiceScroll().resize()	
 }
 
-function get_date()
+function nice_date(date=Date.now())
 {
-	return dateFormat(Date.now(), "dddd, mmmm dS, yyyy, h:MM:ss TT")
+	return dateFormat(date, "dddd, mmmm dS, yyyy, h:MM:ss TT")
 }
 
 function update_chat(uname, msg)
@@ -2699,7 +2674,7 @@ function update_chat(uname, msg)
 		}
 	}
 
-	var date = get_date()
+	var date = nice_date()
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
@@ -2853,7 +2828,7 @@ function start_image_events()
 
 		if(image_url !== default_image_url)
 		{
-			var title = `Uploader: ${image_uploader} | Size: ${get_size_string(image_size)} | ${get_date()}`
+			var title = `Uploader: ${image_uploader} | Size: ${get_size_string(image_size)} | ${image_date}`
 
 			$(this).prop('title', title)
 		}
@@ -2888,6 +2863,23 @@ function set_opacity(o)
 	$("#input").css("opacity", o)
 }
 
+function set_image_info(data)
+{
+	if(data.image_url === '' || data.image_url === undefined)
+	{
+		image_url = default_image_url
+	}
+
+	else
+	{
+		image_url = data.image_url
+	}
+
+	image_uploader = data.image_uploader
+	image_size = data.image_size
+	image_date = nice_date(data.image_date)
+}
+
 function change()
 {
 	if(started)
@@ -2906,8 +2898,6 @@ function change()
 
 function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 {
-	var date = get_date()
-
 	var contclasses = "announcement_content"
 
 	var regex = new RegExp("\\b" + username + "\\b")
@@ -2921,12 +2911,12 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 
 	if(title)
 	{
-		var t = `${title} | ${date}`
+		var t = `${title}`
 	}
 
 	else
 	{
-		var t = date
+		var t = nice_date()
 	}
 
 	if(brk1 !== "")
@@ -3337,7 +3327,7 @@ function send_to_chat(msg)
 
 			else if(oiEquals(lmsg, '/topic'))
 			{
-				show_topic2()
+				show_topic()
 			}
 
 			else if(oiEquals(lmsg, '/room'))
@@ -3392,7 +3382,7 @@ function send_to_chat(msg)
 
 			else
 			{
-				chat_announce('[', ']', "Invalid command", 'small')
+				chat_announce('[', ']', "Invalid command. Use // to start a message with /", 'small')
 			}
 		}
 
@@ -3552,7 +3542,7 @@ function announce_topic_change(data)
 			{
 				highlight = true
 			}
-		}	
+		}
 			
 		if(data.username === username)
 		{
@@ -3573,12 +3563,12 @@ function announce_topic_change(data)
 			{
 				if(topic.startsWith(data.topic))
 				{
-					chat_announce('~', '~', `You trimmed the topic to: ${data.topic}`, 'small', highlight)				
+					chat_announce('~', '~', `You trimmed the topic to: ${data.topic}`, 'small', highlight)
 				}
 
 				else
 				{
-					chat_announce('~', '~', `You changed the topic to: ${data.topic}`, 'small', highlight)				
+					chat_announce('~', '~', `You changed the topic to: ${data.topic}`, 'small', highlight)
 				}
 			}
 		}
@@ -3602,7 +3592,7 @@ function announce_topic_change(data)
 			{
 				if(topic.startsWith(data.topic))
 				{
-					chat_announce('~', '~', `${data.username} trimmed the topic to: ${data.topic}`, 'small', highlight)				
+					chat_announce('~', '~', `${data.username} trimmed the topic to: ${data.topic}`, 'small', highlight)
 				}
 
 				else
@@ -3612,7 +3602,7 @@ function announce_topic_change(data)
 			}
 		}
 
-		update_topic(data.topic, data.topic_setter)
+		update_topic(data.topic, data.topic_setter, data.topic_date)
 	}
 }
 
@@ -3799,7 +3789,7 @@ function push_played(title, artist)
 
 	if(played[played.length - 1] !== s)
 	{
-		var date = get_date()
+		var date = nice_date()
 		
 		var pi = "<div class='pititle'></div><div class='piartist'></div>"
 		
@@ -4374,7 +4364,7 @@ function clear_chat()
 	msgcount = 0
 
 	show_intro()
-	show_topic()
+	show_topic("big")
 	show_priv()
 	show_public()
 	goto_bottom(true)
@@ -4391,10 +4381,11 @@ function add_to_input(what)
 	$('#input').val(`${$('#input').val() + what} `).focus()
 }
 
-function update_topic(t, setter)
+function update_topic(t, setter, date)
 {
 	topic = t
 	topic_setter = setter
+	topic_date = nice_date(date)
 	update_topic_title()
 }
 
@@ -4965,7 +4956,7 @@ function announce_unclaim(data)
 	chat_permission = 1
 	is_public = true
 
-	update_topic("", "")
+	update_topic("", "", "")
 
 	check_permissions()
 
@@ -5542,19 +5533,9 @@ function banned(data)
 
 function start_msg()
 {
-	if(settings.modal_color)
-	{
-		var msg_class = settings.modal_color
-	}
-
-	else
-	{
-		var msg_class = default_modal_color
-	}
-
 	var common = 
 	{
-		class: msg_class,
+		class: settings.modal_color,
 		show_effect: "none",
 		close_effect: "none",
 		clear_editables: true
@@ -5855,7 +5836,7 @@ function get_settings()
 
 	if(settings.modal_color === undefined)
 	{
-		settings.modal_color = "default"
+		settings.modal_color = default_modal_color
 		changed = true
 	}
 
