@@ -4403,17 +4403,16 @@ function set_topic_info(data)
 {
 	if(!data)
 	{
-		topic = ""
-		topic_setter = ""
-		topic_date = ""
+		data = {}
+
+		data.topic = ""
+		data.topic_setter = ""
+		data.topic_date = ""
 	}
 
-	else
-	{
-		topic = data.topic
-		topic_setter = data.topic_setter
-		topic_date = nice_date(data.topic_date)
-	}
+	topic = data.topic
+	topic_setter = data.topic_setter
+	topic_date = nice_date(data.topic_date)
 
 	update_topic_title()
 }
