@@ -378,7 +378,15 @@ function show_room()
 
 function show_radio_source()
 {
-	chat_announce('[', ']', `Radio: ${radio_source}`, 'small', false, `Setter: ${radio_setter} | ${radio_date}`)
+	if(radio_setter !== '')
+	{
+		chat_announce('[', ']', `Radio: ${radio_source}`, 'small', false, `Setter: ${radio_setter} | ${radio_date}`)
+	}
+
+	else
+	{
+		chat_announce('[', ']', `Radio: ${radio_source}`, 'small')
+	}
 }
 
 function show_topic(size="small")
@@ -831,11 +839,16 @@ function start_heartbeat()
 
 function set_radio_info(data)
 {
-	get_metadata = true
+	if(!data)
+	{
+		data = {}
 
-	no_meta_count = 0
+		data.radio_source = ''
+		data.radio_setter = ''
+		data.radio_date = 0
+	}
 
-	if(data.radio_source == '')
+	if(data.radio_source === '')
 	{
 		radio_source = default_radio_source
 	}
@@ -845,7 +858,7 @@ function set_radio_info(data)
 		radio_source = data.radio_source
 	}
 
-	if(radio_source.slice(-1) == '/')
+	if(radio_source.slice(-1) === '/')
 	{
 		radio_metadata = `${radio_source.slice(0, -1).split('/').slice(0, -1).join('/')}/status-json.xsl`
 	}
@@ -857,6 +870,8 @@ function set_radio_info(data)
 
 	radio_setter = data.radio_setter
 	radio_date = nice_date(data.radio_date)
+	get_metadata = true
+	no_meta_count = 0	
 
 	get_radio_metadata()
 }

@@ -1068,16 +1068,19 @@ module.exports = function(io)
 
 				db.collection('rooms').update({_id:info._id}, {$set:
 				{
-					keys:'', 
-					claimed:false, 
+					keys: '', 
+					claimed: false, 
 					topic:'',
-					topic_setter:'',
-					upload_permission:1,
-					chat_permission:1,
-					radio_source:'',
-					bans:'',
-					public:true,
-					modified:Date.now()
+					topic_setter: '',
+					topic_date: 0,
+					upload_permission: 1,
+					chat_permission: 1,
+					radio_source: '',
+					radio_setter: '',
+					radio_date: '',
+					bans: '',
+					public: true,
+					modified: Date.now()
 				}})
 			})
 		}		
@@ -2204,11 +2207,11 @@ module.exports = function(io)
 			info.image_size = size
 			info.image_date = Date.now()	
 
-			io.sockets.in(room).emit('update', 
+			io.sockets.in(room).emit('update',
 			{
 				type: 'image_change',
-				image_url: info.image_url, 
-				image_uploader: info.image_uploader, 
+				image_url: info.image_url,
+				image_uploader: info.image_uploader,
 				image_size: info.image_size,
 				image_date: info.image_date
 			})
