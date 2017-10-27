@@ -2190,14 +2190,12 @@ module.exports = function(io)
 	{
 		get_roominfo(room, {image_url:true}, function(info)
 		{
-			if(info.image_url.indexOf(config.default_image_name) === -1)
+			if(info.image_url !== "")
 			{
+				console.log(1)
 				var rname = info.image_url.split('_')[0].split('/').pop()
 
-				exec(`find ${images_root} -maxdepth 1 -type f -name "${rname}_*" -not -name "${fname}" -delete`, function(status, output)
-				{
-				
-				})
+				exec(`find ${images_root} -maxdepth 1 -type f -name "${rname}_*" -not -name "${fname}" -delete`)
 			}
 
 			var pth = config.public_images_location + fname
