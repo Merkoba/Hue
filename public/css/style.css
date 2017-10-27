@@ -256,7 +256,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 .pititle
 {
 	font-size: 1.4em;
-	font-style: italic;
+	font-weight: bold;
 }
 
 .piartist
@@ -328,6 +328,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 .roomlist_name
 {
 	font-size: 1.4em;
+	font-weight: bold;
 }
 
 .roomlist_topic
@@ -340,6 +341,13 @@ a.chat:link, a.chat:visited, a.chat:hover
 {
 	font-size: 1.1em;
 	padding-left: 0.5em;
+}
+
+.roomlist_filler
+{
+	font-size: 1.1em;
+	padding-right: 0.5em;
+	opacity: 0;
 }
 
 #volume_area

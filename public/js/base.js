@@ -1832,7 +1832,7 @@ function update_roomlist(roomlist)
 
 	for(var i=0; i<roomlist.length; i++)
 	{
-		var c = "<span class='roomlist_name'></span><span class='roomlist_count'></span><div class='roomlist_topic'></div>"
+		var c = "<span class='roomlist_filler'></span><span class='roomlist_name'></span><span class='roomlist_count'></span><div class='roomlist_topic'></div>"
 		var h = $(`<div class='roomlist_item'>${c}</div>`)
 
 		h.find('.roomlist_name').eq(0).text(roomlist[i][0])
@@ -1847,7 +1847,9 @@ function update_roomlist(roomlist)
 			var t = `(${roomlist[i][2]})`
 		}
 
-		h.find('.roomlist_count').eq(0).text(t)		
+		h.find('.roomlist_count').eq(0).text(t)
+
+		h.find('.roomlist_filler').eq(0).text(t)
 
 		h.click({room:roomlist[i][0]}, function(event)
 		{
