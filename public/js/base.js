@@ -4375,7 +4375,7 @@ function chat_search(filter=false)
 		c = c[0]
 	}
 	
-	$("#search_container").html(c)
+	$("#search_container").html(c).closest('.Msg-content-container').scrollTop(0)
 
 	update_modal_scrollbar("info")
 }
@@ -6233,7 +6233,9 @@ function do_played_filter()
 		})
 	}
 
-	update_modal_scrollbar("played")	
+	update_modal_scrollbar("played")
+
+	$('#Msg-content-container-played').scrollTop(0)
 }
 
 function reset_played_filter()
@@ -6281,6 +6283,8 @@ function do_userlist_filter()
 	}
 
 	update_modal_scrollbar("userlist")
+
+	$('#Msg-content-container-userlist').scrollTop(0)
 }
 
 function do_roomlist_filter()
@@ -6328,6 +6332,8 @@ function do_roomlist_filter()
 	}
 
 	update_modal_scrollbar("roomlist")
+
+	$('#Msg-content-container-roomlist').scrollTop(0)	
 }
 
 function reset_userlist_filter()
@@ -6370,5 +6376,7 @@ function do_history_filter()
 		})
 	}
 
-	update_modal_scrollbar("info")	
+	update_modal_scrollbar("info")
+
+	$('#Msg-content-container-info').scrollTop(0)	
 }

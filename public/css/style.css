@@ -449,6 +449,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 .Msg-content
 {
 	font-size: 1em !important;
+	overflow: initial !important;
 }
 
 #Msg-window-menu
@@ -514,10 +515,13 @@ a.chat:link, a.chat:visited, a.chat:hover
 
 .filter_input
 {
+	top: 0px;
 	width: 10em;
 	border: 1px solid grey;
 	font-size: 1.4em;
 	text-align: center;
+	position: sticky;
+	overflow: hidden;
 }
 
 #played_filter
@@ -537,7 +541,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 
 #history_filter
 {
-	width: 99%;
+	width: 14em;
 }
 
 #search_filter

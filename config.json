@@ -7,7 +7,7 @@
 	"default_image_name": "default.gif",
 	"default_image_url": "/img/default.gif",
 	"loading_image_url": "/img/loading.jpg",
-	"default_radio_source": "https://hue.merkoba.com:8765/hue",
+	"default_radio_source": "https://hue.merkoba.com:8765/wok3n",
 	"mongodb_path": "mongodb://localhost:27017/hue",
 	"topic_separator": " | ",
 	"title_topic_separator": " - ",
