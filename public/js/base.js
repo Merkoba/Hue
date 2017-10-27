@@ -4375,9 +4375,11 @@ function chat_search(filter=false)
 		c = c[0]
 	}
 	
-	$("#search_container").html(c).closest('.Msg-content-container').scrollTop(0)
+	$("#search_container").html(c)
 
 	update_modal_scrollbar("info")
+
+	$('#Msg-content-container-info').scrollTop(0)	
 }
 
 function clear_chat()
