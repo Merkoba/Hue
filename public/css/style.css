@@ -521,7 +521,6 @@ a.chat:link, a.chat:visited, a.chat:hover
 	font-size: 1.4em;
 	text-align: center;
 	position: sticky;
-	overflow: hidden;
 }
 
 #played_filter
