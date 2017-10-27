@@ -454,10 +454,15 @@ a.chat:link, a.chat:visited, a.chat:hover
 	height: 1.5em;
 }
 
+#Msg-overlay-nickname-picker
+{
+	width: 10em;
+	background-color: rgba(121, 121, 121, 1) !important;;
+}
+
 .Msg-content
 {
 	font-size: 1em !important;
-	overflow: initial !important;
 }
 
 #Msg-window-menu
@@ -592,10 +597,4 @@ a.chat:link, a.chat:visited, a.chat:hover
 	font-size: 1.4em;
 	border: 1px solid grey;
 	text-align: center;
-}
-
-#Msg-overlay-nickname-picker
-{
-	width: 10em;
-	background-color: grey;
 }

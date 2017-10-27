@@ -2,7 +2,7 @@ var socket
 var ls_room_nicknames = "room_nicknames_v2"
 var ls_room_keys = "room_keys_v2"
 var ls_user_keys = "user_keys_v2"
-var ls_settings = "settings_v2"
+var ls_settings = "settings_v3"
 var settings
 var is_public
 var room
