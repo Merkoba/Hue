@@ -13,7 +13,7 @@
 	"title_topic_separator": " - ",
 	"default_topic": "Use /claim to get admin rights to this room",
 	"default_topic_claimed": "Room claimed. There is no topic set",
-	"default_modal_color": "black",
+	"default_modal_color": "white",
 	"check_metadata_interval_duration": 12000,
 	"general_opacity": 0.95,
 	"color_contrast_amount": 40,
