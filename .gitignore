@@ -5,4 +5,4 @@
 !/public/img/default.gif
 !/public/img/loading.jpg
 
-config.secret.json
+/config.secret.json
