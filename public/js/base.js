@@ -73,9 +73,12 @@ var played_filtered = false
 var userlist_filtered = false
 var roomlist_filter_string = ""
 var picking_nickname = true
+var yt_player
+var youtube_player
 
 function init()
 {
+	get_volume()
 	activate_key_detection()
 	get_nickname()
 }
@@ -95,7 +98,6 @@ function init2()
 	start_image_events()
 	start_dropzone()
 	start_volume_scroll()
-	initial_volume()
 	activate_window_visibility_listener()
 	input_click_events()
 	copypaste_events()
@@ -926,7 +928,11 @@ function setup_radio(data)
 		get_metadata = true
 		no_meta_count = 0
 		get_radio_metadata()
-		$('#iframe').attr('src', '')		
+		
+		if(youtube_player !== undefined)
+		{
+			youtube_player.stopVideo()
+		}
 	}
 
 	else if(data.radio_type === "youtube")
@@ -950,6 +956,13 @@ function get_youtube_id(url)
 	var id = undefined !== url[2] ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0]
 
 	return id.length === 11 ? id : false
+}
+
+function get_youtube_time(url)
+{
+	var match = url.match(/[\?|&]t=(\d+)/)
+
+	return match === null ? 0 : match[1]
 }
 
 function update_usercount(usercount)
@@ -4137,7 +4150,10 @@ function start_radio()
 
 	else if(radio_type === "youtube")
 	{
-		$("#iframe").attr('src', `https://www.youtube.com/embed/${get_youtube_id(radio_source)}?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1`)		
+		if(youtube_player !== undefined)
+		{
+			youtube_player.loadVideoById({videoId:get_youtube_id(radio_source), startSeconds:get_youtube_time(radio_source)})
+		}
 	}
 
 	$('#playing_icon').css('display', 'inline-block')
@@ -4148,7 +4164,12 @@ function start_radio()
 function stop_radio()
 {
 	$('#audio').attr('src', '')
-	$('#iframe').attr('src', '')
+	
+	if(youtube_player !== undefined)
+	{
+		youtube_player.stopVideo()
+	}
+
 	$('#playing_icon').css('display', 'none')
 	$('#toggle_radio_text').html('Start Radio')
 }
@@ -4213,13 +4234,16 @@ function start_volume_scroll()
 
 function set_volume(nv, save=true)
 {
-	var audio = $('#audio')[0]
+	var vt = parseInt(Math.round((nv * 100)))
 
-	audio.volume = nv
+	$('#audio')[0].volume = nv
 
 	$('#pup')[0].volume = nv
 
-	var vt = parseInt(Math.round((nv * 100)))
+	if(youtube_player !== undefined)
+	{
+		youtube_player.setVolume(vt)
+	}
 
 	$('#volume').text(`${vt} %`)
 
@@ -4249,9 +4273,9 @@ function volume_decrease()
 
 	var nv = audio.volume - 0.1
 
-	if(nv < 0.1)
+	if(nv < 0)
 	{
-		nv = 0.1
+		nv = 0
 	}
 
 	set_volume(nv)
@@ -4274,9 +4298,9 @@ function change_volume_command(arg)
 			nv = 100
 		}
 
-		if(nv < 10)
+		if(nv < 0)
 		{
-			nv = 10
+			nv = 0
 		}
 
 		nv = nv / 100
@@ -4498,7 +4522,7 @@ function refresh()
 	window.location = window.location
 }
 
-function initial_volume()
+function get_volume()
 {
 	var volume = get_local_storage('volume')
 
@@ -4512,6 +4536,8 @@ function initial_volume()
 	{
 		set_volume(volume, false)
 	}
+
+	return [volume, parseInt(Math.round((volume * 100)))]	
 }
 
 var search_timer = (function() 
@@ -6725,4 +6751,21 @@ function do_history_filter()
 	update_modal_scrollbar("info")
 
 	$('#Msg-content-container-info').scrollTop(0)	
+}
+
+function onYouTubeIframeAPIReady() 
+{
+	yt_player = new YT.Player('youtube_player', 
+	{
+		events: 
+		{
+			'onReady': onYouTubePlayerReady
+		}		
+	})
+}
+
+function onYouTubePlayerReady()
+{
+	youtube_player = yt_player
+	youtube_player.setVolume(get_volume()[1])
 }

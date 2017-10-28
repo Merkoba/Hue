@@ -92,11 +92,6 @@ body, html
 	cursor: pointer;
 }
 
-#media_iframe
-{
-	display: none;
-}
-
 #chat_area_parent
 {
 	position: relative;
