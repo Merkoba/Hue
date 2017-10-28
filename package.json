@@ -14,6 +14,7 @@
     "debug": "~2.2.0",
     "shelljs": "~0.7.0",
     "socket-anti-spam": "~1.1.8",
-    "mongodb": "~2.2.24"
+    "mongodb": "~2.2.24",
+    "node-fetch": "~1.7.3"
   }
 }

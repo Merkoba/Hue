@@ -1,7 +1,6 @@
 {
 	"site_root": "https://hue.merkoba.com/",
 	"main_room": "Hue",
-	"secretpass": "whatever",
 	"images_directory": "public/img",
 	"public_images_location": "/img/",
 	"default_image_url": "/img/default.gif",

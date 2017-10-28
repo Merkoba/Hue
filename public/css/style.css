@@ -85,11 +85,16 @@ body, html
 	flex-direction: column;
 }
 
-#media img
+#media_image
 {
 	max-height: calc(100vh - 8em);
 	max-width: 44vw;
 	cursor: pointer;
+}
+
+#media_iframe
+{
+	display: none;
 }
 
 #chat_area_parent

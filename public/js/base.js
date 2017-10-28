@@ -25,10 +25,14 @@ var nicknames = []
 var priv = ''
 var upload_permission
 var chat_permission
+var radio_permission
 var can_upload
 var can_chat
+var can_radio
 var change_when_focused = false
+var radio_type = ''
 var radio_source = ''
+var radio_title = ''
 var radio_metadata = ''
 var radio_setter = ''
 var radio_date = ''
@@ -435,6 +439,7 @@ function check_priv(data)
 	priv = data.priv
 	upload_permission = data.upload_permission
 	chat_permission = data.chat_permission
+	radio_permission = data.radio_permission
 	check_permissions()
 }
 
@@ -442,6 +447,7 @@ function check_permissions()
 {
 	can_upload = check_upload_permission(priv)
 	can_chat = check_chat_permission(priv)
+	can_radio = check_radio_permission(priv)
 }
 
 function check_upload_permission(priv)
@@ -502,6 +508,35 @@ function check_chat_permission(priv)
 	}	
 }
 
+function check_radio_permission(priv)
+{
+	if(radio_permission === 1)
+	{
+		return true
+	}
+
+	else if(radio_permission === 2)
+	{
+		if(priv === "admin" || priv === "op" || priv === "voice")
+		{
+			return true
+		}
+	}
+
+	else if(radio_permission === 3)
+	{
+		if(priv === "admin" || priv === "op")
+		{
+			return true
+		}	
+	}
+
+	else
+	{
+		return false
+	}	
+}
+
 function show_priv(data)
 {
 	if(priv === 'admin')
@@ -523,6 +558,7 @@ function show_priv(data)
 	{
 		show_chat_permission()
 		show_upload_permission()
+		show_radio_permission()
 	}
 
 	else
@@ -539,6 +575,13 @@ function show_priv(data)
 		if(can_upload)
 		{
 			chat_announce('[', ']', "You have upload permission", 'small')
+
+			ps += 1
+		}
+
+		if(can_radio)
+		{
+			chat_announce('[', ']', "You have radio permission", 'small')
 
 			ps += 1
 		}
@@ -583,7 +626,7 @@ function start_socket()
 			username = data.username
 			set_image_info(data)
 			claimed = data.claimed
-			set_radio_info(data)
+			setup_radio(data)
 			userlist = data.userlist
 			update_userlist()
 			set_topic_info(data)
@@ -672,6 +715,11 @@ function start_socket()
 		else if(data.type === 'chat_permission_change')
 		{
 			announce_chat_permission_change(data)
+		}
+
+		else if(data.type === 'radio_permission_change')
+		{
+			announce_radio_permission_change(data)
 		}
 
 		else if(data.type === 'announce_voice')
@@ -837,7 +885,7 @@ function start_heartbeat()
 	}, heartbeat_interval)
 }
 
-function set_radio_info(data)
+function setup_radio(data)
 {
 	if(!data)
 	{
@@ -858,22 +906,50 @@ function set_radio_info(data)
 		radio_source = data.radio_source
 	}
 
-	if(radio_source.slice(-1) === '/')
-	{
-		radio_metadata = `${radio_source.slice(0, -1).split('/').slice(0, -1).join('/')}/status-json.xsl`
-	}
-
-	else
-	{
-		radio_metadata = `${radio_source.split('/').slice(0, -1).join('/')}/status-json.xsl`
-	}
-
+	radio_type = data.radio_type
+	radio_title = data.radio_title
 	radio_setter = data.radio_setter
 	radio_date = nice_date(data.radio_date)
-	get_metadata = true
-	no_meta_count = 0	
 
-	get_radio_metadata()
+	if(radio_type === "radio")
+	{
+		if(radio_source.slice(-1) === '/')
+		{
+			radio_metadata = `${radio_source.slice(0, -1).split('/').slice(0, -1).join('/')}/status-json.xsl`
+		}
+
+		else
+		{
+			radio_metadata = `${radio_source.split('/').slice(0, -1).join('/')}/status-json.xsl`
+		}
+		
+		get_metadata = true
+		no_meta_count = 0
+		get_radio_metadata()
+		$('#iframe').attr('src', '')		
+	}
+
+	else if(data.radio_type === "youtube")
+	{
+		get_metadata = false
+		$('#now_playing').text(radio_title)
+		push_played(false, {s1:radio_title, s2:`https://youtube.com/watch?v=${get_youtube_id(radio_source)}`})
+		$('#audio').attr('src', '')
+	}
+
+	if($('#toggle_radio_text').html() === 'Stop Radio')
+	{
+		start_radio()
+	}		
+}
+
+function get_youtube_id(url)
+{
+	url = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/)
+
+	var id = undefined !== url[2] ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0]
+
+	return id.length === 11 ? id : false
 }
 
 function update_usercount(usercount)
@@ -1563,6 +1639,145 @@ function start_main_menu_context_menu()
 						}						
 					}
 				}
+			},
+			radpmodes: 
+			{
+				name: "Radio Permission", 
+				visible: function(key, opt)
+				{ 
+					if(priv !== 'admin' && priv !== 'op')
+					{
+						return false
+					}
+
+					else
+					{
+						return true
+					}
+				},				
+				items: 
+				{
+					radpmode1: 
+					{
+						name: "1. Anyone",
+						visible: function(key, opt)
+						{ 
+							if(radio_permission === 1)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_radio_permission(1)
+						}
+					},
+					radpmode1b: 
+					{
+						name: "1. Anyone *",
+						visible: function(key, opt)
+						{ 
+							if(radio_permission !== 1)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_radio_permission(1)
+						}
+					},
+					radpmode2: 
+					{
+						name: "2. Voiced Users And Up",
+						visible: function(key, opt)
+						{ 
+							if(radio_permission === 2)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_radio_permission(2)
+						}
+					},
+					radpmode2b: 
+					{
+						name: "2. Voiced Users And Up *",
+						visible: function(key, opt)
+						{ 
+							if(radio_permission !== 2)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_radio_permission(2)
+						} 
+					},
+					radpmode3: 
+					{
+						name: "3. Ops And Up",
+						visible: function(key, opt)
+						{ 
+							if(radio_permission === 3)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_radio_permission(3)
+						}						
+					},
+					radpmode3b: 
+					{
+						name: "3. Ops And Up *",
+						visible: function(key, opt)
+						{ 
+							if(radio_permission !== 3)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_radio_permission(3)
+						}						
+					}
+				}
 			},			
 			cmprivacy: 
 			{
@@ -1794,21 +2009,21 @@ function start_played_context_menu()
 			{
 				name: "Search on Google", callback: function(key, opt)
 				{
-					search_in('google', $(this).data('q'))
+					search_in('google', this.data('q'))
 				}
 			},
 			cmenu2: 
 			{
 				name: "Search on SoundCloud", callback: function(key, opt)
 				{
-					search_in('soundcloud', $(this).data('q'))
+					search_in('soundcloud', this.data('q'))
 				}         
 			},
 			cmenu3: 
 			{
 				name: "Search on YouTube", callback: function(key, opt)
 				{
-					search_in('youtube', $(this).data('q'))
+					search_in('youtube', this.data('q'))
 				}
 			}
 		}
@@ -3041,6 +3256,7 @@ function register_commands()
 	commands.push('/unclaim')
 	commands.push('/upload_permission')
 	commands.push('/chat_permission')
+	commands.push('/radio_permission')
 	commands.push('/users')
 	commands.push('/rooms')
 	commands.push('/played')
@@ -3166,6 +3382,16 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/chat_permission'))
 			{
 				show_chat_permission()
+			}
+
+			else if(oiStartsWith(lmsg, '/radio_permission'))
+			{
+				change_radio_permission(arg)
+			}
+
+			else if(oiEquals(lmsg, '/radio_permission'))
+			{
+				show_radio_permission()
 			}
 
 			else if(oiEquals(lmsg, '/users'))
@@ -3718,6 +3944,11 @@ function emit_pasted(url)
 
 function get_radio_metadata()
 {	
+	if(radio_type !== "radio")
+	{
+		return
+	}
+
 	try
 	{
 		$.get(radio_metadata,
@@ -3758,7 +3989,7 @@ function get_radio_metadata()
 					return false
 				}
 
-				push_played(source.title, source.artist)
+				push_played({title:source.title, artist:source.artist})
 			}
 
 			catch(err)
@@ -3801,11 +4032,21 @@ function show_playing_file()
 	}
 }
 
-function push_played(title, artist)
+function push_played(info, info2=false)
 {
-	var s = `${title} - ${artist}`
+	if(info)
+	{
+		var s = `${info.title} - ${info.artist}`
+		var q = `"${info.title}" by "${info.artist}"`
+		var q2 = ""
+	}
 
-	var q = `"${title}" by "${artist}"`
+	else
+	{
+		var s = info2.s1
+		var q = info2.s1
+		var q2 = info2.s2
+	}
 	
 	$('#now_playing').text(s)
 
@@ -3818,15 +4059,33 @@ function push_played(title, artist)
 		var pi = "<div class='pititle'></div><div class='piartist'></div>"
 		
 		h = $(`<div title='${date}' class='played_item'>${pi}</div>`)
+
+		if(info)
+		{
+			h.find('.pititle').eq(0).text(info.title)
+			h.find('.piartist').eq(0).text(`by ${info.artist}`)
+		}
 		
-		h.find('.pititle').eq(0).text(title)
-		h.find('.piartist').eq(0).text(`by ${artist}`)
+		else
+		{
+			h.find('.pititle').eq(0).text(info2.s1)
+			h.find('.piartist').eq(0).text(`${info2.s2}`)			
+		}
 
 		h.data('q', q)
+		h.data('q2', q2)
 
 		h.click(function()
 		{
-			search_in('google', $(this).data('q'))
+			if($(this).data('q2') !== '')
+			{
+				window.open(q2, '_blank')
+			}
+
+			else
+			{
+				search_in('google', $(this).data('q'))
+			}
 		})
 		
 		$('#played').prepend(h)
@@ -3863,14 +4122,22 @@ function show_nowplaying()
 
 function start_radio()
 {
-	if(radio_source)
+	if(radio_type === "radio")
 	{
-		$('#audio').attr('src', radio_source)
+		if(radio_source)
+		{
+			$('#audio').attr('src', radio_source)
+		}
+
+		else
+		{
+			$('#audio').attr('src', default_radio_source)
+		}
 	}
 
-	else
+	else if(radio_type === "youtube")
 	{
-		$('#audio').attr('src', default_radio_source)
+		$("#iframe").attr('src', `https://www.youtube.com/embed/${get_youtube_id(radio_source)}?rel=0&amp;controls=0&amp;showinfo=0&amp;autoplay=1`)		
 	}
 
 	$('#playing_icon').css('display', 'inline-block')
@@ -3881,6 +4148,7 @@ function start_radio()
 function stop_radio()
 {
 	$('#audio').attr('src', '')
+	$('#iframe').attr('src', '')
 	$('#playing_icon').css('display', 'none')
 	$('#toggle_radio_text').html('Start Radio')
 }
@@ -3902,19 +4170,22 @@ function start_metadata_loop()
 {
 	setInterval(function()
 	{
-		if(get_metadata)
+		if(radio_type === "radio")
 		{
-			get_radio_metadata()
-		}
-
-		else
-		{
-			no_meta_count += 1
-
-			if(no_meta_count > max_no_meta_count)
+			if(get_metadata)
 			{
-				get_metadata = true
-				no_meta_count = 0
+				get_radio_metadata()
+			}
+
+			else
+			{
+				no_meta_count += 1
+
+				if(no_meta_count > max_no_meta_count)
+				{
+					get_metadata = true
+					no_meta_count = 0
+				}
 			}
 		}
 	}, check_metadata_interval_duration)
@@ -4673,6 +4944,45 @@ function change_chat_permission(m)
 	}
 }
 
+function change_radio_permission(m)
+{
+	if(priv === 'admin' || priv === 'op')
+	{
+		var amodes = [1, 2, 3]
+
+		if(!isNaN(m))
+		{
+			m = parseInt(m)
+
+			if(m === radio_permission)
+			{
+				chat_announce('[', ']', `Radio permission is already ${m}`, 'small')
+				return false
+			}			
+
+			if(amodes.indexOf(m) !== -1)
+			{
+				socket_emit('change_radio_permission', {radio_permission:m})
+			}
+
+			else
+			{
+				chat_announce('[', ']', "That permission does not exist", 'small')
+			}
+		}
+
+		else
+		{
+			chat_announce('[', ']', "Argument must be a number", 'small')
+		}
+	}
+
+	else
+	{
+		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+	}
+}
+
 function announce_upload_permission_change(data)
 {
 	var s = ""
@@ -4747,6 +5057,43 @@ function announce_chat_permission_change(data)
 	}
 }
 
+function announce_radio_permission_change(data)
+{
+	var s = ""
+
+	if(username === data.username)
+	{
+		var d = "You changed the radio permission to"
+	}
+
+	else
+	{
+		var d = `${data.username} changed the radio permission to`
+	}
+
+	if(data.radio_permission === 1 && radio_permission !== 1)
+	{
+		s = `${d} 1. Anyone can change the radio`
+	}
+
+	else if(data.radio_permission === 2 && radio_permission !== 2)
+	{
+		s = `${d} 2. Only voiced users and up can change the radio`
+	}
+
+	else if(data.radio_permission === 3 && radio_permission !== 3)
+	{
+		s = `${d} 3. Only ops and up can change the radio`
+	}
+
+	if(s.length > 0)
+	{
+		radio_permission = data.radio_permission
+		can_radio = check_radio_permission(priv)
+		chat_announce('~', '~', s, 'small')
+	}
+}
+
 function show_upload_permission()
 {
 	chat_announce('[', ']', `Upload permission: ${upload_permission}`, 'small')
@@ -4755,6 +5102,11 @@ function show_upload_permission()
 function show_chat_permission()
 {
 	chat_announce('[', ']', `Chat permission: ${chat_permission}`, 'small')
+}
+
+function show_radio_permission()
+{
+	chat_announce('[', ']', `Radio permission: ${radio_permission}`, 'small')
 }
 
 function big_letter(s)
@@ -5003,12 +5355,7 @@ function announce_unclaim(data)
 
 	if(radio_source !== default_radio_source)
 	{
-		set_radio_info(false)
-
-		if($('#toggle_radio_text').html() === 'Stop Radio')
-		{
-			start_radio()
-		}
+		setup_radio(false)
 	}
 }
 
@@ -5250,7 +5597,7 @@ function recover(nck)
 
 function change_radio_source(src)
 {
-	if(priv === 'admin' || priv === 'op')
+	if(can_radio)
 	{
 		src = clean_string2(src)
 
@@ -5262,18 +5609,13 @@ function change_radio_source(src)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You don't have permission to change the radio", 'small')
 	}
 }
 
 function changed_radio_source(data)
 {
-	set_radio_info(data)
-
-	if($('#toggle_radio_text').html() === 'Stop Radio')
-	{
-		start_radio()
-	}
+	setup_radio(data)
 
 	if(data.radio_source == '')
 	{

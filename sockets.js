@@ -4,7 +4,9 @@ const {exec} = require('child_process')
 const shell = require('shelljs/global')
 const antiSpam  = require('socket-anti-spam')
 const mongo = require('mongodb')
+const fetch = require('node-fetch')
 const config = require('./config.json')
+const sconfig = require('./config.secret.json')
 const images_root = path.join(__dirname, config.images_directory)
 
 var db
@@ -394,6 +396,19 @@ module.exports = function(io)
 			}
 		})
 
+		socket.on('change_radio_permission', function(data) 
+		{
+			try
+			{
+				change_radio_permission(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
 		socket.on('make_private', function(data) 
 		{
 			try
@@ -563,8 +578,11 @@ module.exports = function(io)
 				priv: socket.priv, 
 				upload_permission: info.upload_permission, 
 				chat_permission: info.chat_permission, 
-				public: info.public, 
-				radio_source: info.radio_source, 
+				radio_permission: info.radio_permission, 
+				public: info.public,
+				radio_type: info.radio_type,
+				radio_source: info.radio_source,
+				radio_title: info.radio_title,
 				radio_setter: info.radio_setter, 
 				radio_date: info.radio_date, 
 				claimed: info.claimed
@@ -799,7 +817,7 @@ module.exports = function(io)
 
 			get_userinfo(socket.username, function(userinfo)
 			{
-				if(userinfo.key === '' || userinfo.key === data.key || data.pass === config.secretpass)
+				if(userinfo.key === '' || userinfo.key === data.key || data.pass === sconfig.secretpass)
 				{
 					if(userinfo.key !== '' && userinfo.key === data.key)
 					{
@@ -1004,14 +1022,14 @@ module.exports = function(io)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.room === config.main_room && data.pass !== config.secretpass)
+			if(socket.room === config.main_room && data.pass !== sconfig.secretpass)
 			{
 				return false
 			}
 
 			get_roominfo(socket.room, {claimed:true}, function(info)
 			{
-				if(!info.claimed || socket.priv === 'admin' || data.pass === config.secretpass)
+				if(!info.claimed || socket.priv === 'admin' || data.pass === sconfig.secretpass)
 				{
 					socket.key = get_random_key()
 
@@ -1691,9 +1709,10 @@ module.exports = function(io)
 						return false
 					}
 
-					if(amodes.indexOf(m) != -1)
+					if(amodes.indexOf(m) !== -1)
 					{
 						io.sockets.in(socket.room).emit('update', {type:'upload_permission_change', username:socket.username, upload_permission:m})
+						
 						info.upload_permission = m
 						
 						db.collection('rooms').update({_id:info._id}, {$set:{upload_permission:info.upload_permission}})
@@ -1731,12 +1750,54 @@ module.exports = function(io)
 						return false
 					}				
 
-					if(amodes.indexOf(m) != -1)
+					if(amodes.indexOf(m) !== -1)
 					{
 						io.sockets.in(socket.room).emit('update', {type:'chat_permission_change', username:socket.username, chat_permission:m})
+						
 						info.chat_permission = m
 						
 						db.collection('rooms').update({_id:info._id}, {$set:{chat_permission:info.chat_permission}})
+					}
+				}
+			})
+		}
+	}
+
+	function change_radio_permission(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			{
+				return false
+			}
+
+			if(data.radio_permission === undefined)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			get_roominfo(socket.room, {radio_permission:true}, function(info)
+			{
+				var amodes = [1, 2, 3]
+
+				if(!isNaN(data.radio_permission))
+				{
+					var m = parseInt(data.radio_permission)
+
+					if(m === info.radio_permission)
+					{
+						return false
+					}				
+
+					if(amodes.indexOf(m) !== -1)
+					{
+						io.sockets.in(socket.room).emit('update', {type:'radio_permission_change', username:socket.username, radio_permission:m})
+						
+						info.radio_permission = m
+						
+						db.collection('rooms').update({_id:info._id}, {$set:{radio_permission:info.radio_permission}})
 					}
 				}
 			})
@@ -1792,11 +1853,6 @@ module.exports = function(io)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
-			{
-				return false
-			}
-
 			if(data.src === undefined)
 			{
 				socket.disconnect()
@@ -1815,43 +1871,79 @@ module.exports = function(io)
 				return false
 			}
 
-			get_roominfo(socket.room, {radio_source:true}, function(info)
+			get_roominfo(socket.room, {radio_permission:true}, function(info)
 			{
-				if(data.src.length == 0)
+				if(!check_permission(info.radio_permission, socket.priv))
 				{
 					return false
 				}
 
-				if(data.src === 'default')
+				if(data.src.indexOf("youtube.com") !== -1 || data.src.indexOf("youtu.be") !== -1)
 				{
-					info.radio_source = ''
+					var id = get_youtube_id(data.src)
+
+					if(id)
+					{
+						fetch(`https://www.googleapis.com/youtube/v3/videos?id=${id}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`).then(function(res)
+						{
+							return res.json()
+						}).then(function(response)
+						{
+							data.type = "youtube"
+							data.title = response.items[0].snippet.title
+							do_change_radio_source(socket, info, data)
+						})
+					}
 				}
 
 				else
 				{
-					info.radio_source = data.src
+					data.type = "radio"
+					data.title = ""
+					do_change_radio_source(socket, info, data)
 				}
-
-				info.radio_setter = socket.username
-				info.radio_date = Date.now()
-
-				io.sockets.in(socket.room).emit('update', 
-				{
-					type: 'changed_radio_source', 
-					radio_source: info.radio_source,
-					radio_setter: info.radio_setter,
-					radio_date: info.radio_date
-				})
-
-				db.collection('rooms').update({_id:info._id}, {$set:
-				{
-					radio_source: info.radio_source,
-					radio_setter: info.radio_setter,
-					radio_date: info.radio_date,
-					modified: Date.now()
-				}})
 			})
 		}
+	}
+
+	function do_change_radio_source(socket, info, data)
+	{	
+		if(data.src === 'default')
+		{
+			info.radio_type = "radio"
+			info.radio_source = ''
+			info.radio_title = ''
+		}
+
+		else
+		{
+			info.radio_type = data.type
+			info.radio_source = data.src
+			info.radio_title = data.title
+		}
+
+		info.radio_setter = socket.username
+		info.radio_date = Date.now()
+
+		io.sockets.in(socket.room).emit('update', 
+		{
+			type: 'changed_radio_source', 
+			radio_type: info.radio_type,
+			radio_source: info.radio_source,
+			radio_title: info.radio_title,
+			radio_setter: info.radio_setter,
+			radio_date: info.radio_date
+		})
+
+		db.collection('rooms').update({_id:info._id}, {$set:
+		{
+			radio_type: info.radio_type,
+			radio_source: info.radio_source,
+			radio_title: info.radio_title,
+			radio_setter: info.radio_setter,
+			radio_date: info.radio_date,
+			modified: Date.now()
+		}})
 	}
 
 	function do_disconnect(socc)
@@ -1908,7 +2000,7 @@ module.exports = function(io)
 
 	function get_roominfo(room, fields, callback)
 	{
-		var version = 8
+		var version = 10
 
 		if(Object.keys(fields).length > 0)
 		{
@@ -1934,7 +2026,10 @@ module.exports = function(io)
 					keys: '',
 					upload_permission: 1,
 					chat_permission: 1,
+					radio_permission: 1,
+					radio_type: 'radio',
 					radio_source: '',
+					radio_title: '',
 					radio_setter: '',
 					radio_date: 0,
 					bans: '',
@@ -2009,9 +2104,24 @@ module.exports = function(io)
 						roominfo.chat_permission = 1
 					}
 					
+					if(roominfo.radio_permission === undefined || typeof roominfo.radio_permission !== "number")
+					{
+						roominfo.radio_permission = 1
+					}
+
+					if(roominfo.radio_type === undefined || typeof roominfo.radio_type !== "string")
+					{
+						roominfo.radio_type = "radio"
+					}					
+					
 					if(roominfo.radio_source === undefined || typeof roominfo.radio_source !== "string")
 					{
 						roominfo.radio_source = ""
+					}
+
+					if(roominfo.radio_title === undefined || typeof roominfo.radio_title !== "string")
+					{
+						roominfo.radio_title = ""
 					}
 					
 					if(roominfo.radio_setter === undefined || typeof roominfo.radio_setter !== "string")
@@ -2478,4 +2588,13 @@ module.exports = function(io)
 			}
 		}
 	}
+
+	function get_youtube_id(url)
+	{
+		url = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/)
+
+		var id = undefined !== url[2] ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0]
+
+		return id.length === 11 ? id : false
+	}	
 }
