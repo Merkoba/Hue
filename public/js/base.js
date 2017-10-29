@@ -677,7 +677,9 @@ function start_socket()
 
 		else if(data.type === 'image_change')
 		{
-			image_change(data)
+			set_image_info(data)
+			announce_uploaded_image(data)
+			change()
 		}
 
 		else if(data.type === 'userjoin')
@@ -3134,13 +3136,6 @@ function set_image_info(data)
 	image_uploader = data.image_uploader
 	image_size = data.image_size
 	image_date = nice_date(data.image_date)
-}
-
-function image_change(data)
-{
-	set_image_info(data)
-	announce_uploaded_image(data)
-	change()
 }
 
 function change()
