@@ -302,6 +302,7 @@ function help2()
 	chat_announce('', '', 'Clicking on a nickname sends it to the input.', 'small')
 	chat_announce('', '', 'Tab completes nicknames and commands.', 'small')
 	chat_announce('', '', 'Shift + Enter toggles the radio.', 'small')
+	chat_announce('', '', '/radio x: Changes the radio source. This can be an internet radio url, a file url, a youtube url or a search term to find a video on youtube. If x is \'default\' it changes to the default radio.', 'small')
 	chat_announce('', '', '/defnick x: Changes your default nickname for rooms you visit for the first time.', 'small')
 	chat_announce('', '', '/reserve: Reserves current nickname to be recoverable later. If called again it changes the key with a new one.', 'small')
 	chat_announce('', '', '/unreserve: Makes a nickname available again.', 'small')
@@ -315,7 +316,7 @@ function help2()
 	chat_announce('', '', '/startradio: Starts the radio.', 'small')
 	chat_announce('', '', '/stopradio: Stops the radio.', 'small')
 	chat_announce('', '', '/volume x: Changes the volume of the radio.', 'small')
-	chat_announce('', '', 'Note: Dates shown when hovering some items show the time when the item was placed on the screen.', 'small')
+	chat_announce('', '', `Note: Dates shown when hovering some items show the time when the item was placed on the screen, except when a nickname is displayed beside it meaning it's that date an action was performed.`, 'small')
 }
 
 function help3()
@@ -330,6 +331,9 @@ function help3()
 	chat_announce('', '', '/chat_permission 1: Anyone can chat.', 'small')
 	chat_announce('', '', '/chat_permission 2: Only voiced users and up can chat.', 'small')
 	chat_announce('', '', '/chat_permission 3: Only ops and up can chat.', 'small')
+	chat_announce('', '', '/radio_permission 1: Anyone can change the radio.', 'small')
+	chat_announce('', '', '/radio_permission 2: Only voiced users and up can change the radio.', 'small')
+	chat_announce('', '', '/radio_permission 3: Only ops and up can change the radio.', 'small')
 	chat_announce('', '', '/voice x: Gives voice to a user.', 'small')
 	chat_announce('', '', '/op x: Gives op to a user. Ops can do anything an admin can do except more high level commands.', 'small')
 	chat_announce('', '', '/admin x: Gives admin to a user. This gives a user the same rights as the original admin.', 'small')
@@ -338,7 +342,6 @@ function help3()
 	chat_announce('', '', '/removeops: Removes all privileges from op\'d users.', 'small')
 	chat_announce('', '', '/private: Room doesn\'t appear in the public room list.', 'small')
 	chat_announce('', '', '/public: Room appears in the public room list.', 'small')
-	chat_announce('', '', '/radio x: Changes the radio source. It will try to automatically fetch metadata from Icecast2 servers. If x is \'default\' it changes to the default radio.', 'small')
 	chat_announce('', '', '/topic x: Changes the topic of the room.', 'small')
 	chat_announce('', '', '/topicadd x: Adds text to the current topic.', 'small')
 	chat_announce('', '', '/topictrim x: Removes added text to topic, where the optional x is the number of trims you want to do.', 'small')
@@ -845,6 +848,11 @@ function start_socket()
 		else if(data.type === 'couldnotrecover')
 		{
 			chat_announce('[', ']', "You don't seem to own that nickname", 'small')
+		}
+
+		else if(data.type === 'songnotfound')
+		{
+			chat_announce('[', ']', "The song couldn't be found", 'small')
 		}
 
 		else if(data.type === 'redirect')
@@ -4153,6 +4161,7 @@ function start_radio()
 		if(youtube_player !== undefined)
 		{
 			youtube_player.loadVideoById({videoId:get_youtube_id(radio_source), startSeconds:get_youtube_time(radio_source)})
+			youtube_player.setVolume(get_volume()[1])
 		}
 	}
 
@@ -5643,7 +5652,12 @@ function changed_radio_source(data)
 {
 	setup_radio(data)
 
-	if(data.radio_source == '')
+	if(data.radio_title !== "")
+	{
+		var name = data.radio_title
+	}
+
+	else if(data.radio_source == '')
 	{
 		var name = 'default'
 	}
@@ -6767,5 +6781,4 @@ function onYouTubeIframeAPIReady()
 function onYouTubePlayerReady()
 {
 	youtube_player = yt_player
-	youtube_player.setVolume(get_volume()[1])
 }

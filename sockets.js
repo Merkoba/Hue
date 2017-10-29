@@ -1878,29 +1878,62 @@ module.exports = function(io)
 					return false
 				}
 
-				if(data.src.indexOf("youtube.com") !== -1 || data.src.indexOf("youtu.be") !== -1)
+				if(data.src.indexOf("http://") !== -1 || data.src.indexOf("https://") !== -1 || data.src === "default")
 				{
-					var id = get_youtube_id(data.src)
-
-					if(id)
+					if(data.src.indexOf("youtube.com") !== -1 || data.src.indexOf("youtu.be") !== -1)
 					{
-						fetch(`https://www.googleapis.com/youtube/v3/videos?id=${id}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`).then(function(res)
+						var id = get_youtube_id(data.src)
+
+						if(id)
 						{
-							return res.json()
-						}).then(function(response)
-						{
-							data.type = "youtube"
-							data.title = response.items[0].snippet.title
-							do_change_radio_source(socket, info, data)
-						})
+							fetch(`https://www.googleapis.com/youtube/v3/videos?id=${id}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`).then(function(res)
+							{
+								return res.json()
+							}).then(function(response)
+							{
+								if(response.items.length > 0)
+								{
+									data.type = "youtube"
+									data.title = response.items[0].snippet.title
+									do_change_radio_source(socket, info, data)
+								}
+
+								else
+								{
+									socket.emit('update', {room:socket.room, type:'songnotfound'})
+								}
+							})
+						}
+					}
+
+					else
+					{
+						data.type = "radio"
+						data.title = ""
+						do_change_radio_source(socket, info, data)
 					}
 				}
 
 				else
 				{
-					data.type = "radio"
-					data.title = ""
-					do_change_radio_source(socket, info, data)
+					fetch(`https://www.googleapis.com/youtube/v3/search?q=${data.src}&fields=items(id,snippet(title))&part=snippet&maxResults=1&key=${sconfig.youtube_api_key}`).then(function(res)
+					{
+						return res.json()
+					}).then(function(response)
+					{
+						if(response.items.length > 0)
+						{
+							data.type = "youtube"
+							data.src = `https://youtube.com/watch?v=${response.items[0].id.videoId}`
+							data.title = response.items[0].snippet.title
+							do_change_radio_source(socket, info, data)
+						}
+
+						else
+						{
+							socket.emit('update', {room:socket.room, type:'songnotfound'})
+						}						
+					})						
 				}
 			})
 		}
