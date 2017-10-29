@@ -276,7 +276,7 @@ function compile_templates()
 
 function help()
 {
-	chat_announce('', '', 'Basic Features:', 'small')
+	chat_announce('', '', 'Basic Features:', 'big')
 	chat_announce('', '', 'Chat by typing anything.', 'small')
 	chat_announce('', '', 'All elements in the top bar are clickable.', 'small')
 	chat_announce('', '', 'Change the image on the right by pasting an image url.', 'small')
@@ -294,7 +294,7 @@ function help()
 
 function help2()
 {
-	chat_announce('', '', 'Additional Features:', 'small')
+	chat_announce('', '', 'Additional Features:', 'big')
 	chat_announce('', '', 'Escape clears the input or closes popups.', 'small')
 	chat_announce('', '', 'Shift + Escape or /clear clears all messages from the chat.', 'small')
 	chat_announce('', '', 'Shift + Tab or /status shows information about you and the room.', 'small')
@@ -322,7 +322,7 @@ function help2()
 
 function help3()
 {
-	chat_announce('', '', 'Administration Features:', 'small')
+	chat_announce('', '', 'Administration Features:', 'big')
 	chat_announce('', '', '/claim: Requests administration of the room. If it hasn\'t been claimed, user gets the ownership.', 'small')
 	chat_announce('', '', '/reclaim: Reclaims the room if you\'re already an admin. Removes all given privileges to other users.', 'small')
 	chat_announce('', '', '/unclaim: Removes all ownership on the room and resets it to a default state.', 'small')
@@ -353,7 +353,7 @@ function help3()
 	chat_announce('', '', '/bannedcount: Displays the number of banned users in the room.', 'small')
 	chat_announce('', '', '/kick x: Kicks a user out of the room.', 'small')
 	chat_announce('', '', 'Note: Nicknames and main menu have a context menu with some operations.', 'small')
-	chat_announce('', '', 'Note: Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada url is gathered automatically. To work, the server needs to allow cross-domain requests and be https enabled if the system is being served through https.', 'small')
+	chat_announce('', '', 'Note: Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada url is gathered automatically. To work, the server needs to allow cross-domain requests and be https enabled if this system is being served through https.', 'small')
 }
 
 function show_status()
