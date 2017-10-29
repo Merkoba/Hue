@@ -448,8 +448,15 @@ module.exports = function(io)
 			}
 		})
 
-		socket.on('disconnect', function()
+		socket.on('disconnect', function(reason)
 		{
+			reason = reason.toLowerCase()
+
+			if(reason.indexOf('timeout') !== -1)
+			{
+				socket.pingd = true
+			}
+
 			try
 			{
 				disconnect(socket)
@@ -1988,7 +1995,12 @@ module.exports = function(io)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.kickd)
+			if(socket.pingd)
+			{
+				var type = 'pinged'
+			}
+
+			else if(socket.kickd)
 			{
 				var type = 'kicked'
 			}

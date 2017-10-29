@@ -677,19 +677,12 @@ function start_socket()
 
 		else if(data.type === 'image_change')
 		{
-			set_image_info(data)
-			announce_uploaded_image(data)
-			change()
+			image_change(data)
 		}
 
 		else if(data.type === 'userjoin')
 		{
-			addto_userlist(data.username, data.priv)
-
-			if(check_chat_permission(data.priv))
-			{
-				chat_announce('--', '--', `${data.username} has joined`, 'small')
-			}
+			userjoin(data)
 		}
 
 		else if(data.type === 'roomlist')
@@ -770,15 +763,7 @@ function start_socket()
 
 		else if(data.type === 'get_bannedcount')
 		{
-			if(data.count == 1)
-			{
-				chat_announce('[', ']', `There is ${data.count} user banned`, 'small')
-			}
-
-			else
-			{
-				chat_announce('[', ']', `There are ${data.count} users banned`, 'small')
-			}
+			get_bannedcount(data)
 		}
 
 		else if(data.type === 'nothingtounban')
@@ -863,12 +848,12 @@ function start_socket()
 
 		else if(data.type === 'disconnection')
 		{		
-			removefrom_userlist(data.username)
+			disconnected(data)
+		}
 
-			if(check_chat_permission(data.priv))
-			{
-				chat_announce('--', '--', `${data.username} has left`, 'small')
-			}
+		else if(data.type === 'pinged')
+		{
+			pinged(data)
 		}
 
 		else if(data.type === 'kicked')
@@ -972,6 +957,16 @@ function get_youtube_time(url)
 	var match = url.match(/[\?|&]t=(\d+)/)
 
 	return match === null ? 0 : match[1]
+}
+
+function userjoin(data)
+{
+	addto_userlist(data.username, data.priv)
+
+	if(check_chat_permission(data.priv))
+	{
+		chat_announce('--', '--', `${data.username} has joined`, 'small')
+	}	
 }
 
 function update_usercount(usercount)
@@ -3139,6 +3134,13 @@ function set_image_info(data)
 	image_uploader = data.image_uploader
 	image_size = data.image_size
 	image_date = nice_date(data.image_date)
+}
+
+function image_change(data)
+{
+	set_image_info(data)
+	announce_uploaded_image(data)
+	change()
 }
 
 function change()
@@ -5749,6 +5751,19 @@ function bannedcount()
 	}
 }
 
+function get_bannedcount(data)
+{
+	if(data.count == 1)
+	{
+		chat_announce('[', ']', `There is ${data.count} user banned`, 'small')
+	}
+
+	else
+	{
+		chat_announce('[', ']', `There are ${data.count} users banned`, 'small')
+	}	
+}
+
 function kick(nck)
 {
 	if(priv === 'admin' || priv === 'op')
@@ -5919,6 +5934,26 @@ function announce_removedops(data)
 	}
 
 	remove_ops_userlist()
+}
+
+function disconnected(data)
+{
+	removefrom_userlist(data.username)
+
+	if(check_chat_permission(data.priv))
+	{
+		chat_announce('--', '--', `${data.username} has left`, 'small')
+	}
+}
+
+function pinged(data)
+{
+	removefrom_userlist(data.username)
+
+	if(check_chat_permission(data.priv))
+	{
+		chat_announce('--', '--', `${data.username} has left (Ping Timeout)`, 'small')
+	}
 }
 
 function kicked(data)
