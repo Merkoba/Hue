@@ -15,7 +15,7 @@ You will also need MongoDB installed in your computer, and for everything to wor
 
 There is no need create database tables, all of that is done automatically, MongoDB just needs to be installed and running.
 
-Most configuration is done in the config.json file found in the root directory.
+Most configuration is done in the config.json and config.secret.json files found in the root directory.
 
 To run it locally you first have to start 'mongod' then go to the bin directory and run 'node www start'.
 
@@ -23,4 +23,4 @@ To run it properly in production you will have to configure Apache or some other
 
 Using 'forever' is suggested to control the Node process.
 
-Note: To claim the main room you have to use the secretpass in config.json i.e '/claim password'.
+Note: To claim the main room you have to use the secretpass in config.secret.json i.e '/claim password'.

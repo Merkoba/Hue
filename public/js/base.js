@@ -352,6 +352,7 @@ function help3()
 	chat_announce('', '', '/bannedcount: Displays the number of banned users in the room.', 'small')
 	chat_announce('', '', '/kick x: Kicks a user out of the room.', 'small')
 	chat_announce('', '', 'Note: Nicknames and main menu have a context menu with some operations.', 'small')
+	chat_announce('', '', 'Note: Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada url is gathered automatically. To work, the server needs to allow cross-domain requests and be https enabled if the system is being served through https.', 'small')
 }
 
 function show_status()
@@ -2030,21 +2031,21 @@ function start_played_context_menu()
 			{
 				name: "Search on Google", callback: function(key, opt)
 				{
-					search_in('google', this.data('q'))
+					search_on('google', this.data('q'))
 				}
 			},
 			cmenu2: 
 			{
 				name: "Search on SoundCloud", callback: function(key, opt)
 				{
-					search_in('soundcloud', this.data('q'))
+					search_on('soundcloud', this.data('q'))
 				}         
 			},
 			cmenu3: 
 			{
 				name: "Search on YouTube", callback: function(key, opt)
 				{
-					search_in('youtube', this.data('q'))
+					search_on('youtube', this.data('q'))
 				}
 			}
 		}
@@ -4105,7 +4106,7 @@ function push_played(info, info2=false)
 
 			else
 			{
-				search_in('google', $(this).data('q'))
+				search_on('google', $(this).data('q'))
 			}
 		})
 		
@@ -5838,7 +5839,7 @@ function forbiddenuser()
 	chat_announce('[', ']', "That operation is forbidden on that user", 'small')
 }
 
-function search_in(site, q)
+function search_on(site, q)
 {
 	var q = encodeURIComponent(q)
 
