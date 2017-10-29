@@ -676,7 +676,7 @@ module.exports = function(io)
 
 				if(clean)
 				{
-					var fname = `${socket.room.replace(/\s+/g, "-").replace(/\'+/g, "")}_${Date.now()}_${get_random_int(0, 1000)}.${data.image_url.split('.').pop(-1)}`
+					var fname = `${info._id}_${Date.now()}_${get_random_int(0, 1000)}.${data.image_url.split('.').pop(-1)}`
 					
 					exec(`wget -O ${images_root}/${fname} -q "${data.image_url}"`, function(status, output)
 					{
@@ -733,7 +733,7 @@ module.exports = function(io)
 
 				if(clean)
 				{
-					var fname = `${socket.room.replace(/\s+/g, "-").replace(/\'+/g, "")}_${Date.now()}_${get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
+					var fname = `${info._id}_${Date.now()}_${get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
 
 					fs.writeFile(images_root + '/' + fname, data.image_file, function (err,data) 
 					{
@@ -2414,7 +2414,7 @@ module.exports = function(io)
 
 	function clean_string4(s)
 	{
-		return s.replace(/[^a-z0-9\-\_\s\'\(\)]+/gi, "").replace(/\s+/g, " ").trim()
+		return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\%\<\>\^\$\(\)\[\]\*\"\'\,\.\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
 	}
 
 	function get_random_int(min, max)
