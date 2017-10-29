@@ -38,7 +38,7 @@ c.vars.youtube_enabled = config.youtube_enabled
 
 function clean_string4(s)
 {
-	return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\%\<\>\^\$\(\)\[\]\*\"\'\,\.\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
+	return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
 }
 
 router.get('/', function(req, res, next) 

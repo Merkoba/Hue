@@ -2414,7 +2414,7 @@ module.exports = function(io)
 
 	function clean_string4(s)
 	{
-		return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\%\<\>\^\$\(\)\[\]\*\"\'\,\.\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
+		return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
 	}
 
 	function get_random_int(min, max)
