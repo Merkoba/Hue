@@ -597,3 +597,8 @@ a.chat:link, a.chat:visited, a.chat:hover
 	border: 1px solid grey;
 	text-align: center;
 }
+
+#youtube_player
+{
+	display: none;
+}
