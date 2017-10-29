@@ -347,6 +347,7 @@ function help3()
 	chat_announce('', '', '/topicadd x: Adds text to the current topic.', 'small')
 	chat_announce('', '', '/topictrim x: Removes added text to topic, where the optional x is the number of trims you want to do.', 'small')
 	chat_announce('', '', '/topicedit: Puts the topic in the input, ready to be edited.', 'small')
+	chat_announce('', '', '/nickedit: Puts the nickname in the input, ready to be edited.', 'small')	
 	chat_announce('', '', '/ban x: Bans a user from the room.', 'small')
 	chat_announce('', '', '/unbanlast: Unbans the latest banned user.', 'small')
 	chat_announce('', '', '/unbanall: Removes all bans.', 'small')
@@ -846,7 +847,7 @@ function start_socket()
 
 		else if(data.type === 'redirect')
 		{
-			window.location = data.location
+			goto_url(data.location, true)
 		}
 
 		else if(data.type === 'disconnection')
@@ -2917,15 +2918,20 @@ function nice_date(date=Date.now())
 	return dateFormat(date, "dddd, mmmm dS, yyyy, h:MM:ss TT")
 }
 
+function escape_special_characters(s)
+{
+	return s.replace(/[^A-Za-z0-9_]/g, '\\$&');
+}
+
 function update_chat(uname, msg)
 {
 	var contclasses = "chat_content"
 
 	if(uname !== username)
 	{
-		var regex = new RegExp("\\b" + username + "\\b")
+		var regex = new RegExp("(^|\\s+)" + escape_special_characters(username) + "($|\\s+|\\!|\\?|\\,|\\.)")
 
-		if(msg.search(regex) != -1)
+		if(msg.search(regex) !== -1)
 		{
 			contclasses += " dotted"
 
@@ -3159,8 +3165,6 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 {
 	var contclasses = "announcement_content"
 
-	var regex = new RegExp("\\b" + username + "\\b")
-
 	if(dotted === true)
 	{
 		contclasses += " dotted"
@@ -3225,7 +3229,7 @@ function clean_string3(s)
 
 function clean_string4(s)
 {
-	return s.replace(/[^a-z0-9\-_\s]+/gi, "").replace(/\s+/g, " ").trim()
+	return s.replace(/[^a-z0-9\-\_\s\@\!\<\>\^\$\(\)\[\]\*\'\,\.\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
 }
 
 jQuery.fn.urlize = function() 
@@ -3270,6 +3274,7 @@ function register_commands()
 	commands.push('/me')
 	commands.push('/nick')
 	commands.push('/defnick')
+	commands.push('/nickedit')
 	commands.push('/clear')
 	commands.push('/claim')
 	commands.push('/reclaim')
@@ -3347,6 +3352,12 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/nick'))
 			{
 				show_nickname()
+			}
+
+			else if(oiEquals(lmsg, '/nickedit'))
+			{
+				nickedit()
+				return
 			}
 
 			else if(oiStartsWith(lmsg, '/defnick'))
@@ -3806,7 +3817,7 @@ function announce_topic_change(data)
 
 		if(data.topic_setter !== username)
 		{
-			var regex = new RegExp("\\b" + username + "\\b")
+			var regex = new RegExp("(^|\\s+)" + escape_special_characters(username) + "($|\\s+|\\!|\\?|\\,|\\.)")
 
 			if(data.topic.search(regex) !== -1)
 			{
@@ -3900,6 +3911,11 @@ function change_nickname(nck)
 	{
 		chat_announce('[', ']', "You don't have permission to do that", 'small')
 	}
+}
+
+function nickedit()
+{
+	change_input(`/nick ${username}`)
 }
 
 function change_default_nickname(nck)
@@ -4099,7 +4115,7 @@ function push_played(info, info2=false)
 		{
 			if($(this).data('q2') !== '')
 			{
-				window.open(q2, '_blank')
+				goto_url(q2)
 			}
 
 			else
@@ -4498,6 +4514,21 @@ function word_generator(pattern)
 	return res.join("").toLowerCase()
 }
 
+function goto_url(u, sametab=false)
+{
+	u = encodeURIComponent(u)
+
+	if(sametab)
+	{
+		window.location = u
+	}
+
+	else
+	{
+		window.open(u, '_blank')
+	}	
+}
+
 function goto_room(id, sametab=false)
 {
 	close_all_modals()
@@ -4506,22 +4537,22 @@ function goto_room(id, sametab=false)
 
 	if(id !== main_room)
 	{
-		var nroom = `/${id}`
+		var nroom = `${id}`
 	}
 
 	else
 	{
-		var nroom = '/'
+		var nroom = ''
 	}
 
 	if(sametab)
 	{
-		window.location = nroom
+		goto_url(nroom, true)
 	}
 
 	else
 	{
-		window.open(nroom, '_blank')
+		goto_url(nroom)
 	}
 }
 
@@ -5852,21 +5883,19 @@ function forbiddenuser()
 
 function search_on(site, q)
 {
-	var q = encodeURIComponent(q)
-
 	if(site === 'google')
 	{
-		window.open(`https://www.google.com/search?q=${q}`, '_blank')
+		goto_url(`https://www.google.com/search?q=${q}`)
 	}
 
 	else if(site === 'soundcloud')
 	{
-		window.open(`https://soundcloud.com/search?q=${q}`, '_blank')
+		goto_url(`https://soundcloud.com/search?q=${q}`)
 	}
 
 	else if(site === 'youtube')
 	{
-		window.open(`https://www.youtube.com/results?search_query=${q}`, '_blank')
+		goto_url(`https://www.youtube.com/results?search_query=${q}`)
 	}
 }
 

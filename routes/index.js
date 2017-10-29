@@ -35,6 +35,11 @@ c.vars.default_topic_claimed = config.default_topic_claimed
 c.vars.afk_timeout_duration = config.afk_timeout_duration
 c.vars.heartbeat_interval = config.heartbeat_interval
 
+function clean_string4(s)
+{
+	return s.replace(/[^a-z0-9\-\_\s\@\!\<\>\^\$\(\)\[\]\*\'\,\.\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
+}
+
 router.get('/', function(req, res, next) 
 {
 	c.vars.room = config.main_room
@@ -43,7 +48,7 @@ router.get('/', function(req, res, next)
 
 router.get('/:id', function(req, res, next) 
 {
-	c.vars.room = req.params.id.substr(0, config.max_roomname_length).replace(/[^a-z0-9\-_\s]+/gi, "").replace(/\s+/g, " ").trim()
+	c.vars.room = clean_string4(req.params.id.substr(0, config.max_roomname_length))
 	res.render('main', c)
 })
 

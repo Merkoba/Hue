@@ -515,12 +515,6 @@ module.exports = function(io)
 			return false
 		}
 
-		if(data.room.length !== clean_string4(data.room).length)
-		{
-			socket.disconnect()
-			return false
-		}
-
 		get_roominfo(data.room, {}, function(info)
 		{
 			var bans = info.bans.split(';')
@@ -1541,7 +1535,7 @@ module.exports = function(io)
 								sokk.bannd = true
 								sokk.info1 = socket.username
 
-								io.to(ids[j]).emit('update', {type:'redirect', location:'/the street'})
+								io.to(ids[j]).emit('update', {type:'redirect', location:'the street'})
 
 								setTimeout(do_disconnect, 2000, sokk)
 							}
@@ -1678,7 +1672,7 @@ module.exports = function(io)
 					socc.kickd = true
 					socc.info1 = socket.username
 					
-					io.to(ids[i]).emit('update', {type:'redirect', location:'/the street'})
+					io.to(ids[i]).emit('update', {type:'redirect', location:'the street'})
 
 					setTimeout(do_disconnect, 2000, socc)
 
@@ -2413,7 +2407,7 @@ module.exports = function(io)
 
 	function clean_string4(s)
 	{
-		return s.replace(/[^a-z0-9\-_\s]+/gi, "").replace(/\s+/g, " ").trim()
+		return s.replace(/[^a-z0-9\-\_\s\@\!\<\>\^\$\(\)\[\]\*\'\,\.\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
 	}
 
 	function get_random_int(min, max)
