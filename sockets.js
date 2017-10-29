@@ -1880,6 +1880,11 @@ module.exports = function(io)
 				{
 					if(data.src.indexOf("youtube.com") !== -1 || data.src.indexOf("youtu.be") !== -1)
 					{
+						if(!config.youtube_enabled)
+						{
+							return
+						}
+
 						var id = get_youtube_id(data.src)
 
 						if(id)
@@ -1914,6 +1919,11 @@ module.exports = function(io)
 
 				else
 				{
+					if(!config.youtube_enabled)
+					{
+						return
+					}
+
 					fetch(`https://www.googleapis.com/youtube/v3/search?q=${data.src}&fields=items(id,snippet(title))&part=snippet&maxResults=1&key=${sconfig.youtube_api_key}`).then(function(res)
 					{
 						return res.json()

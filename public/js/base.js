@@ -5664,6 +5664,27 @@ function change_radio_source(src)
 {
 	if(can_radio)
 	{
+		if(src.indexOf("http://") !== -1 || src.indexOf("https://") !== -1 || src === "default")
+		{
+			if(src.indexOf("youtube.com") !== -1 || src.indexOf("youtu.be") !== -1)
+			{
+				if(!youtube_enabled)
+				{
+					chat_announce('[', ']', "Invalid radio source", 'small')
+					return
+				}
+			}
+		}
+
+		else
+		{
+			if(!youtube_enabled)
+			{
+				chat_announce('[', ']', "Invalid radio source", 'small')
+				return
+			}
+		}
+
 		src = clean_string2(src)
 
 		if(src.length > 0 && src.length <= max_radio_source_length)

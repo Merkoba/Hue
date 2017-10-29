@@ -34,6 +34,7 @@ c.vars.default_topic = config.default_topic
 c.vars.default_topic_claimed = config.default_topic_claimed
 c.vars.afk_timeout_duration = config.afk_timeout_duration
 c.vars.heartbeat_interval = config.heartbeat_interval
+c.vars.youtube_enabled = config.youtube_enabled
 
 function clean_string4(s)
 {

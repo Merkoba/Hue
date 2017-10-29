@@ -33,6 +33,7 @@
 	"afk_timeout_duration": 120000,
 	"roomlist_cache": 120000,
 	"roomlist_max_inactivity": 172800000,
+	"youtube_enabled": true,
 	"heartbeat_interval": 10000,
 	"antispam_banTime": 30,
 	"antispam_kickThreshold": 20,
