@@ -691,11 +691,8 @@ module.exports = function(io)
 
 							else
 							{
-								exec(`rm -f ${images_root}/${fname}`, function(status, output) 
-								{
-
-								})
-
+								exec(`rm -f ${images_root}/${fname}`)
+								
 								socket.emit('update', {room:socket.room, type:'upload_error'})								
 							}
 						})
@@ -2407,7 +2404,7 @@ module.exports = function(io)
 
 	function clean_string4(s)
 	{
-		return s.replace(/[^a-z0-9\-\_\s\@\!\<\>\^\$\(\)\[\]\*\'\,\.\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
+		return s.replace(/[^a-z0-9\-_\s]+/gi, "").replace(/\s+/g, " ").trim()
 	}
 
 	function get_random_int(min, max)
