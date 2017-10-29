@@ -5601,7 +5601,7 @@ function reserved(data)
 {
 	if(data.updated)
 	{
-		chat_announce('[', ']', 'You already had this username reserved. The key was updated with a new one', 'small')
+		chat_announce('[', ']', 'You already had this nickname reserved. The key was updated with a new one', 'small')
 	}
 
 	else
