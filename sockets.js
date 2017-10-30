@@ -568,30 +568,39 @@ module.exports = function(io)
 			socket.room = info._id.toString()
 			socket.join(socket.room)
 
-			socket.priv = ''
-			socket.key = ''
-
-			if(info.keys !== '' && data.key !== '')
+			if(info.fresh)
 			{
-				var skeys = info.keys.split(';')
+				socket.priv = "admin"
+				var key = info.keys
+			}
 
-				if(skeys.indexOf(data.key) !== -1)
+			else
+			{
+				socket.priv = ''
+				var key = false
+
+				if(info.keys !== '' && data.key !== '')
 				{
-					socket.key = data.key
+					var skeys = info.keys.split(';')
 
-					if(data.key.startsWith('_key_'))
+					if(skeys.indexOf(data.key) !== -1)
 					{
-						socket.priv = 'admin'
-					}
+						key = data.key
 
-					else if(data.key.startsWith('_okey_'))
-					{
-						socket.priv = 'op'
-					}
+						if(data.key.startsWith('_key_'))
+						{
+							socket.priv = 'admin'
+						}
 
-					else if(data.key.startsWith('_vkey_'))
-					{
-						socket.priv = 'voice'
+						else if(data.key.startsWith('_okey_'))
+						{
+							socket.priv = 'op'
+						}
+
+						else if(data.key.startsWith('_vkey_'))
+						{
+							socket.priv = 'voice'
+						}
 					}
 				}
 			}
@@ -621,7 +630,8 @@ module.exports = function(io)
 				radio_title: info.radio_title,
 				radio_setter: info.radio_setter, 
 				radio_date: info.radio_date, 
-				claimed: info.claimed
+				claimed: info.claimed,
+				key: key
 			})
 
 			socket.broadcast.in(socket.room).emit('update',
@@ -1105,7 +1115,7 @@ module.exports = function(io)
 
 			create_roominfo(data.name, false, function(info)
 			{
-				socket.emit('update', {room:socket.room, type:'roomcreated', id:info._id})
+				socket.emit('update', {room:socket.room, type:'roomcreated', id:info._id.toString(), key:info.keys})
 			})
 		}
 	}
@@ -2159,8 +2169,8 @@ module.exports = function(io)
 			topic: '',
 			topic_setter: '',
 			topic_date: 0,
-			claimed: false,
-			keys: '',
+			claimed: true,
+			keys: get_random_key(),
 			upload_permission: 1,
 			chat_permission: 1,
 			radio_permission: 1,
@@ -2170,7 +2180,7 @@ module.exports = function(io)
 			radio_setter: '',
 			radio_date: 0,
 			bans: '',
-			modified: 0,
+			modified: Date.now(),
 			public: true
 		}
 
@@ -2181,6 +2191,7 @@ module.exports = function(io)
 
 		db.collection('rooms').insertOne(roominfo, function(err, result)
 		{
+			roominfo.fresh = true
 			callback(roominfo)
 		})
 

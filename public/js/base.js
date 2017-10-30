@@ -668,6 +668,12 @@ function start_socket()
 			set_topic_info(data)
 			update_title()
 			is_public = data.public
+			
+			if(data.key)
+			{
+				save_room_key(data.key)
+			}
+
 			check_priv(data)
 			change()
 
@@ -881,6 +887,7 @@ function start_socket()
 
 		else if(data.type === 'roomcreated')
 		{
+			save_room_key(data.key, data.id)
 			show_open_room_buttons(data.id)
 		}
 
@@ -4924,11 +4931,19 @@ function get_room_key()
 	return key
 }
 
-function save_room_key(key)
+function save_room_key(key, id=false)
 {
 	var room_keys = get_room_keys()
 
-	room_keys[room_id] = key
+	if(id)
+	{
+		room_keys[id] = key
+	}
+
+	else
+	{
+		room_keys[room_id] = key
+	}
 
 	save_room_keys(room_keys)
 }

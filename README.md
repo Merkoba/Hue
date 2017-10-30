@@ -23,4 +23,4 @@ To run it properly in production you will have to configure Apache or some other
 
 Using 'forever' is suggested to control the Node process.
 
-Note: To claim the main room you have to use the secretpass in config.secret.json i.e '/claim password'.
+Note: The main room is claimed automatically by whoever enters first. To claim it again, the secretpass in config.json is needed.
