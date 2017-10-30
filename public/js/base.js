@@ -345,6 +345,7 @@ function help3()
 	chat_announce('', '', '/strip x: Removes all privileges from a user.', 'small')
 	chat_announce('', '', '/removevoices: Removes all privileges from voiced users.', 'small')
 	chat_announce('', '', '/removeops: Removes all privileges from op\'d users.', 'small')
+	chat_announce('', '', '/removeboth: Removes all privileges from voiced and op\'d users.', 'small')
 	chat_announce('', '', '/private: Room doesn\'t appear in the public room list.', 'small')
 	chat_announce('', '', '/public: Room appears in the public room list.', 'small')
 	chat_announce('', '', '/topic x: Changes the topic of the room.', 'small')
@@ -826,9 +827,14 @@ function start_socket()
 			forbiddenuser()
 		}
 
-		else if(data.type === 'nothingtoremove')
+		else if(data.type === 'noopstoremove')
 		{
-			chat_announce('[', ']', "There was nothing to remove", 'small')
+			chat_announce('[', ']', "There were no voices to remove", 'small')
+		}
+
+		else if(data.type === 'novoicestoremove')
+		{
+			chat_announce('[', ']', "There were no ops to remove", 'small')
 		}
 
 		else if(data.type === 'isalready')
@@ -1999,6 +2005,33 @@ function start_main_menu_context_menu()
 								name: "I'm Sure", callback: function(key, opt)
 								{
 									remove_ops()
+								}					
+							}
+						}												
+					},
+					cp3: 
+					{
+						name: "Remove Both",
+						visible: function(key, opt)
+						{ 
+							if(priv !== 'admin')
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},						
+						items: 
+						{
+							rmopssure: 
+							{
+								name: "I'm Sure", callback: function(key, opt)
+								{
+									remove_ops()
+									remove_voices()
 								}					
 							}
 						}												
@@ -3371,6 +3404,7 @@ function register_commands()
 	commands.push('/strip')
 	commands.push('/removevoices')
 	commands.push('/removeops')
+	commands.push('/removeboth')
 	commands.push('/ban')
 	commands.push('/unbanall')
 	commands.push('/unbanlast')
@@ -3590,6 +3624,12 @@ function send_to_chat(msg)
 
 			else if(oiEquals(lmsg, '/removeops'))
 			{
+				remove_ops()
+			}
+
+			else if(oiEquals(lmsg, '/removeboth'))
+			{
+				remove_voices()
 				remove_ops()
 			}
 
@@ -4296,7 +4336,7 @@ function start_radio()
 	}
 
 	$('#playing_icon').css('display', 'inline-block')
-
+	$('#volume_area').css('display', 'inline-block')
 	$('#toggle_radio_text').html('Stop Radio')
 }
 
@@ -4310,6 +4350,7 @@ function stop_radio()
 	}
 
 	$('#playing_icon').css('display', 'none')
+	$('#volume_area').css('display', 'none')
 	$('#toggle_radio_text').html('Start Radio')
 }
 
@@ -4826,7 +4867,7 @@ function chat_search(filter=false)
 
 function clear_chat()
 {
-	$('#chat_area').html('<div class="clear">&nbsp<br><br><br><br></div>')
+	$('#chat_area').html('<div class="clear"><br><br><br><br></div>')
 
 	msgcount = 0
 

@@ -49,15 +49,16 @@ body, html
 	overflow: hidden;
 }
 
-.header_item
-{
-	padding-top: 0.25em;
-	display: inline-block;
-}
-
-#toggle_radio
+#header_items_inner
 {
 	cursor: pointer;
+	display: inline-block;
+	padding-top: 0.4em;	
+}
+
+.header_item
+{
+	display: inline-block;
 }
 
 #playing_icon
@@ -238,10 +239,9 @@ a.chat:link, a.chat:visited, a.chat:hover
 	user-select: none;
 }
 
-#usercount
+#volume_area
 {
-	padding-left: 0.3em;
-	cursor: pointer;
+	display: none;
 }
 
 .played_item
@@ -263,26 +263,6 @@ a.chat:link, a.chat:visited, a.chat:hover
 {
 	padding-top: 0.3em;
 	font-size: 1.2em;
-}
-
-#menu
-{
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;	
-}
-
-#settings
-{
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;	
 }
 
 .menu_item 
@@ -370,14 +350,13 @@ a.chat:link, a.chat:visited, a.chat:hover
 	opacity: 0;
 }
 
-#volume_area
+.pointer
 {
 	cursor: pointer;
 }
 
 #now_playing_area
 {
-	cursor: pointer;
 	display: none;
 }
 
@@ -388,11 +367,6 @@ a.chat:link, a.chat:visited, a.chat:hover
 	padding-right: 0.3em;
 	position: relative;
 	top: 0.07em;
-}
-
-#main_menu
-{
-	cursor: pointer;
 }
 
 .ps__thumb-y

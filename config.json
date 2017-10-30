@@ -10,6 +10,7 @@
 	"mongodb_path": "mongodb://localhost:27017/hue",
 	"topic_separator": " | ",
 	"title_separator": " - ",
+	"default_title": "Hue | Chat room with dynamic images and internet radio",
 	"default_topic": "Use /claim to get admin rights to this room",
 	"default_topic_claimed": "No topic set",
 	"default_modal_color": "white",

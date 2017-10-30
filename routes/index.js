@@ -30,6 +30,7 @@ c.vars.big_keyboard_scroll = config.big_keyboard_scroll
 c.vars.max_image_size = config.max_image_size
 c.vars.topic_separator = config.topic_separator
 c.vars.title_separator = config.title_separator
+c.vars.default_title = config.default_title
 c.vars.default_topic = config.default_topic
 c.vars.default_topic_claimed = config.default_topic_claimed
 c.vars.afk_timeout_duration = config.afk_timeout_duration
