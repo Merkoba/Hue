@@ -2369,7 +2369,7 @@ function activate_key_detection()
 					return
 				}
 
-				var arg = $('#create_room_input').val().substr(0, max_room_name_length).trim()
+				var arg = $('#create_room_input').val().trim()
 
 				if(arg.length > 0)
 				{
@@ -4640,7 +4640,7 @@ function create_room(name, sametab=false)
 {
 	close_all_modals()
 
-	name = clean_string4(name.substring(0, max_room_name_length))
+	name = clean_string2(name.substring(0, max_room_name_length))
 
 	socket_emit('create_room', {name:name})
 }
