@@ -2920,7 +2920,7 @@ function nice_date(date=Date.now())
 
 function escape_special_characters(s)
 {
-	return s.replace(/[^A-Za-z0-9_]/g, '\\$&');
+	return s.replace(/[^A-Za-z0-9]/g, '\\$&');
 }
 
 function update_chat(uname, msg)
