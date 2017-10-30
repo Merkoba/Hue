@@ -829,12 +829,12 @@ function start_socket()
 
 		else if(data.type === 'noopstoremove')
 		{
-			chat_announce('[', ']', "There were no voices to remove", 'small')
+			chat_announce('[', ']', "There were no ops to remove", 'small')
 		}
 
 		else if(data.type === 'novoicestoremove')
 		{
-			chat_announce('[', ']', "There were no ops to remove", 'small')
+			chat_announce('[', ']', "There were no voices to remove", 'small')
 		}
 
 		else if(data.type === 'isalready')
@@ -2030,8 +2030,7 @@ function start_main_menu_context_menu()
 							{
 								name: "I'm Sure", callback: function(key, opt)
 								{
-									remove_ops()
-									remove_voices()
+									remove_both()
 								}					
 							}
 						}												
@@ -3629,8 +3628,7 @@ function send_to_chat(msg)
 
 			else if(oiEquals(lmsg, '/removeboth'))
 			{
-				remove_voices()
-				remove_ops()
+				remove_both()
 			}
 
 			else if(oiStartsWith(lmsg, '/ban'))
@@ -6095,6 +6093,12 @@ function remove_ops()
 	}
 
 	socket_emit('remove_ops', {})
+}
+
+function remove_both()
+{
+	remove_voices()
+	remove_ops()
 }
 
 function announce_removedvoices(data)
