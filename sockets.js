@@ -551,7 +551,7 @@ module.exports = function(io)
 				socket.disconnect()
 				return false
 			}
-			
+
 			var bans = info.bans.split(';')
 
 			socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
@@ -1047,7 +1047,7 @@ module.exports = function(io)
 				return false
 			}
 
-			if(data.name.length !== clean_string4(data.name).length)
+			if(data.name.length !== clean_string2(data.name).length)
 			{
 				socket.disconnect()
 				return false
@@ -1091,8 +1091,22 @@ module.exports = function(io)
 	{
 		if(socket.username !== undefined)
 		{
-			var info = create_roominfo(data.name)
-			socket.emit('update', {room:socket.room, type:'roomcreated', id:info._id})
+			if(data.name.length === 0 || data.name.length > config.max_room_name_length)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			if(data.name.length !== clean_string2(data.name).length)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			create_roominfo(data.name, false, function(info)
+			{
+				socket.emit('update', {room:socket.room, type:'roomcreated', id:info._id})
+			})
 		}
 	}
 
@@ -2132,7 +2146,7 @@ module.exports = function(io)
 		return 0
 	}
 
-	function create_roominfo(name, id=false)
+	function create_roominfo(name, id, callback)
 	{
 		roominfo = 
 		{
@@ -2165,9 +2179,11 @@ module.exports = function(io)
 			roominfo._id = config.main_room_id
 		}
 
-		db.collection('rooms').insertOne(roominfo)
+		db.collection('rooms').insertOne(roominfo, function(err, result)
+		{
+			callback(roominfo)
+		})
 
-		return roominfo	
 	}
 
 	function get_roominfo(id, fields, callback)
@@ -2201,7 +2217,10 @@ module.exports = function(io)
 			{
 				if(id === config.main_room_id)
 				{
-					return create_roominfo(config.default_main_room_name, config.main_room_id)
+					create_roominfo(config.default_main_room_name, config.main_room_id, function(nri)
+					{
+						callback(nri)
+					})
 				}
 
 				return false

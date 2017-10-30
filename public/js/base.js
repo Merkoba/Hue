@@ -399,7 +399,7 @@ function change_room_name(arg)
 		chat_announce('[', ']', "You are not a room operator or admin", 'small')		
 	}
 
-	arg = clean_string4(arg.substring(0, max_room_name_length))
+	arg = clean_string2(arg.substring(0, max_room_name_length))
 
 	if(arg === room_name)
 	{
@@ -659,7 +659,6 @@ function start_socket()
 			started = false
 			connections += 1
 			room_name = data.room_name
-			set_title(data.room_name)
 			username = data.username
 			set_image_info(data)
 			claimed = data.claimed
@@ -667,6 +666,7 @@ function start_socket()
 			userlist = data.userlist
 			update_userlist()
 			set_topic_info(data)
+			update_title()
 			is_public = data.public
 			check_priv(data)
 			change()
@@ -2570,6 +2570,11 @@ function add_to_history(msg)
 
 function input_history_change(direction)
 {
+	if(input_history.length === 0)
+	{
+		return false
+	}
+
 	if(direction === "up")
 	{
 		input_history_index -= 1
@@ -3769,7 +3774,7 @@ function change_topic(dtopic)
 
 		if(dtopic.length > 0)
 		{
-			if(topic != dtopic)
+			if(topic !== dtopic)
 			{
 				socket_emit('topic_change', {topic:dtopic})
 			}
@@ -3950,6 +3955,8 @@ function announce_topic_change(data)
 		}
 
 		set_topic_info(data)
+
+		update_title()
 	}
 }
 
@@ -3968,6 +3975,8 @@ function announce_room_name_change(data)
 		}
 
 		room_name = data.name
+
+		update_title()
 	}
 }
 
@@ -4425,8 +4434,8 @@ function alert_title()
 		{
 			if(alert_mode === 0)
 			{
-				set_title(`(*) ${document.title}`)
 				alert_mode = 1
+				update_title()
 			}
 		}
 	}, 1000)
@@ -4438,17 +4447,11 @@ function alert_title2()
 	{
 		if(document.hidden)
 		{
-			if(alert_mode === 1)
-			{
-				set_title(document.title.substring(4))
-			}
-
 			if(alert_mode !== 2)
 			{
-				set_title(`(!) ${document.title}`)
+				alert_mode = 2
+				update_title()
 			}
-
-			alert_mode = 2
 		}
 	}, 1000)
 }
@@ -4457,8 +4460,8 @@ function remove_alert_title()
 {
 	if(alert_mode > 0)
 	{
-		set_title(document.title.substring(4))
 		alert_mode = 0
+		update_title()
 	}
 }
 
@@ -4467,22 +4470,28 @@ function set_title(s)
 	document.title = s.substring(0, max_title_length)
 }
 
-function update_topic_title()
+function update_title()
 {
+	var t = ""
+
+	if(alert_mode === 1)
+	{
+		t += "(*) "
+	}
+
+	else if(alert_mode === 2)
+	{
+		t += "(!) "
+	}
+
+	t += room_name
+
 	if(topic !== '')
 	{
-		var i = document.title.indexOf(title_separator)
-
-		if(i !== -1)
-		{
-			set_title(document.title.split(title_separator)[0] + title_separator + topic)
-		}
-
-		else
-		{
-			set_title(document.title + title_separator + topic)
-		}
+		t += ` ${title_separator} ${topic}`
 	}
+
+	set_title(t)
 }
 
 function activate_window_visibility_listener()
@@ -4831,8 +4840,6 @@ function set_topic_info(data)
 	topic = data.topic
 	topic_setter = data.topic_setter
 	topic_date = nice_date(data.topic_date)
-
-	update_topic_title()
 }
 
 function claim_room(arg="")
@@ -5484,6 +5491,8 @@ function announce_unclaim(data)
 	is_public = true
 
 	set_topic_info(false)
+
+	update_title()
 
 	check_permissions()
 
