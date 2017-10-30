@@ -4514,9 +4514,12 @@ function word_generator(pattern)
 	return res.join("").toLowerCase()
 }
 
-function goto_url(u, sametab=false)
+function goto_url(u, sametab=false, encode=true)
 {
-	u = encodeURIComponent(u)
+	if(encode)
+	{
+		u = encodeURIComponent(u)
+	}
 
 	if(sametab)
 	{
@@ -5904,19 +5907,21 @@ function forbiddenuser()
 
 function search_on(site, q)
 {
+	q = encodeURIComponent(q)
+
 	if(site === 'google')
 	{
-		goto_url(`https://www.google.com/search?q=${q}`)
+		goto_url(`https://www.google.com/search?q=${q}`, false, false)
 	}
 
 	else if(site === 'soundcloud')
 	{
-		goto_url(`https://soundcloud.com/search?q=${q}`)
+		goto_url(`https://soundcloud.com/search?q=${q}`, false, false)
 	}
 
 	else if(site === 'youtube')
 	{
-		goto_url(`https://www.youtube.com/results?search_query=${q}`)
+		goto_url(`https://www.youtube.com/results?search_query=${q}`, false, false)
 	}
 }
 
