@@ -305,6 +305,7 @@ function help2()
 	chat_announce('', '', 'Clicking on a nickname sends it to the input.', 'small')
 	chat_announce('', '', 'Tab completes nicknames and commands.', 'small')
 	chat_announce('', '', 'Shift + Enter toggles the radio.', 'small')
+	chat_announce('', '', '/nickedit: Puts the nickname in the input, ready to be edited.', 'small')	
 	chat_announce('', '', '/defnick x: Changes your default nickname for rooms you visit for the first time.', 'small')
 	chat_announce('', '', '/reserve: Reserves current nickname to be recoverable later. If called again it changes the key with a new one.', 'small')
 	chat_announce('', '', '/unreserve: Makes a nickname available again.', 'small')
@@ -328,15 +329,15 @@ function help3()
 	chat_announce('', '', '/claim: Requests administration of the room. If it hasn\'t been claimed, user gets the ownership.', 'small')
 	chat_announce('', '', '/reclaim: Reclaims the room if you\'re already an admin. Removes all given privileges to other users.', 'small')
 	chat_announce('', '', '/unclaim: Removes all ownership on the room and resets it to a default state.', 'small')
-	chat_announce('', '', '/upload_permission 1: Anyone can upload images.', 'small')
-	chat_announce('', '', '/upload_permission 2: Only voiced users and up can upload images.', 'small')
-	chat_announce('', '', '/upload_permission 3: Only ops and up can upload images.', 'small')
-	chat_announce('', '', '/chat_permission 1: Anyone can chat.', 'small')
-	chat_announce('', '', '/chat_permission 2: Only voiced users and up can chat.', 'small')
-	chat_announce('', '', '/chat_permission 3: Only ops and up can chat.', 'small')
-	chat_announce('', '', '/radio_permission 1: Anyone can change the radio.', 'small')
-	chat_announce('', '', '/radio_permission 2: Only voiced users and up can change the radio.', 'small')
-	chat_announce('', '', '/radio_permission 3: Only ops and up can change the radio.', 'small')
+	chat_announce('', '', '/uploadpermission 1: Anyone can upload images.', 'small')
+	chat_announce('', '', '/uploadpermission 2: Only voiced users and up can upload images.', 'small')
+	chat_announce('', '', '/uploadpermission 3: Only ops and up can upload images.', 'small')
+	chat_announce('', '', '/chatpermission 1: Anyone can chat.', 'small')
+	chat_announce('', '', '/chatpermission 2: Only voiced users and up can chat.', 'small')
+	chat_announce('', '', '/chatpermission 3: Only ops and up can chat.', 'small')
+	chat_announce('', '', '/radiopermission 1: Anyone can change the radio.', 'small')
+	chat_announce('', '', '/radiopermission 2: Only voiced users and up can change the radio.', 'small')
+	chat_announce('', '', '/radiopermission 3: Only ops and up can change the radio.', 'small')
 	chat_announce('', '', '/voice x: Gives voice to a user.', 'small')
 	chat_announce('', '', '/op x: Gives op to a user. Ops can do anything an admin can do except more high level commands.', 'small')
 	chat_announce('', '', '/admin x: Gives admin to a user. This gives a user the same rights as the original admin.', 'small')
@@ -349,7 +350,8 @@ function help3()
 	chat_announce('', '', '/topicadd x: Adds text to the current topic.', 'small')
 	chat_announce('', '', '/topictrim x: Removes added text to topic, where the optional x is the number of trims you want to do.', 'small')
 	chat_announce('', '', '/topicedit: Puts the topic in the input, ready to be edited.', 'small')
-	chat_announce('', '', '/nickedit: Puts the nickname in the input, ready to be edited.', 'small')	
+	chat_announce('', '', '/roomname x: Chages the name of the room.', 'small')
+	chat_announce('', '', '/roomnameedit x: Puts the room name in the input, ready to be edited.', 'small')
 	chat_announce('', '', '/ban x: Bans a user from the room.', 'small')
 	chat_announce('', '', '/unbanlast: Unbans the latest banned user.', 'small')
 	chat_announce('', '', '/unbanall: Removes all bans.', 'small')
@@ -406,6 +408,11 @@ function change_room_name(arg)
 	}
 
 	socket_emit("change_room_name", {name:arg})
+}
+
+function room_name_edit()
+{
+	change_input(`/roomname ${room_name}`)
 }
 
 function show_radio_source()
@@ -652,6 +659,7 @@ function start_socket()
 			started = false
 			connections += 1
 			room_name = data.room_name
+			set_title(data.room_name)
 			username = data.username
 			set_image_info(data)
 			claimed = data.claimed
@@ -3319,13 +3327,14 @@ function register_commands()
 	commands.push('/claim')
 	commands.push('/reclaim')
 	commands.push('/unclaim')
-	commands.push('/upload_permission')
-	commands.push('/chat_permission')
-	commands.push('/radio_permission')
+	commands.push('/uploadpermission')
+	commands.push('/chatpermission')
+	commands.push('/radiopermission')
 	commands.push('/users')
 	commands.push('/room')
 	commands.push('/rooms')
-	commands.push('/room_name')
+	commands.push('/roomname')
+	commands.push('/roomnameedit')
 	commands.push('/played')
 	commands.push('/search')
 	commands.push('/priv')
@@ -3436,32 +3445,32 @@ function send_to_chat(msg)
 				unclaim_room()
 			}
 
-			else if(oiStartsWith(lmsg, '/upload_permission'))
+			else if(oiStartsWith(lmsg, '/uploadpermission'))
 			{
 				change_upload_permission(arg)
 			}
 
-			else if(oiEquals(lmsg, '/upload_permission'))
+			else if(oiEquals(lmsg, '/uploadpermission'))
 			{
 				show_upload_permission()
 			}
 
-			else if(oiStartsWith(lmsg, '/chat_permission'))
+			else if(oiStartsWith(lmsg, '/chatpermission'))
 			{
 				change_chat_permission(arg)
 			}
 
-			else if(oiEquals(lmsg, '/chat_permission'))
+			else if(oiEquals(lmsg, '/chatpermission'))
 			{
 				show_chat_permission()
 			}
 
-			else if(oiStartsWith(lmsg, '/radio_permission'))
+			else if(oiStartsWith(lmsg, '/radiopermission'))
 			{
 				change_radio_permission(arg)
 			}
 
-			else if(oiEquals(lmsg, '/radio_permission'))
+			else if(oiEquals(lmsg, '/radiopermission'))
 			{
 				show_radio_permission()
 			}
@@ -3486,14 +3495,20 @@ function send_to_chat(msg)
 				request_roomlist(arg)
 			}
 
-			else if(oiEquals(lmsg, '/room_name'))
+			else if(oiEquals(lmsg, '/roomname'))
 			{
 				show_room()
 			}
 
-			else if(oiStartsWith(lmsg, '/room_name'))
+			else if(oiStartsWith(lmsg, '/roomname'))
 			{
 				change_room_name(arg)
+			}
+
+			else if(oiEquals(lmsg, '/roomnameedit'))
+			{
+				room_name_edit()
+				return
 			}
 
 			else if(oiEquals(lmsg, '/played'))
@@ -4410,7 +4425,7 @@ function alert_title()
 		{
 			if(alert_mode === 0)
 			{
-				document.title = `(*) ${document.title}`
+				set_title(`(*) ${document.title}`)
 				alert_mode = 1
 			}
 		}
@@ -4425,12 +4440,12 @@ function alert_title2()
 		{
 			if(alert_mode === 1)
 			{
-				document.title = document.title.substring(4)
+				set_title(document.title.substring(4))
 			}
 
 			if(alert_mode !== 2)
 			{
-				document.title = `(!) ${document.title}`
+				set_title(`(!) ${document.title}`)
 			}
 
 			alert_mode = 2
@@ -4442,25 +4457,30 @@ function remove_alert_title()
 {
 	if(alert_mode > 0)
 	{
-		document.title = document.title.substring(4)
+		set_title(document.title.substring(4))
 		alert_mode = 0
 	}
 }
 
+function set_title(s)
+{
+	document.title = s.substring(0, max_title_length)
+}
+
 function update_topic_title()
 {
-	if(topic != '')
+	if(topic !== '')
 	{
-		var i = document.title.indexOf(title_topic_separator)
+		var i = document.title.indexOf(title_separator)
 
 		if(i !== -1)
 		{
-			document.title = (document.title.split(title_topic_separator)[0] + title_topic_separator + topic.substr(0, max_title_topic_length))
+			set_title(document.title.split(title_separator)[0] + title_separator + topic)
 		}
 
 		else
 		{
-			document.title = document.title + title_topic_separator + topic.substr(0, max_title_topic_length)
+			set_title(document.title + title_separator + topic)
 		}
 	}
 }
