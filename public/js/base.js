@@ -45,6 +45,7 @@ var tabbed_word = ""
 var tabbed_start = 0
 var tabbed_end = 0
 var crm = false
+var crm2 = false
 var modal_open = false
 var started = false
 var connections = 0
@@ -2179,7 +2180,10 @@ function show_create_room()
 
 function show_open_room_buttons(id)
 {
-	msg_info.show(template_open_room_buttons({id:id}))
+	msg_info.show(template_open_room_buttons({id:id}), function()
+	{
+		crm2 = true
+	})
 }
 
 function show_settings()
@@ -2380,6 +2384,17 @@ function activate_key_detection()
 				return
 			}			
 
+			return
+		}
+
+		if(crm2)
+		{
+			if(e.key === "Enter")
+			{
+				$("#open_room_new_tab").trigger("click")
+			}
+
+			e.preventDefault()
 			return
 		}
 
@@ -6290,6 +6305,7 @@ function start_msg()
 			{
 				after_modal_close(instance)
 				crm = false
+				crm2 = false
 			}
 		})
 	)

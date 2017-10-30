@@ -20,7 +20,7 @@
 		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
 
-		<script src="/js/base.js?ver=549"></script>
+		<script src="/js/base.js?ver=550"></script>
 		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=109" />
 
 		<script src="https://www.youtube.com/iframe_api"></script>
@@ -163,9 +163,9 @@
 
 		<script id='template_open_room_buttons' type='text/x-handlebars-template'>
 
-				<div class='menu_item' onclick='goto_url("{{id}}");close_all_modals()'>Open&nbsp;Here</div>
+				<div id='open_room_here' class='menu_item' onclick='goto_url("{{id}}");close_all_modals()'>Open&nbsp;Here</div>
 
-				<div class='menu_item' onclick='goto_url("{{id}}", "tab");close_all_modals()'>Open&nbsp;In&nbsp;New&nbsp;Tab</div>
+				<div id='open_room_new_tab' class='menu_item' onclick='goto_url("{{id}}", "tab");close_all_modals()'>Open&nbsp;In&nbsp;New&nbsp;Tab</div>
 
 		</script>
 
