@@ -548,7 +548,7 @@ module.exports = function(io)
 		{
 			if(!info)
 			{
-				socket.disconnect()
+				socket.emit('update', {type: 'redirect', location:config.redirect_url})
 				return false
 			}
 
@@ -1644,7 +1644,7 @@ module.exports = function(io)
 								sokk.bannd = true
 								sokk.info1 = socket.username
 
-								io.to(ids[j]).emit('update', {type:'redirect', location:'the street'})
+								io.to(ids[j]).emit('update', {type:'redirect', location:config.redirect_url})
 
 								setTimeout(do_disconnect, 2000, sokk)
 							}
@@ -1781,7 +1781,7 @@ module.exports = function(io)
 					socc.kickd = true
 					socc.info1 = socket.username
 					
-					io.to(ids[i]).emit('update', {type:'redirect', location:'the street'})
+					io.to(ids[i]).emit('update', {type:'redirect', location:config.redirect_url})
 
 					setTimeout(do_disconnect, 2000, socc)
 
@@ -2213,7 +2213,8 @@ module.exports = function(io)
 
 			catch(err)
 			{
-				return false
+				callback(false)
+				return
 			}
 		}
 
@@ -2234,7 +2235,7 @@ module.exports = function(io)
 					})
 				}
 
-				return false
+				return
 			}
 
 			if(roominfo.version !== roominfo_version)

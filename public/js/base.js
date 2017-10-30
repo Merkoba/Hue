@@ -893,11 +893,11 @@ function start_socket()
 
 		else if(data.type === 'redirect')
 		{
-			goto_url(data.location)
+			goto_url(data.location, "same", false)
 		}
 
 		else if(data.type === 'disconnection')
-		{		
+		{
 			disconnected(data)
 		}
 
