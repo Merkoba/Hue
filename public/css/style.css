@@ -53,7 +53,7 @@ body, html
 {
 	cursor: pointer;
 	display: inline-block;
-	padding-top: 0.4em;	
+	padding-top: 0.42em;	
 }
 
 .header_item
@@ -440,6 +440,12 @@ a.chat:link, a.chat:visited, a.chat:hover
 {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
+}
+
+.hspacer1
+{
+	padding-left: 0.3em;
+	padding-right: 0.3em;
 }
 
 .setting_checkbox
