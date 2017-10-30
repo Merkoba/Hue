@@ -21,7 +21,7 @@
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
 
 		<script src="/js/base.js?ver=552"></script>
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=111" />
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=112" />
 
 		<script src="https://www.youtube.com/iframe_api"></script>
 
@@ -76,10 +76,10 @@
 						<span id='volume_area'>
 							<span class='header_item'>
 							<span class='hspacer1'></span>|<span class='hspacer1'></span>
-							<i class='header_item icon fa fa-minus' onclick='volume_decrease()'></i>
+							<i id='header_icon_minus' class='header_item icon fa fa-minus' onclick='volume_decrease()'></i>
 							<span onclick='volume_decrease()'>Volume:</span></span>
 							<span class='header_item' id='volume' onclick='volume_increase()'>100%</span>
-							<i class='header_item icon fa fa-plus' onclick='volume_increase()'></i>
+							<i id='header_icon_plus' class='header_item icon fa fa-plus' onclick='volume_increase()'></i>
 						</span>
 						<span class='hspacer1'></span>|<span class='hspacer1'></span> 
 						<span id="now_playing_area" onclick="show_played()">
