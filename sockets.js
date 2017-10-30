@@ -9,6 +9,9 @@ const config = require('./config.json')
 const sconfig = require('./config.secret.json')
 const images_root = path.join(__dirname, config.images_directory)
 
+const roominfo_version = 10
+const userinfo_version = 2
+
 var db
 var last_roomlist
 var roomlist_lastget = 0
@@ -175,11 +178,37 @@ module.exports = function(io)
 			}
 		})
 
+		socket.on('change_room_name', function(data) 
+		{
+			try
+			{
+				change_room_name(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
 		socket.on('roomlist', function(data) 
 		{
 			try
 			{
 				roomlist(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
+		socket.on('create_room', function(data) 
+		{
+			try
+			{
+				create_room(socket, data)
 			}
 
 			catch(err)
@@ -485,13 +514,13 @@ module.exports = function(io)
 
 	function join_room(socket, data)
 	{
-		if(data.username === undefined || data.room === undefined || data.key === undefined)
+		if(data.username === undefined || data.room_id === undefined || data.key === undefined)
 		{
 			socket.disconnect()
 			return false
 		}
 
-		if(data.username.length === 0 || data.room.length === 0)
+		if(data.username.length === 0 || data.room_id.length === 0)
 		{
 			socket.disconnect()
 			return false
@@ -503,20 +532,26 @@ module.exports = function(io)
 			return false
 		}
 
-		if(data.room.length > config.max_roomname_length)
+		if(data.room_id.length > config.max_room_id_length)
 		{
 			socket.disconnect()
 			return false
 		}
 
-		if(data.room.length !== clean_string4(data.room).length)
+		if(data.room_id.length !== clean_string4(data.room_id).length)
 		{
 			socket.disconnect()
 			return false
 		}
 
-		get_roominfo(data.room, {}, function(info)
+		get_roominfo(data.room_id, {}, function(info)
 		{
+			if(!info)
+			{
+				socket.disconnect()
+				return false
+			}
+			
 			var bans = info.bans.split(';')
 
 			socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
@@ -530,7 +565,7 @@ module.exports = function(io)
 				}
 			}
 
-			socket.room = data.room
+			socket.room = info._id.toString()
 			socket.join(socket.room)
 
 			socket.priv = ''
@@ -562,11 +597,11 @@ module.exports = function(io)
 			}
 
 			socket.username = make_username_unique(data.username, get_usernames(socket.room))
-			
+
 			socket.emit('update', 
 			{
 				type: 'username', 
-				room: socket.room, 
+				room_name: info.name,
 				username: socket.username, 
 				image_url: info.image_url, 
 				image_uploader: info.image_uploader, 
@@ -997,6 +1032,50 @@ module.exports = function(io)
 		}
 	}
 
+	function change_room_name(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			{
+				return false
+			}
+
+			if(data.name.length === 0 || data.name.length > config.max_room_name_length)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			if(data.name.length !== clean_string4(data.name).length)
+			{
+				socket.disconnect()
+				return false
+			}			
+
+			get_roominfo(socket.room, {name:true}, function(info)
+			{
+				if(info.name !== data.name)
+				{
+					info.name = data.name
+
+					io.sockets.in(socket.room).emit('update', 
+					{
+						type: 'room_name_changed',
+						name: info.name,
+						username: socket.username
+					})
+					
+					db.collection('rooms').update({_id:info._id}, {$set:
+					{
+						name: info.name,
+						modified: Date.now()
+					}})					
+				}
+			})		
+		}
+	}
+
 	function roomlist(socket, data)
 	{
 		if(socket.username !== undefined)
@@ -1005,7 +1084,16 @@ module.exports = function(io)
 			{
 				socket.emit('update', {room:socket.room, type:'roomlist', roomlist:rooms})
 			})
-		}		
+		}
+	}
+
+	function create_room(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			var info = create_roominfo(data.name)
+			socket.emit('update', {room:socket.room, type:'roomcreated', id:info._id})
+		}
 	}
 
 	function heartbeat(socket, data)
@@ -1013,14 +1101,14 @@ module.exports = function(io)
 		if(socket.username === undefined)
 		{
 			socket.emit('update', {room:socket.room, type:'connection_lost'})
-		}		
+		}
 	}
 
 	function claim_room(socket, data)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.room === config.main_room && data.pass !== sconfig.secretpass)
+			if(socket.room === config.main_room_id && data.pass !== sconfig.secretpass)
 			{
 				return false
 			}
@@ -1058,7 +1146,7 @@ module.exports = function(io)
 					db.collection('rooms').update({_id:info._id}, {$set:{keys:socket.key, claimed:true, modified:Date.now()}})
 				}
 			})
-		}		
+		}
 	}
 
 	function unclaim_room(socket, data)
@@ -2031,12 +2119,12 @@ module.exports = function(io)
 
 	function compare_roomlist(a, b)
 	{
-		if(a[2] < b[2])
+		if(a[3] < b[3])
 		{
 			return 1
 		}
 
-		if(a[2] > b[2])
+		if(a[3] > b[3])
 		{
 			return -1
 		}
@@ -2044,162 +2132,191 @@ module.exports = function(io)
 		return 0
 	}
 
-	function get_roominfo(room, fields, callback)
+	function create_roominfo(name, id=false)
 	{
-		var version = 10
+		roominfo = 
+		{
+			version: roominfo_version,
+			name: name,
+			image_url: '',
+			image_uploader: '',
+			image_size: 0,
+			image_date: 0,
+			topic: '',
+			topic_setter: '',
+			topic_date: 0,
+			claimed: false,
+			keys: '',
+			upload_permission: 1,
+			chat_permission: 1,
+			radio_permission: 1,
+			radio_type: 'radio',
+			radio_source: '',
+			radio_title: '',
+			radio_setter: '',
+			radio_date: 0,
+			bans: '',
+			modified: 0,
+			public: true
+		}
 
+		if(id)
+		{
+			roominfo._id = config.main_room_id
+		}
+
+		db.collection('rooms').insertOne(roominfo)
+
+		return roominfo	
+	}
+
+	function get_roominfo(id, fields, callback)
+	{
 		if(Object.keys(fields).length > 0)
 		{
 			fields.version = true
 		}
 
-		db.collection('rooms').findOne({name:room}, fields, function(err, roominfo)
+		if(typeof id === "string" && id !== config.main_room_id)
+		{
+			try
+			{
+				var q = {_id: new mongo.ObjectId(id)}
+			}
+
+			catch(err)
+			{
+				return false
+			}
+		}
+
+		else
+		{
+			var q = {_id: id}
+		}
+
+		db.collection("rooms").findOne(q, fields, function(err, roominfo)
 		{
 			if(!roominfo)
 			{
-				roominfo = 
+				if(id === config.main_room_id)
 				{
-					version: version,
-					name: room,
-					image_url: '',
-					image_uploader: '',
-					image_size: 0,
-					image_date: 0,
-					topic: '',
-					topic_setter: '',
-					topic_date: 0,
-					claimed: false,
-					keys: '',
-					upload_permission: 1,
-					chat_permission: 1,
-					radio_permission: 1,
-					radio_type: 'radio',
-					radio_source: '',
-					radio_title: '',
-					radio_setter: '',
-					radio_date: 0,
-					bans: '',
-					modified: 0,
-					public: true
+					return create_roominfo(config.default_main_room_name, config.main_room_id)
 				}
 
-				db.collection('rooms').insertOne(roominfo)
+				return false
 			}
 
-			else
+			if(roominfo.version !== roominfo_version)
 			{
-				if(roominfo.version !== version)
+				if(roominfo.name === undefined || typeof roominfo.name !== "string")
 				{
-					if(roominfo.name === undefined || typeof roominfo.name !== "string")
-					{
-						roominfo.name = room
-					}
-					
-					if(roominfo.image_url === undefined || typeof roominfo.image_url !== "string")
-					{
-						roominfo.image_url = ""
-					}
-					
-					if(roominfo.image_uploader === undefined || typeof roominfo.image_uploader !== "string")
-					{
-						roominfo.image_uploader = ""
-					}
-					
-					if(roominfo.image_size === undefined || typeof roominfo.image_size !== "number")
-					{
-						roominfo.image_size = 0
-					}
-					
-					if(roominfo.image_date === undefined || typeof roominfo.image_date !== "number")
-					{
-						roominfo.image_date = 0
-					}
-					
-					if(roominfo.topic === undefined || typeof roominfo.topic !== "string")
-					{
-						roominfo.topic = ""
-					}
-					
-					if(roominfo.topic_setter === undefined || typeof roominfo.topic_setter !== "string")
-					{
-						roominfo.topic_setter = ""
-					}
-					
-					if(roominfo.topic_date === undefined || typeof roominfo.topic_date !== "number")
-					{
-						roominfo.topic_date = 0
-					}
-					
-					if(roominfo.claimed === undefined || typeof roominfo.claimed !== "boolean")
-					{
-						roominfo.claimed = false
-					}
-					
-					if(roominfo.keys === undefined || typeof roominfo.keys !== "string")
-					{
-						roominfo.keys = ""
-					}
-					
-					if(roominfo.upload_permission === undefined || typeof roominfo.upload_permission !== "number")
-					{
-						roominfo.upload_permission = 1
-					}
-					
-					if(roominfo.chat_permission === undefined || typeof roominfo.chat_permission !== "number")
-					{
-						roominfo.chat_permission = 1
-					}
-					
-					if(roominfo.radio_permission === undefined || typeof roominfo.radio_permission !== "number")
-					{
-						roominfo.radio_permission = 1
-					}
-
-					if(roominfo.radio_type === undefined || typeof roominfo.radio_type !== "string")
-					{
-						roominfo.radio_type = "radio"
-					}					
-					
-					if(roominfo.radio_source === undefined || typeof roominfo.radio_source !== "string")
-					{
-						roominfo.radio_source = ""
-					}
-
-					if(roominfo.radio_title === undefined || typeof roominfo.radio_title !== "string")
-					{
-						roominfo.radio_title = ""
-					}
-					
-					if(roominfo.radio_setter === undefined || typeof roominfo.radio_setter !== "string")
-					{
-						roominfo.radio_setter = ""
-					}
-					
-					if(roominfo.radio_date === undefined || typeof roominfo.radio_date !== "number")
-					{
-						roominfo.radio_date = 0
-					}
-					
-					if(roominfo.bans === undefined || typeof roominfo.bans !== "string")
-					{
-						roominfo.bans = ""
-					}
-					
-					if(roominfo.modified === undefined || typeof roominfo.modified !== "number")
-					{
-						roominfo.modified = 0
-					}
-					
-					if(roominfo.public === undefined || typeof roominfo.public !== "boolean")
-					{
-						roominfo.public = true
-					}
-
-					roominfo.version = version
-
-					db.collection('rooms').update({_id:roominfo._id}, {$set:roominfo})
+					roominfo.name = room
 				}
 				
+				if(roominfo.image_url === undefined || typeof roominfo.image_url !== "string")
+				{
+					roominfo.image_url = ""
+				}
+				
+				if(roominfo.image_uploader === undefined || typeof roominfo.image_uploader !== "string")
+				{
+					roominfo.image_uploader = ""
+				}
+				
+				if(roominfo.image_size === undefined || typeof roominfo.image_size !== "number")
+				{
+					roominfo.image_size = 0
+				}
+				
+				if(roominfo.image_date === undefined || typeof roominfo.image_date !== "number")
+				{
+					roominfo.image_date = 0
+				}
+				
+				if(roominfo.topic === undefined || typeof roominfo.topic !== "string")
+				{
+					roominfo.topic = ""
+				}
+				
+				if(roominfo.topic_setter === undefined || typeof roominfo.topic_setter !== "string")
+				{
+					roominfo.topic_setter = ""
+				}
+				
+				if(roominfo.topic_date === undefined || typeof roominfo.topic_date !== "number")
+				{
+					roominfo.topic_date = 0
+				}
+				
+				if(roominfo.claimed === undefined || typeof roominfo.claimed !== "boolean")
+				{
+					roominfo.claimed = false
+				}
+				
+				if(roominfo.keys === undefined || typeof roominfo.keys !== "string")
+				{
+					roominfo.keys = ""
+				}
+				
+				if(roominfo.upload_permission === undefined || typeof roominfo.upload_permission !== "number")
+				{
+					roominfo.upload_permission = 1
+				}
+				
+				if(roominfo.chat_permission === undefined || typeof roominfo.chat_permission !== "number")
+				{
+					roominfo.chat_permission = 1
+				}
+				
+				if(roominfo.radio_permission === undefined || typeof roominfo.radio_permission !== "number")
+				{
+					roominfo.radio_permission = 1
+				}
+
+				if(roominfo.radio_type === undefined || typeof roominfo.radio_type !== "string")
+				{
+					roominfo.radio_type = "radio"
+				}					
+				
+				if(roominfo.radio_source === undefined || typeof roominfo.radio_source !== "string")
+				{
+					roominfo.radio_source = ""
+				}
+
+				if(roominfo.radio_title === undefined || typeof roominfo.radio_title !== "string")
+				{
+					roominfo.radio_title = ""
+				}
+				
+				if(roominfo.radio_setter === undefined || typeof roominfo.radio_setter !== "string")
+				{
+					roominfo.radio_setter = ""
+				}
+				
+				if(roominfo.radio_date === undefined || typeof roominfo.radio_date !== "number")
+				{
+					roominfo.radio_date = 0
+				}
+				
+				if(roominfo.bans === undefined || typeof roominfo.bans !== "string")
+				{
+					roominfo.bans = ""
+				}
+				
+				if(roominfo.modified === undefined || typeof roominfo.modified !== "number")
+				{
+					roominfo.modified = 0
+				}
+				
+				if(roominfo.public === undefined || typeof roominfo.public !== "boolean")
+				{
+					roominfo.public = true
+				}
+
+				roominfo.version = roominfo_version
+
+				db.collection('rooms').update({_id:roominfo._id}, {$set:roominfo})
 			}
 
 			callback(roominfo)
@@ -2208,8 +2325,6 @@ module.exports = function(io)
 
 	function get_userinfo(username, callback)
 	{
-		var version = 2
-
 		db.collection('users').findOne({username:username}, function(err, userinfo)
 		{
 			if(!userinfo)
@@ -2226,7 +2341,7 @@ module.exports = function(io)
 
 			else
 			{
-				if(userinfo.version !== version)
+				if(userinfo.version !== userinfo_version)
 				{
 					if(userinfo.username === undefined || typeof userinfo.username !== "string")
 					{
@@ -2238,7 +2353,7 @@ module.exports = function(io)
 						userinfo.key = ""
 					}
 
-					userinfo.version = version
+					userinfo.version = userinfo_version
 
 					db.collection('users').update({_id:userinfo._id}, {$set:userinfo})
 				}
@@ -2311,7 +2426,7 @@ module.exports = function(io)
 				{
 					var room = results[i]
 
-					rooms.push([room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room.name)])
+					rooms.push([room._id.toString(), room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room._id.toString())])
 				}
 
 				rooms.sort(compare_roomlist).splice(config.max_roomlist_items)
@@ -2329,11 +2444,11 @@ module.exports = function(io)
 		}
 	}
 
-	function get_usercount(room)
+	function get_usercount(id)
 	{
 		try 
 		{
-			return Object.keys(io.sockets.adapter.rooms[room].sockets).length
+			return Object.keys(io.sockets.adapter.rooms[id].sockets).length
 		}
 
 		catch(err) 
@@ -2412,7 +2527,7 @@ module.exports = function(io)
 
 	function clean_string4(s)
 	{
-		return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
+		return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\#\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
 	}
 
 	function get_random_int(min, max)

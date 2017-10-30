@@ -1,6 +1,7 @@
 {
 	"site_root": "https://hue.merkoba.com/",
-	"main_room": "Hue",
+	"main_room_id": "main",
+	"default_main_room_name": "Hue",
 	"images_directory": "public/img",
 	"public_images_location": "/img/",
 	"default_image_url": "/img/default.gif",
@@ -21,7 +22,8 @@
 	"max_input_length": 1250,
 	"max_topic_length": 1200,
 	"max_username_length": 30,
-	"max_roomname_length": 50,
+	"max_room_name_length": 50,
+	"max_roomid_length": 100,
 	"max_radio_source_length": 500,
 	"max_roomlist_items": 50,
 	"max_roomlist_topic_length": 140,

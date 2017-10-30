@@ -290,7 +290,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 
 #create_room_input
 {
-	width: 99%;
+	width: 14em;
 	font-size: 1.4em;
 	text-align: center;
 	border: 1px solid grey;

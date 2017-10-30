@@ -5,7 +5,7 @@ var ls_user_keys = "user_keys_v2"
 var ls_settings = "settings_v4"
 var settings
 var is_public
-var room
+var room_name
 var username
 var image_url = ''
 var image_uploader = ''
@@ -56,12 +56,12 @@ var commands = []
 var chat_scrollbar
 var template_menu
 var template_create_room
+var template_open_room_buttons
 var template_userlist
 var template_roomlist
 var template_played
 var storageui_interval
 var msg_menu
-var msg_create_room
 var msg_settings
 var msg_userlist
 var msg_roomlist
@@ -75,6 +75,7 @@ var roomlist_filter_string = ""
 var picking_nickname = true
 var yt_player
 var youtube_player
+var fetched_room_id
 
 function init()
 {
@@ -179,7 +180,7 @@ function get_nickname()
 {
 	var room_nicknames = get_room_nicknames()
 
-	var uname = room_nicknames[room]
+	var uname = room_nicknames[room_id]
 
 	if(uname === undefined)
 	{
@@ -240,7 +241,7 @@ function save_room_nickname(uname)
 {
 	var room_nicknames = get_room_nicknames()
 
-	room_nicknames[room] = uname
+	room_nicknames[room_id] = uname
 
 	save_room_nicknames(room_nicknames)
 }
@@ -256,7 +257,7 @@ function save_default_nickname(uname)
 
 function show_intro()
 {
-	chat_announce('', '', `Welcome to ${room}, ${username}`, 'big')
+	chat_announce('', '', `Welcome to ${room_name}, ${username}`, 'big')
 }
 
 function show_reconnected()
@@ -268,6 +269,7 @@ function compile_templates()
 {
 	template_menu = Handlebars.compile($('#template_menu').html())
 	template_create_room = Handlebars.compile($('#template_create_room').html())
+	template_open_room_buttons = Handlebars.compile($('#template_open_room_buttons').html())
 	template_settings = Handlebars.compile($('#template_settings').html())
 	template_userlist = Handlebars.compile($('#template_userlist').html())
 	template_roomlist = Handlebars.compile($('#template_roomlist').html())
@@ -284,7 +286,6 @@ function help()
 	chat_announce('', '', 'Change it by dropping an image file anywhere on the page.', 'small')
 	chat_announce('', '', '/nick x: Used to change your nickname in the current room.', 'small')
 	chat_announce('', '', '/radio x: Changes the radio source. This can be an internet radio url, a file url, a youtube url or a search term to find a video on youtube. If x is \'default\' it changes to the default radio.', 'small')
-	chat_announce('', '', '/goto x: Goes to a certain room.', 'small')
 	chat_announce('', '', '/me x: Makes a message in third person.', 'small')
 	chat_announce('', '', '/help: Shows this message.', 'small')
 	chat_announce('', '', '/help2: Shows additional features.', 'small')
@@ -314,6 +315,7 @@ function help2()
 	chat_announce('', '', '/played: Shows the list of songs played. Accepts a filter as an argument.', 'small')
 	chat_announce('', '', '/history: Shows the input history. Accepts a filter as an argument.', 'small')
 	chat_announce('', '', '/search: Opens the search window. Accepts a query as an argument.', 'small')
+	chat_announce('', '', '/create x: A shortcut for creating a room.', 'small')
 	chat_announce('', '', '/startradio: Starts the radio.', 'small')
 	chat_announce('', '', '/stopradio: Stops the radio.', 'small')
 	chat_announce('', '', '/volume x: Changes the volume of the radio.', 'small')
@@ -385,7 +387,25 @@ function show_public()
 
 function show_room()
 {
-	chat_announce('[', ']', `Room: ${room}`, 'small')
+	chat_announce('[', ']', `Room: ${room_name}`, 'small')
+}
+
+function change_room_name(arg)
+{
+	if(priv !== 'admin' && priv !== 'op')
+	{
+		chat_announce('[', ']', "You are not a room operator or admin", 'small')		
+	}
+
+	arg = clean_string4(arg.substring(0, max_room_name_length))
+
+	if(arg === room_name)
+	{
+		chat_announce('[', ']', "That's already the room name", 'small')
+		return
+	}
+
+	socket_emit("change_room_name", {name:arg})
 }
 
 function show_radio_source()
@@ -617,7 +637,7 @@ function start_socket()
 
 	socket.on('connect', function() 
 	{
-		socket_emit('join_room', {room:room, username:username, key:get_room_key()})
+		socket_emit('join_room', {room_id:room_id, username:username, key:get_room_key()})
 	})
 
 	socket.on('update', function(data) 
@@ -631,6 +651,7 @@ function start_socket()
 		{
 			started = false
 			connections += 1
+			room_name = data.room_name
 			username = data.username
 			set_image_info(data)
 			claimed = data.claimed
@@ -708,6 +729,11 @@ function start_socket()
 		else if(data.type === 'topic_change')
 		{
 			announce_topic_change(data)
+		}
+
+		else if(data.type === 'room_name_changed')
+		{
+			announce_room_name_change(data)
 		}
 
 		else if(data.type === 'upload_permission_change')
@@ -845,9 +871,14 @@ function start_socket()
 			chat_announce('[', ']', "The song couldn't be found", 'small')
 		}
 
+		else if(data.type === 'roomcreated')
+		{
+			show_open_room_buttons(data.id)
+		}
+
 		else if(data.type === 'redirect')
 		{
-			goto_url(data.location, true)
+			goto_url(data.location)
 		}
 
 		else if(data.type === 'disconnection')
@@ -2071,30 +2102,30 @@ function update_roomlist(roomlist)
 		var c = "<span class='roomlist_filler'></span><span class='roomlist_name'></span><span class='roomlist_count'></span><div class='roomlist_topic'></div>"
 		var h = $(`<div class='roomlist_item'>${c}</div>`)
 
-		h.find('.roomlist_name').eq(0).text(roomlist[i][0])
+		h.find('.roomlist_name').eq(0).text(roomlist[i][1])
 
-		if(roomlist[i][0] === room)
+		if(roomlist[i][0] === room_id)
 		{
-			var t = `(${roomlist[i][2]}) *`		
+			var t = `(${roomlist[i][3]}) *`		
 		}
 
 		else
 		{
-			var t = `(${roomlist[i][2]})`
+			var t = `(${roomlist[i][3]})`
 		}
 
 		h.find('.roomlist_count').eq(0).text(t)
 
 		h.find('.roomlist_filler').eq(0).text(t)
 
-		h.click({room:roomlist[i][0]}, function(event)
+		h.click({room_id:roomlist[i][0]}, function(event)
 		{
-			goto_room(event.data.room)
+			show_open_room_buttons(event.data.room_id)
 		})
 
-		if(roomlist[i][1].length > 0)
+		if(roomlist[i][2].length > 0)
 		{
-			var topic = roomlist[i][1]
+			var topic = roomlist[i][2]
 		}
 
 		else 
@@ -2124,7 +2155,16 @@ function show_menu()
 
 function show_create_room()
 {
-	msg_create_room.show()
+	msg_info.show(template_create_room(), function()
+	{
+		$("#create_room_input").val('').focus()
+		crm = true
+	})
+}
+
+function show_open_room_buttons(id)
+{
+	msg_info.show(template_open_room_buttons({id:id}))
 }
 
 function show_settings()
@@ -2314,11 +2354,11 @@ function activate_key_detection()
 					return
 				}
 
-				var arg = $('#create_room_input').val().substr(0, max_roomname_length).trim()
+				var arg = $('#create_room_input').val().substr(0, max_room_name_length).trim()
 
 				if(arg.length > 0)
 				{
-					goto_room(arg)
+					create_room(arg)
 					e.preventDefault()
 				}
 
@@ -3229,7 +3269,7 @@ function clean_string3(s)
 
 function clean_string4(s)
 {
-	return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
+	return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\#\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
 }
 
 jQuery.fn.urlize = function() 
@@ -3283,7 +3323,9 @@ function register_commands()
 	commands.push('/chat_permission')
 	commands.push('/radio_permission')
 	commands.push('/users')
+	commands.push('/room')
 	commands.push('/rooms')
+	commands.push('/room_name')
 	commands.push('/played')
 	commands.push('/search')
 	commands.push('/priv')
@@ -3310,8 +3352,7 @@ function register_commands()
 	commands.push('/topicadd')
 	commands.push('/topictrim')
 	commands.push('/topicedit')
-	commands.push('/room')
-	commands.push('/goto')
+	commands.push('/create')
 	commands.push('/help3')
 	commands.push('/help2')
 	commands.push('/help')
@@ -3443,6 +3484,16 @@ function send_to_chat(msg)
 			else if(oiStartsWith(lmsg, '/rooms'))
 			{
 				request_roomlist(arg)
+			}
+
+			else if(oiEquals(lmsg, '/room_name'))
+			{
+				show_room()
+			}
+
+			else if(oiStartsWith(lmsg, '/room_name'))
+			{
+				change_room_name(arg)
 			}
 
 			else if(oiEquals(lmsg, '/played'))
@@ -3616,9 +3667,9 @@ function send_to_chat(msg)
 				show_room()
 			}
 
-			else if(oiStartsWith(lmsg, '/goto'))
+			else if(oiStartsWith(lmsg, '/create'))
 			{
-				goto_room(arg)
+				create_room(arg)
 			}
 
 			else if(oiEquals(lmsg, '/help3'))
@@ -3887,6 +3938,24 @@ function announce_topic_change(data)
 	}
 }
 
+function announce_room_name_change(data)
+{
+	if(data.name !== room_name)
+	{		
+		if(data.username === username)
+		{
+			chat_announce('~', '~', `You changed the room name to: ${data.name}`, 'small')
+		}
+
+		else
+		{
+			chat_announce('~', '~', `${username} changed the room name to: ${data.name}`, 'small')
+		}
+
+		room_name = data.name
+	}
+}
+
 function change_nickname(nck)
 {
 	if(can_chat)
@@ -4115,7 +4184,7 @@ function push_played(info, info2=false)
 		{
 			if($(this).data('q2') !== '')
 			{
-				goto_url(q2)
+				goto_url(q2, "tab")
 			}
 
 			else
@@ -4434,20 +4503,19 @@ function activate_window_visibility_listener()
 
 function random_room()
 {
-	var id = word_generator('cvcvcv')
-	goto_room(id)
+	create_room(word_generator('cvcvcv'))
 }
 
 function copy_room_url()
 {
-	if(room === main_room)
+	if(room_id === main_room_id)
 	{
 		var r = ''
 	}
 
 	else
 	{
-		var r = room
+		var r = room_name
 	}
 
 	var url = site_root + r
@@ -4514,49 +4582,31 @@ function word_generator(pattern)
 	return res.join("").toLowerCase()
 }
 
-function goto_url(u, sametab=false, encode=true)
+function goto_url(u, mode="same", encode=true)
 {
 	if(encode)
 	{
 		u = encodeURIComponent(u)
 	}
 
-	if(sametab)
+	if(mode === "tab")
 	{
-		window.location = u
+		window.open(u, "_blank")
 	}
 
 	else
 	{
-		window.open(u, '_blank')
+		window.location = u
 	}	
 }
 
-function goto_room(id, sametab=false)
+function create_room(name, sametab=false)
 {
 	close_all_modals()
 
-	id = clean_string4(id.substring(0, max_roomname_length))
+	name = clean_string4(name.substring(0, max_room_name_length))
 
-	if(id !== main_room)
-	{
-		var nroom = `${id}`
-	}
-
-	else
-	{
-		var nroom = ''
-	}
-
-	if(sametab)
-	{
-		goto_url(nroom, true)
-	}
-
-	else
-	{
-		goto_url(nroom)
-	}
+	socket_emit('create_room', {name:name})
 }
 
 function refresh()
@@ -4769,7 +4819,7 @@ function claim_room(arg="")
 {
 	arg = arg.substring(0, 200)
 
-	if(room === main_room && arg === '')
+	if(room_id === main_room_id && arg === '')
 	{
 		chat_announce('[', ']', "This room can\'t be claimed", 'small')
 		return false
@@ -4837,7 +4887,7 @@ function save_room_keys(room_keys)
 
 function get_room_key()
 {
-	var key = get_room_keys()[room]
+	var key = get_room_keys()[room_id]
 
 	if(key === undefined)
 	{
@@ -4851,7 +4901,7 @@ function save_room_key(key)
 {
 	var room_keys = get_room_keys()
 
-	room_keys[room] = key
+	room_keys[room_id] = key
 
 	save_room_keys(room_keys)
 }
@@ -5911,17 +5961,17 @@ function search_on(site, q)
 
 	if(site === 'google')
 	{
-		goto_url(`https://www.google.com/search?q=${q}`, false, false)
+		goto_url(`https://www.google.com/search?q=${q}`, "tab", false)
 	}
 
 	else if(site === 'soundcloud')
 	{
-		goto_url(`https://soundcloud.com/search?q=${q}`, false, false)
+		goto_url(`https://soundcloud.com/search?q=${q}`, "tab", false)
 	}
 
 	else if(site === 'youtube')
 	{
-		goto_url(`https://www.youtube.com/results?search_query=${q}`, false, false)
+		goto_url(`https://www.youtube.com/results?search_query=${q}`, "tab", false)
 	}
 }
 
@@ -6072,34 +6122,6 @@ function start_msg()
 		})
 	)
 
-	msg_create_room = Msg
-	(
-		Object.assign({}, common,
-		{	
-			id: "create-room",
-			after_create: function(instance)
-			{
-				after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				crm = true
-				after_modal_show(instance)
-				after_modal_set_or_show(instance)
-				$("#create_room_input").focus()
-			},
-			after_set: function(instance)
-			{
-				after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				crm = false
-				after_modal_close(instance)
-			}
-		})
-	)
-
 	msg_settings = Msg
 	(
 		Object.assign({}, common,
@@ -6223,6 +6245,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
+				crm = false
 			}
 		})
 	)
@@ -6262,7 +6285,6 @@ function start_msg()
 	)
 
 	msg_menu.set(template_menu())
-	msg_create_room.set(template_create_room())
 	msg_settings.set(template_settings())
 	msg_userlist.set(template_userlist())
 	msg_roomlist.set(template_roomlist())

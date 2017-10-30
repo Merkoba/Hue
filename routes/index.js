@@ -7,7 +7,7 @@ var c = {}
 c.vars = {}
 
 c.vars.site_root = config.site_root
-c.vars.main_room = config.main_room
+c.vars.main_room_id = config.main_room_id
 c.vars.default_image_url = config.default_image_url
 c.vars.loading_image_url = config.loading_image_url
 c.vars.default_radio_source = config.default_radio_source
@@ -21,7 +21,7 @@ c.vars.history_crop_limit = config.history_crop_limit
 c.vars.max_input_length = config.max_input_length
 c.vars.max_topic_length = config.max_topic_length
 c.vars.max_username_length = config.max_username_length
-c.vars.max_roomname_length = config.max_roomname_length
+c.vars.max_room_name_length = config.max_room_name_length
 c.vars.max_radio_source_length = config.max_radio_source_length
 c.vars.max_title_topic_length = config.max_title_topic_length
 c.vars.max_no_meta_count = config.max_no_meta_count
@@ -38,18 +38,18 @@ c.vars.youtube_enabled = config.youtube_enabled
 
 function clean_string4(s)
 {
-	return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
+	return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\#\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
 }
 
 router.get('/', function(req, res, next) 
 {
-	c.vars.room = config.main_room
+	c.vars.room_id = config.main_room_id
 	res.render('main', c)
 })
 
 router.get('/:id', function(req, res, next) 
 {
-	c.vars.room = clean_string4(req.params.id.substr(0, config.max_roomname_length))
+	c.vars.room_id = req.params.id.substr(0, config.max_room_id_length)
 	res.render('main', c)
 })
 

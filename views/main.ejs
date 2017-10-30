@@ -2,7 +2,7 @@
 
 	<head>
 
-		<title><%= vars.room %></title> 
+		<title></title> 
 		<script src="/js/jquery.js"></script>
 		<script src="/js/handlebars.js"></script>
 		<script src="/js/colorlib.js?v=4"></script>
@@ -20,7 +20,7 @@
 		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
 
-		<script src="/js/base.js?ver=542"></script>
+		<script src="/js/base.js?ver=543"></script>
 		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=108" />
 
 		<script src="https://www.youtube.com/iframe_api"></script>
@@ -113,7 +113,7 @@
 			<div id='menu'>
 
 				<div class='menu_item' onclick="request_roomlist()">Public Rooms</div>
-				<div class='menu_item' onclick='show_create_room()'>Go To Room</div>
+				<div class='menu_item' onclick='show_create_room()'>Create Room</div>
 				<div class='menu_item' onclick='show_settings()'>Settings</div>
 
 				<div id='menu_smaller_container'>
@@ -159,6 +159,14 @@
 				<div class='menu_item' onclick='random_room()'>Random Name</div><br>
 
 			</div>
+		</script>
+
+		<script id='template_open_room_buttons' type='text/x-handlebars-template'>
+
+				<div class='menu_item' onclick='goto_url("{{id}}");close_all_modals()'>Open&nbsp;Here</div>
+
+				<div class='menu_item' onclick='goto_url("{{id}}", "tab");close_all_modals()'>Open&nbsp;In&nbsp;New&nbsp;Tab</div>
+
 		</script>
 
 		<script id='template_settings' type='text/x-handlebars-template'>
