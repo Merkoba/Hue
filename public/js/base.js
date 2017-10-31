@@ -348,8 +348,10 @@ function help3()
 	chat_announce('', '', '/private: Room doesn\'t appear in the public room list.', 'small')
 	chat_announce('', '', '/public: Room appears in the public room list.', 'small')
 	chat_announce('', '', '/topic x: Changes the topic of the room.', 'small')
-	chat_announce('', '', '/topicadd x: Adds text to the current topic.', 'small')
-	chat_announce('', '', '/topictrim x: Removes added text to topic, where the optional x is the number of trims you want to do.', 'small')
+	chat_announce('', '', '/topicadd x: Adds a section at the end of the topic.', 'small')
+	chat_announce('', '', '/topictrim x: Removes a section from the end of the topic, where the optional x is the number of trims you want to do.', 'small')
+	chat_announce('', '', '/topicstart x: Adds a section at the start of the topic.', 'small')
+	chat_announce('', '', '/topictrimstart x: Removes a section from the start of the topic, where the optional x is the number of trims you want to do.', 'small')
 	chat_announce('', '', '/topicedit: Puts the topic in the input, ready to be edited.', 'small')
 	chat_announce('', '', '/roomname x: Chages the name of the room.', 'small')
 	chat_announce('', '', '/roomnameedit x: Puts the room name in the input, ready to be edited.', 'small')
@@ -3509,6 +3511,8 @@ function register_commands()
 	commands.push('/topic')
 	commands.push('/topicadd')
 	commands.push('/topictrim')
+	commands.push('/topicstart')
+	commands.push('/topictrimstart')
 	commands.push('/topicedit')
 	commands.push('/create')
 	commands.push('/help3')
@@ -3820,6 +3824,21 @@ function send_to_chat(msg)
 				topictrim(1)
 			}
 
+			else if(oiStartsWith(lmsg, '/topicstart'))
+			{
+				topicstart(arg)
+			}
+
+			else if(oiStartsWith(lmsg, '/topictrimstart'))
+			{
+				topictrimstart(arg)
+			}
+
+			else if(oiEquals(lmsg, '/topictrimstart'))
+			{
+				topictrimstart(1)
+			}			
+
 			else if(oiEquals(lmsg, '/topicedit'))
 			{
 				topicedit()
@@ -3945,14 +3964,16 @@ function topicadd(arg)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
+		arg = clean_string2(arg)
+
 		if(arg.length === 0)
 		{
 			return
 		}
 
-		var ntopic = topic + topic_separator
+		var ntopic = topic + topic_separator + arg
 
-		if(ntopic.length < max_topic_length)
+		if(ntopic.length <= max_topic_length)
 		{
 			ntopic += arg
 		}
@@ -3962,8 +3983,6 @@ function topicadd(arg)
 			chat_announce('[', ']', "There is no more room to add that to the topic", 'small')
 			return
 		}
-
-		ntopic = ntopic.substring(0, max_topic_length)
 
 		change_topic(ntopic)
 	}
@@ -4024,6 +4043,89 @@ function topictrim(n)
 	}
 }
 
+function topicstart(arg)
+{
+	if(priv === 'admin' || priv === 'op')
+	{
+		arg = clean_string2(arg)
+
+		if(arg.length === 0)
+		{
+			return
+		}
+
+		var ntopic = arg + topic_separator + topic
+
+		if(ntopic.length <= max_topic_length)
+		{
+			ntopic += arg
+		}
+
+		else
+		{
+			chat_announce('[', ']', "There is no more room to add that to the topic", 'small')
+			return
+		}
+
+		change_topic(ntopic)
+	}
+
+	else
+	{
+		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+	}
+}
+
+function topictrimstart(n)
+{
+	if(priv === 'admin' || priv === 'op')
+	{
+		var split = topic.split(topic_separator)
+
+		if(split.length > 1)
+		{
+			if(!isNaN(n))
+			{
+				if(n < 1)
+				{
+					return false
+				}
+
+				if(n > split.length - 1)
+				{
+					n = split.length - 1
+				}
+			}
+
+			else
+			{
+				chat_announce('[', ']', "Argument must be a number", 'small')
+				return false
+			}
+
+			if(split.length > 1)
+			{
+				var t = split.slice(n, split.length).join(topic_separator)
+
+				if(t.length > 0)
+				{
+					change_topic(t)
+				}
+			}	
+		}
+
+		else
+		{
+			chat_announce('[', ']', "Nothing to trim", 'small')
+		}
+	}
+
+	else
+	{
+		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+	}
+}
+
 function topicedit()
 {
 	change_input(`/topic ${topic}`)
@@ -4047,60 +4149,12 @@ function announce_topic_change(data)
 			
 		if(data.topic_setter === username)
 		{
-			if(data.topic.startsWith(topic + topic_separator))
-			{
-				if(highlight)
-				{
-					chat_announce('~', '~', `You added to the topic: ${data.topic}`, 'small', highlight)
-				}
-
-				else
-				{
-					chat_announce('~', '~', `You added to the topic: ${topic + topic_separator}`, 'small', data.topic.substr(topic.length + 3))
-				}
-			}
-
-			else
-			{
-				if(topic.startsWith(data.topic))
-				{
-					chat_announce('~', '~', `You trimmed the topic to: ${data.topic}`, 'small', highlight)
-				}
-
-				else
-				{
-					chat_announce('~', '~', `You changed the topic to: ${data.topic}`, 'small', highlight)
-				}
-			}
+			chat_announce('~', '~', `You changed the topic to: ${data.topic}`, 'small', highlight)
 		}
 
 		else
 		{
-			if(data.topic.startsWith(topic + topic_separator))
-			{
-				if(highlight)
-				{
-					chat_announce('~', '~', `${data.topic_setter} added to the topic: ${data.topic}`, 'small', highlight)
-				}
-
-				else
-				{
-					chat_announce('~', '~', `${data.topic_setter} added to the topic: ${topic + topic_separator}`, 'small', data.topic.substr(topic.length + 3))
-				}
-			}
-
-			else
-			{
-				if(topic.startsWith(data.topic))
-				{
-					chat_announce('~', '~', `${data.topic_setter} trimmed the topic to: ${data.topic}`, 'small', highlight)
-				}
-
-				else
-				{
-					chat_announce('~', '~', `${data.topic_setter} changed the topic to: ${data.topic}`, 'small', highlight)
-				}
-			}
+			chat_announce('~', '~', `${data.topic_setter} changed the topic to: ${data.topic}`, 'small', highlight)
 		}
 
 		set_topic_info(data)
