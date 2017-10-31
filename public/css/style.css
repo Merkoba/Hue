@@ -10,13 +10,13 @@ body, html
 	width: 100%;
 	margin: 0px;
 	font-family: consolas;
-	background-color: white;
+	background-color: black;
 	overflow: hidden;
 }
 
 #main_container
 {
-	display: none;
+	visibility: hidden;
 }
 
 #background_image 

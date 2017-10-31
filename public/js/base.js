@@ -89,7 +89,6 @@ function init2()
 {
 	picking_nickname = false
 	start_loading_image()
-	make_main_container_visible()
 	compile_templates()
 	get_settings()
 	start_msg()
@@ -113,7 +112,7 @@ function init2()
 
 function make_main_container_visible()
 {
-	$("#main_container").css("display", "initial")	
+	$("#main_container").css("visibility", "initial")	
 }
 
 function start_loading_image()
@@ -689,6 +688,7 @@ function start_socket()
 				start_played_context_menu()
 				start_volume_context_menu()
 				start_metadata_loop()
+				make_main_container_visible()				
 				start_heartbeat()
 			}
 
