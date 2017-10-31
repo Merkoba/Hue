@@ -3973,12 +3973,7 @@ function topicadd(arg)
 
 		var ntopic = topic + topic_separator + arg
 
-		if(ntopic.length <= max_topic_length)
-		{
-			ntopic += arg
-		}
-
-		else
+		if(ntopic.length > max_topic_length)
 		{
 			chat_announce('[', ']', "There is no more room to add that to the topic", 'small')
 			return
@@ -4056,12 +4051,7 @@ function topicstart(arg)
 
 		var ntopic = arg + topic_separator + topic
 
-		if(ntopic.length <= max_topic_length)
-		{
-			ntopic += arg
-		}
-
-		else
+		if(ntopic.length > max_topic_length)
 		{
 			chat_announce('[', ']', "There is no more room to add that to the topic", 'small')
 			return
