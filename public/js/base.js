@@ -687,6 +687,7 @@ function start_socket()
 				start_nickname_context_menu()
 				start_main_menu_context_menu()
 				start_played_context_menu()
+				start_volume_context_menu()
 				start_metadata_loop()
 				start_heartbeat()
 			}
@@ -2123,6 +2124,97 @@ function start_played_context_menu()
 				name: "Search on YouTube", callback: function(key, opt)
 				{
 					search_on('youtube', this.data('q'))
+				}
+			}
+		}
+	})
+}
+
+function start_volume_context_menu()
+{
+	$.contextMenu(
+	{
+		selector: "#volume_area",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		className: 'volume_context',
+		items: 
+		{
+			vcm100: 
+			{
+				name: "100%", callback: function(key, opt)
+				{
+					set_volume(1)
+				}
+			},
+			vcm90: 
+			{
+				name: "90%", callback: function(key, opt)
+				{
+					set_volume(0.9)
+				}         
+			},
+			vcm80: 
+			{
+				name: "80%", callback: function(key, opt)
+				{
+					set_volume(0.8)
+				}
+			},
+			vcm70: 
+			{
+				name: "70%", callback: function(key, opt)
+				{
+					set_volume(0.7)
+				}
+			},
+			vcm60: 
+			{
+				name: "60%", callback: function(key, opt)
+				{
+					set_volume(0.6)
+				}
+			},
+			vcm50: 
+			{
+				name: "50%", callback: function(key, opt)
+				{
+					set_volume(0.5)
+				}
+			},
+			vcm40: 
+			{
+				name: "40%", callback: function(key, opt)
+				{
+					set_volume(0.4)
+				}
+			},
+			vcm30: 
+			{
+				name: "30%", callback: function(key, opt)
+				{
+					set_volume(0.3)
+				}
+			},
+			vcm20: 
+			{
+				name: "20%", callback: function(key, opt)
+				{
+					set_volume(0.2)
+				}
+			},
+			vcm10: 
+			{
+				name: "10%", callback: function(key, opt)
+				{
+					set_volume(0.1)
+				}
+			},
+			vcm0: 
+			{
+				name: "0%", callback: function(key, opt)
+				{
+					set_volume(0)
 				}
 			}
 		}
@@ -4149,7 +4241,7 @@ function get_radio_metadata()
 			{
 				return
 			}
-					
+
 			try
 			{
 				if(Array.isArray(data.icestats.source))

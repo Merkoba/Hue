@@ -615,3 +615,17 @@ a.chat:link, a.chat:visited, a.chat:hover
 {
 	display: none;
 }
+
+.volume_context
+{
+	min-width: 5em !important;
+	max-width: 10em !important;
+	text-align: center !important;
+}
+
+.volume_context .context-menu-item
+{
+	padding: 0 !important;
+	padding-top: 0.3em !important;
+	padding-bottom: 0.3em !important;
+}
