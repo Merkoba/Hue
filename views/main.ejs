@@ -20,8 +20,8 @@
 		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
 
-		<script src="/js/base.js?ver=556"></script>
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=119" />
+		<script src="/js/base.js?ver=557"></script>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=120" />
 
 		<script src="https://www.youtube.com/iframe_api"></script>
 
@@ -75,15 +75,19 @@
 						</span>
 						<span id='volume_area'>
 							<span class='hspacer1'></span>|<span class='hspacer1'></span>
-							<i id='header_icon_minus' class='header_item icon fa fa-minus' onclick='volume_decrease()'></i>
-							<span onclick='volume_decrease()'>Volume:</span>
-							<span class='header_item' id='volume' onclick='volume_increase()'>100%</span>
-							<i id='header_icon_plus' class='header_item icon fa fa-plus' onclick='volume_increase()'></i>
+							<span id='volume_controls'>
+								<i id='header_icon_minus' class='header_item icon fa fa-minus' onclick='volume_decrease()'></i>
+								<span onclick='volume_decrease()'>Volume:</span>
+								<span class='header_item' id='volume' onclick='volume_increase()'>100%</span>
+								<i id='header_icon_plus' class='header_item icon fa fa-plus' onclick='volume_increase()'></i>
+							</span>
 						</span>
 						<span id="now_playing_area" onclick="show_played()">
 							<span class='hspacer1'></span>|<span class='hspacer1'></span> 
-							<span class='header_item'>Now Playing:</span>
-							<span class='header_item' id='now_playing'></span>
+							<span id='now_playing_controls'>
+								<span class='header_item'>Now Playing:</span>
+								<span class='header_item' id='now_playing'></span>
+							</span>
 						</span>
 
 					</div>

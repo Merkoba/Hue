@@ -2100,7 +2100,7 @@ function start_played_context_menu()
 {
 	$.contextMenu(
 	{
-		selector: ".played_item, #now_playing_area",
+		selector: ".played_item, #now_playing_controls",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,		
 		items: 
@@ -2134,7 +2134,7 @@ function start_volume_context_menu()
 {
 	$.contextMenu(
 	{
-		selector: "#volume_area",
+		selector: "#volume_controls",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
 		className: 'volume_context',
@@ -4306,7 +4306,7 @@ function show_playing_file()
 		var p = s.pop()
 
 		$('#now_playing').text(p)
-		$('#now_playing_area').data('q', p)
+		$('#now_playing_controls').data('q', p)
 
 		show_nowplaying()
 	}
@@ -4339,7 +4339,7 @@ function push_played(info, info2=false)
 	}
 
 	$('#now_playing').text(s)
-	$('#now_playing_area').data('q', q)
+	$('#now_playing_controls').data('q', q)
 
 	if(played[played.length - 1] !== s)
 	{
