@@ -1028,17 +1028,7 @@ function userjoin(data)
 
 function update_usercount(usercount)
 {
-	if(usercount == 1)
-	{
-		var s = `${usercount} User Online`
-	}
-
-	else 
-	{
-		var s = `${usercount} Users Online`
-	}
-
-	$('#usercount').html(s)
+	$('#usercount').html(`${singular_or_plural(usercount, "Users")} Online`)
 }
 
 function addto_userlist(uname, prv)
@@ -2221,6 +2211,21 @@ function start_volume_context_menu()
 	})
 }
 
+function singular_or_plural(n, s)
+{
+	if(n === 1)
+	{
+		var ss = `${n} ${s.substring(0, s.length - 1)}`
+	}
+
+	else
+	{
+		var ss = `${n} ${s}`
+	}
+
+	return ss
+}
+
 function request_roomlist(filter="")
 {
 	roomlist_filter_string = filter
@@ -2238,29 +2243,17 @@ function update_roomlist(roomlist)
 
 	for(var i=0; i<roomlist.length; i++)
 	{
-		var c = "<span class='roomlist_filler'></span><span class='roomlist_name'></span><span class='roomlist_count'></span><div class='roomlist_topic'></div>"
+		var c = "<div class='roomlist_name'></div><div class='roomlist_topic'></div><div class='roomlist_here'></div><div class='roomlist_count'></div>"
 		var h = $(`<div class='roomlist_item'>${c}</div>`)
 
 		h.find('.roomlist_name').eq(0).text(roomlist[i][1])
 
+		h.find('.roomlist_count').eq(0).text(singular_or_plural(roomlist[i][3], "users"))
+
 		if(roomlist[i][0] === room_id)
 		{
-			var t = `(${roomlist[i][3]}) *`		
+			h.find('.roomlist_here').eq(0).text("You are here").css("display", "block")
 		}
-
-		else
-		{
-			var t = `(${roomlist[i][3]})`
-		}
-
-		h.find('.roomlist_count').eq(0).text(t)
-
-		h.find('.roomlist_filler').eq(0).text(t)
-
-		h.click({room_id:roomlist[i][0]}, function(event)
-		{
-			show_open_room_buttons(event.data.room_id)
-		})
 
 		if(roomlist[i][2].length > 0)
 		{
@@ -2273,6 +2266,11 @@ function update_roomlist(roomlist)
 		}
 
 		h.find('.roomlist_topic').eq(0).text(topic)
+
+		h.click({room_id:roomlist[i][0]}, function(event)
+		{
+			show_open_room_buttons(event.data.room_id)
+		})
 
 		s = s.add(h)
 	}

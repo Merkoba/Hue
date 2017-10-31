@@ -339,20 +339,15 @@ a.chat:link, a.chat:visited, a.chat:hover
 
 .roomlist_count
 {
-	font-size: 1.1em;
-	padding-left: 0.5em;
+	padding-top: 0.3em;
+	font-size: 1.2em;
 }
 
-.roomlist_filler
+.roomlist_here
 {
-	font-size: 1.1em;
-	padding-right: 0.5em;
-	opacity: 0;
-}
-
-.pointer
-{
-	cursor: pointer;
+	padding-top: 0.3em;
+	font-size: 1.2em;
+	display: none;
 }
 
 #now_playing_area
