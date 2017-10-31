@@ -989,7 +989,6 @@ function setup_radio(data)
 	else if(data.radio_type === "youtube")
 	{
 		get_metadata = false
-		$('#now_playing').text(radio_title)
 		push_played(false, {s1:radio_title, s2:`https://youtube.com/watch?v=${get_youtube_id(radio_source)}`})
 		$('#audio').attr('src', '')
 	}
@@ -4133,7 +4132,7 @@ function emit_pasted(url)
 
 function get_radio_metadata()
 {	
-	if(radio_type !== "radio")
+	if(!get_metadata || radio_type !== "radio")
 	{
 		return
 	}
@@ -4146,6 +4145,11 @@ function get_radio_metadata()
 		},
 		function(data)
 		{
+			if(!get_metadata || radio_type !== "radio")
+			{
+				return
+			}
+					
 			try
 			{
 				if(Array.isArray(data.icestats.source))
@@ -4333,7 +4337,7 @@ function start_radio()
 		if(youtube_player !== undefined)
 		{
 			youtube_player.loadVideoById({videoId:get_youtube_id(radio_source), startSeconds:get_youtube_time(radio_source)})
-			youtube_player.setVolume(get_volume()[1])
+			youtube_player.setVolume(get_nice_volume($("#audio")[0].volume))
 		}
 	}
 
@@ -4723,7 +4727,12 @@ function get_volume()
 		set_volume(volume, false)
 	}
 
-	return [volume, parseInt(Math.round((volume * 100)))]	
+	return [volume, get_nice_volume(volume)]	
+}
+
+function get_nice_volume(volume)
+{
+	return parseInt(Math.round((volume * 100)))	
 }
 
 var search_timer = (function() 

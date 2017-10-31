@@ -2006,7 +2006,7 @@ module.exports = function(io)
 								return res.json()
 							}).then(function(response)
 							{
-								if(response.items.length > 0)
+								if(response.items !== undefined && response.items.length > 0)
 								{
 									data.type = "youtube"
 									data.title = response.items[0].snippet.title
@@ -2041,7 +2041,7 @@ module.exports = function(io)
 						return res.json()
 					}).then(function(response)
 					{
-						if(response.items.length > 0)
+						if(response.items !== undefined && response.items.length > 0)
 						{
 							data.type = "youtube"
 							data.src = `https://youtube.com/watch?v=${response.items[0].id.videoId}`
