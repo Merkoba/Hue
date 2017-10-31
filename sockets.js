@@ -2143,17 +2143,30 @@ module.exports = function(io)
 
 	function compare_roomlist(a, b)
 	{
-		if(a[3] < b[3])
+		if(a[3] < b[3]) 
 		{
 			return 1
 		}
 
-		if(a[3] > b[3])
+		if(a[3] > b[3]) 
 		{
 			return -1
 		}
 
-		return 0
+		if(a[3] === b[3])
+		{
+			if (a[4] < b[4]) 
+			{
+				return 1
+			}
+
+			if(a[4] > b[4]) 
+			{
+				return -1
+			}
+
+			return 0
+		}
 	}
 
 	function create_roominfo(name, id, callback)
@@ -2457,7 +2470,7 @@ module.exports = function(io)
 				{
 					var room = results[i]
 
-					rooms.push([room._id.toString(), room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room._id.toString())])
+					rooms.push([room._id.toString(), room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room._id.toString()), room.modified])
 				}
 
 				rooms.sort(compare_roomlist).splice(config.max_roomlist_items)
