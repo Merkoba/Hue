@@ -4236,9 +4236,13 @@ function push_played(info, info2=false)
 		var q = info2.s1
 		var q2 = info2.s2
 	}
-	
-	$('#now_playing').text(s)
 
+	if($("#now_playing").text() === s)
+	{
+		return
+	}
+
+	$('#now_playing').text(s)
 	$('#now_playing_area').data('q', q)
 
 	if(played[played.length - 1] !== s)
