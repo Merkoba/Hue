@@ -208,8 +208,8 @@ function start_nickname_picker()
 		class: "black",
 		show_effect: "fade",
 		close_effect: "fade",
-		show_effect_duration: [800, 800],
-		close_effect_duration: [800, 800],
+		show_effect_duration: [2000, 800],
+		close_effect_duration: [800, 2000],
 		window_x: "none",
 		close_on_escape: false,
 		close_on_overlay_click: false
