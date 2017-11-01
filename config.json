@@ -12,7 +12,7 @@
 	"title_separator": " - ",
 	"default_title": "Hue | Chat room with dynamic images and internet radio",
 	"default_topic": "Use /claim to get admin rights to this room",
-	"default_topic_claimed": "No topic set",
+	"default_topic_claimed": "Check /help3 to learn about administration commands",
 	"default_modal_color": "white",
 	"redirect_url": "https://en.wikipedia.org/wiki/Special:Random",
 	"check_metadata_interval_duration": 12000,

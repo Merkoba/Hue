@@ -20,8 +20,8 @@
 		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
 
-		<script src="/js/base.js?ver=565"></script>
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=124" />
+		<script src="/js/base.js?ver=567"></script>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=125" />
 
 		<script src="https://www.youtube.com/iframe_api"></script>
 
@@ -161,19 +161,61 @@
 
 				<br>
 
-				<input id='create_room_input' placeholder="Name" type="text">
+				<div>All&nbsp;of&nbsp;these&nbsp;can&nbsp;be&nbsp;changed&nbsp;later</div>
+
+				<div class='spacer1'></div>
+
+				<input id='create_room_name' placeholder="Name" type="text">
 
 				<div class='unselectable'>
 
-					<div class='spacer3'></div>
-					<div class='spacer3'></div>
+					<div class='spacer1'></div>
 
-					Or
+					<div>Chat Permission</div>
 
 					<div class='spacer2'></div>
+
+					<select id='create_room_chat_permission'>
+						<option value='1' selected>Anyone</option>
+						<option value='2'>Voiced Users And Up</option>
+						<option value='3'>Ops And Up</option>
+					</select>
+
+					<div class='spacer1'></div>
+
+					<div>Upload Permission</div>
+
+					<div class='spacer2'></div>					
+
+					<select id='create_room_upload_permission'>
+						<option value='1' selected>Anyone</option>
+						<option value='2'>Voiced Users And Up</option>
+						<option value='3'>Ops And Up</option>
+					</select>
+
+					<div class='spacer1'></div>
+
+					<div>Radio Permission</div>
+
+					<div class='spacer2'></div>					
+
+					<select id='create_room_radio_permission'>
+						<option value='1' selected>Anyone</option>
+						<option value='2'>Voiced Users And Up</option>
+						<option value='3'>Ops And Up</option>
+					</select>
+
+					<div class='spacer1'></div>
+
+					<select id='create_room_public'>
+						<option value='true' selected>Public</option>
+						<option value='false'>Private</option>
+					</select>					
+
+					<div class='spacer3'></div>
 					<div class='spacer2'></div>
 
-					<div class='menu_item' onclick='random_room()'>Random Name</div>
+					<div id='create_room_done' class='menu_item'>Create</div>
 
 				</div>
 
@@ -220,13 +262,11 @@
 				<div class="setting_title">Modal Color</div>
 
 				<select id='setting_modal_color'>
-
 					<option value='white'>White</option>
 					<option value='red'>Red</option>
 					<option value='green'>Green</option>
 					<option value='blue'>Blue</option>
 					<option value='black'>Black</option>
-
 				</select>
 
 				<div class='spacer1'></div>

@@ -44,8 +44,7 @@ var tabbed_list = []
 var tabbed_word = ""
 var tabbed_start = 0
 var tabbed_end = 0
-var crm = false
-var crm2 = false
+var orb = false
 var modal_open = false
 var started = false
 var connections = 0
@@ -316,7 +315,7 @@ function help2()
 	chat_announce('', '', '/played: Shows the list of songs played. Accepts a filter as an argument.', 'small')
 	chat_announce('', '', '/history: Shows the input history. Accepts a filter as an argument.', 'small')
 	chat_announce('', '', '/search: Opens the search window. Accepts a query as an argument.', 'small')
-	chat_announce('', '', '/create x: A shortcut for creating a room.', 'small')
+	chat_announce('', '', '/create: A shortcut to open the room creator.', 'small')
 	chat_announce('', '', '/startradio: Starts the radio.', 'small')
 	chat_announce('', '', '/stopradio: Stops the radio.', 'small')
 	chat_announce('', '', '/volume x: Changes the volume of the radio.', 'small')
@@ -326,9 +325,12 @@ function help2()
 function help3()
 {
 	chat_announce('', '', 'Administration Features:', 'big')
-	chat_announce('', '', '/claim: Requests administration of the room. If it hasn\'t been claimed, user gets the ownership.', 'small')
-	chat_announce('', '', '/reclaim: Reclaims the room if you\'re already an admin. Removes all given privileges to other users.', 'small')
-	chat_announce('', '', '/unclaim: Removes all ownership on the room and resets it to a default state.', 'small')
+	chat_announce('', '', '/topic x: Changes the topic of the room.', 'small')
+	chat_announce('', '', '/topicadd x: Adds a section at the end of the topic.', 'small')
+	chat_announce('', '', '/topictrim x: Removes a section from the end of the topic, where the optional x is the number of trims you want to do.', 'small')
+	chat_announce('', '', '/topicaddstart x: Adds a section at the start of the topic.', 'small')
+	chat_announce('', '', '/topictrimstart x: Removes a section from the start of the topic, where the optional x is the number of trims you want to do.', 'small')
+	chat_announce('', '', '/topicedit: Puts the topic in the input, ready to be edited.', 'small')
 	chat_announce('', '', '/uploadpermission 1: Anyone can upload images.', 'small')
 	chat_announce('', '', '/uploadpermission 2: Only voiced users and up can upload images.', 'small')
 	chat_announce('', '', '/uploadpermission 3: Only ops and up can upload images.', 'small')
@@ -347,20 +349,18 @@ function help3()
 	chat_announce('', '', '/removeboth: Removes all privileges from voiced and op\'d users.', 'small')
 	chat_announce('', '', '/private: Room doesn\'t appear in the public room list.', 'small')
 	chat_announce('', '', '/public: Room appears in the public room list.', 'small')
-	chat_announce('', '', '/topic x: Changes the topic of the room.', 'small')
-	chat_announce('', '', '/topicadd x: Adds a section at the end of the topic.', 'small')
-	chat_announce('', '', '/topictrim x: Removes a section from the end of the topic, where the optional x is the number of trims you want to do.', 'small')
-	chat_announce('', '', '/topicaddstart x: Adds a section at the start of the topic.', 'small')
-	chat_announce('', '', '/topictrimstart x: Removes a section from the start of the topic, where the optional x is the number of trims you want to do.', 'small')
-	chat_announce('', '', '/topicedit: Puts the topic in the input, ready to be edited.', 'small')
 	chat_announce('', '', '/roomname x: Chages the name of the room.', 'small')
 	chat_announce('', '', '/roomnameedit x: Puts the room name in the input, ready to be edited.', 'small')
+	chat_announce('', '', '/kick x: Kicks a user out of the room.', 'small')
 	chat_announce('', '', '/ban x: Bans a user from the room.', 'small')
 	chat_announce('', '', '/unbanlast: Unbans the latest banned user.', 'small')
 	chat_announce('', '', '/unbanall: Removes all bans.', 'small')
 	chat_announce('', '', '/bannedcount: Displays the number of banned users in the room.', 'small')
-	chat_announce('', '', '/kick x: Kicks a user out of the room.', 'small')
-	chat_announce('', '', 'Note: Nicknames and main menu have a context menu with some operations.', 'small')
+	chat_announce('', '', '/claim: Requests administration of the room. If it hasn\'t been claimed, user gets the ownership.', 'small')
+	chat_announce('', '', '/reclaim: Reclaims the room if you\'re already an admin. Removes all given privileges to other users.', 'small')
+	chat_announce('', '', '/unclaim: Removes all ownership on the room and resets it to a default state.', 'small')
+	chat_announce('', '', 'Note: Nicknames and main menu have a context (right click) menu with some operations if you are an op or admin.', 'small')
+	chat_announce('', '', 'Note: Check /help for information about how users interact in the room through chat, image uploads, or radio.', 'small')
 	chat_announce('', '', 'Note: Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada url is gathered automatically. To work, the server needs to allow cross-domain requests and be https enabled if this system is being served through https.', 'small')
 }
 
@@ -2296,8 +2296,29 @@ function show_create_room()
 {
 	msg_info.show(template_create_room(), function()
 	{
-		$("#create_room_input").val('').focus()
-		crm = true
+		$("#create_room_name").focus()
+		
+		$('#create_room_done').click(function()
+		{
+			var name = clean_string2($('#create_room_name').val())
+
+			if(name === "")
+			{
+				return
+			}
+
+			var data = {}
+
+			data.name = clean_string2(name.substring(0, max_room_name_length))
+
+			data.public = JSON.parse($('#create_room_public option:selected').val())
+
+			data.chat_permission = parseInt($('#create_room_chat_permission option:selected').val())
+			data.upload_permission = parseInt($('#create_room_upload_permission option:selected').val())
+			data.radio_permission = parseInt($('#create_room_radio_permission option:selected').val())
+
+			create_room(data)
+		})
 	})
 }
 
@@ -2305,7 +2326,7 @@ function show_open_room_buttons(id)
 {
 	msg_info.show(template_open_room_buttons({id:id}), function()
 	{
-		crm2 = true
+		orb = true
 	})
 }
 
@@ -2483,34 +2504,7 @@ function activate_key_detection()
 			return
 		}
 
-		if(crm)
-		{
-			$('#create_room_input').focus()
-
-			if(e.key === "Enter")
-			{
-				if(e.shiftKey)
-				{
-					toggle_radio()
-					e.preventDefault()
-					return
-				}
-
-				var arg = $('#create_room_input').val().trim()
-
-				if(arg.length > 0)
-				{
-					create_room(arg)
-					e.preventDefault()
-				}
-
-				return
-			}			
-
-			return
-		}
-
-		if(crm2)
+		if(orb)
 		{
 			if(e.key === "Enter")
 			{
@@ -3855,9 +3849,9 @@ function send_to_chat(msg)
 				show_room()
 			}
 
-			else if(oiStartsWith(lmsg, '/create'))
+			else if(oiEquals(lmsg, '/create'))
 			{
-				create_room(arg)
+				show_create_room()
 			}
 
 			else if(oiEquals(lmsg, '/help3'))
@@ -4733,11 +4727,6 @@ function activate_window_visibility_listener()
 	}, false)
 }
 
-function random_room()
-{
-	create_room(word_generator('cvcvcv'))
-}
-
 function copy_room_url()
 {
 	if(room_id === main_room_id)
@@ -4832,13 +4821,10 @@ function goto_url(u, mode="same", encode=true)
 	}	
 }
 
-function create_room(name, sametab=false)
+function create_room(data)
 {
 	close_all_modals()
-
-	name = clean_string2(name.substring(0, max_room_name_length))
-
-	socket_emit('create_room', {name:name})
+	socket_emit('create_room', data)
 }
 
 function refresh()
@@ -6496,8 +6482,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				crm = false
-				crm2 = false
+				orb = false
 			}
 		})
 	)

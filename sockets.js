@@ -663,13 +663,13 @@ module.exports = function(io)
 			if(data.msg.length > config.max_input_length)
 			{
 				socket.disconnect()
-				return
+				return false
 			}
 
 			if(data.msg.length !== clean_string2(data.msg).length)
 			{
 				socket.disconnect()
-				return
+				return false
 			}
 
 			get_roominfo(socket.room, {chat_permission:true}, function(info)
@@ -985,6 +985,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1048,6 +1049,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1113,7 +1115,33 @@ module.exports = function(io)
 				return false
 			}
 
-			create_roominfo(data.name, false, function(info)
+			if(data.public !== true && data.public !== false)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			var amodes = [1, 2, 3]
+
+			if(amodes.indexOf(data.chat_permission) === -1)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			if(amodes.indexOf(data.upload_permission) === -1)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			if(amodes.indexOf(data.radio_permission) === -1)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			create_roominfo(data, function(info)
 			{
 				socket.emit('update', {room:socket.room, type:'roomcreated', id:info._id.toString(), key:info.keys})
 			})
@@ -1179,6 +1207,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1220,6 +1249,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1237,6 +1267,7 @@ module.exports = function(io)
 
 			if(socket.username === data.username)
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1287,6 +1318,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1343,6 +1375,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1399,6 +1432,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1416,6 +1450,7 @@ module.exports = function(io)
 					
 			if(socket.username === data.username)
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1466,6 +1501,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1511,6 +1547,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1556,6 +1593,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1665,6 +1703,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1693,6 +1732,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1721,6 +1761,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1747,6 +1788,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -1791,16 +1833,53 @@ module.exports = function(io)
 		}		
 	}
 
+	function change_chat_permission(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			{
+				socket.disconnect()
+				return false
+			}
+
+			var amodes = [1, 2, 3]
+
+			if(amodes.indexOf(data.chat_permission) === -1)
+			{
+				socket.disconnect()
+				return false
+			}			
+
+			get_roominfo(socket.room, {chat_permission:true}, function(info)
+			{
+				if(data.chat_permission === info.chat_permission)
+				{
+					return false
+				}				
+
+				io.sockets.in(socket.room).emit('update', {type:'chat_permission_change', username:socket.username, chat_permission:data.chat_permission})
+					
+				info.chat_permission = data.chat_permission
+					
+				db.collection('rooms').update({_id:info._id}, {$set:{chat_permission:info.chat_permission}})
+			})
+		}
+	}	
+
 	function change_upload_permission(socket, data)
 	{
 		if(socket.username !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
+				socket.disconnect()
 				return false
 			}
 
-			if(data.upload_permission === undefined)
+			var amodes = [1, 2, 3]
+
+			if(amodes.indexOf(data.upload_permission) === -1)
 			{
 				socket.disconnect()
 				return false
@@ -1808,67 +1887,16 @@ module.exports = function(io)
 
 			get_roominfo(socket.room, {upload_permission:true}, function(info)
 			{
-				var amodes = [1, 2, 3]
-
-				if(!isNaN(data.upload_permission))
+				if(data.upload_permission === info.upload_permission)
 				{
-					var m = parseInt(data.upload_permission)
-
-					if(m === info.upload_permission)
-					{
-						return false
-					}
-
-					if(amodes.indexOf(m) !== -1)
-					{
-						io.sockets.in(socket.room).emit('update', {type:'upload_permission_change', username:socket.username, upload_permission:m})
-						
-						info.upload_permission = m
-						
-						db.collection('rooms').update({_id:info._id}, {$set:{upload_permission:info.upload_permission}})
-					}
+					return false
 				}
-			})
-		}
-	}
 
-	function change_chat_permission(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
-			{
-				return false
-			}
-
-			if(data.chat_permission === undefined)
-			{
-				socket.disconnect()
-				return false
-			}
-
-			get_roominfo(socket.room, {chat_permission:true}, function(info)
-			{
-				var amodes = [1, 2, 3]
-
-				if(!isNaN(data.chat_permission))
-				{
-					var m = parseInt(data.chat_permission)
-
-					if(m === info.chat_permission)
-					{
-						return false
-					}				
-
-					if(amodes.indexOf(m) !== -1)
-					{
-						io.sockets.in(socket.room).emit('update', {type:'chat_permission_change', username:socket.username, chat_permission:m})
-						
-						info.chat_permission = m
-						
-						db.collection('rooms').update({_id:info._id}, {$set:{chat_permission:info.chat_permission}})
-					}
-				}
+				io.sockets.in(socket.room).emit('update', {type:'upload_permission_change', username:socket.username, upload_permission:data.upload_permission})
+					
+				info.upload_permission = data.upload_permission
+					
+				db.collection('rooms').update({_id:info._id}, {$set:{upload_permission:info.upload_permission}})
 			})
 		}
 	}
@@ -1882,34 +1910,26 @@ module.exports = function(io)
 				return false
 			}
 
-			if(data.radio_permission === undefined)
+			var amodes = [1, 2, 3]
+
+			if(amodes.indexOf(data.radio_permission) === -1)
 			{
 				socket.disconnect()
 				return false
-			}
+			}			
 
 			get_roominfo(socket.room, {radio_permission:true}, function(info)
 			{
-				var amodes = [1, 2, 3]
-
-				if(!isNaN(data.radio_permission))
+				if(data.radio_permission === info.radio_permission)
 				{
-					var m = parseInt(data.radio_permission)
+					return false
+				}				
 
-					if(m === info.radio_permission)
-					{
-						return false
-					}				
-
-					if(amodes.indexOf(m) !== -1)
-					{
-						io.sockets.in(socket.room).emit('update', {type:'radio_permission_change', username:socket.username, radio_permission:m})
-						
-						info.radio_permission = m
-						
-						db.collection('rooms').update({_id:info._id}, {$set:{radio_permission:info.radio_permission}})
-					}
-				}
+				io.sockets.in(socket.room).emit('update', {type:'radio_permission_change', username:socket.username, radio_permission:data.radio_permission})
+					
+				info.radio_permission = data.radio_permission
+					
+				db.collection('rooms').update({_id:info._id}, {$set:{radio_permission:info.radio_permission}})
 			})
 		}
 	}
@@ -1920,6 +1940,7 @@ module.exports = function(io)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
+				socket.disconnect()
 				return false
 			}
 
@@ -2169,12 +2190,11 @@ module.exports = function(io)
 		}
 	}
 
-	function create_roominfo(name, id, callback)
+	function create_roominfo(data, callback)
 	{
 		roominfo = 
 		{
 			version: roominfo_version,
-			name: name,
 			image_url: '',
 			image_uploader: '',
 			image_size: 0,
@@ -2184,9 +2204,6 @@ module.exports = function(io)
 			topic_date: 0,
 			claimed: true,
 			keys: get_random_key(),
-			upload_permission: 1,
-			chat_permission: 1,
-			radio_permission: 1,
 			radio_type: 'radio',
 			radio_source: '',
 			radio_title: '',
@@ -2194,13 +2211,18 @@ module.exports = function(io)
 			radio_date: 0,
 			bans: '',
 			modified: Date.now(),
-			public: true
 		}
 
-		if(id)
+		if(data.id !== undefined)
 		{
-			roominfo._id = config.main_room_id
+			roominfo._id = data.id
 		}
+
+		roominfo.name = data.name !== undefined ? data.name : "No Name"
+		roominfo.chat_permission = data.chat_permission !== undefined ? data.chat_permission : 1
+		roominfo.upload_permission = data.upload_permission !== undefined ? data.upload_permission : 1
+		roominfo.radio_permission = data.radio_permission !== undefined ? data.radio_permission : 1
+		roominfo.public = data.public !== undefined ? data.public : true
 
 		db.collection('rooms').insertOne(roominfo, function(err, result)
 		{
@@ -2242,7 +2264,7 @@ module.exports = function(io)
 			{
 				if(id === config.main_room_id)
 				{
-					create_roominfo(config.default_main_room_name, config.main_room_id, function(nri)
+					create_roominfo({name:config.default_main_room_name, id:config.main_room_id}, function(nri)
 					{
 						callback(nri)
 					})
@@ -2255,7 +2277,7 @@ module.exports = function(io)
 			{
 				if(roominfo.name === undefined || typeof roominfo.name !== "string")
 				{
-					roominfo.name = room
+					roominfo.name = "No Name"
 				}
 				
 				if(roominfo.image_url === undefined || typeof roominfo.image_url !== "string")

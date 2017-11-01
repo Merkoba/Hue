@@ -288,7 +288,7 @@ a.chat:link, a.chat:visited, a.chat:hover
 	padding-bottom: 0.8em;
 }
 
-#create_room_input
+#create_room_name
 {
 	width: 14em;
 	font-size: 1.4em;
