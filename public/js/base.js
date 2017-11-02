@@ -44,6 +44,7 @@ var tabbed_list = []
 var tabbed_word = ""
 var tabbed_start = 0
 var tabbed_end = 0
+var crm = false
 var orb = false
 var orb_timeout
 var modal_open = false
@@ -316,7 +317,7 @@ function help2()
 	chat_announce('', '', '/played: Shows the list of songs played. Accepts a filter as an argument.', 'small')
 	chat_announce('', '', '/history: Shows the input history. Accepts a filter as an argument.', 'small')
 	chat_announce('', '', '/search: Opens the search window. Accepts a query as an argument.', 'small')
-	chat_announce('', '', '/create: A shortcut to open the room creator.', 'small')
+	chat_announce('', '', '/create x: Quickly create a room with name x.', 'small')
 	chat_announce('', '', '/startradio: Starts the radio.', 'small')
 	chat_announce('', '', '/stopradio: Stops the radio.', 'small')
 	chat_announce('', '', '/volume x: Changes the volume of the radio.', 'small')
@@ -2301,26 +2302,48 @@ function show_create_room()
 		
 		$('#create_room_done').click(function()
 		{
-			var name = clean_string2($('#create_room_name').val())
-
-			if(name === "")
-			{
-				return
-			}
-
-			var data = {}
-
-			data.name = clean_string2(name.substring(0, max_room_name_length))
-
-			data.public = JSON.parse($('#create_room_public option:selected').val())
-
-			data.chat_permission = parseInt($('#create_room_chat_permission option:selected').val())
-			data.upload_permission = parseInt($('#create_room_upload_permission option:selected').val())
-			data.radio_permission = parseInt($('#create_room_radio_permission option:selected').val())
-
-			create_room(data)
+			create_room_submit()
 		})
+
+		crm = true
 	})
+}
+
+function create_room_submit(oname=false)
+{
+	var data = {}
+
+	if(oname)
+	{
+		data.name = clean_string2(oname.substring(0, max_room_name_length))
+
+		if(data.name === "")
+		{
+			return
+		}
+
+		data.chat_permission = 1
+		data.upload_permission = 1
+		data.radio_permission = 1
+		data.public = true
+	}
+
+	else
+	{
+		data.name = clean_string2($('#create_room_name').val().substring(0, max_room_name_length))
+
+		if(data.name === "")
+		{
+			return
+		}
+
+		data.chat_permission = parseInt($('#create_room_chat_permission option:selected').val())
+		data.upload_permission = parseInt($('#create_room_upload_permission option:selected').val())
+		data.radio_permission = parseInt($('#create_room_radio_permission option:selected').val())
+		data.public = JSON.parse($('#create_room_public option:selected').val())
+	}
+
+	create_room(data)	
 }
 
 function show_open_room(id)
@@ -2496,6 +2519,17 @@ function activate_key_detection()
 			if(e.key === "Enter")
 			{
 				check_nickname()
+				e.preventDefault()
+			}
+
+			return
+		}
+
+		if(crm)
+		{
+			if(e.key === "Enter")
+			{
+				create_room_submit()
 				e.preventDefault()
 			}
 
@@ -3847,9 +3881,9 @@ function send_to_chat(msg)
 				show_room()
 			}
 
-			else if(oiEquals(lmsg, '/create'))
+			else if(oiStartsWith(lmsg, '/create'))
 			{
-				show_create_room()
+				create_room_submit(arg)
 			}
 
 			else if(oiEquals(lmsg, '/help3'))
@@ -6485,7 +6519,7 @@ function start_msg()
 				orb = false			
 			}
 		})
-	)	
+	)
 
 	msg_storageui = Msg
 	(
@@ -6519,7 +6553,7 @@ function start_msg()
 				after_modal_close(instance)
 			}
 		})
-	)	
+	)
 
 	msg_info = Msg
 	(
@@ -6537,14 +6571,15 @@ function start_msg()
 			},
 			after_set: function(instance)
 			{
-				after_modal_set_or_show(instance)				
+				after_modal_set_or_show(instance)
 			},
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
+				crm = false
 			}
 		})
-	)	
+	)
 
 	msg_menu.set(template_menu())
 	msg_settings.set(template_settings())
