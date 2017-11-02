@@ -322,6 +322,7 @@ function help2()
 	chat_announce('', '', '/stopradio: Stops the radio.', 'small')
 	chat_announce('', '', '/volume x: Changes the volume of the radio.', 'small')
 	chat_announce('', '', `Note: Dates shown when hovering some items show the time when the item was placed on the screen, except when a nickname is displayed beside it meaning it's that date an action was performed.`, 'small')
+	chat_announce('', '', `Note: In the Open Here or Open In New Tab picker, 'here' can be triggered with Shift + Enter, 'new tab' with Enter.`, 'small')
 }
 
 function help3()
