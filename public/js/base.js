@@ -315,8 +315,8 @@ function help2()
 	chat_announce('', '', '/users: Shows the user list. Accepts a filter as an argument.', 'small')
 	chat_announce('', '', '/rooms: Shows the room list. Accepts a filter as an argument.', 'small')
 	chat_announce('', '', '/played: Shows the list of songs played. Accepts a filter as an argument.', 'small')
-	chat_announce('', '', '/history: Shows the input history. Accepts a filter as an argument.', 'small')
 	chat_announce('', '', '/search: Opens the search window. Accepts a query as an argument.', 'small')
+	chat_announce('', '', '/history: Shows the input history. Accepts a filter as an argument.', 'small')
 	chat_announce('', '', '/create x: Quickly create a room with name x.', 'small')
 	chat_announce('', '', '/startradio: Starts the radio.', 'small')
 	chat_announce('', '', '/stopradio: Stops the radio.', 'small')
@@ -2540,7 +2540,15 @@ function activate_key_detection()
 		{
 			if(e.key === "Enter")
 			{
-				$("#open_room_new_tab").trigger("click")
+				if(e.shiftKey)
+				{
+					$("#open_room_here").trigger("click")
+				}
+
+				else
+				{
+					$("#open_room_new_tab").trigger("click")
+				}
 			}
 
 			e.preventDefault()
