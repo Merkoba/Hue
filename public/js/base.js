@@ -45,6 +45,7 @@ var tabbed_word = ""
 var tabbed_start = 0
 var tabbed_end = 0
 var orb = false
+var orb_timeout
 var modal_open = false
 var started = false
 var connections = 0
@@ -56,10 +57,10 @@ var commands = []
 var chat_scrollbar
 var template_menu
 var template_create_room
-var template_open_room_buttons
 var template_userlist
 var template_roomlist
 var template_played
+var template_open_room
 var storageui_interval
 var msg_menu
 var msg_settings
@@ -268,7 +269,7 @@ function compile_templates()
 {
 	template_menu = Handlebars.compile($('#template_menu').html())
 	template_create_room = Handlebars.compile($('#template_create_room').html())
-	template_open_room_buttons = Handlebars.compile($('#template_open_room_buttons').html())
+	template_open_room = Handlebars.compile($('#template_open_room').html())
 	template_settings = Handlebars.compile($('#template_settings').html())
 	template_userlist = Handlebars.compile($('#template_userlist').html())
 	template_roomlist = Handlebars.compile($('#template_roomlist').html())
@@ -898,7 +899,7 @@ function start_socket()
 		else if(data.type === 'roomcreated')
 		{
 			save_room_key(data.key, data.id)
-			show_open_room_buttons(data.id)
+			show_open_room(data.id)
 		}
 
 		else if(data.type === 'redirect')
@@ -2271,7 +2272,7 @@ function update_roomlist(roomlist)
 
 		h.click({room_id:roomlist[i][0]}, function(event)
 		{
-			show_open_room_buttons(event.data.room_id)
+			show_open_room(event.data.room_id)
 		})
 
 		s = s.add(h)
@@ -2322,12 +2323,9 @@ function show_create_room()
 	})
 }
 
-function show_open_room_buttons(id)
+function show_open_room(id)
 {
-	msg_info.show(template_open_room_buttons({id:id}), function()
-	{
-		orb = true
-	})
+	msg_open_room.show(template_open_room({id:id}))
 }
 
 function show_settings()
@@ -6461,11 +6459,12 @@ function start_msg()
 		})
 	)
 
-	msg_info = Msg
+	msg_open_room = Msg
 	(
 		Object.assign({}, common,
 		{
-			id: "info",
+			id: "open_room",
+			temp_disable_close: true,
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -6474,18 +6473,24 @@ function start_msg()
 			{
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
+				
+				orb_timeout = setTimeout(function()
+				{
+					orb = true
+				}, 1000)
 			},
 			after_set: function(instance)
 			{
-				after_modal_set_or_show(instance)				
+				after_modal_set_or_show(instance)
 			},
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				orb = false
+				clearInterval(orb_timeout)
+				orb = false			
 			}
 		})
-	)
+	)	
 
 	msg_storageui = Msg
 	(
@@ -6519,7 +6524,32 @@ function start_msg()
 				after_modal_close(instance)
 			}
 		})
-	)
+	)	
+
+	msg_info = Msg
+	(
+		Object.assign({}, common,
+		{
+			id: "info",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)				
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+			}
+		})
+	)	
 
 	msg_menu.set(template_menu())
 	msg_settings.set(template_settings())
