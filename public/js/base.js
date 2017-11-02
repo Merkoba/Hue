@@ -110,7 +110,6 @@ function init2()
 	resize_events()
 	register_commands()
 	start_chat_scrollbar()
-	set_input_info()
 	start_socket()
 }
 
@@ -690,14 +689,15 @@ function start_socket()
 			if(connections === 1)
 			{
 				setup_opacity()
-				clear_chat()
-				check_firstime()
 				start_nickname_context_menu()
 				start_main_menu_context_menu()
 				start_played_context_menu()
 				start_volume_context_menu()
 				start_metadata_loop()
+				set_input_info()
 				make_main_container_visible()				
+				clear_chat()
+				check_firstime()
 				start_heartbeat()
 			}
 
