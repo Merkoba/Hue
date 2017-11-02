@@ -21,7 +21,7 @@
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
 
 		<script src="/js/base.js?ver=572"></script>
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=125" />
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=126" />
 
 		<script src="https://www.youtube.com/iframe_api"></script>
 
@@ -105,7 +105,7 @@
 				<div id='scroll_notice' onclick='goto_bottom(true)'>Go To Bottom</div>
 
 				<div id='input_container'>
-					<input id='input' type='text'>
+					<span id='input_info' onClick="show_nick_editor()"></span><input id='input' type='text'>
 				</div>
 
 			</div>
@@ -231,6 +231,14 @@
 					<div id='open_room_new_tab' class='menu_item' onclick='goto_url("{{id}}", "tab");msg_open_room.close()'>Open&nbsp;In&nbsp;New&nbsp;Tab</div>
 
 				</div>
+
+		</script>
+
+		<script id='template_nick_editor' type='text/x-handlebars-template'>
+
+				<div class="spacer3"></div>
+				<input value={{nick}} id="nick_editor_input">
+				<div class="spacer3"></div>
 
 		</script>
 

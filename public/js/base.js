@@ -2,7 +2,7 @@ var socket
 var ls_room_nicknames = "room_nicknames_v2"
 var ls_room_keys = "room_keys_v2"
 var ls_user_keys = "user_keys_v2"
-var ls_settings = "settings_v4"
+var ls_settings = "settings_v5"
 var settings
 var is_public
 var room_name
@@ -46,6 +46,7 @@ var tabbed_start = 0
 var tabbed_end = 0
 var crm = false
 var orb = false
+var ned = false
 var orb_timeout
 var modal_open = false
 var started = false
@@ -62,6 +63,7 @@ var template_userlist
 var template_roomlist
 var template_played
 var template_open_room
+var template_nick_editor
 var storageui_interval
 var msg_menu
 var msg_settings
@@ -108,6 +110,7 @@ function init2()
 	resize_events()
 	register_commands()
 	start_chat_scrollbar()
+	set_input_info()
 	start_socket()
 }
 
@@ -275,6 +278,7 @@ function compile_templates()
 	template_userlist = Handlebars.compile($('#template_userlist').html())
 	template_roomlist = Handlebars.compile($('#template_roomlist').html())
 	template_played = Handlebars.compile($('#template_played').html())
+	template_nick_editor = Handlebars.compile($('#template_nick_editor').html())
 }
 
 function help()
@@ -2556,6 +2560,18 @@ function activate_key_detection()
 			return
 		}
 
+		if(ned)
+		{
+			if(e.key === "Enter")
+			{
+				change_nickname($("#nick_editor_input").val())
+				msg_info.close()				
+				e.preventDefault()
+			}
+
+			return
+		}
+
 		if(modal_open)
 		{
 			return
@@ -3301,9 +3317,9 @@ function start_image_events()
 			$('#header').css('color', header_font_color)
 			$('#chat_area').css('background-color', background_color)
 			$('#chat_area').css('color', font_color)
-			$('#input_container').css('background-color', background_color)
-			$('#input').css('background-color', input_bg_color)
-			$('#input').css('color', input_font_color)
+			$('#input_container').css('background-color', input_bg_color)
+			$('#input_container').css('color', input_font_color)
+			// $('#input').css('background-color', input_bg_color)
 			$('#media').css('background-color', background_color)
 
 			if(settings.background_image)
@@ -4262,6 +4278,7 @@ function new_username(data)
 	if(username === data.old_username)
 	{
 		username = data.username
+		set_input_info()
 		chat_announce('~', '~', `You are now known as ${username}`, 'small')
 	}
 
@@ -6587,6 +6604,7 @@ function start_msg()
 			{
 				after_modal_close(instance)
 				crm = false
+				ned = false
 			}
 		})
 	)
@@ -6658,13 +6676,13 @@ function get_settings()
 	
 	if(settings.header_contrast === undefined)
 	{
-		settings.header_contrast = false
+		settings.header_contrast = true
 		changed = true
 	}
 
 	if(settings.input_contrast === undefined)
 	{
-		settings.input_contrast = false
+		settings.input_contrast = true
 		changed = true
 	}
 
@@ -6698,7 +6716,6 @@ function start_settings_state()
 	$("#setting_header_contrast").prop("checked", settings.header_contrast)
 	
 	$("#setting_input_contrast").prop("checked", settings.input_contrast)
-	input_contrast_fix()
 
 	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
 
@@ -6731,7 +6748,6 @@ function start_settings_listeners()
 	$("#setting_input_contrast").change(function()
 	{
 		settings.input_contrast = $("#setting_input_contrast").prop("checked")
-		input_contrast_fix()
 		change()
 		save_settings()
 	})
@@ -6749,21 +6765,6 @@ function start_settings_listeners()
 		change_modal_color(settings.modal_color)		
 		save_settings()
 	})
-}
-
-function input_contrast_fix()
-{
-	if(settings.input_contrast)
-	{
-		$("#input").css("padding-left", "10px")
-		$("#input").css("padding-right", "10px")
-	}
-
-	else
-	{
-		$("#input").css("padding-left", 0)
-		$("#input").css("padding-right", 0)
-	}
 }
 
 function setup_opacity()
@@ -7197,4 +7198,23 @@ function onYouTubeIframeAPIReady()
 function onYouTubePlayerReady()
 {
 	youtube_player = yt_player
+}
+
+function set_input_info()
+{
+	$("#input_info").text(`[${username}]`)
+}
+
+function show_nick_editor()
+{
+	msg_info.show(template_nick_editor({nick:username}), function()
+	{
+		$("#nick_editor_input").focus()
+
+		var len = $("#nick_editor_input").val().length
+		
+		$("#nick_editor_input")[0].setSelectionRange(len, len)
+
+		ned = true
+	})
 }
