@@ -6508,6 +6508,7 @@ function start_msg()
 		{
 			id: "open_room",
 			temp_disable_close: true,
+			temp_disable_close_delay: 1000,
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
