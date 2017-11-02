@@ -6473,11 +6473,7 @@ function start_msg()
 			{
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
-				
-				orb_timeout = setTimeout(function()
-				{
-					orb = true
-				}, 1000)
+				orb = true
 			},
 			after_set: function(instance)
 			{
@@ -6486,7 +6482,6 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				clearInterval(orb_timeout)
 				orb = false			
 			}
 		})
