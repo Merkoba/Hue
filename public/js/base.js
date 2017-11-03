@@ -4563,8 +4563,6 @@ function set_volume(nv, save=true)
 
 	$('#audio')[0].volume = nv
 
-	$('#pup')[0].volume = nv
-
 	if(youtube_player !== undefined)
 	{
 		youtube_player.setVolume(vt)
