@@ -2,7 +2,7 @@ var socket
 var ls_room_nicknames = "room_nicknames_v2"
 var ls_room_keys = "room_keys_v2"
 var ls_user_keys = "user_keys_v2"
-var ls_settings = "settings_v5"
+var ls_settings = "settings_v6"
 var settings
 var is_public
 var room_name
@@ -6732,7 +6732,7 @@ function start_settings_state()
 	
 	$("#setting_footer_contrast").prop("checked", settings.footer_contrast)
 	
-	$("#setting_nickname_on_footer").prop("checked", settings.footer_contrast)
+	$("#setting_nickname_on_footer").prop("checked", settings.nickname_on_footer)
 
 	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
 
