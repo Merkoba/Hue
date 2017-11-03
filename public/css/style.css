@@ -435,13 +435,9 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .dash
 {
+	color: inherit;
 	border: 1px dashed;
-}
-
-.sep1
-{
-	padding-top: 0.35rem;
-	padding-bottom: 0.35rem;
+	border-color: currentColor;
 }
 
 .setting_title
@@ -672,8 +668,8 @@ select
 
 .msg
 {
-	padding-top: 0.35rem;
-	padding-bottom: 0.35rem;
+	padding-top: 0.4rem;
+	padding-bottom: 0.4rem;
 }
 
 #chat_area > .msg:last-child
