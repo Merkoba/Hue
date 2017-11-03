@@ -509,19 +509,14 @@ a.generic:link, a.generic:visited, a.generic:hover
 	width: 20em !important;
 }
 
-#Msg-window-create-room
-{
-	width: 20em !important;
-}
-
 #Msg-window-settings
 {
-	width: 20em !important;
+	width: 22em !important;
 }
 
 #Msg-window-userlist
 {
-	width: 20em !important;
+	width: 22em !important;
 }
 
 #Msg-window-roomlist
