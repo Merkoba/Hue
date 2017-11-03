@@ -454,7 +454,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .setting_title
 {
-	font-size: 1.2em;
 	padding-bottom: 0.5em;
 }
 
@@ -684,6 +683,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 select
 {
-	font-size: 1em;
+	font-size: 0.9em;
 	text-align-last: center;	
 }
