@@ -81,7 +81,6 @@ body, html
 	display: flex;
 	flex-direction: row;
 	flex-grow: 1;
-	overflow: hidden;
 }
 
 #chat_main
