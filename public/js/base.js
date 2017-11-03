@@ -2278,7 +2278,10 @@ function create_room_submit(oname=false)
 
 function show_open_room(id)
 {
-	msg_open_room.show(template_open_room({id:id}))
+	msg_info.show(template_open_room({id:id}), function()
+	{
+		orb = true
+	})
 }
 
 function show_settings()
@@ -6436,35 +6439,6 @@ function start_msg()
 		})
 	)
 
-	msg_open_room = Msg
-	(
-		Object.assign({}, common,
-		{
-			id: "open_room",
-			temp_disable_close: true,
-			temp_disable_close_delay: 1000,
-			after_create: function(instance)
-			{
-				after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				after_modal_show(instance)
-				after_modal_set_or_show(instance)
-				orb = true
-			},
-			after_set: function(instance)
-			{
-				after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				after_modal_close(instance)
-				orb = false			
-			}
-		})
-	)
-
 	msg_storageui = Msg
 	(
 		Object.assign({}, common,
@@ -6521,6 +6495,7 @@ function start_msg()
 			{
 				after_modal_close(instance)
 				crm = false
+				orb = false
 				ned = false
 			}
 		})
