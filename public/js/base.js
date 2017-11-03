@@ -47,6 +47,7 @@ var tabbed_end = 0
 var crm = false
 var orb = false
 var ned = false
+var stu = false
 var orb_timeout
 var modal_open = false
 var started = false
@@ -2497,8 +2498,25 @@ function activate_key_detection()
 				e.preventDefault()
 			}
 
+			if(e.key === "Tab" && e.shiftKey)
+			{
+				show_status()
+				e.preventDefault()
+			}			
+
 			return
 		}
+
+		if(stu)
+		{
+			if(e.key === "Tab" && e.shiftKey)
+			{
+				show_user_info()
+				e.preventDefault()
+			}
+
+			return
+		}			
 
 		if(modal_open)
 		{
@@ -2608,7 +2626,6 @@ function activate_key_detection()
 			if(e.shiftKey)
 			{
 				show_status()
-				e.preventDefault()
 			}
 
 			if(input.value.length > 0)
@@ -2618,6 +2635,16 @@ function activate_key_detection()
 
 			e.preventDefault()
 			return
+		}		
+
+		else if(e.key === "Backspace")
+		{
+			if(e.shiftKey)
+			{
+				debug1()
+				e.preventDefault()
+				return
+			}
 		}
 
 		clear_tabbed()
@@ -3481,6 +3508,7 @@ function register_commands()
 	commands.push('/unreserve')
 	commands.push('/recover')
 	commands.push('/status')
+	commands.push('/userinfo')
 	commands.push('/topic')
 	commands.push('/topicadd')
 	commands.push('/topictrim')
@@ -3775,6 +3803,11 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/status'))
 			{
 				show_status()
+			}
+
+			else if(oiEquals(lmsg, '/userinfo'))
+			{
+				show_user_info()
 			}
 
 			else if(oiStartsWith(lmsg, '/topic'))
@@ -6482,6 +6515,10 @@ function start_msg()
 			{
 				after_modal_create(instance)
 			},
+			before_show: function(instance)
+			{
+				info_vars_to_false()
+			},
 			after_show: function(instance)
 			{
 				after_modal_show(instance)
@@ -6494,9 +6531,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				crm = false
-				orb = false
-				ned = false
+				info_vars_to_false()
 			}
 		})
 	)
@@ -6506,6 +6541,14 @@ function start_msg()
 	msg_userlist.set(template_userlist())
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
+}
+
+function info_vars_to_false()
+{
+	crm = false
+	orb = false
+	ned = false
+	stu = false		
 }
 
 function after_modal_create(instance)
@@ -7150,8 +7193,6 @@ function show_user_info()
 {
 	msg_info.show(template_user_info({nick:username, info:get_user_info_html()}), function()
 	{
-		$("#user_info_nickname_input").focus()
-
 		var len = $("#user_info_nickname_input").val().length
 		
 		$("#user_info_nickname_input")[0].setSelectionRange(len, len)
@@ -7199,7 +7240,10 @@ function get_user_info_html()
 
 function show_status()
 {
-	msg_info.show(template_status({info:get_status_html()}))
+	msg_info.show(template_status({info:get_status_html()}), function()
+	{
+		stu = true
+	})
 }
 
 function get_status_html()
@@ -7264,4 +7308,32 @@ function permission_tag(n)
 	{
 		return "Ops and up"
 	}
+}
+
+function debug1()
+{
+	var s = `
+	abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ 
+	$%& /() =?* '<> #|; ²³~ @ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC 
+	DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @ ©«» ¤¼× {} abc
+	def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /()
+	=?* '<> #|; ²³~ @ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI
+	JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`\´ ©«» ¤¼× {} abc def
+	ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?*
+	'<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL
+	MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl
+	mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ 
+	@\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV
+	WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv
+	wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼×
+	{} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /()
+	=?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL
+	MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno
+	pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ 
+	©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§
+	$%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF
+	GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {}abc def ghi
+	jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|;`
+
+	send_to_chat(s)
 }
