@@ -19,6 +19,7 @@ var colorlib = ColorLib()
 var played = []
 var input_history = []
 var input_history_index = 0
+var chat_history = []
 var usercount
 var userlist = []
 var nicknames = []
@@ -3144,13 +3145,13 @@ function update_chat(uname, msg)
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
-		var fmsg = $(`<div title='${date}' class='msg chat_message'>* <span class='chat_uname'></span> <span class='${contclasses}'></span> *</div><div class='sep1'>&nbsp</div>`)
+		var fmsg = $(`<div title='${date}' class='msg chat_message'>* <span class='chat_uname'></span> <span class='${contclasses}'></span> *</div>`)
 		$(fmsg).find('.chat_content').eq(0).text(msg.substr(4)).urlize()
 	}
 
 	else
 	{
-		var fmsg = $(`<div title='${date}' class='msg chat_message'><b><span class='chat_uname'></span>:</b>&nbsp<span class='${contclasses}'></span></div><div class='sep1'>&nbsp</div>`)
+		var fmsg = $(`<div title='${date}' class='msg chat_message'><b><span class='chat_uname'></span>:</b>&nbsp<span class='${contclasses}'></span></div>`)
 		$(fmsg).find('.chat_content').eq(0).text(msg).urlize()
 	}
 	
@@ -3160,6 +3161,8 @@ function update_chat(uname, msg)
 	})
 
 	add_to_chat(fmsg)
+
+	chat_history.push(fmsg)
 
 	add_msgcount()
 
@@ -3176,7 +3179,7 @@ function add_to_chat(msg)
 	{
 		if($('.dash').length === 0 && (started || connections > 1))
 		{
-			chat_area.append("<div class='dash_container'><hr class='dash'><div class='sep1'>&nbsp</div></div>")
+			chat_area.append("<div class='msg dash_container'><hr class='dash'></div>")
 		}
 	}
 
@@ -3190,9 +3193,10 @@ function add_msgcount()
 	msgcount += 1
 
 	if(msgcount > chat_crop_limit)
-	{	
+	{	chat_history.shift()
 		var els = $('#chat_area').children()	
-		els.slice(0, 2).remove()
+		$("#chat_area > .msg:first-child").remove()
+		$("#chat_area > .sep1:first-child").remove()
 		update_chat_scrollbar()
 	}
 }
@@ -3390,13 +3394,13 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 	
 	if(typeof dotted === "string")
 	{
-		var fmsg = $(`<div title='${t}' class='msg announcement announcement_${size}'>${brk1}<span class='${contclasses}'></span><span class='dotted'></span>${brk2}</div><div class='sep1'>&nbsp</div>`)
+		var fmsg = $(`<div title='${t}' class='msg announcement announcement_${size}'>${brk1}<span class='${contclasses}'></span><span class='dotted'></span>${brk2}</div>`)
 		$(fmsg).find('.dotted').eq(0).text(dotted).urlize()
 	}
 
 	else
 	{
-		var fmsg = $(`<div title='${t}' class='msg announcement announcement_${size}'>${brk1}<span class='${contclasses}'></span>${brk2}</div><div class='sep1'>&nbsp</div>`)
+		var fmsg = $(`<div title='${t}' class='msg announcement announcement_${size}'>${brk1}<span class='${contclasses}'></span>${brk2}</div>`)
 	}
 
 	$(fmsg).find('.announcement_content').eq(0).text(msg).urlize()
@@ -4939,9 +4943,9 @@ function chat_search(filter=false)
 
 	var c = $("<div></div>")
 
-	if($(".chat_message").length > 0)
+	if(chat_history.length > 0)
 	{
-		$($(".chat_message").get().reverse()).each(function()
+		$(chat_history.slice(0).reverse()).each(function()
 		{
 			var huname = $(this).find('.chat_uname').eq(0)
 			var hcontent = $(this).find('.chat_content').eq(0)

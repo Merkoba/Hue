@@ -120,12 +120,6 @@ body, html
 	max-width: 100%;
 }
 
-#chat_area > .sep1:last-child
-{
-	padding-top: 1em;
-	padding-bottom: 1em;
-}
-
 #media
 {
 	display: flex;
@@ -220,19 +214,15 @@ body, html
 
 .chat_message
 {
-	clear: both;
 	overflow-wrap: break-word;
 	word-break: break-word;
 	font-size: 1.2em;
-	display: inline-block;
 }
 
 .announcement
 {
-	clear: both;
 	overflow-wrap: break-word;
 	word-break: break-word;
-	display: inline-block;
 }
 
 .announcement_small
@@ -255,11 +245,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 {
 	text-decoration: underline;
 	color: inherit;
-}
-
-.clear
-{
-	clear: both;
 }
 
 #test_image
@@ -455,7 +440,8 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .sep1
 {
-	font-size: 0.6em;
+	padding-top: 0.35rem;
+	padding-bottom: 0.35rem;
 }
 
 .setting_title
@@ -682,4 +668,15 @@ select
 {
 	font-size: 0.9em;
 	text-align-last: center;	
+}
+
+.msg
+{
+	padding-top: 0.35rem;
+	padding-bottom: 0.35rem;
+}
+
+#chat_area > .msg:last-child
+{
+	padding-bottom: 2rem;
 }
