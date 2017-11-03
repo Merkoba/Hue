@@ -59,59 +59,70 @@
 
 			<div id='background_image'></div>
 
-			<div id='header' class='unselectable'>
+			<div id="main_flex">
 
-				<div id='header_items'>
+				<div id='header' class='unselectable'>
 
-					<div id='header_items_inner'>
+					<div id='header_items'>
 
-						<i id='main_menu' class='header_item icon fa fa-th-large' onclick='show_menu()'></i>
-						<span class='hspacer1'></span>|<span class='hspacer1'></span>
-						<span class='header_item' id='usercount' onclick='show_userlist()'></span>
-						<span class='hspacer1'></span>|<span class='hspacer1'></span>
-						<span class='header_item' id='toggle_radio' onclick='toggle_radio()'>
-							<i class='icon fa fa-volume-up' id='playing_icon'></i>
-							<span id='toggle_radio_text'>Start Radio</span>
-						</span>
-						<span id='volume_area'>
+						<div id='header_items_inner'>
+
+							<i id='main_menu' class='header_item icon fa fa-th-large' onclick='show_menu()'></i>
 							<span class='hspacer1'></span>|<span class='hspacer1'></span>
-							<span id='volume_controls'>
-								<i id='header_icon_minus' class='header_item icon fa fa-minus' onclick='volume_decrease()'></i>
-								<span onclick='volume_decrease()'>Volume:</span>
-								<span class='header_item' id='volume' onclick='volume_increase()'>100%</span>
-								<i id='header_icon_plus' class='header_item icon fa fa-plus' onclick='volume_increase()'></i>
+							<span class='header_item' id='usercount' onclick='show_userlist()'></span>
+							<span class='hspacer1'></span>|<span class='hspacer1'></span>
+							<span class='header_item' id='toggle_radio' onclick='toggle_radio()'>
+								<i class='icon fa fa-volume-up' id='playing_icon'></i>
+								<span id='toggle_radio_text'>Start Radio</span>
 							</span>
-						</span>
-						<span id="now_playing_area" onclick="show_played()">
-							<span class='hspacer1'></span>|<span class='hspacer1'></span> 
-							<span id='now_playing_controls'>
-								<span class='header_item'>Now Playing:</span>
-								<span class='header_item' id='now_playing'></span>
+							<span id='volume_area'>
+								<span class='hspacer1'></span>|<span class='hspacer1'></span>
+								<span id='volume_controls'>
+									<i id='header_icon_minus' class='header_item icon fa fa-minus' onclick='volume_decrease()'></i>
+									<span onclick='volume_decrease()'>Volume:</span>
+									<span class='header_item' id='volume' onclick='volume_increase()'>100%</span>
+									<i id='header_icon_plus' class='header_item icon fa fa-plus' onclick='volume_increase()'></i>
+								</span>
 							</span>
-						</span>
+							<span id="now_playing_area" onclick="show_played()">
+								<span class='hspacer1'></span>|<span class='hspacer1'></span> 
+								<span id='now_playing_controls'>
+									<span class='header_item'>Now Playing:</span>
+									<span class='header_item' id='now_playing'></span>
+								</span>
+							</span>
+
+						</div>
 
 					</div>
 
 				</div>
 
-			</div>
+				<div id="flex_columns">
 
-			<div id='chat_main'>
+					<div id='chat_main'>
 
-				<div id='chat_area_parent'>
-					<div id='chat_area'></div>
+						<div id='chat_area_parent'>
+							<div id='chat_area'></div>
+						</div>
+
+					</div>
+
+					<div id='media' class='unselectable' draggable='false'>
+						<img id='media_image' draggable='false'>
+					</div>
+
 				</div>
 
 				<div id='scroll_notice' onclick='goto_bottom(true)'>Go To Bottom</div>
 
-				<div id='input_container'>
-					<span id='input_info' onClick="show_nick_editor()"></span><input id='input' type='text'>
-				</div>
+				<div id='footer'>
+					<div id='footer_items'>
+						<span id='footer_nickname' onClick="show_nick_editor()"></span>
+						<input id='input' type='text'>
+					</div>
+				</div>				
 
-			</div>
-
-			<div id='media' class='unselectable' draggable='false'>
-				<img id='media_image' draggable='false'>
 			</div>
 
 			<img id='test_image'>
@@ -249,6 +260,11 @@
 
 				<div class="setting_title">Background Image</div>
 				<input class="setting_checkbox" id="setting_background_image" type="checkbox">
+				
+				<div class='spacer1'></div>
+
+				<div class="setting_title">Foreground Image</div>
+				<input class="setting_checkbox" id="setting_foreground_image" type="checkbox">
 
 				<div class='spacer1'></div>
 
@@ -262,8 +278,13 @@
 
 				<div class='spacer1'></div>
 
-				<div class="setting_title">Input Contrast</div>
-				<input class="setting_checkbox" id="setting_input_contrast" type="checkbox">
+				<div class="setting_title">Footer Contrast</div>
+				<input class="setting_checkbox" id="setting_footer_contrast" type="checkbox">
+				
+				<div class='spacer1'></div>
+
+				<div class="setting_title">Nickname On Footer</div>
+				<input class="setting_checkbox" id="setting_nickname_on_footer" type="checkbox">
 
 				<div class='spacer1'></div>
 

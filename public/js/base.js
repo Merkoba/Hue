@@ -689,12 +689,13 @@ function start_socket()
 			if(connections === 1)
 			{
 				setup_opacity()
+				setup_media_display()
 				start_nickname_context_menu()
 				start_main_menu_context_menu()
 				start_played_context_menu()
 				start_volume_context_menu()
 				start_metadata_loop()
-				set_input_info()
+				set_footer_nickname()
 				make_main_container_visible()				
 				clear_chat()
 				check_firstime()
@@ -3300,7 +3301,7 @@ function start_image_events()
 				var header_font_color = font_color
 			}
 
-			if(settings.input_contrast)
+			if(settings.footer_contrast)
 			{
 				var input_bg_color = background_color2
 				var input_font_color = font_color2
@@ -3317,8 +3318,8 @@ function start_image_events()
 			$('#header').css('color', header_font_color)
 			$('#chat_area').css('background-color', background_color)
 			$('#chat_area').css('color', font_color)
-			$('#input_container').css('background-color', input_bg_color)
-			$('#input_container').css('color', input_font_color)
+			$('#footer').css('background-color', input_bg_color)
+			$('#footer').css('color', input_font_color)
 			$('#media').css('background-color', background_color)
 
 			if(settings.background_image)
@@ -3372,7 +3373,7 @@ function set_opacity(o)
 	$("#header").css("opacity", o)
 	$("#media").css("opacity", o)
 	$("#chat_area").css("opacity", o)
-	$("#input_container").css("opacity", o)
+	$("#footer").css("opacity", o)
 	$("#input").css("opacity", o)
 }
 
@@ -4277,7 +4278,7 @@ function new_username(data)
 	if(username === data.old_username)
 	{
 		username = data.username
-		set_input_info()
+		set_footer_nickname()
 		chat_announce('~', '~', `You are now known as ${username}`, 'small')
 	}
 
@@ -6672,6 +6673,12 @@ function get_settings()
 		settings.background_image = true
 		changed = true
 	}
+
+	if(settings.foreground_image === undefined)
+	{
+		settings.foreground_image = true
+		changed = true
+	}
 	
 	if(settings.header_contrast === undefined)
 	{
@@ -6679,9 +6686,9 @@ function get_settings()
 		changed = true
 	}
 
-	if(settings.input_contrast === undefined)
+	if(settings.footer_contrast === undefined)
 	{
-		settings.input_contrast = true
+		settings.footer_contrast = true
 		changed = true
 	}
 
@@ -6711,10 +6718,12 @@ function save_settings()
 function start_settings_state()
 {
 	$("#setting_background_image").prop("checked", settings.background_image)
+	
+	$("#setting_foreground_image").prop("checked", settings.foreground_image)
 
 	$("#setting_header_contrast").prop("checked", settings.header_contrast)
 	
-	$("#setting_input_contrast").prop("checked", settings.input_contrast)
+	$("#setting_footer_contrast").prop("checked", settings.footer_contrast)
 
 	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
 
@@ -6737,6 +6746,13 @@ function start_settings_listeners()
 		save_settings()
 	})
 
+	$("#setting_foreground_image").change(function()
+	{
+		settings.foreground_image = $("#setting_foreground_image").prop("checked")
+		setup_media_display()
+		save_settings()
+	})
+
 	$("#setting_header_contrast").change(function()
 	{
 		settings.header_contrast = $("#setting_header_contrast").prop("checked")
@@ -6744,9 +6760,9 @@ function start_settings_listeners()
 		save_settings()
 	})
 
-	$("#setting_input_contrast").change(function()
+	$("#setting_footer_contrast").change(function()
 	{
-		settings.input_contrast = $("#setting_input_contrast").prop("checked")
+		settings.footer_contrast = $("#setting_footer_contrast").prop("checked")
 		change()
 		save_settings()
 	})
@@ -6776,6 +6792,21 @@ function setup_opacity()
 	else
 	{
 		set_opacity(1)
+	}
+}
+
+function setup_media_display()
+{
+	if(settings.foreground_image)
+	{
+		$("#media").css("display", "flex")
+		// $("#chat_main").css("width", "50%")
+	}
+
+	else
+	{
+		$("#media").css("display", "none")
+		// $("#chat_main").css("width", "100%")
 	}
 }
 
@@ -7199,9 +7230,9 @@ function onYouTubePlayerReady()
 	youtube_player = yt_player
 }
 
-function set_input_info()
+function set_footer_nickname()
 {
-	$("#input_info").text(`[${username}]`)
+	$("#footer_nickname").text(`[${username}]`)
 }
 
 function show_nick_editor()
