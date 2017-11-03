@@ -10,6 +10,7 @@ body, html
 	height: 100%;
 	margin: 0px;
 	padding: 0px;
+	font-size: 16px;
 	font-family: consolas;
 	background-color: black;
 	overflow: hidden;
@@ -53,7 +54,6 @@ body, html
 
 #header_items
 {
-	height: 2em;
 	width: 80%;
 	margin: 0 auto;
 	text-align: center;
@@ -65,7 +65,8 @@ body, html
 {
 	cursor: pointer;
 	display: inline-block;
-	padding-top: 0.34em;
+	padding-top: 0.33em;
+	padding-bottom: 0.33em;
 }
 
 .header_item
@@ -663,6 +664,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding: 0 !important;
 	padding-top: 0.3em !important;
 	padding-bottom: 0.3em !important;
+}
+
+.context-menu-item
+{
+	font-size: 19px !important;	
 }
 
 .info_item
