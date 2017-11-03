@@ -133,7 +133,7 @@ body, html
 #media_image
 {
 	max-height: calc(100% - 10em);
-	max-width: calc(100% - 10em);
+	max-width: calc(100% - 8em);
 	cursor: pointer;
 }
 
