@@ -63,7 +63,11 @@ var template_userlist
 var template_roomlist
 var template_played
 var template_open_room
-var template_nick_editor
+var template_user_info
+var template_status
+var template_help
+var template_help2
+var template_help3
 var storageui_interval
 var msg_menu
 var msg_settings
@@ -277,107 +281,26 @@ function compile_templates()
 	template_userlist = Handlebars.compile($('#template_userlist').html())
 	template_roomlist = Handlebars.compile($('#template_roomlist').html())
 	template_played = Handlebars.compile($('#template_played').html())
-	template_nick_editor = Handlebars.compile($('#template_nick_editor').html())
+	template_user_info = Handlebars.compile($('#template_user_info').html())
+	template_status = Handlebars.compile($('#template_status').html())
+	template_help = Handlebars.compile($('#template_help').html())
+	template_help2 = Handlebars.compile($('#template_help2').html())
+	template_help3 = Handlebars.compile($('#template_help3').html())
 }
 
 function help()
 {
-	chat_announce('', '', 'Basic Features:', 'big')
-	chat_announce('', '', 'Chat by typing anything.', 'small')
-	chat_announce('', '', 'All elements in the top and bottom bar are clickable.', 'small')
-	chat_announce('', '', 'Change the image on the right by pasting an image url.', 'small')
-	chat_announce('', '', 'Change it by clicking on the current image.', 'small')
-	chat_announce('', '', 'Change it by dropping an image file anywhere on the page.', 'small')
-	chat_announce('', '', '/nick x: Used to change your nickname in the current room. There is also an editor that appears when you click the nickname in the bottom left.', 'small')
-	chat_announce('', '', '/radio x: Changes the radio source. This can be an internet radio url, a file url, a youtube url or a search term to find a video on youtube. If x is \'default\' it changes to the default radio.', 'small')
-	chat_announce('', '', '/me x: Makes a message in third person.', 'small')
-	chat_announce('', '', '/help: Shows this message.', 'small')
-	chat_announce('', '', '/help2: Shows additional features.', 'small')
-	chat_announce('', '', '/help3: Shows administration features.', 'small')
-	chat_announce('', '', 'Note: Chat, upload, and radio features have permission settings per room. So you might not be able to do certain actions depending on what settings the ops/admins have set. To check what you can do use /priv.', 'small')
+	msg_info.show(template_help())
 }
 
 function help2()
 {
-	chat_announce('', '', 'Additional Features:', 'big')
-	chat_announce('', '', 'Escape clears the input or closes popups.', 'small')
-	chat_announce('', '', 'Shift + Escape or /clear clears all messages from the chat.', 'small')
-	chat_announce('', '', 'Shift + Tab or /status shows information about you and the room.', 'small')
-	chat_announce('', '', 'Up and Down Arrows cycle through the input history.', 'small')
-	chat_announce('', '', 'Shift + Up Arrow and Shift + Down Arrow or Page Up and Page down make the chat scroll.', 'small')
-	chat_announce('', '', 'Enter without text in the input scrolls to the bottom of the chat.', 'small')
-	chat_announce('', '', 'Clicking on a nickname sends it to the input.', 'small')
-	chat_announce('', '', 'Tab completes nicknames and commands.', 'small')
-	chat_announce('', '', 'Shift + Enter toggles the radio.', 'small')
-	chat_announce('', '', '/nickedit: Puts the nickname in the input, ready to be edited.', 'small')	
-	chat_announce('', '', '/defnick x: Changes your default nickname for rooms you visit for the first time.', 'small')
-	chat_announce('', '', '/reserve: Reserves current nickname to be recoverable later. If called again it changes the key with a new one.', 'small')
-	chat_announce('', '', '/unreserve: Makes a nickname available again.', 'small')
-	chat_announce('', '', '/recover x: Recovers reserved nickname in case someone else in the room is using it.', 'small')
-	chat_announce('', '', '/priv: Shows information regarding privileges and permissions.', 'small')
-	chat_announce('', '', '/users: Shows the user list. Accepts a filter as an argument.', 'small')
-	chat_announce('', '', '/rooms: Shows the room list. Accepts a filter as an argument.', 'small')
-	chat_announce('', '', '/played: Shows the list of songs played. Accepts a filter as an argument.', 'small')
-	chat_announce('', '', '/search: Opens the search window. Accepts a query as an argument.', 'small')
-	chat_announce('', '', '/history: Shows the input history. Accepts a filter as an argument.', 'small')
-	chat_announce('', '', '/create x: Quickly create a room with name x.', 'small')
-	chat_announce('', '', '/startradio: Starts the radio.', 'small')
-	chat_announce('', '', '/stopradio: Stops the radio.', 'small')
-	chat_announce('', '', '/volume x: Changes the volume of the radio.', 'small')
-	chat_announce('', '', `Note: Dates shown when hovering some items show the time when the item was placed on the screen, except when a nickname is displayed beside it meaning it's that date an action was performed.`, 'small')
-	chat_announce('', '', `Note: In the Open Here or Open In New Tab picker, 'here' can be triggered with Shift + Enter, 'new tab' with Enter.`, 'small')
+	msg_info.show(template_help2())
 }
 
 function help3()
 {
-	chat_announce('', '', 'Administration Features:', 'big')
-	chat_announce('', '', '/topic x: Changes the topic of the room.', 'small')
-	chat_announce('', '', '/topicadd x: Adds a section at the end of the topic.', 'small')
-	chat_announce('', '', '/topictrim x: Removes a section from the end of the topic, where the optional x is the number of trims you want to do.', 'small')
-	chat_announce('', '', '/topicaddstart x: Adds a section at the start of the topic.', 'small')
-	chat_announce('', '', '/topictrimstart x: Removes a section from the start of the topic, where the optional x is the number of trims you want to do.', 'small')
-	chat_announce('', '', '/topicedit: Puts the topic in the input, ready to be edited.', 'small')
-	chat_announce('', '', '/uploadpermission 1: Anyone can upload images.', 'small')
-	chat_announce('', '', '/uploadpermission 2: Only voiced users and up can upload images.', 'small')
-	chat_announce('', '', '/uploadpermission 3: Only ops and up can upload images.', 'small')
-	chat_announce('', '', '/chatpermission 1: Anyone can chat.', 'small')
-	chat_announce('', '', '/chatpermission 2: Only voiced users and up can chat.', 'small')
-	chat_announce('', '', '/chatpermission 3: Only ops and up can chat.', 'small')
-	chat_announce('', '', '/radiopermission 1: Anyone can change the radio.', 'small')
-	chat_announce('', '', '/radiopermission 2: Only voiced users and up can change the radio.', 'small')
-	chat_announce('', '', '/radiopermission 3: Only ops and up can change the radio.', 'small')
-	chat_announce('', '', '/voice x: Gives voice to a user.', 'small')
-	chat_announce('', '', '/op x: Gives op to a user. Ops can do anything an admin can do except more high level commands.', 'small')
-	chat_announce('', '', '/admin x: Gives admin to a user. This gives a user the same rights as the original admin.', 'small')
-	chat_announce('', '', '/strip x: Removes all privileges from a user.', 'small')
-	chat_announce('', '', '/removevoices: Removes all privileges from voiced users.', 'small')
-	chat_announce('', '', '/removeops: Removes all privileges from op\'d users.', 'small')
-	chat_announce('', '', '/removeboth: Removes all privileges from voiced and op\'d users.', 'small')
-	chat_announce('', '', '/private: Room doesn\'t appear in the public room list.', 'small')
-	chat_announce('', '', '/public: Room appears in the public room list.', 'small')
-	chat_announce('', '', '/roomname x: Chages the name of the room.', 'small')
-	chat_announce('', '', '/roomnameedit x: Puts the room name in the input, ready to be edited.', 'small')
-	chat_announce('', '', '/kick x: Kicks a user out of the room.', 'small')
-	chat_announce('', '', '/ban x: Bans a user from the room.', 'small')
-	chat_announce('', '', '/unbanlast: Unbans the latest banned user.', 'small')
-	chat_announce('', '', '/unbanall: Removes all bans.', 'small')
-	chat_announce('', '', '/bannedcount: Displays the number of banned users in the room.', 'small')
-	chat_announce('', '', '/claim: Requests administration of the room. If it hasn\'t been claimed, user gets the ownership.', 'small')
-	chat_announce('', '', '/reclaim: Reclaims the room if you\'re already an admin. Removes all given privileges to other users.', 'small')
-	chat_announce('', '', '/unclaim: Removes all ownership on the room and resets it to a default state.', 'small')
-	chat_announce('', '', 'Note: Nicknames and main menu have a context (right click) menu with some operations if you are an op or admin.', 'small')
-	chat_announce('', '', 'Note: Check /help for information about how users interact in the room through chat, image uploads, or radio.', 'small')
-	chat_announce('', '', 'Note: Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada url is gathered automatically. To work, the server needs to allow cross-domain requests and be https enabled if this system is being served through https.', 'small')
-}
-
-function show_status()
-{
-	show_room()
-	show_nickname()
-	show_topic()
-	show_radio_source()
-	show_priv()
-	show_public()
+	msg_info.show(template_help3())
 }
 
 function show_public()
@@ -585,17 +508,17 @@ function show_priv(data)
 {
 	if(priv === 'admin')
 	{
-		chat_announce('[', ']', 'You are an admin in this room', 'small')
+		chat_announce('[', ']', 'You are an admin', 'small')
 	}
 
 	else if(priv === 'op')
 	{
-		chat_announce('[', ']', 'You are an op in this room', 'small')
+		chat_announce('[', ']', 'You are an op', 'small')
 	}
 
 	else if(priv === 'voice')
 	{
-		chat_announce('[', ']', 'You have voice in this room', 'small')
+		chat_announce('[', ']', 'You have voice', 'small')
 	}
 
 	if(priv === 'admin' || priv === 'op')
@@ -2566,7 +2489,7 @@ function activate_key_detection()
 		{
 			if(e.key === "Enter")
 			{
-				change_nickname($("#nick_editor_input").val())
+				change_nickname($("#user_info_nickname_input").val())
 				msg_info.close()				
 				e.preventDefault()
 			}
@@ -2850,7 +2773,7 @@ function show_history(filter=false)
 		c.append(s)
 		c = c[0]
 
-		show_info(c, function()
+		msg_info.show(c, function()
 		{
 			$("#history_filter").on("input", function()
 			{
@@ -2866,7 +2789,7 @@ function show_history(filter=false)
 
 	else
 	{
-		show_info("Messages or commands you type will appear here")
+		msg_info.show("Messages or commands you type will appear here")
 	}
 }
 
@@ -3288,39 +3211,34 @@ function start_image_events()
 			var color2 = colorlib.get_lighter_or_darker(color1, color_contrast_amount)
 			
 			var background_color2 = color2
-			var font_color2 = colorlib.get_proper_font(color2)
 
 			if(settings.header_contrast)
 			{
 				var header_bg_color = background_color2
-				var header_font_color = font_color2
 			}
 
 			else
 			{
 				var header_bg_color = background_color
-				var header_font_color = font_color
 			}
 
 			if(settings.footer_contrast)
 			{
-				var input_bg_color = background_color2
-				var input_font_color = font_color2
+				var footer_bg_color = background_color2
 			}
 
 			else
 			{
-				var input_bg_color = background_color
-				var input_font_color = font_color
+				var footer_bg_color = background_color
 			}
 
 			$('body').css('background-color', background_color)
 			$('#header').css('background-color', header_bg_color)
-			$('#header').css('color', header_font_color)
+			$('#header').css('color', font_color)
 			$('#chat_area').css('background-color', background_color)
 			$('#chat_area').css('color', font_color)
-			$('#footer').css('background-color', input_bg_color)
-			$('#footer').css('color', input_font_color)
+			$('#footer').css('background-color', footer_bg_color)
+			$('#footer').css('color', font_color)
 			$('#media').css('background-color', background_color)
 
 			if(settings.background_image)
@@ -3497,7 +3415,7 @@ jQuery.fn.urlize = function()
 				for(var i=0; i<list.length; i++) 
 				{
 					var prot = list[i].indexOf('http://') === 0 || list[i].indexOf('https://') === 0 ? '' : 'http://'
-					x = x.replace(list[i], `<a class='chat' target='_blank' href='${prot}${list[i]}'>${list[i]}</a>`)
+					x = x.replace(list[i], `<a class='generic' target='_blank' href='${prot}${list[i]}'>${list[i]}</a>`)
 				}
 			}
 
@@ -4943,7 +4861,7 @@ function create_search_container()
 
 	c = c[0]
 
-	show_info(c, function()
+	msg_info.show(c, function()
 	{
 		$("#search_filter").on("input", function()
 		{
@@ -6959,22 +6877,6 @@ function reload_settings()
 	setup_nickname_on_footer()
 }
 
-function show_info(s, callback=false)
-{
-	if(callback)
-	{
-		msg_info.set_or_show(s, function()
-		{
-			callback()
-		})
-	}
-
-	else
-	{
-		msg_info.set_or_show(s)
-	}
-}
-
 var played_filter_timer = (function() 
 {
 	var timer 
@@ -7266,16 +7168,106 @@ function set_footer_nickname()
 	$("#footer_nickname").text(`[${username}]`)
 }
 
-function show_nick_editor()
+function show_user_info()
 {
-	msg_info.show(template_nick_editor({nick:username}), function()
+	msg_info.show(template_user_info({nick:username, info:get_user_info_html()}), function()
 	{
-		$("#nick_editor_input").focus()
+		$("#user_info_nickname_input").focus()
 
-		var len = $("#nick_editor_input").val().length
+		var len = $("#user_info_nickname_input").val().length
 		
-		$("#nick_editor_input")[0].setSelectionRange(len, len)
+		$("#user_info_nickname_input")[0].setSelectionRange(len, len)
 
 		ned = true
 	})
+}
+
+function get_user_info_html()
+{
+	var info = ""
+
+	info += "<div class='spacer3'></div>"
+
+	if(priv === "admin")
+	{
+		info += "<div class='info_item'>You are an admin</div>"
+	}
+
+	else if(priv === "op")
+	{
+		info += "<div class='info_item'>You are an op</div>"
+	}
+
+	else if(priv === "voice")
+	{
+		info += "<div class='info_item'>You have voice</div>"
+	}
+
+	if(can_chat)
+	{
+		info += "<div class='spacer4'></div>"
+		info += "<div class='info_item'>You have chat permission</div>"
+	}
+
+	if(can_upload)
+	{
+		info += "<div class='spacer4'></div>"
+		info += "<div class='info_item'>You have upload permission</div>"
+	}
+
+	if(can_radio)
+	{
+		info += "<div class='spacer4'></div>"
+		info += "<div class='info_item'>You have radio permission</div>"
+	}
+
+	return urlize(info)
+}
+
+function show_status()
+{
+	msg_info.show(template_status({info:get_status_html()}))
+}
+
+function get_status_html()
+{
+	var info = ""
+
+	info += "<div class='info_title'>Room Name</div>"
+	info += `<div class='info_item'>${room_name}</div>`
+	info += "<div class='spacer4'></div>"
+	info += "<div class='info_title'>Topic</div>"
+
+	if(topic)
+	{
+		info += `<div class='info_item'>${topic}</div>`
+	}
+
+	else
+	{
+		info += "<div class='info_item'>No topic set</div>"
+	}
+
+	info += "<div class='spacer4'></div>"
+	info += "<div class='info_title'>Radio Source</div>"
+	info += `<div class='info_item'>${radio_source}</div>`
+	info += "<div class='spacer4'></div>"
+	info += "<div class='info_title'>Privacy</div>"
+
+	if(is_public)
+	{
+		info += "<div class='info_item'>Public</div>"
+	}
+
+	else
+	{
+		info += "<div class='info_item'>Private</div>"
+	}
+
+	return urlize(info)
+}
+
+function urlize(s, classname="generic")
+{
+	return s.replace(/((?:https?(?::\/\/))(?:www\.)?[a-zA-Z0-9-_.]+(?:\.[a-zA-Z0-9]{2,})(?:[-a-zA-Z0-9:%_+.~#?&//=@]*))/g, `<a class='${classname}' target='_blank' href='$1'>$1</a>`)
 }

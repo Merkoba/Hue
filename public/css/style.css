@@ -178,7 +178,7 @@ body, html
 	color: inherit;
 }
 
-#nick_editor_input
+#user_info_nickname_input
 {
 	width: 12em;
 	border: 1px solid grey;
@@ -244,7 +244,7 @@ body, html
 	white-space: nowrap;
 }
 
-a.chat:link, a.chat:visited, a.chat:hover 
+a.generic:link, a.generic:visited, a.generic:hover 
 {
 	text-decoration: underline;
 	color: inherit;
@@ -480,6 +480,12 @@ a.chat:link, a.chat:visited, a.chat:hover
 	padding-bottom: 0.5em;
 }
 
+.spacer4
+{
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
 .hspacer1
 {
 	padding-left: 0.3em;
@@ -657,4 +663,38 @@ a.chat:link, a.chat:visited, a.chat:hover
 	padding: 0 !important;
 	padding-top: 0.3em !important;
 	padding-bottom: 0.3em !important;
+}
+
+.info_title
+{
+	font-size: 1.2em;
+	font-weight: bold;
+	padding-bottom: 0.3em;
+}
+
+.info_item
+{
+	font-size: 1.2em;
+	max-width: 20em;
+}
+
+.info_item2
+{
+	font-size: 1.2em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+.info_title2
+{
+	font-size: 1.4em;
+	font-weight: bold;
+	padding-bottom: 0.3em;
+}
+
+.help_link
+{
+	cursor: pointer;
+	font-size: 1.2em;
+	text-decoration: underline;
 }
