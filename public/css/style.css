@@ -120,7 +120,7 @@ body, html
 	max-width: 100%;
 }
 
-#chat_area .sep1:last-child
+#chat_area > .sep1:last-child
 {
 	padding-top: 1em;
 	padding-bottom: 1em;
