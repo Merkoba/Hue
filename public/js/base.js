@@ -6822,19 +6822,19 @@ function setup_media_display()
 	{
 		$("#media").css("display", "none")
 	}
+
+	update_chat_scrollbar()
 }
 
 function setup_nickname_on_footer()
 {
 	if(settings.nickname_on_footer)
 	{
-		console.log(1)
 		$("#footer_nickname").css("display", "inline-block")
 	}
 
 	else
 	{
-		console.log(2)
 		$("#footer_nickname").css("display", "none")
 	}
 }
