@@ -2819,7 +2819,7 @@ function show_history(filter=false)
 
 	else
 	{
-		msg_info.show("<div class='onetwo'>Messages or commands you type will appear here</div>")
+		msg_info.show("Messages or commands you type will appear here")
 	}
 }
 
@@ -4934,7 +4934,7 @@ function chat_search(filter=false)
 
 	if(!filter)
 	{
-		$("#search_container").html("<div class='onetwo'>Search for chat messages</div>")
+		$("#search_container").html("Search for chat messages")
 		update_modal_scrollbar("info")		
 		return
 	}
@@ -4994,7 +4994,7 @@ function chat_search(filter=false)
 
 	if(c.find(".search_result_item").length === 0)
 	{
-		c = "<div class='onetwo'>No results</div>"
+		c = "No results"
 	}
 
 	else

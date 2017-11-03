@@ -10,7 +10,7 @@ body, html
 	height: 100%;
 	margin: 0px;
 	padding: 0px;
-	font-size: 16px;
+	font-size: 18px;
 	font-family: consolas;
 	background-color: black;
 	overflow: hidden;
@@ -46,10 +46,10 @@ body, html
 
 #header
 {
-	font-size: 1.2em;
 	background-color: black;
 	color: white;
 	flex-shrink: 0;
+	flex-grow: 0;
 }
 
 #header_items
@@ -134,8 +134,8 @@ body, html
 
 #media_image
 {
-	max-height: calc(100% - 10em);
-	max-width: calc(100% - 8em);
+	max-height: calc(100% - 8em);
+	max-width: calc(100% - 6em);
 	cursor: pointer;
 }
 
@@ -145,6 +145,7 @@ body, html
 	display: flex;
 	flex-direction: row;
 	flex-shrink: 0;
+	flex-grow: 0;
 }
 
 #footer_items
@@ -156,8 +157,7 @@ body, html
 
 #footer_nickname
 {
-	font-size: 1.2em;
-	padding-top: 0.34em;
+	padding-top: 0.31em;
 	padding-right: 0.6em;
 	cursor: pointer;
 	flex-shrink: 1;
@@ -167,7 +167,7 @@ body, html
 
 #input
 {
-	font-size: 1.2em;
+	font-size: 1em;
 	color: white;
 	border: 0px solid black;
 	padding-right: 1em;
@@ -218,7 +218,7 @@ body, html
 	clear: both;
 	overflow-wrap: break-word;
 	word-break: break-word;
-	font-size: 1.4em;
+	font-size: 1.2em;
 	display: inline-block;
 }
 
@@ -232,12 +232,12 @@ body, html
 
 .announcement_small
 {
-	font-size: 1.2em;
+	font-size: 1em;
 }
 
 .announcement_big
 {
-	font-size: 1.4em;
+	font-size: 1.2em;
 }
 
 .chat_uname 
@@ -288,19 +288,18 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .pititle
 {
-	font-size: 1.4em;
+	font-size: 1.2em;
 	font-weight: bold;
 }
 
 .piartist
 {
 	padding-top: 0.3em;
-	font-size: 1.2em;
 }
 
 .menu_item 
 {
-	font-size: 1.4em;
+	font-size: 1.2em;
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	cursor: pointer;
@@ -308,7 +307,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .menu_item_smaller
 {
-	font-size: 1.2em;
+	font-size: 1em;
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	cursor: pointer;
@@ -324,15 +323,15 @@ a.generic:link, a.generic:visited, a.generic:hover
 #create_room_name
 {
 	width: 14em;
-	font-size: 1.4em;
+	font-size: 1.2em;
 	text-align: center;
 	border: 1px solid grey;
 }
 
 .userlist_item
 {
-	padding-top: 0.7em;
-	padding-bottom: 0.7em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
 	cursor: pointer;
 	overflow-wrap: break-word;
 	word-break: break-word;	
@@ -340,13 +339,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .ui_item_priv
 {
-	font-size: 1.1em;
-	padding-right: 0.7em;
+	padding-right: 0.5em;
 }
 
 .ui_item_nick
 {
-	font-size: 1.4em;	
+	font-size: 1.2em;	
 }
 
 .roomlist_item
@@ -360,26 +358,23 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .roomlist_name
 {
-	font-size: 1.4em;
+	font-size: 1.2em;
 	font-weight: bold;
 }
 
 .roomlist_topic
 {
 	padding-top: 0.3em;
-	font-size: 1.2em;
 }
 
 .roomlist_count
 {
 	padding-top: 0.3em;
-	font-size: 1.2em;
 }
 
 .roomlist_here
 {
 	padding-top: 0.3em;
-	font-size: 1.2em;
 	display: none;
 }
 
@@ -455,12 +450,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .sep1
 {
-	font-size: 0.8em;
+	font-size: 0.6em;
 }
 
 .setting_title
 {
-	font-size: 1.4em;
+	font-size: 1.2em;
 	padding-bottom: 0.5em;
 }
 
@@ -512,42 +507,37 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 #Msg-window-menu
 {
-	width: 22em !important;
+	width: 20em !important;
 }
 
 #Msg-window-create-room
 {
-	width: 22em !important;
+	width: 20em !important;
 }
 
 #Msg-window-settings
 {
-	width: 22em !important;
+	width: 20em !important;
 }
 
 #Msg-window-userlist
 {
-	width: 22em !important;
+	width: 20em !important;
 }
 
 #Msg-window-roomlist
 {
-	width: 30em !important;
+	width: 28em !important;
 }
 
 #Msg-window-played
 {
-	width: 30em !important;
-}
-
-#Msg-content-storageui
-{
-	font-size: 20px !important;
+	width: 28em !important;
 }
 
 .StorageUI-area
 {
-	width: 32em !important;
+	width: 30em !important;
 }
 
 .StorageUI-checkbox
@@ -563,7 +553,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .show_history_item
 {
-	font-size: 1.4em;
+	font-size: 1.2em;
 	padding-top: 0.6em;
 	padding-bottom: 0.6em;
 	padding-left: 2em;
@@ -576,7 +566,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	top: 0px;
 	width: 10em;
 	border: 1px solid grey;
-	font-size: 1.4em;
+	font-size: 1.2em;
 	text-align: center;
 	position: sticky;
 }
@@ -615,31 +605,30 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .search_result_uname
 {
-	font-size: 1.4em;
+	font-size: 1.2em;
 	font-weight: bold;
 	padding-bottom: 0.3em;
 }
 
 .search_result_content
 {
-	font-size: 1.4em;
+	font-size: 1.2em;
 }
 
 #pick_nickname_welcome
 {
-	font-size: 1.4em;
+	font-size: 1.2em;
 	padding-bottom: 0.3em;
 }
 
 #pick_nickname_info
 {
-	font-size: 1.2em;
 	padding-bottom: 1em;
 }
 
 #pick_nickname_input
 {
-	font-size: 1.4em;
+	font-size: 1.2em;
 	border: 1px solid grey;
 	text-align: center;
 }
@@ -667,40 +656,28 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-bottom: 0.3em !important;
 }
 
-.context-menu-item
-{
-	font-size: 19px !important;	
-}
-
 .info_item
 {
 	padding-top: 1em;
 	padding-bottom: 1em;	
-	max-width: 30em;
+	max-width: 28em;
 }
 
 .info_title
 {
-	font-size: 1.2em;
 	font-weight: bold;
 	padding-bottom: 0.3em;
 }
 
-.info_item_content
-{
-	font-size: 1.2em;
-}
-
 .info_item2
 {
-	font-size: 1.2em;
 	padding-top: 1em;
 	padding-bottom: 1em;
 }
 
 .info_title2
 {
-	font-size: 1.4em;
+	font-size: 1.2em;
 	font-weight: bold;
 	padding-bottom: 0.3em;
 }
@@ -708,11 +685,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 .help_link
 {
 	cursor: pointer;
-	font-size: 1.2em;
 	text-decoration: underline;
 }
 
-.onetwo
+select
 {
-	font-size: 1.2em;
+	font-size: 1em;
+	text-align-last: center;	
 }
