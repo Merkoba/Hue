@@ -7191,39 +7191,34 @@ function get_user_info_html()
 {
 	var info = ""
 
-	info += "<div class='spacer3'></div>"
-
 	if(priv === "admin")
 	{
-		info += "<div class='info_item'>You are an admin</div>"
+		info += "<div class='info_item'><div class='info_item_content'>You are an admin</div></div>"
 	}
 
 	else if(priv === "op")
 	{
-		info += "<div class='info_item'>You are an op</div>"
+		info += "<div class='info_item'><div class='info_item_content'>You are an op</div></div>"
 	}
 
 	else if(priv === "voice")
 	{
-		info += "<div class='info_item'>You have voice</div>"
+		info += "<div class='info_item'><div class='info_item_content'>You have voice</div></div>"
 	}
 
 	if(can_chat)
 	{
-		info += "<div class='spacer4'></div>"
-		info += "<div class='info_item'>You have chat permission</div>"
+		info += "<div class='info_item'><div class='info_item_content'>You have chat permission</div></div>"
 	}
 
 	if(can_upload)
 	{
-		info += "<div class='spacer4'></div>"
-		info += "<div class='info_item'>You have upload permission</div>"
+		info += "<div class='info_item'><div class='info_item_content'>You have upload permission</div></div>"
 	}
 
 	if(can_radio)
 	{
-		info += "<div class='spacer4'></div>"
-		info += "<div class='info_item'>You have radio permission</div>"
+		info += "<div class='info_item'><div class='info_item_content'>You have radio permission</div></div>"
 	}
 
 	return urlize(info)
@@ -7238,44 +7233,38 @@ function get_status_html()
 {
 	var info = ""
 
-	info += "<div class='info_title'>Room Name</div>"
-	info += `<div class='info_item'>${room_name}</div>`
-	info += "<div class='spacer4'></div>"
-	info += "<div class='info_title'>Topic</div>"
+	info += "<div class='info_item'><div class='info_title'>Room Name</div>"
+	info += `<div class='info_item_content'>${room_name}</div></div>`
+	info += "<div class='info_item'><div class='info_title'>Topic</div>"
 
 	if(topic)
 	{
-		info += `<div class='info_item'>${topic}</div>`
+		info += `<div class='info_item_content'>${topic}</div></div>`
 	}
 
 	else
 	{
-		info += "<div class='info_item'>No topic set</div>"
+		info += "<div class='info_item_content'>No topic set</div></div>"
 	}
 
-	info += "<div class='spacer4'></div>"
-	info += "<div class='info_title'>Radio Source</div>"
-	info += `<div class='info_item'>${radio_source}</div>`
-	info += "<div class='spacer4'></div>"
-	info += "<div class='info_title'>Chat Permission</div>"
-	info += `<div class='info_item'>${permission_tag(chat_permission)}</div>`
-	info += "<div class='spacer4'></div>"
-	info += "<div class='info_title'>Upload Permission</div>"
-	info += `<div class='info_item'>${permission_tag(upload_permission)}</div>`
-	info += "<div class='spacer4'></div>"
-	info += "<div class='info_title'>Radio Permission</div>"
-	info += `<div class='info_item'>${permission_tag(radio_permission)}</div>`
-	info += "<div class='spacer4'></div>"
-	info += "<div class='info_title'>Privacy</div>"
+	info += "<div class='info_item'><div class='info_title'>Radio Source</div>"
+	info += `<div class='info_item_content'>${radio_source}</div></div>`
+	info += "<div class='info_item'><div class='info_title'>Chat Permission</div>"
+	info += `<div class='info_item_content'>${permission_tag(chat_permission)}</div></div>`
+	info += "<div class='info_item'><div class='info_title'>Upload Permission</div>"
+	info += `<div class='info_item_content'>${permission_tag(upload_permission)}</div></div>`
+	info += "<div class='info_item'><div class='info_title'>Radio Permission</div>"
+	info += `<div class='info_item_content'>${permission_tag(radio_permission)}</div></div>`
+	info += "<div class='info_item'><div class='info_title'>Privacy</div>"
 
 	if(is_public)
 	{
-		info += "<div class='info_item'>Public</div>"
+		info += "<div class='info_item_content'>Public</div></div>"
 	}
 
 	else
 	{
-		info += "<div class='info_item'>Private</div>"
+		info += "<div class='info_item_content'>Private</div></div>"
 	}
 
 	return urlize(info)

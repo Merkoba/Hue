@@ -665,6 +665,13 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-bottom: 0.3em !important;
 }
 
+.info_item
+{
+	padding-top: 1em;
+	padding-bottom: 1em;	
+	max-width: 30em;
+}
+
 .info_title
 {
 	font-size: 1.2em;
@@ -672,10 +679,9 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-bottom: 0.3em;
 }
 
-.info_item
+.info_item_content
 {
 	font-size: 1.2em;
-	max-width: 20em;
 }
 
 .info_item2
