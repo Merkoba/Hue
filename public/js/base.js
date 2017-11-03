@@ -4941,7 +4941,7 @@ function chat_search(filter=false)
 
 	if($(".chat_message").length > 0)
 	{
-		$(".chat_message").each(function()
+		$($(".chat_message").get().reverse()).each(function()
 		{
 			var huname = $(this).find('.chat_uname').eq(0)
 			var hcontent = $(this).find('.chat_content').eq(0)

@@ -552,12 +552,10 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .show_history_item
 {
-	font-size: 1.2em;
-	padding-top: 0.6em;
-	padding-bottom: 0.6em;
-	padding-left: 2em;
-	padding-right: 2em;
+	padding-top: 1em;
+	padding-bottom: 1em;
 	cursor: pointer;
+	max-width: 26em;
 }
 
 .filter_input
@@ -604,14 +602,13 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .search_result_uname
 {
-	font-size: 1.2em;
 	font-weight: bold;
 	padding-bottom: 0.3em;
 }
 
 .search_result_content
 {
-	font-size: 1.2em;
+	max-width: 26em;
 }
 
 #pick_nickname_welcome
