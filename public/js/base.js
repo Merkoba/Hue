@@ -6542,6 +6542,7 @@ function start_msg()
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
 
+	msg_storageui.create()
 	msg_info.create()
 }
 
