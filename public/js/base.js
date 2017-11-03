@@ -3100,7 +3100,7 @@ function start_chat_scrollbar()
 	{
 		minScrollbarLength: 50,
 		suppressScrollX: true,
-		scrollingThreshold: 2000
+		scrollingThreshold: 1200
 	})
 }
 

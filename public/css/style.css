@@ -87,6 +87,7 @@ body, html
 
 #chat_main
 {
+	position: relative;
 	display: flex;
 	width: 100%;
 	max-height: 100%;
@@ -189,10 +190,9 @@ body, html
 {
 	visibility: hidden;
 	position: absolute;
-	max-width: 50%;
 	left: 30px;
-	width: calc(50% - 30px);	
-	bottom: 2em;
+	width: calc(100% - 60px);	
+	bottom: 0em;
 	height: 2em;
 	font-size: 1em;
 	background-color: #393939;
