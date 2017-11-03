@@ -3196,6 +3196,7 @@ function add_msgcount()
 	{	chat_history.shift()	
 		$("#chat_area > .msg").eq(0).remove()
 		update_chat_scrollbar()
+		scroll_timer()
 	}
 }
 
@@ -4734,6 +4735,7 @@ function activate_window_visibility_listener()
 			afk_timer = setTimeout(function(){afk = true}, afk_timeout_duration)
 			$('.dash_container').remove()
 			update_chat_scrollbar()
+			check_scroll_notice()
 		}
 	}, false)
 }
