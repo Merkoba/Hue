@@ -690,6 +690,7 @@ function start_socket()
 			{
 				setup_opacity()
 				setup_media_display()
+				setup_nickname_on_footer()
 				start_nickname_context_menu()
 				start_main_menu_context_menu()
 				start_played_context_menu()
@@ -6692,6 +6693,12 @@ function get_settings()
 		changed = true
 	}
 
+	if(settings.nickname_on_footer === undefined)
+	{
+		settings.nickname_on_footer = true
+		changed = true
+	}
+
 	if(settings.modal_color === undefined)
 	{
 		settings.modal_color = default_modal_color
@@ -6724,6 +6731,8 @@ function start_settings_state()
 	$("#setting_header_contrast").prop("checked", settings.header_contrast)
 	
 	$("#setting_footer_contrast").prop("checked", settings.footer_contrast)
+	
+	$("#setting_nickname_on_footer").prop("checked", settings.footer_contrast)
 
 	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
 
@@ -6767,6 +6776,13 @@ function start_settings_listeners()
 		save_settings()
 	})
 
+	$("#setting_nickname_on_footer").change(function()
+	{
+		settings.nickname_on_footer = $("#setting_nickname_on_footer").prop("checked")
+		setup_nickname_on_footer()
+		save_settings()
+	})
+
 	$("#setting_custom_scrollbars").change(function()
 	{
 		settings.custom_scrollbars = $("#setting_custom_scrollbars").prop("checked")
@@ -6800,13 +6816,26 @@ function setup_media_display()
 	if(settings.foreground_image)
 	{
 		$("#media").css("display", "flex")
-		// $("#chat_main").css("width", "50%")
 	}
 
 	else
 	{
 		$("#media").css("display", "none")
-		// $("#chat_main").css("width", "100%")
+	}
+}
+
+function setup_nickname_on_footer()
+{
+	if(settings.nickname_on_footer)
+	{
+		console.log(1)
+		$("#footer_nickname").css("display", "inline-block")
+	}
+
+	else
+	{
+		console.log(2)
+		$("#footer_nickname").css("display", "none")
 	}
 }
 
@@ -6926,6 +6955,8 @@ function reload_settings()
 	setup_scrollbars()
 	change()
 	setup_opacity()
+	setup_media_display()
+	setup_nickname_on_footer()
 }
 
 function show_info(s, callback=false)
