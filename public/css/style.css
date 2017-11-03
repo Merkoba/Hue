@@ -89,6 +89,7 @@ body, html
 	display: flex;
 	width: 100%;
 	max-height: 100%;
+	min-width: 50%;	
 	flex-direction: column;
 	flex-grow: 1;
 }
@@ -97,6 +98,7 @@ body, html
 {
 	display: flex;
 	flex-grow: 1;
+	max-width: 100%;
 	max-height: 100%
 }
 
@@ -104,17 +106,21 @@ body, html
 {
 	position: relative;
 	padding-left: 30px;
-	overflow-x: none;
+	padding-right: 30px;
+	overflow-x: hidden;
 	overflow-y: auto;
 	background-color: black;
 	color: white;
 	flex-grow: 1;
+	max-width: 100%;
+	max-width: 100%;
 }
 
 #media
 {
 	display: flex;
 	width: 100%;
+	min-width: 50%;	
 	background-color: black;
 	justify-content: center;
 	align-items: center;
@@ -206,7 +212,6 @@ body, html
 
 .chat_message
 {
-	max-width: 98%;
 	clear: both;
 	overflow-wrap: break-word;
 	word-break: break-word;
@@ -216,7 +221,6 @@ body, html
 
 .announcement
 {
-	max-width: 98%;
 	clear: both;
 	overflow-wrap: break-word;
 	word-break: break-word;
