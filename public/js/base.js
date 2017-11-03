@@ -2819,7 +2819,7 @@ function show_history(filter=false)
 
 	else
 	{
-		msg_info.show("Messages or commands you type will appear here")
+		msg_info.show("<div class='onetwo'>Messages or commands you type will appear here</div>")
 	}
 }
 
@@ -4934,7 +4934,7 @@ function chat_search(filter=false)
 
 	if(!filter)
 	{
-		$("#search_container").html("Search for chat messages")
+		$("#search_container").html("<div class='onetwo'>Search for chat messages</div>")
 		update_modal_scrollbar("info")		
 		return
 	}
@@ -4994,7 +4994,7 @@ function chat_search(filter=false)
 
 	if(c.find(".search_result_item").length === 0)
 	{
-		c = "No results"
+		c = "<div class='onetwo'>No results</div>"
 	}
 
 	else
@@ -6541,6 +6541,8 @@ function start_msg()
 	msg_userlist.set(template_userlist())
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
+
+	msg_info.create()
 }
 
 function info_vars_to_false()

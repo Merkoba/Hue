@@ -45,6 +45,7 @@ body, html
 
 #header
 {
+	font-size: 1.2em;
 	background-color: black;
 	color: white;
 	flex-shrink: 0;
@@ -155,8 +156,8 @@ body, html
 
 #footer_nickname
 {
-	font-size: 1em;
-	padding-top: 0.4em;
+	font-size: 1.2em;
+	padding-top: 0.25em;
 	padding-right: 0.6em;
 	cursor: pointer;
 	flex-shrink: 1;
@@ -166,8 +167,7 @@ body, html
 
 #input
 {
-	height: 2em;
-	font-size: 1em;
+	font-size: 1.2em;
 	color: white;
 	border: 0px solid black;
 	padding-right: 1em;
@@ -230,7 +230,7 @@ body, html
 
 .announcement_small
 {
-	font-size: 1em;
+	font-size: 1.2em;
 }
 
 .announcement_big
@@ -306,7 +306,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .menu_item_smaller
 {
-	font-size: 1.1em;
+	font-size: 1.2em;
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	cursor: pointer;
@@ -703,4 +703,9 @@ a.generic:link, a.generic:visited, a.generic:hover
 	cursor: pointer;
 	font-size: 1.2em;
 	text-decoration: underline;
+}
+
+.onetwo
+{
+	font-size: 1.2em;
 }
