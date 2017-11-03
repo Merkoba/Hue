@@ -3193,10 +3193,8 @@ function add_msgcount()
 	msgcount += 1
 
 	if(msgcount > chat_crop_limit)
-	{	chat_history.shift()
-		var els = $('#chat_area').children()	
-		$("#chat_area > .msg:first-child").remove()
-		$("#chat_area > .sep1:first-child").remove()
+	{	chat_history.shift()	
+		$("#chat_area > .msg").eq(0).remove()
 		update_chat_scrollbar()
 	}
 }
