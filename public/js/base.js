@@ -2604,21 +2604,18 @@ function activate_key_detection()
 
 		else if(e.key === "Escape")
 		{
-			if(!msg_menu.any_open())
+			if(e.shiftKey)
 			{
-				if(e.shiftKey)
-				{
-					clear_chat()
-				}
-
-				else
-				{
-					clear_input()
-				}
-
-				e.preventDefault()
-				return
+				clear_chat()
 			}
+
+			else
+			{
+				clear_input()
+			}
+
+			e.preventDefault()
+			return
 		}
 
 		else if(e.key === "Tab")
@@ -3267,6 +3264,7 @@ function start_image_events()
 			$('#header').css('color', font_color)
 			$('#chat_area').css('background-color', background_color)
 			$('#chat_area').css('color', font_color)
+			$('#chat_separator').css('background-color', background_color)
 			$('#footer').css('background-color', footer_bg_color)
 			$('#footer').css('color', font_color)
 			$('#media').css('background-color', background_color)
