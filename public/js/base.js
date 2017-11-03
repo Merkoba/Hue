@@ -6552,6 +6552,11 @@ function after_modal_show(instance)
 function after_modal_set_or_show(instance)
 {
 	update_modal_scrollbar(instance.options.id)
+
+	setTimeout(function()
+	{
+		instance.content_container.scrollTop = 0
+	}, 100)
 }
 
 function after_modal_close(instance)
@@ -7252,6 +7257,15 @@ function get_status_html()
 	info += "<div class='info_title'>Radio Source</div>"
 	info += `<div class='info_item'>${radio_source}</div>`
 	info += "<div class='spacer4'></div>"
+	info += "<div class='info_title'>Chat Permission</div>"
+	info += `<div class='info_item'>${permission_tag(chat_permission)}</div>`
+	info += "<div class='spacer4'></div>"
+	info += "<div class='info_title'>Upload Permission</div>"
+	info += `<div class='info_item'>${permission_tag(upload_permission)}</div>`
+	info += "<div class='spacer4'></div>"
+	info += "<div class='info_title'>Radio Permission</div>"
+	info += `<div class='info_item'>${permission_tag(radio_permission)}</div>`
+	info += "<div class='spacer4'></div>"
 	info += "<div class='info_title'>Privacy</div>"
 
 	if(is_public)
@@ -7270,4 +7284,22 @@ function get_status_html()
 function urlize(s, classname="generic")
 {
 	return s.replace(/((?:https?(?::\/\/))(?:www\.)?[a-zA-Z0-9-_.]+(?:\.[a-zA-Z0-9]{2,})(?:[-a-zA-Z0-9:%_+.~#?&//=@]*))/g, `<a class='${classname}' target='_blank' href='$1'>$1</a>`)
+}
+
+function permission_tag(n)
+{
+	if(n === 1)
+	{
+		return "Anyone"
+	}
+
+	else if(n === 2)
+	{
+		return "Voiced and up"
+	}
+
+	else if(n === 3)
+	{
+		return "Ops and up"
+	}
 }
