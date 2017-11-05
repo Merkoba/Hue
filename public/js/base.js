@@ -4084,7 +4084,7 @@ function change_nickname(nck)
 {
 	if(can_chat)
 	{
-		nck = clean_string4(nck.substring(0, max_nickname_length))
+		nck = utilz.clean_string4(nck.substring(0, max_nickname_length))
 		
 		if(nck.length > 0)
 		{
@@ -4113,7 +4113,7 @@ function nickedit()
 
 function change_default_nickname(nck)
 {
-	nck = clean_string4(nck.substring(0, max_nickname_length))
+	nck = utilz.clean_string4(nck.substring(0, max_nickname_length))
 	
 	if(nck.length > 0)
 	{
