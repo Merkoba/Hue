@@ -89,6 +89,7 @@ module.exports = function(db_manager, config)
 		c.vars.max_nickname_length = config.max_nickname_length
 		c.vars.min_password_length = config.min_password_length
 		c.vars.max_password_length = config.max_password_length
+		c.vars.login_title = config.login_title
 
 		res.render('login', c)
 	})

@@ -776,7 +776,7 @@ function start_socket()
 
 		else if(data.type === 'redirect')
 		{
-			goto_url(data.location, "same", false)
+			goto_url(data.location)
 		}
 
 		else if(data.type === 'disconnection')
@@ -3447,6 +3447,7 @@ function register_commands()
 	commands.push('/startradio')
 	commands.push('/volume')
 	commands.push('/history')
+	commands.push('/logout')
 
 	commands.sort()
 }
@@ -3808,6 +3809,11 @@ function send_to_chat(msg)
 			else if(oiStartsWith(lmsg, '/history'))
 			{
 				show_history(arg)
+			}
+
+			else if(oiEquals(lmsg, '/logout'))
+			{
+				logout(arg)
 			}			
 
 			else
@@ -4321,7 +4327,7 @@ function push_played(info, info2=false)
 		{
 			if($(this).data('q2') !== '')
 			{
-				goto_url(q2, "tab")
+				goto_url(q2, "tab", true)
 			}
 
 			else
@@ -4719,7 +4725,7 @@ function word_generator(pattern)
 	return res.join("").toLowerCase()
 }
 
-function goto_url(u, mode="same", encode=true)
+function goto_url(u, mode="same", encode=false)
 {
 	if(encode)
 	{
@@ -5933,17 +5939,17 @@ function search_on(site, q)
 
 	if(site === 'google')
 	{
-		goto_url(`https://www.google.com/search?q=${q}`, "tab", false)
+		goto_url(`https://www.google.com/search?q=${q}`, "tab")
 	}
 
 	else if(site === 'soundcloud')
 	{
-		goto_url(`https://soundcloud.com/search?q=${q}`, "tab", false)
+		goto_url(`https://soundcloud.com/search?q=${q}`, "tab")
 	}
 
 	else if(site === 'youtube')
 	{
-		goto_url(`https://www.youtube.com/results?search_query=${q}`, "tab", false)
+		goto_url(`https://www.youtube.com/results?search_query=${q}`, "tab")
 	}
 }
 
@@ -7032,4 +7038,9 @@ function debug1()
 	jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|;`
 
 	update_chat(nickname, s)
+}
+
+function logout()
+{
+	goto_url('/logout')
 }

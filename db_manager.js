@@ -48,9 +48,9 @@ module.exports = function(db, config, sconfig)
 		{
 			if(!room)
 			{
-				if(id === config.main_room_id)
+				if(query._id === config.main_room_id)
 				{
-					create_room({name:config.default_main_room_name, id:config.main_room_id}, function(nri)
+					manager.create_room({name:config.default_main_room_name, id:config.main_room_id}, function(nri)
 					{
 						callback(nri)
 					})

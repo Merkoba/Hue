@@ -20,7 +20,7 @@
 		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
 
-		<script src="/js/base.js?ver=596"></script>
+		<script src="/js/base.js?ver=597"></script>
 		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=162"/>
 
 		<script src="https://www.youtube.com/iframe_api"></script>
@@ -250,6 +250,8 @@
 				<input value={{nick}} id="user_info_nickname_input">
 				<div class="spacer3"></div>
 				<div id='user_info'>{{{info}}}</div>
+				<div class="spacer2"></div>
+				<div class="menu_item_smaller" onclick="logout()">Logout</div>
 
 		</script>
 
@@ -375,6 +377,7 @@
 			<div class='info_item'>/startradio: Starts the radio.</div>
 			<div class='info_item'>/stopradio: Stops the radio.</div>
 			<div class='info_item'>/volume x: Changes the volume of the radio.</div>
+			<div class='info_item'>/logout: Ends the user session.</div>
 			<div class='info_item'>Note: Dates shown when hovering some items show the time when the item was placed on the screen, except when a nickname is displayed beside it meaning it's that date an action was performed.</div>
 			<div class='info_item'>Note: In the Open Here or Open In New Tab picker, 'here' can be triggered with Shift + Enter, 'new tab' with Enter.</div>
 			<div class='spacer1'></div>

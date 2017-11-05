@@ -1,6 +1,8 @@
 <html>
 	<head>
 
+		<title><%-vars.login_title%></title>
+
 		<script src="/js/jquery.js"></script>
 
 		<style>
@@ -145,6 +147,7 @@
 
 					var username = $("#register_username").val()
 					var password = $("#register_password").val()
+					var password2 = $("#register_password2").val()
 				}
 
 				else
@@ -177,8 +180,17 @@
 
 				if(password.length > max_password_length)
 				{
-					set_message("Password Is To Long")
+					set_message("Password Is Too Long")
 					return false					
+				}
+
+				if(mode === "register")
+				{
+					if(password !== password2)
+					{
+						set_message("The Passwords Don't Match")
+						return false
+					}
 				}
 
 				return true
@@ -224,6 +236,10 @@
 				<div class="spacer2"></div>
 
 				<input type="password" placeholder="Password" name="password" id="register_password">
+
+				<div class="spacer2"></div>
+
+				<input type="password" placeholder="Password Again" name="password" id="register_password2">
 
 				<div class="spacer2"></div>
 
