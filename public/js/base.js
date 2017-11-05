@@ -1,12 +1,10 @@
 var socket
 var ls_room_nicknames = "room_nicknames_v2"
-var ls_room_keys = "room_keys_v2"
-var ls_user_keys = "user_keys_v2"
 var ls_settings = "settings_v6"
 var settings
 var is_public
 var room_name
-var username
+var nickname
 var image_url = ''
 var image_uploader = ''
 var image_size = 0
@@ -189,21 +187,21 @@ function get_nickname()
 {
 	var room_nicknames = get_room_nicknames()
 
-	var uname = room_nicknames[room_id]
+	var nname = room_nicknames[room_id]
 
-	if(uname === undefined)
+	if(nname === undefined)
 	{
-		uname = room_nicknames['/default']
+		nname = room_nicknames['/default']
 	}
 
-	if(uname === undefined)
+	if(nname === undefined)
 	{
 		start_nickname_picker()
 	}
 
 	else
 	{
-		username = uname
+		nickname = nname
 
 		init2()
 	}
@@ -224,9 +222,7 @@ function start_nickname_picker()
 		close_on_overlay_click: false
 	})
 
-	var s = "<div id='pick_nickname_welcome'>Welcome</div><div id='pick_nickname_info'>Pick a nickname to begin</div><input type='text' id='pick_nickname_input'>"
-
-	msg_nickname_picker.show(s, function()
+	msg_nickname_picker.show(template_login(), function()
 	{
 		$("#pick_nickname_input").focus()
 	})	
@@ -234,39 +230,39 @@ function start_nickname_picker()
 
 function check_nickname()
 {
-	var uname = clean_string4($("#pick_nickname_input").val().substring(0, max_username_length))
+	var nname = clean_string4($("#pick_nickname_input").val().substring(0, max_nickname_length))
 	
-	if(uname.length !== 0)
+	if(nname.length !== 0)
 	{
-		username = uname
-		save_room_nickname(uname)
-		save_default_nickname(uname)
+		nickname = nname
+		save_room_nickname(nname)
+		save_default_nickname(nname)
 		msg_nickname_picker.close()
 		init2()
 	}
 }
 
-function save_room_nickname(uname)
+function save_room_nickname(nname)
 {
 	var room_nicknames = get_room_nicknames()
 
-	room_nicknames[room_id] = uname
+	room_nicknames[room_id] = nname
 
 	save_room_nicknames(room_nicknames)
 }
 
-function save_default_nickname(uname)
+function save_default_nickname(nname)
 {
 	var room_nicknames = get_room_nicknames()
 
-	room_nicknames['/default'] = uname
+	room_nicknames['/default'] = nname
 
 	save_room_nicknames(room_nicknames)
 }
 
 function show_intro()
 {
-	chat_announce('', '', `Welcome to ${room_name}, ${username}`, 'big')
+	chat_announce('', '', `Welcome to ${room_name}, ${nickname}`, 'big')
 }
 
 function show_reconnected()
@@ -564,7 +560,7 @@ function show_priv(data)
 
 function show_nickname()
 {
-	chat_announce('[', ']', `Nickname: ${username}`, 'small')
+	chat_announce('[', ']', `Nickname: ${nickname}`, 'small')
 }
 
 function socket_emit(dest, obj)
@@ -578,22 +574,22 @@ function start_socket()
 
 	socket.on('connect', function() 
 	{
-		socket_emit('join_room', {room_id:room_id, username:username, key:get_room_key()})
+		socket_emit('join_room', {room_id:room_id, nickname:nickname, user_id:user_id})
 	})
 
 	socket.on('update', function(data) 
 	{
 		if(data.type === 'chat_msg')
 		{
-			update_chat(data.username, data.msg)
+			update_chat(data.nickname, data.msg)
 		}
 
-		if(data.type === 'username')
+		if(data.type === 'joined')
 		{
 			started = false
 			connections += 1
 			room_name = data.room_name
-			username = data.username
+			nickname = data.nickname
 			set_image_info(data)
 			claimed = data.claimed
 			setup_radio(data)
@@ -602,12 +598,6 @@ function start_socket()
 			set_topic_info(data)
 			update_title()
 			is_public = data.public
-			
-			if(data.key)
-			{
-				save_room_key(data.key)
-			}
-
 			check_priv(data)
 			change()
 
@@ -636,9 +626,9 @@ function start_socket()
 			started = true
 		}
 
-		if(data.type === 'new_username')
+		if(data.type === 'new_nickname')
 		{
-			new_username(data)
+			new_nickname(data)
 		}
 
 		else if(data.type === 'chat_announcement')
@@ -667,11 +657,6 @@ function start_socket()
 		{
 			update_roomlist(data.roomlist)
 			show_roomlist()
-		}
-
-		else if(data.type === 'get_key')
-		{
-			change_priv(data.key)
 		}
 
 		else if(data.type === 'upload_error')
@@ -816,7 +801,7 @@ function start_socket()
 
 		else if(data.type === 'alreadyreserved')
 		{
-			chat_announce('[', ']', `${username} is already reserved`, 'small')
+			chat_announce('[', ']', `${nickname} is already reserved`, 'small')
 		}
 
 		else if(data.type === 'couldnotrecover')
@@ -829,9 +814,8 @@ function start_socket()
 			chat_announce('[', ']', "The song couldn't be found", 'small')
 		}
 
-		else if(data.type === 'roomcreated')
+		else if(data.type === 'room_created')
 		{
-			save_room_key(data.key, data.id)
 			show_open_room(data.id)
 		}
 
@@ -954,11 +938,11 @@ function get_youtube_time(url)
 
 function userjoin(data)
 {
-	addto_userlist(data.username, data.priv)
+	addto_userlist(data.nickname, data.priv)
 
 	if(check_chat_permission(data.priv))
 	{
-		chat_announce('--', '--', `${data.username} has joined`, 'small')
+		chat_announce('--', '--', `${data.nickname} has joined`, 'small')
 	}	
 }
 
@@ -967,28 +951,28 @@ function update_usercount(usercount)
 	$('#usercount').html(`${singular_or_plural(usercount, "Users")} Online`)
 }
 
-function addto_userlist(uname, prv)
+function addto_userlist(nname, prv)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		if(userlist[i][0] === uname)
+		if(userlist[i][0] === nname)
 		{
-			userlist[i][0] = uname
+			userlist[i][0] = nname
 			userlist[i][1] = prv
 			update_userlist()
 			return
 		}
 	}
 
-	userlist.push([uname, prv])
+	userlist.push([nname, prv])
 	update_userlist()
 }
 
-function removefrom_userlist(uname)
+function removefrom_userlist(nname)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		if(userlist[i][0] === uname)
+		if(userlist[i][0] === nname)
 		{
 			userlist.splice(i, 1)
 			break
@@ -1012,11 +996,11 @@ function replace_nick_in_userlist(oldu, newu)
 	update_userlist()
 }
 
-function replace_priv_in_userlist(uname, prv)
+function replace_priv_in_userlist(nname, prv)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		if(userlist[i][0] === uname)
+		if(userlist[i][0] === nname)
 		{
 			userlist[i][1] = prv
 			break
@@ -1026,22 +1010,22 @@ function replace_priv_in_userlist(uname, prv)
 	update_userlist()
 }
 
-function get_priv(uname)
+function get_priv(nname)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		if(userlist[i][0] === uname)
+		if(userlist[i][0] === nname)
 		{
 			return userlist[i][1]
 		}
 	}
 }
 
-function replace_claim_userlist(uname)
+function replace_claim_userlist(nname)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		if(userlist[i][0] === uname)
+		if(userlist[i][0] === nname)
 		{
 			userlist[i][1] = 'admin'
 		}
@@ -1210,7 +1194,7 @@ function start_nickname_context_menu()
 {
 	$.contextMenu(
 	{
-		selector: ".ui_item_nick, .chat_uname",
+		selector: ".ui_item_nick, .chat_nname",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
 		items: 
@@ -2852,7 +2836,7 @@ function oiStartsWith(str, what)
 	return str.valueOf().startsWith(`${what.split('').sort().join('')} `)
 }
 
-function get_closest_username(word)
+function get_closest_nickname(word)
 {
 	word = word.toLowerCase()
 
@@ -2877,7 +2861,7 @@ function get_closest_username(word)
 	if(has)
 	{
 		tabbed_list = []
-		return get_closest_username(word)
+		return get_closest_nickname(word)
 	}
 
 	return ""
@@ -2941,31 +2925,31 @@ function replace_tabbed(word)
 {
 	if(word[0] === '/')
 	{
-		var uname = get_closest_command(word)
+		var nname = get_closest_command(word)
 	}
 
 	else
 	{
-		var uname = get_closest_username(word)
+		var nname = get_closest_nickname(word)
 	}
 	
-	if(uname !== "")
+	if(nname !== "")
 	{
 		if(input.value[tabbed_end] === ' ')
 		{
-			input.value = replaceBetween(input.value, tabbed_start, tabbed_end, uname)
+			input.value = replaceBetween(input.value, tabbed_start, tabbed_end, nname)
 		}
 
 		else
 		{
-			input.value = replaceBetween(input.value, tabbed_start, tabbed_end, `${uname} `)
+			input.value = replaceBetween(input.value, tabbed_start, tabbed_end, `${nname} `)
 		}
 
-		var pos = tabbed_start + uname.length
+		var pos = tabbed_start + nname.length
 
 		input.setSelectionRange(pos + 1, pos + 1)
 
-		tabbed_start = pos - uname.length
+		tabbed_start = pos - nname.length
 		tabbed_end = pos
 	}
 }
@@ -3125,13 +3109,13 @@ function escape_special_characters(s)
 	return s.replace(/[^A-Za-z0-9]/g, '\\$&');
 }
 
-function update_chat(uname, msg)
+function update_chat(nname, msg)
 {
 	var contclasses = "chat_content"
 
-	if(uname !== username)
+	if(nname !== nickname)
 	{
-		var regex = new RegExp("(^|\\s+)" + escape_special_characters(username) + "($|\\s+|\\!|\\?|\\,|\\.)")
+		var regex = new RegExp("(^|\\s+)" + escape_special_characters(nickname) + "($|\\s+|\\!|\\?|\\,|\\.)")
 
 		if(msg.search(regex) !== -1)
 		{
@@ -3145,19 +3129,19 @@ function update_chat(uname, msg)
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
-		var fmsg = $(`<div title='${date}' class='msg chat_message'>* <span class='chat_uname'></span> <span class='${contclasses}'></span> *</div>`)
+		var fmsg = $(`<div title='${date}' class='msg chat_message'>* <span class='chat_nname'></span> <span class='${contclasses}'></span> *</div>`)
 		$(fmsg).find('.chat_content').eq(0).text(msg.substr(4)).urlize()
 	}
 
 	else
 	{
-		var fmsg = $(`<div title='${date}' class='msg chat_message'><b><span class='chat_uname'></span>:</b>&nbsp<span class='${contclasses}'></span></div>`)
+		var fmsg = $(`<div title='${date}' class='msg chat_message'><b><span class='chat_nname'></span>:</b>&nbsp<span class='${contclasses}'></span></div>`)
 		$(fmsg).find('.chat_content').eq(0).text(msg).urlize()
 	}
 	
-	$(fmsg).find('.chat_uname').eq(0).text(uname).click({uname:uname}, function(event)
+	$(fmsg).find('.chat_nname').eq(0).text(nname).click({nname:nname}, function(event)
 	{
-		add_to_input(event.data.uname)
+		add_to_input(event.data.nname)
 	})
 
 	add_to_chat(fmsg)
@@ -3927,7 +3911,7 @@ function send_to_chat(msg)
 
 			if(can_chat)
 			{
-				update_chat(username, msg)	
+				update_chat(nickname, msg)	
 				socket_emit('sendchat', {msg:msg})
 			}
 
@@ -3951,7 +3935,7 @@ function change_topic(dtopic)
 		{
 			if(topic !== dtopic)
 			{
-				socket_emit('topic_change', {topic:dtopic})
+				socket_emit('change_topic', {topic:dtopic})
 			}
 
 			else
@@ -4134,9 +4118,9 @@ function announce_topic_change(data)
 	{
 		var highlight = false
 
-		if(data.topic_setter !== username)
+		if(data.topic_setter !== nickname)
 		{
-			var regex = new RegExp("(^|\\s+)" + escape_special_characters(username) + "($|\\s+|\\!|\\?|\\,|\\.)")
+			var regex = new RegExp("(^|\\s+)" + escape_special_characters(nickname) + "($|\\s+|\\!|\\?|\\,|\\.)")
 
 			if(data.topic.search(regex) !== -1)
 			{
@@ -4144,7 +4128,7 @@ function announce_topic_change(data)
 			}
 		}
 			
-		if(data.topic_setter === username)
+		if(data.topic_setter === nickname)
 		{
 			chat_announce('~', '~', `You changed the topic to: ${data.topic}`, 'small', highlight)
 		}
@@ -4164,14 +4148,14 @@ function announce_room_name_change(data)
 {
 	if(data.name !== room_name)
 	{		
-		if(data.username === username)
+		if(data.nickname === nickname)
 		{
 			chat_announce('~', '~', `You changed the room name to: ${data.name}`, 'small')
 		}
 
 		else
 		{
-			chat_announce('~', '~', `${username} changed the room name to: ${data.name}`, 'small')
+			chat_announce('~', '~', `${nickname} changed the room name to: ${data.name}`, 'small')
 		}
 
 		room_name = data.name
@@ -4184,11 +4168,11 @@ function change_nickname(nck)
 {
 	if(can_chat)
 	{
-		nck = clean_string4(nck.substring(0, max_username_length))
+		nck = clean_string4(nck.substring(0, max_nickname_length))
 		
 		if(nck.length > 0)
 		{
-			if(nck === username)
+			if(nck === nickname)
 			{
 				chat_announce('[', ']', "That's already your nickname", 'small')
 				return false
@@ -4196,7 +4180,7 @@ function change_nickname(nck)
 
 			save_room_nickname(nck)
 
-			socket_emit('username_change', {username:nck})
+			socket_emit('change_nickname', {nickname:nck})
 		}
 	}
 
@@ -4208,12 +4192,12 @@ function change_nickname(nck)
 
 function nickedit()
 {
-	change_input(`/nick ${username}`)
+	change_input(`/nick ${nickname}`)
 }
 
 function change_default_nickname(nck)
 {
-	nck = clean_string4(nck.substring(0, max_username_length))
+	nck = clean_string4(nck.substring(0, max_nickname_length))
 	
 	if(nck.length > 0)
 	{
@@ -4229,21 +4213,21 @@ function show_default_nickname()
 	chat_announce('[', ']', `Default Nickname: ${room_nicknames['/default']}`, 'small')
 }
 
-function new_username(data)
+function new_nickname(data)
 {
-	if(username === data.old_username)
+	if(nickname === data.old_nickname)
 	{
-		username = data.username
+		nickname = data.nickname
 		set_footer_nickname()
-		chat_announce('~', '~', `You are now known as ${username}`, 'small')
+		chat_announce('~', '~', `You are now known as ${nickname}`, 'small')
 	}
 
 	else
 	{
-		chat_announce('~', '~', `${data.old_username} is now known as ${data.username}`, 'small')
+		chat_announce('~', '~', `${data.old_nickname} is now known as ${data.nickname}`, 'small')
 	}
 
-	replace_nick_in_userlist(data.old_username, data.username)
+	replace_nick_in_userlist(data.old_nickname, data.nickname)
 }
 
 function goto_bottom(force=false)
@@ -4947,15 +4931,15 @@ function chat_search(filter=false)
 	{
 		$(chat_history.slice(0).reverse()).each(function()
 		{
-			var huname = $(this).find('.chat_uname').eq(0)
+			var hnname = $(this).find('.chat_nname').eq(0)
 			var hcontent = $(this).find('.chat_content').eq(0)
 
-			var uname = huname.text()
+			var nname = hnname.text()
 			var content = hcontent.text()
 
 			var show = false
 
-			if(uname.toLowerCase().indexOf(filter) !== -1)
+			if(nname.toLowerCase().indexOf(filter) !== -1)
 			{
 				show = true
 			}
@@ -4967,9 +4951,9 @@ function chat_search(filter=false)
 
 			if(show)
 			{
-				var cn = $("<div class='search_result_item'><div class='search_result_uname'></div><div class='search_result_content'></div>")
+				var cn = $("<div class='search_result_item'><div class='search_result_nname'></div><div class='search_result_content'></div>")
 
-				cn.find(".search_result_uname").eq(0).append(huname.clone())
+				cn.find(".search_result_nname").eq(0).append(hnname.clone())
 				cn.find(".search_result_content").eq(0).append(hcontent.clone())
 
 				cn.prop("title", $(this).prop("title")).click(function()
@@ -4978,7 +4962,7 @@ function chat_search(filter=false)
 					{
 						var ss = ""
 
-						ss += $(this).find(".chat_uname").eq(0).text()
+						ss += $(this).find(".chat_nname").eq(0).text()
 						ss += " said: "
 						ss += `"${$(this).find(".chat_content").eq(0).text()}"`
 
@@ -5100,99 +5084,6 @@ function unclaim_room()
 	socket_emit('unclaim_room', {})
 }
 
-function get_room_keys()
-{
-	var obj = get_local_storage(ls_room_keys)
-
-	if(obj === null)
-	{
-		obj = {}
-	}
-
-	return obj	
-}
-
-function save_room_keys(room_keys)
-{
-	save_local_storage(ls_room_keys, room_keys)
-}
-
-function get_room_key()
-{
-	var key = get_room_keys()[room_id]
-
-	if(key === undefined)
-	{
-		key = ""
-	}
-
-	return key
-}
-
-function save_room_key(key, id=false)
-{
-	var room_keys = get_room_keys()
-
-	if(id)
-	{
-		room_keys[id] = key
-	}
-
-	else
-	{
-		room_keys[room_id] = key
-	}
-
-	save_room_keys(room_keys)
-}
-
-function get_user_keys()
-{
-	var obj = get_local_storage(ls_user_keys)
-
-	if(obj === null)
-	{
-		obj = {}
-	}
-
-	return obj	
-}
-
-function save_user_keys(user_keys)
-{
-	save_local_storage(ls_user_keys, user_keys)
-}
-
-function get_user_key(nck)
-{
-	var key = get_user_keys()[nck]
-
-	if(key === undefined)
-	{
-		key = ""
-	}
-
-	return key
-}
-
-function save_user_key(key)
-{
-	var user_keys = get_user_keys()
-
-	user_keys[username] = key
-
-	save_user_keys(user_keys)
-}
-
-function remove_user_key()
-{
-	var user_keys = get_user_keys()
-
-	delete user_keys[username]
-
-	save_user_keys(user_keys)
-}
-
 function check_firstime()
 {
 	if(get_local_storage('firstime') === null)
@@ -5200,28 +5091,6 @@ function check_firstime()
 		help()
 		save_local_storage('firstime', false)
 	}
-}
-
-function change_priv(key)
-{
-	save_room_key(key)
-
-	if(key.startsWith('_key_'))
-	{
-		priv = 'admin'
-	}
-
-	else if(key.startsWith('_okey_'))
-	{
-		priv = 'op'
-	}
-
-	else if(key.startsWith('_vkey_'))
-	{
-		priv = 'voice'
-	}
-
-	check_permissions()
 }
 
 function change_upload_permission(m)
@@ -5345,14 +5214,14 @@ function announce_upload_permission_change(data)
 {
 	var s = ""
 
-	if(username === data.username)
+	if(nickname === data.nickname)
 	{
 		var d = "You changed the upload permission to"
 	}
 
 	else
 	{
-		var d = `${data.username} changed the upload permission to`
+		var d = `${data.nickname} changed the upload permission to`
 	}
 
 	if(data.upload_permission === 1 && upload_permission !== 1)
@@ -5382,14 +5251,14 @@ function announce_chat_permission_change(data)
 {
 	var s = ""
 
-	if(username === data.username)
+	if(nickname === data.nickname)
 	{
 		var d = "You changed the chat permission to"
 	}
 
 	else
 	{
-		var d = `${data.username} changed the chat permission to`
+		var d = `${data.nickname} changed the chat permission to`
 	}
 
 	if(data.chat_permission === 1 && chat_permission !== 1)
@@ -5419,14 +5288,14 @@ function announce_radio_permission_change(data)
 {
 	var s = ""
 
-	if(username === data.username)
+	if(nickname === data.nickname)
 	{
 		var d = "You changed the radio permission to"
 	}
 
 	else
 	{
-		var d = `${data.username} changed the radio permission to`
+		var d = `${data.nickname} changed the radio permission to`
 	}
 
 	if(data.radio_permission === 1 && radio_permission !== 1)
@@ -5476,9 +5345,9 @@ function voice(nck)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(nck.length > 0 && nck.length <= max_username_length)
+		if(nck.length > 0 && nck.length <= max_nickname_length)
 		{
-			if(nck === username)
+			if(nck === nickname)
 			{
 				chat_announce('[', ']', "You can't voice yourself", 'small')
 				return false
@@ -5504,7 +5373,7 @@ function voice(nck)
 				return false
 			}
 
-			socket_emit('voice', {username:nck})
+			socket_emit('voice', {nickname:nck})
 		}
 	}
 
@@ -5521,7 +5390,7 @@ function show_upload_error()
 
 function announce_uploaded_image(data)
 {
-	if(username === data.image_uploader)
+	if(nickname === data.image_uploader)
 	{
 		chat_announce('<<', '>>', 'You uploaded an image', 'small')		
 	}
@@ -5534,51 +5403,55 @@ function announce_uploaded_image(data)
 
 function announce_voice(data)
 {
-	if(username === data.username2)
+	if(nickname === data.nickname2)
 	{
-		chat_announce('~', '~', `${data.username1} gave you voice`, 'small', true)
+		set_priv("voice")
+
+		chat_announce('~', '~', `${data.nickname1} gave you voice`, 'small', true)
 	}
 
-	else if(username === data.username1)
+	else if(nickname === data.nickname1)
 	{
-		chat_announce('~', '~', `You gave voice to ${data.username2}`, 'small')
+		chat_announce('~', '~', `You gave voice to ${data.nickname2}`, 'small')
 	}
 
 	else
 	{
-		chat_announce('~', '~', `${data.username1} gave voice to ${data.username2}`, 'small')
+		chat_announce('~', '~', `${data.nickname1} gave voice to ${data.nickname2}`, 'small')
 	}
 
-	replace_priv_in_userlist(data.username2, 'voice')
+	replace_priv_in_userlist(data.nickname2, 'voice')
 }
 
 function announce_op(data)
 {
-	if(username === data.username2)
+	if(nickname === data.nickname2)
 	{
-		chat_announce('~', '~', `${data.username1} gave you op`, 'small', true)
+		set_priv("op")
+
+		chat_announce('~', '~', `${data.nickname1} gave you op`, 'small', true)
 	}
 
-	else if(username === data.username1)
+	else if(nickname === data.nickname1)
 	{
-		chat_announce('~', '~', `You gave op to ${data.username2}`, 'small')
+		chat_announce('~', '~', `You gave op to ${data.nickname2}`, 'small')
 	}
 
 	else
 	{
-		chat_announce('~', '~', `${data.username1} gave op to ${data.username2}`, 'small')
+		chat_announce('~', '~', `${data.nickname1} gave op to ${data.nickname2}`, 'small')
 	}
 
-	replace_priv_in_userlist(data.username2, 'op')
+	replace_priv_in_userlist(data.nickname2, 'op')
 }
 
 function strip(nck)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(nck.length > 0 && nck.length <= max_username_length)
+		if(nck.length > 0 && nck.length <= max_nickname_length)
 		{
-			if(nck === username)
+			if(nck === nickname)
 			{
 				chat_announce('[', ']', "You can't strip yourself", 'small')
 				return false
@@ -5604,7 +5477,7 @@ function strip(nck)
 				return false
 			}
 
-			socket_emit('strip', {username:nck})
+			socket_emit('strip', {nickname:nck})
 		}
 	}
 
@@ -5616,28 +5489,29 @@ function strip(nck)
 
 function announce_strip(data)
 {
-	if(username === data.username2)
+	if(nickname === data.nickname2)
 	{
-		stripped()
-		chat_announce('~', '~', `${data.username1} removed all privileges from you`, 'small', true)
+		set_priv("")
+
+		chat_announce('~', '~', `${data.nickname1} removed all privileges from you`, 'small', true)
 	}
 
-	else if(username === data.username1)
+	else if(nickname === data.nickname1)
 	{
-		chat_announce('~', '~', `You removed all privileges from ${data.username2}`, 'small')
+		chat_announce('~', '~', `You removed all privileges from ${data.nickname2}`, 'small')
 	}
 
 	else
 	{
-		chat_announce('~', '~', `${data.username1} removed all privileges from ${data.username2}`, 'small')
+		chat_announce('~', '~', `${data.nickname1} removed all privileges from ${data.nickname2}`, 'small')
 	}
 
-	replace_priv_in_userlist(data.username2, '')
+	replace_priv_in_userlist(data.nickname2, '')
 }
 
-function stripped()
+function set_priv(p)
 {
-	priv = ''
+	priv = p
 	check_permissions()
 }
 
@@ -5645,14 +5519,14 @@ function announce_claim(data)
 {
 	claimed = true
 
-	if(username === data.username)
+	if(nickname === data.nickname)
 	{
 		var who = "you"
 	}
 
 	else
 	{
-		var who = data.username
+		var who = data.nickname
 	}
 
 	if(data.updated)
@@ -5662,31 +5536,31 @@ function announce_claim(data)
 
 	else
 	{
-		if(username === data.username)
+		if(nickname === data.nickname)
 		{
 			var s = 'You have claimed this room. Check /help3 to learn about admin commands'
 		}
 
 		else
 		{
-			var s = `${data.username} has claimed this room`
+			var s = `${data.nickname} has claimed this room`
 		}		
 	}
 
 	chat_announce('~', '~', s, 'small')
 
-	if(username !== data.username)
+	if(nickname !== data.nickname)
 	{
 		priv = ""
 		check_permissions()
 	}
 	
-	replace_claim_userlist(data.username)
+	replace_claim_userlist(data.nickname)
 }
 
 function announce_unclaim(data)
 {
-	if(username === data.username)
+	if(nickname === data.nickname)
 	{
 		chat_announce('~', '~', 'You unclaimed the room', 'small')
 	}
@@ -5694,7 +5568,7 @@ function announce_unclaim(data)
 	else
 	{
 		priv = ""
-		chat_announce('~', '~', `${data.username} unclaimed the room`, 'small')
+		chat_announce('~', '~', `${data.nickname} unclaimed the room`, 'small')
 	}
 
 	claimed = false
@@ -5721,31 +5595,31 @@ function announce_unclaim(data)
 
 function announce_admin(data)
 {
-	if(username === data.username2)
+	if(nickname === data.nickname2)
 	{
-		chat_announce('~', '~', `${data.username1} gave you admin`, 'small', true)
+		chat_announce('~', '~', `${data.nickname1} gave you admin`, 'small', true)
 	}
 
-	else if(username === data.username1)
+	else if(nickname === data.nickname1)
 	{
-		chat_announce('~', '~', `You gave admin to ${data.username2}`, 'small')
+		chat_announce('~', '~', `You gave admin to ${data.nickname2}`, 'small')
 	}
 
 	else
 	{
-		chat_announce('~', '~', `${data.username1} gave admin to ${data.username2}`, 'small')
+		chat_announce('~', '~', `${data.nickname1} gave admin to ${data.nickname2}`, 'small')
 	}
 
-	replace_priv_in_userlist(data.username2, 'admin')
+	replace_priv_in_userlist(data.nickname2, 'admin')
 }
 
 function admin(nck)
 {
 	if(priv === 'admin')
 	{
-		if(nck.length > 0 && nck.length <= max_username_length)
+		if(nck.length > 0 && nck.length <= max_nickname_length)
 		{
-			if(nck === username)
+			if(nck === nickname)
 			{
 				chat_announce('[', ']', "You can't admin yourself", 'small')
 				return false
@@ -5765,7 +5639,7 @@ function admin(nck)
 				return false
 			}
 
-			socket_emit('admin', {username:nck})
+			socket_emit('admin', {nickname:nck})
 		}
 	}
 
@@ -5779,9 +5653,9 @@ function op(nck)
 {
 	if(priv === 'admin')
 	{
-		if(nck.length > 0 && nck.length <= max_username_length)
+		if(nck.length > 0 && nck.length <= max_nickname_length)
 		{
-			if(nck === username)
+			if(nck === nickname)
 			{
 				chat_announce('[', ']', "You can't op yourself", 'small')
 				return false
@@ -5801,7 +5675,7 @@ function op(nck)
 				return false
 			}
 
-			socket_emit('op', {username:nck})
+			socket_emit('op', {nickname:nck})
 		}
 	}
 
@@ -5853,14 +5727,14 @@ function made_private(data)
 {
 	is_public = false
 
-	if(data.username === username)
+	if(data.nickname === nickname)
 	{
 		var s = 'You made the room private'	
 	}
 
 	else
 	{
-		var s = `${data.username} made the room private`
+		var s = `${data.nickname} made the room private`
 	}
 
 	s += ". The room won't appear in the public room list"
@@ -5872,87 +5746,19 @@ function made_public(data)
 {
 	is_public = true 
 
-	if(data.username === username)
+	if(data.nickname === nickname)
 	{
 		var s = 'You made the room public'	
 	}
 
 	else
 	{
-		var s = `${data.username} made the room public`
+		var s = `${data.nickname} made the room public`
 	}
 
 	s += ". The room will appear in the public room list"
 	
 	chat_announce('~', '~', s, 'small')
-}
-
-function reserve(pass="")
-{
-	socket_emit('username_reserve', {pass:pass, key:get_user_key(username)})
-}
-
-function reserved(data)
-{
-	if(data.updated)
-	{
-		chat_announce('[', ']', 'You already had this nickname reserved. The key was updated with a new one', 'small')
-	}
-
-	else
-	{
-		chat_announce('[', ']', `You have reserved ${data.username}`, 'small')
-	}
-
-	save_user_key(data.key)
-}
-
-function unreserve()
-{
-	var key = get_user_key(username)
-
-	if(key === '')
-	{
-		chat_announce('[', ']', "You don't seem to own that nickname", 'small')
-		return false
-	}
-
-	socket_emit('username_unreserve', {key:get_user_key(username)})
-}
-
-function unreserved(data)
-{
-	chat_announce('[', ']', `You have unreserved ${data.username}`, 'small')
-	remove_user_key()
-}
-
-function recover(nck)
-{
-	if(!can_chat)
-	{
-		chat_announce('[', ']', "You don't have permission to do that", 'small')
-		return false
-	}
-
-	if(username === nck)
-	{
-		chat_announce('[', ']', "That's already your nickname", 'small')
-		return false
-	}
-
-	nck = clean_string4(nck.substring(0, max_username_length))
-
-	var key = get_user_key(nck)
-
-	if(key === '')
-	{
-		chat_announce('[', ']', "You don't seem to own that nickname", 'small')
-		return false
-	}
-
-	save_room_nickname(nck)	
-
-	socket_emit('username_recover', {username:nck, key:key})
 }
 
 function change_radio_source(src)
@@ -6013,7 +5819,7 @@ function changed_radio_source(data)
 		var name = data.radio_source
 	}
 
-	if(data.radio_setter === username)
+	if(data.radio_setter === nickname)
 	{
 		chat_announce('~', '~', `You changed the radio to ${name}`, 'small')		
 	}
@@ -6028,9 +5834,9 @@ function ban(nck)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(nck.length > 0 && nck.length <= max_username_length)
+		if(nck.length > 0 && nck.length <= max_nickname_length)
 		{
-			if(nck === username)
+			if(nck === nickname)
 			{
 				chat_announce('[', ']', "You can't ban yourself", 'small')
 				return false
@@ -6050,7 +5856,7 @@ function ban(nck)
 				return false
 			}
 
-			socket_emit('ban', {username:nck})
+			socket_emit('ban', {nickname:nck})
 		}
 	}
 
@@ -6111,9 +5917,9 @@ function kick(nck)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		if(nck.length > 0 && nck.length <= max_username_length)
+		if(nck.length > 0 && nck.length <= max_nickname_length)
 		{
-			if(nck === username)
+			if(nck === nickname)
 			{
 				chat_announce('[', ']', "You can't kick yourself", 'small')
 				return false
@@ -6133,7 +5939,7 @@ function kick(nck)
 				return false
 			}
 
-			socket_emit('kick', {username:nck})
+			socket_emit('kick', {nickname:nck})
 		}
 	}
 
@@ -6145,27 +5951,27 @@ function kick(nck)
 
 function announce_unbanall(data)
 {
-	if(data.username === username)
+	if(data.nickname === nickname)
 	{
 		chat_announce('~', '~', 'You unbanned all banned users', 'small')		
 	}
 
 	else
 	{
-		chat_announce('~', '~', `${data.username} unbanned all banned users`, 'small')
+		chat_announce('~', '~', `${data.nickname} unbanned all banned users`, 'small')
 	}
 }
 
 function announce_unbanlast(data)
 {
-	if(data.username === username)
+	if(data.nickname === nickname)
 	{
 		chat_announce('~', '~', 'You unbanned the latest banned user', 'small')		
 	}
 
 	else
 	{
-		chat_announce('~', '~', `${data.username} unbanned the latest banned user`, 'small')
+		chat_announce('~', '~', `${data.nickname} unbanned the latest banned user`, 'small')
 	}
 }
 
@@ -6247,19 +6053,19 @@ function remove_both()
 
 function announce_removedvoices(data)
 {
-	if(username === data.username)
+	if(nickname === data.nickname)
 	{
 		chat_announce('~', '~', 'You removed all voices', 'small')
 	}
 
 	else
 	{
-		chat_announce('~', '~', `${data.username} removed all voices`, 'small')
+		chat_announce('~', '~', `${data.nickname} removed all voices`, 'small')
 	}
 
 	if(priv === 'voice')
 	{
-		stripped()
+		set_priv("")
 	}
 
 	remove_voices_userlist()
@@ -6267,19 +6073,19 @@ function announce_removedvoices(data)
 
 function announce_removedops(data)
 {
-	if(username === data.username)
+	if(nickname === data.nickname)
 	{
 		chat_announce('~', '~', 'You removed all ops', 'small')
 	}
 
 	else
 	{
-		chat_announce('~', '~', `${data.username} removed all ops`, 'small')
+		chat_announce('~', '~', `${data.nickname} removed all ops`, 'small')
 	}
 
 	if(priv === 'op')
 	{
-		stripped()
+		set_priv("")
 	}
 
 	remove_ops_userlist()
@@ -6287,51 +6093,51 @@ function announce_removedops(data)
 
 function disconnected(data)
 {
-	removefrom_userlist(data.username)
+	removefrom_userlist(data.nickname)
 
 	if(check_chat_permission(data.priv))
 	{
-		chat_announce('--', '--', `${data.username} has left`, 'small')
+		chat_announce('--', '--', `${data.nickname} has left`, 'small')
 	}
 }
 
 function pinged(data)
 {
-	removefrom_userlist(data.username)
+	removefrom_userlist(data.nickname)
 
 	if(check_chat_permission(data.priv))
 	{
-		chat_announce('--', '--', `${data.username} has left (Ping Timeout)`, 'small')
+		chat_announce('--', '--', `${data.nickname} has left (Ping Timeout)`, 'small')
 	}
 }
 
 function kicked(data)
 {
-	removefrom_userlist(data.username)
+	removefrom_userlist(data.nickname)
 
-	if(username === data.info1)
+	if(nickname === data.info1)
 	{
-		chat_announce('--', '--', `${data.username} was kicked by you`, 'small')
+		chat_announce('--', '--', `${data.nickname} was kicked by you`, 'small')
 	}
 
 	else
 	{
-		chat_announce('--', '--', `${data.username} was kicked by ${data.info1}`, 'small')
+		chat_announce('--', '--', `${data.nickname} was kicked by ${data.info1}`, 'small')
 	}
 }
 
 function banned(data)
 {
-	removefrom_userlist(data.username)
+	removefrom_userlist(data.nickname)
 
-	if(username === data.info1)
+	if(nickname === data.info1)
 	{
-		chat_announce('--', '--', `${data.username} was banned by you`, 'small')
+		chat_announce('--', '--', `${data.nickname} was banned by you`, 'small')
 	}
 
 	else
 	{
-		chat_announce('--', '--', `${data.username} was banned by ${data.info1}`, 'small')
+		chat_announce('--', '--', `${data.nickname} was banned by ${data.info1}`, 'small')
 	}
 }
 
@@ -6804,38 +6610,6 @@ function start_storageui()
 				}
 			},
 			{
-				name: "Room Keys",
-				ls_name: ls_room_keys,
-				on_save: function(item)
-				{
-					on_storageui_save(item)
-				},
-				on_reset: function(item)
-				{
-					on_storageui_save(item, true)					
-				},
-				on_copied: function(item)
-				{
-					pup()
-				}
-			},
-			{
-				name: "User Keys",
-				ls_name: ls_user_keys,
-				on_save: function(item)
-				{
-					on_storageui_save(item)
-				},
-				on_reset: function(item)
-				{
-					on_storageui_save(item, true)
-				},
-				on_copied: function(item)
-				{
-					pup()
-				}
-			},
-			{
 				name: "Settings",
 				ls_name: ls_settings,
 				on_save: function(item)
@@ -7189,12 +6963,12 @@ function onYouTubePlayerReady()
 
 function set_footer_nickname()
 {
-	$("#footer_nickname").text(`[${username}]`)
+	$("#footer_nickname").text(`[${nickname}]`)
 }
 
 function show_user_info()
 {
-	msg_info.show(template_user_info({nick:username, info:get_user_info_html()}), function()
+	msg_info.show(template_user_info({nick:nickname, info:get_user_info_html()}), function()
 	{
 		var len = $("#user_info_nickname_input").val().length
 		
@@ -7337,5 +7111,5 @@ function debug1()
 	GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {}abc def ghi
 	jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|;`
 
-	update_chat(username, s)
+	update_chat(nickname, s)
 }

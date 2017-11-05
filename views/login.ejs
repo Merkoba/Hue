@@ -1,0 +1,255 @@
+<html>
+	<head>
+
+		<script src="/js/jquery.js"></script>
+
+		<style>
+
+			@font-face
+			{
+				font-family: iconsolas;
+				src: url(/css/consolas.ttf);
+			}
+
+			body, html
+			{
+				font-family: iconsolas;
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+				font-size: 18px;
+			}
+
+			.center
+			{
+				padding-top: 5em;
+				margin-left: auto;
+				margin-right: auto;
+				width: 50em;
+				height: 35em;
+				text-align: center;
+			}
+
+			.spacer1
+			{
+				padding-top: 1.2em;
+				padding-bottom: 1.2em;
+			}
+
+			.spacer2
+			{
+				padding-top: 0.5em;
+				padding-bottom: 0.5em;
+			}
+
+			input[type=text], input[type=password]
+			{
+				padding: 0.2em;
+				border: 1px solid grey;
+				width: 14em;
+				font-size: 1.2em;
+				text-align: center;
+			}
+
+			input[type=submit]
+			{
+				background-color: white;
+				padding: 0.2em 0.4em 0.2em 0.4em;
+				color: black;
+				border: 1px solid #bbb;
+				border-color: #ddd #aaa #aaa #ddd;
+				font-size: 1.2em;
+			}
+
+			input[type=submit]:hover
+			{
+				background-color: #f4f4f4;
+			}
+
+			.logo
+			{
+				width: 10em;
+			}
+
+			#message_container
+			{
+				font-size: 1.2em;
+				color: #e21515;
+				transition: opacity 2s;
+				opacity: 0;
+			}
+
+		</style>
+
+		<script>
+
+			<% 
+				for(var key in vars)
+				{
+					var v = vars[key]
+
+					%><%-key%> = <%
+
+					if(!v)
+					{
+						%>undefined; <%
+					}					
+
+					else if(typeof v === "string")
+					{
+						%>`<%-v%>`; <% 
+					}
+
+					else
+					{
+						%><%-v%>; <%
+					}
+				}
+			%>
+
+			var message_timeout
+
+			function clean_string2(s)
+			{
+				return s.replace(/\s+/g, ' ').trim()
+			}
+
+			function set_message(s)
+			{
+				clearTimeout(message_timeout)
+
+				$("#message_container").text(s)
+
+				$("#message_container").css("opacity", 1)
+
+				message_timeout = setTimeout(function()
+				{
+					$("#message_container").css("opacity", 0)
+				}, 3000)
+			}	
+
+			function validate_form(mode)
+			{
+				if(mode === "login")
+				{
+					$("#login_username").val(clean_string2($("#login_username").val()))
+
+					var username = $("#login_username").val()
+					var password = $("#login_password").val()
+				}
+
+				else if(mode === "register")
+				{
+					$("#register_username").val(clean_string2($("#register_username").val()))
+
+					var username = $("#register_username").val()
+					var password = $("#register_password").val()
+				}
+
+				else
+				{
+					return false
+				}
+
+				if(username.length === 0)
+				{
+					set_message("Username Can't Be Empty")
+					return false
+				}
+
+				if(username.length > max_nickname_length)
+				{
+					set_message("Username Is Too Long")
+					return false
+				}
+
+				if(username.length !== clean_string2(username).length)
+				{
+					return false
+				}
+
+				if(password.length < min_password_length)
+				{
+					set_message("Password Is Too Short")
+					return false
+				}
+
+				if(password.length > max_password_length)
+				{
+					set_message("Password Is To Long")
+					return false					
+				}
+
+				return true
+			}
+
+		</script>
+	</head>
+
+	<body>
+
+		<div class="center">
+
+			<img class="logo" src="<%-vars.login_logo_url%>">
+
+			<div class="spacer2"></div>
+
+			<form method="post" action="/login" name="login" onsubmit="return validate_form('login')">
+
+				<input type="text" placeholder="Username" name="username" id="login_username">
+
+				<div class="spacer2"></div>
+
+				<input type="password" placeholder="Password" name="password" id="login_password">
+
+				<div class="spacer2"></div>
+
+				<input type='hidden' name='fromurl' value="<%-vars.fromurl%>">
+
+				<input id="btn_login" type="submit" value="Login">
+
+			</form>	
+
+			<div class="spacer1"></div>
+
+			Or Register Below:
+
+			<div class="spacer1"></div>
+
+			<form method="post" action="/register" name="register" onsubmit="return validate_form('register')">
+
+				<input type="text" placeholder="Username" name="username" id="register_username">
+
+				<div class="spacer2"></div>
+
+				<input type="password" placeholder="Password" name="password" id="register_password">
+
+				<div class="spacer2"></div>
+
+				<div class="spacer2"></div>
+
+				<input type='hidden' name='fromurl' value="<%-vars.fromurl%>">
+
+				<input id="btn_register" type="submit" value="Register">
+
+			</form>
+
+			<div class="spacer1"></div>
+
+			<div id="message_container"></div>
+		</div>
+
+		<script>
+
+			if(message)
+			{
+				set_message(message)
+			}
+
+			$("#login_username").focus()
+
+		</script>
+
+	</body>
+</html>

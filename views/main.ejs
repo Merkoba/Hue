@@ -426,7 +426,11 @@
 			<div class='info_item'>Note: Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada url is gathered automatically. To work, the server needs to allow cross-domain requests and be https enabled if this system is being served through https.</div>
 			<div class='spacer1'></div>
 			<span class='help_link' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link' onclick='help2()'>Additional Features</span>		
-		</script>		
+		</script>
+
+		<script id='template_played' type='text/x-handlebars-template'>
+			<div id='pick_nickname_welcome'>Welcome</div><div id='pick_nickname_info'>Pick a nickname to begin</div><input type='text' id='pick_nickname_input'>
+		</script>			
 
 		<audio id='audio' autoplay></audio>
 

@@ -1,36 +1,20 @@
-const fs = require('fs')
-const path = require('path')
-const {exec} = require('child_process')
-const shell = require('shelljs/global')
-const antiSpam  = require('socket-anti-spam')
-const mongo = require('mongodb')
-const fetch = require('node-fetch')
-const config = require('./config.json')
-const sconfig = require('./config.secret.json')
-const images_root = path.join(__dirname, config.images_directory)
-
-const roominfo_version = 10
-const userinfo_version = 2
-
-var db
-var last_roomlist
-var roomlist_lastget = 0
-
-mongo.connect(config.mongodb_path, function(err, database) 
+module.exports = function(io, db_manager, config, sconfig)
 {
-	if(err)
-	{
-		console.error(err) 
-	}
+	const fs = require('fs')
+	const path = require('path')
+	const {exec} = require('child_process')
+	const shell = require('shelljs/global')
+	const antiSpam  = require('socket-anti-spam')
+	const fetch = require('node-fetch')
+	const mongo = require('mongodb')
+	const images_root = path.join(__dirname, config.images_directory)
 
-	else
-	{
-		db = database
-	}
-})
+	const roominfo_version = 10
+	const userinfo_version = 2
 
-module.exports = function(io)
-{
+	var last_roomlist
+	var roomlist_lastget = 0
+
 	antiSpam.init(
 	{
 		banTime: config.antispam_banTime, // Ban time in minutes 
@@ -61,7 +45,7 @@ module.exports = function(io)
 			console.error(err)
 		}
 
-		socket.on('join_room', function(data) 
+		socket.on('join_room', function(data)
 		{
 			try
 			{
@@ -113,11 +97,11 @@ module.exports = function(io)
 			}
 		})
 
-		socket.on('username_change', function(data) 
+		socket.on('change_nickname', function(data) 
 		{
 			try
 			{
-				username_change(socket, data)
+				change_nickname(socket, data)
 			}
 
 			catch(err)
@@ -126,50 +110,11 @@ module.exports = function(io)
 			}
 		})
 
-		socket.on('username_reserve', function(data) 
+		socket.on('change_topic', function(data) 
 		{
 			try
 			{
-				username_reserve(socket, data)
-			}
-
-			catch(err)
-			{
-				console.error(err)
-			}
-		})
-
-		socket.on('username_unreserve', function(data) 
-		{
-			try
-			{
-				username_unreserve(socket, data)
-			}
-
-			catch(err)
-			{
-				console.error(err)
-			}
-		})
-
-		socket.on('username_recover', function(data) 
-		{
-			try
-			{
-				username_recover(socket, data)
-			}
-
-			catch(err)
-			{
-				console.error(err)
-			}
-		})
-
-		socket.on('topic_change', function(data) 
-		{
-			try
-			{
-				topic_change(socket, data)
+				change_topic(socket, data)
 			}
 
 			catch(err)
@@ -514,19 +459,19 @@ module.exports = function(io)
 
 	function join_room(socket, data)
 	{
-		if(data.username === undefined || data.room_id === undefined || data.key === undefined)
+		if(data.nickname === undefined || data.room_id === undefined)
 		{
 			socket.disconnect()
 			return false
 		}
 
-		if(data.username.length === 0 || data.room_id.length === 0)
+		if(data.nickname.length === 0 || data.room_id.length === 0)
 		{
 			socket.disconnect()
 			return false
 		}
 
-		if(data.username.length > config.max_username_length)
+		if(data.nickname.length > config.max_nickname_length)
 		{
 			socket.disconnect()
 			return false
@@ -544,7 +489,16 @@ module.exports = function(io)
 			return false
 		}
 
-		get_roominfo(data.room_id, {}, function(info)
+		if(data.room_id == undefined)
+		{
+			socket.disconnect()
+			return false
+		}
+
+
+		socket.user_id = data.user_id
+
+		db_manager.get_room({_id:data.room_id}, {}, function(info)
 		{
 			if(!info)
 			{
@@ -552,101 +506,112 @@ module.exports = function(io)
 				return false
 			}
 
-			var bans = info.bans.split(';')
-
-			socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
-
-			for(var i=0; i<bans.length; i++)
+			db_manager.get_user({_id:socket.user_id}, {}, function(userinfo)				
 			{
-				if(bans[i] === socket.ip)
+				if(!userinfo)
 				{
-					socket.disconnect()
+					socket.emit('update', {type: 'redirect', location:config.redirect_url})
 					return false
 				}
-			}
 
-			socket.room = info._id.toString()
-			socket.join(socket.room)
+				socket.user_username = userinfo.username
 
-			if(info.fresh)
-			{
-				socket.priv = "admin"
-				var key = info.keys
-			}
+				socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
 
-			else
-			{
-				socket.priv = ''
-				var key = false
+				var bans = info.bans.split(';')
 
-				if(info.keys !== '' && data.key !== '')
+				for(var i=0; i<bans.length; i++)
 				{
-					var skeys = info.keys.split(';')
-
-					if(skeys.indexOf(data.key) !== -1)
+					if(bans[i] === socket.ip)
 					{
-						key = data.key
+						socket.disconnect()
+						return false
+					}
+				}
 
-						if(data.key.startsWith('_key_'))
-						{
-							socket.priv = 'admin'
-						}
+				socket.room = info._id.toString()
 
-						else if(data.key.startsWith('_okey_'))
-						{
-							socket.priv = 'op'
-						}
+				socket.join(socket.room)
 
-						else if(data.key.startsWith('_vkey_'))
+				if(info.fresh)
+				{
+					socket.priv = "admin"
+					var key = info.keys
+				}
+
+				else
+				{
+					socket.priv = ''
+
+					var key = false
+
+					if(info.keys !== '')
+					{
+						key = userinfo.room_keys[info._id.toString()]
+
+						if(key !== undefined)
 						{
-							socket.priv = 'voice'
+							if(key.startsWith('_key_'))
+							{
+								socket.priv = 'admin'
+							}
+
+							else if(key.startsWith('_okey_'))
+							{
+								socket.priv = 'op'
+							}
+
+							else if(key.startsWith('_vkey_'))
+							{
+								socket.priv = 'voice'
+							}
 						}
 					}
 				}
-			}
 
-			socket.username = make_username_unique(data.username, get_usernames(socket.room))
+				socket.nickname = make_nickname_unique(data.nickname, get_nicknames(socket.room))
 
-			socket.emit('update', 
-			{
-				type: 'username', 
-				room_name: info.name,
-				username: socket.username, 
-				image_url: info.image_url, 
-				image_uploader: info.image_uploader, 
-				image_size: info.image_size, 
-				image_date: info.image_date, 
-				topic: info.topic, 
-				topic_setter: info.topic_setter,
-				topic_date: info.topic_date,
-				userlist: get_userlist(socket.room), 
-				priv: socket.priv, 
-				upload_permission: info.upload_permission, 
-				chat_permission: info.chat_permission, 
-				radio_permission: info.radio_permission, 
-				public: info.public,
-				radio_type: info.radio_type,
-				radio_source: info.radio_source,
-				radio_title: info.radio_title,
-				radio_setter: info.radio_setter, 
-				radio_date: info.radio_date, 
-				claimed: info.claimed,
-				key: key
-			})
+				socket.emit('update', 
+				{
+					type: 'joined', 
+					room_name: info.name,
+					nickname: socket.nickname, 
+					image_url: info.image_url, 
+					image_uploader: info.image_uploader, 
+					image_size: info.image_size, 
+					image_date: info.image_date, 
+					topic: info.topic, 
+					topic_setter: info.topic_setter,
+					topic_date: info.topic_date,
+					userlist: get_userlist(socket.room), 
+					priv: socket.priv, 
+					upload_permission: info.upload_permission, 
+					chat_permission: info.chat_permission, 
+					radio_permission: info.radio_permission, 
+					public: info.public,
+					radio_type: info.radio_type,
+					radio_source: info.radio_source,
+					radio_title: info.radio_title,
+					radio_setter: info.radio_setter, 
+					radio_date: info.radio_date, 
+					claimed: info.claimed,
+					key: key
+				})
 
-			socket.broadcast.in(socket.room).emit('update',
-			{
-				type: 'userjoin',
-				usercount: get_usercount(socket.room),
-				username: socket.username,
-				priv: socket.priv
+				socket.broadcast.in(socket.room).emit('update',
+				{
+					type: 'userjoin',
+					usercount: get_usercount(socket.room),
+					nickname: socket.nickname,
+					priv: socket.priv
+				})
 			})
 		})
 	}
 
 	function sendchat(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(data.msg === undefined)
 			{
@@ -672,23 +637,23 @@ module.exports = function(io)
 				return false
 			}
 
-			get_roominfo(socket.room, {chat_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {chat_permission:true}, function(info)
 			{
 				if(!check_permission(info.chat_permission, socket.priv))
 				{
 					return false
 				}
 
-				socket.broadcast.in(socket.room).emit('update', {type:'chat_msg', username:socket.username, msg:data.msg})
+				socket.broadcast.in(socket.room).emit('update', {type:'chat_msg', nickname:socket.nickname, msg:data.msg})
 
-				db.collection('rooms').update({_id:info._id}, {$set:{modified:Date.now()}})
+				db_manager.update_room(info._id, {modified:Date.now()})
 			})
 		}
 	}
 
 	function pasted(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(data.image_url === undefined)
 			{
@@ -708,7 +673,7 @@ module.exports = function(io)
 				return false
 			}		    
 
-			get_roominfo(socket.room, {upload_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {upload_permission:true}, function(info)
 			{
 				if(!check_permission(info.upload_permission, socket.priv))
 				{
@@ -731,7 +696,7 @@ module.exports = function(io)
 
 							if(output > 0 && (output <= config.max_image_size))
 							{
-								change_image(socket.room, fname, socket.username, output)
+								change_image(socket.room, fname, socket.nickname, output)
 							}
 
 							else
@@ -749,7 +714,7 @@ module.exports = function(io)
 
 	function uploaded(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(data.image_file === undefined)
 			{
@@ -757,7 +722,7 @@ module.exports = function(io)
 				return false
 			}
 
-			get_roominfo(socket.room, {upload_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {upload_permission:true}, function(info)
 			{
 				if(!check_permission(info.upload_permission, socket.priv))
 				{
@@ -789,7 +754,7 @@ module.exports = function(io)
 
 						else 
 						{
-							change_image(socket.room, fname, socket.username, size)
+							change_image(socket.room, fname, socket.nickname, size)
 						}
 					})
 				}
@@ -797,191 +762,92 @@ module.exports = function(io)
 		}
 	}
 
-	function username_change(socket, data)
+	function change_nickname(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
-			if(data.username === undefined)
+			if(data.nickname === undefined)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			if(data.username.length === 0)
+			if(data.nickname === socket.nickname)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			if(data.username.length > config.max_username_length)
+			if(data.nickname.length === 0)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			if(data.username.length !== clean_string4(data.username).length)
+			if(data.nickname.length > config.max_nickname_length)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			get_roominfo(socket.room, {chat_permission:true}, function(info)
+			if(data.nickname.length !== clean_string4(data.nickname).length)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			db_manager.get_room({_id:socket.room}, {chat_permission:true}, function(info)
 			{
 				if(!check_permission(info.chat_permission, socket.priv))
 				{
 					return false
 				}
 
-				var usernames = get_usernames(socket.room)
-
-				for(var i=0; i<usernames.length; i++)
+				if(data.nickname === socket.user_username)
 				{
-					if(usernames[i] == socket.username)
+					var sockets = io.sockets.adapter.rooms[socket.room].sockets
+
+					var keys = Object.keys(sockets)
+
+					for(var i=0; i<keys.length; i++)
 					{
-						var old_username = usernames[i]
-						socket.username = make_username_unique(data.username, usernames)
-						io.sockets.in(socket.room).emit('update', {type:'new_username', username:socket.username, old_username:old_username})
-						return
-					}
-				}
-			})
-		}
-	}
+						var sckt = io.sockets.connected[keys[i]]
 
-	function username_reserve(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(data.key === undefined)
-			{
-				socket.disconnect()
-				return false
-			}
-
-			get_userinfo(socket.username, function(userinfo)
-			{
-				if(userinfo.key === '' || userinfo.key === data.key || data.pass === sconfig.secretpass)
-				{
-					if(userinfo.key !== '' && userinfo.key === data.key)
-					{
-						var updated = true
-					}
-
-					else
-					{
-						var updated = false
-					}
-
-					userinfo.key = get_random_ukey()
-
-					socket.emit('update', {room:socket.room, type:'reserved', username:userinfo.username, key:userinfo.key, updated:updated})
-
-					db.collection('users').update({_id:userinfo._id}, {$set:{key:userinfo.key}})
-				}
-
-				else
-				{
-					socket.emit('update', {room:socket.room, type:'alreadyreserved'})
-				}
-			})
-		}
-	}
-
-	function username_unreserve(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(data.key === undefined)
-			{
-				socket.disconnect()
-				return false
-			}
-
-			get_userinfo(socket.username, function(userinfo)
-			{
-				if(userinfo.key !== '' && userinfo.key === data.key)
-				{
-					userinfo.key = ''
-
-					socket.emit('update', {room:socket.room, type:'unreserved', username:userinfo.username})
-
-					db.collection('users').update({_id:userinfo._id}, {$set:{key:userinfo.key}})
-				}
-
-				else
-				{
-					socket.emit('update', {room:socket.room, type:'couldnotrecover'})
-				}
-			})
-		}
-	}
-
-	function username_recover(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(data.username === undefined || data.key === undefined)
-			{
-				socket.disconnect()
-				return false
-			}
-
-			if(data.username.length === 0 || data.key.length === 0)
-			{
-				socket.disconnect()
-				return false
-			}
-
-			get_roominfo(socket.room, {chat_permission:true}, function(info)
-			{
-				if(!check_permission(info.chat_permission, socket.priv))
-				{
-					return false
-				}
-
-				if(socket.username === data.username)
-				{
-					return false
-				}
-
-				get_userinfo(data.username, function(userinfo)
-				{
-					if(userinfo.key !== '' && userinfo.key === data.key)
-					{
-						var sockets = io.sockets.adapter.rooms[socket.room].sockets
-
-						var keys = Object.keys(sockets)
-
-						for(var i=0; i<keys.length; i++)
+						if(sckt.nickname === data.nickname)
 						{
-							var sckt = io.sockets.connected[keys[i]]
-
-							if(sckt.username === data.username)
-							{
-								sckt.username = make_username_unique('user', get_usernames(socket.room))
-								io.sockets.in(socket.room).emit('update', {type:'new_username', username:sckt.username, old_username:data.username})
-								break
-							}
+							sckt.nickname = make_nickname_unique('user', get_nicknames(socket.room))
+							io.sockets.in(socket.room).emit('update', {type:'new_nickname', nickname:sckt.nickname, old_nickname:data.nickname})
+							break
 						}
-
-						var old_username = socket.username
-						socket.username = data.username
-
-						io.sockets.in(socket.room).emit('update', {type:'new_username', username:socket.username, old_username:old_username})
 					}
 
-					else
+					var old_nickname = socket.nickname
+					socket.nickname = data.nickname
+
+					io.sockets.in(socket.room).emit('update', {type:'new_nickname', nickname:socket.nickname, old_nickname:old_nickname})					
+				}
+
+				else
+				{
+					var nicknames = get_nicknames(socket.room)
+
+					for(var i=0; i<nicknames.length; i++)
 					{
-						socket.emit('update', {room:socket.room, type:'couldnotrecover'})
-					}	
-				})
+						if(nicknames[i] === socket.nickname)
+						{
+							var old_nickname = nicknames[i]
+							socket.nickname = make_nickname_unique(data.nickname, nicknames)
+							io.sockets.in(socket.room).emit('update', {type:'new_nickname', nickname:socket.nickname, old_nickname:old_nickname})
+						}
+					}
+				}
 			})
 		}
 	}
 
-	function topic_change(socket, data)
+	function change_topic(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1013,14 +879,14 @@ module.exports = function(io)
 				return false
 			}
 
-			get_roominfo(socket.room, {topic:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {topic:true}, function(info)
 			{
 				var new_topic = data.topic
 
 				if(new_topic !== info.topic)
 				{
 					info.topic = new_topic
-					info.topic_setter = socket.username
+					info.topic_setter = socket.nickname
 					info.topic_date = Date.now()
 
 					io.sockets.in(socket.room).emit('update', 
@@ -1031,13 +897,13 @@ module.exports = function(io)
 						topic_date: info.topic_date
 					})
 					
-					db.collection('rooms').update({_id:info._id}, {$set:
+					db_manager.update_room(info._id,
 					{
 						topic: info.topic,
 						topic_setter: info.topic_setter,
 						topic_date: info.topic_date,
 						modified: Date.now()
-					}})
+					})
 				}
 			})
 		}
@@ -1045,7 +911,7 @@ module.exports = function(io)
 
 	function change_room_name(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1065,7 +931,7 @@ module.exports = function(io)
 				return false
 			}			
 
-			get_roominfo(socket.room, {name:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {name:true}, function(info)
 			{
 				if(info.name !== data.name)
 				{
@@ -1075,14 +941,14 @@ module.exports = function(io)
 					{
 						type: 'room_name_changed',
 						name: info.name,
-						username: socket.username
+						nickname: socket.nickname
 					})
 					
-					db.collection('rooms').update({_id:info._id}, {$set:
+					db_manager.update_room(info._id,
 					{
 						name: info.name,
 						modified: Date.now()
-					}})					
+					})					
 				}
 			})		
 		}
@@ -1090,7 +956,7 @@ module.exports = function(io)
 
 	function roomlist(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			get_roomlist(function(rooms)
 			{
@@ -1101,7 +967,7 @@ module.exports = function(io)
 
 	function create_room(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(data.name.length === 0 || data.name.length > config.max_room_name_length)
 			{
@@ -1141,16 +1007,28 @@ module.exports = function(io)
 				return false
 			}
 
-			create_roominfo(data, function(info)
+			db_manager.create_room(data, function(info)
 			{
-				socket.emit('update', {room:socket.room, type:'roomcreated', id:info._id.toString(), key:info.keys})
+				db_manager.get_user({_id:socket.user_id}, {}, function(userinfo)				
+				{
+					var id = info._id.toString()
+
+					userinfo.room_keys[id] = info.keys
+
+					db_manager.update_user(socket.user_id,
+					{
+						room_keys: userinfo.room_keys
+					})
+
+					socket.emit('update', {room:socket.room, type:'room_created', id:id})
+				})
 			})
 		}
 	}
 
 	function heartbeat(socket, data)
 	{
-		if(socket.username === undefined)
+		if(socket.nickname === undefined)
 		{
 			socket.emit('update', {room:socket.room, type:'connection_lost'})
 		}
@@ -1158,14 +1036,14 @@ module.exports = function(io)
 
 	function claim_room(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.room === config.main_room_id && data.pass !== sconfig.secretpass)
 			{
 				return false
 			}
 
-			get_roominfo(socket.room, {claimed:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {claimed:true}, function(info)
 			{
 				if(!info.claimed || socket.priv === 'admin' || data.pass === sconfig.secretpass)
 				{
@@ -1190,12 +1068,22 @@ module.exports = function(io)
 					}
 
 					socket.priv = 'admin'
-					
-					socket.emit('update', {room:socket.room, type:'get_key', key:socket.key})
 
-					io.sockets.in(socket.room).emit('update', {type:'announce_claim', username:socket.username, updated:updated})
+					db_manager.get_user({_id:socket.user_id}, {}, function(userinfo)
+					{
+						var id = info._id.toString()
 
-					db.collection('rooms').update({_id:info._id}, {$set:{keys:socket.key, claimed:true, modified:Date.now()}})
+						userinfo.room_keys[id] = socket.key
+
+						db_manager.update_user(socket.user_id,
+						{
+							room_keys: userinfo.room_keys
+						})
+
+						db_manager.update_room(info._id, {keys:socket.key, claimed:true, modified:Date.now()})
+
+						io.sockets.in(socket.room).emit('update', {type:'announce_claim', nickname:socket.nickname, updated:updated})
+					})				
 				}
 			})
 		}
@@ -1203,7 +1091,7 @@ module.exports = function(io)
 
 	function unclaim_room(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin')
 			{
@@ -1211,7 +1099,7 @@ module.exports = function(io)
 				return false
 			}
 
-			get_roominfo(socket.room, {claimed:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {claimed:true}, function(info)
 			{
 				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
 
@@ -1221,9 +1109,7 @@ module.exports = function(io)
 					socc.priv = ''
 				}
 
-				io.sockets.in(socket.room).emit('update', {type:'announce_unclaim', username:socket.username})
-
-				db.collection('rooms').update({_id:info._id}, {$set:
+				db_manager.update_room(info._id,
 				{
 					keys: '', 
 					claimed: false, 
@@ -1238,14 +1124,16 @@ module.exports = function(io)
 					bans: '',
 					public: true,
 					modified: Date.now()
-				}})
+				})
+
+				io.sockets.in(socket.room).emit('update', {type:'announce_unclaim', nickname:socket.nickname})
 			})
 		}		
 	}
 
 	function voice(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1253,25 +1141,25 @@ module.exports = function(io)
 				return false
 			}
 
-			if(data.username === undefined)
+			if(data.nickname === undefined)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			if(data.username.length === 0)
+			if(data.nickname.length === 0)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			if(socket.username === data.username)
+			if(socket.nickname === data.nickname)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			get_roominfo(socket.room, {keys:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {keys:true}, function(info)
 			{
 				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
 
@@ -1279,7 +1167,7 @@ module.exports = function(io)
 				{
 					var socc = io.sockets.connected[ids[i]]
 
-					if(socc.username === data.username)
+					if(socc.nickname === data.nickname)
 					{
 						if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
 						{
@@ -1289,7 +1177,7 @@ module.exports = function(io)
 
 						if(socc.priv === 'voice')
 						{
-							socket.emit('update', {room:socket.room, type:'isalready', what:'voice', who:data.username})
+							socket.emit('update', {room:socket.room, type:'isalready', what:'voice', who:data.nickname})
 							return false
 						}
 
@@ -1300,10 +1188,21 @@ module.exports = function(io)
 						socc.key = repkey.key
 						info.keys = repkey.keys
 
-						io.to(ids[i]).emit('update', {type:'get_key', key:socc.key})
-						io.sockets.in(socket.room).emit('update', {type:'announce_voice', username1:socket.username, username2:data.username})
+						db_manager.get_user({_id:socc.user_id}, {}, function(userinfo)
+						{
+							var id = info._id.toString()
 
-						db.collection('rooms').update({_id:info._id}, {$set:{keys:info.keys}})
+							userinfo.room_keys[id] = socc.key
+
+							db_manager.update_user(socc.user_id,
+							{
+								room_keys: userinfo.room_keys
+							})
+
+							db_manager.update_room(info._id, {keys:info.keys})
+
+							io.sockets.in(socket.room).emit('update', {type:'announce_voice', nickname1:socket.nickname, nickname2:data.nickname})
+						})
 
 						break
 					}
@@ -1314,7 +1213,7 @@ module.exports = function(io)
 
 	function op(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin')
 			{
@@ -1322,19 +1221,19 @@ module.exports = function(io)
 				return false
 			}
 
-			if(data.username === undefined)
+			if(data.nickname === undefined)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			if(data.username.length === 0)
+			if(data.nickname.length === 0)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			get_roominfo(socket.room, {keys:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {keys:true}, function(info)
 			{
 				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
 
@@ -1342,11 +1241,11 @@ module.exports = function(io)
 				{
 					var socc = io.sockets.connected[ids[i]]
 
-					if(socc.username === data.username)
+					if(socc.nickname === data.nickname)
 					{
 						if(socc.priv === 'op')
 						{
-							socket.emit('update', {room:socket.room, type:'isalready', what:'op', who:data.username})
+							socket.emit('update', {room:socket.room, type:'isalready', what:'op', who:data.nickname})
 							return false
 						}
 
@@ -1357,21 +1256,32 @@ module.exports = function(io)
 						socc.key = repkey.key
 						info.keys = repkey.keys
 
-						io.to(ids[i]).emit('update', {type:'get_key', key:socc.key})
-						io.sockets.in(socket.room).emit('update', {type:'announce_op', username1:socket.username, username2:data.username})
+						db_manager.get_user({_id:socc.user_id}, {}, function(userinfo)
+						{
+							var id = info._id.toString()
 
-						db.collection('rooms').update({_id:info._id}, {$set:{keys:info.keys}})								
+							userinfo.room_keys[id] = socc.key
+
+							db_manager.update_user(socc.user_id,
+							{
+								room_keys: userinfo.room_keys
+							})
+
+							db_manager.update_room(info._id, {keys:info.keys})
+
+							io.sockets.in(socket.room).emit('update', {type:'announce_op', nickname1:socket.nickname, nickname2:data.nickname})
+						})
 
 						break
 					}
 				}
 			})
-		}		
+		}
 	}
 
 	function admin(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin')
 			{
@@ -1379,19 +1289,19 @@ module.exports = function(io)
 				return false
 			}
 
-			if(data.username === undefined)
+			if(data.nickname === undefined)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			if(data.username.length === 0)
+			if(data.nickname.length === 0)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			get_roominfo(socket.room, {keys:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {keys:true}, function(info)
 			{
 				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
 
@@ -1399,11 +1309,11 @@ module.exports = function(io)
 				{
 					var socc = io.sockets.connected[ids[i]]
 
-					if(socc.username === data.username)
+					if(socc.nickname === data.nickname)
 					{
 						if(socc.priv === 'admin')
 						{
-							socket.emit('update', {room:socket.room, type:'isalready', what:'admin', who:data.username})
+							socket.emit('update', {room:socket.room, type:'isalready', what:'admin', who:data.nickname})
 							return false
 						}
 
@@ -1414,10 +1324,21 @@ module.exports = function(io)
 						socc.key = repkey.key
 						info.keys = repkey.keys
 
-						io.to(ids[i]).emit('update', {type:'get_key', key:socc.key})
-						io.sockets.in(socket.room).emit('update', {type:'announce_admin', username1:socket.username, username2:data.username})
+						db_manager.get_user({_id:socc.user_id}, {}, function(userinfo)
+						{
+							var id = info._id.toString()
 
-						db.collection('rooms').update({_id:info._id}, {$set:{keys:info.keys}})																
+							userinfo.room_keys[id] = socc.key
+
+							db_manager.update_user(socc.user_id,
+							{
+								room_keys: userinfo.room_keys
+							})
+
+							db_manager.update_room(info._id, {keys:info.keys})
+
+							io.sockets.in(socket.room).emit('update', {type:'announce_admin', nickname1:socket.nickname, nickname2:data.nickname})
+						})
 
 						break
 					}
@@ -1428,7 +1349,7 @@ module.exports = function(io)
 
 	function strip(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1436,25 +1357,25 @@ module.exports = function(io)
 				return false
 			}
 
-			if(data.username === undefined)
+			if(data.nickname === undefined)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			if(data.username.length === 0)
+			if(data.nickname.length === 0)
 			{
 				socket.disconnect()
 				return false
 			}
 					
-			if(socket.username === data.username)
+			if(socket.nickname === data.nickname)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			get_roominfo(socket.room, {keys:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {keys:true}, function(info)
 			{
 				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
 
@@ -1462,7 +1383,7 @@ module.exports = function(io)
 				{
 					var socc = io.sockets.connected[ids[i]]
 
-					if(socc.username === data.username)
+					if(socc.nickname === data.nickname)
 					{
 						if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
 						{
@@ -1472,7 +1393,7 @@ module.exports = function(io)
 
 						if(socc.priv === '')
 						{
-							socket.emit('update', {room:socket.room, type:'isalready', what:'', who:data.username})
+							socket.emit('update', {room:socket.room, type:'isalready', what:'', who:data.nickname})
 							return false
 						}
 
@@ -1484,9 +1405,9 @@ module.exports = function(io)
 							socc.key = ''
 						}
 
-						io.sockets.in(socket.room).emit('update', {type:'announce_strip', username1:socket.username, username2:data.username})
+						io.sockets.in(socket.room).emit('update', {type:'announce_strip', nickname1:socket.nickname, nickname2:data.nickname})
 
-						db.collection('rooms').update({_id:info._id}, {$set:{keys:info.keys}})																
+						db_manager.update_room(info._id, {keys:info.keys})																
 
 						break
 					}
@@ -1497,7 +1418,7 @@ module.exports = function(io)
 
 	function remove_voices(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1505,7 +1426,7 @@ module.exports = function(io)
 				return false
 			}
 
-			get_roominfo(socket.room, {keys:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {keys:true}, function(info)
 			{
 				var key_array = info.keys.split(';')
 
@@ -1534,16 +1455,16 @@ module.exports = function(io)
 					}
 				}
 				
-				io.sockets.in(socket.room).emit('update', {type:'announce_removedvoices', username:socket.username})
+				io.sockets.in(socket.room).emit('update', {type:'announce_removedvoices', nickname:socket.nickname})
 
-				db.collection('rooms').update({_id:info._id}, {$set:{keys:info.keys}})
+				db_manager.update_room(info._id, {keys:info.keys})
 			})
 		}		
 	}
 
 	function remove_ops(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin')
 			{
@@ -1551,7 +1472,7 @@ module.exports = function(io)
 				return false
 			}
 
-			get_roominfo(socket.room, {keys:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {keys:true}, function(info)
 			{
 				var key_array = info.keys.split(';')
 
@@ -1580,16 +1501,16 @@ module.exports = function(io)
 					}
 				}
 				
-				io.sockets.in(socket.room).emit('update', {type:'announce_removedops', username:socket.username})
+				io.sockets.in(socket.room).emit('update', {type:'announce_removedops', nickname:socket.nickname})
 
-				db.collection('rooms').update({_id:info._id}, {$set:{keys:info.keys}})
+				db_manager.update_room(info._id, {keys:info.keys})
 			})
 		}
 	}
 
 	function ban(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1597,19 +1518,19 @@ module.exports = function(io)
 				return false
 			}
 
-			if(data.username === undefined)
+			if(data.nickname === undefined)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			if(data.username.length === 0)
+			if(data.nickname.length === 0)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			get_roominfo(socket.room, {bans:true, keys:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {bans:true, keys:true}, function(info)
 			{
 				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
 
@@ -1617,7 +1538,7 @@ module.exports = function(io)
 				{
 					var socc = io.sockets.connected[ids[i]]
 
-					if(socc.username === data.username)
+					if(socc.nickname === data.nickname)
 					{
 						if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
 						{
@@ -1666,7 +1587,7 @@ module.exports = function(io)
 									continue
 								}
 
-								if(sokk.username === socket.username)
+								if(sokk.nickname === socket.nickname)
 								{
 									continue
 								}
@@ -1680,7 +1601,7 @@ module.exports = function(io)
 								}
 
 								sokk.bannd = true
-								sokk.info1 = socket.username
+								sokk.info1 = socket.nickname
 
 								io.to(ids[j]).emit('update', {type:'redirect', location:config.redirect_url})
 
@@ -1688,7 +1609,7 @@ module.exports = function(io)
 							}
 						}
 
-						db.collection('rooms').update({_id:info._id}, {$set:{bans:info.bans, keys:info.keys}})
+						db_manager.update_room(info._id, {bans:info.bans, keys:info.keys})
 
 						break
 					}
@@ -1699,7 +1620,7 @@ module.exports = function(io)
 
 	function unbanall(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1707,15 +1628,15 @@ module.exports = function(io)
 				return false
 			}
 
-			get_roominfo(socket.room, {bans:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {bans:true}, function(info)
 			{
 				if(info.bans !== '')
 				{
 					info.bans = ''
 
-					io.sockets.in(socket.room).emit('update', {type:'announce_unbanall', username:socket.username})
+					io.sockets.in(socket.room).emit('update', {type:'announce_unbanall', nickname:socket.nickname})
 					
-					db.collection('rooms').update({_id:info._id}, {$set:{bans:info.bans}})
+					db_manager.update_room(info._id, {bans:info.bans})
 				}
 
 				else
@@ -1728,7 +1649,7 @@ module.exports = function(io)
 
 	function unbanlast(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1736,15 +1657,15 @@ module.exports = function(io)
 				return false
 			}
 
-			get_roominfo(socket.room, {bans:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {bans:true}, function(info)
 			{
 				if(info.bans !== '')
 				{
 					info.bans = info.bans.split(';').slice(0,-1).join(';')
 
-					io.sockets.in(socket.room).emit('update', {type:'announce_unbanlast', username:socket.username})
+					io.sockets.in(socket.room).emit('update', {type:'announce_unbanlast', nickname:socket.nickname})
 					
-					db.collection('rooms').update({_id:info._id}, {$set:{bans:info.bans}})
+					db_manager.update_room(info._id, {bans:info.bans})
 				}
 
 				else
@@ -1757,7 +1678,7 @@ module.exports = function(io)
 
 	function bannedcount(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1765,7 +1686,7 @@ module.exports = function(io)
 				return false
 			}
 
-			get_roominfo(socket.room, {bans:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {bans:true}, function(info)
 			{
 				if(info.bans === '')
 				{
@@ -1784,7 +1705,7 @@ module.exports = function(io)
 
 	function kick(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1792,13 +1713,13 @@ module.exports = function(io)
 				return false
 			}
 
-			if(data.username === undefined)
+			if(data.nickname === undefined)
 			{
 				socket.disconnect()
 				return false
 			}
 
-			if(data.username.length === 0)
+			if(data.nickname.length === 0)
 			{
 				socket.disconnect()
 				return false
@@ -1810,7 +1731,7 @@ module.exports = function(io)
 			{
 				var socc = io.sockets.connected[ids[i]]
 
-				if(socc.username === data.username)
+				if(socc.nickname === data.nickname)
 				{
 					if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
 					{
@@ -1821,7 +1742,7 @@ module.exports = function(io)
 					socc.priv = ''
 					socc.key = ''
 					socc.kickd = true
-					socc.info1 = socket.username
+					socc.info1 = socket.nickname
 					
 					io.to(ids[i]).emit('update', {type:'redirect', location:config.redirect_url})
 
@@ -1835,7 +1756,7 @@ module.exports = function(io)
 
 	function change_chat_permission(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1851,25 +1772,25 @@ module.exports = function(io)
 				return false
 			}			
 
-			get_roominfo(socket.room, {chat_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {chat_permission:true}, function(info)
 			{
 				if(data.chat_permission === info.chat_permission)
 				{
 					return false
 				}				
 
-				io.sockets.in(socket.room).emit('update', {type:'chat_permission_change', username:socket.username, chat_permission:data.chat_permission})
+				io.sockets.in(socket.room).emit('update', {type:'chat_permission_change', nickname:socket.nickname, chat_permission:data.chat_permission})
 					
 				info.chat_permission = data.chat_permission
 					
-				db.collection('rooms').update({_id:info._id}, {$set:{chat_permission:info.chat_permission}})
+				db_manager.update_room(info._id, {chat_permission:info.chat_permission})
 			})
 		}
 	}	
 
 	function change_upload_permission(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1885,25 +1806,25 @@ module.exports = function(io)
 				return false
 			}
 
-			get_roominfo(socket.room, {upload_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {upload_permission:true}, function(info)
 			{
 				if(data.upload_permission === info.upload_permission)
 				{
 					return false
 				}
 
-				io.sockets.in(socket.room).emit('update', {type:'upload_permission_change', username:socket.username, upload_permission:data.upload_permission})
+				io.sockets.in(socket.room).emit('update', {type:'upload_permission_change', nickname:socket.nickname, upload_permission:data.upload_permission})
 					
 				info.upload_permission = data.upload_permission
 					
-				db.collection('rooms').update({_id:info._id}, {$set:{upload_permission:info.upload_permission}})
+				db_manager.update_room(info._id, {upload_permission:info.upload_permission})
 			})
 		}
 	}
 
 	function change_radio_permission(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1918,25 +1839,25 @@ module.exports = function(io)
 				return false
 			}			
 
-			get_roominfo(socket.room, {radio_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {radio_permission:true}, function(info)
 			{
 				if(data.radio_permission === info.radio_permission)
 				{
 					return false
 				}				
 
-				io.sockets.in(socket.room).emit('update', {type:'radio_permission_change', username:socket.username, radio_permission:data.radio_permission})
+				io.sockets.in(socket.room).emit('update', {type:'radio_permission_change', nickname:socket.nickname, radio_permission:data.radio_permission})
 					
 				info.radio_permission = data.radio_permission
 					
-				db.collection('rooms').update({_id:info._id}, {$set:{radio_permission:info.radio_permission}})
+				db_manager.update_room(info._id, {radio_permission:info.radio_permission})
 			})
 		}
 	}
 
 	function make_private(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1944,14 +1865,14 @@ module.exports = function(io)
 				return false
 			}
 
-			get_roominfo(socket.room, {public:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {public:true}, function(info)
 			{
 				if(info.public)
 				{
-					io.sockets.in(socket.room).emit('update', {type:'made_private', username:socket.username})
+					io.sockets.in(socket.room).emit('update', {type:'made_private', nickname:socket.nickname})
 					info.public = false
 
-					db.collection('rooms').update({_id:info._id}, {$set:{public:info.public}})
+					db_manager.update_room(info._id, {public:info.public})
 				}
 			})
 		}
@@ -1959,7 +1880,7 @@ module.exports = function(io)
 
 	function make_public(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
@@ -1967,14 +1888,14 @@ module.exports = function(io)
 				return false
 			}
 
-			get_roominfo(socket.room, {public:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {public:true}, function(info)
 			{
 				if(!info.public)
 				{
-					io.sockets.in(socket.room).emit('update', {type:'made_public', username:socket.username})
+					io.sockets.in(socket.room).emit('update', {type:'made_public', nickname:socket.nickname})
 					info.public = true
 
-					db.collection('rooms').update({_id:info._id}, {$set:{public:info.public}})
+					db_manager.update_room(info._id, {public:info.public})
 				}
 			})
 		}
@@ -1982,7 +1903,7 @@ module.exports = function(io)
 
 	function change_radio_source(socket, data)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(data.src === undefined)
 			{
@@ -2002,7 +1923,7 @@ module.exports = function(io)
 				return false
 			}
 
-			get_roominfo(socket.room, {radio_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room}, {radio_permission:true}, function(info)
 			{
 				if(!check_permission(info.radio_permission, socket.priv))
 				{
@@ -2096,7 +2017,7 @@ module.exports = function(io)
 			info.radio_title = data.title
 		}
 
-		info.radio_setter = socket.username
+		info.radio_setter = socket.nickname
 		info.radio_date = Date.now()
 
 		io.sockets.in(socket.room).emit('update', 
@@ -2109,7 +2030,7 @@ module.exports = function(io)
 			radio_date: info.radio_date
 		})
 
-		db.collection('rooms').update({_id:info._id}, {$set:
+		db_manager.update_room(info._id,
 		{
 			radio_type: info.radio_type,
 			radio_source: info.radio_source,
@@ -2117,7 +2038,7 @@ module.exports = function(io)
 			radio_setter: info.radio_setter,
 			radio_date: info.radio_date,
 			modified: Date.now()
-		}})
+		})
 	}
 
 	function do_disconnect(socc)
@@ -2127,7 +2048,7 @@ module.exports = function(io)
 
 	function disconnect(socket)
 	{
-		if(socket.username !== undefined)
+		if(socket.nickname !== undefined)
 		{
 			if(socket.pingd)
 			{
@@ -2152,7 +2073,7 @@ module.exports = function(io)
 			io.sockets.in(socket.room).emit('update', 
 			{
 				type: type,
-				username: socket.username, 
+				nickname: socket.nickname, 
 				usercount: get_usercount(socket.room), 
 				info1: socket.info1, 
 				priv: socket.priv
@@ -2161,440 +2082,6 @@ module.exports = function(io)
 	}
 
 	// Helper Functions
-
-	function compare_roomlist(a, b)
-	{
-		if(a[3] < b[3]) 
-		{
-			return 1
-		}
-
-		if(a[3] > b[3]) 
-		{
-			return -1
-		}
-
-		if(a[3] === b[3])
-		{
-			if (a[4] < b[4]) 
-			{
-				return 1
-			}
-
-			if(a[4] > b[4]) 
-			{
-				return -1
-			}
-
-			return 0
-		}
-	}
-
-	function create_roominfo(data, callback)
-	{
-		roominfo = 
-		{
-			version: roominfo_version,
-			image_url: '',
-			image_uploader: '',
-			image_size: 0,
-			image_date: 0,
-			topic: '',
-			topic_setter: '',
-			topic_date: 0,
-			claimed: true,
-			keys: get_random_key(),
-			radio_type: 'radio',
-			radio_source: '',
-			radio_title: '',
-			radio_setter: '',
-			radio_date: 0,
-			bans: '',
-			modified: Date.now(),
-		}
-
-		if(data.id !== undefined)
-		{
-			roominfo._id = data.id
-		}
-
-		roominfo.name = data.name !== undefined ? data.name : "No Name"
-		roominfo.chat_permission = data.chat_permission !== undefined ? data.chat_permission : 1
-		roominfo.upload_permission = data.upload_permission !== undefined ? data.upload_permission : 1
-		roominfo.radio_permission = data.radio_permission !== undefined ? data.radio_permission : 1
-		roominfo.public = data.public !== undefined ? data.public : true
-
-		db.collection('rooms').insertOne(roominfo, function(err, result)
-		{
-			roominfo.fresh = true
-			callback(roominfo)
-		})
-
-	}
-
-	function get_roominfo(id, fields, callback)
-	{
-		if(Object.keys(fields).length > 0)
-		{
-			fields.version = true
-		}
-
-		if(typeof id === "string" && id !== config.main_room_id)
-		{
-			try
-			{
-				var q = {_id: new mongo.ObjectId(id)}
-			}
-
-			catch(err)
-			{
-				callback(false)
-				return
-			}
-		}
-
-		else
-		{
-			var q = {_id: id}
-		}
-
-		db.collection("rooms").findOne(q, fields, function(err, roominfo)
-		{
-			if(!roominfo)
-			{
-				if(id === config.main_room_id)
-				{
-					create_roominfo({name:config.default_main_room_name, id:config.main_room_id}, function(nri)
-					{
-						callback(nri)
-					})
-				}
-
-				return
-			}
-
-			if(roominfo.version !== roominfo_version)
-			{
-				if(roominfo.name === undefined || typeof roominfo.name !== "string")
-				{
-					roominfo.name = "No Name"
-				}
-				
-				if(roominfo.image_url === undefined || typeof roominfo.image_url !== "string")
-				{
-					roominfo.image_url = ""
-				}
-				
-				if(roominfo.image_uploader === undefined || typeof roominfo.image_uploader !== "string")
-				{
-					roominfo.image_uploader = ""
-				}
-				
-				if(roominfo.image_size === undefined || typeof roominfo.image_size !== "number")
-				{
-					roominfo.image_size = 0
-				}
-				
-				if(roominfo.image_date === undefined || typeof roominfo.image_date !== "number")
-				{
-					roominfo.image_date = 0
-				}
-				
-				if(roominfo.topic === undefined || typeof roominfo.topic !== "string")
-				{
-					roominfo.topic = ""
-				}
-				
-				if(roominfo.topic_setter === undefined || typeof roominfo.topic_setter !== "string")
-				{
-					roominfo.topic_setter = ""
-				}
-				
-				if(roominfo.topic_date === undefined || typeof roominfo.topic_date !== "number")
-				{
-					roominfo.topic_date = 0
-				}
-				
-				if(roominfo.claimed === undefined || typeof roominfo.claimed !== "boolean")
-				{
-					roominfo.claimed = false
-				}
-				
-				if(roominfo.keys === undefined || typeof roominfo.keys !== "string")
-				{
-					roominfo.keys = ""
-				}
-				
-				if(roominfo.upload_permission === undefined || typeof roominfo.upload_permission !== "number")
-				{
-					roominfo.upload_permission = 1
-				}
-				
-				if(roominfo.chat_permission === undefined || typeof roominfo.chat_permission !== "number")
-				{
-					roominfo.chat_permission = 1
-				}
-				
-				if(roominfo.radio_permission === undefined || typeof roominfo.radio_permission !== "number")
-				{
-					roominfo.radio_permission = 1
-				}
-
-				if(roominfo.radio_type === undefined || typeof roominfo.radio_type !== "string")
-				{
-					roominfo.radio_type = "radio"
-				}					
-				
-				if(roominfo.radio_source === undefined || typeof roominfo.radio_source !== "string")
-				{
-					roominfo.radio_source = ""
-				}
-
-				if(roominfo.radio_title === undefined || typeof roominfo.radio_title !== "string")
-				{
-					roominfo.radio_title = ""
-				}
-				
-				if(roominfo.radio_setter === undefined || typeof roominfo.radio_setter !== "string")
-				{
-					roominfo.radio_setter = ""
-				}
-				
-				if(roominfo.radio_date === undefined || typeof roominfo.radio_date !== "number")
-				{
-					roominfo.radio_date = 0
-				}
-				
-				if(roominfo.bans === undefined || typeof roominfo.bans !== "string")
-				{
-					roominfo.bans = ""
-				}
-				
-				if(roominfo.modified === undefined || typeof roominfo.modified !== "number")
-				{
-					roominfo.modified = 0
-				}
-				
-				if(roominfo.public === undefined || typeof roominfo.public !== "boolean")
-				{
-					roominfo.public = true
-				}
-
-				roominfo.version = roominfo_version
-
-				db.collection('rooms').update({_id:roominfo._id}, {$set:roominfo})
-			}
-
-			callback(roominfo)
-		})
-	}
-
-	function get_userinfo(username, callback)
-	{
-		db.collection('users').findOne({username:username}, function(err, userinfo)
-		{
-			if(!userinfo)
-			{
-				userinfo = 
-				{
-					version: version,
-					username: username,
-					key: ''
-				}
-
-				db.collection('users').insertOne(userinfo)
-			}
-
-			else
-			{
-				if(userinfo.version !== userinfo_version)
-				{
-					if(userinfo.username === undefined || typeof userinfo.username !== "string")
-					{
-						userinfo.username = username
-					}
-
-					if(userinfo.key === undefined || typeof userinfo.key !== "string")
-					{
-						userinfo.key = ""
-					}
-
-					userinfo.version = userinfo_version
-
-					db.collection('users').update({_id:userinfo._id}, {$set:userinfo})
-				}
-			}
-
-			callback(userinfo)
-		})
-	}
-
-	function get_usernames(room)
-	{
-		try
-		{
-			var sockets = io.sockets.adapter.rooms[room].sockets
-
-			var usernames = []
-
-			var keys = Object.keys(sockets)
-
-			for(var i=0; i<keys.length; i++)
-			{
-				usernames.push(io.sockets.connected[keys[i]].username)
-			}
-
-			return usernames
-		}
-
-		catch(err)
-		{
-			return []
-		}
-	}
-
-	function get_userlist(room)
-	{
-		try
-		{
-			var sockets = io.sockets.adapter.rooms[room].sockets
-
-			var userlist = []
-
-			var keys = Object.keys(sockets)
-
-			for(var i=0; i<keys.length; i++)
-			{
-				var socc = io.sockets.connected[keys[i]]
-				userlist.push([socc.username, socc.priv])
-			}
-
-			return userlist
-		}
-
-		catch(err)
-		{
-			return []
-		}
-	}
-
-	function get_roomlist(callback)
-	{
-		if(last_roomlist === undefined || (Date.now() - roomlist_lastget > config.roomlist_cache))
-		{
-			var rooms = []
-
-			var md = Date.now() - config.roomlist_max_inactivity
-
-			db.collection('rooms').find({claimed:true, public:true, modified:{$gt:md}}).toArray(function(err, results)
-			{
-				for(var i=0; i<results.length; i++)
-				{
-					var room = results[i]
-
-					rooms.push([room._id.toString(), room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room._id.toString()), room.modified])
-				}
-
-				rooms.sort(compare_roomlist).splice(config.max_roomlist_items)
-
-				last_roomlist = rooms
-				roomlist_lastget = Date.now()
-
-				callback(last_roomlist)
-			})
-		}
-
-		else
-		{
-			callback(last_roomlist)
-		}
-	}
-
-	function get_usercount(id)
-	{
-		try 
-		{
-			return Object.keys(io.sockets.adapter.rooms[id].sockets).length
-		}
-
-		catch(err) 
-		{
-			return 0
-		}
-	}
-
-	function change_image(room, fname, uploader, size)
-	{
-		get_roominfo(room, {image_url:true}, function(info)
-		{
-			if(info.image_url !== "")
-			{
-				exec(`find ${images_root} -maxdepth 1 -type f -name "${info._id}_*" -not -name "${fname}" -delete`)
-			}
-
-			var pth = config.public_images_location + fname
-
-			info.image_url = pth
-			info.image_uploader = uploader
-			info.image_size = size
-			info.image_date = Date.now()	
-
-			io.sockets.in(room).emit('update',
-			{
-				type: 'image_change',
-				image_url: info.image_url,
-				image_uploader: info.image_uploader,
-				image_size: info.image_size,
-				image_date: info.image_date
-			})
-				
-			db.collection('rooms').update({_id:info._id}, {$set:
-			{
-				image_url: info.image_url, 
-				image_uploader: info.image_uploader, 
-				image_size: info.image_size, 
-				image_date: info.image_date,
-				modified: Date.now()
-			}})
-		})
-	}
-
-	function check_image_url(uri)
-	{
-		if(uri.split(' ').length > 1)
-		{
-			return false
-		}
-
-		var ext = uri.split('.').pop().toLowerCase()
-
-		if(ext !== 'jpg' && ext !== 'png' && ext !== 'jpeg' && ext !== 'gif')
-		{
-			return false
-		}
-
-		return true
-	}
-
-	function clean_string(s)
-	{
-		return s.replace(/</g, '').replace(/\s+/g, ' ').trim()
-	}
-
-	function clean_string2(s)
-	{
-		return s.replace(/\s+/g, ' ').trim()
-	}
-
-	function clean_string3(s)
-	{
-		return s.replace(/[\\"']/g, '')
-	}
-
-	function clean_string4(s)
-	{
-		return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\#\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
-	}
 
 	function get_random_int(min, max)
 	{
@@ -2658,6 +2145,206 @@ module.exports = function(io)
 		}
 
 		return "_ukey_" + Date.now() + text
+	}	
+
+	function compare_roomlist(a, b)
+	{
+		if(a[3] < b[3]) 
+		{
+			return 1
+		}
+
+		if(a[3] > b[3]) 
+		{
+			return -1
+		}
+
+		if(a[3] === b[3])
+		{
+			if (a[4] < b[4]) 
+			{
+				return 1
+			}
+
+			if(a[4] > b[4]) 
+			{
+				return -1
+			}
+
+			return 0
+		}
+	}
+
+	function get_nicknames(room)
+	{
+		try
+		{
+			var sockets = io.sockets.adapter.rooms[room].sockets
+
+			var nicknames = []
+
+			var keys = Object.keys(sockets)
+
+			for(var i=0; i<keys.length; i++)
+			{
+				nicknames.push(io.sockets.connected[keys[i]].nickname)
+			}
+
+			return nicknames
+		}
+
+		catch(err)
+		{
+			return []
+		}
+	}
+
+	function get_userlist(room)
+	{
+		try
+		{
+			var sockets = io.sockets.adapter.rooms[room].sockets
+
+			var userlist = []
+
+			var keys = Object.keys(sockets)
+
+			for(var i=0; i<keys.length; i++)
+			{
+				var socc = io.sockets.connected[keys[i]]
+				userlist.push([socc.nickname, socc.priv])
+			}
+
+			return userlist
+		}
+
+		catch(err)
+		{
+			return []
+		}
+	}
+
+	function get_roomlist(callback)
+	{
+		if(last_roomlist === undefined || (Date.now() - roomlist_lastget > config.roomlist_cache))
+		{
+			var rooms = []
+
+			var md = Date.now() - config.roomlist_max_inactivity
+
+			db_manager.find_rooms({claimed:true, public:true, modified:{$gt:md}}, function(results)
+			{
+				if(!results)
+				{
+					return false
+				}
+
+				for(var i=0; i<results.length; i++)
+				{
+					var room = results[i]
+
+					rooms.push([room._id.toString(), room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room._id.toString()), room.modified])
+				}
+
+				rooms.sort(compare_roomlist).splice(config.max_roomlist_items)
+
+				last_roomlist = rooms
+				roomlist_lastget = Date.now()
+
+				callback(last_roomlist)
+			})
+		}
+
+		else
+		{
+			callback(last_roomlist)
+		}
+	}
+
+	function get_usercount(id)
+	{
+		try 
+		{
+			return Object.keys(io.sockets.adapter.rooms[id].sockets).length
+		}
+
+		catch(err) 
+		{
+			return 0
+		}
+	}
+
+	function change_image(room, fname, uploader, size)
+	{
+		db_manager.get_room({_id:room}, {image_url:true}, function(info)
+		{
+			if(info.image_url !== "")
+			{
+				exec(`find ${images_root} -maxdepth 1 -type f -name "${info._id}_*" -not -name "${fname}" -delete`)
+			}
+
+			var pth = config.public_images_location + fname
+
+			info.image_url = pth
+			info.image_uploader = uploader
+			info.image_size = size
+			info.image_date = Date.now()	
+
+			io.sockets.in(room).emit('update',
+			{
+				type: 'image_change',
+				image_url: info.image_url,
+				image_uploader: info.image_uploader,
+				image_size: info.image_size,
+				image_date: info.image_date
+			})
+				
+			db_manager.update_room(info._id,
+			{
+				image_url: info.image_url, 
+				image_uploader: info.image_uploader, 
+				image_size: info.image_size, 
+				image_date: info.image_date,
+				modified: Date.now()
+			})
+		})
+	}
+
+	function check_image_url(uri)
+	{
+		if(uri.split(' ').length > 1)
+		{
+			return false
+		}
+
+		var ext = uri.split('.').pop().toLowerCase()
+
+		if(ext !== 'jpg' && ext !== 'png' && ext !== 'jpeg' && ext !== 'gif')
+		{
+			return false
+		}
+
+		return true
+	}
+
+	function clean_string(s)
+	{
+		return s.replace(/</g, '').replace(/\s+/g, ' ').trim()
+	}
+
+	function clean_string2(s)
+	{
+		return s.replace(/\s+/g, ' ').trim()
+	}
+
+	function clean_string3(s)
+	{
+		return s.replace(/[\\"']/g, '')
+	}
+
+	function clean_string4(s)
+	{
+		return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\#\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
 	}
 
 	function replace_key(priv, okey, keys)
@@ -2764,15 +2451,15 @@ module.exports = function(io)
 		return res.join("").toLowerCase()
 	}	
 
-	function make_username_unique(username, usernames)
+	function make_nickname_unique(nickname, nicknames)
 	{
 		for(var i=0; i<5; i++)
 		{
 			var matched = false
 
-			for(var j=0; j<usernames.length; j++)
+			for(var j=0; j<nicknames.length; j++)
 			{
-				if(usernames[j] === username)
+				if(nicknames[j] === nickname)
 				{
 					matched = true
 					break
@@ -2783,14 +2470,14 @@ module.exports = function(io)
 			{
 				if(i === 4)
 				{
-					return make_username_unique(word_generator('cvcvcv'), usernames)
+					return make_nickname_unique(word_generator('cvcvcv'), nicknames)
 				}
 
-				username = username + get_random_int(2, 9)
+				nickname = nickname + get_random_int(2, 9)
 
-				if(username.length > config.max_username_length)
+				if(nickname.length > config.max_nickname_length)
 				{
-					username = username.substring(0, parseInt(config.max_username_length / 2))
+					nickname = nickname.substring(0, parseInt(config.max_nickname_length / 2))
 				}
 			}
 
@@ -2800,18 +2487,7 @@ module.exports = function(io)
 			}
 		}
 
-		return username
-	}
-
-	function remove_username(username, usernames)
-	{
-		for(var i=0; i<usernames.length; i++)
-		{
-			if(usernames[i] === username)
-			{
-				usernames.splice(i, 1)
-			}
-		}
+		return nickname
 	}
 
 	function get_youtube_id(url)
