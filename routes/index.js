@@ -38,9 +38,9 @@ module.exports = function(db_manager, config)
 	c.vars.heartbeat_interval = config.heartbeat_interval
 	c.vars.youtube_enabled = config.youtube_enabled
 
-	function clean_string2(s)
+	function clean_string4(s)
 	{
-		return s.replace(/\s+/g, ' ').trim()
+		return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\#\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
 	}	
 
 	function require_login(req, res, next)
@@ -105,7 +105,7 @@ module.exports = function(db_manager, config)
 			return false
 		}
 
-		if(username.length !== clean_string2(username).length)
+		if(username.length !== clean_string4(username).length)
 		{
 			return false
 		}
@@ -160,7 +160,7 @@ module.exports = function(db_manager, config)
 			return false
 		}
 
-		if(username.length !== clean_string2(username).length)
+		if(username.length !== clean_string4(username).length)
 		{
 			return false
 		}

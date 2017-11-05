@@ -22,9 +22,11 @@ module.exports = function(db, db_manager, config, sconfig)
 		secret: sconfig.session_secret,
 		resave: false,
 		saveUninitialized: true,
-		cookie: {secure: false},
+		cookie: {secure: false, maxAge: 123456789000},
 		store: new MongoStore({db:db})
-	}	
+	}
+
+	console.log(`ENV: ${app.get('env')}`)
 
 	if(app.get('env') === 'production' && config.https_enabled) 
 	{

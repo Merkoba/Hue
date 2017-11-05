@@ -112,10 +112,10 @@
 
 			var message_timeout
 
-			function clean_string2(s)
+			function clean_string4(s)
 			{
-				return s.replace(/\s+/g, ' ').trim()
-			}
+				return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\#\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
+			}			
 
 			function set_message(s)
 			{
@@ -135,17 +135,13 @@
 			{
 				if(mode === "login")
 				{
-					$("#login_username").val(clean_string2($("#login_username").val()))
-
-					var username = $("#login_username").val()
+					var username = $("#login_username").val().trim()
 					var password = $("#login_password").val()
 				}
 
 				else if(mode === "register")
 				{
-					$("#register_username").val(clean_string2($("#register_username").val()))
-
-					var username = $("#register_username").val()
+					var username = $("#register_username").val().trim()
 					var password = $("#register_password").val()
 					var password2 = $("#register_password2").val()
 				}
@@ -167,9 +163,10 @@
 					return false
 				}
 
-				if(username.length !== clean_string2(username).length)
+				if(username.length !== clean_string4(username).length)
 				{
-					return false
+					set_message("Username Contains Illegal Characters")
+					return 
 				}
 
 				if(password.length < min_password_length)
