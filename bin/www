@@ -14,7 +14,7 @@ mongo.connect(config.mongodb_path, function(err, db)
 	else
 	{
 		const utilz = require('../public/js/utilz.js')()
-		const db_manager = require('../db_manager.js')(db, config, sconfig, utilz)
+		const db_manager = require('../db_manager.js')(db, config, utilz)
 		const app = require('../app')(db, db_manager, config, sconfig, utilz)
 		const debug = require('debug')('hue:server')
 		const http = require('http')

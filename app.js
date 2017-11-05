@@ -5,7 +5,7 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 	const MongoStore = require('connect-mongo')(session);
 	const path = require('path')
 	const bodyParser = require('body-parser')
-	const routes = require('./routes/index')(db_manager, config, sconfig)
+	const routes = require('./routes/index')(db_manager, config, utilz)
 
 	var app = express()
 

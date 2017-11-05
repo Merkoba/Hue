@@ -1,4 +1,4 @@
-module.exports = function(db, config, sconfig, utilz)
+module.exports = function(db, config, utilz)
 {
 	var mongo = require('mongodb')
 
