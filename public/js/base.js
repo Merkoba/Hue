@@ -191,6 +191,8 @@ function get_nickname()
 	if(nickname === undefined)
 	{
 		nickname = user_username
+
+		save_default_nickname(nickname)
 	}
 }
 
@@ -3429,9 +3431,6 @@ function register_commands()
 	commands.push('/public')
 	commands.push('/radio')
 	commands.push('/privacy')
-	commands.push('/reserve')
-	commands.push('/unreserve')
-	commands.push('/recover')
 	commands.push('/status')
 	commands.push('/userinfo')
 	commands.push('/topic')
@@ -3703,26 +3702,6 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/privacy'))
 			{
 				show_public()
-			}
-
-			else if(oiStartsWith(lmsg, '/reserve'))
-			{
-				reserve(arg)
-			}
-
-			else if(oiEquals(lmsg, '/reserve'))
-			{
-				reserve()
-			}
-
-			else if(oiEquals(lmsg, '/unreserve'))
-			{
-				unreserve()
-			}
-
-			else if(oiStartsWith(lmsg, '/recover'))
-			{	
-				recover(arg)
 			}
 
 			else if(oiEquals(lmsg, '/status'))
@@ -6566,10 +6545,6 @@ function start_storageui()
 				}
 			}
 		],
-		after_reset: function()
-		{
-			pup()
-		},
 		msg: msg_storageui
 	})
 }
