@@ -194,20 +194,6 @@ function get_nickname()
 	}
 }
 
-function check_nickname()
-{
-	var nname = clean_string4($("#pick_nickname_input").val().substring(0, max_nickname_length))
-	
-	if(nname.length !== 0)
-	{
-		nickname = nname
-		save_room_nickname(nname)
-		save_default_nickname(nname)
-		msg_nickname_picker.close()
-		init2()
-	}
-}
-
 function save_room_nickname(nname)
 {
 	var room_nicknames = get_room_nicknames()
