@@ -1,4 +1,4 @@
-module.exports = function(db, db_manager, config, sconfig)
+module.exports = function(db, db_manager, config, sconfig, utilz)
 {
 	const express = require('express')
 	const session = require('express-session')

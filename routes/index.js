@@ -1,4 +1,4 @@
-module.exports = function(db_manager, config)
+module.exports = function(db_manager, config, utilz)
 {
 	const express = require('express')
 	const router = express.Router()
@@ -36,12 +36,7 @@ module.exports = function(db_manager, config)
 	c.vars.default_topic_claimed = config.default_topic_claimed
 	c.vars.afk_timeout_duration = config.afk_timeout_duration
 	c.vars.heartbeat_interval = config.heartbeat_interval
-	c.vars.youtube_enabled = config.youtube_enabled
-
-	function clean_string4(s)
-	{
-		return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\#\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
-	}	
+	c.vars.youtube_enabled = config.youtube_enabled	
 
 	function require_login(req, res, next)
 	{
@@ -105,7 +100,7 @@ module.exports = function(db_manager, config)
 			return false
 		}
 
-		if(username.length !== clean_string4(username).length)
+		if(username.length !== utilz.clean_string4(username).length)
 		{
 			return false
 		}
@@ -160,7 +155,7 @@ module.exports = function(db_manager, config)
 			return false
 		}
 
-		if(username.length !== clean_string4(username).length)
+		if(username.length !== utilz.clean_string4(username).length)
 		{
 			return false
 		}

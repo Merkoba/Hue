@@ -83,6 +83,7 @@ var roomlist_filter_string = ""
 var yt_player
 var youtube_player
 var fetched_room_id
+var utilz = Utilz()
 
 function init()
 {
@@ -278,7 +279,7 @@ function change_room_name(arg)
 		chat_announce('[', ']', "You are not a room operator or admin", 'small')		
 	}
 
-	arg = clean_string2(arg.substring(0, max_room_name_length))
+	arg = utilz.clean_string2(arg.substring(0, max_room_name_length))
 
 	if(arg === room_name)
 	{
@@ -2179,7 +2180,7 @@ function create_room_submit(oname=false)
 
 	if(oname)
 	{
-		data.name = clean_string2(oname.substring(0, max_room_name_length))
+		data.name = utilz.clean_string2(oname.substring(0, max_room_name_length))
 
 		if(data.name === "")
 		{
@@ -2194,7 +2195,7 @@ function create_room_submit(oname=false)
 
 	else
 	{
-		data.name = clean_string2($('#create_room_name').val().substring(0, max_room_name_length))
+		data.name = utilz.clean_string2($('#create_room_name').val().substring(0, max_room_name_length))
 
 		if(data.name === "")
 		{
@@ -3330,26 +3331,6 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 	goto_bottom()
 }
 
-function clean_string(s)
-{
-	return s.replace(/</g, '').replace(/\s+/g, ' ').trim()
-}
-
-function clean_string2(s)
-{
-	return s.replace(/\s+/g, ' ').trim()
-}
-
-function clean_string3(s)
-{
-	return s.replace(/[\\"']/g, '')
-}
-
-function clean_string4(s)
-{
-	return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\#\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
-}
-
 jQuery.fn.urlize = function() 
 {
 	if(this.length > 0) 
@@ -3447,7 +3428,7 @@ function register_commands()
 
 function send_to_chat(msg)
 {
-	msg = clean_string2(msg.substring(0, max_input_length))
+	msg = utilz.clean_string2(msg.substring(0, max_input_length))
 
 	if(msg_is_ok(msg))
 	{
@@ -3847,7 +3828,7 @@ function change_topic(dtopic)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		dtopic = clean_string2(dtopic.substring(0, max_topic_length))
+		dtopic = utilz.clean_string2(dtopic.substring(0, max_topic_length))
 
 		if(dtopic.length > 0)
 		{
@@ -3873,7 +3854,7 @@ function topicadd(arg)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		arg = clean_string2(arg)
+		arg = utilz.clean_string2(arg)
 
 		if(arg.length === 0)
 		{
@@ -3951,7 +3932,7 @@ function topicstart(arg)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
-		arg = clean_string2(arg)
+		arg = utilz.clean_string2(arg)
 
 		if(arg.length === 0)
 		{
@@ -5711,7 +5692,7 @@ function change_radio_source(src)
 			}
 		}
 
-		src = clean_string2(src)
+		src = utilz.clean_string2(src)
 
 		if(src.length > 0 && src.length <= max_radio_source_length)
 		{

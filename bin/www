@@ -13,9 +13,10 @@ mongo.connect(config.mongodb_path, function(err, db)
 
 	else
 	{
-		const db_manager = require('../db_manager.js')(db, config, sconfig)
-		const app = require('../app')(db, db_manager, config, sconfig)
-		const debug = require('debug')('armtrak:server')
+		const utilz = require('../public/js/utilz.js')()
+		const db_manager = require('../db_manager.js')(db, config, sconfig, utilz)
+		const app = require('../app')(db, db_manager, config, sconfig, utilz)
+		const debug = require('debug')('hue:server')
 		const http = require('http')
 		const port = normalizePort(process.env.PORT || '3210')
 		
@@ -29,7 +30,7 @@ mongo.connect(config.mongodb_path, function(err, db)
 
 		const io = require('socket.io').listen(server)
 
-		require('../sockets')(io, db_manager, config, sconfig)
+		require('../sockets')(io, db_manager, config, sconfig, utilz)
 
 		function normalizePort(val) 
 		{

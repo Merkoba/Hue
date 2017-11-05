@@ -1,4 +1,4 @@
-module.exports = function(io, db_manager, config, sconfig)
+module.exports = function(io, db_manager, config, sconfig, utilz)
 {
 	const fs = require('fs')
 	const path = require('path')
@@ -477,7 +477,7 @@ module.exports = function(io, db_manager, config, sconfig)
 			return false
 		}
 
-		if(data.room_id.length !== clean_string4(data.room_id).length)
+		if(data.room_id.length !== utilz.clean_string4(data.room_id).length)
 		{
 			socket.disconnect()
 			return false
@@ -630,7 +630,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			if(data.msg.length !== clean_string2(data.msg).length)
+			if(data.msg.length !== utilz.clean_string2(data.msg).length)
 			{
 				socket.disconnect()
 				return false
@@ -789,7 +789,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			if(data.nickname.length !== clean_string4(data.nickname).length)
+			if(data.nickname.length !== utilz.clean_string4(data.nickname).length)
 			{
 				socket.disconnect()
 				return false
@@ -872,7 +872,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			if(data.topic.length !== clean_string2(data.topic).length)
+			if(data.topic.length !== utilz.clean_string2(data.topic).length)
 			{
 				socket.disconnect()
 				return false
@@ -924,7 +924,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			if(data.name.length !== clean_string2(data.name).length)
+			if(data.name.length !== utilz.clean_string2(data.name).length)
 			{
 				socket.disconnect()
 				return false
@@ -974,7 +974,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			if(data.name.length !== clean_string2(data.name).length)
+			if(data.name.length !== utilz.clean_string2(data.name).length)
 			{
 				socket.disconnect()
 				return false
@@ -2324,26 +2324,6 @@ module.exports = function(io, db_manager, config, sconfig)
 		}
 
 		return true
-	}
-
-	function clean_string(s)
-	{
-		return s.replace(/</g, '').replace(/\s+/g, ' ').trim()
-	}
-
-	function clean_string2(s)
-	{
-		return s.replace(/\s+/g, ' ').trim()
-	}
-
-	function clean_string3(s)
-	{
-		return s.replace(/[\\"']/g, '')
-	}
-
-	function clean_string4(s)
-	{
-		return s.replace(/[^a-z0-9\-\_\s\@\!\?\&\#\%\<\>\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~]+/gi, "").replace(/\s+/g, " ").trim()
 	}
 
 	function replace_key(priv, okey, keys)
