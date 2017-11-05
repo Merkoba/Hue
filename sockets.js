@@ -685,7 +685,7 @@ module.exports = function(io, db_manager, config, sconfig)
 
 				if(clean)
 				{
-					var fname = `${info._id}_${Date.now()}_${get_random_int(0, 1000)}.${data.image_url.split('.').pop(-1)}`
+					var fname = `${info._id.toString()}_${Date.now()}_${get_random_int(0, 1000)}.${data.image_url.split('.').pop(-1)}`
 					
 					exec(`wget -O ${images_root}/${fname} -q "${data.image_url}"`, function(status, output)
 					{
@@ -742,7 +742,7 @@ module.exports = function(io, db_manager, config, sconfig)
 
 				if(clean)
 				{
-					var fname = `${info._id}_${Date.now()}_${get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
+					var fname = `${info._id.toString()}_${Date.now()}_${get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
 
 					fs.writeFile(images_root + '/' + fname, data.image_file, function (err,data) 
 					{
@@ -2279,7 +2279,7 @@ module.exports = function(io, db_manager, config, sconfig)
 		{
 			if(info.image_url !== "")
 			{
-				exec(`find ${images_root} -maxdepth 1 -type f -name "${info._id}_*" -not -name "${fname}" -delete`)
+				exec(`find ${images_root} -maxdepth 1 -type f -name "${info._id.toString()}_*" -not -name "${fname}" -delete`)
 			}
 
 			var pth = config.public_images_location + fname

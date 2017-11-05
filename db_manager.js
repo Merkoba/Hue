@@ -220,7 +220,7 @@ module.exports = function(db, config, sconfig)
 	{
 		if(_id !== undefined)
 		{
-			if(typeof _id === "string")
+			if(typeof _id === "string" && _id !== config.main_room_id)
 			{
 				try
 				{
