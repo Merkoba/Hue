@@ -1,6 +1,6 @@
 var socket
-var ls_room_nicknames = "room_nicknames_v2"
-var ls_settings = "settings_v6"
+var ls_room_nicknames = "room_nicknames_v11"
+var ls_settings = "settings_v11"
 var settings
 var is_public
 var room_name
@@ -565,6 +565,7 @@ function show_nickname()
 
 function socket_emit(dest, obj)
 {
+	console.log(`Emit: ${dest}`)
 	socket.emit(dest, obj)	
 }
 

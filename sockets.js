@@ -529,9 +529,9 @@ module.exports = function(io, db_manager, config, sconfig)
 					}
 				}
 
-				socket.room = info._id.toString()
+				socket.room_id = info._id.toString()
 
-				socket.join(socket.room)
+				socket.join(socket.room_id)
 
 				if(info.fresh)
 				{
@@ -569,7 +569,7 @@ module.exports = function(io, db_manager, config, sconfig)
 					}
 				}
 
-				socket.nickname = make_nickname_unique(data.nickname, get_nicknames(socket.room))
+				socket.nickname = make_nickname_unique(data.nickname, get_nicknames(socket.room_id))
 
 				socket.emit('update', 
 				{
@@ -583,7 +583,7 @@ module.exports = function(io, db_manager, config, sconfig)
 					topic: info.topic, 
 					topic_setter: info.topic_setter,
 					topic_date: info.topic_date,
-					userlist: get_userlist(socket.room), 
+					userlist: get_userlist(socket.room_id), 
 					priv: socket.priv, 
 					upload_permission: info.upload_permission, 
 					chat_permission: info.chat_permission, 
@@ -598,10 +598,10 @@ module.exports = function(io, db_manager, config, sconfig)
 					key: key
 				})
 
-				socket.broadcast.in(socket.room).emit('update',
+				socket.broadcast.in(socket.room_id).emit('update',
 				{
 					type: 'userjoin',
-					usercount: get_usercount(socket.room),
+					usercount: get_usercount(socket.room_id),
 					nickname: socket.nickname,
 					priv: socket.priv
 				})
@@ -637,14 +637,14 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {chat_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {chat_permission:true}, function(info)
 			{
 				if(!check_permission(info.chat_permission, socket.priv))
 				{
 					return false
 				}
 
-				socket.broadcast.in(socket.room).emit('update', {type:'chat_msg', nickname:socket.nickname, msg:data.msg})
+				socket.broadcast.in(socket.room_id).emit('update', {type:'chat_msg', nickname:socket.nickname, msg:data.msg})
 
 				db_manager.update_room(info._id, {modified:Date.now()})
 			})
@@ -673,7 +673,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}		    
 
-			db_manager.get_room({_id:socket.room}, {upload_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {upload_permission:true}, function(info)
 			{
 				if(!check_permission(info.upload_permission, socket.priv))
 				{
@@ -696,14 +696,14 @@ module.exports = function(io, db_manager, config, sconfig)
 
 							if(output > 0 && (output <= config.max_image_size))
 							{
-								change_image(socket.room, fname, socket.nickname, output)
+								change_image(socket.room_id, fname, socket.nickname, output)
 							}
 
 							else
 							{
 								exec(`rm -f ${images_root}/${fname}`)
 
-								socket.emit('update', {room:socket.room, type:'upload_error'})								
+								socket.emit('update', {room:socket.room_id, type:'upload_error'})								
 							}
 						})
 					})
@@ -722,7 +722,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {upload_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {upload_permission:true}, function(info)
 			{
 				if(!check_permission(info.upload_permission, socket.priv))
 				{
@@ -733,7 +733,7 @@ module.exports = function(io, db_manager, config, sconfig)
 
 				if(size === 0 || (size > config.max_image_size))
 				{
-					socket.emit('update', {room:socket.room, type:'upload_error'})													
+					socket.emit('update', {room:socket.room_id, type:'upload_error'})													
 					return false
 				}
 
@@ -749,12 +749,12 @@ module.exports = function(io, db_manager, config, sconfig)
 					{
 						if(err) 
 						{
-							socket.emit('update', {room:socket.room, type:'upload_error'})
+							socket.emit('update', {room:socket.room_id, type:'upload_error'})
 						}
 
 						else 
 						{
-							change_image(socket.room, fname, socket.nickname, size)
+							change_image(socket.room_id, fname, socket.nickname, size)
 						}
 					})
 				}
@@ -796,7 +796,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {chat_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {chat_permission:true}, function(info)
 			{
 				if(!check_permission(info.chat_permission, socket.priv))
 				{
@@ -805,7 +805,7 @@ module.exports = function(io, db_manager, config, sconfig)
 
 				if(data.nickname === socket.user_username)
 				{
-					var sockets = io.sockets.adapter.rooms[socket.room].sockets
+					var sockets = io.sockets.adapter.rooms[socket.room_id].sockets
 
 					var keys = Object.keys(sockets)
 
@@ -815,8 +815,8 @@ module.exports = function(io, db_manager, config, sconfig)
 
 						if(sckt.nickname === data.nickname)
 						{
-							sckt.nickname = make_nickname_unique('user', get_nicknames(socket.room))
-							io.sockets.in(socket.room).emit('update', {type:'new_nickname', nickname:sckt.nickname, old_nickname:data.nickname})
+							sckt.nickname = make_nickname_unique('user', get_nicknames(socket.room_id))
+							io.sockets.in(socket.room_id).emit('update', {type:'new_nickname', nickname:sckt.nickname, old_nickname:data.nickname})
 							break
 						}
 					}
@@ -824,12 +824,12 @@ module.exports = function(io, db_manager, config, sconfig)
 					var old_nickname = socket.nickname
 					socket.nickname = data.nickname
 
-					io.sockets.in(socket.room).emit('update', {type:'new_nickname', nickname:socket.nickname, old_nickname:old_nickname})					
+					io.sockets.in(socket.room_id).emit('update', {type:'new_nickname', nickname:socket.nickname, old_nickname:old_nickname})					
 				}
 
 				else
 				{
-					var nicknames = get_nicknames(socket.room)
+					var nicknames = get_nicknames(socket.room_id)
 
 					for(var i=0; i<nicknames.length; i++)
 					{
@@ -837,7 +837,7 @@ module.exports = function(io, db_manager, config, sconfig)
 						{
 							var old_nickname = nicknames[i]
 							socket.nickname = make_nickname_unique(data.nickname, nicknames)
-							io.sockets.in(socket.room).emit('update', {type:'new_nickname', nickname:socket.nickname, old_nickname:old_nickname})
+							io.sockets.in(socket.room_id).emit('update', {type:'new_nickname', nickname:socket.nickname, old_nickname:old_nickname})
 						}
 					}
 				}
@@ -879,7 +879,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {topic:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {topic:true}, function(info)
 			{
 				var new_topic = data.topic
 
@@ -889,7 +889,7 @@ module.exports = function(io, db_manager, config, sconfig)
 					info.topic_setter = socket.nickname
 					info.topic_date = Date.now()
 
-					io.sockets.in(socket.room).emit('update', 
+					io.sockets.in(socket.room_id).emit('update', 
 					{
 						type: 'topic_change',
 						topic: info.topic,
@@ -931,13 +931,13 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}			
 
-			db_manager.get_room({_id:socket.room}, {name:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {name:true}, function(info)
 			{
 				if(info.name !== data.name)
 				{
 					info.name = data.name
 
-					io.sockets.in(socket.room).emit('update', 
+					io.sockets.in(socket.room_id).emit('update', 
 					{
 						type: 'room_name_changed',
 						name: info.name,
@@ -960,7 +960,7 @@ module.exports = function(io, db_manager, config, sconfig)
 		{
 			get_roomlist(function(rooms)
 			{
-				socket.emit('update', {room:socket.room, type:'roomlist', roomlist:rooms})
+				socket.emit('update', {room:socket.room_id, type:'roomlist', roomlist:rooms})
 			})
 		}
 	}
@@ -1020,7 +1020,7 @@ module.exports = function(io, db_manager, config, sconfig)
 						room_keys: userinfo.room_keys
 					})
 
-					socket.emit('update', {room:socket.room, type:'room_created', id:id})
+					socket.emit('update', {room:socket.room_id, type:'room_created', id:id})
 				})
 			})
 		}
@@ -1030,7 +1030,7 @@ module.exports = function(io, db_manager, config, sconfig)
 	{
 		if(socket.nickname === undefined)
 		{
-			socket.emit('update', {room:socket.room, type:'connection_lost'})
+			socket.emit('update', {room:socket.room_id, type:'connection_lost'})
 		}
 	}
 
@@ -1038,12 +1038,12 @@ module.exports = function(io, db_manager, config, sconfig)
 	{
 		if(socket.nickname !== undefined)
 		{
-			if(socket.room === config.main_room_id && data.pass !== sconfig.secretpass)
+			if(socket.room_id === config.main_room_id && data.pass !== sconfig.secretpass)
 			{
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {claimed:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {claimed:true}, function(info)
 			{
 				if(!info.claimed || socket.priv === 'admin' || data.pass === sconfig.secretpass)
 				{
@@ -1059,7 +1059,7 @@ module.exports = function(io, db_manager, config, sconfig)
 						var updated = false
 					}	
 
-					var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
+					var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
 					for(var i=0; i<ids.length; i++)
 					{
@@ -1082,7 +1082,7 @@ module.exports = function(io, db_manager, config, sconfig)
 
 						db_manager.update_room(info._id, {keys:socket.key, claimed:true, modified:Date.now()})
 
-						io.sockets.in(socket.room).emit('update', {type:'announce_claim', nickname:socket.nickname, updated:updated})
+						io.sockets.in(socket.room_id).emit('update', {type:'announce_claim', nickname:socket.nickname, updated:updated})
 					})				
 				}
 			})
@@ -1099,9 +1099,9 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {claimed:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {claimed:true}, function(info)
 			{
-				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
+				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
 				for(var i=0; i<ids.length; i++)
 				{
@@ -1126,7 +1126,7 @@ module.exports = function(io, db_manager, config, sconfig)
 					modified: Date.now()
 				})
 
-				io.sockets.in(socket.room).emit('update', {type:'announce_unclaim', nickname:socket.nickname})
+				io.sockets.in(socket.room_id).emit('update', {type:'announce_unclaim', nickname:socket.nickname})
 			})
 		}		
 	}
@@ -1159,9 +1159,9 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {keys:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {keys:true}, function(info)
 			{
-				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
+				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
 				for(var i=0; i<ids.length; i++)
 				{
@@ -1171,13 +1171,13 @@ module.exports = function(io, db_manager, config, sconfig)
 					{
 						if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
 						{
-							socket.emit('update', {room:socket.room, type:'forbiddenuser'})
+							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
 							return false
 						}
 
 						if(socc.priv === 'voice')
 						{
-							socket.emit('update', {room:socket.room, type:'isalready', what:'voice', who:data.nickname})
+							socket.emit('update', {room:socket.room_id, type:'isalready', what:'voice', who:data.nickname})
 							return false
 						}
 
@@ -1201,7 +1201,7 @@ module.exports = function(io, db_manager, config, sconfig)
 
 							db_manager.update_room(info._id, {keys:info.keys})
 
-							io.sockets.in(socket.room).emit('update', {type:'announce_voice', nickname1:socket.nickname, nickname2:data.nickname})
+							io.sockets.in(socket.room_id).emit('update', {type:'announce_voice', nickname1:socket.nickname, nickname2:data.nickname})
 						})
 
 						break
@@ -1233,9 +1233,9 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {keys:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {keys:true}, function(info)
 			{
-				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
+				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
 				for(var i=0; i<ids.length; i++)
 				{
@@ -1245,7 +1245,7 @@ module.exports = function(io, db_manager, config, sconfig)
 					{
 						if(socc.priv === 'op')
 						{
-							socket.emit('update', {room:socket.room, type:'isalready', what:'op', who:data.nickname})
+							socket.emit('update', {room:socket.room_id, type:'isalready', what:'op', who:data.nickname})
 							return false
 						}
 
@@ -1269,7 +1269,7 @@ module.exports = function(io, db_manager, config, sconfig)
 
 							db_manager.update_room(info._id, {keys:info.keys})
 
-							io.sockets.in(socket.room).emit('update', {type:'announce_op', nickname1:socket.nickname, nickname2:data.nickname})
+							io.sockets.in(socket.room_id).emit('update', {type:'announce_op', nickname1:socket.nickname, nickname2:data.nickname})
 						})
 
 						break
@@ -1301,9 +1301,9 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {keys:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {keys:true}, function(info)
 			{
-				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
+				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
 				for(var i=0; i<ids.length; i++)
 				{
@@ -1313,7 +1313,7 @@ module.exports = function(io, db_manager, config, sconfig)
 					{
 						if(socc.priv === 'admin')
 						{
-							socket.emit('update', {room:socket.room, type:'isalready', what:'admin', who:data.nickname})
+							socket.emit('update', {room:socket.room_id, type:'isalready', what:'admin', who:data.nickname})
 							return false
 						}
 
@@ -1337,7 +1337,7 @@ module.exports = function(io, db_manager, config, sconfig)
 
 							db_manager.update_room(info._id, {keys:info.keys})
 
-							io.sockets.in(socket.room).emit('update', {type:'announce_admin', nickname1:socket.nickname, nickname2:data.nickname})
+							io.sockets.in(socket.room_id).emit('update', {type:'announce_admin', nickname1:socket.nickname, nickname2:data.nickname})
 						})
 
 						break
@@ -1375,9 +1375,9 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {keys:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {keys:true}, function(info)
 			{
-				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
+				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
 				for(var i=0; i<ids.length; i++)
 				{
@@ -1387,13 +1387,13 @@ module.exports = function(io, db_manager, config, sconfig)
 					{
 						if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
 						{
-							socket.emit('update', {room:socket.room, type:'forbiddenuser'})
+							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
 							return false
 						}
 
 						if(socc.priv === '')
 						{
-							socket.emit('update', {room:socket.room, type:'isalready', what:'', who:data.nickname})
+							socket.emit('update', {room:socket.room_id, type:'isalready', what:'', who:data.nickname})
 							return false
 						}
 
@@ -1405,7 +1405,7 @@ module.exports = function(io, db_manager, config, sconfig)
 							socc.key = ''
 						}
 
-						io.sockets.in(socket.room).emit('update', {type:'announce_strip', nickname1:socket.nickname, nickname2:data.nickname})
+						io.sockets.in(socket.room_id).emit('update', {type:'announce_strip', nickname1:socket.nickname, nickname2:data.nickname})
 
 						db_manager.update_room(info._id, {keys:info.keys})																
 
@@ -1426,7 +1426,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {keys:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {keys:true}, function(info)
 			{
 				var key_array = info.keys.split(';')
 
@@ -1437,13 +1437,13 @@ module.exports = function(io, db_manager, config, sconfig)
 
 				if(key_array.length === filtered_array.length)
 				{
-					socket.emit('update', {room:socket.room, type:'novoicestoremove'})
+					socket.emit('update', {room:socket.room_id, type:'novoicestoremove'})
 					return false
 				}
 
 				info.keys = filtered_array.join(';')
 
-				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
+				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
 				for(var i=0; i<ids.length; i++)
 				{
@@ -1455,7 +1455,7 @@ module.exports = function(io, db_manager, config, sconfig)
 					}
 				}
 				
-				io.sockets.in(socket.room).emit('update', {type:'announce_removedvoices', nickname:socket.nickname})
+				io.sockets.in(socket.room_id).emit('update', {type:'announce_removedvoices', nickname:socket.nickname})
 
 				db_manager.update_room(info._id, {keys:info.keys})
 			})
@@ -1472,7 +1472,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {keys:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {keys:true}, function(info)
 			{
 				var key_array = info.keys.split(';')
 
@@ -1483,13 +1483,13 @@ module.exports = function(io, db_manager, config, sconfig)
 
 				if(key_array.length === filtered_array.length)
 				{
-					socket.emit('update', {room:socket.room, type:'noopstoremove'})
+					socket.emit('update', {room:socket.room_id, type:'noopstoremove'})
 					return false
 				}
 
 				info.keys = filtered_array.join(';')
 
-				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
+				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
 				for(var i=0; i<ids.length; i++)
 				{
@@ -1501,7 +1501,7 @@ module.exports = function(io, db_manager, config, sconfig)
 					}
 				}
 				
-				io.sockets.in(socket.room).emit('update', {type:'announce_removedops', nickname:socket.nickname})
+				io.sockets.in(socket.room_id).emit('update', {type:'announce_removedops', nickname:socket.nickname})
 
 				db_manager.update_room(info._id, {keys:info.keys})
 			})
@@ -1530,9 +1530,9 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {bans:true, keys:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {bans:true, keys:true}, function(info)
 			{
-				var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
+				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
 				for(var i=0; i<ids.length; i++)
 				{
@@ -1542,7 +1542,7 @@ module.exports = function(io, db_manager, config, sconfig)
 					{
 						if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
 						{
-							socket.emit('update', {room:socket.room, type:'forbiddenuser'})
+							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
 							return false
 						}
 
@@ -1628,20 +1628,20 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {bans:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {bans:true}, function(info)
 			{
 				if(info.bans !== '')
 				{
 					info.bans = ''
 
-					io.sockets.in(socket.room).emit('update', {type:'announce_unbanall', nickname:socket.nickname})
+					io.sockets.in(socket.room_id).emit('update', {type:'announce_unbanall', nickname:socket.nickname})
 					
 					db_manager.update_room(info._id, {bans:info.bans})
 				}
 
 				else
 				{
-					socket.emit('update', {room:socket.room, type:'nothingtounban'})
+					socket.emit('update', {room:socket.room_id, type:'nothingtounban'})
 				}
 			})
 		}		
@@ -1657,20 +1657,20 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {bans:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {bans:true}, function(info)
 			{
 				if(info.bans !== '')
 				{
 					info.bans = info.bans.split(';').slice(0,-1).join(';')
 
-					io.sockets.in(socket.room).emit('update', {type:'announce_unbanlast', nickname:socket.nickname})
+					io.sockets.in(socket.room_id).emit('update', {type:'announce_unbanlast', nickname:socket.nickname})
 					
 					db_manager.update_room(info._id, {bans:info.bans})
 				}
 
 				else
 				{
-					socket.emit('update', {room:socket.room, type:'nothingtounban'})
+					socket.emit('update', {room:socket.room_id, type:'nothingtounban'})
 				}
 			})
 		}		
@@ -1686,7 +1686,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {bans:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {bans:true}, function(info)
 			{
 				if(info.bans === '')
 				{
@@ -1698,7 +1698,7 @@ module.exports = function(io, db_manager, config, sconfig)
 					var count = info.bans.split(';').length
 				}
 
-				socket.emit('update', {room:socket.room, type:'get_bannedcount', count:count})
+				socket.emit('update', {room:socket.room_id, type:'get_bannedcount', count:count})
 			})
 		}		
 	}
@@ -1725,7 +1725,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			var ids = Object.keys(io.sockets.adapter.rooms[socket.room].sockets)
+			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
 			for(var i=0; i<ids.length; i++)
 			{
@@ -1735,7 +1735,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				{
 					if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
 					{
-						socket.emit('update', {room:socket.room, type:'forbiddenuser'})
+						socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
 						return false
 					}
 
@@ -1772,14 +1772,14 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}			
 
-			db_manager.get_room({_id:socket.room}, {chat_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {chat_permission:true}, function(info)
 			{
 				if(data.chat_permission === info.chat_permission)
 				{
 					return false
 				}				
 
-				io.sockets.in(socket.room).emit('update', {type:'chat_permission_change', nickname:socket.nickname, chat_permission:data.chat_permission})
+				io.sockets.in(socket.room_id).emit('update', {type:'chat_permission_change', nickname:socket.nickname, chat_permission:data.chat_permission})
 					
 				info.chat_permission = data.chat_permission
 					
@@ -1806,14 +1806,14 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {upload_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {upload_permission:true}, function(info)
 			{
 				if(data.upload_permission === info.upload_permission)
 				{
 					return false
 				}
 
-				io.sockets.in(socket.room).emit('update', {type:'upload_permission_change', nickname:socket.nickname, upload_permission:data.upload_permission})
+				io.sockets.in(socket.room_id).emit('update', {type:'upload_permission_change', nickname:socket.nickname, upload_permission:data.upload_permission})
 					
 				info.upload_permission = data.upload_permission
 					
@@ -1839,14 +1839,14 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}			
 
-			db_manager.get_room({_id:socket.room}, {radio_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {radio_permission:true}, function(info)
 			{
 				if(data.radio_permission === info.radio_permission)
 				{
 					return false
 				}				
 
-				io.sockets.in(socket.room).emit('update', {type:'radio_permission_change', nickname:socket.nickname, radio_permission:data.radio_permission})
+				io.sockets.in(socket.room_id).emit('update', {type:'radio_permission_change', nickname:socket.nickname, radio_permission:data.radio_permission})
 					
 				info.radio_permission = data.radio_permission
 					
@@ -1865,11 +1865,11 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {public:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {public:true}, function(info)
 			{
 				if(info.public)
 				{
-					io.sockets.in(socket.room).emit('update', {type:'made_private', nickname:socket.nickname})
+					io.sockets.in(socket.room_id).emit('update', {type:'made_private', nickname:socket.nickname})
 					info.public = false
 
 					db_manager.update_room(info._id, {public:info.public})
@@ -1888,11 +1888,11 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {public:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {public:true}, function(info)
 			{
 				if(!info.public)
 				{
-					io.sockets.in(socket.room).emit('update', {type:'made_public', nickname:socket.nickname})
+					io.sockets.in(socket.room_id).emit('update', {type:'made_public', nickname:socket.nickname})
 					info.public = true
 
 					db_manager.update_room(info._id, {public:info.public})
@@ -1923,7 +1923,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room}, {radio_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {radio_permission:true}, function(info)
 			{
 				if(!check_permission(info.radio_permission, socket.priv))
 				{
@@ -1957,7 +1957,7 @@ module.exports = function(io, db_manager, config, sconfig)
 
 								else
 								{
-									socket.emit('update', {room:socket.room, type:'songnotfound'})
+									socket.emit('update', {room:socket.room_id, type:'songnotfound'})
 								}
 							})
 						}
@@ -1993,7 +1993,7 @@ module.exports = function(io, db_manager, config, sconfig)
 
 						else
 						{
-							socket.emit('update', {room:socket.room, type:'songnotfound'})
+							socket.emit('update', {room:socket.room_id, type:'songnotfound'})
 						}						
 					})						
 				}
@@ -2020,7 +2020,7 @@ module.exports = function(io, db_manager, config, sconfig)
 		info.radio_setter = socket.nickname
 		info.radio_date = Date.now()
 
-		io.sockets.in(socket.room).emit('update', 
+		io.sockets.in(socket.room_id).emit('update', 
 		{
 			type: 'changed_radio_source', 
 			radio_type: info.radio_type,
@@ -2070,11 +2070,11 @@ module.exports = function(io, db_manager, config, sconfig)
 				var type = 'disconnection'
 			}
 
-			io.sockets.in(socket.room).emit('update', 
+			io.sockets.in(socket.room_id).emit('update', 
 			{
 				type: type,
 				nickname: socket.nickname, 
-				usercount: get_usercount(socket.room), 
+				usercount: get_usercount(socket.room_id), 
 				info1: socket.info1, 
 				priv: socket.priv
 			})	

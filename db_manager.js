@@ -2,8 +2,8 @@ module.exports = function(db, config, sconfig)
 {
 	var mongo = require('mongodb')
 
-	const rooms_version = 10
-	const users_version = 2
+	const rooms_version = 11
+	const users_version = 11
 
 	function get_random_key()
 	{

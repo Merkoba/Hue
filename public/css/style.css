@@ -235,7 +235,7 @@ body, html
 	font-size: 1.2em;
 }
 
-.chat_uname 
+.chat_nname 
 {
 	cursor: pointer;
 	white-space: nowrap;
@@ -582,7 +582,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	cursor: pointer;
 }
 
-.search_result_uname
+.search_result_nname
 {
 	font-weight: bold;
 	padding-bottom: 0.3em;
