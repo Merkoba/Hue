@@ -4926,6 +4926,8 @@ function clear_chat()
 
 	show_intro()
 	show_topic("big")
+	show_priv()
+	show_public()
 	goto_bottom(true)
 	focus_input()
 }
