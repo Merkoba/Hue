@@ -1,6 +1,7 @@
 var socket
 var ls_room_nicknames = "room_nicknames_v11"
 var ls_settings = "settings_v11"
+var ls_visited_rooms = "visited_rooms_v11"
 var settings
 var is_public
 var room_name
@@ -570,6 +571,7 @@ function start_socket()
 			make_main_container_visible()				
 			clear_chat()
 			check_firstime()
+			save_visited(room_id)
 			start_heartbeat()
 			
 			started = true
@@ -2100,6 +2102,13 @@ function request_roomlist(filter="")
 	roomlist_filter_string = filter
 
 	socket_emit("roomlist", {})
+}
+
+function request_visited_roomlist(filter="")
+{
+	roomlist_filter_string = filter
+
+	socket_emit("roomlist", {ids:get_visited_rooms()})
 }
 
 function update_roomlist(roomlist)
@@ -6516,6 +6525,22 @@ function start_storageui()
 				}
 			},
 			{
+				name: "Visited",
+				ls_name: ls_visited_rooms,
+				on_save: function(item)
+				{
+					on_storageui_save(item)
+				},
+				on_reset: function(item)
+				{
+					on_storageui_save(item, true)				
+				},
+				on_copied: function(item)
+				{
+					pup()
+				}
+			},
+			{
 				name: "Settings",
 				ls_name: ls_settings,
 				on_save: function(item)
@@ -7019,4 +7044,41 @@ function debug1()
 function logout()
 {
 	goto_url('/logout')
+}
+
+function save_visited(id)
+{
+	var visited = get_visited_rooms()
+
+	for(var i=0; i<visited.length; i++)
+	{
+		var v = visited[i]
+
+		if(v === id)
+		{
+			visited.splice(i, 1)
+			break
+		}
+	}
+
+	visited.unshift(id)
+
+	if(visited.length > max_visited_rooms_items)
+	{
+		visited.pop()
+	}
+
+	save_local_storage(ls_visited_rooms, visited)
+}
+
+function get_visited_rooms()
+{
+	var lst = get_local_storage(ls_visited_rooms)
+
+	if(lst === null)
+	{
+		lst = []
+	}
+
+	return lst
 }

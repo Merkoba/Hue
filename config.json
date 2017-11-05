@@ -34,6 +34,7 @@
 	"max_radio_source_length": 500,
 	"max_roomlist_items": 100,
 	"max_roomlist_topic_length": 140,
+	"max_visited_rooms_items": 100,
 	"max_title_length": 200,
 	"max_no_meta_count": 10,
 	"max_image_size": 5555,

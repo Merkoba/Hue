@@ -957,10 +957,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.nickname !== undefined)
 		{
-			get_roomlist(function(rooms)
+			if(data.ids !== undefined && data.ids.length <= config.max_visited_rooms_items)
 			{
-				socket.emit('update', {room:socket.room_id, type:'roomlist', roomlist:rooms})
-			})
+				get_visited_roomlist(data.ids, function(rooms)
+				{
+					socket.emit('update', {room:socket.room_id, type:'roomlist', roomlist:rooms})
+				})
+			}
+
+			else
+			{
+				get_roomlist(function(rooms)
+				{
+					socket.emit('update', {room:socket.room_id, type:'roomlist', roomlist:rooms})
+				})
+			}
 		}
 	}
 
@@ -2248,6 +2259,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				rooms.sort(compare_roomlist).splice(config.max_roomlist_items)
 
 				last_roomlist = rooms
+
 				roomlist_lastget = Date.now()
 
 				callback(last_roomlist)
@@ -2258,6 +2270,45 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			callback(last_roomlist)
 		}
+	}
+
+	function get_visited_roomlist(ids, callback)
+	{
+		var rooms = []
+
+		var mids = []
+
+		for(var id of ids)
+		{
+			if(typeof id === "string" && id !== config.main_room_id)
+			{
+				mids.push(new mongo.ObjectId(id))
+			}
+
+			else
+			{
+				mids.push(id)
+			}
+		}
+
+		db_manager.find_rooms({_id:{"$in":mids}}, function(results)
+		{
+			if(!results)
+			{
+				return false
+			}
+
+			for(var i=0; i<results.length; i++)
+			{
+				var room = results[i]
+
+				rooms.push([room._id.toString(), room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room._id.toString()), room.modified])
+			}
+
+			rooms.sort(compare_roomlist)
+
+			callback(rooms)
+		})
 	}
 
 	function get_usercount(id)
