@@ -129,7 +129,7 @@ module.exports = function(db_manager, config)
 				{
 					req.session.user_id = user._id.toString()
 
-					if(fromurl === undefined || fromurl === "" || fromurl === "/login")
+					if(fromurl === undefined || fromurl === "" || fromurl === "/login" || fromurl === "/register")
 					{
 						res.redirect("/")
 					}
@@ -180,7 +180,7 @@ module.exports = function(db_manager, config)
 
 					req.session.save(function()
 					{
-						if(fromurl === undefined || fromurl === "" || fromurl === "/login")
+						if(fromurl === undefined || fromurl === "" || fromurl === "/login" || fromurl === "/register")
 						{
 							res.redirect("/")
 						}

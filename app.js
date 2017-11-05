@@ -10,18 +10,27 @@ module.exports = function(db_manager, config, sconfig)
 
 	app.set('views', path.join(__dirname, 'views'))
 	app.set('view engine', 'ejs')
+	app.set('trust proxy', 1)	
 
 	app.use(bodyParser.json())
 	app.use(bodyParser.urlencoded({ extended: false }))
 	app.use(express.static(path.join(__dirname, 'public')))
 
-	app.use(session(
+	var sess =
 	{
 		secret: sconfig.session_secret,
 		resave: false,
 		saveUninitialized: true,
-		cookie: {secure: config.https_enabled}
-	}))
+		cookie: {secure: false}
+	}	
+
+	if(app.get('env') === 'production' && config.https_enabled) 
+	{
+		app.set('trust proxy', 1)
+		sess.cookie.secure = true
+	}
+
+	app.use(session(sess))
 
 	app.use('/', routes)
 
