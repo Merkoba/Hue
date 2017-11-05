@@ -1,7 +1,8 @@
-module.exports = function(db_manager, config, sconfig)
+module.exports = function(db, db_manager, config, sconfig)
 {
 	const express = require('express')
 	const session = require('express-session')
+	const MongoStore = require('connect-mongo')(session);
 	const path = require('path')
 	const bodyParser = require('body-parser')
 	const routes = require('./routes/index')(db_manager, config, sconfig)
@@ -21,7 +22,8 @@ module.exports = function(db_manager, config, sconfig)
 		secret: sconfig.session_secret,
 		resave: false,
 		saveUninitialized: true,
-		cookie: {secure: false}
+		cookie: {secure: false},
+		store: new MongoStore({db:db})
 	}	
 
 	if(app.get('env') === 'production' && config.https_enabled) 

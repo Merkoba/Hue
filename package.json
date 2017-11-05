@@ -1,20 +1,21 @@
 {
-  "name": "hue",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node ./bin/www"
-  },
-  "dependencies": {
-    "body-parser": "~1.10.2",
-    "debug": "~2.2.0",
-    "ejs": "~2.5.5",
-    "express": "~4.11.1",
-    "express-session": "~1.10.1",
-    "mongodb": "~2.2.24",
-    "node-fetch": "~1.7.3",
-    "shelljs": "~0.7.0",
-    "socket-anti-spam": "~1.1.8",
-    "socket.io": "~1.7.2"
-  }
+	"name": "hue",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node ./bin/www"
+	},
+	"dependencies": {
+		"body-parser": "~1.10.2",
+		"debug": "~2.2.0",
+		"ejs": "~2.5.5",
+		"express": "~4.11.1",
+		"express-session": "~1.10.1",
+		"mongodb": "~2.2.24",
+		"node-fetch": "~1.7.3",
+		"shelljs": "~0.7.0",
+		"socket-anti-spam": "~1.1.8",
+		"socket.io": "~1.7.2",
+		"connect-mongo": "~2.0.0"
+	}
 }

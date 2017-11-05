@@ -4,7 +4,7 @@ const config = require('../config.json')
 const sconfig = require('../config.secret.json')
 const mongo = require('mongodb')
 
-mongo.connect(config.mongodb_path, function(err, database) 
+mongo.connect(config.mongodb_path, function(err, db) 
 {
 	if(err)
 	{
@@ -13,8 +13,8 @@ mongo.connect(config.mongodb_path, function(err, database)
 
 	else
 	{
-		const db_manager = require('../db_manager.js')(database, config, sconfig)
-		const app = require('../app')(db_manager, config, sconfig)
+		const db_manager = require('../db_manager.js')(db, config, sconfig)
+		const app = require('../app')(db, db_manager, config, sconfig)
 		const debug = require('debug')('armtrak:server')
 		const http = require('http')
 		const port = normalizePort(process.env.PORT || '3210')
