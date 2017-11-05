@@ -60,7 +60,7 @@ module.exports = function(db_manager, config, utilz)
 			{
 				if(!user)
 				{
-					req.session.destroy()
+					req.session.destroy(function(){})
 					res.redirect(`/login?fromurl=${fromurl}`)
 				}
 
@@ -115,7 +115,7 @@ module.exports = function(db_manager, config, utilz)
 		{
 			if(!user)
 			{
-				req.session.destroy()
+				req.session.destroy(function(){})
 				res.redirect("/login?message=Wrong%20Username%20Or%20Password")
 			}
 
@@ -138,7 +138,7 @@ module.exports = function(db_manager, config, utilz)
 
 				else
 				{
-					req.session.destroy()
+					req.session.destroy(function(){})
 					res.redirect("/login?message=Wrong%20Username%20Or%20Password")
 				}				
 			}
@@ -198,7 +198,7 @@ module.exports = function(db_manager, config, utilz)
 
 	router.get('/logout', function(req, res, next) 
 	{
-		req.session.destroy()
+		req.session.destroy(function(){})
 		res.redirect('/login')
 	})	
 
