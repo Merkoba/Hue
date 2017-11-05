@@ -23,6 +23,6 @@ To run it properly in production you will have to configure Apache or some other
 
 Using 'forever' is suggested to control the Node process.
 
-The main room is claimed automatically by whoever enters first. To claim it again, the secretpass in config.json is needed.
+The main room is created automatically when entered for the first time. To get ownership to it you need to use /claim secretpass.
 
 Config option, https_enabled, is true by default for security reasons. If you're using a non-https setup, set it to false.
