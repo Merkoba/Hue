@@ -2106,9 +2106,17 @@ function request_roomlist(filter="")
 
 function request_visited_roomlist(filter="")
 {
+	var visited = get_visited_rooms()
+
+	if(visited.length === 0)
+	{
+		msg_info.show("You haven't visited any room yet")
+		return
+	}
+
 	roomlist_filter_string = filter
 
-	socket_emit("roomlist", {ids:get_visited_rooms()})
+	socket_emit("roomlist", {ids:visited})
 }
 
 function update_roomlist(roomlist)

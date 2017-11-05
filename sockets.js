@@ -957,7 +957,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.nickname !== undefined)
 		{
-			if(data.ids !== undefined && data.ids.length <= config.max_visited_rooms_items)
+			if(data.ids !== undefined && data.ids.length > 0 && data.ids.length <= config.max_visited_rooms_items)
 			{
 				get_visited_roomlist(data.ids, function(rooms)
 				{
