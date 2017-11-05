@@ -529,6 +529,12 @@ function start_socket()
 
 	socket.on('connect', function() 
 	{
+		if(connections > 0)
+		{
+			refresh()
+			return
+		}
+
 		socket_emit('join_room', {room_id:room_id, nickname:nickname, user_id:user_id})
 	})
 
