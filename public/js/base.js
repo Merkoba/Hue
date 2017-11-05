@@ -6519,7 +6519,7 @@ function start_storageui()
 		items:
 		[
 			{
-				name: "Room Nicknames",
+				name: "Nicknames",
 				ls_name: ls_room_nicknames,
 				on_save: function(item)
 				{
