@@ -5457,6 +5457,8 @@ function announce_claim(data)
 	{
 		if(nickname === data.nickname)
 		{
+			set_priv("admin")
+
 			var s = 'You have claimed this room. Check /help3 to learn about admin commands'
 		}
 
@@ -5468,10 +5470,14 @@ function announce_claim(data)
 
 	chat_announce('~', '~', s, 'small')
 
-	if(nickname !== data.nickname)
+	if(nickname === data.nickname)
 	{
-		priv = ""
-		check_permissions()
+		set_priv("admin")
+	}
+
+	else
+	{
+		set_priv("")
 	}
 	
 	replace_claim_userlist(data.nickname)
@@ -5486,12 +5492,11 @@ function announce_unclaim(data)
 
 	else
 	{
-		priv = ""
 		chat_announce('~', '~', `${data.nickname} unclaimed the room`, 'small')
 	}
 
 	claimed = false
-	priv = ""
+	set_priv("")
 	upload_permission = 1
 	chat_permission = 1
 	is_public = true

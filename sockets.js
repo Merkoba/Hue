@@ -545,20 +545,25 @@ module.exports = function(io, db_manager, config, sconfig)
 
 						if(key !== undefined)
 						{
-							if(key.startsWith('_key_'))
-							{
-								socket.priv = 'admin'
-							}
+							var skeys = info.keys.split(';')
 
-							else if(key.startsWith('_okey_'))
+							if(skeys.indexOf(key) !== -1)
 							{
-								socket.priv = 'op'
-							}
+								if(key.startsWith('_key_'))
+								{
+									socket.priv = 'admin'
+								}
 
-							else if(key.startsWith('_vkey_'))
-							{
-								socket.priv = 'voice'
-							}
+								else if(key.startsWith('_okey_'))
+								{
+									socket.priv = 'op'
+								}
+
+								else if(key.startsWith('_vkey_'))
+								{
+									socket.priv = 'voice'
+								}
+							}							
 						}
 					}
 				}
@@ -1107,7 +1112,7 @@ module.exports = function(io, db_manager, config, sconfig)
 				{
 					keys: '', 
 					claimed: false, 
-					topic:'',
+					topic: '',
 					topic_setter: '',
 					topic_date: 0,
 					upload_permission: 1,
