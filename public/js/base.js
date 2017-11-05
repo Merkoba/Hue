@@ -219,11 +219,6 @@ function show_intro()
 	chat_announce('', '', `Welcome to ${room_name}, ${nickname}`, 'big')
 }
 
-function show_reconnected()
-{
-	chat_announce('--', '--', 'Reconnected', 'small')
-
-}
 function compile_templates()
 {
 	template_menu = Handlebars.compile($('#template_menu').html())
@@ -562,27 +557,19 @@ function start_socket()
 			check_priv(data)
 			change()
 
-			if(connections === 1)
-			{
-				setup_opacity()
-				setup_media_display()
-				setup_nickname_on_footer()
-				start_nickname_context_menu()
-				start_main_menu_context_menu()
-				start_played_context_menu()
-				start_volume_context_menu()
-				start_metadata_loop()
-				set_footer_nickname()
-				make_main_container_visible()				
-				clear_chat()
-				check_firstime()
-				start_heartbeat()
-			}
-
-			else
-			{
-				show_reconnected()
-			}
+			setup_opacity()
+			setup_media_display()
+			setup_nickname_on_footer()
+			start_nickname_context_menu()
+			start_main_menu_context_menu()
+			start_played_context_menu()
+			start_volume_context_menu()
+			start_metadata_loop()
+			set_footer_nickname()
+			make_main_container_visible()				
+			clear_chat()
+			check_firstime()
+			start_heartbeat()
 			
 			started = true
 		}
