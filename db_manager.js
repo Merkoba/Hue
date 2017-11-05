@@ -229,7 +229,6 @@ module.exports = function(db, config, sconfig)
 
 				catch(err)
 				{
-					callback(false)
 					return
 				}
 			}
