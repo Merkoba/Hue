@@ -447,12 +447,6 @@ module.exports = function(io, db_manager, config, sconfig)
 
 	function connection(socket)
 	{
-		if(db === undefined)
-		{
-			socket.disconnect()
-			return false
-		}
-
 		socket.kickd = false
 		socket.bannd = false		
 	}

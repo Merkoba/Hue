@@ -70,6 +70,7 @@ module.exports = function(db_manager, config)
 
 				else 
 				{
+					req.session.user_username = user.username
 					next()
 				}
 			})
@@ -208,6 +209,7 @@ module.exports = function(db_manager, config)
 	{
 		c.vars.room_id = config.main_room_id
 		c.vars.user_id = req.session.user_id
+		c.vars.user_username = req.session.user_username
 		res.render('main', c)
 	})
 	
@@ -215,6 +217,7 @@ module.exports = function(db_manager, config)
 	{
 		c.vars.room_id = req.params.id.substr(0, config.max_room_id_length)
 		c.vars.user_id = req.session.user_id
+		c.vars.user_username = req.session.user_username
 		res.render('main', c)
 	})
 

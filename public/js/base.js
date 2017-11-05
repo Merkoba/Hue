@@ -80,7 +80,6 @@ var msg_nickname_picker
 var played_filtered = false
 var userlist_filtered = false
 var roomlist_filter_string = ""
-var picking_nickname = true
 var yt_player
 var youtube_player
 var fetched_room_id
@@ -90,11 +89,6 @@ function init()
 	get_volume()
 	activate_key_detection()
 	get_nickname()
-}
-
-function init2()
-{
-	picking_nickname = false
 	start_loading_image()
 	compile_templates()
 	get_settings()
@@ -187,45 +181,17 @@ function get_nickname()
 {
 	var room_nicknames = get_room_nicknames()
 
-	var nname = room_nicknames[room_id]
+	nickname = room_nicknames[room_id]
 
-	if(nname === undefined)
+	if(nickname === undefined)
 	{
-		nname = room_nicknames['/default']
+		nickname = room_nicknames['/default']
 	}
 
-	if(nname === undefined)
+	if(nickname === undefined)
 	{
-		start_nickname_picker()
+		nickname = user_username
 	}
-
-	else
-	{
-		nickname = nname
-
-		init2()
-	}
-}
-
-function start_nickname_picker()
-{
-	msg_nickname_picker = Msg(
-	{
-		id: "nickname-picker",
-		class: "black",
-		show_effect: "fade",
-		close_effect: "fade",
-		show_effect_duration: [2000, 800],
-		close_effect_duration: [800, 2000],
-		window_x: "none",
-		close_on_escape: false,
-		close_on_overlay_click: false
-	})
-
-	msg_nickname_picker.show(template_login(), function()
-	{
-		$("#pick_nickname_input").focus()
-	})	
 }
 
 function check_nickname()
@@ -2432,19 +2398,6 @@ function activate_key_detection()
 {
 	$(document).keydown(function(e)
 	{
-		if(picking_nickname)
-		{
-			$('#pick_nickname_input').focus()
-
-			if(e.key === "Enter")
-			{
-				check_nickname()
-				e.preventDefault()
-			}
-
-			return
-		}
-
 		if(crm)
 		{
 			if(e.key === "Enter")

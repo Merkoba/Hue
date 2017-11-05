@@ -291,7 +291,7 @@ module.exports = function(db, config, sconfig)
 
 				user.version = users_version
 
-				db.collection('users').update({_id:user._id}, {$set:room})					
+				db.collection('users').update({_id:user._id}, {$set:user})					
 			}
 
 			callback(user)
