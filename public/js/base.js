@@ -3401,6 +3401,7 @@ function register_commands()
 	commands.push('/users')
 	commands.push('/room')
 	commands.push('/rooms')
+	commands.push('/visited')
 	commands.push('/roomname')
 	commands.push('/roomnameedit')
 	commands.push('/played')
@@ -3563,6 +3564,16 @@ function send_to_chat(msg)
 			else if(oiStartsWith(lmsg, '/rooms'))
 			{
 				request_roomlist(arg)
+			}
+
+			else if(oiEquals(lmsg, '/visited'))
+			{
+				request_visited_roomlist()
+			}
+
+			else if(oiStartsWith(lmsg, '/visited'))
+			{
+				request_visited_roomlist(arg)
 			}
 
 			else if(oiEquals(lmsg, '/roomname'))
