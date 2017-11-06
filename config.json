@@ -50,5 +50,6 @@
 	"antispam_kickTimesBeforeBan": 1,
 	"antispam_banning": true,
 	"antispam_heartBeatStale": 40,
-	"antispam_heartBeatCheck": 4
+	"antispam_heartBeatCheck": 4,
+	"session_cookie_max_age": 123456789000
 }

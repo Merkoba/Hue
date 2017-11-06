@@ -22,7 +22,7 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 		secret: sconfig.session_secret,
 		resave: false,
 		saveUninitialized: true,
-		cookie: {secure: false, maxAge: 123456789000},
+		cookie: {secure: false, maxAge: config.session_cookie_max_age},
 		store: new MongoStore({db:db})
 	}
 
