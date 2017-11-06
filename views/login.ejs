@@ -57,11 +57,11 @@
 			input[type=submit]
 			{
 				background-color: white;
-				padding: 0.2em 0.4em 0.2em 0.4em;
+				padding: 0.2em 0.8em 0.2em 0.8em;
 				color: black;
 				border: 1px solid #bbb;
 				border-color: #ddd #aaa #aaa #ddd;
-				font-size: 1.2em;
+				font-size: 1em;
 			}
 
 			input[type=submit]:hover
@@ -77,7 +77,7 @@
 			#message_container
 			{
 				font-size: 1.2em;
-				color: #e21515;
+				color: rgb(205, 140, 217);
 				transition: opacity 2s;
 				opacity: 0;
 			}
@@ -128,7 +128,7 @@
 				message_timeout = setTimeout(function()
 				{
 					$("#message_container").css("opacity", 0)
-				}, 3000)
+				}, 5000)
 			}	
 
 			function validate_form(mode)
@@ -153,7 +153,7 @@
 
 				if(username.length === 0)
 				{
-					set_message("Username Can't Be Empty")
+					set_message("Username can't be empty")
 					return false
 				}
 
@@ -165,27 +165,27 @@
 
 				if(username.length !== clean_string4(username).length)
 				{
-					set_message("Username Contains Illegal Characters")
+					set_message("Username contains illegal characters")
 					return 
 				}
 
 				if(password.length < min_password_length)
 				{
-					set_message("Password Is Too Short")
+					set_message("Password is too short")
 					return false
 				}
 
 				if(password.length > max_password_length)
 				{
-					set_message("Password Is Too Long")
-					return false					
+					set_message("Password is too long")
+					return false
 				}
 
 				if(mode === "register")
 				{
 					if(password !== password2)
 					{
-						set_message("The Passwords Don't Match")
+						set_message("The passwords don't match")
 						return false
 					}
 				}
@@ -237,8 +237,6 @@
 				<div class="spacer2"></div>
 
 				<input type="password" placeholder="Password Again" id="register_password2">
-
-				<div class="spacer2"></div>
 
 				<div class="spacer2"></div>
 

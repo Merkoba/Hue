@@ -117,7 +117,7 @@ module.exports = function(db_manager, config, utilz)
 			if(!user)
 			{
 				req.session.destroy(function(){})
-				res.redirect("/login?message=Wrong%20Username%20Or%20Password")
+				res.redirect("/login?message=Wrong%20username%20or%20password")
 			}
 
 			else 
@@ -140,7 +140,7 @@ module.exports = function(db_manager, config, utilz)
 				else
 				{
 					req.session.destroy(function(){})
-					res.redirect("/login?message=Wrong%20Username%20Or%20Password")
+					res.redirect("/login?message=Wrong%20username%20or%20password")
 				}				
 			}
 		})	
@@ -192,7 +192,7 @@ module.exports = function(db_manager, config, utilz)
 
 			else
 			{
-				res.redirect("/login?message=Username%20Already%20Exists")
+				res.redirect("/login?message=Username%20already%20exists")
 			}
 		})
 	})
