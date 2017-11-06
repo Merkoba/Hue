@@ -3174,9 +3174,18 @@ function start_image_events()
 
 			var background_color = color1
 
-			var font_color = colorlib.get_lighter_or_darker(color1, color_contrast_amount_1)
+			if(settings.background_image)
+			{
+				var font_color = colorlib.get_lighter_or_darker(color1, color_contrast_amount_2)
+				var color2 = colorlib.get_lighter_or_darker(color1, color_contrast_amount_4)
+			}
 
-			var color2 = colorlib.get_lighter_or_darker(color1, color_contrast_amount_2)
+			else
+			{
+				var font_color = colorlib.get_lighter_or_darker(color1, color_contrast_amount_1)
+				var color2 = colorlib.get_lighter_or_darker(color1, color_contrast_amount_3)
+			}
+
 			
 			var background_color2 = color2
 

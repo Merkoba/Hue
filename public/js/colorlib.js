@@ -44,13 +44,11 @@ var ColorLib = (function()
 				const alpha = pixels[offset + 3]
 				let matchIndex = undefined
 
-				// Skip this pixel if transparent or too close to white
 				if(alpha === 0) 
 				{
 					continue
 				}
 
-				// See if the color is already stored
 				for(let j=0; j<pixelArray.length; j++) 
 				{
 					if(red === pixelArray[j][0] && green === pixelArray[j][1] && blue === pixelArray[j][2]) 
@@ -60,7 +58,6 @@ var ColorLib = (function()
 					}
 				}
 
-				// Add the color if it doesn't exist, otherwise increment frequency
 				if(matchIndex === undefined) 
 				{
 					pixelArray.push([red, green, blue, 1]);
@@ -72,14 +69,11 @@ var ColorLib = (function()
 				}
 			}
 
-			// Sort pixelArray by color frequency
 			pixelArray.sort(function(a, b) 
 			{
 				return b[3] - a[3]
 			})
 
-			// Fill array with [red, green, blue] values until palette_size or
-			// until there are no more colors, whichever happens first
 			for(let i=0; i<Math.min(palette_size, pixelArray.length); i++) 
 			{
 				var arr = [pixelArray[i][0], pixelArray[i][1], pixelArray[i][2]]
@@ -123,40 +117,6 @@ var ColorLib = (function()
 			{
 				return instance.shadeBlendConvert(amount, rgb)
 			}
-		}
-
-		instance.get_lighter = function(rgb, amount=20)
-		{
-			rgb = instance.check_rgb(rgb)
-
-			var new_rgb = []
-
-			new_rgb[0] = rgb[0] + amount
-			new_rgb[1] = rgb[1] + amount
-			new_rgb[2] = rgb[2] + amount
-
-			for(let i=0; i<new_rgb.length; i++)
-			{
-				if(new_rgb[i] > 255)
-				{
-					new_rgb[i] = 255
-				}
-			}
-
-			return instance.array_to_rgb(instance.check_array(new_rgb))
-		}
-
-		instance.get_darker = function(rgb, amount=20)
-		{
-			rgb = instance.check_rgb(rgb)
-
-			var new_rgb = []
-
-			new_rgb[0] = rgb[0] - amount
-			new_rgb[1] = rgb[1] - amount
-			new_rgb[2] = rgb[2] - amount
-
-			return instance.array_to_rgb(instance.check_array(new_rgb))
 		}
 
 		instance.is_light = function(rgb)
@@ -299,7 +259,73 @@ var ColorLib = (function()
 			if(!f||!t)return null; //ErrorCheck
 			if(h)return "rgb("+r((t[0]-f[0])*p+f[0])+","+r((t[1]-f[1])*p+f[1])+","+r((t[2]-f[2])*p+f[2])+(f[3]<0&&t[3]<0?")":","+(f[3]>-1&&t[3]>-1?r(((t[3]-f[3])*p+f[3])*10000)/10000:t[3]<0?f[3]:t[3])+")");
 			else return "#"+(0x100000000+(f[3]>-1&&t[3]>-1?r(((t[3]-f[3])*p+f[3])*255):t[3]>-1?r(t[3]*255):f[3]>-1?r(f[3]*255):255)*0x1000000+r((t[0]-f[0])*p+f[0])*0x10000+r((t[1]-f[1])*p+f[1])*0x100+r((t[2]-f[2])*p+f[2])).toString(16).slice(f[3]>-1||t[3]>-1?1:3);
-		}	
+		}
+
+		instance.lab2rgb = function(lab)
+		{
+			var y = (lab[0] + 16) / 116,
+				x = lab[1] / 500 + y,
+				z = y - lab[2] / 200,
+				r, g, b;
+
+			x = 0.95047 * ((x * x * x > 0.008856) ? x * x * x : (x - 16/116) / 7.787);
+			y = 1.00000 * ((y * y * y > 0.008856) ? y * y * y : (y - 16/116) / 7.787);
+			z = 1.08883 * ((z * z * z > 0.008856) ? z * z * z : (z - 16/116) / 7.787);
+
+			r = x *  3.2406 + y * -1.5372 + z * -0.4986;
+			g = x * -0.9689 + y *  1.8758 + z *  0.0415;
+			b = x *  0.0557 + y * -0.2040 + z *  1.0570;
+
+			r = (r > 0.0031308) ? (1.055 * Math.pow(r, 1/2.4) - 0.055) : 12.92 * r;
+			g = (g > 0.0031308) ? (1.055 * Math.pow(g, 1/2.4) - 0.055) : 12.92 * g;
+			b = (b > 0.0031308) ? (1.055 * Math.pow(b, 1/2.4) - 0.055) : 12.92 * b;
+
+			return [Math.max(0, Math.min(1, r)) * 255, 
+			Math.max(0, Math.min(1, g)) * 255, 
+			Math.max(0, Math.min(1, b)) * 255]
+		}
+
+
+		instance.rgb2lab = function(rgb)
+		{
+			var r = rgb[0] / 255,
+				g = rgb[1] / 255,
+				b = rgb[2] / 255,
+				x, y, z;
+
+			r = (r > 0.04045) ? Math.pow((r + 0.055) / 1.055, 2.4) : r / 12.92;
+			g = (g > 0.04045) ? Math.pow((g + 0.055) / 1.055, 2.4) : g / 12.92;
+			b = (b > 0.04045) ? Math.pow((b + 0.055) / 1.055, 2.4) : b / 12.92;
+
+			x = (r * 0.4124 + g * 0.3576 + b * 0.1805) / 0.95047;
+			y = (r * 0.2126 + g * 0.7152 + b * 0.0722) / 1.00000;
+			z = (r * 0.0193 + g * 0.1192 + b * 0.9505) / 1.08883;
+
+			x = (x > 0.008856) ? Math.pow(x, 1/3) : (7.787 * x) + 16/116;
+			y = (y > 0.008856) ? Math.pow(y, 1/3) : (7.787 * y) + 16/116;
+			z = (z > 0.008856) ? Math.pow(z, 1/3) : (7.787 * z) + 16/116;
+
+			return [(116 * y) - 16, 500 * (x - y), 200 * (y - z)]
+		}
+
+		instance.deltaE = function(labA, labB)
+		{
+			var deltaL = labA[0] - labB[0];
+			var deltaA = labA[1] - labB[1];
+			var deltaB = labA[2] - labB[2];
+			var c1 = Math.sqrt(labA[1] * labA[1] + labA[2] * labA[2]);
+			var c2 = Math.sqrt(labB[1] * labB[1] + labB[2] * labB[2]);
+			var deltaC = c1 - c2;
+			var deltaH = deltaA * deltaA + deltaB * deltaB - deltaC * deltaC;
+			deltaH = deltaH < 0 ? 0 : Math.sqrt(deltaH);
+			var sc = 1.0 + 0.045 * c1;
+			var sh = 1.0 + 0.015 * c1;
+			var deltaLKlsl = deltaL / (1.0);
+			var deltaCkcsc = deltaC / (sc);
+			var deltaHkhsh = deltaH / (sh);
+			var i = deltaLKlsl * deltaLKlsl + deltaCkcsc * deltaCkcsc + deltaHkhsh * deltaHkhsh;
+			return i < 0 ? 0 : Math.sqrt(i);
+		}		
 
 		return instance
 	}
