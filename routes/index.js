@@ -40,7 +40,9 @@ module.exports = function(db_manager, config, utilz)
 	c.vars.afk_timeout_duration = config.afk_timeout_duration
 	c.vars.heartbeat_interval = config.heartbeat_interval
 	c.vars.youtube_enabled = config.youtube_enabled	
-	c.vars.max_visited_rooms_items = config.max_visited_rooms_items	
+	c.vars.max_visited_rooms_items = config.max_visited_rooms_items
+	c.vars.min_password_length = config.min_password_length
+	c.vars.max_password_length = config.max_password_length	
 
 	function require_login(req, res, next)
 	{

@@ -422,6 +422,32 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
+		socket.on('change_username', function(data) 
+		{
+			try
+			{
+				change_username(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
+		socket.on('change_password', function(data) 
+		{
+			try
+			{
+				change_password(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})				
+
 		socket.on('disconnect', function(reason)
 		{
 			reason = reason.toLowerCase()
@@ -488,7 +514,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			socket.disconnect()
 			return false
 		}
-
 
 		socket.user_id = data.user_id
 
@@ -2050,6 +2075,76 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			modified: Date.now()
 		})
 	}
+
+	function change_username(socket, data)
+	{
+		if(socket.nickname !== undefined)
+		{
+			if(data.username === undefined)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			if(data.username.length === 0)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			if(data.username.length > config.max_nickname_length)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			if(utilz.clean_string4(data.username).length !== data.username.length)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			db_manager.update_user(socket.user_id,
+			{
+				username: data.username
+			})
+
+			socket.user_username = data.username
+
+			socket.emit('update', {room:socket.room, type:'username_changed', username:data.username})
+		}
+	}
+
+	function change_password(socket, data)
+	{
+		if(socket.nickname !== undefined)
+		{
+			if(data.password === undefined)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			if(data.password.length < config.min_password_length)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			if(data.password.length > config.max_password_length)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			db_manager.update_user(socket.user_id,
+			{
+				password: data.password
+			})
+
+			socket.emit('update', {room:socket.room, type:'password_changed', password:data.password})
+		}
+	}	
 
 	function do_disconnect(socc)
 	{

@@ -775,6 +775,16 @@ function start_socket()
 			goto_url(data.location)
 		}
 
+		else if(data.type === 'username_changed')
+		{
+			username_changed(data)
+		}
+
+		else if(data.type === 'password_changed')
+		{
+			password_changed(data)
+		}				
+
 		else if(data.type === 'disconnection')
 		{
 			disconnected(data)
@@ -3450,6 +3460,8 @@ function register_commands()
 	commands.push('/volume')
 	commands.push('/history')
 	commands.push('/logout')
+	commands.push('/changeusername')
+	commands.push('/changepassword')
 
 	commands.sort()
 }
@@ -3823,10 +3835,20 @@ function send_to_chat(msg)
 				show_history(arg)
 			}
 
+			else if(oiStartsWith(lmsg, '/changeusername'))
+			{
+				change_username(arg)
+			}
+
+			else if(oiStartsWith(lmsg, '/changepassword'))
+			{
+				change_password(arg)
+			}
+
 			else if(oiEquals(lmsg, '/logout'))
 			{
 				logout(arg)
-			}			
+			}
 
 			else
 			{
@@ -7110,4 +7132,54 @@ function get_visited_rooms()
 	}
 
 	return lst
+}
+
+function change_username(uname)
+{
+	if(utilz.clean_string4(uname).length !== uname.length)
+	{
+		chat_announce('[', ']', "Username contains invalid characters", 'small')
+		return
+	}
+
+	if(uname.length === 0)
+	{
+		chat_announce('[', ']', "Username can't be empty", 'small')
+		return
+	}
+
+	if(uname.length > max_nickname_length)
+	{
+		chat_announce('[', ']', "Username is too long", 'small')
+		return
+	}
+
+	socket_emit("change_username", {username:uname})
+}
+
+function username_changed(data)
+{
+	chat_announce('[', ']', `Username succesfully changed to ${data.username}`, 'small')
+}
+
+function change_password(passwd)
+{
+	if(passwd.length < min_password_length)
+	{
+		chat_announce('[', ']', "Password is too short", 'small')
+		return
+	}
+
+	if(passwd.length > max_password_length)
+	{
+		chat_announce('[', ']', "Password is too long", 'small')
+		return
+	}
+
+	socket_emit("change_password", {password:passwd})
+}
+
+function password_changed(data)
+{
+	chat_announce('[', ']', `Password succesfully changed to ${data.password}`, 'small')
 }
