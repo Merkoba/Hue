@@ -3082,13 +3082,13 @@ function update_chat(nname, msg)
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
-		var fmsg = $(`<div title='${date}' class='msg chat_message'>* <span class='chat_nname'></span> <span class='${contclasses}'></span> *</div>`)
+		var fmsg = $(`<div class='msg chat_message'>* <span class='chat_nname'></span> <span title='${date}' class='${contclasses}'></span> *</div>`)
 		$(fmsg).find('.chat_content').eq(0).text(msg.substr(4)).urlize()
 	}
 
 	else
 	{
-		var fmsg = $(`<div title='${date}' class='msg chat_message'><b><span class='chat_nname'></span>:</b>&nbsp<span class='${contclasses}'></span></div>`)
+		var fmsg = $(`<div class='msg chat_message'><b><span class='chat_nname'></span>:</b>&nbsp<span title='${date}' class='${contclasses}'></span></div>`)
 		$(fmsg).find('.chat_content').eq(0).text(msg).urlize()
 	}
 	
@@ -3330,13 +3330,13 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 	
 	if(typeof dotted === "string")
 	{
-		var fmsg = $(`<div title='${t}' class='msg announcement announcement_${size}'>${brk1}<span class='${contclasses}'></span><span class='dotted'></span>${brk2}</div>`)
+		var fmsg = $(`<div class='msg announcement announcement_${size}'>${brk1}<span title='${t}' class='${contclasses}'></span><span class='dotted'></span>${brk2}</div>`)
 		$(fmsg).find('.dotted').eq(0).text(dotted).urlize()
 	}
 
 	else
 	{
-		var fmsg = $(`<div title='${t}' class='msg announcement announcement_${size}'>${brk1}<span class='${contclasses}'></span>${brk2}</div>`)
+		var fmsg = $(`<div class='msg announcement announcement_${size}'>${brk1}<span title='${t}' class='${contclasses}'></span>${brk2}</div>`)
 	}
 
 	$(fmsg).find('.announcement_content').eq(0).text(msg).urlize()
@@ -6353,7 +6353,7 @@ function get_settings()
 
 	if(settings.background_image === undefined)
 	{
-		settings.background_image = true
+		settings.background_image = false
 		changed = true
 	}
 
