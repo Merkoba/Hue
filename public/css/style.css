@@ -402,11 +402,15 @@ a.generic:link, a.generic:visited, a.generic:hover
 }
 
 .ps__rail-y,
-.ps__rail-y:hover,
 .ps__rail-y:focus
 {
 	width: 10px !important;
 	transition: initial !important;
+}
+
+.ps--active-y:not(.ps--scrolling-y) .ps__rail-y:hover
+{
+	opacity: 0 !important;
 }
 
 .ps--scrolling-y .ps__rail-y 
