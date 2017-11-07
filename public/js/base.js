@@ -196,6 +196,8 @@ function get_nickname()
 
 		save_default_nickname(nickname)
 	}
+
+	nickname = utilz.clean_string4(nickname.substring(0, max_nickname_length))
 }
 
 function save_room_nickname(nname)
