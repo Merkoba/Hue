@@ -207,10 +207,10 @@ The following reside in config.secret.json:
 
 
 "secretpass": "whatever"
->Password used for claiming the main room, and force claim any room.
+>Password used for claiming the main room, and force claim any room. Change it to anything you want.
 
 "youtube_api_key": "SomeYouTubeV3ApiKey"
->The Youtube v3 Api used to fetch video information from urls or to search for videos by search terms using /radio.
+>The Youtube v3 Api key used to fetch video information from urls or to search for videos by search terms using /radio.
 
 "session_secret": "secret string for express-session constructor"
->Used for express-session security.
+>Used for express-session security. Change it to anything you want.
