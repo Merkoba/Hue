@@ -4362,6 +4362,8 @@ function push_played(info, info2=false)
 	$('#now_playing').text(s)
 	$('#now_playing_controls').data('q', q)
 
+	update_chat_scrollbar()
+
 	if(played[played.length - 1] !== s)
 	{
 		var date = nice_date()
