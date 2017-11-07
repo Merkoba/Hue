@@ -780,6 +780,11 @@ function start_socket()
 			username_changed(data)
 		}
 
+		else if(data.type === 'username_already_exists')
+		{
+			chat_announce('[', ']', "Username already exists", 'small')
+		}
+
 		else if(data.type === 'password_changed')
 		{
 			password_changed(data)
@@ -7159,6 +7164,8 @@ function change_username(uname)
 
 function username_changed(data)
 {
+	user_username = data.username
+
 	chat_announce('[', ']', `Username succesfully changed to ${data.username}`, 'small')
 }
 

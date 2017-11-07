@@ -2104,14 +2104,20 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return false
 			}
 
-			db_manager.update_user(socket.user_id,
+			db_manager.change_username(socket.user_id, data.username, function(done)
 			{
-				username: data.username
+				if(done)
+				{
+					socket.user_username = data.username
+					socket.emit('update', {room:socket.room, type:'username_changed', username:data.username})
+				}
+
+				else
+				{
+					socket.emit('update', {room:socket.room, type:'username_already_exists', username:data.username})
+				}
 			})
 
-			socket.user_username = data.username
-
-			socket.emit('update', {room:socket.room, type:'username_changed', username:data.username})
 		}
 	}
 

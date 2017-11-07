@@ -116,38 +116,29 @@ module.exports = function(db_manager, config, utilz)
 			return false
 		}
 
-		db_manager.get_user({username:username}, {}, function(user)
+		db_manager.check_password(username, password, function(user, valid)
 		{
-			if(!user)
+			if(valid)
 			{
-				req.session.destroy(function(){})
-				res.redirect("/login?message=Wrong%20username%20or%20password")
-			}
+				req.session.user_id = user._id.toString()
 
-			else 
-			{
-				if(user.password === password)
+				if(fromurl === undefined || fromurl === "" || fromurl === "/login" || fromurl === "/register")
 				{
-					req.session.user_id = user._id.toString()
-
-					if(fromurl === undefined || fromurl === "" || fromurl === "/login" || fromurl === "/register")
-					{
-						res.redirect("/")
-					}
-
-					else
-					{
-						res.redirect(fromurl)
-					}
+					res.redirect("/")
 				}
 
 				else
 				{
-					req.session.destroy(function(){})
-					res.redirect("/login?message=Wrong%20username%20or%20password")
+					res.redirect(fromurl)
 				}				
 			}
-		})	
+
+			else
+			{
+				req.session.destroy(function(){})
+				res.redirect("/login?message=Wrong%20username%20or%20password")
+			}
+		})
 	})
 
 	router.post('/register', function(req, res, next) 

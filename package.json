@@ -16,6 +16,7 @@
 		"shelljs": "~0.7.0",
 		"socket-anti-spam": "~1.1.8",
 		"socket.io": "~1.7.2",
-		"connect-mongo": "~2.0.0"
+		"connect-mongo": "~2.0.0",
+		"bcrypt": "~1.0.3"
 	}
 }

@@ -3,6 +3,7 @@
 const config = require('../config.json')
 const sconfig = require('../config.secret.json')
 const mongo = require('mongodb')
+const bcrypt = require('bcrypt')
 
 mongo.connect(config.mongodb_path, function(err, db) 
 {

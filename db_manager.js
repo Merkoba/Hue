@@ -1,6 +1,7 @@
 module.exports = function(db, config, utilz)
 {
-	var mongo = require('mongodb')
+	const mongo = require('mongodb')
+	const bcrypt = require('bcrypt')
 
 	const rooms_version = 11
 	const users_version = 11
@@ -299,21 +300,24 @@ module.exports = function(db, config, utilz)
 
 	manager.create_user = function(username, password, callback)
 	{
-		var user = {}
-
-		user = 
+		bcrypt.hash(password, config.encryption_salt_rounds, function(err, hash) 
 		{
-			version: users_version,
-			username: username,
-			password: password, 
-			room_keys: {}
-		}
+			var user = {}
 
-		db.collection('users').insertOne(user, function(err, result)
-		{
-			user.fresh = true
-			callback(result)
-		})	
+			user =
+			{
+				version: users_version,
+				username: username,
+				password: hash, 
+				room_keys: {}
+			}
+
+			db.collection('users').insertOne(user, function(err, result)
+			{
+				user.fresh = true
+				callback(result)
+			})
+		})
 	}
 
 	manager.update_user = function(_id, fields)
@@ -335,7 +339,71 @@ module.exports = function(db, config, utilz)
 			}
 		}
 
-		db.collection('users').update({_id:_id}, {$set:fields})		
+		if(fields.password !== undefined)
+		{
+			bcrypt.hash(fields.password, config.encryption_salt_rounds, function(err, hash)
+			{
+				fields.password = hash
+
+				db.collection('users').update({_id:_id}, {$set:fields})
+			})
+		}
+
+		else
+		{
+			db.collection('users').update({_id:_id}, {$set:fields})
+		}
+	}
+
+	manager.check_password = function(username, password, callback)
+	{
+		manager.get_user({username:username}, {}, function(user)
+		{
+			if(!user)
+			{
+				callback(null, false)
+			}
+
+			else 
+			{
+				bcrypt.compare(password, user.password, function(err, valid) 
+				{
+					callback(user, valid)
+				})
+			}
+		})		
+	}
+
+	manager.change_username = function(_id, username, callback)
+	{
+		manager.get_user({_id:_id}, {}, function(user)
+		{
+			if(!user)
+			{
+				callback(false)
+			}
+
+			else
+			{
+				manager.get_user({username:username}, {}, function(user2)
+				{
+					if(user2)
+					{
+						callback(false)
+					}
+
+					else
+					{
+						manager.update_user(_id,
+						{
+							username: username
+						})
+
+						callback(true)					
+					}
+				})
+			}
+		})
 	}
 
 	return manager
