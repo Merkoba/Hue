@@ -201,3 +201,16 @@ Using 'forever' is suggested to control the Node process.
 
 "encryption_cost": 12
 >This is used for the password hashing. A cost of 12 are 4096 salt rounds. The more rounds, the more secure the hash is, but it takes longer to process.
+
+
+The following reside in config.secret.json:
+
+
+"secretpass": "whatever"
+>Password used for claiming the main room, and force claim any room.
+
+"youtube_api_key": "SomeYouTubeV3ApiKey"
+>The Youtube v3 Api used to fetch video information from urls or to search for videos by search terms using /radio.
+
+"session_secret": "secret string for express-session constructor"
+>Used for express-session security.
