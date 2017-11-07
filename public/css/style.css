@@ -685,3 +685,9 @@ select
 {
 	padding-bottom: 2rem;
 }
+
+input[type=text], textarea
+{
+	background-color: white;
+	color: #222222;
+}

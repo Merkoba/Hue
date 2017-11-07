@@ -6,7 +6,7 @@
 		<script src="/js/jquery.js"></script>
 		<script src="/js/handlebars.js"></script>
 		<script src="/js/msg.min.js?v=5"></script>
-		<script src="/js/storageui.min.js?v=2"></script>
+		<script src="/js/storageui.min.js?v=3"></script>
 		<script src="/js/dropzone.js"></script>
 		<script src="/js/dateformat.js"></script>
 		<script src="/js/perfect-scrollbar.min.js?v=3"></script>
@@ -22,7 +22,7 @@
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=6"></script>
 		<script src="/js/base.js?ver=613"></script>
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=164"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=165"/>
 
 		<script src="https://www.youtube.com/iframe_api"></script>
 
@@ -120,7 +120,7 @@
 				<div id='footer'>
 					<div id='footer_items'>
 						<span id='footer_nickname' onClick="show_user_info()"></span>
-						<input id='input' type='text'>
+						<input type='text' id='input'>
 					</div>
 				</div>				
 
@@ -178,7 +178,7 @@
 
 				<div class='spacer1'></div>
 
-				<input id='create_room_name' placeholder="Name" type="text">
+				<input type="text" id="create_room_name" placeholder="Name">
 
 				<div class='unselectable'>
 
@@ -249,9 +249,9 @@
 
 		<script id='template_user_info' type='text/x-handlebars-template'>
 
-				<input value={{nick}} id="user_info_nickname_input">
+				<input type="text" value={{nick}} id="user_info_nickname_input">
 				<div class="spacer3"></div>
-				<div id='user_info'>{{{info}}}</div>
+				<div id="user_info">{{{info}}}</div>
 				<div class="spacer2"></div>
 				<div class="menu_item_smaller" onclick="logout()">Logout</div>
 
@@ -267,32 +267,32 @@
 				<br>
 
 				<div class="setting_title">Background Image</div>
-				<input class="setting_checkbox" id="setting_background_image" type="checkbox">
+				<input type="checkbox" class="setting_checkbox" id="setting_background_image">
 				
 				<div class='spacer1'></div>
 
 				<div class="setting_title">Foreground Image</div>
-				<input class="setting_checkbox" id="setting_foreground_image" type="checkbox">
+				<input type="checkbox" class="setting_checkbox" id="setting_foreground_image">
 
 				<div class='spacer1'></div>
 
 				<div class="setting_title">Custom Scrollbars</div>
-				<input class="setting_checkbox" id="setting_custom_scrollbars" type="checkbox">
+				<input type="checkbox" class="setting_checkbox" id="setting_custom_scrollbars">
 
 				<div class='spacer1'></div>
 
 				<div class="setting_title">Header Contrast</div>
-				<input class="setting_checkbox" id="setting_header_contrast" type="checkbox">
+				<input type="checkbox" class="setting_checkbox" id="setting_header_contrast">
 
 				<div class='spacer1'></div>
 
 				<div class="setting_title">Footer Contrast</div>
-				<input class="setting_checkbox" id="setting_footer_contrast" type="checkbox">
+				<input type="checkbox" class="setting_checkbox" id="setting_footer_contrast">
 				
 				<div class='spacer1'></div>
 
 				<div class="setting_title">Nickname On Footer</div>
-				<input class="setting_checkbox" id="setting_nickname_on_footer" type="checkbox">
+				<input type="checkbox" class="setting_checkbox" id="setting_nickname_on_footer">
 
 				<div class='spacer1'></div>
 
