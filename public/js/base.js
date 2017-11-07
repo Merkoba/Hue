@@ -795,6 +795,11 @@ function start_socket()
 		else if(data.type === 'password_changed')
 		{
 			password_changed(data)
+		}
+
+		else if(data.type === 'show_username')
+		{
+			chat_announce('[', ']', `Username: ${data.username}`, 'small')
 		}				
 
 		else if(data.type === 'disconnection')
@@ -3477,6 +3482,7 @@ function register_commands()
 	commands.push('/volume')
 	commands.push('/history')
 	commands.push('/logout')
+	commands.push('/username')
 	commands.push('/changeusername')
 	commands.push('/changepassword')
 
@@ -3860,6 +3866,11 @@ function send_to_chat(msg)
 			else if(oiStartsWith(lmsg, '/changepassword'))
 			{
 				change_password(arg)
+			}
+
+			else if(oiEquals(lmsg, '/username'))
+			{
+				request_username(arg)
 			}
 
 			else if(oiEquals(lmsg, '/logout'))
@@ -7201,4 +7212,9 @@ function change_password(passwd)
 function password_changed(data)
 {
 	chat_announce('[', ']', `Password succesfully changed to ${data.password}`, 'small')
+}
+
+function request_username()
+{
+	socket_emit("get_username", {})
 }

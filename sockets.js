@@ -446,6 +446,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				console.error(err)
 			}
+		})
+
+		socket.on('get_username', function(data) 
+		{
+			try
+			{
+				get_username(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
 		})				
 
 		socket.on('disconnect', function(reason)
@@ -2150,7 +2163,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			socket.emit('update', {room:socket.room, type:'password_changed', password:data.password})
 		}
-	}	
+	}
+
+	function get_username(socket, data)
+	{
+		if(socket.nickname !== undefined)
+		{
+			db_manager.get_user({_id:socket.user_id}, {}, function(user)
+			{
+				if(user)
+				{
+					socket.emit('update', {room:socket.room, type:'show_username', username:user.username})
+				}
+			})
+		}
+	}
 
 	function do_disconnect(socc)
 	{

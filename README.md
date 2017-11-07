@@ -176,7 +176,7 @@ Using 'forever' is suggested to control the Node process.
 >Whether youtube features are enabled. If disabled, youtube urls and search terms will be discarded when /radio is used. There are checks both in the client and server.
 
 "heartbeat_interval": 10000
->This is a heartbeat used to check whether a user is still properly connected to the system. It is a simple check that tests if socket.username is undefined. If it is undefined it sends a signal that refreshes the page. This is probably not necesary since Socket.IO has it's own heartbeat feature so this interval can be a lot bigger, but previous problems lead to this implementation, so it's a safety measure.
+>This is a heartbeat used to check whether a user is still properly connected to the system. It is a simple check that tests if socket.nickname is undefined. If it is undefined it sends a signal that refreshes the page. This is probably not necesary since Socket.IO has it's own heartbeat feature so this interval can be a lot bigger, but previous problems lead to this implementation, so it's a safety measure.
 
 "antispam_banTime": 30
 >How much time in minutes a user is banned from the system after being detected as a spammer by the automatic spam detection system.
