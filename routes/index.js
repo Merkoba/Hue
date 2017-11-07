@@ -36,7 +36,7 @@ module.exports = function(db_manager, config, utilz)
 	c.vars.title_separator = config.title_separator
 	c.vars.default_title = config.default_title
 	c.vars.default_topic = config.default_topic
-	c.vars.default_topic_claimed = config.default_topic_claimed
+	c.vars.default_topic_unclaimed = config.default_topic_unclaimed
 	c.vars.afk_timeout_duration = config.afk_timeout_duration
 	c.vars.heartbeat_interval = config.heartbeat_interval
 	c.vars.youtube_enabled = config.youtube_enabled	
@@ -90,6 +90,8 @@ module.exports = function(db_manager, config, utilz)
 		c.vars.max_nickname_length = config.max_nickname_length
 		c.vars.min_password_length = config.min_password_length
 		c.vars.max_password_length = config.max_password_length
+		c.vars.max_max_nickname_length = config.max_max_nickname_length
+		c.vars.max_max_password_length = config.max_max_password_length
 		c.vars.login_title = config.login_title
 
 		res.render('login', c)
@@ -101,17 +103,12 @@ module.exports = function(db_manager, config, utilz)
 		var password = req.body.password
 		var fromurl = decodeURIComponent(req.body.fromurl)
 
-		if(username.length === 0 || username.length > config.max_nickname_length)
+		if(username.length === 0 || username.length > 300)
 		{
 			return false
 		}
 
-		if(username.length !== utilz.clean_string4(username).length)
-		{
-			return false
-		}
-
-		if(password.length < config.min_password_length || password.length > config.max_password_length)
+		if(password.length === 0 || password.length > 2000)
 		{
 			return false
 		}

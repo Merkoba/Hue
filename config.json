@@ -14,8 +14,8 @@
 	"title_separator": " - ",
 	"default_title": "Hue | Chat room with dynamic images and internet radio",
 	"login_title": "Hue | Login",
-	"default_topic": "Use /claim to get admin rights to this room",
-	"default_topic_claimed": "Check /help3 to learn about administration commands",
+	"default_topic_unclaimed": "Use /claim to get admin rights to this room",
+	"default_topic": "Check /help3 to learn about administration commands",
 	"default_modal_color": "white",
 	"redirect_url": "https://en.wikipedia.org/wiki/Special:Random",
 	"check_metadata_interval_duration": 12000,
@@ -32,6 +32,8 @@
 	"max_nickname_length": 30,
 	"min_password_length": 1,
 	"max_password_length": 200,
+	"max_max_nickname_length": 300,
+	"max_max_password_length": 2000,
 	"max_room_name_length": 100,
 	"max_roomid_length": 100,
 	"max_radio_source_length": 500,
@@ -55,5 +57,5 @@
 	"antispam_heartBeatStale": 40,
 	"antispam_heartBeatCheck": 4,
 	"session_cookie_max_age": 123456789000,
-	"encryption_salt_rounds": 12
+	"encryption_cost": 12
 }

@@ -156,38 +156,59 @@
 					return false
 				}
 
-				if(username.length > max_nickname_length)
+				if(password.length === 0)
 				{
-					set_message("Username Is Too Long")
+					set_message("Password can't be empty")
 					return false
 				}
 
-				if(username.length !== utilz.clean_string4(username).length)
+				if(mode === "login")
 				{
-					set_message("Username contains invalid characters. Only letters, numbers, and some special characters are allowed.")
-					return false
+					if(username.length > max_max_nickname_length)
+					{
+						set_message("Username is too long")
+						return false
+					}
+
+					if(password.length > max_max_password_length)
+					{
+						set_message("Password is too long")
+						return false
+					}
 				}
 
-				if(password.length < min_password_length)
+				else if(mode === "register")
 				{
-					set_message("Password is too short")
-					return false
-				}
+					if(username.length > max_nickname_length)
+					{
+						set_message("Username is too Long")
+						return false
+					}
 
-				if(password.length > max_password_length)
-				{
-					set_message("Password is too long")
-					return false
-				}
+					if(username.length !== utilz.clean_string4(username).length)
+					{
+						set_message("Username contains invalid characters. Only letters, numbers, and some special characters are allowed.")
+						return false
+					}
 
-				if(password.length !== utilz.clean_string2(password).length)
-				{
-					set_message("Password contains invalid characters. There can't be spaces at the start or end of the password, or consecutive spaces.")
-					return false
-				}				
+					if(password.length < min_password_length)
+					{
+						set_message("Password is too short")
+						return false
+					}
 
-				if(mode === "register")
-				{
+					if(password.length > max_password_length)
+					{
+						set_message("Password is too long")
+						return false
+					}
+
+					if(password.length !== utilz.clean_string2(password).length)
+					{
+						set_message("Password contains invalid characters. There can't be spaces at the start or end of the password, or consecutive spaces.")
+						return false
+					}
+
 					if(password !== password2)
 					{
 						set_message("The passwords don't match")

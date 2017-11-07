@@ -198,6 +198,11 @@ function get_nickname()
 	}
 
 	nickname = utilz.clean_string4(nickname.substring(0, max_nickname_length))
+
+	if(nickname.length === 0)
+	{
+		nickname = "user"
+	}
 }
 
 function save_room_nickname(nname)
@@ -342,12 +347,12 @@ function show_topic(size="small")
 	{
 		if(claimed)
 		{
-			chat_announce(brk1, brk2, `Topic: ${default_topic_claimed}`, size)
+			chat_announce(brk1, brk2, `Topic: ${default_topic}`, size)
 		}
 
 		else
 		{
-			chat_announce(brk1, brk2, `Topic: ${default_topic}`, size)
+			chat_announce(brk1, brk2, `Topic: ${default_topic_unclaimed}`, size)
 		}
 	}
 }
@@ -2293,7 +2298,7 @@ function start_dropzone()
 	{ 
 		url: "/",
 		maxFiles: 1,
-		maxFilesize: max_image_size / 1000,
+		maxFilesize: max_image_size / 1024,
 		autoProcessQueue: false,
 		clickable: '#media_image',
 		acceptedFiles: "image/jpeg,image/png,image/gif"
@@ -3118,6 +3123,11 @@ function update_chat(nname, msg)
 
 	chat_history.push(fmsg)
 
+	if(chat_history.length > chat_crop_limit)
+	{
+		chat_history.shift()
+	}
+
 	add_msgcount()
 
 	goto_bottom()
@@ -3147,7 +3157,7 @@ function add_msgcount()
 	msgcount += 1
 
 	if(msgcount > chat_crop_limit)
-	{	chat_history.shift()	
+	{
 		$("#chat_area > .msg").eq(0).remove()
 		update_chat_scrollbar()
 		scroll_timer()

@@ -300,7 +300,7 @@ module.exports = function(db, config, utilz)
 
 	manager.create_user = function(username, password, callback)
 	{
-		bcrypt.hash(password, config.encryption_salt_rounds, function(err, hash) 
+		bcrypt.hash(password, config.encryption_cost, function(err, hash) 
 		{
 			var user = {}
 
@@ -341,7 +341,7 @@ module.exports = function(db, config, utilz)
 
 		if(fields.password !== undefined)
 		{
-			bcrypt.hash(fields.password, config.encryption_salt_rounds, function(err, hash)
+			bcrypt.hash(fields.password, config.encryption_cost, function(err, hash)
 			{
 				fields.password = hash
 
