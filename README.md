@@ -1,5 +1,3 @@
-![](https://i.imgur.com/fLpuX5d.gif)
-
 ![](https://i.imgur.com/ZrP56hg.jpg)
 
 # Installation
