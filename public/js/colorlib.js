@@ -18,7 +18,7 @@ var ColorLib = (function()
 				return
 			}
 
-			var size = 32
+			var size = 64
 
 			const canvas = document.createElement('canvas')
 
