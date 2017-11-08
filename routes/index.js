@@ -51,12 +51,6 @@ module.exports = function(db_manager, config, utilz)
 
 		if(req.session.user_id === undefined)
 		{
-			let c = {}
-
-			c.vars = {}
-
-			c.vars.fromurl = req.originalUrl
-
 			res.redirect(`/login?fromurl=${fromurl}`)
 		}
 
@@ -87,12 +81,13 @@ module.exports = function(db_manager, config, utilz)
 
 		c.vars.login_logo_url = config.login_logo_url
 		c.vars.fromurl = req.query.fromurl
-		c.vars.message = req.query.message
+		c.vars.message = decodeURIComponent(req.query.message)
 		c.vars.max_nickname_length = config.max_nickname_length
 		c.vars.min_password_length = config.min_password_length
 		c.vars.max_password_length = config.max_password_length
 		c.vars.max_max_nickname_length = config.max_max_nickname_length
 		c.vars.max_max_password_length = config.max_max_password_length
+		c.vars.max_email_length = config.max_email_length
 		c.vars.login_title = config.login_title
 
 		res.render('login', c)
@@ -104,12 +99,12 @@ module.exports = function(db_manager, config, utilz)
 		var password = req.body.password
 		var fromurl = decodeURIComponent(req.body.fromurl)
 
-		if(username.length === 0 || username.length > 300)
+		if(username.length === 0 || username.length > config.max_max_nickname_length)
 		{
 			return false
 		}
 
-		if(password.length === 0 || password.length > 2000)
+		if(password.length === 0 || password.length > config.max_max_password_length)
 		{
 			return false
 		}
@@ -134,7 +129,10 @@ module.exports = function(db_manager, config, utilz)
 			else
 			{
 				req.session.destroy(function(){})
-				res.redirect("/login?message=Wrong%20username%20or%20password")
+
+				var m = encodeURIComponent("Wrong username or password")
+
+				res.redirect(`/login?message=${m}`)
 			}
 		})
 	})
@@ -199,10 +197,89 @@ module.exports = function(db_manager, config, utilz)
 
 			else
 			{
-				res.redirect("/login?message=Username%20already%20exists")
+				var m = encodeURIComponent("Username already exists")
+
+				res.redirect(`/login?message=${m}`)
 			}
 		})
 	})
+
+	router.get('/recover', function(req, res, next) 
+	{
+		let c = {}
+
+		c.vars = {}
+
+		c.vars.message = decodeURIComponent(req.query.message)
+		c.vars.max_max_nickname_length = config.max_max_nickname_length
+		c.vars.max_max_email_length = config.max_max_email_length
+
+		res.render('recover', c)
+	})
+
+	router.post('/recover', function(req, res, next) 
+	{
+		var username = req.body.username
+		var email = req.body.email
+
+		if(username.length === 0 || username.length > config.max_max_nickname_length)
+		{
+			return false
+		}
+
+		if(email.length === 0 || email.length > config.max_max_email_length)
+		{
+			return false
+		}
+
+		if(email.indexOf('@') === -1 || email.indexOf(' ') !== -1)
+		{
+			return false
+		}
+
+		db_manager.reset_user_password(username, email, function(result)
+		{
+			if(result)
+			{
+				if(result === "done")
+				{
+					var m = encodeURIComponent(`An email was sent to ${email}`)
+
+					res.redirect(`/message?message=${m}`)
+				}
+
+				else if(result === "limit")
+				{
+					var m = encodeURIComponent("You must wait a while before resetting the password again")
+
+					res.redirect(`/message?message=${m}`)
+				}
+
+				else
+				{
+					return false
+				}
+			}
+
+			else
+			{
+				var m = encodeURIComponent("We couldn't find an account that matched")
+
+				res.redirect(`/message?message=${m}`)
+			}
+		})
+	})
+
+	router.get('/message', function(req, res, next) 
+	{
+		let c = {}
+
+		c.vars = {}
+
+		c.vars.message = decodeURIComponent(req.query.message)
+
+		res.render('message', c)
+	})		
 
 	router.get('/logout', function(req, res, next) 
 	{

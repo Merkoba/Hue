@@ -1,0 +1,163 @@
+<html>
+	<head>
+
+		<title>Message</title>
+
+		<script src="/js/jquery.js"></script>
+
+		<style>
+
+			@font-face
+			{
+				font-family: iconsolas;
+				src: url(/css/consolas.ttf);
+			}
+
+			body, html
+			{
+				font-family: iconsolas;
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+				font-size: 18px;
+				background-color: white;
+				color: #222222;				
+			}
+
+			.center
+			{
+				padding-top: 5em;
+				margin-left: auto;
+				margin-right: auto;
+				width: 50em;
+				height: 35em;
+				text-align: center;
+			}
+
+			.spacer1
+			{
+				padding-top: 1.2em;
+				padding-bottom: 1.2em;
+			}
+
+			.spacer2
+			{
+				padding-top: 0.5em;
+				padding-bottom: 0.5em;
+			}
+
+			input[type=text], input[type=password]
+			{
+				padding: 0.2em;
+				border: 1px solid grey;
+				width: 14em;
+				font-size: 1.2em;
+				text-align: center;
+				background-color: white;
+				color: #222222;				
+			}
+
+			input[type=submit]
+			{
+				background-color: white;
+				color: #222222;	
+				padding: 0.2em 0.8em 0.2em 0.8em;
+				color: black;
+				border: 1px solid #bbb;
+				border-color: #ddd #aaa #aaa #ddd;
+				font-size: 1em;
+			}
+
+			input[type=submit]:hover
+			{
+				background-color: #f4f4f4;
+			}
+
+			.logo
+			{
+				width: 10em;
+			}
+
+			#message_container
+			{
+				font-size: 1.4em;
+				color: rgb(205, 140, 217);
+				transition: opacity 2s;				
+			}
+
+			a:hover, a:visited, a:link
+			{
+				color: #222222;
+				text-decoration: underline;
+				cursor: pointer;
+			}
+
+			form
+			{
+				margin: 0;
+			}
+
+		</style>
+
+		<script>
+
+			<% 
+				for(var key in vars)
+				{
+					var v = vars[key]
+
+					%><%-key%> = <%
+
+					if(!v)
+					{
+						%>undefined; <%
+					}					
+
+					else if(typeof v === "string")
+					{
+						%>`<%-v%>`; <% 
+					}
+
+					else
+					{
+						%><%-v%>; <%
+					}
+				}
+			%>
+
+			var message_timeout			
+
+			function set_message(s)
+			{
+				$("#message_container").text(s)
+			}
+
+		</script>
+	</head>
+
+	<body>
+
+		<div class="center">
+
+			<div id="message_container"></div>
+
+			<div class='spacer1'></div>
+
+			<a href='/login'>Login</a>
+
+		</div>
+
+		<script>
+
+			if(message && message !== "undefined")
+			{
+				set_message(message)
+			}
+
+			$("#txt_username").focus()
+
+		</script>
+
+	</body>
+</html>

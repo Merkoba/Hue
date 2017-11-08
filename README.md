@@ -133,6 +133,12 @@ Using 'forever' is suggested to control the Node process.
 "max_email_length": 200
 >Maximum length for email addresses.
 
+"max_max_email_length": 2000
+>Same as max_max_nickname but for emails.
+
+"password_reset_limit": 3600000
+>How long a user must wait to reset a password again, after a reset email was sent.
+
 "max_room_name_length": 100
 >Max length for room names.
 

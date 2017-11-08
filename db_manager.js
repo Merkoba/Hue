@@ -1,10 +1,11 @@
-module.exports = function(db, config, utilz)
+module.exports = function(db, config, sconfig, utilz)
 {
 	const mongo = require('mongodb')
 	const bcrypt = require('bcrypt')
+	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
 	const rooms_version = 11
-	const users_version = 14
+	const users_version = 15
 
 	function get_random_key()
 	{
@@ -17,6 +18,19 @@ module.exports = function(db, config, utilz)
 		}
 
 		return "_key_" + Date.now() + text
+	}
+
+	function get_random_password()
+	{
+		var text = ""
+		var possible = "ABCDEFGHIJKLMnopqrstuvwxyz012345"
+
+		for(var i=0; i < 12; i++)
+		{
+			text += possible.charAt(Math.floor(Math.random() * possible.length))
+		}
+
+		return Date.now() + text
 	}
 
 	var manager = {}
@@ -294,6 +308,11 @@ module.exports = function(db, config, utilz)
 					user.room_keys = {}
 				}
 
+				if(user.password_reset_date === undefined || typeof user.password_reset_date !== "number")
+				{
+					user.password_reset_date = 0
+				}
+
 				user.version = users_version
 
 				db.collection('users').update({_id:user._id}, {$set:user})					
@@ -315,7 +334,8 @@ module.exports = function(db, config, utilz)
 				username: info.username,
 				password: hash,
 				email: info.email, 
-				room_keys: {}
+				room_keys: {},
+				password_reset_date: Date.now()
 			}
 
 			db.collection('users').insertOne(user, function(err, result)
@@ -408,6 +428,45 @@ module.exports = function(db, config, utilz)
 						callback(true)					
 					}
 				})
+			}
+		})
+	}
+
+	manager.reset_user_password = function(username, email, callback)
+	{
+		manager.get_user({username:username}, {}, function(user)
+		{
+			if(user)
+			{
+				if((Date.now() - user.password_reset_date) > config.password_reset_limit)
+				{
+					var new_pass = get_random_password()
+
+					manager.update_user(user._id, {password:new_pass, password_reset_date:Date.now()})
+
+					var data = 
+					{
+						from: 'Hue <hue@merkoba.com>',
+						to: email,
+						subject: 'Password Reset',
+						text: `The password of your account with username "${username}" has been changed to "${new_pass}"`
+					}
+
+					mailgun.messages().send(data, function(error, body) 
+					{
+						callback("done")
+					})
+				}
+
+				else
+				{
+					callback("limit")
+				}
+			}
+
+			else
+			{
+				callback(false)
 			}
 		})
 	}

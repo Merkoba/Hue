@@ -1,0 +1,235 @@
+<html>
+	<head>
+
+		<title>Reset Password</title>
+
+		<script src="/js/jquery.js"></script>
+
+		<style>
+
+			@font-face
+			{
+				font-family: iconsolas;
+				src: url(/css/consolas.ttf);
+			}
+
+			body, html
+			{
+				font-family: iconsolas;
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+				font-size: 18px;
+				background-color: white;
+				color: #222222;				
+			}
+
+			.center
+			{
+				padding-top: 5em;
+				margin-left: auto;
+				margin-right: auto;
+				width: 50em;
+				height: 35em;
+				text-align: center;
+			}
+
+			.spacer1
+			{
+				padding-top: 1.2em;
+				padding-bottom: 1.2em;
+			}
+
+			.spacer2
+			{
+				padding-top: 0.5em;
+				padding-bottom: 0.5em;
+			}
+
+			input[type=text], input[type=password]
+			{
+				padding: 0.2em;
+				border: 1px solid grey;
+				width: 14em;
+				font-size: 1.2em;
+				text-align: center;
+				background-color: white;
+				color: #222222;				
+			}
+
+			input[type=submit]
+			{
+				background-color: white;
+				color: #222222;	
+				padding: 0.2em 0.8em 0.2em 0.8em;
+				color: black;
+				border: 1px solid #bbb;
+				border-color: #ddd #aaa #aaa #ddd;
+				font-size: 1em;
+			}
+
+			input[type=submit]:hover
+			{
+				background-color: #f4f4f4;
+			}
+
+			.logo
+			{
+				width: 10em;
+			}
+
+			#message_container
+			{
+				font-size: 1.2em;
+				color: rgb(205, 140, 217);
+				transition: opacity 2s;
+				opacity: 0;
+			}
+
+			a:hover, a:visited, a:link
+			{
+				color: #222222;
+				text-decoration: underline;
+				cursor: pointer;
+			}
+
+			form
+			{
+				margin: 0;
+			}
+
+		</style>
+
+		<script>
+
+			<% 
+				for(var key in vars)
+				{
+					var v = vars[key]
+
+					%><%-key%> = <%
+
+					if(!v)
+					{
+						%>undefined; <%
+					}					
+
+					else if(typeof v === "string")
+					{
+						%>`<%-v%>`; <% 
+					}
+
+					else
+					{
+						%><%-v%>; <%
+					}
+				}
+			%>
+
+			var message_timeout	
+
+			function set_message(s)
+			{
+				clearTimeout(message_timeout)
+
+				$("#message_container").text(s)
+
+				$("#message_container").css("opacity", 1)
+
+				message_timeout = setTimeout(function()
+				{
+					$("#message_container").css("opacity", 0)
+				}, 10000)
+			}	
+
+			function validate_form()
+			{
+				$("#txt_username").val($("#txt_username").val().trim())
+				var username = $("#txt_username").val()
+
+				$("#txt_email").val($("#txt_email").val().trim())
+				var email = $("#txt_email").val()
+
+				if(username.length === 0)
+				{
+					set_message("Username can't be empty")
+					return false
+				}
+
+				if(email.length === 0)
+				{
+					set_message("Email can't be empty")
+					return false
+				}
+
+				if(username.length > max_max_nickname_length)
+				{
+					set_message("Username is too long")
+					return false
+				}
+
+				if(email.length > max_max_email_length)
+				{
+					set_message("Password is too long")
+					return false
+				}
+
+				if(email.indexOf('@') === -1 || email.indexOf(' ') !== -1)
+				{
+					set_message("Invalid email address")
+					return false
+				}
+
+				$("#btn_submit").prop("disabled", true)
+
+				return true
+			}
+
+		</script>
+	</head>
+
+	<body>
+
+		<div class="center">
+
+			<form method="post" action="/recover" name="recover" onsubmit="return validate_form()">
+
+				If the username and email match
+
+				<div class="spacer2"></div>
+
+				we will reset your password and email it to you
+
+				<div class="spacer1"></div>
+
+				<input type="text" placeholder="Username" name="username" id="txt_username">
+
+				<div class="spacer2"></div>
+				
+				<input type="text" placeholder="Email" name="email" id="txt_email">
+
+				<div class="spacer2"></div>
+
+				<input id="btn_submit" type="submit" value="Send Email">				
+
+			</form>
+
+			<div class="spacer1"></div>
+
+			<div id="message_container"></div>
+		</div>
+
+		<script>
+
+			if(message && message !== "undefined")
+			{
+				set_message(message)
+			}
+
+			$("#txt_username").focus()
+
+		</script>
+
+	</body>
+</html>

@@ -89,6 +89,18 @@
 				opacity: 0;
 			}
 
+			a:hover, a:visited, a:link
+			{
+				color: #222222;
+				text-decoration: underline;
+				cursor: pointer;
+			}
+
+			form
+			{
+				margin: 0;
+			}
+
 		</style>
 
 		<script>
@@ -196,13 +208,13 @@
 
 					if(username.length !== utilz.clean_string4(username).length)
 					{
-						set_message("Username contains invalid characters. Only letters, numbers, and some special characters are allowed.")
+						set_message("Username contains invalid characters. Only letters, numbers, and some special characters are allowed")
 						return false
 					}
 
 					if(password.length < min_password_length)
 					{
-						set_message(`Password is too short. It must be at least ${min_password_length} characters long.`)
+						set_message(`Password is too short. It must be at least ${min_password_length} characters long`)
 						return false
 					}
 
@@ -214,7 +226,7 @@
 
 					if(password.length !== utilz.clean_string2(password).length)
 					{
-						set_message("Password contains invalid characters. There can't be spaces at the start or end of the password, or consecutive spaces.")
+						set_message("Password contains invalid characters. There can't be spaces at the start or end of the password, or consecutive spaces")
 						return false
 					}
 
@@ -228,13 +240,13 @@
 					{
 						if(email.indexOf('@') === -1 || email.indexOf(' ') !== -1)
 						{
-							set_message("Invalid email address.")
+							set_message("Invalid email address")
 							return false
 						}					
 
-						if(email.length > config.max_email_length)
+						if(email.length > max_email_length)
 						{
-							set_message("Email is too long.")
+							set_message("Email is too long")
 							return false
 						}
 					}					
@@ -300,6 +312,10 @@
 				<input type='hidden' name='fromurl' value="<%-vars.fromurl%>">
 
 				<input id="btn_register" type="submit" value="Register">
+				
+				<div class="spacer1"></div>
+
+				<a href='/recover'>Forgot Password</a>
 
 			</form>
 
@@ -310,7 +326,7 @@
 
 		<script>
 
-			if(message)
+			if(message && message !== "undefined")
 			{
 				set_message(message)
 			}
