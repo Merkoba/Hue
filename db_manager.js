@@ -4,7 +4,7 @@ module.exports = function(db, config, utilz)
 	const bcrypt = require('bcrypt')
 
 	const rooms_version = 11
-	const users_version = 12
+	const users_version = 14
 
 	function get_random_key()
 	{
@@ -289,7 +289,7 @@ module.exports = function(db, config, utilz)
 					user.email = ""
 				}
 
-				if(user.room_keys === undefined || typeof user.keys !== "object")
+				if(user.room_keys === undefined || typeof user.room_keys !== "object")
 				{
 					user.room_keys = {}
 				}
