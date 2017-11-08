@@ -2157,7 +2157,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return false
 			}
 
-			if(data.password.length < config.min_password_length)
+			if(data.password.length === 0 || data.password.length < config.min_password_length)
 			{
 				socket.disconnect()
 				return false

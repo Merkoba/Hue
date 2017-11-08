@@ -31,7 +31,7 @@
 	"max_topic_length": 1200,
 	"max_nickname_length": 30,
 	"max_max_nickname_length": 300,
-	"min_password_length": 1,
+	"min_password_length": 3,
 	"max_password_length": 200,
 	"max_max_password_length": 2000,
 	"max_email_length": 200,

@@ -156,7 +156,7 @@ module.exports = function(db_manager, config, utilz)
 			return false
 		}
 
-		if(password.length < config.min_password_length || password.length > config.max_password_length)
+		if(password.length === 0 || password.length < config.min_password_length || password.length > config.max_password_length)
 		{
 			return false
 		}

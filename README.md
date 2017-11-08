@@ -121,8 +121,8 @@ Using 'forever' is suggested to control the Node process.
 "max_max_nickname_length": 300
 >This is a safety used when validating usernames on login. In case max or min nickname length configurations where changed when there were already users registered, this arbitrary big number is used to check something huge is not being inputed instead of checking with the nickname length configuration options, to avoid old nicknames from not being able to login. This likely shouldn't be changed.
 
-"min_password_length": 1
->Minimum length for passwords.
+"min_password_length": 3
+>Minimum length for passwords. It has to be at least 1.
 
 "max_password_length": 200
 >Maximum length for passwords.

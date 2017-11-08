@@ -7209,7 +7209,7 @@ function change_password(passwd)
 {
 	if(passwd.length < min_password_length)
 	{
-		chat_announce('[', ']', "Password is too short", 'small')
+		chat_announce('[', ']', `Password is too short. It must be at least ${min_password_length} characters long.`, 'small')
 		return
 	}
 

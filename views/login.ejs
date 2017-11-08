@@ -202,7 +202,7 @@
 
 					if(password.length < min_password_length)
 					{
-						set_message("Password is too short")
+						set_message(`Password is too short. It must be at least ${min_password_length} characters long.`)
 						return false
 					}
 
