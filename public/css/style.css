@@ -495,11 +495,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 	font-size: 1em !important;
 }
 
-.Msg-window-white
-{
-	color: #222222;
-}
-
 #Msg-window-menu
 {
 	width: 20em !important;
