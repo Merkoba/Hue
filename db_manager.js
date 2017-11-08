@@ -436,7 +436,7 @@ module.exports = function(db, config, sconfig, utilz)
 	{
 		manager.get_user({username:username}, {}, function(user)
 		{
-			if(user)
+			if(user && user.email === email)
 			{
 				if((Date.now() - user.password_reset_date) > config.password_reset_limit)
 				{
