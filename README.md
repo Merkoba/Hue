@@ -215,7 +215,7 @@ Using 'forever' is suggested to control the Node process.
 >Whether a mailgun account is to be used for mail delivery, for example for password resets. If this is enabled, the "Forgot Password" link will appear in the login page.
 
 
-The following reside in config.secret.json:
+## The following reside in config.secret.json:
 
 
 "secretpass": "whatever"
