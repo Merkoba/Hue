@@ -315,7 +315,7 @@
 				
 				<div class="spacer1"></div>
 
-				<a href='/recover'>Forgot Password</a>
+				<a href="/recover" id="password_reset_link"'>Forgot Password</a>
 
 			</form>
 
@@ -329,6 +329,11 @@
 			if(message && message !== "undefined")
 			{
 				set_message(message)
+			}
+
+			if(!mail_enabled)
+			{
+				$("#password_reset_link").css("display", "none")
 			}
 
 			$("#login_username").focus()

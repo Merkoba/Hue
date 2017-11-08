@@ -211,6 +211,9 @@ Using 'forever' is suggested to control the Node process.
 "encryption_cost": 12
 >This is used for the password hashing. A cost of 12 are 4096 salt rounds. The more rounds, the more secure the hash is, but it takes longer to process.
 
+"mail_enabled": true
+>Whether a mailgun account is to be used for mail delivery, for example for password resets. If this is enabled, the "Forgot Password" link will appear in the login page.
+
 
 The following reside in config.secret.json:
 
@@ -223,3 +226,9 @@ The following reside in config.secret.json:
 
 "session_secret": "secret string for express-session constructor"
 >Used for express-session security. Change it to anything you want.
+
+"mailgun_api_key": "aMailGunApiKey"
+>An api key from mailgun.com to enable mail delivery, used for password resets.
+
+"mailgun_domain": "some.domain.com"
+>The domain registered in mailgun.com

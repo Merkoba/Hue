@@ -89,6 +89,7 @@ module.exports = function(db_manager, config, utilz)
 		c.vars.max_max_password_length = config.max_max_password_length
 		c.vars.max_email_length = config.max_email_length
 		c.vars.login_title = config.login_title
+		c.vars.mail_enabled = config.mail_enabled
 
 		res.render('login', c)
 	})
@@ -206,6 +207,15 @@ module.exports = function(db_manager, config, utilz)
 
 	router.get('/recover', function(req, res, next) 
 	{
+		if(!config.mail_enabled)
+		{
+			var m = encodeURIComponent("Password resets are not enabled on this system")
+
+			res.redirect(`/message?message=${m}`)
+
+			return false		
+		}
+
 		let c = {}
 
 		c.vars = {}
