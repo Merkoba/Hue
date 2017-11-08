@@ -21,7 +21,7 @@
 
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=6"></script>
-		<script src="/js/base.js?ver=613"></script>
+		<script src="/js/base.js?ver=614"></script>
 		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=165"/>
 
 		<script src="https://www.youtube.com/iframe_api"></script>
@@ -253,6 +253,8 @@
 				<div class="spacer3"></div>
 				<div id="user_info">{{{info}}}</div>
 				<div class="spacer2"></div>
+				<div class="menu_item_smaller" onclick="request_details()">Details</div>
+				<span class='hspacer1'></span>|<span class='hspacer1'></span>
 				<div class="menu_item_smaller" onclick="logout()">Logout</div>
 
 		</script>
@@ -380,9 +382,10 @@
 			<div class='info_item'>/startradio: Starts the radio.</div>
 			<div class='info_item'>/stopradio: Stops the radio.</div>
 			<div class='info_item'>/volume x: Changes the volume of the radio.</div>
-			<div class='info_item'>/username: Shows the account username.</div>
+			<div class='info_item'>/details: Shows the account details.</div>
 			<div class='info_item'>/changeusername x: Changes the account username.</div>
 			<div class='info_item'>/changepassword x: Changes the account password.</div>
+			<div class='info_item'>/changeemail x: Changes the account email.</div>
 			<div class='info_item'>/logout: Ends the user session.</div>
 			<div class='info_item'>Note: Dates shown when hovering some items show the time when the item was placed on the screen, except when a nickname is displayed beside it, meaning it's the date an action was performed.</div>
 			<div class='info_item'>Note: In the Open Here or Open In New Tab picker, 'here' can be triggered with Shift + Enter, 'new tab' with Enter.</div>

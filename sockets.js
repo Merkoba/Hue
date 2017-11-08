@@ -448,11 +448,24 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
-		socket.on('get_username', function(data) 
+		socket.on('change_email', function(data) 
 		{
 			try
 			{
-				get_username(socket, data)
+				change_email(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
+		socket.on('get_details', function(data) 
+		{
+			try
+			{
+				get_details(socket, data)
 			}
 
 			catch(err)
@@ -2165,7 +2178,38 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 	}
 
-	function get_username(socket, data)
+	function change_email(socket, data)
+	{
+		if(socket.nickname !== undefined)
+		{
+			if(data.email === undefined)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			if(data.email.indexOf('@') === -1 || data.email.indexOf(' ') !== -1)
+			{
+				socket.disconnect()
+				return false
+			}			
+
+			if(data.email.length > config.max_email_length)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			db_manager.update_user(socket.user_id,
+			{
+				email: data.email
+			})
+
+			socket.emit('update', {room:socket.room, type:'email_changed', email:data.email})
+		}
+	}
+
+	function get_details(socket, data)
 	{
 		if(socket.nickname !== undefined)
 		{
@@ -2173,7 +2217,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				if(user)
 				{
-					socket.emit('update', {room:socket.room, type:'show_username', username:user.username})
+					socket.emit('update', {room:socket.room, type:'show_details', username:user.username, email:user.email})
 				}
 			})
 		}

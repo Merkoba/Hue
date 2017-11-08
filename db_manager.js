@@ -4,7 +4,7 @@ module.exports = function(db, config, utilz)
 	const bcrypt = require('bcrypt')
 
 	const rooms_version = 11
-	const users_version = 11
+	const users_version = 12
 
 	function get_random_key()
 	{
@@ -284,6 +284,11 @@ module.exports = function(db, config, utilz)
 					db.users.deleteOne({_id: user._id})
 				}
 
+				if(user.email === undefined || typeof user.email !== "string")
+				{
+					user.email = ""
+				}
+
 				if(user.room_keys === undefined || typeof user.keys !== "object")
 				{
 					user.room_keys = {}
@@ -298,17 +303,18 @@ module.exports = function(db, config, utilz)
 		})
 	}
 
-	manager.create_user = function(username, password, callback)
+	manager.create_user = function(info, callback)
 	{
-		bcrypt.hash(password, config.encryption_cost, function(err, hash) 
+		bcrypt.hash(info.password, config.encryption_cost, function(err, hash) 
 		{
 			var user = {}
 
 			user =
 			{
 				version: users_version,
-				username: username,
-				password: hash, 
+				username: info.username,
+				password: hash,
+				email: info.email, 
 				room_keys: {}
 			}
 

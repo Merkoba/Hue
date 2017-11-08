@@ -118,17 +118,20 @@ Using 'forever' is suggested to control the Node process.
 "max_nickname_length": 30
 >Maximum length for nicknames. Currently this is also used for the username max length.
 
+"max_max_nickname_length": 300
+>This is a safety used when validating usernames on login. In case max or min nickname length configurations where changed when there were already users registered, this arbitrary big number is used to check something huge is not being inputed instead of checking with the nickname length configuration options, to avoid old nicknames from not being able to login. This likely shouldn't be changed.
+
 "min_password_length": 1
 >Minimum length for passwords.
 
 "max_password_length": 200
 >Maximum length for passwords.
 
-"max_max_nickname_length": 300
->This is a safety used when validating usernames on login. In case max or min nickname length configurations where changed when there were already users registered, this arbitrary big number is used to check something huge is not being inputed instead of checking with the nickname length configuration options, to avoid old nicknames from not being able to login. This likely shouldn't be changed.
-
 "max_max_password_length": 2000
 >Same as max_max_nickname but for passwords.
+
+"max_email_length": 200
+>Maximum length for email addresses.
 
 "max_room_name_length": 100
 >Max length for room names.

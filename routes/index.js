@@ -43,6 +43,7 @@ module.exports = function(db_manager, config, utilz)
 	c.vars.max_visited_rooms_items = config.max_visited_rooms_items
 	c.vars.min_password_length = config.min_password_length
 	c.vars.max_password_length = config.max_password_length	
+	c.vars.max_email_length = config.max_email_length
 
 	function require_login(req, res, next)
 	{
@@ -142,6 +143,7 @@ module.exports = function(db_manager, config, utilz)
 	{
 		var username = req.body.username
 		var password = req.body.password 
+		var email = req.body.email 
 		var fromurl = req.body.fromurl
 
 		if(username.length === 0 || username.length > config.max_nickname_length)
@@ -159,11 +161,24 @@ module.exports = function(db_manager, config, utilz)
 			return false
 		}
 
+		if(email !== "")
+		{
+			if(email.indexOf('@') === -1 || email.indexOf(' ') !== -1)
+			{
+				return false
+			}
+
+			if(email.length > config.max_email_length)
+			{
+				return false
+			}
+		}
+
 		db_manager.get_user({username:username}, {}, function(user)
 		{
 			if(!user)
 			{
-				db_manager.create_user(username, password, function(user)
+				db_manager.create_user({username:username, password:password, email:email}, function(user)
 				{
 					req.session.user_id = user.ops[0]._id
 

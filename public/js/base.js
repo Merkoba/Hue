@@ -797,9 +797,14 @@ function start_socket()
 			password_changed(data)
 		}
 
-		else if(data.type === 'show_username')
+		else if(data.type === 'email_changed')
 		{
-			chat_announce('[', ']', `Username: ${data.username}`, 'small')
+			email_changed(data)
+		}
+
+		else if(data.type === 'show_details')
+		{
+			show_details(data)
 		}				
 
 		else if(data.type === 'disconnection')
@@ -3482,9 +3487,10 @@ function register_commands()
 	commands.push('/volume')
 	commands.push('/history')
 	commands.push('/logout')
-	commands.push('/username')
+	commands.push('/details')
 	commands.push('/changeusername')
 	commands.push('/changepassword')
+	commands.push('/changeemail')
 
 	commands.sort()
 }
@@ -3868,9 +3874,14 @@ function send_to_chat(msg)
 				change_password(arg)
 			}
 
-			else if(oiEquals(lmsg, '/username'))
+			else if(oiStartsWith(lmsg, '/changeemail'))
 			{
-				request_username(arg)
+				change_email(arg)
+			}
+
+			else if(oiEquals(lmsg, '/details'))
+			{
+				request_details(arg)
 			}
 
 			else if(oiEquals(lmsg, '/logout'))
@@ -7216,7 +7227,50 @@ function password_changed(data)
 	chat_announce('[', ']', `Password succesfully changed to ${data.password}`, 'small')
 }
 
-function request_username()
+function change_email(email)
 {
-	socket_emit("get_username", {})
+	if(email.length === 0)
+	{
+		chat_announce('[', ']', "Username can't be empty", 'small')
+		return
+	}
+
+	if(email.indexOf('@') === -1 || email.indexOf(' ') !== -1)
+	{
+		chat_announce('[', ']', "Invalid email address", 'small')
+		return
+	}	
+
+	if(email.length > max_email_length)
+	{
+		chat_announce('[', ']', "Email is too long", 'small')
+		return
+	}
+
+	socket_emit("change_email", {email:email})
+}
+
+function email_changed(data)
+{
+	chat_announce('[', ']', `Email succesfully changed to ${data.email}`, 'small')
+}
+
+function request_details()
+{
+	socket_emit("get_details", {})
+}
+
+function show_details(data)
+{
+	if(data.email === "")
+	{
+		data.email = "No Email"
+	}
+
+	var info = ""
+
+	info += `<div class='info_item'><div class='info_title'>Username</div><div class='info_item_content'>${data.username}</div></div>`
+	info += `<div class='info_item'><div class='info_title'>Email</div><div class='info_item_content'>${data.email}</div></div>`
+
+	msg_info.show(info)
 }
