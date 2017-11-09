@@ -157,7 +157,7 @@ module.exports = function(db, config, sconfig, utilz)
 				
 				if(room.modified === undefined || typeof room.modified !== "number")
 				{
-					room.modified = 0
+					room.modified = Date.now()
 				}
 				
 				if(room.public === undefined || typeof room.public !== "boolean")
@@ -312,7 +312,7 @@ module.exports = function(db, config, sconfig, utilz)
 
 				if(user.modified === undefined || typeof user.modified !== "number")
 				{
-					user.modified = 0
+					user.modified = Date.now()
 				}
 
 				user.version = users_version
@@ -338,7 +338,7 @@ module.exports = function(db, config, sconfig, utilz)
 				email: info.email, 
 				room_keys: {},
 				password_reset_link_date: 0,
-				password_reset_date: Date.now(),
+				password_reset_date: 0,
 				modified: Date.now()
 			}
 
