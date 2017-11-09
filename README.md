@@ -272,4 +272,6 @@ Using 'forever' is suggested to control the Node process.
 
 To learn how to host a working internet radio refer to http://icecast.org/
 
+For metadata fetching to work (to display the song and artist name in the played list and Now Playing), the Icecast metadata source needs to allow cross origin requests and be served through https if the system is being served through https.
+
 To have images work properly when hosted on an S3 service, the CORS file has to be edited to allow Cross-Origin requests. This is done inside the S3 interface. If not, the dynamic color feature won't work since canvas elements won't have access to the image data.
