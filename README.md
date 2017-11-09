@@ -227,10 +227,10 @@ Using 'forever' is suggested to control the Node process.
 >The api version to use when creating the s3 object.
 
 "s3_endpoint_url"
->The location where your S3 bucket resides. It can look like https://s3-us-west-1.amazonaws.com/.
+>The location where your S3 bucket resides. It can look like https://s3-us-west-1.amazonaws.com/
 
 "s3_main_url"
->The url of your S3 bucket. It can look like "https://s3-us-west-1.amazonaws.com/merkoba/".
+>The url of your S3 bucket. It can look like "https://s3-us-west-1.amazonaws.com/merkoba/"
 
 "s3_bucket_name"
 >The name of the S3 bucket.
