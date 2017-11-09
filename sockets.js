@@ -705,7 +705,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				socket.broadcast.in(socket.room_id).emit('update', {type:'chat_msg', nickname:socket.nickname, msg:data.msg})
 
-				db_manager.update_room(info._id, {modified:Date.now()})
+				db_manager.update_room(info._id, {})
 			})
 		}
 	}
@@ -960,8 +960,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					{
 						topic: info.topic,
 						topic_setter: info.topic_setter,
-						topic_date: info.topic_date,
-						modified: Date.now()
+						topic_date: info.topic_date
 					})
 				}
 			})
@@ -1005,8 +1004,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					
 					db_manager.update_room(info._id,
 					{
-						name: info.name,
-						modified: Date.now()
+						name: info.name
 					})					
 				}
 			})		
@@ -1150,7 +1148,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							room_keys: userinfo.room_keys
 						})
 
-						db_manager.update_room(info._id, {keys:socket.key, claimed:true, modified:Date.now()})
+						db_manager.update_room(info._id, {keys:socket.key, claimed:true})
 
 						io.sockets.in(socket.room_id).emit('update', {type:'announce_claim', nickname:socket.nickname, updated:updated})
 					})				
@@ -1192,8 +1190,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					radio_setter: '',
 					radio_date: '',
 					bans: '',
-					public: true,
-					modified: Date.now()
+					public: true
 				})
 
 				io.sockets.in(socket.room_id).emit('update', {type:'announce_unclaim', nickname:socket.nickname})
@@ -2106,8 +2103,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			radio_source: info.radio_source,
 			radio_title: info.radio_title,
 			radio_setter: info.radio_setter,
-			radio_date: info.radio_date,
-			modified: Date.now()
+			radio_date: info.radio_date
 		})
 	}
 
@@ -2565,8 +2561,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				image_uploader: uploader, 
 				image_size: size, 
 				image_date: Date.now(),
-				stored_images: info.stored_images,
-				modified: Date.now()
+				stored_images: info.stored_images
 			})
 
 			if(popped)

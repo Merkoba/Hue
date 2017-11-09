@@ -5,7 +5,7 @@ module.exports = function(db, config, sconfig, utilz)
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
 	const rooms_version = 14
-	const users_version = 16
+	const users_version = 17
 
 	function get_random_key()
 	{
@@ -195,7 +195,7 @@ module.exports = function(db, config, sconfig, utilz)
 			radio_setter: '',
 			radio_date: 0,
 			bans: '',
-			modified: Date.now(),
+			modified: Date.now()
 		}
 
 		if(data.id !== undefined)
@@ -233,6 +233,8 @@ module.exports = function(db, config, sconfig, utilz)
 				}
 			}
 		}
+
+		fields.modified = Date.now()
 
 		db.collection('rooms').update({_id:_id}, {$set:fields})		
 	}
@@ -308,6 +310,11 @@ module.exports = function(db, config, sconfig, utilz)
 					user.password_reset_link_date = 0
 				}
 
+				if(user.modified === undefined || typeof user.modified !== "number")
+				{
+					user.modified = 0
+				}
+
 				user.version = users_version
 
 				db.collection('users').update({_id:user._id}, {$set:user})					
@@ -330,7 +337,9 @@ module.exports = function(db, config, sconfig, utilz)
 				password: hash,
 				email: info.email, 
 				room_keys: {},
-				password_reset_date: Date.now()
+				password_reset_link_date: 0,
+				password_reset_date: Date.now(),
+				modified: Date.now()
 			}
 
 			db.collection('users').insertOne(user, function(err, result)
@@ -359,6 +368,8 @@ module.exports = function(db, config, sconfig, utilz)
 				}
 			}
 		}
+
+		fields.modified = Date.now()
 
 		if(fields.password !== undefined)
 		{

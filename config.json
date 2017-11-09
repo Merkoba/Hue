@@ -1,7 +1,7 @@
 {
 	"https_enabled": true,
 	"site_root": "https://hue.merkoba.com/",
-	"image_storage_s3_or_local": "s3",
+	"image_storage_s3_or_local": "local",
 	"s3_api_version": "latest",
 	"s3_endpoint_url": "https://s3-us-west-1.amazonaws.com/",
 	"s3_main_url": "https://s3-us-west-1.amazonaws.com/merkoba/",	
