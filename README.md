@@ -272,4 +272,4 @@ Using 'forever' is suggested to control the Node process.
 
 To learn how to host a working internet radio refer to http://icecast.org/
 
-To have images work properly when hosted on an S3 service, the CORS file has to be edited to allow Cross-Origin requests. If not, the dynamic color feature won't work since canvas elements won't have access to the image data.
+To have images work properly when hosted on an S3 service, the CORS file has to be edited to allow Cross-Origin requests. This is done inside the S3 interface. If not, the dynamic color feature won't work since canvas elements won't have access to the image data.
