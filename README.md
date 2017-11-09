@@ -220,6 +220,27 @@ Using 'forever' is suggested to control the Node process.
 "max_url_length"
 >Url lengths beyond this are ignored by the system. This is to avoid triggering actions on urls that are likely wrong or meant as an attack.
 
+"image_storage_s3_or_local"
+>Whether to serve images locally or hosted on an S3 service.
+
+"s3_api_version"
+>The api version to use when creating the s3 object.
+
+"s3_endpoint_url"
+>The location where your S3 bucket resides. It can look like https://s3-us-west-1.amazonaws.com/.
+
+"s3_main_url"
+>The url of your S3 bucket. It can look like "https://s3-us-west-1.amazonaws.com/merkoba/".
+
+"s3_bucket_name"
+>The name of the S3 bucket.
+
+"s3_images_location"
+>The directory inside the bucket where the images will reside.
+
+"max_stored_images"
+>The amount of most recent images to have stored in a room. Each room has an array of images stored, when the array's length surpasses this number, the oldest image in it will get deleted, either locally or on the S3 bucket depending on settings.
+
 
 ## The following reside in config.secret.json
 
@@ -238,3 +259,17 @@ Using 'forever' is suggested to control the Node process.
 
 "mailgun_domain"
 >The domain registered in mailgun.com
+
+"s3_access_key"
+>The access key of an S3 service.
+
+"s3_secret_access_key"
+>The secret access key of an S3 service.
+
+
+## Additional Notes
+
+
+To learn how to host a working internet radio refer to http://icecast.org/
+
+To have images work properly when hosted on an S3 service, the CORS file has to be edited to allow Cross-Origin requests. If not, the dynamic color feature won't work since canvas elements won't have access to the image data.

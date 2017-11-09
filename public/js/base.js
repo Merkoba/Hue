@@ -100,6 +100,7 @@ function init()
 	start_storageui()
 	start_filters()
 	start_image_events()
+	set_image_cors()
 	start_dropzone()
 	start_volume_scroll()
 	activate_window_visibility_listener()
@@ -3295,6 +3296,11 @@ function start_image_events()
 	{
 		emit_pasted($('#test_image').attr('src'))
 	})
+}
+
+function set_image_cors()
+{
+	$('#media_image')[0].crossOrigin = "Anonymous"	
 }
 
 function get_size_string(size)

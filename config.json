@@ -1,6 +1,12 @@
 {
 	"https_enabled": true,
 	"site_root": "https://hue.merkoba.com/",
+	"image_storage_s3_or_local": "s3",
+	"s3_api_version": "latest",
+	"s3_endpoint_url": "https://s3-us-west-1.amazonaws.com/",
+	"s3_main_url": "https://s3-us-west-1.amazonaws.com/merkoba/",	
+	"s3_bucket_name": "merkoba",
+	"s3_images_location": "hue/",	
 	"main_room_id": "main",
 	"default_main_room_name": "Hue",
 	"images_directory": "public/img",
@@ -63,5 +69,6 @@
 	"session_cookie_max_age": 123456789000,
 	"encryption_cost": 12,
 	"mail_enabled": true,
-	"max_url_length": 1000
+	"max_url_length": 1000,
+	"max_stored_images": 5
 }

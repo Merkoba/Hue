@@ -18,6 +18,7 @@
 		"socket.io": "~1.7.2",
 		"connect-mongo": "~2.0.0",
 		"bcrypt": "~1.0.3",
-		"mailgun-js": "~0.13.1"
+		"mailgun-js": "~0.13.1",
+		"aws-sdk": "~2.148.0"
 	}
 }

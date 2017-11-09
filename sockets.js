@@ -7,10 +7,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	const antiSpam  = require('socket-anti-spam')
 	const fetch = require('node-fetch')
 	const mongo = require('mongodb')
+	const aws = require('aws-sdk');
 	const images_root = path.join(__dirname, config.images_directory)
 
-	const roominfo_version = 10
-	const userinfo_version = 2
+	const s3 = new aws.S3(
+	{
+		apiVersion: config.s3_api_version,
+		endpoint: config.s3_endpoint_url,
+		credentials:
+		{
+			accessKeyId: sconfig.s3_access_key,
+			secretAccessKey: sconfig.s3_secret_access_key
+		}
+	})
 
 	var last_roomlist
 	var roomlist_lastget = 0
@@ -751,7 +760,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 							else
 							{
-								exec(`rm -f ${images_root}/${fname}`)
+								fs.unlink(`${images_root}/${fname}`, function(){})
 
 								socket.emit('update', {room:socket.room_id, type:'upload_error'})								
 							}
@@ -795,7 +804,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				{
 					var fname = `${info._id.toString()}_${Date.now()}_${get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
 
-					fs.writeFile(images_root + '/' + fname, data.image_file, function (err,data) 
+					fs.writeFile(images_root + '/' + fname, data.image_file, function(err,data) 
 					{
 						if(err) 
 						{
@@ -2470,41 +2479,114 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 	}
 
-	function change_image(room, fname, uploader, size)
+	function change_image(room_id, fname, uploader, size)
 	{
-		db_manager.get_room({_id:room}, {image_url:true}, function(info)
+		if(config.image_storage_s3_or_local === "local")
 		{
-			if(info.image_url !== "")
+			do_change_image(room_id, fname, uploader, size)
+		}
+
+		else if(config.image_storage_s3_or_local === "s3")
+		{
+			fs.readFile(`${images_root}/${fname}`, (err, data) => 
 			{
-				exec(`find ${images_root} -maxdepth 1 -type f -name "${info._id.toString()}_*" -not -name "${fname}" -delete`)
+				if(err)
+				{
+					fs.unlink(`${images_root}/${fname}`, function(){})
+					return
+				}
+
+				s3.putObject(
+				{
+					ACL: "public-read",
+					Body: data,
+					Bucket: config.s3_bucket_name, 
+					Key: `${config.s3_images_location}${fname}`
+				}, function(err, data) 
+				{
+					fs.unlink(`${images_root}/${fname}`, function(){})
+					
+					if(err)
+					{
+						return
+					}
+
+					do_change_image(room_id, config.s3_main_url + config.s3_images_location + fname, uploader, size)
+				})
+			})
+		}
+
+		else
+		{
+			return false
+		}
+	}
+
+	function do_change_image(room_id, fname, uploader, size)
+	{
+		db_manager.get_room({_id:room_id}, {stored_images:true}, function(info)
+		{
+			if(config.image_storage_s3_or_local === "local")
+			{
+				var image_url = config.public_images_location + fname
 			}
 
-			var pth = config.public_images_location + fname
+			else if(config.image_storage_s3_or_local === "s3")
+			{
+				var image_url = fname
+			}
 
-			info.image_url = pth
-			info.image_uploader = uploader
-			info.image_size = size
-			info.image_date = Date.now()	
+			else
+			{
+				return false
+			}
 
-			io.sockets.in(room).emit('update',
+			info.stored_images.unshift(fname)
+
+			var popped = false
+
+			if(info.stored_images.length > config.max_stored_images)
+			{
+				var popped = info.stored_images.pop()
+			}
+
+			io.sockets.in(room_id).emit('update',
 			{
 				type: 'image_change',
-				image_url: info.image_url,
-				image_uploader: info.image_uploader,
-				image_size: info.image_size,
-				image_date: info.image_date
+				image_url: image_url,
+				image_uploader: uploader,
+				image_size: size,
+				image_date: Date.now()
 			})
 				
-			db_manager.update_room(info._id,
+			db_manager.update_room(room_id,
 			{
-				image_url: info.image_url, 
-				image_uploader: info.image_uploader, 
-				image_size: info.image_size, 
-				image_date: info.image_date,
+				image_url: image_url, 
+				image_uploader: uploader, 
+				image_size: size, 
+				image_date: Date.now(),
+				stored_images: info.stored_images,
 				modified: Date.now()
 			})
+
+			if(popped)
+			{
+				if(popped.indexOf(config.s3_main_url) === -1)
+				{
+					fs.unlink(`${images_root}/${popped}`, function(err){})
+				}
+
+				else
+				{
+					s3.deleteObject(
+					{
+						Bucket: config.s3_bucket_name,
+						Key: popped.replace(config.s3_main_url, "")
+					}, function(err, data){})
+				}
+			}
 		})
-	}
+	}	
 
 	function check_image_url(uri)
 	{
