@@ -45,6 +45,19 @@ module.exports = function(db_manager, config, utilz)
 	c.vars.max_password_length = config.max_password_length	
 	c.vars.max_email_length = config.max_email_length
 
+	function check_url(req, res, next)
+	{
+		if(req.originalUrl.length > config.max_url_length)
+		{
+			return false
+		}
+
+		else
+		{
+			next()
+		}
+	}
+
 	function require_login(req, res, next)
 	{
 		var fromurl = encodeURIComponent(req.originalUrl)
@@ -73,7 +86,7 @@ module.exports = function(db_manager, config, utilz)
 		}
 	}	
 
-	router.get('/login', function(req, res, next) 
+	router.get('/login', check_url, function(req, res, next) 
 	{
 		let c = {}
 
@@ -132,7 +145,6 @@ module.exports = function(db_manager, config, utilz)
 				req.session.destroy(function(){})
 
 				var m = encodeURIComponent("Wrong username or password")
-
 				res.redirect(`/login?message=${m}`)
 			}
 		})
@@ -199,18 +211,16 @@ module.exports = function(db_manager, config, utilz)
 			else
 			{
 				var m = encodeURIComponent("Username already exists")
-
 				res.redirect(`/login?message=${m}`)
 			}
 		})
 	})
 
-	router.get('/recover', function(req, res, next) 
+	router.get('/recover', check_url, function(req, res, next) 
 	{
 		if(!config.mail_enabled)
 		{
 			var m = encodeURIComponent("Password resets are not enabled on this system")
-
 			res.redirect(`/message?message=${m}`)
 
 			return false		
@@ -254,14 +264,12 @@ module.exports = function(db_manager, config, utilz)
 				if(result === "done")
 				{
 					var m = encodeURIComponent(`An email was sent to ${email}`)
-
 					res.redirect(`/message?message=${m}`)
 				}
 
 				else if(result === "limit")
 				{
 					var m = encodeURIComponent("You must wait a while before resetting the password again")
-
 					res.redirect(`/message?message=${m}`)
 				}
 
@@ -274,13 +282,100 @@ module.exports = function(db_manager, config, utilz)
 			else
 			{
 				var m = encodeURIComponent("We couldn't find an account that matched")
-
 				res.redirect(`/message?message=${m}`)
 			}
 		})
 	})
 
-	router.get('/message', function(req, res, next) 
+	router.get('/change_password', check_url, function(req, res, next)
+	{
+		
+		var token = req.query.token
+
+		var split = token.split('_')
+
+		var _id = split[0]
+
+		var code = split[1]
+
+		db_manager.get_user({_id:_id, password_reset_code:code}, {}, function(user)
+		{
+			if(user)
+			{
+				if(Date.now() - user.password_reset_link_date < config.password_reset_expiration)
+				{
+					var c = {}
+
+					c.vars = {}
+
+					c.vars.min_password_length = config.min_password_length
+					c.vars.max_password_length = config.max_password_length
+					c.vars.message = decodeURIComponent(req.query.message)
+					c.vars.token = token
+
+					res.render('change_password', c)
+				}
+
+				else
+				{
+					var m = encodeURIComponent("The link has expired")
+					res.redirect(`/message?message=${m}`)
+				}
+			}
+
+			else
+			{
+				var m = encodeURIComponent("The link has expired")
+				res.redirect(`/message?message=${m}`)
+			}
+		})
+	})
+
+	router.post('/change_password', function(req, res, next)
+	{
+		var token = req.body.token
+
+		var split = token.split('_')
+
+		var _id = split[0]
+
+		var code = split[1]
+
+		db_manager.get_user({_id:_id, password_reset_code:code}, {}, function(user)
+		{
+			if(user)
+			{
+				if(Date.now() - user.password_reset_link_date < config.password_reset_expiration)
+				{
+					var password = req.body.password 
+
+					if(password.length === 0 || password.length < config.min_password_length || password.length > config.max_password_length)
+					{
+						return false
+					}
+
+					db_manager.update_user(user._id, {password:password, password_reset_link_date:0})
+
+					var m = encodeURIComponent("Password succesfully changed")
+					res.redirect(`/message?message=${m}`)					
+				}
+
+				else
+				{
+					var m = encodeURIComponent("The link has expired")
+					res.redirect(`/message?message=${m}`)
+				}
+			}
+
+			else
+			{
+				var m = encodeURIComponent("The link has expired")
+				res.redirect(`/message?message=${m}`)
+			}
+		})
+	})
+
+	router.get('/message', check_url, function(req, res, next) 
 	{
 		let c = {}
 
@@ -297,7 +392,7 @@ module.exports = function(db_manager, config, utilz)
 		res.redirect('/login')
 	})	
 
-	router.get('/', require_login, function(req, res, next) 
+	router.get('/', [check_url, require_login], function(req, res, next) 
 	{
 		c.vars.room_id = config.main_room_id
 		c.vars.user_id = req.session.user_id
@@ -305,7 +400,7 @@ module.exports = function(db_manager, config, utilz)
 		res.render('main', c)
 	})
 	
-	router.get('/:id', require_login, function(req, res, next) 
+	router.get('/:id', [check_url, require_login], function(req, res, next) 
 	{
 		c.vars.room_id = req.params.id.substr(0, config.max_room_id_length)
 		c.vars.user_id = req.session.user_id

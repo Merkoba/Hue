@@ -2267,66 +2267,40 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 	function get_random_int(min, max)
 	{
-		return Math.floor(Math.random() * (max-min+1) + min)
+		return Math.floor(Math.random() * (max  -min + 1) + min)
 	}
+
+	function get_random_string(n)
+	{
+		var text = ""
+		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
+		for(var i=0; i < n; i++)
+		{
+			text += possible[get_random_int(0, possible.length - 1)]
+		}
+
+		return text
+	}	
 
 	function get_random_key()
 	{
-		var text = ""
-		var possible = "ABCDEFGHIJKLMnopqrstuvwxyz012345"
-
-		for(var i=0; i < 12; i++)
-		{
-			text += possible.charAt(Math.floor(Math.random() * possible.length))
-		}
-
-		return "_key_" + Date.now() + text
+		return `_key_${Date.now()}_${utilz.get_random_string(12)}`
 	}
 
 	function get_random_vkey()
 	{
-		var text = ""
-		var possible = "NOPQRSTUVWXYZabcdefghijklm6789"
-
-		for(var i=0; i<12; i++)
-		{
-			text += possible.charAt(Math.floor(Math.random() * possible.length))
-		}
-
-		return "_vkey_" + Date.now() + text
+		return `_vkey_${Date.now()}_${utilz.get_random_string(12)}`
 	}
 
 	function get_random_okey()
 	{
-		var text = ""
-		var possible = "NOPQRSTUVWXYZabcdefghijklm6789"
-
-		for(var i=0; i<6; i++)
-		{
-			text += possible.charAt(Math.floor(Math.random() * possible.length))
-		}
-
-		possible = "ABCDEFGHIJKLMnopqrstuvwxyz012345"
-
-		for(var i=0; i<6; i++)
-		{
-			text += possible.charAt(Math.floor(Math.random() * possible.length))
-		}
-
-		return "_okey_" + Date.now() + text
+		return `_okey_${Date.now()}_${utilz.get_random_string(12)}`
 	}
 
 	function get_random_ukey()
 	{
-		var text = ""
-		var possible = "ABCDEFGHIJKLMnopqrstuvwxyz012345"
-
-		for(var i=0; i<12; i++)
-		{
-			text += possible.charAt(Math.floor(Math.random() * possible.length))
-		}
-
-		return "_ukey_" + Date.now() + text
+		return `_ukey_${Date.now()}_${utilz.get_random_string(12)}`
 	}	
 
 	function compare_roomlist(a, b)

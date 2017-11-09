@@ -5,32 +5,11 @@ module.exports = function(db, config, sconfig, utilz)
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
 	const rooms_version = 11
-	const users_version = 15
+	const users_version = 16
 
 	function get_random_key()
 	{
-		var text = ""
-		var possible = "ABCDEFGHIJKLMnopqrstuvwxyz012345"
-
-		for(var i=0; i < 12; i++)
-		{
-			text += possible.charAt(Math.floor(Math.random() * possible.length))
-		}
-
-		return "_key_" + Date.now() + text
-	}
-
-	function get_random_password()
-	{
-		var text = ""
-		var possible = "ABCDEFGHIJKLMnopqrstuvwxyz012345"
-
-		for(var i=0; i < 12; i++)
-		{
-			text += possible.charAt(Math.floor(Math.random() * possible.length))
-		}
-
-		return Date.now() + text
+		return `_key_${Date.now()}_${utilz.get_random_string(12)}`
 	}
 
 	var manager = {}
@@ -308,9 +287,19 @@ module.exports = function(db, config, sconfig, utilz)
 					user.room_keys = {}
 				}
 
+				if(user.password_reset_code === undefined || typeof user.password_reset_code !== "string")
+				{
+					user.password_reset_code = ""
+				}
+
 				if(user.password_reset_date === undefined || typeof user.password_reset_date !== "number")
 				{
 					user.password_reset_date = 0
+				}
+
+				if(user.password_reset_link_date === undefined || typeof user.password_reset_link_date !== "number")
+				{
+					user.password_reset_link_date = 0
 				}
 
 				user.version = users_version
@@ -440,16 +429,23 @@ module.exports = function(db, config, sconfig, utilz)
 			{
 				if((Date.now() - user.password_reset_date) > config.password_reset_limit)
 				{
-					var new_pass = get_random_password()
+					var code = Date.now() + utilz.get_random_string(12)
 
-					manager.update_user(user._id, {password:new_pass, password_reset_date:Date.now()})
+					var link = `${config.site_root}change_password?token=${user._id.toString()}_${code}`
+
+					manager.update_user(user._id, 
+					{
+						password_reset_code: code,
+						password_reset_date: Date.now(),
+						password_reset_link_date: Date.now()
+					})
 
 					var data = 
 					{
 						from: 'Hue <hue@merkoba.com>',
 						to: email,
 						subject: 'Password Reset',
-						text: `The password of your account with username "${username}" has been changed to "${new_pass}"`
+						text: link
 					}
 
 					mailgun.messages().send(data, function(error, body) 
