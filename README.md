@@ -21,7 +21,7 @@ To run it locally you first have to start 'mongod' then go to the bin directory 
 
 To run it properly in production you will have to configure Apache or some other webserver to use a reverse proxy. A sample vhost configuration for Apache (apache_vhost.conf) is included. For using https LetsEncrypt is suggested.
 
-Using 'forever' is suggested to control the Node process.
+Using pm2 is suggested to control the Node process.
 
 # Configuration
 
