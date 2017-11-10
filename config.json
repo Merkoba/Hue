@@ -17,7 +17,6 @@
 	"login_title": "Hue | Login",
 	"default_topic_unclaimed": "Use /claim to get admin rights to this room",
 	"default_topic": "Check /help3 to learn about administration commands",
-	"default_modal_color": "white",
 	"redirect_url": "https://en.wikipedia.org/wiki/Special:Random",
 	"max_stored_images": 5,
 	"check_metadata_interval_duration": 12000,
@@ -70,5 +69,12 @@
 	"s3_endpoint_url": "https://s3-us-west-1.amazonaws.com/",
 	"s3_main_url": "https://s3-us-west-1.amazonaws.com/merkoba/",	
 	"s3_bucket_name": "merkoba",
-	"s3_images_location": "hue/"
+	"s3_images_location": "hue/",
+	"settings_default_background_image": false,
+	"settings_default_foreground_image": true,
+	"settings_default_custom_scrollbars": true,
+	"settings_default_header_contrast": true,
+	"settings_default_footer_contrast": true,
+	"settings_default_nickname_on_footer": true,
+	"settings_default_modal_color": "white"
 }

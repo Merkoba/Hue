@@ -18,7 +18,6 @@ module.exports = function(db_manager, config, utilz)
 	c.vars.color_contrast_amount_2 = config.color_contrast_amount_2
 	c.vars.color_contrast_amount_3 = config.color_contrast_amount_3
 	c.vars.color_contrast_amount_4 = config.color_contrast_amount_4
-	c.vars.default_modal_color = config.default_modal_color
 	c.vars.chat_crop_limit = config.chat_crop_limit
 	c.vars.played_crop_limit = config.played_crop_limit
 	c.vars.history_crop_limit = config.history_crop_limit
@@ -44,6 +43,13 @@ module.exports = function(db_manager, config, utilz)
 	c.vars.min_password_length = config.min_password_length
 	c.vars.max_password_length = config.max_password_length	
 	c.vars.max_email_length = config.max_email_length
+	c.vars.settings_default_background_image = config.settings_default_background_image
+	c.vars.settings_default_foreground_image = config.settings_default_foreground_image
+	c.vars.settings_default_custom_scrollbars = config.settings_default_custom_scrollbars
+	c.vars.settings_default_header_contrast = config.settings_default_header_contrast
+	c.vars.settings_default_footer_contrast = config.settings_default_footer_contrast
+	c.vars.settings_default_nickname_on_footer = config.settings_default_nickname_on_footer
+	c.vars.settings_default_modal_color = config.settings_default_modal_color
 
 	function check_url(req, res, next)
 	{

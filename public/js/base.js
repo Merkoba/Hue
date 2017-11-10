@@ -6432,45 +6432,46 @@ function get_settings()
 
 	if(settings.background_image === undefined)
 	{
-		settings.background_image = false
+		settings.background_image = settings_default_background_image
 		changed = true
 	}
 
 	if(settings.foreground_image === undefined)
 	{
-		settings.foreground_image = true
+		settings.foreground_image = settings_default_foreground_image
 		changed = true
 	}
 	
+	if(settings.custom_scrollbars === undefined)
+	{
+		settings.custom_scrollbars = settings_default_custom_scrollbars
+		changed = true
+	}
+
 	if(settings.header_contrast === undefined)
 	{
-		settings.header_contrast = true
+		settings.header_contrast = settings_default_header_contrast
 		changed = true
 	}
 
 	if(settings.footer_contrast === undefined)
 	{
-		settings.footer_contrast = true
+		settings.footer_contrast = settings_default_footer_contrast
 		changed = true
 	}
 
 	if(settings.nickname_on_footer === undefined)
 	{
-		settings.nickname_on_footer = true
+		settings.nickname_on_footer = settings_default_nickname_on_footer
 		changed = true
 	}
 
 	if(settings.modal_color === undefined)
 	{
-		settings.modal_color = default_modal_color
+		settings.modal_color = settings_default_modal_color
 		changed = true
 	}
 
-	if(settings.custom_scrollbars === undefined)
-	{
-		settings.custom_scrollbars = true
-		changed = true
-	}
 
 	if(changed)
 	{

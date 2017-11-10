@@ -76,9 +76,6 @@ Using 'forever' is suggested to control the Node process.
 "default_topic_unclaimed"
 >Topic shown when the room is unclaimed.
 
-"default_modal_color"
->The class name for the modals, which change the modal colors. Either "white", "red", "green", "blue", or "black".
-
 "redirect_url"
 >Url used in some cases when the user needs to be disposed. For example when kicked from a room.
 
@@ -240,6 +237,27 @@ Using 'forever' is suggested to control the Node process.
 
 "max_stored_images"
 >The amount of most recent images to have stored in a room. Each room has an array of images stored, when the array's length surpasses this number, the oldest image in it will get deleted, either locally or on the S3 bucket depending on settings.
+
+"settings_default_background_image"
+>Whether the uploaded image is shown in the background by default.
+
+"settings_default_foreground_image"
+>Whether the uploaded image is shown in the foreground by default.
+
+"settings_default_custom_scrollbars"
+>Whether custom scrollbars are enabled by default.
+
+"settings_default_header_contrast"
+>Whether the header has a slightly lighter or darker color by default.
+
+"settings_default_footer_contrast"
+>Whether the footer has a slightly lighter or darker color by default.
+
+"settings_default_nickname_on_footer"
+>Whether the user's nickname is shown on the left of the footer by default. Clicking this nickname also opens a menu with some information and the abbility to change the nickname.
+
+"settings_default_modal_color"
+>The default modal color. Either "white", "red", "green", "blue" or "black". What this does is change the class of the modals.
 
 
 ## The following reside in config.secret.json
