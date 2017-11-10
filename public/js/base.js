@@ -4398,7 +4398,7 @@ function push_played(info, info2=false)
 
 	if(played[played.length - 1] !== s)
 	{
-		var title = `Setter: ${radio_setter} | ${nice_date()}`
+		var title = nice_date()
 		
 		var pi = "<div class='pititle'></div><div class='piartist'></div>"
 		
@@ -7102,20 +7102,31 @@ function get_status_html()
 
 	info += "<div class='info_item'><div class='info_title'>Room Name</div>"
 	info += `<div class='info_item_content'>${room_name}</div></div>`
-	info += "<div class='info_item'><div class='info_title'>Topic</div>"
 
-	if(topic)
+	if(topic_setter)
 	{
+		info += `<div class='info_item' title='Setter: ${topic_setter} | ${topic_date}'><div class='info_title'>Topic</div>`
 		info += `<div class='info_item_content'>${topic}</div></div>`
 	}
 
 	else
 	{
+		info += `<div class='info_item'><div class='info_title'>Topic</div>`
 		info += "<div class='info_item_content'>No topic set</div></div>"
 	}
 
-	info += "<div class='info_item'><div class='info_title'>Radio Source</div>"
-	info += `<div class='info_item_content'>${radio_source}</div></div>`
+	if(radio_setter)
+	{
+		info += `<div class='info_item' title='Setter: ${radio_setter} | ${radio_date}'><div class='info_title'>Radio Source</div>`
+		info += `<div class='info_item_content'>${radio_source}</div></div>`
+	}
+
+	else
+	{
+		info += `<div class='info_item'><div class='info_title'>Radio Source</div>`
+		info += `<div class='info_item_content'>${radio_source}</div></div>`		
+	}
+
 	info += "<div class='info_item'><div class='info_title'>Chat Permission</div>"
 	info += `<div class='info_item_content'>${permission_tag(chat_permission)}</div></div>`
 	info += "<div class='info_item'><div class='info_title'>Upload Permission</div>"
