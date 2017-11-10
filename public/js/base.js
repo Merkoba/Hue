@@ -37,7 +37,6 @@ var radio_metadata = ''
 var radio_setter = ''
 var radio_date = ''
 var claimed = false
-var msgcount = 0
 var get_metadata
 var no_meta_count
 var tabbed_list = []
@@ -592,7 +591,7 @@ function start_socket()
 
 		else if(data.type === 'chat_announcement')
 		{
-			chat_announce('', '', data.msg, 'small')
+			chat_announce('###', '###', data.msg, 'small')
 		}
 
 		else if(data.type === 'connection_lost')
@@ -3139,8 +3138,6 @@ function update_chat(nname, msg)
 		chat_history.shift()
 	}
 
-	add_msgcount()
-
 	goto_bottom()
 
 	alert_title()
@@ -3160,19 +3157,13 @@ function add_to_chat(msg)
 
 	chat_area.append(msg)
 
-	update_chat_scrollbar()
-}
-
-function add_msgcount()
-{
-	msgcount += 1
-
-	if(msgcount > chat_crop_limit)
+	if($(".msg").length > chat_crop_limit)
 	{
 		$("#chat_area > .msg").eq(0).remove()
-		update_chat_scrollbar()
 		scroll_timer()
-	}
+	}	
+
+	update_chat_scrollbar()
 }
 
 function self_check_images(msg)
@@ -3396,8 +3387,6 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 
 	add_to_chat(fmsg)
 
-	add_msgcount()
-
 	goto_bottom()
 }
 
@@ -3445,6 +3434,7 @@ function register_commands()
 	commands.push('/defnick')
 	commands.push('/nickedit')
 	commands.push('/clear')
+	commands.push('/unclear')
 	commands.push('/claim')
 	commands.push('/reclaim')
 	commands.push('/unclaim')
@@ -3551,6 +3541,11 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/clear'))
 			{
 				clear_chat()
+			}
+
+			else if(oiEquals(lmsg, '/unclear'))
+			{
+				unclear_chat()
 			}
 
 			else if(oiStartsWith(lmsg, '/claim'))
@@ -5003,14 +4998,18 @@ function clear_chat()
 {
 	$('#chat_area').html('<div class="clear"><br><br><br><br></div>')
 
-	msgcount = 0
-
 	show_intro()
 	show_topic("big")
 	show_priv()
 	show_public()
 	goto_bottom(true)
 	focus_input()
+}
+
+function unclear_chat()
+{
+	clear_chat()
+	$("#chat_area").append(chat_history)
 }
 
 function clear_input()
