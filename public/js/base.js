@@ -3131,12 +3131,7 @@ function update_chat(nname, msg)
 
 	add_to_chat(fmsg)
 
-	chat_history.push(fmsg)
-
-	if(chat_history.length > chat_crop_limit)
-	{
-		chat_history.shift()
-	}
+	push_to_chat_history(fmsg)
 
 	goto_bottom()
 
@@ -3164,6 +3159,16 @@ function add_to_chat(msg)
 	}	
 
 	update_chat_scrollbar()
+}
+
+function push_to_chat_history(msg)
+{
+	chat_history.push(msg)
+
+	if(chat_history.length > chat_crop_limit)
+	{
+		chat_history.shift()
+	}	
 }
 
 function self_check_images(msg)
@@ -3364,28 +3369,43 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 
 	if(brk1 !== "")
 	{
-		brk1 = `${brk1}&nbsp;`
+		var hbrk1 = `${brk1}&nbsp;`
+	}
+
+	else
+	{
+		hbrk1 = ""
 	}
 
 	if(brk2 !== "")
 	{
-		brk2 = `&nbsp;${brk2}`
+		var hbrk2 = `&nbsp;${brk2}`
+	}
+
+	else
+	{
+		var hbrk2 = ""
 	}
 	
 	if(typeof dotted === "string")
 	{
-		var fmsg = $(`<div class='msg announcement announcement_${size}'>${brk1}<span title='${t}' class='${contclasses}'></span><span class='dotted'></span>${brk2}</div>`)
+		var fmsg = $(`<div class='msg announcement announcement_${size}'>${hbrk1}<span title='${t}' class='${contclasses}'></span><span class='dotted'></span>${hbrk2}</div>`)
 		$(fmsg).find('.dotted').eq(0).text(dotted).urlize()
 	}
 
 	else
 	{
-		var fmsg = $(`<div class='msg announcement announcement_${size}'>${brk1}<span title='${t}' class='${contclasses}'></span>${brk2}</div>`)
+		var fmsg = $(`<div class='msg announcement announcement_${size}'>${hbrk1}<span title='${t}' class='${contclasses}'></span>${hbrk2}</div>`)
 	}
 
 	$(fmsg).find('.announcement_content').eq(0).text(msg).urlize()
 
 	add_to_chat(fmsg)
+
+	if(brk1 === "--")
+	{
+		push_to_chat_history(fmsg)
+	}
 
 	goto_bottom()
 }
@@ -4932,47 +4952,73 @@ function chat_search(filter=false)
 	{
 		$(chat_history.slice(0).reverse()).each(function()
 		{
+			var show = false
+			
 			var hnname = $(this).find('.chat_nname').eq(0)
 			var hcontent = $(this).find('.chat_content').eq(0)
 
-			var nname = hnname.text()
-			var content = hcontent.text()
-
-			var show = false
-
-			if(nname.toLowerCase().indexOf(filter) !== -1)
+			if(hnname.length !== 0 && hcontent.length !== 0)
 			{
-				show = true
-			}
+				var nname = hnname.text()
+				var content = hcontent.text()
 
-			else if(content.toLowerCase().indexOf(filter) !== -1)
-			{
-				show = true
-			}
-
-			if(show)
-			{
-				var cn = $("<div class='search_result_item'><div class='search_result_nname'></div><div class='search_result_content'></div>")
-
-				cn.find(".search_result_nname").eq(0).append(hnname.clone())
-				cn.find(".search_result_content").eq(0).append(hcontent.clone())
-
-				cn.prop("title", $(this).prop("title")).click(function()
+				if(nname.toLowerCase().indexOf(filter) !== -1)
 				{
-					if($(this).find('a').length === 0)
+					show = true
+				}
+
+				else if(content.toLowerCase().indexOf(filter) !== -1)
+				{
+					show = true
+				}
+
+				if(show)
+				{
+					var cn = $("<div class='search_result_item'><div class='search_result_nname'></div><div class='search_result_content'></div>")
+
+					cn.find(".search_result_nname").eq(0).html(hnname.clone())
+					cn.find(".search_result_content").eq(0).html(hcontent.clone())
+
+					cn.prop("title", $(this).prop("title")).click(function()
 					{
-						var ss = ""
+						if($(this).find('a').length === 0)
+						{
+							var ss = ""
 
-						ss += $(this).find(".chat_nname").eq(0).text()
-						ss += " said: "
-						ss += `"${$(this).find(".chat_content").eq(0).text()}"`
+							ss += $(this).find(".chat_nname").eq(0).text()
+							ss += " said: "
+							ss += `"${$(this).find(".chat_content").eq(0).text()}"`
 
-						change_input(ss)
-						close_all_modals()
-					}
-				})
+							change_input(ss)
+							close_all_modals()
+						}
+					})
 
-				c.append(cn)
+					c.append(cn)
+				}
+			}
+
+			else
+			{
+				var hcontent = $(this).find(".announcement_content").eq(0)
+
+				if(hcontent.length === 0)
+				{
+					return true
+				}
+
+				var content = hcontent.text()
+				
+				if(content.toLowerCase().indexOf(filter) === -1)
+				{
+					return true
+				}
+
+				var cn = $("<div class='search_result_item'><div class='search_result_content'></div>")
+
+				cn.find(".search_result_content").eq(0).html(hcontent.clone())
+
+				c.append(cn)				
 			}
 		})
 	}
@@ -5010,6 +5056,8 @@ function unclear_chat()
 {
 	clear_chat()
 	$("#chat_area").append(chat_history)
+	update_chat_scrollbar()
+	goto_bottom(true)
 }
 
 function clear_input()
