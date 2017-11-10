@@ -12,8 +12,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 	const s3 = new aws.S3(
 	{
-		apiVersion: config.s3_api_version,
-		endpoint: config.s3_endpoint_url,
+		apiVersion: sconfig.s3_api_version,
+		endpoint: sconfig.s3_endpoint_url,
 		credentials:
 		{
 			accessKeyId: sconfig.s3_access_key,
@@ -987,7 +987,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				socket.disconnect()
 				return false
-			}			
+			}
 
 			db_manager.get_room({_id:socket.room_id}, {name:true}, function(info)
 			{
@@ -1005,7 +1005,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					db_manager.update_room(info._id,
 					{
 						name: info.name
-					})					
+					})
 				}
 			})		
 		}
@@ -2496,8 +2496,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				{
 					ACL: "public-read",
 					Body: data,
-					Bucket: config.s3_bucket_name, 
-					Key: `${config.s3_images_location}${fname}`
+					Bucket: sconfig.s3_bucket_name, 
+					Key: `${sconfig.s3_images_location}${fname}`
 				}, function(err, data) 
 				{
 					fs.unlink(`${images_root}/${fname}`, function(){})
@@ -2507,7 +2507,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						return
 					}
 
-					do_change_image(room_id, config.s3_main_url + config.s3_images_location + fname, uploader, size)
+					do_change_image(room_id, sconfig.s3_main_url + sconfig.s3_images_location + fname, uploader, size)
 				})
 			})
 		}
@@ -2566,7 +2566,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			if(popped)
 			{
-				if(popped.indexOf(config.s3_main_url) === -1)
+				if(popped.indexOf(sconfig.s3_main_url) === -1)
 				{
 					fs.unlink(`${images_root}/${popped}`, function(err){})
 				}
@@ -2575,8 +2575,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				{
 					s3.deleteObject(
 					{
-						Bucket: config.s3_bucket_name,
-						Key: popped.replace(config.s3_main_url, "")
+						Bucket: sconfig.s3_bucket_name,
+						Key: popped.replace(sconfig.s3_main_url, "")
 					}, function(err, data){})
 				}
 			}

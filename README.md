@@ -29,7 +29,7 @@ Using 'forever' is suggested to control the Node process.
 >Defaults to true for security reasons. If deployed in a non-https environment set it to false. In order for it to be really enabled the Node environment must be set to production.
 
 "site_root"
->The root url where the system will work. End it with a slash (/).
+>The root url where the system will work. Needs a slash at the end.
 
 "main_room_id"
 >The name of the main room. This is the room that will be joined when going to the root url. This room is created automatically when first joined. To get ownership of the room "/claim secretpass" is needed.
@@ -41,7 +41,7 @@ Using 'forever' is suggested to control the Node process.
 >The directory where uploaded images will be stored.
 
 "public_images_location"
->The public root of images. For example /public/img/image.jpg can be accessed in a client with root_url/img/image.jpg.
+>The public root of images. For example a public_images_location of /img/ would send public image urls as /img/image.jpg, which would reside in public/img/. Needs a slash at the end.
 
 "default_image_url"
 >The public location of the default image. This image appears on new rooms or when an uploaded image fails to load.
@@ -220,21 +220,6 @@ Using 'forever' is suggested to control the Node process.
 "image_storage_s3_or_local"
 >Whether to serve images locally or hosted on an S3 service.
 
-"s3_api_version"
->The api version to use when creating the s3 object.
-
-"s3_endpoint_url"
->The location where your S3 bucket resides. It can look like https://s3-us-west-1.amazonaws.com/
-
-"s3_main_url"
->The url of your S3 bucket. It can look like "https://s3-us-west-1.amazonaws.com/merkoba/"
-
-"s3_bucket_name"
->The name of the S3 bucket.
-
-"s3_images_location"
->The directory inside the bucket where the images will reside.
-
 "max_stored_images"
 >The amount of most recent images to have stored in a room. Each room has an array of images stored, when the array's length surpasses this number, the oldest image in it will get deleted, either locally or on the S3 bucket depending on settings.
 
@@ -283,6 +268,21 @@ Using 'forever' is suggested to control the Node process.
 
 "s3_secret_access_key"
 >The secret access key of an S3 service.
+
+"s3_api_version"
+>The api version to use when creating the s3 object.
+
+"s3_endpoint_url"
+>The location where your S3 bucket resides. It can look like https://s3-us-west-1.amazonaws.com/. Slash at the end is important.
+
+"s3_main_url"
+>The url of your S3 bucket. It can look like https://s3-us-west-1.amazonaws.com/merkoba/. Slash at the end is important.
+
+"s3_bucket_name"
+>The name of the S3 bucket.
+
+"s3_images_location"
+>The directory inside the bucket where the images will reside, with a slash at the end.
 
 
 ## Additional Notes
