@@ -4398,11 +4398,11 @@ function push_played(info, info2=false)
 
 	if(played[played.length - 1] !== s)
 	{
-		var date = nice_date()
+		var title = `Setter: ${radio_setter} | ${nice_date()}`
 		
 		var pi = "<div class='pititle'></div><div class='piartist'></div>"
 		
-		h = $(`<div title='${date}' class='played_item'>${pi}</div>`)
+		h = $(`<div title='${title}' class='played_item'>${pi}</div>`)
 
 		if(info)
 		{
@@ -5881,12 +5881,12 @@ function changed_radio_source(data)
 
 	if(data.radio_setter === nickname)
 	{
-		chat_announce('~', '~', `You changed the radio to ${name}`, 'small')		
+		chat_announce('<<', '>>', `You changed the radio to ${name}`, 'small')		
 	}
 
 	else
 	{
-		chat_announce('~', '~', `${data.radio_setter} changed the radio to ${name}`, 'small')
+		chat_announce('<<', '>>', `${data.radio_setter} changed the radio to ${name}`, 'small')
 	}
 }
 
