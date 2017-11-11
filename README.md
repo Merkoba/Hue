@@ -142,8 +142,8 @@ Using pm2 is suggested to control the Node process.
 "max_room_name_length"
 >Max length for room names.
 
-"max_roomid_length"
->Arbitrary big number to avoid big urls from being considered as valid. Mongo ids are approximately 24 chars in length as for 2017.
+"max_room_id_length"
+>Arbitrary big number to avoid big urls from being considered as valid room ids. Mongo ids are approximately 24 chars in length as for 2017.
 
 "max_radio_source_length"
 >Maximum length of a radio source url.

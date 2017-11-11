@@ -538,12 +538,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		if(data.room_id.length !== utilz.clean_string4(data.room_id).length)
-		{
-			socket.disconnect()
-			return false
-		}
-
 		if(data.room_id == undefined)
 		{
 			socket.disconnect()
