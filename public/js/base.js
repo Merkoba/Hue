@@ -1305,7 +1305,7 @@ function start_nickname_context_menu()
 						{
 							var arg = $(this).text()
 							ban(arg)
-						}					
+						}
 					}
 				}				
 			},
@@ -2024,7 +2024,7 @@ function start_main_menu_context_menu()
 				{
 					cmlogenabled: 
 					{
-						name: "Enabled",
+						name: "Enabled",						
 						visible: function(key, opt)
 						{ 
 							if(log_enabled)
@@ -2037,10 +2037,16 @@ function start_main_menu_context_menu()
 								return true
 							}
 						},
-						callback: function(key, opt)
+						items: 
 						{
-							change_log(true)
-						}		
+							cmlogsure: 
+							{
+								name: "I'm Sure", callback: function(key, opt)
+								{
+									change_log(true)
+								}
+							}
+						}
 					},
 					cmlogenabledb: 
 					{
@@ -2057,10 +2063,16 @@ function start_main_menu_context_menu()
 								return true
 							}
 						},
-						callback: function(key, opt)
+						items: 
 						{
-							change_log(true)
-						}							
+							cmlogsure: 
+							{
+								name: "I'm Sure", callback: function(key, opt)
+								{
+									change_log(true)
+								}
+							}
+						}
 					},
 					cmlogdisabled: 
 					{
@@ -2077,10 +2089,16 @@ function start_main_menu_context_menu()
 								return true
 							}
 						},
-						callback: function(key, opt)
+						items: 
 						{
-							change_log(false)
-						}		
+							cmlogsure: 
+							{
+								name: "I'm Sure", callback: function(key, opt)
+								{
+									change_log(false)
+								}
+							}
+						}
 					},
 					cmlogdisableddb: 
 					{
@@ -2097,11 +2115,31 @@ function start_main_menu_context_menu()
 								return true
 							}
 						},
-						callback: function(key, opt)
+						items: 
 						{
-							change_log(false)
-						}							
-					}					
+							cmlogsure: 
+							{
+								name: "I'm Sure", callback: function(key, opt)
+								{
+									change_log(false)
+								}
+							}
+						}	
+					},
+					cmlogclear: 
+					{
+						name: "Clear",
+						items: 
+						{
+							cmlogsure: 
+							{
+								name: "I'm Sure", callback: function(key, opt)
+								{
+									clear_log()
+								}
+							}
+						}	
+					}
 				}
 			}
 		}
