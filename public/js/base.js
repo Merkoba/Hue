@@ -712,6 +712,11 @@ function start_socket()
 			chat_announce('[', ']', "There was nothing to unban", 'small')
 		}
 
+		else if(data.type === 'nothingtoclear')
+		{
+			chat_announce('[', ']', "There was nothing to clear", 'small')
+		}
+
 		else if(data.type === 'listbans')
 		{
 			show_listbans(data)
@@ -7552,7 +7557,7 @@ function show_messages()
 		{
 			update_chat(message.nickname, message.content, message.date)	
 		}
-		
+
 		log_messages = false
 	}
 }

@@ -1996,9 +1996,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return false
 			}
 
-			db_manager.update_room(socket.room_id, {log_messages:[]})
+			db_manager.get_room({_id:socket.room_id}, {log_messages:true}, function(info)
+			{
+				if(info.log_messages.length > 0)
+				{
+					db_manager.update_room(socket.room_id, {log_messages:[]})
 
-			io.sockets.in(socket.room_id).emit('update', {type:'log_cleared', nickname:socket.nickname})
+					io.sockets.in(socket.room_id).emit('update', {type:'log_cleared', nickname:socket.nickname})
+				}
+
+				else
+				{
+					socket.emit('update', {room:socket.room_id, type:'nothingtoclear'})
+				}
+			})
+
 		}		
 	}
 
