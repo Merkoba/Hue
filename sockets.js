@@ -392,6 +392,32 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
+		socket.on('change_log', function(data) 
+		{
+			try
+			{
+				change_log(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
+		socket.on('clear_log', function(data) 
+		{
+			try
+			{
+				clear_log(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
 		socket.on('make_private', function(data) 
 		{
 			try
@@ -637,6 +663,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					topic_setter: info.topic_setter,
 					topic_date: info.topic_date,
 					userlist: get_userlist(socket.room_id), 
+					log: info.log,
+					log_messages: info.log_messages,
 					priv: socket.priv, 
 					upload_permission: info.upload_permission, 
 					chat_permission: info.chat_permission, 
@@ -648,7 +676,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					radio_setter: info.radio_setter, 
 					radio_date: info.radio_date, 
 					claimed: info.claimed,
-					key: key
+					key: key,
 				})
 
 				socket.broadcast.in(socket.room_id).emit('update',
@@ -690,7 +718,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return false
 			}
 
-			db_manager.get_room({_id:socket.room_id}, {chat_permission:true}, function(info)
+			db_manager.get_room({_id:socket.room_id}, {chat_permission:true, log:true}, function(info)
 			{
 				if(!check_permission(info.chat_permission, socket.priv))
 				{
@@ -699,7 +727,15 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				socket.broadcast.in(socket.room_id).emit('update', {type:'chat_msg', nickname:socket.nickname, msg:data.msg})
 
-				db_manager.update_room(info._id, {})
+				if(info.log)
+				{
+					db_manager.push_room_message(info._id, {nickname:socket.nickname, content:data.msg, date:Date.now()})
+				}
+
+				else
+				{
+					db_manager.update_room(info._id, {})
+				}
 			})
 		}
 	}
@@ -1916,6 +1952,56 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 	}
 
+	function change_log(socket, data)
+	{
+		if(socket.nickname !== undefined)
+		{
+			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			{
+				return false
+			}
+
+			if(data.log !== true && data.log !== false)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			db_manager.get_room({_id:socket.room_id}, {log:true}, function(info)
+			{
+				if(info.log !== data.log)
+				{
+					if(!data.log)
+					{
+						db_manager.update_room(socket.room_id, {log:data.log, log_messages:[]})
+					}
+
+					else
+					{
+						db_manager.update_room(socket.room_id, {log:data.log})
+					}
+
+					io.sockets.in(socket.room_id).emit('update', {type:'log_change', nickname:socket.nickname, log:data.log})
+				}
+			})
+		}		
+	}
+
+	function clear_log(socket, data)
+	{
+		if(socket.nickname !== undefined)
+		{
+			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			{
+				return false
+			}
+
+			db_manager.update_room(socket.room_id, {log_messages:[]})
+
+			io.sockets.in(socket.room_id).emit('update', {type:'log_cleared', nickname:socket.nickname})
+		}		
+	}
+
 	function make_private(socket, data)
 	{
 		if(socket.nickname !== undefined)
@@ -1931,6 +2017,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				if(info.public)
 				{
 					io.sockets.in(socket.room_id).emit('update', {type:'made_private', nickname:socket.nickname})
+					
 					info.public = false
 
 					db_manager.update_room(info._id, {public:info.public})
@@ -1954,6 +2041,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				if(!info.public)
 				{
 					io.sockets.in(socket.room_id).emit('update', {type:'made_public', nickname:socket.nickname})
+					
 					info.public = true
 
 					db_manager.update_room(info._id, {public:info.public})

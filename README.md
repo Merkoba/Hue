@@ -103,7 +103,7 @@ Using pm2 is suggested to control the Node process.
 "played_crop_limit"
 >Same as chat_crop limit but for items displayed when "Now Playing" is clicked.
 
-"history_crop_limit"
+"input_history_crop_limit"
 >The maximum amount of items stored in the input history. These are the commands you have issued in the input box, which can be traversed through Up and Down keyboard arrows to repeat them. They can also view viewed in the History window.
 
 "max_input_length"
@@ -153,6 +153,9 @@ Using pm2 is suggested to control the Node process.
 
 "max_roomlist_topic_length"
 >Maximum displayed topic of a room in room lists. If topic is bigger it gets cropped.
+
+"max_room_log_messages"
+>Maximum amount of messages to store in room logs.
 
 "max_visited_rooms_items"
 >Maximum amount of items shown in the Visited Rooms list.

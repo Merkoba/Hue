@@ -4,7 +4,7 @@ module.exports = function(db, config, sconfig, utilz)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 14
+	const rooms_version = 18
 	const users_version = 17
 
 	function get_random_key()
@@ -154,6 +154,16 @@ module.exports = function(db, config, sconfig, utilz)
 				{
 					room.bans = ""
 				}
+
+				if(room.log === undefined || typeof room.log !== "object")
+				{
+					room.log = true
+				}
+
+				if(room.log_messages === undefined || typeof room.log_messages !== "object")
+				{
+					room.log_messages = []
+				}
 				
 				if(room.modified === undefined || typeof room.modified !== "number")
 				{
@@ -194,6 +204,8 @@ module.exports = function(db, config, sconfig, utilz)
 			radio_title: '',
 			radio_setter: '',
 			radio_date: 0,
+			log: true,
+			log_messages: [],
 			bans: '',
 			modified: Date.now()
 		}
@@ -244,6 +256,21 @@ module.exports = function(db, config, sconfig, utilz)
 		db.collection('rooms').find(query).toArray(function(err, results)
 		{
 			callback(results)
+		})
+	}
+
+	manager.push_room_message = function(_id, message)
+	{
+		manager.get_room({_id:_id}, {log_messages:true}, function(room)
+		{
+			room.log_messages.push(message)
+
+			if(room.log_messages.length > config.max_room_log_messages)
+			{
+				room.log_messages = room.log_messages.slice(room.log_messages.length - config.max_room_log_messages)
+			}
+
+			manager.update_room(_id, {log_messages:room.log_messages})
 		})
 	}
 	

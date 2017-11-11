@@ -2,6 +2,7 @@ var socket
 var ls_room_nicknames = "room_nicknames_v11"
 var ls_settings = "settings_v11"
 var ls_visited_rooms = "visited_rooms_v11"
+var ls_input_history = "input_history_v11"
 var settings
 var is_public
 var room_name
@@ -84,6 +85,7 @@ var yt_player
 var youtube_player
 var fetched_room_id
 var utilz = Utilz()
+var log_messages
 
 function init()
 {
@@ -284,7 +286,7 @@ function change_room_name(arg)
 {
 	if(priv !== 'admin' && priv !== 'op')
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')		
+		chat_announce('[', ']', "You are not a room operator", 'small')		
 	}
 
 	arg = utilz.clean_string2(arg.substring(0, max_room_name_length))
@@ -560,6 +562,8 @@ function start_socket()
 			setup_radio(data)
 			userlist = data.userlist
 			update_userlist()
+			log_enabled = data.log
+			log_messages = data.log_messages
 			set_topic_info(data)
 			update_title()
 			is_public = data.public
@@ -575,10 +579,11 @@ function start_socket()
 			start_volume_context_menu()
 			start_metadata_loop()
 			set_footer_nickname()
-			make_main_container_visible()				
+			make_main_container_visible()
 			clear_chat()
 			check_firstime()
 			save_visited(room_id)
+			get_input_history()
 			start_heartbeat()
 			
 			started = true
@@ -645,6 +650,16 @@ function start_socket()
 		else if(data.type === 'radio_permission_change')
 		{
 			announce_radio_permission_change(data)
+		}
+
+		else if(data.type === 'log_change')
+		{
+			announce_log_change(data)
+		}
+
+		else if(data.type === 'log_cleared')
+		{
+			announce_log_cleared(data)
 		}
 
 		else if(data.type === 'announce_voice')
@@ -1984,6 +1999,105 @@ function start_main_menu_context_menu()
 						}												
 					}
 				}
+			},
+			cmlog: 
+			{
+				name: "Log",
+				visible: function(key, opt)
+				{ 
+					if(priv !== 'admin' && priv !== 'op')
+					{
+						return false
+					}
+
+					else
+					{
+						return true
+					}
+				},				
+				items: 
+				{
+					cmlogenabled: 
+					{
+						name: "Enabled",
+						visible: function(key, opt)
+						{ 
+							if(log_enabled)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_log(true)
+						}		
+					},
+					cmlogenabledb: 
+					{
+						name: "Enabled *",
+						visible: function(key, opt)
+						{ 
+							if(!log_enabled)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_log(true)
+						}							
+					},
+					cmlogdisabled: 
+					{
+						name: "Disabled",
+						visible: function(key, opt)
+						{ 
+							if(!log_enabled)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_log(false)
+						}		
+					},
+					cmlogdisableddb: 
+					{
+						name: "Disabled *",
+						visible: function(key, opt)
+						{ 
+							if(log_enabled)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_log(false)
+						}							
+					}					
+				}
 			}
 		}
 	})
@@ -2582,6 +2696,8 @@ function activate_key_detection()
 			else
 			{
 				clear_input()
+
+				input_history_index = -1
 			}
 
 			e.preventDefault()
@@ -2678,12 +2794,30 @@ function add_to_history(msg)
 		}
 	}
 
-	if(input_history.length >= history_crop_limit)
+	if(input_history.length >= input_history_crop_limit)
 	{
 		input_history.shift()
 	}
 
-	input_history.push([msg, nice_date()])	
+	push_to_input_history([msg, nice_date()])	
+}
+
+function push_to_input_history(item)
+{
+	input_history.push(item)
+	save_local_storage(ls_input_history, input_history)
+}
+
+function get_input_history()
+{
+	input_history_index = -1
+
+	input_history = get_local_storage(ls_input_history)
+
+	if(input_history === null)
+	{
+		input_history = []
+	}	
 }
 
 function input_history_change(direction)
@@ -3094,7 +3228,7 @@ function escape_special_characters(s)
 	return s.replace(/[^A-Za-z0-9]/g, '\\$&');
 }
 
-function update_chat(nname, msg)
+function update_chat(nname, msg, odate=false)
 {
 	var contclasses = "chat_content"
 
@@ -3110,7 +3244,15 @@ function update_chat(nname, msg)
 		}
 	}
 
-	var date = nice_date()
+	if(odate)
+	{
+		var date = nice_date(odate)
+	}
+
+	else
+	{
+		var date = nice_date()
+	}
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
@@ -3484,6 +3626,10 @@ function register_commands()
 	commands.push('/kick')
 	commands.push('/private')
 	commands.push('/public')
+	commands.push('/log')
+	commands.push('/enablelog')
+	commands.push('/disablelog')
+	commands.push('/clearlog')
 	commands.push('/radio')
 	commands.push('/privacy')
 	commands.push('/status')
@@ -3759,6 +3905,26 @@ function send_to_chat(msg)
 				make_public()
 			}
 
+			else if(oiEquals(lmsg, '/log'))
+			{
+				show_log()
+			}
+
+			else if(oiEquals(lmsg, '/enablelog'))
+			{
+				change_log(true)
+			}
+
+			else if(oiEquals(lmsg, '/disablelog'))
+			{
+				change_log(false)
+			}
+
+			else if(oiEquals(lmsg, '/clearlog'))
+			{
+				clear_log()
+			}
+
 			else if(oiStartsWith(lmsg, '/radio'))
 			{
 				change_radio_source(arg)
@@ -3966,7 +4132,7 @@ function change_topic(dtopic)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -3994,7 +4160,7 @@ function topicadd(arg)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -4044,7 +4210,7 @@ function topictrim(n)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -4072,7 +4238,7 @@ function topicstart(arg)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -4122,7 +4288,7 @@ function topictrimstart(n)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -5042,12 +5208,13 @@ function chat_search(filter=false)
 
 function clear_chat()
 {
-	$('#chat_area').html('<div class="clear"><br><br><br><br></div>')
+	$('#chat_area').html('<div><br><br><br><br></div>')
 
 	show_intro()
 	show_topic("big")
 	show_priv()
 	show_public()
+	show_messages()
 	goto_bottom(true)
 	focus_input()
 }
@@ -5183,7 +5350,7 @@ function change_upload_permission(m)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -5222,7 +5389,7 @@ function change_chat_permission(m)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -5261,7 +5428,7 @@ function change_radio_permission(m)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -5434,7 +5601,7 @@ function voice(nck)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -5538,7 +5705,7 @@ function strip(nck)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -5760,7 +5927,7 @@ function make_private()
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -5779,7 +5946,7 @@ function make_public()
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -5922,7 +6089,7 @@ function ban(nck)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -5935,7 +6102,7 @@ function unbanall()
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -5948,7 +6115,7 @@ function unbanlast()
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -6005,7 +6172,7 @@ function kick(nck)
 
 	else 
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 	}
 }
 
@@ -6087,7 +6254,7 @@ function remove_voices()
 {
 	if(priv !== 'admin' && priv !== 'op')
 	{
-		chat_announce('[', ']', "You are not a room operator or admin", 'small')
+		chat_announce('[', ']', "You are not a room operator", 'small')
 		return false
 	}
 
@@ -6671,6 +6838,22 @@ function start_storageui()
 				}
 			},
 			{
+				name: "History",
+				ls_name: ls_input_history,
+				on_save: function(item)
+				{
+					on_storageui_save(item)
+				},
+				on_reset: function(item)
+				{
+					on_storageui_save(item, true)				
+				},
+				on_copied: function(item)
+				{
+					pup()
+				}
+			},
+			{
 				name: "Visited",
 				ls_name: ls_visited_rooms,
 				on_save: function(item)
@@ -6722,7 +6905,11 @@ function on_storageui_save(item, reset=false)
 	if(item.ls_name === ls_settings)
 	{
 		reload_settings()
-		storageui.view()
+	}
+
+	else if(item.ls_name === ls_input_history)
+	{
+		get_input_history()
 	}
 
 	if(!reset)
@@ -7355,4 +7542,113 @@ function show_details(data)
 	h.find("#details_email").eq(0).text(data.email)
 
 	msg_info.show(h.html())
+}
+
+function show_messages()
+{
+	if(log_messages)
+	{
+		for(var message of log_messages)
+		{
+			update_chat(message.nickname, message.content, message.date)	
+		}
+	}
+
+	log_messages = false
+}
+
+function change_log(log)
+{
+	if(priv !== 'admin' && priv !== 'op')
+	{
+		chat_announce('[', ']', "You are not a room operator", 'small')	
+		return false
+	}
+
+	if(log === log_enabled)
+	{
+		if(log)
+		{
+			chat_announce('[', ']', "Log is already enabled", 'small')
+		}
+
+		else
+		{
+			chat_announce('[', ']', "Log is already disabled", 'small')
+		}
+	}
+
+	socket_emit("change_log", {log:log})
+}
+
+function clear_log(log)
+{
+	if(priv !== 'admin' && priv !== 'op')
+	{
+		chat_announce('[', ']', "You are not a room operator", 'small')	
+		return false
+	}
+
+	socket_emit("clear_log", {})
+}
+
+function announce_log_change(data)
+{
+	var s = ""
+
+	if(nickname === data.nickname)
+	{
+		var nck = "You"
+	}
+
+	else
+	{
+		var nck = data.nickname
+	}
+
+	if(data.log)
+	{
+		s += `${nck} enabled the log`
+	}
+
+	else
+	{
+		s += `${nck} disabled the log`
+	}
+
+	log_enabled = data.log
+
+	chat_announce('~', '~', s, 'small')
+}
+
+function announce_log_cleared(data)
+{
+	var s = ""
+
+	if(nickname === data.nickname)
+	{
+		var nck = "You"
+	}
+
+	else
+	{
+		var nck = data.nickname
+	}
+
+	s += `${nck} cleared the log`
+
+	chat_announce('~', '~', s, 'small')
+}
+
+function show_log()
+{
+	if(log_enabled)
+	{
+		chat_announce('[', ']', "Log is enabled", 'small')
+	}
+
+	else
+	{
+		chat_announce('[', ']', "Log is disabled", 'small')
+	}
 }
