@@ -7552,9 +7552,9 @@ function show_messages()
 		{
 			update_chat(message.nickname, message.content, message.date)	
 		}
+		
+		log_messages = false
 	}
-
-	log_messages = false
 }
 
 function change_log(log)
