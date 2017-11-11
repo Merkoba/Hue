@@ -7142,7 +7142,7 @@ function get_status_html()
 		info += "<div class='info_item_content'>Private</div></div>"
 	}
 
-	h = h.append($(info))
+	h.append($(info))
 
 	h.find("#status_room_name").eq(0).text(room_name).urlize()
 
@@ -7342,10 +7342,17 @@ function show_details(data)
 		data.email = "No Email"
 	}
 
+	var h = $("<div></div>")	
+
 	var info = ""
 
-	info += `<div class='info_item'><div class='info_title'>Username</div><div class='info_item_content'>${data.username}</div></div>`
-	info += `<div class='info_item'><div class='info_title'>Email</div><div class='info_item_content'>${data.email}</div></div>`
+	info += "<div class='info_item'><div class='info_title'>Username</div><div class='info_item_content' id='details_username'></div></div>"
+	info += "<div class='info_item'><div class='info_title'>Email</div><div class='info_item_content' id='details_email'></div></div>"
 
-	msg_info.show(info)
+	h.append($(info))
+
+	h.find("#details_username").eq(0).text(data.username)
+	h.find("#details_email").eq(0).text(data.email)
+
+	msg_info.show(h.html())
 }
