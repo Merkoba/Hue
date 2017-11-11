@@ -7098,33 +7098,30 @@ function show_status()
 
 function get_status_html()
 {
+	var h = $("<div></div>")
+
 	var info = ""
 
-	info += "<div class='info_item'><div class='info_title'>Room Name</div>"
-	info += `<div class='info_item_content'>${room_name}</div></div>`
+	info += "<div class='info_item'><div class='info_title'>Room Name</div><div class='info_item_content' id='status_room_name'></div></div>"
 
 	if(topic_setter)
 	{
-		info += `<div class='info_item' title='Setter: ${topic_setter} | ${topic_date}'><div class='info_title'>Topic</div>`
-		info += `<div class='info_item_content'>${topic}</div></div>`
+		info += `<div class='info_item' title='Setter: ${topic_setter} | ${topic_date}'><div class='info_title'>Topic</div><div class='info_item_content' id='status_topic'></div></div>`
 	}
 
 	else
 	{
-		info += `<div class='info_item'><div class='info_title'>Topic</div>`
-		info += "<div class='info_item_content'>No topic set</div></div>"
+		info += "<div class='info_item'><div class='info_title'>Topic</div><div class='info_item_content' id='status_topic'>No topic set</div></div>"
 	}
 
 	if(radio_setter)
 	{
-		info += `<div class='info_item' title='Setter: ${radio_setter} | ${radio_date}'><div class='info_title'>Radio Source</div>`
-		info += `<div class='info_item_content'>${radio_source}</div></div>`
+		info += `<div class='info_item' title='Setter: ${radio_setter} | ${radio_date}'><div class='info_title'>Radio Source</div><div class='info_item_content' id='status_radio_source'></div></div>`
 	}
 
 	else
 	{
-		info += `<div class='info_item'><div class='info_title'>Radio Source</div>`
-		info += `<div class='info_item_content'>${radio_source}</div></div>`		
+		info += `<div class='info_item'><div class='info_title'>Radio Source</div><div class='info_item_content' id='status_radio_source'></div></div>`
 	}
 
 	info += "<div class='info_item'><div class='info_title'>Chat Permission</div>"
@@ -7145,7 +7142,20 @@ function get_status_html()
 		info += "<div class='info_item_content'>Private</div></div>"
 	}
 
-	return urlize(info)
+	h = h.append($(info))
+
+	h.find("#status_room_name").eq(0).text(room_name).urlize()
+
+	var t = h.find("#status_topic").eq(0)
+
+	if(t.text() === "")
+	{
+		t.text(topic).urlize()
+	}
+
+	h.find("#status_radio_source").eq(0).text(radio_source).urlize()
+
+	return h.html()
 }
 
 function urlize(s, classname="generic")
