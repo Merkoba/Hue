@@ -3198,7 +3198,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			_id: info._id.toString(),
 			activity: false,
 			log: info.log,
-			log_messages:[],
+			log_messages: [],
 			chat_permission: info.chat_permission,
 			upload_permission: info.upload_permission,
 			radio_permission: info.radio_permission
