@@ -652,7 +652,7 @@ function start_socket()
 			announce_radio_permission_change(data)
 		}
 
-		else if(data.type === 'log_change')
+		else if(data.type === 'log_changed')
 		{
 			announce_log_change(data)
 		}
@@ -5257,6 +5257,7 @@ function clear_chat()
 	show_topic("big")
 	show_priv()
 	show_public()
+	show_log()
 	show_messages()
 	goto_bottom(true)
 	focus_input()
@@ -7370,6 +7371,18 @@ function get_status_html()
 	else
 	{
 		info += "<div class='info_item_content'>Private</div></div>"
+	}
+
+	info += "<div class='info_item'><div class='info_title'>Log</div>"
+
+	if(log_enabled)
+	{
+		info += "<div class='info_item_content'>Enabled</div></div>"
+	}
+
+	else
+	{
+		info += "<div class='info_item_content'>Disabled</div></div>"
 	}
 
 	h.append(info)

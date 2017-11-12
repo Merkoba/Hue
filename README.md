@@ -145,6 +145,9 @@ Using pm2 is suggested to control the Node process.
 "max_room_id_length"
 >Arbitrary big number to avoid big urls from being considered as valid room ids. Mongo ids are approximately 24 chars in length as for 2017.
 
+"room_loop_interval"
+>The interval in milliseconds for the loop that saves iterates through a rooms object which is updated through chat activity and saves it to the database. This loops is to avoid saving data, like log messages, to the database on every message.
+
 "max_radio_source_length"
 >Maximum length of a radio source url.
 

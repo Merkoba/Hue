@@ -75,7 +75,9 @@ module.exports = function(db_manager, config, utilz)
 
 		else
 		{
-			db_manager.get_user({_id:req.session.user_id}, {}, function(user)
+			db_manager.get_user({_id:req.session.user_id}, {})
+
+			.then(user =>
 			{
 				if(!user)
 				{
@@ -88,6 +90,11 @@ module.exports = function(db_manager, config, utilz)
 					req.session.user_username = user.username
 					next()
 				}
+			})
+
+			.catch(err =>
+			{
+				console.error(err)
 			})
 		}
 	}	
@@ -129,11 +136,13 @@ module.exports = function(db_manager, config, utilz)
 			return false
 		}
 
-		db_manager.check_password(username, password, function(user, valid)
+		db_manager.check_password(username, password)
+
+		.then(ans =>
 		{
-			if(valid)
+			if(ans.valid)
 			{
-				req.session.user_id = user._id.toString()
+				req.session.user_id = ans.user._id.toString()
 
 				if(fromurl === undefined || fromurl === "" || fromurl === "/login" || fromurl === "/register")
 				{
@@ -153,6 +162,11 @@ module.exports = function(db_manager, config, utilz)
 				var m = encodeURIComponent("Wrong username or password")
 				res.redirect(`/login?message=${m}`)
 			}
+		})
+
+		.catch(err =>
+		{
+			console.error(err)
 		})
 	})
 
@@ -191,11 +205,15 @@ module.exports = function(db_manager, config, utilz)
 			}
 		}
 
-		db_manager.get_user({username:username}, {}, function(user)
+		db_manager.get_user({username:username}, {})
+
+		.then(user =>
 		{
 			if(!user)
 			{
-				db_manager.create_user({username:username, password:password, email:email}, function(user)
+				db_manager.create_user({username:username, password:password, email:email})
+
+				.then(user =>
 				{
 					req.session.user_id = user.ops[0]._id
 
@@ -212,6 +230,11 @@ module.exports = function(db_manager, config, utilz)
 						}
 					})
 				})
+
+				.catch(err =>
+				{
+					console.error(err)
+				})
 			}
 
 			else
@@ -219,6 +242,11 @@ module.exports = function(db_manager, config, utilz)
 				var m = encodeURIComponent("Username already exists")
 				res.redirect(`/login?message=${m}`)
 			}
+		})
+
+		.catch(err =>
+		{
+			console.error(err)
 		})
 	})
 
@@ -263,7 +291,9 @@ module.exports = function(db_manager, config, utilz)
 			return false
 		}
 
-		db_manager.reset_user_password(username, email, function(result)
+		db_manager.reset_user_password(username, email)
+
+		.then(result =>
 		{
 			if(result)
 			{
@@ -279,6 +309,12 @@ module.exports = function(db_manager, config, utilz)
 					res.redirect(`/message?message=${m}`)
 				}
 
+				else if(result === "error")
+				{
+					var m = encodeURIComponent("There was an error. Please try again later")
+					res.redirect(`/message?message=${m}`)					
+				}
+
 				else
 				{
 					return false
@@ -290,6 +326,11 @@ module.exports = function(db_manager, config, utilz)
 				var m = encodeURIComponent("We couldn't find an account that matched")
 				res.redirect(`/message?message=${m}`)
 			}
+		})
+
+		.catch(err =>
+		{
+			console.error(err)
 		})
 	})
 
@@ -304,7 +345,9 @@ module.exports = function(db_manager, config, utilz)
 
 		var code = split[1]
 
-		db_manager.get_user({_id:_id, password_reset_code:code}, {}, function(user)
+		db_manager.get_user({_id:_id, password_reset_code:code}, {})
+
+		.then(user =>
 		{
 			if(user)
 			{
@@ -335,6 +378,11 @@ module.exports = function(db_manager, config, utilz)
 				res.redirect(`/message?message=${m}`)
 			}
 		})
+
+		.catch(err =>
+		{
+			console.error(err)
+		})
 	})
 
 	router.post('/change_password', function(req, res, next)
@@ -347,7 +395,9 @@ module.exports = function(db_manager, config, utilz)
 
 		var code = split[1]
 
-		db_manager.get_user({_id:_id, password_reset_code:code}, {}, function(user)
+		db_manager.get_user({_id:_id, password_reset_code:code}, {})
+
+		.then(user =>
 		{
 			if(user)
 			{
@@ -361,6 +411,11 @@ module.exports = function(db_manager, config, utilz)
 					}
 
 					db_manager.update_user(user._id, {password:password, password_reset_link_date:0})
+
+					.catch(err =>
+					{
+						console.error(err)
+					})
 
 					var m = encodeURIComponent("Password succesfully changed")
 					res.redirect(`/message?message=${m}`)					
@@ -378,6 +433,11 @@ module.exports = function(db_manager, config, utilz)
 				var m = encodeURIComponent("The link has expired")
 				res.redirect(`/message?message=${m}`)
 			}
+		})
+
+		.catch(err =>
+		{
+			console.error(err)
 		})
 	})
 
