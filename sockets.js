@@ -2802,7 +2802,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(last_roomlist === undefined || (Date.now() - roomlist_lastget > config.roomlist_cache))
 		{
-			var rooms = []
+			var roomlist = []
 
 			var md = Date.now() - config.roomlist_max_inactivity
 
@@ -2819,12 +2819,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				{
 					var room = results[i]
 
-					rooms.push([room._id.toString(), room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room._id.toString()), room.modified])
+					roomlist.push([room._id.toString(), room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room._id.toString()), room.modified])
 				}
 
-				rooms.sort(compare_roomlist).splice(config.max_roomlist_items)
+				roomlist.sort(compare_roomlist).splice(config.max_roomlist_items)
 
-				last_roomlist = rooms
+				last_roomlist = roomlist
 
 				roomlist_lastget = Date.now()
 
@@ -2845,7 +2845,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 	function get_visited_roomlist(ids, callback)
 	{
-		var rooms = []
+		var roomlist = []
 
 		var mids = []
 
@@ -2875,12 +2875,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				var room = results[i]
 
-				rooms.push([room._id.toString(), room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room._id.toString()), room.modified])
+				roomlist.push([room._id.toString(), room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room._id.toString()), room.modified])
 			}
 
-			rooms.sort(compare_roomlist)
+			roomlist.sort(compare_roomlist)
 
-			callback(rooms)
+			callback(roomlist)
 		})
 
 		.catch(err =>
