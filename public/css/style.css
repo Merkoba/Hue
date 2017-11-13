@@ -322,7 +322,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
-	cursor: pointer;
 	overflow-wrap: break-word;
 	word-break: break-word;	
 }
@@ -335,6 +334,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 .ui_item_nick
 {
 	font-size: 1.2em;	
+	cursor: pointer;
 }
 
 .roomlist_item
@@ -536,7 +536,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	height: auto !important;
 }
 
-.show_history_item
+.history_item
 {
 	padding-top: 1em;
 	padding-bottom: 1em;

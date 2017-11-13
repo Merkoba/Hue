@@ -112,6 +112,10 @@ function init()
 	resize_events()
 	register_commands()
 	start_chat_scrollbar()
+	start_chat_click_events()
+	start_played_click_events()
+	start_userlist_click_events()
+	start_roomlist_click_events()
 	start_socket()
 }
 
@@ -1103,6 +1107,15 @@ function priv_tag(p)
 	return s
 }
 
+function start_userlist_click_events()
+{
+	$("#userlist").on("click", ".ui_item_nick", function()
+	{
+		add_to_input($(this).text()) 
+		close_all_modals()		
+	})
+}
+
 function update_userlist()
 {	
 	var s = $()
@@ -1133,12 +1146,6 @@ function update_userlist()
 		}
 
 		h.find('.ui_item_nick').eq(0).text(item[0])
-
-		h.click({nickname:item[0]}, function(event)
-		{
-			add_to_input(event.data.nickname) 
-			close_all_modals()
-		})
 
 		s = s.add(h)
 	}
@@ -2308,6 +2315,14 @@ function request_visited_roomlist(filter="")
 	socket_emit("roomlist", {ids:visited})
 }
 
+function start_roomlist_click_events()
+{
+	$("#roomlist").on("click", ".roomlist_item", function() 
+	{
+		show_open_room($(this).data("room_id"))
+	})
+}
+
 function update_roomlist(roomlist)
 {	
 	$("#roomlist_filter").val(roomlist_filter_string)
@@ -2319,7 +2334,7 @@ function update_roomlist(roomlist)
 	for(var i=0; i<roomlist.length; i++)
 	{
 		var c = "<div class='roomlist_name'></div><div class='roomlist_topic'></div><div class='roomlist_here'></div><div class='roomlist_count'></div>"
-		var h = $(`<div class='roomlist_item'>${c}</div>`)
+		var h = $(`<div class='roomlist_item' data-room_id='${roomlist[i][0]}'>${c}</div>`)
 
 		h.find('.roomlist_name').eq(0).text(roomlist[i][1])
 
@@ -2341,11 +2356,6 @@ function update_roomlist(roomlist)
 		}
 
 		h.find('.roomlist_topic').eq(0).text(topic)
-
-		h.click({room_id:roomlist[i][0]}, function(event)
-		{
-			show_open_room(event.data.room_id)
-		})
 
 		s = s.add(h)
 	}
@@ -2371,7 +2381,7 @@ function show_create_room()
 	{
 		$("#create_room_name").focus()
 		
-		$('#create_room_done').click(function()
+		$('#create_room_done').on("click", function()
 		{
 			create_room_submit()
 		})
@@ -2923,28 +2933,21 @@ function show_history(filter=false)
 
 		var s = $(`<input type='text' id='history_filter' class='filter_input' placeholder='Filter' ${sfilter}><div class='spacer3'></div>`)
 
-		var s2 = $("<div></div>")
+		var s2 = $("<div id='history_items'></div>")
 
 		for(var item of input_history.slice().reverse())
 		{
-			var h = $(`<div title='${item[1]}' class='show_history_item'></div>`)
+			var h = $(`<div title='${item[1]}' class='history_item'></div>`)
 
 			h.text(item[0]).urlize()
-
-			h.click({text:item[0]}, function(event)
-			{
-				if($(this).find('a').length === 0)
-				{
-					change_input(event.data.text)
-					close_all_modals()
-				}
-			})
 
 			s2.append(h)
 		}
 
 		s = s.add(s2)
+
 		c.append(s)
+
 		c = c[0]
 
 		msg_info.show(c, function()
@@ -2958,6 +2961,15 @@ function show_history(filter=false)
 			{
 				do_history_filter()
 			}
+
+			$("#history_items").on("click", ".history_item", function()
+			{
+				if($(this).find('a').length === 0)
+				{
+					change_input($(this).text())
+					close_all_modals()
+				}
+			})
 		})
 	}
 
@@ -2969,7 +2981,7 @@ function show_history(filter=false)
 
 function input_click_events()
 {
-	$('#input').click(function()
+	$('#input').on("click", function()
 	{
 		clear_tabbed()
 	})
@@ -3271,6 +3283,14 @@ function escape_special_characters(s)
 	return s.replace(/[^A-Za-z0-9]/g, '\\$&');
 }
 
+function start_chat_click_events()
+{
+	$("#chat_area").on("click", ".chat_nname", function() 
+	{
+		add_to_input($(this).text())
+	})	
+}
+
 function update_chat(nname, msg, odate=false)
 {
 	var contclasses = "chat_content"
@@ -3309,10 +3329,7 @@ function update_chat(nname, msg, odate=false)
 		$(fmsg).find('.chat_content').eq(0).text(msg).urlize()
 	}
 	
-	$(fmsg).find('.chat_nname').eq(0).text(nname).click({nname:nname}, function(event)
-	{
-		add_to_input(event.data.nname)
-	})
+	$(fmsg).find('.chat_nname').eq(0).text(nname)
 
 	add_to_chat(fmsg)
 
@@ -4579,6 +4596,22 @@ function show_playing_file()
 	}
 }
 
+function start_played_click_events()
+{
+	$("#played").on("click", ".played_item", function() 
+	{
+		if($(this).data('q2') !== '')
+		{
+			goto_url($(this).data('q2'), "tab")
+		}
+
+		else
+		{
+			search_on('google', $(this).data('q'))
+		}
+	})
+}
+
 function push_played(info, info2=false)
 {
 	if(info)
@@ -4627,19 +4660,6 @@ function push_played(info, info2=false)
 
 		h.data('q', q)
 		h.data('q2', q2)
-
-		h.click(function()
-		{
-			if($(this).data('q2') !== '')
-			{
-				goto_url(q2, "tab", true)
-			}
-
-			else
-			{
-				search_on('google', $(this).data('q'))
-			}
-		})
 		
 		$('#played').prepend(h)
 
@@ -5117,6 +5137,21 @@ function create_search_container()
 		{
 			search_timer()
 		})
+
+		$("#search_container").on("click", ".search_result_item", function()
+		{
+			if($(this).find('a').length === 0)
+			{
+				var ss = ""
+
+				ss += $(this).find(".chat_nname").eq(0).text()
+				ss += " said: "
+				ss += `"${$(this).find(".chat_content").eq(0).text()}"`
+
+				change_input(ss)
+				close_all_modals()
+			}
+		})
 	})	
 }
 
@@ -5187,21 +5222,6 @@ function chat_search(filter=false)
 
 					cn.find(".search_result_nname").eq(0).html(hnname.clone())
 					cn.find(".search_result_content").eq(0).html(hcontent.clone())
-
-					cn.prop("title", $(this).prop("title")).click(function()
-					{
-						if($(this).find('a').length === 0)
-						{
-							var ss = ""
-
-							ss += $(this).find(".chat_nname").eq(0).text()
-							ss += " said: "
-							ss += `"${$(this).find(".chat_content").eq(0).text()}"`
-
-							change_input(ss)
-							close_all_modals()
-						}
-					})
 
 					c.append(cn)
 				}
@@ -7216,7 +7236,7 @@ function do_history_filter()
 
 	if(filter !== "")
 	{
-		$(".show_history_item").each(function()
+		$(".history_item").each(function()
 		{
 			$(this).css("display", "block")
 
@@ -7238,7 +7258,7 @@ function do_history_filter()
 
 	else
 	{
-		$(".show_history_item").each(function()
+		$(".history_item").each(function()
 		{
 			$(this).css("display", "block")
 		})
