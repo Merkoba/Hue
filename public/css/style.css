@@ -487,12 +487,17 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 #Msg-overlay-nickname-picker
 {
-	background-color: rgba(121, 121, 121, 1) !important;;
+	background-color: rgba(121, 121, 121, 1) !important;
 }
 
 .Msg-content
 {
 	font-size: 1em !important;
+}
+
+#Msg-window-black
+{
+	background-color: ;
 }
 
 #Msg-window-menu
