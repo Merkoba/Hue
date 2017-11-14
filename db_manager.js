@@ -220,7 +220,6 @@ module.exports = function(db, config, sconfig, utilz)
 				radio_title: '',
 				radio_setter: '',
 				radio_date: 0,
-				log: true,
 				log_messages: [],
 				bans: '',
 				modified: Date.now()
@@ -236,6 +235,7 @@ module.exports = function(db, config, sconfig, utilz)
 			room.upload_permission = data.upload_permission !== undefined ? data.upload_permission : 1
 			room.radio_permission = data.radio_permission !== undefined ? data.radio_permission : 1
 			room.public = data.public !== undefined ? data.public : true
+			room.log = data.log !== undefined ? data.log : true
 
 			db.collection('rooms').insertOne(room)
 

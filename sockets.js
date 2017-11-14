@@ -1115,12 +1115,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return false
 			}
 
-			if(data.public !== true && data.public !== false)
-			{
-				socket.disconnect()
-				return false
-			}
-
 			var amodes = [1, 2, 3]
 
 			if(amodes.indexOf(data.chat_permission) === -1)
@@ -1136,6 +1130,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 
 			if(amodes.indexOf(data.radio_permission) === -1)
+			{
+				socket.disconnect()
+				return false
+			}
+
+			if(data.public !== true && data.public !== false)
+			{
+				socket.disconnect()
+				return false
+			}
+			
+			if(data.log !== true && data.log !== false)
 			{
 				socket.disconnect()
 				return false

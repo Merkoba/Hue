@@ -2407,6 +2407,7 @@ function create_room_submit(oname=false)
 		data.upload_permission = 1
 		data.radio_permission = 1
 		data.public = true
+		data.log = true
 	}
 
 	else
@@ -2422,6 +2423,7 @@ function create_room_submit(oname=false)
 		data.upload_permission = parseInt($('#create_room_upload_permission option:selected').val())
 		data.radio_permission = parseInt($('#create_room_radio_permission option:selected').val())
 		data.public = JSON.parse($('#create_room_public option:selected').val())
+		data.log = JSON.parse($('#create_room_log option:selected').val())
 	}
 
 	create_room(data)	
