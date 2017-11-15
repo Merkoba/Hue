@@ -5,7 +5,7 @@ module.exports = function(db, config, sconfig, utilz)
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
 	const rooms_version = 18
-	const users_version = 17
+	const users_version = 18
 
 	function get_random_key()
 	{
@@ -35,6 +35,7 @@ module.exports = function(db, config, sconfig, utilz)
 					catch(err)
 					{
 						resolve(false)
+						return
 					}
 				}
 			}
@@ -52,133 +53,135 @@ module.exports = function(db, config, sconfig, utilz)
 						.then(room =>
 						{
 							resolve(room)
+							return
 						})
 
 						.catch(err =>
 						{
 							reject(err)
+							return
 						})
 					}
 				}
 
 				if(room && room.version !== rooms_version)
 				{
-					if(room.name === undefined || typeof room.name !== "string")
+					if(typeof room.name !== "string")
 					{
 						room.name = "No Name"
 					}
 					
-					if(room.image_url === undefined || typeof room.image_url !== "string")
+					if(typeof room.image_url !== "string")
 					{
 						room.image_url = ""
 					}
 
-					if(room.stored_images === undefined || typeof room.stored_images !== "object")
+					if(typeof room.stored_images !== "object")
 					{
 						room.stored_images = []
 					}
 					
-					if(room.image_uploader === undefined || typeof room.image_uploader !== "string")
+					if(typeof room.image_uploader !== "string")
 					{
 						room.image_uploader = ""
 					}
 					
-					if(room.image_size === undefined || typeof room.image_size !== "number")
+					if(typeof room.image_size !== "number")
 					{
 						room.image_size = 0
 					}
 					
-					if(room.image_date === undefined || typeof room.image_date !== "number")
+					if(typeof room.image_date !== "number")
 					{
 						room.image_date = 0
 					}
 					
-					if(room.topic === undefined || typeof room.topic !== "string")
+					if(typeof room.topic !== "string")
 					{
 						room.topic = ""
 					}
 					
-					if(room.topic_setter === undefined || typeof room.topic_setter !== "string")
+					if(typeof room.topic_setter !== "string")
 					{
 						room.topic_setter = ""
 					}
 					
-					if(room.topic_date === undefined || typeof room.topic_date !== "number")
+					if(typeof room.topic_date !== "number")
 					{
 						room.topic_date = 0
 					}
 					
-					if(room.claimed === undefined || typeof room.claimed !== "boolean")
+					if(typeof room.claimed !== "boolean")
 					{
 						room.claimed = false
 					}
 					
-					if(room.keys === undefined || typeof room.keys !== "string")
+					if(typeof room.keys !== "string")
 					{
 						room.keys = ""
 					}
 					
-					if(room.upload_permission === undefined || typeof room.upload_permission !== "number")
+					if(typeof room.upload_permission !== "number")
 					{
 						room.upload_permission = 1
 					}
 					
-					if(room.chat_permission === undefined || typeof room.chat_permission !== "number")
+					if(typeof room.chat_permission !== "number")
 					{
 						room.chat_permission = 1
 					}
 					
-					if(room.radio_permission === undefined || typeof room.radio_permission !== "number")
+					if(typeof room.radio_permission !== "number")
 					{
 						room.radio_permission = 1
 					}
 
-					if(room.radio_type === undefined || typeof room.radio_type !== "string")
+					if(typeof room.radio_type !== "string")
 					{
 						room.radio_type = "radio"
 					}					
 					
-					if(room.radio_source === undefined || typeof room.radio_source !== "string")
+					if(typeof room.radio_source !== "string")
 					{
 						room.radio_source = ""
 					}
 
-					if(room.radio_title === undefined || typeof room.radio_title !== "string")
+					if(typeof room.radio_title !== "string")
 					{
 						room.radio_title = ""
 					}
 					
-					if(room.radio_setter === undefined || typeof room.radio_setter !== "string")
+					if(typeof room.radio_setter !== "string")
 					{
 						room.radio_setter = ""
 					}
 					
-					if(room.radio_date === undefined || typeof room.radio_date !== "number")
+					if(typeof room.radio_date !== "number")
 					{
 						room.radio_date = 0
 					}
 					
-					if(room.bans === undefined || typeof room.bans !== "string")
+					if(typeof room.bans !== "string")
 					{
 						room.bans = ""
 					}
 
-					if(room.log === undefined || typeof room.log !== "object")
+					if(typeof room.log !== "object")
 					{
 						room.log = true
 					}
 
-					if(room.log_messages === undefined || typeof room.log_messages !== "object")
+					if(typeof room.log_messages !== "object")
 					{
 						room.log_messages = []
 					}
 					
-					if(room.modified === undefined || typeof room.modified !== "number")
+					if(typeof room.modified !== "number")
 					{
 						room.modified = Date.now()
 					}
 					
-					if(room.public === undefined || typeof room.public !== "boolean")
+					if(typeof room.public !== "boolean")
 					{
 						room.public = true
 					}
@@ -189,11 +192,13 @@ module.exports = function(db, config, sconfig, utilz)
 				}
 
 				resolve(room)
+				return
 			})
 
 			.catch(err =>
 			{
 				reject(err)
+				return
 			})
 		})
 	}
@@ -243,11 +248,13 @@ module.exports = function(db, config, sconfig, utilz)
 			{
 				room.fresh = true
 				resolve(room)
+				return
 			})
 
 			.catch(err =>
 			{
 				reject(err)
+				return
 			})
 		})
 	}
@@ -268,6 +275,7 @@ module.exports = function(db, config, sconfig, utilz)
 					catch(err)
 					{
 						resolve(false)
+						return
 					}
 				}
 			}
@@ -279,11 +287,13 @@ module.exports = function(db, config, sconfig, utilz)
 			.then(result =>
 			{
 				resolve(true)
+				return
 			})
 
 			.catch(err =>
 			{
 				reject(err)
+				return
 			})
 		})
 	}
@@ -297,11 +307,13 @@ module.exports = function(db, config, sconfig, utilz)
 			.then(results =>
 			{
 				resolve(results)
+				return
 			})
 
 			.catch(err =>
 			{
 				reject(err)
+				return
 			})
 		})	
 	}
@@ -324,11 +336,13 @@ module.exports = function(db, config, sconfig, utilz)
 				manager.update_room(_id, {log_messages:room.log_messages})
 
 				resolve(true)
+				return
 			})
 
 			.catch(err =>
 			{
 				reject(err)
+				return
 			})
 		})
 	}
@@ -354,6 +368,7 @@ module.exports = function(db, config, sconfig, utilz)
 					catch(err)
 					{
 						resolve(false)
+						return
 					}
 				}
 			}
@@ -364,42 +379,58 @@ module.exports = function(db, config, sconfig, utilz)
 			{
 				if(user && user.version !== users_version)
 				{
-					if(user.username === undefined || typeof user.username !== "string")
+					if(typeof user.username !== "string")
 					{
-						db.users.deleteOne({_id: user._id})
+						db.collection('users').deleteOne({_id: user._id})
+
+						.catch(err =>
+						{
+							console.log(err)
+						})
+
+						resolve(false)
+						return
 					}
 
-					if(user.password === undefined || typeof user.password !== "string")
+					if(typeof user.password !== "string")
 					{
-						db.users.deleteOne({_id: user._id})
+						db.collection('users').deleteOne({_id: user._id})
+
+						.catch(err =>
+						{
+							console.log(err)
+						})
+
+						resolve(false)
+						return
 					}
 
-					if(user.email === undefined || typeof user.email !== "string")
+					if(typeof user.email !== "string")
 					{
 						user.email = ""
 					}
 
-					if(user.room_keys === undefined || typeof user.room_keys !== "object")
+					if(typeof user.room_keys !== "object")
 					{
 						user.room_keys = {}
 					}
 
-					if(user.password_reset_code === undefined || typeof user.password_reset_code !== "string")
+					if(typeof user.password_reset_code !== "string")
 					{
 						user.password_reset_code = ""
 					}
 
-					if(user.password_reset_date === undefined || typeof user.password_reset_date !== "number")
+					if(typeof user.password_reset_date !== "number")
 					{
 						user.password_reset_date = 0
 					}
 
-					if(user.password_reset_link_date === undefined || typeof user.password_reset_link_date !== "number")
+					if(typeof user.password_reset_link_date !== "number")
 					{
 						user.password_reset_link_date = 0
 					}
 
-					if(user.modified === undefined || typeof user.modified !== "number")
+					if(typeof user.modified !== "number")
 					{
 						user.modified = Date.now()
 					}
@@ -410,11 +441,13 @@ module.exports = function(db, config, sconfig, utilz)
 				}
 
 				resolve(user)
+				return
 			})
 
 			.catch(err =>
 			{
 				reject(err)
+				return
 			})
 		})	
 	}
@@ -447,17 +480,20 @@ module.exports = function(db, config, sconfig, utilz)
 				{	
 					user.fresh = true
 					resolve(result)
+					return
 				})
 
 				.catch(err =>
 				{
 					reject(err)
+					return
 				})
 			})
 
 			.catch(err =>
 			{
 				reject(err)
+				return
 			})
 		})	
 	}
@@ -478,6 +514,7 @@ module.exports = function(db, config, sconfig, utilz)
 					catch(err)
 					{
 						resolve(false)
+						return
 					}
 				}
 			}
@@ -495,11 +532,13 @@ module.exports = function(db, config, sconfig, utilz)
 					db.collection('users').update({_id:_id}, {$set:fields})
 					
 					resolve(true)
+					return
 				})
 
 				.catch(err =>
 				{
 					reject(err)
+					return
 				})
 			}
 
@@ -508,6 +547,7 @@ module.exports = function(db, config, sconfig, utilz)
 				db.collection('users').update({_id:_id}, {$set:fields})
 
 				resolve(true)
+				return
 			}
 		})	
 	}
@@ -532,11 +572,13 @@ module.exports = function(db, config, sconfig, utilz)
 					.then(valid =>
 					{
 						resolve({user:user, valid:valid})
+						return
 					})
 
 					.catch(err =>
 					{
-						console.error(err)
+						reject(err)
+						return
 					})
 				}
 			})
@@ -544,6 +586,7 @@ module.exports = function(db, config, sconfig, utilz)
 			.catch(err =>
 			{
 				reject(err)
+				return
 			})
 		})	
 	}
@@ -559,6 +602,7 @@ module.exports = function(db, config, sconfig, utilz)
 				if(!user)
 				{
 					resolve(false)
+					return
 				}
 
 				else
@@ -570,6 +614,7 @@ module.exports = function(db, config, sconfig, utilz)
 						if(user2)
 						{
 							resolve(false)
+							return
 						}
 
 						else
@@ -579,13 +624,15 @@ module.exports = function(db, config, sconfig, utilz)
 								username: username
 							})
 
-							resolve(true)					
+							resolve(true)
+							return
 						}
 					})
 
 					.catch(err =>
 					{
 						reject(err)
+						return
 					})
 				}
 			})
@@ -593,6 +640,7 @@ module.exports = function(db, config, sconfig, utilz)
 			.catch(err =>
 			{
 				reject(err)
+				return
 			})
 		})	
 	}
@@ -626,6 +674,7 @@ module.exports = function(db, config, sconfig, utilz)
 							if(error)
 							{
 								resolve("error")
+								return
 							}
 
 							else
@@ -640,9 +689,11 @@ module.exports = function(db, config, sconfig, utilz)
 								.catch(err =>
 								{
 									reject(err)
+									return
 								})								
 
 								resolve("done")
+								return
 							}
 						})
 					}
@@ -650,18 +701,21 @@ module.exports = function(db, config, sconfig, utilz)
 					else
 					{
 						resolve("limit")
+						return
 					}
 				}
 
 				else
 				{
 					resolve(false)
+					return
 				}
 			})
 
 			.catch(err =>
 			{
 				reject(err)
+				return
 			})
 		})		
 	}
