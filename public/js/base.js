@@ -768,7 +768,8 @@ function start_socket()
 
 		else if(data.type === 'changed_radio_source')
 		{
-			changed_radio_source(data)
+			announce_radio_source_change(data)
+			setup_radio(data)			
 		}
 
 		else if(data.type === 'reserved')
@@ -3293,7 +3294,7 @@ function start_chat_click_events()
 	})	
 }
 
-function update_chat(nname, msg, odate=false)
+function update_chat(nname, msg, title=false)
 {
 	var contclasses = "chat_content"
 
@@ -3309,25 +3310,25 @@ function update_chat(nname, msg, odate=false)
 		}
 	}
 
-	if(odate)
+	if(title)
 	{
-		var date = nice_date(odate)
+		var t = title
 	}
 
 	else
 	{
-		var date = nice_date()
+		var t = nice_date()
 	}
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
-		var fmsg = $(`<div class='msg chat_message'>* <span class='chat_nname'></span> <span title='${date}' class='${contclasses}'></span> *</div>`)
+		var fmsg = $(`<div class='msg chat_message'>* <span class='chat_nname'></span> <span title='${t}' class='${contclasses}'></span> *</div>`)
 		$(fmsg).find('.chat_content').eq(0).text(msg.substr(4)).urlize()
 	}
 
 	else
 	{
-		var fmsg = $(`<div class='msg chat_message'><b><span class='chat_nname'></span>:</b>&nbsp<span title='${date}' class='${contclasses}'></span></div>`)
+		var fmsg = $(`<div class='msg chat_message'><b><span class='chat_nname'></span>:</b>&nbsp<span title='${t}' class='${contclasses}'></span></div>`)
 		$(fmsg).find('.chat_content').eq(0).text(msg).urlize()
 	}
 	
@@ -5676,16 +5677,16 @@ function show_upload_error()
 	chat_announce('[', ']', "The image could not be uploaded", 'small')	
 }
 
-function announce_uploaded_image(data)
+function announce_uploaded_image(data, title=false)
 {
 	if(nickname === data.image_uploader)
 	{
-		chat_announce('<<', '>>', 'You uploaded an image', 'small')		
+		chat_announce('<<', '>>', 'You uploaded an image', 'small', false, title)
 	}
 
 	else
 	{
-		chat_announce('<<', '>>', `${data.image_uploader} uploaded an image`, 'small')		
+		chat_announce('<<', '>>', `${data.image_uploader} uploaded an image`, 'small', false, title)
 	}
 }
 
@@ -6093,10 +6094,8 @@ function change_radio_source(src)
 	}
 }
 
-function changed_radio_source(data)
+function announce_radio_source_change(data, title=false)
 {
-	setup_radio(data)
-
 	if(data.radio_title !== "")
 	{
 		var name = data.radio_title
@@ -6114,12 +6113,12 @@ function changed_radio_source(data)
 
 	if(data.radio_setter === nickname)
 	{
-		chat_announce('<<', '>>', `You changed the radio to ${name}`, 'small')		
+		chat_announce('<<', '>>', `You changed the radio to ${name}`, 'small', false, title)
 	}
 
 	else
 	{
-		chat_announce('<<', '>>', `${data.radio_setter} changed the radio to ${name}`, 'small')
+		chat_announce('<<', '>>', `${data.radio_setter} changed the radio to ${name}`, 'small', false, title)
 	}
 }
 
@@ -7624,11 +7623,29 @@ function show_details(data)
 
 function show_messages()
 {
-	if(log_messages)
+	if(log_messages && log_messages.length > 0)
 	{
 		for(var message of log_messages)
 		{
-			update_chat(message.nickname, message.content, message.date)	
+			var data = message.data
+
+			if(data)
+			{
+				if(message.type === "chat")
+				{
+					update_chat(data.nickname, data.content, nice_date(message.date))
+				}
+
+				else if(message.type === "image")
+				{
+					announce_uploaded_image(data, nice_date(message.date))
+				}
+
+				else if(message.type === "radio")
+				{
+					announce_radio_source_change(data, nice_date(message.date))
+				}
+			}
 		}
 
 		log_messages = false

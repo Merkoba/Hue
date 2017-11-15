@@ -158,7 +158,7 @@ Using pm2 is suggested to control the Node process.
 >Maximum displayed topic of a room in room lists. If topic is bigger it gets cropped.
 
 "max_room_log_messages"
->Maximum amount of messages to store in room logs.
+>Maximum amount of messages to store in room logs. It stores chat messages and some notifications like image uploads and radio changes.
 
 "max_visited_rooms_items"
 >Maximum amount of items shown in the Visited Rooms list.

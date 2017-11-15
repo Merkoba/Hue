@@ -754,10 +754,26 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			
 			if(rooms[socket.room_id].log)
 			{
-				var message = {nickname:socket.nickname, content:data.msg, date:Date.now()}
+				var message = {type:"chat", nickname:socket.nickname, content:data.msg, date:Date.now()}
 
 				rooms[socket.room_id].log_messages.push(message)
 			}
+
+			if(rooms[socket.room_id].log)
+			{
+				var message = 
+				{
+					type: "chat",
+					data: 
+					{
+						nickname: socket.nickname,
+						content: data.msg
+					},
+					date: Date.now()
+				}
+
+				rooms[socket.room_id].log_messages.push(message)
+			}			
 		}
 	}
 
@@ -2514,7 +2530,27 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		.catch(err =>
 		{
 			console.error(err)
-		})		
+		})
+
+		rooms[socket.room_id].activity = true
+		
+		if(rooms[socket.room_id].log)
+		{
+			var message = 
+			{
+				type: "radio", 
+				data:
+				{
+					radio_type: radioinfo.radio_type,
+					radio_source: radioinfo.radio_source,
+					radio_title: radioinfo.radio_title,
+					radio_setter: radioinfo.radio_setter
+				}, 
+				date: Date.now()
+			}
+
+			rooms[socket.room_id].log_messages.push(message)
+		}		
 	}
 
 	function change_username(socket, data)
@@ -2945,16 +2981,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					Body: data,
 					Bucket: sconfig.s3_bucket_name, 
 					Key: `${sconfig.s3_images_location}${fname}`
-				}, function(err, data) 
+				}).promise()
+
+				.then(ans =>
 				{
 					fs.unlink(`${images_root}/${fname}`, function(){})
-					
-					if(err)
-					{
-						return
-					}
-
 					do_change_image(room_id, sconfig.s3_main_url + sconfig.s3_images_location + fname, uploader, size)
+				})
+
+				.catch(err =>
+				{					
+					fs.unlink(`${images_root}/${fname}`, function(){})
+					console.error(err)
 				})
 			})
 		}
@@ -3031,9 +3069,31 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					{
 						Bucket: sconfig.s3_bucket_name,
 						Key: popped.replace(sconfig.s3_main_url, "")
-					}, function(err, data){})
+					}).promise()
+
+					.catch(err =>
+					{
+						console.error(err)
+					})
 				}
 			}
+
+			rooms[room_id].activity = true
+			
+			if(rooms[room_id].log)
+			{
+				var message = 
+				{
+					type: "image", 
+					data: 
+					{
+						image_uploader: uploader
+					},
+					date: Date.now()
+				}
+
+				rooms[room_id].log_messages.push(message)
+			}			
 		})
 
 		.catch(err =>
