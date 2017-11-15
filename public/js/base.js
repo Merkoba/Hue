@@ -3607,7 +3607,7 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 
 	add_to_chat(fmsg)
 
-	if(brk1 === "--")
+	if(brk1 === "--" || brk1 === "<<")
 	{
 		push_to_chat_history(fmsg)
 	}
