@@ -2403,7 +2403,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						fetch(`https://www.googleapis.com/youtube/v3/videos?id=${id}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`).then(function(res)
 						{
 							return res.json()
-						}).then(function(response)
+						})
+
+						.then(function(response)
 						{
 							if(response.items !== undefined && response.items.length > 0)
 							{
@@ -2416,6 +2418,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							{
 								socket.emit('update', {room:socket.room_id, type:'songnotfound'})
 							}
+						})
+
+						.catch(err =>
+						{
+							console.error(err)
 						})
 					}
 				}
@@ -2438,7 +2445,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				fetch(`https://www.googleapis.com/youtube/v3/search?q=${data.src}&fields=items(id,snippet(title))&part=snippet&maxResults=1&key=${sconfig.youtube_api_key}`).then(function(res)
 				{
 					return res.json()
-				}).then(function(response)
+				})
+
+				.then(function(response)
 				{
 					if(response.items !== undefined && response.items.length > 0)
 					{
@@ -2452,6 +2461,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					{
 						socket.emit('update', {room:socket.room_id, type:'songnotfound'})
 					}						
+				})
+
+				.catch(err =>
+				{
+					console.error(err)
 				})						
 			}
 		}
