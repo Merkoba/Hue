@@ -52,7 +52,7 @@
 			{
 				if(e.url.startsWith("https://hue.merkoba.com"))
 				{
-					const win = new BrowserWindow({width: 800, height: 600, frame:false, icon:'logo.png', show:false})
+					const win = new BrowserWindow({width: 800, height: 600, frame:false, icon:path.join(__dirname, 'logo.png'), show:false})
 
 					win.once('ready-to-show', () => win.show())
 

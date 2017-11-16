@@ -11,7 +11,7 @@ let win
 function createWindow () 
 {
 	// Create the browser window.
-	win = new BrowserWindow({width: 800, height: 600, frame:false, icon:'logo.png'})
+	win = new BrowserWindow({width: 800, height: 600, frame:false, icon:path.join(__dirname, 'logo.png')})
 
 	win.maximize()
 
