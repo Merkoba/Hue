@@ -7722,5 +7722,10 @@ function show_image(url)
 		{
 			update_modal_scrollbar("info")
 		})
+
+		$('.modal_image').eq(0).error(function() 
+		{
+			msg_info.set("This image is no longer available")
+		})
 	})
 }
