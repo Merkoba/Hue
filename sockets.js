@@ -586,7 +586,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return false
 			}
 
-			db_manager.get_user({_id:socket.user_id}, {})
+			db_manager.get_user({_id:socket.user_id}, {username:true, room_keys:true})
 
 			.then(userinfo =>
 			{
@@ -700,6 +700,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					usercount: get_usercount(socket.room_id),
 					nickname: socket.nickname,
 					priv: socket.priv
+				})
+
+				db_manager.save_visited_room(socket.user_id, socket.room_id)
+
+				.catch(err =>
+				{
+					console.error(err)
 				})
 			})
 
@@ -1097,15 +1104,15 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.nickname !== undefined)
 		{
-			if(data.ids !== undefined && data.ids.length > 0 && data.ids.length <= config.max_visited_rooms_items)
+			if(data.type === "visited")
 			{
-				get_visited_roomlist(data.ids, function(rooms)
+				get_visited_roomlist(socket.user_id, function(rooms)
 				{
 					socket.emit('update', {room:socket.room_id, type:'roomlist', roomlist:rooms})
 				})
 			}
 
-			else
+			else if(data.type === "public")
 			{
 				get_roomlist(function(rooms)
 				{
@@ -1167,7 +1174,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.then(info =>
 			{
-				db_manager.get_user({_id:socket.user_id}, {})
+				db_manager.get_user({_id:socket.user_id}, {room_keys:true})
 
 				.then(userinfo =>				
 				{
@@ -1246,7 +1253,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					socket.priv = 'admin'
 
-					db_manager.get_user({_id:socket.user_id}, {})
+					db_manager.get_user({_id:socket.user_id}, {room_keys:true})
 
 					.then(userinfo =>
 					{
@@ -1400,7 +1407,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						socc.key = repkey.key
 						info.keys = repkey.keys
 
-						db_manager.get_user({_id:socc.user_id}, {})
+						db_manager.get_user({_id:socc.user_id}, {room_keys:true})
 
 						.then(userinfo =>
 						{
@@ -1492,7 +1499,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						socc.key = repkey.key
 						info.keys = repkey.keys
 
-						db_manager.get_user({_id:socc.user_id}, {})
+						db_manager.get_user({_id:socc.user_id}, {room_keys:true})
 
 						.then(userinfo =>
 						{
@@ -1584,7 +1591,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						socc.key = repkey.key
 						info.keys = repkey.keys
 
-						db_manager.get_user({_id:socc.user_id}, {})
+						db_manager.get_user({_id:socc.user_id}, {room_keys:true})
 
 						.then(userinfo =>
 						{
@@ -2680,13 +2687,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.nickname !== undefined)
 		{
-			db_manager.get_user({_id:socket.user_id}, {})
+			db_manager.get_user({_id:socket.user_id}, {username:true, email:true})
 
-			.then(user =>
+			.then(userinfo =>
 			{
-				if(user)
+				if(userinfo)
 				{
-					socket.emit('update', {room:socket.room, type:'show_details', username:user.username, email:user.email})
+					socket.emit('update', {room:socket.room, type:'show_details', username:userinfo.username, email:userinfo.email})
 				}
 			})
 
@@ -2890,7 +2897,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			.catch(err =>
 			{
 				console.error(err)
-			})			
+			})
 		}
 
 		else
@@ -2899,50 +2906,60 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 	}
 
-	function get_visited_roomlist(ids, callback)
+	function get_visited_roomlist(user_id, callback)
 	{
 		var roomlist = []
 
-		var mids = []
+		db_manager.get_user({_id:user_id}, {visited_rooms:true})
 
-		for(var id of ids)
+		.then(userinfo =>
 		{
-			if(typeof id === "string" && id !== config.main_room_id)
+			var mids = []
+
+			for(var id of userinfo.visited_rooms)
 			{
-				mids.push(new mongo.ObjectId(id))
+				if(typeof id === "string" && id !== config.main_room_id)
+				{
+					mids.push(new mongo.ObjectId(id))
+				}
+
+				else
+				{
+					mids.push(id)
+				}
 			}
 
-			else
+			db_manager.find_rooms({_id:{"$in":mids}})
+
+			.then(results =>
 			{
-				mids.push(id)
-			}
-		}
+				if(!results)
+				{
+					return false
+				}
 
-		db_manager.find_rooms({_id:{"$in":mids}})
+				for(var i=0; i<results.length; i++)
+				{
+					var room = results[i]
 
-		.then(results =>
-		{
-			if(!results)
+					roomlist.push([room._id.toString(), room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room._id.toString()), room.modified])
+				}
+
+				roomlist.sort(compare_roomlist)
+
+				callback(roomlist)
+			})
+
+			.catch(err =>
 			{
-				return false
-			}
-
-			for(var i=0; i<results.length; i++)
-			{
-				var room = results[i]
-
-				roomlist.push([room._id.toString(), room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room._id.toString()), room.modified])
-			}
-
-			roomlist.sort(compare_roomlist)
-
-			callback(roomlist)
+				console.error(err)
+			})		
 		})
 
 		.catch(err =>
 		{
 			console.error(err)
-		})		
+		})
 	}
 
 	function get_usercount(id)

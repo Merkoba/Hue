@@ -5,7 +5,7 @@ module.exports = function(db, config, sconfig, utilz)
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
 	const rooms_version = 18
-	const users_version = 18
+	const users_version = 19
 
 	function get_random_key()
 	{
@@ -189,6 +189,11 @@ module.exports = function(db, config, sconfig, utilz)
 					room.version = rooms_version
 
 					db.collection('rooms').update({_id:room._id}, {$set:room})
+
+					.catch(err =>
+					{
+						console.error(err)
+					})
 				}
 
 				resolve(room)
@@ -226,6 +231,7 @@ module.exports = function(db, config, sconfig, utilz)
 				radio_setter: '',
 				radio_date: 0,
 				log_messages: [],
+				visited_rooms: [],
 				bans: '',
 				modified: Date.now()
 			}
@@ -335,6 +341,12 @@ module.exports = function(db, config, sconfig, utilz)
 
 				manager.update_room(_id, {log_messages:room.log_messages})
 
+				.catch(err =>
+				{
+					reject(err)
+					return
+				})
+
 				resolve(true)
 				return
 			})
@@ -385,7 +397,7 @@ module.exports = function(db, config, sconfig, utilz)
 
 						.catch(err =>
 						{
-							console.log(err)
+							console.error(err)
 						})
 
 						resolve(false)
@@ -398,7 +410,7 @@ module.exports = function(db, config, sconfig, utilz)
 
 						.catch(err =>
 						{
-							console.log(err)
+							console.error(err)
 						})
 
 						resolve(false)
@@ -430,6 +442,11 @@ module.exports = function(db, config, sconfig, utilz)
 						user.password_reset_link_date = 0
 					}
 
+					if(typeof user.visited_rooms !== "object")
+					{
+						user.visited_rooms = []
+					}
+
 					if(typeof user.modified !== "number")
 					{
 						user.modified = Date.now()
@@ -437,7 +454,12 @@ module.exports = function(db, config, sconfig, utilz)
 
 					user.version = users_version
 
-					db.collection('users').update({_id:user._id}, {$set:user})					
+					db.collection('users').update({_id:user._id}, {$set:user})
+
+					.catch(err => 
+					{
+						console.error(err)
+					})				
 				}
 
 				resolve(user)
@@ -530,8 +552,19 @@ module.exports = function(db, config, sconfig, utilz)
 					fields.password = hash
 
 					db.collection('users').update({_id:_id}, {$set:fields})
+
+					.then(ans =>
+					{
+						resolve(true)
+						return
+					})
+
+					.catch(err =>
+					{
+						reject(err)
+						return
+					})
 					
-					resolve(true)
 					return
 				})
 
@@ -546,7 +579,18 @@ module.exports = function(db, config, sconfig, utilz)
 			{
 				db.collection('users').update({_id:_id}, {$set:fields})
 
-				resolve(true)
+				.then(ans =>
+				{
+					resolve(true)
+					return
+				})
+
+				.catch(err =>
+				{
+					reject(err)
+					return
+				})
+
 				return
 			}
 		})	
@@ -556,7 +600,7 @@ module.exports = function(db, config, sconfig, utilz)
 	{
 		return new Promise((resolve, reject) => 
 		{
-			manager.get_user({username:username}, {})
+			manager.get_user({username:username}, {password:true})
 
 			.then(user =>
 			{
@@ -595,7 +639,7 @@ module.exports = function(db, config, sconfig, utilz)
 	{
 		return new Promise((resolve, reject) => 
 		{
-			manager.get_user({_id:_id}, {})
+			manager.get_user({_id:_id}, {username:true})
 
 			.then(user =>
 			{
@@ -607,7 +651,7 @@ module.exports = function(db, config, sconfig, utilz)
 
 				else
 				{
-					manager.get_user({username:username}, {})
+					manager.get_user({username:username}, {username:true})
 
 					.then(user2 =>
 					{
@@ -649,7 +693,7 @@ module.exports = function(db, config, sconfig, utilz)
 	{
 		return new Promise((resolve, reject) => 
 		{
-			manager.get_user({username:username}, {})
+			manager.get_user({username:username}, {email:true, password_reset_date:true})
 
 			.then(user =>
 			{
@@ -718,6 +762,57 @@ module.exports = function(db, config, sconfig, utilz)
 				return
 			})
 		})		
+	}
+
+	manager.save_visited_room = function(user_id, room_id)
+	{
+		return new Promise((resolve, reject) => 
+		{
+			manager.get_user({_id:user_id}, {visited_rooms:true})
+
+			.then(user =>
+			{
+				var visited = user.visited_rooms
+
+				for(var i=0; i<visited.length; i++)
+				{
+					var v = visited[i]
+
+					if(v === room_id)
+					{
+						visited.splice(i, 1)
+						break
+					}
+				}
+
+				visited.unshift(room_id)
+
+				if(visited.length > config.max_visited_rooms_items)
+				{
+					visited = visited.slice(0, config.max_visited_rooms_items)
+				}
+
+				manager.update_user(user_id, {visited_rooms:visited})
+
+				.then(ans =>
+				{
+					resolve(ans)
+					return
+				})
+
+				.catch(err =>
+				{
+					reject(err)
+					return
+				})
+			})
+
+			.catch(err =>
+			{
+				reject(err)
+				return
+			})
+		})
 	}
 
 	return manager
