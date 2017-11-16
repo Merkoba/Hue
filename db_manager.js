@@ -5,7 +5,7 @@ module.exports = function(db, config, sconfig, utilz)
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
 	const rooms_version = 18
-	const users_version = 20
+	const users_version = 21
 
 	function get_random_key()
 	{
@@ -66,138 +66,159 @@ module.exports = function(db, config, sconfig, utilz)
 
 				if(room && room.version !== rooms_version)
 				{
-					if(typeof room.name !== "string")
-					{
-						room.name = "No Name"
-					}
-					
-					if(typeof room.image_url !== "string")
-					{
-						room.image_url = ""
-					}
+					db.collection('rooms').findOne({_id:room._id}, {})
 
-					if(typeof room.stored_images !== "object")
+					.then(room =>
 					{
-						room.stored_images = []
-					}
-					
-					if(typeof room.image_uploader !== "string")
-					{
-						room.image_uploader = ""
-					}
-					
-					if(typeof room.image_size !== "number")
-					{
-						room.image_size = 0
-					}
-					
-					if(typeof room.image_date !== "number")
-					{
-						room.image_date = 0
-					}
-					
-					if(typeof room.topic !== "string")
-					{
-						room.topic = ""
-					}
-					
-					if(typeof room.topic_setter !== "string")
-					{
-						room.topic_setter = ""
-					}
-					
-					if(typeof room.topic_date !== "number")
-					{
-						room.topic_date = 0
-					}
-					
-					if(typeof room.claimed !== "boolean")
-					{
-						room.claimed = false
-					}
-					
-					if(typeof room.keys !== "string")
-					{
-						room.keys = ""
-					}
-					
-					if(typeof room.upload_permission !== "number")
-					{
-						room.upload_permission = 1
-					}
-					
-					if(typeof room.chat_permission !== "number")
-					{
-						room.chat_permission = 1
-					}
-					
-					if(typeof room.radio_permission !== "number")
-					{
-						room.radio_permission = 1
-					}
+						if(typeof room.name !== "string")
+						{
+							room.name = "No Name"
+						}
+						
+						if(typeof room.image_url !== "string")
+						{
+							room.image_url = ""
+						}
 
-					if(typeof room.radio_type !== "string")
-					{
-						room.radio_type = "radio"
-					}					
-					
-					if(typeof room.radio_source !== "string")
-					{
-						room.radio_source = ""
-					}
+						if(typeof room.stored_images !== "object")
+						{
+							room.stored_images = []
+						}
+						
+						if(typeof room.image_uploader !== "string")
+						{
+							room.image_uploader = ""
+						}
+						
+						if(typeof room.image_size !== "number")
+						{
+							room.image_size = 0
+						}
+						
+						if(typeof room.image_date !== "number")
+						{
+							room.image_date = 0
+						}
+						
+						if(typeof room.topic !== "string")
+						{
+							room.topic = ""
+						}
+						
+						if(typeof room.topic_setter !== "string")
+						{
+							room.topic_setter = ""
+						}
+						
+						if(typeof room.topic_date !== "number")
+						{
+							room.topic_date = 0
+						}
+						
+						if(typeof room.claimed !== "boolean")
+						{
+							room.claimed = false
+						}
+						
+						if(typeof room.keys !== "string")
+						{
+							room.keys = ""
+						}
+						
+						if(typeof room.upload_permission !== "number")
+						{
+							room.upload_permission = 1
+						}
+						
+						if(typeof room.chat_permission !== "number")
+						{
+							room.chat_permission = 1
+						}
+						
+						if(typeof room.radio_permission !== "number")
+						{
+							room.radio_permission = 1
+						}
 
-					if(typeof room.radio_title !== "string")
-					{
-						room.radio_title = ""
-					}
-					
-					if(typeof room.radio_setter !== "string")
-					{
-						room.radio_setter = ""
-					}
-					
-					if(typeof room.radio_date !== "number")
-					{
-						room.radio_date = 0
-					}
-					
-					if(typeof room.bans !== "string")
-					{
-						room.bans = ""
-					}
+						if(typeof room.radio_type !== "string")
+						{
+							room.radio_type = "radio"
+						}					
+						
+						if(typeof room.radio_source !== "string")
+						{
+							room.radio_source = ""
+						}
 
-					if(typeof room.log !== "object")
-					{
-						room.log = true
-					}
+						if(typeof room.radio_title !== "string")
+						{
+							room.radio_title = ""
+						}
+						
+						if(typeof room.radio_setter !== "string")
+						{
+							room.radio_setter = ""
+						}
+						
+						if(typeof room.radio_date !== "number")
+						{
+							room.radio_date = 0
+						}
+						
+						if(typeof room.bans !== "string")
+						{
+							room.bans = ""
+						}
 
-					if(typeof room.log_messages !== "object")
-					{
-						room.log_messages = []
-					}
-					
-					if(typeof room.modified !== "number")
-					{
-						room.modified = Date.now()
-					}
-					
-					if(typeof room.public !== "boolean")
-					{
-						room.public = true
-					}
+						if(typeof room.log !== "object")
+						{
+							room.log = true
+						}
 
-					room.version = rooms_version
+						if(typeof room.log_messages !== "object")
+						{
+							room.log_messages = []
+						}
+						
+						if(typeof room.modified !== "number")
+						{
+							room.modified = Date.now()
+						}
+						
+						if(typeof room.public !== "boolean")
+						{
+							room.public = true
+						}
 
-					db.collection('rooms').update({_id:room._id}, {$set:room})
+						room.version = rooms_version
+
+						db.collection('rooms').update({_id:room._id}, {$set:room})
+
+						.then(ans =>
+						{
+							resolve(room)
+							return
+						})
+
+						.catch(err =>
+						{
+							reject(err)
+							return
+						})
+					})
 
 					.catch(err =>
 					{
-						console.error(err)
+						reject(err)
+						return
 					})
 				}
 
-				resolve(room)
-				return
+				else
+				{
+					resolve(room)
+					return
+				}
 			})
 
 			.catch(err =>
@@ -390,79 +411,86 @@ module.exports = function(db, config, sconfig, utilz)
 			{
 				if(user && user.version !== users_version)
 				{
-					if(typeof user.username !== "string")
-					{
-						db.collection('users').deleteOne({_id: user._id})
+					db.collection('users').findOne({_id:user._id}, {})
 
-						.catch(err =>
+					.then(user =>
+					{
+						if(typeof user.username !== "string")
 						{
-							console.error(err)
+							resolve(false)
+							return
+						}
+
+						if(typeof user.password !== "string")
+						{
+							resolve(false)
+							return
+						}
+
+						if(typeof user.email !== "string")
+						{
+							user.email = ""
+						}
+
+						if(typeof user.room_keys !== "object")
+						{
+							user.room_keys = {}
+						}
+
+						if(typeof user.password_reset_code !== "string")
+						{
+							user.password_reset_code = ""
+						}
+
+						if(typeof user.password_reset_date !== "number")
+						{
+							user.password_reset_date = 0
+						}
+
+						if(typeof user.password_reset_link_date !== "number")
+						{
+							user.password_reset_link_date = 0
+						}
+
+						if(typeof user.visited_rooms !== "object")
+						{
+							user.visited_rooms = []
+						}
+
+						if(typeof user.modified !== "number")
+						{
+							user.modified = Date.now()
+						}
+
+						user.version = users_version
+
+						db.collection('users').update({_id:user._id}, {$set:user})
+
+						.then(ans =>
+						{
+							resolve(user)
+							return
 						})
 
-						resolve(false)
-						return
-					}
-
-					if(typeof user.password !== "string")
-					{
-						db.collection('users').deleteOne({_id: user._id})
-
-						.catch(err =>
+						.catch(err => 
 						{
-							console.error(err)
+							reject(err)
+							return
 						})
+					})
 
-						resolve(false)
+					.catch(err =>
+					{
+						reject(err)
 						return
-					}
-
-					if(typeof user.email !== "string")
-					{
-						user.email = ""
-					}
-
-					if(typeof user.room_keys !== "object")
-					{
-						user.room_keys = {}
-					}
-
-					if(typeof user.password_reset_code !== "string")
-					{
-						user.password_reset_code = ""
-					}
-
-					if(typeof user.password_reset_date !== "number")
-					{
-						user.password_reset_date = 0
-					}
-
-					if(typeof user.password_reset_link_date !== "number")
-					{
-						user.password_reset_link_date = 0
-					}
-
-					if(typeof user.visited_rooms !== "object")
-					{
-						user.visited_rooms = []
-					}
-
-					if(typeof user.modified !== "number")
-					{
-						user.modified = Date.now()
-					}
-
-					user.version = users_version
-
-					db.collection('users').update({_id:user._id}, {$set:user})
-
-					.catch(err => 
-					{
-						console.error(err)
-					})				
+					})
 				}
 
-				resolve(user)
-				return
+				else
+				{
+					resolve(user)
+					return
+				}
 			})
 
 			.catch(err =>
