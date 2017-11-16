@@ -3104,6 +3104,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					type: "image", 
 					data: 
 					{
+						image_url: image_url,
 						image_uploader: uploader
 					},
 					date: Date.now()

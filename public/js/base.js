@@ -3540,7 +3540,7 @@ function change()
 	$('#media_image').attr('src', image_url)
 }
 
-function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
+function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick=false)
 {
 	var contclasses = "announcement_content"
 
@@ -3549,6 +3549,11 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 		contclasses += " dotted"
 
 		alert_title2()
+	}
+
+	if(onclick)
+	{
+		contclasses += " pointer"
 	}
 
 	if(title)
@@ -3593,6 +3598,11 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false)
 	}
 
 	$(fmsg).find('.announcement_content').eq(0).text(msg).urlize()
+
+	if(onclick)
+	{
+		$(fmsg).on("click", onclick)
+	}
 
 	add_to_chat(fmsg)
 
@@ -5668,14 +5678,19 @@ function show_upload_error()
 
 function announce_uploaded_image(data, title=false)
 {
+	var onclick = function()
+	{
+		show_image(data.image_url)
+	}
+
 	if(nickname === data.image_uploader)
 	{
-		chat_announce('<<', '>>', 'You uploaded an image', 'small', false, title)
+		chat_announce('<<', '>>', 'You uploaded an image', 'small', false, title, onclick)
 	}
 
 	else
 	{
-		chat_announce('<<', '>>', `${data.image_uploader} uploaded an image`, 'small', false, title)
+		chat_announce('<<', '>>', `${data.image_uploader} uploaded an image`, 'small', false, title, onclick)
 	}
 }
 
@@ -6100,14 +6115,29 @@ function announce_radio_source_change(data, title=false)
 		var name = data.radio_source
 	}
 
-	if(data.radio_setter === nickname)
+	if(data.radio_source === '')
 	{
-		chat_announce('<<', '>>', `You changed the radio to ${name}`, 'small', false, title)
+		var source = default_radio_source
 	}
 
 	else
 	{
-		chat_announce('<<', '>>', `${data.radio_setter} changed the radio to ${name}`, 'small', false, title)
+		var source = data.radio_source
+	}
+
+	var onclick = function()
+	{
+		goto_url(source, "tab")
+	}
+
+	if(data.radio_setter === nickname)
+	{
+		chat_announce('<<', '>>', `You changed the radio to ${name}`, 'small', false, title, onclick)
+	}
+
+	else
+	{
+		chat_announce('<<', '>>', `${data.radio_setter} changed the radio to ${name}`, 'small', false, title, onclick)
 	}
 }
 
@@ -7682,4 +7712,15 @@ function show_log()
 	{
 		chat_announce('[', ']', "Log is disabled", 'small')
 	}
+}
+
+function show_image(url)
+{
+	msg_info.show(`<img class="modal_image" src="${url}">`, function()
+	{
+		$('.modal_image').get(0).addEventListener('load', function()
+		{
+			update_modal_scrollbar("info")
+		})
+	})
 }

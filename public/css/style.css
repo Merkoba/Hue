@@ -686,3 +686,14 @@ input[type=text], textarea
 	background-color: white;
 	color: #222222;
 }
+
+.modal_image
+{
+	max-height: 100%;
+	max-width: 100%;
+}
+
+.pointer
+{
+	cursor: pointer;	
+}
