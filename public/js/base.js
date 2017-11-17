@@ -3357,7 +3357,7 @@ function add_to_chat(msg)
 
 function push_to_chat_history(msg)
 {
-	chat_history.push(msg)
+	chat_history.push(msg.clone(true, true))
 
 	if(chat_history.length > chat_crop_limit)
 	{
@@ -3473,7 +3473,7 @@ function start_image_events()
 		}
 	})
 
-	$("#media_image").error(function() 
+	$("#media_image").on("error", function() 
 	{
 		if(image_url !== default_image_url)
 		{
@@ -3589,7 +3589,7 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 	if(typeof dotted === "string")
 	{
 		var fmsg = $(`<div class='msg announcement announcement_${size}'>${hbrk1}<span title='${t}' class='${contclasses}'></span><span class='dotted'></span>${hbrk2}</div>`)
-		$(fmsg).find('.dotted').eq(0).text(dotted).urlize()
+		fmsg.find('.dotted').eq(0).text(dotted).urlize()
 	}
 
 	else
@@ -3597,12 +3597,9 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 		var fmsg = $(`<div class='msg announcement announcement_${size}'>${hbrk1}<span title='${t}' class='${contclasses}'></span>${hbrk2}</div>`)
 	}
 
-	$(fmsg).find('.announcement_content').eq(0).text(msg).urlize()
+	fmsg.find('.announcement_content').eq(0).text(msg).urlize()
 
-	if(onclick)
-	{
-		$(fmsg).on("click", onclick)
-	}
+	fmsg.on("click", onclick)
 
 	add_to_chat(fmsg)
 
@@ -5288,7 +5285,12 @@ function clear_chat()
 function unclear_chat()
 {
 	clear_chat()
-	$("#chat_area").append(chat_history)
+	
+	for(var el of chat_history)
+	{
+		$("#chat_area").append(el.clone(true, true))
+	}
+
 	update_chat_scrollbar()
 	goto_bottom(true)
 }
@@ -7723,7 +7725,7 @@ function show_image(url)
 			update_modal_scrollbar("info")
 		})
 
-		$('.modal_image').eq(0).error(function() 
+		$('.modal_image').eq(0).on("error", function() 
 		{
 			msg_info.set("This image is no longer available")
 		})
