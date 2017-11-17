@@ -23,7 +23,7 @@ module.exports = function(db_manager, config, utilz)
 	c.vars.input_history_crop_limit = config.input_history_crop_limit
 	c.vars.max_input_length = config.max_input_length
 	c.vars.max_topic_length = config.max_topic_length
-	c.vars.max_nickname_length = config.max_nickname_length
+	c.vars.max_username_length = config.max_username_length
 	c.vars.max_room_name_length = config.max_room_name_length
 	c.vars.max_radio_source_length = config.max_radio_source_length
 	c.vars.max_title_length = config.max_title_length
@@ -47,7 +47,7 @@ module.exports = function(db_manager, config, utilz)
 	c.vars.settings_default_custom_scrollbars = config.settings_default_custom_scrollbars
 	c.vars.settings_default_header_contrast = config.settings_default_header_contrast
 	c.vars.settings_default_footer_contrast = config.settings_default_footer_contrast
-	c.vars.settings_default_nickname_on_footer = config.settings_default_nickname_on_footer
+	c.vars.settings_default_username_on_footer = config.settings_default_username_on_footer
 	c.vars.settings_default_modal_color = config.settings_default_modal_color
 
 	function check_url(req, res, next)
@@ -107,10 +107,10 @@ module.exports = function(db_manager, config, utilz)
 		c.vars.login_logo_url = config.login_logo_url
 		c.vars.fromurl = req.query.fromurl
 		c.vars.message = decodeURIComponent(req.query.message)
-		c.vars.max_nickname_length = config.max_nickname_length
+		c.vars.max_username_length = config.max_username_length
 		c.vars.min_password_length = config.min_password_length
 		c.vars.max_password_length = config.max_password_length
-		c.vars.max_max_nickname_length = config.max_max_nickname_length
+		c.vars.max_max_username_length = config.max_max_username_length
 		c.vars.max_max_password_length = config.max_max_password_length
 		c.vars.max_email_length = config.max_email_length
 		c.vars.login_title = config.login_title
@@ -125,7 +125,7 @@ module.exports = function(db_manager, config, utilz)
 		var password = req.body.password
 		var fromurl = decodeURIComponent(req.body.fromurl)
 
-		if(username.length === 0 || username.length > config.max_max_nickname_length)
+		if(username.length === 0 || username.length > config.max_max_username_length)
 		{
 			return false
 		}
@@ -176,7 +176,7 @@ module.exports = function(db_manager, config, utilz)
 		var email = req.body.email 
 		var fromurl = req.body.fromurl
 
-		if(username.length === 0 || username.length > config.max_nickname_length)
+		if(username.length === 0 || username.length > config.max_username_length)
 		{
 			return false
 		}
@@ -264,7 +264,7 @@ module.exports = function(db_manager, config, utilz)
 		c.vars = {}
 
 		c.vars.message = decodeURIComponent(req.query.message)
-		c.vars.max_max_nickname_length = config.max_max_nickname_length
+		c.vars.max_max_username_length = config.max_max_username_length
 		c.vars.max_max_email_length = config.max_max_email_length
 
 		res.render('recover', c)
@@ -275,7 +275,7 @@ module.exports = function(db_manager, config, utilz)
 		var username = req.body.username
 		var email = req.body.email
 
-		if(username.length === 0 || username.length > config.max_max_nickname_length)
+		if(username.length === 0 || username.length > config.max_max_username_length)
 		{
 			return false
 		}

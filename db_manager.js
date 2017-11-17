@@ -4,8 +4,8 @@ module.exports = function(db, config, sconfig, utilz)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 18
-	const users_version = 21
+	const rooms_version = 22
+	const users_version = 22
 
 	function get_random_key()
 	{
@@ -61,6 +61,14 @@ module.exports = function(db, config, sconfig, utilz)
 							reject(err)
 							return
 						})
+
+						return
+					}
+
+					else
+					{
+						resolve(false)
+						return
 					}
 				}
 
@@ -120,9 +128,9 @@ module.exports = function(db, config, sconfig, utilz)
 							room.claimed = false
 						}
 						
-						if(typeof room.keys !== "string")
+						if(typeof room.keys !== "object")
 						{
-							room.keys = ""
+							room.keys = {}
 						}
 						
 						if(typeof room.upload_permission !== "number")
@@ -165,9 +173,9 @@ module.exports = function(db, config, sconfig, utilz)
 							room.radio_date = 0
 						}
 						
-						if(typeof room.bans !== "string")
+						if(typeof room.bans !== "object")
 						{
-							room.bans = ""
+							room.bans = []
 						}
 
 						if(typeof room.log !== "object")
@@ -245,20 +253,25 @@ module.exports = function(db, config, sconfig, utilz)
 				topic_setter: '',
 				topic_date: 0,
 				claimed: true,
-				keys: get_random_key(),
+				keys: {},
 				radio_type: 'radio',
 				radio_source: '',
 				radio_title: '',
 				radio_setter: '',
 				radio_date: 0,
 				log_messages: [],
-				bans: '',
+				bans: [],
 				modified: Date.now()
 			}
 
 			if(data.id !== undefined)
 			{
 				room._id = data.id
+			}
+
+			if(data.user_id !== undefined)
+			{
+				room.keys[data.user_id] = "admin"
 			}
 
 			room.name = data.name !== undefined ? data.name : "No Name"
@@ -432,11 +445,6 @@ module.exports = function(db, config, sconfig, utilz)
 							user.email = ""
 						}
 
-						if(typeof user.room_keys !== "object")
-						{
-							user.room_keys = {}
-						}
-
 						if(typeof user.password_reset_code !== "string")
 						{
 							user.password_reset_code = ""
@@ -517,7 +525,6 @@ module.exports = function(db, config, sconfig, utilz)
 					username: info.username,
 					password: hash,
 					email: info.email, 
-					room_keys: {},
 					password_reset_link_date: 0,
 					password_reset_date: 0,
 					visited_rooms: [],

@@ -155,7 +155,7 @@ body, html
 	flex-grow: 1;
 }
 
-#footer_nickname
+#footer_username
 {
 	padding-top: 0.31em;
 	padding-right: 0.6em;
@@ -180,7 +180,7 @@ body, html
 	color: inherit;
 }
 
-#user_info_nickname_input
+#user_info_username_input
 {
 	width: 12em;
 	border: 1px solid grey;
@@ -331,7 +331,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-right: 0.5em;
 }
 
-.ui_item_nick
+.ui_item_uname
 {
 	font-size: 1.2em;	
 	cursor: pointer;
@@ -485,7 +485,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	height: 1.5em;
 }
 
-#Msg-overlay-nickname-picker
+#Msg-overlay-username-picker
 {
 	background-color: rgba(121, 121, 121, 1) !important;
 }
@@ -597,18 +597,18 @@ a.generic:link, a.generic:visited, a.generic:hover
 	max-width: 26em;
 }
 
-#pick_nickname_welcome
+#pick_username_welcome
 {
 	font-size: 1.2em;
 	padding-bottom: 0.3em;
 }
 
-#pick_nickname_info
+#pick_username_info
 {
 	padding-bottom: 1em;
 }
 
-#pick_nickname_input
+#pick_username_input
 {
 	font-size: 1.2em;
 	border: 1px solid grey;
