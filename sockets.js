@@ -605,6 +605,23 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				socket.join(socket.room_id)
 
+				if(!user_already_connected(socket))
+				{
+					socket.broadcast.in(socket.room_id).emit('update',
+					{
+						type: 'userjoin',
+						username: socket.username,
+						priv: socket.priv
+					})
+
+					if(io.sockets.adapter.rooms[socket.room_id].userlist === undefined)
+					{
+						io.sockets.adapter.rooms[socket.room_id].userlist = []
+					}
+
+					io.sockets.adapter.rooms[socket.room_id].userlist.push([socket.username, socket.priv])
+				}
+
 				socket.emit('update', 
 				{
 					type: 'joined', 
@@ -631,17 +648,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					radio_setter: info.radio_setter, 
 					radio_date: info.radio_date, 
 					claimed: info.claimed,
-				})
-
-				if(!user_already_connected(socket))
-				{
-					socket.broadcast.in(socket.room_id).emit('update',
-					{
-						type: 'userjoin',
-						username: socket.username,
-						priv: socket.priv
-					})
-				}
+				})				
 
 				db_manager.save_visited_room(socket.user_id, socket.room_id)
 
@@ -2503,11 +2510,24 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			io.sockets.in(socket.room_id).emit('update', 
 			{
 				type: type,
-				username: socket.username, 
-				usercount: get_usercount(socket.room_id), 
+				username: socket.username,
 				info1: socket.info1, 
 				priv: socket.priv
-			})	
+			})
+
+			if(io.sockets.adapter.rooms[socket.room_id].userlist !== undefined)
+			{
+				for(var i=0; i<io.sockets.adapter.rooms[socket.room_id].userlist.length; i++)
+				{
+					var item = io.sockets.adapter.rooms[socket.room_id].userlist[i]
+
+					if(item[0] === socket.username)
+					{
+						io.sockets.adapter.rooms[socket.room_id].userlist.splice(i, 1)
+						break
+					}
+				}
+			}
 		}
 	}
 
@@ -2516,19 +2536,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	function get_random_int(min, max)
 	{
 		return Math.floor(Math.random() * (max  -min + 1) + min)
-	}
-
-	function get_random_string(n)
-	{
-		var text = ""
-		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-
-		for(var i=0; i < n; i++)
-		{
-			text += possible[get_random_int(0, possible.length - 1)]
-		}
-
-		return text
 	}		
 
 	function compare_roomlist(a, b)
@@ -2583,36 +2590,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 	}
 
-	function get_userlist(room)
+	function get_userlist(room_id)
 	{
-		try
+		if(io.sockets.adapter.rooms[room_id].userlist !== undefined)
 		{
-			var sockets = io.sockets.adapter.rooms[room].sockets
-
-			var userlist = []
-
-			var included = []
-
-			var keys = Object.keys(sockets)
-
-			for(var i=0; i<keys.length; i++)
-			{
-				var socc = io.sockets.connected[keys[i]]
-
-				if(included.indexOf(socc.username) === -1)
-				{
-					userlist.push([socc.username, socc.priv])
-					included.push(socc.username)
-				}
-			}
-
-			return userlist
+			return io.sockets.adapter.rooms[room_id].userlist
 		}
 
-		catch(err)
+		else
 		{
 			return []
 		}
+	}
+
+	function get_usercount(room_id)
+	{
+		return get_userlist(room_id).length
 	}
 
 	function get_roomlist(callback)
@@ -2714,19 +2707,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			console.error(err)
 		})
-	}
-
-	function get_usercount(id)
-	{
-		try 
-		{
-			return Object.keys(io.sockets.adapter.rooms[id].sockets).length
-		}
-
-		catch(err) 
-		{
-			return 0
-		}
 	}
 
 	function change_image(room_id, fname, uploader, size)
