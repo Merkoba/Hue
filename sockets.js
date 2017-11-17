@@ -603,11 +603,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					socket.priv = ''
 				}
 
-				socket.join(socket.room_id)
+				socket.join(room_id)
 
 				if(!user_already_connected(socket))
 				{
-					socket.broadcast.in(socket.room_id).emit('update',
+					socket.broadcast.in(room_id).emit('update',
 					{
 						type: 'userjoin',
 						username: socket.username,
@@ -2520,7 +2520,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return
 			}
 
-			if(io.sockets.adapter.rooms[socket.room_id] === undefined)
+			if(rooms[socket.room_id] === undefined)
 			{
 				return
 			}
@@ -2573,30 +2573,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 
 			return 0
-		}
-	}
-
-	function get_usernames(room)
-	{
-		try
-		{
-			var sockets = io.sockets.adapter.rooms[room].sockets
-
-			var usernames = []
-
-			var keys = Object.keys(sockets)
-
-			for(var i=0; i<keys.length; i++)
-			{
-				usernames.push(io.sockets.connected[keys[i]].username)
-			}
-
-			return usernames
-		}
-
-		catch(err)
-		{
-			return []
 		}
 	}
 
@@ -2997,21 +2973,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		try
 		{
-			if(rooms[socket.room_id] === undefined)
-			{
-				return false
-			}
+			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
-			if(rooms[socket.room_id].userlist === undefined)
+			for(var id of ids)
 			{
-				return false
-			}
+				var socc = io.sockets.connected[id]
 
-			for(var i=0; i<rooms[socket.room_id].userlist.length; i++)
-			{
-				var socc = rooms[socket.room_id].userlist[i]
-
-				if(socc[0] === socket.username)
+				if(socc.id !== socket.id && socc.username === socket.username)
 				{
 					return true
 				}
@@ -3061,9 +3029,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			for(var i=0; i<rooms[socket.room_id].userlist.length; i++)
 			{
-				var socc = rooms[socket.room_id].userlist[i]
+				var item = rooms[socket.room_id].userlist[i]
 
-				if(socc[0] === old_username)
+				if(item[0] === old_username)
 				{
 					rooms[socket.room_id].userlist.splice(i, 1)
 					rooms[socket.room_id].userlist.push([socket.username, socket.priv])
