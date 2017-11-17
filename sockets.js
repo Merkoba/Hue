@@ -2366,6 +2366,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						socc.username = data.username
 					}
 
+					replace_in_userlist(socket, old_username)
+
 					io.sockets.in(socket.room_id).emit('update', {type:'new_username', username:socket.username, old_username:old_username})
 
 				}
@@ -2998,37 +3000,80 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 	function user_already_connected(socket)
 	{
-		var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
-
-		for(var id of ids)
+		try
 		{
-			var socc = io.sockets.connected[id]
+			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
-			if(socc.id !== socket.id && socc.username === socket.username)
+			for(var id of ids)
 			{
-				return true
+				var socc = io.sockets.connected[id]
+
+				if(socc.id !== socket.id && socc.username === socket.username)
+				{
+					return true
+				}
 			}
+
+			return false
 		}
 
-		return false
+		catch(err)
+		{
+			console.error(err)
+		}
 	}
 
 	function get_all_user_clients(socket)
 	{
-		var clients = []
-
-		var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
-
-		for(var id of ids)
+		try
 		{
-			var socc = io.sockets.connected[id]
+			var clients = []
 
-			if(socc.username === socket.username)
+			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
+
+			for(var id of ids)
 			{
-				clients.push(socc)
+				var socc = io.sockets.connected[id]
+
+				if(socc.username === socket.username)
+				{
+					clients.push(socc)
+				}
 			}
+			
+			return clients
 		}
 
-		return clients
+		catch(err)
+		{
+			console.error(err)
+		}
+	}
+
+	function replace_in_userlist(socket, old_username)
+	{
+		try
+		{
+			var clients = []
+
+			for(var i=0; i<io.sockets.adapter.rooms[socket.room_id].userlist.length; i++)
+			{
+				var socc = io.sockets.adapter.rooms[socket.room_id].userlist[i]
+
+				if(socc[0] === old_username)
+				{
+					io.sockets.adapter.rooms[socket.room_id].userlist.splice(i, 1)
+					io.sockets.adapter.rooms[socket.room_id].userlist.push([socket.username, socket.priv])
+					return
+				}
+			}
+			
+			return clients
+		}
+
+		catch(err)
+		{
+			console.error(err)
+		}
 	}
 }
