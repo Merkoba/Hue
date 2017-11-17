@@ -691,9 +691,29 @@ input[type=text], textarea
 {
 	max-height: 100%;
 	max-width: 100%;
+	display: none;
 }
 
 .pointer
 {
 	cursor: pointer;	
+}
+
+.spinner1 
+{
+    border: 10px solid;
+    border-top: 10px solid;
+    color: inherit;
+    border-color: transparent;
+    border-top-color: currentColor;
+	border-radius: 50%;
+	width: 80px;
+	height: 80px;
+	animation: spin 1.4s linear infinite;
+}
+
+@keyframes spin 
+{
+	0% {transform:rotate(0deg)}
+	100% {transform:rotate(360deg)}
 }

@@ -85,6 +85,7 @@ var youtube_player
 var fetched_room_id
 var utilz = Utilz()
 var log_messages
+var first_opacity_checked = false
 
 function init()
 {
@@ -92,6 +93,7 @@ function init()
 	activate_key_detection()
 	get_nickname()
 	start_loading_image()
+	set_opacity(general_opacity)	
 	compile_templates()
 	get_settings()
 	start_msg()
@@ -573,7 +575,6 @@ function start_socket()
 			check_priv(data)
 			change()
 
-			setup_opacity()
 			setup_media_display()
 			setup_nickname_on_footer()
 			start_nickname_context_menu()
@@ -3414,7 +3415,6 @@ function start_image_events()
 				var color2 = colorlib.get_lighter_or_darker(color1, color_contrast_amount_3)
 			}
 
-			
 			var background_color2 = color2
 
 			if(settings.header_contrast)
@@ -3470,6 +3470,12 @@ function start_image_events()
 			var title = `Uploader: ${image_uploader} | Size: ${get_size_string(image_size)} | ${image_date}`
 
 			$(this).prop('title', title)
+		}
+
+		if(!first_opacity_checked)
+		{
+			setup_opacity()
+			first_opacity_checked = true		
 		}
 	})
 
@@ -3597,9 +3603,11 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 		var fmsg = $(`<div class='msg announcement announcement_${size}'>${hbrk1}<span title='${t}' class='${contclasses}'></span>${hbrk2}</div>`)
 	}
 
-	fmsg.find('.announcement_content').eq(0).text(msg).urlize()
+	var content = fmsg.find('.announcement_content').eq(0)
 
-	fmsg.on("click", onclick)
+	content.text(msg).urlize()
+
+	content.on("click", onclick)
 
 	add_to_chat(fmsg)
 
@@ -7718,14 +7726,16 @@ function show_log()
 
 function show_image(url)
 {
-	msg_info.show(`<img class="modal_image" src="${url}">`, function()
+	msg_info.show(`<div id="modal_spinner" class='spinner1'></div><img id="modal_image" class="modal_image" src="${url}">`, function()
 	{
-		$('.modal_image').get(0).addEventListener('load', function()
+		$('#modal_image').get(0).addEventListener('load', function()
 		{
+			$("#modal_spinner").css("display", "none")
+			this.style.display = "block"
 			update_modal_scrollbar("info")
 		})
 
-		$('.modal_image').eq(0).on("error", function() 
+		$('#modal_image').eq(0).on("error", function() 
 		{
 			msg_info.set("This image is no longer available")
 		})
