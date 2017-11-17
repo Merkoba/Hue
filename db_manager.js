@@ -4,8 +4,8 @@ module.exports = function(db, config, sconfig, utilz)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 22
-	const users_version = 22
+	const rooms_version = 23
+	const users_version = 23
 
 	function get_random_key()
 	{

@@ -580,16 +580,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				socket.username = userinfo.username
 
 				socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
-
-				var bans = info.bans.split(';')
-
-				for(var i=0; i<bans.length; i++)
+				
+				if(info.bans.indexOf(socket.ip) !== -1)
 				{
-					if(bans[i] === socket.ip)
-					{
-						socket.disconnect()
-						return false
-					}
+					socket.disconnect()
+					return false
 				}
 
 				var room_id = info._id.toString()
@@ -1727,18 +1722,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.then(info =>
 			{
-				if(info.bans !== '')
+				if(info.bans.length > 0)
 				{
-					info.bans = ''
-
-					io.sockets.in(socket.room_id).emit('update', {type:'announce_unbanall', username:socket.username})
+					info.bans = []
 					
 					db_manager.update_room(info._id, {bans:info.bans})
 
 					.catch(err =>
 					{
 						console.error(err)
-					})					
+					})
+
+					io.sockets.in(socket.room_id).emit('update', {type:'announce_unbanall', username:socket.username})
 				}
 
 				else
@@ -1768,18 +1763,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.then(info =>
 			{
-				if(info.bans !== '')
+				if(info.bans.length > 0)
 				{
-					info.bans = info.bans.split(';').slice(0,-1).join(';')
+					info.bans.pop()
 
-					io.sockets.in(socket.room_id).emit('update', {type:'announce_unbanlast', username:socket.username})
-					
 					db_manager.update_room(info._id, {bans:info.bans})
 
 					.catch(err =>
 					{
 						console.error(err)
-					})					
+					})
+
+					io.sockets.in(socket.room_id).emit('update', {type:'announce_unbanlast', username:socket.username})
 				}
 
 				else
