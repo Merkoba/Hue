@@ -614,16 +614,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						priv: socket.priv
 					})
 
-					if(io.sockets.adapter.rooms[socket.room_id] !== undefined)
+					if(rooms[room_id].userlist === undefined)
 					{
-						if(io.sockets.adapter.rooms[socket.room_id].userlist === undefined)
-						{
-							io.sockets.adapter.rooms[socket.room_id].userlist = []
-						}
+						rooms[room_id].userlist = []
+					}
 
-						io.sockets.adapter.rooms[socket.room_id].userlist.push([socket.username, socket.priv])
-					}					
-
+					rooms[room_id].userlist.push([socket.username, socket.priv])				
 				}
 
 				socket.emit('update', 
@@ -2369,7 +2365,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					replace_in_userlist(socket, old_username)
 
 					io.sockets.in(socket.room_id).emit('update', {type:'new_username', username:socket.username, old_username:old_username})
-
 				}
 
 				else
@@ -2530,15 +2525,15 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return
 			}
 
-			if(io.sockets.adapter.rooms[socket.room_id].userlist !== undefined)
+			if(rooms[socket.room_id].userlist !== undefined)
 			{
-				for(var i=0; i<io.sockets.adapter.rooms[socket.room_id].userlist.length; i++)
+				for(var i=0; i<rooms[socket.room_id].userlist.length; i++)
 				{
-					var item = io.sockets.adapter.rooms[socket.room_id].userlist[i]
+					var item = rooms[socket.room_id].userlist[i]
 
 					if(item[0] === socket.username)
 					{
-						io.sockets.adapter.rooms[socket.room_id].userlist.splice(i, 1)
+						rooms[socket.room_id].userlist.splice(i, 1)
 						break
 					}
 				}
@@ -2609,14 +2604,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		try
 		{
-			if(io.sockets.adapter.rooms[room_id] === undefined)
+			if(rooms[room_id] === undefined)
 			{
 				return []
 			}
 
-			if(io.sockets.adapter.rooms[room_id].userlist !== undefined)
+			if(rooms[room_id].userlist !== undefined)
 			{
-				return io.sockets.adapter.rooms[room_id].userlist
+				return rooms[room_id].userlist
 			}
 
 			else
@@ -3002,13 +2997,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		try
 		{
-			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
-
-			for(var id of ids)
+			if(rooms[socket.room_id] === undefined)
 			{
-				var socc = io.sockets.connected[id]
+				return false
+			}
 
-				if(socc.id !== socket.id && socc.username === socket.username)
+			if(rooms[socket.room_id].userlist === undefined)
+			{
+				return false
+			}
+
+			for(var i=0; i<rooms[socket.room_id].userlist.length; i++)
+			{
+				var socc = rooms[socket.room_id].userlist[i]
+
+				if(socc[0] === socket.username)
 				{
 					return true
 				}
@@ -3056,14 +3059,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			var clients = []
 
-			for(var i=0; i<io.sockets.adapter.rooms[socket.room_id].userlist.length; i++)
+			for(var i=0; i<rooms[socket.room_id].userlist.length; i++)
 			{
-				var socc = io.sockets.adapter.rooms[socket.room_id].userlist[i]
+				var socc = rooms[socket.room_id].userlist[i]
 
 				if(socc[0] === old_username)
 				{
-					io.sockets.adapter.rooms[socket.room_id].userlist.splice(i, 1)
-					io.sockets.adapter.rooms[socket.room_id].userlist.push([socket.username, socket.priv])
+					rooms[socket.room_id].userlist.splice(i, 1)
+					rooms[socket.room_id].userlist.push([socket.username, socket.priv])
 					return
 				}
 			}
