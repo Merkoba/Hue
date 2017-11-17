@@ -2338,6 +2338,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return false
 			}
 
+			var old_username = socket.username
+
 			db_manager.change_username(socket.user_id, data.username)
 
 			.then(done =>
@@ -2345,7 +2347,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				if(done)
 				{
 					socket.username = data.username
-					socket.emit('update', {room:socket.room, type:'username_changed', username:data.username})
+
+					io.sockets.in(socket.room_id).emit('update', {type:'new_username', username:socket.username, old_username:old_username})
+
 				}
 
 				else
@@ -2986,5 +2990,24 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 
 		return false
+	}
+
+	function get_all_user_clients(socket)
+	{
+		var clients = []
+
+		var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
+
+		for(var id of ids)
+		{
+			var socc = io.sockets.connected[id]
+
+			if(socc.username === socket.username)
+			{
+				clients.push(socc)
+			}
+		}
+
+		return clients
 	}
 }

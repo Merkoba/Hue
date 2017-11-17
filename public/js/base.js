@@ -329,6 +329,8 @@ function check_upload_permission(priv)
 		{
 			return true
 		}
+
+		return false
 	}
 
 	else if(upload_permission === 3)
@@ -336,7 +338,9 @@ function check_upload_permission(priv)
 		if(priv === "admin" || priv === "op")
 		{
 			return true
-		}	
+		}
+
+		return false	
 	}
 
 	else
@@ -358,6 +362,8 @@ function check_chat_permission(priv)
 		{
 			return true
 		}
+
+		return false
 	}
 
 	else if(chat_permission === 3)
@@ -365,7 +371,9 @@ function check_chat_permission(priv)
 		if(priv === "admin" || priv === "op")
 		{
 			return true
-		}	
+		}
+
+		return false	
 	}
 
 	else
@@ -387,6 +395,8 @@ function check_radio_permission(priv)
 		{
 			return true
 		}
+
+		return false
 	}
 
 	else if(radio_permission === 3)
@@ -394,7 +404,9 @@ function check_radio_permission(priv)
 		if(priv === "admin" || priv === "op")
 		{
 			return true
-		}	
+		}
+
+		return false	
 	}
 
 	else
@@ -530,7 +542,7 @@ function start_socket()
 
 		if(data.type === 'new_username')
 		{
-			new_username(data)
+			announce_new_username(data)
 		}
 
 		else if(data.type === 'chat_announcement')
@@ -4323,6 +4335,38 @@ function announce_room_name_change(data)
 	}
 }
 
+function announce_new_username(data)
+{
+	replace_uname_in_userlist(data.old_username, data.username)
+
+	var show = check_chat_permission(get_priv(data.username))
+
+	if(username === data.old_username)
+	{
+		username = data.username
+		
+		set_footer_username()
+
+		if(show)
+		{
+			chat_announce('~', '~', `You are now known as ${username}`, 'small')
+		}
+
+		else
+		{
+			chat_announce('[', ']', `You are now known as ${username}`, 'small')
+		}
+	}
+
+	else
+	{
+		if(show)
+		{
+			chat_announce('~', '~', `${data.old_username} is now known as ${data.username}`, 'small')
+		}
+	}
+}
+
 function goto_bottom(force=false)
 {
 	var $ch = $("#chat_area")
@@ -7331,6 +7375,12 @@ function change_username(uname)
 	if(uname.length > max_username_length)
 	{
 		chat_announce('[', ']', "Username is too long", 'small')
+		return
+	}
+
+	if(uname === username)
+	{
+		chat_announce('[', ']', "That's already your username", 'small')
 		return
 	}
 
