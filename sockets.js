@@ -2973,6 +2973,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		try
 		{
+			if(io.sockets.adapter.rooms[socket.room_id] === undefined)
+			{
+				return false
+			}
+
 			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
 			for(var id of ids)
