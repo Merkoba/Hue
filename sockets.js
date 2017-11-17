@@ -667,6 +667,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
+			console.log(socket.username)
 			if(data.msg === undefined)
 			{
 				socket.disconnect()
@@ -1499,20 +1500,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.then(info =>
 			{
-				var key_array = info.keys.split(';')
+				var removed = false
 
-				var filtered_array = key_array.filter(function(item) 
+				for(var key in info.keys)
 				{
-					return item.indexOf('_vkey_') !== 0
-				})
+					if(info.keys[key] === "voice")
+					{
+						delete info.keys[key]
+						removed = true
+					}
+				}
 
-				if(key_array.length === filtered_array.length)
+				if(!removed)
 				{
 					socket.emit('update', {room:socket.room_id, type:'novoicestoremove'})
 					return false
 				}
-
-				info.keys = filtered_array.join(';')
 
 				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
@@ -1526,14 +1529,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					}
 				}
 				
-				io.sockets.in(socket.room_id).emit('update', {type:'announce_removedvoices', username:socket.username})
-
 				db_manager.update_room(info._id, {keys:info.keys})
 
 				.catch(err =>
 				{
 					console.error(err)
 				})
+
+				io.sockets.in(socket.room_id).emit('update', {type:'announce_removedvoices', username:socket.username})
 			})
 
 			.catch(err =>
@@ -1557,20 +1560,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.then(info =>
 			{
-				var key_array = info.keys.split(';')
+				var removed = false
 
-				var filtered_array = key_array.filter(function(item) 
+				for(var key in info.keys)
 				{
-					return item.indexOf('_okey_') !== 0
-				})
+					if(info.keys[key] === "op")
+					{
+						delete info.keys[key]
+						removed = true
+					}
+				}
 
-				if(key_array.length === filtered_array.length)
+				if(!removed)
 				{
 					socket.emit('update', {room:socket.room_id, type:'noopstoremove'})
 					return false
 				}
-
-				info.keys = filtered_array.join(';')
 
 				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
 
@@ -2346,7 +2351,10 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				if(done)
 				{
-					socket.username = data.username
+					for(var socc of get_all_user_clients(socket))
+					{
+						socc.username = data.username
+					}
 
 					io.sockets.in(socket.room_id).emit('update', {type:'new_username', username:socket.username, old_username:old_username})
 
@@ -2583,12 +2591,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			var userlist = []
 
+			var included = []
+
 			var keys = Object.keys(sockets)
 
 			for(var i=0; i<keys.length; i++)
 			{
 				var socc = io.sockets.connected[keys[i]]
-				userlist.push([socc.username, socc.priv])
+
+				if(included.indexOf(socc.username) === -1)
+				{
+					userlist.push([socc.username, socc.priv])
+					included.push(socc.username)
+				}
 			}
 
 			return userlist
