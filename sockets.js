@@ -2776,11 +2776,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			info.stored_images.unshift(fname)
 
-			var popped = false
-
+			var spliced = false
+			
 			if(info.stored_images.length > config.max_stored_images)
 			{
-				var popped = info.stored_images.pop()
+				var spliced = info.stored_images.splice(config.max_stored_images, info.stored_images.length)
 			}
 
 			io.sockets.in(room_id).emit('update',
@@ -2806,25 +2806,28 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				console.error(err)
 			})			
 
-			if(popped)
+			if(spliced)
 			{
-				if(popped.indexOf(sconfig.s3_main_url) === -1)
+				for(var file_name of spliced)
 				{
-					fs.unlink(`${images_root}/${popped}`, function(err){})
-				}
-
-				else
-				{
-					s3.deleteObject(
+					if(file_name.indexOf(sconfig.s3_main_url) === -1)
 					{
-						Bucket: sconfig.s3_bucket_name,
-						Key: popped.replace(sconfig.s3_main_url, "")
-					}).promise()
+						fs.unlink(`${images_root}/${file_name}`, function(err){})
+					}
 
-					.catch(err =>
+					else
 					{
-						console.error(err)
-					})
+						s3.deleteObject(
+						{
+							Bucket: sconfig.s3_bucket_name,
+							Key: file_name.replace(sconfig.s3_main_url, "")
+						}).promise()
+
+						.catch(err =>
+						{
+							console.error(err)
+						})
+					}
 				}
 			}
 

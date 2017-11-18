@@ -18,7 +18,7 @@
 	"default_topic_unclaimed": "Use /claim to get admin rights to this room",
 	"default_topic": "Check /help3 to learn about administration commands",
 	"redirect_url": "https://en.wikipedia.org/wiki/Special:Random",
-	"max_stored_images": 100,
+	"max_stored_images": 50,
 	"check_metadata_interval_duration": 12000,
 	"general_opacity": 0.95,
 	"color_contrast_amount_1": 0.9,
