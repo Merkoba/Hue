@@ -583,13 +583,17 @@ a.generic:link, a.generic:visited, a.generic:hover
 {
 	padding-top: 1em;
 	padding-bottom: 1em;
-	cursor: pointer;
 }
 
 .search_result_uname
 {
 	font-weight: bold;
 	padding-bottom: 0.3em;
+}
+
+.search_result_uname *
+{
+	cursor: default;
 }
 
 .search_result_content

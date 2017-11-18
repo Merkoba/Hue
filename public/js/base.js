@@ -72,6 +72,7 @@ var msg_settings
 var msg_userlist
 var msg_roomlist
 var msg_played
+var msg_image
 var msg_info
 var msg_storageui
 var msg_username_picker
@@ -227,7 +228,7 @@ function change_room_name(arg)
 {
 	if(priv !== 'admin' && priv !== 'op')
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')		
+		not_an_op()		
 	}
 
 	arg = utilz.clean_string2(arg.substring(0, max_room_name_length))
@@ -4118,7 +4119,7 @@ function change_topic(dtopic)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -4146,7 +4147,7 @@ function topicadd(arg)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -4196,7 +4197,7 @@ function topictrim(n)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -4224,7 +4225,7 @@ function topicstart(arg)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -4274,7 +4275,7 @@ function topictrimstart(n)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -4298,16 +4299,8 @@ function announce_topic_change(data)
 				highlight = true
 			}
 		}
-			
-		if(data.topic_setter === username)
-		{
-			chat_announce('~', '~', `You changed the topic to: ${data.topic}`, 'small', highlight)
-		}
 
-		else
-		{
-			chat_announce('~', '~', `${data.topic_setter} changed the topic to: ${data.topic}`, 'small', highlight)
-		}
+		chat_announce('~', '~', `${data.topic_setter} changed the topic to: ${data.topic}`, 'small', highlight)
 
 		set_topic_info(data)
 
@@ -4319,15 +4312,7 @@ function announce_room_name_change(data)
 {
 	if(data.name !== room_name)
 	{		
-		if(data.username === username)
-		{
-			chat_announce('~', '~', `You changed the room name to: ${data.name}`, 'small')
-		}
-
-		else
-		{
-			chat_announce('~', '~', `${username} changed the room name to: ${data.name}`, 'small')
-		}
+		chat_announce('~', '~', `${username} changed the room name to: ${data.name}`, 'small')
 
 		room_name = data.name
 
@@ -4349,7 +4334,7 @@ function announce_new_username(data)
 
 		if(show)
 		{
-			chat_announce('~', '~', `You are now known as ${username}`, 'small')
+			chat_announce('~', '~', `${data.old_username} is now known as ${username}`, 'small')
 		}
 
 		else
@@ -5029,21 +5014,6 @@ function create_search_container()
 		{
 			search_timer()
 		})
-
-		$("#search_container").on("click", ".search_result_item", function()
-		{
-			if($(this).find('a').length === 0)
-			{
-				var ss = ""
-
-				ss += $(this).find(".chat_uname").eq(0).text()
-				ss += " said: "
-				ss += `"${$(this).find(".chat_content").eq(0).text()}"`
-
-				change_input(ss)
-				close_all_modals()
-			}
-		})
 	})	
 }
 
@@ -5137,7 +5107,7 @@ function chat_search(filter=false)
 
 				var cn = $("<div class='search_result_item'><div class='search_result_content'></div>")
 
-				cn.find(".search_result_content").eq(0).html(hcontent.clone())
+				cn.find(".search_result_content").eq(0).html(hcontent.clone(true))
 
 				c.append(cn)				
 			}
@@ -5311,7 +5281,7 @@ function change_upload_permission(m)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -5350,7 +5320,7 @@ function change_chat_permission(m)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -5389,7 +5359,7 @@ function change_radio_permission(m)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -5397,15 +5367,7 @@ function announce_upload_permission_change(data)
 {
 	var s = ""
 
-	if(username === data.username)
-	{
-		var d = "You changed the upload permission to"
-	}
-
-	else
-	{
-		var d = `${data.username} changed the upload permission to`
-	}
+	var d = `${data.username} changed the upload permission to`
 
 	if(data.upload_permission === 1 && upload_permission !== 1)
 	{
@@ -5434,15 +5396,7 @@ function announce_chat_permission_change(data)
 {
 	var s = ""
 
-	if(username === data.username)
-	{
-		var d = "You changed the chat permission to"
-	}
-
-	else
-	{
-		var d = `${data.username} changed the chat permission to`
-	}
+	var d = `${data.username} changed the chat permission to`
 
 	if(data.chat_permission === 1 && chat_permission !== 1)
 	{
@@ -5471,15 +5425,7 @@ function announce_radio_permission_change(data)
 {
 	var s = ""
 
-	if(username === data.username)
-	{
-		var d = "You changed the radio permission to"
-	}
-
-	else
-	{
-		var d = `${data.username} changed the radio permission to`
-	}
+	var d = `${data.username} changed the radio permission to`
 
 	if(data.radio_permission === 1 && radio_permission !== 1)
 	{
@@ -5562,7 +5508,7 @@ function voice(uname)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -5578,15 +5524,7 @@ function announce_uploaded_image(data, title=false)
 		show_image(data.image_url)
 	}
 
-	if(username === data.image_uploader)
-	{
-		chat_announce('<<', '>>', 'You uploaded an image', 'small', false, title, onclick)
-	}
-
-	else
-	{
-		chat_announce('<<', '>>', `${data.image_uploader} uploaded an image`, 'small', false, title, onclick)
-	}
+	chat_announce('<<', '>>', `${data.image_uploader} uploaded an image`, 'small', false, title, onclick)
 }
 
 function announce_voice(data)
@@ -5594,19 +5532,9 @@ function announce_voice(data)
 	if(username === data.username2)
 	{
 		set_priv("voice")
-
-		chat_announce('~', '~', `${data.username1} gave you voice`, 'small', true)
 	}
 
-	else if(username === data.username1)
-	{
-		chat_announce('~', '~', `You gave voice to ${data.username2}`, 'small')
-	}
-
-	else
-	{
-		chat_announce('~', '~', `${data.username1} gave voice to ${data.username2}`, 'small')
-	}
+	chat_announce('~', '~', `${data.username1} gave voice to ${data.username2}`, 'small')
 
 	replace_priv_in_userlist(data.username2, 'voice')
 }
@@ -5616,19 +5544,9 @@ function announce_op(data)
 	if(username === data.username2)
 	{
 		set_priv("op")
-
-		chat_announce('~', '~', `${data.username1} gave you op`, 'small', true)
 	}
 
-	else if(username === data.username1)
-	{
-		chat_announce('~', '~', `You gave op to ${data.username2}`, 'small')
-	}
-
-	else
-	{
-		chat_announce('~', '~', `${data.username1} gave op to ${data.username2}`, 'small')
-	}
+	chat_announce('~', '~', `${data.username1} gave op to ${data.username2}`, 'small')
 
 	replace_priv_in_userlist(data.username2, 'op')
 }
@@ -5671,7 +5589,7 @@ function strip(uname)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -5680,19 +5598,9 @@ function announce_strip(data)
 	if(username === data.username2)
 	{
 		set_priv("")
-
-		chat_announce('~', '~', `${data.username1} removed all privileges from you`, 'small', true)
 	}
 
-	else if(username === data.username1)
-	{
-		chat_announce('~', '~', `You removed all privileges from ${data.username2}`, 'small')
-	}
-
-	else
-	{
-		chat_announce('~', '~', `${data.username1} removed all privileges from ${data.username2}`, 'small')
-	}
+	chat_announce('~', '~', `${data.username1} removed all privileges from ${data.username2}`, 'small')
 
 	replace_priv_in_userlist(data.username2, '')
 }
@@ -5707,34 +5615,14 @@ function announce_claim(data)
 {
 	claimed = true
 
-	if(username === data.username)
-	{
-		var who = "you"
-	}
-
-	else
-	{
-		var who = data.username
-	}
-
 	if(data.updated)
 	{
-		var s = `The room has been reclaimed by ${who}. All previous associated keys are now invalid`
+		var s = `The room has been reclaimed by ${data.username}. All previous given privileges are now invalid`
 	}
 
 	else
 	{
-		if(username === data.username)
-		{
-			set_priv("admin")
-
-			var s = 'You have claimed this room. Check /help3 to learn about admin commands'
-		}
-
-		else
-		{
-			var s = `${data.username} has claimed this room`
-		}		
+		var s = `${data.username} has claimed this room`	
 	}
 
 	chat_announce('~', '~', s, 'small')
@@ -5754,20 +5642,16 @@ function announce_claim(data)
 
 function announce_unclaim(data)
 {
-	if(username === data.username)
-	{
-		chat_announce('~', '~', 'You unclaimed the room', 'small')
-	}
-
-	else
-	{
-		chat_announce('~', '~', `${data.username} unclaimed the room`, 'small')
-	}
+	chat_announce('~', '~', `${data.username} unclaimed the room`, 'small')
 
 	claimed = false
+
 	set_priv("")
+
 	upload_permission = 1
+
 	chat_permission = 1
+
 	is_public = true
 
 	set_topic_info(false)
@@ -5788,20 +5672,7 @@ function announce_unclaim(data)
 
 function announce_admin(data)
 {
-	if(username === data.username2)
-	{
-		chat_announce('~', '~', `${data.username1} gave you admin`, 'small', true)
-	}
-
-	else if(username === data.username1)
-	{
-		chat_announce('~', '~', `You gave admin to ${data.username2}`, 'small')
-	}
-
-	else
-	{
-		chat_announce('~', '~', `${data.username1} gave admin to ${data.username2}`, 'small')
-	}
+	chat_announce('~', '~', `${data.username1} gave admin to ${data.username2}`, 'small')
 
 	replace_priv_in_userlist(data.username2, 'admin')
 }
@@ -5893,7 +5764,7 @@ function make_private()
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -5912,7 +5783,7 @@ function make_public()
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -5920,15 +5791,7 @@ function made_private(data)
 {
 	is_public = false
 
-	if(data.username === username)
-	{
-		var s = 'You made the room private'	
-	}
-
-	else
-	{
-		var s = `${data.username} made the room private`
-	}
+	var s = `${data.username} made the room private`
 
 	s += ". The room won't appear in the public room list"
 	
@@ -5939,15 +5802,7 @@ function made_public(data)
 {
 	is_public = true 
 
-	if(data.username === username)
-	{
-		var s = 'You made the room public'	
-	}
-
-	else
-	{
-		var s = `${data.username} made the room public`
-	}
+	var s = `${data.username} made the room public`
 
 	s += ". The room will appear in the public room list"
 	
@@ -6025,15 +5880,7 @@ function announce_radio_source_change(data, title=false)
 		goto_url(source, "tab")
 	}
 
-	if(data.radio_setter === username)
-	{
-		chat_announce('<<', '>>', `You changed the radio to ${name}`, 'small', false, title, onclick)
-	}
-
-	else
-	{
-		chat_announce('<<', '>>', `${data.radio_setter} changed the radio to ${name}`, 'small', false, title, onclick)
-	}
+	chat_announce('<<', '>>', `${data.radio_setter} changed the radio to ${name}`, 'small', false, title, onclick)
 }
 
 function ban(uname)
@@ -6068,7 +5915,7 @@ function ban(uname)
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -6081,7 +5928,7 @@ function unbanall()
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -6094,7 +5941,7 @@ function unbanlast()
 
 	else
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
@@ -6151,34 +5998,18 @@ function kick(uname)
 
 	else 
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 	}
 }
 
 function announce_unbanall(data)
 {
-	if(data.username === username)
-	{
-		chat_announce('~', '~', 'You unbanned all banned users', 'small')		
-	}
-
-	else
-	{
-		chat_announce('~', '~', `${data.username} unbanned all banned users`, 'small')
-	}
+	chat_announce('~', '~', `${data.username} unbanned all banned users`, 'small')
 }
 
 function announce_unbanlast(data)
 {
-	if(data.username === username)
-	{
-		chat_announce('~', '~', 'You unbanned the latest banned user', 'small')		
-	}
-
-	else
-	{
-		chat_announce('~', '~', `${data.username} unbanned the latest banned user`, 'small')
-	}
+	chat_announce('~', '~', `${data.username} unbanned the latest banned user`, 'small')
 }
 
 function isalready(who, what)
@@ -6233,7 +6064,7 @@ function remove_voices()
 {
 	if(priv !== 'admin' && priv !== 'op')
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')
+		not_an_op()
 		return false
 	}
 
@@ -6259,15 +6090,7 @@ function remove_both()
 
 function announce_removedvoices(data)
 {
-	if(username === data.username)
-	{
-		chat_announce('~', '~', 'You removed all voices', 'small')
-	}
-
-	else
-	{
-		chat_announce('~', '~', `${data.username} removed all voices`, 'small')
-	}
+	chat_announce('~', '~', `${data.username} removed all voices`, 'small')
 
 	if(priv === 'voice')
 	{
@@ -6279,15 +6102,7 @@ function announce_removedvoices(data)
 
 function announce_removedops(data)
 {
-	if(username === data.username)
-	{
-		chat_announce('~', '~', 'You removed all ops', 'small')
-	}
-
-	else
-	{
-		chat_announce('~', '~', `${data.username} removed all ops`, 'small')
-	}
+	chat_announce('~', '~', `${data.username} removed all ops`, 'small')
 
 	if(priv === 'op')
 	{
@@ -6484,6 +6299,31 @@ function start_msg()
 		})
 	)
 
+	msg_image = Msg
+	(
+		Object.assign({}, common,
+		{
+			id: "image",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+			}
+		})
+	)
+
 	msg_storageui = Msg
 	(
 		Object.assign({}, common,
@@ -6554,6 +6394,7 @@ function start_msg()
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
 
+	msg_image.create()
 	msg_storageui.create()
 	msg_info.create()
 }
@@ -7506,7 +7347,7 @@ function change_log(log)
 {
 	if(priv !== 'admin' && priv !== 'op')
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')	
+		not_an_op()	
 		return false
 	}
 
@@ -7530,7 +7371,7 @@ function clear_log(log)
 {
 	if(priv !== 'admin' && priv !== 'op')
 	{
-		chat_announce('[', ']', "You are not a room operator", 'small')	
+		not_an_op()	
 		return false
 	}
 
@@ -7600,18 +7441,23 @@ function show_log()
 
 function show_image(url)
 {
-	msg_info.show(`<div id="modal_spinner" class='spinner1'></div><img id="modal_image" class="modal_image" src="${url}">`, function()
+	msg_image.show(`<div id="modal_spinner" class='spinner1'></div><img id="modal_image" class="modal_image" src="${url}">`, function()
 	{
 		$('#modal_image').get(0).addEventListener('load', function()
 		{
 			$("#modal_spinner").css("display", "none")
 			this.style.display = "block"
-			update_modal_scrollbar("info")
+			update_modal_scrollbar("image")
 		})
 
 		$('#modal_image').eq(0).on("error", function() 
 		{
-			msg_info.set("This image is no longer available")
+			msg_image.set("This image is no longer available")
 		})
 	})
+}
+
+function not_an_op()
+{
+	chat_announce('[', ']', "You are not a room operator", 'small')
 }
