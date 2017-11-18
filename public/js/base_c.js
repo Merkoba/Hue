@@ -495,7 +495,7 @@ function start_socket()
 			return
 		}
 
-		socket_emit('join_room', {room_id:room_id, user_id:user_id})
+		socket_emit('join_room', {room_id:room_id, user_id:user_id, token:jwt_token})
 	})
 
 	socket.on('update', function(data) 

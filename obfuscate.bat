@@ -1,0 +1,1 @@
+javascript-obfuscator C:\Users\yo\Documents\hue\public\js\base_c.js --output C:\Users\yo\Documents\hue\public\js\base_o.js

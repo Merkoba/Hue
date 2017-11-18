@@ -1,5 +1,6 @@
-module.exports = function(db_manager, config, utilz)
+module.exports = function(db_manager, config, sconfig, utilz)
 {
+	const jwt = require('jsonwebtoken')
 	const express = require('express')
 	const router = express.Router()
 
@@ -87,7 +88,19 @@ module.exports = function(db_manager, config, utilz)
 				else 
 				{
 					req.session.user_username = user.username
-					next()
+
+					jwt.sign(
+					{
+						exp: Math.floor(Date.now() + config.jwt_expiration),
+						data: {id:req.session.user_id}
+					}, sconfig.jwt_secret, function(err, token)
+					{
+						if(!err)
+						{
+							req.jwt_token = token
+							next()
+						}
+					});
 				}
 			})
 
@@ -462,6 +475,7 @@ module.exports = function(db_manager, config, utilz)
 		c.vars.room_id = config.main_room_id
 		c.vars.user_id = req.session.user_id
 		c.vars.user_username = req.session.user_username
+		c.vars.jwt_token = req.jwt_token
 		res.render('main', c)
 	})
 	
@@ -470,6 +484,7 @@ module.exports = function(db_manager, config, utilz)
 		c.vars.room_id = req.params.id.substr(0, config.max_room_id_length)
 		c.vars.user_id = req.session.user_id
 		c.vars.user_username = req.session.user_username
+		c.vars.jwt_token = req.jwt_token
 		res.render('main', c)
 	})
 

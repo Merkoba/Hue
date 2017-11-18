@@ -19,6 +19,7 @@
 		"connect-mongo": "~2.0.0",
 		"bcrypt": "~1.0.3",
 		"mailgun-js": "~0.13.1",
-		"aws-sdk": "~2.148.0"
+		"aws-sdk": "~2.148.0",
+		"jsonwebtoken": "~8.1.0"
 	}
 }

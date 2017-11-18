@@ -8,6 +8,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	const fetch = require('node-fetch')
 	const mongo = require('mongodb')
 	const aws = require('aws-sdk');
+	const jwt = require('jsonwebtoken');
 	const images_root = path.join(__dirname, config.images_directory)
 
 	const s3 = new aws.S3(
@@ -531,13 +532,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 	function join_room(socket, data)
 	{
-		if(data.room_id === undefined)
+		if(data.room_id === undefined || data.user_id === undefined || data.token === undefined)
 		{
 			socket.disconnect()
 			return false
 		}
 
-		if(data.room_id.length === 0)
+		if(data.room_id.length === 0 || data.user_id.length === 0 || data.token.length === 0)
 		{
 			socket.disconnect()
 			return false
@@ -549,125 +550,156 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		if(data.room_id == undefined)
+		if(data.user_id > config.max_user_id_length)
 		{
 			socket.disconnect()
 			return false
 		}
 
-		socket.user_id = data.user_id
-
-		db_manager.get_room({_id:data.room_id}, {})
-
-		.then(info =>
+		if(data.token.length > config.max_jwt_token_length)
 		{
-			if(!info)
+			socket.disconnect()
+			return false
+		}
+
+		jwt.verify(data.token, sconfig.jwt_secret, function(err, decoded) 
+		{
+			if(err)
 			{
-				socket.emit('update', {type: 'redirect', location:config.redirect_url})
+				socket.disconnect()
+				return false				
+			}
+
+			else if(decoded.data === undefined || decoded.data.id === undefined)
+			{
+				socket.disconnect()
 				return false
 			}
 
-			db_manager.get_user({_id:socket.user_id}, {username:true, room_keys:true})
-
-			.then(userinfo =>
+			if(decoded.data.id !== data.user_id)
 			{
-				if(!userinfo)
+				socket.disconnect()
+				return false
+			}			
+
+			else
+			{
+				socket.user_id = data.user_id
+
+				db_manager.get_room({_id:data.room_id}, {})
+
+				.then(info =>
 				{
-					socket.emit('update', {type: 'redirect', location:config.redirect_url})
-					return false
-				}
-
-				socket.username = userinfo.username
-
-				socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
-				
-				if(info.bans.indexOf(socket.ip) !== -1)
-				{
-					socket.disconnect()
-					return false
-				}
-
-				var room_id = info._id.toString()
-
-				socket.room_id = room_id		
-
-				if(rooms[room_id] === undefined)
-				{
-					rooms[room_id] = create_room_object(info)
-				}
-
-				socket.priv = info.keys[socket.user_id]
-
-				if(socket.priv === undefined)
-				{
-					socket.priv = ''
-				}
-
-				socket.join(room_id)
-
-				if(!user_already_connected(socket))
-				{
-					socket.broadcast.in(room_id).emit('update',
+					if(!info)
 					{
-						type: 'userjoin',
-						username: socket.username,
-						priv: socket.priv
-					})
-
-					if(rooms[room_id].userlist === undefined)
-					{
-						rooms[room_id].userlist = []
+						socket.emit('update', {type: 'redirect', location:config.redirect_url})
+						return false
 					}
 
-					rooms[room_id].userlist.push([socket.username, socket.priv])				
-				}
+					db_manager.get_user({_id:socket.user_id}, {username:true, room_keys:true})
 
-				socket.emit('update', 
-				{
-					type: 'joined', 
-					room_name: info.name,
-					username: socket.username, 
-					image_url: info.image_url, 
-					image_uploader: info.image_uploader, 
-					image_size: info.image_size, 
-					image_date: info.image_date, 
-					topic: info.topic, 
-					topic_setter: info.topic_setter,
-					topic_date: info.topic_date,
-					userlist: get_userlist(socket.room_id), 
-					log: info.log,
-					log_messages: info.log_messages,
-					priv: socket.priv, 
-					upload_permission: info.upload_permission, 
-					chat_permission: info.chat_permission, 
-					radio_permission: info.radio_permission, 
-					public: info.public,
-					radio_type: info.radio_type,
-					radio_source: info.radio_source,
-					radio_title: info.radio_title,
-					radio_setter: info.radio_setter, 
-					radio_date: info.radio_date, 
-					claimed: info.claimed,
-				})				
+					.then(userinfo =>
+					{
+						if(!userinfo)
+						{
+							socket.emit('update', {type: 'redirect', location:config.redirect_url})
+							return false
+						}
 
-				db_manager.save_visited_room(socket.user_id, socket.room_id)
+						socket.username = userinfo.username
+
+						socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
+						
+						if(info.bans.indexOf(socket.ip) !== -1)
+						{
+							socket.disconnect()
+							return false
+						}
+
+						var room_id = info._id.toString()
+
+						socket.room_id = room_id		
+
+						if(rooms[room_id] === undefined)
+						{
+							rooms[room_id] = create_room_object(info)
+						}
+
+						socket.priv = info.keys[socket.user_id]
+
+						if(socket.priv === undefined)
+						{
+							socket.priv = ''
+						}
+
+						socket.join(room_id)
+
+						if(!user_already_connected(socket))
+						{
+							socket.broadcast.in(room_id).emit('update',
+							{
+								type: 'userjoin',
+								username: socket.username,
+								priv: socket.priv
+							})
+
+							if(rooms[room_id].userlist === undefined)
+							{
+								rooms[room_id].userlist = []
+							}
+
+							rooms[room_id].userlist.push([socket.username, socket.priv])				
+						}
+
+						socket.emit('update', 
+						{
+							type: 'joined', 
+							room_name: info.name,
+							username: socket.username, 
+							image_url: info.image_url, 
+							image_uploader: info.image_uploader, 
+							image_size: info.image_size, 
+							image_date: info.image_date, 
+							topic: info.topic, 
+							topic_setter: info.topic_setter,
+							topic_date: info.topic_date,
+							userlist: get_userlist(socket.room_id), 
+							log: info.log,
+							log_messages: info.log_messages,
+							priv: socket.priv, 
+							upload_permission: info.upload_permission, 
+							chat_permission: info.chat_permission, 
+							radio_permission: info.radio_permission, 
+							public: info.public,
+							radio_type: info.radio_type,
+							radio_source: info.radio_source,
+							radio_title: info.radio_title,
+							radio_setter: info.radio_setter, 
+							radio_date: info.radio_date, 
+							claimed: info.claimed,
+						})				
+
+						db_manager.save_visited_room(socket.user_id, socket.room_id)
+
+						.catch(err =>
+						{
+							console.error(err)
+						})
+					})
+
+					.catch(err =>
+					{
+						console.error(err)
+					})
+				})
 
 				.catch(err =>
 				{
 					console.error(err)
 				})
-			})
-
-			.catch(err =>
-			{
-				console.error(err)
-			})
+			}
 		})
 
-		.catch(err =>
-		{
-			console.error(err)
-		})
 	}
 
 	function sendchat(socket, data)
@@ -728,7 +760,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				}
 
 				rooms[socket.room_id].log_messages.push(message)
-			}			
+			}
 		}
 	}
 

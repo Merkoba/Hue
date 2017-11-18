@@ -37,12 +37,12 @@ mongo.connect(config.mongodb_path, function(err, db)
 		{
 			var port = parseInt(val, 10)
 
-			if (isNaN(port)) 
+			if(isNaN(port)) 
 			{
 				return val
 			}
 
-			if (port >= 0) 
+			if(port >= 0) 
 			{
 				return port
 			}
@@ -52,7 +52,7 @@ mongo.connect(config.mongodb_path, function(err, db)
 
 		function onError(error) 
 		{
-			if (error.syscall !== 'listen') 
+			if(error.syscall !== 'listen') 
 			{
 				throw error
 			}
@@ -61,7 +61,7 @@ mongo.connect(config.mongodb_path, function(err, db)
 				? 'Pipe ' + port
 				: 'Port ' + port
 
-			switch (error.code) 
+			switch(error.code) 
 			{
 				case 'EACCES':
 					console.error(bind + ' requires elevated privileges')
