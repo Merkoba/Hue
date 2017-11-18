@@ -1,5 +1,5 @@
 var socket
-var ls_settings = "settings_v12"
+var ls_settings = "settings_v13"
 var ls_input_history = "input_history_v11"
 var settings
 var is_public
@@ -3333,6 +3333,22 @@ function self_check_images(msg)
 	}
 }
 
+function change()
+{
+	if(started)
+	{
+		alert_title()
+	}
+
+	if(afk)
+	{
+		change_when_focused = true
+		return false
+	}
+	
+	$('#media_image').attr('src', image_url)
+}
+
 function start_image_events()
 {
 	$('#media_image')[0].addEventListener('load', function() 
@@ -3477,22 +3493,6 @@ function set_image_info(data)
 	image_uploader = data.image_uploader
 	image_size = data.image_size
 	image_date = nice_date(data.image_date)
-}
-
-function change()
-{
-	if(started)
-	{
-		alert_title()
-	}
-
-	if(afk)
-	{
-		change_when_focused = true
-		return false
-	}
-	
-	$('#media_image').attr('src', image_url)
 }
 
 function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick=false)

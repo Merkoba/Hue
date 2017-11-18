@@ -67,7 +67,7 @@
 	"encryption_cost": 12,
 	"mail_enabled": true,
 	"max_url_length": 1000,
-	"settings_default_background_image": false,
+	"settings_default_background_image": true,
 	"settings_default_foreground_image": true,
 	"settings_default_custom_scrollbars": true,
 	"settings_default_header_contrast": true,

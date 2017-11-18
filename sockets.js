@@ -596,7 +596,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						return false
 					}
 
-					db_manager.get_user({_id:socket.user_id}, {username:true, room_keys:true})
+					db_manager.get_user({_id:socket.user_id}, {username:true})
 
 					.then(userinfo =>
 					{
@@ -1076,31 +1076,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.then(info =>
 			{
-				db_manager.get_user({_id:socket.user_id}, {room_keys:true})
-
-				.then(userinfo =>				
-				{
-					var id = info._id.toString()
-
-					userinfo.room_keys[id] = info.keys
-
-					db_manager.update_user(socket.user_id,
-					{
-						room_keys: userinfo.room_keys
-					})
-
-					.catch(err =>
-					{
-						console.error(err)
-					})
-
-					socket.emit('update', {room:socket.room_id, type:'room_created', id:id})
-				})
-
-				.catch(err =>
-				{
-					console.error(err)
-				})
+				socket.emit('update', {room:socket.room_id, type:'room_created', id:info._id.toString()})
 			})
 
 			.catch(err =>
