@@ -2570,13 +2570,6 @@ function activate_key_detection()
 
 		if(ned)
 		{
-			if(e.key === "Enter")
-			{
-				change_username($("#user_info_username_input").val())
-				msg_info.close()				
-				e.preventDefault()
-			}
-
 			if(e.key === "Tab" && e.shiftKey)
 			{
 				show_status()
@@ -7017,10 +7010,6 @@ function show_user_info()
 {
 	msg_info.show(template_user_info({uname:username, info:get_user_info_html()}), function()
 	{
-		var len = $("#user_info_username_input").val().length
-		
-		$("#user_info_username_input")[0].setSelectionRange(len, len)
-
 		ned = true
 	})
 }

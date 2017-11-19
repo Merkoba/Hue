@@ -180,14 +180,6 @@ body, html
 	color: inherit;
 }
 
-#user_info_username_input
-{
-	width: 12em;
-	border: 1px solid grey;
-	font-size: 1.2em;	
-	text-align: center;
-}
-
 #scroll_notice
 {
 	visibility: hidden;
