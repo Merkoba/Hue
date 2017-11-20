@@ -713,3 +713,40 @@ input[type=text], textarea
 	0% {transform:rotate(0deg)}
 	100% {transform:rotate(360deg)}
 }
+
+.Msg-window-purple
+{
+	background-color: #b966bd !important;
+	color: white !important;
+}
+
+.Msg-window-inner-x-purple:hover
+{
+	background-color: #9b519a !important;
+}
+
+.Msg-overlay-purple
+{
+	background-color: rgba(65, 17, 64, 0.7) !important;
+}
+
+.Msg-window-yellow
+{
+	background-color: #feff57 !important;
+	color: #43451d !important;
+}
+
+.Msg-window-inner-x-yellow:hover
+{
+	background-color: #d5d516 !important;
+}
+
+.Msg-overlay-yellow
+{
+	background-color: rgba(63, 65, 43, 0.7) !important;
+}
+
+.Msg-overlay-green
+{
+	background-color: rgba(92, 121, 101, 0.7) !important;
+}

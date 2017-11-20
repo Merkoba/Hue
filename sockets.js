@@ -42,7 +42,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		socket.kickd = true
 		socket.info1 = "the anti-spam system"
-		socket.disconnect()
+		do_disconnect(socket)
 	})
 
 	start_room_loop()
@@ -534,52 +534,44 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(data.room_id === undefined || data.user_id === undefined || data.token === undefined)
 		{
-			socket.disconnect()
-			return false
+			return get_out(socket)
 		}
 
 		if(data.room_id.length === 0 || data.user_id.length === 0 || data.token.length === 0)
 		{
-			socket.disconnect()
-			return false
+			return get_out(socket)
 		}
 
 		if(data.room_id.length > config.max_room_id_length)
 		{
-			socket.disconnect()
-			return false
+			return get_out(socket)
 		}
 
 		if(data.user_id > config.max_user_id_length)
 		{
-			socket.disconnect()
-			return false
+			return get_out(socket)
 		}
 
 		if(data.token.length > config.max_jwt_token_length)
 		{
-			socket.disconnect()
-			return false
+			return get_out(socket)
 		}
 
 		jwt.verify(data.token, sconfig.jwt_secret, function(err, decoded) 
 		{
 			if(err)
 			{
-				socket.disconnect()
-				return false				
+				return get_out(socket)				
 			}
 
 			else if(decoded.data === undefined || decoded.data.id === undefined)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(decoded.data.id !== data.user_id)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}			
 
 			else
@@ -592,8 +584,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				{
 					if(!info)
 					{
-						socket.emit('update', {type: 'redirect', location:config.redirect_url})
-						return false
+						return get_out(socket)
 					}
 
 					db_manager.get_user({_id:socket.user_id}, {username:true})
@@ -602,8 +593,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					{
 						if(!userinfo)
 						{
-							socket.emit('update', {type: 'redirect', location:config.redirect_url})
-							return false
+							return get_out(socket)
 						}
 
 						socket.username = userinfo.username
@@ -612,8 +602,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						
 						if(info.bans.indexOf(socket.ip) !== -1)
 						{
-							socket.disconnect()
-							return false
+							return get_out(socket)
 						}
 
 						var room_id = info._id.toString()
@@ -708,26 +697,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(data.msg === undefined)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.msg.length === 0)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.msg.length > config.max_input_length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.msg.length !== utilz.clean_string2(data.msg).length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(!check_permission(rooms[socket.room_id].chat_permission, socket.priv))
@@ -770,20 +755,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(data.image_url === undefined)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.image_url.length === 0)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.image_url.length > config.max_input_length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}		    
 
 			if(!check_permission(rooms[socket.room_id].upload_permission, socket.priv))
@@ -828,8 +810,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(data.image_file === undefined)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(!check_permission(rooms[socket.room_id].upload_permission, socket.priv))
@@ -875,32 +856,27 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.topic === undefined)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.topic.length === 0)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.topic.length > config.max_topic_length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.topic.length !== utilz.clean_string2(data.topic).length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {topic:true})
@@ -950,20 +926,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.name.length === 0 || data.name.length > config.max_room_name_length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.name.length !== utilz.clean_string2(data.name).length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {name:true})
@@ -1028,46 +1001,39 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(data.name.length === 0 || data.name.length > config.max_room_name_length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.name.length !== utilz.clean_string2(data.name).length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			var amodes = [1, 2, 3]
 
 			if(amodes.indexOf(data.chat_permission) === -1)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(amodes.indexOf(data.upload_permission) === -1)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(amodes.indexOf(data.radio_permission) === -1)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.public !== true && data.public !== false)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 			
 			if(data.log !== true && data.log !== false)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			data.user_id = socket.user_id
@@ -1157,8 +1123,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {claimed:true})
@@ -1210,26 +1175,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.username === undefined)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.username.length === 0)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(socket.username === data.username)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {keys:true})
@@ -1287,20 +1248,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.username === undefined)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.username.length === 0)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {keys:true})
@@ -1358,20 +1316,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.username === undefined)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.username.length === 0)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {keys:true})
@@ -1429,26 +1384,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.username === undefined)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.username.length === 0)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 					
 			if(socket.username === data.username)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {keys:true})
@@ -1506,8 +1457,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {keys:true})
@@ -1566,8 +1516,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {keys:true})
@@ -1620,26 +1569,66 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 	}
 
+	function kick(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			{
+				return get_out(socket)
+			}
+
+			if(data.username === undefined)
+			{
+				return get_out(socket)
+			}
+
+			if(data.username.length === 0)
+			{
+				return get_out(socket)
+			}
+
+			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
+
+			for(var i=0; i<ids.length; i++)
+			{
+				var socc = io.sockets.connected[ids[i]]
+
+				if(socc.username === data.username)
+				{
+					if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
+					{
+						socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
+						return false
+					}
+
+					socc.priv = ''
+					socc.kickd = true
+					socc.info1 = socket.username
+					
+					get_out(socc)
+				}
+			}
+		}		
+	}	
+
 	function ban(socket, data)
 	{
 		if(socket.username !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.username === undefined)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.username.length === 0)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {bans:true, keys:true})
@@ -1702,9 +1691,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 								sokk.info1 = socket.username
 
-								io.to(ids[j]).emit('update', {type:'redirect', location:config.redirect_url})
-
-								setTimeout(do_disconnect, 2000, sokk)
+								get_out(sokk)
 							}
 						}
 
@@ -1733,8 +1720,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {bans:true})
@@ -1774,8 +1760,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {bans:true})
@@ -1815,8 +1800,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {bans:true})
@@ -1843,70 +1827,20 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}		
 	}
 
-	function kick(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
-			{
-				socket.disconnect()
-				return false
-			}
-
-			if(data.username === undefined)
-			{
-				socket.disconnect()
-				return false
-			}
-
-			if(data.username.length === 0)
-			{
-				socket.disconnect()
-				return false
-			}
-
-			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
-
-			for(var i=0; i<ids.length; i++)
-			{
-				var socc = io.sockets.connected[ids[i]]
-
-				if(socc.username === data.username)
-				{
-					if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
-					{
-						socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
-						return false
-					}
-
-					socc.priv = ''
-					socc.kickd = true
-					socc.info1 = socket.username
-					
-					io.to(ids[i]).emit('update', {type:'redirect', location:config.redirect_url})
-
-					setTimeout(do_disconnect, 2000, socc)
-				}
-			}
-		}		
-	}
-
 	function change_chat_permission(socket, data)
 	{
 		if(socket.username !== undefined)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			var amodes = [1, 2, 3]
 
 			if(amodes.indexOf(data.chat_permission) === -1)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}							
 
 			io.sockets.in(socket.room_id).emit('update', {type:'chat_permission_change', username:socket.username, chat_permission:data.chat_permission})
@@ -1928,16 +1862,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			var amodes = [1, 2, 3]
 
 			if(amodes.indexOf(data.upload_permission) === -1)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			io.sockets.in(socket.room_id).emit('update', {type:'upload_permission_change', username:socket.username, upload_permission:data.upload_permission})
@@ -1966,8 +1898,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			if(amodes.indexOf(data.radio_permission) === -1)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			io.sockets.in(socket.room_id).emit('update', {type:'radio_permission_change', username:socket.username, radio_permission:data.radio_permission})
@@ -1994,8 +1925,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			if(data.log !== true && data.log !== false)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {log:true})
@@ -2086,8 +2016,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {public:true})
@@ -2122,8 +2051,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(socket.priv !== 'admin' && socket.priv !== 'op')
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.get_room({_id:socket.room_id}, {public:true})
@@ -2158,20 +2086,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(data.src === undefined)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.src.length === 0)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.src.length > config.max_radio_source_length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(!check_permission(rooms[socket.room_id].radio_permission, socket.priv))
@@ -2335,26 +2260,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(data.username === undefined)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.username.length === 0)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.username.length > config.max_username_length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(utilz.clean_string4(data.username).length !== data.username.length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			var old_username = socket.username
@@ -2394,20 +2315,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(data.password === undefined)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.password.length === 0 || data.password.length < config.min_password_length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.password.length > config.max_password_length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.update_user(socket.user_id,
@@ -2430,20 +2348,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(data.email === undefined)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			if(data.email.indexOf('@') === -1 || data.email.indexOf(' ') !== -1)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}			
 
 			if(data.email.length > config.max_email_length)
 			{
-				socket.disconnect()
-				return false
+				return get_out(socket)
 			}
 
 			db_manager.update_user(socket.user_id,
@@ -3056,6 +2971,23 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 			
 			return clients
+		}
+
+		catch(err)
+		{
+			console.error(err)
+		}
+	}
+
+	function get_out(socket)
+	{
+		try
+		{
+			socket.emit('update', {type:'redirect', location:config.redirect_url})
+
+			setTimeout(do_disconnect, 2000, socket)
+
+			return false
 		}
 
 		catch(err)
