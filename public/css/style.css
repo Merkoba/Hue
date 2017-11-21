@@ -750,3 +750,8 @@ input[type=text], textarea
 {
 	background-color: rgba(92, 121, 101, 0.7) !important;
 }
+
+.Msg-overlay-white
+{
+	background-color: rgba(18, 18, 18, 0.7) !important;
+}

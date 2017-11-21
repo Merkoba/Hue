@@ -2706,16 +2706,6 @@ function activate_key_detection()
 
 			e.preventDefault()
 			return
-		}		
-
-		else if(e.key === "Backspace")
-		{
-			if(e.shiftKey)
-			{
-				debug1()
-				e.preventDefault()
-				return
-			}
 		}
 
 		clear_tabbed()
@@ -3659,6 +3649,7 @@ function register_commands()
 	commands.push('/changeusername')
 	commands.push('/changepassword')
 	commands.push('/changeemail')
+	commands.push('/fill')
 
 	commands.sort()
 }
@@ -4054,6 +4045,11 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/logout'))
 			{
 				logout(arg)
+			}
+
+			else if(oiEquals(lmsg, '/fill'))
+			{
+				fill()
 			}
 
 			else
@@ -6580,9 +6576,7 @@ function start_settings_listeners()
 
 	$("#setting_modal_color").change(function()
 	{
-		settings.modal_color = $('#setting_modal_color option:selected').val()
-		change_modal_color(settings.modal_color)		
-		save_settings()
+		modal_color_changed()
 	})
 }
 
@@ -7156,7 +7150,7 @@ function permission_tag(n)
 	}
 }
 
-function debug1()
+function fill()
 {
 	var s = `abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ 
 	$%& /() =?* '<> #|; ²³~ @ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC 
@@ -7449,4 +7443,23 @@ function show_image(url)
 function not_an_op()
 {
 	chat_announce('[', ']', "You are not a room operator", 'small')
+}
+
+function modal_color_up()
+{
+	$('#setting_modal_color option:selected').prev().prop('selected', 'selected')
+	modal_color_changed()
+}
+
+function modal_color_down()
+{
+	$('#setting_modal_color option:selected').next().prop('selected', 'selected')
+	modal_color_changed()
+}
+
+function modal_color_changed()
+{
+	settings.modal_color = $('#setting_modal_color option:selected').val()
+	change_modal_color(settings.modal_color)		
+	save_settings()	
 }
