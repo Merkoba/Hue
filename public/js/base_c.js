@@ -897,8 +897,8 @@ function userjoin(data)
 	addto_userlist(data.username, data.priv)
 
 	if(check_chat_permission(data.priv))
-	{
-		chat_announce('--', '--', `${data.username} has joined`, 'small')
+	{		
+		chat_announce('--', '--', `${data.username} has joined`, 'small', false, false, false, true)
 	}	
 }
 
@@ -3478,8 +3478,15 @@ function set_image_info(data)
 	image_date = nice_date(data.image_date)
 }
 
-function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick=false)
+function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick=false, save=false)
 {
+	var containerclasses = "announcement_content_container"
+
+	if(onclick)
+	{
+		containerclasses += " pointer"
+	}
+
 	var contclasses = "announcement_content"
 
 	if(dotted === true)
@@ -3487,11 +3494,6 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 		contclasses += " dotted"
 
 		alert_title2()
-	}
-
-	if(onclick)
-	{
-		contclasses += " pointer"
 	}
 
 	if(title)
@@ -3526,24 +3528,24 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 	
 	if(typeof dotted === "string")
 	{
-		var fmsg = $(`<div class='msg announcement announcement_${size}'>${hbrk1}<span title='${t}' class='${contclasses}'></span><span class='dotted'></span>${hbrk2}</div>`)
+		var fmsg = $(`<div class='msg announcement announcement_${size}'><span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span><span class='dotted'></span>${hbrk2}</span></div>`)
 		fmsg.find('.dotted').eq(0).text(dotted).urlize()
 	}
 
 	else
 	{
-		var fmsg = $(`<div class='msg announcement announcement_${size}'>${hbrk1}<span title='${t}' class='${contclasses}'></span>${hbrk2}</div>`)
+		var fmsg = $(`<div class='msg announcement announcement_${size}'><span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span>${hbrk2}</span></div>`)
 	}
 
 	var content = fmsg.find('.announcement_content').eq(0)
 
 	content.text(msg).urlize()
 
-	content.on("click", onclick)
+	content.parent().on("click", onclick)
 
 	add_to_chat(fmsg)
 
-	if(brk1 === "--" || brk1 === "<<")
+	if(save)
 	{
 		push_to_chat_history(fmsg)
 	}
@@ -5095,7 +5097,7 @@ function chat_search(filter=false)
 
 				var cn = $("<div class='search_result_item'><div class='search_result_content'></div>")
 
-				cn.find(".search_result_content").eq(0).html(hcontent.clone(true))
+				cn.find(".search_result_content").eq(0).html(hcontent.parent().clone(true, true))
 
 				c.append(cn)				
 			}
@@ -5524,7 +5526,7 @@ function announce_uploaded_image(data, date=false)
 		show_image(data.image_url, title)
 	}
 
-	chat_announce('<<', '>>', `${data.image_uploader} uploaded an image`, 'small', false, title, onclick)
+	chat_announce("<i class='icon2 fa fa-camera'></i>", '', `${data.image_uploader} uploaded an image`, 'small', false, title, onclick, true)
 }
 
 function announce_voice(data)
@@ -5892,7 +5894,7 @@ function announce_radio_source_change(data, date=false)
 		goto_url(source, "tab")
 	}
 
-	chat_announce('<<', '>>', `${data.radio_setter} changed the radio to ${name}`, 'small', false, title, onclick)
+	chat_announce("<i class='icon2 fa fa-volume-up'></i>", '', `${data.radio_setter} changed the radio to ${name}`, 'small', false, title, onclick, true)
 }
 
 function ban(uname)
@@ -6130,7 +6132,7 @@ function disconnected(data)
 
 	if(check_chat_permission(data.priv))
 	{
-		chat_announce('--', '--', `${data.username} has left`, 'small')
+		chat_announce('--', '--', `${data.username} has left`, 'small', false, false, false, true)
 	}
 }
 
@@ -6140,7 +6142,7 @@ function pinged(data)
 
 	if(check_chat_permission(data.priv))
 	{
-		chat_announce('--', '--', `${data.username} has left (Ping Timeout)`, 'small')
+		chat_announce('--', '--', `${data.username} has left (Ping Timeout)`, 'small', false, false, false, true)
 	}
 }
 
@@ -6148,30 +6150,14 @@ function kicked(data)
 {
 	removefrom_userlist(data.username)
 
-	if(username === data.info1)
-	{
-		chat_announce('--', '--', `${data.username} was kicked by you`, 'small')
-	}
-
-	else
-	{
-		chat_announce('--', '--', `${data.username} was kicked by ${data.info1}`, 'small')
-	}
+	chat_announce('--', '--', `${data.username} was kicked by ${data.info1}`, 'small', false, false, false, true)
 }
 
 function banned(data)
 {
 	removefrom_userlist(data.username)
 
-	if(username === data.info1)
-	{
-		chat_announce('--', '--', `${data.username} was banned by you`, 'small')
-	}
-
-	else
-	{
-		chat_announce('--', '--', `${data.username} was banned by ${data.info1}`, 'small')
-	}
+	chat_announce('--', '--', `${data.username} was banned by ${data.info1}`, 'small', false, false, false, true)
 }
 
 function start_msg()

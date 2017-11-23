@@ -371,6 +371,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 	top: 0.07em;
 }
 
+.icon2
+{
+	font-size: 0.8em;
+}
+
 #main_menu
 {
 	padding-right: 0.1em;
