@@ -3559,14 +3559,13 @@ jQuery.fn.urlize = function()
 		{
 			var x = $(obj).html()
 
-			var list = x.match(/\b(https?:\/\/|www\.|https?:\/\/www\.)[^ <]{2,1200}\b/g)
+			var list = x.match(/((?:https?(?::\/\/))(?:www\.)?[a-zA-Z0-9-_.]+(?:\.[a-zA-Z0-9]{2,})(?:[-a-zA-Z0-9:%_+.~#?&//=@]*))/g)
 
 			if(list) 
 			{
 				for(var i=0; i<list.length; i++) 
 				{
-					var prot = list[i].indexOf('http://') === 0 || list[i].indexOf('https://') === 0 ? '' : 'http://'
-					x = x.replace(list[i], `<a class='generic' target='_blank' href='${prot}${list[i]}'>${list[i]}</a>`)
+					x = x.replace(list[i], `<a class='generic' target='_blank' href='${list[i]}'>${list[i]}</a>`)
 				}
 			}
 
@@ -5506,11 +5505,23 @@ function show_upload_error()
 	chat_announce('[', ']', "The image could not be uploaded", 'small')	
 }
 
-function announce_uploaded_image(data, title=false)
+function announce_uploaded_image(data, date=false)
 {
+	if(date)
+	{
+		var d = nice_date(date)
+	}
+
+	else
+	{
+		var d = nice_date(data.image_date)
+	}
+
+	var title = `Uploader: ${data.image_uploader} | Size: ${get_size_string(data.image_size)} | ${d}`	
+
 	var onclick = function()
 	{
-		show_image(data.image_url)
+		show_image(data.image_url, title)
 	}
 
 	chat_announce('<<', '>>', `${data.image_uploader} uploaded an image`, 'small', false, title, onclick)
@@ -5837,7 +5848,7 @@ function change_radio_source(src)
 	}
 }
 
-function announce_radio_source_change(data, title=false)
+function announce_radio_source_change(data, date=false)
 {
 	if(data.radio_title !== "")
 	{
@@ -5863,6 +5874,18 @@ function announce_radio_source_change(data, title=false)
 	{
 		var source = data.radio_source
 	}
+
+	if(date)
+	{
+		var d = nice_date(date)
+	}
+
+	else
+	{
+		var d = nice_date(data.radio_date)
+	}
+
+	var title = `Setter: ${data.radio_setter} | ${d}`
 
 	var onclick = function()
 	{
@@ -7312,12 +7335,12 @@ function show_messages()
 
 				else if(message.type === "image")
 				{
-					announce_uploaded_image(data, nice_date(message.date))
+					announce_uploaded_image(data, message.date)
 				}
 
 				else if(message.type === "radio")
 				{
-					announce_radio_source_change(data, nice_date(message.date))
+					announce_radio_source_change(data, message.date)
 				}
 			}
 		}
@@ -7422,9 +7445,9 @@ function show_log()
 	}
 }
 
-function show_image(url)
+function show_image(url, title)
 {
-	msg_image.show(`<div id="modal_spinner" class='spinner1'></div><img id="modal_image" class="modal_image" src="${url}">`, function()
+	msg_image.show(`<div id="modal_spinner" class='spinner1'></div><img title="${title}" id="modal_image" class="modal_image" src="${url}">`, function()
 	{
 		$('#modal_image').get(0).addEventListener('load', function()
 		{
