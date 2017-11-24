@@ -4302,7 +4302,7 @@ function announce_room_name_change(data)
 {
 	if(data.name !== room_name)
 	{		
-		chat_announce('~', '~', `${username} changed the room name to: ${data.name}`, 'small')
+		chat_announce('~', '~', `${data.username} changed the room name to: ${data.name}`, 'small')
 
 		room_name = data.name
 
