@@ -12,6 +12,7 @@
 		<script src="/js/dateformat.js"></script>
 		<script src="/js/perfect-scrollbar.min.js?v=3"></script>
 		<script src="/js/nicescroll.min.js"></script>
+		<script src="/js/tippy.all.min.js"></script>
 		<script type="text/javascript" src="/js/contextmenu/jquery.contextMenu.min.js"></script>
 		<script src="/js/contextmenu/jquery.ui.position.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
@@ -129,9 +130,9 @@
 						<input type='text' id='input'>
 
 						<span id='footer_icons'>
-							<i class='fa fa-camera footer_icon' id='footer_upload_icon'></i>
-							<i class='fa fa-volume-up footer_icon' id='footer_radio_icon' onclick="show_radio_url_picker()"></i>
-							<i class='fa fa-television footer_icon' id='footer_tv_icon' onclick="show_tv_url_picker()"></i>
+							<i class='fa fa-camera footer_icon nicetitle' id='footer_upload_icon' title='Upload Image'></i>
+							<i class='fa fa-volume-up footer_icon nicetitle' id='footer_radio_icon' onclick="show_radio_url_picker()" title='Change the Radio'></i>
+							<i class='fa fa-television footer_icon nicetitle' id='footer_tv_icon' onclick="show_tv_url_picker()" title='Change the TV'></i>
 						</span>
 
 					</div>
@@ -476,7 +477,7 @@
 
 		<div id='youtube_player'></div>
 
-		<script src="/js/base_o.js?ver=668"></script>
+		<script src="/js/base_o.js?ver=670"></script>
 		<script src="https://www.youtube.com/iframe_api"></script>
 
 	</body>

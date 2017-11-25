@@ -629,6 +629,7 @@ function start_socket()
 			check_firstime()
 			get_input_history()
 			start_heartbeat()
+			start_titles()
 			
 			started = true
 		}
@@ -6682,7 +6683,7 @@ function pinged(data)
 {
 	removefrom_userlist(data.username)
 
-	if(check_chat_permission(data.priv))
+	if(announce_parts && check_chat_permission(data.priv))
 	{
 		chat_announce('--', '--', `${data.username} has left (Ping Timeout)`, 'small', false, false, false, true)
 	}
@@ -8082,4 +8083,22 @@ function fix_youtube_video_iframe()
 	var width = iframe.parent().width()
 	var height = width * iframe.data('ratio')
 	iframe.width(width).height(height)
+}
+
+function start_titles()
+{
+	$(".nicetitle").each(function()
+	{
+		tippy(this,
+		{
+			delay: [1000, 100],
+			animation: 'scale',
+			hideOnClick: true,
+			duration: 100,
+			arrow: true,
+			performance: true,
+			size: 'regular',
+			arrowSize: 'small'
+		})
+	})
 }
