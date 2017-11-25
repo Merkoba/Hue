@@ -605,7 +605,7 @@ function start_socket()
 			update_title()
 			is_public = data.public
 			check_priv(data)
-
+			setup_youtube_video_iframe()
 			if(data.active_media === "image")
 			{
 				change()
@@ -628,7 +628,6 @@ function start_socket()
 			clear_chat()
 			check_firstime()
 			get_input_history()
-			setup_youtube_video_iframe()			
 			start_heartbeat()
 			
 			started = true
@@ -1031,6 +1030,7 @@ function show_youtube_video()
 	$("#media_youtube_video_container").css("display", "flex")
 
 	start_video_mode()
+	fix_youtube_video_iframe()
 }
 
 function show_video()
@@ -8074,8 +8074,6 @@ function show_tv_url_picker()
 function setup_youtube_video_iframe()
 {
 	$("#media_youtube_video").data('ratio', $("#media_youtube_video").height() / $("#media_youtube_video").width()).removeAttr('height').removeAttr('width')
-
-	fix_youtube_video_iframe()
 }
 
 function fix_youtube_video_iframe()
