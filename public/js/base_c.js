@@ -3561,7 +3561,7 @@ jQuery.fn.urlize = function()
 		{
 			var x = $(obj).html()
 
-			var list = x.match(/((?:https?(?::\/\/))(?:www\.)?[a-zA-Z0-9-_.]+(?:\.[a-zA-Z0-9]{2,})(?:[-a-zA-Z0-9:%_+.~#?&//=@]*))/g)
+			var list = x.match(/((?:https?(?::\/\/))(?:www\.)?[a-zA-Z0-9-_.]+(?:\.[a-zA-Z0-9]{2,})(?:[-a-zA-Z0-9:%_+.~#?&//=@;]*))/g)
 
 			if(list) 
 			{
@@ -3574,6 +3574,11 @@ jQuery.fn.urlize = function()
 			$(obj).html(x)
 		})
 	}
+}
+
+function urlize(s, classname="generic")
+{
+	return s.replace(/((?:https?(?::\/\/))(?:www\.)?[a-zA-Z0-9-_.]+(?:\.[a-zA-Z0-9]{2,})(?:[-a-zA-Z0-9:%_+.~#?&//=@;]*))/g, `<a class='${classname}' target='_blank' href='$1'>$1</a>`)
 }
 
 function msg_is_ok(msg)
@@ -7134,11 +7139,6 @@ function get_status_html()
 	h.find("#status_radio_source").eq(0).text(radio_source).urlize()
 
 	return h.html()
-}
-
-function urlize(s, classname="generic")
-{
-	return s.replace(/((?:https?(?::\/\/))(?:www\.)?[a-zA-Z0-9-_.]+(?:\.[a-zA-Z0-9]{2,})(?:[-a-zA-Z0-9:%_+.~#?&//=@]*))/g, `<a class='${classname}' target='_blank' href='$1'>$1</a>`)
 }
 
 function permission_tag(n)

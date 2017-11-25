@@ -1090,7 +1090,10 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					for(var i=0; i<ids.length; i++)
 					{
 						var socc = io.sockets.connected[ids[i]]
+						
 						socc.priv = ''
+						
+						replace_in_userlist(socc, socc.username)
 					}
 
 					socket.priv = "admin"
@@ -1098,6 +1101,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					info.keys = {}
 
 					info.keys[socket.user_id] = "admin"
+
+					replace_in_userlist(socc, socc.username)					
 
 					db_manager.update_room(info._id, {keys:info.keys, claimed:true})
 
@@ -1135,7 +1140,10 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				for(var i=0; i<ids.length; i++)
 				{
 					var socc = io.sockets.connected[ids[i]]
+					
 					socc.priv = ''
+
+					replace_in_userlist(socc, socc.username)					
 				}
 
 				db_manager.update_room(info._id,
@@ -1221,6 +1229,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 						info.keys[socc.user_id] = "voice"
 
+						replace_in_userlist(socc, socc.username)
+
 						db_manager.update_room(info._id, {keys:info.keys})
 
 						.catch(err => 
@@ -1289,6 +1299,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 						info.keys[socc.user_id] = "op"
 
+						replace_in_userlist(socc, socc.username)
+
 						db_manager.update_room(info._id, {keys:info.keys})
 
 						.catch(err => 
@@ -1356,6 +1368,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						socc.priv = 'admin'
 
 						info.keys[socc.user_id] = "admin"
+
+						replace_in_userlist(socc, socc.username)
 
 						db_manager.update_room(info._id, {keys:info.keys})
 
@@ -1490,6 +1504,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					if(socc.priv === 'voice')
 					{
 						socc.priv = ''
+
+						replace_in_userlist(socc, socc.username)
 					}
 				}
 				
@@ -1549,6 +1565,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					if(socc.priv === 'op')
 					{
 						socc.priv = ''
+
+						replace_in_userlist(socc, socc.username)
 					}
 				}
 				
