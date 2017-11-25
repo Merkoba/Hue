@@ -52,6 +52,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.settings_default_username_on_footer = config.settings_default_username_on_footer
 	c.vars.settings_default_modal_color = config.settings_default_modal_color,
 	c.vars.allow_pasted_uploads = config.allow_pasted_uploads
+	c.vars.announce_joins = config.announce_joins
+	c.vars.announce_parts = config.announce_parts
 
 	function check_url(req, res, next)
 	{

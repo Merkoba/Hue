@@ -628,6 +628,7 @@ function start_socket()
 			clear_chat()
 			check_firstime()
 			get_input_history()
+			setup_youtube_video_iframe()			
 			start_heartbeat()
 			
 			started = true
@@ -1027,7 +1028,7 @@ function show_youtube_video()
 	
 	$("#media_image").css("display", "none")
 	$("#media_video").css("display", "none")
-	$("#media_youtube_video_main").css("display", "flex")
+	$("#media_youtube_video_container").css("display", "flex")
 
 	start_video_mode()
 }
@@ -1039,7 +1040,7 @@ function show_video()
 	$("#media_video").prop("src", tv_source)
 
 	$("#media_image").css("display", "none")
-	$("#media_youtube_video_main").css("display", "none")
+	$("#media_youtube_video_container").css("display", "none")
 	$("#media_video").css("display", "block")
 
 	start_video_mode()
@@ -1084,7 +1085,7 @@ function userjoin(data)
 {
 	addto_userlist(data.username, data.priv)
 
-	if(check_chat_permission(data.priv))
+	if(announce_joins && check_chat_permission(data.priv))
 	{		
 		chat_announce('--', '--', `${data.username} has joined`, 'small', false, false, false, true)
 	}	
@@ -3471,7 +3472,8 @@ var resize_timer = (function()
 
 		timer = setTimeout(function() 
 		{
-			update_chat_scrollbar()			
+			update_chat_scrollbar()
+			fix_youtube_video_iframe()		
 			goto_bottom(true)
 		}, 350)
 	}
@@ -3774,7 +3776,7 @@ function start_image_events()
 
 			$("#media_image").css("display", "block")
 			$("#media_video").css("display", "none")
-			$("#media_youtube_video_main").css("display", "none")			
+			$("#media_youtube_video_container").css("display", "none")			
 		}
 
 		catch(err)
@@ -6670,7 +6672,7 @@ function disconnected(data)
 {
 	removefrom_userlist(data.username)
 
-	if(check_chat_permission(data.priv))
+	if(announce_parts && check_chat_permission(data.priv))
 	{
 		chat_announce('--', '--', `${data.username} has left`, 'small', false, false, false, true)
 	}
@@ -7536,7 +7538,7 @@ function onYouTubeIframeAPIReady()
 	{
 		events: 
 		{
-			'onReady': onYouTubePlayerReady
+			onReady: onYouTubePlayerReady
 		}		
 	})
 
@@ -7544,11 +7546,12 @@ function onYouTubeIframeAPIReady()
 	{
 		events: 
 		{
-			'onReady': onYouTubePlayerReady2
+			onReady: onYouTubePlayerReady2
 		},
 		playerVars:
 		{
-			'iv_load_policy': 3
+			autoplay: 1,
+			iv_load_policy: 3,
 		}	
 	})
 }
@@ -7561,6 +7564,7 @@ function onYouTubePlayerReady()
 function onYouTubePlayerReady2()
 {
 	youtube_video_player = yt_video_player
+	youtube_video_player.mute()
 
 	init()
 }
@@ -7646,22 +7650,14 @@ function get_status_html()
 		info += "<div class='info_item'><div class='info_title'>Topic</div><div class='info_item_content' id='status_topic'>No topic set</div></div>"
 	}
 
-	if(radio_setter)
-	{
-		info += `<div class='info_item' title='Setter: ${radio_setter} | ${radio_date}'><div class='info_title'>Radio Source</div><div class='info_item_content' id='status_radio_source'></div></div>`
-	}
-
-	else
-	{
-		info += `<div class='info_item'><div class='info_title'>Radio Source</div><div class='info_item_content' id='status_radio_source'></div></div>`
-	}
-
 	info += "<div class='info_item'><div class='info_title'>Chat Permission</div>"
 	info += `<div class='info_item_content'>${permission_tag(chat_permission)}</div></div>`
 	info += "<div class='info_item'><div class='info_title'>Upload Permission</div>"
 	info += `<div class='info_item_content'>${permission_tag(upload_permission)}</div></div>`
 	info += "<div class='info_item'><div class='info_title'>Radio Permission</div>"
 	info += `<div class='info_item_content'>${permission_tag(radio_permission)}</div></div>`
+	info += "<div class='info_item'><div class='info_title'>TV Permission</div>"
+	info += `<div class='info_item_content'>${permission_tag(tv_permission)}</div></div>`
 	info += "<div class='info_item'><div class='info_title'>Privacy</div>"
 
 	if(is_public)
@@ -8073,4 +8069,19 @@ function show_tv_url_picker()
 
 		$("#tv_url_picker_input").focus()
 	})
+}
+
+function setup_youtube_video_iframe()
+{
+	$("#media_youtube_video").data('ratio', $("#media_youtube_video").height() / $("#media_youtube_video").width()).removeAttr('height').removeAttr('width')
+
+	fix_youtube_video_iframe()
+}
+
+function fix_youtube_video_iframe()
+{
+	var iframe = $("#media_youtube_video")
+	var width = iframe.parent().width()
+	var height = width * iframe.data('ratio')
+	iframe.width(width).height(height)
 }

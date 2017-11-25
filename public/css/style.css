@@ -778,28 +778,12 @@ input[type=text], textarea
 	background-color: rgba(18, 18, 18, 0.7) !important;
 }
 
-#media_youtube_video_main
+#media_youtube_video_container
 {
 	height: calc(100% - 8em);
 	width: calc(100% - 6em);
 	align-items: center;
 	display: none;
-}
-
-#media_youtube_video_container
-{
-	overflow: hidden;
-	padding-bottom: 56.25%;
-	position: relative;
-	flex-grow: 1;
-	height: 0;
-}
-
-#media_youtube_video
-{
-	height: 100%;
-	width: 100%;
-	position: absolute;
 }
 
 #media_video

@@ -78,5 +78,7 @@
 	"jwt_expiration": 60000,
 	"max_jwt_token_length": 300,
 	"max_user_id_length": 100,
-	"allow_pasted_uploads": false
+	"allow_pasted_uploads": false,
+	"announce_joins": false,
+	"announce_parts": false
 }
