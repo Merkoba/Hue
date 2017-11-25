@@ -165,6 +165,23 @@ body, html
 	color: inherit;
 }
 
+#footer_icons
+{
+
+}
+
+.footer_icon
+{
+	padding-top: 0.7em;
+	padding-right: 1em;
+	cursor: pointer;
+	flex-shrink: 1;
+	background-color: transparent;
+	color: inherit;
+	font-size: 0.8em;
+	cursor: pointer;	
+}
+
 #input
 {
 	font-size: 1em;
@@ -759,4 +776,43 @@ input[type=text], textarea
 .Msg-overlay-white
 {
 	background-color: rgba(18, 18, 18, 0.7) !important;
+}
+
+#media_youtube_video_main
+{
+	height: calc(100% - 8em);
+	width: calc(100% - 6em);
+	align-items: center;
+	display: none;
+}
+
+#media_youtube_video_container
+{
+	overflow: hidden;
+	padding-bottom: 56.25%;
+	position: relative;
+	flex-grow: 1;
+	height: 0;
+}
+
+#media_youtube_video
+{
+	height: 100%;
+	width: 100%;
+	position: absolute;
+}
+
+#media_video
+{
+	max-height: calc(100% - 8em);
+	max-width: calc(100% - 6em);
+	display: none;
+}
+
+.input1
+{
+	font-size: 1.2em;
+	width: 14em;
+	border: 1px solid grey;
+	text-align: center;
 }

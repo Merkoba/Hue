@@ -384,6 +384,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
+		socket.on('change_tv_permission', function(data) 
+		{
+			try
+			{
+				change_tv_permission(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
 		socket.on('change_log', function(data) 
 		{
 			try
@@ -441,6 +454,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			try
 			{
 				change_radio_source(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
+		socket.on('change_tv_source', function(data) 
+		{
+			try
+			{
+				change_tv_source(socket, data)
 			}
 
 			catch(err)
@@ -656,16 +682,23 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							log: info.log,
 							log_messages: info.log_messages,
 							priv: socket.priv, 
-							upload_permission: info.upload_permission, 
 							chat_permission: info.chat_permission, 
+							upload_permission: info.upload_permission, 
 							radio_permission: info.radio_permission, 
+							tv_permission: info.tv_permission,
 							public: info.public,
 							radio_type: info.radio_type,
 							radio_source: info.radio_source,
 							radio_title: info.radio_title,
 							radio_setter: info.radio_setter, 
 							radio_date: info.radio_date, 
-							claimed: info.claimed,
+							tv_type: info.tv_type,
+							tv_source: info.tv_source,
+							tv_title: info.tv_title,
+							tv_setter: info.tv_setter, 
+							tv_date: info.tv_date, 
+							active_media: info.active_media,
+							claimed: info.claimed
 						})				
 
 						db_manager.save_visited_room(socket.user_id, socket.room_id)
@@ -1444,6 +1477,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 						delete info.keys[socc.user_id]
 
+						replace_in_userlist(socc, socc.username)
+
 						db_manager.update_room(info._id, {keys:info.keys})
 
 						.catch(err => 
@@ -1845,35 +1880,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}		
 	}
 
-	function change_chat_permission(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
-			{
-				return get_out(socket)
-			}
-
-			var amodes = [1, 2, 3]
-
-			if(amodes.indexOf(data.chat_permission) === -1)
-			{
-				return get_out(socket)
-			}							
-
-			io.sockets.in(socket.room_id).emit('update', {type:'chat_permission_change', username:socket.username, chat_permission:data.chat_permission})
-
-			rooms[socket.room_id].chat_permission = data.chat_permission				
-				
-			db_manager.update_room(socket.room_id, {chat_permission:data.chat_permission})
-
-			.catch(err =>
-			{
-				console.error(err)
-			})
-		}
-	}	
-
 	function change_upload_permission(socket, data)
 	{
 		if(socket.username !== undefined)
@@ -1903,6 +1909,35 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 	}
 
+	function change_chat_permission(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			{
+				return get_out(socket)
+			}
+
+			var amodes = [1, 2, 3]
+
+			if(amodes.indexOf(data.chat_permission) === -1)
+			{
+				return get_out(socket)
+			}							
+
+			io.sockets.in(socket.room_id).emit('update', {type:'chat_permission_change', username:socket.username, chat_permission:data.chat_permission})
+
+			rooms[socket.room_id].chat_permission = data.chat_permission				
+				
+			db_manager.update_room(socket.room_id, {chat_permission:data.chat_permission})
+
+			.catch(err =>
+			{
+				console.error(err)
+			})
+		}
+	}	
+
 	function change_radio_permission(socket, data)
 	{
 		if(socket.username !== undefined)
@@ -1924,6 +1959,35 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			rooms[socket.room_id].radio_permission = data.radio_permission
 				
 			db_manager.update_room(socket.room_id, {radio_permission:data.radio_permission})
+
+			.catch(err =>
+			{
+				console.error(err)
+			})
+		}
+	}
+
+	function change_tv_permission(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			{
+				return false
+			}
+
+			var amodes = [1, 2, 3]
+
+			if(amodes.indexOf(data.tv_permission) === -1)
+			{
+				return get_out(socket)
+			}
+
+			io.sockets.in(socket.room_id).emit('update', {type:'tv_permission_change', username:socket.username, tv_permission:data.tv_permission})
+
+			rooms[socket.room_id].tv_permission = data.tv_permission
+				
+			db_manager.update_room(socket.room_id, {tv_permission:data.tv_permission})
 
 			.catch(err =>
 			{
@@ -2206,6 +2270,114 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 	}
 
+	function change_tv_source(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(data.src === undefined)
+			{
+				return get_out(socket)
+			}
+
+			if(data.src.length === 0)
+			{
+				return get_out(socket)
+			}
+
+			if(data.src.length > config.max_tv_source_length)
+			{
+				return get_out(socket)
+			}
+
+			if(!check_permission(rooms[socket.room_id].tv_permission, socket.priv))
+			{
+				return false
+			}
+
+			if(data.src.indexOf("http://") !== -1 || data.src.indexOf("https://") !== -1 || data.src === "default")
+			{
+				if(data.src.indexOf("youtube.com") !== -1 || data.src.indexOf("youtu.be") !== -1)
+				{
+					if(!config.youtube_enabled)
+					{
+						return
+					}
+
+					var id = get_youtube_id(data.src)
+
+					if(id)
+					{
+						fetch(`https://www.googleapis.com/youtube/v3/videos?id=${id}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`).then(function(res)
+						{
+							return res.json()
+						})
+
+						.then(function(response)
+						{
+							if(response.items !== undefined && response.items.length > 0)
+							{
+								data.type = "youtube"
+								data.title = response.items[0].snippet.title
+								do_change_tv_source(socket, data)
+							}
+
+							else
+							{
+								socket.emit('update', {room:socket.room_id, type:'videonotfound'})
+							}
+						})
+
+						.catch(err =>
+						{
+							console.error(err)
+						})
+					}
+				}
+
+				else
+				{
+					data.type = "url"
+					data.title = ""
+					do_change_tv_source(socket, data)
+				}
+			}
+
+			else
+			{
+				if(!config.youtube_enabled)
+				{
+					return
+				}
+
+				fetch(`https://www.googleapis.com/youtube/v3/search?q=${data.src}&fields=items(id,snippet(title))&part=snippet&maxResults=1&key=${sconfig.youtube_api_key}`).then(function(res)
+				{
+					return res.json()
+				})
+
+				.then(function(response)
+				{
+					if(response.items !== undefined && response.items.length > 0)
+					{
+						data.type = "youtube"
+						data.src = `https://youtube.com/watch?v=${response.items[0].id.videoId}`
+						data.title = response.items[0].snippet.title
+						do_change_tv_source(socket, data)
+					}
+
+					else
+					{
+						socket.emit('update', {room:socket.room_id, type:'songnotfound'})
+					}						
+				})
+
+				.catch(err =>
+				{
+					console.error(err)
+				})						
+			}
+		}
+	}
+
 	function do_change_radio_source(socket, data)
 	{	
 		var radioinfo = {}
@@ -2264,6 +2436,73 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					radio_source: radioinfo.radio_source,
 					radio_title: radioinfo.radio_title,
 					radio_setter: radioinfo.radio_setter
+				}, 
+				date: Date.now()
+			}
+
+			rooms[socket.room_id].log_messages.push(message)
+		}		
+	}
+
+	function do_change_tv_source(socket, data)
+	{	
+		var tvinfo = {}
+
+		if(data.src === 'default')
+		{
+			tvinfo.tv_type = "tv"
+			tvinfo.tv_source = ''
+			tvinfo.tv_title = ''
+		}
+
+		else
+		{
+			tvinfo.tv_type = data.type
+			tvinfo.tv_source = data.src
+			tvinfo.tv_title = data.title
+		}
+
+		tvinfo.tv_setter = socket.username
+		tvinfo.tv_date = Date.now()
+
+		io.sockets.in(socket.room_id).emit('update', 
+		{
+			type: 'changed_tv_source', 
+			tv_type: tvinfo.tv_type,
+			tv_source: tvinfo.tv_source,
+			tv_title: tvinfo.tv_title,
+			tv_setter: tvinfo.tv_setter,
+			tv_date: tvinfo.tv_date
+		})
+
+		db_manager.update_room(socket.room_id,
+		{
+			tv_type: tvinfo.tv_type,
+			tv_source: tvinfo.tv_source,
+			tv_title: tvinfo.tv_title,
+			tv_setter: tvinfo.tv_setter,
+			tv_date: tvinfo.tv_date,
+			active_media: "tv"
+		})
+
+		.catch(err =>
+		{
+			console.error(err)
+		})
+
+		rooms[socket.room_id].activity = true
+		
+		if(rooms[socket.room_id].log)
+		{
+			var message = 
+			{
+				type: "tv", 
+				data:
+				{
+					tv_type: tvinfo.tv_type,
+					tv_source: tvinfo.tv_source,
+					tv_title: tvinfo.tv_title,
+					tv_setter: tvinfo.tv_setter
 				}, 
 				date: Date.now()
 			}
@@ -2739,7 +2978,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				image_uploader: uploader, 
 				image_size: size, 
 				image_date: Date.now(),
-				stored_images: info.stored_images
+				stored_images: info.stored_images,
+				active_media: "image"
 			})
 
 			.catch(err =>
@@ -2863,7 +3103,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			log_messages: [],
 			chat_permission: info.chat_permission,
 			upload_permission: info.upload_permission,
-			radio_permission: info.radio_permission
+			radio_permission: info.radio_permission,
+			tv_permission: info.tv_permission
 		}
 
 		return obj	

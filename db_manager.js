@@ -4,7 +4,7 @@ module.exports = function(db, config, sconfig, utilz)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 23
+	const rooms_version = 25
 	const users_version = 23
 
 	function get_random_key()
@@ -133,19 +133,24 @@ module.exports = function(db, config, sconfig, utilz)
 							room.keys = {}
 						}
 						
-						if(typeof room.upload_permission !== "number")
-						{
-							room.upload_permission = 1
-						}
-						
 						if(typeof room.chat_permission !== "number")
 						{
 							room.chat_permission = 1
 						}
 						
+						if(typeof room.upload_permission !== "number")
+						{
+							room.upload_permission = 1
+						}
+						
 						if(typeof room.radio_permission !== "number")
 						{
 							room.radio_permission = 1
+						}
+
+						if(typeof room.tv_permission !== "number")
+						{
+							room.tv_permission = 1
 						}
 
 						if(typeof room.radio_type !== "string")
@@ -172,6 +177,31 @@ module.exports = function(db, config, sconfig, utilz)
 						{
 							room.radio_date = 0
 						}
+
+						if(typeof room.tv_type !== "string")
+						{
+							room.tv_type = "tv"
+						}					
+						
+						if(typeof room.tv_source !== "string")
+						{
+							room.tv_source = ""
+						}
+
+						if(typeof room.tv_title !== "string")
+						{
+							room.tv_title = ""
+						}
+						
+						if(typeof room.tv_setter !== "string")
+						{
+							room.tv_setter = ""
+						}
+						
+						if(typeof room.tv_date !== "number")
+						{
+							room.tv_date = 0
+						}
 						
 						if(typeof room.bans !== "object")
 						{
@@ -196,6 +226,11 @@ module.exports = function(db, config, sconfig, utilz)
 						if(typeof room.public !== "boolean")
 						{
 							room.public = true
+						}
+
+						if(typeof room.active_media !== "string")
+						{
+							room.active_media = "image"
 						}
 
 						room.version = rooms_version
@@ -259,8 +294,18 @@ module.exports = function(db, config, sconfig, utilz)
 				radio_title: '',
 				radio_setter: '',
 				radio_date: 0,
+				tv_type: '',
+				tv_source: '',
+				tv_title: '',
+				tv_setter: '',
+				tv_date: 0,
 				log_messages: [],
 				bans: [],
+				chat_permission: 1,
+				upload_permission: 1,
+				radio_permission: 1,
+				tv_permission: 1,
+				active_media: "image",
 				modified: Date.now()
 			}
 

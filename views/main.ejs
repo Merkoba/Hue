@@ -24,36 +24,27 @@
 		<script src="/js/storageui.min.js?v=3"></script>
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=7"></script>
-		<script src="/js/base_o.js?ver=660"></script>
 		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=179"/>
 
-		<script src="https://www.youtube.com/iframe_api"></script>
-
 		<script>
+			<% 
+				for(var key in vars)
+				{
+					var v = vars[key]
 
-			$(function()
-			{
-				<% 
-					for(var key in vars)
+					%><%-key%> = <%
+
+					if(typeof v === "string")
 					{
-						var v = vars[key]
-
-						%><%-key%> = <%
-
-						if(typeof v === "string")
-						{
-							%>`<%-v%>`; <% 
-						}
-
-						else
-						{
-							%><%-v%>; <%
-						}
+						%>`<%-v%>`; <% 
 					}
-				%>
 
-				init()
-			})
+					else
+					{
+						%><%-v%>; <%
+					}
+				}
+			%>
 		</script>
 
 	</head>
@@ -115,7 +106,17 @@
 					</div>
 
 					<div id='media' class='unselectable' draggable='false'>
+
 						<img id='media_image' draggable='false'>
+						
+						<div id='media_youtube_video_main'>
+							<div id='media_youtube_video_container'>
+								<div id='media_youtube_video'></div>
+							</div>
+						</div>	
+											
+						<video id='media_video' controls autoplay></video>
+
 					</div>
 
 				</div>
@@ -123,8 +124,17 @@
 
 				<div id='footer'>
 					<div id='footer_items'>
+
 						<span id='footer_username' class='unselectable' onClick="show_user_info()"></span>
+
 						<input type='text' id='input'>
+
+						<span id='footer_icons'>
+							<i class='fa fa-camera footer_icon' id='footer_upload_icon'></i>
+							<i class='fa fa-volume-up footer_icon' id='footer_radio_icon' onclick="show_radio_url_picker()"></i>
+							<i class='fa fa-television footer_icon' id='footer_tv_icon' onclick="show_tv_url_picker()"></i>
+						</span>
+
 					</div>
 				</div>				
 
@@ -361,10 +371,8 @@
 			<div class='info_title2'>Basic Features</div>
 			<div class='info_item'>Chat by typing anything.</div>
 			<div class='info_item'>All elements in the top and bottom bar are clickable.</div>
-			<div class='info_item'>Change the image on the right by pasting an image url.</div>
-			<div class='info_item'>Change it by clicking on the current image.</div>
-			<div class='info_item'>Change it by dropping an image file anywhere on the page.</div>
-			<div class='info_item'>/radio x: Changes the radio source. This can be an internet radio url, a file url, a youtube url or a search term to find a video on youtube. If x is \'default\' it changes to the default radio.</div>
+			<div class='info_item'>There are 3 main media elements that can be changed: Upload, Radio, and TV. In other words, Images, audio and video.</div>
+			<div class='info_item'>The actions available to you are reflected by the icons on the bottom right, which are clickable.</div>
 			<div class='info_item'>/me x: Makes a message in third person.</div>
 			<div class='info_item'>/help: Shows this message.</div>
 			<div class='info_item'>/help2: Shows additional features.</div>
@@ -388,6 +396,9 @@
 			<div class='info_item'>Clicking on a username sends it to the input.</div>
 			<div class='info_item'>Tab completes usernames and commands.</div>
 			<div class='info_item'>Shift + Enter toggles the radio.</div>		
+			<div class='info_item'>Apart from the image upload icon, images can also be uploaded by clicking the current image or by dro/pping a file.</div>		
+			<div class='info_item'>/radio x: Changes the radio using a search term or URL.</div>			
+			<div class='info_item'>/tv x: Changes the TV using a search term or URL.</div>			
 			<div class='info_item'>/status: Shows the room status window.</div>			
 			<div class='info_item'>/userinfo: Shows the user info window.</div>
 			<div class='info_item'>/priv: Shows information regarding privileges and permissions.</div>
@@ -455,7 +466,7 @@
 			<div class='info_item'>/unclaim: Removes all ownership on the room and resets it to a default state.</div>
 			<div class='info_item'>Usernames and main menu have a context (right click) menu with some operations if you are an op or admin.</div>
 			<div class='info_item'>Check /help for information about how users interact in the room through chat, image uploads, or radio.</div>
-			<div class='info_item'>Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada url is gathered automatically. To work, the server needs to allow cross-domain requests and be https enabled if this system is being served through https.</div>
+			<div class='info_item'>Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada URL is gathered automatically. To work, the server needs to allow cross-domain requests and be https enabled if this system is being served through https.</div>
 			<div class='spacer1'></div>
 			<span class='help_link' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link' onclick='help2()'>Additional Features</span>		
 		</script>		
@@ -465,6 +476,9 @@
 		<audio id='pup' src='/audio/pup.mp3'></audio>
 
 		<div id='youtube_player'></div>
+
+		<script src="/js/base_o.js?ver=663"></script>
+		<script src="https://www.youtube.com/iframe_api"></script>
 
 	</body>
 

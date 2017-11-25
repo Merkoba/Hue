@@ -44,6 +44,7 @@
 	"max_room_log_messages": 200,
 	"room_loop_interval": 10000,
 	"max_radio_source_length": 500,
+	"max_tv_source_length": 500,
 	"max_roomlist_items": 100,
 	"max_roomlist_topic_length": 140,
 	"max_visited_rooms_items": 100,
@@ -76,5 +77,6 @@
 	"settings_default_modal_color": "white",
 	"jwt_expiration": 60000,
 	"max_jwt_token_length": 300,
-	"max_user_id_length": 100
+	"max_user_id_length": 100,
+	"allow_pasted_uploads": false
 }

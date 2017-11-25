@@ -21,12 +21,14 @@ var chat_history = []
 var userlist = []
 var usernames = []
 var priv = ''
-var upload_permission
 var chat_permission
+var upload_permission
 var radio_permission
+var tv_permission
 var can_upload
 var can_chat
 var can_radio
+var can_tv
 var change_when_focused = false
 var radio_type = ''
 var radio_source = ''
@@ -34,6 +36,12 @@ var radio_title = ''
 var radio_metadata = ''
 var radio_setter = ''
 var radio_date = ''
+var tv_type = ''
+var tv_source = ''
+var tv_title = ''
+var tv_metadata = ''
+var tv_setter = ''
+var tv_date = ''
 var claimed = false
 var get_metadata
 var no_meta_count
@@ -45,6 +53,8 @@ var crm = false
 var orb = false
 var ned = false
 var stu = false
+var rup = false
+var tup = false
 var orb_timeout
 var modal_open = false
 var started = false
@@ -80,7 +90,9 @@ var played_filtered = false
 var userlist_filtered = false
 var roomlist_filter_string = ""
 var yt_player
+var yt_video_player
 var youtube_player
+var youtube_video_player
 var fetched_room_id
 var utilz = Utilz()
 var log_messages
@@ -307,6 +319,7 @@ function check_priv(data)
 	upload_permission = data.upload_permission
 	chat_permission = data.chat_permission
 	radio_permission = data.radio_permission
+	tv_permission = data.tv_permission
 	check_permissions()
 }
 
@@ -315,6 +328,43 @@ function check_permissions()
 	can_upload = check_upload_permission(priv)
 	can_chat = check_chat_permission(priv)
 	can_radio = check_radio_permission(priv)
+	can_radio = check_radio_permission(priv)
+	can_tv = check_tv_permission(priv)
+
+	setup_icons()
+}
+
+function setup_icons()
+{
+	if(can_upload)
+	{
+		$("#footer_upload_icon").css("display", "inline-block")
+	}
+
+	else
+	{
+		$("#footer_upload_icon").css("display", "none")
+	}
+
+	if(can_radio)
+	{
+		$("#footer_radio_icon").css("display", "inline-block")
+	}
+
+	else
+	{
+		$("#footer_radio_icon").css("display", "none")
+	}
+
+	if(can_tv)
+	{
+		$("#footer_tv_icon").css("display", "inline-block")
+	}
+
+	else
+	{
+		$("#footer_tv_icon").css("display", "none")
+	}	
 }
 
 function check_upload_permission(priv)
@@ -401,6 +451,39 @@ function check_radio_permission(priv)
 	}
 
 	else if(radio_permission === 3)
+	{
+		if(priv === "admin" || priv === "op")
+		{
+			return true
+		}
+
+		return false	
+	}
+
+	else
+	{
+		return false
+	}	
+}
+
+function check_tv_permission(priv)
+{
+	if(tv_permission === 1)
+	{
+		return true
+	}
+
+	else if(tv_permission === 2)
+	{
+		if(priv === "admin" || priv === "op" || priv === "voice")
+		{
+			return true
+		}
+
+		return false
+	}
+
+	else if(tv_permission === 3)
 	{
 		if(priv === "admin" || priv === "op")
 		{
@@ -522,7 +605,16 @@ function start_socket()
 			update_title()
 			is_public = data.public
 			check_priv(data)
-			change()
+
+			if(data.active_media === "image")
+			{
+				change()
+			}
+
+			else
+			{
+				setup_tv(data)
+			}
 
 			setup_media_display()
 			setup_username_on_footer()
@@ -602,6 +694,11 @@ function start_socket()
 		else if(data.type === 'radio_permission_change')
 		{
 			announce_radio_permission_change(data)
+		}
+
+		else if(data.type === 'tv_permission_change')
+		{
+			announce_tv_permission_change(data)
 		}
 
 		else if(data.type === 'log_changed')
@@ -720,6 +817,12 @@ function start_socket()
 			setup_radio(data)			
 		}
 
+		else if(data.type === 'changed_tv_source')
+		{
+			announce_tv_source_change(data)
+			setup_tv(data)			
+		}
+
 		else if(data.type === 'reserved')
 		{
 			reserved(data)
@@ -743,6 +846,11 @@ function start_socket()
 		else if(data.type === 'songnotfound')
 		{
 			chat_announce('[', ']', "The song couldn't be found", 'small')
+		}
+
+		else if(data.type === 'videonotfound')
+		{
+			chat_announce('[', ']', "The video couldn't be found", 'small')
 		}
 
 		else if(data.type === 'room_created')
@@ -874,6 +982,86 @@ function setup_radio(data)
 	{
 		start_radio()
 	}		
+}
+
+function setup_tv(data)
+{
+	if(!data)
+	{
+		data = {}
+
+		data.tv_source = ''
+		data.tv_setter = ''
+		data.tv_date = 0
+	}
+
+	if(data.tv_source === '')
+	{
+		tv_source = default_tv_source
+	}
+
+	else
+	{
+		tv_source = data.tv_source
+	}
+
+	tv_type = data.tv_type
+	tv_title = data.tv_title
+	tv_setter = data.tv_setter
+	tv_date = nice_date(data.tv_date)
+
+	if(tv_type === "youtube")
+	{
+		show_youtube_video()
+	}
+
+	else if(data.tv_type === "url")
+	{
+		show_video()
+	}	
+}
+
+function show_youtube_video()
+{
+	youtube_video_player.loadVideoById({videoId:get_youtube_id(tv_source), startSeconds:get_youtube_time(tv_source)})
+	
+	$("#media_image").css("display", "none")
+	$("#media_video").css("display", "none")
+	$("#media_youtube_video_main").css("display", "flex")
+
+	start_video_mode()
+}
+
+function show_video()
+{
+	youtube_video_player.stopVideo()
+
+	$("#media_video").prop("src", tv_source)
+
+	$("#media_image").css("display", "none")
+	$("#media_youtube_video_main").css("display", "none")
+	$("#media_video").css("display", "block")
+
+	start_video_mode()
+}
+
+function start_video_mode()
+{
+	set_opacity(1)
+
+	var background_color = "#181818"
+	var background_color2 = "#2b2b2b"
+	var font_color = "#f2f2f2"
+
+	$('body').css('background-color', background_color)
+	$('#header').css('background-color', background_color2)
+	$('#header').css('color', font_color)
+	$('#chat_area').css('background-color', background_color)
+	$('#chat_area').css('color', font_color)
+	$('#chat_separator').css('background-color', background_color)
+	$('#footer').css('background-color', background_color2)
+	$('#footer').css('color', font_color)
+	$('#media').css('background-color', background_color)	
 }
 
 function get_youtube_id(url)
@@ -1721,6 +1909,145 @@ function start_main_menu_context_menu()
 						}						
 					}
 				}
+			},
+			tvpmodes: 
+			{
+				name: "TV Permission", 
+				visible: function(key, opt)
+				{ 
+					if(priv !== 'admin' && priv !== 'op')
+					{
+						return false
+					}
+
+					else
+					{
+						return true
+					}
+				},				
+				items: 
+				{
+					tvpmode1: 
+					{
+						name: "1. Anyone",
+						visible: function(key, opt)
+						{ 
+							if(tv_permission === 1)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_tv_permission(1)
+						}
+					},
+					tvpmode1b: 
+					{
+						name: "1. Anyone *",
+						visible: function(key, opt)
+						{ 
+							if(tv_permission !== 1)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_tv_permission(1)
+						}
+					},
+					tvpmode2: 
+					{
+						name: "2. Voiced Users And Up",
+						visible: function(key, opt)
+						{ 
+							if(tv_permission === 2)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_tv_permission(2)
+						}
+					},
+					tvpmode2b: 
+					{
+						name: "2. Voiced Users And Up *",
+						visible: function(key, opt)
+						{ 
+							if(tv_permission !== 2)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_tv_permission(2)
+						} 
+					},
+					tvpmode3: 
+					{
+						name: "3. Ops And Up",
+						visible: function(key, opt)
+						{ 
+							if(tv_permission === 3)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_tv_permission(3)
+						}						
+					},
+					tvpmode3b: 
+					{
+						name: "3. Ops And Up *",
+						visible: function(key, opt)
+						{ 
+							if(tv_permission !== 3)
+							{
+								return false
+							}
+
+							else
+							{
+								return true
+							}
+						},
+						callback: function(key, opt)
+						{
+							change_tv_permission(3)
+						}						
+					}
+				}
 			},			
 			cmprivacy: 
 			{
@@ -2419,7 +2746,7 @@ function start_dropzone()
 		maxFiles: 1,
 		maxFilesize: max_image_size / 1024,
 		autoProcessQueue: false,
-		clickable: '#media_image',
+		clickable: '#media_image, #footer_upload_icon',
 		acceptedFiles: "image/jpeg,image/png,image/gif"
 	})
 
@@ -2538,6 +2865,40 @@ function activate_key_detection()
 {
 	$(document).keydown(function(e)
 	{
+		if(rup)
+		{
+			if(e.key === "Enter")
+			{
+				var val = $("#radio_url_picker_input").val().trim()
+
+				if(val !== "")
+				{
+					change_radio_source(val)
+					close_all_modals()
+					e.preventDefault()
+				}
+			}
+
+			return			
+		}
+
+		if(tup)
+		{
+			if(e.key === "Enter")
+			{
+				var val = $("#tv_url_picker_input").val().trim()
+
+				if(val !== "")
+				{
+					change_tv_source(val)
+					close_all_modals()
+					e.preventDefault()
+				}
+			}
+
+			return			
+		}
+
 		if(crm)
 		{
 			if(e.key === "Enter")
@@ -3406,6 +3767,14 @@ function start_image_events()
 					$('#background_image').css('background-position', 'center center')  
 				}
 			}
+
+			setup_opacity()
+
+			youtube_video_player.stopVideo()			
+
+			$("#media_image").css("display", "block")
+			$("#media_video").css("display", "none")
+			$("#media_youtube_video_main").css("display", "none")			
 		}
 
 		catch(err)
@@ -3605,6 +3974,7 @@ function register_commands()
 	commands.push('/uploadpermission')
 	commands.push('/chatpermission')
 	commands.push('/radiopermission')
+	commands.push('/tvpermission')
 	commands.push('/users')
 	commands.push('/room')
 	commands.push('/rooms')
@@ -3633,6 +4003,7 @@ function register_commands()
 	commands.push('/disablelog')
 	commands.push('/clearlog')
 	commands.push('/radio')
+	commands.push('/tv')
 	commands.push('/privacy')
 	commands.push('/status')
 	commands.push('/userinfo')
@@ -3739,6 +4110,16 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/radiopermission'))
 			{
 				show_radio_permission()
+			}
+
+			else if(oiStartsWith(lmsg, '/tvpermission'))
+			{
+				change_tv_permission(arg)
+			}
+
+			else if(oiEquals(lmsg, '/tvpermission'))
+			{
+				show_tv_permission()
 			}
 
 			else if(oiEquals(lmsg, '/users'))
@@ -3912,6 +4293,11 @@ function send_to_chat(msg)
 				show_radio_source()
 			}
 
+			else if(oiStartsWith(lmsg, '/tv'))
+			{
+				change_tv_source(arg)
+			}
+
 			else if(oiEquals(lmsg, '/public'))
 			{
 				make_public()
@@ -4071,7 +4457,7 @@ function send_to_chat(msg)
 				msg = msg.slice(1)
 			}
 
-			if(can_upload)
+			if(allow_pasted_uploads && can_upload)
 			{
 				self_check_images(msg)
 			}
@@ -5241,7 +5627,7 @@ function check_firstime()
 	}
 }
 
-function change_upload_permission(m)
+function change_chat_permission(m)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
@@ -5251,15 +5637,15 @@ function change_upload_permission(m)
 		{
 			m = parseInt(m)
 
-			if(m === upload_permission)
+			if(m === chat_permission)
 			{
-				chat_announce('[', ']', `Upload permission is already ${m}`, 'small')
+				chat_announce('[', ']', `Chat permission is already ${m}`, 'small')
 				return false
 			}			
 
 			if(amodes.indexOf(m) !== -1)
 			{
-				socket_emit('change_upload_permission', {upload_permission:m})
+				socket_emit('change_chat_permission', {chat_permission:m})
 			}
 
 			else
@@ -5280,7 +5666,7 @@ function change_upload_permission(m)
 	}
 }
 
-function change_chat_permission(m)
+function change_upload_permission(m)
 {
 	if(priv === 'admin' || priv === 'op')
 	{
@@ -5290,15 +5676,15 @@ function change_chat_permission(m)
 		{
 			m = parseInt(m)
 
-			if(m === chat_permission)
+			if(m === upload_permission)
 			{
-				chat_announce('[', ']', `Chat permission is already ${m}`, 'small')
+				chat_announce('[', ']', `Upload permission is already ${m}`, 'small')
 				return false
 			}			
 
 			if(amodes.indexOf(m) !== -1)
 			{
-				socket_emit('change_chat_permission', {chat_permission:m})
+				socket_emit('change_upload_permission', {upload_permission:m})
 			}
 
 			else
@@ -5358,32 +5744,42 @@ function change_radio_permission(m)
 	}
 }
 
-function announce_upload_permission_change(data)
+function change_tv_permission(m)
 {
-	var s = ""
-
-	var d = `${data.username} changed the upload permission to`
-
-	if(data.upload_permission === 1 && upload_permission !== 1)
+	if(priv === 'admin' || priv === 'op')
 	{
-		s = `${d} 1. Anyone can upload images`
+		var amodes = [1, 2, 3]
+
+		if(!isNaN(m))
+		{
+			m = parseInt(m)
+
+			if(m === tv_permission)
+			{
+				chat_announce('[', ']', `TV permission is already ${m}`, 'small')
+				return false
+			}			
+
+			if(amodes.indexOf(m) !== -1)
+			{
+				socket_emit('change_tv_permission', {tv_permission:m})
+			}
+
+			else
+			{
+				chat_announce('[', ']', "That permission does not exist", 'small')
+			}
+		}
+
+		else
+		{
+			chat_announce('[', ']', "Argument must be a number", 'small')
+		}
 	}
 
-	else if(data.upload_permission === 2 && upload_permission !== 2)
+	else
 	{
-		s = `${d} 2. Only voiced users and up can upload images`
-	}
-
-	else if(data.upload_permission === 3 && upload_permission !== 3)
-	{
-		s = `${d} 3. Only ops and up can upload images`
-	}
-
-	if(s.length > 0)
-	{
-		upload_permission = data.upload_permission
-		can_upload = check_upload_permission(priv)
-		chat_announce('~', '~', s, 'small')
+		not_an_op()
 	}
 }
 
@@ -5412,6 +5808,37 @@ function announce_chat_permission_change(data)
 	{
 		chat_permission = data.chat_permission
 		can_chat = check_chat_permission(priv)
+		setup_icons()
+		chat_announce('~', '~', s, 'small')
+	}
+}
+
+function announce_upload_permission_change(data)
+{
+	var s = ""
+
+	var d = `${data.username} changed the upload permission to`
+
+	if(data.upload_permission === 1 && upload_permission !== 1)
+	{
+		s = `${d} 1. Anyone can upload images`
+	}
+
+	else if(data.upload_permission === 2 && upload_permission !== 2)
+	{
+		s = `${d} 2. Only voiced users and up can upload images`
+	}
+
+	else if(data.upload_permission === 3 && upload_permission !== 3)
+	{
+		s = `${d} 3. Only ops and up can upload images`
+	}
+
+	if(s.length > 0)
+	{
+		upload_permission = data.upload_permission
+		can_upload = check_upload_permission(priv)
+		setup_icons()
 		chat_announce('~', '~', s, 'small')
 	}
 }
@@ -5441,6 +5868,37 @@ function announce_radio_permission_change(data)
 	{
 		radio_permission = data.radio_permission
 		can_radio = check_radio_permission(priv)
+		setup_icons()
+		chat_announce('~', '~', s, 'small')
+	}
+}
+
+function announce_tv_permission_change(data)
+{
+	var s = ""
+
+	var d = `${data.username} changed the TV permission to`
+
+	if(data.tv_permission === 1 && tv_permission !== 1)
+	{
+		s = `${d} 1. Anyone can change the TV`
+	}
+
+	else if(data.tv_permission === 2 && tv_permission !== 2)
+	{
+		s = `${d} 2. Only voiced users and up can change the TV`
+	}
+
+	else if(data.tv_permission === 3 && tv_permission !== 3)
+	{
+		s = `${d} 3. Only ops and up can change the TV`
+	}
+
+	if(s.length > 0)
+	{
+		tv_permission = data.tv_permission
+		can_tv = check_tv_permission(priv)
+		setup_icons()
 		chat_announce('~', '~', s, 'small')
 	}
 }
@@ -5458,6 +5916,11 @@ function show_chat_permission()
 function show_radio_permission()
 {
 	chat_announce('[', ']', `Radio permission: ${radio_permission}`, 'small')
+}
+
+function show_tv_permission()
+{
+	chat_announce('[', ']', `TV permission: ${radio_permission}`, 'small')
 }
 
 function big_letter(s)
@@ -5615,6 +6078,7 @@ function announce_strip(data)
 function set_priv(p)
 {
 	priv = p
+
 	check_permissions()
 }
 
@@ -5900,6 +6364,77 @@ function announce_radio_source_change(data, date=false)
 	}
 
 	chat_announce("<i class='icon2 fa fa-volume-up'></i>", '', `${data.radio_setter} changed the radio to ${name}`, 'small', false, title, onclick, true)
+}
+
+function change_tv_source(src)
+{
+	if(can_tv)
+	{
+		if(src.indexOf("http://") !== -1 || src.indexOf("https://") !== -1 || src === "default")
+		{
+			if(src.indexOf("youtube.com") !== -1 || src.indexOf("youtu.be") !== -1)
+			{
+				if(!youtube_enabled)
+				{
+					chat_announce('[', ']', "Invalid tv source", 'small')
+					return
+				}
+			}
+		}
+
+		else
+		{
+			if(!youtube_enabled)
+			{
+				chat_announce('[', ']', "Invalid tv source", 'small')
+				return
+			}
+		}
+
+		src = utilz.clean_string2(src)
+
+		if(src.length > 0 && src.length <= max_tv_source_length)
+		{
+			socket_emit('change_tv_source', {src:src})
+		}
+	}
+
+	else
+	{
+		chat_announce('[', ']', "You don't have permission to change the TV", 'small')
+	}
+}
+
+function announce_tv_source_change(data, date=false)
+{
+	if(data.tv_title !== "")
+	{
+		var name = data.tv_title
+	}
+
+	else
+	{
+		var name = data.tv_source
+	}
+
+	if(date)
+	{
+		var d = nice_date(date)
+	}
+
+	else
+	{
+		var d = nice_date(data.tv_date)
+	}
+
+	var title = `Setter: ${data.tv_setter} | ${d}`
+
+	var onclick = function()
+	{
+		goto_url(data.tv_source, "tab")
+	}
+
+	chat_announce("<i class='icon2 fa fa-television'></i>", '', `${data.tv_setter} changed the TV to ${name}`, 'small', false, title, onclick, true)
 }
 
 function ban(uname)
@@ -6407,7 +6942,9 @@ function info_vars_to_false()
 	crm = false
 	orb = false
 	ned = false
-	stu = false		
+	stu = false	
+	rup = false
+	tup = false
 }
 
 function after_modal_create(instance)
@@ -7002,11 +7539,30 @@ function onYouTubeIframeAPIReady()
 			'onReady': onYouTubePlayerReady
 		}		
 	})
+
+	yt_video_player = new YT.Player('media_youtube_video', 
+	{
+		events: 
+		{
+			'onReady': onYouTubePlayerReady2
+		},
+		playerVars:
+		{
+			'iv_load_policy': 3
+		}	
+	})
 }
 
 function onYouTubePlayerReady()
 {
 	youtube_player = yt_player
+}
+
+function onYouTubePlayerReady2()
+{
+	youtube_video_player = yt_video_player
+
+	init()
 }
 
 function set_footer_username()
@@ -7054,6 +7610,11 @@ function get_user_info_html()
 	if(can_radio)
 	{
 		info += "<div class='info_item'><div class='info_item_content'>You have radio permission</div></div>"
+	}
+
+	if(can_tv)
+	{
+		info += "<div class='info_item'><div class='info_item_content'>You have TV permission</div></div>"
 	}
 
 	return urlize(info)
@@ -7328,6 +7889,11 @@ function show_messages()
 				{
 					announce_radio_source_change(data, message.date)
 				}
+
+				else if(message.type === "tv")
+				{
+					announce_tv_source_change(data, message.date)
+				}
 			}
 		}
 
@@ -7471,4 +8037,40 @@ function modal_color_changed()
 	settings.modal_color = $('#setting_modal_color option:selected').val()
 	change_modal_color(settings.modal_color)		
 	save_settings()	
+}
+
+function show_radio_url_picker()
+{
+	var s = ""
+
+	s += "<i class='fa fa-volume-up'></i>"
+	s += "<div class='spacer3'></div>"
+	s += "Enter a YouTube search term or URL<br>Or audio file/stream URL"
+	s += "<div class='spacer3'></div>"
+	s += "<input id='radio_url_picker_input' class='input1'>"
+
+	msg_info.show(s, function()
+	{
+		rup = true
+
+		$("#radio_url_picker_input").focus()
+	})
+}
+
+function show_tv_url_picker()
+{
+	var s = ""
+
+	s += "<i class='fa fa-television'></i>"
+	s += "<div class='spacer3'></div>"
+	s += "Enter a YouTube search term or URL<br>Or video file/stream URL"
+	s += "<div class='spacer3'></div>"
+	s += "<input id='tv_url_picker_input' class='input1'>"
+
+	msg_info.show(s, function()
+	{
+		tup = true
+
+		$("#tv_url_picker_input").focus()
+	})
 }

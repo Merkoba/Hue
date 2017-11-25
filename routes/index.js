@@ -27,6 +27,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.max_username_length = config.max_username_length
 	c.vars.max_room_name_length = config.max_room_name_length
 	c.vars.max_radio_source_length = config.max_radio_source_length
+	c.vars.max_tv_source_length = config.max_tv_source_length
 	c.vars.max_title_length = config.max_title_length
 	c.vars.max_no_meta_count = config.max_no_meta_count
 	c.vars.small_keyboard_scroll = config.small_keyboard_scroll
@@ -49,7 +50,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.settings_default_header_contrast = config.settings_default_header_contrast
 	c.vars.settings_default_footer_contrast = config.settings_default_footer_contrast
 	c.vars.settings_default_username_on_footer = config.settings_default_username_on_footer
-	c.vars.settings_default_modal_color = config.settings_default_modal_color
+	c.vars.settings_default_modal_color = config.settings_default_modal_color,
+	c.vars.allow_pasted_uploads = config.allow_pasted_uploads
 
 	function check_url(req, res, next)
 	{
