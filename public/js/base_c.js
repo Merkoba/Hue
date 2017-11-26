@@ -71,14 +71,14 @@ var template_userlist
 var template_roomlist
 var template_played
 var template_open_room
-var template_user_info
 var template_status
 var template_help
 var template_help2
 var template_help3
+var template_userinfo
 var storageui_interval
 var msg_menu
-var msg_settings
+var msg_userinfo
 var msg_userlist
 var msg_roomlist
 var msg_played
@@ -190,15 +190,14 @@ function compile_templates()
 	template_menu = Handlebars.compile($('#template_menu').html())
 	template_create_room = Handlebars.compile($('#template_create_room').html())
 	template_open_room = Handlebars.compile($('#template_open_room').html())
-	template_settings = Handlebars.compile($('#template_settings').html())
 	template_userlist = Handlebars.compile($('#template_userlist').html())
 	template_roomlist = Handlebars.compile($('#template_roomlist').html())
 	template_played = Handlebars.compile($('#template_played').html())
-	template_user_info = Handlebars.compile($('#template_user_info').html())
 	template_status = Handlebars.compile($('#template_status').html())
 	template_help = Handlebars.compile($('#template_help').html())
 	template_help2 = Handlebars.compile($('#template_help2').html())
 	template_help3 = Handlebars.compile($('#template_help3').html())
+	template_userinfo = Handlebars.compile($('#template_userinfo').html())
 }
 
 function help()
@@ -2709,11 +2708,6 @@ function show_open_room(id)
 	})
 }
 
-function show_settings()
-{
-	msg_settings.show()
-}
-
 function show_userlist(filter=false)
 {
 	msg_userlist.show(function()
@@ -2949,7 +2943,7 @@ function activate_key_detection()
 		{
 			if(e.key === "Tab" && e.shiftKey)
 			{
-				show_user_info()
+				show_userinfo()
 				e.preventDefault()
 			}
 
@@ -2968,6 +2962,8 @@ function activate_key_detection()
 				return
 			}
 		}
+
+		console.log(234)
 
 		focus_input()
 
@@ -4322,7 +4318,7 @@ function send_to_chat(msg)
 
 			else if(oiEquals(lmsg, '/userinfo'))
 			{
-				show_user_info()
+				show_userinfo()
 			}
 
 			else if(oiStartsWith(lmsg, '/topic'))
@@ -6742,11 +6738,11 @@ function start_msg()
 		})
 	)
 
-	msg_settings = Msg
+	msg_userinfo = Msg
 	(
 		Object.assign({}, common,
 		{		
-			id: "settings",
+			id: "userinfo",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -6934,7 +6930,7 @@ function start_msg()
 	)
 
 	msg_menu.set(template_menu())
-	msg_settings.set(template_settings())
+	msg_userinfo.set(template_userinfo())
 	msg_userlist.set(template_userlist())
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
@@ -6989,6 +6985,7 @@ function after_modal_close(instance)
 
 function change_modal_color(color)
 {
+	console.log(345)
 	for(var ins of msg_menu.instances())
 	{
 		ins.change_class(color)
@@ -7550,40 +7547,13 @@ function set_footer_username()
 	$("#footer_username").text(`[${username}]`)
 }
 
-function show_user_info()
+function show_userinfo()
 {
-	msg_info.show(template_user_info({uname:username, info:get_user_info_html()}), function()
+	msg_userinfo.show(function()
 	{
-		ned = true
+		$("#userinfo_username").text(username)
+		update_modal_scrollbar("userinfo")
 	})
-}
-
-function get_user_info_html()
-{
-	var info = ""
-
-	info += `<div class='bigger'>${username}</div>`
-	
-
-	if(priv === "admin")
-	{
-		info += `<div class='spacer5'></div>`
-		info += "<div>(You are an admin)</div>"
-	}
-
-	else if(priv === "op")
-	{
-		info += `<div class='spacer5'></div>`
-		info += "<div>(You are an op)</div>"
-	}
-
-	else if(priv === "voice")
-	{
-		info += `<div class='spacer5'></div>`
-		info += "<div>(You have voice)</div>"
-	}
-
-	return urlize(info)
 }
 
 function show_status()
@@ -7703,6 +7673,16 @@ function fill()
 	jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|;`
 
 	update_chat(username, s)
+}
+
+function confirm_logout()
+{
+	var r = confirm("Are you sure? Make sure you know your current username and password to avoid getting locked out later.")
+
+	if(r)
+	{
+		logout()
+	}
 }
 
 function logout()

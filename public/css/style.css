@@ -515,7 +515,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	width: 20em !important;
 }
 
-#Msg-window-settings
+#Msg-window-userinfo
 {
 	width: 22em !important;
 }
@@ -815,4 +815,19 @@ input[type=text], textarea
 .bigger
 {
 	font-size: 1.2em;
+}
+
+.underlined
+{
+	text-decoration: underline;
+}
+
+.bold
+{
+	font-weight: bold;
+}
+
+.bigger2
+{
+	font-size: 1.4em;
 }

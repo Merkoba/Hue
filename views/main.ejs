@@ -26,7 +26,7 @@
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=181"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=182"/>
 
 		<script>
 			<% 
@@ -134,7 +134,7 @@
 
 						<input type='text' id='input'>
 						
-						<span id='footer_user_info' class='fa fa-navicon footer_icon nicetitle' onClick="show_user_info()"></span>
+						<span id='footer_userinfo' class='fa fa-navicon footer_icon nicetitle' onClick="show_userinfo()"></span>
 
 						<span id='footer_icons'>
 						</span>
@@ -154,7 +154,6 @@
 				<div class='menu_item' onclick="request_visited_roomlist()">Visited Rooms</div>
 				<div class='menu_item' onclick="request_roomlist()">Public Rooms</div>
 				<div class='menu_item' onclick='show_create_room()'>Create Room</div>
-				<div class='menu_item' onclick='show_settings()'>Settings</div>
 
 				<div id='menu_smaller_container'>
 
@@ -162,15 +161,7 @@
 
 					<div class='spacer2'></div>
 
-					<div class='menu_item_smaller' onclick='chat_search()'>Search</div>
-
-					&nbsp;|&nbsp;
-
-					<div class='menu_item_smaller' onclick='show_history()'>History</div>
-
-					<div class='spacer2'></div>
-
-					<span class='menu_item_smaller' onclick='clear_chat();close_all_modals()'>Clear</span>
+					<span class='menu_item_smaller' onclick='chat_search()'>Search</span>
 
 					&nbsp;|&nbsp;
 
@@ -182,9 +173,75 @@
 
 				</div>
 
-				<div class='spacer3'></div>
+			</div>
+		</script>
+
+		<script id='template_userinfo' type='text/x-handlebars-template'>
+
+			<div class='bigger2' id='userinfo_username'>loading</div>
+	
+			<div class='spacer3'></div>
+
+			<div id='settings' class='unselectable'>
+
+				<br>
+
+				<div class="setting_title">Background Image</div>
+				<input type="checkbox" class="setting_checkbox" id="setting_background_image">
+				
+				<div class='spacer1'></div>
+
+				<div class="setting_title">Foreground Image</div>
+				<input type="checkbox" class="setting_checkbox" id="setting_foreground_image">
+
+				<div class='spacer1'></div>
+
+				<div class="setting_title">Custom Scrollbars</div>
+				<input type="checkbox" class="setting_checkbox" id="setting_custom_scrollbars">
+
+				<div class='spacer1'></div>
+
+				<div class="setting_title">Header Contrast</div>
+				<input type="checkbox" class="setting_checkbox" id="setting_header_contrast">
+
+				<div class='spacer1'></div>
+
+				<div class="setting_title">Footer Contrast</div>
+				<input type="checkbox" class="setting_checkbox" id="setting_footer_contrast">
+
+				<div class='spacer1'></div>
+
+				<div class="setting_title">Modal Color</div>
+
+				<span class='pointer' onclick="modal_color_up()">&lt;</span>
+
+				<select id='setting_modal_color'>
+					<option value='white'>White</option>
+					<option value='black'>Black</option>
+					<option value='red'>Red</option>
+					<option value='green'>Green</option>
+					<option value='blue'>Blue</option>
+					<option value='yellow'>Yellow</option>
+					<option value='purple'>Purple</option>
+				</select>
+
+				<span class='pointer' onclick="modal_color_down()">&gt;</span>
+
+				<div class='spacer1'></div>
+
 
 			</div>
+			
+			<span class='menu_item_smaller' onclick='show_history()'>History</span>
+
+			&nbsp;|&nbsp;
+
+			<div class='menu_item_smaller' onclick='show_data()'>Data</div>
+
+			&nbsp;|&nbsp;
+
+			<span class='menu_item_smaller' onclick='confirm_logout()'>Logout</span>
+
 		</script>
 
 		<script id='template_create_room' type='text/x-handlebars-template'>
@@ -278,71 +335,8 @@
 
 		</script>
 
-		<script id='template_user_info' type='text/x-handlebars-template'>
-
-				<div id="user_info">{{{info}}}</div>		
-				<div class="spacer3"></div>
-				<span class="menu_item_smaller" onclick="logout()">Logout</span>
-
-		</script>
-
 		<script id='template_status' type='text/x-handlebars-template'>
 				<div>{{{info}}}</div>
-		</script>
-
-		<script id='template_settings' type='text/x-handlebars-template'>
-			<div id='settings' class='unselectable'>
-
-				<br>
-
-				<div class="setting_title">Background Image</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_background_image">
-				
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Foreground Image</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_foreground_image">
-
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Custom Scrollbars</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_custom_scrollbars">
-
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Header Contrast</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_header_contrast">
-
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Footer Contrast</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_footer_contrast">
-
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Modal Color</div>
-
-				<span class='pointer' onclick="modal_color_up()">&lt;</span>
-
-				<select id='setting_modal_color'>
-					<option value='white'>White</option>
-					<option value='black'>Black</option>
-					<option value='red'>Red</option>
-					<option value='green'>Green</option>
-					<option value='blue'>Blue</option>
-					<option value='yellow'>Yellow</option>
-					<option value='purple'>Purple</option>
-				</select>
-
-				<span class='pointer' onclick="modal_color_down()">&gt;</span>
-
-				<div class='spacer1'></div>
-
-				<div class='menu_item' onclick='show_data()'>+ Storage Manager</div>
-
-				<br>
-
-			</div>
 		</script>
 
 		<script id='template_userlist' type='text/x-handlebars-template'>
@@ -474,7 +468,7 @@
 
 		<div id='youtube_player'></div>
 
-		<script src="/js/base_o.js?ver=672"></script>
+		<script src="/js/base_o.js?ver=676"></script>
 		<script src="https://www.youtube.com/iframe_api"></script>
 
 	</body>
