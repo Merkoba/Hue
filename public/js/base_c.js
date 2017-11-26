@@ -51,7 +51,6 @@ var tabbed_start = 0
 var tabbed_end = 0
 var crm = false
 var orb = false
-var ned = false
 var stu = false
 var rup = false
 var tup = false
@@ -2928,22 +2927,11 @@ function activate_key_detection()
 			return
 		}
 
-		if(ned)
-		{
-			if(e.key === "Tab" && e.shiftKey)
-			{
-				show_status()
-				e.preventDefault()
-			}			
-
-			return
-		}
-
 		if(stu)
 		{
 			if(e.key === "Tab" && e.shiftKey)
 			{
-				show_userinfo()
+				close_all_modals()
 				e.preventDefault()
 			}
 
@@ -6944,7 +6932,6 @@ function info_vars_to_false()
 {
 	crm = false
 	orb = false
-	ned = false
 	stu = false	
 	rup = false
 	tup = false
