@@ -5880,21 +5880,21 @@ function announce_tv_permission_change(data)
 {
 	var s = ""
 
-	var d = `${data.username} changed the TV permission to`
+	var d = `${data.username} changed the tv permission to`
 
 	if(data.tv_permission === 1 && tv_permission !== 1)
 	{
-		s = `${d} 1. Anyone can change the TV`
+		s = `${d} 1. Anyone can change the tv`
 	}
 
 	else if(data.tv_permission === 2 && tv_permission !== 2)
 	{
-		s = `${d} 2. Only voiced users and up can change the TV`
+		s = `${d} 2. Only voiced users and up can change the tv`
 	}
 
 	else if(data.tv_permission === 3 && tv_permission !== 3)
 	{
-		s = `${d} 3. Only ops and up can change the TV`
+		s = `${d} 3. Only ops and up can change the tv`
 	}
 
 	if(s.length > 0)
@@ -6404,7 +6404,7 @@ function change_tv_source(src)
 
 	else
 	{
-		chat_announce('[', ']', "You don't have permission to change the TV", 'small')
+		chat_announce('[', ']', "You don't have permission to change the tv", 'small')
 	}
 }
 
@@ -6437,7 +6437,7 @@ function announce_tv_source_change(data, date=false)
 		goto_url(data.tv_source, "tab")
 	}
 
-	chat_announce("<i class='icon2 fa fa-television'></i>", '', `${data.tv_setter} changed the TV to ${name}`, 'small', false, title, onclick, true)
+	chat_announce("<i class='icon2 fa fa-television'></i>", '', `${data.tv_setter} changed the tv to ${name}`, 'small', false, title, onclick, true)
 }
 
 function ban(uname)
