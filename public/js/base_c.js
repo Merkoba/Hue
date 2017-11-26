@@ -96,6 +96,7 @@ var fetched_room_id
 var utilz = Utilz()
 var log_messages
 var first_opacity_checked = false
+var change_type
 
 function init()
 {
@@ -127,6 +128,14 @@ function init()
 	start_userlist_click_events()
 	start_roomlist_click_events()
 	setup_media_video()
+	set_default_theme()
+	start_username_context_menu()
+	start_main_menu_context_menu()
+	start_played_context_menu()
+	start_volume_context_menu()
+	start_metadata_loop()
+	make_main_container_visible()
+	start_titles()	
 	start_socket()
 }
 
@@ -605,29 +614,21 @@ function start_socket()
 			is_public = data.public
 			check_priv(data)
 			setup_youtube_video_iframe()
+
 			if(data.active_media === "image")
 			{
-				change()
+				change("image")
 			}
 
 			else
 			{
 				setup_tv(data)
 			}
-
-			setup_media_display()
-			start_username_context_menu()
-			start_main_menu_context_menu()
-			start_played_context_menu()
-			start_volume_context_menu()
-			start_metadata_loop()
-			set_footer_username()
-			make_main_container_visible()
+			
 			clear_chat()
 			check_firstime()
 			get_input_history()
 			start_heartbeat()
-			start_titles()
 			
 			started = true
 		}
@@ -651,7 +652,7 @@ function start_socket()
 		{
 			set_image_info(data)
 			announce_uploaded_image(data)
-			change()
+			change("image")
 		}
 
 		else if(data.type === 'userjoin')
@@ -1011,12 +1012,12 @@ function setup_tv(data)
 
 	if(tv_type === "youtube")
 	{
-		show_youtube_video()
+		change("youtube_video")
 	}
 
 	else if(data.tv_type === "url")
 	{
-		show_video()
+		change("video")
 	}	
 }
 
@@ -1030,9 +1031,8 @@ function show_youtube_video()
 	$("#media_video").css("display", "none")
 	$("#media_youtube_video_container").css("display", "flex")
 
-	start_video_mode()
+	set_default_theme()
 	fix_youtube_video_iframe()
-
 }
 
 function show_video()
@@ -1045,10 +1045,10 @@ function show_video()
 	$("#media_youtube_video_container").css("display", "none")
 	$("#media_video").css("display", "block")
 
-	start_video_mode()
+	set_default_theme()
 }
 
-function start_video_mode()
+function set_default_theme()
 {
 	set_opacity(1)
 
@@ -2744,7 +2744,7 @@ function start_dropzone()
 		maxFiles: 1,
 		maxFilesize: max_image_size / 1024,
 		autoProcessQueue: false,
-		clickable: '#footer_upload_icon',
+		clickable: '#media_image, #footer_upload_icon',
 		acceptedFiles: "image/jpeg,image/png,image/gif"
 	})
 
@@ -3665,8 +3665,15 @@ function self_check_images(msg)
 	}
 }
 
-function change()
+function change(type, check=false)
 {
+	if(check && change_type !== undefined && change_type !== type)
+	{
+		return false
+	}
+
+	change_type = type
+
 	if(started)
 	{
 		alert_title()
@@ -3677,8 +3684,28 @@ function change()
 		change_when_focused = true
 		return false
 	}
+
+	if(type === "image")
+	{
+		show_image()
+	}
 	
-	$('#media_image').attr('src', image_url)
+	else if(type === "youtube_video")
+	{
+		show_youtube_video()
+	}
+
+	else if(type === "video")
+	{
+		show_video()
+	}
+}
+
+function show_image()
+{
+	setup_opacity()
+
+	$('#media_image').attr('src', image_url)	
 }
 
 function start_image_events()
@@ -3694,8 +3721,6 @@ function start_image_events()
 
 			if(colors === null)
 			{
-				image_url = default_image_url
-				change()
 				return
 			}
 
@@ -3717,33 +3742,13 @@ function start_image_events()
 
 			var background_color2 = color2
 
-			if(settings.header_contrast)
-			{
-				var header_bg_color = background_color2
-			}
-
-			else
-			{
-				var header_bg_color = background_color
-			}
-
-			if(settings.footer_contrast)
-			{
-				var footer_bg_color = background_color2
-			}
-
-			else
-			{
-				var footer_bg_color = background_color
-			}
-
 			$('body').css('background-color', background_color)
-			$('#header').css('background-color', header_bg_color)
+			$('#header').css('background-color', background_color2)
 			$('#header').css('color', font_color)
 			$('#chat_area').css('background-color', background_color)
 			$('#chat_area').css('color', font_color)
 			$('#chat_separator').css('background-color', background_color)
-			$('#footer').css('background-color', footer_bg_color)
+			$('#footer').css('background-color', background_color2)
 			$('#footer').css('color', font_color)
 			$('#media').css('background-color', background_color)
 
@@ -3758,8 +3763,6 @@ function start_image_events()
 					$('#background_image').css('background-position', 'center center')  
 				}
 			}
-
-			setup_opacity()			
 
 			$("#media_image").css("display", "block")
 			$("#media_video").css("display", "none")
@@ -3783,16 +3786,7 @@ function start_image_events()
 			setup_opacity()
 			first_opacity_checked = true		
 		}
-	})
-
-	$("#media_image").on("error", function() 
-	{
-		if(image_url !== default_image_url)
-		{
-			image_url = default_image_url
-			change()
-		}
-	})
+	})	
 
 	$('#test_image')[0].addEventListener('load', function() 
 	{
@@ -4699,8 +4693,6 @@ function announce_new_username(data)
 	if(username === data.old_username)
 	{
 		username = data.username
-		
-		set_footer_username()
 
 		if(show)
 		{
@@ -5207,7 +5199,7 @@ function activate_window_visibility_listener()
 			if(change_when_focused)
 			{
 				change_when_focused = false
-				change()
+				change(change_type)
 			}
 		}
 
@@ -5980,7 +5972,7 @@ function announce_uploaded_image(data, date=false)
 
 	var onclick = function()
 	{
-		show_image(data.image_url, title)
+		show_modal_image(data.image_url, title)
 	}
 
 	chat_announce("<i class='icon2 fa fa-camera'></i>", '', `${data.image_uploader} uploaded an image`, 'small', false, title, onclick, true)
@@ -6998,28 +6990,10 @@ function get_settings()
 		settings.background_image = settings_default_background_image
 		changed = true
 	}
-
-	if(settings.foreground_image === undefined)
-	{
-		settings.foreground_image = settings_default_foreground_image
-		changed = true
-	}
 	
 	if(settings.custom_scrollbars === undefined)
 	{
 		settings.custom_scrollbars = settings_default_custom_scrollbars
-		changed = true
-	}
-
-	if(settings.header_contrast === undefined)
-	{
-		settings.header_contrast = settings_default_header_contrast
-		changed = true
-	}
-
-	if(settings.footer_contrast === undefined)
-	{
-		settings.footer_contrast = settings_default_footer_contrast
 		changed = true
 	}
 
@@ -7043,12 +7017,6 @@ function save_settings()
 function start_settings_state()
 {
 	$("#setting_background_image").prop("checked", settings.background_image)
-	
-	$("#setting_foreground_image").prop("checked", settings.foreground_image)
-
-	$("#setting_header_contrast").prop("checked", settings.header_contrast)
-	
-	$("#setting_footer_contrast").prop("checked", settings.footer_contrast)
 
 	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
 
@@ -7066,29 +7034,7 @@ function start_settings_listeners()
 	$("#setting_background_image").change(function()
 	{
 		settings.background_image = $("#setting_background_image").prop("checked")
-		change()
-		setup_opacity()
-		save_settings()
-	})
-
-	$("#setting_foreground_image").change(function()
-	{
-		settings.foreground_image = $("#setting_foreground_image").prop("checked")
-		setup_media_display()
-		save_settings()
-	})
-
-	$("#setting_header_contrast").change(function()
-	{
-		settings.header_contrast = $("#setting_header_contrast").prop("checked")
-		change()
-		save_settings()
-	})
-
-	$("#setting_footer_contrast").change(function()
-	{
-		settings.footer_contrast = $("#setting_footer_contrast").prop("checked")
-		change()
+		change("image", true)
 		save_settings()
 	})
 
@@ -7116,21 +7062,6 @@ function setup_opacity()
 	{
 		set_opacity(1)
 	}
-}
-
-function setup_media_display()
-{
-	if(settings.foreground_image)
-	{
-		$("#media").css("display", "flex")
-	}
-
-	else
-	{
-		$("#media").css("display", "none")
-	}
-
-	update_chat_scrollbar()
 }
 
 function start_storageui()
@@ -7215,9 +7146,7 @@ function reload_settings()
 	start_settings_state()
 	change_modal_color(settings.modal_color)
 	setup_scrollbars()
-	change()
-	setup_opacity()
-	setup_media_display()
+	change("image", true)
 }
 
 var played_filter_timer = (function() 
@@ -7525,11 +7454,6 @@ function onYouTubePlayerReady2()
 	youtube_video_player.mute()
 
 	init()
-}
-
-function set_footer_username()
-{
-	$("#footer_username").text(`[${username}]`)
 }
 
 function show_userinfo()
@@ -7920,7 +7844,7 @@ function show_log()
 	}
 }
 
-function show_image(url, title)
+function show_modal_image(url, title)
 {
 	msg_image.show(`<div id="modal_spinner" class='spinner1'></div><img title="${title}" id="modal_image" class="modal_image" src="${url}">`, function()
 	{
