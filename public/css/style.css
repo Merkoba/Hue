@@ -831,3 +831,8 @@ input[type=text], textarea
 {
 	font-size: 1.4em;
 }
+
+#Msg-content-image
+{
+	padding: 0 !important;
+}

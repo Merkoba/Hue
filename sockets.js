@@ -2903,7 +2903,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					ACL: "public-read",
 					Body: data,
 					Bucket: sconfig.s3_bucket_name, 
-					Key: `${sconfig.s3_images_location}${fname}`
+					Key: `${sconfig.s3_images_location}${fname}`,
+					CacheControl: `max-age=${sconfig.s3_cache_max_age}`
 				}).promise()
 
 				.then(ans =>

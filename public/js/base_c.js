@@ -2744,7 +2744,7 @@ function start_dropzone()
 		maxFiles: 1,
 		maxFilesize: max_image_size / 1024,
 		autoProcessQueue: false,
-		clickable: '#media_image, #footer_upload_icon',
+		clickable: '#footer_upload_icon',
 		acceptedFiles: "image/jpeg,image/png,image/gif"
 	})
 
@@ -3563,7 +3563,7 @@ function start_chat_click_events()
 {
 	$("#chat_area").on("click", ".chat_uname", function() 
 	{
-		add_to_input($(this).text())
+		change_input(`>${$(this).closest('.chat_message').find('.chat_content').eq(0).text()}`) 		
 	})	
 }
 
@@ -6833,6 +6833,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "image",
+			window_x: "floating_right",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)

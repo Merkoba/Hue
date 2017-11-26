@@ -21,12 +21,12 @@
 		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
 
-		<script src="/js/msg.min.js?v=7"></script>
+		<script src="/js/msg.min.js?v=8"></script>
 		<script src="/js/storageui.min.js?v=3"></script>
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=182"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=183"/>
 
 		<script>
 			<% 
@@ -112,7 +112,7 @@
 
 					<div id='media' class='unselectable' draggable='false'>
 
-						<img id='media_image' draggable='false'>
+						<img id='media_image' onclick='show_image(this.src, this.title)' draggable='false'>
 						
 						<div id='media_youtube_video_container'>
 							<div id='media_youtube_video'></div>
@@ -468,7 +468,7 @@
 
 		<div id='youtube_player'></div>
 
-		<script src="/js/base_o.js?ver=677"></script>
+		<script src="/js/base_c.js?ver=678"></script>
 		<script src="https://www.youtube.com/iframe_api"></script>
 
 	</body>
