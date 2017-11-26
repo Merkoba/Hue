@@ -756,13 +756,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			socket.broadcast.in(socket.room_id).emit('update', {type:'chat_msg', username:socket.username, msg:data.msg})
 
 			rooms[socket.room_id].activity = true
-			
-			if(rooms[socket.room_id].log)
-			{
-				var message = {type:"chat", username:socket.username, content:data.msg, date:Date.now()}
-
-				rooms[socket.room_id].log_messages.push(message)
-			}
 
 			if(rooms[socket.room_id].log)
 			{
