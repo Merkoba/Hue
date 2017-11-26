@@ -1052,9 +1052,9 @@ function start_video_mode()
 {
 	set_opacity(1)
 
-	var background_color = "#181818"
-	var background_color2 = "#2b2b2b"
-	var font_color = "#f2f2f2"
+	var background_color = "rgb(24,24,24)"
+	var background_color2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
+	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
 
 	$('body').css('background-color', background_color)
 	$('#header').css('background-color', background_color2)
@@ -2951,8 +2951,6 @@ function activate_key_detection()
 			}
 		}
 
-		console.log(234)
-
 		focus_input()
 
 		if(e.key === "Enter")
@@ -3124,10 +3122,10 @@ function add_to_history(msg)
 
 	if(input_history.length >= input_history_crop_limit)
 	{
-		input_history.shift()
+		input_history.splice(0, input_history.length - input_history_crop_limit + 1)
 	}
 
-	push_to_input_history([msg, nice_date()])	
+	push_to_input_history([msg, nice_date()])
 }
 
 function push_to_input_history(item)
@@ -6973,7 +6971,6 @@ function after_modal_close(instance)
 
 function change_modal_color(color)
 {
-	console.log(345)
 	for(var ins of msg_menu.instances())
 	{
 		ins.change_class(color)
