@@ -26,7 +26,7 @@
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=180"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=181"/>
 
 		<script>
 			<% 
@@ -69,10 +69,12 @@
 							<span class='hspacer1'></span>|<span class='hspacer1'></span>
 							<span class='header_item' id='usercount' onclick='show_userlist()'></span>
 							<span class='hspacer1'></span>|<span class='hspacer1'></span>
+
 							<span class='header_item' id='toggle_radio' onclick='toggle_radio()'>
 								<i class='icon fa fa-volume-up' id='playing_icon'></i>
 								<span id='toggle_radio_text'>Start Radio</span>
 							</span>
+
 							<span id='volume_area'>
 								<span class='hspacer1'></span>|<span class='hspacer1'></span>
 								<span id='volume_controls'>
@@ -82,6 +84,7 @@
 									<i id='header_icon_plus' class='header_item icon fa fa-plus' onclick='volume_increase()'></i>
 								</span>
 							</span>
+
 							<span id="now_playing_area" onclick="show_played()">
 								<span class='hspacer1'></span>|<span class='hspacer1'></span> 
 								<span id='now_playing_controls'>
@@ -129,9 +132,9 @@
 						<i class='fa fa-volume-up footer_icon nicetitle' id='footer_radio_icon' onclick="show_radio_url_picker()" title='Change the Radio'></i>
 						<i class='fa fa-television footer_icon nicetitle' id='footer_tv_icon' onclick="show_tv_url_picker()" title='Change the TV'></i>
 
-						<span id='footer_username' class='unselectable' onClick="show_user_info()"></span>
-
 						<input type='text' id='input'>
+						
+						<span id='footer_user_info' class='fa fa-navicon footer_icon nicetitle' onClick="show_user_info()"></span>
 
 						<span id='footer_icons'>
 						</span>
@@ -277,11 +280,9 @@
 
 		<script id='template_user_info' type='text/x-handlebars-template'>
 
-				<div id="user_info">{{{info}}}</div>
-				<div class="spacer2"></div>
-				<div class="menu_item_smaller" onclick="request_details()">Details</div>
-				<span class='hspacer1'></span>|<span class='hspacer1'></span>
-				<div class="menu_item_smaller" onclick="logout()">Logout</div>
+				<div id="user_info">{{{info}}}</div>		
+				<div class="spacer3"></div>
+				<span class="menu_item_smaller" onclick="logout()">Logout</span>
 
 		</script>
 
@@ -316,11 +317,6 @@
 
 				<div class="setting_title">Footer Contrast</div>
 				<input type="checkbox" class="setting_checkbox" id="setting_footer_contrast">
-				
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Username On Footer</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_username_on_footer">
 
 				<div class='spacer1'></div>
 
@@ -478,7 +474,7 @@
 
 		<div id='youtube_player'></div>
 
-		<script src="/js/base_c.js?ver=671"></script>
+		<script src="/js/base_o.js?ver=672"></script>
 		<script src="https://www.youtube.com/iframe_api"></script>
 
 	</body>

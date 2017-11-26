@@ -127,6 +127,7 @@ function init()
 	start_played_click_events()
 	start_userlist_click_events()
 	start_roomlist_click_events()
+	setup_media_video()
 	start_socket()
 }
 
@@ -617,7 +618,6 @@ function start_socket()
 			}
 
 			setup_media_display()
-			setup_username_on_footer()
 			start_username_context_menu()
 			start_main_menu_context_menu()
 			start_played_context_menu()
@@ -1024,6 +1024,8 @@ function setup_tv(data)
 
 function show_youtube_video()
 {
+	$("#media_video")[0].pause()
+
 	youtube_video_player.loadVideoById({videoId:get_youtube_id(tv_source), startSeconds:get_youtube_time(tv_source)})
 	
 	$("#media_image").css("display", "none")
@@ -1032,6 +1034,7 @@ function show_youtube_video()
 
 	start_video_mode()
 	fix_youtube_video_iframe()
+
 }
 
 function show_video()
@@ -3702,6 +3705,9 @@ function start_image_events()
 	{
 		try 
 		{
+			youtube_video_player.stopVideo()
+			$("#media_video")[0].pause()
+
 			var colors = colorlib.get_dominant(this, 1)
 
 			if(colors === null)
@@ -3771,9 +3777,7 @@ function start_image_events()
 				}
 			}
 
-			setup_opacity()
-
-			youtube_video_player.stopVideo()			
+			setup_opacity()			
 
 			$("#media_image").css("display", "block")
 			$("#media_video").css("display", "none")
@@ -7037,12 +7041,6 @@ function get_settings()
 		changed = true
 	}
 
-	if(settings.username_on_footer === undefined)
-	{
-		settings.username_on_footer = settings_default_username_on_footer
-		changed = true
-	}
-
 	if(settings.modal_color === undefined)
 	{
 		settings.modal_color = settings_default_modal_color
@@ -7069,8 +7067,6 @@ function start_settings_state()
 	$("#setting_header_contrast").prop("checked", settings.header_contrast)
 	
 	$("#setting_footer_contrast").prop("checked", settings.footer_contrast)
-	
-	$("#setting_username_on_footer").prop("checked", settings.username_on_footer)
 
 	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
 
@@ -7114,13 +7110,6 @@ function start_settings_listeners()
 		save_settings()
 	})
 
-	$("#setting_username_on_footer").change(function()
-	{
-		settings.username_on_footer = $("#setting_username_on_footer").prop("checked")
-		setup_username_on_footer()
-		save_settings()
-	})
-
 	$("#setting_custom_scrollbars").change(function()
 	{
 		settings.custom_scrollbars = $("#setting_custom_scrollbars").prop("checked")
@@ -7160,19 +7149,6 @@ function setup_media_display()
 	}
 
 	update_chat_scrollbar()
-}
-
-function setup_username_on_footer()
-{
-	if(settings.username_on_footer)
-	{
-		$("#footer_username").css("display", "inline-block")
-	}
-
-	else
-	{
-		$("#footer_username").css("display", "none")
-	}
 }
 
 function start_storageui()
@@ -7260,7 +7236,6 @@ function reload_settings()
 	change()
 	setup_opacity()
 	setup_media_display()
-	setup_username_on_footer()
 }
 
 var played_filter_timer = (function() 
@@ -7587,39 +7562,25 @@ function get_user_info_html()
 {
 	var info = ""
 
+	info += `<div class='bigger'>${username}</div>`
+	
+
 	if(priv === "admin")
 	{
-		info += "<div class='info_item'><div class='info_item_content'>You are an admin</div></div>"
+		info += `<div class='spacer5'></div>`
+		info += "<div>(You are an admin)</div>"
 	}
 
 	else if(priv === "op")
 	{
-		info += "<div class='info_item'><div class='info_item_content'>You are an op</div></div>"
+		info += `<div class='spacer5'></div>`
+		info += "<div>(You are an op)</div>"
 	}
 
 	else if(priv === "voice")
 	{
-		info += "<div class='info_item'><div class='info_item_content'>You have voice</div></div>"
-	}
-
-	if(can_chat)
-	{
-		info += "<div class='info_item'><div class='info_item_content'>You have chat permission</div></div>"
-	}
-
-	if(can_upload)
-	{
-		info += "<div class='info_item'><div class='info_item_content'>You have upload permission</div></div>"
-	}
-
-	if(can_radio)
-	{
-		info += "<div class='info_item'><div class='info_item_content'>You have radio permission</div></div>"
-	}
-
-	if(can_tv)
-	{
-		info += "<div class='info_item'><div class='info_item_content'>You have TV permission</div></div>"
+		info += `<div class='spacer5'></div>`
+		info += "<div>(You have voice)</div>"
 	}
 
 	return urlize(info)
@@ -8101,4 +8062,9 @@ function start_titles()
 			arrowSize: 'small'
 		})
 	})
+}
+
+function setup_media_video()
+{
+	$("#media_video")[0].volume = 0
 }

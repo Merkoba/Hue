@@ -165,11 +165,6 @@ body, html
 	color: inherit;
 }
 
-#footer_icons
-{
-
-}
-
 .footer_icon
 {
 	padding-top: 0.7em;
@@ -487,6 +482,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-bottom: 1em;
 }
 
+.spacer5
+{
+	padding-top: 0.08em;
+	padding-bottom: 0.08em;
+}
+
 .hspacer1
 {
 	padding-left: 0.3em;
@@ -799,4 +800,19 @@ input[type=text], textarea
 	width: 14em;
 	border: 1px solid grey;
 	text-align: center;
+}
+
+.editor_area
+{
+	display: block;
+	font-size: 1em;
+	width: 35em;
+	height: 16em;
+	border: 1px solid grey;
+	resize: vertical;
+}
+
+.bigger
+{
+	font-size: 1.2em;
 }
