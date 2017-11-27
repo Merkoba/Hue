@@ -3592,13 +3592,13 @@ function update_chat(uname, msg, title=false)
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
-		var fmsg = $(`<div class='msg chat_message'>* <span class='chat_uname'></span> <span title='${t}' class='${contclasses}'></span> *</div>`)
+		var fmsg = $(`<div class='msg chat_message'>*&nbsp;<span class='chat_uname'></span> <span title='${t}' class='${contclasses}'></span>&nbsp;*</div>`)
 		$(fmsg).find('.chat_content').eq(0).text(msg.substr(4)).urlize()
 	}
 
 	else
 	{
-		var fmsg = $(`<div class='msg chat_message'><b><span class='chat_uname'></span>:</b>&nbsp<span title='${t}' class='${contclasses}'></span></div>`)
+		var fmsg = $(`<div class='msg chat_message'><span class='chat_uname_container'><b><span class='chat_uname'></span>:</b>&nbsp</span><span class='chat_content_container'><span title='${t}' class='${contclasses}'></span></span></div>`)
 		$(fmsg).find('.chat_content').eq(0).text(msg).urlize()
 	}
 	

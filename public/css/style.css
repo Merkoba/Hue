@@ -221,6 +221,19 @@ body, html
 	overflow-wrap: break-word;
 	word-break: break-word;
 	font-size: 1.2em;
+	display: flex;
+}
+
+.chat_uname_container
+{
+	flex-shrink: 1;
+	flex-grow: 0;
+}
+
+.chat_content_container
+{
+	flex-shrink: 1;
+	flex-grow: 1;
 }
 
 .announcement
