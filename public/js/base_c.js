@@ -75,7 +75,6 @@ var template_help
 var template_help2
 var template_help3
 var template_userinfo
-var storageui_interval
 var msg_menu
 var msg_userinfo
 var msg_userlist
@@ -83,7 +82,6 @@ var msg_roomlist
 var msg_played
 var msg_image
 var msg_info
-var msg_storageui
 var msg_username_picker
 var played_filtered = false
 var userlist_filtered = false
@@ -109,7 +107,6 @@ function init()
 	start_msg()
 	start_settings_state()
 	start_settings_listeners()
-	start_storageui()
 	start_filters()
 	start_image_events()
 	set_image_cors()
@@ -6844,40 +6841,6 @@ function start_msg()
 		})
 	)
 
-	msg_storageui = Msg
-	(
-		Object.assign({}, common,
-		{
-			id: "storageui",
-			after_create: function(instance)
-			{
-				after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				storageui_interval = setInterval(function()
-				{
-					if(settings.custom_scrollbars)
-					{
-						update_modal_scrollbar("storageui")
-					}
-				}, 1000)
-
-				after_modal_show(instance)
-				after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				clearInterval(storageui_interval)
-				after_modal_close(instance)
-			}
-		})
-	)
-
 	msg_info = Msg
 	(
 		Object.assign({}, common,
@@ -6915,7 +6878,6 @@ function start_msg()
 	msg_played.set(template_played())
 
 	msg_image.create()
-	msg_storageui.create()
 	msg_info.create()
 }
 
@@ -7062,91 +7024,6 @@ function setup_opacity()
 	{
 		set_opacity(1)
 	}
-}
-
-function start_storageui()
-{
-	storageui = StorageUI(
-	{
-		items:
-		[
-			{
-				name: "History",
-				ls_name: ls_input_history,
-				on_save: function(item)
-				{
-					on_storageui_save(item)
-				},
-				on_reset: function(item)
-				{
-					on_storageui_save(item, true)				
-				},
-				on_copied: function(item)
-				{
-					pup()
-				}
-			},
-			{
-				name: "Settings",
-				ls_name: ls_settings,
-				on_save: function(item)
-				{
-					on_storageui_save(item)
-				},
-				on_reset: function(item)
-				{
-					on_storageui_save(item, true)					
-				},
-				on_copied: function(item)
-				{
-					pup()
-				}
-			}
-		],
-		msg: msg_storageui
-	})
-}
-
-function on_storageui_save(item, reset=false)
-{
-	if(reset)
-	{
-		remove_local_storage(item.ls_name)
-	}
-
-	else
-	{
-		save_local_storage(item.ls_name, item.value)
-	}
-
-	if(item.ls_name === ls_settings)
-	{
-		reload_settings()
-	}
-
-	else if(item.ls_name === ls_input_history)
-	{
-		get_input_history()
-	}
-
-	if(!reset)
-	{
-		pup()
-	}
-}
-
-function show_data()
-{
-	storageui.menu()
-}
-
-function reload_settings()
-{
-	get_settings()
-	start_settings_state()
-	change_modal_color(settings.modal_color)
-	setup_scrollbars()
-	change("image", true)
 }
 
 var played_filter_timer = (function() 
