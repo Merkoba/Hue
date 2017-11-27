@@ -6,7 +6,7 @@
 	"default_main_room_name": "Hue",
 	"images_directory": "public/img",
 	"public_images_location": "/img/",
-	"default_image_url": "/img/default.gif",
+	"default_image_url": "/img/default.jpg",
 	"loading_image_url": "/img/loading.jpg",
 	"login_logo_url": "/img/animlogo.gif",
 	"default_profile_image_url": "/img/profile.jpg",
