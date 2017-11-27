@@ -7295,20 +7295,20 @@ function do_history_filter()
 
 	update_modal_scrollbar("info")
 
-	$('#Msg-content-container-info').scrollTop(0)	
+	$('#Msg-content-container-info').scrollTop(0)
 }
 
 function onYouTubeIframeAPIReady() 
 {
-	yt_player = new YT.Player('youtube_player', 
+	yt_player = new YT.Player('youtube_player',
 	{
-		events: 
+		events:
 		{
 			onReady: onYouTubePlayerReady
-		}		
+		}
 	})
 
-	yt_video_player = new YT.Player('media_youtube_video', 
+	yt_video_player = new YT.Player('media_youtube_video',
 	{
 		events: 
 		{
@@ -7318,7 +7318,8 @@ function onYouTubeIframeAPIReady()
 		{
 			autoplay: 1,
 			iv_load_policy: 3,
-		}	
+			rel: 0
+		}
 	})
 }
 
@@ -7860,7 +7861,10 @@ function toggle_media()
 		$("#media").css("display", "none")
 
 		youtube_video_player.stopVideo()
+		youtube_video_player.setVolume(0)
+		
 		$("#media_video")[0].pause()
+		$("#media_video")[0].volume = 0
 
 		$("#footer_toggle_media_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_media_icon").addClass("fa-toggle-off")

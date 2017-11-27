@@ -1,7 +1,7 @@
 {
 	"https_enabled": true,
 	"site_root": "https://hue.merkoba.com/",
-	"image_storage_s3_or_local": "local",
+	"image_storage_s3_or_local": "s3",
 	"main_room_id": "main",
 	"default_main_room_name": "Hue",
 	"images_directory": "public/img",
@@ -77,6 +77,6 @@
 	"max_jwt_token_length": 300,
 	"max_user_id_length": 100,
 	"allow_pasted_uploads": false,
-	"announce_joins": false,
-	"announce_parts": false
+	"announce_joins": true,
+	"announce_parts": true
 }
