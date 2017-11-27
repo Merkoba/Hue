@@ -72,6 +72,7 @@
 	"settings_default_background_image": true,
 	"settings_default_custom_scrollbars": true,
 	"settings_default_modal_color": "white",
+	"settings_default_show_media": true,
 	"jwt_expiration": 60000,
 	"max_jwt_token_length": 300,
 	"max_user_id_length": 100,

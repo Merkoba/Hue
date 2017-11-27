@@ -95,6 +95,7 @@ var utilz = Utilz()
 var log_messages
 var first_opacity_checked = false
 var change_type
+var media_enabled = true
 
 function init()
 {
@@ -3671,6 +3672,11 @@ function change(type, check=false)
 	}
 
 	change_type = type
+
+	if(!media_enabled)
+	{
+		return false
+	}	
 
 	if(started)
 	{
@@ -7829,4 +7835,42 @@ function start_titles()
 function setup_media_video()
 {
 	$("#media_video")[0].volume = 0
+}
+
+function toggle_media()
+{
+	media_enabled = !media_enabled
+
+	if(media_enabled)
+	{
+		$("#media").css("display", "flex")
+
+		$("#footer_toggle_media_icon").removeClass("fa-toggle-off")
+		$("#footer_toggle_media_icon").addClass("fa-toggle-on")
+
+		update_chat_scrollbar()
+
+		goto_bottom()
+
+		change(change_type)
+	}
+
+	else
+	{
+		$("#media").css("display", "none")
+
+		youtube_video_player.stopVideo()
+		$("#media_video")[0].pause()
+
+		$("#footer_toggle_media_icon").removeClass("fa-toggle-on")
+		$("#footer_toggle_media_icon").addClass("fa-toggle-off")
+
+		$("#footer_toggle_media_icon")
+
+		update_chat_scrollbar()
+
+		goto_bottom()
+
+		set_default_theme()
+	}
 }

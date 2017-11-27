@@ -64,7 +64,7 @@
 
 						<div id='header_items_inner'>
 
-							<i id='main_menu' class='header_item icon fa fa-th-large' onclick='show_menu()'></i>
+							<i id='main_menu' class='header_item icon fa fa-th-large nicetitle' onclick='show_menu()' title="Main Menu - If you are an admin or op you can right click it for some administration options"></i>
 							<span class='hspacer1'></span>|<span class='hspacer1'></span>
 							<span class='header_item' id='usercount' onclick='show_userlist()'></span>
 							<span class='hspacer1'></span>|<span class='hspacer1'></span>
@@ -133,7 +133,8 @@
 
 						<input type='text' id='input'>
 						
-						<span id='footer_userinfo' class='fa fa-navicon footer_icon nicetitle' onClick="show_userinfo()"></span>
+						<i class='fa fa-toggle-on footer_icon nicetitle' id='footer_toggle_media_icon' onclick="toggle_media()" title='Toggle Media'></i>
+						<span id='footer_userinfo' class='fa fa-navicon footer_icon nicetitle' onClick="show_userinfo()" title="User Menu"></span>
 
 						<span id='footer_icons'>
 						</span>
@@ -448,7 +449,7 @@
 
 		<div id='youtube_player'></div>
 
-		<script src="/js/base_c.js?ver=686"></script>
+		<script src="/js/base_o.js?ver=690"></script>
 		<script src="https://www.youtube.com/iframe_api"></script>
 
 	</body>
