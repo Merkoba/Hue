@@ -836,3 +836,8 @@ input[type=text], textarea
 {
 	padding: 0 !important;
 }
+
+.padding1
+{
+	padding: 2em;
+}

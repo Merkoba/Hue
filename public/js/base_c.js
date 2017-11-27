@@ -960,6 +960,7 @@ function setup_radio(data)
 		
 		get_metadata = true
 		no_meta_count = 0
+
 		get_radio_metadata()
 		
 		if(youtube_player !== undefined)
@@ -4818,12 +4819,7 @@ function show_playing_file()
 
 	if(s.length > 1)
 	{
-		var p = s.pop()
-
-		$('#now_playing').text(p)
-		$('#now_playing_controls').data('q', p)
-
-		show_nowplaying()
+		push_played(false, {s1: s.pop(), s2:radio_source})
 	}
 
 	else
@@ -7734,7 +7730,7 @@ function show_modal_image(url, title)
 
 		$('#modal_image').eq(0).on("error", function() 
 		{
-			msg_image.set("This image is no longer available")
+			msg_image.set("<div class='padding1'>Image no longer available</div>")
 		})
 	})
 }
