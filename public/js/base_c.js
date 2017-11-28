@@ -101,7 +101,6 @@ function init()
 {
 	get_volume()
 	activate_key_detection()
-	start_loading_image()
 	set_opacity(general_opacity)	
 	compile_templates()
 	get_settings()
@@ -132,19 +131,17 @@ function init()
 	start_played_context_menu()
 	start_volume_context_menu()
 	start_metadata_loop()
-	make_main_container_visible()
-	start_titles()	
+	start_titles()
 	start_socket()
 }
 
 function make_main_container_visible()
 {
-	$("#main_container").css("visibility", "initial")	
-}
-
-function start_loading_image()
-{
-	$("#background_image").css("background-image", `url('${loading_image_url}')`)
+	setTimeout(function()
+	{
+		$("body").css("background-image", "none")
+		$("#main_container").css("opacity", 1)
+	}, 2000)
 }
 
 function get_local_storage(ls_name)
@@ -596,7 +593,6 @@ function start_socket()
 
 		if(data.type === 'joined')
 		{
-			started = false
 			connections += 1
 			room_name = data.room_name
 			username = data.username
@@ -611,7 +607,9 @@ function start_socket()
 			update_title()
 			is_public = data.public
 			check_priv(data)
+
 			setup_youtube_video_iframe()
+			make_main_container_visible()
 
 			if(data.active_media === "image")
 			{
@@ -1055,7 +1053,6 @@ function set_default_theme()
 	var background_color2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
 	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
 
-	$('body').css('background-color', background_color)
 	$('#header').css('background-color', background_color2)
 	$('#header').css('color', font_color)
 	$('#chat_area').css('background-color', background_color)
@@ -3678,11 +3675,6 @@ function change(type, check=false)
 		return false
 	}	
 
-	if(started)
-	{
-		alert_title()
-	}
-
 	if(afk)
 	{
 		change_when_focused = true
@@ -3703,12 +3695,17 @@ function change(type, check=false)
 	{
 		show_video()
 	}
+
+	else
+	{
+		return false
+	}
+
+	alert_title()
 }
 
 function show_image()
 {
-	setup_opacity()
-
 	$('#media_image').attr('src', image_url)	
 }
 
@@ -3746,7 +3743,6 @@ function start_image_events()
 
 			var background_color2 = color2
 
-			$('body').css('background-color', background_color)
 			$('#header').css('background-color', background_color2)
 			$('#header').css('color', font_color)
 			$('#chat_area').css('background-color', background_color)
@@ -3759,18 +3755,13 @@ function start_image_events()
 			if(settings.background_image)
 			{
 				$('#background_image').css('background-image', `url('${image_url}')`) 
-
-				if($('#background_image').css('background-repeat') === 'repeat')
-				{
-					$('#background_image').css('background-size', 'cover')          
-					$('#background_image').css('background-repeat', 'no-repeat')
-					$('#background_image').css('background-position', 'center center')  
-				}
 			}
 
 			$("#media_image").css("display", "block")
 			$("#media_video").css("display", "none")
-			$("#media_youtube_video_container").css("display", "none")			
+			$("#media_youtube_video_container").css("display", "none")
+
+			setup_opacity()
 		}
 
 		catch(err)
@@ -5109,6 +5100,11 @@ function change_volume_command(arg)
 
 function alert_title()
 {
+	if(!started)
+	{
+		return false
+	}
+
 	alert_timer = setTimeout(function()
 	{ 
 		if(document.hidden)
@@ -5124,6 +5120,11 @@ function alert_title()
 
 function alert_title2()
 {
+	if(!started)
+	{
+		return false
+	}
+
 	alert_timer = setTimeout(function()
 	{
 		if(document.hidden)

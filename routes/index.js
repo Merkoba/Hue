@@ -11,7 +11,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.site_root = config.site_root
 	c.vars.main_room_id = config.main_room_id
 	c.vars.default_image_url = config.default_image_url
-	c.vars.loading_image_url = config.loading_image_url
 	c.vars.default_radio_source = config.default_radio_source
 	c.vars.check_metadata_interval_duration = config.check_metadata_interval_duration
 	c.vars.general_opacity = config.general_opacity
