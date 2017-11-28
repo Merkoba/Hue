@@ -6922,6 +6922,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
+				instance.content.innerHTML = ""
 				info_vars_to_false()
 			}
 		})
@@ -7967,11 +7968,13 @@ function profile_image_selected(input)
 
 		reader.onload = function(e) 
 		{
-			var s = "<img id='profile_image_canvas_image'><div id='profile_image_canvas_button'>Upload</div>"
+			var s = "<img id='profile_image_canvas_image'><div id='profile_image_canvas_button'>Crop and Upload</div>"
 
 			msg_info.show(s, function()
 			{
 				$('#profile_image_canvas_image').attr('src', e.target.result)
+
+				$("#profile_image_picker").wrap('<form>').closest('form').get(0).reset()
 
 				var image = $('#profile_image_canvas_image')[0]
 

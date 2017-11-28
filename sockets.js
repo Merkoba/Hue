@@ -648,15 +648,20 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 						socket.room_id = room_id
 
-						if(config.image_storage_s3_or_local === "local")
+						if(userinfo.profile_image === "")
+						{
+							socket.profile_image = ""
+						}
+
+						else if(userinfo.profile_image.indexOf(sconfig.s3_main_url) === -1)
 						{
 							socket.profile_image = config.public_images_location + userinfo.profile_image
 						}
 
-						else if(config.image_storage_s3_or_local === "s3")
+						else
 						{
 							socket.profile_image = userinfo.profile_image
-						}								
+						}
 
 						if(rooms[room_id] === undefined)
 						{
