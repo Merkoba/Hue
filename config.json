@@ -77,5 +77,6 @@
 	"max_user_id_length": 100,
 	"allow_pasted_uploads": false,
 	"announce_joins": true,
-	"announce_parts": true
+	"announce_parts": true,
+	"intro_delay": 1600
 }

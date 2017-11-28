@@ -140,8 +140,8 @@ function make_main_container_visible()
 	setTimeout(function()
 	{
 		$("body").css("background-image", "none")
-		$("#main_container").css("opacity", 1)
-	}, 2000)
+		$("#main_container").css("opacity", 1).css("pointer-events", "initial")
+	}, intro_delay)
 }
 
 function get_local_storage(ls_name)
@@ -1053,14 +1053,15 @@ function set_default_theme()
 	var background_color2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
 	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
 
-	$('#header').css('background-color', background_color2)
-	$('#header').css('color', font_color)
-	$('#chat_area').css('background-color', background_color)
-	$('#chat_area').css('color', font_color)
-	$('#chat_separator').css('background-color', background_color)
-	$('#footer').css('background-color', background_color2)
-	$('#footer').css('color', font_color)
-	$('#media').css('background-color', background_color)	
+	change_colors(background_color, background_color2, font_color)
+}
+
+function change_colors(background_color, background_color2, font_color)
+{	
+	$('.bg1').css('background-color', background_color)
+	$('.bg1').css('color', font_color)
+	$('.bg2').css('background-color', background_color2)
+	$('.bg2').css('color', font_color)	
 }
 
 function get_youtube_id(url)
@@ -3743,14 +3744,7 @@ function start_image_events()
 
 			var background_color2 = color2
 
-			$('#header').css('background-color', background_color2)
-			$('#header').css('color', font_color)
-			$('#chat_area').css('background-color', background_color)
-			$('#chat_area').css('color', font_color)
-			$('#chat_separator').css('background-color', background_color)
-			$('#footer').css('background-color', background_color2)
-			$('#footer').css('color', font_color)
-			$('#media').css('background-color', background_color)
+			change_colors(background_color, background_color2, font_color)
 
 			if(settings.background_image)
 			{
