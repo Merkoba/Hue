@@ -1096,7 +1096,7 @@ function get_youtube_time(url)
 
 function userjoin(data)
 {
-	addto_userlist(data.username, data.priv)
+	addto_userlist(data.username, data.priv, data.profile_image)
 
 	if(announce_joins && check_chat_permission(data.priv))
 	{		
@@ -1109,7 +1109,7 @@ function update_usercount(usercount)
 	$('#usercount').html(`${singular_or_plural(usercount, "Users")} Online`)
 }
 
-function addto_userlist(uname, prv)
+function addto_userlist(uname, prv, pi)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
@@ -1117,12 +1117,13 @@ function addto_userlist(uname, prv)
 		{
 			userlist[i][0] = uname
 			userlist[i][1] = prv
+			userlist[i][2] = pi
 			update_userlist()
 			return
 		}
 	}
 
-	userlist.push([uname, prv])
+	userlist.push([uname, prv, pi])
 	update_userlist()
 }
 
@@ -1258,13 +1259,25 @@ function priv_tag(p)
 	return s
 }
 
+function get_user_by_username(uname)
+{
+	for(var user of userlist)
+	{
+		if(user[0] === uname)
+		{
+			return user
+		}
+	}
+
+	return []
+}
+
 function start_userlist_click_events()
 {
 	$("#userlist").on("click", ".ui_item_uname", function()
 	{
-		add_to_input($(this).text()) 
-		close_all_modals()		
-	})
+		show_profile($(this).text(), get_user_by_username($(this).text())[2])
+	})	
 }
 
 function update_userlist()
@@ -8074,8 +8087,18 @@ function setup_show_profile()
 	})
 }
 
-function show_profile(uname, pi)
+function show_profile(uname, prof_image)
 {
+	if(prof_image === "" || prof_image === undefined)
+	{
+		var pi = default_profile_image_url
+	}
+
+	else
+	{
+		var pi = prof_image
+	}
+
 	msg_profile.show(function()
 	{
 		$("#show_profile_uname").text(uname)

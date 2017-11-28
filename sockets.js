@@ -683,7 +683,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							{
 								type: 'userjoin',
 								username: socket.username,
-								priv: socket.priv
+								priv: socket.priv,
+								profile_image: socket.profile_image
 							})
 
 							if(rooms[room_id].userlist === undefined)
@@ -691,7 +692,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 								rooms[room_id].userlist = []
 							}
 
-							rooms[room_id].userlist.push([socket.username, socket.priv])
+							rooms[room_id].userlist.push([socket.username, socket.priv, socket.profile_image])
 						}
 
 						socket.emit('update', 
