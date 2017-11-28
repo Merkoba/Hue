@@ -143,6 +143,7 @@ function make_main_container_visible()
 {
 	setTimeout(function()
 	{
+		goto_bottom(true)
 		$("body").css("background-image", "none")
 		$("#main_container").css("opacity", 1).css("pointer-events", "initial")
 	}, intro_delay)

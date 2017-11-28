@@ -649,6 +649,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .search_result_uname *
 {
+	font-size: 1em;
 	cursor: default;
 }
 
