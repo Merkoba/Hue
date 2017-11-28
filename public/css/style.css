@@ -232,16 +232,36 @@ body
 	display: flex;
 }
 
+.chat_right_side
+{
+	display: flex;
+	flex-direction: column;
+	padding-left: 1em;
+}
+
+.chat_profile_image
+{
+	max-height: 45px;
+	max-width: 45px;
+	cursor: pointer;
+}
+
 .chat_uname_container
 {
 	flex-shrink: 1;
 	flex-grow: 0;
 }
 
+.chat_uname
+{
+	font-size: 0.8em;
+}
+
 .chat_content_container
 {
 	flex-shrink: 1;
 	flex-grow: 1;
+	padding-top: 0.2em;
 }
 
 .announcement
@@ -712,13 +732,13 @@ select
 
 .msg
 {
-	padding-top: 0.4rem;
-	padding-bottom: 0.4rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
 }
 
 #chat_area > .msg:last-child
 {
-	padding-bottom: 2rem !important;
+	padding-bottom: 2.5rem !important;
 }
 
 input[type=text], textarea
@@ -861,4 +881,39 @@ input[type=text], textarea
 .padding1
 {
 	padding: 2em;
+}
+
+.big_profile_image
+{
+	max-height: 200px;
+	max-width: 200px;
+	cursor: pointer;
+}
+
+#profile_image_picker
+{
+	display: none;
+}
+
+#profile_image_canvas_image
+{
+	max-width: 50vw;
+	max-height: 50vh;
+}
+
+.cropper-view-box, .cropper-face 
+{
+	border-radius: 50% !important;
+}
+
+#profile_image_canvas_button
+{
+	font-size: 1.2em;
+	cursor: pointer;
+	padding-top: 1em;
+}
+
+#Msg-window-profile
+{
+	width: 22em !important;
 }

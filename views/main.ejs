@@ -13,12 +13,14 @@
 		<script src="/js/perfect-scrollbar.min.js?v=3"></script>
 		<script src="/js/nicescroll.min.js"></script>
 		<script src="/js/tippy.all.min.js"></script>
+		<script src="/js/cropper.min.js"></script>
 		<script type="text/javascript" src="/js/contextmenu/jquery.contextMenu.min.js"></script>
 		<script src="/js/contextmenu/jquery.ui.position.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="/css/perfect-scrollbar.css?v=3"/>
 		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/css/cropper.min.css">
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
 
 		<script src="/js/msg.min.js?v=12"></script>
@@ -178,8 +180,12 @@
 
 		<script id='template_userinfo' type='text/x-handlebars-template'>
 
-			<div class='bigger2' id='userinfo_username'>loading</div>
-	
+			<div class='bigger2' id='userinfo_username'>Loading</div>
+
+			<div class='spacer3'></div>
+			
+			<img id='userinfo_profile_image' class='big_profile_image' src='img/profile_default.jpg' onclick='open_profile_image_picker()'>
+
 			<div class='spacer3'></div>
 
 			<div id='settings' class='unselectable'>
@@ -336,6 +342,12 @@
 			<input type="text" id="played_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='played'></div>
+		</script>	
+
+		<script id='template_profile' type='text/x-handlebars-template'>
+			<div id='show_profile_uname' class='bigger2'>Loading</div>
+			<div class='spacer3'></div>
+			<img id='show_profile_image' class='big_profile_image'>`
 		</script>
 
 		<script id='template_help' type='text/x-handlebars-template'>
@@ -449,7 +461,9 @@
 
 		<div id='youtube_player'></div>
 
-		<script src="/js/base_o.js?ver=696"></script>
+		<input type='file' id='profile_image_picker' onchange='profile_image_selected(this)'>
+
+		<script src="/js/base_c.js?ver=696"></script>
 		<script src="https://www.youtube.com/iframe_api"></script>
 
 	</body>

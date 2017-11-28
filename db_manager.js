@@ -5,7 +5,7 @@ module.exports = function(db, config, sconfig, utilz)
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
 	const rooms_version = 25
-	const users_version = 23
+	const users_version = 25
 
 	function get_random_key()
 	{
@@ -510,6 +510,16 @@ module.exports = function(db, config, sconfig, utilz)
 							user.visited_rooms = []
 						}
 
+						if(typeof user.profile_image !== "string")
+						{
+							user.profile_image = ""
+						}
+
+						if(typeof user.profile_image_version !== "number")
+						{
+							user.profile_image_version = 0
+						}
+
 						if(typeof user.modified !== "number")
 						{
 							user.modified = Date.now()
@@ -573,6 +583,8 @@ module.exports = function(db, config, sconfig, utilz)
 					password_reset_link_date: 0,
 					password_reset_date: 0,
 					visited_rooms: [],
+					profile_image: "",
+					profile_image_version: 0,
 					modified: Date.now()
 				}
 

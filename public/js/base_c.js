@@ -75,12 +75,14 @@ var template_help
 var template_help2
 var template_help3
 var template_userinfo
+var template_profile
 var msg_menu
 var msg_userinfo
 var msg_userlist
 var msg_roomlist
 var msg_played
 var msg_image
+var msg_profile
 var msg_info
 var msg_username_picker
 var played_filtered = false
@@ -96,6 +98,7 @@ var log_messages
 var first_opacity_checked = false
 var change_type
 var media_enabled = true
+var profile_image
 
 function init()
 {
@@ -132,6 +135,7 @@ function init()
 	start_volume_context_menu()
 	start_metadata_loop()
 	start_titles()
+	setup_show_profile()
 	start_socket()
 }
 
@@ -201,6 +205,7 @@ function compile_templates()
 	template_help2 = Handlebars.compile($('#template_help2').html())
 	template_help3 = Handlebars.compile($('#template_help3').html())
 	template_userinfo = Handlebars.compile($('#template_userinfo').html())
+	template_profile = Handlebars.compile($('#template_profile').html())
 }
 
 function help()
@@ -588,7 +593,7 @@ function start_socket()
 	{
 		if(data.type === 'chat_msg')
 		{
-			update_chat(data.username, data.msg)
+			update_chat(data.username, data.msg, data.profile_image)
 		}
 
 		if(data.type === 'joined')
@@ -599,6 +604,7 @@ function start_socket()
 			set_image_info(data)
 			claimed = data.claimed
 			setup_radio(data)
+			setup_profile_image(data.profile_image)
 			userlist = data.userlist
 			update_userlist()
 			log_enabled = data.log
@@ -649,6 +655,13 @@ function start_socket()
 			set_image_info(data)
 			announce_uploaded_image(data)
 			change("image")
+		}
+
+		else if(data.type === 'profile_image_changed')
+		{
+			profile_image = data.profile_image
+
+			$("#userinfo_profile_image").attr("src", profile_image)
 		}
 
 		else if(data.type === 'userjoin')
@@ -3559,10 +3572,15 @@ function start_chat_click_events()
 	$("#chat_area").on("click", ".chat_uname", function() 
 	{
 		change_input(`>${$(this).closest('.chat_message').find('.chat_content').eq(0).text()}`) 		
+	})
+
+	$("#chat_area").on("click", ".chat_profile_image", function() 
+	{
+		show_profile($(this).closest(".chat_message").find(".chat_uname").eq(0).text(), $(this).attr('src')) 		
 	})	
 }
 
-function update_chat(uname, msg, title=false)
+function update_chat(uname, msg, profile_image, title=false)
 {
 	var contclasses = "chat_content"
 
@@ -3590,13 +3608,29 @@ function update_chat(uname, msg, title=false)
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
-		var fmsg = $(`<div class='msg chat_message'>*&nbsp;<span class='chat_uname'></span> <span title='${t}' class='${contclasses}'></span>&nbsp;*</div>`)
+		var fmsg = $(`<div class='msg chat_message'>*&nbsp;<span class='chat_uname'></span>&nbsp;<span title='${t}' class='${contclasses}'></span>&nbsp;*</div>`)
 		$(fmsg).find('.chat_content').eq(0).text(msg.substr(4)).urlize()
 	}
 
 	else
 	{
-		var fmsg = $(`<div class='msg chat_message'><span class='chat_uname_container'><b><span class='chat_uname'></span>:</b>&nbsp</span><span class='chat_content_container'><span title='${t}' class='${contclasses}'></span></span></div>`)
+		var s = `
+		<div class='msg chat_message'>
+			<span chat_profile_image_container'>
+				<img class='chat_profile_image' src='${profile_image}'>
+			</span>
+			<span class='chat_right_side'>
+				<span class='chat_uname_container'>
+					<span class='chat_uname'></span>
+				</span>
+				<span class='chat_content_container'>
+					<span title='${t}' class='${contclasses}'></span>
+				</span>
+			</span>
+		</div>`
+
+		var fmsg = $(s)
+
 		$(fmsg).find('.chat_content').eq(0).text(msg).urlize()
 	}
 	
@@ -4436,7 +4470,7 @@ function send_to_chat(msg)
 
 			if(can_chat)
 			{
-				update_chat(username, msg)	
+				update_chat(username, msg, profile_image)	
 				socket_emit('sendchat', {msg:msg})
 			}
 
@@ -6838,6 +6872,31 @@ function start_msg()
 		})
 	)
 
+	msg_profile = Msg
+	(
+		Object.assign({}, common,
+		{
+			id: "profile",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+			}
+		})
+	)
+
 	msg_info = Msg
 	(
 		Object.assign({}, common,
@@ -6873,6 +6932,7 @@ function start_msg()
 	msg_userlist.set(template_userlist())
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
+	msg_profile.set(template_profile())
 
 	msg_image.create()
 	msg_info.create()
@@ -7331,12 +7391,22 @@ function onYouTubePlayerReady2()
 	init()
 }
 
+function setup_userinfo()
+{
+	$('#userinfo_profile_image').get(0).addEventListener('load', function()
+	{
+		update_modal_scrollbar("userinfo")
+	})
+
+	$("#userinfo_profile_image").attr("src", profile_image)
+}
+
 function show_userinfo()
 {
 	msg_userinfo.show(function()
 	{
 		$("#userinfo_username").text(username)
-		update_modal_scrollbar("userinfo")
+		$("#userinfo_profile_image").attr("src", profile_image)
 	})
 }
 
@@ -7456,7 +7526,7 @@ function fill()
 	GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {}abc def ghi
 	jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|;`
 
-	update_chat(username, s)
+	update_chat(username, s, profile_image)
 }
 
 function confirm_logout()
@@ -7599,7 +7669,7 @@ function show_messages()
 			{
 				if(message.type === "chat")
 				{
-					update_chat(data.username, data.content, nice_date(message.date))
+					update_chat(data.username, data.content, data.profile_image, nice_date(message.date))
 				}
 
 				else if(message.type === "image")
@@ -7719,9 +7789,19 @@ function show_log()
 	}
 }
 
-function show_modal_image(url, title)
+function show_modal_image(url, title=false)
 {
-	msg_image.show(`<div id="modal_spinner" class='spinner1'></div><img title="${title}" id="modal_image" class="modal_image" src="${url}">`, function()
+	if(title)
+	{
+		var t = `title="${title}"`
+	}
+
+	else
+	{
+		var t = ""
+	}
+
+	msg_image.show(`<div id="modal_spinner" class='spinner1'></div><img ${t} id="modal_image" class="modal_image" src="${url}">`, function()
 	{
 		$('#modal_image').get(0).addEventListener('load', function()
 		{
@@ -7872,4 +7952,119 @@ function toggle_media()
 
 		set_default_theme()
 	}
+}
+
+function open_profile_image_picker()
+{
+	$("#profile_image_picker").click()
+}
+
+function profile_image_selected(input)
+{
+	if(input.files && input.files[0]) 
+	{
+		var reader = new FileReader()
+
+		reader.onload = function(e) 
+		{
+			var s = "<img id='profile_image_canvas_image'><div id='profile_image_canvas_button'>Upload</div>"
+
+			msg_info.show(s, function()
+			{
+				$('#profile_image_canvas_image').attr('src', e.target.result)
+
+				var image = $('#profile_image_canvas_image')[0]
+
+				var button = $('#profile_image_canvas_button')[0]
+
+				var croppable = false
+
+				var cropper = new Cropper(image, 
+				{
+					aspectRatio: 1,
+					viewMode: 1,
+					ready: function () 
+					{
+						croppable = true;
+						update_modal_scrollbar("info")
+					}
+				})
+
+				button.onclick = function () 
+				{
+					var cropped_canvas
+					var rounded_canvas
+					var roundedImage
+
+					if(!croppable) 
+					{
+						return
+					}
+
+					cropped_canvas = cropper.getCroppedCanvas()
+					
+					rounded_canvas = get_rounded_canvas(cropped_canvas)
+
+					rounded_canvas.toBlob(function(blob)
+					{
+						socket_emit("upload_profile_image",
+						{
+							image_file: blob
+						})
+
+						msg_info.close()
+					}, 'image/png', 0.95)
+				}			
+			})
+		}
+
+		reader.readAsDataURL(input.files[0])
+	}	
+}
+
+function get_rounded_canvas(sourceCanvas) 
+{
+	var canvas = document.createElement('canvas')
+	var context = canvas.getContext('2d')
+	var width = 300
+	var height = 300
+	canvas.width = width
+	canvas.height = height
+	context.imageSmoothingEnabled = true
+	context.drawImage(sourceCanvas, 0, 0, width, height)
+	context.globalCompositeOperation = 'destination-in'
+	context.beginPath()
+	context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true)
+	context.fill()
+	return canvas
+}
+
+function setup_profile_image(pi)
+{
+	if(pi === "")
+	{
+		profile_image = default_profile_image_url
+	}
+
+	else
+	{
+		profile_image = pi
+	}
+}
+
+function setup_show_profile()
+{
+	$('#show_profile_image').get(0).addEventListener('load', function()
+	{
+		update_modal_scrollbar("profile")
+	})
+}
+
+function show_profile(uname, pi)
+{
+	msg_profile.show(function()
+	{
+		$("#show_profile_uname").text(uname)
+		$("#show_profile_image").attr("src", pi)
+	})
 }

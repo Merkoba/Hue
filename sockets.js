@@ -111,6 +111,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
+		socket.on('upload_profile_image', function(data) 
+		{
+			try
+			{
+				upload_profile_image(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
 		socket.on('change_topic', function(data) 
 		{
 			try
@@ -613,7 +626,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						return get_out(socket)
 					}
 
-					db_manager.get_user({_id:socket.user_id}, {username:true})
+					db_manager.get_user({_id:socket.user_id}, {username:true, profile_image:true})
 
 					.then(userinfo =>
 					{
@@ -633,7 +646,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 						var room_id = info._id.toString()
 
-						socket.room_id = room_id		
+						socket.room_id = room_id
+
+						if(config.image_storage_s3_or_local === "local")
+						{
+							socket.profile_image = config.public_images_location + userinfo.profile_image
+						}
+
+						else if(config.image_storage_s3_or_local === "s3")
+						{
+							socket.profile_image = userinfo.profile_image
+						}								
 
 						if(rooms[room_id] === undefined)
 						{
@@ -663,7 +686,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 								rooms[room_id].userlist = []
 							}
 
-							rooms[room_id].userlist.push([socket.username, socket.priv])				
+							rooms[room_id].userlist.push([socket.username, socket.priv])
 						}
 
 						socket.emit('update', 
@@ -698,7 +721,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							tv_setter: info.tv_setter, 
 							tv_date: info.tv_date, 
 							active_media: info.active_media,
-							claimed: info.claimed
+							claimed: info.claimed,
+							profile_image: socket.profile_image
 						})				
 
 						db_manager.save_visited_room(socket.user_id, socket.room_id)
@@ -753,7 +777,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return false
 			}
 
-			socket.broadcast.in(socket.room_id).emit('update', {type:'chat_msg', username:socket.username, msg:data.msg})
+			socket.broadcast.in(socket.room_id).emit('update', 
+			{
+				type:'chat_msg', 
+				username: socket.username, 
+				msg: data.msg,
+				profile_image: socket.profile_image
+			})
 
 			rooms[socket.room_id].activity = true
 
@@ -765,113 +795,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					data: 
 					{
 						username: socket.username,
-						content: data.msg
+						content: data.msg,
+						profile_image: socket.profile_image
 					},
 					date: Date.now()
 				}
 
 				rooms[socket.room_id].log_messages.push(message)
-			}
-		}
-	}
-
-	function pasted(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(data.image_url === undefined)
-			{
-				return get_out(socket)
-			}
-
-			if(data.image_url.length === 0)
-			{
-				return get_out(socket)
-			}
-
-			if(data.image_url.length > config.max_input_length)
-			{
-				return get_out(socket)
-			}		    
-
-			if(!check_permission(rooms[socket.room_id].upload_permission, socket.priv))
-			{
-				return false
-			}	
-
-			data.image_url = data.image_url.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
-
-			var clean = check_image_url(data.image_url)
-
-			if(clean)
-			{
-				var fname = `${socket.room_id}_${Date.now()}_${get_random_int(0, 1000)}.${data.image_url.split('.').pop(-1)}`
-				
-				exec(`wget -O ${images_root}/${fname} -q "${data.image_url}"`, function(status, output)
-				{
-					exec(`stat -c '%s' ${images_root}/${fname}`, function(status, output) 
-					{
-						output = parseInt(output) / 1024
-
-						if(output > 0 && (output <= config.max_image_size))
-						{
-							change_image(socket.room_id, fname, socket.username, output)
-						}
-
-						else
-						{
-							fs.unlink(`${images_root}/${fname}`, function(){})
-
-							socket.emit('update', {room:socket.room_id, type:'upload_error'})								
-						}
-					})
-				})
-			}
-		}
-	}
-
-	function uploaded(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(data.image_file === undefined)
-			{
-				return get_out(socket)
-			}
-
-			if(!check_permission(rooms[socket.room_id].upload_permission, socket.priv))
-			{
-				return false
-			}
-
-			var size = data.image_file.toString('ascii').length / 1024
-
-			if(size === 0 || (size > config.max_image_size))
-			{
-				socket.emit('update', {room:socket.room_id, type:'upload_error'})													
-				return false
-			}
-
-			data.name = data.name.replace(/\s/g, '')
-
-			var clean = check_image_url(data.name)
-
-			if(clean)
-			{
-				var fname = `${socket.room_id}_${Date.now()}_${get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
-
-				fs.writeFile(images_root + '/' + fname, data.image_file, function(err,data) 
-				{
-					if(err) 
-					{
-						socket.emit('update', {room:socket.room_id, type:'upload_error'})
-					}
-
-					else 
-					{
-						change_image(socket.room_id, fname, socket.username, size)
-					}
-				})
 			}
 		}
 	}
@@ -2881,6 +2811,112 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		})
 	}
 
+	function pasted(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(data.image_url === undefined)
+			{
+				return get_out(socket)
+			}
+
+			if(data.image_url.length === 0)
+			{
+				return get_out(socket)
+			}
+
+			if(data.image_url.length > config.max_input_length)
+			{
+				return get_out(socket)
+			}		    
+
+			if(!check_permission(rooms[socket.room_id].upload_permission, socket.priv))
+			{
+				return false
+			}	
+
+			data.image_url = data.image_url.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
+
+			var clean = check_image_url(data.image_url)
+
+			if(clean)
+			{
+				var fname = `${socket.room_id}_${Date.now()}_${get_random_int(0, 1000)}.${data.image_url.split('.').pop(-1)}`
+				
+				exec(`wget -O ${images_root}/${fname} -q "${data.image_url}"`, function(status, output)
+				{
+					exec(`stat -c '%s' ${images_root}/${fname}`, function(status, output) 
+					{
+						output = parseInt(output) / 1024
+
+						if(output > 0 && (output <= config.max_image_size))
+						{
+							change_image(socket.room_id, fname, socket.username, output)
+						}
+
+						else
+						{
+							fs.unlink(`${images_root}/${fname}`, function(){})
+
+							socket.emit('update', {room:socket.room_id, type:'upload_error'})								
+						}
+					})
+				})
+			}
+		}
+	}
+
+	function uploaded(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(data.image_file === undefined)
+			{
+				return get_out(socket)
+			}
+
+			if(data.name === undefined)
+			{
+				return get_out(socket)
+			}
+
+			if(!check_permission(rooms[socket.room_id].upload_permission, socket.priv))
+			{
+				return false
+			}
+
+			var size = data.image_file.toString('ascii').length / 1024
+
+			if(size === 0 || (size > config.max_image_size))
+			{
+				socket.emit('update', {room:socket.room_id, type:'upload_error'})													
+				return false
+			}
+
+			data.name = data.name.replace(/\s/g, '')
+
+			var clean = check_image_url(data.name)
+
+			if(clean)
+			{
+				var fname = `${socket.room_id}_${Date.now()}_${get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
+
+				fs.writeFile(images_root + '/' + fname, data.image_file, function(err,data) 
+				{
+					if(err) 
+					{
+						socket.emit('update', {room:socket.room_id, type:'upload_error'})
+					}
+
+					else 
+					{
+						change_image(socket.room_id, fname, socket.username, size)
+					}
+				})
+			}
+		}
+	}	
+
 	function change_image(room_id, fname, uploader, size)
 	{
 		if(config.image_storage_s3_or_local === "local")
@@ -3030,7 +3066,136 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			console.error(err)
 		})
+	}
+
+	function upload_profile_image(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(data.image_file === undefined)
+			{
+				return get_out(socket)
+			}
+
+			var size = data.image_file.toString('ascii').length / 1024
+
+			if(size === 0 || (size > config.max_image_size))
+			{
+				socket.emit('update', {room:socket.room_id, type:'upload_error'})													
+				return false
+			}
+
+			var fname = `profile_${socket.user_id}.jpg`
+
+			fs.writeFile(images_root + '/' + fname, data.image_file, function(err,data) 
+			{
+				if(err) 
+				{
+					socket.emit('update', {room:socket.room_id, type:'upload_error'})
+				}
+
+				else 
+				{
+					change_profile_image(socket, fname)
+				}
+			})
+		}
 	}	
+
+	function change_profile_image(socket, fname)
+	{
+		if(config.image_storage_s3_or_local === "local")
+		{
+			do_change_profile_image(socket, fname)
+		}
+
+		else if(config.image_storage_s3_or_local === "s3")
+		{
+			fs.readFile(`${images_root}/${fname}`, (err, data) => 
+			{
+				if(err)
+				{
+					fs.unlink(`${images_root}/${fname}`, function(){})
+					return
+				}
+
+				s3.putObject(
+				{
+					ACL: "public-read",
+					Body: data,
+					Bucket: sconfig.s3_bucket_name, 
+					Key: `${sconfig.s3_images_location}${fname}`,
+					CacheControl: `max-age=${sconfig.s3_cache_max_age}`
+				}).promise()
+
+				.then(ans =>
+				{
+					fs.unlink(`${images_root}/${fname}`, function(){})
+					do_change_profile_image(socket, sconfig.s3_main_url + sconfig.s3_images_location + fname)
+				})
+
+				.catch(err =>
+				{					
+					fs.unlink(`${images_root}/${fname}`, function(){})
+					console.error(err)
+				})
+			})
+		}
+
+		else
+		{
+			return false
+		}
+	}
+
+	function do_change_profile_image(socket, fname)
+	{
+		db_manager.get_user({_id:socket.user_id}, {profile_image_version:true})		
+
+		.then(userinfo =>
+		{
+			var new_ver = userinfo.profile_image_version + 1
+
+			var fver = fname + `?ver=${new_ver}`
+
+			if(config.image_storage_s3_or_local === "local")
+			{
+				var image_url = config.public_images_location + fver
+			}
+
+			else if(config.image_storage_s3_or_local === "s3")
+			{
+				var image_url = fver
+			}
+
+			db_manager.update_user(socket.user_id,
+			{
+				profile_image: fver,
+				profile_image_version: new_ver
+			})
+
+			.then(ans =>
+			{
+				socket.profile_image = image_url
+
+				socket.emit('update', 
+				{
+					type: 'profile_image_changed', 
+					profile_image: image_url	
+				})
+			})
+
+			.catch(err =>
+			{
+				console.error(err)
+			})		
+		})
+
+		.catch(err =>
+		{
+			console.error(err)
+		})
+	}
 
 	function check_image_url(uri)
 	{
