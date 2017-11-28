@@ -3084,7 +3084,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			var size = data.image_file.toString('ascii').length / 1024
 
-			if(size === 0 || (size > config.max_image_size))
+			if(size === 0 || (size > config.max_profile_image_size))
 			{
 				socket.emit('update', {room:socket.room_id, type:'upload_error'})													
 				return false

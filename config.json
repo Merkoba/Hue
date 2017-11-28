@@ -1,7 +1,7 @@
 {
 	"https_enabled": true,
 	"site_root": "https://hue.merkoba.com/",
-	"image_storage_s3_or_local": "local",
+	"image_storage_s3_or_local": "s3",
 	"main_room_id": "main",
 	"default_main_room_name": "Hue",
 	"images_directory": "public/img",
@@ -51,6 +51,7 @@
 	"max_title_length": 200,
 	"max_no_meta_count": 10,
 	"max_image_size": 5555,
+	"max_profile_image_size": 1111,
 	"small_keyboard_scroll": 100,
 	"big_keyboard_scroll": 200,
 	"afk_timeout_duration": 120000,
@@ -78,5 +79,5 @@
 	"allow_pasted_uploads": false,
 	"announce_joins": true,
 	"announce_parts": true,
-	"intro_delay": 0
+	"intro_delay": 1600
 }

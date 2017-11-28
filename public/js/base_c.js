@@ -3582,7 +3582,6 @@ function start_chat_click_events()
 
 function update_chat(uname, msg, prof_image, title=false)
 {
-	console.log(prof_image)
 	var contclasses = "chat_content"
 
 	if(uname !== username)
@@ -3607,7 +3606,7 @@ function update_chat(uname, msg, prof_image, title=false)
 		var t = nice_date()
 	}
 
-	if(prof_image === "")
+	if(prof_image === "" || prof_image === undefined)
 	{
 		var pi = default_profile_image_url
 	}
