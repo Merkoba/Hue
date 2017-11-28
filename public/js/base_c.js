@@ -3580,8 +3580,9 @@ function start_chat_click_events()
 	})	
 }
 
-function update_chat(uname, msg, profile_image, title=false)
+function update_chat(uname, msg, prof_image, title=false)
 {
+	console.log(prof_image)
 	var contclasses = "chat_content"
 
 	if(uname !== username)
@@ -3606,6 +3607,16 @@ function update_chat(uname, msg, profile_image, title=false)
 		var t = nice_date()
 	}
 
+	if(prof_image === "")
+	{
+		var pi = default_profile_image_url
+	}
+
+	else
+	{
+		var pi = prof_image
+	}
+
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
 		var fmsg = $(`<div class='msg chat_message'>*&nbsp;<span class='chat_uname'></span>&nbsp;<span title='${t}' class='${contclasses}'></span>&nbsp;*</div>`)
@@ -3617,7 +3628,7 @@ function update_chat(uname, msg, profile_image, title=false)
 		var s = `
 		<div class='msg chat_message'>
 			<span chat_profile_image_container'>
-				<img class='chat_profile_image' src='${profile_image}'>
+				<img class='chat_profile_image' src='${pi}'>
 			</span>
 			<span class='chat_right_side'>
 				<span class='chat_uname_container'>
@@ -5530,7 +5541,7 @@ function clear_chat()
 	show_priv()
 	show_public()
 	show_log()
-	show_messages()
+	show_log_messages()
 	goto_bottom(true)
 	focus_input()
 }
@@ -7658,7 +7669,7 @@ function show_details(data)
 	msg_info.show(h.html())
 }
 
-function show_messages()
+function show_log_messages()
 {
 	if(log_messages && log_messages.length > 0)
 	{
