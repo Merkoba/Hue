@@ -6449,7 +6449,6 @@ function change_tv_source(src)
 
 		if(src.length > 0 && src.length <= max_tv_source_length)
 		{
-			console.log(src)
 			socket_emit('change_tv_source', {src:src})
 		}
 	}
@@ -8230,6 +8229,8 @@ function fix_youtube_video_iframe()
 	var parent = iframe.parent()
 
 	var ratio = iframe.data("ratio")
+
+	iframe.height(iframe.width() * ratio)
 
 	if(iframe.width() === parent.width() && iframe.height() === parent.height())
 	{
