@@ -1,5 +1,5 @@
 var socket
-var ls_settings = "settings_v13"
+var ls_settings = "settings_v14"
 var ls_input_history = "input_history_v11"
 var settings
 var is_public
@@ -96,7 +96,6 @@ var fetched_room_id
 var utilz = Utilz()
 var log_messages
 var first_opacity_checked = false
-var change_type
 var images_enabled = true
 var tv_enabled = true
 var profile_image
@@ -137,6 +136,7 @@ function init()
 	start_metadata_loop()
 	start_titles()
 	setup_show_profile()
+	setup_opacity()
 	start_socket()
 }
 
@@ -1037,8 +1037,6 @@ function show_video()
 
 function set_default_theme()
 {
-	set_opacity(1)
-
 	var background_color = "rgb(24,24,24)"
 	var background_color2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
 	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
@@ -3678,9 +3676,9 @@ function push_to_chat_history(msg)
 	}	
 }
 
-function self_check_images(msg)
+function self_check_image(msg)
 {
-	words = msg.split(' ')
+	var words = msg.split(' ')
 
 	for(var i=0; i<words.length; i++)
 	{
@@ -3696,13 +3694,26 @@ function self_check_images(msg)
 	}
 }
 
-function change(type, check=false)
+function self_check_youtube_video(msg)
 {
-	if(check && change_type !== undefined && change_type !== type)
-	{
-		return false
-	}	
+	var words = msg.split(' ')
 
+	for(var i=0; i<words.length; i++)
+	{
+		var word = words[i].toLowerCase()
+
+		if(word.indexOf("youtube.com") !== -1 || word.indexOf("youtu.be") !== -1)
+		{
+			if(get_youtube_id(word))
+			{
+				change_tv_source(words[i])
+			}
+		}
+	}
+}
+
+function change(type)
+{	
 	if(afk)
 	{
 		change_when_focused = true
@@ -3766,9 +3777,14 @@ function show_image()
 	$('#media_image').attr('src', image_url)	
 }
 
+function show_current_image_modal()
+{
+	show_modal_image(current_image_url, current_image_title)
+}
+
 function start_image_events()
 {
-	$('#media_image')[0].addEventListener('load', function() 
+	$('#media_image')[0].addEventListener('load', function(img) 
 	{
 		try 
 		{
@@ -3799,32 +3815,25 @@ function start_image_events()
 
 			var background_color2 = color2
 
-			change_colors(background_color, background_color2, font_color)
+			if(settings.background_color)
+			{
+				change_colors(background_color, background_color2, font_color)
+			}
 
 			if(settings.background_image)
 			{
 				$('#background_image').css('background-image', `url('${image_url}')`) 
 			}
 
-			setup_opacity()
+			current_image_url = image_url
+			current_image_title = image_title			
+			
+			$(this).prop('title', image_title)
 		}
 
 		catch(err)
 		{
 			console.error(err)
-		}
-
-		if(image_url !== default_image_url)
-		{
-			var title = `Uploader: ${image_uploader} | Size: ${get_size_string(image_size)} | ${image_date}`
-
-			$(this).prop('title', title)
-		}
-
-		if(!first_opacity_checked)
-		{
-			setup_opacity()
-			first_opacity_checked = true		
 		}
 	})	
 
@@ -3858,11 +3867,13 @@ function setup_image(data)
 	if(data.image_url === '' || data.image_url === undefined)
 	{
 		image_url = default_image_url
+		image_title = ""
 	}
 
 	else
 	{
 		image_url = data.image_url
+		image_title = `Uploader: ${image_uploader} | Size: ${get_size_string(image_size)} | ${image_date}`
 	}
 
 	image_uploader = data.image_uploader
@@ -4482,9 +4493,14 @@ function send_to_chat(msg)
 				msg = msg.slice(1)
 			}
 
-			if(allow_pasted_uploads && can_upload)
+			if(allow_pasted_media && can_upload)
 			{
-				self_check_images(msg)
+				self_check_image(msg)
+			}
+
+			if(allow_pasted_media && can_tv)
+			{
+				self_check_youtube_video(msg)
 			}
 
 			if(can_chat)
@@ -6433,6 +6449,7 @@ function change_tv_source(src)
 
 		if(src.length > 0 && src.length <= max_tv_source_length)
 		{
+			console.log(src)
 			socket_emit('change_tv_source', {src:src})
 		}
 	}
@@ -7039,6 +7056,12 @@ function get_settings()
 		settings.background_image = settings_default_background_image
 		changed = true
 	}
+
+	if(settings.background_color === undefined)
+	{
+		settings.background_color = settings_default_background_color
+		changed = true
+	}
 	
 	if(settings.custom_scrollbars === undefined)
 	{
@@ -7067,6 +7090,8 @@ function start_settings_state()
 {
 	$("#setting_background_image").prop("checked", settings.background_image)
 
+	$("#setting_background_color").prop("checked", settings.background_color)
+
 	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
 
 	$('#setting_modal_color').find('option').each(function()
@@ -7083,7 +7108,25 @@ function start_settings_listeners()
 	$("#setting_background_image").change(function()
 	{
 		settings.background_image = $("#setting_background_image").prop("checked")
-		change("image", true)
+		setup_opacity()
+		change("image")
+		save_settings()
+	})
+
+	$("#setting_background_color").change(function()
+	{
+		settings.background_color = $("#setting_background_color").prop("checked")
+
+		if(settings.background_color)
+		{
+			change("image")
+		}
+
+		else
+		{
+			set_default_theme()
+		}
+
 		save_settings()
 	})
 
@@ -7437,6 +7480,7 @@ function show_userinfo()
 	{
 		$("#userinfo_username").text(username)
 		$("#userinfo_profile_image").attr("src", profile_image)
+		update_modal_scrollbar("userinfo")
 	})
 }
 

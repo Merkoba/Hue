@@ -27,7 +27,7 @@
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=198"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=199"/>
 
 		<script>
 			<% 
@@ -116,7 +116,7 @@
 						<div id='media_split'>
 
 							<div id='media_image_container'>
-								<img id='media_image' draggable='false' onclick="show_modal_image(this.src, this.title)">
+								<img id='media_image' draggable='false' onclick="show_current_image_modal()">
 							</div>
 							
 							<div id='media_tv'>
@@ -214,6 +214,11 @@
 
 				<div class="setting_title">Background Image</div>
 				<input type="checkbox" class="setting_checkbox" id="setting_background_image">
+
+				<div class='spacer1'></div>
+				
+				<div class="setting_title">Background Color</div>
+				<input type="checkbox" class="setting_checkbox" id="setting_background_color">
 				
 				<div class='spacer1'></div>
 
@@ -483,7 +488,7 @@
 
 		<input type='file' id='profile_image_picker' onchange='profile_image_selected(this)'>
 
-		<script src="/js/base_o.js?ver=705"></script>
+		<script src="/js/base_o.js?ver=706"></script>
 		<script src="https://www.youtube.com/iframe_api"></script>
 
 	</body>
