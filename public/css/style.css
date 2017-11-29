@@ -1,6 +1,6 @@
 @font-face
 {
-	font-family: iconsolas;
+	font-family: imported_font;
 	src: url(/css/consolas.ttf);
 }
 
@@ -11,7 +11,7 @@ body
 	margin: 0px;
 	padding: 0px;
 	font-size: 18px;
-	font-family: iconsolas;
+	font-family: imported_font;
 	background-color: black;
 	overflow: hidden;
 	background-color: rgb(24,24,24);
@@ -228,7 +228,6 @@ body
 {
 	overflow-wrap: break-word;
 	word-break: break-word;
-	font-size: 1.2em;
 	display: flex;
 }
 
@@ -254,7 +253,7 @@ body
 
 .chat_uname
 {
-	font-size: 0.8em;
+	font-size: 1em;
 }
 
 .chat_content_container
@@ -262,6 +261,11 @@ body
 	flex-shrink: 1;
 	flex-grow: 1;
 	padding-top: 0.1em;
+}
+
+.chat_content
+{
+	font-size: 1.1em;
 }
 
 .announcement
