@@ -2742,7 +2742,7 @@ function start_dropzone()
 		maxFiles: 1,
 		maxFilesize: max_image_size / 1024,
 		autoProcessQueue: false,
-		clickable: '#media_image, #footer_upload_icon',
+		clickable: '#footer_upload_icon',
 		acceptedFiles: "image/jpeg,image/png,image/gif"
 	})
 
