@@ -573,7 +573,7 @@ function show_username()
 function socket_emit(dest, obj)
 {
 	console.log(`Emit: ${dest}`)
-	socket.emit(dest, obj)	
+	socket.emit(dest, obj)
 }
 
 function start_socket()
@@ -617,6 +617,8 @@ function start_socket()
 			is_public = data.public
 			check_priv(data)
 
+			setup_youtube_video_iframe()
+			fix_youtube_video_iframe()
 			make_main_container_visible()
 			
 			clear_chat()
@@ -1020,7 +1022,7 @@ function show_youtube_video()
 	youtube_video_player.loadVideoById({videoId:get_youtube_id(tv_source), startSeconds:get_youtube_time(tv_source)})
 	
 	$("#media_video").css("display", "none")
-	$("#media_youtube_video").css("display", "flex")
+	$("#media_youtube_video_container").css("display", "flex")
 }
 
 function show_video()
@@ -1029,7 +1031,7 @@ function show_video()
 
 	$("#media_video").prop("src", tv_source)
 
-	$("#media_youtube_video").css("display", "none")
+	$("#media_youtube_video_container").css("display", "none")
 	$("#media_video").css("display", "block")
 }
 
@@ -3456,6 +3458,7 @@ var resize_timer = (function()
 
 		timer = setTimeout(function() 
 		{
+			fix_youtube_video_iframe()
 			update_chat_scrollbar()		
 			goto_bottom(true)
 		}, 350)
@@ -7943,8 +7946,6 @@ function toggle_images()
 		$("#toggle_images_text").text("Disable Images")		
 
 		change("image")
-		update_chat_scrollbar()
-		goto_bottom()
 	}
 
 	else
@@ -7966,9 +7967,11 @@ function toggle_images()
 
 		$("#footer_toggle_media_icon")
 
-		update_chat_scrollbar()
-		goto_bottom()
 	}
+
+	update_chat_scrollbar()
+	goto_bottom()
+	fix_youtube_video_iframe()
 }
 
 function toggle_tv()
@@ -7987,8 +7990,6 @@ function toggle_tv()
 		$("#toggle_tv_text").text("Disable TV")
 
 		change("tv")
-		update_chat_scrollbar()
-		goto_bottom()
 	}
 
 	else
@@ -8012,10 +8013,11 @@ function toggle_tv()
 		$("#toggle_tv_text").text("Enable TV")
 
 		$("#footer_toggle_tv_icon")
-
-		update_chat_scrollbar()
-		goto_bottom()
 	}
+
+	update_chat_scrollbar()
+	goto_bottom()
+	fix_youtube_video_iframe()
 }
 
 function open_profile_image_picker()
@@ -8168,4 +8170,65 @@ function update_user_profile_image(uname, pi)
 			return
 		}
 	}	
+}
+
+function setup_youtube_video_iframe()
+{
+	$("#media_youtube_video").data('ratio', $("#media_youtube_video").height() / $("#media_youtube_video").width()).removeAttr('height').removeAttr('width')
+}
+
+function fix_youtube_video_iframe()
+{
+	var n = 0
+
+	var iframe = $("#media_youtube_video")
+
+	var parent = iframe.parent()
+
+	var ratio = iframe.data("ratio")
+
+	if(iframe.width() === parent.width() && iframe.height() === parent.height())
+	{
+		return
+	}
+
+	var max = 20000
+
+	if(iframe.height() < parent.height() && iframe.width() < parent.width())
+	{
+		while(n < max)
+		{
+			if(iframe.height() < parent.height() && iframe.width() < parent.width())
+			{
+				iframe.width(iframe.width() + 2)
+				iframe.height(iframe.width() * ratio)			
+			}
+
+			else
+			{
+				return
+			}
+
+			max += 1
+		}
+	}
+
+	else
+	{
+		while(n < max)
+		{
+			if(iframe.height() > parent.height() || iframe.width() > parent.width())
+			{
+				iframe.width(iframe.width() - 2)
+				iframe.height(iframe.width() * ratio)			
+			}
+
+			else
+			{
+				return
+			}
+
+			max += 1
+		}
+	}
 }

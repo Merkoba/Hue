@@ -163,7 +163,7 @@ body
 #media_image
 {
 	max-height: 90%;
-	max-width: 94%;
+	max-width: calc(100% - 4.7em);
 	cursor: pointer;
 }
 
@@ -178,18 +178,19 @@ body
 	justify-content: center;	
 }
 
-#media_youtube_video
+#media_youtube_video_container
 {
 	height: 90%;
-	width: 94%;
-	align-items: center;
+	width: calc(100% - 4.7em);
 	display: none;
+	align-items: center;
+	justify-content: center;
 }
 
 #media_video
 {
 	height: 90%;
-	width: 94%;
+	width: calc(100% - 4.7em);
 	display: none;
 }
 
@@ -207,6 +208,7 @@ body
 	padding-left: 1.66em;
 	display: flex;
 	flex-grow: 1;
+	white-space: nowrap;
 }
 
 #footer_username
