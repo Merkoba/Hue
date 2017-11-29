@@ -650,9 +650,7 @@ function start_socket()
 
 		else if(data.type === 'profile_image_changed')
 		{
-			profile_image = data.profile_image
-
-			$("#userinfo_profile_image").attr("src", profile_image)
+			profile_image_changed(data)
 		}
 
 		else if(data.type === 'userjoin')
@@ -8145,4 +8143,29 @@ function show_profile(uname, prof_image)
 		$("#show_profile_uname").text(uname)
 		$("#show_profile_image").attr("src", pi)
 	})
+}
+
+function profile_image_changed(data)
+{
+	if(data.username === username)
+	{
+		profile_image = data.profile_image
+		$("#userinfo_profile_image").attr("src", profile_image)	
+	}
+
+	update_user_profile_image(data.username, data.profile_image)
+}
+
+function update_user_profile_image(uname, pi)
+{
+	for(var i=0; i<userlist.length; i++)
+	{
+		var user = userlist[i]
+
+		if(user[0] === uname)
+		{
+			userlist[i][2] = pi
+			return
+		}
+	}	
 }

@@ -3181,10 +3181,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				socket.profile_image = image_url
 
-				socket.emit('update', 
-				{
-					type: 'profile_image_changed', 
-					profile_image: image_url	
+				io.sockets.in(socket.room_id).emit('update',
+				{			
+					type: 'profile_image_changed',
+					username: socket.username,
+					profile_image: image_url
 				})
 			})
 
