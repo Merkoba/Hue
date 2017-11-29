@@ -27,7 +27,7 @@
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=194"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=196"/>
 
 		<script>
 			<% 
@@ -113,13 +113,21 @@
 
 					<div id='media' class='unselectable bg1' draggable='false'>
 
-						<img id='media_image' draggable='false'>
-						
-						<div id='media_youtube_video_container'>
-							<div id='media_youtube_video'></div>
-						</div>	
-											
-						<video id='media_video' controls autoplay></video>
+						<div id='media_split'>
+
+							<div id='media_image_container'>
+								<img id='media_image' draggable='false'>
+							</div>
+							
+							<div id='media_tv'>
+							
+								<div id='media_youtube_video'></div>	
+													
+								<video id='media_video' controls autoplay></video>
+
+							</div>
+
+						</div>
 
 					</div>
 
@@ -129,14 +137,23 @@
 				<div id='footer' class='bg2'>
 					<div id='footer_items'>
 
-						<i class='fa fa-camera footer_icon nicetitle' id='footer_upload_icon' title='Upload Image'></i>
-						<i class='fa fa-volume-up footer_icon nicetitle' id='footer_radio_icon' onclick="show_radio_url_picker()" title='Change the Radio'></i>
-						<i class='fa fa-television footer_icon nicetitle' id='footer_tv_icon' onclick="show_tv_url_picker()" title='Change the TV'></i>
+						<span id='footer_userinfo' class='fa fa-navicon footer_icon nicetitle' onClick="show_userinfo()" title="User Menu"></span>
 
 						<input type='text' id='input'>
 						
-						<i class='fa fa-toggle-on footer_icon nicetitle' id='footer_toggle_media_icon' onclick="toggle_media()" title='Toggle Media'></i>
-						<span id='footer_userinfo' class='fa fa-navicon footer_icon nicetitle' onClick="show_userinfo()" title="User Menu"></span>
+						<span id='toggle_images_text' class='footer_text pointer' onclick="toggle_images()">Disable Images</span>
+						<i class='fa fa-toggle-on footer_icon' id='footer_toggle_images_icon' onclick="toggle_images()"></i>
+
+						<span class='hspacer1'></span>
+
+						<span id='toggle_tv_text' class='footer_text pointer' onclick="toggle_tv()">Disable TV</span>
+						<i class='fa fa-toggle-on footer_icon' id='footer_toggle_tv_icon' onclick="toggle_tv()"></i>
+
+						<span class='hspacer2'></span>
+
+						<i class='fa fa-camera footer_icon nicetitle' id='footer_upload_icon' title='Upload Image'></i>
+						<i class='fa fa-volume-up footer_icon nicetitle' id='footer_radio_icon' onclick="show_radio_url_picker()" title='Change the Radio'></i>
+						<i class='fa fa-television footer_icon nicetitle' id='footer_tv_icon' onclick="show_tv_url_picker()" title='Change the TV'></i>
 
 						<span id='footer_icons'>
 						</span>
@@ -463,7 +480,7 @@
 
 		<input type='file' id='profile_image_picker' onchange='profile_image_selected(this)'>
 
-		<script src="/js/base_o.js?ver=701"></script>
+		<script src="/js/base_o.js?ver=702"></script>
 		<script src="https://www.youtube.com/iframe_api"></script>
 
 	</body>

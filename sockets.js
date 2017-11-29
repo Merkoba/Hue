@@ -726,7 +726,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							tv_title: info.tv_title,
 							tv_setter: info.tv_setter, 
 							tv_date: info.tv_date, 
-							active_media: info.active_media,
 							claimed: info.claimed,
 							profile_image: socket.profile_image
 						})				
@@ -2410,8 +2409,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			tv_source: tvinfo.tv_source,
 			tv_title: tvinfo.tv_title,
 			tv_setter: tvinfo.tv_setter,
-			tv_date: tvinfo.tv_date,
-			active_media: "tv"
+			tv_date: tvinfo.tv_date
 		})
 
 		.catch(err =>
@@ -3014,8 +3012,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				image_uploader: uploader, 
 				image_size: size, 
 				image_date: Date.now(),
-				stored_images: info.stored_images,
-				active_media: "image"
+				stored_images: info.stored_images
 			})
 
 			.catch(err =>

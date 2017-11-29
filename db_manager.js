@@ -228,11 +228,6 @@ module.exports = function(db, config, sconfig, utilz)
 							room.public = true
 						}
 
-						if(typeof room.active_media !== "string")
-						{
-							room.active_media = "image"
-						}
-
 						room.version = rooms_version
 
 						db.collection('rooms').update({_id:room._id}, {$set:room})
@@ -305,7 +300,6 @@ module.exports = function(db, config, sconfig, utilz)
 				upload_permission: 1,
 				radio_permission: 1,
 				tv_permission: 1,
-				active_media: "image",
 				modified: Date.now()
 			}
 
