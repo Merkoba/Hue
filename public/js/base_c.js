@@ -617,6 +617,7 @@ function start_socket()
 			is_public = data.public
 			check_priv(data)
 
+			setup_userinfo()
 			setup_youtube_video_iframe()
 			fix_youtube_video_iframe()
 			make_main_container_visible()
@@ -7478,7 +7479,6 @@ function show_userinfo()
 	msg_userinfo.show(function()
 	{
 		$("#userinfo_username").text(username)
-		$("#userinfo_profile_image").attr("src", profile_image)
 		update_modal_scrollbar("userinfo")
 	})
 }
@@ -8118,6 +8118,8 @@ function profile_image_selected(input)
 
 					rounded_canvas.toBlob(function(blob)
 					{
+						$("#userinfo_profile_image").attr("src", profile_image_loading_url)
+
 						socket_emit("upload_profile_image",
 						{
 							image_file: blob

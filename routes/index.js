@@ -51,6 +51,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.announce_joins = config.announce_joins
 	c.vars.announce_parts = config.announce_parts
 	c.vars.default_profile_image_url = config.default_profile_image_url
+	c.vars.profile_image_loading_url = config.profile_image_loading_url
 	c.vars.intro_delay = config.intro_delay
 	c.vars.default_tv_source = config.default_tv_source
 	c.vars.default_tv_type = config.default_tv_type
