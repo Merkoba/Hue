@@ -28,7 +28,7 @@
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=200"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=201"/>
 
 		<script>
 			<% 
@@ -75,7 +75,7 @@
 								
 								<span class='hspacer1'></span>|<span class='hspacer1'></span>
 
-								<span class='header_item' id='toggle_radio_state' onclick='toggle_radio()'>
+								<span class='header_item' id='toggle_radio_state' onclick='toggle_radio_state()'>
 									<i class='icon fa fa-volume-up' id='playing_icon'></i>
 									<span id='toggle_now_playing_text'>Start Radio</span>
 								</span>
@@ -472,6 +472,12 @@
 			<div class='info_item'>/radiopermission 1: Anyone can change the radio.</div>
 			<div class='info_item'>/radiopermission 2: Only voiced users and up can change the radio.</div>
 			<div class='info_item'>/radiopermission 3: Only ops and up can change the radio.</div>
+			<div class='info_item'>/enableimages: Enables image support in the room.</div>
+			<div class='info_item'>/disableimages: Disables image support in the room.</div>
+			<div class='info_item'>/enableradio: Enables radio support in the room.</div>
+			<div class='info_item'>/disableradio: Disables radio support in the room.</div>
+			<div class='info_item'>/enabletv: Enables tv support in the room.</div>
+			<div class='info_item'>/disabletv: Disables tv support in the room.</div>
 			<div class='info_item'>/voice x: Gives voice to a user.</div>
 			<div class='info_item'>/op x: Gives op to a user. Ops can do anything an admin can do except more high level commands.</div>
 			<div class='info_item'>/admin x: Gives admin to a user. This gives a user the same rights as the original admin.</div>
@@ -509,7 +515,7 @@
 
 		<input type='file' id='profile_image_picker' onchange='profile_image_selected(this)'>
 
-		<script src="/js/base_c.js?ver=710"></script>
+		<script src="/js/base_o.js?ver=711"></script>
 		<script src="https://www.youtube.com/iframe_api"></script>
 
 	</body>

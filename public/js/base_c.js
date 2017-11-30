@@ -331,20 +331,21 @@ function show_topic(size="small")
 function check_priv(data)
 {
 	priv = data.priv
+
 	upload_permission = data.upload_permission
 	chat_permission = data.chat_permission
 	radio_permission = data.radio_permission
 	tv_permission = data.tv_permission
+
 	check_permissions()
 }
 
 function check_permissions()
 {
-	can_upload = check_upload_permission(priv)
 	can_chat = check_chat_permission(priv)
-	can_radio = check_radio_permission(priv)
-	can_radio = check_radio_permission(priv)
-	can_tv = check_tv_permission(priv)
+	can_upload = room_images_enabled && check_upload_permission(priv)
+	can_radio =  room_radio_enabled && check_radio_permission(priv)
+	can_tv = room_tv_enabled && check_tv_permission(priv)
 
 	setup_icons()
 }
@@ -569,6 +570,7 @@ function show_priv(data)
 		show_chat_permission()
 		show_upload_permission()
 		show_radio_permission()
+		show_tv_permission()
 	}
 
 	else
@@ -592,6 +594,13 @@ function show_priv(data)
 		if(can_radio)
 		{
 			chat_announce('[', ']', "You have radio permission", 'small')
+
+			ps += 1
+		}
+
+		if(can_tv)
+		{
+			chat_announce('[', ']', "You have tv permission", 'small')
 
 			ps += 1
 		}
@@ -1033,10 +1042,7 @@ function setup_radio(data)
 		$('#audio').attr('src', '')
 	}
 
-	if(radio_started)
-	{
-		change("radio")
-	}		
+	change("radio")	
 }
 
 function setup_tv(data)
@@ -4182,7 +4188,7 @@ function change(type)
 
 	else if(type === "radio")
 	{
-		if(!room_radio_enabled || !radio_enabled)
+		if(!room_radio_enabled || !radio_enabled || !radio_started)
 		{
 			return false
 		}
@@ -4435,6 +4441,12 @@ function register_commands()
 	commands.push('/chatpermission')
 	commands.push('/radiopermission')
 	commands.push('/tvpermission')
+	commands.push('/enableimages')
+	commands.push('/disableimages')
+	commands.push('/enabletv')
+	commands.push('/disabletv')
+	commands.push('/enableradio')
+	commands.push('/disableradio')
 	commands.push('/users')
 	commands.push('/room')
 	commands.push('/rooms')
@@ -4580,7 +4592,37 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/tvpermission'))
 			{
 				show_tv_permission()
+			}			
+
+			else if(oiEquals(lmsg, '/enableimages'))
+			{
+				change_room_images_enabled(true)
 			}
+
+			else if(oiEquals(lmsg, '/disableimages'))
+			{
+				change_room_images_enabled(false)
+			}
+
+			else if(oiEquals(lmsg, '/enableradio'))
+			{
+				change_room_radio_enabled(true)
+			}
+
+			else if(oiEquals(lmsg, '/disableradio'))
+			{
+				change_room_radio_enabled(false)
+			}
+
+			else if(oiEquals(lmsg, '/enabletv'))
+			{
+				change_room_tv_enabled(true)
+			}
+
+			else if(oiEquals(lmsg, '/disabletv'))
+			{
+				change_room_tv_enabled(false)
+			}								
 
 			else if(oiEquals(lmsg, '/users'))
 			{
@@ -8449,6 +8491,8 @@ function change_images_visibility()
 	{
 		$("#media_image_container").css("display", "none")
 
+		set_default_theme()
+
 		if(!images_enabled && !tv_enabled)
 		{
 			hide_media()
@@ -8524,8 +8568,6 @@ function change_radio_visibility()
 	{
 		$("#radio").css("display", "initial")
 
-		$('#now_playing').text("Loading")
-
 		$("#footer_toggle_radio_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-on")
 
@@ -8537,8 +8579,6 @@ function change_radio_visibility()
 		stop_radio()
 		
 		$("#radio").css("display", "none")
-
-		$('#now_playing').text("")
 
 		$("#footer_toggle_radio_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-off")
@@ -8888,8 +8928,7 @@ function announce_room_images_enabled_change(data)
 	room_images_enabled = data.what
 
 	change_images_visibility()
-
-	setup_icons()
+	check_permissions()
 }
 
 function announce_room_tv_enabled_change(data)
@@ -8907,8 +8946,7 @@ function announce_room_tv_enabled_change(data)
 	room_tv_enabled = data.what
 
 	change_tv_visibility(data.what)
-
-	setup_icons()
+	check_permissions()
 }
 
 function announce_room_radio_enabled_change(data)
@@ -8926,8 +8964,7 @@ function announce_room_radio_enabled_change(data)
 	room_radio_enabled = data.what
 	
 	change_radio_visibility(data.what)
-
-	setup_icons()
+	check_permissions()
 }
 
 function hide_media()
@@ -8939,23 +8976,22 @@ function hide_media()
 
 function setup_active_media(data)
 {
-	console.log(data)
 	room_images_enabled = data.room_images_enabled
 	room_tv_enabled = data.room_tv_enabled
 	room_radio_enabled = data.room_radio_enabled
 
 	if(!room_images_enabled)
 	{
-		toggle_images(false)
+		change_images_visibility()
 	}
 
 	if(!room_tv_enabled)
 	{
-		toggle_tv(false)
+		change_tv_visibility()
 	}
 
 	if(!room_radio_enabled)
 	{
-		toggle_radio(false)
+		change_radio_visibility()
 	}
 }
