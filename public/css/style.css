@@ -194,6 +194,15 @@ body
 	display: none;
 }
 
+#media_twitch_video_container
+{
+	height: 90%;
+	width: calc(100% - 4.7em);
+	display: none;
+	align-items: center;
+	justify-content: center;
+}
+
 #footer
 {
 	background-color: black;

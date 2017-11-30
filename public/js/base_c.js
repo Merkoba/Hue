@@ -99,6 +99,9 @@ var first_opacity_checked = false
 var images_enabled = true
 var tv_enabled = true
 var profile_image
+var change_image_when_focused = false 
+var change_tv_when_focused = false
+var twitch_video_player
 
 function init()
 {
@@ -137,17 +140,15 @@ function init()
 	start_titles()
 	setup_show_profile()
 	setup_opacity()
+
 	start_socket()
 }
 
 function make_main_container_visible()
 {
-	setTimeout(function()
-	{
-		goto_bottom(true)
-		$("body").css("background-image", "none")
-		$("#main_container").css("opacity", 1).css("pointer-events", "initial")
-	}, intro_delay)
+	goto_bottom(true)
+	$("body").css("background-image", "none")
+	$("#main_container").css("opacity", 1).css("pointer-events", "initial")
 }
 
 function get_local_storage(ls_name)
@@ -616,10 +617,8 @@ function start_socket()
 			update_title()
 			is_public = data.public
 			check_priv(data)
-
 			setup_userinfo()
-			setup_youtube_video_iframe()
-			fix_youtube_video_iframe()
+
 			make_main_container_visible()
 			
 			clear_chat()
@@ -1016,24 +1015,69 @@ function setup_tv(data)
 	change("tv")
 }
 
+function stop_videos()
+{
+	youtube_video_player.stopVideo()	
+	twitch_video_player.pause()
+	$("#media_video")[0].pause()	
+}
+
 function show_youtube_video()
 {
-	$("#media_video")[0].pause()
+	stop_videos()
 
 	youtube_video_player.loadVideoById({videoId:get_youtube_id(tv_source), startSeconds:get_youtube_time(tv_source)})
 	
 	$("#media_video").css("display", "none")
+	$("#media_twitch_video_container").css("display", "none")
 	$("#media_youtube_video_container").css("display", "flex")
+
+	youtube_video_player.playVideo()
+
+	fix_video_frame("media_youtube_video")
+}
+
+function show_twitch_video()
+{
+	stop_videos()
+
+	var id = get_twitch_channel_or_id(tv_source)
+
+	if(id[0] === "video")
+	{
+		twitch_video_player.setVideoSource(tv_source)
+	}
+
+	else if(id[0] === "channel")
+	{
+		twitch_video_player.setChannel(id[1])
+	}
+
+	else
+	{
+		return false
+	}
+
+	$("#media_video").css("display", "none")
+	$("#media_youtube_video_container").css("display", "none")
+	$("#media_twitch_video_container").css("display", "flex")
+
+	twitch_video_player.play()
+
+	fix_video_frame("media_twitch_video")
 }
 
 function show_video()
 {
-	youtube_video_player.stopVideo()
+	stop_videos()
 
 	$("#media_video").prop("src", tv_source)
 
 	$("#media_youtube_video_container").css("display", "none")
-	$("#media_video").css("display", "block")
+	$("#media_twitch_video_container").css("display", "none")	
+	$("#media_video").css("display", "flex")
+
+	$("#media_video")[0].play()
 }
 
 function set_default_theme()
@@ -1061,6 +1105,29 @@ function get_youtube_id(url)
 
 	return id.length === 11 ? id : false
 }
+
+function get_twitch_channel_or_id(url)
+{
+	var match = url.match(/twitch\.tv(?:\/videos)?\/(\w+)/)
+
+	if(match)
+	{
+		if(match[0].indexOf('twitch.tv/videos/') !== -1)
+		{
+			return ["video", match[1]]
+		}
+
+		else
+		{
+			return ["channel", match[1]]
+		}
+	}
+
+	else
+	{
+		return false
+	}
+}	
 
 function get_youtube_time(url)
 {
@@ -3457,7 +3524,7 @@ var resize_timer = (function()
 
 		timer = setTimeout(function() 
 		{
-			fix_youtube_video_iframe()
+			fix_visible_video_frame()
 			update_chat_scrollbar()		
 			goto_bottom(true)
 		}, 350)
@@ -3677,25 +3744,7 @@ function push_to_chat_history(msg)
 	}	
 }
 
-function self_check_image(msg)
-{
-	var words = msg.split(' ')
-
-	for(var i=0; i<words.length; i++)
-	{
-		var url = words[i].replace(/\.gifv/g,'.gif')
-
-		var word = words[i].toLowerCase()
-
-		if(word.indexOf('.jpg') !== -1 || word.indexOf('.png') !== -1 || word.indexOf('.jpeg') !== -1 || word.indexOf('.gif') !== -1)
-		{
-			$('#test_image').attr('src', url.split('?')[0])
-			return
-		}
-	}
-}
-
-function self_check_youtube_video(msg)
+function check_url_media(msg)
 {
 	var words = msg.split(' ')
 
@@ -3703,11 +3752,38 @@ function self_check_youtube_video(msg)
 	{
 		var word = words[i].toLowerCase()
 
-		if(word.indexOf("youtube.com") !== -1 || word.indexOf("youtu.be") !== -1)
+		if(can_upload)
 		{
-			if(get_youtube_id(word))
+			if(word.indexOf('.jpg') !== -1 || word.indexOf('.png') !== -1 || word.indexOf('.jpeg') !== -1 || word.indexOf('.gif') !== -1)
 			{
-				change_tv_source(words[i])
+				var url = words[i].replace(/\.gifv/g,'.gif')
+
+				$('#test_image').attr('src', url.split('?')[0])
+
+				return
+			}
+		}
+
+		if(can_tv && (word.indexOf("https://") !== -1 || word.indexOf("http://") !== -1))
+		{
+			if(youtube_enabled && (word.indexOf("youtube.com") !== -1 || word.indexOf("youtu.be") !== -1))
+			{
+				if(get_youtube_id(words[i]))
+				{
+					change_tv_source(words[i])
+				}
+
+				return
+			}	
+			
+			if(twitch_enabled && (word.indexOf("twitch.tv") !== -1))
+			{
+				if(get_twitch_channel_or_id(words[i]))
+				{
+					change_tv_source(words[i])
+				}
+
+				return
 			}
 		}
 	}
@@ -3754,6 +3830,11 @@ function change(type)
 			show_youtube_video()
 		}
 
+		else if(tv_type === "twitch")
+		{
+			show_twitch_video()
+		}
+		
 		else if(tv_type === "url")
 		{
 			show_video()
@@ -3789,8 +3870,6 @@ function start_image_events()
 	{
 		try 
 		{
-			$("#media_video")[0].pause()
-
 			var colors = colorlib.get_dominant(this, 1)
 
 			if(colors === null)
@@ -4494,14 +4573,9 @@ function send_to_chat(msg)
 				msg = msg.slice(1)
 			}
 
-			if(allow_pasted_media && can_upload)
+			if(allow_pasted_media)
 			{
-				self_check_image(msg)
-			}
-
-			if(allow_pasted_media && can_tv)
-			{
-				self_check_youtube_video(msg)
+				check_url_media(msg)
 			}
 
 			if(can_chat)
@@ -6429,9 +6503,18 @@ function change_tv_source(src)
 		{
 			if(src.indexOf("youtube.com") !== -1 || src.indexOf("youtu.be") !== -1)
 			{
-				if(!youtube_enabled)
+				if(get_youtube_id(src) && !youtube_enabled)
 				{
-					chat_announce('[', ']', "Invalid tv source", 'small')
+					chat_announce('[', ']', "YouTube support is not enabled", 'small')
+					return
+				}
+			}
+
+			else if(src.indexOf("twitch.tv") !== -1)
+			{
+				if(get_twitch_channel_or_id(src) && !twitch_enabled)
+				{
+					chat_announce('[', ']', "Twitch support is not enabled", 'small')
 					return
 				}
 			}
@@ -6441,7 +6524,7 @@ function change_tv_source(src)
 		{
 			if(!youtube_enabled)
 			{
-				chat_announce('[', ']', "Invalid tv source", 'small')
+				chat_announce('[', ']', "YouTube support is not enabled", 'small')
 				return
 			}
 		}
@@ -7444,7 +7527,6 @@ function onYouTubeIframeAPIReady()
 		},
 		playerVars:
 		{
-			autoplay: 1,
 			iv_load_policy: 3,
 			rel: 0
 		}
@@ -7461,7 +7543,26 @@ function onYouTubePlayerReady2()
 	youtube_video_player = yt_video_player
 	youtube_video_player.mute()
 
-	init()
+	start_twitch()
+}
+
+function start_twitch()
+{
+	twitch_video_player = new Twitch.Player("media_twitch_video_container", 
+	{
+		channel: "AChannelThatDoesntExisttttt",
+		height: 300,
+		width: 400
+	})
+
+	twitch_video_player.addEventListener(Twitch.Player.READY, () => 
+	{
+		$("#media_twitch_video_container").find("iframe").eq(0).attr("id", "media_twitch_video").addClass("video_frame")
+
+		twitch_video_player.setVolume(0)
+		
+		init()
+	})
 }
 
 function setup_userinfo()
@@ -7997,11 +8098,10 @@ function toggle_images()
 
 		if(!images_enabled && !tv_enabled)
 		{
+			stop_videos()
+
 			$("#media").css("display", "none")
 		}
-		
-		$("#media_video")[0].pause()
-		$("#media_video")[0].volume = 0
 
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-off")
@@ -8014,7 +8114,6 @@ function toggle_images()
 
 	update_chat_scrollbar()
 	goto_bottom()
-	fix_youtube_video_iframe()
 }
 
 function toggle_tv()
@@ -8037,18 +8136,14 @@ function toggle_tv()
 
 	else
 	{
+		stop_videos()
+
 		$("#media_tv").css("display", "none")
 
 		if(!images_enabled && !tv_enabled)
 		{
 			$("#media").css("display", "none")
 		}
-
-		youtube_video_player.stopVideo()
-		youtube_video_player.setVolume(0)
-		
-		$("#media_video")[0].pause()
-		$("#media_video")[0].volume = 0
 
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-off")
@@ -8060,7 +8155,6 @@ function toggle_tv()
 
 	update_chat_scrollbar()
 	goto_bottom()
-	fix_youtube_video_iframe()
 }
 
 function open_profile_image_picker()
@@ -8217,20 +8311,40 @@ function update_user_profile_image(uname, pi)
 	}	
 }
 
-function setup_youtube_video_iframe()
+function get_iframe_ratio(iframe_id)
 {
-	$("#media_youtube_video").data('ratio', $("#media_youtube_video").height() / $("#media_youtube_video").width()).removeAttr('height').removeAttr('width')
+	var id = `#${iframe_id}`
+
+	$(id).data('ratio', $(id).height() / $(id).width()).removeAttr('height').removeAttr('width')
+	
+	return $(id).data('ratio')
 }
 
-function fix_youtube_video_iframe()
+function fix_visible_video_frame()
 {
-	var n = 0
+	$(".video_frame").each(function()
+	{
+		if($(this).css("display") !== "none")
+		{
+			fix_video_frame(this.id)
+		}
+	})
+}
 
-	var iframe = $("#media_youtube_video")
+function fix_video_frame(iframe_id)
+{
+	var id = `#${iframe_id}`
 
-	var parent = iframe.parent()
+	var iframe = $(id)
 
 	var ratio = iframe.data("ratio")
+
+	if(ratio === undefined)
+	{
+		ratio = get_iframe_ratio(iframe_id)
+	}
+
+	var parent = iframe.parent()
 
 	iframe.height(iframe.width() * ratio)
 
@@ -8238,6 +8352,8 @@ function fix_youtube_video_iframe()
 	{
 		return
 	}
+
+	var n = 0
 
 	var max = 20000
 

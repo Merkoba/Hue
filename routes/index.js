@@ -40,6 +40,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.afk_timeout_duration = config.afk_timeout_duration
 	c.vars.heartbeat_interval = config.heartbeat_interval
 	c.vars.youtube_enabled = config.youtube_enabled
+	c.vars.twitch_enabled = config.twitch_enabled
 	c.vars.min_password_length = config.min_password_length
 	c.vars.max_password_length = config.max_password_length
 	c.vars.max_email_length = config.max_email_length
@@ -52,7 +53,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.announce_parts = config.announce_parts
 	c.vars.default_profile_image_url = config.default_profile_image_url
 	c.vars.profile_image_loading_url = config.profile_image_loading_url
-	c.vars.intro_delay = config.intro_delay
 	c.vars.default_tv_source = config.default_tv_source
 	c.vars.default_tv_type = config.default_tv_type
 

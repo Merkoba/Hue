@@ -2235,7 +2235,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					if(id)
 					{
-						fetch(`https://www.googleapis.com/youtube/v3/videos?id=${id}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`).then(function(res)
+						fetch(`https://www.googleapis.com/youtube/v3/videos?id=${id}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`)
+
+						.then(function(res)
 						{
 							return res.json()
 						})
@@ -2252,14 +2254,76 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							else
 							{
 								socket.emit('update', {room:socket.room_id, type:'videonotfound'})
+								return false
 							}
 						})
 
 						.catch(err =>
 						{
+							socket.emit('update', {room:socket.room_id, type:'videonotfound'})
 							console.error(err)
 						})
 					}
+
+					else
+					{
+						socket.emit('update', {room:socket.room_id, type:'videonotfound'})						
+					}
+				}
+
+				else if(data.src.indexOf("twitch.tv") !== -1)
+				{
+					var id = get_twitch_channel_or_id(data.src)
+
+					if(id)
+					{
+						if(id[0] === "video")
+						{
+							fetch(`https://api.twitch.tv/helix/videos?id=203574636`,
+							{
+								headers: 
+								{
+									"Client-ID": sconfig.twitch_api_key
+								}	
+							})
+
+							.then(function(res)
+							{
+								return res.json()
+							})
+
+							.then(function(response)
+							{
+								data.type = "twitch"
+								data.title = response.data[0].title
+								do_change_tv_source(socket, data)
+							})
+
+							.catch(err =>
+							{
+								socket.emit('update', {room:socket.room_id, type:'videonotfound'})								
+								console.error(err)
+							})
+						}
+
+						else if(id[0] === "channel")
+						{
+							data.type = "twitch"
+							data.title = id[1]
+							do_change_tv_source(socket, data)
+						}
+
+						else
+						{
+							socket.emit('update', {room:socket.room_id, type:'videonotfound'})
+							return false
+						}
+					}
+
+					else
+					{
+						socket.emit('update', {room:socket.room_id, type:'videonotfound'})						
+					}					
 				}
 
 				else
@@ -2277,7 +2341,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					return
 				}
 
-				fetch(`https://www.googleapis.com/youtube/v3/search?q=${data.src}&fields=items(id,snippet(title))&part=snippet&maxResults=1&key=${sconfig.youtube_api_key}`).then(function(res)
+				fetch(`https://www.googleapis.com/youtube/v3/search?q=${data.src}&fields=items(id,snippet(title))&part=snippet&maxResults=1&key=${sconfig.youtube_api_key}`)
+
+				.then(function(res)
 				{
 					return res.json()
 				})
@@ -3255,6 +3321,29 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 		return id.length === 11 ? id : false
 	}
+
+	function get_twitch_channel_or_id(url)
+	{
+		var match = url.match(/twitch\.tv(?:\/videos)?\/(\w+)/)
+
+		if(match)
+		{
+			if(match[0].indexOf('twitch.tv/videos/') !== -1)
+			{
+				return ["video", match[1]]
+			}
+
+			else
+			{
+				return ["channel", match[1]]
+			}
+		}
+
+		else
+		{
+			return false
+		}
+	}	
 
 	function create_room_object(info)
 	{

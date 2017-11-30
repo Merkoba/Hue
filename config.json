@@ -61,6 +61,7 @@
 	"roomlist_cache": 120000,
 	"roomlist_max_inactivity": 172800000,
 	"youtube_enabled": true,
+	"twitch_enabled": true,
 	"heartbeat_interval": 10000,
 	"antispam_banTime": 30,
 	"antispam_kickThreshold": 20,
@@ -81,6 +82,5 @@
 	"max_user_id_length": 100,
 	"allow_pasted_media": true,
 	"announce_joins": true,
-	"announce_parts": true,
-	"intro_delay": 1600
+	"announce_parts": true
 }

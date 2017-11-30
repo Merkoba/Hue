@@ -15,6 +15,7 @@
 		<script src="/js/tippy.all.min.js"></script>
 		<script src="/js/cropper.min.js"></script>
 		<script type="text/javascript" src="/js/contextmenu/jquery.contextMenu.min.js"></script>
+		<script src="http://player.twitch.tv/js/embed/v1.js""></script>
 		<script src="/js/contextmenu/jquery.ui.position.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 
@@ -121,11 +122,13 @@
 							
 							<div id='media_tv'>
 							
+								<div id='media_twitch_video_container'></div>
+
 								<div id='media_youtube_video_container'>
-									<div id='media_youtube_video'></div>	
+									<div id='media_youtube_video' class='video_frame'></div>	
 								</div>
 
-								<video id='media_video' controls autoplay></video>
+								<video id='media_video' controls></video>
 
 							</div>
 
@@ -488,7 +491,7 @@
 
 		<input type='file' id='profile_image_picker' onchange='profile_image_selected(this)'>
 
-		<script src="/js/base_o.js?ver=708"></script>
+		<script src="/js/base_c.js?ver=708"></script>
 		<script src="https://www.youtube.com/iframe_api"></script>
 
 	</body>
