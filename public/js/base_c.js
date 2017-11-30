@@ -1906,79 +1906,91 @@ function show_main_menu()
 {
 	msg_menu.show(function()
 	{
-		$('#admin_chat_permission').find('option').each(function()
+		if(role === "admin" || role === "op")
 		{
-			if(JSON.parse($(this).val()) === chat_permission)
+			$('#admin_chat_permission').find('option').each(function()
 			{
-				$(this).prop('selected', true)
-			}
-		})
+				if(JSON.parse($(this).val()) === chat_permission)
+				{
+					$(this).prop('selected', true)
+				}
+			})
 
-		$('#admin_upload_permission').find('option').each(function()
+			$('#admin_upload_permission').find('option').each(function()
+			{
+				if(JSON.parse($(this).val()) === upload_permission)
+				{
+					$(this).prop('selected', true)
+				}
+			})
+
+			$('#admin_tv_permission').find('option').each(function()
+			{
+				if(JSON.parse($(this).val()) === tv_permission)
+				{
+					$(this).prop('selected', true)
+				}
+			})
+
+			$('#admin_radio_permission').find('option').each(function()
+			{
+				if(JSON.parse($(this).val()) === radio_permission)
+				{
+					$(this).prop('selected', true)
+				}
+			})
+
+			$('#admin_enable_images').find('option').each(function()
+			{
+				if(JSON.parse($(this).val()) === room_images_enabled)
+				{
+					$(this).prop('selected', true)
+				}
+			})
+
+			$('#admin_enable_tv').find('option').each(function()
+			{
+				if(JSON.parse($(this).val()) === room_tv_enabled)
+				{
+					$(this).prop('selected', true)
+				}
+			})
+
+			$('#admin_enable_radio').find('option').each(function()
+			{
+				if(JSON.parse($(this).val()) === room_radio_enabled)
+				{
+					$(this).prop('selected', true)
+				}
+			})
+
+			$('#admin_privacy').find('option').each(function()
+			{
+				if(JSON.parse($(this).val()) === is_public)
+				{
+					$(this).prop('selected', true)
+				}
+			})	
+
+			$('#admin_log').find('option').each(function()
+			{
+				if(JSON.parse($(this).val()) === log_enabled)
+				{
+					$(this).prop('selected', true)
+				}
+			})
+
+			$("#admin_default_theme").spectrum("set", default_theme)
+
+			$("#admin_menu").css("display", "block")
+		}
+
+		else
 		{
-			if(JSON.parse($(this).val()) === upload_permission)
-			{
-				$(this).prop('selected', true)
-			}
-		})
+			$("#admin_menu").css("display", "none")
+		}
 
-		$('#admin_tv_permission').find('option').each(function()
-		{
-			if(JSON.parse($(this).val()) === tv_permission)
-			{
-				$(this).prop('selected', true)
-			}
-		})
-
-		$('#admin_radio_permission').find('option').each(function()
-		{
-			if(JSON.parse($(this).val()) === radio_permission)
-			{
-				$(this).prop('selected', true)
-			}
-		})
-
-		$('#admin_enable_images').find('option').each(function()
-		{
-			if(JSON.parse($(this).val()) === room_images_enabled)
-			{
-				$(this).prop('selected', true)
-			}
-		})
-
-		$('#admin_enable_tv').find('option').each(function()
-		{
-			if(JSON.parse($(this).val()) === room_tv_enabled)
-			{
-				$(this).prop('selected', true)
-			}
-		})
-
-		$('#admin_enable_radio').find('option').each(function()
-		{
-			if(JSON.parse($(this).val()) === room_radio_enabled)
-			{
-				$(this).prop('selected', true)
-			}
-		})
-
-		$('#admin_privacy').find('option').each(function()
-		{
-			if(JSON.parse($(this).val()) === is_public)
-			{
-				$(this).prop('selected', true)
-			}
-		})	
-
-		$('#admin_log').find('option').each(function()
-		{
-			if(JSON.parse($(this).val()) === log_enabled)
-			{
-				$(this).prop('selected', true)
-			}
-		})
-
-		$("#admin_default_theme").spectrum("set", default_theme)
+		update_modal_scrollbar("menu")
 	})
 }
 
