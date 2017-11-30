@@ -13,6 +13,7 @@
 		<script src="/js/perfect-scrollbar.min.js?v=3"></script>
 		<script src="/js/nicescroll.min.js"></script>
 		<script src="/js/tippy.all.min.js"></script>
+		<script src="/js/spectrum.min.js"></script>
 		<script src="/js/cropper.min.js"></script>
 		<script type="text/javascript" src="/js/contextmenu/jquery.contextMenu.min.js"></script>
 		<script src="https://player.twitch.tv/js/embed/v1.js""></script>
@@ -22,6 +23,7 @@
 		<link rel="stylesheet" type="text/css" href="/css/perfect-scrollbar.css?v=3"/>
 		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" href="/css/cropper.min.css">
+		<link rel="stylesheet" href="/css/spectrum.css">
 		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
 
 		<script src="/js/msg.min.js?v=12"></script>
@@ -67,7 +69,7 @@
 
 						<div id='header_items_inner'>
 
-							<i id='main_menu' class='header_item icon fa fa-th-large nicetitle' onclick='show_menu()' title="Main Menu - If you are an admin or op you can right click it for some administration options"></i>
+							<i id='main_menu' class='header_item icon fa fa-th-large nicetitle' onclick='show_main_menu()' title="Main Menu"></i>
 							<span class='hspacer1'></span>|<span class='hspacer1'></span>
 							<span class='header_item' id='usercount' onclick='show_userlist()'></span>
 
@@ -214,10 +216,129 @@
 
 					<span class='menu_item_smaller' onclick='show_status()'>Status</span>
 
+					<div id='admin_menu'>
+
+						<div class='spacer1'></div>
+
+						<div class='small_padding_bottom admin_select'>Chat Permission</div>
+
+						<select id='admin_chat_permission'>
+							<option value="1">1. Everyone</option>
+							<option value="2">2. Voiced and Up</option>
+							<option value="3">3. Ops and Up</option>
+						</select>	
+
+						<div class='spacer1'></div>
+						
+						<div class='small_padding_bottom admin_select'>Upload Permission</div>
+
+						<select id='admin_upload_permission'>
+							<option value="1">1. Everyone</option>
+							<option value="2">2. Voiced and Up</option>
+							<option value="3">3. Ops and Up</option>
+						</select>	
+						
+						<div class='spacer1'></div>
+						
+						<div class='small_padding_bottom admin_select'>TV Permission</div>
+
+						<select id='admin_tv_permission'>
+							<option value="1">1. Everyone</option>
+							<option value="2">2. Voiced and Up</option>
+							<option value="3">3. Ops and Up</option>
+						</select>	
+
+						<div class='spacer1'></div>
+						
+						<div class='small_padding_bottom admin_select'>Radio Permission</div>
+
+						<select id='admin_radio_permission'>
+							<option value="1">1. Everyone</option>
+							<option value="2">2. Voiced and Up</option>
+							<option value="3">3. Ops and Up</option>
+						</select>
+
+						<div class='spacer1'></div>
+						
+						<div class='small_padding_bottom admin_select'>Enable Images</div>
+
+						<select id='admin_enable_images'>
+							<option value="true">Yes</option>
+							<option value="false">No</option>
+						</select>
+
+						<div class='spacer1'></div>
+						
+						<div class='small_padding_bottom admin_select'>Enable TV</div>
+
+						<select id='admin_enable_tv'>
+							<option value="true">Yes</option>
+							<option value="false">No</option>
+						</select>
+
+						<div class='spacer1'></div>
+
+						<div class='small_padding_bottom admin_select'>Enable Radio</div>
+
+						<select id='admin_enable_radio'>
+							<option value="true">Yes</option>
+							<option value="false">No</option>
+						</select>
+
+						<div class='spacer1'></div>
+
+						<div class='small_padding_bottom admin_select'>Privacy</div>
+
+						<select id='admin_privacy'>
+							<option value="true">Public</option>
+							<option value="false">Private</option>
+						</select>
+
+						<div class='spacer1'></div>
+
+						<div class='small_padding_bottom admin_select'>Log</div>
+
+						<select id='admin_log'>
+							<option value="true">Enabled</option>
+							<option value="false">Disabled</option>
+						</select>
+
+						<div class='spacer1'></div>
+
+						<div class='small_padding_bottom'>Default Theme</div>
+
+						<input id='admin_default_theme'>						
+
+						<div class='spacer1'></div>
+
+						<div class='smaller_font_size'>These require double click</div>
+
+						<div class='spacer1'></div>
+
+						<div class='pointer underlined' ondblclick='remove_voices()'>Remove Voices</div>
+
+						<div class='spacer1'></div>
+
+						<div class='pointer underlined' ondblclick='remove_ops()'>Remove Ops</div>
+						
+						<div class='spacer1'></div>
+
+						<div class='pointer underlined' ondblclick='get_banned_count()'>Banned Count</div>
+						
+						<div class='spacer1'></div>
+
+						<div class='pointer underlined' ondblclick='unban_all()'>Unban All</div>
+						
+						<div class='spacer1'></div>
+
+						<div class='pointer underlined' ondblclick='unban_last()'>Unban Last</div>
+
+					</div>
+
 				</div>
 
 			</div>
-		</script>
+		</script>	
 
 		<script id='template_userinfo' type='text/x-handlebars-template'>
 
@@ -431,7 +552,7 @@
 			<div class='info_item'>/tv x: Changes the TV using a search term or URL.</div>			
 			<div class='info_item'>/status: Shows the room status window.</div>			
 			<div class='info_item'>/userinfo: Shows the user info window.</div>
-			<div class='info_item'>/priv: Shows information regarding privileges and permissions.</div>
+			<div class='info_item'>/role: Shows information regarding roles and permissions.</div>
 			<div class='info_item'>/users: Shows the user list. Accepts a filter as an argument.</div>
 			<div class='info_item'>/rooms: Shows the room list. Accepts a filter as an argument.</div>
 			<div class='info_item'>/visited: Shows the visited room list. Accepts a filter as an argument.</div>
@@ -439,7 +560,6 @@
 			<div class='info_item'>/search: Opens the search window. Accepts a query as an argument.</div>
 			<div class='info_item'>/history: Shows the input history. Accepts a filter as an argument.</div>
 			<div class='info_item'>/unclear: Restores the cleared chat.</div>
-			<div class='info_item'>/create x: Quickly create a room with name x.</div>
 			<div class='info_item'>/startradio: Starts the radio.</div>
 			<div class='info_item'>/stopradio: Stops the radio.</div>
 			<div class='info_item'>/volume x: Changes the volume of the radio.</div>
@@ -481,10 +601,9 @@
 			<div class='info_item'>/voice x: Gives voice to a user.</div>
 			<div class='info_item'>/op x: Gives op to a user. Ops can do anything an admin can do except more high level commands.</div>
 			<div class='info_item'>/admin x: Gives admin to a user. This gives a user the same rights as the original admin.</div>
-			<div class='info_item'>/strip x: Removes all privileges from a user.</div>
-			<div class='info_item'>/removevoices: Removes all privileges from voiced users.</div>
-			<div class='info_item'>/removeops: Removes all privileges from op\'d users.</div>
-			<div class='info_item'>/removeboth: Removes all privileges from voiced and op\'d users.</div>
+			<div class='info_item'>/strip x: Removes role from a user.</div>
+			<div class='info_item'>/removevoices: Removes all voice roles.</div>
+			<div class='info_item'>/removeops: Removes all op roles.</div>
 			<div class='info_item'>/private: Room doesn\'t appear in the public room list.</div>
 			<div class='info_item'>/public: Room appears in the public room list.</div>
 			<div class='info_item'>/enablelog: Enables logging of the room. Which allows users to see previous messages before they joined.</div>
@@ -498,9 +617,9 @@
 			<div class='info_item'>/unbanall: Removes all bans.</div>
 			<div class='info_item'>/bannedcount: Displays the number of banned users in the room.</div>
 			<div class='info_item'>/claim: Requests administration of the room. If it hasn\'t been claimed, user gets the ownership.</div>
-			<div class='info_item'>/reclaim: Reclaims the room if you\'re already an admin. Removes all given privileges to other users.</div>
+			<div class='info_item'>/reclaim: Reclaims the room if you\'re already an admin. Removes all given roles.</div>
 			<div class='info_item'>/unclaim: Removes all ownership on the room and resets it to a default state.</div>
-			<div class='info_item'>Usernames and main menu have a context (right click) menu with some operations if you are an op or admin.</div>
+			<div class='info_item'>Usernames have a context menu (right click) if you are an op or admin.</div>
 			<div class='info_item'>Check /help for information about how users interact in the room through chat, image uploads, or radio.</div>
 			<div class='info_item'>Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada URL is gathered automatically. To work, the server needs to allow cross-domain requests and be https enabled if this system is being served through https.</div>
 			<div class='spacer1'></div>
@@ -515,7 +634,7 @@
 
 		<input type='file' id='profile_image_picker' onchange='profile_image_selected(this)'>
 
-		<script src="/js/base_o.js?ver=711"></script>
+		<script src="/js/base_c.js?ver=713"></script>
 		<script src="https://www.youtube.com/iframe_api"></script>
 
 	</body>

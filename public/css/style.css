@@ -438,7 +438,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	word-break: break-word;	
 }
 
-.ui_item_priv
+.ui_item_role
 {
 	padding-right: 0.5em;
 }
@@ -975,4 +975,14 @@ input[type=text], textarea
 #Msg-window-profile
 {
 	width: 22em !important;
+}
+
+.small_padding_bottom
+{
+	padding-bottom: 0.2em;
+}
+
+.smaller_font_size
+{
+	font-size: 0.9em;
 }

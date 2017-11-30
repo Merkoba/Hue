@@ -20,7 +20,7 @@ var input_history_index = 0
 var chat_history = []
 var userlist = []
 var usernames = []
-var priv = ''
+var role = ''
 var chat_permission
 var upload_permission
 var radio_permission
@@ -107,6 +107,8 @@ var room_images_enabled = true
 var room_tv_enabled = true
 var room_radio_enabled = true
 var radio_started = false
+var default_theme
+var default_theme_on = false
 
 function init()
 {
@@ -136,14 +138,13 @@ function init()
 	start_userlist_click_events()
 	start_roomlist_click_events()
 	setup_media_video()
-	set_default_theme()
 	start_username_context_menu()
-	start_main_menu_context_menu()
 	start_played_context_menu()
 	start_volume_context_menu()
 	start_metadata_loop()
 	start_titles()
 	setup_show_profile()
+	setup_main_menu()
 	setup_opacity()
 
 	start_socket()
@@ -253,7 +254,7 @@ function show_room()
 
 function change_room_name(arg)
 {
-	if(priv !== 'admin' && priv !== 'op')
+	if(role !== 'admin' && role !== 'op')
 	{
 		not_an_op()		
 	}
@@ -328,9 +329,9 @@ function show_topic(size="small")
 	}
 }
 
-function check_priv(data)
+function check_role(data)
 {
-	priv = data.priv
+	role = data.role
 
 	upload_permission = data.upload_permission
 	chat_permission = data.chat_permission
@@ -342,10 +343,10 @@ function check_priv(data)
 
 function check_permissions()
 {
-	can_chat = check_chat_permission(priv)
-	can_upload = room_images_enabled && check_upload_permission(priv)
-	can_radio =  room_radio_enabled && check_radio_permission(priv)
-	can_tv = room_tv_enabled && check_tv_permission(priv)
+	can_chat = check_chat_permission(role)
+	can_upload = room_images_enabled && check_upload_permission(role)
+	can_radio =  room_radio_enabled && check_radio_permission(role)
+	can_tv = room_tv_enabled && check_tv_permission(role)
 
 	setup_icons()
 }
@@ -416,7 +417,7 @@ function setup_icons()
 	}
 }
 
-function check_upload_permission(priv)
+function check_upload_permission(role)
 {
 	if(upload_permission === 1)
 	{
@@ -425,7 +426,7 @@ function check_upload_permission(priv)
 
 	else if(upload_permission === 2)
 	{
-		if(priv === "admin" || priv === "op" || priv === "voice")
+		if(role === "admin" || role === "op" || role === "voice")
 		{
 			return true
 		}
@@ -435,7 +436,7 @@ function check_upload_permission(priv)
 
 	else if(upload_permission === 3)
 	{
-		if(priv === "admin" || priv === "op")
+		if(role === "admin" || role === "op")
 		{
 			return true
 		}
@@ -449,7 +450,7 @@ function check_upload_permission(priv)
 	}	
 }
 
-function check_chat_permission(priv)
+function check_chat_permission(role)
 {
 	if(chat_permission === 1)
 	{
@@ -458,7 +459,7 @@ function check_chat_permission(priv)
 
 	else if(chat_permission === 2)
 	{
-		if(priv === "admin" || priv === "op" || priv === "voice")
+		if(role === "admin" || role === "op" || role === "voice")
 		{
 			return true
 		}
@@ -468,7 +469,7 @@ function check_chat_permission(priv)
 
 	else if(chat_permission === 3)
 	{
-		if(priv === "admin" || priv === "op")
+		if(role === "admin" || role === "op")
 		{
 			return true
 		}
@@ -482,7 +483,7 @@ function check_chat_permission(priv)
 	}	
 }
 
-function check_radio_permission(priv)
+function check_radio_permission(role)
 {
 	if(radio_permission === 1)
 	{
@@ -491,7 +492,7 @@ function check_radio_permission(priv)
 
 	else if(radio_permission === 2)
 	{
-		if(priv === "admin" || priv === "op" || priv === "voice")
+		if(role === "admin" || role === "op" || role === "voice")
 		{
 			return true
 		}
@@ -501,7 +502,7 @@ function check_radio_permission(priv)
 
 	else if(radio_permission === 3)
 	{
-		if(priv === "admin" || priv === "op")
+		if(role === "admin" || role === "op")
 		{
 			return true
 		}
@@ -515,7 +516,7 @@ function check_radio_permission(priv)
 	}	
 }
 
-function check_tv_permission(priv)
+function check_tv_permission(role)
 {
 	if(tv_permission === 1)
 	{
@@ -524,7 +525,7 @@ function check_tv_permission(priv)
 
 	else if(tv_permission === 2)
 	{
-		if(priv === "admin" || priv === "op" || priv === "voice")
+		if(role === "admin" || role === "op" || role === "voice")
 		{
 			return true
 		}
@@ -534,7 +535,7 @@ function check_tv_permission(priv)
 
 	else if(tv_permission === 3)
 	{
-		if(priv === "admin" || priv === "op")
+		if(role === "admin" || role === "op")
 		{
 			return true
 		}
@@ -548,24 +549,24 @@ function check_tv_permission(priv)
 	}	
 }
 
-function show_priv(data)
+function show_role(data)
 {
-	if(priv === 'admin')
+	if(role === 'admin')
 	{
 		chat_announce('[', ']', 'You are an admin', 'small')
 	}
 
-	else if(priv === 'op')
+	else if(role === 'op')
 	{
 		chat_announce('[', ']', 'You are an op', 'small')
 	}
 
-	else if(priv === 'voice')
+	else if(role === 'voice')
 	{
 		chat_announce('[', ']', 'You have voice', 'small')
 	}
 
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
 		show_chat_permission()
 		show_upload_permission()
@@ -656,11 +657,13 @@ function start_socket()
 			update_userlist()
 			log_enabled = data.log
 			log_messages = data.log_messages
+			default_theme = data.default_theme
+			set_default_theme()			
 			set_topic_info(data)
 			update_title()
 			is_public = data.public
 			setup_active_media(data)
-			check_priv(data)
+			check_role(data)
 			setup_userinfo()
 			clear_chat()
 			check_firstime()
@@ -789,19 +792,19 @@ function start_socket()
 			announce_removedops(data)
 		}
 
-		else if(data.type === 'announce_unbanall')
+		else if(data.type === 'announce_unban_all')
 		{
-			announce_unbanall(data)
+			announce_unban_all(data)
 		}
 
-		else if(data.type === 'announce_unbanlast')
+		else if(data.type === 'announce_unban_last')
 		{
-			announce_unbanlast(data)
+			announce_unban_last(data)
 		}
 
-		else if(data.type === 'get_bannedcount')
+		else if(data.type === 'receive_banned_count')
 		{
-			get_bannedcount(data)
+			receive_banned_count(data)
 		}
 
 		else if(data.type === 'nothingtounban')
@@ -849,14 +852,9 @@ function start_socket()
 			announce_unclaim(data)
 		}
 
-		else if(data.type === 'made_private')
+		else if(data.type === 'privacy_change')
 		{
-			made_private(data)
-		}
-
-		else if(data.type === 'made_public')
-		{
-			made_public(data)
+			announce_privacy_change(data)
 		}
 
 		else if(data.type === 'changed_radio_source')
@@ -949,6 +947,11 @@ function start_socket()
 		else if(data.type === 'room_radio_enabled_change')
 		{
 			announce_room_radio_enabled_change(data)
+		}	
+
+		else if(data.type === 'default_theme_change')
+		{
+			announce_default_theme_change(data)
 		}				
 
 		else if(data.type === 'disconnection')
@@ -1142,11 +1145,13 @@ function show_video()
 
 function set_default_theme()
 {
-	var background_color = "rgb(24,24,24)"
+	var background_color = default_theme
 	var background_color2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
 	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
 
 	change_colors(background_color, background_color2, font_color)
+
+	default_theme_on = true
 }
 
 function change_colors(background_color, background_color2, font_color)
@@ -1198,9 +1203,9 @@ function get_youtube_time(url)
 
 function userjoin(data)
 {
-	addto_userlist(data.username, data.priv, data.profile_image)
+	addto_userlist(data.username, data.role, data.profile_image)
 
-	if(announce_joins && check_chat_permission(data.priv))
+	if(announce_joins && check_chat_permission(data.role))
 	{		
 		chat_announce('--', '--', `${data.username} has joined`, 'small', false, false, false, true)
 	}	
@@ -1211,21 +1216,21 @@ function update_usercount(usercount)
 	$('#usercount').html(`${singular_or_plural(usercount, "Users")} Online`)
 }
 
-function addto_userlist(uname, prv, pi)
+function addto_userlist(uname, rol, pi)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
 		if(userlist[i][0] === uname)
 		{
 			userlist[i][0] = uname
-			userlist[i][1] = prv
+			userlist[i][1] = rol
 			userlist[i][2] = pi
 			update_userlist()
 			return
 		}
 	}
 
-	userlist.push([uname, prv, pi])
+	userlist.push([uname, rol, pi])
 	update_userlist()
 }
 
@@ -1257,13 +1262,13 @@ function replace_uname_in_userlist(oldu, newu)
 	update_userlist()
 }
 
-function replace_priv_in_userlist(uname, prv)
+function replace_role_in_userlist(uname, rol)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
 		if(userlist[i][0] === uname)
 		{
-			userlist[i][1] = prv
+			userlist[i][1] = rol
 			break
 		}
 	}
@@ -1271,7 +1276,7 @@ function replace_priv_in_userlist(uname, prv)
 	update_userlist()
 }
 
-function get_priv(uname)
+function get_role(uname)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
@@ -1300,7 +1305,7 @@ function replace_claim_userlist(uname)
 	update_userlist()
 }
 
-function remove_privs_userlist()
+function remove_roles_in_userlist()
 {
 	for(var i=0; i<userlist.length; i++)
 	{
@@ -1336,7 +1341,7 @@ function remove_ops_userlist()
 	update_userlist()
 }
 
-function priv_tag(p)
+function role_tag(p)
 {
 	if(p === 'admin')
 	{
@@ -1398,11 +1403,11 @@ function update_userlist()
 
 		usernames.push(item[0])
 
-		var h = $("<div class='userlist_item'><span class='ui_item_priv'></span><span class='ui_item_uname'></span></div>")
+		var h = $("<div class='userlist_item'><span class='ui_item_role'></span><span class='ui_item_uname'></span></div>")
 
-		var p = priv_tag(item[1])
+		var p = role_tag(item[1])
 
-		var pel = h.find('.ui_item_priv').eq(0)
+		var pel = h.find('.ui_item_role').eq(0)
 
 		pel.text(p)
 
@@ -1484,7 +1489,7 @@ function start_username_context_menu()
 				},
 				visible: function(key, opt)
 				{ 
-					if(priv !== 'admin' && priv !== 'op')
+					if(role !== 'admin' && role !== 'op')
 					{
 						return false
 					}
@@ -1504,7 +1509,7 @@ function start_username_context_menu()
 				},
 				visible: function(key, opt)
 				{ 
-					if(priv !== 'admin')
+					if(role !== 'admin')
 					{
 						return false
 					}
@@ -1524,7 +1529,7 @@ function start_username_context_menu()
 				},
 				visible: function(key, opt)
 				{ 
-					if(priv !== 'admin' && priv !== 'op')
+					if(role !== 'admin' && role !== 'op')
 					{
 						return false
 					}
@@ -1544,7 +1549,7 @@ function start_username_context_menu()
 				},
 				visible: function(key, opt)
 				{ 
-					if(priv !== 'admin' && priv !== 'op')
+					if(role !== 'admin' && role !== 'op')
 					{
 						return false
 					}
@@ -1560,7 +1565,7 @@ function start_username_context_menu()
 				name: "Ban",
 				visible: function(key, opt)
 				{ 
-					if(priv !== 'admin' && priv !== 'op')
+					if(role !== 'admin' && role !== 'op')
 					{
 						return false
 					}
@@ -1587,7 +1592,7 @@ function start_username_context_menu()
 				name: "Admin",
 				visible: function(key, opt)
 				{ 
-					if(priv !== 'admin')
+					if(role !== 'admin')
 					{
 						return false
 					}
@@ -1609,1231 +1614,6 @@ function start_username_context_menu()
 					}
 				}
 			}			
-		}
-	})
-}
-
-function start_main_menu_context_menu()
-{
-	$.contextMenu(
-	{
-		selector: "#main_menu",
-		animation: {duration: 250, hide: 'fadeOut'},
-		zIndex: 9000000000,		
-		items: 
-		{
-			ctpmodes: 
-			{
-				name: "Chat Permission", 
-				visible: function(key, opt)
-				{ 
-					if(priv !== 'admin' && priv !== 'op')
-					{
-						return false
-					}
-
-					else
-					{
-						return true
-					}
-				},				
-				items: 
-				{
-					ctpmode1: 
-					{
-						name: "1. Anyone",
-						visible: function(key, opt)
-						{ 
-							if(chat_permission === 1)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_chat_permission(1)
-						}
-					},
-					ctpmode1b: 
-					{
-						name: "1. Anyone *",
-						visible: function(key, opt)
-						{ 
-							if(chat_permission !== 1)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_chat_permission(1)
-						}
-					},
-					ctpmode2: 
-					{
-						name: "2. Voiced Users And Up",
-						visible: function(key, opt)
-						{ 
-							if(chat_permission === 2)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_chat_permission(2)
-						}
-					},
-					ctpmode2b: 
-					{
-						name: "2. Voiced Users And Up *",
-						visible: function(key, opt)
-						{ 
-							if(chat_permission !== 2)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_chat_permission(2)
-						} 
-					},
-					ctpmode3: 
-					{
-						name: "3. Ops And Up",
-						visible: function(key, opt)
-						{ 
-							if(chat_permission === 3)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_chat_permission(3)
-						}						
-					},
-					ctpmode3b: 
-					{
-						name: "3. Ops And Up *",
-						visible: function(key, opt)
-						{ 
-							if(chat_permission !== 3)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_chat_permission(3)
-						}						
-					}
-				}
-			},
-			uppmodes: 
-			{
-				name: "Upload Permission", 
-				visible: function(key, opt)
-				{ 
-					if(priv !== 'admin' && priv !== 'op')
-					{
-						return false
-					}
-
-					else
-					{
-						return true
-					}
-				},				
-				items: 
-				{
-					uppmode1: 
-					{
-						name: "1. Anyone",
-						visible: function(key, opt)
-						{ 
-							if(upload_permission === 1)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_upload_permission(1)
-						}
-					},
-					uppmode1b: 
-					{
-						name: "1. Anyone *",
-						visible: function(key, opt)
-						{ 
-							if(upload_permission !== 1)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_upload_permission(1)
-						}
-					},
-					uppmode2: 
-					{
-						name: "2. Voiced Users And Up",
-						visible: function(key, opt)
-						{ 
-							if(upload_permission === 2)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_upload_permission(2)
-						}
-					},
-					uppmode2b: 
-					{
-						name: "2. Voiced Users And Up *",
-						visible: function(key, opt)
-						{ 
-							if(upload_permission !== 2)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_upload_permission(2)
-						} 
-					},
-					uppmode3: 
-					{
-						name: "3. Ops And Up",
-						visible: function(key, opt)
-						{ 
-							if(upload_permission === 3)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_upload_permission(3)
-						}						
-					},
-					uppmode3b: 
-					{
-						name: "3. Ops And Up *",
-						visible: function(key, opt)
-						{ 
-							if(upload_permission !== 3)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_upload_permission(3)
-						}						
-					}
-				}
-			},
-			radpmodes: 
-			{
-				name: "Radio Permission", 
-				visible: function(key, opt)
-				{ 
-					if(priv !== 'admin' && priv !== 'op')
-					{
-						return false
-					}
-
-					else
-					{
-						return true
-					}
-				},				
-				items: 
-				{
-					radpmode1: 
-					{
-						name: "1. Anyone",
-						visible: function(key, opt)
-						{ 
-							if(radio_permission === 1)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_radio_permission(1)
-						}
-					},
-					radpmode1b: 
-					{
-						name: "1. Anyone *",
-						visible: function(key, opt)
-						{ 
-							if(radio_permission !== 1)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_radio_permission(1)
-						}
-					},
-					radpmode2: 
-					{
-						name: "2. Voiced Users And Up",
-						visible: function(key, opt)
-						{ 
-							if(radio_permission === 2)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_radio_permission(2)
-						}
-					},
-					radpmode2b: 
-					{
-						name: "2. Voiced Users And Up *",
-						visible: function(key, opt)
-						{ 
-							if(radio_permission !== 2)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_radio_permission(2)
-						} 
-					},
-					radpmode3: 
-					{
-						name: "3. Ops And Up",
-						visible: function(key, opt)
-						{ 
-							if(radio_permission === 3)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_radio_permission(3)
-						}						
-					},
-					radpmode3b: 
-					{
-						name: "3. Ops And Up *",
-						visible: function(key, opt)
-						{ 
-							if(radio_permission !== 3)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_radio_permission(3)
-						}						
-					}
-				}
-			},
-			tvpmodes: 
-			{
-				name: "TV Permission", 
-				visible: function(key, opt)
-				{ 
-					if(priv !== 'admin' && priv !== 'op')
-					{
-						return false
-					}
-
-					else
-					{
-						return true
-					}
-				},				
-				items: 
-				{
-					tvpmode1: 
-					{
-						name: "1. Anyone",
-						visible: function(key, opt)
-						{ 
-							if(tv_permission === 1)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_tv_permission(1)
-						}
-					},
-					tvpmode1b: 
-					{
-						name: "1. Anyone *",
-						visible: function(key, opt)
-						{ 
-							if(tv_permission !== 1)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_tv_permission(1)
-						}
-					},
-					tvpmode2: 
-					{
-						name: "2. Voiced Users And Up",
-						visible: function(key, opt)
-						{ 
-							if(tv_permission === 2)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_tv_permission(2)
-						}
-					},
-					tvpmode2b: 
-					{
-						name: "2. Voiced Users And Up *",
-						visible: function(key, opt)
-						{ 
-							if(tv_permission !== 2)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_tv_permission(2)
-						} 
-					},
-					tvpmode3: 
-					{
-						name: "3. Ops And Up",
-						visible: function(key, opt)
-						{ 
-							if(tv_permission === 3)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_tv_permission(3)
-						}						
-					},
-					tvpmode3b: 
-					{
-						name: "3. Ops And Up *",
-						visible: function(key, opt)
-						{ 
-							if(tv_permission !== 3)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							change_tv_permission(3)
-						}						
-					}
-				}
-			},	
-			acts:
-			{
-				name: "Active Media", 
-				visible: function(key, opt)
-				{ 
-					if(priv !== 'admin' && priv !== 'op')
-					{
-						return false
-					}
-
-					else
-					{
-						return true
-					}
-				},
-				items: 
-				{
-					actimg: 
-					{
-						name: "Images",
-						items: 
-						{
-							actimgo1: 
-							{
-								name: "Enabled",
-								visible: function(key, opt)
-								{ 
-									if(room_images_enabled)
-									{
-										return false
-									}
-
-									else
-									{
-										return true
-									}
-								},
-								callback: function(key, opt)
-								{
-									change_room_images_enabled(true)
-								}
-							},
-							actimgo1b: 
-							{
-								name: "Enabled *",
-								visible: function(key, opt)
-								{ 
-									if(!room_images_enabled)
-									{
-										return false
-									}
-
-									else
-									{
-										return true
-									}
-								},
-								callback: function(key, opt)
-								{
-									change_room_images_enabled(true)
-								}
-							},
-							actimgo2: 
-							{
-								name: "Disabled",
-								visible: function(key, opt)
-								{ 
-									if(!room_images_enabled)
-									{
-										return false
-									}
-
-									else
-									{
-										return true
-									}
-								},
-								callback: function(key, opt)
-								{
-									change_room_images_enabled(false)
-								}
-							},
-							actimgo2b: 
-							{
-								name: "Disabled *",
-								visible: function(key, opt)
-								{ 
-									if(room_images_enabled)
-									{
-										return false
-									}
-
-									else
-									{
-										return true
-									}
-								},
-								callback: function(key, opt)
-								{
-									change_room_images_enabled(false)
-								}
-							}
-						}						
-					},
-					actrad: 
-					{
-						name: "Radio",
-						items: 
-						{
-							actrado1: 
-							{
-								name: "Enabled",
-								visible: function(key, opt)
-								{ 
-									if(room_radio_enabled)
-									{
-										return false
-									}
-
-									else
-									{
-										return true
-									}
-								},
-								callback: function(key, opt)
-								{
-									change_room_radio_enabled(true)
-								}
-							},
-							actrado1b: 
-							{
-								name: "Enabled *",
-								visible: function(key, opt)
-								{ 
-									if(!room_radio_enabled)
-									{
-										return false
-									}
-
-									else
-									{
-										return true
-									}
-								},
-								callback: function(key, opt)
-								{
-									change_room_radio_enabled(true)
-								}
-							},
-							actrado2: 
-							{
-								name: "Disabled",
-								visible: function(key, opt)
-								{ 
-									if(!room_radio_enabled)
-									{
-										return false
-									}
-
-									else
-									{
-										return true
-									}
-								},
-								callback: function(key, opt)
-								{
-									change_room_radio_enabled(false)
-								}
-							},
-							actrado2b: 
-							{
-								name: "Disabled *",
-								visible: function(key, opt)
-								{ 
-									if(room_radio_enabled)
-									{
-										return false
-									}
-
-									else
-									{
-										return true
-									}
-								},
-								callback: function(key, opt)
-								{
-									change_room_radio_enabled(false)
-								}
-							}
-						}						
-					},					
-					acttv: 
-					{
-						name: "TV",
-						items: 
-						{
-							acttvo1: 
-							{
-								name: "Enabled",
-								visible: function(key, opt)
-								{ 
-									if(room_tv_enabled)
-									{
-										return false
-									}
-
-									else
-									{
-										return true
-									}
-								},
-								callback: function(key, opt)
-								{
-									change_room_tv_enabled(true)
-								}
-							},
-							acttvo1b: 
-							{
-								name: "Enabled *",
-								visible: function(key, opt)
-								{ 
-									if(!room_tv_enabled)
-									{
-										return false
-									}
-
-									else
-									{
-										return true
-									}
-								},
-								callback: function(key, opt)
-								{
-									change_room_tv_enabled(true)
-								}
-							},
-							acttvo2: 
-							{
-								name: "Disabled",
-								visible: function(key, opt)
-								{ 
-									if(!room_tv_enabled)
-									{
-										return false
-									}
-
-									else
-									{
-										return true
-									}
-								},
-								callback: function(key, opt)
-								{
-									change_room_tv_enabled(false)
-								}
-							},
-							acttvo2b: 
-							{
-								name: "Disabled *",
-								visible: function(key, opt)
-								{ 
-									if(room_tv_enabled)
-									{
-										return false
-									}
-
-									else
-									{
-										return true
-									}
-								},
-								callback: function(key, opt)
-								{
-									change_room_tv_enabled(false)
-								}
-							}
-						}						
-					}
-				}		
-			},					
-			cmprivacy: 
-			{
-				name: "Privacy", 
-				visible: function(key, opt)
-				{ 
-					if(priv !== 'admin' && priv !== 'op')
-					{
-						return false
-					}
-
-					else
-					{
-						return true
-					}
-				},				
-				items: 
-				{
-					cpub: 
-					{
-						name: "Public",
-						visible: function(key, opt)
-						{ 
-							if(is_public)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							make_public()
-						}						
-					},
-					cpubb: 
-					{
-						name: "Public *",
-						visible: function(key, opt)
-						{ 
-							if(!is_public)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							make_public()
-						}							
-					},
-					cpriv: 
-					{
-						name: "Private",
-						visible: function(key, opt)
-						{ 
-							if(!is_public)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							make_private()
-						}							
-					},
-					cprivb: 
-					{
-						name: "Private *",
-						visible: function(key, opt)
-						{ 
-							if(is_public)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						callback: function(key, opt)
-						{
-							make_private()
-						}							
-					}
-				}
-			},
-			cmprivs: 
-			{
-				name: "Privs",
-				visible: function(key, opt)
-				{ 
-					if(priv !== 'admin' && priv !== 'op')
-					{
-						return false
-					}
-
-					else
-					{
-						return true
-					}
-				},				
-				items: 
-				{
-					cp1: 
-					{
-						name: "Remove All Voices",
-						items: 
-						{
-							rmvoicessure: 
-							{
-								name: "I'm Sure", callback: function(key, opt)
-								{
-									remove_voices()
-								}					
-							}
-						}											
-					},
-					cp2: 
-					{
-						name: "Remove All Ops",
-						visible: function(key, opt)
-						{ 
-							if(priv !== 'admin')
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},						
-						items: 
-						{
-							rmopssure: 
-							{
-								name: "I'm Sure", callback: function(key, opt)
-								{
-									remove_ops()
-								}					
-							}
-						}												
-					},
-					cp3: 
-					{
-						name: "Remove Both",
-						visible: function(key, opt)
-						{ 
-							if(priv !== 'admin')
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},						
-						items: 
-						{
-							rmopssure: 
-							{
-								name: "I'm Sure", callback: function(key, opt)
-								{
-									remove_both()
-								}					
-							}
-						}												
-					}
-				}
-			},
-			cmbans: 
-			{
-				name: "Bans",
-				visible: function(key, opt)
-				{ 
-					if(priv !== 'admin' && priv !== 'op')
-					{
-						return false
-					}
-
-					else
-					{
-						return true
-					}
-				},				
-				items: 
-				{
-					cb1: 
-					{
-						name: "Banned Count",
-						callback: function(key, opt)
-						{
-							bannedcount()
-						}						
-					},
-					cb2: 
-					{
-						name: "Unban Last",
-						items: 
-						{
-							unbanlastsure: 
-							{
-								name: "I'm Sure", callback: function(key, opt)
-								{
-									unbanlast()
-								}					
-							}
-						}											
-					},
-					cb3: 
-					{
-						name: "Unban All",
-						items: 
-						{
-							unbanallsure: 
-							{
-								name: "I'm Sure", callback: function(key, opt)
-								{
-									unbanall()
-								}					
-							}
-						}												
-					}
-				}
-			},
-			cmlog: 
-			{
-				name: "Log",
-				visible: function(key, opt)
-				{ 
-					if(priv !== 'admin' && priv !== 'op')
-					{
-						return false
-					}
-
-					else
-					{
-						return true
-					}
-				},				
-				items: 
-				{
-					cmlogenabled: 
-					{
-						name: "Enabled",						
-						visible: function(key, opt)
-						{ 
-							if(log_enabled)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						items: 
-						{
-							cmlogsure: 
-							{
-								name: "I'm Sure", callback: function(key, opt)
-								{
-									change_log(true)
-								}
-							}
-						}
-					},
-					cmlogenabledb: 
-					{
-						name: "Enabled *",
-						visible: function(key, opt)
-						{ 
-							if(!log_enabled)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						items: 
-						{
-							cmlogsure: 
-							{
-								name: "I'm Sure", callback: function(key, opt)
-								{
-									change_log(true)
-								}
-							}
-						}
-					},
-					cmlogdisabled: 
-					{
-						name: "Disabled",
-						visible: function(key, opt)
-						{ 
-							if(!log_enabled)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						items: 
-						{
-							cmlogsure: 
-							{
-								name: "I'm Sure", callback: function(key, opt)
-								{
-									change_log(false)
-								}
-							}
-						}
-					},
-					cmlogdisableddb: 
-					{
-						name: "Disabled *",
-						visible: function(key, opt)
-						{ 
-							if(log_enabled)
-							{
-								return false
-							}
-
-							else
-							{
-								return true
-							}
-						},
-						items: 
-						{
-							cmlogsure: 
-							{
-								name: "I'm Sure", callback: function(key, opt)
-								{
-									change_log(false)
-								}
-							}
-						}	
-					},
-					cmlogclear: 
-					{
-						name: "Clear",
-						items: 
-						{
-							cmlogsure: 
-							{
-								name: "I'm Sure", callback: function(key, opt)
-								{
-									clear_log()
-								}
-							}
-						}	
-					}
-				}
-			}				
 		}
 	})
 }
@@ -3046,9 +1826,160 @@ function update_roomlist(roomlist)
 	update_modal_scrollbar("roomlist")
 }
 
-function show_menu()
+function setup_main_menu()
 {
-	msg_menu.show()
+	$('#admin_chat_permission').change(function()
+	{
+		var what = JSON.parse($('#admin_chat_permission option:selected').val())
+		change_chat_permission(what)
+	})
+
+	$('#admin_upload_permission').change(function()
+	{
+		var what = JSON.parse($('#admin_upload_permission option:selected').val())
+
+		change_upload_permission(what)
+	})
+
+	$('#admin_tv_permission').change(function()
+	{
+		var what = JSON.parse($('#admin_tv_permission option:selected').val())
+
+		change_tv_permission(what)
+	})
+
+	$('#admin_radio_permission').change(function()
+	{
+		var what = JSON.parse($('#admin_radio_permission option:selected').val())
+
+		change_radio_permission(what)
+	})
+
+	$('#admin_enable_images').change(function()
+	{
+		var what = JSON.parse($('#admin_enable_images option:selected').val())
+
+		change_room_images_enabled(what)
+	})
+
+	$('#admin_enable_tv').change(function()
+	{
+		var what = JSON.parse($('#admin_enable_tv option:selected').val())
+
+		change_room_tv_enabled(what)
+	})
+
+	$('#admin_enable_radio').change(function()
+	{
+		var what = JSON.parse($('#admin_enable_radio option:selected').val())
+
+		change_room_radio_enabled(what)
+	})
+
+	$('#admin_privacy').change(function()
+	{
+		var what = JSON.parse($('#admin_privacy option:selected').val())
+
+		change_privacy(what)
+	})	
+
+	$('#admin_log').change(function()
+	{
+		var what = JSON.parse($('#admin_log option:selected').val())
+
+		change_log(what)
+	})
+
+	$("#admin_default_theme").spectrum(
+	{
+		color: "#B5599A",
+		appendTo: "#admin_menu"
+	})
+
+	$("#admin_default_theme").on('hide.spectrum', function(e, t) 
+	{
+		change_default_theme(t.toRgbString())
+	})
+}
+
+function show_main_menu()
+{
+	msg_menu.show(function()
+	{
+		$('#admin_chat_permission').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === chat_permission)
+			{
+				$(this).prop('selected', true)
+			}
+		})
+
+		$('#admin_upload_permission').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === upload_permission)
+			{
+				$(this).prop('selected', true)
+			}
+		})
+
+		$('#admin_tv_permission').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === tv_permission)
+			{
+				$(this).prop('selected', true)
+			}
+		})
+
+		$('#admin_radio_permission').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === radio_permission)
+			{
+				$(this).prop('selected', true)
+			}
+		})
+
+		$('#admin_enable_images').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === room_images_enabled)
+			{
+				$(this).prop('selected', true)
+			}
+		})
+
+		$('#admin_enable_tv').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === room_tv_enabled)
+			{
+				$(this).prop('selected', true)
+			}
+		})
+
+		$('#admin_enable_radio').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === room_radio_enabled)
+			{
+				$(this).prop('selected', true)
+			}
+		})
+
+		$('#admin_privacy').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === is_public)
+			{
+				$(this).prop('selected', true)
+			}
+		})	
+
+		$('#admin_log').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === log_enabled)
+			{
+				$(this).prop('selected', true)
+			}
+		})
+
+		$("#admin_default_theme").spectrum("set", default_theme)
+	})
 }
 
 function show_create_room()
@@ -4248,6 +3179,7 @@ function start_image_events()
 			if(settings.background_color)
 			{
 				change_colors(background_color, background_color2, font_color)
+				default_theme_on = false
 			}
 
 			if(settings.background_image)
@@ -4455,21 +3387,20 @@ function register_commands()
 	commands.push('/roomnameedit')
 	commands.push('/played')
 	commands.push('/search')
-	commands.push('/priv')
+	commands.push('/role')
 	commands.push('/voice')
 	commands.push('/op')
 	commands.push('/admin')
 	commands.push('/strip')
 	commands.push('/removevoices')
 	commands.push('/removeops')
-	commands.push('/removeboth')
 	commands.push('/ban')
 	commands.push('/unbanall')
 	commands.push('/unbanlast')
 	commands.push('/bannedcount')
 	commands.push('/kick')
-	commands.push('/private')
 	commands.push('/public')
+	commands.push('/private')
 	commands.push('/log')
 	commands.push('/enablelog')
 	commands.push('/disablelog')
@@ -4485,7 +3416,6 @@ function register_commands()
 	commands.push('/topicaddstart')
 	commands.push('/topictrimstart')
 	commands.push('/topicedit')
-	commands.push('/create')
 	commands.push('/help3')
 	commands.push('/help2')
 	commands.push('/help')
@@ -4690,9 +3620,9 @@ function send_to_chat(msg)
 				chat_search(arg)
 			}
 
-			else if(oiEquals(lmsg, '/priv'))
+			else if(oiEquals(lmsg, '/role'))
 			{
-				show_priv()
+				show_role()
 			}
 
 			else if(oiStartsWith(lmsg, '/voice'))
@@ -4725,11 +3655,6 @@ function send_to_chat(msg)
 				remove_ops()
 			}
 
-			else if(oiEquals(lmsg, '/removeboth'))
-			{
-				remove_both()
-			}
-
 			else if(oiStartsWith(lmsg, '/ban'))
 			{
 				ban(arg)
@@ -4737,17 +3662,17 @@ function send_to_chat(msg)
 
 			else if(oiEquals(lmsg, '/unbanall'))
 			{
-				unbanall()
+				unban_all()
 			}
 
 			else if(oiEquals(lmsg, '/unbanlast'))
 			{
-				unbanlast()
+				unban_last()
 			}
 
 			else if(oiEquals(lmsg, '/bannedcount'))
 			{
-				bannedcount()
+				get_banned_count()
 			}
 
 			else if(oiStartsWith(lmsg, '/kick'))
@@ -4755,14 +3680,14 @@ function send_to_chat(msg)
 				kick(arg)
 			}
 
-			else if(oiEquals(lmsg, '/private'))
-			{
-				make_private()
-			}
-
 			else if(oiEquals(lmsg, '/public'))
 			{
-				make_public()
+				change_privacy(true)
+			}
+
+			else if(oiEquals(lmsg, '/private'))
+			{
+				change_privacy(false)
 			}
 
 			else if(oiEquals(lmsg, '/log'))
@@ -4798,16 +3723,6 @@ function send_to_chat(msg)
 			else if(oiStartsWith(lmsg, '/tv'))
 			{
 				change_tv_source(arg)
-			}
-
-			else if(oiEquals(lmsg, '/public'))
-			{
-				make_public()
-			}
-
-			else if(oiEquals(lmsg, '/privacy'))
-			{
-				show_public()
 			}
 
 			else if(oiEquals(lmsg, '/status'))
@@ -4869,11 +3784,6 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/room'))
 			{
 				show_room()
-			}
-
-			else if(oiStartsWith(lmsg, '/create'))
-			{
-				create_room_submit(arg)
 			}
 
 			else if(oiEquals(lmsg, '/help3'))
@@ -4982,7 +3892,7 @@ function send_to_chat(msg)
 
 function change_topic(dtopic)
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
 		dtopic = utilz.clean_string2(dtopic.substring(0, max_topic_length))
 
@@ -5008,7 +3918,7 @@ function change_topic(dtopic)
 
 function topicadd(arg)
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
 		arg = utilz.clean_string2(arg)
 
@@ -5036,7 +3946,7 @@ function topicadd(arg)
 
 function topictrim(n)
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
 		var split = topic.split(topic_separator)
 
@@ -5086,7 +3996,7 @@ function topictrim(n)
 
 function topicstart(arg)
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
 		arg = utilz.clean_string2(arg)
 
@@ -5114,7 +4024,7 @@ function topicstart(arg)
 
 function topictrimstart(n)
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
 		var split = topic.split(topic_separator)
 
@@ -5207,7 +4117,7 @@ function announce_new_username(data)
 {
 	replace_uname_in_userlist(data.old_username, data.username)
 
-	var show = check_chat_permission(get_priv(data.username))
+	var show = check_chat_permission(get_role(data.username))
 
 	if(username === data.old_username)
 	{
@@ -6037,7 +4947,7 @@ function clear_chat()
 
 	show_intro()
 	show_topic("big")
-	show_priv()
+	show_role()
 	show_public()
 	show_log()
 	show_log_messages()
@@ -6111,7 +5021,7 @@ function reclaim_room()
 		return false
 	}
 
-	if(priv !== 'admin')
+	if(role !== 'admin')
 	{
 		chat_announce('[', ']', "You are not a room admin", 'small')
 		return false
@@ -6128,7 +5038,7 @@ function unclaim_room()
 		return false
 	}
 
-	if(priv !== 'admin')
+	if(role !== 'admin')
 	{
 		chat_announce('[', ']', "You are not a room admin", 'small')
 		return false
@@ -6148,7 +5058,7 @@ function check_firstime()
 
 function change_chat_permission(m)
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
 		var amodes = [1, 2, 3]
 
@@ -6187,7 +5097,7 @@ function change_chat_permission(m)
 
 function change_upload_permission(m)
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
 		var amodes = [1, 2, 3]
 
@@ -6226,7 +5136,7 @@ function change_upload_permission(m)
 
 function change_radio_permission(m)
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
 		var amodes = [1, 2, 3]
 
@@ -6265,7 +5175,7 @@ function change_radio_permission(m)
 
 function change_tv_permission(m)
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
 		var amodes = [1, 2, 3]
 
@@ -6326,7 +5236,7 @@ function announce_chat_permission_change(data)
 	if(s.length > 0)
 	{
 		chat_permission = data.chat_permission
-		can_chat = check_chat_permission(priv)
+		can_chat = check_chat_permission(role)
 		setup_icons()
 		chat_announce('~', '~', s, 'small')
 	}
@@ -6356,7 +5266,7 @@ function announce_upload_permission_change(data)
 	if(s.length > 0)
 	{
 		upload_permission = data.upload_permission
-		can_upload = check_upload_permission(priv)
+		can_upload = check_upload_permission(role)
 		setup_icons()
 		chat_announce('~', '~', s, 'small')
 	}
@@ -6386,7 +5296,7 @@ function announce_radio_permission_change(data)
 	if(s.length > 0)
 	{
 		radio_permission = data.radio_permission
-		can_radio = check_radio_permission(priv)
+		can_radio = check_radio_permission(role)
 		setup_icons()
 		chat_announce('~', '~', s, 'small')
 	}
@@ -6416,7 +5326,7 @@ function announce_tv_permission_change(data)
 	if(s.length > 0)
 	{
 		tv_permission = data.tv_permission
-		can_tv = check_tv_permission(priv)
+		can_tv = check_tv_permission(role)
 		setup_icons()
 		chat_announce('~', '~', s, 'small')
 	}
@@ -6449,7 +5359,7 @@ function big_letter(s)
 
 function voice(uname)
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
 		if(uname.length > 0 && uname.length <= max_username_length)
 		{
@@ -6465,15 +5375,15 @@ function voice(uname)
 				return false
 			}
 
-			var prv = get_priv(uname)
+			var rol = get_role(uname)
 
-			if(prv === 'voice')
+			if(rol === 'voice')
 			{
 				isalready(uname, 'voice')
 				return false
 			}
 
-			if((prv === 'admin' || prv === 'op') && priv !== 'admin')
+			if((rol === 'admin' || rol === 'op') && role !== 'admin')
 			{
 				forbiddenuser()
 				return false
@@ -6520,29 +5430,29 @@ function announce_voice(data)
 {
 	if(username === data.username2)
 	{
-		set_priv("voice")
+		set_role("voice")
 	}
 
 	chat_announce('~', '~', `${data.username1} gave voice to ${data.username2}`, 'small')
 
-	replace_priv_in_userlist(data.username2, 'voice')
+	replace_role_in_userlist(data.username2, 'voice')
 }
 
 function announce_op(data)
 {
 	if(username === data.username2)
 	{
-		set_priv("op")
+		set_role("op")
 	}
 
 	chat_announce('~', '~', `${data.username1} gave op to ${data.username2}`, 'small')
 
-	replace_priv_in_userlist(data.username2, 'op')
+	replace_role_in_userlist(data.username2, 'op')
 }
 
 function strip(uname)
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
 		if(uname.length > 0 && uname.length <= max_username_length)
 		{
@@ -6558,15 +5468,15 @@ function strip(uname)
 				return false
 			}
 
-			var prv = get_priv(uname)
+			var rol = get_role(uname)
 
-			if(prv === 'z')
+			if(rol === 'z')
 			{
 				isalready(uname, '')
 				return false
 			}
 
-			if((prv === 'admin' || prv === 'op') && priv !== 'admin')
+			if((rol === 'admin' || rol === 'op') && role !== 'admin')
 			{
 				forbiddenuser()
 				return false
@@ -6586,17 +5496,17 @@ function announce_strip(data)
 {
 	if(username === data.username2)
 	{
-		set_priv("")
+		set_role("")
 	}
 
-	chat_announce('~', '~', `${data.username1} removed all privileges from ${data.username2}`, 'small')
+	chat_announce('~', '~', `${data.username1} removed role from ${data.username2}`, 'small')
 
-	replace_priv_in_userlist(data.username2, '')
+	replace_role_in_userlist(data.username2, '')
 }
 
-function set_priv(p)
+function set_role(p)
 {
-	priv = p
+	role = p
 
 	check_permissions()
 }
@@ -6607,7 +5517,7 @@ function announce_claim(data)
 
 	if(data.updated)
 	{
-		var s = `The room has been reclaimed by ${data.username}. All previous given privileges are now invalid`
+		var s = `The room has been reclaimed by ${data.username}. All previous given roles are now invalid`
 	}
 
 	else
@@ -6619,12 +5529,12 @@ function announce_claim(data)
 
 	if(username === data.username)
 	{
-		set_priv("admin")
+		set_role("admin")
 	}
 
 	else
 	{
-		set_priv("")
+		set_role("")
 	}
 	
 	replace_claim_userlist(data.username)
@@ -6636,7 +5546,7 @@ function announce_unclaim(data)
 
 	claimed = false
 
-	set_priv("")
+	set_role("")
 
 	upload_permission = 1
 
@@ -6650,7 +5560,7 @@ function announce_unclaim(data)
 
 	check_permissions()
 
-	remove_privs_userlist()
+	remove_roles_in_userlist()
 
 	if(radio_source !== "")
 
@@ -6664,12 +5574,12 @@ function announce_admin(data)
 {
 	chat_announce('~', '~', `${data.username1} gave admin to ${data.username2}`, 'small')
 
-	replace_priv_in_userlist(data.username2, 'admin')
+	replace_role_in_userlist(data.username2, 'admin')
 }
 
 function admin(uname)
 {
-	if(priv === 'admin')
+	if(role === 'admin')
 	{
 		if(uname.length > 0 && uname.length <= max_username_length)
 		{
@@ -6685,9 +5595,9 @@ function admin(uname)
 				return false
 			}
 
-			var prv = get_priv(uname)
+			var rol = get_role(uname)
 
-			if(prv === 'admin')
+			if(rol === 'admin')
 			{
 				isalready(uname, 'admin')
 				return false
@@ -6705,7 +5615,7 @@ function admin(uname)
 
 function op(uname)
 {
-	if(priv === 'admin')
+	if(role === 'admin')
 	{
 		if(uname.length > 0 && uname.length <= max_username_length)
 		{
@@ -6721,9 +5631,9 @@ function op(uname)
 				return false
 			}
 
-			var prv = get_priv(uname)
+			var rol = get_role(uname)
 
-			if(prv === 'op')
+			if(rol === 'op')
 			{
 				isalready(uname, 'op')
 				return false
@@ -6739,62 +5649,45 @@ function op(uname)
 	}
 }
 
-function make_private()
+function change_privacy(what)
 {
-	if(priv === 'admin' || priv === 'op')
-	{
-		if(!is_public)
-		{
-			chat_announce('[', ']', "Room is already private", 'small')
-			return false
-		}
-
-		socket_emit('make_private', {})
-	}
-
-	else
+	if(role !== 'admin' && role !== 'op')
 	{
 		not_an_op()
+		return
 	}
-}
 
-function make_public()
-{
-	if(priv === 'admin' || priv === 'op')
+	if(is_public === what)
 	{
-		if(is_public)
+		if(what)
 		{
 			chat_announce('[', ']', "Room is already public", 'small')
-			return false
 		}
 
-		socket_emit('make_public', {})
+		else
+		{
+			chat_announce('[', ']', "Room is already private", 'small')
+		}
+	}
+
+	socket_emit('change_privacy', {what:what})
+}
+
+function announce_privacy_change(data)
+{
+	is_public = data.what
+
+	if(is_public)
+	{
+		var s = `${data.username} made the room public`
+		s += ". The room won't appear in the public room list"
 	}
 
 	else
 	{
-		not_an_op()
+		var s = `${data.username} made the room private`
+		s += ". The room will appear in the public room list"
 	}
-}
-
-function made_private(data)
-{
-	is_public = false
-
-	var s = `${data.username} made the room private`
-
-	s += ". The room won't appear in the public room list"
-	
-	chat_announce('~', '~', s, 'small')
-}
-
-function made_public(data)
-{
-	is_public = true 
-
-	var s = `${data.username} made the room public`
-
-	s += ". The room will appear in the public room list"
 	
 	chat_announce('~', '~', s, 'small')
 }
@@ -6967,7 +5860,7 @@ function announce_tv_source_change(data, date=false)
 
 function ban(uname)
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
 		if(uname.length > 0 && uname.length <= max_username_length)
 		{
@@ -6983,9 +5876,9 @@ function ban(uname)
 				return false
 			}
 
-			var prv = get_priv(uname)
+			var rol = get_role(uname)
 
-			if((prv === 'admin' || prv === 'op') && priv !== 'admin')
+			if((rol === 'admin' || rol === 'op') && role !== 'admin')
 			{
 				forbiddenuser()
 				return false
@@ -7001,11 +5894,11 @@ function ban(uname)
 	}
 }
 
-function unbanall()
+function unban_all()
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
-		socket_emit('unbanall', {})
+		socket_emit('unban_all', {})
 	}
 
 	else
@@ -7014,11 +5907,11 @@ function unbanall()
 	}
 }
 
-function unbanlast()
+function unban_last()
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
-		socket_emit('unbanlast', {})
+		socket_emit('unban_last', {})
 	}
 
 	else
@@ -7027,30 +5920,32 @@ function unbanlast()
 	}
 }
 
-function bannedcount()
+function get_banned_count()
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
-		socket_emit('bannedcount', {})
+		socket_emit('get_banned_count', {})
 	}
 }
 
-function get_bannedcount(data)
+function receive_banned_count(data)
 {
-	if(data.count == 1)
+	if(data.count === 1)
 	{
-		chat_announce('[', ']', `There is ${data.count} user banned`, 'small')
+		var s = `There is ${data.count} user banned`
 	}
 
 	else
 	{
-		chat_announce('[', ']', `There are ${data.count} users banned`, 'small')
-	}	
+		var s = `There are ${data.count} users banned`
+	}
+
+	msg_info.show(s)
 }
 
 function kick(uname)
 {
-	if(priv === 'admin' || priv === 'op')
+	if(role === 'admin' || role === 'op')
 	{
 		if(uname.length > 0 && uname.length <= max_username_length)
 		{
@@ -7066,9 +5961,9 @@ function kick(uname)
 				return false
 			}
 
-			var prv = get_priv(uname)
+			var rol = get_role(uname)
 
-			if((prv === 'admin' || prv === 'op') && priv !== 'admin')
+			if((rol === 'admin' || rol === 'op') && role !== 'admin')
 			{
 				forbiddenuser()
 				return false
@@ -7084,12 +5979,12 @@ function kick(uname)
 	}
 }
 
-function announce_unbanall(data)
+function announce_unban_all(data)
 {
 	chat_announce('~', '~', `${data.username} unbanned all banned users`, 'small')
 }
 
-function announce_unbanlast(data)
+function announce_unban_last(data)
 {
 	chat_announce('~', '~', `${data.username} unbanned the latest banned user`, 'small')
 }
@@ -7113,7 +6008,7 @@ function isalready(who, what)
 
 	else if(what === '')
 	{
-		chat_announce('[', ']', `${who} already has no privileges`, 'small')
+		chat_announce('[', ']', `${who} already has no role`, 'small')
 	}
 }
 
@@ -7144,7 +6039,7 @@ function search_on(site, q)
 
 function remove_voices()
 {
-	if(priv !== 'admin' && priv !== 'op')
+	if(role !== 'admin' && role !== 'op')
 	{
 		not_an_op()
 		return false
@@ -7155,7 +6050,7 @@ function remove_voices()
 
 function remove_ops()
 {
-	if(priv !== 'admin')
+	if(role !== 'admin')
 	{
 		chat_announce('[', ']', "You are not a room admin", 'small')
 		return false
@@ -7164,19 +6059,13 @@ function remove_ops()
 	socket_emit('remove_ops', {})
 }
 
-function remove_both()
-{
-	remove_voices()
-	remove_ops()
-}
-
 function announce_removedvoices(data)
 {
 	chat_announce('~', '~', `${data.username} removed all voices`, 'small')
 
-	if(priv === 'voice')
+	if(role === 'voice')
 	{
-		set_priv("")
+		set_role("")
 	}
 
 	remove_voices_userlist()
@@ -7186,9 +6075,9 @@ function announce_removedops(data)
 {
 	chat_announce('~', '~', `${data.username} removed all ops`, 'small')
 
-	if(priv === 'op')
+	if(role === 'op')
 	{
-		set_priv("")
+		set_role("")
 	}
 
 	remove_ops_userlist()
@@ -7198,7 +6087,7 @@ function disconnected(data)
 {
 	removefrom_userlist(data.username)
 
-	if(announce_parts && check_chat_permission(data.priv))
+	if(announce_parts && check_chat_permission(data.role))
 	{
 		chat_announce('--', '--', `${data.username} has left`, 'small', false, false, false, true)
 	}
@@ -7208,7 +6097,7 @@ function pinged(data)
 {
 	removefrom_userlist(data.username)
 
-	if(announce_parts && check_chat_permission(data.priv))
+	if(announce_parts && check_chat_permission(data.role))
 	{
 		chat_announce('--', '--', `${data.username} has left (Ping Timeout)`, 'small', false, false, false, true)
 	}
@@ -8259,7 +7148,7 @@ function show_log_messages()
 
 function change_log(log)
 {
-	if(priv !== 'admin' && priv !== 'op')
+	if(role !== 'admin' && role !== 'op')
 	{
 		not_an_op()	
 		return false
@@ -8283,7 +7172,7 @@ function change_log(log)
 
 function clear_log(log)
 {
-	if(priv !== 'admin' && priv !== 'op')
+	if(role !== 'admin' && role !== 'op')
 	{
 		not_an_op()	
 		return false
@@ -8294,31 +7183,19 @@ function clear_log(log)
 
 function announce_log_change(data)
 {
-	var s = ""
-
-	if(username === data.username)
-	{
-		var uname = "You"
-	}
-
-	else
-	{
-		var uname = data.username
-	}
-
 	if(data.log)
 	{
-		s += `${uname} enabled the log`
+		var s = `${data.username} enabled the log`
 	}
 
 	else
 	{
-		s += `${uname} disabled the log`
+		var s = `${data.username} disabled the log`
 	}
 
-	log_enabled = data.log
-
 	chat_announce('~', '~', s, 'small')
+
+	log_enabled = data.log
 }
 
 function announce_log_cleared(data)
@@ -8493,6 +7370,8 @@ function change_images_visibility()
 
 		set_default_theme()
 
+		recreate_background_image()
+
 		if(!images_enabled && !tv_enabled)
 		{
 			hide_media()
@@ -8504,8 +7383,9 @@ function change_images_visibility()
 		$("#toggle_images_text").text("Images Disabled")
 	}
 
+	fix_visible_video_frame()
 	update_chat_scrollbar()
-	goto_bottom()	
+	goto_bottom()
 }
 
 function toggle_tv()
@@ -8828,7 +7708,7 @@ function fix_video_frame(iframe_id)
 
 function change_room_images_enabled(what)
 {
-	if(priv !== 'admin' && priv !== 'op')
+	if(role !== 'admin' && role !== 'op')
 	{
 		not_an_op()
 		return
@@ -8857,7 +7737,7 @@ function change_room_images_enabled(what)
 
 function change_room_tv_enabled(what)
 {
-	if(priv !== 'admin' && priv !== 'op')
+	if(role !== 'admin' && role !== 'op')
 	{
 		not_an_op()
 		return
@@ -8886,7 +7766,7 @@ function change_room_tv_enabled(what)
 
 function change_room_radio_enabled(what)
 {
-	if(priv !== 'admin' && priv !== 'op')
+	if(role !== 'admin' && role !== 'op')
 	{
 		not_an_op()
 		return
@@ -8993,5 +7873,40 @@ function setup_active_media(data)
 	if(!room_radio_enabled)
 	{
 		change_radio_visibility()
+	}
+}
+
+function recreate_background_image()
+{
+	$("#background_image").remove()
+
+	$("#main_container").prepend("<div id='background_image'></div>")
+}
+
+function change_default_theme(color)
+{
+	if(role !== 'admin' && role !== 'op')
+	{
+		not_an_op()
+		return
+	}
+
+	if(color === undefined)
+	{
+		return false
+	}
+
+	socket_emit("change_default_theme", {color:color})	
+}
+
+function announce_default_theme_change(data)
+{
+	chat_announce('~', '~', `${data.username} changed the default theme to ${data.color}`, 'small')
+
+	default_theme = data.color
+
+	if(default_theme_on)
+	{
+		set_default_theme()
 	}
 }

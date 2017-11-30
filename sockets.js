@@ -306,11 +306,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
-		socket.on('unbanall', function(data) 
+		socket.on('unban_all', function(data) 
 		{
 			try
 			{
-				unbanall(socket, data)
+				unban_all(socket, data)
 			}
 
 			catch(err)
@@ -319,11 +319,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
-		socket.on('unbanlast', function(data) 
+		socket.on('unban_last', function(data) 
 		{
 			try
 			{
-				unbanlast(socket, data)
+				unban_last(socket, data)
 			}
 
 			catch(err)
@@ -332,11 +332,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
-		socket.on('bannedcount', function(data) 
+		socket.on('get_banned_count', function(data) 
 		{
 			try
 			{
-				bannedcount(socket, data)
+				get_banned_count(socket, data)
 			}
 
 			catch(err)
@@ -436,24 +436,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
-		socket.on('make_private', function(data) 
+		socket.on('change_privacy', function(data) 
 		{
 			try
 			{
-				make_private(socket, data)
-			}
-
-			catch(err)
-			{
-				console.error(err)
-			}
-		})
-
-		socket.on('make_public', function(data) 
-		{
-			try
-			{
-				make_public(socket, data)
+				change_privacy(socket, data)
 			}
 
 			catch(err)
@@ -571,6 +558,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			try
 			{
 				get_details(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
+		socket.on('change_default_theme', function(data) 
+		{
+			try
+			{
+				change_default_theme(socket, data)
 			}
 
 			catch(err)
@@ -707,11 +707,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							rooms[room_id] = create_room_object(info)
 						}
 
-						socket.priv = info.keys[socket.user_id]
+						socket.role = info.keys[socket.user_id]
 
-						if(socket.priv === undefined)
+						if(socket.role === undefined)
 						{
-							socket.priv = ''
+							socket.role = ''
 						}
 
 						socket.join(room_id)
@@ -722,7 +722,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							{
 								type: 'userjoin',
 								username: socket.username,
-								priv: socket.priv,
+								role: socket.role,
 								profile_image: socket.profile_image
 							})
 
@@ -731,7 +731,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 								rooms[room_id].userlist = []
 							}
 
-							rooms[room_id].userlist.push([socket.username, socket.priv, socket.profile_image])
+							rooms[room_id].userlist.push([socket.username, socket.role, socket.profile_image])
 						}
 
 						socket.emit('update', 
@@ -749,7 +749,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							userlist: get_userlist(socket.room_id), 
 							log: info.log,
 							log_messages: info.log_messages,
-							priv: socket.priv, 
+							role: socket.role, 
 							chat_permission: info.chat_permission, 
 							upload_permission: info.upload_permission, 
 							radio_permission: info.radio_permission, 
@@ -769,7 +769,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							profile_image: socket.profile_image,
 							room_images_enabled: info.images_enabled,
 							room_tv_enabled: info.tv_enabled,
-							room_radio_enabled: info.radio_enabled
+							room_radio_enabled: info.radio_enabled,
+							default_theme: info.default_theme
 						})				
 
 						db_manager.save_visited_room(socket.user_id, socket.room_id)
@@ -819,7 +820,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
-			if(!check_permission(rooms[socket.room_id].chat_permission, socket.priv))
+			if(!check_permission(rooms[socket.room_id].chat_permission, socket.role))
 			{
 				return false
 			}
@@ -857,7 +858,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return get_out(socket)
 			}
@@ -927,7 +928,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return get_out(socket)
 			}
@@ -1076,9 +1077,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.then(info =>
 			{
-				if(!info.claimed || socket.priv === 'admin' || data.pass === sconfig.secretpass)
+				if(!info.claimed || socket.role === 'admin' || data.pass === sconfig.secretpass)
 				{
-					if(socket.priv === 'admin')
+					if(socket.role === 'admin')
 					{
 						var updated = true
 					}
@@ -1094,12 +1095,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					{
 						var socc = io.sockets.connected[ids[i]]
 						
-						socc.priv = ''
+						socc.role = ''
 						
 						replace_in_userlist(socc, socc.username)
 					}
 
-					socket.priv = "admin"
+					socket.role = "admin"
 
 					info.keys = {}
 
@@ -1129,7 +1130,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin')
+			if(socket.role !== 'admin')
 			{
 				return get_out(socket)
 			}
@@ -1144,7 +1145,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				{
 					var socc = io.sockets.connected[ids[i]]
 					
-					socc.priv = ''
+					socc.role = ''
 
 					replace_in_userlist(socc, socc.username)					
 				}
@@ -1184,7 +1185,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return get_out(socket)
 			}
@@ -1216,19 +1217,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					if(socc.username === data.username)
 					{
-						if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
+						if((socc.role === 'admin' || socc.role === 'op') && socket.role !== 'admin')
 						{
 							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
 							return false
 						}
 
-						if(socc.priv === 'voice')
+						if(socc.role === 'voice')
 						{
 							socket.emit('update', {room:socket.room_id, type:'isalready', what:'voice', who:data.username})
 							return false
 						}
 
-						socc.priv = 'voice'
+						socc.role = 'voice'
 
 						info.keys[socc.user_id] = "voice"
 
@@ -1259,7 +1260,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin')
+			if(socket.role !== 'admin')
 			{
 				return get_out(socket)
 			}
@@ -1286,19 +1287,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					if(socc.username === data.username)
 					{
-						if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
+						if((socc.role === 'admin' || socc.role === 'op') && socket.role !== 'admin')
 						{
 							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
 							return false
 						}
 
-						if(socc.priv === 'op')
+						if(socc.role === 'op')
 						{
 							socket.emit('update', {room:socket.room_id, type:'isalready', what:'op', who:data.username})
 							return false
 						}
 
-						socc.priv = 'op'
+						socc.role = 'op'
 
 						info.keys[socc.user_id] = "op"
 
@@ -1329,7 +1330,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin')
+			if(socket.role !== 'admin')
 			{
 				return get_out(socket)
 			}
@@ -1356,19 +1357,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					if(socc.username === data.username)
 					{
-						if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
+						if((socc.role === 'admin' || socc.role === 'op') && socket.role !== 'admin')
 						{
 							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
 							return false
 						}
 
-						if(socc.priv === 'admin')
+						if(socc.role === 'admin')
 						{
 							socket.emit('update', {room:socket.room_id, type:'isalready', what:'admin', who:data.username})
 							return false
 						}
 
-						socc.priv = 'admin'
+						socc.role = 'admin'
 
 						info.keys[socc.user_id] = "admin"
 
@@ -1399,7 +1400,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return get_out(socket)
 			}
@@ -1431,19 +1432,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					if(socc.username === data.username)
 					{
-						if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
+						if((socc.role === 'admin' || socc.role === 'op') && socket.role !== 'admin')
 						{
 							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
 							return false
 						}
 
-						if(socc.priv === '')
+						if(socc.role === '')
 						{
 							socket.emit('update', {room:socket.room_id, type:'isalready', what:'', who:data.username})
 							return false
 						}
 
-						socc.priv = ''
+						socc.role = ''
 
 						delete info.keys[socc.user_id]
 
@@ -1474,7 +1475,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return get_out(socket)
 			}
@@ -1506,9 +1507,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				{
 					var socc = io.sockets.connected[ids[i]]
 
-					if(socc.priv === 'voice')
+					if(socc.role === 'voice')
 					{
-						socc.priv = ''
+						socc.role = ''
 
 						replace_in_userlist(socc, socc.username)
 					}
@@ -1535,7 +1536,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin')
+			if(socket.role !== 'admin')
 			{
 				return get_out(socket)
 			}
@@ -1567,9 +1568,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				{
 					var socc = io.sockets.connected[ids[i]]
 
-					if(socc.priv === 'op')
+					if(socc.role === 'op')
 					{
-						socc.priv = ''
+						socc.role = ''
 
 						replace_in_userlist(socc, socc.username)
 					}
@@ -1596,7 +1597,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return get_out(socket)
 			}
@@ -1619,13 +1620,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				if(socc.username === data.username)
 				{
-					if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
+					if((socc.role === 'admin' || socc.role === 'op') && socket.role !== 'admin')
 					{
 						socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
 						return false
 					}
 
-					socc.priv = ''
+					socc.role = ''
 					socc.kickd = true
 					socc.info1 = socket.username
 					
@@ -1639,7 +1640,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return get_out(socket)
 			}
@@ -1666,7 +1667,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					if(socc.username === data.username)
 					{
-						if((socc.priv === 'admin' || socc.priv === 'op') && socket.priv !== 'admin')
+						if((socc.role === 'admin' || socc.role === 'op') && socket.role !== 'admin')
 						{
 							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
 							return false
@@ -1698,7 +1699,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 							if(socc.ip === sokk.ip)
 							{
-								if((sokk.priv === 'admin' || sokk.priv === 'op') && socket.priv !== 'admin')
+								if((sokk.role === 'admin' || sokk.role === 'op') && socket.role !== 'admin')
 								{
 									continue
 								}
@@ -1708,7 +1709,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 									continue
 								}
 
-								sokk.priv = ''
+								sokk.role = ''
 
 								sokk.bannd = true
 
@@ -1737,11 +1738,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}		
 	}
 
-	function unbanall(socket, data)
+	function unban_all(socket, data)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return get_out(socket)
 			}
@@ -1761,7 +1762,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						console.error(err)
 					})
 
-					io.sockets.in(socket.room_id).emit('update', {type:'announce_unbanall', username:socket.username})
+					io.sockets.in(socket.room_id).emit('update', {type:'announce_unban_all', username:socket.username})
 				}
 
 				else
@@ -1777,11 +1778,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}		
 	}
 
-	function unbanlast(socket, data)
+	function unban_last(socket, data)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return get_out(socket)
 			}
@@ -1801,7 +1802,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						console.error(err)
 					})
 
-					io.sockets.in(socket.room_id).emit('update', {type:'announce_unbanlast', username:socket.username})
+					io.sockets.in(socket.room_id).emit('update', {type:'announce_unban_last', username:socket.username})
 				}
 
 				else
@@ -1817,11 +1818,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}		
 	}
 
-	function bannedcount(socket, data)
+	function get_banned_count(socket, data)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return get_out(socket)
 			}
@@ -1837,10 +1838,10 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				else
 				{
-					var count = info.bans.split(';').length
+					var count = info.bans.length
 				}
 
-				socket.emit('update', {room:socket.room_id, type:'get_bannedcount', count:count})
+				socket.emit('update', {room:socket.room_id, type:'receive_banned_count', count:count})
 			})
 
 			.catch(err =>
@@ -1854,7 +1855,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return get_out(socket)
 			}
@@ -1883,7 +1884,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return get_out(socket)
 			}
@@ -1912,7 +1913,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return false
 			}
@@ -1941,7 +1942,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return false
 			}
@@ -1970,7 +1971,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return false
 			}
@@ -2025,7 +2026,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return false
 			}
@@ -2062,73 +2063,28 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}		
 	}
 
-	function make_private(socket, data)
+	function change_privacy(socket, data)
 	{
 		if(socket.username !== undefined)
 		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
+			if(socket.role !== 'admin' && socket.role !== 'op')
 			{
 				return get_out(socket)
 			}
 
-			db_manager.get_room({_id:socket.room_id}, {public:true})
-
-			.then(info =>
+			if(data.what !== true && data.what !== false)
 			{
-				if(info.public)
-				{
-					io.sockets.in(socket.room_id).emit('update', {type:'made_private', username:socket.username})
-					
-					info.public = false
+				return get_out(socket)
+			}
 
-					db_manager.update_room(info._id, {public:info.public})
-
-					.catch(err =>
-					{
-						console.error(err)
-					})					
-				}
-			})
+			db_manager.update_room(socket.room_id, {public:data.what})
 
 			.catch(err =>
 			{
 				console.error(err)
 			})
-		}
-	}
 
-	function make_public(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(socket.priv !== 'admin' && socket.priv !== 'op')
-			{
-				return get_out(socket)
-			}
-
-			db_manager.get_room({_id:socket.room_id}, {public:true})
-
-			.then(info =>
-			{
-				if(!info.public)
-				{
-					io.sockets.in(socket.room_id).emit('update', {type:'made_public', username:socket.username})
-					
-					info.public = true
-
-					db_manager.update_room(info._id, {public:info.public})
-
-					.catch(err =>
-					{
-						console.error(err)
-					})					
-				}
-			})
-
-			.catch(err =>
-			{
-				console.error(err)
-			})
+			io.sockets.in(socket.room_id).emit('update', {type:'privacy_change', username:socket.username, what:data.what})
 		}
 	}
 
@@ -2151,7 +2107,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
-			if(!check_permission(rooms[socket.room_id].radio_permission, socket.priv))
+			if(!check_permission(rooms[socket.room_id].radio_permission, socket.role))
 			{
 				return false
 			}
@@ -2259,7 +2215,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
-			if(!check_permission(rooms[socket.room_id].tv_permission, socket.priv))
+			if(!check_permission(rooms[socket.room_id].tv_permission, socket.role))
 			{
 				return false
 			}
@@ -2692,9 +2648,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
+			if(socket.role !== 'admin' && socket.role !== 'op')
+			{
+				return get_out(socket)
+			}
+
 			if(data.what !== true && data.what !== false)
 			{
-				get_out(socket)
+				return get_out(socket)
 			}
 
 			db_manager.update_room(socket.room_id,
@@ -2720,9 +2681,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
+			if(socket.role !== 'admin' && socket.role !== 'op')
+			{
+				return get_out(socket)
+			}
+
 			if(data.what !== true && data.what !== false)
 			{
-				get_out(socket)
+				return get_out(socket)
 			}
 
 			db_manager.update_room(socket.room_id,
@@ -2748,9 +2714,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{
+			if(socket.role !== 'admin' && socket.role !== 'op')
+			{
+				return get_out(socket)
+			}
+
 			if(data.what !== true && data.what !== false)
 			{
-				get_out(socket)
+				return get_out(socket)
 			}
 
 			db_manager.update_room(socket.room_id,
@@ -2767,6 +2738,39 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				type: 'room_radio_enabled_change', 
 				what: data.what,
+				username: socket.username
+			})
+		}
+	}
+
+	function change_default_theme(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(socket.role !== 'admin' && socket.role !== 'op')
+			{
+				return get_out(socket)
+			}
+
+			if(data.color === undefined)
+			{
+				return get_out(socket)
+			}
+
+			db_manager.update_room(socket.room_id,
+			{
+				default_theme: data.color
+			})
+
+			.catch(err =>
+			{
+				console.error(err)
+			})
+
+			io.sockets.in(socket.room_id).emit('update', 
+			{
+				type: 'default_theme_change', 
+				color: data.color,
 				username: socket.username
 			})
 		}
@@ -2811,7 +2815,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				type: type,
 				username: socket.username,
 				info1: socket.info1, 
-				priv: socket.priv
+				role: socket.role
 			})
 
 			if(socket.room_id === undefined)
@@ -3026,7 +3030,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}		    
 
-			if(!check_permission(rooms[socket.room_id].upload_permission, socket.priv))
+			if(!check_permission(rooms[socket.room_id].upload_permission, socket.role))
 			{
 				return false
 			}	
@@ -3076,7 +3080,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
-			if(!check_permission(rooms[socket.room_id].upload_permission, socket.priv))
+			if(!check_permission(rooms[socket.room_id].upload_permission, socket.role))
 			{
 				return false
 			}
@@ -3410,7 +3414,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		return true
 	}
 
-	function check_permission(permission, priv)
+	function check_permission(permission, role)
 	{
 		if(permission === 1)
 		{
@@ -3419,7 +3423,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 		else if(permission === 2)
 		{
-			if(priv === "admin" || priv === "op" || priv === "voice")
+			if(role === "admin" || role === "op" || role === "voice")
 			{
 				return true
 			}
@@ -3427,7 +3431,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 		else if(permission === 3)
 		{
-			if(priv === "admin" || priv === "op")
+			if(role === "admin" || role === "op")
 			{
 				return true
 			}	
@@ -3603,7 +3607,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				if(item[0] === old_username)
 				{
 					rooms[socket.room_id].userlist.splice(i, 1)
-					rooms[socket.room_id].userlist.push([socket.username, socket.priv])
+					rooms[socket.room_id].userlist.push([socket.username, socket.role])
 					return
 				}
 			}
