@@ -96,12 +96,17 @@ var fetched_room_id
 var utilz = Utilz()
 var log_messages
 var first_opacity_checked = false
-var images_enabled = true
-var tv_enabled = true
 var profile_image
 var change_image_when_focused = false 
 var change_tv_when_focused = false
 var twitch_video_player
+var images_enabled = true
+var tv_enabled = true
+var radio_enabled = true
+var room_images_enabled = true
+var room_tv_enabled = true
+var room_radio_enabled = true
+var radio_started = false
 
 function init()
 {
@@ -146,7 +151,6 @@ function init()
 
 function make_main_container_visible()
 {
-	goto_bottom(true)
 	$("body").css("background-image", "none")
 	$("#main_container").css("opacity", 1).css("pointer-events", "initial")
 }
@@ -347,35 +351,68 @@ function check_permissions()
 
 function setup_icons()
 {
-	if(can_upload)
+	if(room_images_enabled)
 	{
-		$("#footer_upload_icon").css("display", "inline-block")
+		$("#toggle_images_container").css("display", "initial")
+
+		if(can_upload)
+		{
+			$("#footer_upload_icon").css("display", "inline-block")
+		}
+
+		else
+		{
+			$("#footer_upload_icon").css("display", "none")
+		}
 	}
 
 	else
 	{
 		$("#footer_upload_icon").css("display", "none")
+		$("#toggle_images_container").css("display", "none")
 	}
 
-	if(can_radio)
+	if(room_radio_enabled)
 	{
-		$("#footer_radio_icon").css("display", "inline-block")
+		$("#toggle_radio_container").css("display", "initial")
+
+		if(can_radio)
+		{
+			$("#footer_radio_icon").css("display", "inline-block")
+		}
+		
+		else
+		{
+			$("#footer_radio_icon").css("display", "none")
+		}
 	}
 
 	else
 	{
 		$("#footer_radio_icon").css("display", "none")
+		$("#toggle_radio_container").css("display", "none")
 	}
 
-	if(can_tv)
+	if(room_tv_enabled)
 	{
-		$("#footer_tv_icon").css("display", "inline-block")
+		$("#toggle_tv_container").css("display", "initial")
+
+		if(can_tv)
+		{
+			$("#footer_tv_icon").css("display", "inline-block")
+		}
+
+		else
+		{
+			$("#footer_tv_icon").css("display", "none")
+		}
 	}
 
 	else
 	{
 		$("#footer_tv_icon").css("display", "none")
-	}	
+		$("#toggle_tv_container").css("display", "none")
+	}
 }
 
 function check_upload_permission(priv)
@@ -604,9 +641,6 @@ function start_socket()
 			connections += 1
 			room_name = data.room_name
 			username = data.username
-			setup_image(data)
-			setup_tv(data)
-			setup_radio(data)
 			claimed = data.claimed
 			setup_profile_image(data.profile_image)
 			userlist = data.userlist
@@ -616,16 +650,21 @@ function start_socket()
 			set_topic_info(data)
 			update_title()
 			is_public = data.public
+			setup_active_media(data)
 			check_priv(data)
 			setup_userinfo()
-
-			make_main_container_visible()
-			
 			clear_chat()
 			check_firstime()
 			get_input_history()
-			start_heartbeat()
+
+			setup_image(data)
+			setup_tv(data)
+			setup_radio(data)
 			
+			make_main_container_visible()
+			
+			start_heartbeat()
+
 			started = true
 		}
 
@@ -886,6 +925,21 @@ function start_socket()
 		else if(data.type === 'show_details')
 		{
 			show_details(data)
+		}
+
+		else if(data.type === 'room_images_enabled_change')
+		{
+			announce_room_images_enabled_change(data)
+		}
+
+		else if(data.type === 'room_tv_enabled_change')
+		{
+			announce_room_tv_enabled_change(data)
+		}
+
+		else if(data.type === 'room_radio_enabled_change')
+		{
+			announce_room_radio_enabled_change(data)
 		}				
 
 		else if(data.type === 'disconnection')
@@ -979,9 +1033,9 @@ function setup_radio(data)
 		$('#audio').attr('src', '')
 	}
 
-	if($('#toggle_radio_text').html() === 'Stop Radio')
+	if(radio_started)
 	{
-		start_radio()
+		change("radio")
 	}		
 }
 
@@ -2117,7 +2171,287 @@ function start_main_menu_context_menu()
 						}						
 					}
 				}
-			},			
+			},	
+			acts:
+			{
+				name: "Active Media", 
+				visible: function(key, opt)
+				{ 
+					if(priv !== 'admin' && priv !== 'op')
+					{
+						return false
+					}
+
+					else
+					{
+						return true
+					}
+				},
+				items: 
+				{
+					actimg: 
+					{
+						name: "Images",
+						items: 
+						{
+							actimgo1: 
+							{
+								name: "Enabled",
+								visible: function(key, opt)
+								{ 
+									if(room_images_enabled)
+									{
+										return false
+									}
+
+									else
+									{
+										return true
+									}
+								},
+								callback: function(key, opt)
+								{
+									change_room_images_enabled(true)
+								}
+							},
+							actimgo1b: 
+							{
+								name: "Enabled *",
+								visible: function(key, opt)
+								{ 
+									if(!room_images_enabled)
+									{
+										return false
+									}
+
+									else
+									{
+										return true
+									}
+								},
+								callback: function(key, opt)
+								{
+									change_room_images_enabled(true)
+								}
+							},
+							actimgo2: 
+							{
+								name: "Disabled",
+								visible: function(key, opt)
+								{ 
+									if(!room_images_enabled)
+									{
+										return false
+									}
+
+									else
+									{
+										return true
+									}
+								},
+								callback: function(key, opt)
+								{
+									change_room_images_enabled(false)
+								}
+							},
+							actimgo2b: 
+							{
+								name: "Disabled *",
+								visible: function(key, opt)
+								{ 
+									if(room_images_enabled)
+									{
+										return false
+									}
+
+									else
+									{
+										return true
+									}
+								},
+								callback: function(key, opt)
+								{
+									change_room_images_enabled(false)
+								}
+							}
+						}						
+					},
+					actrad: 
+					{
+						name: "Radio",
+						items: 
+						{
+							actrado1: 
+							{
+								name: "Enabled",
+								visible: function(key, opt)
+								{ 
+									if(room_radio_enabled)
+									{
+										return false
+									}
+
+									else
+									{
+										return true
+									}
+								},
+								callback: function(key, opt)
+								{
+									change_room_radio_enabled(true)
+								}
+							},
+							actrado1b: 
+							{
+								name: "Enabled *",
+								visible: function(key, opt)
+								{ 
+									if(!room_radio_enabled)
+									{
+										return false
+									}
+
+									else
+									{
+										return true
+									}
+								},
+								callback: function(key, opt)
+								{
+									change_room_radio_enabled(true)
+								}
+							},
+							actrado2: 
+							{
+								name: "Disabled",
+								visible: function(key, opt)
+								{ 
+									if(!room_radio_enabled)
+									{
+										return false
+									}
+
+									else
+									{
+										return true
+									}
+								},
+								callback: function(key, opt)
+								{
+									change_room_radio_enabled(false)
+								}
+							},
+							actrado2b: 
+							{
+								name: "Disabled *",
+								visible: function(key, opt)
+								{ 
+									if(room_radio_enabled)
+									{
+										return false
+									}
+
+									else
+									{
+										return true
+									}
+								},
+								callback: function(key, opt)
+								{
+									change_room_radio_enabled(false)
+								}
+							}
+						}						
+					},					
+					acttv: 
+					{
+						name: "TV",
+						items: 
+						{
+							acttvo1: 
+							{
+								name: "Enabled",
+								visible: function(key, opt)
+								{ 
+									if(room_tv_enabled)
+									{
+										return false
+									}
+
+									else
+									{
+										return true
+									}
+								},
+								callback: function(key, opt)
+								{
+									change_room_tv_enabled(true)
+								}
+							},
+							acttvo1b: 
+							{
+								name: "Enabled *",
+								visible: function(key, opt)
+								{ 
+									if(!room_tv_enabled)
+									{
+										return false
+									}
+
+									else
+									{
+										return true
+									}
+								},
+								callback: function(key, opt)
+								{
+									change_room_tv_enabled(true)
+								}
+							},
+							acttvo2: 
+							{
+								name: "Disabled",
+								visible: function(key, opt)
+								{ 
+									if(!room_tv_enabled)
+									{
+										return false
+									}
+
+									else
+									{
+										return true
+									}
+								},
+								callback: function(key, opt)
+								{
+									change_room_tv_enabled(false)
+								}
+							},
+							acttvo2b: 
+							{
+								name: "Disabled *",
+								visible: function(key, opt)
+								{ 
+									if(room_tv_enabled)
+									{
+										return false
+									}
+
+									else
+									{
+										return true
+									}
+								},
+								callback: function(key, opt)
+								{
+									change_room_tv_enabled(false)
+								}
+							}
+						}						
+					}
+				}		
+			},					
 			cmprivacy: 
 			{
 				name: "Privacy", 
@@ -2493,7 +2827,7 @@ function start_main_menu_context_menu()
 						}	
 					}
 				}
-			}
+			}				
 		}
 	})
 }
@@ -3023,7 +3357,7 @@ function activate_key_detection()
 		{
 			if(e.shiftKey)
 			{
-				toggle_radio()
+				toggle_radio_state()
 				e.preventDefault()
 				return
 			}
@@ -3810,7 +4144,7 @@ function change(type)
 
 	if(type === "image")
 	{
-		if(!images_enabled)
+		if(!room_images_enabled || !images_enabled)
 		{
 			return false
 		}
@@ -3820,7 +4154,7 @@ function change(type)
 
 	else if(type === "tv")
 	{
-		if(!tv_enabled)
+		if(!room_tv_enabled || !tv_enabled)
 		{
 			return false
 		}
@@ -3844,6 +4178,16 @@ function change(type)
 		{
 			return false
 		}
+	}
+
+	else if(type === "radio")
+	{
+		if(!room_radio_enabled || !radio_enabled)
+		{
+			return false
+		}
+
+		start_radio()
 	}
 
 	else
@@ -4512,7 +4856,7 @@ function send_to_chat(msg)
 
 			else if(oiEquals(lmsg, '/startradio'))
 			{
-				start_radio()
+				change("radio")
 			}
 
 			else if(oiStartsWith(lmsg, '/volume'))
@@ -4875,7 +5219,7 @@ function emit_pasted(url)
 
 function get_radio_metadata()
 {	
-	if(!get_metadata || radio_type !== "radio")
+	if(!radio_enabled || !get_metadata || radio_type !== "radio")
 	{
 		return
 	}
@@ -4888,7 +5232,7 @@ function get_radio_metadata()
 		},
 		function(data)
 		{
-			if(!get_metadata || radio_type !== "radio")
+			if(!radio_enabled || !get_metadata || radio_type !== "radio")
 			{
 				return
 			}
@@ -4959,7 +5303,7 @@ function show_playing_file()
 
 	else
 	{
-		hide_nowplaying()
+		hide_now_playing()
 	}
 }
 
@@ -5047,15 +5391,15 @@ function push_played(info, info2=false)
 		update_modal_scrollbar("played")
 	}
 		
-	show_nowplaying()					
+	show_now_playing()					
 }
 
-function hide_nowplaying()
+function hide_now_playing()
 {
 	$('#now_playing_area').css('display', 'none')
 }
 
-function show_nowplaying()
+function show_now_playing()
 {
 	$('#now_playing_area').css('display', 'inline-block')
 }
@@ -5086,7 +5430,9 @@ function start_radio()
 
 	$('#playing_icon').css('display', 'inline-block')
 	$('#volume_area').css('display', 'inline-block')
-	$('#toggle_radio_text').html('Stop Radio')
+	$('#toggle_now_playing_text').html('Stop Radio')
+
+	radio_started = true
 }
 
 function stop_radio()
@@ -5100,12 +5446,14 @@ function stop_radio()
 
 	$('#playing_icon').css('display', 'none')
 	$('#volume_area').css('display', 'none')
-	$('#toggle_radio_text').html('Start Radio')
+	$('#toggle_now_playing_text').html('Start Radio')
+
+	radio_started = false
 }
 
-function toggle_radio()
+function toggle_radio_state()
 {
-	if($('#toggle_radio_text').html() === 'Stop Radio')
+	if(radio_started)
 	{
 		stop_radio()
 	}
@@ -5120,7 +5468,7 @@ function start_metadata_loop()
 {
 	setInterval(function()
 	{
-		if(radio_type === "radio")
+		if(radio_enabled && radio_type === "radio")
 		{
 			if(get_metadata)
 			{
@@ -7551,8 +7899,8 @@ function start_twitch()
 	twitch_video_player = new Twitch.Player("media_twitch_video_container", 
 	{
 		channel: "AChannelThatDoesntExisttttt",
-		height: 300,
-		width: 400
+		width: 640,
+		height: 360
 	})
 
 	twitch_video_player.addEventListener(Twitch.Player.READY, () => 
@@ -8078,7 +8426,12 @@ function toggle_images()
 {
 	images_enabled = !images_enabled
 
-	if(images_enabled)
+	change_images_visibility()
+}
+
+function change_images_visibility()
+{
+	if(room_images_enabled && images_enabled)
 	{
 		$("#media").css("display", "flex")
 
@@ -8087,7 +8440,7 @@ function toggle_images()
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-on")
 
-		$("#toggle_images_text").text("Disable Images")		
+		$("#toggle_images_text").text("Images Enabled")
 
 		change("image")
 	}
@@ -8098,29 +8451,29 @@ function toggle_images()
 
 		if(!images_enabled && !tv_enabled)
 		{
-			stop_videos()
-
-			$("#media").css("display", "none")
+			hide_media()
 		}
 
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-off")
 
-		$("#toggle_images_text").text("Enable Images")		
-
-		$("#footer_toggle_media_icon")
-
+		$("#toggle_images_text").text("Images Disabled")
 	}
 
 	update_chat_scrollbar()
-	goto_bottom()
+	goto_bottom()	
 }
 
 function toggle_tv()
 {
 	tv_enabled = !tv_enabled
 
-	if(tv_enabled)
+	change_tv_visibility()
+}
+
+function change_tv_visibility()
+{
+	if(room_tv_enabled && tv_enabled)
 	{
 		$("#media").css("display", "flex")
 
@@ -8129,32 +8482,69 @@ function toggle_tv()
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-on")
 
-		$("#toggle_tv_text").text("Disable TV")
+		$("#toggle_tv_text").text("TV Enabled")
 
 		change("tv")
 	}
 
 	else
 	{
-		stop_videos()
-
 		$("#media_tv").css("display", "none")
 
 		if(!images_enabled && !tv_enabled)
 		{
-			$("#media").css("display", "none")
+			hide_media()
+		}
+
+		else
+		{
+			stop_videos()
 		}
 
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-off")
 
-		$("#toggle_tv_text").text("Enable TV")
-
-		$("#footer_toggle_tv_icon")
+		$("#toggle_tv_text").text("TV Disabled")
 	}
 
 	update_chat_scrollbar()
-	goto_bottom()
+	goto_bottom()	
+}
+
+function toggle_radio()
+{
+	radio_enabled = !radio_enabled
+
+	change_radio_visibility()
+}
+
+function change_radio_visibility()
+{
+	if(room_radio_enabled && radio_enabled)
+	{
+		$("#radio").css("display", "initial")
+
+		$('#now_playing').text("Loading")
+
+		$("#footer_toggle_radio_icon").removeClass("fa-toggle-off")
+		$("#footer_toggle_radio_icon").addClass("fa-toggle-on")
+
+		$("#toggle_radio_text").text("Radio Enabled")
+	}
+
+	else
+	{
+		stop_radio()
+		
+		$("#radio").css("display", "none")
+
+		$('#now_playing').text("")
+
+		$("#footer_toggle_radio_icon").removeClass("fa-toggle-on")
+		$("#footer_toggle_radio_icon").addClass("fa-toggle-off")
+
+		$("#toggle_radio_text").text("Radio Disabled")
+	}
 }
 
 function open_profile_image_picker()
@@ -8393,5 +8783,179 @@ function fix_video_frame(iframe_id)
 
 			max += 1
 		}
+	}
+}
+
+function change_room_images_enabled(what)
+{
+	if(priv !== 'admin' && priv !== 'op')
+	{
+		not_an_op()
+		return
+	}
+
+	if(what)
+	{
+		if(room_images_enabled)
+		{
+			chat_announce('[', ']', `Room images are already enabled`, 'small')
+			return false			
+		}
+	}
+	
+	else
+	{
+		if(!room_images_enabled)
+		{
+			chat_announce('[', ']', `Room images are already disabled`, 'small')
+			return false
+		}
+	}
+
+	socket_emit("change_images_enabled", {what:what})	
+}
+
+function change_room_tv_enabled(what)
+{
+	if(priv !== 'admin' && priv !== 'op')
+	{
+		not_an_op()
+		return
+	}
+
+	if(what)
+	{
+		if(room_tv_enabled)
+		{
+			chat_announce('[', ']', `Room tv is already enabled`, 'small')
+			return false			
+		}
+	}
+	
+	else
+	{
+		if(!room_tv_enabled)
+		{
+			chat_announce('[', ']', `Room tv is already disabled`, 'small')
+			return false
+		}
+	}
+
+	socket_emit("change_tv_enabled", {what:what})	
+}
+
+function change_room_radio_enabled(what)
+{
+	if(priv !== 'admin' && priv !== 'op')
+	{
+		not_an_op()
+		return
+	}
+
+	if(what)
+	{
+		if(room_radio_enabled)
+		{
+			chat_announce('[', ']', `Room radio is already enabled`, 'small')
+			return false			
+		}
+	}
+	
+	else
+	{
+		if(!room_radio_enabled)
+		{
+			chat_announce('[', ']', `Room radio is already disabled`, 'small')
+			return false
+		}
+	}
+
+	socket_emit("change_radio_enabled", {what:what})	
+}
+
+function announce_room_images_enabled_change(data)
+{
+	if(data.what)
+	{
+		chat_announce('~', '~', `${data.username} enabled room images`, 'small')
+	}
+
+	else
+	{
+		chat_announce('~', '~', `${data.username} disabled room images`, 'small')
+	}
+
+	room_images_enabled = data.what
+
+	change_images_visibility()
+
+	setup_icons()
+}
+
+function announce_room_tv_enabled_change(data)
+{
+	if(data.what)
+	{
+		chat_announce('~', '~', `${data.username} enabled room tv`, 'small')
+	}
+
+	else
+	{
+		chat_announce('~', '~', `${data.username} disabled room tv`, 'small')
+	}
+
+	room_tv_enabled = data.what
+
+	change_tv_visibility(data.what)
+
+	setup_icons()
+}
+
+function announce_room_radio_enabled_change(data)
+{
+	if(data.what)
+	{
+		chat_announce('~', '~', `${data.username} enabled room radio`, 'small')
+	}
+
+	else
+	{
+		chat_announce('~', '~', `${data.username} disabled room radio`, 'small')
+	}
+
+	room_radio_enabled = data.what
+	
+	change_radio_visibility(data.what)
+
+	setup_icons()
+}
+
+function hide_media()
+{
+	stop_videos()
+
+	$("#media").css("display", "none")	
+}
+
+function setup_active_media(data)
+{
+	console.log(data)
+	room_images_enabled = data.room_images_enabled
+	room_tv_enabled = data.room_tv_enabled
+	room_radio_enabled = data.room_radio_enabled
+
+	if(!room_images_enabled)
+	{
+		toggle_images(false)
+	}
+
+	if(!room_tv_enabled)
+	{
+		toggle_tv(false)
+	}
+
+	if(!room_radio_enabled)
+	{
+		toggle_radio(false)
 	}
 }

@@ -15,7 +15,7 @@
 		<script src="/js/tippy.all.min.js"></script>
 		<script src="/js/cropper.min.js"></script>
 		<script type="text/javascript" src="/js/contextmenu/jquery.contextMenu.min.js"></script>
-		<script src="http://player.twitch.tv/js/embed/v1.js""></script>
+		<script src="https://player.twitch.tv/js/embed/v1.js""></script>
 		<script src="/js/contextmenu/jquery.ui.position.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 
@@ -28,7 +28,7 @@
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=199"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=200"/>
 
 		<script>
 			<% 
@@ -70,29 +70,34 @@
 							<i id='main_menu' class='header_item icon fa fa-th-large nicetitle' onclick='show_menu()' title="Main Menu - If you are an admin or op you can right click it for some administration options"></i>
 							<span class='hspacer1'></span>|<span class='hspacer1'></span>
 							<span class='header_item' id='usercount' onclick='show_userlist()'></span>
-							<span class='hspacer1'></span>|<span class='hspacer1'></span>
 
-							<span class='header_item' id='toggle_radio' onclick='toggle_radio()'>
-								<i class='icon fa fa-volume-up' id='playing_icon'></i>
-								<span id='toggle_radio_text'>Start Radio</span>
-							</span>
-
-							<span id='volume_area'>
+							<span id='radio'>
+								
 								<span class='hspacer1'></span>|<span class='hspacer1'></span>
-								<span id='volume_controls'>
-									<i id='header_icon_minus' class='header_item icon fa fa-minus' onclick='volume_decrease()'></i>
-									<span class='header_item' onclick='volume_decrease()'>Volume:</span>
-									<span class='header_item' id='volume' onclick='volume_increase()'>100%</span>
-									<i id='header_icon_plus' class='header_item icon fa fa-plus' onclick='volume_increase()'></i>
-								</span>
-							</span>
 
-							<span id="now_playing_area" onclick="show_played()">
-								<span class='hspacer1'></span>|<span class='hspacer1'></span> 
-								<span id='now_playing_controls'>
-									<span class='header_item'>Now Playing:</span>
-									<span class='header_item' id='now_playing'></span>
+								<span class='header_item' id='toggle_radio_state' onclick='toggle_radio()'>
+									<i class='icon fa fa-volume-up' id='playing_icon'></i>
+									<span id='toggle_now_playing_text'>Start Radio</span>
 								</span>
+
+								<span id='volume_area'>
+									<span class='hspacer1'></span>|<span class='hspacer1'></span>
+									<span id='volume_controls'>
+										<i id='header_icon_minus' class='header_item icon fa fa-minus' onclick='volume_decrease()'></i>
+										<span class='header_item' onclick='volume_decrease()'>Volume:</span>
+										<span class='header_item' id='volume' onclick='volume_increase()'>100%</span>
+										<i id='header_icon_plus' class='header_item icon fa fa-plus' onclick='volume_increase()'></i>
+									</span>
+								</span>
+
+								<span id="now_playing_area" onclick="show_played()">
+									<span class='hspacer1'></span>|<span class='hspacer1'></span> 
+									<span id='now_playing_controls'>
+										<span class='header_item'>Now Playing:</span>
+										<span class='header_item' id='now_playing'>Loading</span>
+									</span>
+								</span>
+
 							</span>
 
 						</div>
@@ -147,16 +152,29 @@
 						<input type='text' id='input'>
 
 						<span class='unselectable'>
-						
-							<span id='toggle_images_text' class='footer_text pointer' onclick="toggle_images()">Disable Images</span>
-							<i class='fa fa-toggle-on footer_icon' id='footer_toggle_images_icon' onclick="toggle_images()"></i>
+							
+							<span id='toggle_images_container'>
+								<span id='toggle_images_text' class='footer_text pointer' onclick="toggle_images()">Images Enabled</span>
+								<i class='fa fa-toggle-on footer_icon' id='footer_toggle_images_icon' onclick="toggle_images()"></i>
 
-							<span class='hspacer1'></span>
+								<span class='hspacer1'></span>
+							</span>
 
-							<span id='toggle_tv_text' class='footer_text pointer' onclick="toggle_tv()">Disable TV</span>
-							<i class='fa fa-toggle-on footer_icon' id='footer_toggle_tv_icon' onclick="toggle_tv()"></i>
+							<span id='toggle_tv_container'>
+								<span id='toggle_tv_text' class='footer_text pointer' onclick="toggle_tv()">TV Enabled</span>
+								<i class='fa fa-toggle-on footer_icon' id='footer_toggle_tv_icon' onclick="toggle_tv()"></i>
 
-							<span class='hspacer2'></span>
+								<span class='hspacer1'></span>
+							</span>
+
+							<span id='toggle_radio_container'>
+
+								<span id='toggle_radio_text' class='footer_text pointer' onclick="toggle_radio()">Radio Enabled</span>
+								<i class='fa fa-toggle-on footer_icon' id='footer_toggle_radio_icon' onclick="toggle_radio()"></i>
+
+								<span class='hspacer2'></span>
+
+							</span>
 
 							<i class='fa fa-camera footer_icon nicetitle' id='footer_upload_icon' title='Upload Image'></i>
 							<i class='fa fa-volume-up footer_icon nicetitle' id='footer_radio_icon' onclick="show_radio_url_picker()" title='Change the Radio'></i>
@@ -491,7 +509,7 @@
 
 		<input type='file' id='profile_image_picker' onchange='profile_image_selected(this)'>
 
-		<script src="/js/base_c.js?ver=708"></script>
+		<script src="/js/base_c.js?ver=710"></script>
 		<script src="https://www.youtube.com/iframe_api"></script>
 
 	</body>

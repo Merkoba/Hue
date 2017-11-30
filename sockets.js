@@ -527,6 +527,45 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
+		socket.on('change_images_enabled', function(data) 
+		{
+			try
+			{
+				change_images_enabled(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})	
+
+		socket.on('change_tv_enabled', function(data) 
+		{
+			try
+			{
+				change_tv_enabled(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
+		socket.on('change_radio_enabled', function(data) 
+		{
+			try
+			{
+				change_radio_enabled(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})	
+
 		socket.on('get_details', function(data) 
 		{
 			try
@@ -538,7 +577,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				console.error(err)
 			}
-		})				
+		})		
 
 		socket.on('disconnect', function(reason)
 		{
@@ -727,7 +766,10 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							tv_setter: info.tv_setter, 
 							tv_date: info.tv_date, 
 							claimed: info.claimed,
-							profile_image: socket.profile_image
+							profile_image: socket.profile_image,
+							room_images_enabled: info.images_enabled,
+							room_tv_enabled: info.tv_enabled,
+							room_radio_enabled: info.radio_enabled
 						})				
 
 						db_manager.save_visited_room(socket.user_id, socket.room_id)
@@ -2643,6 +2685,90 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				console.error(err)
 			})			
+		}
+	}
+
+	function change_images_enabled(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(data.what !== true && data.what !== false)
+			{
+				get_out(socket)
+			}
+
+			db_manager.update_room(socket.room_id,
+			{
+				images_enabled: data.what
+			})
+
+			.catch(err =>
+			{
+				console.error(err)
+			})
+
+			io.sockets.in(socket.room_id).emit('update', 
+			{
+				type: 'room_images_enabled_change', 
+				what: data.what,
+				username: socket.username
+			})
+		}
+	}
+
+	function change_tv_enabled(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(data.what !== true && data.what !== false)
+			{
+				get_out(socket)
+			}
+
+			db_manager.update_room(socket.room_id,
+			{
+				tv_enabled: data.what
+			})
+
+			.catch(err =>
+			{
+				console.error(err)
+			})
+
+			io.sockets.in(socket.room_id).emit('update', 
+			{
+				type: 'room_tv_enabled_change', 
+				what: data.what,
+				username: socket.username
+			})
+		}
+	}
+
+	function change_radio_enabled(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(data.what !== true && data.what !== false)
+			{
+				get_out(socket)
+			}
+
+			db_manager.update_room(socket.room_id,
+			{
+				radio_enabled: data.what
+			})
+
+			.catch(err =>
+			{
+				console.error(err)
+			})
+
+			io.sockets.in(socket.room_id).emit('update', 
+			{
+				type: 'room_radio_enabled_change', 
+				what: data.what,
+				username: socket.username
+			})
 		}
 	}
 
