@@ -30,9 +30,9 @@
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<script src="/js/base_o.js?ver=716"></script>
+		<script src="/js/base_o.js?ver=717"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=202"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=203"/>
 
 		<script>
 
@@ -338,6 +338,10 @@
 						
 						<div class='spacer1'></div>
 
+						<div class='pointer underlined' ondblclick='clear_log()'>Clear Log</div>
+						
+						<div class='spacer1'></div>
+
 						<div class='pointer underlined' ondblclick='get_banned_count()'>Banned Count</div>
 						
 						<div class='spacer1'></div>
@@ -416,71 +420,18 @@
 		<script id='template_create_room' type='text/x-handlebars-template'>
 			<div id='create_room'>
 
-				<br>
-
-				<div>All&nbsp;of&nbsp;these&nbsp;can&nbsp;be&nbsp;changed&nbsp;later</div>
-
-				<div class='spacer1'></div>
+				<div class='spacer3'></div>
 
 				<input type="text" id="create_room_name" placeholder="Name">
 
 				<div class='unselectable'>
 
-					<div class='spacer1'></div>
-
-					<div>Chat Permission</div>
-
-					<div class='spacer2'></div>
-
-					<select id='create_room_chat_permission'>
-						<option value='1' selected>Anyone</option>
-						<option value='2'>Voiced Users And Up</option>
-						<option value='3'>Ops And Up</option>
-					</select>
-
-					<div class='spacer1'></div>
-
-					<div>Upload Permission</div>
-
-					<div class='spacer2'></div>					
-
-					<select id='create_room_upload_permission'>
-						<option value='1' selected>Anyone</option>
-						<option value='2'>Voiced Users And Up</option>
-						<option value='3'>Ops And Up</option>
-					</select>
-
-					<div class='spacer1'></div>
-
-					<div>Radio Permission</div>
-
-					<select id='create_room_radio_permission'>
-						<option value='1' selected>Anyone</option>
-						<option value='2'>Voiced Users And Up</option>
-						<option value='3'>Ops And Up</option>
-					</select>
-
-					<div class='spacer1'></div>
-
-					<div>Privacy</div>
-
-					<div class='spacer2'></div>		
+					<div class='spacer1'></div>	
 
 					<select id='create_room_public'>
 						<option value='true' selected>Public</option>
 						<option value='false'>Private</option>
-					</select>
-
-					<div class='spacer1'></div>
-
-					<div>Log</div>
-
-					<div class='spacer2'></div>
-
-					<select id='create_room_log'>
-						<option value='true' selected>Enabled</option>
-						<option value='false'>Disabled</option>
-					</select>					
+					</select>				
 
 					<div class='spacer3'></div>
 					<div class='spacer2'></div>

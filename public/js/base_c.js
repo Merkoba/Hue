@@ -320,7 +320,15 @@ function show_topic(size="small")
 	{
 		if(claimed)
 		{
-			chat_announce(brk1, brk2, `Topic: ${default_topic}`, size)
+			if(role === "admin" || role === "op")
+			{
+				chat_announce(brk1, brk2, `Topic: ${default_topic_admin}`, size)
+			}
+
+			else
+			{
+				chat_announce(brk1, brk2, `Topic: ${default_topic}`, size)
+			}
 		}
 
 		else
@@ -2022,37 +2030,14 @@ function create_room_submit(oname=false)
 {
 	var data = {}
 
-	if(oname)
+	data.name = utilz.clean_string2($('#create_room_name').val().substring(0, max_room_name_length))
+
+	if(data.name === "")
 	{
-		data.name = utilz.clean_string2(oname.substring(0, max_room_name_length))
-
-		if(data.name === "")
-		{
-			return
-		}
-
-		data.chat_permission = 1
-		data.upload_permission = 1
-		data.radio_permission = 1
-		data.public = true
-		data.log = true
+		return
 	}
 
-	else
-	{
-		data.name = utilz.clean_string2($('#create_room_name').val().substring(0, max_room_name_length))
-
-		if(data.name === "")
-		{
-			return
-		}
-
-		data.chat_permission = parseInt($('#create_room_chat_permission option:selected').val())
-		data.upload_permission = parseInt($('#create_room_upload_permission option:selected').val())
-		data.radio_permission = parseInt($('#create_room_radio_permission option:selected').val())
-		data.public = JSON.parse($('#create_room_public option:selected').val())
-		data.log = JSON.parse($('#create_room_log option:selected').val())
-	}
+	data.public = JSON.parse($('#create_room_public option:selected').val())
 
 	create_room(data)	
 }
@@ -7224,7 +7209,7 @@ function change_log(log)
 	socket_emit("change_log", {log:log})
 }
 
-function clear_log(log)
+function clear_log()
 {
 	if(role !== 'admin' && role !== 'op')
 	{

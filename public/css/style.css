@@ -986,3 +986,8 @@ input[type=text], textarea
 {
 	font-size: 0.9em;
 }
+
+.nowrap
+{
+	white-space: nowrap;	
+}

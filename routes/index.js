@@ -36,6 +36,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.title_separator = config.title_separator
 	c.vars.default_title = config.default_title
 	c.vars.default_topic = config.default_topic
+	c.vars.default_topic_admin = config.default_topic_admin
 	c.vars.default_topic_unclaimed = config.default_topic_unclaimed
 	c.vars.afk_timeout_duration = config.afk_timeout_duration
 	c.vars.heartbeat_interval = config.heartbeat_interval

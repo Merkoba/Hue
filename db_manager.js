@@ -324,6 +324,7 @@ module.exports = function(db, config, sconfig, utilz)
 				radio_enabled: true,
 				tv_enabled: true,
 				default_theme: "rgb(24,24,24)",
+				log: true,
 				modified: Date.now()
 			}
 
@@ -338,11 +339,7 @@ module.exports = function(db, config, sconfig, utilz)
 			}
 
 			room.name = data.name !== undefined ? data.name : "No Name"
-			room.chat_permission = data.chat_permission !== undefined ? data.chat_permission : 1
-			room.upload_permission = data.upload_permission !== undefined ? data.upload_permission : 1
-			room.radio_permission = data.radio_permission !== undefined ? data.radio_permission : 1
 			room.public = data.public !== undefined ? data.public : true
-			room.log = data.log !== undefined ? data.log : true
 
 			db.collection('rooms').insertOne(room)
 

@@ -1013,29 +1013,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
-			var amodes = [1, 2, 3]
-
-			if(amodes.indexOf(data.chat_permission) === -1)
-			{
-				return get_out(socket)
-			}
-
-			if(amodes.indexOf(data.upload_permission) === -1)
-			{
-				return get_out(socket)
-			}
-
-			if(amodes.indexOf(data.radio_permission) === -1)
-			{
-				return get_out(socket)
-			}
-
 			if(data.public !== true && data.public !== false)
-			{
-				return get_out(socket)
-			}
-			
-			if(data.log !== true && data.log !== false)
 			{
 				return get_out(socket)
 			}
