@@ -56,6 +56,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.profile_image_loading_url = config.profile_image_loading_url
 	c.vars.default_tv_source = config.default_tv_source
 	c.vars.default_tv_type = config.default_tv_type
+	c.vars.image_queue_interval = config.image_queue_interval
 
 	function check_url(req, res, next)
 	{

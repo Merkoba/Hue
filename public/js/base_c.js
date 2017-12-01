@@ -109,6 +109,8 @@ var room_radio_enabled = true
 var radio_started = false
 var default_theme
 var default_theme_on = false
+var image_queue = ["first"]
+var image_queue_timeout
 
 function init()
 {
@@ -147,6 +149,7 @@ function init()
 	setup_main_menu()
 	setup_opacity()
 	start_twitch()
+	check_image_queue()
 
 	start_socket()
 }
@@ -706,8 +709,8 @@ function start_socket()
 
 		else if(data.type === 'image_change')
 		{
-			setup_image(data)
-			announce_uploaded_image(data)
+			queue_image(data)
+			announce_uploaded_image(data)			
 		}
 
 		else if(data.type === 'profile_image_changed')
@@ -3068,7 +3071,7 @@ function check_url_media(msg)
 
 function change(type)
 {	
-	if(afk)
+	if(afk && type !== "radio")
 	{
 		change_when_focused = true
 
@@ -7970,5 +7973,41 @@ function announce_default_theme_change(data)
 	if(default_theme_on)
 	{
 		set_default_theme()
+	}
+}
+
+function queue_image(data)
+{
+	image_queue.push(data)
+
+	if(image_queue_timeout === undefined)
+	{
+		check_image_queue()
+	}
+}
+
+function check_image_queue()
+{
+	if(image_queue.length > 0)
+	{
+		var data = image_queue[0]
+
+		if(data !== "first")
+		{
+			setup_image(image_queue[0])
+		}
+
+		image_queue.shift()
+		
+		image_queue_timeout = setTimeout(function()
+		{
+			check_image_queue()
+		}, image_queue_interval)
+	}
+
+	else
+	{
+		clearTimeout(image_queue_timeout)
+		image_queue_timeout = undefined
 	}
 }
