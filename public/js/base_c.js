@@ -146,6 +146,7 @@ function init()
 	setup_show_profile()
 	setup_main_menu()
 	setup_opacity()
+	start_twitch()
 
 	start_socket()
 }
@@ -1080,8 +1081,16 @@ function setup_tv(data)
 
 function stop_videos()
 {
-	youtube_video_player.stopVideo()	
-	twitch_video_player.pause()
+	if(youtube_video_player !== undefined)
+	{
+		youtube_video_player.stopVideo()
+	}
+
+	if(twitch_video_player !== undefined)
+	{
+		twitch_video_player.pause()
+	}
+
 	$("#media_video")[0].pause()	
 }
 
@@ -3110,11 +3119,21 @@ function change(type)
 
 		if(tv_type === "youtube")
 		{
+			if(youtube_video_player === undefined)
+			{
+				return false
+			}
+
 			show_youtube_video()
 		}
 
 		else if(tv_type === "twitch")
 		{
+			if(twitch_video_player === undefined)
+			{
+				return false
+			}
+
 			show_twitch_video()
 		}
 		
@@ -3135,6 +3154,11 @@ function change(type)
 		{
 			return false
 		}
+
+		if(youtube_player === undefined)
+		{
+			return false
+		}		
 
 		start_radio()
 	}
@@ -4389,6 +4413,11 @@ function start_radio()
 		{
 			youtube_player.loadVideoById({videoId:get_youtube_id(radio_source), startSeconds:get_youtube_time(radio_source)})
 			youtube_player.setVolume(get_nice_volume($("#audio")[0].volume))
+		}
+
+		else
+		{
+			return false
 		}
 	}
 
@@ -6819,7 +6848,9 @@ function onYouTubeIframeAPIReady()
 		playerVars:
 		{
 			iv_load_policy: 3,
-			rel: 0
+			rel: 0,
+			width: 640,
+			height: 360			
 		}
 	})
 }
@@ -6827,6 +6858,11 @@ function onYouTubeIframeAPIReady()
 function onYouTubePlayerReady()
 {
 	youtube_player = yt_player
+
+	if(radio_type === "youtube")
+	{
+		change("radio")
+	}
 }
 
 function onYouTubePlayerReady2()
@@ -6834,7 +6870,10 @@ function onYouTubePlayerReady2()
 	youtube_video_player = yt_video_player
 	youtube_video_player.mute()
 
-	start_twitch()
+	if(tv_type === "youtube")
+	{
+		change("tv")
+	}
 }
 
 function start_twitch()
@@ -6851,8 +6890,11 @@ function start_twitch()
 		$("#media_twitch_video_container").find("iframe").eq(0).attr("id", "media_twitch_video").addClass("video_frame")
 
 		twitch_video_player.setVolume(0)
-		
-		init()
+
+		if(tv_type === "twitch")
+		{
+			change("tv")
+		}
 	})
 }
 
@@ -7648,7 +7690,10 @@ function fix_visible_video_frame()
 	{
 		if($(this).css("display") !== "none")
 		{
-			fix_video_frame(this.id)
+			if($(this).data("ratio") !== undefined)
+			{
+				fix_video_frame(this.id)
+			}
 		}
 	})
 }
