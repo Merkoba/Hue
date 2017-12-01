@@ -7380,6 +7380,22 @@ function setup_media_video()
 	$("#media_video")[0].volume = 0
 }
 
+function any_media_elements_visible()
+{
+	var visible = false
+
+	$("#media_split").children().each(function()
+	{
+		if($(this).css("display") !== "none")
+		{
+			visible = true
+			return
+		}
+	})
+
+	return visible
+}
+
 function toggle_images()
 {
 	images_enabled = !images_enabled
@@ -7411,7 +7427,7 @@ function change_images_visibility()
 
 		recreate_background_image()
 
-		if(!images_enabled && !tv_enabled)
+		if(!any_media_elements_visible())
 		{
 			hide_media()
 		}
@@ -7454,7 +7470,7 @@ function change_tv_visibility()
 	{
 		$("#media_tv").css("display", "none")
 
-		if(!images_enabled && !tv_enabled)
+		if(!any_media_elements_visible())
 		{
 			hide_media()
 		}
