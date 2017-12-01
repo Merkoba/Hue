@@ -3043,6 +3043,11 @@ function check_url_media(msg)
 	{
 		var word = words[i].toLowerCase()
 
+		if(!word.startsWith("https://") && !word.startsWith("http://"))
+		{
+			continue
+		}
+
 		if(can_upload)
 		{
 			if(word.indexOf('.jpg') !== -1 || word.indexOf('.png') !== -1 || word.indexOf('.jpeg') !== -1 || word.indexOf('.gif') !== -1)
@@ -3055,7 +3060,7 @@ function check_url_media(msg)
 			}
 		}
 
-		if(can_tv && (word.indexOf("https://") !== -1 || word.indexOf("http://") !== -1))
+		if(can_tv)
 		{
 			if(youtube_enabled && (word.indexOf("youtube.com") !== -1 || word.indexOf("youtu.be") !== -1))
 			{
