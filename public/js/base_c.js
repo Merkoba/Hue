@@ -5020,6 +5020,7 @@ function set_topic_info(data)
 	topic_date = nice_date(data.topic_date)
 
 	$("#header_topic_text").text(topic)
+	$("#header_topic").attr('title', topic)
 }
 
 function claim_room(arg="")
