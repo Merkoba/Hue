@@ -991,3 +991,8 @@ input[type=text], textarea
 {
 	white-space: nowrap;	
 }
+
+#header_topic
+{
+	display: none;
+}

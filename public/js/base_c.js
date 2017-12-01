@@ -5018,6 +5018,8 @@ function set_topic_info(data)
 	topic = data.topic
 	topic_setter = data.topic_setter
 	topic_date = nice_date(data.topic_date)
+
+	$("#header_topic_text").text(topic)
 }
 
 function claim_room(arg="")
@@ -7491,6 +7493,8 @@ function change_radio_visibility()
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-on")
 
 		$("#toggle_radio_text").text("Radio Enabled")
+
+		$("#header_topic").css("display", "none")
 	}
 
 	else
@@ -7503,6 +7507,8 @@ function change_radio_visibility()
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-off")
 
 		$("#toggle_radio_text").text("Radio Disabled")
+
+		$("#header_topic").css("display", "initial")
 	}
 }
 
