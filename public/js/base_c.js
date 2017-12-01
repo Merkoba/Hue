@@ -7400,7 +7400,7 @@ function change_images_visibility()
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-on")
 
-		$("#toggle_images_text").text("Images Enabled")
+		$("#toggle_images_text").text("Images On")
 
 		change("image")
 	}
@@ -7421,7 +7421,7 @@ function change_images_visibility()
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-off")
 
-		$("#toggle_images_text").text("Images Disabled")
+		$("#toggle_images_text").text("Images Off")
 	}
 
 	fix_visible_video_frame()
@@ -7447,7 +7447,7 @@ function change_tv_visibility()
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-on")
 
-		$("#toggle_tv_text").text("TV Enabled")
+		$("#toggle_tv_text").text("TV On")
 
 		change("tv")
 	}
@@ -7469,7 +7469,7 @@ function change_tv_visibility()
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-off")
 
-		$("#toggle_tv_text").text("TV Disabled")
+		$("#toggle_tv_text").text("TV Off")
 	}
 
 	update_chat_scrollbar()
@@ -7492,7 +7492,7 @@ function change_radio_visibility()
 		$("#footer_toggle_radio_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-on")
 
-		$("#toggle_radio_text").text("Radio Enabled")
+		$("#toggle_radio_text").text("Radio On")
 
 		$("#header_topic").css("display", "none")
 	}
@@ -7506,7 +7506,7 @@ function change_radio_visibility()
 		$("#footer_toggle_radio_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-off")
 
-		$("#toggle_radio_text").text("Radio Disabled")
+		$("#toggle_radio_text").text("Radio Off")
 
 		$("#header_topic").css("display", "initial")
 	}
