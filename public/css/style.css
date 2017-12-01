@@ -101,7 +101,7 @@ body
 	display: flex;
 	width: 100%;
 	max-height: 100%;
-	min-width: 50%;	
+	min-width: 40%;	
 	flex-direction: column;
 	flex-grow: 1;
 }
@@ -132,7 +132,7 @@ body
 {
 	display: flex;
 	width: 100%;
-	min-width: 50%;	
+	min-width: 60%;	
 	background-color: black;
 	justify-content: center;
 	align-items: center;
@@ -158,7 +158,6 @@ body
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-bottom: -1em;
 }
 
 #media_image
@@ -177,7 +176,6 @@ body
 	display: flex;
 	align-items: center;	
 	justify-content: center;	
-	margin-top: -1em;
 }
 
 #media_youtube_video_container

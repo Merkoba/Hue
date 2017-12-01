@@ -1118,6 +1118,8 @@ function show_youtube_video()
 	youtube_video_player.playVideo()
 
 	fix_video_frame("media_youtube_video")
+
+	after_media_show()
 }
 
 function show_twitch_video()
@@ -1148,6 +1150,8 @@ function show_twitch_video()
 	twitch_video_player.play()
 
 	fix_video_frame("media_twitch_video")
+
+	after_media_show()
 }
 
 function show_video()
@@ -1161,6 +1165,13 @@ function show_video()
 	$("#media_video").css("display", "flex")
 
 	$("#media_video")[0].play()
+
+	after_media_show()
+}
+
+function after_media_show()
+{
+	fix_media_margin()
 }
 
 function set_default_theme()
@@ -7383,20 +7394,34 @@ function setup_media_video()
 	$("#media_video")[0].volume = 0
 }
 
-function any_media_elements_visible()
+function num_media_elements_visible()
 {
-	var visible = false
+	var num = 0
 
 	$("#media_split").children().each(function()
 	{
 		if($(this).css("display") !== "none")
 		{
-			visible = true
-			return
+			num += 1
 		}
 	})
 
-	return visible
+	return num
+}
+
+function fix_media_margin()
+{
+	if(num_media_elements_visible() === 2)
+	{
+		$("#media_image_container").css("margin-bottom", "-1em")
+		$("#media_tv").css("margin-top", "-1em")
+	}
+
+	else
+	{
+		$("#media_image_container").css("margin-bottom", "0")
+		$("#media_tv").css("margin-top", "0")		
+	}
 }
 
 function toggle_images()
@@ -7430,7 +7455,7 @@ function change_images_visibility()
 
 		recreate_background_image()
 
-		if(!any_media_elements_visible())
+		if(num_media_elements_visible() === 0)
 		{
 			hide_media()
 		}
@@ -7439,8 +7464,10 @@ function change_images_visibility()
 		$("#footer_toggle_images_icon").addClass("fa-toggle-off")
 
 		$("#toggle_images_text").text("Images Off")
+		
 	}
 
+	fix_media_margin()
 	fix_visible_video_frame()
 	update_chat_scrollbar()
 	goto_bottom()
@@ -7473,7 +7500,7 @@ function change_tv_visibility()
 	{
 		$("#media_tv").css("display", "none")
 
-		if(!any_media_elements_visible())
+		if(num_media_elements_visible() === 0)
 		{
 			hide_media()
 		}
@@ -7487,6 +7514,8 @@ function change_tv_visibility()
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-off")
 
 		$("#toggle_tv_text").text("TV Off")
+		
+		fix_media_margin()
 	}
 
 	update_chat_scrollbar()
