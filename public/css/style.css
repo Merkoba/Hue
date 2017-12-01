@@ -158,11 +158,12 @@ body
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	margin-top: -1em;
 }
 
 #media_image
 {
-	max-height: 90%;
+	max-height: calc(100% - 4em);
 	max-width: calc(100% - 4.7em);
 	cursor: pointer;
 }
@@ -176,11 +177,12 @@ body
 	display: flex;
 	align-items: center;	
 	justify-content: center;	
+	margin-bottom: -1em;
 }
 
 #media_youtube_video_container
 {
-	height: 90%;
+	height: calc(100% - 4em);
 	width: calc(100% - 4.7em);
 	display: none;
 	align-items: center;
@@ -189,14 +191,14 @@ body
 
 #media_video
 {
-	height: 90%;
+	height: calc(100% - 4em);
 	width: calc(100% - 4.7em);
 	display: none;
 }
 
 #media_twitch_video_container
 {
-	height: 90%;
+	height: calc(100% - 4em);
 	width: calc(100% - 4.7em);
 	display: none;
 	align-items: center;
@@ -245,7 +247,7 @@ body
 .footer_text
 {
 	padding-top: 0.25em;
-	padding-right: 0.7em;
+	padding-right: 0.4em;
 }
 
 #input
