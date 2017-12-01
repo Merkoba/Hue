@@ -7995,6 +7995,11 @@ function change_default_theme(color)
 		return false
 	}
 
+	if(color === default_theme)
+	{
+		return false
+	}
+
 	socket_emit("change_default_theme", {color:color})	
 }
 
