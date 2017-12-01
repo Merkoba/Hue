@@ -3256,7 +3256,7 @@ function setup_image(data)
 	else
 	{
 		image_url = data.image_url
-		image_title = `Uploader: ${image_uploader} | Size: ${get_size_string(image_size)} | ${image_date}`
+		image_title = `Uploader: ${data.image_uploader} | Size: ${get_size_string(data.image_size)} | ${data.image_date}`
 	}
 
 	image_uploader = data.image_uploader
