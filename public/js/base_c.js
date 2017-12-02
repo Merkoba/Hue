@@ -1131,7 +1131,7 @@ function show_twitch_video()
 {
 	stop_videos()
 
-	var id = get_twitch_channel_or_id(tv_source)
+	var id = get_twitch_id(tv_source)
 
 	if(id[0] === "video")
 	{
@@ -1207,15 +1207,20 @@ function get_youtube_id(url)
 	return id.length === 11 ? id : false
 }
 
-function get_twitch_channel_or_id(url)
+function get_twitch_id(url)
 {
-	var match = url.match(/twitch\.tv(?:\/videos)?\/(\w+)/)
+	var match = url.match(/.*twitch\.tv(?:\/videos)?\/(\w+)/)
 
 	if(match)
 	{
 		if(match[0].indexOf('twitch.tv/videos/') !== -1)
 		{
 			return ["video", match[1]]
+		}
+
+		else if(match[0].indexOf("clips.twitch.tv") !== -1)
+		{
+			return false
 		}
 
 		else
@@ -3079,7 +3084,7 @@ function check_url_media(msg)
 			
 			if(twitch_enabled && (word.indexOf("twitch.tv") !== -1))
 			{
-				if(get_twitch_channel_or_id(words[i]))
+				if(get_twitch_id(words[i]))
 				{
 					change_tv_source(words[i])
 				}
@@ -5857,7 +5862,7 @@ function change_tv_source(src)
 
 			else if(src.indexOf("twitch.tv") !== -1)
 			{
-				if(get_twitch_channel_or_id(src) && !twitch_enabled)
+				if(get_twitch_id(src) && !twitch_enabled)
 				{
 					chat_announce('[', ']', "Twitch support is not enabled", 'small')
 					return

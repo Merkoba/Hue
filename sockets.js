@@ -2249,7 +2249,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				else if(data.src.indexOf("twitch.tv") !== -1)
 				{
-					var id = get_twitch_channel_or_id(data.src)
+					var id = get_twitch_id(data.src)
 
 					if(id)
 					{
@@ -3430,15 +3430,20 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		return id.length === 11 ? id : false
 	}
 
-	function get_twitch_channel_or_id(url)
+	function get_twitch_id(url)
 	{
-		var match = url.match(/twitch\.tv(?:\/videos)?\/(\w+)/)
+		var match = url.match(/.*twitch\.tv(?:\/videos)?\/(\w+)/)
 
 		if(match)
 		{
 			if(match[0].indexOf('twitch.tv/videos/') !== -1)
 			{
 				return ["video", match[1]]
+			}
+
+			else if(match[0].indexOf("clips.twitch.tv") !== -1)
+			{
+				return false
 			}
 
 			else
