@@ -7739,9 +7739,9 @@ function update_user_profile_image(uname, pi)
 	}	
 }
 
-function get_iframe_ratio(iframe_id)
+function get_frame_ratio(frame_id)
 {
-	var id = `#${iframe_id}`
+	var id = `#${frame_id}`
 
 	$(id).data('ratio', $(id).height() / $(id).width()).removeAttr('height').removeAttr('width')
 	
@@ -7762,68 +7762,84 @@ function fix_visible_video_frame()
 	})
 }
 
-function fix_video_frame(iframe_id)
+function fix_video_frame(frame_id)
 {
-	var id = `#${iframe_id}`
+	var id = `#${frame_id}`
 
-	var iframe = $(id)
+	var frame = $(id)
 
-	var ratio = iframe.data("ratio")
+	var ratio = frame.data("ratio")
 
 	if(ratio === undefined)
 	{
-		ratio = get_iframe_ratio(iframe_id)
+		ratio = get_frame_ratio(frame_id)
 	}
 
-	var parent = iframe.parent()
+	var parent = frame.parent()
 
-	iframe.height(iframe.width() * ratio)
+	var parent_width = parent.width()
+	var parent_height = parent.height()
 
-	if(iframe.width() === parent.width() && iframe.height() === parent.height())
+	var frame_width = frame.width()
+	var frame_height = frame.height()
+
+	frame_height = frame_width * ratio
+
+	if(frame_width === parent_width && frame_height === parent_height)
 	{
 		return
 	}
 
 	var n = 0
 
-	var max = 20000
+	var max = 200000
 
-	if(iframe.height() < parent.height() && iframe.width() < parent.width())
+	if(frame_height < parent_height && frame_width < parent_width)
 	{
 		while(n < max)
 		{
-			if(iframe.height() < parent.height() && iframe.width() < parent.width())
+			if(frame_height < parent_height && frame_width < parent_width)
 			{
-				iframe.width(iframe.width() + 2)
-				iframe.height(iframe.width() * ratio)			
+				frame_width = frame_width + 1
+				frame_height = frame_width * ratio			
 			}
 
 			else
 			{
+				frame.width(frame_width)
+				frame.height(frame_height)
 				return
 			}
 
 			max += 1
 		}
+
+		frame.width(frame_width)
+		frame.height(frame_height)		
 	}
 
 	else
 	{
 		while(n < max)
 		{
-			if(iframe.height() > parent.height() || iframe.width() > parent.width())
+			if(frame_height > parent_height || frame_width > parent_width)
 			{
-				iframe.width(iframe.width() - 2)
-				iframe.height(iframe.width() * ratio)			
+				frame_width = frame_width - 1
+				frame_height = frame_width * ratio			
 			}
 
 			else
 			{
+				frame.width(frame_width)
+				frame.height(frame_height)				
 				return
 			}
 
 			max += 1
 		}
+
+		frame.width(frame_width)
+		frame.height(frame_height)		
 	}
 }
 
