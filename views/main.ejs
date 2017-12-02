@@ -30,9 +30,9 @@
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<script src="/js/base_o.js?ver=735"></script>
+		<script src="/js/base_o.js?ver=737"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=210"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=211"/>
 
 		<script>
 
@@ -328,7 +328,20 @@
 
 						<div class='small_padding_bottom'>Default Theme</div>
 
-						<input id='admin_default_theme'>						
+						<input id='admin_default_theme'>
+
+						<div class='spacer1'></div>
+
+						<div class='small_padding_bottom'>Default Background Image</div>
+						
+						<select id='admin_default_background_image_select'>
+							<option value="true">Enabled</option>
+							<option value="false">Disabled</option>
+						</select>						
+
+						<div class='spacer1'></div>
+
+						<img class='small_square_image pointer' id='admin_default_background_image' onclick='open_default_background_image_picker()'>
 
 						<div class='spacer1'></div>
 
@@ -394,6 +407,11 @@
 
 				<div class='spacer1'></div>
 
+				<div class="setting_title">Sound Notifications</div>
+				<input type="checkbox" class="setting_checkbox" id="setting_sound_notifications">
+
+				<div class='spacer1'></div>
+
 				<div class="setting_title">Modal Color</div>
 
 				<span class='pointer' onclick="modal_color_up()">&lt;</span>
@@ -411,7 +429,6 @@
 				<span class='pointer' onclick="modal_color_down()">&gt;</span>
 
 				<div class='spacer1'></div>
-
 
 			</div>
 			
@@ -604,7 +621,9 @@
 
 		<div id='youtube_player'></div>
 
-		<input type='file' id='profile_image_picker' onchange='profile_image_selected(this)'>
+		<input type='file' accept="image/jpeg, image/png, image/gif" id='profile_image_picker' onchange='profile_image_selected(this)'>
+
+		<input type='file' accept="image/jpeg, image/png, image/gif" id='default_background_image_input' class='nodisplay' onchange='default_background_image_selected(this)'>		
 
 	</body>
 

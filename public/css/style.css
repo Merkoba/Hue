@@ -944,8 +944,8 @@ input[type=text], textarea
 
 .big_profile_image
 {
-	max-height: 200px;
-	max-width: 200px;
+	height: 200px;
+	width: 200px;
 	cursor: pointer;
 }
 
@@ -993,6 +993,19 @@ input[type=text], textarea
 }
 
 #header_topic
+{
+	display: none;
+}
+
+.small_square_image
+{
+	max-width: 250px;
+	max-height: 250px;
+	min-height: 100px;
+	min-width: 100px;	
+}
+
+.nodisplay
 {
 	display: none;
 }

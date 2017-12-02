@@ -4,7 +4,7 @@ module.exports = function(db, config, sconfig, utilz)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 27
+	const rooms_version = 30
 	const users_version = 25
 
 	function get_random_key()
@@ -237,6 +237,16 @@ module.exports = function(db, config, sconfig, utilz)
 						{
 							room.default_theme = "rgb(24,24,24)"
 						}
+
+						if(typeof room.default_background_image !== "string")
+						{
+							room.default_background_image = ""
+						}
+
+						if(typeof room.default_background_image_enabled !== "boolean")
+						{
+							room.default_background_image_enabled = true
+						}
 						
 						if(typeof room.modified !== "number")
 						{
@@ -324,6 +334,8 @@ module.exports = function(db, config, sconfig, utilz)
 				radio_enabled: true,
 				tv_enabled: true,
 				default_theme: "rgb(24,24,24)",
+				default_background_image: "",
+				default_background_image_enabled: true,
 				log: true,
 				modified: Date.now()
 			}

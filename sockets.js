@@ -124,6 +124,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
+		socket.on('upload_default_background_image', function(data) 
+		{
+			try
+			{
+				upload_default_background_image(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
 		socket.on('change_topic', function(data) 
 		{
 			try
@@ -577,6 +590,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				console.error(err)
 			}
+		})
+
+		socket.on('change_default_background_image_enabled', function(data) 
+		{
+			try
+			{
+				change_default_background_image_enabled(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
 		})		
 
 		socket.on('disconnect', function(reason)
@@ -702,6 +728,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							socket.profile_image = userinfo.profile_image
 						}
 
+						if(info.default_background_image === "")
+						{
+							var default_background_image = ""
+						}
+
+						else if(info.default_background_image.indexOf(sconfig.s3_main_url) === -1)
+						{
+							var default_background_image = config.public_images_location + info.default_background_image
+						}
+
+						else
+						{
+							var default_background_image = info.default_background_image
+						}
+
 						if(rooms[room_id] === undefined)
 						{
 							rooms[room_id] = create_room_object(info)
@@ -770,7 +811,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							room_images_enabled: info.images_enabled,
 							room_tv_enabled: info.tv_enabled,
 							room_radio_enabled: info.radio_enabled,
-							default_theme: info.default_theme
+							default_theme: info.default_theme,
+							default_background_image: default_background_image,
+							default_background_image_enabled: info.default_background_image_enabled
 						})				
 
 						db_manager.save_visited_room(socket.user_id, socket.room_id)
@@ -2754,6 +2797,39 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 	}
 
+	function change_default_background_image_enabled(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(socket.role !== 'admin' && socket.role !== 'op')
+			{
+				return get_out(socket)
+			}
+
+			if(data.what !== true && data.what !== false)
+			{
+				return get_out(socket)
+			}
+
+			db_manager.update_room(socket.room_id,
+			{
+				default_background_image_enabled: data.what
+			})
+
+			.catch(err =>
+			{
+				console.error(err)
+			})
+
+			io.sockets.in(socket.room_id).emit('update', 
+			{
+				type: 'default_background_image_enabled_change', 
+				what: data.what,
+				username: socket.username
+			})
+		}
+	}	
+
 	function do_disconnect(socc)
 	{
 		socc.disconnect()
@@ -3079,7 +3155,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				var fname = `${socket.room_id}_${Date.now()}_${get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
 
-				fs.writeFile(images_root + '/' + fname, data.image_file, function(err,data) 
+				fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
 				{
 					if(err) 
 					{
@@ -3264,7 +3340,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			var fname = `profile_${socket.user_id}.jpg`
 
-			fs.writeFile(images_root + '/' + fname, data.image_file, function(err,data) 
+			fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
 			{
 				if(err) 
 				{
@@ -3374,6 +3450,166 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			console.error(err)
 		})
 	}
+
+	function upload_default_background_image(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(data.image_file === undefined)
+			{
+				return get_out(socket)
+			}
+
+			var size = data.image_file.toString('ascii').length / 1024
+
+			if(size === 0 || (size > config.max_image_size))
+			{
+				socket.emit('update', {room:socket.room_id, type:'upload_error'})													
+				return false
+			}
+
+			var clean = check_image_url(data.name)
+
+			if(clean)
+			{
+				var fname = `bg_${socket.room_id}_${Date.now()}_${get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
+
+				fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
+				{
+					if(err) 
+					{
+						socket.emit('update', {room:socket.room_id, type:'upload_error'})
+					}
+
+					else 
+					{
+						change_default_background_image(socket, fname)
+					}
+				})
+			}
+		}
+	}
+
+	function change_default_background_image(socket, fname)
+	{
+		if(config.image_storage_s3_or_local === "local")
+		{
+			do_change_default_background_image(socket, fname)
+		}
+
+		else if(config.image_storage_s3_or_local === "s3")
+		{
+			fs.readFile(`${images_root}/${fname}`, (err, data) => 
+			{
+				if(err)
+				{
+					fs.unlink(`${images_root}/${fname}`, function(){})
+					return
+				}
+
+				s3.putObject(
+				{
+					ACL: "public-read",
+					Body: data,
+					Bucket: sconfig.s3_bucket_name, 
+					Key: `${sconfig.s3_images_location}${fname}`,
+					CacheControl: `max-age=${sconfig.s3_cache_max_age}`
+				}).promise()
+
+				.then(ans =>
+				{
+					fs.unlink(`${images_root}/${fname}`, function(){})
+					do_change_default_background_image(socket, sconfig.s3_main_url + sconfig.s3_images_location + fname)
+				})
+
+				.catch(err =>
+				{					
+					fs.unlink(`${images_root}/${fname}`, function(){})
+					console.error(err)
+				})
+			})
+		}
+
+		else
+		{
+			return false
+		}
+	}
+
+	function do_change_default_background_image(socket, fname)
+	{
+		db_manager.get_room({_id:socket.room_id}, {default_background_image:true})		
+
+		.then(info =>
+		{
+			if(config.image_storage_s3_or_local === "local")
+			{
+				var image_url = config.public_images_location + fname
+			}
+
+			else if(config.image_storage_s3_or_local === "s3")
+			{
+				var image_url = fname
+			}
+
+			if(info !== "")
+			{
+				var to_delete = info.default_background_image
+			}
+
+			else
+			{
+				var to_delete = false
+			}
+
+			db_manager.update_room(socket.room_id,
+			{
+				default_background_image: fname
+			})
+
+			.then(ans =>
+			{
+				io.sockets.in(socket.room_id).emit('update',
+				{			
+					type: 'default_background_image_change',
+					username: socket.username,
+					default_background_image: image_url
+				})
+			})
+
+			.catch(err =>
+			{
+				console.error(err)
+			})
+
+			if(to_delete)
+			{
+				if(to_delete.indexOf(sconfig.s3_main_url) === -1)
+				{
+					fs.unlink(`${images_root}/${to_delete}`, function(err){})
+				}
+
+				else
+				{
+					s3.deleteObject(
+					{
+						Bucket: sconfig.s3_bucket_name,
+						Key: to_delete.replace(sconfig.s3_main_url, "")
+					}).promise()
+
+					.catch(err =>
+					{
+						console.error(err)
+					})
+				}				
+			}	
+		})
+
+		.catch(err =>
+		{
+			console.error(err)
+		})
+	}	
 
 	function check_image_url(uri)
 	{

@@ -1,5 +1,5 @@
 var socket
-var ls_settings = "settings_v14"
+var ls_settings = "settings_v15"
 var ls_input_history = "input_history_v11"
 var settings
 var is_public
@@ -109,6 +109,8 @@ var room_radio_enabled = true
 var radio_started = false
 var default_theme
 var default_theme_on = false
+var default_background_image
+var default_background_image_enabled
 var image_queue = ["first"]
 var image_queue_timeout
 
@@ -674,7 +676,7 @@ function start_socket()
 			update_userlist()
 			log_enabled = data.log
 			log_messages = data.log_messages
-			default_theme = data.default_theme
+			setup_default_theme(data)
 			set_default_theme()			
 			setup_active_media(data)
 			check_role(data)
@@ -969,6 +971,16 @@ function start_socket()
 		else if(data.type === 'default_theme_change')
 		{
 			announce_default_theme_change(data)
+		}
+
+		else if(data.type === 'default_background_image_change')
+		{
+			announce_default_background_image_change(data)
+		}
+
+		else if(data.type === 'default_background_image_enabled_change')
+		{
+			announce_default_background_image_enabled_change(data)
 		}				
 
 		else if(data.type === 'disconnection')
@@ -1179,6 +1191,23 @@ function after_media_show()
 	fix_media_margin()
 }
 
+function setup_default_theme(data)
+{
+	default_theme = data.default_theme
+
+	if(data.default_background_image !== "")
+	{
+		default_background_image = data.default_background_image
+	}
+
+	else
+	{
+		default_background_image = default_default_background_image_url
+	}
+
+	default_background_image_enabled = data.default_background_image_enabled	
+}
+
 function set_default_theme()
 {
 	var background_color = default_theme
@@ -1186,6 +1215,16 @@ function set_default_theme()
 	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
 
 	change_colors(background_color, background_color2, font_color)
+
+	if(default_background_image_enabled && settings.background_image)
+	{
+		$('#background_image').css('background-image', `url('${default_background_image}')`) 
+	}
+
+	else
+	{
+		recreate_background_image()
+	}
 
 	default_theme_on = true
 }
@@ -1249,7 +1288,9 @@ function userjoin(data)
 	if(announce_joins && check_chat_permission(data.role))
 	{		
 		chat_announce('--', '--', `${data.username} has joined`, 'small', false, false, false, true)
-	}	
+	}
+
+	sound_notify()
 }
 
 function update_usercount(usercount)
@@ -1941,6 +1982,18 @@ function setup_main_menu()
 	{
 		change_default_theme(t.toRgbString())
 	})
+
+	$('#admin_default_background_image_select').change(function()
+	{
+		var what = JSON.parse($('#admin_default_background_image_select option:selected').val())
+
+		change_default_background_image_enabled(what)
+	})	
+
+	$("#admin_default_background_image")[0].addEventListener('load', function()
+	{
+		update_modal_scrollbar("menu")
+	})
 }
 
 function show_main_menu()
@@ -2022,6 +2075,27 @@ function show_main_menu()
 			})
 
 			$("#admin_default_theme").spectrum("set", default_theme)
+
+			$('#admin_default_background_image_select').find('option').each(function()
+			{
+				if(JSON.parse($(this).val()) === default_background_image_enabled)
+				{
+					$(this).prop('selected', true)
+				}
+			})			
+
+			if(default_background_image !== $("#admin_default_background_image").attr('src'))
+			{
+				if(default_background_image !== "")
+				{
+					$("#admin_default_background_image").attr("src", default_background_image)
+				}
+
+				else
+				{
+					$("#admin_default_background_image").attr("src", default_default_background_image_url)
+				}
+			}			
 
 			$("#admin_menu").css("display", "block")
 		}
@@ -2159,8 +2233,8 @@ function start_dropzone()
 
 			socket_emit("uploaded", 
 			{
-				image_file:fr.result, 
-				name:file.name
+				image_file: fr.result, 
+				name: utilz.clean_string5(file.name)
 			})
 
 			chat_announce("[", "]", "Uploading", "small")
@@ -2205,8 +2279,6 @@ function copypaste_events()
 	{
 		if(window.getSelection().toString() !== "")
 		{
-			pup()
-
 			setTimeout(function()
 			{
 				if(is_textbox(document.activeElement))
@@ -3010,6 +3082,8 @@ function update_chat(uname, msg, prof_image, title=false)
 	goto_bottom()
 
 	alert_title()
+
+	sound_notify()
 }
 
 function add_to_chat(msg)
@@ -3183,6 +3257,7 @@ function change(type)
 	}
 
 	alert_title()
+	sound_notify()
 }
 
 function show_image()
@@ -6516,6 +6591,12 @@ function get_settings()
 		changed = true
 	}
 
+	if(settings.sound_notifications === undefined)
+	{
+		settings.sound_notifications = settings_default_sound_notifications
+		changed = true
+	}
+
 	if(changed)
 	{
 		save_settings()
@@ -6534,6 +6615,8 @@ function start_settings_state()
 	$("#setting_background_color").prop("checked", settings.background_color)
 
 	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
+	
+	$("#setting_sound_notifications").prop("checked", settings.sound_notifications)
 
 	$('#setting_modal_color').find('option').each(function()
 	{
@@ -6581,6 +6664,13 @@ function start_settings_listeners()
 	$("#setting_modal_color").change(function()
 	{
 		modal_color_changed()
+	})
+
+	$("#setting_sound_notifications").change(function()
+	{
+		settings.sound_notifications = $("#setting_sound_notifications").prop("checked")
+
+		save_settings()
 	})
 }
 
@@ -7492,8 +7582,6 @@ function change_images_visibility()
 
 		set_default_theme()
 
-		recreate_background_image()
-
 		if(num_media_elements_visible() === 0)
 		{
 			hide_media()
@@ -8098,5 +8186,105 @@ function check_image_queue()
 	{
 		clearTimeout(image_queue_timeout)
 		image_queue_timeout = undefined
+	}
+}
+
+function open_default_background_image_picker()
+{
+	$("#default_background_image_input").click()
+}
+
+function default_background_image_selected(input)
+{
+	var file = input.files[0]
+
+	var size = file.size / 1024
+
+	if(size > max_image_size)
+	{
+		msg_info.show("Image is too big")
+		return false
+	}
+
+	$("#admin_default_background_image").attr("src", background_image_loading_url)
+	
+	socket_emit("upload_default_background_image",
+	{
+		image_file: file,
+		name: utilz.clean_string5(file.name)
+	})
+}
+
+function announce_default_background_image_change(data)
+{
+	default_background_image = data.default_background_image
+
+	if(role === "admin" || role === "op")
+	{
+		$("#admin_default_background_image").attr("src", default_background_image)
+	}
+
+	if(default_theme_on)
+	{
+		set_default_theme()
+	}
+
+	chat_announce('~', '~', `${data.username} changed the default background image`, 'small')	
+}
+
+function change_default_background_image_enabled(what)
+{
+	if(role !== 'admin' && role !== 'op')
+	{
+		not_an_op()
+		return
+	}
+
+	if(what)
+	{
+		if(default_background_image_enabled)
+		{
+			chat_announce('[', ']', `Default background image is already enabled`, 'small')
+			return false			
+		}
+	}
+	
+	else
+	{
+		if(!default_background_image_enabled)
+		{
+			chat_announce('[', ']', `Default background image is already disabled`, 'small')
+			return false
+		}
+	}
+
+	socket_emit("change_default_background_image_enabled", {what:what})	
+}
+
+function announce_default_background_image_enabled_change(data)
+{
+	if(data.what)
+	{
+		chat_announce('~', '~', `${data.username} enabled the default background image`, 'small')
+	}
+
+	else
+	{
+		chat_announce('~', '~', `${data.username} disabled the default background image`, 'small')
+	}
+
+	default_background_image_enabled = data.what
+
+	if(default_theme_on)
+	{
+		set_default_theme()
+	}	
+}
+
+function sound_notify()
+{
+	if(document.hidden && settings.sound_notifications)
+	{
+		pup()
 	}
 }

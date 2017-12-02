@@ -49,6 +49,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.settings_default_background_color = config.settings_default_background_color
 	c.vars.settings_default_custom_scrollbars = config.settings_default_custom_scrollbars
 	c.vars.settings_default_modal_color = config.settings_default_modal_color,
+	c.vars.settings_default_sound_notifications = config.settings_default_sound_notifications,
 	c.vars.allow_pasted_media = config.allow_pasted_media
 	c.vars.announce_joins = config.announce_joins
 	c.vars.announce_parts = config.announce_parts
@@ -57,6 +58,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.default_tv_source = config.default_tv_source
 	c.vars.default_tv_type = config.default_tv_type
 	c.vars.image_queue_interval = config.image_queue_interval
+	c.vars.default_default_background_image_url = config.default_default_background_image_url
+	c.vars.background_image_loading_url = config.background_image_loading_url
 
 	function check_url(req, res, next)
 	{
