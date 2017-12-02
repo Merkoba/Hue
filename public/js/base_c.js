@@ -676,11 +676,11 @@ function start_socket()
 			log_messages = data.log_messages
 			default_theme = data.default_theme
 			set_default_theme()			
+			setup_active_media(data)
 			check_role(data)
 			set_topic_info(data)
 			update_title()
 			is_public = data.public
-			setup_active_media(data)
 			setup_userinfo()
 			clear_chat()
 			check_firstime()
@@ -3187,7 +3187,15 @@ function change(type)
 
 function show_image()
 {
-	$('#media_image').attr('src', image_url)	
+	if($("#media_image").attr('src') !== image_url)
+	{
+		$('#media_image').attr('src', image_url)
+	}
+
+	else
+	{
+		after_image_load($('#media_image')[0])
+	}
 }
 
 function show_current_image_modal()
@@ -3197,62 +3205,67 @@ function show_current_image_modal()
 
 function start_image_events()
 {
-	$('#media_image')[0].addEventListener('load', function(img) 
+	$('#media_image')[0].addEventListener('load', function(e)
 	{
-		try 
-		{
-			var colors = colorlib.get_dominant(this, 1)
-
-			if(colors === null)
-			{
-				return
-			}
-
-			var color1 = colors[0]
-
-			var background_color = color1
-
-			if(settings.background_image)
-			{
-				var font_color = colorlib.get_lighter_or_darker(color1, color_contrast_amount_2)
-				var color2 = colorlib.get_lighter_or_darker(color1, color_contrast_amount_4)
-			}
-
-			else
-			{
-				var font_color = colorlib.get_lighter_or_darker(color1, color_contrast_amount_1)
-				var color2 = colorlib.get_lighter_or_darker(color1, color_contrast_amount_3)
-			}
-
-			var background_color2 = color2
-
-			if(settings.background_color)
-			{
-				change_colors(background_color, background_color2, font_color)
-				default_theme_on = false
-			}
-
-			if(settings.background_image)
-			{
-				$('#background_image').css('background-image', `url('${image_url}')`) 
-			}
-
-			current_image_url = image_url
-			current_image_title = image_title			
-			
-			$(this).prop('title', image_title)
-		}
-
-		catch(err)
-		{
-			console.error(err)
-		}
+		after_image_load(e.target)
 	})	
 
 	$('#test_image')[0].addEventListener('load', function() 
 	{
 		emit_pasted($('#test_image').attr('src'))
 	})
+}
+
+function after_image_load(img)
+{
+	try 
+	{
+		var colors = colorlib.get_dominant(img, 1)
+
+		if(colors === null)
+		{
+			return
+		}
+
+		var color1 = colors[0]
+
+		var background_color = color1
+
+		if(settings.background_image)
+		{
+			var font_color = colorlib.get_lighter_or_darker(color1, color_contrast_amount_2)
+			var color2 = colorlib.get_lighter_or_darker(color1, color_contrast_amount_4)
+		}
+
+		else
+		{
+			var font_color = colorlib.get_lighter_or_darker(color1, color_contrast_amount_1)
+			var color2 = colorlib.get_lighter_or_darker(color1, color_contrast_amount_3)
+		}
+
+		var background_color2 = color2
+
+		if(settings.background_color)
+		{
+			change_colors(background_color, background_color2, font_color)
+			default_theme_on = false
+		}
+
+		if(settings.background_image)
+		{
+			$('#background_image').css('background-image', `url('${image_url}')`) 
+		}
+
+		current_image_url = image_url
+		current_image_title = image_title			
+		
+		$(img).prop('title', image_title)
+	}
+
+	catch(err)
+	{
+		console.error(err)
+	}	
 }
 
 function set_image_cors()
@@ -5304,7 +5317,6 @@ function announce_chat_permission_change(data)
 	{
 		chat_permission = data.chat_permission
 		can_chat = check_chat_permission(role)
-		setup_icons()
 		chat_announce('~', '~', s, 'small')
 	}
 }
