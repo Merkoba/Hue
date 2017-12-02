@@ -292,6 +292,27 @@ function show_radio_source()
 	}
 }
 
+function get_unset_topic()
+{
+	if(claimed)
+	{
+		if(role === "admin" || role === "op")
+		{
+			return default_topic_admin
+		}
+
+		else
+		{
+			return default_topic
+		}
+	}
+
+	else
+	{
+		return default_topic_unclaimed
+	}	
+}
+
 function show_topic(size="small")
 {
 	if(size === "small")
@@ -321,23 +342,7 @@ function show_topic(size="small")
 
 	else 
 	{
-		if(claimed)
-		{
-			if(role === "admin" || role === "op")
-			{
-				chat_announce(brk1, brk2, `Topic: ${default_topic_admin}`, size)
-			}
-
-			else
-			{
-				chat_announce(brk1, brk2, `Topic: ${default_topic}`, size)
-			}
-		}
-
-		else
-		{
-			chat_announce(brk1, brk2, `Topic: ${default_topic_unclaimed}`, size)
-		}
+		chat_announce(brk1, brk2, `Topic: ${get_unset_topic()}`, size)
 	}
 }
 
@@ -671,11 +676,11 @@ function start_socket()
 			log_messages = data.log_messages
 			default_theme = data.default_theme
 			set_default_theme()			
+			check_role(data)
 			set_topic_info(data)
 			update_title()
 			is_public = data.public
 			setup_active_media(data)
-			check_role(data)
 			setup_userinfo()
 			clear_chat()
 			check_firstime()
@@ -5035,8 +5040,20 @@ function set_topic_info(data)
 	topic_setter = data.topic_setter
 	topic_date = nice_date(data.topic_date)
 
-	$("#header_topic_text").text(topic)
-	$("#header_topic").attr('title', topic)
+
+	if(topic)
+	{
+		$("#header_topic_text").text(topic)
+		$("#header_topic").attr('title', topic)
+	}
+
+	else
+	{
+		var t = get_unset_topic()
+
+		$("#header_topic_text").text(t)
+		$("#header_topic").attr('title', t)
+	}
 }
 
 function claim_room(arg="")
