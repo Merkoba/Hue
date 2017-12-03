@@ -245,17 +245,17 @@ module.exports = function(db, config, sconfig, utilz)
 
 						if(typeof room.v1_images_permission !== "boolean")
 						{
-							room.v1_images_permission = true
+							room.v1_images_permission = false
 						}	
 
 						if(typeof room.v1_tv_permission !== "boolean")
 						{
-							room.v1_tv_permission = true
+							room.v1_tv_permission = false
 						}	
 
 						if(typeof room.v1_radio_permission !== "boolean")
 						{
-							room.v1_radio_permission = true
+							room.v1_radio_permission = false
 						}
 
 						if(typeof room.v2_chat_permission !== "boolean")
@@ -270,12 +270,12 @@ module.exports = function(db, config, sconfig, utilz)
 
 						if(typeof room.v2_tv_permission !== "boolean")
 						{
-							room.v2_tv_permission = true
+							room.v2_tv_permission = false
 						}	
 
 						if(typeof room.v2_radio_permission !== "boolean")
 						{
-							room.v2_radio_permission = true
+							room.v2_radio_permission = false
 						}
 
 						if(typeof room.v3_chat_permission !== "boolean")
@@ -295,7 +295,7 @@ module.exports = function(db, config, sconfig, utilz)
 
 						if(typeof room.v3_radio_permission !== "boolean")
 						{
-							room.v3_radio_permission = true
+							room.v3_radio_permission = false
 						}
 
 						if(typeof room.v4_chat_permission !== "boolean")

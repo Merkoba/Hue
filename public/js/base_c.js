@@ -1650,29 +1650,60 @@ function compare_userlist(a, b)
 		b[1] = 'z'
 	}
 
-	if(a[1] > b[1]) 
+	if(a[1].startsWith('voice') && b[1].startsWith('voice'))
 	{
-		return 1
-	} 
+		if(a[1] < b[1]) 
+		{
+			return 1
+		} 
 
-	else if(a[1] < b[1]) 
-	{ 
-		return -1
+		else if(a[1] > b[1]) 
+		{ 
+			return -1
+		}
+
+		if(a[0] > b[0]) 
+		{ 
+			return -1
+		}
+
+		else if(a[0] < b[0]) 
+		{
+			return 1
+		}
+
+		else 
+		{ 
+			return 0
+		}		
 	}
 
-	if(a[0] < b[0]) 
-	{ 
-		return -1
-	}
-
-	else if(a[0] > b[0]) 
+	else
 	{
-		return 1
-	}
+		if(a[1] > b[1]) 
+		{
+			return 1
+		} 
 
-	else 
-	{ 
-		return 0
+		else if(a[1] < b[1]) 
+		{ 
+			return -1
+		}
+
+		if(a[0] < b[0]) 
+		{ 
+			return -1
+		}
+
+		else if(a[0] > b[0]) 
+		{
+			return 1
+		}
+	
+		else 
+		{ 
+			return 0
+		}
 	}
 }
 
@@ -3661,10 +3692,6 @@ function register_commands()
 	commands.push('/claim')
 	commands.push('/reclaim')
 	commands.push('/unclaim')
-	commands.push('/uploadpermission')
-	commands.push('/chatpermission')
-	commands.push('/radiopermission')
-	commands.push('/tvpermission')
 	commands.push('/enableimages')
 	commands.push('/disableimages')
 	commands.push('/enabletv')
@@ -3775,46 +3802,6 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/unclaim'))
 			{
 				unclaim_room()
-			}
-
-			else if(oiStartsWith(lmsg, '/uploadpermission'))
-			{
-				change_upload_permission(arg)
-			}
-
-			else if(oiEquals(lmsg, '/uploadpermission'))
-			{
-				show_upload_permission()
-			}
-
-			else if(oiStartsWith(lmsg, '/chatpermission'))
-			{
-				change_chat_permission(arg)
-			}
-
-			else if(oiEquals(lmsg, '/chatpermission'))
-			{
-				show_chat_permission()
-			}
-
-			else if(oiStartsWith(lmsg, '/radiopermission'))
-			{
-				change_radio_permission(arg)
-			}
-
-			else if(oiEquals(lmsg, '/radiopermission'))
-			{
-				show_radio_permission()
-			}
-
-			else if(oiStartsWith(lmsg, '/tvpermission'))
-			{
-				change_tv_permission(arg)
-			}
-
-			else if(oiEquals(lmsg, '/tvpermission'))
-			{
-				show_tv_permission()
 			}			
 
 			else if(oiEquals(lmsg, '/enableimages'))
@@ -5369,301 +5356,6 @@ function check_firstime()
 		help()
 		save_local_storage('firstime', false)
 	}
-}
-
-function change_chat_permission(m)
-{
-	if(role === 'admin' || role === 'op')
-	{
-		var amodes = [1, 2, 3]
-
-		if(!isNaN(m))
-		{
-			m = parseInt(m)
-
-			if(m === chat_permission)
-			{
-				chat_announce('[', ']', `Chat permission is already ${m}`, 'small')
-				return false
-			}			
-
-			if(amodes.indexOf(m) !== -1)
-			{
-				socket_emit('change_chat_permission', {chat_permission:m})
-			}
-
-			else
-			{
-				chat_announce('[', ']', "That permission does not exist", 'small')
-			}
-		}
-
-		else
-		{
-			chat_announce('[', ']', "Argument must be a number", 'small')
-		}
-	}
-
-	else
-	{
-		not_an_op()
-	}
-}
-
-function change_upload_permission(m)
-{
-	if(role === 'admin' || role === 'op')
-	{
-		var amodes = [1, 2, 3]
-
-		if(!isNaN(m))
-		{
-			m = parseInt(m)
-
-			if(m === upload_permission)
-			{
-				chat_announce('[', ']', `Upload permission is already ${m}`, 'small')
-				return false
-			}			
-
-			if(amodes.indexOf(m) !== -1)
-			{
-				socket_emit('change_upload_permission', {upload_permission:m})
-			}
-
-			else
-			{
-				chat_announce('[', ']', "That permission does not exist", 'small')
-			}
-		}
-
-		else
-		{
-			chat_announce('[', ']', "Argument must be a number", 'small')
-		}
-	}
-
-	else
-	{
-		not_an_op()
-	}
-}
-
-function change_radio_permission(m)
-{
-	if(role === 'admin' || role === 'op')
-	{
-		var amodes = [1, 2, 3]
-
-		if(!isNaN(m))
-		{
-			m = parseInt(m)
-
-			if(m === radio_permission)
-			{
-				chat_announce('[', ']', `Radio permission is already ${m}`, 'small')
-				return false
-			}			
-
-			if(amodes.indexOf(m) !== -1)
-			{
-				socket_emit('change_radio_permission', {radio_permission:m})
-			}
-
-			else
-			{
-				chat_announce('[', ']', "That permission does not exist", 'small')
-			}
-		}
-
-		else
-		{
-			chat_announce('[', ']', "Argument must be a number", 'small')
-		}
-	}
-
-	else
-	{
-		not_an_op()
-	}
-}
-
-function change_tv_permission(m)
-{
-	if(role === 'admin' || role === 'op')
-	{
-		var amodes = [1, 2, 3]
-
-		if(!isNaN(m))
-		{
-			m = parseInt(m)
-
-			if(m === tv_permission)
-			{
-				chat_announce('[', ']', `TV permission is already ${m}`, 'small')
-				return false
-			}			
-
-			if(amodes.indexOf(m) !== -1)
-			{
-				socket_emit('change_tv_permission', {tv_permission:m})
-			}
-
-			else
-			{
-				chat_announce('[', ']', "That permission does not exist", 'small')
-			}
-		}
-
-		else
-		{
-			chat_announce('[', ']', "Argument must be a number", 'small')
-		}
-	}
-
-	else
-	{
-		not_an_op()
-	}
-}
-
-function announce_chat_permission_change(data)
-{
-	var s = ""
-
-	var d = `${data.username} changed the chat permission to`
-
-	if(data.chat_permission === 1 && chat_permission !== 1)
-	{
-		s = `${d} 1. Anyone can chat`
-	}
-
-	else if(data.chat_permission === 2 && chat_permission !== 2)
-	{
-		s = `${d} 2. Only voiced users and up can chat`
-	}
-
-	else if(data.chat_permission === 3 && chat_permission !== 3)
-	{
-		s = `${d} 3. Only ops and up can chat`
-	}
-
-	if(s.length > 0)
-	{
-		chat_permission = data.chat_permission
-		can_chat = check_chat_permission(role)
-		chat_announce('~', '~', s, 'small')
-	}
-}
-
-function announce_upload_permission_change(data)
-{
-	var s = ""
-
-	var d = `${data.username} changed the images permission to`
-
-	if(data.upload_permission === 1 && upload_permission !== 1)
-	{
-		s = `${d} 1. Anyone can upload images`
-	}
-
-	else if(data.upload_permission === 2 && upload_permission !== 2)
-	{
-		s = `${d} 2. Only voiced users and up can upload images`
-	}
-
-	else if(data.upload_permission === 3 && upload_permission !== 3)
-	{
-		s = `${d} 3. Only ops and up can upload images`
-	}
-
-	if(s.length > 0)
-	{
-		upload_permission = data.upload_permission
-		can_images = check_images_permission(role)
-		setup_icons()
-		chat_announce('~', '~', s, 'small')
-	}
-}
-
-function announce_radio_permission_change(data)
-{
-	var s = ""
-
-	var d = `${data.username} changed the radio permission to`
-
-	if(data.radio_permission === 1 && radio_permission !== 1)
-	{
-		s = `${d} 1. Anyone can change the radio`
-	}
-
-	else if(data.radio_permission === 2 && radio_permission !== 2)
-	{
-		s = `${d} 2. Only voiced users and up can change the radio`
-	}
-
-	else if(data.radio_permission === 3 && radio_permission !== 3)
-	{
-		s = `${d} 3. Only ops and up can change the radio`
-	}
-
-	if(s.length > 0)
-	{
-		radio_permission = data.radio_permission
-		can_radio = check_radio_permission(role)
-		setup_icons()
-		chat_announce('~', '~', s, 'small')
-	}
-}
-
-function announce_tv_permission_change(data)
-{
-	var s = ""
-
-	var d = `${data.username} changed the tv permission to`
-
-	if(data.tv_permission === 1 && tv_permission !== 1)
-	{
-		s = `${d} 1. Anyone can change the tv`
-	}
-
-	else if(data.tv_permission === 2 && tv_permission !== 2)
-	{
-		s = `${d} 2. Only voiced users and up can change the tv`
-	}
-
-	else if(data.tv_permission === 3 && tv_permission !== 3)
-	{
-		s = `${d} 3. Only ops and up can change the tv`
-	}
-
-	if(s.length > 0)
-	{
-		tv_permission = data.tv_permission
-		can_tv = check_tv_permission(role)
-		setup_icons()
-		chat_announce('~', '~', s, 'small')
-	}
-}
-
-function show_upload_permission()
-{
-	chat_announce('[', ']', `Upload permission: ${upload_permission}`, 'small')
-}
-
-function show_chat_permission()
-{
-	chat_announce('[', ']', `Chat permission: ${chat_permission}`, 'small')
-}
-
-function show_radio_permission()
-{
-	chat_announce('[', ']', `Radio permission: ${radio_permission}`, 'small')
-}
-
-function show_tv_permission()
-{
-	chat_announce('[', ']', `TV permission: ${radio_permission}`, 'small')
 }
 
 function big_letter(s)
