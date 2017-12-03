@@ -6,7 +6,7 @@
 	"default_main_room_name": "Hue",
 	"images_directory": "public/img",
 	"public_images_location": "/img/",
-	"default_image_url": "/_img/default.jpg",
+	"default_image_url": "/_img/default.gif",
 	"default_tv_source": "https://www.youtube.com/watch?v=kP45oOLCmHw",
 	"default_tv_type": "youtube",
 	"login_logo_url": "/_img/animlogo.gif",
@@ -84,7 +84,7 @@
 	"jwt_expiration": 60000,
 	"max_jwt_token_length": 300,
 	"max_user_id_length": 100,
-	"allow_pasted_media": true,
+	"allow_pasted_media": false,
 	"announce_joins": true,
 	"announce_parts": true,
 	"image_queue_interval": 8000

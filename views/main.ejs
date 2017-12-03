@@ -30,9 +30,9 @@
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<script src="/js/base_o.js?ver=737"></script>
+		<script src="/js/base_o.js?ver=740"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=211"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=214"/>
 
 		<script>
 
@@ -199,7 +199,7 @@
 
 							</span>
 
-							<i class='fa fa-camera footer_icon nicetitle' id='footer_upload_icon' title='Upload Image'></i>
+							<i class='fa fa-camera footer_icon nicetitle' id='footer_upload_icon' title='Upload Image' onclick='show_image_picker()'></i>
 							<i class='fa fa-television footer_icon nicetitle' id='footer_tv_icon' onclick="show_tv_url_picker()" title='Change the TV'></i>
 							<i class='fa fa-volume-up footer_icon nicetitle' id='footer_radio_icon' onclick="show_radio_url_picker()" title='Change the Radio'></i>
 
@@ -506,6 +506,16 @@
 			<img id='show_profile_image' class='big_profile_image'>
 		</script>
 
+		<script id='template_image_picker' type='text/x-handlebars-template'>
+			<i class='fa fa-camera'></i>
+			<div class='spacer3'></div>
+			Enter an image URL<br>Or upload one from your computer
+			<div class='spacer3'></div>
+			<input id='image_url_picker_input' class='input1'>
+			<div class='spacer3'></div>
+			<div id='image_file_picker' class='menu_item' onclick='close_all_modals()'>Upload Image</div>
+		</script>
+
 		<script id='template_help' type='text/x-handlebars-template'>
 
 			<div class='info_title2'>Basic Features</div>
@@ -537,8 +547,9 @@
 			<div class='info_item'>Tab completes usernames and commands.</div>
 			<div class='info_item'>Shift + Enter toggles the radio.</div>		
 			<div class='info_item'>Apart from the image upload icon, images can also be uploaded by clicking the current image or by dropping a file.</div>		
-			<div class='info_item'>/radio x: Changes the radio using a search term or URL.</div>			
+			<div class='info_item'>/image x: Sends an image to be uploaded by URL.</div>			
 			<div class='info_item'>/tv x: Changes the TV using a search term or URL.</div>			
+			<div class='info_item'>/radio x: Changes the radio using a search term or URL.</div>			
 			<div class='info_item'>/status: Shows the room status window.</div>			
 			<div class='info_item'>/userinfo: Shows the user info window.</div>
 			<div class='info_item'>/role: Shows information regarding roles and permissions.</div>

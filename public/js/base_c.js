@@ -54,6 +54,7 @@ var orb = false
 var stu = false
 var rup = false
 var tup = false
+var iup = false
 var orb_timeout
 var modal_open = false
 var started = false
@@ -76,6 +77,7 @@ var template_help2
 var template_help3
 var template_userinfo
 var template_profile
+var template_image_picker
 var msg_menu
 var msg_userinfo
 var msg_userlist
@@ -84,7 +86,7 @@ var msg_played
 var msg_image
 var msg_profile
 var msg_info
-var msg_username_picker
+var msg_image_picker
 var played_filtered = false
 var userlist_filtered = false
 var roomlist_filter_string = ""
@@ -220,6 +222,7 @@ function compile_templates()
 	template_help3 = Handlebars.compile($('#template_help3').html())
 	template_userinfo = Handlebars.compile($('#template_userinfo').html())
 	template_profile = Handlebars.compile($('#template_profile').html())
+	template_image_picker = Handlebars.compile($('#template_image_picker').html())
 }
 
 function help()
@@ -2185,7 +2188,7 @@ function start_dropzone()
 		maxFiles: 1,
 		maxFilesize: max_image_size / 1024,
 		autoProcessQueue: false,
-		clickable: '#footer_upload_icon',
+		clickable: '#image_file_picker',
 		acceptedFiles: "image/jpeg,image/png,image/gif"
 	})
 
@@ -2302,6 +2305,23 @@ function activate_key_detection()
 {
 	$(document).keydown(function(e)
 	{
+		if(iup)
+		{
+			if(e.key === "Enter")
+			{
+				var val = $("#image_url_picker_input").val().trim()
+
+				if(val !== "")
+				{
+					upload_image_by_url(val)
+					close_all_modals()
+					e.preventDefault()
+				}
+			}
+
+			return			
+		}
+
 		if(rup)
 		{
 			if(e.key === "Enter")
@@ -3138,8 +3158,6 @@ function check_url_media(msg)
 			{
 				var url = words[i].replace(/\.gifv/g,'.gif')
 
-				$('#test_image').attr('src', url.split('?')[0])
-
 				return
 			}
 		}
@@ -3545,6 +3563,7 @@ function register_commands()
 	commands.push('/clearlog')
 	commands.push('/radio')
 	commands.push('/tv')
+	commands.push('/image')
 	commands.push('/privacy')
 	commands.push('/status')
 	commands.push('/userinfo')
@@ -3861,6 +3880,11 @@ function send_to_chat(msg)
 			else if(oiStartsWith(lmsg, '/tv'))
 			{
 				change_tv_source(arg)
+			}
+
+			else if(oiStartsWith(lmsg, '/image'))
+			{
+				upload_image_by_url(arg)
 			}
 
 			else if(oiEquals(lmsg, '/status'))
@@ -6490,12 +6514,40 @@ function start_msg()
 		})
 	)
 
+	msg_image_picker = Msg
+	(
+		Object.assign({}, common,
+		{
+			id: "image_picker",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				$("#image_url_picker_input").val("")
+				iup = false
+			}
+		})
+	)
+
 	msg_menu.set(template_menu())
 	msg_userinfo.set(template_userinfo())
 	msg_userlist.set(template_userlist())
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
 	msg_profile.set(template_profile())
+	msg_image_picker.set(template_image_picker())
 
 	msg_image.create()
 	msg_info.create()
@@ -7482,6 +7534,16 @@ function show_radio_url_picker()
 	})
 }
 
+function show_image_picker()
+{
+	msg_image_picker.show(function()
+	{
+		iup = true
+
+		$("#image_url_picker_input").focus()
+	})
+}
+
 function show_tv_url_picker()
 {
 	var s = ""
@@ -8287,4 +8349,9 @@ function sound_notify()
 	{
 		pup()
 	}
+}
+
+function upload_image_by_url(url)
+{
+	$('#test_image').attr('src', url.split('?')[0])	
 }
