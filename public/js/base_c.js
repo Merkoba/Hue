@@ -1279,9 +1279,81 @@ function get_twitch_id(url)
 
 function get_youtube_time(url)
 {
-	var match = url.match(/[\?|&]t=(\d+)/)
+	var matches = url.match(/[\?|&]t=(\d+h)?(\d+m)?(\d+s)?(\d+)?/)
 
-	return match === null ? 0 : match[1]
+	if(matches)
+	{
+		var first = false
+
+		var h = false
+		var m = false 
+		var s = false 
+		var t = false 
+
+		for(var match of matches)
+		{
+			if(!first)
+			{
+				first = true
+				continue
+			}
+
+			if(match === undefined)
+			{
+				continue
+			}
+
+			if(match.indexOf("h") !== -1)
+			{
+				h = parseInt(match.replace("h", ""))
+			}
+
+			else if(match.indexOf("m") !== -1)
+			{
+				m = parseInt(match.replace("m", ""))
+			}
+
+			else if(match.indexOf("s") !== -1)
+			{
+				s = parseInt(match.replace("s", ""))
+			}
+
+			else
+			{
+				t = parseInt(match)
+			}
+
+		}
+
+		var time = 0
+
+		if(h)
+		{
+			time += h * 60 * 60
+		}
+
+		if(m)
+		{
+			time += m * 60
+		}
+
+		if(s)
+		{
+			time += s
+		}
+
+		if(t)
+		{
+			time += t
+		}
+
+		return time
+	}
+
+	else
+	{
+		return 0
+	}
 }
 
 function userjoin(data)
@@ -3391,7 +3463,7 @@ function setup_image(data)
 	else
 	{
 		image_url = data.image_url
-		image_title = `Uploader: ${data.image_uploader} | Size: ${get_size_string(data.image_size)} | ${data.image_date}`
+		image_title = `Uploader: ${data.image_uploader} | Size: ${get_size_string(data.image_size)} | ${nice_date(data.image_date)}`
 	}
 
 	image_uploader = data.image_uploader
