@@ -614,6 +614,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 	height: 1.5em;
 }
 
+.admin_voice_permissions_checkbox
+{
+	width: 1.5em;
+	height: 1.5em;
+}
+
 #Msg-overlay-username-picker
 {
 	background-color: rgba(121, 121, 121, 1) !important;

@@ -25,7 +25,7 @@ var chat_permission
 var upload_permission
 var radio_permission
 var tv_permission
-var can_upload
+var can_images
 var can_chat
 var can_radio
 var can_tv
@@ -355,10 +355,22 @@ function check_role(data)
 {
 	role = data.role
 
-	upload_permission = data.upload_permission
-	chat_permission = data.chat_permission
-	radio_permission = data.radio_permission
-	tv_permission = data.tv_permission
+	v1_chat_permission = data.v1_chat_permission
+	v1_images_permission = data.v1_images_permission
+	v1_tv_permission = data.v1_tv_permission
+	v1_radio_permission = data.v1_radio_permission
+	v2_chat_permission = data.v2_chat_permission
+	v2_images_permission = data.v2_images_permission
+	v2_tv_permission = data.v2_tv_permission
+	v2_radio_permission = data.v2_radio_permission
+	v3_chat_permission = data.v3_chat_permission
+	v3_images_permission = data.v3_images_permission
+	v3_tv_permission = data.v3_tv_permission
+	v3_radio_permission = data.v3_radio_permission
+	v4_chat_permission = data.v4_chat_permission
+	v4_images_permission = data.v4_images_permission
+	v4_tv_permission = data.v4_tv_permission
+	v4_radio_permission = data.v4_radio_permission
 
 	check_permissions()
 }
@@ -366,7 +378,7 @@ function check_role(data)
 function check_permissions()
 {
 	can_chat = check_chat_permission(role)
-	can_upload = room_images_enabled && check_upload_permission(role)
+	can_images = room_images_enabled && check_images_permission(role)
 	can_radio =  room_radio_enabled && check_radio_permission(role)
 	can_tv = room_tv_enabled && check_tv_permission(role)
 
@@ -379,7 +391,7 @@ function setup_icons()
 	{
 		$("#toggle_images_container").css("display", "initial")
 
-		if(can_upload)
+		if(can_images)
 		{
 			$("#footer_upload_icon").css("display", "inline-block")
 		}
@@ -439,136 +451,172 @@ function setup_icons()
 	}
 }
 
-function check_upload_permission(role)
-{
-	if(upload_permission === 1)
-	{
-		return true
-	}
-
-	else if(upload_permission === 2)
-	{
-		if(role === "admin" || role === "op" || role === "voice")
-		{
-			return true
-		}
-
-		return false
-	}
-
-	else if(upload_permission === 3)
-	{
-		if(role === "admin" || role === "op")
-		{
-			return true
-		}
-
-		return false	
-	}
-
-	else
-	{
-		return false
-	}	
-}
-
 function check_chat_permission(role)
 {
-	if(chat_permission === 1)
+	if(role === "admin" || role === "op")
 	{
 		return true
 	}
 
-	else if(chat_permission === 2)
+	if(role === "voice1")
 	{
-		if(role === "admin" || role === "op" || role === "voice")
+		if(v1_chat_permission)
 		{
 			return true
 		}
-
-		return false
 	}
 
-	else if(chat_permission === 3)
+	else if(role === "voice2")
 	{
-		if(role === "admin" || role === "op")
+		if(v2_chat_permission)
 		{
 			return true
 		}
-
-		return false	
 	}
 
-	else
+	else if(role === "voice3")
 	{
-		return false
-	}	
+		if(v3_chat_permission)
+		{
+			return true
+		}
+	}
+
+	else if(role === 'voice4')
+	{
+		if(v4_chat_permission)
+		{
+			return true
+		}
+	}
+
+	return false
 }
 
-function check_radio_permission(role)
+function check_images_permission(role)
 {
-	if(radio_permission === 1)
+	if(role === "admin" || role === "op")
 	{
 		return true
 	}
 
-	else if(radio_permission === 2)
+	if(role === "voice1")
 	{
-		if(role === "admin" || role === "op" || role === "voice")
+		if(v1_images_permission)
 		{
 			return true
 		}
-
-		return false
 	}
 
-	else if(radio_permission === 3)
+	else if(role === "voice2")
 	{
-		if(role === "admin" || role === "op")
+		if(v2_images_permission)
 		{
 			return true
 		}
-
-		return false	
 	}
 
-	else
+	else if(role === "voice3")
 	{
-		return false
-	}	
+		if(v3_images_permission)
+		{
+			return true
+		}
+	}
+
+	else if(role === 'voice4')
+	{
+		if(v4_images_permission)
+		{
+			return true
+		}
+	}
+
+	return false
 }
 
 function check_tv_permission(role)
 {
-	if(tv_permission === 1)
+	if(role === "admin" || role === "op")
 	{
 		return true
 	}
 
-	else if(tv_permission === 2)
+	if(role === "voice1")
 	{
-		if(role === "admin" || role === "op" || role === "voice")
+		if(v1_tv_permission)
 		{
 			return true
 		}
-
-		return false
 	}
 
-	else if(tv_permission === 3)
+	else if(role === "voice2")
 	{
-		if(role === "admin" || role === "op")
+		if(v2_tv_permission)
 		{
 			return true
 		}
-
-		return false	
 	}
 
-	else
+	else if(role === "voice3")
 	{
-		return false
-	}	
+		if(v3_tv_permission)
+		{
+			return true
+		}
+	}
+
+	else if(role === 'voice4')
+	{
+		if(v4_tv_permission)
+		{
+			return true
+		}
+	}
+
+	return false
+}
+
+function check_radio_permission(role)
+{
+	if(role === "admin" || role === "op")
+	{
+		return true
+	}
+
+	if(role === "voice1")
+	{
+		if(v1_radio_permission)
+		{
+			return true
+		}
+	}
+
+	else if(role === "voice2")
+	{
+		if(v2_radio_permission)
+		{
+			return true
+		}
+	}
+
+	else if(role === "voice3")
+	{
+		if(v3_radio_permission)
+		{
+			return true
+		}
+	}
+
+	else if(role === 'voice4')
+	{
+		if(v4_radio_permission)
+		{
+			return true
+		}
+	}
+
+	return false
 }
 
 function show_role(data)
@@ -607,9 +655,9 @@ function show_role(data)
 			ps += 1
 		}
 
-		if(can_upload)
+		if(can_images)
 		{
-			chat_announce('[', ']', "You have upload permission", 'small')
+			chat_announce('[', ']', "You have images permission", 'small')
 
 			ps += 1
 		}
@@ -752,26 +800,6 @@ function start_socket()
 		else if(data.type === 'room_name_changed')
 		{
 			announce_room_name_change(data)
-		}
-
-		else if(data.type === 'upload_permission_change')
-		{
-			announce_upload_permission_change(data)
-		}
-
-		else if(data.type === 'chat_permission_change')
-		{
-			announce_chat_permission_change(data)
-		}
-
-		else if(data.type === 'radio_permission_change')
-		{
-			announce_radio_permission_change(data)
-		}
-
-		else if(data.type === 'tv_permission_change')
-		{
-			announce_tv_permission_change(data)
 		}
 
 		else if(data.type === 'log_changed')
@@ -984,6 +1012,11 @@ function start_socket()
 		else if(data.type === 'default_background_image_enabled_change')
 		{
 			announce_default_background_image_enabled_change(data)
+		}
+
+		else if(data.type === 'voice_permission_change')
+		{
+			announce_voice_permission_change(data)
 		}				
 
 		else if(data.type === 'disconnection')
@@ -1510,9 +1543,24 @@ function role_tag(p)
 		var s = '[O]'
 	}
 
-	else if(p === 'voice')
+	else if(p === 'voice1')
 	{
-		var s = '[V]'
+		var s = '[V1]'
+	}
+
+	else if(p === 'voice2')
+	{
+		var s = '[V2]'
+	}
+
+	else if(p === 'voice3')
+	{
+		var s = '[V3]'
+	}
+
+	else if(p === 'voice4')
+	{
+		var s = '[V4]'
 	}
 
 	else
@@ -1637,12 +1685,72 @@ function start_username_context_menu()
 		zIndex: 9000000000,
 		items: 
 		{
-			cmvoice: 
+			cmvoice1: 
 			{
-				name: "Voice", callback: function(key, opt)
+				name: "Voice 1", callback: function(key, opt)
 				{
 					var arg = $(this).text()
-					voice(arg)
+					voice(arg, "voice1")
+				},
+				visible: function(key, opt)
+				{ 
+					if(role !== 'admin' && role !== 'op')
+					{
+						return false
+					}
+
+					else
+					{
+						return true
+					}
+				}
+			},
+			cmvoice2: 
+			{
+				name: "Voice 2", callback: function(key, opt)
+				{
+					var arg = $(this).text()
+					voice(arg, "voice2")
+				},
+				visible: function(key, opt)
+				{ 
+					if(role !== 'admin' && role !== 'op')
+					{
+						return false
+					}
+
+					else
+					{
+						return true
+					}
+				}
+			},
+			cmvoice3: 
+			{
+				name: "Voice 3", callback: function(key, opt)
+				{
+					var arg = $(this).text()
+					voice(arg, "voice3")
+				},
+				visible: function(key, opt)
+				{ 
+					if(role !== 'admin' && role !== 'op')
+					{
+						return false
+					}
+
+					else
+					{
+						return true
+					}
+				}
+			},
+			cmvoice4: 
+			{
+				name: "Voice 4", callback: function(key, opt)
+				{
+					var arg = $(this).text()
+					voice(arg, "voice4")
 				},
 				visible: function(key, opt)
 				{ 
@@ -1985,31 +2093,14 @@ function update_roomlist(roomlist)
 
 function setup_main_menu()
 {
-	$('#admin_chat_permission').change(function()
+	$(".admin_voice_permissions_checkbox").each(function()
 	{
-		var what = JSON.parse($('#admin_chat_permission option:selected').val())
-		change_chat_permission(what)
-	})
+		$(this).change(function()
+		{
+			var what = $(this).prop("checked")
 
-	$('#admin_upload_permission').change(function()
-	{
-		var what = JSON.parse($('#admin_upload_permission option:selected').val())
-
-		change_upload_permission(what)
-	})
-
-	$('#admin_tv_permission').change(function()
-	{
-		var what = JSON.parse($('#admin_tv_permission option:selected').val())
-
-		change_tv_permission(what)
-	})
-
-	$('#admin_radio_permission').change(function()
-	{
-		var what = JSON.parse($('#admin_radio_permission option:selected').val())
-
-		change_radio_permission(what)
+			change_voice_permission($(this).data("ptype"), what)
+		})	
 	})
 
 	$('#admin_enable_images').change(function()
@@ -2077,36 +2168,9 @@ function show_main_menu()
 	{
 		if(role === "admin" || role === "op")
 		{
-			$('#admin_chat_permission').find('option').each(function()
+			$(".admin_voice_permissions_checkbox").each(function()
 			{
-				if(JSON.parse($(this).val()) === chat_permission)
-				{
-					$(this).prop('selected', true)
-				}
-			})
-
-			$('#admin_upload_permission').find('option').each(function()
-			{
-				if(JSON.parse($(this).val()) === upload_permission)
-				{
-					$(this).prop('selected', true)
-				}
-			})
-
-			$('#admin_tv_permission').find('option').each(function()
-			{
-				if(JSON.parse($(this).val()) === tv_permission)
-				{
-					$(this).prop('selected', true)
-				}
-			})
-
-			$('#admin_radio_permission').find('option').each(function()
-			{
-				if(JSON.parse($(this).val()) === radio_permission)
-				{
-					$(this).prop('selected', true)
-				}
+				$(this).prop("checked", window[$(this).data("ptype")])
 			})
 
 			$('#admin_enable_images').find('option').each(function()
@@ -2268,7 +2332,7 @@ function start_dropzone()
 	{
 		focus_input()
 
-		if(!can_upload)
+		if(!can_images)
 		{
 			chat_announce('[', ']', "You don't have permission to upload images", 'small')
 			dropzone.files = []
@@ -3224,7 +3288,7 @@ function check_url_media(msg)
 			continue
 		}
 
-		if(can_upload)
+		if(can_images)
 		{
 			if(word.indexOf('.jpg') !== -1 || word.indexOf('.png') !== -1 || word.indexOf('.jpeg') !== -1 || word.indexOf('.gif') !== -1)
 			{
@@ -5496,7 +5560,7 @@ function announce_upload_permission_change(data)
 {
 	var s = ""
 
-	var d = `${data.username} changed the upload permission to`
+	var d = `${data.username} changed the images permission to`
 
 	if(data.upload_permission === 1 && upload_permission !== 1)
 	{
@@ -5516,7 +5580,7 @@ function announce_upload_permission_change(data)
 	if(s.length > 0)
 	{
 		upload_permission = data.upload_permission
-		can_upload = check_upload_permission(role)
+		can_images = check_images_permission(role)
 		setup_icons()
 		chat_announce('~', '~', s, 'small')
 	}
@@ -5607,7 +5671,7 @@ function big_letter(s)
 	return s.toUpperCase()[0]
 }
 
-function voice(uname)
+function voice(uname, vtype)
 {
 	if(role === 'admin' || role === 'op')
 	{
@@ -5627,9 +5691,9 @@ function voice(uname)
 
 			var rol = get_role(uname)
 
-			if(rol === 'voice')
+			if(rol === vtype)
 			{
-				isalready(uname, 'voice')
+				isalready(uname, vtype)
 				return false
 			}
 
@@ -5639,7 +5703,7 @@ function voice(uname)
 				return false
 			}
 
-			socket_emit('voice', {username:uname})
+			socket_emit('voice', {username:uname, vtype:vtype})
 		}
 	}
 
@@ -5680,12 +5744,12 @@ function announce_voice(data)
 {
 	if(username === data.username2)
 	{
-		set_role("voice")
+		set_role(data.vtype)
 	}
 
-	chat_announce('~', '~', `${data.username1} gave voice to ${data.username2}`, 'small')
+	chat_announce('~', '~', `${data.username1} gave ${data.vtype} to ${data.username2}`, 'small')
 
-	replace_role_in_userlist(data.username2, 'voice')
+	replace_role_in_userlist(data.username2, data.vtype)
 }
 
 function announce_op(data)
@@ -7195,16 +7259,6 @@ function get_status_html()
 		info += "<div class='info_item'><div class='info_title'>Topic</div><div class='info_item_content' id='status_topic'>No topic set</div></div>"
 	}
 
-	info += "<div class='info_item'><div class='info_title'>Chat Permission</div>"
-	info += `<div class='info_item_content'>${permission_tag(chat_permission)}</div></div>`
-	info += "<div class='info_item'><div class='info_title'>Upload Permission</div>"
-	info += `<div class='info_item_content'>${permission_tag(upload_permission)}</div></div>`
-	info += "<div class='info_item'><div class='info_title'>Radio Permission</div>"
-	info += `<div class='info_item_content'>${permission_tag(radio_permission)}</div></div>`
-	info += "<div class='info_item'><div class='info_title'>TV Permission</div>"
-	info += `<div class='info_item_content'>${permission_tag(tv_permission)}</div></div>`
-	info += "<div class='info_item'><div class='info_title'>Privacy</div>"
-
 	if(is_public)
 	{
 		info += "<div class='info_item_content'>Public</div></div>"
@@ -7241,24 +7295,6 @@ function get_status_html()
 	h.find("#status_radio_source").eq(0).text(radio_source).urlize()
 
 	return h.html()
-}
-
-function permission_tag(n)
-{
-	if(n === 1)
-	{
-		return "Anyone"
-	}
-
-	else if(n === 2)
-	{
-		return "Voiced and up"
-	}
-
-	else if(n === 3)
-	{
-		return "Ops and up"
-	}
 }
 
 function fill()
@@ -8426,4 +8462,43 @@ function sound_notify()
 function upload_image_by_url(url)
 {
 	$('#test_image').attr('src', url.split('?')[0])	
+}
+
+function change_voice_permission(ptype, what)
+{
+	if(role !== 'admin' && role !== 'op')
+	{
+		not_an_op()
+		return
+	}
+
+	if(window[ptype] === undefined)
+	{
+		return false
+	}
+
+	if(window[ptype] === what)
+	{
+		chat_announce('[', ']', `That permission is already set to that`, 'small')
+		return false
+	}
+
+	socket_emit("change_voice_permission", {ptype:ptype, what:what})		
+}
+
+function announce_voice_permission_change(data)
+{
+	if(data.what)
+	{
+		chat_announce('~', '~', `${data.username} set ${data.ptype} to true`, 'small')
+	}
+
+	else
+	{
+		chat_announce('~', '~', `${data.username} set ${data.ptype} to false`, 'small')
+	}
+
+	window[data.ptype] = data.what
+
+	check_permissions()
 }

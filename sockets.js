@@ -11,6 +11,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	const jwt = require('jsonwebtoken');
 	const images_root = path.join(__dirname, config.images_directory)
 
+	var vtypes = ["voice1", "voice2", "voice3", "voice4"]
+	var roles = ["admin", "op"].concat(vtypes)
+
 	const s3 = new aws.S3(
 	{
 		apiVersion: sconfig.s3_api_version,
@@ -603,7 +606,20 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				console.error(err)
 			}
-		})		
+		})
+
+		socket.on('change_voice_permission', function(data) 
+		{
+			try
+			{
+				change_voice_permission(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})			
 
 		socket.on('disconnect', function(reason)
 		{
@@ -750,9 +766,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 						socket.role = info.keys[socket.user_id]
 
-						if(socket.role === undefined)
+						if(roles.indexOf(socket.role) === -1)
 						{
-							socket.role = ''
+							socket.role = 'voice1'
 						}
 
 						socket.join(room_id)
@@ -791,10 +807,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							log: info.log,
 							log_messages: info.log_messages,
 							role: socket.role, 
-							chat_permission: info.chat_permission, 
-							upload_permission: info.upload_permission, 
-							radio_permission: info.radio_permission, 
-							tv_permission: info.tv_permission,
 							public: info.public,
 							radio_type: info.radio_type,
 							radio_source: info.radio_source,
@@ -813,7 +825,23 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							room_radio_enabled: info.radio_enabled,
 							default_theme: info.default_theme,
 							default_background_image: default_background_image,
-							default_background_image_enabled: info.default_background_image_enabled
+							default_background_image_enabled: info.default_background_image_enabled,
+							v1_chat_permission: info.v1_chat_permission,
+							v1_images_permission: info.v1_images_permission,
+							v1_tv_permission: info.v1_tv_permission,
+							v1_radio_permission: info.v1_radio_permission,
+							v2_chat_permission: info.v2_chat_permission,
+							v2_images_permission: info.v2_images_permission,
+							v2_tv_permission: info.v2_tv_permission,
+							v2_radio_permission: info.v2_radio_permission,
+							v3_chat_permission: info.v3_chat_permission,
+							v3_images_permission: info.v3_images_permission,
+							v3_tv_permission: info.v3_tv_permission,
+							v3_radio_permission: info.v3_radio_permission,
+							v4_chat_permission: info.v4_chat_permission,
+							v4_images_permission: info.v4_images_permission,
+							v4_tv_permission: info.v4_tv_permission,
+							v4_radio_permission: info.v4_radio_permission
 						})				
 
 						db_manager.save_visited_room(socket.user_id, socket.room_id)
@@ -863,7 +891,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
-			if(!check_permission(rooms[socket.room_id].chat_permission, socket.role))
+			if(!check_permission(socket, "chat"))
 			{
 				return false
 			}
@@ -1221,6 +1249,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
+			if(vtypes.indexOf(data.vtype) === -1)
+			{
+				return get_out(socket)
+			}
+
 			if(socket.username === data.username)
 			{
 				return get_out(socket)
@@ -1244,15 +1277,15 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							return false
 						}
 
-						if(socc.role === 'voice')
+						if(socc.role === data.vtype)
 						{
-							socket.emit('update', {room:socket.room_id, type:'isalready', what:'voice', who:data.username})
+							socket.emit('update', {room:socket.room_id, type:'isalready', what:data.vtype, who:data.username})
 							return false
 						}
 
-						socc.role = 'voice'
+						socc.role = data.vtype
 
-						info.keys[socc.user_id] = "voice"
+						info.keys[socc.user_id] = data.vtype
 
 						replace_in_userlist(socc, socc.username)
 
@@ -1263,7 +1296,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							console.error(err)
 						})
 
-						io.sockets.in(socket.room_id).emit('update', {type:'announce_voice', username1:socket.username, username2:data.username})
+						io.sockets.in(socket.room_id).emit('update', {type:'announce_voice', username1:socket.username, username2:data.username, vtype:data.vtype})
 
 						break
 					}
@@ -2128,7 +2161,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
-			if(!check_permission(rooms[socket.room_id].radio_permission, socket.role))
+			if(!check_permission(socket, "radio"))
 			{
 				return false
 			}
@@ -2236,7 +2269,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
-			if(!check_permission(rooms[socket.room_id].tv_permission, socket.role))
+			if(!check_permission(socket, "tv"))
 			{
 				return false
 			}
@@ -2828,6 +2861,53 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				username: socket.username
 			})
 		}
+	}
+
+	function change_voice_permission(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(socket.role !== 'admin' && socket.role !== 'op')
+			{
+				return get_out(socket)
+			}
+
+			if(data.what !== true && data.what !== false)
+			{
+				return get_out(socket)
+			}
+
+			if(data.ptype === undefined)
+			{
+				return get_out(socket)
+			}
+
+			if(rooms[socket.room_id][data.ptype] === undefined)
+			{
+				return get_out(socket)
+			}
+
+			rooms[socket.room_id][data.ptype] = data.what			
+
+			var obj = {}
+
+			obj[data.ptype] = data.what
+
+			db_manager.update_room(socket.room_id, obj)
+
+			.catch(err =>
+			{
+				console.error(err)
+			})
+
+			io.sockets.in(socket.room_id).emit('update', 
+			{
+				type: 'voice_permission_change',
+				ptype: data.ptype,
+				what: data.what,
+				username: socket.username
+			})
+		}
 	}	
 
 	function do_disconnect(socc)
@@ -3084,7 +3164,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}		    
 
-			if(!check_permission(rooms[socket.room_id].upload_permission, socket.role))
+			if(!check_permission(socket, "images"))
 			{
 				return false
 			}	
@@ -3134,7 +3214,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
-			if(!check_permission(rooms[socket.room_id].upload_permission, socket.role))
+			if(!check_permission(socket, "images"))
 			{
 				return false
 			}
@@ -3628,33 +3708,154 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		return true
 	}
 
-	function check_permission(permission, role)
+	function check_permission(socket, permission)
 	{
-		if(permission === 1)
+		if(socket.role === "admin" || socket.role === "op")
 		{
 			return true
 		}
 
-		else if(permission === 2)
+		if(socket.role === "voice1")
 		{
-			if(role === "admin" || role === "op" || role === "voice")
+			if(permission === "chat")
 			{
-				return true
+				if(rooms[socket.room_id].v1_chat_permission)
+				{
+					return true
+				}
+			}
+
+			else if(permission === "images")
+			{
+				if(rooms[socket.room_id].v1_images_permission)
+				{
+					return true
+				}
+			}
+
+			else if(permission === "tv")
+			{
+				if(rooms[socket.room_id].v1_tv_permission)
+				{
+					return true
+				}
+			}
+
+			else if(permission === "radio")
+			{
+				if(rooms[socket.room_id].v1_radio_permission)
+				{
+					return true
+				}
 			}
 		}
 
-		else if(permission === 3)
+		else if(socket.role === "voice2")
 		{
-			if(role === "admin" || role === "op")
+			if(permission === "chat")
 			{
-				return true
-			}	
+				if(rooms[socket.room_id].v2_chat_permission)
+				{
+					return true
+				}
+			}
+
+			else if(permission === "images")
+			{
+				if(rooms[socket.room_id].v2_images_permission)
+				{
+					return true
+				}
+			}
+
+			else if(permission === "tv")
+			{
+				if(rooms[socket.room_id].v2_tv_permission)
+				{
+					return true
+				}
+			}
+
+			else if(permission === "radio")
+			{
+				if(rooms[socket.room_id].v2_radio_permission)
+				{
+					return true
+				}
+			}
 		}
 
-		else
+		else if(socket.role === "voice3")
 		{
-			return false
-		}	
+			if(permission === "chat")
+			{
+				if(rooms[socket.room_id].v3_chat_permission)
+				{
+					return true
+				}
+			}
+
+			else if(permission === "images")
+			{
+				if(rooms[socket.room_id].v3_images_permission)
+				{
+					return true
+				}
+			}
+
+			else if(permission === "tv")
+			{
+				if(rooms[socket.room_id].v3_tv_permission)
+				{
+					return true
+				}
+			}
+
+			else if(permission === "radio")
+			{
+				if(rooms[socket.room_id].v3_radio_permission)
+				{
+					return true
+				}
+			}
+		}
+
+		else if(socket.role === 'voice4')
+		{
+			if(permission === "chat")
+			{
+				if(rooms[socket.room_id].v4_chat_permission)
+				{
+					return true
+				}
+			}
+
+			else if(permission === "images")
+			{
+				if(rooms[socket.room_id].v4_images_permission)
+				{
+					return true
+				}
+			}
+
+			else if(permission === "tv")
+			{
+				if(rooms[socket.room_id].v4_tv_permission)
+				{
+					return true
+				}
+			}
+
+			else if(permission === "radio")
+			{
+				if(rooms[socket.room_id].v4_radio_permission)
+				{
+					return true
+				}
+			}
+		}
+
+		return false
 	}	
 
 	function get_youtube_id(url)
@@ -3702,10 +3903,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			activity: false,
 			log: info.log,
 			log_messages: [],
-			chat_permission: info.chat_permission,
-			upload_permission: info.upload_permission,
-			radio_permission: info.radio_permission,
-			tv_permission: info.tv_permission
+			v1_chat_permission: info.v1_chat_permission,
+			v1_images_permission: info.v1_images_permission,
+			v1_tv_permission: info.v1_tv_permission,
+			v1_radio_permission: info.v1_radio_permission,
+			v2_chat_permission: info.v2_chat_permission,
+			v2_images_permission: info.v2_images_permission,
+			v2_tv_permission: info.v2_tv_permission,
+			v2_radio_permission: info.v2_radio_permission,
+			v3_chat_permission: info.v3_chat_permission,
+			v3_images_permission: info.v3_images_permission,
+			v3_tv_permission: info.v3_tv_permission,
+			v3_radio_permission: info.v3_radio_permission,
+			v4_chat_permission: info.v4_chat_permission,
+			v4_images_permission: info.v4_images_permission,
+			v4_tv_permission: info.v4_tv_permission,
+			v4_radio_permission: info.v4_radio_permission			
 		}
 
 		return obj	

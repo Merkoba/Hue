@@ -4,7 +4,7 @@ module.exports = function(db, config, sconfig, utilz)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 30
+	const rooms_version = 31
 	const users_version = 25
 
 	function get_random_key()
@@ -132,26 +132,6 @@ module.exports = function(db, config, sconfig, utilz)
 						{
 							room.keys = {}
 						}
-						
-						if(typeof room.chat_permission !== "number")
-						{
-							room.chat_permission = 1
-						}
-						
-						if(typeof room.upload_permission !== "number")
-						{
-							room.upload_permission = 1
-						}
-						
-						if(typeof room.radio_permission !== "number")
-						{
-							room.radio_permission = 1
-						}
-
-						if(typeof room.tv_permission !== "number")
-						{
-							room.tv_permission = 1
-						}
 
 						if(typeof room.radio_type !== "string")
 						{
@@ -258,6 +238,86 @@ module.exports = function(db, config, sconfig, utilz)
 							room.public = true
 						}
 
+						if(typeof room.v1_chat_permission !== "boolean")
+						{
+							room.v1_chat_permission = true
+						}	
+
+						if(typeof room.v1_images_permission !== "boolean")
+						{
+							room.v1_images_permission = true
+						}	
+
+						if(typeof room.v1_tv_permission !== "boolean")
+						{
+							room.v1_tv_permission = true
+						}	
+
+						if(typeof room.v1_radio_permission !== "boolean")
+						{
+							room.v1_radio_permission = true
+						}
+
+						if(typeof room.v2_chat_permission !== "boolean")
+						{
+							room.v2_chat_permission = true
+						}	
+
+						if(typeof room.v2_images_permission !== "boolean")
+						{
+							room.v2_images_permission = true
+						}	
+
+						if(typeof room.v2_tv_permission !== "boolean")
+						{
+							room.v2_tv_permission = true
+						}	
+
+						if(typeof room.v2_radio_permission !== "boolean")
+						{
+							room.v2_radio_permission = true
+						}
+
+						if(typeof room.v3_chat_permission !== "boolean")
+						{
+							room.v3_chat_permission = true
+						}	
+
+						if(typeof room.v3_images_permission !== "boolean")
+						{
+							room.v3_images_permission = true
+						}	
+
+						if(typeof room.v3_tv_permission !== "boolean")
+						{
+							room.v3_tv_permission = true
+						}	
+
+						if(typeof room.v3_radio_permission !== "boolean")
+						{
+							room.v3_radio_permission = true
+						}
+
+						if(typeof room.v4_chat_permission !== "boolean")
+						{
+							room.v4_chat_permission = true
+						}	
+
+						if(typeof room.v4_images_permission !== "boolean")
+						{
+							room.v4_images_permission = true
+						}	
+
+						if(typeof room.v4_tv_permission !== "boolean")
+						{
+							room.v4_tv_permission = true
+						}	
+
+						if(typeof room.v4_radio_permission !== "boolean")
+						{
+							room.v4_radio_permission = true
+						}
+
 						room.version = rooms_version
 
 						db.collection('rooms').update({_id:room._id}, {$set:room})
@@ -326,10 +386,6 @@ module.exports = function(db, config, sconfig, utilz)
 				tv_date: 0,
 				log_messages: [],
 				bans: [],
-				chat_permission: 1,
-				upload_permission: 1,
-				radio_permission: 1,
-				tv_permission: 1,
 				images_enabled: true,
 				radio_enabled: true,
 				tv_enabled: true,
@@ -337,6 +393,22 @@ module.exports = function(db, config, sconfig, utilz)
 				default_background_image: "",
 				default_background_image_enabled: true,
 				log: true,
+				v1_chat_permission: true,
+				v1_images_permission: false,
+				v1_tv_permission: false,
+				v1_radio_permission: false,
+				v2_chat_permission: true,
+				v2_images_permission: true,
+				v2_tv_permission: false,
+				v2_radio_permission: false,
+				v3_chat_permission: true,
+				v3_images_permission: true,
+				v3_tv_permission: true,
+				v3_radio_permission: false,
+				v4_chat_permission: true,
+				v4_images_permission: true,
+				v4_tv_permission: true,
+				v4_radio_permission: true,
 				modified: Date.now()
 			}
 
