@@ -2129,7 +2129,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					return
 				}
 
-				fetch(`https://www.googleapis.com/youtube/v3/search?q=${data.src}&fields=items(id,snippet(title))&part=snippet&maxResults=1&key=${sconfig.youtube_api_key}`).then(function(res)
+				fetch(`https://www.googleapis.com/youtube/v3/search?q=${data.src}&fields=items(id,snippet(title))&part=snippet&maxResults=10&key=${sconfig.youtube_api_key}`).then(function(res)
 				{
 					return res.json()
 				})
@@ -2138,16 +2138,28 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				{
 					if(response.items !== undefined && response.items.length > 0)
 					{
-						data.type = "youtube"
-						data.src = `https://youtube.com/watch?v=${response.items[0].id.videoId}`
-						data.title = response.items[0].snippet.title
-						do_change_radio_source(socket, data)
+						for(var item of response.items)
+						{
+							if(item === undefined || item.id === undefined || item.id.videoId === undefined)
+							{
+								continue
+							}
+
+							data.type = "youtube"
+							data.src = `https://youtube.com/watch?v=${item.id.videoId}`
+							data.title = response.items[0].snippet.title
+							do_change_radio_source(socket, data)
+							return
+						}
+
+						socket.emit('update', {room:socket.room_id, type:'songnotfound'})
+						return false						
 					}
 
 					else
 					{
 						socket.emit('update', {room:socket.room_id, type:'songnotfound'})
-					}						
+					}							
 				})
 
 				.catch(err =>
@@ -2317,7 +2329,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					return
 				}
 
-				fetch(`https://www.googleapis.com/youtube/v3/search?q=${data.src}&fields=items(id,snippet(title))&part=snippet&maxResults=1&key=${sconfig.youtube_api_key}`)
+				fetch(`https://www.googleapis.com/youtube/v3/search?q=${data.src}&fields=items(id,snippet(title))&part=snippet&maxResults=10&key=${sconfig.youtube_api_key}`)
 
 				.then(function(res)
 				{
@@ -2328,10 +2340,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				{
 					if(response.items !== undefined && response.items.length > 0)
 					{
-						data.type = "youtube"
-						data.src = `https://youtube.com/watch?v=${response.items[0].id.videoId}`
-						data.title = response.items[0].snippet.title
-						do_change_tv_source(socket, data)
+						for(var item of response.items)
+						{
+							if(item === undefined || item.id === undefined || item.id.videoId === undefined)
+							{
+								continue
+							}
+
+							data.type = "youtube"
+							data.src = `https://youtube.com/watch?v=${item.id.videoId}`
+							data.title = response.items[0].snippet.title
+							do_change_tv_source(socket, data)
+							return
+						}
+
+						socket.emit('update', {room:socket.room_id, type:'videonotfound'})
+						return false						
 					}
 
 					else
