@@ -3454,6 +3454,11 @@ function start_image_events()
 	{
 		emit_pasted($('#test_image').attr('src'))
 	})
+
+	$('#test_image').on("error", function() 
+	{
+		chat_announce('[', ']', "The provided image URL failed to load", 'small')		
+	})	
 }
 
 function after_image_load(img)
@@ -7170,7 +7175,7 @@ function show_modal_image(url, title=false)
 			update_modal_scrollbar("image")
 		})
 
-		$('#modal_image').eq(0).on("error", function() 
+		$('#modal_image').on("error", function() 
 		{
 			msg_image.set("<div class='padding1'>Image no longer available</div>")
 		})
