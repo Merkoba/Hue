@@ -1905,122 +1905,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}		
 	}
 
-	function change_upload_permission(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(socket.role !== 'admin' && socket.role !== 'op')
-			{
-				return get_out(socket)
-			}
-
-			var amodes = [1, 2, 3]
-
-			if(amodes.indexOf(data.upload_permission) === -1)
-			{
-				return get_out(socket)
-			}
-
-			io.sockets.in(socket.room_id).emit('update', {type:'upload_permission_change', username:socket.username, upload_permission:data.upload_permission})
-
-			rooms[socket.room_id].upload_permission = data.upload_permission				
-				
-			db_manager.update_room(socket.room_id, {upload_permission:data.upload_permission})
-
-			.catch(err =>
-			{
-				console.error(err)
-			})
-		}
-	}
-
-	function change_chat_permission(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(socket.role !== 'admin' && socket.role !== 'op')
-			{
-				return get_out(socket)
-			}
-
-			var amodes = [1, 2, 3]
-
-			if(amodes.indexOf(data.chat_permission) === -1)
-			{
-				return get_out(socket)
-			}							
-
-			io.sockets.in(socket.room_id).emit('update', {type:'chat_permission_change', username:socket.username, chat_permission:data.chat_permission})
-
-			rooms[socket.room_id].chat_permission = data.chat_permission				
-				
-			db_manager.update_room(socket.room_id, {chat_permission:data.chat_permission})
-
-			.catch(err =>
-			{
-				console.error(err)
-			})
-		}
-	}	
-
-	function change_radio_permission(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(socket.role !== 'admin' && socket.role !== 'op')
-			{
-				return false
-			}
-
-			var amodes = [1, 2, 3]
-
-			if(amodes.indexOf(data.radio_permission) === -1)
-			{
-				return get_out(socket)
-			}
-
-			io.sockets.in(socket.room_id).emit('update', {type:'radio_permission_change', username:socket.username, radio_permission:data.radio_permission})
-
-			rooms[socket.room_id].radio_permission = data.radio_permission
-				
-			db_manager.update_room(socket.room_id, {radio_permission:data.radio_permission})
-
-			.catch(err =>
-			{
-				console.error(err)
-			})
-		}
-	}
-
-	function change_tv_permission(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(socket.role !== 'admin' && socket.role !== 'op')
-			{
-				return false
-			}
-
-			var amodes = [1, 2, 3]
-
-			if(amodes.indexOf(data.tv_permission) === -1)
-			{
-				return get_out(socket)
-			}
-
-			io.sockets.in(socket.room_id).emit('update', {type:'tv_permission_change', username:socket.username, tv_permission:data.tv_permission})
-
-			rooms[socket.room_id].tv_permission = data.tv_permission
-				
-			db_manager.update_room(socket.room_id, {tv_permission:data.tv_permission})
-
-			.catch(err =>
-			{
-				console.error(err)
-			})
-		}
-	}
-
 	function change_log(socket, data)
 	{
 		if(socket.username !== undefined)
@@ -2179,7 +2063,25 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					if(id)
 					{
-						fetch(`https://www.googleapis.com/youtube/v3/videos?id=${id}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`).then(function(res)
+						if(id[0] === "video")
+						{
+							var st = "videos"
+						}
+
+						else if(id[0] === "list")
+						{
+							var st = "playlists"
+						}
+
+						else
+						{
+							socket.emit('update', {room:socket.room_id, type:'songnotfound'})
+							return false							
+						}						
+
+						fetch(`https://www.googleapis.com/youtube/v3/${st}?id=${id[1]}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`)
+						
+						.then(function(res)
 						{
 							return res.json()
 						})
@@ -2203,6 +2105,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						{
 							console.error(err)
 						})
+					}
+
+					else
+					{
+						socket.emit('update', {room:socket.room_id, type:'songnotfound'})
+						return false						
 					}
 				}
 
@@ -2287,7 +2195,23 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					if(id)
 					{
-						fetch(`https://www.googleapis.com/youtube/v3/videos?id=${id}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`)
+						if(id[0] === "video")
+						{
+							var st = "videos"
+						}
+
+						else if(id[0] === "list")
+						{
+							var st = "playlists"
+						}
+
+						else
+						{
+							socket.emit('update', {room:socket.room_id, type:'videonotfound'})
+							return false							
+						}
+
+						fetch(`https://www.googleapis.com/youtube/v3/${st}?id=${id[1]}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`)
 
 						.then(function(res)
 						{
@@ -3860,11 +3784,40 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 	function get_youtube_id(url)
 	{
-		url = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/)
+		var id_match = url.match(/(?:\?|&)(v=[0-9A-Za-z_-]+)/)
+		var list_match = url.match(/(?:\?|&)(list=[0-9A-Za-z_-]+)/)
 
-		var id = undefined !== url[2] ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0]
+		var v = false
+		var v_id = false
+		var list = false
+		var list_id = false	
 
-		return id.length === 11 ? id : false
+		if(id_match)
+		{
+			v = true
+			v_id = id_match[1].replace("v=", "")
+		}
+
+		if(list_match)
+		{
+			list = true
+			list_id = list_match[1].replace("list=", "")		
+		}
+
+		if(list)
+		{
+			return ["list", list_id]
+		}
+
+		else if(v)
+		{
+			return ["video", v_id]
+		}
+
+		else
+		{
+			return false
+		}
 	}
 
 	function get_twitch_id(url)

@@ -757,7 +757,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 #youtube_player
 {
-	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: -9999999999;
+	visibility: hidden;
 }
 
 .volume_context

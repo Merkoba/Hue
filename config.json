@@ -84,7 +84,6 @@
 	"jwt_expiration": 60000,
 	"max_jwt_token_length": 300,
 	"max_user_id_length": 100,
-	"allow_pasted_media": false,
 	"announce_joins": true,
 	"announce_parts": true,
 	"image_queue_interval": 8000

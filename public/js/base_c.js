@@ -1106,7 +1106,7 @@ function setup_radio(data)
 	else if(data.radio_type === "youtube")
 	{
 		get_metadata = false
-		push_played(false, {s1:radio_title, s2:`https://youtube.com/watch?v=${get_youtube_id(radio_source)}`})
+		push_played(false, {s1:radio_title, s2:radio_source})
 		$('#audio').attr('src', '')
 	}
 
@@ -1162,7 +1162,22 @@ function show_youtube_video()
 {
 	stop_videos()
 
-	youtube_video_player.loadVideoById({videoId:get_youtube_id(tv_source), startSeconds:get_youtube_time(tv_source)})
+	var id = get_youtube_id(tv_source)
+
+	if(id[0] === "video")
+	{
+		youtube_video_player.loadVideoById({videoId:id[1], startSeconds:get_youtube_time(tv_source)})
+	}
+
+	else if(id[0] === "list")
+	{
+		youtube_video_player.loadPlaylist({list:id[1]})
+	}
+
+	else
+	{
+		return false
+	}
 	
 	$("#media_video").css("display", "none")
 	$("#media_twitch_video_container").css("display", "none")
@@ -1275,11 +1290,40 @@ function change_colors(background_color, background_color2, font_color)
 
 function get_youtube_id(url)
 {
-	url = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/)
+	var id_match = url.match(/(?:\?|&)(v=[0-9A-Za-z_-]+)/)
+	var list_match = url.match(/(?:\?|&)(list=[0-9A-Za-z_-]+)/)
 
-	var id = undefined !== url[2] ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0]
+	var v = false
+	var v_id = false
+	var list = false
+	var list_id = false	
 
-	return id.length === 11 ? id : false
+	if(id_match)
+	{
+		v = true
+		v_id = id_match[1].replace("v=", "")
+	}
+
+	if(list_match)
+	{
+		list = true
+		list_id = list_match[1].replace("list=", "")		
+	}
+
+	if(list)
+	{
+		return ["list", list_id]
+	}
+
+	else if(v)
+	{
+		return ["video", v_id]
+	}
+
+	else
+	{
+		return false
+	}
 }
 
 function get_twitch_id(url)
@@ -1396,6 +1440,8 @@ function userjoin(data)
 	if(announce_joins && check_chat_permission(data.role))
 	{		
 		chat_announce('--', '--', `${data.username} has joined`, 'small', false, false, false, true)
+
+		alert_title()
 	}
 
 	sound_notify()
@@ -3306,54 +3352,6 @@ function push_to_chat_history(msg)
 	}	
 }
 
-function check_url_media(msg)
-{
-	var words = msg.split(' ')
-
-	for(var i=0; i<words.length; i++)
-	{
-		var word = words[i].toLowerCase()
-
-		if(!word.startsWith("https://") && !word.startsWith("http://"))
-		{
-			continue
-		}
-
-		if(can_images)
-		{
-			if(word.indexOf('.jpg') !== -1 || word.indexOf('.png') !== -1 || word.indexOf('.jpeg') !== -1 || word.indexOf('.gif') !== -1)
-			{
-				var url = words[i].replace(/\.gifv/g,'.gif')
-
-				return
-			}
-		}
-
-		if(can_tv)
-		{
-			if(youtube_enabled && (word.indexOf("youtube.com") !== -1 || word.indexOf("youtu.be") !== -1))
-			{
-				if(get_youtube_id(words[i]))
-				{
-					change_tv_source(words[i])
-				}
-
-				return
-			}	
-			
-			if(twitch_enabled && (word.indexOf("twitch.tv") !== -1))
-			{
-				if(get_twitch_id(words[i]))
-				{
-					change_tv_source(words[i])
-				}
-
-				return
-			}
-		}
-	}
-}
-
 function change(type)
 {	
 	if(afk && type !== "radio")
@@ -3424,11 +3422,6 @@ function change(type)
 	else if(type === "radio")
 	{
 		if(!room_radio_enabled || !radio_enabled || !radio_started)
-		{
-			return false
-		}
-
-		if(youtube_player === undefined)
 		{
 			return false
 		}		
@@ -4154,11 +4147,6 @@ function send_to_chat(msg)
 				msg = msg.slice(1)
 			}
 
-			if(allow_pasted_media)
-			{
-				check_url_media(msg)
-			}
-
 			if(can_chat)
 			{
 				update_chat(username, msg, profile_image)	
@@ -4660,7 +4648,23 @@ function start_radio()
 	{
 		if(youtube_player !== undefined)
 		{
-			youtube_player.loadVideoById({videoId:get_youtube_id(radio_source), startSeconds:get_youtube_time(radio_source)})
+			var id = get_youtube_id(radio_source)
+
+			if(id[0] === "video")
+			{
+				youtube_player.loadVideoById({videoId:id[1], startSeconds:get_youtube_time(radio_source)})
+			}
+
+			else if(id[0] === "list")
+			{
+				youtube_player.loadPlaylist({list:id[1]})
+			}
+
+			else
+			{
+				return false
+			}
+
 			youtube_player.setVolume(get_nice_volume($("#audio")[0].volume))
 		}
 
@@ -4735,7 +4739,6 @@ function start_volume_scroll()
 {
 	document.getElementById('header').addEventListener("wheel", function(e)
 	{
-
 		var direction = e.deltaY > 0 ? 'down' : 'up'
 
 		if(direction === 'up')
@@ -4747,7 +4750,6 @@ function start_volume_scroll()
 		{
 			volume_decrease()
 		}
-
 	})
 }
 
@@ -6844,7 +6846,14 @@ function onYouTubeIframeAPIReady()
 		events:
 		{
 			onReady: onYouTubePlayerReady
-		}
+		},
+		playerVars:
+		{
+			iv_load_policy: 3,
+			rel: 0,
+			width: 640,
+			height: 360
+		}		
 	})
 
 	yt_video_player = new YT.Player('media_youtube_video',
@@ -6858,7 +6867,7 @@ function onYouTubeIframeAPIReady()
 			iv_load_policy: 3,
 			rel: 0,
 			width: 640,
-			height: 360			
+			height: 360
 		}
 	})
 }

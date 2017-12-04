@@ -245,17 +245,17 @@ module.exports = function(db, config, sconfig, utilz)
 
 						if(typeof room.v1_images_permission !== "boolean")
 						{
-							room.v1_images_permission = false
+							room.v1_images_permission = true
 						}	
 
 						if(typeof room.v1_tv_permission !== "boolean")
 						{
-							room.v1_tv_permission = false
+							room.v1_tv_permission = true
 						}	
 
 						if(typeof room.v1_radio_permission !== "boolean")
 						{
-							room.v1_radio_permission = false
+							room.v1_radio_permission = true
 						}
 
 						if(typeof room.v2_chat_permission !== "boolean")
@@ -270,12 +270,12 @@ module.exports = function(db, config, sconfig, utilz)
 
 						if(typeof room.v2_tv_permission !== "boolean")
 						{
-							room.v2_tv_permission = false
+							room.v2_tv_permission = true
 						}	
 
 						if(typeof room.v2_radio_permission !== "boolean")
 						{
-							room.v2_radio_permission = false
+							room.v2_radio_permission = true
 						}
 
 						if(typeof room.v3_chat_permission !== "boolean")
@@ -295,7 +295,7 @@ module.exports = function(db, config, sconfig, utilz)
 
 						if(typeof room.v3_radio_permission !== "boolean")
 						{
-							room.v3_radio_permission = false
+							room.v3_radio_permission = true
 						}
 
 						if(typeof room.v4_chat_permission !== "boolean")
@@ -394,17 +394,17 @@ module.exports = function(db, config, sconfig, utilz)
 				default_background_image_enabled: true,
 				log: true,
 				v1_chat_permission: true,
-				v1_images_permission: false,
-				v1_tv_permission: false,
-				v1_radio_permission: false,
+				v1_images_permission: true,
+				v1_tv_permission: true,
+				v1_radio_permission: true,
 				v2_chat_permission: true,
 				v2_images_permission: true,
-				v2_tv_permission: false,
-				v2_radio_permission: false,
+				v2_tv_permission: true,
+				v2_radio_permission: true,
 				v3_chat_permission: true,
 				v3_images_permission: true,
 				v3_tv_permission: true,
-				v3_radio_permission: false,
+				v3_radio_permission: true,
 				v4_chat_permission: true,
 				v4_images_permission: true,
 				v4_tv_permission: true,

@@ -50,7 +50,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.settings_default_custom_scrollbars = config.settings_default_custom_scrollbars
 	c.vars.settings_default_modal_color = config.settings_default_modal_color,
 	c.vars.settings_default_sound_notifications = config.settings_default_sound_notifications,
-	c.vars.allow_pasted_media = config.allow_pasted_media
 	c.vars.announce_joins = config.announce_joins
 	c.vars.announce_parts = config.announce_parts
 	c.vars.default_profile_image_url = config.default_profile_image_url
