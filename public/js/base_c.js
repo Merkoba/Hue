@@ -4384,8 +4384,7 @@ function goto_bottom(force=false)
 }
 
 function emit_pasted(url)
-{
-	chat_announce("[", "]", "Uploading", "small")	
+{	
 	socket_emit('pasted', {image_url:url})
 }
 
