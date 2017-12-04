@@ -827,11 +827,6 @@ function start_socket()
 			announce_admin(data)
 		}
 
-		else if(data.type === 'announce_strip')
-		{
-			announce_strip(data)
-		}
-
 		else if(data.type === 'announce_removedvoices')
 		{
 			announce_removedvoices(data)
@@ -1852,26 +1847,6 @@ function start_username_context_menu()
 				visible: function(key, opt)
 				{ 
 					if(role !== 'admin')
-					{
-						return false
-					}
-
-					else
-					{
-						return true
-					}
-				} 
-			},
-			cmstrip: 
-			{
-				name: "Strip", callback: function(key, opt)
-				{
-					var arg = $(this).text()
-					strip(arg)
-				},
-				visible: function(key, opt)
-				{ 
-					if(role !== 'admin' && role !== 'op')
 					{
 						return false
 					}
@@ -3703,7 +3678,6 @@ function register_commands()
 	commands.push('/voice')
 	commands.push('/op')
 	commands.push('/admin')
-	commands.push('/strip')
 	commands.push('/removevoices')
 	commands.push('/removeops')
 	commands.push('/ban')
@@ -3911,11 +3885,6 @@ function send_to_chat(msg)
 			else if(oiStartsWith(lmsg, '/admin'))
 			{
 				admin(arg)
-			}
-
-			else if(oiStartsWith(lmsg, '/strip'))
-			{
-				strip(arg)
 			}
 
 			else if(oiEquals(lmsg, '/removevoices'))
@@ -5456,60 +5425,6 @@ function announce_op(data)
 	chat_announce('~', '~', `${data.username1} gave op to ${data.username2}`, 'small')
 
 	replace_role_in_userlist(data.username2, 'op')
-}
-
-function strip(uname)
-{
-	if(role === 'admin' || role === 'op')
-	{
-		if(uname.length > 0 && uname.length <= max_username_length)
-		{
-			if(uname === username)
-			{
-				chat_announce('[', ']', "You can't strip yourself", 'small')
-				return false
-			}
-
-			if(usernames.indexOf(uname) === -1)
-			{
-				chat_announce('[', ']', "Nobody is using that username", 'small')
-				return false
-			}
-
-			var rol = get_role(uname)
-
-			if(rol === 'z')
-			{
-				isalready(uname, '')
-				return false
-			}
-
-			if((rol === 'admin' || rol === 'op') && role !== 'admin')
-			{
-				forbiddenuser()
-				return false
-			}
-
-			socket_emit('strip', {username:uname})
-		}
-	}
-
-	else
-	{
-		not_an_op()
-	}
-}
-
-function announce_strip(data)
-{
-	if(username === data.username2)
-	{
-		set_role("")
-	}
-
-	chat_announce('~', '~', `${data.username1} removed role from ${data.username2}`, 'small')
-
-	replace_role_in_userlist(data.username2, '')
 }
 
 function set_role(p)
