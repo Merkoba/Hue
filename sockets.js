@@ -3784,32 +3784,26 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 	function get_youtube_id(url)
 	{
-		var id_match = url.match(/(?:\?|&)(v=[0-9A-Za-z_-]+)/)
-		var list_match = url.match(/(?:\?|&)(list=[0-9A-Za-z_-]+)/)
-
-		var v = false
 		var v_id = false
-		var list = false
-		var list_id = false	
+		var list_id = false
 
-		if(id_match)
-		{
-			v = true
-			v_id = id_match[1].replace("v=", "")
-		}
+		var split = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/)
+		var id = undefined !== split[2] ? split[2].split(/[^0-9a-z_\-]/i)[0] : split[0]
+		v_id = id.length === 11 ? id : false
+
+		var list_match = url.match(/(?:\?|&)(list=[0-9A-Za-z_-]+)/)
 
 		if(list_match)
 		{
-			list = true
 			list_id = list_match[1].replace("list=", "")		
 		}
 
-		if(list)
+		if(list_id)
 		{
 			return ["list", list_id]
 		}
 
-		else if(v)
+		else if(v_id)
 		{
 			return ["video", v_id]
 		}

@@ -1285,32 +1285,26 @@ function change_colors(background_color, background_color2, font_color)
 
 function get_youtube_id(url)
 {
-	var id_match = url.match(/(?:\?|&)(v=[0-9A-Za-z_-]+)/)
-	var list_match = url.match(/(?:\?|&)(list=[0-9A-Za-z_-]+)/)
-
-	var v = false
 	var v_id = false
-	var list = false
-	var list_id = false	
+	var list_id = false
 
-	if(id_match)
-	{
-		v = true
-		v_id = id_match[1].replace("v=", "")
-	}
+	var split = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/)
+	var id = undefined !== split[2] ? split[2].split(/[^0-9a-z_\-]/i)[0] : split[0]
+	v_id = id.length === 11 ? id : false
+
+	var list_match = url.match(/(?:\?|&)(list=[0-9A-Za-z_-]+)/)
 
 	if(list_match)
 	{
-		list = true
 		list_id = list_match[1].replace("list=", "")		
 	}
 
-	if(list)
+	if(list_id)
 	{
 		return ["list", list_id]
 	}
 
-	else if(v)
+	else if(v_id)
 	{
 		return ["video", v_id]
 	}
@@ -1839,11 +1833,7 @@ function start_username_context_menu()
 			},
 			cmop: 
 			{
-				name: "Op", callback: function(key, opt)
-				{
-					var arg = $(this).text()
-					op(arg)
-				},
+				name: "Op",
 				visible: function(key, opt)
 				{ 
 					if(role !== 'admin')
@@ -1855,51 +1845,15 @@ function start_username_context_menu()
 					{
 						return true
 					}
-				} 
-			},
-			cmkick: 
-			{
-				name: "Kick", callback: function(key, opt)
-				{
-					var arg = $(this).text()
-					kick(arg)
-				},
-				visible: function(key, opt)
-				{ 
-					if(role !== 'admin' && role !== 'op')
-					{
-						return false
-					}
-
-					else
-					{
-						return true
-					}
-				} 
-			},
-			cmban: 
-			{
-				name: "Ban",
-				visible: function(key, opt)
-				{ 
-					if(role !== 'admin' && role !== 'op')
-					{
-						return false
-					}
-
-					else
-					{
-						return true
-					}
 				},
 				items: 
 				{
-					bansure: 
+					opsure: 
 					{
 						name: "I'm Sure", callback: function(key, opt)
 						{
 							var arg = $(this).text()
-							ban(arg)
+							op(arg)
 						}
 					}
 				}				
@@ -1930,6 +1884,60 @@ function start_username_context_menu()
 						}					
 					}
 				}
+			},			
+			cmkick: 
+			{
+				name: "Kick",
+				visible: function(key, opt)
+				{ 
+					if(role !== 'admin' && role !== 'op')
+					{
+						return false
+					}
+
+					else
+					{
+						return true
+					}
+				},
+				items: 
+				{
+					kicksure: 
+					{
+						name: "I'm Sure", callback: function(key, opt)
+						{
+							var arg = $(this).text()
+							kick(arg)
+						}
+					}
+				}				
+			},
+			cmban: 
+			{
+				name: "Ban",
+				visible: function(key, opt)
+				{ 
+					if(role !== 'admin' && role !== 'op')
+					{
+						return false
+					}
+
+					else
+					{
+						return true
+					}
+				},
+				items: 
+				{
+					bansure: 
+					{
+						name: "I'm Sure", callback: function(key, opt)
+						{
+							var arg = $(this).text()
+							ban(arg)
+						}
+					}
+				}				
 			}			
 		}
 	})
