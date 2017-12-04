@@ -728,7 +728,8 @@ function start_socket()
 			log_enabled = data.log
 			log_messages = data.log_messages
 			setup_default_theme(data)
-			set_default_theme()			
+			set_default_theme()
+			set_background_image()		
 			setup_active_media(data)
 			check_role(data)
 			set_topic_info(data)
@@ -1262,16 +1263,6 @@ function set_default_theme()
 
 	change_colors(background_color, background_color2, font_color)
 
-	if(default_background_image_enabled && settings.background_image)
-	{
-		$('#background_image').css('background-image', `url('${default_background_image}')`) 
-	}
-
-	else
-	{
-		recreate_background_image()
-	}
-
 	default_theme_on = true
 }
 
@@ -1281,6 +1272,19 @@ function change_colors(background_color, background_color2, font_color)
 	$('.bg1').css('color', font_color)
 	$('.bg2').css('background-color', background_color2)
 	$('.bg2').css('color', font_color)	
+}
+
+function set_background_image()
+{
+	if(default_background_image_enabled && settings.background_image)
+	{
+		$('#background_image').css('background-image', `url('${default_background_image}')`) 
+	}
+
+	else
+	{
+		recreate_background_image()
+	}	
 }
 
 function get_youtube_id(url)
@@ -3454,54 +3458,10 @@ function start_image_events()
 
 function after_image_load(img)
 {
-	try 
-	{
-		var colors = colorlib.get_dominant(img, 1)
-
-		if(colors === null)
-		{
-			return
-		}
-
-		var color1 = colors[0]
-
-		var background_color = color1
-
-		if(settings.background_image)
-		{
-			var font_color = colorlib.get_lighter_or_darker(color1, color_contrast_amount_2)
-			var color2 = colorlib.get_lighter_or_darker(color1, color_contrast_amount_4)
-		}
-
-		else
-		{
-			var font_color = colorlib.get_lighter_or_darker(color1, color_contrast_amount_1)
-			var color2 = colorlib.get_lighter_or_darker(color1, color_contrast_amount_3)
-		}
-
-		var background_color2 = color2
-
-		if(settings.background_color)
-		{
-			change_colors(background_color, background_color2, font_color)
-			default_theme_on = false
-		}
-
-		if(settings.background_image)
-		{
-			$('#background_image').css('background-image', `url('${image_url}')`) 
-		}
-
-		current_image_url = image_url
-		current_image_title = image_title			
-		
-		$(img).prop('title', image_title)
-	}
-
-	catch(err)
-	{
-		console.error(err)
-	}	
+	current_image_url = image_url
+	current_image_title = image_title			
+	
+	$(img).prop('title', image_title)
 }
 
 function set_image_cors()
@@ -3534,12 +3494,22 @@ function setup_image(data)
 	else
 	{
 		image_url = data.image_url
-		image_title = `Uploader: ${data.image_uploader} | Size: ${get_size_string(data.image_size)} | ${nice_date(data.image_date)}`
+
+		if(data.image_type === "link")
+		{
+			image_title = `Linker: ${data.image_uploader} | ${nice_date(data.image_date)}`
+		}
+
+		else
+		{
+			image_title = `Uploader: ${data.image_uploader} | Size: ${get_size_string(data.image_size)} | ${nice_date(data.image_date)}`
+		}
 	}
 
 	image_uploader = data.image_uploader
 	image_size = data.image_size
 	image_date = nice_date(data.image_date)
+	image_type = data.image_type
 
 	change("image")
 }
@@ -5401,14 +5371,24 @@ function announce_uploaded_image(data, date=false)
 		var d = nice_date(data.image_date)
 	}
 
-	var title = `Uploader: ${data.image_uploader} | Size: ${get_size_string(data.image_size)} | ${d}`	
+	if(data.image_type === "link")
+	{
+		var title = `Linker: ${data.image_uploader} | ${d}`
+		var msg = `${data.image_uploader} linked an image`	
+	}
+
+	else
+	{
+		var title = `Uploader: ${data.image_uploader} | Size: ${get_size_string(data.image_size)} | ${d}`
+		var msg = `${data.image_uploader} uploaded an image`
+	}
 
 	var onclick = function()
 	{
 		show_modal_image(data.image_url, title)
 	}
 
-	chat_announce("<i class='icon2 fa fa-camera'></i>", '', `${data.image_uploader} uploaded an image`, 'small', false, title, onclick, true)
+	chat_announce("<i class='icon2 fa fa-camera'></i>", '', msg, 'small', false, title, onclick, true)
 }
 
 function announce_voice(data)
@@ -6377,12 +6357,6 @@ function get_settings()
 		settings.background_image = settings_default_background_image
 		changed = true
 	}
-
-	if(settings.background_color === undefined)
-	{
-		settings.background_color = settings_default_background_color
-		changed = true
-	}
 	
 	if(settings.custom_scrollbars === undefined)
 	{
@@ -6417,8 +6391,6 @@ function start_settings_state()
 {
 	$("#setting_background_image").prop("checked", settings.background_image)
 
-	$("#setting_background_color").prop("checked", settings.background_color)
-
 	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
 	
 	$("#setting_sound_notifications").prop("checked", settings.sound_notifications)
@@ -6438,24 +6410,6 @@ function start_settings_listeners()
 	{
 		settings.background_image = $("#setting_background_image").prop("checked")
 		setup_opacity()
-		change("image")
-		save_settings()
-	})
-
-	$("#setting_background_color").change(function()
-	{
-		settings.background_color = $("#setting_background_color").prop("checked")
-
-		if(settings.background_color)
-		{
-			change("image")
-		}
-
-		else
-		{
-			set_default_theme()
-		}
-
 		save_settings()
 	})
 
@@ -8018,10 +7972,7 @@ function announce_default_background_image_change(data)
 		$("#admin_default_background_image").attr("src", default_background_image)
 	}
 
-	if(default_theme_on)
-	{
-		set_default_theme()
-	}
+	set_background_image()
 
 	chat_announce('~', '~', `${data.username} changed the default background image`, 'small')	
 }
@@ -8069,10 +8020,7 @@ function announce_default_background_image_enabled_change(data)
 
 	default_background_image_enabled = data.what
 
-	if(default_theme_on)
-	{
-		set_default_theme()
-	}	
+	set_background_image()	
 }
 
 function sound_notify()
@@ -8085,6 +8033,8 @@ function sound_notify()
 
 function upload_image_by_url(url)
 {
+	url = url.replace(/\.gifv/g,'.gif')
+
 	$('#test_image').attr('src', url.split('?')[0])	
 }
 

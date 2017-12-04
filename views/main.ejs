@@ -30,9 +30,9 @@
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<script src="/js/base_o.js?ver=747"></script>
+		<script src="/js/base_o.js?ver=749"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=217"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=218"/>
 
 		<script>
 
@@ -240,6 +240,26 @@
 
 						<div class='spacer1'></div>
 
+						<div class='small_padding_bottom'>Theme</div>
+
+						<input id='admin_default_theme'>
+
+						<div class='spacer1'></div>
+
+						<div class='small_padding_bottom'>Background Image</div>
+
+						<select id='admin_default_background_image_select'>
+							<option value="true">Enabled</option>
+							<option value="false">Disabled</option>
+						</select>						
+
+						<div class='spacer1'></div>
+
+						<img class='small_square_image pointer' id='admin_default_background_image' onclick='open_default_background_image_picker()'>	
+
+						<div class='spacer1'></div>
+						<div class='spacer3'></div>
+
 						<div class='small_padding_bottom admin_select'>Enable Images</div>
 
 						<select id='admin_enable_images'>
@@ -385,27 +405,7 @@
 						</select>						
 
 						<div class='spacer1'></div>
-						<div class='spacer3'></div>						
-
-						<div class='small_padding_bottom'>Default Theme</div>
-
-						<input id='admin_default_theme'>
-
-						<div class='spacer1'></div>
-
-						<div class='small_padding_bottom'>Default Background Image</div>
-						
-						<select id='admin_default_background_image_select'>
-							<option value="true">Enabled</option>
-							<option value="false">Disabled</option>
-						</select>						
-
-						<div class='spacer1'></div>
-
-						<img class='small_square_image pointer' id='admin_default_background_image' onclick='open_default_background_image_picker()'>
-
-						<div class='spacer1'></div>
-						<div class='spacer3'></div>						
+						<div class='spacer3'></div>					
 
 						<div class='smaller_font_size'>These require double click</div>
 
@@ -456,11 +456,6 @@
 
 				<div class="setting_title">Background Image</div>
 				<input type="checkbox" class="setting_checkbox" id="setting_background_image">
-
-				<div class='spacer1'></div>
-				
-				<div class="setting_title">Background Color</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_background_color">
 				
 				<div class='spacer1'></div>
 

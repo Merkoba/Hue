@@ -800,6 +800,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							image_uploader: info.image_uploader, 
 							image_size: info.image_size, 
 							image_date: info.image_date, 
+							image_type: info.image_type, 
 							topic: info.topic, 
 							topic_setter: info.topic_setter,
 							topic_date: info.topic_date,
@@ -3119,32 +3120,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			data.image_url = data.image_url.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
 
-			var clean = check_image_url(data.image_url)
-
-			if(clean)
-			{
-				var fname = `${socket.room_id}_${Date.now()}_${get_random_int(0, 1000)}.${data.image_url.split('.').pop(-1)}`
-				
-				exec(`wget -O ${images_root}/${fname} -q "${data.image_url}"`, function(status, output)
-				{
-					exec(`stat -c '%s' ${images_root}/${fname}`, function(status, output) 
-					{
-						output = parseInt(output) / 1024
-
-						if(output > 0 && (output <= config.max_image_size))
-						{
-							change_image(socket.room_id, fname, socket.username, output)
-						}
-
-						else
-						{
-							fs.unlink(`${images_root}/${fname}`, function(){})
-
-							socket.emit('update', {room:socket.room_id, type:'upload_error'})								
-						}
-					})
-				})
-			}
+			change_image(socket.room_id, data.image_url, socket.username, 0, "link")
 		}
 	}
 
@@ -3192,64 +3168,91 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					else 
 					{
-						change_image(socket.room_id, fname, socket.username, size)
+						change_image(socket.room_id, fname, socket.username, size, "upload")
 					}
 				})
 			}
 		}
 	}	
 
-	function change_image(room_id, fname, uploader, size)
+	function change_image(room_id, fname, uploader, size, type)
 	{
-		if(config.image_storage_s3_or_local === "local")
+		if(type === "link")
 		{
-			do_change_image(room_id, fname, uploader, size)
+			do_change_image(room_id, fname, uploader, size, type)
 		}
 
-		else if(config.image_storage_s3_or_local === "s3")
+		else if(type === "upload")
 		{
-			fs.readFile(`${images_root}/${fname}`, (err, data) => 
+			if(config.image_storage_s3_or_local === "local")
 			{
-				if(err)
-				{
-					fs.unlink(`${images_root}/${fname}`, function(){})
-					return
-				}
+				do_change_image(room_id, fname, uploader, size, type)
+			}
 
-				s3.putObject(
+			else if(config.image_storage_s3_or_local === "s3")
+			{
+				fs.readFile(`${images_root}/${fname}`, (err, data) => 
 				{
-					ACL: "public-read",
-					Body: data,
-					Bucket: sconfig.s3_bucket_name, 
-					Key: `${sconfig.s3_images_location}${fname}`,
-					CacheControl: `max-age=${sconfig.s3_cache_max_age}`
-				}).promise()
+					if(err)
+					{
+						fs.unlink(`${images_root}/${fname}`, function(){})
+						return
+					}
 
-				.then(ans =>
-				{
-					fs.unlink(`${images_root}/${fname}`, function(){})
-					do_change_image(room_id, sconfig.s3_main_url + sconfig.s3_images_location + fname, uploader, size)
+					s3.putObject(
+					{
+						ACL: "public-read",
+						Body: data,
+						Bucket: sconfig.s3_bucket_name, 
+						Key: `${sconfig.s3_images_location}${fname}`,
+						CacheControl: `max-age=${sconfig.s3_cache_max_age}`
+					}).promise()
+
+					.then(ans =>
+					{
+						fs.unlink(`${images_root}/${fname}`, function(){})
+						do_change_image(room_id, sconfig.s3_main_url + sconfig.s3_images_location + fname, uploader, size, type)
+					})
+
+					.catch(err =>
+					{					
+						fs.unlink(`${images_root}/${fname}`, function(){})
+						console.error(err)
+					})
 				})
+			}
 
-				.catch(err =>
-				{					
-					fs.unlink(`${images_root}/${fname}`, function(){})
-					console.error(err)
-				})
-			})
-		}
-
-		else
-		{
-			return false
+			else
+			{
+				return false
+			}
 		}
 	}
 
-	function do_change_image(room_id, fname, uploader, size)
+	function do_change_image(room_id, fname, uploader, size, type)
 	{
-		db_manager.get_room({_id:room_id}, {stored_images:true})
+		var image_url 
 
-		.then(info =>
+		if(type === "link")
+		{
+			var image_url = fname
+
+			db_manager.update_room(room_id,
+			{
+				image_url: image_url, 
+				image_uploader: uploader, 
+				image_size: size, 
+				image_date: Date.now(),
+				image_type: type
+			})
+
+			.catch(err =>
+			{
+				console.error(err)
+			})
+		}
+
+		else if(type === "upload")
 		{
 			if(config.image_storage_s3_or_local === "local")
 			{
@@ -3266,87 +3269,106 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return false
 			}
 
-			info.stored_images.unshift(fname)
+			db_manager.get_room({_id:room_id}, {stored_images:true})
 
-			var spliced = false
-			
-			if(info.stored_images.length > config.max_stored_images)
+			.then(info =>
 			{
-				var spliced = info.stored_images.splice(config.max_stored_images, info.stored_images.length)
-			}
 
-			io.sockets.in(room_id).emit('update',
-			{
-				type: 'image_change',
-				image_url: image_url,
-				image_uploader: uploader,
-				image_size: size,
-				image_date: Date.now()
-			})
+				info.stored_images.unshift(fname)
+
+				var spliced = false
 				
-			db_manager.update_room(room_id,
-			{
-				image_url: image_url, 
-				image_uploader: uploader, 
-				image_size: size, 
-				image_date: Date.now(),
-				stored_images: info.stored_images
+				if(info.stored_images.length > config.max_stored_images)
+				{
+					var spliced = info.stored_images.splice(config.max_stored_images, info.stored_images.length)
+				}
+
+				db_manager.update_room(room_id,
+				{
+					image_url: image_url, 
+					image_uploader: uploader, 
+					image_size: size, 
+					image_date: Date.now(),
+					stored_images: info.stored_images,
+					image_type: type
+				})
+
+				.catch(err =>
+				{
+					console.error(err)
+				})					
+
+				if(spliced)
+				{
+					for(var file_name of spliced)
+					{
+						if(file_name.indexOf(sconfig.s3_main_url) === -1)
+						{
+							fs.unlink(`${images_root}/${file_name}`, function(err){})
+						}
+
+						else
+						{
+							s3.deleteObject(
+							{
+								Bucket: sconfig.s3_bucket_name,
+								Key: file_name.replace(sconfig.s3_main_url, "")
+							}).promise()
+
+							.catch(err =>
+							{
+								console.error(err)
+							})
+						}
+					}
+				}			
 			})
 
 			.catch(err =>
 			{
 				console.error(err)
-			})			
+			})
+		}
 
-			if(spliced)
+		else
+		{
+			return false
+		}
+
+		if(image_url === undefined)
+		{
+			return false
+		}
+
+		io.sockets.in(room_id).emit('update',
+		{
+			type: 'image_change',
+			image_url: image_url,
+			image_uploader: uploader,
+			image_size: size,
+			image_date: Date.now(),
+			image_type: type
+		})
+
+		rooms[room_id].activity = true
+		
+		if(rooms[room_id].log)
+		{
+			var message = 
 			{
-				for(var file_name of spliced)
+				type: "image", 
+				data: 
 				{
-					if(file_name.indexOf(sconfig.s3_main_url) === -1)
-					{
-						fs.unlink(`${images_root}/${file_name}`, function(err){})
-					}
-
-					else
-					{
-						s3.deleteObject(
-						{
-							Bucket: sconfig.s3_bucket_name,
-							Key: file_name.replace(sconfig.s3_main_url, "")
-						}).promise()
-
-						.catch(err =>
-						{
-							console.error(err)
-						})
-					}
-				}
+					image_url: image_url,
+					image_uploader: uploader,
+					image_size: size,
+					image_type: type
+				},
+				date: Date.now()
 			}
 
-			rooms[room_id].activity = true
-			
-			if(rooms[room_id].log)
-			{
-				var message = 
-				{
-					type: "image", 
-					data: 
-					{
-						image_url: image_url,
-						image_uploader: uploader,
-						image_size: size
-					},
-					date: Date.now()
-				}
-
-				rooms[room_id].log_messages.push(message)
-			}			
-		})
-
-		.catch(err =>
-		{
-			console.error(err)
-		})
+			rooms[room_id].log_messages.push(message)
+		}				
 	}
 
 	function upload_profile_image(socket, data)

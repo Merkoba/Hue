@@ -46,7 +46,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.max_password_length = config.max_password_length
 	c.vars.max_email_length = config.max_email_length
 	c.vars.settings_default_background_image = config.settings_default_background_image
-	c.vars.settings_default_background_color = config.settings_default_background_color
 	c.vars.settings_default_custom_scrollbars = config.settings_default_custom_scrollbars
 	c.vars.settings_default_modal_color = config.settings_default_modal_color,
 	c.vars.settings_default_sound_notifications = config.settings_default_sound_notifications,

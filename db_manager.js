@@ -4,7 +4,7 @@ module.exports = function(db, config, sconfig, utilz)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 31
+	const rooms_version = 32
 	const users_version = 25
 
 	function get_random_key()
@@ -87,11 +87,6 @@ module.exports = function(db, config, sconfig, utilz)
 						{
 							room.image_url = ""
 						}
-
-						if(typeof room.stored_images !== "object")
-						{
-							room.stored_images = []
-						}
 						
 						if(typeof room.image_uploader !== "string")
 						{
@@ -106,6 +101,16 @@ module.exports = function(db, config, sconfig, utilz)
 						if(typeof room.image_date !== "number")
 						{
 							room.image_date = 0
+						}
+
+						if(typeof room.image_type !== "string")
+						{
+							room.image_type = "upload"
+						}
+
+						if(typeof room.stored_images !== "object")
+						{
+							room.stored_images = []
 						}
 						
 						if(typeof room.topic !== "string")
@@ -365,10 +370,11 @@ module.exports = function(db, config, sconfig, utilz)
 			{
 				version: rooms_version,
 				image_url: '',
-				stored_images: [],
 				image_uploader: '',
 				image_size: 0,
 				image_date: 0,
+				image_type: "upload",
+				stored_images: [],
 				topic: '',
 				topic_setter: '',
 				topic_date: 0,
