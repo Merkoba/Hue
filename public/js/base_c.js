@@ -97,7 +97,6 @@ var youtube_video_player
 var fetched_room_id
 var utilz = Utilz()
 var log_messages
-var first_opacity_checked = false
 var profile_image
 var change_image_when_focused = false 
 var change_tv_when_focused = false
@@ -120,7 +119,6 @@ function init()
 {
 	get_volume()
 	activate_key_detection()
-	set_opacity(general_opacity)	
 	compile_templates()
 	get_settings()
 	start_msg()
@@ -151,7 +149,6 @@ function init()
 	start_titles()
 	setup_show_profile()
 	setup_main_menu()
-	setup_opacity()
 	start_twitch()
 	check_image_queue()
 
@@ -1258,8 +1255,14 @@ function setup_default_theme(data)
 function set_default_theme()
 {
 	var background_color = default_theme
-	var background_color2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
-	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
+	var background_color2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
+	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2)
+
+	if(settings.background_image)
+	{
+		background_color = colorlib.rgb_to_rgba(background_color, general_opacity)
+		background_color2 = colorlib.rgb_to_rgba(background_color2, general_opacity)
+	}
 
 	change_colors(background_color, background_color2, font_color)
 
@@ -3477,15 +3480,6 @@ function set_image_cors()
 function get_size_string(size)
 {
 	return `${parseFloat(size / 1024).toFixed(2)} MB`
-}
-
-function set_opacity(o)
-{
-	$("#header").css("opacity", o)
-	$("#media").css("opacity", o)
-	$("#chat_area").css("opacity", o)
-	$("#footer").css("opacity", o)
-	$("#input").css("opacity", o)
 }
 
 function setup_image(data)
@@ -6413,7 +6407,7 @@ function start_settings_listeners()
 	$("#setting_background_image").change(function()
 	{
 		settings.background_image = $("#setting_background_image").prop("checked")
-		setup_opacity()
+		set_default_theme()
 		save_settings()
 	})
 
@@ -6435,19 +6429,6 @@ function start_settings_listeners()
 
 		save_settings()
 	})
-}
-
-function setup_opacity()
-{
-	if(settings.background_image)
-	{
-		set_opacity(general_opacity)
-	}
-
-	else
-	{
-		set_opacity(1)
-	}
 }
 
 var played_filter_timer = (function() 

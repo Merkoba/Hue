@@ -212,6 +212,15 @@ var ColorLib = (function()
 			return array					
 		}
 
+		instance.rgb_to_rgba = function(rgb, alpha)
+		{
+			var split = rgb.replace("rgb(", "").replace(")", "").split(",")
+			
+			var rgba = `rgba(${split[0]}, ${split[1]}, ${split[2]}, ${alpha})`
+
+			return rgba
+		}
+
 		instance.check_array = function(array)
 		{
 			for(let i=0; i<array.length; i++)
