@@ -7224,7 +7224,8 @@ function show_radio_url_picker()
 
 	s += "<i class='fa fa-volume-up'></i>"
 	s += "<div class='spacer3'></div>"
-	s += "Enter a YouTube search term or URL<br>Or audio file/stream URL"
+	s += "Enter a YouTube search term or URL"
+	s += "<br>Or an audio file/stream URL"
 	s += "<div class='spacer3'></div>"
 	s += "<input id='radio_url_picker_input' class='input1'>"
 
@@ -7252,7 +7253,9 @@ function show_tv_url_picker()
 
 	s += "<i class='fa fa-television'></i>"
 	s += "<div class='spacer3'></div>"
-	s += "Enter a YouTube search term or URL<br>Or video file/stream URL"
+	s += "Enter a YouTube search term or URL"
+	s += "<br>Or a Twitch channel/video URL"
+	s += "<br>Or a video file/stream URL"
 	s += "<div class='spacer3'></div>"
 	s += "<input id='tv_url_picker_input' class='input1'>"
 
