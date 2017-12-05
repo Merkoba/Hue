@@ -7906,7 +7906,7 @@ function change_default_theme(color)
 
 function announce_default_theme_change(data)
 {
-	chat_announce('~', '~', `${data.username} changed the default theme to ${data.color}`, 'small')
+	chat_announce('~', '~', `${data.username} changed the theme to ${data.color}`, 'small')
 
 	default_theme = data.color
 
@@ -7986,7 +7986,7 @@ function announce_default_background_image_change(data)
 
 	set_background_image()
 
-	chat_announce('~', '~', `${data.username} changed the default background image`, 'small')	
+	chat_announce('~', '~', `${data.username} changed the background image`, 'small')	
 }
 
 function change_default_background_image_enabled(what)
@@ -8001,7 +8001,7 @@ function change_default_background_image_enabled(what)
 	{
 		if(default_background_image_enabled)
 		{
-			chat_announce('[', ']', `Default background image is already enabled`, 'small')
+			chat_announce('[', ']', `Background image is already enabled`, 'small')
 			return false			
 		}
 	}
@@ -8010,7 +8010,7 @@ function change_default_background_image_enabled(what)
 	{
 		if(!default_background_image_enabled)
 		{
-			chat_announce('[', ']', `Default background image is already disabled`, 'small')
+			chat_announce('[', ']', `Background image is already disabled`, 'small')
 			return false
 		}
 	}
@@ -8022,12 +8022,12 @@ function announce_default_background_image_enabled_change(data)
 {
 	if(data.what)
 	{
-		chat_announce('~', '~', `${data.username} enabled the default background image`, 'small')
+		chat_announce('~', '~', `${data.username} enabled the background image`, 'small')
 	}
 
 	else
 	{
-		chat_announce('~', '~', `${data.username} disabled the default background image`, 'small')
+		chat_announce('~', '~', `${data.username} disabled the background image`, 'small')
 	}
 
 	default_background_image_enabled = data.what

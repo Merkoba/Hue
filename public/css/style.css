@@ -1017,3 +1017,8 @@ input[type=text], textarea
 {
 	display: none;
 }
+
+.sp-choose
+{
+	background-color: white !important;
+}
