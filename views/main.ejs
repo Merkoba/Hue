@@ -32,7 +32,7 @@
 
 		<script src="/js/base_o.js?ver=756"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=218"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=219"/>
 
 		<script>
 
@@ -238,7 +238,35 @@
 
 					<div id='admin_menu'>
 
+						<div class='spacer1'></div>						
+
+						<div class='small_padding_bottom'>Images</div>
+
+						<select id='admin_enable_images'>
+							<option value="true">Enabled</option>
+							<option value="false">Disabled</option>
+						</select>
+
 						<div class='spacer1'></div>
+						
+						<div class='small_padding_bottom'>TV</div>
+
+						<select id='admin_enable_tv'>
+							<option value="true">Enabled</option>
+							<option value="false">Disabled</option>
+						</select>
+
+						<div class='spacer1'></div>
+
+						<div class='small_padding_bottom'>Radio</div>
+
+						<select id='admin_enable_radio'>
+							<option value="true">Enabled</option>
+							<option value="false">Disabled</option>
+						</select>
+
+						<div class='spacer1'></div>
+						<div class='spacer3'></div>							
 
 						<div class='small_padding_bottom'>Theme</div>
 
@@ -258,37 +286,9 @@
 						<img class='small_square_image pointer' id='admin_default_background_image' onclick='open_default_background_image_picker()'>	
 
 						<div class='spacer1'></div>
-						<div class='spacer3'></div>
+						<div class='spacer3'></div>					
 
-						<div class='small_padding_bottom admin_select'>Enable Images</div>
-
-						<select id='admin_enable_images'>
-							<option value="true">Yes</option>
-							<option value="false">No</option>
-						</select>
-
-						<div class='spacer1'></div>
-						
-						<div class='small_padding_bottom admin_select'>Enable TV</div>
-
-						<select id='admin_enable_tv'>
-							<option value="true">Yes</option>
-							<option value="false">No</option>
-						</select>
-
-						<div class='spacer1'></div>
-
-						<div class='small_padding_bottom admin_select'>Enable Radio</div>
-
-						<select id='admin_enable_radio'>
-							<option value="true">Yes</option>
-							<option value="false">No</option>
-						</select>
-
-						<div class='spacer1'></div>
-						<div class='spacer3'></div>						
-
-						<div class='small_padding_bottom admin_select bold'>Voice 1 Permissions</div>
+						<div class='small_padding_bottom bold'>Voice 1 Permissions</div>
 
 						<div class='spacer1'></div>
 
@@ -313,7 +313,7 @@
 						<div class='spacer1'></div>
 						<div class='spacer3'></div>						
 
-						<div class='small_padding_bottom admin_select bold'>Voice 2 Permissions</div>
+						<div class='small_padding_bottom bold'>Voice 2 Permissions</div>
 
 						<div class='spacer1'></div>
 
@@ -338,7 +338,7 @@
 						<div class='spacer1'></div>
 						<div class='spacer3'></div>
 
-						<div class='small_padding_bottom admin_select bold'>Voice 3 Permissions</div>
+						<div class='small_padding_bottom bold'>Voice 3 Permissions</div>
 
 						<div class='spacer1'></div>
 
@@ -363,7 +363,7 @@
 						<div class='spacer1'></div>
 						<div class='spacer3'></div>
 
-						<div class='small_padding_bottom admin_select bold'>Voice 4 Permissions</div>
+						<div class='small_padding_bottom bold'>Voice 4 Permissions</div>
 
 						<div class='spacer1'></div>
 
@@ -388,7 +388,7 @@
 						<div class='spacer1'></div>
 						<div class='spacer3'></div>						
 
-						<div class='small_padding_bottom admin_select'>Privacy</div>
+						<div class='small_padding_bottom'>Privacy</div>
 
 						<select id='admin_privacy'>
 							<option value="true">Public</option>
@@ -397,7 +397,7 @@
 
 						<div class='spacer1'></div>
 
-						<div class='small_padding_bottom admin_select'>Log</div>
+						<div class='small_padding_bottom'>Log</div>
 
 						<select id='admin_log'>
 							<option value="true">Enabled</option>
