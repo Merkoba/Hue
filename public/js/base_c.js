@@ -109,11 +109,14 @@ var room_tv_enabled = true
 var room_radio_enabled = true
 var radio_started = false
 var default_theme
-var default_theme_on = false
 var default_background_image
 var default_background_image_enabled
 var image_queue = ["first"]
 var image_queue_timeout
+var layout_mode = "normal"
+var last_image_change
+var last_tv_change
+var last_radio_change
 
 function init()
 {
@@ -1140,7 +1143,7 @@ function stop_videos()
 {
 	if(youtube_video_player !== undefined)
 	{
-		youtube_video_player.stopVideo()
+		youtube_video_player.pauseVideo()
 	}
 
 	if(twitch_video_player !== undefined)
@@ -1265,8 +1268,6 @@ function set_default_theme()
 	}
 
 	change_colors(background_color, background_color2, font_color)
-
-	default_theme_on = true
 }
 
 function change_colors(background_color, background_color2, font_color)
@@ -3344,6 +3345,30 @@ function push_to_chat_history(msg)
 
 function change(type)
 {	
+	if(type === "image")
+	{
+		if(last_image_change === image_url)
+		{
+			return false
+		}
+	}
+
+	else if(type === "tv")
+	{
+		if(last_tv_change === tv_source)
+		{
+			return false
+		}
+	}
+
+	else if(type === "radio")
+	{
+		if(last_radio_change === radio_source)
+		{
+			return false
+		}
+	}
+
 	if(afk && type !== "radio")
 	{
 		change_when_focused = true
@@ -3369,6 +3394,8 @@ function change(type)
 		}
 
 		show_image()
+
+		last_image_change = image_url
 	}
 
 	else if(type === "tv")
@@ -3376,7 +3403,7 @@ function change(type)
 		if(!room_tv_enabled || !tv_enabled)
 		{
 			return false
-		}
+		}		
 
 		if(tv_type === "youtube")
 		{
@@ -3407,6 +3434,8 @@ function change(type)
 		{
 			return false
 		}
+
+		last_tv_change = tv_source
 	}
 
 	else if(type === "radio")
@@ -3414,9 +3443,11 @@ function change(type)
 		if(!room_radio_enabled || !radio_enabled || !radio_started)
 		{
 			return false
-		}		
+		}
 
 		start_radio()
+
+		last_radio_change = radio_source
 	}
 
 	else
@@ -4032,7 +4063,7 @@ function send_to_chat(msg)
 
 			else if(oiEquals(lmsg, '/startradio'))
 			{
-				change("radio")
+				start_radio()
 			}
 
 			else if(oiStartsWith(lmsg, '/volume'))
@@ -4651,7 +4682,7 @@ function toggle_radio_state()
 
 	else
 	{
-		start_radio()		
+		start_radio()
 	}
 }
 
@@ -7304,7 +7335,10 @@ function change_images_visibility()
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-on")
 
-		$("#toggle_images_text").text("Images On")
+		if(layout_mode !== "normal")
+		{
+			enable_normal_mode()
+		}		
 
 		change("image")
 	}
@@ -7313,18 +7347,20 @@ function change_images_visibility()
 	{
 		$("#media_image_container").css("display", "none")
 
-		set_default_theme()
+		var num_visible = num_media_elements_visible()
 
-		if(num_media_elements_visible() === 0)
+		if(num_visible === 0)
 		{
 			hide_media()
 		}
 
+		else if(num_visible === 1)
+		{
+			enable_wide_mode()
+		}
+
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-off")
-
-		$("#toggle_images_text").text("Images Off")
-		
 	}
 
 	fix_media_margin()
@@ -7348,10 +7384,10 @@ function change_tv_visibility()
 
 		$("#media_tv").css("display", "flex")/
 
+		fix_visible_video_frame()
+
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-on")
-
-		$("#toggle_tv_text").text("TV On")
 
 		change("tv")
 	}
@@ -7372,12 +7408,10 @@ function change_tv_visibility()
 
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-off")
-
-		$("#toggle_tv_text").text("TV Off")
 		
-		fix_media_margin()
 	}
 
+	fix_media_margin()
 	update_chat_scrollbar()
 	goto_bottom()	
 }
@@ -7398,8 +7432,6 @@ function change_radio_visibility()
 		$("#footer_toggle_radio_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-on")
 
-		$("#toggle_radio_text").text("Radio On")
-
 		$("#header_topic").css("display", "none")
 	}
 
@@ -7411,8 +7443,6 @@ function change_radio_visibility()
 
 		$("#footer_toggle_radio_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-off")
-
-		$("#toggle_radio_text").text("Radio Off")
 
 		$("#header_topic").css("display", "initial")
 	}
@@ -7880,10 +7910,7 @@ function announce_default_theme_change(data)
 
 	default_theme = data.color
 
-	if(default_theme_on)
-	{
-		set_default_theme()
-	}
+	set_default_theme()
 }
 
 function queue_image(data)
@@ -8060,4 +8087,20 @@ function announce_voice_permission_change(data)
 	window[data.ptype] = data.what
 
 	check_permissions()
+}
+
+function enable_wide_mode()
+{
+	$("#chat_main").css("min-width", "40%")
+	$("#media").css("min-width", "60%")
+
+	layout_mode = "wide"
+}
+
+function enable_normal_mode()
+{
+	$("#chat_main").css("min-width", "50%")
+	$("#media").css("min-width", "50%")
+
+	layout_mode = "normal"
 }
