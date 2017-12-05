@@ -27,12 +27,12 @@ var Utilz = function()
 		return s.replace(/\s+/g, '').trim()
 	}	
 
-	utilz.get_random_int =function(min, max)
+	utilz.get_random_int = function(min, max)
 	{
 		return Math.floor(Math.random() * (max  -min + 1) + min)
 	}	
 
-	utilz.get_random_string =function(n)
+	utilz.get_random_string = function(n)
 	{
 		var text = ""
 

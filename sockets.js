@@ -642,8 +642,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		})
 	})
 
-	// Socket Functions
-
 	function connection(socket)
 	{
 		socket.kickd = false
@@ -2925,14 +2923,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				}
 			}
 		}
-	}
-
-	// Helper Functions
-
-	function get_random_int(min, max)
-	{
-		return Math.floor(Math.random() * (max  -min + 1) + min)
-	}		
+	}	
 
 	function compare_roomlist(a, b)
 	{
@@ -3157,7 +3148,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			if(clean)
 			{
-				var fname = `${socket.room_id}_${Date.now()}_${get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
+				var fname = `${socket.room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
 
 				fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
 				{
@@ -3522,7 +3513,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			if(clean)
 			{
-				var fname = `bg_${socket.room_id}_${Date.now()}_${get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
+				var fname = `bg_${socket.room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
 
 				fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
 				{
