@@ -3083,7 +3083,7 @@ var scroll_timer = (function()
 		timer = setTimeout(function() 
 		{
 			check_scroll_notice()
-		}, 350)
+		}, 200)
 	}
 })()
 
@@ -4406,7 +4406,7 @@ function goto_bottom(force=false)
 
 	else
 	{
-		if($('#scroll_notice').css('visibility') == 'hidden')
+		if($('#scroll_notice').css('visibility') === 'hidden')
 		{
 			$ch.scrollTop(max + 10)
 		}
@@ -4549,6 +4549,7 @@ function push_played(info, info2=false)
 	$('#now_playing_controls').data('q', q)
 
 	update_chat_scrollbar()
+	goto_bottom()
 
 	if(played[played.length - 1] !== s)
 	{
