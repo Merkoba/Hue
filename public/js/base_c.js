@@ -6854,6 +6854,8 @@ function get_status_html()
 		info += "<div class='info_item'><div class='info_title'>Topic</div><div class='info_item_content' id='status_topic'>No topic set</div></div>"
 	}
 
+	info += "<div class='info_item'><div class='info_title'>Privacy</div>"	
+
 	if(is_public)
 	{
 		info += "<div class='info_item_content'>Public</div></div>"
