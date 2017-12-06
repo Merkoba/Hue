@@ -15,7 +15,7 @@
 		"node-fetch": "~1.7.3",
 		"shelljs": "~0.7.0",
 		"socket-anti-spam": "~1.1.8",
-		"socket.io": "~1.7.2",
+		"socket.io": "~2.0.4",
 		"connect-mongo": "~2.0.0",
 		"bcrypt": "~1.0.3",
 		"mailgun-js": "~0.13.1",
