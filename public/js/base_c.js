@@ -101,9 +101,6 @@ var profile_image
 var change_image_when_focused = false 
 var change_tv_when_focused = false
 var twitch_video_player
-var images_enabled = true
-var tv_enabled = true
-var radio_enabled = true
 var room_images_enabled = true
 var room_tv_enabled = true
 var room_radio_enabled = true
@@ -3447,7 +3444,7 @@ function change(type)
 
 	if(type === "image")
 	{
-		if(!room_images_enabled || !images_enabled)
+		if(!room_images_enabled || !settings.images_enabled)
 		{
 			return false
 		}
@@ -3459,7 +3456,7 @@ function change(type)
 
 	else if(type === "tv")
 	{
-		if(!room_tv_enabled || !tv_enabled)
+		if(!room_tv_enabled || !settings.tv_enabled)
 		{
 			return false
 		}		
@@ -3499,7 +3496,7 @@ function change(type)
 
 	else if(type === "radio")
 	{
-		if(!room_radio_enabled || !radio_enabled || !radio_started)
+		if(!room_radio_enabled || !settings.radio_enabled || !radio_started)
 		{
 			return false
 		}
@@ -6472,6 +6469,24 @@ function get_settings()
 		changed = true
 	}
 
+	if(settings.images_enabled === undefined)
+	{
+		settings.images_enabled = settings_default_images_enabled
+		changed = true
+	}
+
+	if(settings.tv_enabled === undefined)
+	{
+		settings.tv_enabled = settings_default_tv_enabled
+		changed = true
+	}
+
+	if(settings.radio_enabled === undefined)
+	{
+		settings.radio_enabled = settings_default_radio_enabled
+		changed = true
+	}
+
 	if(changed)
 	{
 		save_settings()
@@ -7391,14 +7406,16 @@ function fix_media_margin()
 
 function toggle_images()
 {
-	images_enabled = !images_enabled
+	settings.images_enabled = !settings.images_enabled
 
 	change_images_visibility()
+
+	save_settings()
 }
 
 function change_images_visibility()
 {
-	if(room_images_enabled && images_enabled)
+	if(room_images_enabled && settings.images_enabled)
 	{
 		$("#media").css("display", "flex")
 
@@ -7443,14 +7460,16 @@ function change_images_visibility()
 
 function toggle_tv()
 {
-	tv_enabled = !tv_enabled
+	settings.tv_enabled = !settings.tv_enabled
 
 	change_tv_visibility()
+
+	save_settings()	
 }
 
 function change_tv_visibility()
 {
-	if(room_tv_enabled && tv_enabled)
+	if(room_tv_enabled && settings.tv_enabled)
 	{
 		$("#media").css("display", "flex")
 
@@ -7490,14 +7509,16 @@ function change_tv_visibility()
 
 function toggle_radio()
 {
-	radio_enabled = !radio_enabled
+	settings.radio_enabled = !settings.radio_enabled
 
 	change_radio_visibility()
+
+	save_settings()	
 }
 
 function change_radio_visibility()
 {
-	if(room_radio_enabled && radio_enabled)
+	if(room_radio_enabled && settings.radio_enabled)
 	{
 		$("#radio").css("display", "initial")
 
@@ -7926,20 +7947,9 @@ function setup_active_media(data)
 	room_tv_enabled = data.room_tv_enabled
 	room_radio_enabled = data.room_radio_enabled
 
-	if(!room_images_enabled)
-	{
-		change_images_visibility()
-	}
-
-	if(!room_tv_enabled)
-	{
-		change_tv_visibility()
-	}
-
-	if(!room_radio_enabled)
-	{
-		change_radio_visibility()
-	}
+	change_images_visibility()
+	change_tv_visibility()
+	change_radio_visibility()
 }
 
 function recreate_background_image()
