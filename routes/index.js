@@ -56,6 +56,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.image_queue_interval = config.image_queue_interval
 	c.vars.default_default_background_image_url = config.default_default_background_image_url
 	c.vars.background_image_loading_url = config.background_image_loading_url
+	c.vars.upload_slice_size = config.upload_slice_size
 
 	function check_url(req, res, next)
 	{

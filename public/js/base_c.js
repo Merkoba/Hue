@@ -117,6 +117,7 @@ var layout_mode = "normal"
 var last_image_change
 var last_tv_change
 var last_radio_change
+var files = {}
 
 function init()
 {
@@ -1034,6 +1035,28 @@ function start_socket()
 		{
 			banned(data)
 		}
+	})
+
+	socket.on('request_slice_upload', (data) => 
+	{ 
+		var place = data.current_slice * upload_slice_size
+
+		var file = files[data.date]
+
+		var slice = file.slice(place, place + Math.min(upload_slice_size, file.size - place))
+
+		file.reader.readAsArrayBuffer(slice)
+		
+		var percentage = Math.floor(((upload_slice_size * data.current_slice) / file.size) * 100)
+
+		$(`#uploading_${file.date}`).find(".announcement_content").eq(0).text(`Uploading: ${percentage}%`)
+	})
+
+	socket.on('upload_ended', (data) => 
+	{ 
+		$(`#uploading_${data.date}`).find(".announcement_content").eq(0).text("Uploading: 100%")
+
+		files[data.date] = undefined
 	})
 }
 
@@ -2432,23 +2455,59 @@ function start_dropzone()
 			return false
 		}
 
-		var fr = new FileReader()
+		dropzone.files = []
 
-		fr.addEventListener("loadend", function() 
-		{
-			dropzone.files = []
-
-			socket_emit("uploaded", 
-			{
-				image_file: fr.result, 
-				name: utilz.clean_string5(file.name)
-			})
-
-			chat_announce("[", "]", "Uploading", "small")
-		})
-
-		fr.readAsArrayBuffer(file)
+		upload_file(file, "image_upload")
 	})
+}
+
+function create_file_reader(file)
+{
+	var reader = new FileReader()
+
+	reader.addEventListener("loadend", function(e) 
+	{
+		socket_emit('slice_upload',
+		{ 
+			action: file.action,
+			name: file.name,
+			type: file.type,
+			size: file.size,
+			data: reader.result,
+			date: file.date
+		})
+	})
+
+	return reader
+}
+
+function upload_file(file, action)
+{
+	var date = Date.now()
+						
+	file.date = date
+
+	file.action = action
+
+	if(file.name !== undefined)
+	{
+		file.name = utilz.clean_string5(file.name).replace(/.gifv/g, ".gif")
+	}
+
+	else
+	{
+		file.name = "no_name"
+	}
+
+	file.reader = create_file_reader(file)
+
+	var slice = file.slice(0, upload_slice_size)
+
+	files[date] = file
+
+	file.reader.readAsArrayBuffer(slice)
+
+	chat_announce('[', ']', `Uploading: 0%`, 'small', false, false, false, false, `uploading_${date}`)	
 }
 
 function is_textbox(element) 
@@ -3544,13 +3603,20 @@ function setup_image(data)
 	change("image")
 }
 
-function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick=false, save=false)
+function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick=false, save=false, id=false)
 {
 	var containerclasses = "announcement_content_container"
 
 	if(onclick)
 	{
 		containerclasses += " pointer"
+	}
+
+	var containerid = " "
+
+	if(id)
+	{
+		containerid = ` id='${id}' `
 	}
 
 	var contclasses = "announcement_content"
@@ -3594,13 +3660,13 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 	
 	if(typeof dotted === "string")
 	{
-		var fmsg = $(`<div class='msg announcement announcement_${size}'><span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span><span class='dotted'></span>${hbrk2}</span></div>`)
+		var fmsg = $(`<div${containerid}class='msg announcement announcement_${size}'><span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span><span class='dotted'></span>${hbrk2}</span></div>`)
 		fmsg.find('.dotted').eq(0).text(dotted).urlize()
 	}
 
 	else
 	{
-		var fmsg = $(`<div class='msg announcement announcement_${size}'><span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span>${hbrk2}</span></div>`)
+		var fmsg = $(`<div${containerid}class='msg announcement announcement_${size}'><span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span>${hbrk2}</span></div>`)
 	}
 
 	var content = fmsg.find('.announcement_content').eq(0)
@@ -7509,15 +7575,9 @@ function profile_image_selected(input)
 
 					rounded_canvas.toBlob(function(blob)
 					{
-						$("#userinfo_profile_image").attr("src", profile_image_loading_url)
-
-						socket_emit("upload_profile_image",
-						{
-							image_file: blob
-						})
-
+						upload_file(blob, "profile_image_upload")
 						msg_info.close()
-					}, 'image/png', 0.95)
+					}, 'image/jpeg', 0.95)
 				}			
 			})
 		}
@@ -7974,11 +8034,7 @@ function default_background_image_selected(input)
 
 	$("#admin_default_background_image").attr("src", background_image_loading_url)
 	
-	socket_emit("upload_default_background_image",
-	{
-		image_file: file,
-		name: utilz.clean_string5(file.name)
-	})
+	upload_file(file, "background_image_upload")
 }
 
 function announce_default_background_image_change(data)

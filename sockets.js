@@ -13,6 +13,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 	var vtypes = ["voice1", "voice2", "voice3", "voice4"]
 	var roles = ["admin", "op"].concat(vtypes)
+	var image_types = ["image/jpeg", "image/png", "image/gif"]
 
 	const s3 = new aws.S3(
 	{
@@ -26,6 +27,20 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	})
 
 	const rooms = {}
+
+	const files = {}
+
+   	const files_struct = 
+   	{
+   		action: null,
+		name: null, 
+		type: null, 
+		size: 0, 
+		data: [], 
+		slice: 0,
+		date: null,
+		updated: null
+    }	
 
 	var last_roomlist
 	var roomlist_lastget = 0
@@ -49,6 +64,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	})
 
 	start_room_loop()
+	start_files_loop()
 
 	io.on("connection", function(socket)
 	{
@@ -613,6 +629,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			try
 			{
 				change_voice_permission(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
+		socket.on('slice_upload', function(data) 
+		{
+			try
+			{
+				slice_upload(socket, data)
 			}
 
 			catch(err)
@@ -3501,6 +3530,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
+			if(data.name === undefined)
+			{
+				return get_out(socket)
+			}			
+
 			var size = data.image_file.toString('ascii').length / 1024
 
 			if(size === 0 || (size > config.max_image_size))
@@ -3650,7 +3684,79 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			console.error(err)
 		})
-	}	
+	}
+
+	function slice_upload(socket, data)
+	{
+		if(socket.username !== undefined)
+		{ 
+			var key = `${socket.user_id}_${data.date}`
+
+			if(!files[key]) 
+			{
+				if(image_types.indexOf(data.type) === -1)
+				{
+					return get_out(socket)
+				}
+
+				files[key] = Object.assign({}, files_struct, data) 
+				files[key].data = []
+			}
+
+			data.data = new Buffer(new Uint8Array(data.data))
+
+			files[key].data.push(data.data)
+			files[key].slice++
+
+			files[key].updated = Date.now()
+			
+			if(files[key].slice * config.upload_slice_size >= files[key].size) 
+			{  
+				socket.emit('upload_ended', {date:data.date})
+
+				var full_file = Buffer.concat(files[key].data)
+
+				if(data.action === "image_upload")
+				{
+
+					uploaded(socket,
+					{
+						image_file: full_file,
+						name: files[key].name
+					})
+
+				}
+
+				else if(data.action === "profile_image_upload")
+				{
+					upload_profile_image(socket,
+					{
+						image_file: full_file
+					})	
+				}
+
+				else if(data.action === "background_image_upload")
+				{
+					upload_default_background_image(socket,
+					{
+						image_file: full_file,
+						name: files[key].name
+					})	
+				}
+
+				delete files[key] 
+			}
+
+			else 
+			{ 
+				socket.emit('request_slice_upload', 
+				{ 
+					current_slice: files[key].slice,
+					date: data.date 
+				})
+			}		
+		}
+	}
 
 	function check_image_url(uri)
 	{
@@ -3951,6 +4057,30 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				console.error(err)
 			}
 		}, config.room_loop_interval)
+	}
+
+	function start_files_loop()
+	{
+		setInterval(function()
+		{
+			try
+			{
+				for(var key in files)
+				{
+					var file = files[key]
+
+					if((Date.now() - file.updated) > config.files_loop_max_diff)
+					{
+						delete files[key]
+					}
+				}
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		}, config.files_loop_interval)
 	}
 
 	function user_already_connected(socket)
