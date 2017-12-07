@@ -39,7 +39,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		data: [], 
 		slice: 0,
 		date: null,
-		updated: null
+		updated: null,
+		received: 0
     }	
 
 	var last_roomlist
@@ -3690,6 +3691,16 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	{
 		if(socket.username !== undefined)
 		{ 
+			if(!check_permission(socket, "images"))
+			{
+				return false
+			}
+
+			if(data.data.length > config.upload_slice_size)
+			{
+				return get_out(socket)
+			}
+
 			var key = `${socket.user_id}_${data.date}`
 
 			if(!files[key]) 
@@ -3706,7 +3717,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			data.data = new Buffer(new Uint8Array(data.data))
 
 			files[key].data.push(data.data)
+
 			files[key].slice++
+
+			files[key].received += data.data.length
+
+			if((files[key].received / 1024) > config.max_image_size)
+			{
+				delete files[key]
+				
+				return get_out(socket)
+			}
 
 			files[key].updated = Date.now()
 			
