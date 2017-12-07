@@ -1056,7 +1056,7 @@ function start_socket()
 	{ 
 		$(`#uploading_${data.date}`).find(".announcement_content").eq(0).text("Uploading: 100%")
 
-		files[data.date] = undefined
+		delete files[data.date]
 	})
 }
 
