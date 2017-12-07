@@ -2793,13 +2793,18 @@ function scroll_down(n)
 	}
 }
 
-function change_input(s, to_end=true)
+function change_input(s, to_end=true, focus=true)
 {
 	$("#input").val(s)
 
 	if(to_end)
 	{
 		input_to_end()
+	}
+
+	if(focus)
+	{
+		focus_input()
 	}
 }
 
@@ -3272,7 +3277,7 @@ function start_chat_click_events()
 {
 	$("#chat_area").on("click", ".chat_uname", function() 
 	{
-		change_input(`>${$(this).closest('.chat_message').find('.chat_content').eq(0).text()}`) 		
+		change_input(`>${$(this).closest('.chat_message').find('.chat_content').eq(0).text()}`)
 	})
 
 	$("#chat_area").on("click", ".chat_profile_image", function() 
