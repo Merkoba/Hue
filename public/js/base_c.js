@@ -1300,15 +1300,7 @@ function change_colors(background_color, background_color2, font_color)
 
 function set_background_image()
 {
-	if(default_background_image_enabled && settings.background_image)
-	{
-		$('#background_image').css('background-image', `url('${default_background_image}')`) 
-	}
-
-	else
-	{
-		recreate_background_image()
-	}	
+	$('#background_image').css('background-image', `url('${default_background_image}')`) 	
 }
 
 function get_youtube_id(url)
@@ -7596,9 +7588,12 @@ function profile_image_selected(input)
 
 					rounded_canvas.toBlob(function(blob)
 					{
+						$("#userinfo_profile_image").attr("src", profile_image_loading_url)
+
 						upload_file(blob, "profile_image_upload")
+
 						msg_info.close()
-					}, 'image/jpeg', 0.95)
+					}, 'image/png', 0.95)
 				}			
 			})
 		}
