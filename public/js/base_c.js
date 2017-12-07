@@ -127,7 +127,6 @@ function init()
 	start_settings_listeners()
 	start_filters()
 	start_image_events()
-	set_image_cors()
 	start_dropzone()
 	start_volume_scroll()
 	activate_window_visibility_listener()
@@ -3555,11 +3554,6 @@ function after_image_load(img)
 	current_image_title = image_title			
 	
 	$(img).prop('title', image_title)
-}
-
-function set_image_cors()
-{
-	$('#media_image')[0].crossOrigin = "Anonymous"	
 }
 
 function get_size_string(size)
