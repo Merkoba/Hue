@@ -4483,7 +4483,7 @@ function emit_pasted(url)
 
 function get_radio_metadata()
 {	
-	if(!radio_enabled || !get_metadata || radio_type !== "radio")
+	if(!settings.radio_enabled || !get_metadata || radio_type !== "radio")
 	{
 		return
 	}
@@ -4496,7 +4496,7 @@ function get_radio_metadata()
 		},
 		function(data)
 		{
-			if(!radio_enabled || !get_metadata || radio_type !== "radio")
+			if(!settings.radio_enabled || !get_metadata || radio_type !== "radio")
 			{
 				return
 			}
@@ -4754,7 +4754,7 @@ function start_metadata_loop()
 {
 	setInterval(function()
 	{
-		if(radio_enabled && radio_type === "radio")
+		if(settings.radio_enabled && radio_type === "radio")
 		{
 			if(get_metadata)
 			{
