@@ -3738,7 +3738,10 @@ function register_commands()
 	commands.push('/played')
 	commands.push('/search')
 	commands.push('/role')
-	commands.push('/voice')
+	commands.push('/voice1')
+	commands.push('/voice2')
+	commands.push('/voice3')
+	commands.push('/voice4')
 	commands.push('/op')
 	commands.push('/admin')
 	commands.push('/removevoices')
@@ -3935,9 +3938,24 @@ function send_to_chat(msg)
 				show_role()
 			}
 
-			else if(oiStartsWith(lmsg, '/voice'))
+			else if(oiStartsWith(lmsg, '/voice1'))
 			{
-				voice(arg)
+				voice(arg, "voice1")
+			}
+
+			else if(oiStartsWith(lmsg, '/voice2'))
+			{
+				voice(arg, "voice2")
+			}
+
+			else if(oiStartsWith(lmsg, '/voice3'))
+			{
+				voice(arg, "voice3")
+			}
+
+			else if(oiStartsWith(lmsg, '/voice4'))
+			{
+				voice(arg, "voice4")
 			}
 
 			else if(oiStartsWith(lmsg, '/op'))
@@ -5987,9 +6005,24 @@ function announce_unban_last(data)
 
 function isalready(who, what)
 {
-	if(what === 'voice')
+	if(what === 'voice1')
 	{
-		chat_announce('[', ']', `${who} already has voice`, 'small')
+		chat_announce('[', ']', `${who} already has voice 1`, 'small')
+	}
+
+	else if(what === 'voice2')
+	{
+		chat_announce('[', ']', `${who} already has voice 2`, 'small')
+	}
+
+	else if(what === 'voice3')
+	{
+		chat_announce('[', ']', `${who} already has voice 3`, 'small')
+	}
+
+	else if(what === 'voice4')
+	{
+		chat_announce('[', ']', `${who} already has voice 4`, 'small')
 	}
 
 	else if(what === 'op')
