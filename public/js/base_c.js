@@ -2221,7 +2221,8 @@ function setup_main_menu()
 	$("#admin_default_theme").spectrum(
 	{
 		color: "#B5599A",
-		appendTo: "#admin_menu"
+		appendTo: "#admin_menu",
+		showInput: true,
 	})
 
 	$("#admin_default_theme").on('hide.spectrum', function(e, t) 
