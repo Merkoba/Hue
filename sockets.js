@@ -833,7 +833,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							topic_date: info.topic_date,
 							userlist: get_userlist(socket.room_id), 
 							log: info.log,
-							log_messages: info.log_messages,
+							log_messages: info.log_messages.concat(rooms[room_id].log_messages),
 							role: socket.role, 
 							public: info.public,
 							radio_type: info.radio_type,
