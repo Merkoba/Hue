@@ -310,11 +310,7 @@ body
 {
 	flex-shrink: 1;
 	flex-grow: 0;
-}
-
-.chat_uname
-{
-	font-size: 1em;
+	font-size: 0.9em;
 }
 
 .chat_content_container
