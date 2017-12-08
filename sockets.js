@@ -300,11 +300,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
-		socket.on('remove_voices', function(data) 
+		socket.on('reset_voices', function(data) 
 		{
 			try
 			{
-				remove_voices(socket, data)
+				reset_voices(socket, data)
 			}
 
 			catch(err)
@@ -1554,7 +1554,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}		
 	}
 
-	function remove_voices(socket, data)
+	function reset_voices(socket, data)
 	{
 		if(socket.username !== undefined)
 		{
@@ -1571,7 +1571,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				for(var key in info.keys)
 				{
-					if(info.keys[key] === "voice")
+					if(info.keys[key].startsWith("voice") && info.keys[key] !== "voice1")
 					{
 						delete info.keys[key]
 						removed = true
@@ -1580,7 +1580,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				if(!removed)
 				{
-					socket.emit('update', {room:socket.room_id, type:'novoicestoremove'})
+					socket.emit('update', {room:socket.room_id, type:'novoicestoreset'})
 					return false
 				}
 
@@ -1590,9 +1590,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				{
 					var socc = io.sockets.connected[ids[i]]
 
-					if(socc.role === 'voice')
+					if(socc.role.startsWith("voice") && socc.role !== "voice1")
 					{
-						socc.role = ''
+						socc.role = 'voice1'
 
 						replace_in_userlist(socc, socc.username)
 					}
@@ -1605,7 +1605,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					console.error(err)
 				})
 
-				io.sockets.in(socket.room_id).emit('update', {type:'announce_removedvoices', username:socket.username})
+				io.sockets.in(socket.room_id).emit('update', {type:'voices_resetted', username:socket.username})
 			})
 
 			.catch(err =>

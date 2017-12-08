@@ -825,9 +825,9 @@ function start_socket()
 			announce_admin(data)
 		}
 
-		else if(data.type === 'announce_removedvoices')
+		else if(data.type === 'voices_resetted')
 		{
-			announce_removedvoices(data)
+			announce_voices_resetted(data)
 		}
 
 		else if(data.type === 'announce_removedops')
@@ -875,9 +875,9 @@ function start_socket()
 			chat_announce('[', ']', "There were no ops to remove", 'small')
 		}
 
-		else if(data.type === 'novoicestoremove')
+		else if(data.type === 'novoicestoreset')
 		{
-			chat_announce('[', ']', "There were no voices to remove", 'small')
+			chat_announce('[', ']', "There were no voices to reset", 'small')
 		}
 
 		else if(data.type === 'isalready')
@@ -1559,13 +1559,13 @@ function remove_roles_in_userlist()
 	update_userlist()
 }
 
-function remove_voices_userlist()
+function reset_voices_userlist()
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		if(userlist[i][1] === 'voice')
+		if(userlist[i][1].startsWith('voice') && userlist[i][1] !== 'voice1')
 		{
-			userlist[i][1] = 'z'
+			userlist[i][1] = 'voice1'
 		}
 	}
 
@@ -2894,7 +2894,7 @@ function input_history_change(direction)
 		if(input_history_index === input_history.length)
 		{
 			$("#input").val("")
-			input_history_index = -1
+			input_history_index -= 1
 			return
 		}
 
@@ -3744,7 +3744,7 @@ function register_commands()
 	commands.push('/voice4')
 	commands.push('/op')
 	commands.push('/admin')
-	commands.push('/removevoices')
+	commands.push('/resetvoices')
 	commands.push('/removeops')
 	commands.push('/ban')
 	commands.push('/unbanall')
@@ -3968,9 +3968,9 @@ function send_to_chat(msg)
 				admin(arg)
 			}
 
-			else if(oiEquals(lmsg, '/removevoices'))
+			else if(oiEquals(lmsg, '/resetvoices'))
 			{
-				remove_voices()
+				reset_voices()
 			}
 
 			else if(oiEquals(lmsg, '/removeops'))
@@ -6066,7 +6066,7 @@ function search_on(site, q)
 	}
 }
 
-function remove_voices()
+function reset_voices()
 {
 	if(role !== 'admin' && role !== 'op')
 	{
@@ -6074,7 +6074,7 @@ function remove_voices()
 		return false
 	}
 
-	socket_emit('remove_voices', {})
+	socket_emit('reset_voices', {})
 }
 
 function remove_ops()
@@ -6088,16 +6088,16 @@ function remove_ops()
 	socket_emit('remove_ops', {})
 }
 
-function announce_removedvoices(data)
+function announce_voices_resetted(data)
 {
-	chat_announce('~', '~', `${data.username} removed all voices`, 'small')
+	chat_announce('~', '~', `${data.username} resetted the voices`, 'small')
 
-	if(role === 'voice')
+	if(role.startsWith('voice') && role !== "voice1")
 	{
-		set_role("")
+		set_role("voice1")
 	}
 
-	remove_voices_userlist()
+	reset_voices_userlist()
 }
 
 function announce_removedops(data)
