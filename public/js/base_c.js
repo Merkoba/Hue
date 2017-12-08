@@ -116,6 +116,7 @@ var last_tv_change
 var last_radio_change
 var files = {}
 var time_ago
+var input_changed = false
 
 function init()
 {
@@ -153,6 +154,7 @@ function init()
 	start_twitch()
 	check_image_queue()
 	setup_timeago()
+	setup_input()
 
 	start_socket()
 }
@@ -2771,7 +2773,7 @@ function activate_key_detection()
 			{
 				clear_input()
 
-				input_history_index = -1
+				reset_input_history_index()
 			}
 
 			e.preventDefault()
@@ -2850,10 +2852,8 @@ function input_to_end()
 	$('#input')[0].scrollLeft = $('#input')[0].scrollWidth
 }
 
-function add_to_history(msg)
+function add_to_history(msg, change_index=true)
 {
-	input_history_index = -1
-
 	for(var i=0; i<input_history.length; i++)
 	{
 		if(input_history[i][0] === msg)
@@ -2869,6 +2869,11 @@ function add_to_history(msg)
 	}
 
 	push_to_input_history([msg, nice_date()])
+
+	if(change_index)
+	{
+		reset_input_history_index()
+	}
 }
 
 function push_to_input_history(item)
@@ -2879,14 +2884,19 @@ function push_to_input_history(item)
 
 function get_input_history()
 {
-	input_history_index = -1
-
 	input_history = get_local_storage(ls_input_history)
 
 	if(input_history === null)
 	{
 		input_history = []
-	}	
+	}
+
+	reset_input_history_index()
+}
+
+function reset_input_history_index()
+{
+	input_history_index = input_history.length
 }
 
 function input_history_change(direction)
@@ -2895,6 +2905,29 @@ function input_history_change(direction)
 	{
 		return false
 	}
+
+	if(input_changed)
+	{
+		input_changed = false
+
+		var input_val = $("#input").val().trim()
+
+		if(input_val !== "")
+		{
+			add_to_history(input_val, false)
+
+			if(direction === "up")
+			{
+				input_history_index = input_history.length - 1
+			}
+
+			else
+			{
+				input_history_index = input_history.length
+			}
+		}
+	}
+
 
 	if(direction === "up")
 	{
@@ -2916,12 +2949,25 @@ function input_history_change(direction)
 
 	else
 	{
-		input_history_index += 1
-
-		if(input_history_index === input_history.length)
+		if(input_history_index < 0)
 		{
 			$("#input").val("")
-			input_history_index -= 1
+			return
+		}
+
+		input_history_index += 1
+
+		if(input_history_index > input_history.length - 1)
+		{
+			$("#input").val("")
+			reset_input_history_index()
+			return false
+		}
+
+		if(input_history_index >= input_history.length)
+		{
+			$("#input").val("")
+			reset_input_history_index()
 			return
 		}
 
@@ -8260,4 +8306,12 @@ function setup_timeago()
 
 	timeago.register('default', locale)
 	time_ago = timeago()
+}
+
+function setup_input()
+{
+	$("#input").on("input", function()
+	{
+		input_changed = true
+	})
 }
