@@ -287,19 +287,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
-		socket.on('strip', function(data) 
-		{
-			try
-			{
-				strip(socket, data)
-			}
-
-			catch(err)
-			{
-				console.error(err)
-			}
-		})
-
 		socket.on('reset_voices', function(data) 
 		{
 			try
@@ -1466,81 +1453,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						})
 
 						io.sockets.in(socket.room_id).emit('update', {type:'announce_admin', username1:socket.username, username2:data.username})
-
-						break
-					}
-				}
-			})
-
-			.catch(err =>
-			{
-				console.error(err)
-			})
-		}		
-	}
-
-	function strip(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(socket.role !== 'admin' && socket.role !== 'op')
-			{
-				return get_out(socket)
-			}
-
-			if(data.username === undefined)
-			{
-				return get_out(socket)
-			}
-
-			if(data.username.length === 0)
-			{
-				return get_out(socket)
-			}
-					
-			if(socket.username === data.username)
-			{
-				return get_out(socket)
-			}
-
-			db_manager.get_room({_id:socket.room_id}, {keys:true})
-
-			.then(info =>
-			{
-				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
-
-				for(var i=0; i<ids.length; i++)
-				{
-					var socc = io.sockets.connected[ids[i]]
-
-					if(socc.username === data.username)
-					{
-						if((socc.role === 'admin' || socc.role === 'op') && socket.role !== 'admin')
-						{
-							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
-							return false
-						}
-
-						if(socc.role === '')
-						{
-							socket.emit('update', {room:socket.room_id, type:'isalready', what:'', who:data.username})
-							return false
-						}
-
-						socc.role = ''
-
-						delete info.keys[socc.user_id]
-
-						replace_in_userlist(socc, socc.username)
-
-						db_manager.update_room(info._id, {keys:info.keys})
-
-						.catch(err => 
-						{
-							console.error(err)
-						})
-
-						io.sockets.in(socket.room_id).emit('update', {type:'announce_strip', username1:socket.username, username2:data.username})
 
 						break
 					}
