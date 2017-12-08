@@ -1016,3 +1016,8 @@ input[type=text], textarea
 {
 	display: none;
 }
+
+.admin_v_container
+{
+	display: none;
+}

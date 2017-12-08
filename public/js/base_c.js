@@ -2172,6 +2172,31 @@ function update_roomlist(roomlist)
 
 function setup_main_menu()
 {
+	$(".admin_v_toggle").each(function()
+	{
+		$(this).click(function()
+		{
+			var container = $(this).next('.admin_v_container')
+			var display = container.css('display')
+
+			if(display === "none")
+			{
+				container.css("display", "initial")
+
+				$(this).text(`- ${$(this).text().substring(2)}`)
+			}
+
+			else
+			{
+				container.css("display", "none")
+				
+				$(this).text(`+ ${$(this).text().substring(2)}`)
+			}
+
+			update_modal_scrollbar("menu")
+		})	
+	})
+
 	$(".admin_voice_permissions_checkbox").each(function()
 	{
 		$(this).change(function()
