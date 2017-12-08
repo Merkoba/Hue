@@ -115,6 +115,7 @@ var last_image_change
 var last_tv_change
 var last_radio_change
 var files = {}
+var time_ago
 
 function init()
 {
@@ -151,6 +152,7 @@ function init()
 	setup_main_menu()
 	start_twitch()
 	check_image_queue()
+	setup_timeago()
 
 	start_socket()
 }
@@ -2189,7 +2191,7 @@ function setup_main_menu()
 			else
 			{
 				container.css("display", "none")
-				
+
 				$(this).text(`+ ${$(this).text().substring(2)}`)
 			}
 
@@ -3311,7 +3313,7 @@ function start_chat_click_events()
 	})	
 }
 
-function update_chat(uname, msg, prof_image, title=false)
+function update_chat(uname, msg, prof_image, date=false)
 {
 	var contclasses = "chat_content"
 
@@ -3327,15 +3329,17 @@ function update_chat(uname, msg, prof_image, title=false)
 		}
 	}
 
-	if(title)
+	if(date)
 	{
-		var t = title
+		d = date
 	}
 
 	else
 	{
-		var t = nice_date()
+		d = Date.now()
 	}
+
+	var nd = nice_date(d)
 
 	if(prof_image === "" || prof_image === undefined)
 	{
@@ -3349,8 +3353,8 @@ function update_chat(uname, msg, prof_image, title=false)
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
-		var fmsg = $(`<div class='msg chat_message'>*&nbsp;<span class='chat_uname'></span>&nbsp;<span title='${t}' class='${contclasses}'></span>&nbsp;*</div>`)
-		$(fmsg).find('.chat_content').eq(0).text(msg.substr(4)).urlize()
+		var fmsg = $(`<div class='msg chat_message'>*&nbsp;<span class='chat_uname'></span>&nbsp;<span class='${contclasses}'></span>&nbsp;*</div>`)
+		fmsg.find('.chat_content').eq(0).text(msg.substr(4)).urlize()
 	}
 
 	else
@@ -3362,20 +3366,22 @@ function update_chat(uname, msg, prof_image, title=false)
 			</span>
 			<span class='chat_right_side'>
 				<span class='chat_uname_container'>
-					<span class='chat_uname'></span>
+					<span class='chat_uname'></span> | <span class='chat_timeago' datetime='${d}' title='${nd}'></span>
 				</span>
 				<span class='chat_content_container'>
-					<span title='${t}' class='${contclasses}'></span>
+					<span class='${contclasses}' title='${nd}'></span>
 				</span>
 			</span>
 		</div>`
 
 		var fmsg = $(s)
 
-		$(fmsg).find('.chat_content').eq(0).text(msg).urlize()
+		fmsg.find('.chat_content').eq(0).text(msg).urlize()
 	}
 	
-	$(fmsg).find('.chat_uname').eq(0).text(uname)
+	fmsg.find('.chat_uname').eq(0).text(uname)
+
+	time_ago.render(fmsg.find('.chat_timeago').eq(0), 'default')
 
 	add_to_chat(fmsg)
 
@@ -5573,7 +5579,7 @@ function announce_claim(data)
 
 	else
 	{
-		set_role("")
+		set_role("voice1")
 	}
 	
 	replace_claim_userlist(data.username)
@@ -5585,7 +5591,7 @@ function announce_unclaim(data)
 
 	claimed = false
 
-	set_role("")
+	set_role("voice1")
 
 	upload_permission = 1
 
@@ -6131,7 +6137,7 @@ function announce_removedops(data)
 
 	if(role === 'op')
 	{
-		set_role("")
+		set_role("voice1")
 	}
 
 	remove_ops_userlist()
@@ -7192,7 +7198,7 @@ function show_log_messages()
 			{
 				if(message.type === "chat")
 				{
-					update_chat(data.username, data.content, data.profile_image, nice_date(message.date))
+					update_chat(data.username, data.content, data.profile_image, message.date)
 				}
 
 				else if(message.type === "image")
@@ -8228,4 +8234,30 @@ function enable_normal_mode()
 	$("#media").css("min-width", "50%")
 
 	layout_mode = "normal"
+}
+
+function setup_timeago()
+{
+	var locale = function(number, index, total_sec) 
+	{
+		return [
+			['just now', 'right now'],
+			['just now', 'right now'],
+			['1 minute ago', 'in 1 minute'],
+			['%s minutes ago', 'in %s minutes'],
+			['1 hour ago', 'in 1 hour'],
+			['%s hours ago', 'in %s hours'],
+			['1 day ago', 'in 1 day'],
+			['%s days ago', 'in %s days'],
+			['1 week ago', 'in 1 week'],
+			['%s weeks ago', 'in %s weeks'],
+			['1 month ago', 'in 1 month'],
+			['%s months ago', 'in %s months'],
+			['1 year ago', 'in 1 year'],
+			['%s years ago', 'in %s years']
+		][index]
+	}
+
+	timeago.register('default', locale)
+	time_ago = timeago()
 }
