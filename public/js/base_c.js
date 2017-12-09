@@ -3669,7 +3669,7 @@ function setup_image(data)
 	change("image")
 }
 
-function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick=false, save=false, id=false)
+function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick=false, save=false, id=false, date=false)
 {
 	var containerclasses = "announcement_content_container"
 
@@ -3704,6 +3704,16 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 		var t = nice_date()
 	}
 
+	if(date)
+	{
+		d = date
+	}
+
+	else
+	{
+		d = Date.now()
+	}	
+
 	if(brk1 !== "")
 	{
 		var hbrk1 = `${brk1}&nbsp;`
@@ -3726,18 +3736,31 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 	
 	if(typeof dotted === "string")
 	{
-		var fmsg = $(`<div${containerid}class='msg announcement announcement_${size}'><span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span><span class='dotted'></span>${hbrk2}</span></div>`)
+		var s = `
+
+		<div${containerid}class='msg announcement announcement_${size}'>
+			<span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span><span class='dotted'></span>&nbsp;|&nbsp;<span class='announcement_timeago' datetime='${d}'></span>${hbrk2}</span>
+		</div>`
+
+		var fmsg = $(s)
 		fmsg.find('.dotted').eq(0).text(dotted).urlize()
 	}
 
 	else
 	{
-		var fmsg = $(`<div${containerid}class='msg announcement announcement_${size}'><span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span>${hbrk2}</span></div>`)
+		var s = `
+		<div${containerid}class='msg announcement announcement_${size}'>
+			<span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span>&nbsp;|&nbsp;<span class='announcement_timeago' datetime='${d}'></span>${hbrk2}</span>
+		</div>`
+
+		var fmsg = $(s)
 	}
 
 	var content = fmsg.find('.announcement_content').eq(0)
 
 	content.text(msg).urlize()
+
+	time_ago.render(fmsg.find('.announcement_timeago').eq(0), 'default')	
 
 	content.parent().on("click", onclick)
 
@@ -5543,23 +5566,25 @@ function announce_uploaded_image(data, date=false)
 {
 	if(date)
 	{
-		var d = nice_date(date)
+		var d = date
 	}
 
 	else
 	{
-		var d = nice_date(data.image_date)
+		var d = Date.now()
 	}
+	
+	var nd = nice_date(d)
 
 	if(data.image_type === "link")
 	{
-		var title = `Linker: ${data.image_uploader} | ${d}`
+		var title = `Linker: ${data.image_uploader} | ${nd}`
 		var msg = `${data.image_uploader} linked an image`	
 	}
 
 	else
 	{
-		var title = `Uploader: ${data.image_uploader} | Size: ${get_size_string(data.image_size)} | ${d}`
+		var title = `Uploader: ${data.image_uploader} | Size: ${get_size_string(data.image_size)} | ${nd}`
 		var msg = `${data.image_uploader} uploaded an image`
 	}
 
@@ -5568,7 +5593,7 @@ function announce_uploaded_image(data, date=false)
 		show_modal_image(data.image_url, title)
 	}
 
-	chat_announce("<i class='icon2 fa fa-camera'></i>", '', msg, 'small', false, title, onclick, true)
+	chat_announce("<i class='icon2 fa fa-camera'></i>", '', msg, 'small', false, title, onclick, true, false, d)
 }
 
 function announce_voice(data)
@@ -5851,22 +5876,24 @@ function announce_radio_source_change(data, date=false)
 
 	if(date)
 	{
-		var d = nice_date(date)
+		var d = date
 	}
 
 	else
 	{
-		var d = nice_date(data.radio_date)
+		var d = Date.now()
 	}
+	
+	var nd = nice_date(d)
 
-	var title = `Setter: ${data.radio_setter} | ${d}`
+	var title = `Setter: ${data.radio_setter} | ${nd}`
 
 	var onclick = function()
 	{
 		goto_url(source, "tab")
 	}
 
-	chat_announce("<i class='icon2 fa fa-volume-up'></i>", '', `${data.radio_setter} changed the radio to ${name}`, 'small', false, title, onclick, true)
+	chat_announce("<i class='icon2 fa fa-volume-up'></i>", '', `${data.radio_setter} changed the radio to ${name}`, 'small', false, title, onclick, true, false, d)
 }
 
 function change_tv_source(src)
@@ -5931,22 +5958,24 @@ function announce_tv_source_change(data, date=false)
 
 	if(date)
 	{
-		var d = nice_date(date)
+		var d = date
 	}
 
 	else
 	{
-		var d = nice_date(data.tv_date)
+		var d = Date.now()
 	}
+	
+	var nd = nice_date(d)
 
-	var title = `Setter: ${data.tv_setter} | ${d}`
+	var title = `Setter: ${data.tv_setter} | ${nd}`
 
 	var onclick = function()
 	{
 		goto_url(data.tv_source, "tab")
 	}
 
-	chat_announce("<i class='icon2 fa fa-television'></i>", '', `${data.tv_setter} changed the tv to ${name}`, 'small', false, title, onclick, true)
+	chat_announce("<i class='icon2 fa fa-television'></i>", '', `${data.tv_setter} changed the tv to ${name}`, 'small', false, title, onclick, true, false, d)
 }
 
 function ban(uname)
