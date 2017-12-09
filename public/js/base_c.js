@@ -3399,7 +3399,7 @@ function update_chat(uname, msg, prof_image, date=false)
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
-		var fmsg = $(`<div class='msg chat_message'>*&nbsp;<span class='chat_uname'></span>&nbsp;<span class='${contclasses}'></span>&nbsp;*</div>`)
+		var fmsg = $(`<div class='msg chat_message thirdperson'>*&nbsp;<span class='chat_uname'></span>&nbsp;<span class='${contclasses}'></span>&nbsp;*</div>`)
 		fmsg.find('.chat_content').eq(0).text(msg.substr(4)).urlize()
 	}
 
@@ -3739,7 +3739,7 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 		var s = `
 
 		<div${containerid}class='msg announcement announcement_${size}'>
-			<span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span><span class='dotted'></span>&nbsp;|&nbsp;<span class='announcement_timeago' datetime='${d}'></span>${hbrk2}</span>
+			<span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span>${hbrk2}</span>
 		</div>`
 
 		var fmsg = $(s)
@@ -3750,7 +3750,7 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 	{
 		var s = `
 		<div${containerid}class='msg announcement announcement_${size}'>
-			<span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span>&nbsp;|&nbsp;<span class='announcement_timeago' datetime='${d}'></span>${hbrk2}</span>
+			<span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span>${hbrk2}</span>
 		</div>`
 
 		var fmsg = $(s)
@@ -3759,8 +3759,6 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 	var content = fmsg.find('.announcement_content').eq(0)
 
 	content.text(msg).urlize()
-
-	time_ago.render(fmsg.find('.announcement_timeago').eq(0), 'default')	
 
 	content.parent().on("click", onclick)
 

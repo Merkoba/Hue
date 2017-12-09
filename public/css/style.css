@@ -325,6 +325,11 @@ body
 	font-size: 1.1em;
 }
 
+.thirdperson *
+{
+	font-size: 1em;
+}
+
 .announcement
 {
 	overflow-wrap: break-word;
