@@ -829,10 +829,16 @@ input[type=text], textarea
 	color: #222222;
 }
 
+#Msg-window-image
+{
+	max-width: 90vw !important;
+	max-height: 90vh !important;
+}
+
 .modal_image
 {
-	max-height: 100%;
-	max-width: 100%;
+	max-width: 90vw;
+	max-height: 90vh;
 	display: none;
 }
 

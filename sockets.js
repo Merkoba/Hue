@@ -3135,6 +3135,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					s3.putObject(
 					{
 						ACL: "public-read",
+						ContentType: get_content_type(fname),
 						Body: data,
 						Bucket: sconfig.s3_bucket_name, 
 						Key: `${sconfig.s3_images_location}${fname}`,
@@ -3358,6 +3359,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				s3.putObject(
 				{
 					ACL: "public-read",
+					ContentType: get_content_type(fname),
 					Body: data,
 					Bucket: sconfig.s3_bucket_name, 
 					Key: `${sconfig.s3_images_location}${fname}`,
@@ -3498,6 +3500,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				s3.putObject(
 				{
 					ACL: "public-read",
+					ContentType: get_content_type(fname),
 					Body: data,
 					Bucket: sconfig.s3_bucket_name, 
 					Key: `${sconfig.s3_images_location}${fname}`,
@@ -4114,6 +4117,43 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		catch(err)
 		{
 			console.error(err)
+		}
+	}
+
+	function get_content_type(fname)
+	{
+		if(typeof fname !== "string")
+		{
+			return "image/jpeg"
+		}
+
+		if(fname.length === 0)
+		{
+			return "image/jpeg"
+		}
+
+		var split = fname.split('.')
+
+		var ext = split[split.length - 1]
+
+		if(ext === "jpg" || ext === "jpeg")
+		{
+			return "image/jpeg"
+		}
+
+		else if(ext === "png")
+		{
+			return "image/png"
+		}
+
+		else if(ext === "gif")
+		{
+			return "image/gif"
+		}
+
+		else
+		{
+			return "image/jpeg"
 		}
 	}
 }
