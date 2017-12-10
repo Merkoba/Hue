@@ -3397,21 +3397,7 @@ function update_chat(uname, msg, prof_image, date=false)
 		var pi = prof_image
 	}
 
-	if(msg[0] === '/')
-	{
-		var a = msg.toLowerCase().split(' ')
-
-		var lmsg = a[0].split('').sort().join('')
-
-		if(a.length > 1)
-		{
-			lmsg += ' '
-
-			var arg = msg.substring(lmsg.length)
-		}	
-	}
-
-	if(msg[0] === '/' && oiStartsWith(lmsg, '/me'))
+	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
 		var fmsg = $(`<div class='msg chat_message thirdperson'>*&nbsp;<span class='chat_uname'></span>&nbsp;<span class='${contclasses}'></span>&nbsp;*</div>`)
 		fmsg.find('.chat_content').eq(0).text(msg.substr(4)).urlize()
@@ -3436,40 +3422,22 @@ function update_chat(uname, msg, prof_image, date=false)
 
 		var fmsg = $(s)
 
-		var content = fmsg.find('.chat_content').eq(0)
-
-		if(msg[0] === '/' && oiStartsWith(lmsg, '/speed'))
-		{
-			content.text(msg.substr(6))
-
-			fmsg.data("speed", true)
-		}
-
-		else
-		{
-			content.text(msg).urlize()
-		}
-
-		time_ago.render(fmsg.find('.chat_timeago').eq(0), 'default')
+		fmsg.find('.chat_content').eq(0).text(msg).urlize()
 	}
 	
 	fmsg.find('.chat_uname').eq(0).text(uname)
 
-	push_to_chat_history(fmsg)
-
-	if(fmsg.data("speed"))
-	{
-		start_speed_text(content[0])
-	}
+	time_ago.render(fmsg.find('.chat_timeago').eq(0), 'default')
 
 	add_to_chat(fmsg)
+
+	push_to_chat_history(fmsg)
 
 	goto_bottom()
 
 	alert_title()
 
 	sound_notify()
-
 }
 
 function add_to_chat(msg)
@@ -3848,7 +3816,6 @@ function msg_is_ok(msg)
 function register_commands()
 {
 	commands.push('/me')
-	commands.push('/speed')
 	commands.push('/clear')
 	commands.push('/unclear')
 	commands.push('/claim')
@@ -3925,7 +3892,7 @@ function send_to_chat(msg)
 	{
 		add_to_history(msg)
 
-		if(msg[0] === '/')
+		if(msg[0] === '/' && !msg.startsWith('/me ') && !msg.startsWith('/em ') && !msg.startsWith('//'))
 		{
 			var a = msg.toLowerCase().split(' ')
 
@@ -3937,10 +3904,7 @@ function send_to_chat(msg)
 
 				var arg = msg.substring(lmsg.length)
 			}
-		}
 
-		if(msg[0] === '/' && !oiStartsWith(lmsg, '/me') && !oiStartsWith(lmsg, '/speed') && !msg.startsWith('//'))
-		{
 			if(oiEquals(lmsg, '/clear'))
 			{
 				clear_chat()
@@ -5434,14 +5398,7 @@ function unclear_chat()
 	
 	for(var el of chat_history)
 	{
-		var clone = el.clone(true, true)
-
-		$("#chat_area").append(clone)
-
-		if(el.data("speed"))
-		{
-			start_speed_text(clone.find('.chat_content').get(0))
-		}		
+		$("#chat_area").append(el.clone(true, true))
 	}
 
 	update_chat_scrollbar()
@@ -8384,37 +8341,4 @@ function setup_input()
 	{
 		input_changed = true
 	})
-}
-
-function start_speed_text(element)
-{
-	var text = $(element).text()
-
-	var words = utilz.clean_string2(text.trim()).split(' ')
-
-	if(words.length < 2)
-	{
-		return false
-	}
-
-	var current_word = 0
-
-	$(element).text(words[current_word])	
-
-	var interval = setInterval(function()
-	{
-		if(!document.contains(element))
-		{
-			clearInterval(interval)
-		}
-		
-		current_word += 1
-
-		if(current_word > words.length - 1)
-		{
-			current_word = 0
-		}
-
-		$(element).text(words[current_word])
-	}, speed_text_interval)
 }

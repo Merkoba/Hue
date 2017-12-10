@@ -89,6 +89,5 @@
 	"max_user_id_length": 100,
 	"announce_joins": true,
 	"announce_parts": true,
-	"image_queue_interval": 8000,
-	"speed_text_interval": 350
+	"image_queue_interval": 8000
 }
