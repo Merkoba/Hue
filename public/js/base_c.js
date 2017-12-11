@@ -7531,8 +7531,6 @@ function start_titles()
 
 function setup_media_video()
 {
-	$("#media_video")[0].volume = 0
-
 	hls = new Hls()
 }
 
