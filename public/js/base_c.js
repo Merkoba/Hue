@@ -118,6 +118,7 @@ var files = {}
 var time_ago
 var input_changed = false
 var hls
+var first_tv_played = false
 
 function init()
 {
@@ -1178,7 +1179,7 @@ function stop_videos()
 	$("#media_video")[0].pause()	
 }
 
-function show_youtube_video()
+function show_youtube_video(play=true)
 {
 	stop_videos()
 
@@ -1186,12 +1187,12 @@ function show_youtube_video()
 
 	if(id[0] === "video")
 	{
-		youtube_video_player.loadVideoById({videoId:id[1], startSeconds:get_youtube_time(tv_source)})
+		youtube_video_player.cueVideoById({videoId:id[1], startSeconds:get_youtube_time(tv_source)})
 	}
 
 	else if(id[0] === "list")
 	{
-		youtube_video_player.loadPlaylist({list:id[1]})
+		youtube_video_player.cuePlaylist({list:id[1]})
 	}
 
 	else
@@ -1203,14 +1204,17 @@ function show_youtube_video()
 	$("#media_twitch_video_container").css("display", "none")
 	$("#media_youtube_video_container").css("display", "flex")
 
-	youtube_video_player.playVideo()
+	if(play)
+	{
+		youtube_video_player.playVideo()
+	}
 
 	fix_video_frame("media_youtube_video")
 
 	after_media_show()
 }
 
-function show_twitch_video()
+function show_twitch_video(play=true)
 {
 	stop_videos()
 
@@ -1235,14 +1239,22 @@ function show_twitch_video()
 	$("#media_youtube_video_container").css("display", "none")
 	$("#media_twitch_video_container").css("display", "flex")
 
-	twitch_video_player.play()
+	if(play)
+	{
+		twitch_video_player.play()
+	}
+
+	else
+	{
+		twitch_video_player.pause()
+	}
 
 	fix_video_frame("media_twitch_video")
 
 	after_media_show()
 }
 
-function show_video()
+function show_video(play=true)
 {
 	stop_videos()
 
@@ -1264,7 +1276,10 @@ function show_video()
 	$("#media_twitch_video_container").css("display", "none")	
 	$("#media_video").css("display", "flex")
 
-	$("#media_video")[0].play()
+	if(play)
+	{
+		$("#media_video")[0].play()
+	}
 
 	after_media_show()
 }
@@ -3546,7 +3561,7 @@ function change(type)
 		if(!room_tv_enabled || !settings.tv_enabled)
 		{
 			return false
-		}		
+		}
 
 		if(tv_type === "youtube")
 		{
@@ -3555,7 +3570,7 @@ function change(type)
 				return false
 			}
 
-			show_youtube_video()
+			show_youtube_video(first_tv_played)
 		}
 
 		else if(tv_type === "twitch")
@@ -3565,18 +3580,20 @@ function change(type)
 				return false
 			}
 
-			show_twitch_video()
+			show_twitch_video(first_tv_played)
 		}
 		
 		else if(tv_type === "url")
 		{
-			show_video()
+			show_video(first_tv_played)
 		}
 
 		else
 		{
 			return false
 		}
+
+		first_tv_played = true
 
 		last_tv_change = tv_source
 	}
@@ -6984,7 +7001,8 @@ function onYouTubeIframeAPIReady()
 			iv_load_policy: 3,
 			rel: 0,
 			width: 640,
-			height: 360
+			height: 360,
+			autoplay: 0
 		}
 	})
 }
@@ -7002,7 +7020,6 @@ function onYouTubePlayerReady()
 function onYouTubePlayerReady2()
 {
 	youtube_video_player = yt_video_player
-	youtube_video_player.mute()
 
 	if(tv_type === "youtube")
 	{
@@ -7012,18 +7029,19 @@ function onYouTubePlayerReady2()
 
 function start_twitch()
 {
-	twitch_video_player = new Twitch.Player("media_twitch_video_container", 
+	var twch_video_player = new Twitch.Player("media_twitch_video_container", 
 	{
 		channel: "AChannelThatDoesntExisttttt",
 		width: 640,
-		height: 360
+		height: 360,
+		autoplay: false
 	})
 
-	twitch_video_player.addEventListener(Twitch.Player.READY, () => 
+	twch_video_player.addEventListener(Twitch.Player.READY, () => 
 	{
-		$("#media_twitch_video_container").find("iframe").eq(0).attr("id", "media_twitch_video").addClass("video_frame")
+		twitch_video_player = twch_video_player
 
-		twitch_video_player.setVolume(0)
+		$("#media_twitch_video_container").find("iframe").eq(0).attr("id", "media_twitch_video").addClass("video_frame")
 
 		if(tv_type === "twitch")
 		{
@@ -7849,7 +7867,7 @@ function fix_visible_video_frame()
 {
 	$(".video_frame").each(function()
 	{
-		if($(this).css("display") !== "none")
+		if($(this).parent().css("display") !== "none")
 		{
 			if($(this).data("ratio") !== undefined)
 			{
