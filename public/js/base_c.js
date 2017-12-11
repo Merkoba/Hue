@@ -117,6 +117,7 @@ var last_radio_change
 var files = {}
 var time_ago
 var input_changed = false
+var hls
 
 function init()
 {
@@ -1245,7 +1246,19 @@ function show_video()
 {
 	stop_videos()
 
-	$("#media_video").prop("src", tv_source)
+	var split = tv_source.split('.')
+
+	if(split[split.length - 1] === "m3u8")
+	{
+		hls.loadSource(tv_source)
+
+		hls.attachMedia($("#media_video")[0])
+	}
+
+	else
+	{
+		$("#media_video").prop("src", tv_source)
+	}
 
 	$("#media_youtube_video_container").css("display", "none")
 	$("#media_twitch_video_container").css("display", "none")	
@@ -7501,6 +7514,8 @@ function start_titles()
 function setup_media_video()
 {
 	$("#media_video")[0].volume = 0
+
+	hls = new Hls()
 }
 
 function num_media_elements_visible()
