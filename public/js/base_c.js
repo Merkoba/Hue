@@ -155,7 +155,6 @@ function init()
 	setup_main_menu()
 	start_twitch()
 	check_image_queue()
-	setup_timeago()
 	setup_input()
 
 	start_socket()
@@ -3440,7 +3439,7 @@ function update_chat(uname, msg, prof_image, date=false)
 			</span>
 			<span class='chat_right_side'>
 				<span class='chat_uname_container'>
-					<span class='chat_uname'></span> | <span class='chat_timeago' datetime='${d}' title='${nd}'></span>
+					<span class='chat_uname'></span>
 				</span>
 				<span class='chat_content_container'>
 					<span class='${contclasses}' title='${nd}'></span>
@@ -3454,8 +3453,6 @@ function update_chat(uname, msg, prof_image, date=false)
 	}
 	
 	fmsg.find('.chat_uname').eq(0).text(uname)
-
-	time_ago.render(fmsg.find('.chat_timeago').eq(0), 'default')
 
 	add_to_chat(fmsg)
 
