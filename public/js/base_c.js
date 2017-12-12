@@ -3907,6 +3907,7 @@ function register_commands()
 	commands.push('/changepassword')
 	commands.push('/changeemail')
 	commands.push('/fill')
+	commands.push('/shrug')
 
 	commands.sort()
 }
@@ -4307,6 +4308,11 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/fill'))
 			{
 				fill()
+			}
+
+			else if(oiEquals(lmsg, '/shrug'))
+			{
+				shrug()
 			}
 
 			else
@@ -8369,4 +8375,9 @@ function setup_input()
 	{
 		input_changed = true
 	})
+}
+
+function shrug()
+{
+	send_to_chat("¯\\_(ツ)_/¯")
 }
