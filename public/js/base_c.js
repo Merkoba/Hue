@@ -2492,7 +2492,7 @@ function start_dropzone()
 
 		var name = file.name
 
-		var ext = name.split('.').pop().toLowerCase()
+		var ext = name.split('.').pop(-1).toLowerCase()
 
 		if(ext !== 'jpg' && ext !== 'png' && ext !== 'jpeg' && ext !== 'gif')
 		{
@@ -8209,7 +8209,7 @@ function default_background_image_selected(input)
 	}
 
 	$("#admin_default_background_image").attr("src", background_image_loading_url)
-	
+
 	upload_file(file, "background_image_upload")
 }
 

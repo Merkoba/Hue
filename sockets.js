@@ -14,6 +14,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	var vtypes = ["voice1", "voice2", "voice3", "voice4"]
 	var roles = ["admin", "op"].concat(vtypes)
 	var image_types = ["image/jpeg", "image/png", "image/gif"]
+	var image_extensions = ["jpg", "jpeg", "png", "gif"]
 
 	const s3 = new aws.S3(
 	{
@@ -40,7 +41,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		slice: 0,
 		date: null,
 		updated: null,
-		received: 0
+		received: 0,
+		extension: null
     }	
 
 	var last_roomlist
@@ -3066,7 +3068,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
-			if(data.name === undefined)
+			if(data.extension === undefined)
 			{
 				return get_out(socket)
 			}
@@ -3084,27 +3086,20 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return false
 			}
 
-			data.name = data.name.replace(/\s/g, '')
+			var fname = `${socket.room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.extension}`
 
-			var clean = check_image_url(data.name)
-
-			if(clean)
+			fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
 			{
-				var fname = `${socket.room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
-
-				fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
+				if(err) 
 				{
-					if(err) 
-					{
-						socket.emit('update', {room:socket.room_id, type:'upload_error'})
-					}
+					socket.emit('update', {room:socket.room_id, type:'upload_error'})
+				}
 
-					else 
-					{
-						change_image(socket.room_id, fname, socket.username, size, "upload")
-					}
-				})
-			}
+				else 
+				{
+					change_image(socket.room_id, fname, socket.username, size, "upload")
+				}
+			})
 		}
 	}	
 
@@ -3445,7 +3440,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
-			if(data.name === undefined)
+			if(data.extension === undefined)
 			{
 				return get_out(socket)
 			}			
@@ -3458,25 +3453,20 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return false
 			}
 
-			var clean = check_image_url(data.name)
+			var fname = `bg_${socket.room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.extension}`
 
-			if(clean)
+			fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
 			{
-				var fname = `bg_${socket.room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.name.split('.').pop(-1)}`
-
-				fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
+				if(err) 
 				{
-					if(err) 
-					{
-						socket.emit('update', {room:socket.room_id, type:'upload_error'})
-					}
+					socket.emit('update', {room:socket.room_id, type:'upload_error'})
+				}
 
-					else 
-					{
-						change_default_background_image(socket, fname)
-					}
-				})
-			}
+				else 
+				{
+					change_default_background_image(socket, fname)
+				}
+			})
 		}
 	}
 
@@ -3625,7 +3615,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					return get_out(socket)
 				}
 
-				files[key] = Object.assign({}, files_struct, data) 
+				var ext = data.name.split('.').pop(-1).toLowerCase()
+
+				if(!valid_image_extension(ext))
+				{
+					return get_out(socket)
+				}
+
+				data.extension = ext
+
+				files[key] = Object.assign({}, files_struct, data)
+
 				files[key].data = []
 			}
 
@@ -3654,11 +3654,10 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				if(data.action === "image_upload")
 				{
-
 					uploaded(socket,
 					{
 						image_file: full_file,
-						name: files[key].name
+						extension: files[key].extension
 					})
 
 				}
@@ -3676,7 +3675,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					upload_default_background_image(socket,
 					{
 						image_file: full_file,
-						name: files[key].name
+						extension: files[key].extension
 					})	
 				}
 
@@ -4155,5 +4154,15 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			return "image/jpeg"
 		}
+	}
+
+	function valid_image_extension(ext)
+	{
+		if(image_extensions.indexOf(ext) !== -1)
+		{
+			return true
+		}
+
+		return false
 	}
 }
