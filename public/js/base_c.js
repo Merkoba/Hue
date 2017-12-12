@@ -1312,7 +1312,7 @@ function set_default_theme()
 	var background_color2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
 	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2)
 
-	if(settings.background_image)
+	if(default_background_image_enabled && settings.background_image)
 	{
 		background_color = colorlib.rgb_to_rgba(background_color, general_opacity)
 		background_color2 = colorlib.rgb_to_rgba(background_color2, general_opacity)
@@ -8267,7 +8267,7 @@ function announce_default_background_image_enabled_change(data)
 
 	default_background_image_enabled = data.what
 
-	set_background_image()	
+	set_default_theme()
 }
 
 function sound_notify()
