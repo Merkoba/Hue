@@ -185,11 +185,13 @@ body
 	justify-content: center;
 }
 
-#media_video
+#media_video_container
 {
 	height: calc(100% - 4em);
 	width: calc(100% - 4.7em);
 	display: none;
+	align-items: center;
+	justify-content: center;
 }
 
 #media_twitch_video_container

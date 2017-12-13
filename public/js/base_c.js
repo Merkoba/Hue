@@ -1199,7 +1199,7 @@ function show_youtube_video(play=true)
 		return false
 	}
 	
-	$("#media_video").css("display", "none")
+	$("#media_video_container").css("display", "none")
 	$("#media_twitch_video_container").css("display", "none")
 	$("#media_youtube_video_container").css("display", "flex")
 
@@ -1234,7 +1234,7 @@ function show_twitch_video(play=true)
 		return false
 	}
 
-	$("#media_video").css("display", "none")
+	$("#media_video_container").css("display", "none")
 	$("#media_youtube_video_container").css("display", "none")
 	$("#media_twitch_video_container").css("display", "flex")
 
@@ -1273,12 +1273,14 @@ function show_video(play=true)
 
 	$("#media_youtube_video_container").css("display", "none")
 	$("#media_twitch_video_container").css("display", "none")	
-	$("#media_video").css("display", "flex")
+	$("#media_video_container").css("display", "flex")
 
 	if(play)
 	{
 		$("#media_video")[0].play()
 	}
+
+	fix_video_frame("media_video")	
 
 	after_media_show()
 }
