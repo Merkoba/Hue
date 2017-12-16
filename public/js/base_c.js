@@ -1182,16 +1182,16 @@ function show_youtube_video(play=true)
 {
 	stop_videos()
 
-	var id = get_youtube_id(tv_source)
+	var id = utilz.get_youtube_id(tv_source)
 
 	if(id[0] === "video")
 	{
-		youtube_video_player.cueVideoById({videoId:id[1], startSeconds:get_youtube_time(tv_source)})
+		youtube_video_player.cueVideoById({videoId:id[1], startSeconds:utilz.get_youtube_time(tv_source)})
 	}
 
 	else if(id[0] === "list")
 	{
-		youtube_video_player.cuePlaylist({list:id[1]})
+		youtube_video_player.cuePlaylist({list:id[1][0], index:id[1][1]})
 	}
 
 	else
@@ -1217,7 +1217,7 @@ function show_twitch_video(play=true)
 {
 	stop_videos()
 
-	var id = get_twitch_id(tv_source)
+	var id = utilz.get_twitch_id(tv_source)
 
 	if(id[0] === "video")
 	{
@@ -1333,145 +1333,6 @@ function change_colors(background_color, background_color2, font_color)
 function set_background_image()
 {
 	$('#background_image').css('background-image', `url('${default_background_image}')`) 	
-}
-
-function get_youtube_id(url)
-{
-	var v_id = false
-	var list_id = false
-
-	var split = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/)
-	var id = undefined !== split[2] ? split[2].split(/[^0-9a-z_\-]/i)[0] : split[0]
-	v_id = id.length === 11 ? id : false
-
-	var list_match = url.match(/(?:\?|&)(list=[0-9A-Za-z_-]+)/)
-
-	if(list_match)
-	{
-		list_id = list_match[1].replace("list=", "")		
-	}
-
-	if(list_id)
-	{
-		return ["list", list_id]
-	}
-
-	else if(v_id)
-	{
-		return ["video", v_id]
-	}
-
-	else
-	{
-		return false
-	}
-}
-
-function get_twitch_id(url)
-{
-	var match = url.match(/.*twitch\.tv(?:\/videos)?\/(\w+)/)
-
-	if(match)
-	{
-		if(match[0].indexOf('twitch.tv/videos/') !== -1)
-		{
-			return ["video", match[1]]
-		}
-
-		else if(match[0].indexOf("clips.twitch.tv") !== -1)
-		{
-			return false
-		}
-
-		else
-		{
-			return ["channel", match[1]]
-		}
-	}
-
-	else
-	{
-		return false
-	}
-}	
-
-function get_youtube_time(url)
-{
-	var matches = url.match(/[\?|&]t=(\d+h)?(\d+m)?(\d+s)?(\d+)?/)
-
-	if(matches)
-	{
-		var first = false
-
-		var h = false
-		var m = false 
-		var s = false 
-		var t = false 
-
-		for(var match of matches)
-		{
-			if(!first)
-			{
-				first = true
-				continue
-			}
-
-			if(match === undefined)
-			{
-				continue
-			}
-
-			if(match.indexOf("h") !== -1)
-			{
-				h = parseInt(match.replace("h", ""))
-			}
-
-			else if(match.indexOf("m") !== -1)
-			{
-				m = parseInt(match.replace("m", ""))
-			}
-
-			else if(match.indexOf("s") !== -1)
-			{
-				s = parseInt(match.replace("s", ""))
-			}
-
-			else
-			{
-				t = parseInt(match)
-			}
-
-		}
-
-		var time = 0
-
-		if(h)
-		{
-			time += h * 60 * 60
-		}
-
-		if(m)
-		{
-			time += m * 60
-		}
-
-		if(s)
-		{
-			time += s
-		}
-
-		if(t)
-		{
-			time += t
-		}
-
-		return time
-	}
-
-	else
-	{
-		return 0
-	}
 }
 
 function userjoin(data)
@@ -4831,16 +4692,16 @@ function start_radio()
 	{
 		if(youtube_player !== undefined)
 		{
-			var id = get_youtube_id(radio_source)
+			var id = utilz.get_youtube_id(radio_source)
 
 			if(id[0] === "video")
 			{
-				youtube_player.loadVideoById({videoId:id[1], startSeconds:get_youtube_time(radio_source)})
+				youtube_player.loadVideoById({videoId:id[1], startSeconds:utilz.get_youtube_time(radio_source)})
 			}
 
 			else if(id[0] === "list")
 			{
-				youtube_player.loadPlaylist({list:id[1]})
+				youtube_player.loadPlaylist({list:id[1][0], index:id[1][1]})
 			}
 
 			else
@@ -5937,7 +5798,7 @@ function change_tv_source(src)
 		{
 			if(src.indexOf("youtube.com") !== -1 || src.indexOf("youtu.be") !== -1)
 			{
-				if(get_youtube_id(src) && !youtube_enabled)
+				if(utilz.get_youtube_id(src) && !youtube_enabled)
 				{
 					chat_announce('[', ']', "YouTube support is not enabled", 'small')
 					return
@@ -5946,7 +5807,7 @@ function change_tv_source(src)
 
 			else if(src.indexOf("twitch.tv") !== -1)
 			{
-				if(get_twitch_id(src) && !twitch_enabled)
+				if(utilz.get_twitch_id(src) && !twitch_enabled)
 				{
 					chat_announce('[', ']', "Twitch support is not enabled", 'small')
 					return

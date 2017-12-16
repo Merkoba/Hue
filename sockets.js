@@ -2002,18 +2002,20 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						return
 					}
 
-					var id = get_youtube_id(data.src)
+					var id = utilz.get_youtube_id(data.src)
 
 					if(id)
 					{
 						if(id[0] === "video")
 						{
 							var st = "videos"
+							var pid = id[1]
 						}
 
 						else if(id[0] === "list")
 						{
 							var st = "playlists"
+							var pid = id[1][0]
 						}
 
 						else
@@ -2022,7 +2024,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							return false							
 						}						
 
-						fetch(`https://www.googleapis.com/youtube/v3/${st}?id=${id[1]}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`)
+						fetch(`https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`)
 						
 						.then(function(res)
 						{
@@ -2146,18 +2148,20 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						return
 					}
 
-					var id = get_youtube_id(data.src)
+					var id = utilz.get_youtube_id(data.src)
 
 					if(id)
 					{
 						if(id[0] === "video")
 						{
 							var st = "videos"
+							var pid = id[1]
 						}
 
 						else if(id[0] === "list")
 						{
 							var st = "playlists"
+							var pid = id[1][0]
 						}
 
 						else
@@ -2166,7 +2170,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							return false							
 						}
 
-						fetch(`https://www.googleapis.com/youtube/v3/${st}?id=${id[1]}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`)
+						fetch(`https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`)
 
 						.then(function(res)
 						{
@@ -2204,7 +2208,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				else if(data.src.indexOf("twitch.tv") !== -1)
 				{
-					var id = get_twitch_id(data.src)
+					var id = utilz.get_twitch_id(data.src)
 
 					if(id)
 					{
@@ -3858,67 +3862,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 
 		return false
-	}	
-
-	function get_youtube_id(url)
-	{
-		var v_id = false
-		var list_id = false
-
-		var split = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/)
-		var id = undefined !== split[2] ? split[2].split(/[^0-9a-z_\-]/i)[0] : split[0]
-		v_id = id.length === 11 ? id : false
-
-		var list_match = url.match(/(?:\?|&)(list=[0-9A-Za-z_-]+)/)
-
-		if(list_match)
-		{
-			list_id = list_match[1].replace("list=", "")		
-		}
-
-		if(list_id)
-		{
-			return ["list", list_id]
-		}
-
-		else if(v_id)
-		{
-			return ["video", v_id]
-		}
-
-		else
-		{
-			return false
-		}
 	}
-
-	function get_twitch_id(url)
-	{
-		var match = url.match(/.*twitch\.tv(?:\/videos)?\/(\w+)/)
-
-		if(match)
-		{
-			if(match[0].indexOf('twitch.tv/videos/') !== -1)
-			{
-				return ["video", match[1]]
-			}
-
-			else if(match[0].indexOf("clips.twitch.tv") !== -1)
-			{
-				return false
-			}
-
-			else
-			{
-				return ["channel", match[1]]
-			}
-		}
-
-		else
-		{
-			return false
-		}
-	}	
 
 	function create_room_object(info)
 	{
