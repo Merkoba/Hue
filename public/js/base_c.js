@@ -119,6 +119,7 @@ var time_ago
 var input_changed = false
 var hls
 var first_tv_played = false
+var youtube_video_play_on_queue = false
 
 function init()
 {
@@ -1184,6 +1185,8 @@ function show_youtube_video(play=true)
 
 	var id = utilz.get_youtube_id(tv_source)
 
+	youtube_video_play_on_queue = play
+
 	if(id[0] === "video")
 	{
 		youtube_video_player.cueVideoById({videoId:id[1], startSeconds:utilz.get_youtube_time(tv_source)})
@@ -1202,11 +1205,6 @@ function show_youtube_video(play=true)
 	$("#media_video_container").css("display", "none")
 	$("#media_twitch_video_container").css("display", "none")
 	$("#media_youtube_video_container").css("display", "flex")
-
-	if(play)
-	{
-		youtube_video_player.playVideo()
-	}
 
 	fix_video_frame("media_youtube_video")
 
@@ -6886,6 +6884,17 @@ function onYouTubePlayerReady()
 function onYouTubePlayerReady2()
 {
 	youtube_video_player = yt_video_player
+
+	youtube_video_player.addEventListener("onStateChange", function(e)
+	{
+		if(e.data === 5)
+		{
+			if(youtube_video_play_on_queue)
+			{
+				youtube_video_player.playVideo()
+			}
+		}
+	})
 
 	if(tv_type === "youtube")
 	{
