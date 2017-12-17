@@ -303,8 +303,8 @@ body
 
 .chat_profile_image
 {
-	max-height: 45px;
-	max-width: 45px;
+	height: 45px;
+	width: 45px;
 	cursor: pointer;
 }
 
