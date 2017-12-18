@@ -120,6 +120,9 @@ var input_changed = false
 var hls
 var first_tv_played = false
 var youtube_video_play_on_queue = false
+var images_locked = false
+var tv_locked = false 
+var radio_locked = false
 
 function init()
 {
@@ -3404,7 +3407,7 @@ function change(type)
 
 	if(type === "image")
 	{
-		if(!room_images_enabled || !settings.images_enabled)
+		if(!room_images_enabled || !settings.images_enabled || images_locked)
 		{
 			return false
 		}
@@ -3416,7 +3419,7 @@ function change(type)
 
 	else if(type === "tv")
 	{
-		if(!room_tv_enabled || !settings.tv_enabled)
+		if(!room_tv_enabled || !settings.tv_enabled || tv_locked)
 		{
 			return false
 		}
@@ -3458,7 +3461,7 @@ function change(type)
 
 	else if(type === "radio")
 	{
-		if(!room_radio_enabled || !settings.radio_enabled || !radio_started)
+		if(!room_radio_enabled || !settings.radio_enabled || !radio_started || radio_locked)
 		{
 			return false
 		}
@@ -8252,4 +8255,61 @@ function setup_input()
 function shrug()
 {
 	send_to_chat("¯\\_(ツ)_/¯")
+}
+
+function toggle_lock_images()
+{
+	images_locked = !images_locked
+
+	if(images_locked)
+	{
+		$("#footer_lock_images_icon").removeClass("fa-unlock-alt")
+		$("#footer_lock_images_icon").addClass("fa-lock")		
+	}
+
+	else
+	{
+		$("#footer_lock_images_icon").removeClass("fa-lock")
+		$("#footer_lock_images_icon").addClass("fa-unlock-alt")
+
+		change("image")
+	}
+}
+
+function toggle_lock_tv()
+{
+	tv_locked = !tv_locked
+
+	if(tv_locked)
+	{
+		$("#footer_lock_tv_icon").removeClass("fa-unlock-alt")
+		$("#footer_lock_tv_icon").addClass("fa-lock")		
+	}
+
+	else
+	{
+		$("#footer_lock_tv_icon").removeClass("fa-lock")
+		$("#footer_lock_tv_icon").addClass("fa-unlock-alt")
+
+		change("tv")
+	}
+}
+
+function toggle_lock_radio()
+{
+	radio_locked = !radio_locked
+
+	if(radio_locked)
+	{
+		$("#footer_lock_radio_icon").removeClass("fa-unlock-alt")
+		$("#footer_lock_radio_icon").addClass("fa-lock")		
+	}
+
+	else
+	{
+		$("#footer_lock_radio_icon").removeClass("fa-lock")
+		$("#footer_lock_radio_icon").addClass("fa-unlock-alt")
+
+		change("radio")
+	}
 }

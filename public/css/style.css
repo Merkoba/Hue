@@ -242,6 +242,18 @@ body
 	cursor: pointer;	
 }
 
+.footer_icon2
+{
+	padding-top: 0.7em;
+	padding-right: 0.3em;
+	cursor: pointer;
+	flex-shrink: 1;
+	background-color: transparent;
+	color: inherit;
+	font-size: 0.8em;
+	cursor: pointer;	
+}
+
 .footer_text
 {
 	padding-top: 0.25em;
