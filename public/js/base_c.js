@@ -3467,8 +3467,6 @@ function change(type)
 		}
 
 		start_radio()
-
-		last_radio_change = radio_source
 	}
 
 	else
@@ -4724,6 +4722,8 @@ function start_radio()
 	$('#toggle_now_playing_text').html('Stop Radio')
 
 	radio_started = true
+
+	last_radio_change = radio_source
 }
 
 function stop_radio()
