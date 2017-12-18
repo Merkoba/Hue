@@ -395,7 +395,7 @@ function setup_icons()
 {
 	if(room_images_enabled)
 	{
-		$("#toggle_images_container").css("display", "initial")
+		$("#footer_images_controls").css("display", "initial")
 
 		if(can_images)
 		{
@@ -411,12 +411,12 @@ function setup_icons()
 	else
 	{
 		$("#footer_upload_icon").css("display", "none")
-		$("#toggle_images_container").css("display", "none")
+		$("#footer_images_controls").css("display", "none")
 	}
 
 	if(room_radio_enabled)
 	{
-		$("#toggle_radio_container").css("display", "initial")
+		$("#footer_radio_controls").css("display", "initial")
 
 		if(can_radio)
 		{
@@ -432,12 +432,12 @@ function setup_icons()
 	else
 	{
 		$("#footer_radio_icon").css("display", "none")
-		$("#toggle_radio_container").css("display", "none")
+		$("#footer_radio_controls").css("display", "none")
 	}
 
 	if(room_tv_enabled)
 	{
-		$("#toggle_tv_container").css("display", "initial")
+		$("#footer_tv_controls").css("display", "initial")
 
 		if(can_tv)
 		{
@@ -453,7 +453,7 @@ function setup_icons()
 	else
 	{
 		$("#footer_tv_icon").css("display", "none")
-		$("#toggle_tv_container").css("display", "none")
+		$("#footer_tv_controls").css("display", "none")
 	}
 }
 

@@ -257,7 +257,7 @@ body
 .footer_text
 {
 	padding-top: 0.25em;
-	padding-right: 0.2em;
+	padding-right: 0.3em;
 }
 
 #input
@@ -619,6 +619,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 {
 	padding-left: 0.8em;
 	padding-right: 0.8em;
+}
+
+.hspacer3
+{
+	padding-left: 0.4em;
+	padding-right: 0.4em;
 }
 
 .setting_checkbox

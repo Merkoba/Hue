@@ -31,9 +31,9 @@
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<script src="/js/base_o.js?ver=799"></script>
+		<script src="/js/base_o.js?ver=800"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=234"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=235"/>
 
 		<script>
 
@@ -178,23 +178,29 @@
 
 						<span class='unselectable'>
 
-							<span id='toggle_images_text' class='footer_text'>Images</span>
-							<i class='fa fa-toggle-on footer_icon2 nicetitle' id='footer_toggle_images_icon' onclick='toggle_images()' title='Enable/Disable Images. Disabled means it will be invisible and inactive'></i>
-							<i class='fa fa-unlock-alt footer_icon nicetitle' id='footer_lock_images_icon' onclick='toggle_lock_images()' title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'></i>
- 
-							<span class='hspacer1'></span>
- 
-							<span id='toggle_tv_text' class='footer_text'>TV</span>
-							<i class='fa fa-toggle-on footer_icon2 nicetitle' id='footer_toggle_tv_icon' onclick='toggle_tv()' title='Enable/Disable TV. Disabled means it will be invisible and inactive'></i>
-							<i class='fa fa-unlock-alt footer_icon nicetitle' id='footer_lock_tv_icon' onclick='toggle_lock_tv()' title='Lock/Unlock TV. Locked means it will stay the same even if media is changed by a user'></i>
- 
-							<span class='hspacer1'></span>
- 
-							<span id='toggle_radio_text' class='footer_text'>Radio</span>
-							<i class='fa fa-toggle-on footer_icon2 nicetitle' id='footer_toggle_radio_icon' onclick='toggle_radio()' title='Enable/Disable Radio. Disabled means it will be invisible and inactive'></i>
-							<i class='fa fa-unlock-alt footer_icon nicetitle' id='footer_lock_radio_icon' onclick='toggle_lock_radio()' title='Lock/Unlock Radio. Locked means it will stay the same even if media is changed by a user'></i>
- 
-							<span class='hspacer1'></span>
+							<span id='footer_images_controls'>
+								<span id='toggle_images_text' class='footer_text'>Images</span>
+								<i class='fa fa-toggle-on footer_icon2 nicetitle' id='footer_toggle_images_icon' onclick='toggle_images()' title='Enable/Disable Images. Disabled means it will be invisible and inactive'></i>
+								<i class='fa fa-unlock-alt footer_icon nicetitle' id='footer_lock_images_icon' onclick='toggle_lock_images()' title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'></i>
+	 
+								<span class='hspacer3'></span>
+							</span>
+ 	
+							<span id='footer_tv_controls'>
+								<span id='toggle_tv_text' class='footer_text'>TV</span>
+								<i class='fa fa-toggle-on footer_icon2 nicetitle' id='footer_toggle_tv_icon' onclick='toggle_tv()' title='Enable/Disable TV. Disabled means it will be invisible and inactive'></i>
+								<i class='fa fa-unlock-alt footer_icon nicetitle' id='footer_lock_tv_icon' onclick='toggle_lock_tv()' title='Lock/Unlock TV. Locked means it will stay the same even if media is changed by a user'></i>
+	 
+								<span class='hspacer3'></span>
+ 							</span>
+
+							<span id='footer_radio_controls'>
+								<span id='toggle_radio_text' class='footer_text'>Radio</span>
+								<i class='fa fa-toggle-on footer_icon2 nicetitle' id='footer_toggle_radio_icon' onclick='toggle_radio()' title='Enable/Disable Radio. Disabled means it will be invisible and inactive'></i>
+								<i class='fa fa-unlock-alt footer_icon nicetitle' id='footer_lock_radio_icon' onclick='toggle_lock_radio()' title='Lock/Unlock Radio. Locked means it will stay the same even if media is changed by a user'></i>
+	 
+								<span class='hspacer3'></span>
+							</span>
 
 							<i class='fa fa-camera footer_icon nicetitle' id='footer_upload_icon' title='Change the Image' onclick='show_image_picker()'></i>
 							<i class='fa fa-television footer_icon nicetitle' id='footer_tv_icon' onclick="show_tv_url_picker()" title='Change the TV'></i>
