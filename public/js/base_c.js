@@ -6152,8 +6152,8 @@ function start_msg()
 	var common = 
 	{
 		class: settings.modal_color,
-		show_effect: "fade",
-		close_effect: "fade",
+		show_effect: "scale",
+		close_effect: "scale",
 		show_effect_duration: [200, 200],
 		close_effect_duration: [200, 200],
 		clear_editables: true
