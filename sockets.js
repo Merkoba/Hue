@@ -2074,7 +2074,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					return
 				}
 
-				fetch(`https://www.googleapis.com/youtube/v3/search?q=${data.src}&fields=items(id,snippet(title))&part=snippet&maxResults=10&key=${sconfig.youtube_api_key}`).then(function(res)
+				fetch(`https://www.googleapis.com/youtube/v3/search?q=${data.src}&type=video&fields=items(id,snippet(title))&part=snippet&maxResults=10&key=${sconfig.youtube_api_key}`).then(function(res)
 				{
 					return res.json()
 				})
@@ -2276,7 +2276,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					return
 				}
 
-				fetch(`https://www.googleapis.com/youtube/v3/search?q=${data.src}&fields=items(id,snippet(title))&part=snippet&maxResults=10&key=${sconfig.youtube_api_key}`)
+				fetch(`https://www.googleapis.com/youtube/v3/search?q=${data.src}&type=video&fields=items(id,snippet(title))&part=snippet&maxResults=10&key=${sconfig.youtube_api_key}`)
 
 				.then(function(res)
 				{
