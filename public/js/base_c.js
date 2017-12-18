@@ -6152,8 +6152,10 @@ function start_msg()
 	var common = 
 	{
 		class: settings.modal_color,
-		show_effect: "none",
-		close_effect: "none",
+		show_effect: "fade",
+		close_effect: "fade",
+		show_effect_duration: [200, 200],
+		close_effect_duration: [200, 200],
 		clear_editables: true
 	}
 
@@ -7300,20 +7302,25 @@ function show_modal_image(url, title=false)
 		var t = ""
 	}
 
-	msg_image.show(`<div id="modal_spinner" class='spinner1'></div><img ${t} id="modal_image" class="modal_image" src="${url}">`, function()
-	{
-		$('#modal_image').get(0).addEventListener('load', function()
-		{
-			$("#modal_spinner").css("display", "none")
-			this.style.display = "block"
-			update_modal_scrollbar("image")
-		})
+	var c = $("<div></div>")
 
-		$('#modal_image').on("error", function() 
-		{
-			msg_image.set("<div class='padding1'>Image no longer available</div>")
-		})
+	c.append($(`<div id="modal_spinner" class='spinner1'></div><img ${t} id="modal_image" class="modal_image" src="${url}">`))
+
+	var img = c.find("#modal_image").eq(0)
+
+	img[0].addEventListener('load', function()
+	{
+		$("#modal_spinner").css("display", "none")
+		this.style.display = "block"
+		update_modal_scrollbar("image")
 	})
+
+	img.on("error", function() 
+	{
+		msg_image.set("<div class='padding1'>Image no longer available</div>")
+	})
+
+	msg_image.show(c[0])
 }
 
 function not_an_op()
