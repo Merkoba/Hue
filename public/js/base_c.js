@@ -7643,6 +7643,8 @@ function profile_image_selected(input)
 					{
 						$("#userinfo_profile_image").attr("src", profile_image_loading_url)
 
+						blob.name = "profile.png"
+
 						upload_file(blob, "profile_image_upload")
 
 						msg_info.close()
