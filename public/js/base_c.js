@@ -2587,13 +2587,6 @@ function activate_key_detection()
 
 		if(e.key === "Enter")
 		{
-			if(e.shiftKey)
-			{
-				toggle_radio_state()
-				e.preventDefault()
-				return
-			}
-
 			if($("#input").val().length === 0)
 			{
 				goto_bottom(true)
@@ -5095,8 +5088,10 @@ function goto_url(u, mode="same", encode=false)
 
 function create_room(data)
 {
-	close_all_modals()
-	socket_emit('create_room', data)
+	msg_info.close(function()
+	{
+		socket_emit('create_room', data)
+	})
 }
 
 function refresh()
