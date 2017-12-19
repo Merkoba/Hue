@@ -30,6 +30,7 @@
 	"modal_overlay_opacity": 0.8,
 	"color_contrast_amount_1": 0.07,
 	"color_contrast_amount_2": 0.8,
+	"color_contrast_amount_3": 0.5,
 	"chat_crop_limit": 1000,
 	"played_crop_limit": 1000,
 	"input_history_crop_limit": 1000,

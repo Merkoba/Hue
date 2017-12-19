@@ -8282,7 +8282,8 @@ function setup_modal_colors()
 	var background_color = default_theme
 	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2)
 	var inner_x_hover_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
-	var overlay_color = colorlib.rgb_to_rgba(colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2), modal_overlay_opacity)
+	var overlay_color = colorlib.rgb_to_rgba(font_color, modal_overlay_opacity)
+	var scrollbar_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
 
 	var css = `
 	<style class='appended_style'>
@@ -8301,6 +8302,11 @@ function setup_modal_colors()
 	.Msg-window-inner-x:hover
 	{
 		background-color: ${inner_x_hover_color} !important;
+	}
+
+	.nicescroll-cursors
+	{
+		background-color: ${scrollbar_color} !important
 	}
 
 	</style>
