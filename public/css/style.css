@@ -315,8 +315,8 @@ body
 
 .chat_profile_image
 {
-	height: 45px;
 	width: 45px;
+	height: 45px;
 	cursor: pointer;
 }
 
@@ -639,11 +639,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 	height: 1.5em;
 }
 
-#Msg-overlay-username-picker
-{
-	background-color: rgba(121, 121, 121, 1) !important;
-}
-
 .Msg-content
 {
 	font-size: 1em !important;
@@ -884,48 +879,6 @@ input[type=text], textarea
 {
 	0% {transform:rotate(0deg)}
 	100% {transform:rotate(360deg)}
-}
-
-.Msg-window-purple
-{
-	background-color: #b966bd !important;
-	color: white !important;
-}
-
-.Msg-window-inner-x-purple:hover
-{
-	background-color: #9b519a !important;
-}
-
-.Msg-overlay-purple
-{
-	background-color: rgba(65, 17, 64, 0.7) !important;
-}
-
-.Msg-window-yellow
-{
-	background-color: #feff57 !important;
-	color: #43451d !important;
-}
-
-.Msg-window-inner-x-yellow:hover
-{
-	background-color: #d5d516 !important;
-}
-
-.Msg-overlay-yellow
-{
-	background-color: rgba(63, 65, 43, 0.7) !important;
-}
-
-.Msg-overlay-green
-{
-	background-color: rgba(92, 121, 101, 0.7) !important;
-}
-
-.Msg-overlay-white
-{
-	background-color: rgba(18, 18, 18, 0.7) !important;
 }
 
 .input1

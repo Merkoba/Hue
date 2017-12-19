@@ -736,6 +736,7 @@ function start_socket()
 			setup_default_theme(data)
 			set_default_theme()
 			set_background_image()		
+			setup_modal_colors()
 			setup_active_media(data)
 			check_role(data)
 			set_topic_info(data)
@@ -6151,7 +6152,6 @@ function start_msg()
 {
 	var common = 
 	{
-		class: settings.modal_color,
 		show_effect: "fade",
 		close_effect: "fade",
 		show_effect_duration: [200, 200],
@@ -6449,14 +6449,6 @@ function after_modal_close(instance)
 	}
 }
 
-function change_modal_color(color)
-{
-	for(var ins of msg_menu.instances())
-	{
-		ins.change_class(color)
-	}
-}
-
 function close_all_modals()
 {
 	msg_menu.close_all()
@@ -6482,12 +6474,6 @@ function get_settings()
 	if(settings.custom_scrollbars === undefined)
 	{
 		settings.custom_scrollbars = settings_default_custom_scrollbars
-		changed = true
-	}
-
-	if(settings.modal_color === undefined)
-	{
-		settings.modal_color = settings_default_modal_color
 		changed = true
 	}
 
@@ -6533,14 +6519,6 @@ function start_settings_state()
 	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
 	
 	$("#setting_sound_notifications").prop("checked", settings.sound_notifications)
-
-	$('#setting_modal_color').find('option').each(function()
-	{
-		if($(this).val() === settings.modal_color)
-		{
-			$(this).prop('selected', true)
-		}
-	})
 }
 
 function start_settings_listeners()
@@ -6557,11 +6535,6 @@ function start_settings_listeners()
 		settings.custom_scrollbars = $("#setting_custom_scrollbars").prop("checked")
 		setup_scrollbars()
 		save_settings()
-	})
-
-	$("#setting_modal_color").change(function()
-	{
-		modal_color_changed()
 	})
 
 	$("#setting_sound_notifications").change(function()
@@ -7328,25 +7301,6 @@ function not_an_op()
 	chat_announce('[', ']', "You are not a room operator", 'small')
 }
 
-function modal_color_up()
-{
-	$('#setting_modal_color option:selected').prev().prop('selected', 'selected')
-	modal_color_changed()
-}
-
-function modal_color_down()
-{
-	$('#setting_modal_color option:selected').next().prop('selected', 'selected')
-	modal_color_changed()
-}
-
-function modal_color_changed()
-{
-	settings.modal_color = $('#setting_modal_color option:selected').val()
-	change_modal_color(settings.modal_color)		
-	save_settings()	
-}
-
 function show_radio_url_picker()
 {
 	var s = ""
@@ -7584,6 +7538,9 @@ function change_radio_visibility()
 
 		$("#header_topic").css("display", "initial")
 	}
+
+	update_chat_scrollbar()
+	goto_bottom()
 }
 
 function open_profile_image_picker()
@@ -8037,6 +7994,8 @@ function announce_default_theme_change(data)
 	default_theme = data.color
 
 	set_default_theme()
+
+	setup_modal_colors()
 }
 
 function queue_image(data)
@@ -8321,4 +8280,41 @@ function toggle_lock_radio()
 
 		change("radio")
 	}
+}
+
+function setup_modal_colors()
+{
+	var background_color = default_theme
+	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2)
+	var inner_x_hover_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
+	var overlay_color = colorlib.rgb_to_rgba(colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2), modal_overlay_opacity)
+
+	var css = `
+	<style class='appended_style'>
+
+	.Msg-overlay
+	{
+		background-color: ${overlay_color} !important;
+	}
+
+	.Msg-window
+	{
+		background-color: ${background_color} !important;
+		color: ${font_color} !important;
+	}
+
+	.Msg-window-inner-x:hover
+	{
+		background-color: ${inner_x_hover_color} !important;
+	}
+
+	</style>
+	`
+
+	$(".appended_style").each(function()
+	{
+		$(this).remove()
+	})
+
+	$("head").append(css)
 }
