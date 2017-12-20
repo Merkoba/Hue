@@ -2067,6 +2067,37 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				}
 			}
 
+			else if(data.src === "restart")
+			{
+				db_manager.get_room({_id:socket.room_id}, 
+				{
+					radio_type: true,
+					radio_source: true,
+					radio_title: true,
+					radio_setter: true,
+					radio_date: true
+				})
+
+				.then(info =>
+				{
+					io.sockets.in(socket.room_id).emit('update', 
+					{
+						type: 'restarted_radio_source', 
+						radio_type: info.radio_type,
+						radio_source: info.radio_source,
+						radio_title: info.radio_title,
+						radio_setter: info.radio_setter,
+						radio_date: info.radio_date,
+						username: socket.username
+					})
+				})
+
+				.catch(err =>
+				{
+					
+				})			
+			}
+
 			else
 			{
 				if(!config.youtube_enabled)
@@ -2268,6 +2299,37 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					do_change_tv_source(socket, data)
 				}
 			}
+
+			else if(data.src === "restart")
+			{
+				db_manager.get_room({_id:socket.room_id}, 
+				{
+					tv_type: true,
+					tv_source: true,
+					tv_title: true,
+					tv_setter: true,
+					tv_date: true
+				})
+
+				.then(info =>
+				{
+					io.sockets.in(socket.room_id).emit('update', 
+					{
+						type: 'restarted_tv_source', 
+						tv_type: info.tv_type,
+						tv_source: info.tv_source,
+						tv_title: info.tv_title,
+						tv_setter: info.tv_setter,
+						tv_date: info.tv_date,
+						username: socket.username
+					})
+				})
+
+				.catch(err =>
+				{
+					
+				})			
+			}			
 
 			else
 			{

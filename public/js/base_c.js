@@ -916,9 +916,21 @@ function start_socket()
 			setup_radio(data)			
 		}
 
+		else if(data.type === 'restarted_radio_source')
+		{
+			announce_radio_source_change(data, false, true)
+			setup_radio(data)			
+		}
+
 		else if(data.type === 'changed_tv_source')
 		{
 			announce_tv_source_change(data)
+			setup_tv(data)			
+		}
+
+		else if(data.type === 'restarted_tv_source')
+		{
+			announce_tv_source_change(data, false, true)
 			setup_tv(data)			
 		}
 
@@ -1135,7 +1147,7 @@ function setup_radio(data)
 		$('#audio').attr('src', '')
 	}
 
-	change("radio")	
+	change("radio", true)	
 }
 
 function setup_tv(data)
@@ -1165,7 +1177,7 @@ function setup_tv(data)
 	tv_setter = data.tv_setter
 	tv_date = nice_date(data.tv_date)
 
-	change("tv")
+	change("tv", true)
 }
 
 function stop_videos()
@@ -3356,7 +3368,7 @@ function push_to_chat_history(msg)
 	}	
 }
 
-function change(type)
+function change(type, force=false)
 {	
 	if(type === "image")
 	{
@@ -3368,7 +3380,7 @@ function change(type)
 
 	else if(type === "tv")
 	{
-		if(last_tv_change === tv_source)
+		if(!force && last_tv_change === tv_source)
 		{
 			return false
 		}
@@ -3376,7 +3388,7 @@ function change(type)
 
 	else if(type === "radio")
 	{
-		if(last_radio_change === radio_source)
+		if(!force && last_radio_change === radio_source)
 		{
 			return false
 		}
@@ -5715,7 +5727,7 @@ function change_radio_source(src)
 			}
 		}
 
-		else
+		else if(src !== "restart")
 		{
 			if(!youtube_enabled)
 			{
@@ -5738,7 +5750,7 @@ function change_radio_source(src)
 	}
 }
 
-function announce_radio_source_change(data, date=false)
+function announce_radio_source_change(data, date=false, restarted=false)
 {
 	if(data.radio_title !== "")
 	{
@@ -5774,6 +5786,16 @@ function announce_radio_source_change(data, date=false)
 	{
 		var d = Date.now()
 	}
+
+	if(restarted)
+	{
+		var action = `${data.username} restarted the radio`
+	}
+
+	else
+	{
+		var action = `${data.radio_setter} changed the radio to ${name}`
+	}	
 	
 	var nd = nice_date(d)
 
@@ -5784,7 +5806,7 @@ function announce_radio_source_change(data, date=false)
 		goto_url(source, "tab")
 	}
 
-	chat_announce("<i class='icon2 fa fa-volume-up'></i>", '', `${data.radio_setter} changed the radio to ${name}`, 'small', false, title, onclick, true, false, d)
+	chat_announce("<i class='icon2 fa fa-volume-up'></i>", '', action, 'small', false, title, onclick, true, false, d)
 }
 
 function change_tv_source(src)
@@ -5812,7 +5834,7 @@ function change_tv_source(src)
 			}
 		}
 
-		else
+		else if(src !== "restart")
 		{
 			if(!youtube_enabled)
 			{
@@ -5835,7 +5857,7 @@ function change_tv_source(src)
 	}
 }
 
-function announce_tv_source_change(data, date=false)
+function announce_tv_source_change(data, date=false, restarted=false)
 {
 	if(data.tv_title !== "")
 	{
@@ -5866,7 +5888,17 @@ function announce_tv_source_change(data, date=false)
 		goto_url(data.tv_source, "tab")
 	}
 
-	chat_announce("<i class='icon2 fa fa-television'></i>", '', `${data.tv_setter} changed the tv to ${name}`, 'small', false, title, onclick, true, false, d)
+	if(restarted)
+	{
+		var action = `${data.username} restarted the tv`
+	}
+
+	else
+	{
+		var action = `${data.tv_setter} changed the tv to ${name}`
+	}
+
+	chat_announce("<i class='icon2 fa fa-television'></i>", '', action, 'small', false, title, onclick, true, false, d)
 }
 
 function ban(uname)
