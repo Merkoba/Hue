@@ -918,7 +918,7 @@ function start_socket()
 
 		else if(data.type === 'restarted_radio_source')
 		{
-			announce_radio_source_change(data, false, true)
+			announce_radio_source_change(data, false, "restarted")
 			setup_radio(data)			
 		}
 
@@ -930,7 +930,7 @@ function start_socket()
 
 		else if(data.type === 'restarted_tv_source')
 		{
-			announce_tv_source_change(data, false, true)
+			announce_tv_source_change(data, false, "restarted")
 			setup_tv(data)			
 		}
 
@@ -5750,7 +5750,7 @@ function change_radio_source(src)
 	}
 }
 
-function announce_radio_source_change(data, date=false, restarted=false)
+function announce_radio_source_change(data, date=false, action="restarted")
 {
 	if(data.radio_title !== "")
 	{
@@ -5787,7 +5787,7 @@ function announce_radio_source_change(data, date=false, restarted=false)
 		var d = Date.now()
 	}
 
-	if(restarted)
+	if(action === "restarted")
 	{
 		var action = `${data.username} restarted the radio`
 	}
@@ -5857,7 +5857,7 @@ function change_tv_source(src)
 	}
 }
 
-function announce_tv_source_change(data, date=false, restarted=false)
+function announce_tv_source_change(data, date=false, action="change")
 {
 	if(data.tv_title !== "")
 	{
@@ -5888,7 +5888,7 @@ function announce_tv_source_change(data, date=false, restarted=false)
 		goto_url(data.tv_source, "tab")
 	}
 
-	if(restarted)
+	if(action === "restarted")
 	{
 		var action = `${data.username} restarted the tv`
 	}
@@ -7506,7 +7506,7 @@ function change_tv_visibility()
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-on")
 
-		change("tv")
+		change("tv", true)
 	}
 
 	else
