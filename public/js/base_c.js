@@ -918,7 +918,7 @@ function start_socket()
 
 		else if(data.type === 'restarted_radio_source')
 		{
-			announce_radio_source_change(data, false, "restarted")
+			announce_radio_source_change(data, false, "restart")
 			setup_radio(data)			
 		}
 
@@ -930,7 +930,7 @@ function start_socket()
 
 		else if(data.type === 'restarted_tv_source')
 		{
-			announce_tv_source_change(data, false, "restarted")
+			announce_tv_source_change(data, false, "restart")
 			setup_tv(data)			
 		}
 
@@ -5750,7 +5750,7 @@ function change_radio_source(src)
 	}
 }
 
-function announce_radio_source_change(data, date=false, action="restarted")
+function announce_radio_source_change(data, date=false, action="change")
 {
 	if(data.radio_title !== "")
 	{
@@ -5787,7 +5787,7 @@ function announce_radio_source_change(data, date=false, action="restarted")
 		var d = Date.now()
 	}
 
-	if(action === "restarted")
+	if(action === "restart")
 	{
 		var action = `${data.username} restarted the radio`
 	}
@@ -5888,7 +5888,7 @@ function announce_tv_source_change(data, date=false, action="change")
 		goto_url(data.tv_source, "tab")
 	}
 
-	if(action === "restarted")
+	if(action === "restart")
 	{
 		var action = `${data.username} restarted the tv`
 	}
