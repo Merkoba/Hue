@@ -1184,7 +1184,7 @@ function stop_videos()
 {
 	if(youtube_video_player !== undefined)
 	{
-		youtube_video_player.pauseVideo()
+		youtube_video_player.stopVideo()
 	}
 
 	if(twitch_video_player !== undefined)
@@ -7397,7 +7397,11 @@ function start_titles()
 
 function setup_media_video()
 {
-	hls = new Hls()
+	hls = new Hls(
+	{
+		maxBufferSize: 5*1000*1000,
+		maxBufferLength: 10
+	})
 }
 
 function num_media_elements_visible()
