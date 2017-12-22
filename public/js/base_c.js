@@ -1184,7 +1184,7 @@ function stop_videos()
 {
 	if(youtube_video_player !== undefined)
 	{
-		youtube_video_player.stopVideo()
+		youtube_video_player.pauseVideo()
 	}
 
 	if(twitch_video_player !== undefined)
