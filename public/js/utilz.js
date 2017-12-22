@@ -58,17 +58,15 @@ var Utilz = function()
 
 		var list_match = url.match(/(?:\?|&)(list=[0-9A-Za-z_-]+)/)
 		
-		var index_match = url.match(/(?:\?|&)(index=[0-9A-Za-z_-]+)/)
+		var index_match = url.match(/(?:\?|&)(index=[0-9]+)/)
 
 		if(list_match)
 		{
 			list_id = list_match[1].replace("list=", "")		
 		}
 
-		if(list_id)
+		if((list_id && !index_match) || list_id && !v_id)
 		{
-			var index_match = url.match(/(?:\?|&)(index=[0-9]+)/)
-
 			var index = 0
 
 			if(index_match)
