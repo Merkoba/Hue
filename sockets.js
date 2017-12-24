@@ -2369,7 +2369,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					else
 					{
-						socket.emit('update', {room:socket.room_id, type:'songnotfound'})
+						socket.emit('update', {room:socket.room_id, type:'videonotfound'})
 					}						
 				})
 
