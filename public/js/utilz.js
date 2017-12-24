@@ -65,7 +65,7 @@ var Utilz = function()
 			list_id = list_match[1].replace("list=", "")		
 		}
 
-		if((list_id && !index_match) || list_id && !v_id)
+		if(list_id && !v_id)
 		{
 			var index = 0
 
