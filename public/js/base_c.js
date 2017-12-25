@@ -1192,7 +1192,9 @@ function stop_videos()
 		twitch_video_player.pause()
 	}
 
-	$("#media_video")[0].pause()	
+	$("#media_video")[0].pause()
+
+	hls.stopLoad()
 }
 
 function show_youtube_video(play=true)
