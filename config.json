@@ -24,6 +24,7 @@
 	"default_topic": "No topic",
 	"default_topic_admin": "Check the main menu for administration options",
 	"redirect_url": "https://en.wikipedia.org/wiki/Special:Random",
+	"video_error_url": "/videos/didntload.mp4",
 	"max_stored_images": 50,
 	"check_metadata_interval_duration": 12000,
 	"general_opacity": 0.95,

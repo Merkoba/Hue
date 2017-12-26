@@ -61,6 +61,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.default_default_background_image_url = config.default_default_background_image_url
 	c.vars.background_image_loading_url = config.background_image_loading_url
 	c.vars.upload_slice_size = config.upload_slice_size
+	c.vars.video_error_url = config.video_error_url
 
 	function check_url(req, res, next)
 	{

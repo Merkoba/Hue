@@ -124,6 +124,7 @@ var images_locked = false
 var tv_locked = false 
 var radio_locked = false
 var old_input_val
+var check_video_timeout
 
 function init()
 {
@@ -1284,7 +1285,6 @@ function show_video(play=true)
 	if(split[split.length - 1] === "m3u8")
 	{
 		hls.loadSource(tv_source)
-
 		hls.attachMedia($("#media_video")[0])
 	}
 
@@ -1292,6 +1292,8 @@ function show_video(play=true)
 	{
 		$("#media_video").prop("src", tv_source)
 	}
+
+	check_video_load(tv_source)
 
 	$("#media_youtube_video_container").css("display", "none")
 	$("#media_twitch_video_container").css("display", "none")	
@@ -1310,6 +1312,40 @@ function show_video(play=true)
 function after_media_show()
 {
 	fix_media_margin()
+}
+
+function check_video_load(src)
+{
+	clearTimeout(check_video_timeout)
+
+	if(src === video_error_url)
+	{
+		return false
+	}
+
+	check_video_timeout = setTimeout(function()
+	{
+		if(src === tv_source)
+		{
+			var state = $("#media_video")[0].readyState
+
+			if(state === 0)
+			{
+				show_video_error()
+			}
+		}
+	}, 5000)
+}
+
+function show_video_error()
+{
+	setup_tv(
+	{
+		tv_source: video_error_url,
+		tv_title: "Video Didn't Load",
+		tv_date: Date.now(),
+		tv_type: "url"
+	})
 }
 
 function setup_default_theme(data)
@@ -8274,7 +8310,7 @@ function check_typing()
 	{
 		if(oldval.indexOf(val) !== -1)
 		{
-			return
+			return false
 		}
 	}
 
@@ -8286,7 +8322,7 @@ function check_typing()
 		{
 			if(tval[1] !== "/")
 			{
-				return
+				return false
 			}
 		}
 
