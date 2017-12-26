@@ -8308,10 +8308,7 @@ function check_typing()
 
 	if(val.length < oldval.length)
 	{
-		if(oldval.indexOf(val) !== -1)
-		{
-			return false
-		}
+		return false
 	}
 
 	var tval = val.trim()
