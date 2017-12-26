@@ -123,6 +123,7 @@ var youtube_video_play_on_queue = false
 var images_locked = false
 var tv_locked = false 
 var radio_locked = false
+var old_input_val
 
 function init()
 {
@@ -1032,6 +1033,11 @@ function start_socket()
 		else if(data.type === 'voice_permission_change')
 		{
 			announce_voice_permission_change(data)
+		}
+
+		else if(data.type === 'typing')
+		{
+			show_typing()
 		}				
 
 		else if(data.type === 'disconnection')
@@ -8250,7 +8256,90 @@ function setup_input()
 	$("#input").on("input", function()
 	{
 		input_changed = true
+		check_typing()
 	})
+
+	old_input_val = $("#input").val()
+}
+
+function check_typing()
+{
+	var val = $("#input").val()
+
+	var oldval = old_input_val
+
+	old_input_val = val
+
+	if(val.length < oldval.length)
+	{
+		if(oldval.indexOf(val) !== -1)
+		{
+			return
+		}
+	}
+
+	var tval = val.trim()
+
+	if(can_chat && tval !== "")
+	{
+		if(tval[0] === "/")
+		{
+			if(tval[1] !== "/")
+			{
+				return
+			}
+		}
+
+		typing_timer()
+	}	
+}
+
+var typing_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			socket_emit("typing", {})
+		}, 100)
+	}
+})()
+
+var typing_remove_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			$("#footer_userinfo").removeClass("fa-pencil")
+			$("#footer_userinfo").addClass("fa-navicon")
+			update_chat_scrollbar()
+		}, 1200)
+	}
+})()
+
+function show_typing()
+{
+	if($("#typing").length === 0)
+	{
+		$("#footer_userinfo").addClass("fa-pencil")
+		$("#footer_userinfo").removeClass("fa-navicon")
+
+		typing_remove_timer()
+	}
+
+	else
+	{
+		typing_remove_timer()
+	}
 }
 
 function shrug()

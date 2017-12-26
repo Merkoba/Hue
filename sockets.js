@@ -638,6 +638,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				console.error(err)
 			}
+		})
+
+		socket.on('typing', function(data) 
+		{
+			try
+			{
+				typing(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
 		})			
 
 		socket.on('disconnect', function(reason)
@@ -3756,6 +3769,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					date: data.date 
 				})
 			}		
+		}
+	}
+
+	function typing(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(!check_permission(socket, "chat"))
+			{
+				return false
+			}
+
+			socket.broadcast.in(socket.room_id).emit('update',
+			{
+				type: 'typing'
+			})		
 		}
 	}
 
