@@ -168,8 +168,13 @@ function init()
 
 function make_main_container_visible()
 {
-	$("body").css("background-image", "none")
+	$("#loading").css("opacity", 0)
 	$("#main_container").css("opacity", 1).css("pointer-events", "initial")
+
+	setTimeout(function()
+	{
+		$("#loading").css("display", "none")
+	}, 1600)
 }
 
 function get_local_storage(ls_name)
@@ -1293,8 +1298,6 @@ function show_video(play=true)
 		$("#media_video").prop("src", tv_source)
 	}
 
-	check_video_load(tv_source)
-
 	$("#media_youtube_video_container").css("display", "none")
 	$("#media_twitch_video_container").css("display", "none")	
 	$("#media_video_container").css("display", "flex")
@@ -1312,29 +1315,6 @@ function show_video(play=true)
 function after_media_show()
 {
 	fix_media_margin()
-}
-
-function check_video_load(src)
-{
-	clearTimeout(check_video_timeout)
-
-	if(src === video_error_url)
-	{
-		return false
-	}
-
-	check_video_timeout = setTimeout(function()
-	{
-		if(src === tv_source)
-		{
-			var state = $("#media_video")[0].readyState
-
-			if(state === 0)
-			{
-				show_video_error()
-			}
-		}
-	}, 5000)
 }
 
 function show_video_error()
@@ -3567,7 +3547,7 @@ function start_image_events()
 function after_image_load(img)
 {
 	current_image_url = image_url
-	current_image_title = image_title			
+	current_image_title = image_title
 	
 	$(img).prop('title', image_title)
 }
@@ -3719,7 +3699,7 @@ jQuery.fn.urlize = function()
 		{
 			var x = $(obj).html()
 
-			var list = x.match(/((?:https?(?::\/\/))(?:www\.)?[a-zA-Z0-9-_.]+(?:\.[a-zA-Z0-9]{2,})(?:[-a-zA-Z0-9:%_+.~#?&//=@;]*))/g)
+			var list = x.match(/((?:https?(?::\/\/))(?:www\.)?[a-zA-Z0-9-_.]+(?:\.[a-zA-Z0-9]{2,})(?:[-a-zA-Z0-9:%_+.~#?&//=@;\*]*))/g)
 
 			if(list) 
 			{
@@ -3736,7 +3716,7 @@ jQuery.fn.urlize = function()
 
 function urlize(s, classname="generic")
 {
-	return s.replace(/((?:https?(?::\/\/))(?:www\.)?[a-zA-Z0-9-_.]+(?:\.[a-zA-Z0-9]{2,})(?:[-a-zA-Z0-9:%_+.~#?&//=@;]*))/g, `<a class='${classname}' target='_blank' href='$1'>$1</a>`)
+	return s.replace(/((?:https?(?::\/\/))(?:www\.)?[a-zA-Z0-9-_.]+(?:\.[a-zA-Z0-9]{2,})(?:[-a-zA-Z0-9:%_+.~#?&//=@;\*]*))/g, `<a class='${classname}' target='_blank' href='$1'>$1</a>`)
 }
 
 function msg_is_ok(msg)
@@ -6230,7 +6210,7 @@ function start_msg()
 		clear_editables: true
 	}
 
-	msg_menu = Msg
+	msg_menu = Msg.factory
 	(
 		Object.assign({}, common,
 		{
@@ -6255,7 +6235,7 @@ function start_msg()
 		})
 	)
 
-	msg_userinfo = Msg
+	msg_userinfo = Msg.factory
 	(
 		Object.assign({}, common,
 		{		
@@ -6280,7 +6260,7 @@ function start_msg()
 		})
 	)
 
-	msg_userlist = Msg
+	msg_userlist = Msg.factory
 	(
 		Object.assign({}, common,
 		{		
@@ -6306,7 +6286,7 @@ function start_msg()
 		})
 	)
 
-	msg_roomlist = Msg
+	msg_roomlist = Msg.factory
 	(
 		Object.assign({}, common,
 		{
@@ -6331,7 +6311,7 @@ function start_msg()
 		})
 	)
 
-	msg_played = Msg
+	msg_played = Msg.factory
 	(
 		Object.assign({}, common,
 		{
@@ -6357,7 +6337,7 @@ function start_msg()
 		})
 	)
 
-	msg_image = Msg
+	msg_image = Msg.factory
 	(
 		Object.assign({}, common,
 		{
@@ -6383,7 +6363,7 @@ function start_msg()
 		})
 	)
 
-	msg_profile = Msg
+	msg_profile = Msg.factory
 	(
 		Object.assign({}, common,
 		{
@@ -6408,7 +6388,7 @@ function start_msg()
 		})
 	)
 
-	msg_info = Msg
+	msg_info = Msg.factory
 	(
 		Object.assign({}, common,
 		{
@@ -6439,7 +6419,7 @@ function start_msg()
 		})
 	)
 
-	msg_image_picker = Msg
+	msg_image_picker = Msg.factory
 	(
 		Object.assign({}, common,
 		{

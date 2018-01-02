@@ -15,7 +15,6 @@ body
 	background-color: black;
 	overflow: hidden;
 	background-color: rgb(24,24,24);
-	background-image: url('intro.jpg');
 	background-repeat: no-repeat;
 	background-position: center;
 }
@@ -1000,4 +999,44 @@ input[type=text], textarea
 .admin_v_container
 {
 	display: none;
+}
+
+#loading
+{
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	z-index: 9999999999999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #b17fbf;
+	transition: opacity 1.6s linear;	
+}
+
+#loading_spinner 
+{
+	width: 80px;
+	height: 80px;
+	background-color: #8f46a8;
+	animation: rotate_plane 1.2s infinite ease-in-out;
+}
+
+@keyframes rotate_plane 
+{
+	0% 
+	{
+		-webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+		transform: perspective(120px) rotateX(0deg) rotateY(0deg); 
+	}
+	50% 
+	{
+		-webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+		transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg); 
+	}
+	100% 
+	{
+		-webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+		transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg); 
+	} 
 }
