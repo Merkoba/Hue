@@ -3356,6 +3356,11 @@ function update_chat(uname, msg, prof_image, date=false)
 	alert_title()
 
 	sound_notify()
+
+	if(uname !== username)
+	{
+		hide_pencil()
+	}
 }
 
 function add_to_chat(msg)
@@ -5336,6 +5341,7 @@ function unclear_chat()
 function clear_input()
 {
 	$('#input').val("")
+	old_input_val = ""
 }
 
 function add_to_input(what)
@@ -8331,27 +8337,27 @@ var typing_remove_timer = (function()
 
 		timer = setTimeout(function() 
 		{
-			$("#footer_userinfo").removeClass("fa-pencil")
-			$("#footer_userinfo").addClass("fa-navicon")
-			update_chat_scrollbar()
-		}, 1200)
+			hide_pencil()
+		}, 2000)
 	}
 })()
 
 function show_typing()
 {
-	if($("#typing").length === 0)
-	{
-		$("#footer_userinfo").addClass("fa-pencil")
-		$("#footer_userinfo").removeClass("fa-navicon")
+	show_pencil()
+	typing_remove_timer()
+}
 
-		typing_remove_timer()
-	}
+function show_pencil()
+{
+	$("#footer_userinfo").addClass("fa-pencil")
+	$("#footer_userinfo").removeClass("fa-navicon")
+}
 
-	else
-	{
-		typing_remove_timer()
-	}
+function hide_pencil()
+{
+	$("#footer_userinfo").removeClass("fa-pencil")
+	$("#footer_userinfo").addClass("fa-navicon")
 }
 
 function shrug()
