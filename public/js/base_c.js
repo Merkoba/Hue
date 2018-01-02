@@ -124,7 +124,6 @@ var images_locked = false
 var tv_locked = false 
 var radio_locked = false
 var old_input_val
-var check_video_timeout
 
 function init()
 {
