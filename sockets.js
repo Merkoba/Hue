@@ -48,23 +48,23 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	var last_roomlist
 	var roomlist_lastget = 0
 
-	// antiSpam.init(
-	// {
-	// 	banTime: config.antispam_banTime, // Ban time in minutes 
-	// 	kickThreshold: config.antispam_kickThreshold, // User gets kicked after this many spam score 
-	// 	kickTimesBeforeBan: config.antispam_kickTimesBeforeBan, // User gets banned after this many kicks 
-	// 	banning: config.antispam_banning, // Uses temp IP banning after kickTimesBeforeBan 
-	// 	heartBeatStale: config.antispam_heartBeatStale, // Removes a heartbeat after this many seconds 
-	// 	heartBeatCheck: config.antispam_heartBeatCheck, // Checks a heartbeat per this many seconds 
-	// 	io: io // Bind the socket.io variable 
-	// })
+	antiSpam.init(
+	{
+		banTime: config.antispam_banTime, // Ban time in minutes 
+		kickThreshold: config.antispam_kickThreshold, // User gets kicked after this many spam score 
+		kickTimesBeforeBan: config.antispam_kickTimesBeforeBan, // User gets banned after this many kicks 
+		banning: config.antispam_banning, // Uses temp IP banning after kickTimesBeforeBan 
+		heartBeatStale: config.antispam_heartBeatStale, // Removes a heartbeat after this many seconds 
+		heartBeatCheck: config.antispam_heartBeatCheck, // Checks a heartbeat per this many seconds 
+		io: io // Bind the socket.io variable 
+	})
 
-	// antiSpam.event.on('ban', function(socket, data)
-	// {
-	// 	socket.kickd = true
-	// 	socket.info1 = "the anti-spam system"
-	// 	do_disconnect(socket)
-	// })
+	antiSpam.event.on('ban', function(socket, data)
+	{
+		socket.kickd = true
+		socket.info1 = "the anti-spam system"
+		do_disconnect(socket)
+	})
 
 	start_room_loop()
 	start_files_loop()
