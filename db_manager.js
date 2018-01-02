@@ -395,7 +395,7 @@ module.exports = function(db, config, sconfig, utilz)
 				images_enabled: true,
 				radio_enabled: true,
 				tv_enabled: true,
-				default_theme: "rgb(24,24,24)",
+				default_theme: "rgb(124, 77, 130)",
 				default_background_image: "",
 				default_background_image_enabled: true,
 				log: true,
