@@ -6389,6 +6389,9 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
+
+				$("#show_profile_uname").text("Loading")
+				$("#show_profile_image").attr("src", default_profile_image_url)
 			}
 		})
 	)
@@ -6456,7 +6459,7 @@ function start_msg()
 	msg_userlist.set(template_userlist())
 	msg_roomlist.set(template_roomlist())
 	msg_played.set(template_played())
-	msg_profile.set(template_profile())
+	msg_profile.set(template_profile({profile_image: default_profile_image_url}))
 	msg_image_picker.set(template_image_picker())
 
 	msg_image.create()
