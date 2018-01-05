@@ -5756,7 +5756,7 @@ function change_radio_source(src)
 			}
 		}
 
-		else if(src !== "restart")
+		else if(src !== "restart" && src !== "reset")
 		{
 			if(!youtube_enabled)
 			{
@@ -5863,7 +5863,7 @@ function change_tv_source(src)
 			}
 		}
 
-		else if(src !== "restart")
+		else if(src !== "restart" && src !== "reset")
 		{
 			if(!youtube_enabled)
 			{

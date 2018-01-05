@@ -2080,7 +2080,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				}
 			}
 
-			else if(data.src === "restart")
+			else if(data.src === "restart" || data.src === "reset")
 			{
 				db_manager.get_room({_id:socket.room_id}, 
 				{
@@ -2313,7 +2313,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				}
 			}
 
-			else if(data.src === "restart")
+			else if(data.src === "restart" || data.src === "reset")
 			{
 				db_manager.get_room({_id:socket.room_id}, 
 				{
