@@ -3138,7 +3138,7 @@ function check_scroll_notice()
 	var $ch = $("#chat_area")
 	var max = $ch.prop('scrollHeight') - $ch.innerHeight()
 
-	if(max - $ch.scrollTop() > 100)
+	if(max - $ch.scrollTop() > 10)
 	{
 		$('#scroll_notice').css('visibility', 'visible')
 	}
