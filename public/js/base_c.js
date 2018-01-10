@@ -8473,5 +8473,5 @@ function setup_modal_colors()
 
 function setup_separator()
 {
-	separator_title = `This means more than ${separator_min_diff / 1000 / 60} minutes have passed in between`	
+	separator_title = `This means more than ${Math.floor(separator_min_diff / 1000 / 60)} minutes have passed in between`
 }
