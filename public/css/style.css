@@ -561,18 +561,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 	border-bottom: 1px dotted;
 }
 
-.dash_container
-{
-	max-width: 50%;
-}
-
-.dash
-{
-	color: inherit;
-	border: 1px dashed;
-	border-color: currentColor;
-}
-
 .setting_title
 {
 	padding-bottom: 0.5em;
@@ -1039,4 +1027,9 @@ input[type=text], textarea
 		-webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
 		transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg); 
 	} 
+}
+
+.separator
+{
+	padding-left: 20px;	
 }

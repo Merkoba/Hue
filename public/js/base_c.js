@@ -3347,7 +3347,7 @@ function update_chat(uname, msg, prof_image, date=false)
 	
 	fmsg.find('.chat_uname').eq(0).text(uname)
 
-	add_to_chat(fmsg)
+	add_to_chat(fmsg, d)
 
 	push_to_chat_history(fmsg)
 
@@ -3363,17 +3363,19 @@ function update_chat(uname, msg, prof_image, date=false)
 	}
 }
 
-function add_to_chat(msg)
+function add_to_chat(msg, date)
 {
 	var chat_area = $('#chat_area')
 
-	if(document.hidden)
+	if($(".msg").length > 0)
 	{
-		if($('.dash').length === 0 && (started || connections > 1))
+		if((date - $(".msg").last().data("date")) > separator_min_diff)
 		{
-			chat_area.append("<div class='msg dash_container'><hr class='dash'></div>")
+			chat_area.append("<div class='msg separator'>|</div>")
 		}
 	}
+
+	msg.data("date", date)
 
 	chat_area.append(msg)
 
@@ -3381,7 +3383,7 @@ function add_to_chat(msg)
 	{
 		$("#chat_area > .msg").eq(0).remove()
 		scroll_timer()
-	}	
+	}
 
 	update_chat_scrollbar()
 }
@@ -3685,7 +3687,7 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 
 	content.parent().on("click", onclick)
 
-	add_to_chat(fmsg)
+	add_to_chat(fmsg, d)
 
 	if(save)
 	{
@@ -5025,7 +5027,6 @@ function activate_window_visibility_listener()
 		else
 		{
 			afk_timer = setTimeout(function(){afk = true}, afk_timeout_duration)
-			$('.dash_container').remove()
 			update_chat_scrollbar()
 			check_scroll_notice()
 		}

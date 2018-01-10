@@ -62,6 +62,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.background_image_loading_url = config.background_image_loading_url
 	c.vars.upload_slice_size = config.upload_slice_size
 	c.vars.video_error_url = config.video_error_url
+	c.vars.separator_min_diff = config.separator_min_diff
 
 	function check_url(req, res, next)
 	{
