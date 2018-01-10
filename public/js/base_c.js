@@ -124,6 +124,7 @@ var images_locked = false
 var tv_locked = false 
 var radio_locked = false
 var old_input_val
+var separator_title
 
 function init()
 {
@@ -161,6 +162,7 @@ function init()
 	start_twitch()
 	check_image_queue()
 	setup_input()
+	setup_separator()
 
 	start_socket()
 }
@@ -3371,7 +3373,7 @@ function add_to_chat(msg, date)
 	{
 		if((date - $(".msg").last().data("date")) > separator_min_diff)
 		{
-			chat_area.append("<div class='msg separator'>|</div>")
+			chat_area.append(`<div class='msg'><span class='separator' title='${separator_title}'>|</span></div>`)
 		}
 	}
 
@@ -8467,4 +8469,9 @@ function setup_modal_colors()
 	})
 
 	$("head").append(css)
+}
+
+function setup_separator()
+{
+	separator_title = `This means more than ${separator_min_diff / 1000 / 60} minutes have passed in between`	
 }
