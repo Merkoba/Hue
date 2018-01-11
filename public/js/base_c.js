@@ -6252,11 +6252,21 @@ function start_msg()
 {
 	var common = 
 	{
-		show_effect: "none",
-		close_effect: "none",
 		show_effect_duration: [200, 200],
 		close_effect_duration: [200, 200],
 		clear_editables: true
+	}
+
+	if(settings.modal_effects)
+	{
+		common.show_effect = "fade"
+		common.close_effect = "fade"
+	}
+
+	else
+	{
+		common.show_effect = "none"
+		common.close_effect = "none"
 	}
 
 	msg_menu = Msg.factory
