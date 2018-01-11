@@ -3385,7 +3385,7 @@ function add_to_chat(msg, save=false, update_scrollbar=true)
 	{
 		if(msg.find(".chat_uname").eq(0).text() === last_msg.find(".chat_uname").eq(0).text())
 		{
-			if(last_message_date_diff < max_same_post)
+			if(last_message_date_diff < max_same_post_diff)
 			{
 				last_msg.find(".chat_content_container").eq(0).append("<br>").append(msg.find(".chat_content").eq(0))
 				replace_in_chat_history(last_msg)
