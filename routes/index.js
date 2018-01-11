@@ -48,6 +48,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.settings_default_background_image = config.settings_default_background_image
 	c.vars.settings_default_custom_scrollbars = config.settings_default_custom_scrollbars
 	c.vars.settings_default_sound_notifications = config.settings_default_sound_notifications,
+	c.vars.settings_default_modal_effects = config.settings_default_modal_effects,
 	c.vars.settings_default_images_enabled = config.settings_default_images_enabled,
 	c.vars.settings_default_tv_enabled = config.settings_default_tv_enabled,
 	c.vars.settings_default_radio_enabled = config.settings_default_radio_enabled,

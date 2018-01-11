@@ -6252,8 +6252,8 @@ function start_msg()
 {
 	var common = 
 	{
-		show_effect: "fade",
-		close_effect: "fade",
+		show_effect: "none",
+		close_effect: "none",
 		show_effect_duration: [200, 200],
 		close_effect_duration: [200, 200],
 		clear_editables: true
@@ -6586,6 +6586,12 @@ function get_settings()
 		changed = true
 	}
 
+	if(settings.modal_effects === undefined)
+	{
+		settings.modal_effects = settings_default_modal_effects
+		changed = true
+	}
+
 	if(settings.images_enabled === undefined)
 	{
 		settings.images_enabled = settings_default_images_enabled
@@ -6622,6 +6628,8 @@ function start_settings_state()
 	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
 	
 	$("#setting_sound_notifications").prop("checked", settings.sound_notifications)
+	
+	$("#setting_modal_effects").prop("checked", settings.modal_effects)
 }
 
 function start_settings_listeners()
@@ -6643,6 +6651,27 @@ function start_settings_listeners()
 	$("#setting_sound_notifications").change(function()
 	{
 		settings.sound_notifications = $("#setting_sound_notifications").prop("checked")
+		save_settings()
+	})
+
+	$("#setting_modal_effects").change(function()
+	{
+		settings.modal_effects = $("#setting_modal_effects").prop("checked")
+
+		for(var instance of msg_menu.instances())
+		{
+			if(settings.modal_effects)
+			{
+				instance.options.show_effect = "fade"
+				instance.options.close_effect = "fade"
+			}
+
+			else
+			{
+				instance.options.show_effect = "none"
+				instance.options.close_effect = "none"				
+			}
+		}
 
 		save_settings()
 	})
