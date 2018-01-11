@@ -8414,7 +8414,7 @@ var typing_remove_timer = (function()
 		timer = setTimeout(function() 
 		{
 			hide_pencil()
-		}, 2000)
+		}, max_typing_inactivity)
 	}
 })()
 
