@@ -125,6 +125,7 @@ var tv_locked = false
 var radio_locked = false
 var old_input_val
 var separator_title
+var msg_id = 0
 
 function init()
 {
@@ -3277,7 +3278,7 @@ function start_chat_click_events()
 
 	$("#chat_area").on("click", ".chat_profile_image", function() 
 	{
-		show_profile($(this).closest(".chat_message").find(".chat_uname").eq(0).text(), $(this).attr('src')) 		
+		show_profile($(this).closest(".chat_message").find(".chat_uname").eq(0).text(), $(this).attr('src'))
 	})	
 }
 
@@ -3349,9 +3350,9 @@ function update_chat(uname, msg, prof_image, date=false)
 	
 	fmsg.find('.chat_uname').eq(0).text(uname)
 
-	add_to_chat(fmsg, d)
+	fmsg.data("date", d)
 
-	push_to_chat_history(fmsg)
+	add_to_chat(fmsg, true)
 
 	goto_bottom()
 
@@ -3365,29 +3366,58 @@ function update_chat(uname, msg, prof_image, date=false)
 	}
 }
 
-function add_to_chat(msg, date)
+function add_to_chat(msg, save=false, update_scrollbar=true)
 {
 	var chat_area = $('#chat_area')
+	var last_msg = $(".msg").last()
+	var last_message_date_diff = msg.data("date") - last_msg.data("date")
+	var appended = false
 
 	if($(".msg").length > 0)
 	{
-		if((date - $(".msg").last().data("date")) > separator_min_diff)
+		if(last_message_date_diff > separator_min_diff)
 		{
 			chat_area.append(`<div class='msg'><span class='separator' title='${separator_title}'>|</span></div>`)
 		}
 	}
 
-	msg.data("date", date)
-
-	chat_area.append(msg)
-
-	if($(".msg").length > chat_crop_limit)
+	if((msg.hasClass("chat_message") && !msg.hasClass("thirdperson")) && (last_msg.hasClass("chat_message") && !last_msg.hasClass("thirdperson")))
 	{
-		$("#chat_area > .msg").eq(0).remove()
-		scroll_timer()
+		if(msg.find(".chat_uname").eq(0).text() === last_msg.find(".chat_uname").eq(0).text())
+		{
+			if(last_message_date_diff < max_same_post)
+			{
+				last_msg.find(".chat_content_container").eq(0).append("<br>").append(msg.find(".chat_content").eq(0))
+				replace_in_chat_history(last_msg)
+				appended = true
+			}
+		}
 	}
 
-	update_chat_scrollbar()
+	if(!appended)
+	{
+		msg_id += 1
+
+		msg.data("msg_id", msg_id)
+		
+		chat_area.append(msg)
+		
+		if($(".msg").length > chat_crop_limit)
+		{
+			$("#chat_area > .msg").eq(0).remove()
+			scroll_timer()
+		}
+		
+		if(save)
+		{
+			push_to_chat_history(msg)
+		}
+	}
+
+	if(update_scrollbar)
+	{
+		update_chat_scrollbar()
+	}
 }
 
 function push_to_chat_history(msg)
@@ -3397,6 +3427,20 @@ function push_to_chat_history(msg)
 	if(chat_history.length > chat_crop_limit)
 	{
 		chat_history.shift()
+	}	
+}
+
+function replace_in_chat_history(msg)
+{
+	for(var i=0; i<chat_history.length; i++)
+	{
+		var msg2 = chat_history[i]
+
+		if(msg.data("msg_id") === msg2.data("msg_id"))
+		{
+			chat_history[i] = msg
+			return
+		}
 	}	
 }
 
@@ -3689,12 +3733,9 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 
 	content.parent().on("click", onclick)
 
-	add_to_chat(fmsg, d)
+	fmsg.data("date", d)
 
-	if(save)
-	{
-		push_to_chat_history(fmsg)
-	}
+	add_to_chat(fmsg, save)
 
 	goto_bottom()
 }
@@ -5334,7 +5375,7 @@ function unclear_chat()
 	
 	for(var el of chat_history)
 	{
-		$("#chat_area").append(el.clone(true, true))
+		add_to_chat(el.clone(true, true), false, false)
 	}
 
 	update_chat_scrollbar()

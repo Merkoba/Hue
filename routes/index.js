@@ -63,6 +63,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.upload_slice_size = config.upload_slice_size
 	c.vars.video_error_url = config.video_error_url
 	c.vars.separator_min_diff = config.separator_min_diff
+	c.vars.max_same_post = config.max_same_post
 
 	function check_url(req, res, next)
 	{
