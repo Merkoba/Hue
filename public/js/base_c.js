@@ -165,7 +165,6 @@ function init()
 	start_twitch()
 	check_image_queue()
 	setup_input()
-	setup_separator()
 
 	start_socket()
 }
@@ -3375,14 +3374,6 @@ function add_to_chat(msg, save=false, update_scrollbar=true)
 	var last_message_date_diff = msg.data("date") - last_msg.data("date")
 	var appended = false
 
-	if($(".msg").length > 0)
-	{
-		if(last_message_date_diff > separator_min_diff)
-		{
-			chat_area.append(`<div class='msg'><span class='separator' title='${separator_title}'>|</span></div>`)
-		}
-	}
-
 	if((msg.hasClass("chat_message") && !msg.hasClass("thirdperson")) && (last_msg.hasClass("chat_message") && !last_msg.hasClass("thirdperson")))
 	{
 		if(msg.find(".chat_uname").eq(0).text() === last_msg.find(".chat_uname").eq(0).text())
@@ -3398,10 +3389,6 @@ function add_to_chat(msg, save=false, update_scrollbar=true)
 
 	if(!appended)
 	{
-		msg_id += 1
-
-		msg.data("msg_id", msg_id)
-		
 		chat_area.append(msg)
 		
 		if($(".msg").length > chat_crop_limit)
@@ -3412,6 +3399,8 @@ function add_to_chat(msg, save=false, update_scrollbar=true)
 		
 		if(save)
 		{
+			msg_id += 1
+			msg.data("msg_id", msg_id)
 			push_to_chat_history(msg)
 		}
 	}
@@ -8589,9 +8578,4 @@ function setup_modal_colors()
 	})
 
 	$("head").append(css)
-}
-
-function setup_separator()
-{
-	separator_title = `This means more than ${Math.floor(separator_min_diff / 1000 / 60)} minutes have passed in between`
 }
