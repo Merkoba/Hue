@@ -3339,7 +3339,7 @@ function update_chat(uname, msg, prof_image, date=false)
 					<span class='chat_uname'></span>
 				</span>
 				<span class='chat_content_container'>
-					<span class='${contclasses}' title='${nd}'></span>
+					<span class='${contclasses}' title='${nd}' data-date='${d}'></span>
 				</span>
 			</span>
 		</div>`
@@ -3350,8 +3350,6 @@ function update_chat(uname, msg, prof_image, date=false)
 	}
 	
 	fmsg.find('.chat_uname').eq(0).text(uname)
-
-	fmsg.data("date", d)
 
 	add_to_chat(fmsg, true)
 
@@ -3371,14 +3369,15 @@ function add_to_chat(msg, save=false, update_scrollbar=true)
 {
 	var chat_area = $('#chat_area')
 	var last_msg = $(".msg").last()
-	var last_message_date_diff = msg.data("date") - last_msg.data("date")
 	var appended = false
 
 	if((msg.hasClass("chat_message") && !msg.hasClass("thirdperson")) && (last_msg.hasClass("chat_message") && !last_msg.hasClass("thirdperson")))
 	{
 		if(msg.find(".chat_uname").eq(0).text() === last_msg.find(".chat_uname").eq(0).text())
 		{
-			if(last_message_date_diff < max_same_post_diff)
+			var date_diff = msg.find('.chat_content').last().data("date") - last_msg.find('.chat_content').last().data("date")
+
+			if(date_diff < max_same_post_diff)
 			{
 				last_msg.find(".chat_content_container").eq(0).append("<br>").append(msg.find(".chat_content").eq(0))
 				replace_in_chat_history(last_msg)
@@ -3418,7 +3417,7 @@ function push_to_chat_history(msg)
 	if(chat_history.length > chat_crop_limit)
 	{
 		chat_history.shift()
-	}	
+	}
 }
 
 function replace_in_chat_history(msg)
@@ -3723,8 +3722,6 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 	content.text(msg).urlize()
 
 	content.parent().on("click", onclick)
-
-	fmsg.data("date", d)
 
 	add_to_chat(fmsg, save)
 
@@ -5279,12 +5276,19 @@ function chat_search(filter=false)
 			var show = false
 			
 			var huname = $(this).find('.chat_uname').eq(0)
-			var hcontent = $(this).find('.chat_content').eq(0)
+			var hcontent_container = $(this).find('.chat_content_container').eq(0)
+			var hcontent = $(this).find('.chat_content')
 
 			if(huname.length !== 0 && hcontent.length !== 0)
 			{
 				var uname = huname.text()
-				var content = hcontent.text()
+
+				var content = ""
+
+				hcontent.each(function()
+				{
+					content += `${$(this).text()} `	
+				})
 
 				if(uname.toLowerCase().indexOf(filter) !== -1)
 				{
@@ -5301,7 +5305,21 @@ function chat_search(filter=false)
 					var cn = $("<div class='search_result_item'><div class='search_result_uname'></div><div class='search_result_content'></div>")
 
 					cn.find(".search_result_uname").eq(0).html(huname.clone())
-					cn.find(".search_result_content").eq(0).html(hcontent.clone())
+
+					for(var i=0; i < hcontent.length; i++)
+					{
+						var hc = hcontent.get(i)
+
+						if(i < hcontent.length - 1)
+						{
+							cn.find(".search_result_content").eq(0).append($(hc).clone()).append("<br>")
+						}
+
+						else
+						{
+							cn.find(".search_result_content").eq(0).append($(hc).clone())
+						}
+					}
 
 					c.append(cn)
 				}
