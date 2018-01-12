@@ -7616,10 +7616,12 @@ function change_images_visibility()
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-on")
 
-		if(layout_mode !== "normal")
+		var num_visible = num_media_elements_visible()
+
+		if(num_visible > 1)
 		{
-			enable_normal_mode()
-		}		
+			enable_normal_mode()	
+		}	
 
 		change("image")
 	}
@@ -7672,6 +7674,13 @@ function change_tv_visibility()
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-on")
 
+		var num_visible = num_media_elements_visible()
+
+		if(num_visible > 1)
+		{
+			enable_normal_mode()	
+		}		
+
 		change("tv", true)
 	}
 
@@ -7679,14 +7688,17 @@ function change_tv_visibility()
 	{
 		$("#media_tv").css("display", "none")
 
-		if(num_media_elements_visible() === 0)
+		var num_visible = num_media_elements_visible()
+
+		if(num_visible === 0)
 		{
 			hide_media()
 		}
 
-		else
+		else if(num_visible === 1)
 		{
 			stop_videos()
+			enable_wide_mode()
 		}
 
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-on")
