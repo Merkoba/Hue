@@ -7857,10 +7857,12 @@ function show_profile(uname, prof_image)
 		var pi = prof_image
 	}
 
+	$("#show_profile_uname").text(uname)
+	$("#show_profile_image").attr("src", pi)
+
 	msg_profile.show(function()
 	{
-		$("#show_profile_uname").text(uname)
-		$("#show_profile_image").attr("src", pi)
+		update_modal_scrollbar("profile")
 	})
 }
 

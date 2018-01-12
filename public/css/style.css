@@ -920,7 +920,6 @@ input[type=text], textarea
 {
 	height: 200px;
 	width: 200px;
-	cursor: pointer;
 }
 
 #profile_image_picker
