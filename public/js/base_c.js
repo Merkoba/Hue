@@ -7703,7 +7703,6 @@ function change_tv_visibility()
 
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-off")
-		
 	}
 
 	fix_media_margin()
