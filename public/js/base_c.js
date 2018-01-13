@@ -8378,8 +8378,8 @@ function announce_voice_permission_change(data)
 
 function enable_wide_mode()
 {
-	$("#chat_main").css("min-width", "40%")
-	$("#media").css("min-width", "60%")
+	$("#chat_main").css("min-width", "30%")
+	$("#media").css("min-width", "70%")
 
 	layout_mode = "wide"
 }
