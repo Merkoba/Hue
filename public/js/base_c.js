@@ -7464,7 +7464,7 @@ function show_modal_image(url, title=false)
 		var t = ""
 	}
 
-	var c = $("<div></div>")
+	var c = $("<div class='modal_image_container'></div>")
 
 	c.append($(`<div id="modal_spinner" class='spinner1'></div><img ${t} id="modal_image" class="modal_image" src="${url}">`))
 

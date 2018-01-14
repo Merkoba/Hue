@@ -837,6 +837,11 @@ input[type=text], textarea
 	max-height: 90vh !important;
 }
 
+.modal_image_container
+{
+	overflow: hidden;
+}
+
 .modal_image
 {
 	max-width: 90vw;
