@@ -7679,7 +7679,12 @@ function change_tv_visibility()
 		if(num_visible > 1)
 		{
 			enable_normal_mode()	
-		}		
+		}
+
+		if(!first_tv_played)
+		{
+			first_tv_played = true
+		}	
 
 		change("tv", true)
 	}
