@@ -927,6 +927,12 @@ input[type=text], textarea
 	width: 200px;
 }
 
+.bigger_profile_image
+{
+	height: 300px;
+	width: 300px;
+}
+
 #profile_image_picker
 {
 	display: none;
