@@ -7681,7 +7681,7 @@ function change_tv_visibility()
 			enable_normal_mode()	
 		}
 
-		if(!first_tv_played)
+		if(started && !first_tv_played)
 		{
 			first_tv_played = true
 		}	
