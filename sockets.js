@@ -750,7 +750,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 						socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
 						
-						if(info.bans.indexOf(socket.ip) !== -1)
+						if(info.bans.indexOf(socket.user_id) !== -1)
 						{
 							return get_out(socket)
 						}
@@ -1683,50 +1683,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							return false
 						}
 
-						if(socc.ip === undefined)
+						if(info.bans.indexOf(socc.user_id) === -1)
 						{
-							return false
-						}
-
-						if(socc.ip.indexOf('127.0.0.1') !== -1)
-						{
-							return false
-						}
-
-						if(info.bans.indexOf(socc.ip) === -1)
-						{
-							info.bans.push(socc.ip)
+							info.bans.push(socc.user_id)
+							socc.role = ''
+							socc.bannd = true
+							socc.info1 = socket.username
+							get_out(socc)
 						}
 
 						else
 						{
 							return false
-						}
-
-						for(var j=0; j<ids.length; j++)
-						{
-							var sokk = io.sockets.connected[ids[j]]
-
-							if(socc.ip === sokk.ip)
-							{
-								if((sokk.role === 'admin' || sokk.role === 'op') && socket.role !== 'admin')
-								{
-									continue
-								}
-
-								if(sokk.username === socket.username)
-								{
-									continue
-								}
-
-								sokk.role = ''
-
-								sokk.bannd = true
-
-								sokk.info1 = socket.username
-
-								get_out(sokk)
-							}
 						}
 
 						db_manager.update_room(info._id, {bans:info.bans})
