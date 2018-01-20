@@ -1383,11 +1383,10 @@ function userjoin(data)
 	if(announce_joins && check_chat_permission(data.role))
 	{		
 		chat_announce('--', '--', `${data.username} has joined`, 'small', false, false, false, true)
-
 		alert_title()
+		sound_notify()
 	}
 
-	sound_notify()
 }
 
 function update_usercount(usercount)
@@ -3375,13 +3374,16 @@ function add_to_chat(msg, save=false, update_scrollbar=true)
 	{
 		if(msg.find(".chat_uname").eq(0).text() === last_msg.find(".chat_uname").eq(0).text())
 		{
-			var date_diff = msg.find('.chat_content').last().data("date") - last_msg.find('.chat_content').last().data("date")
-
-			if(date_diff < max_same_post_diff)
+			if(last_msg.find(".chat_content").length < max_same_post_messages)
 			{
-				last_msg.find(".chat_content_container").eq(0).append("<br>").append(msg.find(".chat_content").eq(0))
-				replace_in_chat_history(last_msg)
-				appended = true
+				var date_diff = msg.find('.chat_content').last().data("date") - last_msg.find('.chat_content').last().data("date")
+
+				if(date_diff < max_same_post_diff)
+				{
+					last_msg.find(".chat_content_container").eq(0).append("<br>").append(msg.find(".chat_content").eq(0))
+					replace_in_chat_history(last_msg)
+					appended = true
+				}
 			}
 		}
 	}
