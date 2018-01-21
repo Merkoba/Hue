@@ -63,6 +63,7 @@ var connections = 0
 var afk_timer
 var afk = false
 var alert_mode = 0
+var sound_notify_timer
 var alert_timer
 var commands = []
 var chat_scrollbar
@@ -4942,6 +4943,25 @@ function change_volume_command(arg)
 	}
 }
 
+function sound_notify()
+{
+	if(!started)
+	{
+		return false
+	}
+
+	if(settings.sound_notifications)
+	{
+		sound_notify_timer = setTimeout(function()
+		{ 
+			if(document.hidden)
+			{
+				pup()
+			}
+		}, unfocus_delay)
+	}
+}
+
 function alert_title()
 {
 	if(!started)
@@ -4959,7 +4979,7 @@ function alert_title()
 				update_title()
 			}
 		}
-	}, 1000)
+	}, unfocus_delay)
 }
 
 function alert_title2()
@@ -4979,7 +4999,7 @@ function alert_title2()
 				update_title()
 			}
 		}
-	}, 1000)
+	}, unfocus_delay)
 }
 
 function remove_alert_title()
@@ -7938,12 +7958,14 @@ function fix_video_frame(frame_id)
 
 	var frame = $(id)
 
-	var ratio = frame.data("ratio")
+	var pratio = frame.data("ratio")
 
-	if(ratio === undefined)
+	if(pratio === undefined)
 	{
-		ratio = get_frame_ratio(frame_id)
+		pratio = get_frame_ratio(frame_id)
 	}
+
+	var ratio = 0.5625
 
 	var parent = frame.parent()
 
@@ -8327,14 +8349,6 @@ function announce_default_background_image_enabled_change(data)
 	default_background_image_enabled = data.what
 
 	set_default_theme()
-}
-
-function sound_notify()
-{
-	if(document.hidden && settings.sound_notifications)
-	{
-		pup()
-	}
 }
 
 function upload_image_by_url(url)

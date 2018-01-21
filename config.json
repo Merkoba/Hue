@@ -95,5 +95,6 @@
 	"image_queue_interval": 8000,
 	"max_same_post_diff": 60000,
 	"max_same_post_messages": 20,
-	"max_typing_inactivity": 2000
+	"max_typing_inactivity": 2000,
+	"unfocus_delay": 800
 }
