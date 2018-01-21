@@ -193,7 +193,15 @@ var Utilz = function()
 		{
 			return false
 		}
-	}				
+	}
+
+	utilz.object_to_array = function(obj)
+	{
+		return Object.keys(obj).map(function(key) 
+		{
+			return obj[key]
+		})
+	}
 
 	return utilz
 }

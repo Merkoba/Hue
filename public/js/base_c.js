@@ -1399,17 +1399,17 @@ function addto_userlist(uname, rol, pi)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		if(userlist[i][0] === uname)
+		if(userlist[i].username === uname)
 		{
-			userlist[i][0] = uname
-			userlist[i][1] = rol
-			userlist[i][2] = pi
+			userlist[i].username = uname
+			userlist[i].role = rol
+			userlist[i].profile_image = pi
 			update_userlist()
 			return
 		}
 	}
 
-	userlist.push([uname, rol, pi])
+	userlist.push({username:uname, role:rol, profile_image:pi})
 	update_userlist()
 }
 
@@ -1417,7 +1417,7 @@ function removefrom_userlist(uname)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		if(userlist[i][0] === uname)
+		if(userlist[i].username === uname)
 		{
 			userlist.splice(i, 1)
 			break
@@ -1431,9 +1431,9 @@ function replace_uname_in_userlist(oldu, newu)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		if(userlist[i][0] === oldu)
+		if(userlist[i].username === oldu)
 		{
-			userlist[i][0] = newu
+			userlist[i].username = newu
 			break
 		}
 	}
@@ -1445,9 +1445,9 @@ function replace_role_in_userlist(uname, rol)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		if(userlist[i][0] === uname)
+		if(userlist[i].username === uname)
 		{
-			userlist[i][1] = rol
+			userlist[i].role = rol
 			break
 		}
 	}
@@ -1459,9 +1459,9 @@ function get_role(uname)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		if(userlist[i][0] === uname)
+		if(userlist[i].username === uname)
 		{
-			return userlist[i][1]
+			return userlist[i].role
 		}
 	}
 }
@@ -1470,14 +1470,14 @@ function replace_claim_userlist(uname)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		if(userlist[i][0] === uname)
+		if(userlist[i].username === uname)
 		{
-			userlist[i][1] = 'admin'
+			userlist[i].role = 'admin'
 		}
 
 		else
 		{
-			userlist[i][1] = 'z'
+			userlist[i].role = 'z'
 		}
 	}
 
@@ -1488,7 +1488,7 @@ function remove_roles_in_userlist()
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		userlist[i][1] = 'z'
+		userlist[i].role = 'z'
 	}
 
 	update_userlist()
@@ -1498,9 +1498,9 @@ function reset_voices_userlist()
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		if(userlist[i][1].startsWith('voice') && userlist[i][1] !== 'voice1')
+		if(userlist[i].role.startsWith('voice') && userlist[i].role !== 'voice1')
 		{
-			userlist[i][1] = 'voice1'
+			userlist[i].role = 'voice1'
 		}
 	}
 
@@ -1511,9 +1511,9 @@ function remove_ops_userlist()
 {
 	for(var i=0; i<userlist.length; i++)
 	{
-		if(userlist[i][1] === 'op')
+		if(userlist[i].role === 'op')
 		{
-			userlist[i][1] = 'z'
+			userlist[i].role = 'z'
 		}
 	}
 
@@ -1564,7 +1564,7 @@ function get_user_by_username(uname)
 {
 	for(var user of userlist)
 	{
-		if(user[0] === uname)
+		if(user.username === uname)
 		{
 			return user
 		}
@@ -1595,11 +1595,11 @@ function update_userlist()
 	{
 		var item = userlist[i]
 
-		usernames.push(item[0])
+		usernames.push(item.username)
 
 		var h = $("<div class='userlist_item'><span class='ui_item_role'></span><span class='ui_item_uname'></span></div>")
 
-		var p = role_tag(item[1])
+		var p = role_tag(item.role)
 
 		var pel = h.find('.ui_item_role').eq(0)
 
@@ -1610,7 +1610,7 @@ function update_userlist()
 			pel.css("padding-right", 0)
 		}
 
-		h.find('.ui_item_uname').eq(0).text(item[0])
+		h.find('.ui_item_uname').eq(0).text(item.username)
 
 		s = s.add(h)
 	}
@@ -1629,34 +1629,34 @@ function update_userlist()
 
 function compare_userlist(a, b) 
 {
-	if(a[1] === '')
+	if(a.role === '')
 	{
-		a[1] = 'z'
+		a.role = 'z'
 	}
 
-	if(b[1] === '')
+	if(b.role === '')
 	{
-		b[1] = 'z'
+		b.role = 'z'
 	}
 
-	if(a[1].startsWith('voice') && b[1].startsWith('voice'))
+	if(a.role.startsWith('voice') && b.role.startsWith('voice'))
 	{
-		if(a[1] < b[1]) 
+		if(a.role < b.role) 
 		{
 			return 1
 		} 
 
-		else if(a[1] > b[1]) 
+		else if(a.role > b.role) 
 		{ 
 			return -1
 		}
 
-		if(a[0] > b[0]) 
+		if(a.username > b.username) 
 		{ 
 			return -1
 		}
 
-		else if(a[0] < b[0]) 
+		else if(a.username < b.username) 
 		{
 			return 1
 		}
@@ -1669,22 +1669,22 @@ function compare_userlist(a, b)
 
 	else
 	{
-		if(a[1] > b[1]) 
+		if(a.role > b.role) 
 		{
 			return 1
 		} 
 
-		else if(a[1] < b[1]) 
+		else if(a.role < b.role) 
 		{ 
 			return -1
 		}
 
-		if(a[0] < b[0]) 
+		if(a.username < b.username) 
 		{ 
 			return -1
 		}
 
-		else if(a[0] > b[0]) 
+		else if(a.username > b.username) 
 		{
 			return 1
 		}
@@ -7921,9 +7921,9 @@ function update_user_profile_image(uname, pi)
 	{
 		var user = userlist[i]
 
-		if(user[0] === uname)
+		if(user.username === uname)
 		{
-			userlist[i][2] = pi
+			userlist[i].profile_image = pi
 			return
 		}
 	}	

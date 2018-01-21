@@ -29,6 +29,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 	const rooms = {}
 
+	const user_rooms = {}
+
 	const files = {}
 
    	const files_struct = 
@@ -803,6 +805,16 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 						socket.join(room_id)
 
+						if(user_rooms[socket.user_id] === undefined)
+						{
+							user_rooms[socket.user_id] = []
+						}
+
+						if(user_rooms[socket.user_id].indexOf(room_id) === -1)
+						{
+							user_rooms[socket.user_id].push(room_id)
+						}
+
 						if(!user_already_connected(socket))
 						{
 							socket.broadcast.in(room_id).emit('update',
@@ -815,10 +827,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 							if(rooms[room_id].userlist === undefined)
 							{
-								rooms[room_id].userlist = []
+								rooms[room_id].userlist = {}
 							}
 
-							rooms[room_id].userlist.push([socket.username, socket.role, socket.profile_image])
+							rooms[room_id].userlist[socket.user_id] = {}
+
+							update_user_in_userlist(socket)
 						}
 
 						socket.emit('update', 
@@ -834,7 +848,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							topic: info.topic, 
 							topic_setter: info.topic_setter,
 							topic_date: info.topic_date,
-							userlist: get_userlist(socket.room_id), 
+							userlist: utilz.object_to_array(get_userlist(socket.room_id)),
 							log: info.log,
 							log_messages: info.log_messages.concat(rooms[room_id].log_messages),
 							role: socket.role, 
@@ -1177,7 +1191,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						
 						socc.role = ''
 						
-						replace_in_userlist(socc, socc.username)
+						update_user_in_userlist(socc)
 					}
 
 					socket.role = "admin"
@@ -1186,7 +1200,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					info.keys[socket.user_id] = "admin"
 
-					replace_in_userlist(socc, socc.username)					
+					update_user_in_userlist(socc)					
 
 					db_manager.update_room(info._id, {keys:info.keys, claimed:true})
 
@@ -1227,7 +1241,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					
 					socc.role = ''
 
-					replace_in_userlist(socc, socc.username)					
+					update_user_in_userlist(socc)					
 				}
 
 				db_manager.update_room(info._id,
@@ -1318,7 +1332,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 						info.keys[socc.user_id] = data.vtype
 
-						replace_in_userlist(socc, socc.username)
+						update_user_in_userlist(socc)
 
 						db_manager.update_room(info._id, {keys:info.keys})
 
@@ -1388,7 +1402,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 						info.keys[socc.user_id] = "op"
 
-						replace_in_userlist(socc, socc.username)
+						update_user_in_userlist(socc)
 
 						db_manager.update_room(info._id, {keys:info.keys})
 
@@ -1458,7 +1472,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 						info.keys[socc.user_id] = "admin"
 
-						replace_in_userlist(socc, socc.username)
+						update_user_in_userlist(socc)
 
 						db_manager.update_room(info._id, {keys:info.keys})
 
@@ -1521,7 +1535,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					{
 						socc.role = 'voice1'
 
-						replace_in_userlist(socc, socc.username)
+						update_user_in_userlist(socc)
 					}
 				}
 				
@@ -1582,7 +1596,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					{
 						socc.role = ''
 
-						replace_in_userlist(socc, socc.username)
+						update_user_in_userlist(socc)
 					}
 				}
 				
@@ -2526,14 +2540,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				if(done)
 				{
-					for(var socc of get_all_user_clients(socket))
+					for(var room_id of user_rooms[socket.user_id])
 					{
-						socc.username = data.username
+						for(var socc of get_user_sockets_per_room(room_id, socket.user_id))
+						{
+							socc.username = data.username
+						}
+
+						rooms[room_id].userlist[socket.user_id].username = data.username
+
+						io.sockets.in(room_id).emit('update',
+						{
+							type: 'new_username', 
+							username: data.username, 
+							old_username: old_username
+						})
 					}
-
-					replace_in_userlist(socket, old_username)
-
-					io.sockets.in(socket.room_id).emit('update', {type:'new_username', username:socket.username, old_username:old_username})
 				}
 
 				else
@@ -2902,17 +2924,24 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			if(rooms[socket.room_id].userlist !== undefined)
 			{
-				for(var i=0; i<rooms[socket.room_id].userlist.length; i++)
-				{
-					var item = rooms[socket.room_id].userlist[i]
+				delete rooms[socket.room_id].userlist[socket.room_id]
+			}
 
-					if(item[0] === socket.username)
-					{
-						rooms[socket.room_id].userlist.splice(i, 1)
-						break
-					}
+			for(var i=0; i<user_rooms[socket.user_id].length; i++)
+			{
+				var room_id = user_rooms[socket.user_id][i]
+
+				if(socket.room_id === room_id)
+				{
+					user_rooms[socket.user_id].splice(i, 1)
+					break
 				}
 			}
+
+			if(user_rooms[socket.user_id].length === 0)
+			{
+				delete user_rooms[socket.user_id]
+			}			
 		}
 	}	
 
@@ -3436,7 +3465,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			var new_ver = userinfo.profile_image_version + 1
 
-			var fver = fname + `?ver=${new_ver}`
+			var fver = `${fname}?ver=${new_ver}`
 
 			if(config.image_storage_s3_or_local === "local")
 			{
@@ -3456,14 +3485,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.then(ans =>
 			{
-				socket.profile_image = image_url
+				for(var room_id of user_rooms[socket.user_id])
+				{
+					for(var socc of get_user_sockets_per_room(room_id, socket.user_id))
+					{
+						socc.profile_image = image_url
+					}
+					
+					rooms[room_id].userlist[socket.user_id].profile_image = image_url
 
-				io.sockets.in(socket.room_id).emit('update',
-				{			
-					type: 'profile_image_changed',
-					username: socket.username,
-					profile_image: image_url
-				})
+					io.sockets.in(room_id).emit('update',
+					{			
+						type: 'profile_image_changed',
+						username: socket.username,
+						profile_image: image_url
+					})
+				}
 			})
 
 			.catch(err =>
@@ -4036,7 +4073,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				var socc = io.sockets.connected[id]
 
-				if(socc.id !== socket.id && socc.username === socket.username)
+				if(socc.id !== socket.id && socc.user_id === socket.user_id)
 				{
 					return true
 				}
@@ -4051,19 +4088,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 	}
 
-	function get_all_user_clients(socket)
+	function get_user_sockets_per_room(room_id, user_id)
 	{
 		try
 		{
 			var clients = []
 
-			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
+			var ids = Object.keys(io.sockets.adapter.rooms[room_id].sockets)
 
 			for(var id of ids)
 			{
 				var socc = io.sockets.connected[id]
 
-				if(socc.username === socket.username)
+				if(socc.user_id === user_id)
 				{
 					clients.push(socc)
 				}
@@ -4078,25 +4115,16 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 	}
 
-	function replace_in_userlist(socket, old_username)
+	function update_user_in_userlist(socket)
 	{
 		try
 		{
-			var clients = []
+			var user = rooms[socket.room_id].userlist[socket.user_id]
 
-			for(var i=0; i<rooms[socket.room_id].userlist.length; i++)
-			{
-				var item = rooms[socket.room_id].userlist[i]
-
-				if(item[0] === old_username)
-				{
-					rooms[socket.room_id].userlist.splice(i, 1)
-					rooms[socket.room_id].userlist.push([socket.username, socket.role])
-					return
-				}
-			}
-			
-			return clients
+			user.user_id = socket.user_id
+			user.username = socket.username
+			user.role = socket.role
+			user.profile_image = socket.profile_image
 		}
 
 		catch(err)
