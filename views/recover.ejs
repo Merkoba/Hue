@@ -7,19 +7,20 @@
 
 		<title>Reset Password</title>
 
-		<script src="/js/jquery.js"></script>
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/msg.min.js"></script>
 
 		<style>
 
 			@font-face
 			{
-				font-family: iconsolas;
-				src: url(/css/consolas.ttf);
+				font-family: imported_font;
+				src: url(/css/inconsolata.ttf);
 			}
 
 			body, html
 			{
-				font-family: iconsolas;
+				font-family: imported_font, consolas, sans-serif;
 				margin: 0;
 				padding: 0;
 				width: 100%;
@@ -131,20 +132,11 @@
 				}
 			%>
 
-			var message_timeout	
+			var msg = Msg.factory()
 
 			function set_message(s)
 			{
-				clearTimeout(message_timeout)
-
-				$("#message_container").text(s)
-
-				$("#message_container").css("opacity", 1)
-
-				message_timeout = setTimeout(function()
-				{
-					$("#message_container").css("opacity", 0)
-				}, 10000)
+				msg.show(s)
 			}	
 
 			function validate_form()
