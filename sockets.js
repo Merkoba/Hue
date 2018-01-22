@@ -2927,21 +2927,24 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				delete rooms[socket.room_id].userlist[socket.user_id]
 			}
 
-			for(var i=0; i<user_rooms[socket.user_id].length; i++)
+			if(user_rooms[socket.user_id] !== undefined)
 			{
-				var room_id = user_rooms[socket.user_id][i]
-
-				if(socket.room_id === room_id)
+				for(var i=0; i<user_rooms[socket.user_id].length; i++)
 				{
-					user_rooms[socket.user_id].splice(i, 1)
-					break
+					var room_id = user_rooms[socket.user_id][i]
+
+					if(socket.room_id === room_id)
+					{
+						user_rooms[socket.user_id].splice(i, 1)
+						break
+					}
+				}
+
+				if(user_rooms[socket.user_id].length === 0)
+				{
+					delete user_rooms[socket.user_id]
 				}
 			}
-
-			if(user_rooms[socket.user_id].length === 0)
-			{
-				delete user_rooms[socket.user_id]
-			}			
 		}
 	}	
 
