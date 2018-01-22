@@ -2979,7 +2979,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			if(rooms[room_id] === undefined)
 			{
-				return []
+				return {}
 			}
 
 			if(rooms[room_id].userlist !== undefined)
@@ -2989,19 +2989,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			else
 			{
-				return []
+				return {}
 			}
 		}
 
 		catch(err)
 		{
-			return []
+			return {}
 		}
 	}
 
 	function get_usercount(room_id)
 	{
-		return get_userlist(room_id).length
+		return Object.keys(get_userlist(room_id)).length
 	}
 
 	function get_roomlist(callback)
