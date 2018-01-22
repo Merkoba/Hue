@@ -2924,7 +2924,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			if(rooms[socket.room_id].userlist !== undefined)
 			{
-				delete rooms[socket.room_id].userlist[socket.room_id]
+				delete rooms[socket.room_id].userlist[socket.user_id]
 			}
 
 			for(var i=0; i<user_rooms[socket.user_id].length; i++)
