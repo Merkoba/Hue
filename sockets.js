@@ -3033,7 +3033,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				roomlist.sort(compare_roomlist).splice(config.max_roomlist_items)
 
-				last_roomlist = roomlist
+				var roomlist2 = []
+
+				for(var room_array of roomlist)
+				{
+					roomlist2.push(
+					{
+						id: room_array[0],
+						name: room_array[1],
+						topic: room_array[2],
+						usercount: room_array[3],
+						modified: room_array[4]
+					})
+				}
+
+				last_roomlist = roomlist2
 
 				roomlist_lastget = Date.now()
 
@@ -3093,7 +3107,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				roomlist.sort(compare_roomlist)
 
-				callback(roomlist)
+				var roomlist2 = []
+
+				for(var room_array of roomlist)
+				{
+					roomlist2.push(
+					{
+						id: room_array[0],
+						name: room_array[1],
+						topic: room_array[2],
+						usercount: room_array[3],
+						modified: room_array[4]
+					})
+				}				
+
+				callback(roomlist2)
 			})
 
 			.catch(err =>

@@ -2069,20 +2069,20 @@ function update_roomlist(roomlist)
 	for(var i=0; i<roomlist.length; i++)
 	{
 		var c = "<div class='roomlist_name'></div><div class='roomlist_topic'></div><div class='roomlist_here'></div><div class='roomlist_count'></div>"
-		var h = $(`<div class='roomlist_item' data-room_id='${roomlist[i][0]}'>${c}</div>`)
+		var h = $(`<div class='roomlist_item' data-room_id='${roomlist[i].id}'>${c}</div>`)
 
-		h.find('.roomlist_name').eq(0).text(roomlist[i][1])
+		h.find('.roomlist_name').eq(0).text(roomlist[i].name)
 
-		h.find('.roomlist_count').eq(0).text(singular_or_plural(roomlist[i][3], "users"))
+		h.find('.roomlist_count').eq(0).text(singular_or_plural(roomlist[i].usercount, "users"))
 
-		if(roomlist[i][0] === room_id)
+		if(roomlist[i].id === room_id)
 		{
 			h.find('.roomlist_here').eq(0).text("You are here").css("display", "block")
 		}
 
-		if(roomlist[i][2].length > 0)
+		if(roomlist[i].topic.length > 0)
 		{
-			var topic = roomlist[i][2]
+			var topic = roomlist[i].topic
 		}
 
 		else 
