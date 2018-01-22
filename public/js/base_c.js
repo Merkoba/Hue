@@ -1577,7 +1577,7 @@ function start_userlist_click_events()
 {
 	$("#userlist").on("click", ".ui_item_uname", function()
 	{
-		show_profile($(this).text(), get_user_by_username($(this).text())[2])
+		show_profile($(this).text(), get_user_by_username($(this).text()).profile_image)
 	})	
 }
 
@@ -3350,6 +3350,14 @@ function update_chat(uname, msg, prof_image, date=false)
 	}
 	
 	fmsg.find('.chat_uname').eq(0).text(uname)
+
+	fmsg.find('.chat_profile_image').eq(0).on("error", function() 
+	{
+		if($(this).attr("src") !== default_profile_image_url)
+		{
+			$(this).attr("src", default_profile_image_url)
+		}		
+	})	
 
 	add_to_chat(fmsg, true)
 
