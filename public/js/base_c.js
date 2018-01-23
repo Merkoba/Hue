@@ -3848,18 +3848,19 @@ function register_commands()
 	commands.push('/changeemail')
 	commands.push('/fill')
 	commands.push('/shrug')
+	commands.push('/afk')
 
 	commands.sort()
 }
 
-function send_to_chat(msg)
+function send_to_chat(msg, to_history=true)
 {
 	msg = utilz.clean_string2(msg.substring(0, max_input_length))
 
+	var clr_input = true
+
 	if(msg_is_ok(msg))
 	{
-		add_to_history(msg)
-
 		if(msg[0] === '/' && !msg.startsWith('/me ') && !msg.startsWith('/em ') && !msg.startsWith('//'))
 		{
 			var a = msg.toLowerCase().split(' ')
@@ -3976,7 +3977,8 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/roomnameedit'))
 			{
 				room_name_edit()
-				return
+				to_history = false
+				clr_input = false
 			}
 
 			else if(oiEquals(lmsg, '/played'))
@@ -4167,7 +4169,8 @@ function send_to_chat(msg)
 			else if(oiEquals(lmsg, '/topicedit'))
 			{
 				topicedit()
-				return
+				to_history = false
+				clr_input = false
 			}
 
 			else if(oiEquals(lmsg, '/topic'))
@@ -4255,6 +4258,11 @@ function send_to_chat(msg)
 				shrug()
 			}
 
+			else if(oiEquals(lmsg, '/afk'))
+			{
+				show_afk()
+			}
+
 			else
 			{
 				chat_announce('[', ']', "Invalid command. Use // to start a message with /", 'small')
@@ -4279,9 +4287,17 @@ function send_to_chat(msg)
 				chat_announce('[', ']', "You don't have permission to chat", 'small')
 			}
 		}
+
+		if(to_history)
+		{
+			add_to_history(msg)
+		}
 	}
 
-	clear_input()
+	if(clr_input)
+	{
+		clear_input()
+	}
 }
 
 function change_topic(dtopic)
@@ -8537,7 +8553,12 @@ function hide_pencil()
 
 function shrug()
 {
-	send_to_chat("¯\\_(ツ)_/¯")
+	send_to_chat("¯\\_(ツ)_/¯", false)
+}
+
+function show_afk()
+{
+	send_to_chat("/me is now AFK", false)
 }
 
 function toggle_lock_images()
