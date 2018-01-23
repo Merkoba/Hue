@@ -757,6 +757,7 @@ function start_socket()
 			clear_chat()
 			check_firstime()
 			get_input_history()
+			show_joined()
 
 			setup_image(data)
 			setup_tv(data)
@@ -8659,4 +8660,9 @@ function setup_modal_colors()
 	})
 
 	$("head").append(css)
+}
+
+function show_joined()
+{
+	chat_announce('--', '--', `${user_username} has joined`, 'small')
 }
