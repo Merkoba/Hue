@@ -220,11 +220,6 @@ function remove_local_storage(ls_name)
 	localStorage.removeItem(ls_name)	
 }
 
-function show_intro()
-{
-	chat_announce('', '', `Welcome to ${room_name}, ${username}`, 'big')
-}
-
 function compile_templates()
 {
 	template_menu = Handlebars.compile($('#template_menu').html())
@@ -5418,8 +5413,6 @@ function clear_chat()
 {
 	$('#chat_area').html('<div><br><br><br><br></div>')
 
-	show_intro()
-	show_topic("big")
 	show_log_messages()
 	goto_bottom(true)
 	focus_input()
@@ -8664,5 +8657,6 @@ function setup_modal_colors()
 
 function show_joined()
 {
-	chat_announce('--', '--', `${user_username} has joined`, 'small')
+	chat_announce('[', ']', `You joined ${room_name}`, 'small')
+	show_topic()
 }
