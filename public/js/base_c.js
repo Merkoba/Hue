@@ -702,7 +702,7 @@ function show_username()
 
 function socket_emit(dest, obj)
 {
-	console.log(`Emit: ${dest}`)
+	console.info(`Emit: ${dest}`)
 	socket.emit(dest, obj)
 }
 
@@ -3441,7 +3441,7 @@ function replace_in_chat_history(msg)
 	}	
 }
 
-function change(type, force=false)
+function change(type, force=false, play=true)
 {	
 	if(type === "image")
 	{
@@ -3484,6 +3484,11 @@ function change(type, force=false)
 		return false
 	}
 
+	if(!first_tv_played)
+	{
+		play = false
+	}
+
 	if(type === "image")
 	{
 		if(!room_images_enabled || !room_settings.images_enabled || images_locked)
@@ -3510,7 +3515,7 @@ function change(type, force=false)
 				return false
 			}
 
-			show_youtube_video(first_tv_played)
+			show_youtube_video(play)
 		}
 
 		else if(tv_type === "twitch")
@@ -3520,12 +3525,12 @@ function change(type, force=false)
 				return false
 			}
 
-			show_twitch_video(first_tv_played)
+			show_twitch_video(play)
 		}
 		
 		else if(tv_type === "url")
 		{
-			show_video(first_tv_played)
+			show_video(play)
 		}
 
 		else
@@ -7719,14 +7724,9 @@ function change_tv_visibility()
 		if(num_visible > 1)
 		{
 			enable_normal_mode()	
-		}
-
-		if(started && !first_tv_played)
-		{
-			first_tv_played = true
 		}	
 
-		change("tv", true)
+		change("tv", true, false)
 	}
 
 	else
