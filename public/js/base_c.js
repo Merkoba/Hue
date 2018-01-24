@@ -7726,7 +7726,7 @@ function change_tv_visibility()
 			enable_normal_mode()	
 		}	
 
-		change("tv", true, false)
+		change("tv", false, false)
 	}
 
 	else
