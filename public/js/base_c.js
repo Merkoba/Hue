@@ -5433,6 +5433,10 @@ function unclear_chat()
 	}
 
 	update_chat_scrollbar()
+
+	$("#chat_area").find(".ps__rail-x").eq(0).prependTo("#chat_area")
+	$("#chat_area").find(".ps__rail-y").eq(0).prependTo("#chat_area")
+
 	goto_bottom(true)
 }
 
@@ -8657,6 +8661,6 @@ function setup_modal_colors()
 
 function show_joined()
 {
-	chat_announce('[', ']', `You joined ${room_name}`, 'small')
+	chat_announce('[', ']', `You joined ${room_name}`, 'small', false, false, false, true)
 	show_topic()
 }
