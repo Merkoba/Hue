@@ -4601,6 +4601,8 @@ function get_radio_metadata()
 
 			try
 			{
+				var source = false
+
 				if(Array.isArray(data.icestats.source))
 				{
 					for(var i=0; i<data.icestats.source.length; i++)
@@ -4609,7 +4611,10 @@ function get_radio_metadata()
 
 						if(source.listenurl.indexOf(radio_source.split('/').pop()) !== -1)
 						{
-							break
+							if(source.artist !== undefined && source.title !== undefined)
+							{
+								break
+							}
 						}
 					}
 				}
@@ -4625,7 +4630,7 @@ function get_radio_metadata()
 					return false
 				}
 
-				if(source === undefined || source.artist === undefined || source.title === undefined)
+				if(!source)
 				{
 					show_playing_file()
 					return false
