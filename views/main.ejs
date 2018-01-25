@@ -32,7 +32,7 @@
 		<script src="/js/utilz.js?ver=1"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<script src="/js/base_o.js?ver=862"></script>
+		<script src="/js/base_o.js?ver=863"></script>
 
 		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=246"/>
 
@@ -175,12 +175,12 @@
 				<div id='footer' class='bg2'>
 					<div id='footer_items'>
 
-						<span id='footer_userinfo' class='fa fa-navicon footer_icon nicetitle' onClick="show_userinfo()" title="User Menu"></span>
+						<span id='footer_userinfo' class='fa fa-user-circle footer_icon nicetitle' onClick="show_userinfo()" title="User Menu"></span>
 
 						<input type='text' id='input'>
 
 						<span class='unselectable'>
-
+							
 							<span id='footer_images_controls'>
 								<span id='toggle_images_text' class='footer_text'>Images</span>
 								<i class='fa fa-toggle-on footer_icon2 nicetitle' id='footer_toggle_images_icon' onclick='toggle_images()' title='Enable/Disable Images. Disabled means it will be invisible and inactive'></i>
@@ -209,6 +209,9 @@
 							<i class='fa fa-television footer_icon nicetitle' id='footer_tv_icon' onclick="show_tv_url_picker()" title='Change the TV'></i>
 							<i class='fa fa-volume-up footer_icon nicetitle' id='footer_radio_icon' onclick="show_radio_url_picker()" title='Change the Radio'></i>
 
+							<span class='hspacer3'></span>
+
+							<i class='fa fa-bars footer_icon nicetitle' id='footer_lock_images_icon' onclick='show_media_menu()' title='Media Menu'></i>
 						</span>
 
 					</div>
@@ -584,6 +587,14 @@
 			<input id='image_url_picker_input' class='input1'>
 			<div class='spacer3'></div>
 			<div id='image_file_picker' class='menu_item' onclick='close_all_modals()'>Upload Image</div>
+		</script>
+
+		<script id='template_media_menu' type='text/x-handlebars-template'>
+			<div class='menu_item' onclick='stop_and_lock(); hide_media_menu()'>Stop And Lock Everything</div>
+			<div class='menu_item' onclick='refresh_image(); hide_media_menu()'>Refresh Image</div>
+			<div class='menu_item' onclick='refresh_tv(); hide_media_menu()'>Refresh TV</div>
+			<div class='menu_item' onclick='refresh_radio(); hide_media_menu()'>Refresh Radio</div>
+			<div class='menu_item' onclick='default_media_state(); hide_media_menu()'>Default State</div>
 		</script>
 
 		<script id='template_help' type='text/x-handlebars-template'>

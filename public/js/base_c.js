@@ -80,6 +80,7 @@ var template_help3
 var template_userinfo
 var template_profile
 var template_image_picker
+var template_media_menu
 var msg_menu
 var msg_userinfo
 var msg_userlist
@@ -235,6 +236,7 @@ function compile_templates()
 	template_userinfo = Handlebars.compile($('#template_userinfo').html())
 	template_profile = Handlebars.compile($('#template_profile').html())
 	template_image_picker = Handlebars.compile($('#template_image_picker').html())
+	template_media_menu = Handlebars.compile($('#template_media_menu').html())
 }
 
 function help()
@@ -3445,7 +3447,7 @@ function change(type, force=false, play=true)
 {	
 	if(type === "image")
 	{
-		if(last_image_change === image_url)
+		if(!force && last_image_change === image_url)
 		{
 			return false
 		}
@@ -6571,6 +6573,31 @@ function start_msg()
 		})
 	)
 
+	msg_media_menu = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "media_menu",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+			}
+		})
+	)
+
 	msg_menu.set(template_menu())
 	msg_userinfo.set(template_userinfo())
 	msg_userlist.set(template_userlist())
@@ -6578,6 +6605,7 @@ function start_msg()
 	msg_played.set(template_played())
 	msg_profile.set(template_profile({profile_image: default_profile_image_url}))
 	msg_image_picker.set(template_image_picker())
+	msg_media_menu.set(template_media_menu())
 
 	msg_image.create()
 	msg_info.create()
@@ -8545,13 +8573,13 @@ function show_typing()
 function show_pencil()
 {
 	$("#footer_userinfo").addClass("fa-pencil")
-	$("#footer_userinfo").removeClass("fa-navicon")
+	$("#footer_userinfo").removeClass("fa-user-circle")
 }
 
 function hide_pencil()
 {
 	$("#footer_userinfo").removeClass("fa-pencil")
-	$("#footer_userinfo").addClass("fa-navicon")
+	$("#footer_userinfo").addClass("fa-user-circle")
 }
 
 function shrug()
@@ -8564,9 +8592,17 @@ function show_afk()
 	send_to_chat("/me is now AFK", false)
 }
 
-function toggle_lock_images()
+function toggle_lock_images(what=undefined)
 {
-	images_locked = !images_locked
+	if(what !== undefined)
+	{
+		images_locked = what
+	}
+
+	else
+	{
+		images_locked = !images_locked
+	}
 
 	if(images_locked)
 	{
@@ -8583,9 +8619,17 @@ function toggle_lock_images()
 	}
 }
 
-function toggle_lock_tv()
+function toggle_lock_tv(what=undefined)
 {
-	tv_locked = !tv_locked
+	if(what !== undefined)
+	{
+		tv_locked = what
+	}
+
+	else
+	{
+		tv_locked = !tv_locked
+	}
 
 	if(tv_locked)
 	{
@@ -8602,9 +8646,17 @@ function toggle_lock_tv()
 	}
 }
 
-function toggle_lock_radio()
+function toggle_lock_radio(what=undefined)
 {
-	radio_locked = !radio_locked
+	if(what !== undefined)
+	{
+		radio_locked = what
+	}
+
+	else
+	{
+		radio_locked = !radio_locked
+	}
 
 	if(radio_locked)
 	{
@@ -8668,4 +8720,60 @@ function show_joined()
 {
 	chat_announce('[', ']', `You joined ${room_name}`, 'small', false, false, false, true)
 	show_topic()
+}
+
+function show_media_menu()
+{
+	msg_media_menu.show()
+}
+
+function hide_media_menu()
+{
+	msg_media_menu.close()
+}
+
+function stop_and_lock()
+{
+	stop_videos()
+	stop_radio()
+
+	toggle_lock_images(true)
+	toggle_lock_tv(true)
+	toggle_lock_radio(true)
+}
+
+function refresh_image()
+{
+	change("image", true, true)
+}
+
+function refresh_tv()
+{
+	change("tv", true, true)
+}
+
+function refresh_radio()
+{
+	change("radio", true, true)
+}
+
+function default_media_state()
+{
+	toggle_lock_images(false)
+	toggle_lock_tv(false)
+	toggle_lock_radio(false)
+
+	room_images_enabled = true
+	room_tv_enabled = true
+	room_radio_enabled = true	
+
+	room_settings.images_enabled = true
+	room_settings.tv_enabled = true
+	room_settings.radio_enabled = true
+
+	change_images_visibility()
+	change_tv_visibility()
+	change_radio_visibility()
+
+	save_room_settings()
 }
