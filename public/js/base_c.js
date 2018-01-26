@@ -4705,9 +4705,6 @@ function push_played(info, info2=false)
 	$('#now_playing').text(s)
 	$('#now_playing_controls').data('q', q)
 
-	update_chat_scrollbar()
-	goto_bottom()
-
 	if(played[played.length - 1] !== s)
 	{
 		var title = nice_date()
@@ -7685,7 +7682,7 @@ function change_images_visibility()
 		$("#media_image_container").css("display", "flex")
 
 		fix_media_margin()
-		
+
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-on")
 

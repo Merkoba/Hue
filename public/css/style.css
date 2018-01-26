@@ -51,10 +51,15 @@ body
 
 #header
 {
+	display: flex;
 	background-color: black;
 	color: white;
 	flex-shrink: 0;
 	flex-grow: 0;
+	height: 2rem;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
 }
 
 #header_items
@@ -204,11 +209,15 @@ body
 
 #footer
 {
-	background-color: black;
 	display: flex;
+	background-color: black;
 	flex-direction: row;
 	flex-shrink: 0;
 	flex-grow: 0;
+	height: 2rem;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
 }
 
 #footer_items
