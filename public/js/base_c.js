@@ -1239,8 +1239,6 @@ function show_youtube_video(play=true)
 	$("#media_youtube_video_container").css("display", "flex")
 
 	fix_video_frame("media_youtube_video")
-
-	after_media_show()
 }
 
 function show_twitch_video(play=true)
@@ -1279,8 +1277,6 @@ function show_twitch_video(play=true)
 	}
 
 	fix_video_frame("media_twitch_video")
-
-	after_media_show()
 }
 
 function show_video(play=true)
@@ -1309,14 +1305,7 @@ function show_video(play=true)
 		$("#media_video")[0].play()
 	}
 
-	fix_video_frame("media_video")	
-
-	after_media_show()
-}
-
-function after_media_show()
-{
-	fix_media_margin()
+	fix_video_frame("media_video")
 }
 
 function show_video_error()
@@ -7695,6 +7684,8 @@ function change_images_visibility()
 
 		$("#media_image_container").css("display", "flex")
 
+		fix_media_margin()
+		
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-on")
 
@@ -7712,6 +7703,8 @@ function change_images_visibility()
 	{
 		$("#media_image_container").css("display", "none")
 
+		fix_media_margin()
+
 		var num_visible = num_media_elements_visible()
 
 		if(num_visible === 0)
@@ -7728,7 +7721,6 @@ function change_images_visibility()
 		$("#footer_toggle_images_icon").addClass("fa-toggle-off")
 	}
 
-	fix_media_margin()
 	fix_visible_video_frame()
 	update_chat_scrollbar()
 	goto_bottom()
@@ -7751,6 +7743,7 @@ function change_tv_visibility()
 
 		$("#media_tv").css("display", "flex")/
 
+		fix_media_margin()
 		fix_visible_video_frame()
 
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-off")
@@ -7770,6 +7763,8 @@ function change_tv_visibility()
 	{
 		$("#media_tv").css("display", "none")
 
+		fix_media_margin()
+
 		var num_visible = num_media_elements_visible()
 
 		if(num_visible === 0)
@@ -7787,7 +7782,6 @@ function change_tv_visibility()
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-off")
 	}
 
-	fix_media_margin()
 	update_chat_scrollbar()
 	goto_bottom()	
 }
