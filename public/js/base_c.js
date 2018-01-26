@@ -2191,6 +2191,8 @@ function setup_main_menu()
 
 function show_main_menu()
 {
+	$("#admin_menu").css("display", "none")
+	
 	msg_menu.show(function()
 	{
 		if(role === "admin" || role === "op")
@@ -2264,11 +2266,6 @@ function show_main_menu()
 			}			
 
 			$("#admin_menu").css("display", "block")
-		}
-
-		else
-		{
-			$("#admin_menu").css("display", "none")
 		}
 
 		update_modal_scrollbar("menu")
