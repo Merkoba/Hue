@@ -2192,7 +2192,7 @@ function setup_main_menu()
 function show_main_menu()
 {
 	$("#admin_menu").css("display", "none")
-	
+
 	msg_menu.show(function()
 	{
 		if(role === "admin" || role === "op")
@@ -8486,8 +8486,22 @@ function setup_input()
 {
 	$("#input").on("input", function()
 	{
-		input_changed = true
-		check_typing()
+		var value = $("#input").val()
+
+		value = utilz.clean_string6(value)
+
+		if(value.length > max_input_length)
+		{
+			value = value.substring(0, max_input_length)
+			$("#input").val(value)
+		}
+
+		if(old_input_val !== value)
+		{
+			input_changed = true
+			check_typing()
+			old_input_val = value
+		}
 	})
 
 	old_input_val = $("#input").val()
@@ -8497,11 +8511,7 @@ function check_typing()
 {
 	var val = $("#input").val()
 
-	var oldval = old_input_val
-
-	old_input_val = val
-
-	if(val.length < oldval.length)
+	if(val.length < old_input_val.length)
 	{
 		return false
 	}

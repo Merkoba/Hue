@@ -27,6 +27,11 @@ var Utilz = function()
 		return s.replace(/\s+/g, '').trim()
 	}	
 
+	utilz.clean_string6 = function(s)
+	{
+		return s.replace(/\s+/g, ' ')
+	}	
+
 	utilz.get_random_int = function(min, max)
 	{
 		return Math.floor(Math.random() * (max  -min + 1) + min)
