@@ -3736,7 +3736,7 @@ jQuery.fn.urlize = function()
 		{
 			var x = $(obj).html()
 
-			var list = x.match(/((?:https?(?::\/\/))(?:www\.)?[a-zA-Z0-9-_.]+(?:\.[a-zA-Z0-9]{2,})(?:[-a-zA-Z0-9:%_+.~#?&//=@;\*]*))/g)
+			var list = x.match(/\bhttps?:\/\/\S+/g)
 
 			if(list) 
 			{
@@ -3749,11 +3749,6 @@ jQuery.fn.urlize = function()
 			$(obj).html(x)
 		})
 	}
-}
-
-function urlize(s, classname="generic")
-{
-	return s.replace(/((?:https?(?::\/\/))(?:www\.)?[a-zA-Z0-9-_.]+(?:\.[a-zA-Z0-9]{2,})(?:[-a-zA-Z0-9:%_+.~#?&//=@;\*]*))/g, `<a class='${classname}' target='_blank' href='$1'>$1</a>`)
 }
 
 function msg_is_ok(msg)
@@ -8761,17 +8756,31 @@ function default_media_state()
 	toggle_lock_tv(false)
 	toggle_lock_radio(false)
 
-	room_images_enabled = true
-	room_tv_enabled = true
-	room_radio_enabled = true	
+	var save_settings = false
 
-	room_settings.images_enabled = true
-	room_settings.tv_enabled = true
-	room_settings.radio_enabled = true
+	if(room_images_enabled)
+	{
+		room_settings.images_enabled = true
+		change_images_visibility()
+		save_settings = true
+	}
 
-	change_images_visibility()
-	change_tv_visibility()
-	change_radio_visibility()
+	if(room_tv_enabled)
+	{
+		room_settings.tv_enabled = true
+		change_tv_visibility()
+		save_settings = true
+	}
+	
+	if(room_radio_enabled)
+	{
+		room_settings.radio_enabled = true
+		change_radio_visibility()
+		save_settings = true
+	}
 
-	save_room_settings()
+	if(save_settings)
+	{
+		save_room_settings()
+	}
 }
