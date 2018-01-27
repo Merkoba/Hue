@@ -8758,29 +8758,26 @@ function default_media_state()
 
 	var save_settings = false
 
+	room_settings.images_enabled = true
+
 	if(room_images_enabled)
 	{
-		room_settings.images_enabled = true
 		change_images_visibility()
-		save_settings = true
 	}
+
+	room_settings.tv_enabled = true
 
 	if(room_tv_enabled)
 	{
-		room_settings.tv_enabled = true
 		change_tv_visibility()
-		save_settings = true
 	}
 	
+	room_settings.radio_enabled = true
+
 	if(room_radio_enabled)
 	{
-		room_settings.radio_enabled = true
 		change_radio_visibility()
-		save_settings = true
 	}
 
-	if(save_settings)
-	{
-		save_room_settings()
-	}
+	save_room_settings()
 }
