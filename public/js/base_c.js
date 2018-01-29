@@ -3307,7 +3307,13 @@ function update_chat(uname, msg, prof_image, date=false)
 
 	if(msg.startsWith('/me ') || msg.startsWith('/em '))
 	{
-		var fmsg = $(`<div class='msg chat_message thirdperson'>*&nbsp;<span class='chat_uname'></span>&nbsp;<span class='${contclasses}'></span>&nbsp;*</div>`)
+		var s = `
+		<div class='msg chat_message thirdperson'>
+		*&nbsp;<span class='chat_uname'></span>
+		&nbsp;<span class='${contclasses}' title='${nd}' data-date='${d}'></span>&nbsp;*</div>`
+
+		var fmsg = $(s)
+
 		fmsg.find('.chat_content').eq(0).text(msg.substr(4)).urlize()
 	}
 
