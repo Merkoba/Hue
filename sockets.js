@@ -684,12 +684,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 	function join_room(socket, data)
 	{
-		if(data.room_id === undefined || data.user_id === undefined || data.token === undefined)
-		{
-			return get_out(socket)
-		}
-
-		if(data.room_id.length === 0 || data.user_id.length === 0 || data.token.length === 0)
+		if(data.room_id === undefined)
 		{
 			return get_out(socket)
 		}
@@ -697,38 +692,58 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		if(data.room_id.length > config.max_room_id_length)
 		{
 			return get_out(socket)
-		}
+		} 			
 
-		if(data.user_id > config.max_user_id_length)
+		if(data.alternative)
 		{
-			return get_out(socket)
-		}
-
-		if(data.token.length > config.max_jwt_token_length)
-		{
-			return get_out(socket)
-		}
-
-		jwt.verify(data.token, sconfig.jwt_secret, function(err, decoded) 
-		{
-			if(err)
-			{
-				return get_out(socket)				
-			}
-
-			else if(decoded.data === undefined || decoded.data.id === undefined)
+			if(data.username === undefined || data.password === undefined)
 			{
 				return get_out(socket)
 			}
 
-			if(decoded.data.id !== data.user_id)
+			if(data.username > config.max_max_username_length)
 			{
 				return get_out(socket)
-			}			
+			}
 
-			else
+			if(data.password.length > config.max_max_password_length)
 			{
-				socket.user_id = data.user_id
+				return get_out(socket)
+			}
+		}
+
+		else
+		{
+			if(data.user_id === undefined || data.token === undefined)
+			{
+				return get_out(socket)
+			}
+
+			if(data.user_id > config.max_user_id_length)
+			{
+				return get_out(socket)
+			}
+
+			if(data.token.length > config.max_jwt_token_length)
+			{
+				return get_out(socket)
+			}
+		}
+
+		if(data.alternative)
+		{
+			db_manager.check_password(data.username, data.password, {username:true, profile_image:true})
+
+			.then(ans =>
+			{
+				if(!ans.valid)
+				{
+					return get_out(socket)
+				}
+
+				var userinfo = ans.user
+
+				socket.user_id = userinfo._id
 
 				db_manager.get_room({_id:data.room_id}, {})
 
@@ -738,158 +753,74 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					{
 						return get_out(socket)
 					}
+	
+					do_join(socket, info, userinfo)
 
-					db_manager.get_user({_id:socket.user_id}, {username:true, profile_image:true})
+					db_manager.save_visited_room(socket.user_id, data.room_id)
+				})
 
-					.then(userinfo =>
+				.catch(err =>
+				{
+					console.error(err)
+				})
+			})
+			
+			.catch(err =>
+			{
+				console.error(err)
+			})				
+		}
+
+		else
+		{
+			jwt.verify(data.token, sconfig.jwt_secret, function(err, decoded) 
+			{
+				if(err)
+				{
+					return get_out(socket)				
+				}
+
+				else if(decoded.data === undefined || decoded.data.id === undefined)
+				{
+					return get_out(socket)
+				}
+
+				if(decoded.data.id !== data.user_id)
+				{
+					return get_out(socket)
+				}			
+
+				else
+				{
+					socket.user_id = data.user_id
+
+					db_manager.get_room({_id:data.room_id}, {})
+
+					.then(info =>
 					{
-						if(!userinfo)
+						if(!info)
 						{
 							return get_out(socket)
 						}
 
-						socket.username = userinfo.username
+						db_manager.get_user({_id:socket.user_id}, {username:true, profile_image:true})
 
-						socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
-						
-						if(info.bans.indexOf(socket.user_id) !== -1)
+						.then(userinfo =>
 						{
-							return get_out(socket)
-						}
-
-						var room_id = info._id.toString()
-
-						socket.room_id = room_id
-
-						if(userinfo.profile_image === "")
-						{
-							socket.profile_image = ""
-						}
-
-						else if(userinfo.profile_image.indexOf(sconfig.s3_main_url) === -1)
-						{
-							socket.profile_image = config.public_images_location + userinfo.profile_image
-						}
-
-						else
-						{
-							socket.profile_image = userinfo.profile_image
-						}
-
-						if(info.default_background_image === "")
-						{
-							var default_background_image = ""
-						}
-
-						else if(info.default_background_image.indexOf(sconfig.s3_main_url) === -1)
-						{
-							var default_background_image = config.public_images_location + info.default_background_image
-						}
-
-						else
-						{
-							var default_background_image = info.default_background_image
-						}
-
-						if(rooms[room_id] === undefined)
-						{
-							rooms[room_id] = create_room_object(info)
-						}
-
-						socket.role = info.keys[socket.user_id]
-
-						if(roles.indexOf(socket.role) === -1)
-						{
-							socket.role = 'voice1'
-						}
-
-						socket.join(room_id)
-
-						if(user_rooms[socket.user_id] === undefined)
-						{
-							user_rooms[socket.user_id] = []
-						}
-
-						if(user_rooms[socket.user_id].indexOf(room_id) === -1)
-						{
-							user_rooms[socket.user_id].push(room_id)
-						}
-
-						if(!user_already_connected(socket))
-						{
-							socket.broadcast.in(room_id).emit('update',
+							if(!userinfo)
 							{
-								type: 'userjoin',
-								username: socket.username,
-								role: socket.role,
-								profile_image: socket.profile_image
-							})
-
-							if(rooms[room_id].userlist === undefined)
-							{
-								rooms[room_id].userlist = {}
+								return get_out(socket)
 							}
 
-							rooms[room_id].userlist[socket.user_id] = {}
+							do_join(socket, info, userinfo)
 
-							update_user_in_userlist(socket)
-						}
+							db_manager.save_visited_room(socket.user_id, data.room_id)
 
-						socket.emit('update', 
-						{
-							type: 'joined', 
-							room_name: info.name,
-							username: socket.username, 
-							image_url: info.image_url, 
-							image_uploader: info.image_uploader, 
-							image_size: info.image_size, 
-							image_date: info.image_date, 
-							image_type: info.image_type, 
-							topic: info.topic, 
-							topic_setter: info.topic_setter,
-							topic_date: info.topic_date,
-							userlist: utilz.object_to_array(get_userlist(socket.room_id)),
-							log: info.log,
-							log_messages: info.log_messages.concat(rooms[room_id].log_messages),
-							role: socket.role, 
-							public: info.public,
-							radio_type: info.radio_type,
-							radio_source: info.radio_source,
-							radio_title: info.radio_title,
-							radio_setter: info.radio_setter, 
-							radio_date: info.radio_date, 
-							tv_type: info.tv_type,
-							tv_source: info.tv_source,
-							tv_title: info.tv_title,
-							tv_setter: info.tv_setter, 
-							tv_date: info.tv_date, 
-							claimed: info.claimed,
-							profile_image: socket.profile_image,
-							room_images_enabled: info.images_enabled,
-							room_tv_enabled: info.tv_enabled,
-							room_radio_enabled: info.radio_enabled,
-							default_theme: info.default_theme,
-							default_background_image: default_background_image,
-							default_background_image_enabled: info.default_background_image_enabled,
-							v1_chat_permission: info.v1_chat_permission,
-							v1_images_permission: info.v1_images_permission,
-							v1_tv_permission: info.v1_tv_permission,
-							v1_radio_permission: info.v1_radio_permission,
-							v2_chat_permission: info.v2_chat_permission,
-							v2_images_permission: info.v2_images_permission,
-							v2_tv_permission: info.v2_tv_permission,
-							v2_radio_permission: info.v2_radio_permission,
-							v3_chat_permission: info.v3_chat_permission,
-							v3_images_permission: info.v3_images_permission,
-							v3_tv_permission: info.v3_tv_permission,
-							v3_radio_permission: info.v3_radio_permission,
-							v4_chat_permission: info.v4_chat_permission,
-							v4_images_permission: info.v4_images_permission,
-							v4_tv_permission: info.v4_tv_permission,
-							v4_radio_permission: info.v4_radio_permission
-						})				
-
-						db_manager.save_visited_room(socket.user_id, socket.room_id)
+							.catch(err =>
+							{
+								console.error(err)
+							})
+						})
 
 						.catch(err =>
 						{
@@ -901,15 +832,153 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					{
 						console.error(err)
 					})
-				})
+				}
+			})
+		}
+	}
 
-				.catch(err =>
-				{
-					console.error(err)
-				})
+	function do_join(socket, info, userinfo)
+	{
+		socket.username = userinfo.username
+
+		socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
+		
+		if(info.bans.indexOf(socket.user_id) !== -1)
+		{
+			return get_out(socket)
+		}
+
+		var room_id = info._id.toString()
+
+		socket.room_id = room_id
+
+		if(userinfo.profile_image === "")
+		{
+			socket.profile_image = ""
+		}
+
+		else if(userinfo.profile_image.indexOf(sconfig.s3_main_url) === -1)
+		{
+			socket.profile_image = config.public_images_location + userinfo.profile_image
+		}
+
+		else
+		{
+			socket.profile_image = userinfo.profile_image
+		}
+
+		if(info.default_background_image === "")
+		{
+			var default_background_image = ""
+		}
+
+		else if(info.default_background_image.indexOf(sconfig.s3_main_url) === -1)
+		{
+			var default_background_image = config.public_images_location + info.default_background_image
+		}
+
+		else
+		{
+			var default_background_image = info.default_background_image
+		}
+
+		if(rooms[room_id] === undefined)
+		{
+			rooms[room_id] = create_room_object(info)
+		}
+
+		socket.role = info.keys[socket.user_id]
+
+		if(roles.indexOf(socket.role) === -1)
+		{
+			socket.role = 'voice1'
+		}
+
+		socket.join(room_id)
+
+		if(user_rooms[socket.user_id] === undefined)
+		{
+			user_rooms[socket.user_id] = []
+		}
+
+		if(user_rooms[socket.user_id].indexOf(room_id) === -1)
+		{
+			user_rooms[socket.user_id].push(room_id)
+		}
+
+		if(!user_already_connected(socket))
+		{
+			socket.broadcast.in(room_id).emit('update',
+			{
+				type: 'userjoin',
+				username: socket.username,
+				role: socket.role,
+				profile_image: socket.profile_image
+			})
+
+			if(rooms[room_id].userlist === undefined)
+			{
+				rooms[room_id].userlist = {}
 			}
-		})
 
+			rooms[room_id].userlist[socket.user_id] = {}
+
+			update_user_in_userlist(socket)
+		}
+
+		socket.emit('update', 
+		{
+			type: 'joined', 
+			room_name: info.name,
+			username: socket.username, 
+			image_url: info.image_url, 
+			image_uploader: info.image_uploader, 
+			image_size: info.image_size, 
+			image_date: info.image_date, 
+			image_type: info.image_type, 
+			topic: info.topic, 
+			topic_setter: info.topic_setter,
+			topic_date: info.topic_date,
+			userlist: utilz.object_to_array(get_userlist(socket.room_id)),
+			log: info.log,
+			log_messages: info.log_messages.concat(rooms[room_id].log_messages),
+			role: socket.role, 
+			public: info.public,
+			radio_type: info.radio_type,
+			radio_source: info.radio_source,
+			radio_title: info.radio_title,
+			radio_setter: info.radio_setter, 
+			radio_date: info.radio_date, 
+			tv_type: info.tv_type,
+			tv_source: info.tv_source,
+			tv_title: info.tv_title,
+			tv_setter: info.tv_setter, 
+			tv_date: info.tv_date, 
+			claimed: info.claimed,
+			profile_image: socket.profile_image,
+			room_images_enabled: info.images_enabled,
+			room_tv_enabled: info.tv_enabled,
+			room_radio_enabled: info.radio_enabled,
+			default_theme: info.default_theme,
+			default_background_image: default_background_image,
+			default_background_image_enabled: info.default_background_image_enabled,
+			v1_chat_permission: info.v1_chat_permission,
+			v1_images_permission: info.v1_images_permission,
+			v1_tv_permission: info.v1_tv_permission,
+			v1_radio_permission: info.v1_radio_permission,
+			v2_chat_permission: info.v2_chat_permission,
+			v2_images_permission: info.v2_images_permission,
+			v2_tv_permission: info.v2_tv_permission,
+			v2_radio_permission: info.v2_radio_permission,
+			v3_chat_permission: info.v3_chat_permission,
+			v3_images_permission: info.v3_images_permission,
+			v3_tv_permission: info.v3_tv_permission,
+			v3_radio_permission: info.v3_radio_permission,
+			v4_chat_permission: info.v4_chat_permission,
+			v4_images_permission: info.v4_images_permission,
+			v4_tv_permission: info.v4_tv_permission,
+			v4_radio_permission: info.v4_radio_permission
+		})						
 	}
 
 	function sendchat(socket, data)

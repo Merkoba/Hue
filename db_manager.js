@@ -362,7 +362,7 @@ module.exports = function(db, config, sconfig, utilz)
 		})
 	}
 
-	manager.create_room = function(data, callback)
+	manager.create_room = function(data)
 	{
 		return new Promise((resolve, reject) => 
 		{
@@ -487,7 +487,7 @@ module.exports = function(db, config, sconfig, utilz)
 		})
 	}
 
-	manager.find_rooms = function(query, callback)
+	manager.find_rooms = function(query)
 	{
 		return new Promise((resolve, reject) => 
 		{
@@ -542,7 +542,7 @@ module.exports = function(db, config, sconfig, utilz)
 		})
 	}
 	
-	manager.get_user = function(query, fields, callback)
+	manager.get_user = function(query, fields)
 	{
 		return new Promise((resolve, reject) => 
 		{
@@ -669,7 +669,7 @@ module.exports = function(db, config, sconfig, utilz)
 		})	
 	}
 
-	manager.create_user = function(info, callback)
+	manager.create_user = function(info)
 	{
 		return new Promise((resolve, reject) => 
 		{
@@ -793,11 +793,13 @@ module.exports = function(db, config, sconfig, utilz)
 		})	
 	}
 
-	manager.check_password = function(username, password, callback)
+	manager.check_password = function(username, password, fields={})
 	{
 		return new Promise((resolve, reject) => 
-		{
-			manager.get_user({username:username}, {password:true})
+		{	
+			Object.assign(fields, {password:true})
+
+			manager.get_user({username:username}, fields)
 
 			.then(user =>
 			{
@@ -832,7 +834,7 @@ module.exports = function(db, config, sconfig, utilz)
 		})	
 	}
 
-	manager.change_username = function(_id, username, callback)
+	manager.change_username = function(_id, username)
 	{
 		return new Promise((resolve, reject) => 
 		{
@@ -886,7 +888,7 @@ module.exports = function(db, config, sconfig, utilz)
 		})	
 	}
 
-	manager.reset_user_password = function(username, email, callback)
+	manager.reset_user_password = function(username, email)
 	{
 		return new Promise((resolve, reject) => 
 		{
