@@ -743,7 +743,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				var userinfo = ans.user
 
-				socket.user_id = userinfo._id
+				socket.user_id = userinfo._id.toString()
 
 				db_manager.get_room({_id:data.room_id}, {})
 
