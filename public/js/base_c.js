@@ -1308,17 +1308,6 @@ function show_video(play=true)
 	fix_video_frame("media_video")
 }
 
-function show_video_error()
-{
-	setup_tv(
-	{
-		tv_source: video_error_url,
-		tv_title: "Video Didn't Load",
-		tv_date: Date.now(),
-		tv_type: "url"
-	})
-}
-
 function setup_default_theme(data)
 {
 	default_theme = data.default_theme

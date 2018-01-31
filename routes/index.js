@@ -62,11 +62,11 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.default_default_background_image_url = config.default_default_background_image_url
 	c.vars.background_image_loading_url = config.background_image_loading_url
 	c.vars.upload_slice_size = config.upload_slice_size
-	c.vars.video_error_url = config.video_error_url
 	c.vars.max_same_post_diff = config.max_same_post_diff
 	c.vars.max_same_post_messages = config.max_same_post_messages
 	c.vars.max_typing_inactivity = config.max_typing_inactivity
 	c.vars.unfocus_delay = config.unfocus_delay
+	c.vars.default_video_url = config.default_video_url
 
 	function check_url(req, res, next)
 	{
