@@ -7467,7 +7467,7 @@ function announce_log_change(data)
 
 	else
 	{
-		var s = `${data.username} disabled the log`
+		var s = `${data.username} cleared and disabled the log`
 	}
 
 	chat_announce('~', '~', s, 'small')
