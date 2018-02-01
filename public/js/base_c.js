@@ -8690,7 +8690,7 @@ function setup_modal_colors()
 
 	.nicescroll-cursors
 	{
-		background-color: ${scrollbar_color} !important
+		background-color: ${scrollbar_color} !important;
 	}
 
 	</style>
