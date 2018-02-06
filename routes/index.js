@@ -92,11 +92,11 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		else
 		{
-			db_manager.get_user({_id:req.session.user_id}, {})
+			db_manager.get_user({_id:req.session.user_id}, {username:true, password_date:true})
 
 			.then(user =>
 			{
-				if(!user)
+				if(!user || (req.session.password_date !== user.password_date))
 				{
 					req.session.destroy(function(){})
 					res.redirect(`/login?fromurl=${fromurl}`)
@@ -165,13 +165,14 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		db_manager.check_password(username, password)
+		db_manager.check_password(username, password, {password_date:true})
 
 		.then(ans =>
 		{
 			if(ans.valid)
 			{
 				req.session.user_id = ans.user._id.toString()
+				req.session.password_date = ans.user.password_date
 
 				if(fromurl === undefined || fromurl === "" || fromurl === "/login" || fromurl === "/register")
 				{
@@ -245,6 +246,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 				.then(user =>
 				{
 					req.session.user_id = user.ops[0]._id
+					req.session.password_date = user.ops[0].password_date
 
 					req.session.save(function()
 					{
@@ -365,7 +367,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	router.get('/change_password', check_url, function(req, res, next)
 	{
-		
 		var token = req.query.token
 
 		var split = token.split('_')

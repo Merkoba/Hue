@@ -3828,6 +3828,7 @@ function register_commands()
 	commands.push('/fill')
 	commands.push('/shrug')
 	commands.push('/afk')
+	commands.push('/disconnectall')
 
 	commands.sort()
 }
@@ -4240,6 +4241,11 @@ function send_to_chat(msg, to_history=true)
 			else if(oiEquals(lmsg, '/afk'))
 			{
 				show_afk()
+			}
+
+			else if(oiEquals(lmsg, '/disconnectall'))
+			{
+				disconnect_all()
 			}
 
 			else
@@ -7329,7 +7335,7 @@ function change_password(passwd)
 
 function password_changed(data)
 {
-	chat_announce('[', ']', `Password succesfully changed to ${data.password}`, 'small')
+	chat_announce('[', ']', `Password succesfully changed to ${data.password}. If you think other people is connected to your account you can force them to disconnect with /disconnectall`, 'small')
 }
 
 function change_email(email)
@@ -8775,4 +8781,9 @@ function default_media_state()
 	}
 
 	save_room_settings()
+}
+
+function disconnect_all()
+{
+	socket_emit("disconnect_all", {})
 }

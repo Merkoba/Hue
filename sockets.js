@@ -653,6 +653,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			{
 				console.error(err)
 			}
+		})
+
+		socket.on('disconnect_all', function(data) 
+		{
+			try
+			{
+				disconnect_all(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
 		})			
 
 		socket.on('disconnect', function(reason)
@@ -2661,7 +2674,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			db_manager.update_user(socket.user_id,
 			{
-				password: data.password
+				password: data.password,
+				password_date: Date.now()
 			})
 
 			.catch(err =>
@@ -3893,6 +3907,20 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 	}
 
+	function disconnect_all(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			for(var room_id of user_rooms[socket.user_id])
+			{
+				for(var socc of get_user_sockets_per_room(room_id, socket.user_id))
+				{
+					socc.disconnect()
+				}
+			}
+		}
+	}
+
 	function check_image_url(uri)
 	{
 		if(uri.split(' ').length > 1)
@@ -4108,7 +4136,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							.catch(err =>
 							{
 								console.error(err)
-							})							
+							})
 						}
 
 						else
@@ -4239,7 +4267,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		{
 			socket.emit('update', {type:'redirect', location:config.redirect_url})
 
-			setTimeout(do_disconnect, 2000, socket)
+			setTimeout(do_disconnect, 1000, socket)
 
 			return false
 		}
