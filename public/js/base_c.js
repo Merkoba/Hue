@@ -1067,6 +1067,11 @@ function start_socket()
 		{
 			banned(data)
 		}
+
+		else if(data.type === 'othersdisconnected')
+		{
+			show_others_disconnected(data)
+		}
 	})
 
 	socket.on('request_slice_upload', (data) => 
@@ -2436,8 +2441,8 @@ function is_textbox(element)
 {
 	var tag_name = element.tagName.toLowerCase()
 
-	if (tag_name === 'textarea') return true
-	if (tag_name !== 'input') return false
+	if(tag_name === 'textarea') return true
+	if(tag_name !== 'input') return false
 
 	var type = element.getAttribute('type').toLowerCase(),
 
@@ -3828,7 +3833,7 @@ function register_commands()
 	commands.push('/fill')
 	commands.push('/shrug')
 	commands.push('/afk')
-	commands.push('/disconnectall')
+	commands.push('/disconnectothers')
 
 	commands.sort()
 }
@@ -4243,9 +4248,9 @@ function send_to_chat(msg, to_history=true)
 				show_afk()
 			}
 
-			else if(oiEquals(lmsg, '/disconnectall'))
+			else if(oiEquals(lmsg, '/disconnectothers'))
 			{
-				disconnect_all()
+				disconnect_others()
 			}
 
 			else
@@ -7335,7 +7340,7 @@ function change_password(passwd)
 
 function password_changed(data)
 {
-	chat_announce('[', ']', `Password succesfully changed to ${data.password}. If you think other people is connected to your account you can force them to disconnect with /disconnectall`, 'small')
+	chat_announce('[', ']', `Password succesfully changed to ${data.password}. To force other clients connected to your account to disconnect you can use /disconnectothers`, 'small')
 }
 
 function change_email(email)
@@ -8783,7 +8788,22 @@ function default_media_state()
 	save_room_settings()
 }
 
-function disconnect_all()
+function disconnect_others()
 {
-	socket_emit("disconnect_all", {})
+	socket_emit("disconnect_others", {})
+}
+
+function show_others_disconnected(data)
+{
+	if(data.amount === 1)
+	{
+		var s = `${data.amount} client was disconnected`
+	}
+
+	else
+	{
+		var s = `${data.amount} clients were disconnected`
+	}
+
+	chat_announce('[', ']', s, 'small')
 }

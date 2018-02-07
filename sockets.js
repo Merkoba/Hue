@@ -655,11 +655,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
-		socket.on('disconnect_all', function(data) 
+		socket.on('disconnect_others', function(data) 
 		{
 			try
 			{
-				disconnect_all(socket, data)
+				disconnect_others(socket, data)
 			}
 
 			catch(err)
@@ -3879,17 +3879,25 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 	}
 
-	function disconnect_all(socket, data)
+	function disconnect_others(socket, data)
 	{
 		if(socket.username !== undefined)
 		{
+			var amount = 0
+
 			for(var room_id of user_rooms[socket.user_id])
 			{
 				for(var socc of get_user_sockets_per_room(room_id, socket.user_id))
 				{
-					socc.disconnect()
+					if(socc.id !== socket.id)
+					{
+						socc.disconnect()
+						amount += 1
+					}
 				}
 			}
+
+			socket.emit('update', {type:'othersdisconnected', amount:amount})
 		}
 	}
 
