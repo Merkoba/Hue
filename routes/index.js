@@ -440,7 +440,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 						return false
 					}
 
-					db_manager.update_user(user._id, {password:password, password_reset_link_date:0})
+					db_manager.update_user(user._id, {password:password, password_reset_link_date:0, password_date:Date.now()})
 
 					.catch(err =>
 					{

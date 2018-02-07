@@ -516,6 +516,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 .icon2
 {
 	font-size: 0.8em;
+	padding-right: 0.3em;
 }
 
 #main_menu

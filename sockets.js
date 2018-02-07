@@ -3033,24 +3033,24 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 	function compare_roomlist(a, b)
 	{
-		if(a[3] < b[3]) 
+		if(a.usercount < b.usercount) 
 		{
 			return 1
 		}
 
-		if(a[3] > b[3]) 
+		if(a.usercount > b.usercount) 
 		{
 			return -1
 		}
 
-		if(a[3] === b[3])
+		if(a.usercount === b.usercount)
 		{
-			if (a[4] < b[4]) 
+			if(a.modified < b.modified) 
 			{
 				return 1
 			}
 
-			if(a[4] > b[4]) 
+			if(a.modified > b.modified) 
 			{
 				return -1
 			}
@@ -3111,26 +3111,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				{
 					var room = results[i]
 
-					roomlist.push([room._id.toString(), room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room._id.toString()), room.modified])
+					roomlist.push({id:room._id.toString(), name:room.name, topic:room.topic.substring(0, config.max_roomlist_topic_length), usercount:get_usercount(room._id.toString()), modified:room.modified})
 				}
 
 				roomlist.sort(compare_roomlist).splice(config.max_roomlist_items)
 
-				var roomlist2 = []
-
-				for(var room_array of roomlist)
-				{
-					roomlist2.push(
-					{
-						id: room_array[0],
-						name: room_array[1],
-						topic: room_array[2],
-						usercount: room_array[3],
-						modified: room_array[4]
-					})
-				}
-
-				last_roomlist = roomlist2
+				last_roomlist = roomlist
 
 				roomlist_lastget = Date.now()
 
@@ -3185,26 +3171,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				{
 					var room = results[i]
 
-					roomlist.push([room._id.toString(), room.name, room.topic.substring(0, config.max_roomlist_topic_length), get_usercount(room._id.toString()), room.modified])
+					roomlist.push({id:room._id.toString(), name:room.name, topic:room.topic.substring(0, config.max_roomlist_topic_length), usercount:get_usercount(room._id.toString()), modified:room.modified})
 				}
 
-				roomlist.sort(compare_roomlist)
+				roomlist.sort(compare_roomlist)			
 
-				var roomlist2 = []
-
-				for(var room_array of roomlist)
-				{
-					roomlist2.push(
-					{
-						id: room_array[0],
-						name: room_array[1],
-						topic: room_array[2],
-						usercount: room_array[3],
-						modified: room_array[4]
-					})
-				}				
-
-				callback(roomlist2)
+				callback(roomlist)
 			})
 
 			.catch(err =>
