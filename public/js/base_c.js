@@ -3721,7 +3721,10 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 
 	content.text(msg).urlize()
 
-	content.parent().on("click", onclick)
+	if(onclick)
+	{
+		content.parent().on("click", onclick)
+	}
 
 	add_to_chat(fmsg, save)
 
