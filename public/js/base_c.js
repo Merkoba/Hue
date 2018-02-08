@@ -4568,6 +4568,12 @@ function goto_bottom(force=false)
 
 function emit_pasted(url)
 {	
+	if(!can_images)
+	{
+		chat_announce('[', ']', "You don't have permission to link images", 'small')
+		return false
+	}
+	
 	socket_emit('pasted', {image_url:url})
 }
 
@@ -8400,9 +8406,15 @@ function announce_default_background_image_enabled_change(data)
 
 function upload_image_by_url(url)
 {
+	if(!can_images)
+	{
+		chat_announce('[', ']', "You don't have permission to link images", 'small')
+		return false
+	}
+
 	url = url.replace(/\.gifv/g,'.gif')
 
-	$('#test_image').attr('src', url)	
+	$('#test_image').attr('src', url)
 }
 
 function change_voice_permission(ptype, what)
