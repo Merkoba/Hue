@@ -3263,6 +3263,11 @@ function start_chat_click_events()
 
 function update_chat(uname, msg, prof_image, date=false)
 {
+	if(msg.startsWith('//'))
+	{
+		msg = msg.slice(1)
+	}
+
 	var contclasses = "chat_content"
 
 	if(uname !== username)
@@ -4264,11 +4269,6 @@ function send_to_chat(msg, to_history=true)
 
 		else 
 		{
-			if(msg.startsWith('//'))
-			{
-				msg = msg.slice(1)
-			}
-
 			if(can_chat)
 			{
 				update_chat(username, msg, profile_image)	
