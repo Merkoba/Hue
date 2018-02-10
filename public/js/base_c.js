@@ -3151,7 +3151,7 @@ var resize_timer = (function()
 		{
 			fix_visible_video_frame()
 			update_chat_scrollbar()		
-			goto_bottom(true)
+			goto_bottom()
 		}, 350)
 	}
 })()
