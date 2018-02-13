@@ -646,55 +646,44 @@ function show_role(data)
 		chat_announce('[', ']', 'You are an op', 'small')
 	}
 
-	else if(role === 'voice')
+	else if(role.startsWith('voice'))
 	{
-		chat_announce('[', ']', 'You have voice', 'small')
+		chat_announce('[', ']', `You have ${role}`, 'small')
 	}
 
-	if(role === 'admin' || role === 'op')
+	var ps = 0
+
+	if(can_chat)
 	{
-		show_chat_permission()
-		show_upload_permission()
-		show_radio_permission()
-		show_tv_permission()
+		chat_announce('[', ']', "You have chat permission", 'small')
+
+		ps += 1
 	}
 
-	else
+	if(can_images)
 	{
-		var ps = 0
+		chat_announce('[', ']', "You have images permission", 'small')
 
-		if(can_chat)
-		{
-			chat_announce('[', ']', "You have chat permission", 'small')
+		ps += 1
+	}
 
-			ps += 1
-		}
+	if(can_tv)
+	{
+		chat_announce('[', ']', "You have tv permission", 'small')
 
-		if(can_images)
-		{
-			chat_announce('[', ']', "You have images permission", 'small')
+		ps += 1
+	}
 
-			ps += 1
-		}
+	if(can_radio)
+	{
+		chat_announce('[', ']', "You have radio permission", 'small')
 
-		if(can_radio)
-		{
-			chat_announce('[', ']', "You have radio permission", 'small')
+		ps += 1
+	}
 
-			ps += 1
-		}
-
-		if(can_tv)
-		{
-			chat_announce('[', ']', "You have tv permission", 'small')
-
-			ps += 1
-		}
-
-		if(ps === 0)
-		{
-			chat_announce('[', ']', "You cannot interact", 'small')
-		}
+	if(ps === 0)
+	{
+		chat_announce('[', ']', "You cannot interact", 'small')
 	}
 }
 
@@ -3792,8 +3781,6 @@ function register_commands()
 	commands.push('/unbanall')
 	commands.push('/bannedcount')
 	commands.push('/kick')
-	commands.push('/roles')
-	commands.push('/banned')
 	commands.push('/public')
 	commands.push('/private')
 	commands.push('/log')
