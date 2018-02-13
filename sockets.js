@@ -304,19 +304,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
-		socket.on('unban_last', function(data) 
-		{
-			try
-			{
-				unban_last(socket, data)
-			}
-
-			catch(err)
-			{
-				console.error(err)
-			}
-		})
-
 		socket.on('get_banned_count', function(data) 
 		{
 			try
@@ -1700,46 +1687,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					})
 
 					io.sockets.in(socket.room_id).emit('update', {type:'announce_unban_all', username:socket.username})
-				}
-
-				else
-				{
-					socket.emit('update', {room:socket.room_id, type:'nothingtounban'})
-				}
-			})
-
-			.catch(err =>
-			{
-				console.error(err)
-			})
-		}		
-	}
-
-	function unban_last(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(socket.role !== 'admin' && socket.role !== 'op')
-			{
-				return get_out(socket)
-			}
-
-			db_manager.get_room({_id:socket.room_id}, {bans:true})
-
-			.then(info =>
-			{
-				if(info.bans.length > 0)
-				{
-					info.bans.pop()
-
-					db_manager.update_room(info._id, {bans:info.bans})
-
-					.catch(err =>
-					{
-						console.error(err)
-					})
-
-					io.sockets.in(socket.room_id).emit('update', {type:'announce_unban_last', username:socket.username})
 				}
 
 				else

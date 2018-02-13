@@ -859,11 +859,6 @@ function start_socket()
 			announce_unban_all(data)
 		}
 
-		else if(data.type === 'announce_unban_last')
-		{
-			announce_unban_last(data)
-		}
-
 		else if(data.type === 'receive_banned_count')
 		{
 			receive_banned_count(data)
@@ -1683,7 +1678,7 @@ function start_username_context_menu()
 				name: "Voice 1", callback: function(key, opt)
 				{
 					var arg = $(this).text()
-					voice(arg, "voice1")
+					change_role(arg, "voice1")
 				},
 				visible: function(key, opt)
 				{ 
@@ -1703,7 +1698,7 @@ function start_username_context_menu()
 				name: "Voice 2", callback: function(key, opt)
 				{
 					var arg = $(this).text()
-					voice(arg, "voice2")
+					change_role(arg, "voice2")
 				},
 				visible: function(key, opt)
 				{ 
@@ -1723,7 +1718,7 @@ function start_username_context_menu()
 				name: "Voice 3", callback: function(key, opt)
 				{
 					var arg = $(this).text()
-					voice(arg, "voice3")
+					change_role(arg, "voice3")
 				},
 				visible: function(key, opt)
 				{ 
@@ -1743,7 +1738,7 @@ function start_username_context_menu()
 				name: "Voice 4", callback: function(key, opt)
 				{
 					var arg = $(this).text()
-					voice(arg, "voice4")
+					change_role(arg, "voice4")
 				},
 				visible: function(key, opt)
 				{ 
@@ -1780,7 +1775,7 @@ function start_username_context_menu()
 						name: "I'm Sure", callback: function(key, opt)
 						{
 							var arg = $(this).text()
-							op(arg)
+							change_role(arg, "op")
 						}
 					}
 				}				
@@ -1807,7 +1802,7 @@ function start_username_context_menu()
 						name: "I'm Sure", callback: function(key, opt)
 						{
 							var arg = $(this).text()
-							admin(arg)
+							change_role(arg, "admin")
 						}					
 					}
 				}
@@ -3795,7 +3790,6 @@ function register_commands()
 	commands.push('/ban')
 	commands.push('/unban')
 	commands.push('/unbanall')
-	commands.push('/unbanlast')
 	commands.push('/bannedcount')
 	commands.push('/kick')
 	commands.push('/roles')
@@ -4024,11 +4018,6 @@ function send_to_chat(msg, to_history=true)
 			else if(oiEquals(lmsg, '/unbanall'))
 			{
 				unban_all()
-			}
-
-			else if(oiEquals(lmsg, '/unbanlast'))
-			{
-				unban_last()
 			}
 
 			else if(oiEquals(lmsg, '/bannedcount'))
@@ -5849,19 +5838,6 @@ function unban_all()
 	}
 }
 
-function unban_last()
-{
-	if(role === 'admin' || role === 'op')
-	{
-		socket_emit('unban_last', {})
-	}
-
-	else
-	{
-		not_an_op()
-	}
-}
-
 function get_banned_count()
 {
 	if(role === 'admin' || role === 'op')
@@ -5924,11 +5900,6 @@ function kick(uname)
 function announce_unban_all(data)
 {
 	chat_announce('~', '~', `${data.username} unbanned all banned users`, 'small')
-}
-
-function announce_unban_last(data)
-{
-	chat_announce('~', '~', `${data.username} unbanned the latest banned user`, 'small')
 }
 
 function isalready(who, what)
