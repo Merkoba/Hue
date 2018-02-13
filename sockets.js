@@ -1537,9 +1537,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						socket.emit('update', 
 						{
 							room: socket.room_id, 
-							type: 'isalready', 
-							who: userinfo.username,
-							what: "banned"
+							type: 'user_already_banned'
 						})
 
 						return false						
@@ -1549,12 +1547,25 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					
 					var sockets = get_user_sockets_per_room(socket.room_id, id)
 
-					for(var socc of sockets)
+					if(sockets.length > 0)
 					{
-						socc.role = ''
-						socc.bannd = true
-						socc.info1 = socket.username
-						get_out(socc)
+						for(var socc of sockets)
+						{
+							socc.role = ''
+							socc.bannd = true
+							socc.info1 = socket.username
+							get_out(socc)
+						}
+					}
+
+					else
+					{
+						io.sockets.in(socket.room_id).emit('update', 
+						{
+							type: 'announce_ban', 
+							username1: socket.username, 
+							username2: data.username
+						})						
 					}
 
 					db_manager.update_room(info._id, {bans:info.bans})
@@ -1626,9 +1637,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						socket.emit('update', 
 						{
 							room: socket.room_id, 
-							type: 'isalready', 
-							who: userinfo.username,
-							what: "not banned"
+							type: 'user_already_unbanned'
 						})
 
 						return false

@@ -844,9 +844,14 @@ function start_socket()
 			announce_removedops(data)
 		}
 
+		else if(data.type === 'announce_ban')
+		{
+			chat_announce('~', '~', `${data.username1} banned ${data.username2}`, 'small')
+		}
+
 		else if(data.type === 'announce_unban')
 		{
-			chat_announce('~', '~', `${data.username1} unbaned ${data.username2}`, 'small')
+			chat_announce('~', '~', `${data.username1} unbanned ${data.username2}`, 'small')
 		}		
 
 		else if(data.type === 'announce_unban_all')
@@ -907,6 +912,16 @@ function start_socket()
 		else if(data.type === 'isalready')
 		{
 			isalready(data.who, data.what)
+		}
+
+		else if(data.type === 'user_already_banned')
+		{
+			chat_announce('[', ']', "User is already banned", 'small')
+		}
+
+		else if(data.type === 'user_already_unbanned')
+		{
+			chat_announce('[', ']', "User is already unbanned", 'small')
 		}
 
 		else if(data.type === 'privacy_change')
