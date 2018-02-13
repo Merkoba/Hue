@@ -226,63 +226,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			}
 		})
 
-		socket.on('claim_room', function(data) 
+		socket.on('change_role', function(data) 
 		{
 			try
 			{
-				claim_room(socket, data)
-			}
-
-			catch(err)
-			{
-				console.error(err)
-			}
-		})
-
-		socket.on('unclaim_room', function(data) 
-		{
-			try
-			{
-				unclaim_room(socket, data)
-			}
-
-			catch(err)
-			{
-				console.error(err)
-			}
-		})
-
-		socket.on('voice', function(data) 
-		{
-			try
-			{
-				voice(socket, data)
-			}
-
-			catch(err)
-			{
-				console.error(err)
-			}
-		})
-
-		socket.on('op', function(data) 
-		{
-			try
-			{
-				op(socket, data)
-			}
-
-			catch(err)
-			{
-				console.error(err)
-			}
-		})
-
-		socket.on('admin', function(data) 
-		{
-			try
-			{
-				admin(socket, data)
+				change_role(socket, data)
 			}
 
 			catch(err)
@@ -322,6 +270,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			try
 			{
 				ban(socket, data)
+			}
+
+			catch(err)
+			{
+				console.error(err)
+			}
+		})
+
+		socket.on('unban', function(data) 
+		{
+			try
+			{
+				unban(socket, data)
 			}
 
 			catch(err)
@@ -758,7 +719,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				socket.user_id = userinfo._id.toString()
 
-				db_manager.get_room({_id:data.room_id}, {})
+				db_manager.get_room({_id:data.room_id}, {}, socket.user_id)
 
 				.then(info =>
 				{
@@ -807,7 +768,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				{
 					socket.user_id = data.user_id
 
-					db_manager.get_room({_id:data.room_id}, {})
+					db_manager.get_room({_id:data.room_id}, {}, socket.user_id)
 
 					.then(info =>
 					{
@@ -967,7 +928,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			tv_title: info.tv_title,
 			tv_setter: info.tv_setter, 
 			tv_date: info.tv_date, 
-			claimed: info.claimed,
 			profile_image: socket.profile_image,
 			room_images_enabled: info.images_enabled,
 			room_tv_enabled: info.tv_enabled,
@@ -1240,124 +1200,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 	}
 
-	function claim_room(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(socket.room_id === config.main_room_id && data.pass !== sconfig.secretpass)
-			{
-				return false
-			}
-
-			db_manager.get_room({_id:socket.room_id}, {claimed:true})
-
-			.then(info =>
-			{
-				if(!info.claimed || socket.role === 'admin' || data.pass === sconfig.secretpass)
-				{
-					if(socket.role === 'admin')
-					{
-						var updated = true
-					}
-
-					else
-					{
-						var updated = false
-					}	
-
-					var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
-
-					for(var i=0; i<ids.length; i++)
-					{
-						var socc = io.sockets.connected[ids[i]]
-						
-						socc.role = ''
-						
-						update_user_in_userlist(socc)
-					}
-
-					socket.role = "admin"
-
-					info.keys = {}
-
-					info.keys[socket.user_id] = "admin"
-
-					update_user_in_userlist(socc)					
-
-					db_manager.update_room(info._id, {keys:info.keys, claimed:true})
-
-					.catch(err =>
-					{
-						console.error(err)
-					})
-
-					io.sockets.in(socket.room_id).emit('update', {type:'announce_claim', username:socket.username, updated:updated})
-				}
-			})
-
-			.catch(err =>
-			{
-				console.error(err)
-			})
-		}
-	}
-
-	function unclaim_room(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(socket.role !== 'admin')
-			{
-				return get_out(socket)
-			}
-
-			db_manager.get_room({_id:socket.room_id}, {claimed:true})
-
-			.then(info =>
-			{
-				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
-
-				for(var i=0; i<ids.length; i++)
-				{
-					var socc = io.sockets.connected[ids[i]]
-					
-					socc.role = ''
-
-					update_user_in_userlist(socc)					
-				}
-
-				db_manager.update_room(info._id,
-				{
-					keys: {}, 
-					claimed: false, 
-					topic: '',
-					topic_setter: '',
-					topic_date: 0,
-					upload_permission: 1,
-					chat_permission: 1,
-					radio_source: '',
-					radio_setter: '',
-					radio_date: '',
-					bans: '',
-					public: true
-				})
-
-				.catch(err =>
-				{
-					console.error(err)
-				})
-
-				io.sockets.in(socket.room_id).emit('update', {type:'announce_unclaim', username:socket.username})
-			})
-
-			.catch(err =>
-			{
-				console.error(err)
-			})
-		}		
-	}
-
-	function voice(socket, data)
+	function change_role(socket, data)
 	{
 		if(socket.username !== undefined)
 		{
@@ -1376,7 +1219,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
-			if(vtypes.indexOf(data.vtype) === -1)
+			if(data.username.length > config.max_max_username_length)
+			{
+				return get_out(socket)
+			}
+
+			if(roles.indexOf(data.role) === -1)
 			{
 				return get_out(socket)
 			}
@@ -1390,184 +1238,69 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.then(info =>
 			{
-				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
+				db_manager.get_user({username:data.username}, {username:true})
 
-				for(var i=0; i<ids.length; i++)
+				.then(userinfo =>
 				{
-					var socc = io.sockets.connected[ids[i]]
-
-					if(socc.username === data.username)
+					if(!userinfo)
 					{
-						if((socc.role === 'admin' || socc.role === 'op') && socket.role !== 'admin')
-						{
-							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
-							return false
-						}
-
-						if(socc.role === data.vtype)
-						{
-							socket.emit('update', {room:socket.room_id, type:'isalready', what:data.vtype, who:data.username})
-							return false
-						}
-
-						socc.role = data.vtype
-
-						info.keys[socc.user_id] = data.vtype
-
-						update_user_in_userlist(socc)
-
-						db_manager.update_room(info._id, {keys:info.keys})
-
-						.catch(err => 
-						{
-							console.error(err)
-						})
-
-						io.sockets.in(socket.room_id).emit('update', {type:'announce_voice', username1:socket.username, username2:data.username, vtype:data.vtype})
-
-						break
+						socket.emit('update', {room:socket.room_id, type:'user_not_found'})
+						return false						
 					}
-				}
-			})
 
-			.catch(err =>
-			{
-				console.error(err)
-			})
-		}		
-	}
+					var id = userinfo._id.toString()
 
-	function op(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(socket.role !== 'admin')
-			{
-				return get_out(socket)
-			}
+					var current_role = info.keys[id]
 
-			if(data.username === undefined)
-			{
-				return get_out(socket)
-			}
+					if((current_role === 'admin' || current_role === 'op') && socket.role !== 'admin')
+					{
+						socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
+						return false
+					}
 
-			if(data.username.length === 0)
-			{
-				return get_out(socket)
-			}
+					if(current_role === data.role || (current_role === undefined && data.role === "voice1"))
+					{
+						socket.emit('update', {room:socket.room_id, type:'isalready', what:data.role, who:data.username})
+						return false
+					}
 
-			db_manager.get_room({_id:socket.room_id}, {keys:true})
+					info.keys[id] = data.role
 
-			.then(info =>
-			{
-				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
+					var sockets = get_user_sockets_per_room(socket.room_id, id)
 
-				for(var i=0; i<ids.length; i++)
+					var last_socc = false
+					
+					for(var socc of sockets)
+					{
+						socc.role = data.role
+						last_socc = socc
+					}
+
+					if(last_socc)
+					{
+						update_user_in_userlist(last_socc)
+					}
+					
+					db_manager.update_room(info._id, {keys:info.keys})
+
+					.catch(err => 
+					{
+						console.error(err)
+					})
+
+					io.sockets.in(socket.room_id).emit('update', 
+					{
+						type: 'announce_role_change', 
+						username1: socket.username, 
+						username2: data.username, 
+						role: data.role
+					})
+				})
+
+				.catch(err =>
 				{
-					var socc = io.sockets.connected[ids[i]]
-
-					if(socc.username === data.username)
-					{
-						if((socc.role === 'admin' || socc.role === 'op') && socket.role !== 'admin')
-						{
-							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
-							return false
-						}
-
-						if(socc.role === 'op')
-						{
-							socket.emit('update', {room:socket.room_id, type:'isalready', what:'op', who:data.username})
-							return false
-						}
-
-						socc.role = 'op'
-
-						info.keys[socc.user_id] = "op"
-
-						update_user_in_userlist(socc)
-
-						db_manager.update_room(info._id, {keys:info.keys})
-
-						.catch(err => 
-						{
-							console.error(err)
-						})
-
-						io.sockets.in(socket.room_id).emit('update', {type:'announce_op', username1:socket.username, username2:data.username})
-
-						break
-					}
-				}
-			})
-
-			.catch(err =>
-			{
-				console.error(err)
-			})
-		}
-	}
-
-	function admin(socket, data)
-	{
-		if(socket.username !== undefined)
-		{
-			if(socket.role !== 'admin')
-			{
-				return get_out(socket)
-			}
-
-			if(data.username === undefined)
-			{
-				return get_out(socket)
-			}
-
-			if(data.username.length === 0)
-			{
-				return get_out(socket)
-			}
-
-			db_manager.get_room({_id:socket.room_id}, {keys:true})
-
-			.then(info =>
-			{
-				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
-
-				for(var i=0; i<ids.length; i++)
-				{
-					var socc = io.sockets.connected[ids[i]]
-
-					if(socc.username === data.username)
-					{
-						if((socc.role === 'admin' || socc.role === 'op') && socket.role !== 'admin')
-						{
-							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
-							return false
-						}
-
-						if(socc.role === 'admin')
-						{
-							socket.emit('update', {room:socket.room_id, type:'isalready', what:'admin', who:data.username})
-							return false
-						}
-
-						socc.role = 'admin'
-
-						info.keys[socc.user_id] = "admin"
-
-						update_user_in_userlist(socc)
-
-						db_manager.update_room(info._id, {keys:info.keys})
-
-						.catch(err => 
-						{
-							console.error(err)
-						})
-
-						io.sockets.in(socket.room_id).emit('update', {type:'announce_admin', username1:socket.username, username2:data.username})
-
-						break
-					}
-				}
+					console.error(err)
+				})
 			})
 
 			.catch(err =>
@@ -1718,26 +1451,35 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
-			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
-
-			for(var i=0; i<ids.length; i++)
+			if(data.username.length > config.max_max_username_length)
 			{
-				var socc = io.sockets.connected[ids[i]]
+				return get_out(socket)
+			}
 
-				if(socc.username === data.username)
+			var sockets = get_user_sockets_per_room_by_username(socket.room_id, data.username)
+
+			if(sockets.length > 0)
+			{
+				if((sockets[0].role === 'admin' || sockets[0].role === 'op') && socket.role !== 'admin')
 				{
-					if((socc.role === 'admin' || socc.role === 'op') && socket.role !== 'admin')
-					{
-						socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
-						return false
-					}
+					socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
+					return false
+				}
 
+				for(var socc of sockets)
+				{
 					socc.role = ''
 					socc.kickd = true
 					socc.info1 = socket.username
 					
 					get_out(socc)
 				}
+			}
+
+			else
+			{
+				socket.emit('update', {room:socket.room_id, type:'user_not_in_room'})
+				return false
 			}
 		}		
 	}	
@@ -1761,48 +1503,160 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
+			if(data.username.length > config.max_max_username_length)
+			{
+				return get_out(socket)
+			}			
+
 			db_manager.get_room({_id:socket.room_id}, {bans:true, keys:true})
 
 			.then(info =>
 			{
-				var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
+				db_manager.get_user({username:data.username}, {username:true})
 
-				for(var i=0; i<ids.length; i++)
+				.then(userinfo =>
 				{
-					var socc = io.sockets.connected[ids[i]]
-
-					if(socc.username === data.username)
+					if(!userinfo)
 					{
-						if((socc.role === 'admin' || socc.role === 'op') && socket.role !== 'admin')
-						{
-							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
-							return false
-						}
-
-						if(info.bans.indexOf(socc.user_id) === -1)
-						{
-							info.bans.push(socc.user_id)
-							socc.role = ''
-							socc.bannd = true
-							socc.info1 = socket.username
-							get_out(socc)
-						}
-
-						else
-						{
-							return false
-						}
-
-						db_manager.update_room(info._id, {bans:info.bans})
-
-						.catch(err =>
-						{
-							console.error(err)
-						})						
-
-						break
+						socket.emit('update', {room:socket.room_id, type:'user_not_found'})
+						return false						
 					}
-				}
+
+					var id = userinfo._id.toString()
+					
+					var current_role = info.keys[id]
+
+					if((current_role === 'admin' || current_role === 'op') && socket.role !== 'admin')
+					{
+						socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
+						return false
+					}
+
+					if(info.bans.indexOf(id) !== -1)
+					{
+						socket.emit('update', 
+						{
+							room: socket.room_id, 
+							type: 'isalready', 
+							who: userinfo.username,
+							what: "banned"
+						})
+
+						return false						
+					}
+
+					info.bans.push(id)
+					
+					var sockets = get_user_sockets_per_room(socket.room_id, id)
+
+					for(var socc of sockets)
+					{
+						socc.role = ''
+						socc.bannd = true
+						socc.info1 = socket.username
+						get_out(socc)
+					}
+
+					db_manager.update_room(info._id, {bans:info.bans})
+
+					.catch(err =>
+					{
+						console.error(err)
+					})
+				})
+			})
+
+			.catch(err =>
+			{
+				console.error(err)
+			})
+		}		
+	}
+
+	function unban(socket, data)
+	{
+		if(socket.username !== undefined)
+		{
+			if(socket.role !== 'admin' && socket.role !== 'op')
+			{
+				return get_out(socket)
+			}
+
+			if(data.username === undefined)
+			{
+				return get_out(socket)
+			}
+
+			if(data.username.length === 0)
+			{
+				return get_out(socket)
+			}
+
+			if(data.username.length > config.max_max_username_length)
+			{
+				return get_out(socket)
+			}			
+
+			db_manager.get_room({_id:socket.room_id}, {bans:true, keys:true})
+
+			.then(info =>
+			{
+				db_manager.get_user({username:data.username}, {username:true})
+
+				.then(userinfo =>
+				{
+					if(!userinfo)
+					{
+						socket.emit('update', {room:socket.room_id, type:'user_not_found'})
+						return false						
+					}
+
+					var id = userinfo._id.toString()
+					
+					var current_role = info.keys[id]
+
+					if((current_role === 'admin' || current_role === 'op') && socket.role !== 'admin')
+					{
+						socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
+						return false
+					}
+
+					if(info.bans.indexOf(id) === -1)
+					{
+						socket.emit('update', 
+						{
+							room: socket.room_id, 
+							type: 'isalready', 
+							who: userinfo.username,
+							what: "not banned"
+						})
+
+						return false
+					}
+
+					for(var i=0; i<info.bans.length; i++)
+					{
+						if(info.bans[i] === id)
+						{
+							info.bans.splice(i, 1)
+							break
+						}
+					}
+
+					db_manager.update_room(info._id, {bans:info.bans})
+
+					.catch(err =>
+					{
+						console.error(err)
+					})
+
+					io.sockets.in(socket.room_id).emit('update', 
+					{
+						type: 'announce_unban', 
+						username1: socket.username, 
+						username2: data.username
+					})					
+				})
 			})
 
 			.catch(err =>
@@ -3098,7 +2952,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			var md = Date.now() - config.roomlist_max_inactivity
 
-			db_manager.find_rooms({claimed:true, public:true, modified:{$gt:md}})
+			db_manager.find_rooms({public:true, modified:{$gt:md}})
 
 			.then(results =>
 			{
@@ -4209,6 +4063,33 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				var socc = io.sockets.connected[id]
 
 				if(socc.user_id === user_id)
+				{
+					clients.push(socc)
+				}
+			}
+			
+			return clients
+		}
+
+		catch(err)
+		{
+			console.error(err)
+		}
+	}
+
+	function get_user_sockets_per_room_by_username(room_id, username)
+	{
+		try
+		{
+			var clients = []
+
+			var ids = Object.keys(io.sockets.adapter.rooms[room_id].sockets)
+
+			for(var id of ids)
+			{
+				var socc = io.sockets.connected[id]
+
+				if(socc.username === username)
 				{
 					clients.push(socc)
 				}

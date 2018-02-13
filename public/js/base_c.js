@@ -43,7 +43,6 @@ var tv_title = ''
 var tv_metadata = ''
 var tv_setter = ''
 var tv_date = ''
-var claimed = false
 var get_metadata
 var no_meta_count
 var tabbed_list = []
@@ -256,17 +255,14 @@ function help3()
 
 function show_public()
 {
-	if(claimed)
+	if(is_public)
 	{
-		if(is_public)
-		{
-			chat_announce('[', ']', 'This room is public', 'small')
-		}
+		chat_announce('[', ']', 'This room is public', 'small')
+	}
 
-		else
-		{
-			chat_announce('[', ']', 'This room is private', 'small')
-		}
+	else
+	{
+		chat_announce('[', ']', 'This room is private', 'small')
 	}
 }
 
@@ -313,22 +309,27 @@ function show_radio_source()
 
 function get_unset_topic()
 {
-	if(claimed)
+	if(role === "admin" || role === "op")
 	{
-		if(role === "admin" || role === "op")
-		{
-			return default_topic_admin
-		}
-
-		else
-		{
-			return default_topic
-		}
+		return default_topic_admin
 	}
 
 	else
 	{
-		return default_topic_unclaimed
+		return default_topic
+	}
+}
+
+function get_topic()
+{
+	if(topic)
+	{
+		return topic
+	}
+
+	else 
+	{
+		return get_unset_topic()
 	}	
 }
 
@@ -735,7 +736,6 @@ function start_socket()
 			connections += 1
 			room_name = data.room_name
 			username = data.username
-			claimed = data.claimed
 			setup_profile_image(data.profile_image)
 			userlist = data.userlist
 			update_userlist()
@@ -829,19 +829,9 @@ function start_socket()
 			announce_log_cleared(data)
 		}
 
-		else if(data.type === 'announce_voice')
+		else if(data.type === 'announce_role_change')
 		{
-			announce_voice(data)
-		}
-
-		else if(data.type === 'announce_op')
-		{
-			announce_op(data)
-		}
-
-		else if(data.type === 'announce_admin')
-		{
-			announce_admin(data)
+			announce_role_change(data)
 		}
 
 		else if(data.type === 'voices_resetted')
@@ -853,6 +843,11 @@ function start_socket()
 		{
 			announce_removedops(data)
 		}
+
+		else if(data.type === 'announce_unban')
+		{
+			chat_announce('~', '~', `${data.username1} unbaned ${data.username2}`, 'small')
+		}		
 
 		else if(data.type === 'announce_unban_all')
 		{
@@ -889,6 +884,16 @@ function start_socket()
 			forbiddenuser()
 		}
 
+		else if(data.type === 'user_not_found')
+		{
+			chat_announce('[', ']', "User doesn't exist", 'small')
+		}
+
+		else if(data.type === 'user_not_in_room')
+		{
+			chat_announce('[', ']', "User is not in the room", 'small')
+		}
+
 		else if(data.type === 'noopstoremove')
 		{
 			chat_announce('[', ']', "There were no ops to remove", 'small')
@@ -902,16 +907,6 @@ function start_socket()
 		else if(data.type === 'isalready')
 		{
 			isalready(data.who, data.what)
-		}
-
-		else if(data.type === 'announce_claim')
-		{
-			announce_claim(data)
-		}
-
-		else if(data.type === 'announce_unclaim')
-		{
-			announce_unclaim(data)
 		}
 
 		else if(data.type === 'privacy_change')
@@ -1445,24 +1440,6 @@ function get_role(uname)
 			return userlist[i].role
 		}
 	}
-}
-
-function replace_claim_userlist(uname)
-{
-	for(var i=0; i<userlist.length; i++)
-	{
-		if(userlist[i].username === uname)
-		{
-			userlist[i].role = 'admin'
-		}
-
-		else
-		{
-			userlist[i].role = 'z'
-		}
-	}
-
-	update_userlist()
 }
 
 function remove_roles_in_userlist()
@@ -3777,9 +3754,6 @@ function register_commands()
 	commands.push('/me')
 	commands.push('/clear')
 	commands.push('/unclear')
-	commands.push('/claim')
-	commands.push('/reclaim')
-	commands.push('/unclaim')
 	commands.push('/enableimages')
 	commands.push('/disableimages')
 	commands.push('/enabletv')
@@ -3804,10 +3778,13 @@ function register_commands()
 	commands.push('/resetvoices')
 	commands.push('/removeops')
 	commands.push('/ban')
+	commands.push('/unban')
 	commands.push('/unbanall')
 	commands.push('/unbanlast')
 	commands.push('/bannedcount')
 	commands.push('/kick')
+	commands.push('/roles')
+	commands.push('/banned')
 	commands.push('/public')
 	commands.push('/private')
 	commands.push('/log')
@@ -3875,26 +3852,6 @@ function send_to_chat(msg, to_history=true)
 			else if(oiEquals(lmsg, '/unclear'))
 			{
 				unclear_chat()
-			}
-
-			else if(oiStartsWith(lmsg, '/claim'))
-			{
-				claim_room(arg)
-			}
-
-			else if(oiEquals(lmsg, '/claim'))
-			{
-				claim_room()
-			}
-
-			else if(oiEquals(lmsg, '/reclaim'))
-			{
-				reclaim_room()
-			}
-
-			else if(oiEquals(lmsg, '/unclaim'))
-			{
-				unclaim_room()
 			}			
 
 			else if(oiEquals(lmsg, '/enableimages'))
@@ -4001,32 +3958,32 @@ function send_to_chat(msg, to_history=true)
 
 			else if(oiStartsWith(lmsg, '/voice1'))
 			{
-				voice(arg, "voice1")
+				change_role(arg, "voice1")
 			}
 
 			else if(oiStartsWith(lmsg, '/voice2'))
 			{
-				voice(arg, "voice2")
+				change_role(arg, "voice2")
 			}
 
 			else if(oiStartsWith(lmsg, '/voice3'))
 			{
-				voice(arg, "voice3")
+				change_role(arg, "voice3")
 			}
 
 			else if(oiStartsWith(lmsg, '/voice4'))
 			{
-				voice(arg, "voice4")
+				change_role(arg, "voice4")
 			}
 
 			else if(oiStartsWith(lmsg, '/op'))
 			{
-				op(arg)
+				change_role(arg, "op")
 			}
 
 			else if(oiStartsWith(lmsg, '/admin'))
 			{
-				admin(arg)
+				change_role(arg, "admin")
 			}
 
 			else if(oiEquals(lmsg, '/resetvoices'))
@@ -4042,6 +3999,11 @@ function send_to_chat(msg, to_history=true)
 			else if(oiStartsWith(lmsg, '/ban'))
 			{
 				ban(arg)
+			}
+
+			else if(oiStartsWith(lmsg, '/unban'))
+			{
+				unban(arg)
 			}
 
 			else if(oiEquals(lmsg, '/unbanall'))
@@ -5482,59 +5444,6 @@ function set_topic_info(data)
 	}
 }
 
-function claim_room(arg="")
-{
-	arg = arg.substring(0, 200)
-
-	if(room_id === main_room_id && arg === '')
-	{
-		chat_announce('[', ']', "This room can\'t be claimed", 'small')
-		return false
-	}
-
-	if(claimed && arg === '')
-	{
-		chat_announce('[', ']', "Room is already claimed", 'small')
-		return false
-	}
-
-	socket_emit('claim_room', {pass:arg})
-}
-
-function reclaim_room()
-{
-	if(!claimed)
-	{
-		chat_announce('[', ']', "Room hasn\'t been claimed yet", 'small')
-		return false
-	}
-
-	if(role !== 'admin')
-	{
-		chat_announce('[', ']', "You are not a room admin", 'small')
-		return false
-	}
-
-	socket_emit('claim_room', {pass:''})
-}
-
-function unclaim_room()
-{
-	if(!claimed)
-	{
-		chat_announce('[', ']', "Room hasn\'t been claimed yet", 'small')
-		return false
-	}
-
-	if(role !== 'admin')
-	{
-		chat_announce('[', ']', "You are not a room admin", 'small')
-		return false
-	}
-
-	socket_emit('unclaim_room', {})
-}
-
 function check_firstime()
 {
 	if(get_local_storage('firstime') === null)
@@ -5549,29 +5458,15 @@ function big_letter(s)
 	return s.toUpperCase()[0]
 }
 
-function voice(uname, vtype)
+function change_role(uname, rol)
 {
 	if(role === 'admin' || role === 'op')
 	{
-		if(uname.length > 0 && uname.length <= max_username_length)
+		if(uname.length > 0 && uname.length <= max_max_username_length)
 		{
 			if(uname === username)
 			{
-				chat_announce('[', ']', "You can't voice yourself", 'small')
-				return false
-			}
-
-			if(usernames.indexOf(uname) === -1)
-			{
-				chat_announce('[', ']', "Nobody is using that username", 'small')
-				return false
-			}
-
-			var rol = get_role(uname)
-
-			if(rol === vtype)
-			{
-				isalready(uname, vtype)
+				chat_announce('[', ']', "You can't assign a role to yourself", 'small')
 				return false
 			}
 
@@ -5581,7 +5476,7 @@ function voice(uname, vtype)
 				return false
 			}
 
-			socket_emit('voice', {username:uname, vtype:vtype})
+			socket_emit('change_role', {username:uname, role:rol})
 		}
 	}
 
@@ -5630,28 +5525,16 @@ function announce_uploaded_image(data, date=false)
 	chat_announce("<i class='icon2 fa fa-camera'></i>", '', msg, 'small', false, title, onclick, true, false, d)
 }
 
-function announce_voice(data)
+function announce_role_change(data)
 {
 	if(username === data.username2)
 	{
-		set_role(data.vtype)
+		set_role(data.role)
 	}
 
-	chat_announce('~', '~', `${data.username1} gave ${data.vtype} to ${data.username2}`, 'small')
+	chat_announce('~', '~', `${data.username1} gave ${data.role} to ${data.username2}`, 'small')
 
-	replace_role_in_userlist(data.username2, data.vtype)
-}
-
-function announce_op(data)
-{
-	if(username === data.username2)
-	{
-		set_role("op")
-	}
-
-	chat_announce('~', '~', `${data.username1} gave op to ${data.username2}`, 'small')
-
-	replace_role_in_userlist(data.username2, 'op')
+	replace_role_in_userlist(data.username2, data.role)	
 }
 
 function set_role(p)
@@ -5659,144 +5542,6 @@ function set_role(p)
 	role = p
 
 	check_permissions()
-}
-
-function announce_claim(data)
-{
-	claimed = true
-
-	if(data.updated)
-	{
-		var s = `The room has been reclaimed by ${data.username}. All previous given roles are now invalid`
-	}
-
-	else
-	{
-		var s = `${data.username} has claimed this room`	
-	}
-
-	chat_announce('~', '~', s, 'small')
-
-	if(username === data.username)
-	{
-		set_role("admin")
-	}
-
-	else
-	{
-		set_role("voice1")
-	}
-	
-	replace_claim_userlist(data.username)
-}
-
-function announce_unclaim(data)
-{
-	chat_announce('~', '~', `${data.username} unclaimed the room`, 'small')
-
-	claimed = false
-
-	set_role("voice1")
-
-	upload_permission = 1
-
-	chat_permission = 1
-
-	is_public = true
-
-	set_topic_info(false)
-
-	update_title()
-
-	check_permissions()
-
-	remove_roles_in_userlist()
-
-	if(radio_source !== "")
-
-	if(radio_source !== default_radio_source)
-	{
-		setup_radio(false)
-	}
-}
-
-function announce_admin(data)
-{
-	chat_announce('~', '~', `${data.username1} gave admin to ${data.username2}`, 'small')
-
-	replace_role_in_userlist(data.username2, 'admin')
-}
-
-function admin(uname)
-{
-	if(role === 'admin')
-	{
-		if(uname.length > 0 && uname.length <= max_username_length)
-		{
-			if(uname === username)
-			{
-				chat_announce('[', ']', "You can't admin yourself", 'small')
-				return false
-			}
-
-			if(usernames.indexOf(uname) === -1)
-			{
-				chat_announce('[', ']', "Nobody is using that username", 'small')
-				return false
-			}
-
-			var rol = get_role(uname)
-
-			if(rol === 'admin')
-			{
-				isalready(uname, 'admin')
-				return false
-			}
-
-			socket_emit('admin', {username:uname})
-		}
-	}
-
-	else
-	{
-		chat_announce('[', ']', "You are not a room admin", 'small')
-	}
-}
-
-function op(uname)
-{
-	if(role === 'admin')
-	{
-		if(uname.length > 0 && uname.length <= max_username_length)
-		{
-			if(uname === username)
-			{
-				chat_announce('[', ']', "You can't op yourself", 'small')
-				return false
-			}
-
-			if(usernames.indexOf(uname) === -1)
-			{
-				chat_announce('[', ']', "Nobody is using that username", 'small')
-				return false
-			}
-
-			var rol = get_role(uname)
-
-			if(rol === 'op')
-			{
-				isalready(uname, 'op')
-				return false
-			}
-
-			socket_emit('op', {username:uname})
-		}
-	}
-
-	else
-	{
-		chat_announce('[', ']', "You are not a room admin", 'small')
-	}
 }
 
 function change_privacy(what)
@@ -6036,7 +5781,7 @@ function ban(uname)
 {
 	if(role === 'admin' || role === 'op')
 	{
-		if(uname.length > 0 && uname.length <= max_username_length)
+		if(uname.length > 0 && uname.length <= max_max_username_length)
 		{
 			if(uname === username)
 			{
@@ -6044,21 +5789,29 @@ function ban(uname)
 				return false
 			}
 
-			if(usernames.indexOf(uname) === -1)
-			{
-				chat_announce('[', ']', "Nobody is using that username", 'small')
-				return false
-			}
-
-			var rol = get_role(uname)
-
-			if((rol === 'admin' || rol === 'op') && role !== 'admin')
-			{
-				forbiddenuser()
-				return false
-			}
-
 			socket_emit('ban', {username:uname})
+		}
+	}
+
+	else
+	{
+		not_an_op()
+	}
+}
+
+function unban(uname)
+{
+	if(role === 'admin' || role === 'op')
+	{
+		if(uname.length > 0 && uname.length <= max_max_username_length)
+		{
+			if(uname === username)
+			{
+				chat_announce('[', ']', "You can't unban yourself", 'small')
+				return false
+			}
+
+			socket_emit('unban', {username:uname})
 		}
 	}
 
@@ -6121,7 +5874,7 @@ function kick(uname)
 {
 	if(role === 'admin' || role === 'op')
 	{
-		if(uname.length > 0 && uname.length <= max_username_length)
+		if(uname.length > 0 && uname.length <= max_max_username_length)
 		{
 			if(uname === username)
 			{
@@ -6193,11 +5946,6 @@ function isalready(who, what)
 	else if(what === 'admin')
 	{
 		chat_announce('[', ']', `${who} is already an admin`, 'small')
-	}
-
-	else if(what === '')
-	{
-		chat_announce('[', ']', `${who} already has no role`, 'small')
 	}
 }
 
@@ -7209,7 +6957,7 @@ function get_status_html()
 
 	else
 	{
-		info += "<div class='info_item'><div class='info_title'>Topic</div><div class='info_item_content' id='status_topic'>No topic set</div></div>"
+		info += `<div class='info_item'><div class='info_title'>Topic</div><div class='info_item_content' id='status_topic'></div></div>`		
 	}
 
 	info += "<div class='info_item'><div class='info_title'>Privacy</div>"	
@@ -7244,7 +6992,7 @@ function get_status_html()
 
 	if(t.text() === "")
 	{
-		t.text(topic).urlize()
+		t.text(get_topic()).urlize()
 	}
 
 	h.find("#status_radio_source").eq(0).text(radio_source).urlize()

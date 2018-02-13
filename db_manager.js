@@ -4,7 +4,7 @@ module.exports = function(db, config, sconfig, utilz)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 33
+	const rooms_version = 34
 	const users_version = 26
 
 	function get_random_key()
@@ -14,7 +14,7 @@ module.exports = function(db, config, sconfig, utilz)
 
 	var manager = {}
 
-	manager.get_room = function(query, fields)
+	manager.get_room = function(query, fields, user_id=undefined)
 	{
 		return new Promise((resolve, reject) => 
 		{
@@ -48,7 +48,7 @@ module.exports = function(db, config, sconfig, utilz)
 				{
 					if(query._id === config.main_room_id)
 					{
-						manager.create_room({name:config.default_main_room_name, id:config.main_room_id})
+						manager.create_room({name:config.default_main_room_name, id:config.main_room_id, user_id:user_id})
 
 						.then(room =>
 						{
@@ -126,11 +126,6 @@ module.exports = function(db, config, sconfig, utilz)
 						if(typeof room.topic_date !== "number")
 						{
 							room.topic_date = 0
-						}
-						
-						if(typeof room.claimed !== "boolean")
-						{
-							room.claimed = false
 						}
 						
 						if(typeof room.keys !== "object")
@@ -378,7 +373,6 @@ module.exports = function(db, config, sconfig, utilz)
 				topic: '',
 				topic_setter: '',
 				topic_date: 0,
-				claimed: true,
 				keys: {},
 				radio_type: 'radio',
 				radio_source: '',

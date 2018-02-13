@@ -24,6 +24,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.max_input_length = config.max_input_length
 	c.vars.max_topic_length = config.max_topic_length
 	c.vars.max_username_length = config.max_username_length
+	c.vars.max_max_username_length = config.max_max_username_length
 	c.vars.max_room_name_length = config.max_room_name_length
 	c.vars.max_radio_source_length = config.max_radio_source_length
 	c.vars.max_tv_source_length = config.max_tv_source_length
