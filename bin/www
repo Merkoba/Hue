@@ -31,7 +31,7 @@ mongo.connect(config.mongodb_path, function(err, db)
 
 		const io = require('socket.io').listen(server)
 
-		require('../sockets')(io, db_manager, config, sconfig, utilz)
+		require('../sockets')(io, db_manager, config, sconfig, utilz, app.get("env"))
 
 		function normalizePort(val) 
 		{

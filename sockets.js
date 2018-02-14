@@ -1,4 +1,4 @@
-module.exports = function(io, db_manager, config, sconfig, utilz)
+module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 {
 	const fs = require('fs')
 	const path = require('path')
@@ -9,6 +9,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 	const mongo = require('mongodb')
 	const aws = require('aws-sdk');
 	const jwt = require('jsonwebtoken');
+	const winston = require('winston');
 	const images_root = path.join(__dirname, config.images_directory)
 
 	var vtypes = ["voice1", "voice2", "voice3", "voice4"]
@@ -25,6 +26,20 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 			accessKeyId: sconfig.s3_access_key,
 			secretAccessKey: sconfig.s3_secret_access_key
 		}
+	})
+
+	const logger = winston.createLogger(
+	{
+		format: winston.format.simple(),
+		transports: 
+		[
+			new winston.transports.File(
+			{
+				filename: path.join(__dirname, "logs/error.log"), 
+				level: "error",
+				timestamp: (new Date()).toLocaleTimeString()
+			})
+		]
 	})
 
 	const rooms = {}
@@ -80,7 +95,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 		catch(err)
 		{
-			console.error(err)
+			log_error(err)
 		}
 
 		socket.on('join_room', function(data)
@@ -92,7 +107,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -105,7 +120,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -118,7 +133,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -131,7 +146,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -144,7 +159,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -157,7 +172,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -170,7 +185,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -183,7 +198,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -196,7 +211,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -209,7 +224,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -222,7 +237,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -235,7 +250,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -248,7 +263,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -261,7 +276,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -274,7 +289,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -287,7 +302,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -300,7 +315,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -313,7 +328,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -326,7 +341,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -339,7 +354,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -352,7 +367,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -365,7 +380,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -378,7 +393,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -391,7 +406,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -404,7 +419,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -417,7 +432,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -430,7 +445,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -443,7 +458,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -456,7 +471,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -469,7 +484,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -482,7 +497,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -495,7 +510,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})	
 
@@ -508,7 +523,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -521,7 +536,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})	
 
@@ -534,7 +549,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -547,7 +562,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -560,7 +575,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -573,7 +588,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -586,7 +601,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -599,7 +614,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 
@@ -612,7 +627,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})			
 
@@ -632,7 +647,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		})
 	})
@@ -722,13 +737,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				.catch(err =>
 				{
-					console.error(err)
+					log_error(err)
 				})
 			})
 			
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})				
 		}
 
@@ -779,19 +794,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 							.catch(err =>
 							{
-								console.error(err)
+								log_error(err)
 							})
 						})
 
 						.catch(err =>
 						{
-							console.error(err)
+							log_error(err)
 						})
 					})
 
 					.catch(err =>
 					{
-						console.error(err)
+						log_error(err)
 					})
 				}
 			})
@@ -1057,14 +1072,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					.catch(err =>
 					{
-						console.error(err)
+						log_error(err)
 					})
 				}
 			})
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 		}
 	}
@@ -1110,14 +1125,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					.catch(err =>
 					{
-						console.error(err)
+						log_error(err)
 					})
 				}
 			})
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})	
 		}
 	}
@@ -1174,7 +1189,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 		}
 	}
@@ -1272,7 +1287,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					.catch(err => 
 					{
-						console.error(err)
+						log_error(err)
 					})
 
 					io.sockets.in(socket.room_id).emit('update', 
@@ -1286,13 +1301,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				.catch(err =>
 				{
-					console.error(err)
+					log_error(err)
 				})
 			})
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 		}		
 	}
@@ -1345,7 +1360,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				.catch(err =>
 				{
-					console.error(err)
+					log_error(err)
 				})
 
 				io.sockets.in(socket.room_id).emit('update', {type:'voices_resetted', username:socket.username})
@@ -1353,7 +1368,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 		}		
 	}
@@ -1408,13 +1423,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				.catch(err =>
 				{
-					console.error(err)
+					log_error(err)
 				})				
 			})
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 		}
 	}
@@ -1559,14 +1574,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					.catch(err =>
 					{
-						console.error(err)
+						log_error(err)
 					})
 				})
 			})
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 		}		
 	}
@@ -1643,7 +1658,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					.catch(err =>
 					{
-						console.error(err)
+						log_error(err)
 					})
 
 					io.sockets.in(socket.room_id).emit('update', 
@@ -1657,7 +1672,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 		}		
 	}
@@ -1683,7 +1698,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					.catch(err =>
 					{
-						console.error(err)
+						log_error(err)
 					})
 
 					io.sockets.in(socket.room_id).emit('update', {type:'announce_unban_all', username:socket.username})
@@ -1697,7 +1712,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 		}		
 	}
@@ -1730,7 +1745,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 		}		
 	}
@@ -1763,7 +1778,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 						.catch(err =>
 						{
-							console.error(err)
+							log_error(err)
 						})						
 					}
 
@@ -1773,7 +1788,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 						.catch(err =>
 						{
-							console.error(err)
+							log_error(err)
 						})						
 					}
 
@@ -1785,7 +1800,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 		}		
 	}
@@ -1811,7 +1826,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					.catch(err =>
 					{
-						console.error(err)
+						log_error(err)
 					})					
 
 					io.sockets.in(socket.room_id).emit('update', {type:'log_cleared', username:socket.username})
@@ -1825,7 +1840,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 
 		}		
@@ -1849,7 +1864,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 
 			io.sockets.in(socket.room_id).emit('update', {type:'privacy_change', username:socket.username, what:data.what})
@@ -1935,7 +1950,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 						.catch(err =>
 						{
-							console.error(err)
+							log_error(err)
 						})
 					}
 
@@ -2027,7 +2042,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				.catch(err =>
 				{
-					console.error(err)
+					log_error(err)
 				})						
 			}
 		}
@@ -2114,7 +2129,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 						.catch(err =>
 						{
 							socket.emit('update', {room:socket.room_id, type:'videonotfound'})
-							console.error(err)
+							log_error(err)
 						})
 					}
 
@@ -2155,7 +2170,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 							.catch(err =>
 							{
 								socket.emit('update', {room:socket.room_id, type:'videonotfound'})								
-								console.error(err)
+								log_error(err)
 							})
 						}
 
@@ -2262,7 +2277,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				.catch(err =>
 				{
-					console.error(err)
+					log_error(err)
 				})						
 			}
 		}
@@ -2310,7 +2325,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 		.catch(err =>
 		{
-			console.error(err)
+			log_error(err)
 		})
 
 		rooms[socket.room_id].activity = true
@@ -2376,7 +2391,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 		.catch(err =>
 		{
-			console.error(err)
+			log_error(err)
 		})
 
 		rooms[socket.room_id].activity = true
@@ -2458,7 +2473,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 		}
 	}
@@ -2490,7 +2505,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})			
 
 			socket.emit('update', {room:socket.room, type:'password_changed', password:data.password})
@@ -2523,7 +2538,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})			
 
 			socket.emit('update', {room:socket.room, type:'email_changed', email:data.email})
@@ -2546,7 +2561,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})			
 		}
 	}
@@ -2572,7 +2587,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 
 			io.sockets.in(socket.room_id).emit('update', 
@@ -2605,7 +2620,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 
 			io.sockets.in(socket.room_id).emit('update', 
@@ -2638,7 +2653,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 
 			io.sockets.in(socket.room_id).emit('update', 
@@ -2671,7 +2686,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 
 			io.sockets.in(socket.room_id).emit('update', 
@@ -2704,7 +2719,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 
 			io.sockets.in(socket.room_id).emit('update', 
@@ -2750,7 +2765,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 
 			io.sockets.in(socket.room_id).emit('update', 
@@ -2935,7 +2950,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 		}
 
@@ -2991,13 +3006,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})		
 		})
 
 		.catch(err =>
 		{
-			console.error(err)
+			log_error(err)
 		})
 	}
 
@@ -3015,7 +3030,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				return get_out(socket)
 			}
 
-			if(data.image_url.length > config.max_input_length)
+			if(data.image_url.length > config.max_image_source_length)
 			{
 				return get_out(socket)
 			}		    
@@ -3118,7 +3133,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 					.catch(err =>
 					{					
 						fs.unlink(`${images_root}/${fname}`, function(){})
-						console.error(err)
+						log_error(err)
 					})
 				})
 			}
@@ -3149,7 +3164,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 		}
 
@@ -3196,7 +3211,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 				.catch(err =>
 				{
-					console.error(err)
+					log_error(err)
 				})					
 
 				if(spliced)
@@ -3218,7 +3233,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 							.catch(err =>
 							{
-								console.error(err)
+								log_error(err)
 							})
 						}
 					}
@@ -3227,7 +3242,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 		}
 
@@ -3342,7 +3357,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				.catch(err =>
 				{					
 					fs.unlink(`${images_root}/${fname}`, function(){})
-					console.error(err)
+					log_error(err)
 				})
 			})
 		}
@@ -3401,13 +3416,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})		
 		})
 
 		.catch(err =>
 		{
-			console.error(err)
+			log_error(err)
 		})
 	}
 
@@ -3486,7 +3501,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 				.catch(err =>
 				{					
 					fs.unlink(`${images_root}/${fname}`, function(){})
-					console.error(err)
+					log_error(err)
 				})
 			})
 		}
@@ -3540,7 +3555,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			.catch(err =>
 			{
-				console.error(err)
+				log_error(err)
 			})
 
 			if(to_delete)
@@ -3560,7 +3575,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 					.catch(err =>
 					{
-						console.error(err)
+						log_error(err)
 					})
 				}				
 			}	
@@ -3568,7 +3583,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 		.catch(err =>
 		{
-			console.error(err)
+			log_error(err)
 		})
 	}
 
@@ -3925,7 +3940,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 							.catch(err =>
 							{
-								console.error(err)
+								log_error(err)
 							})
 						}
 
@@ -3935,7 +3950,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 							.catch(err =>
 							{
-								console.error(err)
+								log_error(err)
 							})							
 						}
 
@@ -3947,7 +3962,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		}, config.room_loop_interval)
 	}
@@ -3971,7 +3986,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 			catch(err)
 			{
-				console.error(err)
+				log_error(err)
 			}
 		}, config.files_loop_interval)
 	}
@@ -4002,7 +4017,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 		catch(err)
 		{
-			console.error(err)
+			log_error(err)
 		}
 	}
 
@@ -4029,7 +4044,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 		catch(err)
 		{
-			console.error(err)
+			log_error(err)
 		}
 	}
 
@@ -4056,7 +4071,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 		catch(err)
 		{
-			console.error(err)
+			log_error(err)
 		}
 	}
 
@@ -4074,7 +4089,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 		catch(err)
 		{
-			console.error(err)
+			log_error(err)
 		}
 	}
 
@@ -4091,7 +4106,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 
 		catch(err)
 		{
-			console.error(err)
+			log_error(err)
 		}
 	}
 
@@ -4140,5 +4155,26 @@ module.exports = function(io, db_manager, config, sconfig, utilz)
 		}
 
 		return false
+	}
+
+	function log_error(msg)
+	{
+		if(environment === "development")
+		{
+			console.error(msg)
+		}
+
+		if(msg instanceof Error)
+		{
+			msg = JSON.stringify(msg.stack, null, 2).replace(/\\n/g, "\r\n")
+		}
+
+		msg = `${new Date().toLocaleString()}\r\n${msg}`
+
+		logger.log(
+		{
+			level: "error",
+			message: msg
+		})
 	}
 }

@@ -8135,7 +8135,10 @@ function upload_image_by_url(url)
 
 	url = url.replace(/\.gifv/g,'.gif')
 
-	$('#test_image').attr('src', url)
+	if(url.length > 0 && url.length <= max_image_source_length)
+	{
+		$('#test_image').attr('src', url)
+	}
 }
 
 function change_voice_permission(ptype, what)
