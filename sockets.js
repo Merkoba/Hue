@@ -733,6 +733,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 					do_join(socket, info, userinfo)
 
 					db_manager.save_visited_room(socket.user_id, data.room_id)
+
+					.catch(err =>
+					{
+						log_error(err)
+					})					
 				})
 
 				.catch(err =>
@@ -1577,6 +1582,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 						log_error(err)
 					})
 				})
+
+				.catch(err =>
+				{
+					log_error(err)
+				})
 			})
 
 			.catch(err =>
@@ -1668,6 +1678,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 						username2: data.username
 					})					
 				})
+
+				.catch(err =>
+				{
+					log_error(err)
+				})				
 			})
 
 			.catch(err =>
@@ -1996,8 +2011,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 				.catch(err =>
 				{
-					
-				})			
+					log_error(err)
+				})
 			}
 
 			else
@@ -2229,9 +2244,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 				.catch(err =>
 				{
-					
-				})			
-			}			
+					log_error(err)
+				})
+			}
 
 			else
 			{
