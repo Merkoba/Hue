@@ -128,6 +128,7 @@ var radio_locked = false
 var old_input_val
 var separator_title
 var msg_id = 0
+var mentions_regex
 
 function init()
 {
@@ -724,7 +725,7 @@ function start_socket()
 		{
 			connections += 1
 			room_name = data.room_name
-			username = data.username
+			set_username(data.username)
 			setup_profile_image(data.profile_image)
 			userlist = data.userlist
 			update_userlist()
@@ -975,11 +976,6 @@ function start_socket()
 		else if(data.type === 'redirect')
 		{
 			goto_url(data.location)
-		}
-
-		else if(data.type === 'username_changed')
-		{
-			username_changed(data)
 		}
 
 		else if(data.type === 'username_already_exists')
@@ -3248,9 +3244,7 @@ function update_chat(uname, msg, prof_image, date=false)
 
 	if(uname !== username)
 	{
-		var regex = new RegExp("(^|\\s+)" + escape_special_characters(username) + "($|\\s+|\\!|\\?|\\,|\\.)")
-
-		if(msg.search(regex) !== -1)
+		if(msg.search(mentions_regex) !== -1)
 		{
 			contclasses += " dotted"
 
@@ -4441,9 +4435,7 @@ function announce_topic_change(data)
 
 		if(data.topic_setter !== username)
 		{
-			var regex = new RegExp("(^|\\s+)" + escape_special_characters(username) + "($|\\s+|\\!|\\?|\\,|\\.)")
-
-			if(data.topic.search(regex) !== -1)
+			if(data.topic.search(mentions_regex) !== -1)
 			{
 				highlight = true
 			}
@@ -4477,7 +4469,7 @@ function announce_new_username(data)
 
 	if(username === data.old_username)
 	{
-		username = data.username
+		set_username(data.username)
 
 		if(show)
 		{
@@ -7044,13 +7036,6 @@ function change_username(uname)
 	socket_emit("change_username", {username:uname})
 }
 
-function username_changed(data)
-{
-	user_username = data.username
-
-	chat_announce('[', ']', `Username succesfully changed to ${data.username}`, 'small')
-}
-
 function change_password(passwd)
 {
 	if(passwd.length < min_password_length)
@@ -8545,4 +8530,15 @@ function show_others_disconnected(data)
 	}
 
 	chat_announce('[', ']', s, 'small')
+}
+
+function set_username(uname)
+{
+	username = uname
+	generate_mentions_regex()
+}
+
+function generate_mentions_regex()
+{
+	mentions_regex = new RegExp(`(?:^|\\s+)${escape_special_characters(username)}(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`)
 }

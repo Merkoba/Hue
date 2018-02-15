@@ -494,7 +494,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	{
 		c.vars.room_id = config.main_room_id
 		c.vars.user_id = req.session.user_id
-		c.vars.user_username = req.session.user_username
 		c.vars.jwt_token = req.jwt_token
 		res.render('main', c)
 	})
@@ -503,7 +502,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	{
 		c.vars.room_id = req.params.id.substr(0, config.max_room_id_length)
 		c.vars.user_id = req.session.user_id
-		c.vars.user_username = req.session.user_username
 		c.vars.jwt_token = req.jwt_token
 		res.render('main', c)
 	})
