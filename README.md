@@ -313,9 +313,6 @@ To have a full working system, as it is intended, getting the youtube api key is
 "max_typing_inactivity"
 >After the last typing signal has being received, it will stop showing the typing status after this amount of time.
 
-"unfocus_delay"
->When this amount of time after the application has been onfucused, the application will be considered onfocus and will receive notifications like sound notifications on new messages. This window of time is to avoid missing notifications if the application was onfocused about the same time a message had arrived and was not seen.
-
 ## The following reside in config.secret.json
 
 "youtube_api_key"

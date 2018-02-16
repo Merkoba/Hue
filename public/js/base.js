@@ -63,7 +63,6 @@ var afk_timer
 var afk = false
 var alert_mode = 0
 var sound_notify_timer
-var alert_timer
 var commands = []
 var chat_scrollbar
 var template_menu
@@ -4922,13 +4921,10 @@ function sound_notify()
 
 	if(settings.sound_notifications)
 	{
-		sound_notify_timer = setTimeout(function()
-		{ 
-			if(document.hidden)
-			{
-				pup()
-			}
-		}, unfocus_delay)
+		if(document.hidden)
+		{
+			pup()
+		}
 	}
 }
 
@@ -4939,17 +4935,14 @@ function alert_title()
 		return false
 	}
 
-	alert_timer = setTimeout(function()
-	{ 
-		if(document.hidden)
+	if(document.hidden)
+	{
+		if(alert_mode === 0)
 		{
-			if(alert_mode === 0)
-			{
-				alert_mode = 1
-				update_title()
-			}
+			alert_mode = 1
+			update_title()
 		}
-	}, unfocus_delay)
+	}
 }
 
 function alert_title2()
@@ -4959,17 +4952,14 @@ function alert_title2()
 		return false
 	}
 
-	alert_timer = setTimeout(function()
+	if(document.hidden)
 	{
-		if(document.hidden)
+		if(alert_mode !== 2)
 		{
-			if(alert_mode !== 2)
-			{
-				alert_mode = 2
-				update_title()
-			}
+			alert_mode = 2
+			update_title()
 		}
-	}, unfocus_delay)
+	}
 }
 
 function remove_alert_title()
@@ -5019,11 +5009,6 @@ function activate_window_visibility_listener()
 			if(afk_timer !== undefined)
 			{
 				clearTimeout(afk_timer)
-			}
-
-			if(alert_timer !== undefined)
-			{
-				clearTimeout(alert_timer)
 			}
 
 			afk = false
