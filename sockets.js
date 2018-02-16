@@ -2305,12 +2305,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 			else if(data.src.indexOf("twitch.tv") !== -1)
 			{
+				if(!config.twitch_enabled)
+				{
+					return
+				}
+				
 				var id = utilz.get_twitch_id(data.src)
 
 				if(id)
 				{
 					if(id[0] === "video")
 					{
+
 						fetch(`https://api.twitch.tv/helix/videos?id=203574636`,
 						{
 							headers: 

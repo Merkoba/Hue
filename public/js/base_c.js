@@ -5723,6 +5723,11 @@ function announce_tv_source_change(data, date=false, action="change")
 		var name = data.tv_title
 	}
 
+	else if(data.tv_source == '')
+	{
+		var name = 'default'
+	}	
+
 	else
 	{
 		var name = data.tv_source

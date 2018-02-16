@@ -1,27 +1,27 @@
-![](https://i.imgur.com/ZrP56hg.jpg)
+![](https://i.imgur.com/Hxx3aXr.jpg)
 
 # Installation
 
 Requirements:
 - Node 6+
 - MongoDB 3+
-- Linux (to run properly)
+- Linux
 
-There's not much to do. 
-
-Just put the files in the directory you want it work and call "npm install". That should install all necesary packages. 
+Put the files in the directory you want it work and call "npm install". That should install all necesary packages. 
 
 You will also need MongoDB installed in your computer, and for everything to work correctly Hue should be running in a Linux environment as it depends on some Linux calls like rm, wget, stat and find.
 
 There is no need create database tables, all of that is done automatically, MongoDB just needs to be installed and running.
 
-Most configuration is done in the config.json and config.secret.json files found in the root directory.
+Configuration is done in the config.json and config.secret.json files found in the root directory.
 
 To run it locally you first have to start 'mongod' then go to the bin directory and run 'node www start'.
 
 To run it properly in production you will have to configure Apache or some other webserver to use a reverse proxy. A sample vhost configuration for Apache (apache_vhost.conf) is included. For using https LetsEncrypt is suggested.
 
 Using pm2 is suggested to control the Node process.
+
+To have a full working system, as it is intended, getting the youtube api key is very recommended. Twitch api key is recommended to support twitch 'videos' (channels work out of the box). Mailgun api key is recommended if you want to enable password recovery. Setup these in config.secret.json. If you don't want any of these, disable them in the config.json
 
 # Configuration
 
@@ -30,6 +30,9 @@ Using pm2 is suggested to control the Node process.
 
 "site_root"
 >The root url where the system will work. Needs a slash at the end.
+
+"image_storage_s3_or_local"
+>Whether to serve images locally or hosted on an S3 service.
 
 "main_room_id"
 >The name of the main room. This is the room that will be joined when going to the root url. This room is created automatically when first joined. To get ownership of the room "/claim secretpass" is needed.
@@ -46,14 +49,32 @@ Using pm2 is suggested to control the Node process.
 "default_image_url"
 >The public location of the default image. This image appears on new rooms or when an uploaded image fails to load.
 
-"loading_image_url"
->The public location of the loading image. This image appears when the room is loading and hasn't finished loading the first image.
+"default_tv_source"
+>Default source for the tv for new rooms. This is a video url, file, youtube, or twitch.
+
+"default_tv_type"
+>The type of the default_tv_source, either "url", "youtube", or "twitch".
 
 "login_logo_url"
 >The public location of the logo at the top of the login page.
 
+"default_profile_image_url"
+>The location of the default profile image.
+
+"profile_image_loading_url"
+>The location of the loading image when the profile image is changing.
+
+"default_default_background_image_url"
+>The location of the default background image.
+
+"background_image_loading_url"
+>The location of the loading image when the background image is changing.
+
+"default_video_url"
+>Image to show to video element when there's no video image loaded.
+
 "default_radio_source"
->The default radio url used for new rooms or when "/radio default" is issued.
+>The default radio url used for new rooms or when "/radio default" is issued. To work properly, for now, this must be ideally a working icecasat radio url.
 
 "mongodb_path"
 >The path to the MongoDB database. The name can be anything as long as the port is correct.
@@ -76,6 +97,9 @@ Using pm2 is suggested to control the Node process.
 "default_topic_unclaimed"
 >Topic shown when the room is unclaimed.
 
+"default_topic_admin"
+>Default topic shown to admins.
+
 "redirect_url"
 >Url used in some cases when the user needs to be disposed. For example when kicked from a room.
 
@@ -85,14 +109,11 @@ Using pm2 is suggested to control the Node process.
 "general_opacity"
 >Opacity used in various parts of the interface so the background image is partially visible when settings.background_image is enabled.
 
-"color_contrast_amount_1"
->Contrast between the background color and the font color.
+"modal_overlay_opacity"
+>Opacity used in the modal window overlays.
 
-"color_contrast_amount_2"
->Contrast between the background color and the font color when settings.background_image is enabled.
-
-"color_contrast_amount_3"
->Contrast between the background color and the header and footer background colors. This is to make them look a bit lighter or darker depending on the background color. Or they can have no contrast at all if they are disabled in Settings.
+"color_contrast_amount_x"
+>Settings to control contrast between different colors in the interface.
 
 "color_contrast_amount_4"
 >Same but if settings.background_image is enabled.
@@ -112,11 +133,11 @@ Using pm2 is suggested to control the Node process.
 "max_topic_length"
 >The maximum length of a room topic. If a longer topic is tried to be set with /topic it will get cropped to meet this limit. /topicadd and /topicaddstart will throw an error if there is no more room to add to the topic.
 
-"max_nickname_length"
->Maximum length for nicknames. Currently this is also used for the username max length.
+"max_username_length"
+>Maximum length for usernames.
 
-"max_max_nickname_length"
->This is a safety used when validating usernames on login. In case max or min nickname length configurations where changed when there were already users registered, this arbitrary big number is used to check something huge is not being inputed instead of checking with the nickname length configuration options, to avoid old nicknames from not being able to login. This likely shouldn't be changed.
+"max_max_username_length"
+>This is a safety used when validating usernames on login. In case max or min username length configurations where changed when there were already users registered, this arbitrary big number is used to check something huge is not being inputed instead of checking with the username length configuration options, to avoid old username from not being able to login. This likely shouldn't be changed.
 
 "min_password_length"
 >Minimum length for passwords. It must be at least 1.
@@ -148,6 +169,21 @@ Using pm2 is suggested to control the Node process.
 "room_loop_interval"
 >The interval in milliseconds for the loop that saves iterates through a rooms object which is updated through chat activity and saves it to the database. This loops is to avoid saving data, like log messages, to the database on every message.
 
+"files_loop_interval"
+>Interval of the loop to check for expired files that failed to be uploaded properly and delete them from memory.
+
+"files_loop_max_diff"
+>Amount of time for file upload to be inactive for it to be considered expired.
+
+"upload_slice_size"
+>The sice of file slices to be uploaded.
+
+"max_image_source_length"
+>Maximum length of a image source url.
+
+"max_tv_source_length"
+>Maximum length of a tv source url.
+
 "max_radio_source_length"
 >Maximum length of a radio source url.
 
@@ -172,11 +208,14 @@ Using pm2 is suggested to control the Node process.
 "max_image_size"
 >Maximum image size allowed in KB. This is checked both in the client and server. If the image is bigger it won't be uploaded.
 
+"max_profile_image_size"
+>Maximum image size allowed for profile images.
+
 "small_keyboard_scroll"
->The amount scrolled in pixels when Shift + Up or Down arrows are used.
+>The amount scrolled in pixels for a small, normal, scroll. By using shift + up or shift + down.
 
 "big_keyboard_scroll"
->The amount scrolled in pixels when PageUp or PageDown are used.
+>The amount scrolled in pixels for a bigger scroll. By using pageUp or pageDown.
 
 "afk_timeout_duration"
 >When a user has had the tab unfocused (changing applications is currently not detected as being unfocused by browsers, so this means being on a different tab) for this amount of time, the user will be considered internally as afk. When afk is true it the tab won't load new changed images until the user focuses the tab again. This is to be avoid an abandoned tab from loading lots of images for no purpose, to save bandwidth.
@@ -188,7 +227,10 @@ Using pm2 is suggested to control the Node process.
 >Rooms have a "modified" property updated after most operations inside the room. The public roomlist considers rooms that are a) Public b) Claimed and c) Current date - modified date is lower than this configuration.
 
 "youtube_enabled"
->Whether youtube features are enabled. If disabled, youtube urls and search terms will be discarded when /radio is used. There are checks both in the client and server.
+>Whether youtube features are enabled. If disabled, youtube urls and search terms will be discarded when /radio or /tv are used. There are checks both in the client and server.
+
+"twitch_enabled"
+>Whether twitch features are enabled. If disabled, twitch urls will be discarded when /tv is used. There are checks both in the client and server.
 
 "heartbeat_interval"
 >This is a heartbeat used to check whether a user is still properly connected to the system. It is a simple check that tests if socket.nickname is undefined. If it is undefined it sends a signal that refreshes the page. This is probably not necesary since Socket.IO has it's own heartbeat feature so this interval can be a lot bigger, but previous problems lead to this implementation, so it's a safety measure.
@@ -223,39 +265,58 @@ Using pm2 is suggested to control the Node process.
 "max_url_length"
 >Url lengths beyond this are ignored by the system. This is to avoid triggering actions on urls that are likely wrong or meant as an attack.
 
-"image_storage_s3_or_local"
->Whether to serve images locally or hosted on an S3 service.
-
 "max_stored_images"
 >The amount of most recent images to have stored in a room. Each room has an array of images stored, when the array's length surpasses this number, the oldest image in it will get deleted, either locally or on the S3 bucket depending on settings.
 
 "settings_default_background_image"
 >Whether the uploaded image is shown in the background by default.
 
-"settings_default_foreground_image"
->Whether the uploaded image is shown in the foreground by default.
-
 "settings_default_custom_scrollbars"
 >Whether custom scrollbars are enabled by default.
 
-"settings_default_header_contrast"
->Whether the header has a slightly lighter or darker color by default.
+"settings_default_sound_notifications"
+>Whether sound notifications are enabled by default.
 
-"settings_default_footer_contrast"
->Whether the footer has a slightly lighter or darker color by default.
+"settings_default_modal_effects"
+>Whether modal effects are enabled by default.
 
-"settings_default_nickname_on_footer"
->Whether the user's nickname is shown on the left of the footer by default. Clicking this nickname also opens a menu with some information and the abbility to change the nickname.
+"room_settings_default_images_enabled"
+>Whether images are show to the user when joining a room for the first time.
 
-"settings_default_modal_color"
->The default modal color. Either "white", "red", "green", "blue" or "black". What this does is change the class of the modals.
+"room_settings_default_tv_enabled"
+>Whether the tv is show to the user when joining a room for the first time.
 
+"room_settings_default_radio_enabled"
+>Whether the radio is show to the user when joining a room for the first time.
+
+"jwt_expiration"
+>How long jwt will be valid after login.
+
+"max_user_id_length"
+>After this length, this is clearly not a user id.
+
+"announce_joins"
+>Whether to show when a user joins the room.
+
+"announce_parts"
+>Whether to show when a user leaves the room.
+
+"image_queue_interval"
+>Minimum time for a changed image to be displayed before changing to the next one. This doesn't take into account the time the image took to load.
+
+"max_same_post_diff"
+>Maximum difference in time between a message and and another from the same user to be displayed within the same post.
+
+"max_same_post_diff"
+>Maximum messages within a post. After this a new post is displayed.
+
+"max_typing_inactivity"
+>After the last typing signal has being received, it will stop showing the typing status after this amount of time.
+
+"unfocus_delay"
+>When this amount of time after the application has been onfucused, the application will be considered onfocus and will receive notifications like sound notifications on new messages. This window of time is to avoid missing notifications if the application was onfocused about the same time a message had arrived and was not seen.
 
 ## The following reside in config.secret.json
-
-
-"secretpass"
->Password used for claiming the main room, and force claim any room. Change it to anything you want.
 
 "youtube_api_key"
 >The Youtube v3 Api key used to fetch video information from urls or to search for videos by search terms using /radio.
@@ -290,12 +351,14 @@ Using pm2 is suggested to control the Node process.
 "s3_images_location"
 >The directory inside the bucket where the images will reside, with a slash at the end.
 
+"s3_cache_max_age"
+>How long before an image is considered expired and needed to be fetched again by users. A big number is advised to preserve resources.
+
+"jwt_secret"
+>Secret key for the jwt system when logging in.
 
 ## Additional Notes
-
 
 To learn how to host a working internet radio refer to http://icecast.org/
 
 For metadata fetching to work (to display the song and artist name in the played list and Now Playing), the Icecast metadata source needs to allow cross origin requests and be served through https if the system is being served through https.
-
-To have images work properly when hosted on an S3 service, the CORS file has to be edited to allow Cross-Origin requests. This is done inside the S3 interface. If not, the dynamic color feature won't work since canvas elements won't have access to the image data.
