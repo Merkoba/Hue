@@ -64,6 +64,7 @@ var afk = false
 var alert_mode = 0
 var sound_notify_timer
 var commands = []
+var commands_sorted = {}
 var chat_scrollbar
 var template_menu
 var template_create_room
@@ -2937,12 +2938,12 @@ function replaceBetween(str, start, end, what)
 
 function oiEquals(str, what) 
 {
-	return str.valueOf() === what.split('').sort().join('')
+	return str === commands_sorted[what]
 }
 
 function oiStartsWith(str, what) 
 {
-	return str.valueOf().startsWith(`${what.split('').sort().join('')} `)
+	return str.startsWith(`${commands_sorted[what]} `)
 }
 
 function get_closest_username(word)
@@ -3810,6 +3811,29 @@ function register_commands()
 	commands.push('/disconnectothers')
 
 	commands.sort()
+
+	for(var command of commands)
+	{
+		commands_sorted[command] = command.split('').sort().join('')
+	}
+
+	for(var key in commands_sorted)
+	{
+		var scmd1 = commands_sorted[key]
+
+		for(var key2 in commands_sorted)
+		{
+			var scmd2 = commands_sorted[key2]
+
+			if(key !== key2)
+			{
+				if(scmd1 === scmd2)
+				{
+					console.error(`Command anagrams detected. ${key} and ${key2}`)
+				}
+			}
+		}
+	}	
 }
 
 function send_to_chat(msg, to_history=true)
