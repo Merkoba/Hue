@@ -3706,7 +3706,7 @@ function chat_announce(brk1, brk2, msg, size, dotted=false, title=false, onclick
 	goto_bottom()
 }
 
-jQuery.fn.urlize = function() 
+jQuery.fn.urlize = function(force=false) 
 {
 	if(this.length > 0) 
 	{
@@ -3714,13 +3714,21 @@ jQuery.fn.urlize = function()
 		{
 			var x = $(obj).html()
 
-			var list = x.match(/\bhttps?:\/\/\S+/g)
-
-			if(list) 
+			if(force)
 			{
-				for(var i=0; i<list.length; i++) 
+				x = `<a class='generic' target='_blank' href='${x}'>${x}</a>`
+			}
+
+			else
+			{
+				var list = x.match(/\bhttps?:\/\/\S+/g)
+
+				if(list) 
 				{
-					x = x.replace(list[i], `<a class='generic' target='_blank' href='${list[i]}'>${list[i]}</a>`)
+					for(var i=0; i<list.length; i++) 
+					{
+						x = x.replace(list[i], `<a class='generic' target='_blank' href='${list[i]}'>${list[i]}</a>`)
+					}
 				}
 			}
 
@@ -5082,8 +5090,6 @@ function copy_room_url()
 	url = url.replace(/\s+/g, "%20")
 
 	copy_string(url)
-
-	pup()
 
 	close_all_modals()
 }
@@ -6936,7 +6942,7 @@ function get_status_html()
 
 	else
 	{
-		info += `<div class='info_item'><div class='info_title'>Topic</div><div class='info_item_content' id='status_topic'></div></div>`		
+		info += `<div class='info_item'><div class='info_title'>Topic</div><div class='info_item_content' id='status_topic'></div></div>`
 	}
 
 	info += "<div class='info_item'><div class='info_title'>Privacy</div>"	
@@ -6963,18 +6969,75 @@ function get_status_html()
 		info += "<div class='info_item_content'>Disabled</div></div>"
 	}
 
+	if(image_uploader)
+	{
+		info += "<div class='info_item'><div class='info_title'>Image Setter</div>"
+		info += `<div class='info_item_content' id='status_image_setter'></div></div>`
+
+		info += "<div class='info_item'><div class='info_title'>Image Source</div>"
+		info += `<div class='info_item_content' id='status_image_source'></div></div>`
+
+		info += "<div class='info_item'><div class='info_title'>Image Date</div>"
+		info += `<div class='info_item_content' id='status_image_date'></div></div>`
+	}
+
+	if(tv_setter)
+	{
+		info += "<div class='info_item'><div class='info_title'>TV Setter</div>"
+		info += `<div class='info_item_content' id='status_tv_setter'></div></div>`
+
+		info += "<div class='info_item'><div class='info_title'>TV Source</div>"
+		info += `<div class='info_item_content' id='status_tv_source'></div></div>`	
+
+		info += "<div class='info_item'><div class='info_title'>TV Date</div>"
+		info += `<div class='info_item_content' id='status_tv_date'></div></div>`		
+	}
+
+	if(radio_setter)
+	{
+		info += "<div class='info_item'><div class='info_title'>Radio Setter</div>"
+		info += `<div class='info_item_content' id='status_radio_setter'></div></div>`
+
+		info += "<div class='info_item'><div class='info_title'>Radio Source</div>"
+		info += `<div class='info_item_content' id='status_radio_source'></div></div>`
+
+		info += "<div class='info_item'><div class='info_title'>Radio Date</div>"
+		info += `<div class='info_item_content' id='status_radio_date'></div></div>`		
+	}
+
 	h.append(info)
 
 	h.find("#status_room_name").eq(0).text(room_name).urlize()
 
 	var t = h.find("#status_topic").eq(0)
+	t.text(get_topic()).urlize()
 
-	if(t.text() === "")
-	{
-		t.text(get_topic()).urlize()
-	}
+	var t = h.find("#status_image_setter").eq(0)
+	t.text(image_uploader).urlize()
 
-	h.find("#status_radio_source").eq(0).text(radio_source).urlize()
+	var t = h.find("#status_image_source").eq(0)
+	t.text(image_url).urlize(true)
+
+	var t = h.find("#status_image_date").eq(0)
+	t.text(image_date).urlize(true)
+
+	var t = h.find("#status_tv_setter").eq(0)
+	t.text(tv_setter).urlize()
+
+	var t = h.find("#status_tv_source").eq(0)
+	t.text(tv_source).urlize()
+
+	var t = h.find("#status_tv_date").eq(0)
+	t.text(tv_date).urlize()
+
+	var t = h.find("#status_radio_setter").eq(0)
+	t.text(radio_setter).urlize()
+
+	var t = h.find("#status_radio_source").eq(0)
+	t.text(radio_source).urlize()
+
+	var t = h.find("#status_radio_date").eq(0)
+	t.text(radio_date).urlize()
 
 	return h.html()
 }
