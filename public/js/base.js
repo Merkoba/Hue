@@ -2,6 +2,7 @@ var socket
 var ls_settings = "settings_v15"
 var ls_input_history = "input_history_v11"
 var ls_room_settings = "room_settings_v1"
+var ls_first_time = "first_time_v2"
 var settings
 var is_public
 var room_name
@@ -5445,10 +5446,10 @@ function set_topic_info(data)
 
 function check_firstime()
 {
-	if(get_local_storage('firstime') === null)
+	if(get_local_storage(ls_first_time) === null)
 	{
-		help()
-		save_local_storage('firstime', false)
+		show_intro()
+		save_local_storage(ls_first_time, false)
 	}
 }
 
@@ -8622,4 +8623,46 @@ function set_username(uname)
 function generate_mentions_regex()
 {
 	mentions_regex = new RegExp(`(?:^|\\s+)${escape_special_characters(username)}(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`)
+}
+
+function show_intro()
+{
+	var edges_height = $("#footer").height()
+
+	var pop = Msg.factory(
+	{
+		preset: "popup",
+		edge_padding_y: edges_height,
+		position: "bottomleft"
+	})
+
+	var s = `
+	You can chat in this area. The icon on the left opens the user menu where you can change your profile image and other settings. 
+	When someone is typing a message the user menu icon turns into a pencil.`
+
+	pop.show(s)
+
+	var pop = Msg.factory(
+	{
+		preset: "popup",
+		edge_padding_y: edges_height,
+		position: "bottomright"
+	})
+
+	var s = `
+	This area has media controls. You can use these to change the room's media or control what is displayed to you.`
+
+	pop.show(s)
+
+	var pop = Msg.factory(
+	{
+		preset: "popup",
+		edge_padding_y: edges_height,
+		position: "top"
+	})
+
+	var s = `
+	This area contains the main menu, user list, and radio controls. If you disable the radio the topic will be shown instead.`
+
+	pop.show(s)
 }
