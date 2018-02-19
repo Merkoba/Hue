@@ -149,6 +149,7 @@ function init()
 	input_click_events()
 	copypaste_events()
 	main_menu_events()
+	header_topic_events()
 	scroll_events()
 	resize_events()
 	register_commands()
@@ -8665,4 +8666,16 @@ function show_intro()
 	This area contains the main menu, user list, and radio controls. If you disable the radio the topic will be shown instead.`
 
 	pop.show(s)
+}
+
+function header_topic_events()
+{
+	$("#header_topic").click(function()
+	{
+		var s = $("<div id='header_topic_content'></div>")
+		
+		s.text(get_topic()).urlize()
+		
+		msg_info.show(s[0])
+	})
 }
