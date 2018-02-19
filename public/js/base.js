@@ -3363,7 +3363,6 @@ function add_to_chat(msg, save=false, update_scrollbar=true)
 		if($(".msg").length > chat_crop_limit)
 		{
 			$("#chat_area > .msg").eq(0).remove()
-			scroll_timer()
 		}
 		
 		if(save)
@@ -3378,6 +3377,8 @@ function add_to_chat(msg, save=false, update_scrollbar=true)
 	{
 		update_chat_scrollbar()
 	}
+
+	scroll_timer()
 }
 
 function push_to_chat_history(msg)
