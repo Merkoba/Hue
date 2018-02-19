@@ -8533,10 +8533,13 @@ function hide_media_menu()
 	msg_media_menu.close()
 }
 
-function stop_and_lock()
+function stop_and_lock(stop=true)
 {
-	stop_videos()
-	stop_radio()
+	if(stop)
+	{
+		stop_videos()
+		stop_radio()
+	}
 
 	toggle_lock_images(true)
 	toggle_lock_tv(true)
