@@ -721,6 +721,7 @@ function start_socket()
 		if(data.type === 'chat_msg')
 		{
 			update_chat(data.username, data.msg, data.profile_image)
+			hide_pencil()
 		}
 
 		if(data.type === 'joined')
@@ -1357,8 +1358,12 @@ function userjoin(data)
 	if(announce_joins && check_chat_permission(data.role))
 	{		
 		chat_announce('--', '--', `${data.username} has joined`, 'small', false, false, false, true)
-		alert_title()
-		sound_notify()
+		
+		if(data.username !== username)
+		{
+			alert_title()
+			sound_notify()
+		}
 	}
 
 }
@@ -3321,16 +3326,12 @@ function update_chat(uname, msg, prof_image, date=false)
 	})	
 
 	add_to_chat(fmsg, true)
-
 	goto_bottom()
-
-	alert_title()
-
-	sound_notify()
 
 	if(uname !== username)
 	{
-		hide_pencil()
+		alert_title()
+		sound_notify()
 	}
 }
 
@@ -3455,6 +3456,8 @@ function change(type, force=false, play=true)
 		play = false
 	}
 
+	var setter = ""
+
 	if(type === "image")
 	{
 		if(!room_images_enabled || !room_settings.images_enabled || images_locked)
@@ -3465,6 +3468,8 @@ function change(type, force=false, play=true)
 		show_image(force)
 
 		last_image_change = image_url
+
+		setter = image_uploader
 	}
 
 	else if(type === "tv")
@@ -3507,6 +3512,8 @@ function change(type, force=false, play=true)
 		first_tv_played = true
 
 		last_tv_change = tv_source
+
+		setter = tv_setter
 	}
 
 	else if(type === "radio")
@@ -3517,6 +3524,8 @@ function change(type, force=false, play=true)
 		}
 
 		start_radio()
+
+		setter = radio_setter
 	}
 
 	else
@@ -3524,8 +3533,11 @@ function change(type, force=false, play=true)
 		return false
 	}
 
-	alert_title()
-	sound_notify()
+	if(setter !== username)
+	{
+		alert_title()
+		sound_notify()
+	}
 }
 
 function show_image(force=false)
