@@ -4629,7 +4629,7 @@ function get_radio_metadata()
 					return false
 				}
 
-				if(!source)
+				if(!source || source.artist === undefined || source.title === undefined)
 				{
 					show_playing_file()
 					return false
