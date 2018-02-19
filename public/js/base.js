@@ -3462,7 +3462,7 @@ function change(type, force=false, play=true)
 			return false
 		}
 
-		show_image()
+		show_image(force)
 
 		last_image_change = image_url
 	}
@@ -3528,16 +3528,20 @@ function change(type, force=false, play=true)
 	sound_notify()
 }
 
-function show_image()
+function show_image(force=false)
 {
-	if($("#media_image").attr('src') !== image_url)
+	$("#media_image_text").css("display", "none")
+
+	$("#media_image").css("display", "initial")
+
+	if(force || $("#media_image").attr("src") !== image_url)
 	{
-		$('#media_image').attr('src', image_url)
+		$("#media_image").attr("src", image_url)
 	}
 
 	else
 	{
-		after_image_load($('#media_image')[0])
+		after_image_load($("#media_image")[0])
 	}
 }
 
@@ -3551,6 +3555,12 @@ function start_image_events()
 	$('#media_image')[0].addEventListener('load', function(e)
 	{
 		after_image_load(e.target)
+	})
+
+	$('#media_image').on("error", function() 
+	{
+		$("#media_image").css("display", "none")
+		$("#media_image_text").css("display", "initial")
 	})	
 
 	$('#test_image')[0].addEventListener('load', function() 

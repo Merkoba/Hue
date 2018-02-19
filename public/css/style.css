@@ -169,6 +169,12 @@ body
 	cursor: pointer;
 }
 
+#media_image_text
+{
+	display: none;
+	font-size: 1.1em;
+}
+
 #media_tv
 {
 	height: 50%;
