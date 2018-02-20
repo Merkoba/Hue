@@ -5614,7 +5614,7 @@ function change_radio_source(src)
 {
 	if(can_radio)
 	{
-		if(src.indexOf("http://") !== -1 || src.indexOf("https://") !== -1 || src === "default")
+		if(src.startsWith("http://") || src.startsWith("https://") || src === "default")
 		{
 			if(src.indexOf("youtube.com") !== -1 || src.indexOf("youtu.be") !== -1)
 			{
@@ -5634,8 +5634,6 @@ function change_radio_source(src)
 				return
 			}
 		}
-
-		src = utilz.clean_string2(src)
 
 		if(src.length > 0 && src.length <= max_radio_source_length)
 		{
@@ -5712,7 +5710,7 @@ function change_tv_source(src)
 {
 	if(can_tv)
 	{
-		if(src.indexOf("http://") !== -1 || src.indexOf("https://") !== -1 || src === "default")
+		if(src.startsWith("http://") || src.startsWith("https://") || src === "default")
 		{
 			if(src.indexOf("youtube.com") !== -1 || src.indexOf("youtu.be") !== -1)
 			{
@@ -5741,8 +5739,6 @@ function change_tv_source(src)
 				return
 			}
 		}
-
-		src = utilz.clean_string2(src)
 
 		if(src.length > 0 && src.length <= max_tv_source_length)
 		{
@@ -8220,7 +8216,7 @@ function upload_image_by_url(url)
 		return false
 	}
 
-	url = url.replace(/\.gifv/g,'.gif')
+	url = url.replace(/\.gifv/g, '.gif')
 
 	if(url.length > 0 && url.length <= max_image_source_length)
 	{

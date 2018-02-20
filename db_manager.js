@@ -215,7 +215,7 @@ module.exports = function(db, config, sconfig, utilz)
 
 						if(typeof room.default_theme !== "string")
 						{
-							room.default_theme = "rgb(44,44,44)"
+							room.default_theme = "rgb(92, 75, 93)"
 						}
 
 						if(typeof room.default_background_image !== "string")
@@ -389,7 +389,7 @@ module.exports = function(db, config, sconfig, utilz)
 				images_enabled: true,
 				radio_enabled: true,
 				tv_enabled: true,
-				default_theme: "rgb(44, 44, 44)",
+				default_theme: "rgb(92, 75, 93)",
 				default_background_image: "",
 				default_background_image_enabled: true,
 				log: true,
