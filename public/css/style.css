@@ -1060,3 +1060,15 @@ input[type=text], textarea
 {
 	width: 10px;
 }
+
+#write_whisper_info
+{
+	max-width: 30rem;
+}
+
+#write_whisper_area
+{
+	width: 30rem;
+	resize: none;
+	font-size: 1.1em;
+}

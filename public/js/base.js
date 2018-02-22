@@ -81,6 +81,7 @@ var template_userinfo
 var template_profile
 var template_image_picker
 var template_media_menu
+var template_whisper
 var msg_menu
 var msg_userinfo
 var msg_userlist
@@ -89,6 +90,7 @@ var msg_played
 var msg_image
 var msg_profile
 var msg_info
+var msg_whisper
 var msg_image_picker
 var played_filtered = false
 var userlist_filtered = false
@@ -130,6 +132,7 @@ var old_input_val
 var separator_title
 var msg_id = 0
 var mentions_regex
+var writing_whisper = false
 
 function init()
 {
@@ -239,6 +242,7 @@ function compile_templates()
 	template_profile = Handlebars.compile($('#template_profile').html())
 	template_image_picker = Handlebars.compile($('#template_image_picker').html())
 	template_media_menu = Handlebars.compile($('#template_media_menu').html())
+	template_whisper = Handlebars.compile($('#template_whisper').html())
 }
 
 function help()
@@ -760,11 +764,6 @@ function start_socket()
 			started = true
 		}
 
-		if(data.type === 'new_username')
-		{
-			announce_new_username(data)
-		}
-
 		else if(data.type === 'chat_announcement')
 		{
 			chat_announce('###', '###', data.msg, 'small')
@@ -884,7 +883,7 @@ function start_socket()
 
 		else if(data.type === 'user_not_in_room')
 		{
-			chat_announce('[', ']', "User is not in the room", 'small')
+			user_not_in_room()
 		}
 
 		else if(data.type === 'noopstoremove')
@@ -986,6 +985,11 @@ function start_socket()
 			chat_announce('[', ']', "Username already exists", 'small')
 		}
 
+		else if(data.type === 'new_username')
+		{
+			announce_new_username(data)
+		}		
+
 		else if(data.type === 'password_changed')
 		{
 			password_changed(data)
@@ -1064,6 +1068,11 @@ function start_socket()
 		else if(data.type === 'othersdisconnected')
 		{
 			show_others_disconnected(data)
+		}
+
+		else if(data.type === 'whisper')
+		{
+			whisper_received(data)
 		}
 	})
 
@@ -1530,14 +1539,14 @@ function get_user_by_username(uname)
 		}
 	}
 
-	return []
+	return false
 }
 
 function start_userlist_click_events()
 {
 	$("#userlist").on("click", ".ui_item_uname", function()
 	{
-		show_profile($(this).text(), get_user_by_username($(this).text()).profile_image)
+		show_profile($(this).text())
 	})	
 }
 
@@ -2564,7 +2573,15 @@ function activate_key_detection()
 			}
 
 			return
-		}			
+		}
+
+		if(writing_whisper)
+		{
+			if(e.key === "Enter")
+			{
+				send_whisper()
+			}			
+		}		
 
 		if(modal_open)
 		{
@@ -3231,12 +3248,12 @@ function start_chat_click_events()
 {
 	$("#chat_area").on("click", ".chat_uname", function() 
 	{
-		change_input(`>${$(this).closest('.chat_message').find('.chat_content').eq(0).text()}`)
+		show_profile($(this).text())
 	})
 
 	$("#chat_area").on("click", ".chat_profile_image", function() 
 	{
-		show_profile($(this).closest(".chat_message").find(".chat_uname").eq(0).text(), $(this).attr('src'))
+		show_profile($(this).closest(".chat_message").find(".chat_uname").eq(0).text())
 	})	
 }
 
@@ -3842,6 +3859,7 @@ function register_commands()
 	commands.push('/shrug')
 	commands.push('/afk')
 	commands.push('/disconnectothers')
+	commands.push('/whisper')
 
 	commands.sort()
 
@@ -4236,12 +4254,12 @@ function send_to_chat(msg, to_history=true)
 
 			else if(oiEquals(lmsg, '/details'))
 			{
-				request_details(arg)
+				request_details()
 			}
 
 			else if(oiEquals(lmsg, '/logout'))
 			{
-				logout(arg)
+				logout()
 			}
 
 			else if(oiEquals(lmsg, '/fill'))
@@ -4262,6 +4280,11 @@ function send_to_chat(msg, to_history=true)
 			else if(oiEquals(lmsg, '/disconnectothers'))
 			{
 				disconnect_others()
+			}
+
+			else if(oiStartsWith(lmsg, '/whisper'))
+			{
+				write_whisper(arg)
 			}
 
 			else
@@ -5895,7 +5918,7 @@ function kick(uname)
 
 			if(usernames.indexOf(uname) === -1)
 			{
-				chat_announce('[', ']', "Nobody is using that username", 'small')
+				user_not_in_room()
 				return false
 			}
 
@@ -6345,6 +6368,35 @@ function start_msg()
 		})
 	)
 
+	msg_whisper = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "message",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+				writing_whisper = true
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				$("#write_whisper_area").val("")
+				$("#write_whisper_feedback").text("")				
+				after_modal_close(instance)
+				writing_whisper = false
+			}
+		})
+	)
+
 	msg_menu.set(template_menu())
 	msg_userinfo.set(template_userinfo())
 	msg_userlist.set(template_userlist())
@@ -6353,6 +6405,7 @@ function start_msg()
 	msg_profile.set(template_profile({profile_image: default_profile_image_url}))
 	msg_image_picker.set(template_image_picker())
 	msg_media_menu.set(template_media_menu())
+	msg_whisper.set(template_whisper())
 
 	msg_image.create()
 	msg_info.create()
@@ -7740,8 +7793,17 @@ function setup_show_profile()
 	})
 }
 
-function show_profile(uname, prof_image)
+function show_profile(uname)
 {
+	var user = get_user_by_username(uname)
+	
+	if(!user)
+	{
+		return false
+	}
+
+	var prof_image = user.profile_image
+
 	if(prof_image === "" || prof_image === undefined)
 	{
 		var pi = default_profile_image_url
@@ -7754,6 +7816,29 @@ function show_profile(uname, prof_image)
 
 	$("#show_profile_uname").text(uname)
 	$("#show_profile_image").attr("src", pi)
+
+	var num_off = 0
+
+	if(uname === username || usernames.indexOf(uname) === -1)
+	{
+		$("#show_profile_whisper").css("display", "none")
+		num_off += 1
+	}
+
+	else
+	{
+		$("#show_profile_whisper").css("display", "initial")
+	}
+
+	if($('.show_profile_button').filter(function() {return $(this).css('display') !== 'none'}).length)
+	{
+		$("#show_profile_buttons").css("display", "initial")
+	}
+
+	else
+	{
+		$("#show_profile_buttons").css("display", "none")
+	}	
 
 	msg_profile.show(function()
 	{
@@ -8696,4 +8781,74 @@ function header_topic_events()
 		
 		msg_info.show(s[0])
 	})
+}
+
+function write_whisper(uname)
+{
+	if(uname === username)
+	{
+		chat_announce('[', ']', "You can't whisper to yourself", 'small')
+		return false
+	}
+
+	if(usernames.indexOf(uname) === -1)
+	{
+		user_not_in_room()
+		return false
+	}
+
+	$("#write_whisper_uname").text(uname)
+	
+	msg_whisper.show(function()
+	{
+		$("#write_whisper_area").focus()
+	})
+}
+
+function send_whisper()
+{
+	var uname = $("#write_whisper_uname").text()
+
+	if(uname === username)
+	{
+		chat_announce('[', ']', "You can't whisper to yourself", 'small')
+		return false
+	}
+
+	if(usernames.indexOf(uname) === -1)
+	{
+		user_not_in_room()
+		return false
+	}	
+
+	var whisper = utilz.clean_string2($("#write_whisper_area").val())
+
+	var diff = max_input_length - whisper.length
+
+	if(diff === max_input_length)
+	{
+		return false
+	}
+	
+	else if(diff < 0)
+	{
+		$("#write_whisper_feedback").text(`Character limit exceeded by ${Math.abs(diff)}`)
+		return false
+	}
+
+	socket_emit('whisper', {username:uname, message:whisper})
+
+	close_all_modals()
+
+	chat_announce('[', ']', `Whisper sent to ${uname}`, 'small')
+}
+
+function whisper_received(data)
+{
+	chat_announce('<', '>', `Whisper from ${data.username}: ${data.message}`, 'small', true)
+}
+
+function user_not_in_room()
+{
+	chat_announce('[', ']', "User is not in the room", 'small')
 }

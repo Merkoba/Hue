@@ -808,6 +808,24 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 			}
 		})
 
+		socket.on('whisper', function(data) 
+		{
+			try
+			{
+				if(!socket.joined)
+				{
+					return get_out(socket)
+				}
+
+				whisper(socket, data)
+			}
+
+			catch(err)
+			{
+				log_error(err)
+			}
+		})
+
 		socket.on('disconnect_others', function(data) 
 		{
 			try
@@ -3713,9 +3731,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 	function slice_upload(socket, data)
 	{
-		if(!check_permission(socket, "images"))
+		if(data.action === "image_upload")
 		{
-			return false
+			if(!check_permission(socket, "images"))
+			{
+				return false
+			}
 		}
 
 		if(data.data.length > config.upload_slice_size)
@@ -3821,6 +3842,60 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 			type: 'typing'
 		})
 	}
+
+	function whisper(socket, data)
+	{
+		if(data.username === undefined)
+		{
+			return get_out(socket)
+		}
+
+		if(data.username.length === 0)
+		{
+			return get_out(socket)
+		}
+
+		if(data.username.length > config.max_max_username_length)
+		{
+			return get_out(socket)
+		}
+
+		if(data.message.length === 0)
+		{
+			return get_out(socket)
+		}
+
+		if(data.message.length > config.max_input_length)
+		{
+			return get_out(socket)
+		}
+
+		if(data.message.length !== utilz.clean_string2(data.message).length)
+		{
+			return get_out(socket)
+		}		
+
+		var sockets = get_user_sockets_per_room_by_username(socket.room_id, data.username)
+
+		if(sockets.length > 0)
+		{
+			for(var socc of sockets)
+			{
+				socc.emit('update', 
+				{
+					room: socket.room_id, 
+					type: 'whisper',
+					username: socket.username,
+					message: data.message
+				})
+			}
+		}
+
+		else
+		{
+			socket.emit('update', {room:socket.room_id, type:'user_not_in_room'})
+		}
+	}	
 
 	function disconnect_others(socket, data)
 	{
