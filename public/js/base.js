@@ -8846,6 +8846,7 @@ function send_whisper()
 function whisper_received(data)
 {
 	chat_announce('<', '>', `Whisper from ${data.username}: ${data.message}`, 'small', true)
+	sound_notify()
 }
 
 function user_not_in_room()
