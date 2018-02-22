@@ -1546,7 +1546,7 @@ function start_userlist_click_events()
 {
 	$("#userlist").on("click", ".ui_item_uname", function()
 	{
-		show_profile($(this).text())
+		show_profile($(this).text(), get_user_by_username($(this).text()).profile_image)
 	})	
 }
 
@@ -3248,12 +3248,12 @@ function start_chat_click_events()
 {
 	$("#chat_area").on("click", ".chat_uname", function() 
 	{
-		show_profile($(this).text())
+		show_profile($(this).text(), $(this).closest(".chat_message").find(".chat_profile_image").eq(0).attr("src"))
 	})
 
 	$("#chat_area").on("click", ".chat_profile_image", function() 
 	{
-		show_profile($(this).closest(".chat_message").find(".chat_uname").eq(0).text())
+		show_profile($(this).closest(".chat_message").find(".chat_uname").eq(0).text(), $(this).attr("src"))
 	})	
 }
 
@@ -4303,7 +4303,7 @@ function send_to_chat(msg, to_history=true)
 
 			else
 			{
-				chat_announce('[', ']', "You don't have permission to chat", 'small')
+				cant_chat()
 			}
 		}
 
@@ -7793,17 +7793,8 @@ function setup_show_profile()
 	})
 }
 
-function show_profile(uname)
+function show_profile(uname, prof_image)
 {
-	var user = get_user_by_username(uname)
-	
-	if(!user)
-	{
-		return false
-	}
-
-	var prof_image = user.profile_image
-
 	if(prof_image === "" || prof_image === undefined)
 	{
 		var pi = default_profile_image_url
@@ -7817,12 +7808,9 @@ function show_profile(uname)
 	$("#show_profile_uname").text(uname)
 	$("#show_profile_image").attr("src", pi)
 
-	var num_off = 0
-
-	if(uname === username || usernames.indexOf(uname) === -1)
+	if(!can_chat || uname === username || usernames.indexOf(uname) === -1)
 	{
 		$("#show_profile_whisper").css("display", "none")
-		num_off += 1
 	}
 
 	else
@@ -8783,8 +8771,19 @@ function header_topic_events()
 	})
 }
 
+function cant_chat()
+{
+	chat_announce('[', ']', "You don't have permission to chat", 'small')
+}
+
 function write_whisper(uname)
 {
+	if(!can_chat)
+	{
+		cant_chat()
+		return false
+	}
+
 	if(uname === username)
 	{
 		chat_announce('[', ']', "You can't whisper to yourself", 'small')

@@ -3860,6 +3860,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 			return get_out(socket)
 		}
 
+		if(data.username === socket.username)
+		{
+			return get_out(socket)
+		}
+
 		if(data.message.length === 0)
 		{
 			return get_out(socket)
@@ -3873,7 +3878,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 		if(data.message.length !== utilz.clean_string2(data.message).length)
 		{
 			return get_out(socket)
-		}		
+		}
+
+		if(!check_permission(socket, "chat"))
+		{
+			return false
+		}			
 
 		var sockets = get_user_sockets_per_room_by_username(socket.room_id, data.username)
 
