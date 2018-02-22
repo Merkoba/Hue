@@ -8808,15 +8808,21 @@ function send_whisper()
 {
 	var uname = $("#write_whisper_uname").text()
 
+	if(!can_chat)
+	{
+		$("#write_whisper_feedback").text("You don't have chat permission")
+		return false
+	}	
+
 	if(uname === username)
 	{
-		chat_announce('[', ']', "You can't whisper to yourself", 'small')
+		$("#write_whisper_feedback").text("You can't whisper to yourself")
 		return false
 	}
 
 	if(usernames.indexOf(uname) === -1)
 	{
-		user_not_in_room()
+		$("#write_whisper_feedback").text("User is not in the room")
 		return false
 	}	
 
