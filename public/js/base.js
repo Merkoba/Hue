@@ -8897,3 +8897,10 @@ function user_not_in_room()
 {
 	chat_announce({brk1:'[', brk2:']', msg:"User is not in the room"})
 }
+
+function on_write_whisper_uname_click()
+{
+	var uname = $("#write_whisper_uname").text()
+
+	show_profile(uname, get_user_by_username(uname).profile_image)
+}
