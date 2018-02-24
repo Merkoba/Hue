@@ -6648,10 +6648,16 @@ function start_settings_listeners()
 
 	$("#setting_other_words_to_highlight").blur(function()
 	{
-		settings.other_words_to_highlight = utilz.clean_string7($("#setting_other_words_to_highlight").val())
-		$("#setting_other_words_to_highlight").val(settings.other_words_to_highlight)
-		generate_highlight_words_regex()
-		save_settings()
+		var words = utilz.clean_string7($("#setting_other_words_to_highlight").val())
+
+		$("#setting_other_words_to_highlight").val(words)
+
+		if(settings.other_words_to_highlight !== words)
+		{
+			settings.other_words_to_highlight = words
+			generate_highlight_words_regex()
+			save_settings()
+		}
 	})
 }
 
