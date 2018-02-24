@@ -1072,3 +1072,10 @@ input[type=text], textarea
 	resize: none;
 	font-size: 1.1em;
 }
+
+.setting_textarea
+{
+	width: 100%;
+	resize: none;
+	font-size: 1.1em;
+}

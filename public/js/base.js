@@ -150,6 +150,7 @@ function init()
 	start_image_events()
 	start_dropzone()
 	start_volume_scroll()
+	generate_highlight_words_regex()
 	activate_window_visibility_listener()
 	input_click_events()
 	copypaste_events()
@@ -3275,11 +3276,10 @@ function update_chat(uname, msg, prof_image, date=false)
 
 	if(uname !== username)
 	{
-		if(msg.search(mentions_regex) !== -1)
+		if(check_highlights(msg))
 		{
 			contclasses += " dotted"
-
-			alert_title2()
+			alert_title2()		
 		}
 	}
 
@@ -3705,6 +3705,7 @@ function chat_announce(args={})
 	{
 		contclasses += " dotted"
 		alert_title2()
+		sound_notify()
 	}
 
 	if(args.title)
@@ -4560,7 +4561,7 @@ function announce_topic_change(data)
 
 		if(data.topic_setter !== username)
 		{
-			if(data.topic.search(mentions_regex) !== -1)
+			if(check_highlights(data.topic))
 			{
 				highlight = true
 			}
@@ -6186,6 +6187,7 @@ function start_msg()
 		Object.assign({}, common,
 		{		
 			id: "userinfo",
+			clear_editables: false,
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -6545,6 +6547,18 @@ function get_settings()
 		changed = true
 	}
 
+	if(settings.case_sensitive_highlights === undefined)
+	{
+		settings.case_sensitive_highlights = settings_default_case_sensitive_highlights
+		changed = true
+	}
+
+	if(settings.other_words_to_highlight === undefined)
+	{
+		settings.other_words_to_highlight = settings_default_other_words_to_highlight
+		changed = true
+	}
+
 	if(changed)
 	{
 		save_settings()
@@ -6559,12 +6573,11 @@ function save_settings()
 function start_settings_state()
 {
 	$("#setting_background_image").prop("checked", settings.background_image)
-
 	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
-	
 	$("#setting_sound_notifications").prop("checked", settings.sound_notifications)
-	
 	$("#setting_modal_effects").prop("checked", settings.modal_effects)
+	$("#setting_case_sensitive_highlights").prop("checked", settings.case_sensitive_highlights)
+	$("#setting_other_words_to_highlight").val(settings.other_words_to_highlight)
 }
 
 function start_settings_listeners()
@@ -6608,6 +6621,22 @@ function start_settings_listeners()
 			}
 		}
 
+		save_settings()
+	})
+
+	$("#setting_case_sensitive_highlights").change(function()
+	{
+		settings.case_sensitive_highlights = $("#setting_case_sensitive_highlights").prop("checked")
+		generate_mentions_regex()
+		generate_highlight_words_regex()
+		save_settings()
+	})
+
+	$("#setting_other_words_to_highlight").blur(function()
+	{
+		settings.other_words_to_highlight = utilz.clean_string7($("#setting_other_words_to_highlight").val())
+		$("#setting_other_words_to_highlight").val(settings.other_words_to_highlight)
+		generate_highlight_words_regex()
 		save_settings()
 	})
 }
@@ -8766,7 +8795,67 @@ function set_username(uname)
 
 function generate_mentions_regex()
 {
-	mentions_regex = new RegExp(`(?:^|\\s+)${escape_special_characters(username)}(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`)
+	if(settings.case_sensitive_highlights)
+	{
+		mentions_regex = new RegExp(`(?:^|\\s+)${escape_special_characters(username)}(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`)
+	}
+
+	else
+	{
+		mentions_regex = new RegExp(`(?:^|\\s+)${escape_special_characters(username)}(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`, "i")
+	}
+}
+
+function generate_highlight_words_regex()
+{
+	var words = ""
+
+	var lines = settings.other_words_to_highlight.split('\n')
+
+	for(var i=0; i<lines.length; i++)
+	{
+		var line = lines[i].trim()
+
+		words += escape_special_characters(line)
+
+		if(i < lines.length - 1)
+		{
+			words += "|"
+		}
+	}
+
+	if(words.length > 0)
+	{
+		if(settings.case_sensitive_highlights)
+		{
+			highlight_words_regex = new RegExp(`(?:^|\\s+)(?:${words})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`)
+		}
+
+		else
+		{
+			highlight_words_regex = new RegExp(`(?:^|\\s+)(?:${words})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`, "i")
+		}
+	}
+
+	else
+	{
+		highlight_words_regex = false
+	}
+}
+
+function check_highlights(msg)
+{
+	if(msg.search(mentions_regex) !== -1)
+	{
+		return true
+	}
+	
+	if(msg.search(highlight_words_regex) !== -1)
+	{
+		return true
+	}
+
+	return false
 }
 
 function show_intro()
@@ -8908,8 +8997,6 @@ function whisper_received(data)
 	}
 
 	chat_announce({brk1:'<', brk2:'>', msg:`Whisper from ${data.username}: ${data.message}`, dotted:true, onclick:f})
-	
-	sound_notify()
 }
 
 function user_not_in_room()

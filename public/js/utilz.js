@@ -30,6 +30,11 @@ var Utilz = function()
 	utilz.clean_string6 = function(s)
 	{
 		return s.replace(/\s+/g, ' ')
+	}
+
+	utilz.clean_string7 = function(s)
+	{
+		return s.replace(/[ \t\f\v]+/g, ' ').replace(/\n+/g, '\n').trim()
 	}	
 
 	utilz.get_random_int = function(min, max)

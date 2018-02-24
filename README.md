@@ -302,6 +302,12 @@ If you want to remove it to start fresh:
 "settings_default_modal_effects"
 >Whether modal effects are enabled by default.
 
+"settings_default_case_sensitive_highlights"
+>Whether highlights, either current nickname, or specified words matches are case sensitive by default.
+
+"settings_default_other_words_to_highlight"
+>Other words to trigger highlights apart from the current nickname, by default.
+
 "room_settings_default_images_enabled"
 >Whether images are show to the user when joining a room for the first time.
 
