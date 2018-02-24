@@ -141,27 +141,13 @@
 
 			function validate_form()
 			{
-				$("#txt_username").val($("#txt_username").val().trim())
-				var username = $("#txt_username").val()
-
 				$("#txt_email").val($("#txt_email").val().trim())
-				var email = $("#txt_email").val()
 
-				if(username.length === 0)
-				{
-					set_message("Username can't be empty")
-					return false
-				}
+				var email = $("#txt_email").val()
 
 				if(email.length === 0)
 				{
 					set_message("Email can't be empty")
-					return false
-				}
-
-				if(username.length > max_max_username_length)
-				{
-					set_message("Username is too long")
 					return false
 				}
 
@@ -192,17 +178,13 @@
 
 			<form method="post" action="/recover" name="recover" onsubmit="return validate_form()">
 
-				If the username and email match
+				If the email matches
 
 				<div class="spacer2"></div>
 
 				we will email you a reset link
 
 				<div class="spacer1"></div>
-
-				<input type="text" placeholder="Username" name="username" id="txt_username">
-
-				<div class="spacer2"></div>
 				
 				<input type="text" placeholder="Email" name="email" id="txt_email">
 
@@ -224,7 +206,7 @@
 				set_message(message)
 			}
 
-			$("#txt_username").focus()
+			$("#txt_email").focus()
 
 		</script>
 

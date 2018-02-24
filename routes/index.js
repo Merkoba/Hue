@@ -377,7 +377,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		c.vars = {}
 
 		c.vars.message = decodeURIComponent(req.query.message)
-		c.vars.max_max_username_length = config.max_max_username_length
 		c.vars.max_max_email_length = config.max_max_email_length
 
 		res.render('recover', c)
@@ -385,13 +384,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	router.post('/recover', function(req, res, next) 
 	{
-		var username = req.body.username
 		var email = req.body.email
-
-		if(username.length === 0 || username.length > config.max_max_username_length)
-		{
-			return false
-		}
 
 		if(email.length === 0 || email.length > config.max_max_email_length)
 		{
@@ -403,7 +396,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		db_manager.reset_user_password(username, email)
+		db_manager.reset_user_password(email)
 
 		.then(result =>
 		{
@@ -411,7 +404,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			{
 				if(result === "done")
 				{
-					var m = encodeURIComponent(`An email was sent to ${email}`)
+					var m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}`)
 					res.redirect(`/message?message=${m}`)
 				}
 
@@ -435,7 +428,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 			else
 			{
-				var m = encodeURIComponent("We couldn't find an account that matched")
+				var m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}`)
 				res.redirect(`/message?message=${m}`)
 			}
 		})

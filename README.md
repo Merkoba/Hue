@@ -328,6 +328,12 @@ To have a full working system, as it is intended, getting the youtube api key is
 "max_verification_time"
 >How much time a verification link will be active after registration. If it's not used before this it won't work.
 
+"delivery_email"
+>Email address from where system emails are sent.
+
+"delivery_email_name"
+>Name used on system emails.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"

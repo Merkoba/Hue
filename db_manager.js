@@ -734,10 +734,10 @@ module.exports = function(db, config, sconfig, utilz)
 
 					var data = 
 					{
-						from: 'Hue <hue@merkoba.com>',
+						from: `${config.delivery_email_name} <${config.delivery_email}>`,
 						to: info.email,
 						subject: 'Account Verification',
-						text: link
+						text: `Click the link to activate the account on ${config.site_root}. If you didn't register here, ignore this.\n\n${link}`
 					}
 
 					mailgun.messages().send(data, function(error, body) 
@@ -942,11 +942,11 @@ module.exports = function(db, config, sconfig, utilz)
 		})	
 	}
 
-	manager.reset_user_password = function(username, email)
+	manager.reset_user_password = function(email)
 	{
 		return new Promise((resolve, reject) => 
 		{
-			manager.get_user({username:username}, {email:true, password_reset_date:true})
+			manager.get_user({email:email}, {email:true, password_reset_date:true})
 
 			.then(user =>
 			{
@@ -960,10 +960,10 @@ module.exports = function(db, config, sconfig, utilz)
 
 						var data = 
 						{
-							from: 'Hue <hue@merkoba.com>',
+							from: `${config.delivery_email_name} <${config.delivery_email}>`,
 							to: email,
 							subject: 'Password Reset',
-							text: link
+							text: `Click the link to reset your password on ${config.site_root}.\n\n${link}`
 						}
 
 						mailgun.messages().send(data, function(error, body) 
