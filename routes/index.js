@@ -51,6 +51,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.settings_default_custom_scrollbars = config.settings_default_custom_scrollbars
 	c.vars.settings_default_sound_notifications = config.settings_default_sound_notifications
 	c.vars.settings_default_modal_effects = config.settings_default_modal_effects
+	c.vars.settings_default_highlight_current_username = config.settings_default_highlight_current_username
 	c.vars.settings_default_case_sensitive_highlights = config.settings_default_case_sensitive_highlights
 	c.vars.settings_default_other_words_to_highlight = config.settings_default_other_words_to_highlight
 	c.vars.room_settings_default_images_enabled = config.room_settings_default_images_enabled

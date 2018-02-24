@@ -302,6 +302,9 @@ If you want to remove it to start fresh:
 "settings_default_modal_effects"
 >Whether modal effects are enabled by default.
 
+"settings_default_highlight_current_username"
+>Whether current username triggers a highlight by default.
+
 "settings_default_case_sensitive_highlights"
 >Whether highlights, either current nickname, or specified words matches are case sensitive by default.
 

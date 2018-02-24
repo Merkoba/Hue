@@ -134,6 +134,7 @@ var old_input_val
 var separator_title
 var msg_id = 0
 var mentions_regex
+var highlight_words_regex
 var writing_whisper = false
 
 function init()
@@ -6547,6 +6548,12 @@ function get_settings()
 		changed = true
 	}
 
+	if(settings.highlight_current_username === undefined)
+	{
+		settings.highlight_current_username = settings_default_highlight_current_username
+		changed = true
+	}
+
 	if(settings.case_sensitive_highlights === undefined)
 	{
 		settings.case_sensitive_highlights = settings_default_case_sensitive_highlights
@@ -6576,6 +6583,7 @@ function start_settings_state()
 	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
 	$("#setting_sound_notifications").prop("checked", settings.sound_notifications)
 	$("#setting_modal_effects").prop("checked", settings.modal_effects)
+	$("#setting_highlight_current_username").prop("checked", settings.highlight_current_username)
 	$("#setting_case_sensitive_highlights").prop("checked", settings.case_sensitive_highlights)
 	$("#setting_other_words_to_highlight").val(settings.other_words_to_highlight)
 }
@@ -6621,6 +6629,12 @@ function start_settings_listeners()
 			}
 		}
 
+		save_settings()
+	})
+
+	$("#setting_highlight_current_username").change(function()
+	{
+		settings.highlight_current_username = $("#setting_highlight_current_username").prop("checked")
 		save_settings()
 	})
 
@@ -8845,14 +8859,20 @@ function generate_highlight_words_regex()
 
 function check_highlights(msg)
 {
-	if(msg.search(mentions_regex) !== -1)
+	if(settings.highlight_current_username)
 	{
-		return true
+		if(msg.search(mentions_regex) !== -1)
+		{
+			return true
+		}
 	}
-	
-	if(msg.search(highlight_words_regex) !== -1)
+
+	if(highlight_words_regex)
 	{
-		return true
+		if(msg.search(highlight_words_regex) !== -1)
+		{
+			return true
+		}
 	}
 
 	return false

@@ -583,6 +583,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-bottom: 0.5em;
 }
 
+.setting_title2
+{
+	padding-bottom: 0.2em;
+}
+
 .spacer1
 {
 	padding-top: 1.1em;
@@ -1078,4 +1083,5 @@ input[type=text], textarea
 	width: 100%;
 	resize: none;
 	font-size: 1.1em;
+	text-align: center;
 }
