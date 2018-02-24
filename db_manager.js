@@ -14,7 +14,7 @@ module.exports = function(db, config, sconfig, utilz)
 
 	var manager = {}
 
-	manager.get_room = function(query, fields, user_id=undefined)
+	manager.get_room = function(query, fields)
 	{
 		return new Promise((resolve, reject) => 
 		{
@@ -48,7 +48,7 @@ module.exports = function(db, config, sconfig, utilz)
 				{
 					if(query._id === config.main_room_id)
 					{
-						manager.create_room({name:config.default_main_room_name, id:config.main_room_id, user_id:user_id})
+						manager.create_room({name:config.default_main_room_name, id:config.main_room_id})
 
 						.then(room =>
 						{
@@ -429,7 +429,6 @@ module.exports = function(db, config, sconfig, utilz)
 
 			.then(result =>
 			{
-				room.fresh = true
 				resolve(room)
 				return
 			})
@@ -536,7 +535,7 @@ module.exports = function(db, config, sconfig, utilz)
 		})
 	}
 	
-	manager.get_user = function(query, fields)
+	manager.get_user = function(query, fields, verified=true)
 	{
 		return new Promise((resolve, reject) => 
 		{
@@ -559,6 +558,20 @@ module.exports = function(db, config, sconfig, utilz)
 						resolve(false)
 						return
 					}
+				}
+			}
+
+			if(query.verified === undefined)
+			{
+				if(verified)
+				{
+					query.verified = true
+					query = {$and:[query, {verified:true}]}					
+				}
+
+				else
+				{
+					query = {$and:[query, {$or:[{verified:true}, {registration_date:{$gt: Date.now() - config.max_verification_time}}]}]}
 				}
 			}
 
@@ -622,6 +635,21 @@ module.exports = function(db, config, sconfig, utilz)
 						if(typeof user.profile_image_version !== "number")
 						{
 							user.profile_image_version = 0
+						}
+
+						if(typeof user.verified !== "boolean")
+						{
+							user.verified = false
+						}
+
+						if(typeof user.verification_code !== "string")
+						{
+							user.verification_code = ""
+						}
+
+						if(typeof user.registration_date !== "number")
+						{
+							user.registration_date = 0
 						}
 
 						if(typeof user.modified !== "number")
@@ -690,16 +718,42 @@ module.exports = function(db, config, sconfig, utilz)
 					visited_rooms: [],
 					profile_image: "",
 					profile_image_version: 0,
+					verified: false,
+					verification_code: Date.now() + utilz.get_random_string(12),
+					registration_date: Date.now(),
 					modified: Date.now()
 				}
 
 				db.collection('users').insertOne(user)
 
 				.then(result =>
-				{	
-					user.fresh = true
-					resolve(result)
-					return
+				{
+					var code = Date.now() + utilz.get_random_string(12)
+
+					var link = `${config.site_root}verify?token=${result.ops[0]._id}_${result.ops[0].verification_code}`					
+
+					var data = 
+					{
+						from: 'Hue <hue@merkoba.com>',
+						to: info.email,
+						subject: 'Account Verification',
+						text: link
+					}
+
+					mailgun.messages().send(data, function(error, body) 
+					{
+						if(error)
+						{				
+							resolve("error")
+							return
+						}
+
+						else
+						{
+							resolve("done")
+							return
+						}
+					})
 				})
 
 				.catch(err =>
@@ -793,13 +847,13 @@ module.exports = function(db, config, sconfig, utilz)
 		})	
 	}
 
-	manager.check_password = function(username, password, fields={})
+	manager.check_password = function(email, password, fields={})
 	{
 		return new Promise((resolve, reject) => 
 		{	
 			Object.assign(fields, {password:true})
 
-			manager.get_user({username:username}, fields)
+			manager.get_user({email:email}, fields)
 
 			.then(user =>
 			{

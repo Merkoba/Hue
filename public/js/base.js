@@ -3,6 +3,8 @@ var ls_settings = "settings_v15"
 var ls_input_history = "input_history_v11"
 var ls_room_settings = "room_settings_v1"
 var ls_first_time = "first_time_v2"
+var vtypes = ["voice1", "voice2", "voice3", "voice4"]
+var roles = ["admin", "op"].concat(vtypes)
 var settings
 var is_public
 var room_name
@@ -3694,7 +3696,7 @@ function chat_announce(args={})
 
 	if(args.id)
 	{
-		containerid = ` id='${id}' `
+		containerid = ` id='${args.id}' `
 	}
 
 	var contclasses = "announcement_content"
@@ -3893,6 +3895,7 @@ function register_commands()
 	commands.push('/afk')
 	commands.push('/disconnectothers')
 	commands.push('/whisper')
+	commands.push('/annex')
 
 	commands.sort()
 
@@ -4318,6 +4321,16 @@ function send_to_chat(msg, to_history=true)
 			else if(oiStartsWith(lmsg, '/whisper'))
 			{
 				write_whisper(arg)
+			}
+
+			else if(oiEquals(lmsg, '/annex'))
+			{
+				annex(arg)
+			}
+
+			else if(oiStartsWith(lmsg, '/annex'))
+			{
+				annex(arg)
 			}
 
 			else
@@ -5553,6 +5566,12 @@ function change_role(uname, rol)
 			{
 				forbiddenuser()
 				return false
+			}
+
+			if(roles.indexOf(rol) === -1)
+			{
+				chat_announce({brk1:'[', brk2:']', msg:"Invalid role"})
+				return false				
 			}
 
 			socket_emit('change_role', {username:uname, role:rol})
@@ -8903,4 +8922,15 @@ function on_write_whisper_uname_click()
 	var uname = $("#write_whisper_uname").text()
 
 	show_profile(uname, get_user_by_username(uname).profile_image)
+}
+
+function annex(rol="admin")
+{
+	if(roles.indexOf(rol) === -1)
+	{
+		chat_announce({brk1:'[', brk2:']', msg:"Invalid role"})
+		return false				
+	}
+		
+	socket_emit('change_role', {username:username, role:rol})	
 }

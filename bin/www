@@ -1,7 +1,38 @@
 #!/usr/bin/env node
 
+function normalizePort(val) 
+{
+	var port = parseInt(val, 10)
+
+	if(isNaN(port)) 
+	{
+		return val
+	}
+
+	if(port >= 0) 
+	{
+		return port
+	}
+
+	return false
+}
+
+const port = normalizePort(process.env.PORT || "3210")
+const env = process.env.NODE_ENV
+
 const config = require('../config.json')
-const sconfig = require('../config.secret.json')
+
+if(env === "development")
+{
+	config.site_root = `http://localhost:${port}/`
+	var sconfig = require('../config.secret.dev.json')
+}
+
+else
+{
+	var sconfig = require('../config.secret.json')
+}
+
 const mongo = require('mongodb')
 const bcrypt = require('bcrypt')
 
@@ -19,7 +50,6 @@ mongo.connect(config.mongodb_path, function(err, db)
 		const app = require('../app')(db, db_manager, config, sconfig, utilz)
 		const debug = require('debug')('hue:server')
 		const http = require('http')
-		const port = normalizePort(process.env.PORT || '3210')
 		
 		app.set('port', port)
 
@@ -32,23 +62,6 @@ mongo.connect(config.mongodb_path, function(err, db)
 		const io = require('socket.io').listen(server)
 
 		require('../sockets')(io, db_manager, config, sconfig, utilz, app.get("env"))
-
-		function normalizePort(val) 
-		{
-			var port = parseInt(val, 10)
-
-			if(isNaN(port)) 
-			{
-				return val
-			}
-
-			if(port >= 0) 
-			{
-				return port
-			}
-
-			return false
-		}
 
 		function onError(error) 
 		{

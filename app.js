@@ -2,6 +2,7 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 {
 	const express = require('express')
 	const session = require('express-session')
+	const favicon = require('serve-favicon')
 	const MongoStore = require('connect-mongo')(session);
 	const path = require('path')
 	const bodyParser = require('body-parser')
@@ -14,7 +15,7 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 	app.set('trust proxy', 1)	
 
 	app.use(bodyParser.json())
-	app.use(bodyParser.urlencoded({ extended: false }))
+	app.use(bodyParser.urlencoded({extended: false}))
 	app.use(express.static(path.join(__dirname, 'public')))
 
 	var sess =
@@ -69,6 +70,8 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 			error: {}
 		})
 	})
+
+	app.use(favicon(path.join(__dirname,'public', 'favicon.ico')))
 
 	return app
 }

@@ -1,0 +1,352 @@
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="description" content="Fun and powerful chat platform with dynamic images and internet radio.">
+
+		<title><%-vars.register_title%></title>
+
+		<script src="/js/utilz.js"></script>
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/msg.min.js"></script>
+
+		<style>
+
+			@font-face
+			{
+				font-family: imported_font;
+				src: url(/css/inconsolata.ttf);
+			}
+
+			body, html
+			{
+				font-family: imported_font, consolas, sans-serif;
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				height: 100%;
+				font-size: 18px;
+				background-color: white;
+				color: #222222;				
+			}
+
+			.center
+			{
+				padding-top: 5em;
+				margin-left: auto;
+				margin-right: auto;
+				width: 50em;
+				height: 35em;
+				text-align: center;
+			}
+
+			.spacer1
+			{
+				padding-top: 1.2em;
+				padding-bottom: 1.2em;
+			}
+
+			.spacer2
+			{
+				padding-top: 0.5em;
+				padding-bottom: 0.5em;
+			}
+
+			.spacer3
+			{
+				padding-top: 0.25em;
+				padding-bottom: 0.25em;
+			}
+
+			input[type=text], input[type=password]
+			{
+				padding: 0.2em;
+				border: 1px solid grey;
+				width: 14em;
+				font-size: 1.2em;
+				text-align: center;
+				background-color: white;
+				color: #222222;				
+			}
+
+			input[type=submit]
+			{
+				background-color: white;
+				color: #222222;	
+				padding: 0.2em 0.8em 0.2em 0.8em;
+				color: #222222;
+				border: 1px solid #bbb;
+				border-color: #ddd #aaa #aaa #ddd;
+				font-size: 1em;
+			}
+
+			input[type=submit]:hover
+			{
+				background-color: #f4f4f4;
+			}
+
+			.logo
+			{
+				width: 10em;
+			}
+
+			a:hover, a:visited, a:link
+			{
+				color: #222222;
+				text-decoration: underline;
+				cursor: pointer;
+			}
+
+			form
+			{
+				margin: 0;
+			}
+
+			.feedback
+			{
+				color: #bf0000;
+			}
+
+			#username_taken
+			{
+				display: none;
+			}
+
+		</style>
+
+		<script>
+			<% 
+				for(var key in vars)
+				{
+					var v = vars[key]
+
+					%><%-key%> = <%
+
+					if(!v)
+					{
+						%>undefined; <%
+					}					
+
+					else if(typeof v === "string")
+					{
+						%>`<%-v%>`; <% 
+					}
+
+					else
+					{
+						%><%-v%>; <%
+					}
+				}
+			%>
+
+			var msg = Msg.factory()				
+
+			function set_message(s)
+			{
+				msg.show(s)
+			}					
+		</script>
+
+	</head>
+
+	<body>
+
+		<div class="center">
+
+			<img class="logo" src="<%-vars.register_logo_url%>">
+
+			<div class="spacer2"></div>
+
+			<form method="post" action="/register" name="register" onsubmit="return validate_form()">
+
+				<div>Usernames are case sensitive</div>
+				<div>Username can be changed later</div>
+
+				<div class="spacer2"></div>
+
+				<input type="text" placeholder="Username" name="username" id="register_username">
+				
+				<div id="username_taken">
+					<div class="spacer3"></div>
+					<div class="feedback">Username is already taken</div>
+				</div>
+
+				<div class="spacer2"></div>
+
+				<input type="password" placeholder="Password" name="password" id="register_password">
+
+				<div class="spacer2"></div>
+
+				<input type="password" placeholder="Password Again" id="register_password2">
+
+				<div class="spacer2"></div>
+
+				<input type="text" placeholder="Email" name="email" id="register_email">
+
+				<div class="spacer2"></div>
+
+				<input type='hidden' name='fromurl' value="<%-vars.fromurl%>">
+
+				<input id="btn_register" type="submit" value="Register">
+
+			</form>
+
+		</div>
+
+		<script>
+
+			if(message && message !== "undefined")
+			{
+				set_message(message)
+			}
+
+			$("#register_username").focus()
+
+			var utilz = Utilz()
+
+			function validate_form()
+			{
+				if($("#username_taken").css("display") !== "none")
+				{
+					return false					
+				}
+
+				$("#register_username").val($("#register_username").val().trim())
+				
+				var username = $("#register_username").val()
+				var password = $("#register_password").val()
+				var password2 = $("#register_password2").val()
+				
+				$("#register_email").val($("#register_email").val().trim())
+				
+				var email = $("#register_email").val()
+
+				if(username.length === 0)
+				{
+					set_message("Username can't be empty")
+					return false
+				}
+
+				if(password.length === 0)
+				{
+					set_message("Password can't be empty")
+					return false
+				}
+
+				if(email.length === 0)
+				{
+					set_message("Email can't be empty")
+					return false
+				}
+
+				if(username.length > max_username_length)
+				{
+					set_message("Username is too Long")
+					return false
+				}
+
+				if(username.length !== utilz.clean_string4(username).length)
+				{
+					set_message("Username contains invalid characters. Only letters, numbers, and some special characters are allowed")
+					return false
+				}
+
+				if(password.length < min_password_length)
+				{
+					set_message(`Password is too short. It must be at least ${min_password_length} characters long`)
+					return false
+				}
+
+				if(password.length > max_password_length)
+				{
+					set_message("Password is too long")
+					return false
+				}
+
+				if(password.length !== utilz.clean_string2(password).length)
+				{
+					set_message("Password contains invalid characters. There can't be spaces at the start or end of the password, or consecutive spaces")
+					return false
+				}
+
+				if(password !== password2)
+				{
+					set_message("The passwords don't match")
+					return false
+				}
+
+				if(email.indexOf('@') === -1 || email.indexOf(' ') !== -1)
+				{
+					set_message("Invalid email address")
+					return false
+				}
+
+				if(email.length > max_email_length)
+				{
+					set_message("Email is too long")
+					return false
+				}
+
+				$("#btn_register").prop("disabled", true)
+
+				return true
+			}
+
+			var current_username = ""
+
+			var check_username_timer = (function() 
+			{
+				var timer 
+
+				return function() 
+				{
+					clearTimeout(timer)
+
+					timer = setTimeout(function() 
+					{
+						$.post('/check_username/',
+						{
+							username: current_username
+						}, 
+						function(response)
+						{
+							if(response.taken)
+							{
+								$("#username_taken").css("display", "block")
+							}
+						})					
+					}, 1200)
+				}
+			})()			
+
+			$("#register_username").on("input", function()
+			{
+				var uname = $("#register_username").val().trim()
+
+				if(uname === current_username)
+				{
+					return
+				}
+
+				$("#username_taken").css("display", "none")
+
+				if(uname.length > max_username_length)
+				{
+					uname = uname.substring(0, max_username_length)
+					$("#register_username").val(uname)
+				}
+
+				current_username = uname
+
+				if(uname.length > 0 && uname.length < max_username_length)
+				{
+					check_username_timer()	
+				}
+			})
+
+		</script>
+
+	</body>
+
+</html>

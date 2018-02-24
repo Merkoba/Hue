@@ -15,13 +15,19 @@ There is no need create database tables, all of that is done automatically, Mong
 
 Configuration is done in the config.json and config.secret.json files found in the root directory.
 
+The admin email must go in superuser_emails in config.secret.json. It's used to take over control of the main room. The main room is created on first join, with no roles. To get admin on the room use /annex.
+
 To run it locally you first have to start 'mongod' then go to the bin directory and run 'node www start'.
 
 To run it properly in production you will have to configure Apache or some other webserver to use a reverse proxy. A sample vhost configuration for Apache (apache_vhost.conf) is included. For using https LetsEncrypt is suggested.
 
 Using pm2 is suggested to control the Node process.
 
-To have a full working system, as it is intended, getting the youtube api key is very recommended. Twitch api key is recommended to support twitch 'videos' (channels work out of the box). Mailgun api key is recommended if you want to enable password recovery. Setup these in config.secret.json. If you don't want any of these, disable them in the config.json
+>su - node -c "pm2 start /home/node/hue/bin/www --env production"
+
+That's an example of starting it with the user "node" in a production environment.
+
+To have a full working system, as it is intended, getting the youtube api key is very recommended. Twitch api key is recommended to support twitch 'videos' (channels work out of the box). Mailgun api key is necessary for account creation and password recovery, so it must be provided. Setup these in config.secret.json. If you don't want any of these, disable them in the config.json
 
 # Configuration
 
@@ -58,6 +64,9 @@ To have a full working system, as it is intended, getting the youtube api key is
 "login_logo_url"
 >The public location of the logo at the top of the login page.
 
+"register_login_url"
+>The public location of the logo at the top of the registration page.
+
 "default_profile_image_url"
 >The location of the default profile image.
 
@@ -90,6 +99,9 @@ To have a full working system, as it is intended, getting the youtube api key is
 
 "login_title"
 >The title of the login page.
+
+"register_title"
+>The title of the registration page.
 
 "default_topic"
 >The shown topic when the room has been created or claimed and there is no topic yet.
@@ -313,6 +325,9 @@ To have a full working system, as it is intended, getting the youtube api key is
 "max_typing_inactivity"
 >After the last typing signal has being received, it will stop showing the typing status after this amount of time.
 
+"max_verification_time"
+>How much time a verification link will be active after registration. If it's not used before this it won't work.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"
@@ -354,7 +369,13 @@ To have a full working system, as it is intended, getting the youtube api key is
 "jwt_secret"
 >Secret key for the jwt system when logging in.
 
-## Additional Notes
+# Development
+
+You can create a config.secret.dev.json file intended to use in development, which is ignored by git. So you can leave config.secret.json intact and use the modified dev version for testing. Put it in the root directory, where the other config files are.
+
+There's a run_dev file that starts the node server with a development node environment.
+
+# Additional Notes
 
 To learn how to host a working internet radio refer to http://icecast.org/
 

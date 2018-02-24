@@ -10,6 +10,7 @@
 	"default_tv_source": "https://www.youtube.com/watch?v=kP45oOLCmHw",
 	"default_tv_type": "youtube",
 	"login_logo_url": "/_img/animlogo.gif",
+	"register_logo_url": "/_img/animlogo.gif",
 	"default_profile_image_url": "/_img/profile.jpg",
 	"profile_image_loading_url": "/_img/profile_image_loading.jpg",
 	"default_default_background_image_url": "/_img/default_default_background_image.gif",
@@ -21,6 +22,7 @@
 	"title_separator": " - ",
 	"default_title": "Hue | Chat room with images, tv, and radio",
 	"login_title": "Hue | Login",
+	"register_title": "Hue | Register",
 	"default_topic": "No topic",
 	"default_topic_unclaimed": "Use /claim to get admin rights to this room",
 	"default_topic_admin": "Check the main menu for administration options",
@@ -79,7 +81,6 @@
 	"antispam_heartBeatCheck": 4,
 	"session_cookie_max_age": 123456789000,
 	"encryption_cost": 12,
-	"mail_enabled": true,
 	"max_url_length": 1000,
 	"settings_default_background_image": true,
 	"settings_default_custom_scrollbars": true,
@@ -96,5 +97,6 @@
 	"image_queue_interval": 8000,
 	"max_same_post_diff": 60000,
 	"max_same_post_messages": 20,
-	"max_typing_inactivity": 2000
+	"max_typing_inactivity": 2000,
+	"max_verification_time": 3600000
 }

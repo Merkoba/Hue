@@ -11,6 +11,7 @@
 		"ejs": "~2.5.5",
 		"express": "~4.11.1",
 		"express-session": "~1.10.1",
+		"serve-favicon": "~2.4.5",
 		"mongodb": "~2.2.24",
 		"node-fetch": "~1.7.3",
 		"shelljs": "~0.7.0",

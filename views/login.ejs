@@ -85,14 +85,6 @@
 				width: 10em;
 			}
 
-			#message_container
-			{
-				font-size: 1.2em;
-				color: rgb(205, 140, 217);
-				transition: opacity 2s;
-				opacity: 0;
-			}
-
 			a:hover, a:visited, a:link
 			{
 				color: #222222;
@@ -142,33 +134,16 @@
 				msg.show(s)
 			}	
 
-			function validate_form(mode)
+			function validate_form()
 			{
-				if(mode === "login")
-				{
-					$("#login_username").val($("#login_username").val().trim())
-					var username = $("#login_username").val()
-					var password = $("#login_password").val()
-				}
+				$("#login_email").val($("#login_email").val().trim())
+				
+				var email = $("#login_email").val()
+				var password = $("#login_password").val()
 
-				else if(mode === "register")
+				if(email.length === 0)
 				{
-					$("#register_username").val($("#register_username").val().trim())
-					var username = $("#register_username").val()
-					var password = $("#register_password").val()
-					var password2 = $("#register_password2").val()
-					$("#register_email").val($("#register_email").val().trim())
-					var email = $("#register_email").val()
-				}
-
-				else
-				{
-					return false
-				}
-
-				if(username.length === 0)
-				{
-					set_message("Username can't be empty")
+					set_message("Email can't be empty")
 					return false
 				}
 
@@ -178,77 +153,25 @@
 					return false
 				}
 
-				if(mode === "login")
+				if(email.length > max_max_email_length)
 				{
-					if(username.length > max_max_username_length)
-					{
-						set_message("Username is too long")
-						return false
-					}
-
-					if(password.length > max_max_password_length)
-					{
-						set_message("Password is too long")
-						return false
-					}
+					set_message("Email is too long")
+					return false
 				}
 
-				else if(mode === "register")
+				if(password.length > max_max_password_length)
 				{
-					if(username.length > max_username_length)
-					{
-						set_message("Username is too Long")
-						return false
-					}
-
-					if(username.length !== utilz.clean_string4(username).length)
-					{
-						set_message("Username contains invalid characters. Only letters, numbers, and some special characters are allowed")
-						return false
-					}
-
-					if(password.length < min_password_length)
-					{
-						set_message(`Password is too short. It must be at least ${min_password_length} characters long`)
-						return false
-					}
-
-					if(password.length > max_password_length)
-					{
-						set_message("Password is too long")
-						return false
-					}
-
-					if(password.length !== utilz.clean_string2(password).length)
-					{
-						set_message("Password contains invalid characters. There can't be spaces at the start or end of the password, or consecutive spaces")
-						return false
-					}
-
-					if(password !== password2)
-					{
-						set_message("The passwords don't match")
-						return false
-					}
-
-					if(email !== "")
-					{
-						if(email.indexOf('@') === -1 || email.indexOf(' ') !== -1)
-						{
-							set_message("Invalid email address")
-							return false
-						}					
-
-						if(email.length > max_email_length)
-						{
-							set_message("Email is too long")
-							return false
-						}
-					}					
+					set_message("Password is too long")
+					return false
 				}
+
+				if(email.indexOf('@') === -1 || email.indexOf(' ') !== -1)
+				{
+					set_message("Invalid email address")
+					return false
+				}				
 
 				$("#btn_login").prop("disabled", true)
-				$("#btn_register").prop("disabled", true)
 
 				return true
 			}
@@ -265,9 +188,9 @@
 
 			<div class="spacer2"></div>
 
-			<form method="post" action="/login" name="login" onsubmit="return validate_form('login')">
+			<form method="post" action="/login" name="login" onsubmit="return validate_form()">
 
-				<input type="text" placeholder="Username" name="username" id="login_username">
+				<input type="text" placeholder="Email" name="email" id="login_email">
 
 				<div class="spacer2"></div>
 
@@ -283,40 +206,7 @@
 
 			<div class="spacer1"></div>
 
-			Or Register Below:
-
-			<div class="spacer1"></div>
-
-			<form method="post" action="/register" name="register" onsubmit="return validate_form('register')">
-
-				<input type="text" placeholder="Username" name="username" id="register_username">
-
-				<div class="spacer2"></div>
-
-				<input type="password" placeholder="Password" name="password" id="register_password">
-
-				<div class="spacer2"></div>
-
-				<input type="password" placeholder="Password Again" id="register_password2">
-
-				<div class="spacer2"></div>
-				Emails are only used to recover passwords.<br>
-				It's advised to specify one, even though it's optional.
-				<div class="spacer2"></div>
-
-				<input type="text" placeholder="Email (Optional)" name="email" id="register_email">
-
-				<div class="spacer2"></div>
-
-				<input type='hidden' name='fromurl' value="<%-vars.fromurl%>">
-
-				<input id="btn_register" type="submit" value="Register">
-				
-				<div class="spacer1"></div>
-
-				<a href="/recover" id="password_reset_link"'>Forgot Password</a>
-
-			</form>
+			<a href="/recover" id="password_reset_link"'>Forgot Password</a>&nbsp;|&nbsp;<a href="/register">Register</a>
 
 			<div class="spacer1"></div>
 		</div>
@@ -328,12 +218,7 @@
 				set_message(message)
 			}
 
-			if(!mail_enabled)
-			{
-				$("#password_reset_link").css("display", "none")
-			}
-
-			$("#login_username").focus()
+			$("#login_email").focus()
 
 		</script>
 

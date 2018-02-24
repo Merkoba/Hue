@@ -105,8 +105,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 				else 
 				{
-					req.session.user_username = user.username
-
 					jwt.sign(
 					{
 						exp: Math.floor(Date.now() + config.jwt_expiration),
@@ -138,25 +136,21 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		c.vars.login_logo_url = config.login_logo_url
 		c.vars.fromurl = req.query.fromurl
 		c.vars.message = decodeURIComponent(req.query.message)
-		c.vars.max_username_length = config.max_username_length
 		c.vars.min_password_length = config.min_password_length
-		c.vars.max_password_length = config.max_password_length
-		c.vars.max_max_username_length = config.max_max_username_length
 		c.vars.max_max_password_length = config.max_max_password_length
-		c.vars.max_email_length = config.max_email_length
+		c.vars.max_max_email_length = config.max_max_email_length
 		c.vars.login_title = config.login_title
-		c.vars.mail_enabled = config.mail_enabled
 
 		res.render('login', c)
 	})
 
 	router.post('/login', function(req, res, next) 
 	{
-		var username = req.body.username
+		var email = req.body.email
 		var password = req.body.password
 		var fromurl = decodeURIComponent(req.body.fromurl)
 
-		if(username.length === 0 || username.length > config.max_max_username_length)
+		if(email.length === 0 || email.length > config.max_max_email_length)
 		{
 			return false
 		}
@@ -166,7 +160,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		db_manager.check_password(username, password, {password_date:true})
+		db_manager.check_password(email, password, {password_date:true})
 
 		.then(ans =>
 		{
@@ -175,7 +169,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 				req.session.user_id = ans.user._id.toString()
 				req.session.password_date = ans.user.password_date
 
-				if(fromurl === undefined || fromurl === "" || fromurl === "/login" || fromurl === "/register")
+				if(fromurl === undefined || fromurl === "" || fromurl === "/login")
 				{
 					res.redirect("/")
 				}
@@ -190,7 +184,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			{
 				req.session.destroy(function(){})
 
-				var m = encodeURIComponent("Wrong username or password")
+				var m = encodeURIComponent("Wrong email or password")
 				res.redirect(`/login?message=${m}`)
 			}
 		})
@@ -199,6 +193,23 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		{
 			console.error(err)
 		})
+	})
+
+	router.get('/register', check_url, function(req, res, next) 
+	{
+		let c = {}
+
+		c.vars = {}
+
+		c.vars.register_logo_url = config.register_logo_url
+		c.vars.message = decodeURIComponent(req.query.message)
+		c.vars.max_username_length = config.max_username_length
+		c.vars.min_password_length = config.min_password_length
+		c.vars.max_password_length = config.max_password_length
+		c.vars.max_email_length = config.max_email_length
+		c.vars.register_title = config.register_title
+
+		res.render('register', c)
 	})
 
 	router.post('/register', function(req, res, next) 
@@ -223,20 +234,17 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		if(email !== "")
+		if(email.length === 0 || email.length > config.max_email_length)
 		{
-			if(email.indexOf('@') === -1 || email.indexOf(' ') !== -1)
-			{
-				return false
-			}
-
-			if(email.length > config.max_email_length)
-			{
-				return false
-			}
+			return false
 		}
 
-		db_manager.get_user({username:username}, {})
+		if(email.indexOf('@') === -1 || email.indexOf(' ') !== -1)
+		{
+			return false
+		}
+
+		db_manager.get_user({$or:[{username: username}, {email:email}]}, {}, false)
 
 		.then(user =>
 		{
@@ -244,23 +252,19 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			{
 				db_manager.create_user({username:username, password:password, email:email})
 
-				.then(user =>
+				.then(ans =>
 				{
-					req.session.user_id = user.ops[0]._id
-					req.session.password_date = user.ops[0].password_date
-
-					req.session.save(function()
+					if(ans === "done")
 					{
-						if(fromurl === undefined || fromurl === "" || fromurl === "/login" || fromurl === "/register")
-						{
-							res.redirect("/")
-						}
+						var m = encodeURIComponent(`Account verification link sent to ${email}. You must verify the email to be able to login.`)
+						res.redirect(`/message?message=${m}`)
+					}
 
-						else
-						{
-							res.redirect(fromurl)
-						}
-					})
+					else
+					{
+						var m = encodeURIComponent("An error occured")
+						res.redirect(`/message?message=${m}`)
+					}
 				})
 
 				.catch(err =>
@@ -271,9 +275,93 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 			else
 			{
-				var m = encodeURIComponent("Username already exists")
-				res.redirect(`/login?message=${m}`)
+				var m = encodeURIComponent("Username or email already exist")
+				res.redirect(`/register?message=${m}`)
 			}
+		})
+
+		.catch(err =>
+		{
+			console.error(err)
+		})
+	})
+
+	router.get('/verify', check_url, function(req, res, next)
+	{
+		var token = req.query.token
+
+		var split = token.split('_')
+
+		var id = split[0]
+
+		var code = split[1]
+
+		db_manager.get_user({_id:id, verification_code:code, verified:false}, {})
+
+		.then(user =>
+		{
+			if(user)
+			{
+				if(Date.now() - user.registration_date < config.max_verification_time)
+				{
+					db_manager.update_user(user._id, {verified: true})
+
+					.then(ans =>
+					{
+						var m = encodeURIComponent("Account succesfully verified")
+						res.redirect(`/message?message=${m}`)						
+					})
+
+					.catch(err =>
+					{
+						console.error(err)
+					})					
+				}
+
+				else
+				{
+					var m = encodeURIComponent("The link has expired")
+					res.redirect(`/message?message=${m}`)
+				}
+			}
+
+			else
+			{
+				var m = encodeURIComponent("The link has expired")
+				res.redirect(`/message?message=${m}`)
+			}
+		})
+
+		.catch(err =>
+		{
+			console.error(err)
+		})
+	})	
+
+	router.post('/check_username', function(req, res, next)	
+	{
+		var username = req.body.username
+
+		if(username.length === 0 || username.length > config.max_max_username_length)
+		{
+			return false
+		}
+
+		db_manager.get_user({username:username}, {}, false)
+
+		.then(user =>
+		{
+			if(user)
+			{
+				var taken = true
+			}
+
+			else
+			{
+				var taken = false
+			}
+
+			res.json({taken:taken})
 		})
 
 		.catch(err =>
@@ -284,14 +372,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	router.get('/recover', check_url, function(req, res, next) 
 	{
-		if(!config.mail_enabled)
-		{
-			var m = encodeURIComponent("Password resets are not enabled on this system")
-			res.redirect(`/message?message=${m}`)
-
-			return false		
-		}
-
 		let c = {}
 
 		c.vars = {}
@@ -372,11 +452,11 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		var split = token.split('_')
 
-		var _id = split[0]
+		var id = split[0]
 
 		var code = split[1]
 
-		db_manager.get_user({_id:_id, password_reset_code:code}, {})
+		db_manager.get_user({_id:id, password_reset_code:code}, {})
 
 		.then(user =>
 		{
@@ -422,11 +502,11 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		var split = token.split('_')
 
-		var _id = split[0]
+		var id = split[0]
 
 		var code = split[1]
 
-		db_manager.get_user({_id:_id, password_reset_code:code}, {})
+		db_manager.get_user({_id:id, password_reset_code:code}, {})
 
 		.then(user =>
 		{

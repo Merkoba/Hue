@@ -1,3 +1,4 @@
+config.secret.dev.json
 /node_modules/*
 /public/img/*
 /logs/error.log

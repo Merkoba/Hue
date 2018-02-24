@@ -874,7 +874,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 	{
 		socket.kickd = false
 		socket.bannd = false
-		socket.joined = false		
+		socket.joined = false
+		socket.superuser = false	
 	}
 
 	function join_room(socket, data)
@@ -891,12 +892,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 		if(data.alternative)
 		{
-			if(data.username === undefined || data.password === undefined)
+			if(data.email === undefined || data.password === undefined)
 			{
 				return get_out(socket)
 			}
 
-			if(data.username > config.max_max_username_length)
+			if(data.email > config.max_max_email_length)
 			{
 				return get_out(socket)
 			}
@@ -927,7 +928,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 		if(data.alternative)
 		{
-			db_manager.check_password(data.username, data.password, {username:true, profile_image:true})
+			db_manager.check_password(data.email, data.password, {email:true, username:true, profile_image:true})
 
 			.then(ans =>
 			{
@@ -940,7 +941,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 				socket.user_id = userinfo._id.toString()
 
-				db_manager.get_room({_id:data.room_id}, {}, socket.user_id)
+				db_manager.get_room({_id:data.room_id}, {})
 
 				.then(info =>
 				{
@@ -994,7 +995,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 				{
 					socket.user_id = data.user_id
 
-					db_manager.get_room({_id:data.room_id}, {}, socket.user_id)
+					db_manager.get_room({_id:data.room_id}, {})
 
 					.then(info =>
 					{
@@ -1003,7 +1004,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 							return get_out(socket)
 						}
 
-						db_manager.get_user({_id:socket.user_id}, {username:true, profile_image:true})
+						db_manager.get_user({_id:socket.user_id}, {email: true, username:true, profile_image:true})
 
 						.then(userinfo =>
 						{
@@ -1039,11 +1040,16 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 	function do_join(socket, info, userinfo)
 	{
+		if(sconfig.superuser_emails.indexOf(userinfo.email) !== -1)
+		{
+			socket.superuser = true
+		}
+
 		socket.username = userinfo.username
 
 		socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
 		
-		if(info.bans.indexOf(socket.user_id) !== -1)
+		if(!socket.superuser && info.bans.indexOf(socket.user_id) !== -1)
 		{
 			return get_out(socket)
 		}
@@ -1415,7 +1421,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 	function change_role(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(!socket.superuser && (socket.role !== 'admin' && socket.role !== 'op'))
 		{
 			return get_out(socket)
 		}
@@ -1440,7 +1446,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 			return get_out(socket)
 		}
 
-		if(socket.username === data.username)
+		if(!socket.superuser && (socket.username === data.username))
 		{
 			return get_out(socket)
 		}
@@ -1463,10 +1469,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 				var current_role = info.keys[id]
 
-				if((current_role === 'admin' || current_role === 'op') && socket.role !== 'admin')
+				if(!socket.superuser)
 				{
-					socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
-					return false
+					if((current_role === 'admin' || current_role === 'op') && socket.role !== 'admin')
+					{
+						socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
+						return false
+					}
 				}
 
 				if(current_role === data.role || (current_role === undefined && data.role === "voice1"))
@@ -1475,14 +1484,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 					return false
 				}
 
-				info.keys[id] = data.role
-
 				var sockets = get_user_sockets_per_room(socket.room_id, id)
 
 				var last_socc = false
 				
 				for(var socc of sockets)
 				{
+					if(socc.superuser)
+					{
+						if(socket.username !== socc.username && socc.role === "admin")
+						{
+							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
+							return false		
+						}
+					}
+
 					socc.role = data.role
 					last_socc = socc
 				}
@@ -1491,6 +1507,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 				{
 					update_user_in_userlist(last_socc)
 				}
+
+				info.keys[id] = data.role
 				
 				db_manager.update_room(info._id, {keys:info.keys})
 
@@ -1662,7 +1680,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 		if(sockets.length > 0)
 		{
-			if((sockets[0].role === 'admin' || sockets[0].role === 'op') && socket.role !== 'admin')
+			if(((sockets[0].role === 'admin' || sockets[0].role === 'op') && socket.role !== 'admin') || sockets[0].superuser)
 			{
 				socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
 				return false
@@ -1742,14 +1760,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 					return false						
 				}
 
-				info.bans.push(id)
-				
 				var sockets = get_user_sockets_per_room(socket.room_id, id)
 
 				if(sockets.length > 0)
 				{
 					for(var socc of sockets)
 					{
+						if(socc.superuser)
+						{
+							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})							
+							return false
+						}
+
 						socc.role = ''
 						socc.bannd = true
 						socc.info1 = socket.username
@@ -1766,6 +1788,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 						username2: data.username
 					})						
 				}
+				
+				info.bans.push(id)
 
 				db_manager.update_room(info._id, {bans:info.bans})
 
@@ -1824,14 +1848,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 				}
 
 				var id = userinfo._id.toString()
-				
-				var current_role = info.keys[id]
-
-				if((current_role === 'admin' || current_role === 'op') && socket.role !== 'admin')
-				{
-					socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
-					return false
-				}
 
 				if(info.bans.indexOf(id) === -1)
 				{
