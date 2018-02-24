@@ -371,7 +371,7 @@ To have a full working system, as it is intended, getting the youtube api key is
 
 # Development
 
-You can create a config.secret.dev.json file intended to use in development, which is ignored by git. So you can leave config.secret.json intact and use the modified dev version for testing. Put it in the root directory, where the other config files are.
+You can create a config.secret.dev.json file intended to use in development, which is ignored by git. So you can leave config.secret.json intact and use the modified dev version for testing. Put it in the root directory, where the other config files are. This is used when the node environment is set to "development".
 
 There's a run_dev file that starts the node server with a development node environment.
 
