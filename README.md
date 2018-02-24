@@ -7,11 +7,11 @@ Requirements:
 - MongoDB 3+
 - Linux
 
-Put the files in the directory you want it work and call "npm install". That should install all necesary packages. 
+Put the files in the directory you want it work and call "npm install". That should install all necessary packages. 
 
 You will also need MongoDB installed in your computer, and for everything to work correctly Hue should be running in a Linux environment as it depends on some Linux calls like rm, wget, stat and find.
 
-There is no need create database tables, all of that is done automatically, MongoDB just needs to be installed and running.
+There is no need to create database tables, all of that is done automatically. MongoDB just needs to be installed and running.
 
 Configuration is done in the config.json and config.secret.json files found in the root directory.
 
@@ -141,7 +141,10 @@ If you want to remove it to start fresh:
 >Same but if settings.background_image is enabled.
 
 "chat_crop_limit"
->After this number of chat messages on the screen, the oldest ones will start to get removed so there's always this maximum amount of messages displayed. This is to avoid having a huge amount of text in memory in case it is opened for a long time. This is also used to limit the chat_history list, which is used for chat message search.
+>After this number of chat messages on the screen, the oldest ones will start to get removed so there's always this maximum amount of messages displayed. This is to avoid having a huge amount of text in memory in case it is opened for a long time.
+
+"chat_history_crop_limit"
+>How much of the chat history is saved in memory for use in Search and other features.
 
 "played_crop_limit"
 >Same as chat_crop limit but for items displayed when "Now Playing" is clicked.

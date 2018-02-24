@@ -739,13 +739,13 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .search_result_item
 {
-	padding-top: 1em;
-	padding-bottom: 1em;
+	padding-top: 0.8em;
+	padding-bottom: 0.8em;
 }
 
 .search_result_uname
 {
-	padding-bottom: 0.3em;
+	padding-bottom: 0.2em;
 }
 
 .search_result_uname *

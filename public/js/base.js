@@ -3275,12 +3275,15 @@ function update_chat(uname, msg, prof_image, date=false)
 
 	var contclasses = "chat_content"
 
+	var highlighted = false
+
 	if(uname !== username)
 	{
 		if(check_highlights(msg))
 		{
 			contclasses += " dotted"
-			alert_title2()		
+			alert_title2()
+			highlighted = true		
 		}
 	}
 
@@ -3350,6 +3353,11 @@ function update_chat(uname, msg, prof_image, date=false)
 		}		
 	})	
 
+	if(highlighted)
+	{
+		fmsg.data("highlighted", true)
+	}
+
 	add_to_chat(fmsg, true)
 	goto_bottom()
 
@@ -3413,7 +3421,7 @@ function push_to_chat_history(msg)
 {
 	chat_history.push(msg.clone(true, true))
 
-	if(chat_history.length > chat_crop_limit)
+	if(chat_history.length > chat_history_crop_limit)
 	{
 		chat_history.shift()
 	}
@@ -3898,6 +3906,7 @@ function register_commands()
 	commands.push('/disconnectothers')
 	commands.push('/whisper')
 	commands.push('/annex')
+	commands.push('/highlights')
 
 	commands.sort()
 
@@ -4334,6 +4343,11 @@ function send_to_chat(msg, to_history=true)
 			{
 				annex(arg)
 			}
+
+			else if(oiEquals(lmsg, '/highlights'))
+			{
+				show_highlights(arg)
+			}			
 
 			else
 			{
@@ -5482,8 +5496,13 @@ function clear_chat()
 function unclear_chat()
 {
 	clear_chat()
+
+	if(chat_history.length === 0)
+	{
+		return false
+	}
 	
-	for(var el of chat_history)
+	for(var el of chat_history.slice(0 - chat_history_crop_limit))
 	{
 		add_to_chat(el.clone(true, true), false, false)
 	}
@@ -9046,4 +9065,42 @@ function annex(rol="admin")
 	}
 		
 	socket_emit('change_role', {username:username, role:rol})	
+}
+
+function show_highlights()
+{
+	var c = $("<div></div>")
+
+	for(var msg of chat_history)
+	{
+		if(msg.data("highlighted"))
+		{
+			var huname = msg.find('.chat_uname').eq(0)
+			var hcontent_container = msg.find('.chat_content_container').eq(0)
+			var hcontent = msg.find('.chat_content')
+
+			var cn = $("<div class='search_result_item'><div class='search_result_uname'></div><div class='search_result_content'></div>")
+
+			cn.find(".search_result_uname").eq(0).html(huname.clone())
+
+			for(var i=0; i < hcontent.length; i++)
+			{
+				var hc = hcontent.get(i)
+
+				if(i < hcontent.length - 1)
+				{
+					cn.find(".search_result_content").eq(0).append($(hc).clone()).append("<br>")
+				}
+
+				else
+				{
+					cn.find(".search_result_content").eq(0).append($(hc).clone())
+				}
+			}
+
+			c.append(cn)
+		}
+	}
+
+	msg_info.show(c[0])
 }
