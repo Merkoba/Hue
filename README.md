@@ -32,6 +32,7 @@ To have a full working system, as it is intended, getting the youtube api key is
 If you ever need to access the MongoDB database:
 
 >sudo mongo
+
 >use hue
 
 If you want to remove it to start fresh:
