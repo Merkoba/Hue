@@ -29,6 +29,15 @@ That's an example of starting it with the user "node" in a production environmen
 
 To have a full working system, as it is intended, getting the youtube api key is very recommended. Twitch api key is recommended to support twitch 'videos' (channels work out of the box). Mailgun api key is necessary for account creation and password recovery, so it must be provided. Setup these in config.secret.json. If you don't want any of these, disable them in the config.json
 
+If you ever need to access the MongoDB database:
+
+>sudo mongo
+>use hue
+
+If you want to remove it to start fresh:
+
+>db.dropDatabase()
+
 # Configuration
 
 "https_enabled"
