@@ -314,6 +314,18 @@ If you want to remove it to start fresh:
 "settings_default_other_words_to_highlight"
 >Other words to trigger highlights apart from the current nickname, by default.
 
+"settings_default_double_tap"
+>What command or string to trigger on double tap by default.
+
+"settings_default_double_tap_2"
+>What command or string to trigger on double tap 2 by default.
+
+"double_tap_key"
+>The key that triggers the double tap.
+
+"double_tap_key_2"
+>The key that triggers the other double tap.
+
 "room_settings_default_images_enabled"
 >Whether images are show to the user when joining a room for the first time.
 

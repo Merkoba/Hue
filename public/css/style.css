@@ -1112,3 +1112,10 @@ input[type=text], textarea
 	font-size: 1.1em;
 	text-align: center;
 }
+
+.setting_input_text
+{
+	width: 100%;
+	font-size: 1.1em;
+	text-align: center;
+}

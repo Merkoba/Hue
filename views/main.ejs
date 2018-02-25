@@ -32,9 +32,9 @@
 		<script src="/js/utilz.js?ver=2"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<script src="/js/base.js?ver=918"></script>
+		<script src="/js/base.js?ver=920"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=258"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=259"/>
 
 		<script>
 
@@ -515,6 +515,18 @@
 
 				<div class='spacer1'></div>
 
+				<div class="setting_title" id="setting_double_tap_title"></div>
+				<div class='spacer2'></div>
+				<input type="text" class="setting_input_text" id="setting_double_tap"></div>
+
+				<div class='spacer1'></div>
+
+				<div class="setting_title" id="setting_double_tap_2_title"></div>
+				<div class='spacer2'></div>
+				<input type="text" class="setting_input_text" id="setting_double_tap_2"></div>
+
+				<div class='spacer1'></div>
+
 			</div>
 			
 			<span class='menu_item_smaller' onclick='show_history()'>History</span>
@@ -618,6 +630,7 @@
 		<script id='template_media_menu' type='text/x-handlebars-template'>
 			<div class='menu_item' onclick='stop_and_lock(); hide_media_menu()'>Stop And Lock Everything</div>
 			<div class='menu_item' onclick='stop_and_lock(false); hide_media_menu()'>Lock Everything</div>
+			<div class='menu_item' onclick='default_media_state(false); hide_media_menu()'>Unlock Everything</div>
 			<div class='menu_item' onclick='default_media_state(); hide_media_menu()'>Default State</div>
 			<div class='spacer3'></div>
 			<div class='menu_item' onclick='refresh_image(); hide_media_menu()'>Refresh Image</div>
@@ -672,7 +685,6 @@
 			<div class='info_item'>/me x: Makes a message in third person.</div>		
 			<div class='info_item'>/whisper x: Opens the window to write a whisper to x user.</div>		
 			<div class='info_item'>/status: Shows the room status window.</div>			
-			<div class='info_item'>/userinfo: Shows the user info window.</div>
 			<div class='info_item'>/role: Shows your role and permissions.</div>
 			<div class='info_item'>/users: Shows the user list. Accepts a filter as an argument.</div>
 			<div class='info_item'>/rooms: Shows the room list. Accepts a filter as an argument.</div>
@@ -693,6 +705,13 @@
 			<div class='info_item'>/logout: Ends the user session.</div>
 			<div class='info_item'>/shrug: Shows the shrug ascii.</div>
 			<div class='info_item'>/afk: Shows that the user went AFK.</div>
+			<div class='info_item'>/lock: Locks all media.</div>
+			<div class='info_item'>/stopandlock: Stops and locks all media.</div>
+			<div class='info_item'>/unlock: Unlocks all media.</div>
+			<div class='info_item'>/default: Makes media into the default state, everything unlocked and visible.</div>
+			<div class='info_item'>/menu: Shows the main menu.</div>
+			<div class='info_item'>/media: Shows the media menu.</div>
+			<div class='info_item'>/user: Shows the user menu.</div>
 			<div class='info_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil.</div>
 			<div class='spacer1'></div>
 			<span class='help_link' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link' onclick='help3()'>Administration Features</span>			

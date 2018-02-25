@@ -139,6 +139,8 @@ var msg_id = 0
 var mentions_regex
 var highlight_words_regex
 var writing_whisper = false
+var double_tap_key_pressed = 0
+var double_tap_key_2_pressed = 0
 
 function init()
 {
@@ -2492,10 +2494,50 @@ function copypaste_events()
 	}) 
 }
 
+var double_tap_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			double_tap_key_pressed = 0
+		}, 350)
+	}
+})()
+
+var double_tap_2_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			double_tap_key_2_pressed = 0
+		}, 350)
+	}
+})()
+
 function activate_key_detection()
 {
 	$(document).keydown(function(e)
 	{
+		if(e.key === double_tap_key)
+		{
+			double_tap_timer()
+		}
+
+		else if(e.key === double_tap_key_2)
+		{
+			double_tap_2_timer()
+		}
+
 		if(iup)
 		{
 			if(e.key === "Enter")
@@ -2709,6 +2751,41 @@ function activate_key_detection()
 
 		clear_tabbed()
 	})
+
+	$(document).keyup(function(e)
+	{
+		if(e.key === double_tap_key)
+		{
+			double_tap_key_pressed += 1
+
+			if(double_tap_key_pressed === 2)
+			{
+				double_tap_key_pressed = 0
+				on_double_tap()
+			}
+		}
+
+		else
+		{
+			double_tap_key_pressed = 0
+		}
+
+		if(e.key === double_tap_key_2)
+		{
+			double_tap_key_2_pressed += 1
+
+			if(double_tap_key_2_pressed === 2)
+			{
+				double_tap_key_2_pressed = 0
+				on_double_tap_2()
+			}
+		}
+
+		else
+		{
+			double_tap_key_2_pressed = 0
+		}
+	})	
 }
 
 function scroll_up(n)
@@ -3885,7 +3962,6 @@ function register_commands()
 	commands.push('/image')
 	commands.push('/privacy')
 	commands.push('/status')
-	commands.push('/userinfo')
 	commands.push('/topic')
 	commands.push('/topicadd')
 	commands.push('/topictrim')
@@ -3911,6 +3987,13 @@ function register_commands()
 	commands.push('/whisper')
 	commands.push('/annex')
 	commands.push('/highlights')
+	commands.push('/lock')
+	commands.push('/unlock')
+	commands.push('/stopandlock')
+	commands.push('/default')
+	commands.push('/menu')
+	commands.push('/media')
+	commands.push('/user')
 
 	commands.sort()
 
@@ -3935,7 +4018,7 @@ function register_commands()
 				}
 			}
 		}
-	}	
+	}
 }
 
 function send_to_chat(msg, to_history=true)
@@ -4191,11 +4274,6 @@ function send_to_chat(msg, to_history=true)
 				show_status()
 			}
 
-			else if(oiEquals(lmsg, '/userinfo'))
-			{
-				show_userinfo()
-			}
-
 			else if(oiStartsWith(lmsg, '/topic'))
 			{
 				change_topic(arg)
@@ -4356,7 +4434,42 @@ function send_to_chat(msg, to_history=true)
 			else if(oiStartsWith(lmsg, '/highlights'))
 			{
 				show_highlights(arg)
-			}			
+			}
+
+			else if(oiEquals(lmsg, '/lock'))
+			{
+				stop_and_lock(false)
+			}
+
+			else if(oiEquals(lmsg, '/unlock'))
+			{
+				default_media_state(false)
+			}
+
+			else if(oiEquals(lmsg, '/stopandlock'))
+			{
+				stop_and_lock()
+			}
+
+			else if(oiEquals(lmsg, '/default'))
+			{
+				default_media_state()
+			}
+
+			else if(oiEquals(lmsg, '/menu'))
+			{
+				show_main_menu()
+			}
+
+			else if(oiEquals(lmsg, '/media'))
+			{
+				show_media_menu()
+			}
+
+			else if(oiEquals(lmsg, '/user'))
+			{
+				show_userinfo()
+			}
 
 			else
 			{
@@ -5397,13 +5510,13 @@ function chat_search(filter=false)
 
 	if(chat_history.length > 0)
 	{
-		$(chat_history.slice(0).reverse()).each(function()
+		for(var msg of chat_history.slice(0).reverse())
 		{
 			var show = false
 			
-			var huname = $(this).find('.chat_uname').eq(0)
-			var hcontent_container = $(this).find('.chat_content_container').eq(0)
-			var hcontent = $(this).find('.chat_content')
+			var huname = msg.find('.chat_uname').eq(0)
+			var hcontent_container = msg.find('.chat_content_container').eq(0)
+			var hcontent = msg.find('.chat_content')
 
 			if(huname.length !== 0 && hcontent.length !== 0)
 			{
@@ -5413,7 +5526,7 @@ function chat_search(filter=false)
 
 				hcontent.each(function()
 				{
-					content += `${$(this).text()} `	
+					content += `${msg.text()} `	
 				})
 
 				if(uname.toLowerCase().indexOf(filter) !== -1)
@@ -5453,7 +5566,7 @@ function chat_search(filter=false)
 
 			else
 			{
-				var hcontent = $(this).find(".announcement_content").eq(0)
+				var hcontent = msg.find(".announcement_content").eq(0)
 
 				if(hcontent.length === 0)
 				{
@@ -5473,7 +5586,7 @@ function chat_search(filter=false)
 
 				c.append(cn)				
 			}
-		})
+		}
 	}
 
 	if(c.find(".search_result_item").length === 0)
@@ -6622,6 +6735,18 @@ function get_settings()
 		changed = true
 	}
 
+	if(settings.double_tap === undefined)
+	{
+		settings.double_tap = settings_default_double_tap
+		changed = true
+	}
+
+	if(settings.double_tap_2 === undefined)
+	{
+		settings.double_tap_2 = settings_default_double_tap_2
+		changed = true
+	}
+
 	if(changed)
 	{
 		save_settings()
@@ -6642,6 +6767,8 @@ function start_settings_state()
 	$("#setting_highlight_current_username").prop("checked", settings.highlight_current_username)
 	$("#setting_case_insensitive_highlights").prop("checked", settings.case_insensitive_highlights)
 	$("#setting_other_words_to_highlight").val(settings.other_words_to_highlight)
+	$("#setting_double_tap").val(settings.double_tap)
+	$("#setting_double_tap_2").val(settings.double_tap_2)
 }
 
 function start_settings_listeners()
@@ -6712,6 +6839,32 @@ function start_settings_listeners()
 		{
 			settings.other_words_to_highlight = words
 			generate_highlight_words_regex()
+			save_settings()
+		}
+	})
+
+	$("#setting_double_tap").blur(function()
+	{
+		var cmd = utilz.clean_string2($("#setting_double_tap").val())
+
+		$("#setting_double_tap").val(cmd)
+
+		if(settings.double_tap !== cmd)
+		{
+			settings.double_tap = cmd
+			save_settings()
+		}
+	})
+
+	$("#setting_double_tap_2").blur(function()
+	{
+		var cmd = utilz.clean_string2($("#setting_double_tap_2").val())
+
+		$("#setting_double_tap_2").val(cmd)
+
+		if(settings.double_tap_2 !== cmd)
+		{
+			settings.double_tap_2 = cmd
 			save_settings()
 		}
 	})
@@ -7144,6 +7297,9 @@ function setup_userinfo()
 	})
 
 	$("#userinfo_profile_image").attr("src", profile_image)
+
+	$("#setting_double_tap_title").text(`On Double ${double_tap_key} Tap`)
+	$("#setting_double_tap_2_title").text(`On Double ${double_tap_key_2} Tap`)
 }
 
 function show_userinfo()
@@ -8816,36 +8972,39 @@ function refresh_radio()
 	change("radio", true, true)
 }
 
-function default_media_state()
+function default_media_state(change_visibility=true)
 {
 	toggle_lock_images(false)
 	toggle_lock_tv(false)
 	toggle_lock_radio(false)
 
-	var save_settings = false
-
-	room_settings.images_enabled = true
-
-	if(room_images_enabled)
+	if(change_visibility)
 	{
-		change_images_visibility()
+		var save_settings = false
+
+		room_settings.images_enabled = true
+
+		if(room_images_enabled)
+		{
+			change_images_visibility()
+		}
+
+		room_settings.tv_enabled = true
+
+		if(room_tv_enabled)
+		{
+			change_tv_visibility()
+		}
+		
+		room_settings.radio_enabled = true
+
+		if(room_radio_enabled)
+		{
+			change_radio_visibility()
+		}
+
+		save_room_settings()
 	}
-
-	room_settings.tv_enabled = true
-
-	if(room_tv_enabled)
-	{
-		change_tv_visibility()
-	}
-	
-	room_settings.radio_enabled = true
-
-	if(room_radio_enabled)
-	{
-		change_radio_visibility()
-	}
-
-	save_room_settings()
 }
 
 function disconnect_others()
@@ -9115,7 +9274,7 @@ function show_highlights(filter=false)
 	{
 		$("#highlights_container").html("")
 
-		for(var msg of chat_history)
+		for(var msg of chat_history.slice(0).reverse())
 		{
 			if(msg.data("highlighted"))
 			{
@@ -9221,4 +9380,20 @@ function do_highlights_filter()
 	update_modal_scrollbar("highlights")
 
 	$('#Msg-content-container-highlights').scrollTop(0)
+}
+
+function on_double_tap()
+{
+	if(settings.double_tap)
+	{
+		send_to_chat(settings.double_tap)
+	}
+}
+
+function on_double_tap_2()
+{
+	if(settings.double_tap_2)
+	{
+		send_to_chat(settings.double_tap_2)
+	}
 }
