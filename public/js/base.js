@@ -6610,9 +6610,9 @@ function get_settings()
 		changed = true
 	}
 
-	if(settings.case_sensitive_highlights === undefined)
+	if(settings.case_insensitive_highlights === undefined)
 	{
-		settings.case_sensitive_highlights = settings_default_case_sensitive_highlights
+		settings.case_insensitive_highlights = settings_default_case_insensitive_highlights
 		changed = true
 	}
 
@@ -6640,7 +6640,7 @@ function start_settings_state()
 	$("#setting_sound_notifications").prop("checked", settings.sound_notifications)
 	$("#setting_modal_effects").prop("checked", settings.modal_effects)
 	$("#setting_highlight_current_username").prop("checked", settings.highlight_current_username)
-	$("#setting_case_sensitive_highlights").prop("checked", settings.case_sensitive_highlights)
+	$("#setting_case_insensitive_highlights").prop("checked", settings.case_insensitive_highlights)
 	$("#setting_other_words_to_highlight").val(settings.other_words_to_highlight)
 }
 
@@ -6694,9 +6694,9 @@ function start_settings_listeners()
 		save_settings()
 	})
 
-	$("#setting_case_sensitive_highlights").change(function()
+	$("#setting_case_insensitive_highlights").change(function()
 	{
-		settings.case_sensitive_highlights = $("#setting_case_sensitive_highlights").prop("checked")
+		settings.case_insensitive_highlights = $("#setting_case_insensitive_highlights").prop("checked")
 		generate_mentions_regex()
 		generate_highlight_words_regex()
 		save_settings()
@@ -8876,14 +8876,14 @@ function set_username(uname)
 
 function generate_mentions_regex()
 {
-	if(settings.case_sensitive_highlights)
+	if(settings.case_insensitive_highlights)
 	{
-		mentions_regex = new RegExp(`(?:^|\\s+)${escape_special_characters(username)}(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`)
+		mentions_regex = new RegExp(`(?:^|\\s+)${escape_special_characters(username)}(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`, "i")
 	}
 
 	else
 	{
-		mentions_regex = new RegExp(`(?:^|\\s+)${escape_special_characters(username)}(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`, "i")
+		mentions_regex = new RegExp(`(?:^|\\s+)${escape_special_characters(username)}(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`)
 	}
 }
 
@@ -8907,7 +8907,7 @@ function generate_highlight_words_regex()
 
 	if(words.length > 0)
 	{
-		if(settings.case_sensitive_highlights)
+		if(settings.case_insensitive_highlights)
 		{
 			highlight_words_regex = new RegExp(`(?:^|\\s+)(?:${words})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`)
 		}

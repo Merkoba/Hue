@@ -88,7 +88,7 @@
 	"settings_default_sound_notifications": true,
 	"settings_default_modal_effects": true,
 	"settings_default_highlight_current_username": true,
-	"settings_default_case_sensitive_highlights": true,
+	"settings_default_case_insensitive_highlights": true,
 	"settings_default_other_words_to_highlight": "",
 	"room_settings_default_images_enabled": true,
 	"room_settings_default_tv_enabled": true,

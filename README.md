@@ -308,8 +308,8 @@ If you want to remove it to start fresh:
 "settings_default_highlight_current_username"
 >Whether current username triggers a highlight by default.
 
-"settings_default_case_sensitive_highlights"
->Whether highlights, either current nickname, or specified words matches are case sensitive by default.
+"settings_default_case_insensitive_highlights"
+>Whether highlights, either current nickname, or specified words matches are case insensitive by default.
 
 "settings_default_other_words_to_highlight"
 >Other words to trigger highlights apart from the current nickname, by default.
