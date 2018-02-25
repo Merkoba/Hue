@@ -786,6 +786,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 	max-width: 26em;
 }
 
+.highlights_content *
+{
+	border-bottom: 0px solid black !important;
+}
+
 #pick_username_welcome
 {
 	font-size: 1.2em;
