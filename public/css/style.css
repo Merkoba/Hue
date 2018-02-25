@@ -737,6 +737,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 	width: 14em;
 }
 
+#highlights_filter
+{
+	width: 14em;
+}
+
 .search_result_item
 {
 	padding-top: 0.8em;
@@ -755,6 +760,28 @@ a.generic:link, a.generic:visited, a.generic:hover
 }
 
 .search_result_content
+{
+	max-width: 26em;
+}
+
+.highlights_item
+{
+	padding-top: 0.8em;
+	padding-bottom: 0.8em;
+}
+
+.highlights_uname
+{
+	padding-bottom: 0.2em;
+}
+
+.highlights_uname *
+{
+	font-size: 1em;
+	cursor: default;
+}
+
+.highlights_content
 {
 	max-width: 26em;
 }

@@ -32,9 +32,9 @@
 		<script src="/js/utilz.js?ver=2"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<script src="/js/base.js?ver=916"></script>
+		<script src="/js/base.js?ver=917"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=257"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=258"/>
 
 		<script>
 
@@ -587,7 +587,13 @@
 			<input type="text" id="played_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='played'></div>
-		</script>	
+		</script>
+
+		<script id='template_highlights' type='text/x-handlebars-template'>
+			<input type="text" id="highlights_filter" class="filter_input" placeholder="Filter">
+			<div class='spacer3'></div>
+			<div id='highlights_container'></div>
+		</script>
 
 		<script id='template_profile' type='text/x-handlebars-template'>
 			<div id='show_profile_uname' class='bigger2'>Loading</div>
@@ -674,6 +680,7 @@
 			<div class='info_item'>/played: Shows the list of songs played. Accepts a filter as an argument.</div>
 			<div class='info_item'>/search: Opens the search window. Accepts a query as an argument.</div>
 			<div class='info_item'>/history: Shows the input history. Accepts a filter as an argument.</div>
+			<div class='info_item'>/highlights: Shows chat messages where you were highlighted.</div>
 			<div class='info_item'>/unclear: Restores the cleared chat.</div>
 			<div class='info_item'>/startradio: Starts the radio.</div>
 			<div class='info_item'>/stopradio: Stops the radio.</div>

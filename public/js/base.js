@@ -84,6 +84,7 @@ var template_profile
 var template_image_picker
 var template_media_menu
 var template_whisper
+var template_highlights
 var msg_menu
 var msg_userinfo
 var msg_userlist
@@ -94,6 +95,8 @@ var msg_profile
 var msg_info
 var msg_whisper
 var msg_image_picker
+var msg_highlights
+var msg_media_menu
 var played_filtered = false
 var userlist_filtered = false
 var roomlist_filter_string = ""
@@ -247,6 +250,7 @@ function compile_templates()
 	template_image_picker = Handlebars.compile($('#template_image_picker').html())
 	template_media_menu = Handlebars.compile($('#template_media_menu').html())
 	template_whisper = Handlebars.compile($('#template_whisper').html())
+	template_highlights = Handlebars.compile($('#template_highlights').html())
 }
 
 function help()
@@ -3351,7 +3355,7 @@ function update_chat(uname, msg, prof_image, date=false)
 		{
 			$(this).attr("src", default_profile_image_url)
 		}		
-	})	
+	})
 
 	if(highlighted)
 	{
@@ -4336,7 +4340,7 @@ function send_to_chat(msg, to_history=true)
 
 			else if(oiEquals(lmsg, '/annex'))
 			{
-				annex(arg)
+				annex()
 			}
 
 			else if(oiStartsWith(lmsg, '/annex'))
@@ -4345,6 +4349,11 @@ function send_to_chat(msg, to_history=true)
 			}
 
 			else if(oiEquals(lmsg, '/highlights'))
+			{
+				show_highlights()
+			}
+
+			else if(oiStartsWith(lmsg, '/highlights'))
 			{
 				show_highlights(arg)
 			}			
@@ -6464,9 +6473,36 @@ function start_msg()
 			after_close: function(instance)
 			{
 				$("#write_whisper_area").val("")
-				$("#write_whisper_feedback").text("")				
+				$("#write_whisper_feedback").text("")
 				after_modal_close(instance)
 				writing_whisper = false
+			}
+		})
+	)
+
+	msg_highlights = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "highlights",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+				writing_whisper = true
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				$("#highlights_filter").val("")
 			}
 		})
 	)
@@ -6480,6 +6516,7 @@ function start_msg()
 	msg_image_picker.set(template_image_picker())
 	msg_media_menu.set(template_media_menu())
 	msg_whisper.set(template_whisper())
+	msg_highlights.set(template_highlights())
 
 	msg_image.create()
 	msg_info.create()
@@ -6811,6 +6848,11 @@ function start_filters()
 	$("#roomlist_filter").on("input", function()
 	{
 		roomlist_filter_timer()
+	})
+
+	$("#highlights_filter").on("input", function()
+	{
+		highlights_filter_timer()
 	})
 }
 
@@ -9067,40 +9109,116 @@ function annex(rol="admin")
 	socket_emit('change_role', {username:username, role:rol})	
 }
 
-function show_highlights()
+function show_highlights(filter=false)
 {
-	var c = $("<div></div>")
-
-	for(var msg of chat_history)
+	msg_highlights.show(function()
 	{
-		if(msg.data("highlighted"))
+		$("#highlights_container").html("")
+
+		for(var msg of chat_history)
 		{
-			var huname = msg.find('.chat_uname').eq(0)
-			var hcontent_container = msg.find('.chat_content_container').eq(0)
-			var hcontent = msg.find('.chat_content')
-
-			var cn = $("<div class='search_result_item'><div class='search_result_uname'></div><div class='search_result_content'></div>")
-
-			cn.find(".search_result_uname").eq(0).html(huname.clone())
-
-			for(var i=0; i < hcontent.length; i++)
+			if(msg.data("highlighted"))
 			{
-				var hc = hcontent.get(i)
+				var huname = msg.find('.chat_uname').eq(0)
+				var hcontent = msg.find('.chat_content')
 
-				if(i < hcontent.length - 1)
+				var cn = $("<div class='highlights_item'><div class='highlights_uname'></div><div class='highlights_content'></div>")
+
+				cn.find(".highlights_uname").eq(0).html(huname.clone())
+
+				for(var i=0; i < hcontent.length; i++)
 				{
-					cn.find(".search_result_content").eq(0).append($(hc).clone()).append("<br>")
+					var hc = hcontent.get(i)
+
+					if(i < hcontent.length - 1)
+					{
+						cn.find(".highlights_content").eq(0).append($(hc).clone()).append("<br>")
+					}
+
+					else
+					{
+						cn.find(".highlights_content").eq(0).append($(hc).clone())
+					}
+					
 				}
 
-				else
-				{
-					cn.find(".search_result_content").eq(0).append($(hc).clone())
-				}
+				$("#highlights_container").append(cn)
+			}
+		}
+
+		if(filter)
+		{
+			$("#highlights_filter").val(filter)
+			do_highlights_filter()
+		}
+
+		update_modal_scrollbar("highlights")
+	})
+}
+
+var highlights_filter_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			do_highlights_filter()
+		}, 350)
+	}
+})()
+
+function do_highlights_filter()
+{
+	var filter = $("#highlights_filter").val().trim().toLowerCase()
+
+	if(filter !== "")
+	{
+		$(".highlights_item").each(function()
+		{
+			$(this).css("display", "block")
+
+			var uname = $(this).find(".highlights_uname").eq(0).text()
+			var hcontent = $(this).find(".highlights_content").eq(0)
+
+			var content = ""
+
+			hcontent.each(function()
+			{
+				content += `${$(this).text()} `	
+			})			
+
+			var include = false
+
+			if(uname.toLowerCase().indexOf(filter) !== -1)
+			{
+				include = true
 			}
 
-			c.append(cn)
-		}
+			else if(content.toLowerCase().indexOf(filter) !== -1)
+			{
+				include = true
+			}
+
+			if(!include)
+			{
+				$(this).css("display", "none")
+			}
+		})
 	}
 
-	msg_info.show(c[0])
+	else
+	{
+		$(".highlights_item").each(function()
+		{
+			$(this).css("display", "block")
+		})
+	}
+
+	update_modal_scrollbar("highlights")
+
+	$('#Msg-content-container-highlights').scrollTop(0)
 }
