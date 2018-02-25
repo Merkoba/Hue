@@ -77,6 +77,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.max_same_post_messages = config.max_same_post_messages
 	c.vars.max_typing_inactivity = config.max_typing_inactivity
 	c.vars.default_video_url = config.default_video_url
+	c.vars.media_history_max_items = config.media_history_max_items
 
 	function check_url(req, res, next)
 	{

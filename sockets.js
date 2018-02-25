@@ -874,57 +874,63 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 	{
 		socket.kickd = false
 		socket.bannd = false
+		socket.joining = false
 		socket.joined = false
-		socket.superuser = false	
+		socket.superuser = false
 	}
 
 	function join_room(socket, data)
 	{
 		if(data.room_id === undefined)
 		{
-			return get_out(socket)
+			socket.disconnect()
 		}
 
 		if(data.room_id.length > config.max_room_id_length)
 		{
-			return get_out(socket)
+			socket.disconnect()
 		} 			
 
 		if(data.alternative)
 		{
+			data.email = data.email.trim()
+			data.password = data.password.trim()
+
 			if(data.email === undefined || data.password === undefined)
 			{
-				return get_out(socket)
+				socket.disconnect()
 			}
 
 			if(data.email > config.max_max_email_length)
 			{
-				return get_out(socket)
+				socket.disconnect()
 			}
 
 			if(data.password.length > config.max_max_password_length)
 			{
-				return get_out(socket)
+				socket.disconnect()
 			}
 		}
 
 		else
 		{
+			data.user_id = data.user_id.trim()
+
 			if(data.user_id === undefined || data.token === undefined)
 			{
-				return get_out(socket)
+				socket.disconnect()
 			}
 
 			if(data.user_id > config.max_user_id_length)
 			{
-				return get_out(socket)
+				socket.disconnect()
 			}
 
 			if(data.token.length > config.max_jwt_token_length)
 			{
-				return get_out(socket)
+				socket.disconnect()
 			}
-		}
+		}	
 
 		if(data.alternative)
 		{
@@ -934,7 +940,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 			{
 				if(!ans.valid)
 				{
-					return get_out(socket)
+					socket.disconnect()
 				}
 
 				var userinfo = ans.user
@@ -947,7 +953,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 				{
 					if(!info)
 					{
-						return get_out(socket)
+						socket.disconnect()
 					}
 	
 					do_join(socket, info, userinfo)
@@ -978,17 +984,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 			{
 				if(err)
 				{
-					return get_out(socket)				
+					socket.disconnect()				
 				}
 
 				else if(decoded.data === undefined || decoded.data.id === undefined)
 				{
-					return get_out(socket)
+					socket.disconnect()
 				}
 
 				if(decoded.data.id !== data.user_id)
 				{
-					return get_out(socket)
+					socket.disconnect()
 				}			
 
 				else
@@ -1001,7 +1007,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 					{
 						if(!info)
 						{
-							return get_out(socket)
+							socket.disconnect()
 						}
 
 						db_manager.get_user({_id:socket.user_id}, {email: true, username:true, profile_image:true})
@@ -1010,7 +1016,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 						{
 							if(!userinfo)
 							{
-								return get_out(socket)
+								socket.disconnect()
 							}
 
 							do_join(socket, info, userinfo)
@@ -1040,6 +1046,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 	function do_join(socket, info, userinfo)
 	{
+		var room_id = info._id.toString()
+
+		socket.room_id = room_id
+		
+		socket.joining = true
+		
+		socket.join(room_id)		
+
+		if(check_multipe_joins(socket))
+		{
+			socket.disconnect()
+		}
+
 		if(sconfig.superuser_emails.indexOf(userinfo.email) !== -1)
 		{
 			socket.superuser = true
@@ -1051,12 +1070,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 		
 		if(!socket.superuser && info.bans.indexOf(socket.user_id) !== -1)
 		{
-			return get_out(socket)
+			socket.disconnect()
 		}
-
-		var room_id = info._id.toString()
-
-		socket.room_id = room_id
 
 		if(userinfo.profile_image === "")
 		{
@@ -1099,8 +1114,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 		{
 			socket.role = 'voice1'
 		}
-
-		socket.join(room_id)
 
 		if(user_rooms[socket.user_id] === undefined)
 		{
@@ -1185,6 +1198,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 			v4_radio_permission: info.v4_radio_permission
 		})
 
+		socket.joining = false
 		socket.joined = true			
 	}
 
@@ -4314,8 +4328,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 		try
 		{
 			socket.emit('update', {type:'redirect', location:config.redirect_url})
-
-			setTimeout(do_disconnect, 1000, socket)
+			do_disconnect(socket)
 
 			return false
 		}
@@ -4392,5 +4405,35 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 			level: "error",
 			message: msg
 		})
+	}
+
+	function check_multipe_joins(socket)
+	{
+		try
+		{
+			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
+			
+			for(var i=0; i<ids.length; i++)
+			{
+				var socc = io.sockets.connected[ids[i]]
+
+				if(socc.user_id !== undefined)
+				{
+					if(socc.id !== socket.id && socc.user_id === socket.user_id)
+					{
+						if(socc.joining === true)
+						{
+							return true
+						}
+					}
+				}
+			}
+		}
+
+		catch(err)
+		{
+			return true
+			log_error(err)
+		}
 	}
 }

@@ -435,6 +435,13 @@ a.generic:link, a.generic:visited, a.generic:hover
 	cursor: pointer;
 }
 
+.menu_item2
+{
+	font-size: 1.2em;
+	padding-top: 0.5em;
+	cursor: pointer;
+}
+
 .menu_item_smaller
 {
 	font-size: 1em;
@@ -618,6 +625,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-bottom: 0.08em;
 }
 
+.spacer6
+{
+	padding-top: 0.6em;
+	padding-bottom: 0.6em;
+}
+
 .hspacer1
 {
 	padding-left: 0.3em;
@@ -738,6 +751,21 @@ a.generic:link, a.generic:visited, a.generic:hover
 }
 
 #highlights_filter
+{
+	width: 14em;
+}
+
+#image_history_filter
+{
+	width: 14em;
+}
+
+#tv_history_filter
+{
+	width: 14em;
+}
+
+#radio_history_filter
 {
 	width: 14em;
 }
@@ -1123,4 +1151,31 @@ input[type=text], textarea
 	width: 100%;
 	font-size: 1.1em;
 	text-align: center;
+}
+
+.media_history_container
+{
+	max-width: 25em;
+}
+
+.media_history_item .msg
+{
+	padding-top: 0em !important;
+	padding-bottom: 0em !important;
+}
+
+.media_history_item
+{
+	padding-top: 0.8em;
+	padding-bottom: 0.8em;
+}
+
+.media_history_item .announcement_content
+{
+	font-size: 1em !important;
+}
+
+.media_history_item .icon2
+{
+	display: none;
 }

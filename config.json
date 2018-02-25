@@ -108,5 +108,6 @@
 	"max_typing_inactivity": 2000,
 	"max_verification_time": 3600000,
 	"delivery_email": "hue@merkoba.com",
-	"delivery_email_name": "Hue"
+	"delivery_email_name": "Hue",
+	"media_history_max_items": 1000
 }

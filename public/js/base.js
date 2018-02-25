@@ -82,9 +82,14 @@ var template_help3
 var template_userinfo
 var template_profile
 var template_image_picker
+var template_tv_picker
+var template_radio_picker
 var template_media_menu
 var template_whisper
 var template_highlights
+var template_image_history
+var template_tv_history
+var template_radio_history
 var msg_menu
 var msg_userinfo
 var msg_userlist
@@ -95,10 +100,18 @@ var msg_profile
 var msg_info
 var msg_whisper
 var msg_image_picker
+var msg_tv_picker
+var msg_radio_picker
 var msg_highlights
 var msg_media_menu
+var msg_image_history
+var msg_tv_history
+var msg_radio_history
 var played_filtered = false
 var userlist_filtered = false
+var image_history_filtered = false
+var tv_history_filtered = false
+var radio_history_filtered = false
 var roomlist_filter_string = ""
 var yt_player
 var yt_video_player
@@ -250,9 +263,14 @@ function compile_templates()
 	template_userinfo = Handlebars.compile($('#template_userinfo').html())
 	template_profile = Handlebars.compile($('#template_profile').html())
 	template_image_picker = Handlebars.compile($('#template_image_picker').html())
+	template_tv_picker = Handlebars.compile($('#template_tv_picker').html())
+	template_radio_picker = Handlebars.compile($('#template_radio_picker').html())
 	template_media_menu = Handlebars.compile($('#template_media_menu').html())
 	template_whisper = Handlebars.compile($('#template_whisper').html())
 	template_highlights = Handlebars.compile($('#template_highlights').html())
+	template_image_history = Handlebars.compile($('#template_image_history').html())
+	template_tv_history = Handlebars.compile($('#template_tv_history').html())
+	template_radio_history = Handlebars.compile($('#template_radio_history').html())
 }
 
 function help()
@@ -3770,7 +3788,8 @@ function chat_announce(args={})
 		onclick: false,
 		save: false,
 		id: false,
-		date: false
+		date: false,
+		type: "normal"
 	}
 
 	fill_defaults(args, def_args)
@@ -3872,6 +3891,75 @@ function chat_announce(args={})
 	add_to_chat(fmsg, args.save)
 
 	goto_bottom()
+
+	if(args.type !== "normal")
+	{
+		handle_chat_announce_types(fmsg, args.type)
+	}
+}
+
+function handle_chat_announce_types(msg, type)
+{
+	var s = $("<div class='media_history_item'></div>")
+
+	var item = s.html(msg.find(".announcement_content_container").eq(0).clone(true, true))
+
+	if(type === "image_change")
+	{
+		$("#image_history_container").prepend(item)
+		var els = $("#image_history_container").children()
+		var t = "image"
+	}
+
+	else if(type === "tv_change")
+	{
+		$("#tv_history_container").prepend(item)
+		var els = $("#tv_history_container").children()
+		var t = "tv"
+	}
+
+	else if(type === "radio_change")
+	{
+		$("#radio_history_container").prepend(item)
+		var els = $("#radio_history_container").children()
+		var t = "radio"
+	}
+
+	else
+	{
+		return false
+	}
+
+	if(els.length > media_history_max_items)
+	{
+		els.last().remove()
+	}
+
+	if(type === "image")
+	{
+		if(image_history_filtered)
+		{
+			do_image_history_filter()			
+		}
+	}
+
+	else if(type === "tv")
+	{
+		if(tv_history_filtered)	
+		{
+			do_tv_history_filter()
+		}
+	}
+
+	else if(type === "radio")
+	{
+		if(radio_history_filtered)
+		{
+			do_radio_history_filter()
+		}
+	}	
+
+	update_modal_scrollbar(`${t}_change`)	
 }
 
 jQuery.fn.urlize = function(force=false) 
@@ -3994,6 +4082,9 @@ function register_commands()
 	commands.push('/menu')
 	commands.push('/media')
 	commands.push('/user')
+	commands.push('/imagehistory')
+	commands.push('/tvhistory')
+	commands.push('/radiohistory')
 
 	commands.sort()
 
@@ -4469,6 +4560,36 @@ function send_to_chat(msg, to_history=true)
 			else if(oiEquals(lmsg, '/user'))
 			{
 				show_userinfo()
+			}
+
+			else if(oiEquals(lmsg, '/imagehistory'))
+			{
+				show_image_history()
+			}
+
+			else if(oiStartsWith(lmsg, '/imagehistory'))
+			{
+				show_image_history(arg)
+			}
+
+			else if(oiEquals(lmsg, '/tvhistory'))
+			{
+				show_tv_history()
+			}
+
+			else if(oiStartsWith(lmsg, '/tvhistory'))
+			{
+				show_tv_history(arg)
+			}
+
+			else if(oiEquals(lmsg, '/radiohistory'))
+			{
+				show_radio_history()
+			}
+
+			else if(oiStartsWith(lmsg, '/radiohistory'))
+			{
+				show_radio_history(arg)
 			}
 
 			else
@@ -5570,14 +5691,14 @@ function chat_search(filter=false)
 
 				if(hcontent.length === 0)
 				{
-					return true
+					continue
 				}
 
 				var content = hcontent.text()
 				
 				if(content.toLowerCase().indexOf(filter) === -1)
 				{
-					return true
+					continue
 				}
 
 				var cn = $("<div class='search_result_item'><div class='search_result_content'></div>")
@@ -5763,7 +5884,7 @@ function announce_uploaded_image(data, date=false)
 		show_modal_image(data.image_url, title)
 	}
 
-	chat_announce({brk1:"<i class='icon2 fa fa-camera'></i>", msg:msg, title:title, onclick:onclick, save:true, date:d})
+	chat_announce({brk1:"<i class='icon2 fa fa-camera'></i>", msg:msg, title:title, onclick:onclick, save:true, date:d, type:"image_change"})
 }
 
 function announce_role_change(data)
@@ -5921,7 +6042,7 @@ function announce_radio_source_change(data, date=false, action="change")
 		goto_url(source, "tab")
 	}
 
-	chat_announce({brk1:"<i class='icon2 fa fa-volume-up'></i>", msg:action, title:title, onclick:onclick, save:true, date:d})
+	chat_announce({brk1:"<i class='icon2 fa fa-volume-up'></i>", msg:action, title:title, onclick:onclick, save:true, date:d, type:"radio_change"})
 }
 
 function change_tv_source(src)
@@ -6016,7 +6137,7 @@ function announce_tv_source_change(data, date=false, action="change")
 		var action = `${data.tv_setter} changed the tv to ${name}`
 	}
 
-	chat_announce({brk1:"<i class='icon2 fa fa-television'></i>", msg:action, title:title, onclick:onclick, save:true, date:d})
+	chat_announce({brk1:"<i class='icon2 fa fa-television'></i>", msg:action, title:title, onclick:onclick, save:true, date:d, type:"tv_change"})
 }
 
 function ban(uname)
@@ -6539,6 +6660,60 @@ function start_msg()
 		})
 	)
 
+	msg_tv_picker = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "tv_picker",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				$("#tv_url_picker_input").val("")
+				tup = false
+			}
+		})
+	)
+
+	msg_radio_picker = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "radio_picker",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				$("#radio_url_picker_input").val("")
+				rup = false
+			}
+		})
+	)
+
 	msg_media_menu = Msg.factory
 	(
 		Object.assign({}, common,
@@ -6568,7 +6743,7 @@ function start_msg()
 	(
 		Object.assign({}, common,
 		{
-			id: "message",
+			id: "whisper",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -6606,7 +6781,6 @@ function start_msg()
 			{
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
-				writing_whisper = true
 			},
 			after_set: function(instance)
 			{
@@ -6620,6 +6794,84 @@ function start_msg()
 		})
 	)
 
+	msg_image_history = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "image_history",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				reset_image_history_filter()				
+			}
+		})
+	)
+
+	msg_tv_history = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "tv_history",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				reset_tv_history_filter()				
+			}
+		})
+	)
+
+	msg_radio_history = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "radio_history",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				reset_radio_history_filter()				
+			}
+		})
+	)
+
 	msg_menu.set(template_menu())
 	msg_userinfo.set(template_userinfo())
 	msg_userlist.set(template_userlist())
@@ -6627,9 +6879,14 @@ function start_msg()
 	msg_played.set(template_played())
 	msg_profile.set(template_profile({profile_image: default_profile_image_url}))
 	msg_image_picker.set(template_image_picker())
+	msg_tv_picker.set(template_tv_picker())
+	msg_radio_picker.set(template_radio_picker())
 	msg_media_menu.set(template_media_menu())
 	msg_whisper.set(template_whisper())
 	msg_highlights.set(template_highlights())
+	msg_image_history.set(template_image_history())
+	msg_tv_history.set(template_tv_history())
+	msg_radio_history.set(template_radio_history())
 
 	msg_image.create()
 	msg_info.create()
@@ -6639,9 +6896,7 @@ function info_vars_to_false()
 {
 	crm = false
 	orb = false
-	stu = false	
-	rup = false
-	tup = false
+	stu = false
 }
 
 function after_modal_create(instance)
@@ -7006,6 +7261,21 @@ function start_filters()
 	$("#highlights_filter").on("input", function()
 	{
 		highlights_filter_timer()
+	})
+
+	$("#image_history_filter").on("input", function()
+	{
+		image_history_filter_timer()
+	})
+
+	$("#tv_history_filter").on("input", function()
+	{
+		tv_history_filter_timer()
+	})
+
+	$("#radio_history_filter").on("input", function()
+	{
+		radio_history_filter_timer()
 	})
 }
 
@@ -7740,25 +8010,6 @@ function not_an_op()
 	chat_announce({brk1:'[', brk2:']', msg:"You are not a room operator"})
 }
 
-function show_radio_url_picker()
-{
-	var s = ""
-
-	s += "<i class='fa fa-volume-up'></i>"
-	s += "<div class='spacer3'></div>"
-	s += "Enter a YouTube search term or URL"
-	s += "<br>Or an audio file/stream URL"
-	s += "<div class='spacer3'></div>"
-	s += "<input id='radio_url_picker_input' class='input1'>"
-
-	msg_info.show(s, function()
-	{
-		rup = true
-
-		$("#radio_url_picker_input").focus()
-	})
-}
-
 function show_image_picker()
 {
 	msg_image_picker.show(function()
@@ -7769,23 +8020,23 @@ function show_image_picker()
 	})
 }
 
-function show_tv_url_picker()
+function show_tv_picker()
 {
-	var s = ""
-
-	s += "<i class='fa fa-television'></i>"
-	s += "<div class='spacer3'></div>"
-	s += "Enter a YouTube search term or URL"
-	s += "<br>Or a Twitch channel/video URL"
-	s += "<br>Or a video file/stream URL"
-	s += "<div class='spacer3'></div>"
-	s += "<input id='tv_url_picker_input' class='input1'>"
-
-	msg_info.show(s, function()
+	msg_tv_picker.show(function()
 	{
 		tup = true
 
 		$("#tv_url_picker_input").focus()
+	})
+}
+
+function show_radio_picker()
+{
+	msg_radio_picker.show(function()
+	{
+		rup = true
+
+		$("#radio_url_picker_input").focus()
 	})
 }
 
@@ -9396,4 +9647,187 @@ function on_double_tap_2()
 	{
 		send_to_chat(settings.double_tap_2)
 	}
+}
+
+function show_image_history(filter=false)
+{
+	msg_image_history.show(function()
+	{
+		if(filter)
+		{
+			$("#image_history_filter").val(filter)
+			do_image_history_filter()
+		}
+	})
+}
+
+function show_tv_history(filter=false)
+{
+	msg_tv_history.show(function()
+	{
+		if(filter)
+		{
+			$("#tv_history_filter").val(filter)
+			do_tv_history_filter()
+		}
+	})
+}
+
+function show_radio_history(filter=false)
+{
+	msg_radio_history.show(function()
+	{
+		if(filter)
+		{
+			$("#radio_history_filter").val(filter)
+			do_radio_history_filter()
+		}
+	})
+}
+
+function do_media_history_filter(type, container, filter)
+{
+	var filter = filter.trim().toLowerCase()
+
+	if(filter !== "")
+	{
+		if(type === "image")
+		{
+			image_history_filtered = true
+		}
+
+		else if(type === "tv")
+		{
+			tv_history_filtered = true	
+		}
+
+		else if(type === "radio")
+		{
+			radio_history_filtered = true
+		}
+
+		container.children().each(function()
+		{
+			$(this).css("display", "block")
+
+			var content = $(this).find(".announcement_content").eq(0).text()
+
+			var include = false
+
+			if(content.toLowerCase().indexOf(filter) !== -1)
+			{
+				include = true
+			}
+
+			if(!include)
+			{
+				$(this).css("display", "none")
+			}
+		})
+	}
+
+	else
+	{
+		if(type === "image")
+		{
+			image_history_filtered = false
+		}
+
+		else if(type === "tv")
+		{
+			tv_history_filtered = false	
+		}
+
+		else if(type === "radio")
+		{
+			radio_history_filtered = false
+		}
+
+		container.children().each(function()
+		{
+			$(this).css("display", "block")
+		})
+	}
+
+	update_modal_scrollbar(`${type}_change`)
+
+	$('#Msg-content-container-played').scrollTop(0)
+}
+
+var image_history_filter_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			do_image_history_filter()
+		}, 350)
+	}
+})()
+
+var tv_history_filter_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			do_tv_history_filter()
+		}, 350)
+	}
+})()
+
+var radio_history_filter_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			do_radio_history_filter()
+		}, 350)
+	}
+})()
+
+function reset_image_history_filter()
+{
+	$("#image_history_filter").val("")
+	do_image_history_filter()
+}
+
+function reset_tv_history_filter()
+{
+	$("#tv_history_filter").val("")
+	do_tv_history_filter()
+}
+
+function reset_radio_history_filter()
+{
+	$("#radio_history_filter").val("")
+	do_radio_history_filter()
+}
+
+function do_image_history_filter()
+{
+	do_media_history_filter("image", $("#image_history_container"), $("#image_history_filter").val())	
+}
+
+function do_tv_history_filter()
+{
+	do_media_history_filter("tv", $("#tv_history_container"), $("#tv_history_filter").val())	
+}
+
+function do_radio_history_filter()
+{
+	do_media_history_filter("radio", $("#radio_history_container"), $("#radio_history_filter").val())	
 }

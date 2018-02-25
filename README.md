@@ -368,6 +368,9 @@ If you want to remove it to start fresh:
 "delivery_email_name"
 >Name used on system emails.
 
+"media_history_max_items"
+>The amount of items stored in each media change history window.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"

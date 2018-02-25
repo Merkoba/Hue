@@ -32,9 +32,9 @@
 		<script src="/js/utilz.js?ver=2"></script>
 		<script src="/js/colorlib.js?v=7"></script>
 
-		<script src="/js/base.js?ver=920"></script>
+		<script src="/js/base.js?ver=922"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=260"/>
+		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=261"/>
 
 		<script>
 
@@ -207,8 +207,8 @@
 							</span>
 
 							<i class='fa fa-camera footer_icon nicetitle' id='footer_upload_icon' title='Change the Image' onclick='show_image_picker()'></i>
-							<i class='fa fa-television footer_icon nicetitle' id='footer_tv_icon' onclick="show_tv_url_picker()" title='Change the TV'></i>
-							<i class='fa fa-volume-up footer_icon nicetitle' id='footer_radio_icon' onclick="show_radio_url_picker()" title='Change the Radio'></i>
+							<i class='fa fa-television footer_icon nicetitle' id='footer_tv_icon' onclick="show_tv_picker()" title='Change the TV'></i>
+							<i class='fa fa-volume-up footer_icon nicetitle' id='footer_radio_icon' onclick="show_radio_picker()" title='Change the Radio'></i>
 
 							<i class='fa fa-bars footer_icon nicetitle' id='footer_lock_images_icon' onclick='show_media_menu()' title='Media Menu'></i>
 						</span>
@@ -627,15 +627,55 @@
 			<div id='image_file_picker' class='menu_item' onclick='close_all_modals()'>Upload Image</div>
 		</script>
 
-		<script id='template_media_menu' type='text/x-handlebars-template'>
-			<div class='menu_item' onclick='stop_and_lock(); hide_media_menu()'>Stop And Lock Everything</div>
-			<div class='menu_item' onclick='stop_and_lock(false); hide_media_menu()'>Lock Everything</div>
-			<div class='menu_item' onclick='default_media_state(false); hide_media_menu()'>Unlock Everything</div>
-			<div class='menu_item' onclick='default_media_state(); hide_media_menu()'>Default State</div>
+		<script id='template_tv_picker' type='text/x-handlebars-template'>
+			<i class='fa fa-television'></i>
 			<div class='spacer3'></div>
-			<div class='menu_item' onclick='refresh_image(); hide_media_menu()'>Refresh Image</div>
-			<div class='menu_item' onclick='refresh_tv(); hide_media_menu()'>Refresh TV</div>
-			<div class='menu_item' onclick='refresh_radio(); hide_media_menu()'>Refresh Radio</div>
+			Enter a YouTube search term or URL<br>Or a Twitch channel/video URL<br>Or a video file/stream URL
+			<div class='spacer3'></div>
+			<input id='tv_url_picker_input' class='input1'>
+		</script>
+
+		<script id='template_radio_picker' type='text/x-handlebars-template'>
+			<i class='fa fa-volume-up'></i>
+			<div class='spacer3'></div>
+			Enter a YouTube search term or URL<br>Or an audio file/stream URL
+			<div class='spacer3'></div>
+			<input id='radio_url_picker_input' class='input1'>
+		</script>
+
+		<script id='template_image_history' type='text/x-handlebars-template'>
+			<input type="text" id="image_history_filter" class="filter_input" placeholder="Filter">
+			<div class='spacer3'></div>
+			<div id='image_history_container' class='media_history_container'></div>
+		</script>
+
+		<script id='template_tv_history' type='text/x-handlebars-template'>
+			<input type="text" id="tv_history_filter" class="filter_input" placeholder="Filter">
+			<div class='spacer3'></div>
+			<div id='tv_history_container' class='media_history_container'></div>
+		</script>
+
+		<script id='template_radio_history' type='text/x-handlebars-template'>
+			<input type="text" id="radio_history_filter" class="filter_input" placeholder="Filter">
+			<div class='spacer3'></div>
+			<div id='radio_history_container' class='media_history_container'></div>
+		</script>		
+
+		<script id='template_media_menu' type='text/x-handlebars-template'>
+			<div class='unselectable'>
+				<div class='menu_item' onclick='stop_and_lock(); hide_media_menu()'>Stop And Lock Everything</div>
+				<div class='menu_item' onclick='stop_and_lock(false); hide_media_menu()'>Lock Everything</div>
+				<div class='menu_item' onclick='default_media_state(false); hide_media_menu()'>Unlock Everything</div>
+				<div class='menu_item' onclick='default_media_state(); hide_media_menu()'>Default State</div>
+				<div class='spacer3'></div>
+				<div class='menu_item' onclick='show_image_history()'>Image History</div>
+				<div class='menu_item' onclick='show_tv_history()'>TV History</div>
+				<div class='menu_item' onclick='show_radio_history()'>Radio History</div>
+				<div class='spacer3'></div>
+				<div class='menu_item' onclick='refresh_image(); hide_media_menu()'>Refresh Image</div>
+				<div class='menu_item' onclick='refresh_tv(); hide_media_menu()'>Refresh TV</div>
+				<div class='menu_item' onclick='refresh_radio(); hide_media_menu()'>Refresh Radio</div>
+			</div>
 		</script>
 
 		<script id='template_whisper' type='text/x-handlebars-template'>
@@ -712,6 +752,11 @@
 			<div class='info_item'>/menu: Shows the main menu.</div>
 			<div class='info_item'>/media: Shows the media menu.</div>
 			<div class='info_item'>/user: Shows the user menu.</div>
+			<div class='info_item'>/: Shows the user menu.</div>
+			<div class='info_item'>/user: Shows the user menu.</div>
+			<div class='info_item'>/imagehistory: Shows the image history.</div>
+			<div class='info_item'>/tvhistory: Shows the tv history.</div>
+			<div class='info_item'>/radiohistory: Shows the radio history.</div>
 			<div class='info_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil.</div>
 			<div class='spacer1'></div>
 			<span class='help_link' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link' onclick='help3()'>Administration Features</span>			
