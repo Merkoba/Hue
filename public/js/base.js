@@ -7576,7 +7576,6 @@ function show_userinfo()
 {
 	msg_userinfo.show(function()
 	{
-		$("#userinfo_username").text(username)
 		update_modal_scrollbar("userinfo")
 	})
 }
@@ -9282,6 +9281,7 @@ function set_username(uname)
 {
 	username = uname
 	generate_mentions_regex()
+	$("#userinfo_username").text(username)
 }
 
 function generate_mentions_regex()
