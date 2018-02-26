@@ -329,8 +329,11 @@ body
 
 .chat_profile_image_container
 {
-	width: 45px;
-	height: 45px;
+	min-width: 45px;
+	max-width: 45px;
+	min-height: 45px;
+	max-height: 45px;
+	display: inline-block;
 }
 
 .chat_profile_image
@@ -1011,8 +1014,10 @@ input[type=text], textarea
 
 .big_profile_image_container
 {
-	height: 200px;
-	width: 200px;
+	min-width: 200px;
+	max-width: 200px;
+	min-height: 200px;
+	max-height: 200px;
 	display: inline-block;
 }
 
@@ -1024,8 +1029,10 @@ input[type=text], textarea
 
 .bigger_profile_image_container
 {
-	height: 300px;
-	width: 300px;
+	min-width: 300px;
+	max-width: 300px;
+	min-height: 300px;
+	max-height: 300px;
 	display: inline-block;	
 }
 

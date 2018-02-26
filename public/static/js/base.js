@@ -3424,9 +3424,9 @@ function update_chat(uname, msg, prof_image, date=false)
 	{
 		var s = `
 		<div class='msg chat_message'>
-			<span class='chat_profile_image_container'>
+			<div class='chat_profile_image_container'>
 				<img class='chat_profile_image' src='${pi}'>
-			</span>
+			</div>
 			<span class='chat_right_side'>
 				<span class='chat_uname_container'>
 					<span class='chat_uname'></span>
