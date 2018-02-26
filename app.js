@@ -71,7 +71,7 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 		})
 	})
 
-	app.use(favicon(path.join(__dirname,'public', 'favicon.ico')))
+	app.use(favicon(path.join(__dirname,'public/static', 'favicon.ico')))
 
 	return app
 }

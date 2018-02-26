@@ -17,6 +17,8 @@ Configuration is done in the config.json and config.secret.json files found in t
 
 The admin email must go in superuser_emails in config.secret.json. It's used to take over control of the main room. The main room is created on first join, with no roles. To get admin on the room use /annex.
 
+To have a full working system, as it is intended, getting the youtube api key is very recommended. Twitch api key is recommended to support twitch 'videos' (channels work out of the box). Mailgun api key is necessary for account creation and password recovery, so it must be provided. Setup these in config.secret.json. If you don't want any of these, disable them in the config.json
+
 To run it locally you first have to start 'mongod' then go to the bin directory and run 'node www start'.
 
 To run it properly in production you will have to configure Apache or some other webserver to use a reverse proxy. A sample vhost configuration for Apache (apache_vhost.conf) is included. For using https LetsEncrypt is suggested.
@@ -26,8 +28,6 @@ Using pm2 is suggested to control the Node process.
 >su - node -c "pm2 start /home/node/hue/bin/www --env production"
 
 That's an example of starting it with the user "node" in a production environment.
-
-To have a full working system, as it is intended, getting the youtube api key is very recommended. Twitch api key is recommended to support twitch 'videos' (channels work out of the box). Mailgun api key is necessary for account creation and password recovery, so it must be provided. Setup these in config.secret.json. If you don't want any of these, disable them in the config.json
 
 If you ever need to access the MongoDB database:
 

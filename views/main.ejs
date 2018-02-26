@@ -7,34 +7,34 @@
 
 		<title><%= vars.default_title %></title>
 
-		<script src="/js/jquery.min.js"></script>
-		<script src="/js/handlebars.js"></script>
-		<script src="/js/dropzone.js"></script>
-		<script src="/js/dateformat.js"></script>
-		<script src="/js/perfect-scrollbar.min.js?v=3"></script>
-		<script src="/js/nicescroll.min.js"></script>
-		<script src="/js/tippy.all.min.js"></script>
-		<script src="/js/spectrum.min.js"></script>
-		<script src="/js/cropper.min.js"></script>
-		<script type="text/javascript" src="/js/contextmenu/jquery.contextMenu.min.js"></script>
+		<script src="/static/js/jquery.min.js"></script>
+		<script src="/static/js/handlebars.js"></script>
+		<script src="/static/js/dropzone.js"></script>
+		<script src="/static/js/dateformat.js"></script>
+		<script src="/static/js/perfect-scrollbar.min.js?v=3"></script>
+		<script src="/static/js/nicescroll.min.js"></script>
+		<script src="/static/js/tippy.all.min.js"></script>
+		<script src="/static/js/spectrum.min.js"></script>
+		<script src="/static/js/cropper.min.js"></script>
+		<script type="text/javascript" src="/static/js/contextmenu/jquery.contextMenu.min.js"></script>
 		<script src="https://player.twitch.tv/js/embed/v1.js"></script>
-		<script src="/js/contextmenu/jquery.ui.position.min.js"></script>
-		<script src="/socket.io/socket.io.js"></script>
-		<script src="/js/hls.js"></script>
+		<script src="/static/js/contextmenu/jquery.ui.position.min.js"></script>
+		<script src="/static/js/socket.io.js"></script>
+		<script src="/static/js/hls.js"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/perfect-scrollbar.css?v=3"/>
-		<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
-		<link rel="stylesheet" href="/css/cropper.min.css">
-		<link rel="stylesheet" href="/css/spectrum.css">
-		<link rel="stylesheet" type="text/css" href="/js/contextmenu/jquery.contextMenu.min.css"> 
+		<link rel="stylesheet" type="text/css" href="/static/css/perfect-scrollbar.css?v=3"/>
+		<link rel="stylesheet" href="/static/css/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/static/css/cropper.min.css">
+		<link rel="stylesheet" href="/static/css/spectrum.css">
+		<link rel="stylesheet" type="text/css" href="/static/js/contextmenu/jquery.contextMenu.min.css"> 
 
-		<script src="/js/msg.min.js?v=18"></script>
-		<script src="/js/utilz.js?ver=2"></script>
-		<script src="/js/colorlib.js?v=7"></script>
+		<script src="/static/js/msg.min.js?v=18"></script>
+		<script src="/static/js/utilz.js?ver=2"></script>
+		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/js/base.js?ver=925"></script>
+		<script src="/static/js/base.js?ver=926"></script>
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css?ver=261"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=262"/>
 
 		<script>
 
@@ -470,7 +470,9 @@
 
 			<div class='spacer3'></div>
 			
-			<img id='userinfo_profile_image' class='big_profile_image pointer unselectable' onclick='open_profile_image_picker()'>
+			<div class='big_profile_image_container'>
+				<img id='userinfo_profile_image' class='big_profile_image pointer unselectable' onclick='open_profile_image_picker()'>
+			</div>
 
 			<div class='spacer3'></div>
 
@@ -610,7 +612,9 @@
 		<script id='template_profile' type='text/x-handlebars-template'>
 			<div id='show_profile_uname' class='bigger2'>Loading</div>
 			<div class='spacer3'></div>
-			<img id='show_profile_image' class='bigger_profile_image unselectable' src="{{profile_image}}">
+			<div class="bigger_profile_image_container">
+				<img id='show_profile_image' class='bigger_profile_image unselectable' src="{{profile_image}}">
+			</div>
 			<div id='show_profile_buttons'>
 				<div class='spacer4'></div>
 				<span class='menu_item unselectable show_profile_button' id='show_profile_whisper' onclick='write_whisper($("#show_profile_uname").text())'>Send Whisper</span>
@@ -823,7 +827,7 @@
 
 		<audio id='audio' preload="metadata" autoplay></audio>
 
-		<audio id='pup' src='/audio/pup.mp3' preload="auto"></audio>
+		<audio id='pup' src='/static/audio/pup.mp3' preload="auto"></audio>
 
 		<div id='youtube_player'></div>
 

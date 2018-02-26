@@ -3424,7 +3424,7 @@ function update_chat(uname, msg, prof_image, date=false)
 	{
 		var s = `
 		<div class='msg chat_message'>
-			<span chat_profile_image_container'>
+			<span class='chat_profile_image_container'>
 				<img class='chat_profile_image' src='${pi}'>
 			</span>
 			<span class='chat_right_side'>
@@ -3718,7 +3718,7 @@ function start_image_events()
 	$('#test_image').on("error", function() 
 	{
 		chat_announce({brk1:'[', brk2:']', msg:"The provided image URL failed to load"})	
-	})	
+	})
 }
 
 function after_image_load(img)
@@ -7649,34 +7649,37 @@ function onYouTubePlayerReady2()
 
 function start_twitch()
 {
-	var twch_video_player = new Twitch.Player("media_twitch_video_container", 
+	try
 	{
-		channel: "AChannelThatDoesntExisttttt",
-		width: 640,
-		height: 360,
-		autoplay: false
-	})
-
-	twch_video_player.addEventListener(Twitch.Player.READY, () => 
-	{
-		twitch_video_player = twch_video_player
-
-		$("#media_twitch_video_container").find("iframe").eq(0).attr("id", "media_twitch_video").addClass("video_frame")
-
-		if(tv_type === "twitch")
+		var twch_video_player = new Twitch.Player("media_twitch_video_container", 
 		{
-			change("tv")
-		}
-	})
+			channel: "AChannelThatDoesntExisttttt",
+			width: 640,
+			height: 360,
+			autoplay: false
+		})
+
+		twch_video_player.addEventListener(Twitch.Player.READY, () => 
+		{
+			twitch_video_player = twch_video_player
+
+			$("#media_twitch_video_container").find("iframe").eq(0).attr("id", "media_twitch_video").addClass("video_frame")
+
+			if(tv_type === "twitch")
+			{
+				change("tv")
+			}
+		})
+	}
+
+	catch(err)
+	{
+		console.error("Twitch failed to load")
+	}
 }
 
 function setup_userinfo()
 {
-	$('#userinfo_profile_image').get(0).addEventListener('load', function()
-	{
-		update_modal_scrollbar("userinfo")
-	})
-
 	$("#userinfo_profile_image").attr("src", profile_image)
 
 	$("#setting_double_tap_title").text(`On Double ${double_tap_key} Tap`)
@@ -7685,10 +7688,7 @@ function setup_userinfo()
 
 function show_userinfo()
 {
-	msg_userinfo.show(function()
-	{
-		update_modal_scrollbar("userinfo")
-	})
+	msg_userinfo.show()
 }
 
 function show_status()
@@ -8538,7 +8538,7 @@ function show_profile(uname, prof_image)
 	else
 	{
 		$("#show_profile_buttons").css("display", "none")
-	}	
+	}
 
 	msg_profile.show(function()
 	{
