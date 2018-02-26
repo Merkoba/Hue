@@ -3452,10 +3452,7 @@ function update_chat(uname, msg, prof_image, date=false)
 		}		
 	})
 
-	if(highlighted)
-	{
-		fmsg.data("highlighted", true)
-	}
+	fmsg.data("highlighted", highlighted)
 
 	add_to_chat(fmsg, true)
 	goto_bottom()
@@ -3485,6 +3482,12 @@ function add_to_chat(msg, save=false, update_scrollbar=true)
 				{
 					last_msg.find(".chat_content_container").eq(0).append("<br>").append(msg.find(".chat_content").eq(0))
 					replace_in_chat_history(last_msg)
+
+					if(!last_msg.data("highlighted"))
+					{
+						last_msg.data("highlighted", msg.data("highlighted"))
+					}
+					
 					appended = true
 				}
 			}
@@ -4085,6 +4088,24 @@ function register_commands()
 	commands.push('/imagehistory')
 	commands.push('/tvhistory')
 	commands.push('/radiohistory')
+	commands.push('/lockimages')
+	commands.push('/locktv')
+	commands.push('/lockradio')
+	commands.push('/unlockimages')
+	commands.push('/unlocktv')
+	commands.push('/unlockradio')
+	commands.push('/togglelockimages')
+	commands.push('/togglelocktv')
+	commands.push('/togglelockradio')
+	commands.push('/showimages')
+	commands.push('/showtv')
+	commands.push('/showradio')
+	commands.push('/hideimages')
+	commands.push('/hidetv')
+	commands.push('/hideradio')
+	commands.push('/toggleimages')
+	commands.push('/toggletv')
+	commands.push('/toggleradio')
 
 	commands.sort()
 
@@ -4590,6 +4611,96 @@ function send_to_chat(msg, to_history=true)
 			else if(oiStartsWith(lmsg, '/radiohistory'))
 			{
 				show_radio_history(arg)
+			}
+
+			else if(oiEquals(lmsg, '/lockimages'))
+			{
+				toggle_lock_images(true)
+			}
+
+			else if(oiEquals(lmsg, '/locktv'))
+			{
+				toggle_lock_tv(true)
+			}
+
+			else if(oiEquals(lmsg, '/lockradio'))
+			{
+				toggle_lock_radio(true)
+			}
+			
+			else if(oiEquals(lmsg, '/unlockimages'))
+			{
+				toggle_lock_images(false)
+			}
+
+			else if(oiEquals(lmsg, '/unlocktv'))
+			{
+				toggle_lock_tv(false)
+			}
+
+			else if(oiEquals(lmsg, '/unlockradio'))
+			{
+				toggle_lock_radio(false)
+			}
+
+			else if(oiEquals(lmsg, '/togglelockimages'))
+			{
+				toggle_lock_images()
+			}
+
+			else if(oiEquals(lmsg, '/togglelocktv'))
+			{
+				toggle_lock_tv()
+			}
+
+			else if(oiEquals(lmsg, '/togglelockradio'))
+			{
+				toggle_lock_radio()
+			}
+
+			else if(oiEquals(lmsg, '/showimages'))
+			{
+				toggle_images(true)
+			}
+
+			else if(oiEquals(lmsg, '/showtv'))
+			{
+				toggle_tv(true)
+			}
+
+			else if(oiEquals(lmsg, '/showradio'))
+			{
+				toggle_radio(true)
+			}
+
+			else if(oiEquals(lmsg, '/hideimages'))
+			{
+				toggle_images(false)
+			}
+
+			else if(oiEquals(lmsg, '/hidetv'))
+			{
+				toggle_tv(false)
+			}
+
+			else if(oiEquals(lmsg, '/hideradio'))
+			{
+				toggle_radio(false)
+			}	
+
+			else if(oiEquals(lmsg, '/toggleimages'))
+			{
+				toggle_images()
+			}
+
+			else if(oiEquals(lmsg, '/toggletv'))
+			{
+				toggle_tv()
+			}
+
+			else if(oiEquals(lmsg, '/toggleradio'))
+			{
+				toggle_radio()
 			}
 
 			else
@@ -8096,13 +8207,24 @@ function fix_media_margin()
 	}
 }
 
-function toggle_images()
+function toggle_images(what=undefined, save=true)
 {
-	room_settings.images_enabled = !room_settings.images_enabled
+	if(what !== undefined)
+	{
+		room_settings.images_enabled = what
+	}
+
+	else
+	{
+		room_settings.images_enabled = !room_settings.images_enabled
+	}
 
 	change_images_visibility()
 
-	save_room_settings()
+	if(save)
+	{
+		save_room_settings()
+	}
 }
 
 function change_images_visibility()
@@ -8155,13 +8277,24 @@ function change_images_visibility()
 	goto_bottom()
 }
 
-function toggle_tv()
+function toggle_tv(what=undefined, save=true)
 {
-	room_settings.tv_enabled = !room_settings.tv_enabled
+	if(what !== undefined)
+	{
+		room_settings.tv_enabled = what
+	}
+
+	else
+	{
+		room_settings.tv_enabled = !room_settings.tv_enabled
+	}
 
 	change_tv_visibility()
 
-	save_room_settings()	
+	if(save)
+	{
+		save_room_settings()
+	}
 }
 
 function change_tv_visibility()
@@ -8215,13 +8348,24 @@ function change_tv_visibility()
 	goto_bottom()	
 }
 
-function toggle_radio()
+function toggle_radio(what=undefined, save=true)
 {
-	room_settings.radio_enabled = !room_settings.radio_enabled
+	if(what !== undefined)
+	{
+		room_settings.radio_enabled = what
+	}
+
+	else
+	{
+		room_settings.radio_enabled = !room_settings.radio_enabled
+	}
 
 	change_radio_visibility()
 
-	save_room_settings()	
+	if(save)
+	{
+		save_room_settings()
+	}
 }
 
 function change_radio_visibility()
@@ -9230,28 +9374,9 @@ function default_media_state(change_visibility=true)
 
 	if(change_visibility)
 	{
-		var save_settings = false
-
-		room_settings.images_enabled = true
-
-		if(room_images_enabled)
-		{
-			change_images_visibility()
-		}
-
-		room_settings.tv_enabled = true
-
-		if(room_tv_enabled)
-		{
-			change_tv_visibility()
-		}
-		
-		room_settings.radio_enabled = true
-
-		if(room_radio_enabled)
-		{
-			change_radio_visibility()
-		}
+		toggle_images(true, false)
+		toggle_tv(true, false)
+		toggle_radio(true, false)
 
 		save_room_settings()
 	}
