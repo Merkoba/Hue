@@ -4106,6 +4106,7 @@ function register_commands()
 	commands.push('/toggleimages')
 	commands.push('/toggletv')
 	commands.push('/toggleradio')
+	commands.push('/test')	
 
 	commands.sort()
 
@@ -4701,6 +4702,11 @@ function send_to_chat(msg, to_history=true)
 			else if(oiEquals(lmsg, '/toggleradio'))
 			{
 				toggle_radio()
+			}
+
+			else if(oiEquals(lmsg, '/test'))
+			{
+				do_test()
 			}
 
 			else
@@ -9955,4 +9961,9 @@ function do_tv_history_filter()
 function do_radio_history_filter()
 {
 	do_media_history_filter("radio", $("#radio_history_container"), $("#radio_history_filter").val())	
+}
+
+function do_test()
+{
+	send_to_chat("Test: 1")
 }
