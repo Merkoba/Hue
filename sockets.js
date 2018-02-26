@@ -883,12 +883,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 	{
 		if(data.room_id === undefined)
 		{
-			socket.disconnect()
+			return do_disconnect(socket)
 		}
 
 		if(data.room_id.length > config.max_room_id_length)
 		{
-			socket.disconnect()
+			return do_disconnect(socket)
 		} 			
 
 		if(data.alternative)
@@ -898,17 +898,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 			if(data.email === undefined || data.password === undefined)
 			{
-				socket.disconnect()
+				return do_disconnect(socket)
 			}
 
 			if(data.email > config.max_max_email_length)
 			{
-				socket.disconnect()
+				return do_disconnect(socket)
 			}
 
 			if(data.password.length > config.max_max_password_length)
 			{
-				socket.disconnect()
+				return do_disconnect(socket)
 			}
 		}
 
@@ -918,17 +918,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 			if(data.user_id === undefined || data.token === undefined)
 			{
-				socket.disconnect()
+				return do_disconnect(socket)
 			}
 
 			if(data.user_id > config.max_user_id_length)
 			{
-				socket.disconnect()
+				return do_disconnect(socket)
 			}
 
 			if(data.token.length > config.max_jwt_token_length)
 			{
-				socket.disconnect()
+				return do_disconnect(socket)
 			}
 		}	
 
@@ -940,7 +940,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 			{
 				if(!ans.valid)
 				{
-					socket.disconnect()
+					return do_disconnect(socket)
 				}
 
 				var userinfo = ans.user
@@ -953,7 +953,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 				{
 					if(!info)
 					{
-						socket.disconnect()
+						return do_disconnect(socket)
 					}
 	
 					do_join(socket, info, userinfo)
@@ -984,17 +984,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 			{
 				if(err)
 				{
-					socket.disconnect()				
+					return do_disconnect(socket)				
 				}
 
 				else if(decoded.data === undefined || decoded.data.id === undefined)
 				{
-					socket.disconnect()
+					return do_disconnect(socket)
 				}
 
 				if(decoded.data.id !== data.user_id)
 				{
-					socket.disconnect()
+					return do_disconnect(socket)
 				}			
 
 				else
@@ -1007,7 +1007,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 					{
 						if(!info)
 						{
-							socket.disconnect()
+							return do_disconnect(socket)
 						}
 
 						db_manager.get_user({_id:socket.user_id}, {email: true, username:true, profile_image:true})
@@ -1016,7 +1016,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 						{
 							if(!userinfo)
 							{
-								socket.disconnect()
+								return do_disconnect(socket)
 							}
 
 							do_join(socket, info, userinfo)
@@ -1056,7 +1056,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 
 		if(check_multipe_joins(socket))
 		{
-			socket.disconnect()
+			return do_disconnect(socket)
 		}
 
 		if(sconfig.superuser_emails.indexOf(userinfo.email) !== -1)
@@ -1070,7 +1070,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 		
 		if(!socket.superuser && info.bans.indexOf(socket.user_id) !== -1)
 		{
-			socket.disconnect()
+			return do_disconnect(socket)
 		}
 
 		if(userinfo.profile_image === "")
@@ -2968,6 +2968,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, environment)
 	function do_disconnect(socc)
 	{
 		socc.disconnect()
+		return false
 	}
 
 	function disconnect(socket)
