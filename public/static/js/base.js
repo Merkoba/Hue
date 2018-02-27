@@ -3673,9 +3673,7 @@ function change(args={})
 		}
 
 		first_tv_played = true
-
 		last_tv_change = tv_source
-
 		setter = tv_setter
 	}
 
