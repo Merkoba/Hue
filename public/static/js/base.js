@@ -1202,7 +1202,7 @@ function setup_radio(data)
 		$('#audio').attr('src', '')
 	}
 
-	change("radio", true)	
+	change({type:"radio", force:true})	
 }
 
 function setup_tv(data)
@@ -1232,7 +1232,7 @@ function setup_tv(data)
 	tv_setter = data.tv_setter
 	tv_date = nice_date(data.tv_date)
 
-	change("tv", true)
+	change({type:"tv", force:true})
 }
 
 function stop_videos()
@@ -3561,42 +3561,52 @@ function replace_in_chat_history(msg)
 	}	
 }
 
-function change(type, force=false, play=true)
+function change(args={})
 {	
-	if(type === "image")
+	var def_args = 
 	{
-		if(!force && last_image_change === image_url)
+		type: "",
+		force: false,
+		play: true,
+		notify: true
+	}
+
+	fill_defaults(args, def_args)
+
+	if(args.type === "image")
+	{
+		if(!args.force && last_image_change === image_url)
 		{
 			return false
 		}
 	}
 
-	else if(type === "tv")
+	else if(args.type === "tv")
 	{
-		if(!force && last_tv_change === tv_source)
+		if(!args.force && last_tv_change === tv_source)
 		{
 			return false
 		}
 	}
 
-	else if(type === "radio")
+	else if(args.type === "radio")
 	{
-		if(!force && last_radio_change === radio_source)
+		if(!args.force && last_radio_change === radio_source)
 		{
 			return false
 		}
 	}
 
-	if(afk && type !== "radio")
+	if(afk && args.type !== "radio")
 	{
 		change_when_focused = true
 
-		if(type === "image")
+		if(args.type === "image")
 		{
 			change_image_when_focused = true
 		}
 
-		if(type === "tv")
+		if(args.type === "tv")
 		{
 			change_tv_when_focused = true
 		}
@@ -3606,26 +3616,26 @@ function change(type, force=false, play=true)
 
 	if(!first_tv_played)
 	{
-		play = false
+		args.play = false
 	}
 
 	var setter = ""
 
-	if(type === "image")
+	if(args.type === "image")
 	{
 		if(!room_images_enabled || !room_settings.images_enabled || images_locked)
 		{
 			return false
 		}
 
-		show_image(force)
+		show_image(args.force)
 
 		last_image_change = image_url
 
 		setter = image_uploader
 	}
 
-	else if(type === "tv")
+	else if(args.type === "tv")
 	{
 		if(!room_tv_enabled || !room_settings.tv_enabled || tv_locked)
 		{
@@ -3639,7 +3649,7 @@ function change(type, force=false, play=true)
 				return false
 			}
 
-			show_youtube_video(play)
+			show_youtube_video(args.play)
 		}
 
 		else if(tv_type === "twitch")
@@ -3649,12 +3659,12 @@ function change(type, force=false, play=true)
 				return false
 			}
 
-			show_twitch_video(play)
+			show_twitch_video(args.play)
 		}
 		
 		else if(tv_type === "url")
 		{
-			show_video(play)
+			show_video(args.play)
 		}
 
 		else
@@ -3669,7 +3679,7 @@ function change(type, force=false, play=true)
 		setter = tv_setter
 	}
 
-	else if(type === "radio")
+	else if(args.type === "radio")
 	{
 		if(!room_radio_enabled || !room_settings.radio_enabled || !radio_started || radio_locked)
 		{
@@ -3686,7 +3696,7 @@ function change(type, force=false, play=true)
 		return false
 	}
 
-	if(setter !== username)
+	if(args.notify && setter !== username)
 	{
 		alert_title()
 		sound_notify()
@@ -3780,7 +3790,7 @@ function setup_image(data)
 	image_date = nice_date(data.image_date)
 	image_type = data.image_type
 
-	change("image")
+	change({type:"image"})
 }
 
 function fill_defaults(args, def_args)
@@ -5537,12 +5547,12 @@ function activate_window_visibility_listener()
 			{
 				if(change_image_when_focused)
 				{
-					change("image")
+					change({type:"image"})
 				}
 				
 				if(change_tv_when_focused)
 				{
-					change("tv")
+					change({type:"tv"})
 				}
 
 				change_image_when_focused = false
@@ -7676,7 +7686,7 @@ function onYouTubePlayerReady()
 
 	if(radio_type === "youtube")
 	{
-		change("radio")
+		change({type:"radio", notify:false})
 	}
 }
 
@@ -7697,7 +7707,7 @@ function onYouTubePlayerReady2()
 
 	if(tv_type === "youtube")
 	{
-		change("tv")
+		change({type:"tv", notify:false})
 	}
 }
 
@@ -7721,7 +7731,7 @@ function start_twitch()
 
 			if(tv_type === "twitch")
 			{
-				change("tv")
+				change({type:"tv", notify:false})
 			}
 		})
 	}
@@ -8308,7 +8318,7 @@ function change_images_visibility()
 			enable_normal_mode()	
 		}
 
-		change("image")
+		change({type:"image"})
 
 		images_visible = true
 	}
@@ -8383,7 +8393,7 @@ function change_tv_visibility()
 			enable_normal_mode()	
 		}	
 
-		change("tv", false, false)
+		change({type:"tv", force:false, play:false})
 
 		tv_visible = true
 	}
@@ -9294,7 +9304,7 @@ function toggle_lock_images(what=undefined)
 		$("#footer_lock_images_icon").removeClass("fa-lock")
 		$("#footer_lock_images_icon").addClass("fa-unlock-alt")
 
-		change("image")
+		change({type:"image"})
 	}
 }
 
@@ -9321,7 +9331,7 @@ function toggle_lock_tv(what=undefined)
 		$("#footer_lock_tv_icon").removeClass("fa-lock")
 		$("#footer_lock_tv_icon").addClass("fa-unlock-alt")
 
-		change("tv")
+		change({type:"tv"})
 	}
 }
 
@@ -9348,7 +9358,7 @@ function toggle_lock_radio(what=undefined)
 		$("#footer_lock_radio_icon").removeClass("fa-lock")
 		$("#footer_lock_radio_icon").addClass("fa-unlock-alt")
 
-		change("radio")
+		change({type:"radio"})
 	}
 }
 
@@ -9426,17 +9436,17 @@ function stop_and_lock(stop=true)
 
 function refresh_image()
 {
-	change("image", true, true)
+	change({type:"image", force:true, play:true})
 }
 
 function refresh_tv()
 {
-	change("tv", true, true)
+	change({type:"tv", force:true, play:true})
 }
 
 function refresh_radio()
 {
-	change("radio", true, true)
+	change({type:"radio", force:true, play:true})
 }
 
 function default_media_state(change_visibility=true)
