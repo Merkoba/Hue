@@ -194,6 +194,7 @@ function init()
 	start_twitch()
 	check_image_queue()
 	setup_input()
+	font_check()
 
 	start_socket()
 }
@@ -752,7 +753,7 @@ function start_socket()
 	{
 		if(data.type === 'chat_msg')
 		{
-			update_chat(data.username, data.msg, data.profile_image)
+			update_chat({uname:data.username, msg:data.msg, prof_image:data.profile_image})
 			hide_pencil()
 		}
 
@@ -784,8 +785,10 @@ function start_socket()
 			setup_image(data)
 			setup_tv(data)
 			setup_radio(data)
-			
+
 			make_main_container_visible()
+			
+			fix_chat_scroll()
 			
 			start_heartbeat()
 
@@ -3365,20 +3368,30 @@ function start_chat_click_events()
 	})	
 }
 
-function update_chat(uname, msg, prof_image, date=false)
+function update_chat(args={})
 {
-	if(msg.startsWith('//'))
+	var def_args = 
 	{
-		msg = msg.slice(1)
+		uname: "",
+		msg: "",
+		prof_image: "",
+		date: false
+	}
+
+	fill_defaults(args, def_args)
+
+	if(args.msg.startsWith('//'))
+	{
+		args.msg = args.msg.slice(1)
 	}
 
 	var contclasses = "chat_content"
 
 	var highlighted = false
 
-	if(uname !== username)
+	if(args.uname !== username)
 	{
-		if(check_highlights(msg))
+		if(check_highlights(args.msg))
 		{
 			contclasses += " dotted"
 			alert_title2()
@@ -3386,9 +3399,9 @@ function update_chat(uname, msg, prof_image, date=false)
 		}
 	}
 
-	if(date)
+	if(args.date)
 	{
-		d = date
+		d = args.date
 	}
 
 	else
@@ -3398,17 +3411,17 @@ function update_chat(uname, msg, prof_image, date=false)
 
 	var nd = nice_date(d)
 
-	if(prof_image === "" || prof_image === undefined)
+	if(args.prof_image === "" || args.prof_image === undefined)
 	{
 		var pi = default_profile_image_url
 	}
 
 	else
 	{
-		var pi = prof_image
+		var pi = args.prof_image
 	}
 
-	if(msg.startsWith('/me ') || msg.startsWith('/em '))
+	if(args.msg.startsWith('/me ') || args.msg.startsWith('/em '))
 	{
 		var s = `
 		<div class='msg chat_message thirdperson'>
@@ -3417,32 +3430,34 @@ function update_chat(uname, msg, prof_image, date=false)
 
 		var fmsg = $(s)
 
-		fmsg.find('.chat_content').eq(0).text(msg.substr(4)).urlize()
+		fmsg.find('.chat_content').eq(0).text(args.msg.substr(4)).urlize()
 	}
 
 	else
 	{
 		var s = `
 		<div class='msg chat_message'>
-			<div class='chat_profile_image_container'>
-				<img class='chat_profile_image' src='${pi}'>
+			<div class='chat_left_side'>
+				<div class='chat_profile_image_container'>
+					<img class='chat_profile_image' src='${pi}'>
+				</div>
 			</div>
-			<span class='chat_right_side'>
+			<div class='chat_right_side'>
 				<span class='chat_uname_container'>
 					<span class='chat_uname'></span>
 				</span>
 				<span class='chat_content_container'>
 					<span class='${contclasses}' title='${nd}' data-date='${d}'></span>
 				</span>
-			</span>
+			</div>
 		</div>`
 
 		var fmsg = $(s)
 
-		fmsg.find('.chat_content').eq(0).text(msg).urlize()
+		fmsg.find('.chat_content').eq(0).text(args.msg).urlize()
 	}
 	
-	fmsg.find('.chat_uname').eq(0).text(uname)
+	fmsg.find('.chat_uname').eq(0).text(args.uname)
 
 	fmsg.find('.chat_profile_image').eq(0).on("error", function() 
 	{
@@ -3455,16 +3470,15 @@ function update_chat(uname, msg, prof_image, date=false)
 	fmsg.data("highlighted", highlighted)
 
 	add_to_chat(fmsg, true)
-	goto_bottom()
 
-	if(uname !== username)
+	if(args.uname !== username)
 	{
 		alert_title()
 		sound_notify()
 	}
 }
 
-function add_to_chat(msg, save=false, update_scrollbar=true)
+function add_to_chat(msg, save=false)
 {
 	var chat_area = $('#chat_area')
 	var last_msg = $(".msg").last()
@@ -3511,9 +3525,10 @@ function add_to_chat(msg, save=false, update_scrollbar=true)
 		}
 	}
 
-	if(update_scrollbar)
+	if(started)
 	{
 		update_chat_scrollbar()
+		goto_bottom()
 	}
 
 	scroll_timer()
@@ -3892,8 +3907,6 @@ function chat_announce(args={})
 	}
 
 	add_to_chat(fmsg, args.save)
-
-	goto_bottom()
 
 	if(args.type !== "normal")
 	{
@@ -4719,7 +4732,7 @@ function send_to_chat(msg, to_history=true)
 		{
 			if(can_chat)
 			{
-				update_chat(username, msg, profile_image)	
+				update_chat({uname:username, msg:msg, prof_image:profile_image})	
 				socket_emit('sendchat', {msg:msg})
 			}
 
@@ -5844,6 +5857,16 @@ function chat_search(filter=false)
 	$('#Msg-content-container-info').scrollTop(0)	
 }
 
+function fix_chat_scroll()
+{
+	update_chat_scrollbar()
+
+	$("#chat_area").find(".ps__rail-x").eq(0).prependTo("#chat_area")
+	$("#chat_area").find(".ps__rail-y").eq(0).prependTo("#chat_area")
+
+	goto_bottom(true)	
+}
+
 function clear_chat()
 {
 	$('#chat_area').html('<div><br><br><br><br></div>')
@@ -5867,12 +5890,7 @@ function unclear_chat()
 		add_to_chat(el.clone(true, true), false, false)
 	}
 
-	update_chat_scrollbar()
-
-	$("#chat_area").find(".ps__rail-x").eq(0).prependTo("#chat_area")
-	$("#chat_area").find(".ps__rail-y").eq(0).prependTo("#chat_area")
-
-	goto_bottom(true)
+	fix_chat_scroll()
 }
 
 function clear_input()
@@ -6001,7 +6019,16 @@ function announce_uploaded_image(data, date=false)
 		show_modal_image(data.image_url, title)
 	}
 
-	chat_announce({brk1:"<i class='icon2 fa fa-camera'></i>", msg:msg, title:title, onclick:onclick, save:true, date:d, type:"image_change"})
+	chat_announce(
+	{
+		brk1: "<i class='icon2 fa fa-camera'></i>", 
+		msg: msg, 
+		title: title, 
+		onclick: onclick, 
+		save: true, 
+		date: d, 
+		type: "image_change"
+	})
 }
 
 function announce_role_change(data)
@@ -6159,7 +6186,16 @@ function announce_radio_source_change(data, date=false, action="change")
 		goto_url(source, "tab")
 	}
 
-	chat_announce({brk1:"<i class='icon2 fa fa-volume-up'></i>", msg:action, title:title, onclick:onclick, save:true, date:d, type:"radio_change"})
+	chat_announce(
+	{
+		brk1:"<i class='icon2 fa fa-volume-up'></i>", 
+		msg:action, 
+		title:title, 
+		onclick:onclick, 
+		save:true, 
+		date:d, 
+		type:"radio_change"
+	})
 }
 
 function change_tv_source(src)
@@ -6254,7 +6290,16 @@ function announce_tv_source_change(data, date=false, action="change")
 		var action = `${data.tv_setter} changed the tv to ${name}`
 	}
 
-	chat_announce({brk1:"<i class='icon2 fa fa-television'></i>", msg:action, title:title, onclick:onclick, save:true, date:d, type:"tv_change"})
+	chat_announce(
+	{
+		brk1: "<i class='icon2 fa fa-television'></i>", 
+		msg: action, 
+		title: title, 
+		onclick: onclick, 
+		save: true, 
+		date: d, 
+		type: "tv_change"
+	})
 }
 
 function ban(uname)
@@ -7844,7 +7889,7 @@ function fill()
 	GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {}abc def ghi
 	jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|;`
 
-	update_chat(username, s, profile_image)
+	update_chat({uname:username, msg:s, prof_image:profile_image})
 }
 
 function confirm_logout()
@@ -7980,7 +8025,14 @@ function show_log_messages()
 			{
 				if(message.type === "chat")
 				{
-					update_chat(data.username, data.content, data.profile_image, message.date)
+					update_chat(
+					{
+						uname: data.username, 
+						msg: data.content, 
+						prof_image: data.profile_image, 
+						date: message.date, 
+						scroll: false
+					})
 				}
 
 				else if(message.type === "image")
@@ -9965,7 +10017,7 @@ function do_radio_history_filter()
 
 function do_test()
 {
-	send_to_chat("Test: 1")
+	send_to_chat("Test: 3")
 }
 
 function maximize_images()
@@ -9982,4 +10034,13 @@ function maximize_tv()
 	toggle_images(false, false)
 
 	save_room_settings()
+}
+
+function font_check()
+{
+	document.fonts.ready.then(function () 
+	{
+		update_chat_scrollbar()
+		goto_bottom(true)
+	})	
 }
