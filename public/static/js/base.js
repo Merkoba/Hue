@@ -154,6 +154,9 @@ var highlight_words_regex
 var writing_whisper = false
 var double_tap_key_pressed = 0
 var double_tap_key_2_pressed = 0
+var images_visible
+var tv_visible
+var radio_visible
 
 function init()
 {
@@ -8303,9 +8306,11 @@ function change_images_visibility()
 		if(num_visible > 1)
 		{
 			enable_normal_mode()	
-		}	
+		}
 
 		change("image")
+
+		images_visible = true
 	}
 
 	else
@@ -8328,6 +8333,8 @@ function change_images_visibility()
 
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-off")
+
+		images_visible = false
 	}
 
 	fix_visible_video_frame()
@@ -8377,6 +8384,8 @@ function change_tv_visibility()
 		}	
 
 		change("tv", false, false)
+
+		tv_visible = true
 	}
 
 	else
@@ -8400,6 +8409,8 @@ function change_tv_visibility()
 
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-off")
+
+		tv_visible = false
 	}
 
 	update_chat_scrollbar()
@@ -8436,6 +8447,8 @@ function change_radio_visibility()
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-on")
 
 		$("#header_topic").css("display", "none")
+
+		radio_visible = true
 	}
 
 	else
@@ -8448,6 +8461,8 @@ function change_radio_visibility()
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-off")
 
 		$("#header_topic").css("display", "initial")
+
+		radio_visible = false
 	}
 
 	update_chat_scrollbar()
@@ -10022,16 +10037,56 @@ function do_test()
 
 function maximize_images()
 {
-	toggle_images(true, false)
-	toggle_tv(false, false)
+	if(images_visible)
+	{
+		if(tv_visible)
+		{
+			toggle_tv(false, false)
+		}
+
+		else
+		{
+			toggle_tv(true, false)
+		}
+	}
+
+	else
+	{
+		toggle_images(true, false)
+
+		if(tv_visible)
+		{
+			toggle_tv(false, false)
+		}
+	}
 
 	save_room_settings()
 }
 
 function maximize_tv()
 {
-	toggle_tv(true, false)
-	toggle_images(false, false)
+	if(tv_visible)
+	{
+		if(images_visible)
+		{
+			toggle_images(false, false)
+		}
+
+		else
+		{
+			toggle_images(true, false)
+		}
+	}
+
+	else
+	{
+		toggle_tv(true, false)
+
+		if(images_visible)
+		{
+			toggle_images(false, false)
+		}
+	}
 
 	save_room_settings()
 }
