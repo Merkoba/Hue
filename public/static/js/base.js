@@ -9967,3 +9967,19 @@ function do_test()
 {
 	send_to_chat("Test: 1")
 }
+
+function maximize_images()
+{
+	toggle_images(true, false)
+	toggle_tv(false, false)
+
+	save_room_settings()
+}
+
+function maximize_tv()
+{
+	toggle_tv(true, false)
+	toggle_images(false, false)
+
+	save_room_settings()
+}
