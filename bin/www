@@ -33,8 +33,10 @@ else
 	var sconfig = require('../config.secret.json')
 }
 
+const path = require('path')
 const mongo = require('mongodb')
 const bcrypt = require('bcrypt')
+const winston = require('winston')
 
 mongo.connect(config.mongodb_path, function(err, db) 
 {
@@ -45,8 +47,43 @@ mongo.connect(config.mongodb_path, function(err, db)
 
 	else
 	{
+		const logger = winston.createLogger(
+		{
+			format: winston.format.simple(),
+			transports: 
+			[
+				new winston.transports.File(
+				{
+					filename: path.join(__dirname, "../logs/error.log"), 
+					level: "error",
+					timestamp: (new Date()).toLocaleTimeString()
+				})
+			]
+		})
+
+		logger.log_error = function(msg)
+		{
+			if(process.env.NODE_ENV === "development")
+			{
+				console.error(msg)
+			}
+
+			if(msg instanceof Error)
+			{
+				msg = JSON.stringify(msg.stack, null, 2).replace(/\\n/g, "\r\n")
+			}
+
+			msg = `${new Date().toLocaleString()}\r\n${msg}`
+
+			logger.log(
+			{
+				level: "error",
+				message: msg
+			})
+		}		
+
 		const utilz = require('../public/static/js/utilz.js')()
-		const db_manager = require('../db_manager.js')(db, config, sconfig, utilz)
+		const db_manager = require('../db_manager.js')(db, config, sconfig, utilz, logger)
 		const app = require('../app')(db, db_manager, config, sconfig, utilz)
 		const debug = require('debug')('hue:server')
 		const http = require('http')
@@ -61,7 +98,7 @@ mongo.connect(config.mongodb_path, function(err, db)
 
 		const io = require('socket.io').listen(server)
 
-		require('../sockets')(io, db_manager, config, sconfig, utilz, app.get("env"))
+		require('../sockets')(io, db_manager, config, sconfig, utilz, logger)
 
 		function onError(error) 
 		{

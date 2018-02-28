@@ -1,4 +1,4 @@
-module.exports = function(db, config, sconfig, utilz)
+module.exports = function(db, config, sconfig, utilz, logger)
 {
 	const mongo = require('mongodb')
 	const bcrypt = require('bcrypt')
@@ -59,6 +59,7 @@ module.exports = function(db, config, sconfig, utilz)
 						.catch(err =>
 						{
 							reject(err)
+							logger.log_error(err)
 							return
 						})
 
@@ -331,6 +332,7 @@ module.exports = function(db, config, sconfig, utilz)
 						.catch(err =>
 						{
 							reject(err)
+							logger.log_error(err)
 							return
 						})
 					})
@@ -338,6 +340,7 @@ module.exports = function(db, config, sconfig, utilz)
 					.catch(err =>
 					{
 						reject(err)
+						logger.log_error(err)
 						return
 					})
 				}
@@ -352,6 +355,7 @@ module.exports = function(db, config, sconfig, utilz)
 			.catch(err =>
 			{
 				reject(err)
+				logger.log_error(err)
 				return
 			})
 		})
@@ -436,6 +440,7 @@ module.exports = function(db, config, sconfig, utilz)
 			.catch(err =>
 			{
 				reject(err)
+				logger.log_error(err)
 				return
 			})
 		})
@@ -475,6 +480,7 @@ module.exports = function(db, config, sconfig, utilz)
 			.catch(err =>
 			{
 				reject(err)
+				logger.log_error(err)
 				return
 			})
 		})
@@ -495,9 +501,10 @@ module.exports = function(db, config, sconfig, utilz)
 			.catch(err =>
 			{
 				reject(err)
+				logger.log_error(err)
 				return
 			})
-		})	
+		})
 	}
 
 	manager.push_room_messages = function(_id, messages)
@@ -520,6 +527,7 @@ module.exports = function(db, config, sconfig, utilz)
 				.catch(err =>
 				{
 					reject(err)
+					logger.log_error(err)
 					return
 				})
 
@@ -530,6 +538,7 @@ module.exports = function(db, config, sconfig, utilz)
 			.catch(err =>
 			{
 				reject(err)
+				logger.log_error(err)
 				return
 			})
 		})
@@ -670,6 +679,7 @@ module.exports = function(db, config, sconfig, utilz)
 						.catch(err => 
 						{
 							reject(err)
+							logger.log_error(err)
 							return
 						})
 					})
@@ -677,6 +687,7 @@ module.exports = function(db, config, sconfig, utilz)
 					.catch(err =>
 					{
 						reject(err)
+						logger.log_error(err)
 						return
 					})
 				}
@@ -691,6 +702,7 @@ module.exports = function(db, config, sconfig, utilz)
 			.catch(err =>
 			{
 				reject(err)
+				logger.log_error(err)
 				return
 			})
 		})	
@@ -759,6 +771,7 @@ module.exports = function(db, config, sconfig, utilz)
 				.catch(err =>
 				{
 					reject(err)
+					logger.log_error(err)
 					return
 				})
 			})
@@ -766,6 +779,7 @@ module.exports = function(db, config, sconfig, utilz)
 			.catch(err =>
 			{
 				reject(err)
+				logger.log_error(err)
 				return
 			})
 		})	
@@ -813,6 +827,7 @@ module.exports = function(db, config, sconfig, utilz)
 					.catch(err =>
 					{
 						reject(err)
+						logger.log_error(err)
 						return
 					})
 					
@@ -822,6 +837,7 @@ module.exports = function(db, config, sconfig, utilz)
 				.catch(err =>
 				{
 					reject(err)
+					logger.log_error(err)
 					return
 				})
 			}
@@ -839,6 +855,7 @@ module.exports = function(db, config, sconfig, utilz)
 				.catch(err =>
 				{
 					reject(err)
+					logger.log_error(err)
 					return
 				})
 
@@ -875,6 +892,7 @@ module.exports = function(db, config, sconfig, utilz)
 					.catch(err =>
 					{
 						reject(err)
+						logger.log_error(err)
 						return
 					})
 				}
@@ -883,6 +901,7 @@ module.exports = function(db, config, sconfig, utilz)
 			.catch(err =>
 			{
 				reject(err)
+				logger.log_error(err)
 				return
 			})
 		})	
@@ -929,6 +948,7 @@ module.exports = function(db, config, sconfig, utilz)
 					.catch(err =>
 					{
 						reject(err)
+						logger.log_error(err)
 						return
 					})
 				}
@@ -937,6 +957,7 @@ module.exports = function(db, config, sconfig, utilz)
 			.catch(err =>
 			{
 				reject(err)
+				logger.log_error(err)
 				return
 			})
 		})	
@@ -986,6 +1007,7 @@ module.exports = function(db, config, sconfig, utilz)
 								.catch(err =>
 								{
 									reject(err)
+									logger.log_error(err)
 									return
 								})								
 
@@ -1012,6 +1034,7 @@ module.exports = function(db, config, sconfig, utilz)
 			.catch(err =>
 			{
 				reject(err)
+				logger.log_error(err)
 				return
 			})
 		})		
@@ -1056,6 +1079,7 @@ module.exports = function(db, config, sconfig, utilz)
 				.catch(err =>
 				{
 					reject(err)
+					logger.log_error(err)
 					return
 				})
 			})
@@ -1063,6 +1087,7 @@ module.exports = function(db, config, sconfig, utilz)
 			.catch(err =>
 			{
 				reject(err)
+				logger.log_error(err)
 				return
 			})
 		})
