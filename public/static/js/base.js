@@ -154,6 +154,7 @@ var highlight_words_regex
 var writing_whisper = false
 var double_tap_key_pressed = 0
 var double_tap_key_2_pressed = 0
+var double_tap_key_3_pressed = 0
 var images_visible
 var tv_visible
 var radio_visible
@@ -2550,6 +2551,21 @@ var double_tap_2_timer = (function()
 	}
 })()
 
+var double_tap_3_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			double_tap_key_3_pressed = 0
+		}, 350)
+	}
+})()
+
 function activate_key_detection()
 {
 	$(document).keydown(function(e)
@@ -2562,6 +2578,11 @@ function activate_key_detection()
 		else if(e.key === double_tap_key_2)
 		{
 			double_tap_2_timer()
+		}
+
+		else if(e.key === double_tap_key_3)
+		{
+			double_tap_3_timer()
 		}
 
 		if(iup)
@@ -2810,6 +2831,22 @@ function activate_key_detection()
 		else
 		{
 			double_tap_key_2_pressed = 0
+		}
+
+		if(e.key === double_tap_key_3)
+		{
+			double_tap_key_3_pressed += 1
+
+			if(double_tap_key_3_pressed === 2)
+			{
+				double_tap_key_3_pressed = 0
+				on_double_tap_3()
+			}
+		}
+
+		else
+		{
+			double_tap_key_3_pressed = 0
 		}
 	})	
 }
@@ -7186,6 +7223,12 @@ function get_settings()
 		changed = true
 	}
 
+	if(settings.double_tap_3 === undefined)
+	{
+		settings.double_tap_3 = settings_default_double_tap_3
+		changed = true
+	}
+
 	if(changed)
 	{
 		save_settings()
@@ -7208,6 +7251,7 @@ function start_settings_state()
 	$("#setting_other_words_to_highlight").val(settings.other_words_to_highlight)
 	$("#setting_double_tap").val(settings.double_tap)
 	$("#setting_double_tap_2").val(settings.double_tap_2)
+	$("#setting_double_tap_3").val(settings.double_tap_3)
 }
 
 function start_settings_listeners()
@@ -7304,6 +7348,19 @@ function start_settings_listeners()
 		if(settings.double_tap_2 !== cmd)
 		{
 			settings.double_tap_2 = cmd
+			save_settings()
+		}
+	})
+
+	$("#setting_double_tap_3").blur(function()
+	{
+		var cmd = utilz.clean_string2($("#setting_double_tap_3").val())
+
+		$("#setting_double_tap_3").val(cmd)
+
+		if(settings.double_tap_3 !== cmd)
+		{
+			settings.double_tap_3 = cmd
 			save_settings()
 		}
 	})
@@ -7757,6 +7814,7 @@ function setup_userinfo()
 
 	$("#setting_double_tap_title").text(`On Double ${double_tap_key} Tap`)
 	$("#setting_double_tap_2_title").text(`On Double ${double_tap_key_2} Tap`)
+	$("#setting_double_tap_3_title").text(`On Double ${double_tap_key_3} Tap`)
 }
 
 function show_userinfo()
@@ -9902,6 +9960,14 @@ function on_double_tap_2()
 	if(settings.double_tap_2)
 	{
 		send_to_chat(settings.double_tap_2)
+	}
+}
+
+function on_double_tap_3()
+{
+	if(settings.double_tap_3)
+	{
+		send_to_chat(settings.double_tap_3)
 	}
 }
 
