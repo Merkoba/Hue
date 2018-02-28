@@ -7974,7 +7974,7 @@ function fill()
 
 function confirm_logout()
 {
-	var r = confirm("Are you sure? Make sure you know your current username and password to avoid getting locked out later.")
+	var r = confirm("Are you sure? Make sure you know your current email and password to avoid getting locked out later.")
 
 	if(r)
 	{
