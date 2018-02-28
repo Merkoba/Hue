@@ -61,6 +61,11 @@ mongo.connect(config.mongodb_path, function(err, db)
 			]
 		})
 
+		if(logger.log_error !== undefined)
+		{
+			console.error("logger.log_error is reserved")
+		}
+
 		logger.log_error = function(msg)
 		{
 			if(process.env.NODE_ENV === "development")
