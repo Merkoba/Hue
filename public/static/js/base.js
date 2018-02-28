@@ -8490,7 +8490,7 @@ function profile_image_selected(input)
 
 		reader.onload = function(e) 
 		{
-			var s = "<img id='profile_image_canvas_image'><div id='profile_image_canvas_button'>Crop and Upload</div>"
+			var s = "<img id='profile_image_canvas_image'><div id='profile_image_canvas_button' class='unselectable'>Crop and Upload</div>"
 
 			msg_info.show(s, function()
 			{
@@ -8504,7 +8504,7 @@ function profile_image_selected(input)
 
 				var croppable = false
 
-				cropper = new Cropper(image, 
+				var cropper = new Cropper(image, 
 				{
 					aspectRatio: 1,
 					viewMode: 2,
@@ -8515,7 +8515,7 @@ function profile_image_selected(input)
 						cropper.setCropBoxData({width:container_data.width, height:container_data.height})
 
 						var cropbox_data = cropper.getCropBoxData()
-						
+
 						var left = (container_data.width - cropbox_data.width) / 2
 						var top = (container_data.height - cropbox_data.height) / 2
 
