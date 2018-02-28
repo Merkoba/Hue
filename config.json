@@ -9,8 +9,6 @@
 	"default_image_url": "/static/_img/default.jpg",
 	"default_tv_source": "https://www.youtube.com/watch?v=kP45oOLCmHw",
 	"default_tv_type": "youtube",
-	"login_logo_url": "/static/_img/animlogo.gif",
-	"register_logo_url": "/static/_img/animlogo.gif",
 	"default_profile_image_url": "/static/_img/profile.jpg",
 	"profile_image_loading_url": "/static/_img/profile_image_loading.jpg",
 	"default_default_background_image_url": "/static/_img/default_default_background_image.gif",

@@ -561,7 +561,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		c.vars = {}
 
-		c.vars.message = decodeURIComponent(req.query.message)
+		c.vars.message2 = decodeURIComponent(req.query.message)
 
 		res.render('message', c)
 	})		

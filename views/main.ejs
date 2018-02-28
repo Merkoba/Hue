@@ -2,8 +2,7 @@
 
 	<head>
 
-		<meta charset="utf-8">
-		<meta name="description" content="Fun and powerful chat platform with dynamic images and internet radio.">
+		<% include meta.ejs %>
 
 		<title><%= vars.default_title %></title>
 
@@ -38,24 +37,7 @@
 
 		<script>
 
-			<% 
-				for(var key in vars)
-				{
-					var v = vars[key]
-
-					%><%-key%> = <%
-
-					if(typeof v === "string")
-					{
-						%>`<%-v%>`; <% 
-					}
-
-					else
-					{
-						%><%-v%>; <%
-					}
-				}
-			%>
+			<% include vars.ejs %>
 
 			$(function()
 			{

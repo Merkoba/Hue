@@ -2,140 +2,15 @@
 
 	<head>
 
-		<meta charset="utf-8">
-		<meta name="description" content="Fun and powerful chat platform with dynamic images and internet radio.">
-
 		<title><%-vars.login_title%></title>
 
-		<script src="/static/js/utilz.js"></script>
-		<script src="/static/js/jquery.min.js"></script>
-		<script src="/static/js/msg.min.js"></script>
+		<% include pages_imports.ejs %>
 
-		<style>
-
-			@font-face
-			{
-				font-family: imported_font;
-				src: url(/static/css/inconsolata.ttf);
-			}
-
-			body, html
-			{
-				font-family: imported_font, consolas, sans-serif;
-				margin: 0;
-				padding: 0;
-				width: 100%;
-				height: 100%;
-				font-size: 18px;
-				background-color: white;
-				color: #222222;				
-			}
-
-			.center
-			{
-				padding-top: 5em;
-				margin-left: auto;
-				margin-right: auto;
-				width: 50em;
-				height: 35em;
-				text-align: center;
-			}
-
-			.spacer1
-			{
-				padding-top: 1.2em;
-				padding-bottom: 1.2em;
-			}
-
-			.spacer2
-			{
-				padding-top: 0.5em;
-				padding-bottom: 0.5em;
-			}
-
-			input[type=text], input[type=password]
-			{
-				padding: 0.2em;
-				border: 1px solid grey;
-				width: 14em;
-				font-size: 1.2em;
-				text-align: center;
-				background-color: white;
-				color: #222222;				
-			}
-
-			input[type=submit]
-			{
-				background-color: white;
-				color: #222222;	
-				padding: 0.2em 0.8em 0.2em 0.8em;
-				color: #222222;
-				border: 1px solid #bbb;
-				border-color: #ddd #aaa #aaa #ddd;
-				font-size: 1em;
-			}
-
-			input[type=submit]:hover
-			{
-				background-color: #f4f4f4;
-			}
-
-			.logo
-			{
-				width: 10em;
-			}
-
-			a:hover, a:visited, a:link
-			{
-				color: #222222;
-				text-decoration: underline;
-				cursor: pointer;
-			}
-
-			form
-			{
-				margin: 0;
-			}
-
-		</style>
-
-		<script>
-
-			<% 
-				for(var key in vars)
-				{
-					var v = vars[key]
-
-					%><%-key%> = <%
-
-					if(!v)
-					{
-						%>undefined; <%
-					}					
-
-					else if(typeof v === "string")
-					{
-						%>`<%-v%>`; <% 
-					}
-
-					else
-					{
-						%><%-v%>; <%
-					}
-				}
-			%>
-
-			var utilz = Utilz()
-
-			var msg = Msg.factory()
-
-			function set_message(s)
-			{
-				msg.show(s)
-			}	
+		<script>			
 
 			function validate_form()
 			{
+
 				$("#login_email").val($("#login_email").val().trim())
 				
 				var email = $("#login_email").val()
@@ -182,21 +57,17 @@
 
 	<body>
 
-		<div class="center">
-
-			<img class="logo" src="<%-vars.login_logo_url%>">
-
-			<div class="spacer2"></div>
+		<div class='main'>
 
 			<form method="post" action="/login" name="login" onsubmit="return validate_form()">
 
 				<input type="text" placeholder="Email" name="email" id="login_email">
 
-				<div class="spacer2"></div>
+				<div class="spacer4"></div>
 
 				<input type="password" placeholder="Password" name="password" id="login_password">
 
-				<div class="spacer2"></div>
+				<div class="spacer4"></div>
 
 				<input type='hidden' name='fromurl' value="<%-vars.fromurl%>">
 
@@ -206,17 +77,15 @@
 
 			<div class="spacer1"></div>
 
-			<a href="/recover" id="password_reset_link"'>Forgot Password</a>&nbsp;|&nbsp;<a href="/register">Register</a>
+			<a href="/recover" id="password_reset_link"'>Forgot Password</a>
+			<div class="spacer2"></div>
+			<a href="/register">Register</a>
 
 			<div class="spacer1"></div>
+
 		</div>
 
 		<script>
-
-			if(message && message !== "undefined")
-			{
-				set_message(message)
-			}
 
 			$("#login_email").focus()
 

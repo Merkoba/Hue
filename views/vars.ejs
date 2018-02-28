@@ -1,0 +1,23 @@
+<% 
+	for(var key in vars)
+	{
+		var v = vars[key]
+
+		if(v === undefined)
+		{
+			continue
+		}
+
+		%><%-key%> = <%					
+
+		if(typeof v === "string")
+		{
+			%>`<%-v%>`; <% 
+		}
+
+		else
+		{
+			%><%-v%>; <%
+		}
+	}
+%>
