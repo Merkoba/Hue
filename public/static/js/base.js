@@ -8504,16 +8504,29 @@ function profile_image_selected(input)
 
 				var croppable = false
 
-				var cropper = new Cropper(image, 
+				cropper = new Cropper(image, 
 				{
 					aspectRatio: 1,
-					viewMode: 1,
+					viewMode: 2,
 					ready: function () 
 					{
-						croppable = true;
+						var container_data = cropper.getContainerData()
+
+						cropper.setCropBoxData({width:container_data.width, height:container_data.height})
+
+						var cropbox_data = cropper.getCropBoxData()
+						
+						var left = (container_data.width - cropbox_data.width) / 2
+						var top = (container_data.height - cropbox_data.height) / 2
+
+						cropper.setCropBoxData({left:left, right:top})
+
+						croppable = true
+
 						update_modal_scrollbar("info")
 					}
 				})
+
 
 				button.onclick = function () 
 				{
