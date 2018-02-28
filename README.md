@@ -71,12 +71,6 @@ If you want to remove it to start fresh:
 "default_tv_type"
 >The type of the default_tv_source, either "url", "youtube", or "twitch".
 
-"login_logo_url"
->The public location of the logo at the top of the login page.
-
-"register_login_url"
->The public location of the logo at the top of the registration page.
-
 "default_profile_image_url"
 >The location of the default profile image.
 

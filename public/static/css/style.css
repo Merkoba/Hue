@@ -818,13 +818,18 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .highlights_uname
 {
-	padding-bottom: 0.2em;
+	padding-bottom: 0.2em;	
 }
 
 .highlights_uname *
 {
-	font-size: 1em;
-	cursor: default;
+	font-size: 1em !important;
+}
+
+.generic_uname
+{
+	font-weight: bold;
+	cursor: pointer;
 }
 
 .highlights_content

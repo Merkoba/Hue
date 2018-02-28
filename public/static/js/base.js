@@ -186,6 +186,7 @@ function init()
 	start_played_click_events()
 	start_userlist_click_events()
 	start_roomlist_click_events()
+	start_generic_uname_click_events()
 	setup_media_video()
 	start_username_context_menu()
 	start_played_context_menu()
@@ -1585,7 +1586,8 @@ function start_userlist_click_events()
 {
 	$("#userlist").on("click", ".ui_item_uname", function()
 	{
-		show_profile($(this).text(), get_user_by_username($(this).text()).profile_image)
+		var uname = $(this).text()
+		show_profile(uname, get_user_by_username(uname).profile_image)
 	})	
 }
 
@@ -1708,7 +1710,7 @@ function start_username_context_menu()
 {
 	$.contextMenu(
 	{
-		selector: ".ui_item_uname, .chat_uname, #show_profile_uname",
+		selector: ".ui_item_uname, .chat_uname, #show_profile_uname, .generic_uname",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
 		items: 
@@ -3812,13 +3814,15 @@ function chat_announce(args={})
 		brk2: "",
 		msg: "",
 		size: "small",
-		dotted: false,
+		highlight: false,
 		title: false,
 		onclick: false,
 		save: false,
 		id: false,
 		date: false,
-		type: "normal"
+		type: "normal",
+		info1: "",
+		info2: ""
 	}
 
 	fill_defaults(args, def_args)
@@ -3839,7 +3843,7 @@ function chat_announce(args={})
 
 	var contclasses = "announcement_content"
 
-	if(args.dotted === true)
+	if(args.highlight === true)
 	{
 		contclasses += " dotted"
 		alert_title2()
@@ -3885,28 +3889,13 @@ function chat_announce(args={})
 	{
 		var hbrk2 = ""
 	}
-	
-	if(typeof args.dotted === "string")
-	{
-		var s = `
 
-		<div${containerid}class='msg announcement announcement_${args.size}'>
-			<span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span>${hbrk2}</span>
-		</div>`
+	var s = `
+	<div${containerid}class='msg announcement announcement_${args.size}'>
+		<span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span>${hbrk2}</span>
+	</div>`
 
-		var fmsg = $(s)
-		fmsg.find('.dotted').eq(0).text(dotted).urlize()
-	}
-
-	else
-	{
-		var s = `
-		<div${containerid}class='msg announcement announcement_${args.size}'>
-			<span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span>${hbrk2}</span>
-		</div>`
-
-		var fmsg = $(s)
-	}
+	var fmsg = $(s)
 
 	var content = fmsg.find('.announcement_content').eq(0)
 
@@ -3916,6 +3905,11 @@ function chat_announce(args={})
 	{
 		content.parent().on("click", args.onclick)
 	}
+
+	fmsg.data("highlighted", args.highlight)
+	fmsg.data("type", args.type)
+	fmsg.data("info1", args.info1)
+	fmsg.data("info2", args.info2)
 
 	add_to_chat(fmsg, args.save)
 
@@ -3927,66 +3921,71 @@ function chat_announce(args={})
 
 function handle_chat_announce_types(msg, type)
 {
-	var s = $("<div class='media_history_item'></div>")
+	var media_history_types = ["image_change", "tv_change", "radio_change"]
 
-	var item = s.html(msg.find(".announcement_content_container").eq(0).clone(true, true))
-
-	if(type === "image_change")
+	if(media_history_types.indexOf(type) !== -1)
 	{
-		$("#image_history_container").prepend(item)
-		var els = $("#image_history_container").children()
-		var t = "image"
-	}
+		var s = $("<div class='media_history_item'></div>")
 
-	else if(type === "tv_change")
-	{
-		$("#tv_history_container").prepend(item)
-		var els = $("#tv_history_container").children()
-		var t = "tv"
-	}
+		var item = s.html(msg.find(".announcement_content_container").eq(0).clone(true, true))
 
-	else if(type === "radio_change")
-	{
-		$("#radio_history_container").prepend(item)
-		var els = $("#radio_history_container").children()
-		var t = "radio"
-	}
-
-	else
-	{
-		return false
-	}
-
-	if(els.length > media_history_max_items)
-	{
-		els.last().remove()
-	}
-
-	if(type === "image")
-	{
-		if(image_history_filtered)
+		if(type === "image_change")
 		{
-			do_image_history_filter()			
+			$("#image_history_container").prepend(item)
+			var els = $("#image_history_container").children()
+			var t = "image"
 		}
-	}
 
-	else if(type === "tv")
-	{
-		if(tv_history_filtered)	
+		else if(type === "tv_change")
 		{
-			do_tv_history_filter()
+			$("#tv_history_container").prepend(item)
+			var els = $("#tv_history_container").children()
+			var t = "tv"
 		}
-	}
 
-	else if(type === "radio")
-	{
-		if(radio_history_filtered)
+		else if(type === "radio_change")
 		{
-			do_radio_history_filter()
+			$("#radio_history_container").prepend(item)
+			var els = $("#radio_history_container").children()
+			var t = "radio"
 		}
-	}	
 
-	update_modal_scrollbar(`${t}_change`)	
+		else
+		{
+			return false
+		}
+	
+		if(els.length > media_history_max_items)
+		{
+			els.last().remove()
+		}
+
+		if(type === "image")
+		{
+			if(image_history_filtered)
+			{
+				do_image_history_filter()			
+			}
+		}
+
+		else if(type === "tv")
+		{
+			if(tv_history_filtered)	
+			{
+				do_tv_history_filter()
+			}
+		}
+
+		else if(type === "radio")
+		{
+			if(radio_history_filtered)
+			{
+				do_radio_history_filter()
+			}
+		}	
+
+		update_modal_scrollbar(`${t}_change`)	
+	}
 }
 
 jQuery.fn.urlize = function(force=false) 
@@ -4130,7 +4129,9 @@ function register_commands()
 	commands.push('/toggleimages')
 	commands.push('/toggletv')
 	commands.push('/toggleradio')
-	commands.push('/test')	
+	commands.push('/test')
+	commands.push('/maximizeimages')
+	commands.push('/maximizetv')
 
 	commands.sort()
 
@@ -4733,6 +4734,16 @@ function send_to_chat(msg, to_history=true)
 				do_test()
 			}
 
+			else if(oiEquals(lmsg, '/maximizeimages'))
+			{
+				maximize_images()
+			}
+
+			else if(oiEquals(lmsg, '/maximizetv'))
+			{
+				maximize_tv()
+			}
+
 			else
 			{
 				chat_announce({brk1:'[', brk2:']', msg:"Invalid command. Use // to start a message with /"})
@@ -4966,7 +4977,7 @@ function announce_topic_change(data)
 			}
 		}
 
-		chat_announce({brk1:'~', brk2:'~', msg:`${data.topic_setter} changed the topic to: ${data.topic}`, dotted:highlight})
+		chat_announce({brk1:'~', brk2:'~', msg:`${data.topic_setter} changed the topic to: ${data.topic}`, highlight:highlight})
 
 		set_topic_info(data)
 
@@ -5805,7 +5816,7 @@ function chat_search(filter=false)
 				{
 					var cn = $("<div class='search_result_item'><div class='search_result_uname'></div><div class='search_result_content'></div>")
 
-					cn.find(".search_result_uname").eq(0).html(huname.clone())
+					cn.find(".search_result_uname").eq(0).html(`<span class='generic_uname'>${huname.text()}</div>`)
 
 					for(var i=0; i < hcontent.length; i++)
 					{
@@ -6199,13 +6210,13 @@ function announce_radio_source_change(data, date=false, action="change")
 
 	chat_announce(
 	{
-		brk1:"<i class='icon2 fa fa-volume-up'></i>", 
-		msg:action, 
-		title:title, 
-		onclick:onclick, 
-		save:true, 
-		date:d, 
-		type:"radio_change"
+		brk1: "<i class='icon2 fa fa-volume-up'></i>", 
+		msg: action, 
+		title: title, 
+		onclick: onclick, 
+		save: true, 
+		date: d, 
+		type: "radio_change"
 	})
 }
 
@@ -9712,7 +9723,18 @@ function whisper_received(data)
 		write_whisper(data.username)
 	}
 
-	chat_announce({brk1:'<', brk2:'>', msg:`Whisper from ${data.username}: ${data.message}`, dotted:true, onclick:f})
+	chat_announce(
+	{
+		brk1: '<', 
+		brk2: '>', 
+		msg: `Whisper from ${data.username}: ${data.message}`, 
+		highlight: true, 
+		onclick: f, 
+		save: true,
+		type: "whisper",
+		info1: data.username,
+		info2: data.message
+	})
 }
 
 function user_not_in_room()
@@ -9748,27 +9770,42 @@ function show_highlights(filter=false)
 		{
 			if(msg.data("highlighted"))
 			{
-				var huname = msg.find('.chat_uname').eq(0)
-				var hcontent = msg.find('.chat_content')
-
-				var cn = $("<div class='highlights_item'><div class='highlights_uname'></div><div class='highlights_content'></div>")
-
-				cn.find(".highlights_uname").eq(0).html(huname.clone())
-
-				for(var i=0; i < hcontent.length; i++)
+				if(msg.hasClass("chat_message"))
 				{
-					var hc = hcontent.get(i)
+					var huname = msg.find('.chat_uname').eq(0)
+					var hcontent = msg.find('.chat_content')
 
-					if(i < hcontent.length - 1)
-					{
-						cn.find(".highlights_content").eq(0).append($(hc).clone()).append("<br>")
-					}
+					var cn = $("<div class='highlights_item'><div class='highlights_uname'></div><div class='highlights_content'></div>")
 
-					else
+					cn.find(".highlights_uname").eq(0).html(`<span class='generic_uname'>${huname.text()}</span>`)
+
+					for(var i=0; i < hcontent.length; i++)
 					{
-						cn.find(".highlights_content").eq(0).append($(hc).clone())
+						var hc = hcontent.get(i)
+
+						if(i < hcontent.length - 1)
+						{
+							cn.find(".highlights_content").eq(0).append($(hc).clone()).append("<br>")
+						}
+
+						else
+						{
+							cn.find(".highlights_content").eq(0).append($(hc).clone())
+						}
+						
 					}
-					
+				}
+
+				else if(msg.hasClass("announcement"))
+				{
+					if(msg.data("type") === "whisper")
+					{
+						var cn = $("<div class='highlights_item'><div class='highlights_uname'></div><div class='highlights_content'></div>")
+						cn.find(".highlights_uname").eq(0).html(`Whisper from&nbsp;<span class='generic_uname'>${msg.data("info1")}</span>`)
+						var content = cn.find(".highlights_content").eq(0)
+						content.text(msg.data("info2")).urlize()
+						content.attr("title", msg.find(".announcement_content_container").eq(0).attr("title"))
+					}
 				}
 
 				$("#highlights_container").append(cn)
@@ -10119,4 +10156,13 @@ function font_check()
 		update_chat_scrollbar()
 		goto_bottom(true)
 	})	
+}
+
+function start_generic_uname_click_events()
+{
+	$("body").on("click", ".generic_uname", function() 
+	{
+		var uname = $(this).text()
+		show_profile(uname, get_user_by_username(uname).profile_image)
+	})
 }
