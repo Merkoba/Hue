@@ -3566,7 +3566,6 @@ function add_to_chat(msg, save=false)
 		}
 	} 
 
-
 	if((msg.hasClass("chat_message") && !msg.hasClass("thirdperson")) && (last_msg.hasClass("chat_message") && !last_msg.hasClass("thirdperson")))
 	{
 		if(msg.find(".chat_uname").eq(0).text() === last_msg.find(".chat_uname").eq(0).text())
