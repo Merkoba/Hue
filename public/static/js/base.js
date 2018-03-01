@@ -3539,6 +3539,7 @@ function update_chat(args={})
 	})
 
 	fmsg.data("highlighted", highlighted)
+	fmsg.data("mode", "chat")
 
 	add_to_chat(fmsg, true)
 
@@ -3554,6 +3555,26 @@ function add_to_chat(msg, save=false)
 	var chat_area = $('#chat_area')
 	var last_msg = $(".msg").last()
 	var appended = false
+	var mode = msg.data("mode")
+
+	if(mode === "chat")
+	{
+		var content = msg.find(".chat_content").eq(0)
+
+		if(started)
+		{
+			content.addClass("fader")
+		}
+	}
+
+	else
+	{
+		if(started)
+		{
+			msg.addClass("fader")
+		}
+	} 
+
 
 	if((msg.hasClass("chat_message") && !msg.hasClass("thirdperson")) && (last_msg.hasClass("chat_message") && !last_msg.hasClass("thirdperson")))
 	{
@@ -3565,13 +3586,6 @@ function add_to_chat(msg, save=false)
 
 				if(date_diff < max_same_post_diff)
 				{
-					var content = msg.find(".chat_content").eq(0)
-
-					if(started)
-					{
-						content.addClass("fader")						
-					}
-
 					last_msg.find(".chat_content_container").eq(0).append("<br>").append(content)
 
 					replace_in_chat_history(last_msg)
@@ -3589,11 +3603,6 @@ function add_to_chat(msg, save=false)
 
 	if(!appended)
 	{
-		if(started)
-		{
-			msg.addClass("fader")
-		}
-
 		chat_area.append(msg)
 		
 		if($(".msg").length > chat_crop_limit)
@@ -3994,6 +4003,7 @@ function chat_announce(args={})
 	fmsg.data("type", args.type)
 	fmsg.data("info1", args.info1)
 	fmsg.data("info2", args.info2)
+	fmsg.data("mode", "announcement")	
 
 	add_to_chat(fmsg, args.save)
 
