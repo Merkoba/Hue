@@ -1220,3 +1220,21 @@ input[type=text], textarea
 {
 	display: none;
 }
+
+@keyframes fadein 
+{
+	from 
+	{
+		opacity: 0;
+	}
+
+	to 
+	{
+		opacity: 1;
+	}
+}
+
+.fader
+{
+	animation: fadein 0.5s linear;
+}

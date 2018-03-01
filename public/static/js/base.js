@@ -3564,7 +3564,15 @@ function add_to_chat(msg, save=false)
 
 				if(date_diff < max_same_post_diff)
 				{
-					last_msg.find(".chat_content_container").eq(0).append("<br>").append(msg.find(".chat_content").eq(0))
+					var content = msg.find(".chat_content").eq(0)
+
+					if(started)
+					{
+						content.addClass("fader")						
+					}
+
+					last_msg.find(".chat_content_container").eq(0).append("<br>").append(content)
+
 					replace_in_chat_history(last_msg)
 
 					if(!last_msg.data("highlighted"))
@@ -3580,6 +3588,11 @@ function add_to_chat(msg, save=false)
 
 	if(!appended)
 	{
+		if(started)
+		{
+			msg.addClass("fader")
+		}
+
 		chat_area.append(msg)
 		
 		if($(".msg").length > chat_crop_limit)
