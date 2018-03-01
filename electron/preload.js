@@ -1,9 +1,15 @@
+const remote = require('electron').remote
 const electron_notifier = require('node-notifier')
 
 window.electron_api = {}
 
 window.electron_api.highlighted = function(data)
 {
+	if(remote.getCurrentWindow().isFocused())
+	{
+		return false
+	}
+
 	electron_notify("Hue", "You were highlighted")
 }
 

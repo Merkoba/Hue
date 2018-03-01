@@ -50,7 +50,7 @@
 			webview.focus()
 
 			//Open the DevTools.
-			// webview.addEventListener("dom-ready", function(){webview.openDevTools()})
+			webview.addEventListener("dom-ready", function(){webview.openDevTools()})
 
 			webview.addEventListener('new-window', (e) => 
 			{

@@ -10247,6 +10247,6 @@ function electron_signal(func, data={})
 
 	if(window["electron_api"][func] !== undefined)
 	{
-		electron_api[func](data)
+		window["electron_api"][func](data)
 	}
 }
