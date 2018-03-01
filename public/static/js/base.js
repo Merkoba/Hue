@@ -3574,6 +3574,11 @@ function add_to_chat(msg, save=false)
 	}
 
 	scroll_timer()
+
+	if(started && msg.data("highlighted"))
+	{
+		electron_signal("highlighted")
+	}
 }
 
 function push_to_chat_history(msg)
@@ -10231,4 +10236,17 @@ function start_generic_uname_click_events()
 		var uname = $(this).text()
 		show_profile(uname, get_user_by_username(uname).profile_image)
 	})
+}
+
+function electron_signal(func, data={})
+{
+	if(window["electron_api"] === undefined)
+	{
+		return false
+	}
+
+	if(window["electron_api"][func] !== undefined)
+	{
+		electron_api[func](data)
+	}
 }

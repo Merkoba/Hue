@@ -45,15 +45,25 @@
 			const BrowserWindow = remote.BrowserWindow
 			const webview = document.querySelector('#webview')
 
-			webview.src = getget("url")
-
+			webview.setAttribute("preload", "./preload")
+			webview.src = getget("url")		
 			webview.focus()
+
+			//Open the DevTools.
+			webview.addEventListener("dom-ready", function(){webview.openDevTools()})
 
 			webview.addEventListener('new-window', (e) => 
 			{
-				if(e.url.startsWith("https://hue.merkoba.com"))
+				if(e.url.startsWith("http://localhost:3210/"))
 				{
-					const win = new BrowserWindow({width: 800, height: 600, frame:false, icon:path.join(__dirname, 'logo.png'), show:false})
+					const win = new BrowserWindow(
+					{
+						width: 800, 
+						height: 600, 
+						frame:false, 
+						icon: path.join(__dirname, 'logo.png'), 
+						show: false
+					})
 
 					win.once('ready-to-show', () => win.show())
 
@@ -64,7 +74,7 @@
 					win.on('closed', () => 
 					{
 						win = null
-					})	
+					})					
 
 					event.newGuest = win
 				}
