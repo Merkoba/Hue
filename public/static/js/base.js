@@ -65,7 +65,6 @@ var connections = 0
 var afk_timer
 var afk = false
 var alert_mode = 0
-var sound_notify_timer
 var commands = []
 var commands_sorted = {}
 var chat_scrollbar
@@ -1252,6 +1251,35 @@ function stop_videos()
 	$("#media_video")[0].pause()
 
 	hls.stopLoad()
+}
+
+function play_video()
+{
+	if(!tv_visible)
+	{
+		return false
+	}
+
+	if(tv_type === "youtube")
+	{
+		if(youtube_video_player !== undefined)
+		{
+			youtube_video_player.playVideo()
+		}
+	}
+
+	else if(tv_type === "twitch")
+	{
+		if(twitch_video_player !== undefined)
+		{
+			twitch_video_player.play()
+		}
+	}
+
+	else if(tv_type === "url")
+	{
+		$("#media_video")[0].play()
+	}
 }
 
 function show_youtube_video(play=true)
@@ -4174,6 +4202,8 @@ function register_commands()
 	commands.push('/test')
 	commands.push('/maximizeimages')
 	commands.push('/maximizetv')
+	commands.push('/starttv')
+	commands.push('/stoptv')
 
 	commands.sort()
 
@@ -4784,6 +4814,16 @@ function send_to_chat(msg, to_history=true)
 			else if(oiEquals(lmsg, '/maximizetv'))
 			{
 				maximize_tv()
+			}
+
+			else if(oiEquals(lmsg, '/starttv'))
+			{
+				play_video()
+			}
+
+			else if(oiEquals(lmsg, '/stoptv'))
+			{
+				stop_videos()
 			}
 
 			else
