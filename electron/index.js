@@ -1,4 +1,4 @@
-const main_url = "http://localhost:3210/"
+const main_url = "https://hue.merkoba.com/"
 
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
