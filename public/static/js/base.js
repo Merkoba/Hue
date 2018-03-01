@@ -1292,6 +1292,7 @@ function show_youtube_video(play=true)
 
 	if(id[0] === "video")
 	{
+		console.log(utilz.get_youtube_time(tv_source))
 		youtube_video_player.cueVideoById({videoId:id[1], startSeconds:utilz.get_youtube_time(tv_source)})
 	}
 
