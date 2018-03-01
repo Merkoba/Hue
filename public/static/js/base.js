@@ -1,6 +1,6 @@
 var socket
 var ls_settings = "settings_v15"
-var ls_input_history = "input_history_v11"
+var ls_input_history = "input_history_v16"
 var ls_room_settings = "room_settings_v1"
 var ls_first_time = "first_time_v2"
 var vtypes = ["voice1", "voice2", "voice3", "voice4"]
@@ -89,6 +89,8 @@ var template_highlights
 var template_image_history
 var template_tv_history
 var template_radio_history
+var template_input_history
+var template_chat_search
 var msg_menu
 var msg_userinfo
 var msg_userlist
@@ -106,6 +108,8 @@ var msg_media_menu
 var msg_image_history
 var msg_tv_history
 var msg_radio_history
+var msg_input_history
+var msg_chat_search
 var played_filtered = false
 var userlist_filtered = false
 var image_history_filtered = false
@@ -199,6 +203,7 @@ function init()
 	check_image_queue()
 	setup_input()
 	font_check()
+	setup_input_history()
 
 	start_socket()
 }
@@ -276,6 +281,8 @@ function compile_templates()
 	template_image_history = Handlebars.compile($('#template_image_history').html())
 	template_tv_history = Handlebars.compile($('#template_tv_history').html())
 	template_radio_history = Handlebars.compile($('#template_radio_history').html())
+	template_input_history = Handlebars.compile($('#template_input_history').html())
+	template_chat_search = Handlebars.compile($('#template_chat_search').html())
 }
 
 function help()
@@ -2372,12 +2379,23 @@ function show_userlist(filter=false)
 			$("#userlist_filter").val(filter)
 			do_userlist_filter()
 		}
+
+		$("#userlist_filter").focus()
 	})
+}
+
+function reset_userlist_filter()
+{
+	$("#userlist_filter").val("")
+	do_userlist_filter()
 }
 
 function show_roomlist()
 {
-	msg_roomlist.show()
+	msg_roomlist.show(function()
+	{
+		$("#roomlist_filter").focus()
+	})
 }
 
 function show_played(filter=false)
@@ -2389,6 +2407,8 @@ function show_played(filter=false)
 			$("#played_filter").val(filter)
 			do_played_filter()
 		}
+		
+		$("#played_filter").focus()
 	})
 }
 
@@ -2931,7 +2951,7 @@ function input_to_end()
 	$('#input')[0].scrollLeft = $('#input')[0].scrollWidth
 }
 
-function add_to_history(msg, change_index=true)
+function add_to_input_history(msg, change_index=true)
 {
 	for(var i=0; i<input_history.length; i++)
 	{
@@ -2942,23 +2962,41 @@ function add_to_history(msg, change_index=true)
 		}
 	}
 
-	if(input_history.length >= input_history_crop_limit)
-	{
-		input_history.splice(0, input_history.length - input_history_crop_limit + 1)
-	}
+	var item = [msg, nice_date()]
 
-	push_to_input_history([msg, nice_date()])
+	input_history.push(item)
+
+	push_to_input_history_window(item)
+
+	if(input_history.length > input_history_crop_limit)
+	{
+		input_history = input_history.slice(input_history.length - input_history_crop_limit)
+		$(".input_history_item").last().remove()
+	}
 
 	if(change_index)
 	{
 		reset_input_history_index()
 	}
+
+	save_input_history()
 }
 
-function push_to_input_history(item)
+function save_input_history()
 {
-	input_history.push(item)
 	save_local_storage(ls_input_history, input_history)
+}
+
+function push_to_input_history_window(item, update_scrollbar=true)
+{
+	var c = `<div class='input_history_item' title='${item[1]}'>${item[0]}</div>`
+
+	$("#input_history_container").prepend(c)
+	
+	if(update_scrollbar)
+	{
+		update_modal_scrollbar("input_history")	
+	}
 }
 
 function get_input_history()
@@ -2971,6 +3009,13 @@ function get_input_history()
 	}
 
 	reset_input_history_index()
+
+	for(var item of input_history)
+	{
+		push_to_input_history_window(item, false)
+	}
+
+	update_modal_scrollbar("input_history")
 }
 
 function reset_input_history_index()
@@ -2993,7 +3038,7 @@ function input_history_change(direction)
 
 		if(input_val !== "")
 		{
-			add_to_history(input_val, false)
+			add_to_input_history(input_val, false)
 
 			if(direction === "up")
 			{
@@ -3006,7 +3051,6 @@ function input_history_change(direction)
 			}
 		}
 	}
-
 
 	if(direction === "up")
 	{
@@ -3056,68 +3100,16 @@ function input_history_change(direction)
 	change_input(v)
 }
 
-function show_history(filter=false)
+function setup_input_history()
 {
-	if(input_history.length > 0)
+	$("#input_history_container").on("click", ".input_history_item", function()
 	{
-		if(filter)
+		if($(this).find('a').length === 0)
 		{
-			sfilter = `value='${filter}'`
+			change_input($(this).text())
+			close_all_modals()
 		}
-
-		else
-		{
-			sfilter = ''
-		}
-
-		var c = $("<div></div>")
-
-		var s = $(`<input type='text' id='history_filter' class='filter_input' placeholder='Filter' ${sfilter}><div class='spacer3'></div>`)
-
-		var s2 = $("<div id='history_items'></div>")
-
-		for(var item of input_history.slice().reverse())
-		{
-			var h = $(`<div title='${item[1]}' class='history_item'></div>`)
-
-			h.text(item[0]).urlize()
-
-			s2.append(h)
-		}
-
-		s = s.add(s2)
-
-		c.append(s)
-
-		c = c[0]
-
-		msg_info.show(c, function()
-		{
-			$("#history_filter").on("input", function()
-			{
-				history_filter_timer()
-			})
-
-			if(filter)
-			{
-				do_history_filter()
-			}
-
-			$("#history_items").on("click", ".history_item", function()
-			{
-				if($(this).find('a').length === 0)
-				{
-					change_input($(this).text())
-					close_all_modals()
-				}
-			})
-		})
-	}
-
-	else
-	{
-		msg_info.show("Messages or commands you type will appear here")
-	}
+	})	
 }
 
 function input_click_events()
@@ -3637,7 +3629,7 @@ function push_to_chat_history(msg)
 
 	if(chat_history.length > chat_history_crop_limit)
 	{
-		chat_history.shift()
+		chat_history = chat_history.slice(chat_history.length - chat_history_crop_limit)
 	}
 }
 
@@ -4374,12 +4366,12 @@ function send_to_chat(msg, to_history=true)
 
 			else if(oiEquals(lmsg, '/search'))
 			{
-				chat_search()
+				show_chat_search()
 			}			
 
 			else if(oiStartsWith(lmsg, '/search'))
 			{
-				chat_search(arg)
+				show_chat_search(arg)
 			}
 
 			else if(oiEquals(lmsg, '/role'))
@@ -4591,12 +4583,12 @@ function send_to_chat(msg, to_history=true)
 
 			else if(oiEquals(lmsg, '/history'))
 			{
-				show_history()
+				show_input_history()
 			}
 
 			else if(oiStartsWith(lmsg, '/history'))
 			{
-				show_history(arg)
+				show_input_history(arg)
 			}
 
 			else if(oiStartsWith(lmsg, '/changeusername'))
@@ -4871,7 +4863,7 @@ function send_to_chat(msg, to_history=true)
 
 		if(to_history)
 		{
-			add_to_history(msg)
+			add_to_input_history(msg)
 		}
 	}
 
@@ -5135,6 +5127,7 @@ function announce_new_username(data)
 function goto_bottom(force=false)
 {
 	var $ch = $("#chat_area")
+
 	var max = $ch.prop('scrollHeight') - $ch.innerHeight()
 
 	if(force)
@@ -5811,7 +5804,7 @@ function get_nice_volume(volume)
 	return parseInt(Math.round((volume * 100)))	
 }
 
-var search_timer = (function() 
+var chat_search_timer = (function() 
 {
 	var timer 
 
@@ -5821,48 +5814,32 @@ var search_timer = (function()
 
 		timer = setTimeout(function() 
 		{
-			chat_search($("#search_filter").val())
+			chat_search($("#chat_search_filter").val())
 		}, 350)
 	}
 })()
 
-function create_search_container()
+function show_chat_search(filter=false)
 {
-	var c = $("<div></div>")
-
-	var s = $(`<input type='text' id='search_filter' class='filter_input' placeholder='Search'><div class='spacer3'></div>`)
-	
-	var s2 = $("<div id='search_container'></div>")
-
-	s = s.add(s2)
-
-	c.append(s)
-
-	c = c[0]
-
-	msg_info.show(c, function()
+	msg_chat_search.show(function()
 	{
-		$("#search_filter").on("input", function()
+		if(filter)
 		{
-			search_timer()
-		})
-	})	
+			chat_search(filter)
+		}
+		
+		$("#chat_search_filter").focus()
+	})
+}
+
+function reset_chat_search_filter()
+{
+	$("#chat_search_filter").val("")
+	chat_search()
 }
 
 function chat_search(filter=false)
 {
-	if($("#search_container").length === 0)
-	{
-		create_search_container()
-	}
-
-	if(filter !== "" && !msg_info.is_open())
-	{
-		msg_info.show()
-	}
-
-	$("#search_filter").focus()
-
 	if(filter)
 	{
 		sfilter = filter
@@ -5873,11 +5850,11 @@ function chat_search(filter=false)
 		sfilter = ''
 	}
 
-	$("#search_filter").val(sfilter)
+	$("#chat_search_filter").val(sfilter)
 
 	if(!filter)
 	{
-		$("#search_container").html("Search for chat messages")
+		$("#chat_search_container").html("Search for chat messages")
 		update_modal_scrollbar("info")		
 		return
 	}
@@ -5919,9 +5896,9 @@ function chat_search(filter=false)
 
 				if(show)
 				{
-					var cn = $("<div class='search_result_item'><div class='search_result_uname'></div><div class='search_result_content'></div>")
+					var cn = $("<div class='chat_search_result_item'><div class='chat_search_result_uname'></div><div class='chat_search_result_content'></div>")
 
-					cn.find(".search_result_uname").eq(0).html(`<span class='generic_uname'>${huname.text()}</div>`)
+					cn.find(".chat_search_result_uname").eq(0).html(`<span class='generic_uname'>${huname.text()}</div>`)
 
 					for(var i=0; i < hcontent.length; i++)
 					{
@@ -5929,12 +5906,12 @@ function chat_search(filter=false)
 
 						if(i < hcontent.length - 1)
 						{
-							cn.find(".search_result_content").eq(0).append($(hc).clone()).append("<br>")
+							cn.find(".chat_search_result_content").eq(0).append($(hc).clone()).append("<br>")
 						}
 
 						else
 						{
-							cn.find(".search_result_content").eq(0).append($(hc).clone())
+							cn.find(".chat_search_result_content").eq(0).append($(hc).clone())
 						}
 					}
 
@@ -5958,16 +5935,16 @@ function chat_search(filter=false)
 					continue
 				}
 
-				var cn = $("<div class='search_result_item'><div class='search_result_content'></div>")
+				var cn = $("<div class='chat_search_result_item'><div class='chat_search_result_content'></div>")
 
-				cn.find(".search_result_content").eq(0).html(hcontent.parent().clone(true, true))
+				cn.find(".chat_search_result_content").eq(0).html(hcontent.parent().clone(true, true))
 
 				c.append(cn)				
 			}
 		}
 	}
 
-	if(c.find(".search_result_item").length === 0)
+	if(c.find(".chat_search_result_item").length === 0)
 	{
 		c = "No results"
 	}
@@ -5977,11 +5954,11 @@ function chat_search(filter=false)
 		c = c[0]
 	}
 	
-	$("#search_container").html(c)
+	$("#chat_search_container").html(c)
 
-	update_modal_scrollbar("info")
+	update_modal_scrollbar("search")
 
-	$('#Msg-content-container-info').scrollTop(0)	
+	$('#Msg-content-container-search').scrollTop(0)	
 }
 
 function fix_chat_scroll()
@@ -6012,7 +5989,7 @@ function unclear_chat()
 		return false
 	}
 	
-	for(var el of chat_history.slice(0 - chat_history_crop_limit))
+	for(var el of chat_history)
 	{
 		add_to_chat(el.clone(true, true), false, false)
 	}
@@ -7161,6 +7138,58 @@ function start_msg()
 		})
 	)
 
+	msg_input_history = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "input_history",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				reset_input_history_filter()
+			}
+		})
+	)
+
+	msg_chat_search = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "chat_search",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				reset_chat_search_filter()
+			}
+		})
+	)
+
 	msg_menu.set(template_menu())
 	msg_userinfo.set(template_userinfo())
 	msg_userlist.set(template_userlist())
@@ -7176,6 +7205,8 @@ function start_msg()
 	msg_image_history.set(template_image_history())
 	msg_tv_history.set(template_tv_history())
 	msg_radio_history.set(template_radio_history())
+	msg_input_history.set(template_input_history())
+	msg_chat_search.set(template_chat_search())
 
 	msg_image.create()
 	msg_info.create()
@@ -7535,21 +7566,6 @@ var roomlist_filter_timer = (function()
 	}
 })()
 
-var history_filter_timer = (function() 
-{
-	var timer 
-
-	return function() 
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function() 
-		{
-			do_history_filter()
-		}, 350)
-	}
-})()
-
 function start_filters()
 {
 	$("#played_filter").on("input", function()
@@ -7585,6 +7601,16 @@ function start_filters()
 	$("#radio_history_filter").on("input", function()
 	{
 		radio_history_filter_timer()
+	})	
+
+	$("#input_history_filter").on("input", function()
+	{
+		input_history_filter_timer()
+	})
+
+	$("#chat_search_filter").on("input", function()
+	{
+		chat_search_timer()
 	})
 }
 
@@ -7735,19 +7761,27 @@ function do_roomlist_filter()
 	$('#Msg-content-container-roomlist').scrollTop(0)	
 }
 
-function reset_userlist_filter()
+function show_input_history(filter=false)
 {
-	$("#userlist_filter").val("")
-	do_userlist_filter()
+	msg_input_history.show(function()
+	{
+		if(filter)
+		{
+			$("#input_history_filter").val(filter)
+			do_input_history_filter()
+		}
+		
+		$("#input_history_filter").focus()
+	})
 }
 
-function do_history_filter()
+function do_input_history_filter()
 {
-	var filter = $("#history_filter").val().trim().toLowerCase()
+	var filter = $("#input_history_filter").val().trim().toLowerCase()
 
 	if(filter !== "")
 	{
-		$(".history_item").each(function()
+		$(".input_history_item").each(function()
 		{
 			$(this).css("display", "block")
 
@@ -7769,15 +7803,88 @@ function do_history_filter()
 
 	else
 	{
-		$(".history_item").each(function()
+		$(".input_history_item").each(function()
 		{
 			$(this).css("display", "block")
 		})
 	}
 
-	update_modal_scrollbar("info")
+	update_modal_scrollbar("input_history")
 
-	$('#Msg-content-container-info').scrollTop(0)
+	$('#Msg-content-container-input_history').scrollTop(0)
+}
+
+function reset_input_history_filter()
+{
+	$("#input_history_filter").val("")
+	do_input_history_filter()
+}
+
+var input_history_filter_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			do_input_history_filter()
+		}, 350)
+	}
+})()
+
+function do_highlights_filter()
+{
+	var filter = $("#input_history_filter").val().trim().toLowerCase()
+
+	if(filter !== "")
+	{
+		$(".input_history_item").each(function()
+		{
+			$(this).css("display", "block")
+
+			var uname = $(this).find(".input_history_uname").eq(0).text()
+			var hcontent = $(this).find(".input_history_content").eq(0)
+
+			var content = ""
+
+			hcontent.each(function()
+			{
+				content += `${$(this).text()} `	
+			})			
+
+			var include = false
+
+			if(uname.toLowerCase().indexOf(filter) !== -1)
+			{
+				include = true
+			}
+
+			else if(content.toLowerCase().indexOf(filter) !== -1)
+			{
+				include = true
+			}
+
+			if(!include)
+			{
+				$(this).css("display", "none")
+			}
+		})
+	}
+
+	else
+	{
+		$(".input_history_item").each(function()
+		{
+			$(this).css("display", "block")
+		})
+	}
+
+	update_modal_scrollbar("input_history")
+
+	$('#Msg-content-container-input_history').scrollTop(0)
 }
 
 function onYouTubeIframeAPIReady() 
@@ -9890,6 +9997,8 @@ function show_highlights(filter=false)
 {
 	msg_highlights.show(function()
 	{
+		$("#highlights_filter").focus()
+
 		$("#highlights_container").html("")
 
 		for(var msg of chat_history.slice(0).reverse())
@@ -10048,6 +10157,8 @@ function show_image_history(filter=false)
 			$("#image_history_filter").val(filter)
 			do_image_history_filter()
 		}
+		
+		$("#image_history_filter").focus()
 	})
 }
 
@@ -10060,6 +10171,8 @@ function show_tv_history(filter=false)
 			$("#tv_history_filter").val(filter)
 			do_tv_history_filter()
 		}
+		
+		$("#tv_history_filter").focus()
 	})
 }
 
@@ -10072,10 +10185,12 @@ function show_radio_history(filter=false)
 			$("#radio_history_filter").val(filter)
 			do_radio_history_filter()
 		}
+		
+		$("#radio_history_filter").focus()
 	})
 }
 
-function do_media_history_filter(type, container, filter)
+function do_media_history_filter(type, container, filter="")
 {
 	var filter = filter.trim().toLowerCase()
 

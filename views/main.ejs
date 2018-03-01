@@ -31,9 +31,9 @@
 		<script src="/static/js/utilz.js?ver=2"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=953"></script>
+		<script src="/static/js/base.js?ver=954"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=268"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=269"/>
 
 		<script>
 
@@ -221,7 +221,7 @@
 
 					<div class='spacer2'></div>
 
-					<span class='menu_item_smaller' onclick='chat_search()'>Search</span>
+					<span class='menu_item_smaller' onclick='show_chat_search()'>Search</span>
 
 					&nbsp;|&nbsp;
 
@@ -519,7 +519,7 @@
 
 			</div>
 			
-			<span class='menu_item_smaller' onclick='show_history()'>History</span>
+			<span class='menu_item_smaller' onclick='show_input_history()'>History</span>
 
 			&nbsp;|&nbsp;
 
@@ -595,6 +595,18 @@
 			<input type="text" id="highlights_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='highlights_container'></div>
+		</script>
+
+		<script id='template_input_history' type='text/x-handlebars-template'>
+			<input type="text" id="input_history_filter" class="filter_input" placeholder="Filter">
+			<div class='spacer3'></div>
+			<div id='input_history_container'></div>
+		</script>	
+
+		<script id='template_chat_search' type='text/x-handlebars-template'>
+			<input type="text" id="chat_search_filter" class="filter_input" placeholder="Search">
+			<div class='spacer3'></div>
+			<div id='chat_search_container'></div>
 		</script>
 
 		<script id='template_profile' type='text/x-handlebars-template'>

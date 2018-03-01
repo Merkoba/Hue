@@ -725,7 +725,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	height: auto !important;
 }
 
-.history_item
+.input_history_item
 {
 	padding-top: 1em;
 	padding-bottom: 1em;
@@ -763,12 +763,17 @@ a.generic:link, a.generic:visited, a.generic:hover
 	width: 14em;
 }
 
-#search_filter
+#chat_search_filter
 {
 	width: 14em;
 }
 
 #highlights_filter
+{
+	width: 14em;
+}
+
+#input_history_filter
 {
 	width: 14em;
 }
@@ -788,24 +793,24 @@ a.generic:link, a.generic:visited, a.generic:hover
 	width: 14em;
 }
 
-.search_result_item
+.chat_search_result_item
 {
 	padding-top: 0.8em;
 	padding-bottom: 0.8em;
 }
 
-.search_result_uname
+.chat_search_result_uname
 {
 	padding-bottom: 0.2em;
 }
 
-.search_result_uname *
+.chat_search_result_uname *
 {
 	font-size: 1em;
 	cursor: default;
 }
 
-.search_result_content
+.chat_search_result_content
 {
 	max-width: 26em;
 }
@@ -1234,7 +1239,7 @@ input[type=text], textarea
 	}
 }
 
-.fader
+#chat_area .fader
 {
 	animation: fadein 0.5s linear;
 }
