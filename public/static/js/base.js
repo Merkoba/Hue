@@ -167,6 +167,9 @@ var modal_image_open = false
 var current_image_url = ""
 var current_image_title = ""
 var current_image_date_raw = 0
+var date_joined
+var user_email
+var user_reg_date
 
 function init()
 {
@@ -781,6 +784,8 @@ function start_socket()
 			connections += 1
 			room_name = data.room_name
 			set_username(data.username)
+			set_email(data.email)
+			user_reg_date = data.reg_date
 			setup_profile_image(data.profile_image)
 			userlist = data.userlist
 			update_userlist()
@@ -806,10 +811,11 @@ function start_socket()
 			setup_radio(data)
 
 			make_main_container_visible()
-			
+		
 			fix_chat_scroll()
-			
 			start_heartbeat()
+
+			date_joined = Date.now()
 
 			started = true
 		}
@@ -1032,7 +1038,12 @@ function start_socket()
 
 		else if(data.type === 'username_already_exists')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"Username already exists"})
+			chat_announce({brk1:'[', brk2:']', msg:`${data.username} already exists`})
+		}
+
+		else if(data.type === 'email_already_exists')
+		{
+			chat_announce({brk1:'[', brk2:']', msg:`${data.email} already exists`})
 		}
 
 		else if(data.type === 'new_username')
@@ -4268,6 +4279,7 @@ function register_commands()
 	commands.push('/starttv')
 	commands.push('/stoptv')
 	commands.push('/openimage')
+	commands.push('/date')
 
 	commands.sort()
 
@@ -4893,6 +4905,11 @@ function send_to_chat(msg, to_history=true)
 			else if(oiEquals(lmsg, '/openimage'))
 			{
 				show_current_image_modal()
+			}
+
+			else if(oiEquals(lmsg, '/date'))
+			{
+				chat_announce({brk1:'[', brk2:']', msg:nice_date()})
 			}
 
 			else
@@ -8320,13 +8337,19 @@ function password_changed(data)
 
 function change_email(email)
 {
+	if(utilz.clean_string5(email).length !== email.length)
+	{
+		chat_announce({brk1:'[', brk2:']', msg:"Invalid email address"})
+		return
+	}
+
 	if(email.length === 0)
 	{
 		chat_announce({brk1:'[', brk2:']', msg:"Username can't be empty"})
 		return
 	}
 
-	if(email.indexOf('@') === -1 || email.indexOf(' ') !== -1)
+	if(email.indexOf('@') === -1)
 	{
 		chat_announce({brk1:'[', brk2:']', msg:"Invalid email address"})
 		return
@@ -8343,32 +8366,27 @@ function change_email(email)
 
 function email_changed(data)
 {
+	set_email(data.email)
 	chat_announce({brk1:'[', brk2:']', msg:`Email succesfully changed to ${data.email}`})
-}
-
-function request_details()
-{
-	socket_emit("get_details", {})
 }
 
 function show_details(data)
 {
-	if(data.email === "")
-	{
-		data.email = "No Email"
-	}
-
 	var h = $("<div></div>")	
 
 	var info = ""
 
 	info += "<div class='info_item'><div class='info_title'>Username</div><div class='info_item_content' id='details_username'></div></div>"
 	info += "<div class='info_item'><div class='info_title'>Email</div><div class='info_item_content' id='details_email'></div></div>"
+	info += "<div class='info_item'><div class='info_title'>Account Created On</div><div class='info_item_content' id='details_reg_date'></div></div>"
+	info += "<div class='info_item'><div class='info_title'>Joined Room On</div><div class='info_item_content' id='details_joined_room'></div></div>"
 
 	h.append(info)
 
-	h.find("#details_username").eq(0).text(data.username)
-	h.find("#details_email").eq(0).text(data.email)
+	h.find("#details_username").eq(0).text(username)
+	h.find("#details_email").eq(0).text(user_email)
+	h.find("#details_reg_date").eq(0).text(nice_date(user_reg_date))
+	h.find("#details_joined_room").eq(0).text(nice_date(date_joined))
 
 	msg_info.show(h.html())
 }
@@ -9840,6 +9858,11 @@ function set_username(uname)
 	username = uname
 	generate_mentions_regex()
 	$("#userinfo_username").text(username)
+}
+
+function set_email(email)
+{
+	user_email = email
 }
 
 function generate_mentions_regex()

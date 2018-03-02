@@ -963,6 +963,62 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})	
 	}
 
+	manager.change_email = function(_id, email)
+	{
+		return new Promise((resolve, reject) => 
+		{
+			manager.get_user({_id:_id}, {email:true})
+
+			.then(user =>
+			{
+				if(!user)
+				{
+					resolve(false)
+					return
+				}
+
+				else
+				{
+					manager.get_user({email:email}, {email:true})
+
+					.then(user2 =>
+					{
+						if(user2)
+						{
+							resolve(false)
+							return
+						}
+
+						else
+						{
+							manager.update_user(_id,
+							{
+								email: email
+							})
+
+							resolve(true)
+							return
+						}
+					})
+
+					.catch(err =>
+					{
+						reject(err)
+						logger.log_error(err)
+						return
+					})
+				}
+			})
+
+			.catch(err =>
+			{
+				reject(err)
+				logger.log_error(err)
+				return
+			})
+		})	
+	}
+
 	manager.reset_user_password = function(email)
 	{
 		return new Promise((resolve, reject) => 

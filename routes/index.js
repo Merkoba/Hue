@@ -256,6 +256,11 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}
 
+		if(email.length !== utilz.clean_string5(email).length)
+		{
+			return false
+		}
+
 		db_manager.get_user({$or:[{username: username}, {email:email}]}, {}, false)
 
 		.then(user =>

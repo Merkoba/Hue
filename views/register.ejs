@@ -131,7 +131,7 @@
 					return false
 				}
 
-				if(email.indexOf('@') === -1 || email.indexOf(' ') !== -1)
+				if(email.indexOf('@') === -1)
 				{
 					set_message("Invalid email address")
 					return false
@@ -142,6 +142,12 @@
 					set_message("Email is too long")
 					return false
 				}
+
+				if(email.length !== utilz.clean_string5(email).length)
+				{
+					set_message("Invalid email address")
+					return false
+				}				
 
 				$("#btn_register").prop("disabled", true)
 

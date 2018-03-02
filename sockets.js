@@ -682,24 +682,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				logger.log_error(err)
 			}
-		})	
-
-		socket.on('get_details', function(data) 
-		{
-			try
-			{
-				if(!socket.joined)
-				{
-					return get_out(socket)
-				}
-
-				get_details(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
 		})
 
 		socket.on('change_default_theme', function(data) 
@@ -918,7 +900,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(data.alternative)
 		{
-			db_manager.check_password(data.email, data.password, {email:true, username:true, profile_image:true})
+			db_manager.check_password(data.email, data.password, 
+			{
+				email: true, 
+				username: true, 
+				profile_image: true, 
+				registration_date: true
+			})
 
 			.then(ans =>
 			{
@@ -994,7 +982,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 							return do_disconnect(socket)
 						}
 
-						db_manager.get_user({_id:socket.user_id}, {email: true, username:true, profile_image:true})
+						db_manager.get_user({_id:socket.user_id}, 
+						{
+							email: true, 
+							username: true, 
+							profile_image: true, 
+							registration_date: true
+						})
 
 						.then(userinfo =>
 						{
@@ -1033,7 +1027,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		var room_id = info._id.toString()
 
 		socket.room_id = room_id
-		
+		socket.email = userinfo.email
 		socket.joining = true
 		
 		socket.join(room_id)		
@@ -1179,7 +1173,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			v4_chat_permission: info.v4_chat_permission,
 			v4_images_permission: info.v4_images_permission,
 			v4_tv_permission: info.v4_tv_permission,
-			v4_radio_permission: info.v4_radio_permission
+			v4_radio_permission: info.v4_radio_permission,
+			email: socket.email,
+			reg_date: userinfo.registration_date			
 		})
 
 		socket.joining = false
@@ -2728,35 +2724,40 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		db_manager.update_user(socket.user_id,
+		if(utilz.clean_string5(data.email).length !== data.email.length)
 		{
-			email: data.email
-		})
+			return get_out(socket)
+		}		
 
-		.catch(err =>
+		db_manager.change_email(socket.user_id, data.email)
+
+		.then(done =>
 		{
-			logger.log_error(err)
-		})			
-
-		socket.emit('update', {room:socket.room, type:'email_changed', email:data.email})
-	}
-
-	function get_details(socket, data)
-	{
-		db_manager.get_user({_id:socket.user_id}, {username:true, email:true})
-
-		.then(userinfo =>
-		{
-			if(userinfo)
+			if(done)
 			{
-				socket.emit('update', {room:socket.room, type:'show_details', username:userinfo.username, email:userinfo.email})
+				for(var room_id of user_rooms[socket.user_id])
+				{
+					for(var socc of get_user_sockets_per_room(room_id, socket.user_id))
+					{
+						socc.email = data.email
+					}
+
+					rooms[room_id].userlist[socket.user_id].email = data.email
+				}
+
+				socket.emit('update', {room:socket.room, type:'email_changed', email:data.email})
 			}
-		})
+
+			else
+			{
+				socket.emit('update', {room:socket.room, type:'email_already_exists', email:data.email})
+			}
+		})		
 
 		.catch(err =>
 		{
 			logger.log_error(err)
-		})
+		})	
 	}
 
 	function change_images_enabled(socket, data)
@@ -4305,6 +4306,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			user.username = socket.username
 			user.role = socket.role
 			user.profile_image = socket.profile_image
+			user.email = socket.email
 		}
 
 		catch(err)

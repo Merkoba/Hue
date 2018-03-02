@@ -119,8 +119,8 @@ body
 #chat_area
 {
 	position: relative;
-	padding-left: 25px;
-	padding-right: 25px;
+	padding-left: 1.2rem;
+	padding-right: 1.2rem;
 	overflow-x: hidden;
 	overflow-y: auto;
 	background-color: black;
@@ -229,7 +229,6 @@ body
 
 #footer_items
 {
-	padding-left: 27px;
 	display: flex;
 	flex-grow: 1;
 	white-space: nowrap;
@@ -275,6 +274,11 @@ body
 	padding-right: 0.3em;
 }
 
+#footer_media_menu
+{
+	padding-right: 1.2rem !important;
+}
+
 #input
 {
 	font-size: 1em;
@@ -294,8 +298,8 @@ body
 {
 	visibility: hidden;
 	position: absolute;
-	left: 22px;
-	width: calc(100% - 44px);	
+	left: 16px;
+	width: calc(100% - 32px);	
 	bottom: 0em;
 	height: 2em;
 	background-color: #393939;
@@ -1197,6 +1201,7 @@ input[type=text], textarea
 #footer_userinfo
 {
 	width: 10px;
+	padding-left: 1.2rem;
 }
 
 #write_whisper_info
@@ -1269,4 +1274,9 @@ input[type=text], textarea
 #chat_area .fader
 {
 	animation: fadein 500ms linear;
+}
+
+#userinfo_username
+{
+	display: inline-block;
 }

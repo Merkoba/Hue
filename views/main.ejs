@@ -31,9 +31,9 @@
 		<script src="/static/js/utilz.js?ver=2"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=964"></script>
+		<script src="/static/js/base.js?ver=965"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=275"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=276"/>
 
 		<script>
 
@@ -192,7 +192,7 @@
 							<i class='fa fa-television footer_icon nicetitle' id='footer_tv_icon' onclick="show_tv_picker()" title='Change the TV'></i>
 							<i class='fa fa-volume-up footer_icon nicetitle' id='footer_radio_icon' onclick="show_radio_picker()" title='Change the Radio'></i>
 
-							<i class='fa fa-bars footer_icon nicetitle' id='footer_lock_images_icon' onclick='show_media_menu()' title='Media Menu'></i>
+							<i id='footer_media_menu' class='fa fa-bars footer_icon nicetitle' id='footer_lock_images_icon' onclick='show_media_menu()' title='Media Menu'></i>
 						</span>
 
 					</div>
@@ -448,7 +448,7 @@
 
 		<script id='template_userinfo' type='text/x-handlebars-template'>
 
-			<div class='bigger2' id='userinfo_username'>Loading</div>
+			<div class='bigger2 pointer' id='userinfo_username' onclick='show_details()'>Loading</div>
 
 			<div class='spacer3'></div>
 			
@@ -790,6 +790,7 @@
 			<div class='info_item'>/starttv: Starts the tv.</div>
 			<div class='info_item'>/stoptv: Stops the tv.</div>
 			<div class='info_item'>/openimage: Opens the image modal with the current image.</div>
+			<div class='info_item'>/date: Shows current date.</div>
 			<div class='info_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil.</div>
 			<div class='spacer1'></div>
 			<span class='help_link' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link' onclick='help3()'>Administration Features</span>			
