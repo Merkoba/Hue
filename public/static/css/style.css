@@ -958,6 +958,7 @@ input[type=text], textarea
 	max-width: 90vw;
 	max-height: 90vh;
 	display: none;
+	cursor: pointer;
 }
 
 #modal_image_error

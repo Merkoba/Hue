@@ -2643,119 +2643,143 @@ function activate_key_detection()
 
 		if(iup)
 		{
-			if(e.key === "Enter")
+			if(msg_image_picker.is_highest())
 			{
-				var val = $("#image_url_picker_input").val().trim()
-
-				if(val !== "")
+				if(e.key === "Enter")
 				{
-					upload_image_by_url(val)
-					close_all_modals()
-					e.preventDefault()
+					var val = $("#image_url_picker_input").val().trim()
+
+					if(val !== "")
+					{
+						upload_image_by_url(val)
+						close_all_modals()
+						e.preventDefault()
+					}
 				}
+				
+				return			
 			}
-
-			return			
-		}
-
-		if(rup)
-		{
-			if(e.key === "Enter")
-			{
-				var val = $("#radio_url_picker_input").val().trim()
-
-				if(val !== "")
-				{
-					change_radio_source(val)
-					close_all_modals()
-					e.preventDefault()
-				}
-			}
-
-			return			
 		}
 
 		if(tup)
 		{
-			if(e.key === "Enter")
+			if(msg_tv_picker.is_highest())
 			{
-				var val = $("#tv_url_picker_input").val().trim()
-
-				if(val !== "")
+				if(e.key === "Enter")
 				{
-					change_tv_source(val)
-					close_all_modals()
-					e.preventDefault()
-				}
-			}
+					var val = $("#tv_url_picker_input").val().trim()
 
-			return			
+					if(val !== "")
+					{
+						change_tv_source(val)
+						close_all_modals()
+						e.preventDefault()
+					}
+				}
+				
+				return			
+			}
+		}		
+
+		if(rup)
+		{
+			if(msg_radio_picker.is_highest())
+			{
+				if(e.key === "Enter")
+				{
+					var val = $("#radio_url_picker_input").val().trim()
+
+					if(val !== "")
+					{
+						change_radio_source(val)
+						close_all_modals()
+						e.preventDefault()
+					}
+				}
+				
+				return			
+			}
 		}
 
 		if(crm)
 		{
-			if(e.key === "Enter")
+			if(msg_info.is_highest())
 			{
-				create_room_submit()
-				e.preventDefault()
+				if(e.key === "Enter")
+				{
+					create_room_submit()
+					e.preventDefault()
+				}
+				
+				return
 			}
-
-			return
 		}
 
 		if(orb)
 		{
-			if(e.key === "Enter")
+			if(msg_info.is_highest())
 			{
-				if(e.shiftKey)
+				if(e.key === "Enter")
 				{
-					$("#open_room_here").trigger("click")
-				}
+					if(e.shiftKey)
+					{
+						$("#open_room_here").trigger("click")
+					}
 
-				else
-				{
-					$("#open_room_new_tab").trigger("click")
+					else
+					{
+						$("#open_room_new_tab").trigger("click")
+					}
 				}
+				
+				e.preventDefault()
+				return
 			}
-
-			e.preventDefault()
-			return
 		}
 
 		if(stu)
 		{
-			if(e.key === "Tab" && e.shiftKey)
+			if(msg_info.is_highest())
 			{
-				close_all_modals()
-				e.preventDefault()
-			}
+				if(e.key === "Tab" && e.shiftKey)
+				{
+					close_all_modals()
+					e.preventDefault()
+				}
 
-			return
+				return
+			}
 		}
 
 		if(writing_whisper)
 		{
-			if(e.key === "Enter")
+			if(msg_whisper.is_highest())
 			{
-				send_whisper()
+				if(e.key === "Enter")
+				{
+					send_whisper()
+				}
+				
+				return
 			}
-
-			return
 		}
 
 		if(modal_image_open)
 		{
-			if(e.key === "ArrowLeft")
+			if(msg_image.is_highest())
 			{
-				image_prev_click()
+				if(e.key === "ArrowLeft")
+				{
+					image_prev_click()
+				}
+				
+				else if(e.key === "ArrowRight")
+				{
+					image_next_click()
+				}
+				
+				return
 			}
-
-			else if(e.key === "ArrowRight")
-			{
-				image_next_click()
-			}
-
-			return
 		}	
 
 		if(modal_open)
@@ -3862,8 +3886,6 @@ function after_image_load(img)
 	current_image_url = image_url
 	current_image_title = image_title
 	current_image_date_raw = image_date_raw
-	
-	$(img).prop('title', image_title)
 }
 
 function get_size_string(size)
@@ -6990,6 +7012,7 @@ function start_msg()
 			{
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
+				iup = true
 			},
 			after_set: function(instance)
 			{
@@ -7017,6 +7040,7 @@ function start_msg()
 			{
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
+				tup = true
 			},
 			after_set: function(instance)
 			{
@@ -7044,6 +7068,7 @@ function start_msg()
 			{
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
+				rup = true
 			},
 			after_set: function(instance)
 			{
@@ -8479,7 +8504,7 @@ function show_modal_image(url, title=false, date)
 {
 	if(title)
 	{
-		var t = `title="${title}"`
+		var t = title
 	}
 
 	else
@@ -8494,8 +8519,8 @@ function show_modal_image(url, title=false, date)
 	$("#modal_image_spinner").css("display", "block")
 	$("#modal_image_error").css("display", "none")	
 
-	img.attr("title", t)
 	img.attr("src", url)
+	img.data("image_title", t)
 	img.data("image_date", date)
 
 	update_modal_scrollbar("image")
@@ -8512,8 +8537,6 @@ function show_image_picker()
 {
 	msg_image_picker.show(function()
 	{
-		iup = true
-
 		$("#image_url_picker_input").focus()
 	})
 }
@@ -8522,8 +8545,6 @@ function show_tv_picker()
 {
 	msg_tv_picker.show(function()
 	{
-		tup = true
-
 		$("#tv_url_picker_input").focus()
 	})
 }
@@ -8532,8 +8553,6 @@ function show_radio_picker()
 {
 	msg_radio_picker.show(function()
 	{
-		rup = true
-
 		$("#radio_url_picker_input").focus()
 	})
 }
@@ -10613,6 +10632,11 @@ function setup_modal_image()
 
 	$("#Msg-window-image")[0].addEventListener("wheel", f)
 	$("#Msg-overlay-image")[0].addEventListener("wheel", f)
+
+	$("#modal_image").click(function()
+	{
+		msg_info.show($("#modal_image").data("image_title"))
+	})
 }
 
 var modal_image_prev_wheel_timer = (function() 
