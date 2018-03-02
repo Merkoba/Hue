@@ -371,6 +371,9 @@ If you want to remove it to start fresh:
 "media_history_max_items"
 >The amount of items stored in each media change history window.
 
+"images_changed_crop_limit"
+>How many items are stored in images_changed. images_changed is an array that holds information about image changes in the room. Used for the prev and next buttons in the image modal.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"

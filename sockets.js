@@ -2488,6 +2488,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	{	
 		var radioinfo = {}
 
+		var date = Date.now()
+
 		if(data.src === 'default')
 		{
 			radioinfo.radio_type = "radio"
@@ -2503,7 +2505,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		radioinfo.radio_setter = socket.username
-		radioinfo.radio_date = Date.now()
+		radioinfo.radio_date = date
 
 		io.sockets.in(socket.room_id).emit('update', 
 		{
@@ -2543,7 +2545,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					radio_title: radioinfo.radio_title,
 					radio_setter: radioinfo.radio_setter
 				}, 
-				date: Date.now()
+				date: date
 			}
 
 			rooms[socket.room_id].log_messages.push(message)
@@ -2553,6 +2555,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	function do_change_tv_source(socket, data)
 	{	
 		var tvinfo = {}
+
+		var date = Date.now()
 
 		if(data.src === 'default')
 		{
@@ -2569,7 +2573,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		tvinfo.tv_setter = socket.username
-		tvinfo.tv_date = Date.now()
+		tvinfo.tv_date = date
 
 		io.sockets.in(socket.room_id).emit('update', 
 		{
@@ -2609,7 +2613,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					tv_title: tvinfo.tv_title,
 					tv_setter: tvinfo.tv_setter
 				}, 
-				date: Date.now()
+				date: date
 			}
 
 			rooms[socket.room_id].log_messages.push(message)
@@ -3310,7 +3314,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function do_change_image(room_id, fname, uploader, size, type)
 	{
-		var image_url 
+		var image_url
+
+		var date = Date.now()
 
 		if(type === "link")
 		{
@@ -3321,7 +3327,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				image_url: image_url, 
 				image_uploader: uploader, 
 				image_size: size, 
-				image_date: Date.now(),
+				image_date: date,
 				image_type: type
 			})
 
@@ -3352,7 +3358,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			.then(info =>
 			{
-
 				info.stored_images.unshift(fname)
 
 				var spliced = false
@@ -3367,7 +3372,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					image_url: image_url, 
 					image_uploader: uploader, 
 					image_size: size, 
-					image_date: Date.now(),
+					image_date: date,
 					stored_images: info.stored_images,
 					image_type: type
 				})
@@ -3443,7 +3448,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					image_size: size,
 					image_type: type
 				},
-				date: Date.now()
+				date: date
 			}
 
 			rooms[room_id].log_messages.push(message)

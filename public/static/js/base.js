@@ -161,6 +161,8 @@ var double_tap_key_3_pressed = 0
 var images_visible
 var tv_visible
 var radio_visible
+var images_changed = []
+var modal_image_open = false
 
 function init()
 {
@@ -819,7 +821,7 @@ function start_socket()
 		else if(data.type === 'image_change')
 		{
 			queue_image(data)
-			announce_uploaded_image(data)			
+			announce_image_change(data)			
 		}
 
 		else if(data.type === 'profile_image_changed')
@@ -960,25 +962,25 @@ function start_socket()
 
 		else if(data.type === 'changed_radio_source')
 		{
-			announce_radio_source_change(data)
+			announce_radio_change(data)
 			setup_radio(data)			
 		}
 
 		else if(data.type === 'restarted_radio_source')
 		{
-			announce_radio_source_change(data, false, "restart")
+			announce_radio_change(data, false, "restart")
 			setup_radio(data)			
 		}
 
 		else if(data.type === 'changed_tv_source')
 		{
-			announce_tv_source_change(data)
+			announce_tv_change(data)
 			setup_tv(data)			
 		}
 
 		else if(data.type === 'restarted_tv_source')
 		{
-			announce_tv_source_change(data, false, "restart")
+			announce_tv_change(data, false, "restart")
 			setup_tv(data)			
 		}
 
@@ -2730,8 +2732,25 @@ function activate_key_detection()
 			if(e.key === "Enter")
 			{
 				send_whisper()
-			}			
-		}		
+			}
+
+			return
+		}
+
+		if(modal_image_open)
+		{
+			if(e.key === "ArrowLeft")
+			{
+				image_prev_click()
+			}
+
+			else if(e.key === "ArrowRight")
+			{
+				image_next_click()
+			}
+
+			return
+		}	
 
 		if(modal_open)
 		{
@@ -3805,7 +3824,7 @@ function show_image(force=false)
 
 function show_current_image_modal()
 {
-	show_modal_image(current_image_url, current_image_title)
+	show_modal_image(current_image_url, current_image_title, image_date_raw)
 }
 
 function start_image_events()
@@ -3871,6 +3890,7 @@ function setup_image(data)
 	image_uploader = data.image_uploader
 	image_size = data.image_size
 	image_date = nice_date(data.image_date)
+	image_date_raw = data.image_date
 	image_type = data.image_type
 
 	change({type:"image"})
@@ -6091,7 +6111,7 @@ function show_upload_error()
 	chat_announce({brk1:'[', brk2:']', msg:"The image could not be uploaded"})
 }
 
-function announce_uploaded_image(data, date=false)
+function announce_image_change(data, date=false)
 {
 	if(date)
 	{
@@ -6119,7 +6139,7 @@ function announce_uploaded_image(data, date=false)
 
 	var onclick = function()
 	{
-		show_modal_image(data.image_url, title)
+		show_modal_image(data.image_url, title, d)
 	}
 
 	chat_announce(
@@ -6132,6 +6152,21 @@ function announce_uploaded_image(data, date=false)
 		date: d, 
 		type: "image_change"
 	})
+
+	data.title = title
+	data.date_raw = d
+
+	push_images_changed(data)
+}
+
+function push_images_changed(data)
+{
+	images_changed.push(data)
+
+	if(images_changed.length > images_changed_crop_limit)
+	{
+		images_changed = images_changed.slice(images_changed.length - images_changed_crop_limit)
+	}
 }
 
 function announce_role_change(data)
@@ -6233,7 +6268,7 @@ function change_radio_source(src)
 	}
 }
 
-function announce_radio_source_change(data, date=false, action="change")
+function announce_radio_change(data, date=false, action="change")
 {
 	if(data.radio_title !== "")
 	{
@@ -6347,7 +6382,7 @@ function change_tv_source(src)
 	}
 }
 
-function announce_tv_source_change(data, date=false, action="change")
+function announce_tv_change(data, date=false, action="change")
 {
 	if(data.tv_title !== "")
 	{
@@ -6827,6 +6862,7 @@ function start_msg()
 			{
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
+				modal_image_open = true
 			},
 			after_set: function(instance)
 			{
@@ -6835,6 +6871,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
+				modal_image_open = false
 			}
 		})
 	)
@@ -7209,6 +7246,8 @@ function start_msg()
 
 	msg_image.create()
 	msg_info.create()
+
+	setup_image_overlay()
 }
 
 function info_vars_to_false()
@@ -8291,17 +8330,17 @@ function show_log_messages()
 
 				else if(message.type === "image")
 				{
-					announce_uploaded_image(data, message.date)
+					announce_image_change(data, message.date)
 				}
 
 				else if(message.type === "radio")
 				{
-					announce_radio_source_change(data, message.date)
+					announce_radio_change(data, message.date)
 				}
 
 				else if(message.type === "tv")
 				{
-					announce_tv_source_change(data, message.date)
+					announce_tv_change(data, message.date)
 				}
 			}
 		}
@@ -8394,7 +8433,7 @@ function show_log()
 	}
 }
 
-function show_modal_image(url, title=false)
+function show_modal_image(url, title=false, date)
 {
 	if(title)
 	{
@@ -8406,7 +8445,7 @@ function show_modal_image(url, title=false)
 		var t = ""
 	}
 
-	var c = $("<div class='modal_image_container'></div>")
+	var c = $("<div id='modal_image_container'></div>")
 
 	c.append($(`<div id="modal_spinner" class='spinner1'></div><img ${t} id="modal_image" class="modal_image" src="${url}">`))
 
@@ -8423,6 +8462,8 @@ function show_modal_image(url, title=false)
 	{
 		msg_image.set("<div class='padding1'>Image no longer available</div>")
 	})
+
+	c.data("image_date", date)
 
 	msg_image.show(c[0])
 }
@@ -9630,6 +9671,7 @@ function setup_modal_colors()
 	.Msg-overlay
 	{
 		background-color: ${overlay_color} !important;
+		color: ${background_color} !important;
 	}
 
 	.Msg-window
@@ -10425,5 +10467,81 @@ function electron_signal(func, data={})
 	if(window["electron_api"][func] !== undefined)
 	{
 		window["electron_api"][func](data)
+	}
+}
+
+function setup_image_overlay()
+{
+	var s = ""
+	
+	s +="<div id='image_overlay_prev' class='unselectable image_overlay_button'>&lt; Prev</div>"
+	s +="<div id='image_overlay_next' class='unselectable image_overlay_button'>Next &gt;</div>"
+
+	$("#Msg-overlay-image").html(s)
+
+	$("#image_overlay_prev").click(function(e)
+	{
+		image_prev_click()
+		e.preventDefault()
+		e.stopPropagation()
+	})
+
+	$("#image_overlay_next").click(function(e)
+	{
+		image_next_click()
+		e.preventDefault()
+		e.stopPropagation()
+	})
+}
+
+function image_prev_click()
+{
+	var date = $("#modal_image_container").data("image_date")
+	var url = $("#modal_image").attr("src")
+
+	for(var data of images_changed.slice(0).reverse())
+	{
+		if(data.date_raw < date)
+		{
+			if(data.image_url !== url)
+			{
+				show_modal_image(data.image_url, data.title, data.date_raw)
+				return
+			}
+		}
+	}
+
+	var last = images_changed[images_changed.length - 1]
+
+	if(last.image_url !== url)
+	{
+		show_modal_image(last.image_url, last.title, last.date_raw)
+		return
+	}	
+}
+
+function image_next_click(e)
+{
+	var date = $("#modal_image_container").data("image_date")
+	var url = $("#modal_image").attr("src")
+
+	for(var data of images_changed)
+	{
+		if(data.date_raw > date)
+		{
+			if(data.image_url !== url)
+			{
+				show_modal_image(data.image_url, data.title, data.date_raw)
+				return
+			}
+		}
+	}
+
+	var first = images_changed[0]
+
+	if(first.image_url !== url)
+	{
+		show_modal_image(first.image_url, first.title, first.date_raw)
+		return
 	}
 }

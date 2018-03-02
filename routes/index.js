@@ -79,6 +79,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.max_typing_inactivity = config.max_typing_inactivity
 	c.vars.default_video_url = config.default_video_url
 	c.vars.media_history_max_items = config.media_history_max_items
+	c.vars.images_changed_crop_limit = config.images_changed_crop_limit
 
 	function check_url(req, res, next)
 	{
