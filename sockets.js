@@ -3430,7 +3430,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			image_url: image_url,
 			image_uploader: uploader,
 			image_size: size,
-			image_date: Date.now(),
+			image_date: date,
 			image_type: type
 		})
 

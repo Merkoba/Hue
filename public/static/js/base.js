@@ -6126,7 +6126,15 @@ function announce_image_change(data, date=false)
 
 	else
 	{
-		var d = Date.now()
+		if(data.image_date !== undefined)
+		{
+			var d = data.image_date
+		}
+
+		else
+		{
+			var d = Date.now()
+		}
 	}
 	
 	var nd = nice_date(d)
@@ -6308,7 +6316,15 @@ function announce_radio_change(data, date=false, action="change")
 
 	else
 	{
-		var d = Date.now()
+		if(data.radio_date !== undefined)
+		{
+			var d = data.radio_date
+		}
+
+		else
+		{
+			var d = Date.now()
+		}
 	}
 
 	if(action === "restart")
@@ -6412,7 +6428,15 @@ function announce_tv_change(data, date=false, action="change")
 
 	else
 	{
-		var d = Date.now()
+		if(data.tv_date !== undefined)
+		{
+			var d = data.tv_date
+		}
+
+		else
+		{
+			var d = Date.now()
+		}
 	}
 	
 	var nd = nice_date(d)
