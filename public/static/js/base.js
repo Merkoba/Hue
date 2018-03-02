@@ -10526,6 +10526,11 @@ function setup_image_overlay()
 
 function image_prev_click()
 {
+	if(images_changed.length < 2)
+	{
+		return false
+	}
+	
 	var date = $("#modal_image_container").data("image_date")
 	var url = $("#modal_image").attr("src")
 
@@ -10545,6 +10550,11 @@ function image_prev_click()
 
 function image_next_click(e)
 {
+	if(images_changed.length < 2)
+	{
+		return false
+	}
+	
 	var date = $("#modal_image_container").data("image_date")
 	var url = $("#modal_image").attr("src")
 
