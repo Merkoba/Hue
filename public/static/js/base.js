@@ -4238,6 +4238,7 @@ function register_commands()
 	commands.push('/maximizetv')
 	commands.push('/starttv')
 	commands.push('/stoptv')
+	commands.push('/openimage')
 
 	commands.sort()
 
@@ -4858,6 +4859,11 @@ function send_to_chat(msg, to_history=true)
 			else if(oiEquals(lmsg, '/stoptv'))
 			{
 				stop_videos()
+			}
+
+			else if(oiEquals(lmsg, '/openimage'))
+			{
+				show_current_image_modal()
 			}
 
 			else
@@ -10503,21 +10509,14 @@ function image_prev_click()
 	{
 		if(data.date_raw < date)
 		{
-			if(data.image_url !== url)
-			{
-				show_modal_image(data.image_url, data.title, data.date_raw)
-				return
-			}
+			show_modal_image(data.image_url, data.title, data.date_raw)
+			return
 		}
 	}
 
 	var last = images_changed[images_changed.length - 1]
 
-	if(last.image_url !== url)
-	{
-		show_modal_image(last.image_url, last.title, last.date_raw)
-		return
-	}	
+	show_modal_image(last.image_url, last.title, last.date_raw)
 }
 
 function image_next_click(e)
@@ -10529,19 +10528,12 @@ function image_next_click(e)
 	{
 		if(data.date_raw > date)
 		{
-			if(data.image_url !== url)
-			{
-				show_modal_image(data.image_url, data.title, data.date_raw)
-				return
-			}
+			show_modal_image(data.image_url, data.title, data.date_raw)
+			return
 		}
 	}
 
 	var first = images_changed[0]
 
-	if(first.image_url !== url)
-	{
-		show_modal_image(first.image_url, first.title, first.date_raw)
-		return
-	}
+	show_modal_image(first.image_url, first.title, first.date_raw)
 }
