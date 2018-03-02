@@ -10583,23 +10583,17 @@ function setup_modal_image()
 
 	img[0].addEventListener('load', function()
 	{
-		setTimeout(function()
-		{
-			$("#modal_image_spinner").css("display", "none")
-			$("#modal_image").css("display", "block")
-			update_modal_scrollbar("image")
-		}, 500)
+		$("#modal_image_spinner").css("display", "none")
+		$("#modal_image").css("display", "block")
+		update_modal_scrollbar("image")
 	})
 
 	img.on("error", function() 
-	{
-		setTimeout(function()
-		{		
-			$("#modal_image_spinner").css("display", "none")
-			$("#modal_image").css("display", "none")
-			$("#modal_image_error").css("display", "block")
-			update_modal_scrollbar("image")
-		}, 500)
+	{		
+		$("#modal_image_spinner").css("display", "none")
+		$("#modal_image").css("display", "none")
+		$("#modal_image_error").css("display", "block")
+		update_modal_scrollbar("image")
 	})
 
 	var f = function(e)
