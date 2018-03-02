@@ -225,7 +225,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.joined && !socket.locked)
 				{
 					return get_out(socket)
 				}
@@ -243,7 +243,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.joined && !socket.locked)
 				{
 					return get_out(socket)
 				}
@@ -630,6 +630,24 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		})
 
+		socket.on('verify_email', function(data) 
+		{
+			try
+			{
+				if(!socket.joined)
+				{
+					return get_out(socket)
+				}
+
+				verify_email(socket, data)
+			}
+
+			catch(err)
+			{
+				logger.log_error(err)
+			}
+		})
+
 		socket.on('change_images_enabled', function(data) 
 		{
 			try
@@ -843,6 +861,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.joining = false
 		socket.joined = false
 		socket.superuser = false
+		socket.locked = false
 	}
 
 	function join_room(socket, data)
@@ -1024,13 +1043,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function do_join(socket, info, userinfo)
 	{
-		var room_id = info._id.toString()
-
-		socket.room_id = room_id
+		socket.room_id = info._id.toString()
 		socket.email = userinfo.email
 		socket.joining = true
 		
-		socket.join(room_id)		
+		socket.join(socket.room_id)		
 
 		if(check_multipe_joins(socket))
 		{
@@ -1045,10 +1062,33 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.username = userinfo.username
 
 		socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
-		
+
+		var banned_from_main = false
+
 		if(!socket.superuser && info.bans.indexOf(socket.user_id) !== -1)
 		{
-			return do_disconnect(socket)
+			if(socket.room_id === config.main_room_id)
+			{
+				banned_from_main = true
+			}
+
+			else
+			{
+				return do_disconnect(socket)
+			}
+		}
+
+		if(banned_from_main)
+		{
+			socket.leave(socket.room_id)
+			socket.locked = true
+
+			user_emit(socket, 'joined', 
+			{
+				room_locked: true	
+			})
+
+			return
 		}
 
 		if(userinfo.profile_image === "")
@@ -1081,9 +1121,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			var default_background_image = info.default_background_image
 		}
 
-		if(rooms[room_id] === undefined)
+		if(rooms[socket.room_id] === undefined)
 		{
-			rooms[room_id] = create_room_object(info)
+			rooms[socket.room_id] = create_room_object(info)
 		}
 
 		socket.role = info.keys[socket.user_id]
@@ -1098,34 +1138,33 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			user_rooms[socket.user_id] = []
 		}
 
-		if(user_rooms[socket.user_id].indexOf(room_id) === -1)
+		if(user_rooms[socket.user_id].indexOf(socket.room_id) === -1)
 		{
-			user_rooms[socket.user_id].push(room_id)
+			user_rooms[socket.user_id].push(socket.room_id)
 		}
 
 		if(!user_already_connected(socket))
 		{
-			socket.broadcast.in(room_id).emit('update',
+			broadcast_emit(socket, 'userjoin',
 			{
-				type: 'userjoin',
 				username: socket.username,
 				role: socket.role,
 				profile_image: socket.profile_image
 			})
 
-			if(rooms[room_id].userlist === undefined)
+			if(rooms[socket.room_id].userlist === undefined)
 			{
-				rooms[room_id].userlist = {}
+				rooms[socket.room_id].userlist = {}
 			}
 
-			rooms[room_id].userlist[socket.user_id] = {}
+			rooms[socket.room_id].userlist[socket.user_id] = {}
 
 			update_user_in_userlist(socket)
 		}
 
-		socket.emit('update', 
+		user_emit(socket, 'joined', 
 		{
-			type: 'joined', 
+			room_locked: false,
 			room_name: info.name,
 			username: socket.username, 
 			image_url: info.image_url, 
@@ -1138,7 +1177,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			topic_date: info.topic_date,
 			userlist: utilz.object_to_array(get_userlist(socket.room_id)),
 			log: info.log,
-			log_messages: info.log_messages.concat(rooms[room_id].log_messages),
+			log_messages: info.log_messages.concat(rooms[socket.room_id].log_messages),
 			role: socket.role, 
 			public: info.public,
 			radio_type: info.radio_type,
@@ -1209,9 +1248,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		socket.broadcast.in(socket.room_id).emit('update', 
-		{
-			type:'chat_msg', 
+		broadcast_emit(socket, 'chat_msg', 
+		{ 
 			username: socket.username, 
 			msg: data.msg,
 			profile_image: socket.profile_image
@@ -1276,9 +1314,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				info.topic_setter = socket.username
 				info.topic_date = Date.now()
 
-				io.sockets.in(socket.room_id).emit('update', 
+				room_emit(socket, 'topic_change', 
 				{
-					type: 'topic_change',
 					topic: info.topic,
 					topic_setter: info.topic_setter,
 					topic_date: info.topic_date
@@ -1329,9 +1366,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				info.name = data.name
 
-				io.sockets.in(socket.room_id).emit('update', 
+				room_emit(socket, 'room_name_changed', 
 				{
-					type: 'room_name_changed',
 					name: info.name,
 					username: socket.username
 				})
@@ -1360,7 +1396,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			get_visited_roomlist(socket.user_id, function(rooms)
 			{
-				socket.emit('update', {room:socket.room_id, type:'roomlist', roomlist:rooms})
+				user_emit(socket, 'roomlist', {roomlist:rooms})
 			})
 		}
 
@@ -1368,7 +1404,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			get_roomlist(function(rooms)
 			{
-				socket.emit('update', {room:socket.room_id, type:'roomlist', roomlist:rooms})
+				user_emit(socket, 'roomlist', {roomlist:rooms})
 			})
 		}
 	}
@@ -1392,11 +1428,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		data.user_id = socket.user_id
 
-		db_manager.create_room(data)
+		db_manager.user_create_room(data)
 
-		.then(info =>
+		.then(ans =>
 		{
-			socket.emit('update', {room:socket.room_id, type:'room_created', id:info._id.toString()})
+			if(ans === "wait")
+			{
+				user_emit(socket, 'create_room_wait', {})
+				return
+			}
+			
+			user_emit(socket, 'room_created', {id:ans._id.toString()})
+		})
+
+		.catch(err =>
+		{
+			logger.log_error(err)
 		})
 
 		.catch(err =>
@@ -1409,7 +1456,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		if(!socket.joined)
 		{
-			socket.emit('update', {room:socket.room_id, type:'connection_lost'})
+			user_emit(socket, 'connection_lost', {})
 		}
 	}
 
@@ -1455,7 +1502,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				if(!userinfo)
 				{
-					socket.emit('update', {room:socket.room_id, type:'user_not_found'})
+					user_emit(socket, 'user_not_found', {})
 					return false						
 				}
 
@@ -1467,14 +1514,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					if((current_role === 'admin' || current_role === 'op') && socket.role !== 'admin')
 					{
-						socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
+						user_emit(socket, 'forbiddenuser', {})
 						return false
 					}
 				}
 
 				if(current_role === data.role || (current_role === undefined && data.role === "voice1"))
 				{
-					socket.emit('update', {room:socket.room_id, type:'isalready', what:data.role, who:data.username})
+					user_emit(socket, 'isalready', {what:data.role, who:data.username})
 					return false
 				}
 
@@ -1488,7 +1535,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						if(socket.username !== socc.username && socc.role === "admin")
 						{
-							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
+							user_emit(socket, 'forbiddenuser', {})
 							return false		
 						}
 					}
@@ -1511,9 +1558,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					logger.log_error(err)
 				})
 
-				io.sockets.in(socket.room_id).emit('update', 
-				{
-					type: 'announce_role_change', 
+				room_emit(socket, 'announce_role_change', 
+				{ 
 					username1: socket.username, 
 					username2: data.username, 
 					role: data.role
@@ -1556,7 +1602,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			if(!removed)
 			{
-				socket.emit('update', {room:socket.room_id, type:'novoicestoreset'})
+				user_emit(socket, 'novoicestoreset', {})
 				return false
 			}
 
@@ -1581,7 +1627,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				logger.log_error(err)
 			})
 
-			io.sockets.in(socket.room_id).emit('update', {type:'voices_resetted', username:socket.username})
+			room_emit(socket, 'voices_resetted', {username:socket.username})
 		})
 
 		.catch(err =>
@@ -1614,7 +1660,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			if(!removed)
 			{
-				socket.emit('update', {room:socket.room_id, type:'noopstoremove'})
+				user_emit(socket, 'noopstoremove', {})
 				return false
 			}
 
@@ -1632,7 +1678,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				}
 			}
 			
-			io.sockets.in(socket.room_id).emit('update', {type:'announce_removedops', username:socket.username})
+			room_emit(socket, 'announce_removedops', {username:socket.username})
 
 			db_manager.update_room(info._id, {keys:info.keys})
 
@@ -1676,7 +1722,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(((sockets[0].role === 'admin' || sockets[0].role === 'op') && socket.role !== 'admin') || sockets[0].superuser)
 			{
-				socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
+				user_emit(socket, 'forbiddenuser', {})
 				return false
 			}
 
@@ -1692,7 +1738,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else
 		{
-			socket.emit('update', {room:socket.room_id, type:'user_not_in_room'})
+			user_emit(socket, 'user_not_in_room', {})
 			return false
 		}		
 	}	
@@ -1729,7 +1775,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				if(!userinfo)
 				{
-					socket.emit('update', {room:socket.room_id, type:'user_not_found'})
+					user_emit(socket, 'user_not_found', {})
 					return false						
 				}
 
@@ -1739,17 +1785,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				if((current_role === 'admin' || current_role === 'op') && socket.role !== 'admin')
 				{
-					socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})
+					user_emit(socket, 'forbiddenuser', {})
 					return false
 				}
 
 				if(info.bans.indexOf(id) !== -1)
 				{
-					socket.emit('update', 
-					{
-						room: socket.room_id, 
-						type: 'user_already_banned'
-					})
+					user_emit(socket, 'user_already_banned', {})
 
 					return false						
 				}
@@ -1762,7 +1804,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						if(socc.superuser)
 						{
-							socket.emit('update', {room:socket.room_id, type:'forbiddenuser'})							
+							user_emit(socket, 'forbiddenuser', {})							
 							return false
 						}
 
@@ -1775,9 +1817,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				else
 				{
-					io.sockets.in(socket.room_id).emit('update', 
+					room_emit(socket, 'announce_ban', 
 					{
-						type: 'announce_ban', 
 						username1: socket.username, 
 						username2: data.username
 					})						
@@ -1837,7 +1878,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				if(!userinfo)
 				{
-					socket.emit('update', {room:socket.room_id, type:'user_not_found'})
+					user_emit(socket, 'user_not_found', {})
 					return false						
 				}
 
@@ -1845,11 +1886,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				if(info.bans.indexOf(id) === -1)
 				{
-					socket.emit('update', 
-					{
-						room: socket.room_id, 
-						type: 'user_already_unbanned'
-					})
+					user_emit(socket, 'user_already_unbanned', {})
 
 					return false
 				}
@@ -1870,9 +1907,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					logger.log_error(err)
 				})
 
-				io.sockets.in(socket.room_id).emit('update', 
-				{
-					type: 'announce_unban', 
+				room_emit(socket, 'announce_unban', 
+				{ 
 					username1: socket.username, 
 					username2: data.username
 				})					
@@ -1912,12 +1948,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					logger.log_error(err)
 				})
 
-				io.sockets.in(socket.room_id).emit('update', {type:'announce_unban_all', username:socket.username})
+				room_emit(socket, 'announce_unban_all', {username:socket.username})
 			}
 
 			else
 			{
-				socket.emit('update', {room:socket.room_id, type:'nothingtounban'})
+				user_emit(socket, 'nothingtounban', {})
 			}
 		})
 
@@ -1948,7 +1984,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				var count = info.bans.length
 			}
 
-			socket.emit('update', {room:socket.room_id, type:'receive_banned_count', count:count})
+			user_emit(socket, 'receive_banned_count', {count:count})
 		})
 
 		.catch(err =>
@@ -1999,7 +2035,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				rooms[socket.room_id].log = data.log
 
-				io.sockets.in(socket.room_id).emit('update', {type:'log_changed', username:socket.username, log:data.log})
+				room_emit(socket, 'log_changed', {username:socket.username, log:data.log})
 			}
 		})
 
@@ -2031,12 +2067,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					logger.log_error(err)
 				})					
 
-				io.sockets.in(socket.room_id).emit('update', {type:'log_cleared', username:socket.username})
+				room_emit(socket, 'log_cleared', {username:socket.username})
 			}
 
 			else
 			{
-				socket.emit('update', {room:socket.room_id, type:'nothingtoclear'})
+				user_emit(socket, 'nothingtoclear', {})
 			}
 		})
 
@@ -2065,7 +2101,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		io.sockets.in(socket.room_id).emit('update', {type:'privacy_change', username:socket.username, what:data.what})
+		room_emit(socket, 'privacy_change', {username:socket.username, what:data.what})
 	}
 
 	function change_radio_source(socket, data)
@@ -2117,7 +2153,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 					else
 					{
-						socket.emit('update', {room:socket.room_id, type:'songnotfound'})
+						user_emit(socket, 'songnotfound', {})
 						return false							
 					}						
 
@@ -2139,7 +2175,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 						else
 						{
-							socket.emit('update', {room:socket.room_id, type:'songnotfound'})
+							user_emit(socket, 'songnotfound', {})
 						}
 					})
 
@@ -2151,7 +2187,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				else
 				{
-					socket.emit('update', {room:socket.room_id, type:'songnotfound'})
+					user_emit(socket, 'songnotfound', {})
 					return false						
 				}
 			}
@@ -2177,9 +2213,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			.then(info =>
 			{
-				io.sockets.in(socket.room_id).emit('update', 
-				{
-					type: 'restarted_radio_source', 
+				room_emit(socket, 'restarted_radio_source', 
+				{ 
 					radio_type: info.radio_type,
 					radio_source: info.radio_source,
 					radio_title: info.radio_title,
@@ -2225,13 +2260,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 						return
 					}
 
-					socket.emit('update', {room:socket.room_id, type:'songnotfound'})
+					user_emit(socket, 'songnotfound', {})
 					return false						
 				}
 
 				else
 				{
-					socket.emit('update', {room:socket.room_id, type:'songnotfound'})
+					user_emit(socket, 'songnotfound', {})
 				}							
 			})
 
@@ -2291,7 +2326,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 					else
 					{
-						socket.emit('update', {room:socket.room_id, type:'videonotfound'})
+						user_emit(socket, 'videonotfound', {})
 						return false							
 					}
 
@@ -2313,21 +2348,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 						else
 						{
-							socket.emit('update', {room:socket.room_id, type:'videonotfound'})
+							user_emit(socket, 'videonotfound', {})
 							return false
 						}
 					})
 
 					.catch(err =>
 					{
-						socket.emit('update', {room:socket.room_id, type:'videonotfound'})
+						user_emit(socket, 'videonotfound', {})
 						logger.log_error(err)
 					})
 				}
 
 				else
 				{
-					socket.emit('update', {room:socket.room_id, type:'videonotfound'})						
+					user_emit(socket, 'videonotfound', {})						
 				}
 			}
 
@@ -2367,7 +2402,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 						.catch(err =>
 						{
-							socket.emit('update', {room:socket.room_id, type:'videonotfound'})								
+							user_emit(socket, 'videonotfound', {})								
 							logger.log_error(err)
 						})
 					}
@@ -2381,14 +2416,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 					else
 					{
-						socket.emit('update', {room:socket.room_id, type:'videonotfound'})
+						user_emit(socket, 'videonotfound', {})
 						return false
 					}
 				}
 
 				else
 				{
-					socket.emit('update', {room:socket.room_id, type:'videonotfound'})						
+					user_emit(socket, 'videonotfound', {})						
 				}					
 			}
 
@@ -2413,9 +2448,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			.then(info =>
 			{
-				io.sockets.in(socket.room_id).emit('update', 
-				{
-					type: 'restarted_tv_source', 
+				room_emit(socket, 'restarted_tv_source', 
+				{ 
 					tv_type: info.tv_type,
 					tv_source: info.tv_source,
 					tv_title: info.tv_title,
@@ -2463,13 +2497,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 						return
 					}
 
-					socket.emit('update', {room:socket.room_id, type:'videonotfound'})
+					user_emit(socket, 'videonotfound', {})
 					return false						
 				}
 
 				else
 				{
-					socket.emit('update', {room:socket.room_id, type:'videonotfound'})
+					user_emit(socket, 'videonotfound', {})
 				}						
 			})
 
@@ -2503,9 +2537,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		radioinfo.radio_setter = socket.username
 		radioinfo.radio_date = date
 
-		io.sockets.in(socket.room_id).emit('update', 
-		{
-			type: 'changed_radio_source', 
+		room_emit(socket, 'changed_radio_source', 
+		{ 
 			radio_type: radioinfo.radio_type,
 			radio_source: radioinfo.radio_source,
 			radio_title: radioinfo.radio_title,
@@ -2571,9 +2604,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		tvinfo.tv_setter = socket.username
 		tvinfo.tv_date = date
 
-		io.sockets.in(socket.room_id).emit('update', 
+		room_emit(socket, 'changed_tv_source', 
 		{
-			type: 'changed_tv_source', 
 			tv_type: tvinfo.tv_type,
 			tv_source: tvinfo.tv_source,
 			tv_title: tvinfo.tv_title,
@@ -2655,9 +2687,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 					rooms[room_id].userlist[socket.user_id].username = data.username
 
-					io.sockets.in(room_id).emit('update',
+					room_emit(room_id, 'new_username',
 					{
-						type: 'new_username', 
 						username: data.username, 
 						old_username: old_username
 					})
@@ -2666,7 +2697,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else
 			{
-				socket.emit('update', {room:socket.room, type:'username_already_exists', username:data.username})
+				user_emit(socket, 'username_already_exists', {username:data.username})
 			}
 		})
 
@@ -2704,7 +2735,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})			
 
-		socket.emit('update', {room:socket.room, type:'password_changed', password:data.password})
+		user_emit(socket, 'password_changed', {password:data.password})
 	}
 
 	function change_email(socket, data)
@@ -2731,9 +2762,91 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		db_manager.change_email(socket.user_id, data.email)
 
-		.then(done =>
+		.then(ans =>
 		{
-			if(done)
+			if(ans.msg === "error")
+			{
+				user_emit(socket, 'error_occurred', {})
+				return
+			}
+
+			else if(ans.msg === "duplicate")
+			{
+				user_emit(socket, 'email_already_exists', {email:data.email})
+				return
+			}
+
+			else if(ans.msg === "wait")
+			{
+				user_emit(socket, 'email_change_wait', {})
+				return
+			}
+
+			else if(ans.msg === "sent_code")
+			{
+				user_emit(socket, 'email_change_code_sent', {email:data.email})
+				return
+			}
+		})		
+
+		.catch(err =>
+		{
+			logger.log_error(err)
+		})	
+	}
+
+	function verify_email(socket, data)
+	{
+		if(utilz.clean_string5(data.code).length !== data.code.length)
+		{
+			return get_out(socket)
+		}
+
+		if(data.code.length === 0)
+		{
+			return get_out(socket)
+		}
+		
+		if(data.code.length > config.email_change_code_max_length)
+		{
+			return get_out(socket)
+		}
+
+		db_manager.change_email(socket.user_id, data.email, data.code)
+
+		.then(ans =>
+		{
+			if(ans.msg === "error")
+			{
+				user_emit(socket, 'error_occurred', {})
+				return
+			}
+
+			else if(ans.msg === "duplicate")
+			{
+				user_emit(socket, 'email_already_exists', {email:data.email})
+				return
+			}
+
+			else if(ans.msg === "not_sent")
+			{
+				user_emit(socket, 'email_change_code_not_sent', {email:data.email})
+				return
+			}
+
+			else if(ans.msg === "wrong_code")
+			{
+				user_emit(socket, 'email_change_wrong_code', {email:data.email})
+				return
+			}
+
+			else if(ans.msg === "expired_code")
+			{
+				user_emit(socket, 'email_change_expired_code', {email:data.email})
+				return
+			}
+
+			else if(ans.msg === "changed")
 			{
 				for(var room_id of user_rooms[socket.user_id])
 				{
@@ -2745,20 +2858,15 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					rooms[room_id].userlist[socket.user_id].email = data.email
 				}
 
-				socket.emit('update', {room:socket.room, type:'email_changed', email:data.email})
-			}
-
-			else
-			{
-				socket.emit('update', {room:socket.room, type:'email_already_exists', email:data.email})
+				user_emit(socket, 'email_changed', {email:ans.email})
 			}
 		})		
 
 		.catch(err =>
 		{
 			logger.log_error(err)
-		})	
-	}
+		})
+	}	
 
 	function change_images_enabled(socket, data)
 	{
@@ -2782,9 +2890,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		io.sockets.in(socket.room_id).emit('update', 
+		room_emit(socket, 'room_images_enabled_change', 
 		{
-			type: 'room_images_enabled_change', 
 			what: data.what,
 			username: socket.username
 		})
@@ -2812,9 +2919,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		io.sockets.in(socket.room_id).emit('update', 
+		room_emit(socket, 'room_tv_enabled_change',
 		{
-			type: 'room_tv_enabled_change', 
 			what: data.what,
 			username: socket.username
 		})
@@ -2842,9 +2948,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		io.sockets.in(socket.room_id).emit('update', 
+		room_emit(socket, 'room_radio_enabled_change', 
 		{
-			type: 'room_radio_enabled_change', 
 			what: data.what,
 			username: socket.username
 		})
@@ -2872,9 +2977,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		io.sockets.in(socket.room_id).emit('update', 
+		room_emit(socket, 'default_theme_change', 
 		{
-			type: 'default_theme_change', 
 			color: data.color,
 			username: socket.username
 		})
@@ -2902,9 +3006,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		io.sockets.in(socket.room_id).emit('update', 
+		room_emit(socket, 'default_background_image_enabled_change', 
 		{
-			type: 'default_background_image_enabled_change', 
 			what: data.what,
 			username: socket.username
 		})
@@ -2945,9 +3048,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		io.sockets.in(socket.room_id).emit('update', 
+		room_emit(socket, 'voice_permission_change', 
 		{
-			type: 'voice_permission_change',
 			ptype: data.ptype,
 			what: data.what,
 			username: socket.username
@@ -2987,9 +3089,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			var type = 'disconnection'
 		}
 
-		io.sockets.in(socket.room_id).emit('update', 
+		room_emit(socket, type, 
 		{
-			type: type,
 			username: socket.username,
 			info1: socket.info1, 
 			role: socket.role
@@ -3238,7 +3339,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(size === 0 || (size > config.max_image_size))
 		{
-			socket.emit('update', {room:socket.room_id, type:'upload_error'})													
+			user_emit(socket, 'upload_error', {})													
 			return false
 		}
 
@@ -3248,7 +3349,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(err) 
 			{
-				socket.emit('update', {room:socket.room_id, type:'upload_error'})
+				user_emit(socket, 'upload_error', {})
 			}
 
 			else 
@@ -3425,9 +3526,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		io.sockets.in(room_id).emit('update',
+		room_emit(room_id, 'image_change',
 		{
-			type: 'image_change',
 			image_url: image_url,
 			image_uploader: uploader,
 			image_size: size,
@@ -3467,7 +3567,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(size === 0 || (size > config.max_profile_image_size))
 		{
-			socket.emit('update', {room:socket.room_id, type:'upload_error'})													
+			user_emit(socket, 'upload_error', {})													
 			return false
 		}
 
@@ -3477,7 +3577,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(err) 
 			{
-				socket.emit('update', {room:socket.room_id, type:'upload_error'})
+				user_emit(socket, 'upload_error', {})
 			}
 
 			else 
@@ -3571,9 +3671,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					
 					rooms[room_id].userlist[socket.user_id].profile_image = image_url
 
-					io.sockets.in(room_id).emit('update',
-					{			
-						type: 'profile_image_changed',
+					room_emit(room_id, 'profile_image_changed',
+					{
 						username: socket.username,
 						profile_image: image_url
 					})
@@ -3608,7 +3707,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(size === 0 || (size > config.max_image_size))
 		{
-			socket.emit('update', {room:socket.room_id, type:'upload_error'})													
+			user_emit(socket, 'upload_error', {})													
 			return false
 		}
 
@@ -3618,7 +3717,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(err) 
 			{
-				socket.emit('update', {room:socket.room_id, type:'upload_error'})
+				user_emit(socket, 'upload_error', {})
 			}
 
 			else 
@@ -3708,9 +3807,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			.then(ans =>
 			{
-				io.sockets.in(socket.room_id).emit('update',
-				{			
-					type: 'default_background_image_change',
+				room_emit(socket, 'default_background_image_change',
+				{
 					username: socket.username,
 					default_background_image: image_url
 				})
@@ -3807,7 +3905,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		
 		if(files[key].slice * config.upload_slice_size >= files[key].size) 
 		{  
-			socket.emit('upload_ended', {date:data.date})
+			user_emit(socket, 'upload_ended', {date:data.date})
 
 			var full_file = Buffer.concat(files[key].data)
 
@@ -3843,7 +3941,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else 
 		{ 
-			socket.emit('request_slice_upload', 
+			user_emit(socket, 'request_slice_upload', 
 			{ 
 				current_slice: files[key].slice,
 				date: data.date 
@@ -3858,10 +3956,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		socket.broadcast.in(socket.room_id).emit('update',
-		{
-			type: 'typing'
-		})
+		broadcast_emit(socket, 'typing', {})
 	}
 
 	function whisper(socket, data)
@@ -3912,10 +4007,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			for(var socc of sockets)
 			{
-				socc.emit('update', 
+				user_emit(socc, 'whisper', 
 				{
-					room: socket.room_id, 
-					type: 'whisper',
+					room: socket.room_id,
 					username: socket.username,
 					message: data.message
 				})
@@ -3924,7 +4018,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else
 		{
-			socket.emit('update', {room:socket.room_id, type:'user_not_in_room'})
+			user_emit(socket, 'user_not_in_room', {})
 		}
 	}	
 
@@ -3944,7 +4038,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		}
 
-		socket.emit('update', {type:'othersdisconnected', amount:amount})
+		user_emit(socket, 'othersdisconnected', {amount:amount})
 	}
 
 	function check_image_url(uri)
@@ -4319,7 +4413,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		try
 		{
-			socket.emit('update', {type:'redirect', location:config.redirect_url})
+			user_emit(socket, 'redirect', {location:config.redirect_url})
 			do_disconnect(socket)
 
 			return false
@@ -4406,5 +4500,47 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return true
 			logger.log_error(err)
 		}
+	}
+
+	function user_emit(socket, type, args={})
+	{
+		args.type = type
+		args.room = socket.room_id
+
+		socket.emit('update', args)
+	}
+
+	function room_emit(socket, type, args={})
+	{
+		if(typeof socket === "object")
+		{
+			var room_id = socket.room_id
+		}
+
+		else
+		{
+			var room_id = socket
+		}
+
+		args.type = type
+
+		io.sockets.in(room_id).emit('update', args)
+	}
+
+	function broadcast_emit(socket, type, args={})
+	{
+		if(typeof socket === "object")
+		{
+			var room_id = socket.room_id
+		}
+
+		else
+		{
+			var room_id = socket
+		}
+
+		args.type = type
+
+		socket.broadcast.in(room_id).emit('update', args)
 	}
 }

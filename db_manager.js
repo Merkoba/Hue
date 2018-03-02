@@ -5,7 +5,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
 	const rooms_version = 34
-	const users_version = 26
+	const users_version = 28
 
 	function get_random_key()
 	{
@@ -444,6 +444,57 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				return
 			})
 		})
+	}	
+
+	manager.user_create_room = function(data)
+	{
+		return new Promise((resolve, reject) => 
+		{
+			manager.get_user({_id:data.user_id}, {create_room_date:true})
+
+			.then(user =>
+			{
+				if(Date.now() - user.create_room_date < config.create_room_cooldown)
+				{
+					resolve('wait')
+					return
+				}
+
+				manager.create_room(data)
+
+				.then(ans =>
+				{
+					manager.update_user(data.user_id,
+					{
+						create_room_date: Date.now()
+					})
+
+					.catch(err =>
+					{
+						reject(err)
+						logger.log_error(err)
+						return
+					})
+
+					resolve(ans)
+					return
+				})
+
+				.catch(err =>
+				{
+					reject(err)
+					logger.log_error(err)
+					return
+				})				
+			})
+
+			.catch(err =>
+			{
+				reject(err)
+				logger.log_error(err)
+				return
+			})			
+		})
 	}
 
 	manager.update_room = function(_id, fields)
@@ -661,10 +712,30 @@ module.exports = function(db, config, sconfig, utilz, logger)
 							user.registration_date = 0
 						}
 
+						if(typeof user.email_change_code !== "string")
+						{
+							user.email_change_code = ""
+						}
+
+						if(typeof user.email_change_date !== "number")
+						{
+							user.email_change_date = 0
+						}
+
+						if(typeof user.email_change_code_date !== "number")
+						{
+							user.email_change_code_date = 0
+						}
+
+						if(typeof user.create_room_date !== "number")
+						{
+							user.create_room_date = 0
+						}						
+
 						if(typeof user.modified !== "number")
 						{
 							user.modified = Date.now()
-						}
+						}						
 
 						user.version = users_version
 
@@ -940,6 +1011,13 @@ module.exports = function(db, config, sconfig, utilz, logger)
 								username: username
 							})
 
+							.catch(err =>
+							{
+								reject(err)
+								logger.log_error(err)
+								return
+							})							
+
 							resolve(true)
 							return
 						}
@@ -963,41 +1041,137 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})	
 	}
 
-	manager.change_email = function(_id, email)
+	manager.change_email = function(_id, email, verify_code=false)
 	{
 		return new Promise((resolve, reject) => 
-		{
-			manager.get_user({_id:_id}, {email:true})
+		{	
+			manager.get_user({_id:_id}, 
+			{
+				email: true,
+				email_change_code: true,
+				email_change_date: true,
+				email_change_code_date: true,
+				email_change_email: true
+			})
 
 			.then(user =>
 			{
 				if(!user)
 				{
-					resolve(false)
+					resolve({msg:"error"})
 					return
 				}
 
 				else
-				{
+				{					
 					manager.get_user({email:email}, {email:true})
 
 					.then(user2 =>
 					{
 						if(user2)
 						{
-							resolve(false)
+							resolve({msg:"duplicate"})
 							return
 						}
 
 						else
 						{
-							manager.update_user(_id,
+							if(verify_code)
 							{
-								email: email
-							})
+								if(!user.email_change_code_date)
+								{
+									resolve({msg:"not_sent"})
+									return
+								}
 
-							resolve(true)
-							return
+								if(verify_code === user.email_change_code)
+								{
+									if(Date.now() - user.email_change_code_date < config.email_change_expiration)
+									{
+										manager.update_user(_id,
+										{
+											email: user.email_change_email,
+											email_change_code_date: 0
+										})
+
+										.catch(err =>
+										{
+											reject(err)
+											logger.log_error(err)
+											return
+										})
+
+										resolve({msg:"changed", email:user.email_change_email})
+										return
+									}
+
+									else
+									{
+										resolve({msg:"expired_code"})
+										return false
+									}
+								}
+
+								else
+								{
+									resolve({msg:"wrong_code"})
+									return false
+								}
+							}
+
+							else
+							{
+								if((Date.now() - user.email_change_date) > config.email_change_limit)
+								{
+									var code = Date.now() + utilz.get_random_string(12)
+
+									var command = `/verifyemail ${code}`
+
+									var data = 
+									{
+										from: `${config.delivery_email_name} <${config.delivery_email}>`,
+										to: email,
+										subject: 'Confirm Email',
+										text: `Enter the command while connected to a room in ${config.site_root} to confirm your email.\n\n${command}`
+									}
+
+									mailgun.messages().send(data, function(error, body) 
+									{
+										if(error)
+										{
+											resolve({msg:"error"})
+											return
+										}
+
+										else
+										{
+											manager.update_user(user._id, 
+											{
+												email_change_code: code,
+												email_change_date: Date.now(),
+												email_change_code_date: Date.now(),
+												email_change_email: email
+											})
+
+											.catch(err =>
+											{
+												reject(err)
+												logger.log_error(err)
+												return
+											})
+
+											resolve({msg:"sent_code"})
+											return
+										}
+									})
+								}
+
+								else
+								{
+									resolve({msg:"wait"})
+									return									
+								}
+							}
 						}
 					})
 

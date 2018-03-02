@@ -12,7 +12,7 @@ body
 	padding: 0px;
 	font-size: 18px;
 	font-family: imported_font, consolas, sans-serif;
-	background-color: black;
+	background-color: #262423;
 	overflow: hidden;
 	background-color: rgb(24,24,24);
 	background-repeat: no-repeat;
@@ -52,7 +52,7 @@ body
 #header
 {
 	display: flex;
-	background-color: black;
+	background-color: #262423;
 	color: white;
 	flex-shrink: 0;
 	flex-grow: 0;
@@ -123,7 +123,7 @@ body
 	padding-right: 1.2rem;
 	overflow-x: hidden;
 	overflow-y: auto;
-	background-color: black;
+	background-color: #262423;
 	color: white;
 	flex-grow: 1;
 	max-width: 100%;
@@ -135,7 +135,7 @@ body
 	display: flex;
 	width: 100%;
 	min-width: 50%;	
-	background-color: black;
+	background-color: #262423;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
@@ -217,7 +217,7 @@ body
 #footer
 {
 	display: flex;
-	background-color: black;
+	background-color: #262423;
 	flex-direction: row;
 	flex-shrink: 0;
 	flex-grow: 0;
@@ -481,6 +481,14 @@ a.generic:link, a.generic:visited, a.generic:hover
 }
 
 #create_room_name
+{
+	width: 14em;
+	font-size: 1.2em;
+	text-align: center;
+	border: 1px solid grey;
+}
+
+#goto_room_input
 {
 	width: 14em;
 	font-size: 1.2em;

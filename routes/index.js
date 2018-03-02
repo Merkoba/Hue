@@ -80,6 +80,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.default_video_url = config.default_video_url
 	c.vars.media_history_max_items = config.media_history_max_items
 	c.vars.images_changed_crop_limit = config.images_changed_crop_limit
+	c.vars.email_change_code_max_length = config.email_change_code_max_length
 
 	function check_url(req, res, next)
 	{
@@ -105,7 +106,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		else
 		{
-			db_manager.get_user({_id:req.session.user_id}, {username:true, password_date:true})
+			db_manager.get_user({_id:req.session.user_id}, {password_date:true})
 
 			.then(user =>
 			{
@@ -128,7 +129,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 							req.jwt_token = token
 							next()
 						}
-					});
+					})
 				}
 			})
 
@@ -261,7 +262,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		db_manager.get_user({$or:[{username: username}, {email:email}]}, {}, false)
+		db_manager.get_user({$or:[{username: username}, {email:email}]}, {username:true}, false)
 
 		.then(user =>
 		{
@@ -307,13 +308,23 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	{
 		var token = req.query.token
 
+		if(token.length === 0)
+		{
+			return false
+		}
+
+		if(token.length.indexOf('_') === -1)
+		{
+			return false
+		}		
+
 		var split = token.split('_')
 
 		var id = split[0]
 
 		var code = split[1]
 
-		db_manager.get_user({_id:id, verification_code:code, verified:false}, {})
+		db_manager.get_user({_id:id, verification_code:code, verified:false}, {registration_date:true})
 
 		.then(user =>
 		{
@@ -364,7 +375,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		db_manager.get_user({username:username}, {}, false)
+		db_manager.get_user({username:username}, {username:true}, false)
 
 		.then(user =>
 		{
@@ -460,13 +471,23 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	{
 		var token = req.query.token
 
+		if(token.length === 0)
+		{
+			return false
+		}
+
+		if(token.length.indexOf('_') === -1)
+		{
+			return false
+		}
+
 		var split = token.split('_')
 
 		var id = split[0]
 
 		var code = split[1]
 
-		db_manager.get_user({_id:id, password_reset_code:code}, {})
+		db_manager.get_user({_id:id, password_reset_code:code}, {password_reset_link_date:true})
 
 		.then(user =>
 		{
@@ -516,7 +537,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		var code = split[1]
 
-		db_manager.get_user({_id:id, password_reset_code:code}, {})
+		db_manager.get_user({_id:id, password_reset_code:code}, {password_reset_link_date:true})
 
 		.then(user =>
 		{

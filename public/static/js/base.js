@@ -29,10 +29,10 @@ var chat_permission
 var upload_permission
 var radio_permission
 var tv_permission
-var can_images
-var can_chat
-var can_radio
-var can_tv
+var can_chat = false
+var can_images = false
+var can_radio = false
+var can_tv = false
 var change_when_focused = false
 var radio_type = ''
 var radio_source = ''
@@ -58,6 +58,7 @@ var stu = false
 var rup = false
 var tup = false
 var iup = false
+var gtr = false
 var orb_timeout
 var modal_open = false
 var started = false
@@ -92,6 +93,7 @@ var template_radio_history
 var template_input_history
 var template_chat_search
 var template_image
+var template_locked_menu
 var msg_menu
 var msg_userinfo
 var msg_userlist
@@ -294,6 +296,7 @@ function compile_templates()
 	template_input_history = Handlebars.compile($('#template_input_history').html())
 	template_chat_search = Handlebars.compile($('#template_chat_search').html())
 	template_image = Handlebars.compile($('#template_image').html())
+	template_locked_menu = Handlebars.compile($('#template_locked_menu').html())
 }
 
 function help()
@@ -773,14 +776,14 @@ function start_socket()
 
 	socket.on('update', function(data) 
 	{
-		if(data.type === 'chat_msg')
-		{
-			update_chat({uname:data.username, msg:data.msg, prof_image:data.profile_image})
-			hide_pencil()
-		}
-
 		if(data.type === 'joined')
 		{
+			if(data.room_locked)
+			{
+				start_locked_mode()
+				return
+			}
+
 			connections += 1
 			room_name = data.room_name
 			set_username(data.username)
@@ -819,6 +822,27 @@ function start_socket()
 
 			started = true
 		}
+
+		else if(data.type === 'typing')
+		{
+			show_typing()
+		}		
+
+		else if(data.type === 'chat_msg')
+		{
+			update_chat({uname:data.username, msg:data.msg, prof_image:data.profile_image})
+			hide_pencil()
+		}		
+
+		else if(data.type === 'request_slice_upload')
+		{
+			request_slice_upload(data)
+		}
+
+		else if(data.type === 'upload_ended') 
+		{
+			upload_ended()
+		}	
 
 		else if(data.type === 'chat_announcement')
 		{
@@ -1099,11 +1123,6 @@ function start_socket()
 		else if(data.type === 'voice_permission_change')
 		{
 			announce_voice_permission_change(data)
-		}
-
-		else if(data.type === 'typing')
-		{
-			show_typing()
 		}				
 
 		else if(data.type === 'disconnection')
@@ -1135,28 +1154,41 @@ function start_socket()
 		{
 			whisper_received(data)
 		}
-	})
 
-	socket.on('request_slice_upload', (data) => 
-	{ 
-		var place = data.current_slice * upload_slice_size
+		else if(data.type === 'error_occurred')
+		{
+			error_occurred()
+		}
 
-		var file = files[data.date]
+		else if(data.type === 'email_change_code_sent')
+		{
+			chat_announce({brk1:'[', brk2:']', msg:`Verification code sent. Use the command sent to ${data.email}`})
+		}
 
-		var slice = file.slice(place, place + Math.min(upload_slice_size, file.size - place))
+		else if(data.type === 'email_change_code_not_sent')
+		{
+			chat_announce({brk1:'[', brk2:']', msg:`Verification code not sent yet. Use /changeemail [new_email] to get a verification code`})
+		}
 
-		file.reader.readAsArrayBuffer(slice)
-		
-		var percentage = Math.floor(((upload_slice_size * data.current_slice) / file.size) * 100)
+		else if(data.type === 'email_change_wait')
+		{
+			chat_announce({brk1:'[', brk2:']', msg:`You must wait a while before changing the email again`})
+		}
 
-		$(`#uploading_${file.date}`).find(".announcement_content").eq(0).text(`Uploading: ${percentage}%`)
-	})
+		else if(data.type === 'email_change_wrong_code')
+		{
+			chat_announce({brk1:'[', brk2:']', msg:`Code supplied didn't match`})
+		}
 
-	socket.on('upload_ended', (data) => 
-	{ 
-		$(`#uploading_${data.date}`).find(".announcement_content").eq(0).text("Uploading: 100%")
+		else if(data.type === 'email_change_expired_code')
+		{
+			chat_announce({brk1:'[', brk2:']', msg:`Code supplied has expired`})
+		}
 
-		delete files[data.date]
+		else if(data.type === 'create_room_wait')
+		{
+			msg_info.show("You must wait a while before creating another room")
+		}
 	})
 }
 
@@ -2270,6 +2302,7 @@ function setup_main_menu()
 function show_main_menu()
 {
 	$("#admin_menu").css("display", "none")
+	$("#menu_smaller_container").css("display", "block")
 
 	msg_menu.show(function()
 	{
@@ -2637,6 +2670,11 @@ function activate_key_detection()
 {
 	$(document).keydown(function(e)
 	{
+		if(!started)
+		{
+			return
+		}
+
 		if(e.key === double_tap_key)
 		{
 			double_tap_timer()
@@ -2757,6 +2795,20 @@ function activate_key_detection()
 					if(e.key === "Tab" && e.shiftKey)
 					{
 						close_all_modals()
+						e.preventDefault()
+					}
+
+					return
+				}
+			}
+
+			if(gtr)
+			{
+				if(msg_info.is_highest())
+				{
+					if(e.key === "Enter")
+					{
+						goto_room_action()
 						e.preventDefault()
 					}
 
@@ -2909,6 +2961,11 @@ function activate_key_detection()
 
 	$(document).keyup(function(e)
 	{
+		if(!started)
+		{
+			return
+		}
+
 		if(e.key === double_tap_key)
 		{
 			double_tap_key_pressed += 1
@@ -4238,6 +4295,7 @@ function register_commands()
 	commands.push('/changeusername')
 	commands.push('/changepassword')
 	commands.push('/changeemail')
+	commands.push('/verifyemail')
 	commands.push('/fill')
 	commands.push('/shrug')
 	commands.push('/afk')
@@ -4667,9 +4725,14 @@ function send_to_chat(msg, to_history=true)
 				change_email(arg)
 			}
 
+			else if(oiStartsWith(lmsg, '/verifyemail'))
+			{
+				verify_email(arg)
+			}
+
 			else if(oiEquals(lmsg, '/details'))
 			{
-				request_details()
+				show_details()
 			}
 
 			else if(oiEquals(lmsg, '/logout'))
@@ -7310,6 +7373,37 @@ function start_msg()
 		})
 	)
 
+	msg_locked = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "locked",
+			closeable: false,
+			window_x: "none",
+			show_effect: "none",
+			close_effect: "none",
+			enable_overlay: false,
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				reset_chat_search_filter()
+			}
+		})
+	)
+
 	msg_menu.set(template_menu())
 	msg_userinfo.set(template_userinfo())
 	msg_userlist.set(template_userlist())
@@ -7328,6 +7422,7 @@ function start_msg()
 	msg_input_history.set(template_input_history())
 	msg_chat_search.set(template_chat_search())
 	msg_image.set(template_image())
+	msg_locked.set(template_locked_menu())
 
 	msg_info.create()
 
@@ -7339,6 +7434,7 @@ function info_vars_to_false()
 	crm = false
 	orb = false
 	stu = false
+	gtr = false
 }
 
 function after_modal_create(instance)
@@ -10695,4 +10791,101 @@ var modal_image_next_wheel_timer = (function()
 function show_current_date()
 {
 	chat_announce({brk1:'[', brk2:']', msg:nice_date()})	
+}
+
+function request_slice_upload(data)
+{
+	var place = data.current_slice * upload_slice_size
+
+	var file = files[data.date]
+
+	var slice = file.slice(place, place + Math.min(upload_slice_size, file.size - place))
+
+	file.reader.readAsArrayBuffer(slice)
+
+	var percentage = Math.floor(((upload_slice_size * data.current_slice) / file.size) * 100)
+
+	$(`#uploading_${file.date}`).find(".announcement_content").eq(0).text(`Uploading: ${percentage}%`)	
+}
+
+function upload_ended(data)
+{
+	$(`#uploading_${data.date}`).find(".announcement_content").eq(0).text("Uploading: 100%")
+	delete files[data.date]	
+}
+
+function error_occurred()
+{
+	chat_announce({brk1:'[', brk2:']', msg:"An error occurred"})
+}
+
+function verify_email(code)
+{
+	if(utilz.clean_string5(code).length !== code.length)
+	{
+		chat_announce({brk1:'[', brk2:']', msg:"Invalid code"})
+		return
+	}
+
+	if(code.length === 0)
+	{
+		chat_announce({brk1:'[', brk2:']', msg:"Empty code"})
+		return
+	}
+	
+	if(code.length > email_change_code_max_length)
+	{
+		chat_announce({brk1:'[', brk2:']', msg:"Invalid code"})
+		return
+	}
+
+	socket_emit("verify_email", {code:code})
+}
+
+function start_locked_mode()
+{
+	$("#header").css("display", "none")
+	$("#footer").css("display", "none")
+
+	show_locked_menu()
+	make_main_container_visible()	
+}
+
+function show_locked_menu()
+{
+	msg_locked.show()
+}
+
+function show_goto_room()
+{
+	var s = `
+	<input id='goto_room_input' type='text' placeholder='Room ID'>
+	<div class='spacer3'></div>
+	<div class='menu_item' id='goto_room_button'>Go To Room</div>`
+
+	msg_info.show(s, function()
+	{
+		$("#goto_room_input").focus()
+
+		$("#goto_room_button").click(function()
+		{
+			goto_room_action()
+		})
+
+		gtr = true
+	})
+}
+
+function goto_room_action()
+{
+	var id = $("#goto_room_input").val().trim()
+
+	if(id.length === 0)
+	{
+		return false
+	}
+
+	goto_url(id, "tab")
+
+	msg_info.close()
 }

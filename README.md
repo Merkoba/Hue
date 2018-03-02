@@ -174,7 +174,7 @@ If you want to remove it to start fresh:
 >Same as max_max_nickname but for emails.
 
 "password_reset_limit"
->How long a user must wait to get a reset password link emailed to them, after a reset email was sent.
+>How long a user must wait to perform another password reset.
 
 "password_reset_expiration"
 >How long a reset password link will be valid.
@@ -373,6 +373,18 @@ If you want to remove it to start fresh:
 
 "images_changed_crop_limit"
 >How many items are stored in images_changed. images_changed is an array that holds information about image changes in the room. Used for the prev and next buttons in the image modal.
+
+"email_change_limit"
+>How long a user must wait to perform another email verification.
+
+"email_change_expiration"
+>How long an email verification code will be valid.
+
+"email_change_code_max_length"
+>Arbitrary long length to consider email verification codes.
+
+"create_room_cooldown"
+>How long a user must wait to create another room.
 
 ## The following reside in config.secret.json
 

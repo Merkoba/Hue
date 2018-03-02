@@ -31,9 +31,9 @@
 		<script src="/static/js/utilz.js?ver=2"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=966"></script>
+		<script src="/static/js/base.js?ver=967"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=276"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=277"/>
 
 		<script>
 
@@ -209,6 +209,7 @@
 
 				<div class='menu_item' onclick="request_visited_roomlist()">Visited Rooms</div>
 				<div class='menu_item' onclick="request_roomlist()">Public Rooms</div>
+				<div class='menu_item' onclick="show_goto_room()">Go To Room</div>
 				<div class='menu_item' onclick='show_create_room()'>Create Room</div>
 
 				<div id='menu_smaller_container'>
@@ -227,222 +228,221 @@
 
 					<span class='menu_item_smaller' onclick='show_status()'>Status</span>
 
-					<div id='admin_menu'>
+				</div>
 
-						<div class='spacer1'></div>						
+				<div id='admin_menu'>
 
-						<div class='small_padding_bottom'>Images</div>
+					<div class='spacer3'></div>						
 
-						<select id='admin_enable_images'>
-							<option value="true">Enabled</option>
-							<option value="false">Disabled</option>
-						</select>
+					<div class='small_padding_bottom'>Images</div>
 
-						<div class='spacer1'></div>
-						
-						<div class='small_padding_bottom'>TV</div>
+					<select id='admin_enable_images'>
+						<option value="true">Enabled</option>
+						<option value="false">Disabled</option>
+					</select>
 
-						<select id='admin_enable_tv'>
-							<option value="true">Enabled</option>
-							<option value="false">Disabled</option>
-						</select>
+					<div class='spacer1'></div>
+					
+					<div class='small_padding_bottom'>TV</div>
 
-						<div class='spacer1'></div>
+					<select id='admin_enable_tv'>
+						<option value="true">Enabled</option>
+						<option value="false">Disabled</option>
+					</select>
 
-						<div class='small_padding_bottom'>Radio</div>
+					<div class='spacer1'></div>
 
-						<select id='admin_enable_radio'>
-							<option value="true">Enabled</option>
-							<option value="false">Disabled</option>
-						</select>
+					<div class='small_padding_bottom'>Radio</div>
 
-						<div class='spacer1'></div>
-						<div class='spacer3'></div>							
+					<select id='admin_enable_radio'>
+						<option value="true">Enabled</option>
+						<option value="false">Disabled</option>
+					</select>
 
-						<div class='small_padding_bottom'>Theme</div>
+					<div class='spacer1'></div>
+					<div class='spacer3'></div>							
 
-						<input id='admin_default_theme'>
+					<div class='small_padding_bottom'>Theme</div>
 
-						<div class='spacer1'></div>
+					<input id='admin_default_theme'>
 
-						<div class='small_padding_bottom'>Background Image</div>
+					<div class='spacer1'></div>
 
-						<select id='admin_default_background_image_select'>
-							<option value="true">Enabled</option>
-							<option value="false">Disabled</option>
-						</select>						
+					<div class='small_padding_bottom'>Background Image</div>
 
-						<div class='spacer1'></div>
+					<select id='admin_default_background_image_select'>
+						<option value="true">Enabled</option>
+						<option value="false">Disabled</option>
+					</select>						
 
-						<img class='small_square_image pointer' id='admin_default_background_image' onclick='open_default_background_image_picker()'>	
+					<div class='spacer1'></div>
 
-						<div class='spacer1'></div>
-						<div class='spacer3'></div>					
+					<img class='small_square_image pointer' id='admin_default_background_image' onclick='open_default_background_image_picker()'>	
 
-						<div class='admin_v_toggle small_padding_bottom bold pointer'>+ Voice 1 Permissions</div>
+					<div class='spacer1'></div>
+					<div class='spacer3'></div>					
 
-						<div class='admin_v_container'>
+					<div class='admin_v_toggle small_padding_bottom bold pointer'>+ Voice 1 Permissions</div>
 
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Chat</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v1_chat_permission" data-ptype="v1_chat_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change Images</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v1_images_permission" data-ptype="v1_images_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the TV</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v1_tv_permission" data-ptype="v1_tv_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the Radio</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v1_radio_permission" data-ptype="v1_radio_permission">
-
-
-						</div>
-						
-						<div class='spacer1'></div>
-						<div class='spacer3'></div>
-
-						<div class='admin_v_toggle small_padding_bottom bold pointer'>+ Voice 2 Permissions</div>
-
-						<div class='admin_v_container'>						
-
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Chat</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v2_chat_permission" data-vtype="v2" data-ptype="v2_chat_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change Images</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v2_images_permission" data-vtype="v2" data-ptype="v2_images_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the TV</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v2_tv_permission" data-vtype="v2" data-ptype="v2_tv_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the Radio</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v2_radio_permission" data-vtype="v2" data-ptype="v2_radio_permission">
-
-
-						</div>
-						
-						<div class='spacer1'></div>
-						<div class='spacer3'></div>
-
-						<div class='admin_v_toggle small_padding_bottom bold pointer'>+ Voice 3 Permissions</div>
-
-						<div class='admin_v_container'>
-
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Chat</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v3_chat_permission" data-vtype="v3" data-ptype="v3_chat_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change Images</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v3_images_permission" data-vtype="v3" data-ptype="v3_images_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the TV</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v3_tv_permission" data-vtype="v3" data-ptype="v3_tv_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the Radio</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v3_radio_permission" data-vtype="v3" data-ptype="v3_radio_permission">
-
-						</div>
-
-						<div class='spacer1'></div>
-						<div class='spacer3'></div>
-
-						<div class='admin_v_toggle small_padding_bottom bold pointer'>+ Voice 4 Permissions</div>
-						
-						<div class='admin_v_container'>
-						
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Chat</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v4_chat_permission" data-vtype="v4" data-ptype="v4_chat_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change Images</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v4_images_permission" data-vtype="v4" data-ptype="v4_images_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the TV</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v4_tv_permission" data-vtype="v4" data-ptype="v4_tv_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the Radio</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v4_radio_permission" data-vtype="v4" data-ptype="v4_radio_permission">
-
-
-						</div>				
-						
-						<div class='spacer1'></div>
-						<div class='spacer3'></div>
-
-						<div class='small_padding_bottom'>Privacy</div>
-
-						<select id='admin_privacy'>
-							<option value="true">Public</option>
-							<option value="false">Private</option>
-						</select>
+					<div class='admin_v_container'>
 
 						<div class='spacer1'></div>
 
-						<div class='small_padding_bottom'>Log</div>
-
-						<select id='admin_log'>
-							<option value="true">Enabled</option>
-							<option value="false">Disabled</option>
-						</select>						
-
-						<div class='spacer1'></div>
-						<div class='spacer3'></div>					
-
-						<div class='smaller_font_size'>These require double click</div>
-
-						<div class='spacer1'></div>
-
-						<div class='pointer underlined' ondblclick='reset_voices()'>Reset Voices</div>
-
-						<div class='spacer1'></div>
-
-						<div class='pointer underlined' ondblclick='remove_ops()'>Remove Ops</div>
+						<div class='setting_title'>Can Chat</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v1_chat_permission" data-ptype="v1_chat_permission">
 						
 						<div class='spacer1'></div>
 
-						<div class='pointer underlined' ondblclick='clear_log()'>Clear Log</div>
+						<div class='setting_title'>Can Change Images</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v1_images_permission" data-ptype="v1_images_permission">
 						
 						<div class='spacer1'></div>
 
-						<div class='pointer underlined' ondblclick='get_banned_count()'>Banned Count</div>
+						<div class='setting_title'>Can Change the TV</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v1_tv_permission" data-ptype="v1_tv_permission">
 						
 						<div class='spacer1'></div>
 
-						<div class='pointer underlined' ondblclick='unban_all()'>Unban All</div>
+						<div class='setting_title'>Can Change the Radio</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v1_radio_permission" data-ptype="v1_radio_permission">
+
+
+					</div>
+					
+					<div class='spacer1'></div>
+					<div class='spacer3'></div>
+
+					<div class='admin_v_toggle small_padding_bottom bold pointer'>+ Voice 2 Permissions</div>
+
+					<div class='admin_v_container'>						
+
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Chat</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v2_chat_permission" data-vtype="v2" data-ptype="v2_chat_permission">
+						
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Change Images</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v2_images_permission" data-vtype="v2" data-ptype="v2_images_permission">
+						
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Change the TV</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v2_tv_permission" data-vtype="v2" data-ptype="v2_tv_permission">
+						
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Change the Radio</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v2_radio_permission" data-vtype="v2" data-ptype="v2_radio_permission">
+
+
+					</div>
+					
+					<div class='spacer1'></div>
+					<div class='spacer3'></div>
+
+					<div class='admin_v_toggle small_padding_bottom bold pointer'>+ Voice 3 Permissions</div>
+
+					<div class='admin_v_container'>
+
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Chat</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v3_chat_permission" data-vtype="v3" data-ptype="v3_chat_permission">
+						
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Change Images</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v3_images_permission" data-vtype="v3" data-ptype="v3_images_permission">
+						
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Change the TV</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v3_tv_permission" data-vtype="v3" data-ptype="v3_tv_permission">
+						
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Change the Radio</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v3_radio_permission" data-vtype="v3" data-ptype="v3_radio_permission">
 
 					</div>
 
-				</div>
+					<div class='spacer1'></div>
+					<div class='spacer3'></div>
 
+					<div class='admin_v_toggle small_padding_bottom bold pointer'>+ Voice 4 Permissions</div>
+					
+					<div class='admin_v_container'>
+					
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Chat</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v4_chat_permission" data-vtype="v4" data-ptype="v4_chat_permission">
+						
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Change Images</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v4_images_permission" data-vtype="v4" data-ptype="v4_images_permission">
+						
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Change the TV</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v4_tv_permission" data-vtype="v4" data-ptype="v4_tv_permission">
+						
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Change the Radio</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_v4_radio_permission" data-vtype="v4" data-ptype="v4_radio_permission">
+
+
+					</div>				
+					
+					<div class='spacer1'></div>
+					<div class='spacer3'></div>
+
+					<div class='small_padding_bottom'>Privacy</div>
+
+					<select id='admin_privacy'>
+						<option value="true">Public</option>
+						<option value="false">Private</option>
+					</select>
+
+					<div class='spacer1'></div>
+
+					<div class='small_padding_bottom'>Log</div>
+
+					<select id='admin_log'>
+						<option value="true">Enabled</option>
+						<option value="false">Disabled</option>
+					</select>						
+
+					<div class='spacer1'></div>
+					<div class='spacer3'></div>					
+
+					<div class='smaller_font_size'>These require double click</div>
+
+					<div class='spacer1'></div>
+
+					<div class='pointer underlined' ondblclick='reset_voices()'>Reset Voices</div>
+
+					<div class='spacer1'></div>
+
+					<div class='pointer underlined' ondblclick='remove_ops()'>Remove Ops</div>
+					
+					<div class='spacer1'></div>
+
+					<div class='pointer underlined' ondblclick='clear_log()'>Clear Log</div>
+					
+					<div class='spacer1'></div>
+
+					<div class='pointer underlined' ondblclick='get_banned_count()'>Banned Count</div>
+					
+					<div class='spacer1'></div>
+
+					<div class='pointer underlined' ondblclick='unban_all()'>Unban All</div>
+
+				</div>
 			</div>
 		</script>	
 
@@ -689,6 +689,15 @@
 				<div class='menu_item' onclick='refresh_radio(); hide_media_menu()'>Refresh Radio</div>
 			</div>
 		</script>
+
+		<script id='template_locked_menu' type='text/x-handlebars-template'>
+			<div id='locked_menu' class='unselectable'>
+				<div class='menu_item' onclick="request_visited_roomlist()">Visited Rooms</div>
+				<div class='menu_item' onclick="request_roomlist()">Public Rooms</div>
+				<div class='menu_item' onclick="show_goto_room()">Go To Room</div>				
+				<div class='menu_item' onclick='show_create_room()'>Create Room</div>
+			</div>
+		</script>		
 
 		<script id='template_whisper' type='text/x-handlebars-template'>
 			<div class='bigger' id='write_whisper_info'>
