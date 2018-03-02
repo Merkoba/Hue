@@ -2641,149 +2641,149 @@ function activate_key_detection()
 			double_tap_3_timer()
 		}
 
-		if(iup)
-		{
-			if(msg_image_picker.is_highest())
-			{
-				if(e.key === "Enter")
-				{
-					var val = $("#image_url_picker_input").val().trim()
-
-					if(val !== "")
-					{
-						upload_image_by_url(val)
-						close_all_modals()
-						e.preventDefault()
-					}
-				}
-				
-				return			
-			}
-		}
-
-		if(tup)
-		{
-			if(msg_tv_picker.is_highest())
-			{
-				if(e.key === "Enter")
-				{
-					var val = $("#tv_url_picker_input").val().trim()
-
-					if(val !== "")
-					{
-						change_tv_source(val)
-						close_all_modals()
-						e.preventDefault()
-					}
-				}
-				
-				return			
-			}
-		}		
-
-		if(rup)
-		{
-			if(msg_radio_picker.is_highest())
-			{
-				if(e.key === "Enter")
-				{
-					var val = $("#radio_url_picker_input").val().trim()
-
-					if(val !== "")
-					{
-						change_radio_source(val)
-						close_all_modals()
-						e.preventDefault()
-					}
-				}
-				
-				return			
-			}
-		}
-
-		if(crm)
-		{
-			if(msg_info.is_highest())
-			{
-				if(e.key === "Enter")
-				{
-					create_room_submit()
-					e.preventDefault()
-				}
-				
-				return
-			}
-		}
-
-		if(orb)
-		{
-			if(msg_info.is_highest())
-			{
-				if(e.key === "Enter")
-				{
-					if(e.shiftKey)
-					{
-						$("#open_room_here").trigger("click")
-					}
-
-					else
-					{
-						$("#open_room_new_tab").trigger("click")
-					}
-				}
-				
-				e.preventDefault()
-				return
-			}
-		}
-
-		if(stu)
-		{
-			if(msg_info.is_highest())
-			{
-				if(e.key === "Tab" && e.shiftKey)
-				{
-					close_all_modals()
-					e.preventDefault()
-				}
-
-				return
-			}
-		}
-
-		if(writing_whisper)
-		{
-			if(msg_whisper.is_highest())
-			{
-				if(e.key === "Enter")
-				{
-					send_whisper()
-				}
-				
-				return
-			}
-		}
-
-		if(modal_image_open)
-		{
-			if(msg_image.is_highest())
-			{
-				if(e.key === "ArrowLeft")
-				{
-					image_prev_click()
-				}
-				
-				else if(e.key === "ArrowRight")
-				{
-					image_next_click()
-				}
-				
-				return
-			}
-		}	
-
 		if(modal_open)
 		{
+			if(iup)
+			{
+				if(msg_image_picker.is_highest())
+				{
+					if(e.key === "Enter")
+					{
+						var val = $("#image_url_picker_input").val().trim()
+
+						if(val !== "")
+						{
+							upload_image_by_url(val)
+							close_all_modals()
+							e.preventDefault()
+						}
+					}
+					
+					return			
+				}
+			}
+
+			if(tup)
+			{
+				if(msg_tv_picker.is_highest())
+				{
+					if(e.key === "Enter")
+					{
+						var val = $("#tv_url_picker_input").val().trim()
+
+						if(val !== "")
+						{
+							change_tv_source(val)
+							close_all_modals()
+							e.preventDefault()
+						}
+					}
+					
+					return			
+				}
+			}		
+
+			if(rup)
+			{
+				if(msg_radio_picker.is_highest())
+				{
+					if(e.key === "Enter")
+					{
+						var val = $("#radio_url_picker_input").val().trim()
+
+						if(val !== "")
+						{
+							change_radio_source(val)
+							close_all_modals()
+							e.preventDefault()
+						}
+					}
+					
+					return			
+				}
+			}
+
+			if(crm)
+			{
+				if(msg_info.is_highest())
+				{
+					if(e.key === "Enter")
+					{
+						create_room_submit()
+						e.preventDefault()
+					}
+					
+					return
+				}
+			}
+
+			if(orb)
+			{
+				if(msg_info.is_highest())
+				{
+					if(e.key === "Enter")
+					{
+						if(e.shiftKey)
+						{
+							$("#open_room_here").trigger("click")
+						}
+
+						else
+						{
+							$("#open_room_new_tab").trigger("click")
+						}
+					}
+					
+					e.preventDefault()
+					return
+				}
+			}
+
+			if(stu)
+			{
+				if(msg_info.is_highest())
+				{
+					if(e.key === "Tab" && e.shiftKey)
+					{
+						close_all_modals()
+						e.preventDefault()
+					}
+
+					return
+				}
+			}
+
+			if(writing_whisper)
+			{
+				if(msg_whisper.is_highest())
+				{
+					if(e.key === "Enter")
+					{
+						send_whisper()
+					}
+					
+					return
+				}
+			}
+
+			if(modal_image_open)
+			{
+				if(msg_image.is_highest())
+				{
+					if(e.key === "ArrowLeft")
+					{
+						image_prev_click()
+					}
+					
+					else if(e.key === "ArrowRight")
+					{
+						image_next_click()
+					}
+					
+					return
+				}
+			}
+
 			return
 		}
 
