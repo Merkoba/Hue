@@ -169,10 +169,11 @@ body
 	cursor: pointer;
 }
 
-#media_image_text
+#media_image_error
 {
 	display: none;
-	font-size: 1.1em;
+	font-size: 1.2em;
+	cursor: pointer;
 }
 
 #media_tv
@@ -952,14 +953,19 @@ input[type=text], textarea
 	overflow: hidden;
 }
 
-.modal_image
+#modal_image
 {
 	max-width: 90vw;
 	max-height: 90vh;
 	display: none;
 }
 
-.image_overlay_button
+#modal_image_error
+{
+	padding: 2em;
+}
+
+.modal_image_overlay_button
 {
 	padding-top: 0.3em;
 	cursor: pointer;
@@ -967,13 +973,13 @@ input[type=text], textarea
 	z-index: 10;
 }
 
-#image_overlay_prev
+#modal_image_overlay_prev
 {
 	float: left;
 	padding-left: 0.5em;
 }
 
-#image_overlay_next
+#modal_image_overlay_next
 {
 	float: right;
 	padding-right: 0.5em;

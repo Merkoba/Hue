@@ -91,6 +91,7 @@ var template_tv_history
 var template_radio_history
 var template_input_history
 var template_chat_search
+var template_image
 var msg_menu
 var msg_userinfo
 var msg_userlist
@@ -163,6 +164,9 @@ var tv_visible
 var radio_visible
 var images_changed = []
 var modal_image_open = false
+var current_image_url = ""
+var current_image_title = ""
+var current_image_date_raw = 0
 
 function init()
 {
@@ -206,6 +210,7 @@ function init()
 	setup_input()
 	font_check()
 	setup_input_history()
+	setup_modal_image()
 
 	start_socket()
 }
@@ -285,6 +290,7 @@ function compile_templates()
 	template_radio_history = Handlebars.compile($('#template_radio_history').html())
 	template_input_history = Handlebars.compile($('#template_input_history').html())
 	template_chat_search = Handlebars.compile($('#template_chat_search').html())
+	template_image = Handlebars.compile($('#template_image').html())
 }
 
 function help()
@@ -3807,7 +3813,7 @@ function change(args={})
 
 function show_image(force=false)
 {
-	$("#media_image_text").css("display", "none")
+	$("#media_image_error").css("display", "none")
 
 	$("#media_image").css("display", "initial")
 
@@ -3824,7 +3830,7 @@ function show_image(force=false)
 
 function show_current_image_modal()
 {
-	show_modal_image(current_image_url, current_image_title, image_date_raw)
+	show_modal_image(current_image_url, current_image_title, current_image_date_raw)
 }
 
 function start_image_events()
@@ -3837,7 +3843,7 @@ function start_image_events()
 	$('#media_image').on("error", function() 
 	{
 		$("#media_image").css("display", "none")
-		$("#media_image_text").css("display", "initial")
+		$("#media_image_error").css("display", "initial")
 	})	
 
 	$('#test_image')[0].addEventListener('load', function() 
@@ -3855,6 +3861,7 @@ function after_image_load(img)
 {
 	current_image_url = image_url
 	current_image_title = image_title
+	current_image_date_raw = image_date_raw
 	
 	$(img).prop('title', image_title)
 }
@@ -5481,8 +5488,13 @@ function start_metadata_loop()
 
 function start_volume_scroll()
 {
-	document.getElementById('header').addEventListener("wheel", function(e)
+	$('#header')[0].addEventListener("wheel", function(e)
 	{
+		if(!radio_started)
+		{
+			return false
+		}
+
 		var direction = e.deltaY > 0 ? 'down' : 'up'
 
 		if(direction === 'up')
@@ -7273,8 +7285,8 @@ function start_msg()
 	msg_radio_history.set(template_radio_history())
 	msg_input_history.set(template_input_history())
 	msg_chat_search.set(template_chat_search())
+	msg_image.set(template_image())
 
-	msg_image.create()
 	msg_info.create()
 
 	setup_image_overlay()
@@ -8475,27 +8487,20 @@ function show_modal_image(url, title=false, date)
 		var t = ""
 	}
 
-	var c = $("<div id='modal_image_container'></div>")
+	var img = $("#modal_image")
 
-	c.append($(`<div id="modal_spinner" class='spinner1'></div><img ${t} id="modal_image" class="modal_image" src="${url}">`))
+	img.css("display", "none")
 
-	var img = c.find("#modal_image").eq(0)
+	$("#modal_image_spinner").css("display", "block")
+	$("#modal_image_error").css("display", "none")	
 
-	img[0].addEventListener('load', function()
-	{
-		$("#modal_spinner").css("display", "none")
-		this.style.display = "block"
-		update_modal_scrollbar("image")
-	})
+	img.attr("title", t)
+	img.attr("src", url)
+	img.data("image_date", date)
 
-	img.on("error", function() 
-	{
-		msg_image.set("<div class='padding1'>Image no longer available</div>")
-	})
+	update_modal_scrollbar("image")
 
-	c.data("image_date", date)
-
-	msg_image.show(c[0])
+	msg_image.show()
 }
 
 function not_an_op()
@@ -10504,19 +10509,19 @@ function setup_image_overlay()
 {
 	var s = ""
 	
-	s +="<div id='image_overlay_prev' class='unselectable image_overlay_button'>&lt; Prev</div>"
-	s +="<div id='image_overlay_next' class='unselectable image_overlay_button'>Next &gt;</div>"
+	s +="<div id='modal_image_overlay_prev' class='unselectable modal_image_overlay_button'>&lt; Prev</div>"
+	s +="<div id='modal_image_overlay_next' class='unselectable modal_image_overlay_button'>Next &gt;</div>"
 
 	$("#Msg-overlay-image").html(s)
 
-	$("#image_overlay_prev").click(function(e)
+	$("#modal_image_overlay_prev").click(function(e)
 	{
 		image_prev_click()
 		e.preventDefault()
 		e.stopPropagation()
 	})
 
-	$("#image_overlay_next").click(function(e)
+	$("#modal_image_overlay_next").click(function(e)
 	{
 		image_next_click()
 		e.preventDefault()
@@ -10530,8 +10535,8 @@ function image_prev_click()
 	{
 		return false
 	}
-	
-	var date = $("#modal_image_container").data("image_date")
+
+	var date = $("#modal_image").data("image_date")
 	var url = $("#modal_image").attr("src")
 
 	for(var data of images_changed.slice(0).reverse())
@@ -10554,8 +10559,8 @@ function image_next_click(e)
 	{
 		return false
 	}
-	
-	var date = $("#modal_image_container").data("image_date")
+
+	var date = $("#modal_image").data("image_date")
 	var url = $("#modal_image").attr("src")
 
 	for(var data of images_changed)
@@ -10571,3 +10576,77 @@ function image_next_click(e)
 
 	show_modal_image(first.image_url, first.title, first.date_raw)
 }
+
+function setup_modal_image()
+{
+	var img = $("#modal_image")
+
+	img[0].addEventListener('load', function()
+	{
+		setTimeout(function()
+		{
+			$("#modal_image_spinner").css("display", "none")
+			$("#modal_image").css("display", "block")
+			update_modal_scrollbar("image")
+		}, 500)
+	})
+
+	img.on("error", function() 
+	{
+		setTimeout(function()
+		{		
+			$("#modal_image_spinner").css("display", "none")
+			$("#modal_image").css("display", "none")
+			$("#modal_image_error").css("display", "block")
+			update_modal_scrollbar("image")
+		}, 500)
+	})
+
+	var f = function(e)
+	{
+		var direction = e.deltaY > 0 ? 'down' : 'up'
+
+		if(direction === 'up')
+		{
+			modal_image_next_wheel_timer()
+		}
+
+		else if(direction === 'down')
+		{
+			modal_image_prev_wheel_timer()
+		}
+	}	
+
+	$("#Msg-window-image")[0].addEventListener("wheel", f)
+	$("#Msg-overlay-image")[0].addEventListener("wheel", f)
+}
+
+var modal_image_prev_wheel_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			image_prev_click()
+		}, 200)
+	}
+})()
+
+var modal_image_next_wheel_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			image_next_click()
+		}, 200)
+	}
+})()
