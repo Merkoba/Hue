@@ -4909,7 +4909,7 @@ function send_to_chat(msg, to_history=true)
 
 			else if(oiEquals(lmsg, '/date'))
 			{
-				chat_announce({brk1:'[', brk2:']', msg:nice_date()})
+				show_current_date()
 			}
 
 			else
@@ -10691,3 +10691,8 @@ var modal_image_next_wheel_timer = (function()
 		}, 200)
 	}
 })()
+
+function show_current_date()
+{
+	chat_announce({brk1:'[', brk2:']', msg:nice_date()})	
+}
