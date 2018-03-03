@@ -10,7 +10,11 @@
 
 			function validate_form()
 			{
-
+				if(msg.is_open())
+				{
+					return false
+				}
+								
 				$("#login_email").val($("#login_email").val().trim())
 				
 				var email = $("#login_email").val()

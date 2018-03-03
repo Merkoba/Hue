@@ -6,6 +6,12 @@
 
 		<% include pages_imports.ejs %>	
 
+		<script src='https://www.google.com/recaptcha/api.js'></script>
+
+		<script>
+			var recaptcha_checked = false
+		</script>
+
 	</head>
 
 	<body>
@@ -41,6 +47,14 @@
 
 				<div class="spacer4"></div>
 
+				<% if(vars.recaptcha_enabled) {%>
+
+				<div class="g-recaptcha" data-sitekey="<%-vars.recaptcha_key%>" data-callback="recaptcha_callback"></div>				
+				
+				<div class="spacer4"></div>
+
+				<%}%>
+
 				<input id="btn_register" type="submit" value="Register">
 
 			</form>
@@ -60,6 +74,12 @@
 				if(msg.is_open())
 				{
 					return false
+				}
+
+				if(recaptcha_enabled && !recaptcha_checked)
+				{
+					set_message("Captcha is not solved")
+					return false					
 				}
 
 				if($("#username_taken").css("display") !== "none")
@@ -205,6 +225,11 @@
 					check_username_timer()	
 				}
 			})
+
+			function recaptcha_callback()
+			{
+				recaptcha_checked = true
+			}
 
 		</script>
 

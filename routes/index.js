@@ -2,6 +2,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 {
 	const jwt = require('jsonwebtoken')
 	const express = require('express')
+	const fetch = require('node-fetch')
 	const router = express.Router()
 
 	var c = {}
@@ -221,6 +222,12 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		c.vars.max_password_length = config.max_password_length
 		c.vars.max_email_length = config.max_email_length
 		c.vars.register_title = config.register_title
+		c.vars.recaptcha_enabled = config.recaptcha_enabled
+
+		if(config.recaptcha_enabled)
+		{
+			c.vars.recaptcha_key = sconfig.recaptcha_key
+		}
 
 		res.render('register', c)
 	})
@@ -229,8 +236,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	{
 		var username = req.body.username
 		var password = req.body.password 
-		var email = req.body.email 
-		var fromurl = req.body.fromurl
+		var email = req.body.email
 
 		if(username.length === 0 || username.length > config.max_username_length)
 		{
@@ -261,6 +267,52 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		{
 			return false
 		}
+
+		if(config.recaptcha_enabled)
+		{
+			var recaptcha_response = req.body["g-recaptcha-response"]
+			var remote_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+
+			if(recaptcha_response === undefined || recaptcha_response === '' || recaptcha_response === null)
+			{
+				return false
+			}
+
+			fetch('https://www.google.com/recaptcha/api/siteverify', 
+			{
+				method: 'POST',
+				body: `secret=${sconfig.recaptcha_secret_key}&response=${recaptcha_response}&remoteip=${remote_ip}`,
+				headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'}
+			})
+
+			.then(res => res.json())
+
+			.then(json => 
+			{
+				if(json.success)
+				{
+					do_register(req, res, next)
+				}
+
+				else
+				{
+					var m = encodeURIComponent(`There was a problem verifying you're not a robot.`)
+					res.redirect(`/message?message=${m}`)					
+				}
+			})	
+		}
+
+		else
+		{
+			do_register(req, res, next)
+		}
+	})
+
+	function do_register(req, res, next)
+	{
+		var username = req.body.username
+		var password = req.body.password 
+		var email = req.body.email
 
 		db_manager.get_user({$or:[{username: username}, {email:email}]}, {username:true}, false)
 
@@ -301,8 +353,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		.catch(err =>
 		{
 			console.error(err)
-		})
-	})
+		})		
+	}
 
 	router.get('/verify', check_url, function(req, res, next)
 	{
