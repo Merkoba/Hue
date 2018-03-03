@@ -313,7 +313,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		if(token.length.indexOf('_') === -1)
+		if(token.indexOf('_') === -1)
 		{
 			return false
 		}		
@@ -476,7 +476,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		if(token.length.indexOf('_') === -1)
+		if(token.indexOf('_') === -1)
 		{
 			return false
 		}
