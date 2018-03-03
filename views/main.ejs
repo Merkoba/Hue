@@ -692,10 +692,14 @@
 
 		<script id='template_locked_menu' type='text/x-handlebars-template'>
 			<div id='locked_menu' class='unselectable'>
+				<div>You are banned from the main room</div>
+				<div class='spacer3'></div>
 				<div class='menu_item' onclick="request_visited_roomlist()">Visited Rooms</div>
 				<div class='menu_item' onclick="request_roomlist()">Public Rooms</div>
 				<div class='menu_item' onclick="show_goto_room()">Go To Room</div>				
 				<div class='menu_item' onclick='show_create_room()'>Create Room</div>
+				<div class='spacer3'></div>
+				<div class='menu_item_smaller' onclick='confirm_logout()'>Logout</div>
 			</div>
 		</script>		
 
