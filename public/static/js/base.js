@@ -841,7 +841,7 @@ function start_socket()
 
 		else if(data.type === 'upload_ended') 
 		{
-			upload_ended()
+			upload_ended(data)
 		}	
 
 		else if(data.type === 'chat_announcement')
