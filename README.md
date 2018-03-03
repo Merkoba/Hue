@@ -386,6 +386,9 @@ If you want to remove it to start fresh:
 "create_room_cooldown"
 >How long a user must wait to create another room.
 
+"recaptcha_enabled"
+>Wether recaptcha verification is used at registration.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"
@@ -426,6 +429,12 @@ If you want to remove it to start fresh:
 
 "jwt_secret"
 >Secret key for the jwt system when logging in.
+
+"recaptcha_key"
+>Public google recaptcha key.
+
+"recaptcha_secret_key"
+>Secret google recaptcha key.
 
 # Development
 
