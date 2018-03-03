@@ -625,7 +625,6 @@ module.exports = function(db, config, sconfig, utilz, logger)
 			{
 				if(verified)
 				{
-					query.verified = true
 					query = {$and:[query, {verified:true}]}					
 				}
 
