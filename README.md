@@ -17,7 +17,7 @@ Configuration is done in the config.json and config.secret.json files found in t
 
 The admin email must go in superuser_emails in config.secret.json. It's used to take over control of the main room. The main room is created on first join, with no roles. To get admin on the room use /annex.
 
-To have a full working system, as it is intended, getting the youtube api key is very recommended. Twitch api key is recommended to support twitch 'videos' (channels work out of the box). Mailgun api key is necessary for account creation and password recovery, so it must be provided. Setup these in config.secret.json. If you don't want any of these, disable them in the config.json
+To have a full working system, as it is intended, getting the YouTube api key is very recommended. Twitch api key is recommended to support twitch 'videos' (channels work out of the box). Mailgun api key is necessary for account creation and password recovery, so it must be provided. A Google Recaptcha key is necessary to enable captcha verification on registration. Setup these in config.secret.json. If you don't want any of these, disable them in the config.json
 
 To run it locally you first have to start 'mongod' then go to the bin directory and run 'node www start'.
 
