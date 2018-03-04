@@ -3450,7 +3450,7 @@ function setup_scrollbars()
 	{
 		start_chat_scrollbar()
 		start_modal_scrollbars()
-		fix_chat_scroll()
+		chat_scroll_bottom(false)
 	}
 }
 
@@ -6106,11 +6106,11 @@ function fix_chat_scroll()
 	$("#chat_area").find(".ps__rail-y").eq(0).prependTo("#chat_area")
 }
 
-function chat_scroll_bottom()
+function chat_scroll_bottom(force=true)
 {
 	update_chat_scrollbar()
 	fix_chat_scroll()
-	goto_bottom(true)
+	goto_bottom(force)
 }
 
 function clear_chat()
