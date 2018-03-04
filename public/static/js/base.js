@@ -2631,7 +2631,7 @@ var double_tap_timer = (function()
 		timer = setTimeout(function() 
 		{
 			double_tap_key_pressed = 0
-		}, 350)
+		}, 200)
 	}
 })()
 
@@ -2646,7 +2646,7 @@ var double_tap_2_timer = (function()
 		timer = setTimeout(function() 
 		{
 			double_tap_key_2_pressed = 0
-		}, 350)
+		}, 200)
 	}
 })()
 
@@ -2661,7 +2661,7 @@ var double_tap_3_timer = (function()
 		timer = setTimeout(function() 
 		{
 			double_tap_key_3_pressed = 0
-		}, 350)
+		}, 200)
 	}
 })()
 
@@ -4339,6 +4339,7 @@ function register_commands()
 	commands.push('/stoptv')
 	commands.push('/openimage')
 	commands.push('/date')
+	commands.push('/js')
 
 	commands.sort()
 
@@ -4974,6 +4975,11 @@ function send_to_chat(msg, to_history=true)
 			else if(oiEquals(lmsg, '/date'))
 			{
 				show_current_date()
+			}
+
+			else if(oiStartsWith(lmsg, '/js'))
+			{
+				execute_javascript(arg)
 			}
 
 			else
@@ -10996,4 +11002,44 @@ function setup_chat()
 	{
 		start_chat_scrollbar()
 	}	
+}
+
+function execute_javascript(arg)
+{
+	try
+	{
+		var r = eval(arg)
+
+		if(typeof r === "number")
+		{
+			try
+			{
+				r = utilz.round(r, 2)
+			}
+
+			catch(err){}
+		}
+
+		try
+		{
+			r = JSON.stringify(r)
+		}
+
+		catch(err)
+		{
+			r = "Done"
+		}
+		
+		if(r === undefined || typeof r === "object")
+		{
+			r = "Done"
+		}
+	}
+	
+	catch(err)
+	{
+		var r = "Error"
+	}
+
+	chat_announce({brk1:'[', brk2:']', msg:`js: ${r}`})
 }
