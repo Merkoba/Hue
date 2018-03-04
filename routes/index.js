@@ -297,9 +297,16 @@ module.exports = function(db_manager, config, sconfig, utilz)
 				else
 				{
 					var m = encodeURIComponent(`There was a problem verifying you're not a robot.`)
-					res.redirect(`/message?message=${m}`)					
+					res.redirect(`/message?message=${m}`)
 				}
-			})	
+			})
+
+			.catch(err =>
+			{
+				var m = encodeURIComponent(`There was a problem verifying you're not a robot.`)
+				res.redirect(`/message?message=${m}`)
+				console.error(err)
+			})
 		}
 
 		else
