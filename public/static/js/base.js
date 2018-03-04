@@ -11062,5 +11062,10 @@ function execute_javascript(arg)
 		var r = "Error"
 	}
 
-	chat_announce({brk1:'[', brk2:']', msg:`js: ${r}`})
+	var f = function()
+	{
+		msg_info.show(arg)
+	}
+
+	chat_announce({brk1:'[', brk2:']', msg:`js: ${r}`, onclick:f})
 }
