@@ -18,9 +18,9 @@ You will also need MongoDB installed in your computer, and the mongod daemon run
 
 >systemctl start mongod
 
-There is no need to create database tables, all of that is done automatically. MongoDB just needs to be installed and running.
+There is no need to create database tables, all of that is done automatically.
 
-Then go to the bin directory and run: 
+Go to the bin directory and run: 
 
 >node www start
 
