@@ -3921,9 +3921,18 @@ function show_image(force=false)
 	}
 }
 
-function show_current_image_modal()
+function show_current_image_modal(current=true)
 {
-	show_modal_image(current_image_url, current_image_title, current_image_date_raw)
+	if(current)
+	{
+		show_modal_image(current_image_url, current_image_title, current_image_date_raw)
+	}
+
+	else
+	{
+		var data = images_changed[images_changed.length - 1]
+		show_modal_image(data.image_url, data.title, data.date_raw)
+	}
 }
 
 function start_image_events()
@@ -4338,6 +4347,7 @@ function register_commands()
 	commands.push('/starttv')
 	commands.push('/stoptv')
 	commands.push('/openimage')
+	commands.push('/openlastimage')
 	commands.push('/date')
 	commands.push('/js')
 
@@ -4970,6 +4980,11 @@ function send_to_chat(msg, to_history=true)
 			else if(oiEquals(lmsg, '/openimage'))
 			{
 				show_current_image_modal()
+			}
+
+			else if(oiEquals(lmsg, '/openlastimage'))
+			{
+				show_current_image_modal(false)
 			}
 
 			else if(oiEquals(lmsg, '/date'))
@@ -8690,6 +8705,12 @@ function show_log()
 
 function show_modal_image(url, title=false, date)
 {
+	if(!url)
+	{
+		msg_info.show("No image loaded yet")
+		return
+	}
+
 	if(title)
 	{
 		var t = title
