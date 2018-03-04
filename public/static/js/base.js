@@ -813,9 +813,8 @@ function start_socket()
 			setup_tv(data)
 			setup_radio(data)
 
+			chat_scroll_bottom()
 			make_main_container_visible()
-		
-			fix_chat_scroll()
 			start_heartbeat()
 
 			date_joined = Date.now()
@@ -3451,6 +3450,7 @@ function setup_scrollbars()
 	{
 		start_chat_scrollbar()
 		start_modal_scrollbars()
+		fix_chat_scroll()
 	}
 }
 
@@ -6102,11 +6102,14 @@ function chat_search(filter=false)
 
 function fix_chat_scroll()
 {
-	update_chat_scrollbar()
-
 	$("#chat_area").find(".ps__rail-x").eq(0).prependTo("#chat_area")
 	$("#chat_area").find(".ps__rail-y").eq(0).prependTo("#chat_area")
+}
 
+function chat_scroll_bottom()
+{
+	update_chat_scrollbar()
+	fix_chat_scroll()
 	goto_bottom(true)	
 }
 
@@ -6133,7 +6136,7 @@ function unclear_chat()
 		add_to_chat(el.clone(true, true), false, false)
 	}
 
-	fix_chat_scroll()
+	chat_scroll_bottom()
 }
 
 function clear_input()
@@ -7585,18 +7588,18 @@ function start_settings_listeners()
 	$("#setting_double_tap_3").blur(setting_double_tap_3_action)
 }
 
-function call_setting_actions()
+function call_setting_actions(save=true)
 {
-	setting_background_image_action()
-	setting_custom_scrollbars_action()
-	setting_sound_notifications_action()
-	setting_modal_effects_action()
-	setting_highlight_current_username_action()
-	setting_case_insensitive_highlights_action()
-	setting_other_words_to_highlight_action()
-	setting_double_tap_action()
-	setting_double_tap_2_action()
-	setting_double_tap_3_action()	
+	setting_background_image_action(save)
+	setting_custom_scrollbars_action(save)
+	setting_sound_notifications_action(save)
+	setting_modal_effects_action(save)
+	setting_highlight_current_username_action(save)
+	setting_case_insensitive_highlights_action(save)
+	setting_other_words_to_highlight_action(save)
+	setting_double_tap_action(save)
+	setting_double_tap_2_action(save)
+	setting_double_tap_3_action(save)	
 }
 
 function setting_background_image_action(save=true)
@@ -10969,7 +10972,8 @@ function reset_settings()
 	localStorage.removeItem(ls_settings)
 	get_settings()
 	start_settings_state()
-	call_setting_actions()
+	call_setting_actions(false)
+	save_settings()	
 }
 
 function setup_chat()
