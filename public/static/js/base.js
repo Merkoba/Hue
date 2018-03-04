@@ -10227,7 +10227,12 @@ function send_whisper()
 
 	close_all_modals()
 
-	chat_announce({brk1:'[', brk2:']', msg:`Whisper sent to ${uname}`})
+	var f = function()
+	{
+		msg_info.show(whisper)
+	}
+
+	chat_announce({brk1:'[', brk2:']', msg:`Whisper sent to ${uname}`, onclick:f})
 }
 
 function whisper_received(data)
