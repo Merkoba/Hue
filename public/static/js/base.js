@@ -10926,7 +10926,7 @@ function show_locked_menu()
 function show_goto_room()
 {
 	var s = `
-	<input id='goto_room_input' type='text' placeholder='Room ID'>
+	<input id='goto_room_input' type='text' placeholder='Room ID or URL'>
 	<div class='spacer3'></div>
 	<div class='menu_item' id='goto_room_button'>Go To Room</div>`
 
