@@ -196,7 +196,7 @@ function init()
 	scroll_events()
 	resize_events()
 	register_commands()
-	start_chat_scrollbar()
+	setup_chat()
 	start_chat_click_events()
 	start_played_click_events()
 	start_userlist_click_events()
@@ -3450,7 +3450,7 @@ function setup_scrollbars()
 	if(settings.custom_scrollbars)
 	{
 		start_chat_scrollbar()
-		start_modal_scrollbars()		
+		start_modal_scrollbars()
 	}
 }
 
@@ -7573,114 +7573,178 @@ function start_settings_state()
 
 function start_settings_listeners()
 {
-	$("#setting_background_image").change(function()
+	$("#setting_background_image").change(setting_background_image_action)
+	$("#setting_custom_scrollbars").change(setting_custom_scrollbars_action)
+	$("#setting_sound_notifications").change(setting_sound_notifications_action)
+	$("#setting_modal_effects").change(setting_modal_effects_action)
+	$("#setting_highlight_current_username").change(setting_highlight_current_username_action)
+	$("#setting_case_insensitive_highlights").change(setting_case_insensitive_highlights_action)
+	$("#setting_other_words_to_highlight").blur(setting_other_words_to_highlight_action)
+	$("#setting_double_tap").blur(setting_double_tap_action)
+	$("#setting_double_tap_2").blur(setting_double_tap_2_action)
+	$("#setting_double_tap_3").blur(setting_double_tap_3_action)
+}
+
+function call_setting_actions()
+{
+	setting_background_image_action()
+	setting_custom_scrollbars_action()
+	setting_sound_notifications_action()
+	setting_modal_effects_action()
+	setting_highlight_current_username_action()
+	setting_case_insensitive_highlights_action()
+	setting_other_words_to_highlight_action()
+	setting_double_tap_action()
+	setting_double_tap_2_action()
+	setting_double_tap_3_action()	
+}
+
+function setting_background_image_action(save=true)
+{
+	settings.background_image = $("#setting_background_image").prop("checked")
+	set_default_theme()
+	
+	if(save)
 	{
-		settings.background_image = $("#setting_background_image").prop("checked")
-		set_default_theme()
 		save_settings()
-	})
+	}
+}
 
-	$("#setting_custom_scrollbars").change(function()
+function setting_custom_scrollbars_action(save=true)
+{
+	settings.custom_scrollbars = $("#setting_custom_scrollbars").prop("checked")
+	setup_scrollbars()
+	
+	if(save)
 	{
-		settings.custom_scrollbars = $("#setting_custom_scrollbars").prop("checked")
-		setup_scrollbars()
-		save_settings()
-	})
+		save_settings()	
+	}
+}
 
-	$("#setting_sound_notifications").change(function()
+function setting_sound_notifications_action(save=true)
+{
+	settings.sound_notifications = $("#setting_sound_notifications").prop("checked")
+	
+	if(save)
 	{
-		settings.sound_notifications = $("#setting_sound_notifications").prop("checked")
-		save_settings()
-	})
+		save_settings()	
+	}
+}
 
-	$("#setting_modal_effects").change(function()
+function setting_modal_effects_action(save=true)
+{
+	settings.modal_effects = $("#setting_modal_effects").prop("checked")
+
+	for(var instance of msg_menu.instances())
 	{
-		settings.modal_effects = $("#setting_modal_effects").prop("checked")
-
-		for(var instance of msg_menu.instances())
+		if(settings.modal_effects)
 		{
-			if(settings.modal_effects)
-			{
-				instance.options.show_effect = "fade"
-				instance.options.close_effect = "fade"
-			}
-
-			else
-			{
-				instance.options.show_effect = "none"
-				instance.options.close_effect = "none"				
-			}
+			instance.options.show_effect = "fade"
+			instance.options.close_effect = "fade"
 		}
 
-		save_settings()
-	})
-
-	$("#setting_highlight_current_username").change(function()
+		else
+		{
+			instance.options.show_effect = "none"
+			instance.options.close_effect = "none"				
+		}
+	}
+	
+	if(save)
 	{
-		settings.highlight_current_username = $("#setting_highlight_current_username").prop("checked")
-		save_settings()
-	})
+		save_settings()	
+	}
+}
 
-	$("#setting_case_insensitive_highlights").change(function()
+function setting_highlight_current_username_action(save=true)
+{
+	settings.highlight_current_username = $("#setting_highlight_current_username").prop("checked")
+	
+	if(save)
 	{
-		settings.case_insensitive_highlights = $("#setting_case_insensitive_highlights").prop("checked")
-		generate_mentions_regex()
+		save_settings()	
+	}
+}
+
+function setting_case_insensitive_highlights_action(save=true)
+{
+	settings.case_insensitive_highlights = $("#setting_case_insensitive_highlights").prop("checked")
+	generate_mentions_regex()
+	generate_highlight_words_regex()
+	
+	if(save)
+	{
+		save_settings()	
+	}
+}
+
+function setting_other_words_to_highlight_action(save=true)
+{
+	var words = utilz.clean_string7($("#setting_other_words_to_highlight").val())
+
+	$("#setting_other_words_to_highlight").val(words)
+
+	if(settings.other_words_to_highlight !== words)
+	{
+		settings.other_words_to_highlight = words
 		generate_highlight_words_regex()
-		save_settings()
-	})
-
-	$("#setting_other_words_to_highlight").blur(function()
-	{
-		var words = utilz.clean_string7($("#setting_other_words_to_highlight").val())
-
-		$("#setting_other_words_to_highlight").val(words)
-
-		if(settings.other_words_to_highlight !== words)
+		
+		if(save)
 		{
-			settings.other_words_to_highlight = words
-			generate_highlight_words_regex()
 			save_settings()
 		}
-	})
+	}	
+}
 
-	$("#setting_double_tap").blur(function()
+function setting_double_tap_action(save=true)
+{
+	var cmd = utilz.clean_string2($("#setting_double_tap").val())
+
+	$("#setting_double_tap").val(cmd)
+
+	if(settings.double_tap !== cmd)
 	{
-		var cmd = utilz.clean_string2($("#setting_double_tap").val())
-
-		$("#setting_double_tap").val(cmd)
-
-		if(settings.double_tap !== cmd)
+		settings.double_tap = cmd
+		
+		if(save)
 		{
-			settings.double_tap = cmd
 			save_settings()
 		}
-	})
+	}	
+}
 
-	$("#setting_double_tap_2").blur(function()
+function setting_double_tap_2_action(save=true)
+{
+	var cmd = utilz.clean_string2($("#setting_double_tap_2").val())
+
+	$("#setting_double_tap_2").val(cmd)
+
+	if(settings.double_tap_2 !== cmd)
 	{
-		var cmd = utilz.clean_string2($("#setting_double_tap_2").val())
-
-		$("#setting_double_tap_2").val(cmd)
-
-		if(settings.double_tap_2 !== cmd)
+		settings.double_tap_2 = cmd
+		
+		if(save)
 		{
-			settings.double_tap_2 = cmd
 			save_settings()
 		}
-	})
+	}	
+}
 
-	$("#setting_double_tap_3").blur(function()
+function setting_double_tap_3_action(save=true)
+{
+	var cmd = utilz.clean_string2($("#setting_double_tap_3").val())
+
+	$("#setting_double_tap_3").val(cmd)
+
+	if(settings.double_tap_3 !== cmd)
 	{
-		var cmd = utilz.clean_string2($("#setting_double_tap_3").val())
-
-		$("#setting_double_tap_3").val(cmd)
-
-		if(settings.double_tap_3 !== cmd)
+		settings.double_tap_3 = cmd
+		
+		if(save)
 		{
-			settings.double_tap_3 = cmd
 			save_settings()
 		}
-	})
+	}	
 }
 
 function get_room_settings()
@@ -8205,9 +8269,9 @@ function setup_userinfo()
 {
 	$("#userinfo_profile_image").attr("src", profile_image)
 
-	$("#setting_double_tap_title").text(`On Double ${double_tap_key} Tap`)
-	$("#setting_double_tap_2_title").text(`On Double ${double_tap_key_2} Tap`)
-	$("#setting_double_tap_3_title").text(`On Double ${double_tap_key_3} Tap`)
+	$("#setting_double_tap_key").text(double_tap_key)
+	$("#setting_double_tap_2_key").text(double_tap_key_2)
+	$("#setting_double_tap_3_key").text(double_tap_key_3)
 }
 
 function show_userinfo()
@@ -10888,4 +10952,30 @@ function goto_room_action()
 	goto_url(id, "tab")
 
 	msg_info.close()
+}
+
+function confirm_reset_settings()
+{
+	var r = confirm("Are you sure you want to reset the settings to their initial state?")
+
+	if(r)
+	{
+		reset_settings()
+	}
+}
+
+function reset_settings()
+{
+	localStorage.removeItem(ls_settings)
+	get_settings()
+	start_settings_state()
+	call_setting_actions()
+}
+
+function setup_chat()
+{
+	if(settings.custom_scrollbars)
+	{
+		start_chat_scrollbar()
+	}	
 }

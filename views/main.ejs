@@ -31,7 +31,7 @@
 		<script src="/static/js/utilz.js?ver=2"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=968"></script>
+		<script src="/static/js/base.js?ver=969"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=277"/>
 
@@ -499,36 +499,43 @@
 
 				<div class='spacer1'></div>
 
-				<div class="setting_title" id="setting_double_tap_title"></div>
+				<div class="setting_title2">On Double&nbsp;<span class='bold' id="setting_double_tap_key"></span>&nbsp;Tap</div>
+				<div class="setting_title">(Leave empty to do nothing)</div>
 				<div class='spacer2'></div>
-				<input type="text" class="setting_input_text" id="setting_double_tap"></div>
+				<input type="text" class="setting_input_text" id="setting_double_tap">
 
 				<div class='spacer1'></div>
 
-				<div class="setting_title" id="setting_double_tap_2_title"></div>
+				<div class="setting_title2">On Double&nbsp;<span class='bold' id="setting_double_tap_2_key"></span>&nbsp;Tap</div>
+				<div class="setting_title">(Leave empty to do nothing)</div>
 				<div class='spacer2'></div>
-				<input type="text" class="setting_input_text" id="setting_double_tap_2"></div>
+				<input type="text" class="setting_input_text" id="setting_double_tap_2">
 
 				<div class='spacer1'></div>
 
-				<div class="setting_title" id="setting_double_tap_3_title"></div>
+				<div class="setting_title2">On Double&nbsp;<span class='bold' id="setting_double_tap_3_key"></span>&nbsp;Tap</div>
+				<div class="setting_title">(Leave empty to do nothing)</div>
 				<div class='spacer2'></div>
-				<input type="text" class="setting_input_text" id="setting_double_tap_3"></div>
+				<input type="text" class="setting_input_text" id="setting_double_tap_3">
 
 				<div class='spacer1'></div>
+				
+				<div class='menu_item_smaller' onclick='confirm_reset_settings()'>Reset Settings To Default</div>
+				
+				<div class='spacer3'></div>
+
+				<span class='menu_item_smaller' onclick='show_input_history()'>History</span>
+
+				&nbsp;|&nbsp;
+
+				<span class='menu_item_smaller' onclick='show_highlights()'>Highlights</span>
+
+				&nbsp;|&nbsp;
+
+				<span class='menu_item_smaller' onclick='confirm_logout()'>Logout</span>
 
 			</div>
-			
-			<span class='menu_item_smaller' onclick='show_input_history()'>History</span>
-
-			&nbsp;|&nbsp;
-
-			<span class='menu_item_smaller' onclick='show_highlights()'>Highlights</span>
-
-			&nbsp;|&nbsp;
-
-			<span class='menu_item_smaller' onclick='confirm_logout()'>Logout</span>
-
+		
 		</script>
 
 		<script id='template_create_room' type='text/x-handlebars-template'>
