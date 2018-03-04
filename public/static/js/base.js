@@ -3450,8 +3450,9 @@ function setup_scrollbars()
 	{
 		start_chat_scrollbar()
 		start_modal_scrollbars()
-		chat_scroll_bottom(false)
 	}
+	
+	chat_scroll_bottom(false)
 }
 
 function start_chat_scrollbar()
