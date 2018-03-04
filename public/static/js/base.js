@@ -2701,7 +2701,7 @@ function activate_key_detection()
 
 						if(val !== "")
 						{
-							upload_image_by_url(val)
+							link_image(val)
 							close_all_modals()
 							e.preventDefault()
 						}
@@ -3941,7 +3941,7 @@ function start_image_events()
 
 	$('#test_image')[0].addEventListener('load', function() 
 	{
-		emit_pasted($('#test_image').attr('src'))
+		emit_linked_image($('#test_image').attr('src'))
 	})
 
 	$('#test_image').on("error", function() 
@@ -4612,7 +4612,7 @@ function send_to_chat(msg, to_history=true)
 
 			else if(oiStartsWith(lmsg, '/image'))
 			{
-				upload_image_by_url(arg)
+				link_image(arg)
 			}
 
 			else if(oiEquals(lmsg, '/status'))
@@ -5286,7 +5286,7 @@ function goto_bottom(force=false)
 	}
 }
 
-function emit_pasted(url)
+function emit_linked_image(url)
 {	
 	if(!can_images)
 	{
@@ -5294,7 +5294,7 @@ function emit_pasted(url)
 		return false
 	}
 	
-	socket_emit('pasted', {image_url:url})
+	socket_emit('linked_image', {image_url:url})
 }
 
 function get_radio_metadata()
@@ -9613,7 +9613,7 @@ function announce_default_background_image_enabled_change(data)
 	set_default_theme()
 }
 
-function upload_image_by_url(url)
+function link_image(url)
 {
 	if(!can_images)
 	{

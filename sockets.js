@@ -112,7 +112,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		})
 
-		socket.on('pasted', function(data) 
+		socket.on('linked_image', function(data) 
 		{
 			try
 			{
@@ -121,61 +121,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					return get_out(socket)
 				}
 
-				pasted(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('uploaded', function(data) 
-		{
-			try
-			{
-				if(!socket.joined)
-				{
-					return get_out(socket)
-				}
-
-				uploaded(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('upload_profile_image', function(data) 
-		{
-			try
-			{
-				if(!socket.joined)
-				{
-					return get_out(socket)
-				}
-
-				upload_profile_image(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('upload_default_background_image', function(data) 
-		{
-			try
-			{
-				if(!socket.joined)
-				{
-					return get_out(socket)
-				}
-
-				upload_default_background_image(socket, data)
+				linked_image(socket, data)
 			}
 
 			catch(err)
@@ -3290,7 +3236,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	function pasted(socket, data)
+	function linked_image(socket, data)
 	{
 		if(data.image_url === undefined)
 		{
@@ -3317,7 +3263,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		change_image(socket.room_id, data.image_url, socket.username, 0, "link")
 	}
 
-	function uploaded(socket, data)
+	function upload_image(socket, data)
 	{
 		if(data.image_file === undefined)
 		{
@@ -3910,12 +3856,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			if(data.action === "image_upload")
 			{
-				uploaded(socket,
+				upload_image(socket,
 				{
 					image_file: full_file,
 					extension: files[key].extension
 				})
-
 			}
 
 			else if(data.action === "profile_image_upload")
