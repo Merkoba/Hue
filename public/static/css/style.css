@@ -299,10 +299,10 @@ body
 	visibility: hidden;
 	position: absolute;
 	left: 16px;
-	width: calc(100% - 32px);	
+	width: calc(100% - 35px);	
 	bottom: 0em;
 	height: 2em;
-	background-color: #393939;
+	background-color: rgba(57, 57, 57, 0.7);
 	color: white;
 	border: 0px solid #2D2D2D;
 	outline: none;
@@ -315,7 +315,7 @@ body
 
 #scroll_notice:hover 
 {
-	background-color: #474747;
+	background-color: rgba(71, 71, 71, 0.7);
 }
 
 .chat_message
