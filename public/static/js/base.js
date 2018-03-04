@@ -6110,7 +6110,7 @@ function chat_scroll_bottom()
 {
 	update_chat_scrollbar()
 	fix_chat_scroll()
-	goto_bottom(true)	
+	goto_bottom(true)
 }
 
 function clear_chat()
