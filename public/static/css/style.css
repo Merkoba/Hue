@@ -1288,3 +1288,10 @@ input[type=text], textarea
 {
 	display: inline-block;
 }
+
+.small_button
+{
+	font-weight: bold;
+	cursor: pointer;
+	display: inline-block;
+}

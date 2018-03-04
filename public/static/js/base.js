@@ -10229,7 +10229,16 @@ function send_whisper()
 
 	var f = function()
 	{
-		msg_info.show(whisper)
+		var s = `<div>${whisper}</div><div class='spacer3'></div><div class='small_button' id='modal_send_whisper'>Send whisper to ${uname}</div>`
+
+		msg_info.show(s, function()
+		{
+			$("#modal_send_whisper").click(function()
+			{
+				console.log(uname)
+				write_whisper(uname)
+			})
+		})
 	}
 
 	chat_announce({brk1:'[', brk2:']', msg:`Whisper sent to ${uname}`, onclick:f})
