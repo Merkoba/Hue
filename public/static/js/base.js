@@ -10257,7 +10257,7 @@ function send_whisper()
 
 	var f = function()
 	{
-		var s = `<div>${whisper}</div><div class='spacer3'></div><div class='small_button' id='modal_send_whisper'>Send whisper to ${uname}</div>`
+		var s = make_safe(whisper, `<div class='spacer3'></div><div class='small_button' id='modal_send_whisper'>Send whisper to ${uname}</div>`)
 
 		msg_info.show(s, function()
 		{
@@ -11062,10 +11062,30 @@ function execute_javascript(arg)
 		var r = "Error"
 	}
 
+	var s = make_safe(arg)
+
 	var f = function()
 	{
-		msg_info.show(arg)
+		msg_info.show(s)
 	}
 
 	chat_announce({brk1:'[', brk2:']', msg:`js: ${r}`, onclick:f})
+}
+
+function make_safe(text, html=false)
+{
+	var c = $("<div></div>")
+
+	c.append("<div id='msg_info_text'></div>")
+
+	var c_text = c.find("#msg_info_text").eq(0)
+
+	c_text.text(text)
+
+	if(html)
+	{
+		c.append(`<div id='msg_info_html'>${html}</div>`)
+	}
+
+	return c[0]
 }
