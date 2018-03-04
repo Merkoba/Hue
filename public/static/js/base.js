@@ -10235,7 +10235,6 @@ function send_whisper()
 		{
 			$("#modal_send_whisper").click(function()
 			{
-				console.log(uname)
 				write_whisper(uname)
 			})
 		})
