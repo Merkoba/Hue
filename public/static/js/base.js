@@ -10063,12 +10063,12 @@ function generate_highlight_words_regex()
 	{
 		if(settings.case_insensitive_highlights)
 		{
-			highlight_words_regex = new RegExp(`(?:^|\\s+)(?:${words})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`)
+			highlight_words_regex = new RegExp(`(?:^|\\s+)(?:${words})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`, "i")
 		}
 
 		else
 		{
-			highlight_words_regex = new RegExp(`(?:^|\\s+)(?:${words})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`, "i")
+			highlight_words_regex = new RegExp(`(?:^|\\s+)(?:${words})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`)
 		}
 	}
 
