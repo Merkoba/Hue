@@ -5,13 +5,6 @@
 Requirements:
 - Node 6+
 - MongoDB 3+
-- Linux
-
-Put the files in the directory you want it work and call "npm install". That should install all necessary packages. 
-
-You will also need MongoDB installed in your computer, and for everything to work correctly Hue should be running in a Linux environment as it depends on some Linux calls like rm, wget, stat and find.
-
-There is no need to create database tables, all of that is done automatically. MongoDB just needs to be installed and running.
 
 Configuration is done in the config.json and config.secret.json files found in the root directory.
 
@@ -19,9 +12,19 @@ The admin email must go in superuser_emails in config.secret.json. It's used to 
 
 To have a full working system, as it is intended, getting the YouTube api key is very recommended. Twitch api key is recommended to support twitch 'videos' (channels work out of the box). Mailgun api key is necessary for account creation and password recovery, so it must be provided. A Google Recaptcha key is necessary to enable captcha verification on registration. Setup these in config.secret.json. If you don't want any of these, disable them in the config.json
 
-To run it locally you first have to start 'mongod' then go to the bin directory and run 'node www start'.
+Put the files in the directory you want it work and call "npm install". That should install all necessary packages. 
 
-To run it properly in production you will have to configure Apache or some other webserver to use a reverse proxy. A sample vhost configuration for Apache (apache_vhost.conf) is included. For using https LetsEncrypt is suggested.
+You will also need MongoDB installed in your computer, and the mongod daemon running.
+
+>systemctl start mongod
+
+There is no need to create database tables, all of that is done automatically. MongoDB just needs to be installed and running.
+
+Then go to the bin directory and run: 
+
+>node www start
+
+To run it properly in production you will have to configure Apache or some other webserver to use a reverse proxy. A sample vhost configuration for Apache (apache_vhost.conf) is included. For using https, LetsEncrypt is suggested.
 
 Using pm2 is suggested to control the Node process.
 

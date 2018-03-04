@@ -2,7 +2,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 {
 	const fs = require('fs')
 	const path = require('path')
-	const {exec} = require('child_process')
 	const antiSpam  = require('socket-anti-spam')
 	const fetch = require('node-fetch')
 	const mongo = require('mongodb')
