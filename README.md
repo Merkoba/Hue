@@ -24,7 +24,7 @@ Example of how to use user_config.secret.json:
 ```javascript
 {
 	"youtube_api_key": "Avjioa5awfFF445234fAFDvF",
-	"super_user_emails": ["me@somedomain.com"]
+	"superuser_emails": ["me@somedomain.com"]
 }
 ```
 
