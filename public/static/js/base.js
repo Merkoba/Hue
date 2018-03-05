@@ -453,12 +453,54 @@ function check_role(data)
 
 function check_permissions()
 {
-	can_chat = check_chat_permission(role)
-	can_images = room_images_enabled && check_images_permission(role)
-	can_radio =  room_radio_enabled && check_radio_permission(role)
-	can_tv = room_tv_enabled && check_tv_permission(role)
+	can_chat = check_permission(role, "chat")
+	can_images = room_images_enabled && check_permission(role, "images")
+	can_tv = room_tv_enabled && check_permission(role, "tv")
+	can_radio =  room_radio_enabled && check_permission(role, "radio")
 
 	setup_icons()
+}
+
+function check_permission(role, type)
+{
+	if(role === "admin" || role === "op")
+	{
+		return true
+	}
+
+	if(role === "voice1")
+	{
+		if(window[`v1_${type}_permission`])
+		{
+			return true
+		}
+	}
+
+	else if(role === "voice2")
+	{
+		if(window[`v2_${type}_permission`])
+		{
+			return true
+		}
+	}
+
+	else if(role === "voice3")
+	{
+		if(window[`v3_${type}_permission`])
+		{
+			return true
+		}
+	}
+
+	else if(role === 'voice4')
+	{
+		if(window[`v4_${type}_permission`])
+		{
+			return true
+		}
+	}
+
+	return false	
 }
 
 function setup_icons()
@@ -525,174 +567,6 @@ function setup_icons()
 		$("#footer_tv_icon").css("display", "none")
 		$("#footer_tv_controls").css("display", "none")
 	}
-}
-
-function check_chat_permission(role)
-{
-	if(role === "admin" || role === "op")
-	{
-		return true
-	}
-
-	if(role === "voice1")
-	{
-		if(v1_chat_permission)
-		{
-			return true
-		}
-	}
-
-	else if(role === "voice2")
-	{
-		if(v2_chat_permission)
-		{
-			return true
-		}
-	}
-
-	else if(role === "voice3")
-	{
-		if(v3_chat_permission)
-		{
-			return true
-		}
-	}
-
-	else if(role === 'voice4')
-	{
-		if(v4_chat_permission)
-		{
-			return true
-		}
-	}
-
-	return false
-}
-
-function check_images_permission(role)
-{
-	if(role === "admin" || role === "op")
-	{
-		return true
-	}
-
-	if(role === "voice1")
-	{
-		if(v1_images_permission)
-		{
-			return true
-		}
-	}
-
-	else if(role === "voice2")
-	{
-		if(v2_images_permission)
-		{
-			return true
-		}
-	}
-
-	else if(role === "voice3")
-	{
-		if(v3_images_permission)
-		{
-			return true
-		}
-	}
-
-	else if(role === 'voice4')
-	{
-		if(v4_images_permission)
-		{
-			return true
-		}
-	}
-
-	return false
-}
-
-function check_tv_permission(role)
-{
-	if(role === "admin" || role === "op")
-	{
-		return true
-	}
-
-	if(role === "voice1")
-	{
-		if(v1_tv_permission)
-		{
-			return true
-		}
-	}
-
-	else if(role === "voice2")
-	{
-		if(v2_tv_permission)
-		{
-			return true
-		}
-	}
-
-	else if(role === "voice3")
-	{
-		if(v3_tv_permission)
-		{
-			return true
-		}
-	}
-
-	else if(role === 'voice4')
-	{
-		if(v4_tv_permission)
-		{
-			return true
-		}
-	}
-
-	return false
-}
-
-function check_radio_permission(role)
-{
-	if(role === "admin" || role === "op")
-	{
-		return true
-	}
-
-	if(role === "voice1")
-	{
-		if(v1_radio_permission)
-		{
-			return true
-		}
-	}
-
-	else if(role === "voice2")
-	{
-		if(v2_radio_permission)
-		{
-			return true
-		}
-	}
-
-	else if(role === "voice3")
-	{
-		if(v3_radio_permission)
-		{
-			return true
-		}
-	}
-
-	else if(role === 'voice4')
-	{
-		if(v4_radio_permission)
-		{
-			return true
-		}
-	}
-
-	return false
 }
 
 function show_role(data)
@@ -1485,7 +1359,7 @@ function userjoin(data)
 {
 	addto_userlist(data.username, data.role, data.profile_image)
 
-	if(announce_joins && check_chat_permission(data.role))
+	if(announce_joins && check_permission(data.role, "chat"))
 	{
 		var f = function()
 		{
@@ -5254,7 +5128,7 @@ function announce_new_username(data)
 {
 	replace_uname_in_userlist(data.old_username, data.username)
 
-	var show = check_chat_permission(get_role(data.username))
+	var show = check_permission(get_role(data.username), "chat")
 
 	if(username === data.old_username)
 	{
@@ -6838,7 +6712,7 @@ function disconnected(data)
 {
 	removefrom_userlist(data.username)
 
-	if(announce_parts && check_chat_permission(data.role))
+	if(announce_parts && check_permission(data.role, "chat"))
 	{
 		chat_announce({brk1:'--', brk2:'--', msg:`${data.username} has left`, save:true})
 	}
@@ -6848,7 +6722,7 @@ function pinged(data)
 {
 	removefrom_userlist(data.username)
 
-	if(announce_parts && check_chat_permission(data.role))
+	if(announce_parts && check_permission(data.role, "chat"))
 	{
 		chat_announce({brk1:'--', brk2:'--', msg:`${data.username} has left (Ping Timeout)`, save:true})
 	}
