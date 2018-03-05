@@ -6,11 +6,31 @@ Requirements:
 - Node 6+
 - MongoDB 3+
 
-Configuration is done in the config.json and config.secret.json files found in the root directory.
+Configuration is done in the user_config.json and user_config.secret.json files found in the config directory.
 
-The admin email must go in superuser_emails in config.secret.json. It's used to take over control of the main room. The main room is created on first join, with no roles. To get admin on the room use /annex.
+Editing those files overrides settings in the default configuration files. The point of having separate files is so the default config files can be changed during an update while the user config files remain intact.
 
-To have a full working system, as it is intended, getting the YouTube api key is very recommended. Twitch api key is recommended to support twitch 'videos' (channels work out of the box). Mailgun api key is necessary for account creation and password recovery, so it must be provided. A Google Recaptcha key is necessary to enable captcha verification on registration. Setup these in config.secret.json. If you don't want any of these, disable them in the config.json
+Example of how to use user_config.json:
+
+```javascript
+{
+	"site_root": "https://mysite.com",
+	"general_opacity": 0.8
+}
+```
+
+Example of how to use user_config.secret.json:
+
+```javascript
+{
+	"youtube_api_key": "Avjioa5awfFF445234fAFDvF",
+	"super_user_emails": ["me@somedomain.com"]
+}
+```
+
+The admin email must go in superuser_emails in user_config.secret.json. It's used to take over control of the main room. The main room is created on first join, with no roles. To get admin on the room use /annex.
+
+To have a full working system, as it is intended, getting the YouTube api key is very recommended. Twitch api key is recommended to support twitch 'videos' (channels work out of the box). Mailgun api key is necessary for account creation and password recovery, so it must be provided. A Google Recaptcha key is necessary to enable captcha verification on registration. Setup these in user_config.secret.json. If you don't want any of these, disable them in the user_config.json
 
 Put the files in the directory you want it work and call "npm install". That should install all necessary packages. 
 
@@ -438,12 +458,6 @@ If you want to remove it to start fresh:
 
 "recaptcha_secret_key"
 >Secret google recaptcha key.
-
-# Development
-
-You can create a config.secret.dev.json file intended to use in development, which is ignored by git. So you can leave config.secret.json intact and use the modified dev version for testing. Put it in the root directory, where the other config files are. This is used when the node environment is set to "development".
-
-There's a run_dev file that starts the node server with a development node environment.
 
 # Additional Notes
 
