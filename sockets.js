@@ -4009,147 +4009,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return true
 		}
 
-		if(socket.role === "voice1")
+		else if(vtypes.indexOf(socket.role) !== -1)
 		{
-			if(permission === "chat")
+			var vtype = socket.role[0] + socket.role.slice(-1)
+			
+			if(rooms[socket.room_id][`${vtype}_${permission}_permission`])
 			{
-				if(rooms[socket.room_id].v1_chat_permission)
-				{
-					return true
-				}
+				return true
 			}
 
-			else if(permission === "images")
-			{
-				if(rooms[socket.room_id].v1_images_permission)
-				{
-					return true
-				}
-			}
-
-			else if(permission === "tv")
-			{
-				if(rooms[socket.room_id].v1_tv_permission)
-				{
-					return true
-				}
-			}
-
-			else if(permission === "radio")
-			{
-				if(rooms[socket.room_id].v1_radio_permission)
-				{
-					return true
-				}
-			}
+			return false
 		}
 
-		else if(socket.role === "voice2")
+		else
 		{
-			if(permission === "chat")
-			{
-				if(rooms[socket.room_id].v2_chat_permission)
-				{
-					return true
-				}
-			}
-
-			else if(permission === "images")
-			{
-				if(rooms[socket.room_id].v2_images_permission)
-				{
-					return true
-				}
-			}
-
-			else if(permission === "tv")
-			{
-				if(rooms[socket.room_id].v2_tv_permission)
-				{
-					return true
-				}
-			}
-
-			else if(permission === "radio")
-			{
-				if(rooms[socket.room_id].v2_radio_permission)
-				{
-					return true
-				}
-			}
+			return false
 		}
-
-		else if(socket.role === "voice3")
-		{
-			if(permission === "chat")
-			{
-				if(rooms[socket.room_id].v3_chat_permission)
-				{
-					return true
-				}
-			}
-
-			else if(permission === "images")
-			{
-				if(rooms[socket.room_id].v3_images_permission)
-				{
-					return true
-				}
-			}
-
-			else if(permission === "tv")
-			{
-				if(rooms[socket.room_id].v3_tv_permission)
-				{
-					return true
-				}
-			}
-
-			else if(permission === "radio")
-			{
-				if(rooms[socket.room_id].v3_radio_permission)
-				{
-					return true
-				}
-			}
-		}
-
-		else if(socket.role === 'voice4')
-		{
-			if(permission === "chat")
-			{
-				if(rooms[socket.room_id].v4_chat_permission)
-				{
-					return true
-				}
-			}
-
-			else if(permission === "images")
-			{
-				if(rooms[socket.room_id].v4_images_permission)
-				{
-					return true
-				}
-			}
-
-			else if(permission === "tv")
-			{
-				if(rooms[socket.room_id].v4_tv_permission)
-				{
-					return true
-				}
-			}
-
-			else if(permission === "radio")
-			{
-				if(rooms[socket.room_id].v4_radio_permission)
-				{
-					return true
-				}
-			}
-		}
-
-		return false
 	}
 
 	function create_room_object(info)
