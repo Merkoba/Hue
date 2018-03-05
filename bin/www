@@ -19,14 +19,30 @@ function normalizePort(val)
 
 const port = normalizePort(process.env.PORT || "3210")
 
-const _config = require('../config/config.json')
-const user_config = require('../config/user_config.json')
+const config = require('../config/config.json')
+const sconfig = require('../config/config.secret.json')
 
-const _sconfig = require('../config/config.secret.json')
-const user_sconfig = require('../config/user_config.secret.json')
+try
+{
+	const user_config = require('../config/user_config.json')
+	Object.assign(config, user_config)
+}
 
-const config = Object.assign(_config, user_config)
-const sconfig = Object.assign(_sconfig, user_sconfig)
+catch(err)
+{
+	console.error(err)
+}
+
+try
+{
+	const user_sconfig = require('../config/user_config.secret.json')
+	Object.assign(sconfig, user_sconfig)
+}
+
+catch(err)
+{
+	console.error(err)	
+}
 
 const path = require('path')
 const mongo = require('mongodb')

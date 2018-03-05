@@ -6,7 +6,7 @@ Requirements:
 - Node 6+
 - MongoDB 3+
 
-Configuration is done in user_config.json and user_config.secret.json files placed in the config directory.
+Configuration is done in user_config.json and user_config.secret.json files placed in the config directory. You must create these files. If they are not going to be used, create empty json objects like {}.
 
 Editing those files overrides settings in the default configuration files. The point of having separate files is so the default config files can be changed during an update while the user config files remain intact.
 
