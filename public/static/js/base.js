@@ -6057,9 +6057,9 @@ function chat_search(filter=false)
 
 				if(show)
 				{
-					var cn = $("<div class='chat_search_result_item'><div class='chat_search_result_uname'></div><div class='chat_search_result_content'></div>")
+					var cn = $("<div class='chat_search_result_item'><div class='chat_search_result_uname generic_uname'></div><div class='chat_search_result_content'></div>")
 
-					cn.find(".chat_search_result_uname").eq(0).html(`<span class='generic_uname'>${huname.text()}</div>`)
+					cn.find(".chat_search_result_uname").eq(0).text(huname.text())
 
 					for(var i=0; i < hcontent.length; i++)
 					{
@@ -10332,9 +10332,9 @@ function show_highlights(filter=false)
 					var huname = msg.find('.chat_uname').eq(0)
 					var hcontent = msg.find('.chat_content')
 
-					var cn = $("<div class='highlights_item'><div class='highlights_uname'></div><div class='highlights_content'></div>")
+					var cn = $("<div class='highlights_item'><div class='highlights_uname generic_uname'></div><div class='highlights_content'></div>")
 
-					cn.find(".highlights_uname").eq(0).html(`<span class='generic_uname'>${huname.text()}</span>`)
+					cn.find(".highlights_uname").eq(0).text(huname.text())
 
 					for(var i=0; i < hcontent.length; i++)
 					{
@@ -10862,7 +10862,8 @@ function setup_modal_image()
 
 	$("#modal_image").click(function()
 	{
-		msg_info.show($("#modal_image").data("image_title"))
+		var s = make_safe($("#modal_image").data("image_title"))
+		msg_info.show(s)
 	})
 }
 
