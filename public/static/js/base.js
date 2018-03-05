@@ -431,22 +431,22 @@ function check_role(data)
 {
 	role = data.role
 
-	v1_chat_permission = data.v1_chat_permission
-	v1_images_permission = data.v1_images_permission
-	v1_tv_permission = data.v1_tv_permission
-	v1_radio_permission = data.v1_radio_permission
-	v2_chat_permission = data.v2_chat_permission
-	v2_images_permission = data.v2_images_permission
-	v2_tv_permission = data.v2_tv_permission
-	v2_radio_permission = data.v2_radio_permission
-	v3_chat_permission = data.v3_chat_permission
-	v3_images_permission = data.v3_images_permission
-	v3_tv_permission = data.v3_tv_permission
-	v3_radio_permission = data.v3_radio_permission
-	v4_chat_permission = data.v4_chat_permission
-	v4_images_permission = data.v4_images_permission
-	v4_tv_permission = data.v4_tv_permission
-	v4_radio_permission = data.v4_radio_permission
+	voice1_chat_permission = data.voice1_chat_permission
+	voice1_images_permission = data.voice1_images_permission
+	voice1_tv_permission = data.voice1_tv_permission
+	voice1_radio_permission = data.voice1_radio_permission
+	voice2_chat_permission = data.voice2_chat_permission
+	voice2_images_permission = data.voice2_images_permission
+	voice2_tv_permission = data.voice2_tv_permission
+	voice2_radio_permission = data.voice2_radio_permission
+	voice3_chat_permission = data.voice3_chat_permission
+	voice3_images_permission = data.voice3_images_permission
+	voice3_tv_permission = data.voice3_tv_permission
+	voice3_radio_permission = data.voice3_radio_permission
+	voice4_chat_permission = data.voice4_chat_permission
+	voice4_images_permission = data.voice4_images_permission
+	voice4_tv_permission = data.voice4_tv_permission
+	voice4_radio_permission = data.voice4_radio_permission
 
 	check_permissions()
 }
@@ -468,36 +468,9 @@ function check_permission(role, type)
 		return true
 	}
 
-	if(role === "voice1")
+	if(window[`${role}_${type}_permission`])
 	{
-		if(window[`v1_${type}_permission`])
-		{
-			return true
-		}
-	}
-
-	else if(role === "voice2")
-	{
-		if(window[`v2_${type}_permission`])
-		{
-			return true
-		}
-	}
-
-	else if(role === "voice3")
-	{
-		if(window[`v3_${type}_permission`])
-		{
-			return true
-		}
-	}
-
-	else if(role === 'voice4')
-	{
-		if(window[`v4_${type}_permission`])
-		{
-			return true
-		}
+		return true
 	}
 
 	return false	

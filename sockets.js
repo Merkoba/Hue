@@ -1142,22 +1142,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			default_theme: info.default_theme,
 			default_background_image: default_background_image,
 			default_background_image_enabled: info.default_background_image_enabled,
-			v1_chat_permission: info.v1_chat_permission,
-			v1_images_permission: info.v1_images_permission,
-			v1_tv_permission: info.v1_tv_permission,
-			v1_radio_permission: info.v1_radio_permission,
-			v2_chat_permission: info.v2_chat_permission,
-			v2_images_permission: info.v2_images_permission,
-			v2_tv_permission: info.v2_tv_permission,
-			v2_radio_permission: info.v2_radio_permission,
-			v3_chat_permission: info.v3_chat_permission,
-			v3_images_permission: info.v3_images_permission,
-			v3_tv_permission: info.v3_tv_permission,
-			v3_radio_permission: info.v3_radio_permission,
-			v4_chat_permission: info.v4_chat_permission,
-			v4_images_permission: info.v4_images_permission,
-			v4_tv_permission: info.v4_tv_permission,
-			v4_radio_permission: info.v4_radio_permission,
+			voice1_chat_permission: info.voice1_chat_permission,
+			voice1_images_permission: info.voice1_images_permission,
+			voice1_tv_permission: info.voice1_tv_permission,
+			voice1_radio_permission: info.voice1_radio_permission,
+			voice2_chat_permission: info.voice2_chat_permission,
+			voice2_images_permission: info.voice2_images_permission,
+			voice2_tv_permission: info.voice2_tv_permission,
+			voice2_radio_permission: info.voice2_radio_permission,
+			voice3_chat_permission: info.voice3_chat_permission,
+			voice3_images_permission: info.voice3_images_permission,
+			voice3_tv_permission: info.voice3_tv_permission,
+			voice3_radio_permission: info.voice3_radio_permission,
+			voice4_chat_permission: info.voice4_chat_permission,
+			voice4_images_permission: info.voice4_images_permission,
+			voice4_tv_permission: info.voice4_tv_permission,
+			voice4_radio_permission: info.voice4_radio_permission,
 			email: socket.email,
 			reg_date: userinfo.registration_date			
 		})
@@ -4011,9 +4011,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else if(vtypes.indexOf(socket.role) !== -1)
 		{
-			var vtype = socket.role[0] + socket.role.slice(-1)
-			
-			if(rooms[socket.room_id][`${vtype}_${permission}_permission`])
+			if(rooms[socket.room_id][`${socket.role}_${permission}_permission`])
 			{
 				return true
 			}
@@ -4035,22 +4033,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			activity: false,
 			log: info.log,
 			log_messages: [],
-			v1_chat_permission: info.v1_chat_permission,
-			v1_images_permission: info.v1_images_permission,
-			v1_tv_permission: info.v1_tv_permission,
-			v1_radio_permission: info.v1_radio_permission,
-			v2_chat_permission: info.v2_chat_permission,
-			v2_images_permission: info.v2_images_permission,
-			v2_tv_permission: info.v2_tv_permission,
-			v2_radio_permission: info.v2_radio_permission,
-			v3_chat_permission: info.v3_chat_permission,
-			v3_images_permission: info.v3_images_permission,
-			v3_tv_permission: info.v3_tv_permission,
-			v3_radio_permission: info.v3_radio_permission,
-			v4_chat_permission: info.v4_chat_permission,
-			v4_images_permission: info.v4_images_permission,
-			v4_tv_permission: info.v4_tv_permission,
-			v4_radio_permission: info.v4_radio_permission			
+			voice1_chat_permission: info.voice1_chat_permission,
+			voice1_images_permission: info.voice1_images_permission,
+			voice1_tv_permission: info.voice1_tv_permission,
+			voice1_radio_permission: info.voice1_radio_permission,
+			voice2_chat_permission: info.voice2_chat_permission,
+			voice2_images_permission: info.voice2_images_permission,
+			voice2_tv_permission: info.voice2_tv_permission,
+			voice2_radio_permission: info.voice2_radio_permission,
+			voice3_chat_permission: info.voice3_chat_permission,
+			voice3_images_permission: info.voice3_images_permission,
+			voice3_tv_permission: info.voice3_tv_permission,
+			voice3_radio_permission: info.voice3_radio_permission,
+			voice4_chat_permission: info.voice4_chat_permission,
+			voice4_images_permission: info.voice4_images_permission,
+			voice4_tv_permission: info.voice4_tv_permission,
+			voice4_radio_permission: info.voice4_radio_permission			
 		}
 
 		return obj	

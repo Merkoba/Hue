@@ -4,7 +4,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 34
+	const rooms_version = 35
 	const users_version = 28
 
 	function get_random_key()
@@ -239,84 +239,84 @@ module.exports = function(db, config, sconfig, utilz, logger)
 							room.public = true
 						}
 
-						if(typeof room.v1_chat_permission !== "boolean")
+						if(typeof room.voice1_chat_permission !== "boolean")
 						{
-							room.v1_chat_permission = true
+							room.voice1_chat_permission = true
 						}	
 
-						if(typeof room.v1_images_permission !== "boolean")
+						if(typeof room.voice1_images_permission !== "boolean")
 						{
-							room.v1_images_permission = true
+							room.voice1_images_permission = true
 						}	
 
-						if(typeof room.v1_tv_permission !== "boolean")
+						if(typeof room.voice1_tv_permission !== "boolean")
 						{
-							room.v1_tv_permission = true
+							room.voice1_tv_permission = true
 						}	
 
-						if(typeof room.v1_radio_permission !== "boolean")
+						if(typeof room.voice1_radio_permission !== "boolean")
 						{
-							room.v1_radio_permission = true
+							room.voice1_radio_permission = true
 						}
 
-						if(typeof room.v2_chat_permission !== "boolean")
+						if(typeof room.voice2_chat_permission !== "boolean")
 						{
-							room.v2_chat_permission = true
+							room.voice2_chat_permission = true
 						}	
 
-						if(typeof room.v2_images_permission !== "boolean")
+						if(typeof room.voice2_images_permission !== "boolean")
 						{
-							room.v2_images_permission = true
+							room.voice2_images_permission = true
 						}	
 
-						if(typeof room.v2_tv_permission !== "boolean")
+						if(typeof room.voice2_tv_permission !== "boolean")
 						{
-							room.v2_tv_permission = true
+							room.voice2_tv_permission = true
 						}	
 
-						if(typeof room.v2_radio_permission !== "boolean")
+						if(typeof room.voice2_radio_permission !== "boolean")
 						{
-							room.v2_radio_permission = true
+							room.voice2_radio_permission = true
 						}
 
-						if(typeof room.v3_chat_permission !== "boolean")
+						if(typeof room.voice3_chat_permission !== "boolean")
 						{
-							room.v3_chat_permission = true
+							room.voice3_chat_permission = true
 						}	
 
-						if(typeof room.v3_images_permission !== "boolean")
+						if(typeof room.voice3_images_permission !== "boolean")
 						{
-							room.v3_images_permission = true
+							room.voice3_images_permission = true
 						}	
 
-						if(typeof room.v3_tv_permission !== "boolean")
+						if(typeof room.voice3_tv_permission !== "boolean")
 						{
-							room.v3_tv_permission = true
+							room.voice3_tv_permission = true
 						}	
 
-						if(typeof room.v3_radio_permission !== "boolean")
+						if(typeof room.voice3_radio_permission !== "boolean")
 						{
-							room.v3_radio_permission = true
+							room.voice3_radio_permission = true
 						}
 
-						if(typeof room.v4_chat_permission !== "boolean")
+						if(typeof room.voice4_chat_permission !== "boolean")
 						{
-							room.v4_chat_permission = true
+							room.voice4_chat_permission = true
 						}	
 
-						if(typeof room.v4_images_permission !== "boolean")
+						if(typeof room.voice4_images_permission !== "boolean")
 						{
-							room.v4_images_permission = true
+							room.voice4_images_permission = true
 						}	
 
-						if(typeof room.v4_tv_permission !== "boolean")
+						if(typeof room.voice4_tv_permission !== "boolean")
 						{
-							room.v4_tv_permission = true
+							room.voice4_tv_permission = true
 						}	
 
-						if(typeof room.v4_radio_permission !== "boolean")
+						if(typeof room.voice4_radio_permission !== "boolean")
 						{
-							room.v4_radio_permission = true
+							room.voice4_radio_permission = true
 						}
 
 						room.version = rooms_version
@@ -397,22 +397,22 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				default_background_image: "",
 				default_background_image_enabled: true,
 				log: true,
-				v1_chat_permission: true,
-				v1_images_permission: true,
-				v1_tv_permission: true,
-				v1_radio_permission: true,
-				v2_chat_permission: true,
-				v2_images_permission: true,
-				v2_tv_permission: true,
-				v2_radio_permission: true,
-				v3_chat_permission: true,
-				v3_images_permission: true,
-				v3_tv_permission: true,
-				v3_radio_permission: true,
-				v4_chat_permission: true,
-				v4_images_permission: true,
-				v4_tv_permission: true,
-				v4_radio_permission: true,
+				voice1_chat_permission: true,
+				voice1_images_permission: true,
+				voice1_tv_permission: true,
+				voice1_radio_permission: true,
+				voice2_chat_permission: true,
+				voice2_images_permission: true,
+				voice2_tv_permission: true,
+				voice2_radio_permission: true,
+				voice3_chat_permission: true,
+				voice3_images_permission: true,
+				voice3_tv_permission: true,
+				voice3_radio_permission: true,
+				voice4_chat_permission: true,
+				voice4_images_permission: true,
+				voice4_tv_permission: true,
+				voice4_radio_permission: true,
 				modified: Date.now()
 			}
 
