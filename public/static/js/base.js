@@ -6117,7 +6117,7 @@ function chat_search(filter=false)
 	
 	$("#chat_search_container").html(c)
 
-	update_modal_scrollbar("search")
+	update_modal_scrollbar("chat_search")
 
 	$('#Msg-content-container-search').scrollTop(0)	
 }
