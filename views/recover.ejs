@@ -12,6 +12,11 @@
 
 			function validate_form()
 			{
+				if(msg_info.is_open())
+				{
+					return false
+				}
+								
 				$("#txt_email").val($("#txt_email").val().trim())
 
 				var email = $("#txt_email").val()

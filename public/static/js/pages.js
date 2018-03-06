@@ -1,23 +1,29 @@
 var utilz = Utilz()
 
-var msg = Msg.factory(
+var msg_info = Msg.factory(
 {
 	id: "info",
-	class: "black"
+	class: "black",
+	after_close: msg_info_after_close
 })
+
+function msg_info_after_close(instance)
+{
+	$("form").eq(0).find("input").eq(0).focus()
+}
 
 function set_message(s)
 {
-	msg.show(s)
+	msg_info.show(s)
 }
 
 $(document).keydown(function(e)
 {
-	if(msg.is_open())
+	if(msg_info.is_open())
 	{
 		if(e.key === "Enter")
 		{
-			msg.close()
+			msg_info.close()
 			e.preventDefault()
 		}
 

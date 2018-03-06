@@ -51,6 +51,11 @@
 
 				<input type="text" placeholder="Email" name="email" id="register_email">
 
+				<div id="email_taken">
+					<div class="spacer3"></div>
+					<div class="error">Email is already taken</div>
+				</div>				
+
 				<div class="spacer4"></div>
 
 				<% if(vars.recaptcha_enabled) {%>
@@ -77,20 +82,24 @@
 
 			function validate_form()
 			{
-				if(msg.is_open())
+				if(msg_info.is_open())
+				{
+					return false
+				}
+
+				if($("#username_taken").css("display") !== "none")
+				{
+					return false
+				}
+
+				if($("#email_taken").css("display") !== "none")
 				{
 					return false
 				}
 
 				if(recaptcha_enabled && !recaptcha_checked)
 				{
-					set_message("Captcha is not solved")
-					return false					
-				}
-
-				if($("#username_taken").css("display") !== "none")
-				{
-					return false					
+					return false
 				}
 
 				$("#register_username").val($("#register_username").val().trim())
@@ -181,6 +190,7 @@
 			}
 
 			var current_username = ""
+			var current_email = ""
 
 			var check_username_timer = (function() 
 			{
@@ -203,11 +213,38 @@
 								$("#username_taken").css("display", "block")
 							}
 						})					
-					}, 1200)
+					}, 1000)
+				}
+			})()
+
+			var check_email_timer = (function() 
+			{
+				var timer 
+
+				return function() 
+				{
+					clearTimeout(timer)
+
+					timer = setTimeout(function() 
+					{
+						$.post('/check_email/',
+						{
+							email: current_email
+						}, 
+						function(response)
+						{
+							if(response.taken)
+							{
+								$("#email_taken").css("display", "block")
+							}
+						})					
+					}, 1000)
 				}
 			})()			
 
-			$("#register_username").on("input", function()
+			$("#register_username").on("input", on_username_input)
+
+			function on_username_input()
 			{
 				var uname = $("#register_username").val().trim()
 
@@ -229,12 +266,51 @@
 				if(uname.length > 0 && uname.length < max_username_length)
 				{
 					check_username_timer()	
+				}	
+			}			
+
+			$("#register_email").on("input", on_email_input)
+
+			function on_email_input()
+			{
+				var email = $("#register_email").val().trim()
+
+				if(email === current_email)
+				{
+					return
 				}
-			})
+
+				$("#email_taken").css("display", "none")
+
+				if(email.length > max_email_length)
+				{
+					email = email.substring(0, max_email_length)
+					$("#register_email").val(email)
+				}
+
+				current_email = email
+
+				if(email.length > 0 && email.length < max_email_length)
+				{
+					check_email_timer()	
+				}				
+			}
 
 			function recaptcha_callback()
 			{
 				recaptcha_checked = true
+			}
+
+			if(form_username && form_username !== "undefined")
+			{
+				$("#register_username").val(form_username)
+				on_username_input()
+			}
+
+			if(form_email && form_email !== "undefined")
+			{
+				$("#register_email").val(form_email)
+				on_email_input()
 			}
 
 		</script>

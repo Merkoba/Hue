@@ -154,6 +154,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		c.vars.max_max_password_length = config.max_max_password_length
 		c.vars.max_max_email_length = config.max_max_email_length
 		c.vars.login_title = config.login_title
+		c.vars.form_email = decodeURIComponent(req.query.form_email)
 
 		res.render('login', c)
 	})
@@ -199,7 +200,9 @@ module.exports = function(db_manager, config, sconfig, utilz)
 				req.session.destroy(function(){})
 
 				var m = encodeURIComponent("Wrong email or password")
-				res.redirect(`/login?message=${m}`)
+				var form_email = encodeURIComponent(email)
+
+				res.redirect(`/login?message=${m}&form_email=${form_email}`)
 			}
 		})
 
@@ -223,6 +226,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		c.vars.max_email_length = config.max_email_length
 		c.vars.register_title = config.register_title
 		c.vars.recaptcha_enabled = config.recaptcha_enabled
+		c.vars.form_username = decodeURIComponent(req.query.form_username)
+		c.vars.form_email = decodeURIComponent(req.query.form_email)
 
 		if(config.recaptcha_enabled)
 		{
@@ -321,7 +326,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		var password = req.body.password 
 		var email = req.body.email
 
-		db_manager.get_user({$or:[{username: username}, {email:email}]}, {username:true}, false)
+		db_manager.get_user({$or:[{username:username}, {email:email}]}, {username:true}, false)
 
 		.then(user =>
 		{
@@ -353,7 +358,10 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			else
 			{
 				var m = encodeURIComponent("Username or email already exist")
-				res.redirect(`/register?message=${m}`)
+				var form_username = encodeURIComponent(username)
+				var form_email = encodeURIComponent(email)
+
+				res.redirect(`/register?message=${m}&form_username=${form_username}&form_email=${form_email}`)
 			}
 		})
 
@@ -435,6 +443,38 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		}
 
 		db_manager.get_user({username:username}, {username:true}, false)
+
+		.then(user =>
+		{
+			if(user)
+			{
+				var taken = true
+			}
+
+			else
+			{
+				var taken = false
+			}
+
+			res.json({taken:taken})
+		})
+
+		.catch(err =>
+		{
+			console.error(err)
+		})
+	})
+
+	router.post('/check_email', function(req, res, next)	
+	{
+		var email = req.body.email
+
+		if(email.length === 0 || email.length > config.max_max_email_length)
+		{
+			return false
+		}
+
+		db_manager.get_user({email:email}, {email:true}, false)
 
 		.then(user =>
 		{

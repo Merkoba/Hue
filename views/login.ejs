@@ -12,7 +12,7 @@
 
 			function validate_form()
 			{
-				if(msg.is_open())
+				if(msg_info.is_open())
 				{
 					return false
 				}
@@ -94,6 +94,11 @@
 		<script>
 
 			$("#login_email").focus()
+
+			if(form_email && form_email !== "undefined")
+			{
+				$("#login_email").val(form_email)
+			}
 
 		</script>
 

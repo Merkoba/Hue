@@ -169,6 +169,8 @@ var current_image_date_raw = 0
 var date_joined
 var user_email
 var user_reg_date
+var filter_delay = 350
+var resize_delay = 350
 
 function init()
 {
@@ -3284,7 +3286,7 @@ var resize_timer = (function()
 			fix_visible_video_frame()
 			update_chat_scrollbar()		
 			goto_bottom()
-		}, 350)
+		}, resize_delay)
 	}
 })()
 
@@ -5835,7 +5837,7 @@ var chat_search_timer = (function()
 		timer = setTimeout(function() 
 		{
 			chat_search($("#chat_search_filter").val())
-		}, 350)
+		}, filter_delay)
 	}
 })()
 
@@ -7698,7 +7700,7 @@ var played_filter_timer = (function()
 		timer = setTimeout(function() 
 		{
 			do_played_filter()
-		}, 350)
+		}, filter_delay)
 	}
 })()
 
@@ -7713,7 +7715,7 @@ var userlist_filter_timer = (function()
 		timer = setTimeout(function() 
 		{
 			do_userlist_filter()
-		}, 350)
+		}, filter_delay)
 	}
 })()
 
@@ -7728,7 +7730,7 @@ var roomlist_filter_timer = (function()
 		timer = setTimeout(function() 
 		{
 			do_roomlist_filter()
-		}, 350)
+		}, filter_delay)
 	}
 })()
 
@@ -7997,7 +7999,7 @@ var input_history_filter_timer = (function()
 		timer = setTimeout(function() 
 		{
 			do_input_history_filter()
-		}, 350)
+		}, filter_delay)
 	}
 })()
 
@@ -10223,7 +10225,7 @@ var highlights_filter_timer = (function()
 		timer = setTimeout(function() 
 		{
 			do_highlights_filter()
-		}, 350)
+		}, filter_delay)
 	}
 })()
 
@@ -10425,7 +10427,7 @@ var image_history_filter_timer = (function()
 		timer = setTimeout(function() 
 		{
 			do_image_history_filter()
-		}, 350)
+		}, filter_delay)
 	}
 })()
 
@@ -10440,7 +10442,7 @@ var tv_history_filter_timer = (function()
 		timer = setTimeout(function() 
 		{
 			do_tv_history_filter()
-		}, 350)
+		}, filter_delay)
 	}
 })()
 
@@ -10455,7 +10457,7 @@ var radio_history_filter_timer = (function()
 		timer = setTimeout(function() 
 		{
 			do_radio_history_filter()
-		}, 350)
+		}, filter_delay)
 	}
 })()
 
