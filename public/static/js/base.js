@@ -188,7 +188,6 @@ function init()
 	activate_window_visibility_listener()
 	input_click_events()
 	copypaste_events()
-	main_menu_events()
 	header_topic_events()
 	scroll_events()
 	resize_events()
@@ -424,10 +423,8 @@ function show_topic(size="small")
 	}
 }
 
-function check_role(data)
+function start_permissions(data)
 {
-	role = data.role
-
 	voice1_chat_permission = data.voice1_chat_permission
 	voice1_images_permission = data.voice1_images_permission
 	voice1_tv_permission = data.voice1_tv_permission
@@ -444,8 +441,6 @@ function check_role(data)
 	voice4_images_permission = data.voice4_images_permission
 	voice4_tv_permission = data.voice4_tv_permission
 	voice4_radio_permission = data.voice4_radio_permission
-
-	check_permissions()
 }
 
 function check_permissions()
@@ -481,18 +476,18 @@ function setup_icons()
 
 		if(can_images)
 		{
-			$("#footer_upload_icon").css("display", "inline-block")
+			$("#footer_images_icon").css("display", "inline-block")
 		}
 
 		else
 		{
-			$("#footer_upload_icon").css("display", "none")
+			$("#footer_images_icon").css("display", "none")
 		}
 	}
 
 	else
 	{
-		$("#footer_upload_icon").css("display", "none")
+		$("#footer_images_icon").css("display", "none")
 		$("#footer_images_controls").css("display", "none")
 	}
 
@@ -537,6 +532,14 @@ function setup_icons()
 		$("#footer_tv_icon").css("display", "none")
 		$("#footer_tv_controls").css("display", "none")
 	}
+
+	$("#footer_images_icon").on("auxclick", function(e)
+	{
+		if(e.which === 2)
+		{
+			$("#image_file_picker").click()
+		}
+	})
 }
 
 function show_role(data)
@@ -643,7 +646,8 @@ function start_socket()
 			set_background_image()		
 			setup_modal_colors()
 			setup_active_media(data)
-			check_role(data)
+			start_permissions(data)
+			set_role(data.role)
 			set_topic_info(data)
 			update_title()
 			is_public = data.public
@@ -2134,96 +2138,95 @@ function setup_main_menu()
 		var what = JSON.parse($('#admin_default_background_image_select option:selected').val())
 
 		change_default_background_image_enabled(what)
-	})	
-
-	$("#admin_default_background_image")[0].addEventListener('load', function()
-	{
-		update_modal_scrollbar("menu")
 	})
 }
 
 function show_main_menu()
 {
-	$("#admin_menu").css("display", "none")
-	$("#menu_smaller_container").css("display", "block")
+	msg_menu.show()
+}
 
-	msg_menu.show(function()
+function config_main_menu()
+{
+	if(role === "admin" || role === "op")
 	{
-		if(role === "admin" || role === "op")
+		$(".admin_voice_permissions_checkbox").each(function()
 		{
-			$(".admin_voice_permissions_checkbox").each(function()
+			$(this).prop("checked", window[$(this).data("ptype")])
+		})
+
+		$('#admin_enable_images').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === room_images_enabled)
 			{
-				$(this).prop("checked", window[$(this).data("ptype")])
-			})
+				$(this).prop('selected', true)
+			}
+		})
 
-			$('#admin_enable_images').find('option').each(function()
+		$('#admin_enable_tv').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === room_tv_enabled)
 			{
-				if(JSON.parse($(this).val()) === room_images_enabled)
-				{
-					$(this).prop('selected', true)
-				}
-			})
+				$(this).prop('selected', true)
+			}
+		})
 
-			$('#admin_enable_tv').find('option').each(function()
+		$('#admin_enable_radio').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === room_radio_enabled)
 			{
-				if(JSON.parse($(this).val()) === room_tv_enabled)
-				{
-					$(this).prop('selected', true)
-				}
-			})
+				$(this).prop('selected', true)
+			}
+		})
 
-			$('#admin_enable_radio').find('option').each(function()
+		$('#admin_privacy').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === is_public)
 			{
-				if(JSON.parse($(this).val()) === room_radio_enabled)
-				{
-					$(this).prop('selected', true)
-				}
-			})
+				$(this).prop('selected', true)
+			}
+		})	
 
-			$('#admin_privacy').find('option').each(function()
+		$('#admin_log').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === log_enabled)
 			{
-				if(JSON.parse($(this).val()) === is_public)
-				{
-					$(this).prop('selected', true)
-				}
-			})	
+				$(this).prop('selected', true)
+			}
+		})
 
-			$('#admin_log').find('option').each(function()
+		$("#admin_default_theme").spectrum("set", default_theme)
+
+		$('#admin_default_background_image_select').find('option').each(function()
+		{
+			if(JSON.parse($(this).val()) === default_background_image_enabled)
 			{
-				if(JSON.parse($(this).val()) === log_enabled)
-				{
-					$(this).prop('selected', true)
-				}
-			})
+				$(this).prop('selected', true)
+			}
+		})			
 
-			$("#admin_default_theme").spectrum("set", default_theme)
-
-			$('#admin_default_background_image_select').find('option').each(function()
+		if(default_background_image !== $("#admin_default_background_image").attr('src'))
+		{
+			if(default_background_image !== "")
 			{
-				if(JSON.parse($(this).val()) === default_background_image_enabled)
-				{
-					$(this).prop('selected', true)
-				}
-			})			
+				$("#admin_default_background_image").attr("src", default_background_image)
+			}
 
-			if(default_background_image !== $("#admin_default_background_image").attr('src'))
+			else
 			{
-				if(default_background_image !== "")
-				{
-					$("#admin_default_background_image").attr("src", default_background_image)
-				}
+				$("#admin_default_background_image").attr("src", default_default_background_image_url)
+			}
+		}			
 
-				else
-				{
-					$("#admin_default_background_image").attr("src", default_default_background_image_url)
-				}
-			}			
+		$("#admin_menu").css("display", "block")
+	}
 
-			$("#admin_menu").css("display", "block")
-		}
+	else
+	{
+		$("#admin_menu").css("display", "none")
+	}
 
-		update_modal_scrollbar("menu")
-	})
+	update_modal_scrollbar("menu")	
 }
 
 function show_create_room()
@@ -3801,6 +3804,11 @@ function start_image_events()
 	{
 		chat_announce({brk1:'[', brk2:']', msg:"The provided image URL failed to load"})	
 	})
+
+	$("#admin_default_background_image")[0].addEventListener('load', function()
+	{
+		update_modal_scrollbar("menu")
+	})
 }
 
 function after_image_load(img)
@@ -4194,6 +4202,9 @@ function register_commands()
 	commands.push('/openlastimage')
 	commands.push('/date')
 	commands.push('/js')
+	commands.push('/changeimage')
+	commands.push('/changetv')
+	commands.push('/changeradio')
 
 	commands.sort()
 
@@ -4839,6 +4850,21 @@ function send_to_chat(msg, to_history=true)
 			else if(oiStartsWith(lmsg, '/js'))
 			{
 				execute_javascript(arg)
+			}
+
+			else if(oiEquals(lmsg, '/changeimage'))
+			{
+				show_image_picker()
+			}
+
+			else if(oiEquals(lmsg, '/changetv'))
+			{
+				show_tv_picker()
+			}
+
+			else if(oiEquals(lmsg, '/changeradio'))
+			{
+				show_radio_picker()
 			}
 
 			else
@@ -5720,17 +5746,6 @@ function pup()
 	$('#pup')[0].play()
 }
 
-function main_menu_events()
-{
-	$('#main_menu').mousedown(function(e) 
-	{
-		if(e.which == 2) 
-		{
-			copy_room_url()
-		}
-	})
-}
-
 function word_generator(pattern) 
 {
 	var possibleC = "BCDFGHJKLMNPQRSTVWXZ"
@@ -6178,11 +6193,11 @@ function announce_role_change(data)
 	replace_role_in_userlist(data.username2, data.role)	
 }
 
-function set_role(p)
+function set_role(rol)
 {
-	role = p
-
+	role = rol
 	check_permissions()
+	config_main_menu()
 }
 
 function change_privacy(what)
