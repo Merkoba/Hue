@@ -17,7 +17,7 @@ body, html
 	background-image: url("/static/_img/pages_background.gif");
 	background-size: cover;
 	background-repeat: no-repeat;
-	background-position: center center;				
+	background-position: center center;	
 }
 
 .main
@@ -33,16 +33,7 @@ body, html
 	justify-content: center;
 	align-items: center;
 	text-align: center;	
-}
-
-.center
-{
-	padding-top: 5em;
-	margin-left: auto;
-	margin-right: auto;
-	width: 50em;
-	height: 35em;
-	text-align: center;
+	overflow: auto;			
 }
 
 .spacer1
@@ -114,6 +105,11 @@ a:hover, a:visited, a:link
 form
 {
 	margin: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;		
 }
 
 .error
@@ -129,4 +125,9 @@ form
 #message_container
 {
 	font-size: 1.4em;
+}
+
+.g-recaptcha > *
+{
+	margin: 0 auto;
 }
