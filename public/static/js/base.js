@@ -59,7 +59,6 @@ var rup = false
 var tup = false
 var iup = false
 var gtr = false
-var orb_timeout
 var modal_open = false
 var started = false
 var connections = 0
@@ -123,7 +122,6 @@ var yt_player
 var yt_video_player
 var youtube_player
 var youtube_video_player
-var fetched_room_id
 var utilz = Utilz()
 var log_messages
 var profile_image
@@ -144,7 +142,6 @@ var last_image_change
 var last_tv_change
 var last_radio_change
 var files = {}
-var time_ago
 var input_changed = false
 var hls
 var first_tv_played = false
@@ -9550,32 +9547,6 @@ function enable_normal_mode()
 	$("#media").css("min-width", "50%")
 
 	layout_mode = "normal"
-}
-
-function setup_timeago()
-{
-	var locale = function(number, index, total_sec) 
-	{
-		return [
-			['just now', 'right now'],
-			['just now', 'right now'],
-			['1 minute ago', 'in 1 minute'],
-			['%s minutes ago', 'in %s minutes'],
-			['1 hour ago', 'in 1 hour'],
-			['%s hours ago', 'in %s hours'],
-			['1 day ago', 'in 1 day'],
-			['%s days ago', 'in %s days'],
-			['1 week ago', 'in 1 week'],
-			['%s weeks ago', 'in %s weeks'],
-			['1 month ago', 'in 1 month'],
-			['%s months ago', 'in %s months'],
-			['1 year ago', 'in 1 year'],
-			['%s years ago', 'in %s years']
-		][index]
-	}
-
-	timeago.register('default', locale)
-	time_ago = timeago()
 }
 
 function setup_input()
