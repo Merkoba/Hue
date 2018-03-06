@@ -33,9 +33,9 @@
 		<script src="/static/js/utilz.js?ver=3"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=997"></script>
+		<script src="/static/js/base.js?ver=998"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=282"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=283"/>
 
 		<script>
 
@@ -453,7 +453,7 @@
 
 		<script id='template_userinfo' type='text/x-handlebars-template'>
 
-			<div class='bigger2 pointer' id='userinfo_username' onclick='show_details()'>Loading</div>
+			<div class='bigger2' id='userinfo_username'>Loading</div>
 
 			<div class='spacer3'></div>
 			
@@ -461,7 +461,23 @@
 				<img id='userinfo_profile_image' class='big_profile_image pointer unselectable' onclick='open_profile_image_picker()'>
 			</div>
 
+			<div class='spacer1'></div>
+
+			<div class='menu_item_smaller' onclick='show_details()'>Details</div>
+
+			&nbsp;|&nbsp;
+
+			<div class='menu_item_smaller' onclick='confirm_logout()'>Logout</div>
+
 			<div class='spacer3'></div>
+
+			<div class='menu_item_smaller' onclick='show_highlights()'>Highlights</div>
+
+			&nbsp;|&nbsp;
+
+			<div class='menu_item_smaller' onclick='show_input_history()'>History</div>
+
+			<div class='spacer1'></div>
 
 			<div id='settings' class='unselectable'>
 
@@ -525,19 +541,26 @@
 
 				<div class='spacer1'></div>
 				
-				<div class='menu_item_smaller' onclick='confirm_reset_settings()'>Reset Settings To Default</div>
+				<div class="setting_title">Go AFK After</div>
 				
-				<div class='spacer3'></div>
+				<select class='setting_select' id='setting_afk_delay'>
+					<option value='false' selected disabled>AFK means media won't change</option>
+					<option value='false' selected disabled>And you won't get sound notifications</option>
+					<option value='false' selected disabled>After being away for this long</option>
+					<option value='never' selected>Never</option>
+					<option value='0' selected>Instantly</option>
+					<option value='60000' selected>1 Minute</option>
+					<option value='120000' selected>2 Minutes</option>
+					<option value='300000' selected>5 Minutes</option>
+					<option value='600000' selected>10 Minutes</option>
+					<option value='1200000' selected>20 Minutes</option>
+					<option value='1800000' selected>30 Minutes</option>
+					<option value='3600000' selected>1 Hour</option>
+				</select>
 
-				<span class='menu_item_smaller' onclick='show_input_history()'>History</span>
+				<div class='spacer1'></div>
 
-				&nbsp;|&nbsp;
-
-				<span class='menu_item_smaller' onclick='show_highlights()'>Highlights</span>
-
-				&nbsp;|&nbsp;
-
-				<span class='menu_item_smaller' onclick='confirm_logout()'>Logout</span>
+				<div class='menu_item_smaller' onclick='confirm_reset_settings()'>Reset Settings To Default</div>
 
 			</div>
 		

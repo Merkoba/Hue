@@ -5583,7 +5583,7 @@ function change_volume_command(arg)
 
 function sound_notify()
 {
-	if(!started)
+	if(!started || afk)
 	{
 		return false
 	}
@@ -5703,7 +5703,14 @@ function activate_window_visibility_listener()
 
 		else
 		{
-			afk_timer = setTimeout(function(){afk = true}, afk_timeout_duration)
+			if(settings.afk_delay !== "never")
+			{
+				afk_timer = setTimeout(function()
+				{
+					afk = true
+				}, settings.afk_delay)
+			}
+
 			update_chat_scrollbar()
 			check_scroll_notice()
 		}
@@ -7433,6 +7440,12 @@ function get_settings()
 		changed = true
 	}
 
+	if(settings.afk_delay === undefined)
+	{
+		settings.afk_delay = settings_default_afk_delay
+		changed = true
+	}
+
 	if(changed)
 	{
 		save_settings()
@@ -7456,6 +7469,13 @@ function start_settings_state()
 	$("#setting_double_tap").val(settings.double_tap)
 	$("#setting_double_tap_2").val(settings.double_tap_2)
 	$("#setting_double_tap_3").val(settings.double_tap_3)
+	$('#setting_afk_delay').find('option').each(function()
+	{
+		if($(this).val() == settings.afk_delay)
+		{
+			$(this).prop('selected', true)
+		}
+	})	
 }
 
 function start_settings_listeners()
@@ -7470,6 +7490,7 @@ function start_settings_listeners()
 	$("#setting_double_tap").blur(setting_double_tap_action)
 	$("#setting_double_tap_2").blur(setting_double_tap_2_action)
 	$("#setting_double_tap_3").blur(setting_double_tap_3_action)
+	$("#setting_afk_delay").blur(setting_afk_delay_action)
 }
 
 function call_setting_actions(save=true)
@@ -7484,6 +7505,7 @@ function call_setting_actions(save=true)
 	setting_double_tap_action(save)
 	setting_double_tap_2_action(save)
 	setting_double_tap_3_action(save)	
+	setting_afk_delay_action(save)	
 }
 
 function setting_background_image_action(save=true)
@@ -7632,6 +7654,23 @@ function setting_double_tap_3_action(save=true)
 			save_settings()
 		}
 	}	
+}
+
+function setting_afk_delay_action(save=true)
+{
+	var delay = $("#setting_afk_delay option:selected").val()
+
+	if(delay !== "never")
+	{
+		delay = parseInt(delay)
+	}
+
+	settings.afk_delay = delay
+		
+	if(save)
+	{
+		save_settings()
+	}
 }
 
 function get_room_settings()
@@ -8155,7 +8194,6 @@ function start_twitch()
 function setup_userinfo()
 {
 	$("#userinfo_profile_image").attr("src", profile_image)
-
 	$("#setting_double_tap_key").text(double_tap_key)
 	$("#setting_double_tap_2_key").text(double_tap_key_2)
 	$("#setting_double_tap_3_key").text(double_tap_key_3)

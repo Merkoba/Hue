@@ -59,6 +59,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.settings_default_double_tap = config.settings_default_double_tap
 	c.vars.settings_default_double_tap_2 = config.settings_default_double_tap_2
 	c.vars.settings_default_double_tap_3 = config.settings_default_double_tap_3
+	c.vars.settings_default_afk_delay = config.settings_default_afk_delay
 	c.vars.double_tap_key = config.double_tap_key
 	c.vars.double_tap_key_2 = config.double_tap_key_2
 	c.vars.double_tap_key_3 = config.double_tap_key_3

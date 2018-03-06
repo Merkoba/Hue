@@ -934,8 +934,13 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 select
 {
-	font-size: 0.9em;
+	font-size: 0.95em;	
+}
+
+.setting_select
+{
 	text-align-last: center;	
+	width: 100%;
 }
 
 .msg
