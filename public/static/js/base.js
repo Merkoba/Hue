@@ -3517,7 +3517,7 @@ function add_to_chat(msg, save=false)
 	{
 		var content = msg.find(".chat_content").eq(0)
 
-		if(started)
+		if(started && !document.hidden)
 		{
 			content.addClass("fader")
 		}
@@ -3525,7 +3525,7 @@ function add_to_chat(msg, save=false)
 
 	else
 	{
-		if(started)
+		if(started && !document.hidden)
 		{
 			msg.addClass("fader")
 		}
