@@ -171,6 +171,7 @@ var user_email
 var user_reg_date
 var filter_delay = 350
 var resize_delay = 350
+var double_tap_delay = 200
 
 function init()
 {
@@ -2480,7 +2481,7 @@ var double_tap_timer = (function()
 		timer = setTimeout(function() 
 		{
 			double_tap_key_pressed = 0
-		}, 200)
+		}, double_tap_delay)
 	}
 })()
 
@@ -2495,7 +2496,7 @@ var double_tap_2_timer = (function()
 		timer = setTimeout(function() 
 		{
 			double_tap_key_2_pressed = 0
-		}, 200)
+		}, double_tap_delay)
 	}
 })()
 
@@ -2510,7 +2511,7 @@ var double_tap_3_timer = (function()
 		timer = setTimeout(function() 
 		{
 			double_tap_key_3_pressed = 0
-		}, 200)
+		}, double_tap_delay)
 	}
 })()
 
