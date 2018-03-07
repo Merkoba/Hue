@@ -6891,7 +6891,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "image",
-			window_x: "floating_right",
+			window_x: "none",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7319,8 +7319,6 @@ function start_msg()
 	msg_locked.set(template_locked_menu())
 
 	msg_info.create()
-
-	setup_image_overlay()
 }
 
 function info_vars_to_false()
@@ -8632,6 +8630,8 @@ function show_modal_image(url, title=false, date)
 	img.data("image_title", t)
 	img.data("image_date", date)
 
+	$("#modal_image_header_info").text(t)
+
 	update_modal_scrollbar("image")
 
 	msg_image.show()
@@ -9797,8 +9797,8 @@ function toggle_lock_radio(what=undefined)
 function setup_modal_colors()
 {
 	var background_color = default_theme
+	var background_color2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
 	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2)
-	var inner_x_hover_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
 	var overlay_color = colorlib.rgb_to_rgba(font_color, modal_overlay_opacity)
 	var scrollbar_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
 
@@ -9811,6 +9811,12 @@ function setup_modal_colors()
 		color: ${background_color} !important;
 	}
 
+	#modal_image_header
+	{
+		background-color: ${background_color2} !important;
+		color: ${font_color} !important;		
+	}
+
 	.Msg-window
 	{
 		background-color: ${background_color} !important;
@@ -9819,7 +9825,7 @@ function setup_modal_colors()
 
 	.Msg-window-inner-x:hover
 	{
-		background-color: ${inner_x_hover_color} !important;
+		background-color: ${background_color2} !important;
 	}
 
 	.nicescroll-cursors
@@ -10625,30 +10631,6 @@ function electron_signal(func, data={})
 	}
 }
 
-function setup_image_overlay()
-{
-	var s = ""
-	
-	s +="<div id='modal_image_overlay_prev' class='unselectable modal_image_overlay_button'>&lt; Prev</div>"
-	s +="<div id='modal_image_overlay_next' class='unselectable modal_image_overlay_button'>Next &gt;</div>"
-
-	$("#Msg-overlay-image").html(s)
-
-	$("#modal_image_overlay_prev").click(function(e)
-	{
-		image_prev_click()
-		e.preventDefault()
-		e.stopPropagation()
-	})
-
-	$("#modal_image_overlay_next").click(function(e)
-	{
-		image_next_click()
-		e.preventDefault()
-		e.stopPropagation()
-	})
-}
-
 function image_prev_click()
 {
 	if(images_changed.length < 2)
@@ -10734,11 +10716,31 @@ function setup_modal_image()
 	$("#Msg-window-image")[0].addEventListener("wheel", f)
 	$("#Msg-overlay-image")[0].addEventListener("wheel", f)
 
+	$("#modal_image_container").click(function()
+	{
+		msg_image.close()
+	})
+
 	$("#modal_image").click(function()
 	{
-		var s = make_safe($("#modal_image").data("image_title"))
-		msg_info.show(s)
+		msg_image.close()
 	})
+
+	$("#modal_image_header").click(function(e)
+	{
+		e.preventDefault()
+		e.stopPropagation()
+	})
+
+	$("#modal_image_header_prev").click(function(e)
+	{
+		image_prev_click()
+	})
+
+	$("#modal_image_header_next").click(function(e)
+	{
+		image_next_click()
+	})	
 }
 
 var modal_image_prev_wheel_timer = (function() 

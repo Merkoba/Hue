@@ -962,21 +962,20 @@ input[type=text], textarea
 
 #Msg-window-image
 {
-	max-width: 90vw !important;
-	max-height: 90vh !important;
+	width: 100vw !important;
+	height: 100vh !important;
+	max-width: 100vw !important;
+	max-height: 100vh !important;
+	min-width: 100vw !important;
+	min-height: 100vh !important;
 }
 
-#modal_image_container
+#Msg-content-image
 {
-	overflow: hidden;
-}
-
-#modal_image
-{
-	max-width: 90vw;
-	max-height: 90vh;
-	display: none;
-	cursor: pointer;
+	padding: 0 !important;
+	margin: 0 !important;
+	height: 100vh !important;
+	width: 100vw !important;
 }
 
 #modal_image_error
@@ -984,24 +983,66 @@ input[type=text], textarea
 	padding: 2em;
 }
 
-.modal_image_overlay_button
+#modal_image_split
 {
-	padding-top: 0.3em;
-	cursor: pointer;
-	font-size: 1.2em;
-	z-index: 10;
+	display: flex;
+	flex-direction: column;	
+	width: 100%;
+	height: 100%;
 }
 
-#modal_image_overlay_prev
+#modal_image_header
+{	
+	display: flex;
+	padding-top: 0.4em;
+	padding-bottom: 0.5em;
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+#modal_image_header_info
+{
+	flex-grow: 1;
+	flex-shrink: 1;
+	text-align: center;
+}
+
+.modal_image_header_button
+{
+	cursor: pointer;
+	z-index: 10;
+	flex-grow: 0;
+	flex-shrink: 0	
+}
+
+#modal_image_header_prev
 {
 	float: left;
 	padding-left: 0.5em;
 }
 
-#modal_image_overlay_next
+#modal_image_header_next
 {
 	float: right;
 	padding-right: 0.5em;
+}
+
+#modal_image_container
+{
+	overflow: hidden;
+	flex-grow: 1;
+	flex-shrink: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 2em;
+}
+
+#modal_image
+{
+	max-width: 100%;
+	max-height: 100%;
+	display: none;
 }
 
 .pointer
@@ -1064,11 +1105,6 @@ input[type=text], textarea
 .bigger2
 {
 	font-size: 1.4em;
-}
-
-#Msg-content-image
-{
-	padding: 0 !important;
 }
 
 .padding1

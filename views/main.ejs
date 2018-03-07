@@ -33,9 +33,9 @@
 		<script src="/static/js/utilz.js?ver=3"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=998"></script>
+		<script src="/static/js/base.js?ver=1000"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=283"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=284"/>
 
 		<script>
 
@@ -707,10 +707,17 @@
 		</script>
 
 		<script id='template_image' type='text/x-handlebars-template'>
-			<div id='modal_image_container'>
-				<div id="modal_image_spinner" class='spinner1'></div>
-				<img id="modal_image">
-				<div id="modal_image_error">Image no longer available</div>			
+			<div id='modal_image_split'>
+				<div id='modal_image_header'>
+					<div id='modal_image_header_prev' class='unselectable modal_image_header_button'>&lt; Prev</div>
+					<div id='modal_image_header_info'></div>
+					<div id='modal_image_header_next' class='unselectable modal_image_header_button'>Next &gt;</div>
+				</div>			
+				<div id='modal_image_container'>
+					<div id="modal_image_spinner" class='spinner1'></div>
+					<img id="modal_image">
+					<div id="modal_image_error">Image no longer available</div>			
+				</div>
 			</div>
 		</script>		
 
