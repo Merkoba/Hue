@@ -1340,9 +1340,11 @@ function userjoin(data)
 
 	if(announce_joins && check_permission(data.role, "chat"))
 	{
+		var prof_image = get_user_by_username(data.username).profile_image
+		
 		var f = function()
 		{
-			show_profile(`${data.username}`, `${get_user_by_username(data.username).profile_image}`)
+			show_profile(data.username, prof_image)
 		}
 
 		chat_announce({brk1:'--', brk2:'--', msg:`${data.username} has joined`, save:true, onclick:f})
@@ -9023,7 +9025,7 @@ function setup_show_profile()
 
 function show_profile(uname, prof_image)
 {
-	if(prof_image === "" || prof_image === undefined)
+	if(prof_image === "" || prof_image === undefined || prof_image === "undefined")
 	{
 		var pi = default_profile_image_url
 	}
