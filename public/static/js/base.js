@@ -3905,7 +3905,7 @@ function chat_announce(args={})
 	if(args.onclick)
 	{
 		containerclasses += " pointer"
-		contclasses += " action"
+		containerclasses += " action"
 	}
 
 	var containerid = " "
