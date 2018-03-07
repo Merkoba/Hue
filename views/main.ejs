@@ -453,31 +453,35 @@
 
 		<script id='template_userinfo' type='text/x-handlebars-template'>
 
-			<div class='bigger2' id='userinfo_username'>Loading</div>
+			<div class='unselectable'>
 
-			<div class='spacer3'></div>
-			
-			<div class='big_profile_image_container'>
-				<img id='userinfo_profile_image' class='big_profile_image pointer unselectable' onclick='open_profile_image_picker()'>
+				<div class='bigger2' id='userinfo_username'>Loading</div>
+
+				<div class='spacer3'></div>
+				
+				<div class='big_profile_image_container'>
+					<img id='userinfo_profile_image' class='big_profile_image pointer unselectable' onclick='open_profile_image_picker()'>
+				</div>
+
+				<div class='spacer1'></div>
+
+				<div class='menu_item_smaller' onclick='show_details()'>Details</div>
+
+				&nbsp;|&nbsp;
+
+				<div class='menu_item_smaller' onclick='confirm_logout()'>Logout</div>
+
+				<div class='spacer3'></div>
+
+				<div class='menu_item_smaller' onclick='show_highlights()'>Highlights</div>
+
+				&nbsp;|&nbsp;
+
+				<div class='menu_item_smaller' onclick='show_input_history()'>History</div>
+
+				<div class='spacer1'></div>
+
 			</div>
-
-			<div class='spacer1'></div>
-
-			<div class='menu_item_smaller' onclick='show_details()'>Details</div>
-
-			&nbsp;|&nbsp;
-
-			<div class='menu_item_smaller' onclick='confirm_logout()'>Logout</div>
-
-			<div class='spacer3'></div>
-
-			<div class='menu_item_smaller' onclick='show_highlights()'>Highlights</div>
-
-			&nbsp;|&nbsp;
-
-			<div class='menu_item_smaller' onclick='show_input_history()'>History</div>
-
-			<div class='spacer1'></div>
 
 			<div id='settings' class='unselectable'>
 
