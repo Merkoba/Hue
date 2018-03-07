@@ -1036,6 +1036,7 @@ input[type=text], textarea
 	justify-content: center;
 	align-items: center;
 	height: 2em;
+	cursor: pointer;
 }
 
 #modal_image

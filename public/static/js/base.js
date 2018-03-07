@@ -10726,12 +10726,6 @@ function setup_modal_image()
 		msg_image.close()
 	})
 
-	$("#modal_image_header").click(function(e)
-	{
-		e.preventDefault()
-		e.stopPropagation()
-	})
-
 	$("#modal_image_header_prev").click(function(e)
 	{
 		image_prev_click()
