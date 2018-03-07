@@ -3462,7 +3462,7 @@ function update_chat(args={})
 	{
 		var s = `
 		<div class='msg chat_message thirdperson'>
-		*&nbsp;<span class='chat_uname'></span>
+		*&nbsp;<span class='chat_uname action'></span>
 		&nbsp;<span class='${contclasses}' title='${nd}' data-date='${d}'></span>&nbsp;*</div>`
 
 		var fmsg = $(s)
@@ -3481,7 +3481,7 @@ function update_chat(args={})
 			</div>
 			<div class='chat_right_side'>
 				<span class='chat_uname_container'>
-					<span class='chat_uname'></span>
+					<span class='chat_uname action'></span>
 				</span>
 				<span class='chat_content_container'>
 					<span class='${contclasses}' title='${nd}' data-date='${d}'></span>
@@ -3900,10 +3900,12 @@ function chat_announce(args={})
 	fill_defaults(args, def_args)
 
 	var containerclasses = "announcement_content_container"
+	var contclasses = "announcement_content"
 
 	if(args.onclick)
 	{
 		containerclasses += " pointer"
+		contclasses += " action"
 	}
 
 	var containerid = " "
@@ -3913,7 +3915,6 @@ function chat_announce(args={})
 		containerid = ` id='${args.id}' `
 	}
 
-	var contclasses = "announcement_content"
 
 	if(args.highlight === true)
 	{
@@ -3998,9 +3999,9 @@ function handle_chat_announce_types(msg, type)
 
 	if(media_history_types.indexOf(type) !== -1)
 	{
-		var s = $("<div class='media_history_item'></div>")
+		var item = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
 
-		var item = s.html(msg.find(".announcement_content_container").eq(0).clone(true, true))
+		item.find(".media_history_item_inner").eq(0).html(msg.find(".announcement_content_container").eq(0).clone(true, true))
 
 		if(type === "image_change")
 		{
@@ -5938,7 +5939,7 @@ function chat_search(filter=false)
 
 				if(show)
 				{
-					var cn = $("<div class='chat_search_result_item'><div class='chat_search_result_uname generic_uname'></div><div class='chat_search_result_content'></div>")
+					var cn = $("<div class='chat_search_result_item'><div class='chat_search_result_uname generic_uname inline action'></div><div class='chat_search_result_content'></div>")
 
 					cn.find(".chat_search_result_uname").eq(0).text(huname.text())
 
@@ -8067,58 +8068,6 @@ var input_history_filter_timer = (function()
 	}
 })()
 
-function do_highlights_filter()
-{
-	var filter = $("#input_history_filter").val().trim().toLowerCase()
-
-	if(filter !== "")
-	{
-		$(".input_history_item").each(function()
-		{
-			$(this).css("display", "block")
-
-			var uname = $(this).find(".input_history_uname").eq(0).text()
-			var hcontent = $(this).find(".input_history_content").eq(0)
-
-			var content = ""
-
-			hcontent.each(function()
-			{
-				content += `${$(this).text()} `	
-			})			
-
-			var include = false
-
-			if(uname.toLowerCase().indexOf(filter) !== -1)
-			{
-				include = true
-			}
-
-			else if(content.toLowerCase().indexOf(filter) !== -1)
-			{
-				include = true
-			}
-
-			if(!include)
-			{
-				$(this).css("display", "none")
-			}
-		})
-	}
-
-	else
-	{
-		$(".input_history_item").each(function()
-		{
-			$(this).css("display", "block")
-		})
-	}
-
-	update_modal_scrollbar("input_history")
-
-	$('#Msg-content-container-input_history').scrollTop(0)
-}
-
 function onYouTubeIframeAPIReady() 
 {
 	yt_player = new YT.Player('youtube_player',
@@ -10238,7 +10187,7 @@ function show_highlights(filter=false)
 					var huname = msg.find('.chat_uname').eq(0)
 					var hcontent = msg.find('.chat_content')
 
-					var cn = $("<div class='highlights_item'><div class='highlights_uname generic_uname'></div><div class='highlights_content'></div>")
+					var cn = $("<div class='highlights_item'><div class='highlights_uname generic_uname inline action'></div><div class='highlights_content'></div>")
 
 					cn.find(".highlights_uname").eq(0).text(huname.text())
 
@@ -10264,7 +10213,7 @@ function show_highlights(filter=false)
 					if(msg.data("type") === "whisper")
 					{
 						var cn = $("<div class='highlights_item'><div class='highlights_uname'></div><div class='highlights_content'></div>")
-						cn.find(".highlights_uname").eq(0).html(`Whisper from&nbsp;<span class='generic_uname'>${msg.data("info1")}</span>`)
+						cn.find(".highlights_uname").eq(0).html(`Whisper from&nbsp;<span class='generic_uname action'>${msg.data("info1")}</span>`)
 						var content = cn.find(".highlights_content").eq(0)
 						content.text(msg.data("info2")).urlize()
 						content.attr("title", msg.find(".announcement_content_container").eq(0).attr("title"))
