@@ -172,6 +172,7 @@ var user_reg_date
 var filter_delay = 350
 var resize_delay = 350
 var double_tap_delay = 200
+var wheel_delay = 100
 
 function init()
 {
@@ -658,6 +659,7 @@ function start_socket()
 			clear_chat()
 			check_firstime()
 			get_input_history()
+			announce_image_change(data, false, false)
 			show_joined()
 
 			setup_image(data)
@@ -1544,7 +1546,7 @@ function update_userlist()
 
 		usernames.push(item.username)
 
-		var h = $("<div class='userlist_item'><span class='ui_item_role'></span><span class='ui_item_uname'></span></div>")
+		var h = $("<div class='userlist_item'><span class='ui_item_role'></span><span class='ui_item_uname action'></span></div>")
 
 		var p = role_tag(item.role)
 
@@ -1848,7 +1850,7 @@ function start_played_context_menu()
 {
 	$.contextMenu(
 	{
-		selector: ".played_item, #now_playing_controls",
+		selector: ".played_item_inner, #now_playing_controls",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,		
 		items: 
@@ -1999,7 +2001,7 @@ function request_visited_roomlist(filter="")
 
 function start_roomlist_click_events()
 {
-	$("#roomlist").on("click", ".roomlist_item", function() 
+	$("#roomlist").on("click", ".roomlist_item_inner", function() 
 	{
 		show_open_room($(this).data("room_id"))
 	})
@@ -2015,8 +2017,13 @@ function update_roomlist(roomlist)
 
 	for(var i=0; i<roomlist.length; i++)
 	{
-		var c = "<div class='roomlist_name'></div><div class='roomlist_topic'></div><div class='roomlist_here'></div><div class='roomlist_count'></div>"
-		var h = $(`<div class='roomlist_item' data-room_id='${roomlist[i].id}'>${c}</div>`)
+		var c = 
+		`<div class='roomlist_item_inner pointer inline action' data-room_id='${roomlist[i].id}'>
+			<div class='roomlist_name'></div><div class='roomlist_topic'></div>
+			<div class='roomlist_here'></div><div class='roomlist_count'></div>
+		</div>`
+
+		var h = $(`<div class='roomlist_item'>${c}</div>`)
 
 		h.find('.roomlist_name').eq(0).text(roomlist[i].name)
 
@@ -2684,12 +2691,12 @@ function activate_key_detection()
 				{
 					if(e.key === "ArrowLeft")
 					{
-						image_prev_click()
+						modal_image_prev_click()
 					}
 					
 					else if(e.key === "ArrowRight")
 					{
-						image_next_click()
+						modal_image_next_click()
 					}
 					
 					return
@@ -5282,7 +5289,7 @@ function show_playing_file()
 
 function start_played_click_events()
 {
-	$("#played").on("click", ".played_item", function() 
+	$("#played").on("click", ".played_item_inner", function() 
 	{
 		if($(this).data('q2') !== '')
 		{
@@ -5324,9 +5331,12 @@ function push_played(info, info2=false)
 	{
 		var title = nice_date()
 		
-		var pi = "<div class='pititle'></div><div class='piartist'></div>"
+		var pi = `
+		<div class='played_item_inner pointer inline action' title='${title}'>
+			<div class='pititle'></div><div class='piartist'></div>
+		</div>`
 		
-		h = $(`<div title='${title}' class='played_item'>${pi}</div>`)
+		h = $(`<div class='played_item'>${pi}</div>`)
 
 		if(info)
 		{
@@ -5340,8 +5350,10 @@ function push_played(info, info2=false)
 			h.find('.piartist').eq(0).text(`${info2.s2}`)			
 		}
 
-		h.data('q', q)
-		h.data('q2', q2)
+		var inner = h.find(".played_item_inner").eq(0)
+
+		inner.data('q', q)
+		inner.data('q2', q2)
 		
 		$('#played').prepend(h)
 
@@ -6125,7 +6137,7 @@ function show_upload_error()
 	chat_announce({brk1:'[', brk2:']', msg:"The image could not be uploaded"})
 }
 
-function announce_image_change(data, date=false)
+function announce_image_change(data, date=false, show=true)
 {
 	if(date)
 	{
@@ -6159,30 +6171,44 @@ function announce_image_change(data, date=false)
 		var msg = `${data.image_uploader} uploaded an image`
 	}
 
-	var onclick = function()
+	if(show)
 	{
-		show_modal_image(data.image_url, title, d)
+		var onclick = function()
+		{
+			show_modal_image(data.image_url, title, d)
+		}
+
+		chat_announce(
+		{
+			brk1: "<i class='icon2 fa fa-camera'></i>", 
+			msg: msg, 
+			title: title, 
+			onclick: onclick, 
+			save: true, 
+			date: d, 
+			type: "image_change"
+		})
 	}
 
-	chat_announce(
-	{
-		brk1: "<i class='icon2 fa fa-camera'></i>", 
-		msg: msg, 
-		title: title, 
-		onclick: onclick, 
-		save: true, 
-		date: d, 
-		type: "image_change"
-	})
+	var ic_data = {}
 
-	data.title = title
-	data.date_raw = d
+	ic_data.image_url = data.image_url
+	ic_data.title = title
+	ic_data.date_raw = d
 
-	push_images_changed(data)
+	push_images_changed(ic_data)
 }
 
 function push_images_changed(data)
 {
+	for(var img of images_changed)
+	{
+		if(img.date_raw === data.date_raw)
+		{
+			return false
+		}
+	}
+
 	images_changed.push(data)
 
 	if(images_changed.length > images_changed_crop_limit)
@@ -10631,7 +10657,7 @@ function electron_signal(func, data={})
 	}
 }
 
-function image_prev_click()
+function modal_image_prev_click()
 {
 	if(images_changed.length < 2)
 	{
@@ -10655,7 +10681,7 @@ function image_prev_click()
 	show_modal_image(last.image_url, last.title, last.date_raw)
 }
 
-function image_next_click(e)
+function modal_image_next_click(e)
 {
 	if(images_changed.length < 2)
 	{
@@ -10728,12 +10754,12 @@ function setup_modal_image()
 
 	$("#modal_image_header_prev").click(function(e)
 	{
-		image_prev_click()
+		modal_image_prev_click()
 	})
 
 	$("#modal_image_header_next").click(function(e)
 	{
-		image_next_click()
+		modal_image_next_click()
 	})	
 }
 
@@ -10747,8 +10773,8 @@ var modal_image_prev_wheel_timer = (function()
 
 		timer = setTimeout(function() 
 		{
-			image_prev_click()
-		}, 200)
+			modal_image_prev_click()
+		}, wheel_delay)
 	}
 })()
 
@@ -10762,8 +10788,8 @@ var modal_image_next_wheel_timer = (function()
 
 		timer = setTimeout(function() 
 		{
-			image_next_click()
-		}, 200)
+			modal_image_next_click()
+		}, wheel_delay)
 	}
 })()
 

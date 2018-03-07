@@ -33,9 +33,9 @@
 		<script src="/static/js/utilz.js?ver=3"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1001"></script>
+		<script src="/static/js/base.js?ver=1002"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=285"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=286"/>
 
 		<script>
 
@@ -66,21 +66,21 @@
 
 			<div id="main_flex">
 
-				<div id='header' class='unselectable bg2'>
+				<div id='header' class='unselectable bg2 panel'>
 
 					<div id='header_items'>
 
 						<div id='header_items_inner'>
 
-							<i id='main_menu' class='header_item icon fa fa-th-large nicetitle' onclick='show_main_menu()' title="Main Menu"></i>
+							<i id='main_menu' class='header_item icon fa fa-th-large nicetitle action' onclick='show_main_menu()' title="Main Menu"></i>
 							<span class='hspacer1'></span>|<span class='hspacer1'></span>
-							<span class='header_item' id='usercount' onclick='show_userlist()'></span>
+							<span class='header_item action' id='usercount' onclick='show_userlist()'></span>
 
 							<span id='radio'>
 								
 								<span class='hspacer1'></span>|<span class='hspacer1'></span>
 
-								<span class='header_item' id='toggle_radio_state' onclick='toggle_radio_state()'>
+								<span class='header_item action' id='toggle_radio_state' onclick='toggle_radio_state()'>
 									<i class='icon fa fa-volume-up' id='playing_icon'></i>
 									<span id='toggle_now_playing_text'>Start Radio</span>
 								</span>
@@ -88,14 +88,14 @@
 								<span id='volume_area'>
 									<span class='hspacer1'></span>|<span class='hspacer1'></span>
 									<span id='volume_controls'>
-										<i id='header_icon_minus' class='header_item icon fa fa-minus' onclick='volume_decrease()'></i>
+										<i id='header_icon_minus' class='header_item icon fa fa-minus action' onclick='volume_decrease()'></i>
 										<span class='header_item' onclick='volume_decrease()'>Volume:</span>
 										<span class='header_item' id='volume' onclick='volume_increase()'>100%</span>
-										<i id='header_icon_plus' class='header_item icon fa fa-plus' onclick='volume_increase()'></i>
+										<i id='header_icon_plus' class='header_item icon fa fa-plus action' onclick='volume_increase()'></i>
 									</span>
 								</span>
 
-								<span id="now_playing_area" onclick="show_played()">
+								<span id="now_playing_area" onclick="show_played()" class='action'>
 									<span class='hspacer1'></span>|<span class='hspacer1'></span> 
 									<span id='now_playing_controls'>
 										<span class='header_item'>Now Playing:</span>
@@ -158,44 +158,44 @@
 
 				</div>
 
-				<div id='footer' class='bg2'>
+				<div id='footer' class='bg2 panel'>
 					<div id='footer_items'>
 
-						<span id='footer_userinfo' class='fa fa-user-circle footer_icon nicetitle' onclick="show_userinfo()" title="User Menu"></span>
+						<span id='footer_userinfo' class='fa fa-user-circle footer_icon nicetitle action' onclick="show_userinfo()" title="User Menu"></span>
 
 						<input type='text' id='input' size="1">
 
 						<span class='unselectable'>
 							
 							<span id='footer_images_controls'>
-								<span id='toggle_images_text' class='footer_text pointer nicetitle' onclick="maximize_images()" title="Maximize/Restore Images">Images</span>
-								<i class='fa fa-toggle-on footer_icon2 nicetitle' id='footer_toggle_images_icon' onclick='toggle_images()' title='Show/Hide Images. Hidden means it will not be displayed or active'></i>
-								<i class='fa fa-unlock-alt footer_icon nicetitle' id='footer_lock_images_icon' onclick='toggle_lock_images()' title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'></i>
+								<span id='toggle_images_text' class='footer_text pointer nicetitle action' onclick="maximize_images()" title="Maximize/Restore Images">Images</span>
+								<i class='fa fa-toggle-on footer_icon2 nicetitle action' id='footer_toggle_images_icon' onclick='toggle_images()' title='Show/Hide Images. Hidden means it will not be displayed or active'></i>
+								<i class='fa fa-unlock-alt footer_icon nicetitle action' id='footer_lock_images_icon' onclick='toggle_lock_images()' title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'></i>
 	 
 								<span class='hspacer3'></span>
 							</span>
  	
 							<span id='footer_tv_controls'>
-								<span id='toggle_tv_text' class='footer_text pointer nicetitle' onclick="maximize_tv()" title="Maximize/Restore TV">TV</span>
-								<i class='fa fa-toggle-on footer_icon2 nicetitle' id='footer_toggle_tv_icon' onclick='toggle_tv()' title='Show/Hide TV. Hidden means it will not be displayed or active'></i>
-								<i class='fa fa-unlock-alt footer_icon nicetitle' id='footer_lock_tv_icon' onclick='toggle_lock_tv()' title='Lock/Unlock TV. Locked means it will stay the same even if media is changed by a user'></i>
+								<span id='toggle_tv_text' class='footer_text pointer nicetitle action' onclick="maximize_tv()" title="Maximize/Restore TV">TV</span>
+								<i class='fa fa-toggle-on footer_icon2 nicetitle action' id='footer_toggle_tv_icon' onclick='toggle_tv()' title='Show/Hide TV. Hidden means it will not be displayed or active'></i>
+								<i class='fa fa-unlock-alt footer_icon nicetitle action' id='footer_lock_tv_icon' onclick='toggle_lock_tv()' title='Lock/Unlock TV. Locked means it will stay the same even if media is changed by a user'></i>
 	 
 								<span class='hspacer3'></span>
  							</span>
 
 							<span id='footer_radio_controls'>
-								<span id='toggle_radio_text' class='footer_text'>Radio</span>
-								<i class='fa fa-toggle-on footer_icon2 nicetitle' id='footer_toggle_radio_icon' onclick='toggle_radio()' title='Show/Hide Radio. Hidden means it will not be displayed or active'></i>
-								<i class='fa fa-unlock-alt footer_icon nicetitle' id='footer_lock_radio_icon' onclick='toggle_lock_radio()' title='Lock/Unlock Radio. Locked means it will stay the same even if media is changed by a user'></i>
+								<span id='toggle_radio_text' class='footer_text action'>Radio</span>
+								<i class='fa fa-toggle-on footer_icon2 nicetitle action' id='footer_toggle_radio_icon' onclick='toggle_radio()' title='Show/Hide Radio. Hidden means it will not be displayed or active'></i>
+								<i class='fa fa-unlock-alt footer_icon nicetitle action' id='footer_lock_radio_icon' onclick='toggle_lock_radio()' title='Lock/Unlock Radio. Locked means it will stay the same even if media is changed by a user'></i>
 	 
 								<span class='hspacer3'></span>
 							</span>
 
-							<i class='fa fa-camera footer_icon nicetitle' id='footer_images_icon' title='Change the Image' onclick='show_image_picker()'></i>
-							<i class='fa fa-television footer_icon nicetitle' id='footer_tv_icon' onclick="show_tv_picker()" title='Change the TV'></i>
-							<i class='fa fa-volume-up footer_icon nicetitle' id='footer_radio_icon' onclick="show_radio_picker()" title='Change the Radio'></i>
+							<i class='fa fa-camera footer_icon nicetitle action' id='footer_images_icon' title='Change the Image' onclick='show_image_picker()'></i>
+							<i class='fa fa-television footer_icon nicetitle action' id='footer_tv_icon' onclick="show_tv_picker()" title='Change the TV'></i>
+							<i class='fa fa-volume-up footer_icon nicetitle action' id='footer_radio_icon' onclick="show_radio_picker()" title='Change the Radio'></i>
 
-							<i id='footer_media_menu' class='fa fa-bars footer_icon nicetitle' id='footer_lock_images_icon' onclick='show_media_menu()' title='Media Menu'></i>
+							<i id='footer_media_menu' class='fa fa-bars footer_icon nicetitle action' id='footer_lock_images_icon' onclick='show_media_menu()' title='Media Menu'></i>
 						</span>
 
 					</div>
@@ -210,26 +210,29 @@
 		<script id='template_menu' type='text/x-handlebars-template'>
 			<div id='menu' class='unselectable'>
 
-				<div class='menu_item' onclick="request_visited_roomlist()">Visited Rooms</div>
-				<div class='menu_item' onclick="request_roomlist()">Public Rooms</div>
-				<div class='menu_item' onclick="show_goto_room()">Go To Room</div>
-				<div class='menu_item' onclick='show_create_room()'>Create Room</div>
+				<div class='menu_item action inline' onclick="request_visited_roomlist()">Visited Rooms</div>
+				<div></div>
+				<div class='menu_item action inline' onclick="request_roomlist()">Public Rooms</div>
+				<div></div>
+				<div class='menu_item action inline' onclick="show_goto_room()">Go To Room</div>
+				<div></div>
+				<div class='menu_item action inline' onclick='show_create_room()'>Create Room</div>
 
 				<div id='menu_smaller_container'>
 
-					<span class='menu_item_smaller' onclick='help()'>Help</span>
+					<span class='menu_item_smaller action' onclick='help()'>Help</span>
 
 					<div class='spacer2'></div>
 
-					<div class='menu_item_smaller' onclick='copy_room_url()'>Copy Room URL</div>
+					<div class='menu_item_smaller action' onclick='copy_room_url()'>Copy Room URL</div>
 
 					<div class='spacer2'></div>
 
-					<span class='menu_item_smaller' onclick='show_chat_search()'>Search</span>
+					<span class='menu_item_smaller action' onclick='show_chat_search()'>Search</span>
 
 					&nbsp;|&nbsp;
 
-					<span class='menu_item_smaller' onclick='show_status()'>Status</span>
+					<span class='menu_item_smaller action' onclick='show_status()'>Status</span>
 
 				</div>
 
@@ -285,7 +288,7 @@
 					<div class='spacer1'></div>
 					<div class='spacer3'></div>					
 
-					<div class='admin_v_toggle small_padding_bottom bold pointer'>+ Voice 1 Permissions</div>
+					<div class='admin_v_toggle small_padding_bottom bold pointer action inline'>+ Voice 1 Permissions</div>
 
 					<div class='admin_v_container'>
 
@@ -315,7 +318,7 @@
 					<div class='spacer1'></div>
 					<div class='spacer3'></div>
 
-					<div class='admin_v_toggle small_padding_bottom bold pointer'>+ Voice 2 Permissions</div>
+					<div class='admin_v_toggle small_padding_bottom bold pointer action inline'>+ Voice 2 Permissions</div>
 
 					<div class='admin_v_container'>						
 
@@ -345,7 +348,7 @@
 					<div class='spacer1'></div>
 					<div class='spacer3'></div>
 
-					<div class='admin_v_toggle small_padding_bottom bold pointer'>+ Voice 3 Permissions</div>
+					<div class='admin_v_toggle small_padding_bottom bold pointer action inline'>+ Voice 3 Permissions</div>
 
 					<div class='admin_v_container'>
 
@@ -374,7 +377,7 @@
 					<div class='spacer1'></div>
 					<div class='spacer3'></div>
 
-					<div class='admin_v_toggle small_padding_bottom bold pointer'>+ Voice 4 Permissions</div>
+					<div class='admin_v_toggle small_padding_bottom bold pointer action inline'>+ Voice 4 Permissions</div>
 					
 					<div class='admin_v_container'>
 					
@@ -427,23 +430,23 @@
 
 					<div class='spacer1'></div>
 
-					<div class='pointer underlined' ondblclick='reset_voices()'>Reset Voices</div>
+					<div class='pointer underlined action inline' ondblclick='reset_voices()'>Reset Voices</div>
 
 					<div class='spacer1'></div>
 
-					<div class='pointer underlined' ondblclick='remove_ops()'>Remove Ops</div>
+					<div class='pointer underlined action inline' ondblclick='remove_ops()'>Remove Ops</div>
 					
 					<div class='spacer1'></div>
 
-					<div class='pointer underlined' ondblclick='clear_log()'>Clear Log</div>
+					<div class='pointer underlined action inline' ondblclick='clear_log()'>Clear Log</div>
 					
 					<div class='spacer1'></div>
 
-					<div class='pointer underlined' ondblclick='get_banned_count()'>Banned Count</div>
+					<div class='pointer underlined action inline' ondblclick='get_banned_count()'>Banned Count</div>
 					
 					<div class='spacer1'></div>
 
-					<div class='pointer underlined' ondblclick='unban_all()'>Unban All</div>
+					<div class='pointer underlined action inline' ondblclick='unban_all()'>Unban All</div>
 					
 					<div class='spacer3'></div>
 
@@ -465,19 +468,19 @@
 
 				<div class='spacer1'></div>
 
-				<div class='menu_item_smaller' onclick='show_details()'>Details</div>
+				<div class='menu_item_smaller action' onclick='show_details()'>Details</div>
 
 				&nbsp;|&nbsp;
 
-				<div class='menu_item_smaller' onclick='confirm_logout()'>Logout</div>
+				<div class='menu_item_smaller action' onclick='confirm_logout()'>Logout</div>
 
 				<div class='spacer3'></div>
 
-				<div class='menu_item_smaller' onclick='show_highlights()'>Highlights</div>
+				<div class='menu_item_smaller action' onclick='show_highlights()'>Highlights</div>
 
 				&nbsp;|&nbsp;
 
-				<div class='menu_item_smaller' onclick='show_input_history()'>History</div>
+				<div class='menu_item_smaller action' onclick='show_input_history()'>History</div>
 
 				<div class='spacer1'></div>
 
@@ -564,7 +567,7 @@
 
 				<div class='spacer1'></div>
 
-				<div class='menu_item_smaller' onclick='confirm_reset_settings()'>Reset Settings To Default</div>
+				<div class='menu_item_smaller action' onclick='confirm_reset_settings()'>Reset Settings To Default</div>
 
 			</div>
 		
@@ -656,7 +659,7 @@
 			</div>
 			<div id='show_profile_buttons'>
 				<div class='spacer4'></div>
-				<span class='menu_item unselectable show_profile_button' id='show_profile_whisper' onclick='write_whisper($("#show_profile_uname").text())'>Send Whisper</span>
+				<span class='menu_item unselectable show_profile_button action' id='show_profile_whisper' onclick='write_whisper($("#show_profile_uname").text())'>Send Whisper</span>
 			</div>
 		</script>
 
@@ -667,7 +670,7 @@
 			<div class='spacer3'></div>
 			<input id='image_url_picker_input' class='input1'>
 			<div class='spacer3'></div>
-			<div id='image_file_picker' class='menu_item' onclick='close_all_modals()'>Upload Image</div>
+			<div id='image_file_picker' class='menu_item action inline' onclick='close_all_modals()'>Upload Image</div>
 		</script>
 
 		<script id='template_tv_picker' type='text/x-handlebars-template'>
@@ -708,10 +711,10 @@
 
 		<script id='template_image' type='text/x-handlebars-template'>
 			<div id='modal_image_split'>
-				<div id='modal_image_header'>
-					<div id='modal_image_header_prev' class='unselectable modal_image_header_button'>&lt; Prev</div>
+				<div id='modal_image_header' class='panel'>
+					<div id='modal_image_header_prev' class='unselectable modal_image_header_button action'>&lt; Prev</div>
 					<div id='modal_image_header_info'></div>
-					<div id='modal_image_header_next' class='unselectable modal_image_header_button'>Next &gt;</div>
+					<div id='modal_image_header_next' class='unselectable modal_image_header_button action'>Next &gt;</div>
 				</div>			
 				<div id='modal_image_container'>
 					<div id="modal_image_spinner" class='spinner1'></div>
@@ -723,18 +726,25 @@
 
 		<script id='template_media_menu' type='text/x-handlebars-template'>
 			<div class='unselectable'>
-				<div class='menu_item' onclick='stop_and_lock(); hide_media_menu()'>Stop And Lock Everything</div>
-				<div class='menu_item' onclick='stop_and_lock(false); hide_media_menu()'>Lock Everything</div>
-				<div class='menu_item' onclick='default_media_state(false); hide_media_menu()'>Unlock Everything</div>
-				<div class='menu_item' onclick='default_media_state(); hide_media_menu()'>Default State</div>
+				<div class='menu_item action inline' onclick='stop_and_lock(); hide_media_menu()'>Stop And Lock Everything</div>
+				<div></div>
+				<div class='menu_item action inline' onclick='stop_and_lock(false); hide_media_menu()'>Lock Everything</div>
+				<div></div>
+				<div class='menu_item action inline' onclick='default_media_state(false); hide_media_menu()'>Unlock Everything</div>
+				<div></div>
+				<div class='menu_item action inline' onclick='default_media_state(); hide_media_menu()'>Default State</div>
 				<div class='spacer3'></div>
-				<div class='menu_item' onclick='show_image_history()'>Image History</div>
-				<div class='menu_item' onclick='show_tv_history()'>TV History</div>
-				<div class='menu_item' onclick='show_radio_history()'>Radio History</div>
+				<div class='menu_item action inline' onclick='show_image_history()'>Image History</div>
+				<div></div>
+				<div class='menu_item action inline' onclick='show_tv_history()'>TV History</div>
+				<div></div>
+				<div class='menu_item action inline' onclick='show_radio_history()'>Radio History</div>
 				<div class='spacer3'></div>
-				<div class='menu_item' onclick='refresh_image(); hide_media_menu()'>Refresh Image</div>
-				<div class='menu_item' onclick='refresh_tv(); hide_media_menu()'>Refresh TV</div>
-				<div class='menu_item' onclick='refresh_radio(); hide_media_menu()'>Refresh Radio</div>
+				<div class='menu_item action inline' onclick='refresh_image(); hide_media_menu()'>Refresh Image</div>
+				<div></div>
+				<div class='menu_item action inline' onclick='refresh_tv(); hide_media_menu()'>Refresh TV</div>
+				<div></div>
+				<div class='menu_item action inline' onclick='refresh_radio(); hide_media_menu()'>Refresh Radio</div>
 			</div>
 		</script>
 
@@ -754,13 +764,13 @@
 		<script id='template_whisper' type='text/x-handlebars-template'>
 			<div class='bigger' id='write_whisper_info'>
 				<span class='bigger'>Whisper to</span>
-				<span class='bigger pointer' id='write_whisper_uname' onclick="on_write_whisper_uname_click()"></span>
+				<span class='bigger pointer action' id='write_whisper_uname' onclick="on_write_whisper_uname_click()"></span>
 			</div>
 			<div class='bigger' id='write_whisper_feedback'></div>
 			<div class='spacer3'></div>
 			<textarea rows="3" id='write_whisper_area'></textarea>
 			<div class='spacer3'></div>
-			<div class='bigger pointer unselectable' onclick='send_whisper()'>Send</div>
+			<div class='bigger pointer unselectable action inline' onclick='send_whisper()'>Send</div>
 		</script>
 
 		<script id='template_help' type='text/x-handlebars-template'>

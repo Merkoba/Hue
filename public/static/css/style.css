@@ -49,17 +49,21 @@ body, html
 	height: 100%;
 }
 
-#header
+.panel
 {
 	display: flex;
+	flex-grow: 0;
+	flex-shrink: 0;
+	height: 2rem;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;	
+}
+
+#header
+{
 	background-color: #262423;
 	color: white;
-	flex-shrink: 0;
-	flex-grow: 0;
-	height: 2rem;
-	justify-content: center;
-	align-items: center;
-	flex-direction: row;
 }
 
 #header_items
@@ -217,15 +221,7 @@ body, html
 
 #footer
 {
-	display: flex;
 	background-color: #262423;
-	flex-direction: row;
-	flex-shrink: 0;
-	flex-grow: 0;
-	height: 2rem;
-	justify-content: center;
-	align-items: center;
-	flex-direction: row;
 }
 
 #footer_items
@@ -435,7 +431,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 {
 	padding-top: 1em;
 	padding-bottom: 1em;
-	cursor: pointer;
 	overflow-wrap: break-word;
 	word-break: break-word;
 }
@@ -520,7 +515,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 {
 	padding-top: 1em;
 	padding-bottom: 1em;
-	cursor: pointer;
 	overflow-wrap: break-word;
 	word-break: break-word;	
 }
@@ -991,15 +985,6 @@ input[type=text], textarea
 	height: 100%;
 }
 
-#modal_image_header
-{	
-	display: flex;
-	padding-top: 0.4em;
-	padding-bottom: 0.5em;
-	flex-grow: 0;
-	flex-shrink: 0;
-}
-
 #modal_image_header_info
 {
 	flex-grow: 1;
@@ -1019,11 +1004,13 @@ input[type=text], textarea
 {
 	float: left;
 	padding-left: 0.5em;
+	padding-right: 0.5em;
 }
 
 #modal_image_header_next
 {
 	float: right;
+	padding-left: 0.5em;
 	padding-right: 0.5em;
 }
 
@@ -1336,5 +1323,15 @@ input[type=text], textarea
 {
 	font-weight: bold;
 	cursor: pointer;
+	display: inline-block;
+}
+
+.action:hover
+{
+	text-shadow: 0 0 30px;
+}
+
+.inline
+{
 	display: inline-block;
 }
