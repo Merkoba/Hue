@@ -339,13 +339,13 @@ module.exports = function(db_manager, config, sconfig, utilz)
 				{
 					if(ans === "done")
 					{
-						var m = encodeURIComponent(`Account verification link sent to ${email}. You must verify the email to be able to login.`)
+						var m = encodeURIComponent(`Account verification link sent to ${email}. You must verify the email to be able to login. Email might take a couple of minutes to arrive.`)
 						res.redirect(`/message?message=${m}`)
 					}
 
 					else
 					{
-						var m = encodeURIComponent("An error occured")
+						var m = encodeURIComponent("An error occurred")
 						res.redirect(`/message?message=${m}`)
 					}
 				})
@@ -404,7 +404,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 					.then(ans =>
 					{
-						var m = encodeURIComponent("Account succesfully verified")
+						var m = encodeURIComponent("Account successfully verified")
 						res.redirect(`/message?message=${m}`)						
 					})
 
@@ -532,7 +532,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			{
 				if(result === "done")
 				{
-					var m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}`)
+					var m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}. Email might take a couple of minutes to arrive.`)
 					res.redirect(`/message?message=${m}`)
 				}
 
@@ -556,7 +556,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 			else
 			{
-				var m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}`)
+				var m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}. Email might take a couple of minutes to arrive.`)
 				res.redirect(`/message?message=${m}`)
 			}
 		})
@@ -659,7 +659,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 						console.error(err)
 					})
 
-					var m = encodeURIComponent("Password succesfully changed")
+					var m = encodeURIComponent("Password successfully changed")
 					res.redirect(`/message?message=${m}`)					
 				}
 

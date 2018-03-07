@@ -1014,7 +1014,7 @@ function start_socket()
 
 		else if(data.type === 'email_change_code_sent')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`Verification code sent. Use the command sent to ${data.email}`})
+			chat_announce({brk1:'[', brk2:']', msg:`Verification code sent. Use the command sent to ${data.email}. Email might take a couple of minutes to arrive.`})
 		}
 
 		else if(data.type === 'email_change_code_not_sent')
