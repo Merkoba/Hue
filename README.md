@@ -296,7 +296,7 @@ If you want to remove it to start fresh:
 >Checks a heartbeat per this many seconds
 
 "session_cookie_max_age"
->The amount of time a session cookie is valid. This cookie determines if a user needs to login again when entering. Using this default, the max age will be around 4 years, to avoid annoying users as much as possible.
+>The amount of time a session cookie is valid. This cookie determines if a user needs to login again when entering.
 
 "encryption_cost"
 >This is used for the password hashing. A cost of 12 are 4096 salt rounds. The more rounds, the more secure the hash is, but it takes longer to process.
