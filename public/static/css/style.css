@@ -1326,12 +1326,20 @@ input[type=text], textarea
 	display: inline-block;
 }
 
-.action:hover
-{
-	text-shadow: 0 0 30px;
-}
-
 .inline
 {
 	display: inline-block;
+}
+
+.action:hover
+{
+	animation-duration: 500ms;
+	animation-name: glow;
+	animation-fill-mode: forwards;
+}
+
+@keyframes glow
+{	
+	0% {text-shadow: 0 0 0px}
+	100% {text-shadow: 0 0 1.2em}
 }

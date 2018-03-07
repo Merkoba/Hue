@@ -1341,7 +1341,7 @@ function userjoin(data)
 	if(announce_joins && check_permission(data.role, "chat"))
 	{
 		var prof_image = get_user_by_username(data.username).profile_image
-		
+
 		var f = function()
 		{
 			show_profile(data.username, prof_image)
@@ -10817,7 +10817,7 @@ function show_goto_room()
 	var s = `
 	<input id='goto_room_input' type='text' placeholder='Room ID or URL'>
 	<div class='spacer3'></div>
-	<div class='menu_item' id='goto_room_button'>Go To Room</div>`
+	<div class='menu_item action inline' id='goto_room_button'>Go To Room</div>`
 
 	msg_info.show(s, function()
 	{

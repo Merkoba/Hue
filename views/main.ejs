@@ -33,9 +33,9 @@
 		<script src="/static/js/utilz.js?ver=3"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1004"></script>
+		<script src="/static/js/base.js?ver=1005"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=287"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=288"/>
 
 		<script>
 
@@ -592,7 +592,7 @@
 					<div class='spacer3'></div>
 					<div class='spacer2'></div>
 
-					<div id='create_room_done' class='menu_item'>Create</div>
+					<div id='create_room_done' class='menu_item action inline'>Create</div>
 
 				</div>
 
@@ -785,7 +785,7 @@
 			<div class='info_item'>/help3: Shows administration features.</div>
 			<div class='info_item'>Media change has permission settings per room. So you might not be able to do certain actions depending on what settings the ops/admins have set. If you are able to do a certain action, an icon for it will appear on the bottom right.</div>
 			<div class='spacer1'></div>
-			<span class='help_link' onclick='help2()'>Additional Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link' onclick='help3()'>Administration Features</span>
+			<span class='help_link action' onclick='help2()'>Additional Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action' onclick='help3()'>Administration Features</span>
 
 		</script>
 
@@ -870,7 +870,7 @@
 			<div class='info_item'>/changeradio: Opens the window to change the radio.</div>
 			<div class='info_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil.</div>
 			<div class='spacer1'></div>
-			<span class='help_link' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link' onclick='help3()'>Administration Features</span>			
+			<span class='help_link action' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action' onclick='help3()'>Administration Features</span>			
 		</script>
 
 		<script id='template_help3' type='text/x-handlebars-template'>
@@ -913,7 +913,7 @@
 			<div class='info_item'>Check /help for information about how users interact in the room through chat, image uploads, or radio.</div>
 			<div class='info_item'>Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada URL is gathered automatically. To work, the server needs to allow cross-domain requests and be HTTPS enabled if this system is being served through HTTPS.</div>
 			<div class='spacer1'></div>
-			<span class='help_link' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link' onclick='help2()'>Additional Features</span>		
+			<span class='help_link action' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action' onclick='help2()'>Additional Features</span>		
 		</script>		
 
 		<audio id='audio' preload="metadata" autoplay></audio>
