@@ -2762,6 +2762,11 @@ function activate_key_detection()
 				scroll_down(small_keyboard_scroll)
 			}
 
+			else if(e.ctrlKey)
+			{
+				go_down()
+			}			
+
 			else
 			{
 				input_history_change("down")
@@ -10981,8 +10986,6 @@ function go_up()
 		if(uname === username)
 		{
 			var p = $(this).position()
-			var o = $(this).offset()
-			var st = $(this)[0].scrollTop
 
 			if(p.top < up_scroller_height)
 			{
@@ -10998,4 +11001,41 @@ function go_up()
 	{
 		$("#chat_area").scrollTop(0)
 	}
+}
+
+function go_down()
+{
+	var step = false
+	var up_scroller_height = $("#up_scroller").outerHeight()
+	var down_scroller_height = $("#down_scroller").outerHeight()
+	var chat_area_height = $("#chat_area").innerHeight()
+	var scrolltop = $("#chat_area").scrollTop()
+
+	$(".msg").each(function()
+	{
+		var uname = $(this).data("uname")
+
+		if(!uname)
+		{
+			return true
+		}
+
+		if(uname === username)
+		{
+			var p = $(this).position()
+
+			if(p.top > chat_area_height + down_scroller_height)
+			{
+				var diff = scrolltop + p.top - up_scroller_height
+				$("#chat_area").scrollTop(diff)
+				step = true
+				return false
+			}
+		}
+	})
+
+	if(!step)
+	{
+		goto_bottom(true)
+	}	
 }
