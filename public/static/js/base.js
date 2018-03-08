@@ -9390,13 +9390,6 @@ function setup_active_media(data)
 	change_radio_visibility()
 }
 
-function recreate_background_image()
-{
-	$("#background_image").remove()
-
-	$("#main_container").prepend("<div id='background_image'></div>")
-}
-
 function change_default_theme(color)
 {
 	if(role !== 'admin' && role !== 'op')
