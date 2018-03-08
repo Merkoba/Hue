@@ -6951,6 +6951,8 @@ function start_msg()
 		{
 			id: "image",
 			window_x: "none",
+			show_effect: "none",
+			close_effect: "none",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
