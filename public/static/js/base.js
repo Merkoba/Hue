@@ -3525,8 +3525,8 @@ function update_chat(args={})
 	})
 
 	fmsg.data("highlighted", highlighted)
-	fmsg.data("mode", "chat")
 	fmsg.data("uname", args.uname)
+	fmsg.data("mode", "chat")
 
 	add_to_chat(fmsg, true)
 
@@ -3915,7 +3915,8 @@ function chat_announce(args={})
 		date: false,
 		type: "normal",
 		info1: "",
-		info2: ""
+		info2: "",
+		uname: false
 	}
 
 	fill_defaults(args, def_args)
@@ -4004,6 +4005,7 @@ function chat_announce(args={})
 	fmsg.data("type", args.type)
 	fmsg.data("info1", args.info1)
 	fmsg.data("info2", args.info2)
+	fmsg.data("uname", args.uname)
 	fmsg.data("mode", "announcement")	
 
 	add_to_chat(fmsg, args.save)
@@ -6209,7 +6211,8 @@ function announce_image_change(data, date=false, show=true)
 			onclick: onclick, 
 			save: true, 
 			date: d, 
-			type: "image_change"
+			type: "image_change",
+			uname: data.image_uploader
 		})
 	}
 
@@ -6411,7 +6414,8 @@ function announce_radio_change(data, date=false, action="change")
 		onclick: onclick, 
 		save: true, 
 		date: d, 
-		type: "radio_change"
+		type: "radio_change",
+		uname: data.radio_setter
 	})
 }
 
@@ -6523,7 +6527,8 @@ function announce_tv_change(data, date=false, action="change")
 		onclick: onclick, 
 		save: true, 
 		date: d, 
-		type: "tv_change"
+		type: "tv_change",
+		uname: data.tv_setter
 	})
 }
 
@@ -10964,9 +10969,14 @@ function go_up()
 	var up_scroller_height = $("#up_scroller").outerHeight()
 	var scrolltop = $("#chat_area").scrollTop()
 
-	$($(".chat_message").get().reverse()).each(function()
+	$($(".msg").get().reverse()).each(function()
 	{
 		var uname = $(this).data("uname")
+
+		if(!uname)
+		{
+			return true
+		}
 
 		if(uname === username)
 		{
