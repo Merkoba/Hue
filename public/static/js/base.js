@@ -1333,6 +1333,7 @@ function change_colors(background_color, background_color2, font_color)
 function set_background_image()
 {
 	$('#background_image').css('background-image', `url('${default_background_image}')`) 	
+	$('#modal_image_background_image').css('background-image', `url('${default_background_image}')`) 	
 }
 
 function userjoin(data)
@@ -7571,7 +7572,9 @@ function call_setting_actions(save=true)
 function setting_background_image_action(save=true)
 {
 	settings.background_image = $("#setting_background_image").prop("checked")
+	
 	set_default_theme()
+	setup_modal_colors()
 	
 	if(save)
 	{
@@ -9812,6 +9815,18 @@ function setup_modal_colors()
 	var overlay_color = colorlib.rgb_to_rgba(font_color, modal_overlay_opacity)
 	var scrollbar_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
 
+	if(default_background_image_enabled && settings.background_image)
+	{
+		background_color_a = colorlib.rgb_to_rgba(background_color, general_opacity)
+		background_color2_a = colorlib.rgb_to_rgba(background_color2, general_opacity)
+	}
+
+	else
+	{
+		background_color_a = background_color
+		background_color2_a = background_color2
+	}	
+
 	var css = `
 	<style class='appended_style'>
 
@@ -9819,12 +9834,6 @@ function setup_modal_colors()
 	{
 		background-color: ${overlay_color} !important;
 		color: ${background_color} !important;
-	}
-
-	#modal_image_header
-	{
-		background-color: ${background_color2} !important;
-		color: ${font_color} !important;		
 	}
 
 	.Msg-window
@@ -9837,6 +9846,16 @@ function setup_modal_colors()
 	{
 		background-color: ${background_color2} !important;
 	}
+
+	#modal_image_split
+	{
+		background-color: ${background_color_a} !important;		
+	}
+
+	#modal_image_header
+	{
+		background-color: ${background_color2_a} !important;		
+	}	
 
 	.nicescroll-cursors
 	{

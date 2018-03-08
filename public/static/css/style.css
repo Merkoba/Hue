@@ -29,7 +29,7 @@ body, html
 	pointer-events: none;	
 }
 
-#background_image 
+.background_image 
 {
 	position: fixed;
 	left: 0; right: 0;
