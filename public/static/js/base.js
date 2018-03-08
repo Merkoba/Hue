@@ -169,10 +169,11 @@ var current_image_date_raw = 0
 var date_joined
 var user_email
 var user_reg_date
-var filter_delay = 350
-var resize_delay = 350
+var filter_delay = 200
+var resize_delay = 200
 var double_tap_delay = 200
 var wheel_delay = 100
+var check_scrollers_delay = 100
 
 function init()
 {
@@ -3265,7 +3266,7 @@ var scroll_timer = (function()
 		timer = setTimeout(function() 
 		{
 			check_scrollers()
-		}, 200)
+		}, check_scrollers_delay)
 	}
 })()
 
