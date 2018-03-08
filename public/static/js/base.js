@@ -3838,8 +3838,11 @@ function show_current_image_modal(current=true)
 
 	else
 	{
-		var data = images_changed[images_changed.length - 1]
-		show_modal_image(data.image_url, data.title, data.date_raw)
+		if(images_changed.length > 0)
+		{
+			var data = images_changed[images_changed.length - 1]
+			show_modal_image(data.url, data.title, data.date_raw)
+		}
 	}
 }
 
@@ -6255,7 +6258,7 @@ function announce_image_change(data, date=false, show=true)
 
 	var ic_data = {}
 
-	ic_data.image_url = data.image_url
+	ic_data.url = data.image_url
 	ic_data.title = title
 	ic_data.date_raw = d
 
@@ -8701,12 +8704,21 @@ function show_log()
 	}
 }
 
-function show_modal_image(url, title=false, date)
+function show_modal_image(url, title, date)
 {
 	if(!url)
 	{
-		msg_info.show("No image loaded yet")
-		return
+		if(images_changed.length > 0)
+		{
+			show_current_image_modal(false)
+			return
+		}
+
+		else
+		{
+			msg_info.show("No image loaded yet")
+			return
+		}
 	}
 
 	if(title)
@@ -10754,14 +10766,14 @@ function modal_image_prev_click()
 	{
 		if(data.date_raw < date)
 		{
-			show_modal_image(data.image_url, data.title, data.date_raw)
+			show_modal_image(data.url, data.title, data.date_raw)
 			return
 		}
 	}
 
 	var last = images_changed[images_changed.length - 1]
 
-	show_modal_image(last.image_url, last.title, last.date_raw)
+	show_modal_image(last.url, last.title, last.date_raw)
 }
 
 function modal_image_next_click(e)
@@ -10778,14 +10790,14 @@ function modal_image_next_click(e)
 	{
 		if(data.date_raw > date)
 		{
-			show_modal_image(data.image_url, data.title, data.date_raw)
+			show_modal_image(data.url, data.title, data.date_raw)
 			return
 		}
 	}
 
 	var first = images_changed[0]
 
-	show_modal_image(first.image_url, first.title, first.date_raw)
+	show_modal_image(first.url, first.title, first.date_raw)
 }
 
 function setup_modal_image()
@@ -10826,11 +10838,6 @@ function setup_modal_image()
 	$("#Msg-overlay-image")[0].addEventListener("wheel", f)
 
 	$("#modal_image_container").click(function()
-	{
-		msg_image.close()
-	})
-
-	$("#modal_image").click(function()
 	{
 		msg_image.close()
 	})

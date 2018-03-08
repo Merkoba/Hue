@@ -985,7 +985,7 @@ input[type=text], textarea
 
 #modal_image_error
 {
-	padding: 2em;
+	font-size: 1.2em;	
 }
 
 #modal_image_split
