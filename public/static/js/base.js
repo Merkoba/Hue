@@ -11025,8 +11025,9 @@ function go_down()
 		if(uname === username)
 		{
 			var p = $(this).position()
+			var h = $(this).outerHeight()
 
-			if(p.top > chat_area_height + down_scroller_height)
+			if(p.top + h + down_scroller_height > chat_area_height)
 			{
 				var diff = scrolltop + p.top - up_scroller_height
 				$("#chat_area").scrollTop(diff)
