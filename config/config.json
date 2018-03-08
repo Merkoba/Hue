@@ -106,7 +106,7 @@
 	"max_same_post_diff": 60000,
 	"max_same_post_messages": 20,
 	"max_typing_inactivity": 2000,
-	"max_verification_time": 3600000,
+	"max_verification_time": 86400000,
 	"delivery_email": "hue@merkoba.com",
 	"delivery_email_name": "Hue",
 	"media_history_max_items": 1000,
