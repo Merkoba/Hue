@@ -1354,10 +1354,13 @@ function userjoin(data)
 		if(data.username !== username)
 		{
 			alert_title()
-			sound_notify()
+
+			if(settings.beep_on_user_joins)
+			{
+				sound_notify()
+			}
 		}
 	}
-
 }
 
 function update_usercount(usercount)
@@ -3458,7 +3461,6 @@ function update_chat(args={})
 		if(check_highlights(args.msg))
 		{
 			contclasses += " dotted"
-			alert_title2()
 			highlighted = true		
 		}
 	}
@@ -3539,8 +3541,25 @@ function update_chat(args={})
 
 	if(args.uname !== username)
 	{
-		alert_title()
-		sound_notify()
+		if(highlighted)
+		{
+			alert_title2()
+
+			if(settings.beep_on_highlights)
+			{
+				sound_notify()
+			}
+		}
+
+		else
+		{
+			alert_title()
+
+			if(settings.beep_on_messages)
+			{
+				sound_notify()
+			}
+		}
 	}
 }
 
@@ -3785,7 +3804,11 @@ function change(args={})
 	if(args.notify && setter !== username)
 	{
 		alert_title()
-		sound_notify()
+
+		if(settings.beep_on_media_change)
+		{
+			sound_notify()
+		}
 	}
 }
 
@@ -3944,12 +3967,9 @@ function chat_announce(args={})
 		containerid = ` id='${args.id}' `
 	}
 
-
 	if(args.highlight === true)
 	{
 		contclasses += " dotted"
-		alert_title2()
-		sound_notify()
 	}
 
 	if(args.title)
@@ -4020,6 +4040,16 @@ function chat_announce(args={})
 	if(args.type !== "normal")
 	{
 		handle_chat_announce_types(fmsg, args.type)
+	}
+
+	if(args.highlight)
+	{
+		alert_title2()
+
+		if(settings.beep_on_highlights)
+		{
+			sound_notify()
+		}
 	}
 }
 
@@ -7453,9 +7483,27 @@ function get_settings()
 		changed = true
 	}
 
-	if(settings.sound_notifications === undefined)
+	if(settings.beep_on_messages === undefined)
 	{
-		settings.sound_notifications = settings_default_sound_notifications
+		settings.beep_on_messages = settings_default_beep_on_messages
+		changed = true
+	}
+
+	if(settings.beep_on_highlights === undefined)
+	{
+		settings.beep_on_highlights = settings_default_beep_on_highlights
+		changed = true
+	}
+
+	if(settings.beep_on_media_change === undefined)
+	{
+		settings.beep_on_media_change = settings_default_beep_on_media_change
+		changed = true
+	}
+
+	if(settings.beep_on_user_joins === undefined)
+	{
+		settings.beep_on_user_joins = settings_default_beep_on_user_joins
 		changed = true
 	}
 
@@ -7522,7 +7570,10 @@ function start_settings_state()
 {
 	$("#setting_background_image").prop("checked", settings.background_image)
 	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
-	$("#setting_sound_notifications").prop("checked", settings.sound_notifications)
+	$("#setting_beep_on_messages").prop("checked", settings.beep_on_messages)
+	$("#setting_beep_on_highlights").prop("checked", settings.beep_on_highlights)
+	$("#setting_beep_on_media_change").prop("checked", settings.beep_on_media_change)
+	$("#setting_beep_on_user_joins").prop("checked", settings.beep_on_user_joins)
 	$("#setting_modal_effects").prop("checked", settings.modal_effects)
 	$("#setting_highlight_current_username").prop("checked", settings.highlight_current_username)
 	$("#setting_case_insensitive_highlights").prop("checked", settings.case_insensitive_highlights)
@@ -7543,7 +7594,10 @@ function start_settings_listeners()
 {
 	$("#setting_background_image").change(setting_background_image_action)
 	$("#setting_custom_scrollbars").change(setting_custom_scrollbars_action)
-	$("#setting_sound_notifications").change(setting_sound_notifications_action)
+	$("#setting_beep_on_messages").change(setting_beep_on_messages_action)
+	$("#setting_beep_on_highlights").change(setting_beep_on_highlights_action)
+	$("#setting_beep_on_media_change").change(setting_beep_on_media_change_action)
+	$("#setting_beep_on_user_joins").change(setting_beep_on_user_joins_action)
 	$("#setting_modal_effects").change(setting_modal_effects_action)
 	$("#setting_highlight_current_username").change(setting_highlight_current_username_action)
 	$("#setting_case_insensitive_highlights").change(setting_case_insensitive_highlights_action)
@@ -7558,7 +7612,10 @@ function call_setting_actions(save=true)
 {
 	setting_background_image_action(save)
 	setting_custom_scrollbars_action(save)
-	setting_sound_notifications_action(save)
+	setting_beep_on_messages(save)
+	setting_beep_on_highlights(save)
+	setting_beep_on_media_change(save)
+	setting_beep_on_user_joins(save)
 	setting_modal_effects_action(save)
 	setting_highlight_current_username_action(save)
 	setting_case_insensitive_highlights_action(save)
@@ -7593,9 +7650,39 @@ function setting_custom_scrollbars_action(save=true)
 	}
 }
 
-function setting_sound_notifications_action(save=true)
+function setting_beep_on_messages_action(save=true)
 {
-	settings.sound_notifications = $("#setting_sound_notifications").prop("checked")
+	settings.beep_on_messages = $("#setting_beep_on_messages").prop("checked")
+	
+	if(save)
+	{
+		save_settings()	
+	}
+}
+
+function setting_beep_on_highlights_action(save=true)
+{
+	settings.beep_on_highlights = $("#setting_beep_on_highlights").prop("checked")
+	
+	if(save)
+	{
+		save_settings()	
+	}
+}
+
+function setting_beep_on_media_change_action(save=true)
+{
+	settings.beep_on_media_change = $("#setting_beep_on_media_change").prop("checked")
+	
+	if(save)
+	{
+		save_settings()	
+	}
+}
+
+function setting_beep_on_user_joins_action(save=true)
+{
+	settings.beep_on_user_joins = $("#setting_beep_on_user_joins").prop("checked")
 	
 	if(save)
 	{
