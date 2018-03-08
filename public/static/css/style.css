@@ -291,15 +291,13 @@ body, html
 	color: inherit;
 }
 
-#scroll_notice
+.scroller
 {
-	visibility: hidden;
 	position: absolute;
 	left: 16px;
 	width: calc(100% - 35px);	
-	bottom: 0em;
 	height: 2em;
-	background-color: rgba(57, 57, 57, 0.7);
+	background-color: rgba(57, 57, 57, 0.5);
 	color: white;
 	border: 0px solid #2D2D2D;
 	outline: none;
@@ -308,11 +306,24 @@ body, html
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
+	z-index: 99999999;
 }
 
-#scroll_notice:hover 
+.scroller:hover 
 {
-	background-color: rgba(71, 71, 71, 0.7);
+	background-color: rgba(71, 71, 71, 0.5);
+}
+
+#up_scroller
+{
+	visibility: hidden;
+	top: 0em;
+}
+
+#down_scroller
+{
+	bottom: 0em;
+	visibility: hidden;
 }
 
 .chat_message

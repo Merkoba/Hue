@@ -2741,6 +2741,11 @@ function activate_key_detection()
 				scroll_up(small_keyboard_scroll)
 			}
 
+			else if(e.ctrlKey)
+			{
+				go_up()
+			}
+
 			else
 			{
 				input_history_change("up")
@@ -3254,24 +3259,37 @@ var scroll_timer = (function()
 
 		timer = setTimeout(function() 
 		{
-			check_scroll_notice()
+			check_scrollers()
 		}, 200)
 	}
 })()
 
-function check_scroll_notice()
+function check_scrollers()
 {
 	var $ch = $("#chat_area")
 	var max = $ch.prop('scrollHeight') - $ch.innerHeight()
 
-	if(max - $ch.scrollTop() > 10)
+	var scrolltop = $ch.scrollTop()
+
+	if(max - scrolltop > 10)
 	{
-		$('#scroll_notice').css('visibility', 'visible')
+		if(scrolltop > 0)
+		{
+			$('#up_scroller').css('visibility', 'visible')
+		}
+
+		else
+		{
+			$('#up_scroller').css('visibility', 'hidden')
+		}
+
+		$('#down_scroller').css('visibility', 'visible')
 	}
 
 	else
 	{
-		$('#scroll_notice').css('visibility', 'hidden')
+		$('#up_scroller').css('visibility', 'hidden')
+		$('#down_scroller').css('visibility', 'hidden')
 	}
 }
 
@@ -3508,6 +3526,7 @@ function update_chat(args={})
 
 	fmsg.data("highlighted", highlighted)
 	fmsg.data("mode", "chat")
+	fmsg.data("uname", args.uname)
 
 	add_to_chat(fmsg, true)
 
@@ -5172,12 +5191,13 @@ function goto_bottom(force=false)
 	if(force)
 	{
 		$ch.scrollTop(max + 10)
-		$('#scroll_notice').css('visibility', 'hidden')
+		$('#up_scroller').css('visibility', 'hidden')
+		$('#down_scroller').css('visibility', 'hidden')
 	}
 
 	else
 	{
-		if($('#scroll_notice').css('visibility') === 'hidden')
+		if($('#down_scroller').css('visibility') === 'hidden')
 		{
 			$ch.scrollTop(max + 10)
 		}
@@ -5727,7 +5747,7 @@ function activate_window_visibility_listener()
 			}
 
 			update_chat_scrollbar()
-			check_scroll_notice()
+			check_scrollers()
 		}
 	}, false)
 }
@@ -10936,4 +10956,36 @@ function make_safe(text, html=false)
 	}
 
 	return c[0]
+}
+
+function go_up()
+{
+	var step = false
+	var up_scroller_height = $("#up_scroller").outerHeight()
+	var scrolltop = $("#chat_area").scrollTop()
+
+	$($(".chat_message").get().reverse()).each(function()
+	{
+		var uname = $(this).data("uname")
+
+		if(uname === username)
+		{
+			var p = $(this).position()
+			var o = $(this).offset()
+			var st = $(this)[0].scrollTop
+
+			if(p.top < up_scroller_height)
+			{
+				var diff = scrolltop + p.top - up_scroller_height
+				$("#chat_area").scrollTop(diff)
+				step = true
+				return false
+			}
+		}
+	})
+
+	if(!step)
+	{
+		$("#chat_area").scrollTop(0)
+	}
 }
