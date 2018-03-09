@@ -3849,6 +3849,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			files[key].data = []
 		}
 
+		if(files[key].cancelled)
+		{
+			delete files[key]
+			return false
+		}
+
 		data.data = new Buffer(new Uint8Array(data.data))
 
 		files[key].data.push(data.data)
@@ -3860,7 +3866,6 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		if((files[key].received / 1024) > config.max_image_size)
 		{
 			delete files[key]
-			
 			return get_out(socket)
 		}
 
@@ -3913,8 +3918,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function cancel_upload(socket, data)
 	{
-		var key = `${socket.user_id}_${data.date}`
-		delete files[key]
+		var key = `${socket.user_id}_${data.date}`		
+		files[key].cancelled = true
 	}
 
 	function typing(socket, data)

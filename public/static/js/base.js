@@ -2425,23 +2425,61 @@ function upload_file(file, action)
 
 	files[date] = file
 
+	var next = Math.floor(((upload_slice_size * 1) / file.size) * 100)
+
+	if(next >= 100)
+	{
+		file.sending_last_slice = true
+	}
+
+	else
+	{
+		file.sending_last_slice = false
+	}
+
 	file.reader.readAsArrayBuffer(slice)
 
-	var f = function()
+	if(file.sending_last_slice)
 	{
-		change_upload_status(file, "Cancelled")
-		delete files[date]
-		socket_emit("cancel_upload", {date:date})
-	}	
+		chat_announce(
+		{
+			brk1: '[', 
+			brk2: ']', 
+			msg: `Uploading ${get_file_action_name(file.action)}: 0%`, 
+			id: `uploading_${date}`
+		})
+	}
 
-	chat_announce(
+	else
 	{
-		brk1: '[', 
-		brk2: ']', 
-		msg: `Uploading ${get_file_action_name(file.action)}: 0% - Click to cancel`, 
-		id: `uploading_${date}`,
-		onclick: f
-	})	
+		var f = function()
+		{
+			var file = files[date]
+
+			if(!file)
+			{
+				return false
+			}
+
+			if(file.sending_last_slice)
+			{
+				return false
+			}
+
+			change_upload_status(file, "Cancelled")
+			delete files[date]
+			socket_emit("cancel_upload", {date:date})
+		}	
+
+		chat_announce(
+		{
+			brk1: '[', 
+			brk2: ']', 
+			msg: `Uploading ${get_file_action_name(file.action)}: 0%`, 
+			id: `uploading_${date}`,
+			onclick: f
+		})		
+	}
 }
 
 function change_upload_status(file, status)
@@ -10951,8 +10989,14 @@ function request_slice_upload(data)
 	file.reader.readAsArrayBuffer(slice)
 
 	var percentage = Math.floor(((upload_slice_size * data.current_slice) / file.size) * 100)
+	var next = Math.floor(((upload_slice_size * (data.current_slice + 1)) / file.size) * 100)
 
-	$(`#uploading_${file.date}`).find(".announcement_content").eq(0).text(`Uploading ${get_file_action_name(file.action)}: ${percentage}% - Click to cancel`)
+	$(`#uploading_${file.date}`).find(".announcement_content").eq(0).text(`Uploading ${get_file_action_name(file.action)}: ${percentage}%`)
+
+	if(next >= 100)
+	{
+		file.sending_last_slice = true
+	}
 }
 
 function upload_ended(data)
