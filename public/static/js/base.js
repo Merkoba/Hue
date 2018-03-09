@@ -647,9 +647,8 @@ function start_socket()
 			log_enabled = data.log
 			log_messages = data.log_messages
 			setup_default_theme(data)
-			set_default_theme()
-			set_background_image()		
-			setup_modal_colors()
+			set_theme()
+			set_background_image()
 			setup_active_media(data)
 			start_permissions(data)
 			set_role(data.role)
@@ -1307,27 +1306,66 @@ function setup_default_theme(data)
 	default_background_image_enabled = data.default_background_image_enabled	
 }
 
-function set_default_theme()
+function set_theme()
 {
 	var background_color = default_theme
-	var background_color2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
+	var background_color_2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
 	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2)
 
 	if(default_background_image_enabled && settings.background_image)
 	{
-		background_color = colorlib.rgb_to_rgba(background_color, general_opacity)
-		background_color2 = colorlib.rgb_to_rgba(background_color2, general_opacity)
+		background_color_a = colorlib.rgb_to_rgba(background_color, general_opacity)
+		background_color_2_a = colorlib.rgb_to_rgba(background_color_2, general_opacity)
 	}
 
-	change_colors(background_color, background_color2, font_color)
-}
+	else
+	{
+		background_color_a = background_color
+		background_color_2_a = background_color_2
+	}
 
-function change_colors(background_color, background_color2, font_color)
-{	
-	$('.bg1').css('background-color', background_color)
+	$('.bg1').css('background-color', background_color_a)
 	$('.bg1').css('color', font_color)
-	$('.bg2').css('background-color', background_color2)
-	$('.bg2').css('color', font_color)	
+	$('.bg2').css('background-color', background_color_2_a)
+	$('.bg2').css('color', font_color)
+
+	var overlay_color = colorlib.rgb_to_rgba(font_color, modal_overlay_opacity)
+	var scrollbar_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
+
+	var css = `
+	<style class='appended_style'>
+
+	.Msg-overlay
+	{
+		background-color: ${overlay_color} !important;
+		color: ${background_color} !important;
+	}
+
+	.Msg-window
+	{
+		background-color: ${background_color} !important;
+		color: ${font_color} !important;
+	}
+
+	.Msg-window-inner-x:hover
+	{
+		background-color: ${background_color_2} !important;
+	}	
+
+	.nicescroll-cursors
+	{
+		background-color: ${scrollbar_color} !important;
+	}
+
+	</style>
+	`
+
+	$(".appended_style").each(function()
+	{
+		$(this).remove()
+	})
+
+	$("head").append(css)	
 }
 
 function set_background_image()
@@ -3960,7 +3998,7 @@ function start_image_events()
 	})
 }
 
-function after_image_load(img)
+function after_image_load()
 {
 	current_image_url = image_url
 	current_image_title = image_title
@@ -3977,7 +4015,7 @@ function setup_image(data)
 	if(data.image_url === '' || data.image_url === undefined)
 	{
 		image_url = default_image_url
-		image_title = ""
+		image_title = "Default Image"
 	}
 
 	else
@@ -6350,6 +6388,16 @@ function announce_image_change(data, date=false, show=true)
 
 function push_images_changed(data)
 {
+	if(!data.url)
+	{
+		data.url = default_image_url
+	}
+
+	if(data.title)
+	{
+		data.title = "Default Image"
+	}
+
 	for(var img of images_changed)
 	{
 		if(img.date_raw === data.date_raw)
@@ -7711,8 +7759,7 @@ function setting_background_image_action(save=true)
 {
 	settings.background_image = $("#setting_background_image").prop("checked")
 	
-	set_default_theme()
-	setup_modal_colors()
+	set_theme()
 	
 	if(save)
 	{
@@ -9596,9 +9643,7 @@ function announce_default_theme_change(data)
 
 	default_theme = data.color
 
-	set_default_theme()
-
-	setup_modal_colors()
+	set_theme()
 }
 
 function queue_image(data)
@@ -9716,7 +9761,7 @@ function announce_default_background_image_enabled_change(data)
 
 	default_background_image_enabled = data.what
 
-	set_default_theme()
+	set_theme()
 }
 
 function link_image(url)
@@ -9977,72 +10022,6 @@ function toggle_lock_radio(what=undefined)
 
 		change({type:"radio"})
 	}
-}
-
-function setup_modal_colors()
-{
-	var background_color = default_theme
-	var background_color2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
-	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2)
-	var overlay_color = colorlib.rgb_to_rgba(font_color, modal_overlay_opacity)
-	var scrollbar_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
-
-	if(default_background_image_enabled && settings.background_image)
-	{
-		background_color_a = colorlib.rgb_to_rgba(background_color, general_opacity)
-		background_color2_a = colorlib.rgb_to_rgba(background_color2, general_opacity)
-	}
-
-	else
-	{
-		background_color_a = background_color
-		background_color2_a = background_color2
-	}	
-
-	var css = `
-	<style class='appended_style'>
-
-	.Msg-overlay
-	{
-		background-color: ${overlay_color} !important;
-		color: ${background_color} !important;
-	}
-
-	.Msg-window
-	{
-		background-color: ${background_color} !important;
-		color: ${font_color} !important;
-	}
-
-	.Msg-window-inner-x:hover
-	{
-		background-color: ${background_color2} !important;
-	}
-
-	#modal_image_split
-	{
-		background-color: ${background_color_a} !important;		
-	}
-
-	#modal_image_header
-	{
-		background-color: ${background_color2_a} !important;		
-	}	
-
-	.nicescroll-cursors
-	{
-		background-color: ${scrollbar_color} !important;
-	}
-
-	</style>
-	`
-
-	$(".appended_style").each(function()
-	{
-		$(this).remove()
-	})
-
-	$("head").append(css)
 }
 
 function show_joined()
