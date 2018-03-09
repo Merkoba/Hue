@@ -4,7 +4,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 35
+	const rooms_version = 36
 	const users_version = 28
 
 	function get_random_key()
@@ -214,19 +214,19 @@ module.exports = function(db, config, sconfig, utilz, logger)
 							room.log_messages = []
 						}
 
-						if(typeof room.default_theme !== "string")
+						if(typeof room.theme !== "string")
 						{
-							room.default_theme = "rgb(92, 75, 93)"
+							room.theme = "rgb(56, 46, 95)"
 						}
 
-						if(typeof room.default_background_image !== "string")
+						if(typeof room.background_image !== "string")
 						{
-							room.default_background_image = ""
+							room.background_image = ""
 						}
 
-						if(typeof room.default_background_image_enabled !== "boolean")
+						if(typeof room.background_image_enabled !== "boolean")
 						{
-							room.default_background_image_enabled = true
+							room.background_image_enabled = true
 						}
 						
 						if(typeof room.modified !== "number")
@@ -393,9 +393,9 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				images_enabled: true,
 				radio_enabled: true,
 				tv_enabled: true,
-				default_theme: "rgb(92, 75, 93)",
-				default_background_image: "",
-				default_background_image_enabled: true,
+				theme: "rgb(56, 46, 95)",
+				background_image: "",
+				background_image_enabled: true,
 				log: true,
 				voice1_chat_permission: true,
 				voice1_images_permission: true,
@@ -446,7 +446,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})
 	}	
 
-	manager.user_create_room = function(data)
+	manager.user_create_room = function(data, force=false)
 	{
 		return new Promise((resolve, reject) => 
 		{
@@ -454,10 +454,13 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 			.then(user =>
 			{
-				if(Date.now() - user.create_room_date < config.create_room_cooldown)
+				if(!force)
 				{
-					resolve('wait')
-					return
+					if(Date.now() - user.create_room_date < config.create_room_cooldown)
+					{
+						resolve('wait')
+						return
+					}
 				}
 
 				manager.create_room(data)

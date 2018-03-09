@@ -648,7 +648,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		})
 
-		socket.on('change_default_theme', function(data) 
+		socket.on('change_theme', function(data) 
 		{
 			try
 			{
@@ -657,7 +657,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					return get_out(socket)
 				}
 
-				change_default_theme(socket, data)
+				change_theme(socket, data)
 			}
 
 			catch(err)
@@ -666,7 +666,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		})
 
-		socket.on('change_default_background_image_enabled', function(data) 
+		socket.on('change_background_image_enabled', function(data) 
 		{
 			try
 			{
@@ -675,7 +675,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					return get_out(socket)
 				}
 
-				change_default_background_image_enabled(socket, data)
+				change_background_image_enabled(socket, data)
 			}
 
 			catch(err)
@@ -1070,19 +1070,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			socket.profile_image = userinfo.profile_image
 		}
 
-		if(info.default_background_image === "")
+		if(info.background_image === "")
 		{
-			var default_background_image = ""
+			var background_image = ""
 		}
 
-		else if(info.default_background_image.indexOf(sconfig.s3_main_url) === -1)
+		else if(info.background_image.indexOf(sconfig.s3_main_url) === -1)
 		{
-			var default_background_image = config.public_images_location + info.default_background_image
+			var background_image = config.public_images_location + info.background_image
 		}
 
 		else
 		{
-			var default_background_image = info.default_background_image
+			var background_image = info.background_image
 		}
 
 		if(rooms[socket.room_id] === undefined)
@@ -1158,9 +1158,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			room_images_enabled: info.images_enabled,
 			room_tv_enabled: info.tv_enabled,
 			room_radio_enabled: info.radio_enabled,
-			default_theme: info.default_theme,
-			default_background_image: default_background_image,
-			default_background_image_enabled: info.default_background_image_enabled,
+			theme: info.theme,
+			background_image: background_image,
+			background_image_enabled: info.background_image_enabled,
 			voice1_chat_permission: info.voice1_chat_permission,
 			voice1_images_permission: info.voice1_images_permission,
 			voice1_tv_permission: info.voice1_tv_permission,
@@ -1392,7 +1392,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		data.user_id = socket.user_id
 
-		db_manager.user_create_room(data)
+		if(socket.superuser)
+		{
+			var force = true
+		}
+
+		else
+		{
+			var force = false
+		}
+
+		db_manager.user_create_room(data, force)
 
 		.then(ans =>
 		{
@@ -2919,7 +2929,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	function change_default_theme(socket, data)
+	function change_theme(socket, data)
 	{
 		if(socket.role !== 'admin' && socket.role !== 'op')
 		{
@@ -2933,7 +2943,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		db_manager.update_room(socket.room_id,
 		{
-			default_theme: data.color
+			theme: data.color
 		})
 
 		.catch(err =>
@@ -2941,14 +2951,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		room_emit(socket, 'default_theme_change', 
+		room_emit(socket, 'theme_change',
 		{
 			color: data.color,
 			username: socket.username
 		})
 	}
 
-	function change_default_background_image_enabled(socket, data)
+	function change_background_image_enabled(socket, data)
 	{
 		if(socket.role !== 'admin' && socket.role !== 'op')
 		{
@@ -2962,7 +2972,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		db_manager.update_room(socket.room_id,
 		{
-			default_background_image_enabled: data.what
+			background_image_enabled: data.what
 		})
 
 		.catch(err =>
@@ -2970,7 +2980,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		room_emit(socket, 'default_background_image_enabled_change', 
+		room_emit(socket, 'background_image_enabled_change', 
 		{
 			what: data.what,
 			username: socket.username
@@ -3655,7 +3665,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	function upload_default_background_image(socket, data)
+	function upload_background_image(socket, data)
 	{
 		if(data.image_file === undefined)
 		{
@@ -3686,16 +3696,16 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else 
 			{
-				change_default_background_image(socket, fname)
+				change_background_image(socket, fname)
 			}
 		})
 	}
 
-	function change_default_background_image(socket, fname)
+	function change_background_image(socket, fname)
 	{
 		if(config.image_storage_s3_or_local === "local")
 		{
-			do_change_default_background_image(socket, fname)
+			do_change_background_image(socket, fname)
 		}
 
 		else if(config.image_storage_s3_or_local === "s3")
@@ -3721,7 +3731,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				.then(ans =>
 				{
 					fs.unlink(`${images_root}/${fname}`, function(){})
-					do_change_default_background_image(socket, sconfig.s3_main_url + sconfig.s3_images_location + fname)
+					do_change_background_image(socket, sconfig.s3_main_url + sconfig.s3_images_location + fname)
 				})
 
 				.catch(err =>
@@ -3738,9 +3748,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function do_change_default_background_image(socket, fname)
+	function do_change_background_image(socket, fname)
 	{
-		db_manager.get_room({_id:socket.room_id}, {default_background_image:true})		
+		db_manager.get_room({_id:socket.room_id}, {background_image:true})		
 
 		.then(info =>
 		{
@@ -3756,7 +3766,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			if(info !== "")
 			{
-				var to_delete = info.default_background_image
+				var to_delete = info.background_image
 			}
 
 			else
@@ -3766,15 +3776,15 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			db_manager.update_room(socket.room_id,
 			{
-				default_background_image: fname
+				background_image: fname
 			})
 
 			.then(ans =>
 			{
-				room_emit(socket, 'default_background_image_change',
+				room_emit(socket, 'background_image_change',
 				{
 					username: socket.username,
-					default_background_image: image_url
+					background_image: image_url
 				})
 			})
 
@@ -3901,7 +3911,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else if(data.action === "background_image_upload")
 			{
-				upload_default_background_image(socket,
+				upload_background_image(socket,
 				{
 					image_file: full_file,
 					extension: file.extension

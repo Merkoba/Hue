@@ -33,9 +33,9 @@
 		<script src="/static/js/utilz.js?ver=3"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1027"></script>
+		<script src="/static/js/base.js?ver=1028"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=292"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=293"/>
 
 		<script>
 
@@ -64,7 +64,7 @@
 
 			<div id='background_image' class='background_image'></div>
 
-			<div id="main_flex">
+			<div class="columns_container">
 
 				<div id='header' class='unselectable bg2 panel'>
 
@@ -117,7 +117,7 @@
 
 				</div>
 
-				<div id="flex_columns">
+				<div class='rows_container'>
 
 					<div id='chat_main'>
 
@@ -272,20 +272,20 @@
 
 					<div class='small_padding_bottom'>Theme</div>
 
-					<input id='admin_default_theme'>
+					<input id='admin_theme'>
 
 					<div class='spacer1'></div>
 
 					<div class='small_padding_bottom'>Background Image</div>
 
-					<select id='admin_default_background_image_select'>
+					<select id='admin_background_image_select'>
 						<option value="true">Enabled</option>
 						<option value="false">Disabled</option>
 					</select>						
 
 					<div class='spacer1'></div>
 
-					<img class='small_square_image pointer' id='admin_default_background_image' onclick='open_default_background_image_picker()'>	
+					<img class='small_square_image pointer' id='admin_background_image' onclick='open_background_image_picker()'>	
 
 					<div class='spacer1'></div>
 					<div class='spacer3'></div>					
@@ -617,15 +617,14 @@
 		</script>
 
 		<script id='template_open_room' type='text/x-handlebars-template'>
-
 				<div id="open_buttons" class='unselectable'>
-
-					<div id='open_room_here' class='menu_item' onclick='goto_url("{{id}}");msg_info.close()'>Open&nbsp;Here</div>
-
-					<div id='open_room_new_tab' class='menu_item' onclick='goto_url("{{id}}", "tab");msg_info.close()'>Open&nbsp;In&nbsp;New&nbsp;Tab</div>
-
+					<div id='open_room_here' class='menu_item action' onclick='goto_url("{{id}}");msg_info.close()'>
+						Open&nbsp;Here
+					</div>
+					<div id='open_room_new_tab' class='menu_item action' onclick='goto_url("{{id}}", "tab");msg_info.close()'>
+						Open&nbsp;In&nbsp;New&nbsp;Tab
+					</div>
 				</div>
-
 		</script>
 
 		<script id='template_status' type='text/x-handlebars-template'>
@@ -728,7 +727,7 @@
 
 		<script id='template_image' type='text/x-handlebars-template'>
 			<div id='modal_image_background_image' class='background_image'></div>
-			<div id='modal_image_split'>
+			<div class='columns_container'>
 				<div id='modal_image_header' class='panel unselectable bg2'>
 					<div id='modal_image_header_prev' class='modal_image_header_button action'>&lt; Prev</div>
 					<div id='modal_image_header_info' class='action pointer'></div>
@@ -943,7 +942,7 @@
 
 		<input type='file' accept="image/jpeg, image/png, image/gif" id='profile_image_picker' onchange='profile_image_selected(this)'>
 
-		<input type='file' accept="image/jpeg, image/png, image/gif" id='default_background_image_input' class='nodisplay' onchange='default_background_image_selected(this)'>		
+		<input type='file' accept="image/jpeg, image/png, image/gif" id='background_image_input' class='nodisplay' onchange='background_image_selected(this)'>
 
 	</body>
 
