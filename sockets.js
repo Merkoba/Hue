@@ -42,7 +42,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		date: null,
 		updated: null,
 		received: 0,
-		extension: null
+		extension: null,
+		cancelled: false
     }	
 
 	var last_roomlist
@@ -3828,7 +3829,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		var key = `${socket.user_id}_${data.date}`
 
-		if(!files[key]) 
+		var file = files[key]
+
+		if(!file) 
 		{
 			if(image_types.indexOf(data.type) === -1)
 			{
@@ -3846,43 +3849,45 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			files[key] = Object.assign({}, files_struct, data)
 
-			files[key].data = []
+			file = files[key]
+			
+			file.data = []
 		}
 
-		if(files[key].cancelled)
+		if(file.cancelled)
 		{
-			delete files[key]
+			delete file
 			return false
 		}
 
 		data.data = new Buffer(new Uint8Array(data.data))
 
-		files[key].data.push(data.data)
+		file.data.push(data.data)
 
-		files[key].slice++
+		file.slice++
 
-		files[key].received += data.data.length
+		file.received += data.data.length
 
-		if((files[key].received / 1024) > config.max_image_size)
+		if((file.received / 1024) > config.max_image_size)
 		{
 			delete files[key]
 			return get_out(socket)
 		}
 
-		files[key].updated = Date.now()
+		file.updated = Date.now()
 		
-		if(files[key].slice * config.upload_slice_size >= files[key].size) 
+		if(file.slice * config.upload_slice_size >= file.size) 
 		{  
 			user_emit(socket, 'upload_ended', {date:data.date})
 
-			var full_file = Buffer.concat(files[key].data)
+			var full_file = Buffer.concat(file.data)
 
 			if(data.action === "image_upload")
 			{
 				upload_image(socket,
 				{
 					image_file: full_file,
-					extension: files[key].extension
+					extension: file.extension
 				})
 			}
 
@@ -3899,7 +3904,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				upload_default_background_image(socket,
 				{
 					image_file: full_file,
-					extension: files[key].extension
+					extension: file.extension
 				})	
 			}
 
@@ -3910,7 +3915,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{ 
 			user_emit(socket, 'request_slice_upload', 
 			{ 
-				current_slice: files[key].slice,
+				current_slice: file.slice,
 				date: data.date
 			})
 		}
@@ -3919,7 +3924,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	function cancel_upload(socket, data)
 	{
 		var key = `${socket.user_id}_${data.date}`		
-		files[key].cancelled = true
+		
+		var file = files[key]
+
+		if(file)
+		{
+			file.cancelled = true
+		}
 	}
 
 	function typing(socket, data)
