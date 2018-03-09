@@ -10842,6 +10842,11 @@ function setup_modal_image()
 		msg_image.close()
 	})
 
+	$("#modal_image_header_info").click(function()
+	{
+		show_image_history()
+	})
+
 	$("#modal_image_header_prev").click(function(e)
 	{
 		modal_image_prev_click()
