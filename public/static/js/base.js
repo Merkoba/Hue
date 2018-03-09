@@ -10820,12 +10820,12 @@ function setup_modal_image()
 
 		if(direction === 'up')
 		{
-			modal_image_prev_wheel_timer()
+			modal_image_next_wheel_timer()
 		}
 
 		else if(direction === 'down')
 		{
-			modal_image_next_wheel_timer()
+			modal_image_prev_wheel_timer()
 		}
 	}	
 
