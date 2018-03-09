@@ -7116,7 +7116,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "image",
-			window_x: "none",
+			preset: "window",
 			show_effect: "none",
 			close_effect: "none",
 			after_create: function(instance)

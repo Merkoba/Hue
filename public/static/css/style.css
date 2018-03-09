@@ -131,7 +131,6 @@ body, html
 	color: white;
 	flex-grow: 1;
 	max-width: 100%;
-	max-width: 100%;
 }
 
 #media
@@ -306,7 +305,7 @@ body, html
 	align-items: center;
 	justify-content: center;
 	cursor: pointer;
-	z-index: 99999999;
+	z-index: 99;
 }
 
 .scroller:hover 
@@ -965,24 +964,6 @@ input[type=text], textarea
 	color: #222222;
 }
 
-#Msg-window-image
-{
-	width: 100vw !important;
-	height: 100vh !important;
-	max-width: 100vw !important;
-	max-height: 100vh !important;
-	min-width: 100vw !important;
-	min-height: 100vh !important;
-}
-
-#Msg-content-image
-{
-	padding: 0 !important;
-	margin: 0 !important;
-	height: 100vh !important;
-	width: 100vw !important;
-}
-
 #modal_image_error
 {
 	font-size: 1.2em;	
@@ -1026,6 +1007,8 @@ input[type=text], textarea
 	align-items: center;
 	height: 2em;
 	cursor: pointer;
+	flex-direction: column;
+	position: relative;
 }
 
 #modal_image
