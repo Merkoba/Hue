@@ -2455,17 +2455,6 @@ function change_upload_status(file, status)
 	.removeClass("action")
 }
 
-function change_upload_status_2(date, status)
-{
-	$(`#uploading_${date}`)
-	.find(".announcement_content")
-	.eq(0).text(status)
-	.parent()
-	.off("click")
-	.removeClass("pointer")
-	.removeClass("action")
-}
-
 function get_file_action_name(action)
 {
 	var s = ""
@@ -10974,11 +10963,6 @@ function upload_ended(data)
 	{
 		change_upload_status(file, "100%")
 		delete files[data.date]
-	}
-
-	else
-	{
-		change_upload_status_2(data.date, "File uploaded")
 	}
 }
 
