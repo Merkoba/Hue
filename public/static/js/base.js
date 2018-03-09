@@ -2566,7 +2566,7 @@ function activate_key_detection()
 						if(val !== "")
 						{
 							link_image(val)
-							close_all_modals()
+							msg_image_picker.close()
 							e.preventDefault()
 						}
 					}
@@ -2586,7 +2586,7 @@ function activate_key_detection()
 						if(val !== "")
 						{
 							change_tv_source(val)
-							close_all_modals()
+							msg_tv_picker.close()
 							e.preventDefault()
 						}
 					}
@@ -2606,7 +2606,7 @@ function activate_key_detection()
 						if(val !== "")
 						{
 							change_radio_source(val)
-							close_all_modals()
+							msg_radio_picker.close()
 							e.preventDefault()
 						}
 					}
@@ -2657,7 +2657,7 @@ function activate_key_detection()
 				{
 					if(e.key === "Tab" && e.shiftKey)
 					{
-						close_all_modals()
+						msg_info.close()
 						e.preventDefault()
 					}
 
@@ -3097,7 +3097,7 @@ function setup_input_history()
 		if($(this).find('a').length === 0)
 		{
 			change_input($(this).text())
-			close_all_modals()
+			msg_input_history.close()
 		}
 	})	
 }
@@ -5811,8 +5811,6 @@ function copy_room_url()
 	url = url.replace(/\s+/g, "%20")
 
 	copy_string(url)
-
-	close_all_modals()
 }
 
 function copy_string(s)
@@ -7458,11 +7456,6 @@ function after_modal_close(instance)
 	}
 }
 
-function close_all_modals()
-{
-	msg_menu.close_all()
-}
-
 function get_settings()
 {
 	var changed = false
@@ -8267,7 +8260,6 @@ function start_twitch()
 	{
 		var twch_video_player = new Twitch.Player("media_twitch_video_container", 
 		{
-			channel: "AChannelThatDoesntExisttttt",
 			width: 640,
 			height: 360,
 			autoplay: false
@@ -8746,7 +8738,10 @@ function show_modal_image(url, title, date)
 
 	update_modal_scrollbar("image")
 
-	msg_image.show()
+	msg_image.show(function()
+	{
+		msg_image_history.close()
+	})
 }
 
 function not_an_op()
@@ -10254,7 +10249,7 @@ function send_whisper()
 
 	socket_emit('whisper', {username:uname, message:whisper})
 
-	close_all_modals()
+	msg_whisper.close()
 
 	var f = function()
 	{
