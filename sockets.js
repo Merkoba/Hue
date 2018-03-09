@@ -719,6 +719,24 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		})
 
+		socket.on('cancel_upload', function(data) 
+		{
+			try
+			{
+				if(!socket.joined)
+				{
+					return get_out(socket)
+				}
+
+				cancel_upload(socket, data)
+			}
+
+			catch(err)
+			{
+				logger.log_error(err)
+			}
+		})
+
 		socket.on('typing', function(data) 
 		{
 			try
@@ -3888,9 +3906,15 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			user_emit(socket, 'request_slice_upload', 
 			{ 
 				current_slice: files[key].slice,
-				date: data.date 
+				date: data.date
 			})
 		}
+	}
+
+	function cancel_upload(socket, data)
+	{
+		var key = `${socket.user_id}_${data.date}`
+		delete files[key]
 	}
 
 	function typing(socket, data)

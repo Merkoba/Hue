@@ -2427,7 +2427,65 @@ function upload_file(file, action)
 
 	file.reader.readAsArrayBuffer(slice)
 
-	chat_announce({brk1:'[', brk2:']', msg:`Uploading: 0%`, id:`uploading_${date}`})	
+	var f = function()
+	{
+		change_upload_status(file, "Cancelled")
+		delete files[date]
+		socket_emit("cancel_upload", {date:date})
+	}	
+
+	chat_announce(
+	{
+		brk1: '[', 
+		brk2: ']', 
+		msg: `Uploading ${get_file_action_name(file.action)}: 0% - Click to cancel`, 
+		id: `uploading_${date}`,
+		onclick: f
+	})	
+}
+
+function change_upload_status(file, status)
+{
+	$(`#uploading_${file.date}`)
+	.find(".announcement_content")
+	.eq(0).text(`Uploading ${get_file_action_name(file.action)}: ${status}`)
+	.parent()
+	.off("click")
+	.removeClass("pointer")
+	.removeClass("action")
+}
+
+function change_upload_status_2(date, status)
+{
+	$(`#uploading_${date}`)
+	.find(".announcement_content")
+	.eq(0).text(status)
+	.parent()
+	.off("click")
+	.removeClass("pointer")
+	.removeClass("action")
+}
+
+function get_file_action_name(action)
+{
+	var s = ""
+
+	if(action === "image_upload")
+	{
+		s = "image"
+	}
+
+	else if(action === "profile_image_upload")
+	{
+		s = "profile image"
+	}
+
+	else if(action === "background_image_upload")
+	{
+		s = "background image"
+	}
+
+	return s
 }
 
 function is_textbox(element) 
@@ -10827,7 +10885,7 @@ function setup_modal_image()
 		{
 			modal_image_prev_wheel_timer()
 		}
-	}	
+	}
 
 	$("#Msg-window-image")[0].addEventListener("wheel", f)
 	$("#Msg-overlay-image")[0].addEventListener("wheel", f)
@@ -10890,9 +10948,14 @@ function show_current_date()
 
 function request_slice_upload(data)
 {
-	var place = data.current_slice * upload_slice_size
-
 	var file = files[data.date]
+
+	if(!file)
+	{
+		return false
+	}
+
+	var place = data.current_slice * upload_slice_size
 
 	var slice = file.slice(place, place + Math.min(upload_slice_size, file.size - place))
 
@@ -10900,13 +10963,23 @@ function request_slice_upload(data)
 
 	var percentage = Math.floor(((upload_slice_size * data.current_slice) / file.size) * 100)
 
-	$(`#uploading_${file.date}`).find(".announcement_content").eq(0).text(`Uploading: ${percentage}%`)	
+	$(`#uploading_${file.date}`).find(".announcement_content").eq(0).text(`Uploading ${get_file_action_name(file.action)}: ${percentage}% - Click to cancel`)
 }
 
 function upload_ended(data)
 {
-	$(`#uploading_${data.date}`).find(".announcement_content").eq(0).text("Uploading: 100%")
-	delete files[data.date]	
+	var file = files[data.date]
+
+	if(file)
+	{
+		change_upload_status(file, "100%")
+		delete files[data.date]
+	}
+
+	else
+	{
+		change_upload_status_2(data.date, "File uploaded")
+	}
 }
 
 function error_occurred()
