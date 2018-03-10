@@ -2667,7 +2667,7 @@ var double_tap_3_timer = (function()
 
 function activate_key_detection()
 {
-	$(document).keydown(function(e)
+	document.addEventListener('keydown', (e) => 
 	{
 		if(!started)
 		{
@@ -2676,17 +2676,56 @@ function activate_key_detection()
 
 		if(e.key === double_tap_key)
 		{
-			double_tap_timer()
+			if(!e.repeat)
+			{
+				double_tap_key_pressed += 1
+
+				if(double_tap_key_pressed === 2)
+				{
+					on_double_tap()
+				}
+
+				else
+				{
+					double_tap_timer()
+				}
+			}
 		}
 
 		else if(e.key === double_tap_key_2)
 		{
-			double_tap_2_timer()
+			if(!e.repeat)
+			{
+				double_tap_key_2_pressed += 1
+
+				if(double_tap_key_2_pressed === 2)
+				{
+					on_double_tap_2()
+				}
+
+				else
+				{
+					double_tap_2_timer()
+				}
+			}
 		}
 
 		else if(e.key === double_tap_key_3)
 		{
-			double_tap_3_timer()
+			if(!e.repeat)
+			{
+				double_tap_key_3_pressed += 1
+
+				if(double_tap_key_3_pressed === 2)
+				{
+					on_double_tap_3()
+				}
+
+				else
+				{
+					double_tap_3_timer()
+				}
+			}
 		}
 
 		if(modal_open)
@@ -2967,62 +3006,6 @@ function activate_key_detection()
 
 		clear_tabbed()
 	})
-
-	$(document).keyup(function(e)
-	{
-		if(!started)
-		{
-			return
-		}
-
-		if(e.key === double_tap_key)
-		{
-			double_tap_key_pressed += 1
-
-			if(double_tap_key_pressed === 2)
-			{
-				double_tap_key_pressed = 0
-				on_double_tap()
-			}
-		}
-
-		else
-		{
-			double_tap_key_pressed = 0
-		}
-
-		if(e.key === double_tap_key_2)
-		{
-			double_tap_key_2_pressed += 1
-
-			if(double_tap_key_2_pressed === 2)
-			{
-				double_tap_key_2_pressed = 0
-				on_double_tap_2()
-			}
-		}
-
-		else
-		{
-			double_tap_key_2_pressed = 0
-		}
-
-		if(e.key === double_tap_key_3)
-		{
-			double_tap_key_3_pressed += 1
-
-			if(double_tap_key_3_pressed === 2)
-			{
-				double_tap_key_3_pressed = 0
-				on_double_tap_3()
-			}
-		}
-
-		else
-		{
-			double_tap_key_3_pressed = 0
-		}
-	})	
 }
 
 function scroll_up(n)
