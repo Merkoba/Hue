@@ -7609,7 +7609,7 @@ function get_settings()
 
 	if(settings.background_image === undefined)
 	{
-		settings.background_image = settings_background_image
+		settings.background_image = settings_default_background_image
 		changed = true
 	}
 	
