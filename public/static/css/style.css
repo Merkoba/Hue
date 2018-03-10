@@ -979,21 +979,19 @@ input[type=text], textarea
 	cursor: pointer;
 	z-index: 10;
 	flex-grow: 0;
-	flex-shrink: 0	
+	flex-shrink: 0;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
 }
 
 #modal_image_header_prev
 {
 	float: left;
-	padding-left: 0.5em;
-	padding-right: 0.5em;
 }
 
 #modal_image_header_next
 {
 	float: right;
-	padding-left: 0.5em;
-	padding-right: 0.5em;
 }
 
 #modal_image_container
