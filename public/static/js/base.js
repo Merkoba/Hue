@@ -2728,6 +2728,13 @@ function activate_key_detection()
 			}
 		}
 
+		else
+		{
+			double_tap_key_pressed = 0
+			double_tap_key_2_pressed = 0
+			double_tap_key_3_pressed = 0
+		}
+		
 		if(modal_open)
 		{
 			if(iup)
