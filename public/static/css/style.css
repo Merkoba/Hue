@@ -86,8 +86,6 @@ body, html
 #header_items_inner
 {
 	display: inline-block;
-	padding-top: 0.33em;
-	padding-bottom: 0.33em;
 }
 
 .header_item
