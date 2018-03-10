@@ -168,14 +168,12 @@ body, html
 	object-fit: contain;
 	max-height: calc(100% - 4em);
 	max-width: calc(100% - 4.7em);
-	cursor: pointer;
 }
 
 #media_image_error
 {
 	display: none;
 	font-size: 1.2em;
-	cursor: pointer;
 }
 
 #media_tv

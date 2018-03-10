@@ -35,7 +35,7 @@
 
 		<script src="/static/js/base.js?ver=1042"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=296"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=297"/>
 
 		<script>
 
@@ -135,9 +135,9 @@
 
 						<div id='media_split'>
 							
-							<div id='media_image_container'>
-								<img id='media_image' draggable='false' onclick="show_current_image_modal()">
-								<div id='media_image_error' onclick="show_current_image_modal()">Image failed to load</div>
+							<div id='media_image_container' onclick="show_current_image_modal()" class='pointer'>
+								<img id='media_image' draggable='false'>
+								<div id='media_image_error'>Image failed to load</div>
 							</div>
 
 							<div id='media_tv'>
@@ -736,9 +736,9 @@
 					<div id='modal_image_header_next' class='modal_image_header_button action'>Next &gt;</div>
 				</div>
 
-				<div id='modal_image_container' class='bg1'>
+				<div id='modal_image_container' class='bg1 unselectable'>
 					<div id="modal_image_spinner" class='spinner1'></div>
-					<img id="modal_image">
+					<img id="modal_image" draggable="false">
 					<div id="modal_image_error">Image not available</div>
 				</div>
 
