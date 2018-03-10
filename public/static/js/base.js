@@ -5930,6 +5930,8 @@ function copy_room_url()
 	url = url.replace(/\s+/g, "%20")
 
 	copy_string(url)
+
+	pum()
 }
 
 function copy_string(s)
@@ -5948,6 +5950,11 @@ function copy_string(s)
 function pup()
 {
 	$('#pup')[0].play()
+}
+
+function pum()
+{
+	$('#pum')[0].play()
 }
 
 function word_generator(pattern) 
