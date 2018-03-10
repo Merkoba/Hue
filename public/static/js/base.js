@@ -2734,7 +2734,7 @@ function activate_key_detection()
 			double_tap_key_2_pressed = 0
 			double_tap_key_3_pressed = 0
 		}
-		
+
 		if(modal_open)
 		{
 			if(iup)
@@ -5929,12 +5929,10 @@ function copy_room_url()
 
 	else
 	{
-		var r = room_name
+		var r = '/' + room_id
 	}
 
-	var url = site_root + r
-
-	url = url.replace(/\s+/g, "%20")
+	var url = window.location.origin + r
 
 	copy_string(url)
 
