@@ -100,7 +100,7 @@ If you want to remove it to start fresh:
 "profile_image_loading_url"
 >The location of the loading image when the profile image is changing.
 
-"default_default_background_image_url"
+"default_background_image_url"
 >The location of the default background image.
 
 "background_image_loading_url"
