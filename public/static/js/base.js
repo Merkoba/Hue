@@ -5931,7 +5931,7 @@ function copy_room_url()
 
 	copy_string(url)
 
-	pum()
+	pup2()
 }
 
 function copy_string(s)
@@ -5952,9 +5952,9 @@ function pup()
 	$('#pup')[0].play()
 }
 
-function pum()
+function pup2()
 {
-	$('#pum')[0].play()
+	$('#pup2')[0].play()
 }
 
 function word_generator(pattern) 
