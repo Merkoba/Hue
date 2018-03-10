@@ -647,8 +647,8 @@ function start_socket()
 			log_enabled = data.log
 			log_messages = data.log_messages
 			setup_theme(data)
-			set_theme()
 			set_background_image()
+			set_theme()
 			setup_active_media(data)
 			start_permissions(data)
 			set_role(data.role)
@@ -1306,6 +1306,19 @@ function setup_theme(data)
 	background_image_enabled = data.background_image_enabled	
 }
 
+function set_background_image()
+{
+	if(background_image_enabled && settings.background_image)
+	{
+		$('.background_image').css('background-image', `url('${background_image}')`)
+	}
+
+	else
+	{
+		$('.background_image').css('background-image', "none")
+	}
+}
+
 function set_theme()
 {
 	var background_color = theme
@@ -1366,12 +1379,6 @@ function set_theme()
 	})
 
 	$("head").append(css)	
-}
-
-function set_background_image()
-{
-	$('#background_image').css('background-image', `url('${background_image}')`) 	
-	$('#modal_image_background_image').css('background-image', `url('${background_image}')`) 	
 }
 
 function userjoin(data)
@@ -7758,7 +7765,8 @@ function call_setting_actions(save=true)
 function setting_background_image_action(save=true)
 {
 	settings.background_image = $("#setting_background_image").prop("checked")
-	
+
+	set_background_image()
 	set_theme()
 	
 	if(save)
@@ -9761,6 +9769,7 @@ function announce_background_image_enabled_change(data)
 
 	background_image_enabled = data.what
 
+	set_background_image()
 	set_theme()
 }
 
