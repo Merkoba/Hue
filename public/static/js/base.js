@@ -6393,7 +6393,7 @@ function push_images_changed(data)
 		data.url = default_image_url
 	}
 
-	if(data.title)
+	if(!data.title)
 	{
 		data.title = "Default Image"
 	}
