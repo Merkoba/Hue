@@ -2470,9 +2470,9 @@ function upload_file(file, action)
 
 	files[date] = file
 
-	var next = Math.floor(((upload_slice_size * 1) / file.size) * 100)
+	file.next = get_file_next(file)
 
-	if(next >= 100)
+	if(file.next >= 100)
 	{
 		file.sending_last_slice = true
 	}
@@ -2482,20 +2482,19 @@ function upload_file(file, action)
 		file.sending_last_slice = false
 	}
 
+	file.percentage = 0
+
 	file.reader.readAsArrayBuffer(slice)
 
-	if(file.sending_last_slice)
+	var obj =
 	{
-		chat_announce(
-		{
-			brk1: '[', 
-			brk2: ']', 
-			msg: `Uploading ${get_file_action_name(file.action)}: 0%`, 
-			id: `uploading_${date}`
-		})
+		brk1: '[', 
+		brk2: ']', 
+		msg: `Uploading ${get_file_action_name(file.action)}: 0%`, 
+		id: `uploading_${date}`
 	}
 
-	else
+	if(!file.sending_last_slice)
 	{
 		var f = function()
 		{
@@ -2514,17 +2513,24 @@ function upload_file(file, action)
 			change_upload_status(file, "Cancelled")
 			delete files[date]
 			socket_emit("cancel_upload", {date:date})
-		}	
+		}
 
-		chat_announce(
-		{
-			brk1: '[', 
-			brk2: ']', 
-			msg: `Uploading ${get_file_action_name(file.action)}: 0%`, 
-			id: `uploading_${date}`,
-			onclick: f
-		})		
+		obj.onclick = f
 	}
+
+	chat_announce(obj)
+}
+
+function get_file_next(file)
+{
+	var next = Math.floor(((upload_slice_size * 1) / file.size) * 100)
+
+	if(next > 100)
+	{
+		next = 100
+	}
+
+	return next	
 }
 
 function change_upload_status(file, status)
@@ -10974,17 +10980,18 @@ function request_slice_upload(data)
 
 	var slice = file.slice(place, place + Math.min(upload_slice_size, file.size - place))
 
-	file.reader.readAsArrayBuffer(slice)
+	file.next = get_file_next(file)
 
-	var percentage = Math.floor(((upload_slice_size * data.current_slice) / file.size) * 100)
-	var next = Math.floor(((upload_slice_size * (data.current_slice + 1)) / file.size) * 100)
-
-	$(`#uploading_${file.date}`).find(".announcement_content").eq(0).text(`Uploading ${get_file_action_name(file.action)}: ${percentage}%`)
-
-	if(next >= 100)
+	if(file.next >= 100)
 	{
 		file.sending_last_slice = true
 	}
+
+	file.percentage = Math.floor(((upload_slice_size * data.current_slice) / file.size) * 100)
+	
+	file.reader.readAsArrayBuffer(slice)
+
+	change_upload_status(file, `${file.percentage}%`)
 }
 
 function upload_ended(data)
