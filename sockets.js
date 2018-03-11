@@ -62,8 +62,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	antiSpam.event.on('ban', function(socket, data)
 	{
-		socket.kickd = true
-		socket.info1 = "the anti-spam system"
+		socket.hue_kicked = true
+		socket.hue_info1 = "the anti-spam system"
 		do_disconnect(socket)
 	})
 
@@ -99,7 +99,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -117,7 +117,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -135,7 +135,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -153,7 +153,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -171,7 +171,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined && !socket.locked)
+				if(!socket.hue_joined && !socket.hue_locked)
 				{
 					return get_out(socket)
 				}
@@ -189,7 +189,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined && !socket.locked)
+				if(!socket.hue_joined && !socket.hue_locked)
 				{
 					return get_out(socket)
 				}
@@ -203,24 +203,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		})
 
-		socket.on('heartbeat', function(data) 
-		{
-			try
-			{
-				heartbeat(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
 		socket.on('change_role', function(data) 
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -238,7 +225,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -256,7 +243,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -274,7 +261,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -292,7 +279,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -310,7 +297,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -328,7 +315,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -346,7 +333,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -364,7 +351,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -382,7 +369,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -400,7 +387,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -418,7 +405,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -436,7 +423,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -454,7 +441,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -472,7 +459,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -490,7 +477,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -508,7 +495,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -526,7 +513,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -544,7 +531,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -562,7 +549,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -580,7 +567,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -598,7 +585,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -616,7 +603,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -634,7 +621,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -652,7 +639,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -670,7 +657,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -688,7 +675,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -706,7 +693,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -724,7 +711,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -742,7 +729,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -760,7 +747,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -778,7 +765,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -796,7 +783,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
-				if(!socket.joined)
+				if(!socket.hue_joined)
 				{
 					return get_out(socket)
 				}
@@ -805,7 +792,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				if(reason.indexOf('timeout') !== -1)
 				{
-					socket.pingd = true
+					socket.hue_pinged = true
 				}				
 
 				disconnect(socket)
@@ -820,12 +807,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function connection(socket)
 	{
-		socket.kickd = false
-		socket.bannd = false
-		socket.joining = false
-		socket.joined = false
-		socket.superuser = false
-		socket.locked = false
+		socket.hue_pinged = false
+		socket.hue_kicked = false
+		socket.hue_banned = false
+		socket.hue_joining = false
+		socket.hue_joined = false
+		socket.hue_superuser = false
+		socket.hue_locked = false
+		socket.hue_info1 = ""
 	}
 
 	function join_room(socket, data)
@@ -900,7 +889,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				var userinfo = ans.user
 
-				socket.user_id = userinfo._id.toString()
+				socket.hue_user_id = userinfo._id.toString()
 
 				db_manager.get_room({_id:data.room_id}, {})
 
@@ -913,7 +902,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	
 					do_join(socket, info, userinfo)
 
-					db_manager.save_visited_room(socket.user_id, data.room_id)
+					db_manager.save_visited_room(socket.hue_user_id, data.room_id)
 
 					.catch(err =>
 					{
@@ -954,7 +943,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				else
 				{
-					socket.user_id = data.user_id
+					socket.hue_user_id = data.user_id
 
 					db_manager.get_room({_id:data.room_id}, {})
 
@@ -965,7 +954,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 							return do_disconnect(socket)
 						}
 
-						db_manager.get_user({_id:socket.user_id}, 
+						db_manager.get_user({_id:socket.hue_user_id}, 
 						{
 							email: true, 
 							username: true, 
@@ -982,7 +971,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 							do_join(socket, info, userinfo)
 
-							db_manager.save_visited_room(socket.user_id, data.room_id)
+							db_manager.save_visited_room(socket.hue_user_id, data.room_id)
 
 							.catch(err =>
 							{
@@ -1007,11 +996,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function do_join(socket, info, userinfo)
 	{
-		socket.room_id = info._id.toString()
-		socket.email = userinfo.email
-		socket.joining = true
+		socket.hue_room_id = info._id.toString()
+		socket.hue_email = userinfo.email
+		socket.hue_joining = true
 		
-		socket.join(socket.room_id)		
+		socket.join(socket.hue_room_id)		
 
 		if(check_multipe_joins(socket))
 		{
@@ -1020,54 +1009,39 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(sconfig.superuser_emails.indexOf(userinfo.email) !== -1)
 		{
-			socket.superuser = true
+			socket.hue_superuser = true
 		}
 
-		socket.username = userinfo.username
+		socket.hue_username = userinfo.username
 
-		socket.ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
+		socket.hue_ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
 
-		var banned_from_main = false
-
-		if(!socket.superuser && info.bans.indexOf(socket.user_id) !== -1)
+		if(!socket.hue_superuser && info.bans.indexOf(socket.hue_user_id) !== -1)
 		{
-			if(socket.room_id === config.main_room_id)
-			{
-				banned_from_main = true
-			}
-
-			else
-			{
-				return do_disconnect(socket)
-			}
-		}
-
-		if(banned_from_main)
-		{
-			socket.leave(socket.room_id)
-			socket.locked = true
+			socket.leave(socket.hue_room_id)
+			socket.hue_locked = true
 
 			user_emit(socket, 'joined', 
 			{
 				room_locked: true	
 			})
 
-			return
+			return false
 		}
 
 		if(userinfo.profile_image === "")
 		{
-			socket.profile_image = ""
+			socket.hue_profile_image = ""
 		}
 
 		else if(userinfo.profile_image.indexOf(sconfig.s3_main_url) === -1)
 		{
-			socket.profile_image = config.public_images_location + userinfo.profile_image
+			socket.hue_profile_image = config.public_images_location + userinfo.profile_image
 		}
 
 		else
 		{
-			socket.profile_image = userinfo.profile_image
+			socket.hue_profile_image = userinfo.profile_image
 		}
 
 		if(info.background_image === "")
@@ -1085,43 +1059,43 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			var background_image = info.background_image
 		}
 
-		if(rooms[socket.room_id] === undefined)
+		if(rooms[socket.hue_room_id] === undefined)
 		{
-			rooms[socket.room_id] = create_room_object(info)
+			rooms[socket.hue_room_id] = create_room_object(info)
 		}
 
-		socket.role = info.keys[socket.user_id]
+		socket.hue_role = info.keys[socket.hue_user_id]
 
-		if(roles.indexOf(socket.role) === -1)
+		if(roles.indexOf(socket.hue_role) === -1)
 		{
-			socket.role = 'voice1'
+			socket.hue_role = 'voice1'
 		}
 
-		if(user_rooms[socket.user_id] === undefined)
+		if(user_rooms[socket.hue_user_id] === undefined)
 		{
-			user_rooms[socket.user_id] = []
+			user_rooms[socket.hue_user_id] = []
 		}
 
-		if(user_rooms[socket.user_id].indexOf(socket.room_id) === -1)
+		if(user_rooms[socket.hue_user_id].indexOf(socket.hue_room_id) === -1)
 		{
-			user_rooms[socket.user_id].push(socket.room_id)
+			user_rooms[socket.hue_user_id].push(socket.hue_room_id)
 		}
 
 		if(!user_already_connected(socket))
 		{
 			broadcast_emit(socket, 'userjoin',
 			{
-				username: socket.username,
-				role: socket.role,
-				profile_image: socket.profile_image
+				username: socket.hue_username,
+				role: socket.hue_role,
+				profile_image: socket.hue_profile_image
 			})
 
-			if(rooms[socket.room_id].userlist === undefined)
+			if(rooms[socket.hue_room_id].userlist === undefined)
 			{
-				rooms[socket.room_id].userlist = {}
+				rooms[socket.hue_room_id].userlist = {}
 			}
 
-			rooms[socket.room_id].userlist[socket.user_id] = {}
+			rooms[socket.hue_room_id].userlist[socket.hue_user_id] = {}
 
 			update_user_in_userlist(socket)
 		}
@@ -1130,7 +1104,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			room_locked: false,
 			room_name: info.name,
-			username: socket.username, 
+			username: socket.hue_username, 
 			image_url: info.image_url, 
 			image_uploader: info.image_uploader, 
 			image_size: info.image_size, 
@@ -1139,10 +1113,10 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			topic: info.topic, 
 			topic_setter: info.topic_setter,
 			topic_date: info.topic_date,
-			userlist: utilz.object_to_array(get_userlist(socket.room_id)),
+			userlist: utilz.object_to_array(get_userlist(socket.hue_room_id)),
 			log: info.log,
-			log_messages: info.log_messages.concat(rooms[socket.room_id].log_messages),
-			role: socket.role, 
+			log_messages: info.log_messages.concat(rooms[socket.hue_room_id].log_messages),
+			role: socket.hue_role, 
 			public: info.public,
 			radio_type: info.radio_type,
 			radio_source: info.radio_source,
@@ -1154,7 +1128,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_title: info.tv_title,
 			tv_setter: info.tv_setter, 
 			tv_date: info.tv_date, 
-			profile_image: socket.profile_image,
+			profile_image: socket.hue_profile_image,
 			room_images_enabled: info.images_enabled,
 			room_tv_enabled: info.tv_enabled,
 			room_radio_enabled: info.radio_enabled,
@@ -1177,12 +1151,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			voice4_images_permission: info.voice4_images_permission,
 			voice4_tv_permission: info.voice4_tv_permission,
 			voice4_radio_permission: info.voice4_radio_permission,
-			email: socket.email,
+			email: socket.hue_email,
 			reg_date: userinfo.registration_date			
 		})
 
-		socket.joining = false
-		socket.joined = true			
+		socket.hue_joining = false
+		socket.hue_joined = true			
 	}
 
 	function sendchat(socket, data)
@@ -1214,34 +1188,34 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		broadcast_emit(socket, 'chat_msg', 
 		{ 
-			username: socket.username, 
+			username: socket.hue_username, 
 			msg: data.msg,
-			profile_image: socket.profile_image
+			profile_image: socket.hue_profile_image
 		})
 
-		rooms[socket.room_id].activity = true
+		rooms[socket.hue_room_id].activity = true
 
-		if(rooms[socket.room_id].log)
+		if(rooms[socket.hue_room_id].log)
 		{
 			var message = 
 			{
 				type: "chat",
 				data: 
 				{
-					username: socket.username,
+					username: socket.hue_username,
 					content: data.msg,
-					profile_image: socket.profile_image
+					profile_image: socket.hue_profile_image
 				},
 				date: Date.now()
 			}
 
-			rooms[socket.room_id].log_messages.push(message)
+			rooms[socket.hue_room_id].log_messages.push(message)
 		}
 	}
 
 	function change_topic(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
@@ -1266,7 +1240,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.room_id}, {topic:true})
+		db_manager.get_room({_id:socket.hue_room_id}, {topic:true})
 
 		.then(info =>
 		{
@@ -1275,7 +1249,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			if(new_topic !== info.topic)
 			{
 				info.topic = new_topic
-				info.topic_setter = socket.username
+				info.topic_setter = socket.hue_username
 				info.topic_date = Date.now()
 
 				room_emit(socket, 'topic_change', 
@@ -1307,7 +1281,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function change_room_name(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
@@ -1322,7 +1296,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.room_id}, {name:true})
+		db_manager.get_room({_id:socket.hue_room_id}, {name:true})
 
 		.then(info =>
 		{
@@ -1333,7 +1307,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				room_emit(socket, 'room_name_changed', 
 				{
 					name: info.name,
-					username: socket.username
+					username: socket.hue_username
 				})
 				
 				db_manager.update_room(info._id,
@@ -1358,7 +1332,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		if(data.type === "visited")
 		{
-			get_visited_roomlist(socket.user_id, function(rooms)
+			get_visited_roomlist(socket.hue_user_id, function(rooms)
 			{
 				user_emit(socket, 'roomlist', {roomlist:rooms})
 			})
@@ -1390,9 +1364,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		data.user_id = socket.user_id
+		data.user_id = socket.hue_user_id
 
-		if(socket.superuser)
+		if(socket.hue_superuser)
 		{
 			var force = true
 		}
@@ -1426,17 +1400,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	function heartbeat(socket, data)
-	{
-		if(!socket.joined)
-		{
-			user_emit(socket, 'connection_lost', {})
-		}
-	}
-
 	function change_role(socket, data)
 	{
-		if(!socket.superuser && (socket.role !== 'admin' && socket.role !== 'op'))
+		if(!socket.hue_superuser && (socket.hue_role !== 'admin' && socket.hue_role !== 'op'))
 		{
 			return get_out(socket)
 		}
@@ -1461,12 +1427,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		if(!socket.superuser && (socket.username === data.username))
+		if(!socket.hue_superuser && (socket.hue_username === data.username))
 		{
 			return get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.room_id}, {keys:true})
+		db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
 
 		.then(info =>
 		{
@@ -1484,9 +1450,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				var current_role = info.keys[id]
 
-				if(!socket.superuser)
+				if(!socket.hue_superuser)
 				{
-					if((current_role === 'admin' || current_role === 'op') && socket.role !== 'admin')
+					if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
 					{
 						user_emit(socket, 'forbiddenuser', {})
 						return false
@@ -1499,22 +1465,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					return false
 				}
 
-				var sockets = get_user_sockets_per_room(socket.room_id, id)
+				var sockets = get_user_sockets_per_room(socket.hue_room_id, id)
 
 				var last_socc = false
 				
 				for(var socc of sockets)
 				{
-					if(socc.superuser)
+					if(socc.hue_superuser)
 					{
-						if(socket.username !== socc.username && socc.role === "admin")
+						if(socket.hue_username !== socc.hue_username && socc.hue_role === "admin")
 						{
 							user_emit(socket, 'forbiddenuser', {})
 							return false		
 						}
 					}
 
-					socc.role = data.role
+					socc.hue_role = data.role
 					last_socc = socc
 				}
 
@@ -1534,7 +1500,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				room_emit(socket, 'announce_role_change', 
 				{ 
-					username1: socket.username, 
+					username1: socket.hue_username, 
 					username2: data.username, 
 					role: data.role
 				})
@@ -1554,12 +1520,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function reset_voices(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.room_id}, {keys:true})
+		db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
 
 		.then(info =>
 		{
@@ -1580,15 +1546,15 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
+			var ids = Object.keys(io.sockets.adapter.rooms[socket.hue_room_id].sockets)
 
 			for(var i=0; i<ids.length; i++)
 			{
 				var socc = io.sockets.connected[ids[i]]
 
-				if(socc.role.startsWith("voice") && socc.role !== "voice1")
+				if(socc.hue_role.startsWith("voice") && socc.hue_role !== "voice1")
 				{
-					socc.role = 'voice1'
+					socc.hue_role = 'voice1'
 
 					update_user_in_userlist(socc)
 				}
@@ -1601,7 +1567,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				logger.log_error(err)
 			})
 
-			room_emit(socket, 'voices_resetted', {username:socket.username})
+			room_emit(socket, 'voices_resetted', {username:socket.hue_username})
 		})
 
 		.catch(err =>
@@ -1612,12 +1578,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function remove_ops(socket, data)
 	{
-		if(socket.role !== 'admin')
+		if(socket.hue_role !== 'admin')
 		{
 			return get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.room_id}, {keys:true})
+		db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
 
 		.then(info =>
 		{
@@ -1638,21 +1604,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
+			var ids = Object.keys(io.sockets.adapter.rooms[socket.hue_room_id].sockets)
 
 			for(var i=0; i<ids.length; i++)
 			{
 				var socc = io.sockets.connected[ids[i]]
 
-				if(socc.role === 'op')
+				if(socc.hue_role === 'op')
 				{
-					socc.role = ''
+					socc.hue_role = ''
 
 					update_user_in_userlist(socc)
 				}
 			}
 			
-			room_emit(socket, 'announce_removedops', {username:socket.username})
+			room_emit(socket, 'announce_removedops', {username:socket.hue_username})
 
 			db_manager.update_room(info._id, {keys:info.keys})
 
@@ -1670,7 +1636,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function kick(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
@@ -1690,11 +1656,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		var sockets = get_user_sockets_per_room_by_username(socket.room_id, data.username)
+		var sockets = get_user_sockets_per_room_by_username(socket.hue_room_id, data.username)
 
 		if(sockets.length > 0)
 		{
-			if(((sockets[0].role === 'admin' || sockets[0].role === 'op') && socket.role !== 'admin') || sockets[0].superuser)
+			if(((sockets[0].role === 'admin' || sockets[0].role === 'op') && socket.hue_role !== 'admin') || sockets[0].superuser)
 			{
 				user_emit(socket, 'forbiddenuser', {})
 				return false
@@ -1702,9 +1668,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			for(var socc of sockets)
 			{
-				socc.role = ''
-				socc.kickd = true
-				socc.info1 = socket.username
+				socc.hue_role = ''
+				socc.hue_kicked = true
+				socc.hue_info1 = socket.hue_username
 				
 				get_out(socc)
 			}
@@ -1719,7 +1685,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function ban(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
@@ -1739,7 +1705,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}			
 
-		db_manager.get_room({_id:socket.room_id}, {bans:true, keys:true})
+		db_manager.get_room({_id:socket.hue_room_id}, {bans:true, keys:true})
 
 		.then(info =>
 		{
@@ -1757,7 +1723,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				
 				var current_role = info.keys[id]
 
-				if((current_role === 'admin' || current_role === 'op') && socket.role !== 'admin')
+				if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
 				{
 					user_emit(socket, 'forbiddenuser', {})
 					return false
@@ -1770,21 +1736,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					return false						
 				}
 
-				var sockets = get_user_sockets_per_room(socket.room_id, id)
+				var sockets = get_user_sockets_per_room(socket.hue_room_id, id)
 
 				if(sockets.length > 0)
 				{
 					for(var socc of sockets)
 					{
-						if(socc.superuser)
+						if(socc.hue_superuser)
 						{
 							user_emit(socket, 'forbiddenuser', {})							
 							return false
 						}
 
-						socc.role = ''
-						socc.bannd = true
-						socc.info1 = socket.username
+						socc.hue_role = ''
+						socc.hue_banned = true
+						socc.hue_info1 = socket.hue_username
 						get_out(socc)
 					}
 				}
@@ -1793,7 +1759,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					room_emit(socket, 'announce_ban', 
 					{
-						username1: socket.username, 
+						username1: socket.hue_username, 
 						username2: data.username
 					})						
 				}
@@ -1822,7 +1788,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function unban(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
@@ -1842,7 +1808,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}			
 
-		db_manager.get_room({_id:socket.room_id}, {bans:true, keys:true})
+		db_manager.get_room({_id:socket.hue_room_id}, {bans:true, keys:true})
 
 		.then(info =>
 		{
@@ -1883,7 +1849,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				room_emit(socket, 'announce_unban', 
 				{ 
-					username1: socket.username, 
+					username1: socket.hue_username, 
 					username2: data.username
 				})					
 			})
@@ -1902,12 +1868,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function unban_all(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.room_id}, {bans:true})
+		db_manager.get_room({_id:socket.hue_room_id}, {bans:true})
 
 		.then(info =>
 		{
@@ -1922,7 +1888,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					logger.log_error(err)
 				})
 
-				room_emit(socket, 'announce_unban_all', {username:socket.username})
+				room_emit(socket, 'announce_unban_all', {username:socket.hue_username})
 			}
 
 			else
@@ -1939,12 +1905,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function get_banned_count(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.room_id}, {bans:true})
+		db_manager.get_room({_id:socket.hue_room_id}, {bans:true})
 
 		.then(info =>
 		{
@@ -1969,7 +1935,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function change_log(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return false
 		}
@@ -1979,7 +1945,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.room_id}, {log:true})
+		db_manager.get_room({_id:socket.hue_room_id}, {log:true})
 
 		.then(info =>
 		{
@@ -1987,9 +1953,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				if(!data.log)
 				{
-					rooms[socket.room_id].log_messages = []
+					rooms[socket.hue_room_id].log_messages = []
 
-					db_manager.update_room(socket.room_id, {log:data.log, log_messages:[]})
+					db_manager.update_room(socket.hue_room_id, {log:data.log, log_messages:[]})
 
 					.catch(err =>
 					{
@@ -1999,7 +1965,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				else
 				{
-					db_manager.update_room(socket.room_id, {log:data.log})
+					db_manager.update_room(socket.hue_room_id, {log:data.log})
 
 					.catch(err =>
 					{
@@ -2007,9 +1973,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					})						
 				}
 
-				rooms[socket.room_id].log = data.log
+				rooms[socket.hue_room_id].log = data.log
 
-				room_emit(socket, 'log_changed', {username:socket.username, log:data.log})
+				room_emit(socket, 'log_changed', {username:socket.hue_username, log:data.log})
 			}
 		})
 
@@ -2021,27 +1987,27 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function clear_log(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return false
 		}
 
-		db_manager.get_room({_id:socket.room_id}, {log_messages:true})
+		db_manager.get_room({_id:socket.hue_room_id}, {log_messages:true})
 
 		.then(info =>
 		{
 			if(info.log_messages.length > 0)
 			{
-				rooms[socket.room_id].log_messages = []
+				rooms[socket.hue_room_id].log_messages = []
 
-				db_manager.update_room(socket.room_id, {log_messages:[]})
+				db_manager.update_room(socket.hue_room_id, {log_messages:[]})
 
 				.catch(err =>
 				{
 					logger.log_error(err)
 				})					
 
-				room_emit(socket, 'log_cleared', {username:socket.username})
+				room_emit(socket, 'log_cleared', {username:socket.hue_username})
 			}
 
 			else
@@ -2058,7 +2024,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function change_privacy(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
@@ -2068,14 +2034,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		db_manager.update_room(socket.room_id, {public:data.what})
+		db_manager.update_room(socket.hue_room_id, {public:data.what})
 
 		.catch(err =>
 		{
 			logger.log_error(err)
 		})
 
-		room_emit(socket, 'privacy_change', {username:socket.username, what:data.what})
+		room_emit(socket, 'privacy_change', {username:socket.hue_username, what:data.what})
 	}
 
 	function change_radio_source(socket, data)
@@ -2176,7 +2142,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else if(data.src === "restart" || data.src === "reset")
 		{
-			db_manager.get_room({_id:socket.room_id}, 
+			db_manager.get_room({_id:socket.hue_room_id}, 
 			{
 				radio_type: true,
 				radio_source: true,
@@ -2194,7 +2160,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					radio_title: info.radio_title,
 					radio_setter: info.radio_setter,
 					radio_date: info.radio_date,
-					username: socket.username
+					username: socket.hue_username
 				})
 			})
 
@@ -2411,7 +2377,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else if(data.src === "restart" || data.src === "reset")
 		{
-			db_manager.get_room({_id:socket.room_id}, 
+			db_manager.get_room({_id:socket.hue_room_id}, 
 			{
 				tv_type: true,
 				tv_source: true,
@@ -2429,7 +2395,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					tv_title: info.tv_title,
 					tv_setter: info.tv_setter,
 					tv_date: info.tv_date,
-					username: socket.username
+					username: socket.hue_username
 				})
 			})
 
@@ -2508,7 +2474,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			radioinfo.radio_title = data.title
 		}
 
-		radioinfo.radio_setter = socket.username
+		radioinfo.radio_setter = socket.hue_username
 		radioinfo.radio_date = date
 
 		room_emit(socket, 'changed_radio_source', 
@@ -2520,7 +2486,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			radio_date: radioinfo.radio_date
 		})
 
-		db_manager.update_room(socket.room_id,
+		db_manager.update_room(socket.hue_room_id,
 		{
 			radio_type: radioinfo.radio_type,
 			radio_source: radioinfo.radio_source,
@@ -2534,9 +2500,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		rooms[socket.room_id].activity = true
+		rooms[socket.hue_room_id].activity = true
 		
-		if(rooms[socket.room_id].log)
+		if(rooms[socket.hue_room_id].log)
 		{
 			var message = 
 			{
@@ -2551,7 +2517,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				date: date
 			}
 
-			rooms[socket.room_id].log_messages.push(message)
+			rooms[socket.hue_room_id].log_messages.push(message)
 		}		
 	}
 
@@ -2575,7 +2541,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			tvinfo.tv_title = data.title
 		}
 
-		tvinfo.tv_setter = socket.username
+		tvinfo.tv_setter = socket.hue_username
 		tvinfo.tv_date = date
 
 		room_emit(socket, 'changed_tv_source', 
@@ -2587,7 +2553,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_date: tvinfo.tv_date
 		})
 
-		db_manager.update_room(socket.room_id,
+		db_manager.update_room(socket.hue_room_id,
 		{
 			tv_type: tvinfo.tv_type,
 			tv_source: tvinfo.tv_source,
@@ -2601,9 +2567,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		rooms[socket.room_id].activity = true
+		rooms[socket.hue_room_id].activity = true
 		
-		if(rooms[socket.room_id].log)
+		if(rooms[socket.hue_room_id].log)
 		{
 			var message = 
 			{
@@ -2618,7 +2584,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				date: date
 			}
 
-			rooms[socket.room_id].log_messages.push(message)
+			rooms[socket.hue_room_id].log_messages.push(message)
 		}		
 	}
 
@@ -2644,22 +2610,22 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		var old_username = socket.username
+		var old_username = socket.hue_username
 
-		db_manager.change_username(socket.user_id, data.username)
+		db_manager.change_username(socket.hue_user_id, data.username)
 
 		.then(done =>
 		{
 			if(done)
 			{
-				for(var room_id of user_rooms[socket.user_id])
+				for(var room_id of user_rooms[socket.hue_user_id])
 				{
-					for(var socc of get_user_sockets_per_room(room_id, socket.user_id))
+					for(var socc of get_user_sockets_per_room(room_id, socket.hue_user_id))
 					{
-						socc.username = data.username
+						socc.hue_username = data.username
 					}
 
-					rooms[room_id].userlist[socket.user_id].username = data.username
+					update_user_in_userlist(socket)
 
 					room_emit(room_id, 'new_username',
 					{
@@ -2698,7 +2664,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		db_manager.update_user(socket.user_id,
+		db_manager.update_user(socket.hue_user_id,
 		{
 			password: data.password,
 			password_date: Date.now()
@@ -2734,7 +2700,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}		
 
-		db_manager.change_email(socket.user_id, data.email)
+		db_manager.change_email(socket.hue_user_id, data.email)
 
 		.then(ans =>
 		{
@@ -2786,7 +2752,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		db_manager.change_email(socket.user_id, data.email, data.code)
+		db_manager.change_email(socket.hue_user_id, data.email, data.code)
 
 		.then(ans =>
 		{
@@ -2822,14 +2788,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else if(ans.msg === "changed")
 			{
-				for(var room_id of user_rooms[socket.user_id])
+				for(var room_id of user_rooms[socket.hue_user_id])
 				{
-					for(var socc of get_user_sockets_per_room(room_id, socket.user_id))
+					for(var socc of get_user_sockets_per_room(room_id, socket.hue_user_id))
 					{
-						socc.email = data.email
+						socc.hue_email = data.email
 					}
 
-					rooms[room_id].userlist[socket.user_id].email = data.email
+					update_user_in_userlist(socket)
 				}
 
 				user_emit(socket, 'email_changed', {email:ans.email})
@@ -2844,7 +2810,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function change_images_enabled(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
@@ -2854,7 +2820,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		db_manager.update_room(socket.room_id,
+		db_manager.update_room(socket.hue_room_id,
 		{
 			images_enabled: data.what
 		})
@@ -2867,13 +2833,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		room_emit(socket, 'room_images_enabled_change', 
 		{
 			what: data.what,
-			username: socket.username
+			username: socket.hue_username
 		})
 	}
 
 	function change_tv_enabled(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
@@ -2883,7 +2849,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		db_manager.update_room(socket.room_id,
+		db_manager.update_room(socket.hue_room_id,
 		{
 			tv_enabled: data.what
 		})
@@ -2896,13 +2862,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		room_emit(socket, 'room_tv_enabled_change',
 		{
 			what: data.what,
-			username: socket.username
+			username: socket.hue_username
 		})
 	}
 
 	function change_radio_enabled(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
@@ -2912,7 +2878,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		db_manager.update_room(socket.room_id,
+		db_manager.update_room(socket.hue_room_id,
 		{
 			radio_enabled: data.what
 		})
@@ -2925,13 +2891,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		room_emit(socket, 'room_radio_enabled_change', 
 		{
 			what: data.what,
-			username: socket.username
+			username: socket.hue_username
 		})
 	}
 
 	function change_theme(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
@@ -2941,7 +2907,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		db_manager.update_room(socket.room_id,
+		db_manager.update_room(socket.hue_room_id,
 		{
 			theme: data.color
 		})
@@ -2954,13 +2920,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		room_emit(socket, 'theme_change',
 		{
 			color: data.color,
-			username: socket.username
+			username: socket.hue_username
 		})
 	}
 
 	function change_background_image_enabled(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
@@ -2970,7 +2936,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		db_manager.update_room(socket.room_id,
+		db_manager.update_room(socket.hue_room_id,
 		{
 			background_image_enabled: data.what
 		})
@@ -2983,13 +2949,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		room_emit(socket, 'background_image_enabled_change', 
 		{
 			what: data.what,
-			username: socket.username
+			username: socket.hue_username
 		})
 	}
 
 	function change_voice_permission(socket, data)
 	{
-		if(socket.role !== 'admin' && socket.role !== 'op')
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
 			return get_out(socket)
 		}
@@ -3004,18 +2970,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		if(rooms[socket.room_id][data.ptype] === undefined)
+		if(rooms[socket.hue_room_id][data.ptype] === undefined)
 		{
 			return get_out(socket)
 		}
 
-		rooms[socket.room_id][data.ptype] = data.what			
+		rooms[socket.hue_room_id][data.ptype] = data.what			
 
 		var obj = {}
 
 		obj[data.ptype] = data.what
 
-		db_manager.update_room(socket.room_id, obj)
+		db_manager.update_room(socket.hue_room_id, obj)
 
 		.catch(err =>
 		{
@@ -3026,7 +2992,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			ptype: data.ptype,
 			what: data.what,
-			username: socket.username
+			username: socket.hue_username
 		})
 	}	
 
@@ -3043,17 +3009,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return
 		}
 
-		if(socket.pingd)
+		if(socket.hue_pinged)
 		{
 			var type = 'pinged'
 		}
 
-		else if(socket.kickd)
+		else if(socket.hue_kicked)
 		{
 			var type = 'kicked'
 		}
 
-		else if(socket.bannd)
+		else if(socket.hue_banned)
 		{
 			var type = 'banned'
 		}
@@ -3065,42 +3031,42 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		room_emit(socket, type, 
 		{
-			username: socket.username,
-			info1: socket.info1, 
-			role: socket.role
+			username: socket.hue_username,
+			info1: socket.hue_info1, 
+			role: socket.hue_role
 		})
 
-		if(socket.room_id === undefined)
+		if(socket.hue_room_id === undefined)
 		{
 			return
 		}
 
-		if(rooms[socket.room_id] === undefined)
+		if(rooms[socket.hue_room_id] === undefined)
 		{
 			return
 		}
 
-		if(rooms[socket.room_id].userlist !== undefined)
+		if(rooms[socket.hue_room_id].userlist !== undefined)
 		{
-			delete rooms[socket.room_id].userlist[socket.user_id]
+			delete rooms[socket.hue_room_id].userlist[socket.hue_user_id]
 		}
 
-		if(user_rooms[socket.user_id] !== undefined)
+		if(user_rooms[socket.hue_user_id] !== undefined)
 		{
-			for(var i=0; i<user_rooms[socket.user_id].length; i++)
+			for(var i=0; i<user_rooms[socket.hue_user_id].length; i++)
 			{
-				var room_id = user_rooms[socket.user_id][i]
+				var room_id = user_rooms[socket.hue_user_id][i]
 
-				if(socket.room_id === room_id)
+				if(socket.hue_room_id === room_id)
 				{
-					user_rooms[socket.user_id].splice(i, 1)
+					user_rooms[socket.hue_user_id].splice(i, 1)
 					break
 				}
 			}
 
-			if(user_rooms[socket.user_id].length === 0)
+			if(user_rooms[socket.hue_user_id].length === 0)
 			{
-				delete user_rooms[socket.user_id]
+				delete user_rooms[socket.hue_user_id]
 			}
 		}
 	}	
@@ -3289,7 +3255,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		data.image_url = data.image_url.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
 
-		change_image(socket.room_id, data.image_url, socket.username, 0, "link")
+		change_image(socket.hue_room_id, data.image_url, socket.hue_username, 0, "link")
 	}
 
 	function upload_image(socket, data)
@@ -3317,7 +3283,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		var fname = `${socket.room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.extension}`
+		var fname = `${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.extension}`
 
 		fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
 		{
@@ -3328,7 +3294,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else 
 			{
-				change_image(socket.room_id, fname, socket.username, size, "upload")
+				change_image(socket.hue_room_id, fname, socket.hue_username, size, "upload")
 			}
 		})
 	}	
@@ -3545,7 +3511,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		var fname = `profile_${socket.user_id}.jpg`
+		var fname = `profile_${socket.hue_user_id}.jpg`
 
 		fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
 		{
@@ -3610,7 +3576,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function do_change_profile_image(socket, fname)
 	{
-		db_manager.get_user({_id:socket.user_id}, {profile_image_version:true})		
+		db_manager.get_user({_id:socket.hue_user_id}, {profile_image_version:true})		
 
 		.then(userinfo =>
 		{
@@ -3628,7 +3594,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				var image_url = fver
 			}
 
-			db_manager.update_user(socket.user_id,
+			db_manager.update_user(socket.hue_user_id,
 			{
 				profile_image: fver,
 				profile_image_version: new_ver
@@ -3636,18 +3602,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			.then(ans =>
 			{
-				for(var room_id of user_rooms[socket.user_id])
+				for(var room_id of user_rooms[socket.hue_user_id])
 				{
-					for(var socc of get_user_sockets_per_room(room_id, socket.user_id))
+					for(var socc of get_user_sockets_per_room(room_id, socket.hue_user_id))
 					{
-						socc.profile_image = image_url
+						socc.hue_profile_image = image_url
 					}
 					
-					rooms[room_id].userlist[socket.user_id].profile_image = image_url
+					update_user_in_userlist(socket)
 
 					room_emit(room_id, 'profile_image_changed',
 					{
-						username: socket.username,
+						username: socket.hue_username,
 						profile_image: image_url
 					})
 				}
@@ -3685,7 +3651,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		var fname = `bg_${socket.room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.extension}`
+		var fname = `bg_${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.extension}`
 
 		fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
 		{
@@ -3750,7 +3716,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function do_change_background_image(socket, fname)
 	{
-		db_manager.get_room({_id:socket.room_id}, {background_image:true})		
+		db_manager.get_room({_id:socket.hue_room_id}, {background_image:true})		
 
 		.then(info =>
 		{
@@ -3774,7 +3740,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				var to_delete = false
 			}
 
-			db_manager.update_room(socket.room_id,
+			db_manager.update_room(socket.hue_room_id,
 			{
 				background_image: fname
 			})
@@ -3783,7 +3749,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				room_emit(socket, 'background_image_change',
 				{
-					username: socket.username,
+					username: socket.hue_username,
 					background_image: image_url
 				})
 			})
@@ -3837,7 +3803,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		var key = `${socket.user_id}_${data.date}`
+		var key = `${socket.hue_user_id}_${data.date}`
 
 		var file = files[key]
 
@@ -3933,7 +3899,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function cancel_upload(socket, data)
 	{
-		var key = `${socket.user_id}_${data.date}`		
+		var key = `${socket.hue_user_id}_${data.date}`		
 		
 		var file = files[key]
 
@@ -3970,7 +3936,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return get_out(socket)
 		}
 
-		if(data.username === socket.username)
+		if(data.username === socket.hue_username)
 		{
 			return get_out(socket)
 		}
@@ -3995,7 +3961,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}			
 
-		var sockets = get_user_sockets_per_room_by_username(socket.room_id, data.username)
+		var sockets = get_user_sockets_per_room_by_username(socket.hue_room_id, data.username)
 
 		if(sockets.length > 0)
 		{
@@ -4003,8 +3969,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				user_emit(socc, 'whisper', 
 				{
-					room: socket.room_id,
-					username: socket.username,
+					room: socket.hue_room_id,
+					username: socket.hue_username,
 					message: data.message
 				})
 			}
@@ -4020,9 +3986,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		var amount = 0
 
-		for(var room_id of user_rooms[socket.user_id])
+		for(var room_id of user_rooms[socket.hue_user_id])
 		{
-			for(var socc of get_user_sockets_per_room(room_id, socket.user_id))
+			for(var socc of get_user_sockets_per_room(room_id, socket.hue_user_id))
 			{
 				if(socc.id !== socket.id)
 				{
@@ -4054,14 +4020,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	function check_permission(socket, permission)
 	{
-		if(socket.role === "admin" || socket.role === "op")
+		if(socket.hue_role === "admin" || socket.hue_role === "op")
 		{
 			return true
 		}
 
-		else if(vtypes.indexOf(socket.role) !== -1)
+		else if(vtypes.indexOf(socket.hue_role) !== -1)
 		{
-			if(rooms[socket.room_id][`${socket.role}_${permission}_permission`])
+			if(rooms[socket.hue_room_id][`${socket.hue_role}_${permission}_permission`])
 			{
 				return true
 			}
@@ -4177,18 +4143,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		try
 		{
-			if(io.sockets.adapter.rooms[socket.room_id] === undefined)
+			if(io.sockets.adapter.rooms[socket.hue_room_id] === undefined)
 			{
 				return false
 			}
 
-			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
+			var ids = Object.keys(io.sockets.adapter.rooms[socket.hue_room_id].sockets)
 
 			for(var id of ids)
 			{
 				var socc = io.sockets.connected[id]
 
-				if(socc.id !== socket.id && socc.user_id === socket.user_id)
+				if(socc.id !== socket.id && socc.hue_user_id === socket.hue_user_id)
 				{
 					return true
 				}
@@ -4215,7 +4181,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				var socc = io.sockets.connected[id]
 
-				if(socc.user_id === user_id)
+				if(socc.hue_user_id === user_id)
 				{
 					clients.push(socc)
 				}
@@ -4242,7 +4208,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				var socc = io.sockets.connected[id]
 
-				if(socc.username === username)
+				if(socc.hue_username === username)
 				{
 					clients.push(socc)
 				}
@@ -4261,13 +4227,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		try
 		{
-			var user = rooms[socket.room_id].userlist[socket.user_id]
+			var user = rooms[socket.hue_room_id].userlist[socket.hue_user_id]
 
-			user.user_id = socket.user_id
-			user.username = socket.username
-			user.role = socket.role
-			user.profile_image = socket.profile_image
-			user.email = socket.email
+			user.user_id = socket.hue_user_id
+			user.username = socket.hue_username
+			user.role = socket.hue_role
+			user.profile_image = socket.hue_profile_image
+			user.email = socket.hue_email
 		}
 
 		catch(err)
@@ -4343,17 +4309,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		try
 		{
-			var ids = Object.keys(io.sockets.adapter.rooms[socket.room_id].sockets)
+			var ids = Object.keys(io.sockets.adapter.rooms[socket.hue_room_id].sockets)
 			
 			for(var i=0; i<ids.length; i++)
 			{
 				var socc = io.sockets.connected[ids[i]]
 
-				if(socc.user_id !== undefined)
+				if(socc.hue_user_id !== undefined)
 				{
-					if(socc.id !== socket.id && socc.user_id === socket.user_id)
+					if(socc.id !== socket.id && socc.hue_user_id === socket.hue_user_id)
 					{
-						if(socc.joining === true)
+						if(socc.hue_joining === true)
 						{
 							return true
 						}
@@ -4372,7 +4338,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	function user_emit(socket, type, args={})
 	{
 		args.type = type
-		args.room = socket.room_id
+		args.room = socket.hue_room_id
 
 		socket.emit('update', args)
 	}
@@ -4381,7 +4347,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		if(typeof socket === "object")
 		{
-			var room_id = socket.room_id
+			var room_id = socket.hue_room_id
 		}
 
 		else
@@ -4398,7 +4364,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		if(typeof socket === "object")
 		{
-			var room_id = socket.room_id
+			var room_id = socket.hue_room_id
 		}
 
 		else

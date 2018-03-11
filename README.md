@@ -274,9 +274,6 @@ If you want to remove it to start fresh:
 "twitch_enabled"
 >Whether twitch features are enabled. If disabled, twitch urls will be discarded when /tv is used. There are checks both in the client and server.
 
-"heartbeat_interval"
->This is a heartbeat used to check whether a user is still properly connected to the system. It is a simple check that tests if socket.nickname is undefined. If it is undefined it sends a signal that refreshes the page. This is probably not necesary since Socket.IO has it's own heartbeat feature so this interval can be a lot bigger, but previous problems lead to this implementation, so it's a safety measure.
-
 "antispam_banTime"
 >How much time in minutes a user is banned from the system after being detected as a spammer by the automatic spam detection system.
 

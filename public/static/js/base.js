@@ -61,7 +61,6 @@ var iup = false
 var gtr = false
 var modal_open = false
 var started = false
-var connections = 0
 var afk_timer
 var afk = false
 var alert_mode = 0
@@ -614,20 +613,25 @@ function socket_emit(dest, obj)
 
 function start_socket()
 {
-	socket = io('/')
-
-	socket.on('connect', function() 
+	socket = io('/',
 	{
-		if(connections > 0)
-		{
-			refresh()
-			return
-		}
+		reconnection: false
+	})
 
+	socket.on('connect', () =>
+	{
 		socket_emit('join_room', {room_id:room_id, user_id:user_id, token:jwt_token})
 	})
 
-	socket.on('update', function(data) 
+	socket.on('disconnect', (reason) => 
+	{
+		setTimeout(function()
+		{
+			refresh()
+		}, 2000)
+	})
+
+	socket.on('update', (data) =>
 	{
 		if(data.type === 'joined')
 		{
@@ -637,7 +641,6 @@ function start_socket()
 				return
 			}
 
-			connections += 1
 			room_name = data.room_name
 			set_username(data.username)
 			set_email(data.email)
@@ -669,7 +672,6 @@ function start_socket()
 
 			chat_scroll_bottom()
 			make_main_container_visible()
-			start_heartbeat()
 
 			date_joined = Date.now()
 
@@ -700,11 +702,6 @@ function start_socket()
 		else if(data.type === 'chat_announcement')
 		{
 			chat_announce({brk1:'###', brk2:'###', msg:data.msg})
-		}
-
-		else if(data.type === 'connection_lost')
-		{
-			refresh()
 		}
 
 		else if(data.type === 'image_change')
@@ -1043,19 +1040,6 @@ function start_socket()
 			msg_info.show("You must wait a while before creating another room")
 		}
 	})
-}
-
-function start_heartbeat()
-{
-	setInterval(function()
-	{
-		if(!socket.connected)
-		{
-			refresh()
-		}
-
-		socket_emit('heartbeat', {})
-	}, heartbeat_interval)
 }
 
 function setup_radio(data)

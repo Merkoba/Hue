@@ -43,7 +43,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.default_topic_admin = config.default_topic_admin
 	c.vars.default_topic_unclaimed = config.default_topic_unclaimed
 	c.vars.afk_timeout_duration = config.afk_timeout_duration
-	c.vars.heartbeat_interval = config.heartbeat_interval
 	c.vars.youtube_enabled = config.youtube_enabled
 	c.vars.twitch_enabled = config.twitch_enabled
 	c.vars.min_password_length = config.min_password_length
