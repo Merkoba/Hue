@@ -174,6 +174,7 @@ var resize_delay = 200
 var double_tap_delay = 200
 var wheel_delay = 100
 var check_scrollers_delay = 100
+var requesting_roomlist = false
 
 function init()
 {
@@ -2038,17 +2039,23 @@ function singular_or_plural(n, s)
 	return ss
 }
 
-function request_roomlist(filter="")
+function request_roomlist(filter="", type="public")
 {
+	if(requesting_roomlist)
+	{
+		return false
+	}
+
+	requesting_roomlist = true
+
 	roomlist_filter_string = filter
 
-	socket_emit("roomlist", {type:"public"})
-}
+	socket_emit("roomlist", {type:type})
 
-function request_visited_roomlist(filter="")
-{
-	roomlist_filter_string = filter
-	socket_emit("roomlist", {type:"visited"})
+	setTimeout(function()
+	{
+		requesting_roomlist = false
+	}, 1000)
 }
 
 function start_roomlist_click_events()
@@ -4515,12 +4522,12 @@ function send_to_chat(msg, to_history=true)
 
 			else if(oiEquals(lmsg, '/visited'))
 			{
-				request_visited_roomlist()
+				request_roomlist("", "visited")
 			}
 
 			else if(oiStartsWith(lmsg, '/visited'))
 			{
-				request_visited_roomlist(arg)
+				request_roomlist(arg, "visited")
 			}
 
 			else if(oiEquals(lmsg, '/roomname'))

@@ -33,7 +33,7 @@
 		<script src="/static/js/utilz.js?ver=3"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1042"></script>
+		<script src="/static/js/base.js?ver=1043"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=297"/>
 
@@ -212,7 +212,7 @@
 		<script id='template_menu' type='text/x-handlebars-template'>
 			<div id='menu' class='unselectable'>
 
-				<div class='menu_item action inline' onclick="request_visited_roomlist()">Visited Rooms</div>
+				<div class='menu_item action inline' onclick="request_roomlist('', 'visited')">Visited Rooms</div>
 				<div></div>
 				<div class='menu_item action inline' onclick="request_roomlist()">Public Rooms</div>
 				<div></div>
@@ -774,7 +774,7 @@
 			<div id='locked_menu' class='unselectable'>
 				<div>You are banned from the main room</div>
 				<div class='spacer3'></div>
-				<div class='menu_item' onclick="request_visited_roomlist()">Visited Rooms</div>
+				<div class='menu_item' onclick="request_roomlist('', 'visited')">Visited Rooms</div>
 				<div class='menu_item' onclick="request_roomlist()">Public Rooms</div>
 				<div class='menu_item' onclick="show_goto_room()">Go To Room</div>				
 				<div class='menu_item' onclick='show_create_room()'>Create Room</div>
