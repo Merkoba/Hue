@@ -2954,11 +2954,25 @@ function activate_key_detection()
 			return
 		}
 
+		else if(e.key === "Home")
+		{
+			goto_top()
+			e.preventDefault()
+			return
+		}
+
+		else if(e.key === "End")
+		{
+			goto_bottom(true)
+			e.preventDefault()
+			return
+		}				
+
 		else if(e.key === "PageUp")
 		{
 			scroll_up(big_keyboard_scroll)
 			e.preventDefault()
-			return			
+			return
 		}
 
 		else if(e.key === "PageDown")
@@ -5339,6 +5353,11 @@ function announce_new_username(data)
 			chat_announce({brk1:'~', brk2:'~', msg:`${data.old_username} is now known as ${data.username}`})
 		}
 	}
+}
+
+function goto_top()
+{
+	$("#chat_area").scrollTop(0)
 }
 
 function goto_bottom(force=false)
@@ -11198,7 +11217,7 @@ function go_up()
 
 	if(!step)
 	{
-		$("#chat_area").scrollTop(0)
+		goto_top()
 	}
 }
 
