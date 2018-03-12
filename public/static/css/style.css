@@ -513,7 +513,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .ui_item_uname
 {
-	font-size: 1.2em;	
+	font-size: 1.3em;	
 	cursor: pointer;
 }
 
@@ -1185,7 +1185,8 @@ input[type=text], textarea
 	justify-content: center;
 	align-items: center;
 	background-color: #b17fbf;
-	transition: opacity 1.6s linear;	
+	transition: opacity 1.6s linear;
+	pointer-events: none;
 }
 
 #loading_spinner 

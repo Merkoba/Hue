@@ -674,8 +674,9 @@ function start_socket()
 			make_main_container_visible()
 
 			date_joined = Date.now()
-
 			started = true
+
+			at_startup()
 		}
 
 		else if(data.type === 'typing')
@@ -1345,6 +1346,12 @@ function set_theme()
 		color: ${font_color} !important;
 	}
 
+	.Msg-titlebar
+	{
+		background-color: ${background_color_2} !important;
+		color: ${font_color} !important;
+	}
+
 	.Msg-window-inner-x:hover
 	{
 		background-color: ${background_color_2} !important;
@@ -1395,7 +1402,11 @@ function userjoin(data)
 
 function update_usercount(usercount)
 {
-	$('#usercount').html(`${singular_or_plural(usercount, "Users")} Online`)
+	var s = `${singular_or_plural(usercount, "Users")} Online`
+
+	$('#usercount').html(s)
+	
+	msg_userlist.set_title(s)
 }
 
 function addto_userlist(uname, rol, pi)
@@ -3852,9 +3863,12 @@ function change(args={})
 		return false
 	}
 
-	if(!first_tv_played)
+	if(args.type === "tv")
 	{
-		args.play = false
+		if(!first_tv_played)
+		{
+			args.play = false
+		}
 	}
 
 	var setter = ""
@@ -5626,11 +5640,6 @@ function start_radio()
 
 			youtube_player.setVolume(get_nice_volume($("#audio")[0].volume))
 		}
-
-		else
-		{
-			return false
-		}
 	}
 
 	$('#playing_icon').css('display', 'inline-block')
@@ -5638,8 +5647,6 @@ function start_radio()
 	$('#toggle_now_playing_text').html('Stop Radio')
 
 	radio_started = true
-
-	last_radio_change = radio_source
 }
 
 function stop_radio()
@@ -7057,6 +7064,7 @@ function start_msg()
 		Object.assign({}, common,
 		{		
 			id: "userlist",
+			enable_titlebar: true,
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7702,6 +7710,12 @@ function get_settings()
 		changed = true
 	}
 
+	if(settings.at_startup === undefined)
+	{
+		settings.at_startup = settings_default_at_startup
+		changed = true
+	}
+
 	if(changed)
 	{
 		save_settings()
@@ -7735,6 +7749,7 @@ function start_settings_state()
 			$(this).prop('selected', true)
 		}
 	})	
+	$("#setting_at_startup").val(settings.at_startup)
 }
 
 function start_settings_listeners()
@@ -7753,6 +7768,7 @@ function start_settings_listeners()
 	$("#setting_double_tap_2").blur(setting_double_tap_2_action)
 	$("#setting_double_tap_3").blur(setting_double_tap_3_action)
 	$("#setting_afk_delay").blur(setting_afk_delay_action)
+	$("#setting_at_startup").blur(setting_at_startup_action)
 }
 
 function call_setting_actions(save=true)
@@ -7968,6 +7984,23 @@ function setting_afk_delay_action(save=true)
 	{
 		save_settings()
 	}
+}
+
+function setting_at_startup_action(save=true)
+{
+	var cmd = utilz.clean_string2($("#setting_at_startup").val())
+
+	$("#setting_at_startup").val(cmd)
+
+	if(settings.at_startup !== cmd)
+	{
+		settings.at_startup = cmd
+		
+		if(save)
+		{
+			save_settings()
+		}
+	}	
 }
 
 function get_room_settings()
@@ -8380,7 +8413,15 @@ function onYouTubePlayerReady()
 
 	if(radio_type === "youtube")
 	{
-		change({type:"radio", notify:false})
+		if(radio_started)
+		{
+			change({type:"radio", notify:false, force:true})	
+		}
+
+		else
+		{
+			change({type:"radio", notify:false})
+		}
 	}
 }
 
@@ -11257,4 +11298,12 @@ function go_down()
 	{
 		goto_bottom(true)
 	}	
+}
+
+function at_startup()
+{
+	if(settings.at_startup)
+	{
+		send_to_chat(settings.at_startup)
+	}
 }

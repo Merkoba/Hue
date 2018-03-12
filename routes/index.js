@@ -62,6 +62,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.settings_default_beep_on_highlights = config.settings_default_beep_on_highlights
 	c.vars.settings_default_beep_on_media_change = config.settings_default_beep_on_media_change
 	c.vars.settings_default_beep_on_user_joins = config.settings_default_beep_on_user_joins
+	c.vars.settings_default_at_startup = config.settings_default_at_startup
 	c.vars.double_tap_key = config.double_tap_key
 	c.vars.double_tap_key_2 = config.double_tap_key_2
 	c.vars.double_tap_key_3 = config.double_tap_key_3
