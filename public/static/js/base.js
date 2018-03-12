@@ -11141,7 +11141,7 @@ function execute_javascript(arg)
 	chat_announce({brk1:'[', brk2:']', msg:`js: ${r}`, onclick:f})
 }
 
-function make_safe(text, html=false)
+function make_safe(text, html=false, urlize=true)
 {
 	var c = $("<div></div>")
 
@@ -11149,7 +11149,15 @@ function make_safe(text, html=false)
 
 	var c_text = c.find("#msg_info_text").eq(0)
 
-	c_text.text(text)
+	if(urlize)
+	{
+		c_text.text(text).urlize()
+	}
+
+	else
+	{
+		c_text.text(text)
+	}
 
 	if(html)
 	{
