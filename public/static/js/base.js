@@ -100,6 +100,7 @@ var msg_played
 var msg_image
 var msg_profile
 var msg_info
+var msg_info2
 var msg_whisper
 var msg_image_picker
 var msg_tv_picker
@@ -6108,7 +6109,7 @@ function chat_search(filter=false)
 	if(!filter)
 	{
 		$("#chat_search_container").html("Search for chat messages")
-		update_modal_scrollbar("info")		
+		update_modal_scrollbar("chat_search")		
 		return
 	}
 
@@ -7226,6 +7227,34 @@ function start_msg()
 		})
 	)
 
+	msg_info2 = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "info2",
+			enable_titlebar: true,
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				instance.content.innerHTML = ""
+				instance.titlebar.innerHTML = ""
+			}
+		})
+	)
+
 	msg_image_picker = Msg.factory
 	(
 		Object.assign({}, common,
@@ -7369,6 +7398,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "highlights",
+			enable_titlebar: true,
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7395,6 +7425,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "image_history",
+			enable_titlebar: true,
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7421,6 +7452,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "tv_history",
+			enable_titlebar: true,
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7447,6 +7479,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "radio_history",
+			enable_titlebar: true,
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7473,6 +7506,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "input_history",
+			enable_titlebar: true,
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7499,6 +7533,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "chat_search",
+			enable_titlebar: true,
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7572,6 +7607,14 @@ function start_msg()
 	msg_locked.set(template_locked_menu())
 
 	msg_info.create()
+	msg_info2.create()
+
+	msg_input_history.set_title("Input History")
+	msg_highlights.set_title("Highlights")
+	msg_chat_search.set_title("Search")
+	msg_image_history.set_title("Image History")
+	msg_tv_history.set_title("TV History")
+	msg_radio_history.set_title("Radio History")
 }
 
 function info_vars_to_false()
@@ -8492,7 +8535,7 @@ function show_userinfo()
 
 function show_status()
 {
-	msg_info.show(template_status({info:get_status_html()}), function()
+	msg_info2.show(["Room Status", template_status({info:get_status_html()})], function()
 	{
 		stu = true
 	})
@@ -8759,7 +8802,7 @@ function show_details(data)
 	h.find("#details_reg_date").eq(0).text(nice_date(user_reg_date))
 	h.find("#details_joined_room").eq(0).text(nice_date(date_joined))
 
-	msg_info.show(h.html())
+	msg_info2.show(["User Details", h.html()])
 }
 
 function show_log_messages()
@@ -10379,9 +10422,9 @@ function send_whisper()
 
 	var f = function()
 	{
-		var s = make_safe(whisper, `<div class='spacer3'></div><div class='small_button' id='modal_send_whisper'>Send whisper to ${uname}</div>`)
+		var s = make_safe(whisper, `<div class='spacer3'></div><div class='small_button' id='modal_send_whisper'>Send Another Whisper</div>`)
 
-		msg_info.show(s, function()
+		msg_info2.show([`Whisper sent to ${uname}`, s], function()
 		{
 			$("#modal_send_whisper").click(function()
 			{
@@ -11224,7 +11267,7 @@ function execute_javascript(arg)
 
 	var f = function()
 	{
-		msg_info.show(s)
+		msg_info2.show(["Executed Javascript", s])
 	}
 
 	chat_announce({brk1:'[', brk2:']', msg:`js: ${r}`, onclick:f})
