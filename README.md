@@ -337,6 +337,9 @@ If you want to remove it to start fresh:
 "settings_default_double_tap_3"
 >What command or string to trigger on double tap 3 by default.
 
+"settings_default_at_startup"
+>What command or string to trigger at startup.
+
 "double_tap_key"
 >The key that triggers double tap.
 
