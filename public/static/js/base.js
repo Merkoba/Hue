@@ -7909,6 +7909,7 @@ function setting_other_words_to_highlight_action(save=true)
 	if(settings.other_words_to_highlight !== words)
 	{
 		settings.other_words_to_highlight = words
+
 		generate_highlight_words_regex()
 		
 		if(save)
@@ -7920,13 +7921,13 @@ function setting_other_words_to_highlight_action(save=true)
 
 function setting_double_tap_action(save=true)
 {
-	var cmd = utilz.clean_string2($("#setting_double_tap").val())
+	var cmds = utilz.clean_string7($("#setting_double_tap").val())
 
-	$("#setting_double_tap").val(cmd)
+	$("#setting_double_tap").val(cmds)
 
-	if(settings.double_tap !== cmd)
+	if(settings.double_tap !== cmds)
 	{
-		settings.double_tap = cmd
+		settings.double_tap = cmds
 		
 		if(save)
 		{
@@ -7937,13 +7938,13 @@ function setting_double_tap_action(save=true)
 
 function setting_double_tap_2_action(save=true)
 {
-	var cmd = utilz.clean_string2($("#setting_double_tap_2").val())
+	var cmds = utilz.clean_string7($("#setting_double_tap_2").val())
 
-	$("#setting_double_tap_2").val(cmd)
+	$("#setting_double_tap_2").val(cmds)
 
-	if(settings.double_tap_2 !== cmd)
+	if(settings.double_tap_2 !== cmds)
 	{
-		settings.double_tap_2 = cmd
+		settings.double_tap_2 = cmds
 		
 		if(save)
 		{
@@ -7954,13 +7955,13 @@ function setting_double_tap_2_action(save=true)
 
 function setting_double_tap_3_action(save=true)
 {
-	var cmd = utilz.clean_string2($("#setting_double_tap_3").val())
+	var cmds = utilz.clean_string7($("#setting_double_tap_3").val())
 
-	$("#setting_double_tap_3").val(cmd)
+	$("#setting_double_tap_3").val(cmds)
 
-	if(settings.double_tap_3 !== cmd)
+	if(settings.double_tap_3 !== cmds)
 	{
-		settings.double_tap_3 = cmd
+		settings.double_tap_3 = cmds
 		
 		if(save)
 		{
@@ -7988,13 +7989,13 @@ function setting_afk_delay_action(save=true)
 
 function setting_at_startup_action(save=true)
 {
-	var cmd = utilz.clean_string2($("#setting_at_startup").val())
+	var cmds = utilz.clean_string7($("#setting_at_startup").val())
 
-	$("#setting_at_startup").val(cmd)
+	$("#setting_at_startup").val(cmds)
 
-	if(settings.at_startup !== cmd)
+	if(settings.at_startup !== cmds)
 	{
-		settings.at_startup = cmd
+		settings.at_startup = cmds
 		
 		if(save)
 		{
@@ -10198,7 +10199,7 @@ function generate_highlight_words_regex()
 
 	for(var i=0; i<lines.length; i++)
 	{
-		var line = lines[i].trim()
+		var line = lines[i]
 
 		words += escape_special_characters(line)
 
@@ -10571,7 +10572,12 @@ function on_double_tap()
 {
 	if(settings.double_tap)
 	{
-		send_to_chat(settings.double_tap)
+		var cmds = settings.double_tap.split('\n')
+
+		for(var cmd of cmds)
+		{
+			send_to_chat(cmd)
+		}
 	}
 }
 
@@ -10579,7 +10585,12 @@ function on_double_tap_2()
 {
 	if(settings.double_tap_2)
 	{
-		send_to_chat(settings.double_tap_2)
+		var cmds = settings.double_tap_2.split('\n')
+
+		for(var cmd of cmds)
+		{
+			send_to_chat(cmd)
+		}
 	}
 }
 
@@ -10587,7 +10598,25 @@ function on_double_tap_3()
 {
 	if(settings.double_tap_3)
 	{
-		send_to_chat(settings.double_tap_3)
+		var cmds = settings.double_tap_3.split('\n')
+
+		for(var cmd of cmds)
+		{
+			send_to_chat(cmd)
+		}
+	}
+}
+
+function at_startup()
+{
+	if(settings.at_startup)
+	{
+		var cmds = settings.at_startup.split('\n')
+
+		for(var cmd of cmds)
+		{
+			send_to_chat(cmd)
+		}
 	}
 }
 
@@ -11298,12 +11327,4 @@ function go_down()
 	{
 		goto_bottom(true)
 	}	
-}
-
-function at_startup()
-{
-	if(settings.at_startup)
-	{
-		send_to_chat(settings.at_startup)
-	}
 }

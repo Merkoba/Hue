@@ -34,7 +34,23 @@ var Utilz = function()
 
 	utilz.clean_string7 = function(s)
 	{
-		return s.replace(/[ \t\f\v]+/g, ' ').replace(/\n+/g, '\n').trim()
+		var ns = []
+
+		var split = s.split('\n')
+
+		for(var line of split)
+		{
+			var ps = line.replace(/[ \t\f\v]+/g, ' ').trim()
+
+			if(ps !== "")
+			{
+				ns.push(ps)
+			}
+		}
+
+		var pf = ns.join('\n')
+
+		return pf
 	}	
 
 	utilz.get_random_int = function(min, max)
