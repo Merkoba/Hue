@@ -2740,6 +2740,16 @@ function activate_key_detection()
 
 		if(modal_open)
 		{
+			if(e.key === "Escape")
+			{
+				if(e.shiftKey)
+				{
+					close_all_modals()
+					e.preventDefault()
+					return
+				}
+			}
+
 			if(iup)
 			{
 				if(msg_image_picker.is_highest())
@@ -2996,20 +3006,13 @@ function activate_key_detection()
 
 		else if(e.key === "Escape")
 		{
-			if(e.shiftKey)
-			{
-				clear_chat()
-			}
-
-			else
+			if(!e.shiftKey)
 			{
 				clear_input()
-
 				reset_input_history_index()
+				e.preventDefault()
+				return
 			}
-
-			e.preventDefault()
-			return
 		}
 
 		else if(e.key === "Tab")
@@ -4425,6 +4428,7 @@ function register_commands()
 	commands.push('/changeimage')
 	commands.push('/changetv')
 	commands.push('/changeradio')
+	commands.push('/closeall')
 
 	commands.sort()
 
@@ -5085,6 +5089,11 @@ function send_to_chat(msg, to_history=true)
 			else if(oiEquals(lmsg, '/changeradio'))
 			{
 				show_radio_picker()
+			}
+
+			else if(oiEquals(lmsg, '/closeall'))
+			{
+				close_all_modals()
 			}
 
 			else
@@ -7656,6 +7665,11 @@ function after_modal_close(instance)
 		modal_open = false
 		focus_input()
 	}
+}
+
+function close_all_modals()
+{
+	msg_menu.close_all()
 }
 
 function get_settings()
