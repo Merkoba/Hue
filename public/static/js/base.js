@@ -175,6 +175,7 @@ var double_tap_delay = 200
 var wheel_delay = 100
 var check_scrollers_delay = 100
 var requesting_roomlist = false
+var num_keys_pressed = 0
 
 function init()
 {
@@ -218,6 +219,7 @@ function init()
 	font_check()
 	setup_input_history()
 	setup_modal_image()
+	start_focus_events()
 
 	start_socket()
 }
@@ -2682,6 +2684,13 @@ var double_tap_3_timer = (function()
 	}
 })()
 
+function reset_double_tap_keys_pressed()
+{
+	double_tap_key_pressed = 0
+	double_tap_key_2_pressed = 0
+	double_tap_key_3_pressed = 0	
+}
+
 function activate_key_detection()
 {
 	document.addEventListener('keydown', (e) => 
@@ -2691,66 +2700,79 @@ function activate_key_detection()
 			return
 		}
 
-		if(e.key === double_tap_key)
+		if(e.key === "Tab" && e.shiftKey)
 		{
-			if(!e.repeat)
-			{
-				double_tap_key_pressed += 1
-
-				if(double_tap_key_pressed === 2)
-				{
-					on_double_tap()
-				}
-
-				else
-				{
-					double_tap_timer()
-				}
-			}
+			e.preventDefault()
 		}
 
-		else if(e.key === double_tap_key_2)
+		if(!e.repeat)
 		{
-			if(!e.repeat)
-			{
-				double_tap_key_2_pressed += 1
+			num_keys_pressed += 1
 
-				if(double_tap_key_2_pressed === 2)
+			if(num_keys_pressed === 1)
+			{
+				if(e.key === double_tap_key)
 				{
-					on_double_tap_2()
+					double_tap_key_pressed += 1
+
+					if(double_tap_key_pressed === 2)
+					{
+						on_double_tap()
+					}
+
+					else
+					{
+						double_tap_timer()
+					}
+				}
+
+				else if(e.key === double_tap_key_2)
+				{
+					double_tap_key_2_pressed += 1
+
+					if(double_tap_key_2_pressed === 2)
+					{
+						on_double_tap_2()
+					}
+
+					else
+					{
+						double_tap_2_timer()
+					}
+				}
+
+				else if(e.key === double_tap_key_3)
+				{
+					double_tap_key_3_pressed += 1
+
+					if(double_tap_key_3_pressed === 2)
+					{
+						on_double_tap_3()
+					}
+
+					else
+					{
+						double_tap_3_timer()
+					}
 				}
 
 				else
 				{
-					double_tap_2_timer()
-				}
+					reset_double_tap_keys_pressed()
+				}				
 			}
-		}
 
-		else if(e.key === double_tap_key_3)
-		{
-			if(!e.repeat)
+	
+			else
 			{
-				double_tap_key_3_pressed += 1
-
-				if(double_tap_key_3_pressed === 2)
-				{
-					on_double_tap_3()
-				}
-
-				else
-				{
-					double_tap_3_timer()
-				}
+				reset_double_tap_keys_pressed()
 			}
 		}
 
 		else
 		{
-			double_tap_key_pressed = 0
-			double_tap_key_2_pressed = 0
-			double_tap_key_3_pressed = 0
-		}
+			reset_double_tap_keys_pressed()
+		}		
 
 		if(modal_open)
 		{
@@ -2862,17 +2884,16 @@ function activate_key_detection()
 
 			if(stu)
 			{
-				if(msg_info.is_highest())
+				if(msg_info2.is_highest())
 				{
 					if(e.key === "Tab" && e.shiftKey)
 					{
-						msg_info.close()
-						e.preventDefault()
+						msg_info2.close()
 					}
 
 					return
 				}
-			}
+			}			
 
 			if(gtr)
 			{
@@ -3046,6 +3067,19 @@ function activate_key_detection()
 		}
 
 		clear_tabbed()
+	})
+
+	document.addEventListener('keyup', (e) => 
+	{
+		if(!e.repeat)
+		{
+			num_keys_pressed -= 1
+
+			if(num_keys_pressed < 0)
+			{
+				num_keys_pressed = 0
+			}
+		}
 	})
 }
 
@@ -5961,6 +5995,14 @@ function activate_window_visibility_listener()
 	}, false)
 }
 
+function start_focus_events()
+{
+	window.onblur = function() 
+	{
+		num_keys_pressed = 0
+	}
+}
+
 function copy_room_url()
 {
 	if(room_id === main_room_id)
@@ -7264,6 +7306,10 @@ function start_msg()
 			{
 				after_modal_create(instance)
 			},
+			before_show: function(instance)
+			{
+				info2_vars_to_false()
+			},			
 			after_show: function(instance)
 			{
 				after_modal_show(instance)
@@ -7278,6 +7324,7 @@ function start_msg()
 				after_modal_close(instance)
 				instance.content.innerHTML = ""
 				instance.titlebar.innerHTML = ""
+				info2_vars_to_false()
 			}
 		})
 	)
@@ -7660,8 +7707,12 @@ function info_vars_to_false()
 {
 	crm = false
 	orb = false
-	stu = false
 	gtr = false
+}
+
+function info2_vars_to_false()
+{
+	stu = false
 }
 
 function after_modal_create(instance)
