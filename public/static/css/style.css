@@ -627,6 +627,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-bottom: 0.2em;
 }
 
+.setting_toggle_container
+{
+	display: none;
+	padding-top:0.2em;
+}
+
 .spacer1
 {
 	padding-top: 1.1em;

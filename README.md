@@ -364,12 +364,6 @@ If you want to remove it to start fresh:
 "max_user_id_length"
 >After this length, this is clearly not a user id.
 
-"announce_joins"
->Whether to show when a user joins the room.
-
-"announce_parts"
->Whether to show when a user leaves the room.
-
 "image_queue_interval"
 >Minimum time for a changed image to be displayed before changing to the next one. This doesn't take into account the time the image took to load.
 

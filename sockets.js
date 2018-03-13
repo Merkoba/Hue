@@ -3916,7 +3916,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		broadcast_emit(socket, 'typing', {})
+		broadcast_emit(socket, 'typing', {username:socket.hue_username})
 	}
 
 	function whisper(socket, data)

@@ -684,7 +684,7 @@ function start_socket()
 
 		else if(data.type === 'typing')
 		{
-			show_typing()
+			show_typing(data)
 		}		
 
 		else if(data.type === 'chat_msg')
@@ -1379,6 +1379,13 @@ function set_theme()
 		background-color: ${scrollbar_color} !important;
 	}
 
+	.modal_select
+	{
+		color: ${font_color} !important;
+		background-color: ${background_color} !important;
+		border: 1px solid ${background_color_2} !important;
+	}
+
 	</style>
 	`
 
@@ -1394,7 +1401,7 @@ function userjoin(data)
 {
 	addto_userlist(data.username, data.role, data.profile_image)
 
-	if(announce_joins && check_permission(data.role, "chat"))
+	if(settings.show_joins && check_permission(data.role, "chat"))
 	{
 		var prof_image = get_user_by_username(data.username).profile_image
 
@@ -1403,7 +1410,7 @@ function userjoin(data)
 			show_profile(data.username, prof_image)
 		}
 
-		chat_announce({brk1:'--', brk2:'--', msg:`${data.username} has joined`, save:true, onclick:f})
+		chat_announce({brk1:'--', brk2:'--', msg:`${data.username} has joined`, save:true, onclick:f, uname:data.username})
 		
 		if(data.username !== username)
 		{
@@ -3650,6 +3657,11 @@ function update_chat(args={})
 
 	fill_defaults(args, def_args)
 
+	if(user_is_ignored(args.uname))
+	{
+		return false
+	}
+
 	if(args.msg.startsWith('//'))
 	{
 		args.msg = args.msg.slice(1)
@@ -4159,6 +4171,14 @@ function chat_announce(args={})
 	}
 
 	fill_defaults(args, def_args)
+
+	if(args.uname)
+	{
+		if(user_is_ignored(args.uname))
+		{
+			return false
+		}
+	}
 
 	var containerclasses = "announcement_content_container"
 	var contclasses = "announcement_content"
@@ -7050,9 +7070,9 @@ function disconnected(data)
 {
 	removefrom_userlist(data.username)
 
-	if(announce_parts && check_permission(data.role, "chat"))
+	if(settings.show_parts && check_permission(data.role, "chat"))
 	{
-		chat_announce({brk1:'--', brk2:'--', msg:`${data.username} has left`, save:true})
+		chat_announce({brk1:'--', brk2:'--', msg:`${data.username} has left`, save:true, uname:data.username})
 	}
 }
 
@@ -7060,9 +7080,9 @@ function pinged(data)
 {
 	removefrom_userlist(data.username)
 
-	if(announce_parts && check_permission(data.role, "chat"))
+	if(settings.show_parts && check_permission(data.role, "chat"))
 	{
-		chat_announce({brk1:'--', brk2:'--', msg:`${data.username} has left (Ping Timeout)`, save:true})
+		chat_announce({brk1:'--', brk2:'--', msg:`${data.username} has left (Ping Timeout)`, save:true, uname:data.username})
 	}
 }
 
@@ -7070,14 +7090,14 @@ function kicked(data)
 {
 	removefrom_userlist(data.username)
 
-	chat_announce({brk1:'--', brk2:'--', msg:`${data.username} was kicked by ${data.info1}`, save:true})
+	chat_announce({brk1:'--', brk2:'--', msg:`${data.username} was kicked by ${data.info1}`, save:true, uname:data.username})
 }
 
 function banned(data)
 {
 	removefrom_userlist(data.username)
 
-	chat_announce({brk1:'--', brk2:'--', msg:`${data.username} was banned by ${data.info1}`, save:true})
+	chat_announce({brk1:'--', brk2:'--', msg:`${data.username} was banned by ${data.info1}`, save:true, uname:data.username})
 }
 
 function start_msg()
@@ -7881,6 +7901,24 @@ function get_settings()
 		changed = true
 	}
 
+	if(settings.ignored_usernames === undefined)
+	{
+		settings.ignored_usernames = settings_default_ignored_usernames
+		changed = true
+	}
+
+	if(settings.show_joins === undefined)
+	{
+		settings.show_joins = settings_default_show_joins
+		changed = true
+	}
+
+	if(settings.show_parts === undefined)
+	{
+		settings.show_parts = settings_default_show_parts
+		changed = true
+	}
+
 	if(changed)
 	{
 		save_settings()
@@ -7915,6 +7953,9 @@ function start_settings_state()
 		}
 	})	
 	$("#setting_at_startup").val(settings.at_startup)
+	$("#setting_ignored_usernames").val(settings.ignored_usernames)
+	$("#setting_show_joins").prop("checked", settings.show_joins)
+	$("#setting_show_parts").prop("checked", settings.show_parts)
 }
 
 function start_settings_listeners()
@@ -7934,16 +7975,19 @@ function start_settings_listeners()
 	$("#setting_double_tap_3").blur(setting_double_tap_3_action)
 	$("#setting_afk_delay").blur(setting_afk_delay_action)
 	$("#setting_at_startup").blur(setting_at_startup_action)
+	$("#setting_ignored_usernames").blur(setting_ignored_usernames_action)
+	$("#setting_show_joins").change(setting_show_joins_action)
+	$("#setting_show_parts").change(setting_show_parts_action)
 }
 
 function call_setting_actions(save=true)
 {
 	setting_background_image_action(save)
 	setting_custom_scrollbars_action(save)
-	setting_beep_on_messages(save)
-	setting_beep_on_highlights(save)
-	setting_beep_on_media_change(save)
-	setting_beep_on_user_joins(save)
+	setting_beep_on_messages_action(save)
+	setting_beep_on_highlights_action(save)
+	setting_beep_on_media_change_action(save)
+	setting_beep_on_user_joins_action(save)
 	setting_modal_effects_action(save)
 	setting_highlight_current_username_action(save)
 	setting_case_insensitive_highlights_action(save)
@@ -7952,6 +7996,8 @@ function call_setting_actions(save=true)
 	setting_double_tap_2_action(save)
 	setting_double_tap_3_action(save)	
 	setting_afk_delay_action(save)	
+	setting_show_joins_action(save)	
+	setting_show_parts_action(save)	
 }
 
 function setting_background_image_action(save=true)
@@ -8167,6 +8213,43 @@ function setting_at_startup_action(save=true)
 			save_settings()
 		}
 	}	
+}
+
+function setting_ignored_usernames_action(save=true)
+{
+	var unames = utilz.clean_string7($("#setting_ignored_usernames").val())
+
+	$("#setting_ignored_usernames").val(unames)
+
+	if(settings.ignored_usernames !== unames)
+	{
+		settings.ignored_usernames = unames
+		
+		if(save)
+		{
+			save_settings()
+		}
+	}	
+}
+
+function setting_show_joins_action(save=true)
+{
+	settings.show_joins = $("#setting_show_joins").prop("checked")
+	
+	if(save)
+	{
+		save_settings()	
+	}
+}
+
+function setting_show_parts_action(save=true)
+{
+	settings.show_parts = $("#setting_show_parts").prop("checked")
+	
+	if(save)
+	{
+		save_settings()	
+	}
 }
 
 function get_room_settings()
@@ -8648,6 +8731,31 @@ function setup_userinfo()
 	$("#setting_double_tap_key").text(double_tap_key)
 	$("#setting_double_tap_2_key").text(double_tap_key_2)
 	$("#setting_double_tap_3_key").text(double_tap_key_3)
+
+	$(".setting_toggle").each(function()
+	{
+		$(this).click(function()
+		{
+			var container = $(this).next('.setting_toggle_container')
+			var display = container.css('display')
+
+			if(display === "none")
+			{
+				container.css("display", "block")
+
+				$(this).html(`- ${$(this).html().substring(2)}`)
+			}
+
+			else
+			{
+				container.css("display", "none")
+
+				$(this).html(`+ ${$(this).html().substring(2)}`)
+			}
+
+			update_modal_scrollbar("userinfo")
+		})	
+	})	
 }
 
 function show_userinfo()
@@ -10142,8 +10250,13 @@ var typing_remove_timer = (function()
 	}
 })()
 
-function show_typing()
+function show_typing(data)
 {
+	if(user_is_ignored(data.username))
+	{
+		return false
+	}
+
 	show_pencil()
 	typing_remove_timer()
 }
@@ -11497,4 +11610,19 @@ function go_down()
 	{
 		goto_bottom(true)
 	}	
+}
+
+function user_is_ignored(uname)
+{
+	if(uname === username)
+	{
+		return false
+	}
+
+	if(settings.ignored_usernames.indexOf(uname) !== -1)
+	{
+		return true
+	}
+
+	return false
 }
