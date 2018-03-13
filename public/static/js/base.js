@@ -305,17 +305,17 @@ function compile_templates()
 
 function help()
 {
-	msg_info.show(template_help())
+	msg_info2.show(["Basic Features", template_help()])
 }
 
 function help2()
 {
-	msg_info.show(template_help2())
+	msg_info2.show(["Additional Features", template_help2()])
 }
 
 function help3()
 {
-	msg_info.show(template_help3())
+	msg_info2.show(["Administration Features", template_help3()])
 }
 
 function show_public()
