@@ -1381,8 +1381,8 @@ function set_theme()
 
 	.modal_select
 	{
-		color: ${font_color} !important;
-		background-color: ${background_color} !important;
+		color: ${background_color} !important;
+		background-color: ${font_color} !important;
 		border: 1px solid ${background_color_2} !important;
 	}
 

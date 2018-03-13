@@ -943,10 +943,12 @@ select
 	font-size: 0.95em;	
 }
 
-.setting_select
+.modal_select
 {
-	text-align-last: center;	
-	width: 100%;
+	text-align-last: center;
+	padding-left: 0.25em;
+	padding-right: 0.25em;
+	cursor: pointer;
 }
 
 .msg

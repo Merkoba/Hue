@@ -33,9 +33,9 @@
 		<script src="/static/js/utilz.js?ver=4"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1060"></script>
+		<script src="/static/js/base.js?ver=1061"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=301"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=302"/>
 
 		<script>
 
@@ -244,7 +244,7 @@
 
 					<div class='small_padding_bottom'>Images</div>
 
-					<select id='admin_enable_images'>
+					<select id='admin_enable_images' class='modal_select'>
 						<option value="true">Enabled</option>
 						<option value="false">Disabled</option>
 					</select>
@@ -253,7 +253,7 @@
 					
 					<div class='small_padding_bottom'>TV</div>
 
-					<select id='admin_enable_tv'>
+					<select id='admin_enable_tv' class='modal_select'>
 						<option value="true">Enabled</option>
 						<option value="false">Disabled</option>
 					</select>
@@ -262,7 +262,7 @@
 
 					<div class='small_padding_bottom'>Radio</div>
 
-					<select id='admin_enable_radio'>
+					<select id='admin_enable_radio' class='modal_select'>
 						<option value="true">Enabled</option>
 						<option value="false">Disabled</option>
 					</select>
@@ -278,7 +278,7 @@
 
 					<div class='small_padding_bottom'>Background Image</div>
 
-					<select id='admin_background_image_select'>
+					<select id='admin_background_image_select' class='modal_select'>
 						<option value="true">Enabled</option>
 						<option value="false">Disabled</option>
 					</select>						
@@ -411,7 +411,7 @@
 
 					<div class='small_padding_bottom'>Privacy</div>
 
-					<select id='admin_privacy'>
+					<select id='admin_privacy' class='modal_select'>
 						<option value="true">Public</option>
 						<option value="false">Private</option>
 					</select>
@@ -420,7 +420,7 @@
 
 					<div class='small_padding_bottom'>Log</div>
 
-					<select id='admin_log'>
+					<select id='admin_log' class='modal_select'>
 						<option value="true">Enabled</option>
 						<option value="false">Disabled</option>
 					</select>						
@@ -600,21 +600,17 @@
 				</div>				
 				
 				<div class='spacer1'></div>
-
-				<div class="setting_title">Go AFK After</div>
 				
-				<select class='setting_select modal_select' id='setting_afk_delay'>
-					<option value='false' selected disabled>AFK means media won't change</option>
-					<option value='false' selected disabled>And you won't get sound notifications</option>
-					<option value='false' selected disabled>After being away for this long</option>
+				<div class="setting_title" title="AFK means you won't get sound notifications and media won't change">Go AFK</div>
+				<select class='modal_select' id='setting_afk_delay'>
 					<option value='0' selected>Instantly</option>
-					<option value='60000' selected>1 Minute</option>
-					<option value='120000' selected>2 Minutes</option>
-					<option value='300000' selected>5 Minutes</option>
-					<option value='600000' selected>10 Minutes</option>
-					<option value='1200000' selected>20 Minutes</option>
-					<option value='1800000' selected>30 Minutes</option>
-					<option value='3600000' selected>1 Hour</option>
+					<option value='60000' selected>After 1 Minute</option>
+					<option value='120000' selected>After 2 Minutes</option>
+					<option value='300000' selected>After 5 Minutes</option>
+					<option value='600000' selected>After 10 Minutes</option>
+					<option value='1200000' selected>After 20 Minutes</option>
+					<option value='1800000' selected>After 30 Minutes</option>
+					<option value='3600000' selected>After 1 Hour</option>
 					<option value='never' selected>Never</option>
 				</select>
 
