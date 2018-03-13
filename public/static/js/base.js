@@ -7149,7 +7149,7 @@ function start_msg()
 		{		
 			id: "userlist",
 			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar",
+			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
@@ -7318,7 +7318,7 @@ function start_msg()
 		{
 			id: "info2",
 			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar",
+			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
@@ -7491,7 +7491,7 @@ function start_msg()
 		{
 			id: "highlights",
 			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar",
+			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
@@ -7520,7 +7520,7 @@ function start_msg()
 		{
 			id: "image_history",
 			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar",
+			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
@@ -7549,7 +7549,7 @@ function start_msg()
 		{
 			id: "tv_history",
 			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar",
+			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
@@ -7578,7 +7578,7 @@ function start_msg()
 		{
 			id: "radio_history",
 			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar",
+			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
@@ -7607,7 +7607,7 @@ function start_msg()
 		{
 			id: "input_history",
 			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar",
+			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
@@ -7636,7 +7636,7 @@ function start_msg()
 		{
 			id: "chat_search",
 			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar",
+			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
