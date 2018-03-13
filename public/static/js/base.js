@@ -1331,6 +1331,7 @@ function set_theme()
 
 	var overlay_color = colorlib.rgb_to_rgba(font_color, modal_overlay_opacity)
 	var scrollbar_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
+	var inner_x_width = $("#Msg-window-inner-x-info2").outerWidth()
 
 	var css = `
 	<style class='appended_style'>
@@ -1347,16 +1348,29 @@ function set_theme()
 		color: ${font_color} !important;
 	}
 
-	.Msg-titlebar
-	{
-		background-color: ${background_color_2} !important;
-		color: ${font_color} !important;
-	}
-
 	.Msg-window-inner-x:hover
 	{
 		background-color: ${background_color_2} !important;
 	}	
+
+	.custom_titlebar
+	{
+		background-color: ${background_color_2} !important;
+		color: ${font_color} !important;
+		padding-left: 50.78px !important;
+		padding-right: 10.78px !important;
+		text-align: center !important;
+	}
+
+	.titlebar_inner_x
+	{
+		background-color: ${background_color_2} !important;
+	}
+
+	.titlebar_inner_x:hover
+	{
+		background-color: ${background_color} !important;
+	}
 
 	.nicescroll-cursors
 	{
@@ -7075,6 +7089,8 @@ function start_msg()
 		{		
 			id: "userlist",
 			enable_titlebar: true,
+			titlebar_class: "!custom_titlebar",
+			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7242,6 +7258,8 @@ function start_msg()
 		{
 			id: "info2",
 			enable_titlebar: true,
+			titlebar_class: "!custom_titlebar",
+			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7408,6 +7426,8 @@ function start_msg()
 		{
 			id: "highlights",
 			enable_titlebar: true,
+			titlebar_class: "!custom_titlebar",
+			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7435,6 +7455,8 @@ function start_msg()
 		{
 			id: "image_history",
 			enable_titlebar: true,
+			titlebar_class: "!custom_titlebar",
+			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7462,6 +7484,8 @@ function start_msg()
 		{
 			id: "tv_history",
 			enable_titlebar: true,
+			titlebar_class: "!custom_titlebar",
+			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7489,6 +7513,8 @@ function start_msg()
 		{
 			id: "radio_history",
 			enable_titlebar: true,
+			titlebar_class: "!custom_titlebar",
+			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7516,6 +7542,8 @@ function start_msg()
 		{
 			id: "input_history",
 			enable_titlebar: true,
+			titlebar_class: "!custom_titlebar",
+			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7543,6 +7571,8 @@ function start_msg()
 		{
 			id: "chat_search",
 			enable_titlebar: true,
+			titlebar_class: "!custom_titlebar",
+			window_inner_x_class: "!titlebar_inner_x",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
