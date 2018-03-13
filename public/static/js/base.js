@@ -2916,6 +2916,7 @@ function activate_key_detection()
 					if(e.key === "Enter")
 					{
 						send_whisper()
+						e.preventDefault()
 					}
 					
 					return
@@ -2929,11 +2930,19 @@ function activate_key_detection()
 					if(e.key === "ArrowLeft")
 					{
 						modal_image_prev_click()
+						e.preventDefault()
 					}
 					
 					else if(e.key === "ArrowRight")
 					{
 						modal_image_next_click()
+						e.preventDefault()
+					}
+
+					if(e.key === "Enter")
+					{
+						show_image_history()
+						e.preventDefault()
 					}
 					
 					return
@@ -11126,6 +11135,11 @@ function setup_modal_image()
 
 	var f = function(e)
 	{
+		if(e.ctrlKey || e.shiftKey)
+		{
+			return false
+		}
+
 		var direction = e.deltaY > 0 ? 'down' : 'up'
 
 		if(direction === 'up')
