@@ -2962,7 +2962,7 @@ function activate_key_detection()
 
 			else
 			{
-				send_to_chat($('#input').val())
+				process_message($('#input').val())
 			}
 
 			e.preventDefault()
@@ -4504,650 +4504,28 @@ function register_commands()
 	}
 }
 
-function send_to_chat(msg, to_history=true)
+function is_command(msg)
+{
+	if(msg[0] === '/' && !msg.startsWith('/me ') && !msg.startsWith('/em ') && !msg.startsWith('//'))
+	{
+		return true
+	}
+
+	return false
+}
+
+function process_message(msg, to_history=true, clr_input=true)
 {
 	msg = utilz.clean_string2(msg.substring(0, max_input_length))
 
-	var clr_input = true
-
 	if(msg_is_ok(msg))
 	{
-		if(msg[0] === '/' && !msg.startsWith('/me ') && !msg.startsWith('/em ') && !msg.startsWith('//'))
+		if(is_command(msg))
 		{
-			var a = msg.toLowerCase().split(' ')
+			var ans = execute_command(msg, {to_history:to_history, clr_input:clr_input})
 
-			var lmsg = a[0].split('').sort().join('')
-
-			if(a.length > 1)
-			{
-				lmsg += ' '
-
-				var arg = msg.substring(lmsg.length)
-			}
-
-			if(oiEquals(lmsg, '/clear'))
-			{
-				clear_chat()
-			}
-
-			else if(oiEquals(lmsg, '/unclear'))
-			{
-				unclear_chat()
-			}			
-
-			else if(oiEquals(lmsg, '/enableimages'))
-			{
-				change_room_images_enabled(true)
-			}
-
-			else if(oiEquals(lmsg, '/disableimages'))
-			{
-				change_room_images_enabled(false)
-			}
-
-			else if(oiEquals(lmsg, '/enableradio'))
-			{
-				change_room_radio_enabled(true)
-			}
-
-			else if(oiEquals(lmsg, '/disableradio'))
-			{
-				change_room_radio_enabled(false)
-			}
-
-			else if(oiEquals(lmsg, '/enabletv'))
-			{
-				change_room_tv_enabled(true)
-			}
-
-			else if(oiEquals(lmsg, '/disabletv'))
-			{
-				change_room_tv_enabled(false)
-			}								
-
-			else if(oiEquals(lmsg, '/users'))
-			{
-				show_userlist()
-			}
-
-			else if(oiStartsWith(lmsg, '/users'))
-			{
-				show_userlist(arg)
-			}
-
-			else if(oiEquals(lmsg, '/rooms'))
-			{
-				request_roomlist()
-			}
-
-			else if(oiStartsWith(lmsg, '/rooms'))
-			{
-				request_roomlist(arg)
-			}
-
-			else if(oiEquals(lmsg, '/visited'))
-			{
-				request_roomlist("", "visited")
-			}
-
-			else if(oiStartsWith(lmsg, '/visited'))
-			{
-				request_roomlist(arg, "visited")
-			}
-
-			else if(oiEquals(lmsg, '/roomname'))
-			{
-				show_room()
-			}
-
-			else if(oiStartsWith(lmsg, '/roomname'))
-			{
-				change_room_name(arg)
-			}
-
-			else if(oiEquals(lmsg, '/roomnameedit'))
-			{
-				room_name_edit()
-				to_history = false
-				clr_input = false
-			}
-
-			else if(oiEquals(lmsg, '/played'))
-			{
-				show_played()
-			}
-
-			else if(oiStartsWith(lmsg, '/played'))
-			{
-				show_played(arg)
-			}
-
-			else if(oiEquals(lmsg, '/search'))
-			{
-				show_chat_search()
-			}			
-
-			else if(oiStartsWith(lmsg, '/search'))
-			{
-				show_chat_search(arg)
-			}
-
-			else if(oiEquals(lmsg, '/role'))
-			{
-				show_role()
-			}
-
-			else if(oiStartsWith(lmsg, '/voice1'))
-			{
-				change_role(arg, "voice1")
-			}
-
-			else if(oiStartsWith(lmsg, '/voice2'))
-			{
-				change_role(arg, "voice2")
-			}
-
-			else if(oiStartsWith(lmsg, '/voice3'))
-			{
-				change_role(arg, "voice3")
-			}
-
-			else if(oiStartsWith(lmsg, '/voice4'))
-			{
-				change_role(arg, "voice4")
-			}
-
-			else if(oiStartsWith(lmsg, '/op'))
-			{
-				change_role(arg, "op")
-			}
-
-			else if(oiStartsWith(lmsg, '/admin'))
-			{
-				change_role(arg, "admin")
-			}
-
-			else if(oiEquals(lmsg, '/resetvoices'))
-			{
-				reset_voices()
-			}
-
-			else if(oiEquals(lmsg, '/removeops'))
-			{
-				remove_ops()
-			}
-
-			else if(oiStartsWith(lmsg, '/ban'))
-			{
-				ban(arg)
-			}
-
-			else if(oiStartsWith(lmsg, '/unban'))
-			{
-				unban(arg)
-			}
-
-			else if(oiEquals(lmsg, '/unbanall'))
-			{
-				unban_all()
-			}
-
-			else if(oiEquals(lmsg, '/bannedcount'))
-			{
-				get_banned_count()
-			}
-
-			else if(oiStartsWith(lmsg, '/kick'))
-			{
-				kick(arg)
-			}
-
-			else if(oiEquals(lmsg, '/public'))
-			{
-				change_privacy(true)
-			}
-
-			else if(oiEquals(lmsg, '/private'))
-			{
-				change_privacy(false)
-			}
-
-			else if(oiEquals(lmsg, '/log'))
-			{
-				show_log()
-			}
-
-			else if(oiEquals(lmsg, '/enablelog'))
-			{
-				change_log(true)
-			}
-
-			else if(oiEquals(lmsg, '/disablelog'))
-			{
-				change_log(false)
-			}
-
-			else if(oiEquals(lmsg, '/clearlog'))
-			{
-				clear_log()
-			}
-
-			else if(oiStartsWith(lmsg, '/radio'))
-			{
-				change_radio_source(arg)
-			}
-
-			else if(oiEquals(lmsg, '/radio'))
-			{
-				show_radio_source()
-			}
-
-			else if(oiStartsWith(lmsg, '/tv'))
-			{
-				change_tv_source(arg)
-			}
-
-			else if(oiStartsWith(lmsg, '/image'))
-			{
-				link_image(arg)
-			}
-
-			else if(oiEquals(lmsg, '/status'))
-			{
-				show_status()
-			}
-
-			else if(oiStartsWith(lmsg, '/topic'))
-			{
-				change_topic(arg)
-			}
-
-			else if(oiStartsWith(lmsg, '/topicadd'))
-			{
-				topicadd(arg)
-			}
-
-			else if(oiStartsWith(lmsg, '/topictrim'))
-			{
-				topictrim(arg)
-			}
-
-			else if(oiEquals(lmsg, '/topictrim'))
-			{
-				topictrim(1)
-			}
-
-			else if(oiStartsWith(lmsg, '/topicaddstart'))
-			{
-				topicstart(arg)
-			}
-
-			else if(oiStartsWith(lmsg, '/topictrimstart'))
-			{
-				topictrimstart(arg)
-			}
-
-			else if(oiEquals(lmsg, '/topictrimstart'))
-			{
-				topictrimstart(1)
-			}			
-
-			else if(oiEquals(lmsg, '/topicedit'))
-			{
-				topicedit()
-				to_history = false
-				clr_input = false
-			}
-
-			else if(oiEquals(lmsg, '/topic'))
-			{
-				show_topic()
-			}
-
-			else if(oiEquals(lmsg, '/room'))
-			{
-				show_room()
-			}
-
-			else if(oiEquals(lmsg, '/help3'))
-			{
-				help3()
-			}
-
-			else if(oiEquals(lmsg, '/help2'))
-			{
-				help2()
-			}
-
-			else if(oiEquals(lmsg, '/help') || oiEquals(lmsg, '/help1'))
-			{
-				help()
-			}
-
-			else if(oiEquals(lmsg, '/stopradio'))
-			{
-				stop_radio()
-			}
-
-			else if(oiEquals(lmsg, '/startradio'))
-			{
-				start_radio()
-			}
-
-			else if(oiStartsWith(lmsg, '/volume'))
-			{
-				change_volume_command(arg)
-			}
-
-			else if(oiEquals(lmsg, '/history'))
-			{
-				show_input_history()
-			}
-
-			else if(oiStartsWith(lmsg, '/history'))
-			{
-				show_input_history(arg)
-			}
-
-			else if(oiStartsWith(lmsg, '/changeusername'))
-			{
-				change_username(arg)
-			}
-
-			else if(oiStartsWith(lmsg, '/changepassword'))
-			{
-				change_password(arg)
-			}
-
-			else if(oiStartsWith(lmsg, '/changeemail'))
-			{
-				change_email(arg)
-			}
-
-			else if(oiStartsWith(lmsg, '/verifyemail'))
-			{
-				verify_email(arg)
-			}
-
-			else if(oiEquals(lmsg, '/details'))
-			{
-				show_details()
-			}
-
-			else if(oiEquals(lmsg, '/logout'))
-			{
-				logout()
-			}
-
-			else if(oiEquals(lmsg, '/fill'))
-			{
-				fill()
-			}
-
-			else if(oiEquals(lmsg, '/shrug'))
-			{
-				shrug()
-			}
-
-			else if(oiEquals(lmsg, '/afk'))
-			{
-				show_afk()
-			}
-
-			else if(oiEquals(lmsg, '/disconnectothers'))
-			{
-				disconnect_others()
-			}
-
-			else if(oiStartsWith(lmsg, '/whisper'))
-			{
-				write_whisper(arg)
-			}
-
-			else if(oiEquals(lmsg, '/annex'))
-			{
-				annex()
-			}
-
-			else if(oiStartsWith(lmsg, '/annex'))
-			{
-				annex(arg)
-			}
-
-			else if(oiEquals(lmsg, '/highlights'))
-			{
-				show_highlights()
-			}
-
-			else if(oiStartsWith(lmsg, '/highlights'))
-			{
-				show_highlights(arg)
-			}
-
-			else if(oiEquals(lmsg, '/lock'))
-			{
-				stop_and_lock(false)
-			}
-
-			else if(oiEquals(lmsg, '/unlock'))
-			{
-				default_media_state(false)
-			}
-
-			else if(oiEquals(lmsg, '/stopandlock'))
-			{
-				stop_and_lock()
-			}
-
-			else if(oiEquals(lmsg, '/default'))
-			{
-				default_media_state()
-			}
-
-			else if(oiEquals(lmsg, '/menu'))
-			{
-				show_main_menu()
-			}
-
-			else if(oiEquals(lmsg, '/media'))
-			{
-				show_media_menu()
-			}
-
-			else if(oiEquals(lmsg, '/user'))
-			{
-				show_userinfo()
-			}
-
-			else if(oiEquals(lmsg, '/imagehistory'))
-			{
-				show_image_history()
-			}
-
-			else if(oiStartsWith(lmsg, '/imagehistory'))
-			{
-				show_image_history(arg)
-			}
-
-			else if(oiEquals(lmsg, '/tvhistory'))
-			{
-				show_tv_history()
-			}
-
-			else if(oiStartsWith(lmsg, '/tvhistory'))
-			{
-				show_tv_history(arg)
-			}
-
-			else if(oiEquals(lmsg, '/radiohistory'))
-			{
-				show_radio_history()
-			}
-
-			else if(oiStartsWith(lmsg, '/radiohistory'))
-			{
-				show_radio_history(arg)
-			}
-
-			else if(oiEquals(lmsg, '/lockimages'))
-			{
-				toggle_lock_images(true)
-			}
-
-			else if(oiEquals(lmsg, '/locktv'))
-			{
-				toggle_lock_tv(true)
-			}
-
-			else if(oiEquals(lmsg, '/lockradio'))
-			{
-				toggle_lock_radio(true)
-			}
-			
-			else if(oiEquals(lmsg, '/unlockimages'))
-			{
-				toggle_lock_images(false)
-			}
-
-			else if(oiEquals(lmsg, '/unlocktv'))
-			{
-				toggle_lock_tv(false)
-			}
-
-			else if(oiEquals(lmsg, '/unlockradio'))
-			{
-				toggle_lock_radio(false)
-			}
-
-			else if(oiEquals(lmsg, '/togglelockimages'))
-			{
-				toggle_lock_images()
-			}
-
-			else if(oiEquals(lmsg, '/togglelocktv'))
-			{
-				toggle_lock_tv()
-			}
-
-			else if(oiEquals(lmsg, '/togglelockradio'))
-			{
-				toggle_lock_radio()
-			}
-
-			else if(oiEquals(lmsg, '/showimages'))
-			{
-				toggle_images(true)
-			}
-
-			else if(oiEquals(lmsg, '/showtv'))
-			{
-				toggle_tv(true)
-			}
-
-			else if(oiEquals(lmsg, '/showradio'))
-			{
-				toggle_radio(true)
-			}
-
-			else if(oiEquals(lmsg, '/hideimages'))
-			{
-				toggle_images(false)
-			}
-
-			else if(oiEquals(lmsg, '/hidetv'))
-			{
-				toggle_tv(false)
-			}
-
-			else if(oiEquals(lmsg, '/hideradio'))
-			{
-				toggle_radio(false)
-			}	
-
-			else if(oiEquals(lmsg, '/toggleimages'))
-			{
-				toggle_images()
-			}
-
-			else if(oiEquals(lmsg, '/toggletv'))
-			{
-				toggle_tv()
-			}
-
-			else if(oiEquals(lmsg, '/toggleradio'))
-			{
-				toggle_radio()
-			}
-
-			else if(oiEquals(lmsg, '/test'))
-			{
-				do_test()
-			}
-
-			else if(oiEquals(lmsg, '/maximizeimages'))
-			{
-				maximize_images()
-			}
-
-			else if(oiEquals(lmsg, '/maximizetv'))
-			{
-				maximize_tv()
-			}
-
-			else if(oiEquals(lmsg, '/starttv'))
-			{
-				play_video()
-			}
-
-			else if(oiEquals(lmsg, '/stoptv'))
-			{
-				stop_videos()
-			}
-
-			else if(oiEquals(lmsg, '/openimage'))
-			{
-				show_current_image_modal()
-			}
-
-			else if(oiEquals(lmsg, '/openlastimage'))
-			{
-				show_current_image_modal(false)
-			}
-
-			else if(oiEquals(lmsg, '/date'))
-			{
-				show_current_date()
-			}
-
-			else if(oiStartsWith(lmsg, '/js'))
-			{
-				execute_javascript(arg)
-			}
-
-			else if(oiEquals(lmsg, '/changeimage'))
-			{
-				show_image_picker()
-			}
-
-			else if(oiEquals(lmsg, '/changetv'))
-			{
-				show_tv_picker()
-			}
-
-			else if(oiEquals(lmsg, '/changeradio'))
-			{
-				show_radio_picker()
-			}
-
-			else if(oiEquals(lmsg, '/closeall'))
-			{
-				close_all_modals()
-			}
-
-			else
-			{
-				chat_announce({brk1:'[', brk2:']', msg:"Invalid command. Use // to start a message with /"})
-			}
+			to_history = ans.to_history
+			clr_input = ans.clr_input
 		}
 
 		else 
@@ -5174,6 +4552,646 @@ function send_to_chat(msg, to_history=true)
 	{
 		clear_input()
 	}
+}
+
+function execute_command(msg, ans)
+{
+	var a = msg.toLowerCase().split(' ')
+
+	var lmsg = a[0].split('').sort().join('')
+
+	if(a.length > 1)
+	{
+		lmsg += ' '
+
+		var arg = msg.substring(lmsg.length)
+	}
+
+	if(oiEquals(lmsg, '/clear'))
+	{
+		clear_chat()
+	}
+
+	else if(oiEquals(lmsg, '/unclear'))
+	{
+		unclear_chat()
+	}			
+
+	else if(oiEquals(lmsg, '/enableimages'))
+	{
+		change_room_images_enabled(true)
+	}
+
+	else if(oiEquals(lmsg, '/disableimages'))
+	{
+		change_room_images_enabled(false)
+	}
+
+	else if(oiEquals(lmsg, '/enableradio'))
+	{
+		change_room_radio_enabled(true)
+	}
+
+	else if(oiEquals(lmsg, '/disableradio'))
+	{
+		change_room_radio_enabled(false)
+	}
+
+	else if(oiEquals(lmsg, '/enabletv'))
+	{
+		change_room_tv_enabled(true)
+	}
+
+	else if(oiEquals(lmsg, '/disabletv'))
+	{
+		change_room_tv_enabled(false)
+	}								
+
+	else if(oiEquals(lmsg, '/users'))
+	{
+		show_userlist()
+	}
+
+	else if(oiStartsWith(lmsg, '/users'))
+	{
+		show_userlist(arg)
+	}
+
+	else if(oiEquals(lmsg, '/rooms'))
+	{
+		request_roomlist()
+	}
+
+	else if(oiStartsWith(lmsg, '/rooms'))
+	{
+		request_roomlist(arg)
+	}
+
+	else if(oiEquals(lmsg, '/visited'))
+	{
+		request_roomlist("", "visited")
+	}
+
+	else if(oiStartsWith(lmsg, '/visited'))
+	{
+		request_roomlist(arg, "visited")
+	}
+
+	else if(oiEquals(lmsg, '/roomname'))
+	{
+		show_room()
+	}
+
+	else if(oiStartsWith(lmsg, '/roomname'))
+	{
+		change_room_name(arg)
+	}
+
+	else if(oiEquals(lmsg, '/roomnameedit'))
+	{
+		room_name_edit()
+		ans.to_history = false
+		ans.clr_input = false
+	}
+
+	else if(oiEquals(lmsg, '/played'))
+	{
+		show_played()
+	}
+
+	else if(oiStartsWith(lmsg, '/played'))
+	{
+		show_played(arg)
+	}
+
+	else if(oiEquals(lmsg, '/search'))
+	{
+		show_chat_search()
+	}			
+
+	else if(oiStartsWith(lmsg, '/search'))
+	{
+		show_chat_search(arg)
+	}
+
+	else if(oiEquals(lmsg, '/role'))
+	{
+		show_role()
+	}
+
+	else if(oiStartsWith(lmsg, '/voice1'))
+	{
+		change_role(arg, "voice1")
+	}
+
+	else if(oiStartsWith(lmsg, '/voice2'))
+	{
+		change_role(arg, "voice2")
+	}
+
+	else if(oiStartsWith(lmsg, '/voice3'))
+	{
+		change_role(arg, "voice3")
+	}
+
+	else if(oiStartsWith(lmsg, '/voice4'))
+	{
+		change_role(arg, "voice4")
+	}
+
+	else if(oiStartsWith(lmsg, '/op'))
+	{
+		change_role(arg, "op")
+	}
+
+	else if(oiStartsWith(lmsg, '/admin'))
+	{
+		change_role(arg, "admin")
+	}
+
+	else if(oiEquals(lmsg, '/resetvoices'))
+	{
+		reset_voices()
+	}
+
+	else if(oiEquals(lmsg, '/removeops'))
+	{
+		remove_ops()
+	}
+
+	else if(oiStartsWith(lmsg, '/ban'))
+	{
+		ban(arg)
+	}
+
+	else if(oiStartsWith(lmsg, '/unban'))
+	{
+		unban(arg)
+	}
+
+	else if(oiEquals(lmsg, '/unbanall'))
+	{
+		unban_all()
+	}
+
+	else if(oiEquals(lmsg, '/bannedcount'))
+	{
+		get_banned_count()
+	}
+
+	else if(oiStartsWith(lmsg, '/kick'))
+	{
+		kick(arg)
+	}
+
+	else if(oiEquals(lmsg, '/public'))
+	{
+		change_privacy(true)
+	}
+
+	else if(oiEquals(lmsg, '/private'))
+	{
+		change_privacy(false)
+	}
+
+	else if(oiEquals(lmsg, '/log'))
+	{
+		show_log()
+	}
+
+	else if(oiEquals(lmsg, '/enablelog'))
+	{
+		change_log(true)
+	}
+
+	else if(oiEquals(lmsg, '/disablelog'))
+	{
+		change_log(false)
+	}
+
+	else if(oiEquals(lmsg, '/clearlog'))
+	{
+		clear_log()
+	}
+
+	else if(oiStartsWith(lmsg, '/radio'))
+	{
+		change_radio_source(arg)
+	}
+
+	else if(oiEquals(lmsg, '/radio'))
+	{
+		show_radio_source()
+	}
+
+	else if(oiStartsWith(lmsg, '/tv'))
+	{
+		change_tv_source(arg)
+	}
+
+	else if(oiStartsWith(lmsg, '/image'))
+	{
+		link_image(arg)
+	}
+
+	else if(oiEquals(lmsg, '/status'))
+	{
+		show_status()
+	}
+
+	else if(oiStartsWith(lmsg, '/topic'))
+	{
+		change_topic(arg)
+	}
+
+	else if(oiStartsWith(lmsg, '/topicadd'))
+	{
+		topicadd(arg)
+	}
+
+	else if(oiStartsWith(lmsg, '/topictrim'))
+	{
+		topictrim(arg)
+	}
+
+	else if(oiEquals(lmsg, '/topictrim'))
+	{
+		topictrim(1)
+	}
+
+	else if(oiStartsWith(lmsg, '/topicaddstart'))
+	{
+		topicstart(arg)
+	}
+
+	else if(oiStartsWith(lmsg, '/topictrimstart'))
+	{
+		topictrimstart(arg)
+	}
+
+	else if(oiEquals(lmsg, '/topictrimstart'))
+	{
+		topictrimstart(1)
+	}			
+
+	else if(oiEquals(lmsg, '/topicedit'))
+	{
+		topicedit()
+		ans.to_history = false
+		ans.clr_input = false
+	}
+
+	else if(oiEquals(lmsg, '/topic'))
+	{
+		show_topic()
+	}
+
+	else if(oiEquals(lmsg, '/room'))
+	{
+		show_room()
+	}
+
+	else if(oiEquals(lmsg, '/help3'))
+	{
+		help3()
+	}
+
+	else if(oiEquals(lmsg, '/help2'))
+	{
+		help2()
+	}
+
+	else if(oiEquals(lmsg, '/help') || oiEquals(lmsg, '/help1'))
+	{
+		help()
+	}
+
+	else if(oiEquals(lmsg, '/stopradio'))
+	{
+		stop_radio()
+	}
+
+	else if(oiEquals(lmsg, '/startradio'))
+	{
+		start_radio()
+	}
+
+	else if(oiStartsWith(lmsg, '/volume'))
+	{
+		change_volume_command(arg)
+	}
+
+	else if(oiEquals(lmsg, '/history'))
+	{
+		show_input_history()
+	}
+
+	else if(oiStartsWith(lmsg, '/history'))
+	{
+		show_input_history(arg)
+	}
+
+	else if(oiStartsWith(lmsg, '/changeusername'))
+	{
+		change_username(arg)
+	}
+
+	else if(oiStartsWith(lmsg, '/changepassword'))
+	{
+		change_password(arg)
+	}
+
+	else if(oiStartsWith(lmsg, '/changeemail'))
+	{
+		change_email(arg)
+	}
+
+	else if(oiStartsWith(lmsg, '/verifyemail'))
+	{
+		verify_email(arg)
+	}
+
+	else if(oiEquals(lmsg, '/details'))
+	{
+		show_details()
+	}
+
+	else if(oiEquals(lmsg, '/logout'))
+	{
+		logout()
+	}
+
+	else if(oiEquals(lmsg, '/fill'))
+	{
+		fill()
+	}
+
+	else if(oiEquals(lmsg, '/shrug'))
+	{
+		shrug()
+	}
+
+	else if(oiEquals(lmsg, '/afk'))
+	{
+		show_afk()
+	}
+
+	else if(oiEquals(lmsg, '/disconnectothers'))
+	{
+		disconnect_others()
+	}
+
+	else if(oiStartsWith(lmsg, '/whisper'))
+	{
+		write_whisper(arg)
+	}
+
+	else if(oiEquals(lmsg, '/annex'))
+	{
+		annex()
+	}
+
+	else if(oiStartsWith(lmsg, '/annex'))
+	{
+		annex(arg)
+	}
+
+	else if(oiEquals(lmsg, '/highlights'))
+	{
+		show_highlights()
+	}
+
+	else if(oiStartsWith(lmsg, '/highlights'))
+	{
+		show_highlights(arg)
+	}
+
+	else if(oiEquals(lmsg, '/lock'))
+	{
+		stop_and_lock(false)
+	}
+
+	else if(oiEquals(lmsg, '/unlock'))
+	{
+		default_media_state(false)
+	}
+
+	else if(oiEquals(lmsg, '/stopandlock'))
+	{
+		stop_and_lock()
+	}
+
+	else if(oiEquals(lmsg, '/default'))
+	{
+		default_media_state()
+	}
+
+	else if(oiEquals(lmsg, '/menu'))
+	{
+		show_main_menu()
+	}
+
+	else if(oiEquals(lmsg, '/media'))
+	{
+		show_media_menu()
+	}
+
+	else if(oiEquals(lmsg, '/user'))
+	{
+		show_userinfo()
+	}
+
+	else if(oiEquals(lmsg, '/imagehistory'))
+	{
+		show_image_history()
+	}
+
+	else if(oiStartsWith(lmsg, '/imagehistory'))
+	{
+		show_image_history(arg)
+	}
+
+	else if(oiEquals(lmsg, '/tvhistory'))
+	{
+		show_tv_history()
+	}
+
+	else if(oiStartsWith(lmsg, '/tvhistory'))
+	{
+		show_tv_history(arg)
+	}
+
+	else if(oiEquals(lmsg, '/radiohistory'))
+	{
+		show_radio_history()
+	}
+
+	else if(oiStartsWith(lmsg, '/radiohistory'))
+	{
+		show_radio_history(arg)
+	}
+
+	else if(oiEquals(lmsg, '/lockimages'))
+	{
+		toggle_lock_images(true)
+	}
+
+	else if(oiEquals(lmsg, '/locktv'))
+	{
+		toggle_lock_tv(true)
+	}
+
+	else if(oiEquals(lmsg, '/lockradio'))
+	{
+		toggle_lock_radio(true)
+	}
+
+	else if(oiEquals(lmsg, '/unlockimages'))
+	{
+		toggle_lock_images(false)
+	}
+
+	else if(oiEquals(lmsg, '/unlocktv'))
+	{
+		toggle_lock_tv(false)
+	}
+
+	else if(oiEquals(lmsg, '/unlockradio'))
+	{
+		toggle_lock_radio(false)
+	}
+
+	else if(oiEquals(lmsg, '/togglelockimages'))
+	{
+		toggle_lock_images()
+	}
+
+	else if(oiEquals(lmsg, '/togglelocktv'))
+	{
+		toggle_lock_tv()
+	}
+
+	else if(oiEquals(lmsg, '/togglelockradio'))
+	{
+		toggle_lock_radio()
+	}
+
+	else if(oiEquals(lmsg, '/showimages'))
+	{
+		toggle_images(true)
+	}
+
+	else if(oiEquals(lmsg, '/showtv'))
+	{
+		toggle_tv(true)
+	}
+
+	else if(oiEquals(lmsg, '/showradio'))
+	{
+		toggle_radio(true)
+	}
+
+	else if(oiEquals(lmsg, '/hideimages'))
+	{
+		toggle_images(false)
+	}
+
+	else if(oiEquals(lmsg, '/hidetv'))
+	{
+		toggle_tv(false)
+	}
+
+	else if(oiEquals(lmsg, '/hideradio'))
+	{
+		toggle_radio(false)
+	}	
+
+	else if(oiEquals(lmsg, '/toggleimages'))
+	{
+		toggle_images()
+	}
+
+	else if(oiEquals(lmsg, '/toggletv'))
+	{
+		toggle_tv()
+	}
+
+	else if(oiEquals(lmsg, '/toggleradio'))
+	{
+		toggle_radio()
+	}
+
+	else if(oiEquals(lmsg, '/test'))
+	{
+		do_test()
+	}
+
+	else if(oiEquals(lmsg, '/maximizeimages'))
+	{
+		maximize_images()
+	}
+
+	else if(oiEquals(lmsg, '/maximizetv'))
+	{
+		maximize_tv()
+	}
+
+	else if(oiEquals(lmsg, '/starttv'))
+	{
+		play_video()
+	}
+
+	else if(oiEquals(lmsg, '/stoptv'))
+	{
+		stop_videos()
+	}
+
+	else if(oiEquals(lmsg, '/openimage'))
+	{
+		show_current_image_modal()
+	}
+
+	else if(oiEquals(lmsg, '/openlastimage'))
+	{
+		show_current_image_modal(false)
+	}
+
+	else if(oiEquals(lmsg, '/date'))
+	{
+		show_current_date()
+	}
+
+	else if(oiStartsWith(lmsg, '/js'))
+	{
+		execute_javascript(arg)
+	}
+
+	else if(oiEquals(lmsg, '/changeimage'))
+	{
+		show_image_picker()
+	}
+
+	else if(oiEquals(lmsg, '/changetv'))
+	{
+		show_tv_picker()
+	}
+
+	else if(oiEquals(lmsg, '/changeradio'))
+	{
+		show_radio_picker()
+	}
+
+	else if(oiEquals(lmsg, '/closeall'))
+	{
+		close_all_modals()
+	}
+
+	else
+	{
+		chat_announce({brk1:'[', brk2:']', msg:"Invalid command. Use // to start a message with /"})
+	}
+
+	return ans
 }
 
 function change_topic(dtopic)
@@ -10135,12 +10153,12 @@ function hide_pencil()
 
 function shrug()
 {
-	send_to_chat("¯\\_(ツ)_/¯", false)
+	process_message("¯\\_(ツ)_/¯", false)
 }
 
 function show_afk()
 {
-	send_to_chat("/me is now AFK", false)
+	process_message("/me is now AFK", false)
 }
 
 function toggle_lock_images(what=undefined)
@@ -10714,7 +10732,7 @@ function on_double_tap()
 
 		for(var cmd of cmds)
 		{
-			send_to_chat(cmd)
+			process_message(cmd, false, false)
 		}
 	}
 }
@@ -10727,7 +10745,7 @@ function on_double_tap_2()
 
 		for(var cmd of cmds)
 		{
-			send_to_chat(cmd)
+			process_message(cmd, false, false)
 		}
 	}
 }
@@ -10740,7 +10758,7 @@ function on_double_tap_3()
 
 		for(var cmd of cmds)
 		{
-			send_to_chat(cmd)
+			process_message(cmd, false, false)
 		}
 	}
 }
@@ -10753,7 +10771,7 @@ function at_startup()
 
 		for(var cmd of cmds)
 		{
-			send_to_chat(cmd)
+			process_message(cmd)
 		}
 	}
 }
@@ -10949,7 +10967,7 @@ function do_radio_history_filter()
 
 function do_test()
 {
-	send_to_chat("Test: 3")
+	process_message("Test: 3")
 }
 
 function maximize_images()
