@@ -102,6 +102,13 @@ a:hover, a:visited, a:link
 	cursor: pointer;
 }
 
+a:hover
+{
+	animation-duration: 500ms;
+	animation-name: glow;
+	animation-fill-mode: forwards;	
+}
+
 form
 {
 	margin: 0;
@@ -135,4 +142,10 @@ form
 .g-recaptcha > *
 {
 	margin: 0 auto;
+}
+
+@keyframes glow
+{	
+	0% {text-shadow: 0 0 0px}
+	100% {text-shadow: 0 0 1.2em}
 }
