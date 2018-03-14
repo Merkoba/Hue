@@ -1386,8 +1386,6 @@ function set_theme()
 
 	.custom_popup
 	{
-		background-color: ${background_color_2} !important;
-		color: ${font_color} !important;
 		border: 1px solid ${font_color} !important;
 	}	
 
@@ -10728,7 +10726,7 @@ function show_intro()
 	create_popup("top").show(s)
 
 	var s = `
-	Welcome. Read and close all popups to be able to chat.`
+	Welcome. Read and close all the popups to be able to chat.`
 
 	create_popup("center").show(s)
 }
