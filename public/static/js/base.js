@@ -1,7 +1,7 @@
 var socket
-var ls_settings = "settings_v15"
-var ls_input_history = "input_history_v16"
+var ls_global_settings = "global_settings_v1"
 var ls_room_settings = "room_settings_v1"
+var ls_input_history = "input_history_v16"
 var ls_first_time = "first_time_v2"
 var vtypes = ["voice1", "voice2", "voice3", "voice4"]
 var roles = ["admin", "op"].concat(vtypes)
@@ -186,14 +186,14 @@ function init()
 	get_volume()
 	activate_key_detection()
 	compile_templates()
-	get_settings()
+	get_global_settings()
 	get_room_settings()
 	start_msg()
-	start_settings_state("settings")
-	start_settings_listeners("settings")
+	start_settings_state("global_settings")
+	start_settings_listeners("global_settings")
 	start_settings_state("room_settings")
 	start_settings_listeners("room_settings")
-	setup_setting_windows()	
+	setup_settings_windows()	
 	start_filters()
 	start_image_events()
 	start_dropzone()
@@ -2154,30 +2154,7 @@ function update_roomlist(roomlist)
 
 function setup_main_menu()
 {
-	$(".admin_v_toggle").each(function()
-	{
-		$(this).click(function()
-		{
-			var container = $(this).next('.admin_v_container')
-			var display = container.css('display')
-
-			if(display === "none")
-			{
-				container.css("display", "initial")
-
-				$(this).text(`- ${$(this).text().substring(2)}`)
-			}
-
-			else
-			{
-				container.css("display", "none")
-
-				$(this).text(`+ ${$(this).text().substring(2)}`)
-			}
-
-			update_modal_scrollbar("menu")
-		})	
-	})
+	setup_togglers("menu")
 
 	$(".admin_voice_permissions_checkbox").each(function()
 	{
@@ -7203,6 +7180,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
+				close_togglers("menu")
 			}
 		})
 	)
@@ -7812,7 +7790,8 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				reset_radio_history_filter()				
+				reset_radio_history_filter()
+				close_togglers("global_settings")
 			}
 		})
 	)
@@ -7842,7 +7821,8 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				reset_radio_history_filter()				
+				reset_radio_history_filter()
+				close_togglers("room_settings")
 			}
 		})
 	)		
@@ -7866,7 +7846,7 @@ function start_msg()
 	msg_chat_search.set(template_chat_search())
 	msg_image.set(template_image())
 	msg_locked.set(template_locked_menu())
-	msg_global_settings.set(template_global_settings({settings:template_settings({type:"settings"})}))
+	msg_global_settings.set(template_global_settings({settings:template_settings({type:"global_settings"})}))
 	msg_room_settings.set(template_room_settings({settings:template_settings({type:"room_settings"})}))
 
 	msg_info.create()
@@ -7932,122 +7912,122 @@ function close_all_modals()
 	msg_menu.close_all()
 }
 
-function get_settings()
+function get_global_settings()
 {
 	var changed = false
 
-	settings = get_local_storage(ls_settings)
+	global_settings = get_local_storage(ls_global_settings)
 
-	if(settings === null)
+	if(global_settings === null)
 	{
-		settings = {}
+		global_settings = {}
 	}
 
-	if(settings.background_image === undefined)
+	if(global_settings.background_image === undefined)
 	{
-		settings.background_image = settings_default_background_image
+		global_settings.background_image = global_settings_default_background_image
 		changed = true
 	}
 	
-	if(settings.custom_scrollbars === undefined)
+	if(global_settings.custom_scrollbars === undefined)
 	{
-		settings.custom_scrollbars = settings_default_custom_scrollbars
+		global_settings.custom_scrollbars = global_settings_default_custom_scrollbars
 		changed = true
 	}
 
-	if(settings.beep_on_messages === undefined)
+	if(global_settings.beep_on_messages === undefined)
 	{
-		settings.beep_on_messages = settings_default_beep_on_messages
+		global_settings.beep_on_messages = global_settings_default_beep_on_messages
 		changed = true
 	}
 
-	if(settings.beep_on_highlights === undefined)
+	if(global_settings.beep_on_highlights === undefined)
 	{
-		settings.beep_on_highlights = settings_default_beep_on_highlights
+		global_settings.beep_on_highlights = global_settings_default_beep_on_highlights
 		changed = true
 	}
 
-	if(settings.beep_on_media_change === undefined)
+	if(global_settings.beep_on_media_change === undefined)
 	{
-		settings.beep_on_media_change = settings_default_beep_on_media_change
+		global_settings.beep_on_media_change = global_settings_default_beep_on_media_change
 		changed = true
 	}
 
-	if(settings.beep_on_user_joins === undefined)
+	if(global_settings.beep_on_user_joins === undefined)
 	{
-		settings.beep_on_user_joins = settings_default_beep_on_user_joins
+		global_settings.beep_on_user_joins = global_settings_default_beep_on_user_joins
 		changed = true
 	}
 
-	if(settings.modal_effects === undefined)
+	if(global_settings.modal_effects === undefined)
 	{
-		settings.modal_effects = settings_default_modal_effects
+		global_settings.modal_effects = global_settings_default_modal_effects
 		changed = true
 	}
 
-	if(settings.highlight_current_username === undefined)
+	if(global_settings.highlight_current_username === undefined)
 	{
-		settings.highlight_current_username = settings_default_highlight_current_username
+		global_settings.highlight_current_username = global_settings_default_highlight_current_username
 		changed = true
 	}
 
-	if(settings.case_insensitive_highlights === undefined)
+	if(global_settings.case_insensitive_highlights === undefined)
 	{
-		settings.case_insensitive_highlights = settings_default_case_insensitive_highlights
+		global_settings.case_insensitive_highlights = global_settings_default_case_insensitive_highlights
 		changed = true
 	}
 
-	if(settings.other_words_to_highlight === undefined)
+	if(global_settings.other_words_to_highlight === undefined)
 	{
-		settings.other_words_to_highlight = settings_default_other_words_to_highlight
+		global_settings.other_words_to_highlight = global_settings_default_other_words_to_highlight
 		changed = true
 	}
 
-	if(settings.double_tap === undefined)
+	if(global_settings.double_tap === undefined)
 	{
-		settings.double_tap = settings_default_double_tap
+		global_settings.double_tap = global_settings_default_double_tap
 		changed = true
 	}
 
-	if(settings.double_tap_2 === undefined)
+	if(global_settings.double_tap_2 === undefined)
 	{
-		settings.double_tap_2 = settings_default_double_tap_2
+		global_settings.double_tap_2 = global_settings_default_double_tap_2
 		changed = true
 	}
 
-	if(settings.double_tap_3 === undefined)
+	if(global_settings.double_tap_3 === undefined)
 	{
-		settings.double_tap_3 = settings_default_double_tap_3
+		global_settings.double_tap_3 = global_settings_default_double_tap_3
 		changed = true
 	}
 
-	if(settings.afk_delay === undefined)
+	if(global_settings.afk_delay === undefined)
 	{
-		settings.afk_delay = settings_default_afk_delay
+		global_settings.afk_delay = global_settings_default_afk_delay
 		changed = true
 	}
 
-	if(settings.at_startup === undefined)
+	if(global_settings.at_startup === undefined)
 	{
-		settings.at_startup = settings_default_at_startup
+		global_settings.at_startup = global_settings_default_at_startup
 		changed = true
 	}
 
-	if(settings.ignored_usernames === undefined)
+	if(global_settings.ignored_usernames === undefined)
 	{
-		settings.ignored_usernames = settings_default_ignored_usernames
+		global_settings.ignored_usernames = global_settings_default_ignored_usernames
 		changed = true
 	}
 
-	if(settings.show_joins === undefined)
+	if(global_settings.show_joins === undefined)
 	{
-		settings.show_joins = settings_default_show_joins
+		global_settings.show_joins = global_settings_default_show_joins
 		changed = true
 	}
 
-	if(settings.show_parts === undefined)
+	if(global_settings.show_parts === undefined)
 	{
-		settings.show_parts = settings_default_show_parts
+		global_settings.show_parts = global_settings_default_show_parts
 		changed = true
 	}
 
@@ -8059,7 +8039,7 @@ function get_settings()
 
 function save_settings()
 {
-	save_local_storage(ls_settings, settings)
+	save_local_storage(ls_global_settings, settings)
 }
 
 function start_settings_state(type)
@@ -8458,7 +8438,7 @@ function get_room_settings()
 	{
 		if(room_settings[key] === undefined)
 		{
-			room_settings[key] = settings[key]
+			room_settings[key] = global_settings[key]
 			changed = true
 		}
 	}
@@ -11806,10 +11786,10 @@ function show_room_settings()
 	msg_room_settings.show()
 }
 
-function setup_setting_windows()
+function setup_settings_windows()
 {
-	setup_setting_elements("settings", "global_settings")
-	setup_setting_elements("room_settings", "room_settings")
+	setup_setting_elements("global_settings")
+	setup_setting_elements("room_settings")
 	
 	$('#room_settings_override').find('option').each(function()
 	{
@@ -11832,7 +11812,7 @@ function setup_setting_windows()
 
 		else
 		{
-			call_setting_actions("settings", false)
+			call_setting_actions("global_settings", false)
 		}
 
 		save_room_settings()
@@ -11841,36 +11821,13 @@ function setup_setting_windows()
 	check_room_settings_override()
 }
 
-function setup_setting_elements(type, parent)
+function setup_setting_elements(type)
 {
 	$(`#${type}_double_tap_key`).text(double_tap_key)
 	$(`#${type}_double_tap_2_key`).text(double_tap_key_2)
 	$(`#${type}_double_tap_3_key`).text(double_tap_key_3)
 
-	$(`.${type}_toggle`).each(function()
-	{
-		$(this).click(function()
-		{
-			var container = $(this).next(`.${type}_toggle_container`)
-			var display = container.css('display')
-
-			if(display === "none")
-			{
-				container.css("display", "block")
-
-				$(this).html(`- ${$(this).html().substring(2)}`)
-			}
-
-			else
-			{
-				container.css("display", "none")
-
-				$(this).html(`+ ${$(this).html().substring(2)}`)
-			}
-
-			update_modal_scrollbar(parent)
-		})	
-	})
+	setup_togglers(type)
 }
 
 function check_room_settings_override()
@@ -11903,7 +11860,7 @@ function get_setting(name)
 
 		else
 		{
-			return settings[name]
+			return global_settings[name]
 		}
 	}
 
@@ -11922,6 +11879,52 @@ function active_settings()
 
 	else
 	{
-		return "settings"
+		return "global_settings"
 	}
+}
+
+function setup_togglers(type)
+{
+	$(`.${type}_toggle`).each(function()
+	{
+		$(this).click(function()
+		{
+			var container = $(this).next(`.${type}_toggle_container`)
+			var display = container.css('display')
+
+			if(display === "none")
+			{
+				container.css("display", "block")
+
+				$(this).html(`- ${$(this).html().substring(2)}`)
+			}
+
+			else
+			{
+				container.css("display", "none")
+
+				$(this).html(`+ ${$(this).html().substring(2)}`)
+			}
+
+			update_modal_scrollbar(type)
+		})	
+	})
+}
+
+function close_togglers(type)
+{
+	$(`.${type}_toggle`).each(function()
+	{
+		var container = $(this).next(`.${type}_toggle_container`)
+		var display = container.css('display')
+
+		if(display !== "none")
+		{
+			container.css("display", "none")
+
+			$(this).html(`+ ${$(this).html().substring(2)}`)
+		}
+	})	
+	
+	update_modal_scrollbar(type)
 }

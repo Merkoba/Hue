@@ -307,46 +307,46 @@ If you want to remove it to start fresh:
 "max_stored_images"
 >The amount of most recent images to have stored in a room. Each room has an array of images stored, when the array's length surpasses this number, the oldest image in it will get deleted, either locally or on the S3 bucket depending on settings.
 
-"settings_default_background_image"
+"global_settings_default_background_image"
 >Whether the uploaded image is shown in the background by default.
 
-"settings_default_custom_scrollbars"
+"global_settings_default_custom_scrollbars"
 >Whether custom scrollbars are enabled by default.
 
-"settings_default_sound_notifications"
+"global_settings_default_sound_notifications"
 >Whether sound notifications are enabled by default.
 
-"settings_default_modal_effects"
+"global_settings_default_modal_effects"
 >Whether modal effects are enabled by default.
 
-"settings_default_highlight_current_username"
+"global_settings_default_highlight_current_username"
 >Whether current username triggers a highlight by default.
 
-"settings_default_case_insensitive_highlights"
+"global_settings_default_case_insensitive_highlights"
 >Whether highlights, either current nickname, or specified words matches are case insensitive by default.
 
-"settings_default_other_words_to_highlight"
+"global_settings_default_other_words_to_highlight"
 >Other words to trigger highlights apart from the current nickname, by default.
 
-"settings_default_double_tap"
+"global_settings_default_double_tap"
 >What command or string to trigger on double tap by default.
 
-"settings_default_double_tap_2"
+"global_settings_default_double_tap_2"
 >What command or string to trigger on double tap 2 by default.
 
-"settings_default_double_tap_3"
+"global_settings_default_double_tap_3"
 >What command or string to trigger on double tap 3 by default.
 
-"settings_default_at_startup"
+"global_settings_default_at_startup"
 >What command or string to trigger at startup.
 
-"settings_default_ignored_usernames"
+"global_settings_default_ignored_usernames"
 >What usernames to be ignored by default.
 
-"settings_default_show_joins"
+"global_settings_default_show_joins"
 >Whether to show user joins by default.
 
-"settings_default_show_parts"
+"global_settings_default_show_parts"
 >Whether to show user parts by default.
 
 "double_tap_key"
