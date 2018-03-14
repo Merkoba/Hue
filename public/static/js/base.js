@@ -11553,11 +11553,21 @@ function confirm_reset_settings(type)
 
 function reset_settings(type)
 {
+	if(type === "room_settings")
+	{
+		var o_override = room_settings.override
+	}
+
 	localStorage.removeItem(window[`ls_${type}`])
 	window[`get_${type}`]()
 	start_settings_state(type)
 	call_setting_actions(type, false)
-	window[`save_${type}`]()	
+	window[`save_${type}`]()
+
+	if(type === "room_settings")
+	{
+		room_settings.override = o_override
+	}	
 }
 
 function setup_chat()
