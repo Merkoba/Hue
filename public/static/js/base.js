@@ -8116,6 +8116,11 @@ function call_setting_actions(type, save=true)
 
 function setting_background_image_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+
 	window[type].background_image = $(`#${type}_background_image`).prop("checked")
 
 	set_background_image()
@@ -8129,6 +8134,11 @@ function setting_background_image_action(type, save=true)
 
 function setting_custom_scrollbars_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	window[type].custom_scrollbars = $(`#${type}_custom_scrollbars`).prop("checked")
 	
 	setup_scrollbars()
@@ -8141,6 +8151,11 @@ function setting_custom_scrollbars_action(type, save=true)
 
 function setting_beep_on_messages_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	window[type].beep_on_messages = $(`#${type}_beep_on_messages`).prop("checked")
 	
 	if(save)
@@ -8151,6 +8166,11 @@ function setting_beep_on_messages_action(type, save=true)
 
 function setting_beep_on_highlights_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	window[type].beep_on_highlights = $(`#${type}_beep_on_highlights`).prop("checked")
 	
 	if(save)
@@ -8161,6 +8181,11 @@ function setting_beep_on_highlights_action(type, save=true)
 
 function setting_beep_on_media_change_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	window[type].beep_on_media_change = $(`#${type}_beep_on_media_change`).prop("checked")
 	
 	if(save)
@@ -8171,6 +8196,11 @@ function setting_beep_on_media_change_action(type, save=true)
 
 function setting_beep_on_user_joins_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	window[type].beep_on_user_joins = $(`#${type}_beep_on_user_joins`).prop("checked")
 	
 	if(save)
@@ -8181,6 +8211,11 @@ function setting_beep_on_user_joins_action(type, save=true)
 
 function setting_modal_effects_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	window[type].modal_effects = $(`#${type}_modal_effects`).prop("checked")
 
 	for(var instance of msg_menu.instances())
@@ -8206,6 +8241,11 @@ function setting_modal_effects_action(type, save=true)
 
 function setting_highlight_current_username_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	window[type].highlight_current_username = $(`#${type}_highlight_current_username`).prop("checked")
 	
 	if(save)
@@ -8216,6 +8256,11 @@ function setting_highlight_current_username_action(type, save=true)
 
 function setting_case_insensitive_highlights_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	window[type].case_insensitive_highlights = $(`#${type}_case_insensitive_highlights`).prop("checked")
 	generate_mentions_regex()
 	generate_highlight_words_regex()
@@ -8228,6 +8273,11 @@ function setting_case_insensitive_highlights_action(type, save=true)
 
 function setting_other_words_to_highlight_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	var words = utilz.clean_string7($(`#${type}_other_words_to_highlight`).val())
 
 	$(`#${type}_other_words_to_highlight`).val(words)
@@ -8247,6 +8297,11 @@ function setting_other_words_to_highlight_action(type, save=true)
 
 function setting_double_tap_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	var cmds = utilz.clean_string7($(`#${type}_double_tap`).val())
 
 	$(`#${type}_double_tap`).val(cmds)
@@ -8264,6 +8319,11 @@ function setting_double_tap_action(type, save=true)
 
 function setting_double_tap_2_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	var cmds = utilz.clean_string7($(`#${type}_double_tap_2`).val())
 
 	$(`#${type}_double_tap_2`).val(cmds)
@@ -8281,6 +8341,11 @@ function setting_double_tap_2_action(type, save=true)
 
 function setting_double_tap_3_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	var cmds = utilz.clean_string7($(`#${type}_double_tap_3`).val())
 
 	$(`#${type}_double_tap_3`).val(cmds)
@@ -8298,6 +8363,11 @@ function setting_double_tap_3_action(type, save=true)
 
 function setting_afk_delay_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	var delay = $(`#${type}_afk_delay option:selected`).val()
 
 	if(delay !== "never")
@@ -8315,6 +8385,11 @@ function setting_afk_delay_action(type, save=true)
 
 function setting_at_startup_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	var cmds = utilz.clean_string7($(`#${type}_at_startup`).val())
 
 	$(`#${type}_at_startup`).val(cmds)
@@ -8332,6 +8407,11 @@ function setting_at_startup_action(type, save=true)
 
 function setting_ignored_usernames_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	var unames = utilz.clean_string7($(`#${type}_ignored_usernames`).val())
 
 	$(`#${type}_ignored_usernames`).val(unames)
@@ -8349,6 +8429,11 @@ function setting_ignored_usernames_action(type, save=true)
 
 function setting_show_joins_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	window[type].show_joins = $(`#${type}_show_joins`).prop("checked")
 	
 	if(save)
@@ -8359,6 +8444,11 @@ function setting_show_joins_action(type, save=true)
 
 function setting_show_parts_action(type, save=true)
 {
+	if(active_settings() !== type)
+	{
+		return false
+	}
+		
 	window[type].show_parts = $(`#${type}_show_parts`).prop("checked")
 	
 	if(save)
@@ -11854,5 +11944,18 @@ function get_setting(name)
 	catch(err)
 	{
 		return undefined
+	}
+}
+
+function active_settings()
+{
+	if(room_settings.override)
+	{
+		return "room_settings"
+	}
+
+	else
+	{
+		return "settings"
 	}
 }
