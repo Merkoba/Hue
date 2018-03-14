@@ -5932,13 +5932,13 @@ function change_volume_command(arg)
 
 function sound_notify()
 {
-	if(!started || afk)
-	{
-		return false
-	}
-
 	if(document.hidden)
 	{
+		if(!started || afk)
+		{
+			return false
+		}		
+
 		pup()
 	}
 }
