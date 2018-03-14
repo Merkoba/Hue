@@ -33,7 +33,7 @@
 		<script src="/static/js/utilz.js?ver=4"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1062"></script>
+		<script src="/static/js/base.js?ver=1063"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=303"/>
 
@@ -124,7 +124,7 @@
 						<div class='scroller_container top_scroller_container' id='top_scroller_container'>
 							<div id='top_scroller' class='left_scroller scroller unselectable' onclick='goto_top()'>Go&nbsp;To&nbsp;Top</div>
 							<div class='hspacer3'></div>
-							<div id='up_scroller' class='right_scroller scroller unselectable' onclick='go_up()'>Activity&nbsp;Above</div>
+							<div id='up_scroller' class='right_scroller scroller unselectable' onclick='activity_above()'>Activity&nbsp;Above</div>
 						</div>
 
 						<div id='chat_area_parent'>
@@ -134,7 +134,7 @@
 						<div class='scroller_container bottom_scroller_container' id='bottom_scroller_container'>
 							<div id='bottom_scroller' class='left_scroller scroller unselectable' onclick='goto_bottom(true)'>Go&nbsp;To&nbsp;Bottom</div>
 							<div class='hspacer3'></div>
-							<div id='down_scroller' class='right_scroller scroller unselectable' onclick='go_down()'>Activity&nbsp;Below</div>
+							<div id='down_scroller' class='right_scroller scroller unselectable' onclick='activity_below()'>Activity&nbsp;Below</div>
 						</div>
 
 					</div>
@@ -931,6 +931,8 @@
 			<div class='info_item'>/changetv: Opens the window to change the tv.</div>
 			<div class='info_item'>/changeradio: Opens the window to change the radio.</div>
 			<div class='info_item'>/closeall: Closes all the modal windows, or popups.</div>
+			<div class='info_item'>/activityabove: Scrolls chat to activity pertaining you above.</div>
+			<div class='info_item'>/activitybelow: Scrolls chat to activity pertaining you below.</div>
 			<div class='info_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil.</div>
 			<div class='spacer1'></div>
 			<span class='help_link action' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action' onclick='help3()'>Administration Features</span>			

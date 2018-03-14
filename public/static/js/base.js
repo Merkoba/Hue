@@ -2994,7 +2994,7 @@ function activate_key_detection()
 
 			else if(e.ctrlKey)
 			{
-				go_up()
+				activity_above()
 			}
 
 			else
@@ -3015,8 +3015,8 @@ function activate_key_detection()
 
 			else if(e.ctrlKey)
 			{
-				go_down()
-			}			
+				activity_below()
+			}
 
 			else
 			{
@@ -4506,6 +4506,8 @@ function register_commands()
 	commands.push('/changetv')
 	commands.push('/changeradio')
 	commands.push('/closeall')
+	commands.push('/activityabove')
+	commands.push('/activitybelow')
 
 	commands.sort()
 
@@ -5213,6 +5215,16 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/closeall'))
 	{
 		close_all_modals()
+	}
+
+	else if(oiEquals(lmsg, '/activityabove'))
+	{
+		activity_above()
+	}
+
+	else if(oiEquals(lmsg, '/activitybelow'))
+	{
+		activity_below()
 	}
 
 	else
@@ -11539,7 +11551,7 @@ function make_safe(text, html=false, urlize=true)
 	return c[0]
 }
 
-function go_up()
+function activity_above()
 {
 	var step = false
 	var up_scroller_height = $("#up_scroller").outerHeight()
@@ -11576,7 +11588,7 @@ function go_up()
 	}
 }
 
-function go_down()
+function activity_below()
 {
 	var step = false
 	var up_scroller_height = $("#up_scroller").outerHeight()
