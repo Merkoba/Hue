@@ -8035,13 +8035,13 @@ function get_global_settings()
 
 	if(changed)
 	{
-		save_settings()
+		save_global_settings()
 	}
 }
 
-function save_settings()
+function save_global_settings()
 {
-	save_local_storage(ls_global_settings, settings)
+	save_local_storage(ls_global_settings, global_settings)
 }
 
 function start_settings_state(type)
@@ -8441,7 +8441,7 @@ function get_room_settings()
 		changed = true
 	}
 
-	for(var key in settings)
+	for(var key in global_settings)
 	{
 		if(room_settings[key] === undefined)
 		{
