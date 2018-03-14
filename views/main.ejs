@@ -33,9 +33,9 @@
 		<script src="/static/js/utilz.js?ver=4"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1061"></script>
+		<script src="/static/js/base.js?ver=1062"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=302"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=303"/>
 
 		<script>
 
@@ -121,13 +121,21 @@
 
 					<div id='chat_main'>
 
-						<div id='up_scroller' class='scroller unselectable' onclick='go_up()'>Go Up</div>
+						<div class='scroller_container top_scroller_container' id='top_scroller_container'>
+							<div id='top_scroller' class='left_scroller scroller unselectable' onclick='goto_top()'>Go&nbsp;To&nbsp;Top</div>
+							<div class='hspacer3'></div>
+							<div id='up_scroller' class='right_scroller scroller unselectable' onclick='go_up()'>Activity&nbsp;Above</div>
+						</div>
 
 						<div id='chat_area_parent'>
 							<div id='chat_area' class='bg1'></div>
 						</div>
-						
-						<div id='down_scroller' class='scroller unselectable' onclick='goto_bottom(true)'>Go Down</div>
+
+						<div class='scroller_container bottom_scroller_container' id='bottom_scroller_container'>
+							<div id='bottom_scroller' class='left_scroller scroller unselectable' onclick='goto_bottom(true)'>Go&nbsp;To&nbsp;Bottom</div>
+							<div class='hspacer3'></div>
+							<div id='down_scroller' class='right_scroller scroller unselectable' onclick='go_down()'>Activity&nbsp;Below</div>
+						</div>
 
 					</div>
 
@@ -850,7 +858,7 @@
 			<div class='info_item'>Shift + Tab cycles between room status and user info windows.</div>
 			<div class='info_item'>Up and Down Arrows cycle through the input history.</div>
 			<div class='info_item'>Shift + Up Arrow and Shift + Down Arrow or Page Up and Page down make the chat scroll.</div>
-			<div class='info_item'>Control + Up Arrow and Control + Down Arrow Go Up and Go Down.</div>
+			<div class='info_item'>Control + Up Arrow and Control + Down Arrow go to Activity Above and Activity Below.</div>
 			<div class='info_item'>Enter without text in the input scrolls to the bottom of the chat.</div>
 			<div class='info_item'>Clicking on a chat message username quotes the text.</div>
 			<div class='info_item'>Tab completes usernames and commands.</div>

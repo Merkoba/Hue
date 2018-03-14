@@ -340,6 +340,15 @@ If you want to remove it to start fresh:
 "settings_default_at_startup"
 >What command or string to trigger at startup.
 
+"settings_default_ignored_usernames"
+>What usernames to be ignored by default.
+
+"settings_default_show_joins"
+>Whether to show user joins by default.
+
+"settings_default_show_parts"
+>Whether to show user parts by default.
+
 "double_tap_key"
 >The key that triggers double tap.
 

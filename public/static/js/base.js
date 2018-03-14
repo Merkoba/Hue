@@ -3495,21 +3495,21 @@ function check_scrollers()
 	{
 		if(scrolltop > 0)
 		{
-			$('#up_scroller').css('visibility', 'visible')
+			$('#top_scroller_container').css('visibility', 'visible')
 		}
 
 		else
 		{
-			$('#up_scroller').css('visibility', 'hidden')
+			$('#top_scroller_container').css('visibility', 'hidden')
 		}
 
-		$('#down_scroller').css('visibility', 'visible')
+		$('#bottom_scroller_container').css('visibility', 'visible')
 	}
 
 	else
 	{
-		$('#up_scroller').css('visibility', 'hidden')
-		$('#down_scroller').css('visibility', 'hidden')
+		$('#top_scroller_container').css('visibility', 'hidden')
+		$('#bottom_scroller_container').css('visibility', 'hidden')
 	}
 }
 
@@ -5488,13 +5488,13 @@ function goto_bottom(force=false)
 	if(force)
 	{
 		$ch.scrollTop(max + 10)
-		$('#up_scroller').css('visibility', 'hidden')
-		$('#down_scroller').css('visibility', 'hidden')
+		$('#top_scroller_container').css('visibility', 'hidden')
+		$('#bottom_scroller_container').css('visibility', 'hidden')
 	}
 
 	else
 	{
-		if($('#down_scroller').css('visibility') === 'hidden')
+		if($('#bottom_scroller_container').css('visibility') === 'hidden')
 		{
 			$ch.scrollTop(max + 10)
 		}
@@ -11547,14 +11547,16 @@ function go_up()
 
 	$($(".msg").get().reverse()).each(function()
 	{
+		var same_uname = false
+
 		var uname = $(this).data("uname")
 
-		if(!uname)
+		if(uname && uname === username)
 		{
-			return true
+			same_uname = true	
 		}
 
-		if(uname === username)
+		if(same_uname || $(this).data("highlighted"))
 		{
 			var p = $(this).position()
 
@@ -11584,14 +11586,16 @@ function go_down()
 
 	$(".msg").each(function()
 	{
+		var same_uname = false
+
 		var uname = $(this).data("uname")
 
-		if(!uname)
+		if(uname && uname === username)
 		{
-			return true
+			same_uname = true	
 		}
 
-		if(uname === username)
+		if(same_uname || $(this).data("highlighted"))
 		{
 			var p = $(this).position()
 			var h = $(this).outerHeight()

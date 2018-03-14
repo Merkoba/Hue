@@ -286,11 +286,28 @@ body, html
 	color: inherit;
 }
 
-.scroller
+.scroller_container
 {
 	position: absolute;
 	left: 16px;
 	width: calc(100% - 35px);	
+	display: flex;
+	flex-direction: row;
+	visibility: hidden;	
+}
+
+.top_scroller_container
+{
+	top: 0em;
+}
+
+.bottom_scroller_container
+{	
+	bottom: 0em;
+}
+
+.scroller
+{
 	height: 2em;
 	background-color: rgba(57, 57, 57, 0.5);
 	color: white;
@@ -302,23 +319,24 @@ body, html
 	justify-content: center;
 	cursor: pointer;
 	z-index: 99;
+	padding-left: 2em;
+	padding-right: 2em;
+}
+
+.left_scroller
+{
+	width: 60%;
+}
+
+.right_scroller
+{
+	flex-grow: 1;
+	flex-shrink: 1;
 }
 
 .scroller:hover 
 {
 	background-color: rgba(71, 71, 71, 0.5);
-}
-
-#up_scroller
-{
-	visibility: hidden;
-	top: 0em;
-}
-
-#down_scroller
-{
-	bottom: 0em;
-	visibility: hidden;
 }
 
 .chat_message
