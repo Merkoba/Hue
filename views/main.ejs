@@ -33,7 +33,7 @@
 		<script src="/static/js/utilz.js?ver=4"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1066"></script>
+		<script src="/static/js/base.js?ver=1068"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=304"/>
 
@@ -496,9 +496,13 @@
 
 			<div class='spacer1'></div>
 
-			<div class="action inline pointer" onclick="show_global_settings()">Global Settings</div>
+			<div class="action inline pointer" onclick="show_global_settings()">
+				Global&nbsp;Settings<div class='inline' id='userinfo_global_settings_status'></div>
+			</div>
 			<div class='spacer3'></div>
-			<div class="action inline pointer" onclick="show_room_settings()">Room Settings</div>			
+			<div class="action inline pointer" onclick="show_room_settings()">
+				Room&nbsp;Settings<div class='inline' id='userinfo_room_settings_status'></div>
+			</div>
 			
 			<div class='spacer2'></div>
 		
@@ -634,6 +638,7 @@
 		</script>
 
 		<script id='template_global_settings' type='text/x-handlebars-template'>
+			<div class='spacer2'></div>
 			<div id='settings_container' class='unselectable'>{{{settings}}}</div>
 		</script>
 
@@ -957,6 +962,8 @@
 			<div class='info_item'>/closeall: Closes all the modal windows, or popups.</div>
 			<div class='info_item'>/activityabove: Scrolls chat to activity pertaining you above.</div>
 			<div class='info_item'>/activitybelow: Scrolls chat to activity pertaining you below.</div>
+			<div class='info_item'>/globalsettings: Shows the global settings window.</div>
+			<div class='info_item'>/roomsettings: Shows the room settings window.</div>
 			<div class='info_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil.</div>
 			<div class='spacer1'></div>
 			<span class='help_link action' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action' onclick='help3()'>Administration Features</span>			

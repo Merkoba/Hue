@@ -4524,6 +4524,8 @@ function register_commands()
 	commands.push('/closeall')
 	commands.push('/activityabove')
 	commands.push('/activitybelow')
+	commands.push('/globalsettings')
+	commands.push('/roomsettings')
 
 	commands.sort()
 
@@ -5246,6 +5248,16 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/activitybelow'))
 	{
 		activity_below()
+	}
+
+	else if(oiEquals(lmsg, '/globalsettings'))
+	{
+		show_global_settings()
+	}
+
+	else if(oiEquals(lmsg, '/roomsettings'))
+	{
+		show_room_settings()
 	}
 
 	else
@@ -11801,11 +11813,15 @@ function check_room_settings_override()
 	if(room_settings.override)
 	{
 		$("#room_settings_container").css("display", "initial")
+		$("#userinfo_global_settings_status").html("")
+		$("#userinfo_room_settings_status").html("&nbsp;(Active)")
 	}
 
 	else
 	{
 		$("#room_settings_container").css("display", "none")
+		$("#userinfo_global_settings_status").html("&nbsp;(Active)")
+		$("#userinfo_room_settings_status").html("")
 	}
 
 	update_modal_scrollbar("room_settings")
