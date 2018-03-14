@@ -637,10 +637,13 @@ function start_socket()
 
 	socket.on('disconnect', (reason) => 
 	{
-		setTimeout(function()
+		if(started)
 		{
-			refresh()
-		}, 2000)
+			setTimeout(function()
+			{
+				refresh()
+			}, 2000)
+		}
 	})
 
 	socket.on('update', (data) =>

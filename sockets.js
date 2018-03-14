@@ -43,7 +43,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		updated: null,
 		received: 0,
 		extension: null,
-		cancelled: false
+		cancelled: false,
+		spsize: 0
     }	
 
 	var last_roomlist
@@ -56,15 +57,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		kickTimesBeforeBan: config.antispam_kickTimesBeforeBan, // User gets banned after this many kicks 
 		banning: config.antispam_banning, // Uses temp IP banning after kickTimesBeforeBan 
 		heartBeatStale: config.antispam_heartBeatStale, // Removes a heartbeat after this many seconds 
-		heartBeatCheck: config.antispam_heartBeatCheck, // Checks a heartbeat per this many seconds 
-		io: io // Bind the socket.io variable 
+		heartBeatCheck: config.antispam_heartBeatCheck, // Checks a heartbeat per this many seconds
 	})
 
 	antiSpam.event.on('ban', function(socket, data)
 	{
 		socket.hue_kicked = true
 		socket.hue_info1 = "the anti-spam system"
-		do_disconnect(socket)
+		get_out(socket)
 	})
 
 	start_room_loop()
@@ -74,6 +74,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		try
 		{
+			add_spam(socket)
 			connection(socket)
 		}
 
@@ -86,6 +87,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
 				join_room(socket, data)
 			}
 
@@ -99,6 +101,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -117,6 +121,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -135,6 +141,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -153,6 +161,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -171,6 +181,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined && !socket.hue_locked)
 				{
 					return get_out(socket)
@@ -189,6 +201,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined && !socket.hue_locked)
 				{
 					return get_out(socket)
@@ -207,6 +221,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -225,6 +241,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -243,6 +261,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -261,6 +281,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -279,6 +301,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -297,6 +321,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -315,6 +341,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -333,6 +361,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -351,6 +381,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -369,6 +401,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -387,6 +421,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -405,6 +441,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -423,6 +461,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -441,6 +481,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -459,6 +501,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -477,6 +521,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -495,6 +541,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -513,6 +561,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -531,6 +581,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -549,6 +601,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -567,6 +621,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -585,6 +641,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -603,6 +661,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -621,6 +681,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -639,6 +701,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -657,6 +721,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -675,6 +741,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -711,6 +779,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -729,6 +799,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				socket.hue_typing_counter += 1
+
+				if(socket.hue_typing_counter >= 100)
+				{
+					add_spam(socket)
+					socket.hue_typing_counter = 0
+				}
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -747,6 +825,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -765,6 +845,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				add_spam(socket)
+
 				if(!socket.hue_joined)
 				{
 					return get_out(socket)
@@ -815,6 +897,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.hue_superuser = false
 		socket.hue_locked = false
 		socket.hue_info1 = ""
+		socket.hue_typing_counter = 0
 	}
 
 	function join_room(socket, data)
@@ -3809,6 +3892,8 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(!file) 
 		{
+			add_spam(socket)
+
 			if(image_types.indexOf(data.type) === -1)
 			{
 				return get_out(socket)
@@ -3844,10 +3929,20 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		file.received += data.data.length
 
-		if((file.received / 1024) > config.max_image_size)
+		var fsize = file.received / 1024
+
+		if(fsize > config.max_image_size)
 		{
 			delete files[key]
 			return get_out(socket)
+		}
+
+		var spsize = Math.floor(fsize / (config.max_image_size / 20))
+
+		if(file.spsize !== spsize)
+		{
+			add_spam(socket)
+			file.spsize = spsize
 		}
 
 		file.updated = Date.now()
@@ -4375,5 +4470,10 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		args.type = type
 
 		socket.broadcast.in(room_id).emit('update', args)
+	}
+
+	function add_spam(socket)
+	{
+		antiSpam.addSpam(socket)		
 	}
 }
