@@ -4502,6 +4502,13 @@ function register_commands()
 	commands.push('/openlastimage')
 	commands.push('/date')
 	commands.push('/js')
+	commands.push('/js2')
+	commands.push('/changeimage')
+	commands.push('/changetv')
+	commands.push('/chenlastimage')
+	commands.push('/date')
+	commands.push('/js')
+	commands.push('/js2')
 	commands.push('/changeimage')
 	commands.push('/changetv')
 	commands.push('/changeradio')
@@ -5195,6 +5202,11 @@ function execute_command(msg, ans)
 	else if(oiStartsWith(lmsg, '/js'))
 	{
 		execute_javascript(arg)
+	}
+
+	else if(oiStartsWith(lmsg, '/js2'))
+	{
+		execute_javascript(arg, false)
 	}
 
 	else if(oiEquals(lmsg, '/changeimage'))
@@ -5925,12 +5937,9 @@ function sound_notify()
 		return false
 	}
 
-	if(settings.sound_notifications)
+	if(document.hidden)
 	{
-		if(document.hidden)
-		{
-			pup()
-		}
+		pup()
 	}
 }
 
@@ -11478,7 +11487,7 @@ function setup_chat()
 	}	
 }
 
-function execute_javascript(arg)
+function execute_javascript(arg, show_result=true)
 {
 	try
 	{
@@ -11515,14 +11524,17 @@ function execute_javascript(arg)
 		var r = "Error"
 	}
 
-	var s = make_safe(arg)
-
-	var f = function()
+	if(show_result)
 	{
-		msg_info2.show(["Executed Javascript", s])
-	}
+		var s = make_safe(arg)
 
-	chat_announce({brk1:'[', brk2:']', msg:`js: ${r}`, onclick:f})
+		var f = function()
+		{
+			msg_info2.show(["Executed Javascript", s])
+		}
+
+		chat_announce({brk1:'[', brk2:']', msg:`js: ${r}`, onclick:f})
+	}
 }
 
 function make_safe(text, html=false, urlize=true)

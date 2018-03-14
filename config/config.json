@@ -88,7 +88,7 @@
 	"settings_default_double_tap": "/users",
 	"settings_default_double_tap_2": "/highlights",
 	"settings_default_double_tap_3": "/maximizetv",
-	"settings_default_afk_delay": 120000,
+	"settings_default_afk_delay": 300000,
 	"settings_default_beep_on_messages": true,
 	"settings_default_beep_on_highlights": true,
 	"settings_default_beep_on_media_change": true,
