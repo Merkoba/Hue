@@ -645,7 +645,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-bottom: 0.2em;
 }
 
-.setting_toggle_container
+.toggler_container
 {
 	display: none;
 	padding-top:0.2em;
@@ -720,47 +720,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 .Msg-content
 {
 	font-size: 1em !important;
-}
-
-#Msg-window-menu
-{
-	width: 22em !important;
-}
-
-#Msg-window-userinfo
-{
-	width: 22em !important;
-}
-
-#Msg-window-userlist
-{
-	width: 22em !important;
-}
-
-#Msg-window-roomlist
-{
-	width: 28em !important;
-}
-
-#Msg-window-played
-{
-	width: 28em !important;
-}
-
-.StorageUI-area
-{
-	width: 30em !important;
-}
-
-.StorageUI-checkbox
-{
-	width: 1.5em !important;
-	height: 1.5em !important;
-}
-
-#Msg-window-info
-{
-	height: auto !important;
 }
 
 .input_history_item
@@ -1158,11 +1117,6 @@ input[type=text], textarea
 	padding-top: 1em;
 }
 
-#Msg-window-profile
-{
-	width: 22em !important;
-}
-
 .small_padding_bottom
 {
 	padding-bottom: 0.4em;
@@ -1348,4 +1302,13 @@ input[type=text], textarea
 {	
 	0% {text-shadow: 0 0 0px}
 	100% {text-shadow: 0 0 1.2em}
+}
+
+.custom_titlebar
+{
+	padding-left: 50.78px !important;
+	padding-right: 10.78px !important;
+	text-align: center !important;
+	font-family: imported_font, consolas, sans-serif !important;
+	font-weight: bold !important;
 }

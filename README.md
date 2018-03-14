@@ -367,6 +367,9 @@ If you want to remove it to start fresh:
 "room_settings_default_radio_enabled"
 >Whether the radio is show to the user when joining a room for the first time.
 
+"room_settings_default_override"
+>Whether room settings override global settings by default.
+
 "jwt_expiration"
 >How long jwt will be valid after login.
 

@@ -33,9 +33,9 @@
 		<script src="/static/js/utilz.js?ver=4"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1065"></script>
+		<script src="/static/js/base.js?ver=1066"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=303"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=304"/>
 
 		<script>
 
@@ -495,140 +495,161 @@
 			</div>
 
 			<div class='spacer1'></div>
+
+			<div class="action inline pointer" onclick="show_global_settings()">Global Settings</div>
+			<div class='spacer3'></div>
+			<div class="action inline pointer" onclick="show_room_settings()">Room Settings</div>			
+			
 			<div class='spacer2'></div>
-
-			<div id='settings' class='unselectable'>
-				
-				<div class="setting_title">Beep On Messages</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_beep_on_messages">
-				
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Beep On Highlights</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_beep_on_highlights">
-				
-				<div class='spacer1'></div>
-				
-				<div class="setting_title">Beep On Media Change</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_beep_on_media_change">
-				
-				<div class='spacer1'></div>
-				
-				<div class="setting_title">Beep On User Joins</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_beep_on_user_joins">
-				
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Background Image</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_background_image">
-				
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Custom Scrollbars</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_custom_scrollbars">
-
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Modal Effects</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_modal_effects">
-
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Show User Joins</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_show_joins">
-
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Show User Parts</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_show_parts">
-
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Highlight Username</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_highlight_current_username">
-
-				<div class='spacer1'></div>
-
-				<div class="setting_title2">Case Insensitive</div>
-				<div class="setting_title">Highlights</div>
-				<input type="checkbox" class="setting_checkbox" id="setting_case_insensitive_highlights">
-
-				<div class='spacer1'></div>
-
-				<div class="setting_toggle action pointer bold inline">+ Words To Highlight</div>
-				<div class='setting_toggle_container'>
-					<div class="setting_title">(Each on a different line)</div>
-					<div class='spacer2'></div>
-					<textarea rows=4 class="setting_textarea" id="setting_other_words_to_highlight"></textarea>
-				</div>
-
-				<div class='spacer1'></div>
-
-				<div class="setting_toggle action pointer bold inline">+ Usernames To Ignore</div>
-				<div class='setting_toggle_container'>
-					<div class="setting_title">(Each on a different line)</div>				
-					<div class='spacer2'></div>
-					<textarea rows=4 class="setting_textarea" id="setting_ignored_usernames"></textarea>
-				</div>
-
-				<div class='spacer1'></div>
-
-				<div class="setting_toggle action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="setting_double_tap_key"></span>&nbsp;Tap</div>
-				<div class='setting_toggle_container'>
-					<div class="setting_title">(Each on a different line)</div>
-					<div class='spacer2'></div>
-					<textarea rows=4 class="setting_textarea" id="setting_double_tap"></textarea>
-				</div>
-
-				<div class='spacer1'></div>
-
-				<div class="setting_toggle action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="setting_double_tap_2_key"></span>&nbsp;Tap</div>
-				<div class='setting_toggle_container'>
-					<div class="setting_title">(Each on a different line)</div>
-					<div class='spacer2'></div>
-					<textarea rows=4 class="setting_textarea" id="setting_double_tap_2"></textarea>
-				</div>
-
-				<div class='spacer1'></div>
-
-				<div class="setting_toggle action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="setting_double_tap_3_key"></span>&nbsp;Tap</div>
-				<div class='setting_toggle_container'>
-					<div class="setting_title">(Each on a different line)</div>
-					<div class='spacer2'></div>
-					<textarea rows=4 class="setting_textarea" id="setting_double_tap_3"></textarea>
-				</div>
-
-				<div class='spacer1'></div>
-
-				<div class="setting_toggle action pointer bold inline">+ At Startup</div>
-				<div class='setting_toggle_container'>
-					<div class="setting_title">(Each on a different line)</div>				
-					<div class='spacer2'></div>
-					<textarea rows=4 class="setting_textarea" id="setting_at_startup"></textarea>
-				</div>				
-				
-				<div class='spacer1'></div>
-				
-				<div class="setting_title" title="AFK means you won't get sound notifications and media won't change">Go AFK</div>
-				<select class='modal_select' id='setting_afk_delay'>
-					<option value='0' selected>Instantly</option>
-					<option value='60000' selected>After 1 Minute</option>
-					<option value='120000' selected>After 2 Minutes</option>
-					<option value='300000' selected>After 5 Minutes</option>
-					<option value='600000' selected>After 10 Minutes</option>
-					<option value='1200000' selected>After 20 Minutes</option>
-					<option value='1800000' selected>After 30 Minutes</option>
-					<option value='3600000' selected>After 1 Hour</option>
-					<option value='never' selected>Never</option>
-				</select>
-
-				<div class='spacer1'></div>
-
-				<div class='menu_item_smaller action' onclick='confirm_reset_settings()'>Reset Settings To Default</div>
-
-			</div>
 		
 		</script>
+
+		<script id='template_settings' type='text/x-handlebars-template'>
+			<div class="setting_title">Beep On Messages</div>
+			<input type="checkbox" class="setting_checkbox" id="{{type}}_beep_on_messages">
+			
+			<div class='spacer1'></div>
+
+			<div class="setting_title">Beep On Highlights</div>
+			<input type="checkbox" class="setting_checkbox" id="{{type}}_beep_on_highlights">
+			
+			<div class='spacer1'></div>
+			
+			<div class="setting_title">Beep On Media Change</div>
+			<input type="checkbox" class="setting_checkbox" id="{{type}}_beep_on_media_change">
+			
+			<div class='spacer1'></div>
+			
+			<div class="setting_title">Beep On User Joins</div>
+			<input type="checkbox" class="setting_checkbox" id="{{type}}_beep_on_user_joins">
+			
+			<div class='spacer1'></div>
+
+			<div class="setting_title">Background Image</div>
+			<input type="checkbox" class="setting_checkbox" id="{{type}}_background_image">
+			
+			<div class='spacer1'></div>
+
+			<div class="setting_title">Custom Scrollbars</div>
+			<input type="checkbox" class="setting_checkbox" id="{{type}}_custom_scrollbars">
+
+			<div class='spacer1'></div>
+
+			<div class="setting_title">Modal Effects</div>
+			<input type="checkbox" class="setting_checkbox" id="{{type}}_modal_effects">
+
+			<div class='spacer1'></div>
+
+			<div class="setting_title">Show User Joins</div>
+			<input type="checkbox" class="setting_checkbox" id="{{type}}_show_joins">
+
+			<div class='spacer1'></div>
+
+			<div class="setting_title">Show User Parts</div>
+			<input type="checkbox" class="setting_checkbox" id="{{type}}_show_parts">
+
+			<div class='spacer1'></div>
+
+			<div class="setting_title">Highlight Username</div>
+			<input type="checkbox" class="setting_checkbox" id="{{type}}_highlight_current_username">
+
+			<div class='spacer1'></div>
+
+			<div class="setting_title2">Case Insensitive</div>
+			<div class="setting_title">Highlights</div>
+			<input type="checkbox" class="setting_checkbox" id="{{type}}_case_insensitive_highlights">
+
+			<div class='spacer1'></div>
+
+			<div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Highlight</div>
+			<div class='{{type}}_toggle_container toggler_container'>
+				<div class="setting_title">(Each on a different line)</div>
+				<div class='spacer2'></div>
+				<textarea rows=4 class="setting_textarea" id="{{type}}_other_words_to_highlight"></textarea>
+			</div>
+
+			<div class='spacer1'></div>
+
+			<div class="{{type}}_toggle toggler action pointer bold inline">+ Usernames To Ignore</div>
+			<div class='{{type}}_toggle_container toggler_container'>
+				<div class="setting_title">(Each on a different line)</div>				
+				<div class='spacer2'></div>
+				<textarea rows=4 class="setting_textarea" id="{{type}}_ignored_usernames"></textarea>
+			</div>
+
+			<div class='spacer1'></div>
+
+			<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_key"></span>&nbsp;Tap</div>
+			<div class='{{type}}_toggle_container toggler_container'>
+				<div class="setting_title">(Each on a different line)</div>
+				<div class='spacer2'></div>
+				<textarea rows=4 class="setting_textarea" id="{{type}}_double_tap"></textarea>
+			</div>
+
+			<div class='spacer1'></div>
+
+			<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_2_key"></span>&nbsp;Tap</div>
+			<div class='{{type}}_toggle_container toggler_container'>
+				<div class="setting_title">(Each on a different line)</div>
+				<div class='spacer2'></div>
+				<textarea rows=4 class="setting_textarea" id="{{type}}_double_tap_2"></textarea>
+			</div>
+
+			<div class='spacer1'></div>
+
+			<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_3_key"></span>&nbsp;Tap</div>
+			<div class='{{type}}_toggle_container toggler_container'>
+				<div class="setting_title">(Each on a different line)</div>
+				<div class='spacer2'></div>
+				<textarea rows=4 class="setting_textarea" id="{{type}}_double_tap_3"></textarea>
+			</div>
+
+			<div class='spacer1'></div>
+
+			<div class="{{type}}_toggle toggler action pointer bold inline">+ At Startup</div>
+			<div class='{{type}}_toggle_container toggler_container'>
+				<div class="setting_title">(Each on a different line)</div>				
+				<div class='spacer2'></div>
+				<textarea rows=4 class="setting_textarea" id="{{type}}_at_startup"></textarea>
+			</div>				
+			
+			<div class='spacer1'></div>
+			
+			<div class="setting_title" title="AFK means you won't get sound notifications and media won't change">Go AFK</div>
+			<select class="modal_select" id="{{type}}_afk_delay">
+				<option value='0'>Instantly</option>
+				<option value='60000'>After 1 Minute</option>
+				<option value='120000'>After 2 Minutes</option>
+				<option value='300000'>After 5 Minutes</option>
+				<option value='600000'>After 10 Minutes</option>
+				<option value='1200000'>After 20 Minutes</option>
+				<option value='1800000'>After 30 Minutes</option>
+				<option value='3600000'>After 1 Hour</option>
+				<option value='never'>Never</option>
+			</select>
+
+			<div class='spacer1'></div>
+
+			<div class='menu_item_smaller action' onclick='confirm_reset_settings("{{type}}")'>Reset Settings To Default</div>			
+		</script>
+
+		<script id='template_global_settings' type='text/x-handlebars-template'>
+			<div id='settings_container' class='unselectable'>{{{settings}}}</div>
+		</script>
+
+		<script id='template_room_settings' type='text/x-handlebars-template'>
+
+			<select class="modal_select" id="room_settings_override">
+				<option value="false">Use Global Settings</option>
+				<option value="true">Override Global Settings</option>
+			</select>
+
+			<div id='room_settings_container' class='unselectable'>
+				<div class='spacer1'></div>
+				{{{settings}}}
+			</div>
+
+		</script>		
 
 		<script id='template_create_room' type='text/x-handlebars-template'>
 			<div id='create_room'>
@@ -789,6 +810,7 @@
 
 		<script id='template_media_menu' type='text/x-handlebars-template'>
 			<div class='unselectable'>
+
 				<div class='menu_item action inline' onclick='stop_and_lock(); hide_media_menu()'>Stop And Lock Everything</div>
 				<div></div>
 				<div class='menu_item action inline' onclick='stop_and_lock(false); hide_media_menu()'>Lock Everything</div>
@@ -808,6 +830,7 @@
 				<div class='menu_item action inline' onclick='refresh_tv(); hide_media_menu()'>Refresh TV</div>
 				<div></div>
 				<div class='menu_item action inline' onclick='refresh_radio(); hide_media_menu()'>Refresh Radio</div>
+				
 			</div>
 		</script>
 

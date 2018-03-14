@@ -92,6 +92,9 @@ var template_input_history
 var template_chat_search
 var template_image
 var template_locked_menu
+var template_settings
+var template_global_settings
+var template_room_settings
 var msg_menu
 var msg_userinfo
 var msg_userlist
@@ -185,8 +188,11 @@ function init()
 	get_settings()
 	get_room_settings()
 	start_msg()
-	start_settings_state()
-	start_settings_listeners()
+	start_settings_state("settings")
+	start_settings_listeners("settings")
+	start_settings_state("room_settings")
+	start_settings_listeners("room_settings")
+	setup_setting_windows()	
 	start_filters()
 	start_image_events()
 	start_dropzone()
@@ -301,6 +307,9 @@ function compile_templates()
 	template_chat_search = Handlebars.compile($('#template_chat_search').html())
 	template_image = Handlebars.compile($('#template_image').html())
 	template_locked_menu = Handlebars.compile($('#template_locked_menu').html())
+	template_settings = Handlebars.compile($('#template_settings').html())
+	template_global_settings = Handlebars.compile($('#template_global_settings').html())
+	template_room_settings = Handlebars.compile($('#template_room_settings').html())
 }
 
 function help()
@@ -1297,7 +1306,7 @@ function setup_theme(data)
 
 function set_background_image()
 {
-	if(background_image_enabled && settings.background_image)
+	if(background_image_enabled && get_setting("background_image"))
 	{
 		$('.background_image').css('background-image', `url('${background_image}')`)
 	}
@@ -1314,7 +1323,7 @@ function set_theme()
 	var background_color_2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
 	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2)
 
-	if(background_image_enabled && settings.background_image)
+	if(background_image_enabled && get_setting("background_image"))
 	{
 		background_color_a = colorlib.rgb_to_rgba(background_color, general_opacity)
 		background_color_2_a = colorlib.rgb_to_rgba(background_color_2, general_opacity)
@@ -1359,9 +1368,6 @@ function set_theme()
 	{
 		background-color: ${background_color_2} !important;
 		color: ${font_color} !important;
-		padding-left: 50.78px !important;
-		padding-right: 10.78px !important;
-		text-align: center !important;
 	}
 
 	.titlebar_inner_x
@@ -1401,7 +1407,7 @@ function userjoin(data)
 {
 	addto_userlist(data.username, data.role, data.profile_image)
 
-	if(settings.show_joins && check_permission(data.role, "chat"))
+	if(get_setting("show_joins") && check_permission(data.role, "chat"))
 	{
 		var prof_image = get_user_by_username(data.username).profile_image
 
@@ -1416,7 +1422,7 @@ function userjoin(data)
 		{
 			alert_title()
 
-			if(settings.beep_on_user_joins)
+			if(get_setting("beep_on_user_joins"))
 			{
 				sound_notify()
 			}
@@ -3543,7 +3549,7 @@ function setup_scrollbars()
 	remove_chat_scrollbar()
 	remove_modal_scrollbars()
 
-	if(settings.custom_scrollbars)
+	if(get_setting("custom_scrollbars"))
 	{
 		start_chat_scrollbar()
 		start_modal_scrollbars()
@@ -3760,7 +3766,7 @@ function update_chat(args={})
 		{
 			alert_title2()
 
-			if(settings.beep_on_highlights)
+			if(get_setting("beep_on_highlights"))
 			{
 				sound_notify()
 			}
@@ -3770,7 +3776,7 @@ function update_chat(args={})
 		{
 			alert_title()
 
-			if(settings.beep_on_messages)
+			if(get_setting("beep_on_messages"))
 			{
 				sound_notify()
 			}
@@ -4023,7 +4029,7 @@ function change(args={})
 	{
 		alert_title()
 
-		if(settings.beep_on_media_change)
+		if(get_setting("beep_on_media_change"))
 		{
 			sound_notify()
 		}
@@ -4275,7 +4281,7 @@ function chat_announce(args={})
 	{
 		alert_title2()
 
-		if(settings.beep_on_highlights)
+		if(get_setting("beep_on_highlights"))
 		{
 			sound_notify()
 		}
@@ -6049,12 +6055,12 @@ function activate_window_visibility_listener()
 
 		else
 		{
-			if(settings.afk_delay !== "never")
+			if(get_setting("afk_delay") !== "never")
 			{
 				afk_timer = setTimeout(function()
 				{
 					afk = true
-				}, settings.afk_delay)
+				}, get_setting("afk_delay"))
 			}
 
 			update_chat_scrollbar()
@@ -7091,7 +7097,7 @@ function disconnected(data)
 {
 	removefrom_userlist(data.username)
 
-	if(settings.show_parts && check_permission(data.role, "chat"))
+	if(get_setting("show_parts") && check_permission(data.role, "chat"))
 	{
 		chat_announce({brk1:'--', brk2:'--', msg:`${data.username} has left`, save:true, uname:data.username})
 	}
@@ -7101,7 +7107,7 @@ function pinged(data)
 {
 	removefrom_userlist(data.username)
 
-	if(settings.show_parts && check_permission(data.role, "chat"))
+	if(get_setting("show_parts") && check_permission(data.role, "chat"))
 	{
 		chat_announce({brk1:'--', brk2:'--', msg:`${data.username} has left (Ping Timeout)`, save:true, uname:data.username})
 	}
@@ -7130,7 +7136,7 @@ function start_msg()
 		clear_editables: true
 	}
 
-	if(settings.modal_effects)
+	if(get_setting("modal_effects"))
 	{
 		common.show_effect = "fade"
 		common.close_effect = "fade"
@@ -7147,6 +7153,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "menu",
+			window_width: "22em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7173,6 +7180,7 @@ function start_msg()
 		{		
 			id: "userinfo",
 			clear_editables: false,
+			window_width: "22em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7201,6 +7209,7 @@ function start_msg()
 			enable_titlebar: true,
 			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
+			window_width: "22em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7227,6 +7236,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "roomlist",
+			window_width: "28em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7252,6 +7262,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "played",
+			window_width: "28em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7308,6 +7319,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "profile",
+			window_width: "22em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7336,6 +7348,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "info",
+			window_height: "auto",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7370,6 +7383,7 @@ function start_msg()
 			enable_titlebar: true,
 			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
+			window_height: "auto",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7740,6 +7754,66 @@ function start_msg()
 		})
 	)
 
+	msg_global_settings = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "global_settings",
+			enable_titlebar: true,
+			titlebar_class: "!custom_titlebar !unselectable",
+			window_inner_x_class: "!titlebar_inner_x",
+			window_width: "22em",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				reset_radio_history_filter()				
+			}
+		})
+	)
+
+	msg_room_settings = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "room_settings",
+			enable_titlebar: true,
+			titlebar_class: "!custom_titlebar !unselectable",
+			window_inner_x_class: "!titlebar_inner_x",
+			window_width: "22em",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				reset_radio_history_filter()				
+			}
+		})
+	)		
+
 	msg_menu.set(template_menu())
 	msg_userinfo.set(template_userinfo())
 	msg_userlist.set(template_userlist())
@@ -7759,6 +7833,8 @@ function start_msg()
 	msg_chat_search.set(template_chat_search())
 	msg_image.set(template_image())
 	msg_locked.set(template_locked_menu())
+	msg_global_settings.set(template_global_settings({settings:template_settings({type:"settings"})}))
+	msg_room_settings.set(template_room_settings({settings:template_settings({type:"room_settings"})}))
 
 	msg_info.create()
 	msg_info2.create()
@@ -7769,6 +7845,8 @@ function start_msg()
 	msg_image_history.set_title("Image History")
 	msg_tv_history.set_title("TV History")
 	msg_radio_history.set_title("Radio History")
+	msg_global_settings.set_title("Global Settings")
+	msg_room_settings.set_title("Room Settings")
 }
 
 function info_vars_to_false()
@@ -7785,7 +7863,7 @@ function info2_vars_to_false()
 
 function after_modal_create(instance)
 {
-	if(settings.custom_scrollbars)
+	if(get_setting("custom_scrollbars"))
 	{
 		start_modal_scrollbar(instance.options.id)
 	}	
@@ -7951,147 +8029,148 @@ function save_settings()
 	save_local_storage(ls_settings, settings)
 }
 
-function start_settings_state()
+function start_settings_state(type)
 {
-	$("#setting_background_image").prop("checked", settings.background_image)
-	$("#setting_custom_scrollbars").prop("checked", settings.custom_scrollbars)
-	$("#setting_beep_on_messages").prop("checked", settings.beep_on_messages)
-	$("#setting_beep_on_highlights").prop("checked", settings.beep_on_highlights)
-	$("#setting_beep_on_media_change").prop("checked", settings.beep_on_media_change)
-	$("#setting_beep_on_user_joins").prop("checked", settings.beep_on_user_joins)
-	$("#setting_modal_effects").prop("checked", settings.modal_effects)
-	$("#setting_highlight_current_username").prop("checked", settings.highlight_current_username)
-	$("#setting_case_insensitive_highlights").prop("checked", settings.case_insensitive_highlights)
-	$("#setting_other_words_to_highlight").val(settings.other_words_to_highlight)
-	$("#setting_double_tap").val(settings.double_tap)
-	$("#setting_double_tap_2").val(settings.double_tap_2)
-	$("#setting_double_tap_3").val(settings.double_tap_3)
-	$('#setting_afk_delay').find('option').each(function()
+	$(`#${type}_background_image`).prop("checked", window[type].background_image)
+	$(`#${type}_custom_scrollbars`).prop("checked", window[type].custom_scrollbars)
+	$(`#${type}_beep_on_messages`).prop("checked", window[type].beep_on_messages)
+	$(`#${type}_beep_on_highlights`).prop("checked", window[type].beep_on_highlights)
+	$(`#${type}_beep_on_media_change`).prop("checked", window[type].beep_on_media_change)
+	$(`#${type}_beep_on_user_joins`).prop("checked", window[type].beep_on_user_joins)
+	$(`#${type}_modal_effects`).prop("checked", window[type].modal_effects)
+	$(`#${type}_highlight_current_username`).prop("checked", window[type].highlight_current_username)
+	$(`#${type}_case_insensitive_highlights`).prop("checked", window[type].case_insensitive_highlights)
+	$(`#${type}_other_words_to_highlight`).val(window[type].other_words_to_highlight)
+	$(`#${type}_double_tap`).val(window[type].double_tap)
+	$(`#${type}_double_tap_2`).val(window[type].double_tap_2)
+	$(`#${type}_double_tap_3`).val(window[type].double_tap_3)
+	$(`#${type}_afk_delay`).find('option').each(function()
 	{
-		if($(this).val() == settings.afk_delay)
+		if($(this).val() == window[type].afk_delay)
 		{
 			$(this).prop('selected', true)
 		}
 	})	
-	$("#setting_at_startup").val(settings.at_startup)
-	$("#setting_ignored_usernames").val(settings.ignored_usernames)
-	$("#setting_show_joins").prop("checked", settings.show_joins)
-	$("#setting_show_parts").prop("checked", settings.show_parts)
+	$(`#${type}_at_startup`).val(window[type].at_startup)
+	$(`#${type}_ignored_usernames`).val(window[type].ignored_usernames)
+	$(`#${type}_show_joins`).prop("checked", window[type].show_joins)
+	$(`#${type}_show_parts`).prop("checked", window[type].show_parts)
 }
 
-function start_settings_listeners()
+function start_settings_listeners(type)
 {
-	$("#setting_background_image").change(setting_background_image_action)
-	$("#setting_custom_scrollbars").change(setting_custom_scrollbars_action)
-	$("#setting_beep_on_messages").change(setting_beep_on_messages_action)
-	$("#setting_beep_on_highlights").change(setting_beep_on_highlights_action)
-	$("#setting_beep_on_media_change").change(setting_beep_on_media_change_action)
-	$("#setting_beep_on_user_joins").change(setting_beep_on_user_joins_action)
-	$("#setting_modal_effects").change(setting_modal_effects_action)
-	$("#setting_highlight_current_username").change(setting_highlight_current_username_action)
-	$("#setting_case_insensitive_highlights").change(setting_case_insensitive_highlights_action)
-	$("#setting_other_words_to_highlight").blur(setting_other_words_to_highlight_action)
-	$("#setting_double_tap").blur(setting_double_tap_action)
-	$("#setting_double_tap_2").blur(setting_double_tap_2_action)
-	$("#setting_double_tap_3").blur(setting_double_tap_3_action)
-	$("#setting_afk_delay").blur(setting_afk_delay_action)
-	$("#setting_at_startup").blur(setting_at_startup_action)
-	$("#setting_ignored_usernames").blur(setting_ignored_usernames_action)
-	$("#setting_show_joins").change(setting_show_joins_action)
-	$("#setting_show_parts").change(setting_show_parts_action)
+	$(`#${type}_background_image`).change(() => {setting_background_image_action(type)})
+	$(`#${type}_custom_scrollbars`).change(() => {setting_custom_scrollbars_action(type)})
+	$(`#${type}_beep_on_messages`).change(() => {setting_beep_on_messages_action(type)})
+	$(`#${type}_beep_on_highlights`).change(() => {setting_beep_on_highlights_action(type)})
+	$(`#${type}_beep_on_media_change`).change(() => {setting_beep_on_media_change_action(type)})
+	$(`#${type}_beep_on_user_joins`).change(() => {setting_beep_on_user_joins_action(type)})
+	$(`#${type}_modal_effects`).change(() => {setting_modal_effects_action(type)})
+	$(`#${type}_highlight_current_username`).change(() => {setting_highlight_current_username_action(type)})
+	$(`#${type}_case_insensitive_highlights`).change(() => {setting_case_insensitive_highlights_action(type)})
+	$(`#${type}_other_words_to_highlight`).blur(() => {setting_other_words_to_highlight_action(type)})
+	$(`#${type}_double_tap`).blur(() => {setting_double_tap_action(type)})
+	$(`#${type}_double_tap_2`).blur(() => {setting_double_tap_2_action(type)})
+	$(`#${type}_double_tap_3`).blur(() => {setting_double_tap_3_action(type)})
+	$(`#${type}_afk_delay`).blur(() => {setting_afk_delay_action(type)})
+	$(`#${type}_at_startup`).blur(() => {setting_at_startup_action(type)})
+	$(`#${type}_ignored_usernames`).blur(() => {setting_ignored_usernames_action(type)})
+	$(`#${type}_show_joins`).change(() => {setting_show_joins_action(type)})
+	$(`#${type}_show_parts`).change(() => {setting_show_parts_action(type)})
 }
 
-function call_setting_actions(save=true)
+function call_setting_actions(type, save=true)
 {
-	setting_background_image_action(save)
-	setting_custom_scrollbars_action(save)
-	setting_beep_on_messages_action(save)
-	setting_beep_on_highlights_action(save)
-	setting_beep_on_media_change_action(save)
-	setting_beep_on_user_joins_action(save)
-	setting_modal_effects_action(save)
-	setting_highlight_current_username_action(save)
-	setting_case_insensitive_highlights_action(save)
-	setting_other_words_to_highlight_action(save)
-	setting_double_tap_action(save)
-	setting_double_tap_2_action(save)
-	setting_double_tap_3_action(save)	
-	setting_afk_delay_action(save)	
-	setting_show_joins_action(save)	
-	setting_show_parts_action(save)	
+	setting_background_image_action(type, save)
+	setting_custom_scrollbars_action(type, save)
+	setting_beep_on_messages_action(type, save)
+	setting_beep_on_highlights_action(type, save)
+	setting_beep_on_media_change_action(type, save)
+	setting_beep_on_user_joins_action(type, save)
+	setting_modal_effects_action(type, save)
+	setting_highlight_current_username_action(type, save)
+	setting_case_insensitive_highlights_action(type, save)
+	setting_other_words_to_highlight_action(type, save)
+	setting_double_tap_action(type, save)
+	setting_double_tap_2_action(type, save)
+	setting_double_tap_3_action(type, save)
+	setting_afk_delay_action(type, save)
+	setting_show_joins_action(type, save)
+	setting_show_parts_action(type, save)
 }
 
-function setting_background_image_action(save=true)
+function setting_background_image_action(type, save=true)
 {
-	settings.background_image = $("#setting_background_image").prop("checked")
+	window[type].background_image = $(`#${type}_background_image`).prop("checked")
 
 	set_background_image()
 	set_theme()
 	
 	if(save)
 	{
-		save_settings()
+		window[`save_${type}`]()
 	}
 }
 
-function setting_custom_scrollbars_action(save=true)
+function setting_custom_scrollbars_action(type, save=true)
 {
-	settings.custom_scrollbars = $("#setting_custom_scrollbars").prop("checked")
+	window[type].custom_scrollbars = $(`#${type}_custom_scrollbars`).prop("checked")
+	
 	setup_scrollbars()
 	
 	if(save)
 	{
-		save_settings()	
+		window[`save_${type}`]()	
 	}
 }
 
-function setting_beep_on_messages_action(save=true)
+function setting_beep_on_messages_action(type, save=true)
 {
-	settings.beep_on_messages = $("#setting_beep_on_messages").prop("checked")
+	window[type].beep_on_messages = $(`#${type}_beep_on_messages`).prop("checked")
 	
 	if(save)
 	{
-		save_settings()	
+		window[`save_${type}`]()	
 	}
 }
 
-function setting_beep_on_highlights_action(save=true)
+function setting_beep_on_highlights_action(type, save=true)
 {
-	settings.beep_on_highlights = $("#setting_beep_on_highlights").prop("checked")
+	window[type].beep_on_highlights = $(`#${type}_beep_on_highlights`).prop("checked")
 	
 	if(save)
 	{
-		save_settings()	
+		window[`save_${type}`]()	
 	}
 }
 
-function setting_beep_on_media_change_action(save=true)
+function setting_beep_on_media_change_action(type, save=true)
 {
-	settings.beep_on_media_change = $("#setting_beep_on_media_change").prop("checked")
+	window[type].beep_on_media_change = $(`#${type}_beep_on_media_change`).prop("checked")
 	
 	if(save)
 	{
-		save_settings()	
+		window[`save_${type}`]()	
 	}
 }
 
-function setting_beep_on_user_joins_action(save=true)
+function setting_beep_on_user_joins_action(type, save=true)
 {
-	settings.beep_on_user_joins = $("#setting_beep_on_user_joins").prop("checked")
+	window[type].beep_on_user_joins = $(`#${type}_beep_on_user_joins`).prop("checked")
 	
 	if(save)
 	{
-		save_settings()	
+		window[`save_${type}`]()	
 	}
 }
 
-function setting_modal_effects_action(save=true)
+function setting_modal_effects_action(type, save=true)
 {
-	settings.modal_effects = $("#setting_modal_effects").prop("checked")
+	window[type].modal_effects = $(`#${type}_modal_effects`).prop("checked")
 
 	for(var instance of msg_menu.instances())
 	{
-		if(settings.modal_effects)
+		if(window[type].modal_effects)
 		{
 			instance.options.show_effect = "fade"
 			instance.options.close_effect = "fade"
@@ -8106,170 +8185,170 @@ function setting_modal_effects_action(save=true)
 	
 	if(save)
 	{
-		save_settings()	
+		window[`save_${type}`]()	
 	}
 }
 
-function setting_highlight_current_username_action(save=true)
+function setting_highlight_current_username_action(type, save=true)
 {
-	settings.highlight_current_username = $("#setting_highlight_current_username").prop("checked")
+	window[type].highlight_current_username = $(`#${type}_highlight_current_username`).prop("checked")
 	
 	if(save)
 	{
-		save_settings()	
+		window[`save_${type}`]()	
 	}
 }
 
-function setting_case_insensitive_highlights_action(save=true)
+function setting_case_insensitive_highlights_action(type, save=true)
 {
-	settings.case_insensitive_highlights = $("#setting_case_insensitive_highlights").prop("checked")
+	window[type].case_insensitive_highlights = $(`#${type}_case_insensitive_highlights`).prop("checked")
 	generate_mentions_regex()
 	generate_highlight_words_regex()
 	
 	if(save)
 	{
-		save_settings()	
+		window[`save_${type}`]()	
 	}
 }
 
-function setting_other_words_to_highlight_action(save=true)
+function setting_other_words_to_highlight_action(type, save=true)
 {
-	var words = utilz.clean_string7($("#setting_other_words_to_highlight").val())
+	var words = utilz.clean_string7($(`#${type}_other_words_to_highlight`).val())
 
-	$("#setting_other_words_to_highlight").val(words)
+	$(`#${type}_other_words_to_highlight`).val(words)
 
-	if(settings.other_words_to_highlight !== words)
+	if(window[type].other_words_to_highlight !== words)
 	{
-		settings.other_words_to_highlight = words
+		window[type].other_words_to_highlight = words
 
 		generate_highlight_words_regex()
 		
 		if(save)
 		{
-			save_settings()
+			window[`save_${type}`]()
 		}
 	}	
 }
 
-function setting_double_tap_action(save=true)
+function setting_double_tap_action(type, save=true)
 {
-	var cmds = utilz.clean_string7($("#setting_double_tap").val())
+	var cmds = utilz.clean_string7($(`#${type}_double_tap`).val())
 
-	$("#setting_double_tap").val(cmds)
+	$(`#${type}_double_tap`).val(cmds)
 
-	if(settings.double_tap !== cmds)
+	if(window[type].double_tap !== cmds)
 	{
-		settings.double_tap = cmds
+		window[type].double_tap = cmds
 		
 		if(save)
 		{
-			save_settings()
+			window[`save_${type}`]()
 		}
 	}	
 }
 
-function setting_double_tap_2_action(save=true)
+function setting_double_tap_2_action(type, save=true)
 {
-	var cmds = utilz.clean_string7($("#setting_double_tap_2").val())
+	var cmds = utilz.clean_string7($(`#${type}_double_tap_2`).val())
 
-	$("#setting_double_tap_2").val(cmds)
+	$(`#${type}_double_tap_2`).val(cmds)
 
-	if(settings.double_tap_2 !== cmds)
+	if(window[type].double_tap_2 !== cmds)
 	{
-		settings.double_tap_2 = cmds
+		window[type].double_tap_2 = cmds
 		
 		if(save)
 		{
-			save_settings()
+			window[`save_${type}`]()
 		}
 	}	
 }
 
-function setting_double_tap_3_action(save=true)
+function setting_double_tap_3_action(type, save=true)
 {
-	var cmds = utilz.clean_string7($("#setting_double_tap_3").val())
+	var cmds = utilz.clean_string7($(`#${type}_double_tap_3`).val())
 
-	$("#setting_double_tap_3").val(cmds)
+	$(`#${type}_double_tap_3`).val(cmds)
 
-	if(settings.double_tap_3 !== cmds)
+	if(window[type].double_tap_3 !== cmds)
 	{
-		settings.double_tap_3 = cmds
+		window[type].double_tap_3 = cmds
 		
 		if(save)
 		{
-			save_settings()
+			window[`save_${type}`]()
 		}
 	}	
 }
 
-function setting_afk_delay_action(save=true)
+function setting_afk_delay_action(type, save=true)
 {
-	var delay = $("#setting_afk_delay option:selected").val()
+	var delay = $(`#${type}_afk_delay option:selected`).val()
 
 	if(delay !== "never")
 	{
 		delay = parseInt(delay)
 	}
 
-	settings.afk_delay = delay
+	window[type].afk_delay = delay
 		
 	if(save)
 	{
-		save_settings()
+		window[`save_${type}`]()
 	}
 }
 
-function setting_at_startup_action(save=true)
+function setting_at_startup_action(type, save=true)
 {
-	var cmds = utilz.clean_string7($("#setting_at_startup").val())
+	var cmds = utilz.clean_string7($(`#${type}_at_startup`).val())
 
-	$("#setting_at_startup").val(cmds)
+	$(`#${type}_at_startup`).val(cmds)
 
-	if(settings.at_startup !== cmds)
+	if(window[type].at_startup !== cmds)
 	{
-		settings.at_startup = cmds
+		window[type].at_startup = cmds
 		
 		if(save)
 		{
-			save_settings()
+			window[`save_${type}`]()
 		}
 	}	
 }
 
-function setting_ignored_usernames_action(save=true)
+function setting_ignored_usernames_action(type, save=true)
 {
-	var unames = utilz.clean_string7($("#setting_ignored_usernames").val())
+	var unames = utilz.clean_string7($(`#${type}_ignored_usernames`).val())
 
-	$("#setting_ignored_usernames").val(unames)
+	$(`#${type}_ignored_usernames`).val(unames)
 
-	if(settings.ignored_usernames !== unames)
+	if(window[type].ignored_usernames !== unames)
 	{
-		settings.ignored_usernames = unames
+		window[type].ignored_usernames = unames
 		
 		if(save)
 		{
-			save_settings()
+			window[`save_${type}`]()
 		}
 	}	
 }
 
-function setting_show_joins_action(save=true)
+function setting_show_joins_action(type, save=true)
 {
-	settings.show_joins = $("#setting_show_joins").prop("checked")
+	window[type].show_joins = $(`#${type}_show_joins`).prop("checked")
 	
 	if(save)
 	{
-		save_settings()	
+		window[`save_${type}`]()	
 	}
 }
 
-function setting_show_parts_action(save=true)
+function setting_show_parts_action(type, save=true)
 {
-	settings.show_parts = $("#setting_show_parts").prop("checked")
+	window[type].show_parts = $(`#${type}_show_parts`).prop("checked")
 	
 	if(save)
 	{
-		save_settings()	
+		window[`save_${type}`]()	
 	}
 }
 
@@ -8291,6 +8370,12 @@ function get_room_settings()
 
 	var changed = false
 
+	if(room_settings.override === undefined)
+	{
+		room_settings.override = room_settings_default_override
+		changed = true
+	}
+
 	if(room_settings.images_enabled === undefined)
 	{
 		room_settings.images_enabled = room_settings_default_images_enabled
@@ -8307,6 +8392,15 @@ function get_room_settings()
 	{
 		room_settings.radio_enabled = room_settings_default_radio_enabled
 		changed = true
+	}
+
+	for(var key in settings)
+	{
+		if(room_settings[key] === undefined)
+		{
+			room_settings[key] = settings[key]
+			changed = true
+		}
 	}
 
 	if(changed)
@@ -8748,35 +8842,7 @@ function start_twitch()
 
 function setup_userinfo()
 {
-	$("#userinfo_profile_image").attr("src", profile_image)
-	$("#setting_double_tap_key").text(double_tap_key)
-	$("#setting_double_tap_2_key").text(double_tap_key_2)
-	$("#setting_double_tap_3_key").text(double_tap_key_3)
-
-	$(".setting_toggle").each(function()
-	{
-		$(this).click(function()
-		{
-			var container = $(this).next('.setting_toggle_container')
-			var display = container.css('display')
-
-			if(display === "none")
-			{
-				container.css("display", "block")
-
-				$(this).html(`- ${$(this).html().substring(2)}`)
-			}
-
-			else
-			{
-				container.css("display", "none")
-
-				$(this).html(`+ ${$(this).html().substring(2)}`)
-			}
-
-			update_modal_scrollbar("userinfo")
-		})	
-	})	
+	$("#userinfo_profile_image").attr("src", profile_image)	
 }
 
 function show_userinfo()
@@ -10479,7 +10545,7 @@ function set_email(email)
 
 function generate_mentions_regex()
 {
-	if(settings.case_insensitive_highlights)
+	if(get_setting("case_insensitive_highlights"))
 	{
 		mentions_regex = new RegExp(`(?:^|\\s+)${escape_special_characters(username)}(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`, "i")
 	}
@@ -10494,7 +10560,7 @@ function generate_highlight_words_regex()
 {
 	var words = ""
 
-	var lines = settings.other_words_to_highlight.split('\n')
+	var lines = get_setting("other_words_to_highlight").split('\n')
 
 	for(var i=0; i<lines.length; i++)
 	{
@@ -10510,7 +10576,7 @@ function generate_highlight_words_regex()
 
 	if(words.length > 0)
 	{
-		if(settings.case_insensitive_highlights)
+		if(get_setting("case_insensitive_highlights"))
 		{
 			highlight_words_regex = new RegExp(`(?:^|\\s+)(?:${words})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.)`, "i")
 		}
@@ -10529,7 +10595,7 @@ function generate_highlight_words_regex()
 
 function check_highlights(msg)
 {
-	if(settings.highlight_current_username)
+	if(get_setting("highlight_current_username"))
 	{
 		if(msg.search(mentions_regex) !== -1)
 		{
@@ -10869,9 +10935,9 @@ function do_highlights_filter()
 
 function on_double_tap()
 {
-	if(settings.double_tap)
+	if(get_setting("double_tap"))
 	{
-		var cmds = settings.double_tap.split('\n')
+		var cmds = get_setting("double_tap").split('\n')
 
 		for(var cmd of cmds)
 		{
@@ -10882,9 +10948,9 @@ function on_double_tap()
 
 function on_double_tap_2()
 {
-	if(settings.double_tap_2)
+	if(get_setting("double_tap_2"))
 	{
-		var cmds = settings.double_tap_2.split('\n')
+		var cmds = get_setting("double_tap_2").split('\n')
 
 		for(var cmd of cmds)
 		{
@@ -10895,9 +10961,9 @@ function on_double_tap_2()
 
 function on_double_tap_3()
 {
-	if(settings.double_tap_3)
+	if(get_setting("double_tap_3"))
 	{
-		var cmds = settings.double_tap_3.split('\n')
+		var cmds = get_setting("double_tap_3").split('\n')
 
 		for(var cmd of cmds)
 		{
@@ -10908,9 +10974,9 @@ function on_double_tap_3()
 
 function at_startup()
 {
-	if(settings.at_startup)
+	if(get_setting("at_startup"))
 	{
-		var cmds = settings.at_startup.split('\n')
+		var cmds = get_setting("at_startup").split('\n')
 
 		for(var cmd of cmds)
 		{
@@ -11460,28 +11526,28 @@ function goto_room_action()
 	msg_info.close()
 }
 
-function confirm_reset_settings()
+function confirm_reset_settings(type)
 {
 	var r = confirm("Are you sure you want to reset the settings to their initial state?")
 
 	if(r)
 	{
-		reset_settings()
+		reset_settings(type)
 	}
 }
 
-function reset_settings()
+function reset_settings(type)
 {
-	localStorage.removeItem(ls_settings)
-	get_settings()
-	start_settings_state()
-	call_setting_actions(false)
-	save_settings()	
+	localStorage.removeItem(window[`ls_${type}`])
+	window[`get_${type}`]()
+	start_settings_state(type)
+	call_setting_actions(type, false)
+	window[`save_${type}`]()	
 }
 
 function setup_chat()
 {
-	if(settings.custom_scrollbars)
+	if(get_setting("custom_scrollbars"))
 	{
 		start_chat_scrollbar()
 	}	
@@ -11509,11 +11575,6 @@ function execute_javascript(arg, show_result=true)
 		}
 
 		catch(err)
-		{
-			r = "Done"
-		}
-		
-		if(r === undefined || typeof r === "object")
 		{
 			r = "Done"
 		}
@@ -11647,10 +11708,123 @@ function user_is_ignored(uname)
 		return false
 	}
 
-	if(settings.ignored_usernames.indexOf(uname) !== -1)
+	if(get_setting("ignored_usernames").indexOf(uname) !== -1)
 	{
 		return true
 	}
 
 	return false
+}
+
+function show_global_settings()
+{
+	msg_global_settings.show()
+}
+
+function show_room_settings()
+{
+	msg_room_settings.show()
+}
+
+function setup_setting_windows()
+{
+	setup_setting_elements("settings", "global_settings")
+	setup_setting_elements("room_settings", "room_settings")
+	
+	$('#room_settings_override').find('option').each(function()
+	{
+		if(JSON.parse($(this).val()) === room_settings.override)
+		{
+			$(this).prop('selected', true)
+		}
+	})
+
+	$('#room_settings_override').change(function()
+	{
+		room_settings.override = JSON.parse($('#room_settings_override option:selected').val())
+		
+		check_room_settings_override()
+		
+		if(room_settings.override)
+		{
+			call_setting_actions("room_settings", false)
+		}
+
+		else
+		{
+			call_setting_actions("settings", false)
+		}
+
+		save_room_settings()
+	})
+
+	check_room_settings_override()
+}
+
+function setup_setting_elements(type, parent)
+{
+	$(`#${type}_double_tap_key`).text(double_tap_key)
+	$(`#${type}_double_tap_2_key`).text(double_tap_key_2)
+	$(`#${type}_double_tap_3_key`).text(double_tap_key_3)
+
+	$(`.${type}_toggle`).each(function()
+	{
+		$(this).click(function()
+		{
+			var container = $(this).next(`.${type}_toggle_container`)
+			var display = container.css('display')
+
+			if(display === "none")
+			{
+				container.css("display", "block")
+
+				$(this).html(`- ${$(this).html().substring(2)}`)
+			}
+
+			else
+			{
+				container.css("display", "none")
+
+				$(this).html(`+ ${$(this).html().substring(2)}`)
+			}
+
+			update_modal_scrollbar(parent)
+		})	
+	})
+}
+
+function check_room_settings_override()
+{
+	if(room_settings.override)
+	{
+		$("#room_settings_container").css("display", "initial")
+	}
+
+	else
+	{
+		$("#room_settings_container").css("display", "none")
+	}
+
+	update_modal_scrollbar("room_settings")
+}
+
+function get_setting(name)
+{
+	try
+	{
+		if(room_settings.override)
+		{
+			return room_settings[name]
+		}
+
+		else
+		{
+			return settings[name]
+		}
+	}
+
+	catch(err)
+	{
+		return undefined
+	}
 }
