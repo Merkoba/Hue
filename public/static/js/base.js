@@ -179,6 +179,7 @@ var wheel_delay = 100
 var check_scrollers_delay = 100
 var requesting_roomlist = false
 var num_keys_pressed = 0
+var first_time
 
 function init()
 {
@@ -1382,6 +1383,13 @@ function set_theme()
 	{
 		background-color: ${background_color} !important;
 	}
+
+	.custom_popup
+	{
+		background-color: ${background_color_2} !important;
+		color: ${font_color} !important;
+		border: 1px solid ${font_color} !important;
+	}	
 
 	.nicescroll-cursors
 	{
@@ -2713,8 +2721,10 @@ function activate_key_detection()
 	{
 		if(!started)
 		{
-			return
+			return false
 		}
+
+		console.log(1)
 
 		if(e.key === "Tab" && e.shiftKey)
 		{
@@ -3096,6 +3106,11 @@ function activate_key_detection()
 
 	document.addEventListener('keyup', (e) => 
 	{
+		if(!started)
+		{
+			return false
+		}
+
 		if(!e.repeat)
 		{
 			num_keys_pressed -= 1
@@ -6454,8 +6469,15 @@ function check_firstime()
 {
 	if(get_local_storage(ls_first_time) === null)
 	{
+		first_time = true
+
 		show_intro()
 		save_local_storage(ls_first_time, false)
+	}
+
+	else
+	{
+		first_time = false
 	}
 }
 
@@ -10654,7 +10676,7 @@ function check_highlights(msg)
 	return false
 }
 
-function show_intro()
+function create_popup(position)
 {
 	var edges_height = $("#footer").height()
 
@@ -10662,38 +10684,53 @@ function show_intro()
 	{
 		preset: "popup",
 		edge_padding_y: edges_height,
-		position: "bottomleft"
+		position: position,
+		window_class: "!custom_popup",
+		after_create: function(instance)
+		{
+			after_modal_create(instance)
+		},
+		after_show: function(instance)
+		{
+			after_modal_show(instance)
+			after_modal_set_or_show(instance)
+		},
+		after_set: function(instance)
+		{
+			after_modal_set_or_show(instance)
+		},
+		after_close: function(instance)
+		{
+			after_modal_close(instance)
+			reset_played_filter()
+		}		
 	})
 
+	return pop
+}
+
+function show_intro()
+{
 	var s = `
 	You can chat in this area. The icon on the left opens the user menu where you can change your profile image and other settings. 
 	When someone is typing a message the user menu icon turns into a pencil.`
 
-	pop.show(s)
-
-	var pop = Msg.factory(
-	{
-		preset: "popup",
-		edge_padding_y: edges_height,
-		position: "bottomright"
-	})
+	create_popup("bottomleft").show(s)
 
 	var s = `
 	This area has media controls. You can use these to change the room's media or control what is displayed to you.`
 
-	pop.show(s)
-
-	var pop = Msg.factory(
-	{
-		preset: "popup",
-		edge_padding_y: edges_height,
-		position: "top"
-	})
+	create_popup("bottomright").show(s)
 
 	var s = `
-	This area contains the main menu, user list, and radio controls. If you disable the radio the topic will be shown instead.`
+	This area contains the main menu, user list, and radio controls.`
 
-	pop.show(s)
+	create_popup("top").show(s)
+
+	var s = `
+	Welcome. Read and close all popups to be able to chat.`
+
+	create_popup("center").show(s)
 }
 
 function header_topic_events()
@@ -11014,6 +11051,11 @@ function on_double_tap_3()
 
 function at_startup()
 {
+	if(first_time)
+	{
+		return false
+	}
+
 	if(get_setting("at_startup"))
 	{
 		var cmds = get_setting("at_startup").split('\n')
