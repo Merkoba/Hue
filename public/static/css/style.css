@@ -1312,3 +1312,8 @@ input[type=text], textarea
 	font-family: imported_font, consolas, sans-serif !important;
 	font-weight: bold !important;
 }
+
+#room_settings_container
+{
+	display: "none";
+}

@@ -2724,8 +2724,6 @@ function activate_key_detection()
 			return false
 		}
 
-		console.log(1)
-
 		if(e.key === "Tab" && e.shiftKey)
 		{
 			e.preventDefault()
@@ -8425,7 +8423,9 @@ function get_room_settings()
 
 	if(room_settings.override === undefined)
 	{
-		if($("#room_settings_container").css("display") === "none")
+		var contdisplay = $("#room_settings_container").css("display")
+
+		if(contdisplay === "none" || contdisplay === undefined)
 		{
 			room_settings.override = false
 		}
