@@ -7303,6 +7303,7 @@ function start_msg()
 			preset: "window",
 			show_effect: "none",
 			close_effect: "none",
+			window_class: "!no_effects",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7743,7 +7744,8 @@ function start_msg()
 			window_x: "none",
 			show_effect: "none",
 			close_effect: "none",
-			enable_overlay: false,
+			enable_overlay: true,
+			window_class: "!no_effects",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -8191,6 +8193,11 @@ function setting_modal_effects_action(type, save=true)
 	{
 		for(var instance of msg_menu.instances())
 		{
+			if($(instance.window).hasClass("no_effects"))
+			{
+				continue
+			}
+
 			if(window[type].modal_effects)
 			{
 				instance.options.show_effect = "fade"

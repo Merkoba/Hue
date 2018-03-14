@@ -33,9 +33,9 @@
 		<script src="/static/js/utilz.js?ver=4"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1077"></script>
+		<script src="/static/js/base.js?ver=1078"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=305"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=306"/>
 
 		<script>
 
@@ -837,18 +837,21 @@
 				<div class='menu_item action inline' onclick='refresh_radio(); hide_media_menu()'>Refresh Radio</div>
 				
 			</div>
-		</script>
+		</script>	
 
 		<script id='template_locked_menu' type='text/x-handlebars-template'>
 			<div id='locked_menu' class='unselectable'>
 				<div>You are banned from this room</div>
 				<div class='spacer3'></div>
-				<div class='menu_item' onclick="request_roomlist('', 'visited')">Visited Rooms</div>
-				<div class='menu_item' onclick="request_roomlist()">Public Rooms</div>
-				<div class='menu_item' onclick="show_goto_room()">Go To Room</div>				
-				<div class='menu_item' onclick='show_create_room()'>Create Room</div>
+				<div class='menu_item action inline' onclick="request_roomlist('', 'visited')">Visited Rooms</div>
+				<div></div>
+				<div class='menu_item action inline' onclick="request_roomlist()">Public Rooms</div>
+				<div></div>
+				<div class='menu_item action inline' onclick="show_goto_room()">Go To Room</div>
+				<div></div>
+				<div class='menu_item action inline' onclick='show_create_room()'>Create Room</div>
 				<div class='spacer3'></div>
-				<div class='menu_item_smaller' onclick='confirm_logout()'>Logout</div>
+				<div class='menu_item_smaller action' onclick='confirm_logout()'>Logout</div>
 			</div>
 		</script>		
 

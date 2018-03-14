@@ -722,6 +722,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 	font-size: 1em !important;
 }
 
+#Msg-overlay-locked
+{
+	background-color: rgba(186, 93, 93, 0.7) !important;
+}
+
 .input_history_item
 {
 	padding-top: 1em;
