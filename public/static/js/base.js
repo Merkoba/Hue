@@ -2719,7 +2719,7 @@ function activate_key_detection()
 	{
 		if(!started)
 		{
-			return false
+			return
 		}
 
 		if(e.key === "Tab" && e.shiftKey)
@@ -3104,7 +3104,7 @@ function activate_key_detection()
 	{
 		if(!started)
 		{
-			return false
+			return
 		}
 
 		if(!e.repeat)
