@@ -161,9 +161,9 @@ var writing_whisper = false
 var double_tap_key_pressed = 0
 var double_tap_key_2_pressed = 0
 var double_tap_key_3_pressed = 0
-var images_visible
-var tv_visible
-var radio_visible
+var images_visible = true
+var tv_visible = true
+var radio_visible = true
 var images_changed = []
 var modal_image_open = false
 var current_image_url = ""
@@ -8387,25 +8387,34 @@ function get_room_settings()
 
 	if(room_settings.override === undefined)
 	{
-		room_settings.override = room_settings_default_override
+		if($("#room_settings_container").css("display") === "none")
+		{
+			room_settings.override = false
+		}
+
+		else
+		{
+			room_settings.override = true
+		}
+
 		changed = true
 	}
 
 	if(room_settings.images_enabled === undefined)
 	{
-		room_settings.images_enabled = room_settings_default_images_enabled
+		room_settings.images_enabled = images_visible
 		changed = true
 	}
 
 	if(room_settings.tv_enabled === undefined)
 	{
-		room_settings.tv_enabled = room_settings_default_tv_enabled
+		room_settings.tv_enabled = tv_visible
 		changed = true
 	}
 
 	if(room_settings.radio_enabled === undefined)
 	{
-		room_settings.radio_enabled = room_settings_default_radio_enabled
+		room_settings.radio_enabled = radio_visible
 		changed = true
 	}
 
@@ -11553,21 +11562,11 @@ function confirm_reset_settings(type)
 
 function reset_settings(type)
 {
-	if(type === "room_settings")
-	{
-		var o_override = room_settings.override
-	}
-
 	localStorage.removeItem(window[`ls_${type}`])
 	window[`get_${type}`]()
 	start_settings_state(type)
 	call_setting_actions(type, false)
-	window[`save_${type}`]()
-
-	if(type === "room_settings")
-	{
-		room_settings.override = o_override
-	}	
+	window[`save_${type}`]()	
 }
 
 function setup_chat()
