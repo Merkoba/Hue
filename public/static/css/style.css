@@ -1318,7 +1318,14 @@ input[type=text], textarea
 	font-weight: bold !important;
 }
 
-#room_settings_container
+.room_settings_overrider_container
 {
-	display: "none";
+	padding-top: 0.4em;
+	padding-bottom: 0.4em;
+}
+
+.faded
+{
+	opacity: 0.5;
+	pointer-events: none;
 }

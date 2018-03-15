@@ -188,7 +188,7 @@ function init()
 {
 	get_volume()
 	activate_key_detection()
-	compile_templates()
+	setup_templates()
 	get_global_settings()
 	get_room_settings()
 	start_msg()
@@ -223,7 +223,7 @@ function init()
 	start_titles()
 	setup_show_profile()
 	setup_main_menu()
-	start_twitch()
+	// start_twitch()
 	check_image_queue()
 	setup_input()
 	font_check()
@@ -283,8 +283,13 @@ function remove_local_storage(ls_name)
 	localStorage.removeItem(ls_name)	
 }
 
-function compile_templates()
+function setup_templates()
 {
+	Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) 
+	{
+		return (arg1 === arg2) ? options.fn(this) : options.inverse(this)
+	})
+
 	template_menu = Handlebars.compile($('#template_menu').html())
 	template_create_room = Handlebars.compile($('#template_create_room').html())
 	template_open_room = Handlebars.compile($('#template_open_room').html())
@@ -3585,6 +3590,7 @@ var resize_timer = (function()
 			fix_visible_video_frame()
 			update_chat_scrollbar()		
 			goto_bottom()
+			check_scrollers()
 		}, resize_delay)
 	}
 })()
@@ -8084,6 +8090,12 @@ function get_global_settings()
 		changed = true
 	}
 
+	if(global_settings.animate_scroll === undefined)
+	{
+		global_settings.animate_scroll = global_settings_default_animate_scroll
+		changed = true
+	}
+
 	if(changed)
 	{
 		save_global_settings()
@@ -8121,6 +8133,7 @@ function start_settings_state(type)
 	$(`#${type}_ignored_usernames`).val(window[type].ignored_usernames)
 	$(`#${type}_show_joins`).prop("checked", window[type].show_joins)
 	$(`#${type}_show_parts`).prop("checked", window[type].show_parts)
+	$(`#${type}_animate_scroll`).prop("checked", window[type].animate_scroll)
 }
 
 function start_settings_listeners(type)
@@ -8143,6 +8156,7 @@ function start_settings_listeners(type)
 	$(`#${type}_ignored_usernames`).blur(() => {setting_ignored_usernames_action(type)})
 	$(`#${type}_show_joins`).change(() => {setting_show_joins_action(type)})
 	$(`#${type}_show_parts`).change(() => {setting_show_parts_action(type)})
+	$(`#${type}_animate_scroll`).change(() => {setting_animate_scroll_action(type)})
 }
 
 function call_setting_actions(type, save=true)
@@ -8163,13 +8177,14 @@ function call_setting_actions(type, save=true)
 	setting_afk_delay_action(type, save)
 	setting_show_joins_action(type, save)
 	setting_show_parts_action(type, save)
+	setting_animate_scroll_action(type, save)
 }
 
 function setting_background_image_action(type, save=true)
 {
 	window[type].background_image = $(`#${type}_background_image`).prop("checked")
 
-	if(active_settings() === type)
+	if(active_settings("background_image") === type)
 	{
 		set_background_image()
 		set_theme()
@@ -8185,7 +8200,7 @@ function setting_custom_scrollbars_action(type, save=true)
 {
 	window[type].custom_scrollbars = $(`#${type}_custom_scrollbars`).prop("checked")
 	
-	if(active_settings() === type)
+	if(active_settings("custom_scrollbars") === type)
 	{
 		setup_scrollbars()
 	}	
@@ -8240,7 +8255,7 @@ function setting_modal_effects_action(type, save=true)
 {
 	window[type].modal_effects = $(`#${type}_modal_effects`).prop("checked")
 
-	if(active_settings() === type)
+	if(active_settings("modal_effects") === type)
 	{
 		for(var instance of msg_menu.instances())
 		{
@@ -8283,7 +8298,7 @@ function setting_case_insensitive_highlights_action(type, save=true)
 {
 	window[type].case_insensitive_highlights = $(`#${type}_case_insensitive_highlights`).prop("checked")
 	
-	if(active_settings() === type)
+	if(active_settings("case_insensitive_highlights") === type)
 	{
 		generate_mentions_regex()
 		generate_highlight_words_regex()
@@ -8305,7 +8320,7 @@ function setting_other_words_to_highlight_action(type, save=true)
 	{
 		window[type].other_words_to_highlight = words
 
-		if(active_settings() === type)
+		if(active_settings("other_words_to_highlight") === type)
 		{
 			generate_highlight_words_regex()
 		}
@@ -8439,6 +8454,16 @@ function setting_show_parts_action(type, save=true)
 	}
 }
 
+function setting_animate_scroll_action(type, save=true)
+{
+	window[type].animate_scroll = $(`#${type}_animate_scroll`).prop("checked")
+	
+	if(save)
+	{
+		window[`save_${type}`]()	
+	}
+}
+
 function get_room_settings()
 {
 	var room_settings_all = get_local_storage(ls_room_settings)
@@ -8456,23 +8481,6 @@ function get_room_settings()
 	}
 
 	var changed = false
-
-	if(room_settings.override === undefined)
-	{
-		var contdisplay = $("#room_settings_container").css("display")
-
-		if(contdisplay === "none" || contdisplay === undefined)
-		{
-			room_settings.override = false
-		}
-
-		else
-		{
-			room_settings.override = true
-		}
-
-		changed = true
-	}
 
 	if(room_settings.images_enabled === undefined)
 	{
@@ -8497,6 +8505,12 @@ function get_room_settings()
 		if(room_settings[key] === undefined)
 		{
 			room_settings[key] = global_settings[key]
+			changed = true
+		}
+
+		if(room_settings[`${key}_override`] === undefined)
+		{
+			room_settings[`${key}_override`] = false
 			changed = true
 		}
 	}
@@ -11848,35 +11862,84 @@ function setup_settings_windows()
 {
 	setup_setting_elements("global_settings")
 	setup_setting_elements("room_settings")
-	
-	$('#room_settings_override').find('option').each(function()
+	create_room_settings_overriders()
+	start_room_settings_overriders()
+	check_room_settings_override()
+}
+
+function create_room_settings_overriders()
+{
+	var s = `
+	<div class='room_settings_overrider_container'>
+		<input type='checkbox' class='room_settings_overrider'> 
+		Override
+	</div>`
+
+	$(".room_settings_item").each(function()
 	{
-		if(JSON.parse($(this).val()) === room_settings.override)
+		$(this).before(s)
+	})	
+}
+
+function start_room_settings_overriders()
+{
+	$(".room_settings_overrider").each(function()
+	{
+		var item = $(this).parent().next(".room_settings_item")
+		var setting = item.data("setting")
+		var override = room_settings[`${setting}_override`]
+
+		if(override === undefined)
 		{
-			$(this).prop('selected', true)
+			override = false
 		}
+
+		$(this).prop("checked", override)
+
+		room_item_fade(override, item)
 	})
 
-	$('#room_settings_override').change(function()
+	$(".room_settings_overrider").change(function()
 	{
-		room_settings.override = JSON.parse($('#room_settings_override option:selected').val())
-		
-		check_room_settings_override()
-		
-		if(room_settings.override)
+		var item = $(this).parent().next(".room_settings_item")
+		var setting = item.data("setting")
+		var override = $(this).prop("checked")
+
+		if(override === undefined)
 		{
-			call_setting_actions("room_settings", false)
+			override = false
+		}
+
+		room_item_fade(override, item)
+
+		room_settings[`${setting}_override`] = override
+
+		if(override)
+		{
+			window[`setting_${setting}_action`]("room_settings", false)
 		}
 
 		else
 		{
-			call_setting_actions("global_settings", false)
+			window[`setting_${setting}_action`]("global_settings", false)
 		}
 
+		check_room_settings_override()
 		save_room_settings()
 	})
+}
 
-	check_room_settings_override()
+function room_item_fade(override, item)
+{
+	if(override)
+	{
+		item.removeClass("faded")
+	}
+
+	else
+	{
+		item.addClass("faded")
+	}	
 }
 
 function setup_setting_elements(type)
@@ -11890,28 +11953,33 @@ function setup_setting_elements(type)
 
 function check_room_settings_override()
 {
-	if(room_settings.override)
+	var override = false
+
+	for(var key in global_settings)
 	{
-		$("#room_settings_container").css("display", "initial")
-		$("#userinfo_global_settings_status").html("")
-		$("#userinfo_room_settings_status").html("&nbsp;(Active)")
+		if(room_settings[`${key}_override`])
+		{
+			override = true
+			break
+		}
+	}
+
+	if(override)
+	{
+		$("#userinfo_room_settings_status").html("&nbsp;(*)")
 	}
 
 	else
 	{
-		$("#room_settings_container").css("display", "none")
-		$("#userinfo_global_settings_status").html("&nbsp;(Active)")
 		$("#userinfo_room_settings_status").html("")
 	}
-
-	update_modal_scrollbar("room_settings")
 }
 
 function get_setting(name)
 {
 	try
 	{
-		if(room_settings.override)
+		if(room_settings[`${name}_override`])
 		{
 			return room_settings[name]
 		}
@@ -11928,9 +11996,9 @@ function get_setting(name)
 	}
 }
 
-function active_settings()
+function active_settings(name)
 {
-	if(room_settings.override)
+	if(room_settings[`${name}_override`])
 	{
 		return "room_settings"
 	}
@@ -11938,7 +12006,7 @@ function active_settings()
 	else
 	{
 		return "global_settings"
-	}
+	}	
 }
 
 function setup_togglers(type)
@@ -12010,8 +12078,8 @@ function hide_bottom_scroller()
 function scroll_chat_to(y, animate=true, d=500)
 {
 	$("#chat_area").stop()
-	
-	if(animate && app_focused)
+
+	if(app_focused && animate && get_setting("animate_scroll"))
 	{
 		$("#chat_area").animate({scrollTop:y}, d, function()
 		{

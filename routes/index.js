@@ -66,6 +66,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.global_settings_default_ignored_usernames = config.global_settings_default_ignored_usernames
 	c.vars.global_settings_default_show_joins = config.global_settings_default_show_joins
 	c.vars.global_settings_default_show_parts = config.global_settings_default_show_parts
+	c.vars.global_settings_default_animate_scroll = config.global_settings_default_animate_scroll
 	c.vars.double_tap_key = config.double_tap_key
 	c.vars.double_tap_key_2 = config.double_tap_key_2
 	c.vars.double_tap_key_3 = config.double_tap_key_3

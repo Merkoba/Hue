@@ -2489,10 +2489,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					var room = results[i]
 
-					roomlist.push({id:room._id.toString(), name:room.name, topic:room.topic.substring(0, config.max_roomlist_topic_length), usercount:get_usercount(room._id.toString()), modified:room.modified})
+					roomlist.push({id:room._id.toString(), name:room.name, topic:room.topic.substring(0, config.max_roomlist_topic_length), usercount:handler.get_usercount(room._id.toString()), modified:room.modified})
 				}
 
-				roomlist.sort(compare_roomlist).splice(config.max_roomlist_items)
+				roomlist.sort(handler.compare_roomlist).splice(config.max_roomlist_items)
 
 				last_roomlist = roomlist
 
@@ -2549,10 +2549,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					var room = results[i]
 
-					roomlist.push({id:room._id.toString(), name:room.name, topic:room.topic.substring(0, config.max_roomlist_topic_length), usercount:get_usercount(room._id.toString()), modified:room.modified})
+					roomlist.push({id:room._id.toString(), name:room.name, topic:room.topic.substring(0, config.max_roomlist_topic_length), usercount:handler.get_usercount(room._id.toString()), modified:room.modified})
 				}
 
-				roomlist.sort(compare_roomlist)			
+				roomlist.sort(handler.compare_roomlist)			
 
 				callback(roomlist)
 			})
