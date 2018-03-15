@@ -285,11 +285,6 @@ function remove_local_storage(ls_name)
 
 function setup_templates()
 {
-	Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) 
-	{
-		return (arg1 === arg2) ? options.fn(this) : options.inverse(this)
-	})
-
 	template_menu = Handlebars.compile($('#template_menu').html())
 	template_create_room = Handlebars.compile($('#template_create_room').html())
 	template_open_room = Handlebars.compile($('#template_open_room').html())
