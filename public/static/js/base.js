@@ -2297,7 +2297,7 @@ function config_admin_permission_checkboxes()
 	{
 		return false
 	}
-	
+
 	$(".admin_voice_permissions_checkbox").each(function()
 	{
 		$(this).prop("checked", window[$(this).data("ptype")])
@@ -2310,7 +2310,7 @@ function config_admin_background_image_enabled()
 	{
 		return false
 	}
-	
+
 	$('#admin_background_image_select').find('option').each(function()
 	{
 		if(JSON.parse($(this).val()) === background_image_enabled)
@@ -2326,7 +2326,7 @@ function config_admin_privacy()
 	{
 		return false
 	}
-	
+
 	$('#admin_privacy').find('option').each(function()
 	{
 		if(JSON.parse($(this).val()) === is_public)
@@ -2342,7 +2342,7 @@ function config_admin_log_enabled()
 	{
 		return false
 	}
-	
+
 	$('#admin_log').find('option').each(function()
 	{
 		if(JSON.parse($(this).val()) === log_enabled)
@@ -2358,7 +2358,7 @@ function config_admin_room_images_enabled()
 	{
 		return false
 	}
-	
+
 	$('#admin_enable_images').find('option').each(function()
 	{
 		if(JSON.parse($(this).val()) === room_images_enabled)
@@ -2374,7 +2374,7 @@ function config_admin_room_tv_enabled()
 	{
 		return false
 	}
-	
+
 	$('#admin_enable_tv').find('option').each(function()
 	{
 		if(JSON.parse($(this).val()) === room_tv_enabled)
@@ -2390,7 +2390,7 @@ function config_admin_room_radio_enabled()
 	{
 		return false
 	}
-	
+
 	$('#admin_enable_radio').find('option').each(function()
 	{
 		if(JSON.parse($(this).val()) === room_radio_enabled)
@@ -2406,7 +2406,7 @@ function config_admin_theme()
 	{
 		return false
 	}
-	
+
 	$("#admin_theme").spectrum("set", theme)	
 }
 
@@ -2416,7 +2416,7 @@ function config_admin_room_name()
 	{
 		return false
 	}
-	
+
 	$("#admin_room_name").val(room_name)
 }
 
@@ -2426,7 +2426,7 @@ function config_admin_topic()
 	{
 		return false
 	}
-	
+
 	$("#admin_topic").val(topic)
 }
 
@@ -2436,7 +2436,7 @@ function config_admin_background_image()
 	{
 		return false
 	}
-	
+
 	if(background_image !== $("#admin_background_image").attr('src'))
 	{
 		if(background_image !== "")
@@ -12359,12 +12359,12 @@ function is_admin_or_op(rol=false)
 {
 	if(rol)
 	{
-		r = rol
+		var r = rol
 	}
 
 	else
 	{
-		r = role
+		var r = role
 	}
 
 	if(r === "admin" || r === "op")
