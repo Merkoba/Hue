@@ -419,15 +419,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			user_rooms[socket.hue_user_id].push(socket.hue_room_id)
 		}
 
-		if(!handler.user_already_connected(socket))
-		{
-			handler.broadcast_emit(socket, 'userjoin',
-			{
-				username: socket.hue_username,
-				role: socket.hue_role,
-				profile_image: socket.hue_profile_image
-			})
+		var already_connected = handler.user_already_connected(socket)
 
+		if(!already_connected)
+		{
 			if(rooms[socket.hue_room_id].userlist === undefined)
 			{
 				rooms[socket.hue_room_id].userlist = {}
@@ -437,6 +432,9 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			handler.update_user_in_userlist(socket)
 		}
+
+		socket.hue_joining = false
+		socket.hue_joined = true		
 
 		handler.user_emit(socket, 'joined', 
 		{
@@ -490,11 +488,18 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			voice4_tv_permission: info.voice4_tv_permission,
 			voice4_radio_permission: info.voice4_radio_permission,
 			email: socket.hue_email,
-			reg_date: userinfo.registration_date			
+			reg_date: userinfo.registration_date
 		})
 
-		socket.hue_joining = false
-		socket.hue_joined = true			
+		if(!already_connected)
+		{
+			handler.broadcast_emit(socket, 'userjoin',
+			{
+				username: socket.hue_username,
+				role: socket.hue_role,
+				profile_image: socket.hue_profile_image
+			})
+		}
 	}
 
 	handler.sendchat = function(socket, data)
