@@ -203,7 +203,7 @@ function init()
 	start_dropzone()
 	start_volume_scroll()
 	generate_highlight_words_regex()
-	activate_window_focus_listener()
+	activate_visibility_listener()
 	input_click_events()
 	copypaste_events()
 	header_topic_events()
@@ -6203,62 +6203,62 @@ function update_title()
 	set_title(t)
 }
 
-function activate_window_focus_listener()
+function activate_visibility_listener()
 {
-	window.onfocus = function()
+	document.addEventListener("visibilitychange", function()
 	{
-		app_focused = true
+		app_focused = !document.hidden
 
-		if(afk_timer !== undefined)
+		if(app_focused)
 		{
-			clearTimeout(afk_timer)
-		}
-
-		afk = false
-
-		remove_alert_title()
-
-		if(change_when_focused)
-		{
-			if(change_image_when_focused)
+			if(afk_timer !== undefined)
 			{
-				change({type:"image"})
-			}
-			
-			if(change_tv_when_focused)
-			{
-				change({type:"tv"})
-			}	
-
-			if(change_radio_when_focused)
-			{
-				change({type:"radio"})
+				clearTimeout(afk_timer)
 			}
 
-			change_image_when_focused = false
-			change_tv_when_focused = false
-			change_radio_when_focused = false
+			afk = false
+
+			remove_alert_title()
+
+			if(change_when_focused)
+			{
+				if(change_image_when_focused)
+				{
+					change({type:"image"})
+				}
+				
+				if(change_tv_when_focused)
+				{
+					change({type:"tv"})
+				}	
+
+				if(change_radio_when_focused)
+				{
+					change({type:"radio"})
+				}
+
+				change_image_when_focused = false
+				change_tv_when_focused = false
+				change_radio_when_focused = false
+			}
 		}
-
-	}
-
-	window.onblur = function() 
-	{
-		app_focused = false
-
-		num_keys_pressed = 0
 		
-		if(get_setting("afk_delay") !== "never")
+		else
 		{
-			afk_timer = setTimeout(function()
+			num_keys_pressed = 0
+			
+			if(get_setting("afk_delay") !== "never")
 			{
-				afk = true
-			}, get_setting("afk_delay"))
-		}
+				afk_timer = setTimeout(function()
+				{
+					afk = true
+				}, get_setting("afk_delay"))
+			}
 
-		update_chat_scrollbar()
-		check_scrollers()
-	}
+			update_chat_scrollbar()
+			check_scrollers()
+		}
+	}, false)
 }
 
 function copy_room_url()
