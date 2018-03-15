@@ -18,7 +18,7 @@
 		<script src="/static/js/spectrum.min.js"></script>
 		<script src="/static/js/cropper.min.js?v=2"></script>
 		<script type="text/javascript" src="/static/js/contextmenu/jquery.contextMenu.min.js"></script>
-		<!-- <script src="https://player.twitch.tv/js/embed/v1.js"></script> -->
+		<script src="https://player.twitch.tv/js/embed/v1.js"></script>
 		<script src="/static/js/contextmenu/jquery.ui.position.min.js"></script>
 		<script src="/static/js/socket.io.js"></script>
 		<script src="/static/js/hls.js"></script>
@@ -33,9 +33,9 @@
 		<script src="/static/js/utilz.js?ver=4"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1085"></script>
+		<script src="/static/js/base.js?ver=1086"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=307"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=308"/>
 
 		<script>
 
@@ -509,93 +509,72 @@
 		</script>
 
 		<script id='template_settings' type='text/x-handlebars-template'>
+			<input type="text" id="{{type}}_filter" class="filter_input" placeholder="Filter">
+			
+			<div class='spacer3'></div>	
 
-			<div class='{{type}}_item' data-setting='beep_on_messages' data-type='checkbox'>
+			<div class='settings_item {{type}}_item' data-setting='beep_on_messages' data-type='checkbox'>
 				<div class="setting_item setting_title">Beep On Messages</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_beep_on_messages">
 			</div>
-			
-			<div class='spacer1'></div>
 
-			<div class='{{type}}_item' data-setting='beep_on_highlights' data-type='checkbox'>
+			<div class='settings_item {{type}}_item' data-setting='beep_on_highlights' data-type='checkbox'>
 				<div class="setting_title">Beep On Highlights</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_beep_on_highlights">
 			</div>
-			
-			<div class='spacer1'></div>
 
-			<div class='{{type}}_item' data-setting='beep_on_media_change' data-type='checkbox'>
+			<div class='settings_item {{type}}_item' data-setting='beep_on_media_change' data-type='checkbox'>
 				<div class="setting_title">Beep On Media Change</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_beep_on_media_change">
 			</div>
-			
-			<div class='spacer1'></div>
 
-			<div class='{{type}}_item' data-setting='beep_on_user_joins' data-type='checkbox'>
+			<div class='settings_item {{type}}_item' data-setting='beep_on_user_joins' data-type='checkbox'>
 				<div class="setting_title">Beep On User Joins</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_beep_on_user_joins">
 			</div>
-			
-			<div class='spacer1'></div>
 
-			<div class='{{type}}_item' data-setting='background_image' data-type='checkbox'>
+			<div class='settings_item {{type}}_item' data-setting='background_image' data-type='checkbox'>
 				<div class="setting_title">Background Image</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_background_image">
 			</div>
-			
-			<div class='spacer1'></div>
 
-			<div class='{{type}}_item' data-setting='custom_scrollbars' data-type='checkbox'>
+			<div class='settings_item {{type}}_item' data-setting='custom_scrollbars' data-type='checkbox'>
 				<div class="setting_title">Custom Scrollbars</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_custom_scrollbars">
 			</div>
 
-			<div class='spacer1'></div>
-
-			<div class='{{type}}_item' data-setting='modal_effects' data-type='checkbox'>
+			<div class='settings_item {{type}}_item' data-setting='modal_effects' data-type='checkbox'>
 				<div class="setting_title">Modal Effects</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_modal_effects">
 			</div>
 
-			<div class='spacer1'></div>
-
-			<div class='{{type}}_item' data-setting='show_joins' data-type='checkbox'>
+			<div class='settings_item {{type}}_item' data-setting='show_joins' data-type='checkbox'>
 				<div class="setting_title">Show User Joins</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_show_joins">
 			</div>
 
-			<div class='spacer1'></div>
-
-			<div class='{{type}}_item' data-setting='show_parts' data-type='checkbox'>
+			<div class='settings_item {{type}}_item' data-setting='show_parts' data-type='checkbox'>
 				<div class="setting_title">Show User Parts</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_show_parts">
 			</div>
 
-			<div class='spacer1'></div>
-
-			<div class='{{type}}_item' data-setting='animate_scroll' data-type='checkbox'>
+			<div class='settings_item {{type}}_item' data-setting='animate_scroll' data-type='checkbox'>
 				<div class="setting_title">Animate Scroll</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_animate_scroll">
 			</div>
 
-			<div class='spacer1'></div>
-
-			<div class='{{type}}_item' data-setting='highlight_current_username' data-type='checkbox'>
+			<div class='settings_item {{type}}_item' data-setting='highlight_current_username' data-type='checkbox'>
 				<div class="setting_title">Highlight Username</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_highlight_current_username">
 			</div>
 
-			<div class='spacer1'></div>
-
-			<div class='{{type}}_item' data-setting='case_insensitive_highlights' data-type='checkbox'>
+			<div class='settings_item {{type}}_item' data-setting='case_insensitive_highlights' data-type='checkbox'>
 				<div class="setting_title2">Case Insensitive</div>
 				<div class="setting_title">Highlights</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_case_insensitive_highlights">
 			</div>
 
-			<div class='spacer1'></div>
-
-			<div class='{{type}}_item' data-setting='other_words_to_highlight' data-type='textarea'>
+			<div class='settings_item {{type}}_item' data-setting='other_words_to_highlight' data-type='textarea'>
 				<div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Highlight</div>
 				<div class='{{type}}_toggle_container toggler_container'>
 					<div class="setting_title">(Each on a different line)</div>
@@ -604,9 +583,7 @@
 				</div>
 			</div>
 
-			<div class='spacer1'></div>
-
-			<div class='{{type}}_item' data-setting='ignored_usernames' data-type='textarea'>
+			<div class='settings_item {{type}}_item' data-setting='ignored_usernames' data-type='textarea'>
 				<div class="{{type}}_toggle toggler action pointer bold inline">+ Usernames To Ignore</div>
 				<div class='{{type}}_toggle_container toggler_container'>
 					<div class="setting_title">(Each on a different line)</div>				
@@ -615,9 +592,7 @@
 				</div>
 			</div>
 
-			<div class='spacer1'></div>
-
-			<div class='{{type}}_item' data-setting='double_tap' data-type='textarea'>
+			<div class='settings_item {{type}}_item' data-setting='double_tap' data-type='textarea'>
 				<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_key"></span>&nbsp;Tap</div>
 				<div class='{{type}}_toggle_container toggler_container'>
 					<div class="setting_title">(Each on a different line)</div>
@@ -626,9 +601,7 @@
 				</div>
 			</div>
 
-			<div class='spacer1'></div>
-
-			<div class='{{type}}_item' data-setting='double_tap_2' data-type='textarea'>
+			<div class='settings_item {{type}}_item' data-setting='double_tap_2' data-type='textarea'>
 				<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_2_key"></span>&nbsp;Tap</div>
 				<div class='{{type}}_toggle_container toggler_container'>
 					<div class="setting_title">(Each on a different line)</div>
@@ -637,9 +610,7 @@
 				</div>
 			</div>
 
-			<div class='spacer1'></div>
-
-			<div class='{{type}}_item' data-setting='double_tap_3' data-type='textarea'>
+			<div class='settings_item {{type}}_item' data-setting='double_tap_3' data-type='textarea'>
 				<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_3_key"></span>&nbsp;Tap</div>
 				<div class='{{type}}_toggle_container toggler_container'>
 					<div class="setting_title">(Each on a different line)</div>
@@ -648,9 +619,7 @@
 				</div>
 			</div>
 
-			<div class='spacer1'></div>
-
-			<div class='{{type}}_item' data-setting='at_startup' data-type='textarea'>
+			<div class='settings_item {{type}}_item' data-setting='at_startup' data-type='textarea'>
 				<div class="{{type}}_toggle toggler action pointer bold inline">+ At Startup</div>
 				<div class='{{type}}_toggle_container toggler_container'>
 					<div class="setting_title">(Each on a different line)</div>				
@@ -658,10 +627,8 @@
 					<textarea rows=4 class="setting_textarea" id="{{type}}_at_startup"></textarea>
 				</div>				
 			</div>
-			
-			<div class='spacer1'></div>
 
-			<div class='{{type}}_item' data-setting='afk_delay' data-type='select'>
+			<div class='settings_item {{type}}_item' data-setting='afk_delay' data-type='select'>
 				<div class="setting_title" title="AFK means you won't get sound notifications and media won't change">Go AFK</div>
 				<select class="modal_select" id="{{type}}_afk_delay">
 					<option value='0'>Instantly</option>
@@ -676,7 +643,7 @@
 				</select>
 			</div>
 
-			<div class='spacer1'></div>
+			<div class='spacer3'></div>
 
 			<div class='menu_item_smaller action' onclick='confirm_reset_settings("{{type}}")'>Reset Settings To Default</div>	
 
@@ -684,21 +651,16 @@
 
 		<script id='template_global_settings' type='text/x-handlebars-template'>
 			<div class='spacer2'></div>
-			<div id='global_settings_container' class='unselectable'>{{{settings}}}</div>
+			<div id='global_settings_container' class='unselectable'>
+				{{{settings}}}
+			</div>
 		</script>
 
 		<script id='template_room_settings' type='text/x-handlebars-template'>
-
-			<select class="modal_select" id="room_settings_override">
-				<option value="false">Use Global Settings</option>
-				<option value="true">Override Global Settings</option>
-			</select>
-
+			<div class='spacer2'></div>
 			<div id='room_settings_container' class='unselectable'>
-				<div class='spacer1'></div>
 				{{{settings}}}
 			</div>
-
 		</script>		
 
 		<script id='template_create_room' type='text/x-handlebars-template'>

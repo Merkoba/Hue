@@ -743,6 +743,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	font-size: 1.2em;
 	text-align: center;
 	position: sticky;
+	z-index: 99;
 }
 
 #played_filter
@@ -791,6 +792,16 @@ a.generic:link, a.generic:visited, a.generic:hover
 }
 
 #radio_history_filter
+{
+	width: 14em;
+}
+
+#global_settings_filter
+{
+	width: 14em;
+}
+
+#room_settings_filter
 {
 	width: 14em;
 }
@@ -1322,10 +1333,17 @@ input[type=text], textarea
 {
 	padding-top: 0.4em;
 	padding-bottom: 0.4em;
+	pointer-events: initial !important;
 }
 
 .faded
 {
 	opacity: 0.5;
 	pointer-events: none;
+}
+
+.settings_item
+{
+	padding-top: 1em;
+	padding-bottom: 1em;	
 }

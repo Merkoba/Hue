@@ -223,7 +223,7 @@ function init()
 	start_titles()
 	setup_show_profile()
 	setup_main_menu()
-	// start_twitch()
+	start_twitch()
 	check_image_queue()
 	setup_input()
 	font_check()
@@ -7626,6 +7626,7 @@ function start_msg()
 			enable_titlebar: true,
 			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
+			window_width: "22em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7655,6 +7656,7 @@ function start_msg()
 			enable_titlebar: true,
 			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
+			window_width: "22em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7684,6 +7686,7 @@ function start_msg()
 			enable_titlebar: true,
 			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
+			window_width: "22em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7713,6 +7716,7 @@ function start_msg()
 			enable_titlebar: true,
 			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
+			window_width: "22em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7742,6 +7746,7 @@ function start_msg()
 			enable_titlebar: true,
 			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
+			window_width: "22em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7771,6 +7776,7 @@ function start_msg()
 			enable_titlebar: true,
 			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x",
+			window_width: "22em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7851,6 +7857,7 @@ function start_msg()
 				after_modal_close(instance)
 				reset_radio_history_filter()
 				close_togglers("global_settings")
+				reset_settings_filter("global_settings")
 			}
 		})
 	)
@@ -7882,6 +7889,7 @@ function start_msg()
 				after_modal_close(instance)
 				reset_radio_history_filter()
 				close_togglers("room_settings")
+				reset_settings_filter("room_settings")
 			}
 		})
 	)		
@@ -8625,6 +8633,21 @@ function start_filters()
 	$("#chat_search_filter").on("input", function()
 	{
 		chat_search_timer()
+	})
+
+	$("#chat_search_filter").on("input", function()
+	{
+		chat_search_timer()
+	})
+
+	$("#global_settings_filter").on("input", function()
+	{
+		global_settings_filter_timer()
+	})
+
+	$("#room_settings_filter").on("input", function()
+	{
+		room_settings_filter_timer()
 	})
 }
 
@@ -11223,9 +11246,9 @@ function do_media_history_filter(type, container, filter="")
 		})
 	}
 
-	update_modal_scrollbar(`${type}_change`)
+	update_modal_scrollbar(`${type}_history`)
 
-	$('#Msg-content-container-played').scrollTop(0)
+	$(`#Msg-content-container-${type}_history`).scrollTop(0)
 }
 
 var image_history_filter_timer = (function() 
@@ -11850,12 +11873,18 @@ function user_is_ignored(uname)
 
 function show_global_settings()
 {
-	msg_global_settings.show()
+	msg_global_settings.show(function()
+	{
+		$("#global_settings_filter").focus()		
+	})
 }
 
 function show_room_settings()
 {
-	msg_room_settings.show()
+	msg_room_settings.show(function()
+	{
+		$("#room_settings_filter").focus()
+	})
 }
 
 function setup_settings_windows()
@@ -11877,7 +11906,7 @@ function create_room_settings_overriders()
 
 	$(".room_settings_item").each(function()
 	{
-		$(this).before(s)
+		$(this).prepend(s)
 	})	
 }
 
@@ -11885,7 +11914,7 @@ function start_room_settings_overriders()
 {
 	$(".room_settings_overrider").each(function()
 	{
-		var item = $(this).parent().next(".room_settings_item")
+		var item = $(this).parent().closest(".room_settings_item")
 		var setting = item.data("setting")
 		var override = room_settings[`${setting}_override`]
 
@@ -11901,7 +11930,7 @@ function start_room_settings_overriders()
 
 	$(".room_settings_overrider").change(function()
 	{
-		var item = $(this).parent().next(".room_settings_item")
+		var item = $(this).parent().closest(".room_settings_item")
 		var setting = item.data("setting")
 		var override = $(this).prop("checked")
 
@@ -12092,3 +12121,88 @@ function scroll_chat_to(y, animate=true, d=500)
 		$("#chat_area").scrollTop(y)
 	}
 }
+
+function do_settings_filter(type)
+{
+	var filter = $(`#${type}_filter`).val().trim().toLowerCase()
+
+	if(filter !== "")
+	{
+		$(`.${type}_item`).each(function()
+		{
+			$(this).css("display", "block")
+
+			var text = $(this).text()
+
+			var include = false
+
+			if(text.toLowerCase().indexOf(filter) !== -1)
+			{
+				include = true
+			}
+
+			if(!include)
+			{
+				$(this).css("display", "none")
+			}
+		})
+	}
+
+	else
+	{
+		$(`.${type}_item`).each(function()
+		{
+			$(this).css("display", "block")
+		})
+	}
+
+	update_modal_scrollbar(type)
+
+	$(`#Msg-content-container-${type}`).scrollTop(0)
+}
+
+function reset_settings_filter(type)
+{
+	$(`#${type}_filter`).val("")
+	do_settings_filter(type)
+}
+
+function do_global_settings_filter()
+{
+	do_settings_filter("global_settings")
+}
+
+function do_room_settings_filter()
+{
+	do_settings_filter("room_settings")
+}
+
+var global_settings_filter_timer = (function() 
+{
+	var timer
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			do_global_settings_filter()
+		}, filter_delay)
+	}
+})()
+
+var room_settings_filter_timer = (function() 
+{
+	var timer
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			do_room_settings_filter()
+		}, filter_delay)
+	}
+})()
