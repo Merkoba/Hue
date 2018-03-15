@@ -91,7 +91,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				if(handler[m] === undefined)
 				{
-					return handler.get_out()
+					return handler.get_out(socket)
 				}
 
 				if(m === undefined)
