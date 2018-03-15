@@ -1135,7 +1135,7 @@ input[type=text], textarea
 
 .small_padding_bottom
 {
-	padding-bottom: 0.4em;
+	padding-bottom: 0.5em;
 }
 
 .smaller_font_size
@@ -1241,7 +1241,7 @@ input[type=text], textarea
 .setting_input_text
 {
 	width: 100%;
-	font-size: 1.1em;
+	font-size: 1em;
 	text-align: center;
 }
 

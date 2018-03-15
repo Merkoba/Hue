@@ -2269,6 +2269,26 @@ function setup_main_menu()
 
 		change_background_image_enabled(what)
 	})
+
+	$('#admin_room_name').blur(function()
+	{
+		var name = utilz.clean_string7($(this).val())
+
+		if(name !== "" && name !== room_name)
+		{
+			change_room_name(name)
+		}
+	})
+
+	$('#admin_topic').blur(function()
+	{
+		var t = utilz.clean_string7($(this).val())
+
+		if(t !== "" && t !== topic)
+		{
+			change_topic(t)
+		}
+	})
 }
 
 function show_main_menu()
@@ -2276,77 +2296,126 @@ function show_main_menu()
 	msg_menu.show()
 }
 
+function config_admin_permission_checkboxes()
+{
+	$(".admin_voice_permissions_checkbox").each(function()
+	{
+		$(this).prop("checked", window[$(this).data("ptype")])
+	})	
+}
+
+function config_admin_background_image_enabled()
+{
+	$('#admin_background_image_select').find('option').each(function()
+	{
+		if(JSON.parse($(this).val()) === background_image_enabled)
+		{
+			$(this).prop('selected', true)
+		}
+	})	
+}
+
+function config_admin_privacy()
+{
+	$('#admin_privacy').find('option').each(function()
+	{
+		if(JSON.parse($(this).val()) === is_public)
+		{
+			$(this).prop('selected', true)
+		}
+	})	
+}
+
+function config_admin_log_enabled()
+{
+	$('#admin_log').find('option').each(function()
+	{
+		if(JSON.parse($(this).val()) === log_enabled)
+		{
+			$(this).prop('selected', true)
+		}
+	})	
+}
+
+function config_admin_room_images_enabled()
+{
+	$('#admin_enable_images').find('option').each(function()
+	{
+		if(JSON.parse($(this).val()) === room_images_enabled)
+		{
+			$(this).prop('selected', true)
+		}
+	})
+}
+
+function config_admin_room_tv_enabled()
+{
+	$('#admin_enable_tv').find('option').each(function()
+	{
+		if(JSON.parse($(this).val()) === room_tv_enabled)
+		{
+			$(this).prop('selected', true)
+		}
+	})	
+}
+
+function config_admin_room_radio_enabled()
+{
+	$('#admin_enable_radio').find('option').each(function()
+	{
+		if(JSON.parse($(this).val()) === room_radio_enabled)
+		{
+			$(this).prop('selected', true)
+		}
+	})
+}
+
+function config_admin_theme()
+{
+	$("#admin_theme").spectrum("set", theme)	
+}
+
+function config_admin_room_name()
+{
+	$("#admin_room_name").val(room_name)
+}
+
+function config_admin_topic()
+{
+	$("#admin_topic").val(topic)
+}
+
+function config_admin_background_image()
+{
+	if(background_image !== $("#admin_background_image").attr('src'))
+	{
+		if(background_image !== "")
+		{
+			$("#admin_background_image").attr("src", background_image)
+		}
+
+		else
+		{
+			$("#admin_background_image").attr("src", default_background_image_url)
+		}
+	}	
+}
+
 function config_main_menu()
 {
 	if(role === "admin" || role === "op")
 	{
-		$(".admin_voice_permissions_checkbox").each(function()
-		{
-			$(this).prop("checked", window[$(this).data("ptype")])
-		})
-
-		$('#admin_enable_images').find('option').each(function()
-		{
-			if(JSON.parse($(this).val()) === room_images_enabled)
-			{
-				$(this).prop('selected', true)
-			}
-		})
-
-		$('#admin_enable_tv').find('option').each(function()
-		{
-			if(JSON.parse($(this).val()) === room_tv_enabled)
-			{
-				$(this).prop('selected', true)
-			}
-		})
-
-		$('#admin_enable_radio').find('option').each(function()
-		{
-			if(JSON.parse($(this).val()) === room_radio_enabled)
-			{
-				$(this).prop('selected', true)
-			}
-		})
-
-		$('#admin_privacy').find('option').each(function()
-		{
-			if(JSON.parse($(this).val()) === is_public)
-			{
-				$(this).prop('selected', true)
-			}
-		})	
-
-		$('#admin_log').find('option').each(function()
-		{
-			if(JSON.parse($(this).val()) === log_enabled)
-			{
-				$(this).prop('selected', true)
-			}
-		})
-
-		$("#admin_theme").spectrum("set", theme)
-
-		$('#admin_background_image_select').find('option').each(function()
-		{
-			if(JSON.parse($(this).val()) === background_image_enabled)
-			{
-				$(this).prop('selected', true)
-			}
-		})			
-
-		if(background_image !== $("#admin_background_image").attr('src'))
-		{
-			if(background_image !== "")
-			{
-				$("#admin_background_image").attr("src", background_image)
-			}
-
-			else
-			{
-				$("#admin_background_image").attr("src", default_background_image_url)
-			}
-		}			
+		config_admin_permission_checkboxes()
+		config_admin_room_images_enabled()
+		config_admin_room_tv_enabled()
+		config_admin_room_radio_enabled()
+		config_admin_privacy()	
+		config_admin_log_enabled()
+		config_admin_theme()
+		config_admin_background_image_enabled()
+		config_admin_background_image()
+		config_admin_room_name()		
+		config_admin_topic()		
 
 		$("#admin_menu").css("display", "block")
 	}
@@ -3067,32 +3136,36 @@ function activate_key_detection()
 
 			e.preventDefault()
 			return
-		}
-
-		else if(e.key === "Home")
-		{
-			goto_top()
-			e.preventDefault()
-			return
-		}
-
-		else if(e.key === "End")
-		{
-			goto_bottom(true)
-			e.preventDefault()
-			return
-		}				
+		}			
 
 		else if(e.key === "PageUp")
 		{
-			scroll_up(big_keyboard_scroll)
+			if(e.shiftKey)
+			{
+				goto_top()
+			}
+
+			else
+			{
+				scroll_up(big_keyboard_scroll)
+			}
+			
 			e.preventDefault()
 			return
 		}
 
 		else if(e.key === "PageDown")
 		{
-			scroll_down(big_keyboard_scroll)
+			if(e.shiftKey)
+			{
+				goto_bottom(true)
+			}
+
+			else
+			{
+				scroll_down(big_keyboard_scroll)
+			}
+
 			e.preventDefault()
 			return			
 		}
@@ -5518,9 +5591,7 @@ function announce_topic_change(data)
 		}
 
 		chat_announce({brk1:'~', brk2:'~', msg:`${data.topic_setter} changed the topic to: ${data.topic}`, highlight:highlight})
-
 		set_topic_info(data)
-
 		update_title()
 	}
 }
@@ -5530,9 +5601,7 @@ function announce_room_name_change(data)
 	if(data.name !== room_name)
 	{		
 		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} changed the room name to: ${data.name}`})
-
-		room_name = data.name
-
+		set_room_name(data.name)
 		update_title()
 	}
 }
@@ -6493,6 +6562,8 @@ function set_topic_info(data)
 		$("#header_topic_text").text(t)
 		$("#header_topic").attr('title', t)
 	}
+
+	config_admin_topic()
 }
 
 function check_firstime()
@@ -6691,7 +6762,7 @@ function change_privacy(what)
 
 function announce_privacy_change(data)
 {
-	is_public = data.what
+	set_privacy(data.what)
 
 	if(is_public)
 	{
@@ -7304,7 +7375,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "roomlist",
-			window_width: "28em",
+			window_width: "26em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7330,7 +7401,7 @@ function start_msg()
 		Object.assign({}, common,
 		{
 			id: "played",
-			window_width: "28em",
+			window_width: "26em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -9349,7 +9420,7 @@ function announce_log_change(data)
 
 	chat_announce({brk1:'~', brk2:'~', msg:s})
 
-	log_enabled = data.log
+	set_log_enabled(data.log)
 }
 
 function announce_log_cleared(data)
@@ -10112,8 +10183,7 @@ function announce_room_images_enabled_change(data)
 		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} disabled room images`})
 	}
 
-	room_images_enabled = data.what
-
+	set_room_images_enabled(data.what)
 	change_images_visibility()
 	check_permissions()
 }
@@ -10130,8 +10200,7 @@ function announce_room_tv_enabled_change(data)
 		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} disabled room tv`})
 	}
 
-	room_tv_enabled = data.what
-
+	set_room_tv_enabled(data.what)
 	change_tv_visibility(data.what)
 	check_permissions()
 }
@@ -10148,8 +10217,7 @@ function announce_room_radio_enabled_change(data)
 		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} disabled room radio`})
 	}
 
-	room_radio_enabled = data.what
-	
+	set_room_radio_enabled(data.what)
 	change_radio_visibility(data.what)
 	check_permissions()
 }
@@ -10196,10 +10264,9 @@ function change_theme(color)
 function announce_theme_change(data)
 {
 	chat_announce({brk1:'~', brk2:'~', msg:`${data.username} changed the theme to ${data.color}`})
-
 	theme = data.color
-
 	set_theme()
+	config_admin_theme()	
 }
 
 function queue_image(data)
@@ -10264,14 +10331,11 @@ function announce_background_image_change(data)
 {
 	background_image = data.background_image
 
-	if(role === "admin" || role === "op")
-	{
-		$("#admin_background_image").attr("src", background_image)
-	}
-
 	set_background_image()
 
-	chat_announce({brk1:'~', brk2:'~', msg:`${data.username} changed the background image`})	
+	chat_announce({brk1:'~', brk2:'~', msg:`${data.username} changed the background image`})
+
+	config_admin_background_image()
 }
 
 function change_background_image_enabled(what)
@@ -10315,8 +10379,7 @@ function announce_background_image_enabled_change(data)
 		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} disabled the background image`})
 	}
 
-	background_image_enabled = data.what
-
+	set_background_image_enabled(data.what)
 	set_background_image()
 	set_theme()
 }
@@ -10374,6 +10437,7 @@ function announce_voice_permission_change(data)
 	window[data.ptype] = data.what
 
 	check_permissions()
+	config_admin_permission_checkboxes()
 }
 
 function enable_wide_mode()
@@ -12206,3 +12270,45 @@ var room_settings_filter_timer = (function()
 		}, filter_delay)
 	}
 })()
+
+function set_room_name(name)
+{
+	room_name = name
+	config_admin_room_name()
+}
+
+function set_room_images_enabled(what)
+{
+	room_images_enabled = what
+	config_admin_room_images_enabled()
+}
+
+function set_room_tv_enabled(what)
+{
+	room_tv_enabled = what
+	config_admin_room_tv_enabled()
+}
+
+function set_room_radio_enabled(what)
+{
+	room_radio_enabled = what
+	config_admin_room_radio_enabled()	
+}
+
+function set_background_image_enabled(what)
+{
+	background_image_enabled = what
+	config_admin_background_image_enabled()
+}
+
+function set_privacy(what)
+{
+	is_public = what
+	config_admin_privacy()
+}
+
+function set_log_enabled(what)
+{
+	log_enabled = what
+	config_admin_log_enabled()
+}
