@@ -3492,21 +3492,21 @@ function check_scrollers()
 	{
 		if(scrolltop > 0)
 		{
-			$('#top_scroller_container').css('visibility', 'visible')
+			show_top_scroller()
 		}
 
 		else
 		{
-			$('#top_scroller_container').css('visibility', 'hidden')
+			hide_top_scroller()
 		}
 
-		$('#bottom_scroller_container').css('visibility', 'visible')
+		show_bottom_scroller()
 	}
 
 	else
 	{
-		$('#top_scroller_container').css('visibility', 'hidden')
-		$('#bottom_scroller_container').css('visibility', 'hidden')
+		hide_top_scroller()
+		hide_bottom_scroller()
 	}
 }
 
@@ -5510,6 +5510,7 @@ function announce_new_username(data)
 function goto_top()
 {
 	$("#chat_area").scrollTop(0)
+	hide_top_scroller()
 }
 
 function goto_bottom(force=false)
@@ -5521,8 +5522,8 @@ function goto_bottom(force=false)
 	if(force)
 	{
 		$ch.scrollTop(max + 10)
-		$('#top_scroller_container').css('visibility', 'hidden')
-		$('#bottom_scroller_container').css('visibility', 'hidden')
+		hide_top_scroller()
+		hide_bottom_scroller()
 	}
 
 	else
@@ -11934,4 +11935,24 @@ function close_togglers(type)
 	})	
 	
 	update_modal_scrollbar(type)
+}
+
+function show_top_scroller()
+{
+	$('#top_scroller_container').css('visibility', 'visible')	
+}
+
+function hide_top_scroller()
+{
+	$('#top_scroller_container').css('visibility', 'hidden')
+}
+
+function show_bottom_scroller()
+{
+	$('#bottom_scroller_container').css('visibility', 'visible')	
+}
+
+function hide_bottom_scroller()
+{
+	$('#bottom_scroller_container').css('visibility', 'hidden')
 }
