@@ -10906,11 +10906,7 @@ function header_topic_events()
 {
 	$("#header_topic").click(function()
 	{
-		var s = $("<div id='header_topic_content'></div>")
-		
-		s.text(get_topic()).urlize()
-		
-		msg_info.show(s[0])
+		show_status()
 	})
 }
 
