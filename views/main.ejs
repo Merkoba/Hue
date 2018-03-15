@@ -33,7 +33,7 @@
 		<script src="/static/js/utilz.js?ver=4"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1089"></script>
+		<script src="/static/js/base.js?ver=1090"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=309"/>
 
@@ -302,7 +302,7 @@
 
 					<div class='toggler_container menu_toggle_container'>
 
-						<div class='spacer1'></div>
+						<div class='spacer3'></div>
 
 						<div class='setting_title'>Can Chat</div>
 						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice1_chat_permission" data-ptype="voice1_chat_permission">
@@ -331,7 +331,7 @@
 
 					<div class='toggler_container menu_toggle_container'>						
 
-						<div class='spacer1'></div>
+						<div class='spacer3'></div>
 
 						<div class='setting_title'>Can Chat</div>
 						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice2_chat_permission" data-vtype="v2" data-ptype="voice2_chat_permission">
@@ -360,7 +360,7 @@
 
 					<div class='toggler_container menu_toggle_container'>
 
-						<div class='spacer1'></div>
+						<div class='spacer3'></div>
 
 						<div class='setting_title'>Can Chat</div>
 						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice3_chat_permission" data-vtype="v3" data-ptype="voice3_chat_permission">
@@ -389,7 +389,7 @@
 					
 					<div class='toggler_container menu_toggle_container'>
 					
-						<div class='spacer1'></div>
+						<div class='spacer3'></div>
 
 						<div class='setting_title'>Can Chat</div>
 						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice4_chat_permission" data-vtype="v4" data-ptype="voice4_chat_permission">
@@ -431,33 +431,8 @@
 					</select>						
 
 					<div class='spacer1'></div>
-					<div class='spacer3'></div>					
-
-					<div class='smaller_font_size'>These require double click</div>
-
-					<div class='spacer1'></div>
-
-					<div class='pointer underlined action inline' ondblclick='reset_voices()'>Reset Voices</div>
-
-					<div class='spacer1'></div>
-
-					<div class='pointer underlined action inline' ondblclick='remove_ops()'>Remove Ops</div>
-					
-					<div class='spacer1'></div>
-
-					<div class='pointer underlined action inline' ondblclick='clear_log()'>Clear Log</div>
-					
-					<div class='spacer1'></div>
-
-					<div class='pointer underlined action inline' ondblclick='get_banned_count()'>Banned Count</div>
-					
-					<div class='spacer1'></div>
-
-					<div class='pointer underlined action inline' ondblclick='unban_all()'>Unban All</div>
-					
-					<div class='spacer1'></div>
 					<div class='spacer3'></div>
-
+					
 					<div class='small_padding_bottom'>Room Name</div>
 
 					<input type="text" class="setting_input_text" id="admin_room_name">
@@ -467,6 +442,35 @@
 					<div class='small_padding_bottom'>Topic</div>
 
 					<textarea class='setting_textarea' rows=4 id="admin_topic"></textarea>
+
+					<div class='spacer1'></div>
+					<div class='spacer3'></div>
+
+					<div class='toggler menu_toggle small_padding_bottom bold pointer action inline'>+ Actions</div>
+
+					<div class='toggler_container menu_toggle_container'>
+
+						<div class='spacer3'></div>
+
+						<div class='pointer underlined action inline' onclick='needs_confirm("reset_voices")'>Reset Voices</div>
+
+						<div class='spacer1'></div>
+
+						<div class='pointer underlined action inline' onclick='needs_confirm("remove_ops")'>Remove Ops</div>
+						
+						<div class='spacer1'></div>
+
+						<div class='pointer underlined action inline' onclick='needs_confirm("clear_log")'>Clear Log</div>
+						
+						<div class='spacer1'></div>
+
+						<div class='pointer underlined action inline' onclick='get_banned_count()'>Banned Count</div>
+						
+						<div class='spacer1'></div>
+
+						<div class='pointer underlined action inline' onclick='needs_confirm("unban_all")'>Unban All</div>
+
+					</div>					
 										
 					<div class='spacer3'></div>
 
@@ -492,7 +496,7 @@
 
 				&nbsp;|&nbsp;
 
-				<div class='menu_item_smaller action' onclick='confirm_logout()'>Logout</div>
+				<div class='menu_item_smaller action' onclick='needs_confirm("logout")'>Logout</div>
 
 				<div class='spacer3'></div>
 
@@ -868,7 +872,7 @@
 				<div></div>
 				<div class='menu_item action inline' onclick='show_create_room()'>Create Room</div>
 				<div class='spacer3'></div>
-				<div class='menu_item_smaller action' onclick='confirm_logout()'>Logout</div>
+				<div class='menu_item_smaller action' onclick='needs_confirm("logout")'>Logout</div>
 			</div>
 		</script>		
 

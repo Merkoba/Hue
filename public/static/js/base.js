@@ -9193,16 +9193,6 @@ function fill()
 	update_chat({uname:username, msg:s, prof_image:profile_image})
 }
 
-function confirm_logout()
-{
-	var r = confirm("Are you sure? Make sure you know your current email and password to avoid getting locked out later.")
-
-	if(r)
-	{
-		logout()
-	}
-}
-
 function logout()
 {
 	goto_url('/logout')
@@ -12298,4 +12288,14 @@ function set_log_enabled(what)
 {
 	log_enabled = what
 	config_admin_log_enabled()
+}
+
+function needs_confirm(func)
+{
+	var r = confirm("Are you sure?")
+
+	if(r)
+	{
+		window[func]()
+	}	
 }
