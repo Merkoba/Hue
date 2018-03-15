@@ -33,7 +33,7 @@
 		<script src="/static/js/utilz.js?ver=4"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1094"></script>
+		<script src="/static/js/base.js?ver=1095"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=310"/>
 
@@ -783,6 +783,7 @@
 			<div class='spacer3'></div>
 			<input id='tv_url_picker_input' class='input1'>
 			<div class='spacer3'></div>
+			<div class='menu_item action inline unselectable' onclick='change_tv_source("restart");msg_tv_picker.close()'>Restart</div>
 		</script>
 
 		<script id='template_radio_picker' type='text/x-handlebars-template'>
@@ -792,6 +793,7 @@
 			<div class='spacer3'></div>
 			<input id='radio_url_picker_input' class='input1'>
 			<div class='spacer3'></div>
+			<div class='menu_item action inline unselectable' onclick='change_radio_source("restart");msg_radio_picker.close()'>Restart</div>
 		</script>
 
 		<script id='template_image_history' type='text/x-handlebars-template'>
