@@ -386,7 +386,7 @@ function show_radio_source()
 
 function get_unset_topic()
 {
-	if(role === "admin" || role === "op")
+	if(is_admin_or_op())
 	{
 		return default_topic_admin
 	}
@@ -475,7 +475,7 @@ function check_permissions()
 
 function check_permission(role, type)
 {
-	if(role === "admin" || role === "op")
+	if(is_admin_or_op())
 	{
 		return true
 	}
@@ -2293,6 +2293,11 @@ function show_main_menu()
 
 function config_admin_permission_checkboxes()
 {
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+	
 	$(".admin_voice_permissions_checkbox").each(function()
 	{
 		$(this).prop("checked", window[$(this).data("ptype")])
@@ -2301,6 +2306,11 @@ function config_admin_permission_checkboxes()
 
 function config_admin_background_image_enabled()
 {
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+	
 	$('#admin_background_image_select').find('option').each(function()
 	{
 		if(JSON.parse($(this).val()) === background_image_enabled)
@@ -2312,6 +2322,11 @@ function config_admin_background_image_enabled()
 
 function config_admin_privacy()
 {
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+	
 	$('#admin_privacy').find('option').each(function()
 	{
 		if(JSON.parse($(this).val()) === is_public)
@@ -2323,6 +2338,11 @@ function config_admin_privacy()
 
 function config_admin_log_enabled()
 {
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+	
 	$('#admin_log').find('option').each(function()
 	{
 		if(JSON.parse($(this).val()) === log_enabled)
@@ -2334,6 +2354,11 @@ function config_admin_log_enabled()
 
 function config_admin_room_images_enabled()
 {
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+	
 	$('#admin_enable_images').find('option').each(function()
 	{
 		if(JSON.parse($(this).val()) === room_images_enabled)
@@ -2345,6 +2370,11 @@ function config_admin_room_images_enabled()
 
 function config_admin_room_tv_enabled()
 {
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+	
 	$('#admin_enable_tv').find('option').each(function()
 	{
 		if(JSON.parse($(this).val()) === room_tv_enabled)
@@ -2356,6 +2386,11 @@ function config_admin_room_tv_enabled()
 
 function config_admin_room_radio_enabled()
 {
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+	
 	$('#admin_enable_radio').find('option').each(function()
 	{
 		if(JSON.parse($(this).val()) === room_radio_enabled)
@@ -2367,21 +2402,41 @@ function config_admin_room_radio_enabled()
 
 function config_admin_theme()
 {
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+	
 	$("#admin_theme").spectrum("set", theme)	
 }
 
 function config_admin_room_name()
 {
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+	
 	$("#admin_room_name").val(room_name)
 }
 
 function config_admin_topic()
 {
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+	
 	$("#admin_topic").val(topic)
 }
 
 function config_admin_background_image()
 {
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+	
 	if(background_image !== $("#admin_background_image").attr('src'))
 	{
 		if(background_image !== "")
@@ -2398,7 +2453,7 @@ function config_admin_background_image()
 
 function config_main_menu()
 {
-	if(role === "admin" || role === "op")
+	if(is_admin_or_op())
 	{
 		config_admin_permission_checkboxes()
 		config_admin_room_images_enabled()
@@ -5378,7 +5433,7 @@ function execute_command(msg, ans)
 
 function change_topic(dtopic)
 {
-	if(role === 'admin' || role === 'op')
+	if(is_admin_or_op())
 	{
 		dtopic = utilz.clean_string2(dtopic.substring(0, max_topic_length))
 
@@ -5404,7 +5459,7 @@ function change_topic(dtopic)
 
 function topicadd(arg)
 {
-	if(role === 'admin' || role === 'op')
+	if(is_admin_or_op())
 	{
 		arg = utilz.clean_string2(arg)
 
@@ -5432,7 +5487,7 @@ function topicadd(arg)
 
 function topictrim(n)
 {
-	if(role === 'admin' || role === 'op')
+	if(is_admin_or_op())
 	{
 		var split = topic.split(topic_separator)
 
@@ -5482,7 +5537,7 @@ function topictrim(n)
 
 function topicstart(arg)
 {
-	if(role === 'admin' || role === 'op')
+	if(is_admin_or_op())
 	{
 		arg = utilz.clean_string2(arg)
 
@@ -5510,7 +5565,7 @@ function topicstart(arg)
 
 function topictrimstart(n)
 {
-	if(role === 'admin' || role === 'op')
+	if(is_admin_or_op())
 	{
 		var split = topic.split(topic_separator)
 
@@ -6576,7 +6631,7 @@ function big_letter(s)
 
 function change_role(uname, rol)
 {
-	if(role === 'admin' || role === 'op')
+	if(is_admin_or_op())
 	{
 		if(uname.length > 0 && uname.length <= max_max_username_length)
 		{
@@ -6995,7 +7050,7 @@ function announce_tv_change(data, date=false, action="change")
 
 function ban(uname)
 {
-	if(role === 'admin' || role === 'op')
+	if(is_admin_or_op())
 	{
 		if(uname.length > 0 && uname.length <= max_max_username_length)
 		{
@@ -7017,7 +7072,7 @@ function ban(uname)
 
 function unban(uname)
 {
-	if(role === 'admin' || role === 'op')
+	if(is_admin_or_op())
 	{
 		if(uname.length > 0 && uname.length <= max_max_username_length)
 		{
@@ -7039,7 +7094,7 @@ function unban(uname)
 
 function unban_all()
 {
-	if(role === 'admin' || role === 'op')
+	if(is_admin_or_op())
 	{
 		socket_emit('unban_all', {})
 	}
@@ -7052,7 +7107,7 @@ function unban_all()
 
 function get_banned_count()
 {
-	if(role === 'admin' || role === 'op')
+	if(is_admin_or_op())
 	{
 		socket_emit('get_banned_count', {})
 	}
@@ -7075,7 +7130,7 @@ function receive_banned_count(data)
 
 function kick(uname)
 {
-	if(role === 'admin' || role === 'op')
+	if(is_admin_or_op())
 	{
 		if(uname.length > 0 && uname.length <= max_max_username_length)
 		{
@@ -12298,4 +12353,27 @@ function needs_confirm(func)
 	{
 		window[func]()
 	}	
+}
+
+function is_admin_or_op(rol=false)
+{
+	if(rol)
+	{
+		r = rol
+	}
+
+	else
+	{
+		r = role
+	}
+
+	if(r === "admin" || r === "op")
+	{
+		return true
+	}
+
+	else
+	{
+		return false
+	}
 }
