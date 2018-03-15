@@ -3143,8 +3143,7 @@ function activate_key_detection()
 
 function scroll_up(n)
 {
-	var $ch = $('#chat_area')
-	$ch.scrollTop($ch.scrollTop() - n)
+	scroll_chat_to($('#chat_area').scrollTop() - n, false)
 }
 
 function scroll_down(n)
@@ -3154,12 +3153,12 @@ function scroll_down(n)
 
 	if(max - $ch.scrollTop < n)
 	{
-		$ch.scrollTop(max + 10)
+		scroll_chat_to(max + 10)
 	}
 
 	else
 	{
-		$ch.scrollTop($ch.scrollTop() + n)
+		scroll_chat_to($ch.scrollTop() + n, false)
 	}
 }
 
@@ -3505,6 +3504,11 @@ function replace_tabbed(word)
 
 function scroll_events()
 {
+	$('#chat_area')[0].addEventListener("wheel", function(e)
+	{
+		$("#chat_area").stop()
+	})
+
 	$('#chat_area').scroll(function()
 	{
 		scroll_timer()
@@ -3528,6 +3532,11 @@ var scroll_timer = (function()
 
 function check_scrollers()
 {
+	if($("#chat_area").is(":animated"))
+	{
+		return false
+	}
+
 	var $ch = $("#chat_area")
 	var max = $ch.prop('scrollHeight') - $ch.innerHeight()
 
@@ -5554,7 +5563,7 @@ function announce_new_username(data)
 
 function goto_top()
 {
-	$("#chat_area").scrollTop(0)
+	scroll_chat_to(0)
 	hide_top_scroller()
 }
 
@@ -5566,7 +5575,7 @@ function goto_bottom(force=false)
 
 	if(force)
 	{
-		$ch.scrollTop(max + 10)
+		scroll_chat_to(max + 10)
 		hide_top_scroller()
 		hide_bottom_scroller()
 	}
@@ -5575,7 +5584,7 @@ function goto_bottom(force=false)
 	{
 		if($('#bottom_scroller_container').css('visibility') === 'hidden')
 		{
-			$ch.scrollTop(max + 10)
+			scroll_chat_to(max + 10)
 		}
 	}
 }
@@ -11757,7 +11766,7 @@ function activity_above()
 			if(p.top < up_scroller_height)
 			{
 				var diff = scrolltop + p.top - up_scroller_height
-				$("#chat_area").scrollTop(diff)
+				scroll_chat_to(diff)
 				step = true
 				return false
 			}
@@ -11797,7 +11806,7 @@ function activity_below()
 			if(p.top + h + down_scroller_height > chat_area_height)
 			{
 				var diff = scrolltop + p.top - up_scroller_height
-				$("#chat_area").scrollTop(diff)
+				scroll_chat_to(diff)
 				step = true
 				return false
 			}
@@ -11996,4 +12005,22 @@ function show_bottom_scroller()
 function hide_bottom_scroller()
 {
 	$('#bottom_scroller_container').css('visibility', 'hidden')
+}
+
+function scroll_chat_to(y, animate=true, d=500)
+{
+	$("#chat_area").stop()
+	
+	if(animate && app_focused)
+	{
+		$("#chat_area").animate({scrollTop:y}, d, function()
+		{
+			check_scrollers()
+		})
+	}
+
+	else
+	{
+		$("#chat_area").scrollTop(y)
+	}
 }

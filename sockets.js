@@ -144,7 +144,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.connection = function(socket)
 	{
-		socket.hue_last_activity = Date.now()
 		socket.hue_pinged = false
 		socket.hue_kicked = false
 		socket.hue_banned = false
