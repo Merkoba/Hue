@@ -116,5 +116,6 @@
 	"email_change_expiration": 86400000,
 	"email_change_code_max_length": 200,
 	"create_room_cooldown": 1200000,
-	"recaptcha_enabled": true
+	"recaptcha_enabled": true,
+	"socket_emit_throttle": 10
 }

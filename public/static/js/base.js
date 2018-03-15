@@ -180,6 +180,8 @@ var check_scrollers_delay = 100
 var requesting_roomlist = false
 var num_keys_pressed = 0
 var first_time
+var emit_queue_timeout
+var emit_queue = []
 
 function init()
 {
@@ -618,10 +620,53 @@ function show_username()
 	chat_announce({brk1:'[', brk2:']', msg:`Username: ${username}`})
 }
 
-function socket_emit(dest, obj)
+function socket_emit(destination, data)
 {
-	console.info(`Emit: ${dest}`)
-	socket.emit(dest, obj)
+	var obj = 
+	{
+		destination: destination, 
+		data: data
+	}
+
+	emit_queue.push(obj)
+
+	if(emit_queue_timeout === undefined)
+	{
+		check_emit_queue()
+	}	
+}
+
+function check_emit_queue()
+{
+	if(emit_queue.length > 0)
+	{
+		var obj = emit_queue[0]
+
+		if(obj !== "first")
+		{
+			do_socket_emit(obj)
+		}
+
+		emit_queue.shift()
+		
+		emit_queue_timeout = setTimeout(function()
+		{
+			check_emit_queue()
+		}, socket_emit_throttle)
+	}
+
+	else
+	{
+		clearTimeout(emit_queue_timeout)
+		emit_queue_timeout = undefined
+	}
+}
+
+function do_socket_emit(obj)
+{
+	console.info(`Emit: ${obj.destination}`)
+	obj.data.server_method_name = obj.destination
+	socket.emit("server_method", obj.data)
 }
 
 function start_socket()

@@ -1,4 +1,4 @@
-module.exports = function(io, db_manager, config, sconfig, utilz, logger)
+var handler = function(io, db_manager, config, sconfig, utilz, logger)
 {
 	const fs = require('fs')
 	const path = require('path')
@@ -64,18 +64,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		socket.hue_kicked = true
 		socket.hue_info1 = "the anti-spam system"
-		get_out(socket)
+		handler.get_out(socket)
 	})
 
-	start_room_loop()
-	start_files_loop()
+	const dont_check_joined = ["join_room"]
+	const dont_add_spam = ["slice_upload", "typing"]
 
 	io.on("connection", function(socket)
 	{
 		try
 		{
-			add_spam(socket)
-			connection(socket)
+			handler.add_spam(socket)
+			handler.connection(socket)
 		}
 
 		catch(err)
@@ -83,793 +83,48 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		}
 
-		socket.on('join_room', function(data)
+		socket.on('server_method', function(data)
 		{
 			try
 			{
-				add_spam(socket)
-				join_room(socket, data)
+				var m = data.server_method_name
+
+				if(handler[m] === undefined)
+				{
+					return handler.get_out()
+				}
+
+				if(m === undefined)
+				{
+					return handler.get_out(socket)
+				}
+
+				if(dont_check_joined.indexOf(m) === -1)
+				{
+					if(!socket.hue_joined)
+					{
+						return handler.get_out(socket)
+					}
+				}
+
+				if(dont_add_spam.indexOf(m) === -1)
+				{
+					handler.add_spam(socket)
+				}
+
+				handler[m](socket, data)
 			}
 
 			catch(err)
 			{
-				logger.log_error(err)
+				logger.log_error(err)				
 			}
-		})
-
-		socket.on('sendchat', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				sendchat(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('linked_image', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				linked_image(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_topic', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_topic(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_room_name', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_room_name(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('roomlist', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined && !socket.hue_locked)
-				{
-					return get_out(socket)
-				}
-
-				roomlist(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('create_room', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined && !socket.hue_locked)
-				{
-					return get_out(socket)
-				}
-
-				create_room(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_role', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_role(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('reset_voices', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				reset_voices(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('remove_ops', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				remove_ops(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('ban', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				ban(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('unban', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				unban(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('unban_all', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				unban_all(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('get_banned_count', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				get_banned_count(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('kick', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				kick(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_upload_permission', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_upload_permission(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_chat_permission', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_chat_permission(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_radio_permission', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_radio_permission(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_tv_permission', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_tv_permission(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_log', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_log(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('clear_log', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				clear_log(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_privacy', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_privacy(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_radio_source', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_radio_source(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_tv_source', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_tv_source(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_username', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_username(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_password', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_password(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_email', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_email(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('verify_email', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				verify_email(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_images_enabled', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_images_enabled(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})	
-
-		socket.on('change_tv_enabled', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_tv_enabled(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_radio_enabled', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_radio_enabled(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_theme', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_theme(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_background_image_enabled', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_background_image_enabled(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('change_voice_permission', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				change_voice_permission(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('slice_upload', function(data) 
-		{
-			try
-			{
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				slice_upload(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('cancel_upload', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				cancel_upload(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('typing', function(data) 
-		{
-			try
-			{
-				socket.hue_typing_counter += 1
-
-				if(socket.hue_typing_counter >= 100)
-				{
-					add_spam(socket)
-					socket.hue_typing_counter = 0
-				}
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				typing(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('whisper', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				whisper(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})
-
-		socket.on('disconnect_others', function(data) 
-		{
-			try
-			{
-				add_spam(socket)
-
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
-				disconnect_others(socket, data)
-			}
-
-			catch(err)
-			{
-				logger.log_error(err)
-			}
-		})			
+		})		
 
 		socket.on('disconnect', function(reason)
 		{
 			try
 			{
-				if(!socket.hue_joined)
-				{
-					return get_out(socket)
-				}
-
 				reason = reason.toLowerCase()
 
 				if(reason.indexOf('timeout') !== -1)
@@ -877,7 +132,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					socket.hue_pinged = true
 				}				
 
-				disconnect(socket)
+				handler.disconnect(socket)
 			}
 
 			catch(err)
@@ -887,8 +142,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	})
 
-	function connection(socket)
+	handler.connection = function(socket)
 	{
+		socket.hue_last_activity = Date.now()
 		socket.hue_pinged = false
 		socket.hue_kicked = false
 		socket.hue_banned = false
@@ -900,16 +156,16 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.hue_typing_counter = 0
 	}
 
-	function join_room(socket, data)
+	handler.join_room = function(socket, data)
 	{
 		if(data.room_id === undefined)
 		{
-			return do_disconnect(socket)
+			return handler.do_disconnect(socket)
 		}
 
 		if(data.room_id.length > config.max_room_id_length)
 		{
-			return do_disconnect(socket)
+			return handler.do_disconnect(socket)
 		} 			
 
 		if(data.alternative)
@@ -919,17 +175,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			if(data.email === undefined || data.password === undefined)
 			{
-				return do_disconnect(socket)
+				return handler.do_disconnect(socket)
 			}
 
 			if(data.email > config.max_max_email_length)
 			{
-				return do_disconnect(socket)
+				return handler.do_disconnect(socket)
 			}
 
 			if(data.password.length > config.max_max_password_length)
 			{
-				return do_disconnect(socket)
+				return handler.do_disconnect(socket)
 			}
 		}
 
@@ -939,17 +195,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			if(data.user_id === undefined || data.token === undefined)
 			{
-				return do_disconnect(socket)
+				return handler.do_disconnect(socket)
 			}
 
 			if(data.user_id > config.max_user_id_length)
 			{
-				return do_disconnect(socket)
+				return handler.do_disconnect(socket)
 			}
 
 			if(data.token.length > config.max_jwt_token_length)
 			{
-				return do_disconnect(socket)
+				return handler.do_disconnect(socket)
 			}
 		}	
 
@@ -967,7 +223,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				if(!ans.valid)
 				{
-					return do_disconnect(socket)
+					return handler.do_disconnect(socket)
 				}
 
 				var userinfo = ans.user
@@ -980,10 +236,10 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					if(!info)
 					{
-						return do_disconnect(socket)
+						return handler.do_disconnect(socket)
 					}
 	
-					do_join(socket, info, userinfo)
+					handler.do_join(socket, info, userinfo)
 
 					db_manager.save_visited_room(socket.hue_user_id, data.room_id)
 
@@ -1011,17 +267,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				if(err)
 				{
-					return do_disconnect(socket)				
+					return handler.do_disconnect(socket)				
 				}
 
 				else if(decoded.data === undefined || decoded.data.id === undefined)
 				{
-					return do_disconnect(socket)
+					return handler.do_disconnect(socket)
 				}
 
 				if(decoded.data.id !== data.user_id)
 				{
-					return do_disconnect(socket)
+					return handler.do_disconnect(socket)
 				}			
 
 				else
@@ -1034,7 +290,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						if(!info)
 						{
-							return do_disconnect(socket)
+							return handler.do_disconnect(socket)
 						}
 
 						db_manager.get_user({_id:socket.hue_user_id}, 
@@ -1049,10 +305,10 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 						{
 							if(!userinfo)
 							{
-								return do_disconnect(socket)
+								return handler.do_disconnect(socket)
 							}
 
-							do_join(socket, info, userinfo)
+							handler.do_join(socket, info, userinfo)
 
 							db_manager.save_visited_room(socket.hue_user_id, data.room_id)
 
@@ -1077,7 +333,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function do_join(socket, info, userinfo)
+	handler.do_join = function(socket, info, userinfo)
 	{
 		socket.hue_room_id = info._id.toString()
 		socket.hue_email = userinfo.email
@@ -1085,9 +341,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		
 		socket.join(socket.hue_room_id)		
 
-		if(check_multipe_joins(socket))
+		if(handler.check_multipe_joins(socket))
 		{
-			return do_disconnect(socket)
+			return handler.do_disconnect(socket)
 		}
 
 		if(sconfig.superuser_emails.indexOf(userinfo.email) !== -1)
@@ -1104,7 +360,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			socket.leave(socket.hue_room_id)
 			socket.hue_locked = true
 
-			user_emit(socket, 'joined', 
+			handler.user_emit(socket, 'joined', 
 			{
 				room_locked: true	
 			})
@@ -1144,7 +400,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(rooms[socket.hue_room_id] === undefined)
 		{
-			rooms[socket.hue_room_id] = create_room_object(info)
+			rooms[socket.hue_room_id] = handler.create_room_object(info)
 		}
 
 		socket.hue_role = info.keys[socket.hue_user_id]
@@ -1164,9 +420,9 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			user_rooms[socket.hue_user_id].push(socket.hue_room_id)
 		}
 
-		if(!user_already_connected(socket))
+		if(!handler.user_already_connected(socket))
 		{
-			broadcast_emit(socket, 'userjoin',
+			handler.broadcast_emit(socket, 'userjoin',
 			{
 				username: socket.hue_username,
 				role: socket.hue_role,
@@ -1180,10 +436,10 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			rooms[socket.hue_room_id].userlist[socket.hue_user_id] = {}
 
-			update_user_in_userlist(socket)
+			handler.update_user_in_userlist(socket)
 		}
 
-		user_emit(socket, 'joined', 
+		handler.user_emit(socket, 'joined', 
 		{
 			room_locked: false,
 			room_name: info.name,
@@ -1196,7 +452,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			topic: info.topic, 
 			topic_setter: info.topic_setter,
 			topic_date: info.topic_date,
-			userlist: utilz.object_to_array(get_userlist(socket.hue_room_id)),
+			userlist: utilz.object_to_array(handler.get_userlist(socket.hue_room_id)),
 			log: info.log,
 			log_messages: info.log_messages.concat(rooms[socket.hue_room_id].log_messages),
 			role: socket.hue_role, 
@@ -1242,34 +498,34 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.hue_joined = true			
 	}
 
-	function sendchat(socket, data)
+	handler.sendchat = function(socket, data)
 	{
 		if(data.msg === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.msg.length === 0)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.msg.length > config.max_input_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.msg.length !== utilz.clean_string2(data.msg).length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
-		if(!check_permission(socket, "chat"))
+		if(!handler.check_permission(socket, "chat"))
 		{
 			return false
 		}
 
-		broadcast_emit(socket, 'chat_msg', 
+		handler.broadcast_emit(socket, 'chat_msg', 
 		{ 
 			username: socket.hue_username, 
 			msg: data.msg,
@@ -1296,31 +552,31 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function change_topic(socket, data)
+	handler.change_topic = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.topic === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.topic.length === 0)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.topic.length > config.max_topic_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.topic.length !== utilz.clean_string2(data.topic).length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.get_room({_id:socket.hue_room_id}, {topic:true})
@@ -1335,7 +591,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				info.topic_setter = socket.hue_username
 				info.topic_date = Date.now()
 
-				room_emit(socket, 'topic_change', 
+				handler.room_emit(socket, 'topic_change', 
 				{
 					topic: info.topic,
 					topic_setter: info.topic_setter,
@@ -1362,21 +618,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	function change_room_name(socket, data)
+	handler.change_room_name = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.name.length === 0 || data.name.length > config.max_room_name_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.name.length !== utilz.clean_string2(data.name).length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.get_room({_id:socket.hue_room_id}, {name:true})
@@ -1387,7 +643,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				info.name = data.name
 
-				room_emit(socket, 'room_name_changed', 
+				handler.room_emit(socket, 'room_name_changed', 
 				{
 					name: info.name,
 					username: socket.hue_username
@@ -1411,40 +667,40 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	function roomlist(socket, data)
+	handler.roomlist = function(socket, data)
 	{
 		if(data.type === "visited")
 		{
-			get_visited_roomlist(socket.hue_user_id, function(rooms)
+			handler.get_visited_roomlist(socket.hue_user_id, function(rooms)
 			{
-				user_emit(socket, 'roomlist', {roomlist:rooms})
+				handler.user_emit(socket, 'roomlist', {roomlist:rooms})
 			})
 		}
 
 		else if(data.type === "public")
 		{
-			get_roomlist(function(rooms)
+			handler.get_roomlist(function(rooms)
 			{
-				user_emit(socket, 'roomlist', {roomlist:rooms})
+				handler.user_emit(socket, 'roomlist', {roomlist:rooms})
 			})
 		}
 	}
 
-	function create_room(socket, data)
+	handler.create_room = function(socket, data)
 	{
 		if(data.name.length === 0 || data.name.length > config.max_room_name_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.name.length !== utilz.clean_string2(data.name).length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.public !== true && data.public !== false)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		data.user_id = socket.hue_user_id
@@ -1465,11 +721,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(ans === "wait")
 			{
-				user_emit(socket, 'create_room_wait', {})
+				handler.user_emit(socket, 'create_room_wait', {})
 				return
 			}
 			
-			user_emit(socket, 'room_created', {id:ans._id.toString()})
+			handler.user_emit(socket, 'room_created', {id:ans._id.toString()})
 		})
 
 		.catch(err =>
@@ -1483,36 +739,36 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	function change_role(socket, data)
+	handler.change_role = function(socket, data)
 	{
 		if(!socket.hue_superuser && (socket.hue_role !== 'admin' && socket.hue_role !== 'op'))
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username.length === 0)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username.length > config.max_max_username_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(roles.indexOf(data.role) === -1)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(!socket.hue_superuser && (socket.hue_username === data.username))
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
@@ -1525,7 +781,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				if(!userinfo)
 				{
-					user_emit(socket, 'user_not_found', {})
+					handler.user_emit(socket, 'user_not_found', {})
 					return false						
 				}
 
@@ -1537,18 +793,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
 					{
-						user_emit(socket, 'forbiddenuser', {})
+						handler.user_emit(socket, 'forbiddenuser', {})
 						return false
 					}
 				}
 
 				if(current_role === data.role || (current_role === undefined && data.role === "voice1"))
 				{
-					user_emit(socket, 'isalready', {what:data.role, who:data.username})
+					handler.user_emit(socket, 'isalready', {what:data.role, who:data.username})
 					return false
 				}
 
-				var sockets = get_user_sockets_per_room(socket.hue_room_id, id)
+				var sockets = handler.get_user_sockets_per_room(socket.hue_room_id, id)
 
 				var last_socc = false
 				
@@ -1558,7 +814,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						if(socket.hue_username !== socc.hue_username && socc.hue_role === "admin")
 						{
-							user_emit(socket, 'forbiddenuser', {})
+							handler.user_emit(socket, 'forbiddenuser', {})
 							return false		
 						}
 					}
@@ -1569,7 +825,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				if(last_socc)
 				{
-					update_user_in_userlist(last_socc)
+					handler.update_user_in_userlist(last_socc)
 				}
 
 				info.keys[id] = data.role
@@ -1581,7 +837,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					logger.log_error(err)
 				})
 
-				room_emit(socket, 'announce_role_change', 
+				handler.room_emit(socket, 'announce_role_change', 
 				{ 
 					username1: socket.hue_username, 
 					username2: data.username, 
@@ -1601,11 +857,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})		
 	}
 
-	function reset_voices(socket, data)
+	handler.reset_voices = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
@@ -1625,7 +881,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			if(!removed)
 			{
-				user_emit(socket, 'novoicestoreset', {})
+				handler.user_emit(socket, 'novoicestoreset', {})
 				return false
 			}
 
@@ -1639,7 +895,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					socc.hue_role = 'voice1'
 
-					update_user_in_userlist(socc)
+					handler.update_user_in_userlist(socc)
 				}
 			}
 			
@@ -1650,7 +906,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				logger.log_error(err)
 			})
 
-			room_emit(socket, 'voices_resetted', {username:socket.hue_username})
+			handler.room_emit(socket, 'voices_resetted', {username:socket.hue_username})
 		})
 
 		.catch(err =>
@@ -1659,11 +915,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})	
 	}
 
-	function remove_ops(socket, data)
+	handler.remove_ops = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
@@ -1683,7 +939,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			if(!removed)
 			{
-				user_emit(socket, 'noopstoremove', {})
+				handler.user_emit(socket, 'noopstoremove', {})
 				return false
 			}
 
@@ -1697,11 +953,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					socc.hue_role = ''
 
-					update_user_in_userlist(socc)
+					handler.update_user_in_userlist(socc)
 				}
 			}
 			
-			room_emit(socket, 'announce_removedops', {username:socket.hue_username})
+			handler.room_emit(socket, 'announce_removedops', {username:socket.hue_username})
 
 			db_manager.update_room(info._id, {keys:info.keys})
 
@@ -1717,35 +973,35 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	function kick(socket, data)
+	handler.kick = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username.length === 0)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username.length > config.max_max_username_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
-		var sockets = get_user_sockets_per_room_by_username(socket.hue_room_id, data.username)
+		var sockets = handler.get_user_sockets_per_room_by_username(socket.hue_room_id, data.username)
 
 		if(sockets.length > 0)
 		{
 			if(((sockets[0].role === 'admin' || sockets[0].role === 'op') && socket.hue_role !== 'admin') || sockets[0].superuser)
 			{
-				user_emit(socket, 'forbiddenuser', {})
+				handler.user_emit(socket, 'forbiddenuser', {})
 				return false
 			}
 
@@ -1755,37 +1011,37 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				socc.hue_kicked = true
 				socc.hue_info1 = socket.hue_username
 				
-				get_out(socc)
+				handler.get_out(socc)
 			}
 		}
 
 		else
 		{
-			user_emit(socket, 'user_not_in_room', {})
+			handler.user_emit(socket, 'user_not_in_room', {})
 			return false
 		}		
 	}	
 
-	function ban(socket, data)
+	handler.ban = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username.length === 0)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username.length > config.max_max_username_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}			
 
 		db_manager.get_room({_id:socket.hue_room_id}, {bans:true, keys:true})
@@ -1798,7 +1054,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				if(!userinfo)
 				{
-					user_emit(socket, 'user_not_found', {})
+					handler.user_emit(socket, 'user_not_found', {})
 					return false						
 				}
 
@@ -1808,18 +1064,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
 				{
-					user_emit(socket, 'forbiddenuser', {})
+					handler.user_emit(socket, 'forbiddenuser', {})
 					return false
 				}
 
 				if(info.bans.indexOf(id) !== -1)
 				{
-					user_emit(socket, 'user_already_banned', {})
+					handler.user_emit(socket, 'user_already_banned', {})
 
 					return false						
 				}
 
-				var sockets = get_user_sockets_per_room(socket.hue_room_id, id)
+				var sockets = handler.get_user_sockets_per_room(socket.hue_room_id, id)
 
 				if(sockets.length > 0)
 				{
@@ -1827,20 +1083,20 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						if(socc.hue_superuser)
 						{
-							user_emit(socket, 'forbiddenuser', {})							
+							handler.user_emit(socket, 'forbiddenuser', {})							
 							return false
 						}
 
 						socc.hue_role = ''
 						socc.hue_banned = true
 						socc.hue_info1 = socket.hue_username
-						get_out(socc)
+						handler.get_out(socc)
 					}
 				}
 
 				else
 				{
-					room_emit(socket, 'announce_ban', 
+					handler.room_emit(socket, 'announce_ban', 
 					{
 						username1: socket.hue_username, 
 						username2: data.username
@@ -1869,26 +1125,26 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})		
 	}
 
-	function unban(socket, data)
+	handler.unban = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username.length === 0)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username.length > config.max_max_username_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}			
 
 		db_manager.get_room({_id:socket.hue_room_id}, {bans:true, keys:true})
@@ -1901,7 +1157,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				if(!userinfo)
 				{
-					user_emit(socket, 'user_not_found', {})
+					handler.user_emit(socket, 'user_not_found', {})
 					return false						
 				}
 
@@ -1909,7 +1165,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				if(info.bans.indexOf(id) === -1)
 				{
-					user_emit(socket, 'user_already_unbanned', {})
+					handler.user_emit(socket, 'user_already_unbanned', {})
 
 					return false
 				}
@@ -1930,7 +1186,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					logger.log_error(err)
 				})
 
-				room_emit(socket, 'announce_unban', 
+				handler.room_emit(socket, 'announce_unban', 
 				{ 
 					username1: socket.hue_username, 
 					username2: data.username
@@ -1949,11 +1205,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})		
 	}
 
-	function unban_all(socket, data)
+	handler.unban_all = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.get_room({_id:socket.hue_room_id}, {bans:true})
@@ -1971,12 +1227,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					logger.log_error(err)
 				})
 
-				room_emit(socket, 'announce_unban_all', {username:socket.hue_username})
+				handler.room_emit(socket, 'announce_unban_all', {username:socket.hue_username})
 			}
 
 			else
 			{
-				user_emit(socket, 'nothingtounban', {})
+				handler.user_emit(socket, 'nothingtounban', {})
 			}
 		})
 
@@ -1986,11 +1242,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})		
 	}
 
-	function get_banned_count(socket, data)
+	handler.get_banned_count = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.get_room({_id:socket.hue_room_id}, {bans:true})
@@ -2007,7 +1263,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				var count = info.bans.length
 			}
 
-			user_emit(socket, 'receive_banned_count', {count:count})
+			handler.user_emit(socket, 'receive_banned_count', {count:count})
 		})
 
 		.catch(err =>
@@ -2016,7 +1272,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})		
 	}
 
-	function change_log(socket, data)
+	handler.change_log = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -2025,7 +1281,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(data.log !== true && data.log !== false)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.get_room({_id:socket.hue_room_id}, {log:true})
@@ -2058,7 +1314,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				rooms[socket.hue_room_id].log = data.log
 
-				room_emit(socket, 'log_changed', {username:socket.hue_username, log:data.log})
+				handler.room_emit(socket, 'log_changed', {username:socket.hue_username, log:data.log})
 			}
 		})
 
@@ -2068,7 +1324,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})		
 	}
 
-	function clear_log(socket, data)
+	handler.clear_log = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -2090,12 +1346,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					logger.log_error(err)
 				})					
 
-				room_emit(socket, 'log_cleared', {username:socket.hue_username})
+				handler.room_emit(socket, 'log_cleared', {username:socket.hue_username})
 			}
 
 			else
 			{
-				user_emit(socket, 'nothingtoclear', {})
+				handler.user_emit(socket, 'nothingtoclear', {})
 			}
 		})
 
@@ -2105,16 +1361,16 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})		
 	}
 
-	function change_privacy(socket, data)
+	handler.change_privacy = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.what !== true && data.what !== false)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.update_room(socket.hue_room_id, {public:data.what})
@@ -2124,27 +1380,27 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		room_emit(socket, 'privacy_change', {username:socket.hue_username, what:data.what})
+		handler.room_emit(socket, 'privacy_change', {username:socket.hue_username, what:data.what})
 	}
 
-	function change_radio_source(socket, data)
+	handler.change_radio_source = function(socket, data)
 	{
 		if(data.src === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.src.length === 0)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.src.length > config.max_radio_source_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
-		if(!check_permission(socket, "radio"))
+		if(!handler.check_permission(socket, "radio"))
 		{
 			return false
 		}
@@ -2176,7 +1432,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 					else
 					{
-						user_emit(socket, 'songnotfound', {})
+						handler.user_emit(socket, 'songnotfound', {})
 						return false							
 					}						
 
@@ -2193,12 +1449,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 						{
 							data.type = "youtube"
 							data.title = response.items[0].snippet.title
-							do_change_radio_source(socket, data)
+							handler.do_change_radio_source(socket, data)
 						}
 
 						else
 						{
-							user_emit(socket, 'songnotfound', {})
+							handler.user_emit(socket, 'songnotfound', {})
 						}
 					})
 
@@ -2210,7 +1466,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 				else
 				{
-					user_emit(socket, 'songnotfound', {})
+					handler.user_emit(socket, 'songnotfound', {})
 					return false						
 				}
 			}
@@ -2219,7 +1475,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				data.type = "radio"
 				data.title = ""
-				do_change_radio_source(socket, data)
+				handler.do_change_radio_source(socket, data)
 			}
 		}
 
@@ -2236,7 +1492,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			.then(info =>
 			{
-				room_emit(socket, 'restarted_radio_source', 
+				handler.room_emit(socket, 'restarted_radio_source', 
 				{ 
 					radio_type: info.radio_type,
 					radio_source: info.radio_source,
@@ -2279,17 +1535,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 						data.type = "youtube"
 						data.src = `https://youtube.com/watch?v=${item.id.videoId}`
 						data.title = response.items[0].snippet.title
-						do_change_radio_source(socket, data)
+						handler.do_change_radio_source(socket, data)
 						return
 					}
 
-					user_emit(socket, 'songnotfound', {})
+					handler.user_emit(socket, 'songnotfound', {})
 					return false						
 				}
 
 				else
 				{
-					user_emit(socket, 'songnotfound', {})
+					handler.user_emit(socket, 'songnotfound', {})
 				}							
 			})
 
@@ -2300,24 +1556,24 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function change_tv_source(socket, data)
+	handler.change_tv_source = function(socket, data)
 	{
 		if(data.src === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.src.length === 0)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.src.length > config.max_tv_source_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
-		if(!check_permission(socket, "tv"))
+		if(!handler.check_permission(socket, "tv"))
 		{
 			return false
 		}
@@ -2349,7 +1605,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 					else
 					{
-						user_emit(socket, 'videonotfound', {})
+						handler.user_emit(socket, 'videonotfound', {})
 						return false							
 					}
 
@@ -2366,26 +1622,26 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 						{
 							data.type = "youtube"
 							data.title = response.items[0].snippet.title
-							do_change_tv_source(socket, data)
+							handler.do_change_tv_source(socket, data)
 						}
 
 						else
 						{
-							user_emit(socket, 'videonotfound', {})
+							handler.user_emit(socket, 'videonotfound', {})
 							return false
 						}
 					})
 
 					.catch(err =>
 					{
-						user_emit(socket, 'videonotfound', {})
+						handler.user_emit(socket, 'videonotfound', {})
 						logger.log_error(err)
 					})
 				}
 
 				else
 				{
-					user_emit(socket, 'videonotfound', {})						
+					handler.user_emit(socket, 'videonotfound', {})						
 				}
 			}
 
@@ -2420,12 +1676,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 						{
 							data.type = "twitch"
 							data.title = response.data[0].title
-							do_change_tv_source(socket, data)
+							handler.do_change_tv_source(socket, data)
 						})
 
 						.catch(err =>
 						{
-							user_emit(socket, 'videonotfound', {})								
+							handler.user_emit(socket, 'videonotfound', {})								
 							logger.log_error(err)
 						})
 					}
@@ -2434,19 +1690,19 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						data.type = "twitch"
 						data.title = id[1]
-						do_change_tv_source(socket, data)
+						handler.do_change_tv_source(socket, data)
 					}
 
 					else
 					{
-						user_emit(socket, 'videonotfound', {})
+						handler.user_emit(socket, 'videonotfound', {})
 						return false
 					}
 				}
 
 				else
 				{
-					user_emit(socket, 'videonotfound', {})						
+					handler.user_emit(socket, 'videonotfound', {})						
 				}					
 			}
 
@@ -2454,7 +1710,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				data.type = "url"
 				data.title = ""
-				do_change_tv_source(socket, data)
+				handler.do_change_tv_source(socket, data)
 			}
 		}
 
@@ -2471,7 +1727,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			.then(info =>
 			{
-				room_emit(socket, 'restarted_tv_source', 
+				handler.room_emit(socket, 'restarted_tv_source', 
 				{ 
 					tv_type: info.tv_type,
 					tv_source: info.tv_source,
@@ -2516,17 +1772,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 						data.type = "youtube"
 						data.src = `https://youtube.com/watch?v=${item.id.videoId}`
 						data.title = response.items[0].snippet.title
-						do_change_tv_source(socket, data)
+						handler.do_change_tv_source(socket, data)
 						return
 					}
 
-					user_emit(socket, 'videonotfound', {})
+					handler.user_emit(socket, 'videonotfound', {})
 					return false						
 				}
 
 				else
 				{
-					user_emit(socket, 'videonotfound', {})
+					handler.user_emit(socket, 'videonotfound', {})
 				}						
 			})
 
@@ -2537,7 +1793,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function do_change_radio_source(socket, data)
+	handler.do_change_radio_source = function(socket, data)
 	{	
 		var radioinfo = {}
 
@@ -2560,7 +1816,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		radioinfo.radio_setter = socket.hue_username
 		radioinfo.radio_date = date
 
-		room_emit(socket, 'changed_radio_source', 
+		handler.room_emit(socket, 'changed_radio_source', 
 		{ 
 			radio_type: radioinfo.radio_type,
 			radio_source: radioinfo.radio_source,
@@ -2604,7 +1860,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}		
 	}
 
-	function do_change_tv_source(socket, data)
+	handler.do_change_tv_source = function(socket, data)
 	{	
 		var tvinfo = {}
 
@@ -2627,7 +1883,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		tvinfo.tv_setter = socket.hue_username
 		tvinfo.tv_date = date
 
-		room_emit(socket, 'changed_tv_source', 
+		handler.room_emit(socket, 'changed_tv_source', 
 		{
 			tv_type: tvinfo.tv_type,
 			tv_source: tvinfo.tv_source,
@@ -2671,26 +1927,26 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}		
 	}
 
-	function change_username(socket, data)
+	handler.change_username = function(socket, data)
 	{
 		if(data.username === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username.length === 0)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username.length > config.max_username_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(utilz.clean_string4(data.username).length !== data.username.length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		var old_username = socket.hue_username
@@ -2703,14 +1959,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				for(var room_id of user_rooms[socket.hue_user_id])
 				{
-					for(var socc of get_user_sockets_per_room(room_id, socket.hue_user_id))
+					for(var socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
 					{
 						socc.hue_username = data.username
 					}
 
-					update_user_in_userlist(socket)
+					handler.update_user_in_userlist(socket)
 
-					room_emit(room_id, 'new_username',
+					handler.room_emit(room_id, 'new_username',
 					{
 						username: data.username, 
 						old_username: old_username
@@ -2720,7 +1976,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else
 			{
-				user_emit(socket, 'username_already_exists', {username:data.username})
+				handler.user_emit(socket, 'username_already_exists', {username:data.username})
 			}
 		})
 
@@ -2730,21 +1986,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	function change_password(socket, data)
+	handler.change_password = function(socket, data)
 	{
 		if(data.password === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.password.length === 0 || data.password.length < config.min_password_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.password.length > config.max_password_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.update_user(socket.hue_user_id,
@@ -2758,29 +2014,29 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})			
 
-		user_emit(socket, 'password_changed', {password:data.password})
+		handler.user_emit(socket, 'password_changed', {password:data.password})
 	}
 
-	function change_email(socket, data)
+	handler.change_email = function(socket, data)
 	{
 		if(data.email === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.email.indexOf('@') === -1 || data.email.indexOf(' ') !== -1)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}			
 
 		if(data.email.length > config.max_email_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(utilz.clean_string5(data.email).length !== data.email.length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}		
 
 		db_manager.change_email(socket.hue_user_id, data.email)
@@ -2789,25 +2045,25 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(ans.msg === "error")
 			{
-				user_emit(socket, 'error_occurred', {})
+				handler.user_emit(socket, 'error_occurred', {})
 				return
 			}
 
 			else if(ans.msg === "duplicate")
 			{
-				user_emit(socket, 'email_already_exists', {email:data.email})
+				handler.user_emit(socket, 'email_already_exists', {email:data.email})
 				return
 			}
 
 			else if(ans.msg === "wait")
 			{
-				user_emit(socket, 'email_change_wait', {})
+				handler.user_emit(socket, 'email_change_wait', {})
 				return
 			}
 
 			else if(ans.msg === "sent_code")
 			{
-				user_emit(socket, 'email_change_code_sent', {email:data.email})
+				handler.user_emit(socket, 'email_change_code_sent', {email:data.email})
 				return
 			}
 		})		
@@ -2818,21 +2074,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})	
 	}
 
-	function verify_email(socket, data)
+	handler.verify_email = function(socket, data)
 	{
 		if(utilz.clean_string5(data.code).length !== data.code.length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.code.length === 0)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 		
 		if(data.code.length > config.email_change_code_max_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.change_email(socket.hue_user_id, data.email, data.code)
@@ -2841,31 +2097,31 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(ans.msg === "error")
 			{
-				user_emit(socket, 'error_occurred', {})
+				handler.user_emit(socket, 'error_occurred', {})
 				return
 			}
 
 			else if(ans.msg === "duplicate")
 			{
-				user_emit(socket, 'email_already_exists', {email:data.email})
+				handler.user_emit(socket, 'email_already_exists', {email:data.email})
 				return
 			}
 
 			else if(ans.msg === "not_sent")
 			{
-				user_emit(socket, 'email_change_code_not_sent', {email:data.email})
+				handler.user_emit(socket, 'email_change_code_not_sent', {email:data.email})
 				return
 			}
 
 			else if(ans.msg === "wrong_code")
 			{
-				user_emit(socket, 'email_change_wrong_code', {email:data.email})
+				handler.user_emit(socket, 'email_change_wrong_code', {email:data.email})
 				return
 			}
 
 			else if(ans.msg === "expired_code")
 			{
-				user_emit(socket, 'email_change_expired_code', {email:data.email})
+				handler.user_emit(socket, 'email_change_expired_code', {email:data.email})
 				return
 			}
 
@@ -2873,15 +2129,15 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				for(var room_id of user_rooms[socket.hue_user_id])
 				{
-					for(var socc of get_user_sockets_per_room(room_id, socket.hue_user_id))
+					for(var socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
 					{
 						socc.hue_email = data.email
 					}
 
-					update_user_in_userlist(socket)
+					handler.update_user_in_userlist(socket)
 				}
 
-				user_emit(socket, 'email_changed', {email:ans.email})
+				handler.user_emit(socket, 'email_changed', {email:ans.email})
 			}
 		})		
 
@@ -2891,16 +2147,16 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}	
 
-	function change_images_enabled(socket, data)
+	handler.change_images_enabled = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.what !== true && data.what !== false)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.update_room(socket.hue_room_id,
@@ -2913,23 +2169,23 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		room_emit(socket, 'room_images_enabled_change', 
+		handler.room_emit(socket, 'room_images_enabled_change', 
 		{
 			what: data.what,
 			username: socket.hue_username
 		})
 	}
 
-	function change_tv_enabled(socket, data)
+	handler.change_tv_enabled = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.what !== true && data.what !== false)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.update_room(socket.hue_room_id,
@@ -2942,23 +2198,23 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		room_emit(socket, 'room_tv_enabled_change',
+		handler.room_emit(socket, 'room_tv_enabled_change',
 		{
 			what: data.what,
 			username: socket.hue_username
 		})
 	}
 
-	function change_radio_enabled(socket, data)
+	handler.change_radio_enabled = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.what !== true && data.what !== false)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.update_room(socket.hue_room_id,
@@ -2971,23 +2227,23 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		room_emit(socket, 'room_radio_enabled_change', 
+		handler.room_emit(socket, 'room_radio_enabled_change', 
 		{
 			what: data.what,
 			username: socket.hue_username
 		})
 	}
 
-	function change_theme(socket, data)
+	handler.change_theme = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.color === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.update_room(socket.hue_room_id,
@@ -3000,23 +2256,23 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		room_emit(socket, 'theme_change',
+		handler.room_emit(socket, 'theme_change',
 		{
 			color: data.color,
 			username: socket.hue_username
 		})
 	}
 
-	function change_background_image_enabled(socket, data)
+	handler.change_background_image_enabled = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.what !== true && data.what !== false)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		db_manager.update_room(socket.hue_room_id,
@@ -3029,33 +2285,33 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		room_emit(socket, 'background_image_enabled_change', 
+		handler.room_emit(socket, 'background_image_enabled_change', 
 		{
 			what: data.what,
 			username: socket.hue_username
 		})
 	}
 
-	function change_voice_permission(socket, data)
+	handler.change_voice_permission = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.what !== true && data.what !== false)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.ptype === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(rooms[socket.hue_room_id][data.ptype] === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		rooms[socket.hue_room_id][data.ptype] = data.what			
@@ -3071,7 +2327,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		room_emit(socket, 'voice_permission_change', 
+		handler.room_emit(socket, 'voice_permission_change', 
 		{
 			ptype: data.ptype,
 			what: data.what,
@@ -3079,15 +2335,15 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}	
 
-	function do_disconnect(socc)
+	handler.do_disconnect = function(socc)
 	{
 		socc.disconnect()
 		return false
 	}
 
-	function disconnect(socket)
+	handler.disconnect = function(socket)
 	{
-		if(user_already_connected(socket))
+		if(handler.user_already_connected(socket))
 		{
 			return
 		}
@@ -3112,7 +2368,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			var type = 'disconnection'
 		}
 
-		room_emit(socket, type, 
+		handler.room_emit(socket, type, 
 		{
 			username: socket.hue_username,
 			info1: socket.hue_info1, 
@@ -3154,7 +2410,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}	
 
-	function compare_roomlist(a, b)
+	handler.compare_roomlist = function(a, b)
 	{
 		if(a.usercount < b.usercount) 
 		{
@@ -3182,7 +2438,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function get_userlist(room_id)
+	handler.get_userlist = function(room_id)
 	{
 		try
 		{
@@ -3208,12 +2464,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function get_usercount(room_id)
+	handler.get_usercount = function(room_id)
 	{
-		return Object.keys(get_userlist(room_id)).length
+		return Object.keys(handler.get_userlist(room_id)).length
 	}
 
-	function get_roomlist(callback)
+	handler.get_roomlist = function(callback)
 	{
 		if(last_roomlist === undefined || (Date.now() - roomlist_lastget > config.roomlist_cache))
 		{
@@ -3258,7 +2514,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function get_visited_roomlist(user_id, callback)
+	handler.get_visited_roomlist = function(user_id, callback)
 	{
 		var roomlist = []
 
@@ -3314,46 +2570,46 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	function linked_image(socket, data)
+	handler.linked_image = function(socket, data)
 	{
 		if(data.image_url === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.image_url.length === 0)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.image_url.length > config.max_image_source_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
-		if(!check_permission(socket, "images"))
+		if(!handler.check_permission(socket, "images"))
 		{
 			return false
 		}	
 
 		data.image_url = data.image_url.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
 
-		change_image(socket.hue_room_id, data.image_url, socket.hue_username, 0, "link")
+		handler.change_image(socket.hue_room_id, data.image_url, socket.hue_username, 0, "link")
 	}
 
-	function upload_image(socket, data)
+	handler.upload_image = function(socket, data)
 	{
 		if(data.image_file === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.extension === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
-		if(!check_permission(socket, "images"))
+		if(!handler.check_permission(socket, "images"))
 		{
 			return false
 		}
@@ -3362,7 +2618,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(size === 0 || (size > config.max_image_size))
 		{
-			user_emit(socket, 'upload_error', {})													
+			handler.user_emit(socket, 'upload_error', {})													
 			return false
 		}
 
@@ -3372,28 +2628,28 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(err) 
 			{
-				user_emit(socket, 'upload_error', {})
+				handler.user_emit(socket, 'upload_error', {})
 			}
 
 			else 
 			{
-				change_image(socket.hue_room_id, fname, socket.hue_username, size, "upload")
+				handler.change_image(socket.hue_room_id, fname, socket.hue_username, size, "upload")
 			}
 		})
 	}	
 
-	function change_image(room_id, fname, uploader, size, type)
+	handler.change_image = function(room_id, fname, uploader, size, type)
 	{
 		if(type === "link")
 		{
-			do_change_image(room_id, fname, uploader, size, type)
+			handler.do_change_image(room_id, fname, uploader, size, type)
 		}
 
 		else if(type === "upload")
 		{
 			if(config.image_storage_s3_or_local === "local")
 			{
-				do_change_image(room_id, fname, uploader, size, type)
+				handler.do_change_image(room_id, fname, uploader, size, type)
 			}
 
 			else if(config.image_storage_s3_or_local === "s3")
@@ -3409,7 +2665,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					s3.putObject(
 					{
 						ACL: "public-read",
-						ContentType: get_content_type(fname),
+						ContentType: handler.get_content_type(fname),
 						Body: data,
 						Bucket: sconfig.s3_bucket_name, 
 						Key: `${sconfig.s3_images_location}${fname}`,
@@ -3419,7 +2675,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 					.then(ans =>
 					{
 						fs.unlink(`${images_root}/${fname}`, function(){})
-						do_change_image(room_id, sconfig.s3_main_url + sconfig.s3_images_location + fname, uploader, size, type)
+						handler.do_change_image(room_id, sconfig.s3_main_url + sconfig.s3_images_location + fname, uploader, size, type)
 					})
 
 					.catch(err =>
@@ -3437,7 +2693,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function do_change_image(room_id, fname, uploader, size, type)
+	handler.do_change_image = function(room_id, fname, uploader, size, type)
 	{
 		var image_url
 
@@ -3549,7 +2805,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		room_emit(room_id, 'image_change',
+		handler.room_emit(room_id, 'image_change',
 		{
 			image_url: image_url,
 			image_uploader: uploader,
@@ -3579,18 +2835,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}				
 	}
 
-	function upload_profile_image(socket, data)
+	handler.upload_profile_image = function(socket, data)
 	{
 		if(data.image_file === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		var size = data.image_file.toString('ascii').length / 1024
 
 		if(size === 0 || (size > config.max_profile_image_size))
 		{
-			user_emit(socket, 'upload_error', {})													
+			handler.user_emit(socket, 'upload_error', {})													
 			return false
 		}
 
@@ -3600,21 +2856,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(err) 
 			{
-				user_emit(socket, 'upload_error', {})
+				handler.user_emit(socket, 'upload_error', {})
 			}
 
 			else 
 			{
-				change_profile_image(socket, fname)
+				handler.change_profile_image(socket, fname)
 			}
 		})
 	}	
 
-	function change_profile_image(socket, fname)
+	handler.change_profile_image = function(socket, fname)
 	{
 		if(config.image_storage_s3_or_local === "local")
 		{
-			do_change_profile_image(socket, fname)
+			handler.do_change_profile_image(socket, fname)
 		}
 
 		else if(config.image_storage_s3_or_local === "s3")
@@ -3630,7 +2886,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				s3.putObject(
 				{
 					ACL: "public-read",
-					ContentType: get_content_type(fname),
+					ContentType: handler.get_content_type(fname),
 					Body: data,
 					Bucket: sconfig.s3_bucket_name, 
 					Key: `${sconfig.s3_images_location}${fname}`,
@@ -3640,7 +2896,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				.then(ans =>
 				{
 					fs.unlink(`${images_root}/${fname}`, function(){})
-					do_change_profile_image(socket, sconfig.s3_main_url + sconfig.s3_images_location + fname)
+					handler.do_change_profile_image(socket, sconfig.s3_main_url + sconfig.s3_images_location + fname)
 				})
 
 				.catch(err =>
@@ -3657,7 +2913,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function do_change_profile_image(socket, fname)
+	handler.do_change_profile_image = function(socket, fname)
 	{
 		db_manager.get_user({_id:socket.hue_user_id}, {profile_image_version:true})		
 
@@ -3687,14 +2943,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				for(var room_id of user_rooms[socket.hue_user_id])
 				{
-					for(var socc of get_user_sockets_per_room(room_id, socket.hue_user_id))
+					for(var socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
 					{
 						socc.hue_profile_image = image_url
 					}
 					
-					update_user_in_userlist(socket)
+					handler.update_user_in_userlist(socket)
 
-					room_emit(room_id, 'profile_image_changed',
+					handler.room_emit(room_id, 'profile_image_changed',
 					{
 						username: socket.hue_username,
 						profile_image: image_url
@@ -3714,23 +2970,23 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	function upload_background_image(socket, data)
+	handler.upload_background_image = function(socket, data)
 	{
 		if(data.image_file === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.extension === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}			
 
 		var size = data.image_file.toString('ascii').length / 1024
 
 		if(size === 0 || (size > config.max_image_size))
 		{
-			user_emit(socket, 'upload_error', {})													
+			handler.user_emit(socket, 'upload_error', {})													
 			return false
 		}
 
@@ -3740,21 +2996,21 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(err) 
 			{
-				user_emit(socket, 'upload_error', {})
+				handler.user_emit(socket, 'upload_error', {})
 			}
 
 			else 
 			{
-				change_background_image(socket, fname)
+				handler.change_background_image(socket, fname)
 			}
 		})
 	}
 
-	function change_background_image(socket, fname)
+	handler.change_background_image = function(socket, fname)
 	{
 		if(config.image_storage_s3_or_local === "local")
 		{
-			do_change_background_image(socket, fname)
+			handler.do_change_background_image(socket, fname)
 		}
 
 		else if(config.image_storage_s3_or_local === "s3")
@@ -3770,7 +3026,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				s3.putObject(
 				{
 					ACL: "public-read",
-					ContentType: get_content_type(fname),
+					ContentType: handler.get_content_type(fname),
 					Body: data,
 					Bucket: sconfig.s3_bucket_name, 
 					Key: `${sconfig.s3_images_location}${fname}`,
@@ -3780,7 +3036,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 				.then(ans =>
 				{
 					fs.unlink(`${images_root}/${fname}`, function(){})
-					do_change_background_image(socket, sconfig.s3_main_url + sconfig.s3_images_location + fname)
+					handler.do_change_background_image(socket, sconfig.s3_main_url + sconfig.s3_images_location + fname)
 				})
 
 				.catch(err =>
@@ -3797,7 +3053,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function do_change_background_image(socket, fname)
+	handler.do_change_background_image = function(socket, fname)
 	{
 		db_manager.get_room({_id:socket.hue_room_id}, {background_image:true})		
 
@@ -3830,7 +3086,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			.then(ans =>
 			{
-				room_emit(socket, 'background_image_change',
+				handler.room_emit(socket, 'background_image_change',
 				{
 					username: socket.hue_username,
 					background_image: image_url
@@ -3871,11 +3127,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	function slice_upload(socket, data)
+	handler.slice_upload = function(socket, data)
 	{
 		if(data.action === "image_upload")
 		{
-			if(!check_permission(socket, "images"))
+			if(!handler.check_permission(socket, "images"))
 			{
 				return false
 			}
@@ -3883,7 +3139,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(data.data.length > config.upload_slice_size)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		var key = `${socket.hue_user_id}_${data.date}`
@@ -3892,18 +3148,18 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(!file) 
 		{
-			add_spam(socket)
+			handler.add_spam(socket)
 
 			if(image_types.indexOf(data.type) === -1)
 			{
-				return get_out(socket)
+				return handler.get_out(socket)
 			}
 
 			var ext = data.name.split('.').pop(-1).toLowerCase()
 
-			if(!valid_image_extension(ext))
+			if(!handler.valid_image_extension(ext))
 			{
-				return get_out(socket)
+				return handler.get_out(socket)
 			}
 
 			data.extension = ext
@@ -3934,14 +3190,14 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		if(fsize > config.max_image_size)
 		{
 			delete files[key]
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		var spsize = Math.floor(fsize / (config.max_image_size / 20))
 
 		if(file.spsize !== spsize)
 		{
-			add_spam(socket)
+			handler.add_spam(socket)
 			file.spsize = spsize
 		}
 
@@ -3949,13 +3205,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		
 		if(file.slice * config.upload_slice_size >= file.size) 
 		{  
-			user_emit(socket, 'upload_ended', {date:data.date})
+			handler.user_emit(socket, 'upload_ended', {date:data.date})
 
 			var full_file = Buffer.concat(file.data)
 
 			if(data.action === "image_upload")
 			{
-				upload_image(socket,
+				handler.upload_image(socket,
 				{
 					image_file: full_file,
 					extension: file.extension
@@ -3964,7 +3220,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else if(data.action === "profile_image_upload")
 			{
-				upload_profile_image(socket,
+				handler.upload_profile_image(socket,
 				{
 					image_file: full_file
 				})	
@@ -3972,7 +3228,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else if(data.action === "background_image_upload")
 			{
-				upload_background_image(socket,
+				handler.upload_background_image(socket,
 				{
 					image_file: full_file,
 					extension: file.extension
@@ -3984,7 +3240,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else 
 		{ 
-			user_emit(socket, 'request_slice_upload', 
+			handler.user_emit(socket, 'request_slice_upload', 
 			{ 
 				current_slice: file.slice,
 				date: data.date
@@ -3992,7 +3248,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function cancel_upload(socket, data)
+	handler.cancel_upload = function(socket, data)
 	{
 		var key = `${socket.hue_user_id}_${data.date}`		
 		
@@ -4004,65 +3260,73 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function typing(socket, data)
+	handler.typing = function(socket, data)
 	{
-		if(!check_permission(socket, "chat"))
+		if(!handler.check_permission(socket, "chat"))
 		{
 			return false
 		}
 
-		broadcast_emit(socket, 'typing', {username:socket.hue_username})
+		socket.hue_typing_counter += 1
+
+		if(socket.hue_typing_counter >= 100)
+		{
+			handler.add_spam(socket)
+			socket.hue_typing_counter = 0
+		}		
+
+		handler.broadcast_emit(socket, 'typing', {username:socket.hue_username})
 	}
 
-	function whisper(socket, data)
+	handler.whisper = function(socket, data)
 	{
 		if(data.username === undefined)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username.length === 0)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username.length > config.max_max_username_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.username === socket.hue_username)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.message.length === 0)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.message.length > config.max_input_length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
 		if(data.message.length !== utilz.clean_string2(data.message).length)
 		{
-			return get_out(socket)
+			return handler.get_out(socket)
 		}
 
-		if(!check_permission(socket, "chat"))
+		if(!handler.check_permission(socket, "chat"))
 		{
 			return false
 		}			
 
-		var sockets = get_user_sockets_per_room_by_username(socket.hue_room_id, data.username)
+		var sockets = handler.get_user_sockets_per_room_by_username(socket.hue_room_id, data.username)
 
 		if(sockets.length > 0)
 		{
 			for(var socc of sockets)
 			{
-				user_emit(socc, 'whisper', 
+				handler.user_emit(socc, 'whisper', 
 				{
 					room: socket.hue_room_id,
 					username: socket.hue_username,
@@ -4073,17 +3337,17 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else
 		{
-			user_emit(socket, 'user_not_in_room', {})
+			handler.user_emit(socket, 'user_not_in_room', {})
 		}
 	}	
 
-	function disconnect_others(socket, data)
+	handler.disconnect_others = function(socket, data)
 	{
 		var amount = 0
 
 		for(var room_id of user_rooms[socket.hue_user_id])
 		{
-			for(var socc of get_user_sockets_per_room(room_id, socket.hue_user_id))
+			for(var socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
 			{
 				if(socc.id !== socket.id)
 				{
@@ -4093,10 +3357,10 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		}
 
-		user_emit(socket, 'othersdisconnected', {amount:amount})
+		handler.user_emit(socket, 'othersdisconnected', {amount:amount})
 	}
 
-	function check_image_url(uri)
+	handler.check_image_url = function(uri)
 	{
 		if(uri.split(' ').length > 1)
 		{
@@ -4113,7 +3377,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		return true
 	}
 
-	function check_permission(socket, permission)
+	handler.check_permission = function(socket, permission)
 	{
 		if(socket.hue_role === "admin" || socket.hue_role === "op")
 		{
@@ -4136,7 +3400,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function create_room_object(info)
+	handler.create_room_object = function(info)
 	{
 		var obj = 
 		{
@@ -4165,7 +3429,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		return obj	
 	}
 
-	function start_room_loop()
+	handler.start_room_loop = function()
 	{
 		setInterval(function()
 		{
@@ -4210,7 +3474,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}, config.room_loop_interval)
 	}
 
-	function start_files_loop()
+	handler.start_files_loop = function()
 	{
 		setInterval(function()
 		{
@@ -4234,7 +3498,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}, config.files_loop_interval)
 	}
 
-	function user_already_connected(socket)
+	handler.user_already_connected = function(socket)
 	{
 		try
 		{
@@ -4264,7 +3528,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function get_user_sockets_per_room(room_id, user_id)
+	handler.get_user_sockets_per_room = function(room_id, user_id)
 	{
 		try
 		{
@@ -4291,7 +3555,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function get_user_sockets_per_room_by_username(room_id, username)
+	handler.get_user_sockets_per_room_by_username = function(room_id, username)
 	{
 		try
 		{
@@ -4318,7 +3582,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function update_user_in_userlist(socket)
+	handler.update_user_in_userlist = function(socket)
 	{
 		try
 		{
@@ -4337,12 +3601,12 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function get_out(socket)
+	handler.get_out = function(socket)
 	{
 		try
 		{
-			user_emit(socket, 'redirect', {location:config.redirect_url})
-			do_disconnect(socket)
+			handler.user_emit(socket, 'redirect', {location:config.redirect_url})
+			handler.do_disconnect(socket)
 
 			return false
 		}
@@ -4353,7 +3617,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function get_content_type(fname)
+	handler.get_content_type = function(fname)
 	{
 		if(typeof fname !== "string")
 		{
@@ -4390,7 +3654,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function valid_image_extension(ext)
+	handler.valid_image_extension = function(ext)
 	{
 		if(image_extensions.indexOf(ext) !== -1)
 		{
@@ -4400,7 +3664,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		return false
 	}
 
-	function check_multipe_joins(socket)
+	handler.check_multipe_joins = function(socket)
 	{
 		try
 		{
@@ -4430,7 +3694,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	function user_emit(socket, type, args={})
+	handler.user_emit = function(socket, type, args={})
 	{
 		args.type = type
 		args.room = socket.hue_room_id
@@ -4438,7 +3702,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.emit('update', args)
 	}
 
-	function room_emit(socket, type, args={})
+	handler.room_emit = function(socket, type, args={})
 	{
 		if(typeof socket === "object")
 		{
@@ -4455,7 +3719,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		io.sockets.in(room_id).emit('update', args)
 	}
 
-	function broadcast_emit(socket, type, args={})
+	handler.broadcast_emit = function(socket, type, args={})
 	{
 		if(typeof socket === "object")
 		{
@@ -4472,8 +3736,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.broadcast.in(room_id).emit('update', args)
 	}
 
-	function add_spam(socket)
+	handler.add_spam = function(socket)
 	{
 		antiSpam.addSpam(socket)		
 	}
+
+	handler.start_room_loop()
+	handler.start_files_loop()	
 }
+
+module.exports = handler

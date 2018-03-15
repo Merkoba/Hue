@@ -404,7 +404,10 @@ If you want to remove it to start fresh:
 >How long a user must wait to create another room.
 
 "recaptcha_enabled"
->Wether recaptcha verification is used at registration.
+>Whether recaptcha verification is used at registration.
+
+"socket_emit_throttle"
+>Throttle on socket emits on the client.
 
 ## The following reside in config.secret.json
 
