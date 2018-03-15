@@ -5096,6 +5096,7 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/history'))
 	{
 		show_input_history()
+		ans.to_history = false
 	}
 
 	else if(oiStartsWith(lmsg, '/history'))
@@ -11227,7 +11228,7 @@ function at_startup()
 
 		for(var cmd of cmds)
 		{
-			process_message(cmd)
+			process_message(cmd, false, false)
 		}
 	}
 }
