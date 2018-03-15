@@ -3918,20 +3918,12 @@ function add_to_chat(msg, save=false)
 	if(mode === "chat")
 	{
 		var content = msg.find(".chat_content").eq(0)
-
-		if(started && app_focused)
-		{
-			content.addClass("fader")
-		}
 	}
 
-	else
+	if(started && app_focused)
 	{
-		if(started && app_focused)
-		{
-			msg.addClass("fader")
-		}
-	} 
+		msg.addClass("fader")
+	}
 
 	if((msg.hasClass("chat_message") && !msg.hasClass("thirdperson")) && (last_msg.hasClass("chat_message") && !last_msg.hasClass("thirdperson")))
 	{
