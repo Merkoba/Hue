@@ -130,6 +130,7 @@ var log_messages
 var profile_image
 var change_image_when_focused = false 
 var change_tv_when_focused = false
+var change_radio_when_focused = false
 var twitch_video_player
 var room_images_enabled = true
 var room_tv_enabled = true
@@ -4091,7 +4092,7 @@ function change(args={})
 		}
 	}
 
-	if(afk && args.type !== "radio")
+	if(afk)
 	{
 		change_when_focused = true
 
@@ -4100,9 +4101,14 @@ function change(args={})
 			change_image_when_focused = true
 		}
 
-		if(args.type === "tv")
+		else if(args.type === "tv")
 		{
 			change_tv_when_focused = true
+		}
+
+		else if(args.type === "radio")
+		{
+			change_radio_when_focused = true
 		}
 
 		return false
@@ -6222,10 +6228,16 @@ function activate_window_focus_listener()
 			if(change_tv_when_focused)
 			{
 				change({type:"tv"})
+			}	
+
+			if(change_radio_when_focused)
+			{
+				change({type:"radio"})
 			}
 
 			change_image_when_focused = false
 			change_tv_when_focused = false
+			change_radio_when_focused = false
 		}
 
 	}
