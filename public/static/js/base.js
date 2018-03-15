@@ -182,6 +182,7 @@ var num_keys_pressed = 0
 var first_time
 var emit_queue_timeout
 var emit_queue = []
+var app_focused = true
 
 function init()
 {
@@ -201,7 +202,7 @@ function init()
 	start_dropzone()
 	start_volume_scroll()
 	generate_highlight_words_regex()
-	activate_window_visibility_listener()
+	activate_window_focus_listener()
 	input_click_events()
 	copypaste_events()
 	header_topic_events()
@@ -228,7 +229,6 @@ function init()
 	font_check()
 	setup_input_history()
 	setup_modal_image()
-	start_focus_events()
 
 	start_socket()
 }
@@ -3831,7 +3831,7 @@ function add_to_chat(msg, save=false)
 	{
 		var content = msg.find(".chat_content").eq(0)
 
-		if(started && !document.hidden)
+		if(started && app_focused)
 		{
 			content.addClass("fader")
 		}
@@ -3839,7 +3839,7 @@ function add_to_chat(msg, save=false)
 
 	else
 	{
-		if(started && !document.hidden)
+		if(started && app_focused)
 		{
 			msg.addClass("fader")
 		}
@@ -5987,7 +5987,7 @@ function change_volume_command(arg)
 
 function sound_notify()
 {
-	if(document.hidden)
+	if(!app_focused)
 	{
 		if(!started || afk)
 		{
@@ -6005,7 +6005,7 @@ function alert_title()
 		return false
 	}
 
-	if(document.hidden)
+	if(!app_focused)
 	{
 		if(alert_mode === 0)
 		{
@@ -6022,7 +6022,7 @@ function alert_title2()
 		return false
 	}
 
-	if(document.hidden)
+	if(!app_focused)
 	{
 		if(alert_mode !== 2)
 		{
@@ -6070,59 +6070,55 @@ function update_title()
 	set_title(t)
 }
 
-function activate_window_visibility_listener()
+function activate_window_focus_listener()
 {
-	document.addEventListener("visibilitychange", function()
+	window.onfocus = function()
 	{
-		if(!document.hidden)
+		app_focused = true
+
+		if(afk_timer !== undefined)
 		{
-			if(afk_timer !== undefined)
-			{
-				clearTimeout(afk_timer)
-			}
-
-			afk = false
-
-			remove_alert_title()
-
-			if(change_when_focused)
-			{
-				if(change_image_when_focused)
-				{
-					change({type:"image"})
-				}
-				
-				if(change_tv_when_focused)
-				{
-					change({type:"tv"})
-				}
-
-				change_image_when_focused = false
-				change_tv_when_focused = false
-			}
+			clearTimeout(afk_timer)
 		}
 
-		else
+		afk = false
+
+		remove_alert_title()
+
+		if(change_when_focused)
 		{
-			if(get_setting("afk_delay") !== "never")
+			if(change_image_when_focused)
 			{
-				afk_timer = setTimeout(function()
-				{
-					afk = true
-				}, get_setting("afk_delay"))
+				change({type:"image"})
+			}
+			
+			if(change_tv_when_focused)
+			{
+				change({type:"tv"})
 			}
 
-			update_chat_scrollbar()
-			check_scrollers()
+			change_image_when_focused = false
+			change_tv_when_focused = false
 		}
-	}, false)
-}
 
-function start_focus_events()
-{
+	}
+
 	window.onblur = function() 
 	{
+		app_focused = false
+
 		num_keys_pressed = 0
+		
+		if(get_setting("afk_delay") !== "never")
+		{
+			afk_timer = setTimeout(function()
+			{
+				afk = true
+			}, get_setting("afk_delay"))
+		}
+
+		update_chat_scrollbar()
+		check_scrollers()
 	}
 }
 
