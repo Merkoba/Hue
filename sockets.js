@@ -2347,70 +2347,76 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.disconnect = function(socket)
 	{
+		if(socket.hue_user_id === undefined)
+		{
+			return
+		}
+
 		if(handler.user_already_connected(socket))
 		{
 			return
 		}
 
-		if(socket.hue_pinged)
+		if(socket.hue_room_id !== undefined)
 		{
-			var type = 'pinged'
-		}
-
-		else if(socket.hue_kicked)
-		{
-			var type = 'kicked'
-		}
-
-		else if(socket.hue_banned)
-		{
-			var type = 'banned'
-		}
-
-		else
-		{
-			var type = 'disconnection'
-		}
-
-		handler.room_emit(socket, type, 
-		{
-			username: socket.hue_username,
-			info1: socket.hue_info1, 
-			role: socket.hue_role
-		})
-
-		if(socket.hue_room_id === undefined)
-		{
-			return
-		}
-
-		if(rooms[socket.hue_room_id] === undefined)
-		{
-			return
-		}
-
-		if(rooms[socket.hue_room_id].userlist !== undefined)
-		{
-			delete rooms[socket.hue_room_id].userlist[socket.hue_user_id]
-		}
-
-		if(user_rooms[socket.hue_user_id] !== undefined)
-		{
-			for(var i=0; i<user_rooms[socket.hue_user_id].length; i++)
+			if(rooms[socket.hue_room_id] === undefined)
 			{
-				var room_id = user_rooms[socket.hue_user_id][i]
+				return
+			}
 
-				if(socket.hue_room_id === room_id)
+			if(rooms[socket.hue_room_id].userlist !== undefined)
+			{
+				delete rooms[socket.hue_room_id].userlist[socket.hue_user_id]
+			}
+
+			if(user_rooms[socket.hue_user_id] !== undefined)
+			{
+				for(var i=0; i<user_rooms[socket.hue_user_id].length; i++)
 				{
-					user_rooms[socket.hue_user_id].splice(i, 1)
-					break
+					var room_id = user_rooms[socket.hue_user_id][i]
+
+					if(socket.hue_room_id === room_id)
+					{
+						user_rooms[socket.hue_user_id].splice(i, 1)
+						break
+					}
+				}
+
+				if(user_rooms[socket.hue_user_id].length === 0)
+				{
+					delete user_rooms[socket.hue_user_id]
 				}
 			}
+		}
 
-			if(user_rooms[socket.hue_user_id].length === 0)
+		if(socket.hue_username !== undefined)
+		{
+			if(socket.hue_pinged)
 			{
-				delete user_rooms[socket.hue_user_id]
+				var type = 'pinged'
 			}
+
+			else if(socket.hue_kicked)
+			{
+				var type = 'kicked'
+			}
+
+			else if(socket.hue_banned)
+			{
+				var type = 'banned'
+			}
+
+			else
+			{
+				var type = 'disconnection'
+			}
+
+			handler.room_emit(socket, type, 
+			{
+				username: socket.hue_username,
+				info1: socket.hue_info1, 
+				role: socket.hue_role
+			})
 		}
 	}	
 
