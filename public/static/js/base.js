@@ -12417,21 +12417,32 @@ function show_export_settings(type)
 	var code3 = `var rsettings = ${rsettings}; save_local_storage(ls_room_settings, rsettings); refresh()`
 	
 	var s = `
-	<div class='bigger'>Export Settings</div>
-	<div class='spacer3'></div>
-	Copy the following code and run it in the console where you want to import Global and Room Settings
-	<div class='spacer3'></div>
-	<textarea rows=8 class='setting_textarea'>${code}</textarea>
-	<div class='spacer3'></div>
-	<div class='spacer3'></div>
-	Use this code instead if you only want to import Global Settings
-	<div class='spacer3'></div>
-	<textarea rows=8 class='setting_textarea'>${code2}</textarea>
-	<div class='spacer3'></div>
-	<div class='spacer3'></div>
-	Use this code instead if you only want to import Room Settings
-	<div class='spacer3'></div>
-	<textarea rows=8 class='setting_textarea'>${code3}</textarea>
+	<div class='container_22'>
+		<div class='bigger'>Export Settings</div>
+		<div class='spacer3'></div>
+		In case you want to export your settings from one browser to another. 
+		<div class='spacer3'></div>
+		You can import either Global Settings, Room Settings, or both. 
+		<div class='spacer3'></div>
+		Room Settings copies every room's settings, not just the current one.
+		<div class='spacer3'></div>
+		To do this, copy one of the codes below and paste it in the console of the browser where you want to import the settings.
+		<div class='spacer3'></div>
+		<div class='spacer3'></div>
+		(a) Use this code if you want to import <span class='bold'>Global</span> and <span class='bold'>Room</span> Settings
+		<div class='spacer3'></div>
+		<textarea rows=5 class='setting_textarea'>${code}</textarea>
+		<div class='spacer3'></div>
+		<div class='spacer3'></div>
+		(b) Use this code if you only want to import <span class='bold'>Global</span> Settings
+		<div class='spacer3'></div>
+		<textarea rows=5 class='setting_textarea'>${code2}</textarea>
+		<div class='spacer3'></div>
+		<div class='spacer3'></div>
+		(c) Use this code if you only want to import <span class='bold'>Room</span> Settings
+		<div class='spacer3'></div>
+		<textarea rows=5 class='setting_textarea'>${code3}</textarea>		
+	</div>
 	`
 
 	msg_info.show(s)
