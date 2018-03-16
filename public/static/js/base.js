@@ -8105,6 +8105,12 @@ function close_all_modals()
 	msg_menu.close_all()
 }
 
+function empty_global_settings()
+{
+	global_settings = {}
+	save_global_settings()
+}
+
 function get_global_settings()
 {
 	var changed = false
@@ -8596,6 +8602,12 @@ function setting_animate_scroll_action(type, save=true)
 	{
 		window[`save_${type}`]()	
 	}
+}
+
+function empty_room_settings()
+{
+	room_settings = {}
+	save_room_settings()
 }
 
 function get_room_settings()
@@ -11798,11 +11810,15 @@ function confirm_reset_settings(type)
 
 function reset_settings(type)
 {
-	localStorage.removeItem(window[`ls_${type}`])
+	window[`empty_${type}`]()
 	window[`get_${type}`]()
 	start_settings_state(type)
 	call_setting_actions(type, false)
-	window[`save_${type}`]()	
+
+	if(type === "room_settings")
+	{
+		set_room_settings_overriders()
+	}
 }
 
 function setup_chat()
@@ -11997,6 +12013,7 @@ function setup_settings_windows()
 	setup_setting_elements("global_settings")
 	setup_setting_elements("room_settings")
 	create_room_settings_overriders()
+	set_room_settings_overriders()
 	start_room_settings_overriders()
 	check_room_settings_override()
 }
@@ -12015,7 +12032,7 @@ function create_room_settings_overriders()
 	})	
 }
 
-function start_room_settings_overriders()
+function set_room_settings_overriders()
 {
 	$(".room_settings_overrider").each(function()
 	{
@@ -12031,8 +12048,11 @@ function start_room_settings_overriders()
 		$(this).prop("checked", override)
 
 		room_item_fade(override, item)
-	})
+	})	
+}
 
+function start_room_settings_overriders()
+{
 	$(".room_settings_overrider").change(function()
 	{
 		var item = $(this).parent().closest(".room_settings_item")
