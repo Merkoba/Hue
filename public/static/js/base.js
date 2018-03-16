@@ -12386,3 +12386,33 @@ function is_admin_or_op(rol=false)
 		return false
 	}
 }
+
+function show_export_settings(type)
+{
+	var gsettings = localStorage.getItem(ls_global_settings)
+	var rsettings = localStorage.getItem(ls_room_settings)
+
+	var code = `var gsettings = ${gsettings}; save_local_storage(ls_global_settings, gsettings); var rsettings = ${rsettings}; save_local_storage(ls_room_settings, rsettings); refresh()`
+	var code2 = `var gsettings = ${gsettings}; save_local_storage(ls_global_settings, gsettings); refresh()`
+	var code3 = `var rsettings = ${rsettings}; save_local_storage(ls_room_settings, rsettings); refresh()`
+	
+	var s = `
+	<div class='bigger'>Export Settings</div>
+	<div class='spacer3'></div>
+	Copy the following code and run it in the console where you want to import Global and Room Settings
+	<div class='spacer3'></div>
+	<textarea rows=8 class='setting_textarea'>${code}</textarea>
+	<div class='spacer3'></div>
+	<div class='spacer3'></div>
+	Use this code instead if you only want to import Global Settings
+	<div class='spacer3'></div>
+	<textarea rows=8 class='setting_textarea'>${code2}</textarea>
+	<div class='spacer3'></div>
+	<div class='spacer3'></div>
+	Use this code instead if you only want to import Room Settings
+	<div class='spacer3'></div>
+	<textarea rows=8 class='setting_textarea'>${code3}</textarea>
+	`
+
+	msg_info.show(s)
+}
