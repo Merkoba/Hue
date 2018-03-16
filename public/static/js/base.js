@@ -7387,6 +7387,13 @@ function start_msg()
 		common.close_effect = "none"
 	}
 
+	var titlebar =
+	{
+		enable_titlebar: true,
+		titlebar_class: "!custom_titlebar !unselectable",
+		window_inner_x_class: "!titlebar_inner_x"	
+	}
+
 	msg_menu = Msg.factory
 	(
 		Object.assign({}, common,
@@ -7443,12 +7450,9 @@ function start_msg()
 
 	msg_userlist = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{		
 			id: "userlist",
-			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar !unselectable",
-			window_inner_x_class: "!titlebar_inner_x",
 			window_width: "22em",
 			after_create: function(instance)
 			{
@@ -7473,13 +7477,10 @@ function start_msg()
 
 	msg_public_roomlist = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "public_roomlist",
-			window_width: "26em",
-			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar !unselectable",
-			window_inner_x_class: "!titlebar_inner_x",			
+			window_width: "26em",			
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7502,13 +7503,10 @@ function start_msg()
 
 	msg_visited_roomlist = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "visited_roomlist",
-			window_width: "26em",
-			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar !unselectable",
-			window_inner_x_class: "!titlebar_inner_x",		
+			window_width: "26em",		
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7531,13 +7529,10 @@ function start_msg()
 
 	msg_played = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "played",
-			window_width: "26em",
-			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar !unselectable",
-			window_inner_x_class: "!titlebar_inner_x",			
+			window_width: "26em",			
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7653,12 +7648,9 @@ function start_msg()
 
 	msg_info2 = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "info2",
-			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar !unselectable",
-			window_inner_x_class: "!titlebar_inner_x",
 			window_height: "auto",
 			after_create: function(instance)
 			{
@@ -7827,12 +7819,9 @@ function start_msg()
 
 	msg_highlights = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "highlights",
-			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar !unselectable",
-			window_inner_x_class: "!titlebar_inner_x",
 			window_width: "22em",
 			after_create: function(instance)
 			{
@@ -7857,12 +7846,9 @@ function start_msg()
 
 	msg_image_history = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "image_history",
-			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar !unselectable",
-			window_inner_x_class: "!titlebar_inner_x",
 			window_width: "22em",
 			after_create: function(instance)
 			{
@@ -7887,12 +7873,9 @@ function start_msg()
 
 	msg_tv_history = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "tv_history",
-			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar !unselectable",
-			window_inner_x_class: "!titlebar_inner_x",
 			window_width: "22em",
 			after_create: function(instance)
 			{
@@ -7917,12 +7900,9 @@ function start_msg()
 
 	msg_radio_history = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "radio_history",
-			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar !unselectable",
-			window_inner_x_class: "!titlebar_inner_x",
 			window_width: "22em",
 			after_create: function(instance)
 			{
@@ -7947,12 +7927,9 @@ function start_msg()
 
 	msg_input_history = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "input_history",
-			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar !unselectable",
-			window_inner_x_class: "!titlebar_inner_x",
 			window_width: "22em",
 			after_create: function(instance)
 			{
@@ -7977,12 +7954,9 @@ function start_msg()
 
 	msg_chat_search = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "chat_search",
-			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar !unselectable",
-			window_inner_x_class: "!titlebar_inner_x",
 			window_width: "22em",
 			after_create: function(instance)
 			{
@@ -8039,12 +8013,9 @@ function start_msg()
 
 	msg_global_settings = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "global_settings",
-			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar !unselectable",
-			window_inner_x_class: "!titlebar_inner_x",
 			window_width: "22em",
 			after_create: function(instance)
 			{
@@ -8071,12 +8042,9 @@ function start_msg()
 
 	msg_room_settings = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "room_settings",
-			enable_titlebar: true,
-			titlebar_class: "!custom_titlebar !unselectable",
-			window_inner_x_class: "!titlebar_inner_x",
 			window_width: "22em",
 			after_create: function(instance)
 			{
