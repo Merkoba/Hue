@@ -8456,20 +8456,15 @@ function setting_other_words_to_highlight_action(type, save=true)
 
 	$(`#${type}_other_words_to_highlight`).val(words)
 
-	if(window[type].other_words_to_highlight !== words)
+	if(active_settings("other_words_to_highlight") === type)
 	{
-		window[type].other_words_to_highlight = words
-
-		if(active_settings("other_words_to_highlight") === type)
-		{
-			generate_highlight_words_regex()
-		}
+		generate_highlight_words_regex()
+	}
 		
-		if(save)
-		{
-			window[`save_${type}`]()
-		}
-	}	
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
 }
 
 function setting_double_tap_action(type, save=true)
@@ -8478,14 +8473,11 @@ function setting_double_tap_action(type, save=true)
 
 	$(`#${type}_double_tap`).val(cmds)
 
-	if(window[type].double_tap !== cmds)
+	window[type].double_tap = cmds
+	
+	if(save)
 	{
-		window[type].double_tap = cmds
-		
-		if(save)
-		{
-			window[`save_${type}`]()
-		}
+		window[`save_${type}`]()
 	}	
 }
 
@@ -8495,14 +8487,11 @@ function setting_double_tap_2_action(type, save=true)
 
 	$(`#${type}_double_tap_2`).val(cmds)
 
-	if(window[type].double_tap_2 !== cmds)
+	window[type].double_tap_2 = cmds
+	
+	if(save)
 	{
-		window[type].double_tap_2 = cmds
-		
-		if(save)
-		{
-			window[`save_${type}`]()
-		}
+		window[`save_${type}`]()
 	}	
 }
 
@@ -8512,14 +8501,11 @@ function setting_double_tap_3_action(type, save=true)
 
 	$(`#${type}_double_tap_3`).val(cmds)
 
-	if(window[type].double_tap_3 !== cmds)
+	window[type].double_tap_3 = cmds
+	
+	if(save)
 	{
-		window[type].double_tap_3 = cmds
-		
-		if(save)
-		{
-			window[`save_${type}`]()
-		}
+		window[`save_${type}`]()
 	}	
 }
 
@@ -8546,14 +8532,11 @@ function setting_at_startup_action(type, save=true)
 
 	$(`#${type}_at_startup`).val(cmds)
 
-	if(window[type].at_startup !== cmds)
+	window[type].at_startup = cmds
+	
+	if(save)
 	{
-		window[type].at_startup = cmds
-		
-		if(save)
-		{
-			window[`save_${type}`]()
-		}
+		window[`save_${type}`]()
 	}	
 }
 
@@ -8563,14 +8546,11 @@ function setting_ignored_usernames_action(type, save=true)
 
 	$(`#${type}_ignored_usernames`).val(unames)
 
-	if(window[type].ignored_usernames !== unames)
+	window[type].ignored_usernames = unames
+	
+	if(save)
 	{
-		window[type].ignored_usernames = unames
-		
-		if(save)
-		{
-			window[`save_${type}`]()
-		}
+		window[`save_${type}`]()
 	}	
 }
 
@@ -12036,7 +12016,7 @@ function set_room_settings_overriders()
 {
 	$(".room_settings_overrider").each(function()
 	{
-		var item = $(this).parent().closest(".room_settings_item")
+		var item = $(this).closest(".room_settings_item")
 		var setting = item.data("setting")
 		var override = room_settings[`${setting}_override`]
 
@@ -12055,7 +12035,7 @@ function start_room_settings_overriders()
 {
 	$(".room_settings_overrider").change(function()
 	{
-		var item = $(this).parent().closest(".room_settings_item")
+		var item = $(this).closest(".room_settings_item")
 		var setting = item.data("setting")
 		var override = $(this).prop("checked")
 
