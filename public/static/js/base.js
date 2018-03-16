@@ -9268,7 +9268,7 @@ function logout()
 
 function change_username(uname)
 {
-	if(utilz.clean_string4(uname).length !== uname.length)
+	if(utilz.clean_string4(uname) !== uname)
 	{
 		chat_announce({brk1:'[', brk2:']', msg:"Username contains invalid characters"})
 		return
@@ -9319,7 +9319,7 @@ function password_changed(data)
 
 function change_email(email)
 {
-	if(utilz.clean_string5(email).length !== email.length)
+	if(utilz.clean_string5(email) !== email)
 	{
 		chat_announce({brk1:'[', brk2:']', msg:"Invalid email address"})
 		return
@@ -11717,7 +11717,7 @@ function error_occurred()
 
 function verify_email(code)
 {
-	if(utilz.clean_string5(code).length !== code.length)
+	if(utilz.clean_string5(code) !== code)
 	{
 		chat_announce({brk1:'[', brk2:']', msg:"Invalid code"})
 		return

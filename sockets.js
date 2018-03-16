@@ -519,7 +519,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(data.msg.length !== utilz.clean_string2(data.msg).length)
+		if(data.msg !== utilz.clean_string2(data.msg))
 		{
 			return handler.get_out(socket)
 		}
@@ -578,7 +578,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(data.topic.length !== utilz.clean_string2(data.topic).length)
+		if(data.topic !== utilz.clean_string2(data.topic))
 		{
 			return handler.get_out(socket)
 		}
@@ -634,7 +634,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(data.name.length !== utilz.clean_string2(data.name).length)
+		if(data.name !== utilz.clean_string2(data.name))
 		{
 			return handler.get_out(socket)
 		}
@@ -697,7 +697,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(data.name.length !== utilz.clean_string2(data.name).length)
+		if(data.name !== utilz.clean_string2(data.name))
 		{
 			return handler.get_out(socket)
 		}
@@ -1948,7 +1948,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(utilz.clean_string4(data.username).length !== data.username.length)
+		if(utilz.clean_string4(data.username) !== data.username)
 		{
 			return handler.get_out(socket)
 		}
@@ -2038,7 +2038,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(utilz.clean_string5(data.email).length !== data.email.length)
+		if(utilz.clean_string5(data.email) !== data.email)
 		{
 			return handler.get_out(socket)
 		}		
@@ -2080,7 +2080,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.verify_email = function(socket, data)
 	{
-		if(utilz.clean_string5(data.code).length !== data.code.length)
+		if(utilz.clean_string5(data.code) !== data.code)
 		{
 			return handler.get_out(socket)
 		}
@@ -3320,7 +3320,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(data.message.length !== utilz.clean_string2(data.message).length)
+		if(data.message !== utilz.clean_string2(data.message))
 		{
 			return handler.get_out(socket)
 		}

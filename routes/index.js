@@ -252,7 +252,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		if(username.length !== utilz.clean_string4(username).length)
+		if(username !== utilz.clean_string4(username))
 		{
 			return false
 		}
@@ -272,7 +272,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		if(email.length !== utilz.clean_string5(email).length)
+		if(email !== utilz.clean_string5(email))
 		{
 			return false
 		}
