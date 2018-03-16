@@ -11062,7 +11062,7 @@ function send_whisper()
 
 	var f = function()
 	{
-		var s = make_safe(whisper, `<div class='spacer3'></div><div class='small_button' id='modal_send_whisper'>Send Another Whisper</div>`)
+		var s = make_safe(whisper, `<div class='spacer3'></div><div class='small_button action' id='modal_send_whisper'>Send Another Whisper</div>`)
 
 		msg_info2.show([`Whisper sent to ${uname}`, s], function()
 		{
