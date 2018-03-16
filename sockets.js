@@ -99,6 +99,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					return handler.get_out(socket)
 				}
 
+				if(!data || typeof data !== "object")
+				{
+					return handler.get_out(socket)
+				}
+
 				if(dont_check_joined.indexOf(m) === -1)
 				{
 					if(!socket.hue_joined)
@@ -673,20 +678,25 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.roomlist = function(socket, data)
 	{
-		if(data.type === "visited")
+		if(data.type === "visited_roomlist")
 		{
 			handler.get_visited_roomlist(socket.hue_user_id, function(rooms)
 			{
-				handler.user_emit(socket, 'roomlist', {roomlist:rooms})
+				handler.user_emit(socket, 'roomlist', {roomlist:rooms, rtype:data.type})
 			})
 		}
 
-		else if(data.type === "public")
+		else if(data.type === "public_roomlist")
 		{
 			handler.get_roomlist(function(rooms)
 			{
-				handler.user_emit(socket, 'roomlist', {roomlist:rooms})
+				handler.user_emit(socket, 'roomlist', {roomlist:rooms, rtype:data.type})
 			})
+		}
+
+		else
+		{
+			return handler.get_out(socket)
 		}
 	}
 

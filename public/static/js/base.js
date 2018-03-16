@@ -121,7 +121,8 @@ var userlist_filtered = false
 var image_history_filtered = false
 var tv_history_filtered = false
 var radio_history_filtered = false
-var roomlist_filter_string = ""
+var public_roomlist_filter_string = ""
+var visited_roomlist_filter_string = ""
 var yt_player
 var yt_video_player
 var youtube_player
@@ -786,8 +787,17 @@ function start_socket()
 
 		else if(data.type === 'roomlist')
 		{
-			update_roomlist(data.roomlist)
-			show_roomlist()
+			update_roomlist(data.rtype, data.roomlist)
+
+			if(data.rtype === "public_roomlist")
+			{
+				show_public_roomlist()
+			}
+
+			else if(data.rtype === "visited_roomlist")
+			{
+				show_visited_roomlist()
+			}
 		}
 
 		else if(data.type === 'upload_error')
@@ -2120,7 +2130,7 @@ function singular_or_plural(n, s)
 	return ss
 }
 
-function request_roomlist(filter="", type="public")
+function request_roomlist(filter="", type="public_roomlist")
 {
 	if(requesting_roomlist)
 	{
@@ -2129,7 +2139,7 @@ function request_roomlist(filter="", type="public")
 
 	requesting_roomlist = true
 
-	roomlist_filter_string = filter
+	window[`${type}_filter_string`] = filter
 
 	socket_emit("roomlist", {type:type})
 
@@ -2147,9 +2157,9 @@ function start_roomlist_click_events()
 	})
 }
 
-function update_roomlist(roomlist)
+function update_roomlist(type, roomlist)
 {	
-	$("#roomlist_filter").val(roomlist_filter_string)
+	$(`#${type}_filter`).val(window[`${type}_filter_string`])
 
 	var s = $()
 
@@ -2189,14 +2199,14 @@ function update_roomlist(roomlist)
 		s = s.add(h)
 	}
 
-	$('#roomlist').html(s)
+	$(`#${type}_container`).html(s)
 
-	if(roomlist_filter_string !== "")
+	if(window[`${type}_filter_string`] !== "")
 	{
-		do_roomlist_filter()
+		do_roomlist_filter(type)
 	}
 
-	update_modal_scrollbar("roomlist")
+	update_modal_scrollbar(type)
 }
 
 function setup_main_menu()
@@ -2539,11 +2549,19 @@ function reset_userlist_filter()
 	do_userlist_filter()
 }
 
-function show_roomlist()
+function show_public_roomlist()
 {
-	msg_roomlist.show(function()
+	msg_public_roomlist.show(function()
 	{
-		$("#roomlist_filter").focus()
+		$("#public_roomlist_filter").focus()
+	})
+}
+
+function show_visited_roomlist()
+{
+	msg_visited_roomlist.show(function()
+	{
+		$("#visited_roomlist_filter").focus()
 	})
 }
 
@@ -4604,8 +4622,8 @@ function register_commands()
 	commands.push('/disableradio')
 	commands.push('/users')
 	commands.push('/room')
-	commands.push('/rooms')
-	commands.push('/visited')
+	commands.push('/publicrooms')
+	commands.push('/visitedrooms')
 	commands.push('/roomname')
 	commands.push('/roomnameedit')
 	commands.push('/played')
@@ -4853,24 +4871,24 @@ function execute_command(msg, ans)
 		show_userlist(arg)
 	}
 
-	else if(oiEquals(lmsg, '/rooms'))
+	else if(oiEquals(lmsg, '/publicrooms'))
 	{
-		request_roomlist()
+		request_roomlist("", "public_roomlist")
 	}
 
-	else if(oiStartsWith(lmsg, '/rooms'))
+	else if(oiStartsWith(lmsg, '/publicrooms'))
 	{
-		request_roomlist(arg)
+		request_roomlist(arg, "public_roomlist")
 	}
 
-	else if(oiEquals(lmsg, '/visited'))
+	else if(oiEquals(lmsg, '/visitedrooms'))
 	{
-		request_roomlist("", "visited")
+		request_roomlist("", "visited_roomlist")
 	}
 
-	else if(oiStartsWith(lmsg, '/visited'))
+	else if(oiStartsWith(lmsg, '/visitedrooms'))
 	{
-		request_roomlist(arg, "visited")
+		request_roomlist(arg, "visited_roomlist")
 	}
 
 	else if(oiEquals(lmsg, '/roomname'))
@@ -5443,9 +5461,19 @@ function execute_command(msg, ans)
 		show_global_settings()
 	}
 
+	else if(oiStartsWith(lmsg, '/globalsettings'))
+	{
+		show_global_settings(arg)
+	}
+
 	else if(oiEquals(lmsg, '/roomsettings'))
 	{
 		show_room_settings()
+	}
+
+	else if(oiStartsWith(lmsg, '/roomsettings'))
+	{
+		show_room_settings(arg)
 	}
 
 	else
@@ -7443,12 +7471,44 @@ function start_msg()
 		})
 	)
 
-	msg_roomlist = Msg.factory
+	msg_public_roomlist = Msg.factory
 	(
 		Object.assign({}, common,
 		{
-			id: "roomlist",
+			id: "public_roomlist",
 			window_width: "26em",
+			enable_titlebar: true,
+			titlebar_class: "!custom_titlebar !unselectable",
+			window_inner_x_class: "!titlebar_inner_x",			
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+			}
+		})
+	)
+
+	msg_visited_roomlist = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "visited_roomlist",
+			window_width: "26em",
+			enable_titlebar: true,
+			titlebar_class: "!custom_titlebar !unselectable",
+			window_inner_x_class: "!titlebar_inner_x",		
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -7475,6 +7535,9 @@ function start_msg()
 		{
 			id: "played",
 			window_width: "26em",
+			enable_titlebar: true,
+			titlebar_class: "!custom_titlebar !unselectable",
+			window_inner_x_class: "!titlebar_inner_x",			
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -8041,7 +8104,8 @@ function start_msg()
 	msg_menu.set(template_menu())
 	msg_userinfo.set(template_userinfo())
 	msg_userlist.set(template_userlist())
-	msg_roomlist.set(template_roomlist())
+	msg_public_roomlist.set(template_roomlist({type:"public_roomlist"}))
+	msg_visited_roomlist.set(template_roomlist({type:"visited_roomlist"}))
 	msg_played.set(template_played())
 	msg_profile.set(template_profile({profile_image: default_profile_image_url}))
 	msg_image_picker.set(template_image_picker())
@@ -8071,6 +8135,9 @@ function start_msg()
 	msg_radio_history.set_title("Radio History")
 	msg_global_settings.set_title("Global Settings")
 	msg_room_settings.set_title("Room Settings")
+	msg_public_roomlist.set_title("Public Rooms")
+	msg_visited_roomlist.set_title("Visited Rooms")
+	msg_played.set_title("Recently Played")
 }
 
 function info_vars_to_false()
@@ -8710,7 +8777,7 @@ var userlist_filter_timer = (function()
 	}
 })()
 
-var roomlist_filter_timer = (function() 
+var public_roomlist_filter_timer = (function() 
 {
 	var timer 
 
@@ -8720,7 +8787,22 @@ var roomlist_filter_timer = (function()
 
 		timer = setTimeout(function() 
 		{
-			do_roomlist_filter()
+			do_roomlist_filter("public_roomlist")
+		}, filter_delay)
+	}
+})()
+
+var visited_roomlist_filter_timer = (function() 
+{
+	var timer 
+
+	return function() 
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function() 
+		{
+			do_roomlist_filter("visited_roomlist")
 		}, filter_delay)
 	}
 })()
@@ -8737,9 +8819,14 @@ function start_filters()
 		userlist_filter_timer()
 	})
 
-	$("#roomlist_filter").on("input", function()
+	$("#public_roomlist_filter").on("input", function()
 	{
-		roomlist_filter_timer()
+		public_roomlist_filter_timer()
+	})
+
+	$("#visited_roomlist_filter").on("input", function()
+	{
+		visited_roomlist_filter_timer()
 	})
 
 	$("#highlights_filter").on("input", function()
@@ -8886,15 +8973,14 @@ function do_userlist_filter()
 	$('#Msg-content-container-userlist').scrollTop(0)
 }
 
-function do_roomlist_filter()
+function do_roomlist_filter(type)
 {
-	var filter = $("#roomlist_filter").val().trim().toLowerCase()
+	var filter = $(`#${type}_filter`).val().trim().toLowerCase()
+	var container = $(`#${type}_container`)
 
 	if(filter !== "")
 	{
-		roomlist_filtered = true
-
-		$(".roomlist_item").each(function()
+		$(`#${type}_container`).find(".roomlist_item").each(function()
 		{
 			$(this).css("display", "block")
 
@@ -8922,17 +9008,15 @@ function do_roomlist_filter()
 
 	else
 	{
-		roomlist_filtered = false
-
 		$(".roomlist_item").each(function()
 		{
 			$(this).css("display", "block")
 		})
 	}
 
-	update_modal_scrollbar("roomlist")
+	update_modal_scrollbar(type)
 
-	$('#Msg-content-container-roomlist').scrollTop(0)	
+	$(`#Msg-content-container-${type}`).scrollTop(0)	
 }
 
 function show_input_history(filter=false)
@@ -11298,23 +11382,24 @@ function show_radio_history(filter=false)
 	})
 }
 
-function do_media_history_filter(type, container, filter="")
+function do_media_history_filter(type)
 {
-	var filter = filter.trim().toLowerCase()
+	var filter = $(`#${type}_filter`).val().trim().toLowerCase()
+	var container = $(`#${type}_container`)	
 
 	if(filter !== "")
 	{
-		if(type === "image")
+		if(type === "image_history")
 		{
 			image_history_filtered = true
 		}
 
-		else if(type === "tv")
+		else if(type === "tv_history")
 		{
 			tv_history_filtered = true	
 		}
 
-		else if(type === "radio")
+		else if(type === "radio_history")
 		{
 			radio_history_filtered = true
 		}
@@ -11341,17 +11426,17 @@ function do_media_history_filter(type, container, filter="")
 
 	else
 	{
-		if(type === "image")
+		if(type === "image_history")
 		{
 			image_history_filtered = false
 		}
 
-		else if(type === "tv")
+		else if(type === "tv_history")
 		{
 			tv_history_filtered = false	
 		}
 
-		else if(type === "radio")
+		else if(type === "radio_history")
 		{
 			radio_history_filtered = false
 		}
@@ -11362,9 +11447,9 @@ function do_media_history_filter(type, container, filter="")
 		})
 	}
 
-	update_modal_scrollbar(`${type}_history`)
+	update_modal_scrollbar(type)
 
-	$(`#Msg-content-container-${type}_history`).scrollTop(0)
+	$(`#Msg-content-container-${type}`).scrollTop(0)
 }
 
 var image_history_filter_timer = (function() 
@@ -11432,17 +11517,17 @@ function reset_radio_history_filter()
 
 function do_image_history_filter()
 {
-	do_media_history_filter("image", $("#image_history_container"), $("#image_history_filter").val())	
+	do_media_history_filter("image_history")	
 }
 
 function do_tv_history_filter()
 {
-	do_media_history_filter("tv", $("#tv_history_container"), $("#tv_history_filter").val())	
+	do_media_history_filter("tv_history")	
 }
 
 function do_radio_history_filter()
 {
-	do_media_history_filter("radio", $("#radio_history_container"), $("#radio_history_filter").val())	
+	do_media_history_filter("radio_history")	
 }
 
 function do_test()
@@ -11991,18 +12076,30 @@ function user_is_ignored(uname)
 	return false
 }
 
-function show_global_settings()
+function show_global_settings(filter=false)
 {
 	msg_global_settings.show(function()
 	{
+		if(filter)
+		{
+			$("#global_settings_filter").val(filter)
+			do_settings_filter("global_settings")
+		}
+
 		$("#global_settings_filter").focus()		
 	})
 }
 
-function show_room_settings()
+function show_room_settings(filter=false)
 {
 	msg_room_settings.show(function()
 	{
+		if(filter)
+		{
+			$("#room_settings_filter").val(filter)
+			do_settings_filter("room_settings")
+		}
+
 		$("#room_settings_filter").focus()
 	})
 }
@@ -12025,7 +12122,7 @@ function create_room_settings_overriders()
 		Override
 	</div>`
 
-	$(".room_settings_item").each(function()
+	$("#room_settings_container").find(".settings_item").each(function()
 	{
 		$(this).prepend(s)
 	})	
@@ -12035,7 +12132,7 @@ function set_room_settings_overriders()
 {
 	$(".room_settings_overrider").each(function()
 	{
-		var item = $(this).closest(".room_settings_item")
+		var item = $(this).closest(".settings_item")
 		var setting = item.data("setting")
 		var override = room_settings[`${setting}_override`]
 
@@ -12054,7 +12151,7 @@ function start_room_settings_overriders()
 {
 	$(".room_settings_overrider").change(function()
 	{
-		var item = $(this).closest(".room_settings_item")
+		var item = $(this).closest(".settings_item")
 		var setting = item.data("setting")
 		var override = $(this).prop("checked")
 
@@ -12249,10 +12346,11 @@ function scroll_chat_to(y, animate=true, d=500)
 function do_settings_filter(type)
 {
 	var filter = $(`#${type}_filter`).val().trim().toLowerCase()
+	var container = $(`#${type}_container`)
 
 	if(filter !== "")
 	{
-		$(`.${type}_item`).each(function()
+		container.find(`.settings_item`).each(function()
 		{
 			$(this).css("display", "block")
 
@@ -12274,7 +12372,7 @@ function do_settings_filter(type)
 
 	else
 	{
-		$(`.${type}_item`).each(function()
+		container.find(`.settings_item`).each(function()
 		{
 			$(this).css("display", "block")
 		})

@@ -33,9 +33,9 @@
 		<script src="/static/js/utilz.js?ver=5"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1103"></script>
+		<script src="/static/js/base.js?ver=1104"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=310"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=311"/>
 
 		<script>
 
@@ -220,9 +220,9 @@
 		<script id='template_menu' type='text/x-handlebars-template'>
 			<div id='menu' class='unselectable'>
 
-				<div class='menu_item action inline' onclick="request_roomlist('', 'visited')">Visited Rooms</div>
+				<div class='menu_item action inline' onclick="request_roomlist('', 'visited_roomlist')">Visited Rooms</div>
 				<div></div>
-				<div class='menu_item action inline' onclick="request_roomlist()">Public Rooms</div>
+				<div class='menu_item action inline' onclick="request_roomlist('', 'public_roomlist')">Public Rooms</div>
 				<div></div>
 				<div class='menu_item action inline' onclick="show_goto_room()">Go To Room</div>
 				<div></div>
@@ -536,68 +536,68 @@
 			
 			<div class='spacer3'></div>	
 
-			<div class='settings_item {{type}}_item' data-setting='beep_on_messages' data-type='checkbox'>
-				<div class="setting_item setting_title">Beep On Messages</div>
+			<div class='settings_item' data-setting='beep_on_messages' data-type='checkbox'>
+				<div class="setting_title">Beep On Messages</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_beep_on_messages">
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='beep_on_highlights' data-type='checkbox'>
+			<div class='settings_item' data-setting='beep_on_highlights' data-type='checkbox'>
 				<div class="setting_title">Beep On Highlights</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_beep_on_highlights">
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='beep_on_media_change' data-type='checkbox'>
+			<div class='settings_item' data-setting='beep_on_media_change' data-type='checkbox'>
 				<div class="setting_title">Beep On Media Change</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_beep_on_media_change">
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='beep_on_user_joins' data-type='checkbox'>
+			<div class='settings_item' data-setting='beep_on_user_joins' data-type='checkbox'>
 				<div class="setting_title">Beep On User Joins</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_beep_on_user_joins">
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='background_image' data-type='checkbox'>
+			<div class='settings_item' data-setting='background_image' data-type='checkbox'>
 				<div class="setting_title">Background Image</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_background_image">
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='custom_scrollbars' data-type='checkbox'>
+			<div class='settings_item' data-setting='custom_scrollbars' data-type='checkbox'>
 				<div class="setting_title">Custom Scrollbars</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_custom_scrollbars">
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='modal_effects' data-type='checkbox'>
+			<div class='settings_item' data-setting='modal_effects' data-type='checkbox'>
 				<div class="setting_title">Modal Effects</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_modal_effects">
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='show_joins' data-type='checkbox'>
+			<div class='settings_item' data-setting='show_joins' data-type='checkbox'>
 				<div class="setting_title">Show User Joins</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_show_joins">
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='show_parts' data-type='checkbox'>
+			<div class='settings_item' data-setting='show_parts' data-type='checkbox'>
 				<div class="setting_title">Show User Parts</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_show_parts">
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='animate_scroll' data-type='checkbox'>
+			<div class='settings_item' data-setting='animate_scroll' data-type='checkbox'>
 				<div class="setting_title">Animate Scroll</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_animate_scroll">
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='highlight_current_username' data-type='checkbox'>
+			<div class='settings_item' data-setting='highlight_current_username' data-type='checkbox'>
 				<div class="setting_title">Highlight Username</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_highlight_current_username">
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='case_insensitive_highlights' data-type='checkbox'>
+			<div class='settings_item' data-setting='case_insensitive_highlights' data-type='checkbox'>
 				<div class="setting_title2">Case Insensitive</div>
 				<div class="setting_title">Highlights</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_case_insensitive_highlights">
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='other_words_to_highlight' data-type='textarea'>
+			<div class='settings_item' data-setting='other_words_to_highlight' data-type='textarea'>
 				<div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Highlight</div>
 				<div class='{{type}}_toggle_container toggler_container'>
 					<div class="setting_title">(Each on a different line)</div>
@@ -606,7 +606,7 @@
 				</div>
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='ignored_usernames' data-type='textarea'>
+			<div class='settings_item' data-setting='ignored_usernames' data-type='textarea'>
 				<div class="{{type}}_toggle toggler action pointer bold inline">+ Usernames To Ignore</div>
 				<div class='{{type}}_toggle_container toggler_container'>
 					<div class="setting_title">(Each on a different line)</div>				
@@ -615,7 +615,7 @@
 				</div>
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='double_tap' data-type='textarea'>
+			<div class='settings_item' data-setting='double_tap' data-type='textarea'>
 				<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_key"></span>&nbsp;Tap</div>
 				<div class='{{type}}_toggle_container toggler_container'>
 					<div class="setting_title">(Each on a different line)</div>
@@ -624,7 +624,7 @@
 				</div>
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='double_tap_2' data-type='textarea'>
+			<div class='settings_item' data-setting='double_tap_2' data-type='textarea'>
 				<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_2_key"></span>&nbsp;Tap</div>
 				<div class='{{type}}_toggle_container toggler_container'>
 					<div class="setting_title">(Each on a different line)</div>
@@ -633,7 +633,7 @@
 				</div>
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='double_tap_3' data-type='textarea'>
+			<div class='settings_item' data-setting='double_tap_3' data-type='textarea'>
 				<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_3_key"></span>&nbsp;Tap</div>
 				<div class='{{type}}_toggle_container toggler_container'>
 					<div class="setting_title">(Each on a different line)</div>
@@ -642,7 +642,7 @@
 				</div>
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='at_startup' data-type='textarea'>
+			<div class='settings_item' data-setting='at_startup' data-type='textarea'>
 				<div class="{{type}}_toggle toggler action pointer bold inline">+ At Startup</div>
 				<div class='{{type}}_toggle_container toggler_container'>
 					<div class="setting_title">(Each on a different line)</div>				
@@ -651,7 +651,7 @@
 				</div>				
 			</div>
 
-			<div class='settings_item {{type}}_item' data-setting='afk_delay' data-type='select'>
+			<div class='settings_item' data-setting='afk_delay' data-type='select'>
 				<div class="setting_title" title="AFK means you won't get sound notifications and media won't change">Go AFK</div>
 				<select class="modal_select" id="{{type}}_afk_delay">
 					<option value='0'>Instantly</option>
@@ -734,9 +734,9 @@
 		</script>		
 		
 		<script id='template_roomlist' type='text/x-handlebars-template'>
-			<input type="text" id="roomlist_filter" class="filter_input" placeholder="Filter">
-			<div class='spacer3'></div>			
-			<div id='roomlist'></div>
+			<input type="text" id="{{type}}_filter" class="filter_input" placeholder="Filter">
+			<div class='spacer3'></div>	
+			<div id='{{type}}_container'></div>
 		</script>		
 		
 		<script id='template_played' type='text/x-handlebars-template'>
@@ -875,9 +875,9 @@
 			<div id='locked_menu' class='unselectable'>
 				<div>You are banned from this room</div>
 				<div class='spacer3'></div>
-				<div class='menu_item action inline' onclick="request_roomlist('', 'visited')">Visited Rooms</div>
+				<div class='menu_item action inline' onclick="request_roomlist('', 'visited_roomlist')">Visited Rooms</div>
 				<div></div>
-				<div class='menu_item action inline' onclick="request_roomlist()">Public Rooms</div>
+				<div class='menu_item action inline' onclick="request_roomlist('', 'public_roomlist')">Public Rooms</div>
 				<div></div>
 				<div class='menu_item action inline' onclick="show_goto_room()">Go To Room</div>
 				<div></div>
@@ -935,8 +935,8 @@
 			<div class='info_item'>/status: Shows the room status window.</div>			
 			<div class='info_item'>/role: Shows your role and permissions.</div>
 			<div class='info_item'>/users: Shows the user list. Accepts a filter as an argument.</div>
-			<div class='info_item'>/rooms: Shows the room list. Accepts a filter as an argument.</div>
-			<div class='info_item'>/visited: Shows the visited room list. Accepts a filter as an argument.</div>
+			<div class='info_item'>/publicrooms: Shows the public room list. Accepts a filter as an argument.</div>
+			<div class='info_item'>/visitedrooms: Shows the visited room list. Accepts a filter as an argument.</div>
 			<div class='info_item'>/played: Shows the list of songs played. Accepts a filter as an argument.</div>
 			<div class='info_item'>/search: Opens the search window. Accepts a query as an argument.</div>
 			<div class='info_item'>/history: Shows the input history. Accepts a filter as an argument.</div>
@@ -997,8 +997,8 @@
 			<div class='info_item'>/closeall: Closes all the modal windows, or popups.</div>
 			<div class='info_item'>/activityabove: Scrolls chat to activity pertaining you above.</div>
 			<div class='info_item'>/activitybelow: Scrolls chat to activity pertaining you below.</div>
-			<div class='info_item'>/globalsettings: Shows the global settings window.</div>
-			<div class='info_item'>/roomsettings: Shows the room settings window.</div>
+			<div class='info_item'>/globalsettings: Shows the global settings window. Accepts a filter as an argument.</div>
+			<div class='info_item'>/roomsettings: Shows the room settings window. Accepts a filter as an argument.</div>
 			<div class='info_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil.</div>
 			<div class='spacer1'></div>
 			<span class='help_link action' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action' onclick='help3()'>Administration Features</span>			
