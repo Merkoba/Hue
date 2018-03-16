@@ -305,14 +305,14 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 				else
 				{
-					var m = encodeURIComponent(`There was a problem verifying you're not a robot.`)
+					var m = encodeURIComponent(`There was a problem verifying you're not a robot`)
 					res.redirect(`/message?message=${m}`)
 				}
 			})
 
 			.catch(err =>
 			{
-				var m = encodeURIComponent(`There was a problem verifying you're not a robot.`)
+				var m = encodeURIComponent(`There was a problem verifying you're not a robot`)
 				res.redirect(`/message?message=${m}`)
 				console.error(err)
 			})
@@ -342,7 +342,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 				{
 					if(ans === "done")
 					{
-						var m = encodeURIComponent(`Account verification link sent to ${email}. You must verify the email to be able to login. Email might take a couple of minutes to arrive.`)
+						var m = encodeURIComponent(`Account verification link sent to ${email}\nYou must verify the email to be able to login\nEmail might take a couple of minutes to arrive`)
 						res.redirect(`/message?message=${m}`)
 					}
 
@@ -535,7 +535,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			{
 				if(result === "done")
 				{
-					var m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}. Email might take a couple of minutes to arrive.`)
+					var m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}\nEmail might take a couple of minutes to arrive`)
 					res.redirect(`/message?message=${m}`)
 				}
 
@@ -559,7 +559,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 			else
 			{
-				var m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}. Email might take a couple of minutes to arrive.`)
+				var m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}\nEmail might take a couple of minutes to arrive`)
 				res.redirect(`/message?message=${m}`)
 			}
 		})
@@ -692,7 +692,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		c.vars = {}
 
-		c.vars.message2 = decodeURIComponent(req.query.message)
+		c.vars.message2 = decodeURIComponent(req.query.message).replace(/\n/g, "<br>")
 
 		res.render('message', c)
 	})		

@@ -36,8 +36,13 @@ $(document).keydown(function(e)
 
 $(function()
 {
-	if(message && message !== "undefined")
+	try
 	{
-		set_message(message)
+		if(message && message !== "undefined")
+		{
+			set_message(message)
+		}
 	}
+
+	catch(err){}
 })
