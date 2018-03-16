@@ -140,7 +140,7 @@
 					return false
 				}
 
-				if(username.length !== utilz.clean_string4(username).length)
+				if(username !== utilz.clean_string4(username))
 				{
 					set_message("Username contains invalid characters. Only letters, numbers, and some special characters are allowed")
 					return false
@@ -158,7 +158,7 @@
 					return false
 				}
 
-				if(password.length !== utilz.clean_string2(password).length)
+				if(password !== utilz.clean_string2(password))
 				{
 					set_message("Password contains invalid characters. There can't be spaces at the start or end of the password, or consecutive spaces")
 					return false
@@ -188,7 +188,7 @@
 					return false
 				}
 
-				if(email.length !== utilz.clean_string5(email).length)
+				if(email !== utilz.clean_string5(email))
 				{
 					set_message("Invalid email address")
 					return false
