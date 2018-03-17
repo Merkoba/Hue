@@ -12144,6 +12144,38 @@ function start_room_settings_overriders()
 
 		check_room_settings_override()
 		save_room_settings()
+
+		var togglers = item.find(".toggler")
+
+		if(togglers.length > 0)
+		{
+			var toggler = togglers.eq(0)
+
+			var container = toggler.next(`.toggler_container`)
+			var display = container.css('display')
+
+			if(display === "none")
+			{
+				if(override)
+				{
+					container.css("display", "block")
+					$(this).html(`- ${$(this).html().substring(2)}`)
+
+					update_modal_scrollbar("room_settings")
+				}
+			}
+
+			else
+			{
+				if(!override)
+				{
+					container.css("display", "none")
+					$(this).html(`+ ${$(this).html().substring(2)}`)
+
+					update_modal_scrollbar("room_settings")
+				}
+			}
+		}
 	})
 }
 
