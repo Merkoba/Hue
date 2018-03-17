@@ -6291,8 +6291,6 @@ function activate_visibility_listener()
 		
 		else
 		{
-			num_keys_pressed = 0
-			
 			if(get_setting("afk_delay") !== "never")
 			{
 				afk_timer = setTimeout(function()
@@ -6305,6 +6303,11 @@ function activate_visibility_listener()
 			check_scrollers()
 		}
 	}, false)
+
+	window.onblur = function()
+	{
+		num_keys_pressed = 0
+	}
 }
 
 function copy_room_url()
