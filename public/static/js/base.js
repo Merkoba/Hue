@@ -1403,7 +1403,6 @@ function set_theme()
 
 	var overlay_color = colorlib.rgb_to_rgba(font_color, modal_overlay_opacity)
 	var scrollbar_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
-	var inner_x_width = $("#Msg-window-inner-x-info2").outerWidth()
 
 	var css = `
 	<style class='appended_style'>
