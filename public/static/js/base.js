@@ -2998,7 +2998,7 @@ function activate_key_detection()
 				{
 					if(e.key === "Enter")
 					{
-						var val = $("#image_url_picker_input").val().trim()
+						var val = $("#image_source_picker_input").val().trim()
 
 						if(val !== "")
 						{
@@ -3019,7 +3019,7 @@ function activate_key_detection()
 				{
 					if(e.key === "Enter")
 					{
-						var val = $("#tv_url_picker_input").val().trim()
+						var val = $("#tv_source_picker_input").val().trim()
 
 						if(val !== "")
 						{
@@ -3040,7 +3040,7 @@ function activate_key_detection()
 				{
 					if(e.key === "Enter")
 					{
-						var val = $("#radio_url_picker_input").val().trim()
+						var val = $("#radio_source_picker_input").val().trim()
 
 						if(val !== "")
 						{
@@ -7760,7 +7760,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				$("#image_url_picker_input").val("")
+				$("#image_source_picker_input").val("")
 				iup = false
 			}
 		})
@@ -7788,7 +7788,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				$("#tv_url_picker_input").val("")
+				$("#tv_source_picker_input").val("")
 				tup = false
 			}
 		})
@@ -7816,7 +7816,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				$("#radio_url_picker_input").val("")
+				$("#radio_source_picker_input").val("")
 				rup = false
 			}
 		})
@@ -9691,7 +9691,7 @@ function show_image_picker()
 {
 	msg_image_picker.show(function()
 	{
-		$("#image_url_picker_input").focus()
+		$("#image_source_picker_input").focus()
 	})
 }
 
@@ -9699,7 +9699,7 @@ function show_tv_picker()
 {
 	msg_tv_picker.show(function()
 	{
-		$("#tv_url_picker_input").focus()
+		$("#tv_source_picker_input").focus()
 	})
 }
 
@@ -9707,7 +9707,7 @@ function show_radio_picker()
 {
 	msg_radio_picker.show(function()
 	{
-		$("#radio_url_picker_input").focus()
+		$("#radio_source_picker_input").focus()
 	})
 }
 
