@@ -7827,6 +7827,7 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "media_menu",
+			window_width: "20em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
