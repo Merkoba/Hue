@@ -2523,7 +2523,7 @@ function show_create_room()
 	})
 }
 
-function create_room_submit(oname=false)
+function create_room_submit()
 {
 	var data = {}
 
@@ -2531,7 +2531,7 @@ function create_room_submit(oname=false)
 
 	if(data.name === "")
 	{
-		return
+		return false
 	}
 
 	data.public = JSON.parse($('#create_room_public option:selected').val())
@@ -6414,7 +6414,7 @@ function goto_url(u, mode="same", encode=false)
 
 function create_room(data)
 {
-	msg_info.close(function()
+	msg_info2.close(function()
 	{
 		socket_emit('create_room', data)
 	})
@@ -11871,7 +11871,7 @@ function goto_room_action()
 
 	goto_url(id, "tab")
 
-	msg_info.close()
+	msg_info2.close()
 }
 
 function confirm_reset_settings(type)
