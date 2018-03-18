@@ -76,9 +76,10 @@ body, html
 
 #header_items
 {
+	display: flex;
 	width: 80%;
-	margin: 0 auto;
-	text-align: center;
+	align-items: center;
+	justify-content: center;
 	white-space: nowrap;
 	overflow: hidden;
 }
@@ -226,6 +227,8 @@ body, html
 	display: flex;
 	flex-grow: 1;
 	white-space: nowrap;
+	align-items: center;
+	justify-content: center;	
 }
 
 #footer_username
@@ -240,7 +243,6 @@ body, html
 
 .footer_icon
 {
-	padding-top: 0.6em;
 	padding-right: 1.2em;
 	cursor: pointer;
 	flex-shrink: 1;
@@ -252,7 +254,6 @@ body, html
 
 .footer_icon2
 {
-	padding-top: 0.6em;
 	padding-right: 0.3em;
 	cursor: pointer;
 	flex-shrink: 1;
@@ -264,7 +265,6 @@ body, html
 
 .footer_text
 {
-	padding-top: 0.25em;
 	padding-right: 0.3em;
 }
 
