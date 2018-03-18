@@ -446,8 +446,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			room_locked: false,
 			room_name: info.name,
 			username: socket.hue_username, 
-			image_url: info.image_url, 
-			image_uploader: info.image_uploader, 
+			image_source: info.image_source, 
+			image_setter: info.image_setter, 
 			image_size: info.image_size, 
 			image_date: info.image_date, 
 			image_type: info.image_type, 
@@ -2590,19 +2590,19 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.linked_image = function(socket, data)
+	handler.change_image_source = function(socket, data)
 	{
-		if(data.image_url === undefined)
+		if(data.src === undefined)
 		{
 			return handler.get_out(socket)
 		}
 
-		if(data.image_url.length === 0)
+		if(data.src.length === 0)
 		{
 			return handler.get_out(socket)
 		}
 
-		if(data.image_url.length > config.max_image_source_length)
+		if(data.src.length > config.max_image_source_length)
 		{
 			return handler.get_out(socket)
 		}
@@ -2610,11 +2610,14 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(!handler.check_permission(socket, "images"))
 		{
 			return false
-		}	
+		}
 
-		data.image_url = data.image_url.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
+		if(data.src !== "default")
+		{
+			data.src = data.src.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
+		}
 
-		handler.change_image(socket.hue_room_id, data.image_url, socket.hue_username, 0, "link")
+		handler.change_image(socket.hue_room_id, data.src, socket.hue_username, 0, "link")
 	}
 
 	handler.upload_image = function(socket, data)
@@ -2713,20 +2716,25 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.do_change_image = function(room_id, fname, uploader, size, type)
+	handler.do_change_image = function(room_id, fname, setter, size, type)
 	{
-		var image_url
+		var image_source
 
 		var date = Date.now()
 
 		if(type === "link")
 		{
-			var image_url = fname
+			image_source = fname
+
+			if(image_source === 'default')
+			{
+				image_source = ""
+			}			
 
 			db_manager.update_room(room_id,
 			{
-				image_url: image_url, 
-				image_uploader: uploader, 
+				image_source: image_source, 
+				image_setter: setter,
 				image_size: size, 
 				image_date: date,
 				image_type: type
@@ -2742,12 +2750,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(config.image_storage_s3_or_local === "local")
 			{
-				var image_url = config.public_images_location + fname
+				image_source = config.public_images_location + fname
 			}
 
 			else if(config.image_storage_s3_or_local === "s3")
 			{
-				var image_url = fname
+				image_source = fname
 			}
 
 			else
@@ -2770,8 +2778,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				db_manager.update_room(room_id,
 				{
-					image_url: image_url, 
-					image_uploader: uploader, 
+					image_source: image_source,
+					image_setter: setter, 
 					image_size: size, 
 					image_date: date,
 					stored_images: info.stored_images,
@@ -2820,15 +2828,15 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		if(image_url === undefined)
+		if(image_source === undefined)
 		{
 			return false
 		}
 
 		handler.room_emit(room_id, 'image_change',
 		{
-			image_url: image_url,
-			image_uploader: uploader,
+			image_source: image_source,
+			image_setter: setter,
 			image_size: size,
 			image_date: date,
 			image_type: type
@@ -2843,8 +2851,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				type: "image", 
 				data: 
 				{
-					image_url: image_url,
-					image_uploader: uploader,
+					image_source: image_source,
+					image_setter: setter,
 					image_size: size,
 					image_type: type
 				},

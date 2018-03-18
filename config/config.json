@@ -6,7 +6,7 @@
 	"default_main_room_name": "Hue",
 	"images_directory": "public/static/img",
 	"public_images_location": "/static/img/",
-	"default_image_url": "/static/_img/default_image.gif",
+	"default_image_source": "/static/_img/default_image.gif",
 	"default_tv_source": "https://youtu.be/5814R4JqnDM",
 	"default_tv_type": "youtube",
 	"default_profile_image_url": "/static/_img/profile.jpg",

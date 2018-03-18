@@ -9,8 +9,8 @@ var settings
 var is_public
 var room_name
 var username
-var image_url = ''
-var image_uploader = ''
+var image_source = ''
+var image_setter = ''
 var image_size = 0
 var image_date = ''
 var topic = ''
@@ -169,7 +169,7 @@ var tv_visible = true
 var radio_visible = true
 var images_changed = []
 var modal_image_open = false
-var current_image_url = ""
+var current_image_source = ""
 var current_image_title = ""
 var current_image_date_raw = 0
 var date_joined
@@ -3980,7 +3980,7 @@ function update_chat(args={})
 		if($(this).attr("src") !== default_profile_image_url)
 		{
 			$(this).attr("src", default_profile_image_url)
-		}		
+		}
 	})
 
 	fmsg.data("highlighted", highlighted)
@@ -4124,7 +4124,7 @@ function change(args={})
 
 	if(args.type === "image")
 	{
-		if(!args.force && last_image_change === image_url)
+		if(!args.force && last_image_change === image_source)
 		{
 			return false
 		}
@@ -4187,9 +4187,9 @@ function change(args={})
 
 		show_image(args.force)
 
-		last_image_change = image_url
+		last_image_change = image_source
 
-		setter = image_uploader
+		setter = image_setter
 	}
 
 	else if(args.type === "tv")
@@ -4268,9 +4268,9 @@ function show_image(force=false)
 
 	$("#media_image").css("display", "initial")
 
-	if(force || $("#media_image").attr("src") !== image_url)
+	if(force || $("#media_image").attr("src") !== image_source)
 	{
-		$("#media_image").attr("src", image_url)
+		$("#media_image").attr("src", image_source)
 	}
 
 	else
@@ -4283,7 +4283,7 @@ function show_current_image_modal(current=true)
 {
 	if(current)
 	{
-		show_modal_image(current_image_url, current_image_title, current_image_date_raw)
+		show_modal_image(current_image_source, current_image_title, current_image_date_raw)
 	}
 
 	else
@@ -4311,7 +4311,7 @@ function start_image_events()
 
 	$('#test_image')[0].addEventListener('load', function() 
 	{
-		emit_linked_image($('#test_image').attr('src'))
+		emit_change_image_source($('#test_image').attr('src'))
 	})
 
 	$('#test_image').on("error", function() 
@@ -4327,7 +4327,7 @@ function start_image_events()
 
 function after_image_load()
 {
-	current_image_url = image_url
+	current_image_source = image_source
 	current_image_title = image_title
 	current_image_date_raw = image_date_raw
 }
@@ -4339,28 +4339,37 @@ function get_size_string(size)
 
 function setup_image(data)
 {
-	if(data.image_url === '' || data.image_url === undefined)
+	if(data.image_source === '' || data.image_source === undefined)
 	{
-		image_url = default_image_url
-		image_title = "Default Image"
-	}
+		image_source = default_image_source
 
-	else
-	{
-		image_url = data.image_url
-
-		if(data.image_type === "link")
+		if(data.image_setter)
 		{
-			image_title = `Linker: ${data.image_uploader} | ${nice_date(data.image_date)}`
+			image_title = `Setter: ${data.image_setter} | ${nice_date(data.image_date)}`
 		}
 
 		else
 		{
-			image_title = `Uploader: ${data.image_uploader} | Size: ${get_size_string(data.image_size)} | ${nice_date(data.image_date)}`
+			image_title = "Default Image"
 		}
 	}
 
-	image_uploader = data.image_uploader
+	else
+	{
+		image_source = data.image_source
+
+		if(data.image_type === "link")
+		{
+			image_title = `Linker: ${data.image_setter} | ${nice_date(data.image_date)}`
+		}
+
+		else
+		{
+			image_title = `Uploader: ${data.image_setter} | Size: ${get_size_string(data.image_size)} | ${nice_date(data.image_date)}`
+		}
+	}
+
+	image_setter = data.image_setter
 	image_size = data.image_size
 	image_date = nice_date(data.image_date)
 	image_date_raw = data.image_date
@@ -5777,7 +5786,7 @@ function goto_bottom(force=false)
 	}
 }
 
-function emit_linked_image(url)
+function emit_change_image_source(url)
 {	
 	if(!can_images)
 	{
@@ -5785,7 +5794,7 @@ function emit_linked_image(url)
 		return false
 	}
 	
-	socket_emit('linked_image', {image_url:url})
+	socket_emit('change_image_source', {src:url})
 }
 
 function get_radio_metadata()
@@ -6767,46 +6776,65 @@ function announce_image_change(data, date=false, show=true)
 			var d = Date.now()
 		}
 	}
-	
+
 	var nd = nice_date(d)
 
-	if(data.image_type === "link")
+	if(data.image_source === '')
 	{
-		var title = `Linker: ${data.image_uploader} | ${nd}`
-		var msg = `${data.image_uploader} linked an image`	
-	}
+		var name = 'default'
+		var src = default_image_source
+	}	
 
 	else
 	{
-		var title = `Uploader: ${data.image_uploader} | Size: ${get_size_string(data.image_size)} | ${nd}`
-		var msg = `${data.image_uploader} uploaded an image`
+		var name = data.image_source
+		var src = data.image_source
+	}
+
+	if(data.image_source === "")
+	{
+		var title = `Setter: ${data.image_setter} | ${nd}`
+		var msg = `${data.image_setter} changed the image to default`		
+	}	
+
+	else if(data.image_type === "link")
+	{
+		var title = `Linker: ${data.image_setter} | ${nd}`
+		var msg = `${data.image_setter} linked an image`	
+	}
+
+	else if(data.image_type === "upload")
+	{
+		var title = `Uploader: ${data.image_setter} | Size: ${get_size_string(data.image_size)} | ${nd}`
+		var msg = `${data.image_setter} uploaded an image`
+	}
+
+	var onclick = function()
+	{
+		show_modal_image(src, title, d)
 	}
 
 	if(show)
 	{
-		var onclick = function()
-		{
-			show_modal_image(data.image_url, title, d)
-		}
-
 		chat_announce(
 		{
 			brk1: "<i class='icon2 fa fa-camera'></i>", 
-			msg: msg, 
-			title: title, 
-			onclick: onclick, 
 			save: true, 
 			date: d, 
 			type: "image_change",
-			uname: data.image_uploader
+			uname: data.image_setter,
+			title: title,
+			msg: msg,
+			onclick: onclick
 		})
 	}
 
 	var ic_data = {}
 
-	ic_data.url = data.image_url
+	ic_data.url = data.image_source
 	ic_data.title = title
 	ic_data.date_raw = d
+	ic_data.setter = data.image_setter
 
 	push_images_changed(ic_data)
 }
@@ -6815,10 +6843,10 @@ function push_images_changed(data)
 {
 	if(!data.url)
 	{
-		data.url = default_image_url
+		data.url = default_image_source
 	}
 
-	if(!data.title)
+	if(!data.setter)
 	{
 		data.title = "Default Image"
 	}
@@ -6957,12 +6985,12 @@ function announce_radio_change(data, date=false, action="change")
 
 	if(data.radio_source === '')
 	{
-		var source = default_radio_source
+		var src = default_radio_source
 	}
 
 	else
 	{
-		var source = data.radio_source
+		var src = data.radio_source
 	}
 
 	if(date)
@@ -6999,7 +7027,7 @@ function announce_radio_change(data, date=false, action="change")
 
 	var onclick = function()
 	{
-		goto_url(source, "tab")
+		goto_url(src, "tab")
 	}
 
 	chat_announce(
@@ -7068,7 +7096,7 @@ function announce_tv_change(data, date=false, action="change")
 		var name = data.tv_title
 	}
 
-	else if(data.tv_source == '')
+	else if(data.tv_source === '')
 	{
 		var name = 'default'
 	}	
@@ -7076,6 +7104,16 @@ function announce_tv_change(data, date=false, action="change")
 	else
 	{
 		var name = data.tv_source
+	}
+
+	if(data.tv_source === '')
+	{
+		var src = default_tv_source
+	}
+
+	else
+	{
+		var src = data.tv_source
 	}
 
 	if(date)
@@ -7102,7 +7140,7 @@ function announce_tv_change(data, date=false, action="change")
 
 	var onclick = function()
 	{
-		goto_url(data.tv_source, "tab")
+		goto_url(src, "tab")
 	}
 
 	if(action === "restart")
@@ -9248,7 +9286,7 @@ function get_status_html()
 		info += "<div class='info_item_content'>Disabled</div></div>"
 	}
 
-	if(image_uploader)
+	if(image_setter)
 	{
 		info += "<div class='info_item'><div class='info_title'>Image Setter</div>"
 		info += `<div class='info_item_content' id='status_image_setter'></div></div>`
@@ -9291,32 +9329,41 @@ function get_status_html()
 	var t = h.find("#status_topic").eq(0)
 	t.text(get_topic()).urlize()
 
-	var t = h.find("#status_image_setter").eq(0)
-	t.text(image_uploader).urlize()
+	if(image_setter)
+	{
+		var t = h.find("#status_image_setter").eq(0)
+		t.text(image_setter).urlize()
 
-	var t = h.find("#status_image_source").eq(0)
-	t.text(image_url).urlize(true)
+		var t = h.find("#status_image_source").eq(0)
+		t.text(image_source).urlize(true)
+		
+		var t = h.find("#status_image_date").eq(0)
+		t.text(image_date).urlize(true)
+	}
 
-	var t = h.find("#status_image_date").eq(0)
-	t.text(image_date).urlize(true)
+	if(tv_setter)
+	{
+		var t = h.find("#status_tv_setter").eq(0)
+		t.text(tv_setter).urlize()
 
-	var t = h.find("#status_tv_setter").eq(0)
-	t.text(tv_setter).urlize()
+		var t = h.find("#status_tv_source").eq(0)
+		t.text(tv_source).urlize()
 
-	var t = h.find("#status_tv_source").eq(0)
-	t.text(tv_source).urlize()
+		var t = h.find("#status_tv_date").eq(0)
+		t.text(tv_date).urlize()
+	}
 
-	var t = h.find("#status_tv_date").eq(0)
-	t.text(tv_date).urlize()
+	if(radio_setter)
+	{
+		var t = h.find("#status_radio_setter").eq(0)
+		t.text(radio_setter).urlize()
 
-	var t = h.find("#status_radio_setter").eq(0)
-	t.text(radio_setter).urlize()
+		var t = h.find("#status_radio_source").eq(0)
+		t.text(radio_source).urlize()
 
-	var t = h.find("#status_radio_source").eq(0)
-	t.text(radio_source).urlize()
-
-	var t = h.find("#status_radio_date").eq(0)
-	t.text(radio_date).urlize()
+		var t = h.find("#status_radio_date").eq(0)
+		t.text(radio_date).urlize()
+	}
 
 	return h.html()
 }
@@ -10522,6 +10569,12 @@ function link_image(url)
 	{
 		chat_announce({brk1:'[', brk2:']', msg:"You don't have permission to link images"})
 		return false
+	}
+
+	if(url === "default")
+	{
+		emit_change_image_source("default")
+		return
 	}
 
 	url = url.replace(/\.gifv/g, '.gif')

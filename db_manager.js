@@ -84,14 +84,14 @@ module.exports = function(db, config, sconfig, utilz, logger)
 							room.name = "No Name"
 						}
 						
-						if(typeof room.image_url !== "string")
+						if(typeof room.image_source !== "string")
 						{
-							room.image_url = ""
+							room.image_source = ""
 						}
 						
-						if(typeof room.image_uploader !== "string")
+						if(typeof room.image_setter !== "string")
 						{
-							room.image_uploader = ""
+							room.image_setter = ""
 						}
 						
 						if(typeof room.image_size !== "number")
@@ -368,8 +368,8 @@ module.exports = function(db, config, sconfig, utilz, logger)
 			room = 
 			{
 				version: rooms_version,
-				image_url: '',
-				image_uploader: '',
+				image_source: '',
+				image_setter: '',
 				image_size: 0,
 				image_date: 0,
 				image_type: "upload",
