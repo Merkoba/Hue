@@ -1165,9 +1165,14 @@ input[type=text], textarea
 	max-width: 30rem;
 }
 
+#write_whisper_feedback
+{
+	padding-top: 0.3em;
+}
+
 #write_whisper_area
 {
-	width: 30rem;
+	width: 20rem;
 	resize: none;
 	font-size: 1em;
 }

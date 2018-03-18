@@ -11061,7 +11061,7 @@ function send_whisper()
 
 	if(usernames.indexOf(uname) === -1)
 	{
-		$("#write_whisper_feedback").text("User is not in the room")
+		$("#write_whisper_feedback").text("(User is not in the room)")
 		return false
 	}	
 
