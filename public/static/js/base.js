@@ -2150,7 +2150,12 @@ function request_roomlist(filter="", type="public_roomlist")
 
 function start_roomlist_click_events()
 {
-	$("#roomlist").on("click", ".roomlist_item_inner", function() 
+	$("#public_roomlist_container").on("click", ".roomlist_item_inner", function() 
+	{
+		show_open_room($(this).data("room_id"))
+	})
+
+	$("#visited_roomlist_container").on("click", ".roomlist_item_inner", function() 
 	{
 		show_open_room($(this).data("room_id"))
 	})
