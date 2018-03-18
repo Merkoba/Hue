@@ -177,7 +177,7 @@ var user_email
 var user_reg_date
 var filter_delay = 200
 var resize_delay = 200
-var double_tap_delay = 200
+var double_tap_delay = 350
 var wheel_delay = 100
 var check_scrollers_delay = 100
 var requesting_roomlist = false
@@ -2967,7 +2967,6 @@ function activate_key_detection()
 					reset_double_tap_keys_pressed()
 				}				
 			}
-
 	
 			else
 			{
