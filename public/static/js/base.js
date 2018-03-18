@@ -7417,7 +7417,7 @@ function start_msg()
 
 	msg_menu = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "menu",
 			window_width: "22em",
@@ -7444,7 +7444,7 @@ function start_msg()
 
 	msg_userinfo = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{		
 			id: "userinfo",
 			clear_editables: false,
@@ -7786,7 +7786,7 @@ function start_msg()
 
 	msg_media_menu = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "media_menu",
 			after_create: function(instance)
@@ -8127,6 +8127,9 @@ function start_msg()
 	msg_public_roomlist.set_title("Public Rooms")
 	msg_visited_roomlist.set_title("Visited Rooms")
 	msg_played.set_title("Recently Played")
+	msg_menu.set_title("Main Menu")
+	msg_userinfo.set_title("User Menu")
+	msg_media_menu.set_title("Media Menu")
 }
 
 function info_vars_to_false()
