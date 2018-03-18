@@ -2152,12 +2152,26 @@ function start_roomlist_click_events()
 {
 	$("#public_roomlist_container").on("click", ".roomlist_item_inner", function() 
 	{
-		show_open_room($(this).data("room_id"))
+		var id = $(this).data("room_id")
+
+		if(id === main_room_id)
+		{
+			id = "/"
+		}
+
+		show_open_room(id)
 	})
 
 	$("#visited_roomlist_container").on("click", ".roomlist_item_inner", function() 
 	{
-		show_open_room($(this).data("room_id"))
+		var id = $(this).data("room_id")
+
+		if(id === main_room_id)
+		{
+			id = "/"
+		}
+
+		show_open_room(id)
 	})
 }
 
