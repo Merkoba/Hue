@@ -908,11 +908,20 @@ input[type=text], textarea
 	font-size: 1.2em;	
 }
 
-#modal_image_header_info
+#modal_image_header_info_container
 {
 	flex-grow: 1;
 	flex-shrink: 1;
 	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;	
+}
+
+#modal_image_header_info
+{
+	flex-grow: 0;
+	flex-shrink: 1;
 }
 
 .modal_image_header_button
