@@ -93,6 +93,16 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		{
 			return false
 		}
+		
+		if(req.params.id !== undefined)
+		{
+			var id = req.params.id.substr(0, config.max_room_id_length)
+
+			if(id === config.main_room_id)
+			{
+				res.redirect(`/`)
+			}
+		}
 
 		else
 		{
