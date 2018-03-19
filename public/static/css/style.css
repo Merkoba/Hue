@@ -1234,7 +1234,7 @@ input[type=text], textarea
 
 #chat_area .fader
 {
-	animation: fadein 500ms linear;
+	animation: fadein 600ms linear;
 }
 
 #userinfo_username

@@ -4024,11 +4024,6 @@ function add_to_chat(msg, save=false)
 		var content = msg.find(".chat_content").eq(0)
 	}
 
-	if(started && app_focused)
-	{
-		msg.addClass("fader")
-	}
-
 	if((msg.hasClass("chat_message") && !msg.hasClass("thirdperson")) && (last_msg.hasClass("chat_message") && !last_msg.hasClass("thirdperson")))
 	{
 		if(msg.find(".chat_uname").eq(0).text() === last_msg.find(".chat_uname").eq(0).text())
@@ -4039,6 +4034,11 @@ function add_to_chat(msg, save=false)
 
 				if(date_diff < max_same_post_diff)
 				{
+					if(started && app_focused)
+					{
+						content.addClass("fader")
+					}
+
 					last_msg.find(".chat_content_container").eq(0).append("<br>").append(content)
 
 					replace_in_chat_history(last_msg)
@@ -4056,6 +4056,11 @@ function add_to_chat(msg, save=false)
 
 	if(!appended)
 	{
+		if(started && app_focused)
+		{
+			msg.addClass("fader")
+		}
+
 		chat_area.append(msg)
 		
 		if($(".msg").length > chat_crop_limit)
