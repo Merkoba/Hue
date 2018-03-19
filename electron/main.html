@@ -50,11 +50,12 @@
 			webview.focus()
 
 			//Open the DevTools.
-			webview.addEventListener("dom-ready", function(){webview.openDevTools()})
+			// webview.addEventListener("dom-ready", function(){webview.openDevTools()})
 
 			webview.addEventListener('new-window', (e) => 
 			{
 				if(e.url.startsWith("https://hue.merkoba.com/"))
+				// if(e.url.startsWith("http://localhost:3210/"))
 				{
 					const win = new BrowserWindow(
 					{

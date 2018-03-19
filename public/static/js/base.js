@@ -4627,19 +4627,6 @@ jQuery.fn.urlize = function(force=false)
 	}
 }
 
-function msg_is_ok(msg)
-{
-	if(msg.length > 0 && msg.length <= max_input_length)
-	{
-		return true
-	}
-
-	else
-	{
-		return false
-	}
-}
-
 function register_commands()
 {
 	commands.push('/me')
@@ -4762,6 +4749,7 @@ function register_commands()
 	commands.push('/activitybelow')
 	commands.push('/globalsettings')
 	commands.push('/roomsettings')
+	commands.push('/goto')
 
 	commands.sort()
 
@@ -4801,36 +4789,43 @@ function is_command(msg)
 
 function process_message(msg, to_history=true, clr_input=true)
 {
-	msg = utilz.clean_string2(msg.substring(0, max_input_length))
+	msg = utilz.clean_string2(msg)
 
-	if(msg_is_ok(msg))
+	if(msg.length === 0)
 	{
-		if(is_command(msg))
-		{
-			var ans = execute_command(msg, {to_history:to_history, clr_input:clr_input})
+		return false
+	}
 
-			to_history = ans.to_history
-			clr_input = ans.clr_input
-		}
+	if(is_command(msg))
+	{
+		var ans = execute_command(msg, {to_history:to_history, clr_input:clr_input})
 
-		else 
+		to_history = ans.to_history
+		clr_input = ans.clr_input
+	}
+
+	else 
+	{
+		if(can_chat)
 		{
-			if(can_chat)
+			if(msg.length > max_input_length)
 			{
-				update_chat({uname:username, msg:msg, prof_image:profile_image})	
-				socket_emit('sendchat', {msg:msg})
+				msg = msg.substring(0, max_input_length).trim()
 			}
 
-			else
-			{
-				cant_chat()
-			}
+			update_chat({uname:username, msg:msg, prof_image:profile_image})	
+			socket_emit('sendchat', {msg:msg})
 		}
 
-		if(to_history)
+		else
 		{
-			add_to_input_history(msg)
+			cant_chat()
 		}
+	}
+
+	if(to_history)
+	{
+		add_to_input_history(msg)
 	}
 
 	if(clr_input)
@@ -5506,6 +5501,11 @@ function execute_command(msg, ans)
 	{
 		show_room_settings(arg)
 	}
+
+	else if(oiStartsWith(lmsg, '/goto'))
+	{
+		goto_url(arg, "tab")
+	}	
 
 	else
 	{
@@ -11964,7 +11964,7 @@ function setup_chat()
 }
 
 function execute_javascript(arg, show_result=true)
-{
+{ 
 	try
 	{
 		var r = eval(arg)
