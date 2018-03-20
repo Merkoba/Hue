@@ -337,18 +337,18 @@ function show_public()
 {
 	if(is_public)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:'This room is public'})
+		feedback('This room is public')
 	}
 
 	else
 	{
-		chat_announce({brk1:'[', brk2:']', msg:'This room is private'})
+		feedback('This room is private')
 	}
 }
 
 function show_room()
 {
-	chat_announce({brk1:'[', brk2:']', msg:`Room: ${room_name}`})
+	feedback(`Room: ${room_name}`)
 }
 
 function change_room_name(arg)
@@ -362,7 +362,7 @@ function change_room_name(arg)
 
 	if(arg === room_name)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"That's already the room name"})
+		feedback("That's already the room name")
 		return
 	}
 
@@ -374,17 +374,41 @@ function room_name_edit()
 	change_input(`/roomname ${room_name}`)
 }
 
-function show_radio_source()
+function show_media_source(what)
 {
-	if(radio_setter !== '')
+	var source = window[`${what}_source`]
+	var setter = window[`${what}_setter`]
+	var date = window[`${what}_date`]
+
+	if(setter !== '')
 	{
-		chat_announce({brk1:'[', brk2:']', msg:`Radio: ${radio_source}`, title:`Setter: ${radio_setter} | ${radio_date}`})
+		if(what === "image")
+		{
+			var s = "Image"
+		}
+
+		else if(what === "tv")
+		{
+			var s = "TV"
+		}
+
+		else if(what === "radio")
+		{
+			var s = "Radio"
+		}
+
+		else
+		{
+			return false
+		}
+
+		feedback(`${s} Source: ${source}`, {title:`Setter: ${setter} | ${date}`})
 	}
 
 	else
 	{
-		chat_announce({brk1:'[', brk2:']', msg:`Radio: ${radio_source}`})
-	}
+		feedback(`${s} Source: ${source}`)
+	}	
 }
 
 function get_unset_topic()
@@ -569,58 +593,58 @@ function show_role(data)
 {
 	if(role === 'admin')
 	{
-		chat_announce({brk1:'[', brk2:']', msg:'You are an admin'})
+		feedback('You are an admin')
 	}
 
 	else if(role === 'op')
 	{
-		chat_announce({brk1:'[', brk2:']', msg:'You are an op'})
+		feedback('You are an op')
 	}
 
 	else if(role.startsWith('voice'))
 	{
-		chat_announce({brk1:'[', brk2:']', msg:`You have ${role}`})
+		feedback(`You have ${role}`)
 	}
 
 	var ps = 0
 
 	if(can_chat)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"You have chat permission"})
+		feedback("You have chat permission")
 
 		ps += 1
 	}
 
 	if(can_images)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"You have images permission"})
+		feedback("You have images permission")
 
 		ps += 1
 	}
 
 	if(can_tv)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"You have tv permission"})
+		feedback("You have tv permission")
 
 		ps += 1
 	}
 
 	if(can_radio)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"You have radio permission"})
+		feedback("You have radio permission")
 
 		ps += 1
 	}
 
 	if(ps === 0)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"You cannot interact"})
+		feedback("You cannot interact")
 	}
 }
 
 function show_username()
 {
-	chat_announce({brk1:'[', brk2:']', msg:`Username: ${username}`})
+	feedback(`Username: ${username}`)
 }
 
 function socket_emit(destination, data)
@@ -762,11 +786,6 @@ function start_socket()
 		else if(data.type === 'upload_ended') 
 		{
 			upload_ended(data)
-		}	
-
-		else if(data.type === 'chat_announcement')
-		{
-			chat_announce({brk1:'###', brk2:'###', msg:data.msg})
 		}
 
 		else if(data.type === 'image_change')
@@ -842,12 +861,12 @@ function start_socket()
 
 		else if(data.type === 'announce_ban')
 		{
-			chat_announce({brk1:'~', brk2:'~', msg:`${data.username1} banned ${data.username2}`})
+			public_feedback(`${data.username1} banned ${data.username2}`)
 		}
 
 		else if(data.type === 'announce_unban')
 		{
-			chat_announce({brk1:'~', brk2:'~', msg:`${data.username1} unbanned ${data.username2}`})
+			public_feedback(`${data.username1} unbanned ${data.username2}`)
 		}		
 
 		else if(data.type === 'announce_unban_all')
@@ -862,12 +881,12 @@ function start_socket()
 
 		else if(data.type === 'nothingtounban')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"There was nothing to unban"})
+			feedback("There was nothing to unban")
 		}
 
 		else if(data.type === 'nothingtoclear')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"There was nothing to clear"})
+			feedback("There was nothing to clear")
 		}
 
 		else if(data.type === 'listbans')
@@ -882,7 +901,7 @@ function start_socket()
 
 		else if(data.type === 'user_not_found')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"User doesn't exist"})
+			feedback("User doesn't exist")
 		}
 
 		else if(data.type === 'user_not_in_room')
@@ -892,12 +911,12 @@ function start_socket()
 
 		else if(data.type === 'noopstoremove')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"There were no ops to remove"})
+			feedback("There were no ops to remove")
 		}
 
 		else if(data.type === 'novoicestoreset')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"There were no voices to reset"})
+			feedback("There were no voices to reset")
 		}
 
 		else if(data.type === 'isalready')
@@ -907,12 +926,12 @@ function start_socket()
 
 		else if(data.type === 'user_already_banned')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"User is already banned"})
+			feedback("User is already banned")
 		}
 
 		else if(data.type === 'user_already_unbanned')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"User is already unbanned"})
+			feedback("User is already unbanned")
 		}
 
 		else if(data.type === 'privacy_change')
@@ -956,22 +975,22 @@ function start_socket()
 
 		else if(data.type === 'alreadyreserved')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`${username} is already reserved`})
+			feedback(`${username} is already reserved`)
 		}
 
 		else if(data.type === 'couldnotrecover')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"You don't seem to own that username"})
+			feedback("You don't seem to own that username")
 		}
 
 		else if(data.type === 'songnotfound')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"The song couldn't be found"})
+			feedback("The song couldn't be found")
 		}
 
 		else if(data.type === 'videonotfound')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"The video couldn't be found"})
+			feedback("The video couldn't be found")
 		}
 
 		else if(data.type === 'room_created')
@@ -986,12 +1005,12 @@ function start_socket()
 
 		else if(data.type === 'username_already_exists')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`${data.username} already exists`})
+			feedback(`${data.username} already exists`)
 		}
 
 		else if(data.type === 'email_already_exists')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`${data.email} already exists`})
+			feedback(`${data.email} already exists`)
 		}
 
 		else if(data.type === 'new_username')
@@ -1086,33 +1105,38 @@ function start_socket()
 
 		else if(data.type === 'email_change_code_sent')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`Verification code sent. Use the command sent to ${data.email}. Email might take a couple of minutes to arrive.`})
+			feedback(`Verification code sent. Use the command sent to ${data.email}. Email might take a couple of minutes to arrive.`)
 		}
 
 		else if(data.type === 'email_change_code_not_sent')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`Verification code not sent yet. Use /changeemail [new_email] to get a verification code`})
+			feedback(`Verification code not sent yet. Use /changeemail [new_email] to get a verification code`)
 		}
 
 		else if(data.type === 'email_change_wait')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`You must wait a while before changing the email again`})
+			feedback(`You must wait a while before changing the email again`)
 		}
 
 		else if(data.type === 'email_change_wrong_code')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`Code supplied didn't match`})
+			feedback(`Code supplied didn't match`)
 		}
 
 		else if(data.type === 'email_change_expired_code')
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`Code supplied has expired`})
+			feedback(`Code supplied has expired`)
 		}
 
 		else if(data.type === 'create_room_wait')
 		{
 			msg_info.show("You must wait a while before creating another room")
 		}
+
+		else if(data.type === 'system_broadcast')
+		{
+			chat_announce({brk1:'###', brk2:'###', msg:data.what, save:true})
+		}		
 	})
 }
 
@@ -2615,7 +2639,7 @@ function start_dropzone()
 
 		if(!can_images)
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"You don't have permission to upload images"})
+			feedback("You don't have permission to upload images")
 			dropzone.files = []
 			return false
 		}
@@ -2631,7 +2655,7 @@ function start_dropzone()
 		if(size > max_image_size)
 		{
 			dropzone.files = []
-			chat_announce({brk1:'[', brk2:']', msg:"File is too big"})
+			feedback("File is too big")
 			return false
 		}
 
@@ -4320,7 +4344,7 @@ function start_image_events()
 
 	$('#test_image').on("error", function() 
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"The provided image URL failed to load"})	
+		feedback("The provided image URL failed to load")
 	})
 
 	$("#admin_background_image")[0].addEventListener('load', function()
@@ -4750,6 +4774,9 @@ function register_commands()
 	commands.push('/globalsettings')
 	commands.push('/roomsettings')
 	commands.push('/goto')
+	commands.push('/broadcast')
+	commands.push('/enablebackground')
+	commands.push('/disablebackground')
 
 	commands.sort()
 
@@ -5061,7 +5088,7 @@ function execute_command(msg, ans)
 
 	else if(oiEquals(lmsg, '/radio'))
 	{
-		show_radio_source()
+		show_media_source("radio")
 	}
 
 	else if(oiStartsWith(lmsg, '/tv'))
@@ -5069,10 +5096,20 @@ function execute_command(msg, ans)
 		change_tv_source(arg)
 	}
 
+	else if(oiEquals(lmsg, '/tv'))
+	{
+		show_media_source("tv")
+	}	
+
 	else if(oiStartsWith(lmsg, '/image'))
 	{
 		link_image(arg)
 	}
+
+	else if(oiEquals(lmsg, '/image'))
+	{
+		show_media_source("image")
+	}	
 
 	else if(oiEquals(lmsg, '/status'))
 	{
@@ -5505,11 +5542,26 @@ function execute_command(msg, ans)
 	else if(oiStartsWith(lmsg, '/goto'))
 	{
 		goto_url(arg, "tab")
-	}	
+	}
+
+	else if(oiStartsWith(lmsg, '/broadcast'))
+	{
+		system_broadcast(arg)
+	}
+
+	else if(oiEquals(lmsg, '/enablebackground'))
+	{
+		change_background_image_enabled(true)
+	}
+
+	else if(oiEquals(lmsg, '/disablebackground'))
+	{
+		change_background_image_enabled(false)
+	}		
 
 	else
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Invalid command. Use // to start a message with /"})
+		feedback("Invalid command. Use // to start a message with /")
 	}
 
 	return ans
@@ -5530,7 +5582,7 @@ function change_topic(dtopic)
 
 			else
 			{
-				chat_announce({brk1:'[', brk2:']', msg:"Topic is already set to that"})
+				feedback("Topic is already set to that")
 			}
 		}
 	}
@@ -5556,7 +5608,7 @@ function topicadd(arg)
 
 		if(ntopic.length > max_topic_length)
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"There is no more room to add that to the topic"})
+			feedback("There is no more room to add that to the topic")
 			return
 		}
 
@@ -5592,7 +5644,7 @@ function topictrim(n)
 
 			else
 			{
-				chat_announce({brk1:'[', brk2:']', msg:"Argument must be a number"})
+				feedback("Argument must be a number")
 				return false
 			}
 
@@ -5609,7 +5661,7 @@ function topictrim(n)
 
 		else
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"Nothing to trim"})
+			feedback("Nothing to trim")
 		}
 	}
 
@@ -5634,7 +5686,7 @@ function topicstart(arg)
 
 		if(ntopic.length > max_topic_length)
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"There is no more room to add that to the topic"})
+			feedback("There is no more room to add that to the topic")
 			return
 		}
 
@@ -5670,7 +5722,7 @@ function topictrimstart(n)
 
 			else
 			{
-				chat_announce({brk1:'[', brk2:']', msg:"Argument must be a number"})
+				feedback("Argument must be a number")
 				return false
 			}
 
@@ -5687,7 +5739,7 @@ function topictrimstart(n)
 
 		else
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"Nothing to trim"})
+			feedback("Nothing to trim")
 		}
 	}
 
@@ -5716,7 +5768,7 @@ function announce_topic_change(data)
 			}
 		}
 
-		chat_announce({brk1:'~', brk2:'~', msg:`${data.topic_setter} changed the topic to: ${data.topic}`, highlight:highlight})
+		public_feedback(`${data.topic_setter} changed the topic to: ${data.topic}`, {highlight:highlight})
 		set_topic_info(data)
 		update_title()
 	}
@@ -5726,7 +5778,7 @@ function announce_room_name_change(data)
 {
 	if(data.name !== room_name)
 	{		
-		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} changed the room name to: ${data.name}`})
+		public_feedback(`${data.username} changed the room name to: ${data.name}`)
 		set_room_name(data.name)
 		update_title()
 	}
@@ -5744,12 +5796,12 @@ function announce_new_username(data)
 
 		if(show)
 		{
-			chat_announce({brk1:'~', brk2:'~', msg:`${data.old_username} is now known as ${username}`})
+			public_feedback(`${data.old_username} is now known as ${username}`)
 		}
 
 		else
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`You are now known as ${username}`})
+			feedback(`You are now known as ${username}`)
 		}
 	}
 
@@ -5757,7 +5809,7 @@ function announce_new_username(data)
 	{
 		if(show)
 		{
-			chat_announce({brk1:'~', brk2:'~', msg:`${data.old_username} is now known as ${data.username}`})
+			public_feedback(`${data.old_username} is now known as ${data.username}`)
 		}
 	}
 }
@@ -5794,7 +5846,7 @@ function emit_change_image_source(url)
 {	
 	if(!can_images)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"You don't have permission to link images"})
+		feedback("You don't have permission to link images")
 		return false
 	}
 	
@@ -6171,7 +6223,7 @@ function change_volume_command(arg)
 {
 	if(isNaN(arg))
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Argument must be a number"})
+		feedback("Argument must be a number")
 		return false
 	}
 
@@ -6563,12 +6615,12 @@ function chat_search(filter=false)
 
 						if(i < hcontent.length - 1)
 						{
-							cn.find(".chat_search_result_content").eq(0).append($(hc).clone()).append("<br>")
+							cn.find(".chat_search_result_content").eq(0).append($(hc).clone(true, true)).append("<br>")
 						}
 
 						else
 						{
-							cn.find(".chat_search_result_content").eq(0).append($(hc).clone())
+							cn.find(".chat_search_result_content").eq(0).append($(hc).clone(true, true))
 						}
 					}
 
@@ -6730,7 +6782,7 @@ function change_role(uname, rol)
 		{
 			if(uname === username)
 			{
-				chat_announce({brk1:'[', brk2:']', msg:"You can't assign a role to yourself"})
+				feedback("You can't assign a role to yourself")
 				return false
 			}
 
@@ -6742,7 +6794,7 @@ function change_role(uname, rol)
 
 			if(roles.indexOf(rol) === -1)
 			{
-				chat_announce({brk1:'[', brk2:']', msg:"Invalid role"})
+				feedback("Invalid role")
 				return false				
 			}
 
@@ -6758,7 +6810,7 @@ function change_role(uname, rol)
 
 function show_upload_error()
 {
-	chat_announce({brk1:'[', brk2:']', msg:"The image could not be uploaded"})
+	feedback("The image could not be uploaded")
 }
 
 function announce_image_change(data, date=false, show=true)
@@ -6878,7 +6930,7 @@ function announce_role_change(data)
 		set_role(data.role)
 	}
 
-	chat_announce({brk1:'~', brk2:'~', msg:`${data.username1} gave ${data.role} to ${data.username2}`})
+	public_feedback(`${data.username1} gave ${data.role} to ${data.username2}`)
 
 	replace_role_in_userlist(data.username2, data.role)	
 }
@@ -6902,12 +6954,12 @@ function change_privacy(what)
 	{
 		if(what)
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"Room is already public"})
+			feedback("Room is already public")
 		}
 
 		else
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"Room is already private"})
+			feedback("Room is already private")
 		}
 	}
 
@@ -6930,7 +6982,7 @@ function announce_privacy_change(data)
 		s += ". The room will appear in the public room list"
 	}
 	
-	chat_announce({brk1:'~', brk2:'~', msg:s})
+	public_feedback(s)
 }
 
 function change_radio_source(src)
@@ -6943,7 +6995,7 @@ function change_radio_source(src)
 			{
 				if(!youtube_enabled)
 				{
-					chat_announce({brk1:'[', brk2:']', msg:"Invalid radio source"})
+					feedback("Invalid radio source")
 					return
 				}
 			}
@@ -6953,7 +7005,7 @@ function change_radio_source(src)
 		{
 			if(!youtube_enabled)
 			{
-				chat_announce({brk1:'[', brk2:']', msg:"Invalid radio source"})
+				feedback("Invalid radio source")
 				return
 			}
 		}
@@ -6966,7 +7018,7 @@ function change_radio_source(src)
 
 	else
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"You don't have permission to change the radio"})
+		feedback("You don't have permission to change the radio")
 	}
 }
 
@@ -7057,7 +7109,7 @@ function change_tv_source(src)
 			{
 				if(utilz.get_youtube_id(src) && !youtube_enabled)
 				{
-					chat_announce({brk1:'[', brk2:']', msg:"YouTube support is not enabled"})
+					feedback("YouTube support is not enabled")
 					return
 				}
 			}
@@ -7066,7 +7118,7 @@ function change_tv_source(src)
 			{
 				if(utilz.get_twitch_id(src) && !twitch_enabled)
 				{
-					chat_announce({brk1:'[', brk2:']', msg:"Twitch support is not enabled"})
+					feedback("Twitch support is not enabled")
 					return
 				}
 			}
@@ -7076,7 +7128,7 @@ function change_tv_source(src)
 		{
 			if(!youtube_enabled)
 			{
-				chat_announce({brk1:'[', brk2:']', msg:"YouTube support is not enabled"})
+				feedback("YouTube support is not enabled")
 				return
 			}
 		}
@@ -7089,7 +7141,7 @@ function change_tv_source(src)
 
 	else
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"You don't have permission to change the tv"})
+		feedback("You don't have permission to change the tv")
 	}
 }
 
@@ -7178,7 +7230,7 @@ function ban(uname)
 		{
 			if(uname === username)
 			{
-				chat_announce({brk1:'[', brk2:']', msg:"You can't ban yourself"})
+				feedback("You can't ban yourself")
 				return false
 			}
 
@@ -7200,7 +7252,7 @@ function unban(uname)
 		{
 			if(uname === username)
 			{
-				chat_announce({brk1:'[', brk2:']', msg:"You can't unban yourself"})
+				feedback("You can't unban yourself")
 				return false
 			}
 
@@ -7258,7 +7310,7 @@ function kick(uname)
 		{
 			if(uname === username)
 			{
-				chat_announce({brk1:'[', brk2:']', msg:"You can't kick yourself"})
+				feedback("You can't kick yourself")
 				return false
 			}
 
@@ -7288,45 +7340,45 @@ function kick(uname)
 
 function announce_unban_all(data)
 {
-	chat_announce({brk1:'~', brk2:'~', msg:`${data.username} unbanned all banned users`})
+	public_feedback(`${data.username} unbanned all banned users`)
 }
 
 function isalready(who, what)
 {
 	if(what === 'voice1')
 	{
-		chat_announce({brk1:'[', brk2:']', msg:`${who} already has voice 1`})
+		feedback(`${who} already has voice 1`)
 	}
 
 	else if(what === 'voice2')
 	{
-		chat_announce({brk1:'[', brk2:']', msg:`${who} already has voice 2`})
+		feedback(`${who} already has voice 2`)
 	}
 
 	else if(what === 'voice3')
 	{
-		chat_announce({brk1:'[', brk2:']', msg:`${who} already has voice 3`})
+		feedback(`${who} already has voice 3`)
 	}
 
 	else if(what === 'voice4')
 	{
-		chat_announce({brk1:'[', brk2:']', msg:`${who} already has voice 4`})
+		feedback(`${who} already has voice 4`)
 	}
 
 	else if(what === 'op')
 	{
-		chat_announce({brk1:'[', brk2:']', msg:`${who} is already an op`})
+		feedback(`${who} is already an op`)
 	}
 
 	else if(what === 'admin')
 	{
-		chat_announce({brk1:'[', brk2:']', msg:`${who} is already an admin`})
+		feedback(`${who} is already an admin`)
 	}
 }
 
 function forbiddenuser()
 {
-	chat_announce({brk1:'[', brk2:']', msg:"That operation is forbidden on that user"})
+	feedback("That operation is forbidden on that user")
 }
 
 function search_on(site, q)
@@ -7364,7 +7416,7 @@ function remove_ops()
 {
 	if(role !== 'admin')
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"You are not a room admin"})
+		feedback("You are not a room admin")
 		return false
 	}
 
@@ -7373,7 +7425,7 @@ function remove_ops()
 
 function announce_voices_resetted(data)
 {
-	chat_announce({brk1:'~', brk2:'~', msg:`${data.username} resetted the voices`})
+	public_feedback(`${data.username} resetted the voices`)
 
 	if(role.startsWith('voice') && role !== "voice1")
 	{
@@ -7385,7 +7437,7 @@ function announce_voices_resetted(data)
 
 function announce_removedops(data)
 {
-	chat_announce({brk1:'~', brk2:'~', msg:`${data.username} removed all ops`})
+	public_feedback(`${data.username} removed all ops`)
 
 	if(role === 'op')
 	{
@@ -9409,25 +9461,25 @@ function change_username(uname)
 {
 	if(utilz.clean_string4(uname) !== uname)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Username contains invalid characters"})
+		feedback("Username contains invalid characters")
 		return
 	}
 
 	if(uname.length === 0)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Username can't be empty"})
+		feedback("Username can't be empty")
 		return
 	}
 
 	if(uname.length > max_username_length)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Username is too long"})
+		feedback("Username is too long")
 		return
 	}
 
 	if(uname === username)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"That's already your username"})
+		feedback("That's already your username")
 		return
 	}
 
@@ -9438,13 +9490,13 @@ function change_password(passwd)
 {
 	if(passwd.length < min_password_length)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:`Password is too short. It must be at least ${min_password_length} characters long`})
+		feedback(`Password is too short. It must be at least ${min_password_length} characters long`)
 		return
 	}
 
 	if(passwd.length > max_password_length)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Password is too long"})
+		feedback("Password is too long")
 		return
 	}
 
@@ -9453,32 +9505,32 @@ function change_password(passwd)
 
 function password_changed(data)
 {
-	chat_announce({brk1:'[', brk2:']', msg:`Password succesfully changed to ${data.password}. To force other clients connected to your account to disconnect you can use /disconnectothers`})
+	feedback(`Password succesfully changed to ${data.password}. To force other clients connected to your account to disconnect you can use /disconnectothers`)
 }
 
 function change_email(email)
 {
 	if(utilz.clean_string5(email) !== email)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Invalid email address"})
+		feedback("Invalid email address")
 		return
 	}
 
 	if(email.length === 0)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Username can't be empty"})
+		feedback("Username can't be empty")
 		return
 	}
 
 	if(email.indexOf('@') === -1)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Invalid email address"})
+		feedback("Invalid email address")
 		return
 	}	
 
 	if(email.length > max_email_length)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Email is too long"})
+		feedback("Email is too long")
 		return
 	}
 
@@ -9488,7 +9540,7 @@ function change_email(email)
 function email_changed(data)
 {
 	set_email(data.email)
-	chat_announce({brk1:'[', brk2:']', msg:`Email succesfully changed to ${data.email}`})
+	feedback(`Email succesfully changed to ${data.email}`)
 }
 
 function show_details(data)
@@ -9567,12 +9619,12 @@ function change_log(log)
 	{
 		if(log)
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"Log is already enabled"})
+			feedback("Log is already enabled")
 		}
 
 		else
 		{
-			chat_announce({brk1:'[', brk2:']', msg:"Log is already disabled"})
+			feedback("Log is already disabled")
 		}
 	}
 
@@ -9602,7 +9654,7 @@ function announce_log_change(data)
 		var s = `${data.username} cleared and disabled the log`
 	}
 
-	chat_announce({brk1:'~', brk2:'~', msg:s})
+	public_feedback(s)
 
 	set_log_enabled(data.log)
 }
@@ -9623,19 +9675,19 @@ function announce_log_cleared(data)
 
 	s += `${uname} cleared the log`
 
-	chat_announce({brk1:'~', brk2:'~', msg:s})
+	public_feedback(s)
 }
 
 function show_log()
 {
 	if(log_enabled)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Log is enabled"})
+		feedback("Log is enabled")
 	}
 
 	else
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Log is disabled"})
+		feedback("Log is disabled")
 	}
 }
 
@@ -9689,7 +9741,7 @@ function show_modal_image(url, title, date)
 
 function not_an_op()
 {
-	chat_announce({brk1:'[', brk2:']', msg:"You are not a room operator"})
+	feedback("You are not a room operator")
 }
 
 function show_image_picker()
@@ -10280,7 +10332,7 @@ function change_room_images_enabled(what)
 	{
 		if(room_images_enabled)
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`Room images are already enabled`})
+			feedback(`Room images are already enabled`)
 			return false			
 		}
 	}
@@ -10289,7 +10341,7 @@ function change_room_images_enabled(what)
 	{
 		if(!room_images_enabled)
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`Room images are already disabled`})
+			feedback(`Room images are already disabled`)
 			return false
 		}
 	}
@@ -10309,7 +10361,7 @@ function change_room_tv_enabled(what)
 	{
 		if(room_tv_enabled)
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`Room tv is already enabled`})
+			feedback(`Room tv is already enabled`)
 			return false			
 		}
 	}
@@ -10318,7 +10370,7 @@ function change_room_tv_enabled(what)
 	{
 		if(!room_tv_enabled)
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`Room tv is already disabled`})
+			feedback(`Room tv is already disabled`)
 			return false
 		}
 	}
@@ -10338,7 +10390,7 @@ function change_room_radio_enabled(what)
 	{
 		if(room_radio_enabled)
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`Room radio is already enabled`})
+			feedback(`Room radio is already enabled`)
 			return false			
 		}
 	}
@@ -10347,7 +10399,7 @@ function change_room_radio_enabled(what)
 	{
 		if(!room_radio_enabled)
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`Room radio is already disabled`})
+			feedback(`Room radio is already disabled`)
 			return false
 		}
 	}
@@ -10359,12 +10411,12 @@ function announce_room_images_enabled_change(data)
 {
 	if(data.what)
 	{
-		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} enabled room images`})
+		public_feedback(`${data.username} enabled room images`)
 	}
 
 	else
 	{
-		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} disabled room images`})
+		public_feedback(`${data.username} disabled room images`)
 	}
 
 	set_room_images_enabled(data.what)
@@ -10376,12 +10428,12 @@ function announce_room_tv_enabled_change(data)
 {
 	if(data.what)
 	{
-		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} enabled room tv`})
+		public_feedback(`${data.username} enabled room tv`)
 	}
 
 	else
 	{
-		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} disabled room tv`})
+		public_feedback(`${data.username} disabled room tv`)
 	}
 
 	set_room_tv_enabled(data.what)
@@ -10393,12 +10445,12 @@ function announce_room_radio_enabled_change(data)
 {
 	if(data.what)
 	{
-		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} enabled room radio`})
+		public_feedback(`${data.username} enabled room radio`)
 	}
 
 	else
 	{
-		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} disabled room radio`})
+		public_feedback(`${data.username} disabled room radio`)
 	}
 
 	set_room_radio_enabled(data.what)
@@ -10447,7 +10499,7 @@ function change_theme(color)
 
 function announce_theme_change(data)
 {
-	chat_announce({brk1:'~', brk2:'~', msg:`${data.username} changed the theme to ${data.color}`})
+	public_feedback(`${data.username} changed the theme to ${data.color}`)
 	theme = data.color
 	set_theme()
 	config_admin_theme()	
@@ -10517,7 +10569,7 @@ function announce_background_image_change(data)
 
 	set_background_image()
 
-	chat_announce({brk1:'~', brk2:'~', msg:`${data.username} changed the background image`})
+	public_feedback(`${data.username} changed the background image`)
 
 	config_admin_background_image()
 }
@@ -10534,7 +10586,7 @@ function change_background_image_enabled(what)
 	{
 		if(background_image_enabled)
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`Background image is already enabled`})
+			feedback(`Background image is already enabled`)
 			return false			
 		}
 	}
@@ -10543,7 +10595,7 @@ function change_background_image_enabled(what)
 	{
 		if(!background_image_enabled)
 		{
-			chat_announce({brk1:'[', brk2:']', msg:`Background image is already disabled`})
+			feedback(`Background image is already disabled`)
 			return false
 		}
 	}
@@ -10555,12 +10607,12 @@ function announce_background_image_enabled_change(data)
 {
 	if(data.what)
 	{
-		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} enabled the background image`})
+		public_feedback(`${data.username} enabled the background image`)
 	}
 
 	else
 	{
-		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} disabled the background image`})
+		public_feedback(`${data.username} disabled the background image`)
 	}
 
 	set_background_image_enabled(data.what)
@@ -10572,7 +10624,7 @@ function link_image(url)
 {
 	if(!can_images)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"You don't have permission to link images"})
+		feedback("You don't have permission to link images")
 		return false
 	}
 
@@ -10605,7 +10657,7 @@ function change_voice_permission(ptype, what)
 
 	if(window[ptype] === what)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:`That permission is already set to that`})
+		feedback(`That permission is already set to that`)
 		return false
 	}
 
@@ -10616,12 +10668,12 @@ function announce_voice_permission_change(data)
 {
 	if(data.what)
 	{
-		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} set ${data.ptype} to true`})
+		public_feedback(`${data.username} set ${data.ptype} to true`)
 	}
 
 	else
 	{
-		chat_announce({brk1:'~', brk2:'~', msg:`${data.username} set ${data.ptype} to false`})
+		public_feedback(`${data.username} set ${data.ptype} to false`)
 	}
 
 	window[data.ptype] = data.what
@@ -10842,7 +10894,7 @@ function toggle_lock_radio(what=undefined)
 
 function show_joined()
 {
-	chat_announce({brk1:'[', brk2:']', msg:`You joined ${room_name}`, save:true})
+	feedback(`You joined ${room_name}`, {save:true})
 	show_topic()
 }
 
@@ -10917,7 +10969,7 @@ function show_others_disconnected(data)
 		var s = `${data.amount} clients were disconnected`
 	}
 
-	chat_announce({brk1:'[', brk2:']', msg:s})
+	feedback(s)
 }
 
 function set_username(uname)
@@ -11070,7 +11122,7 @@ function header_topic_events()
 
 function cant_chat()
 {
-	chat_announce({brk1:'[', brk2:']', msg:"You don't have permission to chat"})
+	feedback("You don't have permission to chat")
 }
 
 function write_whisper(uname)
@@ -11083,7 +11135,7 @@ function write_whisper(uname)
 
 	if(uname === username)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"You can't whisper to yourself"})
+		feedback("You can't whisper to yourself")
 		return false
 	}
 
@@ -11155,7 +11207,7 @@ function send_whisper()
 		})
 	}
 
-	chat_announce({brk1:'[', brk2:']', msg:`Whisper sent to ${uname}`, onclick:f})
+	feedback(`Whisper sent to ${uname}`, {onclick:f, save:true})
 }
 
 function whisper_received(data)
@@ -11170,9 +11222,9 @@ function whisper_received(data)
 		brk1: '<', 
 		brk2: '>', 
 		msg: `Whisper from ${data.username}: ${data.message}`, 
-		highlight: true, 
+		highlight: true,
+		save: true, 
 		onclick: f, 
-		save: true,
 		type: "whisper",
 		info1: data.username,
 		info2: data.message
@@ -11181,7 +11233,7 @@ function whisper_received(data)
 
 function user_not_in_room()
 {
-	chat_announce({brk1:'[', brk2:']', msg:"User is not in the room"})
+	feedback("User is not in the room")
 }
 
 function on_write_whisper_uname_click()
@@ -11195,7 +11247,7 @@ function annex(rol="admin")
 {
 	if(roles.indexOf(rol) === -1)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Invalid role"})
+		feedback("Invalid role")
 		return false				
 	}
 		
@@ -11220,8 +11272,8 @@ function show_highlights(filter=false)
 					var hcontent = msg.find('.chat_content')
 
 					var cn = $("<div class='highlights_item'><div class='highlights_uname generic_uname inline action'></div><div class='highlights_content'></div>")
-
 					cn.find(".highlights_uname").eq(0).text(huname.text())
+					var content = cn.find(".highlights_content").eq(0)
 
 					for(var i=0; i < hcontent.length; i++)
 					{
@@ -11229,14 +11281,13 @@ function show_highlights(filter=false)
 
 						if(i < hcontent.length - 1)
 						{
-							cn.find(".highlights_content").eq(0).append($(hc).clone()).append("<br>")
+							content.append($(hc).clone(true, true)).append("<br>")
 						}
 
 						else
 						{
-							cn.find(".highlights_content").eq(0).append($(hc).clone())
+							content.append($(hc).clone(true, true))
 						}
-						
 					}
 				}
 
@@ -11249,6 +11300,14 @@ function show_highlights(filter=false)
 						var content = cn.find(".highlights_content").eq(0)
 						content.text(msg.data("info2")).urlize()
 						content.attr("title", msg.find(".announcement_content_container").eq(0).attr("title"))
+					}
+
+					else
+					{
+						var cn = $("<div class='highlights_item'><div class='highlights_content'></div>")
+						var content = cn.find(".highlights_content").eq(0)
+						var announcement_content = msg.find(".announcement_content").eq(0)
+						content.append(announcement_content.parent().clone(true, true))
 					}
 				}
 
@@ -11815,7 +11874,7 @@ var modal_image_next_wheel_timer = (function()
 
 function show_current_date()
 {
-	chat_announce({brk1:'[', brk2:']', msg:nice_date()})	
+	feedback(nice_date())
 }
 
 function request_slice_upload(data)
@@ -11858,26 +11917,26 @@ function upload_ended(data)
 
 function error_occurred()
 {
-	chat_announce({brk1:'[', brk2:']', msg:"An error occurred"})
+	feedback("An error occurred")
 }
 
 function verify_email(code)
 {
 	if(utilz.clean_string5(code) !== code)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Invalid code"})
+		feedback("Invalid code")
 		return
 	}
 
 	if(code.length === 0)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Empty code"})
+		feedback("Empty code")
 		return
 	}
 	
 	if(code.length > email_change_code_max_length)
 	{
-		chat_announce({brk1:'[', brk2:']', msg:"Invalid code"})
+		feedback("Invalid code")
 		return
 	}
 
@@ -12004,7 +12063,7 @@ function execute_javascript(arg, show_result=true)
 			msg_info2.show(["Executed Javascript", s])
 		}
 
-		chat_announce({brk1:'[', brk2:']', msg:`js: ${r}`, onclick:f})
+		feedback(`js: ${r}`, {onclick:f, save:true})
 	}
 }
 
@@ -12667,4 +12726,49 @@ function show_export_settings()
 	`
 
 	msg_info2.show(["Export Settings", s])
+}
+
+function system_broadcast(what)
+{
+	if(what.length > max_input_length)
+	{
+
+	}
+
+	socket_emit("system_broadcast", {what:what})
+}
+
+function feedback(msg, data=false)
+{
+	var obj = 
+	{
+		brk1: '[', 
+		brk2: ']', 
+		msg: msg
+	}
+
+	if(data)
+	{
+		Object.assign(obj, data)
+	}
+
+	chat_announce(obj)
+}
+
+function public_feedback(msg, data=false)
+{
+	var obj = 
+	{
+		brk1: '~', 
+		brk2: '~',
+		save: true, 
+		msg: msg
+	}
+
+	if(data)
+	{
+		Object.assign(obj, data)
+	}
+
+	chat_announce(obj)
 }

@@ -3388,6 +3388,34 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, 'othersdisconnected', {amount:amount})
 	}
 
+	handler.system_broadcast = function(socket, data)
+	{
+		if(!socket.hue_superuser)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.what === undefined)
+		{
+			return false
+		}
+
+		if(data.what.length === 0)
+		{
+			return false
+		}
+
+		if(data.what.length > config.max_input_length)
+		{
+			return false
+		}
+
+		handler.system_emit(socket, 'system_broadcast', 
+		{
+			what: `System Message: ${data.what}`
+		})
+	}
+
 	handler.check_image_url = function(uri)
 	{
 		if(uri.split(' ').length > 1)
@@ -3763,6 +3791,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		socket.broadcast.in(room_id).emit('update', args)
 	}
+
+	handler.system_emit = function(socket, type, args={})
+	{
+		args.type = type
+		io.emit('update', args)
+	}	
 
 	handler.add_spam = function(socket)
 	{
