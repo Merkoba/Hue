@@ -377,31 +377,32 @@ function room_name_edit()
 function show_media_source(what)
 {
 	var source = window[`${what}_source`]
+
+	if(source.startsWith("/"))
+	{
+		source = window.location.origin + source
+	}
+	
 	var setter = window[`${what}_setter`]
 	var date = window[`${what}_date`]
 
+	if(what === "image")
+	{
+		var s = "Image"
+	}
+
+	else if(what === "tv")
+	{
+		var s = "TV"
+	}
+
+	else if(what === "radio")
+	{
+		var s = "Radio"
+	}	
+
 	if(setter !== '')
 	{
-		if(what === "image")
-		{
-			var s = "Image"
-		}
-
-		else if(what === "tv")
-		{
-			var s = "TV"
-		}
-
-		else if(what === "radio")
-		{
-			var s = "Radio"
-		}
-
-		else
-		{
-			return false
-		}
-
 		feedback(`${s} Source: ${source}`, {title:`Setter: ${setter} | ${date}`})
 	}
 
