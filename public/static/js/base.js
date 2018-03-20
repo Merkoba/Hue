@@ -382,7 +382,7 @@ function show_media_source(what)
 	{
 		source = window.location.origin + source
 	}
-	
+
 	var setter = window[`${what}_setter`]
 	var date = window[`${what}_date`]
 
@@ -9389,38 +9389,68 @@ function get_status_html()
 
 	if(image_setter)
 	{
+		if(image_source.startsWith('/'))
+		{
+			var source = window.location.origin + image_source
+		}
+
+		else
+		{
+			var source = image_source
+		}
+
 		var t = h.find("#status_image_setter").eq(0)
-		t.text(image_setter).urlize()
+		t.text(image_setter)
 
 		var t = h.find("#status_image_source").eq(0)
-		t.text(image_source).urlize(true)
+		t.text(source).urlize()
 		
 		var t = h.find("#status_image_date").eq(0)
-		t.text(image_date).urlize(true)
+		t.text(image_date)
 	}
 
 	if(tv_setter)
 	{
+		if(tv_source.startsWith('/'))
+		{
+			var source = window.location.origin + tv_source
+		}
+
+		else
+		{
+			var source = tv_source
+		}
+
 		var t = h.find("#status_tv_setter").eq(0)
-		t.text(tv_setter).urlize()
+		t.text(tv_setter)
 
 		var t = h.find("#status_tv_source").eq(0)
-		t.text(tv_source).urlize()
+		t.text(source).urlize()
 
 		var t = h.find("#status_tv_date").eq(0)
-		t.text(tv_date).urlize()
+		t.text(tv_date)
 	}
 
 	if(radio_setter)
 	{
+		if(radio_source.startsWith('/'))
+		{
+			var source = window.location.origin + radio_source
+		}
+
+		else
+		{
+			var source = radio_source
+		}
+
 		var t = h.find("#status_radio_setter").eq(0)
-		t.text(radio_setter).urlize()
+		t.text(radio_setter)
 
 		var t = h.find("#status_radio_source").eq(0)
-		t.text(radio_source).urlize()
+		t.text(source).urlize()
 
 		var t = h.find("#status_radio_date").eq(0)
-		t.text(radio_date).urlize()
+		t.text(radio_date)
 	}
 
 	return h.html()
