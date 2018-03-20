@@ -374,15 +374,21 @@ function room_name_edit()
 	change_input(`/roomname ${room_name}`)
 }
 
-function show_media_source(what)
+function get_proper_media_url(type)
 {
-	var source = window[`${what}_source`]
+	var source = window[`${type}_source`]
 
 	if(source.startsWith("/"))
 	{
 		source = window.location.origin + source
 	}
 
+	return source	
+}
+
+function show_media_source(what)
+{
+	var source = get_proper_media_url(what)
 	var setter = window[`${what}_setter`]
 	var date = window[`${what}_date`]
 
@@ -9389,21 +9395,11 @@ function get_status_html()
 
 	if(image_setter)
 	{
-		if(image_source.startsWith('/'))
-		{
-			var source = window.location.origin + image_source
-		}
-
-		else
-		{
-			var source = image_source
-		}
-
 		var t = h.find("#status_image_setter").eq(0)
 		t.text(image_setter)
 
 		var t = h.find("#status_image_source").eq(0)
-		t.text(source).urlize()
+		t.text(get_proper_media_url("image")).urlize()
 		
 		var t = h.find("#status_image_date").eq(0)
 		t.text(image_date)
@@ -9411,21 +9407,11 @@ function get_status_html()
 
 	if(tv_setter)
 	{
-		if(tv_source.startsWith('/'))
-		{
-			var source = window.location.origin + tv_source
-		}
-
-		else
-		{
-			var source = tv_source
-		}
-
 		var t = h.find("#status_tv_setter").eq(0)
 		t.text(tv_setter)
 
 		var t = h.find("#status_tv_source").eq(0)
-		t.text(source).urlize()
+		t.text(get_proper_media_url("tv")).urlize()
 
 		var t = h.find("#status_tv_date").eq(0)
 		t.text(tv_date)
@@ -9433,21 +9419,11 @@ function get_status_html()
 
 	if(radio_setter)
 	{
-		if(radio_source.startsWith('/'))
-		{
-			var source = window.location.origin + radio_source
-		}
-
-		else
-		{
-			var source = radio_source
-		}
-
 		var t = h.find("#status_radio_setter").eq(0)
 		t.text(radio_setter)
 
 		var t = h.find("#status_radio_source").eq(0)
-		t.text(source).urlize()
+		t.text(get_proper_media_url("radio")).urlize()
 
 		var t = h.find("#status_radio_date").eq(0)
 		t.text(radio_date)
