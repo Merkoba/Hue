@@ -101,13 +101,11 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			if(id === config.main_room_id)
 			{
 				res.redirect(`/`)
+				return
 			}
 		}
 
-		else
-		{
-			next()
-		}
+		next()
 	}
 
 	function require_login(req, res, next)
