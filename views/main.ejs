@@ -33,7 +33,7 @@
 		<script src="/static/js/utilz.js?ver=5"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1127"></script>
+		<script src="/static/js/base.js?ver=1128"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=317"/>
 
@@ -720,12 +720,17 @@
 
 		<script id='template_open_room' type='text/x-handlebars-template'>
 				<div id="open_buttons" class='unselectable'>
-					<div id='open_room_here' class='menu_item action' onclick='goto_url("{{id}}");msg_info.close()'>
+
+					<div id='open_room_here' class='bigger action inline pointer' onclick='goto_url("{{id}}");msg_info2.close()'>
 						Open&nbsp;Here
 					</div>
-					<div id='open_room_new_tab' class='menu_item action' onclick='goto_url("{{id}}", "tab");msg_info.close()'>
+
+					<div class='spacer3'></div>
+
+					<div id='open_room_new_tab' class='bigger action inline pointer' onclick='goto_url("{{id}}", "tab");msg_info2.close()'>
 						Open&nbsp;In&nbsp;New&nbsp;Tab
 					</div>
+
 				</div>
 		</script>
 

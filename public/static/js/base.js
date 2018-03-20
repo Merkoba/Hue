@@ -2572,7 +2572,7 @@ function create_room_submit()
 
 function show_open_room(id)
 {
-	msg_info.show(template_open_room({id:id}), function()
+	msg_info2.show(["Open Room", template_open_room({id:id})], function()
 	{
 		orb = true
 	})
@@ -3087,7 +3087,7 @@ function activate_key_detection()
 
 			if(orb)
 			{
-				if(msg_info.is_highest())
+				if(msg_info2.is_highest())
 				{
 					if(e.key === "Enter")
 					{
@@ -3100,9 +3100,10 @@ function activate_key_detection()
 						{
 							$("#open_room_new_tab").trigger("click")
 						}
+						
+						e.preventDefault()
 					}
 					
-					e.preventDefault()
 					return
 				}
 			}
@@ -8236,7 +8237,7 @@ function start_msg()
 
 function info_vars_to_false()
 {
-	orb = false
+
 }
 
 function info2_vars_to_false()
@@ -8245,6 +8246,7 @@ function info2_vars_to_false()
 	stu = false
 	imp = false
 	gtr = false
+	orb = false
 }
 
 function after_modal_create(instance)
