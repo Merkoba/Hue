@@ -3852,17 +3852,23 @@ function update_chat_scrollbar()
 
 function start_modal_scrollbars()
 {
-	for(var instance of msg_menu.instances())
+	for(var instance of get_modal_instances())
 	{
-		start_modal_scrollbar(instance.options.id)
+		if(instance.options.preset !== "popup")
+		{
+			start_modal_scrollbar(instance.options.id)
+		}
 	}
 }
 
 function remove_modal_scrollbars()
 {
-	for(var instance of msg_menu.instances())
+	for(var instance of get_modal_instances())
 	{
-		remove_modal_scrollbar(instance.options.id)
+		if(instance.options.preset !== "popup")
+		{
+			remove_modal_scrollbar(instance.options.id)
+		}
 	}
 }
 
@@ -4777,6 +4783,8 @@ function register_commands()
 	commands.push('/changetv')
 	commands.push('/changeradio')
 	commands.push('/closeall')
+	commands.push('/closeallmodals')
+	commands.push('/closeallpopups')
 	commands.push('/activityabove')
 	commands.push('/activitybelow')
 	commands.push('/globalsettings')
@@ -5514,8 +5522,18 @@ function execute_command(msg, ans)
 
 	else if(oiEquals(lmsg, '/closeall'))
 	{
+		close_all_msg()
+	}
+
+	else if(oiEquals(lmsg, '/closeallmodals'))
+	{
 		close_all_modals()
 	}
+
+	else if(oiEquals(lmsg, '/closeallpopups'))
+	{
+		close_all_popups()
+	}		
 
 	else if(oiEquals(lmsg, '/activityabove'))
 	{
@@ -7513,6 +7531,7 @@ function start_msg()
 	var titlebar =
 	{
 		enable_titlebar: true,
+		center_titlebar: true,
 		titlebar_class: "!custom_titlebar !unselectable",
 		window_inner_x_class: "!titlebar_inner_x"	
 	}
@@ -8275,16 +8294,56 @@ function after_modal_set_or_show(instance)
 
 function after_modal_close(instance)
 {
-	if(!msg_menu.any_open())
+	if(!any_modal_open())
 	{
 		modal_open = false
 		focus_input()
 	}
 }
 
-function close_all_modals()
+function get_modal_instances()
+{
+	return msg_menu.higher_instances()
+}
+
+function get_popup_instances()
+{
+	return msg_menu.lower_instances()
+}
+
+function get_all_msg_instances()
+{
+	return msg_menu.instances()
+}
+
+function any_msg_open()
+{
+	return msg_menu.any_open()
+}
+
+function any_modal_open()
+{
+	return msg_menu.any_higher_open()
+}
+
+function any_popup_open()
+{
+	return msg_menu.any_lower_open()
+}
+
+function close_all_msg()
 {
 	msg_menu.close_all()
+}
+
+function close_all_modals()
+{
+	msg_menu.close_all_higher()
+}
+
+function close_all_popups()
+{
+	msg_menu.close_all_lower()
 }
 
 function empty_global_settings()
@@ -8579,7 +8638,7 @@ function setting_modal_effects_action(type, save=true)
 
 	if(active_settings("modal_effects") === type)
 	{
-		for(var instance of msg_menu.instances())
+		for(var instance of get_all_msg_instances())
 		{
 			if($(instance.window).hasClass("no_effects"))
 			{
@@ -8637,6 +8696,8 @@ function setting_other_words_to_highlight_action(type, save=true)
 	var words = utilz.clean_string7($(`#${type}_other_words_to_highlight`).val())
 
 	$(`#${type}_other_words_to_highlight`).val(words)
+
+	window[type].other_words_to_highlight = words
 
 	if(active_settings("other_words_to_highlight") === type)
 	{
@@ -11066,18 +11127,41 @@ function check_highlights(msg)
 
 function create_popup(position)
 {
+	var common = 
+	{
+		show_effect_duration: [0, 400],
+		close_effect_duration: [400, 0],
+		clear_editables: true
+	}
+
+	if(get_setting("modal_effects"))
+	{
+		common.show_effect = "fade"
+		common.close_effect = "fade"
+	}
+
+	else
+	{
+		common.show_effect = "none"
+		common.close_effect = "none"
+	}
+
 	var edges_height = $("#footer").height()
 
-	var pop = Msg.factory(
-	{
-		preset: "popup",
-		edge_padding_y: edges_height + 1,
-		position: position,
-		window_class: "!custom_popup",
-		enable_titlebar: true,
-		titlebar_class: "!custom_titlebar !unselectable",
-		window_inner_x_class: "!titlebar_inner_x"
-	})
+	var pop = Msg.factory
+	(
+		Object.assign({}, common,
+		{		
+			preset: "popup",
+			edge_padding_y: edges_height + 1,
+			position: position,
+			window_class: "!custom_popup",
+			enable_titlebar: true,
+			center_titlebar: true,
+			titlebar_class: "!custom_titlebar !unselectable",
+			window_inner_x_class: "!titlebar_inner_x"
+		})
+	)	
 
 	return pop
 }

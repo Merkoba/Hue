@@ -1278,11 +1278,7 @@ input[type=text], textarea
 
 .custom_titlebar
 {
-	padding-left: 50.78px !important;
-	padding-right: 10.78px !important;
-	text-align: center !important;
 	font-family: imported_font, consolas, sans-serif !important;
-	font-weight: bold !important;
 }
 
 .room_settings_overrider_container
