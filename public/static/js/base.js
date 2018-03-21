@@ -12769,5 +12769,12 @@ function public_feedback(msg, data=false)
 
 function show_system_broadcast(data)
 {
-	create_popup("top").show(["System Message", data.what])
+	var s = $(`<div>${data.what}</div>`)
+
+	s.urlize()
+
+	create_popup("top").show(["System Message", s[0]])
+	
+	alert_title2()
+	sound_notify()
 }
