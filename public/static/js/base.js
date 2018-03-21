@@ -11071,7 +11071,7 @@ function create_popup(position)
 	var pop = Msg.factory(
 	{
 		preset: "popup",
-		edge_padding_y: edges_height,
+		edge_padding_y: edges_height + 1,
 		position: position,
 		window_class: "!custom_popup",
 		enable_titlebar: true,
