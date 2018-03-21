@@ -3412,7 +3412,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		handler.system_emit(socket, 'system_broadcast', 
 		{
-			what: `System Message: ${data.what}`
+			what: data.what
 		})
 	}
 

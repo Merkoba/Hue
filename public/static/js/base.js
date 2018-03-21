@@ -1142,7 +1142,7 @@ function start_socket()
 
 		else if(data.type === 'system_broadcast')
 		{
-			chat_announce({brk1:'###', brk2:'###', msg:data.what, save:true})
+			show_system_broadcast(data)
 		}		
 	})
 }
@@ -11074,24 +11074,9 @@ function create_popup(position)
 		edge_padding_y: edges_height,
 		position: position,
 		window_class: "!custom_popup",
-		after_create: function(instance)
-		{
-			after_modal_create(instance)
-		},
-		after_show: function(instance)
-		{
-			after_modal_show(instance)
-			after_modal_set_or_show(instance)
-		},
-		after_set: function(instance)
-		{
-			after_modal_set_or_show(instance)
-		},
-		after_close: function(instance)
-		{
-			after_modal_close(instance)
-			reset_played_filter()
-		}		
+		enable_titlebar: true,
+		titlebar_class: "!custom_titlebar !unselectable",
+		window_inner_x_class: "!titlebar_inner_x"
 	})
 
 	return pop
@@ -11103,22 +11088,22 @@ function show_intro()
 	You can chat in this area. The icon on the left opens the user menu where you can change your profile image and other settings. 
 	When someone is typing a message the user menu icon turns into a pencil.`
 
-	create_popup("bottomleft").show(s)
+	create_popup("bottomleft").show(["Chat and User Menu", s])
 
 	var s = `
 	This area has media controls. You can use these to change the room's media or control what is displayed to you.`
 
-	create_popup("bottomright").show(s)
+	create_popup("bottomright").show(["Media Controls", s])
 
 	var s = `
 	This area contains the main menu, user list, and radio controls.`
 
-	create_popup("top").show(s)
+	create_popup("top").show(["Top Panel", s])
 
 	var s = `
-	Welcome. Read and close all the popups to be able to chat.`
+	Please read and close all the popups.`
 
-	create_popup("center").show(s)
+	create_popup("center").show(["Welcome", s])
 }
 
 function header_topic_events()
@@ -12780,4 +12765,9 @@ function public_feedback(msg, data=false)
 	}
 
 	chat_announce(obj)
+}
+
+function show_system_broadcast(data)
+{
+	create_popup("top").show(["System Message", data.what])
 }
