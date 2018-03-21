@@ -3328,6 +3328,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
+		if(data.message === undefined)
+		{
+			return handler.get_out(socket)
+		}
+
 		if(data.message.length === 0)
 		{
 			return handler.get_out(socket)
