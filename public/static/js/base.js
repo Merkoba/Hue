@@ -11056,7 +11056,7 @@ function set_email(email)
 
 function generate_mentions_regex()
 {
-	var regexp = `(?:^|\\s+)${escape_special_characters(username)}(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.|\\:)`
+	var regexp = `(?:^|\\s+)(?:\\@)?(?:${escape_special_characters(username)})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.|\\:)`
 
 	if(get_setting("case_insensitive_highlights"))
 	{
@@ -11089,7 +11089,7 @@ function generate_highlight_words_regex()
 
 	if(words.length > 0)
 	{
-		var regexp = `(?:^|\\s+)(?:${words})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.|\\:)`
+		var regexp = `(?:^|\\s+)(?:\\@)?(?:${words})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.|\\:)`
 
 		if(get_setting("case_insensitive_highlights"))
 		{
