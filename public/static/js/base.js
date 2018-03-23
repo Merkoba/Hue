@@ -4653,9 +4653,19 @@ jQuery.fn.urlize = function(force=false)
 
 				if(list) 
 				{
+					var listed = []
+
 					for(var i=0; i<list.length; i++) 
 					{
-						x = x.replace(list[i], `<a class='generic' target='_blank' href='${list[i]}'>${list[i]}</a>`)
+						if(listed.indexOf(list[i]) !== -1)
+						{
+							continue
+						}
+
+						var rep = new RegExp(list[i], "g")
+						x = x.replace(rep, `<a class='generic' target='_blank' href='${list[i]}'>${list[i]}</a>`)
+
+						listed.push(list[i])
 					}
 				}
 			}
@@ -8693,7 +8703,7 @@ function setting_case_insensitive_highlights_action(type, save=true)
 
 function setting_other_words_to_highlight_action(type, save=true)
 {
-	var words = utilz.clean_string7($(`#${type}_other_words_to_highlight`).val())
+	var words = make_unique_lines(utilz.clean_string7($(`#${type}_other_words_to_highlight`).val()))
 
 	$(`#${type}_other_words_to_highlight`).val(words)
 
@@ -8785,7 +8795,7 @@ function setting_at_startup_action(type, save=true)
 
 function setting_ignored_usernames_action(type, save=true)
 {
-	var unames = utilz.clean_string7($(`#${type}_ignored_usernames`).val())
+	var unames = make_unique_lines(utilz.clean_string7($(`#${type}_ignored_usernames`).val()))
 
 	$(`#${type}_ignored_usernames`).val(unames)
 
@@ -11129,13 +11139,19 @@ function check_highlights(msg)
 	return false
 }
 
-function create_popup(position)
+function create_popup(position, onclick=false)
 {
 	var common = 
 	{
 		show_effect_duration: [0, 400],
 		close_effect_duration: [400, 0],
 		clear_editables: true
+	}
+
+	if(onclick)
+	{
+		common.on_click = onclick
+		common.window_cursor = "pointer"
 	}
 
 	if(get_setting("modal_effects"))
@@ -11294,23 +11310,52 @@ function send_whisper()
 
 function whisper_received(data)
 {
-	var f = function()
+	if(user_is_ignored(data.username))
 	{
-		write_whisper(data.username)
+		return false
 	}
 
-	chat_announce(
+	var s = make_safe(data.message, 
+	`
+	<div class='spacer3'></div>
+	<div class='small_button action inline show_whisper_reply'>Send Whisper</div>
+	`)
+
+	var f = function()
 	{
-		brk1: '<', 
-		brk2: '>', 
-		msg: `Whisper from ${data.username}: ${data.message}`, 
-		highlight: true,
-		save: true, 
-		onclick: f, 
-		type: "whisper",
-		info1: data.username,
-		info2: data.message
+		show_profile(data.username, get_user_by_username(data.username).profile_image)
+	}
+
+	var pop = create_popup("top", f)
+
+	pop.show([`Whisper from ${data.username}`, s], function()
+	{
+		$(pop.content).find(".show_whisper_reply").eq(0).click(function()
+		{
+			write_whisper(data.username)
+		})		
 	})
+	
+	alert_title2()
+	sound_notify()	
+}
+
+function add_to_ignored_usernames(uname)
+{
+	var r = confirm("Are you sure?")
+
+	if(r)
+	{
+		var active = active_settings("ignored_usernames")
+
+		$(`#${active}_ignored_usernames`).val($(`#${active}_ignored_usernames`).val() + `\n${uname}`)
+
+		setting_ignored_usernames_action(active)
+
+		return true
+	}
+
+	return false
 }
 
 function user_not_in_room()
@@ -12814,7 +12859,8 @@ function system_broadcast(what)
 {
 	if(what.length > max_input_length)
 	{
-
+		feedback("Message is too long")
+		return false
 	}
 
 	socket_emit("system_broadcast", {what:what})
@@ -12857,12 +12903,18 @@ function public_feedback(msg, data=false)
 
 function show_system_broadcast(data)
 {
-	var s = $(`<div>${data.what}</div>`)
+	var s = make_safe(data.what)
 
-	s.urlize()
-
-	create_popup("top").show(["System Message", s[0]])
+	create_popup("top").show(["System Message", s])
 	
 	alert_title2()
 	sound_notify()
+}
+
+function make_unique_lines(s)
+{
+	var split = s.split('\n')
+	split = split.filter((v,i) => split.indexOf(v) === i)
+	s = split.join('\n')
+	return s
 }
