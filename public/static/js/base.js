@@ -186,6 +186,7 @@ var first_time
 var emit_queue_timeout
 var emit_queue = []
 var app_focused = true
+var whisper_uname = ""
 
 function init()
 {
@@ -11242,6 +11243,8 @@ function write_whisper(uname)
 		show_profile(uname, get_user_by_username(uname).profile_image)
 	}
 
+	whisper_uname = uname
+
 	msg_whisper.set_title(make_safe({text:`Whisper to ${uname}`, onclick:f}))
 	
 	msg_whisper.show(function()
@@ -11252,7 +11255,12 @@ function write_whisper(uname)
 
 function send_whisper()
 {
-	var uname = $("#write_whisper_uname").text()
+	var uname = whisper_uname
+
+	if(!uname)
+	{
+		return false
+	}
 
 	if(!can_chat)
 	{
