@@ -1826,7 +1826,7 @@ function start_username_context_menu()
 		selector: ".ui_item_uname, .chat_uname, #show_profile_uname, .generic_uname",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
-		items: 
+		items:
 		{
 			cmvoice1: 
 			{
@@ -7943,7 +7943,7 @@ function start_msg()
 
 	msg_whisper = Msg.factory
 	(
-		Object.assign({}, common,
+		Object.assign({}, common, titlebar,
 		{
 			id: "whisper",
 			after_create: function(instance)
@@ -11139,19 +11139,13 @@ function check_highlights(msg)
 	return false
 }
 
-function create_popup(position, onclick=false)
+function create_popup(position)
 {
 	var common = 
 	{
 		show_effect_duration: [0, 400],
 		close_effect_duration: [400, 0],
 		clear_editables: true
-	}
-
-	if(onclick)
-	{
-		common.on_click = onclick
-		common.window_cursor = "pointer"
 	}
 
 	if(get_setting("modal_effects"))
@@ -11243,7 +11237,12 @@ function write_whisper(uname)
 		return false
 	}
 
-	$("#write_whisper_uname").text(uname)
+	var f = function()
+	{
+		show_profile(uname, get_user_by_username(uname).profile_image)
+	}
+
+	msg_whisper.set_title(make_safe({text:`Whisper to ${uname}`, onclick:f}))
 	
 	msg_whisper.show(function()
 	{
@@ -11292,11 +11291,20 @@ function send_whisper()
 
 	msg_whisper.close()
 
+	var ff = function()
+	{
+		show_profile(uname, get_user_by_username(uname).profile_image)
+	}	
+
 	var f = function()
 	{
-		var s = make_safe(whisper, `<div class='spacer3'></div><div class='small_button action' id='modal_send_whisper'>Send Another Whisper</div>`)
+		var s = make_safe(
+		{
+			text: whisper, 
+			html: `<div class='spacer3'></div><div class='small_button action' id='modal_send_whisper'>Send Another Whisper</div>`
+		})
 
-		msg_info2.show([`Whisper sent to ${uname}`, s], function()
+		msg_info2.show([make_safe({text:`Whisper sent to ${uname}`, onclick:ff}), s], function()
 		{
 			$("#modal_send_whisper").click(function()
 			{
@@ -11315,20 +11323,20 @@ function whisper_received(data)
 		return false
 	}
 
-	var s = make_safe(data.message, 
-	`
-	<div class='spacer3'></div>
-	<div class='small_button action inline show_whisper_reply'>Send Whisper</div>
-	`)
-
 	var f = function()
 	{
 		show_profile(data.username, get_user_by_username(data.username).profile_image)
-	}
+	}	
 
-	var pop = create_popup("top", f)
+	var s = make_safe(
+	{
+		text: data.message, 
+		html: ` <div class='spacer3'></div><div class='small_button action inline show_whisper_reply'>Send Whisper</div>`
+	})
 
-	pop.show([`Whisper from ${data.username}`, s], function()
+	var pop = create_popup("top")
+
+	pop.show([make_safe({text:`Whisper from ${data.username}`, onclick:f}), s], function()
 	{
 		$(pop.content).find(".show_whisper_reply").eq(0).click(function()
 		{
@@ -11361,13 +11369,6 @@ function add_to_ignored_usernames(uname)
 function user_not_in_room()
 {
 	feedback("User is not in the room")
-}
-
-function on_write_whisper_uname_click()
-{
-	var uname = $("#write_whisper_uname").text()
-
-	show_profile(uname, get_user_by_username(uname).profile_image)
 }
 
 function annex(rol="admin")
@@ -12183,7 +12184,7 @@ function execute_javascript(arg, show_result=true)
 
 	if(show_result)
 	{
-		var s = make_safe(arg)
+		var s = make_safe({text:arg})
 
 		var f = function()
 		{
@@ -12194,27 +12195,49 @@ function execute_javascript(arg, show_result=true)
 	}
 }
 
-function make_safe(text, html=false, urlize=true)
+function make_safe(args={})
 {
+	var def_args = 
+	{
+		text: "", 
+		html: false,
+		urlize: true, 
+		onclick: false
+	}
+
+	fill_defaults(args, def_args)
+
 	var c = $("<div></div>")
 
-	c.append("<div id='msg_info_text'></div>")
+	var c_text_classes = "msg_info_text inline"
 
-	var c_text = c.find("#msg_info_text").eq(0)
-
-	if(urlize)
+	if(args.onclick)
 	{
-		c_text.text(text).urlize()
+		c_text_classes += " pointer action"
+	}
+	
+	c.append(`<div class='${c_text_classes}'></div>`)
+
+	var c_text = c.find(".msg_info_text").eq(0)
+
+	if(args.urlize)
+	{
+		c_text.text(args.text).urlize()
 	}
 
 	else
 	{
-		c_text.text(text)
+		c_text.text(args.text)
 	}
 
-	if(html)
+	if(args.onclick)
 	{
-		c.append(`<div id='msg_info_html'>${html}</div>`)
+		c_text.on("click", args.onclick)
+	}
+
+	if(args.html)
+	{
+		c.append(`<div class='msg_info_html'>${args.html}</div>`)
 	}
 
 	return c[0]
@@ -12903,7 +12926,7 @@ function public_feedback(msg, data=false)
 
 function show_system_broadcast(data)
 {
-	var s = make_safe(data.what)
+	var s = make_safe({text:data.what})
 
 	create_popup("top").show(["System Message", s])
 	
