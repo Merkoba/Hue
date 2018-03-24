@@ -4716,7 +4716,8 @@ jQuery.fn.urlize = function(force=false)
 							continue
 						}
 
-						var rep = new RegExp(list[i], "g")
+						var rep = new RegExp(escape_special_characters(list[i]), "g")
+
 						x = x.replace(rep, `<a class='generic' target='_blank' href='${list[i]}'>${list[i]}</a>`)
 
 						listed.push(list[i])
