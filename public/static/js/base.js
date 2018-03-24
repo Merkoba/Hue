@@ -48,6 +48,7 @@ var tv_setter = ''
 var tv_date = ''
 var get_metadata
 var no_meta_count
+var loaded_radio_source = ""
 var tabbed_list = []
 var tabbed_word = ""
 var tabbed_start = 0
@@ -1292,7 +1293,10 @@ function load_radio()
 		}
 
 		$('#audio').attr('src', '')
-	}	
+	}
+
+	loaded_radio_source = radio_source
+	loaded_radio_type = radio_type	
 }
 
 function play_video()
@@ -6141,12 +6145,13 @@ function show_now_playing()
 
 function start_radio()
 {
-	if(radio_type === "radio")
+	if(loaded_radio_type === "radio")
 	{
+		$('#audio').attr("src", loaded_radio_source)
 		$('#audio')[0].play()
 	}
 
-	else if(radio_type === "youtube")
+	else if(loaded_radio_type === "youtube")
 	{
 		if(youtube_player !== undefined)
 		{
@@ -6163,7 +6168,7 @@ function start_radio()
 
 function stop_radio()
 {
-	$('#audio')[0].pause()
+	$('#audio').attr("src", "")
 	
 	if(youtube_player !== undefined)
 	{
@@ -7092,7 +7097,7 @@ function announce_radio_change(data, date=false, action="change")
 {
 	if(data.radio_title !== "")
 	{
-		var name = data.radio_title
+		var name = `"${data.radio_title}"`
 	}
 
 	else if(data.radio_source == '')
@@ -7140,7 +7145,7 @@ function announce_radio_change(data, date=false, action="change")
 
 	else
 	{
-		var action = `${data.radio_setter} changed the radio to: "${name}"`
+		var action = `${data.radio_setter} changed the radio to: ${name}`
 	}	
 	
 	var nd = nice_date(d)
@@ -7215,7 +7220,7 @@ function announce_tv_change(data, date=false, action="change")
 {
 	if(data.tv_title !== "")
 	{
-		var name = data.tv_title
+		var name = `"${data.tv_title}"`
 	}
 
 	else if(data.tv_source === '')
@@ -7272,7 +7277,7 @@ function announce_tv_change(data, date=false, action="change")
 
 	else
 	{
-		var action = `${data.tv_setter} changed the tv to: "${name}"`
+		var action = `${data.tv_setter} changed the tv to: ${name}`
 	}
 
 	chat_announce(
