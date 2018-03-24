@@ -349,6 +349,27 @@ If you want to remove it to start fresh:
 "global_settings_default_show_parts"
 >Whether to show user parts by default.
 
+"global_settings_default_animate_scroll"
+>Whether to animate chat scroll by default.
+
+"room_settings_default_images_enabled"
+>Whether images will be enabled to the user on new rooms by default.
+
+"room_settings_default_tv_enabled"
+>Whether tv will be enabled to the user on new rooms by default.
+
+"room_settings_default_radio_enabled"
+>Whether radio will be enabled to the user on new rooms by default.
+
+"room_settings_default_images_locked"
+>Whether images will be locked to the user on new rooms by default.
+
+"room_settings_default_tv_locked"
+>Whether tv will be locked to the user on new rooms by default.
+
+"room_settings_default_radio_locked"
+>Whether radio will be locked to the user on new rooms by default.
+
 "double_tap_key"
 >The key that triggers double tap.
 
