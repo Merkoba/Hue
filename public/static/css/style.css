@@ -1181,6 +1181,12 @@ input[type=text], textarea
 	font-size: 1em;
 }
 
+#write_whisper_feedback
+{
+	padding-bottom: 1.2em;
+	display: none;
+}
+
 .setting_textarea
 {
 	width: 100%;

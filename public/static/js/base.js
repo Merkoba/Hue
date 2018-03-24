@@ -7965,6 +7965,7 @@ function start_msg()
 			{
 				$("#write_whisper_area").val("")
 				$("#write_whisper_feedback").text("")
+				$("#write_whisper_feedback").css("display", "none")
 				after_modal_close(instance)
 				writing_whisper = false
 			}
@@ -11265,18 +11266,21 @@ function send_whisper()
 	if(!can_chat)
 	{
 		$("#write_whisper_feedback").text("You don't have chat permission")
+		$("#write_whisper_feedback").css("display", "block")
 		return false
 	}	
 
 	if(uname === username)
 	{
 		$("#write_whisper_feedback").text("You can't whisper to yourself")
+		$("#write_whisper_feedback").css("display", "block")
 		return false
 	}
 
 	if(usernames.indexOf(uname) === -1)
 	{
 		$("#write_whisper_feedback").text("(User is not in the room)")
+		$("#write_whisper_feedback").css("display", "block")
 		return false
 	}	
 
@@ -11292,6 +11296,7 @@ function send_whisper()
 	else if(diff < 0)
 	{
 		$("#write_whisper_feedback").text(`Character limit exceeded by ${Math.abs(diff)}`)
+		$("#write_whisper_feedback").css("display", "block")
 		return false
 	}
 
