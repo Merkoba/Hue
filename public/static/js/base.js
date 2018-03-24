@@ -7112,6 +7112,13 @@ function announce_radio_change(data, date=false, action="change")
 		var name = data.radio_source
 	}
 
+	var time = utilz.get_youtube_time(data.radio_source)
+
+	if(time !== 0)
+	{
+		name += ` (At ${utilz.humanize_seconds(time)})`
+	}	
+
 	if(data.radio_source === '')
 	{
 		var src = default_radio_source
@@ -7233,6 +7240,13 @@ function announce_tv_change(data, date=false, action="change")
 	else
 	{
 		var name = data.tv_source
+	}
+
+	var time = utilz.get_youtube_time(data.tv_source)
+
+	if(time !== 0)
+	{
+		name += ` (At ${utilz.humanize_seconds(time)})`
 	}
 
 	if(data.tv_source === '')

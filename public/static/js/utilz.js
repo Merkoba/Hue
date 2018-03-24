@@ -234,6 +234,23 @@ var Utilz = function()
   		return Number(Math.round(value+'e'+decimals)+'e-'+decimals)
 	}
 
+	utilz.humanize_seconds = function(input, separator=":")
+	{
+		var pad = function(input) 
+		{
+			return input < 10 ? "0" + input : input
+		}
+
+		var result =  
+		[
+			pad(Math.floor(input / 3600)),
+			pad(Math.floor(input % 3600 / 60)),
+			pad(Math.floor(input % 60)),
+		].join(separator)
+
+		return result
+	}
+
 	return utilz
 }
 
