@@ -49,6 +49,7 @@ var tv_date = ''
 var get_metadata
 var no_meta_count
 var loaded_radio_source = ""
+var loaded_radio_type = "radio"
 var tabbed_list = []
 var tabbed_word = ""
 var tabbed_start = 0
