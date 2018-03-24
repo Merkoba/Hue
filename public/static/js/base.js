@@ -6148,7 +6148,10 @@ function start_radio()
 
 	else if(radio_type === "youtube")
 	{
-		youtube_player.playVideo()
+		if(youtube_player !== undefined)
+		{
+			youtube_player.playVideo()
+		}		
 	}
 
 	$('#playing_icon').css('display', 'inline-block')
