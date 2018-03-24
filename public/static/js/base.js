@@ -5805,7 +5805,7 @@ function announce_topic_change(data)
 			}
 		}
 
-		public_feedback(`${data.topic_setter} changed the topic to: ${data.topic}`, {highlight:highlight})
+		public_feedback(`${data.topic_setter} changed the topic to: "${data.topic}"`, {highlight:highlight})
 		set_topic_info(data)
 		update_title()
 	}
@@ -5815,7 +5815,7 @@ function announce_room_name_change(data)
 {
 	if(data.name !== room_name)
 	{		
-		public_feedback(`${data.username} changed the room name to: ${data.name}`)
+		public_feedback(`${data.username} changed the room name to: "${data.name}"`)
 		set_room_name(data.name)
 		update_title()
 	}
@@ -7111,7 +7111,7 @@ function announce_radio_change(data, date=false, action="change")
 
 	else
 	{
-		var action = `${data.radio_setter} changed the radio to ${name}`
+		var action = `${data.radio_setter} changed the radio to: "${name}"`
 	}	
 	
 	var nd = nice_date(d)
@@ -7243,7 +7243,7 @@ function announce_tv_change(data, date=false, action="change")
 
 	else
 	{
-		var action = `${data.tv_setter} changed the tv to ${name}`
+		var action = `${data.tv_setter} changed the tv to: "${name}"`
 	}
 
 	chat_announce(
