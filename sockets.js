@@ -2,7 +2,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 {
 	const fs = require('fs')
 	const path = require('path')
-	const antiSpam  = require('socket-anti-spam')
+	const SocketAntiSpam  = require('socket-anti-spam')
 	const fetch = require('node-fetch')
 	const mongo = require('mongodb')
 	const aws = require('aws-sdk')
@@ -50,7 +50,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	var last_roomlist
 	var roomlist_lastget = 0
 
-	antiSpam.init(
+	var antiSpam = new SocketAntiSpam(
 	{
 		banTime: config.antispam_banTime, // Ban time in minutes 
 		kickThreshold: config.antispam_kickThreshold, // User gets kicked after this many spam score 
@@ -70,11 +70,17 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const dont_check_joined = ["join_room"]
 	const dont_add_spam = ["slice_upload", "typing"]
 
-	io.on("connection", function(socket)
+	io.on("connection", async function(socket)
 	{
 		try
 		{
-			handler.add_spam(socket)
+			var spam_ans = await handler.add_spam(socket)
+
+			if(!spam_ans)
+			{
+				return false
+			}
+
 			handler.connection(socket)
 		}
 
@@ -83,7 +89,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		}
 
-		socket.on('server_method', function(data)
+		socket.on('server_method', async function(data)
 		{
 			try
 			{
@@ -114,7 +120,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				if(dont_add_spam.indexOf(m) === -1)
 				{
-					handler.add_spam(socket)
+					var spam_ans = await handler.add_spam(socket)
+
+					if(!spam_ans)
+					{
+						return false
+					}
 				}
 
 				handler[m](socket, data)
@@ -3155,7 +3166,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.slice_upload = function(socket, data)
+	handler.slice_upload = async function(socket, data)
 	{
 		if(data.action === "image_upload")
 		{
@@ -3176,7 +3187,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(!file) 
 		{
-			handler.add_spam(socket)
+			var spam_ans = await handler.add_spam(socket)
+
+			if(!spam_ans)
+			{
+				return false
+			}
 
 			if(image_types.indexOf(data.type) === -1)
 			{
@@ -3225,7 +3241,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(file.spsize !== spsize)
 		{
-			handler.add_spam(socket)
+			var spam_ans = await handler.add_spam(socket)
+
+			if(!spam_ans)
+			{
+				return false
+			}
+
 			file.spsize = spsize
 		}
 
@@ -3288,7 +3310,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.typing = function(socket, data)
+	handler.typing = async function(socket, data)
 	{
 		if(!handler.check_permission(socket, "chat"))
 		{
@@ -3299,7 +3321,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(socket.hue_typing_counter >= 100)
 		{
-			handler.add_spam(socket)
+			var spam_ans = await handler.add_spam(socket)
+
+			if(!spam_ans)
+			{
+				return false
+			}
+
 			socket.hue_typing_counter = 0
 		}		
 
@@ -3803,9 +3831,18 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		io.emit('update', args)
 	}	
 
-	handler.add_spam = function(socket)
+	handler.add_spam = async function(socket)
 	{
-		antiSpam.addSpam(socket)		
+		try
+		{
+			await antiSpam.addSpam(socket)
+			return true
+		}
+
+		catch(err)
+		{
+			return false
+		}
 	}
 
 	handler.start_room_loop()
