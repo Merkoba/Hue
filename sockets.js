@@ -173,6 +173,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.join_room = function(socket, data)
 	{
+		if(socket.hue_joining || socket.hue_joined)
+		{
+			return false
+		}
+
 		if(data.room_id === undefined)
 		{
 			return handler.do_disconnect(socket)
@@ -267,12 +272,14 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				.catch(err =>
 				{
 					logger.log_error(err)
+					return handler.do_disconnect(socket)
 				})
 			})
 			
 			.catch(err =>
 			{
 				logger.log_error(err)
+				return handler.do_disconnect(socket)
 			})				
 		}
 
@@ -336,12 +343,14 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 						.catch(err =>
 						{
 							logger.log_error(err)
+							return handler.do_disconnect(socket)
 						})
 					})
 
 					.catch(err =>
 					{
 						logger.log_error(err)
+						return handler.do_disconnect(socket)
 					})
 				}
 			})
