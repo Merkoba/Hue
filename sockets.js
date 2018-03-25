@@ -48,7 +48,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	var last_roomlist
 	var roomlist_lastget = 0
 
-	var antiSpam = new SocketAntiSpam(
+	const antiSpam = new SocketAntiSpam(
 	{
 		banTime: config.antispam_banTime, // Ban time in minutes 
 		kickThreshold: config.antispam_kickThreshold, // User gets kicked after this many spam score 
@@ -2388,11 +2388,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			delete rooms[socket.hue_room_id].userlist[socket.hue_user_id]
 
-			if(Object.keys(rooms[socket.hue_room_id].userlist).length === 0)
-			{
-				delete rooms[socket.hue_room_id]
-			}
-
 			if(user_rooms[socket.hue_user_id] !== undefined)
 			{
 				for(var i=0; i<user_rooms[socket.hue_user_id].length; i++)
@@ -3832,11 +3827,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	handler.system_emit = function(socket, type, args={})
 	{
 		args.type = type
-
-		for(var room_id in rooms)
-		{
-			io.sockets.in(room_id).emit('update', args)
-		}
+		io.emit('update', args)
 	}	
 
 	handler.add_spam = async function(socket)
