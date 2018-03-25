@@ -26,9 +26,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	})
 
 	const rooms = {}
-
 	const user_rooms = {}
-
 	const files = {}
 
    	const files_struct = 
@@ -448,13 +446,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(!already_connected)
 		{
-			if(rooms[socket.hue_room_id].userlist === undefined)
-			{
-				rooms[socket.hue_room_id].userlist = {}
-			}
-
 			rooms[socket.hue_room_id].userlist[socket.hue_user_id] = {}
-
 			handler.update_user_in_userlist(socket)
 		}
 
@@ -2394,9 +2386,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return
 			}
 
-			if(rooms[socket.hue_room_id].userlist !== undefined)
+			delete rooms[socket.hue_room_id].userlist[socket.hue_user_id]
+
+			if(Object.keys(rooms[socket.hue_room_id].userlist).length === 0)
 			{
-				delete rooms[socket.hue_room_id].userlist[socket.hue_user_id]
+				delete rooms[socket.hue_room_id]
 			}
 
 			if(user_rooms[socket.hue_user_id] !== undefined)
@@ -3506,6 +3500,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			activity: false,
 			log: info.log,
 			log_messages: [],
+			userlist: {},
 			voice1_chat_permission: info.voice1_chat_permission,
 			voice1_images_permission: info.voice1_images_permission,
 			voice1_tv_permission: info.voice1_tv_permission,
@@ -3837,7 +3832,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	handler.system_emit = function(socket, type, args={})
 	{
 		args.type = type
-		io.emit('update', args)
+
+		for(var room_id in rooms)
+		{
+			io.sockets.in(room_id).emit('update', args)
+		}
 	}	
 
 	handler.add_spam = async function(socket)
