@@ -33,9 +33,9 @@
 		<script src="/static/js/utilz.js?ver=6"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1148"></script>
+		<script src="/static/js/base.js?ver=1149"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=320"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=321"/>
 
 		<script>
 
@@ -291,7 +291,22 @@
 					<select id='admin_background_image_select' class='modal_select'>
 						<option value="true">Enabled</option>
 						<option value="false">Disabled</option>
-					</select>						
+					</select>
+
+					<div class='spacer1'></div>
+
+					<div class='small_padding_bottom'>Background Mode</div>
+
+					<select class='modal_select' id='admin_background_mode_select'>
+						<option value="normal">Normal</option>
+						<option value="tiled">Tiled</option>
+					</select>
+					
+					<div class='spacer1'></div>
+
+					<div class='small_padding_bottom'>Tile Dimensions</div>
+
+					<input type='text' class='setting_input_text_small' id='admin_background_tile_dimensions' title='CSS background-size property (width and height). For example 200px 200px, 100px auto, auto 100px, or 100px 200px'>		
 
 					<div class='spacer1'></div>
 

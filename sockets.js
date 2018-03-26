@@ -488,6 +488,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			theme: info.theme,
 			background_image: background_image,
 			background_image_enabled: info.background_image_enabled,
+			background_mode: info.background_mode,
+			background_tile_dimensions: info.background_tile_dimensions,
 			voice1_chat_permission: info.voice1_chat_permission,
 			voice1_images_permission: info.voice1_images_permission,
 			voice1_tv_permission: info.voice1_tv_permission,
@@ -2314,6 +2316,64 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.room_emit(socket, 'background_image_enabled_change', 
 		{
 			what: data.what,
+			username: socket.hue_username
+		})
+	}
+	
+	handler.change_background_mode = function(socket, data)
+	{
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.mode !== "normal" && data.mode !== "tiled")
+		{
+			return handler.get_out(socket)
+		}
+
+		db_manager.update_room(socket.hue_room_id,
+		{
+			background_mode: data.mode
+		})
+
+		.catch(err =>
+		{
+			logger.log_error(err)
+		})
+
+		handler.room_emit(socket, 'background_mode_changed', 
+		{
+			mode: data.mode,
+			username: socket.hue_username
+		})
+	}
+
+	handler.change_background_tile_dimensions = function(socket, data)
+	{
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.dimensions !== utilz.clean_string2(data.dimensions))
+		{
+			return handler.get_out(socket)
+		}
+
+		db_manager.update_room(socket.hue_room_id,
+		{
+			background_tile_dimensions: data.dimensions
+		})
+
+		.catch(err =>
+		{
+			logger.log_error(err)
+		})
+
+		handler.room_emit(socket, 'background_tile_dimensions_changed', 
+		{
+			dimensions: data.dimensions,
 			username: socket.hue_username
 		})
 	}

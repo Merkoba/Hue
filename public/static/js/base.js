@@ -143,6 +143,8 @@ var radio_started = false
 var theme
 var background_image
 var background_image_enabled
+var background_mode
+var background_tile_dimensions
 var image_queue = ["first"]
 var image_queue_timeout
 var layout_mode = "normal"
@@ -747,8 +749,8 @@ function start_socket()
 			update_userlist()
 			log_enabled = data.log
 			log_messages = data.log_messages
-			setup_theme(data)
-			set_background_image()
+			setup_theme_and_background(data)
+			set_background()
 			set_theme()
 			setup_active_media(data)
 			start_permissions(data)
@@ -1070,6 +1072,16 @@ function start_socket()
 		else if(data.type === 'background_image_enabled_change')
 		{
 			announce_background_image_enabled_change(data)
+		}
+
+		else if(data.type === 'background_mode_changed')
+		{
+			announce_background_mode_change(data)
+		}
+
+		else if(data.type === 'background_tile_dimensions_changed')
+		{
+			announce_background_tile_dimensions_change(data)
 		}
 
 		else if(data.type === 'voice_permission_change')
@@ -1426,7 +1438,7 @@ function show_video(play=true)
 	fix_video_frame("media_video")
 }
 
-function setup_theme(data)
+function setup_theme_and_background(data)
 {
 	theme = data.theme
 
@@ -1440,10 +1452,12 @@ function setup_theme(data)
 		background_image = default_background_image_url
 	}
 
-	background_image_enabled = data.background_image_enabled	
+	background_image_enabled = data.background_image_enabled
+	background_mode = data.background_mode
+	background_tile_dimensions = data.background_tile_dimensions
 }
 
-function set_background_image()
+function set_background()
 {
 	if(background_image_enabled && get_setting("background_image"))
 	{
@@ -1454,6 +1468,41 @@ function set_background_image()
 	{
 		$('.background_image').css('background-image', "none")
 	}
+
+	if(background_mode === "normal")
+	{
+		$('.background_image').each(function()
+		{
+			$(this).removeClass("background_image_tiled")
+		})
+	}
+
+	else if(background_mode === "tiled")
+	{
+		$('.background_image').each(function()
+		{
+			$(this).addClass("background_image_tiled")
+		})
+	}
+
+	var css = `
+	<style class='appended_background_style'>
+
+	.background_image_tiled
+	{
+		background-size: ${background_tile_dimensions} !important;
+		background-repeat: repeat !important;		
+	}
+
+	</style>
+	`
+
+	$(".appended_background_style").each(function()
+	{
+		$(this).remove()
+	})
+
+	$("head").append(css)	
 }
 
 function set_theme()
@@ -1483,7 +1532,7 @@ function set_theme()
 	var scrollbar_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
 
 	var css = `
-	<style class='appended_style'>
+	<style class='appended_theme_style'>
 
 	.Msg-overlay
 	{
@@ -1538,7 +1587,7 @@ function set_theme()
 	</style>
 	`
 
-	$(".appended_style").each(function()
+	$(".appended_theme_style").each(function()
 	{
 		$(this).remove()
 	})
@@ -2373,6 +2422,20 @@ function setup_main_menu()
 		change_background_image_enabled(what)
 	})
 
+	$('#admin_background_mode_select').change(function()
+	{
+		var what = $('#admin_background_mode_select option:selected').val()
+
+		change_background_mode(what)
+	})
+
+	$("#admin_background_tile_dimensions").blur(function()
+	{
+		var what = $("#admin_background_tile_dimensions").val()
+
+		change_background_tile_dimensions(what)
+	})
+
 	$('#admin_room_name').blur(function()
 	{
 		var name = utilz.clean_string7($(this).val())
@@ -2426,6 +2489,32 @@ function config_admin_background_image_enabled()
 			$(this).prop('selected', true)
 		}
 	})	
+}
+
+function config_admin_background_mode()
+{
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+
+	$('#admin_background_mode_select').find('option').each(function()
+	{
+		if($(this).val() === background_mode)
+		{
+			$(this).prop('selected', true)
+		}
+	})	
+}
+
+function config_admin_background_tile_dimensions()
+{
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+
+	$('#admin_background_tile_dimensions').val(background_tile_dimensions)	
 }
 
 function config_admin_privacy()
@@ -2571,6 +2660,8 @@ function config_main_menu()
 		config_admin_log_enabled()
 		config_admin_theme()
 		config_admin_background_image_enabled()
+		config_admin_background_mode()
+		config_admin_background_tile_dimensions()
 		config_admin_background_image()
 		config_admin_room_name()		
 		config_admin_topic()		
@@ -8629,7 +8720,7 @@ function setting_background_image_action(type, save=true)
 
 	if(active_settings("background_image") === type)
 	{
-		set_background_image()
+		set_background()
 		set_theme()
 	}
 	
@@ -10718,7 +10809,7 @@ function announce_background_image_change(data)
 {
 	background_image = data.background_image
 
-	set_background_image()
+	set_background()
 
 	public_feedback(`${data.username} changed the background image`)
 
@@ -10767,8 +10858,68 @@ function announce_background_image_enabled_change(data)
 	}
 
 	set_background_image_enabled(data.what)
-	set_background_image()
+	set_background()
 	set_theme()
+}
+
+function change_background_mode(mode)
+{
+	if(role !== 'admin' && role !== 'op')
+	{
+		not_an_op()
+		return
+	}
+
+	if(mode !== "normal" && mode !== "tiled")
+	{
+		feedback("Invalid background mode")
+		return false
+	}
+
+	if(mode === background_mode)
+	{
+		feedback(`Background mode is already ${background_mode}`)
+		return false
+	}
+
+	socket_emit("change_background_mode", {mode:mode})	
+}
+
+function announce_background_mode_change(data)
+{
+	public_feedback(`${data.username} changed the background mode to ${data.mode}`)
+	set_background_mode(data.mode)
+	set_background()
+}
+
+function change_background_tile_dimensions(dimensions)
+{
+	if(role !== 'admin' && role !== 'op')
+	{
+		not_an_op()
+		return
+	}
+
+	dimensions = utilz.clean_string2(dimensions)
+
+	if(dimensions.length === 0)
+	{
+		return false
+	}
+
+	if(dimensions === background_tile_dimensions)
+	{
+		return false
+	}
+
+	socket_emit("change_background_tile_dimensions", {dimensions:dimensions})
+}
+
+function announce_background_tile_dimensions_change(data)
+{
+	public_feedback(`${data.username} changed the background tile dimensions to ${data.dimensions}`)
+	set_background_tile_dimensions(data.dimensions)
+	set_background()
 }
 
 function link_image(url)
@@ -12869,6 +13020,18 @@ function set_background_image_enabled(what)
 {
 	background_image_enabled = what
 	config_admin_background_image_enabled()
+}
+
+function set_background_mode(what)
+{
+	background_mode = what
+	config_admin_background_mode()
+}
+
+function set_background_tile_dimensions(dimensions)
+{
+	background_tile_dimensions = dimensions
+	config_admin_background_tile_dimensions()
 }
 
 function set_privacy(what)
