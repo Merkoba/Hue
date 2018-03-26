@@ -406,6 +406,8 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				theme: "rgb(56, 46, 95)",
 				background_image: "",
 				background_image_enabled: true,
+				background_mode: "normal",
+				background_tile_dimensions: "100px 100px",
 				log: true,
 				voice1_chat_permission: true,
 				voice1_images_permission: true,
