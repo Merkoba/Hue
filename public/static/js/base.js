@@ -357,9 +357,10 @@ function show_room()
 
 function change_room_name(arg)
 {
-	if(role !== 'admin' && role !== 'op')
+	if(!is_admin_or_op(role))
 	{
-		not_an_op()		
+		not_an_op()
+		return false	
 	}
 
 	arg = utilz.clean_string2(arg.substring(0, max_room_name_length))
@@ -1933,7 +1934,7 @@ function start_username_context_menu()
 				},
 				visible: function(key, opt)
 				{ 
-					if(role !== 'admin' && role !== 'op')
+					if(!is_admin_or_op(role))
 					{
 						return false
 					}
@@ -1953,7 +1954,7 @@ function start_username_context_menu()
 				},
 				visible: function(key, opt)
 				{ 
-					if(role !== 'admin' && role !== 'op')
+					if(!is_admin_or_op(role))
 					{
 						return false
 					}
@@ -1973,7 +1974,7 @@ function start_username_context_menu()
 				},
 				visible: function(key, opt)
 				{ 
-					if(role !== 'admin' && role !== 'op')
+					if(!is_admin_or_op(role))
 					{
 						return false
 					}
@@ -1993,7 +1994,7 @@ function start_username_context_menu()
 				},
 				visible: function(key, opt)
 				{ 
-					if(role !== 'admin' && role !== 'op')
+					if(!is_admin_or_op(role))
 					{
 						return false
 					}
@@ -2063,7 +2064,7 @@ function start_username_context_menu()
 				name: "Kick",
 				visible: function(key, opt)
 				{ 
-					if(role !== 'admin' && role !== 'op')
+					if(!is_admin_or_op(role))
 					{
 						return false
 					}
@@ -2090,7 +2091,7 @@ function start_username_context_menu()
 				name: "Ban",
 				visible: function(key, opt)
 				{ 
-					if(role !== 'admin' && role !== 'op')
+					if(!is_admin_or_op(role))
 					{
 						return false
 					}
@@ -7108,10 +7109,10 @@ function set_role(rol)
 
 function change_privacy(what)
 {
-	if(role !== 'admin' && role !== 'op')
+	if(!is_admin_or_op(role))
 	{
 		not_an_op()
-		return
+		return false
 	}
 
 	if(is_public === what)
@@ -7581,7 +7582,7 @@ function search_on(site, q)
 
 function reset_voices()
 {
-	if(role !== 'admin' && role !== 'op')
+	if(!is_admin_or_op(role))
 	{
 		not_an_op()
 		return false
@@ -9842,7 +9843,7 @@ function show_log_messages()
 
 function change_log(log)
 {
-	if(role !== 'admin' && role !== 'op')
+	if(!is_admin_or_op(role))
 	{
 		not_an_op()	
 		return false
@@ -9866,7 +9867,7 @@ function change_log(log)
 
 function clear_log()
 {
-	if(role !== 'admin' && role !== 'op')
+	if(!is_admin_or_op(role))
 	{
 		not_an_op()	
 		return false
@@ -10555,10 +10556,10 @@ function fix_video_frame(frame_id)
 
 function change_room_images_enabled(what)
 {
-	if(role !== 'admin' && role !== 'op')
+	if(!is_admin_or_op(role))
 	{
 		not_an_op()
-		return
+		return false
 	}
 
 	if(what)
@@ -10584,10 +10585,10 @@ function change_room_images_enabled(what)
 
 function change_room_tv_enabled(what)
 {
-	if(role !== 'admin' && role !== 'op')
+	if(!is_admin_or_op(role))
 	{
 		not_an_op()
-		return
+		return false
 	}
 
 	if(what)
@@ -10613,10 +10614,10 @@ function change_room_tv_enabled(what)
 
 function change_room_radio_enabled(what)
 {
-	if(role !== 'admin' && role !== 'op')
+	if(!is_admin_or_op(role))
 	{
 		not_an_op()
-		return
+		return false
 	}
 
 	if(what)
@@ -10720,10 +10721,10 @@ function media_visibility_and_locks()
 
 function change_theme(color)
 {
-	if(role !== 'admin' && role !== 'op')
+	if(!is_admin_or_op(role))
 	{
 		not_an_op()
-		return
+		return false
 	}
 
 	if(color === undefined)
@@ -10818,10 +10819,10 @@ function announce_background_image_change(data)
 
 function change_background_image_enabled(what)
 {
-	if(role !== 'admin' && role !== 'op')
+	if(!is_admin_or_op(role))
 	{
 		not_an_op()
-		return
+		return false
 	}
 
 	if(what)
@@ -10864,10 +10865,10 @@ function announce_background_image_enabled_change(data)
 
 function change_background_mode(mode)
 {
-	if(role !== 'admin' && role !== 'op')
+	if(!is_admin_or_op(role))
 	{
 		not_an_op()
-		return
+		return false
 	}
 
 	if(mode !== "normal" && mode !== "tiled")
@@ -10894,10 +10895,10 @@ function announce_background_mode_change(data)
 
 function change_background_tile_dimensions(dimensions)
 {
-	if(role !== 'admin' && role !== 'op')
+	if(!is_admin_or_op(role))
 	{
 		not_an_op()
-		return
+		return false
 	}
 
 	dimensions = utilz.clean_string2(dimensions)
@@ -10946,10 +10947,10 @@ function link_image(url)
 
 function change_voice_permission(ptype, what)
 {
-	if(role !== 'admin' && role !== 'op')
+	if(!is_admin_or_op(role))
 	{
 		not_an_op()
-		return
+		return false
 	}
 
 	if(window[ptype] === undefined)
