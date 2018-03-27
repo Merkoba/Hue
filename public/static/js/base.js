@@ -1617,7 +1617,7 @@ function userjoin(data)
 
 			if(get_setting("beep_on_user_joins"))
 			{
-				sound_notify()
+				sound_notify("join")
 			}
 		}
 	}
@@ -4455,7 +4455,7 @@ function change(args={})
 
 		if(get_setting("beep_on_media_change"))
 		{
-			sound_notify()
+			sound_notify("change")
 		}
 	}
 }
@@ -6422,7 +6422,7 @@ function change_volume_command(arg)
 	}
 }
 
-function sound_notify()
+function sound_notify(what="pup")
 {
 	if(!app_focused)
 	{
@@ -6431,7 +6431,7 @@ function sound_notify()
 			return false
 		}		
 
-		pup()
+		play_audio(what)
 	}
 }
 
@@ -6584,7 +6584,7 @@ function copy_room_url()
 
 	copy_string(url)
 
-	pup2()
+	play_audio("pup2")
 }
 
 function copy_string(s)
@@ -6600,14 +6600,11 @@ function copy_string(s)
 	document.body.removeChild(textareaEl)	
 }
 
-function pup()
+function play_audio(what)
 {
-	$('#pup')[0].play()
-}
-
-function pup2()
-{
-	$('#pup2')[0].play()
+	$(`#audio_${what}`)[0].pause()
+	$(`#audio_${what}`)[0].currentTime = 0
+	$(`#audio_${what}`)[0].play()			
 }
 
 function word_generator(pattern) 
