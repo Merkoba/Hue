@@ -6602,8 +6602,6 @@ function copy_string(s)
 
 function play_audio(what)
 {
-	$(`#audio_${what}`)[0].pause()
-	$(`#audio_${what}`)[0].currentTime = 0
 	$(`#audio_${what}`)[0].play()			
 }
 
