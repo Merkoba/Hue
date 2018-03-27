@@ -4183,7 +4183,7 @@ function update_chat(args={})
 
 			if(get_setting("beep_on_highlights"))
 			{
-				sound_notify()
+				sound_notify("highlight")
 			}
 		}
 
@@ -4716,7 +4716,7 @@ function chat_announce(args={})
 
 		if(get_setting("beep_on_highlights"))
 		{
-			sound_notify()
+			sound_notify("highlight")
 		}
 	}
 }
@@ -11624,7 +11624,7 @@ function whisper_received(data)
 	})
 	
 	alert_title2()
-	sound_notify()	
+	sound_notify("highlight")	
 }
 
 function add_to_ignored_usernames(uname)
@@ -13223,7 +13223,7 @@ function show_system_broadcast(data)
 	create_popup("top").show(["System Message", s])
 	
 	alert_title2()
-	sound_notify()
+	sound_notify("highlight")
 }
 
 function make_unique_lines(s)
