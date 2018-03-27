@@ -535,40 +535,20 @@ function setup_icons()
 
 		if(can_images)
 		{
-			$("#footer_images_icon").css("display", "inline-block")
+			$("#footer_images_text").removeClass("nopointer")
+			$("#footer_images_text").addClass("action")
 		}
 
 		else
 		{
-			$("#footer_images_icon").css("display", "none")
+			$("#footer_images_text").removeClass("action")
+			$("#footer_images_text").addClass("nopointer")
 		}
 	}
 
 	else
 	{
-		$("#footer_images_icon").css("display", "none")
 		$("#footer_images_controls").css("display", "none")
-	}
-
-	if(room_radio_enabled)
-	{
-		$("#footer_radio_controls").css("display", "initial")
-
-		if(can_radio)
-		{
-			$("#footer_radio_icon").css("display", "inline-block")
-		}
-		
-		else
-		{
-			$("#footer_radio_icon").css("display", "none")
-		}
-	}
-
-	else
-	{
-		$("#footer_radio_icon").css("display", "none")
-		$("#footer_radio_controls").css("display", "none")
 	}
 
 	if(room_tv_enabled)
@@ -577,22 +557,45 @@ function setup_icons()
 
 		if(can_tv)
 		{
-			$("#footer_tv_icon").css("display", "inline-block")
+			$("#footer_tv_text").removeClass("nopointer")
+			$("#footer_tv_text").addClass("action")
 		}
 
 		else
 		{
-			$("#footer_tv_icon").css("display", "none")
+			$("#footer_tv_text").removeClass("action")
+			$("#footer_tv_text").addClass("nopointer")
 		}
 	}
 
 	else
 	{
-		$("#footer_tv_icon").css("display", "none")
 		$("#footer_tv_controls").css("display", "none")
+	}	
+
+	if(room_radio_enabled)
+	{
+		$("#footer_radio_controls").css("display", "initial")
+
+		if(can_radio)
+		{
+			$("#footer_radio_text").removeClass("nopointer")
+			$("#footer_radio_text").addClass("action")
+		}
+		
+		else
+		{
+			$("#footer_radio_text").removeClass("action")
+			$("#footer_radio_text").addClass("nopointer")
+		}
 	}
 
-	$("#footer_images_icon").on("auxclick", function(e)
+	else
+	{
+		$("#footer_radio_controls").css("display", "none")
+	}
+
+	$("#footer_images_text").on("auxclick", function(e)
 	{
 		if(e.which === 2)
 		{
@@ -9985,6 +9988,12 @@ function not_an_op()
 
 function show_image_picker()
 {
+	if(!can_images)
+	{
+		feedback("You don't have images permission")
+		return false
+	}
+
 	msg_image_picker.show(function()
 	{
 		$("#image_source_picker_input").focus()
@@ -9993,6 +10002,12 @@ function show_image_picker()
 
 function show_tv_picker()
 {
+	if(!can_images)
+	{
+		feedback("You don't have tv permission")
+		return false
+	}
+
 	msg_tv_picker.show(function()
 	{
 		$("#tv_source_picker_input").focus()
@@ -10001,6 +10016,12 @@ function show_tv_picker()
 
 function show_radio_picker()
 {
+	if(!can_images)
+	{
+		feedback("You don't have radio permission")
+		return false
+	}
+
 	msg_radio_picker.show(function()
 	{
 		$("#radio_source_picker_input").focus()
