@@ -236,7 +236,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 						if(typeof room.background_tile_dimensions !== "boolean")
 						{
-							room.background_tile_dimensions = "100px 100px"
+							room.background_tile_dimensions = "100px auto"
 						}
 						
 						if(typeof room.modified !== "number")
@@ -407,7 +407,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				background_image: "",
 				background_image_enabled: true,
 				background_mode: "normal",
-				background_tile_dimensions: "100px 100px",
+				background_tile_dimensions: "100px auto",
 				log: true,
 				voice1_chat_permission: true,
 				voice1_images_permission: true,
