@@ -76,11 +76,9 @@ body, html
 
 #header_items
 {
-	display: flex;
-	width: 80%;
-	align-items: center;
-	justify-content: center;
+	width: calc(100% - 2em);
 	white-space: nowrap;
+	text-align: center;
 	overflow: hidden;
 }
 
