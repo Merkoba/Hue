@@ -2505,7 +2505,17 @@ function config_admin_background_mode()
 		{
 			$(this).prop('selected', true)
 		}
-	})	
+	})
+
+	if(background_mode === "tiled")
+	{
+		$("#admin_background_tile_dimensions_container").css("display", "block")
+	}
+
+	else
+	{
+		$("#admin_background_tile_dimensions_container").css("display", "none")
+	}
 }
 
 function config_admin_background_tile_dimensions()
@@ -2516,6 +2526,27 @@ function config_admin_background_tile_dimensions()
 	}
 
 	$('#admin_background_tile_dimensions').val(background_tile_dimensions)	
+}
+
+function config_admin_background_image()
+{
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+
+	if(background_image !== $("#admin_background_image").attr('src'))
+	{
+		if(background_image !== "")
+		{
+			$("#admin_background_image").attr("src", background_image)
+		}
+
+		else
+		{
+			$("#admin_background_image").attr("src", default_background_image_url)
+		}
+	}	
 }
 
 function config_admin_privacy()
@@ -2626,27 +2657,6 @@ function config_admin_topic()
 	}
 
 	$("#admin_topic").val(topic)
-}
-
-function config_admin_background_image()
-{
-	if(!is_admin_or_op())
-	{
-		return false
-	}
-
-	if(background_image !== $("#admin_background_image").attr('src'))
-	{
-		if(background_image !== "")
-		{
-			$("#admin_background_image").attr("src", background_image)
-		}
-
-		else
-		{
-			$("#admin_background_image").attr("src", default_background_image_url)
-		}
-	}	
 }
 
 function config_main_menu()
