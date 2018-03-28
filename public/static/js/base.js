@@ -371,7 +371,10 @@ function change_room_name(arg)
 		return
 	}
 
-	socket_emit("change_room_name", {name:arg})
+	if(arg.length > 0)
+	{
+		socket_emit("change_room_name", {name:arg})
+	}
 }
 
 function room_name_edit()
@@ -2442,9 +2445,15 @@ function setup_main_menu()
 
 	$('#admin_room_name').blur(function()
 	{
-		var name = utilz.clean_string7($(this).val())
+		var name = utilz.clean_string2($(this).val())
 
-		if(name !== "" && name !== room_name)
+		if(name === "")
+		{
+			$("#admin_room_name").val(room_name)
+			return false
+		}
+
+		if(name !== room_name)
 		{
 			change_room_name(name)
 		}
@@ -2452,9 +2461,15 @@ function setup_main_menu()
 
 	$('#admin_topic').blur(function()
 	{
-		var t = utilz.clean_string7($(this).val())
+		var t = utilz.clean_string2($(this).val())
 
-		if(t !== "" && t !== topic)
+		if(t === "")
+		{
+			$("#admin_topic").val(topic)
+			return false
+		}
+
+		if(t !== topic)
 		{
 			change_topic(t)
 		}
