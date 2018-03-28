@@ -3949,8 +3949,8 @@ var resize_timer = (function()
 		timer = setTimeout(function() 
 		{
 			fix_visible_video_frame()
-			update_chat_scrollbar()		
-			goto_bottom()
+			update_chat_scrollbar()
+			goto_bottom(false, false)
 			check_scrollers()
 		}, resize_delay)
 	}
@@ -6016,7 +6016,7 @@ function goto_top()
 	hide_top_scroller()
 }
 
-function goto_bottom(force=false)
+function goto_bottom(force=false, animate=true)
 {
 	var $ch = $("#chat_area")
 
@@ -6024,7 +6024,7 @@ function goto_bottom(force=false)
 
 	if(force)
 	{
-		scroll_chat_to(max + 10)
+		scroll_chat_to(max + 10, animate)
 		hide_top_scroller()
 		hide_bottom_scroller()
 	}
@@ -6033,7 +6033,7 @@ function goto_bottom(force=false)
 	{
 		if($('#bottom_scroller_container').css('visibility') === 'hidden')
 		{
-			scroll_chat_to(max + 10)
+			scroll_chat_to(max + 10, animate)
 		}
 	}
 }
@@ -10156,7 +10156,7 @@ function change_images_visibility()
 
 	fix_visible_video_frame()
 	update_chat_scrollbar()
-	goto_bottom()
+	goto_bottom(false, false)
 }
 
 function toggle_tv(what=undefined, save=true)
@@ -10231,7 +10231,7 @@ function change_tv_visibility()
 	}
 
 	update_chat_scrollbar()
-	goto_bottom()	
+	goto_bottom(false, false)	
 }
 
 function toggle_radio(what=undefined, save=true)
