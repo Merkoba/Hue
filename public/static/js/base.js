@@ -10281,9 +10281,6 @@ function change_radio_visibility()
 
 		radio_visible = false
 	}
-
-	update_chat_scrollbar()
-	goto_bottom()
 }
 
 function open_profile_image_picker()
@@ -12131,7 +12128,7 @@ function font_check()
 	document.fonts.ready.then(function () 
 	{
 		update_chat_scrollbar()
-		goto_bottom(true)
+		goto_bottom(true, false)
 	})	
 }
 
