@@ -538,14 +538,14 @@ function setup_icons()
 
 		if(can_images)
 		{
-			$("#footer_images_text").removeClass("nopointer")
-			$("#footer_images_text").addClass("action")
+			$("#footer_images_icon").removeClass("nopointer")
+			$("#footer_images_icon").addClass("action")
 		}
 
 		else
 		{
-			$("#footer_images_text").removeClass("action")
-			$("#footer_images_text").addClass("nopointer")
+			$("#footer_images_icon").removeClass("action")
+			$("#footer_images_icon").addClass("nopointer")
 		}
 	}
 
@@ -560,14 +560,14 @@ function setup_icons()
 
 		if(can_tv)
 		{
-			$("#footer_tv_text").removeClass("nopointer")
-			$("#footer_tv_text").addClass("action")
+			$("#footer_tv_icon").removeClass("nopointer")
+			$("#footer_tv_icon").addClass("action")
 		}
 
 		else
 		{
-			$("#footer_tv_text").removeClass("action")
-			$("#footer_tv_text").addClass("nopointer")
+			$("#footer_tv_icon").removeClass("action")
+			$("#footer_tv_icon").addClass("nopointer")
 		}
 	}
 
@@ -582,14 +582,14 @@ function setup_icons()
 
 		if(can_radio)
 		{
-			$("#footer_radio_text").removeClass("nopointer")
-			$("#footer_radio_text").addClass("action")
+			$("#footer_radio_icon").removeClass("nopointer")
+			$("#footer_radio_icon").addClass("action")
 		}
 		
 		else
 		{
-			$("#footer_radio_text").removeClass("action")
-			$("#footer_radio_text").addClass("nopointer")
+			$("#footer_radio_icon").removeClass("action")
+			$("#footer_radio_icon").addClass("nopointer")
 		}
 	}
 
@@ -598,7 +598,7 @@ function setup_icons()
 		$("#footer_radio_controls").css("display", "none")
 	}
 
-	$("#footer_images_text").on("auxclick", function(e)
+	$("#footer_images_icon").on("auxclick", function(e)
 	{
 		if(e.which === 2)
 		{
