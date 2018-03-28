@@ -12916,7 +12916,7 @@ function scroll_chat_to(y, animate=true, d=500)
 {
 	$("#chat_area").stop()
 
-	if(app_focused && animate && get_setting("animate_scroll"))
+	if(started && app_focused && animate && get_setting("animate_scroll"))
 	{
 		$("#chat_area").animate({scrollTop:y}, d, function()
 		{
