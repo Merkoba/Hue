@@ -1603,7 +1603,14 @@ function userjoin(data)
 			show_profile(data.username, prof_image)
 		}
 
-		chat_announce({brk:'--', msg:`${data.username} has joined`, save:true, onclick:f, uname:data.username})
+		chat_announce(
+		{
+			brk: "<i class='icon2 fa fa-user-plus'></i>", 
+			msg: `${data.username} has joined`, 
+			save: true, 
+			onclick: f, 
+			uname: data.username
+		})
 		
 		if(data.username !== username)
 		{
@@ -7623,7 +7630,13 @@ function disconnected(data)
 
 	if(get_setting("show_parts") && check_permission(data.role, "chat"))
 	{
-		chat_announce({brk:'--', msg:`${data.username} has left`, save:true, uname:data.username})
+		chat_announce(
+		{
+			brk: "<i class='icon2 fa fa-sign-out'></i>",  
+			msg: `${data.username} has left`, 
+			save: true, 
+			uname: data.username
+		})
 	}
 }
 
@@ -7633,7 +7646,13 @@ function pinged(data)
 
 	if(get_setting("show_parts") && check_permission(data.role, "chat"))
 	{
-		chat_announce({brk:'--', msg:`${data.username} has left (Ping Timeout)`, save:true, uname:data.username})
+		chat_announce(
+		{
+			brk: "<i class='icon2 fa fa-sign-out'></i>",  
+			msg: `${data.username} has left (Ping Timeout)`, 
+			save: true, 
+			uname: data.username
+		})
 	}
 }
 
@@ -7641,14 +7660,24 @@ function kicked(data)
 {
 	removefrom_userlist(data.username)
 
-	chat_announce({brk:'--', msg:`${data.username} was kicked by ${data.info1}`, save:true, uname:data.username})
+	chat_announce(
+	{
+		brk: "<i class='icon2 fa fa-sign-out'></i>",  
+		msg: `${data.username} was kicked by ${data.info1}`, 
+		save: true, 
+		uname: data.username})
 }
 
 function banned(data)
 {
 	removefrom_userlist(data.username)
 
-	chat_announce({brk:'--', msg:`${data.username} was banned by ${data.info1}`, save:true, uname:data.username})
+	chat_announce(
+	{
+		brk: "<i class='icon2 fa fa-sign-out'></i>",  
+		msg: `${data.username} was banned by ${data.info1}`, 
+		save: true, 
+		uname: data.username})
 }
 
 function start_msg()
