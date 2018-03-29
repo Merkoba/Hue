@@ -2899,7 +2899,7 @@ function upload_file(file, action)
 
 	var obj =
 	{
-		brk: '[', 
+		brk: '*', 
 		msg: `Uploading ${get_file_action_name(file.action)}: 0%`, 
 		id: `uploading_${date}`
 	}

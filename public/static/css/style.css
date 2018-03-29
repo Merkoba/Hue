@@ -409,7 +409,7 @@ body, html
 {
 	flex-grow: 0;
 	flex-shrink: 0;
-	width: 1.7em;
+	padding-right: 1em;
 }
 
 .announcement_content
