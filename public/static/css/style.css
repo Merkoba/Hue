@@ -422,7 +422,6 @@ body, html
 a.generic:link, a.generic:visited, a.generic:hover 
 {
 	text-decoration: underline;
-	text-underline-position: under;
 	color: inherit;
 }
 
@@ -878,7 +877,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 {
 	cursor: pointer;
 	text-decoration: underline;
-	text-underline-position: under;	
 }
 
 select
@@ -1022,7 +1020,6 @@ input[type=text], textarea
 .underlined
 {
 	text-decoration: underline;
-	text-underline-position: under;
 }
 
 .bold
