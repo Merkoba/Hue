@@ -397,16 +397,24 @@ body, html
 {
 	overflow-wrap: break-word;
 	word-break: break-word;
-}
-
-.announcement_small
-{
 	font-size: 1.1em;
 }
 
-.announcement_big
+.announcement_content_container
 {
-	font-size: 1.4em;
+	display: inline-flex;
+}
+
+.announcement_brk
+{
+	flex-grow: 0;
+	flex-shrink: 0;
+	width: 1.7em;
+}
+
+.announcement_content
+{
+
 }
 
 .chat_uname 
@@ -711,6 +719,8 @@ a.generic:link, a.generic:visited, a.generic:hover
 .Msg-content
 {
 	font-size: 1em !important;
+	overflow-wrap: break-word;
+	word-break: break-word;	
 }
 
 #Msg-overlay-locked
@@ -743,6 +753,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-bottom: 0.8em;
 }
 
+.chat_search_result_item .announcement_brk
+{
+	display: none;
+}
+
 .chat_search_result_uname
 {
 	padding-bottom: 0.2em;
@@ -763,6 +778,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 {
 	padding-top: 0.8em;
 	padding-bottom: 0.8em;
+}
+
+.highlights_item .announcement_brk
+{
+	display: none;	
 }
 
 .highlights_uname
@@ -1220,7 +1240,7 @@ input[type=text], textarea
 	font-size: 1em !important;
 }
 
-.media_history_item .icon2
+.media_history_item .announcement_brk
 {
 	display: none;
 }

@@ -452,36 +452,24 @@ function get_topic()
 	}	
 }
 
-function show_topic(size="small")
+function show_topic()
 {
-	if(size === "small")
-	{
-		var brk1 = "["
-		var brk2 = "]"
-	}
-
-	else
-	{
-		var brk1 = ""
-		var brk2 = ""
-	}
-
 	if(topic)
 	{
 		if(topic_setter !== "")
 		{
-			chat_announce({brk1:brk1, brk2:brk2, msg:`Topic: ${topic}`, size:size, title:`Setter: ${topic_setter} | ${topic_date}`})
+			feedback(`Topic: ${topic}`, {title:`Setter: ${topic_setter} | ${topic_date}`})
 		}
 
 		else
 		{
-			chat_announce({brk1:brk1, brk2:brk2, msg:`Topic: ${topic}`, size:size})
+			feedback(`Topic: ${topic}`)
 		}
 	}
 
 	else 
 	{
-		chat_announce({brk1:brk1, brk2:brk2, msg:`Topic: ${get_unset_topic()}`, size:size})
+		feedback(`Topic: ${get_unset_topic()}`)
 	}
 }
 
@@ -1615,7 +1603,7 @@ function userjoin(data)
 			show_profile(data.username, prof_image)
 		}
 
-		chat_announce({brk1:'--', brk2:'--', msg:`${data.username} has joined`, save:true, onclick:f, uname:data.username})
+		chat_announce({brk:'--', msg:`${data.username} has joined`, save:true, onclick:f, uname:data.username})
 		
 		if(data.username !== username)
 		{
@@ -2911,8 +2899,7 @@ function upload_file(file, action)
 
 	var obj =
 	{
-		brk1: '[', 
-		brk2: ']', 
+		brk: '[', 
 		msg: `Uploading ${get_file_action_name(file.action)}: 0%`, 
 		id: `uploading_${date}`
 	}
@@ -4611,10 +4598,8 @@ function chat_announce(args={})
 {
 	var def_args = 
 	{
-		brk1: "",
-		brk2: "",
+		brk: "",
 		msg: "",
-		size: "small",
 		highlight: false,
 		title: false,
 		onclick: false,
@@ -4678,29 +4663,12 @@ function chat_announce(args={})
 		d = Date.now()
 	}	
 
-	if(args.brk1 !== "")
-	{
-		var hbrk1 = `${args.brk1}&nbsp;`
-	}
-
-	else
-	{
-		hbrk1 = ""
-	}
-
-	if(args.brk2 !== "")
-	{
-		var hbrk2 = `&nbsp;${args.brk2}`
-	}
-
-	else
-	{
-		var hbrk2 = ""
-	}
-
 	var s = `
-	<div${containerid}class='msg announcement announcement_${args.size}'>
-		<span class='${containerclasses}' title='${t}'>${hbrk1}<span class='${contclasses}'></span>${hbrk2}</span>
+	<div${containerid}class='msg announcement'>
+		<div class='${containerclasses}' title='${t}'>
+			<div class='announcement_brk'>${args.brk}</div>
+			<div class='${contclasses}'></div>
+		</div>
 	</div>`
 
 	var fmsg = $(s)
@@ -7062,7 +7030,7 @@ function announce_image_change(data, date=false, show=true)
 	{
 		chat_announce(
 		{
-			brk1: "<i class='icon2 fa fa-camera'></i>", 
+			brk: "<i class='icon2 fa fa-camera'></i>", 
 			save: true, 
 			date: d, 
 			type: "image_change",
@@ -7283,7 +7251,7 @@ function announce_radio_change(data, date=false, action="change")
 
 	chat_announce(
 	{
-		brk1: "<i class='icon2 fa fa-volume-up'></i>", 
+		brk: "<i class='icon2 fa fa-volume-up'></i>", 
 		msg: action, 
 		title: title, 
 		onclick: onclick, 
@@ -7413,7 +7381,7 @@ function announce_tv_change(data, date=false, action="change")
 
 	chat_announce(
 	{
-		brk1: "<i class='icon2 fa fa-television'></i>", 
+		brk: "<i class='icon2 fa fa-television'></i>", 
 		msg: action, 
 		title: title, 
 		onclick: onclick, 
@@ -7655,7 +7623,7 @@ function disconnected(data)
 
 	if(get_setting("show_parts") && check_permission(data.role, "chat"))
 	{
-		chat_announce({brk1:'--', brk2:'--', msg:`${data.username} has left`, save:true, uname:data.username})
+		chat_announce({brk:'--', msg:`${data.username} has left`, save:true, uname:data.username})
 	}
 }
 
@@ -7665,7 +7633,7 @@ function pinged(data)
 
 	if(get_setting("show_parts") && check_permission(data.role, "chat"))
 	{
-		chat_announce({brk1:'--', brk2:'--', msg:`${data.username} has left (Ping Timeout)`, save:true, uname:data.username})
+		chat_announce({brk:'--', msg:`${data.username} has left (Ping Timeout)`, save:true, uname:data.username})
 	}
 }
 
@@ -7673,14 +7641,14 @@ function kicked(data)
 {
 	removefrom_userlist(data.username)
 
-	chat_announce({brk1:'--', brk2:'--', msg:`${data.username} was kicked by ${data.info1}`, save:true, uname:data.username})
+	chat_announce({brk:'--', msg:`${data.username} was kicked by ${data.info1}`, save:true, uname:data.username})
 }
 
 function banned(data)
 {
 	removefrom_userlist(data.username)
 
-	chat_announce({brk1:'--', brk2:'--', msg:`${data.username} was banned by ${data.info1}`, save:true, uname:data.username})
+	chat_announce({brk:'--', msg:`${data.username} was banned by ${data.info1}`, save:true, uname:data.username})
 }
 
 function start_msg()
@@ -13216,8 +13184,7 @@ function feedback(msg, data=false)
 {
 	var obj = 
 	{
-		brk1: '[', 
-		brk2: ']', 
+		brk: '*',
 		msg: msg
 	}
 
@@ -13233,8 +13200,7 @@ function public_feedback(msg, data=false)
 {
 	var obj = 
 	{
-		brk1: '~', 
-		brk2: '~',
+		brk: '~', 
 		save: true, 
 		msg: msg
 	}
