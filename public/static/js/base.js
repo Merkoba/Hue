@@ -1170,15 +1170,17 @@ function setup_radio(data)
 	if(data.radio_source === '')
 	{
 		radio_source = default_radio_source
+		radio_title = default_radio_title
+		radio_type = default_radio_type
 	}
 
 	else
 	{
 		radio_source = data.radio_source
+		radio_title = data.radio_title
+		radio_type = data.radio_type
 	}
 
-	radio_type = data.radio_type
-	radio_title = data.radio_title
 	radio_setter = data.radio_setter
 	radio_date = nice_date(data.radio_date)
 

@@ -94,6 +94,15 @@ If you want to remove it to start fresh:
 "default_tv_type"
 >The type of the default_tv_source, either "url", "youtube", or "twitch".
 
+"default_radio_source"
+>The default radio url used for new rooms or when "/radio default" is issued.
+
+"default_radio_title"
+>The title for the default radio. This is what is shown in "Now Playing" on top. If radio source is of type "radio", the title will dynamically change to current playing song if the icecast radio source is configured correctly.
+
+"default_radio_type"
+>The type of the default_radio_source, either "radio" or "youtube".
+
 "default_profile_image_url"
 >The location of the default profile image.
 
@@ -108,9 +117,6 @@ If you want to remove it to start fresh:
 
 "default_video_url"
 >Image to show to video element when there's no video image loaded.
-
-"default_radio_source"
->The default radio url used for new rooms or when "/radio default" is issued. To work properly, for now, this must be ideally a working icecasat radio url.
 
 "mongodb_path"
 >The path to the MongoDB database. The name can be anything as long as the port is correct.
