@@ -98,7 +98,7 @@ If you want to remove it to start fresh:
 >The default radio url used for new rooms or when "/radio default" is issued.
 
 "default_radio_title"
->The title for the default radio. This is what is shown in "Now Playing" on top. If radio source is of type "radio", the title will dynamically change to current playing song if the icecast radio source is configured correctly.
+>The title for the default radio. This is what is shown in "Now Playing" on top. If radio source is of type "radio", the title will dynamically change to current playing song if the Icecast radio source is configured correctly.
 
 "default_radio_type"
 >The type of the default_radio_source, either "radio" or "youtube".
