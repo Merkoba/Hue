@@ -86,10 +86,10 @@ If you want to remove it to start fresh:
 >The public root of images. For example a public_images_location of /img/ would send public image urls as /img/image.jpg, which would reside in public/img/. Needs a slash at the end.
 
 "default_image_url"
->The public location of the default image. This image appears on new rooms or when an uploaded image fails to load.
+>The public location of the default image or when "/image default" is issued. This image appears on new rooms or when an uploaded image fails to load.
 
 "default_tv_source"
->Default source for the tv for new rooms. This is a video url, file, youtube, or twitch.
+>Default source for the tv for new rooms or when "/tv default" is issued. This is a video url, file, youtube, or twitch.
 
 "default_tv_type"
 >The type of the default_tv_source, either "url", "youtube", or "twitch".
