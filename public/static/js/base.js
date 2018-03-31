@@ -4222,7 +4222,7 @@ function add_to_chat(msg, save=false)
 {
 	if(!app_focused)
 	{
-		add_separator()
+		add_separator(false)
 	}
 
 	var chat_area = $('#chat_area')
@@ -6562,7 +6562,7 @@ function activate_visibility_listener()
 				}, get_setting("afk_delay"))
 			}
 
-			remove_separator()
+			remove_separator(false)
 			update_chat_scrollbar()
 			check_scrollers()
 		}
@@ -13297,7 +13297,7 @@ function make_unique_lines(s)
 	return s
 }
 
-function add_separator()
+function add_separator(update_scroll=true)
 {
 	if(!get_setting("new_messages_separator"))
 	{
@@ -13320,18 +13320,24 @@ function add_separator()
 
 	$("#chat_area").append(sep)
 
-	update_chat_scrollbar()
-	goto_bottom()
+	if(update_scroll)
+	{
+		update_chat_scrollbar()
+		goto_bottom()
+	}
 }
 
-function remove_separator()
+function remove_separator(update_scroll=true)
 {
 	$(".separator_container").each(function()
 	{
 		$(this).remove()
 	})
 
-	update_chat_scrollbar()
-	goto_bottom()
+	if(update_scroll)
+	{
+		update_chat_scrollbar()
+		goto_bottom()
+	}
 }
 
