@@ -4220,6 +4220,11 @@ function update_chat(args={})
 
 function add_to_chat(msg, save=false)
 {
+	if(!app_focused)
+	{
+		add_separator()
+	}
+
 	var chat_area = $('#chat_area')
 	var last_msg = $(".msg").last()
 	var appended = false
@@ -6557,6 +6562,7 @@ function activate_visibility_listener()
 				}, get_setting("afk_delay"))
 			}
 
+			remove_separator()
 			update_chat_scrollbar()
 			check_scrollers()
 		}
@@ -8658,6 +8664,12 @@ function get_global_settings()
 		changed = true
 	}
 
+	if(global_settings.new_messages_separator === undefined)
+	{
+		global_settings.new_messages_separator = global_settings_default_new_messages_separator
+		changed = true
+	}
+
 	if(changed)
 	{
 		save_global_settings()
@@ -8696,6 +8708,7 @@ function start_settings_state(type)
 	$(`#${type}_show_joins`).prop("checked", window[type].show_joins)
 	$(`#${type}_show_parts`).prop("checked", window[type].show_parts)
 	$(`#${type}_animate_scroll`).prop("checked", window[type].animate_scroll)
+	$(`#${type}_new_messages_separator`).prop("checked", window[type].new_messages_separator)
 }
 
 function start_settings_listeners(type)
@@ -8719,6 +8732,7 @@ function start_settings_listeners(type)
 	$(`#${type}_show_joins`).change(() => {setting_show_joins_action(type)})
 	$(`#${type}_show_parts`).change(() => {setting_show_parts_action(type)})
 	$(`#${type}_animate_scroll`).change(() => {setting_animate_scroll_action(type)})
+	$(`#${type}_new_messages_separator`).change(() => {setting_new_messages_separator_action(type)})
 }
 
 function call_setting_actions(type, save=true)
@@ -8740,6 +8754,7 @@ function call_setting_actions(type, save=true)
 	setting_show_joins_action(type, save)
 	setting_show_parts_action(type, save)
 	setting_animate_scroll_action(type, save)
+	setting_new_messasges_separator_action(type, save)
 }
 
 function setting_background_image_action(type, save=true)
@@ -9001,6 +9016,21 @@ function setting_show_parts_action(type, save=true)
 function setting_animate_scroll_action(type, save=true)
 {
 	window[type].animate_scroll = $(`#${type}_animate_scroll`).prop("checked")
+	
+	if(save)
+	{
+		window[`save_${type}`]()	
+	}
+}
+
+function setting_new_messages_separator_action(type, save=true)
+{
+	window[type].new_messages_separator = $(`#${type}_new_messages_separator`).prop("checked")
+
+	if(!window[type].new_messages_separator)
+	{
+		remove_separator()
+	}
 	
 	if(save)
 	{
@@ -13266,3 +13296,42 @@ function make_unique_lines(s)
 	s = split.join('\n')
 	return s
 }
+
+function add_separator()
+{
+	if(!get_setting("new_messages_separator"))
+	{
+		return false
+	}
+
+	if($(".separator_container").length > 0)
+	{
+		return false
+	}
+
+	var s = `
+	<div class='msg separator_container'>
+		<div class='separator_line'></div>
+		<div class='separator_text'>New Messages</div>
+		<div class='separator_line'></div>
+	<div>`
+
+	var sep = $(s)
+
+	$("#chat_area").append(sep)
+
+	update_chat_scrollbar()
+	goto_bottom()
+}
+
+function remove_separator()
+{
+	$(".separator_container").each(function()
+	{
+		$(this).remove()
+	})
+
+	update_chat_scrollbar()
+	goto_bottom()
+}
+

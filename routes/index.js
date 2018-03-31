@@ -71,6 +71,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.global_settings_default_show_joins = config.global_settings_default_show_joins
 	c.vars.global_settings_default_show_parts = config.global_settings_default_show_parts
 	c.vars.global_settings_default_animate_scroll = config.global_settings_default_animate_scroll
+	c.vars.global_settings_default_new_messages_separator = config.global_settings_default_new_messages_separator
 	c.vars.room_settings_default_images_enabled = config.room_settings_default_images_enabled
 	c.vars.room_settings_default_tv_enabled = config.room_settings_default_tv_enabled
 	c.vars.room_settings_default_radio_enabled = config.room_settings_default_radio_enabled

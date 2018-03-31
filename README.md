@@ -358,6 +358,9 @@ If you want to remove it to start fresh:
 "global_settings_default_animate_scroll"
 >Whether to animate chat scroll by default.
 
+"global_settings_default_new_messages_separator"
+>Whether to enable the new messages separator by default.
+
 "room_settings_default_images_enabled"
 >Whether images will be enabled to the user on new rooms by default.
 
