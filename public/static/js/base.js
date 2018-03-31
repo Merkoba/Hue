@@ -4220,7 +4220,7 @@ function update_chat(args={})
 
 function add_to_chat(msg, save=false)
 {
-	if(!app_focused)
+	if(started && !app_focused)
 	{
 		add_separator(false)
 	}
