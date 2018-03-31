@@ -2904,8 +2904,6 @@ function upload_file(file, action)
 
 	file.percentage = 0
 
-	file.reader.readAsArrayBuffer(slice)
-
 	var obj =
 	{
 		brk: '*', 
@@ -2929,7 +2927,7 @@ function upload_file(file, action)
 				return false
 			}
 
-			change_upload_status(file, "Cancelled")
+			change_upload_status(file, "Cancelled", true)
 			delete files[date]
 			socket_emit("cancel_upload", {date:date})
 		}
@@ -2938,6 +2936,8 @@ function upload_file(file, action)
 	}
 
 	chat_announce(obj)
+
+	file.reader.readAsArrayBuffer(slice)
 }
 
 function get_file_next(file)
@@ -2952,15 +2952,20 @@ function get_file_next(file)
 	return next	
 }
 
-function change_upload_status(file, status)
+function change_upload_status(file, status, clear=false)
 {
 	$(`#uploading_${file.date}`)
 	.find(".announcement_content")
 	.eq(0).text(`Uploading ${get_file_action_name(file.action)}: ${status}`)
-	.parent()
-	.off("click")
-	.removeClass("pointer")
-	.removeClass("action")
+
+	if(clear)
+	{
+		$(`#uploading_${file.date}`)
+		.find(".announcement_content_container").eq(0)
+		.off("click")
+		.removeClass("pointer")
+		.removeClass("action")
+	}
 }
 
 function get_file_action_name(action)
@@ -12347,7 +12352,7 @@ function upload_ended(data)
 
 	if(file)
 	{
-		change_upload_status(file, "100%")
+		change_upload_status(file, "100%", true)
 		delete files[data.date]
 	}
 }
