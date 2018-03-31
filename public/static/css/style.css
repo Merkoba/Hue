@@ -907,6 +907,7 @@ input[type=text], textarea
 {
 	background-color: white;
 	color: #222222;
+	font-family: imported_font, consolas, sans-serif !important;
 }
 
 #modal_image_error
