@@ -361,6 +361,27 @@ If you want to remove it to start fresh:
 "global_settings_default_new_messages_separator"
 >Whether to enable the new messages separator by default.
 
+"global_settings_default_afk_disable_messages_beep"
+>Whether to disable message beeps while afk.
+
+"global_settings_default_afk_disable_highlights_beep"
+>Whether to disable highlight beeps while afk.
+
+"global_settings_default_afk_disable_media_change_beep"
+>Whether to disable media change beeps while afk.
+
+"global_settings_default_afk_disable_joins_beep"
+>Whether to disable join beeps while afk.
+
+"global_settings_default_afk_disable_image_change"
+>Whether to disable image change while afk.
+
+"global_settings_default_afk_disable_tv_change"
+>Whether to disable tv change while afk.
+
+"global_settings_default_afk_disable_radio_change"
+>Whether to disable radio change while afk.
+
 "room_settings_default_images_enabled"
 >Whether images will be enabled to the user on new rooms by default.
 
