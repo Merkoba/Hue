@@ -103,6 +103,9 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.images_changed_crop_limit = config.images_changed_crop_limit
 	c.vars.email_change_code_max_length = config.email_change_code_max_length
 	c.vars.socket_emit_throttle = config.socket_emit_throttle
+	c.vars.safe_limit_1 = config.safe_limit_1
+	c.vars.safe_limit_2 = config.safe_limit_2
+	c.vars.safe_limit_3 = config.safe_limit_3
 
 	function check_url(req, res, next)
 	{

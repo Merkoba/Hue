@@ -463,6 +463,9 @@ If you want to remove it to start fresh:
 "socket_emit_throttle"
 >Throttle on socket emits on the client.
 
+"safe_limit_*"
+>Generic limits used to check data length.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"

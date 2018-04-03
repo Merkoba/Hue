@@ -135,5 +135,8 @@
 	"email_change_code_max_length": 200,
 	"create_room_cooldown": 1200000,
 	"recaptcha_enabled": true,
-	"socket_emit_throttle": 10
+	"socket_emit_throttle": 10,
+	"safe_limit_1": 100,
+	"safe_limit_2": 500,
+	"safe_limit_3": 1000
 }

@@ -498,6 +498,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			background_image_enabled: info.background_image_enabled,
 			background_mode: info.background_mode,
 			background_tile_dimensions: info.background_tile_dimensions,
+			text_color_mode: info.text_color_mode,
+			text_color: info.text_color,
 			voice1_chat_permission: info.voice1_chat_permission,
 			voice1_images_permission: info.voice1_images_permission,
 			voice1_tv_permission: info.voice1_tv_permission,
@@ -2414,6 +2416,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
+		if(data.dimensions.length > config.safe_limit_1)
+		{
+			return handler.get_out(socket)
+		}		
+
 		if(data.dimensions !== utilz.clean_string2(data.dimensions))
 		{
 			return handler.get_out(socket)
@@ -2432,6 +2439,64 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.room_emit(socket, 'background_tile_dimensions_changed', 
 		{
 			dimensions: data.dimensions,
+			username: socket.hue_username
+		})
+	}
+
+	handler.change_text_color_mode = function(socket, data)
+	{
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.mode !== "automatic" && data.mode !== "custom")
+		{
+			return handler.get_out(socket)
+		}
+
+		db_manager.update_room(socket.hue_room_id,
+		{
+			text_color_mode: data.mode
+		})
+
+		.catch(err =>
+		{
+			logger.log_error(err)
+		})
+
+		handler.room_emit(socket, 'text_color_mode_changed', 
+		{
+			mode: data.mode,
+			username: socket.hue_username
+		})
+	}	
+
+	handler.change_text_color = function(socket, data)
+	{
+		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.color !== utilz.clean_string2(data.color))
+		{
+			return handler.get_out(socket)
+		}
+
+		db_manager.update_room(socket.hue_room_id,
+		{
+			text_color: data.color
+		})
+
+		.catch(err =>
+		{
+			logger.log_error(err)
+		})
+
+		handler.room_emit(socket, 'text_color_changed', 
+		{
+			color: data.color,
 			username: socket.hue_username
 		})
 	}

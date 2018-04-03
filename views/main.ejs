@@ -34,7 +34,7 @@
 		<script src="/static/js/utilz.js?ver=6"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1168"></script>
+		<script src="/static/js/base.js?ver=1171"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=330"/>
 
@@ -314,8 +314,23 @@
 						<div class='spacer1'></div>
 
 					</div>
+					
+					<img class='small_square_image pointer' id='admin_background_image' onclick='open_background_image_picker()'>
 
-					<img class='small_square_image pointer' id='admin_background_image' onclick='open_background_image_picker()'>	
+					<div class='spacer1'></div>
+
+					<div class='small_padding_bottom'>Text Color Mode</div>
+
+					<select class='modal_select' id='admin_text_color_mode_select'>
+						<option value="automatic">Automatic</option>
+						<option value="custom">Custom</option>
+					</select>
+
+					<div id='admin_text_color_container'>
+						<div class='spacer1'></div>
+						<div class='small_padding_bottom'>Text Color</div>
+						<input id='admin_text_color'>
+					</div>
 
 					<div class='spacer1'></div>
 					<div class='spacer3'></div>					

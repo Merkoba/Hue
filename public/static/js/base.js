@@ -1080,6 +1080,16 @@ function start_socket()
 			announce_background_tile_dimensions_change(data)
 		}
 
+		else if(data.type === 'text_color_mode_changed')
+		{
+			announce_text_color_mode_change(data)
+		}
+
+		else if(data.type === 'text_color_changed')
+		{
+			announce_text_color_change(data)
+		}
+
 		else if(data.type === 'voice_permission_change')
 		{
 			announce_voice_permission_change(data)
@@ -1539,6 +1549,8 @@ function setup_theme_and_background(data)
 	background_image_enabled = data.background_image_enabled
 	background_mode = data.background_mode
 	background_tile_dimensions = data.background_tile_dimensions
+	text_color_mode = data.text_color_mode
+	text_color = data.text_color
 }
 
 function set_background()
@@ -1592,8 +1604,18 @@ function set_background()
 function set_theme()
 {
 	var background_color = theme
+	
 	var background_color_2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
-	var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2)
+
+	if(text_color_mode === "custom")
+	{
+		var font_color = text_color
+	}
+
+	else
+	{
+		var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2)
+	}
 
 	if(background_image_enabled && get_setting("background_image"))
 	{
@@ -2519,7 +2541,7 @@ function setup_main_menu()
 	{
 		color: "#B5599A",
 		appendTo: "#admin_menu",
-		showInput: true,
+		showInput: true
 	})
 
 	$("#admin_theme").on('hide.spectrum', function(e, t) 
@@ -2547,6 +2569,25 @@ function setup_main_menu()
 
 		change_background_tile_dimensions(what)
 	})
+
+	$('#admin_text_color_mode_select').change(function()
+	{
+		var what = $('#admin_text_color_mode_select option:selected').val()
+
+		change_text_color_mode(what)
+	})	
+
+	$("#admin_text_color").spectrum(
+	{
+		color: "#B5599A",
+		appendTo: "#admin_menu",
+		showInput: true
+	})
+
+	$("#admin_text_color").on('hide.spectrum', function(e, t) 
+	{
+		change_text_color(t.toRgbString())
+	})	
 
 	$('#admin_room_name').blur(function()
 	{
@@ -2670,6 +2711,42 @@ function config_admin_background_image()
 			$("#admin_background_image").attr("src", default_background_image_url)
 		}
 	}	
+}
+
+function config_admin_text_color_mode()
+{
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+
+	$('#admin_text_color_mode_select').find('option').each(function()
+	{
+		if($(this).val() === text_color_mode)
+		{
+			$(this).prop('selected', true)
+		}
+	})
+
+	if(text_color_mode === "custom")
+	{
+		$("#admin_text_color_container").css("display", "block")
+	}
+
+	else
+	{
+		$("#admin_text_color_container").css("display", "none")
+	}
+}
+
+function config_admin_text_color()
+{
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+
+	$("#admin_text_color").spectrum("set", text_color)
 }
 
 function config_admin_privacy()
@@ -2797,6 +2874,8 @@ function config_main_menu()
 		config_admin_background_mode()
 		config_admin_background_tile_dimensions()
 		config_admin_background_image()
+		config_admin_text_color_mode()
+		config_admin_text_color()
 		config_admin_room_name()		
 		config_admin_topic()		
 
@@ -11298,6 +11377,11 @@ function change_background_tile_dimensions(dimensions)
 		return false
 	}
 
+	if(dimensions.length > safe_limit_1)
+	{
+		return false
+	}
+
 	dimensions = utilz.clean_string2(dimensions)
 
 	if(dimensions.length === 0)
@@ -13671,4 +13755,76 @@ function start_soundcloud()
 {
 	soundcloud_player = SC.Widget("soundcloud_player")
 	soundcloud_video_player = SC.Widget("media_soundcloud_video")
+}
+
+function change_text_color_mode(mode)
+{
+	if(!is_admin_or_op(role))
+	{
+		not_an_op()
+		return false
+	}
+
+	if(mode !== "automatic" && mode !== "custom")
+	{
+		feedback("Invalid text color mode")
+		return false
+	}
+
+	if(mode === text_color_mode)
+	{
+		feedback(`Text color mode is already ${text_color_mode}`)
+		return false
+	}
+
+	socket_emit("change_text_color_mode", {mode:mode})	
+}
+
+function announce_text_color_mode_change(data)
+{
+	public_feedback(`${data.username} changed the text color mode to ${data.mode}`)
+	set_text_color_mode(data.mode)
+	set_theme()
+}
+
+function set_text_color_mode(mode)
+{
+	text_color_mode = mode
+	config_admin_text_color_mode()	
+}
+
+function change_text_color(color)
+{
+	if(!is_admin_or_op(role))
+	{
+		not_an_op()
+		return false
+	}
+
+	color = utilz.clean_string2(color)
+
+	if(color.length === 0)
+	{
+		return false
+	}
+
+	if(color === text_color)
+	{
+		return false
+	}
+
+	socket_emit("change_text_color", {color:color})
+}
+
+function announce_text_color_change(data)
+{
+	public_feedback(`${data.username} changed the text color to ${data.color}`)
+	set_text_color(data.color)
+	set_theme()
+}
+
+function set_text_color(color)
+{
+	text_color = color
+	config_admin_text_color()	
 }

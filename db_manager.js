@@ -4,7 +4,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 40
+	const rooms_version = 44
 	const users_version = 28
 
 	function get_random_key()
@@ -79,255 +79,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 					.then(room =>
 					{
-						if(typeof room.name !== "string")
-						{
-							room.name = "No Name"
-						}
-						
-						if(typeof room.image_source !== "string")
-						{
-							room.image_source = ""
-						}
-						
-						if(typeof room.image_setter !== "string")
-						{
-							room.image_setter = ""
-						}
-						
-						if(typeof room.image_size !== "number")
-						{
-							room.image_size = 0
-						}
-						
-						if(typeof room.image_date !== "number")
-						{
-							room.image_date = 0
-						}
-
-						if(typeof room.image_type !== "string")
-						{
-							room.image_type = "upload"
-						}
-
-						if(typeof room.stored_images !== "object")
-						{
-							room.stored_images = []
-						}
-						
-						if(typeof room.topic !== "string")
-						{
-							room.topic = ""
-						}
-						
-						if(typeof room.topic_setter !== "string")
-						{
-							room.topic_setter = ""
-						}
-						
-						if(typeof room.topic_date !== "number")
-						{
-							room.topic_date = 0
-						}
-						
-						if(typeof room.keys !== "object")
-						{
-							room.keys = {}
-						}
-
-						if(typeof room.radio_type !== "string")
-						{
-							room.radio_type = "radio"
-						}					
-						
-						if(typeof room.radio_source !== "string")
-						{
-							room.radio_source = ""
-						}
-
-						if(typeof room.radio_title !== "string")
-						{
-							room.radio_title = ""
-						}
-						
-						if(typeof room.radio_setter !== "string")
-						{
-							room.radio_setter = ""
-						}
-						
-						if(typeof room.radio_date !== "number")
-						{
-							room.radio_date = 0
-						}
-
-						if(typeof room.tv_type !== "string")
-						{
-							room.tv_type = "tv"
-						}					
-						
-						if(typeof room.tv_source !== "string")
-						{
-							room.tv_source = ""
-						}
-
-						if(typeof room.tv_title !== "string")
-						{
-							room.tv_title = ""
-						}
-						
-						if(typeof room.tv_setter !== "string")
-						{
-							room.tv_setter = ""
-						}
-						
-						if(typeof room.tv_date !== "number")
-						{
-							room.tv_date = 0
-						}	
-
-						if(typeof room.images_enabled !== "boolean")
-						{
-							room.images_enabled = true
-						}	
-
-						if(typeof room.radio_enabled !== "boolean")
-						{
-							room.radio_enabled = true
-						}	
-
-						if(typeof room.tv_enabled !== "boolean")
-						{
-							room.tv_enabled = true
-						}
-						
-						if(typeof room.bans !== "object")
-						{
-							room.bans = []
-						}
-
-						if(typeof room.log !== "object")
-						{
-							room.log = true
-						}
-
-						if(typeof room.log_messages !== "object")
-						{
-							room.log_messages = []
-						}
-
-						if(typeof room.theme !== "string")
-						{
-							room.theme = "rgb(56, 46, 95)"
-						}
-
-						if(typeof room.background_image !== "string")
-						{
-							room.background_image = ""
-						}
-
-						if(typeof room.background_image_enabled !== "boolean")
-						{
-							room.background_image_enabled = true
-						}
-
-						if(typeof room.background_mode !== "boolean")
-						{
-							room.background_mode = "normal"
-						}
-
-						if(typeof room.background_tile_dimensions !== "boolean")
-						{
-							room.background_tile_dimensions = "100px auto"
-						}
-						
-						if(typeof room.modified !== "number")
-						{
-							room.modified = Date.now()
-						}
-						
-						if(typeof room.public !== "boolean")
-						{
-							room.public = true
-						}
-
-						if(typeof room.voice1_chat_permission !== "boolean")
-						{
-							room.voice1_chat_permission = true
-						}	
-
-						if(typeof room.voice1_images_permission !== "boolean")
-						{
-							room.voice1_images_permission = true
-						}	
-
-						if(typeof room.voice1_tv_permission !== "boolean")
-						{
-							room.voice1_tv_permission = true
-						}	
-
-						if(typeof room.voice1_radio_permission !== "boolean")
-						{
-							room.voice1_radio_permission = true
-						}
-
-						if(typeof room.voice2_chat_permission !== "boolean")
-						{
-							room.voice2_chat_permission = true
-						}	
-
-						if(typeof room.voice2_images_permission !== "boolean")
-						{
-							room.voice2_images_permission = true
-						}	
-
-						if(typeof room.voice2_tv_permission !== "boolean")
-						{
-							room.voice2_tv_permission = true
-						}	
-
-						if(typeof room.voice2_radio_permission !== "boolean")
-						{
-							room.voice2_radio_permission = true
-						}
-
-						if(typeof room.voice3_chat_permission !== "boolean")
-						{
-							room.voice3_chat_permission = true
-						}	
-
-						if(typeof room.voice3_images_permission !== "boolean")
-						{
-							room.voice3_images_permission = true
-						}	
-
-						if(typeof room.voice3_tv_permission !== "boolean")
-						{
-							room.voice3_tv_permission = true
-						}	
-
-						if(typeof room.voice3_radio_permission !== "boolean")
-						{
-							room.voice3_radio_permission = true
-						}
-
-						if(typeof room.voice4_chat_permission !== "boolean")
-						{
-							room.voice4_chat_permission = true
-						}	
-
-						if(typeof room.voice4_images_permission !== "boolean")
-						{
-							room.voice4_images_permission = true
-						}	
-
-						if(typeof room.voice4_tv_permission !== "boolean")
-						{
-							room.voice4_tv_permission = true
-						}	
-
-						if(typeof room.voice4_radio_permission !== "boolean")
-						{
-							room.voice4_radio_permission = true
-						}
+						manager.room_fill_defaults(room)
 
 						room.version = rooms_version
 
@@ -371,63 +123,277 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})
 	}
 
+	manager.room_fill_defaults = function(room)
+	{
+		if(typeof room.name !== "string")
+		{
+			room.name = "No Name"
+		}
+		
+		if(typeof room.image_source !== "string")
+		{
+			room.image_source = ""
+		}
+		
+		if(typeof room.image_setter !== "string")
+		{
+			room.image_setter = ""
+		}
+		
+		if(typeof room.image_size !== "number")
+		{
+			room.image_size = 0
+		}
+		
+		if(typeof room.image_date !== "number")
+		{
+			room.image_date = 0
+		}
+
+		if(typeof room.image_type !== "string")
+		{
+			room.image_type = "upload"
+		}
+
+		if(typeof room.stored_images !== "object")
+		{
+			room.stored_images = []
+		}
+		
+		if(typeof room.topic !== "string")
+		{
+			room.topic = ""
+		}
+		
+		if(typeof room.topic_setter !== "string")
+		{
+			room.topic_setter = ""
+		}
+		
+		if(typeof room.topic_date !== "number")
+		{
+			room.topic_date = 0
+		}
+		
+		if(typeof room.keys !== "object")
+		{
+			room.keys = {}
+		}
+
+		if(typeof room.radio_type !== "string")
+		{
+			room.radio_type = "radio"
+		}					
+		
+		if(typeof room.radio_source !== "string")
+		{
+			room.radio_source = ""
+		}
+
+		if(typeof room.radio_title !== "string")
+		{
+			room.radio_title = ""
+		}
+		
+		if(typeof room.radio_setter !== "string")
+		{
+			room.radio_setter = ""
+		}
+		
+		if(typeof room.radio_date !== "number")
+		{
+			room.radio_date = 0
+		}
+
+		if(typeof room.tv_type !== "string")
+		{
+			room.tv_type = "tv"
+		}					
+		
+		if(typeof room.tv_source !== "string")
+		{
+			room.tv_source = ""
+		}
+
+		if(typeof room.tv_title !== "string")
+		{
+			room.tv_title = ""
+		}
+		
+		if(typeof room.tv_setter !== "string")
+		{
+			room.tv_setter = ""
+		}
+		
+		if(typeof room.tv_date !== "number")
+		{
+			room.tv_date = 0
+		}	
+
+		if(typeof room.images_enabled !== "boolean")
+		{
+			room.images_enabled = true
+		}	
+
+		if(typeof room.radio_enabled !== "boolean")
+		{
+			room.radio_enabled = true
+		}	
+
+		if(typeof room.tv_enabled !== "boolean")
+		{
+			room.tv_enabled = true
+		}
+		
+		if(typeof room.bans !== "object")
+		{
+			room.bans = []
+		}
+
+		if(typeof room.log !== "object")
+		{
+			room.log = true
+		}
+
+		if(typeof room.log_messages !== "object")
+		{
+			room.log_messages = []
+		}
+
+		if(typeof room.theme !== "string")
+		{
+			room.theme = "rgb(56, 46, 95)"
+		}
+
+		if(typeof room.background_image !== "string")
+		{
+			room.background_image = ""
+		}
+
+		if(typeof room.background_image_enabled !== "boolean")
+		{
+			room.background_image_enabled = true
+		}
+
+		if(typeof room.background_mode !== "string")
+		{
+			room.background_mode = "normal"
+		}
+
+		if(typeof room.background_tile_dimensions !== "string")
+		{
+			room.background_tile_dimensions = "100px auto"
+		}
+
+		if(typeof room.text_color_mode !== "string")
+		{
+			room.text_color_mode = "automatic"
+		}
+
+		if(typeof room.text_color !== "string")
+		{
+			room.text_color = "rgb(215, 213, 223)"
+		}
+		
+		if(typeof room.modified !== "number")
+		{
+			room.modified = Date.now()
+		}
+		
+		if(typeof room.public !== "boolean")
+		{
+			room.public = true
+		}
+
+		if(typeof room.voice1_chat_permission !== "boolean")
+		{
+			room.voice1_chat_permission = true
+		}	
+
+		if(typeof room.voice1_images_permission !== "boolean")
+		{
+			room.voice1_images_permission = true
+		}	
+
+		if(typeof room.voice1_tv_permission !== "boolean")
+		{
+			room.voice1_tv_permission = true
+		}	
+
+		if(typeof room.voice1_radio_permission !== "boolean")
+		{
+			room.voice1_radio_permission = true
+		}
+
+		if(typeof room.voice2_chat_permission !== "boolean")
+		{
+			room.voice2_chat_permission = true
+		}	
+
+		if(typeof room.voice2_images_permission !== "boolean")
+		{
+			room.voice2_images_permission = true
+		}	
+
+		if(typeof room.voice2_tv_permission !== "boolean")
+		{
+			room.voice2_tv_permission = true
+		}	
+
+		if(typeof room.voice2_radio_permission !== "boolean")
+		{
+			room.voice2_radio_permission = true
+		}
+
+		if(typeof room.voice3_chat_permission !== "boolean")
+		{
+			room.voice3_chat_permission = true
+		}	
+
+		if(typeof room.voice3_images_permission !== "boolean")
+		{
+			room.voice3_images_permission = true
+		}	
+
+		if(typeof room.voice3_tv_permission !== "boolean")
+		{
+			room.voice3_tv_permission = true
+		}	
+
+		if(typeof room.voice3_radio_permission !== "boolean")
+		{
+			room.voice3_radio_permission = true
+		}
+
+		if(typeof room.voice4_chat_permission !== "boolean")
+		{
+			room.voice4_chat_permission = true
+		}	
+
+		if(typeof room.voice4_images_permission !== "boolean")
+		{
+			room.voice4_images_permission = true
+		}	
+
+		if(typeof room.voice4_tv_permission !== "boolean")
+		{
+			room.voice4_tv_permission = true
+		}	
+
+		if(typeof room.voice4_radio_permission !== "boolean")
+		{
+			room.voice4_radio_permission = true
+		}		
+	}
+
 	manager.create_room = function(data)
 	{
 		return new Promise((resolve, reject) => 
 		{
-			room = 
-			{
-				version: rooms_version,
-				image_source: '',
-				image_setter: '',
-				image_size: 0,
-				image_date: 0,
-				image_type: "upload",
-				stored_images: [],
-				topic: '',
-				topic_setter: '',
-				topic_date: 0,
-				keys: {},
-				radio_type: 'radio',
-				radio_source: '',
-				radio_title: '',
-				radio_setter: '',
-				radio_date: 0,
-				tv_type: '',
-				tv_source: '',
-				tv_title: '',
-				tv_setter: '',
-				tv_date: 0,
-				log_messages: [],
-				bans: [],
-				images_enabled: true,
-				radio_enabled: true,
-				tv_enabled: true,
-				theme: "rgb(56, 46, 95)",
-				background_image: "",
-				background_image_enabled: true,
-				background_mode: "normal",
-				background_tile_dimensions: "100px auto",
-				log: true,
-				voice1_chat_permission: true,
-				voice1_images_permission: true,
-				voice1_tv_permission: true,
-				voice1_radio_permission: true,
-				voice2_chat_permission: true,
-				voice2_images_permission: true,
-				voice2_tv_permission: true,
-				voice2_radio_permission: true,
-				voice3_chat_permission: true,
-				voice3_images_permission: true,
-				voice3_tv_permission: true,
-				voice3_radio_permission: true,
-				voice4_chat_permission: true,
-				voice4_images_permission: true,
-				voice4_tv_permission: true,
-				voice4_radio_permission: true,
-				modified: Date.now()
-			}
+			room = {}
 
+			manager.room_fill_defaults(room)
+			
 			if(data.id !== undefined)
 			{
 				room._id = data.id
@@ -440,6 +406,8 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 			room.name = data.name !== undefined ? data.name : "No Name"
 			room.public = data.public !== undefined ? data.public : true
+
+			room.version = rooms_version
 
 			db.collection('rooms').insertOne(room)
 
@@ -671,85 +639,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 							return
 						}
 
-						if(typeof user.password_date !== "number")
-						{
-							user.password_date = 0
-						}
-
-						if(typeof user.email !== "string")
-						{
-							user.email = ""
-						}
-
-						if(typeof user.password_reset_code !== "string")
-						{
-							user.password_reset_code = ""
-						}
-
-						if(typeof user.password_reset_date !== "number")
-						{
-							user.password_reset_date = 0
-						}
-
-						if(typeof user.password_reset_link_date !== "number")
-						{
-							user.password_reset_link_date = 0
-						}
-
-						if(typeof user.visited_rooms !== "object")
-						{
-							user.visited_rooms = []
-						}
-
-						if(typeof user.profile_image !== "string")
-						{
-							user.profile_image = ""
-						}
-
-						if(typeof user.profile_image_version !== "number")
-						{
-							user.profile_image_version = 0
-						}
-
-						if(typeof user.verified !== "boolean")
-						{
-							user.verified = false
-						}
-
-						if(typeof user.verification_code !== "string")
-						{
-							user.verification_code = ""
-						}
-
-						if(typeof user.registration_date !== "number")
-						{
-							user.registration_date = 0
-						}
-
-						if(typeof user.email_change_code !== "string")
-						{
-							user.email_change_code = ""
-						}
-
-						if(typeof user.email_change_date !== "number")
-						{
-							user.email_change_date = 0
-						}
-
-						if(typeof user.email_change_code_date !== "number")
-						{
-							user.email_change_code_date = 0
-						}
-
-						if(typeof user.create_room_date !== "number")
-						{
-							user.create_room_date = 0
-						}						
-
-						if(typeof user.modified !== "number")
-						{
-							user.modified = Date.now()
-						}						
+						manager.user_fill_defaults()						
 
 						user.version = users_version
 
@@ -793,6 +683,89 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})	
 	}
 
+	manager.user_fill_defaults = function(user)
+	{
+		if(typeof user.password_date !== "number")
+		{
+			user.password_date = 0
+		}
+
+		if(typeof user.email !== "string")
+		{
+			user.email = ""
+		}
+
+		if(typeof user.password_reset_code !== "string")
+		{
+			user.password_reset_code = ""
+		}
+
+		if(typeof user.password_reset_date !== "number")
+		{
+			user.password_reset_date = 0
+		}
+
+		if(typeof user.password_reset_link_date !== "number")
+		{
+			user.password_reset_link_date = 0
+		}
+
+		if(typeof user.visited_rooms !== "object")
+		{
+			user.visited_rooms = []
+		}
+
+		if(typeof user.profile_image !== "string")
+		{
+			user.profile_image = ""
+		}
+
+		if(typeof user.profile_image_version !== "number")
+		{
+			user.profile_image_version = 0
+		}
+
+		if(typeof user.verified !== "boolean")
+		{
+			user.verified = false
+		}
+
+		if(typeof user.verification_code !== "string")
+		{
+			user.verification_code = ""
+		}
+
+		if(typeof user.registration_date !== "number")
+		{
+			user.registration_date = 0
+		}
+
+		if(typeof user.email_change_code !== "string")
+		{
+			user.email_change_code = ""
+		}
+
+		if(typeof user.email_change_date !== "number")
+		{
+			user.email_change_date = 0
+		}
+
+		if(typeof user.email_change_code_date !== "number")
+		{
+			user.email_change_code_date = 0
+		}
+
+		if(typeof user.create_room_date !== "number")
+		{
+			user.create_room_date = 0
+		}						
+
+		if(typeof user.modified !== "number")
+		{
+			user.modified = Date.now()
+		}		
+	}
+
 	manager.create_user = function(info)
 	{
 		return new Promise((resolve, reject) => 
@@ -805,21 +778,18 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 				user =
 				{
-					version: users_version,
 					username: info.username,
 					password: hash,
 					password_date: Date.now(),
 					email: info.email, 
-					password_reset_link_date: 0,
-					password_reset_date: 0,
-					visited_rooms: [],
-					profile_image: "",
-					profile_image_version: 0,
 					verified: false,
 					verification_code: Date.now() + utilz.get_random_string(12),
-					registration_date: Date.now(),
-					modified: Date.now()
+					registration_date: Date.now()
 				}
+
+				manager.user_fill_defaults(user)
+
+				user.version = users_version
 
 				db.collection('users').insertOne(user)
 
