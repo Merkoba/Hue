@@ -22,6 +22,7 @@
 		<script src="/static/js/contextmenu/jquery.ui.position.min.js"></script>
 		<script src="/static/js/socket.io.js"></script>
 		<script src="/static/js/hls.js"></script>
+		<script src="https://w.soundcloud.com/player/api.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/perfect-scrollbar.css?v=3"/>
 		<link rel="stylesheet" href="/static/css/font-awesome/css/font-awesome.min.css">
@@ -33,9 +34,9 @@
 		<script src="/static/js/utilz.js?ver=6"></script>
 		<script src="/static/js/colorlib.js?v=7"></script>
 
-		<script src="/static/js/base.js?ver=1167"></script>
+		<script src="/static/js/base.js?ver=1168"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=329"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=330"/>
 
 		<script>
 
@@ -151,6 +152,10 @@
 							</div>
 
 							<div id='media_tv'>
+
+								<div id='media_soundcloud_video_container'>
+									<iframe id='media_soundcloud_video' class='video_frame' src='https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536'></iframe>
+								</div>
 							
 								<div id='media_twitch_video_container'></div>
 
@@ -1120,7 +1125,7 @@
 			<span class='help_link action unselectable' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='help2()'>Additional Features</span>		
 		</script>		
 
-		<audio id='audio' preload="metadata" autoplay></audio>
+		<audio id='audio' preload="metadata"></audio>
 
 		<audio id='audio_pup' src='/static/audio/pup.mp3?v=1' preload="auto"></audio>
 		<audio id='audio_pup2' src='/static/audio/pup2.mp3?v=1' preload="auto"></audio>
@@ -1132,6 +1137,8 @@
 		<input type='file' accept="image/jpeg, image/png, image/gif" id='profile_image_picker' onchange='profile_image_selected(this)'>
 
 		<input type='file' accept="image/jpeg, image/png, image/gif" id='background_image_input' class='nodisplay' onchange='background_image_selected(this)'>
+
+		<iframe id='soundcloud_player' src='https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536'></iframe>
 
 	</body>
 

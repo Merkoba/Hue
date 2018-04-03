@@ -49,6 +49,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.afk_timeout_duration = config.afk_timeout_duration
 	c.vars.youtube_enabled = config.youtube_enabled
 	c.vars.twitch_enabled = config.twitch_enabled
+	c.vars.soundcloud_enabled = config.soundcloud_enabled
 	c.vars.min_password_length = config.min_password_length
 	c.vars.max_password_length = config.max_password_length
 	c.vars.max_email_length = config.max_email_length

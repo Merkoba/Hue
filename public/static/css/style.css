@@ -215,6 +215,15 @@ body, html
 	justify-content: center;
 }
 
+#media_soundcloud_video_container
+{
+	height: calc(100% - 4em);
+	width: calc(100% - 4.7em);
+	display: none;
+	align-items: center;
+	justify-content: center;
+}
+
 #footer
 {
 	background-color: #262423;
@@ -827,6 +836,15 @@ a.generic:link, a.generic:visited, a.generic:hover
 }
 
 #youtube_player
+{
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: -9999999999;
+	visibility: hidden;
+}
+
+#soundcloud_player
 {
 	position: fixed;
 	top: 0;

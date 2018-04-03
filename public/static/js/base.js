@@ -225,11 +225,13 @@ function init()
 	start_username_context_menu()
 	start_played_context_menu()
 	start_volume_context_menu()
+	start_toggle_radio_context_menu()
 	start_metadata_loop()
 	start_titles()
 	setup_show_profile()
 	setup_main_menu()
 	start_twitch()
+	start_soundcloud()
 	check_image_queue()
 	setup_input()
 	font_check()
@@ -1216,23 +1218,6 @@ function setup_tv(data)
 	change({type:"tv", force:true})
 }
 
-function stop_videos()
-{
-	if(youtube_video_player !== undefined)
-	{
-		youtube_video_player.pauseVideo()
-	}
-
-	if(twitch_video_player !== undefined)
-	{
-		twitch_video_player.pause()
-	}
-
-	$("#media_video")[0].pause()
-
-	hls.stopLoad()
-}
-
 function load_radio()
 {
 	if(radio_type === "radio")
@@ -1252,17 +1237,22 @@ function load_radio()
 
 		get_radio_metadata()
 		
-		if(youtube_player !== undefined)
-		{
-			youtube_player.stopVideo()
-		}
-		
 		$('#audio').attr('src', radio_source)
 
-		if(!radio_started)
+		if(radio_started)
 		{
-			$('#audio')[0].pause()
-		}		
+			$('#audio')[0].play()
+		}
+
+		if(youtube_player !== undefined)
+		{
+			youtube_player.pauseVideo()
+		}
+
+		if(soundcloud_player !== undefined)
+		{
+			soundcloud_player.pause()
+		}
 	}
 
 	else if(radio_type === "youtube")
@@ -1301,11 +1291,72 @@ function load_radio()
 			push_played(false, {s1:radio_title, s2:radio_source})
 		}
 
+		if(soundcloud_player !== undefined)
+		{
+			soundcloud_player.pause()
+		}
+
+		$('#audio').attr('src', '')
+	}
+
+	else if(radio_type === "soundcloud")
+	{
+		if(soundcloud_player !== undefined)
+		{
+			soundcloud_player.load(radio_source,
+			{
+				auto_play: false,
+				single_active: false,
+				show_artwork: true,
+				callback: function()
+				{
+					if(radio_started)
+					{
+						soundcloud_player.play()
+					}
+				}
+			})		
+
+		}
+
+
+		if(!room_settings.radio_locked || !last_radio_change)
+		{
+			push_played(false, {s1:radio_title, s2:radio_source})
+		}		
+		
+		if(youtube_player !== undefined)
+		{
+			youtube_player.pauseVideo()
+		}
+
 		$('#audio').attr('src', '')
 	}
 
 	loaded_radio_source = radio_source
 	loaded_radio_type = radio_type	
+}
+
+function stop_videos()
+{
+	if(youtube_video_player !== undefined)
+	{
+		youtube_video_player.pauseVideo()
+	}
+
+	if(twitch_video_player !== undefined)
+	{
+		twitch_video_player.pause()
+	}
+
+	if(soundcloud_video_player !== undefined)
+	{
+		soundcloud_video_player.pause()
+	}
+
+	$("#media_video")[0].pause()
+
+	hls.stopLoad()
 }
 
 function play_video()
@@ -1328,6 +1379,14 @@ function play_video()
 		if(twitch_video_player !== undefined)
 		{
 			twitch_video_player.play()
+		}
+	}
+
+	else if(tv_type === "soundcloud")
+	{
+		if(soundcloud_video_player !== undefined)
+		{
+			soundcloud_video_player.play()
 		}
 	}
 
@@ -1362,6 +1421,7 @@ function show_youtube_video(play=true)
 	
 	$("#media_video_container").css("display", "none")
 	$("#media_twitch_video_container").css("display", "none")
+	$("#media_soundcloud_video_container").css("display", "none")	
 	$("#media_youtube_video_container").css("display", "flex")
 
 	fix_video_frame("media_youtube_video")
@@ -1390,6 +1450,7 @@ function show_twitch_video(play=true)
 
 	$("#media_video_container").css("display", "none")
 	$("#media_youtube_video_container").css("display", "none")
+	$("#media_soundcloud_video_container").css("display", "none")
 	$("#media_twitch_video_container").css("display", "flex")
 
 	if(play)
@@ -1403,6 +1464,32 @@ function show_twitch_video(play=true)
 	}
 
 	fix_video_frame("media_twitch_video")
+}
+
+function show_soundcloud_video(play=true)
+{
+	stop_videos()
+
+	soundcloud_video_player.load(tv_source,
+	{
+		auto_play: false,
+		single_active: false,
+		show_artwork: true,
+		callback: function()
+		{
+			if(play)
+			{
+				soundcloud_video_player.play()
+			}
+		}
+	})
+
+	$("#media_video_container").css("display", "none")
+	$("#media_twitch_video_container").css("display", "none")
+	$("#media_youtube_video_container").css("display", "none")	
+	$("#media_soundcloud_video_container").css("display", "flex")
+
+	fix_video_frame("media_soundcloud_video")
 }
 
 function show_video(play=true)
@@ -1423,7 +1510,8 @@ function show_video(play=true)
 	}
 
 	$("#media_youtube_video_container").css("display", "none")
-	$("#media_twitch_video_container").css("display", "none")	
+	$("#media_twitch_video_container").css("display", "none")
+	$("#media_soundcloud_video_container").css("display", "none")	
 	$("#media_video_container").css("display", "flex")
 
 	if(play)
@@ -2240,6 +2328,27 @@ function start_volume_context_menu()
 					set_volume(0)
 				}
 			}
+		}
+	})
+}
+
+function start_toggle_radio_context_menu()
+{
+	$.contextMenu(
+	{
+		selector: "#toggle_radio_state",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		className: 'toggle_radio_context',
+		items: 
+		{
+			trrestart: 
+			{
+				name: "Restart", callback: function(key, opt)
+				{
+					change({type:"radio", force:true})
+				}    
+			},
 		}
 	})
 }
@@ -4444,6 +4553,16 @@ function change(args={})
 
 			show_twitch_video(args.play)
 		}
+
+		else if(tv_type === "soundcloud")
+		{
+			if(soundcloud_video_player === undefined)
+			{
+				return false
+			}
+
+			show_soundcloud_video(args.play)
+		}
 		
 		else if(tv_type === "url")
 		{
@@ -6280,6 +6399,14 @@ function start_radio()
 		}		
 	}
 
+	else if(loaded_radio_type === "soundcloud")
+	{
+		if(soundcloud_player !== undefined)
+		{
+			soundcloud_player.play()
+		}
+	}
+
 	$('#playing_icon').css('display', 'inline-block')
 	$('#volume_area').css('display', 'inline-block')
 	$('#toggle_now_playing_text').html('Stop Radio')
@@ -6293,7 +6420,12 @@ function stop_radio()
 	
 	if(youtube_player !== undefined)
 	{
-		youtube_player.stopVideo()
+		youtube_player.pauseVideo()
+	}	
+
+	if(soundcloud_player !== undefined)
+	{
+		soundcloud_player.pause()
 	}
 
 	$('#playing_icon').css('display', 'none')
@@ -7229,9 +7361,18 @@ function change_radio_source(src)
 			{
 				if(!youtube_enabled)
 				{
-					feedback("Invalid radio source")
+					feedback("YouTube support is not enabled")
 					return
 				}
+			}
+
+			else if(src.indexOf("soundcloud.com") !== -1)
+			{
+				if(!soundcloud_enabled)
+				{
+					feedback("Soundcloud support is not enabled")
+					return
+				}			
 			}
 		}
 
@@ -7360,6 +7501,15 @@ function change_tv_source(src)
 				if(utilz.get_twitch_id(src) && !twitch_enabled)
 				{
 					feedback("Twitch support is not enabled")
+					return
+				}
+			}
+
+			else if(src.indexOf("soundcloud.com") !== -1)
+			{
+				if(!soundcloud_enabled)
+				{
+					feedback("Soundcloud support is not enabled")
 					return
 				}
 			}
@@ -13517,3 +13667,8 @@ function remove_separator(update_scroll=true)
 	}
 }
 
+function start_soundcloud()
+{
+	soundcloud_player = SC.Widget("soundcloud_player")
+	soundcloud_video_player = SC.Widget("media_soundcloud_video")
+}

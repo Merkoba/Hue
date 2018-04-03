@@ -7,6 +7,14 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const mongo = require('mongodb')
 	const aws = require('aws-sdk')
 	const jwt = require('jsonwebtoken')
+	const soundcloud = require('node-soundcloud')
+
+	soundcloud.init(
+	{
+		id: `${sconfig.soundcloud_id}`,
+		secret: `${sconfig.soundcloud_secret}`
+	})
+
 	const images_root = path.join(__dirname, config.images_directory)
 
 	var vtypes = ["voice1", "voice2", "voice3", "voice4"]
@@ -1499,6 +1507,31 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				}
 			}
 
+			else if(data.src.indexOf("soundcloud.com") !== -1)
+			{
+				if(!config.soundcloud_enabled)
+				{
+					return
+				}
+
+				soundcloud.get(`/resolve?url=${data.src}`, function(err, track) 
+				{
+					if(err) 
+					{
+						handler.user_emit(socket, 'songnotfound', {})
+						logger.log_error(err)
+						return false
+					} 
+
+					else 
+					{
+						data.type = "soundcloud"
+						data.title = track.title
+						handler.do_change_radio_source(socket, data)
+					}
+				})
+			}			
+
 			else
 			{
 				data.type = "radio"
@@ -1732,6 +1765,31 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					handler.user_emit(socket, 'videonotfound', {})						
 				}					
+			}
+
+			else if(data.src.indexOf("soundcloud.com") !== -1)
+			{
+				if(!config.soundcloud_enabled)
+				{
+					return
+				}
+
+				soundcloud.get(`/resolve?url=${data.src}`, function(err, track) 
+				{
+					if(err) 
+					{
+						handler.user_emit(socket, 'songnotfound', {})
+						logger.log_error(err)
+						return false
+					} 
+
+					else 
+					{
+						data.type = "soundcloud"
+						data.title = track.title
+						handler.do_change_tv_source(socket, data)
+					}
+				})
 			}
 
 			else

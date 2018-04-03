@@ -30,7 +30,7 @@ Example of how to use user_config.secret.json:
 
 The admin email must go in superuser_emails in user_config.secret.json. It's used to take over control of the main room. The main room is created on first join, with no roles. To get admin on the room use /annex.
 
-To have a full working system, as it is intended, getting the YouTube api key is very recommended. Twitch api key is recommended to support twitch 'videos' (channels work out of the box). Mailgun api key is necessary for account creation and password recovery, so it must be provided. A Google Recaptcha key is necessary to enable captcha verification on registration. Setup these in user_config.secret.json. If you don't want any of these, disable them in the user_config.json
+To have a fully working system, as it is intended, getting all the API keys (YouTube, Twitch, Soundcloud) is very recommended. If you don't need some of these, disable them in user_config.json (for example "youtube_enabled: false") Mailgun api key is necessary for account creation and password recovery, so it must be provided. A Google Recaptcha key is necessary to enable captcha verification on registration. Setup the API keys in user_config.secret.json.
 
 Put the files in the directory you want it work and call "npm install". That should install all necessary packages. 
 
@@ -275,10 +275,13 @@ If you want to remove it to start fresh:
 >Rooms have a "modified" property updated after most operations inside the room. The public roomlist considers rooms that are a) Public b) Claimed and c) Current date - modified date is lower than this configuration.
 
 "youtube_enabled"
->Whether youtube features are enabled. If disabled, youtube urls and search terms will be discarded when /radio or /tv are used. There are checks both in the client and server.
+>Whether youtube features are enabled.
 
 "twitch_enabled"
->Whether twitch features are enabled. If disabled, twitch urls will be discarded when /tv is used. There are checks both in the client and server.
+>Whether twitch features are enabled.
+
+"soundcloud_enabled"
+>Whether soundcloud features are enabled.
 
 "antispam_banTime"
 >How much time in minutes a user is banned from the system after being detected as a spammer by the automatic spam detection system.
@@ -503,6 +506,12 @@ If you want to remove it to start fresh:
 
 "recaptcha_key"
 >Public google recaptcha key.
+
+"soundcloud_id"
+>Soundcloud API ID.
+
+"recaptcha_secret_key"
+>Soundcloud API Secret.
 
 "recaptcha_secret_key"
 >Secret google recaptcha key.

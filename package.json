@@ -21,6 +21,7 @@
 		"mailgun-js": "~0.16.0",
 		"aws-sdk": "~2.203.0",
 		"jsonwebtoken": "~8.1.1",
-		"winston": "~3.0.0-rc1"
+		"winston": "~3.0.0-rc1",
+		"node-soundcloud": "~0.0.6"
 	}
 }
