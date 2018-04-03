@@ -1638,9 +1638,9 @@ function set_theme()
 	$('.bg2').css('background-color', background_color_2_a)
 	$('.bg2').css('color', font_color)
 
-	var scrollbar_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
+	var color_3 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
 	
-	var overlay_color = colorlib.rgb_to_rgba(scrollbar_color, opacity_amount_2)
+	var overlay_color = colorlib.rgb_to_rgba(color_3, opacity_amount_2)
 
 	var css = `
 	<style class='appended_theme_style'>
@@ -1685,7 +1685,7 @@ function set_theme()
 
 	.nicescroll-cursors
 	{
-		background-color: ${scrollbar_color} !important;
+		background-color: ${font_color} !important;
 	}
 
 	.modal_select
