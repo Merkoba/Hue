@@ -1528,7 +1528,14 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					else 
 					{
 						data.type = "soundcloud"
-						data.title = track.title
+
+						data.title = track.title ? track.title : track.permalink_url
+
+						if(data.title === undefined)
+						{
+							return false
+						}
+
 						handler.do_change_radio_source(socket, data)
 					}
 				})
@@ -1788,7 +1795,14 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					else 
 					{
 						data.type = "soundcloud"
-						data.title = track.title
+
+						data.title = track.title ? track.title : track.permalink_url
+
+						if(data.title === undefined)
+						{
+							return false
+						}
+
 						handler.do_change_tv_source(socket, data)
 					}
 				})
