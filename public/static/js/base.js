@@ -128,13 +128,15 @@ var yt_player
 var yt_video_player
 var youtube_player
 var youtube_video_player
+var twitch_video_player
+var soundcloud_player
+var soundcloud_video_player
 var utilz = Utilz()
 var log_messages
 var profile_image
 var change_image_when_focused = false 
 var change_tv_when_focused = false
 var change_radio_when_focused = false
-var twitch_video_player
 var room_images_enabled = true
 var room_tv_enabled = true
 var room_radio_enabled = true
@@ -1619,8 +1621,8 @@ function set_theme()
 
 	if(background_image_enabled && get_setting("background_image"))
 	{
-		background_color_a = colorlib.rgb_to_rgba(background_color, general_opacity)
-		background_color_2_a = colorlib.rgb_to_rgba(background_color_2, general_opacity)
+		background_color_a = colorlib.rgb_to_rgba(background_color, opacity_amount_1)
+		background_color_2_a = colorlib.rgb_to_rgba(background_color_2, opacity_amount_1)
 	}
 
 	else
@@ -1634,8 +1636,9 @@ function set_theme()
 	$('.bg2').css('background-color', background_color_2_a)
 	$('.bg2').css('color', font_color)
 
-	var overlay_color = colorlib.rgb_to_rgba(font_color, modal_overlay_opacity)
 	var scrollbar_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
+	
+	var overlay_color = colorlib.rgb_to_rgba(scrollbar_color, opacity_amount_2)
 
 	var css = `
 	<style class='appended_theme_style'>
@@ -13753,8 +13756,16 @@ function remove_separator(update_scroll=true)
 
 function start_soundcloud()
 {
-	soundcloud_player = SC.Widget("soundcloud_player")
-	soundcloud_video_player = SC.Widget("media_soundcloud_video")
+	try
+	{
+		soundcloud_player = SC.Widget("soundcloud_player")
+		soundcloud_video_player = SC.Widget("media_soundcloud_video")
+	}
+
+	catch(err)
+	{
+		console.error("Soundcloud failed to load")		
+	}
 }
 
 function change_text_color_mode(mode)

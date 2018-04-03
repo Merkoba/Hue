@@ -15,7 +15,7 @@ Example of how to use user_config.json:
 ```javascript
 {
 	"site_root": "https://mysite.com",
-	"general_opacity": 0.8
+	"min_password_length": 3
 }
 ```
 
@@ -151,17 +151,11 @@ If you want to remove it to start fresh:
 "check_metadata_interval_duration"
 >The interval in milliseconds to check for radio metadata. This only occurs when an internet radio url is set as the radio source, for example it won't check if there's a youtube video set.
 
-"general_opacity"
->Opacity used in various parts of the interface so the background image is partially visible when settings.background_image is enabled.
-
-"modal_overlay_opacity"
->Opacity used in the modal window overlays.
+"opacity_amount_x"
+>Opacity levels used through out the interface.
 
 "color_contrast_amount_x"
->Settings to control contrast between different colors in the interface.
-
-"color_contrast_amount_4"
->Same but if settings.background_image is enabled.
+>Color contrast levels used through out the interface.
 
 "chat_crop_limit"
 >After this number of chat messages on the screen, the oldest ones will start to get removed so there's always this maximum amount of messages displayed. This is to avoid having a huge amount of text in memory in case it is opened for a long time.
