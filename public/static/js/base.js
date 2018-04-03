@@ -141,6 +141,7 @@ var room_images_enabled = true
 var room_tv_enabled = true
 var room_radio_enabled = true
 var radio_started = false
+var radio_volume
 var theme
 var background_image
 var background_image_enabled
@@ -1290,7 +1291,7 @@ function load_radio()
 				return false
 			}
 
-			youtube_player.setVolume(get_nice_volume($("#audio")[0].volume))
+			youtube_player.setVolume(get_nice_volume(radio_volume))
 
 			if(!radio_started)
 			{
@@ -1326,11 +1327,12 @@ function load_radio()
 					{
 						soundcloud_player.play()
 					}
+					
+					soundcloud_player.setVolume(get_nice_volume(radio_volume))
 				}
-			})		
+			})
 
 		}
-
 
 		if(!room_settings.radio_locked || !last_radio_change)
 		{
@@ -6580,28 +6582,33 @@ function start_volume_scroll()
 
 function set_volume(nv, save=true)
 {
+	radio_volume = nv
+
 	var vt = parseInt(Math.round((nv * 100)))
 
-	$('#audio')[0].volume = nv
+	$('#audio')[0].volume = radio_volume
 
 	if(youtube_player !== undefined)
 	{
 		youtube_player.setVolume(vt)
 	}
 
+	if(soundcloud_player !== undefined)
+	{
+		soundcloud_player.setVolume(vt)		
+	}
+
 	$('#volume').text(`${vt} %`)
 
 	if(save)
 	{
-		save_local_storage('volume', nv)
+		save_local_storage('volume', radio_volume)
 	}
 }
 
 function volume_increase()
 {
-	var audio = $('#audio')[0]
-
-	var nv = audio.volume + 0.1
+	var nv = radio_volume + 0.1
 
 	if(nv > 1)
 	{
@@ -6613,9 +6620,7 @@ function volume_increase()
 
 function volume_decrease()
 {
-	var audio = $('#audio')[0]
-
-	var nv = audio.volume - 0.1
+	var nv = radio_volume - 0.1
 
 	if(nv < 0)
 	{
