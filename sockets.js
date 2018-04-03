@@ -1530,7 +1530,14 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					else 
 					{
 						data.type = "soundcloud"
-						data.title = track.title ? track.title : data.src
+
+						data.title = track.title ? track.title : track.username
+
+						if(!data.title)
+						{
+							data.title = data.src
+						}
+						
 						handler.do_change_radio_source(socket, data)
 					}
 				})
@@ -1792,7 +1799,14 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					else 
 					{
 						data.type = "soundcloud"
-						data.title = track.title ? track.title : data.src
+
+						data.title = track.title ? track.title : track.username
+
+						if(!data.title)
+						{
+							data.title = data.src
+						}
+
 						handler.do_change_tv_source(socket, data)
 					}
 				})
