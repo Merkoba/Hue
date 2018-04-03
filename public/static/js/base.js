@@ -10050,10 +10050,16 @@ function get_status_html()
 	{
 		info += "<div class='info_item'><div class='info_title'>Image Setter</div>"
 		info += `<div class='info_item_content' id='status_image_setter'></div></div>`
+	}
 
+	if(image_source)
+	{
 		info += "<div class='info_item'><div class='info_title'>Image Source</div>"
 		info += `<div class='info_item_content' id='status_image_source'></div></div>`
+	}
 
+	if(image_date)
+	{
 		info += "<div class='info_item'><div class='info_title'>Image Date</div>"
 		info += `<div class='info_item_content' id='status_image_date'></div></div>`
 	}
@@ -10062,10 +10068,22 @@ function get_status_html()
 	{
 		info += "<div class='info_item'><div class='info_title'>TV Setter</div>"
 		info += `<div class='info_item_content' id='status_tv_setter'></div></div>`
+	}
+	
+	if(tv_title)
+	{
+		info += "<div class='info_item'><div class='info_title'>TV Title</div>"
+		info += `<div class='info_item_content' id='status_tv_title'></div></div>`	
+	}
 
+	if(tv_source)
+	{
 		info += "<div class='info_item'><div class='info_title'>TV Source</div>"
-		info += `<div class='info_item_content' id='status_tv_source'></div></div>`	
+		info += `<div class='info_item_content' id='status_tv_source'></div></div>`
+	}
 
+	if(tv_date)
+	{
 		info += "<div class='info_item'><div class='info_title'>TV Date</div>"
 		info += `<div class='info_item_content' id='status_tv_date'></div></div>`		
 	}
@@ -10074,10 +10092,22 @@ function get_status_html()
 	{
 		info += "<div class='info_item'><div class='info_title'>Radio Setter</div>"
 		info += `<div class='info_item_content' id='status_radio_setter'></div></div>`
+	}
+	
+	if(radio_title)
+	{
+		info += "<div class='info_item'><div class='info_title'>Radio Title</div>"
+		info += `<div class='info_item_content' id='status_radio_title'></div></div>`
+	}
 
+	if(radio_source)
+	{
 		info += "<div class='info_item'><div class='info_title'>Radio Source</div>"
 		info += `<div class='info_item_content' id='status_radio_source'></div></div>`
+	}
 
+	if(radio_date)
+	{
 		info += "<div class='info_item'><div class='info_title'>Radio Date</div>"
 		info += `<div class='info_item_content' id='status_radio_date'></div></div>`		
 	}
@@ -10093,10 +10123,16 @@ function get_status_html()
 	{
 		var t = h.find("#status_image_setter").eq(0)
 		t.text(image_setter)
+	}
 
+	if(image_source)
+	{
 		var t = h.find("#status_image_source").eq(0)
 		t.text(get_proper_media_url("image")).urlize()
-		
+	}
+
+	if(image_date)
+	{
 		var t = h.find("#status_image_date").eq(0)
 		t.text(image_date)
 	}
@@ -10105,10 +10141,22 @@ function get_status_html()
 	{
 		var t = h.find("#status_tv_setter").eq(0)
 		t.text(tv_setter)
+	}
 
+	if(tv_title)
+	{
+		var t = h.find("#status_tv_title").eq(0)
+		t.text(tv_title).urlize()
+	}
+
+	if(tv_source)
+	{
 		var t = h.find("#status_tv_source").eq(0)
 		t.text(get_proper_media_url("tv")).urlize()
+	}
 
+	if(tv_date)
+	{
 		var t = h.find("#status_tv_date").eq(0)
 		t.text(tv_date)
 	}
@@ -10117,10 +10165,22 @@ function get_status_html()
 	{
 		var t = h.find("#status_radio_setter").eq(0)
 		t.text(radio_setter)
+	}
 
+	if(radio_title)
+	{
+		var t = h.find("#status_radio_title").eq(0)
+		t.text(radio_title).urlize()
+	}
+
+	if(radio_source)
+	{
 		var t = h.find("#status_radio_source").eq(0)
 		t.text(get_proper_media_url("radio")).urlize()
+	}
 
+	if(radio_date)
+	{
 		var t = h.find("#status_radio_date").eq(0)
 		t.text(radio_date)
 	}
