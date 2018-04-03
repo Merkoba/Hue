@@ -1511,12 +1511,14 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else if(data.src.indexOf("soundcloud.com") !== -1)
 			{
+				data.src = data.src.split("#t=")[0]
+
 				if(!config.soundcloud_enabled)
 				{
 					return
 				}
 
-				soundcloud.get(`/resolve?url=${data.src}`, function(err, track) 
+				soundcloud.get(`/resolve?url=${encodeURIComponent(data.src)}`, function(err, track) 
 				{
 					if(err) 
 					{
@@ -1528,14 +1530,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					else 
 					{
 						data.type = "soundcloud"
-
-						data.title = track.title ? track.title : track.permalink_url
-
-						if(data.title === undefined)
-						{
-							return false
-						}
-
+						data.title = track.title ? track.title : data.src
 						handler.do_change_radio_source(socket, data)
 					}
 				})
@@ -1778,16 +1773,18 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else if(data.src.indexOf("soundcloud.com") !== -1)
 			{
+				data.src = data.src.split("#t=")[0]
+
 				if(!config.soundcloud_enabled)
 				{
 					return
 				}
 
-				soundcloud.get(`/resolve?url=${data.src}`, function(err, track) 
+				soundcloud.get(`/resolve?url=${encodeURIComponent(data.src)}`, function(err, track) 
 				{
 					if(err) 
 					{
-						handler.user_emit(socket, 'songnotfound', {})
+						handler.user_emit(socket, 'videonotfound', {})
 						logger.log_error(err)
 						return false
 					} 
@@ -1795,14 +1792,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					else 
 					{
 						data.type = "soundcloud"
-
-						data.title = track.title ? track.title : track.permalink_url
-
-						if(data.title === undefined)
-						{
-							return false
-						}
-
+						data.title = track.title ? track.title : data.src
 						handler.do_change_tv_source(socket, data)
 					}
 				})

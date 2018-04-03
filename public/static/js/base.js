@@ -7486,12 +7486,12 @@ function change_radio_source(src)
 
 function announce_radio_change(data, date=false, action="change")
 {
-	if(data.radio_title !== "")
+	if(data.radio_title)
 	{
-		var name = `"${data.radio_title}"`
+		var name = conditional_quotes(data.radio_title)
 	}
 
-	else if(data.radio_source == '')
+	else if(!data.radio_source)
 	{
 		var name = 'default'
 	}
@@ -7625,12 +7625,12 @@ function change_tv_source(src)
 
 function announce_tv_change(data, date=false, action="change")
 {
-	if(data.tv_title !== "")
+	if(data.tv_title)
 	{
-		var name = `"${data.tv_title}"`
+		var name = conditional_quotes(data.tv_title)
 	}
 
-	else if(data.tv_source === '')
+	else if(!data.tv_source)
 	{
 		var name = 'default'
 	}	
@@ -13843,4 +13843,17 @@ function set_text_color(color)
 {
 	text_color = color
 	config_admin_text_color()	
+}
+
+function conditional_quotes(s)
+{
+	if(s.indexOf(" ") === -1 && (s.startsWith("https://") || s.startsWith("http://")))
+	{
+		return s
+	}
+
+	else
+	{
+		return `"${s}"` 		
+	}
 }
