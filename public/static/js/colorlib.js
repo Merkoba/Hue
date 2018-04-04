@@ -221,6 +221,42 @@ var ColorLib = (function()
 			return rgba
 		}
 
+		instance.rgb_to_hex = function(rgb, hash=true)
+		{
+			if(typeof rgb === "string")
+			{
+				rgb = instance.rgb_to_array(rgb)
+			}
+
+			var code = ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1)
+
+			if(hash)
+			{
+				code = "#" + code
+			}
+
+			return code
+		}
+
+		instance.hex_to_rgb = function(hex) 
+		{
+			var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i
+			
+			hex = hex.replace(shorthandRegex, function(m, r, g, b) 
+			{
+				return r + r + g + g + b + b;
+			})
+
+			var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+			
+			return result ? 
+			{
+				r: parseInt(result[1], 16),
+				g: parseInt(result[2], 16),
+				b: parseInt(result[3], 16)
+			} : null
+		}		
+
 		instance.check_array = function(array)
 		{
 			for(let i=0; i<array.length; i++)
