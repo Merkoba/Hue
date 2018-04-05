@@ -2130,7 +2130,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(!data.email.includes('@') || !data.email.includes(' '))
+		if(!data.email.includes('@') || data.email.includes(' '))
 		{
 			return handler.get_out(socket)
 		}			
