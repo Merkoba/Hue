@@ -460,6 +460,15 @@ If you want to remove it to start fresh:
 "safe_limit_*"
 >Generic limits used to check data length.
 
+"data_max_items"
+>Maximum amount of data items allowed in socket emits.
+
+"data_items_max_string_length"
+>Used to check string data.
+
+"data_items_max_number_length"
+>Used to check number data.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"

@@ -99,6 +99,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				if(!handler.check_data(data))
+				{
+					return handler.get_out(socket)
+				}
+
 				var m = data.server_method_name
 
 				if(handler[m] === undefined)
@@ -4045,8 +4050,73 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	handler.check_data = function(data)
+	{
+		try
+		{
+			var m = data.server_method_name
+
+			if(m === undefined)
+			{
+				return false
+			}
+
+			var keys = Object.keys(data)
+
+			if(keys.length > config.data_max_items)
+			{
+				return false
+			}
+
+			for(key of keys)
+			{
+				var d = data[key]
+
+				var td = typeof d
+
+				if(td === "function")
+				{
+					return false
+				}
+
+				if(m === "slice_upload")
+				{
+					if(key === "data")
+					{
+						continue
+					}
+				}
+
+				var s = JSON.stringify(d)
+
+				if(td === "number")
+				{
+					if(s.length > config.data_items_max_number_length)
+					{
+						return false
+					}
+				}
+
+				else
+				{
+					if(s.length > config.data_items_max_string_length)
+					{
+						return false
+					}
+				}
+			}
+
+			return true
+		}
+
+		catch(err)
+		{
+			return false
+		}
+	}
+
 	handler.start_room_loop()
-	handler.start_files_loop()	
+	handler.start_files_loop()
 }
 
 module.exports = handler
