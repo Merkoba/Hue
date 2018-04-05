@@ -5180,6 +5180,7 @@ function register_commands()
 	commands.push('/broadcast')
 	commands.push('/enablebackground')
 	commands.push('/disablebackground')
+	commands.push('/changeinput')
 
 	commands.sort()
 
@@ -5970,6 +5971,13 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/disablebackground'))
 	{
 		change_background_image_enabled(false)
+	}	
+
+	else if(oiStartsWith(lmsg, '/changeinput'))
+	{
+		change_input(arg)
+		ans.to_history = false
+		ans.clr_input = false
 	}		
 
 	else
