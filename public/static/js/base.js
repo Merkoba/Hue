@@ -8067,6 +8067,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
+				close_togglers("userinfo")
 			}
 		})
 	)
@@ -9988,7 +9989,8 @@ function start_twitch()
 
 function setup_userinfo()
 {
-	$("#userinfo_profile_image").attr("src", profile_image)	
+	$("#userinfo_profile_image").attr("src", profile_image)
+	setup_togglers("userinfo")
 }
 
 function show_userinfo()
