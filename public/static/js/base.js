@@ -3208,7 +3208,7 @@ function is_textbox(element)
 		'week'
 	]
 
-	return input_types.indexOf(type) !== -1
+	return input_types.includes(type)
 }
 
 function copypaste_events()
@@ -3972,7 +3972,7 @@ function get_closest_username(word)
 		{
 			has = true
 
-			if(tabbed_list.indexOf(pw) === -1)
+			if(!tabbed_list.includes(pw))
 			{
 				tabbed_list.push(pw)
 				return usernames[i]
@@ -4003,7 +4003,7 @@ function get_closest_command(word)
 		{
 			has = true
 
-			if(tabbed_list.indexOf(pw) === -1)
+			if(!tabbed_list.includes(pw))
 			{
 				tabbed_list.push(pw)
 				return commands[i]
@@ -4945,7 +4945,7 @@ function handle_chat_announce_types(msg, type)
 {
 	var media_history_types = ["image_change", "tv_change", "radio_change"]
 
-	if(media_history_types.indexOf(type) !== -1)
+	if(media_history_types.includes(type))
 	{
 		var item = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
 
@@ -5033,7 +5033,7 @@ jQuery.fn.urlize = function(force=false)
 
 					for(var i=0; i<list.length; i++) 
 					{
-						if(listed.indexOf(list[i]) !== -1)
+						if(listed.includes(list[i]))
 						{
 							continue
 						}
@@ -6309,7 +6309,7 @@ function get_radio_metadata()
 					{
 						var source = data.icestats.source[i]
 
-						if(source.listenurl.indexOf(radio_source.split('/').pop()) !== -1)
+						if(source.listenurl.includes(radio_source.split('/').pop()))
 						{
 							if(source.artist !== undefined && source.title !== undefined)
 							{
@@ -6319,7 +6319,7 @@ function get_radio_metadata()
 					}
 				}
 
-				else if(data.icestats.source.listenurl.indexOf(radio_source.split('/').pop()) !== -1)
+				else if(data.icestats.source.listenurl.includes(radio_source.split('/').pop()))
 				{
 					var source = data.icestats.source
 				}
@@ -7054,12 +7054,12 @@ function chat_search(filter=false)
 					content += `${msg.text()} `	
 				})
 
-				if(uname.toLowerCase().indexOf(filter) !== -1)
+				if(uname.toLowerCase().includes(filter))
 				{
 					show = true
 				}
 
-				else if(content.toLowerCase().indexOf(filter) !== -1)
+				else if(content.toLowerCase().includes(filter))
 				{
 					show = true
 				}
@@ -7100,7 +7100,7 @@ function chat_search(filter=false)
 
 				var content = hcontent.text()
 				
-				if(content.toLowerCase().indexOf(filter) === -1)
+				if(!content.toLowerCase().includes(filter))
 				{
 					continue
 				}
@@ -7253,7 +7253,7 @@ function change_role(uname, rol)
 				return false
 			}
 
-			if(roles.indexOf(rol) === -1)
+			if(!roles.includes(rol))
 			{
 				feedback("Invalid role")
 				return false				
@@ -7452,7 +7452,7 @@ function change_radio_source(src)
 	{
 		if(src.startsWith("http://") || src.startsWith("https://") || src === "default")
 		{
-			if(src.indexOf("youtube.com") !== -1 || src.indexOf("youtu.be") !== -1)
+			if(src.includes("youtube.com") || src.includes("youtu.be"))
 			{
 				if(!youtube_enabled)
 				{
@@ -7461,7 +7461,7 @@ function change_radio_source(src)
 				}
 			}
 
-			else if(src.indexOf("soundcloud.com") !== -1)
+			else if(src.includes("soundcloud.com"))
 			{
 				if(!soundcloud_enabled)
 				{
@@ -7582,7 +7582,7 @@ function change_tv_source(src)
 	{
 		if(src.startsWith("http://") || src.startsWith("https://") || src === "default")
 		{
-			if(src.indexOf("youtube.com") !== -1 || src.indexOf("youtu.be") !== -1)
+			if(src.includes("youtube.com") || src.includes("youtu.be"))
 			{
 				if(utilz.get_youtube_id(src) && !youtube_enabled)
 				{
@@ -7591,7 +7591,7 @@ function change_tv_source(src)
 				}
 			}
 
-			else if(src.indexOf("twitch.tv") !== -1)
+			else if(src.includes("twitch.tv"))
 			{
 				if(utilz.get_twitch_id(src) && !twitch_enabled)
 				{
@@ -7600,7 +7600,7 @@ function change_tv_source(src)
 				}
 			}
 
-			else if(src.indexOf("soundcloud.com") !== -1)
+			else if(src.includes("soundcloud.com"))
 			{
 				if(!soundcloud_enabled)
 				{
@@ -7807,7 +7807,7 @@ function kick(uname)
 				return false
 			}
 
-			if(usernames.indexOf(uname) === -1)
+			if(!usernames.includes(uname))
 			{
 				user_not_in_room()
 				return false
@@ -9699,12 +9699,12 @@ function do_played_filter()
 
 			var include = false
 
-			if(title.toLowerCase().indexOf(filter) !== -1)
+			if(title.toLowerCase().includes(filter))
 			{
 				include = true
 			}
 
-			else if(artist.toLowerCase().indexOf(filter) !== -1)
+			else if(artist.toLowerCase().includes(filter))
 			{
 				include = true
 			}
@@ -9753,7 +9753,7 @@ function do_userlist_filter()
 
 			var include = false
 
-			if(uname.toLowerCase().indexOf(filter) !== -1)
+			if(uname.toLowerCase().includes(filter))
 			{
 				include = true
 			}
@@ -9796,12 +9796,12 @@ function do_roomlist_filter(type)
 
 			var include = false
 
-			if(name.toLowerCase().indexOf(filter) !== -1)
+			if(name.toLowerCase().includes(filter))
 			{
 				include = true
 			}
 
-			else if(topic.toLowerCase().indexOf(filter) !== -1)
+			else if(topic.toLowerCase().includes(filter))
 			{
 				include = true
 			}
@@ -9854,7 +9854,7 @@ function do_input_history_filter()
 
 			var include = false
 
-			if(text.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
+			if(text.toLowerCase().includes(filter.toLowerCase()))
 			{
 				include = true
 			}
@@ -10295,7 +10295,7 @@ function change_email(email)
 		return
 	}
 
-	if(email.indexOf('@') === -1)
+	if(!email.includes('@'))
 	{
 		feedback("Invalid email address")
 		return
@@ -10951,7 +10951,7 @@ function show_profile(uname, prof_image)
 	$("#show_profile_uname").text(uname)
 	$("#show_profile_image").attr("src", pi)
 
-	if(!can_chat || uname === username || usernames.indexOf(uname) === -1)
+	if(!can_chat || uname === username || !usernames.includes(uname))
 	{
 		$("#show_profile_whisper").css("display", "none")
 	}
@@ -12051,7 +12051,7 @@ function write_whisper(uname)
 		return false
 	}
 
-	if(usernames.indexOf(uname) === -1)
+	if(!usernames.includes(uname))
 	{
 		user_not_in_room()
 		return false
@@ -12095,7 +12095,7 @@ function send_whisper()
 		return false
 	}
 
-	if(usernames.indexOf(uname) === -1)
+	if(!usernames.includes(uname))
 	{
 		$("#write_whisper_feedback").text("(User is not in the room)")
 		$("#write_whisper_feedback").css("display", "block")
@@ -12204,7 +12204,7 @@ function user_not_in_room()
 
 function annex(rol="admin")
 {
-	if(roles.indexOf(rol) === -1)
+	if(!roles.includes(rol))
 	{
 		feedback("Invalid role")
 		return false				
@@ -12321,12 +12321,12 @@ function do_highlights_filter()
 
 			var include = false
 
-			if(uname.toLowerCase().indexOf(filter) !== -1)
+			if(uname.toLowerCase().includes(filter))
 			{
 				include = true
 			}
 
-			else if(content.toLowerCase().indexOf(filter) !== -1)
+			else if(content.toLowerCase().includes(filter))
 			{
 				include = true
 			}
@@ -12480,7 +12480,7 @@ function do_media_history_filter(type)
 
 			var include = false
 
-			if(content.toLowerCase().indexOf(filter) !== -1)
+			if(content.toLowerCase().includes(filter))
 			{
 				include = true
 			}
@@ -13160,7 +13160,7 @@ function user_is_ignored(uname)
 		return false
 	}
 
-	if(get_setting("ignored_usernames").indexOf(uname) !== -1)
+	if(get_setting("ignored_usernames").includes(uname))
 	{
 		return true
 	}
@@ -13482,7 +13482,7 @@ function do_settings_filter(type)
 
 			var include = false
 
-			if(text.toLowerCase().indexOf(filter) !== -1)
+			if(text.toLowerCase().includes(filter))
 			{
 				include = true
 			}
@@ -13917,7 +13917,7 @@ function set_text_color(color)
 
 function conditional_quotes(s)
 {
-	if(s.indexOf(" ") === -1 && (s.startsWith("https://") || s.startsWith("http://")))
+	if(!s.includes(" ") && (s.startsWith("https://") || s.startsWith("http://")))
 	{
 		return s
 	}

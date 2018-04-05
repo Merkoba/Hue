@@ -116,7 +116,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					return handler.get_out(socket)
 				}
 
-				if(dont_check_joined.indexOf(m) === -1)
+				if(!dont_check_joined.includes(m))
 				{
 					if(!socket.hue_joined)
 					{
@@ -124,7 +124,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					}
 				}
 
-				if(dont_add_spam.indexOf(m) === -1)
+				if(!dont_add_spam.includes(m))
 				{
 					var spam_ans = await handler.add_spam(socket)
 
@@ -149,7 +149,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				reason = reason.toLowerCase()
 
-				if(reason.indexOf('timeout') !== -1)
+				if(reason.includes('timeout'))
 				{
 					socket.hue_pinged = true
 				}				
@@ -376,7 +376,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.do_disconnect(socket)
 		}
 
-		if(sconfig.superuser_emails.indexOf(userinfo.email) !== -1)
+		if(sconfig.superuser_emails.includes(userinfo.email))
 		{
 			socket.hue_superuser = true
 		}
@@ -385,7 +385,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		socket.hue_ip = socket.client.request.headers['x-forwarded-for'] || socket.client.conn.remoteAddress
 
-		if(!socket.hue_superuser && info.bans.indexOf(socket.hue_user_id) !== -1)
+		if(!socket.hue_superuser && info.bans.includes(socket.hue_user_id))
 		{
 			socket.leave(socket.hue_room_id)
 			socket.hue_locked = true
@@ -403,7 +403,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			socket.hue_profile_image = ""
 		}
 
-		else if(userinfo.profile_image.indexOf(sconfig.s3_main_url) === -1)
+		else if(!userinfo.profile_image.includes(sconfig.s3_main_url))
 		{
 			socket.hue_profile_image = config.public_images_location + userinfo.profile_image
 		}
@@ -418,7 +418,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			var background_image = ""
 		}
 
-		else if(info.background_image.indexOf(sconfig.s3_main_url) === -1)
+		else if(!info.background_image.includes(sconfig.s3_main_url))
 		{
 			var background_image = config.public_images_location + info.background_image
 		}
@@ -435,7 +435,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		socket.hue_role = info.keys[socket.hue_user_id]
 
-		if(roles.indexOf(socket.hue_role) === -1)
+		if(!roles.includes(socket.hue_role))
 		{
 			socket.hue_role = 'voice1'
 		}
@@ -445,7 +445,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			user_rooms[socket.hue_user_id] = []
 		}
 
-		if(user_rooms[socket.hue_user_id].indexOf(socket.hue_room_id) === -1)
+		if(!user_rooms[socket.hue_user_id].includes(socket.hue_room_id))
 		{
 			user_rooms[socket.hue_user_id].push(socket.hue_room_id)
 		}
@@ -799,7 +799,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(roles.indexOf(data.role) === -1)
+		if(!roles.includes(data.role))
 		{
 			return handler.get_out(socket)
 		}
@@ -1106,7 +1106,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					return false
 				}
 
-				if(info.bans.indexOf(id) !== -1)
+				if(info.bans.includes(id))
 				{
 					handler.user_emit(socket, 'user_already_banned', {})
 
@@ -1201,7 +1201,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				var id = userinfo._id.toString()
 
-				if(info.bans.indexOf(id) === -1)
+				if(!info.bans.includes(id))
 				{
 					handler.user_emit(socket, 'user_already_unbanned', {})
 
@@ -1443,9 +1443,9 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		if(data.src.indexOf("http://") !== -1 || data.src.indexOf("https://") !== -1 || data.src === "default")
+		if(data.src.includes("http://") || data.src.includes("https://") || data.src === "default")
 		{
-			if(data.src.indexOf("youtube.com") !== -1 || data.src.indexOf("youtu.be") !== -1)
+			if(data.src.includes("youtube.com") || data.src.includes("youtu.be"))
 			{
 				if(!config.youtube_enabled)
 				{
@@ -1509,7 +1509,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				}
 			}
 
-			else if(data.src.indexOf("soundcloud.com") !== -1)
+			else if(data.src.includes("soundcloud.com"))
 			{
 				data.src = data.src.split("#t=")[0]
 
@@ -1650,9 +1650,9 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		if(data.src.indexOf("http://") !== -1 || data.src.indexOf("https://") !== -1 || data.src === "default")
+		if(data.src.includes("http://") || data.src.includes("https://") || data.src === "default")
 		{
-			if(data.src.indexOf("youtube.com") !== -1 || data.src.indexOf("youtu.be") !== -1)
+			if(data.src.includes("youtube.com") || data.src.includes("youtu.be"))
 			{
 				if(!config.youtube_enabled)
 				{
@@ -1717,7 +1717,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				}
 			}
 
-			else if(data.src.indexOf("twitch.tv") !== -1)
+			else if(data.src.includes("twitch.tv"))
 			{
 				if(!config.twitch_enabled)
 				{
@@ -1778,7 +1778,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				}					
 			}
 
-			else if(data.src.indexOf("soundcloud.com") !== -1)
+			else if(data.src.includes("soundcloud.com"))
 			{
 				data.src = data.src.split("#t=")[0]
 
@@ -2130,7 +2130,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(data.email.indexOf('@') === -1 || data.email.indexOf(' ') !== -1)
+		if(!data.email.includes('@') || !data.email.includes(' '))
 		{
 			return handler.get_out(socket)
 		}			
@@ -3005,7 +3005,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					for(var file_name of spliced)
 					{
-						if(file_name.indexOf(sconfig.s3_main_url) === -1)
+						if(!file_name.includes(sconfig.s3_main_url))
 						{
 							fs.unlink(`${images_root}/${file_name}`, function(err){})
 						}
@@ -3338,7 +3338,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			if(to_delete)
 			{
-				if(to_delete.indexOf(sconfig.s3_main_url) === -1)
+				if(!to_delete.includes(sconfig.s3_main_url))
 				{
 					fs.unlink(`${images_root}/${to_delete}`, function(err){})
 				}
@@ -3393,7 +3393,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			if(image_types.indexOf(data.type) === -1)
+			if(!image_types.includes(data.type))
 			{
 				return handler.get_out(socket)
 			}
@@ -3672,7 +3672,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return true
 		}
 
-		else if(vtypes.indexOf(socket.hue_role) !== -1)
+		else if(vtypes.includes(socket.hue_role))
 		{
 			if(rooms[socket.hue_room_id][`${socket.hue_role}_${permission}_permission`])
 			{
@@ -3945,7 +3945,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.valid_image_extension = function(ext)
 	{
-		if(image_extensions.indexOf(ext) !== -1)
+		if(image_extensions.includes(ext))
 		{
 			return true
 		}

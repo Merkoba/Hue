@@ -140,17 +140,17 @@ var Utilz = function()
 					continue
 				}
 
-				if(match.indexOf("h") !== -1)
+				if(match.includes("h"))
 				{
 					h = parseInt(match.replace("h", ""))
 				}
 
-				else if(match.indexOf("m") !== -1)
+				else if(match.includes("m"))
 				{
 					m = parseInt(match.replace("m", ""))
 				}
 
-				else if(match.indexOf("s") !== -1)
+				else if(match.includes("s"))
 				{
 					s = parseInt(match.replace("s", ""))
 				}
@@ -199,12 +199,12 @@ var Utilz = function()
 
 		if(match)
 		{
-			if(match[0].indexOf('twitch.tv/videos/') !== -1)
+			if(match[0].includes('twitch.tv/videos/'))
 			{
 				return ["video", match[1]]
 			}
 
-			else if(match[0].indexOf("clips.twitch.tv") !== -1)
+			else if(match[0].includes("clips.twitch.tv"))
 			{
 				return false
 			}
