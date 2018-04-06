@@ -7543,16 +7543,6 @@ function announce_radio_change(data, date=false, action="change")
 			var d = Date.now()
 		}
 	}
-
-	if(action === "restart")
-	{
-		var action = `${data.username} restarted the radio`
-	}
-
-	else
-	{
-		var action = `${data.radio_setter} changed the radio to: ${name}`
-	}	
 	
 	var nd = nice_date(d)
 
@@ -7563,10 +7553,22 @@ function announce_radio_change(data, date=false, action="change")
 		goto_url(src, "tab")
 	}
 
+	if(action === "restart")
+	{
+		var msg = `${data.username} restarted the radio`
+		title = undefined
+		d = undefined
+	}
+
+	else
+	{
+		var msg = `${data.radio_setter} changed the radio to: ${name}`
+	}	
+
 	chat_announce(
 	{
 		brk: "<i class='icon2 fa fa-volume-up'></i>", 
-		msg: action, 
+		msg: msg, 
 		title: title, 
 		onclick: onclick, 
 		save: true, 
@@ -7694,18 +7696,20 @@ function announce_tv_change(data, date=false, action="change")
 
 	if(action === "restart")
 	{
-		var action = `${data.username} restarted the tv`
+		var msg = `${data.username} restarted the tv`
+		title = undefined,
+		d = undefined
 	}
 
 	else
 	{
-		var action = `${data.tv_setter} changed the tv to: ${name}`
+		var msg = `${data.tv_setter} changed the tv to: ${name}`
 	}
 
 	chat_announce(
 	{
 		brk: "<i class='icon2 fa fa-television'></i>", 
-		msg: action, 
+		msg: msg, 
 		title: title, 
 		onclick: onclick, 
 		save: true, 
@@ -13926,4 +13930,16 @@ function conditional_quotes(s)
 	{
 		return `"${s}"` 		
 	}
+}
+
+function restart_tv()
+{
+	change_tv_source("restart")
+	msg_tv_picker.close()
+}
+
+function restart_radio()
+{
+	change_radio_source("restart")
+	msg_radio_picker.close()
 }
