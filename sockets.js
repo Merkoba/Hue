@@ -2410,7 +2410,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(data.mode !== "normal" && data.mode !== "tiled")
+		if(data.mode !== "normal" && data.mode !== "tiled" && data.mode !== "mirror")
 		{
 			return handler.get_out(socket)
 		}

@@ -749,8 +749,8 @@ function start_socket()
 			log_enabled = data.log
 			log_messages = data.log_messages
 			setup_theme_and_background(data)
-			set_background()
-			set_theme()
+			apply_background()
+			apply_theme()
 			setup_active_media(data)
 			start_permissions(data)
 			set_role(data.role)
@@ -1557,11 +1557,28 @@ function setup_theme_and_background(data)
 	text_color = data.text_color
 }
 
-function set_background()
+function set_background(bg)
 {
+	background_image = bg
+	apply_background()
+	config_admin_background_image()	
+}
+
+function apply_background()
+{
+	if(background_mode === "mirror")
+	{
+		var bg_image = current_image_source
+	}
+
+	else
+	{
+		var bg_image = background_image
+	}
+
 	if(background_image_enabled && get_setting("background_image"))
 	{
-		$('.background_image').css('background-image', `url('${background_image}')`)
+		$('.background_image').css('background-image', `url('${bg_image}')`)
 	}
 
 	else
@@ -1569,7 +1586,7 @@ function set_background()
 		$('.background_image').css('background-image', "none")
 	}
 
-	if(background_mode === "normal")
+	if(background_mode === "normal" || background_mode === "mirror")
 	{
 		$('.background_image').each(function()
 		{
@@ -1605,7 +1622,14 @@ function set_background()
 	$("head").append(css)	
 }
 
-function set_theme()
+function set_theme(color)
+{
+	theme = color
+	apply_theme()
+	config_admin_theme()	
+}
+
+function apply_theme()
 {
 	var background_color = theme
 	
@@ -2658,7 +2682,17 @@ function config_admin_background_image_enabled()
 		{
 			$(this).prop('selected', true)
 		}
-	})	
+	})
+
+	if(background_image_enabled)
+	{
+		$("#admin_background_controls_container").css("display", "block")
+	}
+
+	else
+	{
+		$("#admin_background_controls_container").css("display", "none")
+	}	
 }
 
 function config_admin_background_mode()
@@ -2676,14 +2710,22 @@ function config_admin_background_mode()
 		}
 	})
 
-	if(background_mode === "tiled")
-	{
-		$("#admin_background_tile_dimensions_container").css("display", "block")
-	}
-
-	else
+	if(background_mode === "normal")
 	{
 		$("#admin_background_tile_dimensions_container").css("display", "none")
+		$("#admin_background_image_container").css("display", "block")
+	}
+
+	else if(background_mode === "tiled")
+	{
+		$("#admin_background_tile_dimensions_container").css("display", "block")
+		$("#admin_background_image_container").css("display", "block")
+	}
+
+	else if(background_mode === "mirror")
+	{
+		$("#admin_background_tile_dimensions_container").css("display", "none")
+		$("#admin_background_image_container").css("display", "none")
 	}
 }
 
@@ -4767,6 +4809,11 @@ function after_image_load()
 	current_image_source = image_source
 	current_image_title = image_title
 	current_image_date_raw = image_date_raw
+
+	if(background_mode === "mirror")
+	{
+		apply_background()
+	}
 }
 
 function get_size_string(size)
@@ -9118,8 +9165,8 @@ function setting_background_image_action(type, save=true)
 
 	if(active_settings("background_image") === type)
 	{
-		set_background()
-		set_theme()
+		apply_background()
+		apply_theme()
 	}
 	
 	if(save)
@@ -11313,9 +11360,7 @@ function change_theme(color)
 function announce_theme_change(data)
 {
 	public_feedback(`${data.username} changed the theme to ${data.color}`)
-	theme = data.color
-	set_theme()
-	config_admin_theme()	
+	set_theme(data.color)	
 }
 
 function queue_image(data)
@@ -11378,13 +11423,8 @@ function background_image_selected(input)
 
 function announce_background_image_change(data)
 {
-	background_image = data.background_image
-
-	set_background()
-
 	public_feedback(`${data.username} changed the background image`)
-
-	config_admin_background_image()
+	set_background(data.background_image)
 }
 
 function change_background_image_enabled(what)
@@ -11429,8 +11469,8 @@ function announce_background_image_enabled_change(data)
 	}
 
 	set_background_image_enabled(data.what)
-	set_background()
-	set_theme()
+	apply_background()
+	apply_theme()
 }
 
 function change_background_mode(mode)
@@ -11441,7 +11481,7 @@ function change_background_mode(mode)
 		return false
 	}
 
-	if(mode !== "normal" && mode !== "tiled")
+	if(mode !== "normal" && mode !== "tiled" && mode !== "mirror")
 	{
 		feedback("Invalid background mode")
 		return false
@@ -11460,7 +11500,7 @@ function announce_background_mode_change(data)
 {
 	public_feedback(`${data.username} changed the background mode to ${data.mode}`)
 	set_background_mode(data.mode)
-	set_background()
+	apply_background()
 }
 
 function change_background_tile_dimensions(dimensions)
@@ -11495,7 +11535,7 @@ function announce_background_tile_dimensions_change(data)
 {
 	public_feedback(`${data.username} changed the background tile dimensions to ${data.dimensions}`)
 	set_background_tile_dimensions(data.dimensions)
-	set_background()
+	apply_background()
 }
 
 function link_image(url)
@@ -13886,7 +13926,7 @@ function announce_text_color_mode_change(data)
 {
 	public_feedback(`${data.username} changed the text color mode to ${data.mode}`)
 	set_text_color_mode(data.mode)
-	set_theme()
+	apply_theme()
 }
 
 function set_text_color_mode(mode)
@@ -13932,7 +13972,7 @@ function announce_text_color_change(data)
 {
 	public_feedback(`${data.username} changed the text color to ${data.color}`)
 	set_text_color(data.color)
-	set_theme()
+	apply_theme()
 }
 
 function set_text_color(color)
