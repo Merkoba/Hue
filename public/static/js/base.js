@@ -1568,7 +1568,7 @@ function apply_background()
 {
 	if(background_mode === "mirror")
 	{
-		var bg_image = current_image_source
+		var bg_image = image_source
 	}
 
 	else
@@ -4809,11 +4809,6 @@ function after_image_load()
 	current_image_source = image_source
 	current_image_title = image_title
 	current_image_date_raw = image_date_raw
-
-	if(background_mode === "mirror")
-	{
-		apply_background()
-	}
 }
 
 function get_size_string(size)
@@ -4860,6 +4855,11 @@ function setup_image(data)
 	image_type = data.image_type
 
 	change({type:"image"})
+
+	if(background_mode === "mirror")
+	{
+		apply_background()
+	}	
 }
 
 function fill_defaults(args, def_args)
