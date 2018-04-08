@@ -4351,7 +4351,7 @@ function update_chat(args={})
 		var s = `
 		<div class='msg chat_message'>
 			<div class='chat_left_side'>
-				<div class='chat_profile_image_container'>
+				<div class='chat_profile_image_container unselectable'>
 					<img class='chat_profile_image' src='${pi}'>
 				</div>
 			</div>
