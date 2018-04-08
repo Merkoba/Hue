@@ -216,9 +216,18 @@ var ColorLib = (function()
 		{
 			var split = rgb.replace("rgb(", "").replace(")", "").split(",")
 			
-			var rgba = `rgba(${split[0]}, ${split[1]}, ${split[2]}, ${alpha})`
+			var rgba = `rgba(${split[0].trim()}, ${split[1].trim()}, ${split[2].trim()}, ${alpha})`
 
 			return rgba
+		}
+
+		instance.rgba_to_rgb = function(rgb)
+		{
+			var split = rgb.replace("rgba(", "").replace(")", "").split(",")
+			
+			var nrgb = `rgb(${split[0].trim()}, ${split[1].trim()}, ${split[2].trim()})`
+
+			return nrgb
 		}
 
 		instance.rgb_to_hex = function(rgb, hash=true)

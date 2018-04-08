@@ -11285,6 +11285,18 @@ function change_theme(color)
 		return false
 	}
 
+	color = utilz.clean_string2(color)
+
+	if(color.startsWith("rgba("))
+	{
+		color = colorlib.rgba_to_rgb(color)
+	}
+
+	if(!color.startsWith("rgb("))
+	{
+		return false
+	}	
+
 	if(color === undefined)
 	{
 		return false
@@ -13892,6 +13904,16 @@ function change_text_color(color)
 	}
 
 	color = utilz.clean_string2(color)
+
+	if(rgb.startsWith("rgba("))
+	{
+		color = colorlib.rgba_to_rgb(color)
+	}
+
+	if(!color.startsWith("rgb("))
+	{
+		return false
+	}	
 
 	if(color.length === 0)
 	{
