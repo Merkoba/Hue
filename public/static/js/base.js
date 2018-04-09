@@ -13847,7 +13847,7 @@ function change_text_color(color)
 
 	color = utilz.clean_string2(color)
 
-	if(rgb.startsWith("rgba("))
+	if(color.startsWith("rgba("))
 	{
 		color = colorlib.rgba_to_rgb(color)
 	}
