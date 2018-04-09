@@ -270,11 +270,6 @@ module.exports = function(db, config, sconfig, utilz, logger)
 			room.background_image = ""
 		}
 
-		if(typeof room.background_image_enabled !== "boolean")
-		{
-			room.background_image_enabled = true
-		}
-
 		if(typeof room.background_mode !== "string")
 		{
 			room.background_mode = "normal"

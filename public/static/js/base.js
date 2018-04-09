@@ -144,7 +144,6 @@ var radio_started = false
 var radio_volume
 var theme
 var background_image
-var background_image_enabled
 var background_mode
 var background_tile_dimensions
 var image_queue = ["first"]
@@ -1068,11 +1067,6 @@ function start_socket()
 			announce_background_image_change(data)
 		}
 
-		else if(data.type === 'background_image_enabled_change')
-		{
-			announce_background_image_enabled_change(data)
-		}
-
 		else if(data.type === 'background_mode_changed')
 		{
 			announce_background_mode_change(data)
@@ -1550,7 +1544,6 @@ function setup_theme_and_background(data)
 		background_image = default_background_image_url
 	}
 
-	background_image_enabled = data.background_image_enabled
 	background_mode = data.background_mode
 	background_tile_dimensions = data.background_tile_dimensions
 	text_color_mode = data.text_color_mode
@@ -1576,7 +1569,7 @@ function apply_background()
 		var bg_image = background_image
 	}
 
-	if(background_image_enabled && get_setting("background_image"))
+	if(background_image_enabled() && get_setting("background_image"))
 	{
 		$('.background_image').css('background-image', `url('${bg_image}')`)
 	}
@@ -1645,7 +1638,7 @@ function apply_theme()
 		var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2)
 	}
 
-	if(background_image_enabled && get_setting("background_image"))
+	if(background_image_enabled() && get_setting("background_image"))
 	{
 		background_color_a = colorlib.rgb_to_rgba(background_color, opacity_amount_1)
 		background_color_2_a = colorlib.rgb_to_rgba(background_color_2, opacity_amount_1)
@@ -2578,13 +2571,6 @@ function setup_main_menu()
 		change_theme(t.toRgbString())
 	})
 
-	$('#admin_background_image_select').change(function()
-	{
-		var what = JSON.parse($('#admin_background_image_select option:selected').val())
-
-		change_background_image_enabled(what)
-	})
-
 	$('#admin_background_mode_select').change(function()
 	{
 		var what = $('#admin_background_mode_select option:selected').val()
@@ -2669,32 +2655,6 @@ function config_admin_permission_checkboxes()
 	})	
 }
 
-function config_admin_background_image_enabled()
-{
-	if(!is_admin_or_op())
-	{
-		return false
-	}
-
-	$('#admin_background_image_select').find('option').each(function()
-	{
-		if(JSON.parse($(this).val()) === background_image_enabled)
-		{
-			$(this).prop('selected', true)
-		}
-	})
-
-	if(background_image_enabled)
-	{
-		$("#admin_background_controls_container").css("display", "block")
-	}
-
-	else
-	{
-		$("#admin_background_controls_container").css("display", "none")
-	}	
-}
-
 function config_admin_background_mode()
 {
 	if(!is_admin_or_op())
@@ -2723,6 +2683,12 @@ function config_admin_background_mode()
 	}
 
 	else if(background_mode === "mirror")
+	{
+		$("#admin_background_tile_dimensions_container").css("display", "none")
+		$("#admin_background_image_container").css("display", "none")
+	}
+
+	else if(background_mode === "solid")
 	{
 		$("#admin_background_tile_dimensions_container").css("display", "none")
 		$("#admin_background_image_container").css("display", "none")
@@ -2917,7 +2883,6 @@ function config_main_menu()
 		config_admin_privacy()	
 		config_admin_log_enabled()
 		config_admin_theme()
-		config_admin_background_image_enabled()
 		config_admin_background_mode()
 		config_admin_background_tile_dimensions()
 		config_admin_background_image()
@@ -5225,8 +5190,6 @@ function register_commands()
 	commands.push('/roomsettings')
 	commands.push('/goto')
 	commands.push('/broadcast')
-	commands.push('/enablebackground')
-	commands.push('/disablebackground')
 	commands.push('/changeinput')
 
 	commands.sort()
@@ -6009,16 +5972,6 @@ function execute_command(msg, ans)
 	{
 		system_broadcast(arg)
 	}
-
-	else if(oiEquals(lmsg, '/enablebackground'))
-	{
-		change_background_image_enabled(true)
-	}
-
-	else if(oiEquals(lmsg, '/disablebackground'))
-	{
-		change_background_image_enabled(false)
-	}	
 
 	else if(oiStartsWith(lmsg, '/changeinput'))
 	{
@@ -11427,52 +11380,6 @@ function announce_background_image_change(data)
 	set_background(data.background_image)
 }
 
-function change_background_image_enabled(what)
-{
-	if(!is_admin_or_op(role))
-	{
-		not_an_op()
-		return false
-	}
-
-	if(what)
-	{
-		if(background_image_enabled)
-		{
-			feedback(`Background image is already enabled`)
-			return false			
-		}
-	}
-	
-	else
-	{
-		if(!background_image_enabled)
-		{
-			feedback(`Background image is already disabled`)
-			return false
-		}
-	}
-
-	socket_emit("change_background_image_enabled", {what:what})	
-}
-
-function announce_background_image_enabled_change(data)
-{
-	if(data.what)
-	{
-		public_feedback(`${data.username} enabled the background image`)
-	}
-
-	else
-	{
-		public_feedback(`${data.username} disabled the background image`)
-	}
-
-	set_background_image_enabled(data.what)
-	apply_background()
-	apply_theme()
-}
-
 function change_background_mode(mode)
 {
 	if(!is_admin_or_op(role))
@@ -11481,7 +11388,7 @@ function change_background_mode(mode)
 		return false
 	}
 
-	if(mode !== "normal" && mode !== "tiled" && mode !== "mirror")
+	if(mode !== "normal" && mode !== "tiled" && mode !== "mirror" && mode !== "solid")
 	{
 		feedback("Invalid background mode")
 		return false
@@ -11500,7 +11407,6 @@ function announce_background_mode_change(data)
 {
 	public_feedback(`${data.username} changed the background mode to ${data.mode}`)
 	set_background_mode(data.mode)
-	apply_background()
 }
 
 function change_background_tile_dimensions(dimensions)
@@ -13633,16 +13539,12 @@ function set_room_radio_enabled(what)
 	config_admin_room_radio_enabled()	
 }
 
-function set_background_image_enabled(what)
-{
-	background_image_enabled = what
-	config_admin_background_image_enabled()
-}
-
 function set_background_mode(what)
 {
 	background_mode = what
 	config_admin_background_mode()
+	apply_background()
+	apply_theme()
 }
 
 function set_background_tile_dimensions(dimensions)
@@ -14004,4 +13906,9 @@ function restart_radio()
 {
 	change_radio_source("restart")
 	msg_radio_picker.close()
+}
+
+function background_image_enabled()
+{
+	return background_mode !== "solid"
 }

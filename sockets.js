@@ -500,7 +500,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			room_radio_enabled: info.radio_enabled,
 			theme: info.theme,
 			background_image: background_image,
-			background_image_enabled: info.background_image_enabled,
 			background_mode: info.background_mode,
 			background_tile_dimensions: info.background_tile_dimensions,
 			text_color_mode: info.text_color_mode,
@@ -2373,35 +2372,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			username: socket.hue_username
 		})
 	}
-
-	handler.change_background_image_enabled = function(socket, data)
-	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
-		{
-			return handler.get_out(socket)
-		}
-
-		if(data.what !== true && data.what !== false)
-		{
-			return handler.get_out(socket)
-		}
-
-		db_manager.update_room(socket.hue_room_id,
-		{
-			background_image_enabled: data.what
-		})
-
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
-
-		handler.room_emit(socket, 'background_image_enabled_change', 
-		{
-			what: data.what,
-			username: socket.hue_username
-		})
-	}
 	
 	handler.change_background_mode = function(socket, data)
 	{
@@ -2410,7 +2380,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(data.mode !== "normal" && data.mode !== "tiled" && data.mode !== "mirror")
+		if(data.mode !== "normal" && data.mode !== "tiled" && data.mode !== "mirror" && data.mode !== "solid")
 		{
 			return handler.get_out(socket)
 		}

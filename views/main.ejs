@@ -34,7 +34,7 @@
 		<script src="/static/js/utilz.js?ver=7"></script>
 		<script src="/static/js/colorlib.js?v=9"></script>
 
-		<script src="/static/js/base.js?ver=1184"></script>
+		<script src="/static/js/base.js?ver=1185"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=330"/>
 
@@ -288,41 +288,29 @@
 
 					<div class='spacer1'></div>
 
-					<div class='small_padding_bottom'>Background Image</div>
+					<div class='small_padding_bottom'>Background Mode</div>
 
-					<select id='admin_background_image_select' class='modal_select'>
-						<option value="true">Enabled</option>
-						<option value="false">Disabled</option>
+					<select class='modal_select' id='admin_background_mode_select'>
+						<option value="normal">Normal</option>
+						<option value="tiled">Tiled</option>
+						<option value="mirror">Mirror</option>
+						<option value="solid">Solid</option>
 					</select>
+					
 
-					<div id='admin_background_controls_container'>
-
+					<div id='admin_background_tile_dimensions_container'>
+						
 						<div class='spacer1'></div>
 
-						<div class='small_padding_bottom'>Background Mode</div>
+						<div class='small_padding_bottom'>Tile Dimensions</div>
 
-						<select class='modal_select' id='admin_background_mode_select'>
-							<option value="normal">Normal</option>
-							<option value="mirror">Mirror</option>
-							<option value="tiled">Tiled</option>
-						</select>
-						
+						<input type='text' class='setting_input_text_small' id='admin_background_tile_dimensions' title='CSS background-size property (width and height). For example 200px 200px, 100px auto, auto 100px, or 100px 200px'>		
 
-						<div id='admin_background_tile_dimensions_container'>
-							
-							<div class='spacer1'></div>
+					</div>
 
-							<div class='small_padding_bottom'>Tile Dimensions</div>
-
-							<input type='text' class='setting_input_text_small' id='admin_background_tile_dimensions' title='CSS background-size property (width and height). For example 200px 200px, 100px auto, auto 100px, or 100px 200px'>		
-
-						</div>
-
-						<div id='admin_background_image_container'>
-							<div class='spacer1'></div>
-							<img class='small_square_image pointer' id='admin_background_image' onclick='open_background_image_picker()'>
-						</div>
-
+					<div id='admin_background_image_container'>
+						<div class='spacer1'></div>
+						<img class='small_square_image pointer' id='admin_background_image' onclick='open_background_image_picker()'>
 					</div>
 
 					<div class='spacer1'></div>
@@ -1140,9 +1128,7 @@
 			<div class='info_item'>/public: Room appears in the public room list.</div>
 			<div class='info_item'>/enablelog: Enables logging of the room. Which allows users to see previous messages before they joined.</div>
 			<div class='info_item'>/disablelog: Disables logging.</div>
-			<div class='info_item'>/clearlog: Removes all messages from the log.</div>
-			<div class='info_item'>/enablebackground: Enables background images in the room.</div>
-			<div class='info_item'>/disablebackground: Disables background images in the room.</div>			
+			<div class='info_item'>/clearlog: Removes all messages from the log.</div>			
 			<div class='info_item'>/roomname x: Chages the name of the room.</div>
 			<div class='info_item'>/roomnameedit x: Puts the room name in the input, ready to be edited.</div>
 			<div class='info_item'>/kick x: Kicks a user out of the room.</div>
