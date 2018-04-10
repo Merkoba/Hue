@@ -12369,22 +12369,10 @@ function show_highlights(filter=false)
 
 				else if(msg.hasClass("announcement"))
 				{
-					if(msg.data("type") === "whisper")
-					{
-						var cn = $("<div class='highlights_item'><div class='highlights_uname'></div><div class='highlights_content'></div>")
-						cn.find(".highlights_uname").eq(0).html(`Whisper from&nbsp;<span class='generic_uname action'>${msg.data("info1")}</span>`)
-						var content = cn.find(".highlights_content").eq(0)
-						content.text(msg.data("info2")).urlize()
-						content.attr("title", msg.find(".announcement_content_container").eq(0).attr("title"))
-					}
-
-					else
-					{
-						var cn = $("<div class='highlights_item'><div class='highlights_content'></div>")
-						var content = cn.find(".highlights_content").eq(0)
-						var announcement_content = msg.find(".announcement_content").eq(0)
-						content.append(announcement_content.parent().clone(true, true))
-					}
+					var cn = $("<div class='highlights_item'><div class='highlights_content'></div>")
+					var content = cn.find(".highlights_content").eq(0)
+					var announcement_content = msg.find(".announcement_content").eq(0)
+					content.append(announcement_content.parent().clone(true, true))
 				}
 
 				$("#highlights_container").append(cn)
