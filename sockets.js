@@ -1,5 +1,7 @@
 var handler = function(io, db_manager, config, sconfig, utilz, logger)
 {
+	handler.public = {}
+
 	const fs = require('fs')
 	const path = require('path')
 	const SocketAntiSpam  = require('socket-anti-spam')
@@ -106,7 +108,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				var m = data.server_method_name
 
-				if(handler[m] === undefined)
+				if(handler.public[m] === undefined)
 				{
 					return handler.get_out(socket)
 				}
@@ -139,7 +141,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					}
 				}
 
-				handler[m](socket, data)
+				handler.public[m](socket, data)
 			}
 
 			catch(err)
@@ -182,7 +184,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.hue_typing_counter = 0
 	}
 
-	handler.join_room = function(socket, data)
+	handler.public.join_room = function(socket, data)
 	{
 		if(socket.hue_joining || socket.hue_joined)
 		{
@@ -535,7 +537,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.sendchat = function(socket, data)
+	handler.public.sendchat = function(socket, data)
 	{
 		if(data.msg === undefined)
 		{
@@ -589,7 +591,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.change_topic = function(socket, data)
+	handler.public.change_topic = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -655,7 +657,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.change_room_name = function(socket, data)
+	handler.public.change_room_name = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -704,7 +706,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.roomlist = function(socket, data)
+	handler.public.roomlist = function(socket, data)
 	{
 		if(data.type === "visited_roomlist")
 		{
@@ -728,7 +730,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.create_room = function(socket, data)
+	handler.public.create_room = function(socket, data)
 	{
 		if(data.name.length === 0 || data.name.length > config.max_room_name_length)
 		{
@@ -781,7 +783,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.change_role = function(socket, data)
+	handler.public.change_role = function(socket, data)
 	{
 		if(!socket.hue_superuser && (socket.hue_role !== 'admin' && socket.hue_role !== 'op'))
 		{
@@ -899,7 +901,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})		
 	}
 
-	handler.reset_voices = function(socket, data)
+	handler.public.reset_voices = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -957,7 +959,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})	
 	}
 
-	handler.remove_ops = function(socket, data)
+	handler.public.remove_ops = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin')
 		{
@@ -1015,7 +1017,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.kick = function(socket, data)
+	handler.public.kick = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -1064,7 +1066,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}		
 	}	
 
-	handler.ban = function(socket, data)
+	handler.public.ban = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -1167,7 +1169,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})		
 	}
 
-	handler.unban = function(socket, data)
+	handler.public.unban = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -1247,7 +1249,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})		
 	}
 
-	handler.unban_all = function(socket, data)
+	handler.public.unban_all = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -1284,7 +1286,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})		
 	}
 
-	handler.get_banned_count = function(socket, data)
+	handler.public.get_banned_count = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -1314,7 +1316,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})		
 	}
 
-	handler.change_log = function(socket, data)
+	handler.public.change_log = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -1366,7 +1368,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})		
 	}
 
-	handler.clear_log = function(socket, data)
+	handler.public.clear_log = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -1403,7 +1405,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})		
 	}
 
-	handler.change_privacy = function(socket, data)
+	handler.public.change_privacy = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -1425,7 +1427,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.room_emit(socket, 'privacy_change', {username:socket.hue_username, what:data.what})
 	}
 
-	handler.change_radio_source = function(socket, data)
+	handler.public.change_radio_source = function(socket, data)
 	{
 		if(data.src === undefined)
 		{
@@ -1632,7 +1634,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.change_tv_source = function(socket, data)
+	handler.public.change_tv_source = function(socket, data)
 	{
 		if(data.src === undefined)
 		{
@@ -2037,7 +2039,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}		
 	}
 
-	handler.change_username = function(socket, data)
+	handler.public.change_username = function(socket, data)
 	{
 		if(data.username === undefined)
 		{
@@ -2096,7 +2098,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.change_password = function(socket, data)
+	handler.public.change_password = function(socket, data)
 	{
 		if(data.password === undefined)
 		{
@@ -2127,7 +2129,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, 'password_changed', {password:data.password})
 	}
 
-	handler.change_email = function(socket, data)
+	handler.public.change_email = function(socket, data)
 	{
 		if(data.email === undefined)
 		{
@@ -2184,7 +2186,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})	
 	}
 
-	handler.verify_email = function(socket, data)
+	handler.public.verify_email = function(socket, data)
 	{
 		if(utilz.clean_string5(data.code) !== data.code)
 		{
@@ -2257,7 +2259,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}	
 
-	handler.change_images_enabled = function(socket, data)
+	handler.public.change_images_enabled = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -2286,7 +2288,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.change_tv_enabled = function(socket, data)
+	handler.public.change_tv_enabled = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -2315,7 +2317,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.change_radio_enabled = function(socket, data)
+	handler.public.change_radio_enabled = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -2344,7 +2346,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.change_theme = function(socket, data)
+	handler.public.change_theme = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -2373,7 +2375,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 	
-	handler.change_background_mode = function(socket, data)
+	handler.public.change_background_mode = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -2402,7 +2404,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.change_background_tile_dimensions = function(socket, data)
+	handler.public.change_background_tile_dimensions = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -2436,7 +2438,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.change_text_color_mode = function(socket, data)
+	handler.public.change_text_color_mode = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -2465,7 +2467,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}	
 
-	handler.change_text_color = function(socket, data)
+	handler.public.change_text_color = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -2494,7 +2496,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.change_voice_permission = function(socket, data)
+	handler.public.change_voice_permission = function(socket, data)
 	{
 		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
 		{
@@ -2775,7 +2777,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.change_image_source = function(socket, data)
+	handler.public.change_image_source = function(socket, data)
 	{
 		if(data.src === undefined)
 		{
@@ -3340,7 +3342,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.slice_upload = async function(socket, data)
+	handler.public.slice_upload = async function(socket, data)
 	{
 		if(data.action === "image_upload")
 		{
@@ -3472,7 +3474,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.cancel_upload = function(socket, data)
+	handler.public.cancel_upload = function(socket, data)
 	{
 		var key = `${socket.hue_user_id}_${data.date}`		
 		
@@ -3484,7 +3486,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.typing = async function(socket, data)
+	handler.public.typing = async function(socket, data)
 	{
 		if(!handler.check_permission(socket, "chat"))
 		{
@@ -3508,7 +3510,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.broadcast_emit(socket, 'typing', {username:socket.hue_username})
 	}
 
-	handler.whisper = function(socket, data)
+	handler.public.whisper = function(socket, data)
 	{
 		if(data.username === undefined)
 		{
@@ -3576,7 +3578,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}	
 
-	handler.disconnect_others = function(socket, data)
+	handler.public.disconnect_others = function(socket, data)
 	{
 		var amount = 0
 
@@ -3595,7 +3597,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, 'othersdisconnected', {amount:amount})
 	}
 
-	handler.system_broadcast = function(socket, data)
+	handler.public.system_broadcast = function(socket, data)
 	{
 		if(!socket.hue_superuser)
 		{
