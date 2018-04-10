@@ -30,7 +30,7 @@ Example of how to use user_config.secret.json:
 
 The admin email must go in superuser_emails in user_config.secret.json. It's used to take over control of the main room. The main room is created on first join, with no roles. To get admin on the room use /annex.
 
-To have a fully working system, as it is intended, getting all the API keys (YouTube, Twitch, Soundcloud) is very recommended. If you don't need some of these, disable them in user_config.json (for example "youtube_enabled": false) Mailgun api key is necessary for account creation and password recovery, so it must be provided. A Google Recaptcha key is necessary to enable captcha verification on registration, though captcha support can be disabled ("recaptcha_enabled": false). Set up the API keys in user_config.secret.json.
+To have a fully working system, as it is intended, getting all the API keys (YouTube, Twitch, Soundcloud) is very recommended. If you don't need some of these, disable them in user_config.json (for example "youtube_enabled": false) Mailgun api key is necessary for account creation and password recovery, so it must be provided. A Google Recaptcha key is necessary to enable captcha verification on registration, though captcha support can be disabled ("recaptcha_enabled": false). Set the API keys in user_config.secret.json.
 
 Put the files in the directory you want it work and call "npm install". That should install all necessary packages. 
 
