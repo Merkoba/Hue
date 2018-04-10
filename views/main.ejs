@@ -34,7 +34,7 @@
 		<script src="/static/js/utilz.js?ver=7"></script>
 		<script src="/static/js/colorlib.js?v=9"></script>
 
-		<script src="/static/js/base.js?ver=1187"></script>
+		<script src="/static/js/base.js?ver=1188"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=330"/>
 
@@ -871,7 +871,7 @@
 			</div>
 			<div id='show_profile_buttons'>
 				<div class='spacer4'></div>
-				<span class='menu_item unselectable show_profile_button action' id='show_profile_whisper' onclick='write_whisper($("#show_profile_uname").text())'>Send Whisper</span>
+				<span class='menu_item unselectable show_profile_button action' id='show_profile_whisper' onclick='write_message($("#show_profile_uname").text())'>Send Whisper</span>
 			</div>
 		</script>
 
@@ -989,11 +989,11 @@
 			</div>
 		</script>		
 
-		<script id='template_whisper' type='text/x-handlebars-template'>
-			<div id='write_whisper_feedback'></div>
-			<textarea rows="3" id='write_whisper_area'></textarea>
+		<script id='template_message' type='text/x-handlebars-template'>
+			<div id='write_message_feedback'></div>
+			<textarea rows="3" id='write_message_area'></textarea>
 			<div class='spacer3'></div>
-			<div class='bigger pointer unselectable action inline' onclick='send_whisper()'>Send</div>
+			<div class='bigger pointer unselectable action inline' onclick='send_message()'>Send</div>
 		</script>
 
 		<script id='template_help' type='text/x-handlebars-template'>
@@ -1025,7 +1025,7 @@
 			<div class='info_item'>/radio x: Changes the radio using a search term or URL. "/radio restart" restarts the current radio for all users, in case it gets stuck. "/radio default" sets the radio to the site's default radio.</div>	
 			<div class='info_item'>/me x: Makes a message in third person.</div>		
 			<div class='info_item'>/whisper x: Opens a window to write a whisper to x user.</div>		
-			<div class='info_item'>/whisperops: Opens a window to write a whisper to ops and admins.</div>		
+			<div class='info_item'>/whisperops: Opens a window to write a whisper to ops and admins.</div>
 			<div class='info_item'>/status: Shows the room status window.</div>			
 			<div class='info_item'>/role: Shows your role and permissions.</div>
 			<div class='info_item'>/users: Shows the user list. Accepts a filter as an argument.</div>
@@ -1137,6 +1137,9 @@
 			<div class='info_item'>/unban x: Unbans a user from the room.</div>
 			<div class='info_item'>/unbanall: Removes all bans.</div>
 			<div class='info_item'>/bannedcount: Displays the number of banned users in the room.</div>
+			<div class='info_item'>/broadcast: Opens a window to write a message to be sent to the entire room.</div>
+			<div class='info_item'>/systembroadcast: (Only for superusers) Opens a window to write a message to be sent to the entire system.</div>
+			<div class='info_item'>/annex: (Only for superusers) Used to change the user's role.</div>
 			<div class='info_item'>Usernames have a context menu (right click) if you are an op or admin.</div>
 			<div class='info_item'>Check /help for information about how users interact in the room through chat, image uploads, or radio.</div>
 			<div class='info_item'>Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada URL is gathered automatically. To work, the server needs to allow cross-domain requests and be HTTPS enabled if this system is being served through HTTPS.</div>

@@ -1194,19 +1194,19 @@ input[type=text], textarea
 	padding-left: 1.2rem;
 }
 
-#write_whisper_info
+#write_message_info
 {
 	max-width: 30rem;
 }
 
-#write_whisper_area
+#write_message_area
 {
 	width: 20rem;
 	resize: none;
 	font-size: 1em;
 }
 
-#write_whisper_feedback
+#write_message_feedback
 {
 	padding-bottom: 1.2em;
 	display: none;

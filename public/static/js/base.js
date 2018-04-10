@@ -85,7 +85,7 @@ var template_image_picker
 var template_tv_picker
 var template_radio_picker
 var template_media_menu
-var template_whisper
+var template_message
 var template_highlights
 var template_image_history
 var template_tv_history
@@ -106,7 +106,7 @@ var msg_image
 var msg_profile
 var msg_info
 var msg_info2
-var msg_whisper
+var msg_message
 var msg_image_picker
 var msg_tv_picker
 var msg_radio_picker
@@ -161,7 +161,7 @@ var separator_title
 var msg_id = 0
 var mentions_regex
 var highlight_words_regex
-var writing_whisper = false
+var writing_message = false
 var double_tap_key_pressed = 0
 var double_tap_key_2_pressed = 0
 var double_tap_key_3_pressed = 0
@@ -181,7 +181,7 @@ var user_email
 var user_reg_date
 var filter_delay = 350
 var resize_delay = 350
-var double_tap_delay = 350
+var double_tap_delay = 200
 var wheel_delay = 100
 var check_scrollers_delay = 100
 var requesting_roomlist = false
@@ -190,7 +190,8 @@ var first_time
 var emit_queue_timeout
 var emit_queue = []
 var app_focused = true
-var whisper_uname = ""
+var message_uname = ""
+var message_type = ""
 
 function init()
 {
@@ -311,7 +312,7 @@ function setup_templates()
 	template_tv_picker = Handlebars.compile($('#template_tv_picker').html())
 	template_radio_picker = Handlebars.compile($('#template_radio_picker').html())
 	template_media_menu = Handlebars.compile($('#template_media_menu').html())
-	template_whisper = Handlebars.compile($('#template_whisper').html())
+	template_message = Handlebars.compile($('#template_message').html())
 	template_highlights = Handlebars.compile($('#template_highlights').html())
 	template_image_history = Handlebars.compile($('#template_image_history').html())
 	template_tv_history = Handlebars.compile($('#template_tv_history').html())
@@ -1119,13 +1120,23 @@ function start_socket()
 
 		else if(data.type === 'whisper')
 		{
-			whisper_received(data)
+			message_received(data)
 		}
 
 		else if(data.type === 'whisper_ops')
 		{
-			whisper_received(data, "ops")
+			message_received(data, "ops")
 		}
+
+		else if(data.type === 'room_broadcast')
+		{
+			message_received(data, "room")
+		}
+
+		else if(data.type === 'system_broadcast')
+		{
+			message_received(data, "system")
+		}		
 
 		else if(data.type === 'error_occurred')
 		{
@@ -1161,11 +1172,6 @@ function start_socket()
 		{
 			msg_info.show("You must wait a while before creating another room")
 		}
-
-		else if(data.type === 'system_broadcast')
-		{
-			show_system_broadcast(data)
-		}		
 	})
 }
 
@@ -3535,13 +3541,13 @@ function activate_key_detection()
 				}
 			}
 
-			if(writing_whisper)
+			if(writing_message)
 			{
-				if(msg_whisper.is_highest())
+				if(msg_message.is_highest())
 				{
 					if(e.key === "Enter")
 					{
-						send_whisper()
+						send_message()
 						e.preventDefault()
 					}
 					
@@ -5196,6 +5202,7 @@ function register_commands()
 	commands.push('/roomsettings')
 	commands.push('/goto')
 	commands.push('/broadcast')
+	commands.push('/systembroadcast')
 	commands.push('/changeinput')
 
 	commands.sort()
@@ -5681,13 +5688,23 @@ function execute_command(msg, ans)
 
 	else if(oiStartsWith(lmsg, '/whisper'))
 	{
-		write_whisper(arg)
+		write_message(arg)
 	}
 
 	else if(oiEquals(lmsg, '/whisperops'))
 	{
-		write_whisper(false, "ops")
+		write_message(false, "ops")
 	}
+
+	else if(oiEquals(lmsg, '/broadcast'))
+	{
+		write_message(false, "room")
+	}
+
+	else if(oiEquals(lmsg, '/systembroadcast'))
+	{
+		write_message(false, "system")
+	}	
 
 	else if(oiEquals(lmsg, '/annex'))
 	{
@@ -5977,11 +5994,6 @@ function execute_command(msg, ans)
 	else if(oiStartsWith(lmsg, '/goto'))
 	{
 		goto_url(arg, "tab")
-	}
-
-	else if(oiStartsWith(lmsg, '/broadcast'))
-	{
-		system_broadcast(arg)
 	}
 
 	else if(oiStartsWith(lmsg, '/changeinput'))
@@ -8436,11 +8448,11 @@ function start_msg()
 		})
 	)
 
-	msg_whisper = Msg.factory
+	msg_message = Msg.factory
 	(
 		Object.assign({}, common, titlebar,
 		{
-			id: "whisper",
+			id: "message",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -8449,7 +8461,7 @@ function start_msg()
 			{
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
-				writing_whisper = true
+				writing_message = true
 			},
 			after_set: function(instance)
 			{
@@ -8457,11 +8469,11 @@ function start_msg()
 			},
 			after_close: function(instance)
 			{
-				$("#write_whisper_area").val("")
-				$("#write_whisper_feedback").text("")
-				$("#write_whisper_feedback").css("display", "none")
+				$("#write_message_area").val("")
+				$("#write_message_feedback").text("")
+				$("#write_message_feedback").css("display", "none")
 				after_modal_close(instance)
-				writing_whisper = false
+				writing_message = false
 			}
 		})
 	)
@@ -8729,7 +8741,7 @@ function start_msg()
 	msg_tv_picker.set(template_tv_picker())
 	msg_radio_picker.set(template_radio_picker())
 	msg_media_menu.set(template_media_menu())
-	msg_whisper.set(template_whisper())
+	msg_message.set(template_message())
 	msg_highlights.set(template_highlights())
 	msg_image_history.set(template_image_history())
 	msg_tv_history.set(template_tv_history())
@@ -12010,7 +12022,7 @@ function cant_chat()
 	feedback("You don't have permission to chat")
 }
 
-function write_whisper(uname, type="user")
+function write_message(uname, type="user")
 {
 	if(type === "user")
 	{
@@ -12042,67 +12054,48 @@ function write_whisper(uname, type="user")
 
 	else if(type === "ops")
 	{
+		if(!is_admin_or_op(role))
+		{
+			not_an_op()
+			return false
+		}
+
 		var title = {text:"* Whisper To Operators *"}
 	}
 
-	whisper_uname = uname
-
-	whisper_type = type
-
-	msg_whisper.set_title(make_safe(title))
-	
-	msg_whisper.show(function()
+	else if(type === "room")
 	{
-		$("#write_whisper_area").focus()
+		if(!is_admin_or_op(role))
+		{
+			not_an_op()
+			return false
+		}
+
+		var title = {text:"* Message To Room *"}
+	}
+
+	else if(type === "system")
+	{
+		var title = {text:"* Message To System *"}
+	}
+
+	message_uname = uname
+
+	message_type = type
+
+	msg_message.set_title(make_safe(title))
+	
+	msg_message.show(function()
+	{
+		$("#write_message_area").focus()
 	})
 }
 
-function send_whisper()
+function send_message()
 {
-	if(whisper_type === "user")
-	{
-		send_whisper_user()
-	}
+	var message = utilz.clean_string2($("#write_message_area").val())
 
-	else if(whisper_type === "ops")
-	{
-		send_whisper_ops()
-	}
-}
-
-function send_whisper_user()
-{
-	var uname = whisper_uname
-
-	if(!uname)
-	{
-		return false
-	}
-
-	if(!can_chat)
-	{
-		$("#write_whisper_feedback").text("You don't have chat permission")
-		$("#write_whisper_feedback").css("display", "block")
-		return false
-	}	
-
-	if(uname === username)
-	{
-		$("#write_whisper_feedback").text("You can't whisper to yourself")
-		$("#write_whisper_feedback").css("display", "block")
-		return false
-	}
-
-	if(!usernames.includes(uname))
-	{
-		$("#write_whisper_feedback").text("(User is not in the room)")
-		$("#write_whisper_feedback").css("display", "block")
-		return false
-	}
-
-	var whisper = utilz.clean_string2($("#write_whisper_area").val())
-
-	var diff = max_input_length - whisper.length
+	var diff = max_input_length - message.length
 
 	if(diff === max_input_length)
 	{
@@ -12111,14 +12104,68 @@ function send_whisper_user()
 	
 	else if(diff < 0)
 	{
-		$("#write_whisper_feedback").text(`Character limit exceeded by ${Math.abs(diff)}`)
-		$("#write_whisper_feedback").css("display", "block")
+		$("#write_message_feedback").text(`Character limit exceeded by ${Math.abs(diff)}`)
+		$("#write_message_feedback").css("display", "block")
 		return false
 	}
 
-	socket_emit('whisper', {username:uname, message:whisper})
+	if(message_type === "user")
+	{
+		var ans = send_whisper_user(message)
+	}
 
-	msg_whisper.close()
+	else if(message_type === "ops")
+	{
+		var ans = send_whisper_ops(message)
+	}
+
+	else if(message_type === "room")
+	{
+		var ans = send_room_broadcast(message)
+	}
+
+	else if(message_type === "system")
+	{
+		var ans = send_system_broadcast(message)
+	}
+
+	if(ans)
+	{
+		msg_message.close()
+	}
+}
+
+function send_whisper_user(message)
+{
+	var uname = message_uname
+
+	if(!uname)
+	{
+		return false
+	}
+
+	if(!can_chat)
+	{
+		$("#write_message_feedback").text("You don't have chat permission")
+		$("#write_message_feedback").css("display", "block")
+		return false
+	}	
+
+	if(uname === username)
+	{
+		$("#write_message_feedback").text("You can't whisper to yourself")
+		$("#write_message_feedback").css("display", "block")
+		return false
+	}
+
+	if(!usernames.includes(uname))
+	{
+		$("#write_message_feedback").text("(User is not in the room)")
+		$("#write_message_feedback").css("display", "block")
+		return false
+	}
+
+	socket_emit('whisper', {username:uname, message:message})
 
 	var ff = function()
 	{
@@ -12129,7 +12176,7 @@ function send_whisper_user()
 	{
 		var s = make_safe(
 		{
-			text: whisper, 
+			text: message, 
 			html: `<div class='spacer3'></div><div class='small_button action' id='modal_send_whisper'>Send Another Whisper</div>`
 		})
 
@@ -12137,84 +12184,115 @@ function send_whisper_user()
 		{
 			$("#modal_send_whisper").click(function()
 			{
-				write_whisper(uname)
+				write_message(uname)
 			})
 		})
 	}
 
 	feedback(`Whisper sent to ${uname}`, {onclick:f, save:true})
+
+	return true
 }
 
-function send_whisper_ops()
+function send_whisper_ops(message)
 {
-	var whisper = utilz.clean_string2($("#write_whisper_area").val())
-
-	var diff = max_input_length - whisper.length
-
-	if(diff === max_input_length)
-	{
-		return false
-	}
-	
-	else if(diff < 0)
-	{
-		$("#write_whisper_feedback").text(`Character limit exceeded by ${Math.abs(diff)}`)
-		$("#write_whisper_feedback").css("display", "block")
-		return false
-	}
-
-	socket_emit('whisper_ops', {message:whisper})
-
-	msg_whisper.close()	
+	socket_emit('whisper_ops', {message:message})
+	return true
 }
 
-function whisper_received(data, type="user")
+function send_room_broadcast(message)
 {
-	if(user_is_ignored(data.username))
+	if(!is_admin_or_op(role))
 	{
+		not_an_op()
 		return false
 	}
 
-	var f = function()
+	socket_emit("room_broadcast", {message:message})
+
+	return true
+}
+
+function send_system_broadcast(message)
+{
+	socket_emit("system_broadcast", {message:message})
+
+	return true
+}
+
+function message_received(data, type="user")
+{
+	if(data.username)
 	{
-		show_profile(data.username, get_user_by_username(data.username).profile_image)
+		if(user_is_ignored(data.username))
+		{
+			return false
+		}
+
+		var f = function()
+		{
+			show_profile(data.username, get_user_by_username(data.username).profile_image)
+		}
 	}
 
 	if(type === "user")
 	{
-		var t = `Whisper from ${data.username}`
-		var h = "<div class='spacer3'></div><div class='small_button action inline show_whisper_reply'>Send&nbsp;Whisper</div>"
+		var title = {text:`Whisper from ${data.username}`, onclick:f}
+		var h = "<div class='spacer3'></div><div class='small_button action inline show_message_reply'>Send&nbsp;Whisper</div>"
 	}
 
 	else if(type === "ops")
 	{
-		var t = `Whisper (To Operators) from ${data.username}`
-		var h = `<div class='spacer3'></div><div class='small_button action inline show_whisper_reply'>Send&nbsp;Whisper</div>
-		<div class='spacer2'></div><div class='small_button action inline show_whisper_reply_ops'>Send&nbsp;Whisper&nbsp;To&nbsp;Operators</div>`
+		var title = {text:`Whisper (To Operators) from ${data.username}`, onclick:f}
+
+		if(data.username !== username)
+		{
+			var h0 = "<div class='spacer3'></div><div class='small_button action inline show_message_reply'>Send&nbsp;Whisper</div>"
+		}
+
+		else
+		{
+			var h0 = ""
+		}
+
+		var h = h0 + "<div class='spacer2'></div><div class='small_button action inline show_message_reply_ops'>Send&nbsp;Whisper&nbsp;To&nbsp;Operators</div>"
+	}
+
+	else if(type === "room")
+	{
+		var title = {text:`Room Message from ${data.username}`, onclick:f}
+		var h = false
+	}
+
+	else if(type === "system")
+	{
+		var title = {text:"System Message"}
+		var h = false
 	}
 
 	var s = make_safe(
 	{
-		text: data.message, 
+		text: data.message,
 		html: h
 	})
 
 	var pop = create_popup("top")
 
-	pop.show([make_safe({text:t, onclick:f}), s], function()
+	pop.show([make_safe(title), s], function()
 	{
-		$(pop.content).find(".show_whisper_reply").eq(0).click(function()
+		$(pop.content).find(".show_message_reply").eq(0).click(function()
 		{
-			write_whisper(data.username)
+			write_message(data.username)
 		})
 
-		$(pop.content).find(".show_whisper_reply_ops").eq(0).click(function()
+		$(pop.content).find(".show_message_reply_ops").eq(0).click(function()
 		{
-			write_whisper(false, "ops")
+			write_message(false, "ops")
 		})		
 	})
 	
 	alert_title2()
+
 	sound_notify("highlight")	
 }
 
@@ -13764,17 +13842,6 @@ function show_export_settings()
 	msg_info2.show(["Export Settings", s])
 }
 
-function system_broadcast(what)
-{
-	if(what.length > max_input_length)
-	{
-		feedback("Message is too long")
-		return false
-	}
-
-	socket_emit("system_broadcast", {what:what})
-}
-
 function feedback(msg, data=false)
 {
 	var obj = 
@@ -13806,16 +13873,6 @@ function public_feedback(msg, data=false)
 	}
 
 	chat_announce(obj)
-}
-
-function show_system_broadcast(data)
-{
-	var s = make_safe({text:data.what})
-
-	create_popup("top").show(["System Message", s])
-	
-	alert_title2()
-	sound_notify("highlight")
 }
 
 function make_unique_lines(s)

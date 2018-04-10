@@ -3615,6 +3615,63 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				})
 			}
 		}
+	}
+
+	handler.public.room_broadcast = function(socket, data)
+	{
+		if(!handler.is_admin_or_op(socket))
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.message === undefined)
+		{
+			return false
+		}
+
+		if(data.message.length === 0)
+		{
+			return false
+		}
+
+		if(data.message.length > config.max_input_length)
+		{
+			return false
+		}
+
+		handler.room_emit(socket, 'room_broadcast',
+		{
+			message: data.message,
+			username: socket.hue_username
+		})
+	}
+
+	handler.public.system_broadcast = function(socket, data)
+	{
+		if(!socket.hue_superuser)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.message === undefined)
+		{
+			return false
+		}
+
+		if(data.message.length === 0)
+		{
+			return false
+		}
+
+		if(data.message.length > config.max_input_length)
+		{
+			return false
+		}
+
+		handler.system_emit(socket, 'system_broadcast', 
+		{
+			message: data.message
+		})
 	}	
 
 	handler.public.disconnect_others = function(socket, data)
@@ -3634,34 +3691,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		handler.user_emit(socket, 'othersdisconnected', {amount:amount})
-	}
-
-	handler.public.system_broadcast = function(socket, data)
-	{
-		if(!socket.hue_superuser)
-		{
-			return handler.get_out(socket)
-		}
-
-		if(data.what === undefined)
-		{
-			return false
-		}
-
-		if(data.what.length === 0)
-		{
-			return false
-		}
-
-		if(data.what.length > config.max_input_length)
-		{
-			return false
-		}
-
-		handler.system_emit(socket, 'system_broadcast', 
-		{
-			what: data.what
-		})
 	}
 
 	handler.check_image_url = function(uri)
