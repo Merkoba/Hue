@@ -929,12 +929,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			var ids = Object.keys(io.sockets.adapter.rooms[socket.hue_room_id].sockets)
+			var sockets = handler.get_room_sockets(socket.hue_room_id)
 
-			for(var i=0; i<ids.length; i++)
+			for(var socc of sockets)
 			{
-				var socc = io.sockets.connected[ids[i]]
-
 				if(socc.hue_role.startsWith("voice") && socc.hue_role !== "voice1")
 				{
 					socc.hue_role = 'voice1'
@@ -987,12 +985,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			var ids = Object.keys(io.sockets.adapter.rooms[socket.hue_room_id].sockets)
+			var sockets = handler.get_room_sockets(socket.hue_room_id)
 
-			for(var i=0; i<ids.length; i++)
+			for(var socc of sockets)
 			{
-				var socc = io.sockets.connected[ids[i]]
-
 				if(socc.hue_role === 'op')
 				{
 					socc.hue_role = ''
@@ -3576,6 +3572,49 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			handler.user_emit(socket, 'user_not_in_room', {})
 		}
+	}
+
+	handler.public.whisper_ops = function(socket, data)
+	{
+		if(!handler.is_admin_or_op(socket))
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.message === undefined)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.message.length === 0)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.message.length > config.max_input_length)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.message !== utilz.clean_string2(data.message))
+		{
+			return handler.get_out(socket)
+		}			
+
+		var sockets = handler.get_room_sockets(socket.hue_room_id)
+
+		for(var socc of sockets)
+		{
+			if(handler.is_admin_or_op(socc))
+			{
+				handler.user_emit(socc, 'whisper_ops', 
+				{
+					room: socket.hue_room_id,
+					username: socket.hue_username,
+					message: data.message
+				})
+			}
+		}
 	}	
 
 	handler.public.disconnect_others = function(socket, data)
@@ -3773,12 +3812,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			var ids = Object.keys(io.sockets.adapter.rooms[socket.hue_room_id].sockets)
+			var sockets = handler.get_room_sockets(socket.hue_room_id)
 
-			for(var id of ids)
+			for(var socc of sockets)
 			{
-				var socc = io.sockets.connected[id]
-
 				if(socc.id !== socket.id && socc.hue_user_id === socket.hue_user_id)
 				{
 					return true
@@ -3800,12 +3837,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			var clients = []
 
-			var ids = Object.keys(io.sockets.adapter.rooms[room_id].sockets)
+			var sockets = handler.get_room_sockets(room_id)
 
-			for(var id of ids)
+			for(var socc of sockets)
 			{
-				var socc = io.sockets.connected[id]
-
 				if(socc.hue_user_id === user_id)
 				{
 					clients.push(socc)
@@ -3827,12 +3862,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			var clients = []
 
-			var ids = Object.keys(io.sockets.adapter.rooms[room_id].sockets)
+			var sockets = handler.get_room_sockets(room_id)
 
-			for(var id of ids)
+			for(var socc of sockets)
 			{
-				var socc = io.sockets.connected[id]
-
 				if(socc.hue_username === username)
 				{
 					clients.push(socc)
@@ -3847,6 +3880,30 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		}
 	}
+
+	handler.get_room_sockets = function(room_id)
+	{
+		try
+		{
+			var sockets = []
+
+			var ids = Object.keys(io.sockets.adapter.rooms[room_id].sockets)
+
+			for(var id of ids)
+			{
+				var socc = io.sockets.connected[id]
+
+				sockets.push(socc)
+			}
+
+			return sockets
+		}
+
+		catch(err)
+		{
+			logger.log_error(err)
+		}
+	}	
 
 	handler.update_user_in_userlist = function(socket)
 	{
@@ -3934,12 +3991,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		try
 		{
-			var ids = Object.keys(io.sockets.adapter.rooms[socket.hue_room_id].sockets)
+			var sockets = handler.get_room_sockets(socket.hue_room_id)
 			
-			for(var i=0; i<ids.length; i++)
+			for(var socc of sockets)
 			{
-				var socc = io.sockets.connected[ids[i]]
-
 				if(socc.hue_user_id !== undefined)
 				{
 					if(socc.id !== socket.id && socc.hue_user_id === socket.hue_user_id)

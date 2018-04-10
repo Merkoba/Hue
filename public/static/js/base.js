@@ -1122,6 +1122,11 @@ function start_socket()
 			whisper_received(data)
 		}
 
+		else if(data.type === 'whisper_ops')
+		{
+			whisper_received(data, "ops")
+		}
+
 		else if(data.type === 'error_occurred')
 		{
 			error_occurred()
@@ -5132,6 +5137,7 @@ function register_commands()
 	commands.push('/afk')
 	commands.push('/disconnectothers')
 	commands.push('/whisper')
+	commands.push('/whisperops')
 	commands.push('/annex')
 	commands.push('/highlights')
 	commands.push('/lock')
@@ -5676,6 +5682,11 @@ function execute_command(msg, ans)
 	else if(oiStartsWith(lmsg, '/whisper'))
 	{
 		write_whisper(arg)
+	}
+
+	else if(oiEquals(lmsg, '/whisperops'))
+	{
+		write_whisper(false, "ops")
 	}
 
 	else if(oiEquals(lmsg, '/annex'))
@@ -11999,34 +12010,46 @@ function cant_chat()
 	feedback("You don't have permission to chat")
 }
 
-function write_whisper(uname)
+function write_whisper(uname, type="user")
 {
-	if(!can_chat)
+	if(type === "user")
 	{
-		cant_chat()
-		return false
+		if(!can_chat)
+		{
+			cant_chat()
+			return false
+		}
+
+		if(uname === username)
+		{
+			feedback("You can't whisper to yourself")
+			return false
+		}
+
+		if(!usernames.includes(uname))
+		{
+			user_not_in_room()
+			return false
+		}
+		
+		var f = function()
+		{
+			show_profile(uname, get_user_by_username(uname).profile_image)
+		}
+
+		var title = {text:`Whisper To ${uname}`, onclick:f}
 	}
 
-	if(uname === username)
+	else if(type === "ops")
 	{
-		feedback("You can't whisper to yourself")
-		return false
-	}
-
-	if(!usernames.includes(uname))
-	{
-		user_not_in_room()
-		return false
-	}
-
-	var f = function()
-	{
-		show_profile(uname, get_user_by_username(uname).profile_image)
+		var title = {text:"* Whisper To Operators *"}
 	}
 
 	whisper_uname = uname
 
-	msg_whisper.set_title(make_safe({text:`Whisper to ${uname}`, onclick:f}))
+	whisper_type = type
+
+	msg_whisper.set_title(make_safe(title))
 	
 	msg_whisper.show(function()
 	{
@@ -12035,6 +12058,19 @@ function write_whisper(uname)
 }
 
 function send_whisper()
+{
+	if(whisper_type === "user")
+	{
+		send_whisper_user()
+	}
+
+	else if(whisper_type === "ops")
+	{
+		send_whisper_ops()
+	}
+}
+
+function send_whisper_user()
 {
 	var uname = whisper_uname
 
@@ -12062,7 +12098,7 @@ function send_whisper()
 		$("#write_whisper_feedback").text("(User is not in the room)")
 		$("#write_whisper_feedback").css("display", "block")
 		return false
-	}	
+	}
 
 	var whisper = utilz.clean_string2($("#write_whisper_area").val())
 
@@ -12109,7 +12145,30 @@ function send_whisper()
 	feedback(`Whisper sent to ${uname}`, {onclick:f, save:true})
 }
 
-function whisper_received(data)
+function send_whisper_ops()
+{
+	var whisper = utilz.clean_string2($("#write_whisper_area").val())
+
+	var diff = max_input_length - whisper.length
+
+	if(diff === max_input_length)
+	{
+		return false
+	}
+	
+	else if(diff < 0)
+	{
+		$("#write_whisper_feedback").text(`Character limit exceeded by ${Math.abs(diff)}`)
+		$("#write_whisper_feedback").css("display", "block")
+		return false
+	}
+
+	socket_emit('whisper_ops', {message:whisper})
+
+	msg_whisper.close()	
+}
+
+function whisper_received(data, type="user")
 {
 	if(user_is_ignored(data.username))
 	{
@@ -12119,21 +12178,39 @@ function whisper_received(data)
 	var f = function()
 	{
 		show_profile(data.username, get_user_by_username(data.username).profile_image)
-	}	
+	}
+
+	if(type === "user")
+	{
+		var t = `Whisper from ${data.username}`
+		var h = "<div class='spacer3'></div><div class='small_button action inline show_whisper_reply'>Send&nbsp;Whisper</div>"
+	}
+
+	else if(type === "ops")
+	{
+		var t = `Whisper (To Operators) from ${data.username}`
+		var h = `<div class='spacer3'></div><div class='small_button action inline show_whisper_reply'>Send&nbsp;Whisper</div>
+		<div class='spacer2'></div><div class='small_button action inline show_whisper_reply_ops'>Send&nbsp;Whisper&nbsp;To&nbsp;Operators</div>`
+	}
 
 	var s = make_safe(
 	{
 		text: data.message, 
-		html: ` <div class='spacer3'></div><div class='small_button action inline show_whisper_reply'>Send Whisper</div>`
+		html: h
 	})
 
 	var pop = create_popup("top")
 
-	pop.show([make_safe({text:`Whisper from ${data.username}`, onclick:f}), s], function()
+	pop.show([make_safe({text:t, onclick:f}), s], function()
 	{
 		$(pop.content).find(".show_whisper_reply").eq(0).click(function()
 		{
 			write_whisper(data.username)
+		})
+
+		$(pop.content).find(".show_whisper_reply_ops").eq(0).click(function()
+		{
+			write_whisper(false, "ops")
 		})		
 	})
 	
@@ -12997,7 +13074,8 @@ function make_safe(args={})
 		text: "", 
 		html: false,
 		urlize: true, 
-		onclick: false
+		onclick: false,
+		html_unselectable: true
 	}
 
 	fill_defaults(args, def_args)
@@ -13033,6 +13111,11 @@ function make_safe(args={})
 	if(args.html)
 	{
 		c.append(`<div class='msg_info_html'>${args.html}</div>`)
+
+		if(args.html_unselectable)
+		{
+			c.find(".msg_info_html").eq(0).addClass("unselectable")
+		}
 	}
 
 	return c[0]

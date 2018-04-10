@@ -4,8 +4,8 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 44
-	const users_version = 28
+	const rooms_version = 45
+	const users_version = 29
 
 	function get_random_key()
 	{
@@ -634,7 +634,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 							return
 						}
 
-						manager.user_fill_defaults()						
+						manager.user_fill_defaults(user)						
 
 						user.version = users_version
 
