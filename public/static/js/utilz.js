@@ -251,6 +251,11 @@ var Utilz = function()
 		return result
 	}
 
+	utilz.nonbreak = function(s)
+	{
+		return s.trim().split(" ").join("&nbsp;")
+	}
+
 	return utilz
 }
 

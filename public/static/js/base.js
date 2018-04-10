@@ -12177,7 +12177,7 @@ function send_whisper_user(message)
 		var s = make_safe(
 		{
 			text: message, 
-			html: `<div class='spacer3'></div><div class='small_button action' id='modal_send_whisper'>Send Another Whisper</div>`
+			html: `<div class='small_button action' id='modal_send_whisper'>${utilz.nonbreak("Send Another Whisper")}</div>`
 		})
 
 		msg_info2.show([make_safe({text:`Whisper sent to ${uname}`, onclick:ff}), s], function()
@@ -12197,6 +12197,26 @@ function send_whisper_user(message)
 function send_whisper_ops(message)
 {
 	socket_emit('whisper_ops', {message:message})
+
+	var f = function()
+	{
+		var s = make_safe(
+		{
+			text: message, 
+			html: `<div class='small_button action' id='modal_send_whisper_ops'>${utilz.nonbreak("Send Another Whisper")}</div>`
+		})
+
+		msg_info2.show([make_safe({text:`* Whisper sent to Operators *`}), s], function()
+		{
+			$("#modal_send_whisper_ops").click(function()
+			{
+				write_message(false, "ops")
+			})
+		})
+	}	
+	
+	feedback(`Whisper To Operators sent`, {onclick:f, save:true})
+
 	return true
 }
 
@@ -12210,6 +12230,25 @@ function send_room_broadcast(message)
 
 	socket_emit("room_broadcast", {message:message})
 
+	var f = function()
+	{
+		var s = make_safe(
+		{
+			text: message, 
+			html: `<div class='small_button action' id='modal_send_room_message'>${utilz.nonbreak("Send Another Message")}</div>`
+		})
+
+		msg_info2.show([make_safe({text:`* Whisper sent to Room *`}), s], function()
+		{
+			$("#modal_send_room_message").click(function()
+			{
+				write_message(false, "room")
+			})
+		})
+	}
+	
+	feedback(`Message To Room sent`, {onclick:f, save:true})	
+
 	return true
 }
 
@@ -12217,10 +12256,29 @@ function send_system_broadcast(message)
 {
 	socket_emit("system_broadcast", {message:message})
 
+	var f = function()
+	{
+		var s = make_safe(
+		{
+			text: message, 
+			html: `<div class='small_button action' id='modal_send_system_message'>${utilz.nonbreak("Send Another Message")}</div>`
+		})
+
+		msg_info2.show([make_safe({text:`* Whisper sent to System *`}), s], function()
+		{
+			$("#modal_send_system_message").click(function()
+			{
+				write_message(false, "system")
+			})
+		})
+	}	
+	
+	feedback(`Message To System sent`, {onclick:f, save:true})	
+
 	return true
 }
 
-function message_received(data, type="user")
+function message_received(data, type="user", announce=true)
 {
 	if(data.username)
 	{
@@ -12237,17 +12295,19 @@ function message_received(data, type="user")
 
 	if(type === "user")
 	{
-		var title = {text:`Whisper from ${data.username}`, onclick:f}
-		var h = "<div class='spacer3'></div><div class='small_button action inline show_message_reply'>Send&nbsp;Whisper</div>"
+		var t = `Whisper from ${data.username}`
+		var title = {text:t, onclick:f}
+		var h = `<div class='small_button action inline show_message_reply'>${utilz.nonbreak("Send Whisper")}</div>`
 	}
 
 	else if(type === "ops")
 	{
-		var title = {text:`Whisper (To Operators) from ${data.username}`, onclick:f}
+		var t = `Whisper (To Operators) from ${data.username}`
+		var title = {text:t, onclick:f}
 
 		if(data.username !== username)
 		{
-			var h0 = "<div class='spacer3'></div><div class='small_button action inline show_message_reply'>Send&nbsp;Whisper</div>"
+			var h0 = `<div class='small_button action inline show_message_reply'>${utilz.nonbreak("Send Whisper")}</div><div class='spacer2'></div>`
 		}
 
 		else
@@ -12255,18 +12315,20 @@ function message_received(data, type="user")
 			var h0 = ""
 		}
 
-		var h = h0 + "<div class='spacer2'></div><div class='small_button action inline show_message_reply_ops'>Send&nbsp;Whisper&nbsp;To&nbsp;Operators</div>"
+		var h = h0 + `<div class='small_button action inline show_message_reply_ops'>${utilz.nonbreak("Send Whisper To Operators")}</div>`
 	}
 
 	else if(type === "room")
 	{
-		var title = {text:`Room Message from ${data.username}`, onclick:f}
+		var t = `Room Message from ${data.username}`
+		var title = {text:t, onclick:f}
 		var h = false
 	}
 
 	else if(type === "system")
 	{
-		var title = {text:"System Message"}
+		var t = "System Message"
+		var title = {text:t}
 		var h = false
 	}
 
@@ -12290,10 +12352,24 @@ function message_received(data, type="user")
 			write_message(false, "ops")
 		})		
 	})
+
+	if(announce)
+	{
+		var af = function()
+		{
+			message_received(data, type, false)
+		}
+
+		feedback(`${t} received`, 
+		{
+			onclick: af,
+			save: true
+		})
+	}
 	
 	alert_title2()
 
-	sound_notify("highlight")	
+	sound_notify("highlight")
 }
 
 function add_to_ignored_usernames(uname)
@@ -13176,7 +13252,7 @@ function make_safe(args={})
 
 	if(args.html)
 	{
-		c.append(`<div class='msg_info_html'>${args.html}</div>`)
+		c.append(`<div class='spacer3'></div><div class='msg_info_html'>${args.html}</div>`)
 
 		if(args.html_unselectable)
 		{
