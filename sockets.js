@@ -593,7 +593,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.change_topic = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -659,7 +659,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.change_room_name = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -785,7 +785,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.change_role = function(socket, data)
 	{
-		if(!socket.hue_superuser && (socket.hue_role !== 'admin' && socket.hue_role !== 'op'))
+		if(!socket.hue_superuser && (!handler.is_admin_or_op(socket)))
 		{
 			return handler.get_out(socket)
 		}
@@ -903,7 +903,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.reset_voices = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -1019,7 +1019,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.kick = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -1068,7 +1068,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.ban = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -1171,7 +1171,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.unban = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -1251,7 +1251,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.unban_all = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -1288,7 +1288,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.get_banned_count = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -1318,7 +1318,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.change_log = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return false
 		}
@@ -1370,7 +1370,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.clear_log = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return false
 		}
@@ -1407,7 +1407,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.change_privacy = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -2261,7 +2261,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.change_images_enabled = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -2290,7 +2290,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.change_tv_enabled = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -2319,7 +2319,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.change_radio_enabled = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -2348,7 +2348,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.change_theme = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -2377,7 +2377,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	
 	handler.public.change_background_mode = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -2406,7 +2406,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.change_background_tile_dimensions = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -2440,7 +2440,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.change_text_color_mode = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -2469,7 +2469,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.change_text_color = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -2498,7 +2498,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.change_voice_permission = function(socket, data)
 	{
-		if(socket.hue_role !== 'admin' && socket.hue_role !== 'op')
+		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
@@ -4085,6 +4085,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			return false
 		}
+	}
+
+	handler.is_admin_or_op = function(socket)
+	{
+		return socket.hue_role === 'admin' || socket.hue_role === 'op'
 	}
 
 	handler.start_room_loop()
