@@ -3078,7 +3078,7 @@ function create_file_reader(file)
 
 function upload_file(file, action)
 {
-	if(file.action === "background_image_upload")
+	if(action === "background_image_upload")
 	{
 		for(var d in files)
 		{
