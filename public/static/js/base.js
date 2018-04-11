@@ -3078,6 +3078,19 @@ function create_file_reader(file)
 
 function upload_file(file, action)
 {
+	if(file.action === "background_image_upload")
+	{
+		for(var d in files)
+		{
+			var f = files[d]
+
+			if(f.action === "background_image_upload")
+			{
+				cancel_file_upload(d, false)
+			}
+		} 
+	}	
+
 	var date = Date.now()
 						
 	file.date = date
@@ -3123,31 +3136,44 @@ function upload_file(file, action)
 
 	if(!file.sending_last_slice)
 	{
-		var f = function()
+		obj.onclick = function()
 		{
-			var file = files[date]
-
-			if(!file)
-			{
-				return false
-			}
-
-			if(file.sending_last_slice)
-			{
-				return false
-			}
-
-			change_upload_status(file, "Cancelled", true)
-			delete files[date]
-			socket_emit("cancel_upload", {date:date})
+			cancel_file_upload(date)
 		}
-
-		obj.onclick = f
 	}
 
 	chat_announce(obj)
 
 	file.reader.readAsArrayBuffer(slice)
+}
+
+function cancel_file_upload(date, check=true)
+{
+	var file = files[date]
+
+	if(!file)
+	{
+		return false
+	}
+
+	if(file.sending_last_slice)
+	{
+		return false
+	}
+
+	change_upload_status(file, "Cancelled", true)
+
+	if(check)
+	{
+		if(file.action === "background_image_upload")
+		{
+			config_admin_background_image()
+		}
+	}
+
+	delete files[date]
+
+	socket_emit("cancel_upload", {date:date})
 }
 
 function get_file_next(file)
