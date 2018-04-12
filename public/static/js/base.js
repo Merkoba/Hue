@@ -39,17 +39,16 @@ var radio_title = ''
 var radio_metadata = ''
 var radio_setter = ''
 var radio_date = ''
+var loaded_radio_source = ""
+var loaded_radio_type = "radio"
+var loaded_radio_metadata = ""
+var get_radio_metadata_request
 var tv_type = ''
 var tv_source = ''
 var tv_title = ''
 var tv_metadata = ''
 var tv_setter = ''
 var tv_date = ''
-var get_metadata
-var no_meta_count
-var loaded_radio_source = ""
-var loaded_radio_type = "radio"
-var loaded_radio_metadata = ""
 var tabbed_list = []
 var tabbed_word = ""
 var tabbed_start = 0
@@ -1251,9 +1250,6 @@ function load_radio()
 			radio_metadata = `${radio_source.split('/').slice(0, -1).join('/')}/status-json.xsl`
 		}
 		
-		get_metadata = true
-		no_meta_count = 0
-		
 		$('#audio').attr('src', radio_source)
 
 		if(radio_started)
@@ -1274,8 +1270,6 @@ function load_radio()
 
 	else if(radio_type === "youtube")
 	{
-		get_metadata = false
-
 		if(youtube_player !== undefined)
 		{
 			var id = utilz.get_youtube_id(radio_source)
@@ -1355,7 +1349,7 @@ function load_radio()
 	loaded_radio_type = radio_type
 	loaded_radio_metadata = radio_metadata
 
-	if(radio_type === "radio")
+	if(loaded_radio_type === "radio")
 	{
 		get_radio_metadata()
 	}
@@ -6328,34 +6322,37 @@ function emit_change_image_source(url)
 	socket_emit('change_image_source', {src:url})
 }
 
+function get_radio_metadata_enabled()
+{
+	return loaded_radio_type === "radio" && 
+	loaded_radio_metadata && 
+	room_radio_enabled && 
+	room_settings.radio_enabled
+}
+
 function get_radio_metadata()
 {	
-	if(!loaded_radio_metadata)
-	{
-		return false
-	}
-
-	if(room_settings.radio_locked && last_radio_change)
-	{
-		return false
-	}
-
-	if(loaded_radio_type !== "radio" || !room_radio_enabled || !room_settings.radio_enabled || !get_metadata)
+	if(!get_radio_metadata_enabled())
 	{
 		return false
 	}
 
 	try
 	{
-		$.get(loaded_radio_metadata,
+		if(get_radio_metadata_request)
+		{
+			get_radio_metadata_request.abort()
+		}
+
+		get_radio_metadata_request = $.get(loaded_radio_metadata,
 		{
 
 		},
 		function(data)
 		{
-			if(loaded_radio_type !== "radio" || !room_radio_enabled || !room_settings.radio_enabled || !get_metadata)
+			if(!get_radio_metadata_enabled())
 			{
-				return
+				return false
 			}
 
 			try
@@ -6418,8 +6415,6 @@ function get_radio_metadata()
 
 function show_playing_file()
 {
-	get_metadata = false
-	
 	var s = loaded_radio_source.split('/')
 
 	if(s.length > 1)
@@ -6603,23 +6598,9 @@ function start_metadata_loop()
 {
 	setInterval(function()
 	{
-		if(loaded_radio_type === "radio" && room_radio_enabled && room_settings.radio_enabled)
+		if(get_radio_metadata_enabled())
 		{
-			if(get_metadata)
-			{
-				get_radio_metadata()
-			}
-
-			else
-			{
-				no_meta_count += 1
-
-				if(no_meta_count > max_no_meta_count)
-				{
-					get_metadata = true
-					no_meta_count = 0
-				}
-			}
+			get_radio_metadata()
 		}
 	}, check_metadata_interval_duration)
 }
@@ -10861,10 +10842,11 @@ function change_radio_visibility()
 
 		radio_visible = true
 
+		change({type:"radio", force:false, play:false})
+
 		if(loaded_radio_type === "radio")
 		{
-			get_metadata = true
-			no_meta_count = 0	
+			get_radio_metadata()
 		}
 	}
 

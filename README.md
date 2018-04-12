@@ -244,9 +244,6 @@ If you want to remove it to start fresh:
 "max_title_length"
 >Maximum length for the tab's title. Title consists of "room_name - topic" and is set automatically. If title is bigger it gets cropped.
 
-"max_no_meta_count"
->If radio metadata fails to be fetched, metadata fetch is disabled and this option is set to 0. After each metadata loop this number is increased by 1. When it reaches this configured count, metadata fetch is resumed. This is to avoid continuous fetch of invalid resources to save bandwidth.
-
 "max_image_size"
 >Maximum image size allowed in KB. This is checked both in the client and server. If the image is bigger it won't be uploaded.
 
