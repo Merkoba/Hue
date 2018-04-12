@@ -49,6 +49,7 @@ var get_metadata
 var no_meta_count
 var loaded_radio_source = ""
 var loaded_radio_type = "radio"
+var loaded_radio_metadata = ""
 var tabbed_list = []
 var tabbed_word = ""
 var tabbed_start = 0
@@ -1353,7 +1354,8 @@ function load_radio()
 	}
 
 	loaded_radio_source = radio_source
-	loaded_radio_type = radio_type	
+	loaded_radio_type = radio_type
+	loaded_radio_metadata = radio_metadata
 }
 
 function stop_videos()
@@ -6330,20 +6332,20 @@ function get_radio_metadata()
 		return false
 	}
 
-	if(!room_settings.radio_enabled || !get_metadata || radio_type !== "radio")
+	if(loaded_radio_type !== "radio" || !room_radio_enabled || !room_settings.radio_enabled || !get_metadata)
 	{
-		return
+		return false
 	}
 
 	try
 	{
-		$.get(radio_metadata,
+		$.get(loaded_radio_metadata,
 		{
 
 		},
 		function(data)
 		{
-			if(!room_settings.radio_enabled || !get_metadata || radio_type !== "radio")
+			if(loaded_radio_type !== "radio" || !room_radio_enabled || !room_settings.radio_enabled || !get_metadata)
 			{
 				return
 			}
@@ -6358,7 +6360,7 @@ function get_radio_metadata()
 					{
 						var source = data.icestats.source[i]
 
-						if(source.listenurl.includes(radio_source.split('/').pop()))
+						if(source.listenurl.includes(loaded_radio_source.split('/').pop()))
 						{
 							if(source.artist !== undefined && source.title !== undefined)
 							{
@@ -6368,7 +6370,7 @@ function get_radio_metadata()
 					}
 				}
 
-				else if(data.icestats.source.listenurl.includes(radio_source.split('/').pop()))
+				else if(data.icestats.source.listenurl.includes(loaded_radio_source.split('/').pop()))
 				{
 					var source = data.icestats.source
 				}
@@ -6410,11 +6412,11 @@ function show_playing_file()
 {
 	get_metadata = false
 	
-	var s = radio_source.split('/')
+	var s = loaded_radio_source.split('/')
 
 	if(s.length > 1)
 	{
-		push_played(false, {s1: s.pop(), s2:radio_source})
+		push_played(false, {s1: s.pop(), s2:loaded_radio_source})
 	}
 
 	else
@@ -6593,7 +6595,7 @@ function start_metadata_loop()
 {
 	setInterval(function()
 	{
-		if(room_settings.radio_enabled && radio_type === "radio")
+		if(loaded_radio_type === "radio" && room_radio_enabled && room_settings.radio_enabled)
 		{
 			if(get_metadata)
 			{
@@ -10850,6 +10852,12 @@ function change_radio_visibility()
 		$("#header_topic").css("display", "none")
 
 		radio_visible = true
+
+		if(loaded_radio_type === "radio")
+		{
+			get_metadata = true
+			no_meta_count = 0	
+		}
 	}
 
 	else
