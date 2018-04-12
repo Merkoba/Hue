@@ -230,7 +230,6 @@ function init()
 	start_played_context_menu()
 	start_volume_context_menu()
 	start_toggle_radio_context_menu()
-	start_metadata_loop()
 	start_titles()
 	setup_show_profile()
 	setup_main_menu()
@@ -769,6 +768,7 @@ function start_socket()
 			setup_tv(data)
 			setup_radio(data)
 
+			start_metadata_loop()
 			chat_scroll_bottom()
 			make_main_container_visible()
 
@@ -1253,8 +1253,6 @@ function load_radio()
 		
 		get_metadata = true
 		no_meta_count = 0
-
-		get_radio_metadata()
 		
 		$('#audio').attr('src', radio_source)
 
@@ -1356,6 +1354,11 @@ function load_radio()
 	loaded_radio_source = radio_source
 	loaded_radio_type = radio_type
 	loaded_radio_metadata = radio_metadata
+
+	if(radio_type === "radio")
+	{
+		get_radio_metadata()
+	}
 }
 
 function stop_videos()
@@ -6327,6 +6330,11 @@ function emit_change_image_source(url)
 
 function get_radio_metadata()
 {	
+	if(!loaded_radio_metadata)
+	{
+		return false
+	}
+
 	if(room_settings.radio_locked && last_radio_change)
 	{
 		return false
