@@ -737,16 +737,9 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		res.render('main', c)
 	})
 	
-	router.get('/:id', [check_url, require_login], function(req, res, next) 
+	router.get('/:id(\\w+)', [check_url, require_login], function(req, res, next) 
 	{
-		var pid = req.params.id
-
-		if(pid.includes("."))
-		{
-			return false
-		}
-
-		c.vars.room_id = pid.substr(0, config.max_room_id_length)
+		c.vars.room_id = req.params.id.substr(0, config.max_room_id_length)
 		c.vars.user_id = req.session.user_id
 		c.vars.jwt_token = req.jwt_token
 		res.render('main', c)
