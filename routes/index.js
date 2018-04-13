@@ -36,7 +36,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.max_tv_source_length = config.max_tv_source_length
 	c.vars.max_radio_source_length = config.max_radio_source_length
 	c.vars.max_title_length = config.max_title_length
-	c.vars.max_no_meta_count = config.max_no_meta_count
 	c.vars.small_keyboard_scroll = config.small_keyboard_scroll
 	c.vars.big_keyboard_scroll = config.big_keyboard_scroll
 	c.vars.max_image_size = config.max_image_size
@@ -46,7 +45,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.default_topic = config.default_topic
 	c.vars.default_topic_admin = config.default_topic_admin
 	c.vars.default_topic_unclaimed = config.default_topic_unclaimed
-	c.vars.afk_timeout_duration = config.afk_timeout_duration
 	c.vars.youtube_enabled = config.youtube_enabled
 	c.vars.twitch_enabled = config.twitch_enabled
 	c.vars.soundcloud_enabled = config.soundcloud_enabled
@@ -741,7 +739,14 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	
 	router.get('/:id', [check_url, require_login], function(req, res, next) 
 	{
-		c.vars.room_id = req.params.id.substr(0, config.max_room_id_length)
+		var pid = req.params.id
+
+		if(pid.includes("."))
+		{
+			return false
+		}
+
+		c.vars.room_id = pid.substr(0, config.max_room_id_length)
 		c.vars.user_id = req.session.user_id
 		c.vars.jwt_token = req.jwt_token
 		res.render('main', c)
