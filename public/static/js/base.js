@@ -4751,6 +4751,11 @@ function show_image(force=false)
 	if(force || $("#media_image").attr("src") !== image_source)
 	{
 		$("#media_image").attr("src", image_source)
+
+		if(background_mode === "mirror")
+		{
+			apply_background()
+		}		
 	}
 
 	else
@@ -4855,12 +4860,7 @@ function setup_image(data)
 	image_date_raw = data.image_date
 	image_type = data.image_type
 
-	change({type:"image"})
-
-	if(background_mode === "mirror")
-	{
-		apply_background()
-	}	
+	change({type:"image"})	
 }
 
 function fill_defaults(args, def_args)
