@@ -12304,6 +12304,11 @@ function send_system_broadcast(message)
 
 function message_received(data, type="user", announce=true)
 {
+	if(!data.date)
+	{
+		data.date = Date.now()
+	}
+
 	if(data.username)
 	{
 		if(user_is_ignored(data.username))
@@ -12327,6 +12332,7 @@ function message_received(data, type="user", announce=true)
 	else if(type === "ops")
 	{
 		var t = `Whisper (To Operators) from ${data.username}`
+
 		var title = {text:t, onclick:f}
 
 		if(data.username !== username)
@@ -12359,7 +12365,8 @@ function message_received(data, type="user", announce=true)
 	var s = make_safe(
 	{
 		text: data.message,
-		html: h
+		html: h,
+		title: nice_date(data.date)
 	})
 
 	var pop = create_popup("top")
@@ -13241,7 +13248,8 @@ function make_safe(args={})
 		html: false,
 		urlize: true, 
 		onclick: false,
-		html_unselectable: true
+		html_unselectable: true,
+		title: false
 	}
 
 	fill_defaults(args, def_args)
@@ -13272,6 +13280,11 @@ function make_safe(args={})
 	if(args.onclick)
 	{
 		c_text.on("click", args.onclick)
+	}
+
+	if(args.title)
+	{
+		c_text.attr("title", args.title)
 	}
 
 	if(args.html)
