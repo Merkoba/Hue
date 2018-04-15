@@ -158,7 +158,8 @@ var hls
 var youtube_video_play_on_queue = false
 var old_input_val
 var separator_title
-var msg_id = 0
+var message_id = 0
+var popup_message_id = 0
 var mentions_regex
 var highlight_words_regex
 var writing_message = false
@@ -1120,22 +1121,22 @@ function start_socket()
 
 		else if(data.type === 'whisper')
 		{
-			message_received(data)
+			popup_message_received(data)
 		}
 
 		else if(data.type === 'whisper_ops')
 		{
-			message_received(data, "ops")
+			popup_message_received(data, "ops")
 		}
 
 		else if(data.type === 'room_broadcast')
 		{
-			message_received(data, "room")
+			popup_message_received(data, "room")
 		}
 
 		else if(data.type === 'system_broadcast')
 		{
-			message_received(data, "system")
+			popup_message_received(data, "system")
 		}		
 
 		else if(data.type === 'error_occurred')
@@ -3572,7 +3573,7 @@ function activate_key_detection()
 				{
 					if(e.key === "Enter")
 					{
-						send_message()
+						send_popup_message()
 						e.preventDefault()
 					}
 					
@@ -4516,8 +4517,8 @@ function add_to_chat(msg, save=false)
 		
 		if(save)
 		{
-			msg_id += 1
-			msg.data("msg_id", msg_id)
+			message_id += 1
+			msg.data("message_id", message_id)
 			push_to_chat_history(msg)
 		}
 	}
@@ -4552,7 +4553,7 @@ function replace_in_chat_history(msg)
 	{
 		var msg2 = chat_history[i]
 
-		if(msg.data("msg_id") === msg2.data("msg_id"))
+		if(msg.data("message_id") === msg2.data("message_id"))
 		{
 			chat_history[i] = msg
 			return
@@ -5713,22 +5714,22 @@ function execute_command(msg, ans)
 
 	else if(oiStartsWith(lmsg, '/whisper'))
 	{
-		write_message(arg)
+		write_popup_message(arg)
 	}
 
 	else if(oiEquals(lmsg, '/whisperops'))
 	{
-		write_message(false, "ops")
+		write_popup_message(false, "ops")
 	}
 
 	else if(oiEquals(lmsg, '/broadcast'))
 	{
-		write_message(false, "room")
+		write_popup_message(false, "room")
 	}
 
 	else if(oiEquals(lmsg, '/systembroadcast'))
 	{
-		write_message(false, "system")
+		write_popup_message(false, "system")
 	}	
 
 	else if(oiEquals(lmsg, '/annex'))
@@ -9060,6 +9061,12 @@ function get_global_settings()
 		changed = true
 	}
 
+	if(global_settings.open_popup_messages === undefined)
+	{
+		global_settings.open_popup_messages = global_settings_default_open_popup_messages
+		changed = true
+	}
+
 	if(changed)
 	{
 		save_global_settings()
@@ -9106,6 +9113,7 @@ function start_settings_state(type)
 	$(`#${type}_afk_disable_image_change`).prop("checked", window[type].afk_disable_image_change)
 	$(`#${type}_afk_disable_tv_change`).prop("checked", window[type].afk_disable_tv_change)
 	$(`#${type}_afk_disable_radio_change`).prop("checked", window[type].afk_disable_radio_change)
+	$(`#${type}_open_popup_messages`).prop("checked", window[type].open_popup_messages)
 }
 
 function start_settings_listeners(type)
@@ -9137,6 +9145,7 @@ function start_settings_listeners(type)
 	$(`#${type}_afk_disable_image_change`).change(() => {setting_afk_disable_image_change_action(type)})
 	$(`#${type}_afk_disable_tv_change`).change(() => {setting_afk_disable_tv_change_action(type)})
 	$(`#${type}_afk_disable_radio_change`).change(() => {setting_afk_disable_radio_change_action(type)})
+	$(`#${type}_open_popup_messages`).change(() => {setting_open_popup_messages_action(type)})
 }
 
 function call_setting_actions(type, save=true)
@@ -9496,6 +9505,16 @@ function setting_afk_disable_tv_change_action(type, save=true)
 function setting_afk_disable_radio_change_action(type, save=true)
 {
 	window[type].afk_disable_radio_change = $(`#${type}_afk_disable_radio_change`).prop("checked")
+	
+	if(save)
+	{
+		window[`save_${type}`]()	
+	}
+}
+
+function setting_open_popup_messages_action(type, save=true)
+{
+	window[type].open_popup_messages = $(`#${type}_open_popup_messages`).prop("checked")
 	
 	if(save)
 	{
@@ -11968,13 +11987,18 @@ function check_highlights(msg)
 	return false
 }
 
-function create_popup(position)
+function create_popup(position, id=false)
 {
 	var common = 
 	{
 		show_effect_duration: [0, 400],
 		close_effect_duration: [400, 0],
 		clear_editables: true
+	}
+
+	if(id)
+	{
+		common.id = id
 	}
 
 	if(get_setting("modal_effects"))
@@ -12046,7 +12070,7 @@ function cant_chat()
 	feedback("You don't have permission to chat")
 }
 
-function write_message(uname, type="user")
+function write_popup_message(uname, type="user")
 {
 	if(type === "user")
 	{
@@ -12115,7 +12139,7 @@ function write_message(uname, type="user")
 	})
 }
 
-function send_message()
+function send_popup_message()
 {
 	var message = utilz.clean_string2($("#write_message_area").val())
 
@@ -12208,7 +12232,7 @@ function send_whisper_user(message)
 		{
 			$("#modal_send_whisper").click(function()
 			{
-				write_message(uname)
+				write_popup_message(uname)
 			})
 		})
 	}
@@ -12234,7 +12258,7 @@ function send_whisper_ops(message)
 		{
 			$("#modal_send_whisper_ops").click(function()
 			{
-				write_message(false, "ops")
+				write_popup_message(false, "ops")
 			})
 		})
 	}	
@@ -12266,7 +12290,7 @@ function send_room_broadcast(message)
 		{
 			$("#modal_send_room_message").click(function()
 			{
-				write_message(false, "room")
+				write_popup_message(false, "room")
 			})
 		})
 	}
@@ -12292,7 +12316,7 @@ function send_system_broadcast(message)
 		{
 			$("#modal_send_system_message").click(function()
 			{
-				write_message(false, "system")
+				write_popup_message(false, "system")
 			})
 		})
 	}	
@@ -12302,8 +12326,14 @@ function send_system_broadcast(message)
 	return true
 }
 
-function message_received(data, type="user", announce=true)
+function popup_message_received(data, type="user", announce=true)
 {
+	if(!data.id)
+	{
+		popup_message_id += 1
+		data.id = popup_message_id
+	}
+
 	if(!data.date)
 	{
 		data.date = Date.now()
@@ -12362,45 +12392,77 @@ function message_received(data, type="user", announce=true)
 		var h = false
 	}
 
-	var s = make_safe(
+	data.content = make_safe(
 	{
 		text: data.message,
 		html: h,
 		title: nice_date(data.date)
 	})
 
-	var pop = create_popup("top")
+	data.title = make_safe(title)
 
-	pop.show([make_safe(title), s], function()
+	if(!announce || get_setting("open_popup_messages"))
 	{
-		$(pop.content).find(".show_message_reply").eq(0).click(function()
-		{
-			write_message(data.username)
-		})
+		var closing_popups = false
 
-		$(pop.content).find(".show_message_reply_ops").eq(0).click(function()
+		for(var p of get_popup_instances())
 		{
-			write_message(false, "ops")
-		})		
-	})
+			if(p.window.id === `Msg-window-popup_message_${data.id}`)
+			{
+				p.close(function()
+				{
+					show_popup_message(data)
+				})
+
+				closing_popups = true
+
+				break
+			}
+		}
+
+		if(!closing_popups)
+		{
+			show_popup_message(data)
+		}
+	}
 
 	if(announce)
 	{
 		var af = function()
 		{
-			message_received(data, type, false)
+			popup_message_received(data, type, false)
 		}
 
-		feedback(`${t} received`, 
+		chat_announce(
 		{
-			onclick: af,
-			save: true
-		})
+			brk: "<i class='icon2 fa fa-envelope'></i>",
+			msg: `${t} received`,
+			save: true,
+			onclick: af
+		})		
 	}
 	
 	alert_title2()
 
 	sound_notify("highlight")
+}
+
+function show_popup_message(data)
+{
+	var pop = create_popup("top", `popup_message_${data.id}`)
+
+	pop.show([data.title, data.content], function()
+	{
+		$(pop.content).find(".show_message_reply").eq(0).click(function()
+		{
+			write_popup_message(data.username)
+		})
+
+		$(pop.content).find(".show_message_reply_ops").eq(0).click(function()
+		{
+			write_popup_message(false, "ops")
+		})		
+	})
 }
 
 function add_to_ignored_usernames(uname)

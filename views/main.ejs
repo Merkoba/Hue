@@ -34,7 +34,7 @@
 		<script src="/static/js/utilz.js?ver=8"></script>
 		<script src="/static/js/colorlib.js?v=9"></script>
 
-		<script src="/static/js/base.js?ver=1197"></script>
+		<script src="/static/js/base.js?ver=1198"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=330"/>
 
@@ -636,6 +636,12 @@
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_new_messages_separator">
 			</div>
 
+			<div class='settings_item' data-setting='open_popup_messages' data-type='checkbox'>
+				<div class="setting_title2">Open Popup Messages</div>
+				<div class="setting_title">Automatically</div>
+				<input type="checkbox" class="setting_checkbox" id="{{type}}_open_popup_messages">
+			</div>
+
 			<div class='settings_item' data-setting='highlight_current_username' data-type='checkbox'>
 				<div class="setting_title">Highlight Username</div>
 				<input type="checkbox" class="setting_checkbox" id="{{type}}_highlight_current_username">
@@ -871,7 +877,7 @@
 			</div>
 			<div id='show_profile_buttons'>
 				<div class='spacer4'></div>
-				<span class='menu_item unselectable show_profile_button action' id='show_profile_whisper' onclick='write_message($("#show_profile_uname").text())'>Send Whisper</span>
+				<span class='menu_item unselectable show_profile_button action' id='show_profile_whisper' onclick='write_popup_message($("#show_profile_uname").text())'>Send Whisper</span>
 			</div>
 		</script>
 
@@ -993,7 +999,7 @@
 			<div id='write_message_feedback'></div>
 			<textarea rows="3" id='write_message_area'></textarea>
 			<div class='spacer3'></div>
-			<div class='bigger pointer unselectable action inline' onclick='send_message()'>Send</div>
+			<div class='bigger pointer unselectable action inline' onclick='send_popup_message()'>Send</div>
 		</script>
 
 		<script id='template_help' type='text/x-handlebars-template'>
