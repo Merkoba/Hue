@@ -748,7 +748,7 @@ function start_socket()
 			setup_active_media(data)
 			start_permissions(data)
 			is_public = data.public
-			set_role(data.role)
+			set_role(data.role, false)
 			set_topic_info(data)
 			update_title()
 			setup_userinfo()
@@ -762,6 +762,7 @@ function start_socket()
 			setup_tv(data)
 			setup_radio(data)
 
+			config_main_menu()
 			start_metadata_loop()
 			chat_scroll_bottom()
 			make_main_container_visible()
@@ -7428,11 +7429,16 @@ function announce_role_change(data)
 	replace_role_in_userlist(data.username2, data.role)	
 }
 
-function set_role(rol)
+function set_role(rol, config=true)
 {
 	role = rol
+
 	check_permissions()
-	config_main_menu()
+
+	if(config)
+	{
+		config_main_menu()
+	}
 }
 
 function change_privacy(what)
