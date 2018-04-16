@@ -4761,7 +4761,7 @@ function show_image(force=false)
 
 	else
 	{
-		after_image_load($("#media_image")[0])
+		after_image_load()
 	}
 }
 
@@ -4786,7 +4786,7 @@ function start_image_events()
 {
 	$('#media_image')[0].addEventListener('load', function(e)
 	{
-		after_image_load(e.target)
+		after_image_load()
 	})
 
 	$('#media_image').on("error", function() 
