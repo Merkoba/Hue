@@ -240,6 +240,7 @@ function init()
 	font_check()
 	setup_input_history()
 	setup_modal_image()
+	setup_footer()
 
 	start_socket()
 }
@@ -589,14 +590,6 @@ function setup_icons()
 	{
 		$("#footer_radio_controls").css("display", "none")
 	}
-
-	$("#footer_images_icon").on("auxclick", function(e)
-	{
-		if(e.which === 2)
-		{
-			$("#image_file_picker").click()
-		}
-	})
 }
 
 function show_role(data)
@@ -14082,4 +14075,15 @@ function background_image_enabled()
 	}
 
 	return true
+}
+
+function setup_footer()
+{
+	$("#footer_images_icon").on("auxclick", function(e)
+	{
+		if(e.which === 2)
+		{
+			$("#image_file_picker").click()
+		}
+	})	
 }
