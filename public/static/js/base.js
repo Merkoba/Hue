@@ -8890,8 +8890,6 @@ function empty_global_settings()
 
 function get_global_settings()
 {
-	var changed = false
-
 	global_settings = get_local_storage(ls_global_settings)
 
 	if(global_settings === null)
@@ -8899,172 +8897,47 @@ function get_global_settings()
 		global_settings = {}
 	}
 
-	if(global_settings.background_image === undefined)
-	{
-		global_settings.background_image = global_settings_default_background_image
-		changed = true
-	}
-	
-	if(global_settings.custom_scrollbars === undefined)
-	{
-		global_settings.custom_scrollbars = global_settings_default_custom_scrollbars
-		changed = true
-	}
+	var settings = 
+	[
+		"background_image",
+		"custom_scrollbars",
+		"beep_on_messages",
+		"beep_on_highlights",
+		"beep_on_media_change",
+		"beep_on_user_joins",
+		"modal_effects",
+		"highlight_current_username",
+		"case_insensitive_highlights",
+		"other_words_to_highlight",
+		"double_tap",
+		"double_tap_2",
+		"double_tap_3",
+		"afk_delay",
+		"at_startup",
+		"ignored_usernames",
+		"show_joins",
+		"show_parts",
+		"animate_scroll",
+		"new_messages_separator",
+		"afk_disable_messages_beep",
+		"afk_disable_highlights_beep",
+		"afk_disable_media_change_beep",
+		"afk_disable_joins_beep",
+		"afk_disable_image_change",
+		"afk_disable_tv_change",
+		"afk_disable_radio_change",
+		"open_popup_messages"
+	]
 
-	if(global_settings.beep_on_messages === undefined)
-	{
-		global_settings.beep_on_messages = global_settings_default_beep_on_messages
-		changed = true
-	}
+	var changed = false
 
-	if(global_settings.beep_on_highlights === undefined)
+	for(var setting of settings)
 	{
-		global_settings.beep_on_highlights = global_settings_default_beep_on_highlights
-		changed = true
-	}
-
-	if(global_settings.beep_on_media_change === undefined)
-	{
-		global_settings.beep_on_media_change = global_settings_default_beep_on_media_change
-		changed = true
-	}
-
-	if(global_settings.beep_on_user_joins === undefined)
-	{
-		global_settings.beep_on_user_joins = global_settings_default_beep_on_user_joins
-		changed = true
-	}
-
-	if(global_settings.modal_effects === undefined)
-	{
-		global_settings.modal_effects = global_settings_default_modal_effects
-		changed = true
-	}
-
-	if(global_settings.highlight_current_username === undefined)
-	{
-		global_settings.highlight_current_username = global_settings_default_highlight_current_username
-		changed = true
-	}
-
-	if(global_settings.case_insensitive_highlights === undefined)
-	{
-		global_settings.case_insensitive_highlights = global_settings_default_case_insensitive_highlights
-		changed = true
-	}
-
-	if(global_settings.other_words_to_highlight === undefined)
-	{
-		global_settings.other_words_to_highlight = global_settings_default_other_words_to_highlight
-		changed = true
-	}
-
-	if(global_settings.double_tap === undefined)
-	{
-		global_settings.double_tap = global_settings_default_double_tap
-		changed = true
-	}
-
-	if(global_settings.double_tap_2 === undefined)
-	{
-		global_settings.double_tap_2 = global_settings_default_double_tap_2
-		changed = true
-	}
-
-	if(global_settings.double_tap_3 === undefined)
-	{
-		global_settings.double_tap_3 = global_settings_default_double_tap_3
-		changed = true
-	}
-
-	if(global_settings.afk_delay === undefined)
-	{
-		global_settings.afk_delay = global_settings_default_afk_delay
-		changed = true
-	}
-
-	if(global_settings.at_startup === undefined)
-	{
-		global_settings.at_startup = global_settings_default_at_startup
-		changed = true
-	}
-
-	if(global_settings.ignored_usernames === undefined)
-	{
-		global_settings.ignored_usernames = global_settings_default_ignored_usernames
-		changed = true
-	}
-
-	if(global_settings.show_joins === undefined)
-	{
-		global_settings.show_joins = global_settings_default_show_joins
-		changed = true
-	}
-
-	if(global_settings.show_parts === undefined)
-	{
-		global_settings.show_parts = global_settings_default_show_parts
-		changed = true
-	}
-
-	if(global_settings.animate_scroll === undefined)
-	{
-		global_settings.animate_scroll = global_settings_default_animate_scroll
-		changed = true
-	}
-
-	if(global_settings.new_messages_separator === undefined)
-	{
-		global_settings.new_messages_separator = global_settings_default_new_messages_separator
-		changed = true
-	}
-
-	if(global_settings.afk_disable_messages_beep === undefined)
-	{
-		global_settings.afk_disable_messages_beep = global_settings_default_afk_disable_messages_beep
-		changed = true
-	}
-
-	if(global_settings.afk_disable_highlights_beep === undefined)
-	{
-		global_settings.afk_disable_highlights_beep = global_settings_default_afk_disable_highlights_beep
-		changed = true
-	}
-
-	if(global_settings.afk_disable_media_change_beep === undefined)
-	{
-		global_settings.afk_disable_media_change_beep = global_settings_default_afk_disable_media_change_beep
-		changed = true
-	}
-
-	if(global_settings.afk_disable_joins_beep === undefined)
-	{
-		global_settings.afk_disable_joins_beep = global_settings_default_afk_disable_joins_beep
-		changed = true
-	}
-
-	if(global_settings.afk_disable_image_change === undefined)
-	{
-		global_settings.afk_disable_image_change = global_settings_default_afk_disable_image_change
-		changed = true
-	}
-
-	if(global_settings.afk_disable_tv_change === undefined)
-	{
-		global_settings.afk_disable_tv_change = global_settings_default_afk_disable_tv_change
-		changed = true
-	}
-
-	if(global_settings.afk_disable_radio_change === undefined)
-	{
-		global_settings.afk_disable_radio_change = global_settings_default_afk_disable_radio_change
-		changed = true
-	}
-
-	if(global_settings.open_popup_messages === undefined)
-	{
-		global_settings.open_popup_messages = global_settings_default_open_popup_messages
-		changed = true
+		if(global_settings[setting] === undefined)
+		{
+			global_settings[setting] = window[`global_settings_default_${setting}`]
+			changed = true
+		}
 	}
 
 	if(changed)
@@ -9080,72 +8953,53 @@ function save_global_settings()
 
 function start_settings_state(type)
 {
-	$(`#${type}_background_image`).prop("checked", window[type].background_image)
-	$(`#${type}_custom_scrollbars`).prop("checked", window[type].custom_scrollbars)
-	$(`#${type}_beep_on_messages`).prop("checked", window[type].beep_on_messages)
-	$(`#${type}_beep_on_highlights`).prop("checked", window[type].beep_on_highlights)
-	$(`#${type}_beep_on_media_change`).prop("checked", window[type].beep_on_media_change)
-	$(`#${type}_beep_on_user_joins`).prop("checked", window[type].beep_on_user_joins)
-	$(`#${type}_modal_effects`).prop("checked", window[type].modal_effects)
-	$(`#${type}_highlight_current_username`).prop("checked", window[type].highlight_current_username)
-	$(`#${type}_case_insensitive_highlights`).prop("checked", window[type].case_insensitive_highlights)
-	$(`#${type}_other_words_to_highlight`).val(window[type].other_words_to_highlight)
-	$(`#${type}_double_tap`).val(window[type].double_tap)
-	$(`#${type}_double_tap_2`).val(window[type].double_tap_2)
-	$(`#${type}_double_tap_3`).val(window[type].double_tap_3)
-	$(`#${type}_afk_delay`).find('option').each(function()
+	$(`.${type}_settings_item_control`).each(function()
 	{
-		if($(this).val() == window[type].afk_delay)
+		var parent = $(this).closest(".settings_item")
+		var setting_name = parent.data("setting")
+		var setting_type = parent.data("type")
+
+		if(setting_type === "checkbox")
 		{
-			$(this).prop('selected', true)
+			$(this).prop("checked", window[type][setting_name])
 		}
-	})	
-	$(`#${type}_at_startup`).val(window[type].at_startup)
-	$(`#${type}_ignored_usernames`).val(window[type].ignored_usernames)
-	$(`#${type}_show_joins`).prop("checked", window[type].show_joins)
-	$(`#${type}_show_parts`).prop("checked", window[type].show_parts)
-	$(`#${type}_animate_scroll`).prop("checked", window[type].animate_scroll)
-	$(`#${type}_new_messages_separator`).prop("checked", window[type].new_messages_separator)
-	$(`#${type}_afk_disable_messages_beep`).prop("checked", window[type].afk_disable_messages_beep)
-	$(`#${type}_afk_disable_highlights_beep`).prop("checked", window[type].afk_disable_highlights_beep)
-	$(`#${type}_afk_disable_media_change_beep`).prop("checked", window[type].afk_disable_media_change_beep)
-	$(`#${type}_afk_disable_joins_beep`).prop("checked", window[type].afk_disable_joins_beep)
-	$(`#${type}_afk_disable_image_change`).prop("checked", window[type].afk_disable_image_change)
-	$(`#${type}_afk_disable_tv_change`).prop("checked", window[type].afk_disable_tv_change)
-	$(`#${type}_afk_disable_radio_change`).prop("checked", window[type].afk_disable_radio_change)
-	$(`#${type}_open_popup_messages`).prop("checked", window[type].open_popup_messages)
+
+		else if(setting_type === "textarea")
+		{
+			$(this).val(window[type][setting_name])
+		}
+
+		else if(setting_type === "select")
+		{
+			$(this).find('option').each(function()
+			{
+				if($(this).val() == window[type][setting_name])
+				{
+					$(this).prop('selected', true)
+				}
+			})
+		}
+	})
 }
 
 function start_settings_listeners(type)
 {
-	$(`#${type}_background_image`).change(() => {setting_background_image_action(type)})
-	$(`#${type}_custom_scrollbars`).change(() => {setting_custom_scrollbars_action(type)})
-	$(`#${type}_beep_on_messages`).change(() => {setting_beep_on_messages_action(type)})
-	$(`#${type}_beep_on_highlights`).change(() => {setting_beep_on_highlights_action(type)})
-	$(`#${type}_beep_on_media_change`).change(() => {setting_beep_on_media_change_action(type)})
-	$(`#${type}_beep_on_user_joins`).change(() => {setting_beep_on_user_joins_action(type)})
-	$(`#${type}_modal_effects`).change(() => {setting_modal_effects_action(type)})
-	$(`#${type}_highlight_current_username`).change(() => {setting_highlight_current_username_action(type)})
-	$(`#${type}_case_insensitive_highlights`).change(() => {setting_case_insensitive_highlights_action(type)})
-	$(`#${type}_other_words_to_highlight`).blur(() => {setting_other_words_to_highlight_action(type)})
-	$(`#${type}_double_tap`).blur(() => {setting_double_tap_action(type)})
-	$(`#${type}_double_tap_2`).blur(() => {setting_double_tap_2_action(type)})
-	$(`#${type}_double_tap_3`).blur(() => {setting_double_tap_3_action(type)})
-	$(`#${type}_afk_delay`).blur(() => {setting_afk_delay_action(type)})
-	$(`#${type}_at_startup`).blur(() => {setting_at_startup_action(type)})
-	$(`#${type}_ignored_usernames`).blur(() => {setting_ignored_usernames_action(type)})
-	$(`#${type}_show_joins`).change(() => {setting_show_joins_action(type)})
-	$(`#${type}_show_parts`).change(() => {setting_show_parts_action(type)})
-	$(`#${type}_animate_scroll`).change(() => {setting_animate_scroll_action(type)})
-	$(`#${type}_new_messages_separator`).change(() => {setting_new_messages_separator_action(type)})
-	$(`#${type}_afk_disable_messages_beep`).change(() => {setting_afk_disable_messages_beep_action(type)})
-	$(`#${type}_afk_disable_highlights_beep`).change(() => {setting_afk_disable_highlights_beep_action(type)})
-	$(`#${type}_afk_disable_media_change_beep`).change(() => {setting_afk_disable_media_change_beep_action(type)})
-	$(`#${type}_afk_disable_joins_beep`).change(() => {setting_afk_disable_joins_beep_action(type)})
-	$(`#${type}_afk_disable_image_change`).change(() => {setting_afk_disable_image_change_action(type)})
-	$(`#${type}_afk_disable_tv_change`).change(() => {setting_afk_disable_tv_change_action(type)})
-	$(`#${type}_afk_disable_radio_change`).change(() => {setting_afk_disable_radio_change_action(type)})
-	$(`#${type}_open_popup_messages`).change(() => {setting_open_popup_messages_action(type)})
+	$(`.${type}_settings_item_control`).each(function()
+	{
+		var parent = $(this).closest(".settings_item")
+		var setting_name = parent.data("setting")
+		var setting_type = parent.data("type")
+
+		if(setting_type === "checkbox" || setting_type === "select")
+		{
+			$(this).change(() => {window[`setting_${setting_name}_action`](type)})
+		}
+
+		else if(setting_type === "textarea")
+		{
+			$(this).blur(() => {window[`setting_${setting_name}_action`](type)})
+		}
+	})
 }
 
 function call_setting_actions(type, save=true)
