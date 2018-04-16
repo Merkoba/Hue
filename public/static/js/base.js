@@ -1716,6 +1716,8 @@ function apply_theme()
 
 function userjoin(data)
 {
+	clear_from_users_to_disconnect(data)
+
 	var added = addto_userlist(data.username, data.role, data.profile_image)
 
 	if(added)
@@ -1748,11 +1750,6 @@ function userjoin(data)
 				}
 			}
 		}
-	}
-
-	else
-	{
-		clear_from_users_to_disconnect(data)		
 	}
 }
 
@@ -7997,29 +7994,6 @@ function userdisconnect(data)
 	}
 }
 
-function start_user_disconnect_timeout(data)
-{
-	clear_from_users_to_disconnect(data)
-
-	data.timeout = setTimeout(function()
-	{
-		do_userdisconnect(data)
-
-		for(var i=0; i<users_to_disconnect.length; i++)
-		{
-			var u = users_to_disconnect[i]
-
-			if(u.username === data.username)
-			{
-				users_to_disconnect.splice(i, 1)
-				break
-			}
-		}		
-	}, disconnect_timeout_delay)
-
-	users_to_disconnect.push(data)
-}
-
 function clear_from_users_to_disconnect(data)
 {
 	for(var i=0; i<users_to_disconnect.length; i++)
@@ -8035,8 +8009,22 @@ function clear_from_users_to_disconnect(data)
 	}
 }
 
+function start_user_disconnect_timeout(data)
+{
+	clear_from_users_to_disconnect(data)
+
+	data.timeout = setTimeout(function()
+	{
+		do_userdisconnect(data)	
+	}, disconnect_timeout_delay)
+
+	users_to_disconnect.push(data)
+}
+
 function do_userdisconnect(data)
 {
+	clear_from_users_to_disconnect(data)
+
 	if(get_setting("show_parts") && check_permission(data.role, "chat"))
 	{
 		var type = data.disconnection_type
