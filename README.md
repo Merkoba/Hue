@@ -469,6 +469,9 @@ If you want to remove it to start fresh:
 "data_items_max_number_length"
 >Used to check number data.
 
+"disconnect_timeout_delay"
+>Some disconnection types have a buffer so cases like reloading doesn't trigger the left/joined messages. This is how long the timeout is before showing the user disconnected as well as removing it internally.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"

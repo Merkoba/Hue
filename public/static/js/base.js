@@ -193,6 +193,7 @@ var emit_queue = []
 var app_focused = true
 var message_uname = ""
 var message_type = ""
+var users_to_disconnect = []
 
 function init()
 {
@@ -746,10 +747,10 @@ function start_socket()
 			apply_theme()
 			setup_active_media(data)
 			start_permissions(data)
+			is_public = data.public
 			set_role(data.role)
 			set_topic_info(data)
 			update_title()
-			is_public = data.public
 			setup_userinfo()
 			clear_chat()
 			check_firstime()
@@ -1087,24 +1088,9 @@ function start_socket()
 			announce_voice_permission_change(data)
 		}				
 
-		else if(data.type === 'disconnection')
+		else if(data.type === 'userdisconnect')
 		{
-			disconnected(data)
-		}
-
-		else if(data.type === 'pinged')
-		{
-			pinged(data)
-		}
-
-		else if(data.type === 'kicked')
-		{
-			kicked(data)
-		}
-
-		else if(data.type === 'banned')
-		{
-			banned(data)
+			userdisconnect(data)
 		}
 
 		else if(data.type === 'othersdisconnected')
@@ -1729,35 +1715,43 @@ function apply_theme()
 
 function userjoin(data)
 {
-	addto_userlist(data.username, data.role, data.profile_image)
+	var added = addto_userlist(data.username, data.role, data.profile_image)
 
-	if(get_setting("show_joins") && check_permission(data.role, "chat"))
+	if(added)
 	{
-		var prof_image = get_user_by_username(data.username).profile_image
-
-		var f = function()
+		if(get_setting("show_joins") && check_permission(data.role, "chat"))
 		{
-			show_profile(data.username, prof_image)
-		}
+			var prof_image = get_user_by_username(data.username).profile_image
 
-		chat_announce(
-		{
-			brk: "<i class='icon2 fa fa-user-plus'></i>", 
-			msg: `${data.username} has joined`, 
-			save: true, 
-			onclick: f, 
-			uname: data.username
-		})
-		
-		if(data.username !== username)
-		{
-			alert_title()
-
-			if(get_setting("beep_on_user_joins"))
+			var f = function()
 			{
-				sound_notify("join")
+				show_profile(data.username, prof_image)
+			}
+
+			chat_announce(
+			{
+				brk: "<i class='icon2 fa fa-user-plus'></i>", 
+				msg: `${data.username} has joined`, 
+				save: true, 
+				onclick: f, 
+				uname: data.username
+			})
+			
+			if(data.username !== username)
+			{
+				alert_title()
+
+				if(get_setting("beep_on_user_joins"))
+				{
+					sound_notify("join")
+				}
 			}
 		}
+	}
+
+	else
+	{
+		clear_from_users_to_disconnect(data)		
 	}
 }
 
@@ -1779,13 +1773,18 @@ function addto_userlist(uname, rol, pi)
 			userlist[i].username = uname
 			userlist[i].role = rol
 			userlist[i].profile_image = pi
+			
 			update_userlist()
-			return
+			
+			return false
 		}
 	}
 
 	userlist.push({username:uname, role:rol, profile_image:pi})
+	
 	update_userlist()
+
+	return true
 }
 
 function removefrom_userlist(uname)
@@ -1795,11 +1794,10 @@ function removefrom_userlist(uname)
 		if(userlist[i].username === uname)
 		{
 			userlist.splice(i, 1)
+			update_userlist()
 			break
 		}
 	}
-
-	update_userlist()
 }
 
 function replace_uname_in_userlist(oldu, newu)
@@ -7978,60 +7976,95 @@ function announce_removedops(data)
 	remove_ops_userlist()
 }
 
-function disconnected(data)
+function userdisconnect(data)
 {
-	removefrom_userlist(data.username)
+	var type = data.disconnection_type
 
+	if(type === "disconnection")
+	{
+		start_user_disconnect_timeout(data)
+	}
+
+	else
+	{
+		do_userdisconnect(data)
+	}
+}
+
+function start_user_disconnect_timeout(data)
+{
+	clear_from_users_to_disconnect(data)
+
+	data.timeout = setTimeout(function()
+	{
+		do_userdisconnect(data)
+
+		for(var i=0; i<users_to_disconnect.length; i++)
+		{
+			var u = users_to_disconnect[i]
+
+			if(u.username === data.username)
+			{
+				users_to_disconnect.splice(i, 1)
+				break
+			}
+		}		
+	}, disconnect_timeout_delay)
+
+	users_to_disconnect.push(data)
+}
+
+function clear_from_users_to_disconnect(data)
+{
+	for(var i=0; i<users_to_disconnect.length; i++)
+	{
+		var u = users_to_disconnect[i]
+
+		if(u.username === data.username)
+		{
+			clearTimeout(u.timeout)
+			users_to_disconnect.splice(i, 1)
+			break
+		}
+	}
+}
+
+function do_userdisconnect(data)
+{
 	if(get_setting("show_parts") && check_permission(data.role, "chat"))
 	{
+		var type = data.disconnection_type
+
+		if(type === "disconnection")
+		{
+			var s = `${data.username} has left`
+		}
+
+		else if(type === "pinged")
+		{
+			var s = `${data.username} has left (Ping Timeout)`
+		}
+
+		else if(type === "kicked")
+		{
+			var s = `${data.username} was kicked by ${data.info1}`
+		}
+
+		else if(type === "banned")
+		{
+			var s = `${data.username} was banned by ${data.info1}`
+		}
+
 		chat_announce(
 		{
 			brk: "<i class='icon2 fa fa-sign-out'></i>",  
-			msg: `${data.username} has left`, 
+			msg: s, 
 			save: true, 
 			uname: data.username
 		})
 	}
-}
 
-function pinged(data)
-{
 	removefrom_userlist(data.username)
-
-	if(get_setting("show_parts") && check_permission(data.role, "chat"))
-	{
-		chat_announce(
-		{
-			brk: "<i class='icon2 fa fa-sign-out'></i>",  
-			msg: `${data.username} has left (Ping Timeout)`, 
-			save: true, 
-			uname: data.username
-		})
-	}
-}
-
-function kicked(data)
-{
-	removefrom_userlist(data.username)
-
-	chat_announce(
-	{
-		brk: "<i class='icon2 fa fa-sign-out'></i>",  
-		msg: `${data.username} was kicked by ${data.info1}`, 
-		save: true, 
-		uname: data.username})
-}
-
-function banned(data)
-{
-	removefrom_userlist(data.username)
-
-	chat_announce(
-	{
-		brk: "<i class='icon2 fa fa-sign-out'></i>",  
-		msg: `${data.username} was banned by ${data.info1}`, 
-		save: true, 
-		uname: data.username})
 }
 
 function start_msg()

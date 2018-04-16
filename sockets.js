@@ -75,8 +75,9 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.get_out(socket)
 	})
 
-	const dont_check_joined = ["join_room"]
+	const dont_check_joined = ["join_room", "roomlist", "create_room"]
 	const dont_add_spam = ["slice_upload", "typing"]
+	const check_locked = ["roomlist", "create_room"]
 
 	io.on("connection", async function(socket)
 	{
@@ -129,6 +130,20 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						return handler.get_out(socket)
 					}
+				}
+
+				else
+				{
+					if(check_locked.includes(m))
+					{
+						if(!socket.hue_joined)
+						{
+							if(!socket.hue_locked)
+							{
+								return handler.get_out(socket)
+							}
+						}
+					}					
 				}
 
 				if(!dont_add_spam.includes(m))
@@ -2582,7 +2597,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		}
 
-		if(socket.hue_username !== undefined)
+		if(socket.hue_joined)
 		{
 			if(socket.hue_pinged)
 			{
@@ -2604,11 +2619,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				var type = 'disconnection'
 			}
 
-			handler.room_emit(socket, type, 
+			handler.room_emit(socket, "userdisconnect", 
 			{
 				username: socket.hue_username,
 				info1: socket.hue_info1, 
-				role: socket.hue_role
+				role: socket.hue_role,
+				disconnection_type: type
 			})
 		}
 	}	
