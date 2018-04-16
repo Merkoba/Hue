@@ -13703,6 +13703,7 @@ function set_room_images_enabled(what)
 {
 	room_images_enabled = what
 	config_admin_room_images_enabled()
+	apply_theme()
 }
 
 function set_room_tv_enabled(what)
@@ -14067,5 +14068,18 @@ function restart_radio()
 
 function background_image_enabled()
 {
-	return background_mode !== "solid"
+	if(background_mode === "solid")
+	{
+		return false
+	}
+
+	if(background_mode === "mirror")
+	{
+		if(!room_images_enabled)
+		{
+			return false
+		}
+	}
+
+	return true
 }
