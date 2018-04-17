@@ -11502,7 +11502,7 @@ function check_typing()
 	{
 		if(tval[0] === "/")
 		{
-			if(tval[1] !== "/")
+			if(tval[1] !== "/" && !tval.startsWith('/me '))
 			{
 				return false
 			}
