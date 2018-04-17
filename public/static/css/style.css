@@ -984,9 +984,12 @@ input[type=text], textarea
 
 #modal_image
 {
+	display: none;
+	object-fit: contain;
 	max-width: calc(100% - 4rem);
 	max-height: calc(100% - 4rem);
-	display: none;
+	min-height: 100px;
+	min-width: 100px;	
 }
 
 .pointer
