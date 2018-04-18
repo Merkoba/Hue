@@ -4633,10 +4633,25 @@ function change(args={})
 
 	if(args.type === "image")
 	{
-		if(!room_images_enabled || !room_settings.images_enabled || (room_settings.images_locked && last_image_change))
+		if(!room_images_enabled || (room_settings.images_locked && last_image_change))
 		{
 			return false
 		}
+
+		if(background_mode === "mirror")
+		{
+			apply_background()
+		}
+
+		if(!room_settings.images_enabled)
+		{
+			return false
+		}
+
+		if(background_mode === "mirror")
+		{
+			apply_background()
+		}		
 
 		show_image(args.force)
 
@@ -4746,11 +4761,6 @@ function show_image(force=false)
 	else
 	{
 		after_image_load()
-	}
-
-	if(background_mode === "mirror")
-	{
-		apply_background()
 	}
 }
 
