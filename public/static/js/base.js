@@ -1560,7 +1560,7 @@ function apply_background()
 		var bg_image = background_image
 	}
 
-	if(background_image_enabled() && get_setting("background_image"))
+	if(background_image_enabled())
 	{
 		$('.background_image').css('background-image', `url('${bg_image}')`)
 	}
@@ -1629,7 +1629,7 @@ function apply_theme()
 		var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2)
 	}
 
-	if(background_image_enabled() && get_setting("background_image"))
+	if(background_image_enabled())
 	{
 		background_color_a = colorlib.rgb_to_rgba(background_color, opacity_amount_1)
 		background_color_2_a = colorlib.rgb_to_rgba(background_color_2, opacity_amount_1)
@@ -4633,15 +4633,29 @@ function change(args={})
 
 	if(args.type === "image")
 	{
+		var show_img = true
+
 		if(!room_images_enabled || !room_settings.images_enabled || (room_settings.images_locked && last_image_change))
+		{
+			show_img = false
+		}
+
+		if(show_img)
+		{
+			show_image(args.force)
+			last_image_change = image_source
+			setter = image_setter
+		}
+
+		if(background_mode === "mirror")
+		{
+			apply_background()
+		}
+
+		if(!show_img)
 		{
 			return false
 		}
-
-		show_image(args.force)
-
-		last_image_change = image_source
-		setter = image_setter
 	}
 
 	else if(args.type === "tv")
@@ -4740,12 +4754,7 @@ function show_image(force=false)
 
 	if(force || $("#media_image").attr("src") !== image_source)
 	{
-		$("#media_image").attr("src", image_source)
-
-		if(background_mode === "mirror")
-		{
-			apply_background()
-		}		
+		$("#media_image").attr("src", image_source)		
 	}
 
 	else
@@ -4850,7 +4859,7 @@ function setup_image(data)
 	image_date_raw = data.image_date
 	image_type = data.image_type
 
-	change({type:"image"})	
+	change({type:"image"})
 }
 
 function fill_defaults(args, def_args)
@@ -10624,6 +10633,7 @@ function change_images_visibility()
 
 	fix_visible_video_frame()
 	update_chat_scrollbar()
+	apply_theme()
 	goto_bottom(false, false)
 }
 
@@ -13723,7 +13733,6 @@ function set_room_images_enabled(what)
 {
 	room_images_enabled = what
 	config_admin_room_images_enabled()
-	apply_theme()
 }
 
 function set_room_tv_enabled(what)
@@ -14099,6 +14108,11 @@ function background_image_enabled()
 		{
 			return false
 		}
+	}
+
+	if(!get_setting("background_image"))
+	{
+		return false
 	}
 
 	return true
