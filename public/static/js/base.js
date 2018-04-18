@@ -4633,29 +4633,15 @@ function change(args={})
 
 	if(args.type === "image")
 	{
-		var show_img = true
-
 		if(!room_images_enabled || !room_settings.images_enabled || (room_settings.images_locked && last_image_change))
-		{
-			show_img = false
-		}
-
-		if(show_img)
-		{
-			show_image(args.force)
-			last_image_change = image_source
-			setter = image_setter
-		}
-
-		if(background_mode === "mirror")
-		{
-			apply_background()
-		}
-
-		if(!show_img)
 		{
 			return false
 		}
+
+		show_image(args.force)
+
+		last_image_change = image_source
+		setter = image_setter
 	}
 
 	else if(args.type === "tv")
@@ -4754,12 +4740,17 @@ function show_image(force=false)
 
 	if(force || $("#media_image").attr("src") !== image_source)
 	{
-		$("#media_image").attr("src", image_source)		
+		$("#media_image").attr("src", image_source)
 	}
 
 	else
 	{
 		after_image_load()
+	}
+
+	if(background_mode === "mirror")
+	{
+		apply_background()
 	}
 }
 
@@ -4859,7 +4850,7 @@ function setup_image(data)
 	image_date_raw = data.image_date
 	image_type = data.image_type
 
-	change({type:"image"})
+	change({type:"image"})	
 }
 
 function fill_defaults(args, def_args)
@@ -10631,9 +10622,9 @@ function change_images_visibility()
 		images_visible = false
 	}
 
+	apply_theme()
 	fix_visible_video_frame()
 	update_chat_scrollbar()
-	apply_theme()
 	goto_bottom(false, false)
 }
 
