@@ -3405,7 +3405,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(file.cancelled)
 		{
-			delete file
+			delete files[key]
 			return false
 		}
 
