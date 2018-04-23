@@ -329,7 +329,7 @@ If you want to remove it to start fresh:
 >Whether highlights for specified words are case insensitive by default.
 
 "global_settings_default_other_words_to_highlight"
->Other words to trigger highlights apart from the current useranem, by default.
+>Other words to trigger highlights apart from the current username, by default.
 
 "global_settings_default_double_tap"
 >What command or string to trigger on double tap by default.
