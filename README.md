@@ -188,13 +188,13 @@ If you want to remove it to start fresh:
 >Maximum length for passwords.
 
 "max_max_password_length"
->Same as max_max_nickname but for passwords.
+>Same as max_max_username_length but for passwords.
 
 "max_email_length"
 >Maximum length for email addresses.
 
 "max_max_email_length"
->Same as max_max_nickname but for emails.
+>Same as max_max_username_length but for emails.
 
 "password_reset_limit"
 >How long a user must wait to perform another password reset.
@@ -322,11 +322,14 @@ If you want to remove it to start fresh:
 "global_settings_default_highlight_current_username"
 >Whether current username triggers a highlight by default.
 
-"global_settings_default_case_insensitive_highlights"
->Whether highlights, either current nickname, or specified words matches are case insensitive by default.
+"global_settings_default_case_insensitive_username_highlights"
+>Whether highlights for current username are case insensitive by default.
+
+"global_settings_default_case_insensitive_words_highlights"
+>Whether highlights for specified words are case insensitive by default.
 
 "global_settings_default_other_words_to_highlight"
->Other words to trigger highlights apart from the current nickname, by default.
+>Other words to trigger highlights apart from the current useranem, by default.
 
 "global_settings_default_double_tap"
 >What command or string to trigger on double tap by default.

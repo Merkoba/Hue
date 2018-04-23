@@ -8937,7 +8937,8 @@ function get_global_settings()
 		"beep_on_user_joins",
 		"modal_effects",
 		"highlight_current_username",
-		"case_insensitive_highlights",
+		"case_insensitive_username_highlights",
+		"case_insensitive_words_highlights",
 		"other_words_to_highlight",
 		"double_tap",
 		"double_tap_2",
@@ -9159,13 +9160,27 @@ function setting_highlight_current_username_action(type, save=true)
 	}
 }
 
-function setting_case_insensitive_highlights_action(type, save=true)
+function setting_case_insensitive_username_highlights_action(type, save=true)
 {
-	window[type].case_insensitive_highlights = $(`#${type}_case_insensitive_highlights`).prop("checked")
+	window[type].case_insensitive_username_highlights = $(`#${type}_case_insensitive_username_highlights`).prop("checked")
 	
-	if(active_settings("case_insensitive_highlights") === type)
+	if(active_settings("case_insensitive_username_highlights") === type)
 	{
 		generate_mentions_regex()
+	}	
+	
+	if(save)
+	{
+		window[`save_${type}`]()	
+	}
+}
+
+function setting_case_insensitive_words_highlights_action(type, save=true)
+{
+	window[type].case_insensitive_words_highlights = $(`#${type}_case_insensitive_words_highlights`).prop("checked")
+	
+	if(active_settings("case_insensitive_words_highlights") === type)
+	{
 		generate_highlight_words_regex()
 	}	
 	
@@ -11801,7 +11816,7 @@ function generate_mentions_regex()
 {
 	var regexp = `(?:^|\\s+)(?:\\@)?(?:${escape_special_characters(username)})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.|\\:)`
 
-	if(get_setting("case_insensitive_highlights"))
+	if(get_setting("case_insensitive_username_highlights"))
 	{
 		mentions_regex = new RegExp(regexp, "i")
 	}
@@ -11834,7 +11849,7 @@ function generate_highlight_words_regex()
 	{
 		var regexp = `(?:^|\\s+)(?:\\@)?(?:${words})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.|\\:)`
 
-		if(get_setting("case_insensitive_highlights"))
+		if(get_setting("case_insensitive_words_highlights"))
 		{
 			highlight_words_regex = new RegExp(regexp, "i")
 		}

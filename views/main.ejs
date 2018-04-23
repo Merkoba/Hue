@@ -34,7 +34,7 @@
 		<script src="/static/js/utilz.js?ver=8"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1212"></script>
+		<script src="/static/js/base.js?ver=1213"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=331"/>
 
@@ -647,10 +647,16 @@
 				<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_highlight_current_username">
 			</div>
 
-			<div class='settings_item' data-setting='case_insensitive_highlights' data-type='checkbox'>
+			<div class='settings_item' data-setting='case_insensitive_username_highlights' data-type='checkbox'>
 				<div class="setting_title2">Case Insensitive</div>
-				<div class="setting_title">Highlights</div>
-				<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_highlights">
+				<div class="setting_title">Username Highlights</div>
+				<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_username_highlights">
+			</div>
+
+			<div class='settings_item' data-setting='case_insensitive_words_highlights' data-type='checkbox'>
+				<div class="setting_title2">Case Insensitive</div>
+				<div class="setting_title">Words Highlights</div>
+				<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_words_highlights">
 			</div>
 
 			<div class='settings_item' data-setting='other_words_to_highlight' data-type='textarea'>
