@@ -3993,9 +3993,24 @@ function oiStartsWith(str, what)
 
 function get_closest_username(word)
 {
-	wl = word.toLowerCase()
-
+	var wl = word.toLowerCase()
 	var has = false
+
+	for(var i=0; i<usernames.length; i++)
+	{
+		var pw = usernames[i]
+
+		if(pw.startsWith(word))
+		{
+			has = true
+
+			if(!tabbed_list.includes(pw))
+			{
+				tabbed_list.push(pw)
+				return usernames[i]
+			}
+		}
+	}
 
 	for(var i=0; i<usernames.length; i++)
 	{
