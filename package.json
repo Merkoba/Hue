@@ -17,7 +17,7 @@
 		"socket.io": "~2.0.4",
 		"socket-anti-spam": "~2.0.0",
 		"connect-mongo": "~2.0.1",
-		"bcrypt": "~1.0.3",
+		"bcrypt": "~2.0.1",
 		"mailgun-js": "~0.16.0",
 		"aws-sdk": "~2.203.0",
 		"jsonwebtoken": "~8.1.1",
