@@ -475,6 +475,9 @@ If you want to remove it to start fresh:
 "disconnect_timeout_delay"
 >Some disconnection types have a buffer so cases like reloading doesn't trigger the left/joined messages. This is how long the timeout is before showing the user disconnected as well as removing it internally.
 
+"profile_image_diameter"
+>The diameter of the cropped profile image selected by the user.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"
