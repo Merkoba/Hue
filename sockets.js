@@ -10,6 +10,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const aws = require('aws-sdk')
 	const jwt = require('jsonwebtoken')
 	const soundcloud = require('node-soundcloud')
+	const image_dimensions = require('image-size');
 
 	soundcloud.init(
 	{
@@ -3065,6 +3066,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	handler.upload_profile_image = function(socket, data)
 	{
 		if(data.image_file === undefined)
+		{
+			return handler.get_out(socket)
+		}
+
+		var dimensions = image_dimensions(data.image_file)
+
+		if(dimensions.width !== config.profile_image_diameter || dimensions.height !== config.profile_image_diameter)
 		{
 			return handler.get_out(socket)
 		}

@@ -10889,8 +10889,8 @@ function get_rounded_canvas(sourceCanvas)
 {
 	var canvas = document.createElement('canvas')
 	var context = canvas.getContext('2d')
-	var width = 300
-	var height = 300
+	var width = profile_image_diameter
+	var height = profile_image_diameter
 	canvas.width = width
 	canvas.height = height
 	context.imageSmoothingEnabled = true
