@@ -999,11 +999,11 @@ input[type=text], textarea
 
 .spinner1 
 {
-    border: 10px solid;
-    border-top: 10px solid;
-    color: inherit;
-    border-color: transparent;
-    border-top-color: currentColor;
+	border: 10px solid;
+	border-top: 10px solid;
+	color: inherit;
+	border-color: transparent;
+	border-top-color: currentColor;
 	border-radius: 50%;
 	width: 80px;
 	height: 80px;

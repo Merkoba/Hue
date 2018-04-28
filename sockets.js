@@ -4,7 +4,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	const fs = require('fs')
 	const path = require('path')
-	const SocketAntiSpam  = require('socket-anti-spam')
+	const SocketAntiSpam = require('socket-anti-spam')
 	const fetch = require('node-fetch')
 	const mongo = require('mongodb')
 	const aws = require('aws-sdk')
@@ -40,13 +40,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const user_rooms = {}
 	const files = {}
 
-   	const files_struct = 
-   	{
-   		action: null,
-		name: null, 
-		type: null, 
-		size: 0, 
-		data: [], 
+	const files_struct =
+	{
+		action: null,
+		name: null,
+		type: null,
+		size: 0,
+		data: [],
 		slice: 0,
 		date: null,
 		updated: null,
@@ -54,18 +54,18 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		extension: null,
 		cancelled: false,
 		spsize: 0
-    }	
+	}
 
 	var last_roomlist
 	var roomlist_lastget = 0
 
 	const antiSpam = new SocketAntiSpam(
 	{
-		banTime: config.antispam_banTime, // Ban time in minutes 
-		kickThreshold: config.antispam_kickThreshold, // User gets kicked after this many spam score 
-		kickTimesBeforeBan: config.antispam_kickTimesBeforeBan, // User gets banned after this many kicks 
-		banning: config.antispam_banning, // Uses temp IP banning after kickTimesBeforeBan 
-		heartBeatStale: config.antispam_heartBeatStale, // Removes a heartbeat after this many seconds 
+		banTime: config.antispam_banTime, // Ban time in minutes
+		kickThreshold: config.antispam_kickThreshold, // User gets kicked after this many spam score
+		kickTimesBeforeBan: config.antispam_kickTimesBeforeBan, // User gets banned after this many kicks
+		banning: config.antispam_banning, // Uses temp IP banning after kickTimesBeforeBan
+		heartBeatStale: config.antispam_heartBeatStale, // Removes a heartbeat after this many seconds
 		heartBeatCheck: config.antispam_heartBeatCheck, // Checks a heartbeat per this many seconds
 	})
 
@@ -144,7 +144,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 								return handler.get_out(socket)
 							}
 						}
-					}					
+					}
 				}
 
 				if(!dont_add_spam.includes(m))
@@ -162,9 +162,9 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			catch(err)
 			{
-				logger.log_error(err)				
+				logger.log_error(err)
 			}
-		})		
+		})
 
 		socket.on('disconnect', function(reason)
 		{
@@ -175,7 +175,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				if(reason.includes('timeout'))
 				{
 					socket.hue_pinged = true
-				}				
+				}
 
 				handler.disconnect(socket)
 			}
@@ -215,7 +215,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(data.room_id.length > config.max_room_id_length)
 		{
 			return handler.do_disconnect(socket)
-		} 			
+		}
 
 		if(data.alternative)
 		{
@@ -256,15 +256,15 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				return handler.do_disconnect(socket)
 			}
-		}	
+		}
 
 		if(data.alternative)
 		{
-			db_manager.check_password(data.email, data.password, 
+			db_manager.check_password(data.email, data.password,
 			{
-				email: true, 
-				username: true, 
-				profile_image: true, 
+				email: true,
+				username: true,
+				profile_image: true,
 				registration_date: true
 			})
 
@@ -287,7 +287,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						return handler.do_disconnect(socket)
 					}
-	
+
 					handler.do_join(socket, info, userinfo)
 
 					db_manager.save_visited_room(socket.hue_user_id, data.room_id)
@@ -304,21 +304,21 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					return handler.do_disconnect(socket)
 				})
 			})
-			
+
 			.catch(err =>
 			{
 				logger.log_error(err)
 				return handler.do_disconnect(socket)
-			})				
+			})
 		}
 
 		else
 		{
-			jwt.verify(data.token, sconfig.jwt_secret, function(err, decoded) 
+			jwt.verify(data.token, sconfig.jwt_secret, function(err, decoded)
 			{
 				if(err)
 				{
-					return handler.do_disconnect(socket)				
+					return handler.do_disconnect(socket)
 				}
 
 				else if(decoded.data === undefined || decoded.data.id === undefined)
@@ -329,7 +329,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				if(decoded.data.id !== data.user_id)
 				{
 					return handler.do_disconnect(socket)
-				}			
+				}
 
 				else
 				{
@@ -344,11 +344,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 							return handler.do_disconnect(socket)
 						}
 
-						db_manager.get_user({_id:socket.hue_user_id}, 
+						db_manager.get_user({_id:socket.hue_user_id},
 						{
-							email: true, 
-							username: true, 
-							profile_image: true, 
+							email: true,
+							username: true,
+							profile_image: true,
 							registration_date: true
 						})
 
@@ -391,8 +391,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.hue_room_id = info._id.toString()
 		socket.hue_email = userinfo.email
 		socket.hue_joining = true
-		
-		socket.join(socket.hue_room_id)		
+
+		socket.join(socket.hue_room_id)
 
 		if(handler.check_multipe_joins(socket))
 		{
@@ -413,9 +413,9 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			socket.leave(socket.hue_room_id)
 			socket.hue_locked = true
 
-			handler.user_emit(socket, 'joined', 
+			handler.user_emit(socket, 'joined',
 			{
-				room_locked: true	
+				room_locked: true
 			})
 
 			return false
@@ -482,36 +482,36 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		socket.hue_joining = false
-		socket.hue_joined = true		
+		socket.hue_joined = true
 
-		handler.user_emit(socket, 'joined', 
+		handler.user_emit(socket, 'joined',
 		{
 			room_locked: false,
 			room_name: info.name,
-			username: socket.hue_username, 
-			image_source: info.image_source, 
-			image_setter: info.image_setter, 
-			image_size: info.image_size, 
-			image_date: info.image_date, 
-			image_type: info.image_type, 
-			topic: info.topic, 
+			username: socket.hue_username,
+			image_source: info.image_source,
+			image_setter: info.image_setter,
+			image_size: info.image_size,
+			image_date: info.image_date,
+			image_type: info.image_type,
+			topic: info.topic,
 			topic_setter: info.topic_setter,
 			topic_date: info.topic_date,
 			userlist: utilz.object_to_array(handler.get_userlist(socket.hue_room_id)),
 			log: info.log,
 			log_messages: info.log_messages.concat(rooms[socket.hue_room_id].log_messages),
-			role: socket.hue_role, 
+			role: socket.hue_role,
 			public: info.public,
 			radio_type: info.radio_type,
 			radio_source: info.radio_source,
 			radio_title: info.radio_title,
-			radio_setter: info.radio_setter, 
-			radio_date: info.radio_date, 
+			radio_setter: info.radio_setter,
+			radio_date: info.radio_date,
 			tv_type: info.tv_type,
 			tv_source: info.tv_source,
 			tv_title: info.tv_title,
-			tv_setter: info.tv_setter, 
-			tv_date: info.tv_date, 
+			tv_setter: info.tv_setter,
+			tv_date: info.tv_date,
 			profile_image: socket.hue_profile_image,
 			room_images_enabled: info.images_enabled,
 			room_tv_enabled: info.tv_enabled,
@@ -580,9 +580,9 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		handler.broadcast_emit(socket, 'chat_msg', 
-		{ 
-			username: socket.hue_username, 
+		handler.broadcast_emit(socket, 'chat_msg',
+		{
+			username: socket.hue_username,
 			msg: data.msg,
 			profile_image: socket.hue_profile_image
 		})
@@ -591,10 +591,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(rooms[socket.hue_room_id].log)
 		{
-			var message = 
+			var message =
 			{
 				type: "chat",
-				data: 
+				data:
 				{
 					username: socket.hue_username,
 					content: data.msg,
@@ -646,13 +646,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				info.topic_setter = socket.hue_username
 				info.topic_date = Date.now()
 
-				handler.room_emit(socket, 'topic_change', 
+				handler.room_emit(socket, 'topic_change',
 				{
 					topic: info.topic,
 					topic_setter: info.topic_setter,
 					topic_date: info.topic_date
 				})
-				
+
 				db_manager.update_room(info._id,
 				{
 					topic: info.topic,
@@ -698,12 +698,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				info.name = data.name
 
-				handler.room_emit(socket, 'room_name_changed', 
+				handler.room_emit(socket, 'room_name_changed',
 				{
 					name: info.name,
 					username: socket.hue_username
 				})
-				
+
 				db_manager.update_room(info._id,
 				{
 					name: info.name
@@ -784,7 +784,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				handler.user_emit(socket, 'create_room_wait', {})
 				return
 			}
-			
+
 			handler.user_emit(socket, 'room_created', {id:ans._id.toString()})
 		})
 
@@ -842,7 +842,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				if(!userinfo)
 				{
 					handler.user_emit(socket, 'user_not_found', {})
-					return false						
+					return false
 				}
 
 				var id = userinfo._id.toString()
@@ -867,7 +867,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				var sockets = handler.get_user_sockets_per_room(socket.hue_room_id, id)
 
 				var last_socc = false
-				
+
 				for(var socc of sockets)
 				{
 					if(socc.hue_superuser)
@@ -875,7 +875,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 						if(socket.hue_username !== socc.hue_username && socc.hue_role === "admin")
 						{
 							handler.user_emit(socket, 'forbiddenuser', {})
-							return false		
+							return false
 						}
 					}
 
@@ -889,18 +889,18 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				}
 
 				info.keys[id] = data.role
-				
+
 				db_manager.update_room(info._id, {keys:info.keys})
 
-				.catch(err => 
+				.catch(err =>
 				{
 					logger.log_error(err)
 				})
 
-				handler.room_emit(socket, 'announce_role_change', 
-				{ 
-					username1: socket.hue_username, 
-					username2: data.username, 
+				handler.room_emit(socket, 'announce_role_change',
+				{
+					username1: socket.hue_username,
+					username2: data.username,
 					role: data.role
 				})
 			})
@@ -914,7 +914,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		.catch(err =>
 		{
 			logger.log_error(err)
-		})		
+		})
 	}
 
 	handler.public.reset_voices = function(socket, data)
@@ -956,7 +956,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					handler.update_user_in_userlist(socc)
 				}
 			}
-			
+
 			db_manager.update_room(info._id, {keys:info.keys})
 
 			.catch(err =>
@@ -970,7 +970,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		.catch(err =>
 		{
 			logger.log_error(err)
-		})	
+		})
 	}
 
 	handler.public.remove_ops = function(socket, data)
@@ -1012,7 +1012,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					handler.update_user_in_userlist(socc)
 				}
 			}
-			
+
 			handler.room_emit(socket, 'announce_removedops', {username:socket.hue_username})
 
 			db_manager.update_room(info._id, {keys:info.keys})
@@ -1020,7 +1020,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			.catch(err =>
 			{
 				logger.log_error(err)
-			})				
+			})
 		})
 
 		.catch(err =>
@@ -1066,7 +1066,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				socc.hue_role = ''
 				socc.hue_kicked = true
 				socc.hue_info1 = socket.hue_username
-				
+
 				handler.get_out(socc)
 			}
 		}
@@ -1075,8 +1075,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			handler.user_emit(socket, 'user_not_in_room', {})
 			return false
-		}		
-	}	
+		}
+	}
 
 	handler.public.ban = function(socket, data)
 	{
@@ -1098,7 +1098,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(data.username.length > config.max_max_username_length)
 		{
 			return handler.get_out(socket)
-		}			
+		}
 
 		db_manager.get_room({_id:socket.hue_room_id}, {bans:true, keys:true})
 
@@ -1111,11 +1111,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				if(!userinfo)
 				{
 					handler.user_emit(socket, 'user_not_found', {})
-					return false						
+					return false
 				}
 
 				var id = userinfo._id.toString()
-				
+
 				var current_role = info.keys[id]
 
 				if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
@@ -1128,7 +1128,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					handler.user_emit(socket, 'user_already_banned', {})
 
-					return false						
+					return false
 				}
 
 				var sockets = handler.get_user_sockets_per_room(socket.hue_room_id, id)
@@ -1139,7 +1139,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						if(socc.hue_superuser)
 						{
-							handler.user_emit(socket, 'forbiddenuser', {})							
+							handler.user_emit(socket, 'forbiddenuser', {})
 							return false
 						}
 
@@ -1152,13 +1152,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				else
 				{
-					handler.room_emit(socket, 'announce_ban', 
+					handler.room_emit(socket, 'announce_ban',
 					{
-						username1: socket.hue_username, 
+						username1: socket.hue_username,
 						username2: data.username
-					})						
+					})
 				}
-				
+
 				info.bans.push(id)
 
 				db_manager.update_room(info._id, {bans:info.bans})
@@ -1178,7 +1178,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		.catch(err =>
 		{
 			logger.log_error(err)
-		})		
+		})
 	}
 
 	handler.public.unban = function(socket, data)
@@ -1201,7 +1201,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(data.username.length > config.max_max_username_length)
 		{
 			return handler.get_out(socket)
-		}			
+		}
 
 		db_manager.get_room({_id:socket.hue_room_id}, {bans:true, keys:true})
 
@@ -1214,7 +1214,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				if(!userinfo)
 				{
 					handler.user_emit(socket, 'user_not_found', {})
-					return false						
+					return false
 				}
 
 				var id = userinfo._id.toString()
@@ -1242,23 +1242,23 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					logger.log_error(err)
 				})
 
-				handler.room_emit(socket, 'announce_unban', 
-				{ 
-					username1: socket.hue_username, 
+				handler.room_emit(socket, 'announce_unban',
+				{
+					username1: socket.hue_username,
 					username2: data.username
-				})					
+				})
 			})
 
 			.catch(err =>
 			{
 				logger.log_error(err)
-			})				
+			})
 		})
 
 		.catch(err =>
 		{
 			logger.log_error(err)
-		})		
+		})
 	}
 
 	handler.public.unban_all = function(socket, data)
@@ -1275,7 +1275,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			if(info.bans.length > 0)
 			{
 				info.bans = []
-				
+
 				db_manager.update_room(info._id, {bans:info.bans})
 
 				.catch(err =>
@@ -1295,7 +1295,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		.catch(err =>
 		{
 			logger.log_error(err)
-		})		
+		})
 	}
 
 	handler.public.get_banned_count = function(socket, data)
@@ -1325,7 +1325,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		.catch(err =>
 		{
 			logger.log_error(err)
-		})		
+		})
 	}
 
 	handler.public.change_log = function(socket, data)
@@ -1355,7 +1355,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					.catch(err =>
 					{
 						logger.log_error(err)
-					})						
+					})
 				}
 
 				else
@@ -1365,7 +1365,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					.catch(err =>
 					{
 						logger.log_error(err)
-					})						
+					})
 				}
 
 				rooms[socket.hue_room_id].log = data.log
@@ -1377,7 +1377,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		.catch(err =>
 		{
 			logger.log_error(err)
-		})		
+		})
 	}
 
 	handler.public.clear_log = function(socket, data)
@@ -1400,7 +1400,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				.catch(err =>
 				{
 					logger.log_error(err)
-				})					
+				})
 
 				handler.room_emit(socket, 'log_cleared', {username:socket.hue_username})
 			}
@@ -1414,7 +1414,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		.catch(err =>
 		{
 			logger.log_error(err)
-		})		
+		})
 	}
 
 	handler.public.change_privacy = function(socket, data)
@@ -1489,11 +1489,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					else
 					{
 						handler.user_emit(socket, 'songnotfound', {})
-						return false							
-					}						
+						return false
+					}
 
 					fetch(`https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`)
-					
+
 					.then(function(res)
 					{
 						return res.json()
@@ -1523,7 +1523,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				else
 				{
 					handler.user_emit(socket, 'songnotfound', {})
-					return false						
+					return false
 				}
 			}
 
@@ -1536,16 +1536,16 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					return
 				}
 
-				soundcloud.get(`/resolve?url=${encodeURIComponent(data.src)}`, function(err, track) 
+				soundcloud.get(`/resolve?url=${encodeURIComponent(data.src)}`, function(err, track)
 				{
-					if(err) 
+					if(err)
 					{
 						handler.user_emit(socket, 'songnotfound', {})
 						logger.log_error(err)
 						return false
-					} 
+					}
 
-					else 
+					else
 					{
 						data.type = "soundcloud"
 
@@ -1555,11 +1555,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 						{
 							data.title = data.src
 						}
-						
+
 						handler.do_change_radio_source(socket, data)
 					}
 				})
-			}			
+			}
 
 			else
 			{
@@ -1571,7 +1571,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else if(data.src === "restart" || data.src === "reset")
 		{
-			db_manager.get_room({_id:socket.hue_room_id}, 
+			db_manager.get_room({_id:socket.hue_room_id},
 			{
 				radio_type: true,
 				radio_source: true,
@@ -1582,8 +1582,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			.then(info =>
 			{
-				handler.room_emit(socket, 'restarted_radio_source', 
-				{ 
+				handler.room_emit(socket, 'restarted_radio_source',
+				{
 					radio_type: info.radio_type,
 					radio_source: info.radio_source,
 					radio_title: info.radio_title,
@@ -1630,13 +1630,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					}
 
 					handler.user_emit(socket, 'songnotfound', {})
-					return false						
+					return false
 				}
 
 				else
 				{
 					handler.user_emit(socket, 'songnotfound', {})
-				}							
+				}
 			})
 
 			.catch(err =>
@@ -1696,7 +1696,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					else
 					{
 						handler.user_emit(socket, 'videonotfound', {})
-						return false							
+						return false
 					}
 
 					fetch(`https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`)
@@ -1731,7 +1731,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				else
 				{
-					handler.user_emit(socket, 'videonotfound', {})						
+					handler.user_emit(socket, 'videonotfound', {})
 				}
 			}
 
@@ -1741,7 +1741,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					return
 				}
-				
+
 				var id = utilz.get_twitch_id(data.src)
 
 				if(id)
@@ -1751,10 +1751,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 						fetch(`https://api.twitch.tv/helix/videos?id=203574636`,
 						{
-							headers: 
+							headers:
 							{
 								"Client-ID": sconfig.twitch_api_key
-							}	
+							}
 						})
 
 						.then(function(res)
@@ -1771,7 +1771,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 						.catch(err =>
 						{
-							handler.user_emit(socket, 'videonotfound', {})								
+							handler.user_emit(socket, 'videonotfound', {})
 							logger.log_error(err)
 						})
 					}
@@ -1792,8 +1792,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				else
 				{
-					handler.user_emit(socket, 'videonotfound', {})						
-				}					
+					handler.user_emit(socket, 'videonotfound', {})
+				}
 			}
 
 			else if(data.src.includes("soundcloud.com"))
@@ -1805,16 +1805,16 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					return
 				}
 
-				soundcloud.get(`/resolve?url=${encodeURIComponent(data.src)}`, function(err, track) 
+				soundcloud.get(`/resolve?url=${encodeURIComponent(data.src)}`, function(err, track)
 				{
-					if(err) 
+					if(err)
 					{
 						handler.user_emit(socket, 'videonotfound', {})
 						logger.log_error(err)
 						return false
-					} 
+					}
 
-					else 
+					else
 					{
 						data.type = "soundcloud"
 
@@ -1840,7 +1840,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else if(data.src === "restart" || data.src === "reset")
 		{
-			db_manager.get_room({_id:socket.hue_room_id}, 
+			db_manager.get_room({_id:socket.hue_room_id},
 			{
 				tv_type: true,
 				tv_source: true,
@@ -1851,8 +1851,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			.then(info =>
 			{
-				handler.room_emit(socket, 'restarted_tv_source', 
-				{ 
+				handler.room_emit(socket, 'restarted_tv_source',
+				{
 					tv_type: info.tv_type,
 					tv_source: info.tv_source,
 					tv_title: info.tv_title,
@@ -1901,13 +1901,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					}
 
 					handler.user_emit(socket, 'videonotfound', {})
-					return false						
+					return false
 				}
 
 				else
 				{
 					handler.user_emit(socket, 'videonotfound', {})
-				}						
+				}
 			})
 
 			.catch(err =>
@@ -1918,7 +1918,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	}
 
 	handler.do_change_radio_source = function(socket, data)
-	{	
+	{
 		var radioinfo = {}
 
 		var date = Date.now()
@@ -1940,8 +1940,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		radioinfo.radio_setter = socket.hue_username
 		radioinfo.radio_date = date
 
-		handler.room_emit(socket, 'changed_radio_source', 
-		{ 
+		handler.room_emit(socket, 'changed_radio_source',
+		{
 			radio_type: radioinfo.radio_type,
 			radio_source: radioinfo.radio_source,
 			radio_title: radioinfo.radio_title,
@@ -1964,28 +1964,28 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 
 		rooms[socket.hue_room_id].activity = true
-		
+
 		if(rooms[socket.hue_room_id].log)
 		{
-			var message = 
+			var message =
 			{
-				type: "radio", 
+				type: "radio",
 				data:
 				{
 					radio_type: radioinfo.radio_type,
 					radio_source: radioinfo.radio_source,
 					radio_title: radioinfo.radio_title,
 					radio_setter: radioinfo.radio_setter
-				}, 
+				},
 				date: date
 			}
 
 			rooms[socket.hue_room_id].log_messages.push(message)
-		}		
+		}
 	}
 
 	handler.do_change_tv_source = function(socket, data)
-	{	
+	{
 		var tvinfo = {}
 
 		var date = Date.now()
@@ -2007,7 +2007,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		tvinfo.tv_setter = socket.hue_username
 		tvinfo.tv_date = date
 
-		handler.room_emit(socket, 'changed_tv_source', 
+		handler.room_emit(socket, 'changed_tv_source',
 		{
 			tv_type: tvinfo.tv_type,
 			tv_source: tvinfo.tv_source,
@@ -2031,24 +2031,24 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 
 		rooms[socket.hue_room_id].activity = true
-		
+
 		if(rooms[socket.hue_room_id].log)
 		{
-			var message = 
+			var message =
 			{
-				type: "tv", 
+				type: "tv",
 				data:
 				{
 					tv_type: tvinfo.tv_type,
 					tv_source: tvinfo.tv_source,
 					tv_title: tvinfo.tv_title,
 					tv_setter: tvinfo.tv_setter
-				}, 
+				},
 				date: date
 			}
 
 			rooms[socket.hue_room_id].log_messages.push(message)
-		}		
+		}
 	}
 
 	handler.public.change_username = function(socket, data)
@@ -2092,7 +2092,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 					handler.room_emit(room_id, 'new_username',
 					{
-						username: data.username, 
+						username: data.username,
 						old_username: old_username
 					})
 				}
@@ -2136,7 +2136,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		.catch(err =>
 		{
 			logger.log_error(err)
-		})			
+		})
 
 		handler.user_emit(socket, 'password_changed', {password:data.password})
 	}
@@ -2151,7 +2151,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(!data.email.includes('@') || data.email.includes(' '))
 		{
 			return handler.get_out(socket)
-		}			
+		}
 
 		if(data.email.length > config.max_email_length)
 		{
@@ -2161,7 +2161,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(utilz.clean_string5(data.email) !== data.email)
 		{
 			return handler.get_out(socket)
-		}		
+		}
 
 		db_manager.change_email(socket.hue_user_id, data.email)
 
@@ -2190,12 +2190,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				handler.user_emit(socket, 'email_change_code_sent', {email:data.email})
 				return
 			}
-		})		
+		})
 
 		.catch(err =>
 		{
 			logger.log_error(err)
-		})	
+		})
 	}
 
 	handler.public.verify_email = function(socket, data)
@@ -2209,7 +2209,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			return handler.get_out(socket)
 		}
-		
+
 		if(data.code.length > config.email_change_code_max_length)
 		{
 			return handler.get_out(socket)
@@ -2263,13 +2263,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				handler.user_emit(socket, 'email_changed', {email:ans.email})
 			}
-		})		
+		})
 
 		.catch(err =>
 		{
 			logger.log_error(err)
 		})
-	}	
+	}
 
 	handler.public.change_images_enabled = function(socket, data)
 	{
@@ -2293,7 +2293,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		handler.room_emit(socket, 'room_images_enabled_change', 
+		handler.room_emit(socket, 'room_images_enabled_change',
 		{
 			what: data.what,
 			username: socket.hue_username
@@ -2351,7 +2351,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		handler.room_emit(socket, 'room_radio_enabled_change', 
+		handler.room_emit(socket, 'room_radio_enabled_change',
 		{
 			what: data.what,
 			username: socket.hue_username
@@ -2386,7 +2386,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			username: socket.hue_username
 		})
 	}
-	
+
 	handler.public.change_background_mode = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -2409,7 +2409,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		handler.room_emit(socket, 'background_mode_changed', 
+		handler.room_emit(socket, 'background_mode_changed',
 		{
 			mode: data.mode,
 			username: socket.hue_username
@@ -2426,7 +2426,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(data.dimensions.length > config.safe_limit_1)
 		{
 			return handler.get_out(socket)
-		}		
+		}
 
 		if(data.dimensions !== utilz.clean_string2(data.dimensions))
 		{
@@ -2443,7 +2443,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		handler.room_emit(socket, 'background_tile_dimensions_changed', 
+		handler.room_emit(socket, 'background_tile_dimensions_changed',
 		{
 			dimensions: data.dimensions,
 			username: socket.hue_username
@@ -2472,12 +2472,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		handler.room_emit(socket, 'text_color_mode_changed', 
+		handler.room_emit(socket, 'text_color_mode_changed',
 		{
 			mode: data.mode,
 			username: socket.hue_username
 		})
-	}	
+	}
 
 	handler.public.change_text_color = function(socket, data)
 	{
@@ -2501,7 +2501,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		handler.room_emit(socket, 'text_color_changed', 
+		handler.room_emit(socket, 'text_color_changed',
 		{
 			color: data.color,
 			username: socket.hue_username
@@ -2530,7 +2530,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		rooms[socket.hue_room_id][data.ptype] = data.what			
+		rooms[socket.hue_room_id][data.ptype] = data.what
 
 		var obj = {}
 
@@ -2543,13 +2543,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		})
 
-		handler.room_emit(socket, 'voice_permission_change', 
+		handler.room_emit(socket, 'voice_permission_change',
 		{
 			ptype: data.ptype,
 			what: data.what,
 			username: socket.hue_username
 		})
-	}	
+	}
 
 	handler.do_disconnect = function(socc)
 	{
@@ -2620,36 +2620,36 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				var type = 'disconnection'
 			}
 
-			handler.room_emit(socket, "userdisconnect", 
+			handler.room_emit(socket, "userdisconnect",
 			{
 				username: socket.hue_username,
-				info1: socket.hue_info1, 
+				info1: socket.hue_info1,
 				role: socket.hue_role,
 				disconnection_type: type
 			})
 		}
-	}	
+	}
 
 	handler.compare_roomlist = function(a, b)
 	{
-		if(a.usercount < b.usercount) 
+		if(a.usercount < b.usercount)
 		{
 			return 1
 		}
 
-		if(a.usercount > b.usercount) 
+		if(a.usercount > b.usercount)
 		{
 			return -1
 		}
 
 		if(a.usercount === b.usercount)
 		{
-			if(a.modified < b.modified) 
+			if(a.modified < b.modified)
 			{
 				return 1
 			}
 
-			if(a.modified > b.modified) 
+			if(a.modified > b.modified)
 			{
 				return -1
 			}
@@ -2773,7 +2773,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					roomlist.push({id:room._id.toString(), name:room.name, topic:room.topic.substring(0, config.max_roomlist_topic_length), usercount:handler.get_usercount(room._id.toString()), modified:room.modified})
 				}
 
-				roomlist.sort(handler.compare_roomlist)			
+				roomlist.sort(handler.compare_roomlist)
 
 				callback(roomlist)
 			})
@@ -2781,7 +2781,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			.catch(err =>
 			{
 				logger.log_error(err)
-			})		
+			})
 		})
 
 		.catch(err =>
@@ -2841,25 +2841,25 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(size === 0 || (size > config.max_image_size))
 		{
-			handler.user_emit(socket, 'upload_error', {})													
+			handler.user_emit(socket, 'upload_error', {})
 			return false
 		}
 
 		var fname = `${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.extension}`
 
-		fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
+		fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data)
 		{
-			if(err) 
+			if(err)
 			{
 				handler.user_emit(socket, 'upload_error', {})
 			}
 
-			else 
+			else
 			{
 				handler.change_image(socket.hue_room_id, fname, socket.hue_username, size, "upload")
 			}
 		})
-	}	
+	}
 
 	handler.change_image = function(room_id, fname, uploader, size, type)
 	{
@@ -2877,7 +2877,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else if(config.image_storage_s3_or_local === "s3")
 			{
-				fs.readFile(`${images_root}/${fname}`, (err, data) => 
+				fs.readFile(`${images_root}/${fname}`, (err, data) =>
 				{
 					if(err)
 					{
@@ -2890,7 +2890,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 						ACL: "public-read",
 						ContentType: handler.get_content_type(fname),
 						Body: data,
-						Bucket: sconfig.s3_bucket_name, 
+						Bucket: sconfig.s3_bucket_name,
 						Key: `${sconfig.s3_images_location}${fname}`,
 						CacheControl: `max-age=${sconfig.s3_cache_max_age}`
 					}).promise()
@@ -2902,7 +2902,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					})
 
 					.catch(err =>
-					{					
+					{
 						fs.unlink(`${images_root}/${fname}`, function(){})
 						logger.log_error(err)
 					})
@@ -2929,13 +2929,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			if(image_source === 'default')
 			{
 				image_source = ""
-			}			
+			}
 
 			db_manager.update_room(room_id,
 			{
-				image_source: image_source, 
+				image_source: image_source,
 				image_setter: setter,
-				image_size: size, 
+				image_size: size,
 				image_date: date,
 				image_type: type
 			})
@@ -2970,7 +2970,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				info.stored_images.unshift(fname)
 
 				var spliced = false
-				
+
 				if(info.stored_images.length > config.max_stored_images)
 				{
 					var spliced = info.stored_images.splice(config.max_stored_images, info.stored_images.length)
@@ -2979,8 +2979,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				db_manager.update_room(room_id,
 				{
 					image_source: image_source,
-					image_setter: setter, 
-					image_size: size, 
+					image_setter: setter,
+					image_size: size,
 					image_date: date,
 					stored_images: info.stored_images,
 					image_type: type
@@ -2989,7 +2989,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				.catch(err =>
 				{
 					logger.log_error(err)
-				})					
+				})
 
 				if(spliced)
 				{
@@ -3014,7 +3014,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 							})
 						}
 					}
-				}			
+				}
 			})
 
 			.catch(err =>
@@ -3043,13 +3043,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 
 		rooms[room_id].activity = true
-		
+
 		if(rooms[room_id].log)
 		{
-			var message = 
+			var message =
 			{
-				type: "image", 
-				data: 
+				type: "image",
+				data:
 				{
 					image_source: image_source,
 					image_setter: setter,
@@ -3060,7 +3060,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 
 			rooms[room_id].log_messages.push(message)
-		}				
+		}
 	}
 
 	handler.upload_profile_image = function(socket, data)
@@ -3081,25 +3081,25 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(size === 0 || (size > config.max_profile_image_size))
 		{
-			handler.user_emit(socket, 'upload_error', {})													
+			handler.user_emit(socket, 'upload_error', {})
 			return false
 		}
 
 		var fname = `profile_${socket.hue_user_id}.jpg`
 
-		fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
+		fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data)
 		{
-			if(err) 
+			if(err)
 			{
 				handler.user_emit(socket, 'upload_error', {})
 			}
 
-			else 
+			else
 			{
 				handler.change_profile_image(socket, fname)
 			}
 		})
-	}	
+	}
 
 	handler.change_profile_image = function(socket, fname)
 	{
@@ -3110,7 +3110,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else if(config.image_storage_s3_or_local === "s3")
 		{
-			fs.readFile(`${images_root}/${fname}`, (err, data) => 
+			fs.readFile(`${images_root}/${fname}`, (err, data) =>
 			{
 				if(err)
 				{
@@ -3123,7 +3123,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					ACL: "public-read",
 					ContentType: handler.get_content_type(fname),
 					Body: data,
-					Bucket: sconfig.s3_bucket_name, 
+					Bucket: sconfig.s3_bucket_name,
 					Key: `${sconfig.s3_images_location}${fname}`,
 					CacheControl: `max-age=${sconfig.s3_cache_max_age}`
 				}).promise()
@@ -3135,7 +3135,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				})
 
 				.catch(err =>
-				{					
+				{
 					fs.unlink(`${images_root}/${fname}`, function(){})
 					logger.log_error(err)
 				})
@@ -3150,7 +3150,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.do_change_profile_image = function(socket, fname)
 	{
-		db_manager.get_user({_id:socket.hue_user_id}, {profile_image_version:true})		
+		db_manager.get_user({_id:socket.hue_user_id}, {profile_image_version:true})
 
 		.then(userinfo =>
 		{
@@ -3182,7 +3182,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						socc.hue_profile_image = image_url
 					}
-					
+
 					handler.update_user_in_userlist(socket)
 
 					handler.room_emit(room_id, 'profile_image_changed',
@@ -3196,7 +3196,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			.catch(err =>
 			{
 				logger.log_error(err)
-			})		
+			})
 		})
 
 		.catch(err =>
@@ -3215,26 +3215,26 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(data.extension === undefined)
 		{
 			return handler.get_out(socket)
-		}			
+		}
 
 		var size = data.image_file.toString('ascii').length / 1024
 
 		if(size === 0 || (size > config.max_image_size))
 		{
-			handler.user_emit(socket, 'upload_error', {})													
+			handler.user_emit(socket, 'upload_error', {})
 			return false
 		}
 
 		var fname = `bg_${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.extension}`
 
-		fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data) 
+		fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data)
 		{
-			if(err) 
+			if(err)
 			{
 				handler.user_emit(socket, 'upload_error', {})
 			}
 
-			else 
+			else
 			{
 				handler.change_background_image(socket, fname)
 			}
@@ -3250,7 +3250,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else if(config.image_storage_s3_or_local === "s3")
 		{
-			fs.readFile(`${images_root}/${fname}`, (err, data) => 
+			fs.readFile(`${images_root}/${fname}`, (err, data) =>
 			{
 				if(err)
 				{
@@ -3263,7 +3263,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					ACL: "public-read",
 					ContentType: handler.get_content_type(fname),
 					Body: data,
-					Bucket: sconfig.s3_bucket_name, 
+					Bucket: sconfig.s3_bucket_name,
 					Key: `${sconfig.s3_images_location}${fname}`,
 					CacheControl: `max-age=${sconfig.s3_cache_max_age}`
 				}).promise()
@@ -3275,7 +3275,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				})
 
 				.catch(err =>
-				{					
+				{
 					fs.unlink(`${images_root}/${fname}`, function(){})
 					logger.log_error(err)
 				})
@@ -3290,7 +3290,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.do_change_background_image = function(socket, fname)
 	{
-		db_manager.get_room({_id:socket.hue_room_id}, {background_image:true})		
+		db_manager.get_room({_id:socket.hue_room_id}, {background_image:true})
 
 		.then(info =>
 		{
@@ -3352,8 +3352,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						logger.log_error(err)
 					})
-				}				
-			}	
+				}
+			}
 		})
 
 		.catch(err =>
@@ -3381,7 +3381,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		var file = files[key]
 
-		if(!file) 
+		if(!file)
 		{
 			var spam_ans = await handler.add_spam(socket)
 
@@ -3407,7 +3407,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			files[key] = Object.assign({}, files_struct, data)
 
 			file = files[key]
-			
+
 			file.data = []
 		}
 
@@ -3448,9 +3448,9 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		file.updated = Date.now()
-		
-		if(file.slice * config.upload_slice_size >= file.size) 
-		{  
+
+		if(file.slice * config.upload_slice_size >= file.size)
+		{
 			handler.user_emit(socket, 'upload_ended', {date:data.date})
 
 			var full_file = Buffer.concat(file.data)
@@ -3469,7 +3469,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				handler.upload_profile_image(socket,
 				{
 					image_file: full_file
-				})	
+				})
 			}
 
 			else if(data.action === "background_image_upload")
@@ -3478,16 +3478,16 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					image_file: full_file,
 					extension: file.extension
-				})	
+				})
 			}
 
-			delete files[key] 
+			delete files[key]
 		}
 
-		else 
-		{ 
-			handler.user_emit(socket, 'request_slice_upload', 
-			{ 
+		else
+		{
+			handler.user_emit(socket, 'request_slice_upload',
+			{
 				current_slice: file.slice,
 				date: data.date
 			})
@@ -3496,8 +3496,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.cancel_upload = function(socket, data)
 	{
-		var key = `${socket.hue_user_id}_${data.date}`		
-		
+		var key = `${socket.hue_user_id}_${data.date}`
+
 		var file = files[key]
 
 		if(file)
@@ -3525,7 +3525,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 
 			socket.hue_typing_counter = 0
-		}		
+		}
 
 		handler.broadcast_emit(socket, 'typing', {username:socket.hue_username})
 	}
@@ -3575,7 +3575,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(!handler.check_permission(socket, "chat"))
 		{
 			return false
-		}			
+		}
 
 		var sockets = handler.get_user_sockets_per_room_by_username(socket.hue_room_id, data.username)
 
@@ -3583,7 +3583,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			for(var socc of sockets)
 			{
-				handler.user_emit(socc, 'whisper', 
+				handler.user_emit(socc, 'whisper',
 				{
 					room: socket.hue_room_id,
 					username: socket.hue_username,
@@ -3623,7 +3623,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(data.message !== utilz.clean_string2(data.message))
 		{
 			return handler.get_out(socket)
-		}			
+		}
 
 		var sockets = handler.get_room_sockets(socket.hue_room_id)
 
@@ -3631,7 +3631,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(handler.is_admin_or_op(socc))
 			{
-				handler.user_emit(socc, 'whisper_ops', 
+				handler.user_emit(socc, 'whisper_ops',
 				{
 					room: socket.hue_room_id,
 					username: socket.hue_username,
@@ -3692,11 +3692,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		handler.system_emit(socket, 'system_broadcast', 
+		handler.system_emit(socket, 'system_broadcast',
 		{
 			message: data.message
 		})
-	}	
+	}
 
 	handler.public.disconnect_others = function(socket, data)
 	{
@@ -3759,7 +3759,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.create_room_object = function(info)
 	{
-		var obj = 
+		var obj =
 		{
 			_id: info._id.toString(),
 			activity: false,
@@ -3781,10 +3781,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			voice4_chat_permission: info.voice4_chat_permission,
 			voice4_images_permission: info.voice4_images_permission,
 			voice4_tv_permission: info.voice4_tv_permission,
-			voice4_radio_permission: info.voice4_radio_permission			
+			voice4_radio_permission: info.voice4_radio_permission
 		}
 
-		return obj	
+		return obj
 	}
 
 	handler.start_room_loop = function()
@@ -3816,7 +3816,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 							.catch(err =>
 							{
 								logger.log_error(err)
-							})							
+							})
 						}
 
 						room.activity = false
@@ -3899,7 +3899,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					clients.push(socc)
 				}
 			}
-			
+
 			return clients
 		}
 
@@ -3924,7 +3924,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					clients.push(socc)
 				}
 			}
-			
+
 			return clients
 		}
 
@@ -3956,7 +3956,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			logger.log_error(err)
 		}
-	}	
+	}
 
 	handler.update_user_in_userlist = function(socket)
 	{
@@ -4045,7 +4045,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		try
 		{
 			var sockets = handler.get_room_sockets(socket.hue_room_id)
-			
+
 			for(var socc of sockets)
 			{
 				if(socc.hue_user_id !== undefined)
@@ -4114,7 +4114,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		args.type = type
 		io.emit('update', args)
-	}	
+	}
 
 	handler.add_spam = async function(socket)
 	{

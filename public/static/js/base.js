@@ -134,7 +134,7 @@ var soundcloud_video_player
 var utilz = Utilz()
 var log_messages
 var profile_image
-var change_image_when_focused = false 
+var change_image_when_focused = false
 var change_tv_when_focused = false
 var change_radio_when_focused = false
 var room_images_enabled = true
@@ -207,7 +207,7 @@ function init()
 	start_settings_listeners("global_settings")
 	start_settings_state("room_settings")
 	start_settings_listeners("room_settings")
-	setup_settings_windows()	
+	setup_settings_windows()
 	start_filters()
 	start_image_events()
 	start_dropzone()
@@ -278,7 +278,7 @@ function get_local_storage(ls_name)
 		var obj = null
 	}
 
-	return obj	
+	return obj
 }
 
 function save_local_storage(ls_name, obj)
@@ -293,7 +293,7 @@ function save_local_storage(ls_name, obj)
 
 function remove_local_storage(ls_name)
 {
-	localStorage.removeItem(ls_name)	
+	localStorage.removeItem(ls_name)
 }
 
 function setup_templates()
@@ -366,7 +366,7 @@ function change_room_name(arg)
 	if(!is_admin_or_op(role))
 	{
 		not_an_op()
-		return false	
+		return false
 	}
 
 	arg = utilz.clean_string2(arg.substring(0, max_room_name_length))
@@ -397,7 +397,7 @@ function get_proper_media_url(type)
 		source = window.location.origin + source
 	}
 
-	return source	
+	return source
 }
 
 function show_media_source(what)
@@ -419,7 +419,7 @@ function show_media_source(what)
 	else if(what === "radio")
 	{
 		var s = "Radio"
-	}	
+	}
 
 	if(setter !== '')
 	{
@@ -429,7 +429,7 @@ function show_media_source(what)
 	else
 	{
 		feedback(`${s} Source: ${source}`)
-	}	
+	}
 }
 
 function get_unset_topic()
@@ -452,10 +452,10 @@ function get_topic()
 		return topic
 	}
 
-	else 
+	else
 	{
 		return get_unset_topic()
-	}	
+	}
 }
 
 function show_topic()
@@ -473,7 +473,7 @@ function show_topic()
 		}
 	}
 
-	else 
+	else
 	{
 		feedback(`Topic: ${get_unset_topic()}`)
 	}
@@ -504,7 +504,7 @@ function check_permissions()
 	can_chat = check_permission(role, "chat")
 	can_images = room_images_enabled && check_permission(role, "images")
 	can_tv = room_tv_enabled && check_permission(role, "tv")
-	can_radio =  room_radio_enabled && check_permission(role, "radio")
+	can_radio = room_radio_enabled && check_permission(role, "radio")
 
 	setup_icons()
 }
@@ -521,7 +521,7 @@ function check_permission(role, type)
 		return true
 	}
 
-	return false	
+	return false
 }
 
 function setup_icons()
@@ -568,7 +568,7 @@ function setup_icons()
 	else
 	{
 		$("#footer_tv_controls").css("display", "none")
-	}	
+	}
 
 	if(room_radio_enabled)
 	{
@@ -579,7 +579,7 @@ function setup_icons()
 			$("#footer_radio_icon").removeClass("nopointer")
 			$("#footer_radio_icon").addClass("action")
 		}
-		
+
 		else
 		{
 			$("#footer_radio_icon").removeClass("action")
@@ -653,9 +653,9 @@ function show_username()
 
 function socket_emit(destination, data)
 {
-	var obj = 
+	var obj =
 	{
-		destination: destination, 
+		destination: destination,
 		data: data
 	}
 
@@ -664,7 +664,7 @@ function socket_emit(destination, data)
 	if(emit_queue_timeout === undefined)
 	{
 		check_emit_queue()
-	}	
+	}
 }
 
 function check_emit_queue()
@@ -679,7 +679,7 @@ function check_emit_queue()
 		}
 
 		emit_queue.shift()
-		
+
 		emit_queue_timeout = setTimeout(function()
 		{
 			check_emit_queue()
@@ -712,7 +712,7 @@ function start_socket()
 		socket_emit('join_room', {room_id:room_id, user_id:user_id, token:jwt_token})
 	})
 
-	socket.on('disconnect', (reason) => 
+	socket.on('disconnect', (reason) =>
 	{
 		if(started)
 		{
@@ -776,20 +776,20 @@ function start_socket()
 		else if(data.type === 'typing')
 		{
 			show_typing(data)
-		}		
+		}
 
 		else if(data.type === 'chat_msg')
 		{
 			update_chat({uname:data.username, msg:data.msg, prof_image:data.profile_image})
 			hide_pencil()
-		}		
+		}
 
 		else if(data.type === 'request_slice_upload')
 		{
 			request_slice_upload(data)
 		}
 
-		else if(data.type === 'upload_ended') 
+		else if(data.type === 'upload_ended')
 		{
 			upload_ended(data)
 		}
@@ -797,7 +797,7 @@ function start_socket()
 		else if(data.type === 'image_change')
 		{
 			queue_image(data)
-			announce_image_change(data)			
+			announce_image_change(data)
 		}
 
 		else if(data.type === 'profile_image_changed')
@@ -873,7 +873,7 @@ function start_socket()
 		else if(data.type === 'announce_unban')
 		{
 			public_feedback(`${data.username1} unbanned ${data.username2}`)
-		}		
+		}
 
 		else if(data.type === 'announce_unban_all')
 		{
@@ -948,25 +948,25 @@ function start_socket()
 		else if(data.type === 'changed_radio_source')
 		{
 			announce_radio_change(data)
-			setup_radio(data)			
+			setup_radio(data)
 		}
 
 		else if(data.type === 'restarted_radio_source')
 		{
 			announce_radio_change(data, false, "restart")
-			setup_radio(data)			
+			setup_radio(data)
 		}
 
 		else if(data.type === 'changed_tv_source')
 		{
 			announce_tv_change(data)
-			setup_tv(data)			
+			setup_tv(data)
 		}
 
 		else if(data.type === 'restarted_tv_source')
 		{
 			announce_tv_change(data, false, "restart")
-			setup_tv(data)			
+			setup_tv(data)
 		}
 
 		else if(data.type === 'reserved')
@@ -1022,7 +1022,7 @@ function start_socket()
 		else if(data.type === 'new_username')
 		{
 			announce_new_username(data)
-		}		
+		}
 
 		else if(data.type === 'password_changed')
 		{
@@ -1052,7 +1052,7 @@ function start_socket()
 		else if(data.type === 'room_radio_enabled_change')
 		{
 			announce_room_radio_enabled_change(data)
-		}	
+		}
 
 		else if(data.type === 'theme_change')
 		{
@@ -1087,7 +1087,7 @@ function start_socket()
 		else if(data.type === 'voice_permission_change')
 		{
 			announce_voice_permission_change(data)
-		}				
+		}
 
 		else if(data.type === 'userdisconnect')
 		{
@@ -1117,7 +1117,7 @@ function start_socket()
 		else if(data.type === 'system_broadcast')
 		{
 			popup_message_received(data, "system")
-		}		
+		}
 
 		else if(data.type === 'error_occurred')
 		{
@@ -1184,7 +1184,7 @@ function setup_radio(data)
 	radio_setter = data.radio_setter
 	radio_date = nice_date(data.radio_date)
 
-	change({type:"radio", force:true})	
+	change({type:"radio", force:true})
 }
 
 function setup_tv(data)
@@ -1230,7 +1230,7 @@ function load_radio()
 		{
 			radio_metadata = `${radio_source.split('/').slice(0, -1).join('/')}/status-json.xsl`
 		}
-		
+
 		$('#audio').attr('src', radio_source)
 
 		if(radio_started)
@@ -1306,7 +1306,7 @@ function load_radio()
 					{
 						soundcloud_player.play()
 					}
-					
+
 					soundcloud_player.setVolume(get_nice_volume(radio_volume))
 				}
 			})
@@ -1316,8 +1316,8 @@ function load_radio()
 		if(!room_settings.radio_locked || !last_radio_change)
 		{
 			push_played(false, {s1:radio_title, s2:radio_source})
-		}		
-		
+		}
+
 		if(youtube_player !== undefined)
 		{
 			youtube_player.pauseVideo()
@@ -1417,10 +1417,10 @@ function show_youtube_video(play=true)
 	{
 		return false
 	}
-	
+
 	$("#media_video_container").css("display", "none")
 	$("#media_twitch_video_container").css("display", "none")
-	$("#media_soundcloud_video_container").css("display", "none")	
+	$("#media_soundcloud_video_container").css("display", "none")
 	$("#media_youtube_video_container").css("display", "flex")
 
 	fix_video_frame("media_youtube_video")
@@ -1485,7 +1485,7 @@ function show_soundcloud_video(play=true)
 
 	$("#media_video_container").css("display", "none")
 	$("#media_twitch_video_container").css("display", "none")
-	$("#media_youtube_video_container").css("display", "none")	
+	$("#media_youtube_video_container").css("display", "none")
 	$("#media_soundcloud_video_container").css("display", "flex")
 
 	fix_video_frame("media_soundcloud_video")
@@ -1510,7 +1510,7 @@ function show_video(play=true)
 
 	$("#media_youtube_video_container").css("display", "none")
 	$("#media_twitch_video_container").css("display", "none")
-	$("#media_soundcloud_video_container").css("display", "none")	
+	$("#media_soundcloud_video_container").css("display", "none")
 	$("#media_video_container").css("display", "flex")
 
 	if(play)
@@ -1545,7 +1545,7 @@ function set_background(bg)
 {
 	background_image = bg
 	apply_background()
-	config_admin_background_image()	
+	config_admin_background_image()
 }
 
 function apply_background()
@@ -1592,7 +1592,7 @@ function apply_background()
 	.background_image_tiled
 	{
 		background-size: ${background_tile_dimensions} !important;
-		background-repeat: repeat !important;		
+		background-repeat: repeat !important;
 	}
 
 	</style>
@@ -1603,20 +1603,20 @@ function apply_background()
 		$(this).remove()
 	})
 
-	$("head").append(css)	
+	$("head").append(css)
 }
 
 function set_theme(color)
 {
 	theme = color
 	apply_theme()
-	config_admin_theme()	
+	config_admin_theme()
 }
 
 function apply_theme()
 {
 	var background_color = theme
-	
+
 	var background_color_2 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_1)
 
 	if(text_color_mode === "custom")
@@ -1647,7 +1647,7 @@ function apply_theme()
 	$('.bg2').css('color', font_color)
 
 	var color_3 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
-	
+
 	var overlay_color = colorlib.rgb_to_rgba(color_3, opacity_amount_2)
 
 	var css = `
@@ -1668,7 +1668,7 @@ function apply_theme()
 	.Msg-window-inner-x:hover
 	{
 		background-color: ${background_color_2} !important;
-	}	
+	}
 
 	.custom_titlebar
 	{
@@ -1689,7 +1689,7 @@ function apply_theme()
 	.custom_popup
 	{
 		border: 1px solid ${font_color} !important;
-	}	
+	}
 
 	.nicescroll-cursors
 	{
@@ -1711,7 +1711,7 @@ function apply_theme()
 		$(this).remove()
 	})
 
-	$("head").append(css)	
+	$("head").append(css)
 }
 
 function userjoin(data)
@@ -1733,13 +1733,13 @@ function userjoin(data)
 
 			chat_announce(
 			{
-				brk: "<i class='icon2 fa fa-user-plus'></i>", 
-				msg: `${data.username} has joined`, 
-				save: true, 
-				onclick: f, 
+				brk: "<i class='icon2 fa fa-user-plus'></i>",
+				msg: `${data.username} has joined`,
+				save: true,
+				onclick: f,
 				uname: data.username
 			})
-			
+
 			if(data.username !== username)
 			{
 				alert_title()
@@ -1754,7 +1754,7 @@ function update_usercount(usercount)
 	var s = `${singular_or_plural(usercount, "Users")} Online`
 
 	$('#usercount').html(s)
-	
+
 	msg_userlist.set_title(s)
 }
 
@@ -1767,15 +1767,15 @@ function addto_userlist(uname, rol, pi)
 			userlist[i].username = uname
 			userlist[i].role = rol
 			userlist[i].profile_image = pi
-			
+
 			update_userlist()
-			
+
 			return false
 		}
 	}
 
 	userlist.push({username:uname, role:rol, profile_image:pi})
-	
+
 	update_userlist()
 
 	return true
@@ -1928,11 +1928,11 @@ function start_userlist_click_events()
 	{
 		var uname = $(this).text()
 		show_profile(uname, get_user_by_username(uname).profile_image)
-	})	
+	})
 }
 
 function update_userlist()
-{	
+{
 	var s = $()
 
 	s = s.add()
@@ -1977,7 +1977,7 @@ function update_userlist()
 	update_modal_scrollbar("userlist")
 }
 
-function compare_userlist(a, b) 
+function compare_userlist(a, b)
 {
 	if(a.role === '')
 	{
@@ -1991,56 +1991,56 @@ function compare_userlist(a, b)
 
 	if(a.role.startsWith('voice') && b.role.startsWith('voice'))
 	{
-		if(a.role < b.role) 
-		{
-			return 1
-		} 
-
-		else if(a.role > b.role) 
-		{ 
-			return -1
-		}
-
-		if(a.username > b.username) 
-		{ 
-			return -1
-		}
-
-		else if(a.username < b.username) 
+		if(a.role < b.role)
 		{
 			return 1
 		}
 
-		else 
-		{ 
+		else if(a.role > b.role)
+		{
+			return -1
+		}
+
+		if(a.username > b.username)
+		{
+			return -1
+		}
+
+		else if(a.username < b.username)
+		{
+			return 1
+		}
+
+		else
+		{
 			return 0
-		}		
+		}
 	}
 
 	else
 	{
-		if(a.role > b.role) 
-		{
-			return 1
-		} 
-
-		else if(a.role < b.role) 
-		{ 
-			return -1
-		}
-
-		if(a.username < b.username) 
-		{ 
-			return -1
-		}
-
-		else if(a.username > b.username) 
+		if(a.role > b.role)
 		{
 			return 1
 		}
-	
-		else 
-		{ 
+
+		else if(a.role < b.role)
+		{
+			return -1
+		}
+
+		if(a.username < b.username)
+		{
+			return -1
+		}
+
+		else if(a.username > b.username)
+		{
+			return 1
+		}
+
+		else
+		{
 			return 0
 		}
 	}
@@ -2055,7 +2055,7 @@ function start_username_context_menu()
 		zIndex: 9000000000,
 		items:
 		{
-			cmvoice1: 
+			cmvoice1:
 			{
 				name: "Voice 1", callback: function(key, opt)
 				{
@@ -2063,7 +2063,7 @@ function start_username_context_menu()
 					change_role(arg, "voice1")
 				},
 				visible: function(key, opt)
-				{ 
+				{
 					if(!is_admin_or_op(role))
 					{
 						return false
@@ -2075,7 +2075,7 @@ function start_username_context_menu()
 					}
 				}
 			},
-			cmvoice2: 
+			cmvoice2:
 			{
 				name: "Voice 2", callback: function(key, opt)
 				{
@@ -2083,7 +2083,7 @@ function start_username_context_menu()
 					change_role(arg, "voice2")
 				},
 				visible: function(key, opt)
-				{ 
+				{
 					if(!is_admin_or_op(role))
 					{
 						return false
@@ -2095,7 +2095,7 @@ function start_username_context_menu()
 					}
 				}
 			},
-			cmvoice3: 
+			cmvoice3:
 			{
 				name: "Voice 3", callback: function(key, opt)
 				{
@@ -2103,7 +2103,7 @@ function start_username_context_menu()
 					change_role(arg, "voice3")
 				},
 				visible: function(key, opt)
-				{ 
+				{
 					if(!is_admin_or_op(role))
 					{
 						return false
@@ -2115,7 +2115,7 @@ function start_username_context_menu()
 					}
 				}
 			},
-			cmvoice4: 
+			cmvoice4:
 			{
 				name: "Voice 4", callback: function(key, opt)
 				{
@@ -2123,7 +2123,7 @@ function start_username_context_menu()
 					change_role(arg, "voice4")
 				},
 				visible: function(key, opt)
-				{ 
+				{
 					if(!is_admin_or_op(role))
 					{
 						return false
@@ -2135,11 +2135,11 @@ function start_username_context_menu()
 					}
 				}
 			},
-			cmop: 
+			cmop:
 			{
 				name: "Op",
 				visible: function(key, opt)
-				{ 
+				{
 					if(role !== 'admin')
 					{
 						return false
@@ -2150,9 +2150,9 @@ function start_username_context_menu()
 						return true
 					}
 				},
-				items: 
+				items:
 				{
-					opsure: 
+					opsure:
 					{
 						name: "I'm Sure", callback: function(key, opt)
 						{
@@ -2160,13 +2160,13 @@ function start_username_context_menu()
 							change_role(arg, "op")
 						}
 					}
-				}				
+				}
 			},
-			cmadmin: 
+			cmadmin:
 			{
 				name: "Admin",
 				visible: function(key, opt)
-				{ 
+				{
 					if(role !== 'admin')
 					{
 						return false
@@ -2177,23 +2177,23 @@ function start_username_context_menu()
 						return true
 					}
 				},
-				items: 
+				items:
 				{
-					adminsure: 
+					adminsure:
 					{
 						name: "I'm Sure", callback: function(key, opt)
 						{
 							var arg = $(this).text()
 							change_role(arg, "admin")
-						}					
+						}
 					}
 				}
-			},			
-			cmkick: 
+			},
+			cmkick:
 			{
 				name: "Kick",
 				visible: function(key, opt)
-				{ 
+				{
 					if(!is_admin_or_op(role))
 					{
 						return false
@@ -2204,9 +2204,9 @@ function start_username_context_menu()
 						return true
 					}
 				},
-				items: 
+				items:
 				{
-					kicksure: 
+					kicksure:
 					{
 						name: "I'm Sure", callback: function(key, opt)
 						{
@@ -2214,13 +2214,13 @@ function start_username_context_menu()
 							kick(arg)
 						}
 					}
-				}				
+				}
 			},
-			cmban: 
+			cmban:
 			{
 				name: "Ban",
 				visible: function(key, opt)
-				{ 
+				{
 					if(!is_admin_or_op(role))
 					{
 						return false
@@ -2231,9 +2231,9 @@ function start_username_context_menu()
 						return true
 					}
 				},
-				items: 
+				items:
 				{
-					bansure: 
+					bansure:
 					{
 						name: "I'm Sure", callback: function(key, opt)
 						{
@@ -2241,8 +2241,8 @@ function start_username_context_menu()
 							ban(arg)
 						}
 					}
-				}				
-			}			
+				}
+			}
 		}
 	})
 }
@@ -2253,24 +2253,24 @@ function start_played_context_menu()
 	{
 		selector: ".played_item_inner, #now_playing_controls",
 		animation: {duration: 250, hide: 'fadeOut'},
-		zIndex: 9000000000,		
-		items: 
+		zIndex: 9000000000,
+		items:
 		{
-			cmenu1: 
+			cmenu1:
 			{
 				name: "Search on Google", callback: function(key, opt)
 				{
 					search_on('google', this.data('q'))
 				}
 			},
-			cmenu2: 
+			cmenu2:
 			{
 				name: "Search on SoundCloud", callback: function(key, opt)
 				{
 					search_on('soundcloud', this.data('q'))
-				}         
+				}
 			},
-			cmenu3: 
+			cmenu3:
 			{
 				name: "Search on YouTube", callback: function(key, opt)
 				{
@@ -2289,79 +2289,79 @@ function start_volume_context_menu()
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
 		className: 'volume_context',
-		items: 
+		items:
 		{
-			vcm100: 
+			vcm100:
 			{
 				name: "100%", callback: function(key, opt)
 				{
 					set_volume(1)
 				}
 			},
-			vcm90: 
+			vcm90:
 			{
 				name: "90%", callback: function(key, opt)
 				{
 					set_volume(0.9)
-				}         
+				}
 			},
-			vcm80: 
+			vcm80:
 			{
 				name: "80%", callback: function(key, opt)
 				{
 					set_volume(0.8)
 				}
 			},
-			vcm70: 
+			vcm70:
 			{
 				name: "70%", callback: function(key, opt)
 				{
 					set_volume(0.7)
 				}
 			},
-			vcm60: 
+			vcm60:
 			{
 				name: "60%", callback: function(key, opt)
 				{
 					set_volume(0.6)
 				}
 			},
-			vcm50: 
+			vcm50:
 			{
 				name: "50%", callback: function(key, opt)
 				{
 					set_volume(0.5)
 				}
 			},
-			vcm40: 
+			vcm40:
 			{
 				name: "40%", callback: function(key, opt)
 				{
 					set_volume(0.4)
 				}
 			},
-			vcm30: 
+			vcm30:
 			{
 				name: "30%", callback: function(key, opt)
 				{
 					set_volume(0.3)
 				}
 			},
-			vcm20: 
+			vcm20:
 			{
 				name: "20%", callback: function(key, opt)
 				{
 					set_volume(0.2)
 				}
 			},
-			vcm10: 
+			vcm10:
 			{
 				name: "10%", callback: function(key, opt)
 				{
 					set_volume(0.1)
 				}
 			},
-			vcm0: 
+			vcm0:
 			{
 				name: "0%", callback: function(key, opt)
 				{
@@ -2380,14 +2380,14 @@ function start_toggle_radio_context_menu()
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
 		className: 'toggle_radio_context',
-		items: 
+		items:
 		{
-			trrestart: 
+			trrestart:
 			{
 				name: "Restart", callback: function(key, opt)
 				{
 					change({type:"radio", force:true})
-				}    
+				}
 			},
 		}
 	})
@@ -2429,7 +2429,7 @@ function request_roomlist(filter="", type="public_roomlist")
 
 function start_roomlist_click_events()
 {
-	$("#public_roomlist_container").on("click", ".roomlist_item_inner", function() 
+	$("#public_roomlist_container").on("click", ".roomlist_item_inner", function()
 	{
 		var id = $(this).data("room_id")
 
@@ -2441,7 +2441,7 @@ function start_roomlist_click_events()
 		show_open_room(id)
 	})
 
-	$("#visited_roomlist_container").on("click", ".roomlist_item_inner", function() 
+	$("#visited_roomlist_container").on("click", ".roomlist_item_inner", function()
 	{
 		var id = $(this).data("room_id")
 
@@ -2455,7 +2455,7 @@ function start_roomlist_click_events()
 }
 
 function update_roomlist(type, roomlist)
-{	
+{
 	$(`#${type}_filter`).val(window[`${type}_filter_string`])
 
 	var s = $()
@@ -2464,7 +2464,7 @@ function update_roomlist(type, roomlist)
 
 	for(var i=0; i<roomlist.length; i++)
 	{
-		var c = 
+		var c =
 		`<div class='roomlist_item_inner pointer inline action' data-room_id='${roomlist[i].id}'>
 			<div class='roomlist_name'></div><div class='roomlist_topic'></div>
 			<div class='roomlist_here'></div><div class='roomlist_count'></div>
@@ -2486,7 +2486,7 @@ function update_roomlist(type, roomlist)
 			var topic = roomlist[i].topic
 		}
 
-		else 
+		else
 		{
 			var topic = 'No topic set'
 		}
@@ -2517,7 +2517,7 @@ function setup_main_menu()
 			var what = $(this).prop("checked")
 
 			change_voice_permission($(this).data("ptype"), what)
-		})	
+		})
 	})
 
 	$('#admin_enable_images').change(function()
@@ -2546,7 +2546,7 @@ function setup_main_menu()
 		var what = JSON.parse($('#admin_privacy option:selected').val())
 
 		change_privacy(what)
-	})	
+	})
 
 	$('#admin_log').change(function()
 	{
@@ -2562,7 +2562,7 @@ function setup_main_menu()
 		showInput: true
 	})
 
-	$("#admin_theme").on('hide.spectrum', function(e, t) 
+	$("#admin_theme").on('hide.spectrum', function(e, t)
 	{
 		change_theme(t.toRgbString())
 	})
@@ -2586,7 +2586,7 @@ function setup_main_menu()
 		var what = $('#admin_text_color_mode_select option:selected').val()
 
 		change_text_color_mode(what)
-	})	
+	})
 
 	$("#admin_text_color").spectrum(
 	{
@@ -2595,10 +2595,10 @@ function setup_main_menu()
 		showInput: true
 	})
 
-	$("#admin_text_color").on('hide.spectrum', function(e, t) 
+	$("#admin_text_color").on('hide.spectrum', function(e, t)
 	{
 		change_text_color(t.toRgbString())
-	})	
+	})
 
 	$('#admin_room_name').blur(function()
 	{
@@ -2648,7 +2648,7 @@ function config_admin_permission_checkboxes()
 	$(".admin_voice_permissions_checkbox").each(function()
 	{
 		$(this).prop("checked", window[$(this).data("ptype")])
-	})	
+	})
 }
 
 function config_admin_background_mode()
@@ -2698,7 +2698,7 @@ function config_admin_background_tile_dimensions()
 		return false
 	}
 
-	$('#admin_background_tile_dimensions').val(background_tile_dimensions)	
+	$('#admin_background_tile_dimensions').val(background_tile_dimensions)
 }
 
 function config_admin_background_image()
@@ -2719,7 +2719,7 @@ function config_admin_background_image()
 		{
 			$("#admin_background_image").attr("src", default_background_image_url)
 		}
-	}	
+	}
 }
 
 function config_admin_text_color_mode()
@@ -2771,7 +2771,7 @@ function config_admin_privacy()
 		{
 			$(this).prop('selected', true)
 		}
-	})	
+	})
 }
 
 function config_admin_log_enabled()
@@ -2787,7 +2787,7 @@ function config_admin_log_enabled()
 		{
 			$(this).prop('selected', true)
 		}
-	})	
+	})
 }
 
 function config_admin_room_images_enabled()
@@ -2819,7 +2819,7 @@ function config_admin_room_tv_enabled()
 		{
 			$(this).prop('selected', true)
 		}
-	})	
+	})
 }
 
 function config_admin_room_radio_enabled()
@@ -2845,7 +2845,7 @@ function config_admin_theme()
 		return false
 	}
 
-	$("#admin_theme").spectrum("set", theme)	
+	$("#admin_theme").spectrum("set", theme)
 }
 
 function config_admin_room_name()
@@ -2876,7 +2876,7 @@ function config_main_menu()
 		config_admin_room_images_enabled()
 		config_admin_room_tv_enabled()
 		config_admin_room_radio_enabled()
-		config_admin_privacy()	
+		config_admin_privacy()
 		config_admin_log_enabled()
 		config_admin_theme()
 		config_admin_background_mode()
@@ -2884,8 +2884,8 @@ function config_main_menu()
 		config_admin_background_image()
 		config_admin_text_color_mode()
 		config_admin_text_color()
-		config_admin_room_name()		
-		config_admin_topic()		
+		config_admin_room_name()
+		config_admin_topic()
 
 		$("#admin_menu").css("display", "block")
 	}
@@ -2895,7 +2895,7 @@ function config_main_menu()
 		$("#admin_menu").css("display", "none")
 	}
 
-	update_modal_scrollbar("menu")	
+	update_modal_scrollbar("menu")
 }
 
 function show_create_room()
@@ -2903,7 +2903,7 @@ function show_create_room()
 	msg_info2.show(["Create Room", template_create_room()], function()
 	{
 		$("#create_room_name").focus()
-		
+
 		$('#create_room_done').on("click", function()
 		{
 			create_room_submit()
@@ -2926,7 +2926,7 @@ function create_room_submit()
 
 	data.public = JSON.parse($('#create_room_public option:selected').val())
 
-	create_room(data)	
+	create_room(data)
 }
 
 function show_open_room(id)
@@ -2982,15 +2982,15 @@ function show_played(filter=false)
 			$("#played_filter").val(filter)
 			do_played_filter()
 		}
-		
+
 		$("#played_filter").focus()
 	})
 }
 
 function start_dropzone()
 {
-	dropzone = new Dropzone("body", 
-	{ 
+	dropzone = new Dropzone("body",
+	{
 		url: "/",
 		maxFiles: 1,
 		maxFilesize: max_image_size / 1024,
@@ -2999,7 +2999,7 @@ function start_dropzone()
 		acceptedFiles: "image/jpeg,image/png,image/gif"
 	})
 
-	dropzone.on("addedfile", function(file) 
+	dropzone.on("addedfile", function(file)
 	{
 		focus_input()
 
@@ -3045,10 +3045,10 @@ function create_file_reader(file)
 {
 	var reader = new FileReader()
 
-	reader.addEventListener("loadend", function(e) 
+	reader.addEventListener("loadend", function(e)
 	{
 		socket_emit('slice_upload',
-		{ 
+		{
 			action: file.action,
 			name: file.name,
 			type: file.type,
@@ -3073,11 +3073,11 @@ function upload_file(file, action)
 			{
 				cancel_file_upload(d, false)
 			}
-		} 
-	}	
+		}
+	}
 
 	var date = Date.now()
-						
+
 	file.date = date
 
 	file.action = action
@@ -3114,8 +3114,8 @@ function upload_file(file, action)
 
 	var obj =
 	{
-		brk: '*', 
-		msg: `Uploading ${get_file_action_name(file.action)}: 0%`, 
+		brk: '*',
+		msg: `Uploading ${get_file_action_name(file.action)}: 0%`,
 		id: `uploading_${date}`,
 		title: `Size: ${get_size_string(file.size / 1024)} | ${nice_date()}`
 	}
@@ -3171,7 +3171,7 @@ function get_file_next(file)
 		next = 100
 	}
 
-	return next	
+	return next
 }
 
 function change_upload_status(file, status, clear=false)
@@ -3212,7 +3212,7 @@ function get_file_action_name(action)
 	return s
 }
 
-function is_textbox(element) 
+function is_textbox(element)
 {
 	var tag_name = element.tagName.toLowerCase()
 
@@ -3221,20 +3221,20 @@ function is_textbox(element)
 
 	var type = element.getAttribute('type').toLowerCase(),
 
-	input_types = 
+	input_types =
 	[
-		'text', 
-		'password', 
-		'number', 
-		'email', 
-		'tel', 
-		'url', 
-		'search', 
-		'date', 
-		'datetime', 
-		'datetime-local', 
-		'time', 
-		'month', 
+		'text',
+		'password',
+		'number',
+		'email',
+		'tel',
+		'url',
+		'search',
+		'date',
+		'datetime',
+		'datetime-local',
+		'time',
+		'month',
 		'week'
 	]
 
@@ -3243,7 +3243,7 @@ function is_textbox(element)
 
 function copypaste_events()
 {
-	$(document).bind('copy', function(e) 
+	$(document).bind('copy', function(e)
 	{
 		if(window.getSelection().toString() !== "")
 		{
@@ -3263,48 +3263,48 @@ function copypaste_events()
 
 			}, 200)
 		}
-	}) 
+	})
 }
 
-var double_tap_timer = (function() 
+var double_tap_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			double_tap_key_pressed = 0
 		}, double_tap_delay)
 	}
 })()
 
-var double_tap_2_timer = (function() 
+var double_tap_2_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			double_tap_key_2_pressed = 0
 		}, double_tap_delay)
 	}
 })()
 
-var double_tap_3_timer = (function() 
+var double_tap_3_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			double_tap_key_3_pressed = 0
 		}, double_tap_delay)
@@ -3315,12 +3315,12 @@ function reset_double_tap_keys_pressed()
 {
 	double_tap_key_pressed = 0
 	double_tap_key_2_pressed = 0
-	double_tap_key_3_pressed = 0	
+	double_tap_key_3_pressed = 0
 }
 
 function activate_key_detection()
 {
-	document.addEventListener('keydown', (e) => 
+	document.addEventListener('keydown', (e) =>
 	{
 		if(!started)
 		{
@@ -3386,9 +3386,9 @@ function activate_key_detection()
 				else
 				{
 					reset_double_tap_keys_pressed()
-				}				
+				}
 			}
-	
+
 			else
 			{
 				reset_double_tap_keys_pressed()
@@ -3398,7 +3398,7 @@ function activate_key_detection()
 		else
 		{
 			reset_double_tap_keys_pressed()
-		}		
+		}
 
 		if(modal_open)
 		{
@@ -3425,11 +3425,11 @@ function activate_key_detection()
 							link_image(val)
 							msg_image_picker.close()
 						}
-						
+
 						e.preventDefault()
 					}
-					
-					return			
+
+					return
 				}
 			}
 
@@ -3446,13 +3446,13 @@ function activate_key_detection()
 							change_tv_source(val)
 							msg_tv_picker.close()
 						}
-						
+
 						e.preventDefault()
 					}
-					
-					return			
+
+					return
 				}
-			}		
+			}
 
 			if(rup)
 			{
@@ -3467,11 +3467,11 @@ function activate_key_detection()
 							change_radio_source(val)
 							msg_radio_picker.close()
 						}
-						
+
 						e.preventDefault()
 					}
-					
-					return			
+
+					return
 				}
 			}
 
@@ -3490,10 +3490,10 @@ function activate_key_detection()
 						{
 							$("#open_room_new_tab").trigger("click")
 						}
-						
+
 						e.preventDefault()
 					}
-					
+
 					return
 				}
 			}
@@ -3507,10 +3507,10 @@ function activate_key_detection()
 						create_room_submit()
 						e.preventDefault()
 					}
-					
+
 					return
 				}
-			}			
+			}
 
 			if(stu)
 			{
@@ -3537,7 +3537,7 @@ function activate_key_detection()
 
 					return
 				}
-			}			
+			}
 
 			if(gtr)
 			{
@@ -3562,7 +3562,7 @@ function activate_key_detection()
 						send_popup_message()
 						e.preventDefault()
 					}
-					
+
 					return
 				}
 			}
@@ -3576,7 +3576,7 @@ function activate_key_detection()
 						modal_image_prev_click()
 						e.preventDefault()
 					}
-					
+
 					else if(e.key === "ArrowRight")
 					{
 						modal_image_next_click()
@@ -3588,7 +3588,7 @@ function activate_key_detection()
 						show_image_history()
 						e.preventDefault()
 					}
-					
+
 					return
 				}
 			}
@@ -3641,10 +3641,10 @@ function activate_key_detection()
 
 			e.preventDefault()
 			return
-		}		
+		}
 
 		else if(e.key === "ArrowDown")
-		{	
+		{
 			if(e.shiftKey)
 			{
 				scroll_down(small_keyboard_scroll)
@@ -3662,7 +3662,7 @@ function activate_key_detection()
 
 			e.preventDefault()
 			return
-		}			
+		}
 
 		else if(e.key === "PageUp")
 		{
@@ -3675,7 +3675,7 @@ function activate_key_detection()
 			{
 				scroll_up(big_keyboard_scroll)
 			}
-			
+
 			e.preventDefault()
 			return
 		}
@@ -3693,7 +3693,7 @@ function activate_key_detection()
 			}
 
 			e.preventDefault()
-			return			
+			return
 		}
 
 		else if(e.key === "Escape")
@@ -3726,7 +3726,7 @@ function activate_key_detection()
 		clear_tabbed()
 	})
 
-	document.addEventListener('keyup', (e) => 
+	document.addEventListener('keyup', (e) =>
 	{
 		if(!started)
 		{
@@ -3837,10 +3837,10 @@ function push_to_input_history_window(item, update_scrollbar=true)
 	var c = `<div class='input_history_item' title='${item[1]}'>${item[0]}</div>`
 
 	$("#input_history_container").prepend(c)
-	
+
 	if(update_scrollbar)
 	{
-		update_modal_scrollbar("input_history")	
+		update_modal_scrollbar("input_history")
 	}
 }
 
@@ -3954,7 +3954,7 @@ function setup_input_history()
 			change_input($(this).text())
 			msg_input_history.close()
 		}
-	})	
+	})
 }
 
 function input_click_events()
@@ -3973,17 +3973,17 @@ function clear_tabbed()
 	tabbed_end = 0
 }
 
-function replaceBetween(str, start, end, what) 
+function replaceBetween(str, start, end, what)
 {
 	return str.substring(0, start) + what + str.substring(end)
 }
 
-function oiEquals(str, what) 
+function oiEquals(str, what)
 {
 	return str === commands_sorted[what]
 }
 
-function oiStartsWith(str, what) 
+function oiStartsWith(str, what)
 {
 	return str.startsWith(`${commands_sorted[what]} `)
 }
@@ -4066,8 +4066,8 @@ function get_closest_command(word)
 	return ""
 }
 
-function tabbed() 
-{	
+function tabbed()
+{
 	if(tabbed_word !== "")
 	{
 		replace_tabbed(tabbed_word)
@@ -4100,7 +4100,7 @@ function replace_tabbed(word)
 	{
 		var uname = get_closest_username(word)
 	}
-	
+
 	if(uname !== "")
 	{
 		if(input.value[tabbed_end] === ' ')
@@ -4135,15 +4135,15 @@ function scroll_events()
 	})
 }
 
-var scroll_timer = (function() 
+var scroll_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			check_scrollers()
 		}, check_scrollers_delay)
@@ -4192,15 +4192,15 @@ function resize_events()
 	})
 }
 
-var resize_timer = (function() 
+var resize_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			fix_visible_video_frame()
 			update_chat_scrollbar()
@@ -4220,7 +4220,7 @@ function setup_scrollbars()
 		start_chat_scrollbar()
 		start_modal_scrollbars()
 	}
-	
+
 	chat_scroll_bottom(false)
 }
 
@@ -4286,7 +4286,7 @@ function start_modal_scrollbar(s)
 		autohidemode: false,
 		cursorcolor: "#AFAFAF",
 		cursorborder: "0px solid white",
-		cursorwidth: "7px"	
+		cursorwidth: "7px"
 	})
 }
 
@@ -4297,7 +4297,7 @@ function remove_modal_scrollbar(s)
 
 function update_modal_scrollbar(s)
 {
-	$(`#Msg-content-container-${s}`).getNiceScroll().resize()	
+	$(`#Msg-content-container-${s}`).getNiceScroll().resize()
 }
 
 function nice_date(date=Date.now())
@@ -4312,20 +4312,20 @@ function escape_special_characters(s)
 
 function start_chat_click_events()
 {
-	$("#chat_area").on("click", ".chat_uname", function() 
+	$("#chat_area").on("click", ".chat_uname", function()
 	{
 		show_profile($(this).text(), $(this).closest(".chat_message").find(".chat_profile_image").eq(0).attr("src"))
 	})
 
-	$("#chat_area").on("click", ".chat_profile_image", function() 
+	$("#chat_area").on("click", ".chat_profile_image", function()
 	{
 		show_profile($(this).closest(".chat_message").find(".chat_uname").eq(0).text(), $(this).attr("src"))
-	})	
+	})
 }
 
 function update_chat(args={})
 {
-	var def_args = 
+	var def_args =
 	{
 		uname: "",
 		msg: "",
@@ -4354,7 +4354,7 @@ function update_chat(args={})
 		if(check_highlights(args.msg))
 		{
 			contclasses += " dotted"
-			highlighted = true		
+			highlighted = true
 		}
 	}
 
@@ -4415,10 +4415,10 @@ function update_chat(args={})
 
 		fmsg.find('.chat_content').eq(0).text(args.msg).urlize()
 	}
-	
+
 	fmsg.find('.chat_uname').eq(0).text(args.uname)
 
-	fmsg.find('.chat_profile_image').eq(0).on("error", function() 
+	fmsg.find('.chat_profile_image').eq(0).on("error", function()
 	{
 		if($(this).attr("src") !== default_profile_image_url)
 		{
@@ -4488,7 +4488,7 @@ function add_to_chat(msg, save=false)
 					{
 						last_msg.data("highlighted", msg.data("highlighted"))
 					}
-					
+
 					appended = true
 				}
 			}
@@ -4503,12 +4503,12 @@ function add_to_chat(msg, save=false)
 		}
 
 		chat_area.append(msg)
-		
+
 		if($(".msg").length > chat_crop_limit)
 		{
 			$("#chat_area > .msg").eq(0).remove()
 		}
-		
+
 		if(save)
 		{
 			message_id += 1
@@ -4552,12 +4552,12 @@ function replace_in_chat_history(msg)
 			chat_history[i] = msg
 			return
 		}
-	}	
+	}
 }
 
 function change(args={})
-{	
-	var def_args = 
+{
+	var def_args =
 	{
 		type: "",
 		force: false,
@@ -4656,7 +4656,7 @@ function change(args={})
 		if(background_mode === "mirror")
 		{
 			apply_background()
-		}		
+		}
 
 		show_image(args.force)
 
@@ -4700,7 +4700,7 @@ function change(args={})
 
 			show_soundcloud_video(args.play)
 		}
-		
+
 		else if(tv_type === "url")
 		{
 			show_video(args.play)
@@ -4728,7 +4728,7 @@ function change(args={})
 			{
 				return false
 			}
-		}		
+		}
 
 		load_radio()
 
@@ -4789,18 +4789,18 @@ function start_image_events()
 		after_image_load()
 	})
 
-	$('#media_image').on("error", function() 
+	$('#media_image').on("error", function()
 	{
 		$("#media_image").css("display", "none")
 		$("#media_image_error").css("display", "initial")
-	})	
+	})
 
-	$('#test_image')[0].addEventListener('load', function() 
+	$('#test_image')[0].addEventListener('load', function()
 	{
 		emit_change_image_source($('#test_image').attr('src'))
 	})
 
-	$('#test_image').on("error", function() 
+	$('#test_image').on("error", function()
 	{
 		feedback("The provided image URL failed to load")
 	})
@@ -4861,7 +4861,7 @@ function setup_image(data)
 	image_date_raw = data.image_date
 	image_type = data.image_type
 
-	change({type:"image"})	
+	change({type:"image"})
 }
 
 function fill_defaults(args, def_args)
@@ -4879,7 +4879,7 @@ function fill_defaults(args, def_args)
 
 function chat_announce(args={})
 {
-	var def_args = 
+	var def_args =
 	{
 		brk: "",
 		msg: "",
@@ -4944,7 +4944,7 @@ function chat_announce(args={})
 	else
 	{
 		d = Date.now()
-	}	
+	}
 
 	var s = `
 	<div${containerid}class='msg announcement'>
@@ -4970,7 +4970,7 @@ function chat_announce(args={})
 	fmsg.data("info1", args.info1)
 	fmsg.data("info2", args.info2)
 	fmsg.data("uname", args.uname)
-	fmsg.data("mode", "announcement")	
+	fmsg.data("mode", "announcement")
 
 	add_to_chat(fmsg, args.save)
 
@@ -5021,7 +5021,7 @@ function handle_chat_announce_types(msg, type)
 		{
 			return false
 		}
-	
+
 		if(els.length > media_history_max_items)
 		{
 			els.last().remove()
@@ -5031,13 +5031,13 @@ function handle_chat_announce_types(msg, type)
 		{
 			if(image_history_filtered)
 			{
-				do_image_history_filter()			
+				do_image_history_filter()
 			}
 		}
 
 		else if(type === "tv")
 		{
-			if(tv_history_filtered)	
+			if(tv_history_filtered)
 			{
 				do_tv_history_filter()
 			}
@@ -5049,15 +5049,15 @@ function handle_chat_announce_types(msg, type)
 			{
 				do_radio_history_filter()
 			}
-		}	
+		}
 
-		update_modal_scrollbar(`${t}_change`)	
+		update_modal_scrollbar(`${t}_change`)
 	}
 }
 
-jQuery.fn.urlize = function(force=false) 
+jQuery.fn.urlize = function(force=false)
 {
-	if(this.length > 0) 
+	if(this.length > 0)
 	{
 		this.each(function(n, obj)
 		{
@@ -5072,11 +5072,11 @@ jQuery.fn.urlize = function(force=false)
 			{
 				var list = x.match(/\bhttps?:\/\/\S+/g)
 
-				if(list) 
+				if(list)
 				{
 					var listed = []
 
-					for(var i=0; i<list.length; i++) 
+					for(var i=0; i<list.length; i++)
 					{
 						if(listed.includes(list[i]))
 						{
@@ -5280,7 +5280,7 @@ function process_message(msg, to_history=true, clr_input=true)
 		clr_input = ans.clr_input
 	}
 
-	else 
+	else
 	{
 		if(can_chat)
 		{
@@ -5289,7 +5289,7 @@ function process_message(msg, to_history=true, clr_input=true)
 				msg = msg.substring(0, max_input_length).trim()
 			}
 
-			update_chat({uname:username, msg:msg, prof_image:profile_image})	
+			update_chat({uname:username, msg:msg, prof_image:profile_image})
 			socket_emit('sendchat', {msg:msg})
 		}
 
@@ -5331,7 +5331,7 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/unclear'))
 	{
 		unclear_chat()
-	}			
+	}
 
 	else if(oiEquals(lmsg, '/enableimages'))
 	{
@@ -5361,7 +5361,7 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/disabletv'))
 	{
 		change_room_tv_enabled(false)
-	}								
+	}
 
 	else if(oiEquals(lmsg, '/users'))
 	{
@@ -5423,7 +5423,7 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/search'))
 	{
 		show_chat_search()
-	}			
+	}
 
 	else if(oiStartsWith(lmsg, '/search'))
 	{
@@ -5548,7 +5548,7 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/tv'))
 	{
 		show_media_source("tv")
-	}	
+	}
 
 	else if(oiStartsWith(lmsg, '/image'))
 	{
@@ -5558,7 +5558,7 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/image'))
 	{
 		show_media_source("image")
-	}	
+	}
 
 	else if(oiEquals(lmsg, '/status'))
 	{
@@ -5598,7 +5598,7 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/topictrimstart'))
 	{
 		topictrimstart(1)
-	}			
+	}
 
 	else if(oiEquals(lmsg, '/topicedit'))
 	{
@@ -5726,7 +5726,7 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/systembroadcast'))
 	{
 		write_popup_message(false, "system")
-	}	
+	}
 
 	else if(oiEquals(lmsg, '/annex'))
 	{
@@ -5886,7 +5886,7 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/hideradio'))
 	{
 		toggle_radio(false)
-	}	
+	}
 
 	else if(oiEquals(lmsg, '/toggleimages'))
 	{
@@ -5981,7 +5981,7 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/closeallpopups'))
 	{
 		close_all_popups()
-	}		
+	}
 
 	else if(oiEquals(lmsg, '/activityabove'))
 	{
@@ -6023,7 +6023,7 @@ function execute_command(msg, ans)
 		change_input(arg)
 		ans.to_history = false
 		ans.clr_input = false
-	}		
+	}
 
 	else
 	{
@@ -6122,7 +6122,7 @@ function topictrim(n)
 				{
 					change_topic(t)
 				}
-			}	
+			}
 		}
 
 		else
@@ -6200,7 +6200,7 @@ function topictrimstart(n)
 				{
 					change_topic(t)
 				}
-			}	
+			}
 		}
 
 		else
@@ -6243,7 +6243,7 @@ function announce_topic_change(data)
 function announce_room_name_change(data)
 {
 	if(data.name !== room_name)
-	{		
+	{
 		public_feedback(`${data.username} changed the room name to: "${data.name}"`)
 		set_room_name(data.name)
 		update_title()
@@ -6309,26 +6309,26 @@ function goto_bottom(force=false, animate=true)
 }
 
 function emit_change_image_source(url)
-{	
+{
 	if(!can_images)
 	{
 		feedback("You don't have permission to link images")
 		return false
 	}
-	
+
 	socket_emit('change_image_source', {src:url})
 }
 
 function get_radio_metadata_enabled()
 {
-	return loaded_radio_type === "radio" && 
-	loaded_radio_metadata && 
-	room_radio_enabled && 
+	return loaded_radio_type === "radio" &&
+	loaded_radio_metadata &&
+	room_radio_enabled &&
 	room_settings.radio_enabled
 }
 
 function get_radio_metadata()
-{	
+{
 	if(!get_radio_metadata_enabled())
 	{
 		return false
@@ -6398,7 +6398,7 @@ function get_radio_metadata()
 				return false
 			}
 
-		}).fail(function(err, status) 
+		}).fail(function(err, status)
 		{
 			show_playing_file()
 		})
@@ -6427,7 +6427,7 @@ function show_playing_file()
 
 function start_played_click_events()
 {
-	$("#played").on("click", ".played_item_inner", function() 
+	$("#played").on("click", ".played_item_inner", function()
 	{
 		if($(this).data('q2') !== '')
 		{
@@ -6469,12 +6469,12 @@ function push_played(info, info2=false)
 	if(played[played.length - 1] !== s)
 	{
 		var title = nice_date()
-		
+
 		var pi = `
 		<div class='played_item_inner pointer inline action' title='${title}'>
 			<div class='pititle'></div><div class='piartist'></div>
 		</div>`
-		
+
 		h = $(`<div class='played_item'>${pi}</div>`)
 
 		if(info)
@@ -6482,18 +6482,18 @@ function push_played(info, info2=false)
 			h.find('.pititle').eq(0).text(info.title)
 			h.find('.piartist').eq(0).text(`by ${info.artist}`)
 		}
-		
+
 		else
 		{
 			h.find('.pititle').eq(0).text(info2.s1)
-			h.find('.piartist').eq(0).text(`${info2.s2}`)			
+			h.find('.piartist').eq(0).text(`${info2.s2}`)
 		}
 
 		var inner = h.find(".played_item_inner").eq(0)
 
 		inner.data('q', q)
 		inner.data('q2', q2)
-		
+
 		$('#played').prepend(h)
 
 		played.push(s)
@@ -6509,11 +6509,11 @@ function push_played(info, info2=false)
 		{
 			do_played_filter()
 		}
-		
+
 		update_modal_scrollbar("played")
 	}
-		
-	show_now_playing()					
+
+	show_now_playing()
 }
 
 function hide_now_playing()
@@ -6539,7 +6539,7 @@ function start_radio()
 		if(youtube_player !== undefined)
 		{
 			youtube_player.playVideo()
-		}		
+		}
 	}
 
 	else if(loaded_radio_type === "soundcloud")
@@ -6560,11 +6560,11 @@ function start_radio()
 function stop_radio()
 {
 	$('#audio').attr("src", "")
-	
+
 	if(youtube_player !== undefined)
 	{
 		youtube_player.pauseVideo()
-	}	
+	}
 
 	if(soundcloud_player !== undefined)
 	{
@@ -6640,7 +6640,7 @@ function set_volume(nv, save=true)
 
 	if(soundcloud_player !== undefined)
 	{
-		soundcloud_player.setVolume(vt)		
+		soundcloud_player.setVolume(vt)
 	}
 
 	$('#volume').text(`${vt} %`)
@@ -6719,7 +6719,7 @@ function sound_notify(type)
 				if(get_setting("afk_disable_messages_beep"))
 				{
 					return false
-				}				
+				}
 			}
 
 			var sound = "pup"
@@ -6882,12 +6882,12 @@ function activate_visibility_listener()
 				change({type:"image"})
 				change_image_when_focused = false
 			}
-			
+
 			if(change_tv_when_focused)
 			{
 				change({type:"tv"})
 				change_tv_when_focused = false
-			}	
+			}
 
 			if(change_radio_when_focused)
 			{
@@ -6895,7 +6895,7 @@ function activate_visibility_listener()
 				change_radio_when_focused = false
 			}
 		}
-		
+
 		else
 		{
 			if(get_setting("afk_delay") !== "never")
@@ -6947,15 +6947,15 @@ function copy_string(s)
 	textareaEl.select()
 
 	document.execCommand('copy')
-	document.body.removeChild(textareaEl)	
+	document.body.removeChild(textareaEl)
 }
 
 function play_audio(what)
 {
-	$(`#audio_${what}`)[0].play()			
+	$(`#audio_${what}`)[0].play()
 }
 
-function word_generator(pattern) 
+function word_generator(pattern)
 {
 	var possibleC = "BCDFGHJKLMNPQRSTVWXZ"
 	var possibleV = "AEIOUY"
@@ -6963,14 +6963,14 @@ function word_generator(pattern)
 	var pIndex = pattern.length
 	var res = new Array(pIndex)
 
-	while (pIndex--) 
+	while (pIndex--)
 	{
 		res[pIndex] = pattern[pIndex]
 		.replace(/v/,randomCharacter(possibleV))
 		.replace(/c/,randomCharacter(possibleC))
 	}
 
-	function randomCharacter(bucket) 
+	function randomCharacter(bucket)
 	{
 		var res = bucket.charAt(Math.floor(Math.random() * bucket.length))
 		return res
@@ -6994,7 +6994,7 @@ function goto_url(u, mode="same", encode=false)
 	else
 	{
 		window.location = u
-	}	
+	}
 }
 
 function create_room(data)
@@ -7025,23 +7025,23 @@ function get_volume()
 		set_volume(volume, false)
 	}
 
-	return [volume, get_nice_volume(volume)]	
+	return [volume, get_nice_volume(volume)]
 }
 
 function get_nice_volume(volume)
 {
-	return parseInt(Math.round((volume * 100)))	
+	return parseInt(Math.round((volume * 100)))
 }
 
-var chat_search_timer = (function() 
+var chat_search_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			chat_search($("#chat_search_filter").val())
 		}, filter_delay)
@@ -7056,7 +7056,7 @@ function show_chat_search(filter=false)
 		{
 			chat_search(filter)
 		}
-		
+
 		$("#chat_search_filter").focus()
 	})
 }
@@ -7084,7 +7084,7 @@ function chat_search(filter=false)
 	if(!filter)
 	{
 		$("#chat_search_container").html("Search for chat messages")
-		update_modal_scrollbar("chat_search")		
+		update_modal_scrollbar("chat_search")
 		return
 	}
 
@@ -7097,7 +7097,7 @@ function chat_search(filter=false)
 		for(var msg of chat_history.slice(0).reverse())
 		{
 			var show = false
-			
+
 			var huname = msg.find('.chat_uname').eq(0)
 			var hcontent_container = msg.find('.chat_content_container').eq(0)
 			var hcontent = msg.find('.chat_content')
@@ -7110,7 +7110,7 @@ function chat_search(filter=false)
 
 				hcontent.each(function()
 				{
-					content += `${msg.text()} `	
+					content += `${msg.text()} `
 				})
 
 				if(uname.toLowerCase().includes(filter))
@@ -7158,7 +7158,7 @@ function chat_search(filter=false)
 				}
 
 				var content = hcontent.text()
-				
+
 				if(!content.toLowerCase().includes(filter))
 				{
 					continue
@@ -7168,7 +7168,7 @@ function chat_search(filter=false)
 
 				cn.find(".chat_search_result_content").eq(0).html(hcontent.parent().clone(true, true))
 
-				c.append(cn)				
+				c.append(cn)
 			}
 		}
 	}
@@ -7182,12 +7182,12 @@ function chat_search(filter=false)
 	{
 		c = c[0]
 	}
-	
+
 	$("#chat_search_container").html(c)
 
 	update_modal_scrollbar("chat_search")
 
-	$('#Msg-content-container-search').scrollTop(0)	
+	$('#Msg-content-container-search').scrollTop(0)
 }
 
 function fix_chat_scroll()
@@ -7220,7 +7220,7 @@ function unclear_chat()
 	{
 		return false
 	}
-	
+
 	for(var el of chat_history)
 	{
 		add_to_chat(el.clone(true, true), false, false)
@@ -7315,7 +7315,7 @@ function change_role(uname, rol)
 			if(!roles.includes(rol))
 			{
 				feedback("Invalid role")
-				return false				
+				return false
 			}
 
 			socket_emit('change_role', {username:uname, role:rol})
@@ -7359,7 +7359,7 @@ function announce_image_change(data, date=false, show=true)
 	{
 		var name = 'default'
 		var src = default_image_source
-	}	
+	}
 
 	else
 	{
@@ -7370,13 +7370,13 @@ function announce_image_change(data, date=false, show=true)
 	if(data.image_source === "")
 	{
 		var title = `Setter: ${data.image_setter} | ${nd}`
-		var msg = `${data.image_setter} changed the image to default`		
-	}	
+		var msg = `${data.image_setter} changed the image to default`
+	}
 
 	else if(data.image_type === "link")
 	{
 		var title = `Linker: ${data.image_setter} | ${nd}`
-		var msg = `${data.image_setter} linked an image`	
+		var msg = `${data.image_setter} linked an image`
 	}
 
 	else if(data.image_type === "upload")
@@ -7394,9 +7394,9 @@ function announce_image_change(data, date=false, show=true)
 	{
 		chat_announce(
 		{
-			brk: "<i class='icon2 fa fa-camera'></i>", 
-			save: true, 
-			date: d, 
+			brk: "<i class='icon2 fa fa-camera'></i>",
+			save: true,
+			date: d,
 			type: "image_change",
 			uname: data.image_setter,
 			title: title,
@@ -7452,7 +7452,7 @@ function announce_role_change(data)
 
 	public_feedback(`${data.username1} gave ${data.role} to ${data.username2}`)
 
-	replace_role_in_userlist(data.username2, data.role)	
+	replace_role_in_userlist(data.username2, data.role)
 }
 
 function set_role(rol, config=true)
@@ -7506,7 +7506,7 @@ function announce_privacy_change(data)
 		var s = `${data.username} made the room private`
 		s += ". The room will appear in the public room list"
 	}
-	
+
 	public_feedback(s)
 }
 
@@ -7531,7 +7531,7 @@ function change_radio_source(src)
 				{
 					feedback("Soundcloud support is not enabled")
 					return
-				}			
+				}
 			}
 		}
 
@@ -7578,7 +7578,7 @@ function announce_radio_change(data, date=false, action="change")
 	if(time !== 0)
 	{
 		name += ` (At ${utilz.humanize_seconds(time)})`
-	}	
+	}
 
 	if(data.radio_source === '')
 	{
@@ -7607,7 +7607,7 @@ function announce_radio_change(data, date=false, action="change")
 			var d = Date.now()
 		}
 	}
-	
+
 	var nd = nice_date(d)
 
 	var title = `Setter: ${data.radio_setter} | ${nd}`
@@ -7627,16 +7627,16 @@ function announce_radio_change(data, date=false, action="change")
 	else
 	{
 		var msg = `${data.radio_setter} changed the radio to: ${name}`
-	}	
+	}
 
 	chat_announce(
 	{
-		brk: "<i class='icon2 fa fa-volume-up'></i>", 
-		msg: msg, 
-		title: title, 
-		onclick: onclick, 
-		save: true, 
-		date: d, 
+		brk: "<i class='icon2 fa fa-volume-up'></i>",
+		msg: msg,
+		title: title,
+		onclick: onclick,
+		save: true,
+		date: d,
 		type: "radio_change",
 		uname: data.radio_setter
 	})
@@ -7707,7 +7707,7 @@ function announce_tv_change(data, date=false, action="change")
 	else if(!data.tv_source)
 	{
 		var name = 'default'
-	}	
+	}
 
 	else
 	{
@@ -7748,7 +7748,7 @@ function announce_tv_change(data, date=false, action="change")
 			var d = Date.now()
 		}
 	}
-	
+
 	var nd = nice_date(d)
 
 	var title = `Setter: ${data.tv_setter} | ${nd}`
@@ -7772,12 +7772,12 @@ function announce_tv_change(data, date=false, action="change")
 
 	chat_announce(
 	{
-		brk: "<i class='icon2 fa fa-television'></i>", 
-		msg: msg, 
-		title: title, 
-		onclick: onclick, 
-		save: true, 
-		date: d, 
+		brk: "<i class='icon2 fa fa-television'></i>",
+		msg: msg,
+		title: title,
+		onclick: onclick,
+		save: true,
+		date: d,
 		type: "tv_change",
 		uname: data.tv_setter
 	})
@@ -7893,7 +7893,7 @@ function kick(uname)
 		}
 	}
 
-	else 
+	else
 	{
 		not_an_op()
 	}
@@ -8044,7 +8044,7 @@ function start_user_disconnect_timeout(data)
 
 	data.timeout = setTimeout(function()
 	{
-		do_userdisconnect(data)	
+		do_userdisconnect(data)
 	}, disconnect_timeout_delay)
 
 	users_to_disconnect.push(data)
@@ -8080,9 +8080,9 @@ function do_userdisconnect(data)
 
 		chat_announce(
 		{
-			brk: "<i class='icon2 fa fa-sign-out'></i>",  
-			msg: s, 
-			save: true, 
+			brk: "<i class='icon2 fa fa-sign-out'></i>",
+			msg: s,
+			save: true,
 			uname: data.username
 		})
 	}
@@ -8092,7 +8092,7 @@ function do_userdisconnect(data)
 
 function start_msg()
 {
-	var common = 
+	var common =
 	{
 		show_effect_duration: [200, 200],
 		close_effect_duration: [200, 200],
@@ -8116,7 +8116,7 @@ function start_msg()
 		enable_titlebar: true,
 		center_titlebar: true,
 		titlebar_class: "!custom_titlebar !unselectable",
-		window_inner_x_class: "!titlebar_inner_x"	
+		window_inner_x_class: "!titlebar_inner_x"
 	}
 
 	msg_menu = Msg.factory
@@ -8149,7 +8149,7 @@ function start_msg()
 	msg_userinfo = Msg.factory
 	(
 		Object.assign({}, common, titlebar,
-		{		
+		{
 			id: "userinfo",
 			clear_editables: false,
 			window_width: "22em",
@@ -8177,7 +8177,7 @@ function start_msg()
 	msg_userlist = Msg.factory
 	(
 		Object.assign({}, common, titlebar,
-		{		
+		{
 			id: "userlist",
 			window_width: "22em",
 			after_create: function(instance)
@@ -8206,7 +8206,7 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "public_roomlist",
-			window_width: "26em",			
+			window_width: "26em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -8232,7 +8232,7 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "visited_roomlist",
-			window_width: "26em",		
+			window_width: "26em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -8258,7 +8258,7 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "played",
-			window_width: "26em",			
+			window_width: "26em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -8385,7 +8385,7 @@ function start_msg()
 			before_show: function(instance)
 			{
 				info2_vars_to_false()
-			},			
+			},
 			after_show: function(instance)
 			{
 				after_modal_show(instance)
@@ -8594,7 +8594,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				reset_image_history_filter()				
+				reset_image_history_filter()
 			}
 		})
 	)
@@ -8621,7 +8621,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				reset_tv_history_filter()				
+				reset_tv_history_filter()
 			}
 		})
 	)
@@ -8648,7 +8648,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				reset_radio_history_filter()				
+				reset_radio_history_filter()
 			}
 		})
 	)
@@ -8795,7 +8795,7 @@ function start_msg()
 				reset_settings_filter("room_settings")
 			}
 		})
-	)		
+	)
 
 	msg_menu.set(template_menu())
 	msg_userinfo.set(template_userinfo())
@@ -8858,7 +8858,7 @@ function after_modal_create(instance)
 	if(get_setting("custom_scrollbars"))
 	{
 		start_modal_scrollbar(instance.options.id)
-	}	
+	}
 }
 
 function after_modal_show(instance)
@@ -8946,7 +8946,7 @@ function get_global_settings()
 		global_settings = {}
 	}
 
-	var settings = 
+	var settings =
 	[
 		"background_image",
 		"custom_scrollbars",
@@ -9074,7 +9074,7 @@ function setting_background_image_action(type, save=true)
 		apply_background()
 		apply_theme()
 	}
-	
+
 	if(save)
 	{
 		window[`save_${type}`]()
@@ -9084,55 +9084,55 @@ function setting_background_image_action(type, save=true)
 function setting_custom_scrollbars_action(type, save=true)
 {
 	window[type].custom_scrollbars = $(`#${type}_custom_scrollbars`).prop("checked")
-	
+
 	if(active_settings("custom_scrollbars") === type)
 	{
 		setup_scrollbars()
-	}	
-	
+	}
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_beep_on_messages_action(type, save=true)
 {
 	window[type].beep_on_messages = $(`#${type}_beep_on_messages`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_beep_on_highlights_action(type, save=true)
 {
 	window[type].beep_on_highlights = $(`#${type}_beep_on_highlights`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_beep_on_media_change_action(type, save=true)
 {
 	window[type].beep_on_media_change = $(`#${type}_beep_on_media_change`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_beep_on_user_joins_action(type, save=true)
 {
 	window[type].beep_on_user_joins = $(`#${type}_beep_on_user_joins`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
@@ -9158,54 +9158,54 @@ function setting_modal_effects_action(type, save=true)
 			else
 			{
 				instance.options.show_effect = "none"
-				instance.options.close_effect = "none"				
+				instance.options.close_effect = "none"
 			}
 		}
 	}
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_highlight_current_username_action(type, save=true)
 {
 	window[type].highlight_current_username = $(`#${type}_highlight_current_username`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_case_insensitive_username_highlights_action(type, save=true)
 {
 	window[type].case_insensitive_username_highlights = $(`#${type}_case_insensitive_username_highlights`).prop("checked")
-	
+
 	if(active_settings("case_insensitive_username_highlights") === type)
 	{
 		generate_mentions_regex()
-	}	
-	
+	}
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_case_insensitive_words_highlights_action(type, save=true)
 {
 	window[type].case_insensitive_words_highlights = $(`#${type}_case_insensitive_words_highlights`).prop("checked")
-	
+
 	if(active_settings("case_insensitive_words_highlights") === type)
 	{
 		generate_highlight_words_regex()
-	}	
-	
+	}
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
@@ -9221,7 +9221,7 @@ function setting_other_words_to_highlight_action(type, save=true)
 	{
 		generate_highlight_words_regex()
 	}
-		
+
 	if(save)
 	{
 		window[`save_${type}`]()
@@ -9235,11 +9235,11 @@ function setting_double_tap_action(type, save=true)
 	$(`#${type}_double_tap`).val(cmds)
 
 	window[type].double_tap = cmds
-	
+
 	if(save)
 	{
 		window[`save_${type}`]()
-	}	
+	}
 }
 
 function setting_double_tap_2_action(type, save=true)
@@ -9249,11 +9249,11 @@ function setting_double_tap_2_action(type, save=true)
 	$(`#${type}_double_tap_2`).val(cmds)
 
 	window[type].double_tap_2 = cmds
-	
+
 	if(save)
 	{
 		window[`save_${type}`]()
-	}	
+	}
 }
 
 function setting_double_tap_3_action(type, save=true)
@@ -9263,11 +9263,11 @@ function setting_double_tap_3_action(type, save=true)
 	$(`#${type}_double_tap_3`).val(cmds)
 
 	window[type].double_tap_3 = cmds
-	
+
 	if(save)
 	{
 		window[`save_${type}`]()
-	}	
+	}
 }
 
 function setting_afk_delay_action(type, save=true)
@@ -9280,7 +9280,7 @@ function setting_afk_delay_action(type, save=true)
 	}
 
 	window[type].afk_delay = delay
-		
+
 	if(save)
 	{
 		window[`save_${type}`]()
@@ -9294,11 +9294,11 @@ function setting_at_startup_action(type, save=true)
 	$(`#${type}_at_startup`).val(cmds)
 
 	window[type].at_startup = cmds
-	
+
 	if(save)
 	{
 		window[`save_${type}`]()
-	}	
+	}
 }
 
 function setting_ignored_usernames_action(type, save=true)
@@ -9308,40 +9308,40 @@ function setting_ignored_usernames_action(type, save=true)
 	$(`#${type}_ignored_usernames`).val(unames)
 
 	window[type].ignored_usernames = unames
-	
+
 	if(save)
 	{
 		window[`save_${type}`]()
-	}	
+	}
 }
 
 function setting_show_joins_action(type, save=true)
 {
 	window[type].show_joins = $(`#${type}_show_joins`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_show_parts_action(type, save=true)
 {
 	window[type].show_parts = $(`#${type}_show_parts`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_animate_scroll_action(type, save=true)
 {
 	window[type].animate_scroll = $(`#${type}_animate_scroll`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
@@ -9353,90 +9353,90 @@ function setting_new_messages_separator_action(type, save=true)
 	{
 		remove_separator()
 	}
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_afk_disable_messages_beep_action(type, save=true)
 {
 	window[type].afk_disable_messages_beep = $(`#${type}_afk_disable_messages_beep`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_afk_disable_highlights_beep_action(type, save=true)
 {
 	window[type].afk_disable_highlights_beep = $(`#${type}_afk_disable_highlights_beep`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_afk_disable_media_change_beep_action(type, save=true)
 {
 	window[type].afk_disable_media_change_beep = $(`#${type}_afk_disable_media_change_beep`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_afk_disable_joins_beep_action(type, save=true)
 {
 	window[type].afk_disable_joins_beep = $(`#${type}_afk_disable_joins_beep`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_afk_disable_image_change_action(type, save=true)
 {
 	window[type].afk_disable_image_change = $(`#${type}_afk_disable_image_change`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_afk_disable_tv_change_action(type, save=true)
 {
 	window[type].afk_disable_tv_change = $(`#${type}_afk_disable_tv_change`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_afk_disable_radio_change_action(type, save=true)
 {
 	window[type].afk_disable_radio_change = $(`#${type}_afk_disable_radio_change`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
 function setting_open_popup_messages_action(type, save=true)
 {
 	window[type].open_popup_messages = $(`#${type}_open_popup_messages`).prop("checked")
-	
+
 	if(save)
 	{
-		window[`save_${type}`]()	
+		window[`save_${type}`]()
 	}
 }
 
@@ -9535,60 +9535,60 @@ function save_room_settings()
 	save_local_storage(ls_room_settings, room_settings_all)
 }
 
-var played_filter_timer = (function() 
+var played_filter_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			do_played_filter()
 		}, filter_delay)
 	}
 })()
 
-var userlist_filter_timer = (function() 
+var userlist_filter_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			do_userlist_filter()
 		}, filter_delay)
 	}
 })()
 
-var public_roomlist_filter_timer = (function() 
+var public_roomlist_filter_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			do_roomlist_filter("public_roomlist")
 		}, filter_delay)
 	}
 })()
 
-var visited_roomlist_filter_timer = (function() 
+var visited_roomlist_filter_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			do_roomlist_filter("visited_roomlist")
 		}, filter_delay)
@@ -9635,7 +9635,7 @@ function start_filters()
 	$("#radio_history_filter").on("input", function()
 	{
 		radio_history_filter_timer()
-	})	
+	})
 
 	$("#input_history_filter").on("input", function()
 	{
@@ -9804,7 +9804,7 @@ function do_roomlist_filter(type)
 
 	update_modal_scrollbar(type)
 
-	$(`#Msg-content-container-${type}`).scrollTop(0)	
+	$(`#Msg-content-container-${type}`).scrollTop(0)
 }
 
 function show_input_history(filter=false)
@@ -9816,7 +9816,7 @@ function show_input_history(filter=false)
 			$("#input_history_filter").val(filter)
 			do_input_history_filter()
 		}
-		
+
 		$("#input_history_filter").focus()
 	})
 }
@@ -9866,22 +9866,22 @@ function reset_input_history_filter()
 	do_input_history_filter()
 }
 
-var input_history_filter_timer = (function() 
+var input_history_filter_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			do_input_history_filter()
 		}, filter_delay)
 	}
 })()
 
-function onYouTubeIframeAPIReady() 
+function onYouTubeIframeAPIReady()
 {
 	yt_player = new YT.Player('youtube_player',
 	{
@@ -9895,12 +9895,12 @@ function onYouTubeIframeAPIReady()
 			rel: 0,
 			width: 640,
 			height: 360
-		}		
+		}
 	})
 
 	yt_video_player = new YT.Player('media_youtube_video',
 	{
-		events: 
+		events:
 		{
 			onReady: onYouTubePlayerReady2
 		},
@@ -9950,14 +9950,14 @@ function start_twitch()
 {
 	try
 	{
-		var twch_video_player = new Twitch.Player("media_twitch_video_container", 
+		var twch_video_player = new Twitch.Player("media_twitch_video_container",
 		{
 			width: 640,
 			height: 360,
 			autoplay: false
 		})
 
-		twch_video_player.addEventListener(Twitch.Player.READY, () => 
+		twch_video_player.addEventListener(Twitch.Player.READY, () =>
 		{
 			twitch_video_player = twch_video_player
 
@@ -10013,7 +10013,7 @@ function get_status_html()
 		info += `<div class='info_item'><div class='info_title'>Topic</div><div class='info_item_content' id='status_topic'></div></div>`
 	}
 
-	info += "<div class='info_item'><div class='info_title'>Privacy</div>"	
+	info += "<div class='info_item'><div class='info_title'>Privacy</div>"
 
 	if(is_public)
 	{
@@ -10060,11 +10060,11 @@ function get_status_html()
 		info += "<div class='info_item'><div class='info_title'>TV Setter</div>"
 		info += `<div class='info_item_content' id='status_tv_setter'></div></div>`
 	}
-	
+
 	if(tv_title)
 	{
 		info += "<div class='info_item'><div class='info_title'>TV Title</div>"
-		info += `<div class='info_item_content' id='status_tv_title'></div></div>`	
+		info += `<div class='info_item_content' id='status_tv_title'></div></div>`
 	}
 
 	if(tv_source)
@@ -10076,7 +10076,7 @@ function get_status_html()
 	if(tv_date)
 	{
 		info += "<div class='info_item'><div class='info_title'>TV Date</div>"
-		info += `<div class='info_item_content' id='status_tv_date'></div></div>`		
+		info += `<div class='info_item_content' id='status_tv_date'></div></div>`
 	}
 
 	if(radio_setter)
@@ -10084,7 +10084,7 @@ function get_status_html()
 		info += "<div class='info_item'><div class='info_title'>Radio Setter</div>"
 		info += `<div class='info_item_content' id='status_radio_setter'></div></div>`
 	}
-	
+
 	if(radio_title)
 	{
 		info += "<div class='info_item'><div class='info_title'>Radio Title</div>"
@@ -10100,7 +10100,7 @@ function get_status_html()
 	if(radio_date)
 	{
 		info += "<div class='info_item'><div class='info_title'>Radio Date</div>"
-		info += `<div class='info_item_content' id='status_radio_date'></div></div>`		
+		info += `<div class='info_item_content' id='status_radio_date'></div></div>`
 	}
 
 	h.append(info)
@@ -10181,8 +10181,8 @@ function get_status_html()
 
 function fill()
 {
-	var s = `abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ 
-	$%& /() =?* '<> #|; ²³~ @ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC 
+	var s = `abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§
+	$%& /() =?* '<> #|; ²³~ @ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC
 	DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @ ©«» ¤¼× {} abc
 	def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /()
 	=?* '<> #|; ²³~ @ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI
@@ -10190,14 +10190,14 @@ function fill()
 	ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?*
 	'<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL
 	MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl
-	mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ 
+	mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~
 	@\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV
 	WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv
 	wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼×
 	{} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /()
 	=?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL
 	MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno
-	pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ 
+	pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´
 	©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§
 	$%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF
 	GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {}abc def ghi
@@ -10280,7 +10280,7 @@ function change_email(email)
 	{
 		feedback("Invalid email address")
 		return
-	}	
+	}
 
 	if(email.length > max_email_length)
 	{
@@ -10299,7 +10299,7 @@ function email_changed(data)
 
 function show_details(data)
 {
-	var h = $("<div></div>")	
+	var h = $("<div></div>")
 
 	var info = ""
 
@@ -10332,10 +10332,10 @@ function show_log_messages()
 				{
 					update_chat(
 					{
-						uname: data.username, 
-						msg: data.content, 
-						prof_image: data.profile_image, 
-						date: message.date, 
+						uname: data.username,
+						msg: data.content,
+						prof_image: data.profile_image,
+						date: message.date,
 						scroll: false
 					})
 				}
@@ -10365,7 +10365,7 @@ function change_log(log)
 {
 	if(!is_admin_or_op(role))
 	{
-		not_an_op()	
+		not_an_op()
 		return false
 	}
 
@@ -10389,7 +10389,7 @@ function clear_log()
 {
 	if(!is_admin_or_op(role))
 	{
-		not_an_op()	
+		not_an_op()
 		return false
 	}
 
@@ -10477,7 +10477,7 @@ function show_modal_image(url, title, date)
 	img.css("display", "none")
 
 	$("#modal_image_spinner").css("display", "block")
-	$("#modal_image_error").css("display", "none")	
+	$("#modal_image_error").css("display", "none")
 
 	img.attr("src", url)
 	img.data("image_title", t)
@@ -10593,7 +10593,7 @@ function fix_media_margin()
 	else
 	{
 		$("#media_image_container").css("margin-bottom", "0")
-		$("#media_tv").css("margin-top", "0")		
+		$("#media_tv").css("margin-top", "0")
 	}
 }
 
@@ -10634,7 +10634,7 @@ function change_images_visibility()
 
 		if(num_visible > 1)
 		{
-			enable_normal_mode()	
+			enable_normal_mode()
 		}
 
 		change({type:"image"})
@@ -10710,8 +10710,8 @@ function change_tv_visibility()
 
 		if(num_visible > 1)
 		{
-			enable_normal_mode()	
-		}	
+			enable_normal_mode()
+		}
 
 		change({type:"tv", force:false, play:false})
 
@@ -10744,7 +10744,7 @@ function change_tv_visibility()
 	}
 
 	update_chat_scrollbar()
-	goto_bottom(false, false)	
+	goto_bottom(false, false)
 }
 
 function toggle_radio(what=undefined, save=true)
@@ -10791,7 +10791,7 @@ function change_radio_visibility()
 	else
 	{
 		stop_radio()
-		
+
 		$("#radio").css("display", "none")
 
 		$("#footer_toggle_radio_icon").removeClass("fa-toggle-on")
@@ -10810,11 +10810,11 @@ function open_profile_image_picker()
 
 function profile_image_selected(input)
 {
-	if(input.files && input.files[0]) 
+	if(input.files && input.files[0])
 	{
 		var reader = new FileReader()
 
-		reader.onload = function(e) 
+		reader.onload = function(e)
 		{
 			var s = "<img id='profile_image_canvas_image'><div id='profile_image_canvas_button' class='unselectable'>Crop and Upload</div>"
 
@@ -10830,11 +10830,11 @@ function profile_image_selected(input)
 
 				var croppable = false
 
-				var cropper = new Cropper(image, 
+				var cropper = new Cropper(image,
 				{
 					aspectRatio: 1,
 					viewMode: 2,
-					ready: function () 
+					ready: function ()
 					{
 						var container_data = cropper.getContainerData()
 
@@ -10854,19 +10854,19 @@ function profile_image_selected(input)
 				})
 
 
-				button.onclick = function () 
+				button.onclick = function ()
 				{
 					var cropped_canvas
 					var rounded_canvas
 					var roundedImage
 
-					if(!croppable) 
+					if(!croppable)
 					{
 						return
 					}
 
 					cropped_canvas = cropper.getCroppedCanvas()
-					
+
 					rounded_canvas = get_rounded_canvas(cropped_canvas)
 
 					rounded_canvas.toBlob(function(blob)
@@ -10879,15 +10879,15 @@ function profile_image_selected(input)
 
 						msg_info.close()
 					}, 'image/png', 0.95)
-				}			
+				}
 			})
 		}
 
 		reader.readAsDataURL(input.files[0])
-	}	
+	}
 }
 
-function get_rounded_canvas(sourceCanvas) 
+function get_rounded_canvas(sourceCanvas)
 {
 	var canvas = document.createElement('canvas')
 	var context = canvas.getContext('2d')
@@ -10971,7 +10971,7 @@ function profile_image_changed(data)
 	if(data.username === username)
 	{
 		profile_image = data.profile_image
-		$("#userinfo_profile_image").attr("src", profile_image)	
+		$("#userinfo_profile_image").attr("src", profile_image)
 	}
 
 	update_user_profile_image(data.username, data.profile_image)
@@ -10988,7 +10988,7 @@ function update_user_profile_image(uname, pi)
 			userlist[i].profile_image = pi
 			return
 		}
-	}	
+	}
 }
 
 function get_frame_ratio(frame_id)
@@ -10996,7 +10996,7 @@ function get_frame_ratio(frame_id)
 	var id = `#${frame_id}`
 
 	$(id).data('ratio', $(id).height() / $(id).width()).removeAttr('height').removeAttr('width')
-	
+
 	return $(id).data('ratio')
 }
 
@@ -11055,7 +11055,7 @@ function fix_video_frame(frame_id)
 			if(frame_height < parent_height && frame_width < parent_width)
 			{
 				frame_width = frame_width + 1
-				frame_height = frame_width * ratio			
+				frame_height = frame_width * ratio
 			}
 
 			else
@@ -11069,7 +11069,7 @@ function fix_video_frame(frame_id)
 		}
 
 		frame.width(frame_width)
-		frame.height(frame_height)		
+		frame.height(frame_height)
 	}
 
 	else
@@ -11079,13 +11079,13 @@ function fix_video_frame(frame_id)
 			if(frame_height > parent_height || frame_width > parent_width)
 			{
 				frame_width = frame_width - 1
-				frame_height = frame_width * ratio			
+				frame_height = frame_width * ratio
 			}
 
 			else
 			{
 				frame.width(frame_width)
-				frame.height(frame_height)				
+				frame.height(frame_height)
 				return
 			}
 
@@ -11093,7 +11093,7 @@ function fix_video_frame(frame_id)
 		}
 
 		frame.width(frame_width)
-		frame.height(frame_height)		
+		frame.height(frame_height)
 	}
 }
 
@@ -11110,10 +11110,10 @@ function change_room_images_enabled(what)
 		if(room_images_enabled)
 		{
 			feedback(`Room images are already enabled`)
-			return false			
+			return false
 		}
 	}
-	
+
 	else
 	{
 		if(!room_images_enabled)
@@ -11123,7 +11123,7 @@ function change_room_images_enabled(what)
 		}
 	}
 
-	socket_emit("change_images_enabled", {what:what})	
+	socket_emit("change_images_enabled", {what:what})
 }
 
 function change_room_tv_enabled(what)
@@ -11139,10 +11139,10 @@ function change_room_tv_enabled(what)
 		if(room_tv_enabled)
 		{
 			feedback(`Room tv is already enabled`)
-			return false			
+			return false
 		}
 	}
-	
+
 	else
 	{
 		if(!room_tv_enabled)
@@ -11152,7 +11152,7 @@ function change_room_tv_enabled(what)
 		}
 	}
 
-	socket_emit("change_tv_enabled", {what:what})	
+	socket_emit("change_tv_enabled", {what:what})
 }
 
 function change_room_radio_enabled(what)
@@ -11168,10 +11168,10 @@ function change_room_radio_enabled(what)
 		if(room_radio_enabled)
 		{
 			feedback(`Room radio is already enabled`)
-			return false			
+			return false
 		}
 	}
-	
+
 	else
 	{
 		if(!room_radio_enabled)
@@ -11181,7 +11181,7 @@ function change_room_radio_enabled(what)
 		}
 	}
 
-	socket_emit("change_radio_enabled", {what:what})	
+	socket_emit("change_radio_enabled", {what:what})
 }
 
 function announce_room_images_enabled_change(data)
@@ -11239,7 +11239,7 @@ function hide_media()
 {
 	stop_videos()
 
-	$("#media").css("display", "none")	
+	$("#media").css("display", "none")
 }
 
 function setup_active_media(data)
@@ -11259,7 +11259,7 @@ function media_visibility_and_locks()
 
 	change_lock_images()
 	change_lock_tv()
-	change_lock_radio()	
+	change_lock_radio()
 }
 
 function change_theme(color)
@@ -11280,7 +11280,7 @@ function change_theme(color)
 	if(!color.startsWith("rgb("))
 	{
 		return false
-	}	
+	}
 
 	if(color === undefined)
 	{
@@ -11292,13 +11292,13 @@ function change_theme(color)
 		return false
 	}
 
-	socket_emit("change_theme", {color:color})	
+	socket_emit("change_theme", {color:color})
 }
 
 function announce_theme_change(data)
 {
 	public_feedback(`${data.username} changed the theme to ${data.color}`)
-	set_theme(data.color)	
+	set_theme(data.color)
 }
 
 function queue_image(data)
@@ -11323,7 +11323,7 @@ function check_image_queue()
 		}
 
 		image_queue.shift()
-		
+
 		image_queue_timeout = setTimeout(function()
 		{
 			check_image_queue()
@@ -11385,7 +11385,7 @@ function change_background_mode(mode)
 		return false
 	}
 
-	socket_emit("change_background_mode", {mode:mode})	
+	socket_emit("change_background_mode", {mode:mode})
 }
 
 function announce_background_mode_change(data)
@@ -11470,7 +11470,7 @@ function change_voice_permission(ptype, what)
 		return false
 	}
 
-	socket_emit("change_voice_permission", {ptype:ptype, what:what})		
+	socket_emit("change_voice_permission", {ptype:ptype, what:what})
 }
 
 function announce_voice_permission_change(data)
@@ -11554,33 +11554,33 @@ function check_typing()
 		}
 
 		typing_timer()
-	}	
+	}
 }
 
-var typing_timer = (function() 
+var typing_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			socket_emit("typing", {})
 		}, 100)
 	}
 })()
 
-var typing_remove_timer = (function() 
+var typing_remove_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			hide_pencil()
 		}, max_typing_inactivity)
@@ -11637,7 +11637,7 @@ function toggle_lock_images(what=undefined, save=true)
 	if(save)
 	{
 		save_room_settings()
-	}	
+	}
 }
 
 function change_lock_images()
@@ -11645,7 +11645,7 @@ function change_lock_images()
 	if(room_settings.images_locked)
 	{
 		$("#footer_lock_images_icon").removeClass("fa-unlock-alt")
-		$("#footer_lock_images_icon").addClass("fa-lock")		
+		$("#footer_lock_images_icon").addClass("fa-lock")
 	}
 
 	else
@@ -11676,7 +11676,7 @@ function toggle_lock_tv(what=undefined, save=true)
 	if(save)
 	{
 		save_room_settings()
-	}	
+	}
 }
 
 function change_lock_tv()
@@ -11684,7 +11684,7 @@ function change_lock_tv()
 	if(room_settings.tv_locked)
 	{
 		$("#footer_lock_tv_icon").removeClass("fa-unlock-alt")
-		$("#footer_lock_tv_icon").addClass("fa-lock")		
+		$("#footer_lock_tv_icon").addClass("fa-lock")
 	}
 
 	else
@@ -11695,7 +11695,7 @@ function change_lock_tv()
 		change({type:"tv"})
 	}
 
-	tv_locked = room_settings.tv_locked	
+	tv_locked = room_settings.tv_locked
 }
 
 function toggle_lock_radio(what=undefined, save=true)
@@ -11715,7 +11715,7 @@ function toggle_lock_radio(what=undefined, save=true)
 	if(save)
 	{
 		save_room_settings()
-	}	
+	}
 }
 
 function change_lock_radio()
@@ -11723,7 +11723,7 @@ function change_lock_radio()
 	if(room_settings.radio_locked)
 	{
 		$("#footer_lock_radio_icon").removeClass("fa-unlock-alt")
-		$("#footer_lock_radio_icon").addClass("fa-lock")		
+		$("#footer_lock_radio_icon").addClass("fa-lock")
 	}
 
 	else
@@ -11734,7 +11734,7 @@ function change_lock_radio()
 		change({type:"radio"})
 	}
 
-	radio_locked = room_settings.radio_locked	
+	radio_locked = room_settings.radio_locked
 }
 
 function show_joined()
@@ -11795,7 +11795,7 @@ function default_media_state(change_visibility=true)
 		toggle_tv(true, false)
 		toggle_radio(true, false)
 	}
-	
+
 	save_room_settings()
 }
 
@@ -11908,7 +11908,7 @@ function check_highlights(msg)
 
 function create_popup(position, id=false)
 {
-	var common = 
+	var common =
 	{
 		show_effect_duration: [0, 400],
 		close_effect_duration: [400, 0],
@@ -11937,7 +11937,7 @@ function create_popup(position, id=false)
 	var pop = Msg.factory
 	(
 		Object.assign({}, common,
-		{		
+		{
 			preset: "popup",
 			edge_padding_y: edges_height + 1,
 			position: position,
@@ -11947,7 +11947,7 @@ function create_popup(position, id=false)
 			titlebar_class: "!custom_titlebar !unselectable",
 			window_inner_x_class: "!titlebar_inner_x"
 		})
-	)	
+	)
 
 	return pop
 }
@@ -11955,7 +11955,7 @@ function create_popup(position, id=false)
 function show_intro()
 {
 	var s = `
-	You can chat in this area. The icon on the left opens the user menu where you can change your profile image and other settings. 
+	You can chat in this area. The icon on the left opens the user menu where you can change your profile image and other settings.
 	When someone is typing a message the user menu icon turns into a pencil.`
 
 	create_popup("bottomleft").show(["Chat and User Menu", s])
@@ -12010,7 +12010,7 @@ function write_popup_message(uname, type="user")
 			user_not_in_room()
 			return false
 		}
-		
+
 		var f = function()
 		{
 			show_profile(uname, get_user_by_username(uname).profile_image)
@@ -12051,7 +12051,7 @@ function write_popup_message(uname, type="user")
 	message_type = type
 
 	msg_message.set_title(make_safe(title))
-	
+
 	msg_message.show(function()
 	{
 		$("#write_message_area").focus()
@@ -12068,7 +12068,7 @@ function send_popup_message()
 	{
 		return false
 	}
-	
+
 	else if(diff < 0)
 	{
 		$("#write_message_feedback").text(`Character limit exceeded by ${Math.abs(diff)}`)
@@ -12116,7 +12116,7 @@ function send_whisper_user(message)
 		$("#write_message_feedback").text("You don't have chat permission")
 		$("#write_message_feedback").css("display", "block")
 		return false
-	}	
+	}
 
 	if(uname === username)
 	{
@@ -12137,13 +12137,13 @@ function send_whisper_user(message)
 	var ff = function()
 	{
 		show_profile(uname, get_user_by_username(uname).profile_image)
-	}	
+	}
 
 	var f = function()
 	{
 		var s = make_safe(
 		{
-			text: message, 
+			text: message,
 			html: `<div class='small_button action' id='modal_send_whisper'>${utilz.nonbreak("Send Another Whisper")}</div>`
 		})
 
@@ -12169,7 +12169,7 @@ function send_whisper_ops(message)
 	{
 		var s = make_safe(
 		{
-			text: message, 
+			text: message,
 			html: `<div class='small_button action' id='modal_send_whisper_ops'>${utilz.nonbreak("Send Another Whisper")}</div>`
 		})
 
@@ -12180,8 +12180,8 @@ function send_whisper_ops(message)
 				write_popup_message(false, "ops")
 			})
 		})
-	}	
-	
+	}
+
 	feedback(`Whisper To Operators sent`, {onclick:f, save:true})
 
 	return true
@@ -12201,7 +12201,7 @@ function send_room_broadcast(message)
 	{
 		var s = make_safe(
 		{
-			text: message, 
+			text: message,
 			html: `<div class='small_button action' id='modal_send_room_message'>${utilz.nonbreak("Send Another Message")}</div>`
 		})
 
@@ -12213,8 +12213,8 @@ function send_room_broadcast(message)
 			})
 		})
 	}
-	
-	feedback(`Message To Room sent`, {onclick:f, save:true})	
+
+	feedback(`Message To Room sent`, {onclick:f, save:true})
 
 	return true
 }
@@ -12227,7 +12227,7 @@ function send_system_broadcast(message)
 	{
 		var s = make_safe(
 		{
-			text: message, 
+			text: message,
 			html: `<div class='small_button action' id='modal_send_system_message'>${utilz.nonbreak("Send Another Message")}</div>`
 		})
 
@@ -12238,9 +12238,9 @@ function send_system_broadcast(message)
 				write_popup_message(false, "system")
 			})
 		})
-	}	
-	
-	feedback(`Message To System sent`, {onclick:f, save:true})	
+	}
+
+	feedback(`Message To System sent`, {onclick:f, save:true})
 
 	return true
 }
@@ -12358,9 +12358,9 @@ function popup_message_received(data, type="user", announce=true)
 			msg: `${t} received`,
 			save: true,
 			onclick: af
-		})		
+		})
 	}
-	
+
 	alert_title2()
 	sound_notify("highlight")
 }
@@ -12379,7 +12379,7 @@ function show_popup_message(data)
 		$(pop.content).find(".show_message_reply_ops").eq(0).click(function()
 		{
 			write_popup_message(false, "ops")
-		})		
+		})
 	})
 }
 
@@ -12411,10 +12411,10 @@ function annex(rol="admin")
 	if(!roles.includes(rol))
 	{
 		feedback("Invalid role")
-		return false				
+		return false
 	}
-		
-	socket_emit('change_role', {username:username, role:rol})	
+
+	socket_emit('change_role', {username:username, role:rol})
 }
 
 function show_highlights(filter=false)
@@ -12476,15 +12476,15 @@ function show_highlights(filter=false)
 	})
 }
 
-var highlights_filter_timer = (function() 
+var highlights_filter_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			do_highlights_filter()
 		}, filter_delay)
@@ -12508,8 +12508,8 @@ function do_highlights_filter()
 
 			hcontent.each(function()
 			{
-				content += `${$(this).text()} `	
-			})			
+				content += `${$(this).text()} `
+			})
 
 			var include = false
 
@@ -12609,7 +12609,7 @@ function show_image_history(filter=false)
 			$("#image_history_filter").val(filter)
 			do_image_history_filter()
 		}
-		
+
 		$("#image_history_filter").focus()
 	})
 }
@@ -12623,7 +12623,7 @@ function show_tv_history(filter=false)
 			$("#tv_history_filter").val(filter)
 			do_tv_history_filter()
 		}
-		
+
 		$("#tv_history_filter").focus()
 	})
 }
@@ -12637,7 +12637,7 @@ function show_radio_history(filter=false)
 			$("#radio_history_filter").val(filter)
 			do_radio_history_filter()
 		}
-		
+
 		$("#radio_history_filter").focus()
 	})
 }
@@ -12645,7 +12645,7 @@ function show_radio_history(filter=false)
 function do_media_history_filter(type)
 {
 	var filter = $(`#${type}_filter`).val().trim().toLowerCase()
-	var container = $(`#${type}_container`)	
+	var container = $(`#${type}_container`)
 
 	if(filter !== "")
 	{
@@ -12656,7 +12656,7 @@ function do_media_history_filter(type)
 
 		else if(type === "tv_history")
 		{
-			tv_history_filtered = true	
+			tv_history_filtered = true
 		}
 
 		else if(type === "radio_history")
@@ -12693,7 +12693,7 @@ function do_media_history_filter(type)
 
 		else if(type === "tv_history")
 		{
-			tv_history_filtered = false	
+			tv_history_filtered = false
 		}
 
 		else if(type === "radio_history")
@@ -12712,45 +12712,45 @@ function do_media_history_filter(type)
 	$(`#Msg-content-container-${type}`).scrollTop(0)
 }
 
-var image_history_filter_timer = (function() 
+var image_history_filter_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			do_image_history_filter()
 		}, filter_delay)
 	}
 })()
 
-var tv_history_filter_timer = (function() 
+var tv_history_filter_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			do_tv_history_filter()
 		}, filter_delay)
 	}
 })()
 
-var radio_history_filter_timer = (function() 
+var radio_history_filter_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			do_radio_history_filter()
 		}, filter_delay)
@@ -12777,17 +12777,17 @@ function reset_radio_history_filter()
 
 function do_image_history_filter()
 {
-	do_media_history_filter("image_history")	
+	do_media_history_filter("image_history")
 }
 
 function do_tv_history_filter()
 {
-	do_media_history_filter("tv_history")	
+	do_media_history_filter("tv_history")
 }
 
 function do_radio_history_filter()
 {
-	do_media_history_filter("radio_history")	
+	do_media_history_filter("radio_history")
 }
 
 function do_test()
@@ -12853,16 +12853,16 @@ function maximize_tv()
 
 function font_check()
 {
-	document.fonts.ready.then(function () 
+	document.fonts.ready.then(function ()
 	{
 		update_chat_scrollbar()
 		goto_bottom(true, false)
-	})	
+	})
 }
 
 function start_generic_uname_click_events()
 {
-	$("body").on("click", ".generic_uname", function() 
+	$("body").on("click", ".generic_uname", function()
 	{
 		var uname = $(this).text()
 		show_profile(uname, get_user_by_username(uname).profile_image)
@@ -12941,8 +12941,8 @@ function setup_modal_image()
 		update_modal_scrollbar("image")
 	})
 
-	img.on("error", function() 
-	{		
+	img.on("error", function()
+	{
 		$("#modal_image_spinner").css("display", "none")
 		$("#modal_image").css("display", "none")
 		$("#modal_image_error").css("display", "block")
@@ -12990,33 +12990,33 @@ function setup_modal_image()
 	$("#modal_image_header_next").click(function(e)
 	{
 		modal_image_next_click()
-	})	
+	})
 }
 
-var modal_image_prev_wheel_timer = (function() 
+var modal_image_prev_wheel_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			modal_image_prev_click()
 		}, wheel_delay)
 	}
 })()
 
-var modal_image_next_wheel_timer = (function() 
+var modal_image_next_wheel_timer = (function()
 {
-	var timer 
+	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			modal_image_next_click()
 		}, wheel_delay)
@@ -13049,7 +13049,7 @@ function request_slice_upload(data)
 	}
 
 	file.percentage = Math.floor(((upload_slice_size * data.current_slice) / file.size) * 100)
-	
+
 	file.reader.readAsArrayBuffer(slice)
 
 	change_upload_status(file, `${file.percentage}%`)
@@ -13084,7 +13084,7 @@ function verify_email(code)
 		feedback("Empty code")
 		return
 	}
-	
+
 	if(code.length > email_change_code_max_length)
 	{
 		feedback("Invalid code")
@@ -13100,7 +13100,7 @@ function start_locked_mode()
 	$("#footer").css("display", "none")
 
 	show_locked_menu()
-	make_main_container_visible()	
+	make_main_container_visible()
 }
 
 function show_locked_menu()
@@ -13172,11 +13172,11 @@ function setup_chat()
 	if(get_setting("custom_scrollbars"))
 	{
 		start_chat_scrollbar()
-	}	
+	}
 }
 
 function execute_javascript(arg, show_result=true)
-{ 
+{
 	try
 	{
 		var r = eval(arg)
@@ -13201,7 +13201,7 @@ function execute_javascript(arg, show_result=true)
 			r = "Done"
 		}
 	}
-	
+
 	catch(err)
 	{
 		var r = "Error"
@@ -13222,11 +13222,11 @@ function execute_javascript(arg, show_result=true)
 
 function make_safe(args={})
 {
-	var def_args = 
+	var def_args =
 	{
-		text: "", 
+		text: "",
 		html: false,
-		urlize: true, 
+		urlize: true,
 		onclick: false,
 		html_unselectable: true,
 		title: false
@@ -13242,7 +13242,7 @@ function make_safe(args={})
 	{
 		c_text_classes += " pointer action"
 	}
-	
+
 	c.append(`<div class='${c_text_classes}'></div>`)
 
 	var c_text = c.find(".msg_info_text").eq(0)
@@ -13294,7 +13294,7 @@ function activity_above()
 
 		if(uname && uname === username)
 		{
-			same_uname = true	
+			same_uname = true
 		}
 
 		if(same_uname || $(this).data("highlighted"))
@@ -13333,7 +13333,7 @@ function activity_below()
 
 		if(uname && uname === username)
 		{
-			same_uname = true	
+			same_uname = true
 		}
 
 		if(same_uname || $(this).data("highlighted"))
@@ -13354,7 +13354,7 @@ function activity_below()
 	if(!step)
 	{
 		goto_bottom(true)
-	}	
+	}
 }
 
 function user_is_ignored(uname)
@@ -13382,7 +13382,7 @@ function show_global_settings(filter=false)
 			do_settings_filter("global_settings")
 		}
 
-		$("#global_settings_filter").focus()		
+		$("#global_settings_filter").focus()
 	})
 }
 
@@ -13414,14 +13414,14 @@ function create_room_settings_overriders()
 {
 	var s = `
 	<div class='room_settings_overrider_container'>
-		<input type='checkbox' class='room_settings_overrider'> 
+		<input type='checkbox' class='room_settings_overrider'>
 		Override
 	</div>`
 
 	$("#room_settings_container").find(".settings_item").each(function()
 	{
 		$(this).prepend(s)
-	})	
+	})
 }
 
 function set_room_settings_overriders()
@@ -13440,7 +13440,7 @@ function set_room_settings_overriders()
 		$(this).prop("checked", override)
 
 		room_item_fade(override, item)
-	})	
+	})
 }
 
 function start_room_settings_overriders()
@@ -13517,7 +13517,7 @@ function room_item_fade(override, item)
 	else
 	{
 		item.addClass("faded")
-	}	
+	}
 }
 
 function setup_setting_elements(type)
@@ -13584,7 +13584,7 @@ function active_settings(name)
 	else
 	{
 		return "global_settings"
-	}	
+	}
 }
 
 function setup_togglers(type)
@@ -13611,7 +13611,7 @@ function setup_togglers(type)
 			}
 
 			update_modal_scrollbar(type)
-		})	
+		})
 	})
 }
 
@@ -13628,14 +13628,14 @@ function close_togglers(type)
 
 			$(this).html(`+ ${$(this).html().substring(2)}`)
 		}
-	})	
-	
+	})
+
 	update_modal_scrollbar(type)
 }
 
 function show_top_scroller()
 {
-	$('#top_scroller_container').css('visibility', 'visible')	
+	$('#top_scroller_container').css('visibility', 'visible')
 }
 
 function hide_top_scroller()
@@ -13645,7 +13645,7 @@ function hide_top_scroller()
 
 function show_bottom_scroller()
 {
-	$('#bottom_scroller_container').css('visibility', 'visible')	
+	$('#bottom_scroller_container').css('visibility', 'visible')
 }
 
 function hide_bottom_scroller()
@@ -13727,30 +13727,30 @@ function do_room_settings_filter()
 	do_settings_filter("room_settings")
 }
 
-var global_settings_filter_timer = (function() 
+var global_settings_filter_timer = (function()
 {
 	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			do_global_settings_filter()
 		}, filter_delay)
 	}
 })()
 
-var room_settings_filter_timer = (function() 
+var room_settings_filter_timer = (function()
 {
 	var timer
 
-	return function() 
+	return function()
 	{
 		clearTimeout(timer)
 
-		timer = setTimeout(function() 
+		timer = setTimeout(function()
 		{
 			do_room_settings_filter()
 		}, filter_delay)
@@ -13778,7 +13778,7 @@ function set_room_tv_enabled(what)
 function set_room_radio_enabled(what)
 {
 	room_radio_enabled = what
-	config_admin_room_radio_enabled()	
+	config_admin_room_radio_enabled()
 }
 
 function set_background_mode(what)
@@ -13814,7 +13814,7 @@ function needs_confirm(func)
 	if(r)
 	{
 		window[func]()
-	}	
+	}
 }
 
 function is_admin_or_op(rol=false)
@@ -13846,7 +13846,7 @@ function show_import_settings()
 	<div class='container_22'>
 		Paste code generated by Export Settings
 		<div class='spacer3'></div>
-		<textarea id='import_settings_textarea' rows=5 class='setting_textarea'></textarea>		
+		<textarea id='import_settings_textarea' rows=5 class='setting_textarea'></textarea>
 		<div class='spacer3'></div>
 		<div class='menu_item inline action pointer' id='import_settings_apply'>Apply</div>
 	</div>
@@ -13861,7 +13861,7 @@ function show_import_settings()
 		})
 
 		imp = true
-	})	
+	})
 }
 
 function process_imported_settings()
@@ -13892,12 +13892,12 @@ function show_export_settings()
 	var code = `var gsettings = ${gsettings}; save_local_storage(ls_global_settings, gsettings); var rsettings = ${rsettings}; save_local_storage(ls_room_settings, rsettings); refresh()`
 	var code2 = `var gsettings = ${gsettings}; save_local_storage(ls_global_settings, gsettings); refresh()`
 	var code3 = `var rsettings = ${rsettings}; save_local_storage(ls_room_settings, rsettings); refresh()`
-	
+
 	var s = `
 	<div class='container_22'>
-		In case you want to export your settings from one browser to another. 
+		In case you want to export your settings from one browser to another.
 		<div class='spacer3'></div>
-		You can import either Global Settings, Room Settings, or both. 
+		You can import either Global Settings, Room Settings, or both.
 		<div class='spacer3'></div>
 		Room Settings copies every room's settings, not just the current one.
 		<div class='spacer3'></div>
@@ -13916,7 +13916,7 @@ function show_export_settings()
 		<div class='spacer3'></div>
 		(c) Use this code if you only want to import <span class='bold'>Room</span> Settings
 		<div class='spacer3'></div>
-		<textarea rows=5 class='setting_textarea'>${code3}</textarea>		
+		<textarea rows=5 class='setting_textarea'>${code3}</textarea>
 	</div>
 	`
 
@@ -13925,7 +13925,7 @@ function show_export_settings()
 
 function feedback(msg, data=false)
 {
-	var obj = 
+	var obj =
 	{
 		brk: '*',
 		msg: msg
@@ -13941,10 +13941,10 @@ function feedback(msg, data=false)
 
 function public_feedback(msg, data=false)
 {
-	var obj = 
+	var obj =
 	{
-		brk: '~', 
-		save: true, 
+		brk: '~',
+		save: true,
 		msg: msg
 	}
 
@@ -14018,7 +14018,7 @@ function start_soundcloud()
 
 	catch(err)
 	{
-		console.error("Soundcloud failed to load")		
+		console.error("Soundcloud failed to load")
 	}
 }
 
@@ -14042,7 +14042,7 @@ function change_text_color_mode(mode)
 		return false
 	}
 
-	socket_emit("change_text_color_mode", {mode:mode})	
+	socket_emit("change_text_color_mode", {mode:mode})
 }
 
 function announce_text_color_mode_change(data)
@@ -14055,7 +14055,7 @@ function announce_text_color_mode_change(data)
 function set_text_color_mode(mode)
 {
 	text_color_mode = mode
-	config_admin_text_color_mode()	
+	config_admin_text_color_mode()
 }
 
 function change_text_color(color)
@@ -14076,7 +14076,7 @@ function change_text_color(color)
 	if(!color.startsWith("rgb("))
 	{
 		return false
-	}	
+	}
 
 	if(color.length === 0)
 	{
@@ -14101,7 +14101,7 @@ function announce_text_color_change(data)
 function set_text_color(color)
 {
 	text_color = color
-	config_admin_text_color()	
+	config_admin_text_color()
 }
 
 function conditional_quotes(s)
@@ -14113,7 +14113,7 @@ function conditional_quotes(s)
 
 	else
 	{
-		return `"${s}"` 		
+		return `"${s}"`
 	}
 }
 
@@ -14160,5 +14160,5 @@ function setup_footer()
 		{
 			$("#image_file_picker").click()
 		}
-	})	
+	})
 }
