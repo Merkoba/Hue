@@ -1743,11 +1743,7 @@ function userjoin(data)
 			if(data.username !== username)
 			{
 				alert_title()
-
-				if(get_setting("beep_on_user_joins"))
-				{
-					sound_notify("join")
-				}
+				sound_notify("join")
 			}
 		}
 	}
@@ -4441,21 +4437,13 @@ function update_chat(args={})
 		if(highlighted)
 		{
 			alert_title2()
-
-			if(get_setting("beep_on_highlights"))
-			{
-				sound_notify("highlight")
-			}
+			sound_notify("highlight")
 		}
 
 		else
 		{
 			alert_title()
-
-			if(get_setting("beep_on_messages"))
-			{
-				sound_notify("message")
-			}
+			sound_notify("message")
 		}
 	}
 }
@@ -4756,11 +4744,7 @@ function change(args={})
 	if(args.notify && setter !== username)
 	{
 		alert_title()
-
-		if(get_setting("beep_on_media_change"))
-		{
-			sound_notify("media_change")
-		}
+		sound_notify("media_change")
 	}
 }
 
@@ -4998,11 +4982,7 @@ function chat_announce(args={})
 	if(args.highlight)
 	{
 		alert_title2()
-
-		if(get_setting("beep_on_highlights"))
-		{
-			sound_notify("highlight")
-		}
+		sound_notify("highlight")
 	}
 }
 
@@ -6727,25 +6707,32 @@ function sound_notify(type)
 {
 	if(started && !app_focused)
 	{
-		if(afk)
+		if(type === "message")
 		{
-			if(type === "message")
+			if(!get_setting("beep_on_messages"))
+			{
+				return false
+			}
+
+			if(afk)
 			{
 				if(get_setting("afk_disable_messages_beep"))
 				{
 					return false
-				}
+				}				
 			}
 
-			else if(type === "highlight")
+			var sound = "pup"
+		}
+
+		else if(type === "media_change")
+		{
+			if(!get_setting("beep_on_media_change"))
 			{
-				if(get_setting("afk_disable_highlights_beep"))
-				{
-					return false
-				}
+				return false
 			}
 
-			else if(type === "media_change")
+			if(afk)
 			{
 				if(get_setting("afk_disable_media_change_beep"))
 				{
@@ -6753,28 +6740,43 @@ function sound_notify(type)
 				}
 			}
 
-			else if(type === "join")
+			var sound = "pup"
+		}
+
+		else if(type === "highlight")
+		{
+			if(!get_setting("beep_on_highlights"))
+			{
+				return false
+			}
+
+			if(afk)
+			{
+				if(get_setting("afk_disable_highlights_beep"))
+				{
+					return false
+				}
+			}
+
+			var sound = "highlight"
+		}
+
+		else if(type === "join")
+		{
+			if(!get_setting("beep_on_user_joins"))
+			{
+				return false
+			}
+
+			if(afk)
 			{
 				if(get_setting("afk_disable_joins_beep"))
 				{
 					return false
 				}
 			}
-		}
 
-		if(type === "message" || type === "media_change")
-		{
-			var what = "pup"
-		}
-
-		else if(type === "highlight")
-		{
-			var what = "highlight"
-		}
-
-		else if(type === "join")
-		{
-			var what = "join"
+			var sound = "join"
 		}
 
 		else
@@ -6782,7 +6784,7 @@ function sound_notify(type)
 			return false
 		}
 
-		play_audio(what)
+		play_audio(sound)
 	}
 }
 
@@ -12360,7 +12362,6 @@ function popup_message_received(data, type="user", announce=true)
 	}
 	
 	alert_title2()
-
 	sound_notify("highlight")
 }
 
