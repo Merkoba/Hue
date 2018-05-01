@@ -2431,26 +2431,12 @@ function start_roomlist_click_events()
 {
 	$("#public_roomlist_container").on("click", ".roomlist_item_inner", function()
 	{
-		var id = $(this).data("room_id")
-
-		if(id === main_room_id)
-		{
-			id = "/"
-		}
-
-		show_open_room(id)
+		show_open_room($(this).data("room_id"))
 	})
 
 	$("#visited_roomlist_container").on("click", ".roomlist_item_inner", function()
 	{
-		var id = $(this).data("room_id")
-
-		if(id === main_room_id)
-		{
-			id = "/"
-		}
-
-		show_open_room(id)
+		show_open_room($(this).data("room_id"))
 	})
 }
 
@@ -2931,6 +2917,11 @@ function create_room_submit()
 
 function show_open_room(id)
 {
+	if(id === main_room_id)
+	{
+		id = "/"
+	}
+
 	msg_info2.show(["Open Room", template_open_room({id:id})], function()
 	{
 		orb = true
@@ -13137,9 +13128,7 @@ function goto_room_action()
 		return false
 	}
 
-	goto_url(id, "tab")
-
-	msg_info2.close()
+	show_open_room(id)
 }
 
 function confirm_reset_settings(type)
