@@ -7498,13 +7498,13 @@ function announce_privacy_change(data)
 	if(is_public)
 	{
 		var s = `${data.username} made the room public`
-		s += ". The room won't appear in the public room list"
+		s += ". The room will appear in the public room list"
 	}
 
 	else
 	{
 		var s = `${data.username} made the room private`
-		s += ". The room will appear in the public room list"
+		s += ". The room won't appear in the public room list"
 	}
 
 	public_feedback(s)

@@ -200,7 +200,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.hue_typing_counter = 0
 	}
 
-	handler.public.join_room = function(socket, data)
+	handler.public.join_room = async function(socket, data)
 	{
 		if(socket.hue_joining || socket.hue_joined)
 		{
@@ -260,7 +260,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(data.alternative)
 		{
-			db_manager.check_password(data.email, data.password,
+			var ans = await db_manager.check_password(data.email, data.password,
 			{
 				email: true,
 				username: true,
@@ -268,53 +268,30 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				registration_date: true
 			})
 
-			.then(ans =>
+			if(!ans.valid)
 			{
-				if(!ans.valid)
-				{
-					return handler.do_disconnect(socket)
-				}
-
-				var userinfo = ans.user
-
-				socket.hue_user_id = userinfo._id.toString()
-
-				db_manager.get_room({_id:data.room_id}, {})
-
-				.then(info =>
-				{
-					if(!info)
-					{
-						return handler.do_disconnect(socket)
-					}
-
-					handler.do_join(socket, info, userinfo)
-
-					db_manager.save_visited_room(socket.hue_user_id, data.room_id)
-
-					.catch(err =>
-					{
-						logger.log_error(err)
-					})
-				})
-
-				.catch(err =>
-				{
-					logger.log_error(err)
-					return handler.do_disconnect(socket)
-				})
-			})
-
-			.catch(err =>
-			{
-				logger.log_error(err)
 				return handler.do_disconnect(socket)
-			})
+			}
+
+			var userinfo = ans.user
+
+			socket.hue_user_id = userinfo._id.toString()
+
+			var info = await db_manager.get_room({_id:data.room_id}, {})
+
+			if(!info)
+			{
+				return handler.do_disconnect(socket)
+			}
+
+			handler.do_join(socket, info, userinfo)
+
+			db_manager.save_visited_room(socket.hue_user_id, data.room_id)
 		}
 
 		else
 		{
-			jwt.verify(data.token, sconfig.jwt_secret, function(err, decoded)
+			jwt.verify(data.token, sconfig.jwt_secret, async function(err, decoded)
 			{
 				if(err)
 				{
@@ -335,52 +312,29 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					socket.hue_user_id = data.user_id
 
-					db_manager.get_room({_id:data.room_id}, {})
+					var info = await db_manager.get_room({_id:data.room_id}, {})
 
-					.then(info =>
+					if(!info)
 					{
-						if(!info)
-						{
-							return handler.do_disconnect(socket)
-						}
-
-						db_manager.get_user({_id:socket.hue_user_id},
-						{
-							email: true,
-							username: true,
-							profile_image: true,
-							registration_date: true
-						})
-
-						.then(userinfo =>
-						{
-							if(!userinfo)
-							{
-								return handler.do_disconnect(socket)
-							}
-
-							handler.do_join(socket, info, userinfo)
-
-							db_manager.save_visited_room(socket.hue_user_id, data.room_id)
-
-							.catch(err =>
-							{
-								logger.log_error(err)
-							})
-						})
-
-						.catch(err =>
-						{
-							logger.log_error(err)
-							return handler.do_disconnect(socket)
-						})
-					})
-
-					.catch(err =>
-					{
-						logger.log_error(err)
 						return handler.do_disconnect(socket)
+					}
+
+					var userinfo = await db_manager.get_user({_id:socket.hue_user_id},
+					{
+						email: true,
+						username: true,
+						profile_image: true,
+						registration_date: true
 					})
+
+					if(!userinfo)
+					{
+						return handler.do_disconnect(socket)
+					}
+
+					handler.do_join(socket, info, userinfo)
+
+					db_manager.save_visited_room(socket.hue_user_id, data.room_id)
 				}
 			})
 		}
@@ -607,7 +561,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.public.change_topic = function(socket, data)
+	handler.public.change_topic = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
@@ -634,46 +588,33 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.hue_room_id}, {topic:true})
+		var info = await db_manager.get_room({_id:socket.hue_room_id}, {topic:true})
 
-		.then(info =>
+		var new_topic = data.topic
+
+		if(new_topic !== info.topic)
 		{
-			var new_topic = data.topic
+			info.topic = new_topic
+			info.topic_setter = socket.hue_username
+			info.topic_date = Date.now()
 
-			if(new_topic !== info.topic)
+			handler.room_emit(socket, 'topic_change',
 			{
-				info.topic = new_topic
-				info.topic_setter = socket.hue_username
-				info.topic_date = Date.now()
+				topic: info.topic,
+				topic_setter: info.topic_setter,
+				topic_date: info.topic_date
+			})
 
-				handler.room_emit(socket, 'topic_change',
-				{
-					topic: info.topic,
-					topic_setter: info.topic_setter,
-					topic_date: info.topic_date
-				})
-
-				db_manager.update_room(info._id,
-				{
-					topic: info.topic,
-					topic_setter: info.topic_setter,
-					topic_date: info.topic_date
-				})
-
-				.catch(err =>
-				{
-					logger.log_error(err)
-				})
-			}
-		})
-
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
+			db_manager.update_room(info._id,
+			{
+				topic: info.topic,
+				topic_setter: info.topic_setter,
+				topic_date: info.topic_date
+			})
+		}
 	}
 
-	handler.public.change_room_name = function(socket, data)
+	handler.public.change_room_name = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
@@ -690,36 +631,23 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.hue_room_id}, {name:true})
+		var info = await db_manager.get_room({_id:socket.hue_room_id}, {name:true})
 
-		.then(info =>
+		if(info.name !== data.name)
 		{
-			if(info.name !== data.name)
+			info.name = data.name
+
+			handler.room_emit(socket, 'room_name_changed',
 			{
-				info.name = data.name
+				name: info.name,
+				username: socket.hue_username
+			})
 
-				handler.room_emit(socket, 'room_name_changed',
-				{
-					name: info.name,
-					username: socket.hue_username
-				})
-
-				db_manager.update_room(info._id,
-				{
-					name: info.name
-				})
-
-				.catch(err =>
-				{
-					logger.log_error(err)
-				})
-			}
-		})
-
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
+			db_manager.update_room(info._id,
+			{
+				name: info.name
+			})
+		}
 	}
 
 	handler.public.roomlist = function(socket, data)
@@ -746,7 +674,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.public.create_room = function(socket, data)
+	handler.public.create_room = async function(socket, data)
 	{
 		if(data.name.length === 0 || data.name.length > config.max_room_name_length)
 		{
@@ -775,31 +703,18 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			var force = false
 		}
 
-		db_manager.user_create_room(data, force)
+		var ans = await db_manager.user_create_room(data, force)
 
-		.then(ans =>
+		if(ans === "wait")
 		{
-			if(ans === "wait")
-			{
-				handler.user_emit(socket, 'create_room_wait', {})
-				return
-			}
+			handler.user_emit(socket, 'create_room_wait', {})
+			return
+		}
 
-			handler.user_emit(socket, 'room_created', {id:ans._id.toString()})
-		})
-
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
-
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
+		handler.user_emit(socket, 'room_created', {id:ans._id.toString()})
 	}
 
-	handler.public.change_role = function(socket, data)
+	handler.public.change_role = async function(socket, data)
 	{
 		if(!socket.hue_superuser && (!handler.is_admin_or_op(socket)))
 		{
@@ -831,202 +746,155 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
+		var info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
 
-		.then(info =>
+		var userinfo = await db_manager.get_user({username:data.username}, {username:true})
+
+		if(!userinfo)
 		{
-			db_manager.get_user({username:data.username}, {username:true})
+			handler.user_emit(socket, 'user_not_found', {})
+			return false
+		}
 
-			.then(userinfo =>
+		var id = userinfo._id.toString()
+
+		var current_role = info.keys[id]
+
+		if(!socket.hue_superuser)
+		{
+			if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
 			{
-				if(!userinfo)
+				handler.user_emit(socket, 'forbiddenuser', {})
+				return false
+			}
+		}
+
+		if(current_role === data.role || (current_role === undefined && data.role === "voice1"))
+		{
+			handler.user_emit(socket, 'isalready', {what:data.role, who:data.username})
+			return false
+		}
+
+		var sockets = handler.get_user_sockets_per_room(socket.hue_room_id, id)
+
+		var last_socc = false
+
+		for(var socc of sockets)
+		{
+			if(socc.hue_superuser)
+			{
+				if(socket.hue_username !== socc.hue_username && socc.hue_role === "admin")
 				{
-					handler.user_emit(socket, 'user_not_found', {})
+					handler.user_emit(socket, 'forbiddenuser', {})
 					return false
 				}
+			}
 
-				var id = userinfo._id.toString()
+			socc.hue_role = data.role
+			last_socc = socc
+		}
 
-				var current_role = info.keys[id]
-
-				if(!socket.hue_superuser)
-				{
-					if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
-					{
-						handler.user_emit(socket, 'forbiddenuser', {})
-						return false
-					}
-				}
-
-				if(current_role === data.role || (current_role === undefined && data.role === "voice1"))
-				{
-					handler.user_emit(socket, 'isalready', {what:data.role, who:data.username})
-					return false
-				}
-
-				var sockets = handler.get_user_sockets_per_room(socket.hue_room_id, id)
-
-				var last_socc = false
-
-				for(var socc of sockets)
-				{
-					if(socc.hue_superuser)
-					{
-						if(socket.hue_username !== socc.hue_username && socc.hue_role === "admin")
-						{
-							handler.user_emit(socket, 'forbiddenuser', {})
-							return false
-						}
-					}
-
-					socc.hue_role = data.role
-					last_socc = socc
-				}
-
-				if(last_socc)
-				{
-					handler.update_user_in_userlist(last_socc)
-				}
-
-				info.keys[id] = data.role
-
-				db_manager.update_room(info._id, {keys:info.keys})
-
-				.catch(err =>
-				{
-					logger.log_error(err)
-				})
-
-				handler.room_emit(socket, 'announce_role_change',
-				{
-					username1: socket.hue_username,
-					username2: data.username,
-					role: data.role
-				})
-			})
-
-			.catch(err =>
-			{
-				logger.log_error(err)
-			})
-		})
-
-		.catch(err =>
+		if(last_socc)
 		{
-			logger.log_error(err)
+			handler.update_user_in_userlist(last_socc)
+		}
+
+		info.keys[id] = data.role
+
+		db_manager.update_room(info._id, {keys:info.keys})
+
+		handler.room_emit(socket, 'announce_role_change',
+		{
+			username1: socket.hue_username,
+			username2: data.username,
+			role: data.role
 		})
 	}
 
-	handler.public.reset_voices = function(socket, data)
+	handler.public.reset_voices = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
+		var info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
 
-		.then(info =>
+		var removed = false
+
+		for(var key in info.keys)
 		{
-			var removed = false
-
-			for(var key in info.keys)
+			if(info.keys[key].startsWith("voice") && info.keys[key] !== "voice1")
 			{
-				if(info.keys[key].startsWith("voice") && info.keys[key] !== "voice1")
-				{
-					delete info.keys[key]
-					removed = true
-				}
+				delete info.keys[key]
+				removed = true
 			}
+		}
 
-			if(!removed)
-			{
-				handler.user_emit(socket, 'novoicestoreset', {})
-				return false
-			}
-
-			var sockets = handler.get_room_sockets(socket.hue_room_id)
-
-			for(var socc of sockets)
-			{
-				if(socc.hue_role.startsWith("voice") && socc.hue_role !== "voice1")
-				{
-					socc.hue_role = 'voice1'
-
-					handler.update_user_in_userlist(socc)
-				}
-			}
-
-			db_manager.update_room(info._id, {keys:info.keys})
-
-			.catch(err =>
-			{
-				logger.log_error(err)
-			})
-
-			handler.room_emit(socket, 'voices_resetted', {username:socket.hue_username})
-		})
-
-		.catch(err =>
+		if(!removed)
 		{
-			logger.log_error(err)
-		})
+			handler.user_emit(socket, 'novoicestoreset', {})
+			return false
+		}
+
+		var sockets = handler.get_room_sockets(socket.hue_room_id)
+
+		for(var socc of sockets)
+		{
+			if(socc.hue_role.startsWith("voice") && socc.hue_role !== "voice1")
+			{
+				socc.hue_role = 'voice1'
+
+				handler.update_user_in_userlist(socc)
+			}
+		}
+
+		db_manager.update_room(info._id, {keys:info.keys})
+
+		handler.room_emit(socket, 'voices_resetted', {username:socket.hue_username})
 	}
 
-	handler.public.remove_ops = function(socket, data)
+	handler.public.remove_ops = async function(socket, data)
 	{
 		if(socket.hue_role !== 'admin')
 		{
 			return handler.get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
+		var info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
 
-		.then(info =>
+		var removed = false
+
+		for(var key in info.keys)
 		{
-			var removed = false
-
-			for(var key in info.keys)
+			if(info.keys[key] === "op")
 			{
-				if(info.keys[key] === "op")
-				{
-					delete info.keys[key]
-					removed = true
-				}
+				delete info.keys[key]
+				removed = true
 			}
+		}
 
-			if(!removed)
-			{
-				handler.user_emit(socket, 'noopstoremove', {})
-				return false
-			}
-
-			var sockets = handler.get_room_sockets(socket.hue_room_id)
-
-			for(var socc of sockets)
-			{
-				if(socc.hue_role === 'op')
-				{
-					socc.hue_role = ''
-
-					handler.update_user_in_userlist(socc)
-				}
-			}
-
-			handler.room_emit(socket, 'announce_removedops', {username:socket.hue_username})
-
-			db_manager.update_room(info._id, {keys:info.keys})
-
-			.catch(err =>
-			{
-				logger.log_error(err)
-			})
-		})
-
-		.catch(err =>
+		if(!removed)
 		{
-			logger.log_error(err)
-		})
+			handler.user_emit(socket, 'noopstoremove', {})
+			return false
+		}
+
+		var sockets = handler.get_room_sockets(socket.hue_room_id)
+
+		for(var socc of sockets)
+		{
+			if(socc.hue_role === 'op')
+			{
+				socc.hue_role = ''
+
+				handler.update_user_in_userlist(socc)
+			}
+		}
+
+		handler.room_emit(socket, 'announce_removedops', {username:socket.hue_username})
+
+		db_manager.update_room(info._id, {keys:info.keys})
 	}
 
 	handler.public.kick = function(socket, data)
@@ -1078,7 +946,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.public.ban = function(socket, data)
+	handler.public.ban = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
@@ -1100,88 +968,67 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.hue_room_id}, {bans:true, keys:true})
+		var info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:true, keys:true})
 
-		.then(info =>
+		var userinfo = await db_manager.get_user({username:data.username}, {username:true})
+
+		if(!userinfo)
 		{
-			db_manager.get_user({username:data.username}, {username:true})
+			handler.user_emit(socket, 'user_not_found', {})
+			return false
+		}
 
-			.then(userinfo =>
+		var id = userinfo._id.toString()
+
+		var current_role = info.keys[id]
+
+		if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
+		{
+			handler.user_emit(socket, 'forbiddenuser', {})
+			return false
+		}
+
+		if(info.bans.includes(id))
+		{
+			handler.user_emit(socket, 'user_already_banned', {})
+
+			return false
+		}
+
+		var sockets = handler.get_user_sockets_per_room(socket.hue_room_id, id)
+
+		if(sockets.length > 0)
+		{
+			for(var socc of sockets)
 			{
-				if(!userinfo)
-				{
-					handler.user_emit(socket, 'user_not_found', {})
-					return false
-				}
-
-				var id = userinfo._id.toString()
-
-				var current_role = info.keys[id]
-
-				if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
+				if(socc.hue_superuser)
 				{
 					handler.user_emit(socket, 'forbiddenuser', {})
 					return false
 				}
 
-				if(info.bans.includes(id))
-				{
-					handler.user_emit(socket, 'user_already_banned', {})
+				socc.hue_role = ''
+				socc.hue_banned = true
+				socc.hue_info1 = socket.hue_username
+				handler.get_out(socc)
+			}
+		}
 
-					return false
-				}
-
-				var sockets = handler.get_user_sockets_per_room(socket.hue_room_id, id)
-
-				if(sockets.length > 0)
-				{
-					for(var socc of sockets)
-					{
-						if(socc.hue_superuser)
-						{
-							handler.user_emit(socket, 'forbiddenuser', {})
-							return false
-						}
-
-						socc.hue_role = ''
-						socc.hue_banned = true
-						socc.hue_info1 = socket.hue_username
-						handler.get_out(socc)
-					}
-				}
-
-				else
-				{
-					handler.room_emit(socket, 'announce_ban',
-					{
-						username1: socket.hue_username,
-						username2: data.username
-					})
-				}
-
-				info.bans.push(id)
-
-				db_manager.update_room(info._id, {bans:info.bans})
-
-				.catch(err =>
-				{
-					logger.log_error(err)
-				})
-			})
-
-			.catch(err =>
-			{
-				logger.log_error(err)
-			})
-		})
-
-		.catch(err =>
+		else
 		{
-			logger.log_error(err)
-		})
+			handler.room_emit(socket, 'announce_ban',
+			{
+				username1: socket.hue_username,
+				username2: data.username
+			})
+		}
+
+		info.bans.push(id)
+
+		db_manager.update_room(info._id, {bans:info.bans})
 	}
 
-	handler.public.unban = function(socket, data)
+	handler.public.unban = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
@@ -1203,132 +1050,90 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.hue_room_id}, {bans:true, keys:true})
+		var info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:true, keys:true})
 
-		.then(info =>
+		var userinfo = await db_manager.get_user({username:data.username}, {username:true})
+
+		if(!userinfo)
 		{
-			db_manager.get_user({username:data.username}, {username:true})
+			handler.user_emit(socket, 'user_not_found', {})
+			return false
+		}
 
-			.then(userinfo =>
-			{
-				if(!userinfo)
-				{
-					handler.user_emit(socket, 'user_not_found', {})
-					return false
-				}
+		var id = userinfo._id.toString()
 
-				var id = userinfo._id.toString()
-
-				if(!info.bans.includes(id))
-				{
-					handler.user_emit(socket, 'user_already_unbanned', {})
-
-					return false
-				}
-
-				for(var i=0; i<info.bans.length; i++)
-				{
-					if(info.bans[i] === id)
-					{
-						info.bans.splice(i, 1)
-						break
-					}
-				}
-
-				db_manager.update_room(info._id, {bans:info.bans})
-
-				.catch(err =>
-				{
-					logger.log_error(err)
-				})
-
-				handler.room_emit(socket, 'announce_unban',
-				{
-					username1: socket.hue_username,
-					username2: data.username
-				})
-			})
-
-			.catch(err =>
-			{
-				logger.log_error(err)
-			})
-		})
-
-		.catch(err =>
+		if(!info.bans.includes(id))
 		{
-			logger.log_error(err)
+			handler.user_emit(socket, 'user_already_unbanned', {})
+
+			return false
+		}
+
+		for(var i=0; i<info.bans.length; i++)
+		{
+			if(info.bans[i] === id)
+			{
+				info.bans.splice(i, 1)
+				break
+			}
+		}
+
+		db_manager.update_room(info._id, {bans:info.bans})
+
+		handler.room_emit(socket, 'announce_unban',
+		{
+			username1: socket.hue_username,
+			username2: data.username
 		})
 	}
 
-	handler.public.unban_all = function(socket, data)
+	handler.public.unban_all = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.hue_room_id}, {bans:true})
+		var info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:true})
 
-		.then(info =>
+		if(info.bans.length > 0)
 		{
-			if(info.bans.length > 0)
-			{
-				info.bans = []
+			info.bans = []
 
-				db_manager.update_room(info._id, {bans:info.bans})
+			db_manager.update_room(info._id, {bans:info.bans})
 
-				.catch(err =>
-				{
-					logger.log_error(err)
-				})
+			handler.room_emit(socket, 'announce_unban_all', {username:socket.hue_username})
+		}
 
-				handler.room_emit(socket, 'announce_unban_all', {username:socket.hue_username})
-			}
-
-			else
-			{
-				handler.user_emit(socket, 'nothingtounban', {})
-			}
-		})
-
-		.catch(err =>
+		else
 		{
-			logger.log_error(err)
-		})
+			handler.user_emit(socket, 'nothingtounban', {})
+		}
 	}
 
-	handler.public.get_banned_count = function(socket, data)
+	handler.public.get_banned_count = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.hue_room_id}, {bans:true})
+		var info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:true})
 
-		.then(info =>
+		if(info.bans === '')
 		{
-			if(info.bans === '')
-			{
-				var count = 0
-			}
+			var count = 0
+		}
 
-			else
-			{
-				var count = info.bans.length
-			}
-
-			handler.user_emit(socket, 'receive_banned_count', {count:count})
-		})
-
-		.catch(err =>
+		else
 		{
-			logger.log_error(err)
-		})
+			var count = info.bans.length
+		}
+
+		handler.user_emit(socket, 'receive_banned_count', {count:count})
 	}
 
-	handler.public.change_log = function(socket, data)
+	handler.public.change_log = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
@@ -1340,81 +1145,50 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		db_manager.get_room({_id:socket.hue_room_id}, {log:true})
+		var info = await db_manager.get_room({_id:socket.hue_room_id}, {log:true})
 
-		.then(info =>
+		if(info.log !== data.log)
 		{
-			if(info.log !== data.log)
+			if(!data.log)
 			{
-				if(!data.log)
-				{
-					rooms[socket.hue_room_id].log_messages = []
+				rooms[socket.hue_room_id].log_messages = []
 
-					db_manager.update_room(socket.hue_room_id, {log:data.log, log_messages:[]})
-
-					.catch(err =>
-					{
-						logger.log_error(err)
-					})
-				}
-
-				else
-				{
-					db_manager.update_room(socket.hue_room_id, {log:data.log})
-
-					.catch(err =>
-					{
-						logger.log_error(err)
-					})
-				}
-
-				rooms[socket.hue_room_id].log = data.log
-
-				handler.room_emit(socket, 'log_changed', {username:socket.hue_username, log:data.log})
+				db_manager.update_room(socket.hue_room_id, {log:data.log, log_messages:[]})
 			}
-		})
 
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
+			else
+			{
+				db_manager.update_room(socket.hue_room_id, {log:data.log})
+			}
+
+			rooms[socket.hue_room_id].log = data.log
+
+			handler.room_emit(socket, 'log_changed', {username:socket.hue_username, log:data.log})
+		}
 	}
 
-	handler.public.clear_log = function(socket, data)
+	handler.public.clear_log = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
 			return false
 		}
 
-		db_manager.get_room({_id:socket.hue_room_id}, {log_messages:true})
+		var info = await db_manager.get_room({_id:socket.hue_room_id}, {log_messages:true})
 
-		.then(info =>
+		if(info.log_messages.length > 0)
 		{
-			if(info.log_messages.length > 0)
-			{
-				rooms[socket.hue_room_id].log_messages = []
+			rooms[socket.hue_room_id].log_messages = []
 
-				db_manager.update_room(socket.hue_room_id, {log_messages:[]})
+			db_manager.update_room(socket.hue_room_id, {log_messages:[]})
 
-				.catch(err =>
-				{
-					logger.log_error(err)
-				})
+			handler.room_emit(socket, 'log_cleared', {username:socket.hue_username})
+		}
 
-				handler.room_emit(socket, 'log_cleared', {username:socket.hue_username})
-			}
-
-			else
-			{
-				handler.user_emit(socket, 'nothingtoclear', {})
-			}
-		})
-
-		.catch(err =>
+		else
 		{
-			logger.log_error(err)
-		})
+			handler.user_emit(socket, 'nothingtoclear', {})
+		}
 	}
 
 	handler.public.change_privacy = function(socket, data)
@@ -1431,15 +1205,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		db_manager.update_room(socket.hue_room_id, {public:data.what})
 
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
-
 		handler.room_emit(socket, 'privacy_change', {username:socket.hue_username, what:data.what})
 	}
 
-	handler.public.change_radio_source = function(socket, data)
+	handler.public.change_radio_source = async function(socket, data)
 	{
 		if(data.src === undefined)
 		{
@@ -1571,7 +1340,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else if(data.src === "restart" || data.src === "reset")
 		{
-			db_manager.get_room({_id:socket.hue_room_id},
+			var info = await db_manager.get_room({_id:socket.hue_room_id},
 			{
 				radio_type: true,
 				radio_source: true,
@@ -1580,22 +1349,14 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				radio_date: true
 			})
 
-			.then(info =>
+			handler.room_emit(socket, 'restarted_radio_source',
 			{
-				handler.room_emit(socket, 'restarted_radio_source',
-				{
-					radio_type: info.radio_type,
-					radio_source: info.radio_source,
-					radio_title: info.radio_title,
-					radio_setter: info.radio_setter,
-					radio_date: info.radio_date,
-					username: socket.hue_username
-				})
-			})
-
-			.catch(err =>
-			{
-				logger.log_error(err)
+				radio_type: info.radio_type,
+				radio_source: info.radio_source,
+				radio_title: info.radio_title,
+				radio_setter: info.radio_setter,
+				radio_date: info.radio_date,
+				username: socket.hue_username
 			})
 		}
 
@@ -1646,7 +1407,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.public.change_tv_source = function(socket, data)
+	handler.public.change_tv_source = async function(socket, data)
 	{
 		if(data.src === undefined)
 		{
@@ -1840,7 +1601,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else if(data.src === "restart" || data.src === "reset")
 		{
-			db_manager.get_room({_id:socket.hue_room_id},
+			var info = await db_manager.get_room({_id:socket.hue_room_id},
 			{
 				tv_type: true,
 				tv_source: true,
@@ -1849,22 +1610,14 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				tv_date: true
 			})
 
-			.then(info =>
+			handler.room_emit(socket, 'restarted_tv_source',
 			{
-				handler.room_emit(socket, 'restarted_tv_source',
-				{
-					tv_type: info.tv_type,
-					tv_source: info.tv_source,
-					tv_title: info.tv_title,
-					tv_setter: info.tv_setter,
-					tv_date: info.tv_date,
-					username: socket.hue_username
-				})
-			})
-
-			.catch(err =>
-			{
-				logger.log_error(err)
+				tv_type: info.tv_type,
+				tv_source: info.tv_source,
+				tv_title: info.tv_title,
+				tv_setter: info.tv_setter,
+				tv_date: info.tv_date,
+				username: socket.hue_username
 			})
 		}
 
@@ -1958,11 +1711,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			radio_date: radioinfo.radio_date
 		})
 
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
-
 		rooms[socket.hue_room_id].activity = true
 
 		if(rooms[socket.hue_room_id].log)
@@ -2025,11 +1773,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_date: tvinfo.tv_date
 		})
 
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
-
 		rooms[socket.hue_room_id].activity = true
 
 		if(rooms[socket.hue_room_id].log)
@@ -2051,7 +1794,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.public.change_username = function(socket, data)
+	handler.public.change_username = async function(socket, data)
 	{
 		if(data.username === undefined)
 		{
@@ -2075,39 +1818,31 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		var old_username = socket.hue_username
 
-		db_manager.change_username(socket.hue_user_id, data.username)
+		var done = await db_manager.change_username(socket.hue_user_id, data.username)
 
-		.then(done =>
+		if(done)
 		{
-			if(done)
+			for(var room_id of user_rooms[socket.hue_user_id])
 			{
-				for(var room_id of user_rooms[socket.hue_user_id])
+				for(var socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
 				{
-					for(var socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
-					{
-						socc.hue_username = data.username
-					}
-
-					handler.update_user_in_userlist(socket)
-
-					handler.room_emit(room_id, 'new_username',
-					{
-						username: data.username,
-						old_username: old_username
-					})
+					socc.hue_username = data.username
 				}
-			}
 
-			else
-			{
-				handler.user_emit(socket, 'username_already_exists', {username:data.username})
-			}
-		})
+				handler.update_user_in_userlist(socket)
 
-		.catch(err =>
+				handler.room_emit(room_id, 'new_username',
+				{
+					username: data.username,
+					old_username: old_username
+				})
+			}
+		}
+
+		else
 		{
-			logger.log_error(err)
-		})
+			handler.user_emit(socket, 'username_already_exists', {username:data.username})
+		}
 	}
 
 	handler.public.change_password = function(socket, data)
@@ -2133,15 +1868,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			password_date: Date.now()
 		})
 
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
-
 		handler.user_emit(socket, 'password_changed', {password:data.password})
 	}
 
-	handler.public.change_email = function(socket, data)
+	handler.public.change_email = async function(socket, data)
 	{
 		if(data.email === undefined)
 		{
@@ -2163,42 +1893,34 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		db_manager.change_email(socket.hue_user_id, data.email)
+		var ans = await db_manager.change_email(socket.hue_user_id, data.email)
 
-		.then(ans =>
+		if(ans.msg === "error")
 		{
-			if(ans.msg === "error")
-			{
-				handler.user_emit(socket, 'error_occurred', {})
-				return
-			}
+			handler.user_emit(socket, 'error_occurred', {})
+			return
+		}
 
-			else if(ans.msg === "duplicate")
-			{
-				handler.user_emit(socket, 'email_already_exists', {email:data.email})
-				return
-			}
-
-			else if(ans.msg === "wait")
-			{
-				handler.user_emit(socket, 'email_change_wait', {})
-				return
-			}
-
-			else if(ans.msg === "sent_code")
-			{
-				handler.user_emit(socket, 'email_change_code_sent', {email:data.email})
-				return
-			}
-		})
-
-		.catch(err =>
+		else if(ans.msg === "duplicate")
 		{
-			logger.log_error(err)
-		})
+			handler.user_emit(socket, 'email_already_exists', {email:data.email})
+			return
+		}
+
+		else if(ans.msg === "wait")
+		{
+			handler.user_emit(socket, 'email_change_wait', {})
+			return
+		}
+
+		else if(ans.msg === "sent_code")
+		{
+			handler.user_emit(socket, 'email_change_code_sent', {email:data.email})
+			return
+		}
 	}
 
-	handler.public.verify_email = function(socket, data)
+	handler.public.verify_email = async function(socket, data)
 	{
 		if(utilz.clean_string5(data.code) !== data.code)
 		{
@@ -2215,60 +1937,52 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		db_manager.change_email(socket.hue_user_id, data.email, data.code)
+		var ans = await db_manager.change_email(socket.hue_user_id, data.email, data.code)
 
-		.then(ans =>
+		if(ans.msg === "error")
 		{
-			if(ans.msg === "error")
-			{
-				handler.user_emit(socket, 'error_occurred', {})
-				return
-			}
+			handler.user_emit(socket, 'error_occurred', {})
+			return
+		}
 
-			else if(ans.msg === "duplicate")
-			{
-				handler.user_emit(socket, 'email_already_exists', {email:data.email})
-				return
-			}
+		else if(ans.msg === "duplicate")
+		{
+			handler.user_emit(socket, 'email_already_exists', {email:data.email})
+			return
+		}
 
-			else if(ans.msg === "not_sent")
-			{
-				handler.user_emit(socket, 'email_change_code_not_sent', {email:data.email})
-				return
-			}
+		else if(ans.msg === "not_sent")
+		{
+			handler.user_emit(socket, 'email_change_code_not_sent', {email:data.email})
+			return
+		}
 
-			else if(ans.msg === "wrong_code")
-			{
-				handler.user_emit(socket, 'email_change_wrong_code', {email:data.email})
-				return
-			}
+		else if(ans.msg === "wrong_code")
+		{
+			handler.user_emit(socket, 'email_change_wrong_code', {email:data.email})
+			return
+		}
 
-			else if(ans.msg === "expired_code")
-			{
-				handler.user_emit(socket, 'email_change_expired_code', {email:data.email})
-				return
-			}
+		else if(ans.msg === "expired_code")
+		{
+			handler.user_emit(socket, 'email_change_expired_code', {email:data.email})
+			return
+		}
 
-			else if(ans.msg === "changed")
+		else if(ans.msg === "changed")
+		{
+			for(var room_id of user_rooms[socket.hue_user_id])
 			{
-				for(var room_id of user_rooms[socket.hue_user_id])
+				for(var socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
 				{
-					for(var socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
-					{
-						socc.hue_email = data.email
-					}
-
-					handler.update_user_in_userlist(socket)
+					socc.hue_email = data.email
 				}
 
-				handler.user_emit(socket, 'email_changed', {email:ans.email})
+				handler.update_user_in_userlist(socket)
 			}
-		})
 
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
+			handler.user_emit(socket, 'email_changed', {email:ans.email})
+		}
 	}
 
 	handler.public.change_images_enabled = function(socket, data)
@@ -2286,11 +2000,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		db_manager.update_room(socket.hue_room_id,
 		{
 			images_enabled: data.what
-		})
-
-		.catch(err =>
-		{
-			logger.log_error(err)
 		})
 
 		handler.room_emit(socket, 'room_images_enabled_change',
@@ -2317,11 +2026,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_enabled: data.what
 		})
 
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
-
 		handler.room_emit(socket, 'room_tv_enabled_change',
 		{
 			what: data.what,
@@ -2344,11 +2048,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		db_manager.update_room(socket.hue_room_id,
 		{
 			radio_enabled: data.what
-		})
-
-		.catch(err =>
-		{
-			logger.log_error(err)
 		})
 
 		handler.room_emit(socket, 'room_radio_enabled_change',
@@ -2375,11 +2074,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			theme: data.color
 		})
 
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
-
 		handler.room_emit(socket, 'theme_change',
 		{
 			color: data.color,
@@ -2402,11 +2096,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		db_manager.update_room(socket.hue_room_id,
 		{
 			background_mode: data.mode
-		})
-
-		.catch(err =>
-		{
-			logger.log_error(err)
 		})
 
 		handler.room_emit(socket, 'background_mode_changed',
@@ -2438,11 +2127,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			background_tile_dimensions: data.dimensions
 		})
 
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
-
 		handler.room_emit(socket, 'background_tile_dimensions_changed',
 		{
 			dimensions: data.dimensions,
@@ -2467,11 +2151,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			text_color_mode: data.mode
 		})
 
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
-
 		handler.room_emit(socket, 'text_color_mode_changed',
 		{
 			mode: data.mode,
@@ -2494,11 +2173,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		db_manager.update_room(socket.hue_room_id,
 		{
 			text_color: data.color
-		})
-
-		.catch(err =>
-		{
-			logger.log_error(err)
 		})
 
 		handler.room_emit(socket, 'text_color_changed',
@@ -2537,11 +2211,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		obj[data.ptype] = data.what
 
 		db_manager.update_room(socket.hue_room_id, obj)
-
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
 
 		handler.room_emit(socket, 'voice_permission_change',
 		{
@@ -2689,7 +2358,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		return Object.keys(handler.get_userlist(room_id)).length
 	}
 
-	handler.get_roomlist = function(callback)
+	handler.get_roomlist = async function(callback)
 	{
 		if(last_roomlist === undefined || (Date.now() - roomlist_lastget > config.roomlist_cache))
 		{
@@ -2697,35 +2366,27 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			var md = Date.now() - config.roomlist_max_inactivity
 
-			db_manager.find_rooms({public:true, modified:{$gt:md}})
+			var results = await db_manager.find_rooms({public:true, modified:{$gt:md}})
 
-			.then(results =>
+			if(!results)
 			{
-				if(!results)
-				{
-					return false
-				}
+				return false
+			}
 
-				for(var i=0; i<results.length; i++)
-				{
-					var room = results[i]
-
-					roomlist.push({id:room._id.toString(), name:room.name, topic:room.topic.substring(0, config.max_roomlist_topic_length), usercount:handler.get_usercount(room._id.toString()), modified:room.modified})
-				}
-
-				roomlist.sort(handler.compare_roomlist).splice(config.max_roomlist_items)
-
-				last_roomlist = roomlist
-
-				roomlist_lastget = Date.now()
-
-				callback(last_roomlist)
-			})
-
-			.catch(err =>
+			for(var i=0; i<results.length; i++)
 			{
-				logger.log_error(err)
-			})
+				var room = results[i]
+
+				roomlist.push({id:room._id.toString(), name:room.name, topic:room.topic.substring(0, config.max_roomlist_topic_length), usercount:handler.get_usercount(room._id.toString()), modified:room.modified})
+			}
+
+			roomlist.sort(handler.compare_roomlist).splice(config.max_roomlist_items)
+
+			last_roomlist = roomlist
+
+			roomlist_lastget = Date.now()
+
+			callback(last_roomlist)
 		}
 
 		else
@@ -2734,60 +2395,44 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.get_visited_roomlist = function(user_id, callback)
+	handler.get_visited_roomlist = async function(user_id, callback)
 	{
 		var roomlist = []
 
-		db_manager.get_user({_id:user_id}, {visited_rooms:true})
+		var userinfo = await db_manager.get_user({_id:user_id}, {visited_rooms:true})
 
-		.then(userinfo =>
+		var mids = []
+
+		for(var id of userinfo.visited_rooms)
 		{
-			var mids = []
-
-			for(var id of userinfo.visited_rooms)
+			if(typeof id === "string" && id !== config.main_room_id)
 			{
-				if(typeof id === "string" && id !== config.main_room_id)
-				{
-					mids.push(new mongo.ObjectId(id))
-				}
-
-				else
-				{
-					mids.push(id)
-				}
+				mids.push(new mongo.ObjectId(id))
 			}
 
-			db_manager.find_rooms({_id:{"$in":mids}})
-
-			.then(results =>
+			else
 			{
-				if(!results)
-				{
-					return false
-				}
+				mids.push(id)
+			}
+		}
 
-				for(var i=0; i<results.length; i++)
-				{
-					var room = results[i]
+		var results = await db_manager.find_rooms({_id:{"$in":mids}})
 
-					roomlist.push({id:room._id.toString(), name:room.name, topic:room.topic.substring(0, config.max_roomlist_topic_length), usercount:handler.get_usercount(room._id.toString()), modified:room.modified})
-				}
-
-				roomlist.sort(handler.compare_roomlist)
-
-				callback(roomlist)
-			})
-
-			.catch(err =>
-			{
-				logger.log_error(err)
-			})
-		})
-
-		.catch(err =>
+		if(!results)
 		{
-			logger.log_error(err)
-		})
+			return false
+		}
+
+		for(var i=0; i<results.length; i++)
+		{
+			var room = results[i]
+
+			roomlist.push({id:room._id.toString(), name:room.name, topic:room.topic.substring(0, config.max_roomlist_topic_length), usercount:handler.get_usercount(room._id.toString()), modified:room.modified})
+		}
+
+		roomlist.sort(handler.compare_roomlist)
+
+		callback(roomlist)
 	}
 
 	handler.public.change_image_source = function(socket, data)
@@ -2916,7 +2561,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.do_change_image = function(room_id, fname, setter, size, type)
+	handler.do_change_image = async function(room_id, fname, setter, size, type)
 	{
 		var image_source
 
@@ -2939,11 +2584,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				image_date: date,
 				image_type: type
 			})
-
-			.catch(err =>
-			{
-				logger.log_error(err)
-			})
 		}
 
 		else if(type === "upload")
@@ -2963,64 +2603,51 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			db_manager.get_room({_id:room_id}, {stored_images:true})
+			var info = await db_manager.get_room({_id:room_id}, {stored_images:true})
 
-			.then(info =>
+			info.stored_images.unshift(fname)
+
+			var spliced = false
+
+			if(info.stored_images.length > config.max_stored_images)
 			{
-				info.stored_images.unshift(fname)
+				var spliced = info.stored_images.splice(config.max_stored_images, info.stored_images.length)
+			}
 
-				var spliced = false
+			db_manager.update_room(room_id,
+			{
+				image_source: image_source,
+				image_setter: setter,
+				image_size: size,
+				image_date: date,
+				stored_images: info.stored_images,
+				image_type: type
+			})
 
-				if(info.stored_images.length > config.max_stored_images)
+			if(spliced)
+			{
+				for(var file_name of spliced)
 				{
-					var spliced = info.stored_images.splice(config.max_stored_images, info.stored_images.length)
-				}
-
-				db_manager.update_room(room_id,
-				{
-					image_source: image_source,
-					image_setter: setter,
-					image_size: size,
-					image_date: date,
-					stored_images: info.stored_images,
-					image_type: type
-				})
-
-				.catch(err =>
-				{
-					logger.log_error(err)
-				})
-
-				if(spliced)
-				{
-					for(var file_name of spliced)
+					if(!file_name.includes(sconfig.s3_main_url))
 					{
-						if(!file_name.includes(sconfig.s3_main_url))
-						{
-							fs.unlink(`${images_root}/${file_name}`, function(err){})
-						}
+						fs.unlink(`${images_root}/${file_name}`, function(err){})
+					}
 
-						else
+					else
+					{
+						s3.deleteObject(
 						{
-							s3.deleteObject(
-							{
-								Bucket: sconfig.s3_bucket_name,
-								Key: file_name.replace(sconfig.s3_main_url, "")
-							}).promise()
+							Bucket: sconfig.s3_bucket_name,
+							Key: file_name.replace(sconfig.s3_main_url, "")
+						}).promise()
 
-							.catch(err =>
-							{
-								logger.log_error(err)
-							})
-						}
+						.catch(err =>
+						{
+							logger.log_error(err)
+						})
 					}
 				}
-			})
-
-			.catch(err =>
-			{
-				logger.log_error(err)
-			})
+			}
 		}
 
 		else
@@ -3148,61 +2775,45 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.do_change_profile_image = function(socket, fname)
+	handler.do_change_profile_image = async function(socket, fname)
 	{
-		db_manager.get_user({_id:socket.hue_user_id}, {profile_image_version:true})
+		var userinfo = await db_manager.get_user({_id:socket.hue_user_id}, {profile_image_version:true})
 
-		.then(userinfo =>
+		var new_ver = userinfo.profile_image_version + 1
+
+		var fver = `${fname}?ver=${new_ver}`
+
+		if(config.image_storage_s3_or_local === "local")
 		{
-			var new_ver = userinfo.profile_image_version + 1
+			var image_url = config.public_images_location + fver
+		}
 
-			var fver = `${fname}?ver=${new_ver}`
+		else if(config.image_storage_s3_or_local === "s3")
+		{
+			var image_url = fver
+		}
 
-			if(config.image_storage_s3_or_local === "local")
-			{
-				var image_url = config.public_images_location + fver
-			}
-
-			else if(config.image_storage_s3_or_local === "s3")
-			{
-				var image_url = fver
-			}
-
-			db_manager.update_user(socket.hue_user_id,
-			{
-				profile_image: fver,
-				profile_image_version: new_ver
-			})
-
-			.then(ans =>
-			{
-				for(var room_id of user_rooms[socket.hue_user_id])
-				{
-					for(var socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
-					{
-						socc.hue_profile_image = image_url
-					}
-
-					handler.update_user_in_userlist(socket)
-
-					handler.room_emit(room_id, 'profile_image_changed',
-					{
-						username: socket.hue_username,
-						profile_image: image_url
-					})
-				}
-			})
-
-			.catch(err =>
-			{
-				logger.log_error(err)
-			})
+		var ans = await db_manager.update_user(socket.hue_user_id,
+		{
+			profile_image: fver,
+			profile_image_version: new_ver
 		})
 
-		.catch(err =>
+		for(var room_id of user_rooms[socket.hue_user_id])
 		{
-			logger.log_error(err)
-		})
+			for(var socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
+			{
+				socc.hue_profile_image = image_url
+			}
+
+			handler.update_user_in_userlist(socket)
+
+			handler.room_emit(room_id, 'profile_image_changed',
+			{
+				username: socket.hue_username,
+				profile_image: image_url
+			})
+		}
 	}
 
 	handler.upload_background_image = function(socket, data)
@@ -3288,78 +2899,62 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.do_change_background_image = function(socket, fname)
+	handler.do_change_background_image = async function(socket, fname)
 	{
-		db_manager.get_room({_id:socket.hue_room_id}, {background_image:true})
+		var info = await db_manager.get_room({_id:socket.hue_room_id}, {background_image:true})
 
-		.then(info =>
+		if(config.image_storage_s3_or_local === "local")
 		{
-			if(config.image_storage_s3_or_local === "local")
-			{
-				var image_url = config.public_images_location + fname
-			}
+			var image_url = config.public_images_location + fname
+		}
 
-			else if(config.image_storage_s3_or_local === "s3")
-			{
-				var image_url = fname
-			}
+		else if(config.image_storage_s3_or_local === "s3")
+		{
+			var image_url = fname
+		}
 
-			if(info !== "")
+		if(info !== "")
+		{
+			var to_delete = info.background_image
+		}
+
+		else
+		{
+			var to_delete = false
+		}
+
+		var ans = await db_manager.update_room(socket.hue_room_id,
+		{
+			background_image: fname
+		})
+
+		handler.room_emit(socket, 'background_image_change',
+		{
+			username: socket.hue_username,
+			background_image: image_url
+		})
+
+		if(to_delete)
+		{
+			if(!to_delete.includes(sconfig.s3_main_url))
 			{
-				var to_delete = info.background_image
+				fs.unlink(`${images_root}/${to_delete}`, function(err){})
 			}
 
 			else
 			{
-				var to_delete = false
-			}
-
-			db_manager.update_room(socket.hue_room_id,
-			{
-				background_image: fname
-			})
-
-			.then(ans =>
-			{
-				handler.room_emit(socket, 'background_image_change',
+				s3.deleteObject(
 				{
-					username: socket.hue_username,
-					background_image: image_url
+					Bucket: sconfig.s3_bucket_name,
+					Key: to_delete.replace(sconfig.s3_main_url, "")
+				}).promise()
+
+				.catch(err =>
+				{
+					logger.log_error(err)
 				})
-			})
-
-			.catch(err =>
-			{
-				logger.log_error(err)
-			})
-
-			if(to_delete)
-			{
-				if(!to_delete.includes(sconfig.s3_main_url))
-				{
-					fs.unlink(`${images_root}/${to_delete}`, function(err){})
-				}
-
-				else
-				{
-					s3.deleteObject(
-					{
-						Bucket: sconfig.s3_bucket_name,
-						Key: to_delete.replace(sconfig.s3_main_url, "")
-					}).promise()
-
-					.catch(err =>
-					{
-						logger.log_error(err)
-					})
-				}
 			}
-		})
-
-		.catch(err =>
-		{
-			logger.log_error(err)
-		})
+		}
 	}
 
 	handler.public.slice_upload = async function(socket, data)
@@ -3802,21 +3397,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 						if(room.log_messages.length > 0)
 						{
 							db_manager.push_room_messages(room._id, room.log_messages)
-
-							.catch(err =>
-							{
-								logger.log_error(err)
-							})
 						}
 
 						else
 						{
 							db_manager.update_room(room._id, {})
-
-							.catch(err =>
-							{
-								logger.log_error(err)
-							})
 						}
 
 						room.activity = false
