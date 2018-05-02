@@ -5056,7 +5056,7 @@ jQuery.fn.urlize = function(force=false)
 
 			if(force)
 			{
-				x = `<a class='generic' target='_blank' href='${x}'>${x}</a>`
+				x = `<a class='generic action' target='_blank' href='${x}'>${x}</a>`
 			}
 
 			else
@@ -5076,7 +5076,7 @@ jQuery.fn.urlize = function(force=false)
 
 						var rep = new RegExp(escape_special_characters(list[i]), "g")
 
-						x = x.replace(rep, `<a class='generic' target='_blank' href='${list[i]}'>${list[i]}</a>`)
+						x = x.replace(rep, `<a class='generic action' target='_blank' href='${list[i]}'>${list[i]}</a>`)
 
 						listed.push(list[i])
 					}
