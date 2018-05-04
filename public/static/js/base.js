@@ -141,7 +141,6 @@ var room_images_enabled = true
 var room_tv_enabled = true
 var room_radio_enabled = true
 var radio_started = false
-var radio_volume
 var theme
 var background_image
 var background_mode
@@ -197,11 +196,11 @@ var users_to_disconnect = []
 
 function init()
 {
-	get_volume()
 	activate_key_detection()
 	setup_templates()
 	get_global_settings()
 	get_room_settings()
+	set_radio_volume()
 	start_msg()
 	start_settings_state("global_settings")
 	start_settings_listeners("global_settings")
@@ -1270,7 +1269,7 @@ function load_radio()
 				return false
 			}
 
-			youtube_player.setVolume(get_nice_volume(radio_volume))
+			youtube_player.setVolume(get_nice_volume(room_settings.radio_volume))
 
 			if(!radio_started)
 			{
@@ -1307,7 +1306,7 @@ function load_radio()
 						soundcloud_player.play()
 					}
 
-					soundcloud_player.setVolume(get_nice_volume(radio_volume))
+					soundcloud_player.setVolume(get_nice_volume(room_settings.radio_volume))
 				}
 			})
 
@@ -2295,77 +2294,77 @@ function start_volume_context_menu()
 			{
 				name: "100%", callback: function(key, opt)
 				{
-					set_volume(1)
+					set_radio_volume(1)
 				}
 			},
 			vcm90:
 			{
 				name: "90%", callback: function(key, opt)
 				{
-					set_volume(0.9)
+					set_radio_volume(0.9)
 				}
 			},
 			vcm80:
 			{
 				name: "80%", callback: function(key, opt)
 				{
-					set_volume(0.8)
+					set_radio_volume(0.8)
 				}
 			},
 			vcm70:
 			{
 				name: "70%", callback: function(key, opt)
 				{
-					set_volume(0.7)
+					set_radio_volume(0.7)
 				}
 			},
 			vcm60:
 			{
 				name: "60%", callback: function(key, opt)
 				{
-					set_volume(0.6)
+					set_radio_volume(0.6)
 				}
 			},
 			vcm50:
 			{
 				name: "50%", callback: function(key, opt)
 				{
-					set_volume(0.5)
+					set_radio_volume(0.5)
 				}
 			},
 			vcm40:
 			{
 				name: "40%", callback: function(key, opt)
 				{
-					set_volume(0.4)
+					set_radio_volume(0.4)
 				}
 			},
 			vcm30:
 			{
 				name: "30%", callback: function(key, opt)
 				{
-					set_volume(0.3)
+					set_radio_volume(0.3)
 				}
 			},
 			vcm20:
 			{
 				name: "20%", callback: function(key, opt)
 				{
-					set_volume(0.2)
+					set_radio_volume(0.2)
 				}
 			},
 			vcm10:
 			{
 				name: "10%", callback: function(key, opt)
 				{
-					set_volume(0.1)
+					set_radio_volume(0.1)
 				}
 			},
 			vcm0:
 			{
 				name: "0%", callback: function(key, opt)
 				{
-					set_volume(0)
+					set_radio_volume(0)
 				}
 			}
 		}
@@ -6616,13 +6615,18 @@ function start_volume_scroll()
 	})
 }
 
-function set_volume(nv, save=true)
+function set_radio_volume(nv=false)
 {
-	radio_volume = nv
+	if(!nv)
+	{
+		nv = room_settings.radio_volume
+	}
+
+	room_settings.radio_volume = nv
 
 	var vt = parseInt(Math.round((nv * 100)))
 
-	$('#audio')[0].volume = radio_volume
+	$('#audio')[0].volume = room_settings.radio_volume
 
 	if(youtube_player !== undefined)
 	{
@@ -6636,34 +6640,31 @@ function set_volume(nv, save=true)
 
 	$('#volume').text(`${vt} %`)
 
-	if(save)
-	{
-		save_local_storage('volume', radio_volume)
-	}
+	save_room_settings()
 }
 
 function volume_increase()
 {
-	var nv = radio_volume + 0.1
+	var nv = room_settings.radio_volume + 0.1
 
 	if(nv > 1)
 	{
 		nv = 1
 	}
 
-	set_volume(nv)
+	set_radio_volume(nv)
 }
 
 function volume_decrease()
 {
-	var nv = radio_volume - 0.1
+	var nv = room_settings.radio_volume - 0.1
 
 	if(nv < 0)
 	{
 		nv = 0
 	}
 
-	set_volume(nv)
+	set_radio_volume(nv)
 }
 
 function change_volume_command(arg)
@@ -6690,7 +6691,7 @@ function change_volume_command(arg)
 
 		nv = nv / 100
 
-		set_volume(nv)
+		set_radio_volume(nv)
 	}
 }
 
@@ -6999,24 +7000,6 @@ function create_room(data)
 function refresh()
 {
 	window.location = window.location
-}
-
-function get_volume()
-{
-	var volume = get_local_storage('volume')
-
-	if(volume == null)
-	{
-		set_volume(0.8)
-		save_local_storage('volume', 0.8)
-	}
-
-	else
-	{
-		set_volume(volume, false)
-	}
-
-	return [volume, get_nice_volume(volume)]
 }
 
 function get_nice_volume(volume)
@@ -9488,6 +9471,12 @@ function get_room_settings()
 	if(room_settings.radio_locked === undefined)
 	{
 		room_settings.radio_locked = room_settings_default_radio_locked
+		changed = true
+	}
+
+	if(room_settings.radio_volume === undefined)
+	{
+		room_settings.radio_volume = room_settings_default_radio_volume
 		changed = true
 	}
 

@@ -86,6 +86,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.room_settings_default_images_locked = config.room_settings_default_images_locked
 	c.vars.room_settings_default_tv_locked = config.room_settings_default_tv_locked
 	c.vars.room_settings_default_radio_locked = config.room_settings_default_radio_locked
+	c.vars.room_settings_default_radio_volume = config.room_settings_default_radio_volume
 	c.vars.double_tap_key = config.double_tap_key
 	c.vars.double_tap_key_2 = config.double_tap_key_2
 	c.vars.double_tap_key_3 = config.double_tap_key_3
