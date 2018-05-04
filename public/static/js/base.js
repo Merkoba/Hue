@@ -13142,6 +13142,7 @@ function reset_settings(type)
 		set_room_settings_overriders()
 		media_visibility_and_locks()
 		check_room_settings_override()
+		set_radio_volume()
 	}
 }
 
