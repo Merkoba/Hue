@@ -5255,7 +5255,7 @@ function is_command(msg)
 
 function process_message(msg, to_history=true, clr_input=true)
 {
-	msg = utilz.clean_string2(msg)
+	msg = utilz.clean_string8(msg)
 
 	if(msg.length === 0)
 	{

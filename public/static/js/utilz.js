@@ -51,7 +51,12 @@ var Utilz = function()
 		var pf = ns.join('\n')
 
 		return pf
-	}	
+	}
+
+	utilz.clean_string8 = function(s)
+	{
+		return s.replace(/ +/g, ' ').replace(/[\n\r]+/g, '\n').trim()
+	}
 
 	utilz.get_random_int = function(min, max)
 	{
