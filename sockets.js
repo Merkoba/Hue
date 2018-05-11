@@ -529,6 +529,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
+		if(data.msg.split("\n").length > config.max_num_newlines)
+		{
+			return handler.get_out(socket)
+		}		
+
 		if(!handler.check_permission(socket, "chat"))
 		{
 			return false

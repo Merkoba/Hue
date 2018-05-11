@@ -55,7 +55,12 @@ var Utilz = function()
 
 	utilz.clean_string8 = function(s)
 	{
-		return s.replace(/ +/g, ' ').replace(/[\n\r]+/g, '\n').trim()
+		return s.replace(/[\n\r]+/g, '\n').trim()
+	}
+
+	utilz.clean_string9 = function(s)
+	{
+		return s.replace(/[\n\r]+/g, '\n')
 	}
 
 	utilz.get_random_int = function(min, max)

@@ -5255,15 +5255,12 @@ function is_command(msg)
 
 function process_message(msg, to_history=true, clr_input=true)
 {
-	msg = utilz.clean_string8(msg)
-
-	if(msg.length === 0)
-	{
-		return false
-	}
+	msg = msg.trim()
 
 	if(is_command(msg))
 	{
+		msg = utilz.clean_string2(msg)
+
 		var ans = execute_command(msg, {to_history:to_history, clr_input:clr_input})
 
 		to_history = ans.to_history
@@ -5272,6 +5269,18 @@ function process_message(msg, to_history=true, clr_input=true)
 
 	else
 	{
+		msg = utilz.clean_string8(msg)
+
+		if(msg.length === 0)
+		{
+			return false
+		}
+
+		if(msg.split("\n").length > max_num_newlines)
+		{
+			return false
+		}
+
 		if(can_chat)
 		{
 			if(msg.length > max_input_length)
@@ -11493,7 +11502,7 @@ function setup_input()
 	{
 		var value = $("#input").val()
 
-		value = utilz.clean_string6(value)
+		value = utilz.clean_string9(value)
 
 		if(value.length > max_input_length)
 		{

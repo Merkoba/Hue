@@ -397,7 +397,7 @@ body, html
 .chat_content
 {
 	font-size: 1.1em;
-	white-space: pre-line;
+	white-space: pre-wrap;
 }
 
 .thirdperson *

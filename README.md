@@ -478,6 +478,9 @@ If you want to remove it to start fresh:
 "profile_image_diameter"
 >The diameter of the cropped profile image selected by the user.
 
+"max_num_newlines"
+>Maximum amount of newlines allowed per message.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"
