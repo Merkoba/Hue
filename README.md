@@ -382,6 +382,9 @@ If you want to remove it to start fresh:
 "global_settings_default_open_popup_messages"
 >Whether popup messages will open automatically when arrived by default.
 
+"global_settings_default_tv_height"
+>The % height the tv will take by default when the image is also displayed.
+
 "room_settings_default_images_enabled"
 >Whether images will be enabled to the user on new rooms by default.
 

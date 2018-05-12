@@ -224,6 +224,7 @@ function init()
 	start_userlist_click_events()
 	start_roomlist_click_events()
 	start_generic_uname_click_events()
+	setup_media_height()
 	setup_media_video()
 	start_username_context_menu()
 	start_played_context_menu()
@@ -8941,7 +8942,8 @@ function get_global_settings()
 		"afk_disable_image_change",
 		"afk_disable_tv_change",
 		"afk_disable_radio_change",
-		"open_popup_messages"
+		"open_popup_messages",
+		"tv_height"
 	]
 
 	var changed = false
@@ -8979,7 +8981,7 @@ function start_settings_state(type)
 			$(this).prop("checked", window[type][setting_name])
 		}
 
-		else if(setting_type === "textarea")
+		else if(setting_type === "textarea" || setting_type === "text")
 		{
 			$(this).val(window[type][setting_name])
 		}
@@ -9010,7 +9012,7 @@ function start_settings_listeners(type)
 			$(this).change(() => {window[`setting_${setting_name}_action`](type)})
 		}
 
-		else if(setting_type === "textarea")
+		else if(setting_type === "textarea" || setting_type === "text")
 		{
 			$(this).blur(() => {window[`setting_${setting_name}_action`](type)})
 		}
@@ -9403,6 +9405,58 @@ function setting_open_popup_messages_action(type, save=true)
 	{
 		window[`save_${type}`]()
 	}
+}
+
+function setting_tv_height_action(type, save=true)
+{
+	var val = utilz.clean_string2($(`#${type}_tv_height`).val())
+
+	if(!val.includes("%"))
+	{
+		$(`#${type}_tv_height`).val(window[type].tv_height)
+		return false
+	}
+
+	try
+	{
+		var d = val.replace(/\%+/g, "")
+
+		d = JSON.parse(d)
+
+		if(typeof d !== "number")
+		{
+			$(`#${type}_tv_height`).val(window[type].tv_height)
+			return false
+		}
+
+		if(d < 0 || d > 100)
+		{
+			$(`#${type}_tv_height`).val(window[type].tv_height)
+			return false
+		}
+
+		val = `${d}%`
+	}
+
+	catch(err)
+	{
+		$(`#${type}_tv_height`).val(window[type].tv_height)
+		return false
+	}
+
+	$(`#${type}_tv_height`).val(val)
+
+	window[type].tv_height = val
+
+	if(active_settings("tv_height") === type)
+	{
+		setup_media_height()
+	}
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}	
 }
 
 function empty_room_settings()
@@ -13509,47 +13563,68 @@ function active_settings(name)
 	}
 }
 
+function set_toggler(type, el, action=false, update=true)
+{
+	var container = $(el).next(`.${type}_toggle_container`)
+	
+	var display = container.css('display')
+
+	if(display === "none")
+	{
+		if(action && action !== "open")
+		{
+			return false
+		}
+
+		container.css("display", "block")
+		
+		$(el).html(`- ${$(el).html().substring(2)}`)
+	}
+
+	else
+	{
+		if(action && action !== "close")
+		{
+			return false
+		}
+
+		container.css("display", "none")
+		
+		$(el).html(`+ ${$(el).html().substring(2)}`)		
+	}
+
+	if(update)
+	{
+		update_modal_scrollbar(type)
+	}
+}
+
 function setup_togglers(type)
 {
 	$(`.${type}_toggle`).each(function()
 	{
 		$(this).click(function()
 		{
-			var container = $(this).next(`.${type}_toggle_container`)
-			var display = container.css('display')
-
-			if(display === "none")
-			{
-				container.css("display", "block")
-
-				$(this).html(`- ${$(this).html().substring(2)}`)
-			}
-
-			else
-			{
-				container.css("display", "none")
-
-				$(this).html(`+ ${$(this).html().substring(2)}`)
-			}
-
-			update_modal_scrollbar(type)
+			set_toggler(type, this)
 		})
 	})
+}
+
+function open_togglers(type)
+{
+	$(`.${type}_toggle`).each(function()
+	{
+		set_toggler(type, this, "open", false)
+	})
+
+	update_modal_scrollbar(type)
 }
 
 function close_togglers(type)
 {
 	$(`.${type}_toggle`).each(function()
 	{
-		var container = $(this).next(`.${type}_toggle_container`)
-		var display = container.css('display')
-
-		if(display !== "none")
-		{
-			container.css("display", "none")
-
-			$(this).html(`+ ${$(this).html().substring(2)}`)
-		}
+		set_toggler(type, this, "close", false)
 	})
 
 	update_modal_scrollbar(type)
@@ -13600,6 +13675,13 @@ function do_settings_filter(type)
 
 	if(filter !== "")
 	{
+		open_togglers(type)
+
+		container.find('.toggler_category').each(function()
+		{
+			$(this).css("display", "none")
+		})
+
 		container.find(`.settings_item`).each(function()
 		{
 			$(this).css("display", "block")
@@ -13622,7 +13704,14 @@ function do_settings_filter(type)
 
 	else
 	{
+		close_togglers(type)
+
 		container.find(`.settings_item`).each(function()
+		{
+			$(this).css("display", "block")
+		})
+
+		container.find(`.toggler_category`).each(function()
 		{
 			$(this).css("display", "block")
 		})
@@ -14083,4 +14172,19 @@ function setup_footer()
 			$("#image_file_picker").click()
 		}
 	})
+}
+
+function setup_media_height()
+{
+	var tvh = get_setting("tv_height")
+
+	if(tvh)
+	{
+		var ih = (100 - parseInt(tvh)) + "%"
+
+		$("#media_image_container").css("height", ih)
+		$("#media_tv").css("height", tvh)
+
+		fix_visible_video_frame()
+	}
 }

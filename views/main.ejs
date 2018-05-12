@@ -34,9 +34,9 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1231"></script>
+		<script src="/static/js/base.js?ver=1232"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=336"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=337"/>
 
 		<script>
 
@@ -728,7 +728,7 @@
 				</select>
 			</div>
 
-			<div class="{{type}}_toggle toggler action pointer bold inline spacer4">+ On AFK Actions</div>
+			<div class="{{type}}_toggle toggler toggler_category action pointer bold inline spacer4">+ On AFK Actions</div>
 			<div class='{{type}}_toggle_container toggler_container'>
 				<div class='settings_item' data-setting='afk_disable_messages_beep' data-type='checkbox'>
 					<div class="setting_title2">On AFK</div>
@@ -771,7 +771,12 @@
 					<div class="setting_title">Disable Radio Change</div>
 					<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_radio_change">
 				</div>
-			</div>		
+			</div>
+
+			<div class='settings_item' data-setting='tv_height' data-type='text'>
+				<div class="setting_title">TV Height</div>
+				<input type="text" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_tv_height">
+			</div>
 
 			<div class='spacer3'></div>
 
