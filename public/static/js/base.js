@@ -147,7 +147,6 @@ var background_mode
 var background_tile_dimensions
 var image_queue = ["first"]
 var image_queue_timeout
-var layout_mode = "normal"
 var last_image_change = false
 var last_tv_change = false
 var last_radio_change = false
@@ -10604,11 +10603,6 @@ function change_images_visibility()
 
 		var num_visible = num_media_elements_visible()
 
-		if(num_visible > 1)
-		{
-			enable_normal_mode()
-		}
-
 		change({type:"image"})
 
 		images_visible = true
@@ -10625,11 +10619,6 @@ function change_images_visibility()
 		if(num_visible === 0)
 		{
 			hide_media()
-		}
-
-		else if(num_visible === 1)
-		{
-			enable_wide_mode()
 		}
 
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-on")
@@ -10680,11 +10669,6 @@ function change_tv_visibility()
 
 		var num_visible = num_media_elements_visible()
 
-		if(num_visible > 1)
-		{
-			enable_normal_mode()
-		}
-
 		change({type:"tv", force:false, play:false})
 
 		tv_visible = true
@@ -10706,7 +10690,6 @@ function change_tv_visibility()
 		else if(num_visible === 1)
 		{
 			stop_videos()
-			enable_wide_mode()
 		}
 
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-on")
@@ -11461,22 +11444,6 @@ function announce_voice_permission_change(data)
 
 	check_permissions()
 	config_admin_permission_checkboxes()
-}
-
-function enable_wide_mode()
-{
-	$("#chat_main").css("min-width", "30%")
-	$("#media").css("min-width", "70%")
-
-	layout_mode = "wide"
-}
-
-function enable_normal_mode()
-{
-	$("#chat_main").css("min-width", "50%")
-	$("#media").css("min-width", "50%")
-
-	layout_mode = "normal"
 }
 
 function setup_input()
