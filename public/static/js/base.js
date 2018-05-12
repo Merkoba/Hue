@@ -5267,23 +5267,23 @@ function process_message(msg, to_history=true, clr_input=true)
 
 	else
 	{
-		msg = utilz.clean_string9(msg)
-
-		if(msg.length === 0)
-		{
-			return false
-		}
-
-		if(msg.split("\n").length > max_num_newlines)
-		{
-			return false
-		}
-
 		if(can_chat)
 		{
+			msg = utilz.clean_string9(msg)
+
+			if(msg.length === 0)
+			{
+				return false
+			}
+
+			if(msg.split("\n").length > max_num_newlines)
+			{
+				return false
+			}
+
 			if(msg.length > max_input_length)
 			{
-				msg = msg.substring(0, max_input_length).trim()
+				msg = msg.substring(0, max_input_length)
 			}
 
 			update_chat({uname:username, msg:msg, prof_image:profile_image})
