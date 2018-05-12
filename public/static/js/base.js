@@ -1658,7 +1658,7 @@ function apply_theme()
 		color: ${background_color} !important;
 	}
 
-	.Msg-window
+	.Msg-window, .overlay_same_color
 	{
 		background-color: ${background_color} !important;
 		color: ${font_color} !important;
@@ -8252,9 +8252,7 @@ function start_msg()
 		{
 			id: "image",
 			preset: "window",
-			show_effect: "none",
-			close_effect: "none",
-			window_class: "!no_effects",
+			overlay_class: "!overlay_same_color",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
