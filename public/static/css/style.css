@@ -399,13 +399,14 @@ body, html
 {
 	flex-shrink: 1;
 	flex-grow: 1;
+	padding-top: 0.2em;
 }
 
 .chat_content
 {
 	font-size: 1em;
-	padding-top: 0.3em;
 	white-space: pre-wrap;
+	line-height: 1.2em;
 }
 
 .thirdperson *
@@ -790,6 +791,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	font-size: 1em;
 	font-weight: bold;
 	cursor: pointer;
+	padding-bottom: 0.2em;
 }
 
 .highlights_content
