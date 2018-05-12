@@ -1222,6 +1222,13 @@ input[type=text], textarea
 	text-align: center;
 }
 
+.setting_input_text_smaller
+{
+	width: 100px;
+	font-size: 1em;
+	text-align: center;
+}
+
 .media_history_container
 {
 	max-width: 25em;
