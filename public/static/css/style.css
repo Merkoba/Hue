@@ -384,32 +384,32 @@ body, html
 {
 	flex-shrink: 1;
 	flex-grow: 0;
-	font-size: 0.9em;
+	font-size: 1em;
 }
 
 .chat_content_container
 {
 	flex-shrink: 1;
 	flex-grow: 1;
-	padding-top: 0.17em;
 }
 
 .chat_content
 {
-	font-size: 1.1em;
+	font-size: 1em;
+	padding-top: 0.3em;
 	white-space: pre-wrap;
 }
 
 .thirdperson *
 {
-	font-size: 1.1em;
+	font-size: 1em;
 }
 
 .announcement
 {
 	overflow-wrap: break-word;
 	word-break: break-word;
-	font-size: 1.1em;
+	font-size: 1em;
 }
 
 .announcement_content_container
@@ -429,6 +429,7 @@ body, html
 	cursor: pointer;
 	white-space: nowrap;
 	font-weight: bold;
+	display: inline-block;
 }
 
 a.generic:link, a.generic:visited, a.generic:hover 
@@ -767,17 +768,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 	display: none;
 }
 
-.chat_search_result_uname
-{
-	padding-bottom: 0.2em;
-}
-
-.chat_search_result_uname *
-{
-	font-size: 1em;
-	cursor: default;
-}
-
 .chat_search_result_content
 {
 	max-width: 26em;
@@ -794,18 +784,9 @@ a.generic:link, a.generic:visited, a.generic:hover
 	display: none;	
 }
 
-.highlights_uname
-{
-	padding-bottom: 0.2em;	
-}
-
-.highlights_uname *
-{
-	font-size: 1em !important;
-}
-
 .generic_uname
 {
+	font-size: 1em;
 	font-weight: bold;
 	cursor: pointer;
 }

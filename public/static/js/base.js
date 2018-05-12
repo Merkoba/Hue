@@ -4276,7 +4276,8 @@ function start_modal_scrollbar(s)
 		autohidemode: false,
 		cursorcolor: "#AFAFAF",
 		cursorborder: "0px solid white",
-		cursorwidth: "7px"
+		cursorwidth: "7px",
+		horizrailenabled: false
 	})
 }
 
@@ -4392,12 +4393,12 @@ function update_chat(args={})
 				</div>
 			</div>
 			<div class='chat_right_side'>
-				<span class='chat_uname_container'>
-					<span class='chat_uname action'></span>
-				</span>
-				<span class='chat_content_container'>
-					<span class='${contclasses}' title='${nd}' data-date='${d}'></span>
-				</span>
+				<div class='chat_uname_container'>
+					<div class='chat_uname action'></div>
+				</div>
+				<div class='chat_content_container'>
+					<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
+				</div>
 			</div>
 		</div>`
 
@@ -4470,7 +4471,7 @@ function add_to_chat(msg, save=false)
 						content.addClass("fader")
 					}
 
-					last_msg.find(".chat_content_container").eq(0).append("<br>").append(content)
+					last_msg.find(".chat_content_container").eq(0).append(content)
 
 					replace_in_chat_history(last_msg)
 
@@ -7107,24 +7108,8 @@ function chat_search(filter=false)
 				if(show)
 				{
 					var cn = $("<div class='chat_search_result_item'><div class='chat_search_result_uname generic_uname inline action'></div><div class='chat_search_result_content'></div>")
-
 					cn.find(".chat_search_result_uname").eq(0).text(huname.text())
-
-					for(var i=0; i < hcontent.length; i++)
-					{
-						var hc = hcontent.get(i)
-
-						if(i < hcontent.length - 1)
-						{
-							cn.find(".chat_search_result_content").eq(0).append($(hc).clone(true, true)).append("<br>")
-						}
-
-						else
-						{
-							cn.find(".chat_search_result_content").eq(0).append($(hc).clone(true, true))
-						}
-					}
-
+					cn.find(".chat_search_result_content").eq(0).html(hcontent.clone(true, true))
 					c.append(cn)
 				}
 			}
@@ -12420,25 +12405,9 @@ function show_highlights(filter=false)
 				{
 					var huname = msg.find('.chat_uname').eq(0)
 					var hcontent = msg.find('.chat_content')
-
 					var cn = $("<div class='highlights_item'><div class='highlights_uname generic_uname inline action'></div><div class='highlights_content'></div>")
 					cn.find(".highlights_uname").eq(0).text(huname.text())
-					var content = cn.find(".highlights_content").eq(0)
-
-					for(var i=0; i < hcontent.length; i++)
-					{
-						var hc = hcontent.get(i)
-
-						if(i < hcontent.length - 1)
-						{
-							content.append($(hc).clone(true, true)).append("<br>")
-						}
-
-						else
-						{
-							content.append($(hc).clone(true, true))
-						}
-					}
+					cn.find(".highlights_content").eq(0).html(hcontent.clone(true, true))
 				}
 
 				else if(msg.hasClass("announcement"))
