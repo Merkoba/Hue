@@ -9409,44 +9409,14 @@ function setting_open_popup_messages_action(type, save=true)
 
 function setting_tv_height_action(type, save=true)
 {
-	var val = utilz.clean_string2($(`#${type}_tv_height`).val())
+	var height = $(`#${type}_tv_height option:selected`).val()
 
-	if(!val.includes("%"))
+	if(height !== "never")
 	{
-		$(`#${type}_tv_height`).val(window[type].tv_height)
-		return false
+		height = parseInt(height)
 	}
 
-	try
-	{
-		var d = val.replace(/\%+/g, "")
-
-		d = JSON.parse(d)
-
-		if(typeof d !== "number")
-		{
-			$(`#${type}_tv_height`).val(window[type].tv_height)
-			return false
-		}
-
-		if(d < 0 || d > 100)
-		{
-			$(`#${type}_tv_height`).val(window[type].tv_height)
-			return false
-		}
-
-		val = `${d}%`
-	}
-
-	catch(err)
-	{
-		$(`#${type}_tv_height`).val(window[type].tv_height)
-		return false
-	}
-
-	$(`#${type}_tv_height`).val(val)
-
-	window[type].tv_height = val
+	window[type].tv_height = height
 
 	if(active_settings("tv_height") === type)
 	{
@@ -14177,14 +14147,10 @@ function setup_footer()
 function setup_media_height()
 {
 	var tvh = get_setting("tv_height")
+	var ih = 100 - parseInt(tvh)
 
-	if(tvh)
-	{
-		var ih = (100 - parseInt(tvh)) + "%"
+	$("#media_image_container").css("height", ih + "%")
+	$("#media_tv").css("height", tvh + "%")
 
-		$("#media_image_container").css("height", ih)
-		$("#media_tv").css("height", tvh)
-
-		fix_visible_video_frame()
-	}
+	fix_visible_video_frame()
 }
