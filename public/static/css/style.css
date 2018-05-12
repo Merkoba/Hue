@@ -387,6 +387,14 @@ body, html
 	font-size: 1em;
 }
 
+.chat_uname 
+{
+	cursor: pointer;
+	white-space: nowrap;
+	font-weight: bold;
+	display: inline-block;
+}
+
 .chat_content_container
 {
 	flex-shrink: 1;
@@ -403,6 +411,7 @@ body, html
 .thirdperson *
 {
 	font-size: 1em;
+	padding-top: 0 !important;
 }
 
 .announcement
@@ -422,14 +431,6 @@ body, html
 	flex-grow: 0;
 	flex-shrink: 0;
 	padding-right: 0.8em;
-}
-
-.chat_uname 
-{
-	cursor: pointer;
-	white-space: nowrap;
-	font-weight: bold;
-	display: inline-block;
 }
 
 a.generic:link, a.generic:visited, a.generic:hover 
