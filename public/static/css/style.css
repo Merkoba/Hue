@@ -153,7 +153,7 @@ body, html
 
 #media_image_container
 {
-	height: 30%;
+	height: 50%;
 	width: 100%;
 	flex-grow: 1;
 	flex-shrink: 0;
@@ -179,7 +179,7 @@ body, html
 
 #media_tv
 {
-	height: 70%;
+	height: 50%;
 	width: 100%;
 	flex-grow: 1;
 	flex-shrink: 0;

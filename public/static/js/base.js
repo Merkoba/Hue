@@ -225,7 +225,6 @@ function init()
 	start_userlist_click_events()
 	start_roomlist_click_events()
 	start_generic_uname_click_events()
-	setup_media_height()
 	setup_media_video()
 	start_username_context_menu()
 	start_played_context_menu()
@@ -8941,8 +8940,7 @@ function get_global_settings()
 		"afk_disable_image_change",
 		"afk_disable_tv_change",
 		"afk_disable_radio_change",
-		"open_popup_messages",
-		"tv_height"
+		"open_popup_messages"
 	]
 
 	var changed = false
@@ -9404,28 +9402,6 @@ function setting_open_popup_messages_action(type, save=true)
 	{
 		window[`save_${type}`]()
 	}
-}
-
-function setting_tv_height_action(type, save=true)
-{
-	var height = $(`#${type}_tv_height option:selected`).val()
-
-	if(height !== "never")
-	{
-		height = parseInt(height)
-	}
-
-	window[type].tv_height = height
-
-	if(active_settings("tv_height") === type)
-	{
-		setup_media_height()
-	}
-
-	if(save)
-	{
-		window[`save_${type}`]()
-	}	
 }
 
 function empty_room_settings()
@@ -14157,17 +14133,6 @@ function setup_footer()
 			$("#image_file_picker").click()
 		}
 	})
-}
-
-function setup_media_height()
-{
-	var tvh = get_setting("tv_height")
-	var ih = 100 - parseInt(tvh)
-
-	$("#media_image_container").css("height", ih + "%")
-	$("#media_tv").css("height", tvh + "%")
-
-	fix_visible_video_frame()
 }
 
 function enable_wide_mode()

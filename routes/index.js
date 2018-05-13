@@ -80,7 +80,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.global_settings_default_afk_disable_tv_change = config.global_settings_default_afk_disable_tv_change
 	c.vars.global_settings_default_afk_disable_radio_change	 = config.global_settings_default_afk_disable_radio_change	
 	c.vars.global_settings_default_open_popup_messages	 = config.global_settings_default_open_popup_messages	
-	c.vars.global_settings_default_tv_height	 = config.global_settings_default_tv_height	
 	c.vars.room_settings_default_images_enabled = config.room_settings_default_images_enabled
 	c.vars.room_settings_default_tv_enabled = config.room_settings_default_tv_enabled
 	c.vars.room_settings_default_radio_enabled = config.room_settings_default_radio_enabled
