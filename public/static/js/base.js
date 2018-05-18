@@ -149,8 +149,10 @@ var image_queue = ["first"]
 var image_queue_timeout
 var layout_mode
 var last_image_change = false
-var last_tv_change = false
-var last_radio_change = false
+var last_tv_source = false
+var last_tv_type = false
+var last_radio_source = false
+var last_radio_type = false
 var files = {}
 var input_changed = false
 var hls
@@ -1277,7 +1279,7 @@ function load_radio(src, type)
 			}
 		}
 
-		if(!room_settings.radio_locked || !last_radio_change)
+		if(!room_settings.radio_locked || !last_radio_source)
 		{
 			push_played(false, {s1:radio_title, s2:src})
 		}
@@ -1312,7 +1314,7 @@ function load_radio(src, type)
 
 		}
 
-		if(!room_settings.radio_locked || !last_radio_change)
+		if(!room_settings.radio_locked || !last_radio_source)
 		{
 			push_played(false, {s1:radio_title, s2:src})
 		}
@@ -4569,7 +4571,7 @@ function change(args={})
 
 	else if(args.type === "tv")
 	{
-		if(!args.force && last_tv_change === tv_source)
+		if(!args.force && last_tv_source === tv_source)
 		{
 			return false
 		}
@@ -4577,7 +4579,7 @@ function change(args={})
 
 	else if(args.type === "radio")
 	{
-		if(!args.force && last_radio_change === radio_source)
+		if(!args.force && last_radio_source === radio_source)
 		{
 			return false
 		}
@@ -4620,7 +4622,7 @@ function change(args={})
 
 	if(args.type === "tv")
 	{
-		if(!last_tv_change)
+		if(!last_tv_source)
 		{
 			args.play = false
 		}
@@ -4674,14 +4676,14 @@ function change(args={})
 
 	else if(args.type === "tv")
 	{
-		if(!room_tv_enabled || !room_settings.tv_enabled || (room_settings.tv_locked && last_tv_change && !args.current_source))
+		if(!room_tv_enabled || !room_settings.tv_enabled || (room_settings.tv_locked && last_tv_source && !args.current_source))
 		{
 			return false
 		}
 
-		if(args.current_source && last_tv_change)
+		if(args.current_source && last_tv_source)
 		{
-			var src = last_tv_change
+			var src = last_tv_source
 			var source_changed = false
 		}
 
@@ -4733,7 +4735,8 @@ function change(args={})
 
 		if(source_changed)
 		{
-			last_tv_change = tv_source
+			last_tv_source = tv_source
+			last_tv_type = tv_type
 		}
 
 		setter = tv_setter
@@ -4741,7 +4744,7 @@ function change(args={})
 
 	else if(args.type === "radio")
 	{
-		if(!room_radio_enabled || !room_settings.radio_enabled || (room_settings.radio_locked && last_radio_change && !args.current_source))
+		if(!room_radio_enabled || !room_settings.radio_enabled || (room_settings.radio_locked && last_radio_source && !args.current_source))
 		{
 			return false
 		}
@@ -4754,9 +4757,9 @@ function change(args={})
 			}
 		}
 
-		if(args.current_source && last_radio_change)
+		if(args.current_source && last_radio_source)
 		{
-			var src = last_radio_change
+			var src = last_radio_source
 			var type = last_radio_type
 			var source_changed = false
 		}
@@ -4772,7 +4775,7 @@ function change(args={})
 
 		if(source_changed)
 		{
-			last_radio_change = radio_source
+			last_radio_source = radio_source
 			last_radio_type = radio_type
 		}
 
@@ -9978,7 +9981,7 @@ function onYouTubePlayerReady()
 {
 	youtube_player = yt_player
 
-	if(radio_type === "youtube")
+	if((last_radio_type && last_radio_type === "youtube") || radio_type === "youtube")
 	{
 		change({type:"radio", notify:false})
 	}
@@ -9999,7 +10002,7 @@ function onYouTubePlayerReady2()
 		}
 	})
 
-	if(tv_type === "youtube")
+	if((last_tv_type && last_tv_type === "youtube") || tv_type === "youtube")
 	{
 		change({type:"tv", notify:false})
 	}
