@@ -1216,21 +1216,21 @@ function setup_tv(data)
 	change({type:"tv", force:true})
 }
 
-function load_radio()
+function load_radio(src, type)
 {
-	if(radio_type === "radio")
+	if(type === "radio")
 	{
-		if(radio_source.slice(-1) === '/')
+		if(src.slice(-1) === '/')
 		{
-			radio_metadata = `${radio_source.slice(0, -1).split('/').slice(0, -1).join('/')}/status-json.xsl`
+			radio_metadata = `${src.slice(0, -1).split('/').slice(0, -1).join('/')}/status-json.xsl`
 		}
 
 		else
 		{
-			radio_metadata = `${radio_source.split('/').slice(0, -1).join('/')}/status-json.xsl`
+			radio_metadata = `${src.split('/').slice(0, -1).join('/')}/status-json.xsl`
 		}
 
-		$('#audio').attr('src', radio_source)
+		$('#audio').attr('src', src)
 
 		if(radio_started)
 		{
@@ -1248,15 +1248,15 @@ function load_radio()
 		}
 	}
 
-	else if(radio_type === "youtube")
+	else if(type === "youtube")
 	{
 		if(youtube_player !== undefined)
 		{
-			var id = utilz.get_youtube_id(radio_source)
+			var id = utilz.get_youtube_id(src)
 
 			if(id[0] === "video")
 			{
-				youtube_player.loadVideoById({videoId:id[1], startSeconds:utilz.get_youtube_time(radio_source)})
+				youtube_player.loadVideoById({videoId:id[1], startSeconds:utilz.get_youtube_time(src)})
 			}
 
 			else if(id[0] === "list")
@@ -1279,7 +1279,7 @@ function load_radio()
 
 		if(!room_settings.radio_locked || !last_radio_change)
 		{
-			push_played(false, {s1:radio_title, s2:radio_source})
+			push_played(false, {s1:radio_title, s2:src})
 		}
 
 		if(soundcloud_player !== undefined)
@@ -1290,11 +1290,11 @@ function load_radio()
 		$('#audio').attr('src', '')
 	}
 
-	else if(radio_type === "soundcloud")
+	else if(type === "soundcloud")
 	{
 		if(soundcloud_player !== undefined)
 		{
-			soundcloud_player.load(radio_source,
+			soundcloud_player.load(src,
 			{
 				auto_play: false,
 				single_active: false,
@@ -1314,7 +1314,7 @@ function load_radio()
 
 		if(!room_settings.radio_locked || !last_radio_change)
 		{
-			push_played(false, {s1:radio_title, s2:radio_source})
+			push_played(false, {s1:radio_title, s2:src})
 		}
 
 		if(youtube_player !== undefined)
@@ -1325,8 +1325,8 @@ function load_radio()
 		$('#audio').attr('src', '')
 	}
 
-	loaded_radio_source = radio_source
-	loaded_radio_type = radio_type
+	loaded_radio_source = src
+	loaded_radio_type = type
 	loaded_radio_metadata = radio_metadata
 
 	if(loaded_radio_type === "radio")
@@ -1394,17 +1394,17 @@ function play_video()
 	}
 }
 
-function show_youtube_video(play=true)
+function show_youtube_video(src, play=true)
 {
 	stop_videos()
 
-	var id = utilz.get_youtube_id(tv_source)
+	var id = utilz.get_youtube_id(src)
 
 	youtube_video_play_on_queue = play
 
 	if(id[0] === "video")
 	{
-		youtube_video_player.cueVideoById({videoId:id[1], startSeconds:utilz.get_youtube_time(tv_source)})
+		youtube_video_player.cueVideoById({videoId:id[1], startSeconds:utilz.get_youtube_time(src)})
 	}
 
 	else if(id[0] === "list")
@@ -1425,15 +1425,15 @@ function show_youtube_video(play=true)
 	fix_video_frame("media_youtube_video")
 }
 
-function show_twitch_video(play=true)
+function show_twitch_video(src, play=true)
 {
 	stop_videos()
 
-	var id = utilz.get_twitch_id(tv_source)
+	var id = utilz.get_twitch_id(src)
 
 	if(id[0] === "video")
 	{
-		twitch_video_player.setVideoSource(tv_source)
+		twitch_video_player.setVideoSource(src)
 	}
 
 	else if(id[0] === "channel")
@@ -1464,11 +1464,11 @@ function show_twitch_video(play=true)
 	fix_video_frame("media_twitch_video")
 }
 
-function show_soundcloud_video(play=true)
+function show_soundcloud_video(src, play=true)
 {
 	stop_videos()
 
-	soundcloud_video_player.load(tv_source,
+	soundcloud_video_player.load(src,
 	{
 		auto_play: false,
 		single_active: false,
@@ -1490,21 +1490,21 @@ function show_soundcloud_video(play=true)
 	fix_video_frame("media_soundcloud_video")
 }
 
-function show_video(play=true)
+function show_video(src, play=true)
 {
 	stop_videos()
 
-	var split = tv_source.split('.')
+	var split = src.split('.')
 
 	if(split[split.length - 1] === "m3u8")
 	{
-		hls.loadSource(tv_source)
+		hls.loadSource(src)
 		hls.attachMedia($("#media_video")[0])
 	}
 
 	else
 	{
-		$("#media_video").prop("src", tv_source)
+		$("#media_video").prop("src", src)
 	}
 
 	$("#media_youtube_video_container").css("display", "none")
@@ -4553,7 +4553,8 @@ function change(args={})
 		type: "",
 		force: false,
 		play: true,
-		notify: true
+		notify: true,
+		current_source: false
 	}
 
 	fill_defaults(args, def_args)
@@ -4629,7 +4630,7 @@ function change(args={})
 
 	if(args.type === "image")
 	{
-		if(!room_images_enabled || (room_settings.images_locked && last_image_change))
+		if(!room_images_enabled || (room_settings.images_locked && last_image_change && !args.current_source))
 		{
 			return false
 		}
@@ -4649,17 +4650,45 @@ function change(args={})
 			apply_background()
 		}
 
-		show_image(args.force)
+		if(args.current_source && last_image_change)
+		{
+			var src = last_image_change
+			var source_changed = false
+		}
 
-		last_image_change = image_source
+		else
+		{
+			var src = image_source
+			var source_changed = true
+		}		
+
+		show_image(src, args.force)
+
+		if(source_changed)
+		{
+			last_image_change = image_source
+		}
+
 		setter = image_setter
 	}
 
 	else if(args.type === "tv")
 	{
-		if(!room_tv_enabled || !room_settings.tv_enabled || (room_settings.tv_locked && last_tv_change))
+		if(!room_tv_enabled || !room_settings.tv_enabled || (room_settings.tv_locked && last_tv_change && !args.current_source))
 		{
 			return false
+		}
+
+		if(args.current_source && last_tv_change)
+		{
+			var src = last_tv_change
+			var source_changed = false
+		}
+
+		else
+		{
+			var src = tv_source
+			var source_changed = true
 		}
 
 		if(tv_type === "youtube")
@@ -4669,7 +4698,7 @@ function change(args={})
 				return false
 			}
 
-			show_youtube_video(args.play)
+			show_youtube_video(src, args.play)
 		}
 
 		else if(tv_type === "twitch")
@@ -4679,7 +4708,7 @@ function change(args={})
 				return false
 			}
 
-			show_twitch_video(args.play)
+			show_twitch_video(src, args.play)
 		}
 
 		else if(tv_type === "soundcloud")
@@ -4689,12 +4718,12 @@ function change(args={})
 				return false
 			}
 
-			show_soundcloud_video(args.play)
+			show_soundcloud_video(src, args.play)
 		}
 
 		else if(tv_type === "url")
 		{
-			show_video(args.play)
+			show_video(src, args.play)
 		}
 
 		else
@@ -4702,13 +4731,17 @@ function change(args={})
 			return false
 		}
 
-		last_tv_change = tv_source
+		if(source_changed)
+		{
+			last_tv_change = tv_source
+		}
+
 		setter = tv_setter
 	}
 
 	else if(args.type === "radio")
 	{
-		if(!room_radio_enabled || !room_settings.radio_enabled || (room_settings.radio_locked && last_radio_change))
+		if(!room_radio_enabled || !room_settings.radio_enabled || (room_settings.radio_locked && last_radio_change && !args.current_source))
 		{
 			return false
 		}
@@ -4721,9 +4754,28 @@ function change(args={})
 			}
 		}
 
-		load_radio()
+		if(args.current_source && last_radio_change)
+		{
+			var src = last_radio_change
+			var type = last_radio_type
+			var source_changed = false
+		}
 
-		last_radio_change = radio_source
+		else
+		{
+			var src = radio_source
+			var type = radio_type
+			var source_changed = true
+		}		
+
+		load_radio(src, type)
+
+		if(source_changed)
+		{
+			last_radio_change = radio_source
+			last_radio_type = radio_type
+		}
+
 		setter = radio_setter
 	}
 
@@ -4739,15 +4791,15 @@ function change(args={})
 	}
 }
 
-function show_image(force=false)
+function show_image(src, force=false)
 {
 	$("#media_image_error").css("display", "none")
 
 	$("#media_image").css("display", "initial")
 
-	if(force || $("#media_image").attr("src") !== image_source)
+	if(force || $("#media_image").attr("src") !== src)
 	{
-		$("#media_image").attr("src", image_source)
+		$("#media_image").attr("src", src)
 	}
 
 	else
@@ -5217,6 +5269,10 @@ function register_commands()
 	commands.push('/broadcast')
 	commands.push('/systembroadcast')
 	commands.push('/changeinput')
+	commands.push('/toggleplayradio')
+	commands.push('/refreshimage')
+	commands.push('/refreshtv')
+	commands.push('/refreshradio')
 
 	commands.sort()
 
@@ -6023,6 +6079,26 @@ function execute_command(msg, ans)
 		ans.clr_input = false
 	}
 
+	else if(oiEquals(lmsg, '/toggleplayradio'))
+	{
+		toggle_play_radio()
+	}
+
+	else if(oiEquals(lmsg, '/refreshimage'))
+	{
+		refresh_image()
+	}
+
+	else if(oiEquals(lmsg, '/refreshtv'))
+	{
+		refresh_tv()
+	}
+
+	else if(oiEquals(lmsg, '/refreshradio'))
+	{
+		refresh_radio()
+	}	
+
 	else
 	{
 		feedback("Invalid command. Use // to start a message with /")
@@ -6574,6 +6650,19 @@ function stop_radio()
 	$('#toggle_now_playing_text').html('Start Radio')
 
 	radio_started = false
+}
+
+function toggle_play_radio()
+{
+	if(radio_started)
+	{
+		stop_radio()
+	}
+
+	else
+	{
+		start_radio()
+	}
 }
 
 function toggle_radio_state()
@@ -11724,17 +11813,17 @@ function stop_and_lock(stop=true)
 
 function refresh_image()
 {
-	change({type:"image", force:true, play:true})
+	change({type:"image", force:true, play:true, current_source:true})
 }
 
 function refresh_tv()
 {
-	change({type:"tv", force:true, play:true})
+	change({type:"tv", force:true, play:true, current_source:true})
 }
 
 function refresh_radio()
 {
-	change({type:"radio", force:true, play:true})
+	change({type:"radio", force:true, play:true, current_source:true})
 }
 
 function default_media_state(change_visibility=true)
