@@ -148,7 +148,7 @@ var background_tile_dimensions
 var image_queue = ["first"]
 var image_queue_timeout
 var layout_mode
-var last_image_change = false
+var last_image_source = false
 var last_tv_source = false
 var last_tv_type = false
 var last_radio_source = false
@@ -4563,7 +4563,7 @@ function change(args={})
 
 	if(args.type === "image")
 	{
-		if(!args.force && last_image_change === image_source)
+		if(!args.force && last_image_source === image_source)
 		{
 			return false
 		}
@@ -4632,7 +4632,7 @@ function change(args={})
 
 	if(args.type === "image")
 	{
-		if(!room_images_enabled || (room_settings.images_locked && last_image_change && !args.current_source))
+		if(!room_images_enabled || (room_settings.images_locked && last_image_source && !args.current_source))
 		{
 			return false
 		}
@@ -4652,9 +4652,9 @@ function change(args={})
 			apply_background()
 		}
 
-		if(args.current_source && last_image_change)
+		if(args.current_source && last_image_source)
 		{
-			var src = last_image_change
+			var src = last_image_source
 			var source_changed = false
 		}
 
@@ -4668,7 +4668,7 @@ function change(args={})
 
 		if(source_changed)
 		{
-			last_image_change = image_source
+			last_image_source = image_source
 		}
 
 		setter = image_setter
