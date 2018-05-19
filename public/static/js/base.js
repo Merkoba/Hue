@@ -1627,18 +1627,16 @@ function apply_theme()
 	if(background_image_enabled())
 	{
 		background_color_a = colorlib.rgb_to_rgba(background_color, opacity_amount_1)
-		background_color_2_a = colorlib.rgb_to_rgba(background_color_2, opacity_amount_1)
 	}
 
 	else
 	{
 		background_color_a = background_color
-		background_color_2_a = background_color_2
 	}
 
 	$('.bg1').css('background-color', background_color_a)
 	$('.bg1').css('color', font_color)
-	$('.bg2').css('background-color', background_color_2_a)
+	$('.bg2').css('background-color', background_color_2)
 	$('.bg2').css('color', font_color)
 
 	var color_3 = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_3)
