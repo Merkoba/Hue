@@ -533,14 +533,12 @@ function setup_icons()
 
 		if(can_images)
 		{
-			$("#footer_images_icon").removeClass("nopointer")
-			$("#footer_images_icon").addClass("action")
+			$("#footer_images_icon").css("display", "initial")
 		}
 
 		else
 		{
-			$("#footer_images_icon").removeClass("action")
-			$("#footer_images_icon").addClass("nopointer")
+			$("#footer_images_icon").css("display", "none")
 		}
 	}
 
@@ -555,14 +553,12 @@ function setup_icons()
 
 		if(can_tv)
 		{
-			$("#footer_tv_icon").removeClass("nopointer")
-			$("#footer_tv_icon").addClass("action")
+			$("#footer_tv_icon").css("display", "initial")
 		}
 
 		else
 		{
-			$("#footer_tv_icon").removeClass("action")
-			$("#footer_tv_icon").addClass("nopointer")
+			$("#footer_tv_icon").css("display", "none")
 		}
 	}
 
@@ -577,14 +573,12 @@ function setup_icons()
 
 		if(can_radio)
 		{
-			$("#footer_radio_icon").removeClass("nopointer")
-			$("#footer_radio_icon").addClass("action")
+			$("#footer_radio_icon").css("display", "initial")
 		}
 
 		else
 		{
-			$("#footer_radio_icon").removeClass("action")
-			$("#footer_radio_icon").addClass("nopointer")
+			$("#footer_radio_icon").css("display", "none")
 		}
 	}
 

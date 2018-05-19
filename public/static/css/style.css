@@ -266,6 +266,12 @@ body, html
 	padding-right: 0.3em;
 }
 
+.footer_text_small
+{
+	padding-right: 0.3em;
+	font-size: 0.8em;
+}
+
 #footer_media_menu
 {
 	padding-right: 1.2rem !important;
