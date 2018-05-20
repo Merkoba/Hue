@@ -195,6 +195,7 @@ var app_focused = true
 var message_uname = ""
 var message_type = ""
 var users_to_disconnect = []
+var stop_radio_timeout
 
 function init()
 {
@@ -2375,11 +2376,70 @@ function start_toggle_radio_context_menu()
 		className: 'toggle_radio_context',
 		items:
 		{
+			trs1:
+			{
+				name: "Stop in 1 Minute", callback: function(key, opt)
+				{
+					stop_radio_in(1)
+				},
+				visible: function(key, opt)
+				{
+					return radio_started
+				}			
+			},
+			trs2:
+			{
+				name: "Stop in 5 Minutes", callback: function(key, opt)
+				{
+					stop_radio_in(5)
+				},
+				visible: function(key, opt)
+				{
+					return radio_started
+				}			
+			},
+			trs3:
+			{
+				name: "Stop in 10 Minutes", callback: function(key, opt)
+				{
+					stop_radio_in(10)
+				},
+				visible: function(key, opt)
+				{
+					return radio_started
+				}			
+			},
+			trs4:
+			{
+				name: "Stop in 30 Minutes", callback: function(key, opt)
+				{
+					stop_radio_in(30)
+				},
+				visible: function(key, opt)
+				{
+					return radio_started
+				}			
+			},
+			trs5:
+			{
+				name: "Stop in 1 Hour", callback: function(key, opt)
+				{
+					stop_radio_in(60)
+				},
+				visible: function(key, opt)
+				{
+					return radio_started
+				}			
+			},
 			trrestart:
 			{
 				name: "Restart", callback: function(key, opt)
 				{
 					change({type:"radio", force:true})
+				},
+				visible: function(key, opt)
+				{
+					return radio_started
 				}
 			},
 		}
@@ -5268,6 +5328,7 @@ function register_commands()
 	commands.push('/refreshimage')
 	commands.push('/refreshtv')
 	commands.push('/refreshradio')
+	commands.push('/stopradioin')
 
 	commands.sort()
 
@@ -6092,7 +6153,12 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/refreshradio'))
 	{
 		refresh_radio()
-	}	
+	}
+
+	else if(oiStartsWith(lmsg, '/stopradioin'))
+	{
+		stop_radio_in(arg)
+	}
 
 	else
 	{
@@ -6624,6 +6690,13 @@ function start_radio()
 	$('#toggle_now_playing_text').html('Stop Radio')
 
 	radio_started = true
+
+	if(stop_radio_timeout)
+	{
+		clearTimeout(stop_radio_timeout)
+		stop_radio_timeout = undefined
+		feedback("Radio won't stop automatically anymore")
+	}
 }
 
 function stop_radio()
@@ -6645,6 +6718,13 @@ function stop_radio()
 	$('#toggle_now_playing_text').html('Start Radio')
 
 	radio_started = false
+
+	if(stop_radio_timeout)
+	{
+		clearTimeout(stop_radio_timeout)
+		stop_radio_timeout = undefined
+		feedback("Radio won't stop automatically anymore")
+	}
 }
 
 function toggle_play_radio()
@@ -14233,4 +14313,37 @@ function enable_normal_mode()
 	$("#media").css("min-width", "50%")
 
 	layout_mode = "normal"
+}
+
+function stop_radio_in(minutes)
+{
+	if(!radio_started)
+	{
+		feedback("Radio is not started")
+		return false
+	}
+	
+	clearTimeout(stop_radio_timeout)
+
+	var d = 1000 * 60 * minutes
+
+	stop_radio_timeout = setTimeout(function()
+	{
+		if(radio_started)
+		{
+			stop_radio()
+		}
+	}, d)
+
+	if(minutes === 1)
+	{
+		var s = "1 minute"
+	}
+
+	else
+	{
+		var s = `${minutes} minutes`
+	}
+
+	feedback(`Radio will stop automatically in ${s}`)
 }
