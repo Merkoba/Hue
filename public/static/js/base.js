@@ -2435,7 +2435,7 @@ function start_toggle_radio_context_menu()
 			{
 				name: "Restart", callback: function(key, opt)
 				{
-					change({type:"radio", force:true})
+					refresh_radio()
 				},
 				visible: function(key, opt)
 				{
@@ -14322,7 +14322,7 @@ function stop_radio_in(minutes)
 		feedback("Radio is not started")
 		return false
 	}
-	
+
 	clearTimeout(stop_radio_timeout)
 
 	var d = 1000 * 60 * minutes
