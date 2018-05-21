@@ -6829,24 +6829,24 @@ function set_radio_volume(nv=false)
 
 function volume_increase()
 {
-	var nv = room_settings.radio_volume + 0.1
-
-	if(nv > 1)
+	if(room_settings.radio_volume === 1)
 	{
-		nv = 1
+		return false
 	}
+
+	var nv = room_settings.radio_volume + 0.1
 
 	set_radio_volume(nv)
 }
 
 function volume_decrease()
 {
-	var nv = room_settings.radio_volume - 0.1
-
-	if(nv < 0)
+	if(room_settings.radio_volume === 0)
 	{
-		nv = 0
+		return false
 	}
+
+	var nv = room_settings.radio_volume - 0.1
 
 	set_radio_volume(nv)
 }
@@ -6861,19 +6861,7 @@ function change_volume_command(arg)
 
 	else
 	{
-		var nv = Math.round(arg / 10) * 10
-
-		if(nv > 100)
-		{
-			nv = 100
-		}
-
-		if(nv < 0)
-		{
-			nv = 0
-		}
-
-		nv = nv / 100
+		var nv = arg / 100
 
 		set_radio_volume(nv)
 	}
