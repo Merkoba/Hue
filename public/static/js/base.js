@@ -6789,9 +6789,21 @@ function start_volume_scroll()
 
 function set_radio_volume(nv=false)
 {
-	if(!nv)
+	if(typeof nv !== "number")
 	{
 		nv = room_settings.radio_volume
+	}
+
+	nv = utilz.round(nv, 1)
+
+	if(nv > 1)
+	{
+		nv = 1
+	}
+
+	else if(nv < 0)
+	{
+		nv = 0
 	}
 
 	room_settings.radio_volume = nv
