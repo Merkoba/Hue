@@ -5250,7 +5250,7 @@ function register_commands()
 	commands.push('/help')
 	commands.push('/stopradio')
 	commands.push('/startradio')
-	commands.push('/volume')
+	commands.push('/radiovolume')
 	commands.push('/history')
 	commands.push('/logout')
 	commands.push('/details')
@@ -5752,7 +5752,7 @@ function execute_command(msg, ans)
 		start_radio()
 	}
 
-	else if(oiStartsWith(lmsg, '/volume'))
+	else if(oiStartsWith(lmsg, '/radiovolume'))
 	{
 		change_volume_command(arg)
 	}
