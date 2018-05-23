@@ -34,7 +34,7 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1250"></script>
+		<script src="/static/js/base.js?ver=1252"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=341"/>
 
@@ -96,9 +96,9 @@
 									</span>
 								</span>
 
-								<span id="now_playing_area" onclick="show_played()">
+								<span id='now_playing_area'>
 									<span class='hspacer1'></span>|<span class='hspacer1'></span> 
-									<span id='now_playing_controls' class='action'>
+									<span id='now_playing_controls' class='action' onclick='show_played()'>
 										<span class='header_item'>Now Playing:</span>
 										<span class='header_item' id='now_playing'>Loading</span>
 									</span>
@@ -108,7 +108,7 @@
 
 							<span id='header_topic'>
 								<span class='hspacer1'></span>|<span class='hspacer1'></span>
-								<span class='action'>
+								<span id='header_topic_inner' class='action' onclick='show_status()'>
 									<span class='header_item'>Topic:</span>
 									<span class='header_item' id='header_topic_text'></span>
 								</span>

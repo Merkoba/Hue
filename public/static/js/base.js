@@ -218,7 +218,6 @@ function init()
 	activate_visibility_listener()
 	input_click_events()
 	copypaste_events()
-	header_topic_events()
 	scroll_events()
 	resize_events()
 	register_commands()
@@ -7394,7 +7393,6 @@ function set_topic_info(data)
 	if(topic)
 	{
 		$("#header_topic_text").text(topic)
-		$("#header_topic").attr('title', topic)
 	}
 
 	else
@@ -7402,7 +7400,6 @@ function set_topic_info(data)
 		var t = get_unset_topic()
 
 		$("#header_topic_text").text(t)
-		$("#header_topic").attr('title', t)
 	}
 
 	config_admin_topic()
@@ -12110,14 +12107,6 @@ function show_intro()
 	Please read and close all the popups.`
 
 	create_popup("center").show(["Welcome", s])
-}
-
-function header_topic_events()
-{
-	$("#header_topic").click(function()
-	{
-		show_status()
-	})
 }
 
 function cant_chat()
