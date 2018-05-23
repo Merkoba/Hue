@@ -11593,6 +11593,12 @@ function link_image(url)
 
 	else
 	{
+		if(!imgur_enabled)
+		{
+			feedback("Imgur support is not enabled")
+			return false
+		}
+
 		emit_change_image_source(url)		
 	}
 }

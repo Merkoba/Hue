@@ -1241,7 +1241,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				if(!config.youtube_enabled)
 				{
-					return
+					return false
 				}
 
 				var id = utilz.get_youtube_id(data.src)
@@ -1505,7 +1505,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				if(!config.twitch_enabled)
 				{
-					return
+					return false
 				}
 
 				var id = utilz.get_twitch_id(data.src)
@@ -1568,7 +1568,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				if(!config.soundcloud_enabled)
 				{
-					return
+					return false
 				}
 
 				soundcloud.get(`/resolve?url=${encodeURIComponent(data.src)}`, function(err, track)
@@ -1630,7 +1630,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(!config.youtube_enabled)
 			{
-				return
+				return false
 			}
 
 			fetch(`https://www.googleapis.com/youtube/v3/search?q=${encodeURIComponent(data.src)}&type=video&fields=items(id,snippet(title))&part=snippet&maxResults=10&key=${sconfig.youtube_api_key}`)
@@ -2469,6 +2469,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(!data.src.startsWith("http://") && !data.src.startsWith("https://"))
 		{
+			if(!config.imgur_enabled)
+			{
+				return false
+			}
+
 			fetch(`https://api.imgur.com/3/gallery/search/?q=${data.src}`,
 			{
 				headers: 

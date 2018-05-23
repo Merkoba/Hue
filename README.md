@@ -266,13 +266,16 @@ If you want to remove it to start fresh:
 >Rooms have a "modified" property updated after most operations inside the room. The public roomlist considers rooms that are a) Public b) Claimed and c) Current date - modified date is lower than this configuration.
 
 "youtube_enabled"
->Whether youtube features are enabled.
+>Whether Youtube features are enabled.
 
 "twitch_enabled"
->Whether twitch features are enabled.
+>Whether Twitch features are enabled.
 
 "soundcloud_enabled"
->Whether soundcloud features are enabled.
+>Whether Soundcloud features are enabled.
+
+"imgur_enabled"
+>Whether Imgur features are enabled.
 
 "antispam_banTime"
 >How much time in minutes a user is banned from the system after being detected as a spammer by the automatic spam detection system.
