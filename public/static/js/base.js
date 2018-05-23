@@ -4949,12 +4949,12 @@ function setup_image(data)
 
 		if(data.image_type === "link")
 		{
-			image_title = `Linker: ${data.image_setter} | ${nice_date(data.image_date)}`
+			image_title = `Setter: ${data.image_setter} | ${nice_date(data.image_date)}`
 		}
 
 		else
 		{
-			image_title = `Uploader: ${data.image_setter} | Size: ${get_size_string(data.image_size)} | ${nice_date(data.image_date)}`
+			image_title = `Setter: ${data.image_setter} | Size: ${get_size_string(data.image_size)} | ${nice_date(data.image_date)}`
 		}
 	}
 
@@ -7510,14 +7510,14 @@ function announce_image_change(data, date=false, show=true)
 
 	else if(data.image_type === "link")
 	{
-		var title = `Linker: ${data.image_setter} | ${nd}`
-		var msg = `${data.image_setter} linked an image`
+		var title = `Setter: ${data.image_setter} | ${nd}`
+		var msg = `${data.image_setter} changed the image`
 	}
 
 	else if(data.image_type === "upload")
 	{
-		var title = `Uploader: ${data.image_setter} | Size: ${get_size_string(data.image_size)} | ${nd}`
-		var msg = `${data.image_setter} uploaded an image`
+		var title = `Setter: ${data.image_setter} | Size: ${get_size_string(data.image_size)} | ${nd}`
+		var msg = `${data.image_setter} changed the image`
 	}
 
 	var onclick = function()
