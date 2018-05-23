@@ -2474,7 +2474,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			fetch(`https://api.imgur.com/3/gallery/search/?q=${data.src}`,
+			fetch(`https://api.imgur.com/3/gallery/search/?q=${encodeURIComponent(data.src)}`,
 			{
 				headers: 
 				{
