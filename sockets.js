@@ -2467,7 +2467,68 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			data.src = data.src.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
 		}
 
-		handler.change_image(socket.hue_room_id, data.src, socket.hue_username, 0, "link")
+		if(!data.src.startsWith("http://") && !data.src.startsWith("https://"))
+		{
+			fetch(`https://api.imgur.com/3/gallery/search/?q=${data.src}`,
+			{
+				headers: 
+				{
+					Authorization: `Client-ID ${sconfig.imgur_client_id}`
+				}
+			})
+
+			.then(function(res)
+			{
+				return res.json()
+			})
+
+			.then(function(response)
+			{
+				if(!response.data)
+				{
+					return false
+				}
+
+				for(var item of response.data)
+				{
+					if(item)
+					{
+						if(item.type)
+						{
+							if(item.type.startsWith("image"))
+							{
+								handler.change_image(socket.hue_room_id, item.link, socket.hue_username, 0, "link")
+								return
+							}
+						}
+
+						else if(item.images)
+						{
+							for(var img of item.images)
+							{
+								if(img.type.startsWith("image"))
+								{
+									handler.change_image(socket.hue_room_id, img.link, socket.hue_username, 0, "link")
+									return
+								}
+							}
+						}
+					}
+				}
+
+				handler.user_emit(socket, 'imagenotfound', {})
+			})
+
+			.catch(err =>
+			{
+				logger.log_error(err)
+			})		
+		}
+
+		else
+		{
+			handler.change_image(socket.hue_room_id, data.src, socket.hue_username, 0, "link")
+		}
 	}
 
 	handler.upload_image = function(socket, data)
@@ -3315,23 +3376,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		handler.user_emit(socket, 'othersdisconnected', {amount:amount})
-	}
-
-	handler.check_image_url = function(uri)
-	{
-		if(uri.split(' ').length > 1)
-		{
-			return false
-		}
-
-		var ext = uri.split('.').pop().toLowerCase()
-
-		if(ext !== 'jpg' && ext !== 'png' && ext !== 'jpeg' && ext !== 'gif')
-		{
-			return false
-		}
-
-		return true
 	}
 
 	handler.check_permission = function(socket, permission)

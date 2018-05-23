@@ -985,6 +985,11 @@ function start_socket()
 			feedback("You don't seem to own that username")
 		}
 
+		else if(data.type === 'imagenotfound')
+		{
+			feedback("The image couldn't be found")
+		}
+
 		else if(data.type === 'songnotfound')
 		{
 			feedback("The song couldn't be found")
@@ -11574,14 +11579,21 @@ function link_image(url)
 	if(url === "default")
 	{
 		emit_change_image_source("default")
-		return
 	}
 
-	url = url.replace(/\.gifv/g, '.gif')
-
-	if(url.length > 0 && url.length <= max_image_source_length)
+	else if(url.startsWith("http://") || url.startsWith("https://"))
 	{
-		$('#test_image').attr('src', url)
+		url = url.replace(/\.gifv/g, '.gif')
+
+		if(url.length > 0 && url.length <= max_image_source_length)
+		{
+			$('#test_image').attr('src', url)
+		}
+	}
+
+	else
+	{
+		emit_change_image_source(url)		
 	}
 }
 

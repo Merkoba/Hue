@@ -30,7 +30,7 @@ Example of how to use user_config.secret.json:
 
 The admin email must go in superuser_emails in user_config.secret.json. It's used to take over control of the main room. The main room is created on first join, with no roles. To get admin on the room use /annex.
 
-To have a fully working system, as it is intended, getting all the API keys (YouTube, Twitch, Soundcloud) is very recommended. If you don't need some of these, disable them in user_config.json (for example "youtube_enabled": false) Mailgun api key is necessary for account creation and password recovery, so it must be provided. A Google Recaptcha key is necessary to enable captcha verification on registration, though captcha support can be disabled ("recaptcha_enabled": false). Hosting of uploaded images through an S3 service is supported, yet optional. To enable S3 support, set "image_storage_s3_or_local" to "s3". Set API keys in user_config.secret.json.
+To have a fully working system, as it is intended, getting all the API keys (YouTube, Twitch, Soundcloud, Imgur) is very recommended. If you don't need some of these, disable them in user_config.json (for example "youtube_enabled": false) Mailgun api key is necessary for account creation and password recovery, so it must be provided. A Google Recaptcha key is necessary to enable captcha verification on registration, though captcha support can be disabled ("recaptcha_enabled": false). Hosting of uploaded images through an S3 service is supported, yet optional. To enable S3 support, set "image_storage_s3_or_local" to "s3". Set API keys in user_config.secret.json.
 
 Put the files in the directory you want it work and call "npm install". That should install all necessary packages. 
 
@@ -536,6 +536,9 @@ If you want to remove it to start fresh:
 
 "recaptcha_secret_key"
 >Secret google recaptcha key.
+
+"imgur_client_id"
+>Imgur client id.
 
 # Additional Notes
 
