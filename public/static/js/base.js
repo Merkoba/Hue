@@ -4036,30 +4036,15 @@ function oiStartsWith(str, what)
 	return str.startsWith(`${commands_sorted[what]} `)
 }
 
-function get_closest_username(word)
+function get_closest_autocomplete(word)
 {
+	var list = commands.concat(usernames)
 	var wl = word.toLowerCase()
 	var has = false
 
-	for(var i=0; i<usernames.length; i++)
+	for(var i=0; i<list.length; i++)
 	{
-		var pw = usernames[i]
-
-		if(pw.startsWith(word))
-		{
-			has = true
-
-			if(!tabbed_list.includes(pw))
-			{
-				tabbed_list.push(pw)
-				return usernames[i]
-			}
-		}
-	}
-
-	for(var i=0; i<usernames.length; i++)
-	{
-		var pw = usernames[i]
+		var pw = list[i]
 		var pwl = pw.toLowerCase()
 
 		if(pwl.startsWith(wl))
@@ -4069,7 +4054,7 @@ function get_closest_username(word)
 			if(!tabbed_list.includes(pw))
 			{
 				tabbed_list.push(pw)
-				return usernames[i]
+				return list[i]
 			}
 		}
 	}
@@ -4077,38 +4062,7 @@ function get_closest_username(word)
 	if(has)
 	{
 		tabbed_list = []
-		return get_closest_username(word)
-	}
-
-	return ""
-}
-
-function get_closest_command(word)
-{
-	word = word.toLowerCase()
-
-	var has = false
-
-	for(var i=0; i<commands.length; i++)
-	{
-		var pw = commands[i]
-
-		if(pw.startsWith(word))
-		{
-			has = true
-
-			if(!tabbed_list.includes(pw))
-			{
-				tabbed_list.push(pw)
-				return commands[i]
-			}
-		}
-	}
-
-	if(has)
-	{
-		tabbed_list = []
-		return get_closest_command(word)
+		return get_closest_autocomplete(word)
 	}
 
 	return ""
@@ -4139,33 +4093,25 @@ function tabbed()
 
 function replace_tabbed(word)
 {
-	if(word[0] === '/')
-	{
-		var uname = get_closest_command(word)
-	}
+	var result = get_closest_autocomplete(word)
 
-	else
-	{
-		var uname = get_closest_username(word)
-	}
-
-	if(uname !== "")
+	if(result)
 	{
 		if(input.value[tabbed_end] === ' ')
 		{
-			input.value = replaceBetween(input.value, tabbed_start, tabbed_end, uname)
+			input.value = replaceBetween(input.value, tabbed_start, tabbed_end, result)
 		}
 
 		else
 		{
-			input.value = replaceBetween(input.value, tabbed_start, tabbed_end, `${uname} `)
+			input.value = replaceBetween(input.value, tabbed_start, tabbed_end, `${result} `)
 		}
 
-		var pos = tabbed_start + uname.length
+		var pos = tabbed_start + result.length
 
 		input.setSelectionRange(pos + 1, pos + 1)
 
-		tabbed_start = pos - uname.length
+		tabbed_start = pos - result.length
 		tabbed_end = pos
 	}
 }
@@ -7388,7 +7334,6 @@ function set_topic_info(data)
 	topic = data.topic
 	topic_setter = data.topic_setter
 	topic_date = nice_date(data.topic_date)
-
 
 	if(topic)
 	{
