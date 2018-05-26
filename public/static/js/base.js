@@ -4036,17 +4036,33 @@ function oiStartsWith(str, what)
 	return str.startsWith(`${commands_sorted[what]} `)
 }
 
-function get_closest_autocomplete(word)
+function get_closest_autocomplete(w)
 {
-	var list = commands.concat(usernames)
-	var wl = word.toLowerCase()
+	var l = commands.concat(usernames)
+	var wl = w.toLowerCase()
 	var has = false
 
-	for(var i=0; i<list.length; i++)
+	for(var i=0; i<l.length; i++)
 	{
-		var pw = list[i]
-		var pwl = pw.toLowerCase()
+		var pw = l[i]
 
+		if(pw.startsWith(w))
+		{
+			has = true
+
+			if(!tabbed_list.includes(pw))
+			{
+				tabbed_list.push(pw)
+				return l[i]
+			}
+		}
+	}
+
+	for(var i=0; i<l.length; i++)
+	{
+		var pw = l[i]
+		var pwl = pw.toLowerCase()
+		
 		if(pwl.startsWith(wl))
 		{
 			has = true
@@ -4054,7 +4070,7 @@ function get_closest_autocomplete(word)
 			if(!tabbed_list.includes(pw))
 			{
 				tabbed_list.push(pw)
-				return list[i]
+				return l[i]
 			}
 		}
 	}
@@ -4062,7 +4078,7 @@ function get_closest_autocomplete(word)
 	if(has)
 	{
 		tabbed_list = []
-		return get_closest_autocomplete(word)
+		return get_closest_autocomplete(w)
 	}
 
 	return ""
