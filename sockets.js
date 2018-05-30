@@ -3383,6 +3383,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, 'othersdisconnected', {amount:amount})
 	}
 
+	handler.public.ping_server = function(socket, data)
+	{
+		handler.user_emit(socket, 'pong_received', {date:data.date})
+	}
+
 	handler.check_permission = function(socket, permission)
 	{
 		if(socket.hue_role === "admin" || socket.hue_role === "op")

@@ -1153,6 +1153,11 @@ function start_socket()
 		{
 			msg_info.show("You must wait a while before creating another room")
 		}
+
+		else if(data.type === 'pong_received')
+		{
+			pong_received(data)
+		}
 	})
 }
 
@@ -5295,6 +5300,7 @@ function register_commands()
 	commands.push('/refreshtv')
 	commands.push('/refreshradio')
 	commands.push('/stopradioin')
+	commands.push('/ping')
 
 	commands.sort()
 
@@ -6124,6 +6130,11 @@ function execute_command(msg, ans)
 	else if(oiStartsWith(lmsg, '/stopradioin'))
 	{
 		stop_radio_in(arg)
+	}
+
+	else if(oiEquals(lmsg, '/ping'))
+	{
+		ping_server()
 	}
 
 	else
@@ -14314,4 +14325,26 @@ function stop_radio_in(minutes)
 	}
 
 	feedback(`Radio will stop automatically in ${s}`)
+}
+
+function ping_server()
+{
+	socket_emit("ping_server", {date:Date.now()})
+}
+
+function pong_received(data)
+{
+	var d = (Date.now() - data.date)
+
+	if(d === 1)
+	{
+		var ds = `${d} ms`
+	}
+
+	else
+	{
+		var ds = `${d} ms`
+	}
+
+	feedback(`Pong: ${ds}`)
 }
