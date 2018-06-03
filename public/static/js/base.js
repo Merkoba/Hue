@@ -11722,28 +11722,28 @@ function show_aura(uname)
 {
 	var user = get_user_by_username(uname)
 
-	var pr = user.profile_image.split("?")[0]
-
-	$(".chat_profile_image").each(function()
-	{
-		if($(this).attr("src").split("?")[0] === pr)
-		{
-			$(this).parent().addClass("aura")
-		}
-	})
-
 	if(aura_timeouts[user.user_id] === undefined)
 	{
-		aura_timeouts[user.user_id] = setTimeout(function()
+		var pr = user.profile_image.split("?")[0]
+
+		$(".chat_profile_image").each(function()
 		{
-			remove_aura(uname)
-		}, max_typing_inactivity)
+			if($(this).attr("src").split("?")[0] === pr)
+			{
+				$(this).parent().addClass("aura")
+			}
+		})
 	}
 
 	else
 	{
 		clearTimeout(aura_timeouts[user.user_id])
 	}
+
+	aura_timeouts[user.user_id] = setTimeout(function()
+	{
+		remove_aura(uname)
+	}, max_typing_inactivity)
 }
 
 function remove_aura(uname)
