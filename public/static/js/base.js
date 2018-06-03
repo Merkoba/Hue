@@ -196,6 +196,7 @@ var message_uname = ""
 var message_type = ""
 var users_to_disconnect = []
 var stop_radio_timeout
+var aura_timeouts = {}
 
 function init()
 {
@@ -11701,6 +11702,8 @@ function show_typing(data)
 
 	show_pencil()
 	typing_remove_timer()
+
+	show_aura(data.username)
 }
 
 function show_pencil()
@@ -11713,6 +11716,43 @@ function hide_pencil()
 {
 	$("#footer_userinfo").removeClass("fa-pencil")
 	$("#footer_userinfo").addClass("fa-user-circle")
+}
+
+function show_aura(uname)
+{
+	var user = get_user_by_username(uname)
+
+	var pr = user.profile_image.split("?")[0]
+
+	$(".chat_profile_image").each(function()
+	{
+		if($(this).attr("src").split("?")[0] === pr)
+		{
+			$(this).parent().addClass("aura")
+		}
+	})
+
+	clearTimeout(aura_timeouts[user.user_id])
+
+	aura_timeouts[user.user_id] = setTimeout(function()
+	{
+		remove_aura(uname)
+	}, max_typing_inactivity)
+}
+
+function remove_aura(uname)
+{
+	var user = get_user_by_username(uname)
+
+	var pr = user.profile_image.split("?")[0]
+
+	$(".chat_profile_image").each(function()
+	{
+		if($(this).attr("src").split("?")[0] === pr)
+		{
+			$(this).parent().removeClass("aura")
+		}
+	})
 }
 
 function shrug()

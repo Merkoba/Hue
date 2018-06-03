@@ -1312,6 +1312,12 @@ input[type=text], textarea
 	100% {text-shadow: 0 0 1.2em}
 }
 
+.aura
+{
+	box-shadow: 0 0 20px currentColor, inset 0 0 20px currentColor;
+	border-radius: 50px;
+}
+
 .custom_titlebar
 {
 	font-family: imported_font, consolas, sans-serif !important;
