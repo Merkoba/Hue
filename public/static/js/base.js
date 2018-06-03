@@ -11732,12 +11732,18 @@ function show_aura(uname)
 		}
 	})
 
-	clearTimeout(aura_timeouts[user.user_id])
-
-	aura_timeouts[user.user_id] = setTimeout(function()
+	if(aura_timeouts[user.user_id] === undefined)
 	{
-		remove_aura(uname)
-	}, max_typing_inactivity)
+		aura_timeouts[user.user_id] = setTimeout(function()
+		{
+			remove_aura(uname)
+		}, max_typing_inactivity)
+	}
+
+	else
+	{
+		clearTimeout(aura_timeouts[user.user_id])
+	}
 }
 
 function remove_aura(uname)
@@ -11753,6 +11759,8 @@ function remove_aura(uname)
 			$(this).parent().removeClass("aura")
 		}
 	})
+
+	aura_timeouts[user.user_id] = undefined
 }
 
 function shrug()
