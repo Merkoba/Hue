@@ -778,6 +778,7 @@ function start_socket()
 		{
 			update_chat({uname:data.username, msg:data.msg, prof_image:data.profile_image})
 			hide_pencil()
+			remove_aura(data.username, true)
 		}
 
 		else if(data.type === 'request_slice_upload')
@@ -11722,10 +11723,7 @@ function show_aura(uname)
 {
 	if(aura_timeouts[uname] === undefined)
 	{
-		$(`.umsg_${uname}`).each(function()
-		{
-			$(this).find(".chat_profile_image_container").eq(0).addClass("aura")
-		})
+		$(`.umsg_${uname}`).last().find(".chat_profile_image_container").eq(0).addClass("aura")
 	}
 
 	else
@@ -11739,12 +11737,27 @@ function show_aura(uname)
 	}, max_typing_inactivity)
 }
 
-function remove_aura(uname)
+function remove_aura(uname, clr=false)
 {
-	$(`.umsg_${uname}`).each(function()
+	if(aura_timeouts[uname] === undefined)
 	{
-		$(this).find(".chat_profile_image_container").eq(0).removeClass("aura")
+		return false
+	}
+	
+	$(`.chat_profile_image_container.aura`).each(function()
+	{
+		var umsg = $(this).closest(`.umsg_${uname}`)
+
+		if(umsg.length > 0)
+		{
+			$(this).removeClass("aura")
+		}
 	})
+
+	if(clr)
+	{
+		clearTimeout(aura_timeouts[uname])
+	}
 
 	aura_timeouts[uname] = undefined
 }
