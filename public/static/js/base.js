@@ -778,6 +778,7 @@ function start_socket()
 		{
 			update_chat({uname:data.username, msg:data.msg, prof_image:data.profile_image})
 			hide_pencil()
+			remove_aura(data.username, true)
 		}
 
 		else if(data.type === 'request_slice_upload')
@@ -11747,8 +11748,13 @@ function show_aura(uname)
 	}, max_typing_inactivity)
 }
 
-function remove_aura(uname)
+function remove_aura(uname, clr=false)
 {
+	if(clr)
+	{
+		clearTimeout(aura_timeouts[uname])
+	}
+
 	$(`.chat_profile_image_container.aura`).each(function()
 	{
 		var umsg = $(this).closest(`.umsg_${uname}`)
