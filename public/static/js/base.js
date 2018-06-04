@@ -4412,7 +4412,7 @@ function update_chat(args={})
 	else
 	{
 		var s = `
-		<div class='msg chat_message'>
+		<div class='msg chat_message umsg_${args.uname}'>
 			<div class='chat_left_side'>
 				<div class='chat_profile_image_container unselectable'>
 					<img class='chat_profile_image' src='${pi}'>
@@ -11720,27 +11720,20 @@ function hide_pencil()
 
 function show_aura(uname)
 {
-	var user = get_user_by_username(uname)
-
-	if(aura_timeouts[user.user_id] === undefined)
+	if(aura_timeouts[uname] === undefined)
 	{
-		var pr = user.profile_image.split("?")[0]
-
-		$(".chat_profile_image").each(function()
+		$(`.umsg_${uname}`).each(function()
 		{
-			if($(this).attr("src").split("?")[0] === pr)
-			{
-				$(this).parent().addClass("aura")
-			}
+			$(this).find(".chat_profile_image_container").eq(0).addClass("aura")
 		})
 	}
 
 	else
 	{
-		clearTimeout(aura_timeouts[user.user_id])
+		clearTimeout(aura_timeouts[uname])
 	}
 
-	aura_timeouts[user.user_id] = setTimeout(function()
+	aura_timeouts[uname] = setTimeout(function()
 	{
 		remove_aura(uname)
 	}, max_typing_inactivity)
@@ -11748,19 +11741,12 @@ function show_aura(uname)
 
 function remove_aura(uname)
 {
-	var user = get_user_by_username(uname)
-
-	var pr = user.profile_image.split("?")[0]
-
-	$(".chat_profile_image").each(function()
+	$(`.umsg_${uname}`).each(function()
 	{
-		if($(this).attr("src").split("?")[0] === pr)
-		{
-			$(this).parent().removeClass("aura")
-		}
+		$(this).find(".chat_profile_image_container").eq(0).removeClass("aura")
 	})
 
-	aura_timeouts[user.user_id] = undefined
+	aura_timeouts[uname] = undefined
 }
 
 function shrug()
