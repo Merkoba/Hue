@@ -778,7 +778,6 @@ function start_socket()
 		{
 			update_chat({uname:data.username, msg:data.msg, prof_image:data.profile_image})
 			hide_pencil()
-			remove_aura(data.username, true)
 		}
 
 		else if(data.type === 'request_slice_upload')
@@ -11719,15 +11718,26 @@ function hide_pencil()
 	$("#footer_userinfo").addClass("fa-user-circle")
 }
 
+function add_aura(uname)
+{
+	$(`.umsg_${uname}`).last().find(".chat_profile_image_container").eq(0).addClass("aura")
+}
+
 function show_aura(uname)
 {
 	if(aura_timeouts[uname] === undefined)
 	{
-		$(`.umsg_${uname}`).last().find(".chat_profile_image_container").eq(0).addClass("aura")
+		add_aura(uname)
 	}
 
 	else
 	{
+		if(!$(`.umsg_${uname}`).last().find(".chat_profile_image_container").eq(0).hasClass("aura"))
+		{
+			remove_aura(uname)
+			add_aura(uname)
+		}
+
 		clearTimeout(aura_timeouts[uname])
 	}
 
@@ -11737,13 +11747,8 @@ function show_aura(uname)
 	}, max_typing_inactivity)
 }
 
-function remove_aura(uname, clr=false)
+function remove_aura(uname)
 {
-	if(aura_timeouts[uname] === undefined)
-	{
-		return false
-	}
-	
 	$(`.chat_profile_image_container.aura`).each(function()
 	{
 		var umsg = $(this).closest(`.umsg_${uname}`)
@@ -11753,11 +11758,6 @@ function remove_aura(uname, clr=false)
 			$(this).removeClass("aura")
 		}
 	})
-
-	if(clr)
-	{
-		clearTimeout(aura_timeouts[uname])
-	}
 
 	aura_timeouts[uname] = undefined
 }
