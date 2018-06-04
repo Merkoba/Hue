@@ -779,6 +779,9 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .chat_search_result_content
 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	max-width: 26em;
 }
 
@@ -803,6 +806,9 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .highlights_content
 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	max-width: 26em;
 }
 
