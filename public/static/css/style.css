@@ -403,8 +403,9 @@ body, html
 
 .chat_content_container
 {
-	flex-shrink: 1;
-	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
 	padding-top: 0.2em;
 }
 
