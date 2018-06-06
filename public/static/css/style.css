@@ -598,6 +598,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-right: 0.2em;
 }
 
+.icon3
+{
+	font-size: 2em;
+}
+
 #main_menu
 {
 	padding-right: 0.1em;

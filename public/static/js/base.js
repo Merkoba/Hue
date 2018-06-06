@@ -14401,3 +14401,30 @@ function pong_received(data)
 
 	feedback(`Pong: ${ds}`)
 }
+
+function main_menu_special()
+{
+	var s = `
+	<i class='icon3 fa fa-users'></i>
+
+	<div class='spacer3'></div>
+
+	<div class='bigger'>Hue ${hue_version}</div>
+
+	<div class='spacer2'></div>
+
+	<i class='icon2 fa fa-caret-right'></i>
+	<span>${hue_codename}</span>
+	<i class='icon2 fa fa-caret-left'></i>
+
+	<div class='spacer3'></div>
+
+	<div>Developed by madprops and friends</div>
+
+	<div class='spacer3'></div>
+
+	<div>2016 - 2018</div>
+	`
+
+	msg_info2.show(["About", s])
+}
