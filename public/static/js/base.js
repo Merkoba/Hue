@@ -14419,11 +14419,11 @@ function main_menu_special()
 
 	<div class='spacer3'></div>
 
-	<div>Developed by madprops and friends</div>
+	<div>Developed by ${hue_devs}</div>
 
 	<div class='spacer3'></div>
 
-	<div>2016 - 2018</div>
+	<div>${hue_years}</div>
 	`
 
 	msg_info2.show(["About", s])
