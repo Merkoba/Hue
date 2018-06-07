@@ -14415,7 +14415,7 @@ function main_menu_special()
 
 	<i class='icon2 fa fa-caret-right'></i>
 	<span>${hue_codename}</span>
-	<i class='icon2 fa fa-caret-left'></i>
+	<i class='icon2b fa fa-caret-left'></i>
 
 	<div class='spacer3'></div>
 
