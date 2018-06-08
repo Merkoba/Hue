@@ -34,9 +34,9 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1264"></script>
+		<script src="/static/js/base.js?ver=1265"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=345"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=348"/>
 
 		<script>
 
@@ -118,6 +118,26 @@
 
 					</div>
 
+				</div>
+
+				<div class='topbox_container unselectable' id='reactions_box_container'>
+					<div class='topbox' id='reactions_box'>
+
+						<i class='reaction_icon fa fa-smile-o pointer action nicetitle' onclick='send_reaction("happy")' title="Happy"></i>
+
+						<div class='hspacer1'></div>
+
+						<i class='reaction_icon fa fa-meh-o pointer action nicetitle' onclick='send_reaction("meh")' title="Meh"></i>
+
+						<div class='hspacer1'></div>
+
+						<i class='reaction_icon fa fa-frown-o pointer action nicetitle' onclick='send_reaction("sad")' title="Sad"></i>
+
+					</div>
+				</div>
+
+				<div class='topbox_container unselectable' id='topfeedback_container'>
+					<div class='topbox' id='topfeedback'></div>
 				</div>
 
 				<div class='rows_container'>
@@ -1118,6 +1138,9 @@
 			<div class='info_item'>/goto: Goes to room ID or URL.</div>
 			<div class='info_item'>/changeinput: Sets the text input to the specified argument.</div>
 			<div class='info_item'>/ping: Pings the server and shows the delay from the moment it was sent to the moment it was received.</div>
+			<div class='info_item'>/feelinghappy: Sends reaction "happy".</div>
+			<div class='info_item'>/feelingmeh: Sends reaction "meh".</div>
+			<div class='info_item'>/feelingsad: Sends reaction "sad".</div>
 			<div class='info_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil, and profile images in chat of whoever is typing will have a glow effect.</div>
 			<div class='spacer1'></div>
 			<span class='help_link action unselectable' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='help3()'>Administration Features</span>			

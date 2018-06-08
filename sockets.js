@@ -20,10 +20,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	const images_root = path.join(__dirname, config.images_directory)
 
-	var vtypes = ["voice1", "voice2", "voice3", "voice4"]
-	var roles = ["admin", "op"].concat(vtypes)
-	var image_types = ["image/jpeg", "image/png", "image/gif"]
-	var image_extensions = ["jpg", "jpeg", "png", "gif"]
+	const vtypes = ["voice1", "voice2", "voice3", "voice4"]
+	const roles = ["admin", "op"].concat(vtypes)
+	const image_types = ["image/jpeg", "image/png", "image/gif"]
+	const image_extensions = ["jpg", "jpeg", "png", "gif"]
+	const reaction_types = ["happy", "meh", "sad"]
 
 	const s3 = new aws.S3(
 	{
@@ -3386,6 +3387,25 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	handler.public.ping_server = function(socket, data)
 	{
 		handler.user_emit(socket, 'pong_received', {date:data.date})
+	}
+
+	handler.public.send_reaction = function(socket, data)
+	{
+		if(!reaction_types.includes(data.reaction_type))
+		{
+			return handler.get_out(socket)
+		}
+
+		if(!handler.check_permission(socket, "chat"))
+		{
+			return false
+		}
+
+		handler.room_emit(socket, 'reaction_received', 
+		{
+			username: socket.hue_username, 
+			reaction_type: data.reaction_type
+		})
 	}
 
 	handler.check_permission = function(socket, permission)

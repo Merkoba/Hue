@@ -424,6 +424,9 @@ If you want to remove it to start fresh:
 "image_queue_interval"
 >Minimum time for a changed image to be displayed before changing to the next one. This doesn't take into account the time the image took to load.
 
+"reaction_queue_interval"
+>Minimum time for a reaction to be displayed before changing to the next one. This is also used to determine how long the reaction box will be visible after the last reaction.
+
 "max_same_post_diff"
 >Maximum difference in time between a message and and another from the same user to be displayed within the same post.
 

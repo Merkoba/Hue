@@ -94,6 +94,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.default_profile_image_url = config.default_profile_image_url
 	c.vars.profile_image_loading_url = config.profile_image_loading_url
 	c.vars.image_queue_interval = config.image_queue_interval
+	c.vars.reaction_queue_interval = config.reaction_queue_interval
 	c.vars.default_background_image_url = config.default_background_image_url
 	c.vars.background_image_loading_url = config.background_image_loading_url
 	c.vars.upload_slice_size = config.upload_slice_size

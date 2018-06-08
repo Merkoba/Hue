@@ -147,6 +147,9 @@ var background_mode
 var background_tile_dimensions
 var image_queue = ["first"]
 var image_queue_timeout
+var reaction_queue = []
+var reaction_queue_timeout
+var topfeedback_hide_timeout
 var layout_mode
 var last_image_source = false
 var last_tv_source = false
@@ -197,6 +200,7 @@ var message_type = ""
 var users_to_disconnect = []
 var stop_radio_timeout
 var aura_timeouts = {}
+var reaction_types = ["happy", "meh", "sad"]
 
 function init()
 {
@@ -244,6 +248,7 @@ function init()
 	setup_input_history()
 	setup_modal_image()
 	setup_footer()
+	setup_reactions()
 
 	start_socket()
 }
@@ -509,6 +514,7 @@ function check_permissions()
 	can_radio = room_radio_enabled && check_permission(role, "radio")
 
 	setup_icons()
+	setup_reactions()
 }
 
 function check_permission(role, type)
@@ -1160,6 +1166,11 @@ function start_socket()
 		{
 			pong_received(data)
 		}
+
+		else if(data.type === 'reaction_received')
+		{
+			add_to_reaction_queue(data)
+		}
 	})
 }
 
@@ -1706,6 +1717,12 @@ function apply_theme()
 		color: ${background_color} !important;
 		background-color: ${font_color} !important;
 		border: 1px solid ${background_color_2} !important;
+	}
+
+	.topbox
+	{
+		background-color: ${background_color_2} !important;
+		color: ${font_color} !important;
 	}
 
 	</style>
@@ -5303,6 +5320,9 @@ function register_commands()
 	commands.push('/refreshradio')
 	commands.push('/stopradioin')
 	commands.push('/ping')
+	commands.push('/feelinghappy')
+	commands.push('/feelingmeh')
+	commands.push('/feelingsad')
 
 	commands.sort()
 
@@ -6137,6 +6157,21 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/ping'))
 	{
 		ping_server()
+	}
+
+	else if(oiEquals(lmsg, '/feelinghappy'))
+	{
+		send_reaction("happy")
+	}
+
+	else if(oiEquals(lmsg, '/feelingmeh'))
+	{
+		send_reaction("meh")
+	}
+
+	else if(oiEquals(lmsg, '/feelingsad'))
+	{
+		send_reaction("sad")
 	}
 
 	else
@@ -14400,4 +14435,115 @@ function pong_received(data)
 	}
 
 	feedback(`Pong: ${ds}`)
+}
+
+function setup_reactions()
+{
+
+}
+
+function send_reaction(reaction_type)
+{
+	if(!can_chat)
+	{
+		return false
+	}
+
+	if(!reaction_types.includes(reaction_type))
+	{
+		return false
+	}
+
+	socket_emit("send_reaction", {reaction_type:reaction_type})
+}
+
+function add_to_reaction_queue(data)
+{
+	reaction_queue.push(data)
+
+	if(reaction_queue_timeout === undefined)
+	{
+		check_reaction_queue()
+	}
+}
+
+function check_reaction_queue()
+{
+	if(reaction_queue.length > 0)
+	{
+		var data = reaction_queue[0]
+
+		show_reaction(data)
+
+		reaction_queue.shift()
+
+		reaction_queue_timeout = setTimeout(function()
+		{
+			check_reaction_queue()
+		}, reaction_queue_interval)
+	}
+
+	else
+	{
+		clearTimeout(reaction_queue_timeout)
+		reaction_queue_timeout = undefined
+	}
+}
+
+function show_reaction(data)
+{
+	var h = $(`
+	<div>
+		<span id='topfeedback_icon'></span>
+		<span id='topfeedback_text'></span>
+	</div>`)
+
+	if(data.reaction_type === "happy")
+	{
+		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-smile-o'></i>")
+		var emotion = "happy"
+	}
+
+	else if(data.reaction_type === "meh")
+	{	
+		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-meh-o'></i>")
+		var emotion = "meh"
+	}
+
+	else if(data.reaction_type === "sad")
+	{
+		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-frown-o'></i>")
+		var emotion = "sad"
+	}
+
+	else
+	{
+		return false
+	}
+	
+	h.find("#topfeedback_text").eq(0).text(`${data.username} is feeling ${emotion}`)
+
+	$("#topfeedback").html(h[0])
+
+	$("#topfeedback").css("visibility", "visible")
+
+	clearTimeout("topfeedback_hide_timeout")
+
+	topfeedback_hide_timeout = setTimeout(function()
+	{
+		$("#topfeedback").css("visibility", "hidden")
+	}, reaction_queue_interval)
+}
+
+function setup_reactions()
+{
+	if(can_chat)
+	{
+		$("#reactions_box_container").css("display", "flex")
+	}
+
+	else
+	{
+		$("#reactions_box_container").css("display", "none")
+	}
 }
