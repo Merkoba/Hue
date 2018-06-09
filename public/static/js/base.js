@@ -14550,6 +14550,7 @@ function setup_reactions_box()
 	function()
 	{
 		mouse_over_reactions = true
+		clearTimeout(hide_reactions_timeout)
 	},
 
 	function()
