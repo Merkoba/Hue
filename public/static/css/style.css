@@ -1413,9 +1413,7 @@ input[type=text], textarea
 	align-items: center;
 	justify-content: center;
 	visibility: hidden;
-	font-size: 2rem;
-	padding: 0.4rem;
-	font-size: 1.2rem;
+	font-size: 1rem;
 }
 
 #reactions_box_container
@@ -1433,4 +1431,9 @@ input[type=text], textarea
 	flex-shrink: 0;
 	align-self: center;
 	top: calc(2rem + 1px);
+}
+
+#topfeedback
+{
+	padding: 0.4rem;
 }
