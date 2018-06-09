@@ -14504,7 +14504,7 @@ function check_reaction_queue()
 		reaction_queue_timeout = setTimeout(function()
 		{
 			check_reaction_queue()
-		}, 500)
+		}, 1000)
 	}
 
 	else
