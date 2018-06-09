@@ -147,9 +147,6 @@ var background_mode
 var background_tile_dimensions
 var image_queue = ["first"]
 var image_queue_timeout
-var show_reactions_timeout
-var hide_reactions_timeout
-var mouse_over_reactions = false
 var layout_mode
 var last_image_source = false
 var last_tv_source = false
@@ -201,7 +198,9 @@ var users_to_disconnect = []
 var stop_radio_timeout
 var aura_timeouts = {}
 var reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
-var can_react = true
+var show_reactions_timeout
+var hide_reactions_timeout
+var mouse_over_reactions = false
 
 function init()
 {
@@ -14458,7 +14457,7 @@ function pong_received(data)
 
 function send_reaction(reaction_type)
 {
-	if(!can_chat || !can_react)
+	if(!can_chat)
 	{
 		return false
 	}
@@ -14533,7 +14532,7 @@ function setup_reactions_box()
 
 		show_reactions_timeout = setTimeout(function()
 		{
-			if(can_chat && can_react)
+			if(can_chat)
 			{
 				show_reactions()
 			}
