@@ -1430,7 +1430,7 @@ input[type=text], textarea
 	flex-grow: 1;
 	flex-shrink: 0;
 	align-self: center;
-	top: calc(2rem + 1px);
+	top: calc(2rem + 4px);
 }
 
 #topfeedback
