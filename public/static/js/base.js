@@ -14514,8 +14514,8 @@ function check_reaction_queue()
 function show_reaction(data)
 {
 	var h = $(`
-	<div>
-		<span id='topfeedback_icon'></span>&nbsp;&nbsp;<span id='topfeedback_text'></span>
+	<div id='topfeedback_content_container'>
+		<div id='topfeedback_icon'></div><div id='topfeedback_text'></div>
 	</div>`)
 
 	if(data.reaction_type === "like")

@@ -1336,6 +1336,11 @@ input[type=text], textarea
 	border-radius: 50px;
 }
 
+.aura2
+{
+	box-shadow: inset 0 0 4px currentColor;
+}
+
 .custom_titlebar
 {
 	font-family: imported_font, consolas, sans-serif !important;
@@ -1436,4 +1441,15 @@ input[type=text], textarea
 #topfeedback
 {
 	padding: 0.4rem;
+}
+
+#topfeedback_content_container
+{
+	display: flex;
+	flex-direction: row;
+}
+
+#topfeedback_icon
+{
+	padding-right: 0.8rem;
 }
