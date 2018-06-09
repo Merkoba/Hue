@@ -202,6 +202,7 @@ var show_reactions_timeout
 var hide_reactions_timeout
 var mouse_over_reactions = false
 var reactions_hover_delay = 800
+var user_functions = [1, 2, 3]
 
 function init()
 {
@@ -9132,7 +9133,10 @@ function get_global_settings()
 		"afk_disable_image_change",
 		"afk_disable_tv_change",
 		"afk_disable_radio_change",
-		"open_popup_messages"
+		"open_popup_messages",
+		"user_function_1",
+		"user_function_2",
+		"user_function_3"
 	]
 
 	var changed = false
@@ -9589,6 +9593,48 @@ function setting_afk_disable_radio_change_action(type, save=true)
 function setting_open_popup_messages_action(type, save=true)
 {
 	window[type].open_popup_messages = $(`#${type}_open_popup_messages`).prop("checked")
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_user_function_1_action(type, save=true)
+{
+	var cmds = utilz.clean_string7($(`#${type}_user_function_1`).val())
+
+	$(`#${type}_user_function_1`).val(cmds)
+
+	window[type].user_function_1 = cmds
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_user_function_2_action(type, save=true)
+{
+	var cmds = utilz.clean_string7($(`#${type}_user_function_2`).val())
+
+	$(`#${type}_user_function_2`).val(cmds)
+
+	window[type].user_function_2 = cmds
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_user_function_3_action(type, save=true)
+{
+	var cmds = utilz.clean_string7($(`#${type}_user_function_3`).val())
+
+	$(`#${type}_user_function_3`).val(cmds)
+
+	window[type].user_function_3 = cmds
 
 	if(save)
 	{
@@ -14583,4 +14629,29 @@ function show_reactions()
 function hide_reactions()
 {
 	$("#reactions_box_container").css("display", "none")
+}
+
+function run_user_function(n)
+{
+	if(!user_functions.includes(n))
+	{
+		return false
+	}
+
+	if(get_setting(`user_function_${n}`))
+	{
+		var cmds = get_setting(`user_function_${n}`).split('\n')
+
+		for(var cmd of cmds)
+		{
+			process_message(cmd, false, false)
+		}
+	}
+
+	else
+	{
+		feedback(`User Function ${n} doesn't do anything yet. You can set what it does in the User Menu`)
+	}
+	
+	hide_reactions()
 }
