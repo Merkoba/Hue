@@ -24,7 +24,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const roles = ["admin", "op"].concat(vtypes)
 	const image_types = ["image/jpeg", "image/png", "image/gif"]
 	const image_extensions = ["jpg", "jpeg", "png", "gif"]
-	const reaction_types = ["happy", "meh", "sad"]
+	const reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
 
 	const s3 = new aws.S3(
 	{

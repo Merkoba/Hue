@@ -1403,11 +1403,6 @@ input[type=text], textarea
 	z-index: 99;
 }
 
-.topbox_container:hover > div
-{
-	visibility: visible;
-}
-
 .topbox
 {
 	display: flex;

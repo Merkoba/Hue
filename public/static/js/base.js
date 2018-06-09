@@ -200,7 +200,8 @@ var message_type = ""
 var users_to_disconnect = []
 var stop_radio_timeout
 var aura_timeouts = {}
-var reaction_types = ["happy", "meh", "sad"]
+var reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
+var can_react = true
 
 function init()
 {
@@ -248,7 +249,7 @@ function init()
 	setup_input_history()
 	setup_modal_image()
 	setup_footer()
-	setup_reactions()
+	setup_reactions_box()
 
 	start_socket()
 }
@@ -514,7 +515,6 @@ function check_permissions()
 	can_radio = room_radio_enabled && check_permission(role, "radio")
 
 	setup_icons()
-	setup_reactions()
 }
 
 function check_permission(role, type)
@@ -5320,9 +5320,12 @@ function register_commands()
 	commands.push('/refreshradio')
 	commands.push('/stopradioin')
 	commands.push('/ping')
-	commands.push('/feelinghappy')
-	commands.push('/feelingmeh')
-	commands.push('/feelingsad')
+	commands.push('/reactlike')
+	commands.push('/reactlove')
+	commands.push('/reacthappy')
+	commands.push('/reactmeh')
+	commands.push('/reactsad')
+	commands.push('/reactdislike')
 
 	commands.sort()
 
@@ -6159,19 +6162,34 @@ function execute_command(msg, ans)
 		ping_server()
 	}
 
-	else if(oiEquals(lmsg, '/feelinghappy'))
+	else if(oiEquals(lmsg, '/reactlike'))
+	{
+		send_reaction("like")
+	}
+
+	else if(oiEquals(lmsg, '/reactlove'))
+	{
+		send_reaction("love")
+	}
+
+	else if(oiEquals(lmsg, '/reacthappy'))
 	{
 		send_reaction("happy")
 	}
 
-	else if(oiEquals(lmsg, '/feelingmeh'))
+	else if(oiEquals(lmsg, '/reactmeh'))
 	{
 		send_reaction("meh")
 	}
 
-	else if(oiEquals(lmsg, '/feelingsad'))
+	else if(oiEquals(lmsg, '/reactsad'))
 	{
 		send_reaction("sad")
+	}
+
+	else if(oiEquals(lmsg, '/reactdislike'))
+	{
+		send_reaction("dislike")
 	}
 
 	else
@@ -14437,14 +14455,9 @@ function pong_received(data)
 	feedback(`Pong: ${ds}`)
 }
 
-function setup_reactions()
-{
-
-}
-
 function send_reaction(reaction_type)
 {
-	if(!can_chat)
+	if(!can_chat || !can_react)
 	{
 		return false
 	}
@@ -14455,6 +14468,15 @@ function send_reaction(reaction_type)
 	}
 
 	socket_emit("send_reaction", {reaction_type:reaction_type})
+
+	can_react = false
+
+	setTimeout(function()
+	{
+		can_react = true
+	}, reaction_queue_interval)
+
+	$("#reactions_box").css("visibility", "hidden")
 }
 
 function add_to_reaction_queue(data)
@@ -14494,26 +14516,43 @@ function show_reaction(data)
 {
 	var h = $(`
 	<div>
-		<span id='topfeedback_icon'></span>
-		<span id='topfeedback_text'></span>
+		<span id='topfeedback_icon'></span>&nbsp;&nbsp;<span id='topfeedback_text'></span>
 	</div>`)
 
-	if(data.reaction_type === "happy")
+	if(data.reaction_type === "like")
+	{
+		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-thumbs-o-up'></i>")
+		var emotion = `${data.username} likes this`
+	}
+
+	else if(data.reaction_type === "love")
+	{
+		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-heart-o'></i>")
+		var emotion = `${data.username} loves this`
+	}
+
+	else if(data.reaction_type === "happy")
 	{
 		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-smile-o'></i>")
-		var emotion = "happy"
+		var emotion = `${data.username} is feeling happy`
 	}
 
 	else if(data.reaction_type === "meh")
 	{	
 		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-meh-o'></i>")
-		var emotion = "meh"
+		var emotion = `${data.username} is feeling meh`
 	}
 
 	else if(data.reaction_type === "sad")
 	{
 		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-frown-o'></i>")
-		var emotion = "sad"
+		var emotion = `${data.username} is feeling sad`
+	}
+
+	else if(data.reaction_type === "dislike")
+	{
+		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-thumbs-o-down'></i>")
+		var emotion = `${data.username} dislikes this`
 	}
 
 	else
@@ -14521,7 +14560,7 @@ function show_reaction(data)
 		return false
 	}
 	
-	h.find("#topfeedback_text").eq(0).text(`${data.username} is feeling ${emotion}`)
+	h.find("#topfeedback_text").eq(0).text(emotion)
 
 	$("#topfeedback").html(h[0])
 
@@ -14535,15 +14574,20 @@ function show_reaction(data)
 	}, reaction_queue_interval)
 }
 
-function setup_reactions()
+function setup_reactions_box()
 {
-	if(can_chat)
-	{
-		$("#reactions_box_container").css("display", "flex")
-	}
+	$("#reactions_box_container").hover(
 
-	else
+	function()
 	{
-		$("#reactions_box_container").css("display", "none")
-	}
+		if(can_chat && can_react)
+		{
+			$("#reactions_box").css("visibility", "visible")
+		}
+	},
+
+	function()
+	{
+		$("#reactions_box").css("visibility", "hidden")
+	})
 }
