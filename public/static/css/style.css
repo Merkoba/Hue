@@ -1397,70 +1397,30 @@ input[type=text], textarea
 	padding-right: 0.7em;
 }
 
-.topbox_container
+#reactions_box_container
 {
-	display: flex;
+	display: none;
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: center;
 	position: fixed;
 	border-radius: 50px;
-	top: calc(2rem + 4px);
-	left: 1rem;	
+	bottom: 2rem;
+	left: 0;	
 	flex-grow: 1;
 	flex-shrink: 0;
+	z-index: 99999;
 }
 
-.topbox
+#reactions_box
 {
 	display: flex;
 	position: relative;
 	height: 100%;
 	width: 100%;
 	flex-direction: row;
-	visibility: hidden;
-}
-
-#reactions_box_container
-{
-	z-index: 99;
-}
-
-#reactions_box
-{
 	align-items: center;
 	justify-content: center;
 	padding: 0.5rem;
 	font-size: 1.2rem;
-}
-
-#topfeedback_container
-{
-	z-index: 98;
-}
-
-#topfeedback
-{
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	justify-content: center;
-	padding-top: 0.3rem;
-	padding-bottom: 0.3rem;
-	font-size: 1rem;
-}
-
-.topfeedback_content_container
-{
-	display: flex;
-	flex-direction: row;
-	padding-right: 0.8rem;
-	padding-left: 0.8rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
-}
-
-.topfeedback_icon
-{
-	padding-right: 0.8rem;
 }

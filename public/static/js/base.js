@@ -147,9 +147,9 @@ var background_mode
 var background_tile_dimensions
 var image_queue = ["first"]
 var image_queue_timeout
-var reaction_queue = []
-var reaction_queue_timeout
 var show_reactions_timeout
+var hide_reactions_timeout
+var mouse_over_reactions = false
 var layout_mode
 var last_image_source = false
 var last_tv_source = false
@@ -1169,7 +1169,7 @@ function start_socket()
 
 		else if(data.type === 'reaction_received')
 		{
-			add_to_reaction_queue(data)
+			show_reaction(data)
 		}
 	})
 }
@@ -1719,7 +1719,7 @@ function apply_theme()
 		border: 1px solid ${background_color_2} !important;
 	}
 
-	.topbox
+	#reactions_box
 	{
 		background-color: ${background_color_2} !important;
 		color: ${font_color} !important;
@@ -4209,14 +4209,12 @@ function check_scrollers()
 		}
 
 		show_bottom_scroller()
-		hide_reactions()
 	}
 
 	else
 	{
 		hide_top_scroller()
 		hide_bottom_scroller()
-		show_reactions()
 	}
 }
 
@@ -10148,6 +10146,8 @@ function setup_userinfo()
 
 function show_userinfo()
 {
+	clearTimeout(show_reactions_timeout)
+	hide_reactions()
 	msg_userinfo.show()
 }
 
@@ -14470,93 +14470,45 @@ function send_reaction(reaction_type)
 
 	socket_emit("send_reaction", {reaction_type:reaction_type})
 
-	can_react = false
-
-	setTimeout(function()
-	{
-		can_react = true
-	}, 500)
-
-	$("#reactions_box").css("visibility", "hidden")
-}
-
-function add_to_reaction_queue(data)
-{
-	reaction_queue.push(data)
-
-	if(reaction_queue_timeout === undefined)
-	{
-		check_reaction_queue()
-	}
-}
-
-function check_reaction_queue()
-{
-	if(reaction_queue.length > 0)
-	{
-		if($("#topfeedback").children().length < reaction_max_visible_items)
-		{
-			var data = reaction_queue[0]
-			show_reaction(data)
-			reaction_queue.shift()
-		}
-
-		reaction_queue_timeout = setTimeout(function()
-		{
-			check_reaction_queue()
-		}, 1000)
-	}
-
-	else
-	{
-		clearTimeout(reaction_queue_timeout)
-		reaction_queue_timeout = undefined
-	}
+	hide_reactions()
 }
 
 function show_reaction(data)
 {
-	var d = Date.now()
-
-	var h = $(`
-	<div id='topfeedback_reaction_${d}' class='topfeedback_content_container'>
-		<div class='topfeedback_icon'></div><div class='topfeedback_text'></div>
-	</div>`)
-
 	if(data.reaction_type === "like")
 	{
-		h.find(".topfeedback_icon").eq(0).html("<i class='fa fa-thumbs-o-up'></i>")
-		var emotion = `${data.username} likes this`
+		var icon = "<i class='fa fa-thumbs-o-up'></i>"
+		var msg = `${data.username} likes this`
 	}
 
 	else if(data.reaction_type === "love")
 	{
-		h.find(".topfeedback_icon").eq(0).html("<i class='fa fa-heart-o'></i>")
-		var emotion = `${data.username} loves this`
+		var icon = "<i class='fa fa-heart-o'></i>"
+		var msg = `${data.username} loves this`
 	}
 
 	else if(data.reaction_type === "happy")
 	{
-		h.find(".topfeedback_icon").eq(0).html("<i class='fa fa-smile-o'></i>")
-		var emotion = `${data.username} is feeling happy`
+		var icon = "<i class='fa fa-smile-o'></i>"
+		var msg = `${data.username} is feeling happy`
 	}
 
 	else if(data.reaction_type === "meh")
 	{	
-		h.find(".topfeedback_icon").eq(0).html("<i class='fa fa-meh-o'></i>")
-		var emotion = `${data.username} is feeling meh`
+		var icon = "<i class='fa fa-meh-o'></i>"
+		var msg = `${data.username} is feeling meh`
 	}
 
 	else if(data.reaction_type === "sad")
 	{
-		h.find(".topfeedback_icon").eq(0).html("<i class='fa fa-frown-o'></i>")
-		var emotion = `${data.username} is feeling sad`
+		var icon = "<i class='fa fa-frown-o'></i>"
+		var msg = `${data.username} is feeling sad`
 	}
 
 	else if(data.reaction_type === "dislike")
 	{
-		h.find(".topfeedback_icon").eq(0).html("<i class='fa fa-thumbs-o-down'></i>")
-		var emotion = `${data.username} dislikes this`
+		var icon = "<i class='fa fa-thumbs-o-down'></i>"
+		var msg = `${data.username} dislikes this`
 	}
 
 	else
@@ -14564,55 +14516,70 @@ function show_reaction(data)
 		return false
 	}
 	
-	h.find(".topfeedback_text").eq(0).text(emotion)
-
-	h.hide().appendTo("#topfeedback").fadeIn(400);
-
-	$("#topfeedback").css("visibility", "visible")
-
-	setTimeout(function()
+	chat_announce(
 	{
-		$(`#topfeedback_reaction_${d}`).fadeOut(400, function()
-		{
-			$(this).remove()
-		
-			if($("#topfeedback").children().length === 0)
-			{
-				$("#topfeedback").css("visibility", "hidden")
-				$("#topfeedback").html("")
-			}
-		})
-	}, reaction_visibility_duration)
+		brk: icon,
+		msg: msg
+	})
 }
 
 function setup_reactions_box()
 {
-	$("#reactions_box_container").hover(
+	$("#footer_userinfo").hover(
 
 	function()
 	{
+		clearTimeout(hide_reactions_timeout)
+
 		show_reactions_timeout = setTimeout(function()
 		{
 			if(can_chat && can_react)
 			{
-				$("#reactions_box").css("visibility", "visible")
+				show_reactions()
 			}
-		}, 200)
+		}, 500)
+	}, 
+
+	function()
+	{
+		start_hide_reactions()
+	})
+
+	$("#reactions_box_container").hover(
+
+	function()
+	{
+		mouse_over_reactions = true
 	},
 
 	function()
 	{
-		clearTimeout(show_reactions_timeout)
-		$("#reactions_box").css("visibility", "hidden")
+		mouse_over_reactions = false
+		start_hide_reactions()
 	})
+}
+
+function start_hide_reactions()
+{
+	clearTimeout(show_reactions_timeout)
+
+	hide_reactions_timeout = setTimeout(function()
+	{
+		if(mouse_over_reactions)
+		{
+			return false
+		}
+
+		hide_reactions()
+	}, 800)	
 }
 
 function show_reactions()
 {
-	$(".topbox_container").css("display", "flex")
+	$("#reactions_box_container").css("display", "flex")
 }
 
 function hide_reactions()
 {
-	$(".topbox_container").css("display", "none")
+	$("#reactions_box_container").css("display", "none")
 }

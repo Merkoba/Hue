@@ -125,8 +125,6 @@
 	"max_jwt_token_length": 300,
 	"max_user_id_length": 100,
 	"image_queue_interval": 8000,
-	"reaction_max_visible_items": 5,
-	"reaction_visibility_duration": 10000,
 	"max_same_post_diff": 300000,
 	"max_same_post_messages": 20,
 	"max_typing_inactivity": 2000,

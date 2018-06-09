@@ -34,9 +34,9 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1272"></script>
+		<script src="/static/js/base.js?ver=1274"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=356"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=358"/>
 
 		<script>
 
@@ -120,8 +120,8 @@
 
 				</div>
 
-				<div class='topbox_container unselectable' id='reactions_box_container'>
-					<div class='topbox aura2' id='reactions_box'>
+				<div class='unselectable' id='reactions_box_container'>
+					<div id='reactions_box'>
 
 						<i class='reaction_icon fa fa-thumbs-o-up pointer action nicetitle' onclick='send_reaction("like")' title="Like"></i>
 						
@@ -145,10 +145,6 @@
 
 						<i class='reaction_icon fa fa-thumbs-o-down pointer action nicetitle' onclick='send_reaction("dislike")' title="Dislike"></i>
 					</div>
-				</div>
-
-				<div class='topbox_container unselectable' id='topfeedback_container'>
-					<div class='topbox aura2' id='topfeedback'></div>
 				</div>
 
 				<div class='rows_container'>
@@ -209,7 +205,7 @@
 				<div id='footer' class='bg2 panel'>
 					<div id='footer_items'>
 
-						<span id='footer_userinfo' class='fa fa-user-circle footer_icon nicetitle action' onclick="show_userinfo()" title="User Menu"></span>
+						<span id='footer_userinfo' class='fa fa-user-circle footer_icon action' onclick="show_userinfo()"></span>
 
 						<textarea id='input' size="1" rows="1"></textarea>
 
