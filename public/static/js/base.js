@@ -4209,12 +4209,14 @@ function check_scrollers()
 		}
 
 		show_bottom_scroller()
+		hide_reactions()
 	}
 
 	else
 	{
 		hide_top_scroller()
 		hide_bottom_scroller()
+		show_reactions()
 	}
 }
 
@@ -14603,4 +14605,14 @@ function setup_reactions_box()
 		clearTimeout(show_reactions_timeout)
 		$("#reactions_box").css("visibility", "hidden")
 	})
+}
+
+function show_reactions()
+{
+	$(".topbox_container").css("display", "flex")
+}
+
+function hide_reactions()
+{
+	$(".topbox_container").css("display", "none")
 }
