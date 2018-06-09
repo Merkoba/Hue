@@ -5327,6 +5327,9 @@ function register_commands()
 	commands.push('/reactmeh')
 	commands.push('/reactsad')
 	commands.push('/reactdislike')
+	commands.push('/f1')
+	commands.push('/f2')
+	commands.push('/f3')
 
 	commands.sort()
 
@@ -6190,6 +6193,21 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/reactdislike'))
 	{
 		send_reaction("dislike")
+	}
+
+	else if(oiEquals(lmsg, '/f1'))
+	{
+		run_user_function(1)
+	}
+
+	else if(oiEquals(lmsg, '/f2'))
+	{
+		run_user_function(2)
+	}
+
+	else if(oiEquals(lmsg, '/f3'))
+	{
+		run_user_function(3)
 	}
 
 	else
