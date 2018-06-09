@@ -14570,6 +14570,7 @@ function show_reaction(data)
 	topfeedback_hide_timeout = setTimeout(function()
 	{
 		$("#topfeedback").css("visibility", "hidden")
+		$("#topfeedback").html("")
 	}, reaction_queue_interval)
 }
 
