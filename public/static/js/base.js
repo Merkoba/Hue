@@ -149,7 +149,7 @@ var image_queue = ["first"]
 var image_queue_timeout
 var reaction_queue = []
 var reaction_queue_timeout
-var topfeedback_hide_timeout
+var show_reactions_timeout
 var layout_mode
 var last_image_source = false
 var last_tv_source = false
@@ -14473,7 +14473,7 @@ function send_reaction(reaction_type)
 	setTimeout(function()
 	{
 		can_react = true
-	}, reaction_queue_interval)
+	}, 500)
 
 	$("#reactions_box").css("visibility", "hidden")
 }
@@ -14492,16 +14492,17 @@ function check_reaction_queue()
 {
 	if(reaction_queue.length > 0)
 	{
-		var data = reaction_queue[0]
-
-		show_reaction(data)
-
-		reaction_queue.shift()
+		if($("#topfeedback").children().length < reaction_max_visible_items)
+		{
+			var data = reaction_queue[0]
+			show_reaction(data)
+			reaction_queue.shift()
+		}
 
 		reaction_queue_timeout = setTimeout(function()
 		{
 			check_reaction_queue()
-		}, reaction_queue_interval)
+		}, 500)
 	}
 
 	else
@@ -14513,44 +14514,46 @@ function check_reaction_queue()
 
 function show_reaction(data)
 {
+	var d = Date.now()
+
 	var h = $(`
-	<div id='topfeedback_content_container'>
-		<div id='topfeedback_icon'></div><div id='topfeedback_text'></div>
+	<div id='topfeedback_reaction_${d}' class='topfeedback_content_container'>
+		<div class='topfeedback_icon'></div><div class='topfeedback_text'></div>
 	</div>`)
 
 	if(data.reaction_type === "like")
 	{
-		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-thumbs-o-up'></i>")
+		h.find(".topfeedback_icon").eq(0).html("<i class='fa fa-thumbs-o-up'></i>")
 		var emotion = `${data.username} likes this`
 	}
 
 	else if(data.reaction_type === "love")
 	{
-		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-heart-o'></i>")
+		h.find(".topfeedback_icon").eq(0).html("<i class='fa fa-heart-o'></i>")
 		var emotion = `${data.username} loves this`
 	}
 
 	else if(data.reaction_type === "happy")
 	{
-		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-smile-o'></i>")
+		h.find(".topfeedback_icon").eq(0).html("<i class='fa fa-smile-o'></i>")
 		var emotion = `${data.username} is feeling happy`
 	}
 
 	else if(data.reaction_type === "meh")
 	{	
-		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-meh-o'></i>")
+		h.find(".topfeedback_icon").eq(0).html("<i class='fa fa-meh-o'></i>")
 		var emotion = `${data.username} is feeling meh`
 	}
 
 	else if(data.reaction_type === "sad")
 	{
-		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-frown-o'></i>")
+		h.find(".topfeedback_icon").eq(0).html("<i class='fa fa-frown-o'></i>")
 		var emotion = `${data.username} is feeling sad`
 	}
 
 	else if(data.reaction_type === "dislike")
 	{
-		h.find("#topfeedback_icon").eq(0).html("<i class='fa fa-thumbs-o-down'></i>")
+		h.find(".topfeedback_icon").eq(0).html("<i class='fa fa-thumbs-o-down'></i>")
 		var emotion = `${data.username} dislikes this`
 	}
 
@@ -14559,19 +14562,25 @@ function show_reaction(data)
 		return false
 	}
 	
-	h.find("#topfeedback_text").eq(0).text(emotion)
+	h.find(".topfeedback_text").eq(0).text(emotion)
 
-	$("#topfeedback").html(h[0])
+	h.hide().appendTo("#topfeedback").fadeIn(400);
 
 	$("#topfeedback").css("visibility", "visible")
 
-	clearTimeout("topfeedback_hide_timeout")
-
-	topfeedback_hide_timeout = setTimeout(function()
+	setTimeout(function()
 	{
-		$("#topfeedback").css("visibility", "hidden")
-		$("#topfeedback").html("")
-	}, reaction_queue_interval)
+		$(`#topfeedback_reaction_${d}`).fadeOut(400, function()
+		{
+			$(this).remove()
+		
+			if($("#topfeedback").children().length === 0)
+			{
+				$("#topfeedback").css("visibility", "hidden")
+				$("#topfeedback").html("")
+			}
+		})
+	}, reaction_visibility_duration)
 }
 
 function setup_reactions_box()
@@ -14580,14 +14589,18 @@ function setup_reactions_box()
 
 	function()
 	{
-		if(can_chat && can_react)
+		show_reactions_timeout = setTimeout(function()
 		{
-			$("#reactions_box").css("visibility", "visible")
-		}
+			if(can_chat && can_react)
+			{
+				$("#reactions_box").css("visibility", "visible")
+			}
+		}, 200)
 	},
 
 	function()
 	{
+		clearTimeout(show_reactions_timeout)
 		$("#reactions_box").css("visibility", "hidden")
 	})
 }
