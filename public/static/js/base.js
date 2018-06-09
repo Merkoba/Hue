@@ -201,6 +201,7 @@ var reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
 var show_reactions_timeout
 var hide_reactions_timeout
 var mouse_over_reactions = false
+var reactions_hover_delay = 800
 
 function init()
 {
@@ -14536,7 +14537,7 @@ function setup_reactions_box()
 			{
 				show_reactions()
 			}
-		}, 500)
+		}, reactions_hover_delay)
 	}, 
 
 	function()
@@ -14570,7 +14571,7 @@ function start_hide_reactions()
 		}
 
 		hide_reactions()
-	}, 800)	
+	}, reactions_hover_delay)	
 }
 
 function show_reactions()
