@@ -540,7 +540,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		handler.broadcast_emit(socket, 'chat_msg',
+		handler.room_emit(socket, 'chat_msg',
 		{
 			username: socket.hue_username,
 			msg: data.msg,

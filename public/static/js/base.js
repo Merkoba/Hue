@@ -5396,7 +5396,6 @@ function process_message(msg, to_history=true, clr_input=true)
 				msg = msg.substring(0, max_input_length)
 			}
 
-			update_chat({uname:username, msg:msg, prof_image:profile_image})
 			socket_emit('sendchat', {msg:msg})
 		}
 
