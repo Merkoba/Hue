@@ -4350,7 +4350,7 @@ function start_chat_click_events()
 {
 	$("#chat_area").on("click", ".chat_uname", function()
 	{
-		show_profile($(this).text(), $(this).closest(".chat_message").find(".chat_profile_image").eq(0).attr("src"))
+		show_profile($(this).text(), $(this).data("prof_image"))
 	})
 
 	$("#chat_area").on("click", ".chat_profile_image", function()
@@ -4366,7 +4366,9 @@ function update_chat(args={})
 		uname: "",
 		msg: "",
 		prof_image: "",
-		date: false
+		date: false,
+		third_person: false,
+		brk: false
 	}
 
 	fill_defaults(args, def_args)
@@ -4416,16 +4418,38 @@ function update_chat(args={})
 		var pi = args.prof_image
 	}
 
-	if(args.msg.startsWith('/me ') || args.msg.startsWith('/em '))
+	var starts_me = args.msg.startsWith('/me ') || args.msg.startsWith('/em ')
+	
+	if(starts_me || args.third_person)
 	{
+		if(starts_me)
+		{
+			var tpt = args.msg.substr(4)
+		}
+
+		else
+		{
+			tpt = args.msg
+		}
+
+		if(!args.brk)
+		{
+			args.brk = "<i class='icon2 fa fa-user-circle'></i>"
+		}
+
 		var s = `
 		<div class='msg chat_message thirdperson'>
-		*&nbsp;<span class='chat_uname action'></span>
-		&nbsp;<span class='${contclasses}' title='${nd}' data-date='${d}'></span>&nbsp;*</div>`
+			<div class='chat_third_container'>
+				<div class='chat_third_brk'>${args.brk}</div>
+				<div class='chat_third_content'>
+					<span class='chat_uname action'></span>&nbsp;<span class='${contclasses}' title='${nd}' data-date='${d}'></span>
+				</div>
+			</div>
+		</div>`
 
 		var fmsg = $(s)
 
-		fmsg.find('.chat_content').eq(0).text(args.msg.substr(4)).urlize()
+		fmsg.find('.chat_content').eq(0).text(tpt).urlize()
 	}
 
 	else
@@ -4452,7 +4476,11 @@ function update_chat(args={})
 		fmsg.find('.chat_content').eq(0).text(args.msg).urlize()
 	}
 
-	fmsg.find('.chat_uname').eq(0).text(args.uname)
+	var huname = fmsg.find('.chat_uname').eq(0)
+	
+	huname.text(args.uname)
+
+	huname.data("prof_image", pi)
 
 	fmsg.find('.chat_profile_image').eq(0).on("error", function()
 	{
@@ -14558,38 +14586,38 @@ function show_reaction(data, date=false)
 
 	if(data.reaction_type === "like")
 	{
-		var icon = "<i class='fa fa-thumbs-o-up'></i>"
-		var msg = `${data.username} likes this`
+		var icon = "<i class='icon2 fa fa-thumbs-o-up'></i>"
+		var msg = `likes this`
 	}
 
 	else if(data.reaction_type === "love")
 	{
-		var icon = "<i class='fa fa-heart-o'></i>"
-		var msg = `${data.username} loves this`
+		var icon = "<i class='icon2 fa fa-heart-o'></i>"
+		var msg = `loves this`
 	}
 
 	else if(data.reaction_type === "happy")
 	{
-		var icon = "<i class='fa fa-smile-o'></i>"
-		var msg = `${data.username} is feeling happy`
+		var icon = "<i class='icon2 fa fa-smile-o'></i>"
+		var msg = `is feeling happy`
 	}
 
 	else if(data.reaction_type === "meh")
 	{	
-		var icon = "<i class='fa fa-meh-o'></i>"
-		var msg = `${data.username} is feeling meh`
+		var icon = "<i class='icon2 fa fa-meh-o'></i>"
+		var msg = `is feeling meh`
 	}
 
 	else if(data.reaction_type === "sad")
 	{
-		var icon = "<i class='fa fa-frown-o'></i>"
-		var msg = `${data.username} is feeling sad`
+		var icon = "<i class='icon2 fa fa-frown-o'></i>"
+		var msg = `is feeling sad`
 	}
 
 	else if(data.reaction_type === "dislike")
 	{
-		var icon = "<i class='fa fa-thumbs-o-down'></i>"
-		var msg = `${data.username} dislikes this`
+		var icon = "<i class='icon2 fa fa-thumbs-o-down'></i>"
+		var msg = `dislikes this`
 	}
 
 	else
@@ -14602,12 +14630,13 @@ function show_reaction(data, date=false)
 		show_profile(data.username, data.profile_image)
 	}
 	
-	chat_announce(
+	update_chat(
 	{
 		brk: icon,
 		msg: msg,
-		onclick: f,
 		uname: data.username,
+		prof_image: data.profile_image,
+		third_person: true,
 		date: d
 	})
 }
