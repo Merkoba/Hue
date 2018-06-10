@@ -5022,17 +5022,17 @@ function chat_announce(args={})
 
 	else
 	{
-		var t = nice_date()
-	}
+		if(args.date)
+		{
+			d = args.date
+		}
 
-	if(args.date)
-	{
-		d = args.date
-	}
+		else
+		{
+			d = Date.now()
+		}
 
-	else
-	{
-		d = Date.now()
+		var t = nice_date(d)
 	}
 
 	var s = `
