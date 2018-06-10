@@ -10552,35 +10552,42 @@ function show_log_messages()
 	{
 		for(var message of log_messages)
 		{
+			var type = message.type
 			var data = message.data
+			var date = message.date
 
 			if(data)
 			{
-				if(message.type === "chat")
+				if(type === "chat")
 				{
 					update_chat(
 					{
 						uname: data.username,
 						msg: data.content,
 						prof_image: data.profile_image,
-						date: message.date,
+						date: date,
 						scroll: false
 					})
 				}
 
-				else if(message.type === "image")
+				else if(type === "image")
 				{
-					announce_image_change(data, message.date)
+					announce_image_change(data, date)
 				}
 
-				else if(message.type === "radio")
+				else if(type === "radio")
 				{
-					announce_radio_change(data, message.date)
+					announce_radio_change(data, date)
 				}
 
-				else if(message.type === "tv")
+				else if(type === "tv")
 				{
-					announce_tv_change(data, message.date)
+					announce_tv_change(data, date)
+				}
+
+				else if(type === "reaction")
+				{
+					show_reaction(data, date)
 				}
 			}
 		}
@@ -14537,8 +14544,18 @@ function send_reaction(reaction_type)
 	hide_reactions()
 }
 
-function show_reaction(data)
+function show_reaction(data, date=false)
 {
+	if(date)
+	{
+		var d = date
+	}
+
+	else
+	{
+		var d = Date.now()
+	}
+
 	if(data.reaction_type === "like")
 	{
 		var icon = "<i class='fa fa-thumbs-o-up'></i>"
@@ -14579,11 +14596,19 @@ function show_reaction(data)
 	{
 		return false
 	}
+
+	var f = function()
+	{
+		show_profile(data.username, data.profile_image)
+	}
 	
 	chat_announce(
 	{
 		brk: icon,
-		msg: msg
+		msg: msg,
+		onclick: f,
+		uname: data.username,
+		date: d
 	})
 }
 

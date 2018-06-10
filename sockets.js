@@ -3391,6 +3391,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.send_reaction = function(socket, data)
 	{
+		if(data.reaction_type === undefined)
+		{
+			return handler.get_out(socket)
+		}
+
 		if(!reaction_types.includes(data.reaction_type))
 		{
 			return handler.get_out(socket)
@@ -3404,8 +3409,28 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.room_emit(socket, 'reaction_received', 
 		{
 			username: socket.hue_username, 
-			reaction_type: data.reaction_type
+			reaction_type: data.reaction_type,
+			profile_image: socket.hue_profile_image
 		})
+
+		rooms[socket.hue_room_id].activity = true
+
+		if(rooms[socket.hue_room_id].log)
+		{
+			var message =
+			{
+				type: "reaction",
+				data:
+				{
+					username: socket.hue_username,
+					reaction_type: data.reaction_type,
+					profile_image: socket.hue_profile_image
+				},
+				date: Date.now()
+			}
+
+			rooms[socket.hue_room_id].log_messages.push(message)
+		}
 	}
 
 	handler.check_permission = function(socket, permission)
