@@ -1726,6 +1726,12 @@ function apply_theme()
 		color: ${font_color} !important;
 	}
 
+	.highlighted
+	{
+		background-color: ${background_color_2} !important;
+		color: ${font_color} !important;
+	}
+
 	</style>
 	`
 
@@ -4391,7 +4397,7 @@ function update_chat(args={})
 	{
 		if(check_highlights(args.msg))
 		{
-			contclasses += " dotted"
+			contclasses += " highlighted"
 			highlighted = true
 		}
 	}
@@ -5040,7 +5046,7 @@ function chat_announce(args={})
 
 	if(args.highlight === true)
 	{
-		contclasses += " dotted"
+		contclasses += " highlighted"
 	}
 
 	if(args.title)
