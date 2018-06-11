@@ -147,7 +147,6 @@ var background_mode
 var background_tile_dimensions
 var image_queue = ["first"]
 var image_queue_timeout
-var layout_mode
 var last_image_source = false
 var last_tv_source = false
 var last_tv_type = false
@@ -251,6 +250,8 @@ function init()
 	setup_modal_image()
 	setup_footer()
 	setup_reactions_box()
+	prepare_media_settings()
+	setup_media_settings()
 
 	start_socket()
 }
@@ -9760,6 +9761,18 @@ function get_room_settings()
 		changed = true
 	}
 
+	if(room_settings.image_display_percentage === undefined)
+	{
+		room_settings.image_display_percentage = room_settings_default_image_display_percentage
+		changed = true
+	}
+
+	if(room_settings.image_display_position === undefined)
+	{
+		room_settings.image_display_position = room_settings_default_image_display_position
+		changed = true
+	}
+
 	for(var key in global_settings)
 	{
 		if(room_settings[key] === undefined)
@@ -10855,8 +10868,24 @@ function fix_media_margin()
 {
 	if(num_media_elements_visible() === 2)
 	{
-		$("#media_image_container").css("margin-bottom", "-1em")
-		$("#media_tv").css("margin-top", "-1em")
+		var p = room_settings.image_display_position
+
+		if(p === "top")
+		{
+			var m1 = "margin-bottom"
+			var m2 = "margin-top"
+		}
+
+		else if(p === "bottom")
+		{
+			var m1 = "margin-top"
+			var m2 = "margin-bottom"
+		}
+
+		$("#media_image_container").css(m1, "-1rem")
+		$("#media_image_container").css(m2, "0")
+		$("#media_tv").css(m2, "-1rem")
+		$("#media_tv").css(m1, "0")
 	}
 
 	else
@@ -10899,12 +10928,7 @@ function change_images_visibility()
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-on")
 
-		var num_visible = num_media_elements_visible()
-
-		if(num_visible > 1)
-		{
-			enable_normal_mode()
-		}		
+		var num_visible = num_media_elements_visible()	
 
 		change({type:"image"})
 
@@ -10922,12 +10946,7 @@ function change_images_visibility()
 		if(num_visible === 0)
 		{
 			hide_media()
-		}
-
-		else if(num_visible === 1)
-		{
-			enable_wide_mode()
-		}		
+		}	
 
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-off")
@@ -10977,11 +10996,6 @@ function change_tv_visibility()
 
 		var num_visible = num_media_elements_visible()
 
-		if(num_visible > 1)
-		{
-			enable_normal_mode()
-		}
-
 		change({type:"tv", force:false, play:false})
 
 		tv_visible = true
@@ -11003,7 +11017,6 @@ function change_tv_visibility()
 		else if(num_visible === 1)
 		{
 			stop_videos()
-			enable_wide_mode()
 		}
 
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-on")
@@ -13456,6 +13469,7 @@ function reset_settings(type)
 		media_visibility_and_locks()
 		check_room_settings_override()
 		set_radio_volume()
+		prepare_media_settings()
 	}
 }
 
@@ -14490,22 +14504,6 @@ function setup_footer()
 	})
 }
 
-function enable_wide_mode()
-{
-	$("#chat_main").css("min-width", "30%")
-	$("#media").css("min-width", "70%")
-
-	layout_mode = "wide"
-}
-
-function enable_normal_mode()
-{
-	$("#chat_main").css("min-width", "50%")
-	$("#media").css("min-width", "50%")
-
-	layout_mode = "normal"
-}
-
 function stop_radio_in(minutes)
 {
 	if(!radio_started)
@@ -14732,4 +14730,76 @@ function run_user_function(n)
 	}
 	
 	hide_reactions()
+}
+
+function prepare_media_settings()
+{
+	$("#media_setting_image_display_percentage").find('option').each(function()
+	{
+		if($(this).val() == room_settings.image_display_percentage)
+		{
+			$(this).prop('selected', true)
+		}
+	})
+
+	$("#media_setting_image_display_position").find('option').each(function()
+	{
+		if($(this).val() == room_settings.image_display_position)
+		{
+			$(this).prop('selected', true)
+		}
+	})
+
+	apply_media_percentages()
+	apply_media_positions()
+}
+
+function setup_media_settings()
+{
+	$("#media_setting_image_display_percentage").change(function()
+	{
+		room_settings.image_display_percentage = parseInt($(this).val())
+		save_room_settings()
+		apply_media_percentages()
+	})
+
+	$("#media_setting_image_display_position").change(function()
+	{
+		room_settings.image_display_position = $(this).val()
+		save_room_settings()
+		apply_media_positions()
+	})
+}
+
+function apply_media_percentages()
+{
+	var p1 = room_settings.image_display_percentage
+	var p2 = (100 - p1)
+
+	$("#media_image_container").css("height", `${p1}%`)
+	$("#media_tv").css("height", `${p2}%`)
+
+	fix_visible_video_frame()
+}
+
+function apply_media_positions()
+{
+	var p = room_settings.image_display_position
+
+	if(p === "top")
+	{
+		var ip = 1
+		var tvp = 2
+	}
+
+	else if(p === "bottom")
+	{
+		var ip = 2
+		var tvp = 1
+	}
+
+	$("#media_image_container").css("order", ip)
+	$("#media_tv").css("order", tvp)
+
+	fix_media_margin()
 }

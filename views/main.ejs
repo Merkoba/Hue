@@ -34,9 +34,9 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1282"></script>
+		<script src="/static/js/base.js?ver=1283"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=360"/>
+		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=362"/>
 
 		<script>
 
@@ -1050,7 +1050,28 @@
 				<div class='menu_item action inline' onclick='refresh_tv(); hide_media_menu()'>Refresh TV</div>
 				<div></div>
 				<div class='menu_item action inline' onclick='refresh_radio(); hide_media_menu()'>Refresh Radio</div>
-				
+
+				<div class='spacer3'></div>
+
+				<select id='media_setting_image_display_percentage' class='modal_select'>
+					<option value="10">Image 10%&nbsp&nbsp|&nbsp&nbspTV 90%</option>
+					<option value="20">Image 20%&nbsp&nbsp|&nbsp&nbspTV 80%</option>
+					<option value="30">Image 30%&nbsp&nbsp|&nbsp&nbspTV 70%</option>
+					<option value="40">Image 40%&nbsp&nbsp|&nbsp&nbspTV 60%</option>
+					<option value="50">Image 50%&nbsp&nbsp|&nbsp&nbspTV 50%</option>
+					<option value="60">Image 60%&nbsp&nbsp|&nbsp&nbspTV 40%</option>
+					<option value="70">Image 70%&nbsp&nbsp|&nbsp&nbspTV 30%</option>
+					<option value="80">Image 80%&nbsp&nbsp|&nbsp&nbspTV 20%</option>
+					<option value="90">Image 90%&nbsp&nbsp|&nbsp&nbspTV 10%</option>
+				</select>		
+
+				<div class='spacer3'></div>
+
+				<select id='media_setting_image_display_position' class='modal_select'>
+					<option value="top">Image at Top&nbsp&nbsp|&nbsp&nbspTV at Bottom</option>
+					<option value="bottom">Image at Bottom&nbsp&nbsp|&nbsp&nbspTV at Top</option>
+				</select>
+
 			</div>
 		</script>	
 

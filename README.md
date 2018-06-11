@@ -415,6 +415,12 @@ If you want to remove it to start fresh:
 "room_settings_default_radio_locked"
 >Whether radio will be locked to the user on new rooms by default.
 
+"room_settings_default_image_display_percentage"
+>Default image display percentage relative to tv on new rooms by default.
+
+"room_settings_default_image_display_position"
+>Default image display position relative to tv on new rooms by default.
+
 "double_tap_key"
 >The key that triggers double tap.
 
