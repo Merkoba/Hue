@@ -122,7 +122,7 @@
 	"room_settings_default_radio_locked": false,
 	"room_settings_default_radio_volume": 1,
 	"room_settings_default_tv_display_percentage": 50,
-	"room_settings_default_tv_display_position": "top",
+	"room_settings_default_tv_display_position": "bottom",
 	"double_tap_key": "Shift",
 	"double_tap_key_2": "Control",
 	"double_tap_key_3": "Tab",
