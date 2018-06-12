@@ -1,8 +1,4 @@
 var socket
-var ls_global_settings = "global_settings_v1"
-var ls_room_settings = "room_settings_v1"
-var ls_input_history = "input_history_v16"
-var ls_first_time = "first_time_v2"
 var vtypes = ["voice1", "voice2", "voice3", "voice4"]
 var roles = ["admin", "op"].concat(vtypes)
 var settings
@@ -205,6 +201,11 @@ var user_functions = [1, 2, 3]
 
 function init()
 {
+	ls_global_settings = `${user_id}_global_settings_v1`
+	ls_room_settings = `${user_id}_room_settings_v1`
+	ls_input_history = `${user_id}_input_history_v1`
+	ls_first_time = `${user_id}_first_time_v1`
+
 	activate_key_detection()
 	setup_templates()
 	get_global_settings()
@@ -14251,7 +14252,7 @@ function show_export_settings()
 
 	var s = `
 	<div class='container_22'>
-		In case you want to export your settings from one browser to another.
+		In case you want to export your settings from one browser to another. Or from one account to another in the same browser.
 		<div class='spacer3'></div>
 		You can import either Global Settings, Room Settings, or both.
 		<div class='spacer3'></div>
