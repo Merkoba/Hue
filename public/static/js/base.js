@@ -238,6 +238,7 @@ function init()
 	start_played_context_menu()
 	start_volume_context_menu()
 	start_toggle_radio_context_menu()
+	start_topbox_context_menu()
 	start_titles()
 	setup_show_profile()
 	setup_main_menu()
@@ -2323,6 +2324,26 @@ function start_played_context_menu()
 				name: "Search on YouTube", callback: function(key, opt)
 				{
 					search_on('youtube', this.data('q'))
+				}
+			}
+		}
+	})
+}
+
+function start_topbox_context_menu()
+{
+	$.contextMenu(
+	{
+		selector: "#topbox_close",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		items:
+		{
+			ca1:
+			{
+				name: "Refresh", callback: function(key, opt)
+				{
+					refresh()
 				}
 			}
 		}
