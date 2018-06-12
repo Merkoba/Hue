@@ -238,7 +238,6 @@ function init()
 	start_played_context_menu()
 	start_volume_context_menu()
 	start_toggle_radio_context_menu()
-	start_topbox_context_menu()
 	start_titles()
 	setup_show_profile()
 	setup_main_menu()
@@ -1746,12 +1745,6 @@ function apply_theme()
 		color: ${font_color} !important;
 	}
 
-	#topbox_right
-	{
-		background-color: ${background_color_2} !important;
-		color: ${font_color} !important;
-	}
-
 	</style>
 	`
 
@@ -2324,26 +2317,6 @@ function start_played_context_menu()
 				name: "Search on YouTube", callback: function(key, opt)
 				{
 					search_on('youtube', this.data('q'))
-				}
-			}
-		}
-	})
-}
-
-function start_topbox_context_menu()
-{
-	$.contextMenu(
-	{
-		selector: "#topbox_close",
-		animation: {duration: 250, hide: 'fadeOut'},
-		zIndex: 9000000000,
-		items:
-		{
-			ca1:
-			{
-				name: "Refresh", callback: function(key, opt)
-				{
-					refresh()
 				}
 			}
 		}
@@ -14877,10 +14850,4 @@ function arrange_media_setting_display_positions()
 
 	$("#media_setting_display_position_image").css("order", imo)
 	$("#media_setting_display_position_tv").css("order", tvo)	
-}
-
-function close_window()
-{
-	electron_signal("close_window")
-	window.close()
 }
