@@ -14788,8 +14788,8 @@ function apply_media_percentages()
 	var p1 = room_settings.tv_display_percentage
 	var p2 = (100 - p1)
 
-	$("#media_image_container").css("height", `${p1}%`)
-	$("#media_tv").css("height", `${p2}%`)
+	$("#media_tv").css("height", `${p1}%`)
+	$("#media_image_container").css("height", `${p2}%`)
 
 	fix_visible_video_frame()
 }
