@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1285"></script>
+		<script src="/static/js/base.js?ver=1287"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?ver=363"/>
+		<link rel="stylesheet" href="/static/css/style.css?ver=364"/>
 
 		<script>
 
@@ -1056,20 +1056,24 @@
 
 				<div class='spacer4'></div>
 
+				<div class='squaro_container' onclick='swap_display_positions()'>
+					<div class='squaro' id='media_setting_display_position_image'>
+						<i class='fa fa-camera smaller_font_size'></i>
+					</div>
+					<div class='squaro' id='media_setting_display_position_tv'>
+						<i class='fa fa-television smaller_font_size'></i>
+					</div>
+				</div>
+
+				<div class='spacer4'></div>
+
 				<div class='slider_container'>
 					<i class='icon2 fa fa-camera'></i>&nbsp;
-					<div id='media_setting_tv_display_percentage' class="nstSlider" data-range_min="10" data-range_max="90" data-cur_min="0">
+					<div id='media_setting_display_percentage' class="nstSlider" data-range_min="10" data-range_max="90" data-cur_min="0">
 					    <div class="leftGrip"></div>
 					</div>
 					&nbsp;<i class='icon2b fa fa-television'></i>
 				</div>	
-
-				<div class='spacer4'></div>
-
-				<select id='media_setting_tv_display_position' class='modal_select'>
-					<option value="top">Image at Top&nbsp&nbsp|&nbsp&nbspTV at Bottom</option>
-					<option value="bottom">Image at Bottom&nbsp&nbsp|&nbsp&nbspTV at Top</option>
-				</select>
 
 			</div>
 		</script>	

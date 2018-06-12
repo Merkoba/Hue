@@ -1739,6 +1739,12 @@ function apply_theme()
 		color: ${font_color} !important;
 	}
 
+	.squaro
+	{
+		background-color: ${background_color_2} !important;
+		color: ${font_color} !important;
+	}
+
 	</style>
 	`
 
@@ -6239,16 +6245,19 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/f1'))
 	{
 		run_user_function(1)
+		ans.to_history = false
 	}
 
 	else if(oiEquals(lmsg, '/f2'))
 	{
 		run_user_function(2)
+		ans.to_history = false
 	}
 
 	else if(oiEquals(lmsg, '/f3'))
 	{
 		run_user_function(3)
+		ans.to_history = false
 	}
 
 	else
@@ -10888,10 +10897,10 @@ function fix_media_margin()
 			var m2 = "margin-bottom"
 		}
 
-		$("#media_image_container").css(m1, "-1rem")
-		$("#media_image_container").css(m2, "0")
-		$("#media_tv").css(m2, "-1rem")
-		$("#media_tv").css(m1, "0")
+		$("#media_tv").css(m1, "-1rem")
+		$("#media_tv").css(m2, "0")
+		$("#media_image_container").css(m2, "-1rem")
+		$("#media_image_container").css(m1, "0")
 	}
 
 	else
@@ -14742,15 +14751,8 @@ function prepare_media_settings()
 {
 	var v = room_settings.tv_display_percentage
 
-	$('#media_setting_tv_display_percentage').nstSlider('set_position', v)
-
-	$("#media_setting_tv_display_position").find('option').each(function()
-	{
-		if($(this).val() == room_settings.tv_display_position)
-		{
-			$(this).prop('selected', true)
-		}
-	})
+	$('#media_setting_display_percentage').nstSlider('set_position', v)
+	arrange_media_setting_display_positions()
 
 	apply_media_percentages()
 	apply_media_positions()
@@ -14758,7 +14760,7 @@ function prepare_media_settings()
 
 function setup_media_settings()
 {
-	$('#media_setting_tv_display_percentage').nstSlider(
+	$('#media_setting_display_percentage').nstSlider(
 	{
 		"left_grip_selector": ".leftGrip",
 		"value_changed_callback": function(cause, val) 
@@ -14773,13 +14775,6 @@ function setup_media_settings()
 			save_room_settings()
 			apply_media_percentages()
 		}
-	})
-
-	$("#media_setting_tv_display_position").change(function()
-	{
-		room_settings.tv_display_position = $(this).val()
-		save_room_settings()
-		apply_media_positions()
 	})
 }
 
@@ -14800,18 +14795,59 @@ function apply_media_positions()
 
 	if(p === "top")
 	{
-		var ip = 1
-		var tvp = 2
+		var tvp = 1
+		var ip = 2
 	}
 
 	else if(p === "bottom")
 	{
-		var ip = 2
-		var tvp = 1
+		var tvp = 2
+		var ip = 1
 	}
 
 	$("#media_image_container").css("order", ip)
 	$("#media_tv").css("order", tvp)
 
 	fix_media_margin()
+}
+
+function swap_display_positions()
+{	
+	var p = room_settings.tv_display_position
+
+	if(p === "top")
+	{
+		var np = "bottom"
+	}
+
+	else if(p === "bottom")
+	{
+		var np = "top"
+	}
+
+	room_settings.tv_display_position = np
+
+	save_room_settings()
+	arrange_media_setting_display_positions()
+	apply_media_positions()
+}
+
+function arrange_media_setting_display_positions()
+{
+	var p = room_settings.tv_display_position
+
+	if(p === "top")
+	{
+		var tvo = 1
+		var imo = 2
+	}
+
+	else if(p === "bottom")
+	{
+		var tvo = 2
+		var imo = 1
+	}
+
+	$("#media_setting_display_position_image").css("order", imo)
+	$("#media_setting_display_position_tv").css("order", tvo)	
 }

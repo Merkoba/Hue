@@ -1451,3 +1451,22 @@ input[type=text], textarea
 {
 	width: 10em !important;
 }
+
+.squaro
+{
+	display: flex;
+	width: 3em;
+	height: 3em;
+	background-color: grey;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid currentColor;
+}
+
+.squaro_container
+{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
