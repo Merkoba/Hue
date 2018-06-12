@@ -250,8 +250,8 @@ function init()
 	setup_modal_image()
 	setup_footer()
 	setup_reactions_box()
-	prepare_media_settings()
 	setup_media_settings()
+	prepare_media_settings()
 
 	start_socket()
 }
@@ -1728,6 +1728,12 @@ function apply_theme()
 	}
 
 	.highlighted
+	{
+		background-color: ${background_color_2} !important;
+		color: ${font_color} !important;
+	}
+
+	.nstSlider
 	{
 		background-color: ${background_color_2} !important;
 		color: ${font_color} !important;
@@ -9761,15 +9767,15 @@ function get_room_settings()
 		changed = true
 	}
 
-	if(room_settings.image_display_percentage === undefined)
+	if(room_settings.tv_display_percentage === undefined)
 	{
-		room_settings.image_display_percentage = room_settings_default_image_display_percentage
+		room_settings.tv_display_percentage = room_settings_default_tv_display_percentage
 		changed = true
 	}
 
-	if(room_settings.image_display_position === undefined)
+	if(room_settings.tv_display_position === undefined)
 	{
-		room_settings.image_display_position = room_settings_default_image_display_position
+		room_settings.tv_display_position = room_settings_default_tv_display_position
 		changed = true
 	}
 
@@ -10868,7 +10874,7 @@ function fix_media_margin()
 {
 	if(num_media_elements_visible() === 2)
 	{
-		var p = room_settings.image_display_position
+		var p = room_settings.tv_display_position
 
 		if(p === "top")
 		{
@@ -14734,17 +14740,13 @@ function run_user_function(n)
 
 function prepare_media_settings()
 {
-	$("#media_setting_image_display_percentage").find('option').each(function()
-	{
-		if($(this).val() == room_settings.image_display_percentage)
-		{
-			$(this).prop('selected', true)
-		}
-	})
+	var v = room_settings.tv_display_percentage
 
-	$("#media_setting_image_display_position").find('option').each(function()
+	$('#media_setting_tv_display_percentage').nstSlider('set_position', v)
+
+	$("#media_setting_tv_display_position").find('option').each(function()
 	{
-		if($(this).val() == room_settings.image_display_position)
+		if($(this).val() == room_settings.tv_display_position)
 		{
 			$(this).prop('selected', true)
 		}
@@ -14756,16 +14758,26 @@ function prepare_media_settings()
 
 function setup_media_settings()
 {
-	$("#media_setting_image_display_percentage").change(function()
+	$('#media_setting_tv_display_percentage').nstSlider(
 	{
-		room_settings.image_display_percentage = parseInt($(this).val())
-		save_room_settings()
-		apply_media_percentages()
+		"left_grip_selector": ".leftGrip",
+		"value_changed_callback": function(cause, val) 
+		{
+			if(cause === "init")
+			{
+				return false
+			}
+
+			room_settings.tv_display_percentage = val
+
+			save_room_settings()
+			apply_media_percentages()
+		}
 	})
 
-	$("#media_setting_image_display_position").change(function()
+	$("#media_setting_tv_display_position").change(function()
 	{
-		room_settings.image_display_position = $(this).val()
+		room_settings.tv_display_position = $(this).val()
 		save_room_settings()
 		apply_media_positions()
 	})
@@ -14773,7 +14785,7 @@ function setup_media_settings()
 
 function apply_media_percentages()
 {
-	var p1 = room_settings.image_display_percentage
+	var p1 = room_settings.tv_display_percentage
 	var p2 = (100 - p1)
 
 	$("#media_image_container").css("height", `${p1}%`)
@@ -14784,7 +14796,7 @@ function apply_media_percentages()
 
 function apply_media_positions()
 {
-	var p = room_settings.image_display_position
+	var p = room_settings.tv_display_position
 
 	if(p === "top")
 	{

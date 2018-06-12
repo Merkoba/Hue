@@ -23,20 +23,23 @@
 		<script src="/static/js/socket.io.js"></script>
 		<script src="/static/js/hls.js"></script>
 		<script src="https://w.soundcloud.com/player/api.js"></script>
+		<script src="/static/js/nstslider/jquery.nstSlider.min.js"></script>
 
 		<link rel="stylesheet" type="text/css" href="/static/css/perfect-scrollbar.css?v=3"/>
 		<link rel="stylesheet" href="/static/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" href="/static/css/cropper.min.css?v=2">
 		<link rel="stylesheet" href="/static/css/spectrum.css">
-		<link rel="stylesheet" type="text/css" href="/static/js/contextmenu/jquery.contextMenu.min.css"> 
+		<link rel="stylesheet" href="/static/css/spectrum.css">
+		<link rel="stylesheet" href="/static/js/contextmenu/jquery.contextMenu.min.css"> 
+		<link rel="stylesheet" href="/static/js/nstslider/jquery.nstSlider.min.css"> 
 
 		<script src="/static/js/msg.min.js?v=25"></script>
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1283"></script>
+		<script src="/static/js/base.js?ver=1284"></script>
 
-		<link rel="stylesheet" type="text/css" href="/static/css/style.css?ver=362"/>
+		<link rel="stylesheet" href="/static/css/style.css?ver=363"/>
 
 		<script>
 
@@ -1051,23 +1054,19 @@
 				<div></div>
 				<div class='menu_item action inline' onclick='refresh_radio(); hide_media_menu()'>Refresh Radio</div>
 
-				<div class='spacer3'></div>
+				<div class='spacer4'></div>
 
-				<select id='media_setting_image_display_percentage' class='modal_select'>
-					<option value="10">Image 10%&nbsp&nbsp|&nbsp&nbspTV 90%</option>
-					<option value="20">Image 20%&nbsp&nbsp|&nbsp&nbspTV 80%</option>
-					<option value="30">Image 30%&nbsp&nbsp|&nbsp&nbspTV 70%</option>
-					<option value="40">Image 40%&nbsp&nbsp|&nbsp&nbspTV 60%</option>
-					<option value="50">Image 50%&nbsp&nbsp|&nbsp&nbspTV 50%</option>
-					<option value="60">Image 60%&nbsp&nbsp|&nbsp&nbspTV 40%</option>
-					<option value="70">Image 70%&nbsp&nbsp|&nbsp&nbspTV 30%</option>
-					<option value="80">Image 80%&nbsp&nbsp|&nbsp&nbspTV 20%</option>
-					<option value="90">Image 90%&nbsp&nbsp|&nbsp&nbspTV 10%</option>
-				</select>		
+				<div class='slider_container'>
+					<i class='icon2 fa fa-camera'></i>&nbsp;
+					<div id='media_setting_tv_display_percentage' class="nstSlider" data-range_min="10" data-range_max="90" data-cur_min="0">
+					    <div class="leftGrip"></div>
+					</div>
+					&nbsp;<i class='icon2b fa fa-television'></i>
+				</div>	
 
-				<div class='spacer3'></div>
+				<div class='spacer4'></div>
 
-				<select id='media_setting_image_display_position' class='modal_select'>
+				<select id='media_setting_tv_display_position' class='modal_select'>
 					<option value="top">Image at Top&nbsp&nbsp|&nbsp&nbspTV at Bottom</option>
 					<option value="bottom">Image at Bottom&nbsp&nbsp|&nbsp&nbspTV at Top</option>
 				</select>
