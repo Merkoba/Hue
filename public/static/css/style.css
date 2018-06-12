@@ -1331,6 +1331,19 @@ input[type=text], textarea
 	100% {text-shadow: 0 0 1.2em}
 }
 
+.action2:hover
+{
+	animation-duration: 500ms;
+	animation-name: glow2;
+	animation-fill-mode: forwards;
+}
+
+@keyframes glow2
+{	
+	0% {box-shadow: 0 0 0px}
+	100% {box-shadow: 0 0 1.2em}
+}
+
 .aura
 {
 	box-shadow: 0 0 20px currentColor, inset 0 0 20px currentColor;
