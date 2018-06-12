@@ -1745,6 +1745,12 @@ function apply_theme()
 		color: ${font_color} !important;
 	}
 
+	#topbox_right
+	{
+		background-color: ${background_color_2} !important;
+		color: ${font_color} !important;
+	}
+
 	</style>
 	`
 
@@ -14850,4 +14856,10 @@ function arrange_media_setting_display_positions()
 
 	$("#media_setting_display_position_image").css("order", imo)
 	$("#media_setting_display_position_tv").css("order", tvo)	
+}
+
+function close_window()
+{
+	electron_signal("close_window")
+	window.close()
 }

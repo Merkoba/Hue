@@ -13,6 +13,11 @@ window.electron_api.highlighted = function(data)
 	electron_notify("Hue", "You were highlighted")
 }
 
+window.electron_api.close_window = function(data)
+{
+	remote.getCurrentWindow().close()
+}
+
 function electron_notify(title, msg)
 {
 	electron_notifier.notify(

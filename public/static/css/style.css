@@ -1483,3 +1483,36 @@ input[type=text], textarea
 	justify-content: center;
 	align-items: center;
 }
+
+#topbox_right_container
+{
+	display: flex;
+	position: fixed;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	right: 0;
+	height: 2rem;
+}
+
+#topbox_right
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 100%;
+	visibility: hidden;
+}
+
+#topbox_right_container:hover > #topbox_right
+{
+	visibility: visible;
+}
+
+.topbox_icon
+{
+	padding-right: 0.5rem;
+	padding-left: 0.5rem;
+	font-size: 0.8rem;
+}
