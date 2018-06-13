@@ -14755,11 +14755,14 @@ function run_user_function(n)
 	hide_reactions()
 }
 
+function set_display_percentage(v)
+{
+	$('#media_setting_display_percentage').nstSlider('set_position', v)
+}
+
 function prepare_media_settings()
 {
-	var v = room_settings.tv_display_percentage
-
-	$('#media_setting_display_percentage').nstSlider('set_position', v)
+	set_display_percentage(room_settings.tv_display_percentage)
 	arrange_media_setting_display_positions()
 
 	apply_media_percentages()
