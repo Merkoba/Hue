@@ -14251,7 +14251,7 @@ function show_export_settings()
 
 	var s = `
 	<div class='container_22'>
-		In case you want to export your settings from one browser to another. Or from one account to another in the same browser.
+		In case you want to export your settings from one browser to another.
 		<div class='spacer3'></div>
 		You can import either Global Settings, Room Settings, or both.
 		<div class='spacer3'></div>
