@@ -1,6 +1,10 @@
-var socket
+var ls_global_settings = "global_settings_v1"
+var ls_room_settings = "room_settings_v1"
+var ls_input_history = "input_history_v16"
+var ls_first_time = "first_time_v2"
 var vtypes = ["voice1", "voice2", "voice3", "voice4"]
 var roles = ["admin", "op"].concat(vtypes)
+var socket
 var settings
 var is_public
 var room_name
@@ -201,11 +205,6 @@ var user_functions = [1, 2, 3]
 
 function init()
 {
-	ls_global_settings = `${user_id}_global_settings_v1`
-	ls_room_settings = `${user_id}_room_settings_v1`
-	ls_input_history = `${user_id}_input_history_v1`
-	ls_first_time = `${user_id}_first_time_v1`
-
 	activate_key_detection()
 	setup_templates()
 	get_global_settings()
