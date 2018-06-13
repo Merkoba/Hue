@@ -1649,17 +1649,19 @@ function apply_theme()
 		var font_color = colorlib.get_lighter_or_darker(background_color, color_contrast_amount_2)
 	}
 
+	var background_color_a = colorlib.rgb_to_rgba(background_color, opacity_amount_1)
+	var background_color_a_2 = colorlib.rgb_to_rgba(background_color_2, opacity_amount_3)
+
 	if(background_image_enabled())
 	{
-		background_color_a = colorlib.rgb_to_rgba(background_color, opacity_amount_1)
+		$('.bg1').css('background-color', background_color_a)
 	}
 
 	else
 	{
-		background_color_a = background_color
+		$('.bg1').css('background-color', background_color)
 	}
 
-	$('.bg1').css('background-color', background_color_a)
 	$('.bg1').css('color', font_color)
 	$('.bg2').css('background-color', background_color_2)
 	$('.bg2').css('color', font_color)
@@ -1742,6 +1744,12 @@ function apply_theme()
 	.squaro
 	{
 		background-color: ${background_color_2} !important;
+		color: ${font_color} !important;
+	}
+
+	.scroller 
+	{
+		background-color: ${background_color_a_2} !important;
 		color: ${font_color} !important;
 	}
 
