@@ -12445,7 +12445,7 @@ function create_popup(position, id=false, after_close=false)
 		Object.assign({}, common,
 		{
 			preset: "popup",
-			edge_padding_y: edges_height + 1,
+			edge_padding_y: edges_height,
 			position: position,
 			window_class: "!custom_popup",
 			enable_titlebar: true,
@@ -12492,7 +12492,7 @@ function show_intro()
 	create_popup("topleft", false, f).show(["Close Popups", s])
 
 	var s = `
-	Please read and close all the popups.`
+	Please read all the popups.`
 
 	create_popup("center").show(["Welcome", s])
 }
