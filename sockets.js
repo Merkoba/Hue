@@ -540,11 +540,14 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
+		var date = Date.now()
+
 		handler.room_emit(socket, 'chat_msg',
 		{
 			username: socket.hue_username,
 			msg: data.msg,
-			profile_image: socket.hue_profile_image
+			profile_image: socket.hue_profile_image,
+			date: date
 		})
 
 		rooms[socket.hue_room_id].activity = true
@@ -560,7 +563,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					content: data.msg,
 					profile_image: socket.hue_profile_image
 				},
-				date: Date.now()
+				date: date
 			}
 
 			rooms[socket.hue_room_id].log_messages.push(message)

@@ -789,7 +789,14 @@ function start_socket()
 
 		else if(data.type === 'chat_msg')
 		{
-			update_chat({uname:data.username, msg:data.msg, prof_image:data.profile_image})
+			update_chat(
+			{
+				uname: data.username, 
+				msg: data.msg, 
+				prof_image: data.profile_image,
+				data: data.date
+			})
+
 			hide_pencil()
 			remove_aura(data.username, true)
 		}
