@@ -1757,10 +1757,14 @@ function apply_theme()
 		color: ${font_color} !important;
 	}
 
+	#topbox_container
+	{
+		color: ${font_color} !important;
+	}
+
 	#topbox
 	{
 		background-color: ${background_color_2} !important;
-		color: ${font_color} !important;
 	}
 
 	</style>
