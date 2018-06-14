@@ -5320,6 +5320,7 @@ function register_commands()
 	commands.push('/startradio')
 	commands.push('/radiovolume')
 	commands.push('/tvvolume')
+	commands.push('/volume')
 	commands.push('/history')
 	commands.push('/logout')
 	commands.push('/details')
@@ -5841,6 +5842,12 @@ function execute_command(msg, ans)
 
 	else if(oiStartsWith(lmsg, '/tvvolume'))
 	{
+		change_volume_command(arg, "tv")
+	}
+
+	else if(oiStartsWith(lmsg, '/volume'))
+	{
+		change_volume_command(arg)
 		change_volume_command(arg, "tv")
 	}
 
