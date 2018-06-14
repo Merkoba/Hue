@@ -794,7 +794,7 @@ function start_socket()
 				uname: data.username, 
 				msg: data.msg, 
 				prof_image: data.profile_image,
-				data: data.date
+				date: data.date
 			})
 
 			hide_pencil()
