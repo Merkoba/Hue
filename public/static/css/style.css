@@ -864,8 +864,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	position: fixed;
 	top: 0;
 	left: 0;
-	z-index: -9999999999;
-	visibility: hidden;
+	z-index: -99999999999;
 }
 
 .volume_context
