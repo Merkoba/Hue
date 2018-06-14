@@ -12445,7 +12445,7 @@ function create_popup(position, id=false, after_close=false)
 		Object.assign({}, common,
 		{
 			preset: "popup",
-			edge_padding_y: edges_height,
+			edge_padding_y: edges_height + 20,
 			position: position,
 			window_class: "!custom_popup",
 			enable_titlebar: true,
@@ -12482,7 +12482,7 @@ function show_intro()
 	create_popup("topright").show(["Lock Screen", s])
 
 	var s = `
-	Close this popup to close all the popups`
+	Close this to close all the popups.`
 	
 	var f = () => 
 	{
