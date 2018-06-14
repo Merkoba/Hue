@@ -4290,6 +4290,11 @@ var resize_timer = (function()
 			update_chat_scrollbar()
 			goto_bottom(false, false)
 			check_scrollers()
+
+			if(started)
+			{
+				check_resolution()
+			}
 		}, resize_delay)
 	}
 })()
@@ -15086,4 +15091,23 @@ function unlock_screen()
 	}
 
 	execute_commands("on_unlockscreen")
+}
+
+function check_resolution()
+{
+	var w = window.innerWidth
+
+	if(w < 900)
+	{
+		toggle_images(false)
+		toggle_tv(false)
+		toggle_radio(false)
+
+		$("#footer_media_controls").css("display", "none")
+	}
+
+	else
+	{
+		$("#footer_media_controls").css("display", "initial")
+	}
 }
