@@ -12407,18 +12407,23 @@ function check_highlights(msg)
 	return false
 }
 
-function create_popup(position, id=false)
+function create_popup(position, id=false, after_close=false)
 {
 	var common =
 	{
 		show_effect_duration: [0, 400],
 		close_effect_duration: [400, 0],
-		clear_editables: true
+		clear_editables: true,
 	}
 
 	if(id)
 	{
 		common.id = id
+	}
+
+	if(after_close)
+	{
+		common.after_close = after_close
 	}
 
 	if(get_setting("modal_effects"))
@@ -12457,7 +12462,7 @@ function show_intro()
 {
 	var s = `
 	You can chat in this area. The icon on the left opens the user menu where you can change your profile image and other settings.
-	When someone is typing a message the user menu icon turns into a pencil.`
+	When someone is typing a message the user menu icon turns into a pencil. Hovering this icon shows additional actions.`
 
 	create_popup("bottomleft").show(["Chat and User Menu", s])
 
@@ -12470,6 +12475,21 @@ function show_intro()
 	This area contains the main menu, user list, and radio controls.`
 
 	create_popup("top").show(["Top Panel", s])
+
+	var s = `
+	You can lock the screen in this corner.`
+
+	create_popup("topright").show(["Lock Screen", s])
+
+	var s = `
+	Close this popup to close all the popups`
+	
+	var f = () => 
+	{
+		close_all_popups()
+	}
+
+	create_popup("topleft", false, f).show(["Close Popups", s])
 
 	var s = `
 	Please read and close all the popups.`
