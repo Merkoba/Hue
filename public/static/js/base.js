@@ -5330,6 +5330,7 @@ function register_commands()
 	commands.push('/lock')
 	commands.push('/unlock')
 	commands.push('/stopandlock')
+	commands.push('/stop')
 	commands.push('/default')
 	commands.push('/menu')
 	commands.push('/media')
@@ -5944,6 +5945,11 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/stopandlock'))
 	{
 		stop_and_lock()
+	}
+
+	else if(oiEquals(lmsg, '/stop'))
+	{
+		stop_media()
 	}
 
 	else if(oiEquals(lmsg, '/default'))
@@ -9302,7 +9308,8 @@ function get_global_settings()
 		"user_function_1",
 		"user_function_2",
 		"user_function_3",
-		"on_lockscreen"
+		"on_lockscreen",
+		"on_unlockscreen"
 	]
 
 	var changed = false
@@ -9815,6 +9822,20 @@ function setting_on_lockscreen_action(type, save=true)
 	$(`#${type}_on_lockscreen`).val(cmds)
 
 	window[type].on_lockscreen = cmds
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_on_unlockscreen_action(type, save=true)
+{
+	var cmds = utilz.clean_string7($(`#${type}_on_unlockscreen`).val())
+
+	$(`#${type}_on_unlockscreen`).val(cmds)
+
+	window[type].on_unlockscreen = cmds
 
 	if(save)
 	{
@@ -12210,12 +12231,17 @@ function hide_media_menu()
 	msg_media_menu.close()
 }
 
+function stop_media()
+{
+	stop_videos()
+	stop_radio()
+}
+
 function stop_and_lock(stop=true)
 {
 	if(stop)
 	{
-		stop_videos()
-		stop_radio()
+		stop_media()
 	}
 
 	toggle_lock_images(true, false)
@@ -14963,4 +14989,6 @@ function unlock_screen()
 	app_focused = true
 
 	on_app_focused()
+
+	execute_commands("on_unlockscreen")
 }

@@ -400,6 +400,9 @@ If you want to remove it to start fresh:
 "global_settings_default_on_lockscreen"
 >Default commands to execute when the screen is locked.
 
+"global_settings_default_on_unlockscreen"
+>Default commands to execute when the screen is unlocked.
+
 "room_settings_default_images_enabled"
 >Whether images will be enabled to the user on new rooms by default.
 

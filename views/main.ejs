@@ -38,7 +38,7 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1297"></script>
+		<script src="/static/js/base.js?ver=1298"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?ver=370"/>
 
@@ -792,6 +792,15 @@
 				</div>
 			</div>
 
+			<div class='settings_item' data-setting='on_unlockscreen' data-type='textarea'>
+				<div class="{{type}}_toggle toggler action pointer bold inline">+ On Unlock Screen</div>
+				<div class='{{type}}_toggle_container toggler_container'>
+					<div class="setting_title">(Each on a different line)</div>
+					<div class='spacer2'></div>
+					<textarea rows=4 class="{{type}}_settings_item_control setting_textarea" id="{{type}}_on_unlockscreen"></textarea>
+				</div>
+			</div>
+
 			<div class='settings_item' data-setting='at_startup' data-type='textarea'>
 				<div class="{{type}}_toggle toggler action pointer bold inline">+ At Startup</div>
 				<div class='{{type}}_toggle_container toggler_container'>
@@ -1193,6 +1202,7 @@
 			<div class='info_item'>/shrug: Shows the shrug ascii.</div>
 			<div class='info_item'>/afk: Shows that the user went AFK.</div>
 			<div class='info_item'>/lock: Locks all media.</div>
+			<div class='info_item'>/stop: Stops all media.</div>
 			<div class='info_item'>/stopandlock: Stops and locks all media.</div>
 			<div class='info_item'>/unlock: Unlocks all media.</div>
 			<div class='info_item'>/default: Makes media into the default state, everything unlocked and visible.</div>

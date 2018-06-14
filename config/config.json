@@ -116,6 +116,7 @@
 	"global_settings_default_afk_disable_radio_change": true,
 	"global_settings_default_open_popup_messages": true,
 	"global_settings_default_on_lockscreen": "",
+	"global_settings_default_on_unlockscreen": "",
 	"room_settings_default_images_enabled": true,
 	"room_settings_default_tv_enabled": true,
 	"room_settings_default_radio_enabled": true,
