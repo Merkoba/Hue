@@ -403,6 +403,9 @@ If you want to remove it to start fresh:
 "global_settings_default_on_unlockscreen"
 >Default commands to execute when the screen is unlocked.
 
+"global_settings_default_afk_on_lockscreen"
+>Whether the user will go afk when locking the screen by default.
+
 "room_settings_default_images_enabled"
 >Whether images will be enabled to the user on new rooms by default.
 

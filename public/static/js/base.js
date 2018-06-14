@@ -7195,7 +7195,7 @@ function activate_visibility_listener()
 
 function process_visibility()
 {
-	if(screen_locked)
+	if(screen_locked && get_setting("afk_on_lockscreen"))
 	{
 		return false
 	}
@@ -9309,7 +9309,8 @@ function get_global_settings()
 		"user_function_2",
 		"user_function_3",
 		"on_lockscreen",
-		"on_unlockscreen"
+		"on_unlockscreen",
+		"afk_on_lockscreen"
 	]
 
 	var changed = false
@@ -9836,6 +9837,16 @@ function setting_on_unlockscreen_action(type, save=true)
 	$(`#${type}_on_unlockscreen`).val(cmds)
 
 	window[type].on_unlockscreen = cmds
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_afk_on_lockscreen_action(type, save=true)
+{
+	window[type].afk_on_lockscreen = $(`#${type}_afk_on_lockscreen`).prop("checked")
 
 	if(save)
 	{
@@ -14974,8 +14985,12 @@ function lock_screen()
 	msg_lockscreen.show()
 
 	screen_locked = true
-	afk = true
-	app_focused = false
+
+	if(get_setting("afk_on_lockscreen"))
+	{
+		afk = true
+		app_focused = false
+	}
 
 	execute_commands("on_lockscreen")
 }
@@ -14985,10 +15000,13 @@ function unlock_screen()
 	msg_lockscreen.close()
 
 	screen_locked = false
-	afk = false 
-	app_focused = true
 
-	on_app_focused()
+	if(get_setting("afk_on_lockscreen"))
+	{
+		afk = false 
+		app_focused = true
+		on_app_focused()
+	}
 
 	execute_commands("on_unlockscreen")
 }

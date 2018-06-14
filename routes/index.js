@@ -87,6 +87,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.global_settings_default_open_popup_messages	 = config.global_settings_default_open_popup_messages	
 	c.vars.global_settings_default_on_lockscreen	 = config.global_settings_default_on_lockscreen	
 	c.vars.global_settings_default_on_unlockscreen	 = config.global_settings_default_on_unlockscreen	
+	c.vars.global_settings_default_afk_on_lockscreen	 = config.global_settings_default_afk_on_lockscreen	
 	c.vars.room_settings_default_images_enabled = config.room_settings_default_images_enabled
 	c.vars.room_settings_default_tv_enabled = config.room_settings_default_tv_enabled
 	c.vars.room_settings_default_radio_enabled = config.room_settings_default_radio_enabled
