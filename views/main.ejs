@@ -38,7 +38,7 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1296"></script>
+		<script src="/static/js/base.js?ver=1297"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?ver=370"/>
 
@@ -783,6 +783,15 @@
 				</div>
 			</div>
 
+			<div class='settings_item' data-setting='on_lockscreen' data-type='textarea'>
+				<div class="{{type}}_toggle toggler action pointer bold inline">+ On Screen Lock</div>
+				<div class='{{type}}_toggle_container toggler_container'>
+					<div class="setting_title">(Each on a different line)</div>
+					<div class='spacer2'></div>
+					<textarea rows=4 class="{{type}}_settings_item_control setting_textarea" id="{{type}}_on_lockscreen"></textarea>
+				</div>
+			</div>
+
 			<div class='settings_item' data-setting='at_startup' data-type='textarea'>
 				<div class="{{type}}_toggle toggler action pointer bold inline">+ At Startup</div>
 				<div class='{{type}}_toggle_container toggler_container'>
@@ -1248,6 +1257,7 @@
 			<div class='info_item'>/f3: Runs User Function 3.</div>
 			<div class='info_item'>/lockscreen: Locks the screen. Locking the screen sets the user as afk and no media changes.</div>
 			<div class='info_item'>/unlockscreen: Unlocks the screen.</div>
+			<div class='info_item'>/togglelockscreen: Locks or unlocks the screen.</div>
 			<div class='info_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil, and profile images in chat of whoever is typing will have a glow effect.</div>
 			<div class='spacer1'></div>
 			<span class='help_link action unselectable' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='help3()'>Administration Features</span>			

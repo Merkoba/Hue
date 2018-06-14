@@ -397,6 +397,9 @@ If you want to remove it to start fresh:
 "global_settings_default_tv_height"
 >The % height the tv will take by default when the image is also displayed.
 
+"global_settings_default_on_lockscreen"
+>Default commands to execute when the screen is locked.
+
 "room_settings_default_images_enabled"
 >Whether images will be enabled to the user on new rooms by default.
 

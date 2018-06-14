@@ -205,6 +205,7 @@ var hide_reactions_timeout
 var mouse_over_reactions = false
 var reactions_hover_delay = 800
 var user_functions = [1, 2, 3]
+var screen_locked = false
 
 function init()
 {
@@ -5401,6 +5402,7 @@ function register_commands()
 	commands.push('/f3')
 	commands.push('/lockscreen')
 	commands.push('/unlockscreen')
+	commands.push('/togglelockscreen')
 
 	commands.sort()
 
@@ -6292,6 +6294,19 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/unlockscreen'))
 	{
 		unlock_screen()
+	}
+
+	else if(oiEquals(lmsg, '/togglelockscreen'))
+	{
+		if(screen_locked)
+		{
+			unlock_screen()
+		}
+
+		else
+		{
+			lock_screen()
+		}
 	}
 
 	else
@@ -9286,7 +9301,8 @@ function get_global_settings()
 		"open_popup_messages",
 		"user_function_1",
 		"user_function_2",
-		"user_function_3"
+		"user_function_3",
+		"on_lockscreen"
 	]
 
 	var changed = false
@@ -9785,6 +9801,20 @@ function setting_user_function_3_action(type, save=true)
 	$(`#${type}_user_function_3`).val(cmds)
 
 	window[type].user_function_3 = cmds
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_on_lockscreen_action(type, save=true)
+{
+	var cmds = utilz.clean_string7($(`#${type}_on_lockscreen`).val())
+
+	$(`#${type}_on_lockscreen`).val(cmds)
+
+	window[type].on_lockscreen = cmds
 
 	if(save)
 	{
@@ -12946,43 +12976,32 @@ function do_highlights_filter()
 	$('#Msg-content-container-highlights').scrollTop(0)
 }
 
-function on_double_tap()
+function execute_commands(setting)
 {
-	if(get_setting("double_tap"))
+	if(get_setting(setting))
 	{
-		var cmds = get_setting("double_tap").split('\n')
+		var cmds = get_setting(setting).split('\n')
 
 		for(var cmd of cmds)
 		{
 			process_message(cmd, false, false)
 		}
 	}
+}
+
+function on_double_tap()
+{
+	execute_commands("double_tap")
 }
 
 function on_double_tap_2()
 {
-	if(get_setting("double_tap_2"))
-	{
-		var cmds = get_setting("double_tap_2").split('\n')
-
-		for(var cmd of cmds)
-		{
-			process_message(cmd, false, false)
-		}
-	}
+	execute_commands("double_tap_2")
 }
 
 function on_double_tap_3()
 {
-	if(get_setting("double_tap_3"))
-	{
-		var cmds = get_setting("double_tap_3").split('\n')
-
-		for(var cmd of cmds)
-		{
-			process_message(cmd, false, false)
-		}
-	}
+	execute_commands("double_tap_3")
 }
 
 function at_startup()
@@ -12992,15 +13011,7 @@ function at_startup()
 		return false
 	}
 
-	if(get_setting("at_startup"))
-	{
-		var cmds = get_setting("at_startup").split('\n')
-
-		for(var cmd of cmds)
-		{
-			process_message(cmd, false, false)
-		}
-	}
+	execute_commands("at_startup")
 }
 
 function show_image_history(filter=false)
@@ -14813,12 +14824,7 @@ function run_user_function(n)
 
 	if(get_setting(`user_function_${n}`))
 	{
-		var cmds = get_setting(`user_function_${n}`).split('\n')
-
-		for(var cmd of cmds)
-		{
-			process_message(cmd, false, false)
-		}
+		execute_commands(`user_function_${n}`)
 	}
 
 	else
@@ -14940,16 +14946,21 @@ function arrange_media_setting_display_positions()
 function lock_screen()
 {
 	msg_lockscreen.show()
+
 	screen_locked = true
 	afk = true
 	app_focused = false
+
+	execute_commands("on_lockscreen")
 }
 
 function unlock_screen()
 {
 	msg_lockscreen.close()
+
 	screen_locked = false
 	afk = false 
 	app_focused = true
+
 	on_app_focused()
 }
