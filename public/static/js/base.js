@@ -5319,6 +5319,7 @@ function register_commands()
 	commands.push('/stopradio')
 	commands.push('/startradio')
 	commands.push('/radiovolume')
+	commands.push('/tvvolume')
 	commands.push('/history')
 	commands.push('/logout')
 	commands.push('/details')
@@ -5836,6 +5837,11 @@ function execute_command(msg, ans)
 	else if(oiStartsWith(lmsg, '/radiovolume'))
 	{
 		change_volume_command(arg)
+	}
+
+	else if(oiStartsWith(lmsg, '/tvvolume'))
+	{
+		change_volume_command(arg, "tv")
 	}
 
 	else if(oiEquals(lmsg, '/history'))
@@ -6989,6 +6995,35 @@ function set_radio_volume(nv=false)
 	save_room_settings()
 }
 
+function set_tv_volume(nv=false)
+{
+	nv = utilz.round(nv, 1)
+
+	if(nv > 1)
+	{
+		nv = 1
+	}
+
+	else if(nv < 0)
+	{
+		nv = 0
+	}
+
+	var vt = parseInt(Math.round((nv * 100)))
+
+	$('#media_video')[0].volume = nv
+
+	if(youtube_video_player !== undefined)
+	{
+		youtube_video_player.setVolume(vt)
+	}
+
+	if(twitch_video_player !== undefined)
+	{
+		twitch_video_player.setVolume(nv)
+	}
+}
+
 function volume_increase()
 {
 	if(room_settings.radio_volume === 1)
@@ -7013,7 +7048,7 @@ function volume_decrease()
 	set_radio_volume(nv)
 }
 
-function change_volume_command(arg)
+function change_volume_command(arg, type="radio")
 {
 	if(isNaN(arg))
 	{
@@ -7025,7 +7060,15 @@ function change_volume_command(arg)
 	{
 		var nv = arg / 100
 
-		set_radio_volume(nv)
+		if(type === "radio")
+		{
+			set_radio_volume(nv)
+		}
+
+		else if(type === "tv")
+		{
+			set_tv_volume(nv)
+		}
 	}
 }
 
