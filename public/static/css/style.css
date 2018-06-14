@@ -758,6 +758,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 	background-color: rgba(186, 93, 93, 0.7) !important;
 }
 
+#Msg-overlay-lockscreen
+{
+	background-color: #b17fbf !important;
+}
+
 .input_history_item
 {
 	padding-top: 1em;
@@ -1483,3 +1488,36 @@ input[type=text], textarea
 	justify-content: center;
 	align-items: center;
 }
+
+#topbox_container
+{
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	right: 0;
+	height: 2rem;
+}
+
+#topbox_container:hover > #topbox
+{
+	visibility: visible;
+}
+
+#topbox
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 100%;
+	visibility: hidden;
+}
+
+.topbox_icon
+{
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+}
+

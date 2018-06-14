@@ -117,6 +117,7 @@ var msg_tv_history
 var msg_radio_history
 var msg_input_history
 var msg_chat_search
+var msg_lockscreen
 var played_filtered = false
 var userlist_filtered = false
 var image_history_filtered = false
@@ -142,6 +143,8 @@ var room_tv_enabled = true
 var room_radio_enabled = true
 var radio_started = false
 var theme
+var text_color_mode
+var text_color
 var background_image
 var background_mode
 var background_tile_dimensions
@@ -336,6 +339,7 @@ function setup_templates()
 	template_settings = Handlebars.compile($('#template_settings').html())
 	template_global_settings = Handlebars.compile($('#template_global_settings').html())
 	template_room_settings = Handlebars.compile($('#template_room_settings').html())
+	template_lockscreen = Handlebars.compile($('#template_lockscreen').html())
 }
 
 function help()
@@ -1750,6 +1754,12 @@ function apply_theme()
 	.scroller 
 	{
 		background-color: ${background_color_a_2} !important;
+		color: ${font_color} !important;
+	}
+
+	#topbox
+	{
+		background-color: ${background_color_2} !important;
 		color: ${font_color} !important;
 	}
 
@@ -5385,6 +5395,8 @@ function register_commands()
 	commands.push('/f1')
 	commands.push('/f2')
 	commands.push('/f3')
+	commands.push('/lockscreen')
+	commands.push('/unlockscreen')
 
 	commands.sort()
 
@@ -6268,6 +6280,16 @@ function execute_command(msg, ans)
 		ans.to_history = false
 	}
 
+	else if(oiEquals(lmsg, '/lockscreen'))
+	{
+		lock_screen()
+	}
+
+	else if(oiEquals(lmsg, '/unlockscreen'))
+	{
+		unlock_screen()
+	}
+
 	else
 	{
 		feedback("Invalid command. Use // to start a message with /")
@@ -7136,58 +7158,79 @@ function activate_visibility_listener()
 {
 	document.addEventListener("visibilitychange", function()
 	{
-		app_focused = !document.hidden
+		process_visibility()
 
-		if(app_focused)
-		{
-			if(afk_timer !== undefined)
-			{
-				clearTimeout(afk_timer)
-			}
-
-			afk = false
-
-			remove_alert_title()
-
-			if(change_image_when_focused)
-			{
-				change({type:"image"})
-				change_image_when_focused = false
-			}
-
-			if(change_tv_when_focused)
-			{
-				change({type:"tv"})
-				change_tv_when_focused = false
-			}
-
-			if(change_radio_when_focused)
-			{
-				change({type:"radio"})
-				change_radio_when_focused = false
-			}
-		}
-
-		else
-		{
-			if(get_setting("afk_delay") !== "never")
-			{
-				afk_timer = setTimeout(function()
-				{
-					afk = true
-				}, get_setting("afk_delay"))
-			}
-
-			remove_separator(false)
-			update_chat_scrollbar()
-			check_scrollers()
-		}
 	}, false)
 
 	window.onblur = function()
 	{
 		num_keys_pressed = 0
 	}
+}
+
+function process_visibility()
+{
+	if(screen_locked)
+	{
+		return false
+	}
+
+	app_focused = !document.hidden
+
+	if(app_focused)
+	{
+		on_app_focused()
+	}
+
+	else
+	{
+		on_app_unfocused()
+	}	
+}
+
+function on_app_focused()
+{
+	if(afk_timer !== undefined)
+	{
+		clearTimeout(afk_timer)
+	}
+
+	afk = false
+
+	remove_alert_title()
+
+	if(change_image_when_focused)
+	{
+		change({type:"image"})
+		change_image_when_focused = false
+	}
+
+	if(change_tv_when_focused)
+	{
+		change({type:"tv"})
+		change_tv_when_focused = false
+	}
+
+	if(change_radio_when_focused)
+	{
+		change({type:"radio"})
+		change_radio_when_focused = false
+	}
+}
+
+function on_app_unfocused()
+{
+	if(get_setting("afk_delay") !== "never")
+	{
+		afk_timer = setTimeout(function()
+		{
+			afk = true
+		}, get_setting("afk_delay"))
+	}
+
+	remove_separator(false)
+	update_chat_scrollbar()
+	check_scrollers()
 }
 
 function copy_room_url()
@@ -8521,7 +8564,6 @@ function start_msg()
 		{
 			id: "image",
 			preset: "window",
-			overlay_class: "!overlay_same_color",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -8540,6 +8582,33 @@ function start_msg()
 			{
 				after_modal_close(instance)
 				modal_image_open = false
+			}
+		})
+	)
+
+	msg_lockscreen = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "lockscreen",
+			preset: "window",
+			overlay_class: "!overlay_same_color",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
 			}
 		})
 	)
@@ -9049,6 +9118,7 @@ function start_msg()
 	msg_input_history.set(template_input_history())
 	msg_chat_search.set(template_chat_search())
 	msg_image.set(template_image())
+	msg_lockscreen.set(template_lockscreen())
 	msg_locked.set(template_locked_menu())
 	msg_global_settings.set(template_global_settings({settings:template_settings({type:"global_settings"})}))
 	msg_room_settings.set(template_room_settings({settings:template_settings({type:"room_settings"})}))
@@ -14861,4 +14931,21 @@ function arrange_media_setting_display_positions()
 
 	$("#media_setting_display_position_image").css("order", imo)
 	$("#media_setting_display_position_tv").css("order", tvo)	
+}
+
+function lock_screen()
+{
+	msg_lockscreen.show()
+	screen_locked = true
+	afk = true
+	app_focused = false
+}
+
+function unlock_screen()
+{
+	msg_lockscreen.close()
+	screen_locked = false
+	afk = false 
+	app_focused = true
+	on_app_focused()
 }

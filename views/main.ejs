@@ -32,14 +32,15 @@
 		<link rel="stylesheet" href="/static/css/spectrum.css">
 		<link rel="stylesheet" href="/static/js/contextmenu/jquery.contextMenu.min.css"> 
 		<link rel="stylesheet" href="/static/js/nstslider/jquery.nstSlider.min.css"> 
+		<link rel="stylesheet" href="/static/css/lockscreen.css"> 
 
 		<script src="/static/js/msg.min.js?v=25"></script>
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1293"></script>
+		<script src="/static/js/base.js?ver=1295"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?ver=369"/>
+		<link rel="stylesheet" href="/static/css/style.css?ver=370"/>
 
 		<script>
 
@@ -159,6 +160,12 @@
 						<div class='hspacer3'></div>
 						
 						<div class='pointer action nicetitle' onclick='run_user_function(3)' title='User Function 3'>F3</div>
+					</div>
+				</div>
+
+				<div class='unselectable' id='topbox_container'>
+					<div id='topbox'>
+						<i class='topbox_icon fa fa-lock pointer action nicetitle' onclick='lock_screen()' title="Lock Screen"></i>
 					</div>
 				</div>
 
@@ -1029,6 +1036,28 @@
 
 			</div>
 
+		</script>
+
+		<script id='template_lockscreen' type='text/x-handlebars-template'>
+
+			<div class='lockscreen_body'>
+				<div class="lockscreen_principal action2 pointer" onclick="unlock_screen()">
+					<div class="lockscreen_menu">
+						<div class="lockscreen_titulo_menu">
+							<div class="lockscreen_titulo">
+								<div>UNLOCK</div>
+							</div>
+							<div class="lockscreen_icon_menu">
+								<div class="lockscreen_circle_1"></div>
+								<div class="lockscreen_circle_2"></div>
+								<div class="lockscreen_circle_3"></div>
+								<div class="lockscreen_circle_4"></div>
+							</div>
+						</div>
+					</div> 
+				</div>
+			</div>
+
 		</script>		
 
 		<script id='template_media_menu' type='text/x-handlebars-template'>
@@ -1217,6 +1246,8 @@
 			<div class='info_item'>/f1: Runs User Function 1.</div>
 			<div class='info_item'>/f2: Runs User Function 2.</div>
 			<div class='info_item'>/f3: Runs User Function 3.</div>
+			<div class='info_item'>/lockscreen: Locks the screen. Locking the screen sets the user as afk and no media changes.</div>
+			<div class='info_item'>/unlockscreen: Unlocks the screen.</div>
 			<div class='info_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil, and profile images in chat of whoever is typing will have a glow effect.</div>
 			<div class='spacer1'></div>
 			<span class='help_link action unselectable' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='help3()'>Administration Features</span>			
