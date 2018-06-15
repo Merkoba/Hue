@@ -11310,120 +11310,78 @@ function profile_image_selected(input)
 {
 	if(input.files && input.files[0])
 	{
-		if(input.files.length > 1)
+		var reader = new FileReader()
+
+		reader.onload = function(e)
 		{
-			return false
-		}
+			var s = "<img id='profile_image_canvas_image'><div id='profile_image_canvas_button' class='unselectable'>Crop and Upload</div>"
 
-		var file = input.files[0]
-
-		var split = file.name.split(".")
-
-		if(split.length < 2)
-		{
-			return false
-		}
-
-		var ext = split[split.length - 1].toLowerCase()
-
-		if(ext === "gif")
-		{
-			var size = file.size / 1024
-
-			if(size > max_profile_image_size)
+			msg_info.show(s, function()
 			{
-				msg_info.show("File is too big")
-			}
+				$('#profile_image_canvas_image').attr('src', e.target.result)
 
-			else
-			{
-				upload_file(file, "profile_image_upload")
-			}
-		}
+				$("#profile_image_picker").wrap('<form>').closest('form').get(0).reset()
 
-		else if(ext === "jpg" || ext === "jpeg" || ext === "png")
-		{
-			var reader = new FileReader()
+				var image = $('#profile_image_canvas_image')[0]
 
-			reader.onload = function(e)
-			{
-				z = e
+				var button = $('#profile_image_canvas_button')[0]
 
-				var s = "<img id='profile_image_canvas_image'><div id='profile_image_canvas_button' class='unselectable'>Crop and Upload</div>"
+				var croppable = false
 
-				msg_info.show(s, function()
+				var cropper = new Cropper(image,
 				{
-					$('#profile_image_canvas_image').attr('src', e.target.result)
-
-					$("#profile_image_picker").wrap('<form>').closest('form').get(0).reset()
-
-					var image = $('#profile_image_canvas_image')[0]
-
-					var button = $('#profile_image_canvas_button')[0]
-
-					var croppable = false
-
-					var cropper = new Cropper(image,
+					aspectRatio: 1,
+					viewMode: 2,
+					ready: function ()
 					{
-						aspectRatio: 1,
-						viewMode: 2,
-						ready: function ()
-						{
-							var container_data = cropper.getContainerData()
+						var container_data = cropper.getContainerData()
 
-							cropper.setCropBoxData({width:container_data.width, height:container_data.height})
+						cropper.setCropBoxData({width:container_data.width, height:container_data.height})
 
-							var cropbox_data = cropper.getCropBoxData()
+						var cropbox_data = cropper.getCropBoxData()
 
-							var left = (container_data.width - cropbox_data.width) / 2
-							
-							var top = (container_data.height - cropbox_data.height) / 2
+						var left = (container_data.width - cropbox_data.width) / 2
+						var top = (container_data.height - cropbox_data.height) / 2
 
-							cropper.setCropBoxData({left:left, right:top})
+						cropper.setCropBoxData({left:left, right:top})
 
-							croppable = true
+						croppable = true
 
-							update_modal_scrollbar("info")
-						}
-					})
-
-
-					button.onclick = function ()
-					{
-						var cropped_canvas
-						var rounded_canvas
-						var roundedImage
-
-						if(!croppable)
-						{
-							return
-						}
-
-						cropped_canvas = cropper.getCroppedCanvas()
-
-						rounded_canvas = get_rounded_canvas(cropped_canvas)
-
-						rounded_canvas.toBlob(function(blob)
-						{
-							$("#userinfo_profile_image").attr("src", profile_image_loading_url)
-
-							blob.name = "profile.png"
-
-							upload_file(blob, "profile_image_upload")
-
-							msg_info.close()
-						}, 'image/png', 0.95)
+						update_modal_scrollbar("info")
 					}
 				})
-			}
 
-			reader.readAsDataURL(input.files[0])
+
+				button.onclick = function ()
+				{
+					var cropped_canvas
+					var rounded_canvas
+					var roundedImage
+
+					if(!croppable)
+					{
+						return
+					}
+
+					cropped_canvas = cropper.getCroppedCanvas()
+
+					rounded_canvas = get_rounded_canvas(cropped_canvas)
+
+					rounded_canvas.toBlob(function(blob)
+					{
+						$("#userinfo_profile_image").attr("src", profile_image_loading_url)
+
+						blob.name = "profile.png"
+
+						upload_file(blob, "profile_image_upload")
+
+						msg_info.close()
+					}, 'image/png', 0.95)
+				}
+			})
 		}
 
-		else
-		{
-			return false
-		}		
+		reader.readAsDataURL(input.files[0])
 	}
 }
 

@@ -120,7 +120,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.disconnect_timeout_delay = config.disconnect_timeout_delay
 	c.vars.profile_image_diameter = config.profile_image_diameter
 	c.vars.max_num_newlines = config.max_num_newlines
-	c.vars.max_profile_image_size = config.max_profile_image_size
 
 	function check_url(req, res, next)
 	{
