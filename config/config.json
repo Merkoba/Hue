@@ -156,5 +156,6 @@
 	"data_items_max_number_length": 20,
 	"disconnect_timeout_delay": 5000,
 	"profile_image_diameter": 300,
-	"max_num_newlines": 100
+	"max_num_newlines": 100,
+	"draw_coords_max_length": 10000
 }

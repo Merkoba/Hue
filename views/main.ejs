@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1310"></script>
+		<script src="/static/js/base.js?ver=1311"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?ver=373"/>
+		<link rel="stylesheet" href="/static/css/style.css?ver=374"/>
 
 		<script>
 
@@ -1147,9 +1147,13 @@
 
 		<script id='template_message' type='text/x-handlebars-template'>
 			<div id='write_message_feedback'></div>
-			<textarea rows="3" id='write_message_area'></textarea>
+			<textarea rows="3" id='write_message_area' tabindex=0></textarea>
 			<div class='spacer3'></div>
-			<div class='bigger pointer unselectable action inline' onclick='send_popup_message()'>Send</div>
+			<canvas id='draw_message_area' class='draw_canvas' width='400px' height='300px' tabindex=1></canvas>
+			<div class='spacer3'></div>
+			<div class='bigger pointer unselectable action inline' onclick='clear_draw_message_state()' tabindex=3>Clear Drawing</div>
+			<span>&nbsp;|&nbsp;</span>
+			<div class='bigger pointer unselectable action inline' onclick='send_popup_message()' tabindex=3>Send</div>
 		</script>
 
 		<script id='template_help' type='text/x-handlebars-template'>

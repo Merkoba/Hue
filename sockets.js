@@ -3229,7 +3229,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(data.message.length === 0)
 		{
-			return handler.get_out(socket)
+			if(!data.draw_coords)
+			{
+				return handler.get_out(socket)
+			}
 		}
 
 		if(data.message.length > config.max_input_length)
@@ -3238,6 +3241,16 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		if(data.message !== utilz.clean_string2(data.message))
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.draw_coords === undefined)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(JSON.stringify(data.draw_coords).length > config.draw_coords_max_length)
 		{
 			return handler.get_out(socket)
 		}
@@ -3257,7 +3270,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					room: socket.hue_room_id,
 					username: socket.hue_username,
-					message: data.message
+					message: data.message,
+					draw_coords: data.draw_coords
 				})
 			}
 		}
@@ -3282,7 +3296,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(data.message.length === 0)
 		{
-			return handler.get_out(socket)
+			if(!data.draw_coords)
+			{
+				return handler.get_out(socket)
+			}
 		}
 
 		if(data.message.length > config.max_input_length)
@@ -3291,6 +3308,16 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		if(data.message !== utilz.clean_string2(data.message))
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.draw_coords === undefined)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(JSON.stringify(data.draw_coords).length > config.draw_coords_max_length)
 		{
 			return handler.get_out(socket)
 		}
@@ -3305,7 +3332,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					room: socket.hue_room_id,
 					username: socket.hue_username,
-					message: data.message
+					message: data.message,
+					draw_coords: data.draw_coords
 				})
 			}
 		}
@@ -3325,18 +3353,37 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(data.message.length === 0)
 		{
-			return false
+			if(!data.draw_coords)
+			{
+				return handler.get_out(socket)
+			}
 		}
 
 		if(data.message.length > config.max_input_length)
 		{
-			return false
+			return handler.get_out(socket)
+		}
+
+		if(data.message !== utilz.clean_string2(data.message))
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.draw_coords === undefined)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(JSON.stringify(data.draw_coords).length > config.draw_coords_max_length)
+		{
+			return handler.get_out(socket)
 		}
 
 		handler.room_emit(socket, 'room_broadcast',
 		{
 			message: data.message,
-			username: socket.hue_username
+			username: socket.hue_username,
+			draw_coords: data.draw_coords
 		})
 	}
 
@@ -3354,17 +3401,36 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(data.message.length === 0)
 		{
-			return false
+			if(!data.draw_coords)
+			{
+				return handler.get_out(socket)
+			}
 		}
 
 		if(data.message.length > config.max_input_length)
 		{
-			return false
+			return handler.get_out(socket)
+		}
+
+		if(data.message !== utilz.clean_string2(data.message))
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.draw_coords === undefined)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(JSON.stringify(data.draw_coords).length > config.draw_coords_max_length)
+		{
+			return handler.get_out(socket)
 		}
 
 		handler.system_emit(socket, 'system_broadcast',
 		{
-			message: data.message
+			message: data.message,
+			draw_coords: data.draw_coords
 		})
 	}
 
@@ -3871,9 +3937,20 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				else
 				{
-					if(s.length > config.data_items_max_string_length)
+					if(key === "draw_coords")
 					{
-						return false
+						if(s.length > config.draw_coords_max_length)
+						{
+							return false
+						}
+					}
+
+					else
+					{
+						if(s.length > config.data_items_max_string_length)
+						{
+							return false
+						}
 					}
 				}
 			}

@@ -1219,9 +1219,15 @@ input[type=text], textarea
 
 #write_message_area
 {
-	width: 20rem;
+	width: 400px;
 	resize: none;
 	font-size: 1em;
+}
+
+#draw_message_area
+{
+	cursor: crosshair;
+	outline: none;
 }
 
 #write_message_feedback

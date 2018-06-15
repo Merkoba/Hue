@@ -206,6 +206,11 @@ var mouse_over_reactions = false
 var reactions_hover_delay = 800
 var user_functions = [1, 2, 3]
 var screen_locked = false
+var draw_message_context
+var draw_message_click_x
+var draw_message_click_y
+var draw_message_drag
+var draw_message_paint
 
 function init()
 {
@@ -256,6 +261,7 @@ function init()
 	setup_reactions_box()
 	setup_media_settings()
 	prepare_media_settings()
+	setup_message_area()
 
 	start_socket()
 }
@@ -1773,6 +1779,12 @@ function apply_theme()
 	#topbox
 	{
 		background-color: ${background_color_2} !important;
+	}
+
+	.draw_canvas
+	{
+		background-color: ${background_color_a_2} !important;
+		color: ${font_color} !important;
 	}
 
 	</style>
@@ -8925,6 +8937,7 @@ function start_msg()
 				$("#write_message_feedback").css("display", "none")
 				after_modal_close(instance)
 				writing_message = false
+				clear_draw_message_state()
 			}
 		})
 	)
@@ -12632,9 +12645,22 @@ function send_popup_message()
 
 	var diff = max_input_length - message.length
 
+	if(draw_message_click_x.length > 0)
+	{
+		var draw_coords = [draw_message_click_x, draw_message_click_y, draw_message_drag]
+	}
+
+	else
+	{
+		var draw_coords = false
+	}
+
 	if(diff === max_input_length)
 	{
-		return false
+		if(draw_coords.length === 0)
+		{
+			return false
+		}
 	}
 
 	else if(diff < 0)
@@ -12646,22 +12672,22 @@ function send_popup_message()
 
 	if(message_type === "user")
 	{
-		var ans = send_whisper_user(message)
+		var ans = send_whisper_user(message, draw_coords)
 	}
 
 	else if(message_type === "ops")
 	{
-		var ans = send_whisper_ops(message)
+		var ans = send_whisper_ops(message, draw_coords)
 	}
 
 	else if(message_type === "room")
 	{
-		var ans = send_room_broadcast(message)
+		var ans = send_room_broadcast(message, draw_coords)
 	}
 
 	else if(message_type === "system")
 	{
-		var ans = send_system_broadcast(message)
+		var ans = send_system_broadcast(message, draw_coords)
 	}
 
 	if(ans)
@@ -12670,7 +12696,109 @@ function send_popup_message()
 	}
 }
 
-function send_whisper_user(message)
+function sent_popup_message_function(mode, message, draw_coords, data1=false)
+{
+	var cf = function(){}
+	var ff = function(){}
+
+	if(mode === "whisper")
+	{
+		var s1 = utilz.nonbreak("Send Another Whisper")
+		var s2 = `Whisper sent to ${data1}`
+
+		cf = function()
+		{
+			write_popup_message(data1)
+		}
+		
+		ff = function()
+		{
+			show_profile(data1, get_user_by_username(data1).profile_image)
+		}
+	}
+
+	else if(mode === "ops")
+	{
+		var s1 = utilz.nonbreak("Send Another Whisper")
+		var s2 = "* Whisper sent to Operators *"
+
+		var cf = function()
+		{
+			write_popup_message(false, "ops")
+		}
+	}
+
+	else if(mode === "room")
+	{
+		var s1 = utilz.nonbreak("Send Another Message")
+		var s2 = "* Whisper sent to Room *"
+
+		var cf = function()
+		{
+			write_popup_message(false, "room")
+		}
+	}
+
+	else if(mode === "system")
+	{
+		var s1 = utilz.nonbreak("Send Another Message")
+		var s2 = "* Whisper sent to System *"
+
+		var cf = function()
+		{
+			write_popup_message(false, "system")
+		}
+	}
+
+	else
+	{
+		return false
+	}
+
+	var sp = "<div class='spacer3'></div>"
+
+	var h = `<div class='small_button action' id='modal_popup_feedback_send'>${s1}</div>`
+
+	if(draw_coords)
+	{
+		var ch = "<canvas id='modal_popup_feedback_draw' class='draw_canvas' width='400px' height='300px' tabindex=1></canvas>"
+	}
+
+	else
+	{
+		var ch = ""
+	}
+
+	if(ch)
+	{
+		var h = ch + sp + h
+	}
+
+	var s = make_safe(
+	{
+		text: message,
+		html: h,
+		remove_text_if_empty: true
+	})
+
+	var f = function()
+	{
+		msg_info2.show([make_safe({text:s2, onclick:ff}), s], function()
+		{
+			$("#modal_popup_feedback_send").click(cf)
+
+			if(draw_coords)
+			{
+				var context = $("#modal_popup_feedback_draw")[0].getContext("2d")
+				draw_message_redraw(context, draw_coords[0], draw_coords[1], draw_coords[2])
+			}
+		})
+	}
+
+	return f
+}
+
+function send_whisper_user(message, draw_coords)
 {
 	var uname = message_uname
 
@@ -12700,62 +12828,32 @@ function send_whisper_user(message)
 		return false
 	}
 
-	socket_emit('whisper', {username:uname, message:message})
-
-	var ff = function()
+	socket_emit('whisper', 
 	{
-		show_profile(uname, get_user_by_username(uname).profile_image)
-	}
+		username: uname, 
+		message: message, 
+		draw_coords: draw_coords
+	})
 
-	var f = function()
-	{
-		var s = make_safe(
-		{
-			text: message,
-			html: `<div class='small_button action' id='modal_send_whisper'>${utilz.nonbreak("Send Another Whisper")}</div>`
-		})
-
-		msg_info2.show([make_safe({text:`Whisper sent to ${uname}`, onclick:ff}), s], function()
-		{
-			$("#modal_send_whisper").click(function()
-			{
-				write_popup_message(uname)
-			})
-		})
-	}
+	var f = sent_popup_message_function("whisper", message, draw_coords, uname)
 
 	feedback(`Whisper sent to ${uname}`, {onclick:f, save:true})
 
 	return true
 }
 
-function send_whisper_ops(message)
+function send_whisper_ops(message, draw_coords)
 {
-	socket_emit('whisper_ops', {message:message})
+	socket_emit('whisper_ops', {message:message, draw_coords:draw_coords})
 
-	var f = function()
-	{
-		var s = make_safe(
-		{
-			text: message,
-			html: `<div class='small_button action' id='modal_send_whisper_ops'>${utilz.nonbreak("Send Another Whisper")}</div>`
-		})
-
-		msg_info2.show([make_safe({text:`* Whisper sent to Operators *`}), s], function()
-		{
-			$("#modal_send_whisper_ops").click(function()
-			{
-				write_popup_message(false, "ops")
-			})
-		})
-	}
+	var f = sent_popup_message_function("ops", message, draw_coords)
 
 	feedback(`Whisper To Operators sent`, {onclick:f, save:true})
 
 	return true
 }
 
-function send_room_broadcast(message)
+function send_room_broadcast(message, draw_coords)
 {
 	if(!is_admin_or_op(role))
 	{
@@ -12763,50 +12861,20 @@ function send_room_broadcast(message)
 		return false
 	}
 
-	socket_emit("room_broadcast", {message:message})
+	socket_emit("room_broadcast", {message:message, draw_coords:draw_coords})
 
-	var f = function()
-	{
-		var s = make_safe(
-		{
-			text: message,
-			html: `<div class='small_button action' id='modal_send_room_message'>${utilz.nonbreak("Send Another Message")}</div>`
-		})
-
-		msg_info2.show([make_safe({text:`* Whisper sent to Room *`}), s], function()
-		{
-			$("#modal_send_room_message").click(function()
-			{
-				write_popup_message(false, "room")
-			})
-		})
-	}
+	var f = sent_popup_message_function("room", message, draw_coords)
 
 	feedback(`Message To Room sent`, {onclick:f, save:true})
 
 	return true
 }
 
-function send_system_broadcast(message)
+function send_system_broadcast(message, draw_coords)
 {
-	socket_emit("system_broadcast", {message:message})
+	socket_emit("system_broadcast", {message:message, draw_coords:draw_coords})
 
-	var f = function()
-	{
-		var s = make_safe(
-		{
-			text: message,
-			html: `<div class='small_button action' id='modal_send_system_message'>${utilz.nonbreak("Send Another Message")}</div>`
-		})
-
-		msg_info2.show([make_safe({text:`* Whisper sent to System *`}), s], function()
-		{
-			$("#modal_send_system_message").click(function()
-			{
-				write_popup_message(false, "system")
-			})
-		})
-	}
+	var f = sent_popup_message_function("system", message, draw_coords)
 
 	feedback(`Message To System sent`, {onclick:f, save:true})
 
@@ -12837,6 +12905,16 @@ function popup_message_received(data, type="user", announce=true)
 		{
 			show_profile(data.username, get_user_by_username(data.username).profile_image)
 		}
+	}
+
+	if(data.draw_coords)
+	{
+		var ch = `<canvas id='draw_popup_area_${data.id}' class='draw_canvas' width='400px' height='300px' tabindex=1></canvas>`
+	}
+
+	else
+	{
+		var ch = false
 	}
 
 	if(type === "user")
@@ -12879,11 +12957,27 @@ function popup_message_received(data, type="user", announce=true)
 		var h = false
 	}
 
+	var sp = "<div class='spacer3'></div>"
+
+	if(ch)
+	{
+		if(h)
+		{
+			var h = ch + sp + h
+		}
+		
+		else
+		{
+			var h = ch
+		}
+	}
+
 	data.content = make_safe(
 	{
 		text: data.message,
 		html: h,
-		title: nice_date(data.date)
+		title: nice_date(data.date),
+		remove_text_if_empty: true
 	})
 
 	data.title = make_safe(title)
@@ -12948,6 +13042,12 @@ function show_popup_message(data)
 		{
 			write_popup_message(false, "ops")
 		})
+
+		if(data.draw_coords)
+		{
+			var context = $(`#draw_popup_area_${data.id}`)[0].getContext("2d")
+			draw_message_redraw(context, data.draw_coords[0], data.draw_coords[1], data.draw_coords[2])
+		}
 	})
 }
 
@@ -13762,47 +13862,61 @@ function make_safe(args={})
 		urlize: true,
 		onclick: false,
 		html_unselectable: true,
-		title: false
+		title: false,
+		remove_text_if_empty: false
 	}
 
 	fill_defaults(args, def_args)
 
 	var c = $("<div></div>")
 
-	var c_text_classes = "msg_info_text inline"
-
-	if(args.onclick)
+	if(args.text || !args.remove_text_if_empty)
 	{
-		c_text_classes += " pointer action"
-	}
+		var c_text_classes = "msg_info_text inline"
 
-	c.append(`<div class='${c_text_classes}'></div>`)
+		if(args.onclick)
+		{
+			c_text_classes += " pointer action"
+		}
 
-	var c_text = c.find(".msg_info_text").eq(0)
+		c.append(`<div class='${c_text_classes}'></div>`)
 
-	if(args.urlize)
-	{
-		c_text.text(args.text).urlize()
-	}
+		var c_text = c.find(".msg_info_text").eq(0)
 
-	else
-	{
-		c_text.text(args.text)
-	}
+		if(args.urlize)
+		{
+			c_text.text(args.text).urlize()
+		}
 
-	if(args.onclick)
-	{
-		c_text.on("click", args.onclick)
-	}
+		else
+		{
+			c_text.text(args.text)
+		}
 
-	if(args.title)
-	{
-		c_text.attr("title", args.title)
+		if(args.onclick)
+		{
+			c_text.on("click", args.onclick)
+		}
+
+		if(args.title)
+		{
+			c_text.attr("title", args.title)
+		}
 	}
 
 	if(args.html)
 	{
-		c.append(`<div class='spacer3'></div><div class='msg_info_html'>${args.html}</div>`)
+		if(args.text || !args.remove_text_if_empty)
+		{
+			var sp = "<div class='spacer3'></div>"
+		}
+
+		else
+		{
+			var sp = ""
+		}
+
+		c.append(`${sp}<div class='msg_info_html'>${args.html}</div>`)
 
 		if(args.html_unselectable)
 		{
@@ -15091,4 +15205,89 @@ function unlock_screen()
 	}
 
 	execute_commands("on_unlockscreen")
+}
+
+function setup_message_area()
+{
+	draw_message_context = $("#draw_message_area")[0].getContext("2d")
+	
+	clear_draw_message_state()
+
+	$('#draw_message_area').mousedown(function(e)
+	{
+		draw_message_paint = true
+
+		draw_message_add_click(e.offsetX, e.offsetY, false)
+		draw_message_redraw(draw_message_context, draw_message_click_x, draw_message_click_y, draw_message_drag)
+	})
+
+	$('#draw_message_area').mousemove(function(e)
+	{
+		if(draw_message_paint)
+		{
+			draw_message_add_click(e.offsetX, e.offsetY, true)
+			draw_message_redraw(draw_message_context, draw_message_click_x, draw_message_click_y, draw_message_drag)
+		}
+	})
+
+	$('#draw_message_area').mouseup(function(e)
+	{
+		draw_message_paint = false
+	})
+
+	$('#draw_message_area').mouseleave(function(e)
+	{
+		draw_message_paint = false
+	})	
+}
+
+function clear_draw_message_state()
+{
+	draw_message_click_x = new Array()
+	draw_message_click_y = new Array()
+	draw_message_drag = new Array()
+	draw_message_paint = false
+
+	draw_message_context.clearRect(0, 0, draw_message_context.canvas.width, draw_message_context.canvas.height)
+}
+
+function draw_message_add_click(x, y, dragging)
+{
+	draw_message_click_x.push(x)
+	draw_message_click_y.push(y)
+	draw_message_drag.push(dragging)
+
+	if(draw_message_click_x.length > 500)
+	{
+		draw_message_click_x.shift()
+		draw_message_click_y.shift()
+		draw_message_drag.shift()
+	}
+}
+
+function draw_message_redraw(context, click_x, click_y, drag)
+{
+	context.clearRect(0, 0, context.canvas.width, context.canvas.height)
+	context.strokeStyle = $("#draw_message_area").css("color")
+	context.lineJoin = "round"
+	context.lineWidth = 2
+
+	for(var i=0; i < click_x.length; i++) 
+	{
+		context.beginPath()
+
+		if(drag[i] && i)
+		{
+			context.moveTo(click_x[i - 1], click_y[i - 1])
+		}
+
+		else
+		{
+			context.moveTo(click_x[i] -1, click_y[i])
+		}
+
+		context.lineTo(click_x[i], click_y[i])
+		context.closePath()
+		context.stroke()
+	}
 }

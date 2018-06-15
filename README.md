@@ -511,6 +511,9 @@ If you want to remove it to start fresh:
 "max_num_newlines"
 >Maximum amount of newlines allowed per message.
 
+"draw_coords_max_length"
+>Maximum string length for the draw coordinate arrays.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"
