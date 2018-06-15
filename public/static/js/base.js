@@ -12731,7 +12731,7 @@ function sent_popup_message_function(mode, message, draw_coords, data1=false)
 	else if(mode === "room")
 	{
 		var s1 = utilz.nonbreak("Send Another Message")
-		var s2 = "* Whisper sent to Room *"
+		var s2 = "* Message sent to Room *"
 
 		var cf = function()
 		{
@@ -12742,7 +12742,7 @@ function sent_popup_message_function(mode, message, draw_coords, data1=false)
 	else if(mode === "system")
 	{
 		var s1 = utilz.nonbreak("Send Another Message")
-		var s2 = "* Whisper sent to System *"
+		var s2 = "* Message sent to System *"
 
 		var cf = function()
 		{
