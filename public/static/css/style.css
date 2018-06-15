@@ -373,17 +373,21 @@ body, html
 
 .chat_profile_image_container
 {
-	min-width: 45px;
-	max-width: 45px;
-	min-height: 45px;
-	max-height: 45px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 45px;
+	height: 45px;
 	overflow: hidden;
+	border-radius: 50%;
 }
 
 .chat_profile_image
 {
 	width: 100%;
+	height: 100%;
 	cursor: pointer;
+	object-fit: cover;
 }
 
 .chat_uname_container
@@ -1076,32 +1080,39 @@ input[type=text], textarea
 
 .big_profile_image_container
 {
-	min-width: 200px;
-	max-width: 200px;
-	min-height: 200px;
-	max-height: 200px;
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 200px;
+	height: 200px;
 	overflow: hidden;
+	border-radius: 50%;
 }
 
 .big_profile_image
 {
 	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	object-fit: cover;
 }
 
 .bigger_profile_image_container
 {
-	min-width: 300px;
-	max-width: 300px;
-	min-height: 300px;
-	max-height: 300px;
-	display: inline-block;
-	overflow: hidden;		
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 300px;
+	height: 300px;
+	overflow: hidden;
+	border-radius: 50%;	
 }
 
 .bigger_profile_image
 {
 	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
 #profile_image_picker
