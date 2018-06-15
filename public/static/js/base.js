@@ -12699,6 +12699,7 @@ function send_popup_message()
 function sent_popup_message_function(mode, message, draw_coords, data1=false)
 {
 	var cf = function(){}
+
 	var ff = function(){}
 
 	if(mode === "whisper")
@@ -12714,39 +12715,6 @@ function sent_popup_message_function(mode, message, draw_coords, data1=false)
 		ff = function()
 		{
 			show_profile(data1, get_user_by_username(data1).profile_image)
-		}
-	}
-
-	else if(mode === "ops")
-	{
-		var s1 = utilz.nonbreak("Send Another Whisper")
-		var s2 = "* Whisper sent to Operators *"
-
-		var cf = function()
-		{
-			write_popup_message(false, "ops")
-		}
-	}
-
-	else if(mode === "room")
-	{
-		var s1 = utilz.nonbreak("Send Another Message")
-		var s2 = "* Message sent to Room *"
-
-		var cf = function()
-		{
-			write_popup_message(false, "room")
-		}
-	}
-
-	else if(mode === "system")
-	{
-		var s1 = utilz.nonbreak("Send Another Message")
-		var s2 = "* Message sent to System *"
-
-		var cf = function()
-		{
-			write_popup_message(false, "system")
 		}
 	}
 
@@ -12846,10 +12814,6 @@ function send_whisper_ops(message, draw_coords)
 {
 	socket_emit('whisper_ops', {message:message, draw_coords:draw_coords})
 
-	var f = sent_popup_message_function("ops", message, draw_coords)
-
-	feedback(`Whisper To Operators sent`, {onclick:f, save:true})
-
 	return true
 }
 
@@ -12863,20 +12827,12 @@ function send_room_broadcast(message, draw_coords)
 
 	socket_emit("room_broadcast", {message:message, draw_coords:draw_coords})
 
-	var f = sent_popup_message_function("room", message, draw_coords)
-
-	feedback(`Message To Room sent`, {onclick:f, save:true})
-
 	return true
 }
 
 function send_system_broadcast(message, draw_coords)
 {
 	socket_emit("system_broadcast", {message:message, draw_coords:draw_coords})
-
-	var f = sent_popup_message_function("system", message, draw_coords)
-
-	feedback(`Message To System sent`, {onclick:f, save:true})
 
 	return true
 }
