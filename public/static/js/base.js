@@ -11473,6 +11473,11 @@ function profile_image_changed(data)
 	}
 
 	update_user_profile_image(data.username, data.profile_image)
+
+	if(!user_is_ignored(data.username))
+	{
+		public_feedback(`${data.username} changed the profile image`)
+	}
 }
 
 function update_user_profile_image(uname, pi)
