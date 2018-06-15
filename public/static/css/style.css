@@ -1227,6 +1227,10 @@ input[type=text], textarea
 #draw_message_area
 {
 	cursor: crosshair;
+}
+
+.draw_canvas
+{
 	outline: none;
 }
 

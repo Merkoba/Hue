@@ -39,7 +39,7 @@
 
 		<script src="/static/js/base.js?ver=1311"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?ver=374"/>
+		<link rel="stylesheet" href="/static/css/style.css?ver=375"/>
 
 		<script>
 
@@ -1151,9 +1151,11 @@
 			<div class='spacer3'></div>
 			<canvas id='draw_message_area' class='draw_canvas' width='400px' height='300px' tabindex=1></canvas>
 			<div class='spacer3'></div>
-			<div class='bigger pointer unselectable action inline' onclick='clear_draw_message_state()' tabindex=3>Clear Drawing</div>
-			<span>&nbsp;|&nbsp;</span>
-			<div class='bigger pointer unselectable action inline' onclick='send_popup_message()' tabindex=3>Send</div>
+			<span class='unselectable'>
+				<div class='bigger pointer unselectable action inline' onclick='clear_draw_message_state()' tabindex=3>Clear Drawing</div>
+				<span>&nbsp;|&nbsp;</span>
+				<div class='bigger pointer unselectable action inline' onclick='send_popup_message()' tabindex=3>Send</div>
+			</span>
 		</script>
 
 		<script id='template_help' type='text/x-handlebars-template'>
