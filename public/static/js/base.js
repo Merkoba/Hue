@@ -7277,7 +7277,6 @@ function activate_visibility_listener()
 	window.onblur = function()
 	{
 		num_keys_pressed = 0
-		mouse_is_down = false
 	}
 }
 
@@ -15492,6 +15491,11 @@ function setup_mouse_events()
 	})
 
 	$("body").mouseup(function()
+	{
+		mouse_is_down = false
+	})
+
+	$("body").mouseleave(function()
 	{
 		mouse_is_down = false
 	})
