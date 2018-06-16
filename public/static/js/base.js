@@ -12806,7 +12806,14 @@ function sent_popup_message_function(mode, message, draw_coords, data1=false)
 			if(draw_coords)
 			{
 				var context = $("#modal_popup_feedback_draw")[0].getContext("2d")
-				canvas_redraw(context, draw_coords[0], draw_coords[1], draw_coords[2])
+				
+				canvas_redraw
+				({
+					context: context, 
+					click_x: draw_coords[0], 
+					click_y: draw_coords[1], 
+					drag: draw_coords[2]
+				})
 			}
 		})
 	}
@@ -13050,7 +13057,14 @@ function show_popup_message(data)
 		if(data.draw_coords)
 		{
 			var context = $(`#draw_popup_area_${data.id}`)[0].getContext("2d")
-			canvas_redraw(context, data.draw_coords[0], data.draw_coords[1], data.draw_coords[2])
+
+			canvas_redraw
+			({
+				context: context, 
+				click_x: data.draw_coords[0], 
+				click_y: data.draw_coords[1], 
+				drag: data.draw_coords[2]
+			})
 		}
 	})
 }
@@ -15221,7 +15235,7 @@ function setup_message_area()
 	{
 		draw_message_just_entered = false
 		draw_message_add_click(e.offsetX, e.offsetY, false)
-		canvas_redraw(draw_message_context, draw_message_click_x, draw_message_click_y, draw_message_drag)
+		redraw_draw_message()
 	})
 
 	$('#draw_message_area').mousemove(function(e)
@@ -15229,7 +15243,7 @@ function setup_message_area()
 		if(mouse_is_down)
 		{
 			draw_message_add_click(e.offsetX, e.offsetY, !draw_message_just_entered)
-			canvas_redraw(draw_message_context, draw_message_click_x, draw_message_click_y, draw_message_drag)
+			redraw_draw_message()
 		}
 
 		draw_message_just_entered = false
@@ -15238,6 +15252,17 @@ function setup_message_area()
 	$('#draw_message_area').mouseenter(function(e)
 	{
 		draw_message_just_entered = true
+	})
+}
+
+function redraw_draw_message()
+{
+	canvas_redraw
+	({
+		context: draw_message_context, 
+		click_x: draw_message_click_x, 
+		click_y: draw_message_click_y, 
+		drag: draw_message_drag
 	})
 }
 
@@ -15264,58 +15289,71 @@ function draw_message_add_click(x, y, dragging)
 	}
 }
 
-function canvas_redraw(context, click_x, click_y, drag, bg_color=false, colors=false, sizes=false)
+function canvas_redraw(args={})
 {
-	context.clearRect(0, 0, context.canvas.width, context.canvas.height)
-	
-	context.lineJoin = "round"
-
-	if(bg_color)
+	var def_args =
 	{
-		context.fillStyle = bg_color;
-		
-		context.fillRect(0, 0, context.canvas.width, context.canvas.height)
+		context: false,
+		click_x: false,
+		click_y: false,
+		drag: false,
+		bg_color: false,
+		colors: false,
+		sizes: false
 	}
 
-	for(var i=0; i < click_x.length; i++) 
+	fill_defaults(args, def_args)
+
+	args.context.clearRect(0, 0, args.context.canvas.width, args.context.canvas.height)
+	
+	args.context.lineJoin = "round"
+
+	if(args.bg_color)
 	{
-		context.beginPath()
-
-		if(drag[i] && i)
-		{
-			context.moveTo(click_x[i - 1], click_y[i - 1])
-		}
-
-		else
-		{
-			context.moveTo(click_x[i] -1, click_y[i])
-		}
-
-		context.lineTo(click_x[i], click_y[i])
+		args.context.fillStyle = args.bg_color;
 		
-		context.closePath()
+		args.context.fillRect(0, 0, args.context.canvas.width, args.context.canvas.height)
+	}
 
-		if(colors)
+	for(var i=0; i < args.click_x.length; i++) 
+	{
+		args.context.beginPath()
+
+		if(args.drag[i] && i)
 		{
-			context.strokeStyle = colors[i]
+			args.context.moveTo(args.click_x[i - 1], args.click_y[i - 1])
 		}
 
 		else
 		{
-			context.strokeStyle = $("#draw_message_area").css("color")
+			args.context.moveTo(args.click_x[i] -1, args.click_y[i])
 		}
 
-		if(sizes)
+		args.context.lineTo(args.click_x[i], args.click_y[i])
+		
+		args.context.closePath()
+
+		if(args.colors)
 		{
-			context.lineWidth = sizes[i]
+			args.context.strokeStyle = args.colors[i]
 		}
 
 		else
 		{
-			context.lineWidth = 2
+			args.context.strokeStyle = $("#draw_message_area").css("color")
 		}
 
-		context.stroke()
+		if(args.sizes)
+		{
+			args.context.lineWidth = args.sizes[i]
+		}
+
+		else
+		{
+			args.context.lineWidth = 2
+		}
+
+		args.context.stroke()
 	}
 }
 
@@ -15455,15 +15493,15 @@ function clear_draw_image_state(redraw=true)
 function redraw_draw_image()
 {
 	canvas_redraw
-	(
-		draw_image_context, 
-		draw_image_click_x, 
-		draw_image_click_y, 
-		draw_image_drag, 
-		draw_image_bg_color, 
-		draw_image_color_array,
-		draw_image_pencil_size_array
-	)
+	({
+		context: draw_image_context, 
+		click_x: draw_image_click_x, 
+		click_y: draw_image_click_y, 
+		drag: draw_image_drag, 
+		bg_color: draw_image_bg_color, 
+		colors: draw_image_color_array,
+		sizes: draw_image_pencil_size_array
+	})
 }
 
 function draw_image_add_click(x, y, dragging)
