@@ -211,12 +211,13 @@ var draw_message_context
 var draw_message_click_x
 var draw_message_click_y
 var draw_message_drag
-var draw_message_paint
 var draw_image_context
 var draw_image_click_x
 var draw_image_click_y
 var draw_image_drag
-var draw_image_paint
+var mouse_is_down = false
+var draw_message_just_entered = false
+var draw_image_just_entered = false
 
 function init()
 {
@@ -269,6 +270,7 @@ function init()
 	prepare_media_settings()
 	setup_message_area()
 	setup_draw_image()
+	setup_mouse_events()
 
 	start_socket()
 }
@@ -7275,6 +7277,7 @@ function activate_visibility_listener()
 	window.onblur = function()
 	{
 		num_keys_pressed = 0
+		mouse_is_down = false
 	}
 }
 
@@ -8932,6 +8935,7 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "message",
+			close_on_overlay_click: false,
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -9215,6 +9219,7 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "draw_image",
+			close_on_overlay_click: false,
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -15212,30 +15217,26 @@ function setup_message_area()
 
 	$('#draw_message_area').mousedown(function(e)
 	{
-		draw_message_paint = true
-
+		draw_message_just_entered = false
 		draw_message_add_click(e.offsetX, e.offsetY, false)
 		canvas_redraw(draw_message_context, draw_message_click_x, draw_message_click_y, draw_message_drag)
 	})
 
 	$('#draw_message_area').mousemove(function(e)
 	{
-		if(draw_message_paint)
+		if(mouse_is_down)
 		{
-			draw_message_add_click(e.offsetX, e.offsetY, true)
+			draw_message_add_click(e.offsetX, e.offsetY, !draw_message_just_entered)
 			canvas_redraw(draw_message_context, draw_message_click_x, draw_message_click_y, draw_message_drag)
 		}
+
+		draw_message_just_entered = false
 	})
 
-	$('#draw_message_area').mouseup(function(e)
+	$('#draw_message_area').mouseenter(function(e)
 	{
-		draw_message_paint = false
+		draw_message_just_entered = true
 	})
-
-	$('#draw_message_area').mouseleave(function(e)
-	{
-		draw_message_paint = false
-	})	
 }
 
 function clear_draw_message_state()
@@ -15243,7 +15244,6 @@ function clear_draw_message_state()
 	draw_message_click_x = new Array()
 	draw_message_click_y = new Array()
 	draw_message_drag = new Array()
-	draw_message_paint = false
 
 	draw_message_context.clearRect(0, 0, draw_message_context.canvas.width, draw_message_context.canvas.height)
 }
@@ -15328,29 +15328,25 @@ function setup_draw_image()
 
 	$('#draw_image_area').mousedown(function(e)
 	{
-		draw_image_paint = true
-
+		draw_image_just_entered = false
 		draw_image_add_click(e.offsetX, e.offsetY, false)
 		redraw_draw_image()
 	})
 
 	$('#draw_image_area').mousemove(function(e)
 	{
-		if(draw_image_paint)
+		if(mouse_is_down)
 		{
-			draw_image_add_click(e.offsetX, e.offsetY, true)
+			draw_image_add_click(e.offsetX, e.offsetY, !draw_image_just_entered)
 			redraw_draw_image()
 		}
+
+		draw_image_just_entered = false
 	})
 
-	$('#draw_image_area').mouseup(function(e)
+	$('#draw_image_area').mouseenter(function(e)
 	{
-		draw_image_paint = false
-	})
-
-	$('#draw_image_area').mouseleave(function(e)
-	{
-		draw_image_paint = false
+		draw_image_just_entered = true
 	})
 
 	reset_draw_image_settings(false, false)
@@ -15429,7 +15425,6 @@ function clear_draw_image_state(redraw=true)
 	draw_image_click_x = new Array()
 	draw_image_click_y = new Array()
 	draw_image_drag = new Array()
-	draw_image_paint = false
 
 	if(redraw)
 	{
@@ -15477,4 +15472,27 @@ function upload_draw_image()
 		upload_file(blob, "image_upload")
 		msg_draw_image.close()
 	}, 'image/png', 0.95)
+}
+
+function clear_draw_image_func()
+{
+	clear_draw_image_state()
+}
+
+function reset_draw_image_func()
+{
+	reset_draw_image_settings(true, true)	
+}
+
+function setup_mouse_events()
+{
+	$("body").mousedown(function()
+	{
+		mouse_is_down = true
+	})
+
+	$("body").mouseup(function()
+	{
+		mouse_is_down = false
+	})
 }
