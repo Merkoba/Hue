@@ -217,6 +217,7 @@ var draw_image_click_y
 var draw_image_drag
 var draw_image_color_array
 var draw_image_pencil_size_array
+var draw_image_sectors
 var draw_message_just_entered = false
 var draw_image_just_entered = false
 var mouse_is_down = false
@@ -271,7 +272,6 @@ function init()
 	setup_media_settings()
 	prepare_media_settings()
 	setup_message_area()
-	setup_draw_image()
 	setup_mouse_events()
 
 	start_socket()
@@ -784,6 +784,7 @@ function start_socket()
 			get_input_history()
 			announce_image_change(data, false, false)
 			show_joined()
+			setup_draw_image()
 
 			setup_image(data)
 			setup_tv(data)
@@ -15338,6 +15339,7 @@ function setup_draw_image()
 	$('#draw_image_area').mousedown(function(e)
 	{
 		draw_image_just_entered = false
+		draw_image_sectors.push(draw_image_click_x.length)
 		draw_image_add_click(e.offsetX, e.offsetY, false)
 		redraw_draw_image()
 	})
@@ -15436,6 +15438,7 @@ function clear_draw_image_state(redraw=true)
 	draw_image_drag = []
 	draw_image_color_array = []
 	draw_image_pencil_size_array = []
+	draw_image_sectors = []
 
 	if(redraw)
 	{
@@ -15495,6 +15498,22 @@ function clear_draw_image_func()
 function reset_draw_image_func()
 {
 	reset_draw_image_settings(true, true)	
+}
+
+function draw_image_undo()
+{
+	if(draw_image_sectors.length > 0)
+	{
+		var sector = draw_image_sectors.pop()
+
+		draw_image_click_x = draw_image_click_x.slice(0, sector)
+		draw_image_click_y = draw_image_click_y.slice(0, sector)
+		draw_image_drag = draw_image_drag.slice(0, sector)
+		draw_image_color_array = draw_image_color_array.slice(0, sector)
+		draw_image_pencil_size_array = draw_image_pencil_size_array.slice(0, sector)
+		
+		redraw_draw_image()
+	}
 }
 
 function setup_mouse_events()

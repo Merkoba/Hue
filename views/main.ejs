@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1320"></script>
+		<script src="/static/js/base.js?ver=1322"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?ver=376"/>
 
@@ -1202,7 +1202,10 @@
 
 					<div class='spacer3'></div>
 
-					<div class='bigger pointer action inline' onclick='needs_confirm("clear_draw_image_func")' tabindex=2>Clear Drawing</div>
+					<div class='bigger pointer action inline' onclick='draw_image_undo()'>Undo</div>
+					<span>&nbsp;|&nbsp;</span>
+
+					<div class='bigger pointer action inline' onclick='needs_confirm("clear_draw_image_func")'>Clear Drawing</div>
 					<span>&nbsp;|&nbsp;</span>
 
 					<div class='bigger pointer action inline' onclick='needs_confirm("reset_draw_image_func")'>Reset Settings</div>
