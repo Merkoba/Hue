@@ -215,9 +215,11 @@ var draw_image_context
 var draw_image_click_x
 var draw_image_click_y
 var draw_image_drag
-var mouse_is_down = false
+var draw_image_color_array
+var draw_image_pencil_size_array
 var draw_message_just_entered = false
 var draw_image_just_entered = false
+var mouse_is_down = false
 
 function init()
 {
@@ -15240,9 +15242,9 @@ function setup_message_area()
 
 function clear_draw_message_state()
 {
-	draw_message_click_x = new Array()
-	draw_message_click_y = new Array()
-	draw_message_drag = new Array()
+	draw_message_click_x = []
+	draw_message_click_y = []
+	draw_message_drag = []
 
 	draw_message_context.clearRect(0, 0, draw_message_context.canvas.width, draw_message_context.canvas.height)
 }
@@ -15261,30 +15263,16 @@ function draw_message_add_click(x, y, dragging)
 	}
 }
 
-function canvas_redraw(context, click_x, click_y, drag, bg_color=false, color=false, size=false)
+function canvas_redraw(context, click_x, click_y, drag, bg_color=false, colors=false, sizes=false)
 {
-	if(!color)
-	{
-		color = $("#draw_message_area").css("color")
-	}
-
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height)
-	context.strokeStyle = color
+	
 	context.lineJoin = "round"
-
-	if(size)
-	{
-		context.lineWidth = size
-	}
-
-	else
-	{
-		context.lineWidth = 2
-	}
 
 	if(bg_color)
 	{
 		context.fillStyle = bg_color;
+		
 		context.fillRect(0, 0, context.canvas.width, context.canvas.height)
 	}
 
@@ -15303,7 +15291,29 @@ function canvas_redraw(context, click_x, click_y, drag, bg_color=false, color=fa
 		}
 
 		context.lineTo(click_x[i], click_y[i])
+		
 		context.closePath()
+
+		if(colors)
+		{
+			context.strokeStyle = colors[i]
+		}
+
+		else
+		{
+			context.strokeStyle = $("#draw_message_area").css("color")
+		}
+
+		if(sizes)
+		{
+			context.lineWidth = sizes[i]
+		}
+
+		else
+		{
+			context.lineWidth = 2
+		}
+
 		context.stroke()
 	}
 }
@@ -15421,9 +15431,11 @@ function reset_draw_image_settings(set_pickers=true, redraw=false)
 
 function clear_draw_image_state(redraw=true)
 {
-	draw_image_click_x = new Array()
-	draw_image_click_y = new Array()
-	draw_image_drag = new Array()
+	draw_image_click_x = []
+	draw_image_click_y = []
+	draw_image_drag = []
+	draw_image_color_array = []
+	draw_image_pencil_size_array = []
 
 	if(redraw)
 	{
@@ -15440,8 +15452,8 @@ function redraw_draw_image()
 		draw_image_click_y, 
 		draw_image_drag, 
 		draw_image_bg_color, 
-		draw_image_color,
-		draw_image_pencil_size
+		draw_image_color_array,
+		draw_image_pencil_size_array
 	)
 }
 
@@ -15449,6 +15461,8 @@ function draw_image_add_click(x, y, dragging)
 {
 	draw_image_click_x.push(x)
 	draw_image_click_y.push(y)
+	draw_image_color_array.push(draw_image_color)
+	draw_image_pencil_size_array.push(draw_image_pencil_size)
 	draw_image_drag.push(dragging)
 }
 
