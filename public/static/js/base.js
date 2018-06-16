@@ -118,6 +118,7 @@ var msg_radio_history
 var msg_input_history
 var msg_chat_search
 var msg_lockscreen
+var msg_draw_image
 var played_filtered = false
 var userlist_filtered = false
 var image_history_filtered = false
@@ -211,6 +212,11 @@ var draw_message_click_x
 var draw_message_click_y
 var draw_message_drag
 var draw_message_paint
+var draw_image_context
+var draw_image_click_x
+var draw_image_click_y
+var draw_image_drag
+var draw_image_paint
 
 function init()
 {
@@ -262,6 +268,7 @@ function init()
 	setup_media_settings()
 	prepare_media_settings()
 	setup_message_area()
+	setup_draw_image()
 
 	start_socket()
 }
@@ -347,6 +354,7 @@ function setup_templates()
 	template_global_settings = Handlebars.compile($('#template_global_settings').html())
 	template_room_settings = Handlebars.compile($('#template_room_settings').html())
 	template_lockscreen = Handlebars.compile($('#template_lockscreen').html())
+	template_draw_image = Handlebars.compile($('#template_draw_image').html())
 }
 
 function help()
@@ -2686,6 +2694,7 @@ function setup_main_menu()
 
 	$("#admin_theme").spectrum(
 	{
+		preferredFormat: "rgb",
 		color: "#B5599A",
 		appendTo: "#admin_menu",
 		showInput: true
@@ -2719,6 +2728,7 @@ function setup_main_menu()
 
 	$("#admin_text_color").spectrum(
 	{
+		preferredFormat: "rgb",
 		color: "#B5599A",
 		appendTo: "#admin_menu",
 		showInput: true
@@ -5425,6 +5435,7 @@ function register_commands()
 	commands.push('/lockscreen')
 	commands.push('/unlockscreen')
 	commands.push('/togglelockscreen')
+	commands.push('/drawimage')
 
 	commands.sort()
 
@@ -6345,6 +6356,11 @@ function execute_command(msg, ans)
 		{
 			lock_screen()
 		}
+	}
+
+	else if(oiEquals(lmsg, '/drawimage'))
+	{
+		open_draw_image()
 	}
 
 	else
@@ -9194,6 +9210,32 @@ function start_msg()
 		})
 	)
 
+	msg_draw_image = Msg.factory
+	(
+		Object.assign({}, common, titlebar,
+		{
+			id: "draw_image",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				clear_draw_image_state()
+			}
+		})
+	)
+
 	msg_menu.set(template_menu())
 	msg_userinfo.set(template_userinfo())
 	msg_userlist.set(template_userlist())
@@ -9217,6 +9259,7 @@ function start_msg()
 	msg_locked.set(template_locked_menu())
 	msg_global_settings.set(template_global_settings({settings:template_settings({type:"global_settings"})}))
 	msg_room_settings.set(template_room_settings({settings:template_settings({type:"room_settings"})}))
+	msg_draw_image.set(template_draw_image())
 
 	msg_info.create()
 	msg_info2.create()
@@ -9235,6 +9278,7 @@ function start_msg()
 	msg_menu.set_title("Main Menu")
 	msg_userinfo.set_title("User Menu")
 	msg_media_menu.set_title("Media Menu")
+	msg_draw_image.set_title("Draw an Image")
 }
 
 function info_vars_to_false()
@@ -11377,17 +11421,14 @@ function profile_image_selected(input)
 					}
 
 					cropped_canvas = cropper.getCroppedCanvas()
-
+					
 					rounded_canvas = get_rounded_canvas(cropped_canvas)
 
 					rounded_canvas.toBlob(function(blob)
 					{
 						$("#userinfo_profile_image").attr("src", profile_image_loading_url)
-
 						blob.name = "profile.png"
-
 						upload_file(blob, "profile_image_upload")
-
 						msg_info.close()
 					}, 'image/png', 0.95)
 				}
@@ -12758,7 +12799,7 @@ function sent_popup_message_function(mode, message, draw_coords, data1=false)
 			if(draw_coords)
 			{
 				var context = $("#modal_popup_feedback_draw")[0].getContext("2d")
-				draw_message_redraw(context, draw_coords[0], draw_coords[1], draw_coords[2])
+				canvas_redraw(context, draw_coords[0], draw_coords[1], draw_coords[2])
 			}
 		})
 	}
@@ -13002,7 +13043,7 @@ function show_popup_message(data)
 		if(data.draw_coords)
 		{
 			var context = $(`#draw_popup_area_${data.id}`)[0].getContext("2d")
-			draw_message_redraw(context, data.draw_coords[0], data.draw_coords[1], data.draw_coords[2])
+			canvas_redraw(context, data.draw_coords[0], data.draw_coords[1], data.draw_coords[2])
 		}
 	})
 }
@@ -15174,7 +15215,7 @@ function setup_message_area()
 		draw_message_paint = true
 
 		draw_message_add_click(e.offsetX, e.offsetY, false)
-		draw_message_redraw(draw_message_context, draw_message_click_x, draw_message_click_y, draw_message_drag)
+		canvas_redraw(draw_message_context, draw_message_click_x, draw_message_click_y, draw_message_drag)
 	})
 
 	$('#draw_message_area').mousemove(function(e)
@@ -15182,7 +15223,7 @@ function setup_message_area()
 		if(draw_message_paint)
 		{
 			draw_message_add_click(e.offsetX, e.offsetY, true)
-			draw_message_redraw(draw_message_context, draw_message_click_x, draw_message_click_y, draw_message_drag)
+			canvas_redraw(draw_message_context, draw_message_click_x, draw_message_click_y, draw_message_drag)
 		}
 	})
 
@@ -15213,7 +15254,7 @@ function draw_message_add_click(x, y, dragging)
 	draw_message_click_y.push(y)
 	draw_message_drag.push(dragging)
 
-	if(draw_message_click_x.length > 500)
+	if(draw_message_click_x.length > draw_coords_max_array_length)
 	{
 		draw_message_click_x.shift()
 		draw_message_click_y.shift()
@@ -15221,12 +15262,32 @@ function draw_message_add_click(x, y, dragging)
 	}
 }
 
-function draw_message_redraw(context, click_x, click_y, drag)
+function canvas_redraw(context, click_x, click_y, drag, bg_color=false, color=false, size=false)
 {
+	if(!color)
+	{
+		color = $("#draw_message_area").css("color")
+	}
+
 	context.clearRect(0, 0, context.canvas.width, context.canvas.height)
-	context.strokeStyle = $("#draw_message_area").css("color")
+	context.strokeStyle = color
 	context.lineJoin = "round"
-	context.lineWidth = 2
+
+	if(size)
+	{
+		context.lineWidth = size
+	}
+
+	else
+	{
+		context.lineWidth = 2
+	}
+
+	if(bg_color)
+	{
+		context.fillStyle = bg_color;
+		context.fillRect(0, 0, context.canvas.width, context.canvas.height)
+	}
 
 	for(var i=0; i < click_x.length; i++) 
 	{
@@ -15246,4 +15307,174 @@ function draw_message_redraw(context, click_x, click_y, drag)
 		context.closePath()
 		context.stroke()
 	}
+}
+
+function open_draw_image()
+{
+	if(!can_images)
+	{
+		feedback("You don't have permission to draw images")
+		return false
+	}
+
+	msg_draw_image.show()
+}
+
+function setup_draw_image()
+{
+	draw_image_context = $("#draw_image_area")[0].getContext("2d")
+	
+	clear_draw_image_state(false)
+
+	$('#draw_image_area').mousedown(function(e)
+	{
+		draw_image_paint = true
+
+		draw_image_add_click(e.offsetX, e.offsetY, false)
+		redraw_draw_image()
+	})
+
+	$('#draw_image_area').mousemove(function(e)
+	{
+		if(draw_image_paint)
+		{
+			draw_image_add_click(e.offsetX, e.offsetY, true)
+			redraw_draw_image()
+		}
+	})
+
+	$('#draw_image_area').mouseup(function(e)
+	{
+		draw_image_paint = false
+	})
+
+	$('#draw_image_area').mouseleave(function(e)
+	{
+		draw_image_paint = false
+	})
+
+	reset_draw_image_settings(false, false)
+
+	$("#draw_image_background_color").spectrum(
+	{
+		preferredFormat: "rgb",
+		color: draw_image_bg_color,
+		appendTo: "#draw_image_main",
+		showInput: true
+	})
+
+	$("#draw_image_background_color").on('hide.spectrum', function(e, t)
+	{
+		draw_image_bg_color = t.toRgbString()
+		redraw_draw_image()
+	})
+
+	$("#draw_image_text_color").spectrum(
+	{
+		preferredFormat: "rgb",
+		color: draw_image_color,
+		appendTo: "#draw_image_main",
+		showInput: true
+	})
+
+	$("#draw_image_text_color").on('hide.spectrum', function(e, t)
+	{
+		draw_image_color = t.toRgbString()
+		redraw_draw_image()
+	})
+
+	$("#draw_image_pencil_size").find('option').each(function()
+	{
+		if($(this).val() == 2)
+		{
+			$(this).prop('selected', true)
+		}
+	})
+
+	$("#draw_image_pencil_size").change(function()
+	{
+		draw_image_pencil_size = $(this).val()
+		redraw_draw_image()
+	})
+}
+
+function reset_draw_image_settings(set_pickers=true, redraw=false)
+{
+	draw_image_bg_color = "rgba(0, 0, 0, 0)"
+	draw_image_color = $("#draw_image_area").css("color")
+	draw_image_pencil_size = 2
+
+	if(set_pickers)
+	{
+		$("#draw_image_background_color").spectrum("set", draw_image_bg_color)
+		$("#draw_image_text_color").spectrum("set", draw_image_color)
+
+		$("#draw_image_pencil_size").find('option').each(function()
+		{
+			if($(this).val() == draw_image_pencil_size)
+			{
+				$(this).prop('selected', true)
+			}
+		})
+	}
+
+	if(redraw)
+	{
+		redraw_draw_image()
+	}
+}
+
+function clear_draw_image_state(redraw=true)
+{
+	draw_image_click_x = new Array()
+	draw_image_click_y = new Array()
+	draw_image_drag = new Array()
+	draw_image_paint = false
+
+	if(redraw)
+	{
+		redraw_draw_image()
+	}
+}
+
+function redraw_draw_image()
+{
+	canvas_redraw
+	(
+		draw_image_context, 
+		draw_image_click_x, 
+		draw_image_click_y, 
+		draw_image_drag, 
+		draw_image_bg_color, 
+		draw_image_color,
+		draw_image_pencil_size
+	)
+}
+
+function draw_image_add_click(x, y, dragging)
+{
+	draw_image_click_x.push(x)
+	draw_image_click_y.push(y)
+	draw_image_drag.push(dragging)
+}
+
+function upload_draw_image()
+{
+	if(!can_images)
+	{
+		feedback("You don't have permission to upload images")
+		return false
+	}
+
+	if(draw_image_click_x.length === 0)
+	{
+		return false
+	}
+
+	$("#draw_image_area")[0].toBlob(function(blob)
+	{
+		blob.name = "draw_image.png"
+		upload_file(blob, "image_upload")
+		msg_draw_image.close()
+	}, 'image/png', 0.95)
 }

@@ -1229,6 +1229,11 @@ input[type=text], textarea
 	cursor: crosshair;
 }
 
+#draw_image_area
+{
+	cursor: crosshair;
+}
+
 .draw_canvas
 {
 	outline: none;

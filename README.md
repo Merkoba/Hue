@@ -514,6 +514,9 @@ If you want to remove it to start fresh:
 "draw_coords_max_length"
 >Maximum string length for the draw coordinate arrays.
 
+"draw_coords_max_array_length"
+>Maximum array length for each of the draw coordinate arrays.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"

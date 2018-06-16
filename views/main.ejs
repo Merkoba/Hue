@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1313"></script>
+		<script src="/static/js/base.js?ver=1317"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?ver=375"/>
+		<link rel="stylesheet" href="/static/css/style.css?ver=376"/>
 
 		<script>
 
@@ -995,7 +995,11 @@
 			<div class='spacer3'></div>
 			<input id='image_source_picker_input' class='input1'>
 			<div class='spacer3'></div>
-			<div id='image_file_picker' class='menu_item action inline unselectable' onclick='msg_image_picker.close()'>Upload</div>
+			<div class='unselectable'>
+				<div id='image_file_picker' class='menu_item action inline unselectable' onclick='msg_image_picker.close()'>Upload</div>
+				<span>&nbsp;|&nbsp;</span>
+				<div id='image_file_picker_draw' class='menu_item action inline unselectable' onclick='open_draw_image();msg_image_picker.close()'>Draw</div>
+			</div>
 		</script>
 
 		<script id='template_tv_picker' type='text/x-handlebars-template'>
@@ -1154,8 +1158,56 @@
 			<span class='unselectable'>
 				<div class='bigger pointer unselectable action inline' onclick='clear_draw_message_state()' tabindex=3>Clear Drawing</div>
 				<span>&nbsp;|&nbsp;</span>
-				<div class='bigger pointer unselectable action inline' onclick='send_popup_message()' tabindex=3>Send</div>
+				<div class='bigger pointer unselectable action inline' onclick='send_popup_message()' tabindex=4>Send</div>
 			</span>
+		</script>
+
+		<script id='template_draw_image' type='text/x-handlebars-template'>
+			
+			<div id='draw_image_main'>
+
+				<div class='inline'>Background Color&nbsp;</div>
+				<input id='draw_image_background_color'>
+				
+				<div class='hspacer2 inline'></div>
+				<div class='hspacer2 inline'></div>
+				
+				<div class='inline'>Pencil Color&nbsp;</div>
+				<input id='draw_image_text_color'>
+				
+				<div class='hspacer2 inline'></div>
+				<div class='hspacer2 inline'></div>
+
+				<div class='inline'>Pencil Size&nbsp;</div>
+				<select id='draw_image_pencil_size' class='modal_select'>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+				</select>
+
+				<div class='spacer3'></div>
+
+				<canvas id='draw_image_area' class='draw_canvas' width='800px' height='600px' tabindex=1></canvas>
+
+				<div class='spacer3'></div>
+
+				<span class='unselectable'>
+					<div class='bigger pointer action inline' onclick='clear_draw_image_state()' tabindex=2>Clear Drawing</div>
+					<span>&nbsp;|&nbsp;</span>
+					<div class='bigger pointer action inline' onclick='reset_draw_image_settings(true, true)'>Reset Settings</div>
+					<span>&nbsp;|&nbsp;</span>
+					<div class='bigger pointer action inline' onclick='upload_draw_image()' tabindex=3>Upload</div>
+				</span>
+
+			</div>
+
 		</script>
 
 		<script id='template_help' type='text/x-handlebars-template'>
@@ -1280,6 +1332,7 @@
 			<div class='info_item'>/lockscreen: Locks the screen.</div>
 			<div class='info_item'>/unlockscreen: Unlocks the screen.</div>
 			<div class='info_item'>/togglelockscreen: Locks or unlocks the screen.</div>
+			<div class='info_item'>/drawimage: Opens the window to draw an image.</div>
 			<div class='info_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil, and profile images in chat of whoever is typing will have a glow effect.</div>
 			<div class='spacer1'></div>
 			<span class='help_link action unselectable' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='help3()'>Administration Features</span>			

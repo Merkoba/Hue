@@ -121,6 +121,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.profile_image_diameter = config.profile_image_diameter
 	c.vars.max_num_newlines = config.max_num_newlines
 	c.vars.draw_coords_max_length = config.draw_coords_max_length
+	c.vars.draw_coords_max_array_length = config.draw_coords_max_array_length
 
 	function check_url(req, res, next)
 	{
