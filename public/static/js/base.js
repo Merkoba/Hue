@@ -212,14 +212,10 @@ var draw_message_click_x
 var draw_message_click_y
 var draw_message_drag
 var draw_image_context
-var draw_image_click_x
-var draw_image_click_y
-var draw_image_drag
-var draw_image_color_array
-var draw_image_pencil_size_array
-var draw_image_sectors
 var draw_message_just_entered = false
 var draw_image_just_entered = false
+var draw_image_snapshots
+var draw_image_mode = "pencil"
 var mouse_is_down = false
 
 function init()
@@ -15299,7 +15295,8 @@ function canvas_redraw(args={})
 		drag: false,
 		bg_color: false,
 		colors: false,
-		sizes: false
+		sizes: false,
+		type: false
 	}
 
 	fill_defaults(args, def_args)
@@ -15308,14 +15305,21 @@ function canvas_redraw(args={})
 	
 	args.context.lineJoin = "round"
 
-	if(args.bg_color)
+	var draw_bg = true
+
+	if(args.type === "draw_image")
+	{
+		draw_image_context.putImageData(draw_image_current_snapshot.data, 0, 0)
+	}
+
+	if(args.bg_color && draw_bg)
 	{
 		args.context.fillStyle = args.bg_color;
 		
 		args.context.fillRect(0, 0, args.context.canvas.width, args.context.canvas.height)
 	}
 
-	for(var i=0; i < args.click_x.length; i++) 
+	for(var i=0; i<args.click_x.length; i++) 
 	{
 		args.context.beginPath()
 
@@ -15372,12 +15376,19 @@ function setup_draw_image()
 {
 	draw_image_context = $("#draw_image_area")[0].getContext("2d")
 	
-	clear_draw_image_state(false)
+	clear_draw_image_state()
 
 	$('#draw_image_area').mousedown(function(e)
 	{
+		if(draw_image_mode === "bucket")
+		{
+			return false
+		}
+
 		draw_image_just_entered = false
-		draw_image_sectors.push(draw_image_click_x.length)
+
+		draw_image_current_snapshot.draw_image_sectors.push(draw_image_current_snapshot.draw_image_click_x.length)
+		
 		draw_image_add_click(e.offsetX, e.offsetY, false)
 		redraw_draw_image()
 	})
@@ -15400,38 +15411,19 @@ function setup_draw_image()
 
 	reset_draw_image_settings(false, false)
 
-	$("#draw_image_background_color").spectrum(
-	{
-		preferredFormat: "rgb",
-		color: draw_image_bg_color,
-		appendTo: "#draw_image_main",
-		showInput: true,
-		showPalette: true,
-		showSelectionPalette: false,
-		palette: 
-		[
-			['rgba(0, 0, 0, 0)']
-		]
-	})
-
-	$("#draw_image_background_color").on('hide.spectrum', function(e, t)
-	{
-		draw_image_bg_color = t.toRgbString()
-		redraw_draw_image()
-	})
-
-	$("#draw_image_text_color").spectrum(
+	$("#draw_image_color").spectrum(
 	{
 		preferredFormat: "rgb",
 		color: draw_image_color,
 		appendTo: "#draw_image_main",
 		showInput: true
 	})
-
-	$("#draw_image_text_color").on('hide.spectrum', function(e, t)
+	
+	$("#draw_image_color").on('hide.spectrum', function(e, t)
 	{
 		draw_image_color = t.toRgbString()
-		redraw_draw_image()
+
+		$("#draw_image_bucket_icon").css("color", draw_image_color)
 	})
 
 	$("#draw_image_pencil_size").find('option').each(function()
@@ -15445,20 +15437,54 @@ function setup_draw_image()
 	$("#draw_image_pencil_size").change(function()
 	{
 		draw_image_pencil_size = $(this).val()
-		redraw_draw_image()
 	})
+
+	$("#draw_image_area").click(function(e)
+	{
+		if(draw_image_mode === "bucket")
+		{
+			var result = draw_image_bucket_fill(e.offsetX, e.offsetY)
+
+			if(result)
+			{
+				increase_draw_image_snapshot(result)
+			}
+		}
+	})
+
+	$("#draw_image_bucket_icon").css("color", draw_image_color)
+
+	set_draw_image_mode_input(draw_image_mode)
+
+	$('input[type=radio][name=radio_image_mode_pickers]').change(function() 
+	{
+		draw_image_mode = $(this).val()
+	})
+}
+
+function set_draw_image_mode_input(m)
+{
+	if(m === "pencil")
+	{
+		$("#draw_image_mode_select_pencil").prop("checked", true)
+	}
+
+	else if(m === "bucket")
+	{
+		$("#draw_image_mode_select_bucket").prop("checked", true)
+	}
+
+	draw_image_mode = m
 }
 
 function reset_draw_image_settings(set_pickers=true, redraw=false)
 {
-	draw_image_bg_color = "rgba(0, 0, 0, 0)"
 	draw_image_color = $("#draw_image_area").css("color")
 	draw_image_pencil_size = 2
 
 	if(set_pickers)
 	{
-		$("#draw_image_background_color").spectrum("set", draw_image_bg_color)
-		$("#draw_image_text_color").spectrum("set", draw_image_color)
+		$("#draw_image_color").spectrum("set", draw_image_color)
 
 		$("#draw_image_pencil_size").find('option').each(function()
 		{
@@ -15475,19 +15501,47 @@ function reset_draw_image_settings(set_pickers=true, redraw=false)
 	}
 }
 
-function clear_draw_image_state(redraw=true)
+function increase_draw_image_snapshot(data)
 {
-	draw_image_click_x = []
-	draw_image_click_y = []
-	draw_image_drag = []
-	draw_image_color_array = []
-	draw_image_pencil_size_array = []
-	draw_image_sectors = []
+	var level = draw_image_current_snapshot.level + 1
 
-	if(redraw)
+	draw_image_snapshots[`level_${level}`] = 
 	{
-		redraw_draw_image()
+		level: level,
+		data: data,
+		draw_image_click_x: [],
+		draw_image_click_y: [],
+		draw_image_drag: [],
+		draw_image_color_array: [],
+		draw_image_pencil_size_array: [],
+		draw_image_sectors: []
 	}
+
+	draw_image_current_snapshot = draw_image_snapshots[`level_${level}`]
+}
+
+function clear_draw_image_state()
+{
+	var context = draw_image_context
+
+	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+
+	draw_image_snapshots =
+	{
+		level_0:
+		{
+			level: 0,
+			data: context.getImageData(0, 0, context.canvas.width, context.canvas.height),
+			draw_image_click_x: [],
+			draw_image_click_y: [],
+			draw_image_drag: [],
+			draw_image_color_array: [],
+			draw_image_pencil_size_array: [],
+			draw_image_sectors: []
+		}
+	} 
+
+	draw_image_current_snapshot = draw_image_snapshots["level_0"]
 }
 
 function redraw_draw_image()
@@ -15495,22 +15549,22 @@ function redraw_draw_image()
 	canvas_redraw
 	({
 		context: draw_image_context, 
-		click_x: draw_image_click_x, 
-		click_y: draw_image_click_y, 
-		drag: draw_image_drag, 
-		bg_color: draw_image_bg_color, 
-		colors: draw_image_color_array,
-		sizes: draw_image_pencil_size_array
+		click_x: draw_image_current_snapshot.draw_image_click_x, 
+		click_y: draw_image_current_snapshot.draw_image_click_y, 
+		drag: draw_image_current_snapshot.draw_image_drag, 
+		colors: draw_image_current_snapshot.draw_image_color_array,
+		sizes: draw_image_current_snapshot.draw_image_pencil_size_array,
+		type: "draw_image"
 	})
 }
 
 function draw_image_add_click(x, y, dragging)
 {
-	draw_image_click_x.push(x)
-	draw_image_click_y.push(y)
-	draw_image_color_array.push(draw_image_color)
-	draw_image_pencil_size_array.push(draw_image_pencil_size)
-	draw_image_drag.push(dragging)
+	draw_image_current_snapshot.draw_image_click_x.push(x)
+	draw_image_current_snapshot.draw_image_click_y.push(y)
+	draw_image_current_snapshot.draw_image_color_array.push(draw_image_color)
+	draw_image_current_snapshot.draw_image_pencil_size_array.push(draw_image_pencil_size)
+	draw_image_current_snapshot.draw_image_drag.push(dragging)
 }
 
 function upload_draw_image()
@@ -15521,7 +15575,7 @@ function upload_draw_image()
 		return false
 	}
 
-	if(draw_image_click_x.length === 0)
+	if(!draw_image_current_snapshot.data && !draw_image_current_snapshot.draw_image_click_x.length)
 	{
 		return false
 	}
@@ -15546,18 +15600,180 @@ function reset_draw_image_func()
 
 function draw_image_undo()
 {
-	if(draw_image_sectors.length > 0)
+	if(draw_image_current_snapshot.draw_image_sectors.length > 0)
 	{
-		var sector = draw_image_sectors.pop()
+		var sector = draw_image_current_snapshot.draw_image_sectors.pop()
 
-		draw_image_click_x = draw_image_click_x.slice(0, sector)
-		draw_image_click_y = draw_image_click_y.slice(0, sector)
-		draw_image_drag = draw_image_drag.slice(0, sector)
-		draw_image_color_array = draw_image_color_array.slice(0, sector)
-		draw_image_pencil_size_array = draw_image_pencil_size_array.slice(0, sector)
-		
-		redraw_draw_image()
+		if(typeof sector === "number")
+		{
+			draw_image_current_snapshot.draw_image_click_x = draw_image_current_snapshot.draw_image_click_x.slice(0, sector)
+			draw_image_current_snapshot.draw_image_click_y = draw_image_current_snapshot.draw_image_click_y.slice(0, sector)
+			draw_image_current_snapshot.draw_image_drag = draw_image_current_snapshot.draw_image_drag.slice(0, sector)
+			draw_image_current_snapshot.draw_image_color_array = draw_image_current_snapshot.draw_image_color_array.slice(0, sector)
+			draw_image_current_snapshot.draw_image_pencil_size_array = draw_image_current_snapshot.draw_image_pencil_size_array.slice(0, sector)
+			
+			redraw_draw_image()
+		}
 	}
+
+	else
+	{
+		var l = draw_image_current_snapshot.level
+
+		if(l > 0)
+		{	
+			var level = l - 1
+
+			draw_image_current_snapshot = draw_image_snapshots[`level_${level}`]
+			
+			redraw_draw_image()
+		}
+	}
+}
+
+function clone_image_data_object(image_data)
+{
+	var copy = new ImageData
+	(
+		new Uint8ClampedArray(image_data.data),
+		image_data.width,
+		image_data.height
+	)
+
+	return copy	
+}
+
+function draw_image_bucket_fill(x, y)
+{
+	var context = draw_image_context
+	
+	var w = context.canvas.width 
+	
+	var h = context.canvas.height 
+
+	var image_data = context.getImageData(0, 0, w, h)
+
+	var data = image_data.data
+
+	var node = [y, x]
+
+	var target_color = get_canvas_node_color(data, node, w)
+
+	var replacement_color = colorlib.rgb_to_array(draw_image_color)
+
+	replacement_color.push(255)
+
+	if(canvas_node_color_is_equal(target_color, replacement_color))
+	{
+		return false
+	}
+
+	var q = []
+
+	data = set_canvas_node_color(data, node, replacement_color, w)
+
+	q.push(node)
+
+	while(q.length)
+	{
+		var n = q.shift()
+
+		if(n[1] > 0)
+		{
+			var nn = [n[0], n[1] - 1]
+
+			var nn_color = get_canvas_node_color(data, nn, w)
+
+			if(canvas_node_color_is_equal(nn_color, target_color))
+			{
+				data = set_canvas_node_color(data, nn, replacement_color, w)
+				q.push(nn)
+			}
+		}
+
+		if(n[1] < w - 1)
+		{
+			var nn = [n[0], n[1] + 1]
+			
+			var nn_color = get_canvas_node_color(data, nn, w)
+
+			if(canvas_node_color_is_equal(nn_color, target_color))
+			{
+				data = set_canvas_node_color(data, nn, replacement_color, w)
+				q.push(nn)
+			}
+		}
+
+		if(n[0] > 0)
+		{
+			var nn = [n[0] - 1, n[1]]
+			
+			var nn_color = get_canvas_node_color(data, nn, w)
+
+			if(canvas_node_color_is_equal(nn_color, target_color))
+			{
+				data = set_canvas_node_color(data, nn, replacement_color, w)
+				q.push(nn)
+			}
+		}
+
+		if(n[0] < h - 1)
+		{
+			var nn = [n[0] + 1, n[1]]
+			
+			var nn_color = get_canvas_node_color(data, nn, w)
+
+			if(canvas_node_color_is_equal(nn_color, target_color))
+			{
+				data = set_canvas_node_color(data, nn, replacement_color, w)
+				q.push(nn)
+			}
+		}
+	}
+
+	image_data.data = data
+
+	context.putImageData(image_data, 0, 0)
+
+	return image_data
+}
+
+function get_canvas_node_index(data, node, w)
+{
+	return ((node[0] * w) + node[1]) * 4
+}
+
+function get_canvas_node_color(data, node, w)
+{
+	var index = get_canvas_node_index(data, node, w)
+
+	return [data[index], data[index + 1], data[index + 2], data[index + 3]]
+}
+
+function set_canvas_node_color(data, node, values, w)
+{
+	var index = get_canvas_node_index(data, node, w)
+
+	data[index] = values[0]
+	data[index + 1] = values[1]
+	data[index + 2] = values[2]
+	data[index + 3] = values[3]
+
+	return data
+}
+
+function canvas_node_color_is_equal(a1, a2)
+{
+	var diff = 10
+	var diff2 = 20
+
+	var c1 = Math.abs(a1[0] - a2[0]) <= diff
+	var c2 = Math.abs(a1[1] - a2[1]) <= diff
+	var c3 = Math.abs(a1[2] - a2[2]) <= diff
+
+	var alpha = Math.abs(a1[3] - a2[3]) <= diff2
+
+	return (c1 && c2 && c3 && alpha)
 }
 
 function setup_mouse_events()

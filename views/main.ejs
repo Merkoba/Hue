@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1324"></script>
+		<script src="/static/js/base.js?ver=1326"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?ver=376"/>
 
@@ -1167,14 +1167,19 @@
 			<div id='draw_image_main'>
 
 				<span class='unselectable'>
-					<div class='inline'>Background Color&nbsp;</div>
-					<input id='draw_image_background_color'>
+					
+					<i class='fa fa-pencil' onclick='set_draw_image_mode_input("pencil")'></i>
+					<input type="radio" id="draw_image_mode_select_pencil" name="radio_image_mode_pickers" value="pencil">
+					
+					<div class='hspacer2 inline'></div>
+
+					<i id='draw_image_bucket_icon' class='fa fa-stop' onclick='set_draw_image_mode_input("bucket")'></i>
+					<input type="radio" id="draw_image_mode_select_bucket" name="radio_image_mode_pickers" value="bucket">
 					
 					<div class='hspacer2 inline'></div>
 					<div class='hspacer2 inline'></div>
 					
-					<div class='inline'>Pencil Color&nbsp;</div>
-					<input id='draw_image_text_color'>
+					<input id='draw_image_color'>
 					
 					<div class='hspacer2 inline'></div>
 					<div class='hspacer2 inline'></div>
@@ -1194,6 +1199,7 @@
 					</select>
 					
 					<div class='spacer3'></div>
+
 				</span>
 
 				<canvas id='draw_image_area' class='draw_canvas' width='800px' height='600px' tabindex=1></canvas>
