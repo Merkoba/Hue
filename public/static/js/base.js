@@ -15409,7 +15409,9 @@ function setup_draw_image()
 		draw_image_just_entered = true
 	})
 
-	reset_draw_image_settings(false, false)
+	draw_image_color = $("#draw_image_area").css("color")
+	
+	draw_image_pencil_size = 2
 
 	$("#draw_image_color").spectrum(
 	{
@@ -15475,30 +15477,6 @@ function set_draw_image_mode_input(m)
 	}
 
 	draw_image_mode = m
-}
-
-function reset_draw_image_settings(set_pickers=true, redraw=false)
-{
-	draw_image_color = $("#draw_image_area").css("color")
-	draw_image_pencil_size = 2
-
-	if(set_pickers)
-	{
-		$("#draw_image_color").spectrum("set", draw_image_color)
-
-		$("#draw_image_pencil_size").find('option').each(function()
-		{
-			if($(this).val() == draw_image_pencil_size)
-			{
-				$(this).prop('selected', true)
-			}
-		})
-	}
-
-	if(redraw)
-	{
-		redraw_draw_image()
-	}
 }
 
 function increase_draw_image_snapshot(data)
@@ -15591,11 +15569,6 @@ function upload_draw_image()
 function clear_draw_image_func()
 {
 	clear_draw_image_state()
-}
-
-function reset_draw_image_func()
-{
-	reset_draw_image_settings(true, true)	
 }
 
 function draw_image_undo()
