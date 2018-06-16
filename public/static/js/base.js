@@ -15367,7 +15367,13 @@ function setup_draw_image()
 		preferredFormat: "rgb",
 		color: draw_image_bg_color,
 		appendTo: "#draw_image_main",
-		showInput: true
+		showInput: true,
+		showPalette: true,
+		showSelectionPalette: false,
+		palette: 
+		[
+			['rgba(0, 0, 0, 0)']
+		]
 	})
 
 	$("#draw_image_background_color").on('hide.spectrum', function(e, t)
