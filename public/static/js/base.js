@@ -15304,10 +15304,16 @@ function canvas_redraw(args={})
 		bg_color: false,
 		colors: false,
 		sizes: false,
+		sector_index: false,
 		type: false
 	}
 
 	fill_defaults(args, def_args)
+
+	if(args.sector_index === false)
+	{
+		args.sector_index = args.click_x.length
+	}
 
 	args.context.clearRect(0, 0, args.context.canvas.width, args.context.canvas.height)
 	
@@ -15327,7 +15333,7 @@ function canvas_redraw(args={})
 		args.context.fillRect(0, 0, args.context.canvas.width, args.context.canvas.height)
 	}
 
-	for(var i=0; i<args.click_x.length; i++) 
+	for(var i=0; i<args.sector_index; i++) 
 	{
 		args.context.beginPath()
 
@@ -15404,6 +15410,11 @@ function draw_image_reset_settings()
 	})
 }
 
+function draw_image_add_sector()
+{
+	draw_image_current_snapshot.sectors.push(draw_image_current_snapshot.click_x.length)
+}
+
 function setup_draw_image()
 {
 	draw_image_context = $("#draw_image_area")[0].getContext("2d")
@@ -15421,8 +15432,7 @@ function setup_draw_image()
 
 		draw_image_just_entered = false
 
-		draw_image_current_snapshot.draw_image_sectors.push(draw_image_current_snapshot.draw_image_click_x.length)
-
+		draw_image_add_sector()
 		draw_image_add_click(e.offsetX, e.offsetY, false)
 		redraw_draw_image()
 	})
@@ -15489,6 +15499,7 @@ function setup_draw_image()
 
 			if(result)
 			{
+				draw_image_check_redo()
 				increase_draw_image_snapshot(result)
 			}
 		}
@@ -15522,12 +15533,13 @@ function increase_draw_image_snapshot(data)
 	{
 		level: level,
 		data: data,
-		draw_image_click_x: [],
-		draw_image_click_y: [],
-		draw_image_drag: [],
-		draw_image_color_array: [],
-		draw_image_pencil_size_array: [],
-		draw_image_sectors: []
+		click_x: [],
+		click_y: [],
+		drag: [],
+		color_array: [],
+		size_array: [],
+		sectors: [],
+		sector_index: 0
 	}
 
 	draw_image_current_snapshot = draw_image_snapshots[`level_${level}`]
@@ -15547,12 +15559,13 @@ function clear_draw_image_state()
 		{
 			level: 0,
 			data: context.getImageData(0, 0, context.canvas.width, context.canvas.height),
-			draw_image_click_x: [],
-			draw_image_click_y: [],
-			draw_image_drag: [],
-			draw_image_color_array: [],
-			draw_image_pencil_size_array: [],
-			draw_image_sectors: []
+			click_x: [],
+			click_y: [],
+			drag: [],
+			color_array: [],
+			size_array: [],
+			sectors: [],
+			sector_index: 0
 		}
 	} 
 
@@ -15564,22 +15577,81 @@ function redraw_draw_image()
 	canvas_redraw
 	({
 		context: draw_image_context, 
-		click_x: draw_image_current_snapshot.draw_image_click_x, 
-		click_y: draw_image_current_snapshot.draw_image_click_y, 
-		drag: draw_image_current_snapshot.draw_image_drag, 
-		colors: draw_image_current_snapshot.draw_image_color_array,
-		sizes: draw_image_current_snapshot.draw_image_pencil_size_array,
+		click_x: draw_image_current_snapshot.click_x, 
+		click_y: draw_image_current_snapshot.click_y, 
+		drag: draw_image_current_snapshot.drag, 
+		colors: draw_image_current_snapshot.color_array,
+		sizes: draw_image_current_snapshot.size_array,
+		sector_index: draw_image_current_snapshot.sector_index,
 		type: "draw_image"
 	})
 }
 
+function draw_image_clean_redo()
+{
+	var i = draw_image_current_snapshot.sector_index
+
+	draw_image_current_snapshot.click_x = draw_image_current_snapshot.click_x.slice(0, i)
+	draw_image_current_snapshot.click_y = draw_image_current_snapshot.click_y.slice(0, i)
+	draw_image_current_snapshot.color_array = draw_image_current_snapshot.color_array.slice(0, i)
+	draw_image_current_snapshot.size_array = draw_image_current_snapshot.size_array.slice(0, i)
+	draw_image_current_snapshot.drag = draw_image_current_snapshot.drag.slice(0, i)
+
+	var new_sectors = []
+
+	for(var sector of draw_image_current_snapshot.sectors)
+	{
+		if(sector <= i)
+		{
+			new_sectors.push(sector)
+		}
+	}
+
+	draw_image_current_snapshot.sectors = new_sectors
+
+	for(var level in draw_image_snapshots)
+	{
+		if(draw_image_snapshots[level].level > draw_image_current_snapshot.level)
+		{
+			delete draw_image_snapshots[level]
+		}
+	}
+}
+
+function draw_image_has_levels_above()
+{
+	var level = draw_image_current_snapshot.level
+
+	for(var key in draw_image_snapshots)
+	{
+		if(draw_image_snapshots[key].level > level)
+		{
+			return true
+		}
+	}
+
+	return false
+}
+
+function draw_image_check_redo()
+{
+	if(draw_image_current_snapshot.click_x.length !== draw_image_current_snapshot.sector_index || draw_image_has_levels_above())
+	{
+		draw_image_clean_redo()
+	}
+}
+
 function draw_image_add_click(x, y, dragging)
 {
-	draw_image_current_snapshot.draw_image_click_x.push(x)
-	draw_image_current_snapshot.draw_image_click_y.push(y)
-	draw_image_current_snapshot.draw_image_color_array.push(draw_image_color)
-	draw_image_current_snapshot.draw_image_pencil_size_array.push(draw_image_pencil_size)
-	draw_image_current_snapshot.draw_image_drag.push(dragging)
+	draw_image_check_redo()
+
+	draw_image_current_snapshot.click_x.push(x)
+	draw_image_current_snapshot.click_y.push(y)
+	draw_image_current_snapshot.color_array.push(draw_image_color)
+	draw_image_current_snapshot.size_array.push(draw_image_pencil_size)
+	draw_image_current_snapshot.drag.push(dragging)
+
+	draw_image_current_snapshot.sector_index = draw_image_current_snapshot.click_x.length
 }
 
 function upload_draw_image()
@@ -15590,7 +15662,7 @@ function upload_draw_image()
 		return false
 	}
 
-	if(!draw_image_current_snapshot.data && !draw_image_current_snapshot.draw_image_click_x.length)
+	if(!draw_image_current_snapshot.data && !draw_image_current_snapshot.click_x.length)
 	{
 		return false
 	}
@@ -15610,19 +15682,16 @@ function clear_draw_image_func()
 
 function draw_image_undo()
 {
-	if(draw_image_current_snapshot.draw_image_sectors.length > 0)
+	if(draw_image_current_snapshot.sector_index > 0)
 	{
-		var sector = draw_image_current_snapshot.draw_image_sectors.pop()
-
-		if(typeof sector === "number")
+		for(var sector of draw_image_current_snapshot.sectors.slice(0).reverse())
 		{
-			draw_image_current_snapshot.draw_image_click_x = draw_image_current_snapshot.draw_image_click_x.slice(0, sector)
-			draw_image_current_snapshot.draw_image_click_y = draw_image_current_snapshot.draw_image_click_y.slice(0, sector)
-			draw_image_current_snapshot.draw_image_drag = draw_image_current_snapshot.draw_image_drag.slice(0, sector)
-			draw_image_current_snapshot.draw_image_color_array = draw_image_current_snapshot.draw_image_color_array.slice(0, sector)
-			draw_image_current_snapshot.draw_image_pencil_size_array = draw_image_current_snapshot.draw_image_pencil_size_array.slice(0, sector)
-			
-			redraw_draw_image()
+			if(sector < draw_image_current_snapshot.sector_index)
+			{
+				draw_image_current_snapshot.sector_index = sector
+				redraw_draw_image()
+				break
+			}
 		}
 	}
 
@@ -15634,7 +15703,55 @@ function draw_image_undo()
 		{	
 			var level = l - 1
 
+			draw_image_current_snapshot.sector_index = 0
 			draw_image_current_snapshot = draw_image_snapshots[`level_${level}`]
+			draw_image_current_snapshot.sector_index = draw_image_current_snapshot.click_x.length
+
+			redraw_draw_image()
+		}
+	}
+}
+
+function draw_image_redo()
+{
+	if(draw_image_current_snapshot.sector_index < draw_image_current_snapshot.click_x.length)
+	{
+		var found = false
+		
+		var old_index = draw_image_current_snapshot.sector_index
+
+		for(var sector of draw_image_current_snapshot.sectors)
+		{
+			if(sector > draw_image_current_snapshot.sector_index)
+			{
+				draw_image_current_snapshot.sector_index = sector
+				redraw_draw_image()
+				found = true
+				break
+			}
+		}
+
+		if(!found)
+		{
+			if(draw_image_current_snapshot.sector_index !== draw_image_current_snapshot.click_x.length)
+			{
+				draw_image_current_snapshot.sector_index = draw_image_current_snapshot.click_x.length
+				redraw_draw_image()
+			}
+		}
+	}
+
+	else
+	{
+		var l = draw_image_current_snapshot.level
+
+		var level = l + 1
+
+		if(draw_image_snapshots[`level_${level}`] !== undefined)
+		{
+			draw_image_current_snapshot.sector_index = draw_image_current_snapshot.click_x.length
+			draw_image_current_snapshot = draw_image_snapshots[`level_${level}`]
+			draw_image_current_snapshot.sector_index = 0
 			
 			redraw_draw_image()
 		}
