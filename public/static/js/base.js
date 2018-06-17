@@ -9242,6 +9242,7 @@ function start_msg()
 			{
 				after_modal_close(instance)
 				clear_draw_image_state()
+				draw_image_reset_settings()
 			}
 		})
 	)
@@ -15384,6 +15385,25 @@ function draw_image_scale_fix(n)
 	return parseInt(Math.round(n* draw_image_scale))
 }
 
+function draw_image_reset_settings()
+{
+	draw_image_color = "rgb(51, 51, 51)"
+	
+	draw_image_pencil_size = 4
+
+	set_draw_image_mode_input("pencil")
+
+	$("#draw_image_color").spectrum("set", draw_image_color)
+
+	$("#draw_image_pencil_size").find('option').each(function()
+	{
+		if($(this).val() == draw_image_pencil_size)
+		{
+			$(this).prop('selected', true)
+		}
+	})
+}
+
 function setup_draw_image()
 {
 	draw_image_context = $("#draw_image_area")[0].getContext("2d")
@@ -15422,10 +15442,6 @@ function setup_draw_image()
 	{
 		draw_image_just_entered = true
 	})
-
-	draw_image_color = "rgb(51, 51, 51)"
-	
-	draw_image_pencil_size = 4
 
 	$("#draw_image_color").spectrum(
 	{
@@ -15478,14 +15494,7 @@ function setup_draw_image()
 		}
 	})
 
-	$("#draw_image_bucket_icon").css("color", draw_image_color)
-
-	set_draw_image_mode_input(draw_image_mode)
-
-	$('input[type=radio][name=radio_image_mode_pickers]').change(function() 
-	{
-		draw_image_mode = $(this).val()
-	})
+	draw_image_reset_settings()
 }
 
 function set_draw_image_mode_input(m)
