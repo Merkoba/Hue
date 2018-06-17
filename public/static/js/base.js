@@ -15378,9 +15378,16 @@ function open_draw_image()
 	msg_draw_image.show()
 }
 
+function draw_image_scale_fix(n)
+{
+	return parseInt(Math.round(n* 2.4))
+}
+
 function setup_draw_image()
 {
 	draw_image_context = $("#draw_image_area")[0].getContext("2d")
+
+	draw_image_context.scale(2.4, 2.4)
 	
 	clear_draw_image_state()
 
@@ -15394,7 +15401,7 @@ function setup_draw_image()
 		draw_image_just_entered = false
 
 		draw_image_current_snapshot.draw_image_sectors.push(draw_image_current_snapshot.draw_image_click_x.length)
-		
+
 		draw_image_add_click(e.offsetX, e.offsetY, false)
 		redraw_draw_image()
 	})
@@ -15461,7 +15468,7 @@ function setup_draw_image()
 	{
 		if(draw_image_mode === "bucket")
 		{
-			var result = draw_image_bucket_fill(e.offsetX, e.offsetY)
+			var result = draw_image_bucket_fill(draw_image_scale_fix(e.offsetX), draw_image_scale_fix(e.offsetY))
 
 			if(result)
 			{

@@ -1232,6 +1232,8 @@ input[type=text], textarea
 #draw_image_area
 {
 	cursor: crosshair;
+	width: 800px;
+	height: 600px;
 }
 
 .draw_canvas
