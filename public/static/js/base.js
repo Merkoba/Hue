@@ -216,6 +216,7 @@ var draw_message_just_entered = false
 var draw_image_just_entered = false
 var draw_image_snapshots
 var draw_image_mode = "pencil"
+var draw_image_scale = 2.4
 var mouse_is_down = false
 
 function init()
@@ -15380,14 +15381,14 @@ function open_draw_image()
 
 function draw_image_scale_fix(n)
 {
-	return parseInt(Math.round(n* 2.4))
+	return parseInt(Math.round(n* draw_image_scale))
 }
 
 function setup_draw_image()
 {
 	draw_image_context = $("#draw_image_area")[0].getContext("2d")
 
-	draw_image_context.scale(2.4, 2.4)
+	draw_image_context.scale(draw_image_scale, draw_image_scale)
 	
 	clear_draw_image_state()
 
