@@ -1667,3 +1667,12 @@ input[type=text], textarea
 	from {transform: scale(0)}
 	to {transform: scale(1)}
 }
+
+.modal_icon_container
+{
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	height: 2rem;
+	width: 2rem;
+}

@@ -269,6 +269,7 @@ function init()
 	prepare_media_settings()
 	setup_message_area()
 	setup_mouse_events()
+	setup_draw_image()
 
 	start_socket()
 }
@@ -780,7 +781,6 @@ function start_socket()
 			get_input_history()
 			announce_image_change(data, false, false)
 			show_joined()
-			setup_draw_image()
 
 			setup_image(data)
 			setup_tv(data)
@@ -1791,6 +1791,12 @@ function apply_theme()
 	}
 
 	.draw_canvas
+	{
+		background-color: ${background_color_a_2} !important;
+		color: ${font_color} !important;
+	}
+
+	.modal_icon_selected
 	{
 		background-color: ${background_color_a_2} !important;
 		color: ${font_color} !important;
@@ -15409,28 +15415,38 @@ function setup_draw_image()
 		draw_image_just_entered = true
 	})
 
-	draw_image_color = $("#draw_image_area").css("color")
+	draw_image_color = "rgb(51, 51, 51)"
 	
-	draw_image_pencil_size = 2
+	draw_image_pencil_size = 4
 
 	$("#draw_image_color").spectrum(
 	{
 		preferredFormat: "rgb",
 		color: draw_image_color,
 		appendTo: "#draw_image_main",
-		showInput: true
+		showInput: true,
+		showPalette: true,
+		palette: 
+		[
+			["rgba(0, 0, 0, 0"], 
+			["black"],
+			["white"],
+			["red"],
+			["green"],
+			["blue"],
+			["yellow"]
+		],
+		showSelectionPalette: false,
 	})
 	
 	$("#draw_image_color").on('hide.spectrum', function(e, t)
 	{
 		draw_image_color = t.toRgbString()
-
-		$("#draw_image_bucket_icon").css("color", draw_image_color)
 	})
 
 	$("#draw_image_pencil_size").find('option').each(function()
 	{
-		if($(this).val() == 2)
+		if($(this).val() == draw_image_pencil_size)
 		{
 			$(this).prop('selected', true)
 		}
@@ -15468,12 +15484,14 @@ function set_draw_image_mode_input(m)
 {
 	if(m === "pencil")
 	{
-		$("#draw_image_mode_select_pencil").prop("checked", true)
+		$("#draw_image_mode_select_pencil").addClass("modal_icon_selected")
+		$("#draw_image_mode_select_bucket").removeClass("modal_icon_selected")
 	}
 
 	else if(m === "bucket")
 	{
-		$("#draw_image_mode_select_bucket").prop("checked", true)
+		$("#draw_image_mode_select_bucket").addClass("modal_icon_selected")
+		$("#draw_image_mode_select_pencil").removeClass("modal_icon_selected")
 	}
 
 	draw_image_mode = m
@@ -15502,7 +15520,9 @@ function clear_draw_image_state()
 {
 	var context = draw_image_context
 
-	context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+	context.fillStyle = "rgb(255, 255, 255)";
+	 		
+	context.fillRect(0, 0, context.canvas.width, context.canvas.height)
 
 	draw_image_snapshots =
 	{
@@ -15738,13 +15758,12 @@ function set_canvas_node_color(data, node, values, w)
 function canvas_node_color_is_equal(a1, a2)
 {
 	var diff = 10
-	var diff2 = 20
 
 	var c1 = Math.abs(a1[0] - a2[0]) <= diff
 	var c2 = Math.abs(a1[1] - a2[1]) <= diff
 	var c3 = Math.abs(a1[2] - a2[2]) <= diff
 
-	var alpha = Math.abs(a1[3] - a2[3]) <= diff2
+	var alpha = Math.abs(a1[3] - a2[3]) <= diff
 
 	return (c1 && c2 && c3 && alpha)
 }

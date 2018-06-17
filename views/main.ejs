@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1327"></script>
+		<script src="/static/js/base.js?ver=1329"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?ver=376"/>
+		<link rel="stylesheet" href="/static/css/style.css?ver=377"/>
 
 		<script>
 
@@ -1168,13 +1168,15 @@
 
 				<span class='unselectable'>
 					
-					<i class='fa fa-pencil' onclick='set_draw_image_mode_input("pencil")'></i>
-					<input type="radio" id="draw_image_mode_select_pencil" name="radio_image_mode_pickers" value="pencil">
+					<div id='draw_image_mode_select_pencil' class='pointer action modal_icon_container' onclick='set_draw_image_mode_input("pencil")'>
+						<i class='fa fa-pencil'></i>
+					</div>
 					
-					<div class='hspacer2 inline'></div>
+					<div class='hspacer3 inline'></div>
 
-					<i id='draw_image_bucket_icon' class='fa fa-stop' onclick='set_draw_image_mode_input("bucket")'></i>
-					<input type="radio" id="draw_image_mode_select_bucket" name="radio_image_mode_pickers" value="bucket">
+					<div id='draw_image_mode_select_bucket' class='pointer action modal_icon_container' onclick='set_draw_image_mode_input("bucket")'>
+						<i class='fa fa-adjust'></i>
+					</div>
 					
 					<div class='hspacer2 inline'></div>
 					<div class='hspacer2 inline'></div>
@@ -1210,11 +1212,11 @@
 
 					<div class='bigger pointer action inline' onclick='draw_image_undo()'>Undo</div>
 					
-					<span>&nbsp;|&nbsp;</span>
+					<span class='hspacer1'>|</span>
 
-					<div class='bigger pointer action inline' onclick='needs_confirm("clear_draw_image_func")'>Clear Drawing</div>
+					<div class='bigger pointer action inline' onclick='needs_confirm("clear_draw_image_func")'>Clear</div>
 				
-					<span>&nbsp;|&nbsp;</span>
+					<span class='hspacer1'>|</span>
 
 					<div class='bigger pointer action inline' onclick='upload_draw_image()' tabindex=3>Upload</div>
 				</span>
