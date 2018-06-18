@@ -1675,6 +1675,10 @@ input[type=text], textarea
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	height: 2rem;
-	width: 2rem;
+	padding: 0.5rem;
+}
+
+#draw_image_pencil_size
+{
+	height: 32px;
 }

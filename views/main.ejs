@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1333"></script>
+		<script src="/static/js/base.js?ver=1337"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?ver=378"/>
+		<link rel="stylesheet" href="/static/css/style.css?ver=380"/>
 
 		<script>
 
@@ -1170,35 +1170,32 @@
 					
 					<div id='draw_image_mode_select_pencil' class='pointer action modal_icon_container' onclick='set_draw_image_mode_input("pencil")'>
 						<i class='fa fa-pencil'></i>
+						<div class='hspacer3 inline'></div>
+						<input id='draw_image_pencil_color'>
+						
+						<div class='hspacer3 inline'></div>
+
+						<select id='draw_image_pencil_size' class='modal_select'>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+						</select>
 					</div>
 					
-					<div class='hspacer3 inline'></div>
+					<div class='hspacer2 inline'></div>
 
 					<div id='draw_image_mode_select_bucket' class='pointer action modal_icon_container' onclick='set_draw_image_mode_input("bucket")'>
 						<i class='fa fa-adjust'></i>
+						<div class='hspacer3 inline'></div>
+						<input id='draw_image_bucket_color'>
 					</div>
-					
-					<div class='hspacer2 inline'></div>
-					<div class='hspacer2 inline'></div>
-					
-					<input id='draw_image_color'>
-					
-					<div class='hspacer2 inline'></div>
-					<div class='hspacer2 inline'></div>
-
-					<div class='inline'>Pencil Size&nbsp;</div>
-					<select id='draw_image_pencil_size' class='modal_select'>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
-						<option value="7">7</option>
-						<option value="8">8</option>
-						<option value="9">9</option>
-						<option value="10">10</option>
-					</select>
 					
 					<div class='spacer3'></div>
 

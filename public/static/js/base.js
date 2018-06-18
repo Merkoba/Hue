@@ -217,6 +217,7 @@ var draw_image_just_entered = false
 var draw_image_snapshots
 var draw_image_mode = "pencil"
 var draw_image_scale = 2.4
+var draw_image_num_strokes_save = 200
 var mouse_is_down = false
 
 function init()
@@ -15393,13 +15394,17 @@ function draw_image_scale_fix(n)
 
 function draw_image_reset_settings()
 {
-	draw_image_color = "rgb(51, 51, 51)"
+	draw_image_pencil_color = "rgb(51, 51, 51)"
+	
+	draw_image_bucket_color = "rgb(72, 152, 183)"
 	
 	draw_image_pencil_size = 4
 
 	set_draw_image_mode_input("pencil")
 
-	$("#draw_image_color").spectrum("set", draw_image_color)
+	$("#draw_image_pencil_color").spectrum("set", draw_image_pencil_color)
+	
+	$("#draw_image_bucket_color").spectrum("set", draw_image_bucket_color)
 
 	$("#draw_image_pencil_size").find('option').each(function()
 	{
@@ -15432,6 +15437,7 @@ function setup_draw_image()
 
 		draw_image_just_entered = false
 
+		draw_image_check_increase_snapshot()
 		draw_image_add_sector()
 		draw_image_add_click(e.offsetX, e.offsetY, false)
 		redraw_draw_image()
@@ -15453,10 +15459,10 @@ function setup_draw_image()
 		draw_image_just_entered = true
 	})
 
-	$("#draw_image_color").spectrum(
+	$("#draw_image_pencil_color").spectrum(
 	{
 		preferredFormat: "rgb",
-		color: draw_image_color,
+		color: draw_image_pencil_color,
 		appendTo: "#draw_image_main",
 		showInput: true,
 		showPalette: true,
@@ -15473,9 +15479,34 @@ function setup_draw_image()
 		showSelectionPalette: false,
 	})
 	
-	$("#draw_image_color").on('hide.spectrum', function(e, t)
+	$("#draw_image_pencil_color").on('hide.spectrum', function(e, t)
 	{
-		draw_image_color = t.toRgbString()
+		draw_image_pencil_color = t.toRgbString()
+	})
+
+	$("#draw_image_bucket_color").spectrum(
+	{
+		preferredFormat: "rgb",
+		color: draw_image_bucket_color,
+		appendTo: "#draw_image_main",
+		showInput: true,
+		showPalette: true,
+		palette: 
+		[
+			["rgba(0, 0, 0, 0"], 
+			["black"],
+			["white"],
+			["red"],
+			["green"],
+			["blue"],
+			["yellow"]
+		],
+		showSelectionPalette: false,
+	})
+	
+	$("#draw_image_bucket_color").on('hide.spectrum', function(e, t)
+	{
+		draw_image_bucket_color = t.toRgbString()
 	})
 
 	$("#draw_image_pencil_size").find('option').each(function()
@@ -15514,12 +15545,14 @@ function set_draw_image_mode_input(m)
 	{
 		$("#draw_image_mode_select_pencil").addClass("modal_icon_selected")
 		$("#draw_image_mode_select_bucket").removeClass("modal_icon_selected")
+		$("#draw_image_bucket_color").addClass("nopointer")
 	}
 
 	else if(m === "bucket")
 	{
 		$("#draw_image_mode_select_bucket").addClass("modal_icon_selected")
 		$("#draw_image_mode_select_pencil").removeClass("modal_icon_selected")
+		$("#draw_image_pencil_color").addClass("nopointer")
 	}
 
 	draw_image_mode = m
@@ -15558,7 +15591,7 @@ function clear_draw_image_state()
 		level_0:
 		{
 			level: 0,
-			data: context.getImageData(0, 0, context.canvas.width, context.canvas.height),
+			data: draw_image_get_image_data(),
 			click_x: [],
 			click_y: [],
 			drag: [],
@@ -15587,10 +15620,8 @@ function redraw_draw_image()
 	})
 }
 
-function draw_image_clean_redo()
+function draw_image_clean_redo(i)
 {
-	var i = draw_image_current_snapshot.sector_index
-
 	draw_image_current_snapshot.click_x = draw_image_current_snapshot.click_x.slice(0, i)
 	draw_image_current_snapshot.click_y = draw_image_current_snapshot.click_y.slice(0, i)
 	draw_image_current_snapshot.color_array = draw_image_current_snapshot.color_array.slice(0, i)
@@ -15637,7 +15668,41 @@ function draw_image_check_redo()
 {
 	if(draw_image_current_snapshot.click_x.length !== draw_image_current_snapshot.sector_index || draw_image_has_levels_above())
 	{
-		draw_image_clean_redo()
+		draw_image_clean_redo(draw_image_current_snapshot.sector_index)
+	}
+}
+
+function draw_image_get_image_data()
+{
+	var context = draw_image_context
+	var w = context.canvas.width
+	var h = context.canvas.height
+	var data = draw_image_context.getImageData(0, 0, w, h)
+
+	return data
+}
+
+function draw_image_pop_arrays()
+{
+	draw_image_current_snapshot.click_x.pop()
+	draw_image_current_snapshot.click_y.pop()
+	draw_image_current_snapshot.color_array.pop()
+	draw_image_current_snapshot.size_array.pop()
+	draw_image_current_snapshot.drag.pop()
+
+	draw_image_current_snapshot.sector_index = draw_image_current_snapshot.click_x.length
+}
+
+function draw_image_check_increase_snapshot()
+{
+	if(draw_image_current_snapshot.click_x.length === draw_image_current_snapshot.sector_index && !draw_image_has_levels_above())
+	{
+		if(draw_image_current_snapshot.click_x.length >= draw_image_num_strokes_save)
+		{
+			var sector = draw_image_current_snapshot.sectors[draw_image_current_snapshot.sectors.length - 1]
+			draw_image_clean_redo(sector)
+			increase_draw_image_snapshot(draw_image_get_image_data())
+		}
 	}
 }
 
@@ -15647,7 +15712,7 @@ function draw_image_add_click(x, y, dragging)
 
 	draw_image_current_snapshot.click_x.push(x)
 	draw_image_current_snapshot.click_y.push(y)
-	draw_image_current_snapshot.color_array.push(draw_image_color)
+	draw_image_current_snapshot.color_array.push(draw_image_pencil_color)
 	draw_image_current_snapshot.size_array.push(draw_image_pencil_size)
 	draw_image_current_snapshot.drag.push(dragging)
 
@@ -15778,7 +15843,7 @@ function draw_image_bucket_fill(x, y)
 	
 	var h = context.canvas.height 
 
-	var image_data = context.getImageData(0, 0, w, h)
+	var image_data = draw_image_get_image_data()
 
 	var data = image_data.data
 
@@ -15786,7 +15851,7 @@ function draw_image_bucket_fill(x, y)
 
 	var target_color = get_canvas_node_color(data, node, w)
 
-	var replacement_color = colorlib.rgb_to_array(draw_image_color)
+	var replacement_color = colorlib.rgb_to_array(draw_image_bucket_color)
 
 	replacement_color.push(255)
 
