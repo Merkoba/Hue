@@ -11211,7 +11211,8 @@ function start_titles()
 			arrow: true,
 			performance: true,
 			size: 'regular',
-			arrowSize: 'small'
+			arrowSize: 'small',
+			zIndex: 99999999999
 		})
 	})
 }
