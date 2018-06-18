@@ -1834,20 +1834,13 @@ function userjoin(data)
 	{
 		if(get_setting("show_joins") && check_permission(data.role, "chat"))
 		{
-			var prof_image = get_user_by_username(data.username).profile_image
-
-			var f = function()
-			{
-				show_profile(data.username, prof_image)
-			}
-
 			chat_announce(
 			{
 				brk: "<i class='icon2 fa fa-user-plus'></i>",
 				msg: `${data.username} has joined`,
 				save: true,
-				onclick: f,
-				uname: data.username
+				uname: data.username,
+				open_profile: true
 			})
 
 			if(data.username !== username)
