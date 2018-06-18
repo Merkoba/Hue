@@ -207,6 +207,7 @@ var mouse_over_reactions = false
 var reactions_hover_delay = 800
 var user_functions = [1, 2, 3]
 var screen_locked = false
+var mouse_is_down = false
 var draw_message_context
 var draw_message_click_x
 var draw_message_click_y
@@ -218,7 +219,7 @@ var draw_image_snapshots
 var draw_image_mode = "pencil"
 var draw_image_scale = 2.4
 var draw_image_num_strokes_save = 200
-var mouse_is_down = false
+var draw_image_open = false
 
 function init()
 {
@@ -3743,6 +3744,14 @@ function activate_key_detection()
 					}
 
 					return
+				}
+			}
+
+			if(draw_image_open)
+			{
+				if(e.key === " ")
+				{
+					draw_image_change_mode()
 				}
 			}
 
@@ -9234,6 +9243,7 @@ function start_msg()
 			{
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
+				draw_image_open = true
 			},
 			after_set: function(instance)
 			{
@@ -9244,6 +9254,7 @@ function start_msg()
 				after_modal_close(instance)
 				clear_draw_image_state()
 				draw_image_reset_settings()
+				draw_image_open = false
 			}
 		})
 	)
@@ -15991,4 +16002,17 @@ function setup_mouse_events()
 	{
 		mouse_is_down = false
 	})
+}
+
+function draw_image_change_mode()
+{
+	if(draw_image_mode === "pencil")
+	{
+		set_draw_image_mode_input("bucket")
+	}
+
+	else if(draw_image_mode === "bucket")
+	{
+		set_draw_image_mode_input("pencil")
+	}
 }
