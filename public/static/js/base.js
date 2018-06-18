@@ -15477,6 +15477,10 @@ function setup_draw_image()
 			["yellow"]
 		],
 		showSelectionPalette: false,
+		show: function()
+		{
+			set_draw_image_mode_input("pencil")
+		}
 	})
 	
 	$("#draw_image_pencil_color").on('hide.spectrum', function(e, t)
@@ -15502,6 +15506,10 @@ function setup_draw_image()
 			["yellow"]
 		],
 		showSelectionPalette: false,
+		show: function()
+		{
+			set_draw_image_mode_input("bucket")
+		}
 	})
 	
 	$("#draw_image_bucket_color").on('hide.spectrum', function(e, t)
