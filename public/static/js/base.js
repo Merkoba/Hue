@@ -3753,6 +3753,23 @@ function activate_key_detection()
 				{
 					draw_image_change_mode()
 				}
+
+				if(e.key === "z")
+				{
+					if(e.ctrlKey)
+					{
+
+						draw_image_undo()
+					}
+				}
+
+				if(e.key === "y")
+				{
+					if(e.ctrlKey)
+					{
+						draw_image_redo()
+					}
+				}
 			}
 
 			return
