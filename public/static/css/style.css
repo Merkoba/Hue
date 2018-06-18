@@ -1682,3 +1682,8 @@ input[type=text], textarea
 {
 	height: 33px;
 }
+
+.modal_icon_selected
+{
+	box-shadow: 0 0 2px currentColor
+}
