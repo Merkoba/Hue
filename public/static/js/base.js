@@ -902,12 +902,20 @@ function start_socket()
 
 		else if(data.type === 'announce_ban')
 		{
-			public_feedback(`${data.username1} banned ${data.username2}`)
+			public_feedback(`${data.username1} banned ${data.username2}`,
+			{
+				uname: data.username1,
+				open_profile: true
+			})
 		}
 
 		else if(data.type === 'announce_unban')
 		{
-			public_feedback(`${data.username1} unbanned ${data.username2}`)
+			public_feedback(`${data.username1} unbanned ${data.username2}`,
+			{
+				uname: data.username1,
+				open_profile: true
+			})
 		}
 
 		else if(data.type === 'announce_unban_all')
@@ -2029,7 +2037,7 @@ function start_userlist_click_events()
 	$("#userlist").on("click", ".ui_item_uname", function()
 	{
 		var uname = $(this).text()
-		show_profile(uname, get_user_by_username(uname).profile_image)
+		show_profile(uname)
 	})
 }
 
@@ -5115,7 +5123,8 @@ function chat_announce(args={})
 		type: "normal",
 		info1: "",
 		info2: "",
-		uname: false
+		uname: false,
+		open_profile: false
 	}
 
 	fill_defaults(args, def_args)
@@ -5131,7 +5140,7 @@ function chat_announce(args={})
 	var containerclasses = "announcement_content_container"
 	var contclasses = "announcement_content"
 
-	if(args.onclick)
+	if(args.onclick || (args.uname && args.open_profile))
 	{
 		containerclasses += " pointer"
 		containerclasses += " action"
@@ -5186,6 +5195,16 @@ function chat_announce(args={})
 	if(args.onclick)
 	{
 		content.parent().on("click", args.onclick)
+	}
+
+	else if(args.uname && args.open_profile)
+	{
+		var pif = function()
+		{
+			show_profile(args.uname)
+		}
+
+		content.parent().on("click", pif)
 	}
 
 	fmsg.data("highlighted", args.highlight)
@@ -6607,7 +6626,13 @@ function announce_topic_change(data)
 			}
 		}
 
-		public_feedback(`${data.topic_setter} changed the topic to: "${data.topic}"`, {highlight:highlight})
+		public_feedback(`${data.topic_setter} changed the topic to: "${data.topic}"`, 
+		{
+			highlight: highlight,
+			uname: data.topic_setter,
+			open_profile: true
+		})
+
 		set_topic_info(data)
 		update_title()
 	}
@@ -6617,7 +6642,12 @@ function announce_room_name_change(data)
 {
 	if(data.name !== room_name)
 	{
-		public_feedback(`${data.username} changed the room name to: "${data.name}"`)
+		public_feedback(`${data.username} changed the room name to: "${data.name}"`,
+		{
+			uname: data.username,
+			open_profile: true
+		})
+
 		set_room_name(data.name)
 		update_title()
 	}
@@ -6635,12 +6665,20 @@ function announce_new_username(data)
 
 		if(show)
 		{
-			public_feedback(`${data.old_username} is now known as ${username}`)
+			public_feedback(`${data.old_username} is now known as ${username}`,
+			{
+				uname: data.username,
+				open_profile: true
+			})
 		}
 
 		else
 		{
-			feedback(`You are now known as ${username}`)
+			feedback(`You are now known as ${username}`,
+			{
+				uname: data.username,
+				open_profile: true
+			})
 		}
 	}
 
@@ -6648,7 +6686,11 @@ function announce_new_username(data)
 	{
 		if(show)
 		{
-			public_feedback(`${data.old_username} is now known as ${data.username}`)
+			public_feedback(`${data.old_username} is now known as ${data.username}`,
+			{
+				uname: data.username,
+				open_profile: true
+			})
 		}
 	}
 }
@@ -7873,7 +7915,11 @@ function announce_role_change(data)
 		set_role(data.role)
 	}
 
-	public_feedback(`${data.username1} gave ${data.role} to ${data.username2}`)
+	public_feedback(`${data.username1} gave ${data.role} to ${data.username2}`,
+	{
+		uname: data.username1,
+		open_profile: true
+	})
 
 	replace_role_in_userlist(data.username2, data.role)
 }
@@ -7930,7 +7976,11 @@ function announce_privacy_change(data)
 		s += ". The room won't appear in the public room list"
 	}
 
-	public_feedback(s)
+	public_feedback(s,
+	{
+		uname: data.username,
+		open_profile: true
+	})
 }
 
 function change_radio_source(src)
@@ -8324,7 +8374,11 @@ function kick(uname)
 
 function announce_unban_all(data)
 {
-	public_feedback(`${data.username} unbanned all banned users`)
+	public_feedback(`${data.username} unbanned all banned users`,
+	{
+		uname: data.username,
+		open_profile: true
+	})
 }
 
 function isalready(who, what)
@@ -8409,7 +8463,11 @@ function remove_ops()
 
 function announce_voices_resetted(data)
 {
-	public_feedback(`${data.username} resetted the voices`)
+	public_feedback(`${data.username} resetted the voices`,
+	{
+		uname: data.username,
+		open_profile: true
+	})
 
 	if(role.startsWith('voice') && role !== "voice1")
 	{
@@ -8421,7 +8479,11 @@ function announce_voices_resetted(data)
 
 function announce_removedops(data)
 {
-	public_feedback(`${data.username} removed all ops`)
+	public_feedback(`${data.username} removed all ops`,
+	{
+		uname: data.username,
+		open_profile: true
+	})
 
 	if(role === 'op')
 	{
@@ -11003,7 +11065,11 @@ function announce_log_change(data)
 		var s = `${data.username} cleared and disabled the log`
 	}
 
-	public_feedback(s)
+	public_feedback(s,
+	{
+		uname: data.username,
+		open_profile: true
+	})
 
 	set_log_enabled(data.log)
 }
@@ -11024,7 +11090,11 @@ function announce_log_cleared(data)
 
 	s += `${uname} cleared the log`
 
-	public_feedback(s)
+	public_feedback(s,
+	{
+		uname: uname,
+		open_profile: true
+	})
 }
 
 function show_log()
@@ -11521,7 +11591,18 @@ function show_profile(uname, prof_image)
 {
 	if(prof_image === "" || prof_image === undefined || prof_image === "undefined")
 	{
-		var pi = default_profile_image_url
+		var user = get_user_by_username(uname)
+
+		if(user)
+		{
+			var pi = user.profile_image
+		}
+
+		else
+		{
+			var pi = default_profile_image_url
+		}
+
 	}
 
 	else
@@ -11570,7 +11651,11 @@ function profile_image_changed(data)
 
 	if(!user_is_ignored(data.username))
 	{
-		public_feedback(`${data.username} changed the profile image`)
+		public_feedback(`${data.username} changed the profile image`,
+		{
+			uname: data.username,
+			open_profile: true
+		})
 	}
 }
 
@@ -11785,12 +11870,20 @@ function announce_room_images_enabled_change(data)
 {
 	if(data.what)
 	{
-		public_feedback(`${data.username} enabled room images`)
+		public_feedback(`${data.username} enabled room images`,
+		{
+			uname: data.username,
+			open_profile: true
+		})
 	}
 
 	else
 	{
-		public_feedback(`${data.username} disabled room images`)
+		public_feedback(`${data.username} disabled room images`,
+		{
+			uname: data.username,
+			open_profile: true
+		})
 	}
 
 	set_room_images_enabled(data.what)
@@ -11802,12 +11895,20 @@ function announce_room_tv_enabled_change(data)
 {
 	if(data.what)
 	{
-		public_feedback(`${data.username} enabled room tv`)
+		public_feedback(`${data.username} enabled room tv`,
+		{
+			uname: data.username,
+			open_profile: true
+		})
 	}
 
 	else
 	{
-		public_feedback(`${data.username} disabled room tv`)
+		public_feedback(`${data.username} disabled room tv`,
+		{
+			uname: data.username,
+			open_profile: true
+		})
 	}
 
 	set_room_tv_enabled(data.what)
@@ -11819,12 +11920,20 @@ function announce_room_radio_enabled_change(data)
 {
 	if(data.what)
 	{
-		public_feedback(`${data.username} enabled room radio`)
+		public_feedback(`${data.username} enabled room radio`,
+		{
+			uname: data.username,
+			open_profile: true
+		})
 	}
 
 	else
 	{
-		public_feedback(`${data.username} disabled room radio`)
+		public_feedback(`${data.username} disabled room radio`,
+		{
+			uname: data.username,
+			open_profile: true
+		})
 	}
 
 	set_room_radio_enabled(data.what)
@@ -11894,7 +12003,12 @@ function change_theme(color)
 
 function announce_theme_change(data)
 {
-	public_feedback(`${data.username} changed the theme to ${data.color}`)
+	public_feedback(`${data.username} changed the theme to ${data.color}`,
+	{
+		uname: data.username,
+		open_profile: true
+	})
+
 	set_theme(data.color)
 }
 
@@ -11958,7 +12072,12 @@ function background_image_selected(input)
 
 function announce_background_image_change(data)
 {
-	public_feedback(`${data.username} changed the background image`)
+	public_feedback(`${data.username} changed the background image`,
+	{
+		uname: data.username,
+		open_profile: true
+	})
+
 	set_background(data.background_image)
 }
 
@@ -11987,7 +12106,12 @@ function change_background_mode(mode)
 
 function announce_background_mode_change(data)
 {
-	public_feedback(`${data.username} changed the background mode to ${data.mode}`)
+	public_feedback(`${data.username} changed the background mode to ${data.mode}`,
+	{
+		uname: data.username,
+		open_profile: true
+	})
+
 	set_background_mode(data.mode)
 }
 
@@ -12021,7 +12145,12 @@ function change_background_tile_dimensions(dimensions)
 
 function announce_background_tile_dimensions_change(data)
 {
-	public_feedback(`${data.username} changed the background tile dimensions to ${data.dimensions}`)
+	public_feedback(`${data.username} changed the background tile dimensions to ${data.dimensions}`,
+	{
+		uname: data.username,
+		open_profile: true
+	})
+
 	set_background_tile_dimensions(data.dimensions)
 	apply_background()
 }
@@ -12087,12 +12216,20 @@ function announce_voice_permission_change(data)
 {
 	if(data.what)
 	{
-		public_feedback(`${data.username} set ${data.ptype} to true`)
+		public_feedback(`${data.username} set ${data.ptype} to true`,
+		{
+			uname: data.username,
+			open_profile: true
+		})
 	}
 
 	else
 	{
-		public_feedback(`${data.username} set ${data.ptype} to false`)
+		public_feedback(`${data.username} set ${data.ptype} to false`,
+		{
+			uname: data.username,
+			open_profile: true
+		})
 	}
 
 	window[data.ptype] = data.what
@@ -12675,7 +12812,7 @@ function write_popup_message(uname, type="user")
 
 		var f = function()
 		{
-			show_profile(uname, get_user_by_username(uname).profile_image)
+			show_profile(uname)
 		}
 
 		var title = {text:`Whisper To ${uname}`, onclick:f}
@@ -12795,7 +12932,7 @@ function sent_popup_message_function(mode, message, draw_coords, data1=false)
 		
 		ff = function()
 		{
-			show_profile(data1, get_user_by_username(data1).profile_image)
+			show_profile(data1)
 		}
 	}
 
@@ -12947,7 +13084,7 @@ function popup_message_received(data, type="user", announce=true)
 
 		var f = function()
 		{
-			show_profile(data.username, get_user_by_username(data.username).profile_image)
+			show_profile(data.username)
 		}
 	}
 
@@ -13549,7 +13686,7 @@ function start_generic_uname_click_events()
 	$("body").on("click", ".generic_uname", function()
 	{
 		var uname = $(this).text()
-		show_profile(uname, get_user_by_username(uname).profile_image)
+		show_profile(uname)
 	})
 }
 
@@ -14780,7 +14917,12 @@ function change_text_color_mode(mode)
 
 function announce_text_color_mode_change(data)
 {
-	public_feedback(`${data.username} changed the text color mode to ${data.mode}`)
+	public_feedback(`${data.username} changed the text color mode to ${data.mode}`,
+	{
+		uname: data.username,
+		open_profile: true
+	})
+
 	set_text_color_mode(data.mode)
 	apply_theme()
 }
@@ -14826,7 +14968,12 @@ function change_text_color(color)
 
 function announce_text_color_change(data)
 {
-	public_feedback(`${data.username} changed the text color to ${data.color}`)
+	public_feedback(`${data.username} changed the text color to ${data.color}`,
+	{
+		uname: data.username,
+		open_profile: true
+	})
+
 	set_text_color(data.color)
 	apply_theme()
 }
