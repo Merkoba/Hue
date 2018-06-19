@@ -15558,29 +15558,6 @@ function draw_image_scale_fix(n)
 	return parseInt(Math.round(n* draw_image_scale))
 }
 
-function draw_image_reset_settings()
-{
-	draw_image_pencil_color = "rgb(51, 51, 51)"
-	
-	draw_image_bucket_color = "rgb(72, 152, 183)"
-	
-	draw_image_pencil_size = 4
-
-	set_draw_image_mode_input("pencil")
-
-	$("#draw_image_pencil_color").spectrum("set", draw_image_pencil_color)
-	
-	$("#draw_image_bucket_color").spectrum("set", draw_image_bucket_color)
-
-	$("#draw_image_pencil_size").find('option').each(function()
-	{
-		if($(this).val() == draw_image_pencil_size)
-		{
-			$(this).prop('selected', true)
-		}
-	})
-}
-
 function draw_image_add_sector()
 {
 	draw_image_current_snapshot.sectors.push(draw_image_current_snapshot.click_x.length)
@@ -15624,6 +15601,31 @@ function setup_draw_image()
 	{
 		draw_image_just_entered = true
 	})
+
+	$("#draw_image_area").click(function(e)
+	{
+		if(draw_image_mode === "bucket")
+		{
+			var result = draw_image_bucket_fill(draw_image_scale_fix(e.offsetX), draw_image_scale_fix(e.offsetY))
+
+			if(result)
+			{
+				draw_image_check_redo()
+				increase_draw_image_snapshot(result)
+			}
+		}
+	})
+
+	draw_image_prepare_settings()
+}
+
+function draw_image_prepare_settings()
+{
+	draw_image_pencil_color = "rgb(51, 51, 51)"
+	draw_image_bucket_color = "rgb(72, 152, 183)"
+	draw_image_pencil_size = 4
+
+	set_draw_image_mode_input("pencil")
 
 	$("#draw_image_pencil_color").spectrum(
 	{
@@ -15695,22 +15697,6 @@ function setup_draw_image()
 	{
 		draw_image_pencil_size = $(this).val()
 	})
-
-	$("#draw_image_area").click(function(e)
-	{
-		if(draw_image_mode === "bucket")
-		{
-			var result = draw_image_bucket_fill(draw_image_scale_fix(e.offsetX), draw_image_scale_fix(e.offsetY))
-
-			if(result)
-			{
-				draw_image_check_redo()
-				increase_draw_image_snapshot(result)
-			}
-		}
-	})
-
-	draw_image_reset_settings()
 }
 
 function set_draw_image_mode_input(m)
