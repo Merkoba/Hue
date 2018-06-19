@@ -9306,7 +9306,6 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "draw_image",
-			close_on_overlay_click: false,
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -9324,8 +9323,6 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				clear_draw_image_state()
-				draw_image_reset_settings()
 				draw_image_open = false
 			}
 		})
