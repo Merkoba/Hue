@@ -186,7 +186,7 @@ var user_email
 var user_reg_date
 var filter_delay = 350
 var resize_delay = 350
-var double_tap_delay = 200
+var double_tap_delay = 250
 var wheel_delay = 100
 var check_scrollers_delay = 100
 var requesting_roomlist = false
