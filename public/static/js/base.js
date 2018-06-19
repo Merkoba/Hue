@@ -219,6 +219,7 @@ var draw_image_snapshots
 var draw_image_mode = "pencil"
 var draw_image_scale = 2.4
 var draw_image_num_strokes_save = 500
+var draw_image_max_levels = 200
 var draw_image_open = false
 
 function init()
@@ -15636,15 +15637,10 @@ function draw_image_prepare_settings()
 		showPalette: true,
 		palette: 
 		[
-			["rgba(0, 0, 0, 0"], 
-			["black"],
-			["white"],
-			["red"],
-			["green"],
-			["blue"],
-			["yellow"]
+			["rgba(0, 0, 0, 0)"]
 		],
-		showSelectionPalette: false,
+		showSelectionPalette: true,
+		maxSelectionSize: 15,
 		show: function()
 		{
 			set_draw_image_mode_input("pencil")
@@ -15665,15 +15661,10 @@ function draw_image_prepare_settings()
 		showPalette: true,
 		palette: 
 		[
-			["rgba(0, 0, 0, 0"], 
-			["black"],
-			["white"],
-			["red"],
-			["green"],
-			["blue"],
-			["yellow"]
+			["rgba(0, 0, 0, 0)"]
 		],
-		showSelectionPalette: false,
+		showSelectionPalette: true,
+		maxSelectionSize: 15,
 		show: function()
 		{
 			set_draw_image_mode_input("bucket")
@@ -15734,6 +15725,25 @@ function increase_draw_image_snapshot(data)
 	}
 
 	draw_image_current_snapshot = draw_image_snapshots[`level_${level}`]
+
+	var keys = Object.keys(draw_image_snapshots)
+
+	if(keys.length > draw_image_max_levels)
+	{
+		var lowest_key = keys.length
+
+		for(var key in draw_image_snapshots)
+		{
+			var snapshot = draw_image_snapshots[key]
+
+			if(snapshot.level < lowest_key)
+			{
+				lowest_key = snapshot.level
+			}
+		}
+
+		delete draw_image_snapshots[`level_${lowest_key}`]
+	}
 }
 
 function clear_draw_image_state()
@@ -15920,12 +15930,10 @@ function draw_image_undo()
 
 	else
 	{
-		var l = draw_image_current_snapshot.level
+		var level = draw_image_current_snapshot.level - 1
 
-		if(l > 0)
+		if(draw_image_snapshots[`level_${level}`] !== undefined)
 		{	
-			var level = l - 1
-
 			draw_image_current_snapshot.sector_index = 0
 			draw_image_current_snapshot = draw_image_snapshots[`level_${level}`]
 			draw_image_current_snapshot.sector_index = draw_image_current_snapshot.click_x.length
@@ -15966,9 +15974,7 @@ function draw_image_redo()
 
 	else
 	{
-		var l = draw_image_current_snapshot.level
-
-		var level = l + 1
+		var level = draw_image_current_snapshot.level + 1
 
 		if(draw_image_snapshots[`level_${level}`] !== undefined)
 		{

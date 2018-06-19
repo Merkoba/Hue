@@ -1687,3 +1687,8 @@ input[type=text], textarea
 {
 	box-shadow: 0 0 2px currentColor
 }
+
+.sp-palette
+{
+	max-width: 65px !important;
+}
