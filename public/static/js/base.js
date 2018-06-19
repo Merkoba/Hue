@@ -15850,17 +15850,6 @@ function draw_image_get_image_data()
 	return data
 }
 
-function draw_image_pop_arrays()
-{
-	draw_image_current_snapshot.click_x.pop()
-	draw_image_current_snapshot.click_y.pop()
-	draw_image_current_snapshot.color_array.pop()
-	draw_image_current_snapshot.size_array.pop()
-	draw_image_current_snapshot.drag.pop()
-
-	draw_image_current_snapshot.sector_index = draw_image_current_snapshot.click_x.length
-}
-
 function draw_image_check_increase_snapshot()
 {
 	if(draw_image_current_snapshot.click_x.length === draw_image_current_snapshot.sector_index && !draw_image_has_levels_above())
