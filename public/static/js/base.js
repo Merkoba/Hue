@@ -218,7 +218,7 @@ var draw_image_just_entered = false
 var draw_image_snapshots
 var draw_image_mode = "pencil"
 var draw_image_scale = 2.4
-var draw_image_num_strokes_save = 200
+var draw_image_num_strokes_save = 500
 var draw_image_open = false
 
 function init()
@@ -15904,7 +15904,7 @@ function upload_draw_image()
 		return false
 	}
 
-	if(!draw_image_current_snapshot.data && !draw_image_current_snapshot.click_x.length)
+	if(draw_image_current_snapshot.level === 0 && draw_image_current_snapshot.click_x.length === 0)
 	{
 		return false
 	}
