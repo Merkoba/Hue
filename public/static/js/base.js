@@ -15719,14 +15719,12 @@ function set_draw_image_mode_input(m)
 	{
 		$("#draw_image_mode_select_pencil").addClass("modal_icon_selected")
 		$("#draw_image_mode_select_bucket").removeClass("modal_icon_selected")
-		$("#draw_image_bucket_color").addClass("nopointer")
 	}
 
 	else if(m === "bucket")
 	{
 		$("#draw_image_mode_select_bucket").addClass("modal_icon_selected")
 		$("#draw_image_mode_select_pencil").removeClass("modal_icon_selected")
-		$("#draw_image_pencil_color").addClass("nopointer")
 	}
 
 	draw_image_mode = m
