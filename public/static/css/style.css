@@ -1692,3 +1692,41 @@ input[type=text], textarea
 {
 	max-width: 65px !important;
 }
+
+#voice_chat_container
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 0;
+	min-height: 0;
+}
+
+#voice_chat
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.voice_chat_item
+{
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.voice_chat_profile_image_container
+{
+	min-width: 50px;
+	max-width: 50px;
+	min-height: 50px;
+	max-height: 50px;
+	overflow: hidden;
+}
+
+.voice_chat_profile_image
+{
+	width: 100%;
+	cursor: pointer;
+}

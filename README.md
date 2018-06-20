@@ -406,6 +406,9 @@ If you want to remove it to start fresh:
 "global_settings_default_afk_on_lockscreen"
 >Whether the user will go afk when locking the screen by default.
 
+"global_settings_default_microphone_threshold"
+>Default microphone threshold. This is the minimum volume to transmit audio on voice chat.
+
 "room_settings_default_images_enabled"
 >Whether images will be enabled to the user on new rooms by default.
 
@@ -516,6 +519,15 @@ If you want to remove it to start fresh:
 
 "draw_coords_max_array_length"
 >Maximum array length for each of the draw coordinate arrays.
+
+"max_microphone_chunk_size":
+>Maximum size accepted for voice chat chunks.
+
+"max_voice_chat_inactivity"
+>Maximum amount of time the profile image of a user will be lit after the last thing said on voice chat.
+
+"microphone_sample_rate":
+>Sample rate for transmitted voice chat chunks.
 
 ## The following reside in config.secret.json
 

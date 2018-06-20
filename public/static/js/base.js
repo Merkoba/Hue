@@ -142,6 +142,7 @@ var change_radio_when_focused = false
 var room_images_enabled = true
 var room_tv_enabled = true
 var room_radio_enabled = true
+var room_voice_chat_enabled = true
 var radio_started = false
 var theme
 var text_color_mode
@@ -221,6 +222,18 @@ var draw_image_scale = 2.4
 var draw_image_num_strokes_save = 500
 var draw_image_max_levels = 200
 var draw_image_open = false
+var voice_chat_joined = false
+var voice_chat_userlist
+var microphone_context = false 
+var microphone_input = false
+var microphone_recorder = false
+var microphone_buffer_size = 2048
+var microphone_recording_length = 0
+var microphone_left_channel = []
+var microphone_right_channel = []
+var microphone_volume = 0
+var microphone_averaging = 0.95
+var voice_aura_timeouts = {}
 
 function init()
 {
@@ -519,18 +532,25 @@ function start_permissions(data)
 	voice1_images_permission = data.voice1_images_permission
 	voice1_tv_permission = data.voice1_tv_permission
 	voice1_radio_permission = data.voice1_radio_permission
+	voice1_voice_chat_permission = data.voice1_voice_chat_permission
+	
 	voice2_chat_permission = data.voice2_chat_permission
 	voice2_images_permission = data.voice2_images_permission
 	voice2_tv_permission = data.voice2_tv_permission
 	voice2_radio_permission = data.voice2_radio_permission
+	voice2_voice_chat_permission = data.voice2_voice_chat_permission
+	
 	voice3_chat_permission = data.voice3_chat_permission
 	voice3_images_permission = data.voice3_images_permission
 	voice3_tv_permission = data.voice3_tv_permission
 	voice3_radio_permission = data.voice3_radio_permission
+	voice3_voice_chat_permission = data.voice3_voice_chat_permission
+	
 	voice4_chat_permission = data.voice4_chat_permission
 	voice4_images_permission = data.voice4_images_permission
 	voice4_tv_permission = data.voice4_tv_permission
 	voice4_radio_permission = data.voice4_radio_permission
+	voice4_voice_chat_permission = data.voice4_voice_chat_permission
 }
 
 function check_permissions()
@@ -539,6 +559,12 @@ function check_permissions()
 	can_images = room_images_enabled && check_permission(role, "images")
 	can_tv = room_tv_enabled && check_permission(role, "tv")
 	can_radio = room_radio_enabled && check_permission(role, "radio")
+	can_voice_chat = room_voice_chat_enabled && check_permission(role, "voice_chat")
+
+	if(!can_voice_chat && voice_chat_joined)
+	{
+		leave_voice_chat()
+	}
 
 	setup_icons()
 }
@@ -615,9 +641,24 @@ function setup_icons()
 		}
 	}
 
+	if(room_voice_chat_enabled)
+	{
+		$("#footer_voice_chat_controls").css("display", "initial")
+
+		if(can_voice_chat)
+		{
+			$("#footer_voice_chat_icon").css("display", "initial")
+		}
+
+		else
+		{
+			$("#footer_voice_chat_icon").css("display", "none")
+		}
+	}
+
 	else
 	{
-		$("#footer_radio_controls").css("display", "none")
+		$("#footer_voice_chat_controls").css("display", "none")
 	}
 }
 
@@ -664,6 +705,13 @@ function show_role(data)
 	if(can_radio)
 	{
 		feedback("You have radio permission")
+
+		ps += 1
+	}
+
+	if(can_voice_chat)
+	{
+		feedback("You have voice chat permission")
 
 		ps += 1
 	}
@@ -768,6 +816,8 @@ function start_socket()
 			setup_profile_image(data.profile_image)
 			userlist = data.userlist
 			update_userlist()
+			voice_chat_userlist = data.voice_chat_userlist
+			update_voice_chat_userlist()
 			log_enabled = data.log
 			log_messages = data.log_messages
 			setup_theme_and_background(data)
@@ -1103,6 +1153,11 @@ function start_socket()
 			announce_room_radio_enabled_change(data)
 		}
 
+		else if(data.type === 'room_voice_chat_enabled_change')
+		{
+			announce_room_voice_chat_enabled_change(data)
+		}
+
 		else if(data.type === 'theme_change')
 		{
 			announce_theme_change(data)
@@ -1211,6 +1266,26 @@ function start_socket()
 		else if(data.type === 'reaction_received')
 		{
 			show_reaction(data)
+		}
+		
+		else if(data.type === 'voice_chat_user_connected')
+		{
+			voice_chat_user_connected(data)
+		}
+
+		else if(data.type === 'voice_chat_user_disconnected')
+		{
+			voice_chat_user_disconnected(data)
+		}		
+
+		else if(data.type === 'voice_chat_blob_received')
+		{
+			voice_chat_play_blob(data)
+		}
+
+		else if(data.type === 'voice_chat_blob_received_feedback')
+		{
+			show_voice_aura(user_id)
 		}
 	})
 }
@@ -1829,7 +1904,7 @@ function userjoin(data)
 {
 	clear_from_users_to_disconnect(data)
 
-	var added = addto_userlist(data.username, data.role, data.profile_image)
+	var added = addto_userlist(data.user_id, data.username, data.role, data.profile_image)
 
 	if(added)
 	{
@@ -1862,12 +1937,13 @@ function update_usercount(usercount)
 	msg_userlist.set_title(s)
 }
 
-function addto_userlist(uname, rol, pi)
+function addto_userlist(id, uname, rol, pi)
 {
 	for(var i=0; i<userlist.length; i++)
 	{
 		if(userlist[i].username === uname)
 		{
+			userlist[i].user_id = id
 			userlist[i].username = uname
 			userlist[i].role = rol
 			userlist[i].profile_image = pi
@@ -1878,7 +1954,7 @@ function addto_userlist(uname, rol, pi)
 		}
 	}
 
-	userlist.push({username:uname, role:rol, profile_image:pi})
+	userlist.push({user_id: id, username:uname, role:rol, profile_image:pi})
 
 	update_userlist()
 
@@ -2018,6 +2094,19 @@ function get_user_by_username(uname)
 	for(var user of userlist)
 	{
 		if(user.username === uname)
+		{
+			return user
+		}
+	}
+
+	return false
+}
+
+function get_user_by_id(id)
+{
+	for(var user of userlist)
+	{
+		if(user.user_id === id)
 		{
 			return user
 		}
@@ -2690,6 +2779,13 @@ function setup_main_menu()
 		change_room_radio_enabled(what)
 	})
 
+	$('#admin_enable_voice_chat').change(function()
+	{
+		var what = JSON.parse($('#admin_enable_voice_chat option:selected').val())
+
+		change_room_voice_chat_enabled(what)
+	})
+
 	$('#admin_privacy').change(function()
 	{
 		var what = JSON.parse($('#admin_privacy option:selected').val())
@@ -2989,6 +3085,22 @@ function config_admin_room_radio_enabled()
 	})
 }
 
+function config_admin_room_voice_chat_enabled()
+{
+	if(!is_admin_or_op())
+	{
+		return false
+	}
+
+	$('#admin_enable_voice_chat').find('option').each(function()
+	{
+		if(JSON.parse($(this).val()) === room_voice_chat_enabled)
+		{
+			$(this).prop('selected', true)
+		}
+	})
+}
+
 function config_admin_theme()
 {
 	if(!is_admin_or_op())
@@ -3027,6 +3139,7 @@ function config_main_menu()
 		config_admin_room_images_enabled()
 		config_admin_room_tv_enabled()
 		config_admin_room_radio_enabled()
+		config_admin_room_voice_chat_enabled()
 		config_admin_privacy()
 		config_admin_log_enabled()
 		config_admin_theme()
@@ -5615,6 +5728,16 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/disableradio'))
 	{
 		change_room_radio_enabled(false)
+	}
+
+	else if(oiEquals(lmsg, '/enablevoicechat'))
+	{
+		change_voice_chat_enabled(true)
+	}
+
+	else if(oiEquals(lmsg, '/disablevoicechat'))
+	{
+		change_voice_chat_enabled(false)
 	}
 
 	else if(oiEquals(lmsg, '/enabletv'))
@@ -9517,7 +9640,8 @@ function get_global_settings()
 		"user_function_3",
 		"on_lockscreen",
 		"on_unlockscreen",
-		"afk_on_lockscreen"
+		"afk_on_lockscreen",
+		"microphone_threshold"
 	]
 
 	var changed = false
@@ -10054,6 +10178,20 @@ function setting_on_unlockscreen_action(type, save=true)
 function setting_afk_on_lockscreen_action(type, save=true)
 {
 	window[type].afk_on_lockscreen = $(`#${type}_afk_on_lockscreen`).prop("checked")
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_microphone_threshold_action(type, save=true)
+{
+	var val = utilz.round($(`#${type}_microphone_threshold`).val(), 2)
+
+	$(`#${type}_other_words_to_highlight`).val(val)
+
+	window[type].microphone_threshold = val
 
 	if(save)
 	{
@@ -11858,6 +11996,35 @@ function change_room_radio_enabled(what)
 	socket_emit("change_radio_enabled", {what:what})
 }
 
+function change_room_voice_chat_enabled(what)
+{
+	if(!is_admin_or_op(role))
+	{
+		not_an_op()
+		return false
+	}
+
+	if(what)
+	{
+		if(room_voice_chat_enabled)
+		{
+			feedback(`Room voice chat is already enabled`)
+			return false
+		}
+	}
+
+	else
+	{
+		if(!room_voice_chat_enabled)
+		{
+			feedback(`Room voice chat is already disabled`)
+			return false
+		}
+	}
+
+	socket_emit("change_voice_chat_enabled", {what:what})
+}
+
 function announce_room_images_enabled_change(data)
 {
 	if(data.what)
@@ -11933,6 +12100,35 @@ function announce_room_radio_enabled_change(data)
 	check_permissions()
 }
 
+function announce_room_voice_chat_enabled_change(data)
+{
+	if(data.what)
+	{
+		public_feedback(`${data.username} enabled room voice chat`,
+		{
+			uname: data.username,
+			open_profile: true
+		})
+	}
+
+	else
+	{
+		voice_chat_userlist = []
+		
+		left_voice_chat()
+		
+		public_feedback(`${data.username} disabled room voice chat`,
+		{
+			uname: data.username,
+			open_profile: true
+		})
+	}
+
+	update_voice_chat_userlist()
+	set_room_voice_chat_enabled(data.what)
+	check_permissions()
+}
+
 function hide_media()
 {
 	stop_videos()
@@ -11945,6 +12141,7 @@ function setup_active_media(data)
 	room_images_enabled = data.room_images_enabled
 	room_tv_enabled = data.room_tv_enabled
 	room_radio_enabled = data.room_radio_enabled
+	room_voice_chat_enabled = data.room_voice_chat_enabled
 
 	media_visibility_and_locks()
 }
@@ -14643,6 +14840,12 @@ function set_room_radio_enabled(what)
 	config_admin_room_radio_enabled()
 }
 
+function set_room_voice_chat_enabled(what)
+{
+	room_voice_chat_enabled = what
+	config_admin_room_voice_chat_enabled()
+}
+
 function set_background_mode(what)
 {
 	background_mode = what
@@ -16149,4 +16352,360 @@ function draw_image_change_mode()
 	{
 		set_draw_image_mode_input("pencil")
 	}
+}
+
+function update_voice_chat_userlist()
+{
+	$("#voice_chat_num_users").text(voice_chat_userlist.length)
+
+	if(voice_chat_joined)
+	{
+		var s = ""
+
+		for(var id of voice_chat_userlist)
+		{
+			var u = get_user_by_id(id)
+
+			s += `
+			<div class='voice_chat_item'>
+				<div class='voice_chat_profile_image_container' id='voice_chat_profile_image_container_${u.user_id}'>
+					<img class='voice_chat_profile_image' src='${u.profile_image}' title='${u.username}'>
+				</div>
+			</div>`
+		}
+
+		$("#voice_chat").html(s)
+	}
+}
+
+function toggle_join_voice_chat()
+{
+	if(voice_chat_joined)
+	{
+		leave_voice_chat()
+	}
+
+	else
+	{
+		if(can_voice_chat)
+		{
+			start_microphone()
+		}
+	}
+}
+
+function join_voice_chat()
+{
+	if(can_voice_chat)
+	{
+		socket_emit("join_voice_chat", {})
+	}
+}
+
+function leave_voice_chat()
+{
+	socket_emit("leave_voice_chat", {})
+}
+
+function joined_voice_chat()
+{
+	voice_chat_joined = true
+
+	$("#voice_chat_container").css("height", "80px")
+	$("#voice_chat_container").css("min-height", "80px")
+	$("#footer_voice_chat_icon").addClass("fa-microphone-slash")
+	$("#footer_voice_chat_icon").removeClass("fa-microphone")
+
+	fix_visible_video_frame()
+}
+
+function left_voice_chat()
+{
+	voice_chat_joined = false
+
+	stop_microphone_stream()
+
+	$("#voice_chat_container").css("height", 0)
+	$("#voice_chat_container").css("min-height", 0)
+	$("#footer_voice_chat_icon").addClass("fa-microphone")
+	$("#footer_voice_chat_icon").removeClass("fa-microphone-slash")
+
+	fix_visible_video_frame()
+}
+
+function voice_chat_user_connected(data)
+{
+	if(!voice_chat_userlist.includes(data.user_id))
+	{
+		voice_chat_userlist.push(data.user_id)
+
+		if(data.user_id === user_id)
+		{
+			joined_voice_chat()
+		}
+		
+		update_voice_chat_userlist()
+	}
+}
+
+function voice_chat_user_disconnected(data)
+{
+	if(voice_chat_userlist.includes(data.user_id))
+	{
+		for(var i=0; i<voice_chat_userlist.length; i++)
+		{
+			var id = voice_chat_userlist[i]
+
+			if(id === data.user_id)
+			{
+				voice_chat_userlist.splice(i, 1)
+				
+				if(data.user_id === user_id)
+				{
+					left_voice_chat()
+				}
+
+				update_voice_chat_userlist()
+
+				break
+			}
+		}
+	}
+}
+
+function start_microphone()
+{
+	navigator.mediaDevices.getUserMedia({audio:true, video:false})
+
+	.then(function(stream)
+	{
+		var AudioContext = window.AudioContext
+
+		microphone_context = new AudioContext()
+
+		microphone_input = microphone_context.createMediaStreamSource(stream)
+		
+		microphone_recorder = microphone_context.createScriptProcessor(microphone_buffer_size, 2, 2)
+
+		microphone_recorder.onaudioprocess = function(e)
+		{
+			process_microphone(e)
+		}
+
+		microphone_input.connect(microphone_recorder)
+
+		microphone_recorder.connect(microphone_context.destination)
+
+		join_voice_chat()
+	})
+
+	.catch(function(err)
+	{ 
+		console.error(err)
+	})
+}
+
+function process_microphone(e)
+{
+	var acceptable = check_process_microphone(e)
+
+	if(acceptable)
+	{
+		microphone_left_channel.push(new Float32Array(e.inputBuffer.getChannelData(0)))
+		microphone_right_channel.push(new Float32Array(e.inputBuffer.getChannelData(1)))
+		
+		microphone_recording_length += microphone_buffer_size
+		
+		if(microphone_recording_length > microphone_buffer_size * 4)
+		{	
+			var blob = microphone_data_to_blob()
+
+			microphone_recording_length = 0
+			microphone_left_channel = []
+			microphone_right_channel = []
+
+			socket_emit("voice_chat_blob", {array_buffer:blob})
+		}
+	}
+
+	else
+	{
+		microphone_recording_length = 0
+		microphone_left_channel = []
+		microphone_right_channel = []
+	}
+}
+
+function check_process_microphone(e)
+{
+	var buf = e.inputBuffer.getChannelData(0)
+	var buf_length = buf.length
+	var sum = 0
+	var x
+
+	// Do a root-mean-square on the samples: sum up the squares...
+	for (var i=0; i<buf_length; i++)
+	{
+		x = buf[i]
+		sum += x * x
+	}
+
+	// ... then take the square root of the sum.
+	var rms =  Math.sqrt(sum / buf_length)
+
+	// Now smooth this out with the averaging factor applied
+	// to the previous sample - take the max here because we
+	// want "fast attack, slow release."
+	microphone_volume = Math.max(rms, microphone_volume * microphone_averaging)
+
+	if(microphone_volume >= get_setting("microphone_threshold"))
+	{
+		return true
+	}
+
+	else
+	{
+		return false
+	}
+}
+
+function microphone_data_to_blob()
+{
+	// we flat the left and right channels down
+	// Float32Array[] => Float32Array
+	var left_bugger = flatten_array(microphone_left_channel, microphone_recording_length)
+	var right_buffer = flatten_array(microphone_right_channel, microphone_recording_length)
+	
+	// we interleave both channels together
+	// [left[0],right[0],left[1],right[1],...]
+	var interleaved = interleave(left_bugger, right_buffer)
+	
+	// we create our wav file
+	var buffer = new ArrayBuffer(44 + interleaved.length * 2)
+	var view = new DataView(buffer)
+	
+	// RIFF chunk descriptor
+	writeUTFBytes(view, 0, 'RIFF')
+	view.setUint32(4, 44 + interleaved.length * 2, true)
+	writeUTFBytes(view, 8, 'WAVE')
+	
+	// FMT sub-chunk
+	writeUTFBytes(view, 12, 'fmt ')
+	view.setUint32(16, 16, true) // chunkSize
+	view.setUint16(20, 1, true) // wFormatTag
+	view.setUint16(22, 2, true) // wChannels: stereo (2 channels)
+	view.setUint32(24, microphone_sample_rate, true) // dwSamplesPerSec
+	view.setUint32(28, microphone_sample_rate * 4, true) // dwAvgBytesPerSec
+	view.setUint16(32, 4, true) // wBlockAlign
+	view.setUint16(34, 16, true) // wBitsPerSample
+	
+	// data sub-chunk
+	writeUTFBytes(view, 36, 'data')
+	view.setUint32(40, interleaved.length * 2, true)
+	
+	// write the PCM samples
+	var index = 44
+	var volume = 1
+
+	for(var i=0; i<interleaved.length; i++) 
+	{
+		view.setInt16(index, interleaved[i] * (0x7FFF * volume), true)
+		index += 2
+	}
+
+	// our final blob
+	return new Blob([view], {type:'audio/wav'})
+}
+
+function flatten_array(channel_buffer, recording_length) 
+{
+    var result = new Float32Array(recording_length)
+
+    var offset = 0
+
+    for(var i=0; i<channel_buffer.length; i++) 
+    {
+        var buffer = channel_buffer[i]
+        result.set(buffer, offset)
+        offset += buffer.length
+    }
+
+    return result
+}
+
+function interleave(left_channel, right_channel) 
+{
+	var length = left_channel.length + right_channel.length
+	var result = new Float32Array(length)
+	var input_index = 0
+
+	for(var index=0; index<length;) 
+	{
+		result[index++] = left_channel[input_index]
+		result[index++] = right_channel[input_index]
+		input_index++
+	}
+
+	return result
+}
+
+function writeUTFBytes(view, offset, string) 
+{
+	for(var i=0; i<string.length; i++) 
+	{
+		view.setUint8(offset + i, string.charCodeAt(i))
+	}
+}
+
+function stop_microphone_stream()
+{
+	microphone_recorder.disconnect(microphone_context.destination)
+	microphone_input.disconnect(microphone_recorder)
+}
+
+function voice_chat_play_blob(data)
+{
+	var blob = new Blob([data.array_buffer], {type:'audio/wav'})
+
+	if(voice_chat_joined)
+	{
+		new Audio(window.URL.createObjectURL(blob)).play()
+	}
+
+	show_voice_aura(data.user_id)
+}
+
+function show_voice_aura(id)
+{
+	if(voice_aura_timeouts[id] === undefined)
+	{
+		add_voice_aura(id)
+	}
+
+	else
+	{
+		clearTimeout(voice_aura_timeouts[id])
+	}
+
+	voice_aura_timeouts[id] = setTimeout(function()
+	{
+		remove_voice_aura(id)
+	}, max_voice_chat_inactivity)
+}
+
+function add_voice_aura(id)
+{
+	$(`#voice_chat_profile_image_container_${id}`).addClass("aura")
+}
+
+function remove_voice_aura(id, clr=false)
+{
+	if(clr)
+	{
+		clearTimeout(voice_aura_timeouts[id])
+	}
+
+	$(`#voice_chat_profile_image_container_${id}`).removeClass("aura")
+
+	voice_aura_timeouts[id] = undefined
 }

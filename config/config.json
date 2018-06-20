@@ -118,6 +118,7 @@
 	"global_settings_default_on_lockscreen": "",
 	"global_settings_default_on_unlockscreen": "",
 	"global_settings_default_afk_on_lockscreen": true,
+	"global_settings_default_microphone_threshold": 0.03,
 	"room_settings_default_images_enabled": true,
 	"room_settings_default_tv_enabled": true,
 	"room_settings_default_radio_enabled": true,
@@ -158,5 +159,8 @@
 	"profile_image_diameter": 300,
 	"max_num_newlines": 100,
 	"draw_coords_max_length": 15000,
-	"draw_coords_max_array_length": 1000
+	"draw_coords_max_array_length": 1000,
+	"max_microphone_chunk_size": 100,
+	"max_voice_chat_inactivity": 1000,
+	"microphone_sample_rate": 44100
 }

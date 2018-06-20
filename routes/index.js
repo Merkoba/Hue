@@ -88,6 +88,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.global_settings_default_on_lockscreen = config.global_settings_default_on_lockscreen	
 	c.vars.global_settings_default_on_unlockscreen = config.global_settings_default_on_unlockscreen	
 	c.vars.global_settings_default_afk_on_lockscreen = config.global_settings_default_afk_on_lockscreen	
+	c.vars.global_settings_default_microphone_threshold = config.global_settings_default_microphone_threshold	
 	c.vars.room_settings_default_images_enabled = config.room_settings_default_images_enabled
 	c.vars.room_settings_default_tv_enabled = config.room_settings_default_tv_enabled
 	c.vars.room_settings_default_radio_enabled = config.room_settings_default_radio_enabled
@@ -122,6 +123,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.max_num_newlines = config.max_num_newlines
 	c.vars.draw_coords_max_length = config.draw_coords_max_length
 	c.vars.draw_coords_max_array_length = config.draw_coords_max_array_length
+	c.vars.max_voice_chat_inactivity = config.max_voice_chat_inactivity
+	c.vars.microphone_sample_rate = config.microphone_sample_rate
 
 	function check_url(req, res, next)
 	{

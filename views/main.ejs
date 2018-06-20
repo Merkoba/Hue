@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=1353"></script>
+		<script src="/static/js/base.js?ver=1355"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?ver=383"/>
+		<link rel="stylesheet" href="/static/css/style.css?ver=384"/>
 
 		<script>
 
@@ -69,6 +69,10 @@
 			<div id='background_image' class='background_image'></div>
 
 			<div class="columns_container">
+
+				<div id='voice_chat_container' class='bg2'>
+					<div id='voice_chat'></div>
+				</div>
 
 				<div id='header' class='unselectable bg2 panel'>
 
@@ -259,6 +263,13 @@
 								<span class='hspacer3'></span>
 							</span>
 
+							<span id='footer_voice_chat_controls'>
+								<span class='footer_text_small'>Voice Chat (<span id='voice_chat_num_users'></span>)</span>
+								<i id='footer_voice_chat_icon' class='fa fa-microphone footer_icon pointer nicetitle action' onclick="toggle_join_voice_chat()" title="Join/Leave Voice Chat"></i>
+	 
+								<span class='hspacer3'></span>
+							</span>
+
 							<i id='footer_media_menu' class='fa fa-bars footer_icon nicetitle action' id='footer_lock_images_icon' onclick='show_media_menu()' title='Media Menu'></i>
 						</span>
 
@@ -326,6 +337,15 @@
 					<div class='small_padding_bottom'>Radio</div>
 
 					<select id='admin_enable_radio' class='modal_select'>
+						<option value="true">Enabled</option>
+						<option value="false">Disabled</option>
+					</select>
+
+					<div class='spacer1'></div>
+					
+					<div class='small_padding_bottom'>Voice Chat</div>
+
+					<select id='admin_enable_voice_chat' class='modal_select'>
 						<option value="true">Enabled</option>
 						<option value="false">Disabled</option>
 					</select>
@@ -406,6 +426,11 @@
 						<div class='setting_title'>Can Change the Radio</div>
 						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice1_radio_permission" data-ptype="voice1_radio_permission">
 
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Voice Chat</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice1_voice_chat_permission" data-ptype="voice1_voice_chat_permission">
+
 						<div class='spacer3'></div>
 
 					</div>
@@ -435,6 +460,11 @@
 
 						<div class='setting_title'>Can Change the Radio</div>
 						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice2_radio_permission" data-vtype="v2" data-ptype="voice2_radio_permission">
+
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Voice Chat</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice2_voice_chat_permission" data-ptype="voice2_voice_chat_permission">
 
 						<div class='spacer3'></div>
 
@@ -466,6 +496,11 @@
 						<div class='setting_title'>Can Change the Radio</div>
 						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice3_radio_permission" data-vtype="v3" data-ptype="voice3_radio_permission">
 
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Voice Chat</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice3_voice_chat_permission" data-ptype="voice3_voice_chat_permission">
+
 						<div class='spacer3'></div>
 
 					</div>
@@ -495,6 +530,11 @@
 
 						<div class='setting_title'>Can Change the Radio</div>
 						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice4_radio_permission" data-vtype="v4" data-ptype="voice4_radio_permission">
+
+						<div class='spacer1'></div>
+
+						<div class='setting_title'>Can Voice Chat</div>
+						<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice4_voice_chat_permission" data-ptype="voice4_voice_chat_permission">
 
 					</div>
 					
@@ -831,6 +871,7 @@
 
 			<div class="{{type}}_toggle toggler toggler_category action pointer bold inline spacer4">+ On AFK Actions</div>
 			<div class='{{type}}_toggle_container toggler_container'>
+				
 				<div class='settings_item' data-setting='afk_disable_messages_beep' data-type='checkbox'>
 					<div class="setting_title2">On AFK</div>
 					<div class="setting_title">Disable Messages Beep</div>
@@ -872,7 +913,18 @@
 					<div class="setting_title">Disable Radio Change</div>
 					<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_radio_change">
 				</div>
-			</div>		
+
+			</div>	
+
+			<div class="{{type}}_toggle toggler toggler_category action pointer bold inline spacer4">+ Voice Chat Settings</div>
+			<div class='{{type}}_toggle_container toggler_container'>
+				
+				<div class='settings_item' data-setting='microphone_threshold' data-type='text'>
+					<div class="setting_title">Microphone Threshold</div>
+					<input type="text" class="{{type}}_settings_item_control setting_input_text_smaller" id="{{type}}_microphone_threshold">
+				</div>
+
+			</div>	
 
 			<div class='spacer3'></div>
 
@@ -1365,9 +1417,11 @@
 			<div class='info_item'>/topicedit: Puts the topic in the input, ready to be edited.</div>
 			<div class='info_item'>/enableimages: Enables image support in the room.</div>
 			<div class='info_item'>/disableimages: Disables image support in the room.</div>
+			<div class='info_item'>/enabletv: Enables tv support in the room.</div>
 			<div class='info_item'>/enableradio: Enables radio support in the room.</div>
 			<div class='info_item'>/disableradio: Disables radio support in the room.</div>
-			<div class='info_item'>/enabletv: Enables tv support in the room.</div>
+			<div class='info_item'>/enablevoicechat: Enables voice chat support in the room.</div>
+			<div class='info_item'>/disablevoicechat: Disables voice chat support in the room.</div>
 			<div class='info_item'>/disabletv: Disables tv support in the room.</div>
 			<div class='info_item'>/voice1 x: Gives voice 1 to a user.</div>
 			<div class='info_item'>/voice2 x: Gives voice 2 to a user.</div>
