@@ -643,22 +643,20 @@ function setup_icons()
 
 	if(room_voice_chat_enabled)
 	{
-		$("#footer_voice_chat_controls").css("display", "initial")
-
 		if(can_voice_chat)
 		{
-			$("#footer_voice_chat_icon").css("display", "initial")
+			$("#header_voice_chat_container").css("display", "initial")
 		}
 
 		else
 		{
-			$("#footer_voice_chat_icon").css("display", "none")
+			$("#header_voice_chat_container").css("display", "none")
 		}
 	}
 
 	else
 	{
-		$("#footer_voice_chat_controls").css("display", "none")
+		$("#header_voice_chat_container").css("display", "none")
 	}
 }
 
@@ -16409,28 +16407,34 @@ function leave_voice_chat()
 
 function joined_voice_chat()
 {
-	voice_chat_joined = true
+	if(!voice_chat_joined)
+	{
+		voice_chat_joined = true
 
-	$("#voice_chat_container").css("height", "80px")
-	$("#voice_chat_container").css("min-height", "80px")
-	$("#footer_voice_chat_icon").addClass("fa-microphone-slash")
-	$("#footer_voice_chat_icon").removeClass("fa-microphone")
+		$("#voice_chat_container").css("height", "80px")
+		$("#voice_chat_container").css("min-height", "80px")
+		$("#header_voice_chat_icon").addClass("fa-microphone-slash")
+		$("#header_voice_chat_icon").removeClass("fa-microphone")
 
-	fix_visible_video_frame()
+		fix_visible_video_frame()
+	}
 }
 
 function left_voice_chat()
 {
-	voice_chat_joined = false
+	if(voice_chat_joined)
+	{
+		voice_chat_joined = false
 
-	stop_microphone_stream()
+		stop_microphone_stream()
 
-	$("#voice_chat_container").css("height", 0)
-	$("#voice_chat_container").css("min-height", 0)
-	$("#footer_voice_chat_icon").addClass("fa-microphone")
-	$("#footer_voice_chat_icon").removeClass("fa-microphone-slash")
+		$("#voice_chat_container").css("height", 0)
+		$("#voice_chat_container").css("min-height", 0)
+		$("#header_voice_chat_icon").addClass("fa-microphone")
+		$("#header_voice_chat_icon").removeClass("fa-microphone-slash")
 
-	fix_visible_video_frame()
+		fix_visible_video_frame()
+	}
 }
 
 function voice_chat_user_connected(data)
@@ -16665,9 +16669,12 @@ function writeUTFBytes(view, offset, string)
 
 function stop_microphone_stream()
 {
-	microphone_recorder.disconnect(microphone_context.destination)
-	microphone_input.disconnect(microphone_recorder)
-	microphone_stream.getAudioTracks()[0].stop()
+	if(microphone_recorder)
+	{
+		microphone_recorder.disconnect(microphone_context.destination)
+		microphone_input.disconnect(microphone_recorder)
+		microphone_stream.getAudioTracks()[0].stop()
+	}
 }
 
 function voice_chat_play_blob(data)
