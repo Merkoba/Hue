@@ -224,6 +224,8 @@ var draw_image_max_levels = 200
 var draw_image_open = false
 var voice_chat_joined = false
 var voice_chat_userlist
+var voice_aura_timeouts = {}
+var microphone_stream
 var microphone_context = false 
 var microphone_input = false
 var microphone_recorder = false
@@ -233,7 +235,6 @@ var microphone_left_channel = []
 var microphone_right_channel = []
 var microphone_volume = 0
 var microphone_averaging = 0.95
-var voice_aura_timeouts = {}
 
 function init()
 {
@@ -16481,8 +16482,9 @@ function start_microphone()
 	{
 		var AudioContext = window.AudioContext
 
+		microphone_stream = stream
 		microphone_context = new AudioContext()
-		microphone_input = microphone_context.createMediaStreamSource(stream)
+		microphone_input = microphone_context.createMediaStreamSource(microphone_stream)
 		microphone_recorder = microphone_context.createScriptProcessor(microphone_buffer_size, 2, 2)
 		
 		microphone_left_channel = []
@@ -16664,6 +16666,7 @@ function stop_microphone_stream()
 {
 	microphone_recorder.disconnect(microphone_context.destination)
 	microphone_input.disconnect(microphone_recorder)
+	microphone_stream.getAudioTracks()[0].stop()
 }
 
 function voice_chat_play_blob(data)
