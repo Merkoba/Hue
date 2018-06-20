@@ -287,6 +287,7 @@ function init()
 	setup_message_area()
 	setup_mouse_events()
 	setup_draw_image()
+	setup_voice_chat()
 
 	start_socket()
 }
@@ -16437,7 +16438,7 @@ function update_voice_chat_userlist()
 			var u = get_user_by_id(id)
 
 			s += `
-			<div class='voice_chat_item'>
+			<div class='voice_chat_item' data-user_id='${u.user_id}'>
 				<div class='voice_chat_profile_image_container' id='voice_chat_profile_image_container_${u.user_id}'>
 					<img class='voice_chat_profile_image' src='${u.profile_image}' title='${u.username}'>
 				</div>
@@ -16800,4 +16801,13 @@ function remove_voice_aura(id, clr=false)
 	$(`#voice_chat_profile_image_container_${id}`).removeClass("aura")
 
 	voice_aura_timeouts[id] = undefined
+}
+
+function setup_voice_chat()
+{
+	$("#voice_chat").on("click", ".voice_chat_item", function()
+	{
+		var u = get_user_by_id($(this).data("user_id"))
+		show_profile(u.username)
+	})
 }
