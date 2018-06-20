@@ -16483,7 +16483,7 @@ function joined_voice_chat()
 		$("#voice_chat_container").css("height", "80px")
 		$("#voice_chat_container").css("min-height", "80px")
 
-		fix_visible_video_frame()
+		after_join_or_leave_voice_chat()
 	}
 }
 
@@ -16498,8 +16498,14 @@ function left_voice_chat()
 		$("#voice_chat_container").css("height", 0)
 		$("#voice_chat_container").css("min-height", 0)
 
-		fix_visible_video_frame()
+		after_join_or_leave_voice_chat()
 	}
+}
+
+function after_join_or_leave_voice_chat()
+{
+	fix_visible_video_frame()
+	goto_bottom(false, false)
 }
 
 function voice_chat_user_connected(data)
