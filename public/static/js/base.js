@@ -1985,6 +1985,7 @@ function replace_uname_in_userlist(oldu, newu)
 	}
 
 	update_userlist()
+	update_voice_chat_userlist()
 }
 
 function replace_role_in_userlist(uname, rol)
@@ -11872,6 +11873,8 @@ function update_user_profile_image(uname, pi)
 			return
 		}
 	}
+
+	update_voice_chat_userlist()
 }
 
 function get_frame_ratio(frame_id)
