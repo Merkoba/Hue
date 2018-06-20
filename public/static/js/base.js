@@ -13021,7 +13021,7 @@ function show_intro()
 	create_popup("bottomright").show(["Media Controls", s])
 
 	var s = `
-	This area contains the main menu, user list, and radio controls.`
+	This area contains the main menu, user list, voice chat, and radio controls.`
 
 	create_popup("top").show(["Top Panel", s])
 
