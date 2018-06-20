@@ -98,6 +98,8 @@
 	"global_settings_default_beep_on_highlights": true,
 	"global_settings_default_beep_on_media_change": true,
 	"global_settings_default_beep_on_user_joins": true,
+	"global_settings_default_beep_on_voice_chat_joins": true,
+	"global_settings_default_beep_on_voice_chat_parts": true,
 	"global_settings_default_at_startup": "/users",
 	"global_settings_default_user_function_1": "",
 	"global_settings_default_user_function_2": "",

@@ -7322,12 +7322,28 @@ function sound_notify(type)
 
 	if(type === "voice_chat_join")
 	{
-		var sound = "voice_chat_join"
+		if(get_setting("beep_on_voice_chat_joins"))
+		{
+			var sound = "voice_chat_join"
+		}
+
+		else
+		{
+			return false
+		}
 	}
 
 	else if(type === "voice_chat_left")
 	{
-		var sound = "voice_chat_left"
+		if(get_setting("beep_on_voice_chat_parts"))
+		{
+			var sound = "voice_chat_left"
+		}
+
+		else
+		{
+			return false
+		}
 	}
 
 	else if(!app_focused)
@@ -9644,6 +9660,8 @@ function get_global_settings()
 		"beep_on_highlights",
 		"beep_on_media_change",
 		"beep_on_user_joins",
+		"beep_on_voice_chat_joins",
+		"beep_on_voice_chat_parts",
 		"modal_effects",
 		"highlight_current_username",
 		"case_insensitive_username_highlights",
@@ -9826,6 +9844,26 @@ function setting_beep_on_media_change_action(type, save=true)
 function setting_beep_on_user_joins_action(type, save=true)
 {
 	window[type].beep_on_user_joins = $(`#${type}_beep_on_user_joins`).prop("checked")
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_beep_on_voice_chat_joins_action(type, save=true)
+{
+	window[type].beep_on_voice_chat_joins = $(`#${type}_beep_on_voice_chat_joins`).prop("checked")
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_beep_on_voice_chat_parts_action(type, save=true)
+{
+	window[type].beep_on_voice_chat_parts = $(`#${type}_beep_on_voice_chat_parts`).prop("checked")
 
 	if(save)
 	{
@@ -16475,7 +16513,10 @@ function voice_chat_user_connected(data)
 			joined_voice_chat()
 		}
 
-		sound_notify("voice_chat_join")
+		if(voice_chat_joined)
+		{
+			sound_notify("voice_chat_join")
+		}
 		
 		update_voice_chat_userlist()
 	}
@@ -16496,12 +16537,15 @@ function voice_chat_user_disconnected(data)
 			}
 		}
 
+		if(voice_chat_joined)
+		{
+			sound_notify("voice_chat_left")
+		}
+
 		if(data.user_id === user_id)
 		{
 			left_voice_chat()
 		}
-		
-		sound_notify("voice_chat_left")
 
 		update_voice_chat_userlist()
 	}

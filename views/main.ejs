@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=142"></script>
+		<script src="/static/js/base.js?ver=143"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?ver=384"/>
 
@@ -690,6 +690,18 @@
 				<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_beep_on_user_joins">
 			</div>
 
+			<div class='settings_item' data-setting='beep_on_voice_chat_joins' data-type='checkbox'>
+				<div class="setting_title2">Beep On Voice Chat</div>
+				<div class="setting_title">Joins</div>
+				<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_beep_on_voice_chat_joins">
+			</div>
+
+			<div class='settings_item' data-setting='beep_on_voice_chat_parts' data-type='checkbox'>
+				<div class="setting_title2">Beep On Voice Chat</div>
+				<div class="setting_title">Parts</div>
+				<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_beep_on_voice_chat_parts">
+			</div>
+
 			<div class='settings_item' data-setting='background_image' data-type='checkbox'>
 				<div class="setting_title">Background Image</div>
 				<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_background_image">
@@ -721,7 +733,8 @@
 			</div>
 
 			<div class='settings_item' data-setting='new_messages_separator' data-type='checkbox'>
-				<div class="setting_title">New Messages Separator</div>
+				<div class="setting_title2">New Messages</div>
+				<div class="setting_title">Separator</div>
 				<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_new_messages_separator">
 			</div>
 
@@ -732,7 +745,8 @@
 			</div>
 
 			<div class='settings_item' data-setting='afk_on_lockscreen' data-type='checkbox'>
-				<div class="setting_title">Go AFK On Lock Screen</div>
+				<div class="setting_title2">Go AFK</div>
+				<div class="setting_title">On Lock Screen</div>
 				<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_on_lockscreen">
 			</div>
 

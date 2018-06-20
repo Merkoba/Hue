@@ -370,6 +370,24 @@ If you want to remove it to start fresh:
 "global_settings_default_new_messages_separator"
 >Whether to enable the new messages separator by default.
 
+"global_settings_default_beep_on_messages"
+>Whether to beep by default on chat messages.
+
+"global_settings_default_beep_on_highlights"
+>Whether to beep by default on highlights.
+
+"global_settings_default_beep_on_media_change"
+>Whether to beep by default on media change.
+
+"global_settings_default_beep_on_user_joins"
+>Whether to beep by default on user joins.
+
+"global_settings_default_beep_on_voice_chat_joins"
+>Whether to beep by default on voice chat joins.
+
+"global_settings_default_beep_on_voice_chat_parts"
+>Whether to beep by default on voice chat parts.
+
 "global_settings_default_afk_disable_messages_beep"
 >Whether to disable message beeps while afk by default.
 
