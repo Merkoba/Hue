@@ -16482,10 +16482,13 @@ function start_microphone()
 		var AudioContext = window.AudioContext
 
 		microphone_context = new AudioContext()
-
 		microphone_input = microphone_context.createMediaStreamSource(stream)
-		
 		microphone_recorder = microphone_context.createScriptProcessor(microphone_buffer_size, 2, 2)
+		
+		microphone_left_channel = []
+		microphone_right_channel = []
+		microphone_volume = 0
+		microphone_averaging = 0.95
 
 		microphone_recorder.onaudioprocess = function(e)
 		{
