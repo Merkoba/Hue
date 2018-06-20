@@ -16424,8 +16424,6 @@ function joined_voice_chat()
 
 		$("#voice_chat_container").css("height", "80px")
 		$("#voice_chat_container").css("min-height", "80px")
-		$("#header_voice_chat_icon").addClass("fa-microphone-slash")
-		$("#header_voice_chat_icon").removeClass("fa-microphone")
 
 		fix_visible_video_frame()
 	}
@@ -16441,8 +16439,6 @@ function left_voice_chat()
 
 		$("#voice_chat_container").css("height", 0)
 		$("#voice_chat_container").css("min-height", 0)
-		$("#header_voice_chat_icon").addClass("fa-microphone")
-		$("#header_voice_chat_icon").removeClass("fa-microphone-slash")
 
 		fix_visible_video_frame()
 	}
