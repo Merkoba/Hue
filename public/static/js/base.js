@@ -16501,7 +16501,7 @@ function start_microphone()
 
 	.catch(function(err)
 	{ 
-		console.error(err)
+		msg_info.show("No microphone detected")
 	})
 }
 
