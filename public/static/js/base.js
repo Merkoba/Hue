@@ -5595,6 +5595,10 @@ function register_commands()
 	commands.push('/unlockscreen')
 	commands.push('/togglelockscreen')
 	commands.push('/drawimage')
+	commands.push('/enablevoicechat')
+	commands.push('/disablevoicechat')
+	commands.push('/joinvoicechat')
+	commands.push('/leavevoicechat')
 
 	commands.sort()
 
@@ -5730,12 +5734,12 @@ function execute_command(msg, ans)
 
 	else if(oiEquals(lmsg, '/enablevoicechat'))
 	{
-		change_voice_chat_enabled(true)
+		change_room_voice_chat_enabled(true)
 	}
 
 	else if(oiEquals(lmsg, '/disablevoicechat'))
 	{
-		change_voice_chat_enabled(false)
+		change_room_voice_chat_enabled(false)
 	}
 
 	else if(oiEquals(lmsg, '/enabletv'))
@@ -6530,6 +6534,16 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/drawimage'))
 	{
 		open_draw_image()
+	}
+
+	else if(oiEquals(lmsg, '/joinvoicechat'))
+	{
+		join_voice_chat()
+	}
+
+	else if(oiEquals(lmsg, '/leavevoicechat'))
+	{
+		leave_voice_chat()
 	}
 
 	else
@@ -16385,10 +16399,7 @@ function toggle_join_voice_chat()
 
 	else
 	{
-		if(can_voice_chat)
-		{
-			start_microphone()
-		}
+		join_voice_chat()
 	}
 }
 
@@ -16396,7 +16407,7 @@ function join_voice_chat()
 {
 	if(can_voice_chat)
 	{
-		socket_emit("join_voice_chat", {})
+		start_microphone()
 	}
 }
 
@@ -16504,7 +16515,7 @@ function start_microphone()
 
 		microphone_recorder.connect(microphone_context.destination)
 
-		join_voice_chat()
+		socket_emit("join_voice_chat", {})
 	})
 
 	.catch(function(err)
