@@ -229,7 +229,6 @@ var microphone_stream
 var microphone_context = false 
 var microphone_input = false
 var microphone_recorder = false
-var microphone_buffer_size = 2048
 var microphone_recording_length = 0
 var microphone_left_channel = []
 var microphone_right_channel = []
@@ -16521,13 +16520,15 @@ function process_microphone(e)
 		
 		microphone_recording_length += microphone_buffer_size
 		
-		if(microphone_recording_length > microphone_buffer_size * 4)
+		if(microphone_recording_length > microphone_buffer_size * microphone_buffer_multiplier)
 		{	
 			var blob = microphone_data_to_blob()
 
 			microphone_recording_length = 0
 			microphone_left_channel = []
 			microphone_right_channel = []
+
+			console.log(blob.size)
 
 			socket_emit("voice_chat_blob", {array_buffer:blob})
 		}

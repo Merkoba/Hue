@@ -125,6 +125,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.draw_coords_max_array_length = config.draw_coords_max_array_length
 	c.vars.max_voice_chat_inactivity = config.max_voice_chat_inactivity
 	c.vars.microphone_sample_rate = config.microphone_sample_rate
+	c.vars.microphone_buffer_size = config.microphone_buffer_size
+	c.vars.microphone_buffer_multiplier = config.microphone_buffer_multiplier
 
 	function check_url(req, res, next)
 	{

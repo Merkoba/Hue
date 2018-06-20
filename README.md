@@ -529,6 +529,12 @@ If you want to remove it to start fresh:
 "microphone_sample_rate":
 >Sample rate for transmitted voice chat chunks.
 
+"microphone_buffer_size":
+>Size of the voice chat audio buffer.
+
+"microphone_buffer_multiplier":
+>Send voice chat audio chunk after this amount of buffers.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"
