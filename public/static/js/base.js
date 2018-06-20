@@ -7315,7 +7315,22 @@ function change_volume_command(arg, type="radio")
 
 function sound_notify(type)
 {
-	if(started && !app_focused)
+	if(!started)
+	{
+		return false
+	}
+
+	if(type === "voice_chat_join")
+	{
+		var sound = "voice_chat_join"
+	}
+
+	else if(type === "voice_chat_left")
+	{
+		var sound = "voice_chat_left"
+	}
+
+	else if(!app_focused)
 	{
 		if(type === "message")
 		{
@@ -7393,9 +7408,14 @@ function sound_notify(type)
 		{
 			return false
 		}
-
-		play_audio(sound)
 	}
+
+	else
+	{
+		return false
+	}
+
+	play_audio(sound)
 }
 
 function alert_title()
@@ -16454,6 +16474,8 @@ function voice_chat_user_connected(data)
 		{
 			joined_voice_chat()
 		}
+
+		sound_notify("voice_chat_join")
 		
 		update_voice_chat_userlist()
 	}
@@ -16470,17 +16492,18 @@ function voice_chat_user_disconnected(data)
 			if(id === data.user_id)
 			{
 				voice_chat_userlist.splice(i, 1)
-				
-				if(data.user_id === user_id)
-				{
-					left_voice_chat()
-				}
-
-				update_voice_chat_userlist()
-
 				break
 			}
 		}
+
+		if(data.user_id === user_id)
+		{
+			left_voice_chat()
+		}
+		
+		sound_notify("voice_chat_left")
+
+		update_voice_chat_userlist()
 	}
 }
 
@@ -16538,8 +16561,6 @@ function process_microphone(e)
 			microphone_recording_length = 0
 			microphone_left_channel = []
 			microphone_right_channel = []
-
-			console.log(blob.size)
 
 			socket_emit("voice_chat_blob", {array_buffer:blob})
 		}
