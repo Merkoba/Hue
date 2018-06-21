@@ -225,6 +225,7 @@ var draw_image_open = false
 var voice_chat_joined = false
 var voice_chat_userlist
 var voice_aura_timeouts = {}
+var voice_chat_received_chunks = {}
 var microphone_stream
 var microphone_context = false 
 var microphone_input = false
@@ -1279,7 +1280,7 @@ function start_socket()
 
 		else if(data.type === 'voice_chat_blob_received')
 		{
-			voice_chat_play_blob(data)
+			voice_chat_blob_received(data)
 		}
 
 		else if(data.type === 'voice_chat_blob_received_feedback')
@@ -16762,16 +16763,51 @@ function stop_microphone_stream()
 	}
 }
 
-function voice_chat_play_blob(data)
+function voice_chat_blob_received(data)
 {
-	var blob = new Blob([data.array_buffer], {type:'audio/wav'})
-
 	if(voice_chat_joined)
 	{
-		new Audio(window.URL.createObjectURL(blob)).play()
+		var blob = new Blob([data.array_buffer], {type:'audio/wav'})
+		
+		if(voice_chat_received_chunks[data.user_id] === undefined)
+		{
+			voice_chat_received_chunks[data.user_id] = [blob]
+			
+			setTimeout(function()
+			{
+				voice_chat_play_chunk(data.user_id)
+			}, 200)
+		}
+
+		else
+		{
+			voice_chat_received_chunks[data.user_id].push(blob)
+		}
 	}
 
 	show_voice_aura(data.user_id)
+}
+
+function voice_chat_play_chunk(id)
+{
+	var chunk = voice_chat_received_chunks[id].shift()
+
+	if(chunk === undefined)
+	{
+		voice_chat_received_chunks[id] = undefined
+		return false
+	}
+
+	var audioblob = new Audio(window.URL.createObjectURL(chunk))
+
+	var duration = chunk.size / microphone_sample_rate / microphone_buffer_multiplier / 2
+
+	setTimeout(function()
+	{
+		voice_chat_play_chunk(id)
+	}, duration * 1000)
+
+	audioblob.play()
 }
 
 function show_voice_aura(id)
