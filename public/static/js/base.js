@@ -16776,7 +16776,7 @@ function voice_chat_blob_received(data)
 			setTimeout(function()
 			{
 				voice_chat_play_chunk(data.user_id)
-			}, 200)
+			}, 500)
 		}
 
 		else
