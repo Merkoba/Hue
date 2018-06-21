@@ -1390,7 +1390,15 @@ function load_radio(src, type)
 
 			if(id[0] === "video")
 			{
-				youtube_player.loadVideoById({videoId:id[1], startSeconds:utilz.get_youtube_time(src)})
+				if(radio_started)
+				{
+					youtube_player.loadVideoById({videoId:id[1], startSeconds:utilz.get_youtube_time(src)})
+				}
+
+				else
+				{
+					youtube_player.cueVideoById({videoId:id[1], startSeconds:utilz.get_youtube_time(src)})
+				}
 			}
 
 			else if(id[0] === "list")
@@ -1404,11 +1412,6 @@ function load_radio(src, type)
 			}
 
 			youtube_player.setVolume(get_nice_volume(room_settings.radio_volume))
-
-			if(!radio_started)
-			{
-				youtube_player.pauseVideo()
-			}
 		}
 
 		if(!room_settings.radio_locked || !last_radio_source)
