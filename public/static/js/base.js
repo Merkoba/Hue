@@ -16807,7 +16807,7 @@ function voice_chat_play_chunk(id)
 
 	audioblob.play()
 	
-	show_voice_aura(data.user_id)
+	show_voice_aura(id)
 }
 
 function show_voice_aura(id)
