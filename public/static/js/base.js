@@ -16784,8 +16784,6 @@ function voice_chat_blob_received(data)
 			voice_chat_received_chunks[data.user_id].push(blob)
 		}
 	}
-
-	show_voice_aura(data.user_id)
 }
 
 function voice_chat_play_chunk(id)
@@ -16805,9 +16803,11 @@ function voice_chat_play_chunk(id)
 	setTimeout(function()
 	{
 		voice_chat_play_chunk(id)
-	}, duration * 1000)
+	}, duration * 1000 * 0.9)
 
 	audioblob.play()
+	
+	show_voice_aura(data.user_id)
 }
 
 function show_voice_aura(id)
