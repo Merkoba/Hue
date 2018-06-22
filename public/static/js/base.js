@@ -571,16 +571,19 @@ function check_permissions()
 	setup_icons()
 }
 
-function check_permission(role, type)
+function check_permission(role=false, type=false)
 {
-	if(is_admin_or_op())
+	if(is_admin_or_op(role))
 	{
 		return true
 	}
 
-	if(window[`${role}_${type}_permission`])
+	if(role && type)
 	{
-		return true
+		if(window[`${role}_${type}_permission`])
+		{
+			return true
+		}
 	}
 
 	return false
@@ -1911,8 +1914,12 @@ function userjoin(data)
 
 	if(added)
 	{
+		console.log(1)
+		console.log(data.role)
+		console.log(get_setting("show_joins"))
 		if(get_setting("show_joins") && check_permission(data.role, "chat"))
 		{
+			console.log(2)
 			chat_announce(
 			{
 				brk: "<i class='icon2 fa fa-user-plus'></i>",
