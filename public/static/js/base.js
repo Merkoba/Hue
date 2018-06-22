@@ -49,10 +49,7 @@ var tv_title = ''
 var tv_metadata = ''
 var tv_setter = ''
 var tv_date = ''
-var tabbed_list = []
-var tabbed_word = ""
-var tabbed_start = 0
-var tabbed_end = 0
+var tab_info = {}
 var crm = false
 var orb = false
 var stu = false
@@ -255,7 +252,6 @@ function init()
 	start_volume_scroll()
 	generate_highlight_words_regex()
 	activate_visibility_listener()
-	input_click_events()
 	copypaste_events()
 	scroll_events()
 	resize_events()
@@ -289,6 +285,7 @@ function init()
 	setup_mouse_events()
 	setup_draw_image()
 	setup_voice_chat()
+	setup_autocomplete()
 
 	start_socket()
 }
@@ -4019,16 +4016,9 @@ function activate_key_detection()
 				show_status()
 			}
 
-			if(input.value.length > 0)
-			{
-				tabbed()
-			}
-
 			e.preventDefault()
 			return
 		}
-
-		clear_tabbed()
 	})
 
 	document.addEventListener('keyup', (e) =>
@@ -4262,20 +4252,20 @@ function setup_input_history()
 	})
 }
 
-function input_click_events()
+function clear_tabbed(element)
 {
-	$('#input').on("click", function()
+	if(!element.id)
 	{
-		clear_tabbed()
-	})
-}
+		return false
+	}
 
-function clear_tabbed()
-{
-	tabbed_list = []
-	tabbed_word = ""
-	tabbed_start = 0
-	tabbed_end = 0
+	tab_info[element.id] =
+	{
+		tabbed_list: [],
+		tabbed_word: "",
+		tabbed_start: 0,
+		tabbed_end: 0
+	}
 }
 
 function replaceBetween(str, start, end, what)
@@ -4293,8 +4283,10 @@ function oiStartsWith(str, what)
 	return str.startsWith(`${commands_sorted[what]} `)
 }
 
-function get_closest_autocomplete(w)
+function get_closest_autocomplete(element, w)
 {
+	var info = tab_info[element.id]
+
 	var l = commands.concat(usernames)
 	var wl = w.toLowerCase()
 	var has = false
@@ -4307,9 +4299,9 @@ function get_closest_autocomplete(w)
 		{
 			has = true
 
-			if(!tabbed_list.includes(pw))
+			if(!info.tabbed_list.includes(pw))
 			{
-				tabbed_list.push(pw)
+				info.tabbed_list.push(pw)
 				return l[i]
 			}
 		}
@@ -4324,9 +4316,9 @@ function get_closest_autocomplete(w)
 		{
 			has = true
 
-			if(!tabbed_list.includes(pw))
+			if(!info.tabbed_list.includes(pw))
 			{
-				tabbed_list.push(pw)
+				info.tabbed_list.push(pw)
 				return l[i]
 			}
 		}
@@ -4334,58 +4326,73 @@ function get_closest_autocomplete(w)
 
 	if(has)
 	{
-		tabbed_list = []
-		return get_closest_autocomplete(w)
+		info.tabbed_list = []
+		return get_closest_autocomplete(element, w)
 	}
 
 	return ""
 }
 
-function tabbed()
+function tabbed(element)
 {
-	if(tabbed_word !== "")
+	if(!element.id)
 	{
-		replace_tabbed(tabbed_word)
+		return false
+	}
+
+	var info = tab_info[element.id]
+
+	if(info === undefined)
+	{
+		clear_tabbed(element)
+		var info = tab_info[element.id]
+	}
+
+	if(info.tabbed_word !== "")
+	{
+		replace_tabbed(element, info.tabbed_word)
 		return
 	}
 
-	var split = input.selectionStart
-	var a = input.value.substring(0, split).match(/[^ ]*$/)[0]
-	var b = input.value.substring(split).match(/^[^ ]*/)[0]
+	var split = element.selectionStart
+	var a = element.value.substring(0, split).match(/[^ ]*$/)[0]
+	var b = element.value.substring(split).match(/^[^ ]*/)[0]
 	var word = a + b
 
-	tabbed_start = split - a.length
-	tabbed_end = split + b.length
+	info.tabbed_start = split - a.length
+	info.tabbed_end = split + b.length
 
 	if(word !== "")
 	{
-		tabbed_word = word
-		replace_tabbed(word)
+		info.tabbed_word = word
+		replace_tabbed(element, word)
 	}
 }
 
-function replace_tabbed(word)
+function replace_tabbed(element, word)
 {
-	var result = get_closest_autocomplete(word)
+	var info = tab_info[element.id]
+
+	var result = get_closest_autocomplete(element, word)
 
 	if(result)
 	{
-		if(input.value[tabbed_end] === ' ')
+		if(element.value[info.tabbed_end] === ' ')
 		{
-			input.value = replaceBetween(input.value, tabbed_start, tabbed_end, result)
+			element.value = replaceBetween(element.value, info.tabbed_start, info.tabbed_end, result)
 		}
 
 		else
 		{
-			input.value = replaceBetween(input.value, tabbed_start, tabbed_end, `${result} `)
+			element.value = replaceBetween(element.value, info.tabbed_start, info.tabbed_end, `${result} `)
 		}
 
-		var pos = tabbed_start + result.length
+		var pos = info.tabbed_start + result.length
 
-		input.setSelectionRange(pos + 1, pos + 1)
+		element.setSelectionRange(pos + 1, pos + 1)
 
-		tabbed_start = pos - result.length
-		tabbed_end = pos
+		info.tabbed_start = pos - result.length
+		info.tabbed_end = pos
 	}
 }
 
@@ -16860,3 +16867,29 @@ function setup_voice_chat()
 		show_profile(u.username)
 	})
 }
+
+function setup_autocomplete()
+{
+	$("body").on("keydown", "textarea, input[type='text']", function(e)
+	{
+		if(e.key === "Tab")
+		{
+			var value = $(this).val()
+
+			if(value.length > 0)
+			{
+				tabbed(this)
+				e.preventDefault()
+				return
+			}
+		}
+
+		clear_tabbed(this)
+	})
+
+	$("body").on("click", "textarea, input[type='text']", function(e)
+	{
+		clear_tabbed(this)
+	})
+}
+
