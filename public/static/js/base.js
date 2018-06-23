@@ -1911,12 +1911,8 @@ function userjoin(data)
 
 	if(added)
 	{
-		console.log(1)
-		console.log(data.role)
-		console.log(get_setting("show_joins"))
 		if(get_setting("show_joins") && check_permission(data.role, "chat"))
 		{
-			console.log(2)
 			chat_announce(
 			{
 				brk: "<i class='icon2 fa fa-user-plus'></i>",
@@ -4355,8 +4351,11 @@ function tabbed(element)
 	}
 
 	var split = element.selectionStart
-	var a = element.value.substring(0, split).match(/[^ ]*$/)[0]
-	var b = element.value.substring(split).match(/^[^ ]*/)[0]
+	var value = element.value.replace(/\n/g, ' ')
+
+	var a = value.substring(0, split).match(/[^ ]*$/)[0]
+	var b = value.substring(split).match(/^[^ ]*/)[0]
+
 	var word = a + b
 
 	info.tabbed_start = split - a.length
