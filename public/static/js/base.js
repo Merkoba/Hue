@@ -2684,7 +2684,7 @@ function start_toggle_radio_context_menu()
 			},
 			trs5:
 			{
-				name: "Stop in 1 Hour", callback: function(key, opt)
+				name: "Stop in 60 Minutes", callback: function(key, opt)
 				{
 					stop_radio_in(60)
 				},
@@ -2695,7 +2695,7 @@ function start_toggle_radio_context_menu()
 			},
 			trs5b:
 			{
-				name: "Stop in 1 Hour (*)", callback: function(key, opt)
+				name: "Stop in 60 Minutes (*)", callback: function(key, opt)
 				{
 					stop_radio_in(60)
 				},
