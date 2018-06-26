@@ -4667,9 +4667,9 @@ function start_chat_click_events()
 }
 function start_chat_hover_events()
 {
-	$("#chat_area").on("mouseenter", ".chat_uname", function()
+	$("#chat_area").on("mouseenter", ".chat_uname, .chat_profile_image", function()
 	{
-		var uname = $(this).text()
+		var uname = $(this).closest(".msg").data("uname")
 		
 		clearTimeout(highlight_same_posts_timeouts[uname])
 		
@@ -4679,15 +4679,15 @@ function start_chat_hover_events()
 		}, 400)
 	})
 
-	$("#chat_area").on("mouseleave", ".chat_uname", function()
+	$("#chat_area").on("mouseleave", ".chat_uname, .chat_profile_image", function()
 	{
-		var uname = $(this).text()
+		var uname = $(this).closest(".msg").data("uname")
 
 		clearTimeout(highlight_same_posts_timeouts[uname])
 
 		if($(this).closest(".msg").hasClass("highlighted"))
 		{
-			highlight_same_posts($(this).text(), false)
+			highlight_same_posts(uname, false)
 		}
 	})
 }
@@ -4696,7 +4696,7 @@ function highlight_same_posts(uname, add=true)
 {
 	$(".chat_message").each(function()
 	{
-		if($(this).find(".chat_uname").eq(0).text() === uname)
+		if($(this).data("uname") === uname)
 		{
 			if(add)
 			{
