@@ -395,6 +395,12 @@ body, html
 
 .compact_layout .chat_uname_container
 {
+	display: flex;
+	flex-direction: row;
+}
+
+.compact_layout .chat_uname_container
+{
 	padding-right: 0.5rem;
 }
 

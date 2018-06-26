@@ -4852,7 +4852,7 @@ function update_chat(args={})
 			var s = `
 			<div class='msg chat_message umsg_${args.uname} compact_layout'>
 				<div class='chat_uname_container'>
-					<div class='chat_uname action'></div>
+					<div class='chat_uname action'></div><div>:</div>
 				</div>
 				<div class='chat_content_container'>
 					<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
