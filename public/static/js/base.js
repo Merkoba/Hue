@@ -4772,6 +4772,16 @@ function update_chat(args={})
 	}
 
 	var starts_me = args.msg.startsWith('/me ') || args.msg.startsWith('/em ')
+
+	if(get_setting("message_layout") === "normal")
+	{
+		var msgcls = "normal_layout"
+	}
+
+	else if(get_setting("message_layout") === "compact")
+	{
+		var msgcls = "compact_layout"
+	}
 	
 	if(starts_me || args.third_person)
 	{
@@ -4791,7 +4801,7 @@ function update_chat(args={})
 		}
 
 		var s = `
-		<div class='msg chat_message thirdperson'>
+		<div class='msg chat_message thirdperson ${msgcls}'>
 			<div class='chat_third_container'>
 				<div class='chat_third_brk'>${args.brk}</div>
 				<div class='chat_third_content'>
