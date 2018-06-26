@@ -197,6 +197,7 @@ var message_uname = ""
 var message_type = ""
 var users_to_disconnect = []
 var stop_radio_timeout
+var stop_radio_delay = 0
 var aura_timeouts = {}
 var reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
 var show_reactions_timeout
@@ -2579,6 +2580,17 @@ function start_toggle_radio_context_menu()
 		className: 'toggle_radio_context',
 		items:
 		{
+			trs0:
+			{
+				name: "Don't Stop Automatically", callback: function(key, opt)
+				{
+					clear_automatic_stop_radio()
+				},
+				visible: function(key, opt)
+				{
+					return stop_radio_delay > 0
+				}			
+			},
 			trs1:
 			{
 				name: "Stop in 1 Minute", callback: function(key, opt)
@@ -2587,7 +2599,18 @@ function start_toggle_radio_context_menu()
 				},
 				visible: function(key, opt)
 				{
-					return radio_started
+					return radio_started && stop_radio_delay !== 1
+				}
+			},
+			trs1b:
+			{
+				name: "Stop in 1 Minute (*)", callback: function(key, opt)
+				{
+					stop_radio_in(1)
+				},
+				visible: function(key, opt)
+				{
+					return radio_started && stop_radio_delay === 1
 				}			
 			},
 			trs2:
@@ -2598,8 +2621,19 @@ function start_toggle_radio_context_menu()
 				},
 				visible: function(key, opt)
 				{
-					return radio_started
-				}			
+					return radio_started && stop_radio_delay !== 5
+				}
+			},
+			trs2b:
+			{
+				name: "Stop in 5 Minutes (*)", callback: function(key, opt)
+				{
+					stop_radio_in(5)
+				},
+				visible: function(key, opt)
+				{
+					return radio_started && stop_radio_delay === 5
+				}
 			},
 			trs3:
 			{
@@ -2609,8 +2643,19 @@ function start_toggle_radio_context_menu()
 				},
 				visible: function(key, opt)
 				{
-					return radio_started
-				}			
+					return radio_started && stop_radio_delay !== 10
+				}
+			},
+			trs3b:
+			{
+				name: "Stop in 10 Minutes (*)", callback: function(key, opt)
+				{
+					stop_radio_in(10)
+				},
+				visible: function(key, opt)
+				{
+					return radio_started && stop_radio_delay === 10
+				}
 			},
 			trs4:
 			{
@@ -2620,8 +2665,19 @@ function start_toggle_radio_context_menu()
 				},
 				visible: function(key, opt)
 				{
-					return radio_started
-				}			
+					return radio_started && stop_radio_delay !== 30
+				}
+			},
+			trs4b:
+			{
+				name: "Stop in 30 Minutes (*)", callback: function(key, opt)
+				{
+					stop_radio_in(30)
+				},
+				visible: function(key, opt)
+				{
+					return radio_started && stop_radio_delay === 30
+				}
 			},
 			trs5:
 			{
@@ -2631,8 +2687,19 @@ function start_toggle_radio_context_menu()
 				},
 				visible: function(key, opt)
 				{
-					return radio_started
-				}			
+					return radio_started && stop_radio_delay !== 60
+				}
+			},
+			trs5b:
+			{
+				name: "Stop in 1 Hour (*)", callback: function(key, opt)
+				{
+					stop_radio_in(60)
+				},
+				visible: function(key, opt)
+				{
+					return radio_started && stop_radio_delay === 60
+				}
 			},
 			trrestart:
 			{
@@ -7121,9 +7188,7 @@ function start_radio()
 
 	if(stop_radio_timeout)
 	{
-		clearTimeout(stop_radio_timeout)
-		stop_radio_timeout = undefined
-		feedback("Radio won't stop automatically anymore")
+		clear_automatic_stop_radio()
 	}
 }
 
@@ -7149,9 +7214,7 @@ function stop_radio()
 
 	if(stop_radio_timeout)
 	{
-		clearTimeout(stop_radio_timeout)
-		stop_radio_timeout = undefined
-		feedback("Radio won't stop automatically anymore")
+		clear_automatic_stop_radio()
 	}
 }
 
@@ -15337,9 +15400,11 @@ function stop_radio_in(minutes)
 		return false
 	}
 
-	clearTimeout(stop_radio_timeout)
+	clear_automatic_stop_radio(false)
 
 	var d = 1000 * 60 * minutes
+
+	stop_radio_delay = minutes
 
 	stop_radio_timeout = setTimeout(function()
 	{
@@ -15360,6 +15425,20 @@ function stop_radio_in(minutes)
 	}
 
 	feedback(`Radio will stop automatically in ${s}`)
+}
+
+function clear_automatic_stop_radio(announce=true)
+{
+	clearTimeout(stop_radio_timeout)
+	
+	stop_radio_timeout = undefined
+
+	stop_radio_delay = 0
+
+	if(announce)
+	{
+		feedback("Radio won't stop automatically anymore")
+	}
 }
 
 function ping_server()
@@ -16891,4 +16970,3 @@ function setup_autocomplete()
 		clear_tabbed(this)
 	})
 }
-
