@@ -4668,7 +4668,7 @@ function start_chat_click_events()
 }
 function start_chat_hover_events()
 {
-	$("#chat_area").on("mouseenter", ".chat_uname, .chat_profile_image", function()
+	$("#chat_area").on("mouseenter", ".chat_uname, .chat_profile_image, .announcement_content", function()
 	{
 		var uname = $(this).closest(".msg").data("uname")
 		
@@ -4680,7 +4680,7 @@ function start_chat_hover_events()
 		}, highlight_same_posts_delay)
 	})
 
-	$("#chat_area").on("mouseleave", ".chat_uname, .chat_profile_image", function()
+	$("#chat_area").on("mouseleave", ".chat_uname, .chat_profile_image, .announcement_content", function()
 	{
 		var uname = $(this).closest(".msg").data("uname")
 
