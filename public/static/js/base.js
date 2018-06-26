@@ -290,6 +290,7 @@ function init()
 	setup_draw_image()
 	setup_voice_chat()
 	setup_autocomplete()
+	start_other_scrollbars()
 
 	start_socket()
 }
@@ -1893,6 +1894,12 @@ function apply_theme()
 	.modal_icon_selected
 	{
 		background-color: ${background_color_a_2} !important;
+		color: ${font_color} !important;
+	}
+
+	#settings_window_left
+	{
+		background-color: ${background_color_2} !important;
 		color: ${font_color} !important;
 	}
 
@@ -4611,6 +4618,14 @@ function start_modal_scrollbars()
 	}
 }
 
+function start_other_scrollbars()
+{
+	$(".settings_category").each(function()
+	{
+		start_scrollbar(this, false)
+	})
+}
+
 function remove_modal_scrollbars()
 {
 	for(var instance of get_modal_instances())
@@ -4624,13 +4639,35 @@ function remove_modal_scrollbars()
 
 function start_modal_scrollbar(s)
 {
-	$(`#Msg-content-container-${s}`).niceScroll
+	var ignore = ["global_settings", "room_settings"]
+	
+	if(ignore.includes(s))
+	{
+		return false
+	}
+
+	start_scrollbar($(`#Msg-content-container-${s}`))
+}
+
+function start_scrollbar(element, visible=true)
+{
+	if(visible)
+	{
+		var cursorwidth = "7px"
+	}
+
+	else
+	{
+		var cursorwidth = "0px"
+	}
+
+	$(element).niceScroll
 	({
 		zindex: 9999999,
 		autohidemode: false,
 		cursorcolor: "#AFAFAF",
 		cursorborder: "0px solid white",
-		cursorwidth: "7px",
+		cursorwidth: cursorwidth,
 		horizrailenabled: false
 	})
 }
@@ -4642,7 +4679,12 @@ function remove_modal_scrollbar(s)
 
 function update_modal_scrollbar(s)
 {
-	$(`#Msg-content-container-${s}`).getNiceScroll().resize()
+	update_scrollbar($(`#Msg-content-container-${s}`))
+}
+
+function update_scrollbar(element)
+{
+	$(element).getNiceScroll().resize()
 }
 
 function nice_date(date=Date.now())
@@ -4784,12 +4826,12 @@ function update_chat(args={})
 
 	var starts_me = args.msg.startsWith('/me ') || args.msg.startsWith('/em ')
 
-	if(get_setting("message_layout") === "normal")
+	if(get_setting("chat_layout") === "normal")
 	{
 		var msgcls = "normal_layout"
 	}
 
-	else if(get_setting("message_layout") === "compact")
+	else if(get_setting("chat_layout") === "compact")
 	{
 		var msgcls = "compact_layout"
 	}
@@ -4828,7 +4870,7 @@ function update_chat(args={})
 
 	else
 	{
-		if(get_setting("message_layout") === "normal")
+		if(get_setting("chat_layout") === "normal")
 		{
 			var s = `
 			<div class='msg chat_message umsg_${args.uname} normal_layout'>
@@ -4848,7 +4890,7 @@ function update_chat(args={})
 			</div>`
 		}
 
-		else if(get_setting("message_layout") === "compact")
+		else if(get_setting("chat_layout") === "compact")
 		{
 			var s = `
 			<div class='msg chat_message umsg_${args.uname} compact_layout'>
@@ -4919,7 +4961,7 @@ function add_to_chat(msg, save=false)
 		var content = msg.find(".chat_content").eq(0)
 	}
 
-	if(get_setting("message_layout") === "normal" && (msg.hasClass("chat_message") && !msg.hasClass("thirdperson")) && (last_msg.hasClass("chat_message") && !last_msg.hasClass("thirdperson")))
+	if(get_setting("chat_layout") === "normal" && (msg.hasClass("chat_message") && !msg.hasClass("thirdperson")) && (last_msg.hasClass("chat_message") && !last_msg.hasClass("thirdperson")))
 	{
 		if(msg.find(".chat_uname").eq(0).text() === last_msg.find(".chat_uname").eq(0).text())
 		{
@@ -5454,12 +5496,12 @@ function chat_announce(args={})
 		var t = nice_date(d)
 	}
 
-	if(get_setting("message_layout") === "normal")
+	if(get_setting("chat_layout") === "normal")
 	{
 		var msgcls = "normal_layout"
 	}
 
-	else if(get_setting("message_layout") === "compact")
+	else if(get_setting("chat_layout") === "compact")
 	{
 		var msgcls = "compact_layout"
 	}
@@ -9597,7 +9639,6 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "global_settings",
-			window_width: "22em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -9606,6 +9647,7 @@ function start_msg()
 			{
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
+				update_scrollbar($("#settings_window_global_settings .settings_window_category_container_selected"))
 			},
 			after_set: function(instance)
 			{
@@ -9616,7 +9658,6 @@ function start_msg()
 				after_modal_close(instance)
 				reset_radio_history_filter()
 				close_togglers("global_settings")
-				reset_settings_filter("global_settings")
 			}
 		})
 	)
@@ -9626,7 +9667,6 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "room_settings",
-			window_width: "22em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -9635,6 +9675,7 @@ function start_msg()
 			{
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
+				update_scrollbar($("#settings_window_room_settings .settings_window_category_container_selected"))
 			},
 			after_set: function(instance)
 			{
@@ -9645,7 +9686,6 @@ function start_msg()
 				after_modal_close(instance)
 				reset_radio_history_filter()
 				close_togglers("room_settings")
-				reset_settings_filter("room_settings")
 			}
 		})
 	)
@@ -9869,7 +9909,7 @@ function get_global_settings()
 		"on_unlockscreen",
 		"afk_on_lockscreen",
 		"microphone_threshold",
-		"message_layout"
+		"chat_layout"
 	]
 
 	var changed = false
@@ -10447,18 +10487,18 @@ function setting_microphone_threshold_action(type, save=true)
 	}
 }
 
-function setting_message_layout_action(type, save=true)
+function setting_chat_layout_action(type, save=true)
 {
-	var mode = $(`#${type}_message_layout option:selected`).val()
+	var mode = $(`#${type}_chat_layout option:selected`).val()
 
-	window[type].message_layout = mode
+	window[type].chat_layout = mode
 
 	if(save)
 	{
 		window[`save_${type}`]()
 	}
 
-	if(active_settings("message_layout") === type)
+	if(active_settings("chat_layout") === type)
 	{
 		var r = confirm("To apply this setting a restart is required. Do you want to restart now?")
 
@@ -10697,16 +10737,6 @@ function start_filters()
 	$("#chat_search_filter").on("input", function()
 	{
 		chat_search_timer()
-	})
-
-	$("#global_settings_filter").on("input", function()
-	{
-		global_settings_filter_timer()
-	})
-
-	$("#room_settings_filter").on("input", function()
-	{
-		room_settings_filter_timer()
 	})
 }
 
@@ -14424,7 +14454,17 @@ function goto_room_action()
 
 function confirm_reset_settings(type)
 {
-	var r = confirm("Are you sure you want to reset the settings to their initial state?")
+	if(type === "global_settings")
+	{
+		var s = "Global Settings"
+	}
+
+	else
+	{
+		var s = "Room Settings"
+	}
+
+	var r = confirm(`Are you sure you want to reset the ${s} to their initial state?`)
 
 	if(r)
 	{
@@ -14670,30 +14710,12 @@ function user_is_ignored(uname)
 
 function show_global_settings(filter=false)
 {
-	msg_global_settings.show(function()
-	{
-		if(filter)
-		{
-			$("#global_settings_filter").val(filter)
-			do_settings_filter("global_settings")
-		}
-
-		$("#global_settings_filter").focus()
-	})
+	msg_global_settings.show()
 }
 
 function show_room_settings(filter=false)
 {
-	msg_room_settings.show(function()
-	{
-		if(filter)
-		{
-			$("#room_settings_filter").val(filter)
-			do_settings_filter("room_settings")
-		}
-
-		$("#room_settings_filter").focus()
-	})
+	msg_room_settings.show()
 }
 
 function setup_settings_windows()
@@ -14704,6 +14726,7 @@ function setup_settings_windows()
 	set_room_settings_overriders()
 	start_room_settings_overriders()
 	check_room_settings_override()
+	setup_settings_window()
 }
 
 function create_room_settings_overriders()
@@ -14987,106 +15010,6 @@ function scroll_chat_to(y, animate=true, d=500)
 		$("#chat_area").scrollTop(y)
 	}
 }
-
-function do_settings_filter(type)
-{
-	var filter = $(`#${type}_filter`).val().trim().toLowerCase()
-	var container = $(`#${type}_container`)
-
-	if(filter !== "")
-	{
-		open_togglers(type)
-
-		container.find('.toggler_category').each(function()
-		{
-			$(this).css("display", "none")
-		})
-
-		container.find(`.settings_item`).each(function()
-		{
-			$(this).css("display", "block")
-
-			var text = $(this).text()
-
-			var include = false
-
-			if(text.toLowerCase().includes(filter))
-			{
-				include = true
-			}
-
-			if(!include)
-			{
-				$(this).css("display", "none")
-			}
-		})
-	}
-
-	else
-	{
-		close_togglers(type)
-
-		container.find(`.settings_item`).each(function()
-		{
-			$(this).css("display", "block")
-		})
-
-		container.find(`.toggler_category`).each(function()
-		{
-			$(this).css("display", "block")
-		})
-	}
-
-	update_modal_scrollbar(type)
-
-	$(`#Msg-content-container-${type}`).scrollTop(0)
-}
-
-function reset_settings_filter(type)
-{
-	$(`#${type}_filter`).val("")
-	do_settings_filter(type)
-}
-
-function do_global_settings_filter()
-{
-	do_settings_filter("global_settings")
-}
-
-function do_room_settings_filter()
-{
-	do_settings_filter("room_settings")
-}
-
-var global_settings_filter_timer = (function()
-{
-	var timer
-
-	return function()
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function()
-		{
-			do_global_settings_filter()
-		}, filter_delay)
-	}
-})()
-
-var room_settings_filter_timer = (function()
-{
-	var timer
-
-	return function()
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function()
-		{
-			do_room_settings_filter()
-		}, filter_delay)
-	}
-})()
 
 function set_room_name(name)
 {
@@ -17088,3 +17011,32 @@ function setup_autocomplete()
 		clear_tabbed(this)
 	})
 }
+
+function setup_settings_window()
+{
+	$(".settings_main_window").on("click", ".settings_window_category", function(e)
+	{
+		var main = $(this).closest(".settings_main_window")
+
+		main.find(".settings_window_category").each(function()
+		{
+			$(this).removeClass("underlined")
+		})
+
+		$(this).addClass("underlined")
+
+		main.find(".settings_window_category_container_selected").each(function()
+		{
+			$(this).removeClass("settings_window_category_container_selected")
+			$(this).addClass("settings_window_category_container")
+		})
+
+		var container = $(`#${$(this).data("category_container")}`)
+
+		container.removeClass("settings_window_category_container")
+		container.addClass("settings_window_category_container_selected")
+
+		update_scrollbar(container)
+	})
+}
+

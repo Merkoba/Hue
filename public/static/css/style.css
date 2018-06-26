@@ -772,6 +772,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 	word-break: break-word;	
 }
 
+#Msg-content-container-global_settings, #Msg-content-container-room_settings
+{
+	overflow: hidden !important;
+}
+
 #Msg-overlay-locked
 {
 	background-color: rgba(186, 93, 93, 0.7) !important;
@@ -1280,6 +1285,14 @@ input[type=text], textarea
 	text-align: center;
 }
 
+.setting_textarea2
+{
+	width: 20rem;
+	resize: none;
+	font-size: 1em;
+	text-align: center;
+}
+
 .setting_input_text
 {
 	width: 100%;
@@ -1754,4 +1767,55 @@ input[type=text], textarea
 {
 	width: 100%;
 	cursor: pointer;
+}
+
+.settings_main_window
+{
+	display: flex;
+	flex-direction: row;
+	width: 800px;
+	height: 600px;
+}
+
+#settings_window_left
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 200px;
+	height: 600px;
+	position: relative;
+	top: 0;
+}
+
+#settings_window_right
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 600px;
+	overflow: auto;
+}
+
+.settings_window_category
+{
+	font-size: 1.2em;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	cursor: pointer;
+}
+
+.settings_window_category_container
+{
+	display: none;
+}
+
+.settings_window_category_container_selected
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
 }
