@@ -121,6 +121,7 @@
 	"global_settings_default_on_unlockscreen": "",
 	"global_settings_default_afk_on_lockscreen": true,
 	"global_settings_default_microphone_threshold": 0.03,
+	"global_settings_default_message_layout": "normal",
 	"room_settings_default_images_enabled": true,
 	"room_settings_default_tv_enabled": true,
 	"room_settings_default_radio_enabled": true,

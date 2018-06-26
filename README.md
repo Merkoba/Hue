@@ -427,6 +427,9 @@ If you want to remove it to start fresh:
 "global_settings_default_microphone_threshold"
 >Default microphone threshold. This is the minimum volume to transmit audio on voice chat.
 
+"global_settings_default_message_layout"
+>Default message layout. Either "normal" or "compact".
+
 "room_settings_default_images_enabled"
 >Whether images will be enabled to the user on new rooms by default.
 

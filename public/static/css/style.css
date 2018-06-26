@@ -393,12 +393,17 @@ body, html
 	font-size: 1em;
 }
 
+.compact_layout .chat_uname_container
+{
+	padding-right: 0.5rem;
+}
+
 .chat_uname 
 {
 	cursor: pointer;
 	white-space: nowrap;
-	font-weight: bold;
 	display: inline-block;
+	font-weight: bold;
 }
 
 .chat_content_container
@@ -406,6 +411,10 @@ body, html
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+}
+
+.normal_layout .chat_content_container
+{
 	padding-top: 0.2em;
 }
 
@@ -413,6 +422,10 @@ body, html
 {
 	font-size: 1em;
 	white-space: pre-wrap;
+}
+
+.normal_layout .chat_content
+{
 	line-height: 1.2em;
 }
 
@@ -924,10 +937,16 @@ select
 	cursor: pointer;
 }
 
-.msg
+.msg.normal_layout
 {
 	padding-top: 1rem;
 	padding-bottom: 1rem;
+}
+
+.msg.compact_layout
+{
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
 }
 
 #chat_area > .msg:last-child

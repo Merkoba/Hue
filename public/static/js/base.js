@@ -234,7 +234,7 @@ var microphone_right_channel = []
 var microphone_volume = 0
 var microphone_averaging = 0.95
 var highlight_same_posts_timeouts = {}
-var highlight_same_posts_delay = 400
+var highlight_same_posts_delay = 500
 
 function init()
 {
@@ -4695,7 +4695,7 @@ function start_chat_hover_events()
 
 function highlight_same_posts(uname, add=true)
 {
-	$(".chat_message").each(function()
+	$(".msg").each(function()
 	{
 		if($(this).data("uname") === uname)
 		{
@@ -4807,22 +4807,38 @@ function update_chat(args={})
 
 	else
 	{
-		var s = `
-		<div class='msg chat_message umsg_${args.uname}'>
-			<div class='chat_left_side'>
-				<div class='chat_profile_image_container unselectable'>
-					<img class='chat_profile_image' src='${pi}'>
+		if(get_setting("message_layout") === "normal")
+		{
+			var s = `
+			<div class='msg chat_message umsg_${args.uname} normal_layout'>
+				<div class='chat_left_side'>
+					<div class='chat_profile_image_container unselectable'>
+						<img class='chat_profile_image' src='${pi}'>
+					</div>
 				</div>
-			</div>
-			<div class='chat_right_side'>
+				<div class='chat_right_side'>
+					<div class='chat_uname_container'>
+						<div class='chat_uname action'></div>
+					</div>
+					<div class='chat_content_container'>
+						<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
+					</div>
+				</div>
+			</div>`
+		}
+
+		else if(get_setting("message_layout") === "compact")
+		{
+			var s = `
+			<div class='msg chat_message umsg_${args.uname} compact_layout'>
 				<div class='chat_uname_container'>
 					<div class='chat_uname action'></div>
 				</div>
 				<div class='chat_content_container'>
 					<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
 				</div>
-			</div>
-		</div>`
+			</div>`
+		}
 
 		var fmsg = $(s)
 
@@ -4882,7 +4898,7 @@ function add_to_chat(msg, save=false)
 		var content = msg.find(".chat_content").eq(0)
 	}
 
-	if((msg.hasClass("chat_message") && !msg.hasClass("thirdperson")) && (last_msg.hasClass("chat_message") && !last_msg.hasClass("thirdperson")))
+	if(get_setting("message_layout") === "normal" && (msg.hasClass("chat_message") && !msg.hasClass("thirdperson")) && (last_msg.hasClass("chat_message") && !last_msg.hasClass("thirdperson")))
 	{
 		if(msg.find(".chat_uname").eq(0).text() === last_msg.find(".chat_uname").eq(0).text())
 		{
@@ -5417,8 +5433,18 @@ function chat_announce(args={})
 		var t = nice_date(d)
 	}
 
+	if(get_setting("message_layout") === "normal")
+	{
+		var msgcls = "normal_layout"
+	}
+
+	else if(get_setting("message_layout") === "compact")
+	{
+		var msgcls = "compact_layout"
+	}
+
 	var s = `
-	<div${containerid}class='msg announcement'>
+	<div${containerid}class='msg announcement ${msgcls}'>
 		<div class='${containerclasses}' title='${t}'>
 			<div class='announcement_brk'>${args.brk}</div>
 			<div class='${contclasses}'></div>
@@ -9821,7 +9847,8 @@ function get_global_settings()
 		"on_lockscreen",
 		"on_unlockscreen",
 		"afk_on_lockscreen",
-		"microphone_threshold"
+		"microphone_threshold",
+		"message_layout"
 	]
 
 	var changed = false
@@ -10396,6 +10423,28 @@ function setting_microphone_threshold_action(type, save=true)
 	if(save)
 	{
 		window[`save_${type}`]()
+	}
+}
+
+function setting_message_layout_action(type, save=true)
+{
+	var mode = $(`#${type}_message_layout option:selected`).val()
+
+	window[type].message_layout = mode
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+
+	if(active_settings("message_layout") === type)
+	{
+		var r = confirm("To apply this setting a restart is required. Do you want to restart now?")
+
+		if(r)
+		{
+			refresh()
+		}
 	}
 }
 
