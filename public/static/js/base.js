@@ -233,6 +233,7 @@ var microphone_left_channel = []
 var microphone_right_channel = []
 var microphone_volume = 0
 var microphone_averaging = 0.95
+var highlight_same_posts_timeouts = {}
 
 function init()
 {
@@ -259,6 +260,7 @@ function init()
 	register_commands()
 	setup_chat()
 	start_chat_click_events()
+	start_chat_hover_events()
 	start_played_click_events()
 	start_userlist_click_events()
 	start_roomlist_click_events()
@@ -4661,6 +4663,51 @@ function start_chat_click_events()
 	$("#chat_area").on("click", ".chat_profile_image", function()
 	{
 		show_profile($(this).closest(".chat_message").find(".chat_uname").eq(0).text(), $(this).attr("src"))
+	})
+}
+function start_chat_hover_events()
+{
+	$("#chat_area").on("mouseenter", ".chat_uname", function()
+	{
+		var uname = $(this).text()
+		
+		clearTimeout(highlight_same_posts_timeouts[uname])
+		
+		highlight_same_posts_timeouts[uname] = setTimeout(function()
+		{
+			highlight_same_posts(uname, true)
+		}, 400)
+	})
+
+	$("#chat_area").on("mouseleave", ".chat_uname", function()
+	{
+		var uname = $(this).text()
+
+		clearTimeout(highlight_same_posts_timeouts[uname])
+
+		if($(this).closest(".msg").hasClass("highlighted"))
+		{
+			highlight_same_posts($(this).text(), false)
+		}
+	})
+}
+
+function highlight_same_posts(uname, add=true)
+{
+	$(".chat_message").each(function()
+	{
+		if($(this).find(".chat_uname").eq(0).text() === uname)
+		{
+			if(add)
+			{
+				$(this).addClass("highlighted")
+			}
+
+			else
+			{
+				$(this).removeClass("highlighted")
+			}
+		}
 	})
 }
 

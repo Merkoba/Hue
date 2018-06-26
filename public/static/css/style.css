@@ -932,7 +932,7 @@ select
 
 #chat_area > .msg:last-child
 {
-	padding-bottom: 2.5rem !important;
+	margin-bottom: 1.5rem !important;
 }
 
 input[type=text], textarea
