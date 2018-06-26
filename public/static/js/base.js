@@ -234,6 +234,7 @@ var microphone_right_channel = []
 var microphone_volume = 0
 var microphone_averaging = 0.95
 var highlight_same_posts_timeouts = {}
+var highlight_same_posts_delay = 400
 
 function init()
 {
@@ -4676,7 +4677,7 @@ function start_chat_hover_events()
 		highlight_same_posts_timeouts[uname] = setTimeout(function()
 		{
 			highlight_same_posts(uname, true)
-		}, 400)
+		}, highlight_same_posts_delay)
 	})
 
 	$("#chat_area").on("mouseleave", ".chat_uname, .chat_profile_image", function()
