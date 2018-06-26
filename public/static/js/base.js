@@ -4573,7 +4573,8 @@ function start_chat_scrollbar()
 	{
 		minScrollbarLength: 50,
 		suppressScrollX: true,
-		scrollingThreshold: 3000
+		scrollingThreshold: 3000,
+		wheelSpeed: 0.8
 	})
 }
 
