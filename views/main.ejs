@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=169"></script>
+		<script src="/static/js/base.js?ver=170"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?ver=394"/>
+		<link rel="stylesheet" href="/static/css/style.css?ver=395"/>
 
 		<script>
 
@@ -669,14 +669,18 @@
 			<div id="settings_window_{{type}}" class='settings_main_window' data-settings_type='{{type}}'>
 
 				<div class="settings_window_left" id="settings_window_left_{{type}}">
-					<div class='settings_window_category underlined' data-category_container='settings_window_category_content_afk_{{type}}'>AFK</div>
-					<div class='settings_window_category' data-category_container='settings_window_category_content_beeps_{{type}}'>Beeps</div>
-					<div class='settings_window_category' data-category_container='settings_window_category_content_appearance_{{type}}'>Appearance</div>
-					<div class='settings_window_category' data-category_container='settings_window_category_content_voice_chat_{{type}}'>Voice Chat</div>
-					<div class='settings_window_category' data-category_container='settings_window_category_content_functions_{{type}}'>Functions</div>
-					<div class='settings_window_category' data-category_container='settings_window_category_content_misc_{{type}}'>Misc</div>
-					<div class='spacer3'></div>
-					<div class='smaller_font_size pointer' onclick='confirm_reset_settings("{{type}}")'>Reset</div>
+					<div class='settings_window_left_content' id='settings_window_left_content_{{type}}'>
+						<div class='spacer3'></div>
+						<div class='settings_window_category underlined' data-category_container='settings_window_category_content_afk_{{type}}'>AFK</div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_beeps_{{type}}'>Beeps</div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_appearance_{{type}}'>Appearance</div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_voice_chat_{{type}}'>Voice Chat</div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_functions_{{type}}'>Functions</div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_misc_{{type}}'>Misc</div>
+						<div class='spacer3'></div>
+						<div class='smaller_font_size pointer' onclick='confirm_reset_settings("{{type}}")'>Reset</div>
+						<div class='spacer3'></div>
+					</div>
 				</div>
 
 				<div class="settings_window_right" id="settings_window_right_{{type}}">

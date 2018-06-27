@@ -4624,6 +4624,11 @@ function start_other_scrollbars()
 	{
 		start_scrollbar(this)
 	})
+
+	$(".settings_window_left_content").each(function()
+	{
+		start_scrollbar(this)
+	})
 }
 
 function remove_modal_scrollbars()
@@ -4682,6 +4687,7 @@ function update_modal_scrollbar(s)
 	if(s === "global_settings" || s === "room_settings")
 	{
 		update_scrollbar($(`#settings_window_${s} .settings_window_category_container_selected`).eq(0))
+		update_scrollbar($(`#settings_window_left_content_${s}`))
 	}
 
 	else
@@ -9805,6 +9811,7 @@ function after_modal_set_or_show(instance)
 		if(instance.options.id === "global_settings" || instance.options.id === "room_settings")
 		{
 			$(`#settings_window_${instance.options.id} .settings_window_category_container_selected`).get(0).scrollTop = 0
+			$(`#settings_window_left_content_${instance.options.id}`).get(0).scrollTop = 0
 		}
 
 		else
@@ -17072,34 +17079,6 @@ function setup_settings_window()
 	{
 		change_settings_window_category(this)
 	})
-
-	var f = function(e)
-	{
-		var direction = e.deltaY > 0 ? 'down' : 'up'
-
-		var category = $(this).find(".underlined").eq(0)
-
-		var index = $(".settings_window_category").index(category)
-		
-		if(direction === 'up')
-		{
-			if(index > 0)
-			{
-				category.prev(".settings_window_category").click()
-			}
-		}
-
-		else if(direction === 'down')
-		{
-			if(index < $(this).find(".settings_window_category").length - 1)
-			{
-				category.next(".settings_window_category").click()
-			}
-		}
-	}
-
-	$('#settings_window_left_global_settings')[0].addEventListener("wheel", f)
-	$('#settings_window_left_room_settings')[0].addEventListener("wheel", f)
 }
 
 function change_settings_window_category(element)
