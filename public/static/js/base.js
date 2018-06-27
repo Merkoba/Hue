@@ -4583,7 +4583,8 @@ function start_chat_scrollbar()
 		minScrollbarLength: 50,
 		suppressScrollX: true,
 		scrollingThreshold: 3000,
-		wheelSpeed: 0.8
+		wheelSpeed: 0.8,
+		handlers: ['drag-thumb', 'wheel', 'touch']
 	})
 }
 
