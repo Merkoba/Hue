@@ -4958,7 +4958,7 @@ function update_chat(args={})
 	}
 }
 
-function add_to_chat(msg, save=false)
+function add_to_chat(msg, save=false, notify=true)
 {
 	if(started && !app_focused)
 	{
@@ -5035,7 +5035,7 @@ function add_to_chat(msg, save=false)
 
 	scroll_timer()
 
-	if(started && msg.data("highlighted"))
+	if(notify && started && msg.data("highlighted"))
 	{
 		electron_signal("highlighted")
 	}
