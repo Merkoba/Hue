@@ -1897,7 +1897,7 @@ function apply_theme()
 		color: ${font_color} !important;
 	}
 
-	#settings_window_left
+	.settings_window_left
 	{
 		background-color: ${background_color_2} !important;
 		color: ${font_color} !important;
@@ -4622,7 +4622,7 @@ function start_other_scrollbars()
 {
 	$(".settings_category").each(function()
 	{
-		start_scrollbar(this, false)
+		start_scrollbar(this)
 	})
 }
 
@@ -4679,7 +4679,20 @@ function remove_modal_scrollbar(s)
 
 function update_modal_scrollbar(s)
 {
-	update_scrollbar($(`#Msg-content-container-${s}`))
+	if(s === "global_settings")
+	{
+		update_scrollbar($("#settings_window_global_settings .settings_window_category_container_selected"))
+	}
+
+	else if(s === "room_settings")
+	{
+		update_scrollbar($("#settings_window_room_settings .settings_window_category_container_selected"))
+	}
+
+	else
+	{
+		update_scrollbar($(`#Msg-content-container-${s}`))
+	}
 }
 
 function update_scrollbar(element)
@@ -9647,7 +9660,6 @@ function start_msg()
 			{
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
-				update_scrollbar($("#settings_window_global_settings .settings_window_category_container_selected"))
 			},
 			after_set: function(instance)
 			{
@@ -9675,7 +9687,6 @@ function start_msg()
 			{
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
-				update_scrollbar($("#settings_window_room_settings .settings_window_category_container_selected"))
 			},
 			after_set: function(instance)
 			{
@@ -17016,27 +17027,57 @@ function setup_settings_window()
 {
 	$(".settings_main_window").on("click", ".settings_window_category", function(e)
 	{
-		var main = $(this).closest(".settings_main_window")
-
-		main.find(".settings_window_category").each(function()
-		{
-			$(this).removeClass("underlined")
-		})
-
-		$(this).addClass("underlined")
-
-		main.find(".settings_window_category_container_selected").each(function()
-		{
-			$(this).removeClass("settings_window_category_container_selected")
-			$(this).addClass("settings_window_category_container")
-		})
-
-		var container = $(`#${$(this).data("category_container")}`)
-
-		container.removeClass("settings_window_category_container")
-		container.addClass("settings_window_category_container_selected")
-
-		update_scrollbar(container)
+		change_settings_window_category(this)
 	})
+
+	var f = function(e)
+	{
+		var direction = e.deltaY > 0 ? 'down' : 'up'
+
+		var category = $(this).find(".underlined").eq(0)
+
+		var index = $(".settings_window_category").index(category)
+		
+		if(direction === 'up')
+		{
+			if(index > 0)
+			{
+				category.prev(".settings_window_category").click()
+			}
+		}
+
+		else if(direction === 'down')
+		{
+			if(index < $(this).find(".settings_window_category").length - 1)
+			{
+				category.next(".settings_window_category").click()
+			}
+		}
+	}
+
+	$('#settings_window_left_global_settings')[0].addEventListener("wheel", f)
+	$('#settings_window_left_room_settings')[0].addEventListener("wheel", f)
 }
 
+function change_settings_window_category(element)
+{
+	var main = $(element).closest(".settings_main_window")
+
+	main.find(".settings_window_category").each(function()
+	{
+		$(this).removeClass("underlined")
+	})
+
+	$(element).addClass("underlined")
+
+	main.find(".settings_window_category_container_selected").each(function()
+	{
+		$(this).removeClass("settings_window_category_container_selected")
+		$(this).addClass("settings_window_category_container")
+	})
+
+	var container = $(`#${$(element).data("category_container")}`)
+
+	container.removeClass("settings_window_category_container")
+	container.addClass("settings_window_category_container_selected")
+}

@@ -1777,7 +1777,7 @@ input[type=text], textarea
 	height: 600px;
 }
 
-#settings_window_left
+.settings_window_left
 {
 	display: flex;
 	flex-direction: column;
@@ -1789,7 +1789,7 @@ input[type=text], textarea
 	top: 0;
 }
 
-#settings_window_right
+.settings_window_right
 {
 	display: flex;
 	flex-direction: column;

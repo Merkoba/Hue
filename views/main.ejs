@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?ver=10"></script>
 		<script src="/static/js/colorlib.js?v=10"></script>
 
-		<script src="/static/js/base.js?ver=167"></script>
+		<script src="/static/js/base.js?ver=168"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?ver=389"/>
+		<link rel="stylesheet" href="/static/css/style.css?ver=390"/>
 
 		<script>
 
@@ -668,7 +668,7 @@
 		<script id='template_settings' type='text/x-handlebars-template'>
 			<div id="settings_window_{{type}}" class='settings_main_window' data-settings_type='{{type}}'>
 
-				<div id="settings_window_left">
+				<div class="settings_window_left" id="settings_window_left_{{type}}">
 					<div class='settings_window_category underlined' data-category_container='settings_window_category_content_afk_{{type}}'>AFK</div>
 					<div class='settings_window_category' data-category_container='settings_window_category_content_beeps_{{type}}'>Beeps</div>
 					<div class='settings_window_category' data-category_container='settings_window_category_content_appearance_{{type}}'>Appearance</div>
@@ -679,7 +679,7 @@
 					<div class='smaller_font_size pointer' onclick='confirm_reset_settings("{{type}}")'>Reset</div>
 				</div>
 
-				<div id="settings_window_right">
+				<div class="settings_window_right" id="settings_window_right_{{type}}">
 
 					<div class='settings_category settings_window_category_container' id='settings_window_category_content_beeps_{{type}}'>
 
