@@ -235,6 +235,7 @@ var microphone_volume = 0
 var microphone_averaging = 0.95
 var highlight_same_posts_timeouts = {}
 var highlight_same_posts_delay = 500
+var loaded_chat_layout
 
 function init()
 {
@@ -242,6 +243,7 @@ function init()
 	setup_templates()
 	get_global_settings()
 	get_room_settings()
+	set_loaded_settings_state()
 	set_radio_volume()
 	start_msg()
 	start_settings_state("global_settings")
@@ -10519,13 +10521,16 @@ function setting_chat_layout_action(type, save=true)
 		window[`save_${type}`]()
 	}
 
-	if(active_settings("chat_layout") === type)
+	if(get_setting("chat_layout") !== loaded_chat_layout)
 	{
-		var r = confirm("To apply this setting a restart is required. Do you want to restart now?")
-
-		if(r)
+		if(active_settings("chat_layout") === type)
 		{
-			refresh()
+			var r = confirm("To apply this setting a restart is required. Do you want to restart now?")
+
+			if(r)
+			{
+				refresh()
+			}
 		}
 	}
 }
@@ -17102,4 +17107,9 @@ function change_settings_window_category(element)
 
 	container.removeClass("settings_window_category_container")
 	container.addClass("settings_window_category_container_selected")
+}
+
+function set_loaded_settings_state()
+{
+	loaded_chat_layout = get_setting("chat_layout")
 }
