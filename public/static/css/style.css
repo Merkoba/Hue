@@ -1413,6 +1413,11 @@ input[type=text], textarea
 	box-shadow: inset 0 0 4px currentColor;
 }
 
+.aura3
+{
+	text-shadow: currentColor 0 0 12px;
+}
+
 .custom_titlebar
 {
 	font-family: imported_font, consolas, sans-serif !important;
@@ -1773,8 +1778,8 @@ input[type=text], textarea
 {
 	display: flex;
 	flex-direction: row;
-	width: 800px;
-	height: 600px;
+	width: 50vw;
+	max-height: 50vh;
 }
 
 .settings_window_left
@@ -1784,18 +1789,18 @@ input[type=text], textarea
 	align-items: center;
 	justify-content: center;
 	width: 200px;
-	height: 600px;
 	position: relative;
 	top: 0;
 }
 
 .settings_window_right
 {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	width: 600px;
+	width: calc(100% - 200px);
 	overflow: auto;
 }
 

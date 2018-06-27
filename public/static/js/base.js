@@ -4679,14 +4679,9 @@ function remove_modal_scrollbar(s)
 
 function update_modal_scrollbar(s)
 {
-	if(s === "global_settings")
+	if(s === "global_settings" || s === "room_settings")
 	{
-		update_scrollbar($("#settings_window_global_settings .settings_window_category_container_selected"))
-	}
-
-	else if(s === "room_settings")
-	{
-		update_scrollbar($("#settings_window_room_settings .settings_window_category_container_selected"))
+		update_scrollbar($(`#settings_window_${s} .settings_window_category_container_selected`).eq(0))
 	}
 
 	else
@@ -9807,7 +9802,15 @@ function after_modal_set_or_show(instance)
 
 	setTimeout(function()
 	{
-		instance.content_container.scrollTop = 0
+		if(instance.options.id === "global_settings" || instance.options.id === "room_settings")
+		{
+			$(`#settings_window_${instance.options.id} .settings_window_category_container_selected`).get(0).scrollTop = 0
+		}
+
+		else
+		{
+			instance.content_container.scrollTop = 0
+		}
 	}, 100)
 }
 
@@ -12847,7 +12850,17 @@ function hide_pencil()
 
 function add_aura(uname)
 {
-	$(`.umsg_${uname}`).last().find(".chat_profile_image_container").eq(0).addClass("aura")
+	var mode = get_setting("chat_layout")
+
+	if(mode === "normal")
+	{
+		$(`.umsg_${uname}`).last().find(".chat_profile_image_container").eq(0).addClass("aura")
+	}
+
+	else if(mode === "compact")
+	{
+		$(`.umsg_${uname}`).last().find(".chat_uname").eq(0).addClass("aura3")
+	}
 }
 
 function show_aura(uname)
@@ -12859,7 +12872,19 @@ function show_aura(uname)
 
 	else
 	{
-		if(!$(`.umsg_${uname}`).last().find(".chat_profile_image_container").eq(0).hasClass("aura"))
+		var mode = get_setting("chat_layout")
+
+		if(mode === "normal")
+		{
+			var c = !$(`.umsg_${uname}`).last().find(".chat_profile_image_container").eq(0).hasClass("aura")
+		}
+
+		else if(mode === "compact")
+		{
+			var c = !$(`.umsg_${uname}`).last().find(".chat_uname").eq(0).hasClass("aura3")
+		}
+
+		if(c)
 		{
 			remove_aura(uname)
 			add_aura(uname)
@@ -12881,15 +12906,33 @@ function remove_aura(uname, clr=false)
 		clearTimeout(aura_timeouts[uname])
 	}
 
-	$(`.chat_profile_image_container.aura`).each(function()
-	{
-		var umsg = $(this).closest(`.umsg_${uname}`)
+	var mode = get_setting("chat_layout")
 
-		if(umsg.length > 0)
+	if(mode === "normal")
+	{
+		$(`.chat_profile_image_container.aura`).each(function()
 		{
-			$(this).removeClass("aura")
-		}
-	})
+			var umsg = $(this).closest(`.umsg_${uname}`)
+
+			if(umsg.length > 0)
+			{
+				$(this).removeClass("aura")
+			}
+		})
+	}
+
+	else if(mode === "compact")
+	{
+		$(`.chat_uname.aura3`).each(function()
+		{
+			var umsg = $(this).closest(`.umsg_${uname}`)
+
+			if(umsg.length > 0)
+			{
+				$(this).removeClass("aura3")
+			}
+		})
+	}
 
 	aura_timeouts[uname] = undefined
 }
