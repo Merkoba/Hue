@@ -8388,6 +8388,11 @@ function change_radio_source(src)
 {
 	if(can_radio)
 	{
+		if(src.startsWith("/"))
+		{
+			return false
+		}
+
 		if(src.startsWith("http://") || src.startsWith("https://") || src === "default")
 		{
 			if(src.includes("youtube.com") || src.includes("youtu.be"))
@@ -8520,6 +8525,11 @@ function change_tv_source(src)
 {
 	if(can_tv)
 	{
+		if(src.startsWith("/"))
+		{
+			return false
+		}
+
 		if(src.startsWith("http://") || src.startsWith("https://") || src === "default")
 		{
 			if(src.includes("youtube.com") || src.includes("youtu.be"))
@@ -12678,6 +12688,11 @@ function link_image(url)
 	if(!can_images)
 	{
 		feedback("You don't have permission to link images")
+		return false
+	}
+
+	if(url.startsWith("/"))
+	{
 		return false
 	}
 
