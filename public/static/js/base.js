@@ -4978,7 +4978,7 @@ function add_to_chat(msg, save=false, notify=true)
 		var content = msg.find(".chat_content").eq(0)
 	}
 
-	if(get_setting("chat_layout") === "normal" && (msg.hasClass("chat_message") && !msg.hasClass("thirdperson")) && (last_msg.hasClass("chat_message") && !last_msg.hasClass("thirdperson")))
+	if((msg.hasClass("chat_message") && !msg.hasClass("thirdperson")) && (last_msg.hasClass("chat_message") && !last_msg.hasClass("thirdperson")))
 	{
 		if(msg.find(".chat_uname").eq(0).text() === last_msg.find(".chat_uname").eq(0).text())
 		{
