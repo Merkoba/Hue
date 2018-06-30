@@ -1780,6 +1780,8 @@ input[type=text], textarea
 	flex-direction: row;
 	width: 50vw;
 	height: 50vh;
+	max-width: 800px;
+	max-height: 800px;
 }
 
 .settings_window_left
