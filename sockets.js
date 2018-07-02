@@ -1041,7 +1041,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		info.bans.push(id)
 
-		info.keys[id] = "voice1"
+		delete info.keys[id]
 
 		db_manager.update_room(info._id, {bans:info.bans, keys:info.keys})
 	}
