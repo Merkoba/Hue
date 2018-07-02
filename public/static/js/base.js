@@ -5892,10 +5892,11 @@ function process_message(msg, to_history=true, clr_input=true)
 	{
 		if(can_chat)
 		{
-			msg = utilz.clean_string9(msg)
+			msg = utilz.clean_string10(msg)
 
 			if(msg.length === 0)
 			{
+				clear_input()
 				return false
 			}
 

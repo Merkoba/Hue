@@ -533,7 +533,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(data.msg !== utilz.clean_string9(data.msg))
+		if(data.msg !== utilz.clean_string10(data.msg))
 		{
 			return handler.get_out(socket)
 		}
