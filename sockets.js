@@ -1008,7 +1008,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(info.bans.includes(id))
 		{
 			handler.user_emit(socket, 'user_already_banned', {})
-
 			return false
 		}
 
@@ -1042,7 +1041,9 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		info.bans.push(id)
 
-		db_manager.update_room(info._id, {bans:info.bans})
+		info.keys[id] = "voice1"
+
+		db_manager.update_room(info._id, {bans:info.bans, keys:info.keys})
 	}
 
 	handler.public.unban = async function(socket, data)
