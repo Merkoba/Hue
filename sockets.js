@@ -3231,7 +3231,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		socket.hue_typing_counter += 1
 
-		if(socket.hue_typing_counter >= 100)
+		if(socket.hue_typing_counter >= 200)
 		{
 			var spam_ans = await handler.add_spam(socket)
 
@@ -3621,7 +3621,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		socket.hue_voice_chat_counter += 1
 
-		if(socket.hue_voice_chat_counter >= 100)
+		if(socket.hue_voice_chat_counter >= 200)
 		{
 			var spam_ans = await handler.add_spam(socket)
 
