@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?version=11"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2001"></script>
+		<script src="/static/js/base.js?version=2002"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=398"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=399"/>
 
 		<script>
 
@@ -204,8 +204,14 @@
 						<div id='media_split'>
 							
 							<div id='media_image_container'>
+								
 								<img id='media_image' class='pointer' draggable='false' onclick="show_current_image_modal()">
 								<div id='media_image_error' class='pointer' onclick="show_current_image_modal()">Image failed to load</div>
+
+								<div class='maxer_container'>
+									<div id='media_image_maxer' class='maxer' onclick="maximize_images()"></div>
+								</div>
+
 							</div>
 
 							<div id='media_tv'>
@@ -222,6 +228,10 @@
 
 								<div id='media_video_container'>
 									<video id='media_video' class='video_frame' width="640px" height="360px" preload="metadata" poster="<%-vars.default_video_url%>" controls></video>
+								</div>
+
+								<div class='maxer_container'>
+									<div id='media_tv_maxer' class='maxer' onclick="maximize_tv()"></div>
 								</div>
 
 							</div>

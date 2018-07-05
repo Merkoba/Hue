@@ -847,6 +847,7 @@ function start_socket()
 			setup_tv(data)
 			setup_radio(data)
 
+			check_maxers()
 			config_main_menu()
 			start_metadata_loop()
 			chat_scroll_bottom()
@@ -1902,6 +1903,11 @@ function apply_theme()
 	.settings_window_left
 	{
 		background-color: ${background_color_2} !important;
+		color: ${font_color} !important;
+	}
+
+	.maxer 
+	{
 		color: ${font_color} !important;
 	}
 
@@ -12388,6 +12394,7 @@ function announce_room_images_enabled_change(data)
 	set_room_images_enabled(data.what)
 	change_images_visibility()
 	check_permissions()
+	check_maxers()
 }
 
 function announce_room_tv_enabled_change(data)
@@ -12413,6 +12420,7 @@ function announce_room_tv_enabled_change(data)
 	set_room_tv_enabled(data.what)
 	change_tv_visibility(data.what)
 	check_permissions()
+	check_maxers()
 }
 
 function announce_room_radio_enabled_change(data)
@@ -17129,4 +17137,17 @@ function change_settings_window_category(element)
 function set_loaded_settings_state()
 {
 	loaded_chat_layout = get_setting("chat_layout")
+}
+
+function check_maxers()
+{
+	if(room_tv_enabled && room_images_enabled)
+	{
+		$(".maxer_container").css("display", "block")
+	}
+
+	else
+	{
+		$(".maxer_container").css("display", "none")
+	}
 }

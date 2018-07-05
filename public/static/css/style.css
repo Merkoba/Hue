@@ -160,6 +160,7 @@ body, html
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	position: relative;
 }
 
 #media_image
@@ -186,6 +187,7 @@ body, html
 	display: flex;
 	align-items: center;	
 	justify-content: center;	
+	position: relative;
 }
 
 #media_youtube_video_container
@@ -1832,4 +1834,30 @@ input[type=text], textarea
 	flex-direction: column;
 	align-items: center;
 	width: 100%;
+}
+
+.maxer_container
+{
+	position: absolute;
+	right: 0;
+	height: 80%;
+	width: 5px;
+}
+
+.maxer
+{
+	position: relative;
+	height: 100%;
+	width: 100%;
+	border-radius: 10px;
+	color: white;
+	cursor: pointer;
+	opacity: 0;
+	transition: 1200ms opacity;
+}
+
+.maxer_container:hover .maxer
+{
+	opacity: 1;
+	box-shadow: 0 0 1rem;
 }
