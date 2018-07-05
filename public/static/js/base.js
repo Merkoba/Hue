@@ -15016,7 +15016,7 @@ function set_toggler(type, el, action=false, update=true)
 
 		container.css("display", "none")
 		
-		$(el).html(`+ ${$(el).html().substring(2)}`)		
+		$(el).html(`+ ${$(el).html().substring(2)}`)
 	}
 
 	if(update)
