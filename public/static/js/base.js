@@ -236,6 +236,7 @@ var microphone_averaging = 0.95
 var highlight_same_posts_timeouts = {}
 var highlight_same_posts_delay = 500
 var loaded_chat_layout
+var video_extensions = ["mp4", "webm", "m3u8"]
 
 function init()
 {
@@ -8563,6 +8564,19 @@ function change_tv_source(src)
 				{
 					feedback("Soundcloud support is not enabled")
 					return
+				}
+			}
+
+			else
+			{
+				let split = src.split(".").pop()
+				let extension = split.split("?")[0].toLowerCase()
+				console.log(extension)
+
+				if(!video_extensions.includes(extension))
+				{
+					feedback("That doesn't seem to be a video")
+					return false
 				}
 			}
 		}
