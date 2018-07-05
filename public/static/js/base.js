@@ -8571,7 +8571,6 @@ function change_tv_source(src)
 			{
 				let split = src.split(".").pop()
 				let extension = split.split("?")[0].toLowerCase()
-				console.log(extension)
 
 				if(!video_extensions.includes(extension))
 				{
