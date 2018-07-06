@@ -279,6 +279,11 @@ var Utilz = function()
 
 		if(location[1])
 		{
+			if(!location[1].includes("."))
+			{
+				return extension
+			}
+
 			location.shift()
 			location = location.join("").split(".").pop()
 			extension = location.split("?")[0].toLowerCase()
