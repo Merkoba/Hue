@@ -1873,7 +1873,7 @@ input[type=text], textarea
 	top: 2rem;
 	height: 60px;
 	width: 240px;
-	z-index: 99999;
+	z-index: 9;
 	left: calc((100vw / 2) - 120px);
 }
 
