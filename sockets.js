@@ -1248,7 +1248,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		if(data.src.includes("http://") || data.src.includes("https://") || data.src === "default")
+		if(data.src === "default")
+		{
+			handler.do_change_radio_source(socket, data)
+			return
+		}
+
+		if(data.src.includes("http://") || data.src.includes("https://"))
 		{
 			if(data.src.includes("youtube.com") || data.src.includes("youtu.be"))
 			{
@@ -1350,6 +1356,16 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else
 			{
+				var extension = utilz.get_extension(data.src).toLowerCase()
+
+				if(extension)
+				{
+					if(!utilz.audio_extensions.includes(extension))
+					{
+						return false
+					}
+				}
+
 				data.type = "radio"
 				data.title = ""
 				handler.do_change_radio_source(socket, data)
@@ -1447,7 +1463,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		if(data.src.includes("http://") || data.src.includes("https://") || data.src === "default")
+		if(data.src === "default")
+		{
+			handler.do_change_tv_source(socket, data)
+			return
+		}
+
+		if(data.src.includes("http://") || data.src.includes("https://"))
 		{
 			if(data.src.includes("youtube.com") || data.src.includes("youtu.be"))
 			{
@@ -1611,6 +1633,16 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else
 			{
+				var extension = utilz.get_extension(data.src).toLowerCase()
+
+				if(extension)
+				{
+					if(!utilz.video_extensions.includes(extension))
+					{
+						return false
+					}
+				}
+
 				data.type = "url"
 				data.title = ""
 				handler.do_change_tv_source(socket, data)
@@ -2512,7 +2544,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		if(data.src !== "default")
+		if(data.src === "default")
+		{
+			handler.change_image(socket.hue_room_id, "default", socket.hue_username, 0, "link")
+			return
+		}
+
+		else
 		{
 			data.src = data.src.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
 		}
@@ -2582,6 +2620,16 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else
 		{
+			var extension = utilz.get_extension(data.src).toLowerCase()
+
+			if(extension)
+			{
+				if(!utilz.image_extensions.includes(extension))
+				{
+					return false
+				}
+			}
+
 			handler.change_image(socket.hue_room_id, data.src, socket.hue_username, 0, "link")
 		}
 	}

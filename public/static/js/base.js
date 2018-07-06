@@ -236,8 +236,6 @@ var microphone_averaging = 0.95
 var highlight_same_posts_timeouts = {}
 var highlight_same_posts_delay = 500
 var loaded_chat_layout
-var video_extensions = ["mp4", "webm", "m3u8"]
-var audio_extensions = ["mp3", "ogg", "wav", "flac"]
 
 function init()
 {
@@ -5369,16 +5367,6 @@ function start_image_events()
 		$("#media_image_error").css("display", "initial")
 	})
 
-	$('#test_image')[0].addEventListener('load', function()
-	{
-		emit_change_image_source($('#test_image').attr('src'))
-	})
-
-	$('#test_image').on("error", function()
-	{
-		feedback("The provided image URL failed to load")
-	})
-
 	$("#admin_background_image")[0].addEventListener('load', function()
 	{
 		update_modal_scrollbar("menu")
@@ -8402,7 +8390,23 @@ function change_radio_source(src)
 			return false
 		}
 
-		if(src.startsWith("http://") || src.startsWith("https://") || src === "default")
+		if(src.length === 0)
+		{
+			return false
+		}
+
+		if(src.length > max_tv_source_length)
+		{
+			return false
+		}
+
+		if(src === "default")
+		{
+			socket_emit('change_radio_source', {src:"default"})
+			return
+		}
+
+		if(src.startsWith("http://") || src.startsWith("https://"))
 		{
 			if(src.includes("youtube.com") || src.includes("youtu.be"))
 			{
@@ -8424,11 +8428,11 @@ function change_radio_source(src)
 
 			else
 			{
-				var extension = utilz.get_extension(src)
+				var extension = utilz.get_extension(src).toLowerCase()
 
 				if(extension)
 				{
-					if(!audio_extensions.includes(extension))
+					if(!utilz.audio_extensions.includes(extension))
 					{
 						feedback("That doesn't seem to be an audio")
 						return false
@@ -8446,10 +8450,7 @@ function change_radio_source(src)
 			}
 		}
 
-		if(src.length > 0 && src.length <= max_radio_source_length)
-		{
-			socket_emit('change_radio_source', {src:src})
-		}
+		socket_emit('change_radio_source', {src:src})
 	}
 
 	else
@@ -8553,7 +8554,23 @@ function change_tv_source(src)
 			return false
 		}
 
-		if(src.startsWith("http://") || src.startsWith("https://") || src === "default")
+		if(src.length === 0)
+		{
+			return false
+		}
+
+		if(src.length > max_tv_source_length)
+		{
+			return false
+		}
+
+		if(src === "default")
+		{
+			socket_emit('change_tv_source', {src:"default"})
+			return
+		}
+
+		if(src.startsWith("http://") || src.startsWith("https://"))
 		{
 			if(src.includes("youtube.com") || src.includes("youtu.be"))
 			{
@@ -8584,11 +8601,11 @@ function change_tv_source(src)
 
 			else
 			{
-				var extension = utilz.get_extension(src)
+				var extension = utilz.get_extension(src).toLowerCase()
 
 				if(extension)
 				{
-					if(!video_extensions.includes(extension))
+					if(!utilz.video_extensions.includes(extension))
 					{
 						feedback("That doesn't seem to be a video")
 						return false
@@ -8606,10 +8623,7 @@ function change_tv_source(src)
 			}
 		}
 
-		if(src.length > 0 && src.length <= max_tv_source_length)
-		{
-			socket_emit('change_tv_source', {src:src})
-		}
+		socket_emit('change_tv_source', {src:src})
 	}
 
 	else
@@ -12723,7 +12737,7 @@ function announce_background_tile_dimensions_change(data)
 	apply_background()
 }
 
-function link_image(url)
+function link_image(src)
 {
 	if(!can_images)
 	{
@@ -12731,23 +12745,40 @@ function link_image(url)
 		return false
 	}
 
-	if(url.startsWith("/"))
+	if(src.startsWith("/"))
 	{
 		return false
 	}
 
-	if(url === "default")
+	if(src === "default")
 	{
 		emit_change_image_source("default")
+		return
 	}
 
-	else if(url.startsWith("http://") || url.startsWith("https://"))
+	if(src.length === 0)
 	{
-		url = url.replace(/\.gifv/g, '.gif')
+		return false
+	}
 
-		if(url.length > 0 && url.length <= max_image_source_length)
+	if(src.length > max_tv_source_length)
+	{
+		return false
+	}
+
+	else if(src.startsWith("http://") || src.startsWith("https://"))
+	{
+		src = src.replace(/\.gifv/g, '.gif')
+
+		var extension = utilz.get_extension(src).toLowerCase()
+
+		if(extension)
 		{
-			$('#test_image').attr('src', url)
+			if(!utilz.image_extensions.includes(extension))
+			{
+				feedback("That doesn't seem to be an image")
+				return false
+			}
 		}
 	}
 
@@ -12759,8 +12790,9 @@ function link_image(url)
 			return false
 		}
 
-		emit_change_image_source(url)		
 	}
+
+	emit_change_image_source(src)
 }
 
 function change_voice_permission(ptype, what)

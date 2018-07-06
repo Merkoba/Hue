@@ -286,6 +286,10 @@ var Utilz = function()
 		}
 	}
 
+	utilz.video_extensions = ["mp4", "webm", "m3u8"]
+	utilz.audio_extensions = ["mp3", "ogg", "wav", "flac"]
+	utilz.image_extensions = ["jpg", "jpeg", "png", "gif"]
+
 	return utilz
 }
 
