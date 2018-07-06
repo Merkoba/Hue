@@ -4369,7 +4369,7 @@ function get_closest_autocomplete(element, w)
 {
 	var info = tab_info[element.id]
 
-	var l = commands.concat(usernames)
+	var l = commands.concat(usernames).concat(["@everyone"])
 	var wl = w.toLowerCase()
 	var has = false
 
