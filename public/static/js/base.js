@@ -9219,6 +9219,7 @@ function start_msg()
 		{
 			id: "image",
 			preset: "window",
+			overlay_class: "!overlay_same_color",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
