@@ -273,23 +273,17 @@ var Utilz = function()
 
 	utilz.get_extension = function(s)
 	{
-		var extension = ""
-		var replaced = s.replace(/https?\:\/\//g, "")
-		var location = replaced.split("/")
+		var matches = s.match(/\.(\w+)(?=$|[#?])/)
 
-		if(location[1])
+		if(matches)
 		{
-			if(!location[1].includes("."))
-			{
-				return extension
-			}
-
-			location.shift()
-			location = location.join("").split(".").pop()
-			extension = location.split("?")[0].toLowerCase()
+			return matches[1]
 		}
 
-		return extension
+		else
+		{
+			return false
+		}
 	}
 
 	return utilz
