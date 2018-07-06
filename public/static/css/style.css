@@ -1876,21 +1876,3 @@ input[type=text], textarea
 	z-index: 9;
 	left: calc((100vw / 2) - 120px);
 }
-
-#cursorpad
-{
-	display: flex;
-	position: relative;
-	height: 100%;
-	width: 100%;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	transition: 2000ms opacity;
-	opacity: 0;
-}
-
-#cursorpad_container:hover > #cursorpad
-{
-	opacity: 1;
-}

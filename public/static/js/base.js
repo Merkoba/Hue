@@ -1913,12 +1913,6 @@ function apply_theme()
 		color: ${font_color} !important;
 	}
 
-	#cursorpad
-	{
-		background-color: ${background_color} !important;
-		color: ${font_color} !important;
-	}
-
 	</style>
 	`
 
