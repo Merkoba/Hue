@@ -271,6 +271,22 @@ var Utilz = function()
 		return s.trim().split(" ").join("&nbsp;")
 	}
 
+	utilz.get_extension = function(s)
+	{
+		var extension = ""
+		var replaced = s.replace(/https?\:\/\//g, "")
+		var location = replaced.split("/")
+
+		if(location[1])
+		{
+			location.shift()
+			location = location.join("").split(".").pop()
+			extension = location.split("?")[0].toLowerCase()
+		}
+
+		return extension
+	}
+
 	return utilz
 }
 

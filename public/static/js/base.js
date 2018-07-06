@@ -237,6 +237,7 @@ var highlight_same_posts_timeouts = {}
 var highlight_same_posts_delay = 500
 var loaded_chat_layout
 var video_extensions = ["mp4", "webm", "m3u8"]
+var audio_extensions = ["mp3", "ogg", "wav", "flac"]
 
 function init()
 {
@@ -8420,6 +8421,20 @@ function change_radio_source(src)
 					return
 				}
 			}
+
+			else
+			{
+				var extension = utilz.get_extension(src)
+
+				if(extension)
+				{
+					if(!audio_extensions.includes(extension))
+					{
+						feedback("That doesn't seem to be an audio")
+						return false
+					}
+				}
+			}
 		}
 
 		else if(src !== "restart" && src !== "reset")
@@ -8569,13 +8584,15 @@ function change_tv_source(src)
 
 			else
 			{
-				let split = src.split(".").pop()
-				let extension = split.split("?")[0].toLowerCase()
+				var extension = utilz.get_extension(src)
 
-				if(!video_extensions.includes(extension))
+				if(extension)
 				{
-					feedback("That doesn't seem to be a video")
-					return false
+					if(!video_extensions.includes(extension))
+					{
+						feedback("That doesn't seem to be a video")
+						return false
+					}
 				}
 			}
 		}
