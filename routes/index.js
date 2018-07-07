@@ -130,6 +130,9 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.microphone_sample_rate = config.microphone_sample_rate
 	c.vars.microphone_buffer_size = config.microphone_buffer_size
 	c.vars.microphone_buffer_multiplier = config.microphone_buffer_multiplier
+	c.vars.credits_background_url = config.credits_background_url
+	c.vars.credits_audio_url = config.credits_audio_url
+	c.vars.credits_title = config.credits_title
 
 	function check_url(req, res, next)
 	{

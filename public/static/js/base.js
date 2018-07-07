@@ -94,6 +94,7 @@ var template_locked_menu
 var template_settings
 var template_global_settings
 var template_room_settings
+var template_credits
 var msg_menu
 var msg_userinfo
 var msg_userlist
@@ -116,6 +117,7 @@ var msg_input_history
 var msg_chat_search
 var msg_lockscreen
 var msg_draw_image
+var msg_credits
 var played_filtered = false
 var userlist_filtered = false
 var image_history_filtered = false
@@ -236,6 +238,7 @@ var microphone_averaging = 0.95
 var highlight_same_posts_timeouts = {}
 var highlight_same_posts_delay = 500
 var loaded_chat_layout
+var credits_audio
 
 function init()
 {
@@ -273,6 +276,7 @@ function init()
 	start_played_context_menu()
 	start_volume_context_menu()
 	start_toggle_radio_context_menu()
+	start_main_menu_context_menu()
 	start_titles()
 	setup_show_profile()
 	setup_main_menu()
@@ -379,6 +383,7 @@ function setup_templates()
 	template_room_settings = Handlebars.compile($('#template_room_settings').html())
 	template_lockscreen = Handlebars.compile($('#template_lockscreen').html())
 	template_draw_image = Handlebars.compile($('#template_draw_image').html())
+	template_credits = Handlebars.compile($('#template_credits').html())
 }
 
 function help()
@@ -2730,6 +2735,27 @@ function start_toggle_radio_context_menu()
 					return radio_started
 				}
 			},
+		}
+	})
+}
+
+function start_main_menu_context_menu()
+{
+	$.contextMenu(
+	{
+		selector: "#main_menu",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		className: 'toggle_radio_context',
+		items:
+		{
+			mm0:
+			{
+				name: "About", callback: function(key, opt)
+				{
+					show_credits()
+				}			
+			}
 		}
 	})
 }
@@ -9791,6 +9817,35 @@ function start_msg()
 		})
 	)
 
+	msg_credits = Msg.factory
+	(
+		Object.assign({}, common, titlebar,
+		{
+			id: "credits",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				if(credits_audio)
+				{
+					credits_audio.pause()
+				}
+			}
+		})
+	)
+
 	msg_menu.set(template_menu())
 	msg_userinfo.set(template_userinfo())
 	msg_userlist.set(template_userlist())
@@ -9815,6 +9870,7 @@ function start_msg()
 	msg_global_settings.set(template_global_settings({settings:template_settings({type:"global_settings"})}))
 	msg_room_settings.set(template_room_settings({settings:template_settings({type:"room_settings"})}))
 	msg_draw_image.set(template_draw_image())
+	msg_credits.set(template_credits({background_url:credits_background_url}))
 
 	msg_info.create()
 	msg_info2.create()
@@ -9834,6 +9890,7 @@ function start_msg()
 	msg_userinfo.set_title("User Menu")
 	msg_media_menu.set_title("Media Menu")
 	msg_draw_image.set_title("Draw an Image")
+	msg_credits.set_title(credits_title)
 }
 
 function info_vars_to_false()
@@ -17207,4 +17264,24 @@ function check_maxers()
 	{
 		$(".maxer_container").css("display", "none")
 	}
+}
+
+function show_credits()
+{
+	msg_credits.show(function()
+	{
+		if(!credits_audio)
+		{
+			credits_audio = new Audio()
+			credits_audio.src = credits_audio_url
+			credits_audio.setAttribute("loop", true)
+			credits_audio.play()
+		}
+
+		else
+		{
+			credits_audio.currentTime = 0
+			credits_audio.play()
+		}
+	})
 }
