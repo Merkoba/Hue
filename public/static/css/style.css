@@ -1874,7 +1874,7 @@ input[type=text], textarea
 
 #credits_container
 {
-
+	background-color: black;
 }
 
 #credits_background
