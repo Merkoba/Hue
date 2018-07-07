@@ -1634,13 +1634,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			else
 			{
 				var extension = utilz.get_extension(data.src).toLowerCase()
-
-				if(extension)
+				
+				if(!extension || !utilz.video_extensions.includes(extension))
 				{
-					if(!utilz.video_extensions.includes(extension))
-					{
-						return false
-					}
+					return false
 				}
 
 				data.type = "url"
@@ -2622,12 +2619,9 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			var extension = utilz.get_extension(data.src).toLowerCase()
 
-			if(extension)
+			if(!extension || !utilz.image_extensions.includes(extension))
 			{
-				if(!utilz.image_extensions.includes(extension))
-				{
-					return false
-				}
+				return false
 			}
 
 			handler.change_image(socket.hue_room_id, data.src, socket.hue_username, 0, "link")

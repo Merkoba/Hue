@@ -282,7 +282,7 @@ var Utilz = function()
 
 		else
 		{
-			return false
+			return ""
 		}
 	}
 

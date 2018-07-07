@@ -8603,13 +8603,10 @@ function change_tv_source(src)
 			{
 				var extension = utilz.get_extension(src).toLowerCase()
 
-				if(extension)
+				if(!extension || !utilz.video_extensions.includes(extension))
 				{
-					if(!utilz.video_extensions.includes(extension))
-					{
-						feedback("That doesn't seem to be a video")
-						return false
-					}
+					feedback("That doesn't seem to be a video")
+					return false
 				}
 			}
 		}
@@ -12772,13 +12769,10 @@ function link_image(src)
 
 		var extension = utilz.get_extension(src).toLowerCase()
 
-		if(extension)
+		if(!extension || !utilz.image_extensions.includes(extension))
 		{
-			if(!utilz.image_extensions.includes(extension))
-			{
-				feedback("That doesn't seem to be an image")
-				return false
-			}
+			feedback("That doesn't seem to be an image")
+			return false
 		}
 	}
 
