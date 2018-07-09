@@ -15272,9 +15272,14 @@ function set_log_enabled(what)
 	config_admin_log_enabled()
 }
 
-function needs_confirm(func)
+function needs_confirm(func, s=false)
 {
-	var r = confirm("Are you sure?")
+	if(!s)
+	{
+		s = "Are you sure?"
+	}
+
+	var r = confirm(s)
 
 	if(r)
 	{

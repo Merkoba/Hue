@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?version=15"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2010"></script>
+		<script src="/static/js/base.js?version=2011"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=407"/>
 
@@ -1115,7 +1115,7 @@
 			<div class='spacer3'></div>
 			<input id='tv_source_picker_input' class='input1'>
 			<div class='spacer3'></div>
-			<div class='menu_item action inline unselectable' onclick='needs_confirm("restart_tv")'>Restart</div>
+			<div class='menu_item action inline unselectable' onclick='needs_confirm("restart_tv", "This will restart the tv for everyone. Are you sure?")'>Restart</div>
 		</script>
 
 		<script id='template_radio_picker' type='text/x-handlebars-template'>
@@ -1127,7 +1127,7 @@
 			<div class='spacer3'></div>
 			<input id='radio_source_picker_input' class='input1'>
 			<div class='spacer3'></div>
-			<div class='menu_item action inline unselectable' onclick='needs_confirm("restart_radio")'>Restart</div>
+			<div class='menu_item action inline unselectable' onclick='needs_confirm("restart_radio", "This will restart the radio for everyone. Are you sure?")'>Restart</div>
 		</script>
 
 		<script id='template_image_history' type='text/x-handlebars-template'>
