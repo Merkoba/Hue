@@ -1506,8 +1506,6 @@ function stop_videos()
 	$("#media_video")[0].pause()
 
 	hls.stopLoad()
-
-	$("#input").focus()
 }
 
 function play_video()
@@ -1575,7 +1573,7 @@ function show_youtube_video(src, play=true)
 	$("#media_soundcloud_video_container").css("display", "none")
 	$("#media_youtube_video_container").css("display", "flex")
 
-	fix_video_frame("media_youtube_video")
+	after_show_video()
 }
 
 function show_twitch_video(src, play=true)
@@ -1614,7 +1612,7 @@ function show_twitch_video(src, play=true)
 		twitch_video_player.pause()
 	}
 
-	fix_video_frame("media_twitch_video")
+	after_show_video()
 }
 
 function show_soundcloud_video(src, play=true)
@@ -1640,7 +1638,7 @@ function show_soundcloud_video(src, play=true)
 	$("#media_youtube_video_container").css("display", "none")
 	$("#media_soundcloud_video_container").css("display", "flex")
 
-	fix_video_frame("media_soundcloud_video")
+	after_show_video()
 }
 
 function show_video(src, play=true)
@@ -1670,7 +1668,13 @@ function show_video(src, play=true)
 		$("#media_video")[0].play()
 	}
 
-	fix_video_frame("media_video")
+	after_show_video()
+}
+
+function after_show_video()
+{
+	fix_visible_video_frame()
+	$("#input").focus()
 }
 
 function setup_theme_and_background(data)
@@ -12265,10 +12269,7 @@ function fix_visible_video_frame()
 	{
 		if($(this).parent().css("display") !== "none")
 		{
-			if($(this).data("ratio") !== undefined)
-			{
-				fix_video_frame(this.id)
-			}
+			fix_video_frame(this.id)
 		}
 	})
 }
