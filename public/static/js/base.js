@@ -1506,6 +1506,8 @@ function stop_videos()
 	$("#media_video")[0].pause()
 
 	hls.stopLoad()
+
+	$("#input").focus()
 }
 
 function play_video()
