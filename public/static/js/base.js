@@ -7224,15 +7224,6 @@ function get_radio_metadata()
 		}).fail(function(err, status)
 		{
 			show_playing_file()
-			
-			radio_get_metadata = false
-
-			clearTimeout(radio_metadata_fail_timeout)
-
-			radio_metadata_fail_timeout = setTimeout(function()
-			{
-				radio_get_metadata = true
-			}, radio_retry_metadata_delay)
 		})
 	}
 
@@ -7255,6 +7246,15 @@ function show_playing_file()
 	{
 		hide_now_playing()
 	}
+
+	radio_get_metadata = false
+
+	clearTimeout(radio_metadata_fail_timeout)
+
+	radio_metadata_fail_timeout = setTimeout(function()
+	{
+		radio_get_metadata = true
+	}, radio_retry_metadata_delay)
 }
 
 function start_played_click_events()
