@@ -238,6 +238,8 @@ var highlight_same_posts_timeouts = {}
 var highlight_same_posts_delay = 500
 var loaded_chat_layout
 var credits_audio
+var radio_metadata_fail_timeout
+var radio_get_metadata
 
 function init()
 {
@@ -1365,7 +1367,11 @@ function setup_tv(data)
 
 function load_radio(src, type)
 {
-	var radio_metadata = false
+	var radio_metadata = ""
+	
+	radio_get_metadata = false
+	
+	clearTimeout(radio_metadata_fail_timeout)
 
 	if(type === "radio")
 	{
@@ -1378,6 +1384,8 @@ function load_radio(src, type)
 		{
 			radio_metadata = `${src.split('/').slice(0, -1).join('/')}/status-json.xsl`
 		}
+
+		radio_get_metadata = true
 
 		$('#audio').attr('src', src)
 
@@ -7136,6 +7144,7 @@ function emit_change_image_source(url)
 function get_radio_metadata_enabled()
 {
 	return loaded_radio_type === "radio" &&
+	radio_get_metadata &&
 	loaded_radio_metadata &&
 	room_radio_enabled &&
 	room_settings.radio_enabled
@@ -7215,7 +7224,15 @@ function get_radio_metadata()
 		}).fail(function(err, status)
 		{
 			show_playing_file()
-			loaded_radio_metadata = false
+			
+			radio_get_metadata = false
+
+			clearTimeout(radio_metadata_fail_timeout)
+
+			radio_metadata_fail_timeout = setTimeout(function()
+			{
+				radio_get_metadata = true
+			}, radio_retry_metadata_delay)
 		})
 	}
 
@@ -7437,7 +7454,7 @@ function start_metadata_loop()
 		{
 			get_radio_metadata()
 		}
-	}, check_metadata_interval_duration)
+	}, radio_metadata_interval_duration)
 }
 
 function start_volume_scroll()

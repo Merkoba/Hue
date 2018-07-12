@@ -148,8 +148,11 @@ If you want to remove it to start fresh:
 "redirect_url"
 >Url used in some cases when the user needs to be disposed. For example when kicked from a room.
 
-"check_metadata_interval_duration"
+"radio_metadata_interval_duration"
 >The interval in milliseconds to check for radio metadata. This only occurs when an internet radio url is set as the radio source, for example it won't check if there's a youtube video set.
+
+"radio_retry_metadata_delay":
+>After fetching the radio metadata fails, it will stop trying to fetch it. It will resume after this delay.
 
 "opacity_amount_x"
 >Opacity levels used through out the interface.
