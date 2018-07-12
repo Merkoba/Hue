@@ -239,7 +239,7 @@ var highlight_same_posts_delay = 500
 var loaded_chat_layout
 var credits_audio
 var radio_metadata_fail_timeout
-var radio_get_metadata
+var radio_get_metadata = false
 
 function init()
 {
