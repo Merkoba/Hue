@@ -36,7 +36,6 @@ var can_tv = false
 var radio_type = ''
 var radio_source = ''
 var radio_title = ''
-var radio_metadata = ''
 var radio_setter = ''
 var radio_date = ''
 var loaded_radio_source = ""
@@ -1366,6 +1365,8 @@ function setup_tv(data)
 
 function load_radio(src, type)
 {
+	var radio_metadata = false
+
 	if(type === "radio")
 	{
 		if(src.slice(-1) === '/')
@@ -7214,6 +7215,7 @@ function get_radio_metadata()
 		}).fail(function(err, status)
 		{
 			show_playing_file()
+			loaded_radio_metadata = false
 		})
 	}
 
@@ -7343,7 +7345,6 @@ function start_radio()
 {
 	if(loaded_radio_type === "radio")
 	{
-		$('#audio').attr("src", loaded_radio_source)
 		$('#audio')[0].play()
 	}
 
@@ -7377,7 +7378,7 @@ function start_radio()
 
 function stop_radio()
 {
-	$('#audio').attr("src", "")
+	$('#audio')[0].pause()
 
 	if(youtube_player !== undefined)
 	{
@@ -7461,7 +7462,7 @@ function start_volume_scroll()
 	})
 }
 
-function set_radio_volume(nv=false)
+function set_radio_volume(nv=false, changed=true)
 {
 	if(typeof nv !== "number")
 	{
@@ -7489,6 +7490,7 @@ function set_radio_volume(nv=false)
 	if(youtube_player !== undefined)
 	{
 		youtube_player.setVolume(vt)
+		youtube_player.unMute()
 	}
 
 	if(soundcloud_player !== undefined)
@@ -7496,9 +7498,11 @@ function set_radio_volume(nv=false)
 		soundcloud_player.setVolume(vt)
 	}
 
-	$('#volume').text(`${vt} %`)
-
-	save_room_settings()
+	if(changed)
+	{
+		$('#volume').text(`${vt} %`)
+		save_room_settings()
+	}
 }
 
 function set_tv_volume(nv=false)
@@ -11149,6 +11153,8 @@ function onYouTubePlayerReady()
 	{
 		change({type:"radio", notify:false})
 	}
+
+	set_radio_volume(false, false)
 }
 
 function onYouTubePlayerReady2()
