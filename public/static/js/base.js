@@ -7345,6 +7345,7 @@ function start_radio()
 {
 	if(loaded_radio_type === "radio")
 	{
+		$('#audio').attr("src", loaded_radio_source)
 		$('#audio')[0].play()
 	}
 
