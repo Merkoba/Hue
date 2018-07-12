@@ -7379,7 +7379,7 @@ function start_radio()
 
 function stop_radio()
 {
-	$('#audio')[0].pause()
+	$('#audio').attr("src", "")
 
 	if(youtube_player !== undefined)
 	{
