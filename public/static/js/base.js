@@ -1301,6 +1301,11 @@ function start_socket()
 		{
 			show_voice_aura(user_id)
 		}
+
+		else if(data.type === 'cannot_embed_iframe')
+		{
+			feedback("That website cannot be embedded")
+		}
 	})
 }
 

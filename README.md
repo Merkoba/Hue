@@ -65,7 +65,7 @@ If you want to remove it to start fresh:
 # Configuration
 
 "https_enabled"
->Defaults to true for security reasons. If deployed in a non-https environment set it to false. In order for it to be really enabled the Node environment must be set to production.
+>Defaults to true for security reasons. If deployed in a non-https environment set it to false. In order for it to be really enabled the Node environment must be set to production. If true, some non https media will be blocked. It's recommended to setup a full https site to conform to current standards. Check out Let's Encrypt.
 
 "site_root"
 >The root url where the system will work. Needs a slash at the end.

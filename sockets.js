@@ -1653,9 +1653,41 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					data.type = "iframe"
 				}
 
-				data.title = ""
+				if(data.type = "iframe")
+				{
+					if(config.https_enabled && data.src.includes("http://"))
+					{
+						handler.user_emit(socket, 'cannot_embed_iframe', {})
+						return false
+					}
 
-				handler.do_change_tv_source(socket, data)
+					fetch(data.src)
+					
+					.then(res => 
+					{
+						var xframe_options = res.headers.get('x-frame-options') || ""
+
+						xframe_options = xframe_options.toLowerCase()
+
+						if(xframe_options === "deny" || xframe_options === "sameorigin")
+						{
+							handler.user_emit(socket, 'cannot_embed_iframe', {})
+							return false
+						}
+
+						else
+						{
+							handler.do_change_tv_source(socket, data)
+						}
+					})
+				}
+
+				else
+				{
+					data.title = ""
+
+					handler.do_change_tv_source(socket, data)
+				}
 			}
 		}
 
