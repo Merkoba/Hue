@@ -7164,10 +7164,8 @@ function get_radio_metadata()
 			get_radio_metadata_request.abort()
 		}
 
-		get_radio_metadata_request = $.get(loaded_radio_metadata,
-		{
-
-		},
+		get_radio_metadata_request = $.get(loaded_radio_metadata,{},
+			
 		function(data)
 		{
 			if(!get_radio_metadata_enabled())
@@ -7202,12 +7200,14 @@ function get_radio_metadata()
 
 				else
 				{
+					on_radio_metadata_error()
 					show_playing_file()
 					return false
 				}
 
 				if(!source || source.artist === undefined || source.title === undefined)
 				{
+					on_radio_metadata_error()
 					show_playing_file()
 					return false
 				}
@@ -7217,12 +7217,23 @@ function get_radio_metadata()
 
 			catch(err)
 			{
+				on_radio_metadata_error()
 				show_playing_file()
 				return false
 			}
 
 		}).fail(function(err, status)
 		{
+			if(err.status === 404)
+			{
+				on_radio_metadata_error(false)
+			}
+
+			else
+			{
+				on_radio_metadata_error()
+			}
+			
 			show_playing_file()
 		})
 	}
@@ -7246,15 +7257,21 @@ function show_playing_file()
 	{
 		hide_now_playing()
 	}
+}
 
+function on_radio_metadata_error(retry=true)
+{
 	radio_get_metadata = false
 
-	clearTimeout(radio_metadata_fail_timeout)
-
-	radio_metadata_fail_timeout = setTimeout(function()
+	if(retry)
 	{
-		radio_get_metadata = true
-	}, radio_retry_metadata_delay)
+		clearTimeout(radio_metadata_fail_timeout)
+
+		radio_metadata_fail_timeout = setTimeout(function()
+		{
+			radio_get_metadata = true
+		}, radio_retry_metadata_delay)
+	}
 }
 
 function start_played_click_events()
