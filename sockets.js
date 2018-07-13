@@ -1653,7 +1653,9 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					data.type = "iframe"
 				}
 
-				if(data.type = "iframe")
+				data.title = ""
+
+				if(data.type === "iframe")
 				{
 					if(config.https_enabled && data.src.includes("http://"))
 					{
@@ -1690,8 +1692,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				else
 				{
-					data.title = ""
-
 					handler.do_change_tv_source(socket, data)
 				}
 			}
