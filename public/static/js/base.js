@@ -1514,6 +1514,8 @@ function stop_videos()
 
 	$("#media_video")[0].pause()
 
+	$("#media_iframe_video").attr("src", "")
+
 	hls.stopLoad()
 }
 
@@ -1552,11 +1554,34 @@ function play_video()
 	{
 		$("#media_video")[0].play()
 	}
+
+	else if(tv_type === "iframe")
+	{
+		$("#media_iframe_video").attr("src", tv_source)
+	}
+}
+
+function hide_videos(show)
+{
+	$(".media_video_container").each(function()
+	{
+		if($(this).attr("id") === show)
+		{
+			$(this).css("display", "flex")
+		}
+
+		else
+		{
+			$(this).css("display", "none")
+		}
+	})
 }
 
 function show_youtube_video(src, play=true)
 {
 	stop_videos()
+	
+	hide_videos("media_youtube_video_container")
 
 	var id = utilz.get_youtube_id(src)
 
@@ -1577,17 +1602,14 @@ function show_youtube_video(src, play=true)
 		return false
 	}
 
-	$("#media_video_container").css("display", "none")
-	$("#media_twitch_video_container").css("display", "none")
-	$("#media_soundcloud_video_container").css("display", "none")
-	$("#media_youtube_video_container").css("display", "flex")
-
 	after_show_video()
 }
 
 function show_twitch_video(src, play=true)
 {
 	stop_videos()
+
+	hide_videos("media_twitch_video_container")
 
 	var id = utilz.get_twitch_id(src)
 
@@ -1606,11 +1628,6 @@ function show_twitch_video(src, play=true)
 		return false
 	}
 
-	$("#media_video_container").css("display", "none")
-	$("#media_youtube_video_container").css("display", "none")
-	$("#media_soundcloud_video_container").css("display", "none")
-	$("#media_twitch_video_container").css("display", "flex")
-
 	if(play)
 	{
 		twitch_video_player.play()
@@ -1628,6 +1645,8 @@ function show_soundcloud_video(src, play=true)
 {
 	stop_videos()
 
+	hide_videos("media_soundcloud_video_container")
+
 	soundcloud_video_player.load(src,
 	{
 		auto_play: false,
@@ -1642,17 +1661,14 @@ function show_soundcloud_video(src, play=true)
 		}
 	})
 
-	$("#media_video_container").css("display", "none")
-	$("#media_twitch_video_container").css("display", "none")
-	$("#media_youtube_video_container").css("display", "none")
-	$("#media_soundcloud_video_container").css("display", "flex")
-
 	after_show_video()
 }
 
 function show_video(src, play=true)
 {
 	stop_videos()
+
+	hide_videos("media_video_container")
 
 	var split = src.split('.')
 
@@ -1667,15 +1683,21 @@ function show_video(src, play=true)
 		$("#media_video").prop("src", src)
 	}
 
-	$("#media_youtube_video_container").css("display", "none")
-	$("#media_twitch_video_container").css("display", "none")
-	$("#media_soundcloud_video_container").css("display", "none")
-	$("#media_video_container").css("display", "flex")
-
 	if(play)
 	{
 		$("#media_video")[0].play()
 	}
+
+	after_show_video()
+}
+
+function show_iframe_video(src, play=true)
+{
+	stop_videos()
+
+	hide_videos("media_iframe_video_container")
+
+	$("#media_iframe_video").attr("src", src)
 
 	after_show_video()
 }
@@ -5295,6 +5317,11 @@ function change(args={})
 			show_video(src, args.play)
 		}
 
+		else if(tv_type === "iframe")
+		{
+			show_iframe_video(src, args.play)
+		}
+
 		else
 		{
 			return false
@@ -8669,10 +8696,13 @@ function change_tv_source(src)
 			{
 				var extension = utilz.get_extension(src).toLowerCase()
 
-				if(!extension || !utilz.video_extensions.includes(extension))
+				if(extension)
 				{
-					feedback("That doesn't seem to be a video")
-					return false
+					if(utilz.image_extensions.includes(extension))
+					{
+						feedback("That doesn't seem to be a video")
+						return false
+					}
 				}
 			}
 		}

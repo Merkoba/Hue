@@ -1635,13 +1635,26 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				var extension = utilz.get_extension(data.src).toLowerCase()
 				
-				if(!extension || !utilz.video_extensions.includes(extension))
+				if(extension)
 				{
-					return false
+					if(utilz.video_extensions.includes(extension) || utilz.audio_extensions.includes(extension))
+					{
+						data.type = "url"
+					}
+
+					else
+					{
+						data.type = "iframe"
+					}
 				}
 
-				data.type = "url"
+				else
+				{
+					data.type = "iframe"
+				}
+
 				data.title = ""
+
 				handler.do_change_tv_source(socket, data)
 			}
 		}
