@@ -1663,6 +1663,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 						return false
 					}
 
+					if(config.site_root.includes(data.src))
+					{
+						handler.user_emit(socket, 'cannot_embed_iframe', {})
+						return false
+					}
+
 					fetch(data.src)
 					
 					.then(res => 
