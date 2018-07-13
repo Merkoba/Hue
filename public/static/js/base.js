@@ -7200,15 +7200,13 @@ function get_radio_metadata()
 
 				else
 				{
-					on_radio_metadata_error()
-					show_playing_file()
+					on_radio_get_metadata_error()
 					return false
 				}
 
 				if(!source || source.artist === undefined || source.title === undefined)
 				{
-					on_radio_metadata_error()
-					show_playing_file()
+					on_radio_get_metadata_error()
 					return false
 				}
 
@@ -7217,8 +7215,7 @@ function get_radio_metadata()
 
 			catch(err)
 			{
-				on_radio_metadata_error()
-				show_playing_file()
+				on_radio_get_metadata_error()
 				return false
 			}
 
@@ -7226,41 +7223,23 @@ function get_radio_metadata()
 		{
 			if(err.status === 404)
 			{
-				on_radio_metadata_error(false)
+				on_radio_get_metadata_error(true, false)
 			}
 
 			else
 			{
-				on_radio_metadata_error()
+				on_radio_get_metadata_error()
 			}
-			
-			show_playing_file()
 		})
 	}
 
 	catch(err)
 	{
-		on_radio_metadata_error()
-		show_playing_file()
+		on_radio_get_metadata_error()
 	}
 }
 
-function show_playing_file()
-{
-	var s = loaded_radio_source.split('/')
-
-	if(s.length > 1)
-	{
-		push_played(false, {s1: s.pop(), s2:loaded_radio_source})
-	}
-
-	else
-	{
-		hide_now_playing()
-	}
-}
-
-function on_radio_metadata_error(retry=true)
+function on_radio_get_metadata_error(show_file=true, retry=true)
 {
 	radio_get_metadata = false
 
@@ -7272,6 +7251,21 @@ function on_radio_metadata_error(retry=true)
 		{
 			radio_get_metadata = true
 		}, radio_retry_metadata_delay)
+	}
+
+	if(show_file)
+	{
+		var s = loaded_radio_source.split('/')
+
+		if(s.length > 1)
+		{
+			push_played(false, {s1: s.pop(), s2:loaded_radio_source})
+		}
+
+		else
+		{
+			hide_now_playing()
+		}
 	}
 }
 
