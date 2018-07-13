@@ -7165,7 +7165,7 @@ function get_radio_metadata()
 		}
 
 		get_radio_metadata_request = $.get(loaded_radio_metadata,{},
-			
+
 		function(data)
 		{
 			if(!get_radio_metadata_enabled())
@@ -7240,6 +7240,7 @@ function get_radio_metadata()
 
 	catch(err)
 	{
+		on_radio_metadata_error()
 		show_playing_file()
 	}
 }
