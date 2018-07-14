@@ -11828,7 +11828,7 @@ function show_image_picker()
 
 function show_tv_picker()
 {
-	if(!can_images)
+	if(!can_tv)
 	{
 		feedback("You don't have tv permission")
 		return false
@@ -11842,7 +11842,7 @@ function show_tv_picker()
 
 function show_radio_picker()
 {
-	if(!can_images)
+	if(!can_radio)
 	{
 		feedback("You don't have radio permission")
 		return false
