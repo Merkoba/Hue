@@ -216,7 +216,7 @@ body, html
 
 .footer_icon
 {
-	padding-right: 1.2em;
+	margin-right: 1.2em;
 	cursor: pointer;
 	flex-shrink: 1;
 	background-color: transparent;
@@ -227,7 +227,7 @@ body, html
 
 .footer_icon2
 {
-	padding-right: 0.3em;
+	margin-right: 0.3em;
 	cursor: pointer;
 	flex-shrink: 1;
 	background-color: transparent;
@@ -238,12 +238,12 @@ body, html
 
 .footer_text
 {
-	padding-right: 0.3em;
+	margin-right: 0.3em;
 }
 
 .footer_text_small
 {
-	padding-right: 0.3em;
+	margin-right: 0.3em;
 	font-size: 0.8em;
 }
 
@@ -1854,4 +1854,9 @@ input[type=text], textarea
 {
 	width: 800px;
 	height: auto;
+}
+
+.border_bottom
+{
+	border-bottom: 1px solid currentColor;
 }

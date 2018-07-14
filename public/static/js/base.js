@@ -13198,12 +13198,14 @@ function change_lock_images()
 	{
 		$("#footer_lock_images_icon").removeClass("fa-unlock-alt")
 		$("#footer_lock_images_icon").addClass("fa-lock")
+		$("#footer_lock_images_icon").addClass("border_bottom")
 	}
 
 	else
 	{
 		$("#footer_lock_images_icon").removeClass("fa-lock")
 		$("#footer_lock_images_icon").addClass("fa-unlock-alt")
+		$("#footer_lock_images_icon").removeClass("border_bottom")
 
 		change({type:"image"})
 	}
@@ -13237,12 +13239,14 @@ function change_lock_tv()
 	{
 		$("#footer_lock_tv_icon").removeClass("fa-unlock-alt")
 		$("#footer_lock_tv_icon").addClass("fa-lock")
+		$("#footer_lock_tv_icon").addClass("border_bottom")
 	}
 
 	else
 	{
 		$("#footer_lock_tv_icon").removeClass("fa-lock")
 		$("#footer_lock_tv_icon").addClass("fa-unlock-alt")
+		$("#footer_lock_tv_icon").removeClass("border_bottom")
 
 		change({type:"tv"})
 	}
@@ -13276,12 +13280,14 @@ function change_lock_radio()
 	{
 		$("#footer_lock_radio_icon").removeClass("fa-unlock-alt")
 		$("#footer_lock_radio_icon").addClass("fa-lock")
+		$("#footer_lock_radio_icon").addClass("border_bottom")
 	}
 
 	else
 	{
 		$("#footer_lock_radio_icon").removeClass("fa-lock")
 		$("#footer_lock_radio_icon").addClass("fa-unlock-alt")
+		$("#footer_lock_radio_icon").removeClass("border_bottom")
 
 		change({type:"radio"})
 	}
