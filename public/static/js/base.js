@@ -51,7 +51,6 @@ var tv_date = ''
 var tab_info = {}
 var crm = false
 var orb = false
-var stu = false
 var rup = false
 var tup = false
 var iup = false
@@ -3753,7 +3752,7 @@ function activate_key_detection()
 			return
 		}
 
-		if(e.key === "Tab" && e.shiftKey)
+		if(e.key === "Tab")
 		{
 			e.preventDefault()
 		}
@@ -3932,19 +3931,6 @@ function activate_key_detection()
 					{
 						create_room_submit()
 						e.preventDefault()
-					}
-
-					return
-				}
-			}
-
-			if(stu)
-			{
-				if(msg_info2.is_highest())
-				{
-					if(e.key === "Tab" && e.shiftKey)
-					{
-						msg_info2.close()
 					}
 
 					return
@@ -4156,17 +4142,6 @@ function activate_key_detection()
 				e.preventDefault()
 				return
 			}
-		}
-
-		else if(e.key === "Tab")
-		{
-			if(e.shiftKey)
-			{
-				show_status()
-			}
-
-			e.preventDefault()
-			return
 		}
 	})
 
@@ -9976,7 +9951,6 @@ function info_vars_to_false()
 function info2_vars_to_false()
 {
 	crm = false
-	stu = false
 	imp = false
 	gtr = false
 	orb = false
@@ -11288,10 +11262,7 @@ function show_userinfo()
 
 function show_status()
 {
-	msg_info2.show(["Room Status", template_status({info:get_status_html()})], function()
-	{
-		stu = true
-	})
+	msg_info2.show(["Room Status", template_status({info:get_status_html()})])
 }
 
 function get_status_html()
@@ -17288,7 +17259,6 @@ function setup_autocomplete()
 			if(value.length > 0)
 			{
 				tabbed(this)
-				e.preventDefault()
 				return
 			}
 		}
