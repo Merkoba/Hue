@@ -271,7 +271,6 @@ function init()
 	start_userlist_click_events()
 	start_roomlist_click_events()
 	start_generic_uname_click_events()
-	setup_media_video()
 	start_username_context_menu()
 	start_played_context_menu()
 	start_volume_context_menu()
@@ -1516,11 +1515,14 @@ function stop_videos()
 		soundcloud_video_player.pause()
 	}
 
+	if(hls !== undefined)
+	{
+		hls.stopLoad()	
+	}
+
 	$("#media_video")[0].pause()
 
 	$("#media_iframe_video").attr("src", "")
-
-	hls.stopLoad()
 }
 
 function play_video()
@@ -1678,6 +1680,7 @@ function show_video(src, play=true)
 
 	if(split[split.length - 1] === "m3u8")
 	{
+		start_hls()
 		hls.loadSource(src)
 		hls.attachMedia($("#media_video")[0])
 	}
@@ -11844,7 +11847,7 @@ function start_titles()
 	})
 }
 
-function setup_media_video()
+function start_hls()
 {
 	hls = new Hls(
 	{
