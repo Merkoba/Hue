@@ -1219,7 +1219,7 @@ input[type=text], textarea
 #footer_userinfo
 {
 	width: 10px;
-	padding-left: 1.2rem;
+	margin-left: 1.2rem;
 }
 
 #write_message_info
