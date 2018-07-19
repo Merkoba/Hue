@@ -4622,14 +4622,16 @@ function setup_scrollbars()
 {
 	remove_chat_scrollbar()
 	remove_modal_scrollbars()
+	remove_other_scrollbars()
 
 	if(get_setting("custom_scrollbars"))
 	{
 		start_chat_scrollbar()
 		start_modal_scrollbars()
+		start_other_scrollbars()
 	}
 
-	chat_scroll_bottom(false)
+	chat_scroll_bottom(false, false)
 }
 
 function start_chat_scrollbar()
@@ -4687,6 +4689,19 @@ function start_other_scrollbars()
 	$(".settings_window_left_content").each(function()
 	{
 		start_scrollbar(this)
+	})
+}
+
+function remove_other_scrollbars()
+{
+	$(".settings_category").each(function()
+	{
+		$(this).getNiceScroll().remove()
+	})
+
+	$(".settings_window_left_content").each(function()
+	{
+		$(this).getNiceScroll().remove()
 	})
 }
 
@@ -8142,11 +8157,11 @@ function fix_chat_scroll()
 	$("#chat_area").find(".ps__rail-y").eq(0).prependTo("#chat_area")
 }
 
-function chat_scroll_bottom(force=true)
+function chat_scroll_bottom(force=true, animate=true)
 {
 	update_chat_scrollbar()
 	fix_chat_scroll()
-	goto_bottom(force)
+	goto_bottom(force, animate)
 }
 
 function clear_chat()
