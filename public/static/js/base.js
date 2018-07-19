@@ -5891,6 +5891,8 @@ function register_commands()
 	commands.push('/disablevoicechat')
 	commands.push('/joinvoicechat')
 	commands.push('/leavevoicechat')
+	commands.push('/tvpercentage')
+	commands.push('/mediapercentage')
 
 	commands.sort()
 
@@ -6837,6 +6839,16 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/leavevoicechat'))
 	{
 		leave_voice_chat()
+	}
+
+	else if(oiStartsWith(lmsg, '/tvpercentage'))
+	{
+		set_display_percentage(arg)
+	}
+
+	else if(oiStartsWith(lmsg, '/mediapercentage'))
+	{
+		set_media_display_percentage(arg)
 	}
 
 	else
@@ -15949,9 +15961,14 @@ function run_user_function(n)
 
 function set_display_percentage(v=false)
 {
-	if(!v)
+	if(!v || v === "default")
 	{
 		v = room_settings_default_tv_display_percentage
+	}
+
+	if(typeof v !== "number")
+	{
+		return false
 	}
 
 	$('#media_setting_display_percentage').nstSlider('set_position', v)
@@ -15959,9 +15976,14 @@ function set_display_percentage(v=false)
 
 function set_media_display_percentage(v=false)
 {
-	if(!v)
+	if(!v || v === "default")
 	{
 		v = room_settings_default_media_display_percentage
+	}
+
+	if(typeof v !== "number")
+	{
+		return false
 	}
 
 	$('#media_setting_media_display_percentage').nstSlider('set_position', v)
