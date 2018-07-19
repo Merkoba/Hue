@@ -15966,7 +15966,9 @@ function set_display_percentage(v=false)
 		v = room_settings_default_tv_display_percentage
 	}
 
-	if(typeof v !== "number")
+	v = parseInt(v)
+
+	if(!Number.isInteger(v))
 	{
 		return false
 	}
@@ -15981,7 +15983,9 @@ function set_media_display_percentage(v=false)
 		v = room_settings_default_media_display_percentage
 	}
 
-	if(typeof v !== "number")
+	v = parseInt(v)
+
+	if(!Number.isInteger(v))
 	{
 		return false
 	}
