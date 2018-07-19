@@ -457,6 +457,9 @@ If you want to remove it to start fresh:
 "room_settings_default_tv_display_position"
 >Default tv display position relative to the image on new rooms by default.
 
+"room_settings_default_media_display_percentage"
+>Default media display percentage relative to the chat on new rooms by default
+
 "double_tap_key"
 >The key that triggers double tap.
 

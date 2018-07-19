@@ -4606,13 +4606,18 @@ var resize_timer = (function()
 
 		timer = setTimeout(function()
 		{
-			fix_visible_video_frame()
-			update_chat_scrollbar()
-			goto_bottom(false, false)
-			check_scrollers()
+			on_resize()
 		}, resize_delay)
 	}
 })()
+
+function on_resize()
+{
+	fix_visible_video_frame()
+	update_chat_scrollbar()
+	goto_bottom(false, false)
+	check_scrollers()
+}
 
 function setup_scrollbars()
 {
@@ -10782,6 +10787,12 @@ function get_room_settings()
 		changed = true
 	}
 
+	if(room_settings.media_display_percentage === undefined)
+	{
+		room_settings.media_display_percentage = room_settings_default_media_display_percentage
+		changed = true
+	}
+
 	for(var key in global_settings)
 	{
 		if(room_settings[key] === undefined)
@@ -15936,14 +15947,31 @@ function run_user_function(n)
 	hide_reactions()
 }
 
-function set_display_percentage(v)
+function set_display_percentage(v=false)
 {
+	if(!v)
+	{
+		v = room_settings_default_tv_display_percentage
+	}
+
 	$('#media_setting_display_percentage').nstSlider('set_position', v)
+}
+
+function set_media_display_percentage(v=false)
+{
+	if(!v)
+	{
+		v = room_settings_default_media_display_percentage
+	}
+
+	$('#media_setting_media_display_percentage').nstSlider('set_position', v)
 }
 
 function prepare_media_settings()
 {
 	set_display_percentage(room_settings.tv_display_percentage)
+	set_media_display_percentage(room_settings.media_display_percentage)
+	
 	arrange_media_setting_display_positions()
 
 	apply_media_percentages()
@@ -15968,6 +15996,23 @@ function setup_media_settings()
 			apply_media_percentages()
 		}
 	})
+
+	$('#media_setting_media_display_percentage').nstSlider(
+	{
+		"left_grip_selector": ".leftGrip",
+		"value_changed_callback": function(cause, val) 
+		{
+			if(cause === "init")
+			{
+				return false
+			}
+
+			room_settings.media_display_percentage = val
+
+			save_room_settings()
+			apply_media_percentages()
+		}
+	})
 }
 
 function apply_media_percentages()
@@ -15978,7 +16023,13 @@ function apply_media_percentages()
 	$("#media_tv").css("height", `${p1}%`)
 	$("#media_image_container").css("height", `${p2}%`)
 
-	fix_visible_video_frame()
+	var c1 = room_settings.media_display_percentage
+	var c2 = (100 - c1)
+
+	$("#media").css("width", `${c1}%`)
+	$("#chat_main").css("width", `${c2}%`)
+
+	on_resize()
 }
 
 function apply_media_positions()

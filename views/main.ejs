@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?version=15"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2028"></script>
+		<script src="/static/js/base.js?version=2029"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=411"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=412"/>
 
 		<script>
 
@@ -1223,6 +1223,36 @@
 
 				<div class='spacer4'></div>
 
+				<div class='slider_container'>
+					<div class='slider_icon_left'><i class='icon2 fa fa-pencil'></i></div>
+					<div id='media_setting_media_display_percentage' class="slider nstSlider" data-range_min="10" data-range_max="90" data-cur_min="0">
+					    <div class="leftGrip" ondblclick='set_media_display_percentage()'></div>
+					</div>
+					<div class='slider_icon_right'><i class='icon2b fa fa-picture-o'></i></div>
+				</div>	
+
+				<div class='spacer3'></div>
+
+				<div>Chat/Media Proportions</div>
+
+				<div class='spacer4'></div>
+				<div class='spacer3'></div>
+
+				<div class='slider_container'>
+					<div class='slider_icon_left'><i class='icon2 fa fa-camera'></i></div>
+					<div id='media_setting_display_percentage' class="slider nstSlider" data-range_min="10" data-range_max="90" data-cur_min="0">
+					    <div class="leftGrip" ondblclick='set_display_percentage()'></div>
+					</div>
+					<div class='slider_icon_right'><i class='icon2b fa fa-television'></i></div>
+				</div>	
+
+				<div class='spacer3'></div>
+
+				<div>Image/TV Proportions</div>
+
+				<div class='spacer4'></div>
+				<div class='spacer3'></div>
+
 				<div class='squaro_container pointer action2' onclick='swap_display_positions()'>
 					<div class='squaro' id='media_setting_display_position_image'>
 						<i class='fa fa-camera smaller_font_size'></i>
@@ -1232,15 +1262,9 @@
 					</div>
 				</div>
 
-				<div class='spacer4'></div>
+				<div class='spacer3'></div>
 
-				<div class='slider_container'>
-					<i class='icon2 fa fa-camera'></i>&nbsp;
-					<div id='media_setting_display_percentage' class="nstSlider" data-range_min="10" data-range_max="90" data-cur_min="0">
-					    <div class="leftGrip" ondblclick='set_display_percentage(50)'></div>
-					</div>
-					&nbsp;<i class='icon2b fa fa-television'></i>
-				</div>	
+				<div>Image/TV Positions</div>
 
 			</div>
 		</script>	

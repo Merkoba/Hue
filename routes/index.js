@@ -102,6 +102,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.room_settings_default_radio_volume = config.room_settings_default_radio_volume
 	c.vars.room_settings_default_tv_display_percentage = config.room_settings_default_tv_display_percentage
 	c.vars.room_settings_default_tv_display_position = config.room_settings_default_tv_display_position
+	c.vars.room_settings_default_media_display_percentage = config.room_settings_default_media_display_percentage
 	c.vars.double_tap_key = config.double_tap_key
 	c.vars.double_tap_key_2 = config.double_tap_key_2
 	c.vars.double_tap_key_3 = config.double_tap_key_3
