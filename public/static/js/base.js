@@ -10210,10 +10210,12 @@ function start_settings_listeners(type)
 				return false
 			}
 
-			window[type].tv_display_percentage = val
-			window[`save_${type}`]()
-
-			apply_media_percentages()
+			if(window[type].tv_display_percentage !== val)
+			{
+				window[type].tv_display_percentage = val
+				window[`save_${type}`]()
+				apply_media_percentages()
+			}
 		}
 	})
 
@@ -10227,10 +10229,12 @@ function start_settings_listeners(type)
 				return false
 			}
 
-			window[type].media_display_percentage = val
-			window[`save_${type}`]()
-			
-			apply_media_percentages()
+			if(window[type].media_display_percentage !== val)
+			{
+				window[type].media_display_percentage = val
+				window[`save_${type}`]()	
+				apply_media_percentages()
+			}
 		}
 	})
 
