@@ -1692,7 +1692,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					.catch(err =>
 					{
 						handler.user_emit(socket, 'cannot_embed_iframe', {})
-						logger.log_error(err)
 					})
 				}
 

@@ -433,6 +433,15 @@ If you want to remove it to start fresh:
 "global_settings_default_chat_layout"
 >Default chat layout. Either "normal" or "compact".
 
+"room_settings_default_tv_display_percentage"
+>Default tv display percentage relative to the image.
+
+"room_settings_default_tv_display_position"
+>Default tv display position relative to the image.
+
+"room_settings_default_media_display_percentage"
+>Default media display percentage relative to the chat.
+
 "room_settings_default_images_enabled"
 >Whether images will be enabled to the user on new rooms by default.
 
@@ -450,15 +459,6 @@ If you want to remove it to start fresh:
 
 "room_settings_default_radio_locked"
 >Whether radio will be locked to the user on new rooms by default.
-
-"room_settings_default_tv_display_percentage"
->Default tv display percentage relative to the image on new rooms by default.
-
-"room_settings_default_tv_display_position"
->Default tv display position relative to the image on new rooms by default.
-
-"room_settings_default_media_display_percentage"
->Default media display percentage relative to the chat on new rooms by default
 
 "double_tap_key"
 >The key that triggers double tap.
