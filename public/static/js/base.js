@@ -242,6 +242,7 @@ var credits_audio
 var radio_metadata_fail_timeout
 var radio_get_metadata = false
 var init_data
+var log_messages_processed = false
 
 function init()
 {
@@ -11759,27 +11760,35 @@ function show_details(data)
 
 function show_log_messages()
 {
+	if(log_messages_processed)
+	{
+		return false
+	}
+
 	var num_images = 0
 	var num_tv = 0
 	var num_radio = 0
 
-	for(var message of log_messages)
+	if(log_messages && log_messages.length > 0)
 	{
-		var type = message.type
-
-		if(type === "image")
+		for(var message of log_messages)
 		{
-			num_images += 1
-		}
+			var type = message.type
 
-		else if(type === "tv")
-		{
-			num_tv += 1
-		}
+			if(type === "image")
+			{
+				num_images += 1
+			}
 
-		else if(type === "radio")
-		{
-			num_radio += 1
+			else if(type === "tv")
+			{
+				num_tv += 1
+			}
+
+			else if(type === "radio")
+			{
+				num_radio += 1
+			}
 		}
 	}
 
@@ -11844,7 +11853,7 @@ function show_log_messages()
 
 	}
 
-	log_messages = false
+	log_messages_processed = true
 }
 
 function change_log(log)
