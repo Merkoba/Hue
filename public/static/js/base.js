@@ -5238,27 +5238,9 @@ function change(args={})
 			return false
 		}
 
-		if(background_mode === "mirror")
-		{
-			apply_background()
-		}
-
 		if(!room_settings.images_enabled)
 		{
 			return false
-		}
-
-		if(room_images_mode === "disabled")
-		{
-			return false
-		}
-
-		else if(room_images_mode === "locked")
-		{
-			if(last_image_source)
-			{
-				return false
-			}
 		}
 
 		if(background_mode === "mirror")
@@ -5293,19 +5275,6 @@ function change(args={})
 		if(!room_settings.tv_enabled || (room_settings.tv_locked && last_tv_source && !args.current_source))
 		{
 			return false
-		}
-
-		if(room_tv_mode === "disabled")
-		{
-			return false
-		}
-
-		else if(room_tv_mode === "locked")
-		{
-			if(last_tv_source)
-			{
-				return false
-			}
 		}
 
 		if(args.current_source && last_tv_source)
@@ -5379,19 +5348,6 @@ function change(args={})
 		if(!room_settings.radio_enabled || (room_settings.radio_locked && last_radio_source && !args.current_source))
 		{
 			return false
-		}
-
-		if(room_radio_mode === "disabled")
-		{
-			return false
-		}
-
-		else if(room_radio_mode === "locked")
-		{
-			if(last_radio_source)
-			{
-				return false
-			}
 		}
 
 		if(radio_type === "youtube")
