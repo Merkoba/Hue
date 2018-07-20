@@ -499,8 +499,8 @@ If you want to remove it to start fresh:
 "media_history_max_items"
 >The amount of items stored in each media change history window.
 
-"images_changed_crop_limit"
->How many items are stored in images_changed. images_changed is an array that holds information about image changes in the room. Used for the prev and next buttons in the image modal.
+"media_changed_crop_limit"
+>How many items are stored in images_changed, tv_changed and radio_changed.
 
 "email_change_limit"
 >How long a user must wait to perform another email verification.
