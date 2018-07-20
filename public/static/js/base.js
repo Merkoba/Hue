@@ -8493,7 +8493,7 @@ function change_radio_source(src)
 			return
 		}
 
-		else if(src === "prev")
+		else if(src === "prev" || src === "previous")
 		{
 			if(radio_changed.length > 1)
 			{
@@ -8502,6 +8502,7 @@ function change_radio_source(src)
 
 			else
 			{
+				feedback("No radio source before current one")
 				return false
 			}
 		}
@@ -8700,7 +8701,7 @@ function change_tv_source(src)
 			return
 		}
 
-		else if(src === "prev")
+		else if(src === "prev" || src === "previous")
 		{
 			if(tv_changed.length > 1)
 			{
@@ -8709,6 +8710,7 @@ function change_tv_source(src)
 
 			else
 			{
+				feedback("No tv source before current one")
 				return false
 			}
 		}
@@ -12999,7 +13001,7 @@ function link_image(src)
 		return
 	}
 
-	else if(src === "prev")
+	else if(src === "prev" || src === "previous")
 	{
 		if(images_changed.length > 1)
 		{
@@ -13008,6 +13010,7 @@ function link_image(src)
 
 		else
 		{
+			feedback("No image source before current one")
 			return false
 		}
 	}
@@ -17569,4 +17572,22 @@ function set_media_sliders(type)
 {
 	set_tv_display_percentage(window[type].tv_display_percentage, type)
 	set_media_display_percentage(window[type].media_display_percentage, type)
+}
+
+function image_prev()
+{
+	link_image("prev")
+	msg_image_picker.close()
+}
+
+function tv_prev()
+{
+	change_tv_source("prev")
+	msg_tv_picker.close()
+}
+
+function radio_prev()
+{
+	change_radio_source("prev")
+	msg_radio_picker.close()
 }

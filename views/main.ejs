@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?version=15"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2039"></script>
+		<script src="/static/js/base.js?version=2040"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=412"/>
 
@@ -1141,6 +1141,8 @@
 				<div id='image_file_picker' class='menu_item action inline unselectable' onclick='msg_image_picker.close()'>Upload</div>
 				<span>&nbsp;|&nbsp;</span>
 				<div id='image_file_picker_draw' class='menu_item action inline unselectable' onclick='open_draw_image();msg_image_picker.close()'>Draw</div>
+				<span>&nbsp;|&nbsp;</span>
+				<div id='image_file_picker_draw' class='menu_item action inline unselectable' onclick='needs_confirm("image_prev", "This will change the image for everyone. Are you sure?")'>Previous</div>
 			</div>
 		</script>
 
@@ -1154,6 +1156,8 @@
 			<input id='tv_source_picker_input' class='input1'>
 			<div class='spacer3'></div>
 			<div class='menu_item action inline unselectable' onclick='needs_confirm("restart_tv", "This will restart the tv for everyone. Are you sure?")'>Restart</div>
+			<span>&nbsp;|&nbsp;</span>
+			<div id='image_file_picker_draw' class='menu_item action inline unselectable' onclick='needs_confirm("tv_prev", "This will change the tv for everyone. Are you sure?")'>Previous</div>
 		</script>
 
 		<script id='template_radio_picker' type='text/x-handlebars-template'>
@@ -1166,6 +1170,8 @@
 			<input id='radio_source_picker_input' class='input1'>
 			<div class='spacer3'></div>
 			<div class='menu_item action inline unselectable' onclick='needs_confirm("restart_radio", "This will restart the radio for everyone. Are you sure?")'>Restart</div>
+			<span>&nbsp;|&nbsp;</span>
+			<div id='image_file_picker_draw' class='menu_item action inline unselectable' onclick='needs_confirm("radio_prev", "This will change the radio for everyone. Are you sure?")'>Previous</div>
 		</script>
 
 		<script id='template_image_history' type='text/x-handlebars-template'>
@@ -1382,9 +1388,9 @@
 			<div class='info_item'>Tab completes usernames and commands.</div>
 			<div class='info_item'>Shift + Enter toggles the radio.</div>		
 			<div class='info_item'>Apart from the image upload icon, images can also be uploaded by clicking the current image or by dropping a file.</div>		
-			<div class='info_item'>/image x: Sends an image to be uploaded by URL. "/image default" sets the image to the site's default image.</div>			
-			<div class='info_item'>/tv x: Changes the TV using a search term or URL. "/tv restart" restarts the current video for all users, in case it gets stuck. To link a Youtube playlist the URL must be a pure playlist URL without a video ID. "/tv default" sets the tv to the site's default tv.</div>			
-			<div class='info_item'>/radio x: Changes the radio using a search term or URL. "/radio restart" restarts the current radio for all users, in case it gets stuck. "/radio default" sets the radio to the site's default radio.</div>	
+			<div class='info_item'>/image x: Sends an image to be uploaded by URL. "/image default" sets the image to the site's default image. "/image prev" changes to the previous image source.</div>			
+			<div class='info_item'>/tv x: Changes the TV using a search term or URL. "/tv restart" restarts the current video for all users, in case it gets stuck. To link a Youtube playlist the URL must be a pure playlist URL without a video ID. "/tv default" sets the tv to the site's default tv. "/tv prev" changes to the previous tv source.</div>			
+			<div class='info_item'>/radio x: Changes the radio using a search term or URL. "/radio restart" restarts the current radio for all users, in case it gets stuck. "/radio default" sets the radio to the site's default radio. "/radio prev" changes to the previous radio source.</div>	
 			<div class='info_item'>/me x: Makes a message in third person.</div>		
 			<div class='info_item'>/whisper x: Opens a window to write a whisper to x user.</div>		
 			<div class='info_item'>/whisperops: Opens a window to write a whisper to ops and admins.</div>
