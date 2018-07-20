@@ -25,7 +25,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const image_types = ["image/jpeg", "image/png", "image/gif"]
 	const image_extensions = ["jpg", "jpeg", "png", "gif"]
 	const reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
-	const media_types = ["images", "tv", "radio", "voice chat"]
+	const media_types = ["images", "tv", "radio", "voice_chat"]
 
 	const s3 = new aws.S3(
 	{
