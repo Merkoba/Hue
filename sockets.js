@@ -470,10 +470,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_setter: info.tv_setter,
 			tv_date: info.tv_date,
 			profile_image: socket.hue_profile_image,
-			room_images_enabled: info.images_enabled,
-			room_tv_enabled: info.tv_enabled,
-			room_radio_enabled: info.radio_enabled,
-			room_voice_chat_enabled: info.voice_chat_enabled,
+			room_images_mode: info.images_mode,
+			room_tv_mode: info.tv_mode,
+			room_radio_mode: info.radio_mode,
+			room_voice_chat_mode: info.voice_chat_mode,
 			theme: info.theme,
 			background_image: background_image,
 			background_mode: info.background_mode,
@@ -2088,98 +2088,106 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.public.change_images_enabled = function(socket, data)
+	handler.public.change_images_mode = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
 
-		if(data.what !== true && data.what !== false)
+		if(data.what !== "enabled" && data.what !== "disabled" && data.what !== "locked")
 		{
 			return handler.get_out(socket)
 		}
 
+		rooms[socket.hue_room_id].images_mode = data.what
+
 		db_manager.update_room(socket.hue_room_id,
 		{
-			images_enabled: data.what
+			images_mode: data.what
 		})
 
-		handler.room_emit(socket, 'room_images_enabled_change',
+		handler.room_emit(socket, 'room_images_mode_change',
 		{
 			what: data.what,
 			username: socket.hue_username
 		})
 	}
 
-	handler.public.change_tv_enabled = function(socket, data)
+	handler.public.change_tv_mode = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
 
-		if(data.what !== true && data.what !== false)
+		if(data.what !== "enabled" && data.what !== "disabled" && data.what !== "locked")
 		{
 			return handler.get_out(socket)
 		}
 
+		rooms[socket.hue_room_id].tv_mode = data.what
+
 		db_manager.update_room(socket.hue_room_id,
 		{
-			tv_enabled: data.what
+			tv_mode: data.what
 		})
 
-		handler.room_emit(socket, 'room_tv_enabled_change',
+		handler.room_emit(socket, 'room_tv_mode_change',
 		{
 			what: data.what,
 			username: socket.hue_username
 		})
 	}
 
-	handler.public.change_radio_enabled = function(socket, data)
+	handler.public.change_radio_mode = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
 
-		if(data.what !== true && data.what !== false)
+		if(data.what !== "enabled" && data.what !== "disabled" && data.what !== "locked")
 		{
 			return handler.get_out(socket)
 		}
 
+		rooms[socket.hue_room_id].radio_mode = data.what
+
 		db_manager.update_room(socket.hue_room_id,
 		{
-			radio_enabled: data.what
+			radio_mode: data.what
 		})
 
-		handler.room_emit(socket, 'room_radio_enabled_change',
+		handler.room_emit(socket, 'room_radio_mode_change',
 		{
 			what: data.what,
 			username: socket.hue_username
 		})
 	}
 
-	handler.public.change_voice_chat_enabled = function(socket, data)
+	handler.public.change_voice_chat_mode = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
 
-		if(data.what !== true && data.what !== false)
+		if(data.what !== "enabled" && data.what !== "disabled")
 		{
 			return handler.get_out(socket)
 		}
 
 		rooms[socket.hue_room_id].voice_chat_sockets = []
 
+		rooms[socket.hue_room_id].voice_chat_mode = data.what
+
 		db_manager.update_room(socket.hue_room_id,
 		{
-			voice_chat_enabled: data.what
+			voice_chat_mode: data.what
 		})
 
-		handler.room_emit(socket, 'room_voice_chat_enabled_change',
+		handler.room_emit(socket, 'room_voice_chat_mode_change',
 		{
 			what: data.what,
 			username: socket.hue_username
@@ -2362,14 +2370,20 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return
 		}
 
-		var voice_chat_sockets = rooms[socket.hue_room_id].voice_chat_sockets
-
-		for(var socc of voice_chat_sockets)
+		if(socket.hue_room_id !== undefined)
 		{
-			if(socc.hue_user_id === socket.hue_user_id)
+			if(rooms[socket.hue_room_id] !== undefined)
 			{
-				handler.voice_chat_disconnect_socket(socket)
-				break
+				var voice_chat_sockets = rooms[socket.hue_room_id].voice_chat_sockets
+
+				for(var socc of voice_chat_sockets)
+				{
+					if(socc.hue_user_id === socket.hue_user_id)
+					{
+						handler.voice_chat_disconnect_socket(socket)
+						break
+					}
+				}
 			}
 		}
 
@@ -3750,6 +3764,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.check_permission = function(socket, permission)
 	{
+		if(rooms[socket.hue_room_id][`${permission}_mode`] !== "enabled")
+		{
+			return false
+		}
+
 		if(socket.hue_role === "admin" || socket.hue_role === "op")
 		{
 			return true
@@ -3800,6 +3819,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			voice4_tv_permission: info.voice4_tv_permission,
 			voice4_radio_permission: info.voice4_radio_permission,
 			voice4_voice_chat_permission: info.voice4_voice_chat_permission,
+			images_mode: info.images_mode,
+			tv_mode: info.tv_mode,
+			radio_mode: info.radio_mode,
+			voice_chat_mode: info.voice_chat_mode,
 			voice_chat_sockets: []
 		}
 

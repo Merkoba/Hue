@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?version=15"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2043"></script>
+		<script src="/static/js/base.js?version=2044"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=412"/>
 
@@ -329,8 +329,9 @@
 					<div class='small_padding_bottom'>Images</div>
 
 					<select id='admin_enable_images' class='modal_select'>
-						<option value="true">Enabled</option>
-						<option value="false">Disabled</option>
+						<option value="enabled">Enabled</option>
+						<option value="disabled">Disabled</option>
+						<option value="locked">Locked</option>
 					</select>
 
 					<div class='spacer1'></div>
@@ -338,8 +339,9 @@
 					<div class='small_padding_bottom'>TV</div>
 
 					<select id='admin_enable_tv' class='modal_select'>
-						<option value="true">Enabled</option>
-						<option value="false">Disabled</option>
+						<option value="enabled">Enabled</option>
+						<option value="disabled">Disabled</option>
+						<option value="locked">Locked</option>
 					</select>
 
 					<div class='spacer1'></div>
@@ -347,8 +349,9 @@
 					<div class='small_padding_bottom'>Radio</div>
 
 					<select id='admin_enable_radio' class='modal_select'>
-						<option value="true">Enabled</option>
-						<option value="false">Disabled</option>
+						<option value="enabled">Enabled</option>
+						<option value="disabled">Disabled</option>
+						<option value="locked">Locked</option>
 					</select>
 
 					<div class='spacer1'></div>
@@ -356,8 +359,8 @@
 					<div class='small_padding_bottom'>Voice Chat</div>
 
 					<select id='admin_enable_voice_chat' class='modal_select'>
-						<option value="true">Enabled</option>
-						<option value="false">Disabled</option>
+						<option value="enabled">Enabled</option>
+						<option value="disabled">Disabled</option>
 					</select>
 
 					<div class='spacer1'></div>
@@ -1503,14 +1506,6 @@
 			<div class='info_item'>/topicaddstart x: Adds a section at the start of the topic.</div>
 			<div class='info_item'>/topictrimstart x: Removes a section from the start of the topic, where the optional x is the number of trims you want to do.</div>
 			<div class='info_item'>/topicedit: Puts the topic in the input, ready to be edited.</div>
-			<div class='info_item'>/enableimages: Enables image support in the room.</div>
-			<div class='info_item'>/disableimages: Disables image support in the room.</div>
-			<div class='info_item'>/enabletv: Enables tv support in the room.</div>
-			<div class='info_item'>/enableradio: Enables radio support in the room.</div>
-			<div class='info_item'>/disableradio: Disables radio support in the room.</div>
-			<div class='info_item'>/enablevoicechat: Enables voice chat support in the room.</div>
-			<div class='info_item'>/disablevoicechat: Disables voice chat support in the room.</div>
-			<div class='info_item'>/disabletv: Disables tv support in the room.</div>
 			<div class='info_item'>/voice1 x: Gives voice 1 to a user.</div>
 			<div class='info_item'>/voice2 x: Gives voice 2 to a user.</div>
 			<div class='info_item'>/voice3 x: Gives voice 3 to a user.</div>

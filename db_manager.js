@@ -4,7 +4,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 46
+	const rooms_version = 47
 	const users_version = 29
 
 	function get_random_key()
@@ -230,24 +230,24 @@ module.exports = function(db, config, sconfig, utilz, logger)
 			room.tv_date = 0
 		}	
 
-		if(typeof room.images_enabled !== "boolean")
+		if(typeof room.images_mode !== "boolean")
 		{
-			room.images_enabled = true
+			room.images_mode = "enabled"
 		}	
 
-		if(typeof room.tv_enabled !== "boolean")
+		if(typeof room.tv_mode !== "boolean")
 		{
-			room.tv_enabled = true
+			room.tv_mode = "enabled"
 		}
 
-		if(typeof room.radio_enabled !== "boolean")
+		if(typeof room.radio_mode !== "boolean")
 		{
-			room.radio_enabled = true
+			room.radio_mode = "enabled"
 		}
 
-		if(typeof room.voice_chat_enabled !== "boolean")
+		if(typeof room.voice_chat_mode !== "boolean")
 		{
-			room.voice_chat_enabled = true
+			room.voice_chat_mode = "enabled"
 		}	
 		
 		if(typeof room.bans !== "object")

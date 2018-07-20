@@ -136,10 +136,10 @@ var profile_image
 var change_image_when_focused = false
 var change_tv_when_focused = false
 var change_radio_when_focused = false
-var room_images_enabled = true
-var room_tv_enabled = true
-var room_radio_enabled = true
-var room_voice_chat_enabled = true
+var room_images_mode = "enabled"
+var room_tv_mode = "enabled"
+var room_radio_mode = "enabled"
+var room_voice_chat_mode = "enabled"
 var radio_started = false
 var theme
 var text_color_mode
@@ -569,10 +569,10 @@ function start_permissions(data)
 function check_permissions()
 {
 	can_chat = check_permission(role, "chat")
-	can_images = room_images_enabled && check_permission(role, "images")
-	can_tv = room_tv_enabled && check_permission(role, "tv")
-	can_radio = room_radio_enabled && check_permission(role, "radio")
-	can_voice_chat = room_voice_chat_enabled && check_permission(role, "voice_chat")
+	can_images = room_images_mode === "enabled" && check_permission(role, "images")
+	can_tv = room_tv_mode === "enabled" && check_permission(role, "tv")
+	can_radio = room_radio_mode === "enabled" && check_permission(role, "radio")
+	can_voice_chat = room_voice_chat_mode === "enabled" && check_permission(role, "voice_chat")
 
 	if(!can_voice_chat && voice_chat_joined)
 	{
@@ -602,62 +602,67 @@ function check_permission(role=false, type=false)
 
 function setup_icons()
 {
-	if(room_images_enabled)
-	{
-		$("#footer_images_controls").css("display", "initial")
-
-		if(can_images)
-		{
-			$("#footer_images_icon").css("display", "initial")
-		}
-
-		else
-		{
-			$("#footer_images_icon").css("display", "none")
-		}
-	}
-
-	else
+	if(room_images_mode === "disabled")
 	{
 		$("#footer_images_controls").css("display", "none")
 	}
 
-	if(room_tv_enabled)
+	else
 	{
-		$("#footer_tv_controls").css("display", "initial")
+		$("#footer_images_controls").css("display", "initial")
+	}
 
-		if(can_tv)
-		{
-			$("#footer_tv_icon").css("display", "initial")
-		}
-
-		else
-		{
-			$("#footer_tv_icon").css("display", "none")
-		}
+	if(can_images)
+	{
+		$("#footer_images_icon").css("display", "initial")
 	}
 
 	else
 	{
+		$("#footer_images_icon").css("display", "none")
+	}
+
+	if(room_tv_mode === "disabled")
+	{
 		$("#footer_tv_controls").css("display", "none")
 	}
 
-	if(room_radio_enabled)
+	else
 	{
-		$("#footer_radio_controls").css("display", "initial")
-
-		if(can_radio)
-		{
-			$("#footer_radio_icon").css("display", "initial")
-		}
-
-		else
-		{
-			$("#footer_radio_icon").css("display", "none")
-		}
+		$("#footer_tv_controls").css("display", "initial")
 	}
 
-	if(room_voice_chat_enabled)
+	if(can_tv)
+	{
+		$("#footer_tv_icon").css("display", "initial")
+	}
+
+	else
+	{
+		$("#footer_tv_icon").css("display", "none")
+	}
+
+	if(room_radio_mode === "disabled")
+	{
+		$("#footer_radio_controls").css("display", "none")
+	}
+
+	else
+	{
+		$("#footer_radio_controls").css("display", "initial")
+	}
+
+	if(can_radio)
+	{
+		$("#footer_radio_icon").css("display", "initial")
+	}
+
+	else
+	{
+		$("#footer_radio_icon").css("display", "none")
+	}
+
+	if(room_voice_chat_mode !== "disabled")
 	{
 		if(can_voice_chat)
 		{
@@ -1154,24 +1159,24 @@ function start_socket()
 			show_details(data)
 		}
 
-		else if(data.type === 'room_images_enabled_change')
+		else if(data.type === 'room_images_mode_change')
 		{
-			announce_room_images_enabled_change(data)
+			announce_room_images_mode_change(data)
 		}
 
-		else if(data.type === 'room_tv_enabled_change')
+		else if(data.type === 'room_tv_mode_change')
 		{
-			announce_room_tv_enabled_change(data)
+			announce_room_tv_mode_change(data)
 		}
 
-		else if(data.type === 'room_radio_enabled_change')
+		else if(data.type === 'room_radio_mode_change')
 		{
-			announce_room_radio_enabled_change(data)
+			announce_room_radio_mode_change(data)
 		}
 
-		else if(data.type === 'room_voice_chat_enabled_change')
+		else if(data.type === 'room_voice_chat_mode_change')
 		{
-			announce_room_voice_chat_enabled_change(data)
+			announce_room_voice_chat_mode_change(data)
 		}
 
 		else if(data.type === 'theme_change')
@@ -2923,30 +2928,30 @@ function setup_main_menu()
 
 	$('#admin_enable_images').change(function()
 	{
-		var what = JSON.parse($('#admin_enable_images option:selected').val())
+		var what = $('#admin_enable_images option:selected').val()
 
-		change_room_images_enabled(what)
+		change_room_images_mode(what)
 	})
 
 	$('#admin_enable_tv').change(function()
 	{
-		var what = JSON.parse($('#admin_enable_tv option:selected').val())
+		var what = $('#admin_enable_tv option:selected').val()
 
-		change_room_tv_enabled(what)
+		change_room_tv_mode(what)
 	})
 
 	$('#admin_enable_radio').change(function()
 	{
-		var what = JSON.parse($('#admin_enable_radio option:selected').val())
+		var what = $('#admin_enable_radio option:selected').val()
 
-		change_room_radio_enabled(what)
+		change_room_radio_mode(what)
 	})
 
 	$('#admin_enable_voice_chat').change(function()
 	{
-		var what = JSON.parse($('#admin_enable_voice_chat option:selected').val())
+		var what = $('#admin_enable_voice_chat option:selected').val()
 
-		change_room_voice_chat_enabled(what)
+		change_room_voice_chat_mode(what)
 	})
 
 	$('#admin_privacy').change(function()
@@ -3200,7 +3205,7 @@ function config_admin_log_enabled()
 	})
 }
 
-function config_admin_room_images_enabled()
+function config_admin_room_images_mode()
 {
 	if(!is_admin_or_op())
 	{
@@ -3209,14 +3214,14 @@ function config_admin_room_images_enabled()
 
 	$('#admin_enable_images').find('option').each(function()
 	{
-		if(JSON.parse($(this).val()) === room_images_enabled)
+		if($(this).val() === room_images_mode)
 		{
 			$(this).prop('selected', true)
 		}
 	})
 }
 
-function config_admin_room_tv_enabled()
+function config_admin_room_tv_mode()
 {
 	if(!is_admin_or_op())
 	{
@@ -3225,14 +3230,14 @@ function config_admin_room_tv_enabled()
 
 	$('#admin_enable_tv').find('option').each(function()
 	{
-		if(JSON.parse($(this).val()) === room_tv_enabled)
+		if($(this).val() === room_tv_mode)
 		{
 			$(this).prop('selected', true)
 		}
 	})
 }
 
-function config_admin_room_radio_enabled()
+function config_admin_room_radio_mode()
 {
 	if(!is_admin_or_op())
 	{
@@ -3241,14 +3246,14 @@ function config_admin_room_radio_enabled()
 
 	$('#admin_enable_radio').find('option').each(function()
 	{
-		if(JSON.parse($(this).val()) === room_radio_enabled)
+		if($(this).val() === room_radio_mode)
 		{
 			$(this).prop('selected', true)
 		}
 	})
 }
 
-function config_admin_room_voice_chat_enabled()
+function config_admin_room_voice_chat_mode()
 {
 	if(!is_admin_or_op())
 	{
@@ -3257,7 +3262,7 @@ function config_admin_room_voice_chat_enabled()
 
 	$('#admin_enable_voice_chat').find('option').each(function()
 	{
-		if(JSON.parse($(this).val()) === room_voice_chat_enabled)
+		if($(this).val() === room_voice_chat_mode)
 		{
 			$(this).prop('selected', true)
 		}
@@ -3299,10 +3304,10 @@ function config_main_menu()
 	if(is_admin_or_op())
 	{
 		config_admin_permission_checkboxes()
-		config_admin_room_images_enabled()
-		config_admin_room_tv_enabled()
-		config_admin_room_radio_enabled()
-		config_admin_room_voice_chat_enabled()
+		config_admin_room_images_mode()
+		config_admin_room_tv_mode()
+		config_admin_room_radio_mode()
+		config_admin_room_voice_chat_mode()
 		config_admin_privacy()
 		config_admin_log_enabled()
 		config_admin_theme()
@@ -5228,7 +5233,7 @@ function change(args={})
 
 	if(args.type === "image")
 	{
-		if(!room_images_enabled || (room_settings.images_locked && last_image_source && !args.current_source))
+		if(room_settings.images_locked && last_image_source && !args.current_source)
 		{
 			return false
 		}
@@ -5241,6 +5246,19 @@ function change(args={})
 		if(!room_settings.images_enabled)
 		{
 			return false
+		}
+
+		if(room_images_mode === "disabled")
+		{
+			return false
+		}
+
+		else if(room_images_mode === "locked")
+		{
+			if(last_image_source)
+			{
+				return false
+			}
 		}
 
 		if(background_mode === "mirror")
@@ -5272,9 +5290,22 @@ function change(args={})
 
 	else if(args.type === "tv")
 	{
-		if(!room_tv_enabled || !room_settings.tv_enabled || (room_settings.tv_locked && last_tv_source && !args.current_source))
+		if(!room_settings.tv_enabled || (room_settings.tv_locked && last_tv_source && !args.current_source))
 		{
 			return false
+		}
+
+		if(room_tv_mode === "disabled")
+		{
+			return false
+		}
+
+		else if(room_tv_mode === "locked")
+		{
+			if(last_tv_source)
+			{
+				return false
+			}
 		}
 
 		if(args.current_source && last_tv_source)
@@ -5345,9 +5376,22 @@ function change(args={})
 
 	else if(args.type === "radio")
 	{
-		if(!room_radio_enabled || !room_settings.radio_enabled || (room_settings.radio_locked && last_radio_source && !args.current_source))
+		if(!room_settings.radio_enabled || (room_settings.radio_locked && last_radio_source && !args.current_source))
 		{
 			return false
+		}
+
+		if(room_radio_mode === "disabled")
+		{
+			return false
+		}
+
+		else if(room_radio_mode === "locked")
+		{
+			if(last_radio_source)
+			{
+				return false
+			}
 		}
 
 		if(radio_type === "youtube")
@@ -5760,12 +5804,6 @@ function register_commands()
 	commands.push('/me')
 	commands.push('/clear')
 	commands.push('/unclear')
-	commands.push('/enableimages')
-	commands.push('/disableimages')
-	commands.push('/enabletv')
-	commands.push('/disabletv')
-	commands.push('/enableradio')
-	commands.push('/disableradio')
 	commands.push('/users')
 	commands.push('/room')
 	commands.push('/publicrooms')
@@ -5797,6 +5835,7 @@ function register_commands()
 	commands.push('/radio')
 	commands.push('/tv')
 	commands.push('/image')
+	commands.push('/images')
 	commands.push('/privacy')
 	commands.push('/status')
 	commands.push('/topic')
@@ -5906,8 +5945,6 @@ function register_commands()
 	commands.push('/unlockscreen')
 	commands.push('/togglelockscreen')
 	commands.push('/drawimage')
-	commands.push('/enablevoicechat')
-	commands.push('/disablevoicechat')
 	commands.push('/joinvoicechat')
 	commands.push('/leavevoicechat')
 
@@ -6022,46 +6059,6 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/unclear'))
 	{
 		unclear_chat()
-	}
-
-	else if(oiEquals(lmsg, '/enableimages'))
-	{
-		change_room_images_enabled(true)
-	}
-
-	else if(oiEquals(lmsg, '/disableimages'))
-	{
-		change_room_images_enabled(false)
-	}
-
-	else if(oiEquals(lmsg, '/enableradio'))
-	{
-		change_room_radio_enabled(true)
-	}
-
-	else if(oiEquals(lmsg, '/disableradio'))
-	{
-		change_room_radio_enabled(false)
-	}
-
-	else if(oiEquals(lmsg, '/enablevoicechat'))
-	{
-		change_room_voice_chat_enabled(true)
-	}
-
-	else if(oiEquals(lmsg, '/disablevoicechat'))
-	{
-		change_room_voice_chat_enabled(false)
-	}
-
-	else if(oiEquals(lmsg, '/enabletv'))
-	{
-		change_room_tv_enabled(true)
-	}
-
-	else if(oiEquals(lmsg, '/disabletv'))
-	{
-		change_room_tv_enabled(false)
 	}
 
 	else if(oiEquals(lmsg, '/users'))
@@ -6251,7 +6248,7 @@ function execute_command(msg, ans)
 		show_media_source("tv")
 	}
 
-	else if(oiStartsWith(lmsg, '/image'))
+	else if(oiStartsWith(lmsg, '/image') || oiStartsWith(lmsg, '/images'))
 	{
 		link_image(arg)
 	}
@@ -7180,7 +7177,7 @@ function get_radio_metadata_enabled()
 	return loaded_radio_type === "radio" &&
 	radio_get_metadata &&
 	loaded_radio_metadata &&
-	room_radio_enabled &&
+	room_radio_mode !== "disabled" &&
 	room_settings.radio_enabled
 }
 
@@ -12139,7 +12136,7 @@ function toggle_images(what=undefined, save=true)
 
 function change_images_visibility()
 {
-	if(room_images_enabled && room_settings.images_enabled)
+	if(room_images_mode !== "disabled" && room_settings.images_enabled)
 	{
 		$("#media").css("display", "flex")
 
@@ -12204,7 +12201,7 @@ function toggle_tv(what=undefined, save=true)
 
 function change_tv_visibility()
 {
-	if(room_tv_enabled && room_settings.tv_enabled)
+	if(room_tv_mode !== "disabled" && room_settings.tv_enabled)
 	{
 		$("#media").css("display", "flex")
 
@@ -12273,7 +12270,7 @@ function toggle_radio(what=undefined, save=true)
 
 function change_radio_visibility()
 {
-	if(room_radio_enabled && room_settings.radio_enabled)
+	if(room_radio_mode !== "disabled" && room_settings.radio_enabled)
 	{
 		$("#radio").css("display", "initial")
 
@@ -12617,7 +12614,7 @@ function fix_video_frame(frame_id)
 	}
 }
 
-function change_room_images_enabled(what)
+function change_room_images_mode(what)
 {
 	if(!is_admin_or_op(role))
 	{
@@ -12625,28 +12622,16 @@ function change_room_images_enabled(what)
 		return false
 	}
 
-	if(what)
+	if(what === room_images_mode)
 	{
-		if(room_images_enabled)
-		{
-			feedback(`Room images are already enabled`)
-			return false
-		}
+		feedback(`Images mode is already set to that`)
+		return false
 	}
 
-	else
-	{
-		if(!room_images_enabled)
-		{
-			feedback(`Room images are already disabled`)
-			return false
-		}
-	}
-
-	socket_emit("change_images_enabled", {what:what})
+	socket_emit("change_images_mode", {what:what})
 }
 
-function change_room_tv_enabled(what)
+function change_room_tv_mode(what)
 {
 	if(!is_admin_or_op(role))
 	{
@@ -12654,28 +12639,16 @@ function change_room_tv_enabled(what)
 		return false
 	}
 
-	if(what)
+	if(what === room_tv_mode)
 	{
-		if(room_tv_enabled)
-		{
-			feedback(`Room tv is already enabled`)
-			return false
-		}
+		feedback(`TV mode is already set to that`)
+		return false
 	}
 
-	else
-	{
-		if(!room_tv_enabled)
-		{
-			feedback(`Room tv is already disabled`)
-			return false
-		}
-	}
-
-	socket_emit("change_tv_enabled", {what:what})
+	socket_emit("change_tv_mode", {what:what})
 }
 
-function change_room_radio_enabled(what)
+function change_room_radio_mode(what)
 {
 	if(!is_admin_or_op(role))
 	{
@@ -12683,28 +12656,16 @@ function change_room_radio_enabled(what)
 		return false
 	}
 
-	if(what)
+	if(what === room_radio_mode)
 	{
-		if(room_radio_enabled)
-		{
-			feedback(`Room radio is already enabled`)
-			return false
-		}
+		feedback(`Radio mode is already set to that`)
+		return false
 	}
 
-	else
-	{
-		if(!room_radio_enabled)
-		{
-			feedback(`Room radio is already disabled`)
-			return false
-		}
-	}
-
-	socket_emit("change_radio_enabled", {what:what})
+	socket_emit("change_radio_mode", {what:what})
 }
 
-function change_room_voice_chat_enabled(what)
+function change_room_voice_chat_mode(what)
 {
 	if(!is_admin_or_op(role))
 	{
@@ -12712,130 +12673,72 @@ function change_room_voice_chat_enabled(what)
 		return false
 	}
 
-	if(what)
+	if(what === room_voice_chat_mode)
 	{
-		if(room_voice_chat_enabled)
-		{
-			feedback(`Room voice chat is already enabled`)
-			return false
-		}
+		feedback(`Voice Chat mode is already set to that`)
+		return false
 	}
 
-	else
-	{
-		if(!room_voice_chat_enabled)
-		{
-			feedback(`Room voice chat is already disabled`)
-			return false
-		}
-	}
-
-	socket_emit("change_voice_chat_enabled", {what:what})
+	socket_emit("change_voice_chat_mode", {what:what})
 }
 
-function announce_room_images_enabled_change(data)
+function announce_room_images_mode_change(data)
 {
-	if(data.what)
+	public_feedback(`${data.username} changed images mode to ${data.what}`,
 	{
-		public_feedback(`${data.username} enabled room images`,
-		{
-			uname: data.username,
-			open_profile: true
-		})
-	}
+		uname: data.username,
+		open_profile: true
+	})
 
-	else
-	{
-		public_feedback(`${data.username} disabled room images`,
-		{
-			uname: data.username,
-			open_profile: true
-		})
-	}
-
-	set_room_images_enabled(data.what)
+	set_room_images_mode(data.what)
 	change_images_visibility()
 	check_permissions()
 	check_maxers()
 }
 
-function announce_room_tv_enabled_change(data)
+function announce_room_tv_mode_change(data)
 {
-	if(data.what)
+	public_feedback(`${data.username} changed tv mode to ${data.what}`,
 	{
-		public_feedback(`${data.username} enabled room tv`,
-		{
-			uname: data.username,
-			open_profile: true
-		})
-	}
+		uname: data.username,
+		open_profile: true
+	})
 
-	else
-	{
-		public_feedback(`${data.username} disabled room tv`,
-		{
-			uname: data.username,
-			open_profile: true
-		})
-	}
-
-	set_room_tv_enabled(data.what)
+	set_room_tv_mode(data.what)
 	change_tv_visibility(data.what)
 	check_permissions()
 	check_maxers()
 }
 
-function announce_room_radio_enabled_change(data)
+function announce_room_radio_mode_change(data)
 {
-	if(data.what)
+	public_feedback(`${data.username} changed radio mode to ${data.what}`,
 	{
-		public_feedback(`${data.username} enabled room radio`,
-		{
-			uname: data.username,
-			open_profile: true
-		})
-	}
+		uname: data.username,
+		open_profile: true
+	})
 
-	else
-	{
-		public_feedback(`${data.username} disabled room radio`,
-		{
-			uname: data.username,
-			open_profile: true
-		})
-	}
-
-	set_room_radio_enabled(data.what)
+	set_room_radio_mode(data.what)
 	change_radio_visibility(data.what)
 	check_permissions()
 }
 
-function announce_room_voice_chat_enabled_change(data)
+function announce_room_voice_chat_mode_change(data)
 {
-	if(data.what)
+	public_feedback(`${data.username} changed voice chat mode to ${data.what}`,
 	{
-		public_feedback(`${data.username} enabled room voice chat`,
-		{
-			uname: data.username,
-			open_profile: true
-		})
-	}
+		uname: data.username,
+		open_profile: true
+	})
 
-	else
+	if(data.what === "disabled")
 	{
 		voice_chat_userlist = []
-		
 		left_voice_chat()
-		
-		public_feedback(`${data.username} disabled room voice chat`,
-		{
-			uname: data.username,
-			open_profile: true
-		})
 	}
 
 	update_voice_chat_userlist()
-	set_room_voice_chat_enabled(data.what)
+	set_room_voice_chat_mode(data.what)
 	check_permissions()
 }
 
@@ -12848,10 +12751,10 @@ function hide_media()
 
 function setup_active_media(data)
 {
-	room_images_enabled = data.room_images_enabled
-	room_tv_enabled = data.room_tv_enabled
-	room_radio_enabled = data.room_radio_enabled
-	room_voice_chat_enabled = data.room_voice_chat_enabled
+	room_images_mode = data.room_images_mode
+	room_tv_mode = data.room_tv_mode
+	room_radio_mode = data.room_radio_mode
+	room_voice_chat_mode = data.room_voice_chat_mode
 
 	media_visibility_and_locks()
 }
@@ -15550,28 +15453,28 @@ function set_room_name(name)
 	config_admin_room_name()
 }
 
-function set_room_images_enabled(what)
+function set_room_images_mode(what)
 {
-	room_images_enabled = what
-	config_admin_room_images_enabled()
+	room_images_mode = what
+	config_admin_room_images_mode()
 }
 
-function set_room_tv_enabled(what)
+function set_room_tv_mode(what)
 {
-	room_tv_enabled = what
-	config_admin_room_tv_enabled()
+	room_tv_mode = what
+	config_admin_room_tv_mode()
 }
 
-function set_room_radio_enabled(what)
+function set_room_radio_mode(what)
 {
-	room_radio_enabled = what
-	config_admin_room_radio_enabled()
+	room_radio_mode = what
+	config_admin_room_radio_mode()
 }
 
-function set_room_voice_chat_enabled(what)
+function set_room_voice_chat_mode(what)
 {
-	room_voice_chat_enabled = what
-	config_admin_room_voice_chat_enabled()
+	room_voice_chat_mode = what
+	config_admin_room_voice_chat_mode()
 }
 
 function set_background_mode(what)
@@ -15946,7 +15849,7 @@ function background_image_enabled()
 
 	if(background_mode === "mirror")
 	{
-		if(!room_images_enabled)
+		if(room_images_mode === "disabled")
 		{
 			return false
 		}
@@ -17603,7 +17506,7 @@ function set_loaded_settings_state()
 
 function check_maxers()
 {
-	if(room_tv_enabled && room_images_enabled)
+	if(room_tv_mode !== "disabled" && room_images_mode !== "disabled")
 	{
 		$(".maxer_container").css("display", "block")
 	}
