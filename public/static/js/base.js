@@ -8890,7 +8890,6 @@ function push_tv_changed(data)
 	{
 		if(tv.date_raw === data.date_raw)
 		{
-			console.log(tv.date_raw)
 			return false
 		}
 	}
@@ -14620,10 +14619,27 @@ function modal_image_prev_click()
 
 	for(var data of images_changed.slice(0).reverse())
 	{
-		if(data.date_raw < date)
+		if(data.date_raw < date && data.url !== url)
 		{
-			show_modal_image(data.url, data.title, data.date_raw)
-			return
+			var ok = true
+
+			for(var data2 of images_changed)
+			{
+				if(data2.date_raw > date)
+				{
+					if(data2.url === data.url)
+					{
+						ok = false
+						break
+					}
+				}
+			}
+
+			if(ok)
+			{
+				show_modal_image(data.url, data.title, data.date_raw)
+				return
+			}
 		}
 	}
 
@@ -14644,10 +14660,27 @@ function modal_image_next_click(e)
 
 	for(var data of images_changed)
 	{
-		if(data.date_raw > date)
+		if(data.date_raw > date && data.url !== url)
 		{
-			show_modal_image(data.url, data.title, data.date_raw)
-			return
+			var ok = true
+
+			for(var data2 of images_changed)
+			{
+				if(data2.date_raw < date)
+				{
+					if(data2.url === data.url)
+					{
+						ok = false
+						break
+					}
+				}
+			}
+
+			if(ok)
+			{
+				show_modal_image(data.url, data.title, data.date_raw)
+				return
+			}
 		}
 	}
 
