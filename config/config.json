@@ -147,7 +147,7 @@
 	"delivery_email": "hue@merkoba.com",
 	"delivery_email_name": "Hue",
 	"media_history_max_items": 1000,
-	"images_changed_crop_limit": 1000,
+	"media_changed_crop_limit": 1000,
 	"email_change_limit": 1200000,
 	"email_change_expiration": 86400000,
 	"email_change_code_max_length": 200,

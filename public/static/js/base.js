@@ -175,6 +175,8 @@ var images_locked = false
 var tv_locked = false
 var radio_locked = false
 var images_changed = []
+var tv_changed = [] 
+var radio_changed = []
 var modal_image_open = false
 var current_image_source = ""
 var current_image_title = ""
@@ -8395,9 +8397,9 @@ function push_images_changed(data)
 
 	images_changed.push(data)
 
-	if(images_changed.length > images_changed_crop_limit)
+	if(images_changed.length > media_changed_crop_limit)
 	{
-		images_changed = images_changed.slice(images_changed.length - images_changed_crop_limit)
+		images_changed = images_changed.slice(images_changed.length - media_changed_crop_limit)
 	}
 }
 
@@ -8485,6 +8487,25 @@ function change_radio_source(src)
 			return false
 		}
 
+		if(src === "default")
+		{
+			socket_emit('change_radio_source', {src:"default"})
+			return
+		}
+
+		else if(src === "prev")
+		{
+			if(radio_changed.length > 1)
+			{
+				src = radio_changed[radio_changed.length - 2].url
+			}
+
+			else
+			{
+				return false
+			}
+		}
+
 		if(src.length === 0)
 		{
 			return false
@@ -8493,12 +8514,6 @@ function change_radio_source(src)
 		if(src.length > max_tv_source_length)
 		{
 			return false
-		}
-
-		if(src === "default")
-		{
-			socket_emit('change_radio_source', {src:"default"})
-			return
 		}
 
 		if(src.startsWith("http://") || src.startsWith("https://"))
@@ -8638,6 +8653,36 @@ function announce_radio_change(data, date=false, action="change")
 		type: "radio_change",
 		uname: data.radio_setter
 	})
+
+	var ic_data = {}
+
+	ic_data.url = data.radio_source
+	ic_data.date_raw = d
+	ic_data.setter = data.radio_setter
+
+	push_radio_changed(ic_data)
+}
+function push_radio_changed(data)
+{
+	if(!data.url)
+	{
+		data.url = default_radio_source
+	}
+
+	for(var radio of radio_changed)
+	{
+		if(radio.date_raw === data.date_raw)
+		{
+			return false
+		}
+	}
+
+	radio_changed.push(data)
+
+	if(radio_changed.length > media_changed_crop_limit)
+	{
+		radio_changed = radio_changed.slice(radio_changed.length - media_changed_crop_limit)
+	}
 }
 
 function change_tv_source(src)
@@ -8649,6 +8694,25 @@ function change_tv_source(src)
 			return false
 		}
 
+		if(src === "default")
+		{
+			socket_emit('change_tv_source', {src:"default"})
+			return
+		}
+
+		else if(src === "prev")
+		{
+			if(tv_changed.length > 1)
+			{
+				src = tv_changed[tv_changed.length - 2].url
+			}
+
+			else
+			{
+				return false
+			}
+		}
+
 		if(src.length === 0)
 		{
 			return false
@@ -8657,12 +8721,6 @@ function change_tv_source(src)
 		if(src.length > max_tv_source_length)
 		{
 			return false
-		}
-
-		if(src === "default")
-		{
-			socket_emit('change_tv_source', {src:"default"})
-			return
 		}
 
 		if(src.startsWith("http://") || src.startsWith("https://"))
@@ -8811,6 +8869,38 @@ function announce_tv_change(data, date=false, action="change")
 		type: "tv_change",
 		uname: data.tv_setter
 	})
+	
+	var ic_data = {}
+
+	ic_data.url = data.tv_source
+	ic_data.date_raw = d
+	ic_data.setter = data.tv_setter
+
+	push_tv_changed(ic_data)
+}
+
+function push_tv_changed(data)
+{
+	if(!data.url)
+	{
+		data.url = default_tv_source
+	}
+
+	for(var tv of tv_changed)
+	{
+		if(tv.date_raw === data.date_raw)
+		{
+			console.log(tv.date_raw)
+			return false
+		}
+	}
+
+	tv_changed.push(data)
+
+	if(tv_changed.length > media_changed_crop_limit)
+	{
+		tv_changed = tv_changed.slice(tv_changed.length - media_changed_crop_limit)
+	}
 }
 
 function ban(uname)
@@ -12908,6 +12998,19 @@ function link_image(src)
 	{
 		emit_change_image_source("default")
 		return
+	}
+
+	else if(src === "prev")
+	{
+		if(images_changed.length > 1)
+		{
+			src = images_changed[images_changed.length - 2].url
+		}
+
+		else
+		{
+			return false
+		}
 	}
 
 	if(src.length === 0)
