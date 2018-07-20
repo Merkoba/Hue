@@ -25,6 +25,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const image_types = ["image/jpeg", "image/png", "image/gif"]
 	const image_extensions = ["jpg", "jpeg", "png", "gif"]
 	const reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
+	const media_types = ["images", "tv", "radio", "voice chat"]
 
 	const s3 = new aws.S3(
 	{
@@ -3764,9 +3765,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.check_permission = function(socket, permission)
 	{
-		if(rooms[socket.hue_room_id][`${permission}_mode`] !== "enabled")
+		if(media_types.includes(permission))
 		{
-			return false
+			if(rooms[socket.hue_room_id][`${permission}_mode`] !== "enabled")
+			{
+				return false
+			}
 		}
 
 		if(socket.hue_role === "admin" || socket.hue_role === "op")
