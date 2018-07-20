@@ -1254,7 +1254,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return
 		}
 
-		if(data.src.includes("http://") || data.src.includes("https://"))
+		if(data.src.startsWith("http://") || data.src.startsWith("https://"))
 		{
 			if(data.src.includes("youtube.com") || data.src.includes("youtu.be"))
 			{
@@ -1469,7 +1469,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return
 		}
 
-		if(data.src.includes("http://") || data.src.includes("https://"))
+		if(data.src.startsWith("http://") || data.src.startsWith("https://"))
 		{
 			if(data.src.includes("youtube.com") || data.src.includes("youtu.be"))
 			{
@@ -2608,7 +2608,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			data.src = data.src.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
 		}
 
-		if(!data.src.startsWith("http://") && !data.src.startsWith("https://"))
+		if(!data.src.startsWith("http://") && !data.src.startsWith("https://") && !data.src.startsWith("/"))
 		{
 			if(!config.imgur_enabled)
 			{

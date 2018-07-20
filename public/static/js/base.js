@@ -241,6 +241,7 @@ var loaded_chat_layout
 var credits_audio
 var radio_metadata_fail_timeout
 var radio_get_metadata = false
+var init_data
 
 function init()
 {
@@ -815,6 +816,8 @@ function start_socket()
 	{
 		if(data.type === 'joined')
 		{
+			init_data = data
+
 			if(data.room_locked)
 			{
 				start_locked_mode()
@@ -845,7 +848,6 @@ function start_socket()
 			clear_chat()
 			check_firstime()
 			get_input_history()
-			announce_image_change(data, false, false)
 			show_joined()
 
 			setup_image(data)
@@ -8295,6 +8297,11 @@ function show_upload_error()
 
 function announce_image_change(data, date=false, show=true)
 {
+	if(!data.image_setter)
+	{
+		show = false
+	}
+
 	if(date)
 	{
 		var d = date
@@ -8570,8 +8577,13 @@ function change_radio_source(src)
 	}
 }
 
-function announce_radio_change(data, date=false, action="change")
+function announce_radio_change(data, date=false, action="change", show=true)
 {
+	if(!data.radio_setter)
+	{
+		show = false
+	}
+
 	if(data.radio_title)
 	{
 		var name = conditional_quotes(data.radio_title)
@@ -8643,17 +8655,20 @@ function announce_radio_change(data, date=false, action="change")
 		var msg = `${data.radio_setter} changed the radio to: ${name}`
 	}
 
-	chat_announce(
+	if(show)
 	{
-		brk: "<i class='icon2 fa fa-volume-up'></i>",
-		msg: msg,
-		title: title,
-		onclick: onclick,
-		save: true,
-		date: d,
-		type: "radio_change",
-		uname: data.radio_setter
-	})
+		chat_announce(
+		{
+			brk: "<i class='icon2 fa fa-volume-up'></i>",
+			msg: msg,
+			title: title,
+			onclick: onclick,
+			save: true,
+			date: d,
+			type: "radio_change",
+			uname: data.radio_setter
+		})
+	}
 
 	var ic_data = {}
 
@@ -8787,8 +8802,13 @@ function change_tv_source(src)
 	}
 }
 
-function announce_tv_change(data, date=false, action="change")
+function announce_tv_change(data, date=false, action="change", show=true)
 {
+	if(!data.tv_setter)
+	{
+		show = false
+	}
+
 	if(data.tv_title)
 	{
 		var name = conditional_quotes(data.tv_title)
@@ -8860,17 +8880,20 @@ function announce_tv_change(data, date=false, action="change")
 		var msg = `${data.tv_setter} changed the tv to: ${name}`
 	}
 
-	chat_announce(
+	if(show)
 	{
-		brk: "<i class='icon2 fa fa-television'></i>",
-		msg: msg,
-		title: title,
-		onclick: onclick,
-		save: true,
-		date: d,
-		type: "tv_change",
-		uname: data.tv_setter
-	})
+		chat_announce(
+		{
+			brk: "<i class='icon2 fa fa-television'></i>",
+			msg: msg,
+			title: title,
+			onclick: onclick,
+			save: true,
+			date: d,
+			type: "tv_change",
+			uname: data.tv_setter
+		})
+	}
 	
 	var ic_data = {}
 
@@ -11736,6 +11759,45 @@ function show_details(data)
 
 function show_log_messages()
 {
+	var num_images = 0
+	var num_tv = 0
+	var num_radio = 0
+
+	for(var message of log_messages)
+	{
+		var type = message.type
+
+		if(type === "image")
+		{
+			num_images += 1
+		}
+
+		else if(type === "tv")
+		{
+			num_tv += 1
+		}
+
+		else if(type === "radio")
+		{
+			num_radio += 1
+		}
+	}
+
+	if(num_images === 0)
+	{
+		announce_image_change(init_data)
+	}
+
+	if(num_tv === 0)
+	{
+		announce_tv_change(init_data)
+	}
+
+	if(num_radio === 0)
+	{
+		announce_radio_change(init_data)
+	}
+
 	if(log_messages && log_messages.length > 0)
 	{
 		for(var message of log_messages)
@@ -11763,14 +11825,14 @@ function show_log_messages()
 					announce_image_change(data, date)
 				}
 
-				else if(type === "radio")
-				{
-					announce_radio_change(data, date)
-				}
-
 				else if(type === "tv")
 				{
 					announce_tv_change(data, date)
+				}
+
+				else if(type === "radio")
+				{
+					announce_radio_change(data, date)
 				}
 
 				else if(type === "reaction")
@@ -11780,8 +11842,9 @@ function show_log_messages()
 			}
 		}
 
-		log_messages = false
 	}
+
+	log_messages = false
 }
 
 function change_log(log)
