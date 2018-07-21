@@ -12640,7 +12640,7 @@ function change_room_voice_chat_mode(what)
 
 function announce_room_images_mode_change(data)
 {
-	public_feedback(`${data.username} changed images mode to ${data.what}`,
+	public_feedback(`${data.username} changed the images mode to ${data.what}`,
 	{
 		uname: data.username,
 		open_profile: true
@@ -12654,7 +12654,7 @@ function announce_room_images_mode_change(data)
 
 function announce_room_tv_mode_change(data)
 {
-	public_feedback(`${data.username} changed tv mode to ${data.what}`,
+	public_feedback(`${data.username} changed the tv mode to ${data.what}`,
 	{
 		uname: data.username,
 		open_profile: true
@@ -12668,7 +12668,7 @@ function announce_room_tv_mode_change(data)
 
 function announce_room_radio_mode_change(data)
 {
-	public_feedback(`${data.username} changed radio mode to ${data.what}`,
+	public_feedback(`${data.username} changed the radio mode to ${data.what}`,
 	{
 		uname: data.username,
 		open_profile: true
@@ -12681,7 +12681,7 @@ function announce_room_radio_mode_change(data)
 
 function announce_room_voice_chat_mode_change(data)
 {
-	public_feedback(`${data.username} changed voice chat mode to ${data.what}`,
+	public_feedback(`${data.username} changed the voice chat mode to ${data.what}`,
 	{
 		uname: data.username,
 		open_profile: true
