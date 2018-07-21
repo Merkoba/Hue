@@ -5233,12 +5233,12 @@ function change(args={})
 
 	if(args.type === "image")
 	{
-		if(room_settings.images_locked && last_image_source && !args.current_source)
+		if(!room_settings.images_enabled || (room_settings.images_locked && last_image_source && !args.current_source))
 		{
 			return false
 		}
 
-		if(!room_settings.images_enabled)
+		if(room_images_mode === "disabled")
 		{
 			return false
 		}
@@ -5273,6 +5273,11 @@ function change(args={})
 	else if(args.type === "tv")
 	{
 		if(!room_settings.tv_enabled || (room_settings.tv_locked && last_tv_source && !args.current_source))
+		{
+			return false
+		}
+
+		if(room_tv_mode === "disabled")
 		{
 			return false
 		}
@@ -5346,6 +5351,11 @@ function change(args={})
 	else if(args.type === "radio")
 	{
 		if(!room_settings.radio_enabled || (room_settings.radio_locked && last_radio_source && !args.current_source))
+		{
+			return false
+		}
+
+		if(room_radio_mode === "disabled")
 		{
 			return false
 		}
