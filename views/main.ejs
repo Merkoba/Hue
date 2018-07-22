@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?version=15"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2059"></script>
+		<script src="/static/js/base.js?version=2060"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=414"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=415"/>
 
 		<script>
 
@@ -161,11 +161,11 @@
 						
 						<div class='pointer action user_function_button' onclick='run_user_function(1)' id='user_function_button_1'>F1</div>
 
-						<div class='hspacer3'></div>
+						<div class='hspacer3'>&nbsp;|&nbsp;</div>
 						
 						<div class='pointer action user_function_button' onclick='run_user_function(2)' id='user_function_button_2'>F2</div>
 
-						<div class='hspacer3'></div>
+						<div class='hspacer3'>&nbsp;|&nbsp;</div>
 						
 						<div class='pointer action user_function_button' onclick='run_user_function(3)' id='user_function_button_3'>F3</div>
 					</div>
@@ -865,6 +865,57 @@
 
 					<div class='settings_category settings_window_category_container' id='settings_window_category_content_functions_{{type}}'>
 
+						<div class="{{type}}_toggle toggler action pointer bold settings_container">+ User Function 1</div>
+						<div class='{{type}}_toggle_container toggler_container'>
+							
+							<div class='settings_item' data-setting='user_function_1_name' data-type='text'>
+								<div class="setting_title">Name</div>
+								<input type="text" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_user_function_1_name">
+							</div>
+							
+							<div class='settings_item' data-setting='user_function_1' data-type='textarea'>
+								<div class="setting_title2">Action</div>
+								<div class="setting_title">(Each on a different line)</div>
+								<div class='spacer2'></div>
+								<textarea rows=4 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_user_function_1"></textarea>
+							</div>
+							
+						</div>
+
+						<div class="{{type}}_toggle toggler action pointer bold settings_container">+ User Function 2</div>
+						<div class='{{type}}_toggle_container toggler_container'>
+
+							<div class='settings_item' data-setting='user_function_2_name' data-type='text'>
+								<div class="setting_title">Name</div>
+								<input type="text" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_user_function_2_name">
+							</div>
+
+							<div class='settings_item' data-setting='user_function_2' data-type='textarea'>
+								<div class="setting_title2">Action</div>
+								<div class="setting_title">(Each on a different line)</div>
+								<div class='spacer2'></div>
+								<textarea rows=4 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_user_function_2"></textarea>
+							</div>
+
+						</div>
+
+						<div class="{{type}}_toggle toggler action pointer bold settings_container">+ User Function 3</div>
+						<div class='{{type}}_toggle_container toggler_container'>
+							
+							<div class='settings_item' data-setting='user_function_3_name' data-type='text'>
+								<div class="setting_title">Name</div>
+								<input type="text" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_user_function_3_name">
+							</div>
+
+							<div class='settings_item' data-setting='user_function_3' data-type='textarea'>
+								<div class="setting_title2">Action</div>
+								<div class="setting_title">(Each on a different line)</div>
+								<div class='spacer2'></div>
+								<textarea rows=4 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_user_function_3"></textarea>
+							</div>
+
+						</div>
+
 						<div class='settings_item' data-setting='double_tap' data-type='textarea'>
 							<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_key"></span>&nbsp;Tap</div>
 							<div class='{{type}}_toggle_container toggler_container'>
@@ -889,33 +940,6 @@
 								<div class="setting_title">(Each on a different line)</div>
 								<div class='spacer2'></div>
 								<textarea rows=4 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_double_tap_3"></textarea>
-							</div>
-						</div>
-
-						<div class='settings_item' data-setting='user_function_1' data-type='textarea'>
-							<div class="{{type}}_toggle toggler action pointer bold inline">+ User Function 1</div>
-							<div class='{{type}}_toggle_container toggler_container'>
-								<div class="setting_title">(Each on a different line)</div>				
-								<div class='spacer2'></div>
-								<textarea rows=4 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_user_function_1"></textarea>
-							</div>
-						</div>
-
-						<div class='settings_item' data-setting='user_function_2' data-type='textarea'>
-							<div class="{{type}}_toggle toggler action pointer bold inline">+ User Function 2</div>
-							<div class='{{type}}_toggle_container toggler_container'>
-								<div class="setting_title">(Each on a different line)</div>				
-								<div class='spacer2'></div>
-								<textarea rows=4 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_user_function_2"></textarea>
-							</div>
-						</div>
-
-						<div class='settings_item' data-setting='user_function_3' data-type='textarea'>
-							<div class="{{type}}_toggle toggler action pointer bold inline">+ User Function 3</div>
-							<div class='{{type}}_toggle_container toggler_container'>
-								<div class="setting_title">(Each on a different line)</div>				
-								<div class='spacer2'></div>
-								<textarea rows=4 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_user_function_3"></textarea>
 							</div>
 						</div>
 

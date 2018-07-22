@@ -10202,6 +10202,9 @@ function get_global_settings()
 		"user_function_1",
 		"user_function_2",
 		"user_function_3",
+		"user_function_1_name",
+		"user_function_2_name",
+		"user_function_3_name",
 		"on_lockscreen",
 		"on_unlockscreen",
 		"afk_on_lockscreen",
@@ -10735,6 +10738,30 @@ function setting_open_popup_messages_action(type, save=true)
 	}
 }
 
+function setting_user_function_1_name_action(type, save=true)
+{
+	var val = utilz.clean_string2($(`#${type}_user_function_1_name`).val())
+
+	if(!val)
+	{
+		val = global_settings_default_user_function_1_name
+	}
+
+	$(`#${type}_user_function_1_name`).val(val)
+
+	window[type].user_function_1_name = val
+
+	if(active_settings("user_function_1_name") === type)
+	{
+		setup_user_function_titles()
+	}
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
 function setting_user_function_1_action(type, save=true)
 {
 	var cmds = utilz.clean_string7($(`#${type}_user_function_1`).val())
@@ -10754,6 +10781,30 @@ function setting_user_function_1_action(type, save=true)
 	}
 }
 
+function setting_user_function_2_name_action(type, save=true)
+{
+	var val = utilz.clean_string2($(`#${type}_user_function_2_name`).val())
+
+	if(!val)
+	{
+		val = global_settings_default_user_function_2_name
+	}
+
+	$(`#${type}_user_function_2_name`).val(val)
+
+	window[type].user_function_2_name = val
+
+	if(active_settings("user_function_2_name") === type)
+	{
+		setup_user_function_titles()
+	}
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
 function setting_user_function_2_action(type, save=true)
 {
 	var cmds = utilz.clean_string7($(`#${type}_user_function_2`).val())
@@ -10763,6 +10814,30 @@ function setting_user_function_2_action(type, save=true)
 	window[type].user_function_2 = cmds
 
 	if(active_settings("user_function_2") === type)
+	{
+		setup_user_function_titles()
+	}
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_user_function_3_name_action(type, save=true)
+{
+	var val = utilz.clean_string2($(`#${type}_user_function_3_name`).val())
+
+	if(!val)
+	{
+		val = global_settings_default_user_function_3_name
+	}
+
+	$(`#${type}_user_function_3_name`).val(val)
+
+	window[type].user_function_3_name = val
+
+	if(active_settings("user_function_3_name") === type)
 	{
 		setup_user_function_titles()
 	}
@@ -17598,7 +17673,10 @@ function setup_user_function_titles()
 		{
 			t = "Empty User Function. Set what it does in the User Settings"
 		}
+
+		var name = get_setting(`user_function_${i}_name`)
 		
+		$(`#user_function_button_${i}`).text(name)
 		$(`#user_function_button_${i}`).attr("title", t)
 	}
 }

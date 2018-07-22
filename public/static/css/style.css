@@ -1422,6 +1422,12 @@ input[type=text], textarea
 .settings_item
 {
 	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+.settings_container
+{
+	padding-top: 1em;
 	padding-bottom: 1em;	
 }
 

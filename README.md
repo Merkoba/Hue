@@ -346,14 +346,23 @@ If you want to remove it to start fresh:
 "global_settings_default_double_tap_3"
 >What command or string to trigger on double tap 3 by default.
 
+"global_settings_default_user_function_1_name"
+>What name User Function 1 will have by default.
+
+"global_settings_default_user_function_2_name"
+>What name User Function 2 will have by default.
+
+"global_settings_default_user_function_3_name"
+>What name User Function 3 will have by default.
+
 "global_settings_default_user_function_1"
->What command or string to trigger when User Function 1 is used.
+>What command or string to trigger when User Function 1 is used by default.
 
 "global_settings_default_user_function_2"
->What command or string to trigger when User Function 2 is used.
+>What command or string to trigger when User Function 2 is used by default.
 
 "global_settings_default_user_function_3"
->What command or string to trigger when User Function 3 is used.
+>What command or string to trigger when User Function 3 is used by default.
 
 "global_settings_default_at_startup"
 >What command or string to trigger at startup.
