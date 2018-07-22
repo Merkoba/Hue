@@ -13238,14 +13238,14 @@ function show_typing(data)
 
 function show_pencil()
 {
-	$("#footer_chat_icon").addClass("fa-pencil")
-	$("#footer_chat_icon").removeClass("fa-user-circle")
+	$("#footer_user_menu_icon").addClass("fa-pencil")
+	$("#footer_user_menu_icon").removeClass("fa-user-circle")
 }
 
 function hide_pencil()
 {
-	$("#footer_chat_icon").removeClass("fa-pencil")
-	$("#footer_chat_icon").addClass("fa-user-circle")
+	$("#footer_user_menu_icon").removeClass("fa-pencil")
+	$("#footer_user_menu_icon").addClass("fa-user-circle")
 }
 
 function add_aura(uname)
