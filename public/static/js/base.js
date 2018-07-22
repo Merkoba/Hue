@@ -1565,6 +1565,11 @@ function play_video()
 
 	else if(tv_type === "url")
 	{
+		if(hls !== undefined)
+		{
+			hls.startLoad()	
+		}
+
 		$("#media_video")[0].play()
 	}
 
@@ -1694,6 +1699,7 @@ function show_video(src, play=true)
 
 	else
 	{
+		hls = undefined
 		$("#media_video").prop("src", src)
 	}
 
@@ -12196,6 +12202,8 @@ function change_tv_visibility()
 		change({type:"tv", force:false, play:false})
 
 		tv_visible = true
+		
+		play_video()
 	}
 
 	else
