@@ -12183,7 +12183,7 @@ function toggle_tv(what=undefined, save=true)
 	}
 }
 
-function change_tv_visibility()
+function change_tv_visibility(play=true)
 {
 	if(room_tv_mode !== "disabled" && room_settings.tv_enabled)
 	{
@@ -12203,7 +12203,10 @@ function change_tv_visibility()
 
 		tv_visible = true
 		
-		play_video()
+		if(play)
+		{
+			play_video()
+		}
 	}
 
 	else
@@ -12691,7 +12694,7 @@ function announce_room_tv_mode_change(data)
 	})
 
 	set_room_tv_mode(data.what)
-	change_tv_visibility(data.what)
+	change_tv_visibility(false)
 	check_permissions()
 	check_maxers()
 }
@@ -12705,7 +12708,7 @@ function announce_room_radio_mode_change(data)
 	})
 
 	set_room_radio_mode(data.what)
-	change_radio_visibility(data.what)
+	change_radio_visibility()
 	check_permissions()
 }
 
@@ -13446,9 +13449,20 @@ function default_media_state(change_visibility=true)
 
 	if(change_visibility)
 	{
-		toggle_images(true, false)
-		toggle_tv(true, false)
-		toggle_radio(true, false)
+		if(!images_visible)
+		{
+			toggle_images(true, false)
+		}
+
+		if(!tv_visible)
+		{
+			toggle_tv(true, false)
+		}
+
+		if(!radio_visible)
+		{
+			toggle_radio(true, false)
+		}
 	}
 
 	save_room_settings()
