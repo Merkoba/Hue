@@ -16121,7 +16121,7 @@ function run_user_function(n)
 
 	else
 	{
-		feedback(`User Function ${n} doesn't do anything yet. You can set what it does in the User Menu`)
+		feedback(`User Function ${n} doesn't do anything yet. You can set what it does in the User Settings`)
 	}
 	
 	hide_reactions()
@@ -17582,27 +17582,23 @@ function radio_prev()
 }
 
 function setup_user_function_titles()
-{
-	var t1 = utilz.clean_string2(get_setting("user_function_1")).substring(0, 100)
-	var t2 = utilz.clean_string2(get_setting("user_function_2")).substring(0, 100)
-	var t3 = utilz.clean_string2(get_setting("user_function_3")).substring(0, 100)
+{	
+	var n = $(".user_function_button").length
 
-	if(!t1)
+	if(n === 0)
 	{
-		t1 = "Empty User Function. Set what it does in the User Menu"
+		return false
 	}
 
-	if(!t2)
+	for(var i=1; i<n+1; i++)
 	{
-		t2 = "Empty User Function. Set what it does in the User Menu"
+		var t = utilz.clean_string2(get_setting(`user_function_${i}`)).substring(0, 100)
+		
+		if(!t)
+		{
+			t = "Empty User Function. Set what it does in the User Settings"
+		}
+		
+		$(`#user_function_button_${i}`).attr("title", t)
 	}
-
-	if(!t3)
-	{
-		t3 = "Empty User Function. Set what it does in the User Menu"
-	}
-
-	$("#user_function_button_1").attr("title", t1)
-	$("#user_function_button_2").attr("title", t2)
-	$("#user_function_button_3").attr("title", t3)
 }
