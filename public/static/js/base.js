@@ -16063,7 +16063,7 @@ function run_user_function(n)
 
 	else
 	{
-		feedback(`User Function ${n} doesn't do anything yet. You can set what it does in the User Settings`)
+		feedback(`User Function ${n} doesn't do anything yet. You can set what it does in the User Menu`)
 	}
 	
 	hide_reactions()
@@ -17531,17 +17531,17 @@ function setup_user_function_titles()
 
 	if(!t1)
 	{
-		t1 = "Empty User Function. Set what it does in the User Settings."
+		t1 = "Empty User Function. Set what it does in the User Menu."
 	}
 
 	if(!t2)
 	{
-		t2 = "Empty User Function. Set what it does in the User Settings."
+		t2 = "Empty User Function. Set what it does in the User Menu."
 	}
 
 	if(!t3)
 	{
-		t3 = "Empty User Function. Set what it does in the User Settings."
+		t3 = "Empty User Function. Set what it does in the User Menu."
 	}
 
 	$("#user_function_button_1").attr("title", t1)
