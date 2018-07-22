@@ -17531,17 +17531,17 @@ function setup_user_function_titles()
 
 	if(!t1)
 	{
-		t1 = "Empty User Function. Set what it does in the User Menu."
+		t1 = "Empty User Function. Set what it does in the User Menu"
 	}
 
 	if(!t2)
 	{
-		t2 = "Empty User Function. Set what it does in the User Menu."
+		t2 = "Empty User Function. Set what it does in the User Menu"
 	}
 
 	if(!t3)
 	{
-		t3 = "Empty User Function. Set what it does in the User Menu."
+		t3 = "Empty User Function. Set what it does in the User Menu"
 	}
 
 	$("#user_function_button_1").attr("title", t1)
