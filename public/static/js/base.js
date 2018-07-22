@@ -299,6 +299,7 @@ function init()
 	setup_voice_chat()
 	setup_autocomplete()
 	start_other_scrollbars()
+	setup_user_function_titles()
 
 	start_socket()
 }
@@ -10735,6 +10736,11 @@ function setting_user_function_1_action(type, save=true)
 
 	window[type].user_function_1 = cmds
 
+	if(active_settings("user_function_1") === type)
+	{
+		setup_user_function_titles()
+	}
+
 	if(save)
 	{
 		window[`save_${type}`]()
@@ -10749,6 +10755,11 @@ function setting_user_function_2_action(type, save=true)
 
 	window[type].user_function_2 = cmds
 
+	if(active_settings("user_function_2") === type)
+	{
+		setup_user_function_titles()
+	}
+
 	if(save)
 	{
 		window[`save_${type}`]()
@@ -10762,6 +10773,11 @@ function setting_user_function_3_action(type, save=true)
 	$(`#${type}_user_function_3`).val(cmds)
 
 	window[type].user_function_3 = cmds
+
+	if(active_settings("user_function_3") === type)
+	{
+		setup_user_function_titles()
+	}
 
 	if(save)
 	{
@@ -16073,7 +16089,7 @@ function run_user_function(n)
 
 	else
 	{
-		feedback(`User Function ${n} doesn't do anything yet. You can set what it does in the User Menu`)
+		feedback(`User Function ${n} doesn't do anything yet. You can set what it does in the User Settings`)
 	}
 	
 	hide_reactions()
@@ -17531,4 +17547,30 @@ function radio_prev()
 {
 	change_radio_source("prev")
 	msg_radio_picker.close()
+}
+
+function setup_user_function_titles()
+{
+	var t1 = utilz.clean_string2(get_setting("user_function_1")).substring(0, 100)
+	var t2 = utilz.clean_string2(get_setting("user_function_2")).substring(0, 100)
+	var t3 = utilz.clean_string2(get_setting("user_function_3")).substring(0, 100)
+
+	if(!t1)
+	{
+		t1 = "Empty User Function. Set what it does in the User Settings."
+	}
+
+	if(!t2)
+	{
+		t2 = "Empty User Function. Set what it does in the User Settings."
+	}
+
+	if(!t3)
+	{
+		t3 = "Empty User Function. Set what it does in the User Settings."
+	}
+
+	$("#user_function_button_1").attr("title", t1)
+	$("#user_function_button_2").attr("title", t2)
+	$("#user_function_button_3").attr("title", t3)
 }
