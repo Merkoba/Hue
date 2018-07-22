@@ -202,7 +202,10 @@ var stop_radio_timeout
 var stop_radio_delay = 0
 var aura_timeouts = {}
 var reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
-var reactions_box_visible = false
+var show_reactions_timeout
+var hide_reactions_timeout
+var mouse_over_reactions = false
+var reactions_hover_delay = 800
 var user_functions = [1, 2, 3]
 var screen_locked = false
 var mouse_is_down = false
@@ -11408,6 +11411,8 @@ function setup_user_menu()
 
 function show_user_menu()
 {
+	clearTimeout(show_reactions_timeout)
+	hide_reactions()
 	msg_user_menu.show()
 }
 
@@ -13443,9 +13448,20 @@ function refresh_radio()
 
 function default_media_state(change_visibility=true)
 {
-	toggle_lock_images(false, false)
-	toggle_lock_tv(false, false)
-	toggle_lock_radio(false, false)
+	if(images_locked)
+	{
+		toggle_lock_images(false, false)
+	}
+
+	if(tv_locked)
+	{
+		toggle_lock_tv(false, false)
+	}
+
+	if(radio_locked)
+	{
+		toggle_lock_radio(false, false)
+	}
 
 	if(change_visibility)
 	{
@@ -16034,17 +16050,35 @@ function show_reaction(data, date=false)
 
 function setup_reactions_box()
 {
-	$("#footer_chat_icon").click(function()
-	{
-		if(reactions_box_visible)
-		{
-			hide_reactions()
-		}
+	$("#footer_user_menu_icon").hover(
 
-		else
+	function()
+	{
+		clearTimeout(hide_reactions_timeout)
+	
+		show_reactions_timeout = setTimeout(function()
 		{
 			show_reactions()
-		}
+		}, reactions_hover_delay)
+	},
+	
+	function()
+	{
+		start_hide_reactions()
+	})
+
+	$("#reactions_box_container").hover(
+	
+	function()
+	{
+		mouse_over_reactions = true
+		clearTimeout(hide_reactions_timeout)
+	},
+	
+	function()
+	{
+		mouse_over_reactions = false
+		start_hide_reactions()
 	})
 
 	$("#main_rows_container").click(function()
@@ -16053,22 +16087,29 @@ function setup_reactions_box()
 	})
 }
 
+function start_hide_reactions()
+{
+	clearTimeout(show_reactions_timeout)
+
+	hide_reactions_timeout = setTimeout(function()
+	{
+		if(mouse_over_reactions)
+		{
+			return false
+		}
+
+		hide_reactions()
+	}, reactions_hover_delay)
+}
+
 function show_reactions()
 {
-	if(!reactions_box_visible)
-	{
-		$("#reactions_box_container").css("display", "flex")
-		reactions_box_visible = true
-	}
+	$("#reactions_box_container").css("display", "flex")
 }
 
 function hide_reactions()
 {
-	if(reactions_box_visible)
-	{
-		$("#reactions_box_container").css("display", "none")
-		reactions_box_visible = false
-	}
+	$("#reactions_box_container").css("display", "none")
 }
 
 function run_user_function(n)
