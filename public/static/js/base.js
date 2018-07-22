@@ -13645,8 +13645,8 @@ function create_popup(position, id=false, after_close=false)
 function show_intro()
 {
 	var s = `
-	You can chat in this area.
-	When someone is typing a message the icon turns into a pencil.`
+	You can chat in this area. The icon on the left opens the user menu where you can change your profile image and other settings.
+	When someone is typing a message the user menu icon turns into a pencil. Hovering this icon shows additional actions.`
 
 	create_popup("bottomleft").show(["Chat and User Menu", s])
 
@@ -13656,8 +13656,7 @@ function show_intro()
 	create_popup("bottomright").show(["Media Controls", s])
 
 	var s = `
-	This area contains the main menu, user list, voice chat, and radio controls. 
-	The main menu includes the user menu where you can change your profile image and other settings.`
+	This area contains the main menu, user list, voice chat, and radio controls.`
 
 	create_popup("top").show(["Top Panel", s])
 
@@ -15966,6 +15965,7 @@ function send_reaction(reaction_type)
 {
 	if(!can_chat)
 	{
+		feedback("You don't have permission to chat")
 		return false
 	}
 
@@ -16079,11 +16079,6 @@ function setup_reactions_box()
 	{
 		mouse_over_reactions = false
 		start_hide_reactions()
-	})
-
-	$("#main_rows_container").click(function()
-	{
-		hide_reactions()
 	})
 }
 
