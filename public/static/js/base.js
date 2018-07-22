@@ -74,7 +74,7 @@ var template_status
 var template_help
 var template_help2
 var template_help3
-var template_userinfo
+var template_user_menu
 var template_profile
 var template_image_picker
 var template_tv_picker
@@ -94,7 +94,7 @@ var template_global_settings
 var template_room_settings
 var template_credits
 var msg_menu
-var msg_userinfo
+var msg_user_menu
 var msg_userlist
 var msg_roomlist
 var msg_played
@@ -202,10 +202,7 @@ var stop_radio_timeout
 var stop_radio_delay = 0
 var aura_timeouts = {}
 var reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
-var show_reactions_timeout
-var hide_reactions_timeout
-var mouse_over_reactions = false
-var reactions_hover_delay = 800
+var reactions_box_visible = false
 var user_functions = [1, 2, 3]
 var screen_locked = false
 var mouse_is_down = false
@@ -366,7 +363,7 @@ function setup_templates()
 	template_help = Handlebars.compile($('#template_help').html())
 	template_help2 = Handlebars.compile($('#template_help2').html())
 	template_help3 = Handlebars.compile($('#template_help3').html())
-	template_userinfo = Handlebars.compile($('#template_userinfo').html())
+	template_user_menu = Handlebars.compile($('#template_user_menu').html())
 	template_profile = Handlebars.compile($('#template_profile').html())
 	template_image_picker = Handlebars.compile($('#template_image_picker').html())
 	template_tv_picker = Handlebars.compile($('#template_tv_picker').html())
@@ -851,7 +848,7 @@ function start_socket()
 			set_role(data.role, false)
 			set_topic_info(data)
 			update_title()
-			setup_userinfo()
+			setup_user_menu()
 			clear_chat()
 			check_firstime()
 			get_input_history()
@@ -4153,6 +4150,7 @@ function activate_key_detection()
 				clear_input()
 				reset_input_history_index()
 				e.preventDefault()
+				hide_reactions()
 				return
 			}
 		}
@@ -6461,7 +6459,7 @@ function execute_command(msg, ans)
 
 	else if(oiEquals(lmsg, '/user'))
 	{
-		show_userinfo()
+		show_user_menu()
 	}
 
 	else if(oiEquals(lmsg, '/imagehistory'))
@@ -9267,11 +9265,11 @@ function start_msg()
 		})
 	)
 
-	msg_userinfo = Msg.factory
+	msg_user_menu = Msg.factory
 	(
 		Object.assign({}, common, titlebar,
 		{
-			id: "userinfo",
+			id: "user_menu",
 			clear_editables: false,
 			window_width: "22em",
 			after_create: function(instance)
@@ -9290,7 +9288,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				close_togglers("userinfo")
+				close_togglers("user_menu")
 			}
 		})
 	)
@@ -9998,7 +9996,7 @@ function start_msg()
 	)
 
 	msg_menu.set(template_menu())
-	msg_userinfo.set(template_userinfo())
+	msg_user_menu.set(template_user_menu())
 	msg_userlist.set(template_userlist())
 	msg_public_roomlist.set(template_roomlist({type:"public_roomlist"}))
 	msg_visited_roomlist.set(template_roomlist({type:"visited_roomlist"}))
@@ -10038,7 +10036,7 @@ function start_msg()
 	msg_visited_roomlist.set_title("Visited Rooms")
 	msg_played.set_title("Recently Played")
 	msg_menu.set_title("Main Menu")
-	msg_userinfo.set_title("User Menu")
+	msg_user_menu.set_title("User Menu")
 	msg_media_menu.set_title("Media Menu")
 	msg_draw_image.set_title("Draw an Image")
 	msg_credits.set_title(credits_title)
@@ -11396,17 +11394,15 @@ function start_twitch()
 	}
 }
 
-function setup_userinfo()
+function setup_user_menu()
 {
-	$("#userinfo_profile_image").attr("src", profile_image)
-	setup_togglers("userinfo")
+	$("#user_menu_profile_image").attr("src", profile_image)
+	setup_togglers("user_menu")
 }
 
-function show_userinfo()
+function show_user_menu()
 {
-	clearTimeout(show_reactions_timeout)
-	hide_reactions()
-	msg_userinfo.show()
+	msg_user_menu.show()
 }
 
 function show_status()
@@ -12354,7 +12350,7 @@ function profile_image_selected(input)
 
 					rounded_canvas.toBlob(function(blob)
 					{
-						$("#userinfo_profile_image").attr("src", profile_image_loading_url)
+						$("#user_menu_profile_image").attr("src", profile_image_loading_url)
 						blob.name = "profile.png"
 						upload_file(blob, "profile_image_upload")
 						msg_info.close()
@@ -12462,7 +12458,7 @@ function profile_image_changed(data)
 	if(data.username === username)
 	{
 		profile_image = data.profile_image
-		$("#userinfo_profile_image").attr("src", profile_image)
+		$("#user_menu_profile_image").attr("src", profile_image)
 	}
 
 	update_user_profile_image(data.username, data.profile_image)
@@ -13151,14 +13147,14 @@ function show_typing(data)
 
 function show_pencil()
 {
-	$("#footer_userinfo").addClass("fa-pencil")
-	$("#footer_userinfo").removeClass("fa-user-circle")
+	$("#footer_chat_icon").addClass("fa-pencil")
+	$("#footer_chat_icon").removeClass("fa-user-circle")
 }
 
 function hide_pencil()
 {
-	$("#footer_userinfo").removeClass("fa-pencil")
-	$("#footer_userinfo").addClass("fa-user-circle")
+	$("#footer_chat_icon").removeClass("fa-pencil")
+	$("#footer_chat_icon").addClass("fa-user-circle")
 }
 
 function add_aura(uname)
@@ -13474,7 +13470,7 @@ function set_username(uname)
 {
 	username = uname
 	generate_mentions_regex()
-	$("#userinfo_username").text(username)
+	$("#user_menu_username").text(username)
 }
 
 function set_email(email)
@@ -13611,8 +13607,8 @@ function create_popup(position, id=false, after_close=false)
 function show_intro()
 {
 	var s = `
-	You can chat in this area. The icon on the left opens the user menu where you can change your profile image and other settings.
-	When someone is typing a message the user menu icon turns into a pencil. Hovering this icon shows additional actions.`
+	You can chat in this area.
+	When someone is typing a message the icon turns into a pencil.`
 
 	create_popup("bottomleft").show(["Chat and User Menu", s])
 
@@ -13622,7 +13618,8 @@ function show_intro()
 	create_popup("bottomright").show(["Media Controls", s])
 
 	var s = `
-	This area contains the main menu, user list, voice chat, and radio controls.`
+	This area contains the main menu, user list, voice chat, and radio controls. 
+	The main menu includes the user menu where you can change your profile image and other settings.`
 
 	create_popup("top").show(["Top Panel", s])
 
@@ -15281,12 +15278,12 @@ function check_room_settings_override()
 
 	if(override)
 	{
-		$("#userinfo_room_settings_status").html("&nbsp;(*)")
+		$("#user_menu_room_settings_status").html("&nbsp;(*)")
 	}
 
 	else
 	{
-		$("#userinfo_room_settings_status").html("")
+		$("#user_menu_room_settings_status").html("")
 	}
 }
 
@@ -16015,64 +16012,41 @@ function show_reaction(data, date=false)
 
 function setup_reactions_box()
 {
-	$("#footer_userinfo").hover(
-
-	function()
+	$("#footer_chat_icon").click(function()
 	{
-		clearTimeout(hide_reactions_timeout)
-
-		show_reactions_timeout = setTimeout(function()
+		if(reactions_box_visible)
 		{
-			if(can_chat)
-			{
-				show_reactions()
-			}
-		}, reactions_hover_delay)
-	}, 
-
-	function()
-	{
-		start_hide_reactions()
-	})
-
-	$("#reactions_box_container").hover(
-
-	function()
-	{
-		mouse_over_reactions = true
-		clearTimeout(hide_reactions_timeout)
-	},
-
-	function()
-	{
-		mouse_over_reactions = false
-		start_hide_reactions()
-	})
-}
-
-function start_hide_reactions()
-{
-	clearTimeout(show_reactions_timeout)
-
-	hide_reactions_timeout = setTimeout(function()
-	{
-		if(mouse_over_reactions)
-		{
-			return false
+			hide_reactions()
 		}
 
+		else
+		{
+			show_reactions()
+		}
+	})
+
+	$("#main_rows_container").click(function()
+	{
 		hide_reactions()
-	}, reactions_hover_delay)	
+	})
 }
 
 function show_reactions()
 {
-	$("#reactions_box_container").css("display", "flex")
+	if(!reactions_box_visible)
+	{
+		$("#reactions_box_container").css("display", "flex")
+		reactions_box_visible = true
+	}
 }
 
 function hide_reactions()
 {
-	$("#reactions_box_container").css("display", "none")
+	if(reactions_box_visible)
+	{
+		$("#reactions_box_container").css("display", "none")
+		reactions_box_visible = false
+	}
 }
 
 function run_user_function(n)

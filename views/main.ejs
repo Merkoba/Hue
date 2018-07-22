@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?version=15"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2048"></script>
+		<script src="/static/js/base.js?version=2050"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=412"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=413"/>
 
 		<script>
 
@@ -177,7 +177,7 @@
 					</div>
 				</div>
 
-				<div class='rows_container'>
+				<div class='rows_container' id="main_rows_container">
 
 					<div id='chat_main'>
 
@@ -249,7 +249,7 @@
 				<div id='footer' class='bg2 panel'>
 					<div id='footer_items'>
 
-						<span id='footer_userinfo' class='fa fa-user-circle footer_icon action' onclick="show_userinfo()"></span>
+						<span id='footer_chat_icon' class='fa fa-user-circle footer_icon action nicetitle' title="Click for more actions"></span>
 
 						<textarea id='input' size="1" rows="1"></textarea>
 
@@ -302,6 +302,8 @@
 				<div class='menu_item action inline' onclick="show_goto_room()">Go To Room</div>
 				<div></div>
 				<div class='menu_item action inline' onclick='show_create_room()'>Create Room</div>
+				<div></div>
+				<div class='menu_item action inline' onclick="show_user_menu()">User Menu</div>
 
 				<div id='menu_smaller_container'>
 
@@ -618,16 +620,16 @@
 			</div>
 		</script>	
 
-		<script id='template_userinfo' type='text/x-handlebars-template'>
+		<script id='template_user_menu' type='text/x-handlebars-template'>
 
 			<div class='unselectable'>
 
-				<div class='bigger2' id='userinfo_username'>Loading</div>
+				<div class='bigger2' id='user_menu_username'>Loading</div>
 
 				<div class='spacer3'></div>
 				
 				<div class='big_profile_image_container'>
-					<img id='userinfo_profile_image' class='big_profile_image pointer unselectable' onclick='open_profile_image_picker()'>
+					<img id='user_menu_profile_image' class='big_profile_image pointer unselectable' onclick='open_profile_image_picker()'>
 				</div>
 
 				<div class='spacer1'></div>
@@ -650,19 +652,19 @@
 				<div class='spacer3'></div>
 
 				<div class="action inline pointer" onclick="show_global_settings()">
-					Global&nbsp;Settings<div class='inline' id='userinfo_global_settings_status'></div>
+					Global&nbsp;Settings<div class='inline' id='user_menu_global_settings_status'></div>
 				</div>
 				<div class='spacer3'></div>
 				<div class="action inline pointer" onclick="show_room_settings()">
-					Room&nbsp;Settings<div class='inline' id='userinfo_room_settings_status'></div>
+					Room&nbsp;Settings<div class='inline' id='user_menu_room_settings_status'></div>
 				</div>
 
 				<div class='spacer3'></div>
 				<div class='spacer3'></div>
 
-				<div class='toggler userinfo_toggle small_padding_bottom bold pointer action inline'>+ More</div>
+				<div class='toggler user_menu_toggle small_padding_bottom bold pointer action inline'>+ More</div>
 
-				<div class='toggler_container userinfo_toggle_container'>
+				<div class='toggler_container user_menu_toggle_container'>
 
 					<div class='spacer3'></div>
 

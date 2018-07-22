@@ -1214,7 +1214,7 @@ input[type=text], textarea
 	} 
 }
 
-#footer_userinfo
+#footer_chat_icon
 {
 	width: 10px;
 	margin-left: 1.2rem;
@@ -1337,7 +1337,7 @@ input[type=text], textarea
 	animation: fadein 600ms linear;
 }
 
-#userinfo_username
+#user_menu_username
 {
 	display: inline-block;
 }
