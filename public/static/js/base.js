@@ -4951,7 +4951,7 @@ function update_chat(args={})
 
 		if(!args.brk)
 		{
-			args.brk = "<i class='icon2 fa fa-user-circle'></i>"
+			args.brk = "<i class='icon2c fa fa-user-circle'></i>"
 		}
 
 		var s = `
@@ -15723,6 +15723,11 @@ function feedback(msg, data=false)
 		Object.assign(obj, data)
 	}
 
+	if(!obj.brk.startsWith("<") && !obj.brk.endsWith(">"))
+	{
+		obj.brk = `<div class='inline'>${obj.brk}</div>`
+	}
+
 	chat_announce(obj)
 }
 
@@ -15738,6 +15743,11 @@ function public_feedback(msg, data=false)
 	if(data)
 	{
 		Object.assign(obj, data)
+	}
+
+	if(!obj.brk.startsWith("<") && !obj.brk.endsWith(">"))
+	{
+		obj.brk = `<div class='inline'>${obj.brk}</div>`
 	}
 
 	chat_announce(obj)
@@ -16063,37 +16073,37 @@ function show_reaction(data, date=false)
 
 	if(data.reaction_type === "like")
 	{
-		var icon = "<i class='icon2 fa fa-thumbs-o-up'></i>"
+		var icon = "<i class='icon2c fa fa-thumbs-o-up'></i>"
 		var msg = `likes this`
 	}
 
 	else if(data.reaction_type === "love")
 	{
-		var icon = "<i class='icon2 fa fa-heart-o'></i>"
+		var icon = "<i class='icon2c fa fa-heart-o'></i>"
 		var msg = `loves this`
 	}
 
 	else if(data.reaction_type === "happy")
 	{
-		var icon = "<i class='icon2 fa fa-smile-o'></i>"
+		var icon = "<i class='icon2c fa fa-smile-o'></i>"
 		var msg = `is feeling happy`
 	}
 
 	else if(data.reaction_type === "meh")
 	{	
-		var icon = "<i class='icon2 fa fa-meh-o'></i>"
+		var icon = "<i class='icon2c fa fa-meh-o'></i>"
 		var msg = `is feeling meh`
 	}
 
 	else if(data.reaction_type === "sad")
 	{
-		var icon = "<i class='icon2 fa fa-frown-o'></i>"
+		var icon = "<i class='icon2c fa fa-frown-o'></i>"
 		var msg = `is feeling sad`
 	}
 
 	else if(data.reaction_type === "dislike")
 	{
-		var icon = "<i class='icon2 fa fa-thumbs-o-down'></i>"
+		var icon = "<i class='icon2c fa fa-thumbs-o-down'></i>"
 		var msg = `dislikes this`
 	}
 

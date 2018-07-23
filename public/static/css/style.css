@@ -443,10 +443,16 @@ body, html
 
 .compact_layout .brk
 {
-	min-width: 4rem;
-	max-width: 4rem;
+	min-width: 3.5rem;
+	max-width: 3.5rem;
+	text-align: right;
+	margin-right: 1rem;
+}
+
+.compact_layout .brk > *
+{
+	width: 1rem;
 	text-align: center;
-	margin-right: 0.5rem;
 }
 
 .normal_layout .brk
