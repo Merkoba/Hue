@@ -364,6 +364,8 @@ body, html
 	flex-shrink: 1;
 	flex-grow: 0;
 	font-size: 1em;
+	width: 5rem;
+	justify-content: flex-end;
 }
 
 .compact_layout .chat_uname_container
@@ -383,6 +385,12 @@ body, html
 	white-space: nowrap;
 	display: inline-block;
 	font-weight: bold;
+}
+
+.compact_layout .chat_uname
+{
+	max-width: 100%;
+	overflow: hidden;
 }
 
 .chat_content_container
