@@ -370,8 +370,8 @@ body, html
 {
 	display: flex;
 	flex-direction: row;
-	min-width: 5rem;
-	max-width: 5rem;
+	min-width: 4rem;
+	max-width: 4rem;
 	justify-content: flex-end;
 }
 
@@ -433,6 +433,11 @@ body, html
 .announcement_content_container
 {
 	display: inline-flex;
+}
+
+.compact_layout .announcement_content_container
+{
+	margin-left: 4.5rem;
 }
 
 .announcement_brk
