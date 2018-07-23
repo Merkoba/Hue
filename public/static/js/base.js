@@ -1994,7 +1994,7 @@ function userjoin(data)
 		{
 			chat_announce(
 			{
-				brk: "<i class='icon2 fa fa-user-plus'></i>",
+				brk: "<i class='icon2c fa fa-user-plus'></i>",
 				msg: `${data.username} has joined`,
 				save: true,
 				uname: data.username,
@@ -9203,7 +9203,7 @@ function do_userdisconnect(data)
 
 		chat_announce(
 		{
-			brk: "<i class='icon2 fa fa-sign-out'></i>",
+			brk: "<i class='icon2c fa fa-sign-out'></i>",
 			msg: s,
 			save: true,
 			uname: data.username
@@ -14165,7 +14165,7 @@ function popup_message_received(data, type="user", announce=true)
 
 		chat_announce(
 		{
-			brk: "<i class='icon2 fa fa-envelope'></i>",
+			brk: "<i class='icon2c fa fa-envelope'></i>",
 			msg: `${t} received`,
 			save: true,
 			onclick: af
