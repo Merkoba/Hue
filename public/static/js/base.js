@@ -8328,7 +8328,7 @@ function announce_image_change(data, date=false, show=true)
 	{
 		chat_announce(
 		{
-			brk: "<i class='icon2 fa fa-camera'></i>",
+			brk: "<i class='icon2c fa fa-camera'></i>",
 			save: true,
 			date: d,
 			type: "image_change",
@@ -8626,7 +8626,7 @@ function announce_radio_change(data, date=false, action="change", show=true)
 	{
 		chat_announce(
 		{
-			brk: "<i class='icon2 fa fa-volume-up'></i>",
+			brk: "<i class='icon2c fa fa-volume-up'></i>",
 			msg: msg,
 			title: title,
 			onclick: onclick,
@@ -8851,7 +8851,7 @@ function announce_tv_change(data, date=false, action="change", show=true)
 	{
 		chat_announce(
 		{
-			brk: "<i class='icon2 fa fa-television'></i>",
+			brk: "<i class='icon2c fa fa-television'></i>",
 			msg: msg,
 			title: title,
 			onclick: onclick,

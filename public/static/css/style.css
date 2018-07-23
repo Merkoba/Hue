@@ -435,22 +435,26 @@ body, html
 	display: inline-flex;
 }
 
-.compact_layout .announcement_content_container
-{
-	margin-left: 2.5rem;
-}
-
-.normal_layout .announcement_content_container
-{
-	margin-left: 1.5rem;
-}
-
 .brk
 {
-	flex-grow: 0;
 	flex-shrink: 0;
-	min-width: 2rem;
-	max-width: 2rem;	
+	flex-grow: 0;
+}
+
+.compact_layout .brk
+{
+	min-width: 4rem;
+	max-width: 4rem;
+	text-align: center;
+	margin-right: 0.5rem;
+}
+
+.normal_layout .brk
+{
+	min-width: 45px;
+	max-width: 45px;
+	text-align: center;	
+	margin-right: 1rem;
 }
 
 a.generic:link, a.generic:visited, a.generic:hover 
@@ -614,6 +618,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 {
 	font-size: 0.77em;
 	padding-left: 0.2em;
+}
+
+.icon2c
+{
+	font-size: 0.77em;
 }
 
 .icon3
@@ -1510,16 +1519,6 @@ input[type=text], textarea
 {
 	display: flex;
 	flex-direction: row;
-}
-
-.compact_layout .chat_third_container
-{
-	margin-left: 2.5rem;
-}
-
-.normal_layout .chat_third_container
-{
-	margin-left: 1.5rem;
 }
 
 .slider_container
