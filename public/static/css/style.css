@@ -440,6 +440,11 @@ body, html
 	margin-left: 2.5rem;
 }
 
+.normal_layout .announcement_content_container
+{
+	margin-left: 1.5rem;
+}
+
 .brk
 {
 	flex-grow: 0;
@@ -1510,6 +1515,11 @@ input[type=text], textarea
 .compact_layout .chat_third_container
 {
 	margin-left: 2.5rem;
+}
+
+.normal_layout .chat_third_container
+{
+	margin-left: 1.5rem;
 }
 
 .slider_container
