@@ -1525,11 +1525,6 @@ function stop_videos()
 		soundcloud_video_player.pause()
 	}
 
-	if(hls !== undefined)
-	{
-		hls.stopLoad()	
-	}
-
 	$("#media_video")[0].pause()
 
 	$("#media_iframe_video").attr("src", "")
@@ -1568,11 +1563,6 @@ function play_video()
 
 	else if(tv_type === "url")
 	{
-		if(hls !== undefined)
-		{
-			hls.startLoad()	
-		}
-
 		$("#media_video")[0].play()
 	}
 
@@ -1600,7 +1590,7 @@ function hide_videos(show)
 
 function show_youtube_video(src, play=true)
 {
-	stop_videos()
+	before_show_video()
 	
 	hide_videos("media_youtube_video_container")
 
@@ -1628,7 +1618,7 @@ function show_youtube_video(src, play=true)
 
 function show_twitch_video(src, play=true)
 {
-	stop_videos()
+	before_show_video()
 
 	hide_videos("media_twitch_video_container")
 
@@ -1664,7 +1654,7 @@ function show_twitch_video(src, play=true)
 
 function show_soundcloud_video(src, play=true)
 {
-	stop_videos()
+	before_show_video()
 
 	hide_videos("media_soundcloud_video_container")
 
@@ -1687,7 +1677,7 @@ function show_soundcloud_video(src, play=true)
 
 function show_video(src, play=true)
 {
-	stop_videos()
+	before_show_video()
 
 	hide_videos("media_video_container")
 
@@ -1702,7 +1692,6 @@ function show_video(src, play=true)
 
 	else
 	{
-		hls = undefined
 		$("#media_video").prop("src", src)
 	}
 
@@ -1716,13 +1705,19 @@ function show_video(src, play=true)
 
 function show_iframe_video(src, play=true)
 {
-	stop_videos()
+	before_show_video()
 
 	hide_videos("media_iframe_video_container")
 
 	$("#media_iframe_video").attr("src", src)
 
 	after_show_video()
+}
+
+function before_show_video()
+{
+	stop_videos()
+	hls = undefined
 }
 
 function after_show_video()
