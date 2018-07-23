@@ -388,7 +388,7 @@ body, html
 	font-weight: bold;
 }
 
-.compact_layout .chat_uname
+.compact_layout .chat_uname_container .chat_uname
 {
 	max-width: 100%;
 	overflow: hidden;
@@ -419,7 +419,7 @@ body, html
 
 .thirdperson *
 {
-	font-size: 1em;
+	font-size: 1rem;
 	padding-top: 0 !important;
 }
 
@@ -427,7 +427,7 @@ body, html
 {
 	overflow-wrap: break-word;
 	word-break: break-word;
-	font-size: 1em;
+	font-size: 1rem;
 }
 
 .announcement_content_container
@@ -437,14 +437,15 @@ body, html
 
 .compact_layout .announcement_content_container
 {
-	margin-left: 4.5rem;
+	margin-left: 2.5rem;
 }
 
-.announcement_brk
+.brk
 {
 	flex-grow: 0;
 	flex-shrink: 0;
-	padding-right: 0.8em;
+	min-width: 2rem;
+	max-width: 2rem;	
 }
 
 a.generic:link, a.generic:visited, a.generic:hover 
@@ -1506,11 +1507,9 @@ input[type=text], textarea
 	flex-direction: row;
 }
 
-.chat_third_brk
+.compact_layout .chat_third_container
 {
-	flex-grow: 0;
-	flex-shrink: 0;
-	padding-right: 0.8em;
+	margin-left: 2.5rem;
 }
 
 .slider_container

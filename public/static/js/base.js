@@ -4957,7 +4957,7 @@ function update_chat(args={})
 		var s = `
 		<div class='msg chat_message thirdperson ${msgcls}'>
 			<div class='chat_third_container'>
-				<div class='chat_third_brk'>${args.brk}</div>
+				<div class='brk chat_third_brk'>${args.brk}</div>
 				<div class='chat_third_content'>
 					<span class='chat_uname action'></span>&nbsp;<span class='${contclasses}' title='${nd}' data-date='${d}'></span>
 				</div>
@@ -5610,7 +5610,7 @@ function chat_announce(args={})
 	var s = `
 	<div${containerid}class='msg announcement ${msgcls}'>
 		<div class='${containerclasses}' title='${t}'>
-			<div class='announcement_brk'>${args.brk}</div>
+			<div class='brk announcement_brk'>${args.brk}</div>
 			<div class='${contclasses}'></div>
 		</div>
 	</div>`
