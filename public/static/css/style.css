@@ -119,8 +119,6 @@ body, html
 #chat_area
 {
 	position: relative;
-	padding-left: 1.2rem;
-	padding-right: 1.2rem;
 	overflow-x: hidden;
 	overflow-y: auto;
 	background-color: #262423;
@@ -270,8 +268,8 @@ body, html
 .scroller_container
 {
 	position: absolute;
-	left: 16px;
-	width: calc(100% - 35px);	
+	left: 0px;
+	width: calc(100% - 10px);	
 	display: flex;
 	flex-direction: row;
 	visibility: hidden;	
@@ -961,14 +959,21 @@ select
 	cursor: pointer;
 }
 
+.msg
+{
+	padding-right: 0.5rem;
+}
+
 .msg.normal_layout
 {
+	padding-left: 1.2rem;
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 }
 
 .msg.compact_layout
 {
+	padding-left: 0.5rem;
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
 }
