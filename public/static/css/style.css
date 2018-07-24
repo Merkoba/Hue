@@ -1436,6 +1436,11 @@ input[type=text], textarea
 	text-shadow: currentColor 0 0 12px;
 }
 
+.aura4:hover
+{
+	box-shadow: inset 0 0 4px currentColor;
+}
+
 .custom_titlebar
 {
 	font-family: imported_font, consolas, sans-serif !important;
