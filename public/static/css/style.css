@@ -1394,30 +1394,24 @@ input[type=text], textarea
 	display: inline-block;
 }
 
-.action:hover
+.action, .action2, .action3
 {
-	animation-duration: 500ms;
-	animation-name: glow;
-	animation-fill-mode: forwards;
+	transition: text-shadow 500ms, box-shadow 500ms
 }
 
-@keyframes glow
-{	
-	0% {text-shadow: 0 0 0px}
-	100% {text-shadow: 0 0 1em}
+.action:hover
+{
+	text-shadow: 0 0 1em currentColor;
 }
 
 .action2:hover
 {
-	animation-duration: 500ms;
-	animation-name: glow2;
-	animation-fill-mode: forwards;
+	box-shadow: 0 0 5px currentColor;
 }
 
-@keyframes glow2
-{	
-	0% {box-shadow: 0 0 0px}
-	100% {box-shadow: 0 0 1rem}
+.action3:hover
+{
+	box-shadow: inset 0 0 5px currentColor;
 }
 
 .aura
@@ -1433,12 +1427,7 @@ input[type=text], textarea
 
 .aura3
 {
-	text-shadow: currentColor 0 0 12px;
-}
-
-.aura4:hover
-{
-	box-shadow: inset 0 0 4px currentColor;
+	text-shadow: 0 0 12px currentColor ;
 }
 
 .custom_titlebar
