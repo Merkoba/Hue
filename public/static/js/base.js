@@ -213,8 +213,8 @@ var draw_message_context
 var draw_message_click_x
 var draw_message_click_y
 var draw_message_drag
-var draw_image_context
 var draw_message_just_entered = false
+var draw_image_context
 var draw_image_just_entered = false
 var draw_image_snapshots
 var draw_image_mode = "pencil"
@@ -4030,7 +4030,6 @@ function activate_key_detection()
 				{
 					if(e.ctrlKey)
 					{
-
 						draw_image_undo()
 					}
 				}
