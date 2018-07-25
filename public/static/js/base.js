@@ -12825,7 +12825,7 @@ function setup_active_media(data)
 function media_visibility_and_locks()
 {
 	change_images_visibility()
-	change_tv_visibility()
+	change_tv_visibility(false)
 	change_radio_visibility()
 
 	change_lock_images()
