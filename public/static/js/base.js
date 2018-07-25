@@ -236,7 +236,7 @@ var microphone_right_channel = []
 var microphone_volume = 0
 var microphone_averaging = 0.95
 var highlight_same_posts_timeouts = {}
-var highlight_same_posts_delay = 500
+var highlight_same_posts_delay = 800
 var loaded_chat_layout
 var credits_audio
 var radio_metadata_fail_timeout
@@ -4811,7 +4811,7 @@ function start_chat_click_events()
 }
 function start_chat_hover_events()
 {
-	$("#chat_area").on("mouseenter", ".chat_uname, .chat_profile_image", function()
+	$("#chat_area").on("mouseenter", ".chat_uname, .chat_profile_image, .brk", function()
 	{
 		var uname = $(this).closest(".msg").data("uname")
 
@@ -4828,7 +4828,7 @@ function start_chat_hover_events()
 		}, highlight_same_posts_delay)
 	})
 
-	$("#chat_area").on("mouseleave", ".chat_uname, .chat_profile_image", function()
+	$("#chat_area").on("mouseleave", ".chat_uname, .chat_profile_image, .brk", function()
 	{
 		var uname = $(this).closest(".msg").data("uname")
 
@@ -4975,7 +4975,7 @@ function update_chat(args={})
 			var s = `
 			<div class='msg chat_message umsg_${args.uname} normal_layout'>
 				<div class='chat_left_side'>
-					<div class='chat_profile_image_container unselectable'>
+					<div class='chat_profile_image_container unselectable action4'>
 						<img class='chat_profile_image' src='${pi}'>
 					</div>
 				</div>
@@ -5608,9 +5608,9 @@ function chat_announce(args={})
 
 	var s = `
 	<div${containerid}class='msg announcement ${msgcls}'>
-		<div class='${containerclasses}' title='${t}'>
+		<div class='${containerclasses}'>
 			<div class='brk announcement_brk'>${args.brk}</div>
-			<div class='${contclasses}'></div>
+			<div class='${contclasses}' title='${t}'></div>
 		</div>
 	</div>`
 

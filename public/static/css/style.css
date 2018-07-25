@@ -349,6 +349,7 @@ body, html
 	min-height: 45px;
 	max-height: 45px;
 	overflow: hidden;
+	border-radius: 50px;
 }
 
 .chat_profile_image
@@ -1394,7 +1395,7 @@ input[type=text], textarea
 	display: inline-block;
 }
 
-.action, .action2, .action3
+.action, .action2, .action3, .action4
 {
 	transition: text-shadow 500ms, box-shadow 500ms
 }
@@ -1414,10 +1415,14 @@ input[type=text], textarea
 	box-shadow: inset 0 0 5px currentColor;
 }
 
+.action4:hover
+{
+	box-shadow: 0 0 20px currentColor, inset 0 0 20px currentColor;
+}
+
 .aura
 {
 	box-shadow: 0 0 20px currentColor, inset 0 0 20px currentColor;
-	border-radius: 50px;
 }
 
 .aura2
@@ -1789,6 +1794,7 @@ input[type=text], textarea
 	min-height: 50px;
 	max-height: 50px;
 	overflow: hidden;
+	border-radius: 50px;
 }
 
 .voice_chat_profile_image
