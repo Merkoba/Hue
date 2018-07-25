@@ -1122,7 +1122,7 @@ function start_socket()
 
 		else if(data.type === 'room_created')
 		{
-			show_open_room(data.id)
+			on_room_created(data)
 		}
 
 		else if(data.type === 'redirect')
@@ -17672,4 +17672,22 @@ function setup_user_function_titles()
 		$(`#user_function_button_${i}`).text(name)
 		$(`#user_function_button_${i}`).attr("title", t)
 	}
+}
+
+function on_room_created(data)
+{
+	var onclick = function()
+	{
+		show_open_room(data.id)
+	}
+
+	chat_announce(
+	{
+		brk: "<i class='icon2c fa fa-key'></i>",
+		msg: "Room Created",
+		onclick: onclick,
+		save: true
+	})
+
+	show_open_room(data.id)
 }
