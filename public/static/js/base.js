@@ -15443,6 +15443,8 @@ function set_toggler(type, el, action=false, update=true)
 		container.css("display", "block")
 		
 		$(el).html(`- ${$(el).html().substring(2)}`)
+
+		container[0].scrollIntoView()
 	}
 
 	else
