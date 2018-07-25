@@ -15431,7 +15431,7 @@ function set_toggler(type, el, action=false, update=true)
 		
 		$(el).html(`- ${$(el).html().substring(2)}`)
 
-		container.closest(".toggler_main_container")[0].scrollIntoView()
+		container.closest(".toggler_main_container")[0].scrollIntoView({block:"center"})
 	}
 
 	else
