@@ -15319,29 +15319,14 @@ function start_room_settings_overriders()
 		{
 			var toggler = togglers.eq(0)
 
-			var container = toggler.next(`.toggler_container`)
-			var display = container.css('display')
-
-			if(display === "none")
+			if(override)
 			{
-				if(override)
-				{
-					container.css("display", "block")
-					$(this).html(`- ${$(this).html().substring(2)}`)
-
-					update_modal_scrollbar("room_settings")
-				}
+				set_toggler("room_settings", toggler, "open")
 			}
 
 			else
 			{
-				if(!override)
-				{
-					container.css("display", "none")
-					$(this).html(`+ ${$(this).html().substring(2)}`)
-
-					update_modal_scrollbar("room_settings")
-				}
+				set_toggler("room_settings", toggler, "close")
 			}
 		}
 	})
@@ -15439,6 +15424,8 @@ function set_toggler(type, el, action=false, update=true)
 		{
 			return false
 		}
+
+		close_togglers(type)
 
 		container.css("display", "block")
 		
