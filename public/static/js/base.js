@@ -10641,9 +10641,12 @@ function setting_new_messages_separator_action(type, save=true)
 {
 	window[type].new_messages_separator = $(`#${type}_new_messages_separator`).prop("checked")
 
-	if(!window[type].new_messages_separator)
+	if(active_settings("new_messages_separator") === type)
 	{
-		remove_separator()
+		if(!window[type].new_messages_separator)
+		{
+			remove_separator()
+		}
 	}
 
 	if(save)
