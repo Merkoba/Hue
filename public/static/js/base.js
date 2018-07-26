@@ -174,9 +174,6 @@ var double_tap_key_3_pressed = 0
 var images_visible = true
 var tv_visible = true
 var radio_visible = true
-var images_locked = false
-var tv_locked = false
-var radio_locked = false
 var images_changed = []
 var tv_changed = [] 
 var radio_changed = []
@@ -13414,8 +13411,6 @@ function change_lock_images()
 
 		change({type:"image"})
 	}
-
-	images_locked = room_state.images_locked
 }
 
 function toggle_lock_tv(what=undefined, save=true)
@@ -13455,8 +13450,6 @@ function change_lock_tv()
 
 		change({type:"tv"})
 	}
-
-	tv_locked = room_state.tv_locked
 }
 
 function toggle_lock_radio(what=undefined, save=true)
@@ -13496,8 +13489,6 @@ function change_lock_radio()
 
 		change({type:"radio"})
 	}
-
-	radio_locked = room_state.radio_locked
 }
 
 function show_joined()
@@ -13553,36 +13544,36 @@ function refresh_radio()
 
 function default_media_state(change_visibility=true)
 {
-	if(images_locked)
+	if(room_state.images_locked !== room_state_default_images_locked)
 	{
-		toggle_lock_images(false, false)
+		toggle_lock_images(room_state_default_images_locked, false)
 	}
 
-	if(tv_locked)
+	if(room_state.tv_locked !== room_state_default_tv_locked)
 	{
-		toggle_lock_tv(false, false)
+		toggle_lock_tv(room_state_default_tv_locked, false)
 	}
 
-	if(radio_locked)
+	if(room_state.radio_locked !== room_state_default_radio_locked)
 	{
-		toggle_lock_radio(false, false)
+		toggle_lock_radio(room_state_default_radio_locked, false)
 	}
 
 	if(change_visibility)
 	{
-		if(!images_visible)
+		if(room_state.images_enabled !== room_state_default_images_enabled)
 		{
-			toggle_images(true, false)
+			toggle_images(room_state_default_images_enabled, false)
 		}
 
-		if(!tv_visible)
+		if(room_state.tv_enabled !== room_state_default_tv_enabled)
 		{
-			toggle_tv(true, false)
+			toggle_tv(room_state_default_tv_enabled, false)
 		}
 
-		if(!radio_visible)
+		if(room_state.radio_enabled !== room_state_default_radio_enabled)
 		{
-			toggle_radio(true, false)
+			toggle_radio(room_state_default_radio_enabled, false)
 		}
 	}
 
