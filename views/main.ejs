@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?version=15"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2081"></script>
+		<script src="/static/js/base.js?version=2082"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=428"/>
 
@@ -1609,9 +1609,13 @@
 
 		<div id='youtube_player'></div>
 
-		<input type='file' accept="image/jpeg, image/png, image/gif" id='profile_image_picker' onchange='profile_image_selected(this)'>
+		<form>
+			<input type='file' accept="image/jpeg, image/png, image/gif" id='profile_image_picker' onchange='profile_image_selected(this)'>
+		</form>
 
-		<input type='file' accept="image/jpeg, image/png, image/gif" id='background_image_input' class='nodisplay' onchange='background_image_selected(this)'>
+		<form>
+			<input type='file' accept="image/jpeg, image/png, image/gif" id='background_image_input' class='nodisplay' onchange='background_image_selected(this)'>
+		</form>
 
 		<iframe id='soundcloud_player' src='https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536'></iframe>
 

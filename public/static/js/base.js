@@ -12422,7 +12422,7 @@ function profile_image_selected(input)
 			{
 				$('#profile_image_canvas_image').attr('src', e.target.result)
 
-				$("#profile_image_picker").wrap('<form>').closest('form').get(0).reset()
+				$("#profile_image_picker").closest('form').get(0).reset()
 
 				var image = $('#profile_image_canvas_image')[0]
 
@@ -12960,9 +12960,11 @@ function background_image_selected(input)
 
 	var size = file.size / 1024
 
+	$("#background_image_input").closest('form').get(0).reset()
+
 	if(size > max_image_size)
 	{
-		msg_info.show("Image is too big")
+		msg_info.show("File is too big")
 		return false
 	}
 
