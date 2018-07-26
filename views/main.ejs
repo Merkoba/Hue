@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?version=15"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2075"></script>
+		<script src="/static/js/base.js?version=2076"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=427"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=428"/>
 
 		<script>
 
@@ -710,12 +710,12 @@
 				<div class="settings_window_left" id="settings_window_left_{{type}}">
 					<div class='settings_window_left_content' id='settings_window_left_content_{{type}}'>
 						<div class='spacer3'></div>
-						<div class='settings_window_category underlined' data-category_container='settings_window_category_content_afk_{{type}}'>AFK</div>
-						<div class='settings_window_category' data-category_container='settings_window_category_content_beeps_{{type}}'>Beeps</div>
-						<div class='settings_window_category' data-category_container='settings_window_category_content_appearance_{{type}}'>Appearance</div>
-						<div class='settings_window_category' data-category_container='settings_window_category_content_voice_chat_{{type}}'>Voice Chat</div>
-						<div class='settings_window_category' data-category_container='settings_window_category_content_functions_{{type}}'>Functions</div>
-						<div class='settings_window_category' data-category_container='settings_window_category_content_misc_{{type}}'>Misc</div>
+						<div class='settings_window_category border_bottom' data-category_container='settings_window_category_content_afk_{{type}}' data-category='afk'><span class='settings_window_category_text'>AFK</span><span class='settings_window_category_status'></span></div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_beeps_{{type}}' data-category='beeps'><span class='settings_window_category_text'>Beeps</span><span class='settings_window_category_status'></span></div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_appearance_{{type}}' data-category='appearance'><span class='settings_window_category_text'>Appearance</span><span class='settings_window_category_status'></span></div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_voice_chat_{{type}}' data-category='voice_chat'><span class='settings_window_category_text'>Voice Chat</span><span class='settings_window_category_status'></span></div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_functions_{{type}}' data-category='functions'><span class='settings_window_category_text'>Functions</span><span class='settings_window_category_status'></span></div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_misc_{{type}}' data-category='misc'><span class='settings_window_category_text'>Misc</span><span class='settings_window_category_status'></span></div>
 						<div class='spacer3'></div>
 						<div class='smaller_font_size pointer' onclick='confirm_reset_settings("{{type}}")'>Reset</div>
 						<div class='spacer3'></div>
@@ -724,7 +724,7 @@
 
 				<div class="settings_window_right" id="settings_window_right_{{type}}">
 
-					<div class='settings_category settings_window_category_container' id='settings_window_category_content_beeps_{{type}}'>
+					<div class='settings_category settings_window_category_container' id='settings_window_category_content_beeps_{{type}}' data-category='beeps'>
 
 						<div class='settings_item' data-setting='beep_on_messages' data-type='checkbox'>
 							<div class="setting_title">Beep On Messages</div>
@@ -748,7 +748,7 @@
 
 					</div>
 
-					<div class='settings_category settings_window_category_container' id='settings_window_category_content_appearance_{{type}}'>
+					<div class='settings_category settings_window_category_container' id='settings_window_category_content_appearance_{{type}}' data-category='appearance'>
 
 						<div class='settings_item' data-setting='background_image' data-type='checkbox'>
 							<div class="setting_title">Background Image</div>
@@ -820,7 +820,7 @@
 
 					</div>
 
-					<div class='settings_category settings_window_category_container_selected' id='settings_window_category_content_afk_{{type}}'>
+					<div class='settings_category settings_window_category_container_selected' id='settings_window_category_content_afk_{{type}}' data-category='afk'>
 
 						<div class='settings_item' data-setting='afk_delay' data-type='select'>
 							<div class="setting_title">Go AFK On App Onfocus</div>
@@ -887,7 +887,7 @@
 
 					</div>
 
-					<div class='settings_category settings_window_category_container' id='settings_window_category_content_functions_{{type}}'>
+					<div class='settings_category settings_window_category_container' id='settings_window_category_content_functions_{{type}}' data-category='functions'>
 
 						<div class='toggler_main_container'>
 							<div class="{{type}}_toggle toggler action pointer bold settings_container">+ User Function 1</div>
@@ -1005,7 +1005,7 @@
 
 					</div>
 					
-					<div class='settings_category settings_window_category_container' id='settings_window_category_content_voice_chat_{{type}}'>
+					<div class='settings_category settings_window_category_container' id='settings_window_category_content_voice_chat_{{type}}' data-category='voice_chat'>
 
 						<div class='settings_item' data-setting='beep_on_voice_chat_joins' data-type='checkbox'>
 							<div class="setting_title">Beep On Voice Chat Joins</div>
@@ -1023,7 +1023,7 @@
 						</div>
 					</div>
 
-					<div class='settings_category settings_window_category_container' id='settings_window_category_content_misc_{{type}}'>
+					<div class='settings_category settings_window_category_container' id='settings_window_category_content_misc_{{type}}' data-category='misc'>
 						
 						<div class='settings_item' data-setting='show_joins' data-type='checkbox'>
 							<div class="setting_title">Show User Joins</div>

@@ -15358,12 +15358,36 @@ function check_room_settings_override()
 {
 	var override = false
 
+	$("#settings_window_left_room_settings .settings_window_category").each(function()
+	{
+		$(this).find(".settings_window_category_status").eq(0).html("")
+	})
+
 	for(var key in global_settings)
 	{
 		if(room_settings[`${key}_override`])
 		{
 			override = true
-			break
+
+			var el = $(`#room_settings_${key}`)
+
+			if(el.length > 0)
+			{
+				var container = el.closest(".settings_category")
+
+				if(container.length > 0)
+				{
+					var category = container.data("category")
+
+					$("#settings_window_left_room_settings .settings_window_category").each(function()
+					{
+						if($(this).data("category") === category)
+						{
+							$(this).find(".settings_window_category_status").eq(0).html("&nbsp;(*)")
+						}
+					})
+				}
+			}
 		}
 	}
 
@@ -17564,10 +17588,10 @@ function change_settings_window_category(element)
 
 	main.find(".settings_window_category").each(function()
 	{
-		$(this).removeClass("underlined")
+		$(this).removeClass("border_bottom")
 	})
 
-	$(element).addClass("underlined")
+	$(element).addClass("border_bottom")
 
 	main.find(".settings_window_category_container_selected").each(function()
 	{
