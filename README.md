@@ -442,32 +442,26 @@ If you want to remove it to start fresh:
 "global_settings_default_chat_layout"
 >Default chat layout. Either "normal" or "compact".
 
-"room_settings_default_tv_display_percentage"
->Default tv display percentage relative to the image.
+"room_state_default_images_enabled"
+>Whether images will be enabled by default.
 
-"room_settings_default_tv_display_position"
->Default tv display position relative to the image.
+"room_state_default_tv_enabled"
+>Whether tv will be enabled by default.
 
-"room_settings_default_media_display_percentage"
->Default media display percentage relative to the chat.
+"room_state_default_radio_enabled"
+>Whether radio will be enabled by default.
 
-"room_settings_default_images_enabled"
->Whether images will be enabled to the user on new rooms by default.
+"room_state_default_images_locked"
+>Whether images will be locked by default.
 
-"room_settings_default_tv_enabled"
->Whether tv will be enabled to the user on new rooms by default.
+"room_state_default_tv_locked"
+>Whether tv will be locked by default.
 
-"room_settings_default_radio_enabled"
->Whether radio will be enabled to the user on new rooms by default.
+"room_state_default_radio_locked"
+>Whether radio will be locked by default.
 
-"room_settings_default_images_locked"
->Whether images will be locked to the user on new rooms by default.
-
-"room_settings_default_tv_locked"
->Whether tv will be locked to the user on new rooms by default.
-
-"room_settings_default_radio_locked"
->Whether radio will be locked to the user on new rooms by default.
+"room_state_default_radio_volume"
+>Default volume for the radio.
 
 "double_tap_key"
 >The key that triggers double tap.

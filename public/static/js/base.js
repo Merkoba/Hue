@@ -1,11 +1,14 @@
 var ls_global_settings = "global_settings_v1"
 var ls_room_settings = "room_settings_v1"
+var ls_room_state = "room_state_v1"
 var ls_input_history = "input_history_v16"
 var ls_first_time = "first_time_v2"
 var vtypes = ["voice1", "voice2", "voice3", "voice4"]
 var roles = ["admin", "op"].concat(vtypes)
 var socket
-var settings
+var global_settings
+var room_settings
+var room_state
 var is_public
 var room_name
 var username
@@ -250,6 +253,7 @@ function init()
 	setup_templates()
 	get_global_settings()
 	get_room_settings()
+	get_room_state()
 	set_loaded_settings_state()
 	set_radio_volume()
 	start_msg()
@@ -1447,10 +1451,10 @@ function load_radio(src, type)
 				return false
 			}
 
-			youtube_player.setVolume(get_nice_volume(room_settings.radio_volume))
+			youtube_player.setVolume(get_nice_volume(room_state.radio_volume))
 		}
 
-		if(!room_settings.radio_locked || !last_radio_source)
+		if(!room_state.radio_locked || !last_radio_source)
 		{
 			push_played(false, {s1:radio_title, s2:src})
 		}
@@ -1479,13 +1483,12 @@ function load_radio(src, type)
 						soundcloud_player.play()
 					}
 
-					soundcloud_player.setVolume(get_nice_volume(room_settings.radio_volume))
+					soundcloud_player.setVolume(get_nice_volume(room_state.radio_volume))
 				}
 			})
-
 		}
 
-		if(!room_settings.radio_locked || !last_radio_source)
+		if(!room_state.radio_locked || !last_radio_source)
 		{
 			push_played(false, {s1:radio_title, s2:src})
 		}
@@ -5235,7 +5238,7 @@ function change(args={})
 
 	if(args.type === "image")
 	{
-		if(!room_settings.images_enabled || (room_settings.images_locked && last_image_source && !args.current_source))
+		if(!room_state.images_enabled || (room_state.images_locked && last_image_source && !args.current_source))
 		{
 			return false
 		}
@@ -5274,7 +5277,7 @@ function change(args={})
 
 	else if(args.type === "tv")
 	{
-		if(!room_settings.tv_enabled || (room_settings.tv_locked && last_tv_source && !args.current_source))
+		if(!room_state.tv_enabled || (room_state.tv_locked && last_tv_source && !args.current_source))
 		{
 			return false
 		}
@@ -5352,7 +5355,7 @@ function change(args={})
 
 	else if(args.type === "radio")
 	{
-		if(!room_settings.radio_enabled || (room_settings.radio_locked && last_radio_source && !args.current_source))
+		if(!room_state.radio_enabled || (room_state.radio_locked && last_radio_source && !args.current_source))
 		{
 			return false
 		}
@@ -7146,7 +7149,7 @@ function get_radio_metadata_enabled()
 	radio_get_metadata &&
 	loaded_radio_metadata &&
 	room_radio_mode !== "disabled" &&
-	room_settings.radio_enabled
+	room_state.radio_enabled
 }
 
 function get_radio_metadata()
@@ -7495,7 +7498,7 @@ function set_radio_volume(nv=false, changed=true)
 {
 	if(typeof nv !== "number")
 	{
-		nv = room_settings.radio_volume
+		nv = room_state.radio_volume
 	}
 
 	nv = utilz.round(nv, 1)
@@ -7510,11 +7513,11 @@ function set_radio_volume(nv=false, changed=true)
 		nv = 0
 	}
 
-	room_settings.radio_volume = nv
+	room_state.radio_volume = nv
 
 	var vt = parseInt(Math.round((nv * 100)))
 
-	$('#audio')[0].volume = room_settings.radio_volume
+	$('#audio')[0].volume = room_state.radio_volume
 
 	if(youtube_player !== undefined)
 	{
@@ -7530,7 +7533,7 @@ function set_radio_volume(nv=false, changed=true)
 	if(changed)
 	{
 		$('#volume').text(`${vt} %`)
-		save_room_settings()
+		save_room_state()
 	}
 }
 
@@ -7565,24 +7568,24 @@ function set_tv_volume(nv=false)
 
 function volume_increase()
 {
-	if(room_settings.radio_volume === 1)
+	if(room_state.radio_volume === 1)
 	{
 		return false
 	}
 
-	var nv = room_settings.radio_volume + 0.1
+	var nv = room_state.radio_volume + 0.1
 
 	set_radio_volume(nv)
 }
 
 function volume_decrease()
 {
-	if(room_settings.radio_volume === 0)
+	if(room_state.radio_volume === 0)
 	{
 		return false
 	}
 
-	var nv = room_settings.radio_volume - 0.1
+	var nv = room_state.radio_volume - 0.1
 
 	set_radio_volume(nv)
 }
@@ -10962,48 +10965,6 @@ function get_room_settings()
 
 	var changed = false
 
-	if(room_settings.images_enabled === undefined)
-	{
-		room_settings.images_enabled = room_settings_default_images_enabled
-		changed = true
-	}
-
-	if(room_settings.tv_enabled === undefined)
-	{
-		room_settings.tv_enabled = room_settings_default_tv_enabled
-		changed = true
-	}
-
-	if(room_settings.radio_enabled === undefined)
-	{
-		room_settings.radio_enabled = room_settings_default_radio_enabled
-		changed = true
-	}
-
-	if(room_settings.images_locked === undefined)
-	{
-		room_settings.images_locked = room_settings_default_images_locked
-		changed = true
-	}
-
-	if(room_settings.tv_locked === undefined)
-	{
-		room_settings.tv_locked = room_settings_default_tv_locked
-		changed = true
-	}
-
-	if(room_settings.radio_locked === undefined)
-	{
-		room_settings.radio_locked = room_settings_default_radio_locked
-		changed = true
-	}
-
-	if(room_settings.radio_volume === undefined)
-	{
-		room_settings.radio_volume = room_settings_default_radio_volume
-		changed = true
-	}
-
 	for(var key in global_settings)
 	{
 		if(room_settings[key] === undefined)
@@ -11037,6 +10998,81 @@ function save_room_settings()
 	room_settings_all[room_id] = room_settings
 
 	save_local_storage(ls_room_settings, room_settings_all)
+}
+
+function get_room_state()
+{
+	var room_state_all = get_local_storage(ls_room_state)
+
+	if(room_state_all === null)
+	{
+		room_state_all = {}
+	}
+
+	room_state = room_state_all[room_id]
+
+	if(room_state === undefined)
+	{
+		room_state = {}
+	}
+
+	var changed = false
+
+	if(room_state.images_enabled === undefined)
+	{
+		room_state.images_enabled = room_state_default_images_enabled
+		changed = true
+	}
+
+	if(room_state.tv_enabled === undefined)
+	{
+		room_state.tv_enabled = room_state_default_tv_enabled
+		changed = true
+	}
+
+	if(room_state.radio_enabled === undefined)
+	{
+		room_state.radio_enabled = room_state_default_radio_enabled
+		changed = true
+	}
+
+	if(room_state.images_locked === undefined)
+	{
+		room_state.images_locked = room_state_default_images_locked
+		changed = true
+	}
+
+	if(room_state.tv_locked === undefined)
+	{
+		room_state.tv_locked = room_state_default_tv_locked
+		changed = true
+	}
+
+	if(room_state.radio_locked === undefined)
+	{
+		room_state.radio_locked = room_state_default_radio_locked
+		changed = true
+	}
+
+	if(room_state.radio_volume === undefined)
+	{
+		room_state.radio_volume = room_state_default_radio_volume
+		changed = true
+	}
+}
+
+function save_room_state()
+{
+	var room_state_all = get_local_storage(ls_room_state)
+
+	if(room_state_all === null)
+	{
+		room_state_all = {}
+	}
+
+	room_state_all[room_id] = room_state
+
+	save_local_storage(ls_room_state, room_state_all)
 }
 
 var played_filter_timer = (function()
@@ -12176,25 +12212,25 @@ function toggle_images(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
-		room_settings.images_enabled = what
+		room_state.images_enabled = what
 	}
 
 	else
 	{
-		room_settings.images_enabled = !room_settings.images_enabled
+		room_state.images_enabled = !room_state.images_enabled
 	}
 
 	change_images_visibility()
 
 	if(save)
 	{
-		save_room_settings()
+		save_room_state()
 	}
 }
 
 function change_images_visibility()
 {
-	if(room_images_mode !== "disabled" && room_settings.images_enabled)
+	if(room_images_mode !== "disabled" && room_state.images_enabled)
 	{
 		$("#media").css("display", "flex")
 
@@ -12241,25 +12277,25 @@ function toggle_tv(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
-		room_settings.tv_enabled = what
+		room_state.tv_enabled = what
 	}
 
 	else
 	{
-		room_settings.tv_enabled = !room_settings.tv_enabled
+		room_state.tv_enabled = !room_state.tv_enabled
 	}
 
 	change_tv_visibility()
 
 	if(save)
 	{
-		save_room_settings()
+		save_room_state()
 	}
 }
 
 function change_tv_visibility(play=true)
 {
-	if(room_tv_mode !== "disabled" && room_settings.tv_enabled)
+	if(room_tv_mode !== "disabled" && room_state.tv_enabled)
 	{
 		$("#media").css("display", "flex")
 
@@ -12315,25 +12351,25 @@ function toggle_radio(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
-		room_settings.radio_enabled = what
+		room_state.radio_enabled = what
 	}
 
 	else
 	{
-		room_settings.radio_enabled = !room_settings.radio_enabled
+		room_state.radio_enabled = !room_state.radio_enabled
 	}
 
 	change_radio_visibility()
 
 	if(save)
 	{
-		save_room_settings()
+		save_room_state()
 	}
 }
 
 function change_radio_visibility()
 {
-	if(room_radio_mode !== "disabled" && room_settings.radio_enabled)
+	if(room_radio_mode !== "disabled" && room_state.radio_enabled)
 	{
 		$("#radio").css("display", "initial")
 
@@ -13345,25 +13381,25 @@ function toggle_lock_images(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
-		room_settings.images_locked = what
+		room_state.images_locked = what
 	}
 
 	else
 	{
-		room_settings.images_locked = !room_settings.images_locked
+		room_state.images_locked = !room_state.images_locked
 	}
 
 	change_lock_images()
 
 	if(save)
 	{
-		save_room_settings()
+		save_room_state()
 	}
 }
 
 function change_lock_images()
 {
-	if(room_settings.images_locked)
+	if(room_state.images_locked)
 	{
 		$("#footer_lock_images_icon").removeClass("fa-unlock-alt")
 		$("#footer_lock_images_icon").addClass("fa-lock")
@@ -13379,32 +13415,32 @@ function change_lock_images()
 		change({type:"image"})
 	}
 
-	images_locked = room_settings.images_locked
+	images_locked = room_state.images_locked
 }
 
 function toggle_lock_tv(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
-		room_settings.tv_locked = what
+		room_state.tv_locked = what
 	}
 
 	else
 	{
-		room_settings.tv_locked = !room_settings.tv_locked
+		room_state.tv_locked = !room_state.tv_locked
 	}
 
 	change_lock_tv()
 
 	if(save)
 	{
-		save_room_settings()
+		save_room_state()
 	}
 }
 
 function change_lock_tv()
 {
-	if(room_settings.tv_locked)
+	if(room_state.tv_locked)
 	{
 		$("#footer_lock_tv_icon").removeClass("fa-unlock-alt")
 		$("#footer_lock_tv_icon").addClass("fa-lock")
@@ -13420,32 +13456,32 @@ function change_lock_tv()
 		change({type:"tv"})
 	}
 
-	tv_locked = room_settings.tv_locked
+	tv_locked = room_state.tv_locked
 }
 
 function toggle_lock_radio(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
-		room_settings.radio_locked = what
+		room_state.radio_locked = what
 	}
 
 	else
 	{
-		room_settings.radio_locked = !room_settings.radio_locked
+		room_state.radio_locked = !room_state.radio_locked
 	}
 
 	change_lock_radio()
 
 	if(save)
 	{
-		save_room_settings()
+		save_room_state()
 	}
 }
 
 function change_lock_radio()
 {
-	if(room_settings.radio_locked)
+	if(room_state.radio_locked)
 	{
 		$("#footer_lock_radio_icon").removeClass("fa-unlock-alt")
 		$("#footer_lock_radio_icon").addClass("fa-lock")
@@ -13461,7 +13497,7 @@ function change_lock_radio()
 		change({type:"radio"})
 	}
 
-	radio_locked = room_settings.radio_locked
+	radio_locked = room_state.radio_locked
 }
 
 function show_joined()
@@ -13497,7 +13533,7 @@ function stop_and_lock(stop=true)
 	toggle_lock_tv(true, false)
 	toggle_lock_radio(true, false)
 
-	save_room_settings()
+	save_room_state()
 }
 
 function refresh_image()
@@ -13550,7 +13586,7 @@ function default_media_state(change_visibility=true)
 		}
 	}
 
-	save_room_settings()
+	save_room_state()
 }
 
 function disconnect_others()
@@ -14608,7 +14644,7 @@ function maximize_images()
 		}
 	}
 
-	save_room_settings()
+	save_room_state()
 }
 
 function maximize_tv()
@@ -14636,7 +14672,7 @@ function maximize_tv()
 		}
 	}
 
-	save_room_settings()
+	save_room_state()
 }
 
 function font_check()
@@ -14994,9 +15030,7 @@ function reset_settings(type)
 	if(type === "room_settings")
 	{
 		set_room_settings_overriders()
-		media_visibility_and_locks()
 		check_room_settings_override()
-		set_radio_volume()
 	}
 }
 
