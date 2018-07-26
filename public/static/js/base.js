@@ -15384,6 +15384,7 @@ function check_room_settings_override()
 						if($(this).data("category") === category)
 						{
 							$(this).find(".settings_window_category_status").eq(0).html("&nbsp;(*)")
+							return false
 						}
 					})
 				}
