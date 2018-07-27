@@ -10070,8 +10070,8 @@ function start_msg()
 	msg_radio_history.set_title("Radio History")
 	msg_global_settings.set_title("<span id='global_settings_window_title' class='pointer'>Global Settings</span>")
 	msg_room_settings.set_title("<span id='room_settings_window_title' class='pointer'>Room Settings</span>")
-	msg_public_roomlist.set_title("Public Rooms")
-	msg_visited_roomlist.set_title("Visited Rooms")
+	msg_public_roomlist.set_title("<span id='public_rooms_window_title' class='pointer'>Public Rooms</span>")
+	msg_visited_roomlist.set_title("<span id='visited_rooms_window_title' class='pointer'>Visited Rooms</span>")
 	msg_played.set_title("Recently Played")
 	msg_menu.set_title("Main Menu")
 	msg_user_menu.set_title("User Menu")
@@ -10087,6 +10087,16 @@ function start_msg()
 	$("#room_settings_window_title").click(function()
 	{
 		toggle_settings_windows("global_settings")
+	})
+
+	$("#public_rooms_window_title").click(function()
+	{
+		toggle_rooms_windows("visited_roomlist")
+	})
+
+	$("#visited_rooms_window_title").click(function()
+	{
+		toggle_rooms_windows("public_roomlist")
 	})
 }
 
@@ -17929,6 +17939,29 @@ function toggle_settings_windows(type)
 		})
 
 		window[`show_${type}`]()
+	})
+}
+
+function toggle_rooms_windows(type)
+{
+	if(type === "public_roomlist")
+	{
+		var type2 = "visited_roomlist"
+	}
+
+	else if(type === "visited_roomlist")
+	{
+		var type2 = "public_roomlist"
+	}
+
+	else
+	{
+		return false
+	}
+
+	window[`msg_${type2}`].close(function()
+	{
+		request_roomlist('', type)
 	})
 }
 
