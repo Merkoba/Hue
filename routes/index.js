@@ -75,6 +75,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.global_settings_default_at_startup = config.global_settings_default_at_startup
 	c.vars.global_settings_default_ignored_usernames = config.global_settings_default_ignored_usernames
 	c.vars.global_settings_default_ignored_words = config.global_settings_default_ignored_words
+	c.vars.global_settings_default_ignored_words_exclude_same_user = config.global_settings_default_ignored_words_exclude_same_user
 	c.vars.global_settings_default_user_function_1 = config.global_settings_default_user_function_1
 	c.vars.global_settings_default_user_function_2 = config.global_settings_default_user_function_2
 	c.vars.global_settings_default_user_function_3 = config.global_settings_default_user_function_3

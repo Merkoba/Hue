@@ -376,6 +376,9 @@ If you want to remove it to start fresh:
 "global_settings_default_ignored_words"
 >What words to be ignored by default.
 
+"global_settings_default_ignored_words_exclude_same_user"
+>Whether ignored words apply to the same user by default.
+
 "global_settings_default_show_joins"
 >Whether to show user joins by default.
 

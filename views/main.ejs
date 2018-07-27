@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?version=15"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2083"></script>
+		<script src="/static/js/base.js?version=2084"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=428"/>
 
@@ -1064,6 +1064,12 @@
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_ignored_words">
 						</div>
 
+						<div class='settings_item' data-setting='ignored_words_exclude_same_user' data-type='checkbox'>
+							<div class="setting_title2">Don't Ignore Words</div>
+							<div class="setting_title">From Yourself</div>
+							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_ignored_words_exclude_same_user">
+						</div>
+
 						<div class='settings_item' data-setting='other_words_to_highlight' data-type='textarea'>
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Highlight</div>
@@ -1096,6 +1102,7 @@
 								</div>
 							</div>
 						</div>
+
 					</div>
 
 				</div>

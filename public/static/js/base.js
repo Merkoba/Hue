@@ -4881,18 +4881,9 @@ function update_chat(args={})
 
 	fill_defaults(args, def_args)
 
-	if(args.msg)
+	if(check_ignored_words(args.msg, args.uname))
 	{
-		if(args.uname)
-		{
-			if(args.uname !== username)
-			{
-				if(check_ignored_words(args.msg))
-				{
-					return false
-				}
-			}
-		}
+		return false
 	}
 
 	if(args.uname)
@@ -5568,18 +5559,9 @@ function chat_announce(args={})
 
 	var ignore = false
 
-	if(args.msg)
+	if(check_ignored_words(args.msg, args.uname))
 	{
-		if(args.uname)
-		{
-			if(args.uname !== username)
-			{
-				if(check_ignored_words(args.msg))
-				{
-					ignore = true
-				}
-			}
-		}
+		ignore = true
 	}
 
 	if(args.uname)
@@ -10072,8 +10054,8 @@ function start_msg()
 	msg_image_history.set_title("Image History")
 	msg_tv_history.set_title("TV History")
 	msg_radio_history.set_title("Radio History")
-	msg_global_settings.set_title("Global Settings")
-	msg_room_settings.set_title("Room Settings")
+	msg_global_settings.set_title("<span class='pointer' onclick='title_show_room_settings()'>Global Settings</span>")
+	msg_room_settings.set_title("<span class='pointer' onclick='title_show_global_settings()'>Room Settings</span>")
 	msg_public_roomlist.set_title("Public Rooms")
 	msg_visited_roomlist.set_title("Visited Rooms")
 	msg_played.set_title("Recently Played")
@@ -10222,6 +10204,7 @@ function get_global_settings()
 		"at_startup",
 		"ignored_usernames",
 		"ignored_words",
+		"ignored_words_exclude_same_user",
 		"show_joins",
 		"show_parts",
 		"animate_scroll",
@@ -10675,6 +10658,16 @@ function setting_ignored_words_action(type, save=true)
 	{
 		generate_ignored_words_regex()
 	}
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_ignored_words_exclude_same_user_action(type, save=true)
+{
+	window[type].ignored_words_exclude_same_user = $(`#${type}_ignored_words_exclude_same_user`).prop("checked")
 
 	if(save)
 	{
@@ -13806,13 +13799,21 @@ function generate_ignored_words_regex()
 	}
 }
 
-function check_ignored_words(msg)
+function check_ignored_words(msg="", uname="")
 {
 	if(ignored_words_regex)
 	{
 		if(msg.search(ignored_words_regex) !== -1)
 		{
-			return true
+			if(uname && uname === username && get_setting("ignored_words_exclude_same_user"))
+			{
+				return false
+			}
+
+			else
+			{
+				return true
+			}
 		}
 	}
 
@@ -17891,4 +17892,20 @@ function on_room_created(data)
 	})
 
 	show_open_room(data.id)
+}
+
+function title_show_room_settings()
+{
+	msg_global_settings.close(function()
+	{
+		show_room_settings()
+	})
+}
+
+function title_show_global_settings()
+{
+	msg_room_settings.close(function()
+	{
+		show_global_settings()
+	})
 }

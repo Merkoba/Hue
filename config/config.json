@@ -111,6 +111,7 @@
 	"global_settings_default_user_function_3_name": "F3",
 	"global_settings_default_ignored_usernames": "",
 	"global_settings_default_ignored_words": "",
+	"global_settings_default_ignored_words_exclude_same_user": true,
 	"global_settings_default_show_joins": true,
 	"global_settings_default_show_parts": true,
 	"global_settings_default_animate_scroll": true,
