@@ -17938,9 +17938,13 @@ function toggle_settings_windows(type)
 						if(!$(this).data("selected_category"))
 						{
 							$(this).click()
+							
+							return false
 						}
 					}
 				})
+
+				return false
 			}
 		})
 
