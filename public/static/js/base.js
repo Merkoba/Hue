@@ -10054,8 +10054,8 @@ function start_msg()
 	msg_image_history.set_title("Image History")
 	msg_tv_history.set_title("TV History")
 	msg_radio_history.set_title("Radio History")
-	msg_global_settings.set_title("<span class='pointer' onclick='title_show_room_settings()'>Global Settings</span>")
-	msg_room_settings.set_title("<span class='pointer' onclick='title_show_global_settings()'>Room Settings</span>")
+	msg_global_settings.set_title("<span id='global_settings_window_title' class='pointer'>Global Settings</span>")
+	msg_room_settings.set_title("<span id='room_settings_window_title' class='pointer'>Room Settings</span>")
 	msg_public_roomlist.set_title("Public Rooms")
 	msg_visited_roomlist.set_title("Visited Rooms")
 	msg_played.set_title("Recently Played")
@@ -10064,6 +10064,16 @@ function start_msg()
 	msg_media_menu.set_title("Media Menu")
 	msg_draw_image.set_title("Draw an Image")
 	msg_credits.set_title(credits_title)
+
+	$("#global_settings_window_title").click(function()
+	{
+		toggle_settings_windows("room_settings")
+	})
+
+	$("#room_settings_window_title").click(function()
+	{
+		toggle_settings_windows("global_settings")
+	})
 }
 
 function info_vars_to_false()
@@ -17767,9 +17777,11 @@ function change_settings_window_category(element)
 	main.find(".settings_window_category").each(function()
 	{
 		$(this).removeClass("border_bottom")
+		$(this).data("selected_category", false)
 	})
 
 	$(element).addClass("border_bottom")
+	$(element).data("selected_category", true)
 
 	main.find(".settings_window_category_container_selected").each(function()
 	{
@@ -17894,18 +17906,44 @@ function on_room_created(data)
 	show_open_room(data.id)
 }
 
-function title_show_room_settings()
+function toggle_settings_windows(type)
 {
-	msg_global_settings.close(function()
+	if(type === "global_settings")
 	{
-		show_room_settings()
-	})
-}
+		var type2 = "room_settings"
+	}
 
-function title_show_global_settings()
-{
-	msg_room_settings.close(function()
+	else if(type === "room_settings")
 	{
-		show_global_settings()
+		var type2 = "global_settings"
+	}
+
+	else
+	{
+		return false
+	}
+
+	window[`msg_${type2}`].close(function()
+	{
+		$(`#settings_window_left_${type2} .settings_window_category`).each(function()
+		{
+			var el = this
+
+			if($(el).data("selected_category"))
+			{
+				$(`#settings_window_left_${type} .settings_window_category`).each(function()
+				{
+					if($(el).data("category") === $(this).data("category"))
+					{
+						if(!$(this).data("selected_category"))
+						{
+							$(this).click()
+						}
+					}
+				})
+			}
+		})
+
+		window[`show_${type}`]()
 	})
 }
