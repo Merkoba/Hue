@@ -3593,6 +3593,16 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
+	handler.public.system_restart_signal = function(socket, data)
+	{
+		if(!socket.hue_superuser)
+		{
+			return handler.get_out(socket)
+		}
+
+		handler.system_emit(socket, 'system_restart_signal', {})
+	}
+
 	handler.public.disconnect_others = function(socket, data)
 	{
 		var amount = 0

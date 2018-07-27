@@ -817,7 +817,7 @@ function start_socket()
 		{
 			setTimeout(function()
 			{
-				refresh()
+				restart_client()
 			}, 2000)
 		}
 	})
@@ -1246,6 +1246,11 @@ function start_socket()
 		else if(data.type === 'system_broadcast')
 		{
 			popup_message_received(data, "system")
+		}
+
+		else if(data.type === 'system_restart_signal')
+		{
+			restart_client()
 		}
 
 		else if(data.type === 'error_occurred')
@@ -5914,6 +5919,7 @@ function register_commands()
 	commands.push('/goto')
 	commands.push('/broadcast')
 	commands.push('/systembroadcast')
+	commands.push('/systemrestart')
 	commands.push('/changeinput')
 	commands.push('/toggleplayradio')
 	commands.push('/refreshimage')
@@ -6424,6 +6430,11 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/systembroadcast'))
 	{
 		write_popup_message(false, "system")
+	}
+
+	else if(oiEquals(lmsg, '/systemrestart'))
+	{
+		send_system_restart_signal()
 	}
 
 	else if(oiEquals(lmsg, '/annex'))
@@ -7991,7 +8002,7 @@ function create_room(data)
 	})
 }
 
-function refresh()
+function restart_client()
 {
 	window.location = window.location
 }
@@ -11013,7 +11024,7 @@ function setting_chat_layout_action(type, save=true)
 
 			if(r)
 			{
-				refresh()
+				restart_client()
 			}
 		}
 	}
@@ -15876,9 +15887,9 @@ function show_export_settings()
 	var gsettings = localStorage.getItem(ls_global_settings)
 	var rsettings = localStorage.getItem(ls_room_settings)
 
-	var code = `var gsettings = ${gsettings}; save_local_storage(ls_global_settings, gsettings); var rsettings = ${rsettings}; save_local_storage(ls_room_settings, rsettings); refresh()`
-	var code2 = `var gsettings = ${gsettings}; save_local_storage(ls_global_settings, gsettings); refresh()`
-	var code3 = `var rsettings = ${rsettings}; save_local_storage(ls_room_settings, rsettings); refresh()`
+	var code = `var gsettings = ${gsettings}; save_local_storage(ls_global_settings, gsettings); var rsettings = ${rsettings}; save_local_storage(ls_room_settings, rsettings); restart_client()`
+	var code2 = `var gsettings = ${gsettings}; save_local_storage(ls_global_settings, gsettings); restart_client()`
+	var code3 = `var rsettings = ${rsettings}; save_local_storage(ls_room_settings, rsettings); restart_client()`
 
 	var s = `
 	<div class='container_22'>
@@ -17950,4 +17961,9 @@ function toggle_settings_windows(type)
 
 		window[`show_${type}`]()
 	})
+}
+
+function send_system_restart_signal()
+{
+	socket_emit("system_restart_signal", {})
 }
