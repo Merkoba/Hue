@@ -6430,16 +6430,19 @@ function execute_command(msg, ans)
 	else if(oiEquals(lmsg, '/systembroadcast'))
 	{
 		write_popup_message(false, "system")
+		ans.to_history = false
 	}
 
 	else if(oiEquals(lmsg, '/systemrestart'))
 	{
 		send_system_restart_signal()
+		ans.to_history = false
 	}
 
 	else if(oiEquals(lmsg, '/annex'))
 	{
 		annex()
+		ans.to_history = false
 	}
 
 	else if(oiStartsWith(lmsg, '/annex'))
