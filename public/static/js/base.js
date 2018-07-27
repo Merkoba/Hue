@@ -96,7 +96,7 @@ var template_settings
 var template_global_settings
 var template_room_settings
 var template_credits
-var msg_menu
+var msg_main_menu
 var msg_user_menu
 var msg_userlist
 var msg_roomlist
@@ -3059,7 +3059,7 @@ function setup_main_menu()
 
 function show_main_menu()
 {
-	msg_menu.show()
+	msg_main_menu.show()
 }
 
 function config_admin_permission_checkboxes()
@@ -9276,11 +9276,11 @@ function start_msg()
 		window_inner_x_class: "!titlebar_inner_x"
 	}
 
-	msg_menu = Msg.factory
+	msg_main_menu = Msg.factory
 	(
 		Object.assign({}, common, titlebar,
 		{
-			id: "menu",
+			id: "main_menu",
 			window_width: "22em",
 			after_create: function(instance)
 			{
@@ -10033,7 +10033,7 @@ function start_msg()
 		})
 	)
 
-	msg_menu.set(template_menu())
+	msg_main_menu.set(template_menu())
 	msg_user_menu.set(template_user_menu())
 	msg_userlist.set(template_userlist())
 	msg_public_roomlist.set(template_roomlist({type:"public_roomlist"}))
@@ -10065,16 +10065,16 @@ function start_msg()
 	msg_input_history.set_title("Input History")
 	msg_highlights.set_title("Highlights")
 	msg_chat_search.set_title("Search")
-	msg_image_history.set_title("Image History")
-	msg_tv_history.set_title("TV History")
-	msg_radio_history.set_title("Radio History")
+	msg_image_history.set_title("<span id='image_history_window_title' class='pointer'>Image History</span>")
+	msg_tv_history.set_title("<span id='tv_history_window_title' class='pointer'>TV History</span>")
+	msg_radio_history.set_title("<span id='radio_history_window_title' class='pointer'>Radio History</span>")
 	msg_global_settings.set_title("<span id='global_settings_window_title' class='pointer'>Global Settings</span>")
 	msg_room_settings.set_title("<span id='room_settings_window_title' class='pointer'>Room Settings</span>")
 	msg_public_roomlist.set_title("<span id='public_rooms_window_title' class='pointer'>Public Rooms</span>")
 	msg_visited_roomlist.set_title("<span id='visited_rooms_window_title' class='pointer'>Visited Rooms</span>")
 	msg_played.set_title("Recently Played")
-	msg_menu.set_title("Main Menu")
-	msg_user_menu.set_title("User Menu")
+	msg_main_menu.set_title("<span id='main_menu_window_title' class='pointer'>Main Menu</span>")
+	msg_user_menu.set_title("<span id='user_menu_window_title' class='pointer'>User Menu</span>")
 	msg_media_menu.set_title("Media Menu")
 	msg_draw_image.set_title("Draw an Image")
 	msg_credits.set_title(credits_title)
@@ -10097,6 +10097,31 @@ function start_msg()
 	$("#visited_rooms_window_title").click(function()
 	{
 		toggle_rooms_windows("public_roomlist")
+	})
+
+	$("#image_history_window_title").click(function()
+	{
+		toggle_rooms_windows("tv_history")
+	})
+
+	$("#tv_history_window_title").click(function()
+	{
+		toggle_rooms_windows("radio_history")
+	})
+
+	$("#radio_history_window_title").click(function()
+	{
+		toggle_rooms_windows("image_history")
+	})
+
+	$("#main_menu_window_title").click(function()
+	{
+		toggle_menu_windows("user_menu")
+	})
+
+	$("#user_menu_window_title").click(function()
+	{
+		toggle_menu_windows("main_menu")
 	})
 }
 
@@ -10157,47 +10182,47 @@ function after_modal_close(instance)
 
 function get_modal_instances()
 {
-	return msg_menu.higher_instances()
+	return msg_main_menu.higher_instances()
 }
 
 function get_popup_instances()
 {
-	return msg_menu.lower_instances()
+	return msg_main_menu.lower_instances()
 }
 
 function get_all_msg_instances()
 {
-	return msg_menu.instances()
+	return msg_main_menu.instances()
 }
 
 function any_msg_open()
 {
-	return msg_menu.any_open()
+	return msg_main_menu.any_open()
 }
 
 function any_modal_open()
 {
-	return msg_menu.any_higher_open()
+	return msg_main_menu.any_higher_open()
 }
 
 function any_popup_open()
 {
-	return msg_menu.any_lower_open()
+	return msg_main_menu.any_lower_open()
 }
 
 function close_all_msg()
 {
-	msg_menu.close_all()
+	msg_main_menu.close_all()
 }
 
 function close_all_modals()
 {
-	msg_menu.close_all_higher()
+	msg_main_menu.close_all_higher()
 }
 
 function close_all_popups()
 {
-	msg_menu.close_all_lower()
+	msg_main_menu.close_all_lower()
 }
 
 function empty_global_settings()
@@ -17962,6 +17987,57 @@ function toggle_rooms_windows(type)
 	window[`msg_${type2}`].close(function()
 	{
 		request_roomlist('', type)
+	})
+}
+
+function toggle_rooms_windows(type)
+{
+	if(type === "image_history")
+	{
+		var type2 = "radio_history"
+	}
+
+	else if(type === "tv_history")
+	{
+		var type2 = "image_history"
+	}
+
+	else if(type === "radio_history")
+	{
+		var type2 = "tv_history"
+	}
+
+	else
+	{
+		return false
+	}
+
+	window[`msg_${type2}`].close(function()
+	{
+		window[`show_${type}`]()
+	})
+}
+
+function toggle_menu_windows(type)
+{
+	if(type === "main_menu")
+	{
+		var type2 = "user_menu"
+	}
+
+	else if(type === "user_menu")
+	{
+		var type2 = "main_menu"
+	}
+
+	else
+	{
+		return false
+	}
+
+	window[`msg_${type2}`].close(function()
+	{
+		window[`show_${type}`]()
 	})
 }
 
