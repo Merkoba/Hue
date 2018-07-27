@@ -10101,17 +10101,17 @@ function start_msg()
 
 	$("#image_history_window_title").click(function()
 	{
-		toggle_rooms_windows("tv_history")
+		toggle_media_history_windows("tv_history")
 	})
 
 	$("#tv_history_window_title").click(function()
 	{
-		toggle_rooms_windows("radio_history")
+		toggle_media_history_windows("radio_history")
 	})
 
 	$("#radio_history_window_title").click(function()
 	{
-		toggle_rooms_windows("image_history")
+		toggle_media_history_windows("image_history")
 	})
 
 	$("#main_menu_window_title").click(function()
@@ -17990,7 +17990,7 @@ function toggle_rooms_windows(type)
 	})
 }
 
-function toggle_rooms_windows(type)
+function toggle_media_history_windows(type)
 {
 	if(type === "image_history")
 	{
