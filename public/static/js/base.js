@@ -167,6 +167,7 @@ var message_id = 0
 var popup_message_id = 0
 var mentions_regex
 var highlight_words_regex
+var ignored_words_regex
 var writing_message = false
 var double_tap_key_pressed = 0
 var double_tap_key_2_pressed = 0
@@ -264,6 +265,7 @@ function init()
 	start_dropzone()
 	start_volume_scroll()
 	generate_highlight_words_regex()
+	generate_ignored_words_regex()
 	activate_visibility_listener()
 	copypaste_events()
 	scroll_events()
@@ -4879,9 +4881,26 @@ function update_chat(args={})
 
 	fill_defaults(args, def_args)
 
-	if(user_is_ignored(args.uname))
+	if(args.msg)
 	{
-		return false
+		if(args.uname)
+		{
+			if(args.uname !== username)
+			{
+				if(check_ignored_words(args.msg))
+				{
+					return false
+				}
+			}
+		}
+	}
+
+	if(args.uname)
+	{
+		if(user_is_ignored(args.uname))
+		{
+			return false
+		}
 	}
 
 	if(args.msg.startsWith('//'))
@@ -5547,11 +5566,27 @@ function chat_announce(args={})
 
 	fill_defaults(args, def_args)
 
+	var ignore = false
+
+	if(args.msg)
+	{
+		if(args.uname)
+		{
+			if(args.uname !== username)
+			{
+				if(check_ignored_words(args.msg))
+				{
+					ignore = true
+				}
+			}
+		}
+	}
+
 	if(args.uname)
 	{
 		if(user_is_ignored(args.uname))
 		{
-			return false
+			ignore = true
 		}
 	}
 
@@ -5642,18 +5677,22 @@ function chat_announce(args={})
 	fmsg.data("uname", args.uname)
 	fmsg.data("mode", "announcement")
 
-	add_to_chat(fmsg, args.save)
+	if(!ignore)
+	{
+		add_to_chat(fmsg, args.save)
+		
+		if(args.highlight)
+		{
+			alert_title2()
+			sound_notify("highlight")
+		}
+	}
 
 	if(args.type !== "normal")
 	{
 		handle_chat_announce_types(fmsg, args.type)
 	}
 
-	if(args.highlight)
-	{
-		alert_title2()
-		sound_notify("highlight")
-	}
 }
 
 function handle_chat_announce_types(msg, type)
@@ -10174,6 +10213,7 @@ function get_global_settings()
 		"highlight_current_username",
 		"case_insensitive_username_highlights",
 		"case_insensitive_words_highlights",
+		"case_insensitive_ignored_words",
 		"other_words_to_highlight",
 		"double_tap",
 		"double_tap_2",
@@ -10181,6 +10221,7 @@ function get_global_settings()
 		"afk_delay",
 		"at_startup",
 		"ignored_usernames",
+		"ignored_words",
 		"show_joins",
 		"show_parts",
 		"animate_scroll",
@@ -10501,6 +10542,21 @@ function setting_case_insensitive_words_highlights_action(type, save=true)
 	}
 }
 
+function setting_case_insensitive_ignored_words_action(type, save=true)
+{
+	window[type].case_insensitive_ignored_words = $(`#${type}_case_insensitive_ignored_words`).prop("checked")
+
+	if(active_settings("case_insensitive_ignored_words") === type)
+	{
+		generate_ignored_words_regex()
+	}
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
 function setting_other_words_to_highlight_action(type, save=true)
 {
 	var words = make_unique_lines(utilz.clean_string7($(`#${type}_other_words_to_highlight`).val()))
@@ -10600,6 +10656,25 @@ function setting_ignored_usernames_action(type, save=true)
 	$(`#${type}_ignored_usernames`).val(unames)
 
 	window[type].ignored_usernames = unames
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_ignored_words_action(type, save=true)
+{
+	var unames = make_unique_lines(utilz.clean_string7($(`#${type}_ignored_words`).val()))
+
+	$(`#${type}_ignored_words`).val(unames)
+
+	window[type].ignored_words = unames
+
+	if(active_settings("ignored_words") === type)
+	{
+		generate_ignored_words_regex()
+	}
 
 	if(save)
 	{
@@ -13692,6 +13767,58 @@ function check_highlights(msg)
 	return false
 }
 
+function generate_ignored_words_regex()
+{
+	var words = ""
+
+	var lines = get_setting("ignored_words").split('\n')
+
+	for(var i=0; i<lines.length; i++)
+	{
+		var line = lines[i]
+
+		words += escape_special_characters(line)
+
+		if(i < lines.length - 1)
+		{
+			words += "|"
+		}
+	}
+
+	if(words.length > 0)
+	{
+		var regexp = `(?:^|\\s+)(?:\\@)?(?:${words})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.|\\:)`
+
+		if(get_setting("case_insensitive_ignored_words"))
+		{
+			ignored_words_regex = new RegExp(regexp, "i")
+		}
+
+		else
+		{
+			ignored_words_regex = new RegExp(regexp)
+		}
+	}
+
+	else
+	{
+		ignored_words_regex = false
+	}
+}
+
+function check_ignored_words(msg)
+{
+	if(ignored_words_regex)
+	{
+		if(msg.search(ignored_words_regex) !== -1)
+		{
+			return true
+		}
+	}
+
+	return false
+}
+
 function create_popup(position, id=false, after_close=false)
 {
 	var common =
@@ -15374,6 +15501,24 @@ function room_item_fade(override, item)
 	{
 		item.addClass("faded")
 	}
+
+	$("#settings_window_right_global_settings .settings_item").each(function()
+	{
+		if(item.data("setting") === $(this).data("setting"))
+		{
+			if(override)
+			{
+				$(this).addClass("faded")
+			}
+
+			else
+			{
+				$(this).removeClass("faded")
+			}
+
+			return false
+		}
+	})
 }
 
 function setup_setting_elements(type)

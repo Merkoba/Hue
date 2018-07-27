@@ -334,6 +334,9 @@ If you want to remove it to start fresh:
 "global_settings_default_case_insensitive_words_highlights"
 >Whether highlights for specified words are case insensitive by default.
 
+"global_settings_default_case_insensitive_ignored_words"
+>Whether ignored words are case insensitive by default
+
 "global_settings_default_other_words_to_highlight"
 >Other words to trigger highlights apart from the current username, by default.
 
@@ -369,6 +372,9 @@ If you want to remove it to start fresh:
 
 "global_settings_default_ignored_usernames"
 >What usernames to be ignored by default.
+
+"global_settings_default_ignored_words"
+>What words to be ignored by default.
 
 "global_settings_default_show_joins"
 >Whether to show user joins by default.

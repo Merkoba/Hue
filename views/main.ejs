@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?version=15"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2082"></script>
+		<script src="/static/js/base.js?version=2083"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=428"/>
 
@@ -1058,6 +1058,12 @@
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_words_highlights">
 						</div>
 
+						<div class='settings_item' data-setting='case_insensitive_ignored_words' data-type='checkbox'>
+							<div class="setting_title2">Case Insensitive</div>
+							<div class="setting_title">Ignored Words</div>
+							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_ignored_words">
+						</div>
+
 						<div class='settings_item' data-setting='other_words_to_highlight' data-type='textarea'>
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Highlight</div>
@@ -1076,6 +1082,17 @@
 									<div class="setting_title">(Each on a different line)</div>
 									<div class='spacer2'></div>
 									<textarea rows=4 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_ignored_usernames"></textarea>
+								</div>
+							</div>
+						</div>
+
+						<div class='settings_item' data-setting='ignored_words' data-type='textarea'>
+							<div class='toggler_main_container'>
+								<div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Ignore</div>
+								<div class='{{type}}_toggle_container toggler_container'>
+									<div class="setting_title">(Each on a different line)</div>
+									<div class='spacer2'></div>
+									<textarea rows=4 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_ignored_words"></textarea>
 								</div>
 							</div>
 						</div>
