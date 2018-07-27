@@ -14868,25 +14868,8 @@ function modal_image_prev_click()
 	{
 		if(data.date_raw < date && data.url !== url)
 		{
-			var ok = true
-
-			for(var data2 of images_changed)
-			{
-				if(data2.date_raw > date)
-				{
-					if(data2.url === data.url)
-					{
-						ok = false
-						break
-					}
-				}
-			}
-
-			if(ok)
-			{
-				show_modal_image(data.url, data.title, data.date_raw)
-				return
-			}
+			show_modal_image(data.url, data.title, data.date_raw)
+			return
 		}
 	}
 
@@ -14909,25 +14892,8 @@ function modal_image_next_click(e)
 	{
 		if(data.date_raw > date && data.url !== url)
 		{
-			var ok = true
-
-			for(var data2 of images_changed)
-			{
-				if(data2.date_raw < date)
-				{
-					if(data2.url === data.url)
-					{
-						ok = false
-						break
-					}
-				}
-			}
-
-			if(ok)
-			{
-				show_modal_image(data.url, data.title, data.date_raw)
-				return
-			}
+			show_modal_image(data.url, data.title, data.date_raw)
+			return
 		}
 	}
 
