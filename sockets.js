@@ -2645,7 +2645,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			.then(function(response)
 			{
-				if(!response.data)
+				if(!response.data || !Array.isArray(response.data))
 				{
 					return false
 				}
