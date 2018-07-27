@@ -14061,7 +14061,7 @@ function send_popup_message()
 
 	if(diff === max_input_length)
 	{
-		if(draw_coords.length === 0)
+		if(!draw_coords)
 		{
 			return false
 		}
