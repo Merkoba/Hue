@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?version=15"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2096"></script>
+		<script src="/static/js/base.js?version=2097"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=429"/>
 
@@ -1281,7 +1281,7 @@
 			<div id='radio_history_container' class='media_history_container'></div>
 		</script>
 
-		<script id='template_image' type='text/x-handlebars-template'>
+		<script id='template_modal_image' type='text/x-handlebars-template'>
 
 			<div id='modal_image_background_image' class='background_image'></div>
 			
@@ -1456,6 +1456,12 @@
 				<img src='{{background_url}}' id='credits_background' draggable='false'>
 			</div>
 
+		</script>
+
+		<script id='template_modal_image_number' type='text/x-handlebars-template'>
+			<input id='modal_image_number_input' type='number' class='setting_input_text_smaller'>
+			<div class='spacer3'></div>
+			<div id='modal_image_number_button' class='pointer bigger action inline unselectable'>Go To Image</div>
 		</script>
 
 		<script id='template_help' type='text/x-handlebars-template'>

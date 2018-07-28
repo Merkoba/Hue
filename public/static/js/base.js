@@ -91,7 +91,8 @@ var template_tv_history
 var template_radio_history
 var template_input_history
 var template_chat_search
-var template_image
+var template_modal_image
+var template_modal_image_number
 var template_locked_menu
 var template_settings
 var template_global_settings
@@ -102,7 +103,8 @@ var msg_user_menu
 var msg_userlist
 var msg_roomlist
 var msg_played
-var msg_image
+var msg_modal_image
+var msg_modal_image_number
 var msg_profile
 var msg_info
 var msg_info2
@@ -304,6 +306,7 @@ function init()
 	setup_autocomplete()
 	start_other_scrollbars()
 	setup_user_function_titles()
+	setup_modal_image_number()
 
 	start_socket()
 }
@@ -383,7 +386,8 @@ function setup_templates()
 	template_radio_history = Handlebars.compile($('#template_radio_history').html())
 	template_input_history = Handlebars.compile($('#template_input_history').html())
 	template_chat_search = Handlebars.compile($('#template_chat_search').html())
-	template_image = Handlebars.compile($('#template_image').html())
+	template_modal_image = Handlebars.compile($('#template_modal_image').html())
+	template_modal_image_number = Handlebars.compile($('#template_modal_image_number').html())
 	template_locked_menu = Handlebars.compile($('#template_locked_menu').html())
 	template_settings = Handlebars.compile($('#template_settings').html())
 	template_global_settings = Handlebars.compile($('#template_global_settings').html())
@@ -4003,7 +4007,7 @@ function activate_key_detection()
 
 			if(modal_image_open)
 			{
-				if(msg_image.is_highest())
+				if(msg_modal_image.is_highest())
 				{
 					if(e.key === "ArrowLeft")
 					{
@@ -4025,7 +4029,7 @@ function activate_key_detection()
 
 					if(e.key === " ")
 					{
-						show_modal_image_number_prompt()
+						show_modal_image_number()
 						e.preventDefault()
 					}
 
@@ -4061,7 +4065,7 @@ function activate_key_detection()
 			{
 				if(e.key === "Enter")
 				{
-					modal_image_number_prompt_go()
+					modal_image_number_go()
 				}
 			}
 
@@ -9454,11 +9458,11 @@ function start_msg()
 		})
 	)
 
-	msg_image = Msg.factory
+	msg_modal_image = Msg.factory
 	(
 		Object.assign({}, common,
 		{
-			id: "image",
+			id: "modal_image",
 			preset: "window",
 			overlay_class: "!overlay_same_color",
 			after_create: function(instance)
@@ -9480,6 +9484,34 @@ function start_msg()
 				after_modal_close(instance)
 				clear_modal_image_info()
 				modal_image_open = false
+			}
+		})
+	)
+
+	msg_modal_image_number = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "modal_image_number",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+				modal_image_number_update_val()
+				minpo = true
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+				minpo = false
 			}
 		})
 	)
@@ -10069,7 +10101,8 @@ function start_msg()
 	msg_radio_history.set(template_radio_history())
 	msg_input_history.set(template_input_history())
 	msg_chat_search.set(template_chat_search())
-	msg_image.set(template_image())
+	msg_modal_image.set(template_modal_image())
+	msg_modal_image_number.set(template_modal_image_number())
 	msg_lockscreen.set(template_lockscreen())
 	msg_locked.set(template_locked_menu())
 	msg_global_settings.set(template_global_settings({settings:template_settings({type:"global_settings"})}))
@@ -10145,7 +10178,7 @@ function start_msg()
 
 function info_vars_to_false()
 {
-	minpo = false
+
 }
 
 function info2_vars_to_false()
@@ -12226,7 +12259,7 @@ function show_modal_image(url, title, date)
 
 	update_modal_scrollbar("image")
 
-	msg_image.show(function()
+	msg_modal_image.show(function()
 	{
 		msg_image_history.close()
 		set_modal_image_footer()
@@ -12269,35 +12302,56 @@ function set_modal_image_footer()
 	}
 }
 
-function show_modal_image_number_prompt()
+function setup_modal_image_number()
+{
+	$("#modal_image_number_button").click(function()
+	{
+		modal_image_number_go()
+	})
+
+	$("#modal_image_number_input").on("input", function()
+	{
+		var val = parseInt($("#modal_image_number_input").val())
+
+		if(val < 1)
+		{
+			$("#modal_image_number_input").val(images_changed.length)
+		}
+
+		else if(val === images_changed.length + 1)
+		{
+			$("#modal_image_number_input").val(1)
+		}
+
+		else if(val > images_changed.length)
+		{
+			$("#modal_image_number_input").val(images_changed.length)
+		}
+	})
+}
+
+function modal_image_number_update_val()
 {
 	var index = $("#modal_image").data("image_index")
 
 	if(!index)
 	{
-		index = ""
+		index = images_changed.len
 	}
 
-	var s = ""
-	s += `<input id='modal_image_number_input' type='number' class='setting_input_text_smaller' value='${index}'>`
-	s += "<div class='spacer3'></div>"
-	s += "<div id='modal_image_number_button' class='pointer bigger action inline unselectable'>Go To Image</div>"
+	$("#modal_image_number_input").val(index)
+}
 
-	msg_info.show(s, function()
+function show_modal_image_number()
+{
+	msg_modal_image_number.show(function()
 	{
-		$("#modal_image_number_button").click(function()
-		{
-			modal_image_number_prompt_go()
-		})
-
 		$("#modal_image_number_input").focus()
 		$("#modal_image_number_input").select()
-
-		minpo = true
 	})
 }
 
-function modal_image_number_prompt_go()
+function modal_image_number_go()
 {
 	var val = parseInt($("#modal_image_number_input").val())
 	
@@ -12306,7 +12360,7 @@ function modal_image_number_prompt_go()
 	if(ic)
 	{
 		show_modal_image(ic.url, ic.title, ic.date_raw)
-		msg_info.close()
+		msg_modal_image_number.close()
 	}
 }
 
@@ -15078,12 +15132,11 @@ function setup_modal_image()
 		}
 	}
 
-	$("#Msg-window-image")[0].addEventListener("wheel", f)
-	$("#Msg-overlay-image")[0].addEventListener("wheel", f)
+	$("#Msg-window-modal_image")[0].addEventListener("wheel", f)
 
 	$("#modal_image_container").click(function()
 	{
-		msg_image.close()
+		msg_modal_image.close()
 	})
 
 	$("#modal_image_header_info").click(function()
@@ -15093,7 +15146,7 @@ function setup_modal_image()
 
 	$("#modal_image_footer_info").click(function()
 	{
-		show_modal_image_number_prompt()
+		show_modal_image_number()
 	})
 
 	$("#modal_image_header_prev").click(function(e)
