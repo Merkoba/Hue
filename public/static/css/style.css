@@ -166,6 +166,7 @@ body, html
 	max-width: calc(100% - 4.7em);
 	min-height: 20px;
 	min-width: 20px;
+	position: absolute;
 }
 
 #media_image_error
