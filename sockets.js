@@ -3783,7 +3783,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		}
 
-		if(socket.hue_role === "admin" || socket.hue_role === "op")
+		if(handler.is_admin_or_op(socket))
 		{
 			return true
 		}
