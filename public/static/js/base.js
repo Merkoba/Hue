@@ -59,6 +59,7 @@ var tup = false
 var iup = false
 var gtr = false
 var imp = false
+var minpo = false
 var modal_open = false
 var started = false
 var afk_timer
@@ -4022,6 +4023,12 @@ function activate_key_detection()
 						e.preventDefault()
 					}
 
+					if(e.key === " ")
+					{
+						show_modal_image_number_prompt()
+						e.preventDefault()
+					}
+
 					return
 				}
 			}
@@ -4047,6 +4054,14 @@ function activate_key_detection()
 					{
 						draw_image_redo()
 					}
+				}
+			}
+
+			if(minpo)
+			{
+				if(e.key === "Enter")
+				{
+					modal_image_number_prompt_go()
 				}
 			}
 
@@ -8381,6 +8396,8 @@ function announce_image_change(data, date=false, show=true)
 	ic_data.setter = data.image_setter
 
 	push_images_changed(ic_data)
+
+	set_modal_image_footer()
 }
 
 function push_images_changed(data)
@@ -9461,6 +9478,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
+				clear_modal_image_info()
 				modal_image_open = false
 			}
 		})
@@ -10127,7 +10145,7 @@ function start_msg()
 
 function info_vars_to_false()
 {
-
+	minpo = false
 }
 
 function info2_vars_to_false()
@@ -12211,7 +12229,91 @@ function show_modal_image(url, title, date)
 	msg_image.show(function()
 	{
 		msg_image_history.close()
+		set_modal_image_footer()
 	})
+}
+
+function set_modal_image_footer()
+{
+	if(!modal_image_open)
+	{
+		return false
+	}
+
+	var date = $("#modal_image").data("image_date") 
+	var url = $("#modal_image").attr("src")
+
+	var index = false
+
+	for(var i=0; i<images_changed.length; i++)
+	{
+		var ic = images_changed[i]
+
+		if(ic.date_raw === date && ic.url === url)
+		{
+			index = i + 1
+			break
+		}
+	}
+
+	if(!index)
+	{
+		$("#modal_image_footer_info").text("")
+	}
+
+	else
+	{
+		$("#modal_image").data("image_index", index)
+		var footer_text = `${index} of ${images_changed.length}`
+		$("#modal_image_footer_info").text(footer_text)
+	}
+}
+
+function show_modal_image_number_prompt()
+{
+	var index = $("#modal_image").data("image_index")
+
+	if(!index)
+	{
+		index = ""
+	}
+
+	var s = ""
+	s += `<input id='modal_image_number_input' type='number' class='setting_input_text_smaller' value='${index}'>`
+	s += "<div class='spacer3'></div>"
+	s += "<div id='modal_image_number_button' class='pointer bigger action inline unselectable'>Go To Image</div>"
+
+	msg_info.show(s, function()
+	{
+		$("#modal_image_number_button").click(function()
+		{
+			modal_image_number_prompt_go()
+		})
+
+		$("#modal_image_number_input").focus()
+		$("#modal_image_number_input").select()
+
+		minpo = true
+	})
+}
+
+function modal_image_number_prompt_go()
+{
+	var val = parseInt($("#modal_image_number_input").val())
+	
+	var ic = images_changed[val - 1]
+
+	if(ic)
+	{
+		show_modal_image(ic.url, ic.title, ic.date_raw)
+		msg_info.close()
+	}
+}
+
+function clear_modal_image_info()
+{
+	$("#modal_image_header_info").text("")
+	$("#modal_image_footer_info").text("")
 }
 
 function not_an_op()
@@ -14901,7 +15003,7 @@ function modal_image_prev_click()
 
 	for(var data of images_changed.slice(0).reverse())
 	{
-		if(data.date_raw < date && data.url !== url)
+		if(data.date_raw < date)
 		{
 			show_modal_image(data.url, data.title, data.date_raw)
 			return
@@ -14925,7 +15027,7 @@ function modal_image_next_click(e)
 
 	for(var data of images_changed)
 	{
-		if(data.date_raw > date && data.url !== url)
+		if(data.date_raw > date)
 		{
 			show_modal_image(data.url, data.title, data.date_raw)
 			return
@@ -14987,6 +15089,11 @@ function setup_modal_image()
 	$("#modal_image_header_info").click(function()
 	{
 		show_image_history()
+	})
+
+	$("#modal_image_footer_info").click(function()
+	{
+		show_modal_image_number_prompt()
 	})
 
 	$("#modal_image_header_prev").click(function(e)
