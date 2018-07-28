@@ -1014,7 +1014,23 @@ input[type=text], textarea
 	flex-shrink: 1;
 }
 
-.modal_image_header_button
+#modal_image_footer_info_container
+{
+	flex-grow: 1;
+	flex-shrink: 1;
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;	
+}
+
+#modal_image_footer_info
+{
+	flex-grow: 0;
+	flex-shrink: 1;
+}
+
+.modal_image_footer_button
 {
 	cursor: pointer;
 	z-index: 10;
@@ -1024,12 +1040,12 @@ input[type=text], textarea
 	padding-right: 0.5em;
 }
 
-#modal_image_header_prev
+#modal_image_footer_prev
 {
 	float: left;
 }
 
-#modal_image_header_next
+#modal_image_footer_next
 {
 	float: right;
 }

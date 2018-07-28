@@ -15149,12 +15149,12 @@ function setup_modal_image()
 		show_modal_image_number()
 	})
 
-	$("#modal_image_header_prev").click(function(e)
+	$("#modal_image_footer_prev").click(function(e)
 	{
 		modal_image_prev_click()
 	})
 
-	$("#modal_image_header_next").click(function(e)
+	$("#modal_image_footer_next").click(function(e)
 	{
 		modal_image_next_click()
 	})
