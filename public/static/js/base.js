@@ -15988,8 +15988,18 @@ function add_separator(update_scroll=true)
 		return false
 	}
 
+	if(get_setting("chat_layout") === "normal")
+	{
+		var msgcls = "normal_layout"
+	}
+
+	else if(get_setting("chat_layout") === "compact")
+	{
+		var msgcls = "compact_layout"
+	}
+
 	var s = `
-	<div class='msg separator_container'>
+	<div class='msg separator_container ${msgcls}'>
 		<div class='separator_line'></div>
 		<div class='separator_text'>New Messages</div>
 		<div class='separator_line'></div>
