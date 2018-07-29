@@ -4023,13 +4023,13 @@ function activate_key_detection()
 
 					else if(e.key === "ArrowUp")
 					{
-						show_modal_image_number()
+						modal_image_next_click()
 						e.preventDefault()
 					}
 
 					else if(e.key === "ArrowDown")
 					{
-						show_modal_image_number()
+						modal_image_prev_click()
 						e.preventDefault()
 					}
 

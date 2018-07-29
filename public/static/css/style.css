@@ -1005,13 +1005,20 @@ input[type=text], textarea
 	text-align: center;
 	display: flex;
 	justify-content: center;
-	align-items: center;	
+	align-items: center;
+	height: 100%;
+	position: relative;	
 }
 
 #modal_image_header_info
 {
 	flex-grow: 0;
 	flex-shrink: 1;
+	height: 100%;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 #modal_image_footer_info_container
@@ -1021,13 +1028,20 @@ input[type=text], textarea
 	text-align: center;
 	display: flex;
 	justify-content: center;
-	align-items: center;	
+	align-items: center;
+	height: 100%;
+	position: relative;	
 }
 
 #modal_image_footer_info
 {
 	flex-grow: 0;
 	flex-shrink: 1;
+	height: 100%;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .modal_image_footer_button
