@@ -12677,11 +12677,16 @@ function change_radio_visibility()
 
 		radio_visible = true
 
+		var original_radio_source = loaded_radio_source
+
 		change({type:"radio", force:false, play:false})
 
 		if(loaded_radio_type === "radio")
 		{
-			get_radio_metadata()
+			if(original_radio_source === loaded_radio_source)
+			{
+				get_radio_metadata()
+			}
 		}
 	}
 
