@@ -675,7 +675,7 @@ function setup_icons()
 	{
 		if(can_voice_chat)
 		{
-			$("#header_voice_chat_container").css("display", "initial")
+			$("#header_voice_chat_container").css("display", "inline-flex")
 		}
 
 		else
@@ -2539,7 +2539,7 @@ function start_played_context_menu()
 {
 	$.contextMenu(
 	{
-		selector: ".played_item_inner, #now_playing_controls",
+		selector: ".played_item_inner, #header_now_playing_controls",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
 		items:
@@ -2573,7 +2573,7 @@ function start_volume_context_menu()
 {
 	$.contextMenu(
 	{
-		selector: "#volume_controls",
+		selector: "#header_radio_volume_controls",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
 		className: 'volume_context',
@@ -7373,7 +7373,7 @@ function push_played(info, info2=false)
 
 	$('#now_playing').text(s)
 
-	$('#now_playing_controls').data('q', q)
+	$('#header_now_playing_controls').data('q', q)
 
 	if(played[played.length - 1] !== s)
 	{
@@ -7427,12 +7427,12 @@ function push_played(info, info2=false)
 
 function hide_now_playing()
 {
-	$('#now_playing_area').css('display', 'none')
+	$('#header_now_playing_area').css('display', 'none')
 }
 
 function show_now_playing()
 {
-	$('#now_playing_area').css('display', 'inline-block')
+	$('#header_now_playing_area').css('display', 'inline-flex')
 }
 
 function start_radio()
@@ -7459,8 +7459,8 @@ function start_radio()
 		}
 	}
 
-	$('#playing_icon').css('display', 'inline-block')
-	$('#volume_area').css('display', 'inline-block')
+	$('#header_radio_playing_icon').css('display', 'inline-flex')
+	$('#header_radio_volume_area').css('display', 'inline-flex')
 	$('#toggle_now_playing_text').html('Stop Radio')
 
 	radio_started = true
@@ -7485,8 +7485,8 @@ function stop_radio()
 		soundcloud_player.pause()
 	}
 
-	$('#playing_icon').css('display', 'none')
-	$('#volume_area').css('display', 'none')
+	$('#header_radio_playing_icon').css('display', 'none')
+	$('#header_radio_volume_area').css('display', 'none')
 	$('#toggle_now_playing_text').html('Start Radio')
 
 	radio_started = false
@@ -10045,6 +10045,7 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "draw_image",
+			close_on_overlay_click: false,
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -12667,7 +12668,7 @@ function change_radio_visibility()
 {
 	if(room_radio_mode !== "disabled" && room_state.radio_enabled)
 	{
-		$("#radio").css("display", "initial")
+		$("#header_radio").css("display", "inline-flex")
 
 		$("#footer_toggle_radio_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-on")
@@ -12688,12 +12689,12 @@ function change_radio_visibility()
 	{
 		stop_radio()
 
-		$("#radio").css("display", "none")
+		$("#header_radio").css("display", "none")
 
 		$("#footer_toggle_radio_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-off")
 
-		$("#header_topic").css("display", "initial")
+		$("#header_topic").css("display", "inline-flex")
 
 		radio_visible = false
 	}
@@ -13566,14 +13567,14 @@ function show_typing(data)
 
 function show_pencil()
 {
-	$("#footer_user_menu_icon").addClass("fa-pencil")
-	$("#footer_user_menu_icon").removeClass("fa-user-circle")
+	$("#footer_user_menu").addClass("fa-pencil")
+	$("#footer_user_menu").removeClass("fa-user-circle")
 }
 
 function hide_pencil()
 {
-	$("#footer_user_menu_icon").removeClass("fa-pencil")
-	$("#footer_user_menu_icon").addClass("fa-user-circle")
+	$("#footer_user_menu").removeClass("fa-pencil")
+	$("#footer_user_menu").addClass("fa-user-circle")
 }
 
 function add_aura(uname)
@@ -16528,7 +16529,7 @@ function show_reaction(data, date=false)
 
 function setup_reactions_box()
 {
-	$("#footer_user_menu_icon").hover(
+	$("#footer_user_menu_container").hover(
 
 	function()
 	{

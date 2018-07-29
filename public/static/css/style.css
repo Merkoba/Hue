@@ -74,6 +74,26 @@ body, html
 	color: white;
 }
 
+#header div
+{
+	position: relative;
+	height: 100%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+div#header_radio_volume_area
+{
+	display: none;
+}
+
+div#header_radio_playing_icon
+{
+	display: none;
+	margin-right: 0.8em;
+}
+
 #header_items
 {
 	width: calc(100% - 2em);
@@ -87,15 +107,10 @@ body, html
 	display: inline-block;
 }
 
-.header_item
+.header_separator
 {
-	cursor: pointer;
-	display: inline-block;
-}
-
-#playing_icon
-{
-	display: none;
+	margin-left: 1em;
+	margin-right: 1em;
 }
 
 #chat_main
@@ -202,6 +217,15 @@ body, html
 	justify-content: flex-start !important;
 }
 
+#footer div
+{
+	position: relative;
+	height: 100%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
 #footer_items
 {
 	display: flex;
@@ -219,7 +243,6 @@ body, html
 	background-color: transparent;
 	color: inherit;
 	font-size: 0.8em;
-	cursor: pointer;	
 }
 
 .footer_icon2
@@ -229,8 +252,7 @@ body, html
 	flex-shrink: 1;
 	background-color: transparent;
 	color: inherit;
-	font-size: 0.8em;
-	cursor: pointer;	
+	font-size: 0.8em;	
 }
 
 .footer_text
@@ -247,6 +269,11 @@ body, html
 #footer_media_menu
 {
 	margin-right: 1.2rem !important;
+}
+
+.footer_media_control
+{
+	margin-right: 0.8em;
 }
 
 #input
@@ -484,11 +511,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 	user-select: none;
 }
 
-#volume_area
-{
-	display: none;
-}
-
 .played_item
 {
 	padding-top: 1em;
@@ -603,11 +625,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 	display: none;
 }
 
-#now_playing_area
-{
-	display: none;
-}
-
 .icon
 {
 	position: relative;
@@ -641,14 +658,14 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-right: 0.1em;
 }
 
-#header_icon_plus
+#header_radio_volume_icon_plus
 {
-	padding-left: 0.3em;
+	margin-left: 0.8em;
 }
 
-#header_icon_minus
+#header_radio_volume_icon_minus
 {
-	padding-right: 0.3em;
+	margin-right: 0.8em;
 }
 
 .ps__thumb-y
@@ -1292,7 +1309,7 @@ input[type=text], textarea
 	} 
 }
 
-#footer_user_menu_icon
+#footer_user_menu
 {
 	width: 10px;
 	margin-left: 1.2rem;

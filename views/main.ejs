@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?version=15"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2100"></script>
+		<script src="/static/js/base.js?version=2101"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=432"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=433"/>
 
 		<script>
 
@@ -80,51 +80,54 @@
 
 						<div id='header_items_inner'>
 
-							<i id='main_menu' class='header_item icon fa fa-th-large nicetitle action' onclick='show_main_menu()' title="Main Menu"></i>
-							<span class='hspacer1'></span>|<span class='hspacer1'></span>
-							<span class='header_item action' id='usercount' onclick='show_userlist()'></span>
+							<div id='main_menu' class='pointer nicetitle action' onclick='show_main_menu()' title="Main Menu">
+								<div class='action pointer'><i class='icon fa fa-th-large'></i></div>
+							</div>
 
-							<span id="header_voice_chat_container" class="pointer action nicetitle" title="Join/Leave Voice Chat" onclick="toggle_join_voice_chat()">
-								<span class='hspacer1'></span>|<span class='hspacer1'></span>
-								<span>Voice Chat (<span id='voice_chat_num_users'></span>)</span>
-							</span>
+							<div class='header_separator'>|</div>
+							<div class='pointer action' id='usercount' onclick='show_userlist()'></div>
 
-							<span id='radio'>
+							<div id="header_voice_chat_container" class="pointer action nicetitle" title="Join/Leave Voice Chat" onclick="toggle_join_voice_chat()">
+								<div class='header_separator'>|</div>
+								<div>Voice Chat (<div id='voice_chat_num_users'></div>)</div>
+							</div>
+
+							<div id='header_radio'>
 								
-								<span class='hspacer1'></span>|<span class='hspacer1'></span>
+								<div class='header_separator'>|</div>
 
-								<span class='header_item action' id='toggle_radio_state' onclick='toggle_radio_state()'>
-									<i class='icon fa fa-volume-up' id='playing_icon'></i>
-									<span id='toggle_now_playing_text'>Start Radio</span>
-								</span>
+								<div class='pointer action' id='toggle_radio_state' onclick='toggle_radio_state()'>
+									<div class='action pointer' id='header_radio_playing_icon'><i class='icon fa fa-volume-up'></i></div>
+									<div id='toggle_now_playing_text'>Start Radio</div>
+								</div>
 
-								<span id='volume_area'>
-									<span class='hspacer1'></span>|<span class='hspacer1'></span>
-									<span id='volume_controls'>
-										<i id='header_icon_minus' class='header_item icon fa fa-minus action' onclick='volume_decrease()'></i>
-										<span class='header_item action' onclick='volume_decrease()'>Volume:</span>
-										<span class='header_item action' id='volume' onclick='volume_increase()'>100%</span>
-										<i id='header_icon_plus' class='header_item icon fa fa-plus action' onclick='volume_increase()'></i>
-									</span>
-								</span>
+								<div id='header_radio_volume_area'>
+									<div class='header_separator'>|</div>
+									<div id='header_radio_volume_controls'>
+										<div id='header_radio_volume_icon_minus' class='action pointer' onclick='volume_decrease()'><i class='pointer icon fa fa-minus'></i></div>
+										<div class='pointer action' onclick='volume_decrease()'>Volume:&nbsp;</div>
+										<div class='pointer action' id='volume' onclick='volume_increase()'>100%</div>
+										<div id='header_radio_volume_icon_plus' class='action pointer' onclick='volume_increase()'><i class='pointer icon fa fa-plus'></i></div>
+									</div>
+								</div>
 
-								<span id='now_playing_area'>
-									<span class='hspacer1'></span>|<span class='hspacer1'></span> 
-									<span id='now_playing_controls' class='action' onclick='show_played()'>
-										<span class='header_item'>Now Playing:</span>
-										<span class='header_item' id='now_playing'>Loading</span>
-									</span>
-								</span>
+								<div id='header_now_playing_area'>
+									<div class='header_separator'>|</div> 
+									<div id='header_now_playing_controls' class='action' onclick='show_played()'>
+										<div class='pointer'>Now Playing:&nbsp;</div>
+										<div class='pointer' id='now_playing'>Loading</div>
+									</div>
+								</div>
 
-							</span>
+							</div>
 
-							<span id='header_topic'>
-								<span class='hspacer1'></span>|<span class='hspacer1'></span>
-								<span id='header_topic_inner' class='action' onclick='show_status()'>
-									<span class='header_item'>Topic:</span>
-									<span class='header_item' id='header_topic_text'></span>
-								</span>
-							</span>
+							<div id='header_topic'>
+								<div class='header_separator'>|</div>
+								<div id='header_topic_inner' class='action' onclick='show_status()'>
+									<div class='header_item'>Topic:&nbsp;</div>
+									<div class='header_item' id='header_topic_text'></div>
+								</div>
+							</div>
 
 						</div>
 
@@ -249,41 +252,72 @@
 				<div id='footer' class='bg2 panel'>
 					<div id='footer_items'>
 
-						<span id='footer_user_menu_icon' class='fa fa-user-circle footer_icon action' onclick="show_user_menu()"></span>
+						<div id='footer_user_menu_container' class='pointer action' onclick="show_user_menu()">
+							<i id='footer_user_menu' class='fa fa-user-circle footer_icon'></i>
+						</div>
 
 						<textarea id='input' size="1" rows="1"></textarea>
 
-						<span class='unselectable'>
+						<div class='unselectable'>
 
-							<span id='footer_images_controls'>
-								<span class='footer_text_small'>Images</span>
-								<i id='footer_images_icon' class='fa fa-camera footer_icon2 pointer nicetitle action' onclick="show_image_picker()" title="Change the Image"></i>
-								<i class='fa fa-toggle-on footer_icon2 nicetitle action' id='footer_toggle_images_icon' onclick='toggle_images()' title='Show/Hide Images. Hidden means it will not be displayed or active'></i>
-								<i class='fa fa-unlock-alt footer_icon nicetitle action' id='footer_lock_images_icon' onclick='toggle_lock_images()' title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'></i>
-	 
-								<span class='hspacer3'></span>
-							</span>
+							<div id='footer_images_controls' class='footer_media_control'>
+
+								<div class='footer_text_small'>Images</div>
+
+								<div class='pointer action nicetitle' onclick='show_image_picker()' title="Change the Image">
+									<i  id='footer_images_icon' class='fa fa-camera footer_icon2'></i>
+								</div>
+
+								<div class='pointer action nicetitle' onclick='toggle_images()' title='Show/Hide Images. Hidden means it will not be displayed or active'>
+									<i id='footer_toggle_images_icon' class='fa fa-toggle-on footer_icon2'></i>
+								</div>
+								
+								<div class='pointer action nicetitle' onclick='toggle_lock_images()' title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'>
+									<i id='footer_lock_images_icon' class='fa fa-unlock-alt footer_icon'></i>
+								</div>
+							</div>
  	
-							<span id='footer_tv_controls'>
-								<span class='footer_text_small'>TV</span>
-								<i id='footer_tv_icon' class='fa fa-television footer_icon2 pointer nicetitle action' onclick="show_tv_picker()" title="Change the TV"></i>
-								<i class='fa fa-toggle-on footer_icon2 nicetitle action' id='footer_toggle_tv_icon' onclick='toggle_tv()' title='Show/Hide TV. Hidden means it will not be displayed or active'></i>
-								<i class='fa fa-unlock-alt footer_icon nicetitle action' id='footer_lock_tv_icon' onclick='toggle_lock_tv()' title='Lock/Unlock TV. Locked means it will stay the same even if media is changed by a user'></i>
-	 
-								<span class='hspacer3'></span>
- 							</span>
+							<div id='footer_tv_controls' class='footer_media_control'>
 
-							<span id='footer_radio_controls'>
-								<span class='footer_text_small'>Radio</span>
-								<i id='footer_radio_icon' class='fa fa-volume-up footer_icon2 pointer nicetitle action' onclick="show_radio_picker()" title="Change the Radio"></i>
-								<i class='fa fa-toggle-on footer_icon2 nicetitle action' id='footer_toggle_radio_icon' onclick='toggle_radio()' title='Show/Hide Radio. Hidden means it will not be displayed or active'></i>
-								<i class='fa fa-unlock-alt footer_icon nicetitle action' id='footer_lock_radio_icon' onclick='toggle_lock_radio()' title='Lock/Unlock Radio. Locked means it will stay the same even if media is changed by a user'></i>
-	 
-								<span class='hspacer3'></span>
-							</span>
+								<div class='footer_text_small'>TV</div>
 
-							<i id='footer_media_menu' class='fa fa-bars footer_icon nicetitle action' id='footer_lock_images_icon' onclick='show_media_menu()' title='Media Menu'></i>
-						</span>
+								<div class='pointer action nicetitle' onclick='show_tv_picker()' title="Change the TV">
+									<i id='footer_tv_icon' class='fa fa-television footer_icon2'></i>
+								</div>
+
+								<div class='pointer action nicetitle' onclick='toggle_tv()' title="Show/Hide TV. Hidden means it will not be displayed or active">
+									<i class='fa fa-toggle-on footer_icon2' id='footer_toggle_tv_icon'></i>
+								</div>
+
+								<div class='pointer action nicetitle' onclick='toggle_lock_tv()' title="Lock/Unlock TV. Locked means it will stay the same even if media is changed by a user">
+									<i class='fa fa-unlock-alt footer_icon' id='footer_lock_tv_icon'></i>
+								</div>
+
+ 							</div>
+
+							<div id='footer_radio_controls' class='footer_media_control'>
+
+								<div class='footer_text_small'>Radio</div>
+
+								<div class='pointer action nicetitle' onclick='show_radio_picker()' title="Change the Radio">
+									<i id='footer_radio_icon' class='fa fa-volume-up footer_icon2'></i>
+								</div>
+
+								<div class='pointer action nicetitle' onclick='toggle_radio()' title="Show/Hide Radio. Hidden means it will not be displayed or active">
+									<i class='fa fa-toggle-on footer_icon2' id='footer_toggle_radio_icon'></i>
+								</div>
+
+
+								<div class='pointer action nicetitle' onclick='toggle_lock_radio()' title="Lock/Unlock Radio. Locked means it will stay the same even if media is changed by a user">
+									<i class='fa fa-unlock-alt footer_icon' id='footer_lock_radio_icon'></i>
+								</div>
+
+							</div>
+
+							<div class='nicetitle pointer action' title='Media Menu' onclick='show_media_menu()'>
+								<i id='footer_media_menu' class='fa fa-bars footer_icon' id='footer_lock_images_icon'></i>
+							</div>
+						</div>
 
 					</div>
 				</div>
