@@ -618,12 +618,12 @@ function setup_icons()
 
 	else
 	{
-		$("#footer_images_controls").css("display", "initial")
+		$("#footer_images_controls").css("display", "flex")
 	}
 
 	if(can_images)
 	{
-		$("#footer_images_icon").css("display", "initial")
+		$("#footer_images_icon").css("display", "flex")
 	}
 
 	else
@@ -638,12 +638,12 @@ function setup_icons()
 
 	else
 	{
-		$("#footer_tv_controls").css("display", "initial")
+		$("#footer_tv_controls").css("display", "flex")
 	}
 
 	if(can_tv)
 	{
-		$("#footer_tv_icon").css("display", "initial")
+		$("#footer_tv_icon").css("display", "flex")
 	}
 
 	else
@@ -658,12 +658,12 @@ function setup_icons()
 
 	else
 	{
-		$("#footer_radio_controls").css("display", "initial")
+		$("#footer_radio_controls").css("display", "flex")
 	}
 
 	if(can_radio)
 	{
-		$("#footer_radio_icon").css("display", "initial")
+		$("#footer_radio_icon").css("display", "flex")
 	}
 
 	else
@@ -675,7 +675,7 @@ function setup_icons()
 	{
 		if(can_voice_chat)
 		{
-			$("#header_voice_chat_container").css("display", "inline-flex")
+			$("#header_voice_chat_container").css("display", "flex")
 		}
 
 		else
@@ -7432,7 +7432,7 @@ function hide_now_playing()
 
 function show_now_playing()
 {
-	$('#header_now_playing_area').css('display', 'inline-flex')
+	$('#header_now_playing_area').css('display', 'flex')
 }
 
 function start_radio()
@@ -7459,8 +7459,8 @@ function start_radio()
 		}
 	}
 
-	$('#header_radio_playing_icon').css('display', 'inline-flex')
-	$('#header_radio_volume_area').css('display', 'inline-flex')
+	$('#header_radio_playing_icon').css('display', 'flex')
+	$('#header_radio_volume_area').css('display', 'flex')
 	$('#toggle_now_playing_text').html('Stop Radio')
 
 	radio_started = true
@@ -12668,7 +12668,7 @@ function change_radio_visibility()
 {
 	if(room_radio_mode !== "disabled" && room_state.radio_enabled)
 	{
-		$("#header_radio").css("display", "inline-flex")
+		$("#header_radio").css("display", "flex")
 
 		$("#footer_toggle_radio_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-on")
@@ -12694,7 +12694,7 @@ function change_radio_visibility()
 		$("#footer_toggle_radio_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-off")
 
-		$("#header_topic").css("display", "inline-flex")
+		$("#header_topic").css("display", "flex")
 
 		radio_visible = false
 	}

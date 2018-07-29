@@ -78,7 +78,8 @@ body, html
 {
 	position: relative;
 	height: 100%;
-	display: inline-flex;
+	display: flex;
+	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 }
@@ -90,7 +91,8 @@ div#header_items
 
 div#header_items_inner
 {
-	display: inline-block;
+	display: inline-flex;
+	flex-direction: row;
 }
 
 div#header_radio_volume_area
@@ -226,7 +228,8 @@ div#header_radio_playing_icon
 {
 	position: relative;
 	height: 100%;
-	display: inline-flex;
+	display: flex;
+	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 }
@@ -252,7 +255,7 @@ div#header_radio_playing_icon
 
 .footer_icon2
 {
-	margin-right: 0.3em;
+	margin-right: 0.8em;
 	cursor: pointer;
 	flex-shrink: 1;
 	background-color: transparent;
@@ -262,12 +265,12 @@ div#header_radio_playing_icon
 
 .footer_text
 {
-	margin-right: 0.3em;
+	margin-right: 0.8em;
 }
 
 .footer_text_small
 {
-	margin-right: 0.3em;
+	margin-right: 0.8em;
 	font-size: 0.8em;
 }
 

@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?version=15"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2101"></script>
+		<script src="/static/js/base.js?version=2102"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=435"/>
 
@@ -75,49 +75,64 @@
 				</div>
 
 				<div id='header' class='unselectable bg2 panel'>
+
 					<div id='header_items'>
+
 						<div id='header_items_inner'>
+
 							<div id='main_menu' class='pointer nicetitle action' onclick='show_main_menu()' title="Main Menu">
 								<div class='action pointer'><i class='icon fa fa-th-large'></i></div>
-							</div><!-- 
-						 --><div class='header_separator'>|</div><!--
-						 --><div class='pointer action' id='usercount' onclick='show_userlist()'></div><!--
-						 --><div id="header_voice_chat_container" class="pointer action nicetitle" title="Join/Leave Voice Chat" onclick="toggle_join_voice_chat()"><!-- 
-							 --><div class='header_separator'>|</div><!--
-							 --><div>Voice Chat (<div id='voice_chat_num_users'></div>)</div>
-							</div><!-- 
-						 --><div id='header_radio'><!-- 
-							 --><div class='header_separator'>|</div><!--
-							 --><div class='pointer action' id='toggle_radio_state' onclick='toggle_radio_state()'>
+							</div>
+
+							<div class='header_separator'>|</div>
+							<div class='pointer action' id='usercount' onclick='show_userlist()'></div>
+
+							<div id="header_voice_chat_container" class="pointer action nicetitle" title="Join/Leave Voice Chat" onclick="toggle_join_voice_chat()">
+								<div class='header_separator'>|</div>
+								<div>Voice Chat (<div id='voice_chat_num_users'></div>)</div>
+							</div>
+
+							<div id='header_radio'>
+								
+								<div class='header_separator'>|</div>
+
+								<div class='pointer action' id='toggle_radio_state' onclick='toggle_radio_state()'>
 									<div class='action pointer' id='header_radio_playing_icon'><i class='icon fa fa-volume-up'></i></div>
 									<div id='toggle_now_playing_text'>Start Radio</div>
-								</div><!-- 
-							 --><div id='header_radio_volume_area'><!-- 
-								 --><div class='header_separator'>|</div><!--
-								 --><div id='header_radio_volume_controls'>
+								</div>
+
+								<div id='header_radio_volume_area'>
+									<div class='header_separator'>|</div>
+									<div id='header_radio_volume_controls'>
 										<div id='header_radio_volume_icon_minus' class='action pointer' onclick='volume_decrease()'><i class='pointer icon fa fa-minus'></i></div>
 										<div class='pointer action' onclick='volume_decrease()'>Volume:&nbsp;</div>
 										<div class='pointer action' id='volume' onclick='volume_increase()'>100%</div>
 										<div id='header_radio_volume_icon_plus' class='action pointer' onclick='volume_increase()'><i class='pointer icon fa fa-plus'></i></div>
 									</div>
-								</div><!-- 
-							 --><div id='header_now_playing_area'><!-- 
-								 --><div class='header_separator'>|</div><!--
-								 --><div id='header_now_playing_controls' class='action' onclick='show_played()'>
+								</div>
+
+								<div id='header_now_playing_area'>
+									<div class='header_separator'>|</div> 
+									<div id='header_now_playing_controls' class='action' onclick='show_played()'>
 										<div class='pointer'>Now Playing:&nbsp;</div>
 										<div class='pointer' id='now_playing'>Loading</div>
 									</div>
 								</div>
-							</div><!-- 
-						 --><div id='header_topic'><!-- 
-							 --><div class='header_separator'>|</div><!--
-							 --><div id='header_topic_inner' class='action' onclick='show_status()'>
+
+							</div>
+
+							<div id='header_topic'>
+								<div class='header_separator'>|</div>
+								<div id='header_topic_inner' class='action' onclick='show_status()'>
 									<div class='header_item'>Topic:&nbsp;</div>
 									<div class='header_item' id='header_topic_text'></div>
 								</div>
 							</div>
+
 						</div>
+
 					</div>
+
 				</div>
 
 				<div class='unselectable' id='reactions_box_container'>
