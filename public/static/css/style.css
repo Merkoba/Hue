@@ -83,6 +83,16 @@ body, html
 	justify-content: center;
 }
 
+div#header_items
+{
+	display: initial;
+}
+
+div#header_items_inner
+{
+	display: inline-block;
+}
+
 div#header_radio_volume_area
 {
 	display: none;
@@ -100,11 +110,6 @@ div#header_radio_playing_icon
 	white-space: nowrap;
 	text-align: center;
 	overflow: hidden;
-}
-
-#header_items_inner
-{
-	display: inline-block;
 }
 
 .header_separator
