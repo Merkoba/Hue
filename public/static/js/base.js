@@ -4021,6 +4021,18 @@ function activate_key_detection()
 						e.preventDefault()
 					}
 
+					else if(e.key === "ArrowUp")
+					{
+						show_modal_image_number()
+						e.preventDefault()
+					}
+
+					else if(e.key === "ArrowDown")
+					{
+						show_modal_image_number()
+						e.preventDefault()
+					}
+
 					if(e.key === "Enter")
 					{
 						show_image_history()
@@ -9483,6 +9495,7 @@ function start_msg()
 			{
 				after_modal_close(instance)
 				clear_modal_image_info()
+				msg_modal_image_number.close()
 				modal_image_open = false
 			}
 		})

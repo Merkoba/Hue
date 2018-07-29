@@ -1042,12 +1042,18 @@ input[type=text], textarea
 
 #modal_image_footer_prev
 {
-	float: left;
+	display: flex;
+	align-items: center;
+	height: 100%;
+	position: relative;
 }
 
 #modal_image_footer_next
 {
-	float: right;
+	display: flex;
+	align-items: center;
+	height: 100%;
+	position: relative;	
 }
 
 #modal_image_container
