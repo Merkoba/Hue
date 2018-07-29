@@ -44,7 +44,6 @@ var radio_date = ''
 var loaded_radio_source = ""
 var loaded_radio_type = "radio"
 var loaded_radio_metadata = ""
-var get_radio_metadata_request
 var tv_type = ''
 var tv_source = ''
 var tv_title = ''
@@ -244,6 +243,7 @@ var highlight_same_posts_delay = 800
 var loaded_chat_layout
 var credits_audio
 var radio_metadata_fail_timeout
+var radio_get_metadata_ongoing = false
 var radio_get_metadata = false
 var init_data
 var log_messages_processed = false
@@ -7222,17 +7222,21 @@ function get_radio_metadata()
 		return false
 	}
 
+	if(radio_get_metadata_ongoing)
+	{
+		return false
+	}
+
 	try
 	{
-		if(get_radio_metadata_request)
-		{
-			get_radio_metadata_request.abort()
-		}
+		radio_get_metadata_ongoing = true
 
-		get_radio_metadata_request = $.get(loaded_radio_metadata,{},
+		$.get(loaded_radio_metadata, {},
 
 		function(data)
 		{
+			radio_get_metadata_ongoing = false
+
 			if(!get_radio_metadata_enabled())
 			{
 				return false
@@ -7286,6 +7290,8 @@ function get_radio_metadata()
 
 		}).fail(function(err, status)
 		{
+			radio_get_metadata_ongoing = false
+
 			if(err.status === 404)
 			{
 				on_radio_get_metadata_error(true, false)
@@ -7300,6 +7306,7 @@ function get_radio_metadata()
 
 	catch(err)
 	{
+		radio_get_metadata_ongoing = false
 		on_radio_get_metadata_error()
 	}
 }
