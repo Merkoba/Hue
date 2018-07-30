@@ -3004,7 +3004,7 @@ function setup_main_menu()
 
 	$("#admin_background_tile_dimensions").blur(function()
 	{
-		var what = $("#admin_background_tile_dimensions").val()
+		var what = utilz.clean_string2($(this).val())
 
 		if(what === "")
 		{
