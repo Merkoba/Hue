@@ -3006,6 +3006,12 @@ function setup_main_menu()
 	{
 		var what = $("#admin_background_tile_dimensions").val()
 
+		if(what === "")
+		{
+			$("#admin_background_tile_dimensions").val(background_tile_dimensions)
+			return false
+		}
+
 		change_background_tile_dimensions(what)
 	})
 
