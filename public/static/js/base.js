@@ -8449,6 +8449,16 @@ function push_images_changed(data)
 		}
 	}
 
+	for(var i=0; i<images_changed.length; i++)
+	{
+		var img = images_changed[i]
+
+		if(img.url === data.url)
+		{
+			images_changed.splice(i, 1)
+		}
+	}
+
 	images_changed.push(data)
 
 	if(images_changed.length > media_changed_crop_limit)
@@ -8740,6 +8750,16 @@ function push_radio_changed(data)
 		}
 	}
 
+	for(var i=0; i<radio_changed.length; i++)
+	{
+		var radio = radio_changed[i]
+
+		if(radio.url === data.url)
+		{
+			radio_changed.splice(i, 1)
+		}
+	}
+
 	radio_changed.push(data)
 
 	if(radio_changed.length > media_changed_crop_limit)
@@ -8963,6 +8983,16 @@ function push_tv_changed(data)
 		if(tv.date_raw === data.date_raw)
 		{
 			return false
+		}
+	}
+
+	for(var i=0; i<tv_changed.length; i++)
+	{
+		var tv = tv_changed[i]
+
+		if(tv.url === data.url)
+		{
+			tv_changed.splice(i, 1)
 		}
 	}
 
