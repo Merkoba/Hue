@@ -67,7 +67,7 @@ var alert_mode = 0
 var commands = []
 var commands_sorted = {}
 var chat_scrollbar
-var template_menu
+var template_main_menu
 var template_create_room
 var template_userlist
 var template_roomlist
@@ -363,7 +363,7 @@ function remove_local_storage(ls_name)
 
 function setup_templates()
 {
-	template_menu = Handlebars.compile($('#template_menu').html())
+	template_main_menu = Handlebars.compile($('#template_main_menu').html())
 	template_create_room = Handlebars.compile($('#template_create_room').html())
 	template_open_room = Handlebars.compile($('#template_open_room').html())
 	template_userlist = Handlebars.compile($('#template_userlist').html())
@@ -2928,7 +2928,7 @@ function update_roomlist(type, roomlist)
 
 function setup_main_menu()
 {
-	setup_togglers("menu")
+	setup_togglers("main_menu")
 
 	$(".admin_voice_permissions_checkbox").each(function()
 	{
@@ -3347,7 +3347,7 @@ function config_main_menu()
 		$("#admin_menu").css("display", "none")
 	}
 
-	update_modal_scrollbar("menu")
+	update_modal_scrollbar("main_menu")
 }
 
 function show_create_room()
@@ -5508,7 +5508,7 @@ function start_image_events()
 
 	$("#admin_background_image")[0].addEventListener('load', function()
 	{
-		update_modal_scrollbar("menu")
+		update_modal_scrollbar("main_menu")
 	})
 }
 
@@ -10110,7 +10110,7 @@ function start_msg()
 		})
 	)
 
-	msg_main_menu.set(template_menu())
+	msg_main_menu.set(template_main_menu())
 	msg_user_menu.set(template_user_menu())
 	msg_userlist.set(template_userlist())
 	msg_public_roomlist.set(template_roomlist({type:"public_roomlist"}))
