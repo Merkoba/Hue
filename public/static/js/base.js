@@ -9344,7 +9344,7 @@ function start_msg()
 			after_close: function(instance)
 			{
 				after_modal_close(instance)
-				close_togglers("menu")
+				close_togglers("main_menu")
 			}
 		})
 	)
