@@ -630,6 +630,9 @@ If you want to remove it to start fresh:
 "imgur_client_id"
 >Imgur client id.
 
+"twitch_client_id"
+>Twitch client id.
+
 # Additional Notes
 
 To learn how to host a working internet radio refer to http://icecast.org/

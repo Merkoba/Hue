@@ -1550,12 +1550,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					if(id[0] === "video")
 					{
-
-						fetch(`https://api.twitch.tv/helix/videos?id=203574636`,
+						fetch(`https://api.twitch.tv/helix/videos?id=${id[1]}`,
 						{
 							headers:
 							{
-								"Client-ID": sconfig.twitch_api_key
+								"Client-ID": sconfig.twitch_client_id
 							}
 						})
 
