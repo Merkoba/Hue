@@ -12344,10 +12344,18 @@ function set_modal_image_footer()
 	}
 
 	var footer_text = `${index} of ${images_changed.length}`
-
+	
 	$("#modal_image_footer_info").text(footer_text)
 	
-	$("#modal_image_number_input").val(index)
+	if(index > 0)
+	{
+		$("#modal_image_number_input").val(index)
+	}
+
+	else
+	{
+		$("#modal_image_number_input").val(images_changed.length)
+	}
 }
 
 function setup_modal_image_number()
