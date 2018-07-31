@@ -3991,7 +3991,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				var socc = io.sockets.connected[id]
 
-				sockets.push(socc)
+				if(socc)
+				{
+					sockets.push(socc)
+				}
 			}
 
 			return sockets

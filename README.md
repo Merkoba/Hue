@@ -89,10 +89,10 @@ If you want to remove it to start fresh:
 >The public location of the default image or when "/image default" is issued. This image appears on new rooms or when an uploaded image fails to load.
 
 "default_tv_source"
->Default source for the tv for new rooms or when "/tv default" is issued. This is a video url, file, youtube, or twitch.
+>Default source for the tv for new rooms or when "/tv default" is issued.
 
 "default_tv_type"
->The type of the default_tv_source, either "url", "youtube", or "twitch".
+>The type of the default_tv_source, either "url", "youtube", "twitch", "soundcloud" or "iframe".
 
 "default_radio_source"
 >The default radio url used for new rooms or when "/radio default" is issued.
@@ -101,7 +101,7 @@ If you want to remove it to start fresh:
 >The title for the default radio. This is what is shown in "Now Playing" on top. If radio source is of type "radio", the title will dynamically change to current playing song if the Icecast radio source is configured correctly.
 
 "default_radio_type"
->The type of the default_radio_source, either "radio" or "youtube".
+>The type of the default_radio_source, either "radio", "youtube" or "soundcloud".
 
 "default_profile_image_url"
 >The location of the default profile image.
