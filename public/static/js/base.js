@@ -12146,7 +12146,6 @@ function show_log_messages()
 				}
 			}
 		}
-
 	}
 
 	log_messages_processed = true
