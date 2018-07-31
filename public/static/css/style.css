@@ -1355,7 +1355,7 @@ input[type=text], textarea
 
 .setting_textarea
 {
-	width: 100%;
+	width: calc(100% - 0.5rem);
 	resize: none;
 	font-size: 1em;
 	text-align: center;
@@ -1371,7 +1371,7 @@ input[type=text], textarea
 
 .setting_input_text
 {
-	width: 100%;
+	width: calc(100% - 0.5rem);
 	font-size: 1em;
 	text-align: center;
 }
