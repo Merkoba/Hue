@@ -181,6 +181,7 @@ var images_changed = []
 var tv_changed = [] 
 var radio_changed = []
 var modal_image_open = false
+var current_modal_image_index
 var current_image_source = ""
 var current_image_title = ""
 var current_image_date_raw = 0
@@ -8426,7 +8427,7 @@ function announce_image_change(data, date=false, show=true)
 
 	push_images_changed(ic_data)
 
-	set_modal_image_footer()
+	set_modal_image_number()
 }
 
 function push_images_changed(data)
@@ -12317,11 +12318,11 @@ function show_modal_image(url, title, date)
 	msg_modal_image.show(function()
 	{
 		msg_image_history.close()
-		set_modal_image_footer()
+		set_modal_image_number()
 	})
 }
 
-function set_modal_image_footer()
+function set_modal_image_number()
 {
 	if(!modal_image_open)
 	{
@@ -12330,7 +12331,7 @@ function set_modal_image_footer()
 
 	var url = $("#modal_image").attr("src")
 
-	var index = 0
+	var number = 0
 
 	for(var i=0; i<images_changed.length; i++)
 	{
@@ -12338,23 +12339,24 @@ function set_modal_image_footer()
 
 		if(ic.url === url)
 		{
-			index = i + 1
+			number = i + 1
 			break
 		}
 	}
 
-	var footer_text = `${index} of ${images_changed.length}`
-	
+	var footer_text = `${number} of ${images_changed.length}`
 	$("#modal_image_footer_info").text(footer_text)
 	
-	if(index > 0)
+	if(number > 0)
 	{
-		$("#modal_image_number_input").val(index)
+		$("#modal_image_number_input").val(number)
+		current_modal_image_index = number - 1
 	}
 
 	else
 	{
-		$("#modal_image_number_input").val(images_changed.length)
+		$("#modal_image_number_input").val(1)
+		current_modal_image_index = 0
 	}
 }
 
@@ -15096,50 +15098,40 @@ function electron_signal(func, data={})
 
 function modal_image_prev_click()
 {
-	if(images_changed.length < 2)
+	var index = current_modal_image_index - 1
+
+	if(index < 0)
 	{
-		return false
+		index = images_changed.length - 1
 	}
 
-	var date = $("#modal_image").data("image_date")
 	var url = $("#modal_image").attr("src")
 
-	for(var data of images_changed.slice(0).reverse())
+	var prev = images_changed[index]
+
+	if(prev.url !== url)
 	{
-		if(data.date_raw < date)
-		{
-			show_modal_image(data.url, data.title, data.date_raw)
-			return
-		}
+		show_modal_image(prev.url, prev.title, prev.date_raw)
 	}
-
-	var last = images_changed[images_changed.length - 1]
-
-	show_modal_image(last.url, last.title, last.date_raw)
 }
 
 function modal_image_next_click(e)
 {
-	if(images_changed.length < 2)
+	var index = current_modal_image_index + 1
+
+	if(index > images_changed.length - 1)
 	{
-		return false
+		index = 0
 	}
 
-	var date = $("#modal_image").data("image_date")
 	var url = $("#modal_image").attr("src")
 
-	for(var data of images_changed)
+	var next = images_changed[index]
+
+	if(next.url !== url)
 	{
-		if(data.date_raw > date)
-		{
-			show_modal_image(data.url, data.title, data.date_raw)
-			return
-		}
+		show_modal_image(next.url, next.title, next.date_raw)
 	}
-
-	var first = images_changed[0]
-
-	show_modal_image(first.url, first.title, first.date_raw)
 }
 
 function setup_modal_image()
