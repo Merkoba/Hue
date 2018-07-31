@@ -9557,7 +9557,6 @@ function start_msg()
 			{
 				after_modal_show(instance)
 				after_modal_set_or_show(instance)
-				modal_image_number_update_val()
 				minpo = true
 			},
 			after_set: function(instance)
@@ -12329,33 +12328,26 @@ function set_modal_image_footer()
 		return false
 	}
 
-	var date = $("#modal_image").data("image_date") 
 	var url = $("#modal_image").attr("src")
 
-	var index = false
+	var index = 0
 
 	for(var i=0; i<images_changed.length; i++)
 	{
 		var ic = images_changed[i]
 
-		if(ic.date_raw === date && ic.url === url)
+		if(ic.url === url)
 		{
 			index = i + 1
 			break
 		}
 	}
 
-	if(!index)
-	{
-		$("#modal_image_footer_info").text("")
-	}
+	var footer_text = `${index} of ${images_changed.length}`
 
-	else
-	{
-		$("#modal_image").data("image_index", index)
-		var footer_text = `${index} of ${images_changed.length}`
-		$("#modal_image_footer_info").text(footer_text)
-	}
+	$("#modal_image_footer_info").text(footer_text)
+	
+	$("#modal_image_number_input").val(index)
 }
 
 function setup_modal_image_number()
@@ -12384,18 +12376,6 @@ function setup_modal_image_number()
 			$("#modal_image_number_input").val(images_changed.length)
 		}
 	})
-}
-
-function modal_image_number_update_val()
-{
-	var index = $("#modal_image").data("image_index")
-
-	if(!index)
-	{
-		index = images_changed.len
-	}
-
-	$("#modal_image_number_input").val(index)
 }
 
 function show_modal_image_number()
