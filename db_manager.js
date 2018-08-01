@@ -1062,7 +1062,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 			{
 				if(!user)
 				{
-					resolve({msg:"error"})
+					resolve({message:"error"})
 					return
 				}
 
@@ -1074,7 +1074,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 					{
 						if(user2)
 						{
-							resolve({msg:"duplicate"})
+							resolve({message:"duplicate"})
 							return
 						}
 
@@ -1084,7 +1084,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 							{
 								if(!user.email_change_code_date)
 								{
-									resolve({msg:"not_sent"})
+									resolve({message:"not_sent"})
 									return
 								}
 
@@ -1105,20 +1105,20 @@ module.exports = function(db, config, sconfig, utilz, logger)
 											return
 										})
 
-										resolve({msg:"changed", email:user.email_change_email})
+										resolve({message:"changed", email:user.email_change_email})
 										return
 									}
 
 									else
 									{
-										resolve({msg:"expired_code"})
+										resolve({message:"expired_code"})
 										return false
 									}
 								}
 
 								else
 								{
-									resolve({msg:"wrong_code"})
+									resolve({message:"wrong_code"})
 									return false
 								}
 							}
@@ -1143,7 +1143,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 									{
 										if(error)
 										{
-											resolve({msg:"error"})
+											resolve({message:"error"})
 											return
 										}
 
@@ -1164,7 +1164,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 												return
 											})
 
-											resolve({msg:"sent_code"})
+											resolve({message:"sent_code"})
 											return
 										}
 									})
@@ -1172,7 +1172,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 								else
 								{
-									resolve({msg:"wait"})
+									resolve({message:"wait"})
 									return									
 								}
 							}

@@ -981,26 +981,26 @@ select
 	cursor: pointer;
 }
 
-.msg
+.message
 {
 	padding-right: 0.5rem;
 }
 
-.msg.normal_layout
+.message.normal_layout
 {
 	padding-left: 1.2rem;
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 }
 
-.msg.compact_layout
+.message.compact_layout
 {
 	padding-left: 0.5rem;
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
 }
 
-#chat_area > .msg:last-child
+#chat_area > .message:last-child
 {
 	margin-bottom: 1.5rem !important;
 }
@@ -1395,7 +1395,7 @@ input[type=text], textarea
 	max-width: 25em;
 }
 
-.media_history_item .msg
+.media_history_item .message
 {
 	padding-top: 0em !important;
 	padding-bottom: 0em !important;

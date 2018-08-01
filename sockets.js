@@ -519,27 +519,27 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.sendchat = function(socket, data)
 	{
-		if(data.msg === undefined)
+		if(data.message === undefined)
 		{
 			return handler.get_out(socket)
 		}
 
-		if(data.msg.length === 0)
+		if(data.message.length === 0)
 		{
 			return handler.get_out(socket)
 		}
 
-		if(data.msg.length > config.max_input_length)
+		if(data.message.length > config.max_input_length)
 		{
 			return handler.get_out(socket)
 		}
 
-		if(data.msg !== utilz.clean_string10(data.msg))
+		if(data.message !== utilz.clean_string10(data.message))
 		{
 			return handler.get_out(socket)
 		}
 
-		if(data.msg.split("\n").length > config.max_num_newlines)
+		if(data.message.split("\n").length > config.max_num_newlines)
 		{
 			return handler.get_out(socket)
 		}		
@@ -551,10 +551,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		var date = Date.now()
 
-		handler.room_emit(socket, 'chat_msg',
+		handler.room_emit(socket, 'chat_message',
 		{
 			username: socket.hue_username,
-			msg: data.msg,
+			message: data.message,
 			profile_image: socket.hue_profile_image,
 			date: date
 		})
@@ -569,7 +569,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				data:
 				{
 					username: socket.hue_username,
-					content: data.msg,
+					content: data.message,
 					profile_image: socket.hue_profile_image
 				},
 				date: date
@@ -1998,25 +1998,25 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		var ans = await db_manager.change_email(socket.hue_user_id, data.email)
 
-		if(ans.msg === "error")
+		if(ans.message === "error")
 		{
 			handler.user_emit(socket, 'error_occurred', {})
 			return
 		}
 
-		else if(ans.msg === "duplicate")
+		else if(ans.message === "duplicate")
 		{
 			handler.user_emit(socket, 'email_already_exists', {email:data.email})
 			return
 		}
 
-		else if(ans.msg === "wait")
+		else if(ans.message === "wait")
 		{
 			handler.user_emit(socket, 'email_change_wait', {})
 			return
 		}
 
-		else if(ans.msg === "sent_code")
+		else if(ans.message === "sent_code")
 		{
 			handler.user_emit(socket, 'email_change_code_sent', {email:data.email})
 			return
@@ -2042,37 +2042,37 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		var ans = await db_manager.change_email(socket.hue_user_id, data.email, data.code)
 
-		if(ans.msg === "error")
+		if(ans.message === "error")
 		{
 			handler.user_emit(socket, 'error_occurred', {})
 			return
 		}
 
-		else if(ans.msg === "duplicate")
+		else if(ans.message === "duplicate")
 		{
 			handler.user_emit(socket, 'email_already_exists', {email:data.email})
 			return
 		}
 
-		else if(ans.msg === "not_sent")
+		else if(ans.message === "not_sent")
 		{
 			handler.user_emit(socket, 'email_change_code_not_sent', {email:data.email})
 			return
 		}
 
-		else if(ans.msg === "wrong_code")
+		else if(ans.message === "wrong_code")
 		{
 			handler.user_emit(socket, 'email_change_wrong_code', {email:data.email})
 			return
 		}
 
-		else if(ans.msg === "expired_code")
+		else if(ans.message === "expired_code")
 		{
 			handler.user_emit(socket, 'email_change_expired_code', {email:data.email})
 			return
 		}
 
-		else if(ans.msg === "changed")
+		else if(ans.message === "changed")
 		{
 			for(var room_id of user_rooms[socket.hue_user_id])
 			{

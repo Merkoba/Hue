@@ -887,12 +887,12 @@ function start_socket()
 			show_typing(data)
 		}
 
-		else if(data.type === 'chat_msg')
+		else if(data.type === 'chat_message')
 		{
 			update_chat(
 			{
 				uname: data.username, 
-				msg: data.msg, 
+				message: data.message, 
 				prof_image: data.profile_image,
 				date: data.date
 			})
@@ -2008,7 +2008,7 @@ function userjoin(data)
 			chat_announce(
 			{
 				brk: "<i class='icon2c fa fa-user-plus'></i>",
-				msg: `${data.username} has joined`,
+				message: `${data.username} has joined`,
 				save: true,
 				uname: data.username,
 				open_profile: true
@@ -3573,7 +3573,7 @@ function upload_file(file, action)
 	var obj =
 	{
 		brk: '*',
-		msg: `Uploading ${get_file_action_name(file.action)}: 0%`,
+		message: `Uploading ${get_file_action_name(file.action)}: 0%`,
 		id: `uploading_${date}`,
 		title: `Size: ${get_size_string(file.size / 1024)} | ${nice_date()}`
 	}
@@ -4274,18 +4274,18 @@ function input_to_end()
 	$('#input')[0].scrollLeft = $('#input')[0].scrollWidth
 }
 
-function add_to_input_history(msg, change_index=true)
+function add_to_input_history(message, change_index=true)
 {
 	for(var i=0; i<input_history.length; i++)
 	{
-		if(input_history[i][0] === msg)
+		if(input_history[i][0] === message)
 		{
 			input_history.splice(i, 1)
 			break
 		}
 	}
 
-	var item = [msg, nice_date()]
+	var item = [message, nice_date()]
 
 	input_history.push(item)
 
@@ -4858,7 +4858,7 @@ function start_chat_hover_events()
 {
 	$("#chat_area").on("mouseenter", ".chat_uname, .chat_profile_image, .brk", function()
 	{
-		var uname = $(this).closest(".msg").data("uname")
+		var uname = $(this).closest(".message").data("uname")
 
 		if(!uname)
 		{
@@ -4875,7 +4875,7 @@ function start_chat_hover_events()
 
 	$("#chat_area").on("mouseleave", ".chat_uname, .chat_profile_image, .brk", function()
 	{
-		var uname = $(this).closest(".msg").data("uname")
+		var uname = $(this).closest(".message").data("uname")
 
 		if(!uname)
 		{
@@ -4884,7 +4884,7 @@ function start_chat_hover_events()
 
 		clearTimeout(highlight_same_posts_timeouts[uname])
 
-		if($(this).closest(".msg").hasClass("highlighted"))
+		if($(this).closest(".message").hasClass("highlighted"))
 		{
 			highlight_same_posts(uname, false)
 		}
@@ -4893,7 +4893,7 @@ function start_chat_hover_events()
 
 function highlight_same_posts(uname, add=true)
 {
-	$(".msg").each(function()
+	$(".message").each(function()
 	{
 		if($(this).data("uname") === uname)
 		{
@@ -4915,7 +4915,7 @@ function update_chat(args={})
 	var def_args =
 	{
 		uname: "",
-		msg: "",
+		message: "",
 		prof_image: "",
 		date: false,
 		third_person: false,
@@ -4924,7 +4924,7 @@ function update_chat(args={})
 
 	fill_defaults(args, def_args)
 
-	if(check_ignored_words(args.msg, args.uname))
+	if(check_ignored_words(args.message, args.uname))
 	{
 		return false
 	}
@@ -4937,9 +4937,9 @@ function update_chat(args={})
 		}
 	}
 
-	if(args.msg.startsWith('//'))
+	if(args.message.startsWith('//'))
 	{
-		args.msg = args.msg.slice(1)
+		args.message = args.message.slice(1)
 	}
 
 	var contclasses = "chat_content"
@@ -4948,7 +4948,7 @@ function update_chat(args={})
 
 	if(args.uname !== username)
 	{
-		if(check_highlights(args.msg))
+		if(check_highlights(args.message))
 		{
 			contclasses += " highlighted"
 			highlighted = true
@@ -4977,28 +4977,28 @@ function update_chat(args={})
 		var pi = args.prof_image
 	}
 
-	var starts_me = args.msg.startsWith('/me ') || args.msg.startsWith('/em ')
+	var starts_me = args.message.startsWith('/me ') || args.message.startsWith('/em ')
 
 	if(get_setting("chat_layout") === "normal")
 	{
-		var msgcls = "normal_layout"
+		var messagecls = "normal_layout"
 	}
 
 	else if(get_setting("chat_layout") === "compact")
 	{
-		var msgcls = "compact_layout"
+		var messagecls = "compact_layout"
 	}
 	
 	if(starts_me || args.third_person)
 	{
 		if(starts_me)
 		{
-			var tpt = args.msg.substr(4)
+			var tpt = args.message.substr(4)
 		}
 
 		else
 		{
-			tpt = args.msg
+			tpt = args.message
 		}
 
 		if(!args.brk)
@@ -5007,7 +5007,7 @@ function update_chat(args={})
 		}
 
 		var s = `
-		<div class='msg chat_message thirdperson ${msgcls}'>
+		<div class='message chat_message thirdperson ${messagecls}'>
 			<div class='chat_third_container'>
 				<div class='brk chat_third_brk'>${args.brk}</div>
 				<div class='chat_third_content'>
@@ -5016,9 +5016,9 @@ function update_chat(args={})
 			</div>
 		</div>`
 
-		var fmsg = $(s)
+		var fmessage = $(s)
 
-		fmsg.find('.chat_content').eq(0).text(tpt).urlize()
+		fmessage.find('.chat_content').eq(0).text(tpt).urlize()
 	}
 
 	else
@@ -5026,7 +5026,7 @@ function update_chat(args={})
 		if(get_setting("chat_layout") === "normal")
 		{
 			var s = `
-			<div class='msg chat_message umsg_${args.uname} normal_layout'>
+			<div class='message chat_message umessage_${args.uname} normal_layout'>
 				<div class='chat_left_side'>
 					<div class='chat_profile_image_container unselectable action4'>
 						<img class='chat_profile_image' src='${pi}'>
@@ -5046,7 +5046,7 @@ function update_chat(args={})
 		else if(get_setting("chat_layout") === "compact")
 		{
 			var s = `
-			<div class='msg chat_message umsg_${args.uname} compact_layout'>
+			<div class='message chat_message umessage_${args.uname} compact_layout'>
 				<div class='chat_uname_container'>
 					<div class='chat_uname action'></div><div>:</div>
 				</div>
@@ -5056,18 +5056,18 @@ function update_chat(args={})
 			</div>`
 		}
 
-		var fmsg = $(s)
+		var fmessage = $(s)
 
-		fmsg.find('.chat_content').eq(0).text(args.msg).urlize()
+		fmessage.find('.chat_content').eq(0).text(args.message).urlize()
 	}
 
-	var huname = fmsg.find('.chat_uname').eq(0)
+	var huname = fmessage.find('.chat_uname').eq(0)
 	
 	huname.text(args.uname)
 
 	huname.data("prof_image", pi)
 
-	fmsg.find('.chat_profile_image').eq(0).on("error", function()
+	fmessage.find('.chat_profile_image').eq(0).on("error", function()
 	{
 		if($(this).attr("src") !== default_profile_image_url)
 		{
@@ -5075,11 +5075,11 @@ function update_chat(args={})
 		}
 	})
 
-	fmsg.data("highlighted", highlighted)
-	fmsg.data("uname", args.uname)
-	fmsg.data("mode", "chat")
+	fmessage.data("highlighted", highlighted)
+	fmessage.data("uname", args.uname)
+	fmessage.data("mode", "chat")
 
-	add_to_chat(fmsg, true)
+	add_to_chat(fmessage, true)
 
 	if(args.uname !== username)
 	{
@@ -5097,7 +5097,7 @@ function update_chat(args={})
 	}
 }
 
-function add_to_chat(msg, save=false, notify=true)
+function add_to_chat(message, save=false, notify=true)
 {
 	if(started && !app_focused)
 	{
@@ -5105,22 +5105,22 @@ function add_to_chat(msg, save=false, notify=true)
 	}
 
 	var chat_area = $('#chat_area')
-	var last_msg = $(".msg").last()
+	var last_message = $(".message").last()
 	var appended = false
-	var mode = msg.data("mode")
+	var mode = message.data("mode")
 
 	if(mode === "chat")
 	{
-		var content = msg.find(".chat_content").eq(0)
+		var content = message.find(".chat_content").eq(0)
 	}
 
-	if((msg.hasClass("chat_message") && !msg.hasClass("thirdperson")) && (last_msg.hasClass("chat_message") && !last_msg.hasClass("thirdperson")))
+	if((message.hasClass("chat_message") && !message.hasClass("thirdperson")) && (last_message.hasClass("chat_message") && !last_message.hasClass("thirdperson")))
 	{
-		if(msg.find(".chat_uname").eq(0).text() === last_msg.find(".chat_uname").eq(0).text())
+		if(message.find(".chat_uname").eq(0).text() === last_message.find(".chat_uname").eq(0).text())
 		{
-			if(last_msg.find(".chat_content").length < max_same_post_messages)
+			if(last_message.find(".chat_content").length < max_same_post_messages)
 			{
-				var date_diff = msg.find('.chat_content').last().data("date") - last_msg.find('.chat_content').last().data("date")
+				var date_diff = message.find('.chat_content').last().data("date") - last_message.find('.chat_content').last().data("date")
 
 				if(date_diff < max_same_post_diff)
 				{
@@ -5129,13 +5129,13 @@ function add_to_chat(msg, save=false, notify=true)
 						content.addClass("fader")
 					}
 
-					last_msg.find(".chat_content_container").eq(0).append(content)
+					last_message.find(".chat_content_container").eq(0).append(content)
 
-					replace_in_chat_history(last_msg)
+					replace_in_chat_history(last_message)
 
-					if(!last_msg.data("highlighted"))
+					if(!last_message.data("highlighted"))
 					{
-						last_msg.data("highlighted", msg.data("highlighted"))
+						last_message.data("highlighted", message.data("highlighted"))
 					}
 
 					appended = true
@@ -5148,21 +5148,21 @@ function add_to_chat(msg, save=false, notify=true)
 	{
 		if(started && app_focused)
 		{
-			msg.addClass("fader")
+			message.addClass("fader")
 		}
 
-		chat_area.append(msg)
+		chat_area.append(message)
 
-		if($(".msg").length > chat_crop_limit)
+		if($(".message").length > chat_crop_limit)
 		{
-			$("#chat_area > .msg").eq(0).remove()
+			$("#chat_area > .message").eq(0).remove()
 		}
 
 		if(save)
 		{
 			message_id += 1
-			msg.data("message_id", message_id)
-			push_to_chat_history(msg)
+			message.data("message_id", message_id)
+			push_to_chat_history(message)
 		}
 	}
 
@@ -5174,15 +5174,15 @@ function add_to_chat(msg, save=false, notify=true)
 
 	scroll_timer()
 
-	if(notify && started && msg.data("highlighted"))
+	if(notify && started && message.data("highlighted"))
 	{
 		electron_signal("highlighted")
 	}
 }
 
-function push_to_chat_history(msg)
+function push_to_chat_history(message)
 {
-	chat_history.push(msg.clone(true, true))
+	chat_history.push(message.clone(true, true))
 
 	if(chat_history.length > chat_history_crop_limit)
 	{
@@ -5190,15 +5190,15 @@ function push_to_chat_history(msg)
 	}
 }
 
-function replace_in_chat_history(msg)
+function replace_in_chat_history(message)
 {
 	for(var i=0; i<chat_history.length; i++)
 	{
-		var msg2 = chat_history[i]
+		var message2 = chat_history[i]
 
-		if(msg.data("message_id") === msg2.data("message_id"))
+		if(message.data("message_id") === message2.data("message_id"))
 		{
-			chat_history[i] = msg
+			chat_history[i] = message
 			return
 		}
 	}
@@ -5584,7 +5584,7 @@ function chat_announce(args={})
 	var def_args =
 	{
 		brk: "",
-		msg: "",
+		message: "",
 		highlight: false,
 		title: false,
 		onclick: false,
@@ -5602,7 +5602,7 @@ function chat_announce(args={})
 
 	var ignore = false
 
-	if(check_ignored_words(args.msg, args.uname))
+	if(check_ignored_words(args.message, args.uname))
 	{
 		ignore = true
 	}
@@ -5658,27 +5658,27 @@ function chat_announce(args={})
 
 	if(get_setting("chat_layout") === "normal")
 	{
-		var msgcls = "normal_layout"
+		var messagecls = "normal_layout"
 	}
 
 	else if(get_setting("chat_layout") === "compact")
 	{
-		var msgcls = "compact_layout"
+		var messagecls = "compact_layout"
 	}
 
 	var s = `
-	<div${containerid}class='msg announcement ${msgcls}'>
+	<div${containerid}class='message announcement ${messagecls}'>
 		<div class='${containerclasses}'>
 			<div class='brk announcement_brk'>${args.brk}</div>
 			<div class='${contclasses}' title='${t}'></div>
 		</div>
 	</div>`
 
-	var fmsg = $(s)
+	var fmessage = $(s)
 
-	var content = fmsg.find('.announcement_content').eq(0)
+	var content = fmessage.find('.announcement_content').eq(0)
 
-	content.text(args.msg).urlize()
+	content.text(args.message).urlize()
 
 	if(args.onclick)
 	{
@@ -5695,16 +5695,16 @@ function chat_announce(args={})
 		content.parent().on("click", pif)
 	}
 
-	fmsg.data("highlighted", args.highlight)
-	fmsg.data("type", args.type)
-	fmsg.data("info1", args.info1)
-	fmsg.data("info2", args.info2)
-	fmsg.data("uname", args.uname)
-	fmsg.data("mode", "announcement")
+	fmessage.data("highlighted", args.highlight)
+	fmessage.data("type", args.type)
+	fmessage.data("info1", args.info1)
+	fmessage.data("info2", args.info2)
+	fmessage.data("uname", args.uname)
+	fmessage.data("mode", "announcement")
 
 	if(!ignore)
 	{
-		add_to_chat(fmsg, args.save)
+		add_to_chat(fmessage, args.save)
 		
 		if(args.highlight)
 		{
@@ -5715,12 +5715,12 @@ function chat_announce(args={})
 
 	if(args.type !== "normal")
 	{
-		handle_chat_announce_types(fmsg, args.type)
+		handle_chat_announce_types(fmessage, args.type)
 	}
 
 }
 
-function handle_chat_announce_types(msg, type)
+function handle_chat_announce_types(message, type)
 {
 	var media_history_types = ["image_change", "tv_change", "radio_change"]
 
@@ -5728,7 +5728,7 @@ function handle_chat_announce_types(msg, type)
 	{
 		var item = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
 
-		item.find(".media_history_item_inner").eq(0).html(msg.find(".announcement_content_container").eq(0).clone(true, true))
+		item.find(".media_history_item_inner").eq(0).html(message.find(".announcement_content_container").eq(0).clone(true, true))
 
 		if(type === "image_change")
 		{
@@ -6007,9 +6007,9 @@ function register_commands()
 	}
 }
 
-function is_command(msg)
+function is_command(message)
 {
-	if(msg[0] === '/' && !msg.startsWith('/me ') && !msg.startsWith('/em ') && !msg.startsWith('//'))
+	if(message[0] === '/' && !message.startsWith('/me ') && !message.startsWith('/em ') && !message.startsWith('//'))
 	{
 		return true
 	}
@@ -6017,13 +6017,13 @@ function is_command(msg)
 	return false
 }
 
-function process_message(msg, to_history=true, clr_input=true)
+function process_message(message, to_history=true, clr_input=true)
 {
-	if(is_command(msg))
+	if(is_command(message))
 	{
-		msg = utilz.clean_string2(msg)
+		message = utilz.clean_string2(message)
 
-		var ans = execute_command(msg, {to_history:to_history, clr_input:clr_input})
+		var ans = execute_command(message, {to_history:to_history, clr_input:clr_input})
 
 		to_history = ans.to_history
 		clr_input = ans.clr_input
@@ -6033,25 +6033,25 @@ function process_message(msg, to_history=true, clr_input=true)
 	{
 		if(can_chat)
 		{
-			msg = utilz.clean_string10(msg)
+			message = utilz.clean_string10(message)
 
-			if(msg.length === 0)
+			if(message.length === 0)
 			{
 				clear_input()
 				return false
 			}
 
-			if(msg.split("\n").length > max_num_newlines)
+			if(message.split("\n").length > max_num_newlines)
 			{
 				return false
 			}
 
-			if(msg.length > max_input_length)
+			if(message.length > max_input_length)
 			{
-				msg = msg.substring(0, max_input_length)
+				message = message.substring(0, max_input_length)
 			}
 
-			socket_emit('sendchat', {msg:msg})
+			socket_emit('sendchat', {message:message})
 		}
 
 		else
@@ -6062,7 +6062,7 @@ function process_message(msg, to_history=true, clr_input=true)
 
 	if(to_history)
 	{
-		add_to_input_history(msg)
+		add_to_input_history(message)
 	}
 
 	if(clr_input)
@@ -6071,804 +6071,804 @@ function process_message(msg, to_history=true, clr_input=true)
 	}
 }
 
-function execute_command(msg, ans)
+function execute_command(message, ans)
 {
-	var a = msg.toLowerCase().split(' ')
+	var a = message.toLowerCase().split(' ')
 
-	var lmsg = a[0].split('').sort().join('')
+	var lmessage = a[0].split('').sort().join('')
 
 	if(a.length > 1)
 	{
-		lmsg += ' '
+		lmessage += ' '
 
-		var arg = msg.substring(lmsg.length)
+		var arg = message.substring(lmessage.length)
 	}
 
-	if(oiEquals(lmsg, '/clear'))
+	if(oiEquals(lmessage, '/clear'))
 	{
 		clear_chat()
 	}
 
-	else if(oiEquals(lmsg, '/unclear'))
+	else if(oiEquals(lmessage, '/unclear'))
 	{
 		unclear_chat()
 	}
 
-	else if(oiEquals(lmsg, '/users'))
+	else if(oiEquals(lmessage, '/users'))
 	{
 		show_userlist()
 	}
 
-	else if(oiStartsWith(lmsg, '/users'))
+	else if(oiStartsWith(lmessage, '/users'))
 	{
 		show_userlist(arg)
 	}
 
-	else if(oiEquals(lmsg, '/publicrooms'))
+	else if(oiEquals(lmessage, '/publicrooms'))
 	{
 		request_roomlist("", "public_roomlist")
 	}
 
-	else if(oiStartsWith(lmsg, '/publicrooms'))
+	else if(oiStartsWith(lmessage, '/publicrooms'))
 	{
 		request_roomlist(arg, "public_roomlist")
 	}
 
-	else if(oiEquals(lmsg, '/visitedrooms'))
+	else if(oiEquals(lmessage, '/visitedrooms'))
 	{
 		request_roomlist("", "visited_roomlist")
 	}
 
-	else if(oiStartsWith(lmsg, '/visitedrooms'))
+	else if(oiStartsWith(lmessage, '/visitedrooms'))
 	{
 		request_roomlist(arg, "visited_roomlist")
 	}
 
-	else if(oiEquals(lmsg, '/roomname'))
+	else if(oiEquals(lmessage, '/roomname'))
 	{
 		show_room()
 	}
 
-	else if(oiStartsWith(lmsg, '/roomname'))
+	else if(oiStartsWith(lmessage, '/roomname'))
 	{
 		change_room_name(arg)
 	}
 
-	else if(oiEquals(lmsg, '/roomnameedit'))
+	else if(oiEquals(lmessage, '/roomnameedit'))
 	{
 		room_name_edit()
 		ans.to_history = false
 		ans.clr_input = false
 	}
 
-	else if(oiEquals(lmsg, '/played'))
+	else if(oiEquals(lmessage, '/played'))
 	{
 		show_played()
 	}
 
-	else if(oiStartsWith(lmsg, '/played'))
+	else if(oiStartsWith(lmessage, '/played'))
 	{
 		show_played(arg)
 	}
 
-	else if(oiEquals(lmsg, '/search'))
+	else if(oiEquals(lmessage, '/search'))
 	{
 		show_chat_search()
 	}
 
-	else if(oiStartsWith(lmsg, '/search'))
+	else if(oiStartsWith(lmessage, '/search'))
 	{
 		show_chat_search(arg)
 	}
 
-	else if(oiEquals(lmsg, '/role'))
+	else if(oiEquals(lmessage, '/role'))
 	{
 		show_role()
 	}
 
-	else if(oiStartsWith(lmsg, '/voice1'))
+	else if(oiStartsWith(lmessage, '/voice1'))
 	{
 		change_role(arg, "voice1")
 	}
 
-	else if(oiStartsWith(lmsg, '/voice2'))
+	else if(oiStartsWith(lmessage, '/voice2'))
 	{
 		change_role(arg, "voice2")
 	}
 
-	else if(oiStartsWith(lmsg, '/voice3'))
+	else if(oiStartsWith(lmessage, '/voice3'))
 	{
 		change_role(arg, "voice3")
 	}
 
-	else if(oiStartsWith(lmsg, '/voice4'))
+	else if(oiStartsWith(lmessage, '/voice4'))
 	{
 		change_role(arg, "voice4")
 	}
 
-	else if(oiStartsWith(lmsg, '/op'))
+	else if(oiStartsWith(lmessage, '/op'))
 	{
 		change_role(arg, "op")
 	}
 
-	else if(oiStartsWith(lmsg, '/admin'))
+	else if(oiStartsWith(lmessage, '/admin'))
 	{
 		change_role(arg, "admin")
 	}
 
-	else if(oiEquals(lmsg, '/resetvoices'))
+	else if(oiEquals(lmessage, '/resetvoices'))
 	{
 		reset_voices()
 	}
 
-	else if(oiEquals(lmsg, '/removeops'))
+	else if(oiEquals(lmessage, '/removeops'))
 	{
 		remove_ops()
 	}
 
-	else if(oiStartsWith(lmsg, '/ban'))
+	else if(oiStartsWith(lmessage, '/ban'))
 	{
 		ban(arg)
 	}
 
-	else if(oiStartsWith(lmsg, '/unban'))
+	else if(oiStartsWith(lmessage, '/unban'))
 	{
 		unban(arg)
 	}
 
-	else if(oiEquals(lmsg, '/unbanall'))
+	else if(oiEquals(lmessage, '/unbanall'))
 	{
 		unban_all()
 	}
 
-	else if(oiEquals(lmsg, '/bannedcount'))
+	else if(oiEquals(lmessage, '/bannedcount'))
 	{
 		get_banned_count()
 	}
 
-	else if(oiStartsWith(lmsg, '/kick'))
+	else if(oiStartsWith(lmessage, '/kick'))
 	{
 		kick(arg)
 	}
 
-	else if(oiEquals(lmsg, '/public'))
+	else if(oiEquals(lmessage, '/public'))
 	{
 		change_privacy(true)
 	}
 
-	else if(oiEquals(lmsg, '/private'))
+	else if(oiEquals(lmessage, '/private'))
 	{
 		change_privacy(false)
 	}
 
-	else if(oiEquals(lmsg, '/log'))
+	else if(oiEquals(lmessage, '/log'))
 	{
 		show_log()
 	}
 
-	else if(oiEquals(lmsg, '/enablelog'))
+	else if(oiEquals(lmessage, '/enablelog'))
 	{
 		change_log(true)
 	}
 
-	else if(oiEquals(lmsg, '/disablelog'))
+	else if(oiEquals(lmessage, '/disablelog'))
 	{
 		change_log(false)
 	}
 
-	else if(oiEquals(lmsg, '/clearlog'))
+	else if(oiEquals(lmessage, '/clearlog'))
 	{
 		clear_log()
 	}
 
-	else if(oiStartsWith(lmsg, '/radio'))
+	else if(oiStartsWith(lmessage, '/radio'))
 	{
 		change_radio_source(arg)
 	}
 
-	else if(oiEquals(lmsg, '/radio'))
+	else if(oiEquals(lmessage, '/radio'))
 	{
 		show_media_source("radio")
 	}
 
-	else if(oiStartsWith(lmsg, '/tv'))
+	else if(oiStartsWith(lmessage, '/tv'))
 	{
 		change_tv_source(arg)
 	}
 
-	else if(oiEquals(lmsg, '/tv'))
+	else if(oiEquals(lmessage, '/tv'))
 	{
 		show_media_source("tv")
 	}
 
-	else if(oiStartsWith(lmsg, '/image') || oiStartsWith(lmsg, '/images'))
+	else if(oiStartsWith(lmessage, '/image') || oiStartsWith(lmessage, '/images'))
 	{
 		link_image(arg)
 	}
 
-	else if(oiEquals(lmsg, '/image'))
+	else if(oiEquals(lmessage, '/image'))
 	{
 		show_media_source("image")
 	}
 
-	else if(oiEquals(lmsg, '/status'))
+	else if(oiEquals(lmessage, '/status'))
 	{
 		show_status()
 	}
 
-	else if(oiStartsWith(lmsg, '/topic'))
+	else if(oiStartsWith(lmessage, '/topic'))
 	{
 		change_topic(arg)
 	}
 
-	else if(oiStartsWith(lmsg, '/topicadd'))
+	else if(oiStartsWith(lmessage, '/topicadd'))
 	{
 		topicadd(arg)
 	}
 
-	else if(oiStartsWith(lmsg, '/topictrim'))
+	else if(oiStartsWith(lmessage, '/topictrim'))
 	{
 		topictrim(arg)
 	}
 
-	else if(oiEquals(lmsg, '/topictrim'))
+	else if(oiEquals(lmessage, '/topictrim'))
 	{
 		topictrim(1)
 	}
 
-	else if(oiStartsWith(lmsg, '/topicaddstart'))
+	else if(oiStartsWith(lmessage, '/topicaddstart'))
 	{
 		topicstart(arg)
 	}
 
-	else if(oiStartsWith(lmsg, '/topictrimstart'))
+	else if(oiStartsWith(lmessage, '/topictrimstart'))
 	{
 		topictrimstart(arg)
 	}
 
-	else if(oiEquals(lmsg, '/topictrimstart'))
+	else if(oiEquals(lmessage, '/topictrimstart'))
 	{
 		topictrimstart(1)
 	}
 
-	else if(oiEquals(lmsg, '/topicedit'))
+	else if(oiEquals(lmessage, '/topicedit'))
 	{
 		topicedit()
 		ans.to_history = false
 		ans.clr_input = false
 	}
 
-	else if(oiEquals(lmsg, '/topic'))
+	else if(oiEquals(lmessage, '/topic'))
 	{
 		show_topic()
 	}
 
-	else if(oiEquals(lmsg, '/room'))
+	else if(oiEquals(lmessage, '/room'))
 	{
 		show_room()
 	}
 
-	else if(oiEquals(lmsg, '/help3'))
+	else if(oiEquals(lmessage, '/help3'))
 	{
 		help3()
 	}
 
-	else if(oiEquals(lmsg, '/help2'))
+	else if(oiEquals(lmessage, '/help2'))
 	{
 		help2()
 	}
 
-	else if(oiEquals(lmsg, '/help') || oiEquals(lmsg, '/help1'))
+	else if(oiEquals(lmessage, '/help') || oiEquals(lmessage, '/help1'))
 	{
 		help()
 	}
 
-	else if(oiEquals(lmsg, '/stopradio'))
+	else if(oiEquals(lmessage, '/stopradio'))
 	{
 		stop_radio()
 	}
 
-	else if(oiEquals(lmsg, '/startradio'))
+	else if(oiEquals(lmessage, '/startradio'))
 	{
 		start_radio()
 	}
 
-	else if(oiStartsWith(lmsg, '/radiovolume'))
+	else if(oiStartsWith(lmessage, '/radiovolume'))
 	{
 		change_volume_command(arg)
 	}
 
-	else if(oiStartsWith(lmsg, '/tvvolume'))
+	else if(oiStartsWith(lmessage, '/tvvolume'))
 	{
 		change_volume_command(arg, "tv")
 	}
 
-	else if(oiStartsWith(lmsg, '/volume'))
+	else if(oiStartsWith(lmessage, '/volume'))
 	{
 		change_volume_command(arg)
 		change_volume_command(arg, "tv")
 	}
 
-	else if(oiEquals(lmsg, '/history'))
+	else if(oiEquals(lmessage, '/history'))
 	{
 		show_input_history()
 		ans.to_history = false
 	}
 
-	else if(oiStartsWith(lmsg, '/history'))
+	else if(oiStartsWith(lmessage, '/history'))
 	{
 		show_input_history(arg)
 	}
 
-	else if(oiStartsWith(lmsg, '/changeusername'))
+	else if(oiStartsWith(lmessage, '/changeusername'))
 	{
 		change_username(arg)
 	}
 
-	else if(oiStartsWith(lmsg, '/changepassword'))
+	else if(oiStartsWith(lmessage, '/changepassword'))
 	{
 		change_password(arg)
 	}
 
-	else if(oiStartsWith(lmsg, '/changeemail'))
+	else if(oiStartsWith(lmessage, '/changeemail'))
 	{
 		change_email(arg)
 	}
 
-	else if(oiStartsWith(lmsg, '/verifyemail'))
+	else if(oiStartsWith(lmessage, '/verifyemail'))
 	{
 		verify_email(arg)
 	}
 
-	else if(oiEquals(lmsg, '/details'))
+	else if(oiEquals(lmessage, '/details'))
 	{
 		show_details()
 	}
 
-	else if(oiEquals(lmsg, '/logout'))
+	else if(oiEquals(lmessage, '/logout'))
 	{
 		logout()
 	}
 
-	else if(oiEquals(lmsg, '/fill'))
+	else if(oiEquals(lmessage, '/fill'))
 	{
 		fill()
 	}
 
-	else if(oiEquals(lmsg, '/shrug'))
+	else if(oiEquals(lmessage, '/shrug'))
 	{
 		shrug()
 	}
 
-	else if(oiEquals(lmsg, '/afk'))
+	else if(oiEquals(lmessage, '/afk'))
 	{
 		show_afk()
 	}
 
-	else if(oiEquals(lmsg, '/disconnectothers'))
+	else if(oiEquals(lmessage, '/disconnectothers'))
 	{
 		disconnect_others()
 	}
 
-	else if(oiStartsWith(lmsg, '/whisper'))
+	else if(oiStartsWith(lmessage, '/whisper'))
 	{
 		write_popup_message(arg)
 	}
 
-	else if(oiEquals(lmsg, '/whisperops'))
+	else if(oiEquals(lmessage, '/whisperops'))
 	{
 		write_popup_message(false, "ops")
 	}
 
-	else if(oiEquals(lmsg, '/broadcast'))
+	else if(oiEquals(lmessage, '/broadcast'))
 	{
 		write_popup_message(false, "room")
 	}
 
-	else if(oiEquals(lmsg, '/systembroadcast'))
+	else if(oiEquals(lmessage, '/systembroadcast'))
 	{
 		write_popup_message(false, "system")
 		ans.to_history = false
 	}
 
-	else if(oiEquals(lmsg, '/systemrestart'))
+	else if(oiEquals(lmessage, '/systemrestart'))
 	{
 		send_system_restart_signal()
 		ans.to_history = false
 	}
 
-	else if(oiEquals(lmsg, '/annex'))
+	else if(oiEquals(lmessage, '/annex'))
 	{
 		annex()
 		ans.to_history = false
 	}
 
-	else if(oiStartsWith(lmsg, '/annex'))
+	else if(oiStartsWith(lmessage, '/annex'))
 	{
 		annex(arg)
 	}
 
-	else if(oiEquals(lmsg, '/highlights'))
+	else if(oiEquals(lmessage, '/highlights'))
 	{
 		show_highlights()
 	}
 
-	else if(oiStartsWith(lmsg, '/highlights'))
+	else if(oiStartsWith(lmessage, '/highlights'))
 	{
 		show_highlights(arg)
 	}
 
-	else if(oiEquals(lmsg, '/lock'))
+	else if(oiEquals(lmessage, '/lock'))
 	{
 		stop_and_lock(false)
 	}
 
-	else if(oiEquals(lmsg, '/unlock'))
+	else if(oiEquals(lmessage, '/unlock'))
 	{
 		default_media_state(false)
 	}
 
-	else if(oiEquals(lmsg, '/stopandlock'))
+	else if(oiEquals(lmessage, '/stopandlock'))
 	{
 		stop_and_lock()
 	}
 
-	else if(oiEquals(lmsg, '/stop'))
+	else if(oiEquals(lmessage, '/stop'))
 	{
 		stop_media()
 	}
 
-	else if(oiEquals(lmsg, '/default'))
+	else if(oiEquals(lmessage, '/default'))
 	{
 		default_media_state()
 	}
 
-	else if(oiEquals(lmsg, '/menu'))
+	else if(oiEquals(lmessage, '/menu'))
 	{
 		show_main_menu()
 	}
 
-	else if(oiEquals(lmsg, '/media'))
+	else if(oiEquals(lmessage, '/media'))
 	{
 		show_media_menu()
 	}
 
-	else if(oiEquals(lmsg, '/user'))
+	else if(oiEquals(lmessage, '/user'))
 	{
 		show_user_menu()
 	}
 
-	else if(oiEquals(lmsg, '/imagehistory'))
+	else if(oiEquals(lmessage, '/imagehistory'))
 	{
 		show_image_history()
 	}
 
-	else if(oiStartsWith(lmsg, '/imagehistory'))
+	else if(oiStartsWith(lmessage, '/imagehistory'))
 	{
 		show_image_history(arg)
 	}
 
-	else if(oiEquals(lmsg, '/tvhistory'))
+	else if(oiEquals(lmessage, '/tvhistory'))
 	{
 		show_tv_history()
 	}
 
-	else if(oiStartsWith(lmsg, '/tvhistory'))
+	else if(oiStartsWith(lmessage, '/tvhistory'))
 	{
 		show_tv_history(arg)
 	}
 
-	else if(oiEquals(lmsg, '/radiohistory'))
+	else if(oiEquals(lmessage, '/radiohistory'))
 	{
 		show_radio_history()
 	}
 
-	else if(oiStartsWith(lmsg, '/radiohistory'))
+	else if(oiStartsWith(lmessage, '/radiohistory'))
 	{
 		show_radio_history(arg)
 	}
 
-	else if(oiEquals(lmsg, '/lockimages'))
+	else if(oiEquals(lmessage, '/lockimages'))
 	{
 		toggle_lock_images(true)
 	}
 
-	else if(oiEquals(lmsg, '/locktv'))
+	else if(oiEquals(lmessage, '/locktv'))
 	{
 		toggle_lock_tv(true)
 	}
 
-	else if(oiEquals(lmsg, '/lockradio'))
+	else if(oiEquals(lmessage, '/lockradio'))
 	{
 		toggle_lock_radio(true)
 	}
 
-	else if(oiEquals(lmsg, '/unlockimages'))
+	else if(oiEquals(lmessage, '/unlockimages'))
 	{
 		toggle_lock_images(false)
 	}
 
-	else if(oiEquals(lmsg, '/unlocktv'))
+	else if(oiEquals(lmessage, '/unlocktv'))
 	{
 		toggle_lock_tv(false)
 	}
 
-	else if(oiEquals(lmsg, '/unlockradio'))
+	else if(oiEquals(lmessage, '/unlockradio'))
 	{
 		toggle_lock_radio(false)
 	}
 
-	else if(oiEquals(lmsg, '/togglelockimages'))
+	else if(oiEquals(lmessage, '/togglelockimages'))
 	{
 		toggle_lock_images()
 	}
 
-	else if(oiEquals(lmsg, '/togglelocktv'))
+	else if(oiEquals(lmessage, '/togglelocktv'))
 	{
 		toggle_lock_tv()
 	}
 
-	else if(oiEquals(lmsg, '/togglelockradio'))
+	else if(oiEquals(lmessage, '/togglelockradio'))
 	{
 		toggle_lock_radio()
 	}
 
-	else if(oiEquals(lmsg, '/showimages'))
+	else if(oiEquals(lmessage, '/showimages'))
 	{
 		toggle_images(true)
 	}
 
-	else if(oiEquals(lmsg, '/showtv'))
+	else if(oiEquals(lmessage, '/showtv'))
 	{
 		toggle_tv(true)
 	}
 
-	else if(oiEquals(lmsg, '/showradio'))
+	else if(oiEquals(lmessage, '/showradio'))
 	{
 		toggle_radio(true)
 	}
 
-	else if(oiEquals(lmsg, '/hideimages'))
+	else if(oiEquals(lmessage, '/hideimages'))
 	{
 		toggle_images(false)
 	}
 
-	else if(oiEquals(lmsg, '/hidetv'))
+	else if(oiEquals(lmessage, '/hidetv'))
 	{
 		toggle_tv(false)
 	}
 
-	else if(oiEquals(lmsg, '/hideradio'))
+	else if(oiEquals(lmessage, '/hideradio'))
 	{
 		toggle_radio(false)
 	}
 
-	else if(oiEquals(lmsg, '/toggleimages'))
+	else if(oiEquals(lmessage, '/toggleimages'))
 	{
 		toggle_images()
 	}
 
-	else if(oiEquals(lmsg, '/toggletv'))
+	else if(oiEquals(lmessage, '/toggletv'))
 	{
 		toggle_tv()
 	}
 
-	else if(oiEquals(lmsg, '/toggleradio'))
+	else if(oiEquals(lmessage, '/toggleradio'))
 	{
 		toggle_radio()
 	}
 
-	else if(oiEquals(lmsg, '/test'))
+	else if(oiEquals(lmessage, '/test'))
 	{
 		do_test()
 	}
 
-	else if(oiEquals(lmsg, '/maximizeimages'))
+	else if(oiEquals(lmessage, '/maximizeimages'))
 	{
 		maximize_images()
 	}
 
-	else if(oiEquals(lmsg, '/maximizetv'))
+	else if(oiEquals(lmessage, '/maximizetv'))
 	{
 		maximize_tv()
 	}
 
-	else if(oiEquals(lmsg, '/starttv'))
+	else if(oiEquals(lmessage, '/starttv'))
 	{
 		play_video()
 	}
 
-	else if(oiEquals(lmsg, '/stoptv'))
+	else if(oiEquals(lmessage, '/stoptv'))
 	{
 		stop_videos()
 	}
 
-	else if(oiEquals(lmsg, '/openimage'))
+	else if(oiEquals(lmessage, '/openimage'))
 	{
 		show_current_image_modal()
 	}
 
-	else if(oiEquals(lmsg, '/openlastimage'))
+	else if(oiEquals(lmessage, '/openlastimage'))
 	{
 		show_current_image_modal(false)
 	}
 
-	else if(oiEquals(lmsg, '/date'))
+	else if(oiEquals(lmessage, '/date'))
 	{
 		show_current_date()
 	}
 
-	else if(oiStartsWith(lmsg, '/js'))
+	else if(oiStartsWith(lmessage, '/js'))
 	{
 		execute_javascript(arg)
 	}
 
-	else if(oiStartsWith(lmsg, '/js2'))
+	else if(oiStartsWith(lmessage, '/js2'))
 	{
 		execute_javascript(arg, false)
 	}
 
-	else if(oiEquals(lmsg, '/changeimage'))
+	else if(oiEquals(lmessage, '/changeimage'))
 	{
 		show_image_picker()
 	}
 
-	else if(oiEquals(lmsg, '/changetv'))
+	else if(oiEquals(lmessage, '/changetv'))
 	{
 		show_tv_picker()
 	}
 
-	else if(oiEquals(lmsg, '/changeradio'))
+	else if(oiEquals(lmessage, '/changeradio'))
 	{
 		show_radio_picker()
 	}
 
-	else if(oiEquals(lmsg, '/closeall'))
+	else if(oiEquals(lmessage, '/closeall'))
 	{
-		close_all_msg()
+		close_all_message()
 	}
 
-	else if(oiEquals(lmsg, '/closeallmodals'))
+	else if(oiEquals(lmessage, '/closeallmodals'))
 	{
 		close_all_modals()
 	}
 
-	else if(oiEquals(lmsg, '/closeallpopups'))
+	else if(oiEquals(lmessage, '/closeallpopups'))
 	{
 		close_all_popups()
 	}
 
-	else if(oiEquals(lmsg, '/activityabove'))
+	else if(oiEquals(lmessage, '/activityabove'))
 	{
 		activity_above()
 	}
 
-	else if(oiEquals(lmsg, '/activitybelow'))
+	else if(oiEquals(lmessage, '/activitybelow'))
 	{
 		activity_below()
 	}
 
-	else if(oiEquals(lmsg, '/globalsettings'))
+	else if(oiEquals(lmessage, '/globalsettings'))
 	{
 		show_global_settings()
 	}
 
-	else if(oiStartsWith(lmsg, '/globalsettings'))
+	else if(oiStartsWith(lmessage, '/globalsettings'))
 	{
 		show_global_settings(arg)
 	}
 
-	else if(oiEquals(lmsg, '/roomsettings'))
+	else if(oiEquals(lmessage, '/roomsettings'))
 	{
 		show_room_settings()
 	}
 
-	else if(oiStartsWith(lmsg, '/roomsettings'))
+	else if(oiStartsWith(lmessage, '/roomsettings'))
 	{
 		show_room_settings(arg)
 	}
 
-	else if(oiStartsWith(lmsg, '/goto'))
+	else if(oiStartsWith(lmessage, '/goto'))
 	{
 		goto_url(arg, "tab")
 	}
 
-	else if(oiStartsWith(lmsg, '/changeinput'))
+	else if(oiStartsWith(lmessage, '/changeinput'))
 	{
 		change_input(arg)
 		ans.to_history = false
 		ans.clr_input = false
 	}
 
-	else if(oiEquals(lmsg, '/toggleplayradio'))
+	else if(oiEquals(lmessage, '/toggleplayradio'))
 	{
 		toggle_play_radio()
 	}
 
-	else if(oiEquals(lmsg, '/refreshimage'))
+	else if(oiEquals(lmessage, '/refreshimage'))
 	{
 		refresh_image()
 	}
 
-	else if(oiEquals(lmsg, '/refreshtv'))
+	else if(oiEquals(lmessage, '/refreshtv'))
 	{
 		refresh_tv()
 	}
 
-	else if(oiEquals(lmsg, '/refreshradio'))
+	else if(oiEquals(lmessage, '/refreshradio'))
 	{
 		refresh_radio()
 	}
 
-	else if(oiStartsWith(lmsg, '/stopradioin'))
+	else if(oiStartsWith(lmessage, '/stopradioin'))
 	{
 		stop_radio_in(arg)
 	}
 
-	else if(oiEquals(lmsg, '/ping'))
+	else if(oiEquals(lmessage, '/ping'))
 	{
 		ping_server()
 	}
 
-	else if(oiEquals(lmsg, '/reactlike'))
+	else if(oiEquals(lmessage, '/reactlike'))
 	{
 		send_reaction("like")
 	}
 
-	else if(oiEquals(lmsg, '/reactlove'))
+	else if(oiEquals(lmessage, '/reactlove'))
 	{
 		send_reaction("love")
 	}
 
-	else if(oiEquals(lmsg, '/reacthappy'))
+	else if(oiEquals(lmessage, '/reacthappy'))
 	{
 		send_reaction("happy")
 	}
 
-	else if(oiEquals(lmsg, '/reactmeh'))
+	else if(oiEquals(lmessage, '/reactmeh'))
 	{
 		send_reaction("meh")
 	}
 
-	else if(oiEquals(lmsg, '/reactsad'))
+	else if(oiEquals(lmessage, '/reactsad'))
 	{
 		send_reaction("sad")
 	}
 
-	else if(oiEquals(lmsg, '/reactdislike'))
+	else if(oiEquals(lmessage, '/reactdislike'))
 	{
 		send_reaction("dislike")
 	}
 
-	else if(oiEquals(lmsg, '/f1'))
+	else if(oiEquals(lmessage, '/f1'))
 	{
 		run_user_function(1)
 		ans.to_history = false
 	}
 
-	else if(oiEquals(lmsg, '/f2'))
+	else if(oiEquals(lmessage, '/f2'))
 	{
 		run_user_function(2)
 		ans.to_history = false
 	}
 
-	else if(oiEquals(lmsg, '/f3'))
+	else if(oiEquals(lmessage, '/f3'))
 	{
 		run_user_function(3)
 		ans.to_history = false
 	}
 
-	else if(oiEquals(lmsg, '/lockscreen'))
+	else if(oiEquals(lmessage, '/lockscreen'))
 	{
 		lock_screen()
 	}
 
-	else if(oiEquals(lmsg, '/unlockscreen'))
+	else if(oiEquals(lmessage, '/unlockscreen'))
 	{
 		unlock_screen()
 	}
 
-	else if(oiEquals(lmsg, '/togglelockscreen'))
+	else if(oiEquals(lmessage, '/togglelockscreen'))
 	{
 		if(screen_locked)
 		{
@@ -6881,17 +6881,17 @@ function execute_command(msg, ans)
 		}
 	}
 
-	else if(oiEquals(lmsg, '/drawimage'))
+	else if(oiEquals(lmessage, '/drawimage'))
 	{
 		open_draw_image()
 	}
 
-	else if(oiEquals(lmsg, '/joinvoicechat'))
+	else if(oiEquals(lmessage, '/joinvoicechat'))
 	{
 		join_voice_chat()
 	}
 
-	else if(oiEquals(lmsg, '/leavevoicechat'))
+	else if(oiEquals(lmessage, '/leavevoicechat'))
 	{
 		leave_voice_chat()
 	}
@@ -8121,13 +8121,13 @@ function chat_search(filter=false)
 
 	if(chat_history.length > 0)
 	{
-		for(var msg of chat_history.slice(0).reverse())
+		for(var message of chat_history.slice(0).reverse())
 		{
 			var show = false
 
-			var huname = msg.find('.chat_uname').eq(0)
-			var hcontent_container = msg.find('.chat_content_container').eq(0)
-			var hcontent = msg.find('.chat_content')
+			var huname = message.find('.chat_uname').eq(0)
+			var hcontent_container = message.find('.chat_content_container').eq(0)
+			var hcontent = message.find('.chat_content')
 
 			if(huname.length !== 0 && hcontent.length !== 0)
 			{
@@ -8137,7 +8137,7 @@ function chat_search(filter=false)
 
 				hcontent.each(function()
 				{
-					content += `${msg.text()} `
+					content += `${message.text()} `
 				})
 
 				if(uname.toLowerCase().includes(filter))
@@ -8161,7 +8161,7 @@ function chat_search(filter=false)
 
 			else
 			{
-				var hcontent = msg.find(".announcement_content").eq(0)
+				var hcontent = message.find(".announcement_content").eq(0)
 
 				if(hcontent.length === 0)
 				{
@@ -8383,19 +8383,19 @@ function announce_image_change(data, date=false, show=true)
 	if(data.image_source === "")
 	{
 		var title = `Setter: ${data.image_setter} | ${nd}`
-		var msg = `${data.image_setter} changed the image to default`
+		var message = `${data.image_setter} changed the image to default`
 	}
 
 	else if(data.image_type === "link")
 	{
 		var title = `Setter: ${data.image_setter} | ${nd}`
-		var msg = `${data.image_setter} changed the image`
+		var message = `${data.image_setter} changed the image`
 	}
 
 	else if(data.image_type === "upload")
 	{
 		var title = `Setter: ${data.image_setter} | Size: ${get_size_string(data.image_size)} | ${nd}`
-		var msg = `${data.image_setter} changed the image`
+		var message = `${data.image_setter} changed the image`
 	}
 
 	var onclick = function()
@@ -8413,7 +8413,7 @@ function announce_image_change(data, date=false, show=true)
 			type: "image_change",
 			uname: data.image_setter,
 			title: title,
-			msg: msg,
+			message: message,
 			onclick: onclick
 		})
 	}
@@ -8703,12 +8703,12 @@ function announce_radio_change(data, date=false, action="change", show=true)
 
 	if(action === "restart")
 	{
-		var msg = `${data.username} restarted the radio`
+		var message = `${data.username} restarted the radio`
 	}
 
 	else
 	{
-		var msg = `${data.radio_setter} changed the radio to: ${name}`
+		var message = `${data.radio_setter} changed the radio to: ${name}`
 	}
 
 	if(show)
@@ -8716,7 +8716,7 @@ function announce_radio_change(data, date=false, action="change", show=true)
 		chat_announce(
 		{
 			brk: "<i class='icon2c fa fa-volume-up'></i>",
-			msg: msg,
+			message: message,
 			title: title,
 			onclick: onclick,
 			save: true,
@@ -8936,12 +8936,12 @@ function announce_tv_change(data, date=false, action="change", show=true)
 
 	if(action === "restart")
 	{
-		var msg = `${data.username} restarted the tv`
+		var message = `${data.username} restarted the tv`
 	}
 
 	else
 	{
-		var msg = `${data.tv_setter} changed the tv to: ${name}`
+		var message = `${data.tv_setter} changed the tv to: ${name}`
 	}
 
 	if(show)
@@ -8949,7 +8949,7 @@ function announce_tv_change(data, date=false, action="change", show=true)
 		chat_announce(
 		{
 			brk: "<i class='icon2c fa fa-television'></i>",
-			msg: msg,
+			message: message,
 			title: title,
 			onclick: onclick,
 			save: true,
@@ -9303,7 +9303,7 @@ function do_userdisconnect(data)
 		chat_announce(
 		{
 			brk: "<i class='icon2c fa fa-sign-out'></i>",
-			msg: s,
+			message: s,
 			save: true,
 			uname: data.username
 		})
@@ -11957,7 +11957,7 @@ function fill()
 	GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {}abc def ghi
 	jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|;`
 
-	update_chat({uname:username, msg:s, prof_image:profile_image})
+	update_chat({uname:username, message:s, prof_image:profile_image})
 }
 
 function logout()
@@ -12136,7 +12136,7 @@ function show_log_messages()
 					update_chat(
 					{
 						uname: data.username,
-						msg: data.content,
+						message: data.content,
 						prof_image: data.profile_image,
 						date: date,
 						scroll: false
@@ -13608,12 +13608,12 @@ function add_aura(uname)
 
 	if(mode === "normal")
 	{
-		$(`.umsg_${uname}`).last().find(".chat_profile_image_container").eq(0).addClass("aura")
+		$(`.umessage_${uname}`).last().find(".chat_profile_image_container").eq(0).addClass("aura")
 	}
 
 	else if(mode === "compact")
 	{
-		$(`.umsg_${uname}`).last().find(".chat_uname").eq(0).addClass("aura3")
+		$(`.umessage_${uname}`).last().find(".chat_uname").eq(0).addClass("aura3")
 	}
 }
 
@@ -13630,12 +13630,12 @@ function show_aura(uname)
 
 		if(mode === "normal")
 		{
-			var c = !$(`.umsg_${uname}`).last().find(".chat_profile_image_container").eq(0).hasClass("aura")
+			var c = !$(`.umessage_${uname}`).last().find(".chat_profile_image_container").eq(0).hasClass("aura")
 		}
 
 		else if(mode === "compact")
 		{
-			var c = !$(`.umsg_${uname}`).last().find(".chat_uname").eq(0).hasClass("aura3")
+			var c = !$(`.umessage_${uname}`).last().find(".chat_uname").eq(0).hasClass("aura3")
 		}
 
 		if(c)
@@ -13666,9 +13666,9 @@ function remove_aura(uname, clr=false)
 	{
 		$(`.chat_profile_image_container.aura`).each(function()
 		{
-			var umsg = $(this).closest(`.umsg_${uname}`)
+			var umessage = $(this).closest(`.umessage_${uname}`)
 
-			if(umsg.length > 0)
+			if(umessage.length > 0)
 			{
 				$(this).removeClass("aura")
 			}
@@ -13679,9 +13679,9 @@ function remove_aura(uname, clr=false)
 	{
 		$(`.chat_uname.aura3`).each(function()
 		{
-			var umsg = $(this).closest(`.umsg_${uname}`)
+			var umessage = $(this).closest(`.umessage_${uname}`)
 
-			if(umsg.length > 0)
+			if(umessage.length > 0)
 			{
 				$(this).removeClass("aura3")
 			}
@@ -13993,11 +13993,11 @@ function generate_highlight_words_regex()
 	}
 }
 
-function check_highlights(msg)
+function check_highlights(message)
 {
 	if(get_setting("highlight_current_username"))
 	{
-		if(msg.search(mentions_regex) !== -1)
+		if(message.search(mentions_regex) !== -1)
 		{
 			return true
 		}
@@ -14005,7 +14005,7 @@ function check_highlights(msg)
 
 	if(highlight_words_regex)
 	{
-		if(msg.search(highlight_words_regex) !== -1)
+		if(message.search(highlight_words_regex) !== -1)
 		{
 			return true
 		}
@@ -14053,11 +14053,11 @@ function generate_ignored_words_regex()
 	}
 }
 
-function check_ignored_words(msg="", uname="")
+function check_ignored_words(message="", uname="")
 {
 	if(ignored_words_regex)
 	{
-		if(msg.search(ignored_words_regex) !== -1)
+		if(message.search(ignored_words_regex) !== -1)
 		{
 			if(uname && uname === username && get_setting("ignored_words_exclude_same_user"))
 			{
@@ -14169,10 +14169,14 @@ function cant_chat()
 	feedback("You don't have permission to chat")
 }
 
-function write_popup_message(uname, type="user")
+function write_popup_message(arg, type="user")
 {
 	if(type === "user")
 	{
+		var split = arg.split(">")
+
+		var uname = split[0].trim()
+
 		if(!can_chat)
 		{
 			cant_chat()
@@ -14188,6 +14192,20 @@ function write_popup_message(uname, type="user")
 		if(!usernames.includes(uname))
 		{
 			user_not_in_room()
+			return false
+		}
+
+		if(split.length > 1)
+		{
+			var message = utilz.clean_string2(split.slice(1).join(">"))
+
+			socket_emit('whisper', 
+			{
+				username: uname, 
+				message: message, 
+				draw_coords: false
+			})
+
 			return false
 		}
 
@@ -14579,7 +14597,7 @@ function popup_message_received(data, type="user", announce=true)
 		chat_announce(
 		{
 			brk: "<i class='icon2c fa fa-envelope'></i>",
-			msg: `${t} received`,
+			message: `${t} received`,
 			save: true,
 			onclick: af
 		})
@@ -14662,24 +14680,24 @@ function show_highlights(filter=false)
 
 		$("#highlights_container").html("")
 
-		for(var msg of chat_history.slice(0).reverse())
+		for(var message of chat_history.slice(0).reverse())
 		{
-			if(msg.data("highlighted"))
+			if(message.data("highlighted"))
 			{
-				if(msg.hasClass("chat_message"))
+				if(message.hasClass("chat_message"))
 				{
-					var huname = msg.find('.chat_uname').eq(0)
-					var hcontent = msg.find('.chat_content')
+					var huname = message.find('.chat_uname').eq(0)
+					var hcontent = message.find('.chat_content')
 					var cn = $("<div class='highlights_item'><div class='highlights_uname generic_uname inline action'></div><div class='highlights_content'></div>")
 					cn.find(".highlights_uname").eq(0).text(huname.text())
 					cn.find(".highlights_content").eq(0).html(hcontent.clone(true, true))
 				}
 
-				else if(msg.hasClass("announcement"))
+				else if(message.hasClass("announcement"))
 				{
 					var cn = $("<div class='highlights_item'><div class='highlights_content'></div>")
 					var content = cn.find(".highlights_content").eq(0)
-					var announcement_content = msg.find(".announcement_content").eq(0)
+					var announcement_content = message.find(".announcement_content").eq(0)
 					content.append(announcement_content.parent().clone(true, true))
 				}
 
@@ -15445,7 +15463,7 @@ function make_safe(args={})
 
 	if(args.text || !args.remove_text_if_empty)
 	{
-		var c_text_classes = "msg_info_text inline"
+		var c_text_classes = "message_info_text inline"
 
 		if(args.onclick)
 		{
@@ -15454,7 +15472,7 @@ function make_safe(args={})
 
 		c.append(`<div class='${c_text_classes}'></div>`)
 
-		var c_text = c.find(".msg_info_text").eq(0)
+		var c_text = c.find(".message_info_text").eq(0)
 
 		if(args.urlize)
 		{
@@ -15489,11 +15507,11 @@ function make_safe(args={})
 			var sp = ""
 		}
 
-		c.append(`${sp}<div class='msg_info_html'>${args.html}</div>`)
+		c.append(`${sp}<div class='message_info_html'>${args.html}</div>`)
 
 		if(args.html_unselectable)
 		{
-			c.find(".msg_info_html").eq(0).addClass("unselectable")
+			c.find(".message_info_html").eq(0).addClass("unselectable")
 		}
 	}
 
@@ -15506,7 +15524,7 @@ function activity_above()
 	var up_scroller_height = $("#up_scroller").outerHeight()
 	var scrolltop = $("#chat_area").scrollTop()
 
-	$($(".msg").get().reverse()).each(function()
+	$($(".message").get().reverse()).each(function()
 	{
 		var same_uname = false
 
@@ -15545,7 +15563,7 @@ function activity_below()
 	var chat_area_height = $("#chat_area").innerHeight()
 	var scrolltop = $("#chat_area").scrollTop()
 
-	$(".msg").each(function()
+	$(".message").each(function()
 	{
 		var same_uname = false
 
@@ -16114,12 +16132,12 @@ function show_export_settings()
 	msg_info2.show(["Export Settings", s])
 }
 
-function feedback(msg, data=false)
+function feedback(message, data=false)
 {
 	var obj =
 	{
 		brk: '*',
-		msg: msg
+		message: message
 	}
 
 	if(data)
@@ -16135,13 +16153,13 @@ function feedback(msg, data=false)
 	chat_announce(obj)
 }
 
-function public_feedback(msg, data=false)
+function public_feedback(message, data=false)
 {
 	var obj =
 	{
 		brk: '~',
 		save: true,
-		msg: msg
+		message: message
 	}
 
 	if(data)
@@ -16179,16 +16197,16 @@ function add_separator(update_scroll=true)
 
 	if(get_setting("chat_layout") === "normal")
 	{
-		var msgcls = "normal_layout"
+		var messagecls = "normal_layout"
 	}
 
 	else if(get_setting("chat_layout") === "compact")
 	{
-		var msgcls = "compact_layout"
+		var messagecls = "compact_layout"
 	}
 
 	var s = `
-	<div class='msg separator_container ${msgcls}'>
+	<div class='message separator_container ${messagecls}'>
 		<div class='separator_line'></div>
 		<div class='separator_text'>New Messages</div>
 		<div class='separator_line'></div>
@@ -16488,37 +16506,37 @@ function show_reaction(data, date=false)
 	if(data.reaction_type === "like")
 	{
 		var icon = "<i class='icon2c fa fa-thumbs-o-up'></i>"
-		var msg = `likes this`
+		var message = `likes this`
 	}
 
 	else if(data.reaction_type === "love")
 	{
 		var icon = "<i class='icon2c fa fa-heart-o'></i>"
-		var msg = `loves this`
+		var message = `loves this`
 	}
 
 	else if(data.reaction_type === "happy")
 	{
 		var icon = "<i class='icon2c fa fa-smile-o'></i>"
-		var msg = `is feeling happy`
+		var message = `is feeling happy`
 	}
 
 	else if(data.reaction_type === "meh")
 	{	
 		var icon = "<i class='icon2c fa fa-meh-o'></i>"
-		var msg = `is feeling meh`
+		var message = `is feeling meh`
 	}
 
 	else if(data.reaction_type === "sad")
 	{
 		var icon = "<i class='icon2c fa fa-frown-o'></i>"
-		var msg = `is feeling sad`
+		var message = `is feeling sad`
 	}
 
 	else if(data.reaction_type === "dislike")
 	{
 		var icon = "<i class='icon2c fa fa-thumbs-o-down'></i>"
-		var msg = `dislikes this`
+		var message = `dislikes this`
 	}
 
 	else
@@ -16534,7 +16552,7 @@ function show_reaction(data, date=false)
 	update_chat(
 	{
 		brk: icon,
-		msg: msg,
+		message: message,
 		uname: data.username,
 		prof_image: data.profile_image,
 		third_person: true,
@@ -18112,7 +18130,7 @@ function on_room_created(data)
 	chat_announce(
 	{
 		brk: "<i class='icon2c fa fa-key'></i>",
-		msg: "Room Created",
+		message: "Room Created",
 		onclick: onclick,
 		save: true
 	})
