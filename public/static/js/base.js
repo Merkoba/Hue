@@ -8442,14 +8442,6 @@ function push_images_changed(data)
 		data.title = "Default Image"
 	}
 
-	for(var img of images_changed)
-	{
-		if(img.date_raw === data.date_raw)
-		{
-			return false
-		}
-	}
-
 	for(var i=0; i<images_changed.length; i++)
 	{
 		var img = images_changed[i]
@@ -8743,14 +8735,6 @@ function push_radio_changed(data)
 		data.url = default_radio_source
 	}
 
-	for(var radio of radio_changed)
-	{
-		if(radio.date_raw === data.date_raw)
-		{
-			return false
-		}
-	}
-
 	for(var i=0; i<radio_changed.length; i++)
 	{
 		var radio = radio_changed[i]
@@ -8977,14 +8961,6 @@ function push_tv_changed(data)
 	if(!data.url)
 	{
 		data.url = default_tv_source
-	}
-
-	for(var tv of tv_changed)
-	{
-		if(tv.date_raw === data.date_raw)
-		{
-			return false
-		}
 	}
 
 	for(var i=0; i<tv_changed.length; i++)
