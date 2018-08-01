@@ -8673,7 +8673,7 @@ function announce_radio_change(data, date=false, action="change", show=true)
 
 	else
 	{
-		if(data.radio_date !== undefined)
+		if(data.radio_date !== undefined && action !== "restart")
 		{
 			var d = data.radio_date
 		}
@@ -8686,7 +8686,15 @@ function announce_radio_change(data, date=false, action="change", show=true)
 
 	var nd = nice_date(d)
 
-	var title = `Setter: ${data.radio_setter} | ${nd}`
+	if(action === "restart")
+	{
+		var title = undefined
+	}
+
+	else
+	{
+		var title = `Setter: ${data.radio_setter} | ${nd}`
+	}
 
 	var onclick = function()
 	{
@@ -8696,8 +8704,6 @@ function announce_radio_change(data, date=false, action="change", show=true)
 	if(action === "restart")
 	{
 		var msg = `${data.username} restarted the radio`
-		title = undefined
-		d = undefined
 	}
 
 	else
@@ -8900,7 +8906,7 @@ function announce_tv_change(data, date=false, action="change", show=true)
 
 	else
 	{
-		if(data.tv_date !== undefined)
+		if(data.tv_date !== undefined && action !== "restart")
 		{
 			var d = data.tv_date
 		}
@@ -8913,7 +8919,15 @@ function announce_tv_change(data, date=false, action="change", show=true)
 
 	var nd = nice_date(d)
 
-	var title = `Setter: ${data.tv_setter} | ${nd}`
+	if(action === "restart")
+	{
+		var title = undefined
+	}
+
+	else
+	{
+		var title = `Setter: ${data.tv_setter} | ${nd}`
+	}
 
 	var onclick = function()
 	{
@@ -8923,8 +8937,6 @@ function announce_tv_change(data, date=false, action="change", show=true)
 	if(action === "restart")
 	{
 		var msg = `${data.username} restarted the tv`
-		title = undefined,
-		d = undefined
 	}
 
 	else
