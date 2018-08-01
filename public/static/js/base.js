@@ -891,7 +891,7 @@ function start_socket()
 		{
 			update_chat(
 			{
-				uname: data.username, 
+				username: data.username, 
 				message: data.message, 
 				prof_image: data.profile_image,
 				date: data.date
@@ -986,7 +986,7 @@ function start_socket()
 		{
 			public_feedback(`${data.username1} banned ${data.username2}`,
 			{
-				uname: data.username1,
+				username: data.username1,
 				open_profile: true
 			})
 		}
@@ -995,7 +995,7 @@ function start_socket()
 		{
 			public_feedback(`${data.username1} unbanned ${data.username2}`,
 			{
-				uname: data.username1,
+				username: data.username1,
 				open_profile: true
 			})
 		}
@@ -2010,7 +2010,7 @@ function userjoin(data)
 				brk: "<i class='icon2c fa fa-user-plus'></i>",
 				message: `${data.username} has joined`,
 				save: true,
-				uname: data.username,
+				username: data.username,
 				open_profile: true
 			})
 
@@ -4914,7 +4914,7 @@ function update_chat(args={})
 {
 	var def_args =
 	{
-		uname: "",
+		username: "",
 		message: "",
 		prof_image: "",
 		date: false,
@@ -4924,14 +4924,14 @@ function update_chat(args={})
 
 	fill_defaults(args, def_args)
 
-	if(check_ignored_words(args.message, args.uname))
+	if(check_ignored_words(args.message, args.username))
 	{
 		return false
 	}
 
-	if(args.uname)
+	if(args.username)
 	{
-		if(user_is_ignored(args.uname))
+		if(user_is_ignored(args.username))
 		{
 			return false
 		}
@@ -4946,7 +4946,7 @@ function update_chat(args={})
 
 	var highlighted = false
 
-	if(args.uname !== username)
+	if(args.username !== username)
 	{
 		if(check_highlights(args.message))
 		{
@@ -5026,7 +5026,7 @@ function update_chat(args={})
 		if(get_setting("chat_layout") === "normal")
 		{
 			var s = `
-			<div class='message chat_message umessage_${args.uname} normal_layout'>
+			<div class='message chat_message umessage_${args.username} normal_layout'>
 				<div class='chat_left_side'>
 					<div class='chat_profile_image_container unselectable action4'>
 						<img class='chat_profile_image' src='${pi}'>
@@ -5046,7 +5046,7 @@ function update_chat(args={})
 		else if(get_setting("chat_layout") === "compact")
 		{
 			var s = `
-			<div class='message chat_message umessage_${args.uname} compact_layout'>
+			<div class='message chat_message umessage_${args.username} compact_layout'>
 				<div class='chat_uname_container'>
 					<div class='chat_uname action'></div><div>:</div>
 				</div>
@@ -5063,7 +5063,7 @@ function update_chat(args={})
 
 	var huname = fmessage.find('.chat_uname').eq(0)
 	
-	huname.text(args.uname)
+	huname.text(args.username)
 
 	huname.data("prof_image", pi)
 
@@ -5076,12 +5076,12 @@ function update_chat(args={})
 	})
 
 	fmessage.data("highlighted", highlighted)
-	fmessage.data("uname", args.uname)
+	fmessage.data("uname", args.username)
 	fmessage.data("mode", "chat")
 
 	add_to_chat(fmessage, true)
 
-	if(args.uname !== username)
+	if(args.username !== username)
 	{
 		if(highlighted)
 		{
@@ -5594,7 +5594,7 @@ function chat_announce(args={})
 		type: "normal",
 		info1: "",
 		info2: "",
-		uname: false,
+		username: false,
 		open_profile: false
 	}
 
@@ -5602,14 +5602,14 @@ function chat_announce(args={})
 
 	var ignore = false
 
-	if(check_ignored_words(args.message, args.uname))
+	if(check_ignored_words(args.message, args.username))
 	{
 		ignore = true
 	}
 
-	if(args.uname)
+	if(args.username)
 	{
-		if(user_is_ignored(args.uname))
+		if(user_is_ignored(args.username))
 		{
 			ignore = true
 		}
@@ -5618,7 +5618,7 @@ function chat_announce(args={})
 	var containerclasses = "announcement_content_container"
 	var contclasses = "announcement_content"
 
-	if(args.onclick || (args.uname && args.open_profile))
+	if(args.onclick || (args.username && args.open_profile))
 	{
 		containerclasses += " pointer"
 		containerclasses += " action"
@@ -5685,11 +5685,11 @@ function chat_announce(args={})
 		content.parent().on("click", args.onclick)
 	}
 
-	else if(args.uname && args.open_profile)
+	else if(args.username && args.open_profile)
 	{
 		var pif = function()
 		{
-			show_profile(args.uname)
+			show_profile(args.username)
 		}
 
 		content.parent().on("click", pif)
@@ -5699,7 +5699,7 @@ function chat_announce(args={})
 	fmessage.data("type", args.type)
 	fmessage.data("info1", args.info1)
 	fmessage.data("info2", args.info2)
-	fmessage.data("uname", args.uname)
+	fmessage.data("uname", args.username)
 	fmessage.data("mode", "announcement")
 
 	if(!ignore)
@@ -7108,7 +7108,7 @@ function announce_topic_change(data)
 		public_feedback(`${data.topic_setter} changed the topic to: "${data.topic}"`, 
 		{
 			highlight: highlight,
-			uname: data.topic_setter,
+			username: data.topic_setter,
 			open_profile: true
 		})
 
@@ -7123,7 +7123,7 @@ function announce_room_name_change(data)
 	{
 		public_feedback(`${data.username} changed the room name to: "${data.name}"`,
 		{
-			uname: data.username,
+			username: data.username,
 			open_profile: true
 		})
 
@@ -7146,7 +7146,7 @@ function announce_new_username(data)
 		{
 			public_feedback(`${data.old_username} is now known as ${username}`,
 			{
-				uname: data.username,
+				username: data.username,
 				open_profile: true
 			})
 		}
@@ -7155,7 +7155,7 @@ function announce_new_username(data)
 		{
 			feedback(`You are now known as ${username}`,
 			{
-				uname: data.username,
+				username: data.username,
 				open_profile: true
 			})
 		}
@@ -7167,7 +7167,7 @@ function announce_new_username(data)
 		{
 			public_feedback(`${data.old_username} is now known as ${data.username}`,
 			{
-				uname: data.username,
+				username: data.username,
 				open_profile: true
 			})
 		}
@@ -8411,7 +8411,7 @@ function announce_image_change(data, date=false, show=true)
 			save: true,
 			date: d,
 			type: "image_change",
-			uname: data.image_setter,
+			username: data.image_setter,
 			title: title,
 			message: message,
 			onclick: onclick
@@ -8469,7 +8469,7 @@ function announce_role_change(data)
 
 	public_feedback(`${data.username1} gave ${data.role} to ${data.username2}`,
 	{
-		uname: data.username1,
+		username: data.username1,
 		open_profile: true
 	})
 
@@ -8530,7 +8530,7 @@ function announce_privacy_change(data)
 
 	public_feedback(s,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 }
@@ -8722,7 +8722,7 @@ function announce_radio_change(data, date=false, action="change", show=true)
 			save: true,
 			date: d,
 			type: "radio_change",
-			uname: data.radio_setter
+			username: data.radio_setter
 		})
 	}
 
@@ -8955,7 +8955,7 @@ function announce_tv_change(data, date=false, action="change", show=true)
 			save: true,
 			date: d,
 			type: "tv_change",
-			uname: data.tv_setter
+			username: data.tv_setter
 		})
 	}
 	
@@ -9113,7 +9113,7 @@ function announce_unban_all(data)
 {
 	public_feedback(`${data.username} unbanned all banned users`,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 }
@@ -9202,7 +9202,7 @@ function announce_voices_resetted(data)
 {
 	public_feedback(`${data.username} resetted the voices`,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 
@@ -9218,7 +9218,7 @@ function announce_removedops(data)
 {
 	public_feedback(`${data.username} removed all ops`,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 
@@ -9305,7 +9305,7 @@ function do_userdisconnect(data)
 			brk: "<i class='icon2c fa fa-sign-out'></i>",
 			message: s,
 			save: true,
-			uname: data.username
+			username: data.username
 		})
 	}
 
@@ -11957,7 +11957,7 @@ function fill()
 	GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {}abc def ghi
 	jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|;`
 
-	update_chat({uname:username, message:s, prof_image:profile_image})
+	update_chat({username:username, message:s, prof_image:profile_image})
 }
 
 function logout()
@@ -12135,7 +12135,7 @@ function show_log_messages()
 				{
 					update_chat(
 					{
-						uname: data.username,
+						username: data.username,
 						message: data.content,
 						prof_image: data.profile_image,
 						date: date,
@@ -12218,7 +12218,7 @@ function announce_log_change(data)
 
 	public_feedback(s,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 
@@ -12243,7 +12243,7 @@ function announce_log_cleared(data)
 
 	public_feedback(s,
 	{
-		uname: uname,
+		username: uname,
 		open_profile: true
 	})
 }
@@ -12910,7 +12910,7 @@ function profile_image_changed(data)
 	{
 		public_feedback(`${data.username} changed the profile image`,
 		{
-			uname: data.username,
+			username: data.username,
 			open_profile: true
 		})
 	}
@@ -13107,7 +13107,7 @@ function announce_room_images_mode_change(data)
 {
 	public_feedback(`${data.username} changed the images mode to ${data.what}`,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 
@@ -13121,7 +13121,7 @@ function announce_room_tv_mode_change(data)
 {
 	public_feedback(`${data.username} changed the tv mode to ${data.what}`,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 
@@ -13135,7 +13135,7 @@ function announce_room_radio_mode_change(data)
 {
 	public_feedback(`${data.username} changed the radio mode to ${data.what}`,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 
@@ -13148,7 +13148,7 @@ function announce_room_voice_chat_mode_change(data)
 {
 	public_feedback(`${data.username} changed the voice chat mode to ${data.what}`,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 
@@ -13228,7 +13228,7 @@ function announce_theme_change(data)
 {
 	public_feedback(`${data.username} changed the theme to ${data.color}`,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 
@@ -13299,7 +13299,7 @@ function announce_background_image_change(data)
 {
 	public_feedback(`${data.username} changed the background image`,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 
@@ -13333,7 +13333,7 @@ function announce_background_mode_change(data)
 {
 	public_feedback(`${data.username} changed the background mode to ${data.mode}`,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 
@@ -13372,7 +13372,7 @@ function announce_background_tile_dimensions_change(data)
 {
 	public_feedback(`${data.username} changed the background tile dimensions to ${data.dimensions}`,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 
@@ -13477,7 +13477,7 @@ function announce_voice_permission_change(data)
 	{
 		public_feedback(`${data.username} set ${data.ptype} to true`,
 		{
-			uname: data.username,
+			username: data.username,
 			open_profile: true
 		})
 	}
@@ -13486,7 +13486,7 @@ function announce_voice_permission_change(data)
 	{
 		public_feedback(`${data.username} set ${data.ptype} to false`,
 		{
-			uname: data.username,
+			username: data.username,
 			open_profile: true
 		})
 	}
@@ -16278,7 +16278,7 @@ function announce_text_color_mode_change(data)
 {
 	public_feedback(`${data.username} changed the text color mode to ${data.mode}`,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 
@@ -16329,7 +16329,7 @@ function announce_text_color_change(data)
 {
 	public_feedback(`${data.username} changed the text color to ${data.color}`,
 	{
-		uname: data.username,
+		username: data.username,
 		open_profile: true
 	})
 
@@ -16553,7 +16553,7 @@ function show_reaction(data, date=false)
 	{
 		brk: icon,
 		message: message,
-		uname: data.username,
+		username: data.username,
 		prof_image: data.profile_image,
 		third_person: true,
 		date: d
