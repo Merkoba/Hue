@@ -6044,7 +6044,7 @@ function process_message(message, to_history=true, clr_input=true)
 
 		if(alias !== undefined)
 		{
-			process_message(alias, to_history, clr_input)
+			process_message(alias, false, true)
 			return false
 		}
 
