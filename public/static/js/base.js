@@ -11202,6 +11202,8 @@ function setting_aliases_action(type, save=true)
 {
 	var cmds = utilz.clean_string7($(`#${type}_aliases`).val())
 
+	cmds = format_command_aliases(cmds)
+
 	$(`#${type}_aliases`).val(cmds)
 
 	window[type].aliases = cmds
@@ -18340,7 +18342,39 @@ function setup_command_aliases()
 
 		if(name[0] === "/" && name[1] !== "/")
 		{
-			command_aliases[name] = pieces.slice(1).join("=").trim()
+			var body = pieces.slice(1).join("=").trim()
+
+			command_aliases[name] = body
 		}
 	}
+}
+
+function format_command_aliases(cmds)
+{
+	var aliases = cmds.split("\n")
+
+	var s = ""
+
+	for(var alias of aliases)
+	{
+		var pieces = alias.split("=")
+
+		if(pieces.length < 2)
+		{
+			continue
+		}
+
+		var name = pieces[0].trim()
+
+		if(name[0] !== "/")
+		{
+			name = "/" + name
+		}
+		
+		var body = pieces.slice(1).join("=").trim()
+
+		s += `${name} = ${body}\n`
+	}
+
+	return s.slice(0, -1)
 }
