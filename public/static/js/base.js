@@ -5982,6 +5982,7 @@ function register_commands()
 	commands.push('/drawimage')
 	commands.push('/joinvoicechat')
 	commands.push('/leavevoicechat')
+	commands.push('/say')
 
 	commands.sort()
 
@@ -6921,6 +6922,11 @@ function execute_command(message, ans)
 	else if(oiEquals(lmessage, '/leavevoicechat'))
 	{
 		leave_voice_chat()
+	}
+
+	else if(oiStartsWith(lmessage, '/say'))
+	{
+		process_message(arg)
 	}
 
 	else
