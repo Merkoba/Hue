@@ -6030,9 +6030,14 @@ function process_message(message, to_history=true, clr_input=true)
 
 		if(and_split.length > 1)
 		{
+			if(to_history)
+			{
+				add_to_input_history(message)
+			}
+
 			for(var cmd of and_split)
 			{
-				process_message(cmd.trim(), to_history, clr_input)
+				process_message(cmd.trim(), false, clr_input)
 			}
 
 			return false
@@ -6044,7 +6049,7 @@ function process_message(message, to_history=true, clr_input=true)
 
 		if(alias !== undefined)
 		{
-			process_message(alias, false, true)
+			process_message(alias, to_history, clr_input)
 			return false
 		}
 
@@ -6420,7 +6425,6 @@ function execute_command(message, ans)
 	else if(oiEquals(lmessage, '/history'))
 	{
 		show_input_history()
-		ans.to_history = false
 	}
 
 	else if(oiStartsWith(lmessage, '/history'))
