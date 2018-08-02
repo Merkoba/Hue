@@ -6049,7 +6049,13 @@ function process_message(message, to_history=true, clr_input=true)
 
 		if(alias !== undefined)
 		{
-			process_message(alias, to_history, clr_input)
+			if(to_history)
+			{
+				add_to_input_history(cmd)
+			}
+
+			process_message(alias, false, clr_input)
+			
 			return false
 		}
 
