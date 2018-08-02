@@ -4472,7 +4472,7 @@ function get_closest_autocomplete(element, w)
 {
 	var info = tab_info[element.id]
 
-	var l = commands.concat(usernames).concat(["@everyone"])
+	var l = commands.concat(usernames).concat(["@everyone"]).concat(Object.keys(command_aliases))
 	var wl = w.toLowerCase()
 	var has = false
 
@@ -6049,6 +6049,11 @@ function process_message(message, to_history=true, clr_input=true)
 
 		if(alias !== undefined)
 		{
+			if(cmd.startsWith("/x"))
+			{
+				to_history = false
+			}
+
 			if(to_history)
 			{
 				add_to_input_history(cmd)
@@ -6072,6 +6077,7 @@ function process_message(message, to_history=true, clr_input=true)
 	{
 		if(can_chat)
 		{
+			console.log(to_history)
 			message = utilz.clean_string10(message)
 
 			if(message.length === 0)
@@ -6936,7 +6942,7 @@ function execute_command(message, ans)
 
 	else if(oiStartsWith(lmessage, '/say'))
 	{
-		process_message(arg)
+		process_message(arg, ans.to_history, ans.clr_input)
 	}
 
 	else
