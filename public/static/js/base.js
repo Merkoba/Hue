@@ -6049,7 +6049,7 @@ function process_message(message, to_history=true, clr_input=true)
 
 		if(alias !== undefined)
 		{
-			if(cmd.startsWith("/x"))
+			if(cmd.startsWith("/X"))
 			{
 				to_history = false
 			}
@@ -6077,7 +6077,6 @@ function process_message(message, to_history=true, clr_input=true)
 	{
 		if(can_chat)
 		{
-			console.log(to_history)
 			message = utilz.clean_string10(message)
 
 			if(message.length === 0)
