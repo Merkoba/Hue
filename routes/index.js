@@ -102,6 +102,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.global_settings_default_media_display_percentage = config.global_settings_default_media_display_percentage
 	c.vars.global_settings_default_tv_display_percentage = config.global_settings_default_tv_display_percentage
 	c.vars.global_settings_default_tv_display_position = config.global_settings_default_tv_display_position
+	c.vars.global_settings_default_aliases = config.global_settings_default_aliases
 	c.vars.room_state_default_images_enabled = config.room_state_default_images_enabled
 	c.vars.room_state_default_tv_enabled = config.room_state_default_tv_enabled
 	c.vars.room_state_default_radio_enabled = config.room_state_default_radio_enabled

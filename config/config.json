@@ -132,6 +132,7 @@
 	"global_settings_default_media_display_percentage": 70,
 	"global_settings_default_tv_display_percentage": 50,
 	"global_settings_default_tv_display_position": "bottom",
+	"global_settings_default_aliases": "",
 	"room_state_default_images_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_radio_enabled": true,

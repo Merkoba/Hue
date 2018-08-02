@@ -248,6 +248,7 @@ var radio_get_metadata_ongoing = false
 var radio_get_metadata = false
 var init_data
 var log_messages_processed = false
+var command_aliases = {}
 
 function init()
 {
@@ -308,6 +309,7 @@ function init()
 	start_other_scrollbars()
 	setup_user_function_titles()
 	setup_modal_image_number()
+	setup_command_aliases()
 
 	start_socket()
 }
@@ -6023,10 +6025,35 @@ function process_message(message, to_history=true, clr_input=true)
 	{
 		message = utilz.clean_string2(message)
 
-		var ans = execute_command(message, {to_history:to_history, clr_input:clr_input})
+		var and_split = message.split(" && ")
 
-		to_history = ans.to_history
-		clr_input = ans.clr_input
+		if(and_split.length > 1)
+		{
+			for(var cmd of and_split)
+			{
+				process_message(cmd.trim(), to_history, clr_input)
+			}
+
+			return false
+		}
+
+		var cmd = message.split(" ")[0].trim()
+
+		var alias = command_aliases[cmd]
+
+		if(alias !== undefined)
+		{
+			process_message(alias, to_history, clr_input)
+			return false
+		}
+
+		else
+		{
+			var ans = execute_command(message, {to_history:to_history, clr_input:clr_input})
+
+			to_history = ans.to_history
+			clr_input = ans.clr_input
+		}
 	}
 
 	else
@@ -10385,7 +10412,8 @@ function get_global_settings()
 		"chat_layout",
 		"media_display_percentage",
 		"tv_display_percentage",
-		"tv_display_position"
+		"tv_display_position",
+		"aliases"
 	]
 
 	var changed = false
@@ -11161,6 +11189,25 @@ function setting_chat_layout_action(type, save=true)
 				restart_client()
 			}
 		}
+	}
+}
+
+function setting_aliases_action(type, save=true)
+{
+	var cmds = utilz.clean_string7($(`#${type}_aliases`).val())
+
+	$(`#${type}_aliases`).val(cmds)
+
+	window[type].aliases = cmds
+
+	if(active_settings("aliases") === type)
+	{
+		setup_command_aliases()
+	}
+
+	if(save)
+	{
+		window[`save_${type}`]()
 	}
 }
 
@@ -18261,4 +18308,33 @@ function toggle_menu_windows(type)
 function send_system_restart_signal()
 {
 	socket_emit("system_restart_signal", {})
+}
+
+function setup_command_aliases()
+{
+	var aliases = get_setting("aliases").split("\n")
+
+	command_aliases = {}
+
+	for(var alias of aliases)
+	{
+		var pieces = alias.split("=")
+
+		if(pieces.length < 2)
+		{
+			continue
+		}
+
+		var name = pieces[0].trim()
+
+		if(name.length < 2)
+		{
+			continue
+		}
+
+		if(name[0] === "/" && name[1] !== "/")
+		{
+			command_aliases[name] = pieces.slice(1).join("=").trim()
+		}
+	}
 }

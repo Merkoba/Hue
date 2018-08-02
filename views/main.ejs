@@ -34,10 +34,10 @@
 		<link rel="stylesheet" href="/static/js/nstslider/jquery.nstSlider.min.css"> 
 
 		<script src="/static/js/msg.min.js?version=25"></script>
-		<script src="/static/js/utilz.js?version=15"></script>
+		<script src="/static/js/utilz.js?version=16"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2116"></script>
+		<script src="/static/js/base.js?version=2118"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=438"/>
 
@@ -1037,6 +1037,17 @@
 							</div>
 						</div>
 
+						<div class='settings_item' data-setting='aliases' data-type='textarea'>
+							<div class='toggler_main_container'>
+								<div class="{{type}}_toggle toggler action pointer bold inline" title="For example /sky = /tv touch the sky">+ Aliases</div>
+								<div class='{{type}}_toggle_container toggler_container'>
+									<div class="setting_title">(Each on a different line)</div>
+									<div class='spacer2'></div>
+									<textarea rows=4 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_aliases"></textarea>
+								</div>
+							</div>
+						</div>
+
 					</div>
 					
 					<div class='settings_category settings_window_category_container' id='settings_window_category_content_voice_chat_{{type}}' data-category='voice_chat'>
@@ -1626,6 +1637,7 @@
 			<div class='info_item'>/disablevoicechat: Leaves the voice chat.</div>
 			<div class='info_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil, and profile images in chat of whoever is typing will have a glow effect.</div>
 			<div class='info_item'>In some commands like /whisper the > character can be used to send 2 arguments. For instance, "/whisper Jack > hello my friend" will send a message to Jack directly.</div>
+			<div class='info_item'>Commands can be chained with &&. For instance "/tv The World && /maximizetv".</div>
 			<div class='spacer1'></div>
 			<span class='help_link action unselectable' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='help3()'>Administration Features</span>			
 		</script>
