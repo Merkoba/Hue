@@ -6094,6 +6094,11 @@ function process_message(message, to_history=true, clr_input=true)
 				return false
 			}
 
+			if(num_lines > max_num_newlines)
+			{
+				return false
+			}
+
 			if(message.length > max_input_length)
 			{
 				message = message.substring(0, max_input_length)
