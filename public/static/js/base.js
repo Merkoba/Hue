@@ -18401,7 +18401,7 @@ function format_command_aliases(cmds)
 
 function open_url_menu(src)
 {
-	var n = 25
+	var n = 35
 
 	if(src.length > n)
 	{
