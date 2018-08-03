@@ -1579,9 +1579,42 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 					else if(id[0] === "channel")
 					{
-						data.type = "twitch"
-						data.title = id[1]
-						handler.do_change_tv_source(socket, data)
+						fetch(`https://api.twitch.tv/helix/streams?user_login=${id[1]}`,
+						{
+							headers:
+							{
+								"Client-ID": sconfig.twitch_client_id
+							}
+						})
+
+						.then(function(res)
+						{
+							return res.json()
+						})
+
+						.then(function(response)
+						{
+							data.type = "twitch"
+
+							if(response.data && response.data[0].title)
+							{
+								data.title = response.data[0].title
+							}
+
+							else
+							{
+								data.title = id[1]
+							}
+
+							handler.do_change_tv_source(socket, data)
+						})
+
+						.catch(err =>
+						{
+							data.type = "twitch"
+							data.title = id[1]
+							handler.do_change_tv_source(socket, data)
+						})
 					}
 
 					else
