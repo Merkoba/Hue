@@ -1359,6 +1359,7 @@ input[type=text], textarea
 	resize: none;
 	font-size: 1em;
 	text-align: center;
+	overflow-x: hidden;
 }
 
 .setting_textarea2
@@ -1367,6 +1368,7 @@ input[type=text], textarea
 	resize: none;
 	font-size: 1em;
 	text-align: center;
+	overflow-x: hidden;
 }
 
 .setting_input_text
