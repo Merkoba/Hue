@@ -2813,7 +2813,7 @@ function start_main_menu_context_menu()
 {
 	$.contextMenu(
 	{
-		selector: "#main_menu",
+		selector: "#main_menu_icon",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
 		className: 'toggle_radio_context',
