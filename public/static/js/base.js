@@ -18418,13 +18418,13 @@ function open_url_menu(src)
 		$("#open_url_menu_open").click(function()
 		{
 			goto_url(src, "tab")
-			msg_info.close()
+			msg_info2.close()
 		})
 
 		$("#open_url_menu_copy").click(function()
 		{
 			copy_string(src)
-			msg_info.close()
+			msg_info2.close()
 		})
 	})
 }
