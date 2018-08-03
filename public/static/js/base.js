@@ -6060,6 +6060,10 @@ function process_message(message, to_history=true, clr_input=true)
 
 		if(alias !== undefined)
 		{
+			var alias_arg = msplit.slice(1).join(" ").trim()
+
+			var full_alias = `${alias} ${alias_arg}`.trim()
+
 			if(alias_cmd.startsWith("/X"))
 			{
 				to_history = false
@@ -6067,12 +6071,8 @@ function process_message(message, to_history=true, clr_input=true)
 
 			if(to_history)
 			{
-				add_to_input_history(alias_cmd)
+				add_to_input_history(message)
 			}
-
-			var alias_arg = msplit.slice(1).join(" ").trim()
-
-			var full_alias = `${alias} ${alias_arg}`.trim()
 
 			process_message(full_alias, false, clr_input)
 			
