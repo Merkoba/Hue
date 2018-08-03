@@ -97,6 +97,7 @@ var template_settings
 var template_global_settings
 var template_room_settings
 var template_credits
+var template_open_url
 var msg_main_menu
 var msg_user_menu
 var msg_userlist
@@ -398,6 +399,7 @@ function setup_templates()
 	template_lockscreen = Handlebars.compile($('#template_lockscreen').html())
 	template_draw_image = Handlebars.compile($('#template_draw_image').html())
 	template_credits = Handlebars.compile($('#template_credits').html())
+	template_open_url = Handlebars.compile($('#template_open_url').html())
 }
 
 function help()
@@ -8026,11 +8028,9 @@ function copy_room_url()
 	var url = window.location.origin + r
 
 	copy_string(url)
-
-	play_audio("pup2")
 }
 
-function copy_string(s)
+function copy_string(s, sound=true)
 {
 	var textareaEl = document.createElement('textarea')
 
@@ -8041,6 +8041,11 @@ function copy_string(s)
 
 	document.execCommand('copy')
 	document.body.removeChild(textareaEl)
+	
+	if(sound)
+	{
+		play_audio("pup2")	
+	}
 }
 
 function play_audio(what)
@@ -8746,7 +8751,7 @@ function announce_radio_change(data, date=false, action="change", show=true)
 
 	var onclick = function()
 	{
-		goto_url(src, "tab")
+		open_url_menu(src)
 	}
 
 	if(action === "restart")
@@ -8979,7 +8984,7 @@ function announce_tv_change(data, date=false, action="change", show=true)
 
 	var onclick = function()
 	{
-		goto_url(src, "tab")
+		open_url_menu(src)
 	}
 
 	if(action === "restart")
@@ -18392,4 +18397,22 @@ function format_command_aliases(cmds)
 	}
 
 	return s.slice(0, -1)
+}
+
+function open_url_menu(src)
+{
+	msg_info2.show([`${src}`.substring(0, 40), template_open_url()], function()
+	{
+		$("#open_url_menu_open").click(function()
+		{
+			goto_url(src, "tab")
+			msg_info.close()
+		})
+
+		$("#open_url_menu_copy").click(function()
+		{
+			copy_string(src)
+			msg_info.close()
+		})
+	})
 }
