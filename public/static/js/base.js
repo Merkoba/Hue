@@ -18401,7 +18401,19 @@ function format_command_aliases(cmds)
 
 function open_url_menu(src)
 {
-	msg_info2.show([`${src}`.substring(0, 40), template_open_url()], function()
+	var n = 25
+
+	if(src.length > n)
+	{
+		var s = `${src.substring(0, n)}...`
+	}
+
+	else
+	{
+		var s = src
+	}
+
+	msg_info2.show([s, template_open_url()], function()
 	{
 		$("#open_url_menu_open").click(function()
 		{
