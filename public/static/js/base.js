@@ -6024,6 +6024,13 @@ function is_command(message)
 
 function process_message(message, to_history=true, clr_input=true)
 {
+	var num_lines = message.split("\n").length
+
+	if(num_lines === 1)
+	{
+		 message = message.trim()
+	}
+
 	if(is_command(message))
 	{
 		message = utilz.clean_string2(message)
@@ -6084,11 +6091,6 @@ function process_message(message, to_history=true, clr_input=true)
 			if(message.length === 0)
 			{
 				clear_input()
-				return false
-			}
-
-			if(message.split("\n").length > max_num_newlines)
-			{
 				return false
 			}
 
