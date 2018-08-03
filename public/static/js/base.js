@@ -6052,23 +6052,29 @@ function process_message(message, to_history=true, clr_input=true)
 			return false
 		}
 
-		var cmd = message.split(" ")[0].trim()
+		var msplit = message.split(" ")
 
-		var alias = command_aliases[cmd]
+		var alias_cmd = msplit[0].trim()
+
+		var alias = command_aliases[alias_cmd]
 
 		if(alias !== undefined)
 		{
-			if(cmd.startsWith("/X"))
+			if(alias_cmd.startsWith("/X"))
 			{
 				to_history = false
 			}
 
 			if(to_history)
 			{
-				add_to_input_history(cmd)
+				add_to_input_history(alias_cmd)
 			}
 
-			process_message(alias, false, clr_input)
+			var alias_arg = msplit.slice(1).join(" ").trim()
+
+			var full_alias = `${alias} ${alias_arg}`.trim()
+
+			process_message(full_alias, false, clr_input)
 			
 			return false
 		}
@@ -14281,6 +14287,11 @@ function write_popup_message(arg, type="user")
 		{
 			var message = utilz.clean_string2(split.slice(1).join(">"))
 
+			if(!message)
+			{
+				return false
+			}
+
 			socket_emit('whisper', 
 			{
 				username: uname, 
@@ -18434,4 +18445,16 @@ function open_url_menu(src)
 			msg_info2.close()
 		})
 	})
+}
+
+function sdeb(s)
+{
+	console.info(nice_date())
+
+	for(var line of s.split("\n"))
+	{
+		console.info(`>${line}<`)
+	}
+
+	console.info("-------------")
 }
