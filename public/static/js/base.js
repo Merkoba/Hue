@@ -18451,7 +18451,7 @@ function sdeb(s)
 {
 	console.info(nice_date())
 
-	for(var line of s.split("\n"))
+	for(var line of `${s}`.split("\n"))
 	{
 		console.info(`>${line}<`)
 	}
