@@ -250,6 +250,7 @@ var radio_get_metadata = false
 var init_data
 var log_messages_processed = false
 var command_aliases = {}
+var play_video_on_load = false
 
 function init()
 {
@@ -1560,6 +1561,11 @@ function play_video()
 		{
 			youtube_video_player.playVideo()
 		}
+
+		else
+		{
+			play_video_on_load = true
+		}
 	}
 
 	else if(tv_type === "twitch")
@@ -1568,6 +1574,11 @@ function play_video()
 		{
 			twitch_video_player.play()
 		}
+
+		else
+		{
+			play_video_on_load = true
+		}
 	}
 
 	else if(tv_type === "soundcloud")
@@ -1575,6 +1586,11 @@ function play_video()
 		if(soundcloud_video_player !== undefined)
 		{
 			soundcloud_video_player.play()
+		}
+
+		else
+		{
+			play_video_on_load = true
 		}
 	}
 
@@ -5282,7 +5298,7 @@ function change(args={})
 
 	if(args.type === "tv")
 	{
-		if(!last_tv_source)
+		if(!last_tv_source && !args.force)
 		{
 			args.play = false
 		}
@@ -5405,6 +5421,8 @@ function change(args={})
 		}
 
 		setter = tv_setter
+
+		play_video_on_load = false
 	}
 
 	else if(args.type === "radio")
@@ -11791,7 +11809,15 @@ function onYouTubePlayerReady2()
 
 	if((last_tv_type && last_tv_type === "youtube") || tv_type === "youtube")
 	{
-		change({type:"tv", notify:false})
+		if(play_video_on_load)
+		{
+			change({type:"tv", notify:false, force:true, play:true})
+		}
+
+		else
+		{
+			change({type:"tv", notify:false})
+		}
 	}
 }
 
@@ -11812,9 +11838,17 @@ function start_twitch()
 
 			$("#media_twitch_video_container").find("iframe").eq(0).attr("id", "media_twitch_video").addClass("video_frame")
 
-			if(tv_type === "twitch")
+			if((last_tv_type && last_tv_type === "twitch") || tv_type === "twitch")
 			{
-				change({type:"tv", notify:false})
+				if(play_video_on_load)
+				{
+					change({type:"tv", notify:false, force:true, play:true})
+				}
+
+				else
+				{
+					change({type:"tv", notify:false})
+				}
 			}
 		})
 	}
@@ -16373,8 +16407,38 @@ function start_soundcloud()
 {
 	try
 	{
-		soundcloud_player = SC.Widget("soundcloud_player")
-		soundcloud_video_player = SC.Widget("media_soundcloud_video")
+		var _soundcloud_player = SC.Widget("soundcloud_player")
+		var _soundcloud_video_player = SC.Widget("media_soundcloud_video")
+		
+		_soundcloud_player.bind(SC.Widget.Events.READY, function()
+		{
+			soundcloud_player = _soundcloud_player
+
+			if((last_radio_type && last_radio_type === "youtube") || radio_type === "youtube")
+			{
+				change({type:"radio", notify:false})
+			}
+
+			set_radio_volume(false, false)
+		})
+
+		_soundcloud_video_player.bind(SC.Widget.Events.READY, function()
+		{
+			soundcloud_video_player = _soundcloud_video_player
+
+			if((last_tv_type && last_tv_type === "soundcloud") || tv_type === "soundcloud")
+			{
+				if(play_video_on_load)
+				{
+					change({type:"tv", notify:false, force:true, play:true})
+				}
+
+				else
+				{
+					change({type:"tv", notify:false})
+				}
+			}
+		})
 	}
 
 	catch(err)
