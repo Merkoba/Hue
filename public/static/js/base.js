@@ -6056,15 +6056,23 @@ function process_message(message, to_history=true, clr_input=true)
 
 		var and_split = message.split(" && ")
 
-		if(and_split.length > 1)
+		if(and_split.length > 1 && !message.startsWith("/js ") && !message.startsWith("/js2 "))
 		{
 			if(to_history)
 			{
 				add_to_input_history(message)
 			}
 
-			for(var cmd of and_split)
+			for(var i=0; i<and_split.length; i++)
 			{
+				var cmd = and_split[i]
+
+				if(cmd.startsWith("/js ") || cmd.startsWith("/js2 "))
+				{
+					cmd = and_split.slice(i).join(" && ").trim()
+					i = and_split.length
+				}
+
 				process_message(cmd.trim(), false, clr_input)
 			}
 
