@@ -6069,7 +6069,7 @@ function process_message(message, to_history=true, clr_input=true)
 
 				if(cmd.startsWith("/js ") || cmd.startsWith("/js2 "))
 				{
-					cmd = and_split.slice(i).join(" && ").trim()
+					cmd = and_split.slice(i).join(" && ")
 					i = and_split.length
 				}
 
