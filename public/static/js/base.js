@@ -5900,6 +5900,7 @@ function register_commands()
 	commands.push('/afk')
 	commands.push('/disconnectothers')
 	commands.push('/whisper')
+	commands.push('/whisper2')
 	commands.push('/whisperops')
 	commands.push('/annex')
 	commands.push('/highlights')
@@ -6510,7 +6511,12 @@ function execute_command(message, ans)
 
 	else if(oiStartsWith(lmessage, '/whisper'))
 	{
-		write_popup_message(arg)
+		process_write_whisper(arg, true)
+	}
+
+	else if(oiStartsWith(lmessage, '/whisper2'))
+	{
+		process_write_whisper(arg, false)
 	}
 
 	else if(oiEquals(lmessage, '/whisperops'))
@@ -14257,48 +14263,74 @@ function cant_chat()
 	feedback("You don't have permission to chat")
 }
 
-function write_popup_message(arg, type="user")
+function check_whisper_user(uname)
+{
+	if(!can_chat)
+	{
+		cant_chat()
+		return false
+	}
+
+	if(uname === username)
+	{
+		feedback("You can't whisper to yourself")
+		return false
+	}
+
+	if(!usernames.includes(uname))
+	{
+		user_not_in_room()
+		return false
+	}
+
+	return true
+}
+
+function process_write_whisper(arg, show=true)
+{
+	if(arg.includes(">"))
+	{
+		send_inline_whisper(arg, show)
+	}
+
+	else
+	{
+		write_popup_message(arg, "user")
+	}
+}
+
+function send_inline_whisper(arg, show=true)
+{
+	var split = arg.split(">")
+
+	var uname = split[0].trim()
+
+	if(!check_whisper_user(uname))
+	{
+		return false
+	}
+
+	if(split.length > 1)
+	{
+		var message = utilz.clean_string2(split.slice(1).join(">"))
+
+		if(!message)
+		{
+			return false
+		}
+
+		do_send_whisper_user(uname, message, false, show)
+
+		return false
+	}
+}
+
+function write_popup_message(uname, type="user")
 {
 	if(type === "user")
 	{
-		var split = arg.split(">")
-
-		var uname = split[0].trim()
-
-		if(!can_chat)
+		if(!check_whisper_user(uname))
 		{
-			cant_chat()
-			return false
-		}
-
-		if(uname === username)
-		{
-			feedback("You can't whisper to yourself")
-			return false
-		}
-
-		if(!usernames.includes(uname))
-		{
-			user_not_in_room()
-			return false
-		}
-
-		if(split.length > 1)
-		{
-			var message = utilz.clean_string2(split.slice(1).join(">"))
-
-			if(!message)
-			{
-				return false
-			}
-
-			socket_emit('whisper', 
-			{
-				username: uname, 
-				message: message, 
-				draw_coords: false
-			})
-
 			return false
 		}
 
@@ -14513,6 +14545,13 @@ function send_whisper_user(message, draw_coords)
 		return false
 	}
 
+	do_send_whisper_user(uname, message, draw_coords)
+
+	return true
+}
+
+function do_send_whisper_user(uname, message, draw_coords, show=true)
+{
 	socket_emit('whisper', 
 	{
 		username: uname, 
@@ -14520,11 +14559,11 @@ function send_whisper_user(message, draw_coords)
 		draw_coords: draw_coords
 	})
 
-	var f = sent_popup_message_function("whisper", message, draw_coords, uname)
-
-	feedback(`Whisper sent to ${uname}`, {onclick:f, save:true})
-
-	return true
+	if(show)
+	{
+		var f = sent_popup_message_function("whisper", message, draw_coords, uname)
+		feedback(`Whisper sent to ${uname}`, {onclick:f, save:true})
+	}
 }
 
 function send_whisper_ops(message, draw_coords)
