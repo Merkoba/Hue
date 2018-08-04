@@ -143,8 +143,6 @@ div#header_radio_playing_icon
 	position: relative;
 	overflow-x: hidden;
 	overflow-y: auto;
-	background-color: #262423;
-	color: white;
 	flex-grow: 1;
 	max-width: 100%;
 }
