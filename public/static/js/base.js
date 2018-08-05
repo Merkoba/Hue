@@ -75,6 +75,7 @@ var template_played
 var template_open_room
 var template_status
 var template_help
+var template_help1
 var template_help2
 var template_help3
 var template_user_menu
@@ -122,6 +123,7 @@ var msg_chat_search
 var msg_lockscreen
 var msg_draw_image
 var msg_credits
+var msg_help
 var played_filtered = false
 var userlist_filtered = false
 var image_history_filtered = false
@@ -377,6 +379,7 @@ function setup_templates()
 	template_played = Handlebars.compile($('#template_played').html())
 	template_status = Handlebars.compile($('#template_status').html())
 	template_help = Handlebars.compile($('#template_help').html())
+	template_help1 = Handlebars.compile($('#template_help1').html())
 	template_help2 = Handlebars.compile($('#template_help2').html())
 	template_help3 = Handlebars.compile($('#template_help3').html())
 	template_user_menu = Handlebars.compile($('#template_user_menu').html())
@@ -404,19 +407,21 @@ function setup_templates()
 	template_open_url = Handlebars.compile($('#template_open_url').html())
 }
 
-function help()
-{
-	msg_info2.show(["Basic Features", template_help()])
-}
+function show_help(number=1, filter="")
+{	
+	var t = window[`template_help${number}`]
 
-function help2()
-{
-	msg_info2.show(["Additional Features", template_help2()])
-}
-
-function help3()
-{
-	msg_info2.show(["Administration Features", template_help3()])
+	if(t)
+	{
+		$("#help_content").html(t)
+		
+		msg_help.show(function()
+		{
+			$("#help_filter").val(filter)
+			do_help_filter()
+			$("#help_filter").focus()
+		})
+	}
 }
 
 function show_public()
@@ -6588,19 +6593,34 @@ function execute_command(message, ans)
 		show_room()
 	}
 
-	else if(oiEquals(lmessage, '/help3'))
+	else if(oiEquals(lmessage, '/help') || oiEquals(lmessage, '/help1'))
 	{
-		help3()
+		show_help(1)
+	}
+
+	else if(oiStartsWith(lmessage, '/help') || oiStartsWith(lmessage, '/help1'))
+	{
+		show_help(1, arg)
 	}
 
 	else if(oiEquals(lmessage, '/help2'))
 	{
-		help2()
+		show_help(2)
 	}
 
-	else if(oiEquals(lmessage, '/help') || oiEquals(lmessage, '/help1'))
+	else if(oiStartsWith(lmessage, '/help2'))
 	{
-		help()
+		show_help(2, arg)
+	}
+
+	else if(oiEquals(lmessage, '/help3'))
+	{
+		show_help(3)
+	}
+
+	else if(oiStartsWith(lmessage, '/help3'))
+	{
+		show_help(3, arg)
 	}
 
 	else if(oiEquals(lmessage, '/stopradio'))
@@ -10385,6 +10405,31 @@ function start_msg()
 		})
 	)
 
+	msg_help = Msg.factory
+	(
+		Object.assign({}, common, titlebar,
+		{
+			id: "help",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+			}
+		})
+	)
+
 	msg_main_menu.set(template_main_menu())
 	msg_user_menu.set(template_user_menu())
 	msg_userlist.set(template_userlist())
@@ -10411,6 +10456,7 @@ function start_msg()
 	msg_room_settings.set(template_room_settings({settings:template_settings({type:"room_settings"})}))
 	msg_draw_image.set(template_draw_image())
 	msg_credits.set(template_credits({background_url:credits_background_url}))
+	msg_help.set(template_help())
 
 	msg_info.create()
 	msg_info2.create()
@@ -11716,6 +11762,11 @@ function start_filters()
 	$("#chat_search_filter").on("input", function()
 	{
 		chat_search_timer()
+	})
+
+	$("#help_filter").on("input", function()
+	{
+		help_filter_timer()
 	})
 }
 
@@ -18816,4 +18867,56 @@ function run_commands_queue(id)
 	{
 		process_message(obj)
 	}
+}
+
+var help_filter_timer = (function()
+{
+	var timer
+
+	return function()
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function()
+		{
+			do_help_filter()
+		}, filter_delay)
+	}
+})()
+
+function do_help_filter(type)
+{
+	var filter = $("#help_filter").eq(0).val().trim().toLowerCase()
+
+	if(filter !== "")
+	{
+		$(".help_item").each(function()
+		{
+			$(this).css("display", "block")
+
+			var include = false
+
+			if($(this).text().toLowerCase().includes(filter))
+			{
+				include = true
+			}
+
+			if(!include)
+			{
+				$(this).css("display", "none")
+			}
+		})
+	}
+
+	else
+	{
+		$(".help_item").each(function()
+		{
+			$(this).css("display", "block")
+		})
+	}
+
+	update_modal_scrollbar("info2")
+
+	$('#Msg-content-container-info2').scrollTop(0)
 }

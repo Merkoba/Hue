@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?version=16"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2145"></script>
+		<script src="/static/js/base.js?version=2146"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=440"/>
 
@@ -339,7 +339,7 @@
 
 				<div id='menu_smaller_container'>
 
-					<span class='menu_item_smaller action' onclick='help()'>Help</span>
+					<span class='menu_item_smaller action' onclick='show_help(1)'>Help</span>
 
 					<div class='spacer2'></div>
 
@@ -1525,179 +1525,187 @@
 
 		<script id='template_help' type='text/x-handlebars-template'>
 
-			<div class='info_item'>Chat by typing anything.</div>
-			<div class='info_item'>All elements in the top and bottom bar are clickable.</div>
-			<div class='info_item'>There are 3 main media elements that can be changed, images, tv and radio.</div>
-			<div class='info_item'>Media change has permission settings per room. So you might not be able to do certain actions depending on what settings the ops/admins have set.</div>
-			<div class='spacer1'></div>
-			<span class='help_link action unselectable' onclick='help2()'>Additional Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='help3()'>Administration Features</span>
+			<input type="text" id="help_filter" class="filter_input" placeholder="Filter">
+			<div class='spacer2'></div>
+			<div id="help_content"></div>
+
+		</script>
+
+		<script id='template_help1' type='text/x-handlebars-template'>
+
+			<div class='info_item help_item'>Chat by typing anything.</div>
+			<div class='info_item help_item'>All elements in the top and bottom bar are clickable.</div>
+			<div class='info_item help_item'>There are 3 main media elements that can be changed, images, tv and radio.</div>
+			<div class='info_item help_item'>Media change has permission settings per room. So you might not be able to do certain actions depending on what settings the ops/admins have set.</div>
+			<div class='spacer3'></div>
+			<span class='help_link action unselectable' onclick='show_help(2)'>Additional Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='show_help(3)'>Administration Features</span>
 
 		</script>
 
 		<script id='template_help2' type='text/x-handlebars-template'>
-
-			<div class='info_item'>Escape clears the input or closes modals.</div>
-			<div class='info_item'>Shift + Escape closes all modals and popups.</div>
-			<div class='info_item'>Up and Down Arrows cycle through the input history.</div>
-			<div class='info_item'>Shift + Up Arrow and Shift + Down Arrow or Page Up and Page down make the chat scroll.</div>
-			<div class='info_item'>Control + Up Arrow and Control + Down Arrow go to Activity Above and Activity Below.</div>
-			<div class='info_item'>Enter without text in the input scrolls to the bottom of the chat.</div>
-			<div class='info_item'>Clicking on a chat message username quotes the text.</div>
-			<div class='info_item'>Tab completes usernames and commands.</div>
-			<div class='info_item'>Shift + Enter toggles the radio.</div>		
-			<div class='info_item'>Apart from the image upload icon, images can also be uploaded by clicking the current image or by dropping a file.</div>		
-			<div class='info_item'>/image x: Sends an image to be uploaded by URL. "/image default" sets the image to the site's default image. "/image prev" changes to the previous image source.</div>			
-			<div class='info_item'>/tv x: Changes the TV using a search term or URL. "/tv restart" restarts the current video for all users, in case it gets stuck. To link a Youtube playlist the URL must be a pure playlist URL without a video ID. "/tv default" sets the tv to the site's default tv. "/tv prev" changes to the previous tv source.</div>			
-			<div class='info_item'>/radio x: Changes the radio using a search term or URL. "/radio restart" restarts the current radio for all users, in case it gets stuck. "/radio default" sets the radio to the site's default radio. "/radio prev" changes to the previous radio source.</div>	
-			<div class='info_item'>/me x: Makes a message in third person.</div>		
-			<div class='info_item'>/whisper x: Opens a window to write a whisper to x user. If the argument contains the &gt; character it will use the inline method where the username is whatever is to the left of the &gt; and the message whatever is to the right of it, and send the message directly without using the window.</div>		
-			<div class='info_item'>/whisper2 x: Same as /whisper but it doesn't show feedback when sent through the inline format, for example "/whisper2 user > message". Useful for making calls to bots without filling your own chat too much.</div>		
-			<div class='info_item'>/whisperops: Opens a window to write a whisper to ops and admins.</div>
-			<div class='info_item'>/status: Shows the room status window.</div>	
-			<div class='info_item'>/role: Shows your role and permissions.</div>
-			<div class='info_item'>/users: Shows the user list. Accepts a filter as an argument.</div>
-			<div class='info_item'>/publicrooms: Shows the public room list. Accepts a filter as an argument.</div>
-			<div class='info_item'>/visitedrooms: Shows the visited room list. Accepts a filter as an argument.</div>
-			<div class='info_item'>/played: Shows the list of songs played. Accepts a filter as an argument.</div>
-			<div class='info_item'>/search: Opens the search window. Accepts a query as an argument.</div>
-			<div class='info_item'>/history: Shows the input history. Accepts a filter as an argument.</div>
-			<div class='info_item'>/highlights: Shows chat messages where you were highlighted. Accepts a filter as an argument.</div>
-			<div class='info_item'>/unclear: Restores the cleared chat.</div>
-			<div class='info_item'>/startradio: Starts the radio.</div>
-			<div class='info_item'>/stopradio: Stops the radio.</div>
-			<div class='info_item'>/stopradioin x: Stops the radio automatically after the given x minutes.</div>
-			<div class='info_item'>/toggleplayradio: Starts or stops the radio.</div>
-			<div class='info_item'>/radiovolume x: Changes the volume of the radio.</div>
-			<div class='info_item'>/tvvolume x: Changes the volume of the tv.</div>
-			<div class='info_item'>/volume x: Changes the volume of the radio and the tv.</div>
-			<div class='info_item'>/details: Shows the account details.</div>
-			<div class='info_item'>/changeusername x: Changes the account username.</div>
-			<div class='info_item'>/changepassword x: Changes the account password.</div>
-			<div class='info_item'>/changeemail x: Changes the account email.</div>
-			<div class='info_item'>/disconnectothers: Disconnects other connected account clients.</div>
-			<div class='info_item'>/logout: Ends the user session.</div>
-			<div class='info_item'>/shrug: Shows the shrug ascii.</div>
-			<div class='info_item'>/afk: Shows that the user went AFK.</div>
-			<div class='info_item'>/lock: Locks all media.</div>
-			<div class='info_item'>/stop: Stops all media.</div>
-			<div class='info_item'>/stopandlock: Stops and locks all media.</div>
-			<div class='info_item'>/unlock: Unlocks all media.</div>
-			<div class='info_item'>/default: Sets media visibility and locks to the default state.</div>
-			<div class='info_item'>/menu: Shows the main menu.</div>
-			<div class='info_item'>/user: Shows the user menu.</div>
-			<div class='info_item'>/media: Shows the media menu.</div>
-			<div class='info_item'>/imagehistory: Shows the image history. Accepts a filter as an argument.</div>
-			<div class='info_item'>/tvhistory: Shows the tv history. Accepts a filter as an argument.</div>
-			<div class='info_item'>/radiohistory: Shows the radio history. Accepts a filter as an argument.</div>
-			<div class='info_item'>/showimages: Makes images visible and active.</div>
-			<div class='info_item'>/showtv: Makes the tv visible and active.</div>
-			<div class='info_item'>/showradio: Makes the radio images visible and active.</div>
-			<div class='info_item'>/hideimages: Makes images invisible and inactive.</div>
-			<div class='info_item'>/hidetv: Makes the tv invisible and inactive.</div>
-			<div class='info_item'>/hideradio: Makes the radio images invisible and inactive.</div>
-			<div class='info_item'>/toggleimages: Toggles between show and hide images.</div>
-			<div class='info_item'>/toggletv: Toggles between show and hide the tv.</div>
-			<div class='info_item'>/toggleradio: Toggles between show and hide the radio.</div>
-			<div class='info_item'>/lockimages: Locks images.</div>
-			<div class='info_item'>/locktv: Locks the tv.</div>
-			<div class='info_item'>/lockradio: Locks the radio.</div>
-			<div class='info_item'>/unlockimages: Unlocks images.</div>
-			<div class='info_item'>/unlocktv: Unlocks the tv.</div>
-			<div class='info_item'>/unlockradio: Unlocks the radio.</div>
-			<div class='info_item'>/togglelockimages: Toggles between lock and unlock images.</div>
-			<div class='info_item'>/togglelocktv: Toggles between lock and unlock the tv.</div>
-			<div class='info_item'>/togglelockradio: Toggles between lock and unlock the radio.</div>
-			<div class='info_item'>/maximizeimages: Maximize/Restore images.</div>
-			<div class='info_item'>/maximizetv: Maximize/Restore the tv.</div>
-			<div class='info_item'>/starttv: Starts the tv.</div>
-			<div class='info_item'>/stoptv: Stops the tv.</div>
-			<div class='info_item'>/refreshimage: Loads the image again.</div>
-			<div class='info_item'>/refreshtv: Loads the tv again.</div>
-			<div class='info_item'>/refreshradio: Loads the radio again.</div>
-			<div class='info_item'>/openimage: Opens the image modal with the current image.</div>
-			<div class='info_item'>/openlastimage: Opens the image modal with the latest announced image.</div>
-			<div class='info_item'>/date: Shows current date.</div>
-			<div class='info_item'>/verifyemail x: Used to verify an email email with a received code.</div>
-			<div class='info_item'>/js x: Executes a javascript operation.</div>
-			<div class='info_item'>/js2 x: Executes a javascript operation without showing the result.</div>
-			<div class='info_item'>/endjs: This can be used when chaining /js or /js2 commands with other commands. For example: /js true && true /endjs && /ping.</div>
-			<div class='info_item'>/changeimage: Opens window to change the image.</div>
-			<div class='info_item'>/changetv: Opens the window to change the tv.</div>
-			<div class='info_item'>/changeradio: Opens the window to change the radio.</div>
-			<div class='info_item'>/closeall: Closes all the modal windows and popups.</div>
-			<div class='info_item'>/closeallmodals: Closes all the modal windows.</div>
-			<div class='info_item'>/closeallpopups: Closes all the popups.</div>
-			<div class='info_item'>/closeandwait: Used with chained commands. Whatever is after it will be triggered after the modals are closed. For instance: /closeandwait && /somecommand.</div>
-			<div class='info_item'>/activityabove: Scrolls chat to activity pertaining you above.</div>
-			<div class='info_item'>/activitybelow: Scrolls chat to activity pertaining you below.</div>
-			<div class='info_item'>/globalsettings: Shows the global settings window. Accepts a filter as an argument.</div>
-			<div class='info_item'>/roomsettings: Shows the room settings window. Accepts a filter as an argument.</div>
-			<div class='info_item'>/goto: Goes to room ID or URL.</div>
-			<div class='info_item'>/changeinput: Sets the text input to the specified argument.</div>
-			<div class='info_item'>/ping: Pings the server and shows the delay from the moment it was sent to the moment it was received.</div>
-			<div class='info_item'>/reactlike: Sends reaction "like".</div>
-			<div class='info_item'>/reactlove: Sends reaction "love".</div>
-			<div class='info_item'>/reacthappy: Sends reaction "happy".</div>
-			<div class='info_item'>/reactmeh: Sends reaction "meh".</div>
-			<div class='info_item'>/reactsad: Sends reaction "sad".</div>
-			<div class='info_item'>/reactdislike: Sends reaction "dislike".</div>
-			<div class='info_item'>/f1: Runs User Function 1.</div>
-			<div class='info_item'>/f2: Runs User Function 2.</div>
-			<div class='info_item'>/f3: Runs User Function 3.</div>
-			<div class='info_item'>/lockscreen: Locks the screen.</div>
-			<div class='info_item'>/unlockscreen: Unlocks the screen.</div>
-			<div class='info_item'>/togglelockscreen: Locks or unlocks the screen.</div>
-			<div class='info_item'>/drawimage: Opens the window to draw an image.</div>
-			<div class='info_item'>/joinvoicechate: Joins the voice chat.</div>
-			<div class='info_item'>/leavevoicechat: Leaves the voice chat.</div>
-			<div class='info_item'>/say: Sends a normal chat message. Useful if you want to make a chain of commands that starts with a message.</div>
-			<div class='info_item'>/clearinput: Clears the text input.</div>
-			<div class='info_item'>/sleep x: Pauses the execution of a chain of commands. For instance: /ping && /sleep 1000 && /ping, will execute two pings 1 second apart. If no argument is provided it defaults to 1000.</div>
-			<div class='info_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil, and profile images in chat of whoever is typing will have a glow effect.</div>
-			<div class='info_item'>In some commands like /whisper the > character can be used to send 2 arguments. For instance, "/whisper Jack > hello my friend" will send a message to Jack directly.</div>
-			<div class='info_item'>Commands can be chained with &&. For instance "/tv The World && /maximizetv".</div>
-			<div class='spacer1'></div>
-			<span class='help_link action unselectable' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='help3()'>Administration Features</span>			
+			<div class='spacer3'></div>
+			<div class='info_item help_item'>Escape clears the input or closes modals.</div>
+			<div class='info_item help_item'>Shift + Escape closes all modals and popups.</div>
+			<div class='info_item help_item'>Up and Down Arrows cycle through the input history.</div>
+			<div class='info_item help_item'>Shift + Up Arrow and Shift + Down Arrow or Page Up and Page down make the chat scroll.</div>
+			<div class='info_item help_item'>Control + Up Arrow and Control + Down Arrow go to Activity Above and Activity Below.</div>
+			<div class='info_item help_item'>Enter without text in the input scrolls to the bottom of the chat.</div>
+			<div class='info_item help_item'>Clicking on a chat message username quotes the text.</div>
+			<div class='info_item help_item'>Tab completes usernames and commands.</div>
+			<div class='info_item help_item'>Shift + Enter toggles the radio.</div>		
+			<div class='info_item help_item'>Apart from the image upload icon, images can also be uploaded by clicking the current image or by dropping a file.</div>		
+			<div class='info_item help_item'>/image x: Sends an image to be uploaded by URL. "/image default" sets the image to the site's default image. "/image prev" changes to the previous image source.</div>			
+			<div class='info_item help_item'>/tv x: Changes the TV using a search term or URL. "/tv restart" restarts the current video for all users, in case it gets stuck. To link a Youtube playlist the URL must be a pure playlist URL without a video ID. "/tv default" sets the tv to the site's default tv. "/tv prev" changes to the previous tv source.</div>			
+			<div class='info_item help_item'>/radio x: Changes the radio using a search term or URL. "/radio restart" restarts the current radio for all users, in case it gets stuck. "/radio default" sets the radio to the site's default radio. "/radio prev" changes to the previous radio source.</div>	
+			<div class='info_item help_item'>/me x: Makes a message in third person.</div>		
+			<div class='info_item help_item'>/whisper x: Opens a window to write a whisper to x user. If the argument contains the &gt; character it will use the inline method where the username is whatever is to the left of the &gt; and the message whatever is to the right of it, and send the message directly without using the window.</div>		
+			<div class='info_item help_item'>/whisper2 x: Same as /whisper but it doesn't show feedback when sent through the inline format, for example "/whisper2 user > message". Useful for making calls to bots without filling your own chat too much.</div>		
+			<div class='info_item help_item'>/whisperops: Opens a window to write a whisper to ops and admins.</div>
+			<div class='info_item help_item'>/status: Shows the room status window.</div>	
+			<div class='info_item help_item'>/role: Shows your role and permissions.</div>
+			<div class='info_item help_item'>/users: Shows the user list. Accepts a filter as an argument.</div>
+			<div class='info_item help_item'>/publicrooms: Shows the public room list. Accepts a filter as an argument.</div>
+			<div class='info_item help_item'>/visitedrooms: Shows the visited room list. Accepts a filter as an argument.</div>
+			<div class='info_item help_item'>/played: Shows the list of songs played. Accepts a filter as an argument.</div>
+			<div class='info_item help_item'>/search: Opens the search window. Accepts a query as an argument.</div>
+			<div class='info_item help_item'>/history: Shows the input history. Accepts a filter as an argument.</div>
+			<div class='info_item help_item'>/highlights: Shows chat messages where you were highlighted. Accepts a filter as an argument.</div>
+			<div class='info_item help_item'>/unclear: Restores the cleared chat.</div>
+			<div class='info_item help_item'>/startradio: Starts the radio.</div>
+			<div class='info_item help_item'>/stopradio: Stops the radio.</div>
+			<div class='info_item help_item'>/stopradioin x: Stops the radio automatically after the given x minutes.</div>
+			<div class='info_item help_item'>/toggleplayradio: Starts or stops the radio.</div>
+			<div class='info_item help_item'>/radiovolume x: Changes the volume of the radio.</div>
+			<div class='info_item help_item'>/tvvolume x: Changes the volume of the tv.</div>
+			<div class='info_item help_item'>/volume x: Changes the volume of the radio and the tv.</div>
+			<div class='info_item help_item'>/details: Shows the account details.</div>
+			<div class='info_item help_item'>/changeusername x: Changes the account username.</div>
+			<div class='info_item help_item'>/changepassword x: Changes the account password.</div>
+			<div class='info_item help_item'>/changeemail x: Changes the account email.</div>
+			<div class='info_item help_item'>/disconnectothers: Disconnects other connected account clients.</div>
+			<div class='info_item help_item'>/logout: Ends the user session.</div>
+			<div class='info_item help_item'>/shrug: Shows the shrug ascii.</div>
+			<div class='info_item help_item'>/afk: Shows that the user went AFK.</div>
+			<div class='info_item help_item'>/lock: Locks all media.</div>
+			<div class='info_item help_item'>/stop: Stops all media.</div>
+			<div class='info_item help_item'>/stopandlock: Stops and locks all media.</div>
+			<div class='info_item help_item'>/unlock: Unlocks all media.</div>
+			<div class='info_item help_item'>/default: Sets media visibility and locks to the default state.</div>
+			<div class='info_item help_item'>/menu: Shows the main menu.</div>
+			<div class='info_item help_item'>/user: Shows the user menu.</div>
+			<div class='info_item help_item'>/media: Shows the media menu.</div>
+			<div class='info_item help_item'>/imagehistory: Shows the image history. Accepts a filter as an argument.</div>
+			<div class='info_item help_item'>/tvhistory: Shows the tv history. Accepts a filter as an argument.</div>
+			<div class='info_item help_item'>/radiohistory: Shows the radio history. Accepts a filter as an argument.</div>
+			<div class='info_item help_item'>/showimages: Makes images visible and active.</div>
+			<div class='info_item help_item'>/showtv: Makes the tv visible and active.</div>
+			<div class='info_item help_item'>/showradio: Makes the radio images visible and active.</div>
+			<div class='info_item help_item'>/hideimages: Makes images invisible and inactive.</div>
+			<div class='info_item help_item'>/hidetv: Makes the tv invisible and inactive.</div>
+			<div class='info_item help_item'>/hideradio: Makes the radio images invisible and inactive.</div>
+			<div class='info_item help_item'>/toggleimages: Toggles between show and hide images.</div>
+			<div class='info_item help_item'>/toggletv: Toggles between show and hide the tv.</div>
+			<div class='info_item help_item'>/toggleradio: Toggles between show and hide the radio.</div>
+			<div class='info_item help_item'>/lockimages: Locks images.</div>
+			<div class='info_item help_item'>/locktv: Locks the tv.</div>
+			<div class='info_item help_item'>/lockradio: Locks the radio.</div>
+			<div class='info_item help_item'>/unlockimages: Unlocks images.</div>
+			<div class='info_item help_item'>/unlocktv: Unlocks the tv.</div>
+			<div class='info_item help_item'>/unlockradio: Unlocks the radio.</div>
+			<div class='info_item help_item'>/togglelockimages: Toggles between lock and unlock images.</div>
+			<div class='info_item help_item'>/togglelocktv: Toggles between lock and unlock the tv.</div>
+			<div class='info_item help_item'>/togglelockradio: Toggles between lock and unlock the radio.</div>
+			<div class='info_item help_item'>/maximizeimages: Maximize/Restore images.</div>
+			<div class='info_item help_item'>/maximizetv: Maximize/Restore the tv.</div>
+			<div class='info_item help_item'>/starttv: Starts the tv.</div>
+			<div class='info_item help_item'>/stoptv: Stops the tv.</div>
+			<div class='info_item help_item'>/refreshimage: Loads the image again.</div>
+			<div class='info_item help_item'>/refreshtv: Loads the tv again.</div>
+			<div class='info_item help_item'>/refreshradio: Loads the radio again.</div>
+			<div class='info_item help_item'>/openimage: Opens the image modal with the current image.</div>
+			<div class='info_item help_item'>/openlastimage: Opens the image modal with the latest announced image.</div>
+			<div class='info_item help_item'>/date: Shows current date.</div>
+			<div class='info_item help_item'>/verifyemail x: Used to verify an email email with a received code.</div>
+			<div class='info_item help_item'>/js x: Executes a javascript operation.</div>
+			<div class='info_item help_item'>/js2 x: Executes a javascript operation without showing the result.</div>
+			<div class='info_item help_item'>/endjs: This can be used when chaining /js or /js2 commands with other commands. For example: /js true && true /endjs && /ping.</div>
+			<div class='info_item help_item'>/changeimage: Opens window to change the image.</div>
+			<div class='info_item help_item'>/changetv: Opens the window to change the tv.</div>
+			<div class='info_item help_item'>/changeradio: Opens the window to change the radio.</div>
+			<div class='info_item help_item'>/closeall: Closes all the modal windows and popups.</div>
+			<div class='info_item help_item'>/closeallmodals: Closes all the modal windows.</div>
+			<div class='info_item help_item'>/closeallpopups: Closes all the popups.</div>
+			<div class='info_item help_item'>/closeandwait: Used with chained commands. Whatever is after it will be triggered after the modals are closed. For instance: /closeandwait && /somecommand.</div>
+			<div class='info_item help_item'>/activityabove: Scrolls chat to activity pertaining you above.</div>
+			<div class='info_item help_item'>/activitybelow: Scrolls chat to activity pertaining you below.</div>
+			<div class='info_item help_item'>/globalsettings: Shows the global settings window. Accepts a filter as an argument.</div>
+			<div class='info_item help_item'>/roomsettings: Shows the room settings window. Accepts a filter as an argument.</div>
+			<div class='info_item help_item'>/goto: Goes to room ID or URL.</div>
+			<div class='info_item help_item'>/changeinput: Sets the text input to the specified argument.</div>
+			<div class='info_item help_item'>/ping: Pings the server and shows the delay from the moment it was sent to the moment it was received.</div>
+			<div class='info_item help_item'>/reactlike: Sends reaction "like".</div>
+			<div class='info_item help_item'>/reactlove: Sends reaction "love".</div>
+			<div class='info_item help_item'>/reacthappy: Sends reaction "happy".</div>
+			<div class='info_item help_item'>/reactmeh: Sends reaction "meh".</div>
+			<div class='info_item help_item'>/reactsad: Sends reaction "sad".</div>
+			<div class='info_item help_item'>/reactdislike: Sends reaction "dislike".</div>
+			<div class='info_item help_item'>/f1: Runs User Function 1.</div>
+			<div class='info_item help_item'>/f2: Runs User Function 2.</div>
+			<div class='info_item help_item'>/f3: Runs User Function 3.</div>
+			<div class='info_item help_item'>/lockscreen: Locks the screen.</div>
+			<div class='info_item help_item'>/unlockscreen: Unlocks the screen.</div>
+			<div class='info_item help_item'>/togglelockscreen: Locks or unlocks the screen.</div>
+			<div class='info_item help_item'>/drawimage: Opens the window to draw an image.</div>
+			<div class='info_item help_item'>/joinvoicechate: Joins the voice chat.</div>
+			<div class='info_item help_item'>/leavevoicechat: Leaves the voice chat.</div>
+			<div class='info_item help_item'>/say: Sends a normal chat message. Useful if you want to make a chain of commands that starts with a message.</div>
+			<div class='info_item help_item'>/clearinput: Clears the text input.</div>
+			<div class='info_item help_item'>/sleep x: Pauses the execution of a chain of commands. For instance: /ping && /sleep 1000 && /ping, will execute two pings 1 second apart. If no argument is provided it defaults to 1000.</div>
+			<div class='info_item help_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil, and profile images in chat of whoever is typing will have a glow effect.</div>
+			<div class='info_item help_item'>In some commands like /whisper the > character can be used to send 2 arguments. For instance, "/whisper Jack > hello my friend" will send a message to Jack directly.</div>
+			<div class='info_item help_item'>Commands can be chained with &&. For instance "/tv The World && /maximizetv".</div>
+			<div class='spacer3'></div>
+			<span class='help_link action unselectable' onclick='show_help(1)'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='show_help(3)'>Administration Features</span>			
 		</script>
 
 		<script id='template_help3' type='text/x-handlebars-template'>
 
-			<div class='info_item'>Most administration options are available in the main menu.</div>
-			<div class='info_item'>/topic x: Changes the topic of the room.</div>
-			<div class='info_item'>/topicadd x: Adds a section at the end of the topic.</div>
-			<div class='info_item'>/topictrim x: Removes a section from the end of the topic, where the optional x is the number of trims you want to do.</div>
-			<div class='info_item'>/topicaddstart x: Adds a section at the start of the topic.</div>
-			<div class='info_item'>/topictrimstart x: Removes a section from the start of the topic, where the optional x is the number of trims you want to do.</div>
-			<div class='info_item'>/topicedit: Puts the topic in the input, ready to be edited.</div>
-			<div class='info_item'>/voice1 x: Gives voice 1 to a user.</div>
-			<div class='info_item'>/voice2 x: Gives voice 2 to a user.</div>
-			<div class='info_item'>/voice3 x: Gives voice 3 to a user.</div>
-			<div class='info_item'>/voice4 x: Gives voice 4 to a user.</div>
-			<div class='info_item'>/op x: Gives op to a user. Ops can do anything an admin can do except more high level commands.</div>
-			<div class='info_item'>/admin x: Gives admin to a user. This gives a user the same rights as the original admin.</div>
-			<div class='info_item'>/resetvoices: Turns all voices above 1 to voice 1.</div>
-			<div class='info_item'>/removeops: Removes all op roles.</div>
-			<div class='info_item'>/private: Room doesn\'t appear in the public room list.</div>
-			<div class='info_item'>/public: Room appears in the public room list.</div>
-			<div class='info_item'>/enablelog: Enables logging of the room. Which allows users to see previous messages before they joined.</div>
-			<div class='info_item'>/disablelog: Disables logging.</div>
-			<div class='info_item'>/clearlog: Removes all messages from the log.</div>
-			<div class='info_item'>/roomname x: Chages the name of the room.</div>
-			<div class='info_item'>/roomnameedit x: Puts the room name in the input, ready to be edited.</div>
-			<div class='info_item'>/kick x: Kicks a user out of the room.</div>
-			<div class='info_item'>/ban x: Bans a user from the room.</div>
-			<div class='info_item'>/unban x: Unbans a user from the room.</div>
-			<div class='info_item'>/unbanall: Removes all bans.</div>
-			<div class='info_item'>/bannedcount: Displays the number of banned users in the room.</div>
-			<div class='info_item'>/broadcast: Opens a window to write a message to be sent to the entire room.</div>
-			<div class='info_item'>/systembroadcast: (Only for superusers) Opens a window to write a message to be sent to the entire system.</div>
-			<div class='info_item'>/systemrestart: (Only for superusers) Sends a signal to every connected client to restart the application.</div>
-			<div class='info_item'>/annex: (Only for superusers) Used to change the user's role.</div>
-			<div class='info_item'>Usernames have a context menu (right click) if you are an op or admin.</div>
-			<div class='info_item'>Check /help for information about how users interact in the room through chat, image uploads, or radio.</div>
-			<div class='info_item'>Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada URL is gathered automatically. To work, the server needs to allow cross-domain requests and be HTTPS enabled if this system is being served through HTTPS.</div>
-			<div class='spacer1'></div>
-			<span class='help_link action unselectable' onclick='help()'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='help2()'>Additional Features</span>		
+			<div class='info_item help_item'>Most administration options are available in the main menu.</div>
+			<div class='info_item help_item'>/topic x: Changes the topic of the room.</div>
+			<div class='info_item help_item'>/topicadd x: Adds a section at the end of the topic.</div>
+			<div class='info_item help_item'>/topictrim x: Removes a section from the end of the topic, where the optional x is the number of trims you want to do.</div>
+			<div class='info_item help_item'>/topicaddstart x: Adds a section at the start of the topic.</div>
+			<div class='info_item help_item'>/topictrimstart x: Removes a section from the start of the topic, where the optional x is the number of trims you want to do.</div>
+			<div class='info_item help_item'>/topicedit: Puts the topic in the input, ready to be edited.</div>
+			<div class='info_item help_item'>/voice1 x: Gives voice 1 to a user.</div>
+			<div class='info_item help_item'>/voice2 x: Gives voice 2 to a user.</div>
+			<div class='info_item help_item'>/voice3 x: Gives voice 3 to a user.</div>
+			<div class='info_item help_item'>/voice4 x: Gives voice 4 to a user.</div>
+			<div class='info_item help_item'>/op x: Gives op to a user. Ops can do anything an admin can do except more high level commands.</div>
+			<div class='info_item help_item'>/admin x: Gives admin to a user. This gives a user the same rights as the original admin.</div>
+			<div class='info_item help_item'>/resetvoices: Turns all voices above 1 to voice 1.</div>
+			<div class='info_item help_item'>/removeops: Removes all op roles.</div>
+			<div class='info_item help_item'>/private: Room doesn\'t appear in the public room list.</div>
+			<div class='info_item help_item'>/public: Room appears in the public room list.</div>
+			<div class='info_item help_item'>/enablelog: Enables logging of the room. Which allows users to see previous messages before they joined.</div>
+			<div class='info_item help_item'>/disablelog: Disables logging.</div>
+			<div class='info_item help_item'>/clearlog: Removes all messages from the log.</div>
+			<div class='info_item help_item'>/roomname x: Chages the name of the room.</div>
+			<div class='info_item help_item'>/roomnameedit x: Puts the room name in the input, ready to be edited.</div>
+			<div class='info_item help_item'>/kick x: Kicks a user out of the room.</div>
+			<div class='info_item help_item'>/ban x: Bans a user from the room.</div>
+			<div class='info_item help_item'>/unban x: Unbans a user from the room.</div>
+			<div class='info_item help_item'>/unbanall: Removes all bans.</div>
+			<div class='info_item help_item'>/bannedcount: Displays the number of banned users in the room.</div>
+			<div class='info_item help_item'>/broadcast: Opens a window to write a message to be sent to the entire room.</div>
+			<div class='info_item help_item'>/systembroadcast: (Only for superusers) Opens a window to write a message to be sent to the entire system.</div>
+			<div class='info_item help_item'>/systemrestart: (Only for superusers) Sends a signal to every connected client to restart the application.</div>
+			<div class='info_item help_item'>/annex: (Only for superusers) Used to change the user's role.</div>
+			<div class='info_item help_item'>Usernames have a context menu (right click) if you are an op or admin.</div>
+			<div class='info_item help_item'>Check /help for information about how users interact in the room through chat, image uploads, or radio.</div>
+			<div class='info_item help_item'>Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada URL is gathered automatically. To work, the server needs to allow cross-domain requests and be HTTPS enabled if this system is being served through HTTPS.</div>
+			<div class='spacer3'></div>
+			<span class='help_link action unselectable' onclick='show_help(1)'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='show_help(2)'>Additional Features</span>		
 		</script>		
 
 		<audio id='audio' preload="metadata"></audio>
