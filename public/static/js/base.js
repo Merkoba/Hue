@@ -18916,7 +18916,7 @@ function do_help_filter(type)
 		})
 	}
 
-	update_modal_scrollbar("info2")
+	update_modal_scrollbar("help")
 
-	$('#Msg-content-container-info2').scrollTop(0)
+	$('#Msg-content-container-help').scrollTop(0)
 }
