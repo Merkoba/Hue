@@ -6056,24 +6056,85 @@ function process_message(message, to_history=true, clr_input=true)
 
 		var and_split = message.split(" && ")
 
-		if(and_split.length > 1 && !message.startsWith("/js ") && !message.startsWith("/js2 "))
+		if(message.startsWith("/js ") || message.startsWith("/js2 "))
+		{
+			var more_stuff = message.includes("/endjs")
+		}
+
+		else
+		{
+			var more_stuff = true
+		}
+
+		if(and_split.length > 1 && more_stuff)
 		{
 			if(to_history)
 			{
 				add_to_input_history(message)
 			}
 
-			for(var i=0; i<and_split.length; i++)
-			{
-				var cmd = and_split[i]
+			var ssplit = message.split(" ")
 
-				if(cmd.startsWith("/js ") || cmd.startsWith("/js2 "))
+			var cmds = []
+			var cmd = ""
+			var jsmode = false
+
+			for(var sp of ssplit)
+			{
+				if(jsmode)
 				{
-					cmd = and_split.slice(i).join(" && ")
-					i = and_split.length
+					if(sp === "/endjs")
+					{
+						cmds.push(cmd)
+						cmd = ""
+						jsmode = false
+					}
+
+					else
+					{
+						cmd += ` ${sp}`
+					}
 				}
 
-				process_message(cmd.trim(), false, clr_input)
+				else
+				{
+					if(cmd === "")
+					{
+						if(sp !== "&&")
+						{
+							cmd = sp
+
+							if(cmd === "/js" || cmd === "/js2")
+							{
+								jsmode = true
+							}
+						}
+					}
+
+					else
+					{
+						if(sp === "&&")
+						{
+							cmds.push(cmd)
+							cmd = ""
+						}
+
+						else
+						{
+							cmd += ` ${sp}`
+						}
+					}
+				}
+			}
+
+			if(cmd)
+			{
+				cmds.push(cmd)
+			}
+
+			for(var c of cmds)
+			{
+				process_message(c, false, clr_input)
 			}
 
 			return false
