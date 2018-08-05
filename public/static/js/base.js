@@ -6210,7 +6210,7 @@ function process_message(args={})
 				add_to_input_history(args.message)
 			}
 
-			process_args.message(
+			process_message(
 			{
 				message: full_alias,
 				to_history: false,
