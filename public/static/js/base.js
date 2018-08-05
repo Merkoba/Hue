@@ -251,6 +251,7 @@ var init_data
 var log_messages_processed = false
 var command_aliases = {}
 var play_video_on_load = false
+var commands_queue = []
 
 function init()
 {
@@ -4130,7 +4131,7 @@ function activate_key_detection()
 
 			else
 			{
-				process_message($('#input').val())
+				process_message({message:$('#input').val()})
 			}
 
 			e.preventDefault()
@@ -5857,6 +5858,7 @@ function register_commands()
 {
 	commands.push('/me')
 	commands.push('/clear')
+	commands.push('/clearinput')
 	commands.push('/unclear')
 	commands.push('/users')
 	commands.push('/room')
@@ -6041,24 +6043,34 @@ function is_command(message)
 	return false
 }
 
-function process_message(message, to_history=true, clr_input=true)
+function process_message(args={})
 {
-	var num_lines = message.split("\n").length
+	var def_args =
+	{
+		message: "",
+		to_history: true,
+		clr_input: true,
+		callback: false
+	}
+
+	fill_defaults(args, def_args)
+
+	var num_lines = args.message.split("\n").length
 
 	if(num_lines === 1)
 	{
-		 message = message.trim()
+		 args.message = args.message.trim()
 	}
 
-	if(is_command(message))
+	if(is_command(args.message))
 	{
-		message = utilz.clean_string2(message)
+		args.message = utilz.clean_string2(args.message)
 
-		var and_split = message.split(" && ")
+		var and_split = args.message.split(" && ")
 
-		if(message.startsWith("/js ") || message.startsWith("/js2 "))
+		if(args.message.startsWith("/js ") || args.message.startsWith("/js2 "))
 		{
-			var more_stuff = message.includes("/endjs")
+			var more_stuff = args.message.includes("/endjs")
 		}
 
 		else
@@ -6068,12 +6080,14 @@ function process_message(message, to_history=true, clr_input=true)
 
 		if(and_split.length > 1 && more_stuff)
 		{
-			if(to_history)
+			if(args.to_history)
 			{
-				add_to_input_history(message)
+				add_to_input_history(args.message)
 			}
 
-			var ssplit = message.split(" ")
+			clear_input()
+
+			var ssplit = args.message.split(" ")
 
 			var cmds = []
 			var cmd = ""
@@ -6132,15 +6146,49 @@ function process_message(message, to_history=true, clr_input=true)
 				cmds.push(cmd)
 			}
 
-			for(var c of cmds)
+			var qcmax = 0
+
+			while(true)
 			{
-				process_message(c, false, clr_input)
+				var cqid = utilz.get_random_string(5) + Date.now()
+
+				if(commands_queue[cqid] === undefined)
+				{
+					break
+				}
+
+				qcmax += 1
+
+				if(qcmax >= 100)
+				{
+					if(args.callback)
+					{
+						return args.callback()
+					}
+
+					else
+					{
+						return false
+					}
+				}
 			}
 
-			return false
+			commands_queue[cqid] = cmds
+
+			run_commands_queue(cqid)
+
+			if(args.callback)
+			{
+				return args.callback()
+			}
+
+			else
+			{
+				return false
+			}
 		}
 
-		var msplit = message.split(" ")
+		var msplit = args.message.split(" ")
 
 		var alias_cmd = msplit[0].trim()
 
@@ -6154,25 +6202,38 @@ function process_message(message, to_history=true, clr_input=true)
 
 			if(alias_cmd.startsWith("/X"))
 			{
-				to_history = false
+				args.to_history = false
 			}
 
-			if(to_history)
+			if(args.to_history)
 			{
-				add_to_input_history(message)
+				add_to_input_history(args.message)
 			}
 
-			process_message(full_alias, false, clr_input)
+			process_args.message(
+			{
+				message: full_alias,
+				to_history: false,
+				clr_input: args.clr_input
+			})
 			
-			return false
+			if(args.callback)
+			{
+				return args.callback()
+			}
+
+			else
+			{
+				return false
+			}
 		}
 
 		else
 		{
-			var ans = execute_command(message, {to_history:to_history, clr_input:clr_input})
+			var ans = execute_command(args.message, {to_history:args.to_history, clr_input:args.clr_input})
 
-			to_history = ans.to_history
-			clr_input = ans.clr_input
+			args.to_history = ans.to_history
+			args.clr_input = ans.clr_input
 		}
 	}
 
@@ -6180,25 +6241,42 @@ function process_message(message, to_history=true, clr_input=true)
 	{
 		if(can_chat)
 		{
-			message = utilz.clean_string10(message)
+			args.message = utilz.clean_string10(args.message)
 
-			if(message.length === 0)
+			if(args.message.length === 0)
 			{
 				clear_input()
-				return false
+
+				if(args.callback)
+				{
+					return args.callback()
+				}
+
+				else
+				{
+					return false
+				}
 			}
 
 			if(num_lines > max_num_newlines)
 			{
-				return false
+				if(args.callback)
+				{
+					return args.callback()
+				}
+
+				else
+				{
+					return false
+				}
 			}
 
-			if(message.length > max_input_length)
+			if(args.message.length > max_input_length)
 			{
-				message = message.substring(0, max_input_length)
+				args.message = args.message.substring(0, max_input_length)
 			}
 
-			socket_emit('sendchat', {message:message})
+			socket_emit('sendchat', {message:args.message})
 		}
 
 		else
@@ -6207,14 +6285,19 @@ function process_message(message, to_history=true, clr_input=true)
 		}
 	}
 
-	if(to_history)
+	if(args.to_history)
 	{
-		add_to_input_history(message)
+		add_to_input_history(args.message)
 	}
 
-	if(clr_input)
+	if(args.clr_input)
 	{
 		clear_input()
+	}
+
+	if(args.callback)
+	{
+		return args.callback()
 	}
 }
 
@@ -6234,6 +6317,11 @@ function execute_command(message, ans)
 	if(oiEquals(lmessage, '/clear'))
 	{
 		clear_chat()
+	}
+
+	if(oiEquals(lmessage, '/clearinput'))
+	{
+		clear_input()
 	}
 
 	else if(oiEquals(lmessage, '/unclear'))
@@ -7049,7 +7137,12 @@ function execute_command(message, ans)
 
 	else if(oiStartsWith(lmessage, '/say'))
 	{
-		process_message(arg, ans.to_history, ans.clr_input)
+		process_message(
+		{
+			message: arg,
+			to_history: ans.to_history,
+			clr_input: ans.clr_input
+		})
 	}
 
 	else
@@ -13890,12 +13983,20 @@ function remove_aura(uname, clr=false)
 
 function shrug()
 {
-	process_message("¯\\_(ツ)_/¯", false)
+	process_message(
+	{
+		message: "¯\\_(ツ)_/¯",
+		to_history: false
+	})
 }
 
 function show_afk()
 {
-	process_message("/me is now AFK", false)
+	process_message(
+	{
+		message: "/me is now AFK",
+		to_history: false
+	})
 }
 
 function toggle_lock_images(what=undefined, save=true)
@@ -15025,7 +15126,12 @@ function execute_commands(setting)
 
 		for(var cmd of cmds)
 		{
-			process_message(cmd, false, false)
+			process_message(
+			{
+				message: cmd,
+				to_history: false,
+				clr_input: false
+			})
 		}
 	}
 }
@@ -15247,7 +15353,7 @@ function do_radio_history_filter()
 
 function do_test()
 {
-	process_message("Test: 3")
+	process_message({message:"Test: 3"})
 }
 
 function maximize_images()
@@ -18629,4 +18735,48 @@ function sdeb(s)
 	}
 
 	console.info("-------------")
+}
+
+function run_commands_queue(id)
+{
+	var cmds = commands_queue[id]
+
+	if(!cmds || cmds.length === 0)
+	{
+		delete commands_queue[id]
+		return false
+	}
+
+	var cmd = cmds.shift()
+
+	var obj = 	
+	{
+		message: cmd,
+		to_history: false,
+		clr_input: false,
+		callback: function()
+		{
+			run_commands_queue(id)
+		}
+	}
+
+	if(cmd.startsWith("/sleep") || cmd === "/sleep")
+	{
+		var n = parseInt(cmd.replace("/sleep ", ""))
+
+		if(isNaN(n))
+		{
+			n = 1000
+		}
+
+		setTimeout(function()
+		{
+			run_commands_queue(id)
+		}, n)
+	}
+
+	else
+	{
+		process_message(obj)
+	}
 }
