@@ -5976,6 +5976,7 @@ function register_commands()
 	commands.push('/closeall')
 	commands.push('/closeallmodals')
 	commands.push('/closeallpopups')
+	commands.push('/closeandwait')
 	commands.push('/activityabove')
 	commands.push('/activitybelow')
 	commands.push('/globalsettings')
@@ -6306,8 +6307,10 @@ function process_message(args={})
 function execute_command(message, ans)
 {
 	var a = message.toLowerCase().split(' ')
+	
+	var cmd = a[0]
 
-	var lmessage = a[0].split('').sort().join('')
+	var lmessage = cmd.split('').sort().join('')
 
 	if(a.length > 1)
 	{
@@ -7149,7 +7152,7 @@ function execute_command(message, ans)
 
 	else
 	{
-		feedback("Invalid command. Use // to start a message with /")
+		feedback(`Invalid command "${cmd.slice(1)}". Use // to start a message with /`)
 	}
 
 	return ans
@@ -10560,19 +10563,43 @@ function any_popup_open()
 	return msg_main_menu.any_lower_open()
 }
 
-function close_all_msg()
+function close_all_msg(callback=false)
 {
-	msg_main_menu.close_all()
+	if(callback)
+	{
+		msg_main_menu.close_all(callback)
+	}
+
+	else
+	{
+		msg_main_menu.close_all()
+	}
 }
 
-function close_all_modals()
+function close_all_modals(callback=false)
 {
-	msg_main_menu.close_all_higher()
+	if(callback)
+	{
+		msg_main_menu.close_all_higher(callback)
+	}
+
+	else
+	{
+		msg_main_menu.close_all_higher()
+	}
 }
 
-function close_all_popups()
+function close_all_popups(callback=false)
 {
-	msg_main_menu.close_all_lower()
+	if(callback)
+	{
+		msg_main_menu.close_all_lower(callback)
+	}
+
+	else
+	{
+		msg_main_menu.close_all_lower()
+	}
 }
 
 function empty_global_settings()
@@ -18775,6 +18802,14 @@ function run_commands_queue(id)
 		{
 			run_commands_queue(id)
 		}, n)
+	}
+
+	else if(cmd === "/closeandwait")
+	{
+		close_all_modals(function()
+		{
+			run_commands_queue(id)
+		})
 	}
 
 	else
