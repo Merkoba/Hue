@@ -409,18 +409,37 @@ function setup_templates()
 
 function show_help(number=1, filter="")
 {	
-	var t = window[`template_help${number}`]
+	var template = window[`template_help${number}`]
 
-	if(t)
+	if(template)
 	{
-		$("#help_content").html(t)
-		
+		if(number == 1)
+		{
+			var title = "Basic Features"
+		}
+
+		else if(number == 2)
+		{
+			var title = "Additional Features"
+		}
+
+		else if(number == 3)
+		{
+			var title = "Administration Features"
+		}
+
+		$("#help_content").html(template())
+
 		msg_help.show(function()
 		{
 			$("#help_filter").val(filter)
-			do_help_filter()
+
+			help_filter_timer()
+
 			$("#help_filter").focus()
 		})
+
+		msg_help.set_title(title)
 	}
 }
 
