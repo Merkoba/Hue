@@ -16170,6 +16170,7 @@ function setup_settings_windows()
 	start_room_settings_overriders()
 	check_room_settings_override()
 	setup_settings_window()
+	setup_user_function_switch_selects()
 }
 
 function create_room_settings_overriders()
@@ -19056,4 +19057,59 @@ function do_help_filter(type)
 	update_modal_scrollbar("help")
 
 	$('#Msg-content-container-help').scrollTop(0)
+}
+
+function setup_user_function_switch_selects()
+{
+	$(".user_function_switch_select").each(function()
+	{
+		$(this).change(function()
+		{
+			var num2 = $(this).find("option:selected").val()
+
+			if(num2 == "0")
+			{
+				return false
+			}
+
+			var num = $(this).data("number")
+			var type = $(this).data("type")
+
+			var o_user_function = window[type][`user_function_${num}`]
+			var o_user_function_name = window[type][`user_function_${num}_name`]
+
+			var n_user_function = window[type][`user_function_${num2}`]
+			var n_user_function_name = window[type][`user_function_${num2}_name`]
+
+			if(o_user_function_name === `F${num}`)
+			{
+				o_user_function_name = `F${num2}`
+			}
+
+			if(n_user_function_name === `F${num2}`)
+			{
+				n_user_function_name = `F${num}`
+			}
+
+			window[type][`user_function_${num}`] = n_user_function
+			window[type][`user_function_${num}_name`] = n_user_function_name
+
+			window[type][`user_function_${num2}`] = o_user_function
+			window[type][`user_function_${num2}_name`] = o_user_function_name
+
+			$(`#${type}_user_function_${num}`).val(window[type][`user_function_${num}`])
+			$(`#${type}_user_function_${num}_name`).val(window[type][`user_function_${num}_name`])
+
+			$(`#${type}_user_function_${num2}`).val(window[type][`user_function_${num2}`])
+			$(`#${type}_user_function_${num2}_name`).val(window[type][`user_function_${num2}_name`])
+
+			$(this).find('option').each(function()
+			{
+				if($(this).val() == "0")
+				{
+					$(this).prop('selected', true)
+				}
+			})
+		})
+	})
 }
