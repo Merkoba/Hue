@@ -19111,7 +19111,13 @@ function setup_user_function_switch_selects()
 				}
 			})
 
-			setup_user_function_titles()
+			if(active_settings(`user_function_${num}`) === type 
+			|| active_settings(`user_function_${num2}`) === type
+			|| active_settings(`user_function_${num}_name`) === type
+			|| active_settings(`user_function_${num2}_name`) === type)
+			{
+				setup_user_function_titles()
+			}
 		})
 	})
 }
