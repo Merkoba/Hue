@@ -213,7 +213,7 @@ var show_reactions_timeout
 var hide_reactions_timeout
 var mouse_over_reactions = false
 var reactions_hover_delay = 800
-var user_functions = [1, 2, 3]
+var user_functions = [1, 2, 3, 4]
 var screen_locked = false
 var mouse_is_down = false
 var draw_message_context
@@ -3902,6 +3902,30 @@ function activate_key_detection()
 			reset_double_tap_keys_pressed()
 		}
 
+		if(e.key === "F1")
+		{
+			run_user_function(1)
+			e.preventDefault()
+		}
+
+		else if(e.key === "F2")
+		{
+			run_user_function(2)
+			e.preventDefault()
+		}
+
+		else if(e.key === "F3")
+		{
+			run_user_function(3)
+			e.preventDefault()
+		}
+
+		else if(e.key === "F4")
+		{
+			run_user_function(4)
+			e.preventDefault()
+		}
+
 		if(modal_open)
 		{
 			if(e.key === "Escape")
@@ -6023,6 +6047,7 @@ function register_commands()
 	commands.push('/f1')
 	commands.push('/f2')
 	commands.push('/f3')
+	commands.push('/f4')
 	commands.push('/lockscreen')
 	commands.push('/unlockscreen')
 	commands.push('/togglelockscreen')
@@ -7156,6 +7181,12 @@ function execute_command(message, ans)
 	else if(oiEquals(lmessage, '/f3'))
 	{
 		run_user_function(3)
+		ans.to_history = false
+	}
+
+	else if(oiEquals(lmessage, '/f4'))
+	{
+		run_user_function(4)
 		ans.to_history = false
 	}
 
@@ -10746,9 +10777,11 @@ function get_global_settings()
 		"user_function_1",
 		"user_function_2",
 		"user_function_3",
+		"user_function_4",
 		"user_function_1_name",
 		"user_function_2_name",
 		"user_function_3_name",
+		"user_function_4_name",
 		"on_lockscreen",
 		"on_unlockscreen",
 		"afk_on_lockscreen",
@@ -11449,6 +11482,49 @@ function setting_user_function_3_action(type, save=true)
 	window[type].user_function_3 = cmds
 
 	if(active_settings("user_function_3") === type)
+	{
+		setup_user_function_titles()
+	}
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_user_function_4_name_action(type, save=true)
+{
+	var val = utilz.clean_string2($(`#${type}_user_function_4_name`).val())
+
+	if(!val)
+	{
+		val = global_settings_default_user_function_4_name
+	}
+
+	$(`#${type}_user_function_4_name`).val(val)
+
+	window[type].user_function_4_name = val
+
+	if(active_settings("user_function_4_name") === type)
+	{
+		setup_user_function_titles()
+	}
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_user_function_4_action(type, save=true)
+{
+	var cmds = utilz.clean_string7($(`#${type}_user_function_4`).val())
+
+	$(`#${type}_user_function_4`).val(cmds)
+
+	window[type].user_function_4 = cmds
+
+	if(active_settings("user_function_4") === type)
 	{
 		setup_user_function_titles()
 	}

@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?version=16"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2152"></script>
+		<script src="/static/js/base.js?version=2153"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=440"/>
 
@@ -171,6 +171,10 @@
 						<div class='hspacer3'>&nbsp;|&nbsp;</div>
 						
 						<div class='pointer action user_function_button' onclick='run_user_function(3)' id='user_function_button_3'>F3</div>
+
+						<div class='hspacer3'>&nbsp;|&nbsp;</div>
+						
+						<div class='pointer action user_function_button' onclick='run_user_function(4)' id='user_function_button_4'>F4</div>
 					</div>
 				</div>
 
@@ -971,6 +975,22 @@
 							</div>
 						</div>
 
+						<div class='toggler_main_container'>
+							<div class="{{type}}_toggle toggler action pointer bold settings_container">+ User Function 4</div>
+							<div class='{{type}}_toggle_container toggler_container'>
+								<div class='settings_item' data-setting='user_function_4_name' data-type='text'>
+									<div class="setting_title">Name</div>
+									<input type="text" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_user_function_4_name">
+								</div>
+								<div class='settings_item' data-setting='user_function_4' data-type='textarea'>
+									<div class="setting_title2">Action</div>
+									<div class="setting_title">(Each on a different line)</div>
+									<div class='spacer2'></div>
+									<textarea rows=5 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_user_function_4"></textarea>
+								</div>
+							</div>
+						</div>
+
 						<div class='settings_item' data-setting='double_tap' data-type='textarea'>
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_key"></span>&nbsp;Tap</div>
@@ -1666,6 +1686,7 @@
 			<div class='info_item help_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil, and profile images in chat of whoever is typing will have a glow effect.</div>
 			<div class='info_item help_item'>In some commands like /whisper the > character can be used to send 2 arguments. For instance, "/whisper Jack > hello my friend" will send a message to Jack directly.</div>
 			<div class='info_item help_item'>Commands can be chained with &&. For instance "/tv The World && /maximizetv".</div>
+			<div class='info_item help_item'>Keyboard keys F1, F2, F3, and F4, are mapped to the corresponding User Function.</div>
 			<div class='spacer3'></div>
 			<span class='help_link action unselectable' onclick='show_help(1)'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='show_help(3)'>Administration Features</span>			
 		</script>
