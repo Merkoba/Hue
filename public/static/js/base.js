@@ -19081,14 +19081,14 @@ function setup_user_function_switch_selects()
 			var n_user_function = window[type][`user_function_${num2}`]
 			var n_user_function_name = window[type][`user_function_${num2}_name`]
 
-			if(o_user_function_name === `F${num}`)
+			if(o_user_function_name === window[`global_settings_default_user_function_${num}_name`])
 			{
-				o_user_function_name = `F${num2}`
+				o_user_function_name = window[`global_settings_default_user_function_${num2}_name`]
 			}
 
-			if(n_user_function_name === `F${num2}`)
+			if(n_user_function_name === window[`global_settings_default_user_function_${num2}_name`])
 			{
-				n_user_function_name = `F${num}`
+				n_user_function_name = window[`global_settings_default_user_function_${num}_name`]
 			}
 
 			window[type][`user_function_${num}`] = n_user_function
