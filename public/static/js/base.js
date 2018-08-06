@@ -435,7 +435,7 @@ function show_help(number=1, filter="")
 			$("#help_filter").val(filter)
 			$("#help_filter").focus()
 			
-			update_modal_scrollbar("help")
+			help_filter_timer()
 		})
 
 		msg_help.set_title(title)
