@@ -6008,7 +6008,6 @@ function register_commands()
 	commands.push('/broadcast')
 	commands.push('/systembroadcast')
 	commands.push('/systemrestart')
-	commands.push('/changeinput')
 	commands.push('/toggleplayradio')
 	commands.push('/refreshimage')
 	commands.push('/refreshtv')
@@ -7080,13 +7079,6 @@ function execute_command(message, ans)
 	else if(oiStartsWith(lmessage, '/goto'))
 	{
 		goto_url(arg, "tab")
-	}
-
-	else if(oiStartsWith(lmessage, '/changeinput'))
-	{
-		change_input(arg)
-		ans.to_history = false
-		ans.clr_input = false
 	}
 
 	else if(oiEquals(lmessage, '/toggleplayradio'))
