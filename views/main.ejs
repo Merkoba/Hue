@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?version=16"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2149"></script>
+		<script src="/static/js/base.js?version=2150"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=440"/>
 
@@ -1661,6 +1661,9 @@
 			<div class='info_item help_item'>/say: Sends a normal chat message. Useful if you want to make a chain of commands that starts with a message.</div>
 			<div class='info_item help_item'>/clearinput: Clears the text input.</div>
 			<div class='info_item help_item'>/sleep x: Pauses the execution of a chain of commands. For instance: /ping && /sleep 1000 && /ping, will execute two pings 1 second apart. If no argument is provided it defaults to 1000.</div>
+			<div class='info_item help_item'>/input x: Adds text to the input.</div>
+			<div class='info_item help_item'>/inputend: Since everything after /input is part of it, /endinput is needed to chain more commands. For instance: /input a && b /endinput && /say hello.</div>
+			<div class='info_item help_item'>/inputenter: The same as pressing Enter when there's text in the input. For instance: /input hello /endinput && /inputenter.</div>
 			<div class='info_item help_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil, and profile images in chat of whoever is typing will have a glow effect.</div>
 			<div class='info_item help_item'>In some commands like /whisper the > character can be used to send 2 arguments. For instance, "/whisper Jack > hello my friend" will send a message to Jack directly.</div>
 			<div class='info_item help_item'>Commands can be chained with &&. For instance "/tv The World && /maximizetv".</div>

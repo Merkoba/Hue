@@ -6032,6 +6032,8 @@ function register_commands()
 	commands.push('/leavevoicechat')
 	commands.push('/say')
 	commands.push('/sleep')
+	commands.push('/input')
+	commands.push('/inputenter')
 
 	commands.sort()
 
@@ -6099,6 +6101,11 @@ function process_message(args={})
 			var more_stuff = args.message.includes("/endjs")
 		}
 
+		else if(args.message.startsWith("/input "))
+		{
+			var more_stuff = args.message.includes("/endinput")
+		}
+
 		else
 		{
 			var more_stuff = true
@@ -6117,17 +6124,32 @@ function process_message(args={})
 
 			var cmds = []
 			var cmd = ""
-			var jsmode = false
+			var cmd_mode = "normal"
 
 			for(var sp of ssplit)
 			{
-				if(jsmode)
+				if(cmd_mode === "js")
 				{
 					if(sp === "/endjs")
 					{
 						cmds.push(cmd)
 						cmd = ""
-						jsmode = false
+						cmd_mode = "normal"
+					}
+
+					else
+					{
+						cmd += ` ${sp}`
+					}
+				}
+
+				else if(cmd_mode === "input")
+				{
+					if(sp === "/endinput")
+					{
+						cmds.push(cmd)
+						cmd = ""
+						cmd_mode = "normal"
 					}
 
 					else
@@ -6146,7 +6168,12 @@ function process_message(args={})
 
 							if(cmd === "/js" || cmd === "/js2")
 							{
-								jsmode = true
+								cmd_mode = "js"
+							}
+
+							else if(cmd === "/input")
+							{
+								cmd_mode = "input"
 							}
 						}
 					}
@@ -6347,7 +6374,7 @@ function execute_command(message, ans)
 		clear_chat()
 	}
 
-	if(oiEquals(lmessage, '/clearinput'))
+	else if(oiEquals(lmessage, '/clearinput'))
 	{
 		clear_input()
 	}
@@ -7186,6 +7213,13 @@ function execute_command(message, ans)
 			to_history: ans.to_history,
 			clr_input: ans.clr_input
 		})
+	}
+
+	else if(oiStartsWith(lmessage, '/input'))
+	{
+		change_input(arg)
+		ans.to_history = false
+		ans.clr_input = false
 	}
 
 	else
@@ -18879,6 +18913,23 @@ function run_commands_queue(id)
 		{
 			run_commands_queue(id)
 		})
+	}
+
+	else if(cmd === "/inputenter")
+	{
+		var val = $('#input').val()
+
+		if(val.length > 0)
+		{
+			obj.message = val
+			obj.clr_input = true
+			process_message(obj)
+		}
+
+		else
+		{
+			run_commands_queue(id)
+		}
 	}
 
 	else
