@@ -19110,6 +19110,8 @@ function setup_user_function_switch_selects()
 					$(this).prop('selected', true)
 				}
 			})
+
+			setup_user_function_titles()
 		})
 	})
 }
