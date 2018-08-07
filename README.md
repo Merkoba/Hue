@@ -451,6 +451,12 @@ If you want to remove it to start fresh:
 "global_settings_default_chat_layout"
 >Default chat layout. Either "normal" or "compact".
 
+"global_settings_default_aliases"
+>Default command aliases.
+
+"global_settings_default_other_words_to_autocomplete"
+>Default words to autocomplete besides usernames and commands.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 

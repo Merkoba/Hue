@@ -254,6 +254,7 @@ var log_messages_processed = false
 var command_aliases = {}
 var play_video_on_load = false
 var commands_queue = []
+var words_to_autocomplete = []
 
 function init()
 {
@@ -315,6 +316,7 @@ function init()
 	setup_user_function_titles()
 	setup_modal_image_number()
 	setup_command_aliases()
+	generate_words_to_autocomplete()
 
 	start_socket()
 }
@@ -4538,7 +4540,7 @@ function get_closest_autocomplete(element, w)
 {
 	var info = tab_info[element.id]
 
-	var l = commands.concat(usernames).concat(["@everyone"]).concat(Object.keys(command_aliases))
+	var l = words_to_autocomplete
 	var wl = w.toLowerCase()
 	var has = false
 
@@ -10790,7 +10792,8 @@ function get_global_settings()
 		"media_display_percentage",
 		"tv_display_percentage",
 		"tv_display_position",
-		"aliases"
+		"aliases",
+		"other_words_to_autocomplete"
 	]
 
 	var changed = false
@@ -11625,6 +11628,25 @@ function setting_aliases_action(type, save=true)
 	if(active_settings("aliases") === type)
 	{
 		setup_command_aliases()
+	}
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
+function setting_other_words_to_autocomplete_action(type, save=true)
+{
+	var words = make_unique_lines(utilz.clean_string7($(`#${type}_other_words_to_autocomplete`).val()))
+
+	$(`#${type}_other_words_to_autocomplete`).val(words)
+
+	window[type].other_words_to_autocomplete = words
+
+	if(active_settings("other_words_to_autocomplete") === type)
+	{
+		generate_words_to_autocomplete()
 	}
 
 	if(save)
@@ -19120,4 +19142,19 @@ function setup_user_function_switch_selects()
 			}
 		})
 	})
+}
+
+function generate_words_to_autocomplete()
+{
+	words_to_autocomplete = commands
+	.concat(usernames)
+	.concat(["@everyone"])
+	.concat(Object.keys(command_aliases))
+
+	var autocomplete = get_setting("other_words_to_autocomplete")
+
+	if(autocomplete)
+	{
+		words_to_autocomplete = words_to_autocomplete.concat(autocomplete.split('\n'))
+	}
 }
