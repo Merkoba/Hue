@@ -7035,11 +7035,13 @@ function execute_command(message, ans)
 
 	else if(oiStartsWith(lmessage, '/js'))
 	{
+		arg = arg.replace(/\s\/endjs/gi, "")
 		execute_javascript(arg)
 	}
 
 	else if(oiStartsWith(lmessage, '/js2'))
 	{
+		arg = arg.replace(/\s\/endjs/gi, "")
 		execute_javascript(arg, false)
 	}
 
@@ -7242,6 +7244,7 @@ function execute_command(message, ans)
 
 	else if(oiStartsWith(lmessage, '/input'))
 	{
+		arg = arg.replace(/\s\/endinput/gi, "")
 		change_input(arg)
 		ans.to_history = false
 		ans.clr_input = false
@@ -18948,9 +18951,12 @@ function open_url_menu(src)
 	})
 }
 
-function sdeb(s)
+function sdeb(s, show_date=false)
 {
-	console.info(nice_date())
+	if(show_date)
+	{
+		console.info(nice_date())
+	}
 
 	for(var line of `${s}`.split("\n"))
 	{
