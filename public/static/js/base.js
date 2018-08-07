@@ -6059,6 +6059,7 @@ function register_commands()
 	commands.push('/say')
 	commands.push('/sleep')
 	commands.push('/input')
+	commands.push('/endinput')
 	commands.push('/inputenter')
 
 	commands.sort()
