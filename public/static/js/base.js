@@ -7247,7 +7247,7 @@ function execute_command(message, ans)
 
 	else
 	{
-		feedback(`Invalid command "${cmd.slice(1)}". Use // to start a message with /`)
+		feedback(`Invalid command "${cmd.slice(1)}"`)
 	}
 
 	return ans
