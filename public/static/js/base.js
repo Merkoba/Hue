@@ -18982,6 +18982,8 @@ function run_commands_queue(id)
 
 	var cmd = cmds.shift()
 
+	var lc_cmd = cmd.toLowerCase()
+
 	var obj = 	
 	{
 		message: cmd,
@@ -18993,9 +18995,9 @@ function run_commands_queue(id)
 		}
 	}
 
-	if(cmd.startsWith("/sleep") || cmd === "/sleep")
+	if(lc_cmd.startsWith("/sleep") || lc_cmd === "/sleep")
 	{
-		var n = parseInt(cmd.replace("/sleep ", ""))
+		var n = parseInt(lc_cmd.replace("/sleep ", ""))
 
 		if(isNaN(n))
 		{
@@ -19008,7 +19010,7 @@ function run_commands_queue(id)
 		}, n)
 	}
 
-	else if(cmd === "/closeandwait")
+	else if(lc_cmd === "/closeandwait")
 	{
 		close_all_modals(function()
 		{
@@ -19016,7 +19018,7 @@ function run_commands_queue(id)
 		})
 	}
 
-	else if(cmd === "/inputenter")
+	else if(lc_cmd === "/inputenter")
 	{
 		var val = $('#input').val()
 
