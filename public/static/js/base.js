@@ -19108,6 +19108,7 @@ function setup_user_function_switch_selects()
 			}
 
 			var num = $(this).data("number")
+			
 			var type = $(this).data("type")
 
 			var o_user_function = window[type][`user_function_${num}`]
@@ -19153,6 +19154,8 @@ function setup_user_function_switch_selects()
 			{
 				setup_user_function_titles()
 			}
+
+			window[`save_${type}`]()
 		})
 	})
 }
