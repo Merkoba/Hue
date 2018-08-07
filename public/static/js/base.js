@@ -1297,7 +1297,7 @@ function start_socket()
 
 		else if(data.type === 'email_change_code_sent')
 		{
-			feedback(`Verification code sent. Use the command sent to ${data.email}. Email might take a couple of minutes to arrive.`)
+			feedback(`Verification code sent. Use the command sent to ${data.email}. Email might take a couple of minutes to arrive`)
 		}
 
 		else if(data.type === 'email_change_code_not_sent')
