@@ -6122,12 +6122,14 @@ function process_message(args={})
 
 		var and_split = args.message.split(" && ")
 
-		if(args.message.startsWith("/js ") || args.message.startsWith("/js2 "))
+		var lc_message = args.message.toLowerCase()
+
+		if(lc_message.startsWith("/js ") || lc_message.startsWith("/js2 "))
 		{
-			var more_stuff = args.message.includes("/endjs")
+			var more_stuff = lc_message.includes("/endjs")
 		}
 
-		else if(args.message.startsWith("/input "))
+		else if(lc_message.startsWith("/input "))
 		{
 			var more_stuff = args.message.includes("/endinput")
 		}
@@ -6154,9 +6156,11 @@ function process_message(args={})
 
 			for(var sp of ssplit)
 			{
+				var lc_sp = sp.toLowerCase()
+
 				if(cmd_mode === "js")
 				{
-					if(sp === "/endjs")
+					if(lc_sp === "/endjs")
 					{
 						cmds.push(cmd)
 						cmd = ""
@@ -6171,7 +6175,7 @@ function process_message(args={})
 
 				else if(cmd_mode === "input")
 				{
-					if(sp === "/endinput")
+					if(lc_sp === "/endinput")
 					{
 						cmds.push(cmd)
 						cmd = ""
@@ -6192,12 +6196,12 @@ function process_message(args={})
 						{
 							cmd = sp
 
-							if(cmd === "/js" || cmd === "/js2")
+							if(lc_sp === "/js" || lc_sp === "/js2")
 							{
 								cmd_mode = "js"
 							}
 
-							else if(cmd === "/input")
+							else if(lc_sp === "/input")
 							{
 								cmd_mode = "input"
 							}
