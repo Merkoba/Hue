@@ -6106,7 +6106,12 @@ function register_commands()
 
 function is_command(message)
 {
-	if(message[0] === '/' && !message.startsWith('/me ') && !message.startsWith('/em ') && !message.startsWith('//'))
+	if(message.length >= 2
+	&& message[0] === '/' 
+	&& message[1] !== '/' 
+	&& message[1] !== ' ' 
+	&& !message.startsWith('/me ')
+	&& !message.startsWith('/em '))
 	{
 		return true
 	}
@@ -10148,7 +10153,7 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "media_menu",
-			window_width: "20em",
+			window_width: "22em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -10206,7 +10211,7 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "highlights",
-			window_width: "22em",
+			window_width: "24em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -10233,7 +10238,7 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "image_history",
-			window_width: "22em",
+			window_width: "24em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -10260,7 +10265,7 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "tv_history",
-			window_width: "22em",
+			window_width: "24em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -10287,7 +10292,7 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "radio_history",
-			window_width: "22em",
+			window_width: "24em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -10314,7 +10319,7 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "input_history",
-			window_width: "22em",
+			window_width: "24em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
@@ -10341,7 +10346,7 @@ function start_msg()
 		Object.assign({}, common, titlebar,
 		{
 			id: "chat_search",
-			window_width: "22em",
+			window_width: "24em",
 			after_create: function(instance)
 			{
 				after_modal_create(instance)
