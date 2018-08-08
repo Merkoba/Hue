@@ -6106,10 +6106,11 @@ function register_commands()
 
 function is_command(message)
 {
+	message = message.trim()
+	
 	if(message.length >= 2
 	&& message[0] === '/' 
-	&& message[1] !== '/' 
-	&& message[1] !== ' ' 
+	&& message[1] !== '/'  
 	&& !message.startsWith('/me ')
 	&& !message.startsWith('/em '))
 	{
@@ -6408,829 +6409,831 @@ function process_message(args={})
 
 function execute_command(message, ans)
 {
-	var a = message.toLowerCase().split(' ')
+	message = utilz.clean_string11(message)
+
+	var split = message.toLowerCase().split(' ')
 	
-	var cmd = a[0]
+	var cmd = split[0]
 
-	var lmessage = cmd.split('').sort().join('')
+	var cmd2 = cmd.split('').sort().join('')
 
-	if(a.length > 1)
+	if(split.length > 1)
 	{
-		lmessage += ' '
+		cmd2 += ' '
 
-		var arg = message.substring(lmessage.length)
+		var arg = message.substring(cmd2.length)
 	}
 
-	if(oiEquals(lmessage, '/clear'))
+	if(oiEquals(cmd2, '/clear'))
 	{
 		clear_chat()
 	}
 
-	else if(oiEquals(lmessage, '/clearinput'))
+	else if(oiEquals(cmd2, '/clearinput'))
 	{
 		clear_input()
 	}
 
-	else if(oiEquals(lmessage, '/unclear'))
+	else if(oiEquals(cmd2, '/unclear'))
 	{
 		unclear_chat()
 	}
 
-	else if(oiEquals(lmessage, '/users'))
+	else if(oiEquals(cmd2, '/users'))
 	{
 		show_userlist()
 	}
 
-	else if(oiStartsWith(lmessage, '/users'))
+	else if(oiStartsWith(cmd2, '/users'))
 	{
 		show_userlist(arg)
 	}
 
-	else if(oiEquals(lmessage, '/publicrooms'))
+	else if(oiEquals(cmd2, '/publicrooms'))
 	{
 		request_roomlist("", "public_roomlist")
 	}
 
-	else if(oiStartsWith(lmessage, '/publicrooms'))
+	else if(oiStartsWith(cmd2, '/publicrooms'))
 	{
 		request_roomlist(arg, "public_roomlist")
 	}
 
-	else if(oiEquals(lmessage, '/visitedrooms'))
+	else if(oiEquals(cmd2, '/visitedrooms'))
 	{
 		request_roomlist("", "visited_roomlist")
 	}
 
-	else if(oiStartsWith(lmessage, '/visitedrooms'))
+	else if(oiStartsWith(cmd2, '/visitedrooms'))
 	{
 		request_roomlist(arg, "visited_roomlist")
 	}
 
-	else if(oiEquals(lmessage, '/roomname'))
+	else if(oiEquals(cmd2, '/roomname'))
 	{
 		show_room()
 	}
 
-	else if(oiStartsWith(lmessage, '/roomname'))
+	else if(oiStartsWith(cmd2, '/roomname'))
 	{
 		change_room_name(arg)
 	}
 
-	else if(oiEquals(lmessage, '/roomnameedit'))
+	else if(oiEquals(cmd2, '/roomnameedit'))
 	{
 		room_name_edit()
 		ans.to_history = false
 		ans.clr_input = false
 	}
 
-	else if(oiEquals(lmessage, '/played'))
+	else if(oiEquals(cmd2, '/played'))
 	{
 		show_played()
 	}
 
-	else if(oiStartsWith(lmessage, '/played'))
+	else if(oiStartsWith(cmd2, '/played'))
 	{
 		show_played(arg)
 	}
 
-	else if(oiEquals(lmessage, '/search'))
+	else if(oiEquals(cmd2, '/search'))
 	{
 		show_chat_search()
 	}
 
-	else if(oiStartsWith(lmessage, '/search'))
+	else if(oiStartsWith(cmd2, '/search'))
 	{
 		show_chat_search(arg)
 	}
 
-	else if(oiEquals(lmessage, '/role'))
+	else if(oiEquals(cmd2, '/role'))
 	{
 		show_role()
 	}
 
-	else if(oiStartsWith(lmessage, '/voice1'))
+	else if(oiStartsWith(cmd2, '/voice1'))
 	{
 		change_role(arg, "voice1")
 	}
 
-	else if(oiStartsWith(lmessage, '/voice2'))
+	else if(oiStartsWith(cmd2, '/voice2'))
 	{
 		change_role(arg, "voice2")
 	}
 
-	else if(oiStartsWith(lmessage, '/voice3'))
+	else if(oiStartsWith(cmd2, '/voice3'))
 	{
 		change_role(arg, "voice3")
 	}
 
-	else if(oiStartsWith(lmessage, '/voice4'))
+	else if(oiStartsWith(cmd2, '/voice4'))
 	{
 		change_role(arg, "voice4")
 	}
 
-	else if(oiStartsWith(lmessage, '/op'))
+	else if(oiStartsWith(cmd2, '/op'))
 	{
 		change_role(arg, "op")
 	}
 
-	else if(oiStartsWith(lmessage, '/admin'))
+	else if(oiStartsWith(cmd2, '/admin'))
 	{
 		change_role(arg, "admin")
 	}
 
-	else if(oiEquals(lmessage, '/resetvoices'))
+	else if(oiEquals(cmd2, '/resetvoices'))
 	{
 		reset_voices()
 	}
 
-	else if(oiEquals(lmessage, '/removeops'))
+	else if(oiEquals(cmd2, '/removeops'))
 	{
 		remove_ops()
 	}
 
-	else if(oiStartsWith(lmessage, '/ban'))
+	else if(oiStartsWith(cmd2, '/ban'))
 	{
 		ban(arg)
 	}
 
-	else if(oiStartsWith(lmessage, '/unban'))
+	else if(oiStartsWith(cmd2, '/unban'))
 	{
 		unban(arg)
 	}
 
-	else if(oiEquals(lmessage, '/unbanall'))
+	else if(oiEquals(cmd2, '/unbanall'))
 	{
 		unban_all()
 	}
 
-	else if(oiEquals(lmessage, '/bannedcount'))
+	else if(oiEquals(cmd2, '/bannedcount'))
 	{
 		get_banned_count()
 	}
 
-	else if(oiStartsWith(lmessage, '/kick'))
+	else if(oiStartsWith(cmd2, '/kick'))
 	{
 		kick(arg)
 	}
 
-	else if(oiEquals(lmessage, '/public'))
+	else if(oiEquals(cmd2, '/public'))
 	{
 		change_privacy(true)
 	}
 
-	else if(oiEquals(lmessage, '/private'))
+	else if(oiEquals(cmd2, '/private'))
 	{
 		change_privacy(false)
 	}
 
-	else if(oiEquals(lmessage, '/log'))
+	else if(oiEquals(cmd2, '/log'))
 	{
 		show_log()
 	}
 
-	else if(oiEquals(lmessage, '/enablelog'))
+	else if(oiEquals(cmd2, '/enablelog'))
 	{
 		change_log(true)
 	}
 
-	else if(oiEquals(lmessage, '/disablelog'))
+	else if(oiEquals(cmd2, '/disablelog'))
 	{
 		change_log(false)
 	}
 
-	else if(oiEquals(lmessage, '/clearlog'))
+	else if(oiEquals(cmd2, '/clearlog'))
 	{
 		clear_log()
 	}
 
-	else if(oiStartsWith(lmessage, '/radio'))
+	else if(oiStartsWith(cmd2, '/radio'))
 	{
 		change_radio_source(arg)
 	}
 
-	else if(oiEquals(lmessage, '/radio'))
+	else if(oiEquals(cmd2, '/radio'))
 	{
 		show_media_source("radio")
 	}
 
-	else if(oiStartsWith(lmessage, '/tv'))
+	else if(oiStartsWith(cmd2, '/tv'))
 	{
 		change_tv_source(arg)
 	}
 
-	else if(oiEquals(lmessage, '/tv'))
+	else if(oiEquals(cmd2, '/tv'))
 	{
 		show_media_source("tv")
 	}
 
-	else if(oiStartsWith(lmessage, '/image') || oiStartsWith(lmessage, '/images'))
+	else if(oiStartsWith(cmd2, '/image') || oiStartsWith(cmd2, '/images'))
 	{
 		link_image(arg)
 	}
 
-	else if(oiEquals(lmessage, '/image'))
+	else if(oiEquals(cmd2, '/image'))
 	{
 		show_media_source("image")
 	}
 
-	else if(oiEquals(lmessage, '/status'))
+	else if(oiEquals(cmd2, '/status'))
 	{
 		show_status()
 	}
 
-	else if(oiStartsWith(lmessage, '/topic'))
+	else if(oiStartsWith(cmd2, '/topic'))
 	{
 		change_topic(arg)
 	}
 
-	else if(oiStartsWith(lmessage, '/topicadd'))
+	else if(oiStartsWith(cmd2, '/topicadd'))
 	{
 		topicadd(arg)
 	}
 
-	else if(oiStartsWith(lmessage, '/topictrim'))
+	else if(oiStartsWith(cmd2, '/topictrim'))
 	{
 		topictrim(arg)
 	}
 
-	else if(oiEquals(lmessage, '/topictrim'))
+	else if(oiEquals(cmd2, '/topictrim'))
 	{
 		topictrim(1)
 	}
 
-	else if(oiStartsWith(lmessage, '/topicaddstart'))
+	else if(oiStartsWith(cmd2, '/topicaddstart'))
 	{
 		topicstart(arg)
 	}
 
-	else if(oiStartsWith(lmessage, '/topictrimstart'))
+	else if(oiStartsWith(cmd2, '/topictrimstart'))
 	{
 		topictrimstart(arg)
 	}
 
-	else if(oiEquals(lmessage, '/topictrimstart'))
+	else if(oiEquals(cmd2, '/topictrimstart'))
 	{
 		topictrimstart(1)
 	}
 
-	else if(oiEquals(lmessage, '/topicedit'))
+	else if(oiEquals(cmd2, '/topicedit'))
 	{
 		topicedit()
 		ans.to_history = false
 		ans.clr_input = false
 	}
 
-	else if(oiEquals(lmessage, '/topic'))
+	else if(oiEquals(cmd2, '/topic'))
 	{
 		show_topic()
 	}
 
-	else if(oiEquals(lmessage, '/room'))
+	else if(oiEquals(cmd2, '/room'))
 	{
 		show_room()
 	}
 
-	else if(oiEquals(lmessage, '/help') || oiEquals(lmessage, '/help1'))
+	else if(oiEquals(cmd2, '/help') || oiEquals(cmd2, '/help1'))
 	{
 		show_help(1)
 	}
 
-	else if(oiStartsWith(lmessage, '/help') || oiStartsWith(lmessage, '/help1'))
+	else if(oiStartsWith(cmd2, '/help') || oiStartsWith(cmd2, '/help1'))
 	{
 		show_help(1, arg)
 	}
 
-	else if(oiEquals(lmessage, '/help2'))
+	else if(oiEquals(cmd2, '/help2'))
 	{
 		show_help(2)
 	}
 
-	else if(oiStartsWith(lmessage, '/help2'))
+	else if(oiStartsWith(cmd2, '/help2'))
 	{
 		show_help(2, arg)
 	}
 
-	else if(oiEquals(lmessage, '/help3'))
+	else if(oiEquals(cmd2, '/help3'))
 	{
 		show_help(3)
 	}
 
-	else if(oiStartsWith(lmessage, '/help3'))
+	else if(oiStartsWith(cmd2, '/help3'))
 	{
 		show_help(3, arg)
 	}
 
-	else if(oiEquals(lmessage, '/stopradio'))
+	else if(oiEquals(cmd2, '/stopradio'))
 	{
 		stop_radio()
 	}
 
-	else if(oiEquals(lmessage, '/startradio'))
+	else if(oiEquals(cmd2, '/startradio'))
 	{
 		start_radio()
 	}
 
-	else if(oiStartsWith(lmessage, '/radiovolume'))
+	else if(oiStartsWith(cmd2, '/radiovolume'))
 	{
 		change_volume_command(arg)
 	}
 
-	else if(oiStartsWith(lmessage, '/tvvolume'))
+	else if(oiStartsWith(cmd2, '/tvvolume'))
 	{
 		change_volume_command(arg, "tv")
 	}
 
-	else if(oiStartsWith(lmessage, '/volume'))
+	else if(oiStartsWith(cmd2, '/volume'))
 	{
 		change_volume_command(arg)
 		change_volume_command(arg, "tv")
 	}
 
-	else if(oiEquals(lmessage, '/history'))
+	else if(oiEquals(cmd2, '/history'))
 	{
 		show_input_history()
 	}
 
-	else if(oiStartsWith(lmessage, '/history'))
+	else if(oiStartsWith(cmd2, '/history'))
 	{
 		show_input_history(arg)
 	}
 
-	else if(oiStartsWith(lmessage, '/changeusername'))
+	else if(oiStartsWith(cmd2, '/changeusername'))
 	{
 		change_username(arg)
 	}
 
-	else if(oiStartsWith(lmessage, '/changepassword'))
+	else if(oiStartsWith(cmd2, '/changepassword'))
 	{
 		change_password(arg)
 	}
 
-	else if(oiStartsWith(lmessage, '/changeemail'))
+	else if(oiStartsWith(cmd2, '/changeemail'))
 	{
 		change_email(arg)
 	}
 
-	else if(oiStartsWith(lmessage, '/verifyemail'))
+	else if(oiStartsWith(cmd2, '/verifyemail'))
 	{
 		verify_email(arg)
 	}
 
-	else if(oiEquals(lmessage, '/details'))
+	else if(oiEquals(cmd2, '/details'))
 	{
 		show_details()
 	}
 
-	else if(oiEquals(lmessage, '/logout'))
+	else if(oiEquals(cmd2, '/logout'))
 	{
 		logout()
 	}
 
-	else if(oiEquals(lmessage, '/fill'))
+	else if(oiEquals(cmd2, '/fill'))
 	{
 		fill()
 	}
 
-	else if(oiEquals(lmessage, '/shrug'))
+	else if(oiEquals(cmd2, '/shrug'))
 	{
 		shrug()
 	}
 
-	else if(oiEquals(lmessage, '/afk'))
+	else if(oiEquals(cmd2, '/afk'))
 	{
 		show_afk()
 	}
 
-	else if(oiEquals(lmessage, '/disconnectothers'))
+	else if(oiEquals(cmd2, '/disconnectothers'))
 	{
 		disconnect_others()
 	}
 
-	else if(oiStartsWith(lmessage, '/whisper'))
+	else if(oiStartsWith(cmd2, '/whisper'))
 	{
 		process_write_whisper(arg, true)
 	}
 
-	else if(oiStartsWith(lmessage, '/whisper2'))
+	else if(oiStartsWith(cmd2, '/whisper2'))
 	{
 		process_write_whisper(arg, false)
 	}
 
-	else if(oiEquals(lmessage, '/whisperops'))
+	else if(oiEquals(cmd2, '/whisperops'))
 	{
 		write_popup_message(false, "ops")
 	}
 
-	else if(oiEquals(lmessage, '/broadcast'))
+	else if(oiEquals(cmd2, '/broadcast'))
 	{
 		write_popup_message(false, "room")
 	}
 
-	else if(oiEquals(lmessage, '/systembroadcast'))
+	else if(oiEquals(cmd2, '/systembroadcast'))
 	{
 		write_popup_message(false, "system")
 		ans.to_history = false
 	}
 
-	else if(oiEquals(lmessage, '/systemrestart'))
+	else if(oiEquals(cmd2, '/systemrestart'))
 	{
 		send_system_restart_signal()
 		ans.to_history = false
 	}
 
-	else if(oiEquals(lmessage, '/annex'))
+	else if(oiEquals(cmd2, '/annex'))
 	{
 		annex()
 		ans.to_history = false
 	}
 
-	else if(oiStartsWith(lmessage, '/annex'))
+	else if(oiStartsWith(cmd2, '/annex'))
 	{
 		annex(arg)
 	}
 
-	else if(oiEquals(lmessage, '/highlights'))
+	else if(oiEquals(cmd2, '/highlights'))
 	{
 		show_highlights()
 	}
 
-	else if(oiStartsWith(lmessage, '/highlights'))
+	else if(oiStartsWith(cmd2, '/highlights'))
 	{
 		show_highlights(arg)
 	}
 
-	else if(oiEquals(lmessage, '/lock'))
+	else if(oiEquals(cmd2, '/lock'))
 	{
 		stop_and_lock(false)
 	}
 
-	else if(oiEquals(lmessage, '/unlock'))
+	else if(oiEquals(cmd2, '/unlock'))
 	{
 		default_media_state(false)
 	}
 
-	else if(oiEquals(lmessage, '/stopandlock'))
+	else if(oiEquals(cmd2, '/stopandlock'))
 	{
 		stop_and_lock()
 	}
 
-	else if(oiEquals(lmessage, '/stop'))
+	else if(oiEquals(cmd2, '/stop'))
 	{
 		stop_media()
 	}
 
-	else if(oiEquals(lmessage, '/default'))
+	else if(oiEquals(cmd2, '/default'))
 	{
 		default_media_state()
 	}
 
-	else if(oiEquals(lmessage, '/menu'))
+	else if(oiEquals(cmd2, '/menu'))
 	{
 		show_main_menu()
 	}
 
-	else if(oiEquals(lmessage, '/media'))
+	else if(oiEquals(cmd2, '/media'))
 	{
 		show_media_menu()
 	}
 
-	else if(oiEquals(lmessage, '/user'))
+	else if(oiEquals(cmd2, '/user'))
 	{
 		show_user_menu()
 	}
 
-	else if(oiEquals(lmessage, '/imagehistory'))
+	else if(oiEquals(cmd2, '/imagehistory'))
 	{
 		show_image_history()
 	}
 
-	else if(oiStartsWith(lmessage, '/imagehistory'))
+	else if(oiStartsWith(cmd2, '/imagehistory'))
 	{
 		show_image_history(arg)
 	}
 
-	else if(oiEquals(lmessage, '/tvhistory'))
+	else if(oiEquals(cmd2, '/tvhistory'))
 	{
 		show_tv_history()
 	}
 
-	else if(oiStartsWith(lmessage, '/tvhistory'))
+	else if(oiStartsWith(cmd2, '/tvhistory'))
 	{
 		show_tv_history(arg)
 	}
 
-	else if(oiEquals(lmessage, '/radiohistory'))
+	else if(oiEquals(cmd2, '/radiohistory'))
 	{
 		show_radio_history()
 	}
 
-	else if(oiStartsWith(lmessage, '/radiohistory'))
+	else if(oiStartsWith(cmd2, '/radiohistory'))
 	{
 		show_radio_history(arg)
 	}
 
-	else if(oiEquals(lmessage, '/lockimages'))
+	else if(oiEquals(cmd2, '/lockimages'))
 	{
 		toggle_lock_images(true)
 	}
 
-	else if(oiEquals(lmessage, '/locktv'))
+	else if(oiEquals(cmd2, '/locktv'))
 	{
 		toggle_lock_tv(true)
 	}
 
-	else if(oiEquals(lmessage, '/lockradio'))
+	else if(oiEquals(cmd2, '/lockradio'))
 	{
 		toggle_lock_radio(true)
 	}
 
-	else if(oiEquals(lmessage, '/unlockimages'))
+	else if(oiEquals(cmd2, '/unlockimages'))
 	{
 		toggle_lock_images(false)
 	}
 
-	else if(oiEquals(lmessage, '/unlocktv'))
+	else if(oiEquals(cmd2, '/unlocktv'))
 	{
 		toggle_lock_tv(false)
 	}
 
-	else if(oiEquals(lmessage, '/unlockradio'))
+	else if(oiEquals(cmd2, '/unlockradio'))
 	{
 		toggle_lock_radio(false)
 	}
 
-	else if(oiEquals(lmessage, '/togglelockimages'))
+	else if(oiEquals(cmd2, '/togglelockimages'))
 	{
 		toggle_lock_images()
 	}
 
-	else if(oiEquals(lmessage, '/togglelocktv'))
+	else if(oiEquals(cmd2, '/togglelocktv'))
 	{
 		toggle_lock_tv()
 	}
 
-	else if(oiEquals(lmessage, '/togglelockradio'))
+	else if(oiEquals(cmd2, '/togglelockradio'))
 	{
 		toggle_lock_radio()
 	}
 
-	else if(oiEquals(lmessage, '/showimages'))
+	else if(oiEquals(cmd2, '/showimages'))
 	{
 		toggle_images(true)
 	}
 
-	else if(oiEquals(lmessage, '/showtv'))
+	else if(oiEquals(cmd2, '/showtv'))
 	{
 		toggle_tv(true)
 	}
 
-	else if(oiEquals(lmessage, '/showradio'))
+	else if(oiEquals(cmd2, '/showradio'))
 	{
 		toggle_radio(true)
 	}
 
-	else if(oiEquals(lmessage, '/hideimages'))
+	else if(oiEquals(cmd2, '/hideimages'))
 	{
 		toggle_images(false)
 	}
 
-	else if(oiEquals(lmessage, '/hidetv'))
+	else if(oiEquals(cmd2, '/hidetv'))
 	{
 		toggle_tv(false)
 	}
 
-	else if(oiEquals(lmessage, '/hideradio'))
+	else if(oiEquals(cmd2, '/hideradio'))
 	{
 		toggle_radio(false)
 	}
 
-	else if(oiEquals(lmessage, '/toggleimages'))
+	else if(oiEquals(cmd2, '/toggleimages'))
 	{
 		toggle_images()
 	}
 
-	else if(oiEquals(lmessage, '/toggletv'))
+	else if(oiEquals(cmd2, '/toggletv'))
 	{
 		toggle_tv()
 	}
 
-	else if(oiEquals(lmessage, '/toggleradio'))
+	else if(oiEquals(cmd2, '/toggleradio'))
 	{
 		toggle_radio()
 	}
 
-	else if(oiEquals(lmessage, '/test'))
+	else if(oiEquals(cmd2, '/test'))
 	{
 		do_test()
 	}
 
-	else if(oiEquals(lmessage, '/maximizeimages'))
+	else if(oiEquals(cmd2, '/maximizeimages'))
 	{
 		maximize_images()
 	}
 
-	else if(oiEquals(lmessage, '/maximizetv'))
+	else if(oiEquals(cmd2, '/maximizetv'))
 	{
 		maximize_tv()
 	}
 
-	else if(oiEquals(lmessage, '/starttv'))
+	else if(oiEquals(cmd2, '/starttv'))
 	{
 		play_video()
 	}
 
-	else if(oiEquals(lmessage, '/stoptv'))
+	else if(oiEquals(cmd2, '/stoptv'))
 	{
 		stop_videos()
 	}
 
-	else if(oiEquals(lmessage, '/openimage'))
+	else if(oiEquals(cmd2, '/openimage'))
 	{
 		show_current_image_modal()
 	}
 
-	else if(oiEquals(lmessage, '/openlastimage'))
+	else if(oiEquals(cmd2, '/openlastimage'))
 	{
 		show_current_image_modal(false)
 	}
 
-	else if(oiEquals(lmessage, '/date'))
+	else if(oiEquals(cmd2, '/date'))
 	{
 		show_current_date()
 	}
 
-	else if(oiStartsWith(lmessage, '/js'))
+	else if(oiStartsWith(cmd2, '/js'))
 	{
 		arg = arg.replace(/\s\/endjs/gi, "")
 		execute_javascript(arg)
 	}
 
-	else if(oiStartsWith(lmessage, '/js2'))
+	else if(oiStartsWith(cmd2, '/js2'))
 	{
 		arg = arg.replace(/\s\/endjs/gi, "")
 		execute_javascript(arg, false)
 	}
 
-	else if(oiEquals(lmessage, '/changeimage'))
+	else if(oiEquals(cmd2, '/changeimage'))
 	{
 		show_image_picker()
 	}
 
-	else if(oiEquals(lmessage, '/changetv'))
+	else if(oiEquals(cmd2, '/changetv'))
 	{
 		show_tv_picker()
 	}
 
-	else if(oiEquals(lmessage, '/changeradio'))
+	else if(oiEquals(cmd2, '/changeradio'))
 	{
 		show_radio_picker()
 	}
 
-	else if(oiEquals(lmessage, '/closeall'))
+	else if(oiEquals(cmd2, '/closeall'))
 	{
 		close_all_message()
 	}
 
-	else if(oiEquals(lmessage, '/closeallmodals'))
+	else if(oiEquals(cmd2, '/closeallmodals'))
 	{
 		close_all_modals()
 	}
 
-	else if(oiEquals(lmessage, '/closeallpopups'))
+	else if(oiEquals(cmd2, '/closeallpopups'))
 	{
 		close_all_popups()
 	}
 
-	else if(oiEquals(lmessage, '/activityabove'))
+	else if(oiEquals(cmd2, '/activityabove'))
 	{
 		activity_above()
 	}
 
-	else if(oiEquals(lmessage, '/activitybelow'))
+	else if(oiEquals(cmd2, '/activitybelow'))
 	{
 		activity_below()
 	}
 
-	else if(oiEquals(lmessage, '/globalsettings'))
+	else if(oiEquals(cmd2, '/globalsettings'))
 	{
 		show_global_settings()
 	}
 
-	else if(oiStartsWith(lmessage, '/globalsettings'))
+	else if(oiStartsWith(cmd2, '/globalsettings'))
 	{
 		show_global_settings(arg)
 	}
 
-	else if(oiEquals(lmessage, '/roomsettings'))
+	else if(oiEquals(cmd2, '/roomsettings'))
 	{
 		show_room_settings()
 	}
 
-	else if(oiStartsWith(lmessage, '/roomsettings'))
+	else if(oiStartsWith(cmd2, '/roomsettings'))
 	{
 		show_room_settings(arg)
 	}
 
-	else if(oiStartsWith(lmessage, '/goto'))
+	else if(oiStartsWith(cmd2, '/goto'))
 	{
 		goto_url(arg, "tab")
 	}
 
-	else if(oiEquals(lmessage, '/toggleplayradio'))
+	else if(oiEquals(cmd2, '/toggleplayradio'))
 	{
 		toggle_play_radio()
 	}
 
-	else if(oiEquals(lmessage, '/refreshimage'))
+	else if(oiEquals(cmd2, '/refreshimage'))
 	{
 		refresh_image()
 	}
 
-	else if(oiEquals(lmessage, '/refreshtv'))
+	else if(oiEquals(cmd2, '/refreshtv'))
 	{
 		refresh_tv()
 	}
 
-	else if(oiEquals(lmessage, '/refreshradio'))
+	else if(oiEquals(cmd2, '/refreshradio'))
 	{
 		refresh_radio()
 	}
 
-	else if(oiStartsWith(lmessage, '/stopradioin'))
+	else if(oiStartsWith(cmd2, '/stopradioin'))
 	{
 		stop_radio_in(arg)
 	}
 
-	else if(oiEquals(lmessage, '/ping'))
+	else if(oiEquals(cmd2, '/ping'))
 	{
 		ping_server()
 	}
 
-	else if(oiEquals(lmessage, '/reactlike'))
+	else if(oiEquals(cmd2, '/reactlike'))
 	{
 		send_reaction("like")
 	}
 
-	else if(oiEquals(lmessage, '/reactlove'))
+	else if(oiEquals(cmd2, '/reactlove'))
 	{
 		send_reaction("love")
 	}
 
-	else if(oiEquals(lmessage, '/reacthappy'))
+	else if(oiEquals(cmd2, '/reacthappy'))
 	{
 		send_reaction("happy")
 	}
 
-	else if(oiEquals(lmessage, '/reactmeh'))
+	else if(oiEquals(cmd2, '/reactmeh'))
 	{
 		send_reaction("meh")
 	}
 
-	else if(oiEquals(lmessage, '/reactsad'))
+	else if(oiEquals(cmd2, '/reactsad'))
 	{
 		send_reaction("sad")
 	}
 
-	else if(oiEquals(lmessage, '/reactdislike'))
+	else if(oiEquals(cmd2, '/reactdislike'))
 	{
 		send_reaction("dislike")
 	}
 
-	else if(oiEquals(lmessage, '/f1'))
+	else if(oiEquals(cmd2, '/f1'))
 	{
 		run_user_function(1)
 		ans.to_history = false
 	}
 
-	else if(oiEquals(lmessage, '/f2'))
+	else if(oiEquals(cmd2, '/f2'))
 	{
 		run_user_function(2)
 		ans.to_history = false
 	}
 
-	else if(oiEquals(lmessage, '/f3'))
+	else if(oiEquals(cmd2, '/f3'))
 	{
 		run_user_function(3)
 		ans.to_history = false
 	}
 
-	else if(oiEquals(lmessage, '/f4'))
+	else if(oiEquals(cmd2, '/f4'))
 	{
 		run_user_function(4)
 		ans.to_history = false
 	}
 
-	else if(oiEquals(lmessage, '/lockscreen'))
+	else if(oiEquals(cmd2, '/lockscreen'))
 	{
 		lock_screen()
 	}
 
-	else if(oiEquals(lmessage, '/unlockscreen'))
+	else if(oiEquals(cmd2, '/unlockscreen'))
 	{
 		unlock_screen()
 	}
 
-	else if(oiEquals(lmessage, '/togglelockscreen'))
+	else if(oiEquals(cmd2, '/togglelockscreen'))
 	{
 		if(screen_locked)
 		{
@@ -7243,22 +7246,22 @@ function execute_command(message, ans)
 		}
 	}
 
-	else if(oiEquals(lmessage, '/drawimage'))
+	else if(oiEquals(cmd2, '/drawimage'))
 	{
 		open_draw_image()
 	}
 
-	else if(oiEquals(lmessage, '/joinvoicechat'))
+	else if(oiEquals(cmd2, '/joinvoicechat'))
 	{
 		join_voice_chat()
 	}
 
-	else if(oiEquals(lmessage, '/leavevoicechat'))
+	else if(oiEquals(cmd2, '/leavevoicechat'))
 	{
 		leave_voice_chat()
 	}
 
-	else if(oiStartsWith(lmessage, '/say'))
+	else if(oiStartsWith(cmd2, '/say'))
 	{
 		process_message(
 		{
@@ -7268,7 +7271,7 @@ function execute_command(message, ans)
 		})
 	}
 
-	else if(oiStartsWith(lmessage, '/input'))
+	else if(oiStartsWith(cmd2, '/input'))
 	{
 		arg = arg.replace(/\s\/endinput/gi, "")
 		change_input(arg)

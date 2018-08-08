@@ -68,6 +68,11 @@ var Utilz = function()
 		return s.replace(/[\n\r]+/g, '\n').replace(/\s+$/g, '')
 	}
 
+	utilz.clean_string11 = function(s)
+	{
+		return s.replace(/^\/\s+/g, '/')
+	}
+
 	utilz.get_random_int = function(min, max)
 	{
 		return Math.floor(Math.random() * (max  -min + 1) + min)
