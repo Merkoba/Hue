@@ -5049,12 +5049,12 @@ function update_chat(args={})
 
 	if(get_setting("chat_layout") === "normal")
 	{
-		var messagecls = "normal_layout"
+		var messageclasses = "normal_layout"
 	}
 
 	else if(get_setting("chat_layout") === "compact")
 	{
-		var messagecls = "compact_layout"
+		var messageclasses = "compact_layout"
 	}
 	
 	if(starts_me || args.third_person)
@@ -5075,7 +5075,7 @@ function update_chat(args={})
 		}
 
 		var s = `
-		<div class='message chat_message thirdperson ${messagecls}'>
+		<div class='message chat_message thirdperson ${messageclasses}'>
 			<div class='chat_third_container'>
 				<div class='brk chat_third_brk'>${args.brk}</div>
 				<div class='chat_third_content'>
@@ -5685,11 +5685,13 @@ function chat_announce(args={})
 		}
 	}
 
+	var messageclasses = "message announcement"
 	var containerclasses = "announcement_content_container"
 	var contclasses = "announcement_content"
 
 	if(args.onclick || (args.username && args.open_profile))
 	{
+		messageclasses += " message_clickable"
 		containerclasses += " pointer"
 		containerclasses += " action"
 	}
@@ -5728,16 +5730,16 @@ function chat_announce(args={})
 
 	if(get_setting("chat_layout") === "normal")
 	{
-		var messagecls = "normal_layout"
+		messageclasses += " normal_layout"
 	}
 
 	else if(get_setting("chat_layout") === "compact")
 	{
-		var messagecls = "compact_layout"
+		messageclasses += " compact_layout"
 	}
 
 	var s = `
-	<div${containerid}class='message announcement ${messagecls}'>
+	<div${containerid}class='${messageclasses}'>
 		<div class='${containerclasses}'>
 			<div class='brk announcement_brk'>${args.brk}</div>
 			<div class='${contclasses}' title='${t}'></div>
@@ -16762,16 +16764,16 @@ function add_separator(update_scroll=true)
 
 	if(get_setting("chat_layout") === "normal")
 	{
-		var messagecls = "normal_layout"
+		var messageclasses = "normal_layout"
 	}
 
 	else if(get_setting("chat_layout") === "compact")
 	{
-		var messagecls = "compact_layout"
+		var messageclasses = "compact_layout"
 	}
 
 	var s = `
-	<div class='message separator_container ${messagecls}'>
+	<div class='message separator_container ${messageclasses}'>
 		<div class='separator_line'></div>
 		<div class='separator_text'>New Messages</div>
 		<div class='separator_line'></div>
@@ -18127,6 +18129,17 @@ function setup_mouse_events()
 	$("body").mouseleave(function()
 	{
 		mouse_is_down = false
+	})
+
+	$("body").on("click", ".message", function(e)
+	{
+		if($(e.target).is("a"))
+		{
+			if($(this).hasClass("message_clickable"))
+			{
+				e.preventDefault()
+			}
+		}
 	})
 }
 

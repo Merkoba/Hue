@@ -1981,3 +1981,11 @@ input[type=text], textarea
 {
 	border-bottom: 1px solid currentColor;
 }
+
+.flex_row_center
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
