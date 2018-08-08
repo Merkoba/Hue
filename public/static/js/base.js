@@ -254,7 +254,6 @@ var log_messages_processed = false
 var command_aliases = {}
 var play_video_on_load = false
 var commands_queue = []
-var words_to_autocomplete = []
 
 function init()
 {
@@ -895,7 +894,6 @@ function start_socket()
 			check_firstime()
 			get_input_history()
 			show_joined()
-			generate_words_to_autocomplete()
 
 			setup_image(data)
 			setup_tv(data)
@@ -2098,7 +2096,6 @@ function addto_userlist(id, uname, rol, pi)
 	userlist.push({user_id: id, username:uname, role:rol, profile_image:pi})
 
 	update_userlist()
-	generate_words_to_autocomplete()
 
 	return true
 }
@@ -2111,7 +2108,6 @@ function removefrom_userlist(uname)
 		{
 			userlist.splice(i, 1)
 			update_userlist()
-			generate_words_to_autocomplete()
 			break
 		}
 	}
@@ -2130,7 +2126,6 @@ function replace_uname_in_userlist(oldu, newu)
 
 	update_userlist()
 	update_voice_chat_userlist()
-	generate_words_to_autocomplete()
 }
 
 function replace_role_in_userlist(uname, rol)
@@ -4543,7 +4538,7 @@ function get_closest_autocomplete(element, w)
 {
 	var info = tab_info[element.id]
 
-	var l = words_to_autocomplete
+	var l = generate_words_to_autocomplete()
 	var wl = w.toLowerCase()
 	var has = false
 
@@ -11639,7 +11634,6 @@ function setting_aliases_action(type, save=true)
 	if(active_settings("aliases") === type)
 	{
 		setup_command_aliases()
-		generate_words_to_autocomplete()
 	}
 
 	if(save)
@@ -11655,11 +11649,6 @@ function setting_other_words_to_autocomplete_action(type, save=true)
 	$(`#${type}_other_words_to_autocomplete`).val(words)
 
 	window[type].other_words_to_autocomplete = words
-
-	if(active_settings("other_words_to_autocomplete") === type)
-	{
-		generate_words_to_autocomplete()
-	}
 
 	if(save)
 	{
@@ -19166,7 +19155,7 @@ function setup_user_function_switch_selects()
 
 function generate_words_to_autocomplete()
 {
-	words_to_autocomplete = commands
+	var words = commands
 	.concat(usernames)
 	.concat(["@everyone"])
 	.concat(Object.keys(command_aliases))
@@ -19175,6 +19164,8 @@ function generate_words_to_autocomplete()
 
 	if(autocomplete)
 	{
-		words_to_autocomplete = words_to_autocomplete.concat(autocomplete.split('\n'))
+		words = words.concat(autocomplete.split('\n'))
 	}
+
+	return words
 }
