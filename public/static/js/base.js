@@ -11637,6 +11637,7 @@ function setting_aliases_action(type, save=true)
 	if(active_settings("aliases") === type)
 	{
 		setup_command_aliases()
+		generate_words_to_autocomplete()
 	}
 
 	if(save)
