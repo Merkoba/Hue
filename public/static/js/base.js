@@ -5689,11 +5689,12 @@ function chat_announce(args={})
 	var containerclasses = "announcement_content_container"
 	var contclasses = "announcement_content"
 
+	var clickable = false
+
 	if(args.onclick || (args.username && args.open_profile))
 	{
-		messageclasses += " message_clickable"
-		containerclasses += " pointer"
-		containerclasses += " action"
+		containerclasses += " pointer action"
+		clickable = true
 	}
 
 	var containerid = " "
@@ -5750,7 +5751,15 @@ function chat_announce(args={})
 
 	var content = fmessage.find('.announcement_content').eq(0)
 
-	content.text(args.message).urlize()
+	if(clickable)
+	{
+		content.text(args.message).urlize(false, true)
+	}
+
+	else
+	{
+		content.text(args.message).urlize()
+	}
 
 	if(args.onclick)
 	{
@@ -5861,8 +5870,15 @@ function handle_chat_announce_types(message, type)
 	}
 }
 
-jQuery.fn.urlize = function(force=false)
+jQuery.fn.urlize = function(force=false, disabled=false)
 {
+	var cls = "generic action"
+
+	if(disabled)
+	{
+		cls += " nopointer"
+	}
+
 	if(this.length > 0)
 	{
 		this.each(function(n, obj)
@@ -5871,7 +5887,7 @@ jQuery.fn.urlize = function(force=false)
 
 			if(force)
 			{
-				x = `<a class='generic action' target='_blank' href='${x}'>${x}</a>`
+				x = `<a class='${cls}' target='_blank' href='${x}'>${x}</a>`
 			}
 
 			else
@@ -5891,7 +5907,7 @@ jQuery.fn.urlize = function(force=false)
 
 						var rep = new RegExp(escape_special_characters(list[i]), "g")
 
-						x = x.replace(rep, `<a class='generic action' target='_blank' href='${list[i]}'>${list[i]}</a>`)
+						x = x.replace(rep, `<a class='${cls}' target='_blank' href='${list[i]}'>${list[i]}</a>`)
 
 						listed.push(list[i])
 					}
@@ -18129,17 +18145,6 @@ function setup_mouse_events()
 	$("body").mouseleave(function()
 	{
 		mouse_is_down = false
-	})
-
-	$("body").on("click", ".message", function(e)
-	{
-		if($(e.target).is("a"))
-		{
-			if($(this).hasClass("message_clickable"))
-			{
-				e.preventDefault()
-			}
-		}
 	})
 }
 
