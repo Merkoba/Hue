@@ -316,7 +316,6 @@ function init()
 	setup_user_function_titles()
 	setup_modal_image_number()
 	setup_command_aliases()
-	generate_words_to_autocomplete()
 
 	start_socket()
 }
@@ -2310,6 +2309,8 @@ function update_userlist()
 	}
 
 	update_modal_scrollbar("userlist")
+
+	generate_words_to_autocomplete()
 }
 
 function compare_userlist(a, b)
