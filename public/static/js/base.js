@@ -895,6 +895,7 @@ function start_socket()
 			check_firstime()
 			get_input_history()
 			show_joined()
+			generate_words_to_autocomplete()
 
 			setup_image(data)
 			setup_tv(data)
@@ -2097,6 +2098,7 @@ function addto_userlist(id, uname, rol, pi)
 	userlist.push({user_id: id, username:uname, role:rol, profile_image:pi})
 
 	update_userlist()
+	generate_words_to_autocomplete()
 
 	return true
 }
@@ -2109,6 +2111,7 @@ function removefrom_userlist(uname)
 		{
 			userlist.splice(i, 1)
 			update_userlist()
+			generate_words_to_autocomplete()
 			break
 		}
 	}
@@ -2127,6 +2130,7 @@ function replace_uname_in_userlist(oldu, newu)
 
 	update_userlist()
 	update_voice_chat_userlist()
+	generate_words_to_autocomplete()
 }
 
 function replace_role_in_userlist(uname, rol)
@@ -2309,8 +2313,6 @@ function update_userlist()
 	}
 
 	update_modal_scrollbar("userlist")
-
-	generate_words_to_autocomplete()
 }
 
 function compare_userlist(a, b)
