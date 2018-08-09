@@ -6085,6 +6085,10 @@ function register_commands()
 	commands.push('/input')
 	commands.push('/endinput')
 	commands.push('/inputenter')
+	commands.push('/top')
+	commands.push('/top2')
+	commands.push('/bottom')
+	commands.push('/bottom2')
 
 	commands.sort()
 
@@ -7289,6 +7293,25 @@ function execute_command(message, ans)
 		ans.clr_input = false
 	}
 
+	else if(oiEquals(cmd2, '/top'))
+	{
+		goto_top(true)
+	}
+	else if(oiEquals(cmd2, '/top2'))
+	{
+		goto_top(false)
+	}
+
+	else if(oiEquals(cmd2, '/bottom'))
+	{
+		goto_bottom(true, true)
+	}
+
+	else if(oiEquals(cmd2, '/bottom2'))
+	{
+		goto_bottom(true, false)
+	}
+
 	else
 	{
 		feedback(`Invalid command "${cmd.slice(1)}"`)
@@ -7567,9 +7590,9 @@ function announce_new_username(data)
 	}
 }
 
-function goto_top()
+function goto_top(animate=true)
 {
-	scroll_chat_to(0)
+	scroll_chat_to(0, animate)
 	hide_top_scroller()
 }
 
