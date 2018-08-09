@@ -5873,10 +5873,12 @@ function handle_chat_announce_types(message, type)
 jQuery.fn.urlize = function(force=false, disabled=false)
 {
 	var cls = "generic action"
+	
+	var onclick = ""
 
 	if(disabled)
 	{
-		cls += " nopointer"
+		onclick =  "onclick='event.stopPropagation()'"
 	}
 
 	if(this.length > 0)
@@ -5887,7 +5889,7 @@ jQuery.fn.urlize = function(force=false, disabled=false)
 
 			if(force)
 			{
-				x = `<a class='${cls}' target='_blank' href='${x}'>${x}</a>`
+				x = `<a class='${cls}' target='_blank' href='${x}'${onclick}>${x}</a>`
 			}
 
 			else
@@ -5907,7 +5909,7 @@ jQuery.fn.urlize = function(force=false, disabled=false)
 
 						var rep = new RegExp(escape_special_characters(list[i]), "g")
 
-						x = x.replace(rep, `<a class='${cls}' target='_blank' href='${list[i]}'>${list[i]}</a>`)
+						x = x.replace(rep, `<a class='${cls}' target='_blank' href='${list[i]}'${onclick}>${list[i]}</a>`)
 
 						listed.push(list[i])
 					}
@@ -6106,11 +6108,9 @@ function register_commands()
 
 function is_command(message)
 {
-	message = message.trim()
-	
 	if(message.length >= 2
-	&& message[0] === '/' 
-	&& message[1] !== '/'  
+	&& message[0] === '/'
+	&& message[1] !== '/'
 	&& !message.startsWith('/me ')
 	&& !message.startsWith('/em '))
 	{
@@ -6139,7 +6139,7 @@ function process_message(args={})
 		 args.message = args.message.trim()
 	}
 
-	if(is_command(args.message))
+	if(num_lines === 1 && is_command(args.message))
 	{
 		args.message = utilz.clean_string2(args.message)
 
@@ -6409,11 +6409,15 @@ function process_message(args={})
 
 function execute_command(message, ans)
 {
-	message = utilz.clean_string11(message)
-
 	var split = message.toLowerCase().split(' ')
 	
 	var cmd = split[0]
+
+	if(cmd.length < 2)
+	{
+		feedback("Invalid empty command")
+		return ans
+	}
 
 	var cmd2 = cmd.split('').sort().join('')
 
