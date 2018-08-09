@@ -5870,15 +5870,13 @@ function handle_chat_announce_types(message, type)
 	}
 }
 
-jQuery.fn.urlize = function(force=false, disabled=false)
+jQuery.fn.urlize = function(force=false, stop_propagation=false)
 {
 	var cls = "generic action"
-	
-	var onclick = ""
 
-	if(disabled)
+	if(stop_propagation)
 	{
-		onclick =  "onclick='event.stopPropagation()'"
+		cls +=  " stop_propagation"
 	}
 
 	if(this.length > 0)
@@ -5889,7 +5887,7 @@ jQuery.fn.urlize = function(force=false, disabled=false)
 
 			if(force)
 			{
-				x = `<a class='${cls}' target='_blank' href='${x}'${onclick}>${x}</a>`
+				x = `<a class='${cls}' target='_blank' href='${x}'>${x}</a>`
 			}
 
 			else
@@ -5909,7 +5907,7 @@ jQuery.fn.urlize = function(force=false, disabled=false)
 
 						var rep = new RegExp(escape_special_characters(list[i]), "g")
 
-						x = x.replace(rep, `<a class='${cls}' target='_blank' href='${list[i]}'${onclick}>${list[i]}</a>`)
+						x = x.replace(rep, `<a class='${cls}' target='_blank' href='${list[i]}'>${list[i]}</a>`)
 
 						listed.push(list[i])
 					}
@@ -5917,6 +5915,14 @@ jQuery.fn.urlize = function(force=false, disabled=false)
 			}
 
 			$(obj).html(x)
+
+			$(obj).find(".stop_propagation").each(function()
+			{
+				$(this).click(function(e)
+				{
+					e.stopPropagation()
+				})
+			})
 		})
 	}
 }
