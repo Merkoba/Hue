@@ -6051,7 +6051,9 @@ function register_commands()
 	commands.push('/closeallpopups')
 	commands.push('/closeandwait')
 	commands.push('/activityabove')
+	commands.push('/activityabove2')
 	commands.push('/activitybelow')
+	commands.push('/activitybelow2')
 	commands.push('/globalsettings')
 	commands.push('/roomsettings')
 	commands.push('/goto')
@@ -7120,12 +7122,22 @@ function execute_command(message, ans)
 
 	else if(oiEquals(cmd2, '/activityabove'))
 	{
-		activity_above()
+		activity_above(true)
+	}
+
+	else if(oiEquals(cmd2, '/activityabove2'))
+	{
+		activity_above(false)
 	}
 
 	else if(oiEquals(cmd2, '/activitybelow'))
 	{
-		activity_below()
+		activity_below(true)
+	}
+
+	else if(oiEquals(cmd2, '/activitybelow2'))
+	{
+		activity_below(false)
 	}
 
 	else if(oiEquals(cmd2, '/globalsettings'))
@@ -16141,7 +16153,7 @@ function make_safe(args={})
 	return c[0]
 }
 
-function activity_above()
+function activity_above(animate=true)
 {
 	var step = false
 	var up_scroller_height = $("#up_scroller").outerHeight()
@@ -16165,7 +16177,7 @@ function activity_above()
 			if(p.top < up_scroller_height)
 			{
 				var diff = scrolltop + p.top - up_scroller_height
-				scroll_chat_to(diff)
+				scroll_chat_to(diff, animate)
 				step = true
 				return false
 			}
@@ -16174,11 +16186,11 @@ function activity_above()
 
 	if(!step)
 	{
-		goto_top()
+		goto_top(animate)
 	}
 }
 
-function activity_below()
+function activity_below(animate=true)
 {
 	var step = false
 	var up_scroller_height = $("#up_scroller").outerHeight()
@@ -16205,7 +16217,7 @@ function activity_below()
 			if(p.top + h + down_scroller_height > chat_area_height)
 			{
 				var diff = scrolltop + p.top - up_scroller_height
-				scroll_chat_to(diff)
+				scroll_chat_to(diff, animate)
 				step = true
 				return false
 			}
@@ -16214,7 +16226,7 @@ function activity_below()
 
 	if(!step)
 	{
-		goto_bottom(true)
+		goto_bottom(true, animate)
 	}
 }
 
