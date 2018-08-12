@@ -1,6 +1,5 @@
 module.exports = function(db_manager, config, sconfig, utilz)
 {
-	console.log(11)
 	const jwt = require('jsonwebtoken')
 	const express = require('express')
 	const fetch = require('node-fetch')
@@ -145,8 +144,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.credits_background_url = config.credits_background_url
 	c.vars.credits_audio_url = config.credits_audio_url
 	c.vars.credits_title = config.credits_title
-
-	console.log(22)
 
 	function check_url(req, res, next)
 	{
