@@ -155,8 +155,6 @@ var text_color
 var background_image
 var background_mode
 var background_tile_dimensions
-var image_queue = ["first"]
-var image_queue_timeout
 var last_image_source = false
 var last_tv_source = false
 var last_tv_type = false
@@ -298,7 +296,6 @@ function init()
 	setup_main_menu()
 	start_twitch()
 	start_soundcloud()
-	check_image_queue()
 	setup_input()
 	font_check()
 	setup_input_history()
@@ -13817,42 +13814,6 @@ function announce_theme_change(data)
 	})
 
 	set_theme(data.color)
-}
-
-function queue_image(data)
-{
-	image_queue.push(data)
-
-	if(image_queue_timeout === undefined)
-	{
-		check_image_queue()
-	}
-}
-
-function check_image_queue()
-{
-	if(image_queue.length > 0)
-	{
-		var data = image_queue[0]
-
-		if(data !== "first")
-		{
-			setup_image(image_queue[0])
-		}
-
-		image_queue.shift()
-
-		image_queue_timeout = setTimeout(function()
-		{
-			check_image_queue()
-		}, image_queue_interval)
-	}
-
-	else
-	{
-		clearTimeout(image_queue_timeout)
-		image_queue_timeout = undefined
-	}
 }
 
 function open_background_image_picker()
