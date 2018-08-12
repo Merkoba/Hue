@@ -939,8 +939,8 @@ function start_socket()
 
 		else if(data.type === 'image_change')
 		{
-			queue_image(data)
 			announce_image_change(data)
+			setup_image(data)
 		}
 
 		else if(data.type === 'profile_image_changed')
