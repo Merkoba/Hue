@@ -493,9 +493,6 @@ If you want to remove it to start fresh:
 "max_user_id_length"
 >After this length, this is clearly not a user id.
 
-"image_queue_interval"
->Minimum time for a changed image to be displayed before changing to the next one. This doesn't take into account the time the image took to load.
-
 "max_same_post_diff"
 >Maximum difference in time between a message and and another from the same user to be displayed within the same post.
 
