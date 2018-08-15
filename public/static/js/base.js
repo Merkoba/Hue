@@ -3166,6 +3166,8 @@ function config_admin_background_mode()
 		$("#admin_background_tile_dimensions_container").css("display", "none")
 		$("#admin_background_image_container").css("display", "none")
 	}
+
+	update_modal_scrollbar("main_menu")
 }
 
 function config_admin_background_tile_dimensions()
