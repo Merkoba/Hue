@@ -3225,6 +3225,8 @@ function config_admin_text_color_mode()
 	{
 		$("#admin_text_color_container").css("display", "none")
 	}
+
+	update_modal_scrollbar("main_menu")
 }
 
 function config_admin_text_color()
