@@ -1597,7 +1597,9 @@
 			<div class='info_item help_item'>There are 3 main media elements that can be changed, images, tv and radio.</div>
 			<div class='info_item help_item'>Media change has permission settings per room. So you might not be able to do certain actions depending on what settings the ops/admins have set.</div>
 			<div class='spacer3'></div>
-			<span class='help_link action unselectable' onclick='show_help(2)'>Additional Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='show_help(3)'>Administration Features</span>
+			<span class='unselectable'>
+				<span class='help_link action' onclick='show_help(2)'>Additional Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action' onclick='show_help(3)'>Administration Features</span>
+			</span>
 
 		</script>
 
@@ -1733,7 +1735,9 @@
 			<div class='info_item help_item'>Commands can be chained with &&. For instance "/tv The World && /maximizetv".</div>
 			<div class='info_item help_item'>Keyboard keys F1, F2, F3, and F4, are mapped to the corresponding User Function.</div>
 			<div class='spacer3'></div>
-			<span class='help_link action unselectable' onclick='show_help(1)'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='show_help(3)'>Administration Features</span>			
+			<span class='unselectable'>
+				<span class='help_link action' onclick='show_help(1)'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action' onclick='show_help(3)'>Administration Features</span>			
+			</span>
 		</script>
 
 		<script id='template_help3' type='text/x-handlebars-template'>
@@ -1773,7 +1777,9 @@
 			<div class='info_item help_item'>Check /help for information about how users interact in the room through chat, image uploads, or radio.</div>
 			<div class='info_item help_item'>Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada URL is gathered automatically. To work, the server needs to allow cross-domain requests and be HTTPS enabled if this system is being served through HTTPS.</div>
 			<div class='spacer3'></div>
-			<span class='help_link action unselectable' onclick='show_help(1)'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action unselectable' onclick='show_help(2)'>Additional Features</span>		
+			<span class='unselectable'>
+				<span class='help_link action' onclick='show_help(1)'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action' onclick='show_help(2)'>Additional Features</span>		
+			</span>
 		</script>		
 
 		<audio id='audio' preload="metadata"></audio>
