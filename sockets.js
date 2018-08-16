@@ -1427,6 +1427,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 						}
 
 						data.type = "youtube"
+						data.query = data.src
 						data.src = `https://youtube.com/watch?v=${item.id.videoId}`
 						data.title = response.items[0].snippet.title
 						handler.do_change_radio_source(socket, data)
@@ -1447,6 +1448,78 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				logger.log_error(err)
 			})
+		}
+	}
+
+	handler.do_change_radio_source = function(socket, data)
+	{
+		var radioinfo = {}
+
+		var date = Date.now()
+
+		if(data.query === undefined)
+		{
+			data.query = ""
+		}
+
+		if(data.src === 'default')
+		{
+			radioinfo.radio_type = "radio"
+			radioinfo.radio_source = ''
+			radioinfo.radio_title = ''
+			radioinfo.radio_query = ''
+		}
+
+		else
+		{
+			radioinfo.radio_type = data.type
+			radioinfo.radio_source = data.src
+			radioinfo.radio_title = data.title
+			radioinfo.radio_query = data.query
+		}
+
+		radioinfo.radio_setter = socket.hue_username
+		radioinfo.radio_date = date
+
+		handler.room_emit(socket, 'changed_radio_source',
+		{
+			radio_type: radioinfo.radio_type,
+			radio_source: radioinfo.radio_source,
+			radio_title: radioinfo.radio_title,
+			radio_setter: radioinfo.radio_setter,
+			radio_date: radioinfo.radio_date,
+			radio_query: radioinfo.radio_query
+		})
+
+		db_manager.update_room(socket.hue_room_id,
+		{
+			radio_type: radioinfo.radio_type,
+			radio_source: radioinfo.radio_source,
+			radio_title: radioinfo.radio_title,
+			radio_setter: radioinfo.radio_setter,
+			radio_date: radioinfo.radio_date,
+			radio_query: radioinfo.radio_query
+		})
+
+		rooms[socket.hue_room_id].activity = true
+
+		if(rooms[socket.hue_room_id].log)
+		{
+			var message =
+			{
+				type: "radio",
+				data:
+				{
+					radio_type: radioinfo.radio_type,
+					radio_source: radioinfo.radio_source,
+					radio_title: radioinfo.radio_title,
+					radio_setter: radioinfo.radio_setter,
+					radio_query: radioinfo.radio_query
+				},
+				date: date
+			}
+
+			rooms[socket.hue_room_id].log_messages.push(message)
 		}
 	}
 
@@ -1791,6 +1864,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 						}
 
 						data.type = "youtube"
+						data.query = data.src
 						data.src = `https://youtube.com/watch?v=${item.id.videoId}`
 						data.title = response.items[0].snippet.title
 						handler.do_change_tv_source(socket, data)
@@ -1814,79 +1888,23 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.do_change_radio_source = function(socket, data)
-	{
-		var radioinfo = {}
-
-		var date = Date.now()
-
-		if(data.src === 'default')
-		{
-			radioinfo.radio_type = "radio"
-			radioinfo.radio_source = ''
-			radioinfo.radio_title = ''
-		}
-
-		else
-		{
-			radioinfo.radio_type = data.type
-			radioinfo.radio_source = data.src
-			radioinfo.radio_title = data.title
-		}
-
-		radioinfo.radio_setter = socket.hue_username
-		radioinfo.radio_date = date
-
-		handler.room_emit(socket, 'changed_radio_source',
-		{
-			radio_type: radioinfo.radio_type,
-			radio_source: radioinfo.radio_source,
-			radio_title: radioinfo.radio_title,
-			radio_setter: radioinfo.radio_setter,
-			radio_date: radioinfo.radio_date
-		})
-
-		db_manager.update_room(socket.hue_room_id,
-		{
-			radio_type: radioinfo.radio_type,
-			radio_source: radioinfo.radio_source,
-			radio_title: radioinfo.radio_title,
-			radio_setter: radioinfo.radio_setter,
-			radio_date: radioinfo.radio_date
-		})
-
-		rooms[socket.hue_room_id].activity = true
-
-		if(rooms[socket.hue_room_id].log)
-		{
-			var message =
-			{
-				type: "radio",
-				data:
-				{
-					radio_type: radioinfo.radio_type,
-					radio_source: radioinfo.radio_source,
-					radio_title: radioinfo.radio_title,
-					radio_setter: radioinfo.radio_setter
-				},
-				date: date
-			}
-
-			rooms[socket.hue_room_id].log_messages.push(message)
-		}
-	}
-
 	handler.do_change_tv_source = function(socket, data)
 	{
 		var tvinfo = {}
 
 		var date = Date.now()
 
+		if(data.query === undefined)
+		{
+			data.query = ""
+		}
+
 		if(data.src === 'default')
 		{
 			tvinfo.tv_type = "tv"
 			tvinfo.tv_source = ''
 			tvinfo.tv_title = ''
+			tvinfo.tv_query = ''
 		}
 
 		else
@@ -1894,6 +1912,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tvinfo.tv_type = data.type
 			tvinfo.tv_source = data.src
 			tvinfo.tv_title = data.title
+			tvinfo.tv_query = data.query
 		}
 
 		tvinfo.tv_setter = socket.hue_username
@@ -1905,7 +1924,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_source: tvinfo.tv_source,
 			tv_title: tvinfo.tv_title,
 			tv_setter: tvinfo.tv_setter,
-			tv_date: tvinfo.tv_date
+			tv_date: tvinfo.tv_date,
+			tv_query: tvinfo.tv_query
 		})
 
 		db_manager.update_room(socket.hue_room_id,
@@ -1914,7 +1934,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_source: tvinfo.tv_source,
 			tv_title: tvinfo.tv_title,
 			tv_setter: tvinfo.tv_setter,
-			tv_date: tvinfo.tv_date
+			tv_date: tvinfo.tv_date,
+			tv_query: tvinfo.tv_query
 		})
 
 		rooms[socket.hue_room_id].activity = true
@@ -1929,7 +1950,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					tv_type: tvinfo.tv_type,
 					tv_source: tvinfo.tv_source,
 					tv_title: tvinfo.tv_title,
-					tv_setter: tvinfo.tv_setter
+					tv_setter: tvinfo.tv_setter,
+					tv_query: tvinfo.tv_query
 				},
 				date: date
 			}
@@ -2654,13 +2676,22 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(data.src === "default")
 		{
-			handler.change_image(socket.hue_room_id, "default", socket.hue_username, 0, "link")
+			var obj = {}
+
+			obj.room_id = socket.hue_room_id
+			obj.fname = "default"
+			obj.setter = socket.hue_username
+			obj.size = 0
+			obj.type = "link"
+
+			handler.change_image(obj)
+
 			return
 		}
 
 		else
 		{
-			data.src = data.src.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
+			data.src = data.src.replace(/\.gifv/g,'.gif')
 		}
 
 		if(!data.src.startsWith("http://") && !data.src.startsWith("https://") && !data.src.startsWith("/"))
@@ -2698,7 +2729,16 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 						{
 							if(item.type.startsWith("image"))
 							{
-								handler.change_image(socket.hue_room_id, item.link, socket.hue_username, 0, "link")
+								var obj = {}
+								obj.query = data.src
+								obj.room_id = socket.hue_room_id
+								obj.fname = item.link
+								obj.setter = socket.hue_username
+								obj.size = 0
+								obj.type = "link"
+
+								handler.change_image(obj)
+
 								return
 							}
 						}
@@ -2709,7 +2749,16 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 							{
 								if(img.type.startsWith("image"))
 								{
-									handler.change_image(socket.hue_room_id, img.link, socket.hue_username, 0, "link")
+									var obj = {}
+									obj.query = data.src
+									obj.room_id = socket.hue_room_id
+									obj.fname = img.link
+									obj.setter = socket.hue_username
+									obj.size = 0
+									obj.type = "link"
+
+									handler.change_image(obj)
+
 									return
 								}
 							}
@@ -2735,7 +2784,15 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			handler.change_image(socket.hue_room_id, data.src, socket.hue_username, 0, "link")
+			var obj = {}
+
+			obj.room_id = socket.hue_room_id
+			obj.fname = data.src
+			obj.setter = socket.hue_username
+			obj.size = 0
+			obj.type = "link"
+
+			handler.change_image(obj)
 		}
 	}
 
@@ -2775,54 +2832,63 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else
 			{
-				handler.change_image(socket.hue_room_id, fname, socket.hue_username, size, "upload")
+				var obj = {}
+
+				obj.room_id = socket.hue_room_id
+				obj.fname = fname
+				obj.setter = socket.hue_username
+				obj.size = size
+				obj.type = "upload"
+
+				handler.change_image(obj)
 			}
 		})
 	}
 
-	handler.change_image = function(room_id, fname, uploader, size, type)
+	handler.change_image = function(data)
 	{
-		if(type === "link")
+		if(data.type === "link")
 		{
-			handler.do_change_image(room_id, fname, uploader, size, type)
+			handler.do_change_image(data)
 		}
 
-		else if(type === "upload")
+		else if(data.type === "upload")
 		{
 			if(config.image_storage_s3_or_local === "local")
 			{
-				handler.do_change_image(room_id, fname, uploader, size, type)
+				handler.do_change_image(data)
 			}
 
 			else if(config.image_storage_s3_or_local === "s3")
 			{
-				fs.readFile(`${images_root}/${fname}`, (err, data) =>
+				fs.readFile(`${images_root}/${data.fname}`, (err, data) =>
 				{
 					if(err)
 					{
-						fs.unlink(`${images_root}/${fname}`, function(){})
+						fs.unlink(`${images_root}/${data.fname}`, function(){})
 						return
 					}
 
 					s3.putObject(
 					{
 						ACL: "public-read",
-						ContentType: handler.get_content_type(fname),
+						ContentType: handler.get_content_type(data.fname),
 						Body: data,
 						Bucket: sconfig.s3_bucket_name,
-						Key: `${sconfig.s3_images_location}${fname}`,
+						Key: `${sconfig.s3_images_location}${data.fname}`,
 						CacheControl: `max-age=${sconfig.s3_cache_max_age}`
 					}).promise()
 
 					.then(ans =>
 					{
-						fs.unlink(`${images_root}/${fname}`, function(){})
-						handler.do_change_image(room_id, sconfig.s3_main_url + sconfig.s3_images_location + fname, uploader, size, type)
+						fs.unlink(`${images_root}/${data.fname}`, function(){})
+						data.fname = sconfig.s3_main_url + sconfig.s3_images_location + data.fname
+						handler.do_change_image(data)
 					})
 
 					.catch(err =>
 					{
-						fs.unlink(`${images_root}/${fname}`, function(){})
+						fs.unlink(`${images_root}/${data.fname}`, function(){})
 						logger.log_error(err)
 					})
 				})
@@ -2835,41 +2901,47 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.do_change_image = async function(room_id, fname, setter, size, type)
+	handler.do_change_image = async function(data)
 	{
 		var image_source
 
 		var date = Date.now()
 
-		if(type === "link")
+		if(data.query === undefined)
 		{
-			image_source = fname
+			data.query = ""
+		}
+
+		if(data.type === "link")
+		{
+			image_source = data.fname
 
 			if(image_source === 'default')
 			{
 				image_source = ""
 			}
 
-			db_manager.update_room(room_id,
+			db_manager.update_room(data.room_id,
 			{
 				image_source: image_source,
-				image_setter: setter,
-				image_size: size,
+				image_setter: data.setter,
+				image_size: data.size,
 				image_date: date,
-				image_type: type
+				image_type: data.type,
+				image_query: data.query
 			})
 		}
 
-		else if(type === "upload")
+		else if(data.type === "upload")
 		{
 			if(config.image_storage_s3_or_local === "local")
 			{
-				image_source = config.public_images_location + fname
+				image_source = config.public_images_location + data.fname
 			}
 
 			else if(config.image_storage_s3_or_local === "s3")
 			{
-				image_source = fname
+				image_source = data.fname
 			}
 
 			else
@@ -2877,9 +2949,9 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			var info = await db_manager.get_room({_id:room_id}, {stored_images:true})
+			var info = await db_manager.get_room({_id:data.room_id}, {stored_images:true})
 
-			info.stored_images.unshift(fname)
+			info.stored_images.unshift(data.fname)
 
 			var spliced = false
 
@@ -2888,14 +2960,15 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				var spliced = info.stored_images.splice(config.max_stored_images, info.stored_images.length)
 			}
 
-			db_manager.update_room(room_id,
+			db_manager.update_room(data.room_id,
 			{
 				image_source: image_source,
-				image_setter: setter,
-				image_size: size,
+				image_setter: data.setter,
+				image_size: data.size,
 				image_date: date,
 				stored_images: info.stored_images,
-				image_type: type
+				image_type: data.type,
+				image_query: data.query
 			})
 
 			if(spliced)
@@ -2934,18 +3007,19 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		handler.room_emit(room_id, 'image_change',
+		handler.room_emit(data.room_id, 'image_change',
 		{
 			image_source: image_source,
-			image_setter: setter,
-			image_size: size,
+			image_setter: data.setter,
+			image_size: data.size,
 			image_date: date,
-			image_type: type
+			image_type: data.type,
+			image_query: data.query
 		})
 
-		rooms[room_id].activity = true
+		rooms[data.room_id].activity = true
 
-		if(rooms[room_id].log)
+		if(rooms[data.room_id].log)
 		{
 			var message =
 			{
@@ -2953,14 +3027,15 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				data:
 				{
 					image_source: image_source,
-					image_setter: setter,
-					image_size: size,
-					image_type: type
+					image_setter: data.setter,
+					image_size: data.size,
+					image_type: data.type,
+					image_query: data.query
 				},
 				date: date
 			}
 
-			rooms[room_id].log_messages.push(message)
+			rooms[data.room_id].log_messages.push(message)
 		}
 	}
 

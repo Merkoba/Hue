@@ -8857,6 +8857,11 @@ function announce_image_change(data, date=false, show=true)
 		var message = `${data.image_setter} changed the image`
 	}
 
+	if(data.image_query)
+	{
+		message += `. Search Term: "${data.image_query}"`
+	}
+
 	var onclick = function()
 	{
 		show_modal_image(src, title, d)
@@ -9115,6 +9120,11 @@ function announce_radio_change(data, date=false, action="change", show=true)
 		name += ` (At ${utilz.humanize_seconds(time)})`
 	}
 
+	if(data.radio_query)
+	{
+		name += `. Search Term: "${data.radio_query}"`
+	}
+
 	if(data.radio_source === '')
 	{
 		var src = default_radio_source
@@ -9346,6 +9356,11 @@ function announce_tv_change(data, date=false, action="change", show=true)
 	if(time !== 0)
 	{
 		name += ` (At ${utilz.humanize_seconds(time)})`
+	}
+
+	if(data.tv_query)
+	{
+		name += `. Search Term: "${data.tv_query}"`
 	}
 
 	if(data.tv_source === '')
