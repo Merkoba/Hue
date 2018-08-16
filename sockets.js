@@ -1252,6 +1252,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
+		if(data.src !== utilz.clean_string2(data.src))
+		{
+			return handler.get_out(socket)
+		}
+
 		if(!handler.check_permission(socket, "radio"))
 		{
 			return false
@@ -1536,6 +1541,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		if(data.src.length > config.max_tv_source_length)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.src !== utilz.clean_string2(data.src))
 		{
 			return handler.get_out(socket)
 		}
@@ -2665,6 +2675,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		if(data.src.length > config.max_image_source_length)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.src !== utilz.clean_string2(data.src))
 		{
 			return handler.get_out(socket)
 		}
