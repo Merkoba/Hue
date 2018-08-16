@@ -9033,7 +9033,7 @@ function change_radio_source(src)
 			return false
 		}
 
-		src = utilz.clean_string2(data.src)
+		src = utilz.clean_string2(src)
 
 		if(src.length > max_radio_source_length)
 		{
@@ -9264,7 +9264,7 @@ function change_tv_source(src)
 			return false
 		}
 
-		src = utilz.clean_string2(data.src)
+		src = utilz.clean_string2(src)
 
 		if(src.length > max_tv_source_length)
 		{
@@ -14085,7 +14085,7 @@ function link_image(src)
 		return false
 	}
 
-	src = utilz.clean_string2(data.src)
+	src = utilz.clean_string2(src)
 
 	if(src.length > max_image_source_length)
 	{
