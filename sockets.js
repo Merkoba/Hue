@@ -398,9 +398,17 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			var background_image = ""
 		}
 
-		else if(!info.background_image.includes(sconfig.s3_main_url))
+		else if(info.background_image_type === "hosted")
 		{
-			var background_image = config.public_images_location + info.background_image
+			if(!info.background_image.includes(sconfig.s3_main_url))
+			{
+				var background_image = config.public_images_location + info.background_image
+			}
+
+			else
+			{
+				var background_image = info.background_image
+			}
 		}
 
 		else
@@ -3118,11 +3126,48 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
+	handler.public.change_background_image_source = function(socket, data)
+	{
+		if(!handler.is_admin_or_op(socket))
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.src === undefined)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.src.length === 0)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.src.length > config.max_image_source_length)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.src !== "default")
+		{
+			data.src = data.src.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
+
+			var extension = utilz.get_extension(data.src).toLowerCase()
+
+			if(!extension || !utilz.image_extensions.includes(extension))
+			{
+				return false
+			}
+		}
+
+		handler.do_change_background_image(socket, data.src, "external")
+	}
+
 	handler.change_background_image = function(socket, fname)
 	{
 		if(config.image_storage_s3_or_local === "local")
 		{
-			handler.do_change_background_image(socket, fname)
+			handler.do_change_background_image(socket, fname, "hosted")
 		}
 
 		else if(config.image_storage_s3_or_local === "s3")
@@ -3148,7 +3193,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				.then(ans =>
 				{
 					fs.unlink(`${images_root}/${fname}`, function(){})
-					handler.do_change_background_image(socket, sconfig.s3_main_url + sconfig.s3_images_location + fname)
+					handler.do_change_background_image(socket, sconfig.s3_main_url + sconfig.s3_images_location + fname, "hosted")
 				})
 
 				.catch(err =>
@@ -3165,33 +3210,42 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.do_change_background_image = async function(socket, fname)
+	handler.do_change_background_image = async function(socket, fname, type)
 	{
-		var info = await db_manager.get_room({_id:socket.hue_room_id}, {background_image:true})
+		var info = await db_manager.get_room({_id:socket.hue_room_id}, {background_image:true, background_image_type:true})
 
-		if(config.image_storage_s3_or_local === "local")
+		if(type === "hosted")
 		{
-			var image_url = config.public_images_location + fname
-		}
+			if(config.image_storage_s3_or_local === "local")
+			{
+				var image_url = config.public_images_location + fname
+			}
 
-		else if(config.image_storage_s3_or_local === "s3")
-		{
-			var image_url = fname
-		}
-
-		if(info !== "")
-		{
-			var to_delete = info.background_image
+			else if(config.image_storage_s3_or_local === "s3")
+			{
+				var image_url = fname
+			}
 		}
 
 		else
 		{
-			var to_delete = false
+			var image_url = fname
+		}
+
+		var to_delete = false
+
+		if(info !== "")
+		{
+			if(info.background_image_type === "hosted")
+			{
+				to_delete = info.background_image
+			}
 		}
 
 		var ans = await db_manager.update_room(socket.hue_room_id,
 		{
-			background_image: fname
+			background_image: fname,
+			background_image_type: type
 		})
 
 		handler.room_emit(socket, 'background_image_change',

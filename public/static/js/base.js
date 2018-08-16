@@ -58,6 +58,7 @@ var tup = false
 var iup = false
 var gtr = false
 var imp = false
+var biu = false
 var minpo = false
 var modal_open = false
 var started = false
@@ -99,6 +100,9 @@ var template_global_settings
 var template_room_settings
 var template_credits
 var template_open_url
+var template_background_image_select
+var template_background_image_input
+var template_goto_room
 var msg_main_menu
 var msg_user_menu
 var msg_userlist
@@ -402,6 +406,9 @@ function setup_templates()
 	template_draw_image = Handlebars.compile($('#template_draw_image').html())
 	template_credits = Handlebars.compile($('#template_credits').html())
 	template_open_url = Handlebars.compile($('#template_open_url').html())
+	template_background_image_select = Handlebars.compile($('#template_background_image_select').html())
+	template_background_image_input = Handlebars.compile($('#template_background_image_input').html())
+	template_goto_room = Handlebars.compile($('#template_goto_room').html())
 }
 
 function show_help(number=1, filter="")
@@ -4025,6 +4032,20 @@ function activate_key_detection()
 				}
 			}
 
+			if(biu)
+			{
+				if(msg_info2.is_highest())
+				{
+					if(e.key === "Enter")
+					{
+						background_image_input_action()
+						e.preventDefault()
+					}
+
+					return
+				}
+			}
+
 			if(crm)
 			{
 				if(msg_info2.is_highest())
@@ -6092,6 +6113,7 @@ function register_commands()
 	commands.push('/top2')
 	commands.push('/bottom')
 	commands.push('/bottom2')
+	commands.push('/background')
 
 	commands.sort()
 
@@ -7323,6 +7345,11 @@ function execute_command(message, ans)
 	else if(oiEquals(cmd2, '/bottom2'))
 	{
 		goto_bottom(true, false)
+	}
+
+	else if(oiStartsWith(cmd2, '/background'))
+	{
+		change_background_image_source(arg)
 	}
 
 	else
@@ -9001,7 +9028,7 @@ function change_radio_source(src)
 			return false
 		}
 
-		if(src.length > max_tv_source_length)
+		if(src.length > max_radio_source_length)
 		{
 			return false
 		}
@@ -10690,6 +10717,7 @@ function info2_vars_to_false()
 	imp = false
 	gtr = false
 	orb = false
+	biu = false
 }
 
 function after_modal_create(instance)
@@ -13820,9 +13848,35 @@ function announce_theme_change(data)
 	set_theme(data.color)
 }
 
+function open_background_image_select()
+{
+	msg_info2.show(["Change Background Image", template_background_image_select()])
+}
+
 function open_background_image_picker()
 {
+	msg_info2.close()
+
 	$("#background_image_input").click()
+}
+
+function open_background_image_input()
+{
+	msg_info2.show(["Change Background Image", template_background_image_input()], function()
+	{
+		$("#background_image_input_text").focus()
+		biu = true
+	})
+}
+
+function background_image_input_action()
+{
+	var src = $("#background_image_input_text").val().trim()
+
+	if(change_background_image_source(src))
+	{
+		msg_info2.close()
+	}
 }
 
 function background_image_selected(input)
@@ -13842,6 +13896,51 @@ function background_image_selected(input)
 	$("#admin_background_image").attr("src", background_image_loading_url)
 
 	upload_file(file, "background_image_upload")
+}
+
+function change_background_image_source(src)
+{
+	if(!is_admin_or_op(role))
+	{
+		not_an_op()
+		return false
+	}
+
+	if(src === undefined)
+	{
+		return false
+	}
+
+	if(src !== "default")
+	{
+		src = src.replace(/\.gifv/g, '.gif')
+		
+		var extension = utilz.get_extension(src).toLowerCase()
+
+		if(!extension || !utilz.image_extensions.includes(extension))
+		{
+			return false
+		}
+	}
+
+	if(src === background_image)
+	{
+		return false
+	}
+
+	if(src.length === 0)
+	{
+		return false
+	}
+
+	if(src.length > max_image_source_length)
+	{
+		return false
+	}
+
+	socket_emit("change_background_image_source", {src:src})
+
+	return true
 }
 
 function announce_background_image_change(data)
@@ -13967,7 +14066,7 @@ function link_image(src)
 		return false
 	}
 
-	if(src.length > max_tv_source_length)
+	if(src.length > max_image_source_length)
 	{
 		return false
 	}
@@ -15924,19 +16023,9 @@ function show_locked_menu()
 
 function show_goto_room()
 {
-	var s = `
-	<input id='goto_room_input' type='text' placeholder='Room ID or URL'>
-	<div class='spacer3'></div>
-	<div class='menu_item action inline' id='goto_room_button'>Go There</div>`
-
-	msg_info2.show(["Go To Room", s], function()
+	msg_info2.show(["Go To Room", template_goto_room()], function()
 	{
 		$("#goto_room_input").focus()
-
-		$("#goto_room_button").click(function()
-		{
-			goto_room_action()
-		})
 
 		gtr = true
 	})

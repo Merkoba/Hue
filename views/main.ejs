@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?version=17"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2187"></script>
+		<script src="/static/js/base.js?version=2188"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=441"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=442"/>
 
 		<script>
 
@@ -447,7 +447,7 @@
 
 					<div id='admin_background_image_container'>
 						<div class='spacer1'></div>
-						<img class='small_square_image pointer' id='admin_background_image' onclick='open_background_image_picker()'>
+						<img class='small_square_image pointer' id='admin_background_image' onclick='open_background_image_select()'>
 					</div>
 
 					<div class='spacer1'></div>
@@ -1258,27 +1258,47 @@
 		</script>
 
 		<script id='template_open_room' type='text/x-handlebars-template'>
-				<div id="open_buttons" class='unselectable'>
+			<div id="open_buttons" class='unselectable'>
 
-					<div id='open_room_here' class='bigger action inline pointer' onclick='goto_url("{{id}}");msg_info2.close()'>
-						Open&nbsp;Here
-					</div>
-
-					<div class='spacer3'></div>
-
-					<div id='open_room_new_tab' class='bigger action inline pointer' onclick='goto_url("{{id}}", "tab");msg_info2.close()'>
-						Open&nbsp;In&nbsp;New&nbsp;Tab
-					</div>
-
+				<div id='open_room_here' class='bigger action inline pointer' onclick='goto_url("{{id}}");msg_info2.close()'>
+					Open&nbsp;Here
 				</div>
+
+				<div class='spacer3'></div>
+
+				<div id='open_room_new_tab' class='bigger action inline pointer' onclick='goto_url("{{id}}", "tab");msg_info2.close()'>
+					Open&nbsp;In&nbsp;New&nbsp;Tab
+				</div>
+
+			</div>
 		</script>
 
 		<script id='template_open_url' type='text/x-handlebars-template'>
-				<div class='flex_row_center unselectable'>
-					<div class='bigger action inline pointer' id='open_url_menu_open'>Open&nbsp;URL</div>
-					<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
-					<div class='bigger action inline pointer' id='open_url_menu_copy'>Copy&nbsp;URL</div>
-				</div>
+			<div class='flex_row_center unselectable'>
+				<div class='bigger action inline pointer' id='open_url_menu_open'>Open&nbsp;URL</div>
+				<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
+				<div class='bigger action inline pointer' id='open_url_menu_copy'>Copy&nbsp;URL</div>
+			</div>
+		</script>
+
+		<script id='template_background_image_select' type='text/x-handlebars-template'>
+			<div class='flex_row_center unselectable'>
+				<div class='bigger action inline pointer' onclick='open_background_image_picker()'>Upload&nbsp;Image</div>
+				<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
+				<div class='bigger action inline pointer' onclick='open_background_image_input()'>Use&nbsp;Image&nbsp;URL</div>
+			</div>
+		</script>
+
+		<script id='template_background_image_input' type='text/x-handlebars-template'>
+			<input id='background_image_input_text' class='nice_input'type='text' placeholder='Image URL'>
+			<div class='spacer3'></div>
+			<div class='menu_item action inline unselectable' onclick='background_image_input_action()'>Use This</div>
+		</script>
+
+		<script id='template_goto_room' type='text/x-handlebars-template'>
+			<input id='goto_room_input' class='nice_input'type='text' placeholder='Room ID or URL'>
+			<div class='spacer3'></div>
+			<div class='menu_item action inline unselectable' onclick='goto_room_action()'>Go There</div>
 		</script>
 
 		<script id='template_status' type='text/x-handlebars-template'>
@@ -1769,6 +1789,7 @@
 			<div class='info_item help_item'>/unban x: Unbans a user from the room.</div>
 			<div class='info_item help_item'>/unbanall: Removes all bans.</div>
 			<div class='info_item help_item'>/bannedcount: Displays the number of banned users in the room.</div>
+			<div class='info_item help_item'>/background x: Changes the background image to a specified URL.</div>
 			<div class='info_item help_item'>/broadcast: Opens a window to write a message to be sent to the entire room.</div>
 			<div class='info_item help_item'>/systembroadcast: (Only for superusers) Opens a window to write a message to be sent to the entire system.</div>
 			<div class='info_item help_item'>/systemrestart: (Only for superusers) Sends a signal to every connected client to restart the application.</div>

@@ -574,8 +574,8 @@ a.generic:link, a.generic:visited, a.generic:hover
 	border: 1px solid grey;
 }
 
-#goto_room_input
-{
+.nice_input
+{	
 	width: 18em;
 	font-size: 1.2em;
 	text-align: center;
