@@ -3515,7 +3515,7 @@ function start_dropzone()
 
 		if(!can_images)
 		{
-			feedback("You don't have permission to upload images")
+			feedback("You don't have permission to change images")
 			dropzone.files = []
 			return false
 		}
@@ -7703,7 +7703,7 @@ function emit_change_image_source(url)
 {
 	if(!can_images)
 	{
-		feedback("You don't have permission to link images")
+		feedback("You don't have permission to change images")
 		return false
 	}
 
@@ -14088,7 +14088,7 @@ function change_image_source(src)
 {
 	if(!can_images)
 	{
-		feedback("You don't have permission to link images")
+		feedback("You don't have permission to change images")
 		return false
 	}
 
@@ -18055,7 +18055,7 @@ function upload_draw_image()
 {
 	if(!can_images)
 	{
-		feedback("You don't have permission to upload images")
+		feedback("You don't have permission to change images")
 		return false
 	}
 
