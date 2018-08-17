@@ -255,7 +255,7 @@ var init_data
 var log_messages_processed = false
 var command_aliases = {}
 var play_video_on_load = false
-var commands_queue = []
+var commands_queue = {}
 
 function init()
 {
