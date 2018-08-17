@@ -6218,8 +6218,10 @@ function process_message(args={})
 			var cmd = ""
 			var cmd_mode = "normal"
 
-			for(var sp of ssplit)
+			for(var p=0; p<ssplit.length; p++)
 			{
+				var sp = ssplit[p]
+
 				var lc_sp = sp.toLowerCase()
 
 				if(cmd_mode === "js")
@@ -6269,6 +6271,13 @@ function process_message(args={})
 
 				else
 				{
+					if(command_aliases[sp] !== undefined)
+					{
+						ssplit.splice(p, 1, ...command_aliases[sp].split(" "))
+						p -= 1
+						continue
+					}
+
 					if(cmd === "")
 					{
 						if(sp !== "&&")
@@ -6366,11 +6375,6 @@ function process_message(args={})
 			var alias_arg = msplit.slice(1).join(" ").trim()
 
 			var full_alias = `${alias} ${alias_arg}`.trim()
-
-			if(alias_cmd.startsWith("/X"))
-			{
-				args.to_history = false
-			}
 
 			if(args.to_history)
 			{
