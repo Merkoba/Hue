@@ -6376,6 +6376,11 @@ function process_message(args={})
 
 			var full_alias = `${alias} ${alias_arg}`.trim()
 
+			if(alias_cmd.startsWith("/X"))
+			{
+				args.to_history = false
+			}
+
 			if(args.to_history)
 			{
 				add_to_input_history(args.message)
