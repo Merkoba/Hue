@@ -6016,6 +6016,7 @@ function register_commands()
 	commands.push('/disconnectothers')
 	commands.push('/whisper')
 	commands.push('/whisper2')
+	commands.push('/endwhisper')
 	commands.push('/whisperops')
 	commands.push('/annex')
 	commands.push('/highlights')
@@ -6176,6 +6177,7 @@ function process_message(args={})
 
 	if(num_lines === 1 && is_command(args.message))
 	{
+		
 		args.message = utilz.clean_string2(args.message)
 
 		var and_split = args.message.split(" && ")
@@ -6190,6 +6192,11 @@ function process_message(args={})
 		else if(lc_message.startsWith("/input "))
 		{
 			var more_stuff = args.message.includes("/endinput")
+		}
+
+		else if(lc_message.startsWith("/whisper ") || lc_message.startsWith("/whisper2 "))
+		{
+			var more_stuff = args.message.includes("/endwhisper")
 		}
 
 		else
@@ -6246,6 +6253,21 @@ function process_message(args={})
 					}
 				}
 
+				else if(cmd_mode === "whisper")
+				{
+					if(lc_sp === "/endwhisper")
+					{
+						cmds.push(cmd)
+						cmd = ""
+						cmd_mode = "normal"
+					}
+
+					else
+					{
+						cmd += ` ${sp}`
+					}
+				}
+
 				else
 				{
 					if(cmd === "")
@@ -6262,6 +6284,11 @@ function process_message(args={})
 							else if(lc_sp === "/input")
 							{
 								cmd_mode = "input"
+							}
+
+							else if(lc_sp === "/whisper" || lc_sp === "/whisper2")
+							{
+								cmd_mode = "whisper"
 							}
 						}
 					}
