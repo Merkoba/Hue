@@ -6177,7 +6177,6 @@ function process_message(args={})
 
 	if(num_lines === 1 && is_command(args.message))
 	{
-		
 		args.message = utilz.clean_string2(args.message)
 
 		var and_split = args.message.split(" && ")
