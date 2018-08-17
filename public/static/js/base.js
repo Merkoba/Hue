@@ -6115,6 +6115,7 @@ function register_commands()
 	commands.push('/bottom')
 	commands.push('/bottom2')
 	commands.push('/background')
+	commands.push('/whatis')
 
 	commands.sort()
 
@@ -7385,6 +7386,11 @@ function execute_command(message, ans)
 	else if(oiStartsWith(cmd2, '/background'))
 	{
 		change_background_image_source(arg)
+	}
+
+	else if(oiStartsWith(cmd2, '/whatis'))
+	{
+		inspect_command(arg)
 	}
 
 	else
@@ -19349,4 +19355,31 @@ function generate_words_to_autocomplete()
 	}
 
 	return words
+}
+
+function inspect_command(cmd)
+{
+	if(!cmd.startsWith("/"))
+	{
+		cmd = `/${cmd}`
+	}
+	
+	var s = `${cmd} `
+
+	if(command_aliases[cmd] !== undefined)
+	{
+		s += `is an alias to: "${command_aliases[cmd]}"`
+	}
+
+	else if(commands.includes(cmd))
+	{
+		s += `is a normal command`
+	}
+
+	else
+	{
+		s += ` is not a valid command`
+	}
+
+	feedback(s)
 }
