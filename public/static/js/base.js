@@ -944,10 +944,34 @@ function start_socket()
 			upload_ended(data)
 		}
 
-		else if(data.type === 'image_change')
+		else if(data.type === 'changed_image_source')
 		{
 			announce_image_change(data)
 			setup_image(data)
+		}
+
+		else if(data.type === 'changed_tv_source')
+		{
+			announce_tv_change(data)
+			setup_tv(data)
+		}
+
+		else if(data.type === 'restarted_tv_source')
+		{
+			announce_tv_change(data, false, "restart")
+			setup_tv(data)
+		}
+
+		else if(data.type === 'changed_radio_source')
+		{
+			announce_radio_change(data)
+			setup_radio(data)
+		}
+
+		else if(data.type === 'restarted_radio_source')
+		{
+			announce_radio_change(data, false, "restart")
+			setup_radio(data)
 		}
 
 		else if(data.type === 'profile_image_changed')
@@ -1101,30 +1125,6 @@ function start_socket()
 		else if(data.type === 'privacy_change')
 		{
 			announce_privacy_change(data)
-		}
-
-		else if(data.type === 'changed_radio_source')
-		{
-			announce_radio_change(data)
-			setup_radio(data)
-		}
-
-		else if(data.type === 'restarted_radio_source')
-		{
-			announce_radio_change(data, false, "restart")
-			setup_radio(data)
-		}
-
-		else if(data.type === 'changed_tv_source')
-		{
-			announce_tv_change(data)
-			setup_tv(data)
-		}
-
-		else if(data.type === 'restarted_tv_source')
-		{
-			announce_tv_change(data, false, "restart")
-			setup_tv(data)
 		}
 
 		else if(data.type === 'reserved')
@@ -3956,7 +3956,7 @@ function activate_key_detection()
 
 						if(val !== "")
 						{
-							link_image(val)
+							change_image_source(val)
 							msg_image_picker.close()
 						}
 
@@ -6703,7 +6703,7 @@ function execute_command(message, ans)
 
 	else if(oiStartsWith(cmd2, '/image') || oiStartsWith(cmd2, '/images'))
 	{
-		link_image(arg)
+		change_image_source(arg)
 	}
 
 	else if(oiEquals(cmd2, '/image'))
@@ -9042,96 +9042,94 @@ function announce_privacy_change(data)
 
 function change_radio_source(src)
 {
-	if(can_radio)
+	if(!can_radio)
 	{
-		if(src.startsWith("/"))
+		feedback("You don't have permission to change the radio")
+		return false
+	}
+
+	if(src.length === 0)
+	{
+		return false
+	}
+
+	src = utilz.clean_string2(src)
+
+	if(src.length > max_radio_source_length)
+	{
+		return false
+	}
+
+	if(src.startsWith("/"))
+	{
+		return false
+	}
+
+	if(src === "default")
+	{
+		socket_emit('change_radio_source', {src:"default"})
+		return
+	}
+
+	else if(src === "prev" || src === "previous")
+	{
+		if(radio_changed.length > 1)
 		{
+			src = radio_changed[radio_changed.length - 2].url
+		}
+
+		else
+		{
+			feedback("No radio source before current one")
 			return false
 		}
+	}
 
-		if(src === "default")
-		{
-			socket_emit('change_radio_source', {src:"default"})
-			return
-		}
-
-		else if(src === "prev" || src === "previous")
-		{
-			if(radio_changed.length > 1)
-			{
-				src = radio_changed[radio_changed.length - 2].url
-			}
-
-			else
-			{
-				feedback("No radio source before current one")
-				return false
-			}
-		}
-
-		if(src.length === 0)
-		{
-			return false
-		}
-
-		src = utilz.clean_string2(src)
-
-		if(src.length > max_radio_source_length)
-		{
-			return false
-		}
-
-		if(src.startsWith("http://") || src.startsWith("https://"))
-		{
-			if(src.includes("youtube.com") || src.includes("youtu.be"))
-			{
-				if(!youtube_enabled)
-				{
-					feedback("YouTube support is not enabled")
-					return
-				}
-			}
-
-			else if(src.includes("soundcloud.com"))
-			{
-				if(!soundcloud_enabled)
-				{
-					feedback("Soundcloud support is not enabled")
-					return
-				}
-			}
-
-			else
-			{
-				var extension = utilz.get_extension(src).toLowerCase()
-
-				if(extension)
-				{
-					if(!utilz.audio_extensions.includes(extension))
-					{
-						feedback("That doesn't seem to be an audio")
-						return false
-					}
-				}
-			}
-		}
-
-		else if(src !== "restart" && src !== "reset")
+	if(src.startsWith("http://") || src.startsWith("https://"))
+	{
+		if(src.includes("youtube.com") || src.includes("youtu.be"))
 		{
 			if(!youtube_enabled)
 			{
-				feedback("Invalid radio source")
+				feedback("YouTube support is not enabled")
 				return
 			}
 		}
 
-		socket_emit('change_radio_source', {src:src})
+		else if(src.includes("soundcloud.com"))
+		{
+			if(!soundcloud_enabled)
+			{
+				feedback("Soundcloud support is not enabled")
+				return
+			}
+		}
+
+		else
+		{
+			var extension = utilz.get_extension(src).toLowerCase()
+
+			if(extension)
+			{
+				if(!utilz.audio_extensions.includes(extension))
+				{
+					feedback("That doesn't seem to be an audio")
+					return false
+				}
+			}
+		}
 	}
 
-	else
+	else if(src !== "restart" && src !== "reset")
 	{
-		feedback("You don't have permission to change the radio")
+		if(!youtube_enabled)
+		{
+			feedback("Invalid radio source")
+			return
+		}
 	}
+
+	socket_emit('change_radio_source', {src:src})
 }
 
 function announce_radio_change(data, date=false, action="change", show=true)
@@ -9273,105 +9271,103 @@ function push_radio_changed(data)
 
 function change_tv_source(src)
 {
-	if(can_tv)
+	if(!can_tv)
 	{
-		if(src.startsWith("/"))
+		feedback("You don't have permission to change the tv")
+		return false
+	}
+
+	if(src.length === 0)
+	{
+		return false
+	}
+
+	src = utilz.clean_string2(src)
+
+	if(src.length > max_tv_source_length)
+	{
+		return false
+	}
+
+	if(src.startsWith("/"))
+	{
+		return false
+	}
+
+	if(src === "default")
+	{
+		socket_emit('change_tv_source', {src:"default"})
+		return
+	}
+
+	else if(src === "prev" || src === "previous")
+	{
+		if(tv_changed.length > 1)
 		{
+			src = tv_changed[tv_changed.length - 2].url
+		}
+
+		else
+		{
+			feedback("No tv source before current one")
 			return false
 		}
+	}
 
-		if(src === "default")
+	if(src.startsWith("http://") || src.startsWith("https://"))
+	{
+		if(src.includes("youtube.com") || src.includes("youtu.be"))
 		{
-			socket_emit('change_tv_source', {src:"default"})
-			return
-		}
-
-		else if(src === "prev" || src === "previous")
-		{
-			if(tv_changed.length > 1)
-			{
-				src = tv_changed[tv_changed.length - 2].url
-			}
-
-			else
-			{
-				feedback("No tv source before current one")
-				return false
-			}
-		}
-
-		if(src.length === 0)
-		{
-			return false
-		}
-
-		src = utilz.clean_string2(src)
-
-		if(src.length > max_tv_source_length)
-		{
-			return false
-		}
-
-		if(src.startsWith("http://") || src.startsWith("https://"))
-		{
-			if(src.includes("youtube.com") || src.includes("youtu.be"))
-			{
-				if(utilz.get_youtube_id(src) && !youtube_enabled)
-				{
-					feedback("YouTube support is not enabled")
-					return
-				}
-			}
-
-			else if(src.includes("twitch.tv"))
-			{
-				if(utilz.get_twitch_id(src) && !twitch_enabled)
-				{
-					feedback("Twitch support is not enabled")
-					return
-				}
-			}
-
-			else if(src.includes("soundcloud.com"))
-			{
-				if(!soundcloud_enabled)
-				{
-					feedback("Soundcloud support is not enabled")
-					return
-				}
-			}
-
-			else
-			{
-				var extension = utilz.get_extension(src).toLowerCase()
-
-				if(extension)
-				{
-					if(utilz.image_extensions.includes(extension))
-					{
-						feedback("That doesn't seem to be a video")
-						return false
-					}
-				}
-			}
-		}
-
-		else if(src !== "restart" && src !== "reset")
-		{
-			if(!youtube_enabled)
+			if(utilz.get_youtube_id(src) && !youtube_enabled)
 			{
 				feedback("YouTube support is not enabled")
 				return
 			}
 		}
 
-		socket_emit('change_tv_source', {src:src})
+		else if(src.includes("twitch.tv"))
+		{
+			if(utilz.get_twitch_id(src) && !twitch_enabled)
+			{
+				feedback("Twitch support is not enabled")
+				return
+			}
+		}
+
+		else if(src.includes("soundcloud.com"))
+		{
+			if(!soundcloud_enabled)
+			{
+				feedback("Soundcloud support is not enabled")
+				return
+			}
+		}
+
+		else
+		{
+			var extension = utilz.get_extension(src).toLowerCase()
+
+			if(extension)
+			{
+				if(utilz.image_extensions.includes(extension))
+				{
+					feedback("That doesn't seem to be a video")
+					return false
+				}
+			}
+		}
 	}
 
-	else
+	else if(src !== "restart" && src !== "reset")
 	{
-		feedback("You don't have permission to change the tv")
+		if(!youtube_enabled)
+		{
+			feedback("YouTube support is not enabled")
+			return
+		}
 	}
+
+	socket_emit('change_tv_source', {src:src})
 }
 
 function announce_tv_change(data, date=false, action="change", show=true)
@@ -14088,11 +14084,23 @@ function announce_background_tile_dimensions_change(data)
 	apply_background()
 }
 
-function link_image(src)
+function change_image_source(src)
 {
 	if(!can_images)
 	{
 		feedback("You don't have permission to link images")
+		return false
+	}
+
+	if(src.length === 0)
+	{
+		return false
+	}
+
+	src = utilz.clean_string2(src)
+
+	if(src.length > max_image_source_length)
+	{
 		return false
 	}
 
@@ -14119,18 +14127,6 @@ function link_image(src)
 			feedback("No image source before current one")
 			return false
 		}
-	}
-
-	if(src.length === 0)
-	{
-		return false
-	}
-
-	src = utilz.clean_string2(src)
-
-	if(src.length > max_image_source_length)
-	{
-		return false
 	}
 
 	else if(src.startsWith("http://") || src.startsWith("https://"))
@@ -18861,7 +18857,7 @@ function set_media_sliders(type)
 
 function image_prev()
 {
-	link_image("prev")
+	change_image_source("prev")
 	msg_image_picker.close()
 }
 

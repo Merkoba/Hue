@@ -3022,7 +3022,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		handler.room_emit(data.room_id, 'image_change',
+		handler.room_emit(data.room_id, 'changed_image_source',
 		{
 			image_source: image_source,
 			image_setter: data.setter,
