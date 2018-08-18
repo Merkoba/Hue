@@ -1262,6 +1262,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
+		data.src = data.src.replace(/youtu\.be\/(\w{11})/, "youtube.com/watch?v=$1")
+
 		if(data.src === "default")
 		{
 			handler.do_change_radio_source(socket, data)
@@ -1548,6 +1550,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			return false
 		}
+
+		data.src = data.src.replace(/youtu\.be\/(\w{11})/, "youtube.com/watch?v=$1")
 
 		if(data.src === "default")
 		{
