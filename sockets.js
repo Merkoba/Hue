@@ -1262,7 +1262,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		data.src = data.src.replace(/youtu\.be\/(\w{11})/, "youtube.com/watch?v=$1")
+		data.src = data.src.replace(/youtu\.be\/(\w{11})/, "www.youtube.com/watch?v=$1")
 
 		if(data.src === "default")
 		{
@@ -1421,7 +1421,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 						data.type = "youtube"
 						data.query = data.src
-						data.src = `https://youtube.com/watch?v=${item.id.videoId}`
+						data.src = `https://www.youtube.com/watch?v=${item.id.videoId}`
 						data.title = response.items[0].snippet.title
 						handler.do_change_radio_source(socket, data)
 						return
@@ -1551,7 +1551,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		data.src = data.src.replace(/youtu\.be\/(\w{11})/, "youtube.com/watch?v=$1")
+		data.src = data.src.replace(/youtu\.be\/(\w{11})/, "www.youtube.com/watch?v=$1")
 
 		if(data.src === "default")
 		{
@@ -1859,7 +1859,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 						data.type = "youtube"
 						data.query = data.src
-						data.src = `https://youtube.com/watch?v=${item.id.videoId}`
+						data.src = `https://www.youtube.com/watch?v=${item.id.videoId}`
 						data.title = response.items[0].snippet.title
 						handler.do_change_tv_source(socket, data)
 						return
