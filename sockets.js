@@ -1388,22 +1388,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else if(data.src === "restart" || data.src === "reset")
 		{
-			var info = await db_manager.get_room({_id:socket.hue_room_id},
-			{
-				radio_type: true,
-				radio_source: true,
-				radio_title: true,
-				radio_setter: true,
-				radio_date: true
-			})
-
 			handler.room_emit(socket, 'restarted_radio_source',
 			{
-				radio_type: info.radio_type,
-				radio_source: info.radio_source,
-				radio_title: info.radio_title,
-				radio_setter: info.radio_setter,
-				radio_date: info.radio_date,
 				username: socket.hue_username
 			})
 		}
@@ -1467,6 +1453,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			data.query = ""
 		}
 
+		if(rooms[socket.hue_room_id].current_radio_source === data.src)
+		{
+			handler.user_emit(socket, 'same_radio', {})
+			return false
+		}
+
 		if(data.src === 'default')
 		{
 			radioinfo.radio_type = "radio"
@@ -1526,6 +1518,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			rooms[socket.hue_room_id].log_messages.push(message)
 		}
+
+		rooms[socket.hue_room_id].current_radio_source = radioinfo.radio_source
 	}
 
 	handler.public.change_tv_source = async function(socket, data)
@@ -1828,22 +1822,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else if(data.src === "restart" || data.src === "reset")
 		{
-			var info = await db_manager.get_room({_id:socket.hue_room_id},
-			{
-				tv_type: true,
-				tv_source: true,
-				tv_title: true,
-				tv_setter: true,
-				tv_date: true
-			})
-
 			handler.room_emit(socket, 'restarted_tv_source',
 			{
-				tv_type: info.tv_type,
-				tv_source: info.tv_source,
-				tv_title: info.tv_title,
-				tv_setter: info.tv_setter,
-				tv_date: info.tv_date,
 				username: socket.hue_username
 			})
 		}
@@ -1909,6 +1889,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			data.query = ""
 		}
 
+		if(rooms[socket.hue_room_id].current_tv_source === data.src)
+		{
+			handler.user_emit(socket, 'same_tv', {})
+			return false
+		}
+
 		if(data.src === 'default')
 		{
 			tvinfo.tv_type = "tv"
@@ -1968,6 +1954,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			rooms[socket.hue_room_id].log_messages.push(message)
 		}
+
+		rooms[socket.hue_room_id].current_tv_source = tvinfo.tv_source
 	}
 
 	handler.public.change_username = async function(socket, data)
@@ -2693,13 +2681,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			var obj = {}
 
-			obj.room_id = socket.hue_room_id
 			obj.fname = "default"
 			obj.setter = socket.hue_username
 			obj.size = 0
 			obj.type = "link"
 
-			handler.change_image(obj)
+			handler.change_image(socket, obj)
 
 			return
 		}
@@ -2746,13 +2733,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 							{
 								var obj = {}
 								obj.query = data.src
-								obj.room_id = socket.hue_room_id
 								obj.fname = item.link
 								obj.setter = socket.hue_username
 								obj.size = 0
 								obj.type = "link"
 
-								handler.change_image(obj)
+								handler.change_image(socket, obj)
 
 								return
 							}
@@ -2766,13 +2752,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 								{
 									var obj = {}
 									obj.query = data.src
-									obj.room_id = socket.hue_room_id
 									obj.fname = img.link
 									obj.setter = socket.hue_username
 									obj.size = 0
 									obj.type = "link"
 
-									handler.change_image(obj)
+									handler.change_image(socket, obj)
 
 									return
 								}
@@ -2801,13 +2786,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			var obj = {}
 
-			obj.room_id = socket.hue_room_id
 			obj.fname = data.src
 			obj.setter = socket.hue_username
 			obj.size = 0
 			obj.type = "link"
 
-			handler.change_image(obj)
+			handler.change_image(socket, obj)
 		}
 	}
 
@@ -2849,29 +2833,28 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				var obj = {}
 
-				obj.room_id = socket.hue_room_id
 				obj.fname = fname
 				obj.setter = socket.hue_username
 				obj.size = size
 				obj.type = "upload"
 
-				handler.change_image(obj)
+				handler.change_image(socket, obj)
 			}
 		})
 	}
 
-	handler.change_image = function(data)
+	handler.change_image = function(socket, data)
 	{
 		if(data.type === "link")
 		{
-			handler.do_change_image(data)
+			handler.do_change_image(socket, data)
 		}
 
 		else if(data.type === "upload")
 		{
 			if(config.image_storage_s3_or_local === "local")
 			{
-				handler.do_change_image(data)
+				handler.do_change_image(socket, data)
 			}
 
 			else if(config.image_storage_s3_or_local === "s3")
@@ -2898,7 +2881,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						fs.unlink(`${images_root}/${data.fname}`, function(){})
 						data.fname = sconfig.s3_main_url + sconfig.s3_images_location + data.fname
-						handler.do_change_image(data)
+						handler.do_change_image(socket, data)
 					})
 
 					.catch(err =>
@@ -2916,7 +2899,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.do_change_image = async function(data)
+	handler.do_change_image = async function(socket, data)
 	{
 		var image_source
 
@@ -2936,7 +2919,13 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				image_source = ""
 			}
 
-			db_manager.update_room(data.room_id,
+			if(rooms[socket.hue_room_id].current_image_source === data.fname)
+			{
+				handler.user_emit(socket, 'same_image', {})
+				return false
+			}
+
+			db_manager.update_room(socket.hue_room_id,
 			{
 				image_source: image_source,
 				image_setter: data.setter,
@@ -2964,7 +2953,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			var info = await db_manager.get_room({_id:data.room_id}, {stored_images:true})
+			var info = await db_manager.get_room({_id:socket.hue_room_id}, {stored_images:true})
 
 			info.stored_images.unshift(data.fname)
 
@@ -2975,7 +2964,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				var spliced = info.stored_images.splice(config.max_stored_images, info.stored_images.length)
 			}
 
-			db_manager.update_room(data.room_id,
+			db_manager.update_room(socket.hue_room_id,
 			{
 				image_source: image_source,
 				image_setter: data.setter,
@@ -3022,7 +3011,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		handler.room_emit(data.room_id, 'changed_image_source',
+		handler.room_emit(socket.hue_room_id, 'changed_image_source',
 		{
 			image_source: image_source,
 			image_setter: data.setter,
@@ -3032,9 +3021,9 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			image_query: data.query
 		})
 
-		rooms[data.room_id].activity = true
+		rooms[socket.hue_room_id].activity = true
 
-		if(rooms[data.room_id].log)
+		if(rooms[socket.hue_room_id].log)
 		{
 			var message =
 			{
@@ -3050,8 +3039,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				date: date
 			}
 
-			rooms[data.room_id].log_messages.push(message)
+			rooms[socket.hue_room_id].log_messages.push(message)
 		}
+
+		rooms[socket.hue_room_id].current_image_source = image_source
 	}
 
 	handler.upload_profile_image = function(socket, data)
@@ -4013,7 +4004,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_mode: info.tv_mode,
 			radio_mode: info.radio_mode,
 			voice_chat_mode: info.voice_chat_mode,
-			voice_chat_sockets: []
+			voice_chat_sockets: [],
+			current_image_source: info.image_source,
+			current_tv_source: info.tv_source,
+			current_radio_source: info.radio_source
 		}
 
 		return obj

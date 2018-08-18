@@ -256,6 +256,9 @@ var log_messages_processed = false
 var command_aliases = {}
 var play_video_on_load = false
 var commands_queue = {}
+var current_image_data = {}
+var current_tv_data = {}
+var current_radio_data = {}
 
 function init()
 {
@@ -946,32 +949,32 @@ function start_socket()
 
 		else if(data.type === 'changed_image_source')
 		{
-			announce_image_change(data)
+			announce_image_change({data:data})
 			setup_image(data)
 		}
 
 		else if(data.type === 'changed_tv_source')
 		{
-			announce_tv_change(data)
+			announce_tv_change({data:data})
 			setup_tv(data)
 		}
 
 		else if(data.type === 'restarted_tv_source')
 		{
-			announce_tv_change(data, false, "restart")
-			setup_tv(data)
+			announce_tv_change({action:"restart", uname:data.username})
+			change({type:"tv", force:true, play:true})
 		}
 
 		else if(data.type === 'changed_radio_source')
 		{
-			announce_radio_change(data)
+			announce_radio_change({data:data})
 			setup_radio(data)
 		}
 
 		else if(data.type === 'restarted_radio_source')
 		{
-			announce_radio_change(data, false, "restart")
-			setup_radio(data)
+			announce_radio_change({action:"restart", uname:data.username})
+			change({type:"radio", force:true, play:true})
 		}
 
 		else if(data.type === 'profile_image_changed')
@@ -1360,6 +1363,21 @@ function start_socket()
 		else if(data.type === 'cannot_embed_iframe')
 		{
 			feedback("That website cannot be embedded")
+		}
+
+		else if(data.type === 'same_image')
+		{
+			feedback("Image is already set to that")
+		}
+
+		else if(data.type === 'same_tv')
+		{
+			feedback("TV is already set to that")
+		}
+
+		else if(data.type === 'same_radio')
+		{
+			feedback("Radio is already set to that")
 		}
 	})
 }
@@ -8841,23 +8859,38 @@ function show_upload_error()
 	feedback("The image could not be uploaded")
 }
 
-function announce_image_change(data, date=false, show=true)
+function announce_image_change(args={})
 {
-	if(!data.image_setter)
+	var def_args =
 	{
-		show = false
+		data: {},
+		date: false,
+		action: "change",
+		show: true
 	}
 
-	if(date)
+	fill_defaults(args, def_args)
+
+	if(args.action === "restart")
 	{
-		var d = date
+		args.data = current_image_data
+	}
+
+	if(!args.data.image_setter)
+	{
+		args.show = false
+	}
+
+	if(args.date)
+	{
+		var d = args.date
 	}
 
 	else
 	{
-		if(data.image_date !== undefined)
+		if(args.data.image_date !== undefined)
 		{
-			var d = data.image_date
+			var d = args.data.image_date
 		}
 
 		else
@@ -8868,7 +8901,7 @@ function announce_image_change(data, date=false, show=true)
 
 	var nd = nice_date(d)
 
-	if(data.image_source === '')
+	if(args.data.image_source === '')
 	{
 		var name = 'default'
 		var src = default_image_source
@@ -8876,31 +8909,31 @@ function announce_image_change(data, date=false, show=true)
 
 	else
 	{
-		var name = data.image_source
-		var src = data.image_source
+		var name = args.data.image_source
+		var src = args.data.image_source
 	}
 
-	if(data.image_source === "")
+	if(args.data.image_source === "")
 	{
-		var title = `Setter: ${data.image_setter} | ${nd}`
-		var message = `${data.image_setter} changed the image to default`
+		var title = `Setter: ${args.data.image_setter} | ${nd}`
+		var message = `${args.data.image_setter} changed the image to default`
 	}
 
-	else if(data.image_type === "link")
+	else if(args.data.image_type === "link")
 	{
-		var title = `Setter: ${data.image_setter} | ${nd}`
-		var message = `${data.image_setter} changed the image`
+		var title = `Setter: ${args.data.image_setter} | ${nd}`
+		var message = `${args.data.image_setter} changed the image`
 	}
 
-	else if(data.image_type === "upload")
+	else if(args.data.image_type === "upload")
 	{
-		var title = `Setter: ${data.image_setter} | Size: ${get_size_string(data.image_size)} | ${nd}`
-		var message = `${data.image_setter} changed the image`
+		var title = `Setter: ${args.data.image_setter} | Size: ${get_size_string(args.data.image_size)} | ${nd}`
+		var message = `${args.data.image_setter} changed the image`
 	}
 
-	if(data.image_query)
+	if(args.data.image_query)
 	{
-		message += `. Search Term: "${data.image_query}"`
+		message += `. Search Term: "${args.data.image_query}"`
 	}
 
 	var onclick = function()
@@ -8908,7 +8941,7 @@ function announce_image_change(data, date=false, show=true)
 		show_modal_image(src, title, d)
 	}
 
-	if(show)
+	if(args.show)
 	{
 		chat_announce(
 		{
@@ -8916,7 +8949,7 @@ function announce_image_change(data, date=false, show=true)
 			save: true,
 			date: d,
 			type: "image_change",
-			username: data.image_setter,
+			username: args.data.image_setter,
 			title: title,
 			message: message,
 			onclick: onclick
@@ -8925,14 +8958,17 @@ function announce_image_change(data, date=false, show=true)
 
 	var ic_data = {}
 
-	ic_data.url = data.image_source
+	ic_data.url = args.data.image_source
 	ic_data.title = title
 	ic_data.date_raw = d
-	ic_data.setter = data.image_setter
+	ic_data.setter = args.data.image_setter
 
-	push_images_changed(ic_data)
-
-	set_modal_image_number()
+	if(args.action === "change")
+	{
+		push_images_changed(ic_data)
+		set_modal_image_number()
+		current_image_data = args.data
+	}
 }
 
 function push_images_changed(data)
@@ -9065,7 +9101,13 @@ function change_radio_source(src)
 		return false
 	}
 
-	if(src === "default")
+	if(src === radio_source)
+	{
+		feedback("Radio is already set to that")
+		return false
+	}
+
+	else if(src === "default")
 	{
 		socket_emit('change_radio_source', {src:"default"})
 		return
@@ -9132,60 +9174,76 @@ function change_radio_source(src)
 	socket_emit('change_radio_source', {src:src})
 }
 
-function announce_radio_change(data, date=false, action="change", show=true)
+function announce_radio_change(args={})
 {
-	if(!data.radio_setter)
+	var def_args =
 	{
-		show = false
+		data: {},
+		date: false,
+		action: "change",
+		show: true,
+		uname: false
 	}
 
-	if(data.radio_title)
+	fill_defaults(args, def_args)
+
+	if(args.action === "restart")
 	{
-		var name = conditional_quotes(data.radio_title)
+		args.data = current_radio_data
 	}
 
-	else if(!data.radio_source)
+	if(!args.data.radio_setter)
+	{
+		args.show = false
+	}
+
+	if(args.data.radio_title)
+	{
+		var name = conditional_quotes(args.data.radio_title)
+	}
+
+	else if(!args.data.radio_source)
 	{
 		var name = 'default'
 	}
 
 	else
 	{
-		var name = data.radio_source
+		var name = args.data.radio_source
 	}
 
-	var time = utilz.get_youtube_time(data.radio_source)
+	var time = utilz.get_youtube_time(args.data.radio_source)
 
 	if(time !== 0)
 	{
 		name += ` (At ${utilz.humanize_seconds(time)})`
 	}
 
-	if(data.radio_query)
+	if(args.data.radio_query)
 	{
-		name += `. Search Term: "${data.radio_query}"`
+		name += `. Search Term: "${args.data.radio_query}"`
 	}
 
-	if(data.radio_source === '')
+	if(args.data.radio_source === '')
 	{
 		var src = default_radio_source
 	}
 
 	else
 	{
-		var src = data.radio_source
+		var src = args.data.radio_source
 	}
 
-	if(date)
+	if(args.date)
 	{
-		var d = date
+		var d = args.date
 	}
 
 	else
 	{
-		if(data.radio_date !== undefined && action !== "restart")
+		if(args.data.radio_date !== undefined && args.action !== "restart")
 		{
-			var d = data.radio_date
+			var d = args.data.radio_date
 		}
 
 		else
@@ -9196,14 +9254,14 @@ function announce_radio_change(data, date=false, action="change", show=true)
 
 	var nd = nice_date(d)
 
-	if(action === "restart")
+	if(args.action === "restart")
 	{
 		var title = undefined
 	}
 
 	else
 	{
-		var title = `Setter: ${data.radio_setter} | ${nd}`
+		var title = `Setter: ${args.data.radio_setter} | ${nd}`
 	}
 
 	var onclick = function()
@@ -9211,17 +9269,29 @@ function announce_radio_change(data, date=false, action="change", show=true)
 		open_url_menu(src)
 	}
 
-	if(action === "restart")
+	if(args.action === "restart")
 	{
-		var message = `${data.username} restarted the radio`
+		var message = `${args.uname} restarted the radio`
 	}
 
 	else
 	{
-		var message = `${data.radio_setter} changed the radio to: ${name}`
+		var message = `${args.data.radio_setter} changed the radio to: ${name}`
 	}
 
-	if(show)
+	var type = ""
+
+	if(args.action === "change")
+	{
+		type = "radio_change"
+	}
+
+	else if(type === "restart")
+	{
+		type = "radio_restart"
+	}
+
+	if(args.show)
 	{
 		chat_announce(
 		{
@@ -9231,18 +9301,22 @@ function announce_radio_change(data, date=false, action="change", show=true)
 			onclick: onclick,
 			save: true,
 			date: d,
-			type: "radio_change",
-			username: data.radio_setter
+			type: type,
+			username: args.data.radio_setter
 		})
 	}
 
 	var ic_data = {}
 
-	ic_data.url = data.radio_source
+	ic_data.url = args.data.radio_source
 	ic_data.date_raw = d
-	ic_data.setter = data.radio_setter
+	ic_data.setter = args.data.radio_setter
 
-	push_radio_changed(ic_data)
+	if(args.action === "change")
+	{
+		push_radio_changed(ic_data)
+		current_radio_data = args.data
+	}
 }
 function push_radio_changed(data)
 {
@@ -9294,7 +9368,13 @@ function change_tv_source(src)
 		return false
 	}
 
-	if(src === "default")
+	if(src === tv_source)
+	{
+		feedback("TV is already set to that")
+		return false
+	}
+
+	else if(src === "default")
 	{
 		socket_emit('change_tv_source', {src:"default"})
 		return
@@ -9370,60 +9450,76 @@ function change_tv_source(src)
 	socket_emit('change_tv_source', {src:src})
 }
 
-function announce_tv_change(data, date=false, action="change", show=true)
+function announce_tv_change(args={})
 {
-	if(!data.tv_setter)
+	var def_args =
 	{
-		show = false
+		data: {},
+		date: false,
+		action: "change",
+		show: true,
+		uname: false
 	}
 
-	if(data.tv_title)
+	fill_defaults(args, def_args)
+
+	if(args.action === "restart")
 	{
-		var name = conditional_quotes(data.tv_title)
+		args.data = current_tv_data
 	}
 
-	else if(!data.tv_source)
+	if(!args.data.tv_setter)
+	{
+		args.show = false
+	}
+
+	if(args.data.tv_title)
+	{
+		var name = conditional_quotes(args.data.tv_title)
+	}
+
+	else if(!args.data.tv_source)
 	{
 		var name = 'default'
 	}
 
 	else
 	{
-		var name = data.tv_source
+		var name = args.data.tv_source
 	}
 
-	var time = utilz.get_youtube_time(data.tv_source)
+	var time = utilz.get_youtube_time(args.data.tv_source)
 
 	if(time !== 0)
 	{
 		name += ` (At ${utilz.humanize_seconds(time)})`
 	}
 
-	if(data.tv_query)
+	if(args.data.tv_query)
 	{
-		name += `. Search Term: "${data.tv_query}"`
+		name += `. Search Term: "${args.data.tv_query}"`
 	}
 
-	if(data.tv_source === '')
+	if(args.data.tv_source === '')
 	{
 		var src = default_tv_source
 	}
 
 	else
 	{
-		var src = data.tv_source
+		var src = args.data.tv_source
 	}
 
-	if(date)
+	if(args.date)
 	{
-		var d = date
+		var d = args.date
 	}
 
 	else
 	{
-		if(data.tv_date !== undefined && action !== "restart")
+		if(args.data.tv_date !== undefined && args.action !== "restart")
 		{
-			var d = data.tv_date
+			var d = args.data.tv_date
 		}
 
 		else
@@ -9434,14 +9530,14 @@ function announce_tv_change(data, date=false, action="change", show=true)
 
 	var nd = nice_date(d)
 
-	if(action === "restart")
+	if(args.action === "restart")
 	{
 		var title = undefined
 	}
 
 	else
 	{
-		var title = `Setter: ${data.tv_setter} | ${nd}`
+		var title = `Setter: ${args.data.tv_setter} | ${nd}`
 	}
 
 	var onclick = function()
@@ -9449,17 +9545,29 @@ function announce_tv_change(data, date=false, action="change", show=true)
 		open_url_menu(src)
 	}
 
-	if(action === "restart")
+	if(args.action === "restart")
 	{
-		var message = `${data.username} restarted the tv`
+		var message = `${args.uname} restarted the tv`
 	}
 
 	else
 	{
-		var message = `${data.tv_setter} changed the tv to: ${name}`
+		var message = `${args.data.tv_setter} changed the tv to: ${name}`
 	}
 
-	if(show)
+	var type = ""
+
+	if(args.action === "change")
+	{
+		type = "tv_change"
+	}
+
+	else if(type === "restart")
+	{
+		type = "tv_restart"
+	}
+
+	if(args.show)
 	{
 		chat_announce(
 		{
@@ -9469,18 +9577,22 @@ function announce_tv_change(data, date=false, action="change", show=true)
 			onclick: onclick,
 			save: true,
 			date: d,
-			type: "tv_change",
-			username: data.tv_setter
+			type: type,
+			username: args.data.tv_setter
 		})
 	}
 	
 	var ic_data = {}
 
-	ic_data.url = data.tv_source
+	ic_data.url = args.data.tv_source
 	ic_data.date_raw = d
-	ic_data.setter = data.tv_setter
+	ic_data.setter = args.data.tv_setter
 
-	push_tv_changed(ic_data)
+	if(args.action === "change")
+	{
+		push_tv_changed(ic_data)
+		current_tv_data = args.data
+	}
 }
 
 function push_tv_changed(data)
@@ -12777,17 +12889,17 @@ function show_log_messages()
 
 	if(num_images === 0)
 	{
-		announce_image_change(init_data)
+		announce_image_change({data:init_data})
 	}
 
 	if(num_tv === 0)
 	{
-		announce_tv_change(init_data)
+		announce_tv_change({data:init_data})
 	}
 
 	if(num_radio === 0)
 	{
-		announce_radio_change(init_data)
+		announce_radio_change({data:init_data})
 	}
 
 	if(log_messages && log_messages.length > 0)
@@ -12814,17 +12926,17 @@ function show_log_messages()
 
 				else if(type === "image")
 				{
-					announce_image_change(data, date)
+					announce_image_change({data:data, date:date})
 				}
 
 				else if(type === "tv")
 				{
-					announce_tv_change(data, date)
+					announce_tv_change({data:data, date:date})
 				}
 
 				else if(type === "radio")
 				{
-					announce_radio_change(data, date)
+					announce_radio_change({data:data, date:date})
 				}
 
 				else if(type === "reaction")
@@ -14109,7 +14221,13 @@ function change_image_source(src)
 		return false
 	}
 
-	if(src === "default")
+	if(src === image_source)
+	{
+		feedback("Image is already set to that")
+		return false
+	}
+
+	else if(src === "default")
 	{
 		emit_change_image_source("default")
 		return
