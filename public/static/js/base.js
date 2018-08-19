@@ -1940,38 +1940,37 @@ function apply_theme()
 
 	if(cfsize === "very_small")
 	{
-		var chat_font_size = "0.5rem";
-		var profile_image_size = "23px"
+		var cfsize_factor = 0.5
 	}
 
 	else if(cfsize === "small")
 	{
-		var chat_font_size = "0.8rem";
-		var profile_image_size = "36px"
+		var cfsize_factor = 0.8
 	}
 
 	else if(cfsize === "normal")
 	{
-		var chat_font_size = "1rem";
-		var profile_image_size = "45px"
+		var cfsize_factor = 1
 	}
 
 	else if(cfsize === "big")
 	{
-		var chat_font_size = "1.2rem";
-		var profile_image_size = "54px"
+		var cfsize_factor = 1.2
 	}
 
 	else if(cfsize === "very_big")
 	{
-		var chat_font_size = "1.5rem";
-		var profile_image_size = "68px"
+		var cfsize_factor = 1.5
 	}
 
 	else
 	{
-		var chat_font_size = "1rem";
+		var cfsize_factor = 1
 	}
+
+	var chat_font_size = `${cfsize_factor}rem`;
+
+	var profile_image_size = `${45 * cfsize_factor}px`
 
 	var css = `
 	<style class='appended_theme_style'>
