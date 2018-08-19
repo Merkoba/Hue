@@ -1953,7 +1953,6 @@ function apply_theme()
 	else if(cfsize === "normal")
 	{
 		var chat_font_size = "1rem";
-		var profile_image_size = "100px"
 		var profile_image_size = "45px"
 	}
 
