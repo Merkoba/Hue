@@ -1941,26 +1941,32 @@ function apply_theme()
 	if(cfsize === "very_small")
 	{
 		var chat_font_size = "0.5rem";
+		var profile_image_size = "23px"
 	}
 
 	else if(cfsize === "small")
 	{
 		var chat_font_size = "0.8rem";
+		var profile_image_size = "36px"
 	}
 
 	else if(cfsize === "normal")
 	{
 		var chat_font_size = "1rem";
+		var profile_image_size = "100px"
+		var profile_image_size = "45px"
 	}
 
 	else if(cfsize === "big")
 	{
 		var chat_font_size = "1.2rem";
+		var profile_image_size = "54px"
 	}
 
 	else if(cfsize === "very_big")
 	{
 		var chat_font_size = "1.5rem";
+		var profile_image_size = "68px"
 	}
 
 	else
@@ -2087,6 +2093,20 @@ function apply_theme()
 	.message
 	{
 		font-size: ${chat_font_size} !important;
+	}
+
+	.chat_profile_image_container
+	{
+		min-width: ${profile_image_size} !important;
+		max-width: ${profile_image_size} !important;
+		min-height: ${profile_image_size} !important;
+		max-height: ${profile_image_size} !important;
+	}
+
+	.normal_layout .brk
+	{
+		min-width: ${profile_image_size} !important;
+		max-width: ${profile_image_size} !important;
 	}
 
 	</style>
