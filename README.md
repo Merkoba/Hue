@@ -457,6 +457,15 @@ If you want to remove it to start fresh:
 "global_settings_default_other_words_to_autocomplete"
 >Default words to autocomplete besides usernames and commands.
 
+"global_settings_default_chat_font_size"
+> Default font size for the chat. This is a term like "normal" or "small".
+
+"global_settings_default_font_family"
+> Default font family.
+
+"global_settings_default_warn_before_closing"
+> Default setting of whether it should warn before closing the application/tab. 
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 

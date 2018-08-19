@@ -304,7 +304,6 @@ function init()
 	start_twitch()
 	start_soundcloud()
 	setup_input()
-	font_check()
 	setup_input_history()
 	setup_modal_image()
 	setup_footer()
@@ -319,6 +318,8 @@ function init()
 	setup_user_function_titles()
 	setup_modal_image_number()
 	setup_command_aliases()
+	load_font_face()
+	setup_before_unload()
 
 	start_socket()
 }
@@ -1934,6 +1935,38 @@ function apply_theme()
 
 	var overlay_color = colorlib.rgb_to_rgba(color_3, opacity_amount_2)
 
+	var cfsize = get_setting("chat_font_size")
+
+	if(cfsize === "very_small")
+	{
+		var chat_font_size = "0.5rem";
+	}
+
+	else if(cfsize === "small")
+	{
+		var chat_font_size = "0.8rem";
+	}
+
+	else if(cfsize === "normal")
+	{
+		var chat_font_size = "1rem";
+	}
+
+	else if(cfsize === "big")
+	{
+		var chat_font_size = "1.2rem";
+	}
+
+	else if(cfsize === "very_big")
+	{
+		var chat_font_size = "1.5rem";
+	}
+
+	else
+	{
+		var chat_font_size = "1rem";
+	}
+
 	var css = `
 	<style class='appended_theme_style'>
 
@@ -2048,6 +2081,11 @@ function apply_theme()
 	.maxer 
 	{
 		color: ${font_color} !important;
+	}
+
+	.message
+	{
+		font-size: ${chat_font_size} !important;
 	}
 
 	</style>
@@ -4919,6 +4957,14 @@ function start_scrollbar(element, visible=true)
 function remove_modal_scrollbar(s)
 {
 	$(`#Msg-content-container-${s}`).getNiceScroll().remove()
+}
+
+function update_all_modal_scrollbars()
+{
+	for(var instance of msg_main_menu.instances())
+	{
+		update_modal_scrollbar(instance.options.id)
+	}	
 }
 
 function update_modal_scrollbar(s)
@@ -11067,7 +11113,10 @@ function get_global_settings()
 		"tv_display_percentage",
 		"tv_display_position",
 		"aliases",
-		"other_words_to_autocomplete"
+		"other_words_to_autocomplete",
+		"chat_font_size",
+		"font_family",
+		"warn_before_closing"
 	]
 
 	var changed = false
@@ -11924,6 +11973,52 @@ function setting_other_words_to_autocomplete_action(type, save=true)
 	}
 }
 
+function setting_chat_font_size_action(type, save=true)
+{
+	var fsize = $(`#${type}_chat_font_size option:selected`).val()
+
+	window[type].chat_font_size = fsize
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+
+	if(active_settings("chat_font_size") === type)
+	{
+		apply_theme()
+		update_chat_scrollbar()
+		goto_bottom(true, false)
+	}
+}
+
+function setting_font_family_action(type, save=true)
+{
+	var family = $(`#${type}_font_family option:selected`).val()
+
+	window[type].font_family = family
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+
+	if(active_settings("font_family") === type)
+	{
+		load_font_face()
+	}
+}
+
+function setting_warn_before_closing_action(type, save=true)
+{
+	window[type].warn_before_closing = $(`#${type}_warn_before_closing`).prop("checked")
+
+	if(save)
+	{
+		window[`save_${type}`]()
+	}
+}
+
 function empty_room_settings()
 {
 	room_settings = {}
@@ -12717,26 +12812,26 @@ function get_status_html()
 function fill()
 {
 	var s = `abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§
-	$%& /() =?* '<> #|; ²³~ @ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC
-	DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @ ©«» ¤¼× {} abc
-	def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /()
-	=?* '<> #|; ²³~ @ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI
-	JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`\´ ©«» ¤¼× {} abc def
-	ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?*
-	'<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL
-	MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl
-	mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~
-	@\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV
-	WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv
-	wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼×
-	{} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /()
-	=?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL
-	MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno
-	pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´
-	©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§
-	$%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF
-	GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {}abc def ghi
-	jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|;`
+$%& /() =?* '<> #|; ²³~ @ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC
+DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @ ©«» ¤¼× {} abc
+def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /()
+=?* '<> #|; ²³~ @ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI
+JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`\´ ©«» ¤¼× {} abc def
+ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?*
+'<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL
+MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl
+mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~
+@\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV
+WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv
+wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼×
+{} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /()
+=?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL
+MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno
+pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´
+©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§
+$%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {} abc def ghi jkl mno pqrs tuv wxyz ABC DEF
+GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|; ²³~ @\`´ ©«» ¤¼× {}abc def ghi
+jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|;`
 
 	update_chat({username:username, message:s, prof_image:profile_image})
 }
@@ -15946,13 +16041,33 @@ function maximize_tv()
 	save_room_state()
 }
 
-function font_check()
+function load_font_face()
 {
-	document.fonts.ready.then(function ()
+	var family = get_setting("font_family")
+
+	var imported_font = new FontFace('imported_font', `url(/static/css/${family}.ttf)`,
 	{
-		update_chat_scrollbar()
-		goto_bottom(true, false)
+		style: 'normal',
+		weight: '400'
 	})
+
+	document.fonts.add(imported_font)
+
+	imported_font.load()
+
+	imported_font.loaded
+
+	.then((font_face) => 
+	{
+		on_font_loaded()
+	})
+}
+
+function on_font_loaded()
+{
+	update_chat_scrollbar()
+	goto_bottom(true, false)
+	update_all_modal_scrollbars()
 }
 
 function start_generic_uname_click_events()
@@ -19496,4 +19611,15 @@ function inspect_command(cmd)
 	}
 
 	feedback(s)
+}
+
+function setup_before_unload()
+{
+	window.onbeforeunload = function(e) 
+	{
+		if(get_setting("warn_before_closing"))
+		{
+			return "Are you sure?"
+		}
+	}
 }
