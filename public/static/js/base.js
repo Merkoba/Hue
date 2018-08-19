@@ -259,6 +259,7 @@ var commands_queue = {}
 var current_image_data = {}
 var current_tv_data = {}
 var current_radio_data = {}
+var restarting_client = false
 
 function init()
 {
@@ -6180,6 +6181,7 @@ function register_commands()
 	commands.push('/bottom2')
 	commands.push('/background')
 	commands.push('/whatis')
+	commands.push('/refresh')
 
 	commands.sort()
 
@@ -7457,6 +7459,11 @@ function execute_command(message, ans)
 		inspect_command(arg)
 	}
 
+	else if(oiEquals(cmd2, '/refresh'))
+	{
+		restart_client()
+	}
+
 	else
 	{
 		feedback(`Invalid command "${cmd.slice(1)}"`)
@@ -8616,6 +8623,8 @@ function create_room(data)
 
 function restart_client()
 {
+	restarting_client = true
+
 	window.location = window.location
 }
 
@@ -19617,7 +19626,7 @@ function setup_before_unload()
 {
 	window.onbeforeunload = function(e) 
 	{
-		if(get_setting("warn_before_closing"))
+		if(!restarting_client && get_setting("warn_before_closing"))
 		{
 			return "Are you sure?"
 		}
