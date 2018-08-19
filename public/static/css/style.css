@@ -1254,6 +1254,11 @@ input[type=text], textarea
 	display: none;
 }
 
+.invisible
+{
+	visibility: hidden;
+}
+
 .admin_v_container
 {
 	display: none;
@@ -1895,6 +1900,11 @@ input[type=text], textarea
 }
 
 .settings_window_category_status
+{
+	font-size: 0.8em;
+}
+
+.settings_window_category_status_filler
 {
 	font-size: 0.8em;
 }

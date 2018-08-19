@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?version=17"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2208"></script>
+		<script src="/static/js/base.js?version=2209"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=444"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=445"/>
 
 		<script>
 
@@ -712,7 +712,7 @@
 				</div>
 				<div class='spacer3'></div>
 				<div class="action inline pointer" onclick="show_room_settings()">
-					Room&nbsp;Settings<div class='inline' id='user_menu_room_settings_status'></div>
+					<div class='inline invisible' id='user_menu_room_settings_status_filler'></div>Room&nbsp;Settings<div class='inline' id='user_menu_room_settings_status'></div>
 				</div>
 
 				<div class='spacer3'></div>
@@ -748,12 +748,12 @@
 				<div class="settings_window_left" id="settings_window_left_{{type}}">
 					<div class='settings_window_left_content' id='settings_window_left_content_{{type}}'>
 						<div class='spacer3'></div>
-						<div class='settings_window_category border_bottom' data-category_container='settings_window_category_content_afk_{{type}}' data-category='afk'><span class='settings_window_category_text'>AFK</span><span class='settings_window_category_status'></span></div>
-						<div class='settings_window_category' data-category_container='settings_window_category_content_beeps_{{type}}' data-category='beeps'><span class='settings_window_category_text'>Beeps</span><span class='settings_window_category_status'></span></div>
-						<div class='settings_window_category' data-category_container='settings_window_category_content_appearance_{{type}}' data-category='appearance'><span class='settings_window_category_text'>Appearance</span><span class='settings_window_category_status'></span></div>
-						<div class='settings_window_category' data-category_container='settings_window_category_content_voice_chat_{{type}}' data-category='voice_chat'><span class='settings_window_category_text'>Voice Chat</span><span class='settings_window_category_status'></span></div>
-						<div class='settings_window_category' data-category_container='settings_window_category_content_functions_{{type}}' data-category='functions'><span class='settings_window_category_text'>Functions</span><span class='settings_window_category_status'></span></div>
-						<div class='settings_window_category' data-category_container='settings_window_category_content_misc_{{type}}' data-category='misc'><span class='settings_window_category_text'>Misc</span><span class='settings_window_category_status'></span></div>
+						<div class='settings_window_category border_bottom' data-category_container='settings_window_category_content_afk_{{type}}' data-category='afk'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>AFK</span><span class='settings_window_category_status'></span></div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_beeps_{{type}}' data-category='beeps'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Beeps</span><span class='settings_window_category_status'></span></div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_appearance_{{type}}' data-category='appearance'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Appearance</span><span class='settings_window_category_status'></span></div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_voice_chat_{{type}}' data-category='voice_chat'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Voice Chat</span><span class='settings_window_category_status'></span></div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_functions_{{type}}' data-category='functions'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Functions</span><span class='settings_window_category_status'></span></div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_misc_{{type}}' data-category='misc'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Misc</span><span class='settings_window_category_status'></span></div>
 						<div class='spacer3'></div>
 						<div class='smaller_font_size pointer' onclick='confirm_reset_settings("{{type}}")'>Reset</div>
 						<div class='spacer3'></div>

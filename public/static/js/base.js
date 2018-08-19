@@ -16800,7 +16800,8 @@ function check_room_settings_override()
 					{
 						if($(this).data("category") === category)
 						{
-							$(this).find(".settings_window_category_status").eq(0).html("&nbsp;(*)")
+							$(this).find(".settings_window_category_status").eq(0).html("&nbsp;*")
+							$(this).find(".settings_window_category_status_filler").eq(0).html("&nbsp;*")
 							return false
 						}
 					})
@@ -16811,7 +16812,8 @@ function check_room_settings_override()
 
 	if(override)
 	{
-		$("#user_menu_room_settings_status").html("&nbsp;(*)")
+		$("#user_menu_room_settings_status").html("&nbsp;*")
+		$("#user_menu_room_settings_status_filler").html("&nbsp;*")
 	}
 
 	else
