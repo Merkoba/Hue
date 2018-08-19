@@ -3699,7 +3699,7 @@ function upload_file(file, action)
 
 	var obj =
 	{
-		brk: '*',
+		brk: "<i class='icon2c fa fa-info-circle'></i>",
 		message: `Uploading ${get_file_action_name(file.action)}: 0%`,
 		id: `uploading_${date}`,
 		title: `Size: ${get_size_string(file.size / 1024)} | ${nice_date()}`
@@ -17144,7 +17144,7 @@ function feedback(message, data=false)
 {
 	var obj =
 	{
-		brk: '*',
+		brk: "<i class='icon2c fa fa-info-circle'></i>",
 		message: message
 	}
 
@@ -17165,7 +17165,7 @@ function public_feedback(message, data=false)
 {
 	var obj =
 	{
-		brk: '~',
+		brk: "<i class='icon2c fa fa-info-circle'></i>",
 		save: true,
 		message: message
 	}
