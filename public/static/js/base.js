@@ -19609,7 +19609,11 @@ function modify_setting(arg, show_feedback=true)
 
 	if(window[type][setting] === value)
 	{
-		feedback(`Setting "${setting}" is already set to that`)
+		if(show_feedback)
+		{
+			feedback(`Setting "${setting}" is already set to that`)
+		}
+		
 		return false
 	}
 
