@@ -19556,6 +19556,11 @@ function modify_setting(arg)
 	}
 
 	var setting = split[0]
+
+	if(user_settings[setting] === undefined)
+	{
+		return false
+	}
 	
 	var value = split.slice(1).join(" ")
 
@@ -19574,18 +19579,33 @@ function modify_setting(arg)
 		value = Number(value)
 	}
 
-	if(user_settings[setting] === undefined)
-	{
-		return false
-	}
-
 	var type = active_settings(setting)
 
 	window[type][setting] = value
 
-	modify_setting_widget(type, setting)
+	if(user_settings[setting].widget_type === "custom")
+	{
+		if(setting === "tv_display_position")
+		{
+			arrange_media_setting_display_positions(type)
+			apply_media_positions()
+		}
 
-	window[`setting_${setting}_action`](type)
+		else if(setting === "tv_display_percentage" || "media_display_percentage")
+		{
+			set_media_sliders(type)
+			apply_media_percentages()
+		}
+	}
+
+	else
+	{	
+		modify_setting_widget(type, setting)
+
+		window[`setting_${setting}_action`](type, false)
+	}
+
+	window[`save_${type}`]()
 
 	feedback(`Setting "${setting}" succesfully modified`)
 }
