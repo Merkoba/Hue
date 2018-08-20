@@ -262,8 +262,8 @@ var restarting_client = false
 
 var commands = 
 [
-	'/me', '/clear', '/clearinput', '/unclear', 
-	'/users', '/room', '/publicrooms', '/visitedrooms', 
+	'/me', '/clear', '/clearinput', '/unclear',
+	'/users', '/room', '/publicrooms', '/visitedrooms',
 	'/roomname', '/roomnameedit', '/played', '/search',
 	'/role', '/voice1', '/voice2', '/voice3',
 	'/voice4', '/op', '/admin', '/resetvoices',
@@ -303,7 +303,8 @@ var commands =
 	'/joinvoicechat', '/leavevoicechat', '/say', '/sleep',
 	'/input', '/endinput', '/inputenter', '/top',
 	'/top2', '/bottom', '/bottom2', '/background',
-	'/whatis', '/refresh', '/modifysetting'
+	'/whatis', '/refresh', '/modifysetting', '/modifysetting2',
+	'/feedback'
 ]
 
 var user_settings =
@@ -7428,6 +7429,16 @@ function execute_command(message, ans)
 		modify_setting(arg)
 	}
 
+	else if(oiStartsWith(cmd2, '/modifysetting2'))
+	{
+		modify_setting(arg, false)
+	}
+
+	else if(oiStartsWith(cmd2, '/feedback'))
+	{
+		feedback(arg)
+	}
+
 	else
 	{
 		feedback(`Invalid command "${cmd.slice(1)}"`)
@@ -13325,6 +13336,11 @@ function toggle_images(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
+		if(room_state.images_enabled === what)
+		{
+			return false
+		}
+
 		room_state.images_enabled = what
 	}
 
@@ -13390,6 +13406,11 @@ function toggle_tv(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
+		if(room_state.tv_enabled === what)
+		{
+			return false
+		}
+
 		room_state.tv_enabled = what
 	}
 
@@ -13464,6 +13485,11 @@ function toggle_radio(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
+		if(room_state.radio_enabled === what)
+		{
+			return false
+		}
+
 		room_state.radio_enabled = what
 	}
 
@@ -19546,7 +19572,7 @@ function setup_before_unload()
 	}
 }
 
-function modify_setting(arg)
+function modify_setting(arg, show_feedback=true)
 {
 	var split = arg.split(" ")
 
@@ -19581,6 +19607,12 @@ function modify_setting(arg)
 
 	var type = active_settings(setting)
 
+	if(window[type][setting] === value)
+	{
+		feedback(`Setting "${setting}" is already set to that`)
+		return false
+	}
+
 	window[type][setting] = value
 
 	if(user_settings[setting].widget_type === "custom")
@@ -19607,5 +19639,8 @@ function modify_setting(arg)
 
 	window[`save_${type}`]()
 
-	feedback(`Setting "${setting}" succesfully modified`)
+	if(show_feedback)
+	{
+		feedback(`Setting "${setting}" succesfully modified`)
+	}
 }
