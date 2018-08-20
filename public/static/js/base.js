@@ -65,7 +65,6 @@ var started = false
 var afk_timer
 var afk = false
 var alert_mode = 0
-var commands = []
 var commands_sorted = {}
 var chat_scrollbar
 var template_main_menu
@@ -261,6 +260,111 @@ var current_tv_data = {}
 var current_radio_data = {}
 var restarting_client = false
 
+var commands = 
+[
+	'/me', '/clear', '/clearinput', '/unclear', 
+	'/users', '/room', '/publicrooms', '/visitedrooms', 
+	'/roomname', '/roomnameedit', '/played', '/search',
+	'/role', '/voice1', '/voice2', '/voice3',
+	'/voice4', '/op', '/admin', '/resetvoices',
+	'/removeops', '/ban', '/unban', '/unbanall',
+	'/bannedcount', '/kick', '/public', '/private',
+	'/log', '/enablelog', '/disablelog', '/clearlog',
+	'/radio', '/tv', '/image', '/images',
+	'/privacy', '/status', '/topic', '/topicadd',
+	'/topictrim', '/topicaddstart', '/topictrimstart', '/topicedit',
+	'/help3', '/help2', '/help', '/stopradio',
+	'/startradio', '/radiovolume', '/tvvolume', '/volume',
+	'/history', '/logout', '/details', '/changeusername',
+	'/changepassword', '/changeemail', '/verifyemail', '/fill',
+	'/shrug', '/afk', '/disconnectothers', '/whisper',
+	'/whisper2', '/endwhisper', '/whisperops', '/annex',
+	'/highlights', '/lock', '/unlock', '/stopandlock',
+	'/stop', '/default', '/menu', '/media',
+	'/user', '/imagehistory', '/tvhistory', '/radiohistory',
+	'/lockimages', '/locktv', '/lockradio', '/unlockimages',
+	'/unlocktv', '/unlockradio', '/togglelockimages', '/togglelocktv',
+	'/togglelockradio', '/showimages', '/showtv', '/showradio',
+	'/hideimages', '/hidetv', '/hideradio', '/toggleimages',
+	'/toggletv', '/toggleradio', '/test', '/maximizeimages',
+	'/maximizetv', '/starttv', '/stoptv', '/openimage',
+	'/openlastimage', '/date', '/js', '/js2',
+	'/changeimage', '/changetv', '/chenlastimage', '/date',
+	'/js', '/js2', '/endjs', '/changeimage',
+	'/changetv', '/changeradio', '/closeall', '/closeallmodals',
+	'/closeallpopups', '/closeandwait', '/activityabove', '/activityabove2',
+	'/activitybelow', '/activitybelow2', '/globalsettings', '/roomsettings',
+	'/goto', '/broadcast', '/systembroadcast', '/systemrestart',
+	'/toggleplayradio', '/refreshimage', '/refreshtv', '/refreshradio',
+	'/stopradioin', '/ping', '/reactlike', '/reactlove',
+	'/reacthappy', '/reactmeh', '/reactsad', '/reactdislike',
+	'/f1', '/f2', '/f3', '/f4',
+	'/lockscreen', '/unlockscreen', '/togglelockscreen', '/drawimage',
+	'/joinvoicechat', '/leavevoicechat', '/say', '/sleep',
+	'/input', '/endinput', '/inputenter', '/top',
+	'/top2', '/bottom', '/bottom2', '/background',
+	'/whatis', '/refresh', '/modifysetting'
+]
+
+var user_settings =
+{
+	background_image: {version:1, widget_type:"checkbox"},
+	custom_scrollbars: {version:1, widget_type:"checkbox"},
+	beep_on_messages: {version:1, widget_type:"checkbox"},
+	beep_on_highlights: {version:1, widget_type:"checkbox"},
+	beep_on_media_change: {version:1, widget_type:"checkbox"},
+	beep_on_user_joins: {version:1, widget_type:"checkbox"},
+	beep_on_voice_chat_joins: {version:1, widget_type:"checkbox"},
+	beep_on_voice_chat_parts: {version:1, widget_type:"checkbox"},
+	modal_effects: {version:1, widget_type:"checkbox"},
+	highlight_current_username: {version:1, widget_type:"checkbox"},
+	case_insensitive_username_highlights: {version:1, widget_type:"checkbox"},
+	case_insensitive_words_highlights: {version:1, widget_type:"checkbox"},
+	case_insensitive_ignored_words: {version:1, widget_type:"checkbox"},
+	ignored_words_exclude_same_user: {version:1, widget_type:"checkbox"},
+	other_words_to_highlight: {version:1, widget_type:"textarea"},
+	double_tap: {version:1, widget_type:"textarea"},
+	double_tap_2: {version:1, widget_type:"textarea"},
+	double_tap_3: {version:1, widget_type:"textarea"},
+	at_startup: {version:1, widget_type:"textarea"},
+	afk_delay: {version:1, widget_type:"select"},
+	ignored_usernames: {version:1, widget_type:"textarea"},
+	ignored_words: {version:1, widget_type:"textarea"},
+	show_joins: {version:1, widget_type:"checkbox"},
+	show_parts: {version:1, widget_type:"checkbox"},
+	animate_scroll: {version:1, widget_type:"checkbox"},
+	new_messages_separator: {version:1, widget_type:"checkbox"},
+	afk_disable_messages_beep: {version:1, widget_type:"checkbox"},
+	afk_disable_highlights_beep: {version:1, widget_type:"checkbox"},
+	afk_disable_media_change_beep: {version:1, widget_type:"checkbox"},
+	afk_disable_joins_beep: {version:1, widget_type:"checkbox"},
+	afk_disable_image_change: {version:1, widget_type:"checkbox"},
+	afk_disable_tv_change: {version:1, widget_type:"checkbox"},
+	afk_disable_radio_change: {version:1, widget_type:"checkbox"},
+	open_popup_messages: {version:1, widget_type:"checkbox"},
+	user_function_1: {version:1, widget_type:"textarea"},
+	user_function_2: {version:1, widget_type:"textarea"},
+	user_function_3: {version:1, widget_type:"textarea"},
+	user_function_4: {version:1, widget_type:"textarea"},
+	user_function_1_name: {version:1, widget_type:"text"},
+	user_function_2_name: {version:1, widget_type:"text"},
+	user_function_3_name: {version:1, widget_type:"text"},
+	user_function_4_name: {version:1, widget_type:"text"},
+	on_lockscreen: {version:1, widget_type:"textarea"},
+	on_unlockscreen: {version:1, widget_type:"textarea"},
+	afk_on_lockscreen: {version:1, widget_type:"checkbox"},
+	microphone_threshold: {version:1, widget_type:"text"},
+	chat_layout: {version:1, widget_type:"select"},
+	aliases: {version:1, widget_type:"textarea"},
+	other_words_to_autocomplete: {version:1, widget_type:"textarea"},
+	chat_font_size: {version:1, widget_type:"select"},
+	font_family: {version:1, widget_type:"select"},
+	warn_before_closing: {version:1, widget_type:"checkbox"},
+	media_display_percentage: {version:1, widget_type:"custom"},
+	tv_display_percentage: {version:1, widget_type:"custom"},
+	tv_display_position: {version:1, widget_type:"custom"}
+}
+
 function init()
 {
 	activate_key_detection()
@@ -271,10 +375,10 @@ function init()
 	set_loaded_settings_state()
 	set_radio_volume()
 	start_msg()
-	start_settings_state("global_settings")
-	start_settings_listeners("global_settings")
-	start_settings_state("room_settings")
-	start_settings_listeners("room_settings")
+	start_settings_widgets("global_settings")
+	start_settings_widgets_listeners("global_settings")
+	start_settings_widgets("room_settings")
+	start_settings_widgets_listeners("room_settings")
 	setup_settings_windows()
 	start_filters()
 	start_image_events()
@@ -286,7 +390,7 @@ function init()
 	copypaste_events()
 	scroll_events()
 	resize_events()
-	register_commands()
+	setup_commands()
 	setup_chat()
 	start_chat_click_events()
 	start_chat_hover_events()
@@ -4477,7 +4581,11 @@ function save_input_history()
 
 function push_to_input_history_window(item, update_scrollbar=true)
 {
-	var c = `<div class='input_history_item' title='${item[1]}'>${item[0]}</div>`
+	var c = $(`<div class='input_history_item'></div>`)
+
+	c.attr("title", item[1])
+
+	c.text(item[2])
 
 	$("#input_history_container").prepend(c)
 
@@ -6032,175 +6140,8 @@ jQuery.fn.urlize = function(force=false, stop_propagation=false)
 	}
 }
 
-function register_commands()
+function setup_commands()
 {
-	commands.push('/me')
-	commands.push('/clear')
-	commands.push('/clearinput')
-	commands.push('/unclear')
-	commands.push('/users')
-	commands.push('/room')
-	commands.push('/publicrooms')
-	commands.push('/visitedrooms')
-	commands.push('/roomname')
-	commands.push('/roomnameedit')
-	commands.push('/played')
-	commands.push('/search')
-	commands.push('/role')
-	commands.push('/voice1')
-	commands.push('/voice2')
-	commands.push('/voice3')
-	commands.push('/voice4')
-	commands.push('/op')
-	commands.push('/admin')
-	commands.push('/resetvoices')
-	commands.push('/removeops')
-	commands.push('/ban')
-	commands.push('/unban')
-	commands.push('/unbanall')
-	commands.push('/bannedcount')
-	commands.push('/kick')
-	commands.push('/public')
-	commands.push('/private')
-	commands.push('/log')
-	commands.push('/enablelog')
-	commands.push('/disablelog')
-	commands.push('/clearlog')
-	commands.push('/radio')
-	commands.push('/tv')
-	commands.push('/image')
-	commands.push('/images')
-	commands.push('/privacy')
-	commands.push('/status')
-	commands.push('/topic')
-	commands.push('/topicadd')
-	commands.push('/topictrim')
-	commands.push('/topicaddstart')
-	commands.push('/topictrimstart')
-	commands.push('/topicedit')
-	commands.push('/help3')
-	commands.push('/help2')
-	commands.push('/help')
-	commands.push('/stopradio')
-	commands.push('/startradio')
-	commands.push('/radiovolume')
-	commands.push('/tvvolume')
-	commands.push('/volume')
-	commands.push('/history')
-	commands.push('/logout')
-	commands.push('/details')
-	commands.push('/changeusername')
-	commands.push('/changepassword')
-	commands.push('/changeemail')
-	commands.push('/verifyemail')
-	commands.push('/fill')
-	commands.push('/shrug')
-	commands.push('/afk')
-	commands.push('/disconnectothers')
-	commands.push('/whisper')
-	commands.push('/whisper2')
-	commands.push('/endwhisper')
-	commands.push('/whisperops')
-	commands.push('/annex')
-	commands.push('/highlights')
-	commands.push('/lock')
-	commands.push('/unlock')
-	commands.push('/stopandlock')
-	commands.push('/stop')
-	commands.push('/default')
-	commands.push('/menu')
-	commands.push('/media')
-	commands.push('/user')
-	commands.push('/imagehistory')
-	commands.push('/tvhistory')
-	commands.push('/radiohistory')
-	commands.push('/lockimages')
-	commands.push('/locktv')
-	commands.push('/lockradio')
-	commands.push('/unlockimages')
-	commands.push('/unlocktv')
-	commands.push('/unlockradio')
-	commands.push('/togglelockimages')
-	commands.push('/togglelocktv')
-	commands.push('/togglelockradio')
-	commands.push('/showimages')
-	commands.push('/showtv')
-	commands.push('/showradio')
-	commands.push('/hideimages')
-	commands.push('/hidetv')
-	commands.push('/hideradio')
-	commands.push('/toggleimages')
-	commands.push('/toggletv')
-	commands.push('/toggleradio')
-	commands.push('/test')
-	commands.push('/maximizeimages')
-	commands.push('/maximizetv')
-	commands.push('/starttv')
-	commands.push('/stoptv')
-	commands.push('/openimage')
-	commands.push('/openlastimage')
-	commands.push('/date')
-	commands.push('/js')
-	commands.push('/js2')
-	commands.push('/changeimage')
-	commands.push('/changetv')
-	commands.push('/chenlastimage')
-	commands.push('/date')
-	commands.push('/js')
-	commands.push('/js2')
-	commands.push('/endjs')
-	commands.push('/changeimage')
-	commands.push('/changetv')
-	commands.push('/changeradio')
-	commands.push('/closeall')
-	commands.push('/closeallmodals')
-	commands.push('/closeallpopups')
-	commands.push('/closeandwait')
-	commands.push('/activityabove')
-	commands.push('/activityabove2')
-	commands.push('/activitybelow')
-	commands.push('/activitybelow2')
-	commands.push('/globalsettings')
-	commands.push('/roomsettings')
-	commands.push('/goto')
-	commands.push('/broadcast')
-	commands.push('/systembroadcast')
-	commands.push('/systemrestart')
-	commands.push('/toggleplayradio')
-	commands.push('/refreshimage')
-	commands.push('/refreshtv')
-	commands.push('/refreshradio')
-	commands.push('/stopradioin')
-	commands.push('/ping')
-	commands.push('/reactlike')
-	commands.push('/reactlove')
-	commands.push('/reacthappy')
-	commands.push('/reactmeh')
-	commands.push('/reactsad')
-	commands.push('/reactdislike')
-	commands.push('/f1')
-	commands.push('/f2')
-	commands.push('/f3')
-	commands.push('/f4')
-	commands.push('/lockscreen')
-	commands.push('/unlockscreen')
-	commands.push('/togglelockscreen')
-	commands.push('/drawimage')
-	commands.push('/joinvoicechat')
-	commands.push('/leavevoicechat')
-	commands.push('/say')
-	commands.push('/sleep')
-	commands.push('/input')
-	commands.push('/endinput')
-	commands.push('/inputenter')
-	commands.push('/top')
-	commands.push('/top2')
-	commands.push('/bottom')
-	commands.push('/bottom2')
-	commands.push('/background')
-	commands.push('/whatis')
-	commands.push('/refresh')
-
 	commands.sort()
 
 	for(var command of commands)
@@ -7480,6 +7421,11 @@ function execute_command(message, ans)
 	else if(oiEquals(cmd2, '/refresh'))
 	{
 		restart_client()
+	}
+
+	else if(oiStartsWith(cmd2, '/modifysetting'))
+	{
+		modify_setting(arg)
 	}
 
 	else
@@ -8879,6 +8825,7 @@ function check_firstime()
 		first_time = true
 
 		show_intro()
+
 		save_local_storage(ls_first_time, false)
 	}
 
@@ -11087,68 +11034,9 @@ function get_global_settings()
 		global_settings = {}
 	}
 
-	var settings =
-	[
-		"background_image",
-		"custom_scrollbars",
-		"beep_on_messages",
-		"beep_on_highlights",
-		"beep_on_media_change",
-		"beep_on_user_joins",
-		"beep_on_voice_chat_joins",
-		"beep_on_voice_chat_parts",
-		"modal_effects",
-		"highlight_current_username",
-		"case_insensitive_username_highlights",
-		"case_insensitive_words_highlights",
-		"case_insensitive_ignored_words",
-		"other_words_to_highlight",
-		"double_tap",
-		"double_tap_2",
-		"double_tap_3",
-		"afk_delay",
-		"at_startup",
-		"ignored_usernames",
-		"ignored_words",
-		"ignored_words_exclude_same_user",
-		"show_joins",
-		"show_parts",
-		"animate_scroll",
-		"new_messages_separator",
-		"afk_disable_messages_beep",
-		"afk_disable_highlights_beep",
-		"afk_disable_media_change_beep",
-		"afk_disable_joins_beep",
-		"afk_disable_image_change",
-		"afk_disable_tv_change",
-		"afk_disable_radio_change",
-		"open_popup_messages",
-		"user_function_1",
-		"user_function_2",
-		"user_function_3",
-		"user_function_4",
-		"user_function_1_name",
-		"user_function_2_name",
-		"user_function_3_name",
-		"user_function_4_name",
-		"on_lockscreen",
-		"on_unlockscreen",
-		"afk_on_lockscreen",
-		"microphone_threshold",
-		"chat_layout",
-		"media_display_percentage",
-		"tv_display_percentage",
-		"tv_display_position",
-		"aliases",
-		"other_words_to_autocomplete",
-		"chat_font_size",
-		"font_family",
-		"warn_before_closing"
-	]
-
 	var changed = false
 
-	for(var setting of settings)
+	for(var setting in user_settings)
 	{
 		if(global_settings[setting] === undefined)
 		{
@@ -11168,57 +11056,62 @@ function save_global_settings()
 	save_local_storage(ls_global_settings, global_settings)
 }
 
-function start_settings_state(type)
+function start_settings_widgets(type)
 {
-	$(`.${type}_settings_item_control`).each(function()
+	for(let setting in user_settings)
 	{
-		var parent = $(this).closest(".settings_item")
-		var setting_name = parent.data("setting")
-		var setting_type = parent.data("type")
-
-		if(setting_type === "checkbox")
-		{
-			$(this).prop("checked", window[type][setting_name])
-		}
-
-		else if(setting_type === "textarea" || setting_type === "text")
-		{
-			$(this).val(window[type][setting_name])
-		}
-
-		else if(setting_type === "select")
-		{
-			$(this).find('option').each(function()
-			{
-				if($(this).val() == window[type][setting_name])
-				{
-					$(this).prop('selected', true)
-				}
-			})
-		}
-	})
-
+		modify_setting_widget(type, setting)
+	}
+	
 	arrange_media_setting_display_positions(type)
 }
 
-function start_settings_listeners(type)
+function modify_setting_widget(type, setting_name)
 {
-	$(`.${type}_settings_item_control`).each(function()
+	var widget_type = user_settings[setting_name].widget_type
+
+	var item = $(`#${type}_${setting_name}`)
+
+	if(widget_type === "checkbox")
 	{
-		var parent = $(this).closest(".settings_item")
-		var setting_name = parent.data("setting")
-		var setting_type = parent.data("type")
+		item.prop("checked", window[type][setting_name])
+	}
 
-		if(setting_type === "checkbox" || setting_type === "select")
+	else if(widget_type === "textarea" || widget_type === "text")
+	{
+		item.val(window[type][setting_name])
+	}
+
+	else if(widget_type === "select")
+	{
+		item.find('option').each(function()
 		{
-			$(this).change(() => {window[`setting_${setting_name}_action`](type)})
+			if($(this).val() == window[type][setting_name])
+			{
+				$(this).prop('selected', true)
+			}
+		})
+	}
+}
+
+function start_settings_widgets_listeners(type)
+{
+	for(let setting in user_settings)
+	{
+		var widget_type = user_settings[setting].widget_type
+
+		var item = $(`#${type}_${setting}`)
+
+		if(widget_type === "checkbox" || widget_type === "select")
+		{
+			item.change(() => {window[`setting_${setting}_action`](type)})
 		}
 
-		else if(setting_type === "textarea" || setting_type === "text")
+		else if(widget_type === "textarea" || widget_type === "text")
 		{
-			$(this).blur(() => {window[`setting_${setting_name}_action`](type)})
+			item.blur(() => {window[`setting_${setting}_action`](type)})
 		}
-	})
+	}
 
 	$(`#${type}_tv_display_percentage`).nstSlider(
 	{
@@ -16385,7 +16278,7 @@ function reset_settings(type)
 {
 	window[`empty_${type}`]()
 	window[`get_${type}`]()
-	start_settings_state(type)
+	start_settings_widgets(type)
 	call_setting_actions("global_settings", false)
 	call_setting_actions("room_settings", false)
 	set_media_sliders(type)
@@ -19651,4 +19544,48 @@ function setup_before_unload()
 			return "Are you sure?"
 		}
 	}
+}
+
+function modify_setting(arg)
+{
+	var split = arg.split(" ")
+
+	if(split.length < 2)
+	{
+		return false
+	}
+
+	var setting = split[0]
+	
+	var value = split.slice(1).join(" ")
+
+	if(value === "true")
+	{
+		value = true
+	}
+
+	else if(value === "false")
+	{
+		value = false
+	}
+
+	else if(!isNaN(value))
+	{
+		value = Number(value)
+	}
+
+	if(user_settings[setting] === undefined)
+	{
+		return false
+	}
+
+	var type = active_settings(setting)
+
+	window[type][setting] = value
+
+	modify_setting_widget(type, setting)
+
+	window[`setting_${setting}_action`](type)
+
+	feedback(`Setting "${setting}" succesfully modified`)
 }

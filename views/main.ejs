@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?version=17"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2209"></script>
+		<script src="/static/js/base.js?version=2210"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=445"/>
 
@@ -764,22 +764,22 @@
 
 					<div class='settings_category settings_window_category_container' id='settings_window_category_content_beeps_{{type}}' data-category='beeps'>
 
-						<div class='settings_item' data-setting='beep_on_messages' data-type='checkbox'>
+						<div class='settings_item' data-setting='beep_on_messages'>
 							<div class="setting_title">Beep On Messages</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_beep_on_messages">
 						</div>
 
-						<div class='settings_item' data-setting='beep_on_highlights' data-type='checkbox'>
+						<div class='settings_item' data-setting='beep_on_highlights'>
 							<div class="setting_title">Beep On Highlights</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_beep_on_highlights">
 						</div>
 
-						<div class='settings_item' data-setting='beep_on_media_change' data-type='checkbox'>
+						<div class='settings_item' data-setting='beep_on_media_change'>
 							<div class="setting_title">Beep On Media Change</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_beep_on_media_change">
 						</div>
 
-						<div class='settings_item' data-setting='beep_on_user_joins' data-type='checkbox'>
+						<div class='settings_item' data-setting='beep_on_user_joins'>
 							<div class="setting_title">Beep On User Joins</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_beep_on_user_joins">
 						</div>
@@ -788,33 +788,33 @@
 
 					<div class='settings_category settings_window_category_container' id='settings_window_category_content_appearance_{{type}}' data-category='appearance'>
 
-						<div class='settings_item' data-setting='background_image' data-type='checkbox'>
+						<div class='settings_item' data-setting='background_image'>
 							<div class="setting_title">Background Image</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_background_image">
 						</div>
 
-						<div class='settings_item' data-setting='custom_scrollbars' data-type='checkbox'>
+						<div class='settings_item' data-setting='custom_scrollbars'>
 							<div class="setting_title">Custom Scrollbars</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_custom_scrollbars">
 						</div>
 
-						<div class='settings_item' data-setting='modal_effects' data-type='checkbox'>
+						<div class='settings_item' data-setting='modal_effects'>
 							<div class="setting_title">Modal Effects</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_modal_effects">
 						</div>
 
-						<div class='settings_item' data-setting='animate_scroll' data-type='checkbox'>
+						<div class='settings_item' data-setting='animate_scroll'>
 							<div class="setting_title">Animate Scroll</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_animate_scroll">
 						</div>
 
-						<div class='settings_item' data-setting='new_messages_separator' data-type='checkbox'>
+						<div class='settings_item' data-setting='new_messages_separator'>
 							<div class="setting_title2">New Messages</div>
 							<div class="setting_title">Separator</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_new_messages_separator">
 						</div>
 
-						<div class='settings_item' data-setting='chat_layout' data-type='select'>
+						<div class='settings_item' data-setting='chat_layout'>
 							<div class="setting_title">Chat Layout</div>
 							<select class="{{type}}_settings_item_control modal_select" id="{{type}}_chat_layout">
 								<option value='normal'>Normal</option>
@@ -822,7 +822,7 @@
 							</select>
 						</div>
 
-						<div class='settings_item' data-setting='chat_font_size' data-type='select'>
+						<div class='settings_item' data-setting='chat_font_size'>
 							<div class="setting_title">Chat Font Size</div>
 							<select class="{{type}}_settings_item_control modal_select" id="{{type}}_chat_font_size">
 								<option value='very_small'>Very Small</option>
@@ -833,7 +833,7 @@
 							</select>
 						</div>
 
-						<div class='settings_item' data-setting='font_family' data-type='select'>
+						<div class='settings_item' data-setting='font_family'>
 							<div class="setting_title">Font Family</div>
 							<select class="{{type}}_settings_item_control modal_select" id="{{type}}_font_family">
 								<option value='opensans'>Open Sans</option>
@@ -842,7 +842,7 @@
 							</select>
 						</div>
 
-						<div class='settings_item' data-setting='media_display_percentage' data-type='none'>
+						<div class='settings_item' data-setting='media_display_percentage'>
 							<div class="setting_title">Chat/Media Percentages</div>
 							<div class='slider_container'>
 								<div class='slider_icon_left'><i class='icon2 fa fa-pencil'></i></div>
@@ -853,7 +853,7 @@
 							</div>
 						</div>
 
-						<div class='settings_item' data-setting='tv_display_percentage' data-type='none'>
+						<div class='settings_item' data-setting='tv_display_percentage'>
 							<div class="setting_title">Image/TV Percentages</div>
 							<div class='slider_container'>
 								<div class='slider_icon_left'><i class='icon2 fa fa-camera'></i></div>
@@ -864,7 +864,7 @@
 							</div>
 						</div>
 
-						<div class='settings_item' data-setting='tv_display_position' data-type='none'>
+						<div class='settings_item' data-setting='tv_display_position'>
 							<div class="setting_title">Image/TV Positions</div>
 							<div id='{{type}}_tv_display_position' class='squaro_container pointer action2' onclick='swap_display_positions("{{type}}")'>
 								<div class='squaro' id='{{type}}_display_position_image'>
@@ -880,7 +880,7 @@
 
 					<div class='settings_category settings_window_category_container_selected' id='settings_window_category_content_afk_{{type}}' data-category='afk'>
 
-						<div class='settings_item' data-setting='afk_delay' data-type='select'>
+						<div class='settings_item' data-setting='afk_delay'>
 							<div class="setting_title">Go AFK On App Onfocus</div>
 							<select class="{{type}}_settings_item_control modal_select" id="{{type}}_afk_delay">
 								<option value='0'>Instantly</option>
@@ -895,49 +895,49 @@
 							</select>
 						</div>
 							
-						<div class='settings_item' data-setting='afk_disable_messages_beep' data-type='checkbox'>
+						<div class='settings_item' data-setting='afk_disable_messages_beep'>
 							<div class="setting_title2">On AFK</div>
 							<div class="setting_title">Disable Messages Beep</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_messages_beep">
 						</div>
 
-						<div class='settings_item' data-setting='afk_disable_highlights_beep' data-type='checkbox'>
+						<div class='settings_item' data-setting='afk_disable_highlights_beep'>
 							<div class="setting_title2">On AFK</div>
 							<div class="setting_title">Disable Highlights Beep</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_highlights_beep">
 						</div>
 
-						<div class='settings_item' data-setting='afk_disable_media_change_beep' data-type='checkbox'>
+						<div class='settings_item' data-setting='afk_disable_media_change_beep'>
 							<div class="setting_title2">On AFK</div>
 							<div class="setting_title">Disable Media Change Beep</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_media_change_beep">
 						</div>
 
-						<div class='settings_item' data-setting='afk_disable_joins_beep' data-type='checkbox'>
+						<div class='settings_item' data-setting='afk_disable_joins_beep'>
 							<div class="setting_title2">On AFK</div>
 							<div class="setting_title">Disable Joins Beep</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_joins_beep">
 						</div>
 
-						<div class='settings_item' data-setting='afk_disable_image_change' data-type='checkbox'>
+						<div class='settings_item' data-setting='afk_disable_image_change'>
 							<div class="setting_title2">On AFK</div>
 							<div class="setting_title">Disable Image Change</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_image_change">
 						</div>
 
-						<div class='settings_item' data-setting='afk_disable_tv_change' data-type='checkbox'>
+						<div class='settings_item' data-setting='afk_disable_tv_change'>
 							<div class="setting_title2">On AFK</div>
 							<div class="setting_title">Disable TV Change</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_tv_change">
 						</div>
 
-						<div class='settings_item' data-setting='afk_disable_radio_change' data-type='checkbox'>
+						<div class='settings_item' data-setting='afk_disable_radio_change'>
 							<div class="setting_title2">On AFK</div>
 							<div class="setting_title">Disable Radio Change</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_radio_change">
 						</div>
 
-						<div class='settings_item' data-setting='afk_on_lockscreen' data-type='checkbox'>
+						<div class='settings_item' data-setting='afk_on_lockscreen'>
 							<div class="setting_title2">Go AFK</div>
 							<div class="setting_title">On Lock Screen</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_on_lockscreen">
@@ -950,11 +950,11 @@
 						<div class='toggler_main_container'>
 							<div class="{{type}}_toggle toggler action pointer bold settings_container">+ User Function 1</div>
 							<div class='{{type}}_toggle_container toggler_container'>
-								<div class='settings_item' data-setting='user_function_1_name' data-type='text'>
+								<div class='settings_item' data-setting='user_function_1_name'>
 									<div class="setting_title">Name</div>
 									<input type="text" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_user_function_1_name">
 								</div>
-								<div class='settings_item' data-setting='user_function_1' data-type='textarea'>
+								<div class='settings_item' data-setting='user_function_1'>
 									<div class="setting_title2">Action</div>
 									<div class="setting_title">(Each on a different line)</div>
 									<div class='spacer2'></div>
@@ -974,11 +974,11 @@
 						<div class='toggler_main_container'>
 							<div class="{{type}}_toggle toggler action pointer bold settings_container">+ User Function 2</div>
 							<div class='{{type}}_toggle_container toggler_container'>
-								<div class='settings_item' data-setting='user_function_2_name' data-type='text'>
+								<div class='settings_item' data-setting='user_function_2_name'>
 									<div class="setting_title">Name</div>
 									<input type="text" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_user_function_2_name">
 								</div>
-								<div class='settings_item' data-setting='user_function_2' data-type='textarea'>
+								<div class='settings_item' data-setting='user_function_2'>
 									<div class="setting_title2">Action</div>
 									<div class="setting_title">(Each on a different line)</div>
 									<div class='spacer2'></div>
@@ -998,11 +998,11 @@
 						<div class='toggler_main_container'>
 							<div class="{{type}}_toggle toggler action pointer bold settings_container">+ User Function 3</div>
 							<div class='{{type}}_toggle_container toggler_container'>
-								<div class='settings_item' data-setting='user_function_3_name' data-type='text'>
+								<div class='settings_item' data-setting='user_function_3_name'>
 									<div class="setting_title">Name</div>
 									<input type="text" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_user_function_3_name">
 								</div>
-								<div class='settings_item' data-setting='user_function_3' data-type='textarea'>
+								<div class='settings_item' data-setting='user_function_3'>
 									<div class="setting_title2">Action</div>
 									<div class="setting_title">(Each on a different line)</div>
 									<div class='spacer2'></div>
@@ -1022,11 +1022,11 @@
 						<div class='toggler_main_container'>
 							<div class="{{type}}_toggle toggler action pointer bold settings_container">+ User Function 4</div>
 							<div class='{{type}}_toggle_container toggler_container'>
-								<div class='settings_item' data-setting='user_function_4_name' data-type='text'>
+								<div class='settings_item' data-setting='user_function_4_name'>
 									<div class="setting_title">Name</div>
 									<input type="text" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_user_function_4_name">
 								</div>
-								<div class='settings_item' data-setting='user_function_4' data-type='textarea'>
+								<div class='settings_item' data-setting='user_function_4'>
 									<div class="setting_title2">Action</div>
 									<div class="setting_title">(Each on a different line)</div>
 									<div class='spacer2'></div>
@@ -1043,7 +1043,7 @@
 							</div>
 						</div>
 
-						<div class='settings_item' data-setting='double_tap' data-type='textarea'>
+						<div class='settings_item' data-setting='double_tap'>
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_key"></span>&nbsp;Tap</div>
 								<div class='{{type}}_toggle_container toggler_container'>
@@ -1054,7 +1054,7 @@
 							</div>
 						</div>
 
-						<div class='settings_item' data-setting='double_tap_2' data-type='textarea'>
+						<div class='settings_item' data-setting='double_tap_2'>
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_2_key"></span>&nbsp;Tap</div>
 								<div class='{{type}}_toggle_container toggler_container'>
@@ -1065,7 +1065,7 @@
 							</div>
 						</div>
 
-						<div class='settings_item' data-setting='double_tap_3' data-type='textarea'>
+						<div class='settings_item' data-setting='double_tap_3'>
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_3_key"></span>&nbsp;Tap</div>
 								<div class='{{type}}_toggle_container toggler_container'>
@@ -1076,7 +1076,7 @@
 							</div>
 						</div>
 
-						<div class='settings_item' data-setting='on_lockscreen' data-type='textarea'>
+						<div class='settings_item' data-setting='on_lockscreen'>
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ On Lock Screen</div>
 								<div class='{{type}}_toggle_container toggler_container'>
@@ -1087,7 +1087,7 @@
 							</div>
 						</div>
 
-						<div class='settings_item' data-setting='on_unlockscreen' data-type='textarea'>
+						<div class='settings_item' data-setting='on_unlockscreen'>
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ On Unlock Screen</div>
 								<div class='{{type}}_toggle_container toggler_container'>
@@ -1098,7 +1098,7 @@
 							</div>
 						</div>
 
-						<div class='settings_item' data-setting='at_startup' data-type='textarea'>
+						<div class='settings_item' data-setting='at_startup'>
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ At Startup</div>
 								<div class='{{type}}_toggle_container toggler_container'>
@@ -1109,7 +1109,7 @@
 							</div>
 						</div>
 
-						<div class='settings_item' data-setting='aliases' data-type='textarea'>
+						<div class='settings_item' data-setting='aliases'>
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline" title="For example /sky = /tv touch the sky. If the alias starts with an X, for example, /X1 = /radio restart, it won't be saved to history when used">+ Aliases</div>
 								<div class='{{type}}_toggle_container toggler_container'>
@@ -1124,17 +1124,17 @@
 					
 					<div class='settings_category settings_window_category_container' id='settings_window_category_content_voice_chat_{{type}}' data-category='voice_chat'>
 
-						<div class='settings_item' data-setting='beep_on_voice_chat_joins' data-type='checkbox'>
+						<div class='settings_item' data-setting='beep_on_voice_chat_joins'>
 							<div class="setting_title">Beep On Voice Chat Joins</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_beep_on_voice_chat_joins">
 						</div>
 
-						<div class='settings_item' data-setting='beep_on_voice_chat_parts' data-type='checkbox'>
+						<div class='settings_item' data-setting='beep_on_voice_chat_parts'>
 							<div class="setting_title">Beep On Voice Chat Parts</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_beep_on_voice_chat_parts">
 						</div>
 
-						<div class='settings_item' data-setting='microphone_threshold' data-type='text'>
+						<div class='settings_item' data-setting='microphone_threshold'>
 							<div class="setting_title">Microphone Threshold</div>
 							<input type="text" class="{{type}}_settings_item_control setting_input_text_smaller" id="{{type}}_microphone_threshold">
 						</div>
@@ -1142,57 +1142,57 @@
 
 					<div class='settings_category settings_window_category_container' id='settings_window_category_content_misc_{{type}}' data-category='misc'>
 						
-						<div class='settings_item' data-setting='show_joins' data-type='checkbox'>
+						<div class='settings_item' data-setting='show_joins'>
 							<div class="setting_title">Show User Joins</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_show_joins">
 						</div>
 
-						<div class='settings_item' data-setting='show_parts' data-type='checkbox'>
+						<div class='settings_item' data-setting='show_parts'>
 							<div class="setting_title">Show User Parts</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_show_parts">
 						</div>
 
-						<div class='settings_item' data-setting='warn_before_closing' data-type='checkbox'>
+						<div class='settings_item' data-setting='warn_before_closing'>
 							<div class="setting_title">Warn On Close</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_warn_before_closing">
 						</div>
 
-						<div class='settings_item' data-setting='open_popup_messages' data-type='checkbox'>
+						<div class='settings_item' data-setting='open_popup_messages'>
 							<div class="setting_title2">Open Popup Messages</div>
 							<div class="setting_title">Automatically</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_open_popup_messages">
 						</div>
 
-						<div class='settings_item' data-setting='highlight_current_username' data-type='checkbox'>
+						<div class='settings_item' data-setting='highlight_current_username'>
 							<div class="setting_title">Highlight Username</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_highlight_current_username">
 						</div>
 
-						<div class='settings_item' data-setting='case_insensitive_username_highlights' data-type='checkbox'>
+						<div class='settings_item' data-setting='case_insensitive_username_highlights'>
 							<div class="setting_title2">Case Insensitive</div>
 							<div class="setting_title">Username Highlights</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_username_highlights">
 						</div>
 
-						<div class='settings_item' data-setting='case_insensitive_words_highlights' data-type='checkbox'>
+						<div class='settings_item' data-setting='case_insensitive_words_highlights'>
 							<div class="setting_title2">Case Insensitive</div>
 							<div class="setting_title">Words Highlights</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_words_highlights">
 						</div>
 
-						<div class='settings_item' data-setting='case_insensitive_ignored_words' data-type='checkbox'>
+						<div class='settings_item' data-setting='case_insensitive_ignored_words'>
 							<div class="setting_title2">Case Insensitive</div>
 							<div class="setting_title">Ignored Words</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_ignored_words">
 						</div>
 
-						<div class='settings_item' data-setting='ignored_words_exclude_same_user' data-type='checkbox'>
+						<div class='settings_item' data-setting='ignored_words_exclude_same_user'>
 							<div class="setting_title2">Don't Ignore Words</div>
 							<div class="setting_title">From Yourself</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_ignored_words_exclude_same_user">
 						</div>
 
-						<div class='settings_item' data-setting='other_words_to_highlight' data-type='textarea'>
+						<div class='settings_item' data-setting='other_words_to_highlight'>
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Highlight</div>
 								<div class='{{type}}_toggle_container toggler_container'>
@@ -1203,7 +1203,7 @@
 							</div>
 						</div>
 
-						<div class='settings_item' data-setting='other_words_to_autocomplete' data-type='textarea'>
+						<div class='settings_item' data-setting='other_words_to_autocomplete'>
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Autocomplete</div>
 								<div class='{{type}}_toggle_container toggler_container'>
@@ -1214,7 +1214,7 @@
 							</div>
 						</div>
 
-						<div class='settings_item' data-setting='ignored_usernames' data-type='textarea'>
+						<div class='settings_item' data-setting='ignored_usernames'>
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ Usernames To Ignore</div>
 								<div class='{{type}}_toggle_container toggler_container'>
@@ -1225,7 +1225,7 @@
 							</div>
 						</div>
 
-						<div class='settings_item' data-setting='ignored_words' data-type='textarea'>
+						<div class='settings_item' data-setting='ignored_words'>
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Ignore</div>
 								<div class='{{type}}_toggle_container toggler_container'>
