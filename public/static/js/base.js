@@ -4588,7 +4588,7 @@ function push_to_input_history_window(item, update_scrollbar=true)
 
 	c.attr("title", item[1])
 
-	c.text(item[2])
+	c.text(item[0])
 
 	$("#input_history_container").prepend(c)
 
