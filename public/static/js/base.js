@@ -16116,14 +16116,14 @@ function load_font_face()
 
 	document.fonts.add(imported_font)
 
-	imported_font.load()
-
 	imported_font.loaded
 
 	.then((font_face) => 
 	{
 		on_font_loaded()
 	})
+
+	imported_font.load()
 }
 
 function on_font_loaded()
