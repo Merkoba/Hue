@@ -1078,10 +1078,8 @@ input[type=text], textarea
 {
 	display: none;
 	object-fit: contain;
-	max-width: calc(100% - 4rem);
-	max-height: calc(100% - 4rem);
-	min-height: 20px;
-	min-width: 20px;
+	width: calc(100% - 4rem);
+	height: calc(100% - 4rem);
 }
 
 .pointer
