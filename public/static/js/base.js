@@ -5805,7 +5805,10 @@ function after_image_load()
 	current_image_title = image_title
 	current_image_date_raw = image_date_raw
 
-	$("#media_image").data("ratio", undefined)
+	$("#media_image_frame")
+	.removeData("ratio")
+	.height($("#media_image_frame")[0].naturalHeight)
+	.width($("#media_image_frame")[0].naturalWidth)
 
 	fix_image_frame()
 }
