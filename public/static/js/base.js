@@ -19407,7 +19407,7 @@ function format_command_aliases(cmds)
 			continue
 		}
 
-		var name = pieces[0].trim()
+		var name = `/${utilz.clean_string5(pieces[0]).replace(/\//g, "")}`
 
 		if(name[0] !== "/")
 		{
