@@ -19662,6 +19662,7 @@ function generate_words_to_autocomplete()
 	.concat(usernames)
 	.concat(["@everyone"])
 	.concat(Object.keys(command_aliases))
+	.concat(Object.keys(user_settings))
 
 	var autocomplete = get_setting("other_words_to_autocomplete")
 
