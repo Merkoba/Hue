@@ -291,6 +291,21 @@ var Utilz = function()
 		}
 	}
 
+	utilz.validate_rgb = function(rgb, case_sensitive=true)
+	{
+		if(case_sensitive)
+		{
+			var re = /^[r][g][b][(]([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])[)]$/
+		}
+
+		else
+		{
+			var re = /^[R][G][B][(]([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])[)]$/i
+		}
+
+		return re.test(rgb)
+	}
+
 	utilz.video_extensions = ["mp4", "webm", "m3u8"]
 	utilz.audio_extensions = ["mp3", "ogg", "wav", "flac"]
 	utilz.image_extensions = ["jpg", "jpeg", "png", "gif"]

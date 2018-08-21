@@ -304,7 +304,9 @@ var commands =
 	'/input', '/endinput', '/inputenter', '/top',
 	'/top2', '/bottom', '/bottom2', '/background',
 	'/whatis', '/refresh', '/modifysetting', '/modifysetting2',
-	'/feedback'
+	'/feedback', '/imagesmode', '/tvmode', '/radiomode',
+	'/voicechatmode', '/voicepermission', '/theme', '/textcolormode',
+	'/textcolor', '/backgroundmode', '/tiledimensions'
 ]
 
 var user_settings =
@@ -7439,6 +7441,56 @@ function execute_command(message, ans)
 		feedback(arg)
 	}
 
+	else if(oiStartsWith(cmd2, '/imagesmode'))
+	{
+		change_room_images_mode(arg)
+	}
+
+	else if(oiStartsWith(cmd2, '/tvmode'))
+	{
+		change_room_tv_mode(arg)
+	}
+
+	else if(oiStartsWith(cmd2, '/radiomode'))
+	{
+		change_room_radio_mode(arg)
+	}
+
+	else if(oiStartsWith(cmd2, '/voicechatmode'))
+	{
+		change_room_voice_chat_mode(arg)
+	}
+
+	else if(oiStartsWith(cmd2, '/voicepermission'))
+	{
+		change_voice_permission_command(arg)
+	}
+
+	else if(oiStartsWith(cmd2, '/theme'))
+	{
+		change_theme(arg)
+	}
+
+	else if(oiStartsWith(cmd2, '/textcolormode'))
+	{
+		change_text_color_mode(arg)
+	}
+
+	else if(oiStartsWith(cmd2, '/textcolor'))
+	{
+		change_text_color(arg)
+	}
+
+	else if(oiStartsWith(cmd2, '/backgroundmode'))
+	{
+		change_background_mode(arg)
+	}
+
+	else if(oiStartsWith(cmd2, '/tiledimensions'))
+	{
+		change_background_tile_dimensions(arg)
+	}
+
 	else
 	{
 		feedback(`Invalid command "${cmd.slice(1)}"`)
@@ -13396,10 +13448,10 @@ function change_images_visibility()
 		images_visible = false
 	}
 
-	apply_theme()
-	fix_visible_video_frame()
-	update_chat_scrollbar()
-	goto_bottom(false, false)
+	if(tv_visible)
+	{
+		fix_visible_video_frame()
+	}
 }
 
 function toggle_tv(what=undefined, save=true)
@@ -13476,9 +13528,6 @@ function change_tv_visibility(play=true)
 
 		tv_visible = false
 	}
-
-	update_chat_scrollbar()
-	goto_bottom(false, false)
 }
 
 function toggle_radio(what=undefined, save=true)
@@ -13865,6 +13914,14 @@ function change_room_images_mode(what)
 		return false
 	}
 
+	var modes = ["enabled", "disabled", "locked"]
+
+	if(!modes.includes(what))
+	{
+		feedback(`Valid images modes: ${modes.join(" ")}`)
+		return false
+	}
+
 	if(what === room_images_mode)
 	{
 		feedback(`Images mode is already set to that`)
@@ -13879,6 +13936,14 @@ function change_room_tv_mode(what)
 	if(!is_admin_or_op(role))
 	{
 		not_an_op()
+		return false
+	}
+
+	var modes = ["enabled", "disabled", "locked"]
+
+	if(!modes.includes(what))
+	{
+		feedback(`Valid tv modes: ${modes.join(" ")}`)
 		return false
 	}
 
@@ -13899,6 +13964,14 @@ function change_room_radio_mode(what)
 		return false
 	}
 
+	var modes = ["enabled", "disabled", "locked"]
+
+	if(!modes.includes(what))
+	{
+		feedback(`Valid radio modes: ${modes.join(" ")}`)
+		return false
+	}
+
 	if(what === room_radio_mode)
 	{
 		feedback(`Radio mode is already set to that`)
@@ -13913,6 +13986,14 @@ function change_room_voice_chat_mode(what)
 	if(!is_admin_or_op(role))
 	{
 		not_an_op()
+		return false
+	}
+
+	var modes = ["enabled", "disabled"]
+
+	if(!modes.includes(what))
+	{
+		feedback(`Valid voice chat modes: ${modes.join(" ")}`)
 		return false
 	}
 
@@ -14021,25 +14102,27 @@ function change_theme(color)
 		return false
 	}
 
-	color = utilz.clean_string2(color)
-
-	if(color.startsWith("rgba("))
-	{
-		color = colorlib.rgba_to_rgb(color)
-	}
-
-	if(!color.startsWith("rgb("))
-	{
-		return false
-	}
+	color = utilz.clean_string5(color)
 
 	if(color === undefined)
 	{
 		return false
 	}
 
+	if(color.startsWith("rgba("))
+	{
+		color = utilz.clean_string5(colorlib.rgba_to_rgb(color))
+	}
+
+	if(!utilz.validate_rgb(color))
+	{
+		feedback("Not a valid rgb value")
+		return false
+	}
+
 	if(color === theme)
 	{
+		feedback("Theme is already set to that")
 		return false
 	}
 
@@ -14323,6 +14406,11 @@ function change_voice_permission(ptype, what)
 	}
 
 	if(window[ptype] === undefined)
+	{
+		return false
+	}
+
+	if(what !== true && what !== false)
 	{
 		return false
 	}
@@ -17259,25 +17347,27 @@ function change_text_color(color)
 		return false
 	}
 
-	color = utilz.clean_string2(color)
+	color = utilz.clean_string5(color)
 
-	if(color.startsWith("rgba("))
-	{
-		color = colorlib.rgba_to_rgb(color)
-	}
-
-	if(!color.startsWith("rgb("))
+	if(color === undefined)
 	{
 		return false
 	}
 
-	if(color.length === 0)
+	if(color.startsWith("rgba("))
 	{
+		color = utilz.clean_string5(colorlib.rgba_to_rgb(color))
+	}
+
+	if(!utilz.validate_rgb(color))
+	{
+		feedback("Not a valid rgb value")
 		return false
 	}
 
 	if(color === text_color)
 	{
+		feedback("Text color is already set to that")
 		return false
 	}
 
@@ -19647,4 +19737,39 @@ function modify_setting(arg, show_feedback=true)
 	{
 		feedback(`Setting "${setting}" succesfully modified`)
 	}
+}
+
+function change_voice_permission_command(arg)
+{
+	var split = arg.split(" ")
+
+	if(split.length !== 3)
+	{
+		return false
+	}
+
+	var num = split[0]
+	var type = split[1]
+	var value = split[2]
+
+	var ptype = `voice${num}_${type}_permission`
+
+	if(window[ptype] === undefined)
+	{
+		feedback("Invalid format")
+		return false
+	}
+
+	if(value === "true" || value === "false")
+	{
+		value = JSON.parse(value)
+	}
+
+	else
+	{
+		feedback("Invalid value")
+		return false
+	}
+
+	change_voice_permission(ptype, value)
 }

@@ -2271,6 +2271,16 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
+		if(data.color !== utilz.clean_string5(data.color))
+		{
+			return handler.get_out(socket)
+		}
+
+		if(!utilz.validate_rgb(data.color))
+		{
+			return handler.get_out(socket)
+		}
+
 		db_manager.update_room(socket.hue_room_id,
 		{
 			theme: data.color
@@ -2367,7 +2377,17 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(data.color !== utilz.clean_string2(data.color))
+		if(data.color === undefined)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.color !== utilz.clean_string5(data.color))
+		{
+			return handler.get_out(socket)
+		}
+
+		if(!utilz.validate_rgb(data.color))
 		{
 			return handler.get_out(socket)
 		}
