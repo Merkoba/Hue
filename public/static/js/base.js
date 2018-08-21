@@ -1762,7 +1762,7 @@ function play_video()
 
 function hide_videos(show)
 {
-	$(".media_video_container").each(function()
+	$("#media_tv .media_container").each(function()
 	{
 		if($(this).attr("id") === show)
 		{
@@ -4945,7 +4945,7 @@ var resize_timer = (function()
 
 function on_resize()
 {
-	fix_visible_video_frame()
+	fix_frames()
 	update_chat_scrollbar()
 	goto_bottom(false, false)
 	check_scrollers()
@@ -5750,11 +5750,11 @@ function show_image(src, force=false)
 {
 	$("#media_image_error").css("display", "none")
 
-	$("#media_image").css("display", "initial")
+	$("#media_image_frame").css("display", "initial")
 
-	if(force || $("#media_image").attr("src") !== src)
+	if(force || $("#media_image_frame").attr("src") !== src)
 	{
-		$("#media_image").attr("src", src)
+		$("#media_image_frame").attr("src", src)
 	}
 
 	else
@@ -5782,14 +5782,14 @@ function show_current_image_modal(current=true)
 
 function start_image_events()
 {
-	$('#media_image')[0].addEventListener('load', function(e)
+	$('#media_image_frame')[0].addEventListener('load', function(e)
 	{
 		after_image_load()
 	})
 
-	$('#media_image').on("error", function()
+	$('#media_image_frame').on("error", function()
 	{
-		$("#media_image").css("display", "none")
+		$("#media_image_frame").css("display", "none")
 		$("#media_image_error").css("display", "initial")
 	})
 
@@ -5804,6 +5804,10 @@ function after_image_load()
 	current_image_source = image_source
 	current_image_title = image_title
 	current_image_date_raw = image_date_raw
+
+	$("#media_image").data("ratio", undefined)
+
+	fix_image_frame()
 }
 
 function get_size_string(size)
@@ -13373,13 +13377,13 @@ function fix_media_margin()
 
 		$("#media_tv").css(m1, "-1rem")
 		$("#media_tv").css(m2, "0")
-		$("#media_image_container").css(m2, "-1rem")
-		$("#media_image_container").css(m1, "0")
+		$("#media_image").css(m2, "-1rem")
+		$("#media_image").css(m1, "0")
 	}
 
 	else
 	{
-		$("#media_image_container").css("margin-bottom", "0")
+		$("#media_image").css("margin-bottom", "0")
 		$("#media_tv").css("margin-top", "0")
 	}
 }
@@ -13415,9 +13419,11 @@ function change_images_visibility()
 	{
 		$("#media").css("display", "flex")
 
-		$("#media_image_container").css("display", "flex")
+		$("#media_image").css("display", "flex")
 
 		fix_media_margin()
+		
+		fix_image_frame()
 
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-on")
@@ -13431,7 +13437,7 @@ function change_images_visibility()
 
 	else
 	{
-		$("#media_image_container").css("display", "none")
+		$("#media_image").css("display", "none")
 
 		fix_media_margin()
 
@@ -13488,6 +13494,7 @@ function change_tv_visibility(play=true)
 		$("#media_tv").css("display", "flex")/
 
 		fix_media_margin()
+
 		fix_visible_video_frame()
 
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-off")
@@ -13527,6 +13534,11 @@ function change_tv_visibility(play=true)
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-off")
 
 		tv_visible = false
+	}
+
+	if(images_visible)
+	{
+		fix_image_frame()
 	}
 }
 
@@ -13818,25 +13830,39 @@ function fix_visible_video_frame()
 	{
 		if($(this).parent().css("display") !== "none")
 		{
-			fix_video_frame(this.id)
+			fix_frame(this.id)
 		}
 	})
 }
 
-function fix_video_frame(frame_id)
+function fix_image_frame()
+{
+	if(!$("#media_image_frame").height())
+	{
+		return false
+	}
+
+	fix_frame("media_image_frame")
+}
+
+function fix_frames()
+{
+	fix_visible_video_frame()
+	fix_image_frame()
+}
+
+function fix_frame(frame_id)
 {
 	var id = `#${frame_id}`
 
 	var frame = $(id)
 
-	var pratio = frame.data("ratio")
+	var ratio = frame.data("ratio")
 
-	if(pratio === undefined)
+	if(ratio === undefined)
 	{
-		pratio = get_frame_ratio(frame_id)
+		ratio = get_frame_ratio(frame_id)
 	}
-
-	var ratio = 0.5625
 
 	var parent = frame.parent()
 
@@ -17690,7 +17716,7 @@ function run_user_function(n)
 
 function set_tv_display_percentage(v, type)
 {
-	if(!v)
+	if(v === undefined || type === undefined)
 	{
 		return false
 	}
@@ -17707,12 +17733,22 @@ function set_tv_display_percentage(v, type)
 		return false
 	}
 
+	if(v < 10)
+	{
+		v = 10
+	}
+
+	else if(v > 90)
+	{
+		v = 90
+	}
+
 	$(`#${type}_tv_display_percentage`).nstSlider('set_position', v)
 }
 
 function set_media_display_percentage(v, type)
 {
-	if(!v)
+	if(v === undefined || type === undefined)
 	{
 		return false
 	}
@@ -17729,6 +17765,16 @@ function set_media_display_percentage(v, type)
 		return false
 	}
 
+	if(v < 10)
+	{
+		v = 10
+	}
+
+	else if(v > 90)
+	{
+		v = 90
+	}
+
 	$(`#${type}_media_display_percentage`).nstSlider('set_position', v)
 }
 
@@ -17738,7 +17784,7 @@ function apply_media_percentages()
 	var p2 = (100 - p1)
 
 	$("#media_tv").css("height", `${p1}%`)
-	$("#media_image_container").css("height", `${p2}%`)
+	$("#media_image").css("height", `${p2}%`)
 
 	var c1 = get_setting("media_display_percentage")
 	var c2 = (100 - c1)
@@ -17765,7 +17811,7 @@ function apply_media_positions()
 		var ip = 1
 	}
 
-	$("#media_image_container").css("order", ip)
+	$("#media_image").css("order", ip)
 	$("#media_tv").css("order", tvp)
 
 	fix_media_margin()
@@ -18677,7 +18723,7 @@ function left_voice_chat()
 
 function after_join_or_leave_voice_chat()
 {
-	fix_visible_video_frame()
+	fix_frames()
 	goto_bottom(false, false)
 }
 

@@ -161,53 +161,36 @@ div#header_radio_playing_icon
 	align-items: center;
 }
 
-#media_image_container
-{
-	height: 50%;
-	width: 100%;
-	flex-grow: 1;
-	flex-shrink: 0;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: relative;
-}
-
-#media_image
-{
-	object-fit: contain;
-	max-height: calc(100% - 4em);
-	max-width: calc(100% - 4.7em);
-	min-height: 20px;
-	min-width: 20px;
-	position: absolute;
-}
-
 #media_image_error
 {
 	display: none;
 	font-size: 1.2em;
 }
 
-#media_tv
+.media_main_container
 {
 	height: 50%;
 	width: 100%;
 	flex-grow: 1;
 	flex-shrink: 0;
 	display: flex;
-	align-items: center;	
-	justify-content: center;	
+	align-items: center;
+	justify-content: center;
 	position: relative;
 }
 
-.media_video_container
+.media_container
 {
 	height: calc(100% - 4em);
 	width: calc(100% - 4.7em);
 	display: none;
 	align-items: center;
 	justify-content: center;
+}
+
+#media_image_container
+{
+	display: flex;
 }
 
 #footer
