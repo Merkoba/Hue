@@ -1501,25 +1501,36 @@
 		<script id='template_media_menu' type='text/x-handlebars-template'>
 			<div class='unselectable'>
 
-				<div class='menu_item action inline' onclick='stop_and_lock(); hide_media_menu()'>Stop And Lock Everything</div>
+				<span><i class='fa fa-sliders'></i>&nbsp;&nbsp;State</span>
+				<div class='spacer3'></div>
+
+				<div class='menu_item action inline' onclick='stop_and_lock(); hide_media_menu()'>Stop & Lock Everything</div>
 				<div></div>
 				<div class='menu_item action inline' onclick='stop_and_lock(false); hide_media_menu()'>Lock Everything</div>
 				<div></div>
 				<div class='menu_item action inline' onclick='default_media_state(false); hide_media_menu()'>Unlock Everything</div>
 				<div></div>
 				<div class='menu_item action inline' onclick='default_media_state(); hide_media_menu()'>Default State</div>
+				
+				<div class='spacer4'></div>
+				<span><i class='fa fa-history'></i>&nbsp;&nbsp;History</span>
 				<div class='spacer3'></div>
-				<div class='menu_item action inline' onclick='refresh_image(); hide_media_menu()'>Refresh Image</div>
-				<div></div>
-				<div class='menu_item action inline' onclick='refresh_tv(); hide_media_menu()'>Refresh TV</div>
-				<div></div>
-				<div class='menu_item action inline' onclick='refresh_radio(); hide_media_menu()'>Refresh Radio</div>
-				<div class='spacer3'></div>
+
 				<div class='menu_item action inline' onclick='show_image_history()'>Image History</div>
 				<div></div>
 				<div class='menu_item action inline' onclick='show_tv_history()'>TV History</div>
 				<div></div>
 				<div class='menu_item action inline' onclick='show_radio_history()'>Radio History</div>
+				
+				<div class='spacer4'></div>
+				<span><i class='fa fa-refresh'></i>&nbsp;&nbsp;Refresh</span>
+				<div class='spacer3'></div>
+
+				<div class='menu_item action inline' onclick='refresh_image(); hide_media_menu()'>Refresh Image</div>
+				<div></div>
+				<div class='menu_item action inline' onclick='refresh_tv(); hide_media_menu()'>Refresh TV</div>
+				<div></div>
+				<div class='menu_item action inline' onclick='refresh_radio(); hide_media_menu()'>Refresh Radio</div>
 
 			</div>
 		</script>	
