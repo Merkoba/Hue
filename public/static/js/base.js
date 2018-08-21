@@ -13840,6 +13840,11 @@ function fix_visible_video_frame()
 
 function fix_image_frame()
 {
+	if(!images_visible)
+	{
+		return false
+	}
+	
 	if(!$("#media_image_frame").height())
 	{
 		return false
