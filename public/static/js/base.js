@@ -13434,7 +13434,6 @@ function change_images_visibility()
 
 		fix_media_margin()
 		
-		fix_image_frame()
 
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-on")
@@ -13444,6 +13443,8 @@ function change_images_visibility()
 		change({type:"image"})
 
 		images_visible = true
+		
+		fix_image_frame()
 	}
 
 	else
@@ -13469,6 +13470,9 @@ function change_images_visibility()
 	{
 		fix_visible_video_frame()
 	}
+
+	update_chat_scrollbar()
+	goto_bottom(false, false)
 }
 
 function toggle_tv(what=undefined, save=true)
@@ -13506,7 +13510,6 @@ function change_tv_visibility(play=true)
 
 		fix_media_margin()
 
-		fix_visible_video_frame()
 
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-on")
@@ -13521,6 +13524,8 @@ function change_tv_visibility(play=true)
 		{
 			play_video()
 		}
+		
+		fix_visible_video_frame()
 	}
 
 	else
@@ -13551,6 +13556,9 @@ function change_tv_visibility(play=true)
 	{
 		fix_image_frame()
 	}
+
+	update_chat_scrollbar()
+	goto_bottom(false, false)
 }
 
 function toggle_radio(what=undefined, save=true)
