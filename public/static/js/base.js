@@ -13162,8 +13162,6 @@ function show_modal_image(url, title, date)
 	$("#modal_image_error").css("display", "none")
 
 	img.attr("src", url)
-	img.data("image_title", t)
-	img.data("image_date", date)
 
 	$("#modal_image_header_info").text(t)
 
@@ -13262,6 +13260,16 @@ function modal_image_number_go()
 		show_modal_image(ic.url, ic.title, ic.date_raw)
 		msg_modal_image_number.close()
 	}
+}
+
+function show_modal_image_resolution()
+{
+	var img = $("#modal_image")[0]
+
+	var w = img.naturalWidth
+	var h = img.naturalHeight
+
+	$("#modal_image_header_info").text($("#modal_image_header_info").text() + ` | Resolution: ${w}x${h}`)
 }
 
 function clear_modal_image_info()
@@ -16206,6 +16214,7 @@ function setup_modal_image()
 	{
 		$("#modal_image_spinner").css("display", "none")
 		$("#modal_image").css("display", "block")
+		show_modal_image_resolution()
 		update_modal_scrollbar("image")
 	})
 
