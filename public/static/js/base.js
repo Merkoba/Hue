@@ -5846,7 +5846,7 @@ function setup_image(data)
 
 		else
 		{
-			image_title = `Setter: ${data.image_setter} | Size: ${get_size_string(data.image_size)} | ${nice_date(data.image_date)}`
+			image_title = `Setter: ${data.image_setter} | ${nice_date(data.image_date)} | Size: ${get_size_string(data.image_size)}`
 		}
 	}
 
@@ -9017,7 +9017,7 @@ function announce_image_change(args={})
 
 	else if(args.data.image_type === "upload")
 	{
-		var title = `Setter: ${args.data.image_setter} | Size: ${get_size_string(args.data.image_size)} | ${nd}`
+		var title = `Setter: ${args.data.image_setter} | ${nd} | Size: ${get_size_string(args.data.image_size)}`
 		var message = `${args.data.image_setter} changed the image`
 	}
 
