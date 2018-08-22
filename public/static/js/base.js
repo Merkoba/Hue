@@ -13403,7 +13403,15 @@ function toggle_images(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
-		room_state.images_enabled = what
+		if(room_state.images_enabled !== what)
+		{
+			room_state.images_enabled = what
+		}
+
+		else
+		{
+			save = false
+		}
 	}
 
 	else
@@ -13476,7 +13484,15 @@ function toggle_tv(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
-		room_state.tv_enabled = what
+		if(room_state.tv_enabled !== what)
+		{
+			room_state.tv_enabled = what
+		}
+
+		else
+		{
+			save = false
+		}
 	}
 
 	else
@@ -13559,7 +13575,15 @@ function toggle_radio(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
-		room_state.radio_enabled = what
+		if(room_state.radio_enabled !== what)
+		{
+			room_state.radio_enabled = what
+		}
+
+		else
+		{
+			save = false
+		}
 	}
 
 	else
