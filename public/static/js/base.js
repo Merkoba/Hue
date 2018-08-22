@@ -13403,11 +13403,6 @@ function toggle_images(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
-		if(room_state.images_enabled === what)
-		{
-			return false
-		}
-
 		room_state.images_enabled = what
 	}
 
@@ -13416,7 +13411,10 @@ function toggle_images(what=undefined, save=true)
 		room_state.images_enabled = !room_state.images_enabled
 	}
 
-	change_images_visibility()
+	if(images_visible !== what)
+	{
+		change_images_visibility()
+	}
 
 	if(save)
 	{
@@ -13434,7 +13432,6 @@ function change_images_visibility()
 
 		fix_media_margin()
 		
-
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-on")
 
@@ -13479,11 +13476,6 @@ function toggle_tv(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
-		if(room_state.tv_enabled === what)
-		{
-			return false
-		}
-
 		room_state.tv_enabled = what
 	}
 
@@ -13492,7 +13484,10 @@ function toggle_tv(what=undefined, save=true)
 		room_state.tv_enabled = !room_state.tv_enabled
 	}
 
-	change_tv_visibility()
+	if(tv_visible !== what)
+	{
+		change_tv_visibility()
+	}
 
 	if(save)
 	{
@@ -13509,7 +13504,6 @@ function change_tv_visibility(play=true)
 		$("#media_tv").css("display", "flex")/
 
 		fix_media_margin()
-
 
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-on")
@@ -13565,11 +13559,6 @@ function toggle_radio(what=undefined, save=true)
 {
 	if(what !== undefined)
 	{
-		if(room_state.radio_enabled === what)
-		{
-			return false
-		}
-
 		room_state.radio_enabled = what
 	}
 
@@ -13578,7 +13567,10 @@ function toggle_radio(what=undefined, save=true)
 		room_state.radio_enabled = !room_state.radio_enabled
 	}
 
-	change_radio_visibility()
+	if(radio_visible !== what)
+	{
+		change_radio_visibility()	
+	}
 
 	if(save)
 	{
