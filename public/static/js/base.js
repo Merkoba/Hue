@@ -5797,6 +5797,9 @@ function start_image_events()
 	{
 		update_modal_scrollbar("main_menu")
 	})
+
+	$("#media_image_frame").height(0)
+	$("#media_image_frame").width(0)
 }
 
 function after_image_load()
