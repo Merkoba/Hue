@@ -19879,6 +19879,7 @@ function request_admin_activity()
 {
 	if(!is_admin_or_op(role))
 	{
+		not_an_op()
 		return false
 	}
 
