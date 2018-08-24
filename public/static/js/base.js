@@ -9026,7 +9026,7 @@ function announce_image_change(args={})
 
 	if(args.data.image_query)
 	{
-		message += `. Search Term: "${args.data.image_query}"`
+		title += ` | Search Term: "${args.data.image_query}"`
 	}
 
 	var onclick = function()
@@ -9312,11 +9312,6 @@ function announce_radio_change(args={})
 		name += ` (At ${utilz.humanize_seconds(time)})`
 	}
 
-	if(args.data.radio_query)
-	{
-		name += `. Search Term: "${args.data.radio_query}"`
-	}
-
 	if(args.data.radio_source === '')
 	{
 		var src = default_radio_source
@@ -9355,6 +9350,11 @@ function announce_radio_change(args={})
 	else
 	{
 		var title = `Setter: ${args.data.radio_setter} | ${nd}`
+	}
+
+	if(args.data.radio_query)
+	{
+		title += ` | Search Term: "${args.data.radio_query}"`
 	}
 
 	var onclick = function()
@@ -9588,11 +9588,6 @@ function announce_tv_change(args={})
 		name += ` (At ${utilz.humanize_seconds(time)})`
 	}
 
-	if(args.data.tv_query)
-	{
-		name += `. Search Term: "${args.data.tv_query}"`
-	}
-
 	if(args.data.tv_source === '')
 	{
 		var src = default_tv_source
@@ -9631,6 +9626,11 @@ function announce_tv_change(args={})
 	else
 	{
 		var title = `Setter: ${args.data.tv_setter} | ${nd}`
+	}
+
+	if(args.data.tv_query)
+	{
+		title += ` | Search Term: "${args.data.tv_query}"`
 	}
 
 	var onclick = function()
