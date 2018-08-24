@@ -157,6 +157,8 @@ var theme
 var text_color_mode
 var text_color
 var background_image
+var background_image_setter = ""
+var background_image_date = ""
 var background_mode
 var background_tile_dimensions
 var last_image_source = false
@@ -1924,8 +1926,17 @@ function after_show_video()
 
 function setup_theme_and_background(data)
 {
-	theme = data.theme
+	set_background_image(data)
 
+	theme = data.theme
+	background_mode = data.background_mode
+	background_tile_dimensions = data.background_tile_dimensions
+	text_color_mode = data.text_color_mode
+	text_color = data.text_color
+}
+
+function set_background_image(data)
+{
 	if(data.background_image !== "")
 	{
 		background_image = data.background_image
@@ -1936,15 +1947,8 @@ function setup_theme_and_background(data)
 		background_image = default_background_image_url
 	}
 
-	background_mode = data.background_mode
-	background_tile_dimensions = data.background_tile_dimensions
-	text_color_mode = data.text_color_mode
-	text_color = data.text_color
-}
-
-function set_background(bg)
-{
-	background_image = bg
+	background_image_setter = data.background_image_setter
+	background_image_date = data.background_image_date
 	apply_background()
 	config_admin_background_image()
 }
@@ -3395,6 +3399,18 @@ function config_admin_background_image()
 		{
 			$("#admin_background_image").attr("src", default_background_image_url)
 		}
+	}
+
+	if(background_image_setter)
+	{
+		var s = `Setter: ${background_image_setter}`
+
+		if(background_image_date)
+		{
+			s += ` | ${nice_date(background_image_date)}`
+		}
+
+		$("#admin_background_image").attr("title", s)
 	}
 }
 
@@ -14377,7 +14393,7 @@ function announce_background_image_change(data)
 		open_profile: true
 	})
 
-	set_background(data.background_image)
+	set_background_image(data)
 }
 
 function change_background_mode(mode)

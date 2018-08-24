@@ -485,6 +485,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			room_voice_chat_mode: info.voice_chat_mode,
 			theme: info.theme,
 			background_image: background_image,
+			background_image_setter: info.background_image_setter,
+			background_image_date: info.background_image_date,
 			background_mode: info.background_mode,
 			background_tile_dimensions: info.background_tile_dimensions,
 			text_color_mode: info.text_color_mode,
@@ -3409,16 +3411,22 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		}
 
+		var date = Date.now()
+
 		var ans = await db_manager.update_room(socket.hue_room_id,
 		{
 			background_image: fname,
-			background_image_type: type
+			background_image_type: type,
+			background_image_setter: socket.hue_username,
+			background_image_date: date
 		})
 
 		handler.room_emit(socket, 'background_image_change',
 		{
 			username: socket.hue_username,
-			background_image: image_url
+			background_image: image_url,
+			background_image_setter: socket.hue_username,
+			background_image_date: date
 		})
 
 		if(to_delete)
