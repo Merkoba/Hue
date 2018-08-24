@@ -19945,6 +19945,8 @@ function request_admin_activity(filter="")
 
 function show_admin_activity(messages)
 {
+	$("#admin_activity_container").html("")
+	
 	msg_admin_activity.show(function()
 	{
 		for(var message of messages)
