@@ -4079,6 +4079,30 @@ function activate_key_detection()
 				{
 					reset_double_tap_keys_pressed()
 				}
+
+				if(e.key === "F1")
+				{
+					run_user_function(1)
+					e.preventDefault()
+				}
+
+				else if(e.key === "F2")
+				{
+					run_user_function(2)
+					e.preventDefault()
+				}
+
+				else if(e.key === "F3")
+				{
+					run_user_function(3)
+					e.preventDefault()
+				}
+
+				else if(e.key === "F4")
+				{
+					run_user_function(4)
+					e.preventDefault()
+				}
 			}
 
 			else
@@ -4090,30 +4114,6 @@ function activate_key_detection()
 		else
 		{
 			reset_double_tap_keys_pressed()
-		}
-
-		if(e.key === "F1")
-		{
-			run_user_function(1)
-			e.preventDefault()
-		}
-
-		else if(e.key === "F2")
-		{
-			run_user_function(2)
-			e.preventDefault()
-		}
-
-		else if(e.key === "F3")
-		{
-			run_user_function(3)
-			e.preventDefault()
-		}
-
-		else if(e.key === "F4")
-		{
-			run_user_function(4)
-			e.preventDefault()
 		}
 
 		if(modal_open)
