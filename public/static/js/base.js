@@ -102,6 +102,7 @@ var template_open_url
 var template_background_image_select
 var template_background_image_input
 var template_goto_room
+var template_admin_activity
 var msg_main_menu
 var msg_user_menu
 var msg_userlist
@@ -259,6 +260,7 @@ var current_image_data = {}
 var current_tv_data = {}
 var current_radio_data = {}
 var user_leaving = false
+var admin_activity_filter_string = ""
 
 var commands = 
 [
@@ -521,6 +523,7 @@ function setup_templates()
 	template_background_image_select = Handlebars.compile($('#template_background_image_select').html())
 	template_background_image_input = Handlebars.compile($('#template_background_image_input').html())
 	template_goto_room = Handlebars.compile($('#template_goto_room').html())
+	template_admin_activity = Handlebars.compile($('#template_admin_activity').html())
 }
 
 function show_help(number=1, filter="")
@@ -7511,6 +7514,11 @@ function execute_command(message, ans)
 		request_admin_activity()
 	}
 
+	else if(oiStartsWith(cmd2, '/adminactivity'))
+	{
+		request_admin_activity(arg)
+	}
+
 	else
 	{
 		feedback(`Invalid command "${cmd.slice(1)}"`)
@@ -10883,6 +10891,31 @@ function start_msg()
 		})
 	)
 
+	msg_admin_activity = Msg.factory
+	(
+		Object.assign({}, common, titlebar,
+		{
+			id: "admin_activity",
+			after_create: function(instance)
+			{
+				after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				after_modal_show(instance)
+				after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				after_modal_close(instance)
+			}
+		})
+	)
+
 	msg_main_menu.set(template_main_menu())
 	msg_user_menu.set(template_user_menu())
 	msg_userlist.set(template_userlist())
@@ -10910,6 +10943,7 @@ function start_msg()
 	msg_draw_image.set(template_draw_image())
 	msg_credits.set(template_credits({background_url:credits_background_url}))
 	msg_help.set(template_help())
+	msg_admin_activity.set(template_admin_activity())
 
 	msg_info.create()
 	msg_info2.create()
@@ -10930,6 +10964,7 @@ function start_msg()
 	msg_media_menu.set_title("Media Menu")
 	msg_draw_image.set_title("Draw an Image")
 	msg_credits.set_title(credits_title)
+	msg_admin_activity.set_title("Admin Activity")
 
 	$("#global_settings_window_title").click(function()
 	{
@@ -12216,6 +12251,21 @@ var visited_roomlist_filter_timer = (function()
 	}
 })()
 
+var admin_activity_filter_timer = (function()
+{
+	var timer
+
+	return function()
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function()
+		{
+			do_admin_activity_filter()
+		}, filter_delay)
+	}
+})()
+
 function start_filters()
 {
 	$("#played_filter").on("input", function()
@@ -12276,6 +12326,11 @@ function start_filters()
 	$("#help_filter").on("input", function()
 	{
 		help_filter_timer()
+	})
+
+	$("#admin_activity_filter").on("input", function()
+	{
+		admin_activity_filter_timer()
 	})
 }
 
@@ -19875,7 +19930,7 @@ function change_voice_permission_command(arg)
 	change_voice_permission(ptype, value)
 }
 
-function request_admin_activity()
+function request_admin_activity(filter="")
 {
 	if(!is_admin_or_op(role))
 	{
@@ -19883,26 +19938,70 @@ function request_admin_activity()
 		return false
 	}
 
+	admin_activity_filter_string = filter
+
 	socket_emit("get_admin_activity", {})
 }
 
 function show_admin_activity(messages)
 {
-	var c = $("<div id='admin_activity_container'></div>")
-
-	for(var message of messages)
+	msg_admin_activity.show(function()
 	{
-		var el = $(`
-		<div class='admin_activity_item'>
-			<div class='admin_activity_message'></div>
-			<div class='admin_activity_date'></div>
-		</div>`)
+		for(var message of messages)
+		{
+			var el = $(`
+			<div class='admin_activity_item'>
+				<div class='admin_activity_message'></div>
+				<div class='admin_activity_date'></div>
+			</div>`)
 
-		el.find(".admin_activity_message").eq(0).text(`${message.data.username} ${message.data.content}`)
-		el.find(".admin_activity_date").eq(0).text(nice_date(message.date))
+			el.find(".admin_activity_message").eq(0).text(`${message.data.username} ${message.data.content}`)
+			el.find(".admin_activity_date").eq(0).text(nice_date(message.date))
 
-		c.prepend(el)
+			$("#admin_activity_container").prepend(el)
+		}
+
+		$("#admin_activity_filter").val(admin_activity_filter_string)
+
+		do_admin_activity_filter()
+
+		$("#admin_activity_filter").focus()
+	})
+}
+
+function do_admin_activity_filter(type)
+{
+	var filter = $("#admin_activity_filter").eq(0).val().trim().toLowerCase()
+
+	if(filter !== "")
+	{
+		$(".admin_activity_item").each(function()
+		{
+			$(this).css("display", "block")
+
+			var include = false
+
+			if($(this).text().toLowerCase().includes(filter))
+			{
+				include = true
+			}
+
+			if(!include)
+			{
+				$(this).css("display", "none")
+			}
+		})
 	}
 
-	msg_info2.show(["Admin Activity", c[0]])
+	else
+	{
+		$(".admin_activity_item").each(function()
+		{
+			$(this).css("display", "block")
+		})
+	}
+
+	update_modal_scrollbar("admin_activity")
+
+	$('#Msg-content-container-admin_activity').scrollTop(0)
 }
