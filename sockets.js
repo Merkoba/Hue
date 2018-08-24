@@ -4148,7 +4148,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 						}
 
 						room.activity = false
-
 					}
 				}
 			}
