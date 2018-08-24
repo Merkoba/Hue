@@ -637,6 +637,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				topic_setter: info.topic_setter,
 				topic_date: info.topic_date
 			})
+
+			handler.push_admin_log_message(socket, `changed the topic to "${info.topic}"`)
 		}
 	}
 
@@ -673,6 +675,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				name: info.name
 			})
+
+			handler.push_admin_log_message(socket, `changed the room name to "${info.name}"`)
 		}
 	}
 
@@ -878,6 +882,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		db_manager.update_room(info._id, {keys:info.keys})
 
 		handler.room_emit(socket, 'voices_resetted', {username:socket.hue_username})
+
+		handler.push_admin_log_message(socket, "resetted the voices")
 	}
 
 	handler.public.remove_ops = async function(socket, data)
@@ -921,6 +927,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.room_emit(socket, 'announce_removedops', {username:socket.hue_username})
 
 		db_manager.update_room(info._id, {keys:info.keys})
+
+		handler.push_admin_log_message(socket, "removed the ops")
 	}
 
 	handler.public.kick = function(socket, data)
@@ -963,6 +971,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				handler.get_out(socc)
 			}
+
+			handler.push_admin_log_message(socket, `kicked "${data.username}"`)
 		}
 
 		else
@@ -1037,6 +1047,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				socc.hue_info1 = socket.hue_username
 				handler.get_out(socc)
 			}
+
+			handler.push_admin_log_message(socket, `banned "${data.username}"`)
 		}
 
 		else
@@ -1112,6 +1124,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			username1: socket.hue_username,
 			username2: data.username
 		})
+
+		handler.push_admin_log_message(socket, `unbanned "${data.username}"`)
 	}
 
 	handler.public.unban_all = async function(socket, data)
@@ -1130,6 +1144,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			db_manager.update_room(info._id, {bans:info.bans})
 
 			handler.room_emit(socket, 'announce_unban_all', {username:socket.hue_username})
+			
+			handler.push_admin_log_message(socket, "unbanned all banned users")
 		}
 
 		else
@@ -1191,6 +1207,18 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			rooms[socket.hue_room_id].log = data.log
 
 			handler.room_emit(socket, 'log_changed', {username:socket.hue_username, log:data.log})
+
+			if(data.log)
+			{
+				var als = "enabled the log"
+			}
+
+			else
+			{
+				var als = "disabled the log"
+			}
+
+			handler.push_admin_log_message(socket, als)
 		}
 	}
 
@@ -1210,6 +1238,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			db_manager.update_room(socket.hue_room_id, {log_messages:[]})
 
 			handler.room_emit(socket, 'log_cleared', {username:socket.hue_username})
+
+			handler.push_admin_log_message(socket, "cleared the log")
 		}
 
 		else
@@ -1233,6 +1263,18 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		db_manager.update_room(socket.hue_room_id, {public:data.what})
 
 		handler.room_emit(socket, 'privacy_change', {username:socket.hue_username, what:data.what})
+
+		if(data.what)
+		{
+			var als = "made the room public"
+		}
+
+		else
+		{
+			var als = "made the room private"
+		}
+
+		handler.push_admin_log_message(socket, als)
 	}
 
 	handler.public.change_radio_source = async function(socket, data)
@@ -2177,6 +2219,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			what: data.what,
 			username: socket.hue_username
 		})
+
+		handler.push_admin_log_message(socket, `changed the image mode to "${data.what}"`)
 	}
 
 	handler.public.change_tv_mode = function(socket, data)
@@ -2203,6 +2247,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			what: data.what,
 			username: socket.hue_username
 		})
+
+		handler.push_admin_log_message(socket, `changed the tv mode to "${data.what}"`)
 	}
 
 	handler.public.change_radio_mode = function(socket, data)
@@ -2229,6 +2275,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			what: data.what,
 			username: socket.hue_username
 		})
+
+		handler.push_admin_log_message(socket, `changed the radio mode to "${data.what}"`)
 	}
 
 	handler.public.change_voice_chat_mode = function(socket, data)
@@ -2257,6 +2305,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			what: data.what,
 			username: socket.hue_username
 		})
+
+		handler.push_admin_log_message(socket, `changed the voice chat mode to "${data.what}"`)
 	}
 
 	handler.public.change_theme = function(socket, data)
@@ -2291,6 +2341,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			color: data.color,
 			username: socket.hue_username
 		})
+
+		handler.push_admin_log_message(socket, `changed the theme to "${data.color}"`)
 	}
 
 	handler.public.change_background_mode = function(socket, data)
@@ -2315,6 +2367,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			mode: data.mode,
 			username: socket.hue_username
 		})
+
+		handler.push_admin_log_message(socket, `changed the background mode to "${data.mode}"`)
 	}
 
 	handler.public.change_background_tile_dimensions = function(socket, data)
@@ -2344,6 +2398,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			dimensions: data.dimensions,
 			username: socket.hue_username
 		})
+
+		handler.push_admin_log_message(socket, `changed the background tile dimensions to "${data.dimensions}"`)
 	}
 
 	handler.public.change_text_color_mode = function(socket, data)
@@ -2368,6 +2424,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			mode: data.mode,
 			username: socket.hue_username
 		})
+
+		handler.push_admin_log_message(socket, `changed the text color mode to "${data.mode}"`)
 	}
 
 	handler.public.change_text_color = function(socket, data)
@@ -2402,6 +2460,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			color: data.color,
 			username: socket.hue_username
 		})
+
+		handler.push_admin_log_message(socket, `changed the text color to "${data.color}"`)
 	}
 
 	handler.public.change_voice_permission = function(socket, data)
@@ -2440,6 +2500,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			what: data.what,
 			username: socket.hue_username
 		})
+
+		handler.push_admin_log_message(socket, `changed ${data.ptype} to "${data.what}"`)
 	}
 
 	handler.do_disconnect = function(socc)
@@ -3380,6 +3442,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				})
 			}
 		}
+
+		handler.push_admin_log_message(socket, "changed the background image")
 	}
 
 	handler.public.slice_upload = async function(socket, data)
@@ -3964,6 +4028,18 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, "voice_chat_blob_received_feedback", {})
 	}
 
+	handler.public.get_admin_activity = async function(socket, data)
+	{
+		if(!handler.is_admin_or_op(socket))
+		{
+			return handler.get_out(socket)
+		}
+
+		var info = await db_manager.get_room({_id:socket.hue_room_id}, {})
+
+		handler.user_emit(socket, "receive_admin_activity", {messages:info.admin_log_messages})
+	}
+
 	handler.check_permission = function(socket, permission)
 	{
 		if(media_types.includes(permission))
@@ -4003,6 +4079,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			activity: false,
 			log: info.log,
 			log_messages: [],
+			admin_log_messages: [],
 			userlist: {},
 			voice1_chat_permission: info.voice1_chat_permission,
 			voice1_images_permission: info.voice1_images_permission,
@@ -4049,18 +4126,29 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 					if(room.activity)
 					{
+						var has_data = false
+
 						if(room.log_messages.length > 0)
 						{
-							db_manager.push_room_messages(room._id, room.log_messages)
+							db_manager.push_log_messages(room._id, room.log_messages)
+							room.log_messages = []
+							has_data = true
 						}
 
-						else
+						if(room.admin_log_messages.length > 0)
+						{
+							db_manager.push_admin_log_messages(room._id, room.admin_log_messages)
+							room.admin_log_messages = []
+							has_data = true
+						}
+
+						if(!has_data)
 						{
 							db_manager.update_room(room._id, {})
 						}
 
 						room.activity = false
-						room.log_messages = []
+
 					}
 				}
 			}
@@ -4492,6 +4580,24 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		return userlist2
+	}
+
+	handler.push_admin_log_message = function(socket, content)
+	{
+		rooms[socket.hue_room_id].activity = true
+
+		var message =
+		{
+			type: "admin_activity",
+			data:
+			{
+				username: socket.hue_username,
+				content: content
+			},
+			date: Date.now()
+		}
+
+		rooms[socket.hue_room_id].admin_log_messages.push(message)
 	}
 
 	handler.start_room_loop()

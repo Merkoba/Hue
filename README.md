@@ -238,8 +238,11 @@ If you want to remove it to start fresh:
 "max_roomlist_topic_length"
 >Maximum displayed topic of a room in room lists. If topic is bigger it gets cropped.
 
-"max_room_log_messages"
+"max_log_messages"
 >Maximum amount of messages to store in room logs. It stores chat messages and some notifications like image uploads and radio changes.
+
+"max_admin_log_messages"
+>Maximum amount of messages to store in admin room logs. It stores information about the most recent admin activity.
 
 "max_visited_rooms_items"
 >Maximum amount of items shown in the Visited Rooms list.

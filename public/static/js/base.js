@@ -258,7 +258,7 @@ var commands_queue = {}
 var current_image_data = {}
 var current_tv_data = {}
 var current_radio_data = {}
-var restarting_client = false
+var user_leaving = false
 
 var commands = 
 [
@@ -306,7 +306,7 @@ var commands =
 	'/whatis', '/refresh', '/modifysetting', '/modifysetting2',
 	'/feedback', '/imagesmode', '/tvmode', '/radiomode',
 	'/voicechatmode', '/voicepermission', '/theme', '/textcolormode',
-	'/textcolor', '/backgroundmode', '/tiledimensions'
+	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity'
 ]
 
 var user_settings =
@@ -1487,6 +1487,11 @@ function start_socket()
 		else if(data.type === 'same_radio')
 		{
 			feedback("Radio is already set to that")
+		}
+
+		else if(data.type === 'receive_admin_activity')
+		{
+			show_admin_activity(data.messages)
 		}
 	})
 }
@@ -7501,6 +7506,11 @@ function execute_command(message, ans)
 		change_background_tile_dimensions(arg)
 	}
 
+	else if(oiEquals(cmd2, '/adminactivity'))
+	{
+		request_admin_activity()
+	}
+
 	else
 	{
 		feedback(`Invalid command "${cmd.slice(1)}"`)
@@ -8646,6 +8656,7 @@ function goto_url(u, mode="same", encode=false)
 
 	else
 	{
+		user_leaving = true
 		window.location = u
 	}
 }
@@ -8660,8 +8671,7 @@ function create_room(data)
 
 function restart_client()
 {
-	restarting_client = true
-
+	user_leaving = true
 	window.location = window.location
 }
 
@@ -19746,7 +19756,7 @@ function setup_before_unload()
 {
 	window.onbeforeunload = function(e) 
 	{
-		if(!restarting_client && get_setting("warn_before_closing"))
+		if(!user_leaving && get_setting("warn_before_closing"))
 		{
 			return "Are you sure?"
 		}
@@ -19863,4 +19873,35 @@ function change_voice_permission_command(arg)
 	}
 
 	change_voice_permission(ptype, value)
+}
+
+function request_admin_activity()
+{
+	if(!is_admin_or_op(role))
+	{
+		return false
+	}
+
+	socket_emit("get_admin_activity", {})
+}
+
+function show_admin_activity(messages)
+{
+	var c = $("<div id='admin_activity_container'></div>")
+
+	for(var message of messages)
+	{
+		var el = $(`
+		<div class='admin_activity_item'>
+			<div class='admin_activity_message'></div>
+			<div class='admin_activity_date'></div>
+		</div>`)
+
+		el.find(".admin_activity_message").eq(0).text(`${message.data.username} ${message.data.content}`)
+		el.find(".admin_activity_date").eq(0).text(nice_date(message.date))
+
+		c.prepend(el)
+	}
+
+	msg_info2.show(["Admin Activity", c[0]])
 }

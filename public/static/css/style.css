@@ -1965,3 +1965,19 @@ input[type=text], textarea
 	align-items: center;
 	justify-content: center;
 }
+
+#admin_activity_container
+{
+	width: 22em;
+}
+
+.admin_activity_item
+{
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+.admin_activity_date
+{
+	font-size: 0.8em;
+}

@@ -4,7 +4,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 48
+	const rooms_version = 49
 	const users_version = 29
 
 	function get_random_key()
@@ -408,6 +408,11 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		if(typeof room.voice4_voice_chat_permission !== "boolean")
 		{
 			room.voice4_voice_chat_permission = true
+		}
+
+		if(typeof room.admin_log_messages !== "object")
+		{
+			room.admin_log_messages = []
 		}		
 	}
 
@@ -566,7 +571,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})
 	}
 
-	manager.push_room_messages = function(_id, messages)
+	manager.push_log_messages = function(_id, messages)
 	{
 		return new Promise((resolve, reject) => 
 		{
@@ -576,12 +581,49 @@ module.exports = function(db, config, sconfig, utilz, logger)
 			{
 				room.log_messages = room.log_messages.concat(messages)
 
-				if(room.log_messages.length > config.max_room_log_messages)
+				if(room.log_messages.length > config.max_log_messages)
 				{
-					room.log_messages = room.log_messages.slice(room.log_messages.length - config.max_room_log_messages)
+					room.log_messages = room.log_messages.slice(room.log_messages.length - config.max_log_messages)
 				}
 
 				manager.update_room(_id, {log_messages:room.log_messages})
+
+				.catch(err =>
+				{
+					reject(err)
+					logger.log_error(err)
+					return
+				})
+
+				resolve(true)
+				return
+			})
+
+			.catch(err =>
+			{
+				reject(err)
+				logger.log_error(err)
+				return
+			})
+		})
+	}
+
+	manager.push_admin_log_messages = function(_id, messages)
+	{
+		return new Promise((resolve, reject) => 
+		{
+			manager.get_room({_id:_id}, {admin_log_messages:true})
+
+			.then(room =>
+			{
+				room.admin_log_messages = room.admin_log_messages.concat(messages)
+
+				if(room.admin_log_messages.length > config.max_admin_log_messages)
+				{
+					room.admin_log_messages = room.admin_log_messages.slice(room.admin_log_messages.length - config.max_admin_log_messages)
+				}
+
+				manager.update_room(_id, {admin_log_messages:room.admin_log_messages})
 
 				.catch(err =>
 				{
