@@ -571,6 +571,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		rooms[socket.hue_room_id].activity = true
 
+		rooms[socket.hue_room_id].modified = Date.now()
+
 		if(rooms[socket.hue_room_id].log)
 		{
 			var message =
@@ -640,6 +642,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				topic_date: info.topic_date
 			})
 
+			rooms[socket.hue_room_id].topic = info.topic
+
 			handler.push_admin_log_message(socket, `changed the topic to "${info.topic}"`)
 		}
 	}
@@ -677,6 +681,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				name: info.name
 			})
+
+			rooms[socket.hue_room_id].name = info.name
 
 			handler.push_admin_log_message(socket, `changed the room name to "${info.name}"`)
 		}
@@ -1546,6 +1552,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		rooms[socket.hue_room_id].activity = true
 
+		rooms[socket.hue_room_id].modified = Date.now()
+
 		if(rooms[socket.hue_room_id].log)
 		{
 			var message =
@@ -1983,6 +1991,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 
 		rooms[socket.hue_room_id].activity = true
+
+		rooms[socket.hue_room_id].modified = Date.now()
 
 		if(rooms[socket.hue_room_id].log)
 		{
@@ -2669,18 +2679,14 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			var md = Date.now() - config.roomlist_max_inactivity
 
-			var results = await db_manager.find_rooms({public:true, modified:{$gt:md}})
-
-			if(!results)
+			for(var room_id in rooms)
 			{
-				return false
-			}
+				var room = rooms[room_id]
 
-			for(var i=0; i<results.length; i++)
-			{
-				var room = results[i]
-
-				roomlist.push({id:room._id.toString(), name:room.name, topic:room.topic.substring(0, config.max_roomlist_topic_length), usercount:handler.get_usercount(room._id.toString()), modified:room.modified})
+				if(room.modified > md)
+				{
+					roomlist.push({id:room._id, name:room.name, topic:room.topic.substring(0, config.max_roomlist_topic_length), usercount:handler.get_usercount(room._id), modified:room.modified})
+				}
 			}
 
 			roomlist.sort(handler.compare_roomlist).splice(config.max_roomlist_items)
@@ -3110,6 +3116,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 
 		rooms[socket.hue_room_id].activity = true
+
+		rooms[socket.hue_room_id].modified = Date.now()
 
 		if(rooms[socket.hue_room_id].log)
 		{
@@ -3916,6 +3924,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		rooms[socket.hue_room_id].activity = true
 
+		rooms[socket.hue_room_id].modified = Date.now()
+
 		if(rooms[socket.hue_room_id].log)
 		{
 			var message =
@@ -4116,7 +4126,10 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			voice_chat_sockets: [],
 			current_image_source: info.image_source,
 			current_tv_source: info.tv_source,
-			current_radio_source: info.radio_source
+			current_radio_source: info.radio_source,
+			topic: info.topic,
+			name: info.name,
+			modified: Date.now()
 		}
 
 		return obj
@@ -4592,6 +4605,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	handler.push_admin_log_message = function(socket, content)
 	{
 		rooms[socket.hue_room_id].activity = true
+
+		rooms[socket.hue_room_id].modified = Date.now()
 
 		var message =
 		{
