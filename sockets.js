@@ -1282,6 +1282,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			var als = "made the room private"
 		}
 
+		rooms[socket.hue_room_id].public = data.what
+
 		handler.push_admin_log_message(socket, als)
 	}
 
@@ -2683,7 +2685,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				var room = rooms[room_id]
 
-				if(room.modified > md)
+				if(room.public && room.modified > md)
 				{
 					roomlist.push({id:room._id, name:room.name, topic:room.topic.substring(0, config.max_roomlist_topic_length), usercount:handler.get_usercount(room._id), modified:room.modified})
 				}
@@ -4129,6 +4131,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			current_radio_source: info.radio_source,
 			topic: info.topic,
 			name: info.name,
+			public: info.public,
 			modified: Date.now()
 		}
 
