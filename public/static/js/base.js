@@ -6723,6 +6723,11 @@ function execute_command(message, ans)
 		change_privacy(false)
 	}
 
+	else if(oiEquals(cmd2, '/privacy'))
+	{
+		show_public()
+	}
+
 	else if(oiEquals(cmd2, '/log'))
 	{
 		show_log()
