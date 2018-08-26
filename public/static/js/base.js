@@ -9175,6 +9175,8 @@ function change_privacy(what)
 		{
 			feedback("Room is already private")
 		}
+
+		return false
 	}
 
 	socket_emit('change_privacy', {what:what})
