@@ -2562,6 +2562,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			delete rooms[socket.hue_room_id].userlist[socket.hue_user_id]
 
+			if(Object.keys(rooms[socket.hue_room_id].userlist).length === 0)
+			{
+				delete rooms[socket.hue_room_id]
+			}
+
 			if(user_rooms[socket.hue_user_id] !== undefined)
 			{
 				for(var i=0; i<user_rooms[socket.hue_user_id].length; i++)
