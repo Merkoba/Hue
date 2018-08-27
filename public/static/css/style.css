@@ -833,7 +833,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 {
 	padding-top: 0.8em;
 	padding-bottom: 0.8em;
-	position: relative;
 }
 
 .highlights_item .announcement_brk
@@ -841,7 +840,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 	display: none;	
 }
 
-.highlight_jump
+.jump_button_container
+{
+	position: relative;
+}
+
+.jump_button
 {
 	display: none;
 	cursor: pointer;
@@ -854,7 +858,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding: 0.5em;
 }
 
-.highlights_item:hover > .highlight_jump
+.jump_button_container:hover > .jump_button
 {
 	display: inline-block;
 }

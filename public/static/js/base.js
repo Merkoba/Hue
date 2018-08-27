@@ -432,6 +432,7 @@ function init()
 	setup_command_aliases()
 	load_font_face()
 	setup_before_unload()
+	setup_jumpers()
 
 	start_socket()
 }
@@ -2226,7 +2227,7 @@ function apply_theme()
 		max-width: ${profile_image_size} !important;
 	}
 
-	.highlight_jump
+	.jump_button
 	{
 		background-color: ${background_color} !important;
 	}
@@ -8806,9 +8807,16 @@ function chat_search(filter=false)
 
 				if(show)
 				{
-					var cn = $("<div class='chat_search_result_item'><div class='chat_search_result_uname generic_uname inline action'></div><div class='chat_search_result_content'></div>")
+					var cn = $(`
+					<div class='chat_search_result_item jump_button_container'>
+						<div class='chat_search_result_uname generic_uname inline action'></div>
+						<div class='chat_search_result_content'></div>
+						<div class='jump_button action unselectable'>Jump</div>
+					</div>`)
+
 					cn.find(".chat_search_result_uname").eq(0).text(huname.text())
 					cn.find(".chat_search_result_content").eq(0).html(hcontent.clone(true, true))
+					cn.data("message_id", message.data("message_id"))
 					c.append(cn)
 				}
 			}
@@ -8829,10 +8837,14 @@ function chat_search(filter=false)
 					continue
 				}
 
-				var cn = $("<div class='chat_search_result_item'><div class='chat_search_result_content'></div>")
+				var cn = $(`
+				<div class='chat_search_result_item jump_button_container'>
+					<div class='chat_search_result_content'></div>
+					<div class='jump_button action unselectable'>Jump</div>
+				</div>`)
 
 				cn.find(".chat_search_result_content").eq(0).html(hcontent.parent().clone(true, true))
-
+				cn.data("message_id", message.data("message_id"))
 				c.append(cn)
 			}
 		}
@@ -15851,10 +15863,10 @@ function show_highlights(filter=false)
 					var hcontent = message.find('.chat_content')
 
 					var cn = $(`
-					<div class='highlights_item'>
+					<div class='highlights_item jump_button_container'>
 						<div class='highlights_uname generic_uname inline action'></div>
 						<div class='highlights_content'></div>
-						<div class='highlight_jump action unselectable'>Jump</div>
+						<div class='jump_button action unselectable'>Jump</div>
 					</div>`)
 
 					cn.data("message_id", message.data("message_id"))
@@ -15866,9 +15878,9 @@ function show_highlights(filter=false)
 				else if(message.hasClass("announcement"))
 				{
 					var cn = $(`
-					<div class='highlights_item'>
+					<div class='highlights_item jump_button_container'>
 						<div class='highlights_content'></div>
-						<div class='highlight_jump action unselectable'>Jump</div>
+						<div class='jump_button action unselectable'>Jump</div>
 					</div>`)
 
 					cn.data("message_id", message.data("message_id"))
@@ -15890,24 +15902,6 @@ function show_highlights(filter=false)
 		}
 
 		update_modal_scrollbar("highlights")
-
-		$("#highlights_container").on("click", ".highlight_jump", function()
-		{
-			var id = $(this).closest(".highlights_item").data("message_id")
-
-			$(".message").each(function()
-			{
-				if($(this).data("message_id") === id)
-				{
-					$(this)[0].scrollIntoView({block:"center"})
-
-					msg_highlights.close()
-
-					return false
-				}
-			})
-
-		})
 	})
 }
 
@@ -20069,4 +20063,30 @@ function do_admin_activity_filter(type)
 	update_modal_scrollbar("admin_activity")
 
 	$('#Msg-content-container-admin_activity').scrollTop(0)
+}
+
+function start_jump_events(container_id, msg_instance)
+{
+	$(`#${container_id}`).on("click", ".jump_button", function()
+	{
+		var id = $(this).closest(".jump_button_container").data("message_id")
+
+		$(".message").each(function()
+		{
+			if($(this).data("message_id") === id)
+			{
+				$(this)[0].scrollIntoView({block:"center"})
+
+				msg_instance.close()
+
+				return false
+			}
+		})
+	})
+}
+
+function setup_jumpers()
+{
+	start_jump_events("chat_search_container", msg_chat_search)
+	start_jump_events("highlights_container", msg_highlights)
 }
