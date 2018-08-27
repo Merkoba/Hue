@@ -15854,7 +15854,7 @@ function show_highlights(filter=false)
 					<div class='highlights_item'>
 						<div class='highlights_uname generic_uname inline action'></div>
 						<div class='highlights_content'></div>
-						<div class='highlight_jump action'>Jump</div>
+						<div class='highlight_jump action unselectable'>Jump</div>
 					</div>`)
 
 					cn.data("message_id", message.data("message_id"))
@@ -15868,7 +15868,7 @@ function show_highlights(filter=false)
 					var cn = $(`
 					<div class='highlights_item'>
 						<div class='highlights_content'></div>
-						<div class='highlight_jump action'>Jump</div>
+						<div class='highlight_jump action unselectable'>Jump</div>
 					</div>`)
 
 					cn.data("message_id", message.data("message_id"))
