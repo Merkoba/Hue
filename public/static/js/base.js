@@ -2226,6 +2226,11 @@ function apply_theme()
 		max-width: ${profile_image_size} !important;
 	}
 
+	.highlight_jump
+	{
+		background-color: ${background_color} !important;
+	}
+
 	</style>
 	`
 
@@ -15844,16 +15849,33 @@ function show_highlights(filter=false)
 				{
 					var huname = message.find('.chat_uname').eq(0)
 					var hcontent = message.find('.chat_content')
-					var cn = $("<div class='highlights_item'><div class='highlights_uname generic_uname inline action'></div><div class='highlights_content'></div>")
+
+					var cn = $(`
+					<div class='highlights_item'>
+						<div class='highlights_uname generic_uname inline action'></div>
+						<div class='highlights_content'></div>
+						<div class='highlight_jump action'>Jump</div>
+					</div>`)
+
+					cn.data("message_id", message.data("message_id"))
+
 					cn.find(".highlights_uname").eq(0).text(huname.text())
 					cn.find(".highlights_content").eq(0).html(hcontent.clone(true, true))
 				}
 
 				else if(message.hasClass("announcement"))
 				{
-					var cn = $("<div class='highlights_item'><div class='highlights_content'></div>")
+					var cn = $(`
+					<div class='highlights_item'>
+						<div class='highlights_content'></div>
+						<div class='highlight_jump action'>Jump</div>
+					</div>`)
+
+					cn.data("message_id", message.data("message_id"))
+
 					var content = cn.find(".highlights_content").eq(0)
 					var announcement_content = message.find(".announcement_content").eq(0)
+
 					content.append(announcement_content.parent().clone(true, true))
 				}
 
@@ -15868,6 +15890,24 @@ function show_highlights(filter=false)
 		}
 
 		update_modal_scrollbar("highlights")
+
+		$("#highlights_container").on("click", ".highlight_jump", function()
+		{
+			var id = $(this).closest(".highlights_item").data("message_id")
+
+			$(".message").each(function()
+			{
+				if($(this).data("message_id") === id)
+				{
+					$(this)[0].scrollIntoView({block:"center"})
+
+					msg_highlights.close()
+
+					return false
+				}
+			})
+
+		})
 	})
 }
 

@@ -833,11 +833,30 @@ a.generic:link, a.generic:visited, a.generic:hover
 {
 	padding-top: 0.8em;
 	padding-bottom: 0.8em;
+	position: relative;
 }
 
 .highlights_item .announcement_brk
 {
 	display: none;	
+}
+
+.highlight_jump
+{
+	display: none;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 0.9em;
+	position: absolute;
+	top: 0.5em;
+	right: 0;
+	z-index: 999;
+	padding: 0.5em;
+}
+
+.highlights_item:hover > .highlight_jump
+{
+	display: inline-block;
 }
 
 .generic_uname
