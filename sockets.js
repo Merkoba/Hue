@@ -1259,7 +1259,15 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else
 		{
-			handler.user_emit(socket, 'nothingtoclear', {})
+			if(data.clear_room)
+			{
+				handler.room_emit(socket, 'log_cleared', {username:socket.hue_username, clear_room:data.clear_room})
+			}
+
+			else
+			{
+				handler.user_emit(socket, 'nothingtoclear', {})
+			}
 		}
 	}
 
@@ -2568,11 +2576,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 
 			delete rooms[socket.hue_room_id].userlist[socket.hue_user_id]
-
-			if(Object.keys(rooms[socket.hue_room_id].userlist).length === 0)
-			{
-				delete rooms[socket.hue_room_id]
-			}
 
 			if(user_rooms[socket.hue_user_id] !== undefined)
 			{
@@ -4184,6 +4187,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 						}
 
 						room.activity = false
+					}
+
+					if(Object.keys(room.userlist).length === 0)
+					{
+						delete rooms[key]
+						continue
 					}
 				}
 			}
