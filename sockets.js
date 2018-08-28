@@ -1188,7 +1188,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
-			return false
+			return handler.get_out(socket)
 		}
 
 		if(data.log !== true && data.log !== false)
@@ -1234,19 +1234,26 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
-			return false
+			return handler.get_out(socket)
+		}
+
+		if(data.clear_room === undefined)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.clear_room !== true && data.clear_room !== false)
+		{
+			return handler.get_out(socket)
 		}
 
 		var info = await db_manager.get_room({_id:socket.hue_room_id}, {log_messages:true})
 
-		if(info.log_messages.length > 0)
+		if(info.log_messages.length > 0 || rooms[socket.hue_room_id].log_messages.length > 0)
 		{
 			rooms[socket.hue_room_id].log_messages = []
-
 			db_manager.update_room(socket.hue_room_id, {log_messages:[]})
-
-			handler.room_emit(socket, 'log_cleared', {username:socket.hue_username})
-
+			handler.room_emit(socket, 'log_cleared', {username:socket.hue_username, clear_room:data.clear_room})
 			handler.push_admin_log_message(socket, "cleared the log")
 		}
 

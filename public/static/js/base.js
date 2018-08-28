@@ -310,7 +310,8 @@ var commands =
 	'/whatis', '/refresh', '/modifysetting', '/modifysetting2',
 	'/feedback', '/imagesmode', '/tvmode', '/radiomode',
 	'/voicechatmode', '/voicepermission', '/theme', '/textcolormode',
-	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity'
+	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
+	'/clearlog2'
 ]
 
 var user_settings =
@@ -6754,6 +6755,11 @@ function execute_command(message, ans)
 		clear_log()
 	}
 
+	else if(oiEquals(cmd2, '/clearlog2'))
+	{
+		clear_log(true)
+	}
+
 	else if(oiStartsWith(cmd2, '/radio'))
 	{
 		change_radio_source(arg)
@@ -8885,6 +8891,7 @@ function clear_chat()
 	$('#chat_area').html('<div><br><br><br><br></div>')
 
 	show_log_messages()
+	update_chat_scrollbar()
 	goto_bottom(true)
 	focus_input()
 }
@@ -13167,7 +13174,7 @@ function change_log(log)
 	socket_emit("change_log", {log:log})
 }
 
-function clear_log()
+function clear_log(clr_room=false)
 {
 	if(!is_admin_or_op(role))
 	{
@@ -13175,7 +13182,7 @@ function clear_log()
 		return false
 	}
 
-	socket_emit("clear_log", {})
+	socket_emit("clear_log", {clear_room:clr_room})
 }
 
 function announce_log_change(data)
@@ -13201,23 +13208,14 @@ function announce_log_change(data)
 
 function announce_log_cleared(data)
 {
-	var s = ""
-
-	if(username === data.username)
+	if(data.clear_room)
 	{
-		var uname = "You"
+		clear_room()
 	}
 
-	else
+	public_feedback(`${data.username} cleared the log`,
 	{
-		var uname = data.username
-	}
-
-	s += `${uname} cleared the log`
-
-	public_feedback(s,
-	{
-		username: uname,
+		username: data.username,
 		open_profile: true
 	})
 }
@@ -17364,24 +17362,14 @@ function feedback(message, data=false)
 
 function public_feedback(message, data=false)
 {
-	var obj =
+	if(!data)
 	{
-		brk: "<i class='icon2c fa fa-info-circle'></i>",
-		save: true,
-		message: message
+		data = {}
 	}
 
-	if(data)
-	{
-		Object.assign(obj, data)
-	}
+	data.save = true
 
-	if(!obj.brk.startsWith("<") && !obj.brk.endsWith(">"))
-	{
-		obj.brk = `<div class='inline'>${obj.brk}</div>`
-	}
-
-	chat_announce(obj)
+	feedback(message, data)
 }
 
 function make_unique_lines(s)
@@ -20089,4 +20077,22 @@ function setup_jumpers()
 {
 	start_jump_events("chat_search_container", msg_chat_search)
 	start_jump_events("highlights_container", msg_highlights)
+}
+
+function clear_room(data)
+{
+	clear_chat()
+
+	chat_history = []
+	images_changed = []
+	tv_changed = []
+	radio_changed = []
+
+	$("#image_history_container").html("")
+	$("#tv_history_container").html("")
+	$("#radio_history_container").html("")
+
+	announce_image_change({data:current_image_data})
+	announce_tv_change({data:current_tv_data})
+	announce_radio_change({data:current_radio_data})
 }
