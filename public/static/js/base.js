@@ -2229,7 +2229,7 @@ function apply_theme()
 
 	.jump_button
 	{
-		background-color: ${background_color} !important;
+		background-color: ${background_color_2} !important;
 	}
 
 	</style>

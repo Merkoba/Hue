@@ -850,12 +850,15 @@ a.generic:link, a.generic:visited, a.generic:hover
 	display: none;
 	cursor: pointer;
 	font-weight: bold;
-	font-size: 0.9em;
+	font-size: 0.8em;
 	position: absolute;
-	top: 0.5em;
+	top: 1em;
 	right: 0;
 	z-index: 999;
-	padding: 0.5em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	padding-top: 0.3em;
+	padding-bottom: 0.3em;
 }
 
 .jump_button_container:hover > .jump_button
