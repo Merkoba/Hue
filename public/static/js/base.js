@@ -5484,7 +5484,7 @@ function add_to_chat(message, save=false, notify=true)
 	if(started)
 	{
 		update_chat_scrollbar()
-		goto_bottom()
+		goto_bottom(false, appended)
 	}
 
 	scroll_timer()
