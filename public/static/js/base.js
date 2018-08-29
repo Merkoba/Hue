@@ -5499,9 +5499,9 @@ function push_to_chat_history(message)
 {
 	chat_history.push(message.clone(true, true))
 
-	if(chat_history.length > chat_history_crop_limit)
+	if(chat_history.length > chat_crop_limit)
 	{
-		chat_history = chat_history.slice(chat_history.length - chat_history_crop_limit)
+		chat_history = chat_history.slice(chat_history.length - chat_crop_limit)
 	}
 }
 
