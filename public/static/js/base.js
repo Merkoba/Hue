@@ -3237,12 +3237,12 @@ function setup_main_menu()
 		preferredFormat: "rgb",
 		color: "#B5599A",
 		appendTo: "#admin_menu",
-		showInput: true
-	})
-
-	$("#admin_theme").on('hide.spectrum', function(e, t)
-	{
-		change_theme(t.toRgbString())
+		showInput: true,
+		clickoutFiresChange: false,
+		change: function(color)
+		{
+			change_theme(color.toRgbString())
+		}
 	})
 
 	$('#admin_background_mode_select').change(function()
@@ -3277,12 +3277,12 @@ function setup_main_menu()
 		preferredFormat: "rgb",
 		color: "#B5599A",
 		appendTo: "#admin_menu",
-		showInput: true
-	})
-
-	$("#admin_text_color").on('hide.spectrum', function(e, t)
-	{
-		change_text_color(t.toRgbString())
+		showInput: true,
+		clickoutFiresChange: false,
+		change: function(color)
+		{
+			change_text_color(color.toRgbString())
+		}
 	})
 
 	$('#admin_room_name').blur(function()
@@ -18256,12 +18256,12 @@ function draw_image_prepare_settings()
 		show: function()
 		{
 			set_draw_image_mode_input("pencil")
+		},	
+		clickoutFiresChange: false,
+		change: function(color)
+		{
+			draw_image_pencil_color = color.toRgbString()
 		}
-	})
-	
-	$("#draw_image_pencil_color").on('hide.spectrum', function(e, t)
-	{
-		draw_image_pencil_color = t.toRgbString()
 	})
 
 	$("#draw_image_bucket_color").spectrum(
@@ -18280,12 +18280,12 @@ function draw_image_prepare_settings()
 		show: function()
 		{
 			set_draw_image_mode_input("bucket")
+		},
+		clickoutFiresChange: false,
+		change: function(color)
+		{
+			draw_image_bucket_color = color.toRgbString()
 		}
-	})
-	
-	$("#draw_image_bucket_color").on('hide.spectrum', function(e, t)
-	{
-		draw_image_bucket_color = t.toRgbString()
 	})
 
 	$("#draw_image_pencil_size").find('option').each(function()
