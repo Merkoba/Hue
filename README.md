@@ -163,9 +163,6 @@ If you want to remove it to start fresh:
 "chat_crop_limit"
 >After this number of chat messages on the screen, the oldest ones will start to get removed so there's always this maximum amount of messages displayed. This is to avoid having a huge amount of text in memory in case it is opened for a long time.
 
-"chat_history_crop_limit"
->How much of the chat history is saved in memory for use in Search and other features.
-
 "played_crop_limit"
 >Same as chat_crop limit but for items displayed when "Now Playing" is clicked.
 
@@ -522,9 +519,6 @@ If you want to remove it to start fresh:
 
 "delivery_email_name"
 >Name used on system emails.
-
-"media_history_max_items"
->The amount of items stored in each media change history window.
 
 "media_changed_crop_limit"
 >How many items are stored in images_changed, tv_changed and radio_changed.
