@@ -6050,81 +6050,6 @@ function chat_announce(args={})
 			sound_notify("highlight")
 		}
 	}
-
-	if(args.type !== "normal")
-	{
-		handle_chat_announce_types(fmessage, args.type)
-	}
-
-}
-
-function handle_chat_announce_types(message, type)
-{
-	var media_history_types = ["image_change", "tv_change", "radio_change"]
-
-	if(media_history_types.includes(type))
-	{
-		var item = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
-
-		item.find(".media_history_item_inner").eq(0).html(message.find(".announcement_content_container").eq(0).clone(true, true))
-
-		if(type === "image_change")
-		{
-			$("#image_history_container").prepend(item)
-			var els = $("#image_history_container").children()
-			var t = "image"
-		}
-
-		else if(type === "tv_change")
-		{
-			$("#tv_history_container").prepend(item)
-			var els = $("#tv_history_container").children()
-			var t = "tv"
-		}
-
-		else if(type === "radio_change")
-		{
-			$("#radio_history_container").prepend(item)
-			var els = $("#radio_history_container").children()
-			var t = "radio"
-		}
-
-		else
-		{
-			return false
-		}
-
-		if(els.length > media_history_max_items)
-		{
-			els.last().remove()
-		}
-
-		if(type === "image")
-		{
-			if(image_history_filtered)
-			{
-				do_image_history_filter()
-			}
-		}
-
-		else if(type === "tv")
-		{
-			if(tv_history_filtered)
-			{
-				do_tv_history_filter()
-			}
-		}
-
-		else if(type === "radio")
-		{
-			if(radio_history_filtered)
-			{
-				do_radio_history_filter()
-			}
-		}
-
-		update_modal_scrollbar(`${t}_change`)
-	}
 }
 
 jQuery.fn.urlize = function(force=false, stop_propagation=false)
@@ -9118,6 +9043,7 @@ function announce_image_change(args={})
 	ic_data.title = title
 	ic_data.date_raw = d
 	ic_data.setter = args.data.image_setter
+	ic_data.message = message
 
 	if(args.action === "change")
 	{
@@ -9151,9 +9077,17 @@ function push_images_changed(data)
 
 	images_changed.push(data)
 
+	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	
+	el.find('.media_history_item_inner').eq(0).text(data.message)
+	el.find('.media_history_item_inner').eq(0).attr("title", data.title)
+	
+	$("#image_history_container").prepend(el)
+
 	if(images_changed.length > media_changed_crop_limit)
 	{
 		images_changed = images_changed.slice(images_changed.length - media_changed_crop_limit)
+		$("#image_history_container").children().last().remove()
 	}
 }
 
@@ -9469,6 +9403,8 @@ function announce_radio_change(args={})
 	ic_data.url = args.data.radio_source
 	ic_data.date_raw = d
 	ic_data.setter = args.data.radio_setter
+	ic_data.title = title
+	ic_data.message = message
 
 	if(args.action === "change")
 	{
@@ -9495,9 +9431,17 @@ function push_radio_changed(data)
 
 	radio_changed.push(data)
 
+	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	
+	el.find('.media_history_item_inner').eq(0).text(data.message)
+	el.find('.media_history_item_inner').eq(0).attr("title", data.title)
+	
+	$("#radio_history_container").prepend(el)
+
 	if(radio_changed.length > media_changed_crop_limit)
 	{
 		radio_changed = radio_changed.slice(radio_changed.length - media_changed_crop_limit)
+		$("#radio_history_container").children().last().remove()
 	}
 }
 
@@ -9745,6 +9689,8 @@ function announce_tv_change(args={})
 	ic_data.url = args.data.tv_source
 	ic_data.date_raw = d
 	ic_data.setter = args.data.tv_setter
+	ic_data.title = title
+	ic_data.message = message
 
 	if(args.action === "change")
 	{
@@ -9772,9 +9718,17 @@ function push_tv_changed(data)
 
 	tv_changed.push(data)
 
+	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	
+	el.find('.media_history_item_inner').eq(0).text(data.message)
+	el.find('.media_history_item_inner').eq(0).attr("title", data.title)
+	
+	$("#tv_history_container").prepend(el)
+
 	if(tv_changed.length > media_changed_crop_limit)
 	{
 		tv_changed = tv_changed.slice(tv_changed.length - media_changed_crop_limit)
+		$("#tv_history_container").children().last().remove()
 	}
 }
 
