@@ -9040,9 +9040,9 @@ function announce_image_change(args={})
 	var ic_data = {}
 
 	ic_data.url = args.data.image_source
-	ic_data.title = title
 	ic_data.date_raw = d
 	ic_data.setter = args.data.image_setter
+	ic_data.title = title
 	ic_data.message = message
 
 	if(args.action === "change")
