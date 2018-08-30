@@ -9047,7 +9047,11 @@ function announce_image_change(args={})
 
 	if(args.action === "change")
 	{
-		push_images_changed(ic_data)
+		if(args.show)
+		{
+			push_images_changed(ic_data)
+		}
+
 		set_modal_image_number()
 		current_image_data = args.data
 	}
@@ -9408,7 +9412,11 @@ function announce_radio_change(args={})
 
 	if(args.action === "change")
 	{
-		push_radio_changed(ic_data)
+		if(args.show)
+		{
+			push_radio_changed(ic_data)
+		}
+
 		current_radio_data = args.data
 	}
 }
@@ -9694,7 +9702,11 @@ function announce_tv_change(args={})
 
 	if(args.action === "change")
 	{
-		push_tv_changed(ic_data)
+		if(args.show)
+		{
+			push_tv_changed(ic_data)
+		}
+
 		current_tv_data = args.data
 	}
 }
@@ -14907,8 +14919,8 @@ function change_lock_radio()
 
 function show_joined()
 {
-	feedback(`You joined ${room_name}`, {save:true})
 	show_topic()
+	feedback(`You joined ${room_name}`, {save:true})
 }
 
 function show_media_menu()
@@ -20049,4 +20061,6 @@ function clear_room(data)
 	announce_image_change({data:current_image_data})
 	announce_tv_change({data:current_tv_data})
 	announce_radio_change({data:current_radio_data})
+
+	show_topic()
 }
