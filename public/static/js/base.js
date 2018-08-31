@@ -5461,18 +5461,13 @@ function add_to_chat(message, save=false, notify=true)
 
 	if(!appended)
 	{
-		if(started && app_focused)
-		{
-			message.addClass("fader")
-		}
-
 		chat_area.append(message)
 
 		if($(".message").length > chat_crop_limit)
 		{
 			$("#chat_area > .message").eq(0).remove()
 		}
-
+		
 		if(save)
 		{
 			message_id += 1
@@ -5483,7 +5478,7 @@ function add_to_chat(message, save=false, notify=true)
 
 	if(started)
 	{
-		update_chat_scrollbar()
+		update_chat_scrollbar(false, appended)
 		goto_bottom()
 	}
 
@@ -20063,4 +20058,12 @@ function clear_room(data)
 	announce_radio_change({data:current_radio_data})
 
 	show_topic()
+}
+
+function fillet(n)
+{
+	for(var i=0; i<n; i++)
+	{
+		feedback("Some feedback")
+	}
 }
