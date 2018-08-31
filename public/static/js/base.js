@@ -5461,6 +5461,11 @@ function add_to_chat(message, save=false, notify=true)
 
 	if(!appended)
 	{
+		if(started && app_focused)
+		{
+			message.addClass("fader")
+		}
+
 		chat_area.append(message)
 
 		if($(".message").length > chat_crop_limit)
@@ -5479,7 +5484,7 @@ function add_to_chat(message, save=false, notify=true)
 	if(started)
 	{
 		update_chat_scrollbar()
-		goto_bottom(false, appended)
+		goto_bottom(false, false)
 	}
 
 	scroll_timer()
