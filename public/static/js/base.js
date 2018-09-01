@@ -9449,9 +9449,9 @@ function push_radio_changed(data)
 	el.find('.media_history_item_inner').eq(0).text(data.message)
 	el.find('.media_history_item_inner').eq(0).attr("title", data.title)
 	
-	$("#radio_history_container").prepend(el)
-
 	el.click(data.onclick)
+
+	$("#radio_history_container").prepend(el)
 
 	if(radio_changed.length > media_changed_crop_limit)
 	{
