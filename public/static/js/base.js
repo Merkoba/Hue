@@ -9084,11 +9084,12 @@ function push_images_changed(data)
 	images_changed.push(data)
 
 	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	var inner = el.find('.media_history_item_inner').eq(0)
 	
-	el.find('.media_history_item_inner').eq(0).text(data.message)
-	el.find('.media_history_item_inner').eq(0).attr("title", data.title)
+	inner.text(data.message)
+	inner.attr("title", data.title)
 
-	el.click(data.onclick)
+	inner.click(data.onclick)
 	
 	$("#image_history_container").prepend(el)
 
@@ -9445,11 +9446,12 @@ function push_radio_changed(data)
 	radio_changed.push(data)
 
 	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	var inner = el.find('.media_history_item_inner').eq(0)
 	
-	el.find('.media_history_item_inner').eq(0).text(data.message)
-	el.find('.media_history_item_inner').eq(0).attr("title", data.title)
-	
-	el.click(data.onclick)
+	inner.text(data.message)
+	inner.attr("title", data.title)
+
+	inner.click(data.onclick)
 
 	$("#radio_history_container").prepend(el)
 
@@ -9739,11 +9741,12 @@ function push_tv_changed(data)
 	tv_changed.push(data)
 
 	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	var inner = el.find('.media_history_item_inner').eq(0)
 	
-	el.find('.media_history_item_inner').eq(0).text(data.message)
-	el.find('.media_history_item_inner').eq(0).attr("title", data.title)
+	inner.text(data.message)
+	inner.attr("title", data.title)
 
-	el.click(data.onclick)
+	inner.click(data.onclick)
 	
 	$("#tv_history_container").prepend(el)
 
@@ -13251,7 +13254,6 @@ function show_modal_image(url, title, date)
 
 	msg_modal_image.show(function()
 	{
-		msg_image_history.close()
 		set_modal_image_number()
 	})
 }
