@@ -5845,11 +5845,6 @@ function after_image_load()
 	current_image_title = image_title
 	current_image_date_raw = image_date_raw
 
-	$("#media_image_frame")
-	.removeData("ratio")
-	.height($("#media_image_frame")[0].naturalHeight)
-	.width($("#media_image_frame")[0].naturalWidth)
-
 	fix_image_frame()
 }
 
@@ -7985,7 +7980,7 @@ function push_played(info, info2=false)
 			<div class='pititle'></div><div class='piartist'></div>
 		</div>`
 
-		h = $(`<div class='played_item'>${pi}</div>`)
+		var h = $(`<div class='played_item'>${pi}</div>`)
 
 		if(info)
 		{
@@ -13928,15 +13923,6 @@ function update_user_profile_image(uname, pi)
 	update_voice_chat_userlist()
 }
 
-function get_frame_ratio(frame_id)
-{
-	var id = `#${frame_id}`
-
-	$(id).data('ratio', $(id).height() / $(id).width()).removeAttr('height').removeAttr('width')
-
-	return $(id).data('ratio')
-}
-
 function fix_visible_video_frame()
 {
 	$(".video_frame").each(function()
@@ -13955,7 +13941,7 @@ function fix_image_frame()
 		return false
 	}
 	
-	if(!$("#media_image_frame").height())
+	if(!$("#media_image_frame")[0].naturalHeight)
 	{
 		return false
 	}
@@ -13975,78 +13961,40 @@ function fix_frame(frame_id)
 
 	var frame = $(id)
 
-	var ratio = frame.data("ratio")
-
-	if(ratio === undefined)
+	if(frame_id === "media_image_frame")
 	{
-		ratio = get_frame_ratio(frame_id)
-	}
-
-	var parent = frame.parent()
-
-	var parent_width = parent.width()
-	var parent_height = parent.height()
-
-	var frame_width = frame.width()
-	var frame_height = frame.height()
-
-	frame_height = frame_width * ratio
-
-	if(frame_width === parent_width && frame_height === parent_height)
-	{
-		return
-	}
-
-	var n = 0
-
-	var max = 200000
-
-	if(frame_height < parent_height && frame_width < parent_width)
-	{
-		while(n < max)
-		{
-			if(frame_height < parent_height && frame_width < parent_width)
-			{
-				frame_width = frame_width + 1
-				frame_height = frame_width * ratio
-			}
-
-			else
-			{
-				frame.width(frame_width)
-				frame.height(frame_height)
-				return
-			}
-
-			max += 1
-		}
-
-		frame.width(frame_width)
-		frame.height(frame_height)
+		var frame_ratio = frame[0].naturalHeight / frame[0].naturalWidth
 	}
 
 	else
 	{
-		while(n < max)
-		{
-			if(frame_height > parent_height || frame_width > parent_width)
-			{
-				frame_width = frame_width - 1
-				frame_height = frame_width * ratio
-			}
+		var frame_ratio = 0.5625
+	}
 
-			else
-			{
-				frame.width(frame_width)
-				frame.height(frame_height)
-				return
-			}
+	var parent = frame.parent()
+	var parent_width = parent.width()
+	var parent_height = parent.height()
+	var parent_ratio = parent_height / parent_width
 
-			max += 1
-		}
+	var frame_width = frame.width()
+	var frame_height = frame.height()
 
-		frame.width(frame_width)
-		frame.height(frame_height)
+	if(parent_ratio === frame_ratio)
+	{
+		frame.width(parent_width)
+		frame.height(parent_height)
+	}
+
+	else if(parent_ratio < frame_ratio)
+	{
+		frame.width(parent_height / frame_ratio)
+		frame.height(parent_height)
+	}
+
+	else if(parent_ratio > frame_ratio)
+	{
+		frame.width(parent_width)
+		frame.height(parent_width * frame_ratio)
 	}
 }
 
