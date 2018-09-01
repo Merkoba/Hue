@@ -2158,6 +2158,12 @@ function apply_theme()
 		color: ${font_color} !important;
 	}
 
+	.highlighted2
+	{
+		background-color: ${background_color_2} !important;
+		color: ${font_color} !important;
+	}
+
 	.nstSlider
 	{
 		background-color: ${background_color_2} !important;
@@ -20029,7 +20035,16 @@ function start_jump_events(container_id, msg_instance)
 		{
 			if($(this).data("message_id") === id)
 			{
-				$(this)[0].scrollIntoView({block:"center"})
+				var el = this
+
+				el.scrollIntoView({block:"center"})
+
+				$(el).addClass("highlighted2")
+
+				setTimeout(function()
+				{
+					$(el).removeClass("highlighted2")
+				}, 2000)
 
 				msg_instance.close()
 

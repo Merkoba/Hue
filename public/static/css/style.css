@@ -1969,6 +1969,11 @@ input[type=text], textarea
 	box-shadow: inset 0 0 2px currentColor;
 }
 
+.highlighted2
+{
+	box-shadow: inset 0 0 2px currentColor;
+}
+
 #credits_container
 {
 	background-color: black;
