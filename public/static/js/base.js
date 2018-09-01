@@ -9045,6 +9045,7 @@ function announce_image_change(args={})
 	ic_data.setter = args.data.image_setter
 	ic_data.title = title
 	ic_data.message = message
+	ic_data.onclick = onclick
 
 	if(args.action === "change")
 	{
@@ -9086,6 +9087,8 @@ function push_images_changed(data)
 	
 	el.find('.media_history_item_inner').eq(0).text(data.message)
 	el.find('.media_history_item_inner').eq(0).attr("title", data.title)
+
+	el.click(data.onclick)
 	
 	$("#image_history_container").prepend(el)
 
@@ -9410,6 +9413,7 @@ function announce_radio_change(args={})
 	ic_data.setter = args.data.radio_setter
 	ic_data.title = title
 	ic_data.message = message
+	ic_data.onclick = onclick
 
 	if(args.action === "change")
 	{
@@ -9446,6 +9450,8 @@ function push_radio_changed(data)
 	el.find('.media_history_item_inner').eq(0).attr("title", data.title)
 	
 	$("#radio_history_container").prepend(el)
+
+	el.click(data.onclick)
 
 	if(radio_changed.length > media_changed_crop_limit)
 	{
@@ -9700,6 +9706,7 @@ function announce_tv_change(args={})
 	ic_data.setter = args.data.tv_setter
 	ic_data.title = title
 	ic_data.message = message
+	ic_data.onclick = onclick
 
 	if(args.action === "change")
 	{
@@ -9735,6 +9742,8 @@ function push_tv_changed(data)
 	
 	el.find('.media_history_item_inner').eq(0).text(data.message)
 	el.find('.media_history_item_inner').eq(0).attr("title", data.title)
+
+	el.click(data.onclick)
 	
 	$("#tv_history_container").prepend(el)
 
