@@ -16010,7 +16010,7 @@ function do_media_history_filter(type)
 		{
 			$(this).css("display", "block")
 
-			var content = $(this).find(".announcement_content").eq(0).text()
+			var content = $(this).find(".media_history_item_inner").eq(0).text()
 
 			var include = false
 
