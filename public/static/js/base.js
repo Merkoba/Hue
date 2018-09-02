@@ -20005,7 +20005,7 @@ function start_jump_events(container_id, msg_instance)
 					$(el).removeClass("highlighted2")
 				}, 2000)
 
-				msg_instance.close()
+				close_all_modals()
 
 				return false
 			}
