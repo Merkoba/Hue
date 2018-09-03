@@ -151,7 +151,6 @@ var change_radio_when_focused = false
 var room_images_mode = "enabled"
 var room_tv_mode = "enabled"
 var room_radio_mode = "enabled"
-var room_voice_chat_mode = "enabled"
 var radio_started = false
 var theme
 var text_color_mode
@@ -233,19 +232,6 @@ var draw_image_scale = 2.4
 var draw_image_num_strokes_save = 500
 var draw_image_max_levels = 200
 var draw_image_open = false
-var voice_chat_joined = false
-var voice_chat_userlist
-var voice_aura_timeouts = {}
-var voice_chat_received_chunks = {}
-var microphone_stream
-var microphone_context = false 
-var microphone_input = false
-var microphone_recorder = false
-var microphone_recording_length = 0
-var microphone_left_channel = []
-var microphone_right_channel = []
-var microphone_volume = 0
-var microphone_averaging = 0.95
 var highlight_same_posts_timeouts = {}
 var highlight_same_posts_delay = 800
 var loaded_chat_layout
@@ -322,8 +308,6 @@ var user_settings =
 	beep_on_highlights: {widget_type:"checkbox"},
 	beep_on_media_change: {widget_type:"checkbox"},
 	beep_on_user_joins: {widget_type:"checkbox"},
-	beep_on_voice_chat_joins: {widget_type:"checkbox"},
-	beep_on_voice_chat_parts: {widget_type:"checkbox"},
 	modal_effects: {widget_type:"checkbox"},
 	highlight_current_username: {widget_type:"checkbox"},
 	case_insensitive_username_highlights: {widget_type:"checkbox"},
@@ -361,7 +345,6 @@ var user_settings =
 	on_lockscreen: {widget_type:"textarea"},
 	on_unlockscreen: {widget_type:"textarea"},
 	afk_on_lockscreen: {widget_type:"checkbox"},
-	microphone_threshold: {widget_type:"text"},
 	chat_layout: {widget_type:"select"},
 	aliases: {widget_type:"textarea"},
 	other_words_to_autocomplete: {widget_type:"textarea"},
@@ -425,7 +408,6 @@ function init()
 	setup_message_area()
 	setup_mouse_events()
 	setup_draw_image()
-	setup_voice_chat()
 	setup_autocomplete()
 	start_other_scrollbars()
 	setup_user_function_titles()
@@ -707,25 +689,21 @@ function start_permissions(data)
 	voice1_images_permission = data.voice1_images_permission
 	voice1_tv_permission = data.voice1_tv_permission
 	voice1_radio_permission = data.voice1_radio_permission
-	voice1_voice_chat_permission = data.voice1_voice_chat_permission
 	
 	voice2_chat_permission = data.voice2_chat_permission
 	voice2_images_permission = data.voice2_images_permission
 	voice2_tv_permission = data.voice2_tv_permission
 	voice2_radio_permission = data.voice2_radio_permission
-	voice2_voice_chat_permission = data.voice2_voice_chat_permission
 	
 	voice3_chat_permission = data.voice3_chat_permission
 	voice3_images_permission = data.voice3_images_permission
 	voice3_tv_permission = data.voice3_tv_permission
 	voice3_radio_permission = data.voice3_radio_permission
-	voice3_voice_chat_permission = data.voice3_voice_chat_permission
 	
 	voice4_chat_permission = data.voice4_chat_permission
 	voice4_images_permission = data.voice4_images_permission
 	voice4_tv_permission = data.voice4_tv_permission
 	voice4_radio_permission = data.voice4_radio_permission
-	voice4_voice_chat_permission = data.voice4_voice_chat_permission
 }
 
 function check_permissions()
@@ -734,12 +712,6 @@ function check_permissions()
 	can_images = room_images_mode === "enabled" && check_permission(role, "images")
 	can_tv = room_tv_mode === "enabled" && check_permission(role, "tv")
 	can_radio = room_radio_mode === "enabled" && check_permission(role, "radio")
-	can_voice_chat = room_voice_chat_mode === "enabled" && check_permission(role, "voice_chat")
-
-	if(!can_voice_chat && voice_chat_joined)
-	{
-		leave_voice_chat()
-	}
 
 	setup_icons()
 }
@@ -823,24 +795,6 @@ function setup_icons()
 	{
 		$("#footer_radio_icon").css("display", "none")
 	}
-
-	if(room_voice_chat_mode !== "disabled")
-	{
-		if(can_voice_chat)
-		{
-			$("#header_voice_chat_container").css("display", "flex")
-		}
-
-		else
-		{
-			$("#header_voice_chat_container").css("display", "none")
-		}
-	}
-
-	else
-	{
-		$("#header_voice_chat_container").css("display", "none")
-	}
 }
 
 function show_role(data)
@@ -886,13 +840,6 @@ function show_role(data)
 	if(can_radio)
 	{
 		feedback("You have radio permission")
-
-		ps += 1
-	}
-
-	if(can_voice_chat)
-	{
-		feedback("You have voice chat permission")
 
 		ps += 1
 	}
@@ -999,8 +946,6 @@ function start_socket()
 			setup_profile_image(data.profile_image)
 			userlist = data.userlist
 			update_userlist()
-			voice_chat_userlist = data.voice_chat_userlist
-			update_voice_chat_userlist()
 			log_enabled = data.log
 			log_messages = data.log_messages
 			setup_theme_and_background(data)
@@ -1336,11 +1281,6 @@ function start_socket()
 			announce_room_radio_mode_change(data)
 		}
 
-		else if(data.type === 'room_voice_chat_mode_change')
-		{
-			announce_room_voice_chat_mode_change(data)
-		}
-
 		else if(data.type === 'theme_change')
 		{
 			announce_theme_change(data)
@@ -1454,26 +1394,6 @@ function start_socket()
 		else if(data.type === 'reaction_received')
 		{
 			show_reaction(data)
-		}
-		
-		else if(data.type === 'voice_chat_user_connected')
-		{
-			voice_chat_user_connected(data)
-		}
-
-		else if(data.type === 'voice_chat_user_disconnected')
-		{
-			voice_chat_user_disconnected(data)
-		}		
-
-		else if(data.type === 'voice_chat_blob_received')
-		{
-			voice_chat_blob_received(data)
-		}
-
-		else if(data.type === 'voice_chat_blob_received_feedback')
-		{
-			show_voice_aura(user_id)
 		}
 
 		else if(data.type === 'cannot_embed_iframe')
@@ -2336,7 +2256,6 @@ function replace_uname_in_userlist(oldu, newu)
 	}
 
 	update_userlist()
-	update_voice_chat_userlist()
 }
 
 function replace_role_in_userlist(uname, rol)
@@ -3217,13 +3136,6 @@ function setup_main_menu()
 		change_room_radio_mode(what)
 	})
 
-	$('#admin_enable_voice_chat').change(function()
-	{
-		var what = $('#admin_enable_voice_chat option:selected').val()
-
-		change_room_voice_chat_mode(what)
-	})
-
 	$('#admin_privacy').change(function()
 	{
 		var what = JSON.parse($('#admin_privacy option:selected').val())
@@ -3545,22 +3457,6 @@ function config_admin_room_radio_mode()
 	})
 }
 
-function config_admin_room_voice_chat_mode()
-{
-	if(!is_admin_or_op())
-	{
-		return false
-	}
-
-	$('#admin_enable_voice_chat').find('option').each(function()
-	{
-		if($(this).val() === room_voice_chat_mode)
-		{
-			$(this).prop('selected', true)
-		}
-	})
-}
-
 function config_admin_theme()
 {
 	if(!is_admin_or_op())
@@ -3599,7 +3495,6 @@ function config_main_menu()
 		config_admin_room_images_mode()
 		config_admin_room_tv_mode()
 		config_admin_room_radio_mode()
-		config_admin_room_voice_chat_mode()
 		config_admin_privacy()
 		config_admin_log_enabled()
 		config_admin_theme()
@@ -7341,16 +7236,6 @@ function execute_command(message, ans)
 		open_draw_image()
 	}
 
-	else if(oiEquals(cmd2, '/joinvoicechat'))
-	{
-		join_voice_chat()
-	}
-
-	else if(oiEquals(cmd2, '/leavevoicechat'))
-	{
-		leave_voice_chat()
-	}
-
 	else if(oiStartsWith(cmd2, '/say'))
 	{
 		process_message(
@@ -7431,16 +7316,6 @@ function execute_command(message, ans)
 	else if(oiStartsWith(cmd2, '/radiomode'))
 	{
 		change_room_radio_mode(arg)
-	}
-
-	else if(oiStartsWith(cmd2, '/voicechatmode'))
-	{
-		change_room_voice_chat_mode(arg)
-	}
-
-	else if(oiStartsWith(cmd2, '/voicepermission'))
-	{
-		change_voice_permission_command(arg)
 	}
 
 	else if(oiStartsWith(cmd2, '/theme'))
@@ -8280,33 +8155,7 @@ function sound_notify(type)
 		return false
 	}
 
-	if(type === "voice_chat_join")
-	{
-		if(get_setting("beep_on_voice_chat_joins"))
-		{
-			var sound = "voice_chat_join"
-		}
-
-		else
-		{
-			return false
-		}
-	}
-
-	else if(type === "voice_chat_left")
-	{
-		if(get_setting("beep_on_voice_chat_parts"))
-		{
-			var sound = "voice_chat_left"
-		}
-
-		else
-		{
-			return false
-		}
-	}
-
-	else if(!app_focused)
+	if(!app_focused)
 	{
 		if(type === "message")
 		{
@@ -11382,26 +11231,6 @@ function setting_beep_on_user_joins_action(type, save=true)
 	}
 }
 
-function setting_beep_on_voice_chat_joins_action(type, save=true)
-{
-	window[type].beep_on_voice_chat_joins = $(`#${type}_beep_on_voice_chat_joins`).prop("checked")
-
-	if(save)
-	{
-		window[`save_${type}`]()
-	}
-}
-
-function setting_beep_on_voice_chat_parts_action(type, save=true)
-{
-	window[type].beep_on_voice_chat_parts = $(`#${type}_beep_on_voice_chat_parts`).prop("checked")
-
-	if(save)
-	{
-		window[`save_${type}`]()
-	}
-}
-
 function setting_modal_effects_action(type, save=true)
 {
 	window[type].modal_effects = $(`#${type}_modal_effects`).prop("checked")
@@ -11956,20 +11785,6 @@ function setting_on_unlockscreen_action(type, save=true)
 function setting_afk_on_lockscreen_action(type, save=true)
 {
 	window[type].afk_on_lockscreen = $(`#${type}_afk_on_lockscreen`).prop("checked")
-
-	if(save)
-	{
-		window[`save_${type}`]()
-	}
-}
-
-function setting_microphone_threshold_action(type, save=true)
-{
-	var val = utilz.round($(`#${type}_microphone_threshold`).val(), 2)
-
-	$(`#${type}_other_words_to_highlight`).val(val)
-
-	window[type].microphone_threshold = val
 
 	if(save)
 	{
@@ -13930,8 +13745,6 @@ function update_user_profile_image(uname, pi)
 			return
 		}
 	}
-
-	update_voice_chat_userlist()
 }
 
 function fix_visible_video_frame()
@@ -14084,31 +13897,6 @@ function change_room_radio_mode(what)
 	socket_emit("change_radio_mode", {what:what})
 }
 
-function change_room_voice_chat_mode(what)
-{
-	if(!is_admin_or_op(role))
-	{
-		not_an_op()
-		return false
-	}
-
-	var modes = ["enabled", "disabled"]
-
-	if(!modes.includes(what))
-	{
-		feedback(`Valid voice chat modes: ${modes.join(" ")}`)
-		return false
-	}
-
-	if(what === room_voice_chat_mode)
-	{
-		feedback(`Voice Chat mode is already set to that`)
-		return false
-	}
-
-	socket_emit("change_voice_chat_mode", {what:what})
-}
-
 function announce_room_images_mode_change(data)
 {
 	public_feedback(`${data.username} changed the images mode to ${data.what}`,
@@ -14150,25 +13938,6 @@ function announce_room_radio_mode_change(data)
 	check_permissions()
 }
 
-function announce_room_voice_chat_mode_change(data)
-{
-	public_feedback(`${data.username} changed the voice chat mode to ${data.what}`,
-	{
-		username: data.username,
-		open_profile: true
-	})
-
-	if(data.what === "disabled")
-	{
-		voice_chat_userlist = []
-		left_voice_chat()
-	}
-
-	update_voice_chat_userlist()
-	set_room_voice_chat_mode(data.what)
-	check_permissions()
-}
-
 function hide_media()
 {
 	stop_videos()
@@ -14181,7 +13950,6 @@ function setup_active_media(data)
 	room_images_mode = data.room_images_mode
 	room_tv_mode = data.room_tv_mode
 	room_radio_mode = data.room_radio_mode
-	room_voice_chat_mode = data.room_voice_chat_mode
 
 	media_visibility_and_locks()
 }
@@ -17117,12 +16885,6 @@ function set_room_radio_mode(what)
 	config_admin_room_radio_mode()
 }
 
-function set_room_voice_chat_mode(what)
-{
-	room_voice_chat_mode = what
-	config_admin_room_voice_chat_mode()
-}
-
 function set_background_mode(what)
 {
 	background_mode = what
@@ -18726,428 +18488,6 @@ function draw_image_change_mode()
 	{
 		set_draw_image_mode_input("pencil")
 	}
-}
-
-function update_voice_chat_userlist()
-{
-	$("#voice_chat_num_users").text(voice_chat_userlist.length)
-
-	if(voice_chat_joined)
-	{
-		var s = ""
-
-		for(var id of voice_chat_userlist)
-		{
-			var u = get_user_by_id(id)
-
-			s += `
-			<div class='voice_chat_item' data-user_id='${u.user_id}'>
-				<div class='voice_chat_profile_image_container' id='voice_chat_profile_image_container_${u.user_id}'>
-					<img class='voice_chat_profile_image' src='${u.profile_image}' title='${u.username}'>
-				</div>
-			</div>`
-		}
-
-		$("#voice_chat").html(s)
-	}
-}
-
-function toggle_join_voice_chat()
-{
-	if(voice_chat_joined)
-	{
-		leave_voice_chat()
-	}
-
-	else
-	{
-		join_voice_chat()
-	}
-}
-
-function join_voice_chat()
-{
-	if(can_voice_chat)
-	{
-		start_microphone()
-	}
-}
-
-function leave_voice_chat()
-{
-	socket_emit("leave_voice_chat", {})
-}
-
-function joined_voice_chat()
-{
-	if(!voice_chat_joined)
-	{
-		voice_chat_joined = true
-
-		$("#voice_chat_container").css("height", "80px")
-		$("#voice_chat_container").css("min-height", "80px")
-
-		after_join_or_leave_voice_chat()
-	}
-}
-
-function left_voice_chat()
-{
-	if(voice_chat_joined)
-	{
-		voice_chat_joined = false
-
-		stop_microphone_stream()
-
-		$("#voice_chat_container").css("height", 0)
-		$("#voice_chat_container").css("min-height", 0)
-
-		after_join_or_leave_voice_chat()
-	}
-}
-
-function after_join_or_leave_voice_chat()
-{
-	fix_frames()
-	goto_bottom(false, false)
-}
-
-function voice_chat_user_connected(data)
-{
-	if(!voice_chat_userlist.includes(data.user_id))
-	{
-		voice_chat_userlist.push(data.user_id)
-
-		if(data.user_id === user_id)
-		{
-			joined_voice_chat()
-		}
-
-		if(voice_chat_joined)
-		{
-			sound_notify("voice_chat_join")
-		}
-		
-		update_voice_chat_userlist()
-	}
-}
-
-function voice_chat_user_disconnected(data)
-{
-	if(voice_chat_userlist.includes(data.user_id))
-	{
-		for(var i=0; i<voice_chat_userlist.length; i++)
-		{
-			var id = voice_chat_userlist[i]
-
-			if(id === data.user_id)
-			{
-				voice_chat_userlist.splice(i, 1)
-				break
-			}
-		}
-
-		if(voice_chat_joined)
-		{
-			sound_notify("voice_chat_left")
-		}
-
-		if(data.user_id === user_id)
-		{
-			left_voice_chat()
-		}
-
-		update_voice_chat_userlist()
-	}
-}
-
-function start_microphone()
-{
-	navigator.mediaDevices.getUserMedia({audio:true, video:false})
-
-	.then(function(stream)
-	{
-		var AudioContext = window.AudioContext
-
-		microphone_stream = stream
-		microphone_context = new AudioContext()
-		microphone_input = microphone_context.createMediaStreamSource(microphone_stream)
-		microphone_recorder = microphone_context.createScriptProcessor(microphone_buffer_size, 2, 2)
-		
-		microphone_left_channel = []
-		microphone_right_channel = []
-		microphone_volume = 0
-		microphone_averaging = 0.95
-
-		microphone_recorder.onaudioprocess = function(e)
-		{
-			process_microphone(e)
-		}
-
-		microphone_input.connect(microphone_recorder)
-
-		microphone_recorder.connect(microphone_context.destination)
-
-		socket_emit("join_voice_chat", {})
-	})
-
-	.catch(function(err)
-	{ 
-		msg_info.show("No microphone detected")
-	})
-}
-
-function process_microphone(e)
-{
-	var acceptable = check_process_microphone(e)
-
-	if(acceptable)
-	{
-		microphone_left_channel.push(new Float32Array(e.inputBuffer.getChannelData(0)))
-		microphone_right_channel.push(new Float32Array(e.inputBuffer.getChannelData(1)))
-		
-		microphone_recording_length += microphone_buffer_size
-		
-		if(microphone_recording_length > microphone_buffer_size * microphone_buffer_multiplier)
-		{	
-			var blob = microphone_data_to_blob()
-
-			microphone_recording_length = 0
-			microphone_left_channel = []
-			microphone_right_channel = []
-
-			socket_emit("voice_chat_blob", {array_buffer:blob})
-		}
-	}
-
-	else
-	{
-		microphone_recording_length = 0
-		microphone_left_channel = []
-		microphone_right_channel = []
-	}
-}
-
-function check_process_microphone(e)
-{
-	var buf = e.inputBuffer.getChannelData(0)
-	var buf_length = buf.length
-	var sum = 0
-	var x
-
-	// Do a root-mean-square on the samples: sum up the squares...
-	for (var i=0; i<buf_length; i++)
-	{
-		x = buf[i]
-		sum += x * x
-	}
-
-	// ... then take the square root of the sum.
-	var rms =  Math.sqrt(sum / buf_length)
-
-	// Now smooth this out with the averaging factor applied
-	// to the previous sample - take the max here because we
-	// want "fast attack, slow release."
-	microphone_volume = Math.max(rms, microphone_volume * microphone_averaging)
-
-	if(microphone_volume >= get_setting("microphone_threshold"))
-	{
-		return true
-	}
-
-	else
-	{
-		return false
-	}
-}
-
-function microphone_data_to_blob()
-{
-	// we flat the left and right channels down
-	// Float32Array[] => Float32Array
-	var left_bugger = flatten_array(microphone_left_channel, microphone_recording_length)
-	var right_buffer = flatten_array(microphone_right_channel, microphone_recording_length)
-	
-	// we interleave both channels together
-	// [left[0],right[0],left[1],right[1],...]
-	var interleaved = interleave(left_bugger, right_buffer)
-	
-	// we create our wav file
-	var buffer = new ArrayBuffer(44 + interleaved.length * 2)
-	var view = new DataView(buffer)
-	
-	// RIFF chunk descriptor
-	writeUTFBytes(view, 0, 'RIFF')
-	view.setUint32(4, 44 + interleaved.length * 2, true)
-	writeUTFBytes(view, 8, 'WAVE')
-	
-	// FMT sub-chunk
-	writeUTFBytes(view, 12, 'fmt ')
-	view.setUint32(16, 16, true) // chunkSize
-	view.setUint16(20, 1, true) // wFormatTag
-	view.setUint16(22, 2, true) // wChannels: stereo (2 channels)
-	view.setUint32(24, microphone_sample_rate, true) // dwSamplesPerSec
-	view.setUint32(28, microphone_sample_rate * 4, true) // dwAvgBytesPerSec
-	view.setUint16(32, 4, true) // wBlockAlign
-	view.setUint16(34, 16, true) // wBitsPerSample
-	
-	// data sub-chunk
-	writeUTFBytes(view, 36, 'data')
-	view.setUint32(40, interleaved.length * 2, true)
-	
-	// write the PCM samples
-	var index = 44
-	var volume = 1
-
-	for(var i=0; i<interleaved.length; i++) 
-	{
-		view.setInt16(index, interleaved[i] * (0x7FFF * volume), true)
-		index += 2
-	}
-
-	// our final blob
-	return new Blob([view], {type:'audio/wav'})
-}
-
-function flatten_array(channel_buffer, recording_length) 
-{
-    var result = new Float32Array(recording_length)
-
-    var offset = 0
-
-    for(var i=0; i<channel_buffer.length; i++) 
-    {
-        var buffer = channel_buffer[i]
-        result.set(buffer, offset)
-        offset += buffer.length
-    }
-
-    return result
-}
-
-function interleave(left_channel, right_channel) 
-{
-	var length = left_channel.length + right_channel.length
-	var result = new Float32Array(length)
-	var input_index = 0
-
-	for(var index=0; index<length;) 
-	{
-		result[index++] = left_channel[input_index]
-		result[index++] = right_channel[input_index]
-		input_index++
-	}
-
-	return result
-}
-
-function writeUTFBytes(view, offset, string) 
-{
-	for(var i=0; i<string.length; i++) 
-	{
-		view.setUint8(offset + i, string.charCodeAt(i))
-	}
-}
-
-function stop_microphone_stream()
-{
-	if(microphone_recorder)
-	{
-		microphone_recorder.disconnect(microphone_context.destination)
-		microphone_input.disconnect(microphone_recorder)
-		microphone_stream.getAudioTracks()[0].stop()
-	}
-}
-
-function voice_chat_blob_received(data)
-{
-	if(voice_chat_joined)
-	{
-		var blob = new Blob([data.array_buffer], {type:'audio/wav'})
-		
-		if(voice_chat_received_chunks[data.user_id] === undefined)
-		{
-			voice_chat_received_chunks[data.user_id] = [blob]
-			
-			setTimeout(function()
-			{
-				voice_chat_play_chunk(data.user_id)
-			}, 500)
-		}
-
-		else
-		{
-			voice_chat_received_chunks[data.user_id].push(blob)
-		}
-	}
-}
-
-function voice_chat_play_chunk(id)
-{
-	var chunk = voice_chat_received_chunks[id].shift()
-
-	if(chunk === undefined)
-	{
-		voice_chat_received_chunks[id] = undefined
-		return false
-	}
-
-	var audioblob = new Audio(window.URL.createObjectURL(chunk))
-
-	var duration = chunk.size / microphone_sample_rate / microphone_buffer_multiplier / 2
-
-	setTimeout(function()
-	{
-		voice_chat_play_chunk(id)
-	}, duration * 1000 * 0.9)
-
-	audioblob.play()
-	
-	show_voice_aura(id)
-}
-
-function show_voice_aura(id)
-{
-	if(voice_aura_timeouts[id] === undefined)
-	{
-		add_voice_aura(id)
-	}
-
-	else
-	{
-		clearTimeout(voice_aura_timeouts[id])
-	}
-
-	voice_aura_timeouts[id] = setTimeout(function()
-	{
-		remove_voice_aura(id)
-	}, max_voice_chat_inactivity)
-}
-
-function add_voice_aura(id)
-{
-	$(`#voice_chat_profile_image_container_${id}`).addClass("aura")
-}
-
-function remove_voice_aura(id, clr=false)
-{
-	if(clr)
-	{
-		clearTimeout(voice_aura_timeouts[id])
-	}
-
-	$(`#voice_chat_profile_image_container_${id}`).removeClass("aura")
-
-	voice_aura_timeouts[id] = undefined
-}
-
-function setup_voice_chat()
-{
-	$("#voice_chat").on("click", ".voice_chat_item", function()
-	{
-		var u = get_user_by_id($(this).data("user_id"))
-		show_profile(u.username)
-	})
 }
 
 function setup_autocomplete()

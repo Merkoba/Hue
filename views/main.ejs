@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?version=19"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2261"></script>
+		<script src="/static/js/base.js?version=2262"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=453"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=454"/>
 
 		<script>
 
@@ -70,10 +70,6 @@
 
 			<div class="columns_container">
 
-				<div id='voice_chat_container' class='bg2'>
-					<div id='voice_chat'></div>
-				</div>
-
 				<div id='header' class='unselectable bg2 panel'>
 
 					<div id='header_items'>
@@ -86,11 +82,6 @@
 
 							<div class='header_separator'>|</div>
 							<div class='pointer action' id='usercount' onclick='show_userlist()'></div>
-
-							<div id="header_voice_chat_container" class="pointer action nicetitle" title="Join/Leave Voice Chat" onclick="toggle_join_voice_chat()">
-								<div class='header_separator'>|</div>
-								<div>Voice Chat (<div id='voice_chat_num_users'></div>)</div>
-							</div>
 
 							<div id='header_radio'>
 								
@@ -397,15 +388,6 @@
 					</select>
 
 					<div class='spacer1'></div>
-					
-					<div class='small_padding_bottom'>Voice Chat</div>
-
-					<select id='admin_enable_voice_chat' class='modal_select'>
-						<option value="enabled">Enabled</option>
-						<option value="disabled">Disabled</option>
-					</select>
-
-					<div class='spacer1'></div>
 					<div class='spacer3'></div>
 
 					<div class='small_padding_bottom'>Theme</div>
@@ -483,11 +465,6 @@
 							<div class='setting_title'>Can Change the Radio</div>
 							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice1_radio_permission" data-ptype="voice1_radio_permission">
 
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Voice Chat</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice1_voice_chat_permission" data-ptype="voice1_voice_chat_permission">
-
 							<div class='spacer3'></div>
 
 						</div>
@@ -521,11 +498,6 @@
 
 							<div class='setting_title'>Can Change the Radio</div>
 							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice2_radio_permission" data-vtype="v2" data-ptype="voice2_radio_permission">
-
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Voice Chat</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice2_voice_chat_permission" data-ptype="voice2_voice_chat_permission">
 
 							<div class='spacer3'></div>
 
@@ -561,11 +533,6 @@
 							<div class='setting_title'>Can Change the Radio</div>
 							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice3_radio_permission" data-vtype="v3" data-ptype="voice3_radio_permission">
 
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Voice Chat</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice3_voice_chat_permission" data-ptype="voice3_voice_chat_permission">
-
 							<div class='spacer3'></div>
 
 						</div>
@@ -599,11 +566,6 @@
 
 							<div class='setting_title'>Can Change the Radio</div>
 							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice4_radio_permission" data-vtype="v4" data-ptype="voice4_radio_permission">
-
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Voice Chat</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice4_voice_chat_permission" data-ptype="voice4_voice_chat_permission">
 
 						</div>
 
@@ -759,7 +721,6 @@
 						<div class='settings_window_category border_bottom' data-category_container='settings_window_category_content_afk_{{type}}' data-category='afk'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>AFK</span><span class='settings_window_category_status'></span></div>
 						<div class='settings_window_category' data-category_container='settings_window_category_content_beeps_{{type}}' data-category='beeps'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Beeps</span><span class='settings_window_category_status'></span></div>
 						<div class='settings_window_category' data-category_container='settings_window_category_content_appearance_{{type}}' data-category='appearance'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Appearance</span><span class='settings_window_category_status'></span></div>
-						<div class='settings_window_category' data-category_container='settings_window_category_content_voice_chat_{{type}}' data-category='voice_chat'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Voice Chat</span><span class='settings_window_category_status'></span></div>
 						<div class='settings_window_category' data-category_container='settings_window_category_content_functions_{{type}}' data-category='functions'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Functions</span><span class='settings_window_category_status'></span></div>
 						<div class='settings_window_category' data-category_container='settings_window_category_content_misc_{{type}}' data-category='misc'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Misc</span><span class='settings_window_category_status'></span></div>
 						<div class='spacer3'></div>
@@ -1129,24 +1090,6 @@
 							</div>
 						</div>
 
-					</div>
-					
-					<div class='settings_category settings_window_category_container' id='settings_window_category_content_voice_chat_{{type}}' data-category='voice_chat'>
-
-						<div class='settings_item' data-setting='beep_on_voice_chat_joins'>
-							<div class="setting_title">Beep On Voice Chat Joins</div>
-							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_beep_on_voice_chat_joins">
-						</div>
-
-						<div class='settings_item' data-setting='beep_on_voice_chat_parts'>
-							<div class="setting_title">Beep On Voice Chat Parts</div>
-							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_beep_on_voice_chat_parts">
-						</div>
-
-						<div class='settings_item' data-setting='microphone_threshold'>
-							<div class="setting_title">Microphone Threshold</div>
-							<input type="text" class="{{type}}_settings_item_control setting_input_text_smaller" id="{{type}}_microphone_threshold">
-						</div>
 					</div>
 
 					<div class='settings_category settings_window_category_container' id='settings_window_category_content_misc_{{type}}' data-category='misc'>
@@ -1784,8 +1727,6 @@
 			<div class='info_item help_item'>/unlockscreen: Unlocks the screen.</div>
 			<div class='info_item help_item'>/togglelockscreen: Locks or unlocks the screen.</div>
 			<div class='info_item help_item'>/drawimage: Opens the window to draw an image.</div>
-			<div class='info_item help_item'>/joinvoicechate: Joins the voice chat.</div>
-			<div class='info_item help_item'>/leavevoicechat: Leaves the voice chat.</div>
 			<div class='info_item help_item'>/say: Sends a normal chat message. Useful if you want to make a chain of commands that starts with a message.</div>
 			<div class='info_item help_item'>/clearinput: Clears the text input.</div>
 			<div class='info_item help_item'>/sleep x: Pauses the execution of a chain of commands. For instance: /ping && /sleep 1000 && /ping, will execute two pings 1 second apart. If no argument is provided it defaults to 1000.</div>
@@ -1850,8 +1791,6 @@
 			<div class='info_item help_item'>/imagesmode x: Changes the images mode. Valid modes include enabled, disabled, and locked.</div>
 			<div class='info_item help_item'>/tvmode x: Changes the tv mode. Valid modes include enabled, disabled, and locked.</div>
 			<div class='info_item help_item'>/radiomode x: Changes the radio mode. Valid modes include enabled, disabled, and locked.</div>
-			<div class='info_item help_item'>/voicechatmode x: Changes the voice chat mode. Valid modes include enabled, and disabled.</div>
-			<div class='info_item help_item'>/voicepermission x: Changes a specific voice permission. Format: /voicepermission {number} {type} {value}. For example: /voicepermission 2 tv true. Valid types are images, tv, radio, or voice_chat.</div>
 			<div class='info_item help_item'>/broadcast: Opens a window to write a message to be sent to the entire room.</div>
 			<div class='info_item help_item'>/systembroadcast: (Only for superusers) Opens a window to write a message to be sent to the entire system.</div>
 			<div class='info_item help_item'>/systemrestart: (Only for superusers) Sends a signal to every connected client to restart the application.</div>
@@ -1871,8 +1810,6 @@
 		<audio id='audio_pup2' src='/static/audio/pup2.mp3?version=1' preload="auto"></audio>
 		<audio id='audio_join' src='/static/audio/join.mp3?version=2' preload="auto"></audio>
 		<audio id='audio_highlight' src='/static/audio/highlight.mp3?version=1' preload="auto"></audio>
-		<audio id='audio_voice_chat_join' src='/static/audio/voice_chat_join.mp3?version=1' preload="auto"></audio>
-		<audio id='audio_voice_chat_left' src='/static/audio/voice_chat_left.mp3?version=1' preload="auto"></audio>
 
 		<div id='youtube_player'></div>
 

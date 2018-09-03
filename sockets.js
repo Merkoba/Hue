@@ -25,7 +25,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const image_types = ["image/jpeg", "image/png", "image/gif"]
 	const image_extensions = ["jpg", "jpeg", "png", "gif"]
 	const reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
-	const media_types = ["images", "tv", "radio", "voice_chat"]
+	const media_types = ["images", "tv", "radio"]
 
 	const s3 = new aws.S3(
 	{
@@ -200,7 +200,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.hue_locked = false
 		socket.hue_info1 = ""
 		socket.hue_typing_counter = 0
-		socket.hue_voice_chat_counter = 0
 	}
 
 	handler.public.join_room = async function(socket, data)
@@ -463,7 +462,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			topic_setter: info.topic_setter,
 			topic_date: info.topic_date,
 			userlist: handler.prepare_userlist(handler.get_userlist(socket.hue_room_id)),
-			voice_chat_userlist: handler.prepare_voice_chat_userlist(rooms[socket.hue_room_id].voice_chat_sockets),
 			log: info.log,
 			log_messages: info.log_messages.concat(rooms[socket.hue_room_id].log_messages),
 			role: socket.hue_role,
@@ -2308,36 +2306,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed the radio mode to "${data.what}"`)
 	}
 
-	handler.public.change_voice_chat_mode = function(socket, data)
-	{
-		if(!handler.is_admin_or_op(socket))
-		{
-			return handler.get_out(socket)
-		}
-
-		if(data.what !== "enabled" && data.what !== "disabled")
-		{
-			return handler.get_out(socket)
-		}
-
-		rooms[socket.hue_room_id].voice_chat_sockets = []
-
-		rooms[socket.hue_room_id].voice_chat_mode = data.what
-
-		db_manager.update_room(socket.hue_room_id,
-		{
-			voice_chat_mode: data.what
-		})
-
-		handler.room_emit(socket, 'room_voice_chat_mode_change',
-		{
-			what: data.what,
-			username: socket.hue_username
-		})
-
-		handler.push_admin_log_message(socket, `changed the voice chat mode to "${data.what}"`)
-	}
-
 	handler.public.change_theme = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -2544,23 +2512,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(socket.hue_user_id === undefined)
 		{
 			return
-		}
-
-		if(socket.hue_room_id !== undefined)
-		{
-			if(rooms[socket.hue_room_id] !== undefined)
-			{
-				var voice_chat_sockets = rooms[socket.hue_room_id].voice_chat_sockets
-
-				for(var socc of voice_chat_sockets)
-				{
-					if(socc.hue_user_id === socket.hue_user_id)
-					{
-						handler.voice_chat_disconnect_socket(socket)
-						break
-					}
-				}
-			}
 		}
 
 		if(handler.user_already_connected(socket))
@@ -3961,108 +3912,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.public.join_voice_chat = function(socket, data)
-	{
-		if(!handler.check_permission(socket, "voice_chat"))
-		{
-			return false
-		}
-
-		var connected = rooms[socket.hue_room_id].voice_chat_sockets
-
-		for(var socc of connected)
-		{
-			if(socc.hue_user_id === socket.hue_user_id)
-			{
-				return false
-			}
-		}
-
-		connected.push(socket)
-
-		var userlist = []
-
-		for(var socc of connected)
-		{
-			userlist.push(socc.hue_user_id)
-		}
-
-		handler.room_emit(socket, "voice_chat_user_connected", {user_id:socket.hue_user_id})
-	}
-
-	handler.voice_chat_disconnect_socket = function(socket)
-	{
-		var connected = rooms[socket.hue_room_id].voice_chat_sockets
-
-		var disconnected = false
-
-		for(var i=0; i<connected.length; i++)
-		{
-			var u = connected[i]
-
-			if(u.hue_user_id === socket.hue_user_id)
-			{
-				connected.splice(i, 1)
-				disconnected = true
-				break
-			}
-		}
-
-		if(disconnected)
-		{
-			handler.room_emit(socket, "voice_chat_user_disconnected", {user_id:socket.hue_user_id})
-		}
-	}
-
-	handler.public.leave_voice_chat = function(socket, data)
-	{
-		handler.voice_chat_disconnect_socket(socket)
-	}
-
-	handler.public.voice_chat_blob = async function(socket, data)
-	{
-		if(!handler.check_permission(socket, "voice_chat"))
-		{
-			handler.voice_chat_disconnect_socket(socket)
-			return false
-		}
-
-		if(data.array_buffer.length / 1024 > config.max_microphone_chunk_size)
-		{
-			return handler.get_out(socket)
-		}
-
-		socket.hue_voice_chat_counter += 1
-
-		if(socket.hue_voice_chat_counter >= 100)
-		{
-			var spam_ans = await handler.add_spam(socket)
-
-			if(!spam_ans)
-			{
-				return false
-			}
-
-			socket.hue_voice_chat_counter = 0
-		}
-
-		var connected = rooms[socket.hue_room_id].voice_chat_sockets
-
-		for(var socc of connected)
-		{
-			if(socc.hue_user_id !== socket.hue_user_id)
-			{
-				handler.user_emit(socc, "voice_chat_blob_received", 
-				{
-					user_id: socket.hue_user_id, 
-					array_buffer: data.array_buffer
-				})
-			}
-		}
-
-		handler.user_emit(socket, "voice_chat_blob_received_feedback", {})
-	}
-
 	handler.public.get_admin_activity = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -4120,27 +3969,21 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			voice1_images_permission: info.voice1_images_permission,
 			voice1_tv_permission: info.voice1_tv_permission,
 			voice1_radio_permission: info.voice1_radio_permission,
-			voice1_voice_chat_permission: info.voice1_voice_chat_permission,
 			voice2_chat_permission: info.voice2_chat_permission,
 			voice2_images_permission: info.voice2_images_permission,
 			voice2_tv_permission: info.voice2_tv_permission,
 			voice2_radio_permission: info.voice2_radio_permission,
-			voice2_voice_chat_permission: info.voice2_voice_chat_permission,
 			voice3_chat_permission: info.voice3_chat_permission,
 			voice3_images_permission: info.voice3_images_permission,
 			voice3_tv_permission: info.voice3_tv_permission,
 			voice3_radio_permission: info.voice3_radio_permission,
-			voice3_voice_chat_permission: info.voice3_voice_chat_permission,
 			voice4_chat_permission: info.voice4_chat_permission,
 			voice4_images_permission: info.voice4_images_permission,
 			voice4_tv_permission: info.voice4_tv_permission,
 			voice4_radio_permission: info.voice4_radio_permission,
-			voice4_voice_chat_permission: info.voice4_voice_chat_permission,
 			images_mode: info.images_mode,
 			tv_mode: info.tv_mode,
 			radio_mode: info.radio_mode,
-			voice_chat_mode: info.voice_chat_mode,
-			voice_chat_sockets: [],
 			current_image_source: info.image_source,
 			current_tv_source: info.tv_source,
 			current_radio_source: info.radio_source,
@@ -4542,14 +4385,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					}
 				}
 
-				if(m === "voice_chat_blob")
-				{
-					if(key === "array_buffer")
-					{
-						continue
-					}
-				}
-
 				var s = JSON.stringify(d)
 
 				if(td === "number")
@@ -4609,18 +4444,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				role: item.role,
 				profile_image: item.profile_image
 			})
-		}
-
-		return userlist2
-	}
-
-	handler.prepare_voice_chat_userlist = function(sockets)
-	{
-		var userlist2 = []
-
-		for(var socc of sockets)
-		{
-			userlist2.push(socc.hue_user_id)
 		}
 
 		return userlist2
