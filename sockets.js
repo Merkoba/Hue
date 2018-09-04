@@ -570,8 +570,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			date: date
 		})
 
-		rooms[socket.hue_room_id].activity = true
-
 		rooms[socket.hue_room_id].modified = Date.now()
 
 		if(rooms[socket.hue_room_id].log)
@@ -588,7 +586,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				date: date
 			}
 
-			rooms[socket.hue_room_id].log_messages.push(message)
+			handler.push_log_message(socket, message)
 		}
 	}
 
@@ -1575,8 +1573,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			radio_query: radioinfo.radio_query
 		})
 
-		rooms[socket.hue_room_id].activity = true
-
 		rooms[socket.hue_room_id].modified = Date.now()
 
 		if(rooms[socket.hue_room_id].log)
@@ -1595,7 +1591,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				date: date
 			}
 
-			rooms[socket.hue_room_id].log_messages.push(message)
+			handler.push_log_message(socket, message)
 		}
 
 		rooms[socket.hue_room_id].current_radio_source = radioinfo.radio_source
@@ -2024,8 +2020,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_query: tvinfo.tv_query
 		})
 
-		rooms[socket.hue_room_id].activity = true
-
 		rooms[socket.hue_room_id].modified = Date.now()
 
 		if(rooms[socket.hue_room_id].log)
@@ -2044,7 +2038,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				date: date
 			}
 
-			rooms[socket.hue_room_id].log_messages.push(message)
+			handler.push_log_message(socket, message)
 		}
 
 		rooms[socket.hue_room_id].current_tv_source = tvinfo.tv_source
@@ -3112,8 +3106,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			image_query: data.query
 		})
 
-		rooms[socket.hue_room_id].activity = true
-
 		rooms[socket.hue_room_id].modified = Date.now()
 
 		if(rooms[socket.hue_room_id].log)
@@ -3132,7 +3124,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				date: date
 			}
 
-			rooms[socket.hue_room_id].log_messages.push(message)
+			handler.push_log_message(socket, message)
 		}
 
 		rooms[socket.hue_room_id].current_image_source = image_source
@@ -3532,7 +3524,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		var spsize = Math.floor(fsize / (config.max_image_size / 20))
+		var spsize = Math.floor(fsize / (config.max_image_size / 10))
 
 		if(file.spsize !== spsize)
 		{
@@ -3614,7 +3606,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		socket.hue_typing_counter += 1
 
-		if(socket.hue_typing_counter >= 100)
+		if(socket.hue_typing_counter >= 50)
 		{
 			var spam_ans = await handler.add_spam(socket)
 
@@ -3921,8 +3913,6 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			profile_image: socket.hue_profile_image
 		})
 
-		rooms[socket.hue_room_id].activity = true
-
 		rooms[socket.hue_room_id].modified = Date.now()
 
 		if(rooms[socket.hue_room_id].log)
@@ -3939,7 +3929,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 				date: Date.now()
 			}
 
-			rooms[socket.hue_room_id].log_messages.push(message)
+			handler.push_log_message(socket, message)
 		}
 	}
 
@@ -4486,10 +4476,15 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		return userlist2
 	}
 
+	handler.push_log_message = function(socket, message)
+	{
+		rooms[socket.hue_room_id].activity = true
+		rooms[socket.hue_room_id].log_messages.push(message)
+	}
+
 	handler.push_admin_log_message = function(socket, content)
 	{
 		rooms[socket.hue_room_id].activity = true
-
 		rooms[socket.hue_room_id].modified = Date.now()
 
 		var message =
