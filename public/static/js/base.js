@@ -12,10 +12,6 @@ var room_state
 var is_public
 var room_name
 var username
-var image_source = ''
-var image_setter = ''
-var image_size = 0
-var image_date = ''
 var topic = ''
 var topic_setter = ''
 var topic_date = ''
@@ -36,20 +32,9 @@ var can_chat = false
 var can_images = false
 var can_radio = false
 var can_tv = false
-var radio_type = ''
-var radio_source = ''
-var radio_title = ''
-var radio_setter = ''
-var radio_date = ''
 var loaded_radio_source = ""
 var loaded_radio_type = "radio"
 var loaded_radio_metadata = ""
-var tv_type = ''
-var tv_source = ''
-var tv_title = ''
-var tv_metadata = ''
-var tv_setter = ''
-var tv_date = ''
 var tab_info = {}
 var crm = false
 var orb = false
@@ -189,8 +174,8 @@ var radio_changed = []
 var modal_image_open = false
 var current_modal_image_index
 var current_image_source = ""
-var current_image_title = ""
-var current_image_date_raw = 0
+var current_image_info = ""
+var current_image_date = 0
 var date_joined
 var user_email
 var user_reg_date
@@ -594,7 +579,7 @@ function room_name_edit()
 
 function get_proper_media_url(type)
 {
-	var source = window[`${type}_source`]
+	var source = window[`current_${type}_data`][`${type}_source`]
 
 	if(source.startsWith("/"))
 	{
@@ -962,11 +947,7 @@ function start_socket()
 			check_firstime()
 			get_input_history()
 			show_joined()
-
-			setup_image(data)
-			setup_tv(data)
-			setup_radio(data)
-
+			start_active_media()
 			check_maxers()
 			config_main_menu()
 			start_metadata_loop()
@@ -1010,32 +991,27 @@ function start_socket()
 
 		else if(data.type === 'changed_image_source')
 		{
-			announce_image_change({data:data})
-			setup_image(data)
+			setup_image("change", data)
 		}
 
 		else if(data.type === 'changed_tv_source')
 		{
-			announce_tv_change({data:data})
-			setup_tv(data)
+			setup_tv("change", data)
 		}
 
 		else if(data.type === 'restarted_tv_source')
 		{
-			announce_tv_change({action:"restart", uname:data.username})
-			change({type:"tv", force:true, play:true})
+			setup_tv("restart")
 		}
 
 		else if(data.type === 'changed_radio_source')
 		{
-			announce_radio_change({data:data})
-			setup_radio(data)
+			setup_radio("change", data)
 		}
 
 		else if(data.type === 'restarted_radio_source')
 		{
-			announce_radio_change({action:"restart", uname:data.username})
-			change({type:"radio", force:true, play:true})
+			setup_radio("restart")
 		}
 
 		else if(data.type === 'profile_image_changed')
@@ -1224,6 +1200,21 @@ function start_socket()
 		else if(data.type === 'videonotfound')
 		{
 			feedback("The video couldn't be found")
+		}
+
+		else if(data.type === 'image_cooldown_wait')
+		{
+			feedback("The image was changed recently. You must wait a while before changing it again")
+		}
+
+		else if(data.type === 'tv_cooldown_wait')
+		{
+			feedback("The tv was changed recently. You must wait a while before changing it again")
+		}
+
+		else if(data.type === 'radio_cooldown_wait')
+		{
+			feedback("The radio was changed recently. You must wait a while before changing it again")
 		}
 
 		else if(data.type === 'room_created')
@@ -1423,65 +1414,407 @@ function start_socket()
 	})
 }
 
-function setup_radio(data)
-{
-	if(!data)
-	{
-		data = {}
+function setup_image(mode, odata={})
+{	
+	var data = {}
 
-		data.radio_source = ''
-		data.radio_setter = ''
-		data.radio_date = 0
+	data.image_type = odata.image_type
+	data.image_source = odata.image_source
+	data.image_setter = odata.image_setter
+	data.image_size = odata.image_size
+	data.image_date = odata.image_date
+	data.image_query = odata.image_query
+
+	data.image_nice_date = data.image_date ? nice_date(data.image_date) : nice_date()
+
+	if(!data.image_setter)
+	{
+		data.image_setter = "The system"
 	}
 
-	if(data.radio_source === '')
+	if(!data.image_source)
 	{
-		radio_source = default_radio_source
-		radio_title = default_radio_title
-		radio_type = default_radio_type
+		data.image_source = default_image_source
 	}
 
-	else
+	if(data.image_source === default_image_source)
 	{
-		radio_source = data.radio_source
-		radio_title = data.radio_title
-		radio_type = data.radio_type
+		data.image_info = `Setter: ${data.image_setter} | ${data.image_nice_date}`
+		data.image_message = `${data.image_setter} changed the image to: default`
 	}
 
-	radio_setter = data.radio_setter
-	radio_date = nice_date(data.radio_date)
+	else if(data.image_type === "link")
+	{
+		data.image_info = `Setter: ${data.image_setter} | ${data.image_nice_date}`
+		data.image_message = `${data.image_setter} changed the image`
+	}
 
-	change({type:"radio", force:true})
+	else if(data.image_type === "upload")
+	{
+		data.image_info = `Setter: ${data.image_setter} | ${data.image_nice_date} | Size: ${get_size_string(data.image_size)}`
+		data.image_message = `${data.image_setter} changed the image`
+	}
+
+	if(data.image_query)
+	{
+		data.image_info += ` | Search Term: "${data.image_query}"`
+	}
+
+	data.image_onclick = function()
+	{
+		show_modal_image(data.image_source, data.image_info, data.image_nice_date)
+	}
+
+	if(mode === "change" || mode === "show")
+	{
+		chat_announce(
+		{
+			save: true,
+			brk: "<i class='icon2c fa fa-camera'></i>",
+			type: "image_change",
+			message: data.image_message,
+			date: data.image_date,
+			username: data.image_setter,
+			title: data.image_info,
+			onclick: data.image_onclick
+		})
+	}
+
+	if(mode === "change" || mode === "show")
+	{
+		push_images_changed(data)
+		set_modal_image_number()
+	}
+
+	if(mode === "change")
+	{
+		current_image_data = data
+		change({type:"image"})
+	}
 }
 
-function setup_tv(data)
+function push_images_changed(data)
 {
-	if(!data)
+	if(!data.image_setter)
 	{
-		data = {}
-
-		data.tv_source = ''
-		data.tv_setter = ''
-		data.tv_date = 0
+		data.image_info = "Default Image"
 	}
 
-	if(data.tv_source === '')
+	for(var i=0; i<images_changed.length; i++)
 	{
-		tv_source = default_tv_source
-		tv_type = default_tv_type
+		var img = images_changed[i]
+
+		if(img.image_source === data.image_source)
+		{
+			images_changed.splice(i, 1)
+		}
+	}
+
+	images_changed.push(data)
+
+	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	var inner = el.find('.media_history_item_inner').eq(0)
+	
+	inner.text(data.image_message)
+	inner.attr("title", data.image_info)
+
+	inner.click(data.image_onclick)
+	
+	$("#image_history_container").prepend(el)
+
+	if(images_changed.length > media_changed_crop_limit)
+	{
+		images_changed = images_changed.slice(images_changed.length - media_changed_crop_limit)
+		$("#image_history_container").children().last().remove()
+	}
+}
+
+function setup_tv(mode, odata={})
+{
+	if(mode === "restart")
+	{
+		data = current_tv_data
+		data.tv_name = `${data.tv_setter} restarted the tv`
 	}
 
 	else
 	{
-		tv_source = data.tv_source
-		tv_type = data.tv_type
+		var data = {}
+
+		data.tv_type = odata.tv_type
+		data.tv_source = odata.tv_source
+		data.tv_title = odata.tv_title
+		data.tv_setter = odata.tv_setter
+		data.tv_date = odata.tv_date
+		data.tv_query = odata.tv_query
+
+		data.tv_nice_date = data.tv_date ? nice_date(data.tv_date) : nice_date()
+
+		if(!data.tv_setter)
+		{
+			data.tv_setter = "The system"
+		}
+
+		if(!data.tv_source)
+		{
+			data.tv_source = default_tv_source
+			data.tv_type = default_tv_type
+		}
+
+		if(data.tv_setter)
+		{
+			if(data.tv_source === default_tv_source)
+			{
+				var name = 'default'
+				data.tv_title = 'Default'
+			}
+
+			else if(data.tv_title)
+			{
+				var name = conditional_quotes(data.tv_title)
+			}
+
+			else
+			{
+				var name = data.tv_source
+			}
+
+			data.tv_message = `${data.tv_setter} changed the tv to: ${name}`
+
+			if(data.tv_type === "youtube")
+			{
+				var time = utilz.get_youtube_time(data.tv_source)
+
+				if(time !== 0)
+				{
+					data.tv_name += ` (At ${utilz.humanize_seconds(time)})`
+				}
+			}
+
+			data.tv_info = `Setter: ${data.tv_setter} | ${data.tv_nice_date}`
+			
+			if(data.tv_query)
+			{
+				data.tv_info += ` | Search Term: "${data.tv_query}"`
+			}
+		}
+
+		else
+		{
+			data.tv_title = "Default"
+		}
+
+		data.tv_onclick = function()
+		{
+			open_url_menu(data.tv_source)
+		}
 	}
 
-	tv_title = data.tv_title
-	tv_setter = data.tv_setter
-	tv_date = nice_date(data.tv_date)
+	if((mode === "change" || mode === "show") && data.tv_message)
+	{
+		chat_announce(
+		{
+			save: true,
+			brk: "<i class='icon2c fa fa-television'></i>",
+			message: data.tv_message,
+			title: data.tv_info,
+			onclick: data.tv_onclick,
+			date: data.tv_date,
+			type: data.tv_type,
+			username: data.tv_setter
+		})
+	}
 
-	change({type:"tv", force:true})
+	if(mode === "change" || mode === "show")
+	{
+		push_tv_changed(data)
+	}
+
+	if(mode === "change")
+	{
+		current_tv_data = data
+		change({type:"tv", force:true})
+	}
+
+	else if(mode === "restart")
+	{
+		change({type:"tv", force:true, play:true})
+	}
+}
+
+function push_tv_changed(data)
+{
+	for(var i=0; i<tv_changed.length; i++)
+	{
+		var tv = tv_changed[i]
+
+		if(tv.tv_source === data.tv_source)
+		{
+			tv_changed.splice(i, 1)
+		}
+	}
+
+	tv_changed.push(data)
+
+	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	var inner = el.find('.media_history_item_inner').eq(0)
+	
+	inner.text(data.tv_message)
+	inner.attr("title", data.tv_info)
+
+	inner.click(data.tv_onclick)
+	
+	$("#tv_history_container").prepend(el)
+
+	if(tv_changed.length > media_changed_crop_limit)
+	{
+		tv_changed = tv_changed.slice(tv_changed.length - media_changed_crop_limit)
+		$("#tv_history_container").children().last().remove()
+	}
+}
+
+function setup_radio(mode, odata={})
+{
+	if(mode === "restart")
+	{
+		data = current_radio_data
+		data.radio_name = `${data.radio_setter} restarted the radio`
+	}
+
+	else
+	{
+		var data = {}
+
+		data.radio_type = odata.radio_type
+		data.radio_source = odata.radio_source
+		data.radio_title = odata.radio_title
+		data.radio_setter = odata.radio_setter
+		data.radio_date = odata.radio_date
+		data.radio_query = odata.radio_query
+
+		data.radio_nice_date = data.radio_date ? nice_date(data.radio_date) : nice_date()
+
+		if(!data.radio_setter)
+		{
+			data.radio_setter = "The system"
+		}
+
+		if(!data.radio_source)
+		{
+			data.radio_source = default_radio_source
+			data.radio_type = default_radio_type
+		}
+
+		if(data.radio_setter)
+		{
+			if(data.radio_source === default_radio_source)
+			{
+				var name = 'default'
+				data.radio_title = 'Default'
+			}
+
+			else if(data.radio_title)
+			{
+				var name = conditional_quotes(data.radio_title)
+			}
+
+			else
+			{
+				var name = data.radio_source
+			}
+
+			data.radio_message = `${data.radio_setter} changed the radio to: ${name}`
+
+			if(data.radio_type === "youtube")
+			{
+				var time = utilz.get_youtube_time(data.radio_source)
+
+				if(time !== 0)
+				{
+					data.radio_name += ` (At ${utilz.humanize_seconds(time)})`
+				}
+			}
+
+			data.radio_info = `Setter: ${data.radio_setter} | ${data.radio_nice_date}`
+			
+			if(data.radio_query)
+			{
+				data.radio_info += ` | Search Term: "${data.radio_query}"`
+			}
+		}
+
+		else
+		{
+			data.radio_title = "Default"
+		}
+
+		data.radio_onclick = function()
+		{
+			open_url_menu(data.radio_source)
+		}
+	}
+
+	if((mode === "change" || mode === "show") && data.radio_message)
+	{
+		chat_announce(
+		{
+			save: true,
+			brk: "<i class='icon2c fa fa-volume-up'></i>",
+			message: data.radio_message,
+			title: data.radio_info,
+			onclick: data.radio_onclick,
+			date: data.radio_date,
+			type: data.radio_type,
+			username: data.radio_setter
+		})
+	}
+
+	if(mode === "change" || mode === "show")
+	{
+		push_radio_changed(data)
+	}
+
+	if(mode === "change")
+	{
+		current_radio_data = data
+		change({type:"radio", force:true})
+	}
+
+	else if(mode === "restart")
+	{
+		change({type:"radio", force:true, play:true})
+	}
+}
+
+function push_radio_changed(data)
+{
+	for(var i=0; i<radio_changed.length; i++)
+	{
+		var radio = radio_changed[i]
+
+		if(radio.radio_source === data.radio_source)
+		{
+			radio_changed.splice(i, 1)
+		}
+	}
+
+	radio_changed.push(data)
+
+	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	var inner = el.find('.media_history_item_inner').eq(0)
+	
+	inner.text(data.radio_message)
+	inner.attr("title", data.radio_info)
+
+	inner.click(data.radio_onclick)
+	
+	$("#radio_history_container").prepend(el)
+
+	if(radio_changed.length > media_changed_crop_limit)
+	{
+		radio_changed = radio_changed.slice(radio_changed.length - media_changed_crop_limit)
+		$("#radio_history_container").children().last().remove()
+	}
 }
 
 function load_radio(src, type)
@@ -1558,7 +1891,7 @@ function load_radio(src, type)
 
 		if(!room_state.radio_locked || !last_radio_source)
 		{
-			push_played(false, {s1:radio_title, s2:src})
+			push_played(false, {s1:current_radio_data.radio_title, s2:src})
 		}
 
 		if(soundcloud_player !== undefined)
@@ -1592,7 +1925,7 @@ function load_radio(src, type)
 
 		if(!room_state.radio_locked || !last_radio_source)
 		{
-			push_played(false, {s1:radio_title, s2:src})
+			push_played(false, {s1:current_radio_data.radio_title, s2:src})
 		}
 
 		if(youtube_player !== undefined)
@@ -1642,7 +1975,7 @@ function play_video()
 		return false
 	}
 
-	if(tv_type === "youtube")
+	if(current_tv_data.tv_type === "youtube")
 	{
 		if(youtube_video_player !== undefined)
 		{
@@ -1655,7 +1988,7 @@ function play_video()
 		}
 	}
 
-	else if(tv_type === "twitch")
+	else if(current_tv_data.tv_type === "twitch")
 	{
 		if(twitch_video_player !== undefined)
 		{
@@ -1668,7 +2001,7 @@ function play_video()
 		}
 	}
 
-	else if(tv_type === "soundcloud")
+	else if(current_tv_data.tv_type === "soundcloud")
 	{
 		if(soundcloud_video_player !== undefined)
 		{
@@ -1681,14 +2014,14 @@ function play_video()
 		}
 	}
 
-	else if(tv_type === "url")
+	else if(current_tv_data.tv_type === "url")
 	{
 		$("#media_video")[0].play()
 	}
 
-	else if(tv_type === "iframe")
+	else if(current_tv_data.tv_type === "iframe")
 	{
-		$("#media_iframe_video").attr("src", tv_source)
+		$("#media_iframe_video").attr("src", current_tv_data.tv_source)
 	}
 }
 
@@ -1879,7 +2212,7 @@ function apply_background()
 {
 	if(background_mode === "mirror")
 	{
-		var bg_image = image_source
+		var bg_image = current_image_data.image_source
 	}
 
 	else
@@ -5435,7 +5768,7 @@ function change(args={})
 
 	if(args.type === "image")
 	{
-		if(!args.force && last_image_source === image_source)
+		if(!args.force && last_image_source === current_image_data.image_source)
 		{
 			return false
 		}
@@ -5443,7 +5776,7 @@ function change(args={})
 
 	else if(args.type === "tv")
 	{
-		if(!args.force && last_tv_source === tv_source)
+		if(!args.force && last_tv_source === current_tv_data.tv_source)
 		{
 			return false
 		}
@@ -5451,7 +5784,7 @@ function change(args={})
 
 	else if(args.type === "radio")
 	{
-		if(!args.force && last_radio_source === radio_source)
+		if(!args.force && last_radio_source === current_radio_data.radio_source)
 		{
 			return false
 		}
@@ -5527,7 +5860,7 @@ function change(args={})
 
 		else
 		{
-			var src = image_source
+			var src = current_image_data.image_source
 			var source_changed = true
 		}		
 
@@ -5535,10 +5868,10 @@ function change(args={})
 
 		if(source_changed)
 		{
-			last_image_source = image_source
+			last_image_source = current_image_data.image_source
 		}
 
-		setter = image_setter
+		setter = current_image_data.image_setter
 	}
 
 	else if(args.type === "tv")
@@ -5561,11 +5894,11 @@ function change(args={})
 
 		else
 		{
-			var src = tv_source
+			var src = current_tv_data.tv_source
 			var source_changed = true
 		}
 
-		if(tv_type === "youtube")
+		if(current_tv_data.tv_type === "youtube")
 		{
 			if(youtube_video_player === undefined)
 			{
@@ -5575,7 +5908,7 @@ function change(args={})
 			show_youtube_video(src, args.play)
 		}
 
-		else if(tv_type === "twitch")
+		else if(current_tv_data.tv_type === "twitch")
 		{
 			if(twitch_video_player === undefined)
 			{
@@ -5585,7 +5918,7 @@ function change(args={})
 			show_twitch_video(src, args.play)
 		}
 
-		else if(tv_type === "soundcloud")
+		else if(current_tv_data.tv_type === "soundcloud")
 		{
 			if(soundcloud_video_player === undefined)
 			{
@@ -5595,12 +5928,12 @@ function change(args={})
 			show_soundcloud_video(src, args.play)
 		}
 
-		else if(tv_type === "url")
+		else if(current_tv_data.tv_type === "url")
 		{
 			show_video(src, args.play)
 		}
 
-		else if(tv_type === "iframe")
+		else if(current_tv_data.tv_type === "iframe")
 		{
 			show_iframe_video(src, args.play)
 		}
@@ -5612,11 +5945,11 @@ function change(args={})
 
 		if(source_changed)
 		{
-			last_tv_source = tv_source
-			last_tv_type = tv_type
+			last_tv_source = current_tv_data.tv_source
+			last_tv_type = current_tv_data.tv_type
 		}
 
-		setter = tv_setter
+		setter = current_tv_data.tv_setter
 
 		play_video_on_load = false
 	}
@@ -5633,9 +5966,17 @@ function change(args={})
 			return false
 		}
 
-		if(radio_type === "youtube")
+		if(current_radio_data.radio_type === "youtube")
 		{
 			if(youtube_player === undefined)
+			{
+				return false
+			}
+		}
+
+		else if(current_radio_data.radio_type === "soundcloud")
+		{
+			if(soundcloud_player === undefined)
 			{
 				return false
 			}
@@ -5650,8 +5991,8 @@ function change(args={})
 
 		else
 		{
-			var src = radio_source
-			var type = radio_type
+			var src = current_radio_data.radio_source
+			var type = current_radio_data.radio_type
 			var source_changed = true
 		}		
 
@@ -5659,11 +6000,11 @@ function change(args={})
 
 		if(source_changed)
 		{
-			last_radio_source = radio_source
-			last_radio_type = radio_type
+			last_radio_source = current_radio_data.radio_source
+			last_radio_type = current_radio_data.radio_type
 		}
 
-		setter = radio_setter
+		setter = current_radio_data.radio_setter
 	}
 
 	else
@@ -5699,7 +6040,7 @@ function show_current_image_modal(current=true)
 {
 	if(current)
 	{
-		show_modal_image(current_image_source, current_image_title, current_image_date_raw)
+		show_modal_image(current_image_source, current_image_info, current_image_date)
 	}
 
 	else
@@ -5707,7 +6048,7 @@ function show_current_image_modal(current=true)
 		if(images_changed.length > 0)
 		{
 			var data = images_changed[images_changed.length - 1]
-			show_modal_image(data.url, data.title, data.date_raw)
+			show_modal_image(data.image_source, data.image_info, data.image_date)
 		}
 	}
 }
@@ -5736,9 +6077,9 @@ function start_image_events()
 
 function after_image_load()
 {
-	current_image_source = image_source
-	current_image_title = image_title
-	current_image_date_raw = image_date_raw
+	current_image_source = current_image_data.image_source
+	current_image_info = current_image_data.image_info
+	current_image_date = current_image_data.image_date
 
 	fix_image_frame()
 }
@@ -5746,47 +6087,6 @@ function after_image_load()
 function get_size_string(size)
 {
 	return `${parseFloat(size / 1024).toFixed(2)} MB`
-}
-
-function setup_image(data)
-{
-	if(data.image_source === '' || data.image_source === undefined)
-	{
-		image_source = default_image_source
-
-		if(data.image_setter)
-		{
-			image_title = `Setter: ${data.image_setter} | ${nice_date(data.image_date)}`
-		}
-
-		else
-		{
-			image_title = "Default Image"
-		}
-	}
-
-	else
-	{
-		image_source = data.image_source
-
-		if(data.image_type === "link")
-		{
-			image_title = `Setter: ${data.image_setter} | ${nice_date(data.image_date)}`
-		}
-
-		else
-		{
-			image_title = `Setter: ${data.image_setter} | ${nice_date(data.image_date)} | Size: ${get_size_string(data.image_size)}`
-		}
-	}
-
-	image_setter = data.image_setter
-	image_size = data.image_size
-	image_date = nice_date(data.image_date)
-	image_date_raw = data.image_date
-	image_type = data.image_type
-
-	change({type:"image"})
 }
 
 function fill_defaults(args, def_args)
@@ -8790,165 +9090,6 @@ function show_upload_error()
 	feedback("The image could not be uploaded")
 }
 
-function announce_image_change(args={})
-{
-	var def_args =
-	{
-		data: {},
-		date: false,
-		action: "change",
-		show: true
-	}
-
-	fill_defaults(args, def_args)
-
-	if(args.action === "restart")
-	{
-		args.data = current_image_data
-	}
-
-	if(!args.data.image_setter)
-	{
-		args.show = false
-	}
-
-	if(args.date)
-	{
-		var d = args.date
-	}
-
-	else
-	{
-		if(args.data.image_date !== undefined)
-		{
-			var d = args.data.image_date
-		}
-
-		else
-		{
-			var d = Date.now()
-		}
-	}
-
-	var nd = nice_date(d)
-
-	if(args.data.image_source === '')
-	{
-		var name = 'default'
-		var src = default_image_source
-	}
-
-	else
-	{
-		var name = args.data.image_source
-		var src = args.data.image_source
-	}
-
-	if(args.data.image_source === "")
-	{
-		var title = `Setter: ${args.data.image_setter} | ${nd}`
-		var message = `${args.data.image_setter} changed the image to default`
-	}
-
-	else if(args.data.image_type === "link")
-	{
-		var title = `Setter: ${args.data.image_setter} | ${nd}`
-		var message = `${args.data.image_setter} changed the image`
-	}
-
-	else if(args.data.image_type === "upload")
-	{
-		var title = `Setter: ${args.data.image_setter} | ${nd} | Size: ${get_size_string(args.data.image_size)}`
-		var message = `${args.data.image_setter} changed the image`
-	}
-
-	if(args.data.image_query)
-	{
-		title += ` | Search Term: "${args.data.image_query}"`
-	}
-
-	var onclick = function()
-	{
-		show_modal_image(src, title, d)
-	}
-
-	if(args.show)
-	{
-		chat_announce(
-		{
-			brk: "<i class='icon2c fa fa-camera'></i>",
-			save: true,
-			date: d,
-			type: "image_change",
-			username: args.data.image_setter,
-			title: title,
-			message: message,
-			onclick: onclick
-		})
-	}
-
-	var ic_data = {}
-
-	ic_data.url = args.data.image_source
-	ic_data.date_raw = d
-	ic_data.setter = args.data.image_setter
-	ic_data.title = title
-	ic_data.message = message
-	ic_data.onclick = onclick
-
-	if(args.action === "change")
-	{
-		if(args.show)
-		{
-			push_images_changed(ic_data)
-		}
-
-		set_modal_image_number()
-		current_image_data = args.data
-	}
-}
-
-function push_images_changed(data)
-{
-	if(!data.url)
-	{
-		data.url = default_image_source
-	}
-
-	if(!data.setter)
-	{
-		data.title = "Default Image"
-	}
-
-	for(var i=0; i<images_changed.length; i++)
-	{
-		var img = images_changed[i]
-
-		if(img.url === data.url)
-		{
-			images_changed.splice(i, 1)
-		}
-	}
-
-	images_changed.push(data)
-
-	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
-	var inner = el.find('.media_history_item_inner').eq(0)
-	
-	inner.text(data.message)
-	inner.attr("title", data.title)
-
-	inner.click(data.onclick)
-	
-	$("#image_history_container").prepend(el)
-
-	if(images_changed.length > media_changed_crop_limit)
-	{
-		images_changed = images_changed.slice(images_changed.length - media_changed_crop_limit)
-		$("#image_history_container").children().last().remove()
-	}
-}
-
 function announce_role_change(data)
 {
 	if(username === data.username2)
@@ -9051,7 +9192,7 @@ function change_radio_source(src)
 		return false
 	}
 
-	if(src === radio_source)
+	if(src === current_radio_data.radio_source)
 	{
 		feedback("Radio is already set to that")
 		return false
@@ -9124,193 +9265,6 @@ function change_radio_source(src)
 	socket_emit('change_radio_source', {src:src})
 }
 
-function announce_radio_change(args={})
-{
-	var def_args =
-	{
-		data: {},
-		date: false,
-		action: "change",
-		show: true,
-		uname: false
-	}
-
-	fill_defaults(args, def_args)
-
-	if(args.action === "restart")
-	{
-		args.data = current_radio_data
-	}
-
-	if(!args.data.radio_setter)
-	{
-		args.show = false
-	}
-
-	if(args.data.radio_title)
-	{
-		var name = conditional_quotes(args.data.radio_title)
-	}
-
-	else if(!args.data.radio_source)
-	{
-		var name = 'default'
-	}
-
-	else
-	{
-		var name = args.data.radio_source
-	}
-
-	var time = utilz.get_youtube_time(args.data.radio_source)
-
-	if(time !== 0)
-	{
-		name += ` (At ${utilz.humanize_seconds(time)})`
-	}
-
-	if(args.data.radio_source === '')
-	{
-		var src = default_radio_source
-	}
-
-	else
-	{
-		var src = args.data.radio_source
-	}
-
-	if(args.date)
-	{
-		var d = args.date
-	}
-
-	else
-	{
-		if(args.data.radio_date !== undefined && args.action !== "restart")
-		{
-			var d = args.data.radio_date
-		}
-
-		else
-		{
-			var d = Date.now()
-		}
-	}
-
-	var nd = nice_date(d)
-
-	if(args.action === "restart")
-	{
-		var title = undefined
-	}
-
-	else
-	{
-		var title = `Setter: ${args.data.radio_setter} | ${nd}`
-	}
-
-	if(args.data.radio_query)
-	{
-		title += ` | Search Term: "${args.data.radio_query}"`
-	}
-
-	var onclick = function()
-	{
-		open_url_menu(src)
-	}
-
-	if(args.action === "restart")
-	{
-		var message = `${args.uname} restarted the radio`
-	}
-
-	else
-	{
-		var message = `${args.data.radio_setter} changed the radio to: ${name}`
-	}
-
-	var type = ""
-
-	if(args.action === "change")
-	{
-		type = "radio_change"
-	}
-
-	else if(type === "restart")
-	{
-		type = "radio_restart"
-	}
-
-	if(args.show)
-	{
-		chat_announce(
-		{
-			brk: "<i class='icon2c fa fa-volume-up'></i>",
-			message: message,
-			title: title,
-			onclick: onclick,
-			save: true,
-			date: d,
-			type: type,
-			username: args.data.radio_setter
-		})
-	}
-
-	var ic_data = {}
-
-	ic_data.url = args.data.radio_source
-	ic_data.date_raw = d
-	ic_data.setter = args.data.radio_setter
-	ic_data.title = title
-	ic_data.message = message
-	ic_data.onclick = onclick
-
-	if(args.action === "change")
-	{
-		if(args.show)
-		{
-			push_radio_changed(ic_data)
-		}
-
-		current_radio_data = args.data
-	}
-}
-function push_radio_changed(data)
-{
-	if(!data.url)
-	{
-		data.url = default_radio_source
-	}
-
-	for(var i=0; i<radio_changed.length; i++)
-	{
-		var radio = radio_changed[i]
-
-		if(radio.url === data.url)
-		{
-			radio_changed.splice(i, 1)
-		}
-	}
-
-	radio_changed.push(data)
-
-	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
-	var inner = el.find('.media_history_item_inner').eq(0)
-	
-	inner.text(data.message)
-	inner.attr("title", data.title)
-
-	inner.click(data.onclick)
-
-	$("#radio_history_container").prepend(el)
-
-	if(radio_changed.length > media_changed_crop_limit)
-	{
-		radio_changed = radio_changed.slice(radio_changed.length - media_changed_crop_limit)
-		$("#radio_history_container").children().last().remove()
-	}
-}
-
 function change_tv_source(src)
 {
 	if(!can_tv)
@@ -9336,7 +9290,7 @@ function change_tv_source(src)
 		return false
 	}
 
-	if(src === tv_source)
+	if(src === current_tv_data.tv_source || src === current_tv_data.tv_query)
 	{
 		feedback("TV is already set to that")
 		return false
@@ -9416,194 +9370,6 @@ function change_tv_source(src)
 	}
 
 	socket_emit('change_tv_source', {src:src})
-}
-
-function announce_tv_change(args={})
-{
-	var def_args =
-	{
-		data: {},
-		date: false,
-		action: "change",
-		show: true,
-		uname: false
-	}
-
-	fill_defaults(args, def_args)
-
-	if(args.action === "restart")
-	{
-		args.data = current_tv_data
-	}
-
-	if(!args.data.tv_setter)
-	{
-		args.show = false
-	}
-
-	if(args.data.tv_title)
-	{
-		var name = conditional_quotes(args.data.tv_title)
-	}
-
-	else if(!args.data.tv_source)
-	{
-		var name = 'default'
-	}
-
-	else
-	{
-		var name = args.data.tv_source
-	}
-
-	var time = utilz.get_youtube_time(args.data.tv_source)
-
-	if(time !== 0)
-	{
-		name += ` (At ${utilz.humanize_seconds(time)})`
-	}
-
-	if(args.data.tv_source === '')
-	{
-		var src = default_tv_source
-	}
-
-	else
-	{
-		var src = args.data.tv_source
-	}
-
-	if(args.date)
-	{
-		var d = args.date
-	}
-
-	else
-	{
-		if(args.data.tv_date !== undefined && args.action !== "restart")
-		{
-			var d = args.data.tv_date
-		}
-
-		else
-		{
-			var d = Date.now()
-		}
-	}
-
-	var nd = nice_date(d)
-
-	if(args.action === "restart")
-	{
-		var title = undefined
-	}
-
-	else
-	{
-		var title = `Setter: ${args.data.tv_setter} | ${nd}`
-	}
-
-	if(args.data.tv_query)
-	{
-		title += ` | Search Term: "${args.data.tv_query}"`
-	}
-
-	var onclick = function()
-	{
-		open_url_menu(src)
-	}
-
-	if(args.action === "restart")
-	{
-		var message = `${args.uname} restarted the tv`
-	}
-
-	else
-	{
-		var message = `${args.data.tv_setter} changed the tv to: ${name}`
-	}
-
-	var type = ""
-
-	if(args.action === "change")
-	{
-		type = "tv_change"
-	}
-
-	else if(type === "restart")
-	{
-		type = "tv_restart"
-	}
-
-	if(args.show)
-	{
-		chat_announce(
-		{
-			brk: "<i class='icon2c fa fa-television'></i>",
-			message: message,
-			title: title,
-			onclick: onclick,
-			save: true,
-			date: d,
-			type: type,
-			username: args.data.tv_setter
-		})
-	}
-	
-	var ic_data = {}
-
-	ic_data.url = args.data.tv_source
-	ic_data.date_raw = d
-	ic_data.setter = args.data.tv_setter
-	ic_data.title = title
-	ic_data.message = message
-	ic_data.onclick = onclick
-
-	if(args.action === "change")
-	{
-		if(args.show)
-		{
-			push_tv_changed(ic_data)
-		}
-
-		current_tv_data = args.data
-	}
-}
-
-function push_tv_changed(data)
-{
-	if(!data.url)
-	{
-		data.url = default_tv_source
-	}
-
-	for(var i=0; i<tv_changed.length; i++)
-	{
-		var tv = tv_changed[i]
-
-		if(tv.url === data.url)
-		{
-			tv_changed.splice(i, 1)
-		}
-	}
-
-	tv_changed.push(data)
-
-	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
-	var inner = el.find('.media_history_item_inner').eq(0)
-	
-	inner.text(data.message)
-	inner.attr("title", data.title)
-
-	inner.click(data.onclick)
-	
-	$("#tv_history_container").prepend(el)
-
-	if(tv_changed.length > media_changed_crop_limit)
-	{
-		tv_changed = tv_changed.slice(tv_changed.length - media_changed_crop_limit)
-		$("#tv_history_container").children().last().remove()
-	}
 }
 
 function ban(uname)
@@ -12431,7 +12197,7 @@ function onYouTubePlayerReady()
 {
 	youtube_player = yt_player
 
-	if((last_radio_type && last_radio_type === "youtube") || radio_type === "youtube")
+	if((last_radio_type && last_radio_type === "youtube") || current_radio_data.radio_type === "youtube")
 	{
 		change({type:"radio", notify:false})
 	}
@@ -12454,7 +12220,7 @@ function onYouTubePlayerReady2()
 		}
 	})
 
-	if((last_tv_type && last_tv_type === "youtube") || tv_type === "youtube")
+	if((last_tv_type && last_tv_type === "youtube") || current_tv_data.tv_type === "youtube")
 	{
 		if(play_video_on_load)
 		{
@@ -12485,7 +12251,7 @@ function start_twitch()
 
 			$("#media_twitch_video_container").find("iframe").eq(0).attr("id", "media_twitch_video").addClass("video_frame")
 
-			if((last_tv_type && last_tv_type === "twitch") || tv_type === "twitch")
+			if((last_tv_type && last_tv_type === "twitch") || current_tv_data.tv_type === "twitch")
 			{
 				if(play_video_on_load)
 				{
@@ -12566,67 +12332,67 @@ function get_status_html()
 		info += "<div class='info_item_content'>Disabled</div></div>"
 	}
 
-	if(image_setter)
+	if(current_image_data.image_setter)
 	{
 		info += "<div class='info_item'><div class='info_title'>Image Setter</div>"
 		info += `<div class='info_item_content' id='status_image_setter'></div></div>`
 	}
 
-	if(image_source)
+	if(current_image_data.image_source)
 	{
 		info += "<div class='info_item'><div class='info_title'>Image Source</div>"
 		info += `<div class='info_item_content' id='status_image_source'></div></div>`
 	}
 
-	if(image_date)
+	if(current_image_data.image_nice_date)
 	{
 		info += "<div class='info_item'><div class='info_title'>Image Date</div>"
 		info += `<div class='info_item_content' id='status_image_date'></div></div>`
 	}
 
-	if(tv_setter)
+	if(current_tv_data.tv_setter)
 	{
 		info += "<div class='info_item'><div class='info_title'>TV Setter</div>"
 		info += `<div class='info_item_content' id='status_tv_setter'></div></div>`
 	}
 
-	if(tv_title)
+	if(current_tv_data.tv_title)
 	{
 		info += "<div class='info_item'><div class='info_title'>TV Title</div>"
 		info += `<div class='info_item_content' id='status_tv_title'></div></div>`
 	}
 
-	if(tv_source)
+	if(current_tv_data.tv_source)
 	{
 		info += "<div class='info_item'><div class='info_title'>TV Source</div>"
 		info += `<div class='info_item_content' id='status_tv_source'></div></div>`
 	}
 
-	if(tv_date)
+	if(current_tv_data.tv_nice_date)
 	{
 		info += "<div class='info_item'><div class='info_title'>TV Date</div>"
 		info += `<div class='info_item_content' id='status_tv_date'></div></div>`
 	}
 
-	if(radio_setter)
+	if(current_radio_data.radio_setter)
 	{
 		info += "<div class='info_item'><div class='info_title'>Radio Setter</div>"
 		info += `<div class='info_item_content' id='status_radio_setter'></div></div>`
 	}
 
-	if(radio_title)
+	if(current_radio_data.radio_title)
 	{
 		info += "<div class='info_item'><div class='info_title'>Radio Title</div>"
 		info += `<div class='info_item_content' id='status_radio_title'></div></div>`
 	}
 
-	if(radio_source)
+	if(current_radio_data.radio_source)
 	{
 		info += "<div class='info_item'><div class='info_title'>Radio Source</div>"
 		info += `<div class='info_item_content' id='status_radio_source'></div></div>`
 	}
 
-	if(radio_date)
+	if(current_radio_data.radio_nice_date)
 	{
 		info += "<div class='info_item'><div class='info_title'>Radio Date</div>"
 		info += `<div class='info_item_content' id='status_radio_date'></div></div>`
@@ -12639,70 +12405,70 @@ function get_status_html()
 	var t = h.find("#status_topic").eq(0)
 	t.text(get_topic()).urlize()
 
-	if(image_setter)
+	if(current_image_data.image_setter)
 	{
 		var t = h.find("#status_image_setter").eq(0)
-		t.text(image_setter)
+		t.text(current_image_data.image_setter)
 	}
 
-	if(image_source)
+	if(current_image_data.image_source)
 	{
 		var t = h.find("#status_image_source").eq(0)
 		t.text(get_proper_media_url("image")).urlize()
 	}
 
-	if(image_date)
+	if(current_image_data.image_nice_date)
 	{
 		var t = h.find("#status_image_date").eq(0)
-		t.text(image_date)
+		t.text(current_image_data.image_nice_date)
 	}
 
-	if(tv_setter)
+	if(current_tv_data.tv_setter)
 	{
 		var t = h.find("#status_tv_setter").eq(0)
-		t.text(tv_setter)
+		t.text(current_tv_data.tv_setter)
 	}
 
-	if(tv_title)
+	if(current_tv_data.tv_title)
 	{
 		var t = h.find("#status_tv_title").eq(0)
-		t.text(tv_title).urlize()
+		t.text(current_tv_data.tv_title).urlize()
 	}
 
-	if(tv_source)
+	if(current_tv_data.tv_source)
 	{
 		var t = h.find("#status_tv_source").eq(0)
 		t.text(get_proper_media_url("tv")).urlize()
 	}
 
-	if(tv_date)
+	if(current_tv_data.tv_nice_date)
 	{
 		var t = h.find("#status_tv_date").eq(0)
-		t.text(tv_date)
+		t.text(current_tv_data.tv_nice_date)
 	}
 
-	if(radio_setter)
+	if(current_radio_data.radio_setter)
 	{
 		var t = h.find("#status_radio_setter").eq(0)
-		t.text(radio_setter)
+		t.text(current_radio_data.radio_setter)
 	}
 
-	if(radio_title)
+	if(current_radio_data.radio_title)
 	{
 		var t = h.find("#status_radio_title").eq(0)
-		t.text(radio_title).urlize()
+		t.text(current_radio_data.radio_title).urlize()
 	}
 
-	if(radio_source)
+	if(current_radio_data.radio_source)
 	{
 		var t = h.find("#status_radio_source").eq(0)
 		t.text(get_proper_media_url("radio")).urlize()
 	}
 
-	if(radio_date)
+	if(current_radio_data.radio_nice_date)
 	{
 		var t = h.find("#status_radio_date").eq(0)
-		t.text(radio_date)
+		t.text(current_radio_data.radio_nice_date)
 	}
 
 	return h.html()
@@ -12883,17 +12649,17 @@ function show_log_messages()
 
 	if(num_images === 0)
 	{
-		announce_image_change({data:init_data})
+		setup_image("show", init_data)
 	}
 
 	if(num_tv === 0)
 	{
-		announce_tv_change({data:init_data})
+		setup_tv("show", init_data)
 	}
 
 	if(num_radio === 0)
 	{
-		announce_radio_change({data:init_data})
+		setup_radio("show", init_data)
 	}
 
 	if(log_messages && log_messages.length > 0)
@@ -12920,17 +12686,20 @@ function show_log_messages()
 
 				else if(type === "image")
 				{
-					announce_image_change({data:data, date:date})
+					data.image_date = date
+					setup_image("show", data)
 				}
 
 				else if(type === "tv")
 				{
-					announce_tv_change({data:data, date:date})
+					data.tv_date = date
+					setup_tv("show", data)
 				}
 
 				else if(type === "radio")
 				{
-					announce_radio_change({data:data, date:date})
+					data.radio_date = date
+					setup_radio("show", data)
 				}
 
 				else if(type === "reaction")
@@ -13088,7 +12857,7 @@ function set_modal_image_number()
 	{
 		var ic = images_changed[i]
 
-		if(ic.url === url)
+		if(ic.image_source === url)
 		{
 			number = i + 1
 			break
@@ -13156,7 +12925,7 @@ function modal_image_number_go()
 
 	if(ic)
 	{
-		show_modal_image(ic.url, ic.title, ic.date_raw)
+		show_modal_image(ic.image_source, ic.image_info, ic.image_date)
 		msg_modal_image_number.close()
 	}
 }
@@ -14216,7 +13985,7 @@ function change_image_source(src)
 		return false
 	}
 
-	if(src === image_source)
+	if(src === current_image_data.image_source)
 	{
 		feedback("Image is already set to that")
 		return false
@@ -16027,9 +15796,9 @@ function modal_image_prev_click()
 
 	var prev = images_changed[index]
 
-	if(prev.url !== url)
+	if(prev.image_source !== url)
 	{
-		show_modal_image(prev.url, prev.title, prev.date_raw)
+		show_modal_image(prev.image_source, prev.image_info, prev.image_date)
 	}
 }
 
@@ -16046,9 +15815,9 @@ function modal_image_next_click(e)
 
 	var next = images_changed[index]
 
-	if(next.url !== url)
+	if(next.image_source !== url)
 	{
-		show_modal_image(next.url, next.title, next.date_raw)
+		show_modal_image(next.image_source, next.image_info, next.image_date)
 	}
 }
 
@@ -17138,7 +16907,7 @@ function start_soundcloud()
 		{
 			soundcloud_player = _soundcloud_player
 
-			if((last_radio_type && last_radio_type === "youtube") || radio_type === "youtube")
+			if((last_radio_type && last_radio_type === "youtube") || current_radio_data.radio_type === "youtube")
 			{
 				change({type:"radio", notify:false})
 			}
@@ -17150,7 +16919,7 @@ function start_soundcloud()
 		{
 			soundcloud_video_player = _soundcloud_video_player
 
-			if((last_tv_type && last_tv_type === "soundcloud") || tv_type === "soundcloud")
+			if((last_tv_type && last_tv_type === "soundcloud") || current_tv_data.tv_type === "soundcloud")
 			{
 				if(play_video_on_load)
 				{
@@ -19372,9 +19141,9 @@ function clear_room(data)
 	$("#tv_history_container").html("")
 	$("#radio_history_container").html("")
 
-	announce_image_change({data:current_image_data})
-	announce_tv_change({data:current_tv_data})
-	announce_radio_change({data:current_radio_data})
+	setup_image("show", current_image_data)
+	setup_tv("show", current_tv_data)
+	setup_radio("show", current_tv_data)
 
 	show_topic()
 }
@@ -19384,5 +19153,26 @@ function fillet(n)
 	for(var i=0; i<n; i++)
 	{
 		feedback("Some feedback")
+	}
+}
+
+function start_active_media()
+{
+	if(images_changed.length > 0)
+	{
+		current_image_data = images_changed[images_changed.length - 1]
+		change({type:"image"})
+	}
+
+	if(tv_changed.length > 0)
+	{
+		current_tv_data = tv_changed[tv_changed.length - 1]
+		change({type:"tv", force:true})
+	}
+
+	if(radio_changed.length > 0)
+	{
+		current_radio_data = radio_changed[radio_changed.length - 1]
+		change({type:"radio", force:true})
 	}
 }
