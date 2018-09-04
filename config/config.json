@@ -175,5 +175,8 @@
 	"draw_coords_max_array_length": 1000,
 	"credits_background_url": "/static/_img/credits.jpg",
 	"credits_audio_url": "/static/audio/credits.mp3",
-	"credits_title": "Hue by Merkoba"
+	"credits_title": "Hue by Merkoba",
+	"image_change_cooldown": 2000,
+	"tv_change_cooldown": 2000,
+	"radio_change_cooldown": 2000
 }

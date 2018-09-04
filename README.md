@@ -559,6 +559,15 @@ If you want to remove it to start fresh:
 "draw_coords_max_array_length"
 >Maximum array length for each of the draw coordinate arrays.
 
+"image_change_cooldown"
+>How much it should wait in milliseconds before images can be changed again after last change.
+
+"tv_change_cooldown"
+>How much it should wait in milliseconds before tv can be changed again after last change.
+
+"radio_change_cooldown"
+>How much it should wait in milliseconds before radio can be changed again after last change.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"

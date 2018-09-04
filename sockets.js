@@ -1332,6 +1332,19 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		data.src = data.src.replace(/youtu\.be\/(\w{11})/, "www.youtube.com/watch?v=$1")
 
+		if(rooms[socket.hue_room_id].current_radio_source === data.src 
+		|| rooms[socket.hue_room_id].current_radio_query === data.src)
+		{
+			handler.user_emit(socket, 'same_radio', {})
+			return false
+		}
+
+		if(Date.now() - rooms[socket.hue_room_id].last_radio_change < config.radio_change_cooldown)
+		{
+			handler.user_emit(socket, 'radio_cooldown_wait', {})
+			return false
+		}
+
 		if(data.src === "default")
 		{
 			handler.do_change_radio_source(socket, data)
@@ -1523,18 +1536,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			data.query = ""
 		}
 
-		if(rooms[socket.hue_room_id].current_radio_source === data.src)
-		{
-			handler.user_emit(socket, 'same_radio', {})
-			return false
-		}
-
 		if(data.src === 'default')
 		{
 			radioinfo.radio_type = "radio"
 			radioinfo.radio_source = ''
 			radioinfo.radio_title = ''
-			radioinfo.radio_query = ''
+			radioinfo.radio_query = 'default'
 		}
 
 		else
@@ -1592,6 +1599,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		rooms[socket.hue_room_id].current_radio_source = radioinfo.radio_source
+		rooms[socket.hue_room_id].current_radio_query = radioinfo.radio_query
+		rooms[socket.hue_room_id].last_radio_change = Date.now()
 	}
 
 	handler.public.change_tv_source = async function(socket, data)
@@ -1622,6 +1631,19 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		data.src = data.src.replace(/youtu\.be\/(\w{11})/, "www.youtube.com/watch?v=$1")
+
+		if(rooms[socket.hue_room_id].current_tv_source === data.src 
+		|| rooms[socket.hue_room_id].current_tv_query === data.src)
+		{
+			handler.user_emit(socket, 'same_tv', {})
+			return false
+		}
+
+		if(Date.now() - rooms[socket.hue_room_id].last_tv_change < config.tv_change_cooldown)
+		{
+			handler.user_emit(socket, 'tv_cooldown_wait', {})
+			return false
+		}
 
 		if(data.src === "default")
 		{
@@ -1963,18 +1985,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			data.query = ""
 		}
 
-		if(rooms[socket.hue_room_id].current_tv_source === data.src)
-		{
-			handler.user_emit(socket, 'same_tv', {})
-			return false
-		}
-
 		if(data.src === 'default')
 		{
 			tvinfo.tv_type = "tv"
 			tvinfo.tv_source = ''
 			tvinfo.tv_title = ''
-			tvinfo.tv_query = ''
+			tvinfo.tv_query = 'default'
 		}
 
 		else
@@ -2032,6 +2048,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		rooms[socket.hue_room_id].current_tv_source = tvinfo.tv_source
+		rooms[socket.hue_room_id].current_tv_query = tvinfo.tv_query
+		rooms[socket.hue_room_id].last_tv_change = Date.now()
 	}
 
 	handler.public.change_username = async function(socket, data)
@@ -2742,6 +2760,19 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
+		if(rooms[socket.hue_room_id].current_image_source === data.src 
+		|| rooms[socket.hue_room_id].current_image_query === data.src)
+		{
+			handler.user_emit(socket, 'same_image', {})
+			return false
+		}
+
+		if(Date.now() - rooms[socket.hue_room_id].last_image_change < config.image_change_cooldown)
+		{
+			handler.user_emit(socket, 'image_cooldown_wait', {})
+			return false
+		}
+
 		if(data.src === "default")
 		{
 			var obj = {}
@@ -2982,12 +3013,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			if(image_source === 'default')
 			{
 				image_source = ""
-			}
-
-			if(rooms[socket.hue_room_id].current_image_source === data.fname)
-			{
-				handler.user_emit(socket, 'same_image', {})
-				return false
+				data.query = "default"
 			}
 
 			db_manager.update_room(socket.hue_room_id,
@@ -3110,6 +3136,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		rooms[socket.hue_room_id].current_image_source = image_source
+		rooms[socket.hue_room_id].current_image_query = data.query
+		rooms[socket.hue_room_id].last_image_change = Date.now()
 	}
 
 	handler.upload_profile_image = function(socket, data)
@@ -3988,12 +4016,18 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_mode: info.tv_mode,
 			radio_mode: info.radio_mode,
 			current_image_source: info.image_source,
+			current_image_query: info.image_query,
 			current_tv_source: info.tv_source,
+			current_tv_query: info.tv_query,
 			current_radio_source: info.radio_source,
+			current_radio_query: info.radio_query,
 			topic: info.topic,
 			name: info.name,
 			public: info.public,
-			modified: Date.now()
+			modified: Date.now(),
+			last_image_change: 0,
+			last_tv_change: 0,
+			last_radio_change: 0
 		}
 
 		return obj
