@@ -91,6 +91,9 @@ If you want to remove it to start fresh:
 "default_tv_source"
 >Default source for the tv for new rooms or when "/tv default" is issued.
 
+"default_tv_title"
+>The title for the default tv.
+
 "default_tv_type"
 >The type of the default_tv_source, either "url", "youtube", "twitch", "soundcloud" or "iframe".
 

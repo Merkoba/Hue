@@ -13,6 +13,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.main_room_id = config.main_room_id
 	c.vars.default_image_source = config.default_image_source
 	c.vars.default_tv_source = config.default_tv_source
+	c.vars.default_tv_title = config.default_tv_title
 	c.vars.default_tv_type = config.default_tv_type
 	c.vars.default_radio_source = config.default_radio_source
 	c.vars.default_radio_title = config.default_radio_title

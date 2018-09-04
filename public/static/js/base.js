@@ -1575,7 +1575,7 @@ function setup_tv(mode, odata={})
 			if(data.source === default_tv_source)
 			{
 				var name = 'default'
-				data.title = 'Default'
+				data.title = default_tv_title
 			}
 
 			else if(data.title)
@@ -1610,7 +1610,7 @@ function setup_tv(mode, odata={})
 
 		else
 		{
-			data.title = "Default"
+			data.title = default_tv_title
 		}
 
 		data.onclick = function()
@@ -1766,7 +1766,7 @@ function setup_radio(mode, odata={})
 
 		else
 		{
-			data.title = "Default"
+			data.title = default_radio_title
 		}
 
 		data.onclick = function()

@@ -8,6 +8,7 @@
 	"public_images_location": "/static/img/",
 	"default_image_source": "/static/_img/default_image.gif",
 	"default_tv_source": "https://youtu.be/N-G2U0zHqpY",
+	"default_tv_title": "Grand Dad Metropolis",
 	"default_tv_type": "youtube",
 	"default_radio_source": "https://hue.merkoba.com:8765/wok3n",
 	"default_radio_title": "Wok3n Radio",
