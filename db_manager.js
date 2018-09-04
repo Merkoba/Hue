@@ -277,7 +277,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 		if(typeof room.theme !== "string")
 		{
-			room.theme = "rgb(56, 46, 95)"
+			room.theme = "rgb(100,65,164)"
 		}
 
 		if(typeof room.background_image !== "string")
@@ -317,7 +317,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 		if(typeof room.text_color !== "string")
 		{
-			room.text_color = "rgb(215, 213, 223)"
+			room.text_color = "rgb(205,202,223)"
 		}
 		
 		if(typeof room.modified !== "number")

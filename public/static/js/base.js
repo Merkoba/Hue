@@ -19163,6 +19163,6 @@ function fillet(n)
 function start_active_media()
 {
 	change({type:"image"})
-	change({type:"tv", force:true})
-	change({type:"radio", force:true})
+	change({type:"tv"})
+	change({type:"radio"})
 }
