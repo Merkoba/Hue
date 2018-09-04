@@ -1731,7 +1731,7 @@ function setup_radio(mode, odata={})
 			if(data.source === default_radio_source)
 			{
 				var name = 'default'
-				data.title = 'Default'
+				data.title = default_radio_title
 			}
 
 			else if(data.title)
