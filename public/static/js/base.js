@@ -1434,47 +1434,28 @@ function setup_image(mode, odata={})
 		data.source = default_image_source
 	}
 
-	if(data.source === default_image_source)
-	{
-		data.info = `Setter: ${data.setter} | ${data.nice_date}`
-		data.message = `${data.setter} changed the image to: default`
-	}
+	data.info = `Setter: ${data.setter} | ${data.nice_date}`
 
-	else if(data.type === "link")
+	if(data.type === "upload")
 	{
-		data.info = `Setter: ${data.setter} | ${data.nice_date}`
-		data.message = `${data.setter} changed the image`
+		data.info += ` | Size: ${get_size_string(data.size)}`
 	}
-
-	else if(data.type === "upload")
-	{
-		data.info = `Setter: ${data.setter} | ${data.nice_date} | Size: ${get_size_string(data.size)}`
-		data.message = `${data.setter} changed the image`
-	}
-
+	
 	if(data.query)
 	{
 		data.info += ` | Search Term: "${data.query}"`
 	}
+
+	data.message = `${data.setter} changed the image`
 
 	data.onclick = function()
 	{
 		show_modal_image(data.source, data.info, data.nice_date)
 	}
 
-	if(mode === "change" || mode === "show")
+	if(data.message)
 	{
-		chat_announce(
-		{
-			save: true,
-			brk: "<i class='icon2c fa fa-camera'></i>",
-			type: "image_change",
-			message: data.message,
-			date: data.date,
-			username: data.setter,
-			title: data.info,
-			onclick: data.onclick
-		})
+		announce_image(data)
 	}
 
 	if(mode === "change" || mode === "show")
@@ -1487,6 +1468,21 @@ function setup_image(mode, odata={})
 	{
 		change({type:"image"})
 	}
+}
+
+function announce_image(data)
+{
+	chat_announce(
+	{
+		save: true,
+		brk: "<i class='icon2c fa fa-camera'></i>",
+		type: "image_change",
+		message: data.message,
+		date: data.date,
+		username: data.setter,
+		title: data.info,
+		onclick: data.onclick
+	})
 }
 
 function push_images_changed(data)
@@ -1568,49 +1564,31 @@ function setup_tv(mode, odata={})
 		{
 			data.source = default_tv_source
 			data.type = default_tv_type
-		}
-
-		if(data.setter)
-		{
-			if(data.source === default_tv_source)
-			{
-				var name = 'default'
-				data.title = default_tv_title
-			}
-
-			else if(data.title)
-			{
-				var name = conditional_quotes(data.title)
-			}
-
-			else
-			{
-				var name = data.source
-			}
-
-			data.message = `${data.setter} changed the tv to: ${name}`
-
-			if(data.type === "youtube")
-			{
-				var time = utilz.get_youtube_time(data.source)
-
-				if(time !== 0)
-				{
-					data.message += ` (At ${utilz.humanize_seconds(time)})`
-				}
-			}
-
-			data.info = `Setter: ${data.setter} | ${data.nice_date}`
-			
-			if(data.query)
-			{
-				data.info += ` | Search Term: "${data.query}"`
-			}
-		}
-
-		else
-		{
 			data.title = default_tv_title
+		}
+
+		if(!data.title)
+		{
+			data.title = data.source
+		}
+
+		data.message = `${data.setter} changed the tv to: ${conditional_quotes(data.title)}`
+
+		if(data.type === "youtube")
+		{
+			var time = utilz.get_youtube_time(data.source)
+
+			if(time !== 0)
+			{
+				data.message += ` (At ${utilz.humanize_seconds(time)})`
+			}
+		}
+
+		data.info = `Setter: ${data.setter} | ${data.nice_date}`
+		
+		if(data.query)
+		{
+			data.info += ` | Search Term: "${data.query}"`
 		}
 
 		data.onclick = function()
@@ -1621,17 +1599,7 @@ function setup_tv(mode, odata={})
 
 	if(data.message)
 	{
-		chat_announce(
-		{
-			save: true,
-			brk: "<i class='icon2c fa fa-television'></i>",
-			message: data.message,
-			title: data.info,
-			onclick: data.onclick,
-			date: data.date,
-			type: data.type,
-			username: data.setter
-		})
+		announce_tv(data)
 	}
 
 	if(mode === "change" || mode === "show")
@@ -1648,6 +1616,21 @@ function setup_tv(mode, odata={})
 	{
 		change({type:"tv", force:true, play:true})
 	}
+}
+
+function announce_tv(data)
+{
+	chat_announce(
+	{
+		save: true,
+		brk: "<i class='icon2c fa fa-television'></i>",
+		message: data.message,
+		title: data.info,
+		onclick: data.onclick,
+		date: data.date,
+		type: data.type,
+		username: data.setter
+	})
 }
 
 function current_tv()
@@ -1724,49 +1707,31 @@ function setup_radio(mode, odata={})
 		{
 			data.source = default_radio_source
 			data.type = default_radio_type
-		}
-
-		if(data.setter)
-		{
-			if(data.source === default_radio_source)
-			{
-				var name = 'default'
-				data.title = default_radio_title
-			}
-
-			else if(data.title)
-			{
-				var name = conditional_quotes(data.title)
-			}
-
-			else
-			{
-				var name = data.source
-			}
-
-			data.message = `${data.setter} changed the radio to: ${name}`
-
-			if(data.type === "youtube")
-			{
-				var time = utilz.get_youtube_time(data.source)
-
-				if(time !== 0)
-				{
-					data.message += ` (At ${utilz.humanize_seconds(time)})`
-				}
-			}
-
-			data.info = `Setter: ${data.setter} | ${data.nice_date}`
-			
-			if(data.query)
-			{
-				data.info += ` | Search Term: "${data.query}"`
-			}
-		}
-
-		else
-		{
 			data.title = default_radio_title
+		}
+
+		if(!data.title)
+		{
+			data.title = data.source
+		}
+
+		data.message = `${data.setter} changed the radio to: ${conditional_quotes(data.title)}`
+
+		if(data.type === "youtube")
+		{
+			var time = utilz.get_youtube_time(data.source)
+
+			if(time !== 0)
+			{
+				data.message += ` (At ${utilz.humanize_seconds(time)})`
+			}
+		}
+
+		data.info = `Setter: ${data.setter} | ${data.nice_date}`
+		
+		if(data.query)
+		{
+			data.info += ` | Search Term: "${data.query}"`
 		}
 
 		data.onclick = function()
@@ -1777,17 +1742,7 @@ function setup_radio(mode, odata={})
 
 	if(data.message)
 	{
-		chat_announce(
-		{
-			save: true,
-			brk: "<i class='icon2c fa fa-volume-up'></i>",
-			message: data.message,
-			title: data.info,
-			onclick: data.onclick,
-			date: data.date,
-			type: data.type,
-			username: data.setter
-		})
+		announce_radio(data)
 	}
 
 	if(mode === "change" || mode === "show")
@@ -1804,6 +1759,21 @@ function setup_radio(mode, odata={})
 	{
 		change({type:"radio", force:true, play:true})
 	}
+}
+
+function announce_radio(data)
+{
+	chat_announce(
+	{
+		save: true,
+		brk: "<i class='icon2c fa fa-volume-up'></i>",
+		message: data.message,
+		title: data.info,
+		onclick: data.onclick,
+		date: data.date,
+		type: data.type,
+		username: data.setter
+	})
 }
 
 function push_radio_changed(data)
@@ -19166,17 +19136,18 @@ function clear_room(data)
 	clear_chat()
 
 	chat_history = []
-	images_changed = []
-	tv_changed = []
-	radio_changed = []
+
+	images_changed = images_changed.slice(-1)
+	tv_changed = tv_changed.slice(-1)
+	radio_changed = radio_changed.slice(-1)
 
 	$("#image_history_container").html("")
 	$("#tv_history_container").html("")
 	$("#radio_history_container").html("")
 
-	setup_image("show", current_image())
-	setup_tv("show", current_tv())
-	setup_radio("show", current_tv())
+	announce_image(current_image())
+	announce_tv(current_tv())
+	announce_radio(current_radio())
 
 	show_topic()
 }
