@@ -12719,19 +12719,19 @@ function show_log_messages()
 
 				else if(type === "image")
 				{
-					data.date = date
+					data.image_date = date
 					setup_image("show", data)
 				}
 
 				else if(type === "tv")
 				{
-					data.date = date
+					data.tv_date = date
 					setup_tv("show", data)
 				}
 
 				else if(type === "radio")
 				{
-					data.date = date
+					data.radio_date = date
 					setup_radio("show", data)
 				}
 
