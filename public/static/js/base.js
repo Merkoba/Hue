@@ -13849,7 +13849,27 @@ function change_background_image_source(src)
 
 	if(src !== "default")
 	{
+		if(!src.startsWith("http://") && !src.startsWith("https://"))
+		{
+			return false
+		}
+
 		src = src.replace(/\.gifv/g, '.gif')
+
+		if(src === background_image)
+		{
+			return false
+		}
+
+		if(src.length === 0)
+		{
+			return false
+		}
+
+		if(src.length > max_image_source_length)
+		{
+			return false
+		}
 		
 		var extension = utilz.get_extension(src).toLowerCase()
 
@@ -13857,21 +13877,6 @@ function change_background_image_source(src)
 		{
 			return false
 		}
-	}
-
-	if(src === background_image)
-	{
-		return false
-	}
-
-	if(src.length === 0)
-	{
-		return false
-	}
-
-	if(src.length > max_image_source_length)
-	{
-		return false
 	}
 
 	socket_emit("change_background_image_source", {src:src})

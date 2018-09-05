@@ -1916,7 +1916,7 @@ input[type=text], textarea
 	color: white;
 	cursor: pointer;
 	opacity: 0;
-	transition: opacity 1000ms, box-shadow 1000ms
+	transition: opacity 1200ms, box-shadow 1200ms
 }
 
 .maxer_container:hover .maxer

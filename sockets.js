@@ -3318,6 +3318,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(data.src !== "default")
 		{
+			if(!data.src.startsWith("http://") && !data.src.startsWith("https://"))
+			{
+				return false
+			}
+
 			data.src = data.src.replace(/\s/g,'').replace(/\.gifv/g,'.gif')
 
 			var extension = utilz.get_extension(data.src).toLowerCase()
@@ -3402,12 +3407,19 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		var to_delete = false
 
-		if(info !== "")
+		if(info.background_image !== "")
 		{
 			if(info.background_image_type === "hosted")
 			{
 				to_delete = info.background_image
 			}
+		}
+
+		if(fname === "default")
+		{
+			fname = ""
+			image_url = ""
+			type = "hosted"
 		}
 
 		var date = Date.now()
