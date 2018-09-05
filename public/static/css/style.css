@@ -1904,7 +1904,7 @@ input[type=text], textarea
 	position: absolute;
 	right: 0;
 	height: 90%;
-	width: 5px;
+	width: 0.8em;
 }
 
 .maxer
@@ -1916,13 +1916,13 @@ input[type=text], textarea
 	color: white;
 	cursor: pointer;
 	opacity: 0;
-	transition: opacity 1200ms, box-shadow 1200ms
+	transition: opacity 1000ms, box-shadow 1000ms
 }
 
 .maxer_container:hover .maxer
 {
-	opacity: 1;
-	box-shadow: 0 0 1rem;
+	opacity: 0.25;
+	box-shadow: 0 0 1em currentColor;
 }
 
 .highlighted

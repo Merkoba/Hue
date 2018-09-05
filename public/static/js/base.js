@@ -2468,6 +2468,7 @@ function apply_theme()
 
 	.maxer 
 	{
+		background-color: ${font_color} !important;
 		color: ${font_color} !important;
 	}
 
