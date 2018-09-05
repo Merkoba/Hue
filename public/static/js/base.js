@@ -13858,6 +13858,7 @@ function change_background_image_source(src)
 
 		if(src === background_image)
 		{
+			feedback("Background image is already set to that")
 			return false
 		}
 
@@ -13875,6 +13876,15 @@ function change_background_image_source(src)
 
 		if(!extension || !utilz.image_extensions.includes(extension))
 		{
+			return false
+		}
+	}
+
+	else
+	{
+		if(background_image === default_background_image_url)
+		{
+			feedback("Background image is already set to that")
 			return false
 		}
 	}
