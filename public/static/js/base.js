@@ -1507,7 +1507,7 @@ function push_images_changed(data)
 	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
 	var inner = el.find('.media_history_item_inner').eq(0)
 	
-	inner.text(data.message)
+	inner.text(data.message).urlize()
 	inner.attr("title", data.info)
 
 	inner.click(data.onclick)
@@ -1663,7 +1663,7 @@ function push_tv_changed(data)
 	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
 	var inner = el.find('.media_history_item_inner').eq(0)
 	
-	inner.text(data.message)
+	inner.text(data.message).urlize()
 	inner.attr("title", data.info)
 
 	inner.click(data.onclick)
@@ -1793,7 +1793,7 @@ function push_radio_changed(data)
 	var el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
 	var inner = el.find('.media_history_item_inner').eq(0)
 	
-	inner.text(data.message)
+	inner.text(data.message).urlize()
 	inner.attr("title", data.info)
 
 	inner.click(data.onclick)
@@ -6210,7 +6210,7 @@ function chat_announce(args={})
 
 	if(clickable)
 	{
-		content.text(args.message).urlize(false, true)
+		content.text(args.message).urlize()
 	}
 
 	else
@@ -6252,7 +6252,7 @@ function chat_announce(args={})
 	}
 }
 
-jQuery.fn.urlize = function(force=false, stop_propagation=false)
+jQuery.fn.urlize = function(force=false, stop_propagation=true)
 {
 	var cls = "generic action"
 
