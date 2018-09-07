@@ -9212,7 +9212,7 @@ function change_radio_source(src)
 	{
 		if(radio_changed.length > 1)
 		{
-			src = radio_changed[radio_changed.length - 2].url
+			src = radio_changed[radio_changed.length - 2].source
 		}
 
 		else
@@ -9310,7 +9310,7 @@ function change_tv_source(src)
 	{
 		if(tv_changed.length > 1)
 		{
-			src = tv_changed[tv_changed.length - 2].url
+			src = tv_changed[tv_changed.length - 2].source
 		}
 
 		else
@@ -14020,7 +14020,7 @@ function change_image_source(src)
 	{
 		if(images_changed.length > 1)
 		{
-			src = images_changed[images_changed.length - 2].url
+			src = images_changed[images_changed.length - 2].source
 		}
 
 		else
@@ -19164,7 +19164,7 @@ function clear_room(data)
 	announce_image(current_image())
 	announce_tv(current_tv())
 	announce_radio(current_radio())
-
+R
 	show_topic()
 }
 
