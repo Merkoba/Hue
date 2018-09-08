@@ -19164,7 +19164,7 @@ function clear_room(data)
 	announce_image(current_image())
 	announce_tv(current_tv())
 	announce_radio(current_radio())
-R
+
 	show_topic()
 }
 
