@@ -1498,7 +1498,11 @@ function push_images_changed(data)
 
 		if(img.source === data.source)
 		{
+			console.log(images_changed[i])
+			console.log($("#image_history_container").children().eq(i).text())
 			images_changed.splice(i, 1)
+			$("#image_history_container").children().eq(i).remove()
+			break
 		}
 	}
 
@@ -1655,6 +1659,8 @@ function push_tv_changed(data)
 		if(tv.source === data.source)
 		{
 			tv_changed.splice(i, 1)
+			$("#tv_history_container").children().eq(i).remove()
+			break
 		}
 	}
 
@@ -1785,6 +1791,8 @@ function push_radio_changed(data)
 		if(radio.source === data.source)
 		{
 			radio_changed.splice(i, 1)
+			$("#tv_history_container").children().eq(i).remove()
+			break
 		}
 	}
 
