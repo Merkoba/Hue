@@ -1498,8 +1498,6 @@ function push_images_changed(data)
 
 		if(img.source === data.source)
 		{
-			console.log(images_changed[i])
-			console.log($("#image_history_container").children().eq(i).text())
 			images_changed.splice(i, 1)
 			$("#image_history_container").children().eq(i).remove()
 			break
