@@ -19163,9 +19163,9 @@ function clear_room(data)
 	tv_changed = tv_changed.slice(-1)
 	radio_changed = radio_changed.slice(-1)
 
-	$("#image_history_container").html("")
-	$("#tv_history_container").html("")
-	$("#radio_history_container").html("")
+	$("#image_history_container").children().slice(1).remove()
+	$("#tv_history_container").children().slice(1).remove()
+	$("#radio_history_container").children().slice(1).remove()
 
 	announce_image(current_image())
 	announce_tv(current_tv())
