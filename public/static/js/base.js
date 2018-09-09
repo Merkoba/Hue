@@ -4084,7 +4084,8 @@ function upload_file(file, action)
 		brk: "<i class='icon2c fa fa-info-circle'></i>",
 		message: `Uploading ${get_file_action_name(file.action)}: 0%`,
 		id: `uploading_${date}`,
-		title: `Size: ${get_size_string(file.size / 1024)} | ${nice_date()}`
+		title: `Size: ${get_size_string(file.size / 1024)} | ${nice_date()}`,
+		username: username
 	}
 
 	if(!file.sending_last_slice)
