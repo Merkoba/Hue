@@ -632,6 +632,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 	font-size: 2em;
 }
 
+.icon4
+{
+	padding-right: 0.6em;
+}
+
 #header_radio_volume_icon_plus
 {
 	margin-left: 0.8em;
