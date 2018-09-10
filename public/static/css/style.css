@@ -1974,3 +1974,8 @@ input[type=text], textarea
 {
 	font-size: 0.8em;
 }
+
+.show_profile_button
+{
+	font-size: 1.1em;	
+}
