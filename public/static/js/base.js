@@ -12758,6 +12758,11 @@ function clear_log(clr_room=false)
 	socket_emit("clear_log", {clear_room:clr_room})
 }
 
+function clear_log_and_room(clr_room=false)
+{
+	clear_log(true)
+}
+
 function announce_log_change(data)
 {
 	if(data.log)
