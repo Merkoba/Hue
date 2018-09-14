@@ -4668,7 +4668,7 @@ function activate_key_detection()
 		{
 			if(e.shiftKey)
 			{
-				scroll_up(small_keyboard_scroll)
+				input_history_change("up")
 			}
 
 			else if(e.ctrlKey)
@@ -4678,7 +4678,7 @@ function activate_key_detection()
 
 			else
 			{
-				input_history_change("up")
+				scroll_up(small_keyboard_scroll)
 			}
 
 			e.preventDefault()
@@ -4689,7 +4689,7 @@ function activate_key_detection()
 		{
 			if(e.shiftKey)
 			{
-				scroll_down(small_keyboard_scroll)
+				input_history_change("down")
 			}
 
 			else if(e.ctrlKey)
@@ -4699,7 +4699,7 @@ function activate_key_detection()
 
 			else
 			{
-				input_history_change("down")
+				scroll_down(small_keyboard_scroll)
 			}
 
 			e.preventDefault()
