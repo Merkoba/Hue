@@ -4299,9 +4299,9 @@ function activate_key_detection()
 			e.preventDefault()
 		}
 
-		if(keys_pressed[e.key] === undefined && !e.repeat)
+		if(keys_pressed[e.keyCode] === undefined && !e.repeat)
 		{
-			keys_pressed[e.key] = true
+			keys_pressed[e.keyCode] = true
 
 			if(Object.keys(keys_pressed).length === 1)
 			{
@@ -4808,7 +4808,7 @@ function activate_key_detection()
 			return
 		}
 
-		delete keys_pressed[e.key]
+		delete keys_pressed[e.keyCode]
 	})
 }
 
