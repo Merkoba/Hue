@@ -185,7 +185,6 @@ var double_tap_delay = 250
 var wheel_delay = 100
 var check_scrollers_delay = 100
 var requesting_roomlist = false
-var num_keys_pressed = 0
 var first_time
 var emit_queue_timeout
 var emit_queue = []
@@ -231,6 +230,7 @@ var play_video_on_load = false
 var commands_queue = {}
 var user_leaving = false
 var admin_activity_filter_string = ""
+var keys_pressed = {}
 
 var commands = 
 [
@@ -4299,11 +4299,11 @@ function activate_key_detection()
 			e.preventDefault()
 		}
 
-		if(!e.repeat)
+		if(keys_pressed[e.key] === undefined && !e.repeat)
 		{
-			num_keys_pressed += 1
+			keys_pressed[e.key] = true
 
-			if(num_keys_pressed === 1)
+			if(Object.keys(keys_pressed).length === 1)
 			{
 				if(e.key === double_tap_key)
 				{
@@ -4383,12 +4383,52 @@ function activate_key_detection()
 			else
 			{
 				reset_double_tap_keys_pressed()
+
+				if(e.key === "F1")
+				{
+					e.preventDefault()
+				}
+
+				else if(e.key === "F2")
+				{
+					e.preventDefault()
+				}
+
+				else if(e.key === "F3")
+				{
+					e.preventDefault()
+				}
+
+				else if(e.key === "F4")
+				{
+					e.preventDefault()
+				}
 			}
 		}
 
 		else
 		{
 			reset_double_tap_keys_pressed()
+
+			if(e.key === "F1")
+			{
+				e.preventDefault()
+			}
+
+			else if(e.key === "F2")
+			{
+				e.preventDefault()
+			}
+
+			else if(e.key === "F3")
+			{
+				e.preventDefault()
+			}
+
+			else if(e.key === "F4")
+			{
+				e.preventDefault()
+			}
 		}
 
 		if(modal_open)
@@ -4768,15 +4808,7 @@ function activate_key_detection()
 			return
 		}
 
-		if(!e.repeat)
-		{
-			num_keys_pressed -= 1
-
-			if(num_keys_pressed < 0)
-			{
-				num_keys_pressed = 0
-			}
-		}
+		delete keys_pressed[e.key]
 	})
 }
 
@@ -8645,7 +8677,7 @@ function activate_visibility_listener()
 
 	window.onblur = function()
 	{
-		num_keys_pressed = 0
+		keys_pressed = {}
 	}
 }
 
