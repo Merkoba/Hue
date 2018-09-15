@@ -4669,19 +4669,24 @@ function activate_key_detection()
 			if(e.shiftKey)
 			{
 				input_history_change("up")
+				e.preventDefault()
 			}
 
 			else if(e.ctrlKey)
 			{
 				activity_above()
+				e.preventDefault()
 			}
 
 			else
 			{
-				scroll_up(small_keyboard_scroll)
+				if(!input_is_scrolled())
+				{
+					scroll_up(small_keyboard_scroll)
+					e.preventDefault()
+				}
 			}
 
-			e.preventDefault()
 			return
 		}
 
@@ -4690,19 +4695,24 @@ function activate_key_detection()
 			if(e.shiftKey)
 			{
 				input_history_change("down")
+				e.preventDefault()
 			}
 
 			else if(e.ctrlKey)
 			{
 				activity_below()
+				e.preventDefault()
 			}
 
 			else
 			{
-				scroll_down(small_keyboard_scroll)
+				if(!input_is_scrolled())
+				{
+					scroll_down(small_keyboard_scroll)
+					e.preventDefault()
+				}
 			}
 
-			e.preventDefault()
 			return
 		}
 
@@ -19192,4 +19202,11 @@ function start_active_media()
 	change({type:"image"})
 	change({type:"tv"})
 	change({type:"radio"})
+}
+
+function input_is_scrolled()
+{
+	var el = $("#input")[0]
+
+	return el.clientHeight < el.scrollHeight
 }
