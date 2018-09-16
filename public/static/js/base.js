@@ -5506,29 +5506,6 @@ function update_chat(args={})
 
 	var highlighted = false
 
-	var markdown = check_markdown(args.message)
-
-	if(markdown)
-	{
-		if(markdown === "italic")
-		{
-			contclasses += " italic"
-			args.message = args.message.slice(1, -1)
-		}
-
-		else if(markdown === "bold")
-		{
-			contclasses += " bold"
-			args.message = args.message.slice(2, -2)
-		}
-
-		else if(markdown === "italic_and_bold")
-		{
-			contclasses += " italic bold"
-			args.message = args.message.slice(3, -3)
-		}
-	}
-
 	if(args.username !== username)
 	{
 		if(check_highlights(args.message))
@@ -5661,6 +5638,8 @@ function update_chat(args={})
 	fmessage.data("highlighted", highlighted)
 	fmessage.data("uname", args.username)
 	fmessage.data("mode", "chat")
+
+	fmessage = replace_markdown(fmessage)
 
 	add_to_chat(fmessage, true)
 
@@ -19263,56 +19242,72 @@ function start_reply_events(container_id, msg_instance)
 			text += "..."
 		}
 
-		text = utilz.clean_string2(text)
+		text = `*"${utilz.clean_string2(text)}"*`
 
 		if(uname)
 		{
-			var message = `${uname} said: "${text}"`
+			text = `${uname} said: ${text}`
 		}
 
-		else
+		if(is_command(text))
 		{
-			var message = `"${text}"`
+			text = `/${text}`
 		}
-
-		if(is_command(message))
-		{
-			message = `/${message}`
-		}
-
-		message = `**${message}**`
 
 		goto_bottom(true, false)
 
-		process_message({message:message})
+		process_message({message:text, to_history:false})
 
 		e.preventDefault()
 	})
 }
 
-function check_markdown(message)
+function replace_markdown(message)
 {
-	var matches = message.match(/^(\*+)(?!\s)[^*]*[^*\s]\1$/)
+	var chat_content = message.find(".chat_content").eq(0)
 
-	if(matches)
+	var text = chat_content.html()
+
+	var changed = false
+
+	text = text.replace(/(\*+)(?!\s)[^*]*[^*\s]\1/gm, function(g1, g2)
 	{
-		var n = matches[1].length
+		var n = g2.length
 
 		if(n === 1)
 		{
-			return "italic"
+			changed = true
+			return `<span class='italic'>${g1.slice(1, -1)}</span>`
 		}
 
 		else if(n === 2)
 		{
-			return "bold"
+			changed = true
+			return `<span class='bold'>${g1.slice(2, -2)}</span>`
 		}
 
 		else if(n === 3)
 		{
-			return "italic_and_bold"
+			changed = true
+			return `<span class='italic bold'>${g1.slice(3, -3)}</span>`
 		}
+	})
+
+	text = text.replace(/(\_+)(?!\s)[^_]*[^_\s]\1/gm, function(g1, g2)
+	{
+		var n = g2.length
+
+		if(n === 1)
+		{
+			changed = true
+			return `<span class='underlined'>${g1.slice(1, -1)}</span>`
+		}
+	})
+
+	if(changed)
+	{
+		chat_content.html(text)
 	}
 
-	return false
+	return message
 }
