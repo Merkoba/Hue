@@ -19203,22 +19203,13 @@ function input_is_scrolled()
 
 function check_prevent_default(e)
 {
-	if(e.key === "F1")
-	{
-		e.preventDefault()
-	}
+	var keys = 
+	[
+		"F1", "F2",
+		"F3", "F4"
+	]
 
-	else if(e.key === "F2")
-	{
-		e.preventDefault()
-	}
-
-	else if(e.key === "F3")
-	{
-		e.preventDefault()
-	}
-
-	else if(e.key === "F4")
+	if(keys.includes(e.key))
 	{
 		e.preventDefault()
 	}
