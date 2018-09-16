@@ -398,6 +398,7 @@ function init()
 	load_font_face()
 	setup_before_unload()
 	setup_jumpers()
+	start_reply_events()
 
 	start_socket()
 }
@@ -5504,6 +5505,29 @@ function update_chat(args={})
 	var contclasses = "chat_content"
 
 	var highlighted = false
+
+	var markdown = check_markdown(args.message)
+
+	if(markdown)
+	{
+		if(markdown === "italic")
+		{
+			contclasses += " italic"
+			args.message = args.message.slice(1, -1)
+		}
+
+		else if(markdown === "bold")
+		{
+			contclasses += " bold"
+			args.message = args.message.slice(2, -2)
+		}
+
+		else if(markdown === "italic_and_bold")
+		{
+			contclasses += " italic bold"
+			args.message = args.message.slice(3, -3)
+		}
+	}
 
 	if(args.username !== username)
 	{
@@ -19213,4 +19237,82 @@ function check_prevent_default(e)
 	{
 		e.preventDefault()
 	}
+}
+
+function start_reply_events(container_id, msg_instance)
+{
+	$("#chat_area").on("mouseup", ".chat_content", function(e)
+	{
+		if(e.button !== 1)
+		{
+			return false
+		}
+
+		var max = 100
+
+		var uname = $(this).closest(".chat_message").data("uname")
+
+		var text = $(this).text()
+
+		var add_dots = text.length > max
+
+		text = text.substring(0, max)
+
+		if(add_dots)
+		{
+			text += "..."
+		}
+
+		text = utilz.clean_string2(text)
+
+		if(uname)
+		{
+			var message = `${uname} said: "${text}"`
+		}
+
+		else
+		{
+			var message = `"${text}"`
+		}
+
+		if(is_command(message))
+		{
+			message = `/${message}`
+		}
+
+		message = `**${message}**`
+
+		goto_bottom(true, false)
+
+		process_message({message:message})
+
+		e.preventDefault()
+	})
+}
+
+function check_markdown(message)
+{
+	var matches = message.match(/^(\*+)(?!\s)[^*]*[^*\s]\1$/)
+
+	if(matches)
+	{
+		var n = matches[1].length
+
+		if(n === 1)
+		{
+			return "italic"
+		}
+
+		else if(n === 2)
+		{
+			return "bold"
+		}
+
+		else if(n === 3)
+		{
+			return "italic_and_bold"
+		}
+	}
+
+	return false
 }

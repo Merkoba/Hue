@@ -1166,6 +1166,11 @@ input[type=text], textarea
 	text-decoration: underline;
 }
 
+.italic
+{
+	font-style: italic;
+}
+
 .bold
 {
 	font-weight: bold;
