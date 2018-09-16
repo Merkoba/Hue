@@ -4358,78 +4358,36 @@ function activate_key_detection()
 				if(e.key === "F1")
 				{
 					run_user_function(1)
-					e.preventDefault()
 				}
 
 				else if(e.key === "F2")
 				{
 					run_user_function(2)
-					e.preventDefault()
 				}
 
 				else if(e.key === "F3")
 				{
 					run_user_function(3)
-					e.preventDefault()
 				}
 
 				else if(e.key === "F4")
 				{
 					run_user_function(4)
-					e.preventDefault()
 				}
 			}
 
 			else
 			{
 				reset_double_tap_keys_pressed()
-
-				if(e.key === "F1")
-				{
-					e.preventDefault()
-				}
-
-				else if(e.key === "F2")
-				{
-					e.preventDefault()
-				}
-
-				else if(e.key === "F3")
-				{
-					e.preventDefault()
-				}
-
-				else if(e.key === "F4")
-				{
-					e.preventDefault()
-				}
 			}
 		}
 
 		else
 		{
 			reset_double_tap_keys_pressed()
-
-			if(e.key === "F1")
-			{
-				e.preventDefault()
-			}
-
-			else if(e.key === "F2")
-			{
-				e.preventDefault()
-			}
-
-			else if(e.key === "F3")
-			{
-				e.preventDefault()
-			}
-
-			else if(e.key === "F4")
-			{
-				e.preventDefault()
-			}
 		}
+		
+		check_prevent_default(e)
 
 		if(modal_open)
 		{
@@ -19241,4 +19199,27 @@ function input_is_scrolled()
 	var el = $("#input")[0]
 
 	return el.clientHeight < el.scrollHeight
+}
+
+function check_prevent_default(e)
+{
+	if(e.key === "F1")
+	{
+		e.preventDefault()
+	}
+
+	else if(e.key === "F2")
+	{
+		e.preventDefault()
+	}
+
+	else if(e.key === "F3")
+	{
+		e.preventDefault()
+	}
+
+	else if(e.key === "F4")
+	{
+		e.preventDefault()
+	}
 }
