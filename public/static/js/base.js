@@ -19282,37 +19282,37 @@ function replace_markdown(message)
 
 	var changed = false
 
-	text = text.replace(/(?<=^|\s)(\*+)(?!\s)[^*]*(?<!\s)\1(?=\s|$)/gm, function(g1, g2)
+	text = text.replace(/(^|\s)(\*+)(?!\s)([^*]*[^*\s])\2(?!\S)/gm, function(g1, g2, g3, g4)
 	{
-		var n = g2.length
+		var n = g3.length
 
 		if(n === 1)
 		{
 			changed = true
-			return `<span class='italic'>${g1.slice(1, -1)}</span>`
+			return `${g2}<span class='italic'>${g4}</span>`
 		}
 
 		else if(n === 2)
 		{
 			changed = true
-			return `<span class='bold'>${g1.slice(2, -2)}</span>`
+			return `${g2}<span class='bold'>${g4}</span>`
 		}
 
 		else if(n === 3)
 		{
 			changed = true
-			return `<span class='italic bold'>${g1.slice(3, -3)}</span>`
+			return `${g2}<span class='italic bold'>${g4}</span>`
 		}
 	})
 
-	text = text.replace(/(?<=^|\s)(\_+)(?!\s)[^_]*(?<!\s)\1(?=\s|$)/gm, function(g1, g2)
+	text = text.replace(/(^|\s)(\_+)(?!\s)([^_]*[^_\s])\2(?!\S)/gm, function(g1, g2, g3, g4)
 	{
-		var n = g2.length
+		var n = g3.length
 
 		if(n === 1)
 		{
 			changed = true
-			return `<span class='underlined'>${g1.slice(1, -1)}</span>`
+			return `${g2}<span class='underlined'>${g4}</span>`
 		}
 	})
 
