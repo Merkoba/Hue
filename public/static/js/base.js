@@ -4300,7 +4300,7 @@ function activate_key_detection()
 			e.preventDefault()
 		}
 
-		if(keys_pressed[e.keyCode] === undefined && !e.repeat)
+		if(!$("#input").val() && keys_pressed[e.keyCode] === undefined && !e.repeat)
 		{
 			keys_pressed[e.keyCode] = true
 
