@@ -18894,7 +18894,6 @@ function generate_words_to_autocomplete()
 	.concat(susernames)
 	.concat(["@everyone"])
 	.concat(Object.keys(command_aliases))
-	.sort()
 
 	var autocomplete = get_setting("other_words_to_autocomplete")
 
@@ -18902,6 +18901,8 @@ function generate_words_to_autocomplete()
 	{
 		words = words.concat(autocomplete.split('\n'))
 	}
+
+	words.sort()
 
 	return words
 }
