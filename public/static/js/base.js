@@ -18882,11 +18882,19 @@ function setup_user_function_switch_selects()
 
 function generate_words_to_autocomplete()
 {
+	var susernames = []
+
+	for(var uname of usernames)
+	{
+		susernames.push(`${uname}'s`)
+	}
+
 	var words = commands
 	.concat(usernames)
+	.concat(susernames)
 	.concat(["@everyone"])
 	.concat(Object.keys(command_aliases))
-	.concat(Object.keys(user_settings))
+	.sort()
 
 	var autocomplete = get_setting("other_words_to_autocomplete")
 
