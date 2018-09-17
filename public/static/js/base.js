@@ -4300,7 +4300,10 @@ function activate_key_detection()
 			e.preventDefault()
 		}
 
-		if(!$("#input").val() && keys_pressed[e.keyCode] === undefined && !e.repeat)
+		if(!(is_textbox(document.activeElement) 
+		&& document.activeElement.value) 
+		&& keys_pressed[e.keyCode] === undefined 
+		&& !e.repeat)
 		{
 			keys_pressed[e.keyCode] = true
 
