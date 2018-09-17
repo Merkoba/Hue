@@ -19282,7 +19282,7 @@ function replace_markdown(message)
 
 	var changed = false
 
-	text = text.replace(/(\*+)(?!\s)[^*]*[^*\s]\1/gm, function(g1, g2)
+	text = text.replace(/(?<=^|\s)(\*+)(?!\s)[^*]*(?<!\s)\1(?=\s|$)/gm, function(g1, g2)
 	{
 		var n = g2.length
 
@@ -19305,7 +19305,7 @@ function replace_markdown(message)
 		}
 	})
 
-	text = text.replace(/(\_+)(?!\s)[^_]*[^_\s]\1/gm, function(g1, g2)
+	text = text.replace(/(?<=^|\s)(\_+)(?!\s)[^_]*(?<!\s)\1(?=\s|$)/gm, function(g1, g2)
 	{
 		var n = g2.length
 
