@@ -4187,7 +4187,14 @@ function is_textbox(element)
 	if(tag_name === 'textarea') return true
 	if(tag_name !== 'input') return false
 
-	var type = element.getAttribute('type').toLowerCase(),
+	var type = element.getAttribute('type')
+
+	if(!type)
+	{
+		return false
+	}
+
+	type = type.toLowerCase(),
 
 	input_types =
 	[
