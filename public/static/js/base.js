@@ -4308,7 +4308,7 @@ function activate_key_detection()
 		}
 
 		if(!(is_textbox(document.activeElement) 
-		&& document.activeElement.value) 
+		&& document.activeElement.value.trim()) 
 		&& keys_pressed[e.keyCode] === undefined 
 		&& !e.repeat)
 		{
