@@ -399,6 +399,7 @@ function init()
 	setup_before_unload()
 	setup_jumpers()
 	start_reply_events()
+	set_user_settings_titles()
 
 	start_socket()
 }
@@ -19329,4 +19330,13 @@ function replace_markdown(message)
 	}
 
 	return message
+}
+
+function set_user_settings_titles()
+{
+	for(let setting in user_settings)
+	{
+		$(`#global_settings_${setting}`).attr("title", setting)
+		$(`#room_settings_${setting}`).attr("title", setting)
+	}
 }
