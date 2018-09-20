@@ -19249,6 +19249,11 @@ function start_reply_events(container_id, msg_instance)
 			return false
 		}
 
+		if($(e.target).is("a"))
+		{
+			return false
+		}
+
 		var max = 100
 
 		var uname = $(this).closest(".chat_message").data("uname")
