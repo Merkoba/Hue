@@ -5589,7 +5589,7 @@ function update_chat(args={})
 
 		var fmessage = $(s)
 
-		fmessage.find('.chat_content').eq(0).text(tpt).urlize()
+		fmessage.find('.chat_content').eq(0).text(tpt)
 	}
 
 	else
@@ -5629,7 +5629,7 @@ function update_chat(args={})
 
 		var fmessage = $(s)
 
-		fmessage.find('.chat_content').eq(0).text(args.message).urlize()
+		fmessage.find('.chat_content').eq(0).text(args.message)
 	}
 
 	var huname = fmessage.find('.chat_uname').eq(0)
@@ -5651,6 +5651,8 @@ function update_chat(args={})
 	fmessage.data("mode", "chat")
 
 	fmessage = replace_markdown(fmessage)
+
+	fmessage.find('.chat_content').eq(0).urlize()
 
 	add_to_chat(fmessage, true)
 
