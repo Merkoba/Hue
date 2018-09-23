@@ -732,12 +732,12 @@ function setup_icons()
 
 	if(can_images)
 	{
-		$("#footer_images_icon").css("display", "flex")
+		$("#footer_images_icon_container").css("display", "flex")
 	}
 
 	else
 	{
-		$("#footer_images_icon").css("display", "none")
+		$("#footer_images_icon_container").css("display", "none")
 	}
 
 	if(room_tv_mode === "disabled")
@@ -752,12 +752,12 @@ function setup_icons()
 
 	if(can_tv)
 	{
-		$("#footer_tv_icon").css("display", "flex")
+		$("#footer_tv_icon_container").css("display", "flex")
 	}
 
 	else
 	{
-		$("#footer_tv_icon").css("display", "none")
+		$("#footer_tv_icon_container").css("display", "none")
 	}
 
 	if(room_radio_mode === "disabled")
@@ -772,12 +772,12 @@ function setup_icons()
 
 	if(can_radio)
 	{
-		$("#footer_radio_icon").css("display", "flex")
+		$("#footer_radio_icon_container").css("display", "flex")
 	}
 
 	else
 	{
-		$("#footer_radio_icon").css("display", "none")
+		$("#footer_radio_icon_container").css("display", "none")
 	}
 }
 
