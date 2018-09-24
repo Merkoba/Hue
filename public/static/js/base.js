@@ -8246,6 +8246,11 @@ function start_radio()
 		{
 			youtube_player.playVideo()
 		}
+
+		else
+		{
+			return false
+		}
 	}
 
 	else if(loaded_radio_type === "soundcloud")
@@ -8253,6 +8258,11 @@ function start_radio()
 		if(soundcloud_player !== undefined)
 		{
 			soundcloud_player.play()
+		}
+
+		else
+		{
+			return false
 		}
 	}
 
