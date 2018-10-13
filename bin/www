@@ -49,7 +49,7 @@ const mongo = require('mongodb')
 const bcrypt = require('bcrypt')
 const winston = require('winston')
 
-mongo.connect(config.mongodb_path, function(err, db) 
+mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client) 
 {
 	if(err)
 	{
@@ -58,6 +58,8 @@ mongo.connect(config.mongodb_path, function(err, db)
 
 	else
 	{
+		const db = client.db("hue") 
+
 		const logger = winston.createLogger(
 		{
 			format: winston.format.simple(),

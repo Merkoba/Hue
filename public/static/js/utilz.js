@@ -278,17 +278,29 @@ var Utilz = function()
 
 	utilz.get_extension = function(s)
 	{
-		var matches = s.match(/\.(\w+)(?=$|[#?])/)
-
-		if(matches)
+		if(s.startsWith("http://") || s.startsWith("https://"))
 		{
-			return matches[1]
+			var s2 = s.split("//").slice(1).join("//")
+
+			var matches = s2.match(/\/.*\.(\w+)(?=$|[#?])/)
+
+			if(matches)
+			{
+				return matches[1]
+			}
 		}
 
 		else
 		{
-			return ""
+			var matches = s.match(/\.(\w+)(?=$|[#?])/)
+
+			if(matches)
+			{
+				return matches[1]
+			}
 		}
+
+		return ""
 	}
 
 	utilz.validate_rgb = function(rgb, case_sensitive=true)

@@ -9,6 +9,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	c.vars = {}
 
+	c.vars.autoprocess = true
+
 	c.vars.site_root = config.site_root
 	c.vars.main_room_id = config.main_room_id
 	c.vars.default_image_source = config.default_image_source

@@ -19254,48 +19254,46 @@ function start_reply_events(container_id, msg_instance)
 {
 	$("#chat_area").on("mouseup", ".chat_content", function(e)
 	{
-		if(e.button !== 1)
+		if(e.button === 1)
 		{
-			return false
+			if($(e.target).is("a"))
+			{
+				return false
+			}
+
+			var max = 100
+
+			var uname = $(this).closest(".chat_message").data("uname")
+
+			var text = $(this).text()
+
+			var add_dots = text.length > max
+
+			text = text.substring(0, max)
+
+			if(add_dots)
+			{
+				text += "..."
+			}
+
+			text = `*"${utilz.clean_string2(text)}"*`
+
+			if(uname)
+			{
+				text = `${uname} said: ${text}`
+			}
+
+			if(is_command(text))
+			{
+				text = `/${text}`
+			}
+
+			goto_bottom(true, false)
+
+			process_message({message:text, to_history:false})
+
+			e.preventDefault()
 		}
-
-		if($(e.target).is("a"))
-		{
-			return false
-		}
-
-		var max = 100
-
-		var uname = $(this).closest(".chat_message").data("uname")
-
-		var text = $(this).text()
-
-		var add_dots = text.length > max
-
-		text = text.substring(0, max)
-
-		if(add_dots)
-		{
-			text += "..."
-		}
-
-		text = `*"${utilz.clean_string2(text)}"*`
-
-		if(uname)
-		{
-			text = `${uname} said: ${text}`
-		}
-
-		if(is_command(text))
-		{
-			text = `/${text}`
-		}
-
-		goto_bottom(true, false)
-
-		process_message({message:text, to_history:false})
-
-		e.preventDefault()
 	})
 }
 

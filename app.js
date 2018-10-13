@@ -2,11 +2,27 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 {
 	const express = require('express')
 	const session = require('express-session')
-	const favicon = require('serve-favicon')
-	const MongoStore = require('connect-mongo')(session);
 	const path = require('path')
 	const bodyParser = require('body-parser')
 	const routes = require('./routes/index')(db_manager, config, sconfig, utilz)
+	const MongoDBStore = require('connect-mongodb-session')(session);
+
+	const mongo_store = new MongoDBStore(
+	{
+		uri: 'mongodb://localhost:27017/connect_mongodb_session_test',
+		collection: 'mySessions'
+	})
+	 
+	mongo_store.on('connected', function() 
+	{
+		mongo_store.client
+	})
+	 
+	mongo_store.on('error', function(error) 
+	{
+		assert.ifError(error)
+		assert.ok(false)
+	})
 
 	var app = express()
 
@@ -24,7 +40,7 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 		resave: false,
 		saveUninitialized: true,
 		cookie: {secure: false, maxAge: config.session_cookie_max_age},
-		store: new MongoStore({db:db})
+		store: mongo_store
 	}
 
 	console.log(`ENV: ${app.get('env')}`)
@@ -70,8 +86,6 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 			error: {}
 		})
 	})
-
-	app.use(favicon(path.join(__dirname,'public/static', 'favicon.ico')))
 
 	return app
 }

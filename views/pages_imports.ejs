@@ -6,6 +6,11 @@
 <script src="/static/js/jquery.min.js?v=1"></script>
 <script src="/static/js/msg.min.js?v=3"></script>
 
-<script><% include vars.ejs %></script>
+<% 
+	if(vars.autoprocess)
+	{
+		%><script><% include vars.ejs %></script><%
+	}
+%>
 
 <script src="/static/js/pages.js?v=3"></script>

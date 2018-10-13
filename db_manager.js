@@ -83,7 +83,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 						room.version = rooms_version
 
-						db.collection('rooms').update({_id:room._id}, {$set:room})
+						db.collection('rooms').updateOne({_id:room._id}, {$set:room})
 
 						.then(ans =>
 						{
@@ -533,7 +533,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 			fields.modified = Date.now()
 
-			db.collection('rooms').update({_id:_id}, {$set:fields})
+			db.collection('rooms').updateOne({_id:_id}, {$set:fields})
 
 			.then(result =>
 			{
@@ -710,7 +710,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 						user.version = users_version
 
-						db.collection('users').update({_id:user._id}, {$set:user})
+						db.collection('users').updateOne({_id:user._id}, {$set:user})
 
 						.then(ans =>
 						{
@@ -938,7 +938,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				{
 					fields.password = hash
 
-					db.collection('users').update({_id:_id}, {$set:fields})
+					db.collection('users').updateOne({_id:_id}, {$set:fields})
 
 					.then(ans =>
 					{
@@ -966,7 +966,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 			else
 			{
-				db.collection('users').update({_id:_id}, {$set:fields})
+				db.collection('users').updateOne({_id:_id}, {$set:fields})
 
 				.then(ans =>
 				{
