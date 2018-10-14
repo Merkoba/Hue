@@ -1,7 +1,7 @@
 {
 	"https_enabled": true,
 	"site_root": "https://hue.merkoba.com/",
-	"image_storage_s3_or_local": "local",
+	"image_storage_s3_or_local": "s3",
 	"main_room_id": "main",
 	"default_main_room_name": "Hue",
 	"images_directory": "public/static/img",

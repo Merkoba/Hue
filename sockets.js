@@ -2949,11 +2949,12 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			else if(config.image_storage_s3_or_local === "s3")
 			{
-				fs.readFile(`${images_root}/${data.fname}`, (err, data) =>
+				fs.readFile(`${images_root}/${data.fname}`, (err, data2) =>
 				{
 					if(err)
 					{
 						fs.unlink(`${images_root}/${data.fname}`, function(){})
+						logger.log_error(err)
 						return
 					}
 
@@ -2961,7 +2962,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						ACL: "public-read",
 						ContentType: handler.get_content_type(data.fname),
-						Body: data,
+						Body: data2,
 						Bucket: sconfig.s3_bucket_name,
 						Key: `${sconfig.s3_images_location}${data.fname}`,
 						CacheControl: `max-age=${sconfig.s3_cache_max_age}`
@@ -3520,7 +3521,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		data.data = new Buffer(new Uint8Array(data.data))
+		data.data = Buffer.from(new Uint8Array(data.data))
 
 		file.data.push(data.data)
 
