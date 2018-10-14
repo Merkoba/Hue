@@ -214,8 +214,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		c.vars = {}
 
-		c.vars.login_logo_url = config.login_logo_url
-		c.vars.fromurl = req.query.fromurl
+		c.vars.fromurl = req.query.fromurl || ""
 		c.vars.message = decodeURIComponent(req.query.message)
 		c.vars.min_password_length = config.min_password_length
 		c.vars.max_max_password_length = config.max_max_password_length
@@ -285,7 +284,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		c.vars = {}
 
-		c.vars.register_logo_url = config.register_logo_url
 		c.vars.message = decodeURIComponent(req.query.message)
 		c.vars.max_username_length = config.max_username_length
 		c.vars.min_password_length = config.min_password_length
