@@ -9,8 +9,8 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 
 	const mongo_store = new MongoDBStore(
 	{
-		uri: 'mongodb://localhost:27017/connect_mongodb_session_test',
-		collection: 'mySessions'
+		uri: config.mongodb_path,
+		collection: 'sessions_1'
 	})
 	 
 	mongo_store.on('connected', function() 
