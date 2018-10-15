@@ -3,7 +3,7 @@
 # Installation
 
 Requirements:
-- Node 9+
+- Node 10+
 - MongoDB 3+
 
 Configuration is done in user_config.json and user_config.secret.json files placed in the config directory. You must create these files. If they are not going to be used, create empty json objects like {}, or error messages will be shown at startup.
