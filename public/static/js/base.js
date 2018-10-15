@@ -2221,7 +2221,7 @@ function set_background_image(data)
 
 function apply_background()
 {
-	if(background_mode === "mirror")
+	if(background_mode === "mirror" || background_mode === "mirror_tiled")
 	{
 		var bg_image = current_image().source
 	}
@@ -2249,7 +2249,7 @@ function apply_background()
 		})
 	}
 
-	else if(background_mode === "tiled")
+	else if(background_mode === "tiled" || background_mode === "mirror_tiled")
 	{
 		$('.background_image').each(function()
 		{
@@ -3629,6 +3629,12 @@ function config_admin_background_mode()
 	else if(background_mode === "mirror")
 	{
 		$("#admin_background_tile_dimensions_container").css("display", "none")
+		$("#admin_background_image_container").css("display", "none")
+	}
+
+	else if(background_mode === "mirror_tiled")
+	{
+		$("#admin_background_tile_dimensions_container").css("display", "block")
 		$("#admin_background_image_container").css("display", "none")
 	}
 
@@ -5873,7 +5879,7 @@ function change(args={})
 			return false
 		}
 
-		if(background_mode === "mirror")
+		if(background_mode === "mirror" || background_mode === "mirror_tiled")
 		{
 			apply_background()
 		}
@@ -13950,7 +13956,12 @@ function change_background_mode(mode)
 		return false
 	}
 
-	if(mode !== "normal" && mode !== "tiled" && mode !== "mirror" && mode !== "solid")
+	if(
+		mode !== "normal" && 
+		mode !== "tiled" && 
+		mode !== "mirror" && 
+		mode !== "mirror_tiled" && 
+		mode !== "solid")
 	{
 		feedback("Invalid background mode")
 		return false
@@ -17122,7 +17133,7 @@ function background_image_enabled()
 		return false
 	}
 
-	if(background_mode === "mirror")
+	if(background_mode === "mirror" || background_mode === "mirror_tiled")
 	{
 		if(room_images_mode === "disabled")
 		{
