@@ -13118,8 +13118,6 @@ function fix_media_margin()
 			$("#media_tv_maxer").closest(".maxer_container").css("top", "initial")
 		}
 
-		$(".maxer_container").css("height", "calc(100% - 1rem)")
-
 		$("#media_tv").css(m1, "-1rem")
 		$("#media_tv").css(m2, "0")
 		$("#media_image").css(m2, "-1rem")
@@ -13130,7 +13128,6 @@ function fix_media_margin()
 	{
 		$("#media_image").css("margin-bottom", "0")
 		$("#media_tv").css("margin-top", "0")
-		$(".maxer_container").css("height", "100%")
 	}
 }
 
