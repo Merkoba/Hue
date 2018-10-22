@@ -231,7 +231,7 @@ var commands_queue = {}
 var user_leaving = false
 var admin_activity_filter_string = ""
 var keys_pressed = {}
-var hide_infotip_delay = 1000
+var hide_infotip_delay = 2000
 
 var commands = 
 [
