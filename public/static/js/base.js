@@ -281,7 +281,7 @@ var commands =
 	'/feedback', '/imagesmode', '/tvmode', '/radiomode',
 	'/voicechatmode', '/voicepermission', '/theme', '/textcolormode',
 	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
-	'/clearlog2', '/togglefontsize'
+	'/clearlog2', '/togglefontsize', '/backgroundeffect'
 ]
 
 var user_settings =
@@ -7726,6 +7726,11 @@ function execute_command(message, ans)
 	else if(oiStartsWith(cmd2, '/backgroundmode'))
 	{
 		change_background_mode(arg)
+	}
+
+	else if(oiStartsWith(cmd2, '/backgroundeffect'))
+	{
+		change_background_effect(arg)
 	}
 
 	else if(oiStartsWith(cmd2, '/tiledimensions'))
