@@ -19403,29 +19403,71 @@ function maxers_mouse_events()
 
 		var direction = e.deltaY > 0 ? 'down' : 'up'
 
+		if(e.target.id === "media_image_maxer")
+		{
+			var el = $("#media_image")[0]
+		}
+
+		else if(e.target.id === "media_tv_maxer")
+		{
+			var el = $("#media_tv")[0]
+		}
+
 		if(direction === 'up')
 		{
-			if(e.target.style.order == 1)
+			if(el.style.order == 1)
 			{
-				decrease_media_tv_size(e.target.id)
+				if(el.id === "media_tv")
+				{
+					decrease_media_tv_size()
+				}
+
+				else if(el.id === "media_image")
+				{
+					increase_media_tv_size()
+				}
 			}
 
-			else
+			else if(el.style.order == 2)
 			{
-				increase_media_tv_size(e.target.id)
+				if(el.id === "media_image")
+				{
+					decrease_media_tv_size()
+				}
+
+				else if(el.id === "media_tv")
+				{
+					increase_media_tv_size()
+				}
 			}
 		}
 
 		else if(direction === 'down')
 		{
-			if(e.target.style.order == 2)
+			if(el.style.order == 1)
 			{
-				increase_media_tv_size(e.target.id)
+				if(el.id === "media_tv")
+				{
+					increase_media_tv_size()
+				}
+
+				else if(el.id === "media_image")
+				{
+					decrease_media_tv_size()
+				}
 			}
 
-			else
+			else if(el.style.order == 2)
 			{
-				decrease_media_tv_size(e.target.id)
+				if(el.id === "media_image")
+				{
+					increase_media_tv_size()
+				}
+
+				else if(el.id === "media_tv")
+				{
+					decrease_media_tv_size()
+				}
 			}
 		}
 	}
