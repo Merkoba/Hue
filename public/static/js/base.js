@@ -16517,6 +16517,7 @@ function check_room_settings_override()
 	$("#settings_window_left_room_settings .settings_window_category").each(function()
 	{
 		$(this).find(".settings_window_category_status").eq(0).html("")
+		$(this).find(".settings_window_category_status_filler").eq(0).html("")
 	})
 
 	for(var key in global_settings)
@@ -18371,11 +18372,11 @@ function change_settings_window_category(element)
 
 	main.find(".settings_window_category").each(function()
 	{
-		$(this).removeClass("border_bottom")
+		$(this).find(".settings_window_category_text").eq(0).removeClass("border_bottom")
 		$(this).data("selected_category", false)
 	})
 
-	$(element).addClass("border_bottom")
+	$(element).find(".settings_window_category_text").eq(0).addClass("border_bottom")
 	$(element).data("selected_category", true)
 
 	main.find(".settings_window_category_container_selected").each(function()
