@@ -1913,23 +1913,39 @@ input[type=text], textarea
 {
 	position: absolute;
 	right: 0;
-	height: 90%;
+	height: 100%;
 	width: 0.8em;
+	z-index: 999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.maxer_container2
+{
+	position: absolute;
+	left: 0;
+	height: 100%;
+	width: 0.8em;
+	z-index: 999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .maxer
 {
 	position: relative;
-	height: 100%;
+	height: 90%;
 	width: 100%;
 	border-radius: 10px;
 	color: white;
 	cursor: pointer;
 	opacity: 0;
-	transition: opacity 1200ms, box-shadow 1200ms
+	transition: opacity 1200ms, box-shadow 1200ms;
 }
 
-.maxer_container:hover .maxer
+.maxer_container:hover .maxer, .maxer_container2:hover .maxer
 {
 	opacity: 0.25;
 	box-shadow: 0 0 1em currentColor;

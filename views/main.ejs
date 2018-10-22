@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?version=19"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2304"></script>
+		<script src="/static/js/base.js?version=2305"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=462"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=463"/>
 
 		<script>
 
@@ -183,6 +183,10 @@
 							<div id='top_scroller' class='left_scroller scroller action3 unselectable' onclick='goto_top()'>Go&nbsp;To&nbsp;Top</div>
 							<div class='hspacer3'></div>
 							<div id='up_scroller' class='right_scroller scroller action3 unselectable' onclick='activity_above()'>Activity&nbsp;Above</div>
+						</div>
+
+						<div class='maxer_container2'>
+							<div id='media_image_maxer' class='maxer' onclick="toggle_chat_font_size()"></div>
 						</div>
 
 						<div id='chat_area_parent'>
@@ -1746,6 +1750,7 @@
 			<div class='info_item help_item'>/modifysetting x: This can be used to change user settings directly. This requires the internal name of the setting and the value.</div>
 			<div class='info_item help_item'>/modifysetting2 x: Same as /modifysetting but it doesn't show feedback on completion.</div>
 			<div class='info_item help_item'>/feedback x: Displays a simple feedback information message for the user.</div>
+			<div class='info_item help_item'>/togglefontsize x: Toggles chat font size between normal and very big.</div>
 			<div class='info_item help_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil, and profile images in chat of whoever is typing will have a glow effect.</div>
 			<div class='info_item help_item'>In some commands like /whisper the > character can be used to send 2 arguments. For instance, "/whisper Jack > hello my friend" will send a message to Jack directly.</div>
 			<div class='info_item help_item'>Commands can be chained with &&. For instance "/tv The World && /maximizetv".</div>

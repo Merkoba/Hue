@@ -279,7 +279,7 @@ var commands =
 	'/feedback', '/imagesmode', '/tvmode', '/radiomode',
 	'/voicechatmode', '/voicepermission', '/theme', '/textcolormode',
 	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
-	'/clearlog2'
+	'/clearlog2', '/togglefontsize'
 ]
 
 var user_settings =
@@ -7683,6 +7683,11 @@ function execute_command(message, ans)
 	else if(oiStartsWith(cmd2, '/adminactivity'))
 	{
 		request_admin_activity(arg)
+	}
+
+	else if(oiEquals(cmd2, '/togglefontsize'))
+	{
+		toggle_chat_font_size()
 	}
 
 	else
@@ -18392,7 +18397,7 @@ function check_maxers()
 {
 	if(room_tv_mode !== "disabled" && room_images_mode !== "disabled")
 	{
-		$(".maxer_container").css("display", "block")
+		$(".maxer_container").css("display", "flex")
 	}
 
 	else
@@ -19364,5 +19369,18 @@ function set_user_settings_titles()
 	{
 		$(`#global_settings_${setting}`).attr("title", setting)
 		$(`#room_settings_${setting}`).attr("title", setting)
+	}
+}
+
+function toggle_chat_font_size()
+{
+	if(get_setting("chat_font_size") !== "very_big")
+	{
+		modify_setting("chat_font_size very_big", false)
+	}
+
+	else
+	{
+		modify_setting("chat_font_size normal", false)
 	}
 }
