@@ -19467,6 +19467,8 @@ function increase_media_tv_size()
 
 	size += 10
 
+	size = utilz.round2(size, 10)
+
 	if(size > 90)
 	{
 		return false
@@ -19492,6 +19494,8 @@ function decrease_media_tv_size()
 	var size = get_setting("tv_display_percentage")
 
 	size -= 10
+
+	size = utilz.round2(size, 10)
 
 	if(size < 10)
 	{
@@ -19546,6 +19550,8 @@ function increase_media_size()
 
 	size += 10
 
+	size = utilz.round2(size, 10)
+
 	if(size > 90)
 	{
 		return false
@@ -19571,6 +19577,8 @@ function decrease_media_size()
 	var size = get_setting("media_display_percentage")
 
 	size -= 10
+
+	size = utilz.round2(size, 10)
 
 	if(size < 10)
 	{

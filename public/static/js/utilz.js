@@ -251,7 +251,12 @@ var Utilz = function()
 
 	utilz.round = function(value, decimals)
 	{
-  		return Number(Math.round(value+'e'+decimals)+'e-'+decimals)
+		return Number(Math.round(value+'e'+decimals)+'e-'+decimals)
+	}
+
+	utilz.round2 = function(value, place)
+	{
+		return Math.round(value / place) * place
 	}
 
 	utilz.humanize_seconds = function(input, separator=":")
@@ -261,7 +266,7 @@ var Utilz = function()
 			return input < 10 ? "0" + input : input
 		}
 
-		var result =  
+		var result = 
 		[
 			pad(Math.floor(input / 3600)),
 			pad(Math.floor(input % 3600 / 60)),
@@ -325,7 +330,7 @@ var Utilz = function()
 	return utilz
 }
 
-try 
+try
 {
 	module.exports = Utilz
 }
