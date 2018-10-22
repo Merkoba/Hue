@@ -366,7 +366,7 @@ function init()
 	resize_events()
 	setup_commands()
 	setup_chat()
-	start_chat_click_events()
+	start_chat_mouse_events()
 	start_chat_hover_events()
 	start_played_click_events()
 	start_userlist_click_events()
@@ -401,7 +401,7 @@ function init()
 	setup_jumpers()
 	start_reply_events()
 	set_user_settings_titles()
-	media_image_mouse_events()
+	maxers_mouse_events()
 
 	start_socket()
 }
@@ -5421,7 +5421,7 @@ function escape_special_characters(s)
 	return s.replace(/[^A-Za-z0-9]/g, '\\$&');
 }
 
-function start_chat_click_events()
+function start_chat_mouse_events()
 {
 	$("#chat_area").on("click", ".chat_uname", function()
 	{
@@ -19387,7 +19387,7 @@ function toggle_chat_font_size()
 	}
 }
 
-function media_image_mouse_events()
+function maxers_mouse_events()
 {
 	var f = function(e)
 	{
@@ -19396,24 +19396,72 @@ function media_image_mouse_events()
 			return false
 		}
 
+		if(num_media_elements_visible() < 2)
+		{
+			return false
+		}
+
 		var direction = e.deltaY > 0 ? 'down' : 'up'
 
 		if(direction === 'up')
 		{
-			increase_media_image_size()
+			if(e.target.style.order == 1)
+			{
+				decrease_media_tv_size(e.target.id)
+			}
+
+			else
+			{
+				increase_media_tv_size(e.target.id)
+			}
 		}
 
 		else if(direction === 'down')
 		{
-			decrease_media_image_size()
+			if(e.target.style.order == 2)
+			{
+				increase_media_tv_size(e.target.id)
+			}
+
+			else
+			{
+				decrease_media_tv_size(e.target.id)
+			}
 		}
 	}
 
-	$("#media_image_frame")[0].addEventListener("wheel", f)
-	$("#media_image_error")[0].addEventListener("wheel", f)
+	$("#media_tv_maxer")[0].addEventListener("wheel", f)
+	$("#media_image_maxer")[0].addEventListener("wheel", f)
+
+	var f2 = function(e)
+	{
+		if(e.ctrlKey || e.shiftKey)
+		{
+			return false
+		}
+
+		if(num_media_elements_visible() < 1)
+		{
+			return false
+		}
+
+		var direction = e.deltaY > 0 ? 'down' : 'up'
+
+		if(direction === 'up')
+		{
+			increase_media_size()
+		}
+
+		else if(direction === 'down')
+		{
+			decrease_media_size()
+		}
+	}
+
+	$("#chat_maxer")[0].addEventListener("wheel", f2)
 }
 
-function increase_media_image_size()
+function increase_media_tv_size()
 {
 	var size = get_setting("tv_display_percentage")
 
@@ -19424,12 +19472,22 @@ function increase_media_image_size()
 		return false
 	}
 
-	show_infotip(size)
+	if(size === 50)
+	{
+		var info = " (Default)"
+	}
+
+	else
+	{
+		var info = ""
+	}
+
+	show_infotip(`TV Size: ${size}%${info}`)
 
 	modify_setting(`tv_display_percentage ${size}`, false)
 }
 
-function decrease_media_image_size()
+function decrease_media_tv_size()
 {
 	var size = get_setting("tv_display_percentage")
 
@@ -19440,7 +19498,17 @@ function decrease_media_image_size()
 		return false
 	}
 
-	show_infotip(size)
+	if(size === 50)
+	{
+		var info = " (Default)"
+	}
+
+	else
+	{
+		var info = ""
+	}
+
+	show_infotip(`TV Size: ${size}%${info}`)
 
 	modify_setting(`tv_display_percentage ${size}`, false)
 }
@@ -19471,3 +19539,55 @@ var infotip_timer = (function()
 		}, hide_infotip_delay)
 	}
 })()
+
+function increase_media_size()
+{
+	var size = get_setting("media_display_percentage")
+
+	size += 10
+
+	if(size > 90)
+	{
+		return false
+	}
+
+	if(size === 70)
+	{
+		var info = " (Default)"
+	}
+
+	else
+	{
+		var info = ""
+	}
+
+	show_infotip(`Media Size: ${size}%${info}`)
+
+	modify_setting(`media_display_percentage ${size}`, false)
+}
+
+function decrease_media_size()
+{
+	var size = get_setting("media_display_percentage")
+
+	size -= 10
+
+	if(size < 10)
+	{
+		return false
+	}
+
+	if(size === 70)
+	{
+		var info = " (Default)"
+	}
+
+	else
+	{
+		var info = ""
+	}
+
+	show_infotip(`Media Size: ${size}%${info}`)
+
+	modify_setting(`media_display_percentage ${size}`, false)
+}
