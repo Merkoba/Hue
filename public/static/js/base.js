@@ -19502,6 +19502,30 @@ function maxers_mouse_events()
 	}
 
 	$("#chat_maxer")[0].addEventListener("wheel", f2)
+
+	$("#media_image_maxer").on("auxclick", function(e)
+	{
+		if(e.which === 2)
+		{
+			modify_setting(`tv_display_percentage ${global_settings_default_tv_display_percentage}`, false)
+		}
+	})
+
+	$("#media_tv_maxer").on("auxclick", function(e)
+	{
+		if(e.which === 2)
+		{
+			modify_setting(`tv_display_percentage ${global_settings_default_tv_display_percentage}`, false)
+		}
+	})
+
+	$("#chat_maxer").on("auxclick", function(e)
+	{
+		if(e.which === 2)
+		{
+			modify_setting(`media_display_percentage ${global_settings_default_media_display_percentage}`, false)
+		}
+	})
 }
 
 function increase_media_tv_size()
@@ -19517,7 +19541,7 @@ function increase_media_tv_size()
 		return false
 	}
 
-	if(size === 50)
+	if(size === global_settings_default_tv_display_percentage)
 	{
 		var info = " (Default)"
 	}
@@ -19545,7 +19569,7 @@ function decrease_media_tv_size()
 		return false
 	}
 
-	if(size === 50)
+	if(size === global_settings_default_tv_display_percentage)
 	{
 		var info = " (Default)"
 	}
@@ -19600,7 +19624,7 @@ function increase_media_size()
 		return false
 	}
 
-	if(size === 70)
+	if(size === global_settings_default_media_display_percentage)
 	{
 		var info = " (Default)"
 	}
@@ -19628,7 +19652,7 @@ function decrease_media_size()
 		return false
 	}
 
-	if(size === 70)
+	if(size === global_settings_default_media_display_percentage)
 	{
 		var info = " (Default)"
 	}
