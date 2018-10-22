@@ -19409,7 +19409,8 @@ function media_image_mouse_events()
 		}
 	}
 
-	$("#media_image")[0].addEventListener("wheel", f)
+	$("#media_image_frame")[0].addEventListener("wheel", f)
+	$("#media_image_error")[0].addEventListener("wheel", f)
 }
 
 function increase_media_image_size()
