@@ -489,6 +489,7 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			background_image_setter: info.background_image_setter,
 			background_image_date: info.background_image_date,
 			background_mode: info.background_mode,
+			background_effect: info.background_effect,
 			background_tile_dimensions: info.background_tile_dimensions,
 			text_color_mode: info.text_color_mode,
 			text_color: info.text_color,
@@ -2386,6 +2387,34 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 
 		handler.push_admin_log_message(socket, `changed the background mode to "${data.mode}"`)
+	}
+
+	handler.public.change_background_effect = function(socket, data)
+	{
+		if(!handler.is_admin_or_op(socket))
+		{
+			return handler.get_out(socket)
+		}
+
+		if(
+			data.effect !== "none" && 
+			data.effect !== "blur")
+		{
+			return handler.get_out(socket)
+		}
+
+		db_manager.update_room(socket.hue_room_id,
+		{
+			background_effect: data.effect
+		})
+
+		handler.room_emit(socket, 'background_effect_changed',
+		{
+			effect: data.effect,
+			username: socket.hue_username
+		})
+
+		handler.push_admin_log_message(socket, `changed the background effect to "${data.effect}"`)
 	}
 
 	handler.public.change_background_tile_dimensions = function(socket, data)

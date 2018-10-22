@@ -34,6 +34,11 @@ body, html
 	background-position: center center;
 }
 
+.background_image_blur
+{
+	filter: blur(10px);
+}
+
 .columns_container
 {
 	display: flex;

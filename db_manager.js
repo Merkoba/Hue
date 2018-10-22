@@ -4,7 +4,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 55
+	const rooms_version = 56
 	const users_version = 29
 
 	function get_random_key()
@@ -303,6 +303,11 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		if(typeof room.background_mode !== "string")
 		{
 			room.background_mode = "normal"
+		}
+
+		if(typeof room.background_effect !== "string")
+		{
+			room.background_effect = "none"
 		}
 
 		if(typeof room.background_tile_dimensions !== "string")

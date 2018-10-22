@@ -144,6 +144,7 @@ var background_image
 var background_image_setter = ""
 var background_image_date = ""
 var background_mode
+var background_effect
 var background_tile_dimensions
 var last_image_source = false
 var last_tv_source = false
@@ -1288,6 +1289,11 @@ function start_socket()
 			announce_background_mode_change(data)
 		}
 
+		else if(data.type === 'background_effect_changed')
+		{
+			announce_background_effect_change(data)
+		}
+
 		else if(data.type === 'background_tile_dimensions_changed')
 		{
 			announce_background_tile_dimensions_change(data)
@@ -2198,6 +2204,7 @@ function setup_theme_and_background(data)
 
 	theme = data.theme
 	background_mode = data.background_mode
+	background_effect = data.background_effect
 	background_tile_dimensions = data.background_tile_dimensions
 	text_color_mode = data.text_color_mode
 	text_color = data.text_color
@@ -2249,6 +2256,7 @@ function apply_background()
 		{
 			$(this).removeClass("background_image_tiled")
 		})
+
 	}
 
 	else if(background_mode === "tiled" || background_mode === "mirror_tiled")
@@ -2256,6 +2264,22 @@ function apply_background()
 		$('.background_image').each(function()
 		{
 			$(this).addClass("background_image_tiled")
+		})
+	}
+
+	if(background_effect === "blur" && background_mode !== "solid")
+	{
+		$('.background_image').each(function()
+		{
+			$(this).addClass("background_image_blur")
+		})
+	}
+
+	else
+	{
+		$('.background_image').each(function()
+		{
+			$(this).removeClass("background_image_blur")
 		})
 	}
 
@@ -3517,6 +3541,13 @@ function setup_main_menu()
 		change_background_mode(what)
 	})
 
+	$('#admin_background_effect_select').change(function()
+	{
+		var what = $('#admin_background_effect_select option:selected').val()
+
+		change_background_effect(what)
+	})
+
 	$("#admin_background_tile_dimensions").blur(function()
 	{
 		var what = utilz.clean_string2($(this).val())
@@ -3616,34 +3647,47 @@ function config_admin_background_mode()
 		}
 	})
 
+	$('#admin_background_effect_select').find('option').each(function()
+	{
+		if($(this).val() === background_effect)
+		{
+			$(this).prop('selected', true)
+		}
+	})
+
 	if(background_mode === "normal")
 	{
 		$("#admin_background_tile_dimensions_container").css("display", "none")
 		$("#admin_background_image_container").css("display", "block")
+		$("#admin_background_effect_container").css("display", "block")
 	}
 
 	else if(background_mode === "tiled")
 	{
 		$("#admin_background_tile_dimensions_container").css("display", "block")
 		$("#admin_background_image_container").css("display", "block")
+		$("#admin_background_effect_container").css("display", "block")
 	}
 
 	else if(background_mode === "mirror")
 	{
 		$("#admin_background_tile_dimensions_container").css("display", "none")
 		$("#admin_background_image_container").css("display", "none")
+		$("#admin_background_effect_container").css("display", "block")
 	}
 
 	else if(background_mode === "mirror_tiled")
 	{
 		$("#admin_background_tile_dimensions_container").css("display", "block")
 		$("#admin_background_image_container").css("display", "none")
+		$("#admin_background_effect_container").css("display", "block")
 	}
 
 	else if(background_mode === "solid")
 	{
 		$("#admin_background_tile_dimensions_container").css("display", "none")
 		$("#admin_background_image_container").css("display", "none")
+		$("#admin_background_effect_container").css("display", "none")
 	}
 
 	update_modal_scrollbar("main_menu")
@@ -3690,6 +3734,17 @@ function config_admin_background_image()
 
 		$("#admin_background_image").attr("title", s)
 	}
+}
+
+function config_admin_background_effect()
+{
+	$('#admin_background_effect_select').find('option').each(function()
+	{
+		if($(this).val() === background_effect)
+		{
+			$(this).prop('selected', true)
+		}
+	})
 }
 
 function config_admin_text_color_mode()
@@ -3852,6 +3907,7 @@ function config_main_menu()
 		config_admin_log_enabled()
 		config_admin_theme()
 		config_admin_background_mode()
+		config_admin_background_effect()
 		config_admin_background_tile_dimensions()
 		config_admin_background_image()
 		config_admin_text_color_mode()
@@ -16737,6 +16793,13 @@ function set_background_mode(what)
 	apply_theme()
 }
 
+function set_background_effect(what)
+{
+	background_effect = what
+	config_admin_background_effect()
+	apply_background()
+}
+
 function set_background_tile_dimensions(dimensions)
 {
 	background_tile_dimensions = dimensions
@@ -19640,3 +19703,39 @@ var infotip_timer = (function()
 		}, hide_infotip_delay)
 	}
 })()
+
+function change_background_effect(effect)
+{
+	if(!is_admin_or_op(role))
+	{
+		not_an_op()
+		return false
+	}
+
+	if(
+		effect !== "none" && 
+		effect !== "blur")
+	{
+		feedback("Invalid background effect")
+		return false
+	}
+
+	if(effect === background_effect)
+	{
+		feedback(`Background effect is already ${background_effect}`)
+		return false
+	}
+
+	socket_emit("change_background_effect", {effect:effect})
+}
+
+function announce_background_effect_change(data)
+{
+	public_feedback(`${data.username} changed the background effect to ${data.effect}`,
+	{
+		username: data.username,
+		open_profile: true
+	})
+
+	set_background_effect(data.effect)
+}
