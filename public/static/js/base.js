@@ -19507,7 +19507,7 @@ function maxers_mouse_events()
 	{
 		if(e.which === 2)
 		{
-			modify_setting(`tv_display_percentage ${global_settings_default_tv_display_percentage}`, false)
+			do_media_tv_size_change(global_settings_default_tv_display_percentage)
 		}
 	})
 
@@ -19515,7 +19515,7 @@ function maxers_mouse_events()
 	{
 		if(e.which === 2)
 		{
-			modify_setting(`tv_display_percentage ${global_settings_default_tv_display_percentage}`, false)
+			do_media_tv_size_change(global_settings_default_tv_display_percentage)
 		}
 	})
 
@@ -19523,7 +19523,7 @@ function maxers_mouse_events()
 	{
 		if(e.which === 2)
 		{
-			modify_setting(`media_display_percentage ${global_settings_default_media_display_percentage}`, false)
+			do_media_size_change(global_settings_default_media_display_percentage)
 		}
 	})
 }
@@ -19531,12 +19531,22 @@ function maxers_mouse_events()
 function increase_media_tv_size()
 {
 	var size = get_setting("tv_display_percentage")
-
 	size += 10
-
 	size = utilz.round2(size, 10)
+	do_media_tv_size_change(size)
+}
 
-	if(size > 90)
+function decrease_media_tv_size()
+{
+	var size = get_setting("tv_display_percentage")
+	size -= 10
+	size = utilz.round2(size, 10)
+	do_media_tv_size_change(size)
+}
+
+function do_media_tv_size_change(size)
+{
+	if(size < 10 || size > 90)
 	{
 		return false
 	}
@@ -19556,20 +19566,30 @@ function increase_media_tv_size()
 	modify_setting(`tv_display_percentage ${size}`, false)
 }
 
-function decrease_media_tv_size()
+function increase_media_size()
 {
-	var size = get_setting("tv_display_percentage")
-
-	size -= 10
-
+	var size = get_setting("media_display_percentage")
+	size += 10
 	size = utilz.round2(size, 10)
+	do_media_size_change(size)
+}
 
-	if(size < 10)
+function decrease_media_size()
+{
+	var size = get_setting("media_display_percentage")
+	size -= 10
+	size = utilz.round2(size, 10)
+	do_media_size_change(size)
+}
+
+function do_media_size_change(size)
+{
+	if(size < 10 || size > 90)
 	{
 		return false
 	}
 
-	if(size === global_settings_default_tv_display_percentage)
+	if(size === global_settings_default_media_display_percentage)
 	{
 		var info = " (Default)"
 	}
@@ -19579,9 +19599,9 @@ function decrease_media_tv_size()
 		var info = ""
 	}
 
-	show_infotip(`TV Size: ${size}%${info}`)
+	show_infotip(`Media Size: ${size}%${info}`)
 
-	modify_setting(`tv_display_percentage ${size}`, false)
+	modify_setting(`media_display_percentage ${size}`, false)
 }
 
 function show_infotip(s)
@@ -19610,59 +19630,3 @@ var infotip_timer = (function()
 		}, hide_infotip_delay)
 	}
 })()
-
-function increase_media_size()
-{
-	var size = get_setting("media_display_percentage")
-
-	size += 10
-
-	size = utilz.round2(size, 10)
-
-	if(size > 90)
-	{
-		return false
-	}
-
-	if(size === global_settings_default_media_display_percentage)
-	{
-		var info = " (Default)"
-	}
-
-	else
-	{
-		var info = ""
-	}
-
-	show_infotip(`Media Size: ${size}%${info}`)
-
-	modify_setting(`media_display_percentage ${size}`, false)
-}
-
-function decrease_media_size()
-{
-	var size = get_setting("media_display_percentage")
-
-	size -= 10
-
-	size = utilz.round2(size, 10)
-
-	if(size < 10)
-	{
-		return false
-	}
-
-	if(size === global_settings_default_media_display_percentage)
-	{
-		var info = " (Default)"
-	}
-
-	else
-	{
-		var info = ""
-	}
-
-	show_infotip(`Media Size: ${size}%${info}`)
-
-	modify_setting(`media_display_percentage ${size}`, false)
-}
