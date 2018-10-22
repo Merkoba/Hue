@@ -2005,3 +2005,15 @@ input[type=text], textarea
 {
 	font-size: 1em;	
 }
+
+#infotip_container
+{
+	position: fixed;
+	top: 2rem;
+	right: 0;
+	padding: 0.2em;
+	background-color: black;
+	color: white;
+	display: none;
+	z-index: 999;
+}

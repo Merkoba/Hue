@@ -231,6 +231,7 @@ var commands_queue = {}
 var user_leaving = false
 var admin_activity_filter_string = ""
 var keys_pressed = {}
+var hide_infotip_delay = 1000
 
 var commands = 
 [
@@ -400,6 +401,7 @@ function init()
 	setup_jumpers()
 	start_reply_events()
 	set_user_settings_titles()
+	media_image_mouse_events()
 
 	start_socket()
 }
@@ -19384,3 +19386,87 @@ function toggle_chat_font_size()
 		modify_setting("chat_font_size normal", false)
 	}
 }
+
+function media_image_mouse_events()
+{
+	var f = function(e)
+	{
+		if(e.ctrlKey || e.shiftKey)
+		{
+			return false
+		}
+
+		var direction = e.deltaY > 0 ? 'down' : 'up'
+
+		if(direction === 'up')
+		{
+			increase_media_image_size()
+		}
+
+		else if(direction === 'down')
+		{
+			decrease_media_image_size()
+		}
+	}
+
+	$("#media_image")[0].addEventListener("wheel", f)
+}
+
+function increase_media_image_size()
+{
+	var size = get_setting("tv_display_percentage")
+
+	size += 10
+
+	if(size > 90)
+	{
+		return false
+	}
+
+	show_infotip(size)
+
+	modify_setting(`tv_display_percentage ${size}`, false)
+}
+
+function decrease_media_image_size()
+{
+	var size = get_setting("tv_display_percentage")
+
+	size -= 10
+
+	if(size < 10)
+	{
+		return false
+	}
+
+	show_infotip(size)
+
+	modify_setting(`tv_display_percentage ${size}`, false)
+}
+
+function show_infotip(s)
+{
+	$("#infotip").text(s)
+	$("#infotip_container").css("display", "block")
+	infotip_timer()
+}
+
+function hide_infotip()
+{
+	$("#infotip_container").css("display", "none")
+}
+
+var infotip_timer = (function()
+{
+	var timer
+
+	return function()
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function()
+		{
+			hide_infotip()
+		}, hide_infotip_delay)
+	}
+})()
