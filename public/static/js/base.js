@@ -19551,6 +19551,11 @@ function do_media_tv_size_change(size)
 		return false
 	}
 
+	if(size === get_setting("tv_display_percentage"))
+	{
+		return false
+	}
+
 	if(size === global_settings_default_tv_display_percentage)
 	{
 		var info = " (Default)"
@@ -19585,6 +19590,11 @@ function decrease_media_size()
 function do_media_size_change(size)
 {
 	if(size < 10 || size > 90)
+	{
+		return false
+	}
+
+	if(size === get_setting("media_display_percentage"))
 	{
 		return false
 	}
