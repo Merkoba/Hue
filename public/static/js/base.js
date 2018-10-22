@@ -13100,13 +13100,25 @@ function fix_media_margin()
 		{
 			var m1 = "margin-bottom"
 			var m2 = "margin-top"
+
+			$("#media_tv_maxer").closest(".maxer_container").css("top", 0)
+			$("#media_tv_maxer").closest(".maxer_container").css("bottom", "initial")
+			$("#media_image_maxer").closest(".maxer_container").css("bottom", 0)
+			$("#media_image_maxer").closest(".maxer_container").css("top", "initial")
 		}
 
 		else if(p === "bottom")
 		{
 			var m1 = "margin-top"
 			var m2 = "margin-bottom"
+
+			$("#media_image_maxer").closest(".maxer_container").css("top", 0)
+			$("#media_image_maxer").closest(".maxer_container").css("bottom", "initial")
+			$("#media_tv_maxer").closest(".maxer_container").css("bottom", 0)
+			$("#media_tv_maxer").closest(".maxer_container").css("top", "initial")
 		}
+
+		$(".maxer_container").css("height", "calc(100% - 1rem)")
 
 		$("#media_tv").css(m1, "-1rem")
 		$("#media_tv").css(m2, "0")
@@ -13118,6 +13130,7 @@ function fix_media_margin()
 	{
 		$("#media_image").css("margin-bottom", "0")
 		$("#media_tv").css("margin-top", "0")
+		$(".maxer_container").css("height", "100%")
 	}
 }
 

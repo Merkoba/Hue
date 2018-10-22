@@ -1913,7 +1913,7 @@ input[type=text], textarea
 {
 	position: absolute;
 	right: 0;
-	height: calc(100% - 2rem);
+	height: calc(100% - 1rem);
 	width: 0.8em;
 	z-index: 999;
 	display: flex;
