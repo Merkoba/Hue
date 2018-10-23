@@ -37,7 +37,7 @@
 		<script src="/static/js/utilz.js?version=20"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2320"></script>
+		<script src="/static/js/base.js?version=2319"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=469"/>
 
@@ -837,6 +837,40 @@
 							</select>
 						</div>
 
+						<div class='settings_item' data-setting='media_display_percentage'>
+							<div class="setting_title">Chat/Media Percentages</div>
+							<div class='slider_container'>
+								<div class='slider_icon_left'><i class='icon2 fa fa-pencil'></i></div>
+								<div id='{{type}}_media_display_percentage' class="slider nstSlider" data-range_min="10" data-range_max="90" data-cur_min="0">
+								    <div class="leftGrip" ondblclick='set_media_display_percentage("default", "{{type}}")'></div>
+								</div>
+								<div class='slider_icon_right'><i class='icon2b fa fa-picture-o'></i></div>
+							</div>
+						</div>
+
+						<div class='settings_item' data-setting='tv_display_percentage'>
+							<div class="setting_title">Image/TV Percentages</div>
+							<div class='slider_container'>
+								<div class='slider_icon_left'><i class='icon2 fa fa-camera'></i></div>
+								<div id='{{type}}_tv_display_percentage' class="slider nstSlider" data-range_min="10" data-range_max="90" data-cur_min="0">
+								    <div class="leftGrip" ondblclick='set_tv_display_percentage("default", "{{type}}")'></div>
+								</div>
+								<div class='slider_icon_right'><i class='icon2b fa fa-television'></i></div>
+							</div>
+						</div>
+
+						<div class='settings_item' data-setting='tv_display_position'>
+							<div class="setting_title">Image/TV Positions</div>
+							<div id='{{type}}_tv_display_position' class='squaro_container pointer action2' onclick='swap_display_positions("{{type}}")'>
+								<div class='squaro' id='{{type}}_display_position_image'>
+									<i class='fa fa-camera smaller_font_size'></i>
+								</div>
+								<div class='squaro' id='{{type}}_display_position_tv'>
+									<i class='fa fa-television smaller_font_size'></i>
+								</div>
+							</div>
+						</div>
+
 					</div>
 
 					<div class='settings_category settings_window_category_container_selected' id='settings_window_category_content_afk_{{type}}' data-category='afk'>
@@ -1469,42 +1503,6 @@
 				<div class='menu_item action inline' onclick='refresh_tv(); hide_media_menu()'>Refresh TV</div>
 				<div></div>
 				<div class='menu_item action inline' onclick='refresh_radio(); hide_media_menu()'>Refresh Radio</div>
-
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Chat/Media Percentages</div>
-				<div class='slider_container'>
-					<div class='slider_icon_left'><i class='icon2 fa fa-pencil'></i></div>
-					<div id='media_display_percentage_slider' class="slider nstSlider" data-range_min="10" data-range_max="90" data-cur_min="0">
-					    <div class="leftGrip" ondblclick='set_media_display_percentage("default", "{{type}}")'></div>
-					</div>
-					<div class='slider_icon_right'><i class='icon2b fa fa-picture-o'></i></div>
-				</div>
-
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Image/TV Percentages</div>
-				<div class='slider_container'>
-					<div class='slider_icon_left'><i class='icon2 fa fa-camera'></i></div>
-					<div id='tv_display_percentage_slider' class="slider nstSlider" data-range_min="10" data-range_max="90" data-cur_min="0">
-					    <div class="leftGrip" ondblclick='set_tv_display_percentage("default", "{{type}}")'></div>
-					</div>
-					<div class='slider_icon_right'><i class='icon2b fa fa-television'></i></div>
-				</div>
-
-				<div class='spacer1'></div>
-
-				<div class="setting_title">Image/TV Positions</div>
-				<div id='tv_display_position_squaro' class='squaro_container pointer action2' onclick='swap_display_positions("{{type}}")'>
-					<div class='squaro' id='media_display_position_image'>
-						<i class='fa fa-camera smaller_font_size'></i>
-					</div>
-					<div class='squaro' id='media_display_position_tv'>
-						<i class='fa fa-television smaller_font_size'></i>
-					</div>
-				</div>
-
-				<div class='spacer3'></div>
 
 			</div>
 		</script>	
