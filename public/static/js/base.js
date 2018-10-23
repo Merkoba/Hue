@@ -281,8 +281,7 @@ var commands =
 	'/feedback', '/imagesmode', '/tvmode', '/radiomode',
 	'/voicechatmode', '/voicepermission', '/theme', '/textcolormode',
 	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
-	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/tvpercentage',
-	'/mediapercentage', '/tvposition'
+	'/clearlog2', '/togglefontsize', '/backgroundeffect'
 ]
 
 var user_settings =
@@ -7750,21 +7749,6 @@ function execute_command(message, ans)
 	else if(oiEquals(cmd2, '/togglefontsize'))
 	{
 		toggle_chat_font_size()
-	}
-
-	else if(oiStartsWith(cmd2, '/tvpercentage'))
-	{
-		set_tv_display_percentage(arg)
-	}
-
-	else if(oiStartsWith(cmd2, '/mediapercentage'))
-	{
-		set_media_display_percentage(arg)
-	}
-
-	else if(oiStartsWith(cmd2, '/tvposition'))
-	{
-		swap_display_positions(arg)
 	}
 
 	else
@@ -19622,7 +19606,6 @@ function set_tv_display_percentage(v)
 
 	if(!Number.isInteger(v))
 	{
-		feedback("Argument must be a number between 10 and 90")
 		return false
 	}
 
@@ -19655,7 +19638,6 @@ function set_media_display_percentage(v, type)
 
 	if(!Number.isInteger(v))
 	{
-		feedback("Argument must be a number between 10 and 90")
 		return false
 	}
 
@@ -19711,30 +19693,18 @@ function apply_media_positions()
 	fix_media_margin()
 }
 
-function swap_display_positions(np=false)
+function swap_display_positions(type)
 {	
-	if(!np)
+	var p = room_state.tv_display_position
+
+	if(p === "top")
 	{
-		var p = room_state.tv_display_position
-
-		if(p === "top")
-		{
-			np = "bottom"
-		}
-
-		else if(p === "bottom")
-		{
-			np = "top"
-		}
+		var np = "bottom"
 	}
 
-	else
+	else if(p === "bottom")
 	{
-		if(np !== "top" && np !== "bottom")
-		{
-			feedback("Argument must be either top or bottom")
-			return false
-		}
+		var np = "top"
 	}
 
 	room_state.tv_display_position = np
