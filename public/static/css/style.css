@@ -1520,7 +1520,6 @@ input[type=text], textarea
 .faded
 {
 	opacity: 0.5;
-	pointer-events: none;
 }
 
 .nopointer

@@ -16441,14 +16441,16 @@ function setup_settings_windows()
 
 function create_room_settings_overriders()
 {
-	var s = `
-	<div class='room_settings_overrider_container'>
-		<input type='checkbox' class='room_settings_overrider'>
-		Override
-	</div>`
-
 	$("#room_settings_container").find(".settings_item").each(function()
 	{
+		var setting = $(this).data("setting")
+
+		var s = `
+		<div class='room_settings_overrider_container'>
+			<input type='checkbox' class='room_settings_overrider' id='room_settings_${setting}_overrider'>
+			Override
+		</div>`
+
 		$(this).prepend(s)
 	})
 }
@@ -19445,15 +19447,31 @@ function set_user_settings_titles()
 
 function toggle_chat_font_size()
 {
-	if(get_setting("chat_font_size") !== "very_big")
+	var size = get_setting("chat_font_size")
+
+	var new_size = "normal"
+
+	if(size === "normal" || size === "big" || size === "very_big")
 	{
-		modify_setting("chat_font_size very_big", false)
+		if(size === "normal")
+		{
+			new_size = "big"
+		}
+
+		else if(size === "big")
+		{
+			new_size = "very_big"
+		}
+
+		else if(size === "very_big")
+		{
+			new_size = "normal"
+		}
 	}
 
-	else
-	{
-		modify_setting("chat_font_size normal", false)
-	}
+	enable_setting_override("chat_font_size")
+	modify_setting(`chat_font_size ${new_size}`, false)
+	show_infotip(`Font Size: ${new_size}`)
 }
 
 function maxers_mouse_events()
@@ -19488,12 +19506,12 @@ function maxers_mouse_events()
 			{
 				if(el.id === "media_tv")
 				{
-					decrease_media_tv_size()
+					decrease_tv_percentage()
 				}
 
 				else if(el.id === "media_image")
 				{
-					increase_media_tv_size()
+					increase_tv_percentage()
 				}
 			}
 
@@ -19501,12 +19519,12 @@ function maxers_mouse_events()
 			{
 				if(el.id === "media_image")
 				{
-					decrease_media_tv_size()
+					decrease_tv_percentage()
 				}
 
 				else if(el.id === "media_tv")
 				{
-					increase_media_tv_size()
+					increase_tv_percentage()
 				}
 			}
 		}
@@ -19517,12 +19535,12 @@ function maxers_mouse_events()
 			{
 				if(el.id === "media_tv")
 				{
-					increase_media_tv_size()
+					increase_tv_percentage()
 				}
 
 				else if(el.id === "media_image")
 				{
-					decrease_media_tv_size()
+					decrease_tv_percentage()
 				}
 			}
 
@@ -19530,12 +19548,12 @@ function maxers_mouse_events()
 			{
 				if(el.id === "media_image")
 				{
-					increase_media_tv_size()
+					increase_tv_percentage()
 				}
 
 				else if(el.id === "media_tv")
 				{
-					decrease_media_tv_size()
+					decrease_tv_percentage()
 				}
 			}
 		}
@@ -19560,12 +19578,12 @@ function maxers_mouse_events()
 
 		if(direction === 'up')
 		{
-			increase_media_size()
+			increase_media_percentage()
 		}
 
 		else if(direction === 'down')
 		{
-			decrease_media_size()
+			decrease_media_percentage()
 		}
 	}
 
@@ -19596,7 +19614,7 @@ function maxers_mouse_events()
 	})
 }
 
-function increase_media_tv_size()
+function increase_tv_percentage()
 {
 	var size = get_setting("tv_display_percentage")
 	size += 10
@@ -19604,7 +19622,7 @@ function increase_media_tv_size()
 	do_media_tv_size_change(size)
 }
 
-function decrease_media_tv_size()
+function decrease_tv_percentage()
 {
 	var size = get_setting("tv_display_percentage")
 	size -= 10
@@ -19634,12 +19652,12 @@ function do_media_tv_size_change(size)
 		var info = ""
 	}
 
-	show_infotip(`TV Size: ${size}%${info}`)
-
+	enable_setting_override("tv_display_percentage")
 	modify_setting(`tv_display_percentage ${size}`, false)
+	show_infotip(`TV Size: ${size}%${info}`)
 }
 
-function increase_media_size()
+function increase_media_percentage()
 {
 	var size = get_setting("media_display_percentage")
 	size += 10
@@ -19647,7 +19665,7 @@ function increase_media_size()
 	do_media_size_change(size)
 }
 
-function decrease_media_size()
+function decrease_media_percentage()
 {
 	var size = get_setting("media_display_percentage")
 	size -= 10
@@ -19677,9 +19695,9 @@ function do_media_size_change(size)
 		var info = ""
 	}
 
-	show_infotip(`Media Size: ${size}%${info}`)
-
+	enable_setting_override("media_display_percentage")
 	modify_setting(`media_display_percentage ${size}`, false)
+	show_infotip(`Media Size: ${size}%${info}`)
 }
 
 function show_infotip(s)
@@ -19743,4 +19761,14 @@ function announce_background_effect_change(data)
 	})
 
 	set_background_effect(data.effect)
+}
+
+function enable_setting_override(setting)
+{
+	if(room_settings[`${setting}_override`])
+	{
+		return false
+	}
+
+	$(`#room_settings_${setting}_overrider`).click()
 }
