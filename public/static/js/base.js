@@ -334,10 +334,7 @@ var user_settings =
 	other_words_to_autocomplete: {widget_type:"textarea"},
 	chat_font_size: {widget_type:"select"},
 	font_family: {widget_type:"select"},
-	warn_before_closing: {widget_type:"checkbox"},
-	media_display_percentage: {widget_type:"custom"},
-	tv_display_percentage: {widget_type:"custom"},
-	tv_display_position: {widget_type:"custom"}
+	warn_before_closing: {widget_type:"checkbox"}
 }
 
 function init()
@@ -388,7 +385,8 @@ function init()
 	setup_modal_image()
 	setup_footer()
 	setup_reactions_box()
-	prepare_media_settings()
+	start_media_menu_widgets()
+	prepare_room_state()
 	setup_message_area()
 	setup_mouse_events()
 	setup_draw_image()
@@ -10931,8 +10929,6 @@ function start_settings_widgets(type)
 	{
 		modify_setting_widget(type, setting)
 	}
-	
-	arrange_media_setting_display_positions(type)
 }
 
 function modify_setting_widget(type, setting_name)
@@ -10981,46 +10977,6 @@ function start_settings_widgets_listeners(type)
 			item.blur(() => {window[`setting_${setting}_action`](type)})
 		}
 	}
-
-	$(`#${type}_tv_display_percentage`).nstSlider(
-	{
-		"left_grip_selector": ".leftGrip",
-		"value_changed_callback": function(cause, val) 
-		{
-			if(cause === "init")
-			{
-				return false
-			}
-
-			if(window[type].tv_display_percentage !== val)
-			{
-				window[type].tv_display_percentage = val
-				window[`save_${type}`]()
-				apply_media_percentages()
-			}
-		}
-	})
-
-	$(`#${type}_media_display_percentage`).nstSlider(
-	{
-		"left_grip_selector": ".leftGrip",
-		"value_changed_callback": function(cause, val) 
-		{
-			if(cause === "init")
-			{
-				return false
-			}
-
-			if(window[type].media_display_percentage !== val)
-			{
-				window[type].media_display_percentage = val
-				window[`save_${type}`]()	
-				apply_media_percentages()
-			}
-		}
-	})
-
-	set_media_sliders(type)
 }
 
 function call_setting_actions(type, save=true)
@@ -11890,6 +11846,24 @@ function get_room_state()
 	if(room_state.radio_volume === undefined)
 	{
 		room_state.radio_volume = room_state_default_radio_volume
+		changed = true
+	}
+
+	if(room_state.tv_display_percentage === undefined)
+	{
+		room_state.tv_display_percentage = room_state_default_tv_display_percentage
+		changed = true
+	}
+
+	if(room_state.media_display_percentage === undefined)
+	{
+		room_state.media_display_percentage = room_state_default_media_display_percentage
+		changed = true
+	}
+
+	if(room_state.tv_display_position === undefined)
+	{
+		room_state.tv_display_position = room_state_default_tv_display_position
 		changed = true
 	}
 }
@@ -13155,7 +13129,7 @@ function fix_media_margin()
 {
 	if(num_media_elements_visible() === 2)
 	{
-		var p = get_setting("tv_display_position")
+		var p = room_state.tv_display_position
 
 		if(p === "top")
 		{
@@ -16188,8 +16162,6 @@ function reset_settings(type)
 	start_settings_widgets(type)
 	call_setting_actions("global_settings", false)
 	call_setting_actions("room_settings", false)
-	set_media_sliders(type)
-	prepare_media_settings()
 
 	if(type === "room_settings")
 	{
@@ -16500,13 +16472,6 @@ function start_room_settings_overriders()
 			{
 				window[`setting_${setting}_action`]("global_settings", false)
 			}
-		}
-
-		if(setting === "media_display_percentage" 
-		|| setting === "tv_display_percentage"
-		|| setting === "tv_display_position")
-		{
-			prepare_media_settings()
 		}
 
 		check_room_settings_override()
@@ -17473,150 +17438,6 @@ function run_user_function(n)
 	hide_reactions()
 }
 
-function set_tv_display_percentage(v, type)
-{
-	if(v === undefined || type === undefined)
-	{
-		return false
-	}
-
-	if(v === "default")
-	{
-		v = global_settings_default_tv_display_percentage
-	}
-
-	v = parseInt(v)
-
-	if(!Number.isInteger(v))
-	{
-		return false
-	}
-
-	if(v < 10)
-	{
-		v = 10
-	}
-
-	else if(v > 90)
-	{
-		v = 90
-	}
-
-	$(`#${type}_tv_display_percentage`).nstSlider('set_position', v)
-}
-
-function set_media_display_percentage(v, type)
-{
-	if(v === undefined || type === undefined)
-	{
-		return false
-	}
-
-	if(v === "default")
-	{
-		v = global_settings_default_media_display_percentage
-	}
-
-	v = parseInt(v)
-
-	if(!Number.isInteger(v))
-	{
-		return false
-	}
-
-	if(v < 10)
-	{
-		v = 10
-	}
-
-	else if(v > 90)
-	{
-		v = 90
-	}
-
-	$(`#${type}_media_display_percentage`).nstSlider('set_position', v)
-}
-
-function apply_media_percentages()
-{
-	var p1 = get_setting("tv_display_percentage")
-	var p2 = (100 - p1)
-
-	$("#media_tv").css("height", `${p1}%`)
-	$("#media_image").css("height", `${p2}%`)
-
-	var c1 = get_setting("media_display_percentage")
-	var c2 = (100 - c1)
-
-	$("#media").css("width", `${c1}%`)
-	$("#chat_main").css("width", `${c2}%`)
-
-	on_resize()
-}
-
-function apply_media_positions()
-{
-	var p = get_setting("tv_display_position")
-
-	if(p === "top")
-	{
-		var tvp = 1
-		var ip = 2
-	}
-
-	else if(p === "bottom")
-	{
-		var tvp = 2
-		var ip = 1
-	}
-
-	$("#media_image").css("order", ip)
-	$("#media_tv").css("order", tvp)
-
-	fix_media_margin()
-}
-
-function swap_display_positions(type)
-{	
-	var p = window[type].tv_display_position
-
-	if(p === "top")
-	{
-		var np = "bottom"
-	}
-
-	else if(p === "bottom")
-	{
-		var np = "top"
-	}
-
-	window[type].tv_display_position = np
-	window[`save_${type}`]()
-	
-	arrange_media_setting_display_positions(type)
-	apply_media_positions()
-}
-
-function arrange_media_setting_display_positions(type)
-{
-	var p = window[type].tv_display_position
-
-	if(p === "top")
-	{
-		var tvo = 1
-		var imo = 2
-	}
-
-	else if(p === "bottom")
-	{
-		var tvo = 2
-		var imo = 1
-	}
-
-	$(`#${type}_display_position_image`).css("order", imo)
-	$(`#${type}_display_position_tv`).css("order", tvo)	
-}
-
 function lock_screen()
 {
 	msg_lockscreen.show()
@@ -18497,18 +18318,6 @@ function show_credits()
 	})
 }
 
-function prepare_media_settings()
-{
-	apply_media_percentages()
-	apply_media_positions()
-}
-
-function set_media_sliders(type)
-{
-	set_tv_display_percentage(window[type].tv_display_percentage, type)
-	set_media_display_percentage(window[type].media_display_percentage, type)
-}
-
 function image_prev()
 {
 	change_image_source("prev")
@@ -19101,28 +18910,10 @@ function modify_setting(arg, show_feedback=true)
 	}
 
 	window[type][setting] = value
+	
+	modify_setting_widget(type, setting)
 
-	if(user_settings[setting].widget_type === "custom")
-	{
-		if(setting === "tv_display_position")
-		{
-			arrange_media_setting_display_positions(type)
-			apply_media_positions()
-		}
-
-		else if(setting === "tv_display_percentage" || "media_display_percentage")
-		{
-			set_media_sliders(type)
-			apply_media_percentages()
-		}
-	}
-
-	else
-	{	
-		modify_setting_widget(type, setting)
-
-		window[`setting_${setting}_action`](type, false)
-	}
+	window[`setting_${setting}_action`](type, false)
 
 	window[`save_${type}`]()
 
@@ -19575,7 +19366,7 @@ function maxers_mouse_events()
 	{
 		if(e.which === 2)
 		{
-			do_media_tv_size_change(global_settings_default_tv_display_percentage)
+			do_media_tv_size_change(room_state_default_tv_display_percentage)
 		}
 	})
 
@@ -19583,7 +19374,7 @@ function maxers_mouse_events()
 	{
 		if(e.which === 2)
 		{
-			do_media_tv_size_change(global_settings_default_tv_display_percentage)
+			do_media_tv_size_change(room_state_default_tv_display_percentage)
 		}
 	})
 
@@ -19591,14 +19382,14 @@ function maxers_mouse_events()
 	{
 		if(e.which === 2)
 		{
-			do_media_size_change(global_settings_default_media_display_percentage)
+			do_media_size_change(room_state_default_media_display_percentage)
 		}
 	})
 }
 
 function increase_media_tv_size()
 {
-	var size = get_setting("tv_display_percentage")
+	var size = room_state.tv_display_percentage
 	size += 10
 	size = utilz.round2(size, 10)
 	do_media_tv_size_change(size)
@@ -19606,7 +19397,7 @@ function increase_media_tv_size()
 
 function decrease_media_tv_size()
 {
-	var size = get_setting("tv_display_percentage")
+	var size = room_state.tv_display_percentage
 	size -= 10
 	size = utilz.round2(size, 10)
 	do_media_tv_size_change(size)
@@ -19619,12 +19410,12 @@ function do_media_tv_size_change(size)
 		return false
 	}
 
-	if(size === get_setting("tv_display_percentage"))
+	if(size === room_state.tv_display_percentage)
 	{
 		return false
 	}
 
-	if(size === global_settings_default_tv_display_percentage)
+	if(size === room_state_default_tv_display_percentage)
 	{
 		var info = " (Default)"
 	}
@@ -19636,12 +19427,12 @@ function do_media_tv_size_change(size)
 
 	show_infotip(`TV Size: ${size}%${info}`)
 
-	modify_setting(`tv_display_percentage ${size}`, false)
+	set_tv_display_percentage(size)
 }
 
 function increase_media_size()
 {
-	var size = get_setting("media_display_percentage")
+	var size = room_state.media_display_percentage
 	size += 10
 	size = utilz.round2(size, 10)
 	do_media_size_change(size)
@@ -19649,7 +19440,7 @@ function increase_media_size()
 
 function decrease_media_size()
 {
-	var size = get_setting("media_display_percentage")
+	var size = room_state.media_display_percentage
 	size -= 10
 	size = utilz.round2(size, 10)
 	do_media_size_change(size)
@@ -19662,12 +19453,12 @@ function do_media_size_change(size)
 		return false
 	}
 
-	if(size === get_setting("media_display_percentage"))
+	if(size === room_state.media_display_percentage)
 	{
 		return false
 	}
 
-	if(size === global_settings_default_media_display_percentage)
+	if(size === room_state_default_media_display_percentage)
 	{
 		var info = " (Default)"
 	}
@@ -19679,7 +19470,7 @@ function do_media_size_change(size)
 
 	show_infotip(`Media Size: ${size}%${info}`)
 
-	modify_setting(`media_display_percentage ${size}`, false)
+	set_media_display_percentage(size)
 }
 
 function show_infotip(s)
@@ -19743,4 +19534,208 @@ function announce_background_effect_change(data)
 	})
 
 	set_background_effect(data.effect)
+}
+
+function start_media_menu_widgets()
+{
+	start_media_sliders()
+	set_media_sliders()
+	arrange_media_setting_display_positions()
+}
+
+function start_media_sliders()
+{
+	$(`#tv_display_percentage_slider`).nstSlider(
+	{
+		"left_grip_selector": ".leftGrip",
+		"value_changed_callback": function(cause, val) 
+		{
+			if(cause === "init")
+			{
+				return false
+			}
+
+			if(room_state.tv_display_percentage !== val)
+			{
+				room_state.tv_display_percentage = val
+				save_room_state()
+				apply_media_percentages()
+			}
+		}
+	})
+
+	$(`#media_display_percentage_slider`).nstSlider(
+	{
+		"left_grip_selector": ".leftGrip",
+		"value_changed_callback": function(cause, val) 
+		{
+			if(cause === "init")
+			{
+				return false
+			}
+
+			if(room_state.media_display_percentage !== val)
+			{
+				room_state.media_display_percentage = val
+				save_room_state()	
+				apply_media_percentages()
+			}
+		}
+	})
+}
+
+function set_media_sliders(type)
+{
+	set_tv_display_percentage(room_state.tv_display_percentage)
+	set_media_display_percentage(room_state.media_display_percentage)
+}
+
+function set_tv_display_percentage(v)
+{
+	if(v === undefined)
+	{
+		return false
+	}
+
+	if(v === "default")
+	{
+		v = room_state_default_tv_display_percentage
+	}
+
+	v = parseInt(v)
+
+	if(!Number.isInteger(v))
+	{
+		return false
+	}
+
+	if(v < 10)
+	{
+		v = 10
+	}
+
+	else if(v > 90)
+	{
+		v = 90
+	}
+
+	$(`#tv_display_percentage_slider`).nstSlider('set_position', v)
+}
+
+function set_media_display_percentage(v, type)
+{
+	if(v === undefined)
+	{
+		return false
+	}
+
+	if(v === "default")
+	{
+		v = room_state_default_media_display_percentage
+	}
+
+	v = parseInt(v)
+
+	if(!Number.isInteger(v))
+	{
+		return false
+	}
+
+	if(v < 10)
+	{
+		v = 10
+	}
+
+	else if(v > 90)
+	{
+		v = 90
+	}
+
+	$(`#media_display_percentage_slider`).nstSlider('set_position', v)
+}
+
+function apply_media_percentages()
+{
+	var p1 = room_state.tv_display_percentage
+	var p2 = (100 - p1)
+
+	$("#media_tv").css("height", `${p1}%`)
+	$("#media_image").css("height", `${p2}%`)
+
+	var c1 = room_state.media_display_percentage
+	var c2 = (100 - c1)
+
+	$("#media").css("width", `${c1}%`)
+	$("#chat_main").css("width", `${c2}%`)
+
+	on_resize()
+}
+
+function apply_media_positions()
+{
+	var p = room_state.tv_display_position
+
+	if(p === "top")
+	{
+		var tvp = 1
+		var ip = 2
+	}
+
+	else if(p === "bottom")
+	{
+		var tvp = 2
+		var ip = 1
+	}
+
+	$("#media_image").css("order", ip)
+	$("#media_tv").css("order", tvp)
+
+	fix_media_margin()
+}
+
+function swap_display_positions(type)
+{	
+	var p = room_state.tv_display_position
+
+	if(p === "top")
+	{
+		var np = "bottom"
+	}
+
+	else if(p === "bottom")
+	{
+		var np = "top"
+	}
+
+	room_state.tv_display_position = np
+	save_room_state()
+	
+	arrange_media_setting_display_positions()
+	apply_media_positions()
+}
+
+function arrange_media_setting_display_positions()
+{
+	var p = room_state.tv_display_position
+
+	if(p === "top")
+	{
+		var tvo = 1
+		var imo = 2
+	}
+
+	else if(p === "bottom")
+	{
+		var tvo = 2
+		var imo = 1
+	}
+
+	$(`#media_display_position_image`).css("order", imo)
+	$(`#media_display_position_tv`).css("order", tvo)	
+}
+
+function prepare_room_state()
+{
+	apply_media_percentages()
+	apply_media_positions()
 }

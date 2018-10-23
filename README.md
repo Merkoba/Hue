@@ -478,6 +478,15 @@ If you want to remove it to start fresh:
 "room_state_default_radio_locked"
 >Whether radio will be locked by default.
 
+"room_state_default_media_display_percentage"
+>Default percentage of the width the media area will have in new rooms.
+
+"room_state_default_tv_display_percentage"
+>Default percentage of the height the tv will have in the split media area in new rooms.
+
+"room_state_default_tv_display_position"
+>Default position the tv will have in the split media area in new rooms. (top or bottom)
+
 "room_state_default_radio_volume"
 >Default volume for the radio.
 
