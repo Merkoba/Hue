@@ -4360,8 +4360,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		catch(err)
 		{
-			return true
 			logger.log_error(err)
+			return true
 		}
 	}
 
@@ -4396,8 +4396,8 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		catch(err)
 		{
-			return true
 			logger.log_error(err)
+			return true
 		}
 	}
 
