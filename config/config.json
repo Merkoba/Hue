@@ -179,5 +179,6 @@
 	"credits_title": "Hue by Merkoba",
 	"image_change_cooldown": 2000,
 	"tv_change_cooldown": 2000,
-	"radio_change_cooldown": 2000
+	"radio_change_cooldown": 2000,
+	"max_sockets_per_user": 100
 }

@@ -355,6 +355,11 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.do_disconnect(socket)
 		}
 
+		if(handler.check_socket_limit(socket))
+		{
+			return handler.do_disconnect(socket)
+		}
+
 		if(sconfig.superuser_emails.includes(userinfo.email))
 		{
 			socket.hue_superuser = true
@@ -4350,6 +4355,42 @@ var handler = function(io, db_manager, config, sconfig, utilz, logger)
 						}
 					}
 				}
+			}
+		}
+
+		catch(err)
+		{
+			return true
+			logger.log_error(err)
+		}
+	}
+
+	handler.check_socket_limit = function(socket)
+	{
+		try
+		{
+			var num = 0
+
+			var rooms = user_rooms[socket.hue_user_id]
+
+			if(!rooms)
+			{
+				return false
+			}
+
+			for(var room_id of rooms)
+			{
+				num += handler.get_user_sockets_per_room(room_id, socket.hue_user_id).length
+			}
+
+			if(num > config.max_sockets_per_user)
+			{
+				return true
+			}
+
+			else
+			{
+				return false
 			}
 		}
 

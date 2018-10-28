@@ -580,6 +580,9 @@ If you want to remove it to start fresh:
 "radio_change_cooldown"
 >How much it should wait in milliseconds before radio can be changed again after last change.
 
+"max_sockets_per_user"
+>How many active sockets a user can have at the same time. After this limit all incoming socket connections are droppped.
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"
