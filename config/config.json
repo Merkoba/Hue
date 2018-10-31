@@ -25,7 +25,6 @@
 	"login_title": "Hue | Login",
 	"register_title": "Hue | Register",
 	"default_topic": "No topic",
-	"default_topic_unclaimed": "Use /claim to get admin rights to this room",
 	"default_topic_admin": "Check the main menu for administration options",
 	"redirect_url": "https://en.wikipedia.org/wiki/Special:Random",
 	"max_stored_images": 50,

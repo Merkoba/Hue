@@ -142,9 +142,6 @@ If you want to remove it to start fresh:
 "default_topic"
 >The shown topic when the room has been created or claimed and there is no topic yet.
 
-"default_topic_unclaimed"
->Topic shown when the room is unclaimed.
-
 "default_topic_admin"
 >Default topic shown to admins.
 

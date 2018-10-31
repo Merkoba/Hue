@@ -1,6 +1,6 @@
-var Utilz = function()
+const Utilz = function()
 {
-	var utilz = {}
+	const utilz = {}
 
 	utilz.clean_string = function(s)
 	{
@@ -34,13 +34,13 @@ var Utilz = function()
 
 	utilz.clean_string7 = function(s)
 	{
-		var ns = []
+		let ns = []
 
-		var split = s.split('\n')
+		let split = s.split('\n')
 
-		for(var line of split)
+		for(let line of split)
 		{
-			var ps = line.replace(/[ \t\f\v]+/g, ' ').trim()
+			let ps = line.replace(/[ \t\f\v]+/g, ' ').trim()
 
 			if(ps !== "")
 			{
@@ -48,7 +48,7 @@ var Utilz = function()
 			}
 		}
 
-		var pf = ns.join('\n')
+		let pf = ns.join('\n')
 
 		return pf
 	}
@@ -80,11 +80,11 @@ var Utilz = function()
 
 	utilz.get_random_string = function(n)
 	{
-		var text = ""
+		let text = ""
 
-		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+		let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
-		for(var i=0; i < n; i++)
+		for(let i=0; i < n; i++)
 		{
 			text += possible[utilz.get_random_int(0, possible.length - 1)]
 		}
@@ -94,17 +94,17 @@ var Utilz = function()
 
 	utilz.get_youtube_id = function(url)
 	{
-		var v_id = false
-		var list_id = false
+		let v_id = false
+		let list_id = false
 
-		var split = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/)
-		var id = undefined !== split[2] ? split[2].split(/[^0-9a-z_\-]/i)[0] : split[0]
+		let split = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/)
+		let id = undefined !== split[2] ? split[2].split(/[^0-9a-z_\-]/i)[0] : split[0]
 
 		v_id = id.length === 11 ? id : false
 
-		var list_match = url.match(/(?:\?|&)(list=[0-9A-Za-z_-]+)/)
+		let list_match = url.match(/(?:\?|&)(list=[0-9A-Za-z_-]+)/)
 		
-		var index_match = url.match(/(?:\?|&)(index=[0-9]+)/)
+		let index_match = url.match(/(?:\?|&)(index=[0-9]+)/)
 
 		if(list_match)
 		{
@@ -113,7 +113,7 @@ var Utilz = function()
 
 		if(list_id && !v_id)
 		{
-			var index = 0
+			let index = 0
 
 			if(index_match)
 			{
@@ -136,18 +136,18 @@ var Utilz = function()
 
 	utilz.get_youtube_time = function(url)
 	{
-		var matches = url.match(/[\?|&]t=(\d+h)?(\d+m)?(\d+s)?(\d+)?/)
+		let matches = url.match(/[\?|&]t=(\d+h)?(\d+m)?(\d+s)?(\d+)?/)
 
 		if(matches)
 		{
-			var first = false
+			let first = false
 
-			var h = false
-			var m = false 
-			var s = false 
-			var t = false 
+			let h = false
+			let m = false 
+			let s = false 
+			let t = false 
 
-			for(var match of matches)
+			for(let match of matches)
 			{
 				if(!first)
 				{
@@ -182,7 +182,7 @@ var Utilz = function()
 
 			}
 
-			var time = 0
+			let time = 0
 
 			if(h)
 			{
@@ -215,7 +215,7 @@ var Utilz = function()
 
 	utilz.get_twitch_id = function(url)
 	{
-		var match = url.match(/.*twitch\.tv(?:\/videos)?\/(\w+)/)
+		let match = url.match(/.*twitch\.tv(?:\/videos)?\/(\w+)/)
 
 		if(match)
 		{
@@ -261,12 +261,12 @@ var Utilz = function()
 
 	utilz.humanize_seconds = function(input, separator=":")
 	{
-		var pad = function(input) 
+		let pad = function(input) 
 		{
 			return input < 10 ? "0" + input : input
 		}
 
-		var result = 
+		let result = 
 		[
 			pad(Math.floor(input / 3600)),
 			pad(Math.floor(input % 3600 / 60)),
@@ -285,9 +285,9 @@ var Utilz = function()
 	{
 		if(s.startsWith("http://") || s.startsWith("https://"))
 		{
-			var s2 = s.split("//").slice(1).join("//")
+			let s2 = s.split("//").slice(1).join("//")
 
-			var matches = s2.match(/\/.*\.(\w+)(?=$|[#?])/)
+			let matches = s2.match(/\/.*\.(\w+)(?=$|[#?])/)
 
 			if(matches)
 			{
@@ -297,7 +297,7 @@ var Utilz = function()
 
 		else
 		{
-			var matches = s.match(/\.(\w+)(?=$|[#?])/)
+			let matches = s.match(/\.(\w+)(?=$|[#?])/)
 
 			if(matches)
 			{
@@ -310,14 +310,16 @@ var Utilz = function()
 
 	utilz.validate_rgb = function(rgb, case_sensitive=true)
 	{
+		let re
+
 		if(case_sensitive)
 		{
-			var re = /^[r][g][b][(]([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])[)]$/
+			re = /^[r][g][b][(]([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])[)]$/
 		}
 
 		else
 		{
-			var re = /^[R][G][B][(]([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])[)]$/i
+			re = /^[R][G][B][(]([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\s*,\s*([01]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])[)]$/i
 		}
 
 		return re.test(rgb)

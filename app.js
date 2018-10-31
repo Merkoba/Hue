@@ -24,7 +24,7 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 		assert.ok(false)
 	})
 
-	var app = express()
+	let app = express()
 
 	app.set('views', path.join(__dirname, 'views'))
 	app.set('view engine', 'ejs')
@@ -34,7 +34,7 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 	app.use(bodyParser.urlencoded({extended: false}))
 	app.use(express.static(path.join(__dirname, 'public')))
 
-	var sess =
+	let sess =
 	{
 		secret: sconfig.session_secret,
 		resave: false,
@@ -57,7 +57,7 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 
 	app.use(function(req, res, next) 
 	{
-		var err = new Error('Not Found')
+		let err = new Error('Not Found')
 		err.status = 404
 		next(err)
 	})

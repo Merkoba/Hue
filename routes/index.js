@@ -5,13 +5,10 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	const fetch = require('node-fetch')
 	const router = express.Router()
 
-	var c = {}
+	const c = {}
 
 	c.vars = {}
 
-	c.vars.autoprocess = true
-
-	c.vars.site_root = config.site_root
 	c.vars.main_room_id = config.main_room_id
 	c.vars.default_image_source = config.default_image_source
 	c.vars.default_tv_source = config.default_tv_source
@@ -48,7 +45,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.default_title = config.default_title
 	c.vars.default_topic = config.default_topic
 	c.vars.default_topic_admin = config.default_topic_admin
-	c.vars.default_topic_unclaimed = config.default_topic_unclaimed
 	c.vars.youtube_enabled = config.youtube_enabled
 	c.vars.twitch_enabled = config.twitch_enabled
 	c.vars.soundcloud_enabled = config.soundcloud_enabled
@@ -136,7 +132,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.disconnect_timeout_delay = config.disconnect_timeout_delay
 	c.vars.profile_image_diameter = config.profile_image_diameter
 	c.vars.max_num_newlines = config.max_num_newlines
-	c.vars.draw_coords_max_length = config.draw_coords_max_length
 	c.vars.draw_coords_max_array_length = config.draw_coords_max_array_length
 	c.vars.credits_background_url = config.credits_background_url
 	c.vars.credits_audio_url = config.credits_audio_url
@@ -151,7 +146,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		
 		if(req.params.id !== undefined)
 		{
-			var id = req.params.id.substr(0, config.max_room_id_length)
+			let id = req.params.id.substr(0, config.max_room_id_length)
 
 			if(id === config.main_room_id)
 			{
@@ -165,7 +160,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	function require_login(req, res, next)
 	{
-		var fromurl = encodeURIComponent(req.originalUrl)
+		let fromurl = encodeURIComponent(req.originalUrl)
 
 		if(req.session.user_id === undefined)
 		{
@@ -227,9 +222,9 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	router.post('/login', function(req, res, next) 
 	{
-		var email = req.body.email
-		var password = req.body.password
-		var fromurl = decodeURIComponent(req.body.fromurl)
+		let email = req.body.email
+		let password = req.body.password
+		let fromurl = decodeURIComponent(req.body.fromurl)
 
 		if(email.length === 0 || email.length > config.max_max_email_length)
 		{
@@ -265,8 +260,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			{
 				req.session.destroy(function(){})
 
-				var m = encodeURIComponent("Wrong email or password")
-				var form_email = encodeURIComponent(email)
+				let m = encodeURIComponent("Wrong email or password")
+				let form_email = encodeURIComponent(email)
 
 				res.redirect(`/login?message=${m}&form_email=${form_email}`)
 			}
@@ -304,9 +299,9 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	router.post('/register', function(req, res, next) 
 	{
-		var username = req.body.username
-		var password = req.body.password 
-		var email = req.body.email
+		let username = req.body.username
+		let password = req.body.password 
+		let email = req.body.email
 
 		if(username.length === 0 || username.length > config.max_username_length)
 		{
@@ -340,8 +335,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		if(config.recaptcha_enabled)
 		{
-			var recaptcha_response = req.body["g-recaptcha-response"]
-			var remote_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
+			let recaptcha_response = req.body["g-recaptcha-response"]
+			let remote_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress
 
 			if(recaptcha_response === undefined || recaptcha_response === '' || recaptcha_response === null)
 			{
@@ -366,14 +361,14 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 				else
 				{
-					var m = encodeURIComponent(`There was a problem verifying you're not a robot`)
+					let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
 					res.redirect(`/message?message=${m}`)
 				}
 			})
 
 			.catch(err =>
 			{
-				var m = encodeURIComponent(`There was a problem verifying you're not a robot`)
+				let m = encodeURIComponent(`There was a problem verifying you're not a robot`)
 				res.redirect(`/message?message=${m}`)
 				console.error(err)
 			})
@@ -387,9 +382,9 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	function do_register(req, res, next)
 	{
-		var username = req.body.username
-		var password = req.body.password 
-		var email = req.body.email
+		let username = req.body.username
+		let password = req.body.password 
+		let email = req.body.email
 
 		db_manager.get_user({$or:[{username:username}, {email:email}]}, {username:true}, false)
 
@@ -401,15 +396,17 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 				.then(ans =>
 				{
+					let m 
+
 					if(ans === "done")
 					{
-						var m = encodeURIComponent(`Account verification link sent to ${email}\nYou must verify the email to be able to login\nEmail might take a couple of minutes to arrive`)
+						m = encodeURIComponent(`Account verification link sent to ${email}\nYou must verify the email to be able to login\nEmail might take a couple of minutes to arrive`)
 						res.redirect(`/message?message=${m}`)
 					}
 
 					else
 					{
-						var m = encodeURIComponent("An error occurred")
+						m = encodeURIComponent("An error occurred")
 						res.redirect(`/message?message=${m}`)
 					}
 				})
@@ -422,9 +419,9 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 			else
 			{
-				var m = encodeURIComponent("Username or email already exist")
-				var form_username = encodeURIComponent(username)
-				var form_email = encodeURIComponent(email)
+				let m = encodeURIComponent("Username or email already exist")
+				let form_username = encodeURIComponent(username)
+				let form_email = encodeURIComponent(email)
 
 				res.redirect(`/register?message=${m}&form_username=${form_username}&form_email=${form_email}`)
 			}
@@ -438,7 +435,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	router.get('/verify', check_url, function(req, res, next)
 	{
-		var token = req.query.token
+		let token = req.query.token
 
 		if(token.length === 0)
 		{
@@ -450,11 +447,11 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}		
 
-		var split = token.split('_')
+		let split = token.split('_')
 
-		var id = split[0]
+		let id = split[0]
 
-		var code = split[1]
+		let code = split[1]
 
 		db_manager.get_user({_id:id, verification_code:code, verified:false}, {registration_date:true})
 
@@ -468,7 +465,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 					.then(ans =>
 					{
-						var m = encodeURIComponent("Account successfully verified")
+						let m = encodeURIComponent("Account successfully verified")
 						res.redirect(`/message?message=${m}`)						
 					})
 
@@ -480,14 +477,14 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 				else
 				{
-					var m = encodeURIComponent("The link has expired")
+					let m = encodeURIComponent("The link has expired")
 					res.redirect(`/message?message=${m}`)
 				}
 			}
 
 			else
 			{
-				var m = encodeURIComponent("The link has expired")
+				let m = encodeURIComponent("The link has expired")
 				res.redirect(`/message?message=${m}`)
 			}
 		})
@@ -500,7 +497,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	router.post('/check_username', function(req, res, next)	
 	{
-		var username = req.body.username
+		let username = req.body.username
 
 		if(username.length === 0 || username.length > config.max_max_username_length)
 		{
@@ -511,14 +508,16 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		.then(user =>
 		{
+			let taken
+
 			if(user)
 			{
-				var taken = true
+				taken = true
 			}
 
 			else
 			{
-				var taken = false
+				taken = false
 			}
 
 			res.json({taken:taken})
@@ -532,7 +531,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	router.post('/check_email', function(req, res, next)	
 	{
-		var email = req.body.email
+		let email = req.body.email
 
 		if(email.length === 0 || email.length > config.max_max_email_length)
 		{
@@ -543,14 +542,16 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		.then(user =>
 		{
+			let taken
+
 			if(user)
 			{
-				var taken = true
+				taken = true
 			}
 
 			else
 			{
-				var taken = false
+				taken = false
 			}
 
 			res.json({taken:taken})
@@ -576,7 +577,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	router.post('/recover', function(req, res, next) 
 	{
-		var email = req.body.email
+		let email = req.body.email
 
 		if(email.length === 0 || email.length > config.max_max_email_length)
 		{
@@ -592,23 +593,25 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		.then(result =>
 		{
+			let m 
+
 			if(result)
-			{
+			{ 
 				if(result === "done")
 				{
-					var m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}\nEmail might take a couple of minutes to arrive`)
+					m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}\nEmail might take a couple of minutes to arrive`)
 					res.redirect(`/message?message=${m}`)
 				}
 
 				else if(result === "limit")
 				{
-					var m = encodeURIComponent("You must wait a while before resetting the password again")
+					m = encodeURIComponent("You must wait a while before resetting the password again")
 					res.redirect(`/message?message=${m}`)
 				}
 
 				else if(result === "error")
 				{
-					var m = encodeURIComponent("There was an error. Please try again later")
+					m = encodeURIComponent("There was an error. Please try again later")
 					res.redirect(`/message?message=${m}`)					
 				}
 
@@ -620,7 +623,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 			else
 			{
-				var m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}\nEmail might take a couple of minutes to arrive`)
+				m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}\nEmail might take a couple of minutes to arrive`)
 				res.redirect(`/message?message=${m}`)
 			}
 		})
@@ -633,7 +636,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	router.get('/change_password', check_url, function(req, res, next)
 	{
-		var token = req.query.token
+		let token = req.query.token
 
 		if(token.length === 0)
 		{
@@ -645,21 +648,23 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		var split = token.split('_')
+		let split = token.split('_')
 
-		var id = split[0]
+		let id = split[0]
 
-		var code = split[1]
+		let code = split[1]
 
 		db_manager.get_user({_id:id, password_reset_code:code}, {password_reset_link_date:true})
 
 		.then(user =>
 		{
+			let m
+
 			if(user)
 			{
 				if(Date.now() - user.password_reset_link_date < config.password_reset_expiration)
 				{
-					var c = {}
+					let c = {}
 
 					c.vars = {}
 
@@ -673,14 +678,14 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 				else
 				{
-					var m = encodeURIComponent("The link has expired")
+					m = encodeURIComponent("The link has expired")
 					res.redirect(`/message?message=${m}`)
 				}
 			}
 
 			else
 			{
-				var m = encodeURIComponent("The link has expired")
+				m = encodeURIComponent("The link has expired")
 				res.redirect(`/message?message=${m}`)
 			}
 		})
@@ -693,23 +698,25 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	router.post('/change_password', function(req, res, next)
 	{
-		var token = req.body.token
+		let token = req.body.token
 
-		var split = token.split('_')
+		let split = token.split('_')
 
-		var id = split[0]
+		let id = split[0]
 
-		var code = split[1]
+		let code = split[1]
 
 		db_manager.get_user({_id:id, password_reset_code:code}, {password_reset_link_date:true})
 
 		.then(user =>
 		{
+			let m
+
 			if(user)
 			{
 				if(Date.now() - user.password_reset_link_date < config.password_reset_expiration)
 				{
-					var password = req.body.password 
+					let password = req.body.password 
 
 					if(password.length === 0 || password.length < config.min_password_length || password.length > config.max_password_length)
 					{
@@ -723,20 +730,20 @@ module.exports = function(db_manager, config, sconfig, utilz)
 						console.error(err)
 					})
 
-					var m = encodeURIComponent("Password successfully changed")
+					m = encodeURIComponent("Password successfully changed")
 					res.redirect(`/message?message=${m}`)					
 				}
 
 				else
 				{
-					var m = encodeURIComponent("The link has expired")
+					m = encodeURIComponent("The link has expired")
 					res.redirect(`/message?message=${m}`)
 				}
 			}
 
 			else
 			{
-				var m = encodeURIComponent("The link has expired")
+				m = encodeURIComponent("The link has expired")
 				res.redirect(`/message?message=${m}`)
 			}
 		})

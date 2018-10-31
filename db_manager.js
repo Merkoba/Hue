@@ -12,7 +12,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		return `_key_${Date.now()}_${utilz.get_random_string(12)}`
 	}
 
-	var manager = {}
+	const manager = {}
 
 	manager.get_room = function(query, fields)
 	{
@@ -846,7 +846,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 			.then(hash =>
 			{
-				var user = {}
+				let user = {}
 
 				user =
 				{
@@ -867,11 +867,9 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 				.then(result =>
 				{
-					var code = Date.now() + utilz.get_random_string(12)
+					let link = `${config.site_root}verify?token=${result.ops[0]._id}_${result.ops[0].verification_code}`					
 
-					var link = `${config.site_root}verify?token=${result.ops[0]._id}_${result.ops[0].verification_code}`					
-
-					var data = 
+					let data = 
 					{
 						from: `${config.delivery_email_name} <${config.delivery_email}>`,
 						to: info.email,
@@ -1179,11 +1177,11 @@ module.exports = function(db, config, sconfig, utilz, logger)
 							{
 								if((Date.now() - user.email_change_date) > config.email_change_limit)
 								{
-									var code = Date.now() + utilz.get_random_string(12)
+									let code = Date.now() + utilz.get_random_string(12)
 
-									var command = `/verifyemail ${code}`
+									let command = `/verifyemail ${code}`
 
-									var data = 
+									let data = 
 									{
 										from: `${config.delivery_email_name} <${config.delivery_email}>`,
 										to: email,
@@ -1261,11 +1259,11 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				{
 					if((Date.now() - user.password_reset_date) > config.password_reset_limit)
 					{
-						var code = Date.now() + utilz.get_random_string(12)
+						let code = Date.now() + utilz.get_random_string(12)
 
-						var link = `${config.site_root}change_password?token=${user._id.toString()}_${code}`
+						let link = `${config.site_root}change_password?token=${user._id.toString()}_${code}`
 
-						var data = 
+						let data = 
 						{
 							from: `${config.delivery_email_name} <${config.delivery_email}>`,
 							to: email,
@@ -1334,11 +1332,11 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 			.then(user =>
 			{
-				var visited = user.visited_rooms
+				let visited = user.visited_rooms
 
-				for(var i=0; i<visited.length; i++)
+				for(let i=0; i<visited.length; i++)
 				{
-					var v = visited[i]
+					let v = visited[i]
 
 					if(v === room_id)
 					{

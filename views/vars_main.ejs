@@ -5,10 +5,11 @@
 
 		if(v === undefined)
 		{
+			console.error(`${key} is undefined`)
 			continue
 		}
 
-		%>var <%-key%> = <%
+		%>Hue.<%-key%> = <%
 
 		if(typeof v === "string")
 		{

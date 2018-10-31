@@ -2,7 +2,7 @@
 
 function normalizePort(val) 
 {
-	var port = parseInt(val, 10)
+	let port = parseInt(val, 10)
 
 	if(isNaN(port)) 
 	{
@@ -18,7 +18,6 @@ function normalizePort(val)
 }
 
 const port = normalizePort(process.env.PORT || "3210")
-
 const config = require('../config/config.json')
 const sconfig = require('../config/config.secret.json')
 
@@ -125,7 +124,7 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 				throw error
 			}
 
-			var bind = typeof port === 'string'
+			let bind = typeof port === 'string'
 				? 'Pipe ' + port
 				: 'Port ' + port
 
@@ -148,9 +147,9 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 
 		function onListening() 
 		{
-			var addr = server.address()
+			let addr = server.address()
 
-			var bind = typeof addr === 'string'
+			let bind = typeof addr === 'string'
 				? 'pipe ' + addr
 				: 'port ' + addr.port
 
