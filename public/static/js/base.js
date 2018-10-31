@@ -12289,7 +12289,7 @@ Hue.show_user_menu = function()
 
 Hue.show_status = function()
 {
-	Hue.msg_info2.show(["Room Status", template_status({info:get_status_html()})])
+	Hue.msg_info2.show(["Room Status", Hue.template_status({info:Hue.get_status_html()})])
 }
 
 Hue.get_status_html = function()
@@ -12406,7 +12406,7 @@ Hue.get_status_html = function()
 
 	let t = h.find("#status_topic").eq(0)
 	
-	t.text(get_topic()).urlize()
+	t.text(Hue.get_topic()).urlize()
 
 	if(Hue.current_image().setter)
 	{
