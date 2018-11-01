@@ -8474,9 +8474,10 @@ Hue.sound_notify = function(type)
 		return false
 	}
 
+	let sound
+
 	if(!Hue.app_focused)
 	{
-		let sound
 
 		if(type === "message")
 		{
