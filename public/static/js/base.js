@@ -1,5 +1,7 @@
 const Hue = {}
 
+Hue.debug = false
+
 Hue.ls_global_settings = "global_settings_v1"
 Hue.ls_room_settings = "room_settings_v1"
 Hue.ls_room_state = "room_state_v1"
@@ -288,6 +290,11 @@ Hue.init = function()
 	Hue.start_reply_events()
 	Hue.set_user_settings_titles()
 	Hue.maxers_mouse_events()
+
+	if(Hue.debug)
+	{
+		Hue.wrap_functions()
+	}
 
 	Hue.start_socket()
 }
@@ -19731,4 +19738,28 @@ Hue.enable_setting_override = function(setting)
 	}
 
 	$(`#room_settings_${setting}_overrider`).click()
+}
+
+Hue.wrap_function = function(func, name)
+{
+	let wrapped = function()
+	{
+		console.info(`Running: ${name}`)
+		return func(...arguments)
+	}
+
+	return wrapped
+}
+
+Hue.wrap_functions = function()
+{
+	for(let i in Hue)
+	{
+		let p = Hue[i]
+		
+		if(typeof p === "function")
+		{
+			Hue[i] = Hue.wrap_function(p, i)
+		}
+	}
 }
