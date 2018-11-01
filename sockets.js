@@ -4629,41 +4629,50 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.check_domain_list = function(media_type, src)
 	{
-		let list_type = config[`${media_type}_domain_white_or_black_list`]
-
-		if(list_type !== "white" && list_type !== "black")
+		try
 		{
+
+			let list_type = config[`${media_type}_domain_white_or_black_list`]
+
+			if(list_type !== "white" && list_type !== "black")
+			{
+				return false
+			}
+
+			let list = config[`${media_type}_domain_list`]
+
+			if(list.length === 0)
+			{
+				return false
+			}
+
+			let domain = utilz.get_root(src)
+
+			let includes = list.includes(domain) || list.includes(`${domain}/`)
+
+			if(list_type === "white")
+			{
+				if(!includes)
+				{
+					return true
+				}
+			}
+
+			else if(list_type === "black")
+			{
+				if(includes)
+				{
+					return true
+				}
+			}
+
 			return false
 		}
 
-		let list = config[`${media_type}_domain_list`]
-
-		if(list.length === 0)
+		catch(err)
 		{
-			return false
+			logger.log_error(err)
 		}
-
-		let domain = utilz.get_root(src)
-
-		let includes = list.includes(domain) || list.includes(`${domain}/`)
-
-		if(list_type === "white")
-		{
-			if(!includes)
-			{
-				return true
-			}
-		}
-
-		else if(list_type === "black")
-		{
-			if(includes)
-			{
-				return true
-			}
-		}
-
-		return false
 	}
 
 	handler.start_room_loop()
