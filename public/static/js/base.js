@@ -13685,7 +13685,7 @@ Hue.announce_room_images_mode_change = function(data)
 		open_profile: true
 	})
 
-	set_room_images_mode(data.what)
+	Hue.set_room_images_mode(data.what)
 	Hue.change_images_visibility()
 	Hue.check_permissions()
 	Hue.check_maxers()

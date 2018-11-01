@@ -851,6 +851,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			username2: data.username,
 			role: data.role
 		})
+
+		handler.push_admin_log_message(socket, `changed the role of "${data.username}" to "${data.role}"`)
 	}
 
 	handler.public.reset_voices = async function(socket, data)
