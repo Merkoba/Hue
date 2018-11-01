@@ -308,6 +308,25 @@ const Utilz = function()
 		return ""
 	}
 
+	utilz.get_root = function(s)
+	{
+		if(s.startsWith("http://") || s.startsWith("https://"))
+		{
+			let split = s.split("//")
+
+			let s2 = split.slice(1).join("//")
+
+			return [split[0], s2.split("/")[0]].join("//")
+		}
+
+		else
+		{
+			return s.split("/")[0]
+		}
+
+		return ""
+	}
+
 	utilz.validate_rgb = function(rgb, case_sensitive=true)
 	{
 		let re

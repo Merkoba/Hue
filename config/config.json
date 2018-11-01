@@ -179,5 +179,11 @@
 	"image_change_cooldown": 2000,
 	"tv_change_cooldown": 2000,
 	"radio_change_cooldown": 2000,
-	"max_sockets_per_user": 100
+	"max_sockets_per_user": 100,
+	"images_domain_white_or_black_list": "black",
+	"images_domain_list": [],
+	"tv_domain_white_or_black_list": "black",
+	"tv_domain_list": [],
+	"radio_domain_white_or_black_list": "black",
+	"radio_domain_list": []
 }

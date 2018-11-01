@@ -580,6 +580,28 @@ If you want to remove it to start fresh:
 "max_sockets_per_user"
 >How many active sockets a user can have at the same time. After this limit all incoming socket connections are droppped.
 
+"images_domain_white_or_black_list"
+>Whether images_domain_list is a whitelist or a blacklist of domains.
+
+"images_domain_list"
+>If this is a white list, only image sources belonging to this domain will be accepted.
+If it's a blacklist, image sources from this domain will be rejected.
+
+"tv_domain_white_or_black_list"
+>Whether tv_domain_list is a whitelist or a blacklist of domains.
+
+"tv_domain_list"
+>If this is a white list, only tv sources belonging to this domain will be accepted.
+If it's a blacklist, tv sources from this domain will be rejected.
+
+"radio_domain_white_or_black_list"
+>Whether radio_domain_list is a whitelist or a blacklist of domains.
+
+"radio_domain_list"
+>If this is a white list, only radio sources belonging to this domain will be accepted.
+If it's a blacklist, radio sources from this domain will be rejected.
+
+
 ## The following reside in config.secret.json
 
 "youtube_api_key"

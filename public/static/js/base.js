@@ -9234,6 +9234,12 @@ Hue.change_radio_source = function(src)
 
 	if(src.startsWith("http://") || src.startsWith("https://"))
 	{
+		if(Hue.check_domain_list("radio", src))
+		{
+			Hue.feedback("Radio sources from that domain are not allowed")
+			return false
+		}
+
 		if(src.includes("youtube.com") || src.includes("youtu.be"))
 		{
 			if(!Hue.youtube_enabled)
@@ -9332,6 +9338,12 @@ Hue.change_tv_source = function(src)
 
 	if(src.startsWith("http://") || src.startsWith("https://"))
 	{
+		if(Hue.check_domain_list("tv", src))
+		{
+			Hue.feedback("TV sources from that domain are not allowed")
+			return false
+		}
+
 		if(src.includes("youtube.com") || src.includes("youtu.be"))
 		{
 			if(Hue.utilz.get_youtube_id(src) && !Hue.youtube_enabled)
@@ -14058,6 +14070,12 @@ Hue.change_image_source = function(src)
 	else if(src.startsWith("http://") || src.startsWith("https://"))
 	{
 		src = src.replace(/\.gifv/g, '.gif')
+
+		if(Hue.check_domain_list("images", src))
+		{
+			Hue.feedback("Image sources from that domain are not allowed")
+			return false
+		}
 
 		let extension = Hue.utilz.get_extension(src).toLowerCase()
 
@@ -19773,4 +19791,43 @@ Hue.wrap_functions = function()
 			Hue[i] = Hue.wrap_function(p, i)
 		}
 	}
+}
+
+Hue.check_domain_list = function(media_type, src)
+{
+	let list_type = Hue[`${media_type}_domain_white_or_black_list`]
+
+	if(list_type !== "white" && list_type !== "black")
+	{
+		return false
+	}
+
+	let list = Hue[`${media_type}_domain_list`]
+
+	if(list.length === 0)
+	{
+		return false
+	}
+
+	let domain = Hue.utilz.get_root(src)
+
+	let includes = list.includes(domain) || list.includes(`${domain}/`)
+
+	if(list_type === "white")
+	{
+		if(!includes)
+		{
+			return true
+		}
+	}
+
+	else if(list_type === "black")
+	{
+		if(includes)
+		{
+			return true
+		}
+	}
+
+	return false
 }

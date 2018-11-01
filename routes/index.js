@@ -136,6 +136,12 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.credits_background_url = config.credits_background_url
 	c.vars.credits_audio_url = config.credits_audio_url
 	c.vars.credits_title = config.credits_title
+	c.vars.images_domain_white_or_black_list = config.images_domain_white_or_black_list
+	c.vars.images_domain_list = config.images_domain_list
+	c.vars.tv_domain_white_or_black_list = config.tv_domain_white_or_black_list
+	c.vars.tv_domain_list = config.tv_domain_list
+	c.vars.radio_domain_white_or_black_list = config.radio_domain_white_or_black_list
+	c.vars.radio_domain_list = config.radio_domain_list
 
 	function check_url(req, res, next)
 	{

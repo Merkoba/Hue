@@ -1364,6 +1364,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(data.src.startsWith("http://") || data.src.startsWith("https://"))
 		{
+			if(handler.check_domain_list("radio", data.src))
+			{
+				return false
+			}
+
 			if(data.src.includes("youtube.com") || data.src.includes("youtu.be"))
 			{
 				if(!config.youtube_enabled)
@@ -1665,6 +1670,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(data.src.startsWith("http://") || data.src.startsWith("https://"))
 		{
+			if(handler.check_domain_list("tv", data.src))
+			{
+				return false
+			}
+
 			if(data.src.includes("youtube.com") || data.src.includes("youtu.be"))
 			{
 				if(!config.youtube_enabled)
@@ -2921,6 +2931,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else
 		{
+			if(handler.check_domain_list("images", data.src))
+			{
+				return false
+			}
+
 			let extension = utilz.get_extension(data.src).toLowerCase()
 
 			if(!extension || !utilz.image_extensions.includes(extension))
@@ -4610,6 +4625,45 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		rooms[socket.hue_room_id].admin_log_messages.push(message)
+	}
+
+	handler.check_domain_list = function(media_type, src)
+	{
+		let list_type = config[`${media_type}_domain_white_or_black_list`]
+
+		if(list_type !== "white" && list_type !== "black")
+		{
+			return false
+		}
+
+		let list = config[`${media_type}_domain_list`]
+
+		if(list.length === 0)
+		{
+			return false
+		}
+
+		let domain = utilz.get_root(src)
+
+		let includes = list.includes(domain) || list.includes(`${domain}/`)
+
+		if(list_type === "white")
+		{
+			if(!includes)
+			{
+				return true
+			}
+		}
+
+		else if(list_type === "black")
+		{
+			if(includes)
+			{
+				return true
+			}
+		}
+
+		return false
 	}
 
 	handler.start_room_loop()
