@@ -19764,7 +19764,15 @@ Hue.wrap_functions = function()
 		
 		if(typeof p === "function")
 		{
-			Hue[i] = Hue.wrap_function(p, i)
+			if(i === "wrap_functions" || i === "wrap_function")
+			{
+				continue
+			}
+
+			else
+			{
+				Hue[i] = Hue.wrap_function(p, i)
+			}
 		}
 	}
 }
