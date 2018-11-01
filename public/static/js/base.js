@@ -1,7 +1,7 @@
 const Hue = {}
 
 Hue.debug_socket = true
-Hue.debug_functions = true
+Hue.debug_functions = false
 
 Hue.ls_global_settings = "global_settings_v1"
 Hue.ls_room_settings = "room_settings_v1"
