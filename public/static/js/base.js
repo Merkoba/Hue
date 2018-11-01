@@ -1,6 +1,7 @@
 const Hue = {}
 
-Hue.debug = false
+Hue.debug_socket = true
+Hue.debug_functions = true
 
 Hue.ls_global_settings = "global_settings_v1"
 Hue.ls_room_settings = "room_settings_v1"
@@ -291,7 +292,7 @@ Hue.init = function()
 	Hue.set_user_settings_titles()
 	Hue.maxers_mouse_events()
 
-	if(Hue.debug)
+	if(Hue.debug_functions)
 	{
 		Hue.wrap_functions()
 	}
@@ -784,7 +785,11 @@ Hue.check_emit_queue = function()
 
 Hue.do_socket_emit = function(obj)
 {
-	console.info(`Emit: ${obj.destination}`)
+	if(Hue.debug_socket)
+	{
+		console.info(`Emit: ${obj.destination}`)
+	}
+
 	obj.data.server_method_name = obj.destination
 	Hue.socket.emit("server_method", obj.data)
 }
