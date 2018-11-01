@@ -19760,19 +19760,16 @@ Hue.wrap_functions = function()
 {
 	for(let i in Hue)
 	{
+		if(i === "wrap_functions" || i === "wrap_function")
+		{
+			continue
+		}
+
 		let p = Hue[i]
 		
 		if(typeof p === "function")
 		{
-			if(i === "wrap_functions" || i === "wrap_function")
-			{
-				continue
-			}
-
-			else
-			{
-				Hue[i] = Hue.wrap_function(p, i)
-			}
+			Hue[i] = Hue.wrap_function(p, i)
 		}
 	}
 }
