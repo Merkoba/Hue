@@ -19749,7 +19749,7 @@ Hue.wrap_function = function(func, name)
 {
 	let wrapped = function()
 	{
-		let date = dateFormat(Date.now(), "h:MM:ss:ms")
+		let date = dateFormat(Date.now(), "h:MM:ss:l")
 		console.info(`${date} | Running: ${name}`)
 		return func(...arguments)
 	}
