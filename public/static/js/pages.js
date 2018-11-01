@@ -1,6 +1,6 @@
-var utilz = Utilz()
+const utilz = Utilz()
 
-var msg_info = Msg.factory(
+const msg_info = Msg.factory(
 {
 	id: "info",
 	class: "black",
