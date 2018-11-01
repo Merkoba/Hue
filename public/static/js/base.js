@@ -11589,7 +11589,7 @@ Hue.setting_aliases_action = function(type, save=true)
 {
 	let cmds = Hue.utilz.clean_string7($(`#${type}_aliases`).val())
 
-	cmds = format_command_aliases(cmds)
+	cmds = Hue.format_command_aliases(cmds)
 
 	$(`#${type}_aliases`).val(cmds)
 
@@ -11652,7 +11652,7 @@ Hue.setting_font_family_action = function(type, save=true)
 
 	if(Hue.active_settings("font_family") === type)
 	{
-		load_font_face()
+		Hue.load_font_face()
 	}
 }
 

@@ -211,7 +211,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		c.vars.fromurl = req.query.fromurl || ""
 		c.vars.message = decodeURIComponent(req.query.message)
-		c.vars.min_password_length = config.min_password_length
 		c.vars.max_max_password_length = config.max_max_password_length
 		c.vars.max_max_email_length = config.max_max_email_length
 		c.vars.login_title = config.login_title
