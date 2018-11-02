@@ -4055,6 +4055,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		}
 
+		if(ids.length === 0)
+		{
+			return false
+		}
+
 		let users = await db_manager.get_user({_id:{$in:ids}}, {username:true})
 
 		let list = []
