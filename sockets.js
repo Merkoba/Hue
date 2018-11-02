@@ -4031,6 +4031,42 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, "receive_admin_activity", {messages:info.admin_log_messages})
 	}
 
+	handler.public.get_admin_list = async function(socket, data)
+	{
+		if(!handler.is_admin_or_op(socket))
+		{
+			return handler.get_out(socket)
+		}
+
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
+
+		let roles = {}
+		
+		let ids = []
+
+		for(let id in info.keys)
+		{
+			let role = info.keys[id]
+
+			if(role === "op" || role === "admin")
+			{
+				roles[id] = role
+				ids.push(id)
+			}
+		}
+
+		let users = await db_manager.get_user({_id:{$in:ids}}, {username:true})
+
+		let list = []
+
+		for(let user of users)
+		{
+			list.push({username:user.username, role:roles[user._id]})
+		}
+
+		handler.user_emit(socket, 'receive_admin_list', {list:list})
+	}
+
 	handler.check_permission = function(socket, permission)
 	{
 		if(media_types.includes(permission))

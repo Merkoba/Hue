@@ -654,6 +654,10 @@
 							<div class='pointer underlined action inline' onclick='Hue.request_admin_activity()'>Admin Activity</div>
 
 							<div class='spacer1'></div>
+							
+							<div class='pointer underlined action inline' onclick='Hue.request_admin_list()'>Admin List</div>
+
+							<div class='spacer1'></div>
 
 							<div class='pointer underlined action inline' onclick='Hue.needs_confirm("clear_log")'>Clear Log</div>
 
@@ -1351,6 +1355,7 @@
 
 		<script id='template_profile' type='text/x-handlebars-template'>
 			<div id='show_profile_uname' class='bigger2'>Loading</div>
+			<div id='show_profile_role'></div>
 			<div class='spacer3'></div>
 			<div class="bigger_profile_image_container">
 				<img id='show_profile_image' class='bigger_profile_image unselectable' src="{{profile_image}}">

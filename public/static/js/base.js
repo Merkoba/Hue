@@ -169,7 +169,7 @@ Hue.commands =
 	'/feedback', '/imagesmode', '/tvmode', '/radiomode',
 	'/voicechatmode', '/voicepermission', '/theme', '/textcolormode',
 	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
-	'/clearlog2', '/togglefontsize', '/backgroundeffect'
+	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist'
 ]
 
 Hue.user_settings =
@@ -1297,6 +1297,11 @@ Hue.start_socket = function()
 		else if(data.type === 'receive_admin_activity')
 		{
 			Hue.show_admin_activity(data.messages)
+		}
+
+		else if(data.type === 'receive_admin_list')
+		{
+			Hue.show_admin_list(data)
 		}
 	})
 }
@@ -2615,6 +2620,48 @@ Hue.role_tag = function(p)
 	return s
 }
 
+Hue.get_pretty_role_name = function(p)
+{
+	let s
+
+	if(p === 'admin')
+	{
+		s = 'Admin'
+	}
+
+	else if(p === 'op')
+	{
+		s = 'Operator'
+	}
+
+	else if(p === 'voice1')
+	{
+		s = 'Voice 1'
+	}
+
+	else if(p === 'voice2')
+	{
+		s = 'Voice 2'
+	}
+
+	else if(p === 'voice3')
+	{
+		s = 'Voice 3'
+	}
+
+	else if(p === 'voice4')
+	{
+		s = 'Voice 4'
+	}
+
+	else
+	{
+		s = ''
+	}
+
+	return s
+}
+
 Hue.get_user_by_username = function(uname)
 {
 	for(let user of Hue.userlist)
@@ -2769,7 +2816,7 @@ Hue.start_username_context_menu = function()
 {
 	$.contextMenu(
 	{
-		selector: ".ui_item_uname, .chat_uname, #show_profile_uname, .generic_uname",
+		selector: ".ui_item_uname, .chat_uname, #show_profile_uname, .generic_uname, .admin_list_username",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
 		items:
@@ -7668,6 +7715,11 @@ Hue.execute_command = function(message, ans)
 	else if(Hue.oi_equals(cmd2, '/togglefontsize'))
 	{
 		Hue.toggle_chat_font_size()
+	}
+
+	else if(Hue.oi_equals(cmd2, '/adminlist'))
+	{
+		Hue.request_admin_list()
 	}
 
 	else
@@ -13466,10 +13518,17 @@ Hue.show_profile = function(uname, prof_image)
 {
 	let pi
 
+	let role = "Offline"
+
+	let user = Hue.get_user_by_username(uname)
+
+	if(user)
+	{
+		role = Hue.get_pretty_role_name(user.role)
+	}
+
 	if(prof_image === "" || prof_image === undefined || prof_image === "undefined")
 	{
-		let user = Hue.get_user_by_username(uname)
-
 		if(user)
 		{
 			pi = user.profile_image
@@ -13479,7 +13538,6 @@ Hue.show_profile = function(uname, prof_image)
 		{
 			pi = Hue.default_profile_image_url
 		}
-
 	}
 
 	else
@@ -13488,6 +13546,7 @@ Hue.show_profile = function(uname, prof_image)
 	}
 
 	$("#show_profile_uname").text(uname)
+	$("#show_profile_role").text(`(${role})`)
 	$("#show_profile_image").attr("src", pi)
 
 	if(!Hue.can_chat || uname === Hue.username || !Hue.usernames.includes(uname))
@@ -19830,4 +19889,50 @@ Hue.check_domain_list = function(media_type, src)
 	}
 
 	return false
+}
+
+Hue.request_admin_list = function()
+{
+	if(!Hue.is_admin_or_op(Hue.role))
+	{
+		Hue.not_an_op()
+		return false
+	}
+
+	Hue.socket_emit("get_admin_list", {})
+}
+
+Hue.show_admin_list = function(data)
+{
+	let s = $("<div id='admin_list_container'></div>")
+
+	let i = 0
+
+	data.list.sort(Hue.compare_userlist)
+
+	for(let user of data.list)
+	{
+		i += 1
+
+		let hs = "<span class='admin_list_username'></span>&nbsp;&nbsp;<span class='admin_list_role'></span>"
+
+		let h = $(`<div class='admin_list_item'>${hs}</div>`)
+
+		h.find(".admin_list_username").eq(0).text(user.username)
+		h.find(".admin_list_role").eq(0).text(`(${Hue.get_pretty_role_name(user.role)})`)
+
+		h.click(function()
+		{
+			Hue.show_profile(user.username)
+		})
+
+		if(i < data.list.length)
+		{
+			h = h.add("<div class='spacer3'></div>")
+		}
+
+		s.append(h)
+	}
+
+	Hue.msg_info2.show(["Admin List", s[0]])
 }

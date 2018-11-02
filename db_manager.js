@@ -5,7 +5,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
 	const rooms_version = 56
-	const users_version = 29
+	const users_version = 30
 
 	function get_random_key()
 	{
@@ -654,6 +654,8 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	{
 		return new Promise((resolve, reject) => 
 		{
+			let multiple = false
+
 			if(Object.keys(fields).length > 0)
 			{
 				fields.version = true
@@ -661,7 +663,24 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 			if(query._id !== undefined)
 			{
-				if(typeof query._id === "string")
+				if(typeof query._id === "object")
+				{
+					if(query._id.$in !== undefined)
+					{
+						let ids = []
+
+						for(let id of query._id.$in)
+						{
+							ids.push(new mongo.ObjectId(id))
+						}
+
+						query._id.$in = ids
+
+						multiple = true
+					}
+				}
+
+				else if(typeof query._id === "string")
 				{
 					try
 					{
@@ -689,70 +708,127 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				}
 			}
 
-			db.collection('users').findOne(query, fields)
-
-			.then(user =>
+			if(multiple)
 			{
-				if(user && user.version !== users_version)
+				db.collection('users').find(query, fields).toArray()
+
+				.then(users =>
 				{
-					db.collection('users').findOne({_id:user._id}, {})
+					let i = 0;
 
-					.then(user =>
+					for(let user of users)
 					{
-						if(typeof user.username !== "string")
+						manager.on_user_found(user)
+
+						.then(() =>
 						{
-							resolve(false)
-							return
-						}
+							i += 1
 
-						if(typeof user.password !== "string")
-						{
-							resolve(false)
-							return
-						}
-
-						manager.user_fill_defaults(user)						
-
-						user.version = users_version
-
-						db.collection('users').updateOne({_id:user._id}, {$set:user})
-
-						.then(ans =>
-						{
-							resolve(user)
-							return
+							if(i === users.length)
+							{
+								resolve(users)
+								return
+							}
 						})
 
-						.catch(err => 
+						.catch(err =>
 						{
 							reject(err)
 							logger.log_error(err)
 							return
 						})
+
+					}
+				})
+
+				.catch(err =>
+				{
+					reject(err)
+					logger.log_error(err)
+					return
+				})
+			}
+
+			else
+			{
+				db.collection('users').findOne(query, fields)
+
+				.then(user =>
+				{
+					manager.on_user_found(user)
+
+					.then(()=>
+					{
+						resolve(user)
+						return
+					})
+				})
+
+				.catch(err =>
+				{
+					reject(err)
+					logger.log_error(err)
+					return
+				})
+			}
+		})	
+	}
+
+	manager.on_user_found = function(user)
+	{
+		return new Promise((resolve, reject) => 
+		{
+			if(user && user.version !== users_version)
+			{
+				db.collection('users').findOne({_id:user._id}, {})
+
+				.then(user =>
+				{
+					if(typeof user.username !== "string")
+					{
+						resolve(false)
+						return
+					}
+
+					if(typeof user.password !== "string")
+					{
+						resolve(false)
+						return
+					}
+
+					manager.user_fill_defaults(user)						
+
+					user.version = users_version
+
+					db.collection('users').updateOne({_id:user._id}, {$set:user})
+
+					.then(ans =>
+					{
+						resolve(user)
+						return
 					})
 
-					.catch(err =>
+					.catch(err => 
 					{
 						reject(err)
 						logger.log_error(err)
 						return
 					})
-				}
+				})
 
-				else
+				.catch(err =>
 				{
-					resolve(user)
+					reject(err)
+					logger.log_error(err)
 					return
-				}
-			})
+				})
+			}
 
-			.catch(err =>
+			else
 			{
-				reject(err)
-				logger.log_error(err)
-				return
-			})
-		})	
+				resolve(user)
+			}
+		})
 	}
 
 	manager.user_fill_defaults = function(user)
