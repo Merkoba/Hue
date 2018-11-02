@@ -2542,16 +2542,6 @@ Hue.get_role = function(uname)
 	}
 }
 
-Hue.remove_roles_in_userlist = function()
-{
-	for(let i=0; i<Hue.userlist.length; i++)
-	{
-		Hue.userlist[i].role = 'z'
-	}
-
-	Hue.update_userlist()
-}
-
 Hue.reset_voices_userlist = function()
 {
 	for(let i=0; i<Hue.userlist.length; i++)
@@ -2571,7 +2561,7 @@ Hue.remove_ops_userlist = function()
 	{
 		if(Hue.userlist[i].role === 'op')
 		{
-			Hue.userlist[i].role = 'z'
+			Hue.userlist[i].role = 'voice1'
 		}
 	}
 
