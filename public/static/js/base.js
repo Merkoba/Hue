@@ -37,6 +37,7 @@ Hue.iup = false
 Hue.gtr = false
 Hue.imp = false
 Hue.biu = false
+Hue.alo = false
 Hue.minpo = false
 Hue.modal_open = false
 Hue.started = false
@@ -7993,6 +7994,11 @@ Hue.announce_new_username = function(data)
 			})
 		}
 	}
+
+	if(Hue.alo)
+	{
+		Hue.request_admin_list()
+	}
 }
 
 Hue.goto_top = function(animate=true)
@@ -9163,6 +9169,11 @@ Hue.announce_role_change = function(data)
 	})
 
 	Hue.replace_role_in_userlist(data.username2, data.role)
+
+	if(Hue.alo)
+	{
+		Hue.request_admin_list()
+	}
 }
 
 Hue.set_role = function(rol, config=true)
@@ -10739,6 +10750,7 @@ Hue.info2_vars_to_false = function()
 	Hue.gtr = false
 	Hue.orb = false
 	Hue.biu = false
+	Hue.alo = false
 }
 
 Hue.after_modal_create = function(instance)
@@ -19929,5 +19941,8 @@ Hue.show_admin_list = function(data)
 		s.append(h)
 	}
 
-	Hue.msg_info2.show(["Admin List", s[0]])
+	Hue.msg_info2.show(["Admin List", s[0]], function()
+	{
+		Hue.alo = true
+	})
 }
