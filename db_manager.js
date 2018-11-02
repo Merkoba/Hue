@@ -714,12 +714,6 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 				.then(users =>
 				{
-					if(!users)
-					{
-						reject("No users found")
-						return
-					}
-
 					let i = 0;
 
 					for(let user of users)
@@ -761,12 +755,6 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 				.then(user =>
 				{
-					if(!user)
-					{
-						reject("No user found")
-						return
-					}
-
 					manager.on_user_found(user)
 
 					.then(()=>
