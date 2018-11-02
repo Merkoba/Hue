@@ -43,7 +43,7 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 		store: mongo_store
 	}
 
-	console.log(`ENV: ${app.get('env')}`)
+	console.info(`ENV: ${app.get('env')}`)
 
 	if(app.get('env') === 'production' && config.https_enabled) 
 	{
