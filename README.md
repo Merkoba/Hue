@@ -38,7 +38,7 @@ There's a User Settings system that configures many features of the application 
 
 There's a log system. If active, a room will remember the most recent posts and media activity, so they're visible to users entering the room. This is currently the last 250 messages. This can be disabled or cleared at any time.
 
-There is a socket anti-spam system which kicks and bans users after they spam over a configured threshold.
+There is a socket anti-spam system which kicks and bans users temporarily after they spam over a configured threshold.
 
 Users can create their own room, where they are Admins as default. There's a cooldown after creating a room for creating another one, this is to avoid room creation spam.
 
