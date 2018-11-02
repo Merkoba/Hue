@@ -4057,10 +4057,17 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(ids.length === 0)
 		{
+			handler.user_emit(socket, 'nothing_was_found', {})
 			return false
 		}
 
 		let users = await db_manager.get_user({_id:{$in:ids}}, {username:true})
+
+		if(users.length === 0)
+		{
+			handler.user_emit(socket, 'nothing_was_found', {})
+			return false
+		}
 
 		let list = []
 

@@ -699,7 +699,17 @@ module.exports = function(db, config, sconfig, utilz, logger)
 			{
 				if(verified)
 				{
-					query = {$and:[query, {verified:true}]}					
+					if(multiple)
+					{
+					query = {$and:[query, {verified:true}]}
+
+					}
+
+					else
+					{
+					query = {$and:[query, {verified:true}]}
+						
+					}
 				}
 
 				else
@@ -714,6 +724,12 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 				.then(users =>
 				{
+					if(users.length === 0)
+					{
+						resolve([])
+						return
+					}
+
 					let i = 0;
 
 					for(let user of users)

@@ -1034,6 +1034,11 @@ Hue.start_socket = function()
 			Hue.forbiddenuser()
 		}
 
+		else if(data.type === 'nothing_was_found')
+		{
+			Hue.feedback("Nothing was found")
+		}
+
 		else if(data.type === 'user_not_found')
 		{
 			Hue.feedback("User doesn't exist")
