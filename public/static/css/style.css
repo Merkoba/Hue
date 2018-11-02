@@ -374,7 +374,7 @@ div#header_radio_playing_icon
 	cursor: pointer;
 }
 
-.chat_profile_image:hover
+.chat_profile_image_container:hover
 {
 	animation: spin 1s linear infinite;
 	animation-delay: 1s;
