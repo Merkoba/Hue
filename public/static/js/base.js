@@ -2743,12 +2743,12 @@ Hue.compare_userlist = function(a, b)
 {
 	if(a.role === '')
 	{
-		a.role = 'z'
+		a.role = 'voice1'
 	}
 
 	if(b.role === '')
 	{
-		b.role = 'z'
+		b.role = 'voice1'
 	}
 
 	if(a.role.startsWith('voice') && b.role.startsWith('voice'))
@@ -9693,6 +9693,11 @@ Hue.announce_removedops = function(data)
 	}
 
 	Hue.remove_ops_userlist()
+
+	if(Hue.alo)
+	{
+		Hue.request_admin_list()
+	}
 }
 
 Hue.userdisconnect = function(data)
