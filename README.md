@@ -30,13 +30,15 @@ The room can have a background image which is visible enough to not mess with th
 Admins can also enable, disable, or lock (nobody can change it, not) media.
 
 There's a user system. Admins, Operators, Voice 1, Voice 2, Voice 3, and Voice 4.
-Admins and Operators have basically the same rights, except only Admins can add or remove Operators or other Admins. They have access to the room controls, which are located in the Main Menu at the top. The 4 different types of Voice users can be configured to suit what works best for your room. For instance you can say Voice 1 has all features enabled, but Voice 2 can't change the TV.
+Admins and Operators have basically the same rights, except only Admins can add or remove Operators or other Admins. They have access to the room controls, which are located in the Main Menu at the top. The 4 different types of Voice users can be configured to suit what works best for your room. For instance you can say Voice 1 has all features enabled, but Voice 2 can't change the TV. Users can be kicked or banned too.
 
 There's a real time private message system called Whispers. You can send a Whisper to another user as long as they are online. A popup message will appear in their screen, to which they can reply. Whispers are only visible to the senders and receivers. There's a drawing pad to send drawings in the Whispers. This Whisper system is also good for controlling bots (see Huebot), since orders can be sent to them to trigger an action.
 
 There's a User Settings system that configures many features of the application for users on a personal level. This consists of two categories, Global Settings, and Room Settings. These are both the same settings except whatever is changed in Global Settings affects all rooms, whereas in Room Settings, when a setting is overriden, it affects only the current room.
 
 There's a log system. If active, a room will remember the most recent posts and media activity, so they're visible to users entering the room. This is currently the last 250 messages. This can be disabled or cleared at any time.
+
+There is a socket anti-spam system which kicks and bans users after they spam over a configured threshold.
 
 Users can create their own room, where they are Admins as default. There's a cooldown after creating a room for creating another one, this is to avoid room creation spam.
 
