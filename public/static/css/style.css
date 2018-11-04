@@ -2033,3 +2033,9 @@ input[type=text], textarea
 	cursor: pointer;
 	display: inline-block;
 }
+
+.whisper_link
+{
+	cursor: pointer;
+	text-decoration: underline;
+}

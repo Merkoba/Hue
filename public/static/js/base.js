@@ -5662,6 +5662,14 @@ Hue.update_chat = function(args={})
 
 	fmessage.find('.chat_content').eq(0).urlize()
 
+	fmessage.find(".whisper_link").each(function()
+	{
+		$(this).click(function()
+		{
+			Hue.process_write_whisper(`${args.username} > ${$(this).data("whisper")}`, false)
+		})
+	})
+
 	Hue.add_to_chat(fmessage, true)
 
 	if(args.username !== Hue.username)
@@ -12371,7 +12379,7 @@ Hue.setup_user_menu = function()
 
 Hue.show_user_menu = function()
 {
-	clearTimeout(show_reactions_timeout)
+	clearTimeout(Hue.show_reactions_timeout)
 	Hue.hide_reactions()
 	Hue.msg_user_menu.show()
 }
@@ -15354,6 +15362,16 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 		remove_text_if_empty: true
 	})
 
+	data.content = Hue.replace_markdown(data.content, "whisper")
+
+	$(data.content).find(".whisper_link").each(function()
+	{
+		$(this).click(function()
+		{
+			Hue.process_write_whisper(`${data.username} > ${$(this).data("whisper")}`, false)
+		})
+	})
+
 	data.title = Hue.make_safe(title)
 
 	if(!announce || Hue.get_setting("open_popup_messages"))
@@ -17445,7 +17463,7 @@ Hue.setup_reactions_box = function()
 	{
 		clearTimeout(Hue.hide_reactions_timeout)
 	
-		show_reactions_timeout = setTimeout(function()
+		Hue.show_reactions_timeout = setTimeout(function()
 		{
 			Hue.show_reactions()
 		}, Hue.reactions_hover_delay)
@@ -17473,7 +17491,7 @@ Hue.setup_reactions_box = function()
 
 Hue.start_hide_reactions = function()
 {
-	clearTimeout(show_reactions_timeout)
+	clearTimeout(Hue.show_reactions_timeout)
 
 	Hue.hide_reactions_timeout = setTimeout(function()
 	{
@@ -19441,13 +19459,30 @@ Hue.start_reply_events = function(container_id, msg_instance)
 	})
 }
 
-Hue.replace_markdown = function(message)
+Hue.replace_markdown = function(message, type="chat")
 {
-	let chat_content = message.find(".chat_content").eq(0)
+	let text
+	let chat_content
 
-	let text = chat_content.html()
+	if(type === "chat")
+	{
+		chat_content = $(message).find(".chat_content").eq(0)
+		text = chat_content.html()
+	}
+
+	else if(type === "whisper")
+	{
+		chat_content = $(message).find(".message_info_text").eq(0)
+		text = chat_content.html()
+	}
 
 	let changed = false
+
+	text = text.replace(/\[whisper\s+(.*?)\](.*?)\[\/whisper\]/gm, function(g1, g2, g3)
+	{
+		changed = true
+		return `<span class='whisper_link' data-whisper='${g2}'>${g3}</span>`
+	})
 
 	text = text.replace(/(^|\s)(\*+)(?!\s)([^*]*[^*\s])\2(?!\S)/gm, function(g1, g2, g3, g4)
 	{
