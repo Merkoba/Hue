@@ -2037,12 +2037,10 @@ input[type=text], textarea
 .whisper_link
 {
 	cursor: pointer;
-	animation: action_animated 2s infinite;
+	text-shadow: 0 0 1em currentColor;
 }
 
-@keyframes action_animated
+.whisper_link:hover
 {
-	0% {text-shadow: 0 0 0em currentColor;}
-	50% {text-shadow: 0 0 1em currentColor;}
-	100% {text-shadow: 0 0 0em currentColor;}
+	text-decoration: underline;
 }
