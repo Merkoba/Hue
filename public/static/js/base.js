@@ -19481,7 +19481,7 @@ Hue.replace_markdown = function(message, type="chat")
 	text = text.replace(/\[whisper\s+(.*?)\](.*?)\[\/whisper\]/gm, function(g1, g2, g3)
 	{
 		changed = true
-		return `<span class='whisper_link' data-whisper='${g2}' title='[Whisper] ${g2}'>${g3.replace(/\s+/, "&nbsp;")}</span>`
+		return `<span class="whisper_link" data-whisper="${g2}" title="[Whisper] ${g2}">${g3.replace(/\s+/, "&nbsp;")}</span>`
 	})
 
 	text = text.replace(/(^|\s)(\*+)(?!\s)([^*]*[^*\s])\2(?!\S)/gm, function(g1, g2, g3, g4)
