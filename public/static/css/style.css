@@ -2037,5 +2037,12 @@ input[type=text], textarea
 .whisper_link
 {
 	cursor: pointer;
-	text-decoration: underline;
+	animation: action_animated 2s infinite;
+}
+
+@keyframes action_animated
+{
+	0% {text-shadow: 0 0 0em currentColor;}
+	50% {text-shadow: 0 0 1em currentColor;}
+	100% {text-shadow: 0 0 0em currentColor;}
 }
