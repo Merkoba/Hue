@@ -5568,9 +5568,11 @@ Hue.update_chat = function(args={})
 	
 	if(starts_me || args.third_person)
 	{
+		let tpt
+
 		if(starts_me)
 		{
-			let tpt = args.message.substr(4)
+			tpt = args.message.substr(4)
 		}
 
 		else
