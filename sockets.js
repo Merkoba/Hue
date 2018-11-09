@@ -932,7 +932,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(socc.hue_role === 'op')
 			{
-				socc.hue_role = ''
+				socc.hue_role = 'voice1'
 
 				handler.update_user_in_userlist(socc)
 			}
