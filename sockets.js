@@ -4022,7 +4022,9 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		let info = await db_manager.get_room({_id:socket.hue_room_id}, {admin_log_messages:true})
 
-		handler.user_emit(socket, "receive_admin_activity", {messages:info.admin_log_messages})
+		let messages = info.admin_log_messages.concat(rooms[socket.hue_room_id].admin_log_messages)
+
+		handler.user_emit(socket, "receive_admin_activity", {messages:messages})
 	}
 
 	handler.public.get_access_log = async function(socket, data)
@@ -4034,7 +4036,9 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		let info = await db_manager.get_room({_id:socket.hue_room_id}, {access_log_messages:true})
 
-		handler.user_emit(socket, "receive_access_log", {messages:info.access_log_messages})
+		let messages = info.access_log_messages.concat(rooms[socket.hue_room_id].access_log_messages)
+
+		handler.user_emit(socket, "receive_access_log", {messages:messages})
 	}
 
 	handler.public.get_admin_list = async function(socket, data)
