@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?version=21"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2329"></script>
+		<script src="/static/js/base.js?version=2330"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=475"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=476"/>
 
 		<script>
 
@@ -652,6 +652,10 @@
 							<div class='spacer1'></div>
 							
 							<div class='pointer underlined action inline' onclick='Hue.request_admin_activity()'>Admin Activity</div>
+
+							<div class='spacer1'></div>
+							
+							<div class='pointer underlined action inline' onclick='Hue.request_access_log()'>Access Log</div>
 
 							<div class='spacer1'></div>
 							
@@ -1333,6 +1337,12 @@
 			<input type="text" id="admin_activity_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='admin_activity_container'></div>
+		</script>
+
+		<script id='template_access_log' type='text/x-handlebars-template'>
+			<input type="text" id="access_log_filter" class="filter_input" placeholder="Filter">
+			<div class='spacer3'></div>
+			<div id='access_log_container'></div>
 		</script>
 
 		<script id='template_highlights' type='text/x-handlebars-template'>

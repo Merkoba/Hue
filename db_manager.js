@@ -4,7 +4,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 56
+	const rooms_version = 57
 	const users_version = 30
 
 	function get_random_key()
@@ -418,6 +418,11 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		if(typeof room.admin_log_messages !== "object")
 		{
 			room.admin_log_messages = []
+		}
+
+		if(typeof room.access_log_messages !== "object")
+		{
+			room.access_log_messages = []
 		}		
 	}
 
@@ -629,6 +634,43 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				}
 
 				manager.update_room(_id, {admin_log_messages:room.admin_log_messages})
+
+				.catch(err =>
+				{
+					reject(err)
+					logger.log_error(err)
+					return
+				})
+
+				resolve(true)
+				return
+			})
+
+			.catch(err =>
+			{
+				reject(err)
+				logger.log_error(err)
+				return
+			})
+		})
+	}
+
+	manager.push_access_log_messages = function(_id, messages)
+	{
+		return new Promise((resolve, reject) => 
+		{
+			manager.get_room({_id:_id}, {access_log_messages:true})
+
+			.then(room =>
+			{
+				room.access_log_messages = room.access_log_messages.concat(messages)
+
+				if(room.access_log_messages.length > config.max_access_log_messages)
+				{
+					room.access_log_messages = room.access_log_messages.slice(room.access_log_messages.length - config.max_access_log_messages)
+				}
+
+				manager.update_room(_id, {access_log_messages:room.access_log_messages})
 
 				.catch(err =>
 				{

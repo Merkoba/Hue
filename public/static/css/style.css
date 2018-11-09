@@ -2010,6 +2010,22 @@ input[type=text], textarea
 	font-size: 0.8em;
 }
 
+#access_log_container
+{
+	width: 22em;
+}
+
+.access_log_item
+{
+	padding-top: 1em;
+	padding-bottom: 1em;
+}
+
+.access_log_date
+{
+	font-size: 0.8em;
+}
+
 .show_profile_button
 {
 	font-size: 1em;	

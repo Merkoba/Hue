@@ -120,6 +120,7 @@ Hue.play_video_on_load = false
 Hue.commands_queue = {}
 Hue.user_leaving = false
 Hue.admin_activity_filter_string = ""
+Hue.access_log_filter_string = ""
 Hue.keys_pressed = {}
 Hue.hide_infotip_delay = 2000
 
@@ -170,7 +171,8 @@ Hue.commands =
 	'/feedback', '/imagesmode', '/tvmode', '/radiomode',
 	'/voicechatmode', '/voicepermission', '/theme', '/textcolormode',
 	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
-	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist'
+	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist',
+	'/accesslog'
 ]
 
 Hue.user_settings =
@@ -393,6 +395,7 @@ Hue.setup_templates = function()
 	Hue.template_background_image_input = Handlebars.compile($('#template_background_image_input').html())
 	Hue.template_goto_room = Handlebars.compile($('#template_goto_room').html())
 	Hue.template_admin_activity = Handlebars.compile($('#template_admin_activity').html())
+	Hue.template_access_log = Handlebars.compile($('#template_access_log').html())
 }
 
 Hue.show_help = function(number=1, filter="")
@@ -1303,6 +1306,11 @@ Hue.start_socket = function()
 		else if(data.type === 'receive_admin_activity')
 		{
 			Hue.show_admin_activity(data.messages)
+		}
+
+		else if(data.type === 'receive_access_log')
+		{
+			Hue.show_access_log(data.messages)
 		}
 
 		else if(data.type === 'receive_admin_list')
@@ -7718,6 +7726,16 @@ Hue.execute_command = function(message, ans)
 		Hue.request_admin_activity(arg)
 	}
 
+	else if(Hue.oi_equals(cmd2, '/accesslog'))
+	{
+		Hue.request_access_log()
+	}
+
+	else if(Hue.oi_startswith(cmd2, '/accesslog'))
+	{
+		Hue.request_access_log(arg)
+	}
+
 	else if(Hue.oi_equals(cmd2, '/togglefontsize'))
 	{
 		Hue.toggle_chat_font_size()
@@ -10657,6 +10675,31 @@ Hue.start_msg = function()
 		})
 	)
 
+	Hue.msg_access_log = Msg.factory
+	(
+		Object.assign({}, common, titlebar,
+		{
+			id: "access_log",
+			after_create: function(instance)
+			{
+				Hue.after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				Hue.after_modal_show(instance)
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				Hue.after_modal_close(instance)
+			}
+		})
+	)
+
 	Hue.msg_main_menu.set(Hue.template_main_menu())
 	Hue.msg_user_menu.set(Hue.template_user_menu())
 	Hue.msg_userlist.set(Hue.template_userlist())
@@ -10685,6 +10728,7 @@ Hue.start_msg = function()
 	Hue.msg_credits.set(Hue.template_credits({background_url:Hue.credits_background_url}))
 	Hue.msg_help.set(Hue.template_help())
 	Hue.msg_admin_activity.set(Hue.template_admin_activity())
+	Hue.msg_access_log.set(Hue.template_access_log())
 
 	Hue.msg_info.create()
 	Hue.msg_info2.create()
@@ -10706,6 +10750,7 @@ Hue.start_msg = function()
 	Hue.msg_draw_image.set_title("Draw an Image")
 	Hue.msg_credits.set_title(Hue.credits_title)
 	Hue.msg_admin_activity.set_title("Admin Activity")
+	Hue.msg_access_log.set_title("Access Log")
 
 	$("#global_settings_window_title").click(function()
 	{
@@ -11974,6 +12019,21 @@ Hue.admin_activity_filter_timer = (function()
 	}
 })()
 
+Hue.access_log_filter_timer = (function()
+{
+	let timer
+
+	return function()
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function()
+		{
+			Hue.do_access_log_filter()
+		}, Hue.filter_delay)
+	}
+})()
+
 Hue.start_filters = function()
 {
 	$("#played_filter").on("keyup", function()
@@ -12039,6 +12099,11 @@ Hue.start_filters = function()
 	$("#admin_activity_filter").on("keyup", function()
 	{
 		Hue.admin_activity_filter_timer()
+	})
+
+	$("#access_log_filter").on("keyup", function()
+	{
+		Hue.access_log_filter_timer()
 	})
 }
 
@@ -19987,4 +20052,82 @@ Hue.show_admin_list = function(data)
 	{
 		Hue.alo = true
 	})
+}
+
+Hue.request_access_log = function(filter="")
+{
+	if(!Hue.is_admin_or_op(Hue.role))
+	{
+		Hue.not_an_op()
+		return false
+	}
+
+	Hue.access_log_filter_string = filter
+
+	Hue.socket_emit("get_access_log", {})
+}
+
+Hue.show_access_log = function(messages)
+{
+	$("#access_log_container").html("")
+	
+	Hue.msg_access_log.show(function()
+	{
+		for(let message of messages)
+		{
+			let el = $(`
+			<div class='access_log_item'>
+				<div class='access_log_message'></div>
+				<div class='access_log_date'></div>
+			</div>`)
+
+			el.find(".access_log_message").eq(0).text(`${message.data.username} ${message.data.content}`)
+			el.find(".access_log_date").eq(0).text(Hue.nice_date(message.date))
+
+			$("#access_log_container").prepend(el)
+		}
+
+		$("#access_log_filter").val(Hue.access_log_filter_string)
+
+		Hue.do_access_log_filter()
+
+		$("#access_log_filter").focus()
+	})
+}
+
+Hue.do_access_log_filter = function(type)
+{
+	let filter = $("#access_log_filter").eq(0).val().trim().toLowerCase()
+
+	if(filter !== "")
+	{
+		$(".access_log_item").each(function()
+		{
+			$(this).css("display", "block")
+
+			let include = false
+
+			if($(this).text().toLowerCase().includes(filter))
+			{
+				include = true
+			}
+
+			if(!include)
+			{
+				$(this).css("display", "none")
+			}
+		})
+	}
+
+	else
+	{
+		$(".access_log_item").each(function()
+		{
+			$(this).css("display", "block")
+		})
+	}
+
+	Hue.update_modal_scrollbar("access_log")
+
+	$('#Msg-content-container-access_log').scrollTop(0)
 }
