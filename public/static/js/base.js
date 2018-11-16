@@ -3416,7 +3416,7 @@ Hue.update_roomlist = function(type, roomlist)
 
 	if(Hue[`${type}_filter_string`] !== "")
 	{
-		Hue.do_modal_filter()
+		Hue.do_modal_filter(type)
 	}
 
 	Hue.update_modal_scrollbar(type)
