@@ -44,11 +44,6 @@ Hue.started = false
 Hue.afk = false
 Hue.alert_mode = 0
 Hue.commands_sorted = {}
-Hue.played_filtered = false
-Hue.userlist_filtered = false
-Hue.image_history_filtered = false
-Hue.tv_history_filtered = false
-Hue.radio_history_filtered = false
 Hue.utilz = Utilz()
 Hue.change_image_when_focused = false
 Hue.change_tv_when_focused = false
@@ -123,6 +118,7 @@ Hue.admin_activity_filter_string = ""
 Hue.access_log_filter_string = ""
 Hue.keys_pressed = {}
 Hue.hide_infotip_delay = 2000
+Hue.active_modal = false
 
 Hue.commands = 
 [
@@ -426,9 +422,8 @@ Hue.show_help = function(number=1, filter="")
 		Hue.msg_help.show(function()
 		{
 			$("#help_filter").val(filter)
-			$("#help_filter").focus()
 			
-			Hue.help_filter_timer()
+			Hue.do_modal_filter_timer()
 		})
 
 		Hue.msg_help.set_title(title)
@@ -1415,7 +1410,7 @@ Hue.push_images_changed = function(data)
 
 	Hue.images_changed.push(data)
 
-	let el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	let el = $("<div class='modal_item media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
 	let inner = el.find('.media_history_item_inner').eq(0)
 	
 	inner.text(data.message).urlize()
@@ -1429,6 +1424,11 @@ Hue.push_images_changed = function(data)
 	{
 		Hue.images_changed = Hue.images_changed.slice(Hue.images_changed.length - Hue.media_changed_crop_limit)
 		$("#image_history_container").children().last().remove()
+	}
+
+	if(Hue.image_history_filtered)
+	{
+		Hue.do_modal_filter()
 	}
 }
 
@@ -1575,7 +1575,7 @@ Hue.push_tv_changed = function(data)
 
 	Hue.tv_changed.push(data)
 
-	let el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	let el = $("<div class='modal_item media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
 	let inner = el.find('.media_history_item_inner').eq(0)
 	
 	inner.text(data.message).urlize()
@@ -1589,6 +1589,11 @@ Hue.push_tv_changed = function(data)
 	{
 		Hue.tv_changed = Hue.tv_changed.slice(Hue.tv_changed.length - Hue.media_changed_crop_limit)
 		$("#tv_history_container").children().last().remove()
+	}	
+
+	if(Hue.tv_history_filtered)
+	{
+		Hue.do_modal_filter()
 	}
 }
 
@@ -1709,7 +1714,7 @@ Hue.push_radio_changed = function(data)
 
 	Hue.radio_changed.push(data)
 
-	let el = $("<div class='media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	let el = $("<div class='modal_item media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
 	let inner = el.find('.media_history_item_inner').eq(0)
 	
 	inner.text(data.message).urlize()
@@ -1723,6 +1728,11 @@ Hue.push_radio_changed = function(data)
 	{
 		Hue.radio_changed = Hue.radio_changed.slice(Hue.radio_changed.length - Hue.media_changed_crop_limit)
 		$("#radio_history_container").children().last().remove()
+	}
+
+	if(Hue.radio_history_filtered)
+	{
+		Hue.do_modal_filter()
 	}
 }
 
@@ -2717,7 +2727,7 @@ Hue.update_userlist = function()
 
 		Hue.usernames.push(item.username)
 
-		let h = $("<div class='userlist_item'><span class='ui_item_role'></span><span class='ui_item_uname action'></span></div>")
+		let h = $("<div class='modal_item userlist_item'><span class='ui_item_role'></span><span class='ui_item_uname action'></span></div>")
 
 		let p = Hue.role_tag(item.role)
 
@@ -2741,7 +2751,7 @@ Hue.update_userlist = function()
 
 	if(Hue.userlist_filtered)
 	{
-		Hue.do_userlist_filter()
+		Hue.do_modal_filter()
 	}
 
 	Hue.update_modal_scrollbar("userlist")
@@ -3374,7 +3384,7 @@ Hue.update_roomlist = function(type, roomlist)
 			<div class='roomlist_here'></div><div class='roomlist_count'></div>
 		</div>`
 
-		let h = $(`<div class='roomlist_item'>${c}</div>`)
+		let h = $(`<div class='modal_item roomlist_item'>${c}</div>`)
 
 		h.find('.roomlist_name').eq(0).text(roomlist[i].name)
 
@@ -3406,7 +3416,7 @@ Hue.update_roomlist = function(type, roomlist)
 
 	if(Hue[`${type}_filter_string`] !== "")
 	{
-		Hue.do_roomlist_filter(type)
+		Hue.do_modal_filter()
 	}
 
 	Hue.update_modal_scrollbar(type)
@@ -3917,33 +3927,19 @@ Hue.show_userlist = function(filter=false)
 		if(filter)
 		{
 			$("#userlist_filter").val(filter)
-			Hue.do_userlist_filter()
+			Hue.do_modal_filter()
 		}
-
-		$("#userlist_filter").focus()
 	})
-}
-
-Hue.reset_userlist_filter = function()
-{
-	$("#userlist_filter").val("")
-	Hue.do_userlist_filter()
 }
 
 Hue.show_public_roomlist = function()
 {
-	Hue.msg_public_roomlist.show(function()
-	{
-		$("#public_roomlist_filter").focus()
-	})
+	Hue.msg_public_roomlist.show()
 }
 
 Hue.show_visited_roomlist = function()
 {
-	Hue.msg_visited_roomlist.show(function()
-	{
-		$("#visited_roomlist_filter").focus()
-	})
+	Hue.msg_visited_roomlist.show()
 }
 
 Hue.show_played = function(filter=false)
@@ -3953,10 +3949,8 @@ Hue.show_played = function(filter=false)
 		if(filter)
 		{
 			$("#played_filter").val(filter)
-			Hue.do_played_filter()
+			Hue.do_modal_filter()
 		}
-
-		$("#played_filter").focus()
 	})
 }
 
@@ -4782,6 +4776,14 @@ Hue.activate_key_detection = function()
 			return
 		}
 
+		if(Hue.modal_open && Hue.active_modal)
+		{
+			if(Hue.active_modal.options.id !== "chat_search")
+			{
+				Hue.do_modal_filter_timer()
+			}
+		}
+
 		delete Hue.keys_pressed[e.keyCode]
 	})
 }
@@ -4875,7 +4877,7 @@ Hue.save_input_history = function()
 
 Hue.push_to_input_history_window = function(item, update_scrollbar=true)
 {
-	let c = $(`<div class='input_history_item'></div>`)
+	let c = $(`<div class='modal_item input_history_item'></div>`)
 
 	c.attr("title", item[1])
 
@@ -7472,19 +7474,9 @@ Hue.execute_command = function(message, ans)
 		Hue.show_global_settings()
 	}
 
-	else if(Hue.oi_startswith(cmd2, '/globalsettings'))
-	{
-		Hue.show_global_settings(arg)
-	}
-
 	else if(Hue.oi_equals(cmd2, '/roomsettings'))
 	{
 		Hue.show_room_settings()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/roomsettings'))
-	{
-		Hue.show_room_settings(arg)
 	}
 
 	else if(Hue.oi_startswith(cmd2, '/goto'))
@@ -8257,7 +8249,7 @@ Hue.push_played = function(info, info2=false)
 			<div class='pititle'></div><div class='piartist'></div>
 		</div>`
 
-		let h = $(`<div class='played_item'>${pi}</div>`)
+		let h = $(`<div class='modal_item played_item'>${pi}</div>`)
 
 		if(info)
 		{
@@ -8289,7 +8281,7 @@ Hue.push_played = function(info, info2=false)
 
 		if(Hue.played_filtered)
 		{
-			Hue.do_played_filter()
+			Hue.do_modal_filter()
 		}
 
 		Hue.update_modal_scrollbar("played")
@@ -8912,8 +8904,6 @@ Hue.show_chat_search = function(filter=false)
 		{
 			Hue.chat_search(filter)
 		}
-
-		$("#chat_search_filter").focus()
 	})
 }
 
@@ -8944,7 +8934,9 @@ Hue.chat_search = function(filter=false)
 		return
 	}
 
-	filter = filter.trim().toLowerCase()
+	let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
+
+	let words = lc_value.split(" ")
 
 	let c = $("<div></div>")
 
@@ -8952,47 +8944,38 @@ Hue.chat_search = function(filter=false)
 	{
 		for(let message of Hue.chat_history.slice(0).reverse())
 		{
-			let show = false
-
+			let show = true
 			let huname = message.find('.chat_uname').eq(0)
-			let hcontent_container = message.find('.chat_content_container').eq(0)
 			let hcontent = message.find('.chat_content')
+			let text = message.text().toLowerCase()
+
+			for(let word of words)
+			{
+				if(!text.includes(word))
+				{
+					show = false
+					break
+				}
+			}
+
+			if(!show)
+			{
+				continue
+			}
 
 			if(huname.length !== 0 && hcontent.length !== 0)
 			{
-				let uname = huname.text()
+				let cn = $(`
+				<div class='chat_search_result_item jump_button_container'>
+					<div class='chat_search_result_uname generic_uname inline action'></div>
+					<div class='chat_search_result_content'></div>
+					<div class='jump_button action unselectable'>Jump</div>
+				</div>`)
 
-				let content = ""
-
-				hcontent.each(function()
-				{
-					content += `${message.text()} `
-				})
-
-				if(uname.toLowerCase().includes(filter))
-				{
-					show = true
-				}
-
-				else if(content.toLowerCase().includes(filter))
-				{
-					show = true
-				}
-
-				if(show)
-				{
-					let cn = $(`
-					<div class='chat_search_result_item jump_button_container'>
-						<div class='chat_search_result_uname generic_uname inline action'></div>
-						<div class='chat_search_result_content'></div>
-						<div class='jump_button action unselectable'>Jump</div>
-					</div>`)
-
-					cn.find(".chat_search_result_uname").eq(0).text(huname.text())
-					cn.find(".chat_search_result_content").eq(0).html(hcontent.clone(true, true))
-					cn.data("message_id", message.data("message_id"))
-					c.append(cn)
-				}
+				cn.find(".chat_search_result_uname").eq(0).text(huname.text())
+				cn.find(".chat_search_result_content").eq(0).html(hcontent.clone(true, true))
+				cn.data("message_id", message.data("message_id"))
+				c.append(cn)
 			}
 
 			else
@@ -9005,11 +8988,6 @@ Hue.chat_search = function(filter=false)
 				}
 
 				let content = hcontent.text()
-
-				if(!content.toLowerCase().includes(filter))
-				{
-					continue
-				}
 
 				let cn = $(`
 				<div class='chat_search_result_item jump_button_container'>
@@ -9918,7 +9896,6 @@ Hue.start_msg = function()
 			after_close: function(instance)
 			{
 				Hue.after_modal_close(instance)
-				Hue.reset_userlist_filter()
 			}
 		})
 	)
@@ -9997,7 +9974,6 @@ Hue.start_msg = function()
 			after_close: function(instance)
 			{
 				Hue.after_modal_close(instance)
-				Hue.reset_played_filter()
 			}
 		})
 	)
@@ -10372,7 +10348,6 @@ Hue.start_msg = function()
 			after_close: function(instance)
 			{
 				Hue.after_modal_close(instance)
-				Hue.reset_image_history_filter()
 			}
 		})
 	)
@@ -10399,7 +10374,6 @@ Hue.start_msg = function()
 			after_close: function(instance)
 			{
 				Hue.after_modal_close(instance)
-				Hue.reset_tv_history_filter()
 			}
 		})
 	)
@@ -10426,7 +10400,6 @@ Hue.start_msg = function()
 			after_close: function(instance)
 			{
 				Hue.after_modal_close(instance)
-				Hue.reset_radio_history_filter()
 			}
 		})
 	)
@@ -10453,7 +10426,6 @@ Hue.start_msg = function()
 			after_close: function(instance)
 			{
 				Hue.after_modal_close(instance)
-				Hue.reset_input_history_filter()
 			}
 		})
 	)
@@ -10823,8 +10795,41 @@ Hue.after_modal_create = function(instance)
 
 Hue.after_modal_show = function(instance)
 {
+	Hue.active_modal = instance
 	Hue.modal_open = true
 	Hue.blur_input()
+	Hue.focus_modal_filter(instance)
+}
+
+Hue.focus_modal_filter = function(instance)
+{
+	let filter = $(`#Msg-content-${instance.options.id} .filter_input`).eq(0)
+
+	if(filter.length)
+	{
+		filter.focus()
+	}
+}
+
+Hue.reset_modal_filter = function(instance)
+{
+	let id = instance.options.id
+
+	if(id === "info" || id === "info2" || id === "chat_search")
+	{
+		return false
+	}
+
+	let filter = $(`#Msg-content-${id} .filter_input`).eq(0)
+
+	if(filter.length)
+	{
+		if(filter.val())
+		{
+			filter.val("")
+			Hue.do_modal_filter(id)
+		}
+	}
 }
 
 Hue.after_modal_set_or_show = function(instance)
@@ -10850,9 +10855,12 @@ Hue.after_modal_close = function(instance)
 {
 	if(!Hue.any_modal_open())
 	{
+		Hue.active_modal = false
 		Hue.modal_open = false
 		Hue.focus_input()
 	}
+
+	Hue.reset_modal_filter(instance)
 }
 
 Hue.get_modal_instances = function()
@@ -11944,311 +11952,102 @@ Hue.save_room_state = function()
 	Hue.save_local_storage(Hue.ls_room_state, room_state_all)
 }
 
-Hue.played_filter_timer = (function()
-{
-	let timer
-
-	return function()
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function()
-		{
-			Hue.do_played_filter()
-		}, Hue.filter_delay)
-	}
-})()
-
-Hue.userlist_filter_timer = (function()
-{
-	let timer
-
-	return function()
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function()
-		{
-			Hue.do_userlist_filter()
-		}, Hue.filter_delay)
-	}
-})()
-
-Hue.public_roomlist_filter_timer = (function()
-{
-	let timer
-
-	return function()
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function()
-		{
-			Hue.do_roomlist_filter("public_roomlist")
-		}, Hue.filter_delay)
-	}
-})()
-
-Hue.visited_roomlist_filter_timer = (function()
-{
-	let timer
-
-	return function()
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function()
-		{
-			Hue.do_roomlist_filter("visited_roomlist")
-		}, Hue.filter_delay)
-	}
-})()
-
-Hue.admin_activity_filter_timer = (function()
-{
-	let timer
-
-	return function()
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function()
-		{
-			Hue.do_admin_activity_filter()
-		}, Hue.filter_delay)
-	}
-})()
-
-Hue.access_log_filter_timer = (function()
-{
-	let timer
-
-	return function()
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function()
-		{
-			Hue.do_access_log_filter()
-		}, Hue.filter_delay)
-	}
-})()
-
 Hue.start_filters = function()
 {
-	$("#played_filter").on("keyup", function()
-	{
-		Hue.played_filter_timer()
-	})
-
-	$("#userlist_filter").on("keyup", function()
-	{
-		Hue.userlist_filter_timer()
-	})
-
-	$("#public_roomlist_filter").on("keyup", function()
-	{
-		Hue.public_roomlist_filter_timer()
-	})
-
-	$("#visited_roomlist_filter").on("keyup", function()
-	{
-		Hue.visited_roomlist_filter_timer()
-	})
-
-	$("#highlights_filter").on("keyup", function()
-	{
-		Hue.highlights_filter_timer()
-	})
-
-	$("#image_history_filter").on("keyup", function()
-	{
-		Hue.image_history_filter_timer()
-	})
-
-	$("#tv_history_filter").on("keyup", function()
-	{
-		Hue.tv_history_filter_timer()
-	})
-
-	$("#radio_history_filter").on("keyup", function()
-	{
-		Hue.radio_history_filter_timer()
-	})
-
-	$("#input_history_filter").on("keyup", function()
-	{
-		Hue.input_history_filter_timer()
-	})
-
 	$("#chat_search_filter").on("keyup", function()
 	{
 		Hue.chat_search_timer()
 	})
-
-	$("#chat_search_filter").on("keyup", function()
-	{
-		Hue.chat_search_timer()
-	})
-
-	$("#help_filter").on("keyup", function()
-	{
-		Hue.help_filter_timer()
-	})
-
-	$("#admin_activity_filter").on("keyup", function()
-	{
-		Hue.admin_activity_filter_timer()
-	})
-
-	$("#access_log_filter").on("keyup", function()
-	{
-		Hue.access_log_filter_timer()
-	})
 }
 
-Hue.do_played_filter = function()
+Hue.do_modal_filter_timer = (function()
 {
-	let filter = $("#played_filter").val().trim().toLowerCase()
+	let timer
 
-	if(filter !== "")
+	return function()
 	{
-		Hue.played_filtered = true
+		clearTimeout(timer)
 
-		$(".played_item").each(function()
+		timer = setTimeout(function()
 		{
-			$(this).css("display", "block")
+			Hue.do_modal_filter()
+		}, Hue.filter_delay)
+	}
+})()
 
-			let title = $(this).find(".pititle").eq(0).text()
-			let artist = $(this).find(".piartist").eq(0).text()
+Hue.do_modal_filter = function(id=false)
+{
+	if(!id)
+	{
+		if(!Hue.active_modal)
+		{
+			return false
+		}
 
-			let include = false
+		id = Hue.active_modal.options.id
+	}
 
-			if(title.toLowerCase().includes(filter))
+	let filter = $(`#Msg-content-${id} .filter_input`).eq(0)
+
+	if(!filter.length)
+	{
+		return false
+	}
+
+	let value = filter.val()
+
+	let lc_value = Hue.utilz.clean_string2(value).toLowerCase()
+
+	let items = $(`#Msg-content-${id} .modal_item`)
+
+	let display = "block"
+
+	if(lc_value)
+	{
+		let words = lc_value.split(" ")
+
+		items.each(function()
+		{
+			let item_value = $(this).text().toLowerCase()
+
+			let found = true
+
+			for(let word of words)
 			{
-				include = true
+				if(!item_value.includes(word))
+				{
+					found = false
+					break
+				}
 			}
 
-			else if(artist.toLowerCase().includes(filter))
+			if(found)
 			{
-				include = true
+				$(this).css("display", display)
 			}
 
-			if(!include)
+			else
 			{
 				$(this).css("display", "none")
 			}
 		})
+
+		Hue[`${id}_filtered`] = true
 	}
 
 	else
 	{
-		Hue.played_filtered = false
-
-		$(".played_item").each(function()
+		items.each(function()
 		{
-			$(this).css("display", "block")
+			$(this).css("display", display)
 		})
+
+		Hue[`${id}_filtered`] = false
 	}
 
-	Hue.update_modal_scrollbar("played")
+	Hue.update_modal_scrollbar(id)
 
-	$('#Msg-content-container-played').scrollTop(0)
-}
-
-Hue.reset_played_filter = function()
-{
-	$("#played_filter").val("")
-	Hue.do_played_filter()
-}
-
-Hue.do_userlist_filter = function()
-{
-	let filter = $("#userlist_filter").val().trim().toLowerCase()
-
-	if(filter !== "")
-	{
-		Hue.userlist_filtered = true
-
-		$(".userlist_item").each(function()
-		{
-			$(this).css("display", "block")
-
-			let uname = $(this).find(".ui_item_uname").eq(0).text()
-
-			let include = false
-
-			if(uname.toLowerCase().includes(filter))
-			{
-				include = true
-			}
-
-			if(!include)
-			{
-				$(this).css("display", "none")
-			}
-		})
-	}
-
-	else
-	{
-		Hue.userlist_filtered = false
-
-		$(".userlist_item").each(function()
-		{
-			$(this).css("display", "block")
-		})
-	}
-
-	Hue.update_modal_scrollbar("userlist")
-
-	$('#Msg-content-container-userlist').scrollTop(0)
-}
-
-Hue.do_roomlist_filter = function(type)
-{
-	let filter = $(`#${type}_filter`).val().trim().toLowerCase()
-	let container = $(`#${type}_container`)
-
-	if(filter !== "")
-	{
-		$(`#${type}_container`).find(".roomlist_item").each(function()
-		{
-			$(this).css("display", "block")
-
-			let name = $(this).find(".roomlist_name").eq(0).text()
-			let topic = $(this).find(".roomlist_topic").eq(0).text()
-
-			let include = false
-
-			if(name.toLowerCase().includes(filter))
-			{
-				include = true
-			}
-
-			else if(topic.toLowerCase().includes(filter))
-			{
-				include = true
-			}
-
-			if(!include)
-			{
-				$(this).css("display", "none")
-			}
-		})
-	}
-
-	else
-	{
-		$(".roomlist_item").each(function()
-		{
-			$(this).css("display", "block")
-		})
-	}
-
-	Hue.update_modal_scrollbar(type)
-
-	$(`#Msg-content-container-${type}`).scrollTop(0)
+	$(`#Msg-content-container-${id}`).scrollTop(0)
 }
 
 Hue.show_input_history = function(filter=false)
@@ -12258,72 +12057,10 @@ Hue.show_input_history = function(filter=false)
 		if(filter)
 		{
 			$("#input_history_filter").val(filter)
-			Hue.do_input_history_filter()
+			Hue.do_modal_filter()
 		}
-
-		$("#input_history_filter").focus()
 	})
 }
-
-Hue.do_input_history_filter = function()
-{
-	let filter = $("#input_history_filter").val().trim().toLowerCase()
-
-	if(filter !== "")
-	{
-		$(".input_history_item").each(function()
-		{
-			$(this).css("display", "block")
-
-			let text = $(this).text()
-
-			let include = false
-
-			if(text.toLowerCase().includes(filter.toLowerCase()))
-			{
-				include = true
-			}
-
-			if(!include)
-			{
-				$(this).css("display", "none")
-			}
-		})
-	}
-
-	else
-	{
-		$(".input_history_item").each(function()
-		{
-			$(this).css("display", "block")
-		})
-	}
-
-	Hue.update_modal_scrollbar("input_history")
-
-	$('#Msg-content-container-input_history').scrollTop(0)
-}
-
-Hue.reset_input_history_filter = function()
-{
-	$("#input_history_filter").val("")
-	Hue.do_input_history_filter()
-}
-
-Hue.input_history_filter_timer = (function()
-{
-	let timer
-
-	return function()
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function()
-		{
-			Hue.do_input_history_filter()
-		}, Hue.filter_delay)
-	}
-})()
 
 onYouTubeIframeAPIReady = function()
 {
@@ -15571,7 +15308,7 @@ Hue.show_highlights = function(filter=false)
 					let hcontent = message.find('.chat_content')
 
 					cn = $(`
-					<div class='highlights_item jump_button_container'>
+					<div class='modal_item highlights_item jump_button_container'>
 						<div class='highlights_uname generic_uname inline action'></div>
 						<div class='highlights_content'></div>
 						<div class='jump_button action unselectable'>Jump</div>
@@ -15606,78 +15343,11 @@ Hue.show_highlights = function(filter=false)
 		if(filter)
 		{
 			$("#highlights_filter").val(filter)
-			Hue.do_highlights_filter()
+			Hue.do_modal_filter()
 		}
 
 		Hue.update_modal_scrollbar("highlights")
 	})
-}
-
-Hue.highlights_filter_timer = (function()
-{
-	let timer
-
-	return function()
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function()
-		{
-			Hue.do_highlights_filter()
-		}, Hue.filter_delay)
-	}
-})()
-
-Hue.do_highlights_filter = function()
-{
-	let filter = $("#highlights_filter").val().trim().toLowerCase()
-
-	if(filter !== "")
-	{
-		$(".highlights_item").each(function()
-		{
-			$(this).css("display", "block")
-
-			let uname = $(this).find(".highlights_uname").eq(0).text()
-			let hcontent = $(this).find(".highlights_content").eq(0)
-
-			let content = ""
-
-			hcontent.each(function()
-			{
-				content += `${$(this).text()} `
-			})
-
-			let include = false
-
-			if(uname.toLowerCase().includes(filter))
-			{
-				include = true
-			}
-
-			else if(content.toLowerCase().includes(filter))
-			{
-				include = true
-			}
-
-			if(!include)
-			{
-				$(this).css("display", "none")
-			}
-		})
-	}
-
-	else
-	{
-		$(".highlights_item").each(function()
-		{
-			$(this).css("display", "block")
-		})
-	}
-
-	Hue.update_modal_scrollbar("highlights")
-
-	$('#Msg-content-container-highlights').scrollTop(0)
 }
 
 Hue.execute_commands = function(setting)
@@ -15730,10 +15400,8 @@ Hue.show_image_history = function(filter=false)
 		if(filter)
 		{
 			$("#image_history_filter").val(filter)
-			Hue.do_image_history_filter()
+			Hue.do_modal_filter()
 		}
-
-		$("#image_history_filter").focus()
 	})
 }
 
@@ -15744,10 +15412,8 @@ Hue.show_tv_history = function(filter=false)
 		if(filter)
 		{
 			$("#tv_history_filter").val(filter)
-			Hue.do_tv_history_filter()
+			Hue.do_modal_filter()
 		}
-
-		$("#tv_history_filter").focus()
 	})
 }
 
@@ -15758,164 +15424,9 @@ Hue.show_radio_history = function(filter=false)
 		if(filter)
 		{
 			$("#radio_history_filter").val(filter)
-			Hue.do_radio_history_filter()
+			Hue.do_modal_filter()
 		}
-
-		$("#radio_history_filter").focus()
 	})
-}
-
-Hue.do_media_history_filter = function(type)
-{
-	let filter = $(`#${type}_filter`).val().trim().toLowerCase()
-	let container = $(`#${type}_container`)
-
-	if(filter !== "")
-	{
-		if(type === "image_history")
-		{
-			Hue.image_history_filtered = true
-		}
-
-		else if(type === "tv_history")
-		{
-			Hue.tv_history_filtered = true
-		}
-
-		else if(type === "radio_history")
-		{
-			Hue.radio_history_filtered = true
-		}
-
-		container.children().each(function()
-		{
-			$(this).css("display", "block")
-
-			let content = $(this).find(".media_history_item_inner").eq(0).text()
-
-			let include = false
-
-			if(content.toLowerCase().includes(filter))
-			{
-				include = true
-			}
-
-			if(!include)
-			{
-				$(this).css("display", "none")
-			}
-		})
-	}
-
-	else
-	{
-		if(type === "image_history")
-		{
-			Hue.image_history_filtered = false
-		}
-
-		else if(type === "tv_history")
-		{
-			Hue.tv_history_filtered = false
-		}
-
-		else if(type === "radio_history")
-		{
-			Hue.radio_history_filtered = false
-		}
-
-		container.children().each(function()
-		{
-			$(this).css("display", "block")
-		})
-	}
-
-	Hue.update_modal_scrollbar(type)
-
-	$(`#Msg-content-container-${type}`).scrollTop(0)
-}
-
-Hue.image_history_filter_timer = (function()
-{
-	let timer
-
-	return function()
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function()
-		{
-			Hue.do_image_history_filter()
-		}, Hue.filter_delay)
-	}
-})()
-
-Hue.tv_history_filter_timer = (function()
-{
-	let timer
-
-	return function()
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function()
-		{
-			Hue.do_tv_history_filter()
-		}, Hue.filter_delay)
-	}
-})()
-
-Hue.radio_history_filter_timer = (function()
-{
-	let timer
-
-	return function()
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function()
-		{
-			Hue.do_radio_history_filter()
-		}, Hue.filter_delay)
-	}
-})()
-
-Hue.reset_image_history_filter = function()
-{
-	$("#image_history_filter").val("")
-	Hue.do_image_history_filter()
-}
-
-Hue.reset_tv_history_filter = function()
-{
-	$("#tv_history_filter").val("")
-	Hue.do_tv_history_filter()
-}
-
-Hue.reset_radio_history_filter = function()
-{
-	$("#radio_history_filter").val("")
-	Hue.do_radio_history_filter()
-}
-
-Hue.do_image_history_filter = function()
-{
-	Hue.do_media_history_filter("image_history")
-}
-
-Hue.do_tv_history_filter = function()
-{
-	Hue.do_media_history_filter("tv_history")
-}
-
-Hue.do_radio_history_filter = function()
-{
-	Hue.do_media_history_filter("radio_history")
-}
-
-Hue.do_test = function()
-{
-	Hue.process_message({message:"Test: 3"})
 }
 
 Hue.maximize_images = function()
@@ -16530,12 +16041,12 @@ Hue.user_is_ignored = function(uname)
 	return false
 }
 
-Hue.show_global_settings = function(filter=false)
+Hue.show_global_settings = function()
 {
 	Hue.msg_global_settings.show()
 }
 
-Hue.show_room_settings = function(filter=false)
+Hue.show_room_settings = function()
 {
 	Hue.msg_room_settings.show()
 }
@@ -19016,58 +18527,6 @@ Hue.run_commands_queue = function(id)
 	}
 }
 
-Hue.help_filter_timer = (function()
-{
-	let timer
-
-	return function()
-	{
-		clearTimeout(timer)
-
-		timer = setTimeout(function()
-		{
-			Hue.do_help_filter()
-		}, Hue.filter_delay)
-	}
-})()
-
-Hue.do_help_filter = function(type)
-{
-	let filter = $("#help_filter").eq(0).val().trim().toLowerCase()
-
-	if(filter !== "")
-	{
-		$(".help_item").each(function()
-		{
-			$(this).css("display", "block")
-
-			let include = false
-
-			if($(this).text().toLowerCase().includes(filter))
-			{
-				include = true
-			}
-
-			if(!include)
-			{
-				$(this).css("display", "none")
-			}
-		})
-	}
-
-	else
-	{
-		$(".help_item").each(function()
-		{
-			$(this).css("display", "block")
-		})
-	}
-
-	Hue.update_modal_scrollbar("help")
-
-	$('#Msg-content-container-help').scrollTop(0)
-}
-
 Hue.setup_user_function_switch_selects = function()
 {
 	$(".user_function_switch_select").each(function()
@@ -19332,7 +18791,7 @@ Hue.show_admin_activity = function(messages)
 		for(let message of messages)
 		{
 			let el = $(`
-			<div class='admin_activity_item'>
+			<div class='modal_item admin_activity_item'>
 				<div class='admin_activity_message'></div>
 				<div class='admin_activity_date'></div>
 			</div>`)
@@ -19345,47 +18804,8 @@ Hue.show_admin_activity = function(messages)
 
 		$("#admin_activity_filter").val(Hue.admin_activity_filter_string)
 
-		Hue.do_admin_activity_filter()
-
-		$("#admin_activity_filter").focus()
+		Hue.do_modal_filter()
 	})
-}
-
-Hue.do_admin_activity_filter = function(type)
-{
-	let filter = $("#admin_activity_filter").eq(0).val().trim().toLowerCase()
-
-	if(filter !== "")
-	{
-		$(".admin_activity_item").each(function()
-		{
-			$(this).css("display", "block")
-
-			let include = false
-
-			if($(this).text().toLowerCase().includes(filter))
-			{
-				include = true
-			}
-
-			if(!include)
-			{
-				$(this).css("display", "none")
-			}
-		})
-	}
-
-	else
-	{
-		$(".admin_activity_item").each(function()
-		{
-			$(this).css("display", "block")
-		})
-	}
-
-	Hue.update_modal_scrollbar("admin_activity")
-
-	$('#Msg-content-container-admin_activity').scrollTop(0)
 }
 
 Hue.start_jump_events = function(container_id, msg_instance)
@@ -20076,7 +19496,7 @@ Hue.show_access_log = function(messages)
 		for(let message of messages)
 		{
 			let el = $(`
-			<div class='access_log_item'>
+			<div class='modal_item access_log_item'>
 				<div class='access_log_message'></div>
 				<div class='access_log_date'></div>
 			</div>`)
@@ -20089,45 +19509,6 @@ Hue.show_access_log = function(messages)
 
 		$("#access_log_filter").val(Hue.access_log_filter_string)
 
-		Hue.do_access_log_filter()
-
-		$("#access_log_filter").focus()
+		Hue.do_modal_filter()
 	})
-}
-
-Hue.do_access_log_filter = function(type)
-{
-	let filter = $("#access_log_filter").eq(0).val().trim().toLowerCase()
-
-	if(filter !== "")
-	{
-		$(".access_log_item").each(function()
-		{
-			$(this).css("display", "block")
-
-			let include = false
-
-			if($(this).text().toLowerCase().includes(filter))
-			{
-				include = true
-			}
-
-			if(!include)
-			{
-				$(this).css("display", "none")
-			}
-		})
-	}
-
-	else
-	{
-		$(".access_log_item").each(function()
-		{
-			$(this).css("display", "block")
-		})
-	}
-
-	Hue.update_modal_scrollbar("access_log")
-
-	$('#Msg-content-container-access_log').scrollTop(0)
 }
