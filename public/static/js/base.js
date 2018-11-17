@@ -96,7 +96,6 @@ Hue.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
 Hue.mouse_over_reactions = false
 Hue.reactions_hover_delay = 800
 Hue.user_functions = [1, 2, 3, 4]
-Hue.screen_locked = false
 Hue.mouse_is_down = false
 Hue.draw_message_just_entered = false
 Hue.draw_image_just_entered = false
@@ -290,6 +289,7 @@ Hue.init = function()
 	Hue.start_reply_events()
 	Hue.set_user_settings_titles()
 	Hue.maxers_mouse_events()
+	Hue.check_screen_lock()
 
 	if(Hue.debug_functions)
 	{
@@ -7580,7 +7580,7 @@ Hue.execute_command = function(message, ans)
 
 	else if(Hue.oi_equals(cmd2, '/togglelockscreen'))
 	{
-		if(Hue.screen_locked)
+		if(Hue.room_state.screen_locked)
 		{
 			Hue.unlock_screen()
 		}
@@ -8738,7 +8738,7 @@ Hue.activate_visibility_listener = function()
 
 Hue.process_visibility = function()
 {
-	if(Hue.screen_locked && Hue.get_setting("afk_on_lockscreen"))
+	if(Hue.room_state.screen_locked && Hue.get_setting("afk_on_lockscreen"))
 	{
 		return false
 	}
@@ -8758,6 +8758,7 @@ Hue.process_visibility = function()
 
 Hue.on_app_focused = function()
 {
+	console.log(1)
 	if(Hue.afk_timer !== undefined)
 	{
 		clearTimeout(Hue.afk_timer)
@@ -9796,7 +9797,15 @@ Hue.start_msg = function()
 	{
 		show_effect_duration: [200, 200],
 		close_effect_duration: [200, 200],
-		clear_editables: true
+		clear_editables: true,
+		before_show: function(instance)
+		{
+			if(Hue.room_state.screen_locked)
+			{
+				if(instance.options.id !== "lockscreen")
+				return false
+			}
+		}
 	}
 
 	if(Hue.get_setting("modal_effects"))
@@ -11934,6 +11943,12 @@ Hue.get_room_state = function()
 	if(Hue.room_state.radio_volume === undefined)
 	{
 		Hue.room_state.radio_volume = Hue.room_state_default_radio_volume
+		changed = true
+	}
+
+	if(Hue.room_state.screen_locked === undefined)
+	{
+		Hue.room_state.screen_locked = Hue.room_state_default_screen_locked
 		changed = true
 	}
 }
@@ -17264,11 +17279,9 @@ Hue.arrange_media_setting_display_positions = function(type)
 	$(`#${type}_display_position_tv`).css("order", tvo)	
 }
 
-Hue.lock_screen = function()
+Hue.lock_screen = function(save=true)
 {
 	Hue.msg_lockscreen.show()
-
-	Hue.screen_locked = true
 
 	if(Hue.get_setting("afk_on_lockscreen"))
 	{
@@ -17277,13 +17290,17 @@ Hue.lock_screen = function()
 	}
 
 	Hue.execute_commands("on_lockscreen")
+
+	if(save)
+	{
+		Hue.room_state.screen_locked = true
+		Hue.save_room_state()
+	}
 }
 
-Hue.unlock_screen = function()
+Hue.unlock_screen = function(save=true)
 {
 	Hue.msg_lockscreen.close()
-
-	Hue.screen_locked = false
 
 	if(Hue.get_setting("afk_on_lockscreen"))
 	{
@@ -17293,6 +17310,12 @@ Hue.unlock_screen = function()
 	}
 
 	Hue.execute_commands("on_unlockscreen")
+
+	if(save)
+	{
+		Hue.room_state.screen_locked = false
+		Hue.save_room_state()
+	}
 }
 
 Hue.setup_message_area = function()
@@ -19511,4 +19534,12 @@ Hue.show_access_log = function(messages)
 
 		Hue.do_modal_filter()
 	})
+}
+
+Hue.check_screen_lock = function()
+{
+	if(Hue.room_state.screen_locked)
+	{
+		Hue.lock_screen(false)
+	}
 }
