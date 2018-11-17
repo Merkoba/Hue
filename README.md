@@ -536,6 +536,9 @@ If you want to remove it to start fresh:
 "room_state_default_radio_volume"
 >Default volume for the radio.
 
+"room_state_default_screen_locked"
+>Where screen will be locked by default.
+
 "double_tap_key"
 >The key that triggers double tap.
 
