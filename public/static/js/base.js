@@ -19645,6 +19645,7 @@ Hue.show_top = function()
 	Hue.room_state.top_enabled = true
 	Hue.save_room_state()
 	Hue.update_top()
+	Hue.on_resize()
 }
 
 Hue.hide_top = function()
@@ -19654,6 +19655,7 @@ Hue.hide_top = function()
 	$("#topbox_left_icon").addClass("fa-caret-up")
 	Hue.room_state.top_enabled = false
 	Hue.save_room_state()
+	Hue.on_resize()
 }
 
 Hue.update_top = function()
