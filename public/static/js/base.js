@@ -291,7 +291,6 @@ Hue.init = function()
 	Hue.set_user_settings_titles()
 	Hue.maxers_mouse_events()
 	Hue.check_screen_lock()
-	Hue.setup_top()
 
 	if(Hue.debug_functions)
 	{
@@ -863,6 +862,7 @@ Hue.start_socket = function()
 			Hue.make_main_container_visible()
 			Hue.push_self_to_top()
 			Hue.update_top()
+			Hue.setup_top()
 
 			Hue.date_joined = Date.now()
 			Hue.started = true
@@ -2303,6 +2303,13 @@ Hue.apply_theme = function()
 
 	let profile_image_size = `${45 * cfsize_factor}px`
 
+	let background_color_topbox = background_color_2
+
+	if(Hue.room_state.top_enabled)
+	{
+		background_color_topbox = color_4
+	}
+
 	let css = `
 	<style class='appended_theme_style'>
 
@@ -2392,24 +2399,14 @@ Hue.apply_theme = function()
 		color: ${font_color} !important;
 	}
 
-	#topbox_container
+	.topbox_container
 	{
 		color: ${font_color} !important;
 	}
 
-	#topbox
+	.topbox
 	{
-		background-color: ${background_color_2} !important;
-	}
-
-	#topbox_container_left
-	{
-		color: ${font_color} !important;
-	}
-
-	#topbox_left
-	{
-		background-color: ${background_color_2} !important;
+		background-color: ${background_color_topbox} !important;
 	}
 
 	.draw_canvas
@@ -19641,6 +19638,7 @@ Hue.show_top = function()
 	$("#topbox_left_icon").addClass("fa-caret-down")
 	Hue.room_state.top_enabled = true
 	Hue.save_room_state()
+	Hue.apply_theme()
 	Hue.update_top()
 	Hue.on_resize()
 }
@@ -19652,6 +19650,7 @@ Hue.hide_top = function()
 	$("#topbox_left_icon").addClass("fa-caret-up")
 	Hue.room_state.top_enabled = false
 	Hue.save_room_state()
+	Hue.apply_theme()
 	Hue.on_resize()
 }
 
@@ -19678,7 +19677,7 @@ Hue.update_top = function()
 
 				let h = $(`
 				<div class='top_item'>
-					<div class='top_image_container action'>
+					<div class='top_image_container action4'>
 						<img class='top_image' src='${pi}'>
 					</div>
 				</div>`)

@@ -1688,49 +1688,22 @@ input[type=text], textarea
 	align-items: center;
 }
 
-#topbox_container
+.topbox_container
 {
 	position: fixed;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	top: 0;
-	right: 0;
 	height: 2rem;
 }
 
-#topbox_container:hover > #topbox
+.topbox_container:hover > .topbox
 {
 	visibility: visible;
 }
 
-#topbox
-{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-	width: 100%;
-	visibility: hidden;
-}
-
-#topbox_container_left
-{
-	position: fixed;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	top: 0;
-	left: 0;
-	height: 2rem;
-}
-
-#topbox_container_left:hover > #topbox_left
-{
-	visibility: visible;
-}
-
-#topbox_left
+.topbox
 {
 	display: flex;
 	align-items: center;
@@ -2124,4 +2097,14 @@ input[type=text], textarea
 .whisper_link:hover
 {
 	text-decoration: underline;
+}
+
+.position_left
+{
+	left: 0;
+}
+
+.position_right
+{
+	right: 0;
 }

@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?version=21"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2338"></script>
+		<script src="/static/js/base.js?version=2339"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=479"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=480"/>
 
 		<script>
 
@@ -173,15 +173,15 @@
 					</div>
 				</div>
 
-				<div class='unselectable action nicetitle pointer' id='topbox_container' onclick='Hue.lock_screen()' title="Lock Screen">
-					<div id='topbox'>
-						<i class='topbox_icon fa fa-lock'></i>
+				<div class='unselectable action nicetitle pointer topbox_container position_left' onclick='Hue.toggle_top()' title="Toggle Activity">
+					<div class='topbox'>
+						<i id='topbox_left_icon' class='topbox_icon fa fa-caret-down'></i>
 					</div>
 				</div>
 
-				<div class='unselectable action nicetitle pointer' id='topbox_container_left' onclick='Hue.toggle_top()' title="Toggle Activity">
-					<div id='topbox_left'>
-						<i id='topbox_left_icon' class='topbox_icon fa fa-caret-down'></i>
+				<div class='unselectable action nicetitle pointer topbox_container position_right' onclick='Hue.lock_screen()' title="Lock Screen">
+					<div class='topbox'>
+						<i id='topbox_right_icon' class='topbox_icon fa fa-lock'></i>
 					</div>
 				</div>
 
