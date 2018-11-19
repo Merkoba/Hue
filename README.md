@@ -659,6 +659,21 @@ This should be an array of strings of root domains.
 If it's a blacklist, radio sources from this domain will be rejected.
 This should be an array of strings of root domains.
 
+"ads_enabled"
+>Whether image ads are enabled.
+
+"ads_path"
+>The internal path where ad images are stored.
+
+"ads_public_path"
+>The public directory where ad images are stored.
+
+"ads_threshold"
+>On how many chat messages sent to try to provide an ad.
+
+"ads_setter"
+>The name of the ad changer.
+
 
 ## The following reside in config.secret.json
 

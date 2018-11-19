@@ -4122,6 +4122,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.charge_ads = function(room_id)
 	{
+		if(!config.ads_enabled)
+		{
+			return false
+		}
+		
 		rooms[room_id].ad_charge += 1
 
 		if(rooms[room_id].ad_charge >= config.ads_threshold)
