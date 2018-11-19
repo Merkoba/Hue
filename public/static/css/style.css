@@ -39,6 +39,45 @@ body, html
 	filter: blur(10px);
 }
 
+#top_container
+{
+	background-color: black;
+	height: 2rem;
+	flex-shrink: 0;
+	overflow: hidden;
+}
+
+#top_content
+{
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: 100%;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.8rem;
+	overflow: hidden;
+}
+
+.top_image_container
+{
+	min-width: 22px;
+	max-width: 22px;
+	min-height: 22px;
+	max-height: 22px;
+	overflow: hidden;
+	border-radius: 50px;
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+}
+
+.top_image
+{
+	width: 100%;
+	cursor: pointer;
+}
+
 .columns_container
 {
 	display: flex;

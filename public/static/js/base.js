@@ -118,6 +118,10 @@ Hue.access_log_filter_string = ""
 Hue.keys_pressed = {}
 Hue.hide_infotip_delay = 2000
 Hue.active_modal = false
+Hue.active_top = []
+Hue.max_top_delay = 60000
+Hue.top_interval = 10000
+Hue.max_top_items = 20
 
 Hue.commands = 
 [
@@ -859,6 +863,9 @@ Hue.start_socket = function()
 			Hue.start_metadata_loop()
 			Hue.chat_scroll_bottom()
 			Hue.make_main_container_visible()
+			Hue.push_self_to_top()
+			Hue.setup_top()
+			Hue.update_top()
 
 			Hue.date_joined = Date.now()
 			Hue.started = true
@@ -1312,6 +1319,11 @@ Hue.start_socket = function()
 		{
 			Hue.show_admin_list(data)
 		}
+
+		else if(data.type === 'update_activity')
+		{
+			Hue.push_to_top(data.username, Date.now())
+		}
 	})
 }
 
@@ -1376,12 +1388,11 @@ Hue.setup_image = function(mode, odata={})
 
 Hue.announce_image = function(data)
 {
-	Hue.chat_announce(
+	Hue.public_feedback(data.message,
 	{
 		save: true,
 		brk: "<i class='icon2c fa fa-camera'></i>",
 		type: "image_change",
-		message: data.message,
 		date: data.date,
 		username: data.setter,
 		title: data.info,
@@ -1533,11 +1544,10 @@ Hue.setup_tv = function(mode, odata={})
 
 Hue.announce_tv = function(data)
 {
-	Hue.chat_announce(
+	Hue.public_feedback(data.message,
 	{
 		save: true,
 		brk: "<i class='icon2c fa fa-television'></i>",
-		message: data.message,
 		title: data.info,
 		onclick: data.onclick,
 		date: data.date,
@@ -1685,11 +1695,10 @@ Hue.setup_radio = function(mode, odata={})
 
 Hue.announce_radio = function(data)
 {
-	Hue.chat_announce(
+	Hue.public_feedback(data.message,
 	{
 		save: true,
 		brk: "<i class='icon2c fa fa-volume-up'></i>",
-		message: data.message,
 		title: data.info,
 		onclick: data.onclick,
 		date: data.date,
@@ -2228,6 +2237,7 @@ Hue.apply_theme = function()
 {
 	let background_color = Hue.theme
 	let background_color_2 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.color_contrast_amount_1)
+	
 	let font_color
 
 	if(Hue.text_color_mode === "custom")
@@ -2258,6 +2268,7 @@ Hue.apply_theme = function()
 	$('.bg2').css('color', font_color)
 
 	let color_3 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.color_contrast_amount_3)
+	let color_4 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.color_contrast_amount_4)
 	let overlay_color = Hue.colorlib.rgb_to_rgba(color_3, Hue.opacity_amount_2)
 	let cfsize = Hue.get_setting("chat_font_size")
 
@@ -2442,6 +2453,12 @@ Hue.apply_theme = function()
 		background-color: ${background_color_2} !important;
 	}
 
+	#top_container
+	{
+		background-color: ${color_4} !important;
+		color: ${font_color} !important;
+	}
+
 	</style>
 	`
 
@@ -2463,10 +2480,9 @@ Hue.userjoin = function(data)
 	{
 		if(Hue.get_setting("show_joins") && Hue.check_permission(data.role, "chat"))
 		{
-			Hue.chat_announce(
+			Hue.public_feedback(`${data.username} has joined`,
 			{
 				brk: "<i class='icon2c fa fa-user-plus'></i>",
-				message: `${data.username} has joined`,
 				save: true,
 				username: data.username,
 				open_profile: true
@@ -4079,10 +4095,11 @@ Hue.upload_file = function(file, action)
 
 	file.percentage = 0
 
+	let message = `Uploading ${Hue.get_file_action_name(file.action)}: 0%`
+
 	let obj =
 	{
 		brk: "<i class='icon2c fa fa-info-circle'></i>",
-		message: `Uploading ${Hue.get_file_action_name(file.action)}: 0%`,
 		id: `uploading_${date}`,
 		title: `Size: ${Hue.get_size_string(file.size / 1024)} | ${Hue.nice_date()}`
 	}
@@ -4095,7 +4112,7 @@ Hue.upload_file = function(file, action)
 		}
 	}
 
-	Hue.chat_announce(obj)
+	Hue.feedback(message, obj)
 
 	file.reader.readAsArrayBuffer(slice)
 }
@@ -5500,7 +5517,8 @@ Hue.update_chat = function(args={})
 		prof_image: "",
 		date: false,
 		third_person: false,
-		brk: false
+		brk: false,
+		public: true
 	}
 
 	Hue.fill_defaults(args, def_args)
@@ -5535,6 +5553,8 @@ Hue.update_chat = function(args={})
 			highlighted = true
 		}
 	}
+
+	let d
 
 	if(args.date)
 	{
@@ -5666,6 +5686,8 @@ Hue.update_chat = function(args={})
 		}
 	})
 
+	fmessage.data("public", args.public)
+	fmessage.data("date", d)
 	fmessage.data("highlighted", highlighted)
 	fmessage.data("uname", args.username)
 	fmessage.data("mode", "chat")
@@ -5711,6 +5733,9 @@ Hue.add_to_chat = function(message, save=false, notify=true)
 	let last_message = $(".message").last()
 	let appended = false
 	let mode = message.data("mode")
+	let uname = message.data("uname")
+	let date = message.data("date")
+	let is_public = message.data("public")
 
 	let content
 
@@ -5778,6 +5803,11 @@ Hue.add_to_chat = function(message, save=false, notify=true)
 	}
 
 	Hue.scroll_timer()
+
+	if(is_public && uname && date)
+	{
+		Hue.push_to_top(uname, date)
+	}
 
 	if(notify && Hue.started && message.data("highlighted"))
 	{
@@ -6184,7 +6214,8 @@ Hue.chat_announce = function(args={})
 		info1: "",
 		info2: "",
 		username: false,
-		open_profile: false
+		open_profile: false,
+		public: false
 	}
 
 	Hue.fill_defaults(args, def_args)
@@ -6228,25 +6259,27 @@ Hue.chat_announce = function(args={})
 		contclasses += " highlighted"
 	}
 
+	let d
 	let t
 
-	if(args.title)
+	if(args.date)
 	{
-		t = `${args.title}`
+		d = args.date
 	}
 
 	else
 	{
-		if(args.date)
-		{
-			d = args.date
-		}
+		d = Date.now()
+	}
 
-		else
-		{
-			d = Date.now()
-		}
+	if(args.title)
+	{
+		t = `${args.title}`
 
+	}
+
+	else
+	{
 		t = Hue.nice_date(d)
 	}
 
@@ -6296,7 +6329,9 @@ Hue.chat_announce = function(args={})
 
 		content.parent().on("click", pif)
 	}
-
+	
+	fmessage.data("public", args.public)
+	fmessage.data("date", d)
 	fmessage.data("highlighted", args.highlight)
 	fmessage.data("type", args.type)
 	fmessage.data("info1", args.info1)
@@ -8758,7 +8793,6 @@ Hue.process_visibility = function()
 
 Hue.on_app_focused = function()
 {
-	console.log(1)
 	if(Hue.afk_timer !== undefined)
 	{
 		clearTimeout(Hue.afk_timer)
@@ -8785,6 +8819,8 @@ Hue.on_app_focused = function()
 		Hue.change({type:"radio"})
 		Hue.change_radio_when_focused = false
 	}
+
+	Hue.socket_emit("update_activity", {})
 }
 
 Hue.on_app_unfocused = function()
@@ -9752,6 +9788,8 @@ Hue.start_user_disconnect_timeout = function(data)
 Hue.do_userdisconnect = function(data)
 {
 	Hue.clear_from_users_to_disconnect(data)
+	Hue.removefrom_userlist(data.username)
+	Hue.update_top()
 
 	if(Hue.get_setting("show_parts") && Hue.check_permission(data.role, "chat"))
 	{
@@ -9779,16 +9817,13 @@ Hue.do_userdisconnect = function(data)
 			s = `${data.username} was banned by ${data.info1}`
 		}
 
-		Hue.chat_announce(
+		Hue.public_feedback(s,
 		{
 			brk: "<i class='icon2c fa fa-sign-out'></i>",
-			message: s,
 			save: true,
 			username: data.username
 		})
 	}
-
-	Hue.removefrom_userlist(data.username)
 }
 
 Hue.start_msg = function()
@@ -15225,10 +15260,9 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 			Hue.popup_message_received(data, type, false)
 		}
 
-		Hue.chat_announce(
+		Hue.feedback(`${t} received`,
 		{
 			brk: "<i class='icon2c fa fa-envelope'></i>",
-			message: `${t} received`,
 			save: true,
 			onclick: af
 		})
@@ -16592,7 +16626,8 @@ Hue.feedback = function(message, data=false)
 	let obj =
 	{
 		brk: "<i class='icon2c fa fa-info-circle'></i>",
-		message: message
+		message: message,
+		public: false
 	}
 
 	if(data)
@@ -16610,14 +16645,25 @@ Hue.feedback = function(message, data=false)
 
 Hue.public_feedback = function(message, data=false)
 {
-	if(!data)
+	let obj =
 	{
-		data = {}
+		brk: "<i class='icon2c fa fa-info-circle'></i>",
+		message: message,
+		save: true,
+		public: true
 	}
 
-	data.save = true
+	if(data)
+	{
+		Object.assign(obj, data)
+	}
 
-	Hue.feedback(message, data)
+	if(!obj.brk.startsWith("<") && !obj.brk.endsWith(">"))
+	{
+		obj.brk = `<div class='inline'>${obj.brk}</div>`
+	}
+
+	Hue.chat_announce(obj)
 }
 
 Hue.make_unique_lines = function(s)
@@ -18227,10 +18273,9 @@ Hue.on_room_created = function(data)
 		Hue.show_open_room(data.id)
 	}
 
-	Hue.chat_announce(
+	Hue.feedback("Room Created",
 	{
 		brk: "<i class='icon2c fa fa-key'></i>",
-		message: "Room Created",
 		onclick: onclick,
 		save: true
 	})
@@ -19542,4 +19587,121 @@ Hue.check_screen_lock = function()
 	{
 		Hue.lock_screen(false)
 	}
+}
+
+Hue.setup_top = function()
+{
+	setInterval(function()
+	{
+		let d = Date.now() - Hue.max_top_delay
+
+		let new_top = []
+
+		let changed = false
+
+		for(let item of Hue.active_top)
+		{
+			if(item.date > d)
+			{
+				new_top.push(item)
+			}
+
+			else
+			{
+				changed = true
+			}
+		}
+
+		if(changed)
+		{
+			Hue.active_top = new_top
+			Hue.update_top()
+		}
+	}, Hue.top_interval)
+}
+
+Hue.update_top = function()
+{
+	let c = $("#top_content")
+
+	c.html("")
+
+	if(Hue.active_top.length)
+	{
+		for(let item of Hue.active_top)
+		{
+			let user = Hue.get_user_by_username(item.username)
+
+			if(user)
+			{
+				let pi = user.profile_image || Hue.default_profile_image_url
+
+				let h = $(`
+				<div class='top_item'>
+					<div class='top_image_container action'>
+						<img class='top_image' src='${pi}'>
+					</div>
+				</div>`)
+
+				let container = h.find(".top_image_container").eq(0)
+
+				container.click(function()
+				{
+					Hue.show_profile(item.username)
+				})
+
+				container.attr("title", item.username)
+
+				c.append(h)
+			}
+		}
+	}
+
+	else
+	{
+		c.text("No Recent Activity")
+	}
+}
+
+Hue.push_to_top = function(uname, date)
+{
+	let user = Hue.get_user_by_username(uname)
+
+	if(!user || !Hue.check_permission(user.role, "chat"))
+	{
+		return false
+	}
+
+	let d = Date.now() - Hue.max_top_delay
+
+	if(date < d)
+	{
+		return false
+	}
+
+	for(let i=0; i<Hue.active_top.length; i++)
+	{
+		if(Hue.active_top[i].username === uname)
+		{
+			Hue.active_top.splice(i, 1)
+			break
+		}
+	}
+
+	Hue.active_top.unshift({username:uname, date:date})
+
+	if(Hue.active_top.length > Hue.max_top_items)
+	{
+		Hue.active_top.pop()
+	}
+
+	if(Hue.started)
+	{
+		Hue.update_top()
+	}
+}
+
+Hue.push_self_to_top = function()
+{
+	Hue.push_to_top(Hue.username, Date.now())
 }

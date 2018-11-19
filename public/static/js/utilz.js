@@ -19,7 +19,7 @@ const Utilz = function()
 
 	utilz.clean_string4 = function(s)
 	{
-		return s.replace(/[^a-z0-9 \-\_\@\!\?\#\%\^\$\(\)\[\]\*\"\'\,\.\:\;\|\{\}\=\+\~\\]+/gi, "").replace(/ +/g, " ").trim()
+		return s.replace(/[^a-z0-9 \-\_\@\!\?\#\%\^\$\(\)\[\]\*\,\.\:\;\|\{\}\=\+\~\\]+/gi, "").replace(/ +/g, " ").trim()
 	}
 
 	utilz.clean_string5 = function(s)

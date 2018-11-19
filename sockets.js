@@ -4089,6 +4089,19 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, 'receive_admin_list', {list:list})
 	}
 
+	handler.public.update_activity = function(socket, action)
+	{
+		if(!handler.check_permission(socket, "chat"))
+		{
+			return false
+		}
+
+		handler.room_emit(socket, 'update_activity',
+		{
+			username: socket.hue_username
+		})
+	}
+
 	handler.check_permission = function(socket, permission)
 	{
 		if(media_types.includes(permission))
