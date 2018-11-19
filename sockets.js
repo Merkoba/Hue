@@ -4133,30 +4133,38 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.attempt_show_ad = function(room_id)
 	{
-		let room = rooms[room_id]
-
-		if(room.images_mode !== "enabled")
+		try
 		{
-			return false
+			let room = rooms[room_id]
+
+			if(room.images_mode !== "enabled")
+			{
+				return false
+			}
+
+			let files = fs.readdirSync(path.join(__dirname, config.ads_path))
+			let file = files[utilz.get_random_int(0, files.length - 1)]
+			let image_path = path.join(config.ads_public_path, file)
+
+			if(image_path === room.current_image_source)
+			{
+				return false
+			}
+			
+			let obj = {}
+
+			obj.fname = image_path
+			obj.setter = config.ads_setter
+			obj.size = 0
+			obj.type = "link"
+
+			handler.change_image(room_id, obj)
 		}
 
-		let files = fs.readdirSync(path.join(__dirname, config.ads_path))
-		let file = files[utilz.get_random_int(0, files.length - 1)]
-		let image_path = path.join(config.ads_public_path, file)
-
-		if(image_path === room.current_image_source)
+		catch(err)
 		{
-			return false
+			logger.log_error(err)
 		}
-		
-		let obj = {}
-
-		obj.fname = image_path
-		obj.setter = config.ads_setter
-		obj.size = 0
-		obj.type = "link"
-
-		handler.change_image(room_id, obj)
 	}
 
 	handler.check_permission = function(socket, permission)
