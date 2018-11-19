@@ -13403,7 +13403,7 @@ Hue.show_profile = function(uname, prof_image)
 
 	if(prof_image === "" || prof_image === undefined || prof_image === "undefined")
 	{
-		if(user)
+		if(user && user.profile_image)
 		{
 			pi = user.profile_image
 		}
