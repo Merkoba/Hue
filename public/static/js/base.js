@@ -119,7 +119,7 @@ Hue.keys_pressed = {}
 Hue.hide_infotip_delay = 2000
 Hue.active_modal = false
 Hue.active_top = []
-Hue.max_top_delay = 60000
+Hue.max_top_delay = 300000
 Hue.top_interval = 10000
 Hue.max_top_items = 20
 
