@@ -294,6 +294,7 @@ Hue.init = function()
 	Hue.set_user_settings_titles()
 	Hue.maxers_mouse_events()
 	Hue.check_screen_lock()
+	Hue.setup_top()
 
 	if(Hue.debug_functions)
 	{
@@ -864,7 +865,6 @@ Hue.start_socket = function()
 			Hue.chat_scroll_bottom()
 			Hue.make_main_container_visible()
 			Hue.push_self_to_top()
-			Hue.setup_top()
 			Hue.update_top()
 
 			Hue.date_joined = Date.now()
@@ -2401,6 +2401,16 @@ Hue.apply_theme = function()
 	}
 
 	#topbox
+	{
+		background-color: ${background_color_2} !important;
+	}
+
+	#topbox_container_left
+	{
+		color: ${font_color} !important;
+	}
+
+	#topbox_left
 	{
 		background-color: ${background_color_2} !important;
 	}
@@ -11939,52 +11949,31 @@ Hue.get_room_state = function()
 
 	let changed = false
 
-	if(Hue.room_state.images_enabled === undefined)
+	let settings = 
+	[
+		"images_enabled",
+		"tv_enabled",
+		"radio_enabled",
+		"images_locked",
+		"tv_locked",
+		"radio_locked",
+		"radio_volume",
+		"screen_locked",
+		"top_enabled"
+	]
+
+	for(let setting of settings)
 	{
-		Hue.room_state.images_enabled = Hue.room_state_default_images_enabled
-		changed = true
+		if(Hue.room_state[setting] === undefined)
+		{
+			Hue.room_state[setting] = Hue[`room_state_default_${setting}`]
+			changed = true
+		}
 	}
 
-	if(Hue.room_state.tv_enabled === undefined)
+	if(changed)
 	{
-		Hue.room_state.tv_enabled = Hue.room_state_default_tv_enabled
-		changed = true
-	}
-
-	if(Hue.room_state.radio_enabled === undefined)
-	{
-		Hue.room_state.radio_enabled = Hue.room_state_default_radio_enabled
-		changed = true
-	}
-
-	if(Hue.room_state.images_locked === undefined)
-	{
-		Hue.room_state.images_locked = Hue.room_state_default_images_locked
-		changed = true
-	}
-
-	if(Hue.room_state.tv_locked === undefined)
-	{
-		Hue.room_state.tv_locked = Hue.room_state_default_tv_locked
-		changed = true
-	}
-
-	if(Hue.room_state.radio_locked === undefined)
-	{
-		Hue.room_state.radio_locked = Hue.room_state_default_radio_locked
-		changed = true
-	}
-
-	if(Hue.room_state.radio_volume === undefined)
-	{
-		Hue.room_state.radio_volume = Hue.room_state_default_radio_volume
-		changed = true
-	}
-
-	if(Hue.room_state.screen_locked === undefined)
-	{
-		Hue.room_state.screen_locked = Hue.room_state_default_screen_locked
-		changed = true
+		Hue.save_room_state()
 	}
 }
 
@@ -19593,6 +19582,11 @@ Hue.setup_top = function()
 {
 	setInterval(function()
 	{
+		if(Hue.active_top.length === 0)
+		{
+			return false
+		}
+
 		let d = Date.now() - Hue.max_top_delay
 
 		let new_top = []
@@ -19618,10 +19612,57 @@ Hue.setup_top = function()
 			Hue.update_top()
 		}
 	}, Hue.top_interval)
+
+	if(Hue.room_state.top_enabled)
+	{
+		Hue.show_top()
+	}
+
+	else
+	{
+		Hue.hide_top()
+	}
+}
+
+Hue.toggle_top = function()
+{
+	if(Hue.room_state.top_enabled)
+	{
+		Hue.hide_top()
+	}
+
+	else
+	{
+		Hue.show_top()
+	}
+}
+
+Hue.show_top = function()
+{
+	$("#top_container").css("display", "block")
+	$("#topbox_left_icon").removeClass("fa-caret-up")
+	$("#topbox_left_icon").addClass("fa-caret-down")
+	Hue.room_state.top_enabled = true
+	Hue.save_room_state()
+	Hue.update_top()
+}
+
+Hue.hide_top = function()
+{
+	$("#top_container").css("display", "none")
+	$("#topbox_left_icon").removeClass("fa-caret-down")
+	$("#topbox_left_icon").addClass("fa-caret-up")
+	Hue.room_state.top_enabled = false
+	Hue.save_room_state()
 }
 
 Hue.update_top = function()
 {
+	if(!Hue.room_state.top_enabled)
+	{
+		return false
+	}
+
 	let c = $("#top_content")
 
 	c.html("")

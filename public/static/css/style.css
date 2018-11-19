@@ -1714,6 +1714,32 @@ input[type=text], textarea
 	visibility: hidden;
 }
 
+#topbox_container_left
+{
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	top: 0;
+	left: 0;
+	height: 2rem;
+}
+
+#topbox_container_left:hover > #topbox_left
+{
+	visibility: visible;
+}
+
+#topbox_left
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 100%;
+	visibility: hidden;
+}
+
 .topbox_icon
 {
 	padding-left: 0.5rem;
