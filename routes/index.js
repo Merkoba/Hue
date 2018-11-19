@@ -145,6 +145,9 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.tv_domain_list = config.tv_domain_list
 	c.vars.radio_domain_white_or_black_list = config.radio_domain_white_or_black_list
 	c.vars.radio_domain_list = config.radio_domain_list
+	c.vars.max_top_delay = config.max_top_delay
+	c.vars.top_interval = config.top_interval
+	c.vars.max_top_items = config.max_top_items
 
 	function check_url(req, res, next)
 	{

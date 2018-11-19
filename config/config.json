@@ -194,5 +194,8 @@
 	"ads_path": "public/static/drizzle",
 	"ads_public_path": "/static/drizzle",
 	"ads_threshold": 100,
-	"ads_setter": "Sponsored Ad"
+	"ads_setter": "Sponsored Ad",
+	"max_top_delay": 300000,
+	"top_interval": 10000,
+	"max_top_items": 20
 }

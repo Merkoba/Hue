@@ -674,6 +674,15 @@ This should be an array of strings of root domains.
 "ads_setter"
 >The name of the ad changer.
 
+"max_top_delay"
+>How long until an item in the top activity bar becomes obsolete after not being updated.
+
+"top_interval"
+>How often to check for obsolete items in the top activity bar to remove them.
+
+"max_top_items"
+>Maximum amount of top activity bar items at the same time.
+
 
 ## The following reside in config.secret.json
 
