@@ -596,6 +596,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			handler.push_log_message(socket, message)
 		}
+
+		handler.charge_ads(socket.hue_room_id)
 	}
 
 	handler.public.change_topic = async function(socket, data)
@@ -3059,6 +3061,22 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.do_change_image = async function(socket, data)
 	{
+		let user_change
+		
+		let room_id
+
+		if(typeof socket === "object")
+		{
+			user_change = true
+			room_id = socket.hue_room_id
+		}
+
+		else
+		{
+			user_change = false
+			room_id = socket
+		}
+
 		let image_source
 
 		let date = Date.now()
@@ -3078,7 +3096,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				data.query = "default"
 			}
 
-			db_manager.update_room(socket.hue_room_id,
+			db_manager.update_room(room_id,
 			{
 				image_source: image_source,
 				image_setter: data.setter,
@@ -3106,7 +3124,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			let info = await db_manager.get_room({_id:socket.hue_room_id}, {stored_images:true})
+			let info = await db_manager.get_room({_id:room_id}, {stored_images:true})
 
 			info.stored_images.unshift(data.fname)
 
@@ -3117,7 +3135,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				let spliced = info.stored_images.splice(config.max_stored_images, info.stored_images.length)
 			}
 
-			db_manager.update_room(socket.hue_room_id,
+			db_manager.update_room(room_id,
 			{
 				image_source: image_source,
 				image_setter: data.setter,
@@ -3164,7 +3182,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		handler.room_emit(socket.hue_room_id, 'changed_image_source',
+		handler.room_emit(room_id, 'changed_image_source',
 		{
 			image_source: image_source,
 			image_setter: data.setter,
@@ -3174,7 +3192,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			image_query: data.query
 		})
 
-		if(rooms[socket.hue_room_id].log)
+		if(rooms[room_id].log)
 		{
 			let message =
 			{
@@ -3193,9 +3211,9 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			handler.push_log_message(socket, message)
 		}
 
-		rooms[socket.hue_room_id].current_image_source = image_source
-		rooms[socket.hue_room_id].current_image_query = data.query
-		rooms[socket.hue_room_id].last_image_change = Date.now()
+		rooms[room_id].current_image_source = image_source
+		rooms[room_id].current_image_query = data.query
+		rooms[room_id].last_image_change = Date.now()
 	}
 
 	handler.upload_profile_image = function(socket, data)
@@ -4102,6 +4120,45 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
+	handler.charge_ads = function(room_id)
+	{
+		rooms[room_id].ad_charge += 1
+
+		if(rooms[room_id].ad_charge >= config.ads_threshold)
+		{
+			handler.attempt_show_ad(room_id)
+			rooms[room_id].ad_charge = 0
+		}
+	}
+
+	handler.attempt_show_ad = function(room_id)
+	{
+		let room = rooms[room_id]
+
+		if(room.images_mode !== "enabled")
+		{
+			return false
+		}
+
+		let files = fs.readdirSync(path.join(__dirname, config.ads_path))
+		let file = files[utilz.get_random_int(0, files.length - 1)]
+		let image_path = path.join(config.ads_public_path, file)
+
+		if(image_path === room.current_image_source)
+		{
+			return false
+		}
+		
+		let obj = {}
+
+		obj.fname = image_path
+		obj.setter = config.ads_setter
+		obj.size = 0
+		obj.type = "link"
+
+		handler.change_image(room_id, obj)
+	}
+
 	handler.check_permission = function(socket, permission)
 	{
 		if(media_types.includes(permission))
@@ -4175,7 +4232,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			modified: Date.now(),
 			last_image_change: 0,
 			last_tv_change: 0,
-			last_radio_change: 0
+			last_radio_change: 0,
+			ad_charge: 0
 		}
 
 		return obj
@@ -4673,8 +4731,20 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.push_log_message = function(socket, message)
 	{
-		rooms[socket.hue_room_id].activity = true
-		rooms[socket.hue_room_id].log_messages.push(message)
+		let room_id
+
+		if(typeof socket === "object")
+		{
+			room_id = socket.hue_room_id
+		}
+
+		else
+		{
+			room_id = socket
+		}
+
+		rooms[room_id].activity = true
+		rooms[room_id].log_messages.push(message)
 	}
 
 	handler.push_admin_log_message = function(socket, content)
