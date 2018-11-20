@@ -683,6 +683,12 @@ This should be an array of strings of root domains.
 "max_activity_bar_items"
 >Maximum amount of top activity bar items at the same time.
 
+"old_activity_max"
+>The minimum difference to show the old activity message between messages.
+
+"old_activity_message"
+>The message to display when old_activity_max is met.
+
 
 ## The following reside in config.secret.json
 
