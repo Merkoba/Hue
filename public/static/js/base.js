@@ -19740,7 +19740,7 @@ Hue.update_activity_bar = function()
 
 	if(Hue.activity_list.length)
 	{
-		let sorted_list = activity_list.slice(0).sort(Hue.compare_activity_list)
+		let sorted_list = Hue.activity_list.slice(0).sort(Hue.compare_activity_list)
 
 		for(let item of sorted_list)
 		{
