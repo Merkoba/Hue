@@ -19740,9 +19740,9 @@ Hue.update_activity_bar = function()
 
 	if(Hue.activity_list.length)
 	{
-		Hue.activity_list.sort(Hue.compare_activity_list)
+		let sorted_list = activity_list.slice(0).sort(Hue.compare_activity_list)
 
-		for(let item of Hue.activity_list)
+		for(let item of sorted_list)
 		{
 			let user = Hue.get_user_by_username(item.username)
 
