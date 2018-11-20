@@ -168,7 +168,7 @@ Hue.commands =
 	'/voicechatmode', '/voicepermission', '/theme', '/textcolormode',
 	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
 	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist',
-	'/accesslog'
+	'/accesslog', '/toggleactivtybar'
 ]
 
 Hue.user_settings =
@@ -7776,6 +7776,11 @@ Hue.execute_command = function(message, ans)
 	else if(Hue.oi_equals(cmd2, '/adminlist'))
 	{
 		Hue.request_admin_list()
+	}
+
+	else if(Hue.oi_equals(cmd2, '/toggleactivtybar'))
+	{
+		Hue.toggle_activity_bar()
 	}
 
 	else
