@@ -5794,7 +5794,7 @@ Hue.add_to_chat = function(message, save=false, notify=true)
 		{
 			if(date - last_date > Hue.old_activity_max)
 			{
-				chat_area.append(`<div class='message ghost_message'>${Hue.old_activity_message}</div>`)
+				chat_area.append(Hue.generate_vseparator(Hue.old_activity_message))
 			}
 		}
 
@@ -5854,6 +5854,22 @@ Hue.replace_in_chat_history = function(message)
 			return
 		}
 	}
+}
+
+Hue.generate_vseparator = function(message="", classes="")
+{
+	let layout = `${Hue.get_setting("chat_layout")}_layout`
+	
+	s = 
+	`
+		<div class='message vseparator_container ${layout} ${classes}'>
+			<div class='vseparator_line'></div>
+			<div class='vseparator_text'>${message}</div>
+			<div class='vseparator_line'></div>
+		</div>
+	`
+
+	return s
 }
 
 Hue.change = function(args={})
@@ -11405,6 +11421,12 @@ Hue.setting_ignored_usernames_action = function(type, save=true)
 
 	Hue[type].ignored_usernames = unames
 
+	if(Hue.active_settings("ignored_usernames") === type)
+	{
+		Hue.generate_ignored_words_regex()
+		Hue.check_activity_bar()
+	}
+
 	if(save)
 	{
 		Hue[`save_${type}`]()
@@ -16704,7 +16726,7 @@ Hue.add_separator = function(update_scroll=true)
 		return false
 	}
 
-	if($(".separator_container").length > 0)
+	if($(".new_messages_separator").length > 0)
 	{
 		return false
 	}
@@ -16721,12 +16743,7 @@ Hue.add_separator = function(update_scroll=true)
 		messageclasses = "compact_layout"
 	}
 
-	let s = `
-	<div class='message separator_container ${messageclasses}'>
-		<div class='separator_line'></div>
-		<div class='separator_text'>New Messages</div>
-		<div class='separator_line'></div>
-	<div>`
+	let s = Hue.generate_vseparator("New Messages", "new_messages_separator")
 
 	let sep = $(s)
 
@@ -16741,7 +16758,7 @@ Hue.add_separator = function(update_scroll=true)
 
 Hue.remove_separator = function(update_scroll=true)
 {
-	$(".separator_container").each(function()
+	$(".new_messages_separator").each(function()
 	{
 		$(this).remove()
 	})
@@ -19621,35 +19638,7 @@ Hue.setup_activity_bar = function()
 {
 	setInterval(function()
 	{
-		if(Hue.activity_list.length === 0)
-		{
-			return false
-		}
-
-		let d = Date.now() - Hue.max_activity_bar_delay
-
-		let new_top = []
-
-		let changed = false
-
-		for(let item of Hue.activity_list)
-		{
-			if(item.date > d)
-			{
-				new_top.push(item)
-			}
-
-			else
-			{
-				changed = true
-			}
-		}
-
-		if(changed)
-		{
-			Hue.activity_list = new_top
-			Hue.update_activity_bar()
-		}
+		Hue.check_activity_bar()
 	}, Hue.activity_bar_interval)
 
 	setInterval(function()
@@ -19668,6 +19657,39 @@ Hue.setup_activity_bar = function()
 	else
 	{
 		Hue.hide_activity_bar()
+	}
+}
+
+Hue.check_activity_bar = function()
+{
+	if(Hue.activity_list.length === 0)
+	{
+		return false
+	}
+
+	let d = Date.now() - Hue.max_activity_bar_delay
+
+	let new_top = []
+
+	let changed = false
+
+	for(let item of Hue.activity_list)
+	{
+		if(item.date > d && !Hue.user_is_ignored(item.username))
+		{
+			new_top.push(item)
+		}
+
+		else
+		{
+			changed = true
+		}
+	}
+
+	if(changed)
+	{
+		Hue.activity_list = new_top
+		Hue.update_activity_bar()
 	}
 }
 
@@ -19789,6 +19811,11 @@ Hue.push_to_activity_bar = function(uname, date)
 	let d = Date.now() - Hue.max_activity_bar_delay
 
 	if(date < d)
+	{
+		return false
+	}
+
+	if(Hue.user_is_ignored(uname))
 	{
 		return false
 	}

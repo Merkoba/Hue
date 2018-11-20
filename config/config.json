@@ -199,6 +199,6 @@
 	"activity_bar_interval": 10000,
 	"activity_bar_trigger_interval": 60000,
 	"max_activity_bar_items": 20,
-	"old_activity_max": 3600000,
-	"old_activity_message": "Over 1 Hour Has Passed"
+	"old_activity_max": 21600000,
+	"old_activity_message": "Over 6 Hours Have Passed"
 }
