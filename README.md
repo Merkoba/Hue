@@ -513,7 +513,10 @@ If you want to remove it to start fresh:
 >Default percentage of the height the tv will have in the split media area in new rooms.
 
 "global_settings_default_tv_display_position"
->Default position the tv will have in the split media area in new rooms. (top or bottom) 
+>Default position the tv will have in the split media area in new rooms. (top or bottom)
+
+"global_settings_default_top_enabled"
+>Whether the activity bar at the top will be enabled by default in new rooms.
 
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
@@ -538,9 +541,6 @@ If you want to remove it to start fresh:
 
 "room_state_default_screen_locked"
 >Whether the screen will be locked by default.
-
-"room_state_default_screen_locked"
->Whether the activity bar at the top will be enabled by default.
 
 "double_tap_key"
 >The key that triggers double tap.

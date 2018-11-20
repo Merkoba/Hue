@@ -222,6 +222,7 @@ Hue.user_settings =
 	chat_font_size: {widget_type:"select"},
 	font_family: {widget_type:"select"},
 	warn_before_closing: {widget_type:"checkbox"},
+	top_enabled: {widget_type:"checkbox"},
 	media_display_percentage: {widget_type:"custom"},
 	tv_display_percentage: {widget_type:"custom"},
 	tv_display_position: {widget_type:"custom"}
@@ -2305,7 +2306,7 @@ Hue.apply_theme = function()
 
 	let background_color_topbox = background_color_2
 
-	if(Hue.room_state.top_enabled)
+	if(Hue.get_setting("top_enabled"))
 	{
 		background_color_topbox = color_4
 	}
@@ -11866,6 +11867,29 @@ Hue.setting_warn_before_closing_action = function(type, save=true)
 	}
 }
 
+Hue.setting_top_enabled_action = function(type, save=true)
+{
+	Hue[type].top_enabled = $(`#${type}_top_enabled`).prop("checked")
+
+	if(Hue.active_settings("top_enabled") === type)
+	{
+		if(Hue[type].top_enabled)
+		{
+			Hue.show_top()
+		}
+
+		else
+		{
+			Hue.hide_top()
+		}
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
 Hue.empty_room_settings = function()
 {
 	Hue.room_settings = {}
@@ -11952,8 +11976,7 @@ Hue.get_room_state = function()
 		"tv_locked",
 		"radio_locked",
 		"radio_volume",
-		"screen_locked",
-		"top_enabled"
+		"screen_locked"
 	]
 
 	for(let setting of settings)
@@ -14721,7 +14744,7 @@ Hue.show_intro = function()
 	Hue.create_popup("bottomright").show(["Media Controls", s])
 
 	s = `
-	This area contains the main menu, user list, voice chat, and radio controls.`
+	This area contains the main menu, user list, voice chat, and radio controls. Above that there's the Activty Bar which shows users that have shown activity recently.`
 
 	Hue.create_popup("top").show(["Top Panel", s])
 
@@ -19607,7 +19630,7 @@ Hue.setup_top = function()
 		}
 	}, Hue.top_interval)
 
-	if(Hue.room_state.top_enabled)
+	if(Hue.get_setting("top_enabled"))
 	{
 		Hue.show_top()
 	}
@@ -19620,15 +19643,22 @@ Hue.setup_top = function()
 
 Hue.toggle_top = function()
 {
-	if(Hue.room_state.top_enabled)
+	let new_top
+
+	if(Hue.get_setting("top_enabled"))
 	{
 		Hue.hide_top()
+		new_top = false
 	}
 
 	else
 	{
 		Hue.show_top()
+		new_top = true
 	}
+
+	Hue.enable_setting_override("top_enabled")
+	Hue.modify_setting(`top_enabled ${new_top}`, false)
 }
 
 Hue.show_top = function()
@@ -19636,8 +19666,7 @@ Hue.show_top = function()
 	$("#top_container").css("display", "block")
 	$("#topbox_left_icon").removeClass("fa-caret-up")
 	$("#topbox_left_icon").addClass("fa-caret-down")
-	Hue.room_state.top_enabled = true
-	Hue.save_room_state()
+
 	Hue.apply_theme()
 	Hue.update_top()
 	Hue.on_resize()
@@ -19648,15 +19677,14 @@ Hue.hide_top = function()
 	$("#top_container").css("display", "none")
 	$("#topbox_left_icon").removeClass("fa-caret-down")
 	$("#topbox_left_icon").addClass("fa-caret-up")
-	Hue.room_state.top_enabled = false
-	Hue.save_room_state()
+
 	Hue.apply_theme()
 	Hue.on_resize()
 }
 
 Hue.update_top = function()
 {
-	if(!Hue.room_state.top_enabled)
+	if(!Hue.get_setting("top_enabled"))
 	{
 		return false
 	}
