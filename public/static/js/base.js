@@ -8842,7 +8842,7 @@ Hue.on_app_focused = function()
 		Hue.change_radio_when_focused = false
 	}
 
-	Hue.socket_emit("activity_trigger", {})
+	Hue.trigger_activity()
 }
 
 Hue.on_app_unfocused = function()
@@ -19612,6 +19612,11 @@ Hue.check_screen_lock = function()
 	}
 }
 
+Hue.trigger_activity = function()
+{
+	Hue.socket_emit("activity_trigger", {})
+}
+
 Hue.setup_activity_bar = function()
 {
 	setInterval(function()
@@ -19646,6 +19651,14 @@ Hue.setup_activity_bar = function()
 			Hue.update_activity_bar()
 		}
 	}, Hue.activity_bar_interval)
+
+	setInterval(function()
+	{
+		if(Hue.app_focused)
+		{
+			Hue.trigger_activity()
+		}
+	}, Hue.activity_bar_trigger_interval)
 
 	if(Hue.get_setting("activity_bar"))
 	{
@@ -19699,6 +19712,21 @@ Hue.hide_activity_bar = function()
 	Hue.on_resize()
 }
 
+Hue.compare_activity_list = function(a, b)
+{
+	if(a.username < b.username)
+	{
+		return -1
+	}
+
+	if(a.username > b.username)
+	{
+		return 1
+	}
+
+	return 0
+}
+
 Hue.update_activity_bar = function()
 {
 	if(!Hue.get_setting("activity_bar"))
@@ -19712,6 +19740,8 @@ Hue.update_activity_bar = function()
 
 	if(Hue.activity_list.length)
 	{
+		Hue.activity_list.sort(Hue.compare_activity_list)
+
 		for(let item of Hue.activity_list)
 		{
 			let user = Hue.get_user_by_username(item.username)

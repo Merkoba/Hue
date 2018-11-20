@@ -78,9 +78,25 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.get_out(socket)
 	})
 
-	const dont_check_joined = ["join_room", "roomlist", "create_room"]
-	const dont_add_spam = ["slice_upload", "typing", "voice_chat_blob"]
-	const check_locked = ["roomlist", "create_room"]
+	const dont_check_joined = 
+	[
+		"join_room",
+		"roomlist",
+		"create_room"
+	]
+
+	const dont_add_spam = 
+	[
+		"slice_upload",
+		"typing",
+		"voice_chat_blob",
+		"activity_trigger"
+	]
+	const check_locked = 
+	[
+		"roomlist",
+		"create_room"
+	]
 
 	io.on("connection", async function(socket)
 	{
@@ -200,6 +216,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.hue_locked = false
 		socket.hue_info1 = ""
 		socket.hue_typing_counter = 0
+		socket.hue_activity_counter = 0
 	}
 
 	handler.public.join_room = async function(socket, data)
@@ -4107,11 +4124,25 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, 'receive_admin_list', {list:list})
 	}
 
-	handler.public.activity_trigger = function(socket, action)
+	handler.public.activity_trigger = async function(socket, action)
 	{
 		if(!handler.check_permission(socket, "chat"))
 		{
 			return false
+		}
+
+		socket.hue_activity_counter += 1
+
+		if(socket.hue_activity_counter >= 2)
+		{
+			let spam_ans = await handler.add_spam(socket)
+
+			if(!spam_ans)
+			{
+				return false
+			}
+
+			socket.hue_activity_counter = 0
 		}
 
 		handler.room_emit(socket, 'activity_trigger',
