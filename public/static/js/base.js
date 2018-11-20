@@ -118,7 +118,7 @@ Hue.access_log_filter_string = ""
 Hue.keys_pressed = {}
 Hue.hide_infotip_delay = 2000
 Hue.active_modal = false
-Hue.active_top = []
+Hue.activity_list = []
 
 Hue.commands = 
 [
@@ -222,7 +222,7 @@ Hue.user_settings =
 	chat_font_size: {widget_type:"select"},
 	font_family: {widget_type:"select"},
 	warn_before_closing: {widget_type:"checkbox"},
-	top_enabled: {widget_type:"checkbox"},
+	activity_bar: {widget_type:"checkbox"},
 	media_display_percentage: {widget_type:"custom"},
 	tv_display_percentage: {widget_type:"custom"},
 	tv_display_position: {widget_type:"custom"}
@@ -861,9 +861,9 @@ Hue.start_socket = function()
 			Hue.start_metadata_loop()
 			Hue.chat_scroll_bottom()
 			Hue.make_main_container_visible()
-			Hue.push_self_to_top()
-			Hue.update_top()
-			Hue.setup_top()
+			Hue.push_self_to_activity_bar()
+			Hue.update_activity_bar()
+			Hue.setup_activity_bar()
 
 			Hue.date_joined = Date.now()
 			Hue.started = true
@@ -1318,9 +1318,9 @@ Hue.start_socket = function()
 			Hue.show_admin_list(data)
 		}
 
-		else if(data.type === 'update_activity')
+		else if(data.type === 'activity_trigger')
 		{
-			Hue.push_to_top(data.username, Date.now())
+			Hue.push_to_activity_bar(data.username, Date.now())
 		}
 	})
 }
@@ -2306,7 +2306,7 @@ Hue.apply_theme = function()
 
 	let background_color_topbox = background_color_2
 
-	if(Hue.get_setting("top_enabled"))
+	if(Hue.get_setting("activity_bar"))
 	{
 		background_color_topbox = color_4
 	}
@@ -2458,7 +2458,7 @@ Hue.apply_theme = function()
 		background-color: ${background_color_2} !important;
 	}
 
-	#top_container
+	#activity_bar_container
 	{
 		background-color: ${color_4} !important;
 		color: ${font_color} !important;
@@ -5811,7 +5811,7 @@ Hue.add_to_chat = function(message, save=false, notify=true)
 
 	if(is_public && uname && date)
 	{
-		Hue.push_to_top(uname, date)
+		Hue.push_to_activity_bar(uname, date)
 	}
 
 	if(notify && Hue.started && message.data("highlighted"))
@@ -8825,7 +8825,7 @@ Hue.on_app_focused = function()
 		Hue.change_radio_when_focused = false
 	}
 
-	Hue.socket_emit("update_activity", {})
+	Hue.socket_emit("activity_trigger", {})
 }
 
 Hue.on_app_unfocused = function()
@@ -9794,7 +9794,7 @@ Hue.do_userdisconnect = function(data)
 {
 	Hue.clear_from_users_to_disconnect(data)
 	Hue.removefrom_userlist(data.username)
-	Hue.update_top()
+	Hue.update_activity_bar()
 
 	if(Hue.get_setting("show_parts") && Hue.check_permission(data.role, "chat"))
 	{
@@ -11867,20 +11867,20 @@ Hue.setting_warn_before_closing_action = function(type, save=true)
 	}
 }
 
-Hue.setting_top_enabled_action = function(type, save=true)
+Hue.setting_activity_bar_action = function(type, save=true)
 {
-	Hue[type].top_enabled = $(`#${type}_top_enabled`).prop("checked")
+	Hue[type].activity_bar = $(`#${type}_activity_bar`).prop("checked")
 
-	if(Hue.active_settings("top_enabled") === type)
+	if(Hue.active_settings("activity_bar") === type)
 	{
-		if(Hue[type].top_enabled)
+		if(Hue[type].activity_bar)
 		{
-			Hue.show_top()
+			Hue.show_activity_bar()
 		}
 
 		else
 		{
-			Hue.hide_top()
+			Hue.hide_activity_bar()
 		}
 	}
 
@@ -19595,22 +19595,22 @@ Hue.check_screen_lock = function()
 	}
 }
 
-Hue.setup_top = function()
+Hue.setup_activity_bar = function()
 {
 	setInterval(function()
 	{
-		if(Hue.active_top.length === 0)
+		if(Hue.activity_list.length === 0)
 		{
 			return false
 		}
 
-		let d = Date.now() - Hue.max_top_delay
+		let d = Date.now() - Hue.max_activity_bar_delay
 
 		let new_top = []
 
 		let changed = false
 
-		for(let item of Hue.active_top)
+		for(let item of Hue.activity_list)
 		{
 			if(item.date > d)
 			{
@@ -19625,56 +19625,56 @@ Hue.setup_top = function()
 
 		if(changed)
 		{
-			Hue.active_top = new_top
-			Hue.update_top()
+			Hue.activity_list = new_top
+			Hue.update_activity_bar()
 		}
-	}, Hue.top_interval)
+	}, Hue.activity_bar_interval)
 
-	if(Hue.get_setting("top_enabled"))
+	if(Hue.get_setting("activity_bar"))
 	{
-		Hue.show_top()
+		Hue.show_activity_bar()
 	}
 
 	else
 	{
-		Hue.hide_top()
+		Hue.hide_activity_bar()
 	}
 }
 
-Hue.toggle_top = function()
+Hue.toggle_activity_bar = function()
 {
-	let new_top
+	let new_setting
 
-	if(Hue.get_setting("top_enabled"))
+	if(Hue.get_setting("activity_bar"))
 	{
-		Hue.hide_top()
-		new_top = false
+		Hue.hide_activity_bar()
+		new_setting = false
 	}
 
 	else
 	{
-		Hue.show_top()
-		new_top = true
+		Hue.show_activity_bar()
+		new_setting = true
 	}
 
-	Hue.enable_setting_override("top_enabled")
-	Hue.modify_setting(`top_enabled ${new_top}`, false)
+	Hue.enable_setting_override("activity_bar")
+	Hue.modify_setting(`activity_bar ${new_setting}`, false)
 }
 
-Hue.show_top = function()
+Hue.show_activity_bar = function()
 {
-	$("#top_container").css("display", "block")
+	$("#activity_bar_container").css("display", "block")
 	$("#topbox_left_icon").removeClass("fa-caret-up")
 	$("#topbox_left_icon").addClass("fa-caret-down")
 
 	Hue.apply_theme()
-	Hue.update_top()
+	Hue.update_activity_bar()
 	Hue.on_resize()
 }
 
-Hue.hide_top = function()
+Hue.hide_activity_bar = function()
 {
-	$("#top_container").css("display", "none")
+	$("#activity_bar_container").css("display", "none")
 	$("#topbox_left_icon").removeClass("fa-caret-down")
 	$("#topbox_left_icon").addClass("fa-caret-up")
 
@@ -19682,20 +19682,20 @@ Hue.hide_top = function()
 	Hue.on_resize()
 }
 
-Hue.update_top = function()
+Hue.update_activity_bar = function()
 {
-	if(!Hue.get_setting("top_enabled"))
+	if(!Hue.get_setting("activity_bar"))
 	{
 		return false
 	}
 
-	let c = $("#top_content")
+	let c = $("#activity_bar_content")
 
 	c.html("")
 
-	if(Hue.active_top.length)
+	if(Hue.activity_list.length)
 	{
-		for(let item of Hue.active_top)
+		for(let item of Hue.activity_list)
 		{
 			let user = Hue.get_user_by_username(item.username)
 
@@ -19704,13 +19704,13 @@ Hue.update_top = function()
 				let pi = user.profile_image || Hue.default_profile_image_url
 
 				let h = $(`
-				<div class='top_item'>
-					<div class='top_image_container action4'>
-						<img class='top_image' src='${pi}'>
+				<div class='activity_bar_item'>
+					<div class='activity_bar_image_container action4'>
+						<img class='activity_bar_image' src='${pi}'>
 					</div>
 				</div>`)
 
-				let container = h.find(".top_image_container").eq(0)
+				let container = h.find(".activity_bar_image_container").eq(0)
 
 				container.click(function()
 				{
@@ -19730,7 +19730,7 @@ Hue.update_top = function()
 	}
 }
 
-Hue.push_to_top = function(uname, date)
+Hue.push_to_activity_bar = function(uname, date)
 {
 	let user = Hue.get_user_by_username(uname)
 
@@ -19739,36 +19739,36 @@ Hue.push_to_top = function(uname, date)
 		return false
 	}
 
-	let d = Date.now() - Hue.max_top_delay
+	let d = Date.now() - Hue.max_activity_bar_delay
 
 	if(date < d)
 	{
 		return false
 	}
 
-	for(let i=0; i<Hue.active_top.length; i++)
+	for(let i=0; i<Hue.activity_list.length; i++)
 	{
-		if(Hue.active_top[i].username === uname)
+		if(Hue.activity_list[i].username === uname)
 		{
-			Hue.active_top.splice(i, 1)
+			Hue.activity_list.splice(i, 1)
 			break
 		}
 	}
 
-	Hue.active_top.unshift({username:uname, date:date})
+	Hue.activity_list.unshift({username:uname, date:date})
 
-	if(Hue.active_top.length > Hue.max_top_items)
+	if(Hue.activity_list.length > Hue.max_activity_bar_items)
 	{
-		Hue.active_top.pop()
+		Hue.activity_list.pop()
 	}
 
 	if(Hue.started)
 	{
-		Hue.update_top()
+		Hue.update_activity_bar()
 	}
 }
 
-Hue.push_self_to_top = function()
+Hue.push_self_to_activity_bar = function()
 {
-	Hue.push_to_top(Hue.username, Date.now())
+	Hue.push_to_activity_bar(Hue.username, Date.now())
 }

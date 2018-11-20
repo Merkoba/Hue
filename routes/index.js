@@ -105,7 +105,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.global_settings_default_chat_font_size = config.global_settings_default_chat_font_size
 	c.vars.global_settings_default_font_family = config.global_settings_default_font_family
 	c.vars.global_settings_default_warn_before_closing = config.global_settings_default_warn_before_closing
-	c.vars.global_settings_default_top_enabled = config.global_settings_default_top_enabled
+	c.vars.global_settings_default_activity_bar = config.global_settings_default_activity_bar
 	c.vars.room_state_default_images_enabled = config.room_state_default_images_enabled
 	c.vars.room_state_default_tv_enabled = config.room_state_default_tv_enabled
 	c.vars.room_state_default_radio_enabled = config.room_state_default_radio_enabled
@@ -145,9 +145,9 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.tv_domain_list = config.tv_domain_list
 	c.vars.radio_domain_white_or_black_list = config.radio_domain_white_or_black_list
 	c.vars.radio_domain_list = config.radio_domain_list
-	c.vars.max_top_delay = config.max_top_delay
-	c.vars.top_interval = config.top_interval
-	c.vars.max_top_items = config.max_top_items
+	c.vars.max_activity_bar_delay = config.max_activity_bar_delay
+	c.vars.activity_bar_interval = config.activity_bar_interval
+	c.vars.max_activity_bar_items = config.max_activity_bar_items
 
 	function check_url(req, res, next)
 	{

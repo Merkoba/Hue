@@ -515,7 +515,7 @@ If you want to remove it to start fresh:
 "global_settings_default_tv_display_position"
 >Default position the tv will have in the split media area in new rooms. (top or bottom)
 
-"global_settings_default_top_enabled"
+"global_settings_default_activity_bar"
 >Whether the activity bar at the top will be enabled by default in new rooms.
 
 "room_state_default_images_enabled"
@@ -674,13 +674,13 @@ This should be an array of strings of root domains.
 "ads_setter"
 >The name of the ad changer.
 
-"max_top_delay"
+"max_activity_bar_delay"
 >How long until an item in the top activity bar becomes obsolete after not being updated.
 
-"top_interval"
+"activity_bar_interval"
 >How often to check for obsolete items in the top activity bar to remove them.
 
-"max_top_items"
+"max_activity_bar_items"
 >Maximum amount of top activity bar items at the same time.
 
 

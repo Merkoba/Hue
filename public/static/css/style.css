@@ -39,7 +39,7 @@ body, html
 	filter: blur(10px);
 }
 
-#top_container
+#activity_bar_container
 {
 	background-color: black;
 	height: 2rem;
@@ -47,7 +47,7 @@ body, html
 	overflow: hidden;
 }
 
-#top_content
+#activity_bar_content
 {
 	position: relative;
 	display: flex;
@@ -60,7 +60,7 @@ body, html
 	overflow: hidden;
 }
 
-.top_image_container
+.activity_bar_image_container
 {
 	min-width: 22px;
 	max-width: 22px;
@@ -72,7 +72,7 @@ body, html
 	margin-right: 0.5rem;
 }
 
-.top_image
+.activity_bar_image
 {
 	width: 100%;
 	cursor: pointer;
@@ -359,13 +359,12 @@ div#header_radio_playing_icon
 
 .left_scroller
 {
-	width: 60%;
+	width: 50%;
 }
 
 .right_scroller
 {
-	flex-grow: 1;
-	flex-shrink: 1;
+	width: 50%;
 }
 
 .scroller:hover 

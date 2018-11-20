@@ -139,7 +139,7 @@
 	"global_settings_default_chat_font_size": "normal",
 	"global_settings_default_font_family": "opensans",
 	"global_settings_default_warn_before_closing": false,
-	"global_settings_default_top_enabled": true,
+	"global_settings_default_activity_bar": true,
 	"room_state_default_images_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_radio_enabled": true,
@@ -195,7 +195,7 @@
 	"ads_public_path": "/static/drizzle",
 	"ads_threshold": 100,
 	"ads_setter": "Sponsored Ad",
-	"max_top_delay": 300000,
-	"top_interval": 10000,
-	"max_top_items": 20
+	"max_activity_bar_delay": 300000,
+	"activity_bar_interval": 10000,
+	"max_activity_bar_items": 20
 }

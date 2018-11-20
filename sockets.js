@@ -4107,14 +4107,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, 'receive_admin_list', {list:list})
 	}
 
-	handler.public.update_activity = function(socket, action)
+	handler.public.activity_trigger = function(socket, action)
 	{
 		if(!handler.check_permission(socket, "chat"))
 		{
 			return false
 		}
 
-		handler.room_emit(socket, 'update_activity',
+		handler.room_emit(socket, 'activity_trigger',
 		{
 			username: socket.hue_username
 		})

@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?version=21"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2340"></script>
+		<script src="/static/js/base.js?version=2341"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=480"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=481"/>
 
 		<script>
 
@@ -70,8 +70,8 @@
 
 			<div class="columns_container">
 
-				<div id='top_container' class='unselectable'>
-					<div id='top_content'></div>
+				<div id='activity_bar_container' class='unselectable'>
+					<div id='activity_bar_content'></div>
 				</div>
 
 				<div id='header' class='unselectable bg2 panel'>
@@ -173,7 +173,7 @@
 					</div>
 				</div>
 
-				<div class='unselectable action nicetitle pointer topbox_container position_left' onclick='Hue.toggle_top()' title="Toggle Activity">
+				<div class='unselectable action nicetitle pointer topbox_container position_left' onclick='Hue.toggle_activity_bar()' title="Toggle Activity">
 					<div class='topbox'>
 						<i id='topbox_left_icon' class='topbox_icon fa fa-caret-down'></i>
 					</div>
@@ -196,7 +196,7 @@
 						<div class='scroller_container top_scroller_container' id='top_scroller_container'>
 							<div id='top_scroller' class='left_scroller scroller action3 unselectable' onclick='Hue.goto_top()'>Go&nbsp;To&nbsp;Top</div>
 							<div class='hspacer3'></div>
-							<div id='up_scroller' class='right_scroller scroller action3 unselectable' onclick='Hue.activity_above()'>Activity&nbsp;Above</div>
+							<div id='up_scroller' class='right_scroller scroller action3 unselectable' onclick='Hue.activity_above()'>Your&nbsp;Activity&nbsp;Above</div>
 						</div>
 
 						<div class='maxer_container2'>
@@ -210,7 +210,7 @@
 						<div class='scroller_container bottom_scroller_container' id='bottom_scroller_container'>
 							<div id='bottom_scroller' class='left_scroller scroller action3 unselectable' onclick='Hue.goto_bottom(true)'>Go&nbsp;To&nbsp;Bottom</div>
 							<div class='hspacer3'></div>
-							<div id='down_scroller' class='right_scroller scroller action3 unselectable' onclick='Hue.activity_below()'>Activity&nbsp;Below</div>
+							<div id='down_scroller' class='right_scroller scroller action3 unselectable' onclick='Hue.activity_below()'>Your&nbsp;Activity&nbsp;Below</div>
 						</div>
 
 					</div>
@@ -820,9 +820,9 @@
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_animate_scroll">
 						</div>
 
-						<div class='settings_item' data-setting='top_enabled'>
-							<div class="setting_title">Top Activity Bar</div>
-							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_top_enabled">
+						<div class='settings_item' data-setting='activity_bar'>
+							<div class="setting_title">Show Activity Bar</div>
+							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_activity_bar">
 						</div>
 
 						<div class='settings_item' data-setting='new_messages_separator'>
@@ -1671,7 +1671,7 @@
 			<div class='info_item modal_item'>Shift + Escape closes all modals and popups.</div>
 			<div class='info_item modal_item'>Up Arrow and Down Arrow or Page Up and Page Down make the chat scroll.</div>
 			<div class='info_item modal_item'>Shift + Up Arrow and Shift + Down Arrow cycle through the input history.</div>
-			<div class='info_item modal_item'>Control + Up Arrow and Control + Down Arrow go to Activity Above and Activity Below.</div>
+			<div class='info_item modal_item'>Control + Up Arrow and Control + Down Arrow go to Your Activity Above and Your Activity Below.</div>
 			<div class='info_item modal_item'>Enter without text in the input scrolls to the bottom of the chat.</div>
 			<div class='info_item modal_item'>Clicking on a chat message username quotes the text.</div>
 			<div class='info_item modal_item'>Tab completes usernames and commands.</div>	
