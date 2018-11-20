@@ -2107,3 +2107,11 @@ input[type=text], textarea
 {
 	right: 0;
 }
+
+.ghost_message
+{
+	opacity: 0.5;
+	text-align: center;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+}

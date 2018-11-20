@@ -148,6 +148,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.max_activity_bar_delay = config.max_activity_bar_delay
 	c.vars.activity_bar_interval = config.activity_bar_interval
 	c.vars.max_activity_bar_items = config.max_activity_bar_items
+	c.vars.old_activity_max = config.old_activity_max
+	c.vars.old_activity_message = config.old_activity_message
 
 	function check_url(req, res, next)
 	{

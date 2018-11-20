@@ -5692,7 +5692,7 @@ Hue.update_chat = function(args={})
 	})
 
 	fmessage.data("public", args.public)
-	fmessage.data("date", d)
+	fmessage.data("date", Date.now())
 	fmessage.data("highlighted", highlighted)
 	fmessage.data("uname", args.username)
 	fmessage.data("mode", "chat")
@@ -5784,6 +5784,18 @@ Hue.add_to_chat = function(message, save=false, notify=true)
 		if(Hue.started && Hue.app_focused)
 		{
 			message.addClass("fader")
+		}
+
+		let last = $(".message").last()
+
+		let last_date = last.data("date")
+
+		if(last_date)
+		{
+			if(Date.now() - last_date > Hue.old_activity_max)
+			{
+				chat_area.append(`<div class='message ghost_message'>${Hue.old_activity_message}</div>`)
+			}
 		}
 
 		chat_area.append(message)
@@ -6336,7 +6348,7 @@ Hue.chat_announce = function(args={})
 	}
 	
 	fmessage.data("public", args.public)
-	fmessage.data("date", d)
+	fmessage.data("date", Date.now())
 	fmessage.data("highlighted", args.highlight)
 	fmessage.data("type", args.type)
 	fmessage.data("info1", args.info1)
