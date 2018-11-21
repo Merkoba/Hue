@@ -19634,12 +19634,12 @@ Hue.trigger_activity = function()
 
 Hue.sort_userlist_by_activity_trigger = function(a, b)
 {
-	if(a.last_activity_trigger > b.last_activity_trigger)
+	if(a.last_activity_trigger < b.last_activity_trigger)
 	{
 		return -1
 	}
 
-	if(a.last_activity_trigger < b.last_activity_trigger)
+	if(a.last_activity_trigger > b.last_activity_trigger)
 	{
 		return 1
 	}
