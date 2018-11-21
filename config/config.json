@@ -199,5 +199,5 @@
 	"activity_bar_interval": 20000,
 	"activity_bar_trigger_interval": 30000,
 	"max_activity_bar_items": 20,
-	"old_activity_max": 21600000
+	"old_activity_min": 21600000
 }

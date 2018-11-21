@@ -5793,7 +5793,7 @@ Hue.add_to_chat = function(message, save=false, notify=true)
 
 		if(date && last_date)
 		{
-			if(date - last_date > Hue.old_activity_max)
+			if(date - last_date > Hue.old_activity_min)
 			{
 				chat_area.append(Hue.generate_vseparator(Hue.get_old_activity_message(last_date, date)))
 			}
@@ -5869,12 +5869,12 @@ Hue.get_old_activity_message = function(last_date, date)
 
 		if(n === 1)
 		{
-			s = `Over ${n} Minute Has Passed` 
+			s = `Over ${n} Minute Passed` 
 		}
 
 		else
 		{
-			s = `Over ${n} Minutes Have Passed` 
+			s = `Over ${n} Minutes Passed` 
 		}
 	}
 
@@ -5884,12 +5884,12 @@ Hue.get_old_activity_message = function(last_date, date)
 
 		if(n === 1)
 		{
-			s = `Over ${n} Hour Has Passed` 
+			s = `Over ${n} Hour Passed` 
 		}
 
 		else
 		{
-			s = `Over ${n} Hours Have Passed` 
+			s = `Over ${n} Hours Passed` 
 		} 
 	}
 
@@ -5899,12 +5899,12 @@ Hue.get_old_activity_message = function(last_date, date)
 
 		if(n === 1)
 		{
-			s = `Over ${n} Day Has Passed` 
+			s = `Over ${n} Day Passed` 
 		}
 
 		else
 		{
-			s = `Over ${n} Days Have Passed` 
+			s = `Over ${n} Days Passed` 
 		}
 	}
 
@@ -5914,12 +5914,12 @@ Hue.get_old_activity_message = function(last_date, date)
 
 		if(n === 1)
 		{
-			s = `Over ${n} Year Has Passed` 
+			s = `Over ${n} Year Passed` 
 		}
 
 		else
 		{
-			s = `Over ${n} Years Have Passed` 
+			s = `Over ${n} Years Passed` 
 		}
 	}
 

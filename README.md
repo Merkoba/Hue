@@ -686,7 +686,7 @@ This should be an array of strings of root domains.
 "max_activity_bar_items"
 >Maximum amount of top activity bar items at the same time.
 
-"old_activity_max"
+"old_activity_min"
 >The minimum difference to show the old activity message between messages. The message is created automatically, using different wording depending if the difference is in minutes, hours, days, or years.
 
 
