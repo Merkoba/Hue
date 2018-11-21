@@ -19657,7 +19657,7 @@ Hue.setup_activity_bar = function()
 	{
 		for(let user of sorted_userlist)
 		{
-			Hue.push_to_activity_bar(user.username, Date.now())
+			Hue.push_to_activity_bar(user.username, user.last_activity_trigger)
 		}
 	}
 
