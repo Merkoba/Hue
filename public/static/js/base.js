@@ -861,7 +861,6 @@ Hue.start_socket = function()
 			Hue.start_metadata_loop()
 			Hue.chat_scroll_bottom()
 			Hue.make_main_container_visible()
-			Hue.update_activity_bar()
 			Hue.setup_activity_bar()
 
 			Hue.date_joined = Date.now()
@@ -19652,7 +19651,7 @@ Hue.setup_activity_bar = function()
 {
 	let sorted_userlist = Hue.userlist.slice(0)
 
-	let users = sorted_userlist.sort(Hue.sort_userlist_by_activity_trigger).slice(0, Hue.max_activity_bar_items)
+	sorted_userlist.sort(Hue.sort_userlist_by_activity_trigger)
 
 	if(Hue.get_setting("activity_bar"))
 	{
@@ -19875,9 +19874,10 @@ Hue.push_to_activity_bar = function(uname, date)
 		Hue.activity_list.pop()
 	}
 
+	Hue.check_activity_bar(false)
+
 	if(Hue.started)
 	{
-		Hue.check_activity_bar(false)
 		Hue.update_activity_bar()
 	}
 }
