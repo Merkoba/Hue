@@ -19660,7 +19660,7 @@ Hue.setup_activity_bar = function()
 	}
 }
 
-Hue.check_activity_bar = function()
+Hue.check_activity_bar = function(update=true)
 {
 	if(Hue.activity_list.length === 0)
 	{
@@ -19675,7 +19675,14 @@ Hue.check_activity_bar = function()
 
 	for(let item of Hue.activity_list)
 	{
-		if(item.date > d && !Hue.user_is_ignored(item.username))
+		let user = Hue.get_user_by_username(item.username)
+
+		if
+		(
+			item.date > d &&
+			user && 
+			!Hue.user_is_ignored(item.username)
+		)
 		{
 			new_top.push(item)
 		}
@@ -19689,8 +19696,14 @@ Hue.check_activity_bar = function()
 	if(changed)
 	{
 		Hue.activity_list = new_top
-		Hue.update_activity_bar()
+		
+		if(update)
+		{
+			Hue.update_activity_bar()
+		}
 	}
+
+	return changed
 }
 
 Hue.toggle_activity_bar = function()
@@ -19838,6 +19851,7 @@ Hue.push_to_activity_bar = function(uname, date)
 
 	if(Hue.started)
 	{
+		Hue.check_activity_bar(false)
 		Hue.update_activity_bar()
 	}
 }
