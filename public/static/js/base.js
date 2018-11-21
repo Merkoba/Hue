@@ -16779,7 +16779,7 @@ Hue.start_soundcloud = function()
 		{
 			Hue.soundcloud_player = _soundcloud_player
 
-			if((Hue.last_radio_type && Hue.last_radio_type === "youtube") || Hue.current_radio().type === "youtube")
+			if((Hue.last_radio_type && Hue.last_radio_type === "youtube") || Hue.current_radio().type === "soundcloud")
 			{
 				Hue.change({type:"radio", notify:false})
 			}
