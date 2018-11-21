@@ -861,7 +861,6 @@ Hue.start_socket = function()
 			Hue.start_metadata_loop()
 			Hue.chat_scroll_bottom()
 			Hue.make_main_container_visible()
-			Hue.push_self_to_activity_bar()
 			Hue.update_activity_bar()
 			Hue.setup_activity_bar()
 
@@ -19634,8 +19633,35 @@ Hue.trigger_activity = function()
 	Hue.socket_emit("activity_trigger", {})
 }
 
+Hue.sort_userlist_by_activity_trigger = function(a, b)
+{
+	if(a.last_activity_trigger > b.last_activity_trigger)
+	{
+		return -1
+	}
+
+	if(a.last_activity_trigger < b.last_activity_trigger)
+	{
+		return 1
+	}
+
+	return 0
+}
+
 Hue.setup_activity_bar = function()
 {
+	let sorted_userlist = Hue.userlist.slice(0)
+
+	let users = sorted_userlist.sort(Hue.sort_userlist_by_activity_trigger).slice(0, Hue.max_activity_bar_items)
+
+	if(Hue.get_setting("activity_bar"))
+	{
+		for(let user of sorted_userlist)
+		{
+			Hue.push_to_activity_bar(user.username, Date.now())
+		}
+	}
+
 	setInterval(function()
 	{
 		Hue.check_activity_bar()
@@ -19854,9 +19880,4 @@ Hue.push_to_activity_bar = function(uname, date)
 		Hue.check_activity_bar(false)
 		Hue.update_activity_bar()
 	}
-}
-
-Hue.push_self_to_activity_bar = function()
-{
-	Hue.push_to_activity_bar(Hue.username, Date.now())
 }

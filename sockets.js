@@ -217,6 +217,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.hue_info1 = ""
 		socket.hue_typing_counter = 0
 		socket.hue_activity_counter = 0
+		socket.hue_last_activity_trigger = Date.now()
 	}
 
 	handler.public.join_room = async function(socket, data)
@@ -4145,6 +4146,10 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			socket.hue_activity_counter = 0
 		}
 
+		socket.hue_last_activity_trigger = Date.now()
+
+		handler.update_user_in_userlist(socket)
+
 		handler.room_emit(socket, 'activity_trigger',
 		{
 			username: socket.hue_username
@@ -4471,6 +4476,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			user.role = socket.hue_role
 			user.profile_image = socket.hue_profile_image
 			user.email = socket.hue_email
+			user.last_activity_trigger = socket.hue_last_activity_trigger
 		}
 
 		catch(err)
@@ -4766,7 +4772,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				user_id: item.user_id,
 				username: item.username,
 				role: item.role,
-				profile_image: item.profile_image
+				profile_image: item.profile_image,
+				last_activity_trigger: item.last_activity_trigger
 			})
 		}
 
