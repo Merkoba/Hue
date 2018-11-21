@@ -119,6 +119,9 @@ Hue.keys_pressed = {}
 Hue.hide_infotip_delay = 2000
 Hue.active_modal = false
 Hue.activity_list = []
+Hue.HOUR = 3600000
+Hue.DAY = 86400000
+Hue.YEAR = 31536000000
 
 Hue.commands = 
 [
@@ -5792,7 +5795,7 @@ Hue.add_to_chat = function(message, save=false, notify=true)
 		{
 			if(date - last_date > Hue.old_activity_max)
 			{
-				chat_area.append(Hue.generate_vseparator(Hue.old_activity_message))
+				chat_area.append(Hue.generate_vseparator(Hue.get_old_activity_message(last_date, date)))
 			}
 		}
 
@@ -5852,6 +5855,75 @@ Hue.replace_in_chat_history = function(message)
 			return
 		}
 	}
+}
+
+Hue.get_old_activity_message = function(last_date, date)
+{
+	let diff = date - last_date
+
+	let s
+
+	if(diff < Hue.HOUR)
+	{
+		let n = Math.floor(diff / 60 / 1000)
+
+		if(n === 1)
+		{
+			s = `Over ${n} Minute Has Passed` 
+		}
+
+		else
+		{
+			s = `Over ${n} Minutes Have Passed` 
+		}
+	}
+
+	else if(diff >= Hue.HOUR && diff < Hue.DAY)
+	{
+		let n = Math.floor(diff / 60 / 60 / 1000)
+
+		if(n === 1)
+		{
+			s = `Over ${n} Hour Has Passed` 
+		}
+
+		else
+		{
+			s = `Over ${n} Hours Have Passed` 
+		} 
+	}
+
+	else if(diff >= Hue.DAY && diff < Hue.YEAR)
+	{
+		let n = Math.floor(diff / 24 / 60 / 60 / 1000)
+
+		if(n === 1)
+		{
+			s = `Over ${n} Day Has Passed` 
+		}
+
+		else
+		{
+			s = `Over ${n} Days Have Passed` 
+		}
+	}
+
+	else if(diff >= Hue.YEAR)
+	{
+		let n = Math.floor(diff / 365 / 24 / 60 / 60 / 1000)
+
+		if(n === 1)
+		{
+			s = `Over ${n} Year Has Passed` 
+		}
+
+		else
+		{
+			s = `Over ${n} Years Have Passed` 
+		}
+	}
+
+	return s
 }
 
 Hue.generate_vseparator = function(message="", classes="")
