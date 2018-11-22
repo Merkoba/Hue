@@ -196,8 +196,8 @@
 	"ads_threshold": 100,
 	"ads_setter": "Sponsored Ad",
 	"max_activity_bar_delay": 300000,
-	"activity_bar_interval": 20000,
-	"activity_bar_trigger_interval": 30000,
+	"activity_bar_interval": 30000,
+	"activity_bar_trigger_interval": 60000,
 	"max_activity_bar_items": 20,
 	"old_activity_min": 21600000
 }
