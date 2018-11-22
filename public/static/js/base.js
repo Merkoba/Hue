@@ -5643,7 +5643,7 @@ Hue.update_chat = function(args={})
 		if(Hue.get_setting("chat_layout") === "normal")
 		{
 			s = `
-			<div class='message chat_message umessage_${args.username} normal_layout'>
+			<div class='message chat_message normal_layout'>
 				<div class='chat_left_side'>
 					<div class='chat_profile_image_container unselectable action4'>
 						<img class='chat_profile_image' src='${pi}'>
@@ -5663,7 +5663,7 @@ Hue.update_chat = function(args={})
 		else if(Hue.get_setting("chat_layout") === "compact")
 		{
 			s = `
-			<div class='message chat_message umessage_${args.username} compact_layout'>
+			<div class='message chat_message compact_layout'>
 				<div class='chat_uname_container'>
 					<div class='chat_uname action'></div><div>:</div>
 				</div>
@@ -14304,18 +14304,44 @@ Hue.hide_pencil = function()
 	$("#footer_user_menu").addClass("fa-user-circle")
 }
 
+Hue.get_last_chat_message_by_username = function(ouname)
+{
+	let found_message = false
+
+	$($(".message").get().reverse()).each(function()
+	{
+		if($(this).hasClass("chat_message"))
+		{
+			let uname = $(this).data("uname")
+
+			if(uname)
+			{
+				if(uname === ouname)
+				{
+					found_message = this
+					return false
+				}
+			}
+		}
+	})
+
+	return found_message
+}
+
 Hue.add_aura = function(uname)
 {
 	let mode = Hue.get_setting("chat_layout")
 
 	if(mode === "normal")
 	{
-		$(`.umessage_${uname}`).last().find(".chat_profile_image_container").eq(0).addClass("aura")
+		let message = Hue.get_last_chat_message_by_username(uname)
+		$(message).find(".chat_profile_image_container").eq(0).addClass("aura")
 	}
 
 	else if(mode === "compact")
 	{
-		$(`.umessage_${uname}`).last().find(".chat_uname").eq(0).addClass("aura3")
+		let message = Hue.get_last_chat_message_by_username(uname)
+		$(message).find(".chat_uname").eq(0).addClass("aura3")
 	}
 }
 
@@ -14334,12 +14360,14 @@ Hue.show_aura = function(uname)
 
 		if(mode === "normal")
 		{
-			c = !$(`.umessage_${uname}`).last().find(".chat_profile_image_container").eq(0).hasClass("aura")
+			let message = Hue.get_last_chat_message_by_username(uname)
+			c = !$(message).find(".chat_profile_image_container").eq(0).hasClass("aura")
 		}
 
 		else if(mode === "compact")
 		{
-			c = !$(`.umessage_${uname}`).last().find(".chat_uname").eq(0).hasClass("aura3")
+			let message = Hue.get_last_chat_message_by_username(uname)
+			c = !$(message).find(".chat_uname").eq(0).hasClass("aura3")
 		}
 
 		if(c)
@@ -14370,9 +14398,9 @@ Hue.remove_aura = function(uname, clr=false)
 	{
 		$(`.chat_profile_image_container.aura`).each(function()
 		{
-			let umessage = $(this).closest(`.umessage_${uname}`)
+			let message = $(this).closest(".chat_message")
 
-			if(umessage.length > 0)
+			if(message.length > 0)
 			{
 				$(this).removeClass("aura")
 			}
@@ -14383,9 +14411,9 @@ Hue.remove_aura = function(uname, clr=false)
 	{
 		$(`.chat_uname.aura3`).each(function()
 		{
-			let umessage = $(this).closest(`.umessage_${uname}`)
+			let message = $(this).closest(".chat_message")
 
-			if(umessage.length > 0)
+			if(message.length > 0)
 			{
 				$(this).removeClass("aura3")
 			}
