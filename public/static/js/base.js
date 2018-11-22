@@ -19750,12 +19750,9 @@ Hue.setup_activity_bar = function()
 
 	sorted_userlist.sort(Hue.sort_userlist_by_activity_trigger)
 
-	if(Hue.get_setting("activity_bar"))
+	for(let user of sorted_userlist)
 	{
-		for(let user of sorted_userlist)
-		{
-			Hue.push_to_activity_bar(user.username, user.last_activity_trigger)
-		}
+		Hue.push_to_activity_bar(user.username, user.last_activity_trigger)
 	}
 
 	setInterval(function()
