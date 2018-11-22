@@ -19912,9 +19912,14 @@ Hue.update_activity_bar = function()
 					<div class='activity_bar_image_container action4'>
 						<img class='activity_bar_image' src='${pi}'>
 					</div>
+					<div class='activity_bar_text'></div>
 				</div>`)
 
 				let container = h.find(".activity_bar_image_container").eq(0)
+
+				let text_el = h.find(".activity_bar_text").eq(0)
+
+				text_el.text(user.username)
 
 				container.click(function()
 				{

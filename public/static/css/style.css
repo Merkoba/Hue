@@ -60,6 +60,22 @@ body, html
 	overflow: hidden;
 }
 
+.activity_bar_item
+{
+	display: flex;
+	flex-direction: row;
+	max-width: 7rem;
+	white-space: nowrap;
+	overflow: hidden;
+	margin-left: 0.8rem;
+	margin-right: 0.8rem;
+}
+
+.activity_bar_text
+{
+	margin-left: 0.5rem;
+}
+
 .activity_bar_image_container
 {
 	min-width: 22px;
@@ -68,8 +84,6 @@ body, html
 	max-height: 22px;
 	overflow: hidden;
 	border-radius: 50px;
-	margin-left: 0.5rem;
-	margin-right: 0.5rem;
 }
 
 .activity_bar_image
