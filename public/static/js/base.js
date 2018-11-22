@@ -19908,25 +19908,23 @@ Hue.update_activity_bar = function()
 				let pi = user.profile_image || Hue.default_profile_image_url
 
 				let h = $(`
-				<div class='activity_bar_item'>
-					<div class='activity_bar_image_container action4'>
+				<div class='activity_bar_item action'>
+					<div class='activity_bar_image_container'>
 						<img class='activity_bar_image' src='${pi}'>
 					</div>
 					<div class='activity_bar_text'></div>
 				</div>`)
 
-				let container = h.find(".activity_bar_image_container").eq(0)
-
 				let text_el = h.find(".activity_bar_text").eq(0)
 
 				text_el.text(user.username)
 
-				container.click(function()
+				h.click(function()
 				{
 					Hue.show_profile(item.username)
 				})
 
-				container.attr("title", item.username)
+				h.attr("title", item.username)
 
 				c.append(h)
 			}
