@@ -14308,19 +14308,16 @@ Hue.get_last_chat_message_by_username = function(ouname)
 {
 	let found_message = false
 
-	$($(".message").get().reverse()).each(function()
+	$($(".message.chat_message").get().reverse()).each(function()
 	{
-		if($(this).hasClass("chat_message"))
-		{
-			let uname = $(this).data("uname")
+		let uname = $(this).data("uname")
 
-			if(uname)
+		if(uname)
+		{
+			if(uname === ouname)
 			{
-				if(uname === ouname)
-				{
-					found_message = this
-					return false
-				}
+				found_message = this
+				return false
 			}
 		}
 	})
