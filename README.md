@@ -671,6 +671,9 @@ This should be an array of strings of root domains.
 "ads_threshold"
 >On how many chat messages sent to try to provide an ad.
 
+"ads_min_image_change"
+>At least this time has to pass after an image change for an ad to be displayed.
+
 "ads_setter"
 >The name of the ad changer.
 
