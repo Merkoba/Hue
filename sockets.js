@@ -4158,17 +4158,32 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.charge_ads = function(room_id)
 	{
-		if(!config.ads_enabled)
+		try
 		{
-			return false
-		}
-		
-		rooms[room_id].ad_charge += 1
+			if(!config.ads_enabled)
+			{
+				return false
+			}
+			
+			rooms[room_id].ad_charge += 1
 
-		if(rooms[room_id].ad_charge >= config.ads_threshold)
+			if(rooms[room_id].ad_charge >= config.ads_threshold)
+			{
+				if(handler.attempt_show_ad(room_id))
+				{
+					rooms[room_id].ad_charge = 0
+				}
+
+				else
+				{
+					rooms[room_id].ad_charge = config.ads_threshold
+				}
+			}
+		}
+
+		catch(err)
 		{
-			handler.attempt_show_ad(room_id)
-			rooms[room_id].ad_charge = 0
+			logger.log_error(err)
 		}
 	}
 
@@ -4179,6 +4194,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			let room = rooms[room_id]
 
 			if(room.images_mode !== "enabled")
+			{
+				return false
+			}
+
+			if(Date.now() - room.last_image_change < config.ads_min_image_change)
 			{
 				return false
 			}
@@ -4200,11 +4220,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			obj.type = "link"
 
 			handler.change_image(room_id, obj)
+
+			return true
 		}
 
 		catch(err)
 		{
 			logger.log_error(err)
+			return false
 		}
 	}
 
