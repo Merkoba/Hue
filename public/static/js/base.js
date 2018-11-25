@@ -19777,6 +19777,11 @@ Hue.setup_activity_bar = function()
 	{
 		Hue.hide_activity_bar()
 	}
+
+	$("#activity_bar_container").on("click", ".activity_bar_item", function()
+	{
+		Hue.show_profile($(this).data("username"))
+	})
 }
 
 Hue.check_activity_bar = function(update=true)
@@ -19916,10 +19921,7 @@ Hue.update_activity_bar = function()
 
 				text_el.text(user.username)
 
-				h.click(function()
-				{
-					Hue.show_profile(item.username)
-				})
+				h.data("username", user.username)
 
 				h.attr("title", item.username)
 
