@@ -89,7 +89,7 @@ var ColorLib = (function()
 				{
 					if(last_p === undefined)
 					{
-						palette[i] = [0, 0, 0]
+						palette[i] = [42, 42, 42]
 					}
 
 					else
