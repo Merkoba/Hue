@@ -3681,7 +3681,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let spsize = Math.floor(fsize / (config.max_image_size / 10))
+		// The higher this number is, the quicker it adds spam
+
+		let div = 10
+
+		let spsize = Math.floor(fsize / (config.max_image_size / div))
 
 		if(file.spsize !== spsize)
 		{
