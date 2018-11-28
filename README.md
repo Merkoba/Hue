@@ -299,6 +299,9 @@ If you want to remove it to start fresh:
 "max_image_size"
 >Maximum image size allowed in KB. This is checked both in the client and server. If the image is bigger it won't be uploaded.
 
+"max_image_size"
+>Maximum image size allowed in Bytes.
+
 "max_profile_image_size"
 >Maximum image size allowed for profile images.
 

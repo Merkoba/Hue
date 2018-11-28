@@ -69,6 +69,7 @@
 	"max_visited_rooms_items": 100,
 	"max_title_length": 200,
 	"max_image_size": 5555,
+	"max_image_size_bytes": 5555555,
 	"max_profile_image_size": 1111,
 	"small_keyboard_scroll": 100,
 	"big_keyboard_scroll": 400,

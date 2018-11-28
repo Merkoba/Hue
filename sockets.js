@@ -2988,14 +2988,26 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			let obj = {}
+			fetch(data.src, 
+			{
+				size: config.max_image_size_bytes
+			})
 
-			obj.fname = data.src
-			obj.setter = socket.hue_username
-			obj.size = 0
-			obj.type = "link"
+			.then(res => res.buffer())
 
-			handler.change_image(socket, obj)
+			.then(buffer =>
+			{
+				handler.upload_image(socket,
+				{
+					image_file: buffer,
+					extension: extension
+				})
+			})
+
+			.catch(err => 
+			{
+				return false
+			})
 		}
 	}
 
