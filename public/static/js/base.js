@@ -2276,6 +2276,7 @@ Hue.apply_theme = function()
 	let background_color_a = Hue.colorlib.rgb_to_rgba(background_color, Hue.opacity_amount_1)
 	let background_color_a_2 = Hue.colorlib.rgb_to_rgba(background_color_2, Hue.opacity_amount_3)
 
+	$('.bg0').css('background-color', background_color)
 	$('.bg1').css('background-color', background_color_a)
 	$('.bg1').css('color', font_color)
 	$('.bg2').css('background-color', background_color_2)
