@@ -225,7 +225,6 @@ Hue.user_settings =
 	chat_font_size: {widget_type:"select"},
 	font_family: {widget_type:"select"},
 	warn_before_closing: {widget_type:"checkbox"},
-	dynamic_favicon: {widget_type:"checkbox"},
 	activity_bar: {widget_type:"checkbox"},
 	media_display_percentage: {widget_type:"custom"},
 	tv_display_percentage: {widget_type:"custom"},
@@ -866,7 +865,6 @@ Hue.start_socket = function()
 			Hue.chat_scroll_bottom()
 			Hue.make_main_container_visible()
 			Hue.setup_activity_bar()
-			Hue.setup_favicon()
 
 			Hue.date_joined = Date.now()
 			Hue.started = true
@@ -2500,11 +2498,6 @@ Hue.apply_theme = function()
 	})
 
 	$("head").append(css)
-
-	if(Hue.get_setting("dynamic_favicon"))
-	{
-		Hue.generate_favicon(theme)
-	}
 }
 
 Hue.userjoin = function(data)
@@ -12072,29 +12065,6 @@ Hue.setting_warn_before_closing_action = function(type, save=true)
 	}
 }
 
-Hue.setting_dynamic_favicon_action = function(type, save=true)
-{
-	Hue[type].dynamic_favicon = $(`#${type}_dynamic_favicon`).prop("checked")
-
-	if(Hue.active_settings("dynamic_favicon") === type)
-	{
-		if(Hue.get_setting("dynamic_favicon"))
-		{
-			Hue.apply_theme()
-		}
-
-		else
-		{
-			Hue.generate_default_favicon()
-		}
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
 Hue.setting_activity_bar_action = function(type, save=true)
 {
 	Hue[type].activity_bar = $(`#${type}_activity_bar`).prop("checked")
@@ -20134,45 +20104,5 @@ Hue.push_to_activity_bar = function(uname, date)
 	if(Hue.started)
 	{
 		Hue.update_activity_bar()
-	}
-}
-
-Hue.generate_default_favicon = function()
-{
-	Hue.generate_favicon(Hue.default_favicon_color)
-}
-
-Hue.generate_favicon = function(theme)
-{
-	let canvas = document.createElement("canvas")
-
-	canvas.height = 256
-	canvas.width = 256
-
-	let context = canvas.getContext("2d")
-	let center = canvas.height / 2
-	let side = 192
-	let side2 = 194
-
-	context.fillStyle = "rgb(16,16,16)"
-	context.fillRect(center - (side2 / 2), center - (side2 / 2), side2, side2)
-
-	context.fillStyle = theme
-	context.fillRect(center - (side / 2), center - (side / 2), side, side)
-
-	let link = document.querySelector("link[rel*='icon']") || document.createElement('link')
-
-	link.type = 'image/x-icon'
-	link.rel = 'shortcut icon'
-	link.href = canvas.toDataURL()
-
-	document.getElementsByTagName('head')[0].appendChild(link)
-}
-
-Hue.setup_favicon = function()
-{
-	if(!Hue.get_setting("dynamic_favicon"))
-	{
-		Hue.generate_default_favicon()
 	}
 }

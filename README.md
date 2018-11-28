@@ -521,9 +521,6 @@ If you want to remove it to start fresh:
 "global_settings_default_activity_bar"
 >Whether the activity bar at the top will be enabled by default in new rooms.
 
-"global_settings_default_dynamic_favicon"
->Whether favicons are dynamic by default.
-
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 
@@ -697,9 +694,6 @@ This should be an array of strings of root domains.
 
 "old_activity_min"
 >The minimum difference to show the old activity message between messages. The message is created automatically, using different wording depending if the difference is in minutes, hours, days, or years.
-
-"default_favicon_color"
->The default color to use for the favicon when they're not dynamic.
 
 
 ## The following reside in config.secret.json
