@@ -42,6 +42,9 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const user_rooms = {}
 	const files = {}
 
+	// The higher this number is, the quicker it adds spam on image upload
+	const upload_spam_slice = 10
+
 	const files_struct =
 	{
 		action: null,
@@ -2995,8 +2998,22 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			.then(res => res.buffer())
 
-			.then(buffer =>
+			.then(async (buffer) =>
 			{
+				let fsize = buffer.byteLength
+
+				let spam_points = Math.floor(fsize / (config.max_image_size_bytes / upload_spam_slice))
+
+				for(let i=0; i<spam_points; i++)
+				{
+					let spam_ans = await handler.add_spam(socket)
+
+					if(!spam_ans)
+					{
+						return false
+					}
+				}
+
 				handler.upload_image(socket,
 				{
 					image_file: buffer,
@@ -3028,12 +3045,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		let size = data.image_file.toString('ascii').length / 1024
+		let size = data.image_file.byteLength / 1024
 
 		if(size === 0 || (size > config.max_image_size))
 		{
-			handler.user_emit(socket, 'upload_error', {})
-			return false
+			return handler.get_out(socket)
 		}
 
 		let fname = `${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.extension}`
@@ -3287,7 +3303,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let size = data.image_file.toString('ascii').length / 1024
+		let size = data.image_file.byteLength / 1024
 
 		if(size === 0 || (size > config.max_profile_image_size))
 		{
@@ -3413,7 +3429,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let size = data.image_file.toString('ascii').length / 1024
+		let size = data.image_file.byteLength / 1024
 
 		if(size === 0 || (size > config.max_image_size))
 		{
@@ -3681,11 +3697,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		// The higher this number is, the quicker it adds spam
-
-		let div = 10
-
-		let spsize = Math.floor(fsize / (config.max_image_size / div))
+		let spsize = Math.floor(fsize / (config.max_image_size / upload_spam_slice))
 
 		if(file.spsize !== spsize)
 		{
