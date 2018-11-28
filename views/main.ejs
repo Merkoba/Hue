@@ -37,9 +37,9 @@
 		<script src="/static/js/utilz.js?version=21"></script>
 		<script src="/static/js/colorlib.js?version=10"></script>
 
-		<script src="/static/js/base.js?version=2365"></script>
+		<script src="/static/js/base.js?version=2366"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=485"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=486"/>
 
 		<script>
 
@@ -223,7 +223,7 @@
 
 								<div class='media_container' id='media_image_container'>
 									
-									<img id='media_image_frame' class='pointer' draggable='false' onclick="Hue.show_current_image_modal()">
+									<img id='media_image_frame' class='pointer' draggable='false' onclick="Hue.show_current_image_modal()" crossOrigin="anonymous">
 									<div id='media_image_error' class='pointer' onclick="Hue.show_current_image_modal()">Image failed to load</div>
 
 								</div>
@@ -374,8 +374,7 @@
 
 				<div id='admin_menu'>
 
-					<div class='spacer3'></div>
-					<div class='spacer2'></div>
+					<div class='menu_subsection_title'>Media</div>
 
 					<div class='small_padding_bottom'>Images</div>
 
@@ -405,12 +404,20 @@
 						<option value="locked">Locked</option>
 					</select>
 
-					<div class='spacer1'></div>
-					<div class='spacer3'></div>
+					<div class='menu_subsection_title'>Theme</div>
 
-					<div class='small_padding_bottom'>Theme</div>
+					<div class='small_padding_bottom'>Theme Mode</div>
 
-					<input id='admin_theme'>
+					<select class='modal_select' id='admin_theme_mode_select'>
+						<option value="automatic">Automatic</option>
+						<option value="custom">Custom</option>
+					</select>
+
+					<div id='admin_theme_mode_container'>
+						<div class='spacer1'></div>
+						<div class='small_padding_bottom'>Theme</div>
+						<input id='admin_theme'>
+					</div>
 
 					<div class='spacer1'></div>
 
@@ -467,8 +474,7 @@
 						
 					</div>
 
-					<div class='spacer1'></div>
-					<div class='spacer3'></div>
+					<div class='menu_subsection_title'>Permissions</div>
 
 					<div class='toggler_main_container'>
 
@@ -602,8 +608,7 @@
 
 					</div>
 					
-					<div class='spacer1'></div>
-					<div class='spacer2'></div>
+					<div class='menu_subsection_title2'>Room Config</div>
 
 					<div class='small_padding_bottom'>Privacy</div>
 
@@ -1155,6 +1160,11 @@
 						<div class='settings_item' data-setting='warn_before_closing'>
 							<div class="setting_title">Warn On Close</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_warn_before_closing">
+						</div>
+
+						<div class='settings_item' data-setting='dynamic_favicon'>
+							<div class="setting_title">Dynamic Favicon</div>
+							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_dynamic_favicon">
 						</div>
 
 						<div class='settings_item' data-setting='open_popup_messages'>

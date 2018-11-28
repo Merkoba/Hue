@@ -509,6 +509,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			room_tv_mode: info.tv_mode,
 			room_radio_mode: info.radio_mode,
 			room_voice_chat_mode: info.voice_chat_mode,
+			theme_mode: info.theme_mode,
 			theme: info.theme,
 			background_image: background_image,
 			background_image_setter: info.background_image_setter,
@@ -2364,6 +2365,32 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 
 		handler.push_admin_log_message(socket, `changed the radio mode to "${data.what}"`)
+	}
+
+	handler.public.change_theme_mode = function(socket, data)
+	{
+		if(!handler.is_admin_or_op(socket))
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.mode !== "automatic" && data.mode !== "custom")
+		{
+			return handler.get_out(socket)
+		}
+
+		db_manager.update_room(socket.hue_room_id,
+		{
+			theme_mode: data.mode
+		})
+
+		handler.room_emit(socket, 'theme_mode_changed',
+		{
+			mode: data.mode,
+			username: socket.hue_username
+		})
+
+		handler.push_admin_log_message(socket, `changed the theme color mode to "${data.mode}"`)
 	}
 
 	handler.public.change_theme = function(socket, data)

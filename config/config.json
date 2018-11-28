@@ -140,6 +140,7 @@
 	"global_settings_default_font_family": "opensans",
 	"global_settings_default_warn_before_closing": false,
 	"global_settings_default_activity_bar": true,
+	"global_settings_default_dynamic_favicon": true,
 	"room_state_default_images_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_radio_enabled": true,
@@ -200,5 +201,6 @@
 	"activity_bar_interval": 30000,
 	"activity_bar_trigger_interval": 60000,
 	"max_activity_bar_items": 20,
-	"old_activity_min": 21600000
+	"old_activity_min": 21600000,
+	"default_favicon_color": "rgb(192,109,207)"
 }

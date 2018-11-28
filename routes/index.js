@@ -106,6 +106,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.global_settings_default_font_family = config.global_settings_default_font_family
 	c.vars.global_settings_default_warn_before_closing = config.global_settings_default_warn_before_closing
 	c.vars.global_settings_default_activity_bar = config.global_settings_default_activity_bar
+	c.vars.global_settings_default_dynamic_favicon = config.global_settings_default_dynamic_favicon
 	c.vars.room_state_default_images_enabled = config.room_state_default_images_enabled
 	c.vars.room_state_default_tv_enabled = config.room_state_default_tv_enabled
 	c.vars.room_state_default_radio_enabled = config.room_state_default_radio_enabled
@@ -150,6 +151,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.activity_bar_trigger_interval = config.activity_bar_trigger_interval
 	c.vars.max_activity_bar_items = config.max_activity_bar_items
 	c.vars.old_activity_min = config.old_activity_min
+	c.vars.default_favicon_color = config.default_favicon_color
 
 	function check_url(req, res, next)
 	{

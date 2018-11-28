@@ -598,7 +598,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 #menu_smaller_container
 {
 	padding-top: 0.8em;
-	padding-bottom: 0.8em;
 }
 
 #create_room_name
@@ -2121,4 +2120,22 @@ input[type=text], textarea
 	flex-grow: 0;
 	padding-left: 0.7em;
 	padding-right: 0.7em;
+}
+
+.menu_subsection_title
+{
+	margin-top: 2.2rem;
+	margin-bottom: 2rem;
+	opacity: 0.5;
+	font-size: 1.1rem;
+	letter-spacing: 0.1rem;
+}
+
+.menu_subsection_title2
+{
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+	opacity: 0.5;
+	font-size: 1.1rem;
+	letter-spacing: 0.1rem;
 }

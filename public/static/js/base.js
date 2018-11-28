@@ -225,6 +225,7 @@ Hue.user_settings =
 	chat_font_size: {widget_type:"select"},
 	font_family: {widget_type:"select"},
 	warn_before_closing: {widget_type:"checkbox"},
+	dynamic_favicon: {widget_type:"checkbox"},
 	activity_bar: {widget_type:"checkbox"},
 	media_display_percentage: {widget_type:"custom"},
 	tv_display_percentage: {widget_type:"custom"},
@@ -865,7 +866,7 @@ Hue.start_socket = function()
 			Hue.chat_scroll_bottom()
 			Hue.make_main_container_visible()
 			Hue.setup_activity_bar()
-			Hue.generate_favicon()
+			Hue.setup_favicon()
 
 			Hue.date_joined = Date.now()
 			Hue.started = true
@@ -1163,6 +1164,11 @@ Hue.start_socket = function()
 		else if(data.type === 'room_radio_mode_change')
 		{
 			Hue.announce_room_radio_mode_change(data)
+		}
+
+		else if(data.type === 'theme_mode_changed')
+		{
+			Hue.announce_theme_mode_change(data)
 		}
 
 		else if(data.type === 'theme_change')
@@ -2124,6 +2130,7 @@ Hue.setup_theme_and_background = function(data)
 {
 	Hue.set_background_image(data)
 
+	Hue.theme_mode = data.theme_mode
 	Hue.theme = data.theme
 	Hue.background_mode = data.background_mode
 	Hue.background_effect = data.background_effect
@@ -2226,17 +2233,34 @@ Hue.apply_background = function()
 	$("head").append(css)
 }
 
+Hue.set_theme_mode = function(mode)
+{
+	Hue.theme_mode = mode
+	Hue.config_admin_theme_mode()
+}
+
 Hue.set_theme = function(color)
 {
 	Hue.theme = color
 	Hue.apply_theme()
 	Hue.config_admin_theme()
-	Hue.generate_favicon()
 }
 
 Hue.apply_theme = function()
 {
-	let background_color = Hue.theme
+	let theme
+
+	if(Hue.theme_mode === "automatic" && Hue.dominant_theme)
+	{
+		theme = Hue.dominant_theme
+	}
+
+	else
+	{
+		theme = Hue.theme
+	}
+
+	let background_color = theme
 	let background_color_2 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.color_contrast_amount_1)
 	
 	let font_color
@@ -2476,6 +2500,11 @@ Hue.apply_theme = function()
 	})
 
 	$("head").append(css)
+
+	if(Hue.get_setting("dynamic_favicon"))
+	{
+		Hue.generate_favicon(theme)
+	}
 }
 
 Hue.userjoin = function(data)
@@ -3495,6 +3524,13 @@ Hue.setup_main_menu = function()
 		Hue.change_log(what)
 	})
 
+	$('#admin_theme_mode_select').change(function()
+	{
+		let what = $('#admin_theme_mode_select option:selected').val()
+
+		Hue.change_theme_mode(what)
+	})
+
 	$("#admin_theme").spectrum(
 	{
 		preferredFormat: "rgb",
@@ -3839,6 +3875,34 @@ Hue.config_admin_room_radio_mode = function()
 	})
 }
 
+Hue.config_admin_theme_mode = function()
+{
+	if(!Hue.is_admin_or_op())
+	{
+		return false
+	}
+
+	$('#admin_theme_mode_select').find('option').each(function()
+	{
+		if($(this).val() === Hue.theme_mode)
+		{
+			$(this).prop('selected', true)
+		}
+	})
+
+	if(Hue.theme_mode === "custom")
+	{
+		$("#admin_theme_mode_container").css("display", "block")
+	}
+
+	else
+	{
+		$("#admin_theme_mode_container").css("display", "none")
+	}
+
+	Hue.update_modal_scrollbar("main_menu")
+}
+
 Hue.config_admin_theme = function()
 {
 	if(!Hue.is_admin_or_op())
@@ -3879,6 +3943,7 @@ Hue.config_main_menu = function()
 		Hue.config_admin_room_radio_mode()
 		Hue.config_admin_privacy()
 		Hue.config_admin_log_enabled()
+		Hue.config_admin_theme_mode()
 		Hue.config_admin_theme()
 		Hue.config_admin_background_mode()
 		Hue.config_admin_background_effect()
@@ -6282,7 +6347,36 @@ Hue.after_image_load = function()
 	Hue.current_image_info = Hue.current_image().info
 	Hue.current_image_date = Hue.current_image().date
 
+	Hue.get_dominant_theme()
 	Hue.fix_image_frame()
+}
+
+Hue.get_dominant_theme = function()
+{
+	try
+	{
+		let color = Hue.colorlib.get_dominant($("#media_image_frame")[0], 1)[0]
+
+		if(color)
+		{
+			Hue.dominant_theme = color
+
+			if(Hue.theme_mode === "automatic")
+			{
+				Hue.apply_theme()
+			}
+		}
+
+		else
+		{
+			Hue.dominant_theme = false
+		}
+	}
+
+	catch(err)
+	{
+		Hue.dominant_theme = false
+	}
 }
 
 Hue.get_size_string = function(size)
@@ -11978,6 +12072,29 @@ Hue.setting_warn_before_closing_action = function(type, save=true)
 	}
 }
 
+Hue.setting_dynamic_favicon_action = function(type, save=true)
+{
+	Hue[type].dynamic_favicon = $(`#${type}_dynamic_favicon`).prop("checked")
+
+	if(Hue.active_settings("dynamic_favicon") === type)
+	{
+		if(Hue.get_setting("dynamic_favicon"))
+		{
+			Hue.apply_theme()
+		}
+
+		else
+		{
+			Hue.generate_default_favicon()
+		}
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
 Hue.setting_activity_bar_action = function(type, save=true)
 {
 	Hue[type].activity_bar = $(`#${type}_activity_bar`).prop("checked")
@@ -13820,6 +13937,31 @@ Hue.media_visibility_and_locks = function()
 	Hue.change_lock_radio()
 }
 
+Hue.change_theme_mode = function(mode)
+{
+	if(!Hue.is_admin_or_op(Hue.role))
+	{
+		Hue.not_an_op()
+		return false
+	}
+
+	if(
+		mode !== "automatic" && 
+		mode !== "custom")
+	{
+		Hue.feedback("Invalid theme mode")
+		return false
+	}
+
+	if(mode === Hue.theme_mode)
+	{
+		Hue.feedback(`Theme mode is already ${Hue.theme_mode}`)
+		return false
+	}
+
+	Hue.socket_emit("change_theme_mode", {mode:mode})
+}
+
 Hue.change_theme = function(color)
 {
 	if(!Hue.is_admin_or_op(Hue.role))
@@ -13853,6 +13995,18 @@ Hue.change_theme = function(color)
 	}
 
 	Hue.socket_emit("change_theme", {color:color})
+}
+
+Hue.announce_theme_mode_change = function(data)
+{
+	Hue.public_feedback(`${data.username} changed the theme mode to ${data.mode}`,
+	{
+		username: data.username,
+		open_profile: true
+	})
+
+	Hue.set_theme_mode(data.mode)
+	Hue.apply_theme()
 }
 
 Hue.announce_theme_change = function(data)
@@ -19983,7 +20137,12 @@ Hue.push_to_activity_bar = function(uname, date)
 	}
 }
 
-Hue.generate_favicon = function()
+Hue.generate_default_favicon = function()
+{
+	Hue.generate_favicon(Hue.default_favicon_color)
+}
+
+Hue.generate_favicon = function(theme)
 {
 	let canvas = document.createElement("canvas")
 
@@ -19993,8 +20152,12 @@ Hue.generate_favicon = function()
 	let context = canvas.getContext("2d")
 	let center = canvas.height / 2
 	let side = 192
+	let side2 = 194
 
-	context.fillStyle = Hue.theme
+	context.fillStyle = "rgb(16,16,16)"
+	context.fillRect(center - (side2 / 2), center - (side2 / 2), side2, side2)
+
+	context.fillStyle = theme
 	context.fillRect(center - (side / 2), center - (side / 2), side, side)
 
 	let link = document.querySelector("link[rel*='icon']") || document.createElement('link')
@@ -20004,4 +20167,12 @@ Hue.generate_favicon = function()
 	link.href = canvas.toDataURL()
 
 	document.getElementsByTagName('head')[0].appendChild(link)
+}
+
+Hue.setup_favicon = function()
+{
+	if(!Hue.get_setting("dynamic_favicon"))
+	{
+		Hue.generate_default_favicon()
+	}
 }
