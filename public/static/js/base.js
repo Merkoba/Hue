@@ -865,6 +865,7 @@ Hue.start_socket = function()
 			Hue.chat_scroll_bottom()
 			Hue.make_main_container_visible()
 			Hue.setup_activity_bar()
+			Hue.generate_favicon()
 
 			Hue.date_joined = Date.now()
 			Hue.started = true
@@ -2230,6 +2231,7 @@ Hue.set_theme = function(color)
 	Hue.theme = color
 	Hue.apply_theme()
 	Hue.config_admin_theme()
+	Hue.generate_favicon()
 }
 
 Hue.apply_theme = function()
@@ -19979,4 +19981,27 @@ Hue.push_to_activity_bar = function(uname, date)
 	{
 		Hue.update_activity_bar()
 	}
+}
+
+Hue.generate_favicon = function()
+{
+	let canvas = document.createElement("canvas")
+
+	canvas.height = 256
+	canvas.width = 256
+
+	let context = canvas.getContext("2d")
+	let center = canvas.height / 2
+	let side = 192
+
+	context.fillStyle = Hue.theme
+	context.fillRect(center - (side / 2), center - (side / 2), side, side)
+
+	let link = document.querySelector("link[rel*='icon']") || document.createElement('link')
+
+	link.type = 'image/x-icon'
+	link.rel = 'shortcut icon'
+	link.href = canvas.toDataURL()
+
+	document.getElementsByTagName('head')[0].appendChild(link)
 }
