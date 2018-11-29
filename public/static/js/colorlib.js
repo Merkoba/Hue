@@ -10,7 +10,7 @@ var ColorLib = (function()
 
 		instance.id = num_instances
 
-		instance.get_dominant = function(image, palette_size=1)
+		instance.get_dominant = function(image, palette_size=1, use_limits=false)
 		{
 			if(palette_size === 0 || palette_size > 100)
 			{
@@ -42,6 +42,20 @@ var ColorLib = (function()
 				const green = pixels[offset + 1]
 				const blue = pixels[offset + 2]
 				const alpha = pixels[offset + 3]
+
+				if(use_limits)
+				{
+					if(red < 10 && green < 10 && blue < 10)
+					{
+						continue
+					}
+
+					if(red > 245 && green > 245 && blue > 245)
+					{
+						continue
+					}
+				}
+				
 				let matchIndex = undefined
 
 				if(alpha === 0) 

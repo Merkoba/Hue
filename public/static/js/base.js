@@ -6340,7 +6340,7 @@ Hue.get_dominant_theme = function()
 {
 	try
 	{
-		let color = Hue.colorlib.get_dominant($("#media_image_frame")[0], 1)[0]
+		let color = Hue.colorlib.get_dominant($("#media_image_frame")[0], 1, true)[0]
 
 		if(color)
 		{
