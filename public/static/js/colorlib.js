@@ -1,10 +1,10 @@
-var ColorLib = (function()
+const ColorLib = (function()
 {
-	var num_instances = 0
+	let num_instances = 0
 
-	var factory = function()
+	let factory = function()
 	{
-		var instance = {}
+		let instance = {}
 
 		num_instances += 1
 
@@ -18,7 +18,7 @@ var ColorLib = (function()
 				return
 			}
 
-			var size = 64
+			let size = 64
 
 			const canvas = document.createElement('canvas')
 
@@ -90,12 +90,12 @@ var ColorLib = (function()
 
 			for(let i=0; i<Math.min(palette_size, pixelArray.length); i++) 
 			{
-				var arr = [pixelArray[i][0], pixelArray[i][1], pixelArray[i][2]]
+				let arr = [pixelArray[i][0], pixelArray[i][1], pixelArray[i][2]]
 
 				palette.push(instance.check_array(arr))
 			}
 
-			var last_p
+			let last_p
 
 			for(let i=0; i<palette_size; i++)
 			{
@@ -120,7 +120,7 @@ var ColorLib = (function()
 
 		instance.get_lighter_or_darker = function(rgb, amount=0.2)
 		{
-			var new_rgb = []
+			let new_rgb = []
 
 			if(instance.is_light(rgb))
 			{
@@ -137,13 +137,13 @@ var ColorLib = (function()
 		{
 			rgb = instance.check_rgb(rgb)
 
-			var r = rgb[0]
-			var g = rgb[1]
-			var b = rgb[2]
+			let r = rgb[0]
+			let g = rgb[1]
+			let b = rgb[2]
 
-			var uicolors = [r / 255, g / 255, b / 255]
+			let uicolors = [r / 255, g / 255, b / 255]
 
-			var c = uicolors.map((c) => 
+			let c = uicolors.map((c) => 
 			{
 				if (c <= 0.03928) 
 				{
@@ -156,7 +156,7 @@ var ColorLib = (function()
 				}
 			})
 
-			var L = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
+			let L = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
 
 			return (L > 0.179) ? true : false		
 		}
@@ -186,9 +186,11 @@ var ColorLib = (function()
 
 		instance.array_to_rgb = function(array)
 		{
+			let rgb
+
 			if(Array.isArray(array[0]))
 			{
-				var rgb = []
+				rgb = []
 
 				for(let i=0; i<array.length; i++)
 				{
@@ -198,7 +200,7 @@ var ColorLib = (function()
 
 			else
 			{
-				var rgb = `rgb(${array[0]}, ${array[1]}, ${array[2]})`
+				rgb = `rgb(${array[0]}, ${array[1]}, ${array[2]})`
 			}
 
 			return rgb
@@ -206,21 +208,23 @@ var ColorLib = (function()
 
 		instance.rgb_to_array = function(rgb)
 		{
+			let array
+
 			if(Array.isArray(rgb))
 			{
-				var array = []
+				array = []
 
 				for(let i=0; i<rgb.length; i++)
 				{
-					var split = rgb[i].replace("rgb(", "").replace(")", "").split(",")
+					let split = rgb[i].replace("rgb(", "").replace(")", "").split(",")
 					array[i] = split.map(x => parseInt(x))
 				}
 			}
 
 			else
 			{
-				var split = rgb.replace("rgb(", "").replace(")", "").split(",")
-				var array = split.map(x => parseInt(x))
+				let split = rgb.replace("rgb(", "").replace(")", "").split(",")
+				array = split.map(x => parseInt(x))
 			}
 
 			return array					
@@ -228,18 +232,18 @@ var ColorLib = (function()
 
 		instance.rgb_to_rgba = function(rgb, alpha)
 		{
-			var split = rgb.replace("rgb(", "").replace(")", "").split(",")
+			let split = rgb.replace("rgb(", "").replace(")", "").split(",")
 			
-			var rgba = `rgba(${split[0].trim()}, ${split[1].trim()}, ${split[2].trim()}, ${alpha})`
+			let rgba = `rgba(${split[0].trim()}, ${split[1].trim()}, ${split[2].trim()}, ${alpha})`
 
 			return rgba
 		}
 
 		instance.rgba_to_rgb = function(rgb)
 		{
-			var split = rgb.replace("rgba(", "").replace(")", "").split(",")
+			let split = rgb.replace("rgba(", "").replace(")", "").split(",")
 			
-			var nrgb = `rgb(${split[0].trim()}, ${split[1].trim()}, ${split[2].trim()})`
+			let nrgb = `rgb(${split[0].trim()}, ${split[1].trim()}, ${split[2].trim()})`
 
 			return nrgb
 		}
@@ -251,7 +255,7 @@ var ColorLib = (function()
 				rgb = instance.rgb_to_array(rgb)
 			}
 
-			var code = ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1)
+			let code = ((1 << 24) + (rgb[0] << 16) + (rgb[1] << 8) + rgb[2]).toString(16).slice(1)
 
 			if(hash)
 			{
@@ -263,14 +267,14 @@ var ColorLib = (function()
 
 		instance.hex_to_rgb = function(hex) 
 		{
-			var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i
+			let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i
 			
 			hex = hex.replace(shorthandRegex, function(m, r, g, b) 
 			{
 				return r + r + g + g + b + b;
 			})
 
-			var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
+			let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
 			
 			return result ? 
 			[
@@ -308,11 +312,12 @@ var ColorLib = (function()
 			return rgb		
 		}
 
+		// This should be replaced with something easier to read
 		instance.shadeBlendConvert = function(p, from, to) 
 		{
 			if(typeof(p)!="number"||p<-1||p>1||typeof(from)!="string"||(from[0]!='r'&&from[0]!='#')||(typeof(to)!="string"&&typeof(to)!="undefined"))return null; //ErrorCheck
 			if(!this.sbcRip)this.sbcRip=(d)=>{
-				let l=d.length,RGB=new Object();
+				var l=d.length,RGB=new Object();
 				if(l>9){
 					d=d.split(",");
 					if(d.length<3||d.length>4)return null;//ErrorCheck
@@ -331,7 +336,7 @@ var ColorLib = (function()
 
 		instance.lab2rgb = function(lab)
 		{
-			var y = (lab[0] + 16) / 116,
+			let y = (lab[0] + 16) / 116,
 				x = lab[1] / 500 + y,
 				z = y - lab[2] / 200,
 				r, g, b;
@@ -353,10 +358,9 @@ var ColorLib = (function()
 			Math.max(0, Math.min(1, b)) * 255]
 		}
 
-
 		instance.rgb2lab = function(rgb)
 		{
-			var r = rgb[0] / 255,
+			let r = rgb[0] / 255,
 				g = rgb[1] / 255,
 				b = rgb[2] / 255,
 				x, y, z;
@@ -378,20 +382,20 @@ var ColorLib = (function()
 
 		instance.deltaE = function(labA, labB)
 		{
-			var deltaL = labA[0] - labB[0];
-			var deltaA = labA[1] - labB[1];
-			var deltaB = labA[2] - labB[2];
-			var c1 = Math.sqrt(labA[1] * labA[1] + labA[2] * labA[2]);
-			var c2 = Math.sqrt(labB[1] * labB[1] + labB[2] * labB[2]);
-			var deltaC = c1 - c2;
-			var deltaH = deltaA * deltaA + deltaB * deltaB - deltaC * deltaC;
+			let deltaL = labA[0] - labB[0];
+			let deltaA = labA[1] - labB[1];
+			let deltaB = labA[2] - labB[2];
+			let c1 = Math.sqrt(labA[1] * labA[1] + labA[2] * labA[2]);
+			let c2 = Math.sqrt(labB[1] * labB[1] + labB[2] * labB[2]);
+			let deltaC = c1 - c2;
+			let deltaH = deltaA * deltaA + deltaB * deltaB - deltaC * deltaC;
 			deltaH = deltaH < 0 ? 0 : Math.sqrt(deltaH);
-			var sc = 1.0 + 0.045 * c1;
-			var sh = 1.0 + 0.015 * c1;
-			var deltaLKlsl = deltaL / (1.0);
-			var deltaCkcsc = deltaC / (sc);
-			var deltaHkhsh = deltaH / (sh);
-			var i = deltaLKlsl * deltaLKlsl + deltaCkcsc * deltaCkcsc + deltaHkhsh * deltaHkhsh;
+			let sc = 1.0 + 0.045 * c1;
+			let sh = 1.0 + 0.015 * c1;
+			let deltaLKlsl = deltaL / (1.0);
+			let deltaCkcsc = deltaC / (sc);
+			let deltaHkhsh = deltaH / (sh);
+			let i = deltaLKlsl * deltaLKlsl + deltaCkcsc * deltaCkcsc + deltaHkhsh * deltaHkhsh;
 			return i < 0 ? 0 : Math.sqrt(i);
 		}		
 
