@@ -2991,40 +2991,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			fetch(data.src, 
-			{
-				size: config.max_image_size_bytes
-			})
+			let obj = {}
 
-			.then(res => res.buffer())
+			obj.fname = data.src
+			obj.setter = socket.hue_username
+			obj.size = 0
+			obj.type = "link"
 
-			.then(async (buffer) =>
-			{
-				let fsize = buffer.byteLength
-
-				let spam_points = Math.floor(fsize / (config.max_image_size_bytes / upload_spam_slice))
-
-				for(let i=0; i<spam_points; i++)
-				{
-					let spam_ans = await handler.add_spam(socket)
-
-					if(!spam_ans)
-					{
-						return false
-					}
-				}
-
-				handler.upload_image(socket,
-				{
-					image_file: buffer,
-					extension: extension
-				})
-			})
-
-			.catch(err => 
-			{
-				return false
-			})
+			handler.change_image(socket, obj)
 		}
 	}
 

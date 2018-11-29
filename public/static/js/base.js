@@ -6272,6 +6272,8 @@ Hue.change = function(args={})
 
 Hue.show_image = function(src, force=false)
 {
+	$("#media_image_frame").attr("crossOrigin", "anonymous")
+
 	$("#media_image_error").css("display", "none")
 
 	$("#media_image_frame").css("display", "initial")
@@ -6313,8 +6315,17 @@ Hue.start_image_events = function()
 
 	$('#media_image_frame').on("error", function()
 	{
-		$("#media_image_frame").css("display", "none")
-		$("#media_image_error").css("display", "initial")
+		if($("#media_image_frame")[0].hasAttribute("crossOrigin"))
+		{
+			$("#media_image_frame").removeAttr("crossOrigin")
+			$("#media_image_frame").attr("src", $("#media_image_frame").attr("src"))
+		}
+
+		else
+		{
+			$("#media_image_frame").css("display", "none")
+			$("#media_image_error").css("display", "initial")
+		}
 	})
 
 	$("#admin_background_image")[0].addEventListener('load', function()
