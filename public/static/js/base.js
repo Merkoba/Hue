@@ -171,7 +171,7 @@ Hue.commands =
 	'/voicechatmode', '/voicepermission', '/theme', '/textcolormode',
 	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
 	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist',
-	'/accesslog', '/toggleactivtybar'
+	'/accesslog', '/toggleactivtybar', '/thememode'
 ]
 
 Hue.user_settings =
@@ -7900,6 +7900,11 @@ Hue.execute_command = function(message, ans)
 	else if(Hue.oi_startswith(cmd2, '/theme'))
 	{
 		Hue.change_theme(arg)
+	}
+
+	else if(Hue.oi_startswith(cmd2, '/thememode'))
+	{
+		Hue.change_theme_mode(arg)
 	}
 
 	else if(Hue.oi_startswith(cmd2, '/textcolormode'))
