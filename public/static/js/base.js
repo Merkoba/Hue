@@ -885,7 +885,10 @@ Hue.start_socket = function()
 				username: data.username, 
 				message: data.message, 
 				prof_image: data.profile_image,
-				date: data.date
+				date: data.date,
+				link_title: data.link_title,
+				link_image: data.link_image,
+				link_url: data.link_url
 			})
 
 			Hue.hide_pencil()
@@ -2479,6 +2482,12 @@ Hue.apply_theme = function()
 	#activity_bar_container
 	{
 		background-color: ${color_4} !important;
+		color: ${font_color} !important;
+	}
+
+	.link_preview
+	{
+		background-color: ${background_color_2} !important;
 		color: ${font_color} !important;
 	}
 
@@ -5577,7 +5586,10 @@ Hue.update_chat = function(args={})
 		date: false,
 		third_person: false,
 		brk: false,
-		public: true
+		public: true,
+		link_title: false,
+		link_image: false,
+		link_url: false
 	}
 
 	Hue.fill_defaults(args, def_args)
@@ -5639,6 +5651,8 @@ Hue.update_chat = function(args={})
 		pi = args.prof_image
 	}
 
+	let split = args.message.split(" ")
+
 	let image_preview = false
 	let image_preview_src = false
 	let image_preview_src_original = false
@@ -5647,21 +5661,19 @@ Hue.update_chat = function(args={})
 
 	if(!starts_me && Hue.get_setting("show_image_previews"))
 	{
-		let split = args.message.split(" ")
-
 		let num_links = 0
 		let link = false
 
 		for(let sp of split)
 		{
-			if((sp.startsWith("https://") || sp.startsWith("http://")) && sp.includes("imgur.com"))
+			if((sp.startsWith("https://") || sp.startsWith("http://")))
 			{
 				num_links += 1
 				link = sp
 			}
 		}
 
-		if(num_links === 1)
+		if(num_links === 1 && link.includes("imgur.com"))
 		{
 			let code = Hue.utilz.get_imgur_image_code(link, "l")
 
@@ -5686,6 +5698,50 @@ Hue.update_chat = function(args={})
 
 				image_preview = image_preview_array.join(" ")
 			}
+		}
+	}
+
+	let link_preview = false
+
+	if(!starts_me && !image_preview && args.link_url)
+	{
+		let link_preview_s = false
+
+		if(args.link_title && args.link_image)
+		{
+			link_preview_s = 
+			`<div class='link_preview'>
+				<div class='link_preview_title'>${args.link_title}</div>
+				<img class='link_preview_image' src='${args.link_image}'>
+			</div>`
+		}
+
+		else if(args.link_title)
+		{
+			link_preview_s = 
+			`<div class='link_preview'>
+				<div class='link_preview_title'>${args.link_title}</div>
+			</div>`
+		}
+
+		if(link_preview_s)
+		{
+			let link_preview_array = []
+
+			for(let sp of split)
+			{
+				if(sp === args.link_url)
+				{
+					link_preview_array.push(link_preview_s)
+				}
+
+				else
+				{
+					link_preview_array.push(Hue.make_html_safe(sp))
+				}
+			}
+
+			link_preview = link_preview_array.join(" ")
 		}
 	}
 
@@ -5781,6 +5837,11 @@ Hue.update_chat = function(args={})
 			fmessage.find('.chat_content').eq(0).html(image_preview)
 		}
 
+		else if(link_preview)
+		{
+			fmessage.find('.chat_content').eq(0).html(link_preview)
+		}
+
 		else
 		{
 			fmessage.find('.chat_content').eq(0).text(args.message)
@@ -5809,12 +5870,12 @@ Hue.update_chat = function(args={})
 
 	fmessage = Hue.replace_markdown(fmessage)
 
-	if(!image_preview)
+	if(!image_preview && !link_preview)
 	{
 		fmessage.find('.chat_content').eq(0).urlize()
 	}
 
-	else
+	if(image_preview)
 	{
 		let image_preview_el = fmessage.find(".image_preview").eq(0)
 
@@ -5827,6 +5888,26 @@ Hue.update_chat = function(args={})
 		{
 			Hue.goto_bottom(true, false)
 		})
+	}
+
+	if(link_preview)
+	{
+		let link_preview_el = fmessage.find(".link_preview").eq(0)
+
+		link_preview_el.click(function()
+		{
+			Hue.open_url_menu(args.link_url)
+		})
+		
+		let link_preview_image = link_preview_el.find(".link_preview_image").eq(0)
+
+		if(link_preview_image.length > 0)
+		{
+			link_preview_image[0].addEventListener("load", function()
+			{
+				Hue.goto_bottom(true, false)
+			})	
+		}
 	}
 
 	fmessage.find(".whisper_link").each(function()
@@ -12931,6 +13012,9 @@ Hue.show_log_messages = function()
 						username: data.username,
 						message: data.content,
 						prof_image: data.profile_image,
+						link_title: data.link_title,
+						link_image: data.link_image,
+						link_url: data.link_url,
 						date: date,
 						scroll: false
 					})

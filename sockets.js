@@ -10,7 +10,9 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const aws = require('aws-sdk')
 	const jwt = require('jsonwebtoken')
 	const soundcloud = require('node-soundcloud')
-	const image_dimensions = require('image-size');
+	const image_dimensions = require('image-size')
+	const cheerio = require("cheerio")
+	const linkify = require("linkifyjs")
 
 	soundcloud.init(
 	{
@@ -594,32 +596,41 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		let date = Date.now()
 
-		handler.room_emit(socket, 'chat_message',
+		handler.process_message_links(data.message, function(response)
 		{
-			username: socket.hue_username,
-			message: data.message,
-			profile_image: socket.hue_profile_image,
-			date: date
-		})
-
-		if(rooms[socket.hue_room_id].log)
-		{
-			let message =
+			handler.room_emit(socket, 'chat_message',
 			{
-				type: "chat",
-				data:
+				username: socket.hue_username,
+				message: data.message,
+				profile_image: socket.hue_profile_image,
+				date: date,
+				link_title: response.title,
+				link_image: response.image,
+				link_url: response.url
+			})
+
+			if(rooms[socket.hue_room_id].log)
+			{
+				let message =
 				{
-					username: socket.hue_username,
-					content: data.message,
-					profile_image: socket.hue_profile_image
-				},
-				date: date
+					type: "chat",
+					data:
+					{
+						username: socket.hue_username,
+						content: data.message,
+						profile_image: socket.hue_profile_image,
+						link_title: response.title,
+						link_image: response.image,
+						link_url: response.url
+					},
+					date: date
+				}
+
+				handler.push_log_message(socket, message)
 			}
 
-			handler.push_log_message(socket, message)
-		}
-
-		handler.charge_ads(socket.hue_room_id)
+			handler.charge_ads(socket.hue_room_id)
+		})
 	}
 
 	handler.public.change_topic = async function(socket, data)
@@ -4932,6 +4943,58 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			logger.log_error(err)
 		}
+	}
+
+	handler.process_message_links = function(message, callback)
+	{
+		let response = {}
+
+		let links = linkify.find(message)
+
+		if(!links || links.length !== 1)
+		{
+			return callback(response)
+		}
+
+		let href = links[0].href
+
+		if(!href.startsWith("http://") && !href.startsWith("https://"))
+		{
+			return callback(response)
+		}
+
+		let extension = utilz.get_extension(href).toLowerCase()
+
+		if(extension)
+		{
+			if(extension !== "html" && extension !== "php")
+			{
+				return callback(response)
+			}
+		}
+
+		fetch(href)
+		
+		.then(res => 
+		{
+			return res.text()
+		})
+		
+		.then(body => 
+		{
+			let $ = cheerio.load(body)
+
+			response.title = utilz.clean_string2($("title").text().substring(0, config.max_title_length))
+			response.image = $('meta[property="og:image"]').attr('content')
+			response.url = href
+
+			return callback(response)
+		})
+
+		.catch(err =>
+		{
+			return callback(response)
+		})
 	}
 
 	handler.start_room_loop()
