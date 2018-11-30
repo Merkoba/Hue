@@ -5641,23 +5641,38 @@ Hue.update_chat = function(args={})
 
 	let image_preview = false
 	let image_preview_src = false
+	let image_preview_src_original = false
 
-	if(Hue.get_setting("show_image_previews") && args.message.split(" ").length === 1)
+	let starts_me = args.message.startsWith('/me ') || args.message.startsWith('/em ')
+
+	if(!starts_me && Hue.get_setting("show_image_previews"))
 	{
-		if(args.message.includes("imgur.com"))
+		let split = args.message.split(" ")
+
+		let num_links = 0
+		let link = false
+
+		for(let sp of split)
 		{
-			let code = Hue.utilz.get_imgur_image_code(args.message, "l")
+			if((sp.startsWith("https://") || sp.startsWith("http://")) && sp.includes("imgur.com"))
+			{
+				num_links += 1
+				link = sp
+			}
+		}
+
+		if(num_links === 1)
+		{
+			let code = Hue.utilz.get_imgur_image_code(link, "l")
 
 			if(code)
 			{
-				image_preview_src_original = args.message
+				image_preview_src_original = link
 				image_preview_src = `https://i.imgur.com/${code}l.jpg`
-				image_preview = `<img draggable="false" class='image_preview' src='${image_preview_src}'>`
+				image_preview = `<img draggable="false" class="image_preview" src="${image_preview_src}">`
 			}
 		}
 	}
-
-	let starts_me = args.message.startsWith('/me ') || args.message.startsWith('/em ')
 
 	let messageclasses
 
