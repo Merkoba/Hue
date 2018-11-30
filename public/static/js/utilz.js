@@ -344,6 +344,21 @@ const Utilz = function()
 		return re.test(rgb)
 	}
 
+	utilz.get_imgur_image_code = function(src)
+	{
+		let matches = src.match(/https\:\/\/(?:i.)?imgur.com\/(\w+)(?:\.\w+)?$/)
+
+		if(matches)
+		{
+			return matches[1]
+		}
+
+		else
+		{
+			return false
+		}
+	}
+
 	utilz.video_extensions = ["mp4", "webm", "m3u8"]
 	utilz.audio_extensions = ["mp3", "ogg", "wav", "flac"]
 	utilz.image_extensions = ["jpg", "jpeg", "png", "gif"]

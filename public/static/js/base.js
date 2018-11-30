@@ -226,6 +226,7 @@ Hue.user_settings =
 	font_family: {widget_type:"select"},
 	warn_before_closing: {widget_type:"checkbox"},
 	activity_bar: {widget_type:"checkbox"},
+	show_image_previews: {widget_type:"checkbox"},
 	media_display_percentage: {widget_type:"custom"},
 	tv_display_percentage: {widget_type:"custom"},
 	tv_display_position: {widget_type:"custom"}
@@ -5638,6 +5639,24 @@ Hue.update_chat = function(args={})
 		pi = args.prof_image
 	}
 
+	let image_preview = false
+	let image_preview_src = false
+
+	if(Hue.get_setting("show_image_previews") && args.message.split(" ").length === 1)
+	{
+		if(args.message.includes("imgur.com"))
+		{
+			let code = Hue.utilz.get_imgur_image_code(args.message, "l")
+
+			if(code)
+			{
+				image_preview_src_original = args.message
+				image_preview_src = `https://i.imgur.com/${code}l.jpg`
+				image_preview = `<img draggable="false" class='image_preview' src='${image_preview_src}'>`
+			}
+		}
+	}
+
 	let starts_me = args.message.startsWith('/me ') || args.message.startsWith('/em ')
 
 	let messageclasses
@@ -5727,7 +5746,15 @@ Hue.update_chat = function(args={})
 
 		fmessage = $(s)
 
-		fmessage.find('.chat_content').eq(0).text(args.message)
+		if(image_preview)
+		{
+			fmessage.find('.chat_content').eq(0).html(image_preview)
+		}
+
+		else
+		{
+			fmessage.find('.chat_content').eq(0).text(args.message)
+		}
 	}
 
 	let huname = fmessage.find('.chat_uname').eq(0)
@@ -5752,7 +5779,25 @@ Hue.update_chat = function(args={})
 
 	fmessage = Hue.replace_markdown(fmessage)
 
-	fmessage.find('.chat_content').eq(0).urlize()
+	if(!image_preview)
+	{
+		fmessage.find('.chat_content').eq(0).urlize()
+	}
+
+	else
+	{
+		let image_preview_el = fmessage.find(".image_preview").eq(0)
+
+		image_preview_el.click(function()
+		{
+			Hue.open_url_menu(image_preview_src_original)
+		})
+
+		image_preview_el[0].addEventListener("load", function()
+		{
+			Hue.goto_bottom(true, false)
+		})
+	}
 
 	fmessage.find(".whisper_link").each(function()
 	{
@@ -12089,6 +12134,17 @@ Hue.setting_activity_bar_action = function(type, save=true)
 			Hue.hide_activity_bar()
 		}
 	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+
+Hue.setting_show_image_previews_action = function(type, save=true)
+{
+	Hue[type].show_image_previews = $(`#${type}_show_image_previews`).prop("checked")
 
 	if(save)
 	{
