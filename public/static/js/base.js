@@ -5712,7 +5712,7 @@ Hue.update_chat = function(args={})
 		if(args.link_title && args.link_image)
 		{
 			link_preview_s = 
-			`<div class='link_preview'>
+			`<div class='link_preview action'>
 				<div class='link_preview_title'>${args.link_title}</div>
 				<img class='link_preview_image' src='${args.link_image}'>
 			</div>`
@@ -5721,7 +5721,7 @@ Hue.update_chat = function(args={})
 		else if(args.link_title)
 		{
 			link_preview_s = 
-			`<div class='link_preview'>
+			`<div class='link_preview action'>
 				<div class='link_preview_title'>${args.link_title}</div>
 			</div>`
 		}

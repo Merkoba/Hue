@@ -4978,8 +4978,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		}
 
-		console.log(href)
-
 		fetch(href)
 		
 		.then(res => 
