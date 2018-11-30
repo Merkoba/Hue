@@ -2488,7 +2488,7 @@ Hue.apply_theme = function()
 
 	.link_preview
 	{
-		background-color: ${background_color_2} !important;
+		background-color: ${color_4} !important;
 		color: ${font_color} !important;
 	}
 

@@ -2171,4 +2171,5 @@ input[type=text], textarea
 	margin: 1rem;
 	margin-top: 0rem;
 	max-width: 250px;
+	max-height: 500px;
 }
