@@ -524,6 +524,9 @@ If you want to remove it to start fresh:
 "global_settings_default_show_image_previews"
 >Whether image links get a preview on the chat area by default. This only works with certain links, including direct Imgur links.
 
+"global_settings_default_show_link_previews"
+>Whether links get a preview on the chat area by default.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 
