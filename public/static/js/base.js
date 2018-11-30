@@ -5669,7 +5669,22 @@ Hue.update_chat = function(args={})
 			{
 				image_preview_src_original = link
 				image_preview_src = `https://i.imgur.com/${code}l.jpg`
-				image_preview = `<img draggable="false" class="image_preview" src="${image_preview_src}">`
+				image_preview_array = []
+
+				for(let sp of split)
+				{
+					if(sp === link)
+					{
+						image_preview_array.push(`<img draggable="false" class="image_preview" src="${image_preview_src}">`)
+					}
+
+					else
+					{
+						image_preview_array.push(Hue.make_html_safe(sp))
+					}
+				}
+
+				image_preview = image_preview_array.join(" ")
 			}
 		}
 	}
@@ -16341,6 +16356,12 @@ Hue.make_safe = function(args={})
 	}
 
 	return c[0]
+}
+
+Hue.make_html_safe = function(s)
+{
+	let replaced = s.replace(/\</g, "&lt;").replace(/\>/g, "&gt;")
+	return replaced
 }
 
 Hue.activity_above = function(animate=true)
