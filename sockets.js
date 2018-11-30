@@ -4963,6 +4963,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return callback(response)
 		}
 
+		if(href === "http://localhost" || href === "https://localhost")
+		{
+			return callback(response)
+		}
+
 		let extension = utilz.get_extension(href).toLowerCase()
 
 		if(extension)
@@ -4972,6 +4977,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return callback(response)
 			}
 		}
+
+		console.log(href)
 
 		fetch(href)
 		
