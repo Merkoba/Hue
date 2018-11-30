@@ -2289,6 +2289,7 @@ Hue.apply_theme = function()
 
 	let color_3 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.color_contrast_amount_3)
 	let color_4 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.color_contrast_amount_4)
+	let color_4_a = Hue.colorlib.rgb_to_rgba(color_4, Hue.opacity_amount_3)
 	let overlay_color = Hue.colorlib.rgb_to_rgba(color_3, Hue.opacity_amount_2)
 	let cfsize = Hue.get_setting("chat_font_size")
 
@@ -2488,7 +2489,7 @@ Hue.apply_theme = function()
 
 	.link_preview
 	{
-		background-color: ${color_4} !important;
+		background-color: ${color_4_a} !important;
 		color: ${font_color} !important;
 	}
 
