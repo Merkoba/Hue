@@ -346,7 +346,7 @@ const Utilz = function()
 
 	utilz.get_imgur_image_code = function(src)
 	{
-		let matches = src.match(/https\:\/\/(?:i.)?imgur.com\/(\w+)(?:\.\w+)?$/)
+		let matches = src.match(/https\:\/\/(?:i.)?imgur.com\/(\w{5,7})(?:\.\w+)?$/)
 
 		if(matches)
 		{
