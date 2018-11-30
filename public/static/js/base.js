@@ -227,6 +227,7 @@ Hue.user_settings =
 	warn_before_closing: {widget_type:"checkbox"},
 	activity_bar: {widget_type:"checkbox"},
 	show_image_previews: {widget_type:"checkbox"},
+	show_link_previews: {widget_type:"checkbox"},
 	media_display_percentage: {widget_type:"custom"},
 	tv_display_percentage: {widget_type:"custom"},
 	tv_display_position: {widget_type:"custom"}
@@ -5703,7 +5704,7 @@ Hue.update_chat = function(args={})
 
 	let link_preview = false
 
-	if(!starts_me && !image_preview && args.link_url)
+	if(!starts_me && !image_preview && args.link_url && Hue.get_setting("show_link_previews"))
 	{
 		let link_preview_s = false
 
@@ -12252,10 +12253,19 @@ Hue.setting_activity_bar_action = function(type, save=true)
 	}
 }
 
-
 Hue.setting_show_image_previews_action = function(type, save=true)
 {
 	Hue[type].show_image_previews = $(`#${type}_show_image_previews`).prop("checked")
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_show_link_previews_action = function(type, save=true)
+{
+	Hue[type].show_link_previews = $(`#${type}_show_link_previews`).prop("checked")
 
 	if(save)
 	{

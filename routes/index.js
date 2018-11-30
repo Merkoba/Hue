@@ -107,6 +107,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.global_settings_default_warn_before_closing = config.global_settings_default_warn_before_closing
 	c.vars.global_settings_default_activity_bar = config.global_settings_default_activity_bar
 	c.vars.global_settings_default_show_image_previews = config.global_settings_default_show_image_previews
+	c.vars.global_settings_default_show_link_previews = config.global_settings_default_show_link_previews
 	c.vars.room_state_default_images_enabled = config.room_state_default_images_enabled
 	c.vars.room_state_default_tv_enabled = config.room_state_default_tv_enabled
 	c.vars.room_state_default_radio_enabled = config.room_state_default_radio_enabled
