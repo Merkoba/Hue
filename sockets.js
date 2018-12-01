@@ -13,6 +13,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const image_dimensions = require('image-size')
 	const cheerio = require("cheerio")
 	const linkify = require("linkifyjs")
+	const redis = require("redis")
 
 	soundcloud.init(
 	{
@@ -38,6 +39,15 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			accessKeyId: sconfig.s3_access_key,
 			secretAccessKey: sconfig.s3_secret_access_key
 		}
+	})
+
+	let redis_client_ready = false
+
+	const redis_client = redis.createClient()
+
+	redis_client.select(10, function()
+	{
+		redis_client_ready = true
 	})
 
 	const rooms = {}
@@ -4947,28 +4957,65 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.process_message_links = function(message, callback)
 	{
-		let response = {}
-
 		let links = linkify.find(message)
 
 		if(!links || links.length !== 1)
 		{
-			return callback(response)
+			return callback({})
 		}
 
-		let href = links[0].href
+		let url = links[0].href
 
-		if(!href.startsWith("http://") && !href.startsWith("https://"))
+		if(redis_client_ready)
+		{
+			redis_client.hgetall(`hue_link_${url}`, function(err, reply)
+			{
+				if(err)
+				{
+					return callback({})
+				}
+
+				if(reply)
+				{
+					if(Date.now() - reply.date > config.redis_max_link_age)
+					{
+						return handler.get_link_metadata(url, callback)
+					}
+
+					else
+					{
+						return callback(reply)
+					}
+				}
+
+				else
+				{
+					return handler.get_link_metadata(url, callback)
+				}
+			})
+		}
+
+		else
+		{
+			return handler.get_link_metadata(url, callback)
+		}
+	}
+
+	handler.get_link_metadata = function(url, callback)
+	{
+		let response = {}
+
+		if(!url.startsWith("http://") && !url.startsWith("https://"))
 		{
 			return callback(response)
 		}
 
-		if(href === "http://localhost" || href === "https://localhost")
+		if(url === "http://localhost" || url === "https://localhost")
 		{
 			return callback(response)
 		}
 
-		let extension = utilz.get_extension(href).toLowerCase()
+		let extension = utilz.get_extension(url).toLowerCase()
 
 		if(extension)
 		{
@@ -4978,7 +5025,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		}
 
-		fetch(href)
+		fetch(url)
 		
 		.then(res => 
 		{
@@ -4989,9 +5036,21 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			let $ = cheerio.load(body)
 
-			response.title = utilz.clean_string2($("title").text().substring(0, config.max_title_length))
-			response.image = $('meta[property="og:image"]').attr('content')
-			response.url = href
+			response.title = utilz.clean_string2($("title").text().substring(0, config.max_title_length)) || ""
+			response.image = $('meta[property="og:image"]').attr('content') || ""
+			response.url = url
+
+			if(redis_client_ready)
+			{
+				redis_client.hmset
+				(
+					`hue_link_${url}`, 
+					"title", response.title, 
+					"image", response.image, 
+					"url", response.url,
+					"date", Date.now()
+				)
+			}
 
 			return callback(response)
 		})

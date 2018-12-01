@@ -5664,6 +5664,7 @@ Hue.update_chat = function(args={})
 	if(!starts_me && Hue.get_setting("show_image_previews"))
 	{
 		let num_links = 0
+		
 		let link = false
 
 		for(let sp of split)

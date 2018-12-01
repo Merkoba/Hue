@@ -205,5 +205,6 @@
 	"activity_bar_trigger_interval": 60000,
 	"max_activity_bar_items": 20,
 	"old_activity_min": 21600000,
-	"default_favicon_color": "rgb(192,109,207)"
+	"default_favicon_color": "rgb(192,109,207)",
+	"redis_max_link_age": 86400000
 }

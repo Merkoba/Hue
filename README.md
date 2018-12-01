@@ -51,6 +51,7 @@ Creating an account is email based. There is no third party auth, except an opti
 Requirements:
 - Node 10+
 - MongoDB 3+
+- Redis 3+
 
 Configuration is done in user_config.json and user_config.secret.json files placed in the config directory. You must create these files. If they are not going to be used, create empty json objects like {}, or error messages will be shown at startup.
 
@@ -85,6 +86,8 @@ You will also need MongoDB installed in your computer, and the mongod daemon run
 >systemctl start mongod
 
 There is no need to create database tables, all of that is done automatically.
+
+Redis is now required, to store link metadata in database 10. Install and setup Redis.
 
 Go to the bin directory and run: 
 
@@ -700,6 +703,9 @@ This should be an array of strings of root domains.
 
 "old_activity_min"
 >The minimum difference to show the old activity message between messages. The message is created automatically, using different wording depending if the difference is in minutes, hours, days, or years.
+
+"redis_max_link_age"
+>How old link data has to be to be fetched again.
 
 
 ## The following reside in config.secret.json
