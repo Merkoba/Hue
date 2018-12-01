@@ -5677,11 +5677,13 @@ Hue.update_chat = function(args={})
 
 		if(num_links === 1 && link.includes("imgur.com"))
 		{
-			let code = Hue.utilz.get_imgur_image_code(link, "l")
+			let code = Hue.utilz.get_imgur_image_code(link)
 
 			if(code)
 			{
-				image_preview_src_original = link
+				let extension = Hue.utilz.get_extension(link)
+
+				image_preview_src_original = `https://i.imgur.com/${code}.${extension}`
 				image_preview_src = `https://i.imgur.com/${code}l.jpg`
 				image_preview_array = []
 
