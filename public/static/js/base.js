@@ -18935,7 +18935,7 @@ Hue.format_command_aliases = function(cmds)
 
 Hue.open_url_menu = function(src)
 {
-	let n = 35
+	let n = 50
 
 	let s
 
