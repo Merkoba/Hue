@@ -2160,8 +2160,8 @@ input[type=text], textarea
 
 .link_preview_url
 {
-	margin: 1rem;
-	margin-bottom: 0;
+	margin-left: 1rem;
+	margin-right: 1rem;
 	font-size: 1rem;
 	text-decoration: underline;
 }
@@ -2169,7 +2169,8 @@ input[type=text], textarea
 
 .link_preview_title
 {
-	margin: 1rem;
+	margin-left: 1rem;
+	margin-right: 1rem;
 	font-size: 1.1rem;
 	overflow-wrap: break-word;
 	word-break: break-word;
@@ -2177,7 +2178,8 @@ input[type=text], textarea
 
 .link_preview_image
 {
-	margin: 1rem;
+	margin-left: 1rem;
+	margin-right: 1rem;
 	margin-top: 0rem;
 	max-width: 250px;
 	max-height: 500px;
