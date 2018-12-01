@@ -5713,6 +5713,7 @@ Hue.update_chat = function(args={})
 		{
 			link_preview_s = 
 			`<div class='link_preview action'>
+				<div class='link_preview_url'>${args.link_url}</div>
 				<div class='link_preview_title'>${args.link_title}</div>
 				<img class='link_preview_image' src='${args.link_image}'>
 			</div>`
@@ -5722,6 +5723,7 @@ Hue.update_chat = function(args={})
 		{
 			link_preview_s = 
 			`<div class='link_preview action'>
+				<div class='link_preview_url'>${args.link_url.substring(0, 100)}</div>
 				<div class='link_preview_title'>${args.link_title}</div>
 			</div>`
 		}

@@ -2158,6 +2158,15 @@ input[type=text], textarea
 	margin-bottom: 0.5rem;
 }
 
+.link_preview_url
+{
+	margin: 1rem;
+	margin-bottom: 0;
+	font-size: 1rem;
+	text-decoration: underline;
+}
+
+
 .link_preview_title
 {
 	margin: 1rem;
