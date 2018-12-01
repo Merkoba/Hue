@@ -2164,6 +2164,8 @@ input[type=text], textarea
 	margin-right: 1rem;
 	font-size: 1rem;
 	text-decoration: underline;
+	overflow-wrap: break-word;
+	word-break: break-word;
 }
 
 
