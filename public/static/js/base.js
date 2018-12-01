@@ -5718,7 +5718,7 @@ Hue.update_chat = function(args={})
 				<div class='spacer3'></div>
 				<div class='link_preview_title'>${args.link_title}</div>
 				<div class='spacer3'></div>
-				<img class='link_preview_image' src='${args.link_image}'>
+				<div><img class='link_preview_image' src='${args.link_image}'></div>
 				<div class='spacer3'></div>
 			</div>`
 		}
