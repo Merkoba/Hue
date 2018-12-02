@@ -467,6 +467,12 @@ div#header_radio_playing_icon
 	overflow: hidden;
 }
 
+.chat_container
+{
+	width: 100%;
+	position: relative;
+}
+
 .chat_content_container
 {
 	display: flex;

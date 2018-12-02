@@ -5914,8 +5914,13 @@ Hue.update_chat = function(args={})
 					<div class='chat_uname action'></div><div>:</div>
 				</div>
 				<div class='chat_container'>
-					<div class='chat_content_container'>
+					<div class='chat_content_container ${chat_menu_button_main_class}'>
+						<div class='chat_menu_button_container'>
+							<div class='chat_menu_button chat_menu_button_edit'>Edit</div>
+							<div class='chat_menu_button chat_menu_button_remove'>Remove</div>
+						</div>
 						<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
+						<textarea class='message_edit_area'></textarea>
 					</div>
 				</div>
 			</div>`
@@ -20508,7 +20513,7 @@ Hue.send_edit_messsage = function(id)
 
 	let area = $(Hue.editing_message_container).find(".message_edit_area").get(0)
 
-	let new_message = area.value
+	let new_message = area.value.trim()
 
 	let edit_id = $(Hue.editing_message_container).data("id")
 
