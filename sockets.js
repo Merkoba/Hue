@@ -650,6 +650,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 							edited = true
 							break
 						}
+
+						else
+						{
+							return handler.get_out(socket)
+						}
 					}
 				}
 
@@ -4300,6 +4305,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					})
 
 					break
+				}
+
+				else
+				{
+					return handler.get_out(socket)
 				}
 			}
 		}

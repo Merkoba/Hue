@@ -2497,7 +2497,7 @@ Hue.apply_theme = function()
 
 	.chat_menu_button:hover
 	{
-		background-color: ${color_3} !important;
+		background-color: ${color_4} !important;
 	}
 
 	.chat_menu_button_main:hover
@@ -20632,7 +20632,7 @@ Hue.remove_message = function(id)
 		return false
 	}
 
-	let r = confirm("Are you sure?")
+	let r = confirm("Are you sure you want to remove this message?")
 
 	if(r)
 	{
