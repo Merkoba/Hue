@@ -5931,9 +5931,11 @@ Hue.update_chat = function(args={})
 							<div class='chat_menu_button chat_menu_button_remove'>Remove</div>
 						</div>
 						<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
-						<textarea class='message_edit_area'></textarea>
-						<div class='message_edit_buttons unselectable'>
-							<div class='pointer message_edit_cancel'>Cancel</div>
+						<div class='message_edit_container'>
+							<textarea class='message_edit_area'></textarea>
+							<div class='message_edit_buttons unselectable'>
+								<div class='pointer message_edit_cancel'>Cancel</div>
+							</div>
 						</div>
 					</div>
 				</div>
