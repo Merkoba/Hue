@@ -5566,6 +5566,11 @@ Hue.start_chat_mouse_events = function()
 		let id = $(this).closest(".chat_content_container").data("id")
 		Hue.remove_message(id)
 	})
+
+	$("#chat_area").on("click", ".message_edit_cancel", function()
+	{
+		Hue.stop_edit_message()
+	})
 }
 
 Hue.start_chat_hover_events = function()
@@ -5899,7 +5904,12 @@ Hue.update_chat = function(args={})
 								<div class='chat_menu_button chat_menu_button_remove'>Remove</div>
 							</div>
 							<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
-							<textarea class='message_edit_area'></textarea>
+							<div class='message_edit_container'>
+								<textarea class='message_edit_area'></textarea>
+								<div class='message_edit_buttons'>
+									<div class='pointer message_edit_cancel'>Cancel</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -20438,6 +20448,19 @@ Hue.push_to_activity_bar = function(uname, date)
 	}
 }
 
+Hue.edit_last_message = function()
+{
+	$($(".message").get().reverse()).each(function()
+	{
+		if($(this).data("user_id") === Hue.user_id)
+		{
+			let content_container = $(this).find(".chat_content_container").last().get(0)
+			Hue.edit_message(content_container)
+			return false
+		}
+	})
+}
+
 Hue.edit_message = function(container)
 {
 	if(Hue.editing_message)
@@ -20445,10 +20468,11 @@ Hue.edit_message = function(container)
 		Hue.stop_edit_message()
 	}
 
+	let edit_container = $(container).find(".message_edit_container").get(0)
 	let area = $(container).find(".message_edit_area").get(0)
 	let chat_content = $(container).find(".chat_content").get(0)
 	
-	$(area).css("display", "block")
+	$(edit_container).css("display", "block")
 
 	$(chat_content).css("display", "none")
 
@@ -20464,20 +20488,10 @@ Hue.edit_message = function(container)
 		area.setSelectionRange(area.value.length, area.value.length)
 	}, 10)
 
-	Hue.chat_scroll_bottom(false, false)
-}
+	area.scrollIntoView({block:"center"})
 
-Hue.edit_last_message = function()
-{
-	$($(".message").get().reverse()).each(function()
-	{
-		if($(this).data("user_id") === Hue.user_id)
-		{
-			let content_container = $(this).find(".chat_content_container").last().get(0)
-			Hue.edit_message(content_container)
-			return false
-		}
-	})
+	Hue.update_chat_scrollbar()
+	Hue.check_scrollers()
 }
 
 Hue.stop_edit_message = function()
@@ -20487,10 +20501,11 @@ Hue.stop_edit_message = function()
 		return false
 	}
 
+	let edit_container = $(Hue.editing_message_container).find(".message_edit_container").get(0)
 	let area = $(Hue.editing_message_container).find(".message_edit_area").get(0)
 	let chat_content = $(Hue.editing_message_container).find(".chat_content").get(0)
 	
-	$(area).css("display", "none")
+	$(edit_container).css("display", "none")
 
 	$(area).val("")
 

@@ -2228,14 +2228,29 @@ input[type=text], textarea
 	max-height: 500px;
 }
 
-.message_edit_area
+.message_edit_container
 {
 	display: none;
-	resize: none;
 	width: 90%;
+	position: relative;
+}
+
+.message_edit_area
+{
+	resize: none;
 	font-size: 1rem;
 	height: 4rem;
-	padding: 0.5rem;
+	padding: 0.2rem;
 	outline: none;
 	border: 1px solid grey;
+	position: relative;
+	width: 100%;
+}
+
+.message_edit_buttons
+{
+	display: flex;
+	justify-content: flex-end;
+	position: relative;
+	width: 100%;
 }
