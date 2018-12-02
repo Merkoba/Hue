@@ -312,7 +312,21 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			socket.hue_user_id = userinfo._id.toString()
 
-			let info = await db_manager.get_room({_id:data.room_id}, {})
+			let get_log_messages = true
+
+			if(rooms[data.room_id])
+			{
+				get_log_messages = false
+			}
+
+			let fields = {}
+
+			if(rooms[data.room_id])
+			{
+				fields = {log_messages:0}
+			}
+
+			let info = await db_manager.get_room({_id:data.room_id}, fields)
 
 			if(!info)
 			{
@@ -347,7 +361,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					socket.hue_user_id = data.user_id
 
-					let info = await db_manager.get_room({_id:data.room_id}, {})
+					let fields = {}
+
+					if(rooms[data.room_id])
+					{
+						fields = {log_messages: 0}
+					}
+
+					let info = await db_manager.get_room({_id:data.room_id}, fields)
 
 					if(!info)
 					{
@@ -356,10 +377,10 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 					let userinfo = await db_manager.get_user({_id:socket.hue_user_id},
 					{
-						email: true,
-						username: true,
-						profile_image: true,
-						registration_date: true
+						email: 1,
+						username: 1,
+						profile_image: 1,
+						registration_date: 1
 					})
 
 					if(!userinfo)
@@ -498,7 +519,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			topic_date: info.topic_date,
 			userlist: handler.prepare_userlist(handler.get_userlist(socket.hue_room_id)),
 			log: info.log,
-			log_messages: info.log_messages.concat(rooms[socket.hue_room_id].log_messages),
+			log_messages: rooms[socket.hue_room_id].log_messages,
 			role: socket.hue_role,
 			public: info.public,
 			image_type: info.image_type,
@@ -597,49 +618,94 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(data.message.split("\n").length > config.max_num_newlines)
 		{
 			return handler.get_out(socket)
-		}		
+		}
 
 		if(!handler.check_permission(socket, "chat"))
 		{
 			return false
 		}
 
-		let date = Date.now()
-
 		handler.process_message_links(data.message, function(response)
 		{
+			let id
+			let date
+			let edit
+			let edited = false
+			let edited_date = false
+
+			if(data.edit_id)
+			{
+				let messages = rooms[socket.hue_room_id].log_messages
+
+				for(let i=0; i<messages.length; i++)
+				{
+					let message = messages[i]
+
+					if(message.data.id === data.edit_id)
+					{
+						message.data.content = data.message
+						date = message.date
+						edited = true
+						break
+					}
+				}
+
+				if(!edited)
+				{
+					return false
+				}
+
+				id = data.edit_id
+				edit = true
+			}
+
+			else
+			{
+				date = Date.now()
+				id = `${date}_${utilz.get_random_int(1, 1000)}`
+				edit = false
+			}
+
 			handler.room_emit(socket, 'chat_message',
 			{
+				id: id,
+				user_id: socket.hue_user_id,
 				username: socket.hue_username,
 				message: data.message,
 				profile_image: socket.hue_profile_image,
 				date: date,
 				link_title: response.title,
 				link_image: response.image,
-				link_url: response.url
+				link_url: response.url,
+				edit: edit
 			})
 
-			if(rooms[socket.hue_room_id].log)
+			if(!data.edit_id)
 			{
-				let message =
+				if(rooms[socket.hue_room_id].log)
 				{
-					type: "chat",
-					data:
+					let message =
 					{
-						username: socket.hue_username,
-						content: data.message,
-						profile_image: socket.hue_profile_image,
-						link_title: response.title,
-						link_image: response.image,
-						link_url: response.url
-					},
-					date: date
+						type: "chat",
+						data:
+						{
+							id: id,
+							user_id: socket.hue_user_id,
+							username: socket.hue_username,
+							content: data.message,
+							profile_image: socket.hue_profile_image,
+							link_title: response.title,
+							link_image: response.image,
+							link_url: response.url
+						},
+						date: date
+					}
+
+					handler.push_log_message(socket, message)
 				}
 
-				handler.push_log_message(socket, message)
+				handler.charge_ads(socket.hue_room_id)
 			}
-
-			handler.charge_ads(socket.hue_room_id)
 		})
 	}
 
@@ -670,7 +736,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {topic:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {topic:1})
 
 		let new_topic = data.topic
 
@@ -717,7 +783,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {name:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {name:1})
 
 		if(info.name !== data.name)
 		{
@@ -833,9 +899,9 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:1})
 
-		let userinfo = await db_manager.get_user({username:data.username}, {username:true})
+		let userinfo = await db_manager.get_user({username:data.username}, {username:1})
 
 		if(!userinfo)
 		{
@@ -907,7 +973,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:1})
 
 		let removed = false
 
@@ -952,7 +1018,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:1})
 
 		let removed = false
 
@@ -1063,9 +1129,9 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:true, keys:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:1, keys:1})
 
-		let userinfo = await db_manager.get_user({username:data.username}, {username:true})
+		let userinfo = await db_manager.get_user({username:data.username}, {username:1})
 
 		if(!userinfo)
 		{
@@ -1148,9 +1214,9 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:true, keys:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:1, keys:1})
 
-		let userinfo = await db_manager.get_user({username:data.username}, {username:true})
+		let userinfo = await db_manager.get_user({username:data.username}, {username:1})
 
 		if(!userinfo)
 		{
@@ -1194,7 +1260,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:1})
 
 		if(info.bans.length > 0)
 		{
@@ -1220,7 +1286,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:1})
 
 		let count
 
@@ -1249,7 +1315,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {log:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {log:1})
 
 		if(info.log !== data.log)
 		{
@@ -1302,7 +1368,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {log_messages:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {log_messages:1})
 
 		if(info.log_messages.length > 0 || rooms[socket.hue_room_id].log_messages.length > 0)
 		{
@@ -2824,7 +2890,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		let roomlist = []
 
-		let userinfo = await db_manager.get_user({_id:user_id}, {visited_rooms:true})
+		let userinfo = await db_manager.get_user({_id:user_id}, {visited_rooms:1})
 
 		let mids = []
 
@@ -3192,7 +3258,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			let info = await db_manager.get_room({_id:room_id}, {stored_images:true})
+			let info = await db_manager.get_room({_id:room_id}, {stored_images:1})
 
 			info.stored_images.unshift(data.fname)
 
@@ -3371,7 +3437,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.do_change_profile_image = async function(socket, fname)
 	{
-		let userinfo = await db_manager.get_user({_id:socket.hue_user_id}, {profile_image_version:true})
+		let userinfo = await db_manager.get_user({_id:socket.hue_user_id}, {profile_image_version:1})
 
 		let new_ver = userinfo.profile_image_version + 1
 
@@ -3539,7 +3605,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.do_change_background_image = async function(socket, fname, type)
 	{
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {background_image:true, background_image_type:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {background_image:1, background_image_type:1})
 
 		let image_url
 
@@ -4106,7 +4172,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {admin_log_messages:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {admin_log_messages:1})
 
 		let messages = info.admin_log_messages.concat(rooms[socket.hue_room_id].admin_log_messages)
 
@@ -4120,7 +4186,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {access_log_messages:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {access_log_messages:1})
 
 		let messages = info.access_log_messages.concat(rooms[socket.hue_room_id].access_log_messages)
 
@@ -4134,7 +4200,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:true})
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:1})
 
 		let roles = {}
 		
@@ -4157,7 +4223,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		let users = await db_manager.get_user({_id:{$in:ids}}, {username:true})
+		let users = await db_manager.get_user({_id:{$in:ids}}, {username:1})
 
 		if(users.length === 0)
 		{
@@ -4175,7 +4241,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, 'receive_admin_list', {list:list})
 	}
 
-	handler.public.activity_trigger = async function(socket, action)
+	handler.public.activity_trigger = async function(socket, data)
 	{
 		if(!handler.check_permission(socket, "chat"))
 		{
@@ -4204,6 +4270,36 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			username: socket.hue_username
 		})
+	}
+
+	handler.public.remove_message = function(socket, data)
+	{
+		if(!data.id)
+		{
+			return handler.get_out(socket)
+		}
+
+		let messages = rooms[socket.hue_room_id].log_messages
+
+		for(let i=0; i<messages.length; i++)
+		{
+			let message = messages[i]
+
+			if(message.data.id && message.data.id == data.id)
+			{
+				if(message.data.user_id === socket.hue_user_id)
+				{
+					messages.splice(i, 1)
+
+					handler.room_emit(socket, 'message_removed',
+					{
+						id: message.data.id
+					})
+
+					break
+				}
+			}
+		}
 	}
 
 	handler.charge_ads = function(room_id)
@@ -4319,7 +4415,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			_id: info._id.toString(),
 			activity: false,
 			log: info.log,
-			log_messages: [],
+			log_messages: info.log_messages,
+			log_messages_modifed: false,
 			admin_log_messages: [],
 			access_log_messages: [],
 			userlist: {},
@@ -4373,10 +4470,10 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 					if(room.activity)
 					{
-						if(room.log_messages.length > 0)
+						if(room.log_messages_modifed)
 						{
 							db_manager.push_log_messages(room._id, room.log_messages)
-							room.log_messages = []
+							room.log_messages_modifed = false
 						}
 
 						if(room.admin_log_messages.length > 0)
@@ -4868,7 +4965,15 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		rooms[room_id].activity = true
+
 		rooms[room_id].log_messages.push(message)
+
+		if(rooms[room_id].log_messages.length > config.max_log_messages)
+		{
+			rooms[room_id].log_messages = rooms[room_id].log_messages.slice(rooms[room_id].log_messages.length - config.max_log_messages)
+		}
+
+		rooms[room_id].log_messages_modifed = true
 	}
 
 	handler.push_admin_log_message = function(socket, content)
@@ -4911,7 +5016,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		try
 		{
-
 			let list_type = config[`${media_type}_domain_white_or_black_list`]
 
 			if(list_type !== "white" && list_type !== "black")

@@ -122,6 +122,8 @@ Hue.activity_list = []
 Hue.HOUR = 3600000
 Hue.DAY = 86400000
 Hue.YEAR = 31536000000
+Hue.editing_message = false
+Hue.editing_message_container = false
 
 Hue.commands = 
 [
@@ -883,13 +885,16 @@ Hue.start_socket = function()
 		{
 			Hue.update_chat(
 			{
+				id: data.id,
+				user_id: data.user_id,
 				username: data.username, 
 				message: data.message, 
 				prof_image: data.profile_image,
 				date: data.date,
 				link_title: data.link_title,
 				link_image: data.link_image,
-				link_url: data.link_url
+				link_url: data.link_url, 
+				edit: data.edit
 			})
 
 			Hue.hide_pencil()
@@ -1332,6 +1337,11 @@ Hue.start_socket = function()
 		else if(data.type === 'activity_trigger')
 		{
 			Hue.push_to_activity_bar(data.username, Date.now())
+		}
+
+		else if(data.type === 'message_removed')
+		{
+			Hue.remove_message_from_chat(data)
 		}
 	})
 }
@@ -2476,9 +2486,24 @@ Hue.apply_theme = function()
 		max-width: ${profile_image_size} !important;
 	}
 
-	.jump_button
+	.jump_button, .chat_menu_button
 	{
 		background-color: ${background_color_2} !important;
+	}
+
+	.chat_menu_button
+	{
+		border-left: 1px solid ${color_4_a} !important;
+	}
+
+	.chat_menu_button:hover
+	{
+		background-color: ${color_3} !important;
+	}
+
+	.chat_menu_button_main:hover
+	{
+		background-color: ${color_4_a} !important;
 	}
 
 	#activity_bar_container
@@ -2488,6 +2513,12 @@ Hue.apply_theme = function()
 	}
 
 	.link_preview
+	{
+		background-color: ${color_4_a} !important;
+		color: ${font_color} !important;
+	}
+
+	.message_edit_area
 	{
 		background-color: ${color_4_a} !important;
 		color: ${font_color} !important;
@@ -4741,6 +4772,21 @@ Hue.activate_key_detection = function()
 			}
 		}
 
+		if(Hue.editing_message)
+		{
+			if(e.key === "Enter")
+			{
+				Hue.send_edit_messsage()
+			}
+
+			else if(e.key === "Escape")
+			{
+				Hue.stop_edit_message()
+			}
+
+			return false
+		}
+
 		Hue.focus_input()
 
 		if(e.key === "Enter")
@@ -4775,11 +4821,7 @@ Hue.activate_key_detection = function()
 
 			else
 			{
-				if(!Hue.input_is_scrolled())
-				{
-					Hue.scroll_up(Hue.small_keyboard_scroll)
-					e.preventDefault()
-				}
+				Hue.edit_last_message()
 			}
 
 			return
@@ -4797,15 +4839,6 @@ Hue.activate_key_detection = function()
 			{
 				Hue.activity_below()
 				e.preventDefault()
-			}
-
-			else
-			{
-				if(!Hue.input_is_scrolled())
-				{
-					Hue.scroll_down(Hue.small_keyboard_scroll)
-					e.preventDefault()
-				}
 			}
 
 			return
@@ -5521,7 +5554,20 @@ Hue.start_chat_mouse_events = function()
 	{
 		Hue.show_profile($(this).closest(".chat_message").find(".chat_uname").eq(0).text(), $(this).attr("src"))
 	})
+
+	$("#chat_area").on("click", ".chat_menu_button_edit", function()
+	{
+		let container = $(this).closest(".chat_content_container").get(0)
+		Hue.edit_message(container)
+	})
+
+	$("#chat_area").on("click", ".chat_menu_button_remove", function()
+	{
+		let id = $(this).closest(".chat_content_container").data("id")
+		Hue.remove_message(id)
+	})
 }
+
 Hue.start_chat_hover_events = function()
 {
 	$("#chat_area").on("mouseenter", ".chat_uname, .chat_profile_image, .brk", function()
@@ -5582,6 +5628,8 @@ Hue.update_chat = function(args={})
 {
 	let def_args =
 	{
+		id: false,
+		user_id: false,
 		username: "",
 		message: "",
 		prof_image: "",
@@ -5591,7 +5639,8 @@ Hue.update_chat = function(args={})
 		public: true,
 		link_title: false,
 		link_image: false,
-		link_url: false
+		link_url: false,
+		edit: false
 	}
 
 	Hue.fill_defaults(args, def_args)
@@ -5784,6 +5833,13 @@ Hue.update_chat = function(args={})
 	}
 
 	let fmessage
+
+	let chat_menu_button_main_class = ""
+
+	if(args.id)
+	{
+		chat_menu_button_main_class = "chat_menu_button_main"
+	}
 	
 	if(starts_me || args.third_person)
 	{
@@ -5836,8 +5892,15 @@ Hue.update_chat = function(args={})
 					<div class='chat_uname_container'>
 						<div class='chat_uname action'></div>
 					</div>
-					<div class='chat_content_container'>
-						<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
+					<div class='chat_container'>
+						<div class='chat_content_container ${chat_menu_button_main_class}'>
+							<div class='chat_menu_button_container'>
+								<div class='chat_menu_button chat_menu_button_edit'>Edit</div>
+								<div class='chat_menu_button chat_menu_button_remove'>Remove</div>
+							</div>
+							<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
+							<textarea class='message_edit_area'></textarea>
+						</div>
 					</div>
 				</div>
 			</div>`
@@ -5850,8 +5913,10 @@ Hue.update_chat = function(args={})
 				<div class='chat_uname_container'>
 					<div class='chat_uname action'></div><div>:</div>
 				</div>
-				<div class='chat_content_container'>
-					<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
+				<div class='chat_container'>
+					<div class='chat_content_container'>
+						<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
+					</div>
 				</div>
 			</div>`
 		}
@@ -5888,6 +5953,7 @@ Hue.update_chat = function(args={})
 		}
 	})
 
+	fmessage.data("user_id", args.user_id)
 	fmessage.data("public", args.public)
 	fmessage.data("date", d)
 	fmessage.data("highlighted", highlighted)
@@ -5896,9 +5962,14 @@ Hue.update_chat = function(args={})
 
 	fmessage = Hue.replace_markdown(fmessage)
 
+	let chat_content_container = fmessage.find(".chat_content_container").eq(0)
+	let chat_content = fmessage.find(".chat_content").eq(0)
+
+	chat_content_container.data("id", args.id)
+
 	if(!image_preview && !link_preview)
 	{
-		fmessage.find('.chat_content').eq(0).urlize()
+		chat_content.urlize()
 	}
 
 	if(image_preview)
@@ -5944,7 +6015,7 @@ Hue.update_chat = function(args={})
 		})
 	})
 
-	Hue.add_to_chat(fmessage, true)
+	Hue.add_to_chat({message:fmessage, save:true, id:args.id, edit:args.edit})
 
 	if(args.username !== Hue.username)
 	{
@@ -5962,8 +6033,24 @@ Hue.update_chat = function(args={})
 	}
 }
 
-Hue.add_to_chat = function(message, save=false, notify=true)
+Hue.add_to_chat = function(args={})
 {
+	let def_args =
+	{
+		message: false,
+		save: false,
+		notify: true,
+		id: false,
+		edit: false
+	}
+
+	Hue.fill_defaults(args, def_args)
+
+	if(!args.message)
+	{
+		return false
+	}
+
 	if(Hue.started && !Hue.app_focused)
 	{
 		Hue.add_separator(false)
@@ -5972,40 +6059,57 @@ Hue.add_to_chat = function(message, save=false, notify=true)
 	let chat_area = $('#chat_area')
 	let last_message = $(".message").last()
 	let appended = false
-	let mode = message.data("mode")
-	let uname = message.data("uname")
-	let date = message.data("date")
-	let is_public = message.data("public")
+	let mode = args.message.data("mode")
+	let uname = args.message.data("uname")
+	let date = args.message.data("date")
+	let is_public = args.message.data("public")
 
-	let content
+	let content_container
 
 	if(mode === "chat")
 	{
-		content = message.find(".chat_content").eq(0)
+		content_container = args.message.find(".chat_content_container").eq(0)
+		
+		if(args.edit && args.id)
+		{
+			let edited = false
+
+			$(".chat_content_container").each(function()
+			{
+				if($(this).data("id") === args.id)
+				{
+					$(this).html(content_container.html())
+					edited = true
+					return false
+				}
+			})
+
+			return false
+		}
 	}
 
-	if((message.hasClass("chat_message") && !message.hasClass("thirdperson")) && (last_message.hasClass("chat_message") && !last_message.hasClass("thirdperson")))
+	if((args.message.hasClass("chat_message") && !args.message.hasClass("thirdperson")) && (last_message.hasClass("chat_message") && !last_message.hasClass("thirdperson")))
 	{
-		if(message.find(".chat_uname").eq(0).text() === last_message.find(".chat_uname").eq(0).text())
+		if(args.message.find(".chat_uname").eq(0).text() === last_message.find(".chat_uname").eq(0).text())
 		{
 			if(last_message.find(".chat_content").length < Hue.max_same_post_messages)
 			{
-				let date_diff = message.find('.chat_content').last().data("date") - last_message.find('.chat_content').last().data("date")
+				let date_diff = args.message.find('.chat_content').last().data("date") - last_message.find('.chat_content').last().data("date")
 
 				if(date_diff < Hue.max_same_post_diff)
 				{
 					if(Hue.started && Hue.app_focused)
 					{
-						content.addClass("fader")
+						content_container.addClass("fader")
 					}
 
-					last_message.find(".chat_content_container").eq(0).append(content)
+					last_message.find(".chat_container").eq(0).append(content_container)
 
 					Hue.replace_in_chat_history(last_message)
 
 					if(!last_message.data("highlighted"))
 					{
-						last_message.data("highlighted", message.data("highlighted"))
+						last_message.data("highlighted", args.message.data("highlighted"))
 					}
 
 					appended = true
@@ -6018,7 +6122,7 @@ Hue.add_to_chat = function(message, save=false, notify=true)
 	{
 		if(Hue.started && Hue.app_focused)
 		{
-			message.addClass("fader")
+			args.message.addClass("fader")
 		}
 
 		let last = $(".message").last()
@@ -6033,18 +6137,18 @@ Hue.add_to_chat = function(message, save=false, notify=true)
 			}
 		}
 
-		chat_area.append(message)
+		chat_area.append(args.message)
 
 		if($(".message").length > Hue.chat_crop_limit)
 		{
 			$("#chat_area > .message").eq(0).remove()
 		}
 		
-		if(save)
+		if(args.save)
 		{
 			Hue.message_id += 1
-			message.data("message_id", Hue.message_id)
-			Hue.push_to_chat_history(message)
+			args.message.data("message_id", Hue.message_id)
+			Hue.push_to_chat_history(args.message)
 		}
 	}
 
@@ -6061,7 +6165,7 @@ Hue.add_to_chat = function(message, save=false, notify=true)
 		Hue.push_to_activity_bar(uname, date)
 	}
 
-	if(notify && Hue.started && message.data("highlighted"))
+	if(args.notify && Hue.started && args.message.data("highlighted"))
 	{
 		Hue.electron_signal("highlighted")
 	}
@@ -6718,7 +6822,7 @@ Hue.chat_announce = function(args={})
 
 	if(!ignore)
 	{
-		Hue.add_to_chat(fmessage, args.save)
+		Hue.add_to_chat({message:fmessage, save:args.save})
 		
 		if(args.highlight)
 		{
@@ -6834,7 +6938,8 @@ Hue.process_message = function(args={})
 		message: "",
 		to_history: true,
 		clr_input: true,
-		callback: false
+		callback: false,
+		edit_id: false
 	}
 
 	Hue.fill_defaults(args, def_args)
@@ -6846,7 +6951,7 @@ Hue.process_message = function(args={})
 		 args.message = args.message.trim()
 	}
 
-	if(num_lines === 1 && Hue.is_command(args.message))
+	if(num_lines === 1 && Hue.is_command(args.message) && !args.edit_id)
 	{
 		args.message = Hue.utilz.clean_string2(args.message)
 		
@@ -7123,7 +7228,7 @@ Hue.process_message = function(args={})
 				args.message = args.message.substring(0, Hue.max_input_length)
 			}
 
-			Hue.socket_emit('sendchat', {message:args.message})
+			Hue.socket_emit('sendchat', {message:args.message, edit_id:args.edit_id})
 		}
 
 		else
@@ -9477,7 +9582,7 @@ Hue.unclear_chat = function()
 
 	for(let el of Hue.chat_history)
 	{
-		Hue.add_to_chat(el.clone(true, true), false, false)
+		Hue.add_to_chat({message:el.clone(true, true), save:false, notify:false})
 	}
 
 	Hue.chat_scroll_bottom()
@@ -13044,6 +13149,8 @@ Hue.show_log_messages = function()
 				{
 					Hue.update_chat(
 					{
+						id: data.id,
+						user_id: data.user_id,
 						username: data.username,
 						message: data.content,
 						prof_image: data.profile_image,
@@ -18572,7 +18679,7 @@ Hue.setup_mouse_events = function()
 		Hue.mouse_is_down = true
 	})
 
-	$("body").mouseup(function()
+	$("body").mouseup(function(e)
 	{
 		Hue.mouse_is_down = false
 	})
@@ -20324,4 +20431,133 @@ Hue.push_to_activity_bar = function(uname, date)
 	{
 		Hue.update_activity_bar()
 	}
+}
+
+Hue.edit_message = function(container)
+{
+	if(Hue.editing_message)
+	{
+		Hue.stop_edit_message()
+	}
+
+	let area = $(container).find(".message_edit_area").get(0)
+	let chat_content = $(container).find(".chat_content").get(0)
+	
+	$(area).css("display", "block")
+
+	$(chat_content).css("display", "none")
+
+	$(container).removeClass("chat_menu_button_main")
+	
+	Hue.editing_message = true
+	Hue.editing_message_container = container
+
+	$(area).val($(chat_content).text()).focus()
+
+	setTimeout(function()
+	{
+		area.setSelectionRange(area.value.length, area.value.length)
+	}, 10)
+
+	Hue.chat_scroll_bottom(false, false)
+}
+
+Hue.edit_last_message = function()
+{
+	$($(".message").get().reverse()).each(function()
+	{
+		if($(this).data("user_id") === Hue.user_id)
+		{
+			let content_container = $(this).find(".chat_content_container").last().get(0)
+			Hue.edit_message(content_container)
+			return false
+		}
+	})
+}
+
+Hue.stop_edit_message = function()
+{
+	if(!Hue.editing_message || !Hue.editing_message_container)
+	{
+		return false
+	}
+
+	let area = $(Hue.editing_message_container).find(".message_edit_area").get(0)
+	let chat_content = $(Hue.editing_message_container).find(".chat_content").get(0)
+	
+	$(area).css("display", "none")
+
+	$(area).val("")
+
+	$(chat_content).css("display", "block")
+
+	$(Hue.editing_message_container).addClass("chat_menu_button_main")
+	
+	Hue.editing_message = false
+	Hue.editing_message_container = false
+
+	Hue.chat_scroll_bottom(false, false)
+}
+
+Hue.send_edit_messsage = function(id)
+{
+	if(!Hue.editing_message_container)
+	{
+		return false
+	}
+
+	let area = $(Hue.editing_message_container).find(".message_edit_area").get(0)
+
+	let new_message = area.value
+
+	let edit_id = $(Hue.editing_message_container).data("id")
+
+	if(!edit_id)
+	{
+		return false
+	}
+
+	$(area).val("")
+
+	Hue.stop_edit_message()
+
+	Hue.process_message({message:new_message, edit_id:edit_id})
+}
+
+Hue.remove_message = function(id)
+{
+	let r = confirm("Are you sure?")
+
+	if(r)
+	{
+		Hue.send_remove_message(id)
+	}
+}
+
+Hue.send_remove_message = function(id)
+{
+	Hue.socket_emit("remove_message", {id:id})
+}
+
+Hue.remove_message_from_chat = function(data)
+{
+	$(".chat_content_container").each(function()
+	{
+		if($(this).data("id") == data.id)
+		{
+			if($(this).closest(".chat_container").find(".chat_content_container").length === 1)
+			{
+				$(this).closest(".message").remove()
+			}
+
+			else
+			{
+				$(this).remove()
+			}
+
+			return false
+		}
+	})
+
+	Hue.chat_scroll_bottom(false, false)
 }

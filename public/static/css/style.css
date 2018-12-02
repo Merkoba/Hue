@@ -932,6 +932,41 @@ a.generic:link, a.generic:visited, a.generic:hover
 	display: inline-block;
 }
 
+.chat_menu_button_main
+{
+	position: relative;
+}
+
+.chat_menu_button_container
+{
+	display: none;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 0.8em;
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 999;
+	height: 100%;
+	flex-direction: row;
+}
+
+.chat_menu_button
+{
+	padding-left: 0.8rem;
+	padding-right: 0.8rem;
+	position: relative;
+	height: 100%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.chat_menu_button_main:hover > .chat_menu_button_container
+{
+	display: flex;
+}
+
 .generic_uname
 {
 	font-size: 1em;
@@ -2185,4 +2220,16 @@ input[type=text], textarea
 	margin-top: 0rem;
 	max-width: 250px;
 	max-height: 500px;
+}
+
+.message_edit_area
+{
+	display: none;
+	resize: none;
+	width: 90%;
+	font-size: 1rem;
+	height: 4rem;
+	padding: 0.5rem;
+	outline: none;
+	border: 1px solid grey;
 }

@@ -18,9 +18,25 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	{
 		return new Promise((resolve, reject) => 
 		{
-			if(Object.keys(fields).length > 0)
+			let num_fields = Object.keys(fields).length
+
+			if(num_fields > 0)
 			{
-				fields.version = true
+				let has_zero = false
+
+				for(let key in fields)
+				{
+					if(fields[key] === 0)
+					{
+						has_zero = true
+						break
+					}
+				}
+
+				if(!has_zero)
+				{
+					fields.version = 1
+				}
 			}
 
 			if(query._id !== undefined)
@@ -40,7 +56,14 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				}
 			}
 
-			db.collection("rooms").findOne(query, fields)
+			let pfields = {}
+
+			if(num_fields > 0)
+			{
+				pfields = {projection:fields}
+			}
+
+			db.collection("rooms").findOne(query, pfields)
 
 			.then(room =>
 			{
@@ -475,7 +498,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	{
 		return new Promise((resolve, reject) => 
 		{
-			manager.get_user({_id:data.user_id}, {create_room_date:true})
+			manager.get_user({_id:data.user_id}, {create_room_date:1})
 
 			.then(user =>
 			{
@@ -590,7 +613,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	{
 		return new Promise((resolve, reject) => 
 		{
-			manager.get_room({_id:_id}, {log_messages:true})
+			manager.get_room({_id:_id}, {log_messages:1})
 
 			.then(room =>
 			{
@@ -627,7 +650,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	{
 		return new Promise((resolve, reject) => 
 		{
-			manager.get_room({_id:_id}, {admin_log_messages:true})
+			manager.get_room({_id:_id}, {admin_log_messages:1})
 
 			.then(room =>
 			{
@@ -664,7 +687,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	{
 		return new Promise((resolve, reject) => 
 		{
-			manager.get_room({_id:_id}, {access_log_messages:true})
+			manager.get_room({_id:_id}, {access_log_messages:1})
 
 			.then(room =>
 			{
@@ -701,11 +724,27 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	{
 		return new Promise((resolve, reject) => 
 		{
+			let num_fields = Object.keys(fields).length
+
 			let multiple = false
 
-			if(Object.keys(fields).length > 0)
+			if(num_fields > 0)
 			{
-				fields.version = true
+				let has_zero = false
+
+				for(let key in fields)
+				{
+					if(fields[key] === 0)
+					{
+						has_zero = true
+						break
+					}
+				}
+
+				if(!has_zero)
+				{
+					fields.version = 1
+				}
 			}
 
 			if(query._id !== undefined)
@@ -742,6 +781,13 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				}
 			}
 
+			let pfields = {}
+
+			if(num_fields > 0)
+			{
+				pfields = {projection:fields}
+			}
+
 			if(query.verified === undefined)
 			{
 				if(verified)
@@ -757,7 +803,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 			if(multiple)
 			{
-				db.collection('users').find(query, fields).toArray()
+				db.collection('users').find(query, pfields).toArray()
 
 				.then(users =>
 				{
@@ -804,7 +850,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 			else
 			{
-				db.collection('users').findOne(query, fields)
+				db.collection('users').findOne(query, pfields)
 
 				.then(user =>
 				{
@@ -1122,7 +1168,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	{
 		return new Promise((resolve, reject) => 
 		{	
-			Object.assign(fields, {password:true})
+			Object.assign(fields, {password:1})
 
 			manager.get_user({email:email}, fields)
 
@@ -1165,7 +1211,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	{
 		return new Promise((resolve, reject) => 
 		{
-			manager.get_user({_id:_id}, {username:true})
+			manager.get_user({_id:_id}, {username:1})
 
 			.then(user =>
 			{
@@ -1177,7 +1223,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 				else
 				{
-					manager.get_user({username:username}, {username:true})
+					manager.get_user({username:username}, {username:1})
 
 					.then(user2 =>
 					{
@@ -1230,11 +1276,11 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		{	
 			manager.get_user({_id:_id}, 
 			{
-				email: true,
-				email_change_code: true,
-				email_change_date: true,
-				email_change_code_date: true,
-				email_change_email: true
+				email: 1,
+				email_change_code: 1,
+				email_change_date: 1,
+				email_change_code_date: 1,
+				email_change_email: 1
 			})
 
 			.then(user =>
@@ -1247,7 +1293,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 				else
 				{					
-					manager.get_user({email:email}, {email:true})
+					manager.get_user({email:email}, {email:1})
 
 					.then(user2 =>
 					{
@@ -1380,7 +1426,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	{
 		return new Promise((resolve, reject) => 
 		{
-			manager.get_user({email:email}, {email:true, password_reset_date:true})
+			manager.get_user({email:email}, {email:1, password_reset_date:1})
 
 			.then(user =>
 			{
@@ -1457,7 +1503,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	{
 		return new Promise((resolve, reject) => 
 		{
-			manager.get_user({_id:user_id}, {visited_rooms:true})
+			manager.get_user({_id:user_id}, {visited_rooms:1})
 
 			.then(user =>
 			{

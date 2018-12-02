@@ -185,7 +185,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		else
 		{
-			db_manager.get_user({_id:req.session.user_id}, {password_date:true})
+			db_manager.get_user({_id:req.session.user_id}, {password_date:1})
 
 			.then(user =>
 			{
@@ -401,7 +401,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		let password = req.body.password 
 		let email = req.body.email
 
-		db_manager.get_user({$or:[{username:username}, {email:email}]}, {username:true}, false)
+		db_manager.get_user({$or:[{username:username}, {email:email}]}, {username:1}, false)
 
 		.then(user =>
 		{
@@ -468,7 +468,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		let code = split[1]
 
-		db_manager.get_user({_id:id, verification_code:code, verified:false}, {registration_date:true})
+		db_manager.get_user({_id:id, verification_code:code, verified:false}, {registration_date:1})
 
 		.then(user =>
 		{
@@ -519,7 +519,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		db_manager.get_user({username:username}, {username:true}, false)
+		db_manager.get_user({username:username}, {username:1}, false)
 
 		.then(user =>
 		{
@@ -553,7 +553,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			return false
 		}
 
-		db_manager.get_user({email:email}, {email:true}, false)
+		db_manager.get_user({email:email}, {email:1}, false)
 
 		.then(user =>
 		{
@@ -669,7 +669,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		let code = split[1]
 
-		db_manager.get_user({_id:id, password_reset_code:code}, {password_reset_link_date:true})
+		db_manager.get_user({_id:id, password_reset_code:code}, {password_reset_link_date:1})
 
 		.then(user =>
 		{
@@ -721,7 +721,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		let code = split[1]
 
-		db_manager.get_user({_id:id, password_reset_code:code}, {password_reset_link_date:true})
+		db_manager.get_user({_id:id, password_reset_code:code}, {password_reset_link_date:1})
 
 		.then(user =>
 		{
