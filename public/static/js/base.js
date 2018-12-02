@@ -6090,8 +6090,10 @@ Hue.add_to_chat = function(args={})
 		save: false,
 		notify: true,
 		id: false,
-		just_edited: false
+		just_edited: false,
+		fader: true
 	}
+
 
 	Hue.fill_defaults(args, def_args)
 
@@ -6147,7 +6149,7 @@ Hue.add_to_chat = function(args={})
 
 				if(date_diff < Hue.max_same_post_diff)
 				{
-					if(Hue.started && Hue.app_focused)
+					if(Hue.started && Hue.app_focused && args.fader)
 					{
 						content_container.addClass("fader")
 					}
@@ -6169,7 +6171,7 @@ Hue.add_to_chat = function(args={})
 
 	if(!appended)
 	{
-		if(Hue.started && Hue.app_focused)
+		if(Hue.started && Hue.app_focused && args.fader)
 		{
 			args.message.addClass("fader")
 		}
@@ -9662,7 +9664,7 @@ Hue.unclear_chat = function()
 
 	for(let el of Hue.chat_history)
 	{
-		Hue.add_to_chat({message:el.clone(true, true), save:false, notify:false})
+		Hue.add_to_chat({message:el.clone(true, true), save:false, notify:false, fader:false})
 	}
 
 	Hue.chat_scroll_bottom()
