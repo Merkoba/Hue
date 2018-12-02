@@ -6100,15 +6100,12 @@ Hue.add_to_chat = function(args={})
 		
 		if(args.edit && args.id)
 		{
-			let edited = false
-
 			$(".chat_content_container").each(function()
 			{
 				if($(this).data("id") === args.id)
 				{
 					$(this).html(content_container.html())
 					Hue.replace_in_chat_history($(this).closest(".message"))
-					edited = true
 					Hue.chat_scroll_bottom()
 					return false
 				}
