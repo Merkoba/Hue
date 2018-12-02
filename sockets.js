@@ -629,9 +629,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			let id
 			let date
-			let edit
-			let edited = false
-			let edited_date = false
+			let edited
 
 			if(data.edit_id)
 			{
@@ -646,6 +644,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 						if(message.data.user_id === socket.hue_user_id)
 						{
 							message.data.content = data.message
+							message.data.edited = true
 							date = message.date
 							edited = true
 							break
@@ -664,14 +663,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				}
 
 				id = data.edit_id
-				edit = true
+				edited = true
 			}
 
 			else
 			{
 				date = Date.now()
 				id = `${date}_${utilz.get_random_int(1, 1000)}`
-				edit = false
+				edited = false
 			}
 
 			handler.room_emit(socket, 'chat_message',
@@ -685,7 +684,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				link_title: response.title,
 				link_image: response.image,
 				link_url: response.url,
-				edit: edit
+				edited: edited,
+				just_edited: edited
 			})
 
 			if(!data.edit_id)
@@ -704,7 +704,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 							profile_image: socket.hue_profile_image,
 							link_title: response.title,
 							link_image: response.image,
-							link_url: response.url
+							link_url: response.url,
+							edited: edited
 						},
 						date: date
 					}

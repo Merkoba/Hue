@@ -892,7 +892,8 @@ Hue.start_socket = function()
 				link_title: data.link_title,
 				link_image: data.link_image,
 				link_url: data.link_url, 
-				edit: data.edit
+				edited: data.edited,
+				just_edited: data.just_edited
 			})
 
 			Hue.hide_pencil()
@@ -5649,7 +5650,8 @@ Hue.update_chat = function(args={})
 		link_title: false,
 		link_image: false,
 		link_url: false,
-		edit: false
+		edited: false,
+		just_edited: false
 	}
 
 	Hue.fill_defaults(args, def_args)
@@ -5903,11 +5905,14 @@ Hue.update_chat = function(args={})
 					</div>
 					<div class='chat_container'>
 						<div class='chat_content_container ${chat_menu_button_main_class}'>
+
 							<div class='chat_menu_button_container unselectable'>
 								<div class='chat_menu_button chat_menu_button_edit'>Edit</div>
 								<div class='chat_menu_button chat_menu_button_remove'>Remove</div>
 							</div>
-							<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
+
+							<div class='${contclasses}' title='${nd}' data-date='${d}'></div><div class='message_edited_label'>&nbsp;(Edited)</div>
+							
 							<div class='message_edit_container'>
 								<textarea class='message_edit_area'></textarea>
 								<div class='message_edit_buttons unselectable'>
@@ -5990,6 +5995,12 @@ Hue.update_chat = function(args={})
 
 	let chat_content_container = fmessage.find(".chat_content_container").eq(0)
 	let chat_content = fmessage.find(".chat_content").eq(0)
+	let edited_label = fmessage.find(".message_edited_label").eq(0)
+
+	if(args.edited)
+	{
+		edited_label.css("display", "block")
+	}
 
 	chat_content_container.data("id", args.id)
 
@@ -6041,7 +6052,13 @@ Hue.update_chat = function(args={})
 		})
 	})
 
-	Hue.add_to_chat({message:fmessage, save:true, id:args.id, edit:args.edit})
+	Hue.add_to_chat(
+	{
+		message: fmessage, 
+		save: true, 
+		id: args.id, 
+		just_edited: args.just_edited
+	})
 
 	if(args.username !== Hue.username)
 	{
@@ -6067,7 +6084,7 @@ Hue.add_to_chat = function(args={})
 		save: false,
 		notify: true,
 		id: false,
-		edit: false
+		just_edited: false
 	}
 
 	Hue.fill_defaults(args, def_args)
@@ -6096,13 +6113,14 @@ Hue.add_to_chat = function(args={})
 	{
 		content_container = args.message.find(".chat_content_container").eq(0)
 		
-		if(args.edit && args.id)
+		if(args.just_edited && args.id)
 		{
 			$(".chat_content_container").each(function()
 			{
 				if($(this).data("id") === args.id)
 				{
 					$(this).html(content_container.html())
+					$(this).find(".message_edited_label").css("display", "inline-block")
 					Hue.replace_in_chat_history($(this).closest(".message"))
 					Hue.chat_scroll_bottom(false, false)
 					return false
@@ -13214,7 +13232,8 @@ Hue.show_log_messages = function()
 						link_image: data.link_image,
 						link_url: data.link_url,
 						date: date,
-						scroll: false
+						scroll: false,
+						edited: data.edited
 					})
 				}
 

@@ -479,6 +479,7 @@ div#header_radio_playing_icon
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	margin-top: 0.4rem;
 }
 
 .chat_content
@@ -2267,4 +2268,11 @@ input[type=text], textarea
 {
 	cursor: pointer;
 	margin-left: 1rem;
+}
+
+.message_edited_label
+{
+	display: none;
+	opacity: 0.8;
+	font-size: 0.8rem;
 }
