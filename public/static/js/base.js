@@ -6009,7 +6009,7 @@ Hue.update_chat = function(args={})
 
 		image_preview_el[0].addEventListener("load", function()
 		{
-			Hue.goto_bottom(false, false)
+			Hue.goto_bottom(true, false)
 		})
 	}
 
@@ -6028,7 +6028,7 @@ Hue.update_chat = function(args={})
 		{
 			link_preview_image[0].addEventListener("load", function()
 			{
-				Hue.goto_bottom(false, false)
+				Hue.goto_bottom(true, false)
 			})	
 		}
 	}
