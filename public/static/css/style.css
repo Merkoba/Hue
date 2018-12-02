@@ -954,7 +954,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	display: none;
 	cursor: pointer;
 	font-weight: bold;
-	font-size: 0.8em;
+	font-size: 0.8rem;
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -2272,6 +2272,7 @@ input[type=text], textarea
 {
 	cursor: pointer;
 	margin-left: 1rem;
+	font-size: 0.8rem;
 }
 
 .message_edited_label
