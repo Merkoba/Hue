@@ -6094,6 +6094,7 @@ Hue.add_to_chat = function(args={})
 				if($(this).data("id") === args.id)
 				{
 					$(this).html(content_container.html())
+					Hue.replace_in_chat_history($(this).closest(".message"))
 					edited = true
 					return false
 				}
@@ -6205,6 +6206,20 @@ Hue.replace_in_chat_history = function(message)
 		if(message.data("message_id") === message2.data("message_id"))
 		{
 			Hue.chat_history[i] = message
+			return
+		}
+	}
+}
+
+Hue.remove_from_chat_history = function(message)
+{
+	for(let i=0; i<Hue.chat_history.length; i++)
+	{
+		let message2 = Hue.chat_history[i]
+
+		if(message.data("message_id") === message2.data("message_id"))
+		{
+			Hue.chat_history.splice(i, 1)
 			return
 		}
 	}
@@ -20565,14 +20580,18 @@ Hue.remove_message_from_chat = function(data)
 	{
 		if($(this).data("id") == data.id)
 		{
+			let message = $(this).closest(".message")
+
 			if($(this).closest(".chat_container").find(".chat_content_container").length === 1)
 			{
-				$(this).closest(".message").remove()
+				Hue.remove_from_chat_history(message)
+				message.remove()
 			}
 
 			else
 			{
 				$(this).remove()
+				Hue.replace_in_chat_history(message)
 			}
 
 			return false
