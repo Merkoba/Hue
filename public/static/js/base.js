@@ -6988,11 +6988,28 @@ Hue.process_message = function(args={})
 
 	Hue.fill_defaults(args, def_args)
 
-	let num_lines = args.message.split("\n").length
+	let message_split = args.message.split("\n")
+
+	let num_lines = message_split.length
 
 	if(num_lines === 1)
 	{
 		 args.message = args.message.trim()
+	}
+
+	else
+	{
+		let new_lines = []
+
+		for(let line of message_split)
+		{
+			if(line.trim().length > 0)
+			{
+				new_lines.push(line)
+			}
+		}
+
+		args.message = new_lines.join("\n")
 	}
 
 	if(num_lines === 1 && Hue.is_command(args.message) && !args.edit_id)
