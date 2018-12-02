@@ -41,6 +41,7 @@ Hue.alo = false
 Hue.minpo = false
 Hue.modal_open = false
 Hue.started = false
+Hue.started_safe = false
 Hue.afk = false
 Hue.alert_mode = 0
 Hue.commands_sorted = {}
@@ -16092,6 +16093,11 @@ Hue.at_startup = function()
 	}
 
 	Hue.execute_commands("at_startup")
+
+	setTimeout(function()
+	{
+		Hue.started_safe = true
+	}, 2000)
 }
 
 Hue.show_image_history = function(filter=false)
@@ -20620,6 +20626,11 @@ Hue.send_edit_messsage = function(id)
 
 Hue.remove_message = function(id)
 {
+	if(!Hue.started_safe)
+	{
+		return false
+	}
+	
 	let r = confirm("Are you sure?")
 
 	if(r)
