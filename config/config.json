@@ -37,6 +37,7 @@
 	"color_contrast_amount_2": 0.8,
 	"color_contrast_amount_3": 0.4,
 	"color_contrast_amount_4": 0.2,
+	"color_contrast_amount_5": 0.05,
 	"chat_crop_limit": 1000,
 	"played_crop_limit": 1000,
 	"input_history_crop_limit": 1000,

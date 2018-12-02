@@ -2301,6 +2301,7 @@ Hue.apply_theme = function()
 	let color_4 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.color_contrast_amount_4)
 	let color_4_a = Hue.colorlib.rgb_to_rgba(color_4, Hue.opacity_amount_3)
 	let overlay_color = Hue.colorlib.rgb_to_rgba(color_3, Hue.opacity_amount_2)
+	let slight_background = Hue.colorlib.get_lighter_or_darker(background_color, Hue.color_contrast_amount_5)
 	let cfsize = Hue.get_setting("chat_font_size")
 
 	if(cfsize === "very_small")
@@ -2493,7 +2494,7 @@ Hue.apply_theme = function()
 
 	.chat_menu_button
 	{
-		border-left: 1px solid ${color_4_a} !important;
+		border-left: 1px solid ${slight_background} !important;
 	}
 
 	.chat_menu_button:hover
@@ -2503,7 +2504,7 @@ Hue.apply_theme = function()
 
 	.chat_menu_button_main:hover
 	{
-		background-color: ${color_4_a} !important;
+		background-color: ${slight_background} !important;
 	}
 
 	#activity_bar_container
@@ -5746,7 +5747,7 @@ Hue.update_chat = function(args={})
 				{
 					if(sp === link)
 					{
-						image_preview_array.push(`<img draggable="false" class="image_preview" src="${image_preview_src}">`)
+						image_preview_array.push(`<div class='image_preview'><div image_preview_url>${link}</div><div class='spacer3'></div><img draggable="false" class="image_preview_image" src="${image_preview_src}"></div>`)
 					}
 
 					else
@@ -5906,7 +5907,7 @@ Hue.update_chat = function(args={})
 							<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
 							<div class='message_edit_container'>
 								<textarea class='message_edit_area'></textarea>
-								<div class='message_edit_buttons'>
+								<div class='message_edit_buttons unselectable'>
 									<div class='pointer message_edit_cancel'>Cancel</div>
 								</div>
 							</div>
@@ -5931,6 +5932,9 @@ Hue.update_chat = function(args={})
 						</div>
 						<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
 						<textarea class='message_edit_area'></textarea>
+						<div class='message_edit_buttons unselectable'>
+							<div class='pointer message_edit_cancel'>Cancel</div>
+						</div>
 					</div>
 				</div>
 			</div>`
@@ -5998,7 +6002,7 @@ Hue.update_chat = function(args={})
 
 		image_preview_el[0].addEventListener("load", function()
 		{
-			Hue.goto_bottom(true, false)
+			Hue.goto_bottom(false, false)
 		})
 	}
 
@@ -6017,7 +6021,7 @@ Hue.update_chat = function(args={})
 		{
 			link_preview_image[0].addEventListener("load", function()
 			{
-				Hue.goto_bottom(true, false)
+				Hue.goto_bottom(false, false)
 			})	
 		}
 	}
@@ -6096,6 +6100,7 @@ Hue.add_to_chat = function(args={})
 					$(this).html(content_container.html())
 					Hue.replace_in_chat_history($(this).closest(".message"))
 					edited = true
+					Hue.chat_scroll_bottom()
 					return false
 				}
 			})
@@ -20496,12 +20501,29 @@ Hue.edit_message = function(container)
 	Hue.editing_message = true
 	Hue.editing_message_container = container
 
-	$(area).val($(chat_content).text()).focus()
+	let clone = $(chat_content).clone(true, true)
+
+	clone.find(".link_preview_title").each(function()
+	{
+		$(this).remove()
+	})
+
+	clone.find(".link_preview_image").each(function()
+	{
+		$(this).remove()
+	})
+
+	clone.find(".image_preview_image").each(function()
+	{
+		$(this).remove()
+	})
+
+	$(area).val(Hue.utilz.clean_string2(clone.text())).focus()
 
 	setTimeout(function()
 	{
 		area.setSelectionRange(area.value.length, area.value.length)
-	}, 10)
+	}, 40)
 
 	area.scrollIntoView({block:"center"})
 
@@ -20542,19 +20564,26 @@ Hue.send_edit_messsage = function(id)
 	}
 
 	let area = $(Hue.editing_message_container).find(".message_edit_area").get(0)
+	let chat_content = $(Hue.editing_message_container).find(".chat_content").get(0)
 
 	let new_message = area.value.trim()
 
 	let edit_id = $(Hue.editing_message_container).data("id")
 
+	$(area).val("")
+
+	Hue.stop_edit_message()
+	
+	if($(chat_content).text() === new_message)
+	{
+		console.log(234)
+		return false
+	}
+
 	if(!edit_id)
 	{
 		return false
 	}
-
-	$(area).val("")
-
-	Hue.stop_edit_message()
 
 	Hue.process_message({message:new_message, edit_id:edit_id})
 }

@@ -26,6 +26,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.color_contrast_amount_2 = config.color_contrast_amount_2
 	c.vars.color_contrast_amount_3 = config.color_contrast_amount_3
 	c.vars.color_contrast_amount_4 = config.color_contrast_amount_4
+	c.vars.color_contrast_amount_5 = config.color_contrast_amount_5
 	c.vars.chat_crop_limit = config.chat_crop_limit
 	c.vars.played_crop_limit = config.played_crop_limit
 	c.vars.input_history_crop_limit = config.input_history_crop_limit
