@@ -5836,7 +5836,7 @@ Hue.update_chat = function(args={})
 
 	let chat_menu_button_main_class = ""
 
-	if(args.id)
+	if(args.id && args.user_id === Hue.user_id)
 	{
 		chat_menu_button_main_class = "chat_menu_button_main"
 	}

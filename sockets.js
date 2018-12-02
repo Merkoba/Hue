@@ -643,10 +643,13 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 					if(message.data.id === data.edit_id)
 					{
-						message.data.content = data.message
-						date = message.date
-						edited = true
-						break
+						if(message.data.user_id === socket.hue_user_id)
+						{
+							message.data.content = data.message
+							date = message.date
+							edited = true
+							break
+						}
 					}
 				}
 
