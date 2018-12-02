@@ -5907,8 +5907,8 @@ Hue.update_chat = function(args={})
 						<div class='chat_content_container ${chat_menu_button_main_class}'>
 
 							<div class='chat_menu_button_container unselectable'>
-								<div class='chat_menu_button chat_menu_button_edit'>Edit</div>
-								<div class='chat_menu_button chat_menu_button_remove'>Remove</div>
+								<div class='chat_menu_button action chat_menu_button_edit'>Edit</div>
+								<div class='chat_menu_button action chat_menu_button_remove'>Remove</div>
 							</div>
 
 							<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
@@ -5918,8 +5918,8 @@ Hue.update_chat = function(args={})
 							<div class='message_edit_container'>
 								<textarea class='message_edit_area'></textarea>
 								<div class='message_edit_buttons unselectable'>
-									<div class='message_edit_button message_edit_cancel'>Cancel</div>
-									<div class='message_edit_button message_edit_submit'>Submit</div>
+									<div class='message_edit_button action message_edit_cancel'>Cancel</div>
+									<div class='message_edit_button action message_edit_submit'>Submit</div>
 								</div>
 							</div>
 						</div>
@@ -5938,8 +5938,8 @@ Hue.update_chat = function(args={})
 				<div class='chat_container'>
 					<div class='chat_content_container ${chat_menu_button_main_class}'>
 						<div class='chat_menu_button_container unselectable'>
-							<div class='chat_menu_button chat_menu_button_edit'>Edit</div>
-							<div class='chat_menu_button chat_menu_button_remove'>Remove</div>
+							<div class='chat_menu_button action chat_menu_button_edit'>Edit</div>
+							<div class='chat_menu_button action chat_menu_button_remove'>Remove</div>
 						</div>
 
 						<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
@@ -5949,8 +5949,8 @@ Hue.update_chat = function(args={})
 						<div class='message_edit_container'>
 							<textarea class='message_edit_area'></textarea>
 							<div class='message_edit_buttons unselectable'>
-								<div class='message_edit_button message_edit_cancel'>Cancel</div>
-								<div class='message_edit_button message_edit_submit'>Submit</div>
+								<div class='message_edit_button action message_edit_cancel'>Cancel</div>
+								<div class='message_edit_button action message_edit_submit'>Submit</div>
 							</div>
 						</div>
 					</div>
