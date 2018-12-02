@@ -20576,7 +20576,6 @@ Hue.send_edit_messsage = function(id)
 	
 	if($(chat_content).text() === new_message)
 	{
-		console.log(234)
 		return false
 	}
 
