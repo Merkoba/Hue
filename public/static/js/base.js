@@ -871,9 +871,6 @@ Hue.start_socket = function()
 			Hue.make_main_container_visible()
 			Hue.setup_activity_bar()
 
-			Hue.date_joined = Date.now()
-			Hue.started = true
-
 			Hue.at_startup()
 		}
 
@@ -5906,7 +5903,7 @@ Hue.update_chat = function(args={})
 					</div>
 					<div class='chat_container'>
 						<div class='chat_content_container ${chat_menu_button_main_class}'>
-							<div class='chat_menu_button_container'>
+							<div class='chat_menu_button_container unselectable'>
 								<div class='chat_menu_button chat_menu_button_edit'>Edit</div>
 								<div class='chat_menu_button chat_menu_button_remove'>Remove</div>
 							</div>
@@ -5933,7 +5930,7 @@ Hue.update_chat = function(args={})
 				</div>
 				<div class='chat_container'>
 					<div class='chat_content_container ${chat_menu_button_main_class}'>
-						<div class='chat_menu_button_container'>
+						<div class='chat_menu_button_container unselectable'>
 							<div class='chat_menu_button chat_menu_button_edit'>Edit</div>
 							<div class='chat_menu_button chat_menu_button_remove'>Remove</div>
 						</div>
@@ -16087,6 +16084,10 @@ Hue.on_double_tap_3 = function()
 
 Hue.at_startup = function()
 {
+	Hue.date_joined = Date.now()
+	
+	Hue.started = true
+
 	if(Hue.first_time)
 	{
 		return false
@@ -20630,7 +20631,7 @@ Hue.remove_message = function(id)
 	{
 		return false
 	}
-	
+
 	let r = confirm("Are you sure?")
 
 	if(r)
