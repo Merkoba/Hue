@@ -2256,6 +2256,13 @@ input[type=text], textarea
 {
 	display: flex;
 	justify-content: flex-end;
+	flex-direction: row;
 	position: relative;
 	width: 100%;
+}
+
+.message_edit_button
+{
+	cursor: pointer;
+	margin-left: 1rem;
 }

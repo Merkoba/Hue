@@ -5568,6 +5568,11 @@ Hue.start_chat_mouse_events = function()
 		Hue.remove_message(id)
 	})
 
+	$("#chat_area").on("click", ".message_edit_submit", function()
+	{
+		Hue.send_edit_messsage()
+	})
+
 	$("#chat_area").on("click", ".message_edit_cancel", function()
 	{
 		Hue.stop_edit_message()
@@ -5908,7 +5913,8 @@ Hue.update_chat = function(args={})
 							<div class='message_edit_container'>
 								<textarea class='message_edit_area'></textarea>
 								<div class='message_edit_buttons unselectable'>
-									<div class='pointer message_edit_cancel'>Cancel</div>
+									<div class='message_edit_button message_edit_cancel'>Cancel</div>
+									<div class='message_edit_button message_edit_submit'>Submit</div>
 								</div>
 							</div>
 						</div>
@@ -5934,7 +5940,8 @@ Hue.update_chat = function(args={})
 						<div class='message_edit_container'>
 							<textarea class='message_edit_area'></textarea>
 							<div class='message_edit_buttons unselectable'>
-								<div class='pointer message_edit_cancel'>Cancel</div>
+								<div class='message_edit_button message_edit_cancel'>Cancel</div>
+								<div class='message_edit_button message_edit_submit'>Submit</div>
 							</div>
 						</div>
 					</div>
@@ -14702,6 +14709,14 @@ Hue.setup_input = function()
 			Hue.input_changed = true
 			Hue.check_typing()
 			Hue.old_input_val = value
+		}
+	})
+
+	$("#input").on("click", function()
+	{
+		if(Hue.editing_message)
+		{
+			Hue.stop_edit_message()
 		}
 	})
 
