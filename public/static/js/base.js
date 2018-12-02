@@ -6104,7 +6104,7 @@ Hue.add_to_chat = function(args={})
 				{
 					$(this).html(content_container.html())
 					Hue.replace_in_chat_history($(this).closest(".message"))
-					Hue.chat_scroll_bottom()
+					Hue.chat_scroll_bottom(false, false)
 					return false
 				}
 			})
