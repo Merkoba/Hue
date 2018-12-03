@@ -6022,7 +6022,15 @@ Hue.update_chat = function(args={})
 
 		image_preview_image[0].addEventListener("load", function()
 		{
-			Hue.goto_bottom(true, false)
+			if(args.user_id === Hue.user_id)
+			{
+				Hue.goto_bottom(true, false)
+			}
+
+			else
+			{
+				Hue.goto_bottom(false, false)
+			}
 		})
 	}
 
@@ -6041,7 +6049,16 @@ Hue.update_chat = function(args={})
 		{
 			link_preview_image[0].addEventListener("load", function()
 			{
-				Hue.goto_bottom(true, false)
+				if(args.user_id === Hue.user_id)
+				{
+					Hue.goto_bottom(true, false)
+
+				}
+
+				else
+				{
+					Hue.goto_bottom(false, false)
+				}
 			})	
 		}
 	}
