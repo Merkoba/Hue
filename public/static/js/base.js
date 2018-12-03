@@ -5718,13 +5718,11 @@ Hue.update_chat = function(args={})
 	if(Hue.get_setting("chat_layout") === "normal")
 	{
 		messageclasses = "normal_layout"
-		embed_spacer = "spacer3"
 	}
 
 	else if(Hue.get_setting("chat_layout") === "compact")
 	{
 		messageclasses = "compact_layout"
-		embed_spacer = "spacer_none"
 	}
 
 	let split = args.message.split(" ")
@@ -5790,13 +5788,11 @@ Hue.update_chat = function(args={})
 		{
 			link_preview_s = 
 			`<div class='link_preview action'>
-				<div class='${embed_spacer}'></div>
 				<div class='link_preview_url'>${Hue.make_html_safe(args.link_url)}</div>
-				<div class='${embed_spacer}'></div>
+				<div class='spacer3'></div>
 				<div class='link_preview_title'>${Hue.make_html_safe(args.link_title)}</div>
-				<div class='${embed_spacer}'></div>
+				<div class='spacer3'></div>
 				<div><img class='link_preview_image' src='${args.link_image}'></div>
-				<div class='${embed_spacer}'></div>
 			</div>`
 		}
 
@@ -5804,11 +5800,9 @@ Hue.update_chat = function(args={})
 		{
 			link_preview_s = 
 			`<div class='link_preview action'>
-				<div class='${embed_spacer}'></div>
 				<div class='link_preview_url'>${Hue.make_html_safe(args.link_url)}</div>
-				<div class='${embed_spacer}'></div>
+				<div class='spacer3'></div>
 				<div class='link_preview_title'>${Hue.make_html_safe(args.link_title)}</div>
-				<div class='${embed_spacer}'></div>
 			</div>`
 		}
 
@@ -5816,11 +5810,9 @@ Hue.update_chat = function(args={})
 		{
 			link_preview_s = 
 			`<div class='link_preview action'>
-				<div class='${embed_spacer}'></div>
 				<div class='link_preview_url'>${args.link_url.substring(0, 100)}</div>
-				<div class='${embed_spacer}'></div>
+				<div class='spacer3'></div>
 				<img class='link_preview_image' src='${args.link_image}'>
-				<div class='${embed_spacer}'></div>
 			</div>`
 		}
 
