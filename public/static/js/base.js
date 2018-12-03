@@ -6017,14 +6017,16 @@ Hue.update_chat = function(args={})
 
 	if(image_preview)
 	{
-		let image_preview_el = fmessage.find(".image_preview_image").eq(0)
+		let image_preview_el = fmessage.find(".image_preview").eq(0)
 
 		image_preview_el.click(function()
 		{
 			Hue.open_url_menu(image_preview_src_original)
 		})
 
-		image_preview_el[0].addEventListener("load", function()
+		let image_preview_image = image_preview_el.find(".image_preview_image").eq(0)
+
+		image_preview_image[0].addEventListener("load", function()
 		{
 			Hue.goto_bottom(true, false)
 		})
