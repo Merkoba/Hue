@@ -776,6 +776,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-top:0.2em;
 }
 
+.spacer_none
+{
+	padding-top: 0em;
+	padding-bottom: 0em;
+}
+
 .spacer1
 {
 	padding-top: 1.1em;
@@ -2191,8 +2197,6 @@ input[type=text], textarea
 .image_preview
 {
 	cursor: pointer;
-	margin-top: 0.5rem;
-	margin-bottom: 0.5rem;
 	position: relative;
 }
 
@@ -2211,10 +2215,14 @@ input[type=text], textarea
 	margin-bottom: 0.5rem;
 }
 
+.normal_layout .link_preview
+{
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
 .link_preview_url
 {
-	margin-left: 1rem;
-	margin-right: 1rem;
 	font-size: 1rem;
 	text-decoration: underline;
 	overflow-wrap: break-word;
@@ -2224,8 +2232,6 @@ input[type=text], textarea
 
 .link_preview_title
 {
-	margin-left: 1rem;
-	margin-right: 1rem;
 	font-size: 1.1rem;
 	overflow-wrap: break-word;
 	word-break: break-word;
@@ -2233,9 +2239,6 @@ input[type=text], textarea
 
 .link_preview_image
 {
-	margin-left: 1rem;
-	margin-right: 1rem;
-	margin-top: 0rem;
 	max-width: 250px;
 	max-height: 500px;
 }
