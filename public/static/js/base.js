@@ -5002,7 +5002,7 @@ Hue.change_input = function(s, to_end=true, focus=true)
 {
 	$("#input").val(s)
 
-	Hue.check_input_clone_overflow("")
+	Hue.check_input_clone_overflow(s)
 
 	if(to_end)
 	{
