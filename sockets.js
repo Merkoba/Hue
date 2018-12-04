@@ -1383,6 +1383,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			rooms[socket.hue_room_id].log_messages = []
 			db_manager.update_room(socket.hue_room_id, {log_messages:[]})
+			rooms[socket.hue_room_id].log_messages_modifed = false
 			handler.room_emit(socket, 'log_cleared', {username:socket.hue_username, clear_room:data.clear_room})
 			handler.push_admin_log_message(socket, "cleared the log")
 		}
