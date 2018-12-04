@@ -234,6 +234,8 @@ Hue.user_settings =
 	activity_bar: {widget_type:"checkbox"},
 	show_image_previews: {widget_type:"checkbox"},
 	show_link_previews: {widget_type:"checkbox"},
+	stop_radio_on_tv_play: {widget_type:"checkbox"},
+	stop_tv_on_radio_play: {widget_type:"checkbox"},
 	media_display_percentage: {widget_type:"custom"},
 	tv_display_percentage: {widget_type:"custom"},
 	tv_display_position: {widget_type:"custom"}
@@ -1937,6 +1939,8 @@ Hue.play_video = function()
 		return false
 	}
 
+	let played = true
+
 	if(Hue.current_tv().type === "youtube")
 	{
 		if(Hue.youtube_video_player !== undefined)
@@ -1985,6 +1989,19 @@ Hue.play_video = function()
 	{
 		$("#media_iframe_video").attr("src", Hue.current_tv().source)
 	}
+
+	else
+	{
+		played = false
+	}
+
+	if(played)
+	{
+		if(Hue.get_setting("stop_radio_on_tv_play"))
+		{
+			Hue.stop_radio()
+		}
+	}
 }
 
 Hue.hide_videos = function(show)
@@ -2028,7 +2045,7 @@ Hue.show_youtube_video = function(src, play=true)
 		return false
 	}
 
-	Hue.after_show_video()
+	Hue.after_show_video(play)
 }
 
 Hue.show_twitch_video = function(src, play=true)
@@ -2064,7 +2081,7 @@ Hue.show_twitch_video = function(src, play=true)
 		Hue.twitch_video_player.pause()
 	}
 
-	Hue.after_show_video()
+	Hue.after_show_video(play)
 }
 
 Hue.show_soundcloud_video = function(src, play=true)
@@ -2087,7 +2104,7 @@ Hue.show_soundcloud_video = function(src, play=true)
 		}
 	})
 
-	Hue.after_show_video()
+	Hue.after_show_video(play)
 }
 
 Hue.show_video = function(src, play=true)
@@ -2115,7 +2132,7 @@ Hue.show_video = function(src, play=true)
 		$("#media_video")[0].play()
 	}
 
-	Hue.after_show_video()
+	Hue.after_show_video(play)
 }
 
 Hue.show_iframe_video = function(src, play=true)
@@ -2126,7 +2143,7 @@ Hue.show_iframe_video = function(src, play=true)
 
 	$("#media_iframe_video").attr("src", src)
 
-	Hue.after_show_video()
+	Hue.after_show_video(play)
 }
 
 Hue.before_show_video = function()
@@ -2135,10 +2152,18 @@ Hue.before_show_video = function()
 	Hue.hls = undefined
 }
 
-Hue.after_show_video = function()
+Hue.after_show_video = function(play)
 {
 	Hue.fix_visible_video_frame()
 	Hue.focus_input()
+
+	if(play)
+	{
+		if(Hue.get_setting("stop_radio_on_tv_play"))
+		{
+			Hue.stop_radio()
+		}
+	}
 }
 
 Hue.setup_theme_and_background = function(data)
@@ -9021,6 +9046,11 @@ Hue.start_radio = function()
 	{
 		Hue.clear_automatic_stop_radio()
 	}
+
+	if(Hue.get_setting("stop_tv_on_radio_play"))
+	{
+		Hue.stop_videos()
+	}
 }
 
 Hue.stop_radio = function()
@@ -12547,6 +12577,26 @@ Hue.setting_show_image_previews_action = function(type, save=true)
 Hue.setting_show_link_previews_action = function(type, save=true)
 {
 	Hue[type].show_link_previews = $(`#${type}_show_link_previews`).prop("checked")
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_stop_radio_on_tv_play_action = function(type, save=true)
+{
+	Hue[type].stop_radio_on_tv_play = $(`#${type}_stop_radio_on_tv_play`).prop("checked")
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_stop_tv_on_radio_play_action = function(type, save=true)
+{
+	Hue[type].stop_tv_on_radio_play = $(`#${type}_stop_tv_on_radio_play`).prop("checked")
 
 	if(save)
 	{

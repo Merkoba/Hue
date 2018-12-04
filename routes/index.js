@@ -9,6 +9,14 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	c.vars = {}
 
+	for(let key in config)
+	{
+		if(key.startsWith("global_settings_default") || key.startsWith("room_state_default"))
+		{
+			c.vars[key] = config[key]
+		}
+	}
+
 	c.vars.main_room_id = config.main_room_id
 	c.vars.default_image_source = config.default_image_source
 	c.vars.default_tv_source = config.default_tv_source
@@ -54,69 +62,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.min_password_length = config.min_password_length
 	c.vars.max_password_length = config.max_password_length
 	c.vars.max_email_length = config.max_email_length
-	c.vars.global_settings_default_background_image = config.global_settings_default_background_image
-	c.vars.global_settings_default_custom_scrollbars = config.global_settings_default_custom_scrollbars
-	c.vars.global_settings_default_modal_effects = config.global_settings_default_modal_effects
-	c.vars.global_settings_default_highlight_current_username = config.global_settings_default_highlight_current_username
-	c.vars.global_settings_default_case_insensitive_username_highlights = config.global_settings_default_case_insensitive_username_highlights
-	c.vars.global_settings_default_case_insensitive_words_highlights = config.global_settings_default_case_insensitive_words_highlights
-	c.vars.global_settings_default_case_insensitive_ignored_words = config.global_settings_default_case_insensitive_ignored_words
-	c.vars.global_settings_default_other_words_to_highlight = config.global_settings_default_other_words_to_highlight
-	c.vars.global_settings_default_double_tap = config.global_settings_default_double_tap
-	c.vars.global_settings_default_double_tap_2 = config.global_settings_default_double_tap_2
-	c.vars.global_settings_default_double_tap_3 = config.global_settings_default_double_tap_3
-	c.vars.global_settings_default_afk_delay = config.global_settings_default_afk_delay
-	c.vars.global_settings_default_beep_on_messages = config.global_settings_default_beep_on_messages
-	c.vars.global_settings_default_beep_on_highlights = config.global_settings_default_beep_on_highlights
-	c.vars.global_settings_default_beep_on_media_change = config.global_settings_default_beep_on_media_change
-	c.vars.global_settings_default_beep_on_user_joins = config.global_settings_default_beep_on_user_joins
-	c.vars.global_settings_default_at_startup = config.global_settings_default_at_startup
-	c.vars.global_settings_default_ignored_usernames = config.global_settings_default_ignored_usernames
-	c.vars.global_settings_default_ignored_words = config.global_settings_default_ignored_words
-	c.vars.global_settings_default_ignored_words_exclude_same_user = config.global_settings_default_ignored_words_exclude_same_user
-	c.vars.global_settings_default_user_function_1 = config.global_settings_default_user_function_1
-	c.vars.global_settings_default_user_function_2 = config.global_settings_default_user_function_2
-	c.vars.global_settings_default_user_function_3 = config.global_settings_default_user_function_3
-	c.vars.global_settings_default_user_function_4 = config.global_settings_default_user_function_4
-	c.vars.global_settings_default_user_function_1_name = config.global_settings_default_user_function_1_name
-	c.vars.global_settings_default_user_function_2_name = config.global_settings_default_user_function_2_name
-	c.vars.global_settings_default_user_function_3_name = config.global_settings_default_user_function_3_name
-	c.vars.global_settings_default_user_function_4_name = config.global_settings_default_user_function_4_name
-	c.vars.global_settings_default_show_joins = config.global_settings_default_show_joins
-	c.vars.global_settings_default_show_parts = config.global_settings_default_show_parts
-	c.vars.global_settings_default_animate_scroll = config.global_settings_default_animate_scroll
-	c.vars.global_settings_default_new_messages_separator = config.global_settings_default_new_messages_separator
-	c.vars.global_settings_default_afk_disable_messages_beep = config.global_settings_default_afk_disable_messages_beep
-	c.vars.global_settings_default_afk_disable_highlights_beep = config.global_settings_default_afk_disable_highlights_beep
-	c.vars.global_settings_default_afk_disable_media_change_beep = config.global_settings_default_afk_disable_media_change_beep
-	c.vars.global_settings_default_afk_disable_joins_beep = config.global_settings_default_afk_disable_joins_beep
-	c.vars.global_settings_default_afk_disable_image_change = config.global_settings_default_afk_disable_image_change
-	c.vars.global_settings_default_afk_disable_tv_change = config.global_settings_default_afk_disable_tv_change
-	c.vars.global_settings_default_afk_disable_radio_change	 = config.global_settings_default_afk_disable_radio_change	
-	c.vars.global_settings_default_open_popup_messages = config.global_settings_default_open_popup_messages	
-	c.vars.global_settings_default_on_lockscreen = config.global_settings_default_on_lockscreen	
-	c.vars.global_settings_default_on_unlockscreen = config.global_settings_default_on_unlockscreen	
-	c.vars.global_settings_default_afk_on_lockscreen = config.global_settings_default_afk_on_lockscreen	
-	c.vars.global_settings_default_chat_layout = config.global_settings_default_chat_layout	
-	c.vars.global_settings_default_media_display_percentage = config.global_settings_default_media_display_percentage
-	c.vars.global_settings_default_tv_display_percentage = config.global_settings_default_tv_display_percentage
-	c.vars.global_settings_default_tv_display_position = config.global_settings_default_tv_display_position
-	c.vars.global_settings_default_aliases = config.global_settings_default_aliases
-	c.vars.global_settings_default_other_words_to_autocomplete = config.global_settings_default_other_words_to_autocomplete
-	c.vars.global_settings_default_chat_font_size = config.global_settings_default_chat_font_size
-	c.vars.global_settings_default_font_family = config.global_settings_default_font_family
-	c.vars.global_settings_default_warn_before_closing = config.global_settings_default_warn_before_closing
-	c.vars.global_settings_default_activity_bar = config.global_settings_default_activity_bar
-	c.vars.global_settings_default_show_image_previews = config.global_settings_default_show_image_previews
-	c.vars.global_settings_default_show_link_previews = config.global_settings_default_show_link_previews
-	c.vars.room_state_default_images_enabled = config.room_state_default_images_enabled
-	c.vars.room_state_default_tv_enabled = config.room_state_default_tv_enabled
-	c.vars.room_state_default_radio_enabled = config.room_state_default_radio_enabled
-	c.vars.room_state_default_images_locked = config.room_state_default_images_locked
-	c.vars.room_state_default_tv_locked = config.room_state_default_tv_locked
-	c.vars.room_state_default_radio_locked = config.room_state_default_radio_locked
-	c.vars.room_state_default_radio_volume = config.room_state_default_radio_volume
-	c.vars.room_state_default_screen_locked = config.room_state_default_screen_locked
 	c.vars.double_tap_key = config.double_tap_key
 	c.vars.double_tap_key_2 = config.double_tap_key_2
 	c.vars.double_tap_key_3 = config.double_tap_key_3

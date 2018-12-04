@@ -530,6 +530,12 @@ If you want to remove it to start fresh:
 "global_settings_default_show_link_previews"
 >Whether links get a preview on the chat area by default.
 
+"global_settings_default_stop_radio_on_tv_play"
+>Whether radio stops on TV play by default.
+
+"global_settings_default_stop_tv_on_radio_play"
+>Whether TV stops on radio play by default.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 
