@@ -4777,11 +4777,25 @@ Hue.activate_key_detection = function()
 			if(e.key === "Enter")
 			{
 				Hue.send_edit_messsage()
+				e.preventDefault()
 			}
 
 			else if(e.key === "Escape")
 			{
 				Hue.stop_edit_message()
+				e.preventDefault()
+			}
+
+			else if(e.key === "ArrowUp")
+			{
+				Hue.edit_last_message()
+				e.preventDefault()
+			}
+
+			else if(e.key === "ArrowDown")
+			{
+				Hue.edit_last_message(true)
+				e.preventDefault()
 			}
 
 			return false
@@ -20547,15 +20561,67 @@ Hue.push_to_activity_bar = function(uname, date)
 	}
 }
 
-Hue.edit_last_message = function()
+Hue.edit_last_message = function(reverse=false)
 {
+	let found = false
+	let edit_found = true
+	let last_container = false
+
+	if(Hue.editing_message)
+	{
+		edit_found = false
+	}
+
 	$($(".message").get().reverse()).each(function()
 	{
+		if(found)
+		{
+			return false
+		}
+
 		if($(this).data("user_id") === Hue.user_id)
 		{
-			let content_container = $(this).find(".chat_content_container").last().get(0)
-			Hue.edit_message(content_container)
-			return false
+			$($(this).find(".chat_content_container").get().reverse()).each(function()
+			{
+				if(Hue.editing_message)
+				{
+					if(this === Hue.editing_message_container)
+					{
+						edit_found = true
+						return true
+					}
+				}
+
+				let cnt = this
+
+				if(!edit_found)
+				{
+					last_container = this
+					return true
+				}
+
+				else
+				{
+					if(reverse)
+					{
+						cnt = last_container
+					}
+				}
+
+				if(!cnt)
+				{
+					Hue.stop_edit_message()
+				}
+
+				else
+				{
+					Hue.edit_message(cnt)
+				}
+
+				found = true
+				return false
+			})
+
 		}
 	})
 }
