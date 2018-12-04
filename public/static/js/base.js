@@ -125,6 +125,7 @@ Hue.DAY = 86400000
 Hue.YEAR = 31536000000
 Hue.editing_message = false
 Hue.editing_message_container = false
+Hue.editing_message_area = false
 
 Hue.commands = 
 [
@@ -4774,6 +4775,8 @@ Hue.activate_key_detection = function()
 
 		if(Hue.editing_message)
 		{
+			Hue.focus_edit_area()
+
 			if(e.key === "Enter")
 			{
 				Hue.send_edit_messsage()
@@ -4788,14 +4791,22 @@ Hue.activate_key_detection = function()
 
 			else if(e.key === "ArrowUp")
 			{
-				Hue.edit_last_message()
-				e.preventDefault()
+				let res = Hue.handle_edit_direction()
+
+				if(res)
+				{
+					e.preventDefault()
+				}
 			}
 
 			else if(e.key === "ArrowDown")
 			{
-				Hue.edit_last_message(true)
-				e.preventDefault()
+				let res = Hue.handle_edit_direction(true)
+
+				if(res)
+				{
+					e.preventDefault()
+				}
 			}
 
 			return false
@@ -20561,6 +20572,28 @@ Hue.push_to_activity_bar = function(uname, date)
 	}
 }
 
+Hue.focus_edit_area = function()
+{
+	if(Hue.editing_message_area !== document.activeElement)
+	{
+		Hue.editing_message_area.focus()
+	}
+}
+
+Hue.handle_edit_direction = function(reverse=false)
+{
+	let area = Hue.editing_message_area
+
+	if((reverse && area.selectionStart === area.value.length) 
+	|| !reverse && area.selectionStart === 0)
+	{
+		Hue.edit_last_message(reverse)
+		return true
+	}
+
+	return false
+}
+
 Hue.edit_last_message = function(reverse=false)
 {
 	let found = false
@@ -20645,6 +20678,7 @@ Hue.edit_message = function(container)
 	
 	Hue.editing_message = true
 	Hue.editing_message_container = container
+	Hue.editing_message_area = area
 
 	let clone = $(chat_content).clone(true, true)
 
@@ -20684,12 +20718,11 @@ Hue.stop_edit_message = function()
 	}
 
 	let edit_container = $(Hue.editing_message_container).find(".message_edit_container").get(0)
-	let area = $(Hue.editing_message_container).find(".message_edit_area").get(0)
 	let chat_content = $(Hue.editing_message_container).find(".chat_content").get(0)
 	
 	$(edit_container).css("display", "none")
 
-	$(area).val("")
+	$(Hue.editing_message_area).val("")
 
 	$(chat_content).css("display", "block")
 
@@ -20697,6 +20730,7 @@ Hue.stop_edit_message = function()
 	
 	Hue.editing_message = false
 	Hue.editing_message_container = false
+	Hue.editing_message_area = false
 
 	Hue.chat_scroll_bottom(false, false)
 }
@@ -20708,14 +20742,11 @@ Hue.send_edit_messsage = function(id)
 		return false
 	}
 
-	let area = $(Hue.editing_message_container).find(".message_edit_area").get(0)
 	let chat_content = $(Hue.editing_message_container).find(".chat_content").get(0)
 
-	let new_message = area.value.trim()
+	let new_message = Hue.editing_message_area.value.trim()
 
 	let edit_id = $(Hue.editing_message_container).data("id")
-
-	$(area).val("")
 
 	Hue.stop_edit_message()
 	
