@@ -320,19 +320,19 @@ div#header_radio_playing_icon
 
 #input
 {
-	font-size: 1em;
+	font-size: 1rem;
 	color: white;
 	border: 0px solid black;
-	padding-right: 1em;
-	padding-top: 0.33em;
-	padding-bottom: 0.33em;
+	padding-right: 1rem;
 	outline: none;
 	font-family: inherit;
 	flex-grow: 1;
 	background-color: transparent;
 	color: inherit;
 	resize: none;
-	overflow: hidden;
+	overflow: auto;
+	position: relative;
+	height: calc(100% - 0.6rem);
 }
 
 .scroller_container

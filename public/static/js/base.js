@@ -126,6 +126,7 @@ Hue.YEAR = 31536000000
 Hue.editing_message = false
 Hue.editing_message_container = false
 Hue.editing_message_area = false
+Hue.footer_oversized = false
 
 Hue.commands = 
 [
@@ -2136,7 +2137,7 @@ Hue.before_show_video = function()
 Hue.after_show_video = function()
 {
 	Hue.fix_visible_video_frame()
-	$("#input").focus()
+	Hue.focus_input()
 }
 
 Hue.setup_theme_and_background = function(data)
@@ -4832,6 +4833,11 @@ Hue.activate_key_detection = function()
 
 		else if(e.key === "ArrowUp")
 		{
+			if(Hue.footer_oversized_active())
+			{
+				return
+			}
+
 			if(e.shiftKey)
 			{
 				Hue.input_history_change("up")
@@ -4854,6 +4860,11 @@ Hue.activate_key_detection = function()
 
 		else if(e.key === "ArrowDown")
 		{
+			if(Hue.footer_oversized_active())
+			{
+				return
+			}
+
 			if(e.shiftKey)
 			{
 				Hue.input_history_change("down")
@@ -4957,6 +4968,8 @@ Hue.scroll_down = function(n)
 Hue.change_input = function(s, to_end=true, focus=true)
 {
 	$("#input").val(s)
+
+	Hue.check_input_clone_overflow("")
 
 	if(to_end)
 	{
@@ -5102,7 +5115,7 @@ Hue.input_history_change = function(direction)
 
 		else if(Hue.input_history_index === -1)
 		{
-			$("#input").val("")
+			Hue.change_input("")
 			return
 		}
 
@@ -5113,7 +5126,7 @@ Hue.input_history_change = function(direction)
 	{
 		if(Hue.input_history_index < 0)
 		{
-			$("#input").val("")
+			Hue.change_input("")
 			return
 		}
 
@@ -5121,14 +5134,14 @@ Hue.input_history_change = function(direction)
 
 		if(Hue.input_history_index > Hue.input_history.length - 1)
 		{
-			$("#input").val("")
+			Hue.change_input("")
 			Hue.reset_input_history_index()
 			return false
 		}
 
 		if(Hue.input_history_index >= Hue.input_history.length)
 		{
-			$("#input").val("")
+			Hue.change_input("")
 			Hue.reset_input_history_index()
 			return
 		}
@@ -5389,6 +5402,7 @@ Hue.on_resize = function()
 	Hue.update_chat_scrollbar()
 	Hue.goto_bottom(false, false)
 	Hue.check_scrollers()
+	Hue.fix_input_clone()
 }
 
 Hue.setup_scrollbars = function()
@@ -9711,13 +9725,14 @@ Hue.unclear_chat = function()
 
 Hue.clear_input = function()
 {
-	$('#input').val("")
+	Hue.change_input("")
 	Hue.old_input_val = ""
 }
 
 Hue.add_to_input = function(what)
 {
-	$('#input').val(`${$('#input').val() + what} `).focus()
+	Hue.change_input(`${$('#input').val() + what} `)
+	Hue.focus_input()
 }
 
 Hue.set_topic_info = function(data)
@@ -14779,7 +14794,7 @@ Hue.setup_input = function()
 		if(value.length > Hue.max_input_length)
 		{
 			value = value.substring(0, Hue.max_input_length)
-			$("#input").val(value)
+			Hue.change_input(value)
 		}
 
 		if(Hue.old_input_val !== value)
@@ -14788,6 +14803,8 @@ Hue.setup_input = function()
 			Hue.check_typing()
 			Hue.old_input_val = value
 		}
+
+		Hue.check_input_clone_overflow(value)
 	})
 
 	$("#input").on("click", function()
@@ -14799,6 +14816,88 @@ Hue.setup_input = function()
 	})
 
 	Hue.old_input_val = $("#input").val()
+}
+
+Hue.check_input_overflow = function()
+{	
+	let input = $("#input")[0]
+
+	return input.clientHeight < input.scrollHeight
+}
+
+Hue.create_input_clone = function()
+{
+	let clone = document.createElement("div")
+
+	clone.id = "input_clone"
+	clone.style.height = `${$("#input").height()}px`
+	clone.style.width = `${$("#input").width()}px`
+	clone.style.fontSize = $("#input").css("font-size")
+	clone.style.visibility = "hidden"
+	clone.style.position = "fixed"
+	clone.style.top = "0"
+	clone.style.left = "0"
+	clone.style.zIndex = "-1"
+	clone.style.overflowX = "hidden"
+	clone.style.overflowY = "hidden"
+	clone.style.overflowWrap = "break-word"
+	clone.style.wordBreak = "break-word"
+	clone.style.paddingRight = $("#input").css("padding-right")
+	clone.style.color = "red"
+	clone.style.backgroundColor = "black"
+	clone.style.textAlign = "left"
+
+	document.body.appendChild(clone)
+
+	Hue.initial_input_scroll_height = $("#input_clone")[0].scrollHeight
+	Hue.initial_footer_height = $(".panel").css("height")
+}
+
+Hue.fix_input_clone = function()
+{
+	$("#input_clone").css("width", `${$("#input").width()}px`) 
+}
+
+Hue.check_input_clone_overflow = function(val)
+{
+	$("#input_clone").text(val)
+
+	if(Hue.check_input_overflow())
+	{
+		$("#input_clone").css("overflow-y", "scroll")
+	}
+
+	else
+	{
+		$("#input_clone").css("overflow-y", "hidden")
+	}
+
+	let scroll_height = $("#input_clone")[0].scrollHeight
+
+	if(scroll_height > Hue.initial_input_scroll_height + 10)
+	{
+		if(!Hue.footer_oversized)
+		{
+			$("#footer").css("height", "6rem")
+			Hue.footer_oversized = true
+			Hue.on_resize()
+		}
+	}
+
+	else
+	{
+		if(Hue.footer_oversized)
+		{
+			$("#footer").css("height", Hue.initial_footer_height)
+			Hue.footer_oversized = false
+			Hue.on_resize()
+		}
+	}
+}
+
+Hue.footer_oversized_active = function()
+{
+	return Hue.footer_oversized && document.activeElement === $("#input")[0]
 }
 
 Hue.check_typing = function()
@@ -16286,6 +16385,7 @@ Hue.on_font_loaded = function()
 	Hue.update_chat_scrollbar()
 	Hue.goto_bottom(true, false)
 	Hue.update_all_modal_scrollbars()
+	Hue.create_input_clone()
 }
 
 Hue.start_generic_uname_click_events = function()
