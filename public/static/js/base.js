@@ -1928,8 +1928,6 @@ Hue.stop_videos = function()
 	}
 
 	$("#media_video")[0].pause()
-
-	$("#media_iframe_video").attr("src", "")
 }
 
 Hue.play_video = function()
@@ -1983,11 +1981,6 @@ Hue.play_video = function()
 	else if(Hue.current_tv().type === "url")
 	{
 		$("#media_video")[0].play()
-	}
-
-	else if(Hue.current_tv().type === "iframe")
-	{
-		$("#media_iframe_video").attr("src", Hue.current_tv().source)
 	}
 
 	else
