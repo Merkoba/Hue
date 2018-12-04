@@ -2210,6 +2210,13 @@ input[type=text], textarea
 	margin-bottom: 0.2rem;
 }
 
+.image_preview_url
+{
+	text-decoration: underline;
+	overflow-wrap: break-word;
+	word-break: break-word;
+}
+
 .image_preview_image
 {
 	max-width: 90%;
@@ -2243,7 +2250,7 @@ input[type=text], textarea
 
 .link_preview_url
 {
-	font-size: 1rem;
+	font-size: 1em;
 	text-decoration: underline;
 	overflow-wrap: break-word;
 	word-break: break-word;
@@ -2251,7 +2258,7 @@ input[type=text], textarea
 
 .link_preview_title
 {
-	font-size: 1.1rem;
+	font-size: 1.1em;
 	overflow-wrap: break-word;
 	word-break: break-word;
 }
