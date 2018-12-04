@@ -427,10 +427,9 @@ div#header_radio_playing_icon
 	cursor: pointer;
 }
 
-.chat_profile_image_container:hover
+.chat_profile_image_container.aura
 {
 	animation: spin 1s linear infinite;
-	animation-delay: 1s;
 }
 
 .chat_uname_container
