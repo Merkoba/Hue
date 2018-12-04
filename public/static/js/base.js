@@ -4878,6 +4878,11 @@ Hue.activate_key_detection = function()
 				e.preventDefault()
 			}
 
+			else
+			{
+				Hue.goto_bottom(true, true)
+			}
+
 			return
 		}
 
@@ -4917,10 +4922,19 @@ Hue.activate_key_detection = function()
 		{
 			if(!e.shiftKey)
 			{
-				Hue.clear_input()
-				Hue.reset_input_history_index()
-				e.preventDefault()
+				if($("#input").val().length > 0)
+				{
+					Hue.clear_input()
+					Hue.reset_input_history_index()
+				}
+
+				else
+				{
+					Hue.goto_bottom(true, true)
+				}
+
 				Hue.hide_reactions()
+				e.preventDefault()
 				return
 			}
 		}
