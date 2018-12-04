@@ -6022,7 +6022,7 @@ Hue.update_chat = function(args={})
 
 		image_preview_image[0].addEventListener("load", function()
 		{
-			if(args.user_id === Hue.user_id)
+			if(args.user_id === Hue.user_id || !started)
 			{
 				Hue.goto_bottom(true, false)
 			}
@@ -6033,6 +6033,8 @@ Hue.update_chat = function(args={})
 			}
 		})
 	}
+
+	let started = Hue.started
 
 	if(link_preview)
 	{
@@ -6049,10 +6051,9 @@ Hue.update_chat = function(args={})
 		{
 			link_preview_image[0].addEventListener("load", function()
 			{
-				if(args.user_id === Hue.user_id)
+				if(args.user_id === Hue.user_id || !started)
 				{
 					Hue.goto_bottom(true, false)
-
 				}
 
 				else
