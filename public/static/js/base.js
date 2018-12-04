@@ -127,6 +127,7 @@ Hue.editing_message = false
 Hue.editing_message_container = false
 Hue.editing_message_area = false
 Hue.footer_oversized = false
+Hue.input_clone_created = false
 
 Hue.commands = 
 [
@@ -14846,20 +14847,30 @@ Hue.create_input_clone = function()
 	clone.style.color = "red"
 	clone.style.backgroundColor = "black"
 	clone.style.textAlign = "left"
+	clone.style.whiteSpace = "pre-wrap"
 
 	document.body.appendChild(clone)
 
 	Hue.initial_input_scroll_height = $("#input_clone")[0].scrollHeight
 	Hue.initial_footer_height = $(".panel").css("height")
+	Hue.input_clone_created = true
 }
 
 Hue.fix_input_clone = function()
 {
-	$("#input_clone").css("width", `${$("#input").width()}px`) 
+	if(Hue.input_clone_created)
+	{
+		$("#input_clone").css("width", `${$("#input").width()}px`) 	
+	}
 }
 
 Hue.check_input_clone_overflow = function(val)
 {
+	if(!Hue.input_clone_created)
+	{
+		return false
+	}
+
 	$("#input_clone").text(val)
 
 	if(Hue.check_input_overflow())
