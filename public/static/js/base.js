@@ -903,7 +903,7 @@ Hue.start_socket = function()
 			})
 
 			Hue.hide_pencil()
-			Hue.remove_aura(data.username, true)
+			Hue.remove_aura(data.username)
 		}
 
 		else if(data.type === 'request_slice_upload')
@@ -15117,40 +15117,33 @@ Hue.show_aura = function(uname)
 	}, Hue.max_typing_inactivity)
 }
 
-Hue.remove_aura = function(uname, clr=false)
+Hue.remove_aura = function(uname)
 {
-	if(clr)
-	{
-		clearTimeout(Hue.aura_timeouts[uname])
-	}
+	clearTimeout(Hue.aura_timeouts[uname])
 
 	let mode = Hue.get_setting("chat_layout")
 
-	if(mode === "normal")
-	{
-		$(`.chat_profile_image_container.aura`).each(function()
-		{
-			let message = $(this).closest(".chat_message")
+	let cls = ".chat_profile_image_container.aura"
+	let aura = "aura"
 
-			if(message.length > 0)
-			{
-				$(this).removeClass("aura")
-			}
-		})
+	if(mode === "compact")
+	{
+		cls = ".chat_uname.aura3"
+		aura = "aura3"
 	}
 
-	else if(mode === "compact")
+	$(cls).each(function()
 	{
-		$(`.chat_uname.aura3`).each(function()
-		{
-			let message = $(this).closest(".chat_message")
+		let message = $(this).closest(".chat_message")
 
-			if(message.length > 0)
+		if(message.length > 0)
+		{
+			if(message.data("uname") === uname)
 			{
-				$(this).removeClass("aura3")
+				$(this).removeClass(aura)
 			}
-		})
-	}
+		}
+	})
 
 	Hue.aura_timeouts[uname] = undefined
 }
