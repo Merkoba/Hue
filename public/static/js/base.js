@@ -6419,7 +6419,7 @@ Hue.generate_vseparator = function(message="", classes="")
 {
 	let layout = `${Hue.get_setting("chat_layout")}_layout`
 	
-	s = 
+	let s =
 	`
 		<div class='message vseparator_container ${layout} ${classes}'>
 			<div class='vseparator_line'></div>
