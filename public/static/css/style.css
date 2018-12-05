@@ -2308,3 +2308,10 @@ input[type=text], textarea
 	opacity: 0.8;
 	font-size: 0.8rem;
 }
+
+#media_iframe_poster
+{
+	margin-top: 1rem;
+	position: absolute;
+	display: none;
+}

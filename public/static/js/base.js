@@ -305,6 +305,7 @@ Hue.init = function()
 	Hue.set_user_settings_titles()
 	Hue.maxers_mouse_events()
 	Hue.check_screen_lock()
+	Hue.setup_iframe_video()
 
 	if(Hue.debug_functions)
 	{
@@ -1910,7 +1911,7 @@ Hue.load_radio = function(src, type)
 	}
 }
 
-Hue.stop_videos = function()
+Hue.stop_videos = function(clear_iframe=true)
 {
 	if(Hue.youtube_video_player !== undefined)
 	{
@@ -1928,6 +1929,12 @@ Hue.stop_videos = function()
 	}
 
 	$("#media_video")[0].pause()
+
+	if(clear_iframe)
+	{
+		$("#media_iframe_video").attr("src", "")
+		$("#media_iframe_poster").css("display", "block")
+	}
 }
 
 Hue.play_video = function()
@@ -1981,6 +1988,12 @@ Hue.play_video = function()
 	else if(Hue.current_tv().type === "url")
 	{
 		$("#media_video")[0].play()
+	}
+
+	else if(Hue.current_tv().type === "iframe")
+	{
+		$("#media_iframe_video").attr("src", Hue.current_tv().source)
+		$("#media_iframe_poster").css("display", "none")
 	}
 
 	else
@@ -2135,6 +2148,7 @@ Hue.show_iframe_video = function(src, play=true)
 	Hue.hide_videos("media_iframe_video_container")
 
 	$("#media_iframe_video").attr("src", src)
+	$("#media_iframe_poster").css("display", "none")
 
 	Hue.after_show_video(play)
 }
@@ -9042,7 +9056,7 @@ Hue.start_radio = function()
 
 	if(Hue.get_setting("stop_tv_on_radio_play"))
 	{
-		Hue.stop_videos()
+		Hue.stop_videos(false)
 	}
 }
 
@@ -20954,4 +20968,12 @@ Hue.remove_message_from_chat = function(data)
 	})
 
 	Hue.chat_scroll_bottom(false, false)
+}
+
+Hue.setup_iframe_video = function()
+{
+	$("#media_iframe_poster").click(function()
+	{
+		Hue.play_video()
+	})
 }
