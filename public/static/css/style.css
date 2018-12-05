@@ -964,7 +964,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 	top: 0;
 	right: 0;
 	z-index: 999;
-	height: 100%;
 	flex-direction: row;
 	height: 1rem;
 }
