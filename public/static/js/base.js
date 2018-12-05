@@ -15094,28 +15094,6 @@ Hue.show_aura = function(uname)
 
 	else
 	{
-		let mode = Hue.get_setting("chat_layout")
-
-		let c
-
-		if(mode === "normal")
-		{
-			let message = Hue.get_last_chat_message_by_username(uname)
-			c = !$(message).find(".chat_profile_image_container").eq(0).hasClass("aura")
-		}
-
-		else if(mode === "compact")
-		{
-			let message = Hue.get_last_chat_message_by_username(uname)
-			c = !$(message).find(".chat_uname").eq(0).hasClass("aura3")
-		}
-
-		if(c)
-		{
-			Hue.remove_aura(uname)
-			Hue.add_aura(uname)
-		}
-
 		clearTimeout(Hue.aura_timeouts[uname])
 	}
 
