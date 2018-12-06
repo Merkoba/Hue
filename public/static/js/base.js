@@ -21143,6 +21143,11 @@ Hue.send_piano_key = function(key)
 		return false
 	}
 
+	if(!Hue.utilz.piano_notes.includes(key.toLowerCase()))
+	{
+		return false
+	}
+
 	Hue.socket_emit("send_piano_key", {key:key})
 }
 

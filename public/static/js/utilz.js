@@ -359,6 +359,12 @@ const Utilz = function()
 		}
 	}
 
+	utilz.piano_notes = 
+	[
+		"c3", "d3", "e3", "f3",
+		"g3", "a3", "b3", "c4", "d4"
+	]
+
 	utilz.video_extensions = ["mp4", "webm", "m3u8"]
 	utilz.audio_extensions = ["mp3", "ogg", "wav", "flac"]
 	utilz.image_extensions = ["jpg", "jpeg", "png", "gif"]

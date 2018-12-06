@@ -4326,6 +4326,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
+		if(!utilz.piano_notes.includes(data.key.toLowerCase()))
+		{
+			return handler.get_out(socket)
+		}
+
 		if(!handler.check_permission(socket, "radio", true))
 		{
 			return false
