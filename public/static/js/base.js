@@ -179,7 +179,8 @@ Hue.commands =
 	'/voicechatmode', '/voicepermission', '/theme', '/textcolormode',
 	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
 	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist',
-	'/accesslog', '/toggleactivtybar', '/thememode', '/pianokey'
+	'/accesslog', '/toggleactivtybar', '/thememode', '/pianokey',
+	'/togglemutepiano'
 ]
 
 Hue.user_settings =
@@ -8483,6 +8484,11 @@ Hue.execute_command = function(message, ans)
 	else if(Hue.oi_startswith(cmd2, '/pianokey'))
 	{
 		Hue.process_piano_key_number(arg)
+	}
+
+	else if(Hue.oi_equals(cmd2, '/togglemutepiano'))
+	{
+		Hue.set_piano_muted()
 	}
 
 	else
