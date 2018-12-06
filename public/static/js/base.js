@@ -129,6 +129,7 @@ Hue.editing_message_area = false
 Hue.footer_oversized = false
 Hue.input_clone_created = false
 Hue.piano_timeout_delay = 1000
+Hue.piano_recent_users = []
 
 Hue.commands = 
 [
@@ -21176,6 +21177,7 @@ Hue.receive_piano_key = function(data)
 		}
 		
 		Hue.play_piano_key(data.key)
+		Hue.push_to_piano_recent_users(data)
 	}
 }
 
@@ -21186,5 +21188,51 @@ Hue.process_piano_key_number = function(n)
 	if(key)
 	{
 		Hue.send_piano_key(key)
+	}
+}
+
+Hue.push_to_piano_recent_users = function(data)
+{
+	let changed = false
+
+	if(!Hue.piano_recent_users.includes(data.username))
+	{
+		Hue.piano_recent_users.unshift(data.username)
+		changed = true
+	}
+
+	else if(Hue.piano_recent_users[0] === data.username)
+	{
+		changed = false
+	}
+
+	else
+	{
+		for(let i=0; i<Hue.piano_recent_users.length; i++)
+		{
+			let username = Hue.piano_recent_users[i]
+			
+			if(username === data.username)
+			{
+				Hue.piano_recent_users.splice(i, 1)
+				break
+			}
+		}
+
+		Hue.piano_recent_users.unshift(data.username)
+
+		changed = true
+	}
+
+	if(Hue.piano_recent_users.length > Hue.piano_max_recent_users)
+	{
+		Hue.piano_recent_users = Hue.piano_recent_users.slice(0, Hue.piano_max_recent_users)
+		changed = true
+	}
+
+	if(changed)
+	{
+		let s = Hue.piano_recent_users.join(", ")
+		$("#piano_key_button_volume").attr("title", s)
 	}
 }

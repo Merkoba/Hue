@@ -212,5 +212,6 @@
 	"max_activity_bar_items": 20,
 	"old_activity_min": 21600000,
 	"default_favicon_color": "rgb(192,109,207)",
-	"redis_max_link_age": 604800000
+	"redis_max_link_age": 604800000,
+	"piano_max_recent_users": 10
 }

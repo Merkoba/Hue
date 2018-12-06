@@ -722,6 +722,9 @@ This should be an array of strings of root domains.
 "redis_max_link_age"
 >How old link data has to be to be fetched again.
 
+"piano_max_recent_users"
+>How many users fit in to the title of recent piano users when hovering the piano's volume icon.
+
 
 ## The following reside in config.secret.json
 

@@ -98,6 +98,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.activity_bar_trigger_interval = config.activity_bar_trigger_interval
 	c.vars.max_activity_bar_items = config.max_activity_bar_items
 	c.vars.old_activity_min = config.old_activity_min
+	c.vars.piano_max_recent_users = config.piano_max_recent_users
 
 	function check_url(req, res, next)
 	{
