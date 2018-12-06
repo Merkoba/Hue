@@ -566,6 +566,9 @@ If you want to remove it to start fresh:
 "room_state_default_screen_locked"
 >Whether the screen will be locked by default.
 
+"room_state_default_piano_muted"
+>Whether the piano is muted by default.
+
 "double_tap_key"
 >The key that triggers double tap.
 

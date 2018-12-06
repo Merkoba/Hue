@@ -2580,6 +2580,12 @@ Hue.apply_theme = function()
 		color: ${font_color} !important;
 	}
 
+	.piano_key_button
+	{
+		background-color: ${color_3} !important;
+		color: ${font_color} !important;
+	}
+
 	.piano_key_divider
 	{
 		background-color: ${slight_background} !important;
@@ -12753,7 +12759,8 @@ Hue.get_room_state = function()
 		"tv_locked",
 		"radio_locked",
 		"radio_volume",
-		"screen_locked"
+		"screen_locked",
+		"piano_muted"
 	]
 
 	for(let setting of settings)
@@ -21062,6 +21069,43 @@ Hue.setup_piano = function()
 		let key = $(this).attr("id").replace("piano_key_", "")
 		Hue.send_piano_key(key)
 	})
+
+	$("#piano_key_button_volume").click(function()
+	{
+		Hue.set_piano_muted()
+	})
+
+	Hue.set_piano_muted(Hue.room_state.piano_muted)
+}
+
+Hue.set_piano_muted = function(what=undefined)
+{
+	let what2
+
+	if(what === undefined)
+	{
+		Hue.room_state.piano_muted = !Hue.room_state.piano_muted
+		what2 = Hue.room_state.piano_muted
+	}
+
+	else
+	{
+		what2 = what
+	}
+
+	if(what2)
+	{
+		$("#piano_volume_icon").removeClass("fa-volume-up")
+		$("#piano_volume_icon").addClass("fa-volume-off")
+	}
+
+	else
+	{
+		$("#piano_volume_icon").removeClass("fa-volume-off")
+		$("#piano_volume_icon").addClass("fa-volume-up")
+	}
+
+	Hue.save_room_state()
 }
 
 Hue.show_piano = function()
@@ -21094,9 +21138,8 @@ Hue.hide_piano = function()
 
 Hue.send_piano_key = function(key)
 {
-	if(!Hue.can_piano)
+	if(!Hue.can_piano || Hue.room_state.piano_muted)
 	{
-		Hue.feedback("You don't have radio permission")
 		return false
 	}
 
@@ -21105,7 +21148,7 @@ Hue.send_piano_key = function(key)
 
 Hue.play_piano_key = function(key)
 {
-	if(Hue.get_setting("piano_enabled"))
+	if(!Hue.room_state.piano_muted && Hue.get_setting("piano_enabled"))
 	{
 		if(Hue.afk && Hue.get_setting("afk_disable_piano"))
 		{

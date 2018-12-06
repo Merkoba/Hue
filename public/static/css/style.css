@@ -2321,7 +2321,7 @@ input[type=text], textarea
 	position: fixed;
 	top: 2rem;
 	height: 40px;
-	width: 600px;
+	width: 700px;
 	z-index: 99999;
 	left: 50%;
 	transform: translateX(-50%);
@@ -2338,6 +2338,18 @@ input[type=text], textarea
 }
 
 .piano_key
+{
+	background-color: "white";
+	color: white;
+	flex-grow: 1;
+	flex-shrink: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.piano_key_button
 {
 	background-color: "white";
 	color: white;
