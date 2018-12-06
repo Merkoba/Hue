@@ -2333,8 +2333,11 @@ input[type=text], textarea
 	position: relative;
 	height: 100%;
 	width: 100%;
-	display: none;
 	flex-direction: row;
+	transition: opacity 500ms linear;
+	pointer-events: none;
+	display: flex;
+	opacity: 0;
 }
 
 .piano_key

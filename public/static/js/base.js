@@ -21124,7 +21124,8 @@ Hue.show_piano = function()
 
 		Hue.piano_timeout = setTimeout(function()
 		{
-			$("#piano_content").css("display", "flex")
+			$("#piano_content").css("pointer-events", "auto")
+			$("#piano_content").css("opacity", "1")
 		}, Hue.piano_timeout_delay)
 	}
 }
@@ -21137,8 +21138,8 @@ Hue.hide_piano = function()
 
 	Hue.piano_timeout_2 = setTimeout(function()
 	{
-		$("#piano_content").css("display", "none")
-		$("#piano_content").css("visibility", "none")
+		$("#piano_content").css("pointer-events", "none")
+		$("#piano_content").css("opacity", "0")
 	}, Hue.piano_timeout_delay)
 }
 
