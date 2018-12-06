@@ -21148,18 +21148,23 @@ Hue.send_piano_key = function(key)
 
 Hue.play_piano_key = function(key)
 {
+	Hue.piano.triggerAttackRelease(key, 0.1)
+}
+
+Hue.receive_piano_key = function(data)
+{
 	if(!Hue.room_state.piano_muted && Hue.get_setting("piano_enabled"))
 	{
 		if(Hue.afk && Hue.get_setting("afk_disable_piano"))
 		{
 			return false
 		}
-		
-		Hue.piano.triggerAttackRelease(key, 0.1)
-	}
-}
 
-Hue.receive_piano_key = function(data)
-{
-	Hue.play_piano_key(data.key)
+		if(Hue.user_is_ignored(data.username))
+		{
+			return false
+		}
+		
+		Hue.play_piano_key(data.key)
+	}
 }
