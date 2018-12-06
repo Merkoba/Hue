@@ -178,7 +178,7 @@ Hue.commands =
 	'/voicechatmode', '/voicepermission', '/theme', '/textcolormode',
 	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
 	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist',
-	'/accesslog', '/toggleactivtybar', '/thememode'
+	'/accesslog', '/toggleactivtybar', '/thememode', '/pianokey'
 ]
 
 Hue.user_settings =
@@ -8477,6 +8477,11 @@ Hue.execute_command = function(message, ans)
 	else if(Hue.oi_equals(cmd2, '/toggleactivtybar'))
 	{
 		Hue.toggle_activity_bar()
+	}
+
+	else if(Hue.oi_startswith(cmd2, '/pianokey'))
+	{
+		Hue.process_piano_key_number(arg)
 	}
 
 	else
@@ -21171,5 +21176,15 @@ Hue.receive_piano_key = function(data)
 		}
 		
 		Hue.play_piano_key(data.key)
+	}
+}
+
+Hue.process_piano_key_number = function(n)
+{
+	let key = Hue.utilz.piano_notes[n - 1]
+
+	if(key)
+	{
+		Hue.send_piano_key(key)
 	}
 }
