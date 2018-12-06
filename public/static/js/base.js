@@ -128,6 +128,7 @@ Hue.editing_message_container = false
 Hue.editing_message_area = false
 Hue.footer_oversized = false
 Hue.input_clone_created = false
+Hue.piano_timeout_delay = 1000
 
 Hue.commands = 
 [
@@ -306,6 +307,7 @@ Hue.init = function()
 	Hue.maxers_mouse_events()
 	Hue.check_screen_lock()
 	Hue.setup_iframe_video()
+	Hue.setup_piano()
 
 	if(Hue.debug_functions)
 	{
@@ -613,6 +615,7 @@ Hue.check_permissions = function()
 	Hue.can_images = Hue.room_images_mode === "enabled" && Hue.check_permission(Hue.role, "images")
 	Hue.can_tv = Hue.room_tv_mode === "enabled" && Hue.check_permission(Hue.role, "tv")
 	Hue.can_radio = Hue.room_radio_mode === "enabled" && Hue.check_permission(Hue.role, "radio")
+	Hue.can_piano = (Hue.room_radio_mode === "enabled" || "locked") && Hue.check_permission(Hue.role, "radio")
 
 	Hue.setup_icons()
 }
@@ -1347,6 +1350,11 @@ Hue.start_socket = function()
 		else if(data.type === 'message_removed')
 		{
 			Hue.remove_message_from_chat(data)
+		}
+
+		else if(data.type === 'receive_piano_key')
+		{
+			Hue.receive_piano_key(data)
 		}
 	})
 }
@@ -2557,6 +2565,17 @@ Hue.apply_theme = function()
 	{
 		background-color: ${color_4_a} !important;
 		color: ${font_color} !important;
+	}
+
+	.piano_key
+	{
+		background-color: ${color_4} !important;
+		color: ${font_color} !important;
+	}
+
+	.piano_key_divider
+	{
+		background-color: ${slight_background} !important;
 	}
 
 	</style>
@@ -20600,6 +20619,8 @@ Hue.show_activity_bar = function()
 	$("#topbox_left_icon").removeClass("fa-caret-up")
 	$("#topbox_left_icon").addClass("fa-caret-down")
 
+	$("#piano_container").css("top", "4rem")
+
 	Hue.apply_theme()
 	Hue.update_activity_bar()
 	Hue.on_resize()
@@ -20610,6 +20631,8 @@ Hue.hide_activity_bar = function()
 	$("#activity_bar_container").css("display", "none")
 	$("#topbox_left_icon").removeClass("fa-caret-down")
 	$("#topbox_left_icon").addClass("fa-caret-up")
+
+	$("#piano_container").css("top", "2rem")
 
 	Hue.apply_theme()
 	Hue.on_resize()
@@ -20969,4 +20992,78 @@ Hue.setup_iframe_video = function()
 	{
 		Hue.play_video()
 	})
+}
+
+Hue.setup_piano = function()
+{
+	// Hue.piano = new Tone.FMSynth().toMaster()
+
+	Hue.piano = new Tone.Synth(
+	{
+		oscillator:
+		{
+		  	type : 'triangle8'
+		},
+			envelope : {
+			attack : 2,
+			decay : 1,
+			sustain: 0.4,
+			release: 4
+		}
+	}).toMaster()
+
+	$("#piano_container").on("mouseenter", function()
+	{
+		if(Hue.can_piano)
+		{
+			Hue.mouse_in_piano = true
+
+			clearTimeout(Hue.piano_timeout_2)
+
+			Hue.piano_timeout = setTimeout(function()
+			{
+				$("#piano_content").css("display", "flex")
+			}, Hue.piano_timeout_delay)
+		}
+	})
+
+	$("#piano_container").on("mouseleave", function()
+	{
+		Hue.mouse_in_piano = false
+		
+		clearTimeout(Hue.piano_timeout)
+
+		Hue.piano_timeout_2 = setTimeout(function()
+		{
+			$("#piano_content").css("display", "none")
+			$("#piano_content").css("visibility", "none")
+		}, Hue.piano_timeout_delay)
+	})
+
+	$("#piano_content").on("click", ".piano_key", function()
+	{
+		let key = $(this).attr("id").replace("piano_key_", "")
+		Hue.send_piano_key(key)
+	})
+}
+
+Hue.send_piano_key = function(key)
+{
+	if(!Hue.can_piano)
+	{
+		Hue.feedback("You don't have radio permission")
+		return false
+	}
+
+	Hue.socket_emit("send_piano_key", {key:key})
+}
+
+Hue.play_piano_key = function(key)
+{
+	Hue.piano.triggerAttackRelease(key, 0.1)
+}
+
+Hue.receive_piano_key = function(data)
+{
+	Hue.play_piano_key(data.key)
 }

@@ -105,7 +105,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		"slice_upload",
 		"typing",
 		"voice_chat_blob",
-		"activity_trigger"
+		"activity_trigger",
+		"send_piano_key"
 	]
 	const check_locked = 
 	[
@@ -232,6 +233,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.hue_info1 = ""
 		socket.hue_typing_counter = 0
 		socket.hue_activity_counter = 0
+		socket.hue_piano_counter = 0
 		socket.hue_last_activity_trigger = Date.now()
 	}
 
@@ -4317,6 +4319,38 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	handler.public.send_piano_key = async function(socket, data)
+	{
+		if(data.key === undefined)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(!handler.check_permission(socket, "radio", true))
+		{
+			return false
+		}
+
+		socket.hue_piano_counter += 1
+
+		if(socket.hue_piano_counter >= 20)
+		{
+			let spam_ans = await handler.add_spam(socket)
+
+			if(!spam_ans)
+			{
+				return false
+			}
+
+			socket.hue_piano_counter = 0
+		}
+
+		handler.room_emit(socket, 'receive_piano_key',
+		{
+			key: data.key
+		})
+	}
+
 	handler.charge_ads = function(room_id)
 	{
 		try
@@ -4392,13 +4426,31 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.check_permission = function(socket, permission)
+	handler.check_permission = function(socket, permission, lock_ok=false)
 	{
 		if(media_types.includes(permission))
 		{
-			if(rooms[socket.hue_room_id][`${permission}_mode`] !== "enabled")
+			let pmode = rooms[socket.hue_room_id][`${permission}_mode`]
+
+			if(pmode !== "enabled")
 			{
-				return false
+				if(pmode === "locked")
+				{
+					if(lock_ok)
+					{
+						return true
+					}
+
+					else
+					{
+						return false
+					}
+				}
+
+				else
+				{
+					return false
+				}
 			}
 		}
 
