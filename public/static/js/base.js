@@ -214,6 +214,7 @@ Hue.user_settings =
 	afk_disable_image_change: {widget_type:"checkbox"},
 	afk_disable_tv_change: {widget_type:"checkbox"},
 	afk_disable_radio_change: {widget_type:"checkbox"},
+	afk_disable_piano: {widget_type:"checkbox"},
 	open_popup_messages: {widget_type:"checkbox"},
 	user_function_1: {widget_type:"textarea"},
 	user_function_2: {widget_type:"textarea"},
@@ -237,6 +238,7 @@ Hue.user_settings =
 	show_link_previews: {widget_type:"checkbox"},
 	stop_radio_on_tv_play: {widget_type:"checkbox"},
 	stop_tv_on_radio_play: {widget_type:"checkbox"},
+	piano_enabled: {widget_type:"checkbox"},
 	media_display_percentage: {widget_type:"custom"},
 	tv_display_percentage: {widget_type:"custom"},
 	tv_display_position: {widget_type:"custom"}
@@ -615,9 +617,9 @@ Hue.check_permissions = function()
 	Hue.can_images = Hue.room_images_mode === "enabled" && Hue.check_permission(Hue.role, "images")
 	Hue.can_tv = Hue.room_tv_mode === "enabled" && Hue.check_permission(Hue.role, "tv")
 	Hue.can_radio = Hue.room_radio_mode === "enabled" && Hue.check_permission(Hue.role, "radio")
-	Hue.can_piano = (Hue.room_radio_mode === "enabled" || "locked") && Hue.check_permission(Hue.role, "radio")
 
 	Hue.setup_icons()
+	Hue.check_piano_permission()
 }
 
 Hue.check_permission = function(role=false, type=false)
@@ -636,6 +638,11 @@ Hue.check_permission = function(role=false, type=false)
 	}
 
 	return false
+}
+
+Hue.check_piano_permission = function()
+{
+	Hue.can_piano = (Hue.room_radio_mode === "enabled" || "locked") && Hue.check_permission(Hue.role, "radio") && Hue.get_setting("piano_enabled")
 }
 
 Hue.setup_icons = function()
@@ -12630,6 +12637,36 @@ Hue.setting_stop_tv_on_radio_play_action = function(type, save=true)
 	}
 }
 
+Hue.setting_piano_enabled_action = function(type, save=true)
+{
+	Hue[type].piano_enabled = $(`#${type}_piano_enabled`).prop("checked")
+
+	if(Hue.active_settings("piano_enabled") === type)
+	{
+		if(!Hue[type].piano_enabled)
+		{
+			Hue.hide_piano()
+		}
+
+		Hue.check_piano_permission()
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_afk_disable_piano_action = function(type, save=true)
+{
+	Hue[type].afk_disable_piano = $(`#${type}_afk_disable_piano`).prop("checked")
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
 Hue.empty_room_settings = function()
 {
 	Hue.room_settings = {}
@@ -20996,8 +21033,6 @@ Hue.setup_iframe_video = function()
 
 Hue.setup_piano = function()
 {
-	// Hue.piano = new Tone.FMSynth().toMaster()
-
 	Hue.piano = new Tone.Synth(
 	{
 		oscillator:
@@ -21014,30 +21049,12 @@ Hue.setup_piano = function()
 
 	$("#piano_container").on("mouseenter", function()
 	{
-		if(Hue.can_piano)
-		{
-			Hue.mouse_in_piano = true
-
-			clearTimeout(Hue.piano_timeout_2)
-
-			Hue.piano_timeout = setTimeout(function()
-			{
-				$("#piano_content").css("display", "flex")
-			}, Hue.piano_timeout_delay)
-		}
+		Hue.show_piano()
 	})
 
 	$("#piano_container").on("mouseleave", function()
 	{
-		Hue.mouse_in_piano = false
-		
-		clearTimeout(Hue.piano_timeout)
-
-		Hue.piano_timeout_2 = setTimeout(function()
-		{
-			$("#piano_content").css("display", "none")
-			$("#piano_content").css("visibility", "none")
-		}, Hue.piano_timeout_delay)
+		Hue.hide_piano()
 	})
 
 	$("#piano_content").on("click", ".piano_key", function()
@@ -21045,6 +21062,34 @@ Hue.setup_piano = function()
 		let key = $(this).attr("id").replace("piano_key_", "")
 		Hue.send_piano_key(key)
 	})
+}
+
+Hue.show_piano = function()
+{
+	if(Hue.can_piano)
+	{
+		Hue.mouse_in_piano = true
+
+		clearTimeout(Hue.piano_timeout_2)
+
+		Hue.piano_timeout = setTimeout(function()
+		{
+			$("#piano_content").css("display", "flex")
+		}, Hue.piano_timeout_delay)
+	}
+}
+
+Hue.hide_piano = function()
+{
+	Hue.mouse_in_piano = false
+	
+	clearTimeout(Hue.piano_timeout)
+
+	Hue.piano_timeout_2 = setTimeout(function()
+	{
+		$("#piano_content").css("display", "none")
+		$("#piano_content").css("visibility", "none")
+	}, Hue.piano_timeout_delay)
 }
 
 Hue.send_piano_key = function(key)
@@ -21060,7 +21105,15 @@ Hue.send_piano_key = function(key)
 
 Hue.play_piano_key = function(key)
 {
-	Hue.piano.triggerAttackRelease(key, 0.1)
+	if(Hue.get_setting("piano_enabled"))
+	{
+		if(Hue.afk && Hue.get_setting("afk_disable_piano"))
+		{
+			return false
+		}
+		
+		Hue.piano.triggerAttackRelease(key, 0.1)
+	}
 }
 
 Hue.receive_piano_key = function(data)

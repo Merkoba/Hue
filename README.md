@@ -536,6 +536,12 @@ If you want to remove it to start fresh:
 "global_settings_default_stop_tv_on_radio_play"
 >Whether TV stops on radio play by default.
 
+"global_settings_default_piano_enabled"
+>Whether the piano is enabled by default.
+
+"global_settings_default_afk_disable_piano"
+>Whether the piano is disabled on AFK.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 

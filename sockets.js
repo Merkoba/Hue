@@ -4347,7 +4347,9 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		handler.room_emit(socket, 'receive_piano_key',
 		{
-			key: data.key
+			key: data.key,
+			username: socket.username,
+			user_id: socket.hue_user_id
 		})
 	}
 

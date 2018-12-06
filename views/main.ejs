@@ -38,7 +38,7 @@
 		<script src="/static/js/utilz.js?version=26"></script>
 		<script src="/static/js/colorlib.js?version=13"></script>
 
-		<script src="/static/js/base.js?version=2426"></script>
+		<script src="/static/js/base.js?version=2427"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=509"/>
 
@@ -825,6 +825,11 @@
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_beep_on_user_joins">
 						</div>
 
+						<div class='settings_item' data-setting='piano_enabled'>
+							<div class="setting_title">Piano Enabled</div>
+							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_piano_enabled">
+						</div>
+
 					</div>
 
 					<div class='settings_category settings_window_category_container' id='settings_window_category_content_appearance_{{type}}' data-category='appearance'>
@@ -992,6 +997,12 @@
 							<div class="setting_title2">On AFK</div>
 							<div class="setting_title">Disable Radio Change</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_radio_change">
+						</div>
+
+						<div class='settings_item' data-setting='afk_disable_piano'>
+							<div class="setting_title2">On AFK</div>
+							<div class="setting_title">Disable Piano</div>
+							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_piano">
 						</div>
 
 						<div class='settings_item' data-setting='afk_on_lockscreen'>
