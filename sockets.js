@@ -4375,6 +4375,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
+		if(data.text !== utilz.clean_string2(data.text))
+		{
+			return handler.get_out(socket)
+		}
+
 		if(!handler.check_permission(socket, "radio", true))
 		{
 			return false
