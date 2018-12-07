@@ -4358,6 +4358,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
+		if(isNaN(data.key))
+		{
+			return handler.get_out(socket)
+		}
+
 		if(data.key < 1 || data.key > utilz.synth_notes.length)
 		{
 			return handler.get_out(socket)
