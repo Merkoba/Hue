@@ -4895,6 +4895,11 @@ Hue.activate_key_detection = function()
 					Hue.send_piano_voice()
 				}
 
+				if(e.key === "Escape")
+				{
+					Hue.clear_piano_voice()
+				}
+
 				return false
 			}
 		}
@@ -21192,8 +21197,8 @@ Hue.hide_piano = function()
 	Hue.piano_timeout_2 = setTimeout(function()
 	{
 		$("#piano_content_container").css("display", "none")
-		$("#piano_voice_input").val("")
-
+		
+		Hue.clear_piano_voice()
 		Hue.piano_open = false
 	}, Hue.piano_timeout_delay)
 }
@@ -21305,7 +21310,7 @@ Hue.send_piano_voice = function(text=false)
 		text = Hue.utilz.clean_string2($("#piano_voice_input").val())
 	}
 
-	$("#piano_voice_input").val("")
+	Hue.clear_piano_voice()
 
 	if(text.length === 0 || text.length > Hue.piano_max_voice_text)
 	{
@@ -21338,4 +21343,9 @@ Hue.play_piano_voice = function(text)
 {
 	let speech = new SpeechSynthesisUtterance(text)
 	Hue.piano_voice.speak(speech)
+}
+
+Hue.clear_piano_voice = function()
+{
+	$("#piano_voice_input").val("")
 }
