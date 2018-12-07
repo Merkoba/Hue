@@ -4353,7 +4353,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(!utilz.synth_notes.includes(data.key.toLowerCase()))
+		if(typeof data.key !== "number")
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.key < 1 || data.key > utilz.synth_notes.length)
 		{
 			return handler.get_out(socket)
 		}

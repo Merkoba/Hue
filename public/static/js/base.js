@@ -21280,7 +21280,9 @@ Hue.send_synth_key = function(key)
 		return false
 	}
 
-	if(!Hue.utilz.synth_notes.includes(key.toLowerCase()))
+	key = parseInt(key)
+
+	if(key < 1 || key > Hue.utilz.synth_notes.length)
 	{
 		return false
 	}
@@ -21288,9 +21290,14 @@ Hue.send_synth_key = function(key)
 	Hue.socket_emit("send_synth_key", {key:key})
 }
 
-Hue.play_synth_key = function(key)
+Hue.play_synth_key = function(n)
 {
-	Hue.synth.triggerAttackRelease(key, 0.1)
+	let key = Hue.utilz.synth_notes[n - 1]
+
+	if(key)
+	{
+		Hue.synth.triggerAttackRelease(key, 0.1)
+	}
 }
 
 Hue.receive_synth_key = function(data)
