@@ -181,7 +181,7 @@ Hue.commands =
 	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
 	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist',
 	'/accesslog', '/toggleactivtybar', '/thememode', '/synthkey',
-	'/togglemutesynth', '/speech'
+	'/togglemutesynth', '/speech', '/synthkeylocal', '/speechlocal'
 ]
 
 Hue.user_settings =
@@ -8536,7 +8536,12 @@ Hue.execute_command = function(message, ans)
 
 	else if(Hue.oi_startswith(cmd2, '/synthkey'))
 	{
-		Hue.process_synth_key_number(arg)
+		Hue.send_synth_key(arg)
+	}
+
+	else if(Hue.oi_startswith(cmd2, '/synthkeylocal'))
+	{
+		Hue.play_synth_key(arg)
 	}
 
 	else if(Hue.oi_equals(cmd2, '/togglemutesynth'))
@@ -8547,6 +8552,11 @@ Hue.execute_command = function(message, ans)
 	else if(Hue.oi_startswith(cmd2, '/speech'))
 	{
 		Hue.send_synth_voice(arg)
+	}
+
+	else if(Hue.oi_startswith(cmd2, '/speechlocal'))
+	{
+		Hue.play_synth_voice(arg)
 	}
 
 	else
@@ -21325,16 +21335,6 @@ Hue.receive_synth_key = function(data)
 	}
 }
 
-Hue.process_synth_key_number = function(n)
-{
-	let key = Hue.utilz.synth_notes[n - 1]
-
-	if(key)
-	{
-		Hue.send_synth_key(key)
-	}
-}
-
 Hue.push_to_synth_recent_users = function(data)
 {
 	let changed = false
@@ -21399,7 +21399,7 @@ Hue.send_synth_voice = function(text=false)
 	}
 
 	Hue.clear_synth_voice()
-
+	Hue.play_synth_voice(text)
 	Hue.socket_emit("send_synth_voice", {text:text})
 }
 
@@ -21416,8 +21416,12 @@ Hue.receive_synth_voice = function(data)
 		{
 			return false
 		}
+
+		if(data.user_id !== Hue.user_id)
+		{
+			Hue.play_synth_voice(data.text)
+		}
 		
-		Hue.play_synth_voice(data.text)
 		Hue.push_to_synth_recent_users(data)
 	}
 }
@@ -21438,5 +21442,5 @@ Hue.show_console_message = function()
 	let s = "🤔 Want to work with us? It's pretty much 99.99% risks, some negligible fraction AI, a couple bureaucracies to keep people minimally pissed off, and a whole lot of creativity."
 	let style = "font-size:1.4rem"
 	
-	console.log(`%c${s}`, style)
+	console.info(`%c${s}`, style)
 }
