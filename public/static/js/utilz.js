@@ -73,9 +73,27 @@ const Utilz = function()
 		return s.replace(/^\/\s+/g, '/')
 	}
 
-	utilz.get_random_int = function(min, max)
+	utilz.get_random_int = function(min, max, exclude=undefined)
 	{
-		return Math.floor(Math.random() * (max  -min + 1) + min)
+		let num = Math.floor(Math.random() * (max - min + 1) + min)
+
+		if(exclude !== undefined)
+		{
+			if(num === exclude)
+			{
+				if(num + 1 <= max)
+				{
+					num = num + 1
+				}
+
+				else if(num - 1 >= min)
+				{
+					num = num - 1
+				}
+			}
+		}
+
+		return num
 	}	
 
 	utilz.get_random_string = function(n)

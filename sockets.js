@@ -4443,15 +4443,19 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			if(rooms[room_id].ad_charge >= config.ads_threshold)
 			{
-				if(handler.attempt_show_ad(room_id))
+				handler.attempt_show_ad(room_id, function(res)
 				{
-					rooms[room_id].ad_charge = 0
-				}
+					if(res)
+					{
+						rooms[room_id].ad_charge = 0
+					}
+	
+					else
+					{
+						rooms[room_id].ad_charge = config.ads_threshold
+					}
+				})
 
-				else
-				{
-					rooms[room_id].ad_charge = config.ads_threshold
-				}
 			}
 		}
 
@@ -4461,7 +4465,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.attempt_show_ad = function(room_id)
+	handler.attempt_show_ad = function(room_id, callback)
 	{
 		try
 		{
@@ -4469,33 +4473,62 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			if(room.images_mode !== "enabled")
 			{
-				return false
+				return callback(false)
 			}
 
 			if(Date.now() - room.last_image_change < config.ads_min_image_change)
 			{
-				return false
+				return callback(false)
 			}
 
-			let files = fs.readdirSync(path.join(__dirname, config.ads_path))
-			let file = files[utilz.get_random_int(0, files.length - 1)]
-			let image_path = path.join(config.ads_public_path, file)
-
-			if(image_path === room.current_image_source)
+			fs.readdir(path.join(__dirname, config.ads_path), function(err, files)
 			{
-				return false
-			}
-			
-			let obj = {}
+				if(!files)
+				{
+					return callback(false)
+				}
 
-			obj.fname = image_path
-			obj.setter = config.ads_setter
-			obj.size = 0
-			obj.type = "link"
+				files = files.filter(x => !x.startsWith("."))
 
-			handler.change_image(room_id, obj)
+				let index = utilz.get_random_int(0, files.length - 1)
 
-			return true
+				let file = files[index]
+				
+				let image_path = path.join(config.ads_public_path, file)
+
+				if(image_path === room.current_image_source)
+				{
+					if(files.length === 1)
+					{
+						return callback(false)
+					}
+
+					else
+					{
+						index = utilz.get_random_int(0, files.length -1, index)
+
+						file = files[index]
+
+						image_path = path.join(config.ads_public_path, file)
+
+						if(image_path === room.current_image_source)
+						{
+							return callback(false)
+						}
+					}
+				}
+				
+				let obj = {}
+
+				obj.fname = image_path
+				obj.setter = config.ads_setter
+				obj.size = 0
+				obj.type = "link"
+
+				handler.change_image(room_id, obj)
+
+				return callback(true)
+			})
 		}
 
 		catch(err)
