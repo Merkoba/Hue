@@ -21288,6 +21288,7 @@ Hue.send_synth_key = function(key)
 		return false
 	}
 
+	Hue.play_synth_key(key)
 	Hue.socket_emit("send_synth_key", {key:key})
 }
 
@@ -21314,8 +21315,12 @@ Hue.receive_synth_key = function(data)
 		{
 			return false
 		}
+
+		if(data.user_id !== Hue.user_id)
+		{
+			Hue.play_synth_key(data.key)
+		}
 		
-		Hue.play_synth_key(data.key)
 		Hue.push_to_synth_recent_users(data)
 	}
 }
