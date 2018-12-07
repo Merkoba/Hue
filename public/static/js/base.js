@@ -128,9 +128,9 @@ Hue.editing_message_container = false
 Hue.editing_message_area = false
 Hue.footer_oversized = false
 Hue.input_clone_created = false
-Hue.piano_timeout_delay = 1000
-Hue.piano_recent_users = []
-Hue.piano_open = false
+Hue.synth_timeout_delay = 1000
+Hue.synth_recent_users = []
+Hue.synth_open = false
 
 Hue.commands = 
 [
@@ -180,8 +180,8 @@ Hue.commands =
 	'/voicechatmode', '/voicepermission', '/theme', '/textcolormode',
 	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
 	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist',
-	'/accesslog', '/toggleactivtybar', '/thememode', '/pianokey',
-	'/togglemutepiano', '/speech'
+	'/accesslog', '/toggleactivtybar', '/thememode', '/synthkey',
+	'/togglemutesynth', '/speech'
 ]
 
 Hue.user_settings =
@@ -217,7 +217,7 @@ Hue.user_settings =
 	afk_disable_image_change: {widget_type:"checkbox"},
 	afk_disable_tv_change: {widget_type:"checkbox"},
 	afk_disable_radio_change: {widget_type:"checkbox"},
-	afk_disable_piano: {widget_type:"checkbox"},
+	afk_disable_synth: {widget_type:"checkbox"},
 	open_popup_messages: {widget_type:"checkbox"},
 	user_function_1: {widget_type:"textarea"},
 	user_function_2: {widget_type:"textarea"},
@@ -241,7 +241,7 @@ Hue.user_settings =
 	show_link_previews: {widget_type:"checkbox"},
 	stop_radio_on_tv_play: {widget_type:"checkbox"},
 	stop_tv_on_radio_play: {widget_type:"checkbox"},
-	piano_enabled: {widget_type:"checkbox"},
+	synth_enabled: {widget_type:"checkbox"},
 	media_display_percentage: {widget_type:"custom"},
 	tv_display_percentage: {widget_type:"custom"},
 	tv_display_position: {widget_type:"custom"}
@@ -312,7 +312,7 @@ Hue.init = function()
 	Hue.maxers_mouse_events()
 	Hue.check_screen_lock()
 	Hue.setup_iframe_video()
-	Hue.setup_piano()
+	Hue.setup_synth()
 
 	if(Hue.debug_functions)
 	{
@@ -597,21 +597,25 @@ Hue.start_permissions = function(data)
 	Hue.voice1_images_permission = data.voice1_images_permission
 	Hue.voice1_tv_permission = data.voice1_tv_permission
 	Hue.voice1_radio_permission = data.voice1_radio_permission
+	Hue.voice1_synth_permission = data.voice1_synth_permission
 
 	Hue.voice2_chat_permission = data.voice2_chat_permission
 	Hue.voice2_images_permission = data.voice2_images_permission
 	Hue.voice2_tv_permission = data.voice2_tv_permission
 	Hue.voice2_radio_permission = data.voice2_radio_permission
+	Hue.voice2_synth_permission = data.voice2_synth_permission
 
 	Hue.voice3_chat_permission = data.voice3_chat_permission
 	Hue.voice3_images_permission = data.voice3_images_permission
 	Hue.voice3_tv_permission = data.voice3_tv_permission
 	Hue.voice3_radio_permission = data.voice3_radio_permission
+	Hue.voice3_synth_permission = data.voice3_synth_permission
 
 	Hue.voice4_chat_permission = data.voice4_chat_permission
 	Hue.voice4_images_permission = data.voice4_images_permission
 	Hue.voice4_tv_permission = data.voice4_tv_permission
 	Hue.voice4_radio_permission = data.voice4_radio_permission
+	Hue.voice4_synth_permission = data.voice4_synth_permission
 }
 
 Hue.check_permissions = function()
@@ -620,9 +624,9 @@ Hue.check_permissions = function()
 	Hue.can_images = Hue.room_images_mode === "enabled" && Hue.check_permission(Hue.role, "images")
 	Hue.can_tv = Hue.room_tv_mode === "enabled" && Hue.check_permission(Hue.role, "tv")
 	Hue.can_radio = Hue.room_radio_mode === "enabled" && Hue.check_permission(Hue.role, "radio")
+	Hue.can_synth = Hue.room_synth_mode === "enabled" && Hue.check_permission(Hue.role, "synth")
 
 	Hue.setup_icons()
-	Hue.check_piano_permission()
 }
 
 Hue.check_permission = function(role=false, type=false)
@@ -641,11 +645,6 @@ Hue.check_permission = function(role=false, type=false)
 	}
 
 	return false
-}
-
-Hue.check_piano_permission = function()
-{
-	Hue.can_piano = (Hue.room_radio_mode === "enabled" || "locked") && Hue.check_permission(Hue.role, "radio") && Hue.get_setting("piano_enabled")
 }
 
 Hue.setup_icons = function()
@@ -1192,6 +1191,11 @@ Hue.start_socket = function()
 			Hue.announce_room_radio_mode_change(data)
 		}
 
+		else if(data.type === 'room_synth_mode_change')
+		{
+			Hue.announce_room_synth_mode_change(data)
+		}
+
 		else if(data.type === 'theme_mode_changed')
 		{
 			Hue.announce_theme_mode_change(data)
@@ -1362,14 +1366,14 @@ Hue.start_socket = function()
 			Hue.remove_message_from_chat(data)
 		}
 
-		else if(data.type === 'receive_piano_key')
+		else if(data.type === 'receive_synth_key')
 		{
-			Hue.receive_piano_key(data)
+			Hue.receive_synth_key(data)
 		}
 
-		else if(data.type === 'receive_piano_voice')
+		else if(data.type === 'receive_synth_voice')
 		{
-			Hue.receive_piano_voice(data)
+			Hue.receive_synth_voice(data)
 		}
 	})
 }
@@ -2582,19 +2586,19 @@ Hue.apply_theme = function()
 		color: ${font_color} !important;
 	}
 
-	.piano_key
+	.synth_key
 	{
 		background-color: ${color_4} !important;
 		color: ${font_color} !important;
 	}
 
-	.piano_key_button
+	.synth_key_button
 	{
 		background-color: ${color_3} !important;
 		color: ${font_color} !important;
 	}
 
-	.piano_key_divider
+	.synth_key_divider
 	{
 		background-color: ${slight_background} !important;
 	}
@@ -3613,6 +3617,13 @@ Hue.setup_main_menu = function()
 		Hue.change_room_radio_mode(what)
 	})
 
+	$('#admin_enable_synth').change(function()
+	{
+		let what = $('#admin_enable_synth option:selected').val()
+
+		Hue.change_room_synth_mode(what)
+	})
+
 	$('#admin_privacy').change(function()
 	{
 		let what = JSON.parse($('#admin_privacy option:selected').val())
@@ -3978,6 +3989,22 @@ Hue.config_admin_room_radio_mode = function()
 	})
 }
 
+Hue.config_admin_room_synth_mode = function()
+{
+	if(!Hue.is_admin_or_op())
+	{
+		return false
+	}
+
+	$('#admin_enable_synth').find('option').each(function()
+	{
+		if($(this).val() === Hue.room_synth_mode)
+		{
+			$(this).prop('selected', true)
+		}
+	})
+}
+
 Hue.config_admin_theme_mode = function()
 {
 	if(!Hue.is_admin_or_op())
@@ -4044,6 +4071,7 @@ Hue.config_main_menu = function()
 		Hue.config_admin_room_images_mode()
 		Hue.config_admin_room_tv_mode()
 		Hue.config_admin_room_radio_mode()
+		Hue.config_admin_room_synth_mode()
 		Hue.config_admin_privacy()
 		Hue.config_admin_log_enabled()
 		Hue.config_admin_theme_mode()
@@ -4886,18 +4914,18 @@ Hue.activate_key_detection = function()
 			return false
 		}
 
-		if(Hue.piano_open)
+		if(Hue.synth_open)
 		{
-			if(Hue.piano_voice_input_focused)
+			if(Hue.synth_voice_input_focused)
 			{
 				if(e.key === "Enter")
 				{
-					Hue.send_piano_voice()
+					Hue.send_synth_voice()
 				}
 
 				if(e.key === "Escape")
 				{
-					Hue.clear_piano_voice()
+					Hue.clear_synth_voice()
 				}
 
 				return false
@@ -8505,19 +8533,19 @@ Hue.execute_command = function(message, ans)
 		Hue.toggle_activity_bar()
 	}
 
-	else if(Hue.oi_startswith(cmd2, '/pianokey'))
+	else if(Hue.oi_startswith(cmd2, '/synthkey'))
 	{
-		Hue.process_piano_key_number(arg)
+		Hue.process_synth_key_number(arg)
 	}
 
-	else if(Hue.oi_equals(cmd2, '/togglemutepiano'))
+	else if(Hue.oi_equals(cmd2, '/togglemutesynth'))
 	{
-		Hue.set_piano_muted()
+		Hue.set_synth_muted()
 	}
 
 	else if(Hue.oi_startswith(cmd2, '/speech'))
 	{
-		Hue.send_piano_voice(arg)
+		Hue.send_synth_voice(arg)
 	}
 
 	else
@@ -12684,18 +12712,16 @@ Hue.setting_stop_tv_on_radio_play_action = function(type, save=true)
 	}
 }
 
-Hue.setting_piano_enabled_action = function(type, save=true)
+Hue.setting_synth_enabled_action = function(type, save=true)
 {
-	Hue[type].piano_enabled = $(`#${type}_piano_enabled`).prop("checked")
+	Hue[type].synth_enabled = $(`#${type}_synth_enabled`).prop("checked")
 
-	if(Hue.active_settings("piano_enabled") === type)
+	if(Hue.active_settings("synth_enabled") === type)
 	{
-		if(!Hue[type].piano_enabled)
+		if(!Hue[type].synth_enabled)
 		{
-			Hue.hide_piano()
+			Hue.hide_synth()
 		}
-
-		Hue.check_piano_permission()
 	}
 
 	if(save)
@@ -12704,9 +12730,9 @@ Hue.setting_piano_enabled_action = function(type, save=true)
 	}
 }
 
-Hue.setting_afk_disable_piano_action = function(type, save=true)
+Hue.setting_afk_disable_synth_action = function(type, save=true)
 {
-	Hue[type].afk_disable_piano = $(`#${type}_afk_disable_piano`).prop("checked")
+	Hue[type].afk_disable_synth = $(`#${type}_afk_disable_synth`).prop("checked")
 
 	if(save)
 	{
@@ -12801,7 +12827,7 @@ Hue.get_room_state = function()
 		"radio_locked",
 		"radio_volume",
 		"screen_locked",
-		"piano_muted"
+		"synth_muted"
 	]
 
 	for(let setting of settings)
@@ -14472,6 +14498,31 @@ Hue.change_room_radio_mode = function(what)
 	Hue.socket_emit("change_radio_mode", {what:what})
 }
 
+Hue.change_room_synth_mode = function(what)
+{
+	if(!Hue.is_admin_or_op(Hue.role))
+	{
+		Hue.not_an_op()
+		return false
+	}
+
+	let modes = ["enabled", "disabled"]
+
+	if(!modes.includes(what))
+	{
+		Hue.feedback(`Valid synth modes: ${modes.join(" ")}`)
+		return false
+	}
+
+	if(what === Hue.room_synth_mode)
+	{
+		Hue.feedback(`Synth mode is already set to that`)
+		return false
+	}
+
+	Hue.socket_emit("change_synth_mode", {what:what})
+}
+
 Hue.announce_room_images_mode_change = function(data)
 {
 	Hue.public_feedback(`${data.username} changed the images mode to ${data.what}`,
@@ -14513,6 +14564,18 @@ Hue.announce_room_radio_mode_change = function(data)
 	Hue.check_permissions()
 }
 
+Hue.announce_room_synth_mode_change = function(data)
+{
+	Hue.public_feedback(`${data.username} changed the synth mode to ${data.what}`,
+	{
+		username: data.username,
+		open_profile: true
+	})
+
+	Hue.set_room_synth_mode(data.what)
+	Hue.check_permissions()
+}
+
 Hue.hide_media = function()
 {
 	Hue.stop_videos()
@@ -14525,6 +14588,7 @@ Hue.setup_active_media = function(data)
 	Hue.room_images_mode = data.room_images_mode
 	Hue.room_tv_mode = data.room_tv_mode
 	Hue.room_radio_mode = data.room_radio_mode
+	Hue.room_synth_mode = data.room_synth_mode
 
 	Hue.media_visibility_and_locks()
 }
@@ -17451,6 +17515,12 @@ Hue.set_room_radio_mode = function(what)
 {
 	Hue.room_radio_mode = what
 	Hue.config_admin_room_radio_mode()
+}
+
+Hue.set_room_synth_mode = function(what)
+{
+	Hue.room_synth_mode = what
+	Hue.config_admin_room_synth_mode()
 }
 
 Hue.set_background_mode = function(what)
@@ -20704,7 +20774,7 @@ Hue.show_activity_bar = function()
 	$("#topbox_left_icon").removeClass("fa-caret-up")
 	$("#topbox_left_icon").addClass("fa-caret-down")
 
-	$("#piano_container").css("top", "4rem")
+	$("#synth_container").css("top", "4rem")
 
 	Hue.apply_theme()
 	Hue.update_activity_bar()
@@ -20717,7 +20787,7 @@ Hue.hide_activity_bar = function()
 	$("#topbox_left_icon").removeClass("fa-caret-down")
 	$("#topbox_left_icon").addClass("fa-caret-up")
 
-	$("#piano_container").css("top", "2rem")
+	$("#synth_container").css("top", "2rem")
 
 	Hue.apply_theme()
 	Hue.on_resize()
@@ -21079,9 +21149,9 @@ Hue.setup_iframe_video = function()
 	})
 }
 
-Hue.setup_piano = function()
+Hue.setup_synth = function()
 {
-	Hue.piano = new Tone.Synth(
+	Hue.synth = new Tone.Synth(
 	{
 		oscillator:
 		{
@@ -21095,55 +21165,55 @@ Hue.setup_piano = function()
 		}
 	}).toMaster()
 
-	Hue.piano_voice = window.speechSynthesis
+	Hue.synth_voice = window.speechSynthesis
 
-	$("#piano_container").on("mouseenter", function()
+	$("#synth_container").on("mouseenter", function()
 	{
-		Hue.show_piano()
+		Hue.show_synth()
 	})
 
-	$("#piano_container").on("mouseleave", function()
+	$("#synth_container").on("mouseleave", function()
 	{
-		Hue.hide_piano()
+		Hue.hide_synth()
 	})
 
-	$("#piano_content").on("click", ".piano_key", function()
+	$("#synth_content").on("click", ".synth_key", function()
 	{
-		let key = $(this).attr("id").replace("piano_key_", "")
-		Hue.send_piano_key(key)
+		let key = $(this).attr("id").replace("synth_key_", "")
+		Hue.send_synth_key(key)
 	})
 
-	$("#piano_key_button_volume").click(function()
+	$("#synth_key_button_volume").click(function()
 	{
-		Hue.set_piano_muted()
+		Hue.set_synth_muted()
 	})
 
-	$("#piano_voice_input").on("focus", function()
+	$("#synth_voice_input").on("focus", function()
 	{
-		Hue.piano_voice_input_focused = true
+		Hue.synth_voice_input_focused = true
 	})
 
-	$("#piano_voice_input").on("blur", function()
+	$("#synth_voice_input").on("blur", function()
 	{
-		Hue.piano_voice_input_focused = false
+		Hue.synth_voice_input_focused = false
 
-		if(!Hue.mouse_on_piano)
+		if(!Hue.mouse_on_synth)
 		{
-			Hue.hide_piano()
+			Hue.hide_synth()
 		}
 	})
 
-	Hue.set_piano_muted(Hue.room_state.piano_muted)
+	Hue.set_synth_muted(Hue.room_state.synth_muted)
 }
 
-Hue.set_piano_muted = function(what=undefined)
+Hue.set_synth_muted = function(what=undefined)
 {
 	let what2
 
 	if(what === undefined)
 	{
-		Hue.room_state.piano_muted = !Hue.room_state.piano_muted
-		what2 = Hue.room_state.piano_muted
+		Hue.room_state.synth_muted = !Hue.room_state.synth_muted
+		what2 = Hue.room_state.synth_muted
 	}
 
 	else
@@ -21153,81 +21223,81 @@ Hue.set_piano_muted = function(what=undefined)
 
 	if(what2)
 	{
-		$("#piano_volume_icon").removeClass("fa-volume-up")
-		$("#piano_volume_icon").addClass("fa-volume-off")
+		$("#synth_volume_icon").removeClass("fa-volume-up")
+		$("#synth_volume_icon").addClass("fa-volume-off")
 	}
 
 	else
 	{
-		$("#piano_volume_icon").removeClass("fa-volume-off")
-		$("#piano_volume_icon").addClass("fa-volume-up")
+		$("#synth_volume_icon").removeClass("fa-volume-off")
+		$("#synth_volume_icon").addClass("fa-volume-up")
 	}
 
 	Hue.save_room_state()
 }
 
-Hue.show_piano = function()
+Hue.show_synth = function()
 {
-	if(Hue.can_piano)
+	if(Hue.can_synth && Hue.get_setting("synth_enabled"))
 	{
-		Hue.mouse_on_piano = true
+		Hue.mouse_on_synth = true
 
-		clearTimeout(Hue.piano_timeout_2)
+		clearTimeout(Hue.synth_timeout_2)
 
-		Hue.piano_timeout = setTimeout(function()
+		Hue.synth_timeout = setTimeout(function()
 		{
-			$("#piano_content_container").css("display", "flex")
+			$("#synth_content_container").css("display", "flex")
 
-			Hue.piano_open = true
-		}, Hue.piano_timeout_delay)
+			Hue.synth_open = true
+		}, Hue.synth_timeout_delay)
 	}
 }
 
-Hue.hide_piano = function()
+Hue.hide_synth = function()
 {
-	Hue.mouse_on_piano = false
+	Hue.mouse_on_synth = false
 
-	if(Hue.piano_voice_input_focused)
+	if(Hue.synth_voice_input_focused)
 	{
 		return false
 	}
 	
-	clearTimeout(Hue.piano_timeout)
+	clearTimeout(Hue.synth_timeout)
 
-	Hue.piano_timeout_2 = setTimeout(function()
+	Hue.synth_timeout_2 = setTimeout(function()
 	{
-		$("#piano_content_container").css("display", "none")
+		$("#synth_content_container").css("display", "none")
 		
-		Hue.clear_piano_voice()
-		Hue.piano_open = false
-	}, Hue.piano_timeout_delay)
+		Hue.clear_synth_voice()
+		Hue.synth_open = false
+	}, Hue.synth_timeout_delay)
 }
 
-Hue.send_piano_key = function(key)
+Hue.send_synth_key = function(key)
 {
-	if(!Hue.can_piano || Hue.room_state.piano_muted)
+	if(!Hue.can_synth || Hue.room_state.synth_muted)
 	{
 		return false
 	}
 
-	if(!Hue.utilz.piano_notes.includes(key.toLowerCase()))
+	if(!Hue.utilz.synth_notes.includes(key.toLowerCase()))
 	{
 		return false
 	}
 
-	Hue.socket_emit("send_piano_key", {key:key})
+	Hue.socket_emit("send_synth_key", {key:key})
 }
 
-Hue.play_piano_key = function(key)
+Hue.play_synth_key = function(key)
 {
-	Hue.piano.triggerAttackRelease(key, 0.1)
+	Hue.synth.triggerAttackRelease(key, 0.1)
 }
 
-Hue.receive_piano_key = function(data)
+Hue.receive_synth_key = function(data)
 {
-	if(!Hue.room_state.piano_muted && Hue.get_setting("piano_enabled"))
+	if(!Hue.room_state.synth_muted && Hue.get_setting("synth_enabled"))
 	{
-		if(Hue.afk && Hue.get_setting("afk_disable_piano"))
+		if(Hue.afk && Hue.get_setting("afk_disable_synth"))
 		{
 			return false
 		}
@@ -21237,94 +21307,94 @@ Hue.receive_piano_key = function(data)
 			return false
 		}
 		
-		Hue.play_piano_key(data.key)
-		Hue.push_to_piano_recent_users(data)
+		Hue.play_synth_key(data.key)
+		Hue.push_to_synth_recent_users(data)
 	}
 }
 
-Hue.process_piano_key_number = function(n)
+Hue.process_synth_key_number = function(n)
 {
-	let key = Hue.utilz.piano_notes[n - 1]
+	let key = Hue.utilz.synth_notes[n - 1]
 
 	if(key)
 	{
-		Hue.send_piano_key(key)
+		Hue.send_synth_key(key)
 	}
 }
 
-Hue.push_to_piano_recent_users = function(data)
+Hue.push_to_synth_recent_users = function(data)
 {
 	let changed = false
 
-	if(!Hue.piano_recent_users.includes(data.username))
+	if(!Hue.synth_recent_users.includes(data.username))
 	{
-		Hue.piano_recent_users.unshift(data.username)
+		Hue.synth_recent_users.unshift(data.username)
 		changed = true
 	}
 
-	else if(Hue.piano_recent_users[0] === data.username)
+	else if(Hue.synth_recent_users[0] === data.username)
 	{
 		changed = false
 	}
 
 	else
 	{
-		for(let i=0; i<Hue.piano_recent_users.length; i++)
+		for(let i=0; i<Hue.synth_recent_users.length; i++)
 		{
-			let username = Hue.piano_recent_users[i]
+			let username = Hue.synth_recent_users[i]
 			
 			if(username === data.username)
 			{
-				Hue.piano_recent_users.splice(i, 1)
+				Hue.synth_recent_users.splice(i, 1)
 				break
 			}
 		}
 
-		Hue.piano_recent_users.unshift(data.username)
+		Hue.synth_recent_users.unshift(data.username)
 
 		changed = true
 	}
 
-	if(Hue.piano_recent_users.length > Hue.piano_max_recent_users)
+	if(Hue.synth_recent_users.length > Hue.synth_max_recent_users)
 	{
-		Hue.piano_recent_users = Hue.piano_recent_users.slice(0, Hue.piano_max_recent_users)
+		Hue.synth_recent_users = Hue.synth_recent_users.slice(0, Hue.synth_max_recent_users)
 		changed = true
 	}
 
 	if(changed)
 	{
-		let s = Hue.piano_recent_users.join(", ")
-		$("#piano_key_button_volume").attr("title", s)
+		let s = Hue.synth_recent_users.join(", ")
+		$("#synth_key_button_volume").attr("title", s)
 	}
 }
 
-Hue.send_piano_voice = function(text=false)
+Hue.send_synth_voice = function(text=false)
 {
-	if(!Hue.can_piano || Hue.room_state.piano_muted)
+	if(!Hue.can_synth || Hue.room_state.synth_muted)
 	{
 		return false
 	}
 
 	if(!text)
 	{
-		text = Hue.utilz.clean_string2($("#piano_voice_input").val())
+		text = Hue.utilz.clean_string2($("#synth_voice_input").val())
 	}
 
-	Hue.clear_piano_voice()
+	Hue.clear_synth_voice()
 
-	if(text.length === 0 || text.length > Hue.piano_max_voice_text)
+	if(text.length === 0 || text.length > Hue.synth_max_voice_text)
 	{
 		return false
 	}
 
-	Hue.socket_emit("send_piano_voice", {text:text})
+	Hue.socket_emit("send_synth_voice", {text:text})
 }
 
-Hue.receive_piano_voice = function(data)
+Hue.receive_synth_voice = function(data)
 {
-	if(!Hue.room_state.piano_muted && Hue.get_setting("piano_enabled"))
+	if(!Hue.room_state.synth_muted && Hue.get_setting("synth_enabled"))
 	{
-		if(Hue.afk && Hue.get_setting("afk_disable_piano"))
+		if(Hue.afk && Hue.get_setting("afk_disable_synth"))
 		{
 			return false
 		}
@@ -21334,18 +21404,18 @@ Hue.receive_piano_voice = function(data)
 			return false
 		}
 		
-		Hue.play_piano_voice(data.text)
-		Hue.push_to_piano_recent_users(data)
+		Hue.play_synth_voice(data.text)
+		Hue.push_to_synth_recent_users(data)
 	}
 }
 
-Hue.play_piano_voice = function(text)
+Hue.play_synth_voice = function(text)
 {
 	let speech = new SpeechSynthesisUtterance(text)
-	Hue.piano_voice.speak(speech)
+	Hue.synth_voice.speak(speech)
 }
 
-Hue.clear_piano_voice = function()
+Hue.clear_synth_voice = function()
 {
-	$("#piano_voice_input").val("")
+	$("#synth_voice_input").val("")
 }

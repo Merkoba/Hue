@@ -536,11 +536,11 @@ If you want to remove it to start fresh:
 "global_settings_default_stop_tv_on_radio_play"
 >Whether TV stops on radio play by default.
 
-"global_settings_default_piano_enabled"
->Whether the piano is enabled by default.
+"global_settings_default_synth_enabled"
+>Whether the synth is enabled by default.
 
-"global_settings_default_afk_disable_piano"
->Whether the piano is disabled on AFK.
+"global_settings_default_afk_disable_synth"
+>Whether the synth is disabled on AFK.
 
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
@@ -566,8 +566,8 @@ If you want to remove it to start fresh:
 "room_state_default_screen_locked"
 >Whether the screen will be locked by default.
 
-"room_state_default_piano_muted"
->Whether the piano is muted by default.
+"room_state_default_synth_muted"
+>Whether the synth is muted by default.
 
 "double_tap_key"
 >The key that triggers double tap.
@@ -722,10 +722,10 @@ This should be an array of strings of root domains.
 "redis_max_link_age"
 >How old link data has to be to be fetched again.
 
-"piano_max_recent_users"
->How many users fit in to the title of recent piano users when hovering the piano's volume icon.
+"synth_max_recent_users"
+>How many users fit in to the title of recent synth users when hovering the synth's volume icon.
 
-"piano_max_voice_text"
+"synth_max_voice_text"
 >Max length for the voice synth text.
 
 

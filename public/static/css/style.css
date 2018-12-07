@@ -2316,7 +2316,7 @@ input[type=text], textarea
 	display: none;
 }
 
-#piano_container
+#synth_container
 {
 	position: fixed;
 	top: 2rem;
@@ -2327,13 +2327,13 @@ input[type=text], textarea
 	transform: translateX(-50%);
 }
 
-#piano_content_container
+#synth_content_container
 {
 	flex-direction: column;
 	display: none;
 }
 
-#piano_content
+#synth_content
 {
 	height: 40px;
 	flex-grow: 0;
@@ -2344,7 +2344,7 @@ input[type=text], textarea
 	display: flex;
 }
 
-.piano_key
+.synth_key
 {
 	background-color: "white";
 	color: white;
@@ -2356,7 +2356,7 @@ input[type=text], textarea
 	cursor: pointer;
 }
 
-.piano_key_button
+.synth_key_button
 {
 	background-color: "white";
 	color: white;
@@ -2368,7 +2368,7 @@ input[type=text], textarea
 	cursor: pointer;
 }
 
-.piano_key_divider
+.synth_key_divider
 {
 	background-color: black;
 	width: 2px;
@@ -2376,13 +2376,13 @@ input[type=text], textarea
 	flex-shrink: 0;
 }
 
-#piano_voice_content
+#synth_voice_content
 {
 	flex-grow: 0;
 	flex-shrink: 0;
 }
 
-#piano_voice_input
+#synth_voice_input
 {
 	color: black;
 	background-color: white;

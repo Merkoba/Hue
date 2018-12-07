@@ -28,7 +28,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const image_types = ["image/jpeg", "image/png", "image/gif"]
 	const image_extensions = ["jpg", "jpeg", "png", "gif"]
 	const reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
-	const media_types = ["images", "tv", "radio"]
+	const media_types = ["images", "tv", "radio", "synth"]
 
 	const s3 = new aws.S3(
 	{
@@ -104,9 +104,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	[
 		"slice_upload",
 		"typing",
-		"voice_chat_blob",
 		"activity_trigger",
-		"send_piano_key"
+		"send_synth_key"
 	]
 	const check_locked = 
 	[
@@ -233,7 +232,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.hue_info1 = ""
 		socket.hue_typing_counter = 0
 		socket.hue_activity_counter = 0
-		socket.hue_piano_counter = 0
+		socket.hue_synth_counter = 0
 		socket.hue_last_activity_trigger = Date.now()
 	}
 
@@ -546,7 +545,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			room_images_mode: info.images_mode,
 			room_tv_mode: info.tv_mode,
 			room_radio_mode: info.radio_mode,
-			room_voice_chat_mode: info.voice_chat_mode,
+			room_synth_mode: info.synth_mode,
 			theme_mode: info.theme_mode,
 			theme: info.theme,
 			background_image: background_image,
@@ -561,22 +560,22 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			voice1_images_permission: info.voice1_images_permission,
 			voice1_tv_permission: info.voice1_tv_permission,
 			voice1_radio_permission: info.voice1_radio_permission,
-			voice1_voice_chat_permission: info.voice1_voice_chat_permission,
+			voice1_synth_permission: info.voice1_synth_permission,
 			voice2_chat_permission: info.voice2_chat_permission,
 			voice2_images_permission: info.voice2_images_permission,
 			voice2_tv_permission: info.voice2_tv_permission,
 			voice2_radio_permission: info.voice2_radio_permission,
-			voice2_voice_chat_permission: info.voice2_voice_chat_permission,
+			voice2_synth_permission: info.voice2_synth_permission,
 			voice3_chat_permission: info.voice3_chat_permission,
 			voice3_images_permission: info.voice3_images_permission,
 			voice3_tv_permission: info.voice3_tv_permission,
 			voice3_radio_permission: info.voice3_radio_permission,
-			voice3_voice_chat_permission: info.voice3_voice_chat_permission,
+			voice3_synth_permission: info.voice3_synth_permission,
 			voice4_chat_permission: info.voice4_chat_permission,
 			voice4_images_permission: info.voice4_images_permission,
 			voice4_tv_permission: info.voice4_tv_permission,
 			voice4_radio_permission: info.voice4_radio_permission,
-			voice4_voice_chat_permission: info.voice4_voice_chat_permission,
+			voice4_synth_permission: info.voice4_synth_permission,
 			email: socket.hue_email,
 			reg_date: userinfo.registration_date
 		})
@@ -2469,6 +2468,34 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed the radio mode to "${data.what}"`)
 	}
 
+	handler.public.change_synth_mode = function(socket, data)
+	{
+		if(!handler.is_admin_or_op(socket))
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.what !== "enabled" && data.what !== "disabled")
+		{
+			return handler.get_out(socket)
+		}
+
+		rooms[socket.hue_room_id].synth_mode = data.what
+
+		db_manager.update_room(socket.hue_room_id,
+		{
+			synth_mode: data.what
+		})
+
+		handler.room_emit(socket, 'room_synth_mode_change',
+		{
+			what: data.what,
+			username: socket.hue_username
+		})
+
+		handler.push_admin_log_message(socket, `changed the synth mode to "${data.what}"`)
+	}
+
 	handler.public.change_theme_mode = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -4319,26 +4346,26 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.public.send_piano_key = async function(socket, data)
+	handler.public.send_synth_key = async function(socket, data)
 	{
 		if(data.key === undefined)
 		{
 			return handler.get_out(socket)
 		}
 
-		if(!utilz.piano_notes.includes(data.key.toLowerCase()))
+		if(!utilz.synth_notes.includes(data.key.toLowerCase()))
 		{
 			return handler.get_out(socket)
 		}
 
-		if(!handler.check_permission(socket, "radio", true))
+		if(!handler.check_permission(socket, "synth"))
 		{
 			return false
 		}
 
-		socket.hue_piano_counter += 1
+		socket.hue_synth_counter += 1
 
-		if(socket.hue_piano_counter >= 20)
+		if(socket.hue_synth_counter >= 20)
 		{
 			let spam_ans = await handler.add_spam(socket)
 
@@ -4347,10 +4374,10 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			socket.hue_piano_counter = 0
+			socket.hue_synth_counter = 0
 		}
 
-		handler.room_emit(socket, 'receive_piano_key',
+		handler.room_emit(socket, 'receive_synth_key',
 		{
 			key: data.key,
 			username: socket.hue_username,
@@ -4358,7 +4385,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.public.send_piano_voice = async function(socket, data)
+	handler.public.send_synth_voice = async function(socket, data)
 	{
 		if(data.text === undefined)
 		{
@@ -4370,7 +4397,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(data.text.length > config.piano_max_voice_text)
+		if(data.text.length > config.synth_max_voice_text)
 		{
 			return handler.get_out(socket)
 		}
@@ -4380,12 +4407,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(!handler.check_permission(socket, "radio", true))
+		if(!handler.check_permission(socket, "synth"))
 		{
 			return false
 		}
 
-		handler.room_emit(socket, 'receive_piano_voice',
+		handler.room_emit(socket, 'receive_synth_voice',
 		{
 			text: data.text,
 			username: socket.hue_username,
@@ -4468,7 +4495,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.check_permission = function(socket, permission, lock_ok=false)
+	handler.check_permission = function(socket, permission)
 	{
 		if(media_types.includes(permission))
 		{
@@ -4476,23 +4503,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			if(pmode !== "enabled")
 			{
-				if(pmode === "locked")
-				{
-					if(lock_ok)
-					{
-						return true
-					}
-
-					else
-					{
-						return false
-					}
-				}
-
-				else
-				{
-					return false
-				}
+				return false
 			}
 		}
 
@@ -4533,21 +4544,26 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			voice1_images_permission: info.voice1_images_permission,
 			voice1_tv_permission: info.voice1_tv_permission,
 			voice1_radio_permission: info.voice1_radio_permission,
+			voice1_synth_permission: info.voice1_synth_permission,
 			voice2_chat_permission: info.voice2_chat_permission,
 			voice2_images_permission: info.voice2_images_permission,
 			voice2_tv_permission: info.voice2_tv_permission,
 			voice2_radio_permission: info.voice2_radio_permission,
+			voice2_synth_permission: info.voice2_synth_permission,
 			voice3_chat_permission: info.voice3_chat_permission,
 			voice3_images_permission: info.voice3_images_permission,
 			voice3_tv_permission: info.voice3_tv_permission,
 			voice3_radio_permission: info.voice3_radio_permission,
+			voice3_synth_permission: info.voice3_synth_permission,
 			voice4_chat_permission: info.voice4_chat_permission,
 			voice4_images_permission: info.voice4_images_permission,
 			voice4_tv_permission: info.voice4_tv_permission,
 			voice4_radio_permission: info.voice4_radio_permission,
+			voice4_synth_permission: info.voice4_synth_permission,
 			images_mode: info.images_mode,
 			tv_mode: info.tv_mode,
 			radio_mode: info.radio_mode,
+			synth_mode: info.synth_mode,
 			current_image_source: info.image_source,
 			current_image_query: info.image_query,
 			current_tv_source: info.tv_source,

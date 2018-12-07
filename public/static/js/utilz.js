@@ -359,7 +359,7 @@ const Utilz = function()
 		}
 	}
 
-	utilz.piano_notes = 
+	utilz.synth_notes = 
 	[
 		"c3", "d3", "e3", "f3",
 		"g3", "a3", "b3", "c4", "d4"

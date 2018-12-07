@@ -35,12 +35,12 @@
 		<link rel="stylesheet" href="/static/js/nstslider/jquery.nstSlider.min.css"> 
 
 		<script src="/static/js/msg.min.js?version=27"></script>
-		<script src="/static/js/utilz.js?version=27"></script>
+		<script src="/static/js/utilz.js?version=28"></script>
 		<script src="/static/js/colorlib.js?version=13"></script>
 
-		<script src="/static/js/base.js?version=2436"></script>
+		<script src="/static/js/base.js?version=2437"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=513"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=514"/>
 
 		<script>
 
@@ -186,32 +186,32 @@
 					</div>
 				</div>
 
-				<div id='piano_container' class='unselectable'>
-					<div id='piano_content_container'>
-						<div id='piano_content'>
-							<div class='piano_key_button action' id='piano_key_button_volume'><i id='piano_volume_icon' class='fa fa-volume-up'></i></div>
-							<div class='piano_key_divider'></div>
-							<div class='piano_key action' id='piano_key_c3'>1</div>
-							<div class='piano_key_divider'></div>
-							<div class='piano_key action' id='piano_key_d3'>2</div>
-							<div class='piano_key_divider'></div>
-							<div class='piano_key action' id='piano_key_e3'>3</div>
-							<div class='piano_key_divider'></div>
-							<div class='piano_key action' id='piano_key_f3'>4</div>
-							<div class='piano_key_divider'></div>
-							<div class='piano_key action' id='piano_key_g3'>5</div>
-							<div class='piano_key_divider'></div>
-							<div class='piano_key action' id='piano_key_a3'>6</div>
-							<div class='piano_key_divider'></div>
-							<div class='piano_key action' id='piano_key_b3'>7</div>
-							<div class='piano_key_divider'></div>
-							<div class='piano_key action' id='piano_key_c4'>8</div>
-							<div class='piano_key_divider'></div>
-							<div class='piano_key action' id='piano_key_d4'>9</div>
+				<div id='synth_container' class='unselectable'>
+					<div id='synth_content_container'>
+						<div id='synth_content'>
+							<div class='synth_key_button action' id='synth_key_button_volume'><i id='synth_volume_icon' class='fa fa-volume-up'></i></div>
+							<div class='synth_key_divider'></div>
+							<div class='synth_key action' id='synth_key_c3'>1</div>
+							<div class='synth_key_divider'></div>
+							<div class='synth_key action' id='synth_key_d3'>2</div>
+							<div class='synth_key_divider'></div>
+							<div class='synth_key action' id='synth_key_e3'>3</div>
+							<div class='synth_key_divider'></div>
+							<div class='synth_key action' id='synth_key_f3'>4</div>
+							<div class='synth_key_divider'></div>
+							<div class='synth_key action' id='synth_key_g3'>5</div>
+							<div class='synth_key_divider'></div>
+							<div class='synth_key action' id='synth_key_a3'>6</div>
+							<div class='synth_key_divider'></div>
+							<div class='synth_key action' id='synth_key_b3'>7</div>
+							<div class='synth_key_divider'></div>
+							<div class='synth_key action' id='synth_key_c4'>8</div>
+							<div class='synth_key_divider'></div>
+							<div class='synth_key action' id='synth_key_d4'>9</div>
 						</div>
 
-						<div id='piano_voice_content'>
-							<input type='text' id='piano_voice_input' placeholder="Say Something">
+						<div id='synth_voice_content'>
+							<input type='text' id='synth_voice_input' placeholder="Say Something">
 						</div>
 					</div>
 
@@ -437,6 +437,15 @@
 						<option value="locked">Locked</option>
 					</select>
 
+					<div class='spacer1'></div>
+
+					<div class='small_padding_bottom'>Synth</div>
+
+					<select id='admin_enable_synth' class='modal_select'>
+						<option value="enabled">Enabled</option>
+						<option value="disabled">Disabled</option>
+					</select>
+
 					<div class='menu_subsection_title'>Theme</div>
 
 					<div class='small_padding_bottom'>Theme Mode</div>
@@ -533,7 +542,11 @@
 							<div class='spacer1'></div>
 
 							<div class='setting_title'>Can Change the Radio</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice1_radio_permission" data-ptype="voice1_radio_permission">
+							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice1_radio_permission" data-ptype="voice1_radio_permission">				
+							<div class='spacer1'></div>
+
+							<div class='setting_title'>Can Use The Synth</div>
+							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice1_synth_permission" data-ptype="voice1_synth_permission">
 
 							<div class='spacer3'></div>
 
@@ -569,6 +582,11 @@
 							<div class='setting_title'>Can Change the Radio</div>
 							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice2_radio_permission" data-vtype="v2" data-ptype="voice2_radio_permission">
 
+							<div class='spacer1'></div>
+
+							<div class='setting_title'>Can Use The Synth</div>
+							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice2_synth_permission" data-ptype="voice2_synth_permission">
+
 							<div class='spacer3'></div>
 
 						</div>
@@ -603,6 +621,11 @@
 							<div class='setting_title'>Can Change the Radio</div>
 							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice3_radio_permission" data-vtype="v3" data-ptype="voice3_radio_permission">
 
+							<div class='spacer1'></div>
+
+							<div class='setting_title'>Can Use The Synth</div>
+							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice3_synth_permission" data-ptype="voice3_synth_permission">
+
 							<div class='spacer3'></div>
 
 						</div>
@@ -636,6 +659,11 @@
 
 							<div class='setting_title'>Can Change the Radio</div>
 							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice4_radio_permission" data-vtype="v4" data-ptype="voice4_radio_permission">
+
+							<div class='spacer1'></div>
+
+							<div class='setting_title'>Can Use The Synth</div>
+							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice4_synth_permission" data-ptype="voice4_synth_permission">
 
 						</div>
 
@@ -800,7 +828,7 @@
 					<div class='settings_window_left_content' id='settings_window_left_content_{{type}}'>
 						<div class='spacer3'></div>
 						<div class='settings_window_category' data-category_container='settings_window_category_content_afk_{{type}}' data-category='afk'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text border_bottom'>AFK</span><span class='settings_window_category_status'></span></div>
-						<div class='settings_window_category' data-category_container='settings_window_category_content_beeps_{{type}}' data-category='beeps'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Beeps</span><span class='settings_window_category_status'></span></div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_sound_{{type}}' data-category='sound'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Sound</span><span class='settings_window_category_status'></span></div>
 						<div class='settings_window_category' data-category_container='settings_window_category_content_appearance_{{type}}' data-category='appearance'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Appearance</span><span class='settings_window_category_status'></span></div>
 						<div class='settings_window_category' data-category_container='settings_window_category_content_functions_{{type}}' data-category='functions'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Functions</span><span class='settings_window_category_status'></span></div>
 						<div class='settings_window_category' data-category_container='settings_window_category_content_misc_{{type}}' data-category='misc'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Misc</span><span class='settings_window_category_status'></span></div>
@@ -812,7 +840,7 @@
 
 				<div class="settings_window_right" id="settings_window_right_{{type}}">
 
-					<div class='settings_category settings_window_category_container' id='settings_window_category_content_beeps_{{type}}' data-category='beeps'>
+					<div class='settings_category settings_window_category_container' id='settings_window_category_content_sound_{{type}}' data-category='sound'>
 
 						<div class='settings_item' data-setting='beep_on_messages'>
 							<div class="setting_title">Beep On Messages</div>
@@ -834,9 +862,9 @@
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_beep_on_user_joins">
 						</div>
 
-						<div class='settings_item' data-setting='piano_enabled'>
-							<div class="setting_title">Piano Enabled</div>
-							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_piano_enabled">
+						<div class='settings_item' data-setting='synth_enabled'>
+							<div class="setting_title">Synth Enabled</div>
+							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_synth_enabled">
 						</div>
 
 					</div>
@@ -1008,10 +1036,10 @@
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_radio_change">
 						</div>
 
-						<div class='settings_item' data-setting='afk_disable_piano'>
+						<div class='settings_item' data-setting='afk_disable_synth'>
 							<div class="setting_title2">On AFK</div>
-							<div class="setting_title">Disable Piano</div>
-							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_piano">
+							<div class="setting_title">Disable Synth</div>
+							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_synth">
 						</div>
 
 						<div class='settings_item' data-setting='afk_on_lockscreen'>
@@ -1871,8 +1899,8 @@
 			<div class='info_item modal_item'>/feedback x: Displays a simple feedback information message for the user.</div>
 			<div class='info_item modal_item'>/togglefontsize: Toggles chat font size between normal, big, and very big.</div>
 			<div class='info_item modal_item'>/toggleactivitybar: Toggles the activity bar between enabled and disabled.</div>
-			<div class='info_item modal_item'>/pianokey x: Plays the piano key with that number.</div>
-			<div class='info_item modal_item'>/togglemutepiano: Mutes or unmutes the piano.</div>
+			<div class='info_item modal_item'>/synthkey x: Plays the synth key with that number.</div>
+			<div class='info_item modal_item'>/togglemutesynth: Mutes or unmutes the synth.</div>
 			<div class='info_item modal_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil, and profile images in chat of whoever is typing will have a glow effect.</div>
 			<div class='info_item modal_item'>In some commands like /whisper the > character can be used to send 2 arguments. For instance, "/whisper Jack > hello my friend" will send a message to Jack directly.</div>
 			<div class='info_item modal_item'>Commands can be chained with &&. For instance "/tv The World && /maximizetv".</div>

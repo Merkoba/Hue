@@ -4,7 +4,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 
-	const rooms_version = 58
+	const rooms_version = 60
 	const users_version = 30
 
 	function get_random_key()
@@ -281,6 +281,11 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		if(typeof room.radio_mode !== "string")
 		{
 			room.radio_mode = "enabled"
+		}
+
+		if(typeof room.synth_mode !== "string")
+		{
+			room.synth_mode = "enabled"
 		}	
 		
 		if(typeof room.bans !== "object")
@@ -383,6 +388,11 @@ module.exports = function(db, config, sconfig, utilz, logger)
 			room.voice1_radio_permission = true
 		}
 
+		if(typeof room.voice1_synth_permission !== "boolean")
+		{
+			room.voice1_synth_permission = true
+		}
+
 		if(typeof room.voice2_chat_permission !== "boolean")
 		{
 			room.voice2_chat_permission = true
@@ -401,6 +411,11 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		if(typeof room.voice2_radio_permission !== "boolean")
 		{
 			room.voice2_radio_permission = true
+		}
+
+		if(typeof room.voice2_synth_permission !== "boolean")
+		{
+			room.voice2_synth_permission = true
 		}
 
 		if(typeof room.voice3_chat_permission !== "boolean")
@@ -423,6 +438,11 @@ module.exports = function(db, config, sconfig, utilz, logger)
 			room.voice3_radio_permission = true
 		}
 
+		if(typeof room.voice3_synth_permission !== "boolean")
+		{
+			room.voice3_synth_permission = true
+		}
+
 		if(typeof room.voice4_chat_permission !== "boolean")
 		{
 			room.voice4_chat_permission = true
@@ -441,6 +461,11 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		if(typeof room.voice4_radio_permission !== "boolean")
 		{
 			room.voice4_radio_permission = true
+		}
+
+		if(typeof room.voice4_synth_permission !== "boolean")
+		{
+			room.voice4_synth_permission = true
 		}
 
 		if(typeof room.admin_log_messages !== "object")
