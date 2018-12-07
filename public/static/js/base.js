@@ -313,6 +313,7 @@ Hue.init = function()
 	Hue.check_screen_lock()
 	Hue.setup_iframe_video()
 	Hue.setup_synth()
+	Hue.show_console_message()
 
 	if(Hue.debug_functions)
 	{
@@ -21425,4 +21426,12 @@ Hue.play_synth_voice = function(text)
 Hue.clear_synth_voice = function()
 {
 	$("#synth_voice_input").val("")
+}
+
+Hue.show_console_message = function()
+{
+	let s = "🤔 Want to work with us? It's pretty much 99.99% risks, some negligible fraction AI, a couple bureaucracies to keep people minimally pissed off, and a whole lot of creativity."
+	let style = "font-size:1.4rem"
+	
+	console.log(`%c${s}`, style)
 }
