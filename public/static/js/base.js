@@ -5675,13 +5675,13 @@ Hue.start_chat_mouse_events = function()
 		Hue.show_profile($(this).closest(".chat_message").find(".chat_uname").eq(0).text(), $(this).attr("src"))
 	})
 
-	$("#chat_area").on("click", ".chat_menu_button_edit", function()
+	$("#chat_area").on("dblclick", ".chat_menu_button_edit", function()
 	{
 		let container = $(this).closest(".chat_content_container").get(0)
 		Hue.edit_message(container)
 	})
 
-	$("#chat_area").on("click", ".chat_menu_button_remove", function()
+	$("#chat_area").on("dblclick", ".chat_menu_button_remove", function()
 	{
 		let id = $(this).closest(".chat_content_container").data("id")
 		Hue.remove_message(id)
@@ -6021,8 +6021,8 @@ Hue.update_chat = function(args={})
 						<div class='chat_content_container ${chat_menu_button_main_class}'>
 
 							<div class='chat_menu_button_container unselectable'>
-								<div class='chat_menu_button action chat_menu_button_edit'>Edit</div>
-								<div class='chat_menu_button action chat_menu_button_remove'>Remove</div>
+								<div class='chat_menu_button action chat_menu_button_edit' title='Double Click To Activate'>Edit</div>
+								<div class='chat_menu_button action chat_menu_button_remove' title='Double Click To Activate'>Remove</div>
 							</div>
 
 							<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
@@ -6052,8 +6052,8 @@ Hue.update_chat = function(args={})
 				<div class='chat_container'>
 					<div class='chat_content_container ${chat_menu_button_main_class}'>
 						<div class='chat_menu_button_container unselectable'>
-							<div class='chat_menu_button action chat_menu_button_edit'>Edit</div>
-							<div class='chat_menu_button action chat_menu_button_remove'>Remove</div>
+							<div class='chat_menu_button action chat_menu_button_edit' title='Double Click To Activate'>Edit</div>
+							<div class='chat_menu_button action chat_menu_button_remove' title='Double Click To Activate'>Remove</div>
 						</div>
 
 						<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
