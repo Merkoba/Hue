@@ -2320,24 +2320,28 @@ input[type=text], textarea
 {
 	position: fixed;
 	top: 2rem;
-	height: 40px;
+	min-height: 40px;
 	width: 700px;
 	z-index: 99999;
 	left: 50%;
 	transform: translateX(-50%);
 }
 
+#piano_content_container
+{
+	flex-direction: column;
+	display: none;
+}
+
 #piano_content
 {
+	height: 40px;
+	flex-grow: 0;
+	flex-shrink: 0;
 	background-color: grey;
-	position: relative;
-	height: 100%;
 	width: 100%;
 	flex-direction: row;
-	transition: opacity 500ms linear;
-	pointer-events: none;
 	display: flex;
-	opacity: 0;
 }
 
 .piano_key
@@ -2372,4 +2376,20 @@ input[type=text], textarea
 	flex-shrink: 0;
 }
 
-#piano_overlay
+#piano_voice_content
+{
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+#piano_voice_input
+{
+	color: black;
+	background-color: white;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	font-size: 1rem;
+	padding: 0.1rem;
+}

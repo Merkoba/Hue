@@ -130,6 +130,7 @@ Hue.footer_oversized = false
 Hue.input_clone_created = false
 Hue.piano_timeout_delay = 1000
 Hue.piano_recent_users = []
+Hue.piano_open = false
 
 Hue.commands = 
 [
@@ -180,7 +181,7 @@ Hue.commands =
 	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
 	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist',
 	'/accesslog', '/toggleactivtybar', '/thememode', '/pianokey',
-	'/togglemutepiano'
+	'/togglemutepiano', '/speech'
 ]
 
 Hue.user_settings =
@@ -1364,6 +1365,11 @@ Hue.start_socket = function()
 		else if(data.type === 'receive_piano_key')
 		{
 			Hue.receive_piano_key(data)
+		}
+
+		else if(data.type === 'receive_piano_voice')
+		{
+			Hue.receive_piano_voice(data)
 		}
 	})
 }
@@ -4878,6 +4884,19 @@ Hue.activate_key_detection = function()
 			}
 
 			return false
+		}
+
+		if(Hue.piano_open)
+		{
+			if(Hue.piano_voice_input_focused)
+			{
+				if(e.key === "Enter")
+				{
+					Hue.send_piano_voice()
+				}
+
+				return false
+			}
 		}
 
 		Hue.focus_input()
@@ -8489,6 +8508,11 @@ Hue.execute_command = function(message, ans)
 	else if(Hue.oi_equals(cmd2, '/togglemutepiano'))
 	{
 		Hue.set_piano_muted()
+	}
+
+	else if(Hue.oi_startswith(cmd2, '/speech'))
+	{
+		Hue.send_piano_voice(arg)
 	}
 
 	else
@@ -21066,6 +21090,8 @@ Hue.setup_piano = function()
 		}
 	}).toMaster()
 
+	Hue.piano_voice = window.speechSynthesis
+
 	$("#piano_container").on("mouseenter", function()
 	{
 		Hue.show_piano()
@@ -21085,6 +21111,21 @@ Hue.setup_piano = function()
 	$("#piano_key_button_volume").click(function()
 	{
 		Hue.set_piano_muted()
+	})
+
+	$("#piano_voice_input").on("focus", function()
+	{
+		Hue.piano_voice_input_focused = true
+	})
+
+	$("#piano_voice_input").on("blur", function()
+	{
+		Hue.piano_voice_input_focused = false
+
+		if(!Hue.mouse_on_piano)
+		{
+			Hue.hide_piano()
+		}
 	})
 
 	Hue.set_piano_muted(Hue.room_state.piano_muted)
@@ -21124,28 +21165,36 @@ Hue.show_piano = function()
 {
 	if(Hue.can_piano)
 	{
-		Hue.mouse_in_piano = true
+		Hue.mouse_on_piano = true
 
 		clearTimeout(Hue.piano_timeout_2)
 
 		Hue.piano_timeout = setTimeout(function()
 		{
-			$("#piano_content").css("pointer-events", "auto")
-			$("#piano_content").css("opacity", "1")
+			$("#piano_content_container").css("display", "flex")
+
+			Hue.piano_open = true
 		}, Hue.piano_timeout_delay)
 	}
 }
 
 Hue.hide_piano = function()
 {
-	Hue.mouse_in_piano = false
+	Hue.mouse_on_piano = false
+
+	if(Hue.piano_voice_input_focused)
+	{
+		return false
+	}
 	
 	clearTimeout(Hue.piano_timeout)
 
 	Hue.piano_timeout_2 = setTimeout(function()
 	{
-		$("#piano_content").css("pointer-events", "none")
-		$("#piano_content").css("opacity", "0")
+		$("#piano_content_container").css("display", "none")
+		$("#piano_voice_input").val("")
+
+		Hue.piano_open = false
 	}, Hue.piano_timeout_delay)
 }
 
@@ -21242,4 +21291,51 @@ Hue.push_to_piano_recent_users = function(data)
 		let s = Hue.piano_recent_users.join(", ")
 		$("#piano_key_button_volume").attr("title", s)
 	}
+}
+
+Hue.send_piano_voice = function(text=false)
+{
+	if(!Hue.can_piano || Hue.room_state.piano_muted)
+	{
+		return false
+	}
+
+	if(!text)
+	{
+		text = Hue.utilz.clean_string2($("#piano_voice_input").val())
+	}
+
+	$("#piano_voice_input").val("")
+
+	if(text.length === 0 || text.length > Hue.piano_max_voice_text)
+	{
+		return false
+	}
+
+	Hue.socket_emit("send_piano_voice", {text:text})
+}
+
+Hue.receive_piano_voice = function(data)
+{
+	if(!Hue.room_state.piano_muted && Hue.get_setting("piano_enabled"))
+	{
+		if(Hue.afk && Hue.get_setting("afk_disable_piano"))
+		{
+			return false
+		}
+
+		if(Hue.user_is_ignored(data.username))
+		{
+			return false
+		}
+		
+		Hue.play_piano_voice(data.text)
+		Hue.push_to_piano_recent_users(data)
+	}
+}
+
+Hue.play_piano_voice = function(text)
+{
+	let speech = new SpeechSynthesisUtterance(text)
+	Hue.piano_voice.speak(speech)
 }

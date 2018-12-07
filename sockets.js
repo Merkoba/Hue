@@ -4358,6 +4358,36 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
+	handler.public.send_piano_voice = async function(socket, data)
+	{
+		if(data.text === undefined)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.text.length === 0)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.text.length > config.piano_max_voice_text)
+		{
+			return handler.get_out(socket)
+		}
+
+		if(!handler.check_permission(socket, "radio", true))
+		{
+			return false
+		}
+
+		handler.room_emit(socket, 'receive_piano_voice',
+		{
+			text: data.text,
+			username: socket.hue_username,
+			user_id: socket.hue_user_id
+		})
+	}
+
 	handler.charge_ads = function(room_id)
 	{
 		try

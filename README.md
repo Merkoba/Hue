@@ -725,6 +725,9 @@ This should be an array of strings of root domains.
 "piano_max_recent_users"
 >How many users fit in to the title of recent piano users when hovering the piano's volume icon.
 
+"piano_max_voice_text"
+>Max length for the voice synth text.
+
 
 ## The following reside in config.secret.json
 
