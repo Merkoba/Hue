@@ -21387,12 +21387,12 @@ Hue.send_synth_voice = function(text=false)
 		text = Hue.utilz.clean_string2($("#synth_voice_input").val())
 	}
 
-	Hue.clear_synth_voice()
-
 	if(text.length === 0 || text.length > Hue.synth_max_voice_text)
 	{
 		return false
 	}
+
+	Hue.clear_synth_voice()
 
 	Hue.socket_emit("send_synth_voice", {text:text})
 }
