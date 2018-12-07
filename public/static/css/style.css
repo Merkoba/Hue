@@ -2392,4 +2392,5 @@ input[type=text], textarea
 	text-align: center;
 	font-size: 1rem;
 	padding: 0.1rem;
+	box-sizing: border-box;
 }
