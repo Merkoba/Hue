@@ -20786,6 +20786,7 @@ Hue.show_activity_bar = function()
 	$("#topbox_left_icon").addClass("fa-caret-down")
 
 	$("#synth_container").css("top", "4rem")
+	$("#recent_voice_box").css("top", "4rem")
 
 	Hue.apply_theme()
 	Hue.update_activity_bar()
@@ -20799,6 +20800,7 @@ Hue.hide_activity_bar = function()
 	$("#topbox_left_icon").addClass("fa-caret-up")
 
 	$("#synth_container").css("top", "2rem")
+	$("#recent_voice_box").css("top", "2rem")
 
 	Hue.apply_theme()
 	Hue.on_resize()
@@ -21331,30 +21333,29 @@ Hue.receive_synth_key = function(data)
 			Hue.play_synth_key(data.key)
 		}
 		
-		Hue.push_to_synth_recent_users(data)
+		Hue.push_to_synth_recent_users(data, "key")
 	}
 }
 
-Hue.push_to_synth_recent_users = function(data)
+Hue.push_to_synth_recent_users = function(data, type)
 {
 	let changed = false
 
-	if(!Hue.synth_recent_users.includes(data.username))
-	{
-		Hue.synth_recent_users.unshift(data.username)
-		changed = true
-	}
+	let usernames = Hue.synth_recent_users.map(x => x.username)
 
-	else if(Hue.synth_recent_users[0] === data.username)
+	let obj = {username:data.username, type:type, date:Date.now()}
+
+	if(!usernames.includes(data.username))
 	{
-		changed = false
+		Hue.synth_recent_users.unshift(obj)
+		changed = true
 	}
 
 	else
 	{
-		for(let i=0; i<Hue.synth_recent_users.length; i++)
+		for(let i=0; i<usernames.length; i++)
 		{
-			let username = Hue.synth_recent_users[i]
+			let username = usernames[i]
 			
 			if(username === data.username)
 			{
@@ -21363,8 +21364,7 @@ Hue.push_to_synth_recent_users = function(data)
 			}
 		}
 
-		Hue.synth_recent_users.unshift(data.username)
-
+		Hue.synth_recent_users.unshift(obj)
 		changed = true
 	}
 
@@ -21376,7 +21376,7 @@ Hue.push_to_synth_recent_users = function(data)
 
 	if(changed)
 	{
-		let s = Hue.synth_recent_users.join(", ")
+		let s = Hue.synth_recent_users.map(x => x.username).join(", ")
 		$("#synth_key_button_volume").attr("title", s)
 	}
 }
@@ -21422,7 +21422,8 @@ Hue.receive_synth_voice = function(data)
 			Hue.play_synth_voice(data.text)
 		}
 		
-		Hue.push_to_synth_recent_users(data)
+		Hue.push_to_synth_recent_users(data, "voice")
+		Hue.update_recent_voice_box()
 	}
 }
 
@@ -21443,4 +21444,50 @@ Hue.show_console_message = function()
 	let style = "font-size:1.4rem"
 	
 	console.info(`%c${s}`, style)
+}
+
+Hue.update_recent_voice_box = function()
+{
+	clearTimeout(Hue.recent_voice_box_timeout)
+
+	let date = Date.now()
+
+	let items = []
+
+	for(let item of Hue.synth_recent_users)
+	{
+		if(date - item.date < Hue.recent_voice_box_timeout)
+		{
+			items.push(item)
+
+			if(items.length >= 3)
+			{
+				break
+			}
+		}
+	}
+
+	if(items.length === 0)
+	{
+		return false
+	}
+
+	let s = ""
+
+	for(let item of items)
+	{
+		s += `<div class='recent_voice_box_item'>
+			<i class='fa fa-volume-up'></i>&nbsp;&nbsp;${Hue.make_html_safe(item.username)}
+		</div>`
+	}
+
+
+	$("#recent_voice_box_content").html(s)
+
+	$("#recent_voice_box").css("display", "flex")
+
+	Hue.recent_voice_box_timeout = setTimeout(function()
+	{
+		$("#recent_voice_box").css("display", "none")
+	}, Hue.recent_voice_box_timeout)
 }

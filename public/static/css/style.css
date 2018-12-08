@@ -2394,3 +2394,23 @@ input[type=text], textarea
 	padding: 0.1rem;
 	box-sizing: border-box;
 }
+
+#recent_voice_box
+{
+	color: white;
+	background-color: black;
+	display: none;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	top: 4rem;
+	z-index: 99;
+	padding-left: 0.8rem;
+	padding-right: 0.8rem;
+}
+
+.recent_voice_box_item
+{
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
