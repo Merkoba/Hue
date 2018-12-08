@@ -131,6 +131,7 @@ Hue.input_clone_created = false
 Hue.synth_timeout_delay = 800
 Hue.synth_recent_users = []
 Hue.synth_open = false
+Hue.synth_voice_speeches = []
 
 Hue.commands = 
 [
@@ -8568,7 +8569,7 @@ Hue.execute_command = function(message, ans)
 
 	else if(Hue.oi_startswith(cmd2, '/speaklocal'))
 	{
-		Hue.play_synth_voice(arg)
+		Hue.play_synth_voice(arg, Hue.username, true)
 	}
 
 	else
@@ -21438,7 +21439,6 @@ Hue.send_synth_voice = function(text=false)
 	}
 
 	Hue.clear_synth_voice()
-	Hue.play_synth_voice(text)
 	Hue.socket_emit("send_synth_voice", {text:text})
 }
 
@@ -21456,20 +21456,38 @@ Hue.receive_synth_voice = function(data)
 			return false
 		}
 
-		if(data.user_id !== Hue.user_id)
-		{
-			Hue.play_synth_voice(data.text)
-		}
-		
+		Hue.play_synth_voice(data.text, data.username)
 		Hue.push_to_synth_recent_users(data, "voice")
-		Hue.update_recent_voice_box()
 	}
 }
 
-Hue.play_synth_voice = function(text)
+Hue.play_synth_voice = function(text, username, local=false)
 {
 	let speech = new SpeechSynthesisUtterance(text)
+
+	if(!local)
+	{
+		speech.onstart = function()
+		{
+			Hue.show_voice_box(username)
+		}
+
+		speech.onend = function()
+		{
+			if(!Hue.synth_voice.pending && !Hue.synth_voice.speaking)
+			{
+				Hue.hide_voice_box()
+				Hue.synth_voice_speeches = []
+			}
+		}
+	}
+
 	Hue.synth_voice.speak(speech)
+
+	if(!local)
+	{
+		Hue.synth_voice_speeches.push(speech)
+	}
 }
 
 Hue.clear_synth_voice = function()
@@ -21485,47 +21503,18 @@ Hue.show_console_message = function()
 	console.info(`%c${s}`, style)
 }
 
-Hue.update_recent_voice_box = function()
+Hue.show_voice_box = function(username)
 {
-	clearTimeout(Hue.recent_voice_box_timeout)
-
-	let date = Date.now()
-
-	let items = []
-
-	for(let item of Hue.synth_recent_users)
-	{
-		if(date - item.date < Hue.recent_voice_box_delay)
-		{
-			items.push(item)
-
-			if(items.length >= 5)
-			{
-				break
-			}
-		}
-	}
-
-	if(items.length === 0)
-	{
-		return false
-	}
-
-	let s = ""
-
-	for(let item of items)
-	{
-		s += `<div class='recent_voice_box_item'>
-			<i class='fa fa-volume-up'></i>&nbsp;&nbsp;${Hue.make_html_safe(item.username)}
-		</div>`
-	}
+	let s = `
+	<div class='recent_voice_box_item'>
+		<i class='fa fa-volume-up'></i>&nbsp;&nbsp;${Hue.make_html_safe(username)}
+	</div>`
 
 	$("#recent_voice_box_content").html(s)
-
 	$("#recent_voice_box").css("display", "flex")
+}
 
-	Hue.recent_voice_box_timeout = setTimeout(function()
-	{
-		$("#recent_voice_box").css("display", "none")
-	}, Hue.recent_voice_box_delay)
+Hue.hide_voice_box = function()
+{
+	$("#recent_voice_box").css("display", "none")
 }
