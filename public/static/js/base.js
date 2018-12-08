@@ -247,6 +247,12 @@ Hue.user_settings =
 	tv_display_position: {widget_type:"custom"}
 }
 
+Hue.synth_key_names =
+{
+	1: "one", 2:"two", 3:"three", 4:"four", 5:"five",
+	6: "six", 7:"seven", 8:"eight", 9:"nine", 10:"zero"
+}
+
 Hue.init = function()
 {
 	Hue.activate_key_detection()
@@ -21220,7 +21226,7 @@ Hue.setup_synth = function()
 		{
 			let key = $(this).attr("id").replace("synth_key_", "")
 
-			let name = Hue.get_synth_number_name(key)
+			let name = Hue.synth_key_names[key]
 
 			if(name)
 			{
@@ -21522,59 +21528,4 @@ Hue.update_recent_voice_box = function()
 	{
 		$("#recent_voice_box").css("display", "none")
 	}, Hue.recent_voice_box_delay)
-}
-
-Hue.get_synth_number_name = function(n)
-{
-	if(n == 1)
-	{
-		return "one"
-	}
-
-	else if(n == 2)
-	{
-		return "two"
-	}
-
-	else if(n == 3)
-	{
-		return "three"
-	}
-
-	else if(n == 4)
-	{
-		return "four"
-	}
-
-	else if(n == 5)
-	{
-		return "five"
-	}
-
-	else if(n == 6)
-	{
-		return "six"
-	}
-
-	else if(n == 7)
-	{
-		return "seven"
-	}
-
-	else if(n == 8)
-	{
-		return "eight"
-	}
-
-	else if(n == 9)
-	{
-		return "nine"
-	}
-
-	if(n == 10)
-	{
-		return "zero"
-	}
-
-	return false
 }
