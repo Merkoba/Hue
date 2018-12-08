@@ -21462,7 +21462,7 @@ Hue.update_recent_voice_box = function()
 		{
 			items.push(item)
 
-			if(items.length >= 3)
+			if(items.length >= 5)
 			{
 				break
 			}
