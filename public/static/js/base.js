@@ -2593,6 +2593,12 @@ Hue.apply_theme = function()
 		color: ${font_color} !important;
 	}
 
+	.synth_key_pressed
+	{
+		background-color: ${color_3} !important;
+		color: ${font_color} !important;
+	}
+
 	.synth_key_button
 	{
 		background-color: ${color_3} !important;
@@ -21190,6 +21196,16 @@ Hue.setup_synth = function()
 	$("#synth_container").on("mouseleave", function()
 	{
 		Hue.hide_synth()
+	})
+
+	$("#synth_content").on("mousedown", ".synth_key", function()
+	{
+		$(this).addClass("synth_key_pressed")
+	})
+
+	$("#synth_content").on("mouseup mouseleave", ".synth_key", function()
+	{
+		$(this).removeClass("synth_key_pressed")
 	})
 
 	$("#synth_content").on("click", ".synth_key", function()
