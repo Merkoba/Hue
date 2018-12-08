@@ -21203,7 +21203,8 @@ Hue.setup_synth = function()
 		if(e.which === 2)
 		{
 			let key = $(this).attr("id").replace("synth_key_", "")
-			let name = Hue.get_number_name(key)
+
+			let name = Hue.get_synth_number_name(key)
 
 			if(name)
 			{
@@ -21507,14 +21508,9 @@ Hue.update_recent_voice_box = function()
 	}, Hue.recent_voice_box_delay)
 }
 
-Hue.get_number_name = function(n)
+Hue.get_synth_number_name = function(n)
 {
-	if(n == 0)
-	{
-		return "zero"
-	}
-
-	else if(n == 1)
+	if(n == 1)
 	{
 		return "one"
 	}
@@ -21557,6 +21553,11 @@ Hue.get_number_name = function(n)
 	else if(n == 9)
 	{
 		return "nine"
+	}
+
+	if(n == 10)
+	{
+		return "zero"
 	}
 
 	return false
