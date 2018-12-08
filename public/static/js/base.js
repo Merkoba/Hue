@@ -21483,7 +21483,6 @@ Hue.update_recent_voice_box = function()
 		</div>`
 	}
 
-
 	$("#recent_voice_box_content").html(s)
 
 	$("#recent_voice_box").css("display", "flex")
