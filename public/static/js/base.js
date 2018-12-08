@@ -20787,6 +20787,7 @@ Hue.show_activity_bar = function()
 
 	$("#synth_container").css("top", "4rem")
 	$("#recent_voice_box").css("top", "4rem")
+	$("#infotip_container").css("top", "4rem")
 
 	Hue.apply_theme()
 	Hue.update_activity_bar()
@@ -20801,6 +20802,7 @@ Hue.hide_activity_bar = function()
 
 	$("#synth_container").css("top", "2rem")
 	$("#recent_voice_box").css("top", "2rem")
+	$("#infotip_container").css("top", "2rem")
 
 	Hue.apply_theme()
 	Hue.on_resize()
