@@ -215,5 +215,5 @@
 	"redis_max_link_age": 604800000,
 	"synth_max_recent_users": 10,
 	"synth_max_voice_text": 140,
-	"recent_voice_box_timeout": 2000
+	"recent_voice_box_delay": 2000
 }

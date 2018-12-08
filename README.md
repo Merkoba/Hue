@@ -730,7 +730,7 @@ This should be an array of strings of root domains.
 "synth_max_voice_text"
 >Max length for the voice synth text.
 
-"recent_voice_box_timeout"
+"recent_voice_box_delay"
 >How long the box that shows usernames who used voice messages recently stays there after last activity. Also used to declare if an item is stale according to its date and not include it in the list.
 
 

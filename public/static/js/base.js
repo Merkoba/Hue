@@ -21456,7 +21456,7 @@ Hue.update_recent_voice_box = function()
 
 	for(let item of Hue.synth_recent_users)
 	{
-		if(date - item.date < Hue.recent_voice_box_timeout)
+		if(date - item.date < Hue.recent_voice_box_delay)
 		{
 			items.push(item)
 
@@ -21489,5 +21489,5 @@ Hue.update_recent_voice_box = function()
 	Hue.recent_voice_box_timeout = setTimeout(function()
 	{
 		$("#recent_voice_box").css("display", "none")
-	}, Hue.recent_voice_box_timeout)
+	}, Hue.recent_voice_box_delay)
 }
