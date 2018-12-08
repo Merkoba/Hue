@@ -21198,6 +21198,20 @@ Hue.setup_synth = function()
 		Hue.send_synth_key(key)
 	})
 
+	$("#synth_content").on("auxclick", ".synth_key", function(e)
+	{
+		if(e.which === 2)
+		{
+			let key = $(this).attr("id").replace("synth_key_", "")
+			let name = Hue.get_number_name(key)
+
+			if(name)
+			{
+				Hue.send_synth_voice(name)
+			}
+		}
+	})
+
 	$("#synth_key_button_volume").click(function()
 	{
 		Hue.set_synth_muted()
@@ -21491,4 +21505,59 @@ Hue.update_recent_voice_box = function()
 	{
 		$("#recent_voice_box").css("display", "none")
 	}, Hue.recent_voice_box_delay)
+}
+
+Hue.get_number_name = function(n)
+{
+	if(n == 0)
+	{
+		return "zero"
+	}
+
+	else if(n == 1)
+	{
+		return "one"
+	}
+
+	else if(n == 2)
+	{
+		return "two"
+	}
+
+	else if(n == 3)
+	{
+		return "three"
+	}
+
+	else if(n == 4)
+	{
+		return "four"
+	}
+
+	else if(n == 5)
+	{
+		return "five"
+	}
+
+	else if(n == 6)
+	{
+		return "six"
+	}
+
+	else if(n == 7)
+	{
+		return "seven"
+	}
+
+	else if(n == 8)
+	{
+		return "eight"
+	}
+
+	else if(n == 9)
+	{
+		return "nine"
+	}
+
+	return false
 }
