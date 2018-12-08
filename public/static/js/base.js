@@ -181,7 +181,7 @@ Hue.commands =
 	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
 	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist',
 	'/accesslog', '/toggleactivtybar', '/thememode', '/synthkey',
-	'/togglemutesynth', '/speech', '/synthkeylocal', '/speechlocal'
+	'/togglemutesynth', '/speak', '/synthkeylocal', '/speaklocal'
 ]
 
 Hue.user_settings =
@@ -8549,12 +8549,12 @@ Hue.execute_command = function(message, ans)
 		Hue.set_synth_muted()
 	}
 
-	else if(Hue.oi_startswith(cmd2, '/speech'))
+	else if(Hue.oi_startswith(cmd2, '/speak'))
 	{
 		Hue.send_synth_voice(arg)
 	}
 
-	else if(Hue.oi_startswith(cmd2, '/speechlocal'))
+	else if(Hue.oi_startswith(cmd2, '/speaklocal'))
 	{
 		Hue.play_synth_voice(arg)
 	}
