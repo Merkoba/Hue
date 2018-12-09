@@ -134,7 +134,7 @@
 	"global_settings_default_on_unlockscreen": "",
 	"global_settings_default_afk_on_lockscreen": true,
 	"global_settings_default_chat_layout": "normal",
-	"global_settings_default_media_display_percentage": 70,
+	"global_settings_default_chat_display_percentage": 40,
 	"global_settings_default_tv_display_percentage": 50,
 	"global_settings_default_tv_display_position": "bottom",
 	"global_settings_default_aliases": "",

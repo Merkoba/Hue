@@ -511,8 +511,8 @@ If you want to remove it to start fresh:
 "global_settings_default_warn_before_closing"
 > Default setting of whether it should warn before closing the application/tab.
 
-"global_settings_default_media_display_percentage"
->Default percentage of the width the media area will have in new rooms.
+"global_settings_default_chat_display_percentage"
+>Default percentage of the width the chat area will have in new rooms.
 
 "global_settings_default_tv_display_percentage"
 >Default percentage of the height the tv will have in the split media area in new rooms.

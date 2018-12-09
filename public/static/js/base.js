@@ -84,7 +84,7 @@ Hue.filter_delay = 350
 Hue.resize_delay = 350
 Hue.double_tap_delay = 250
 Hue.wheel_delay = 100
-Hue.wheel_delay_2 = 50
+Hue.wheel_delay_2 = 25
 Hue.check_scrollers_delay = 100
 Hue.requesting_roomlist = false
 Hue.emit_queue = []
@@ -243,7 +243,7 @@ Hue.user_settings =
 	stop_radio_on_tv_play: {widget_type:"checkbox"},
 	stop_tv_on_radio_play: {widget_type:"checkbox"},
 	synth_enabled: {widget_type:"checkbox"},
-	media_display_percentage: {widget_type:"custom"},
+	chat_display_percentage: {widget_type:"custom"},
 	tv_display_percentage: {widget_type:"custom"},
 	tv_display_position: {widget_type:"custom"}
 }
@@ -3452,7 +3452,7 @@ Hue.generate_tv_maxer_context_items = function()
 {
 	let items = {}
 
-	for(let i=9; i>=0; i--)
+	for(let i=9; i>0; i--)
 	{
 		let n = i * 10
 
@@ -3497,16 +3497,15 @@ Hue.generate_chat_maxer_context_items = function()
 {
 	let items = {}
 
-	for(let i=9; i>=0; i--)
+	for(let i=9; i>0; i--)
 	{
 		let n = i * 10
-		let n2 = 100 - n
 
 		items[`per${n}`] =
 		{
 			name: `Chat ${n}%`, callback: function(key, opt)
 			{
-				Hue.do_media_size_change(n2)
+				Hue.do_chat_size_change(n)
 			}
 		}
 	}
@@ -11961,7 +11960,7 @@ Hue.start_settings_widgets_listeners = function(type)
 		}
 	})
 
-	$(`#${type}_media_display_percentage`).nstSlider(
+	$(`#${type}_chat_display_percentage`).nstSlider(
 	{
 		"left_grip_selector": ".leftGrip",
 		"value_changed_callback": function(cause, val) 
@@ -11971,9 +11970,9 @@ Hue.start_settings_widgets_listeners = function(type)
 				return false
 			}
 
-			if(Hue[type].media_display_percentage !== val)
+			if(Hue[type].chat_display_percentage !== val)
 			{
-				Hue[type].media_display_percentage = val
+				Hue[type].chat_display_percentage = val
 				Hue[`save_${type}`]()	
 				Hue.apply_media_percentages()
 			}
@@ -17331,7 +17330,7 @@ Hue.start_room_settings_overriders = function()
 			}
 		}
 
-		if(setting === "media_display_percentage" 
+		if(setting === "chat_display_percentage" 
 		|| setting === "tv_display_percentage"
 		|| setting === "tv_display_position")
 		{
@@ -18360,7 +18359,7 @@ Hue.set_tv_display_percentage = function(v, type)
 	$(`#${type}_tv_display_percentage`).nstSlider('set_position', v)
 }
 
-Hue.set_media_display_percentage = function(v, type)
+Hue.set_chat_display_percentage = function(v, type)
 {
 	if(v === undefined || type === undefined)
 	{
@@ -18369,7 +18368,7 @@ Hue.set_media_display_percentage = function(v, type)
 
 	if(v === "default")
 	{
-		v = Hue.global_settings_default_media_display_percentage
+		v = Hue.global_settings_default_chat_display_percentage
 	}
 
 	v = parseInt(v)
@@ -18389,7 +18388,7 @@ Hue.set_media_display_percentage = function(v, type)
 		v = 90
 	}
 
-	$(`#${type}_media_display_percentage`).nstSlider('set_position', v)
+	$(`#${type}_chat_display_percentage`).nstSlider('set_position', v)
 }
 
 Hue.apply_media_percentages = function()
@@ -18400,11 +18399,11 @@ Hue.apply_media_percentages = function()
 	$("#media_tv").css("height", `${p1}%`)
 	$("#media_image").css("height", `${p2}%`)
 
-	let c1 = Hue.get_setting("media_display_percentage")
+	let c1 = Hue.get_setting("chat_display_percentage")
 	let c2 = (100 - c1)
 
-	$("#media").css("width", `${c1}%`)
-	$("#chat_main").css("width", `${c2}%`)
+	$("#chat_main").css("width", `${c1}%`)
+	$("#media").css("width", `${c2}%`)
 
 	Hue.on_resize()
 }
@@ -19375,7 +19374,7 @@ Hue.prepare_media_settings = function()
 Hue.set_media_sliders = function(type)
 {
 	Hue.set_tv_display_percentage(Hue[type].tv_display_percentage, type)
-	Hue.set_media_display_percentage(Hue[type].media_display_percentage, type)
+	Hue.set_chat_display_percentage(Hue[type].chat_display_percentage, type)
 }
 
 Hue.image_prev = function()
@@ -19935,7 +19934,7 @@ Hue.modify_setting = function(arg, show_feedback=true)
 			Hue.apply_media_positions()
 		}
 
-		else if(setting === "tv_display_percentage" || "media_display_percentage")
+		else if(setting === "tv_display_percentage" || "chat_display_percentage")
 		{
 			Hue.set_media_sliders(type)
 			Hue.apply_media_percentages()
@@ -20436,7 +20435,7 @@ Hue.set_default_tv_size = function()
 
 Hue.set_default_media_size = function()
 {
-	Hue.do_media_size_change(Hue.global_settings_default_media_display_percentage)
+	Hue.do_chat_size_change(Hue.global_settings_default_chat_display_percentage)
 }
 
 Hue.increase_tv_percentage = function()
@@ -20499,35 +20498,35 @@ Hue.do_media_tv_size_change = function(size)
 
 Hue.increase_media_percentage = function()
 {
-	let size = Hue.get_setting("media_display_percentage")
+	let size = Hue.get_setting("chat_display_percentage")
 	size += 10
 	size = Hue.utilz.round2(size, 10)
-	Hue.do_media_size_change(size)
+	Hue.do_chat_size_change(size)
 }
 
 Hue.decrease_media_percentage = function()
 {
-	let size = Hue.get_setting("media_display_percentage")
+	let size = Hue.get_setting("chat_display_percentage")
 	size -= 10
 	size = Hue.utilz.round2(size, 10)
-	Hue.do_media_size_change(size)
+	Hue.do_chat_size_change(size)
 }
 
-Hue.do_media_size_change = function(size)
+Hue.do_chat_size_change = function(size)
 {
 	if(size < 10 || size > 90)
 	{
 		return false
 	}
 
-	if(size === Hue.get_setting("media_display_percentage"))
+	if(size === Hue.get_setting("chat_display_percentage"))
 	{
 		return false
 	}
 
 	let info
 
-	if(size === Hue.global_settings_default_media_display_percentage)
+	if(size === Hue.global_settings_default_chat_display_percentage)
 	{
 		info = " (Default)"
 	}
@@ -20537,9 +20536,9 @@ Hue.do_media_size_change = function(size)
 		info = ""
 	}
 
-	Hue.enable_setting_override("media_display_percentage")
-	Hue.modify_setting(`media_display_percentage ${size}`, false)
-	Hue.show_infotip(`Media Size: ${size}%${info}`)
+	Hue.enable_setting_override("chat_display_percentage")
+	Hue.modify_setting(`chat_display_percentage ${size}`, false)
+	Hue.show_infotip(`Chat Size: ${size}%${info}`)
 }
 
 Hue.show_infotip = function(s)
