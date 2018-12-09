@@ -21137,6 +21137,12 @@ Hue.send_edit_messsage = function(id)
 		return false
 	}
 
+	if(new_message.length === 0)
+	{
+		Hue.remove_message(edit_id)
+		return false
+	}
+
 	Hue.process_message({message:new_message, edit_id:edit_id})
 }
 
