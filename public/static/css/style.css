@@ -85,7 +85,7 @@ body, html
 	min-height: 22px;
 	max-height: 22px;
 	overflow: hidden;
-	border-radius: 50px;
+	border-radius: 50%;
 }
 
 .activity_bar_image
@@ -418,7 +418,7 @@ div#header_radio_playing_icon
 	min-height: 45px;
 	max-height: 45px;
 	overflow: hidden;
-	border-radius: 50px;
+	border-radius: 50%;
 }
 
 .chat_profile_image
@@ -1659,7 +1659,7 @@ input[type=text], textarea
 	align-items: flex-start;
 	justify-content: center;
 	position: fixed;
-	border-radius: 50px;
+	border-radius: 50%;
 	bottom: 2rem;
 	left: 0;	
 	flex-grow: 1;
@@ -1849,7 +1849,7 @@ input[type=text], textarea
 	background-color: #ffffff;
 	opacity: 0.2;
 	z-index: 0;
-	border-radius:50% ;
+	border-radius: 50% ;
 	animation: animation_circle_1 3s infinite;
 	animation-direction: alternate;
 	animation-delay: 0.5s;
@@ -1865,7 +1865,7 @@ input[type=text], textarea
 	background-color: #ffffff;
 	opacity: 0.1;
 	z-index: 0;
-	border-radius:50% ;
+	border-radius: 50% ;
 	animation: animation_circle_1 3s infinite;
 	animation-direction: alternate;
 	animation-delay: 1s;

@@ -20868,6 +20868,15 @@ Hue.update_activity_bar = function()
 				</div>`)
 
 				let text_el = h.find(".activity_bar_text").eq(0)
+				let img_el = h.find(".activity_bar_image").eq(0)
+
+				img_el.on("error", function()
+				{
+					if($(this).attr("src") !== Hue.default_profile_image_url)
+					{
+						$(this).attr("src", Hue.default_profile_image_url)
+					}
+				})
 
 				text_el.text(user.username)
 
