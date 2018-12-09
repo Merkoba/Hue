@@ -84,6 +84,7 @@ Hue.filter_delay = 350
 Hue.resize_delay = 350
 Hue.double_tap_delay = 250
 Hue.wheel_delay = 100
+Hue.wheel_delay_2 = 50
 Hue.check_scrollers_delay = 100
 Hue.requesting_roomlist = false
 Hue.emit_queue = []
@@ -16800,6 +16801,21 @@ Hue.modal_image_next_wheel_timer = (function()
 	}
 })()
 
+Hue.maxer_wheel_timer = (function(f)
+{
+	let timer
+
+	return function(f)
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function()
+		{
+			f()
+		}, Hue.wheel_delay_2)
+	}
+})()
+
 Hue.show_current_date = function()
 {
 	Hue.feedback(Hue.nice_date())
@@ -20239,12 +20255,12 @@ Hue.maxers_mouse_events = function()
 			{
 				if(el.id === "media_tv")
 				{
-					Hue.decrease_tv_percentage()
+					Hue.maxer_wheel_timer(Hue.decrease_tv_percentage)
 				}
 
 				else if(el.id === "media_image")
 				{
-					Hue.increase_tv_percentage()
+					Hue.maxer_wheel_timer(Hue.increase_tv_percentage)
 				}
 			}
 
@@ -20252,12 +20268,12 @@ Hue.maxers_mouse_events = function()
 			{
 				if(el.id === "media_image")
 				{
-					Hue.decrease_tv_percentage()
+					Hue.maxer_wheel_timer(Hue.decrease_tv_percentage)
 				}
 
 				else if(el.id === "media_tv")
 				{
-					Hue.increase_tv_percentage()
+					Hue.maxer_wheel_timer(Hue.increase_tv_percentage)
 				}
 			}
 		}
@@ -20268,12 +20284,12 @@ Hue.maxers_mouse_events = function()
 			{
 				if(el.id === "media_tv")
 				{
-					Hue.increase_tv_percentage()
+					Hue.maxer_wheel_timer(Hue.increase_tv_percentage)
 				}
 
 				else if(el.id === "media_image")
 				{
-					Hue.decrease_tv_percentage()
+					Hue.maxer_wheel_timer(Hue.decrease_tv_percentage)
 				}
 			}
 
@@ -20281,12 +20297,12 @@ Hue.maxers_mouse_events = function()
 			{
 				if(el.id === "media_image")
 				{
-					Hue.increase_tv_percentage()
+					Hue.maxer_wheel_timer(Hue.increase_tv_percentage)
 				}
 
 				else if(el.id === "media_tv")
 				{
-					Hue.decrease_tv_percentage()
+					Hue.maxer_wheel_timer(Hue.decrease_tv_percentage)
 				}
 			}
 		}
@@ -20311,12 +20327,12 @@ Hue.maxers_mouse_events = function()
 
 		if(direction === 'up')
 		{
-			Hue.increase_media_percentage()
+			Hue.maxer_wheel_timer(Hue.increase_media_percentage)
 		}
 
 		else if(direction === 'down')
 		{
-			Hue.decrease_media_percentage()
+			Hue.maxer_wheel_timer(Hue.decrease_media_percentage)
 		}
 	}
 
