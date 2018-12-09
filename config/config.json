@@ -68,7 +68,7 @@
 	"max_roomlist_items": 100,
 	"max_roomlist_topic_length": 140,
 	"max_visited_rooms_items": 100,
-	"max_title_length": 200,
+	"max_title_length": 280,
 	"max_image_size": 11111,
 	"max_image_size_bytes": 11111111,
 	"max_profile_image_size": 1111,
