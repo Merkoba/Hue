@@ -5016,14 +5016,22 @@ Hue.activate_key_detection = function()
 
 		if(e.key === "Enter")
 		{
-			if($("#input").val().length === 0)
+			if(e.shiftKey)
 			{
-				Hue.goto_bottom(true)
+				Hue.add_linebreak_to_input()
 			}
 
 			else
 			{
-				Hue.process_message({message:$('#input').val()})
+				if($("#input").val().length === 0)
+				{
+					Hue.goto_bottom(true)
+				}
+
+				else
+				{
+					Hue.process_message({message:$('#input').val()})
+				}
 			}
 
 			e.preventDefault()
@@ -9974,8 +9982,7 @@ Hue.clear_input = function()
 
 Hue.add_to_input = function(what)
 {
-	Hue.change_input(`${$('#input').val() + what} `)
-	Hue.focus_input()
+	Hue.change_input(`${$('#input').val() + what}`)
 }
 
 Hue.set_topic_info = function(data)
@@ -15202,19 +15209,23 @@ Hue.check_input_clone_overflow = function(val)
 
 	$("#input_clone").text(val)
 
+	let overflowed
+
 	if(Hue.check_input_overflow())
 	{
 		$("#input_clone").css("overflow-y", "scroll")
+		overflowed = true
 	}
 
 	else
 	{
 		$("#input_clone").css("overflow-y", "hidden")
+		overflowed = false
 	}
 
 	let scroll_height = $("#input_clone")[0].scrollHeight
 
-	if(scroll_height > Hue.initial_input_scroll_height + 10)
+	if(overflowed || (scroll_height > Hue.initial_input_scroll_height + 10))
 	{
 		if(!Hue.footer_oversized)
 		{
@@ -21645,4 +21656,16 @@ Hue.show_voice_box = function(username)
 Hue.hide_voice_box = function()
 {
 	$("#recent_voice_box").css("display", "none")
+}
+
+Hue.add_linebreak_to_input = function()
+{
+	Hue.add_to_input("\n")
+	Hue.scroll_input_to_bottom()
+}
+
+Hue.scroll_input_to_bottom = function()
+{
+	let input = $("#input")[0]
+	input.scrollTop = input.scrollHeight
 }
