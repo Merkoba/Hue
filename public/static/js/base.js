@@ -14308,6 +14308,15 @@ Hue.show_profile = function(uname, prof_image)
 
 	$("#show_profile_uname").text(uname)
 	$("#show_profile_role").text(`(${role})`)
+
+	$("#show_profile_image").on("error", function()
+	{
+		if($(this).attr("src") !== Hue.default_profile_image_url)
+		{
+			$(this).attr("src", Hue.default_profile_image_url)
+		}
+	})
+
 	$("#show_profile_image").attr("src", pi)
 
 	if(!Hue.can_chat || uname === Hue.username || !Hue.usernames.includes(uname))
