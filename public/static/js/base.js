@@ -293,6 +293,9 @@ Hue.init = function()
 	Hue.start_volume_context_menu()
 	Hue.start_toggle_radio_context_menu()
 	Hue.start_main_menu_context_menu()
+	Hue.start_image_maxer_context_menu()
+	Hue.start_tv_maxer_context_menu()
+	Hue.start_chat_maxer_context_menu()
 	Hue.start_titles()
 	Hue.setup_show_profile()
 	Hue.setup_main_menu()
@@ -3480,7 +3483,6 @@ Hue.start_main_menu_context_menu = function()
 		selector: "#main_menu_icon",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
-		className: 'toggle_radio_context',
 		items:
 		{
 			mm0:
@@ -3489,6 +3491,352 @@ Hue.start_main_menu_context_menu = function()
 				{
 					Hue.show_credits()
 				}			
+			}
+		}
+	})
+}
+
+Hue.start_image_maxer_context_menu = function()
+{
+	$.contextMenu(
+	{
+		selector: "#media_image_maxer",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		className: "maxer_context",
+		items:
+		{
+			unmax:
+			{
+				name: "Un-Maximize", callback: function(key, opt)
+				{
+					Hue.maximize_images()
+				},
+				visible: function(key, opt)
+				{
+					return Hue.images_is_maximized()
+				}
+			},
+			max:
+			{
+				name: "Maximize", callback: function(key, opt)
+				{
+					Hue.maximize_images()
+				},
+				visible: function(key, opt)
+				{
+					return !Hue.images_is_maximized()
+				}
+			},
+			per90:
+			{
+				name: "Image 90%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(10)
+				}
+			},
+			per80:
+			{
+				name: "Image 80%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(20)
+				}
+			},
+			per70:
+			{
+				name: "Image 70%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(30)
+				}
+			},
+			per60:
+			{
+				name: "Image 60%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(40)
+				}
+			},
+			per50:
+			{
+				name: "Image 50%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(50)
+				}
+			},
+			per40:
+			{
+				name: "Image 40%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(60)
+				}
+			},
+			per30:
+			{
+				name: "Image 30%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(70)
+				}
+			},
+			per20:
+			{
+				name: "Image 20%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(80)
+				}
+			},
+			per10:
+			{
+				name: "Image 10%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(90)
+				}
+			},
+			def:
+			{
+				name: "Default", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.set_default_tv_size()
+				}
+			}
+		}
+	})
+}
+
+Hue.start_tv_maxer_context_menu = function()
+{
+	$.contextMenu(
+	{
+		selector: "#media_tv_maxer",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		className: "maxer_context",
+		items:
+		{
+			unmax:
+			{
+				name: "Un-Maximize", callback: function(key, opt)
+				{
+					Hue.maximize_tv()
+				},
+				visible: function(key, opt)
+				{
+					return Hue.tv_is_maximized()
+				}
+			},
+			max:
+			{
+				name: "Maximize", callback: function(key, opt)
+				{
+					Hue.maximize_tv()
+				},
+				visible: function(key, opt)
+				{
+					return !Hue.tv_is_maximized()
+				}
+			},
+			per90:
+			{
+				name: "TV 90%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(90)
+				}
+			},
+			per80:
+			{
+				name: "TV 80%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(80)
+				}
+			},
+			per70:
+			{
+				name: "TV 70%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(70)
+				}
+			},
+			per60:
+			{
+				name: "TV 60%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(60)
+				}
+			},
+			per50:
+			{
+				name: "TV 50%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(50)
+				}
+			},
+			per40:
+			{
+				name: "TV 40%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(40)
+				}
+			},
+			per30:
+			{
+				name: "TV 30%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(30)
+				}
+			},
+			per20:
+			{
+				name: "TV 20%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(20)
+				}
+			},
+			per10:
+			{
+				name: "TV 10%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_tv_size_change(10)
+				}
+			},
+			def:
+			{
+				name: "Default", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.set_default_tv_size()
+				}
+			}
+		}
+	})
+}
+
+Hue.start_chat_maxer_context_menu = function()
+{
+	$.contextMenu(
+	{
+		selector: "#chat_maxer",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		className: "maxer_context",
+		items:
+		{
+			normal:
+			{
+				name: "Normal Font", callback: function(key, opt)
+				{
+					Hue.toggle_chat_font_size("normal")
+				}
+			},
+			big:
+			{
+				name: "Big Font", callback: function(key, opt)
+				{
+					Hue.toggle_chat_font_size("big")
+				}
+			},
+			very_big:
+			{
+				name: "Very Big Font", callback: function(key, opt)
+				{
+					Hue.toggle_chat_font_size("very_big")
+				}
+			},
+			per90:
+			{
+				name: "Chat 90%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_size_change(10)
+				}
+			},
+			per80:
+			{
+				name: "Chat 80%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_size_change(20)
+				}
+			},
+			per70:
+			{
+				name: "Chat 70%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_size_change(30)
+				}
+			},
+			per60:
+			{
+				name: "Chat 60%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_size_change(40)
+				}
+			},
+			per50:
+			{
+				name: "Chat 50%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_size_change(50)
+				}
+			},
+			per40:
+			{
+				name: "Chat 40%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_size_change(60)
+				}
+			},
+			per30:
+			{
+				name: "Chat 30%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_size_change(70)
+				}
+			},
+			per20:
+			{
+				name: "Chat 20%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_size_change(80)
+				}
+			},
+			per10:
+			{
+				name: "Chat 10%", callback: function(key, opt)
+				{
+					Hue.unmax_media()
+					Hue.do_media_size_change(90)
+				}
+			},
+			def:
+			{
+				name: "Default", callback: function(key, opt)
+				{
+					Hue.set_default_media_size()
+				}
 			}
 		}
 	})
@@ -16613,6 +16961,16 @@ Hue.maximize_tv = function()
 	Hue.save_room_state()
 }
 
+Hue.tv_is_maximized = function()
+{
+	return Hue.tv_visible && !Hue.images_visible
+}
+
+Hue.images_is_maximized = function()
+{
+	return Hue.images_visible && !Hue.tv_visible
+}
+
 Hue.load_font_face = function()
 {
 	let family = Hue.get_setting("font_family")
@@ -20192,28 +20550,41 @@ Hue.set_user_settings_titles = function()
 	}
 }
 
-Hue.toggle_chat_font_size = function()
+Hue.toggle_chat_font_size = function(osize=false)
 {
 	let size = Hue.get_setting("chat_font_size")
 
 	let new_size = "normal"
 
-	if(size === "normal" || size === "big" || size === "very_big")
+	if(osize)
 	{
-		if(size === "normal")
-		{
-			new_size = "big"
-		}
+		new_size = osize
+	}
 
-		else if(size === "big")
+	else
+	{
+		if(size === "normal" || size === "big" || size === "very_big")
 		{
-			new_size = "very_big"
-		}
+			if(size === "normal")
+			{
+				new_size = "big"
+			}
 
-		else if(size === "very_big")
-		{
-			new_size = "normal"
+			else if(size === "big")
+			{
+				new_size = "very_big"
+			}
+
+			else if(size === "very_big")
+			{
+				new_size = "normal"
+			}
 		}
+	}
+
+	if(size === new_size)
+	{
+		return false
 	}
 
 	Hue.enable_setting_override("chat_font_size")
@@ -20342,7 +20713,7 @@ Hue.maxers_mouse_events = function()
 	{
 		if(e.which === 2)
 		{
-			Hue.do_media_tv_size_change(Hue.global_settings_default_tv_display_percentage)
+			Hue.set_default_tv_size()
 		}
 	})
 
@@ -20350,7 +20721,7 @@ Hue.maxers_mouse_events = function()
 	{
 		if(e.which === 2)
 		{
-			Hue.do_media_tv_size_change(Hue.global_settings_default_tv_display_percentage)
+			Hue.set_default_tv_size()
 		}
 	})
 
@@ -20358,9 +20729,19 @@ Hue.maxers_mouse_events = function()
 	{
 		if(e.which === 2)
 		{
-			Hue.do_media_size_change(Hue.global_settings_default_media_display_percentage)
+			Hue.set_default_media_size()
 		}
 	})
+}
+
+Hue.set_default_tv_size = function()
+{
+	Hue.do_media_tv_size_change(Hue.global_settings_default_tv_display_percentage)	
+}
+
+Hue.set_default_media_size = function()
+{
+	Hue.do_media_size_change(Hue.global_settings_default_media_display_percentage)
 }
 
 Hue.increase_tv_percentage = function()
@@ -20377,6 +20758,19 @@ Hue.decrease_tv_percentage = function()
 	size -= 10
 	size = Hue.utilz.round2(size, 10)
 	Hue.do_media_tv_size_change(size)
+}
+
+Hue.unmax_media = function()
+{
+	if(Hue.tv_is_maximized())
+	{
+		Hue.maximize_tv()
+	}
+
+	else if(Hue.images_is_maximized())
+	{
+		Hue.maximize_images()
+	}
 }
 
 Hue.do_media_tv_size_change = function(size)

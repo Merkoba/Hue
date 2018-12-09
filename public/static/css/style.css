@@ -2414,3 +2414,20 @@ input[type=text], textarea
 	margin-top: 0.5rem;
 	margin-bottom: 0.5rem;
 }
+
+.maxer_context
+{
+	min-width: 5em !important;
+	max-width: 10em !important;
+	padding: 0 !important;
+	padding-top: 0.2em !important;
+	padding-bottom: 0.2em !important;
+	border: 0px solid grey !important;
+}
+
+.maxer_context .context-menu-item
+{
+	padding: 1em !important;
+	padding-top: 0.3em !important;
+	padding-bottom: 0.3em !important;
+}
