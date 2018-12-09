@@ -3816,6 +3816,14 @@ Hue.setup_main_menu = function()
 			Hue.change_topic(t)
 		}
 	})
+
+	$('#admin_background_image').on("error", function()
+	{
+		if($(this).attr("src") !== Hue.background_image_loading_url)
+		{
+			$(this).attr("src", Hue.background_image_loading_url)
+		}
+	})
 }
 
 Hue.show_main_menu = function()
