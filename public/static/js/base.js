@@ -236,7 +236,6 @@ Hue.user_settings =
 	aliases: {widget_type:"textarea"},
 	other_words_to_autocomplete: {widget_type:"textarea"},
 	chat_font_size: {widget_type:"select"},
-	font_family: {widget_type:"select"},
 	warn_before_closing: {widget_type:"checkbox"},
 	activity_bar: {widget_type:"checkbox"},
 	show_image_previews: {widget_type:"checkbox"},
@@ -315,7 +314,7 @@ Hue.init = function()
 	Hue.setup_user_function_titles()
 	Hue.setup_modal_image_number()
 	Hue.setup_command_aliases()
-	Hue.load_font_face()
+	Hue.setup_fonts()
 	Hue.setup_before_unload()
 	Hue.setup_jumpers()
 	Hue.start_reply_events()
@@ -12995,23 +12994,6 @@ Hue.setting_chat_font_size_action = function(type, save=true)
 	}
 }
 
-Hue.setting_font_family_action = function(type, save=true)
-{
-	let family = $(`#${type}_font_family option:selected`).val()
-
-	Hue[type].font_family = family
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-
-	if(Hue.active_settings("font_family") === type)
-	{
-		Hue.load_font_face()
-	}
-}
-
 Hue.setting_warn_before_closing_action = function(type, save=true)
 {
 	Hue[type].warn_before_closing = $(`#${type}_warn_before_closing`).prop("checked")
@@ -13457,6 +13439,14 @@ Hue.start_twitch = function()
 
 Hue.setup_user_menu = function()
 {
+	$("#user_menu_profile_image").on("error", function()
+	{
+		if($(this).attr("src") !== Hue.default_profile_image_url)
+		{
+			$(this).attr("src", Hue.default_profile_image_url)
+		}
+	})
+
 	$("#user_menu_profile_image").attr("src", Hue.profile_image)
 	Hue.setup_togglers("user_menu")
 }
@@ -16971,29 +16961,15 @@ Hue.images_is_maximized = function()
 	return Hue.images_visible && !Hue.tv_visible
 }
 
-Hue.load_font_face = function()
+Hue.setup_fonts = function()
 {
-	let family = Hue.get_setting("font_family")
-
-	let imported_font = new FontFace('imported_font', `url(/static/css/${family}.ttf)`,
+	document.fonts.ready.then(function() 
 	{
-		style: 'normal',
-		weight: '400'
+		Hue.on_fonts_loaded()
 	})
-
-	document.fonts.add(imported_font)
-
-	imported_font.loaded
-
-	.then((font_face) => 
-	{
-		Hue.on_font_loaded()
-	})
-
-	imported_font.load()
 }
 
-Hue.on_font_loaded = function()
+Hue.on_fonts_loaded = function()
 {
 	Hue.update_chat_scrollbar()
 	Hue.goto_bottom(true, false)

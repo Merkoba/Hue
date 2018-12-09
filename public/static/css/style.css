@@ -1,3 +1,9 @@
+@font-face 
+{
+	font-family: imported_font;
+	src: url(/static/css/opensans.ttf);
+}
+
 body, html
 {
 	width: 100%;
