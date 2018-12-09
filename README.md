@@ -508,9 +508,6 @@ If you want to remove it to start fresh:
 "global_settings_default_chat_font_size"
 > Default font size for the chat. This is a term like "normal" or "small".
 
-"global_settings_default_font_family"
-> Default font family.
-
 "global_settings_default_warn_before_closing"
 > Default setting of whether it should warn before closing the application/tab.
 
