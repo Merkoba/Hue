@@ -5923,6 +5923,7 @@ Hue.update_chat = function(args={})
 		just_edited: false
 	}
 
+
 	Hue.fill_defaults(args, def_args)
 
 	if(Hue.check_ignored_words(args.message, args.username))
@@ -6138,8 +6139,27 @@ Hue.update_chat = function(args={})
 		<div class='message chat_message thirdperson ${messageclasses}'>
 			<div class='chat_third_container'>
 				<div class='brk chat_third_brk'>${args.brk}</div>
-				<div class='chat_third_content'>
-					<span class='chat_uname action'></span>&nbsp;<span class='${contclasses}' title='${nd}' data-date='${d}'></span>
+				<div class='chat_content_container chat_content_container_third ${chat_menu_button_main_class}'>
+					<div class='chat_menu_button_container unselectable'>
+						<div class='chat_menu_button action chat_menu_button_edit' title='Double Click To Activate'>Edit</div>
+						<div class='chat_menu_button action chat_menu_button_remove' title='Double Click To Activate'>Remove</div>
+					</div>
+
+					<div class='chat_third_container'>
+						<div class='chat_third_content'>
+							<span class='chat_uname action'></span>&nbsp;<span class='${contclasses}' title='${nd}' data-date='${d}'></span>
+						</div>
+					</div>
+
+					<div class='message_edited_label'>(Edited)</div>
+					
+					<div class='message_edit_container'>
+						<textarea class='message_edit_area'></textarea>
+						<div class='message_edit_buttons unselectable'>
+							<div class='message_edit_button action message_edit_cancel'>Cancel</div>
+							<div class='message_edit_button action message_edit_submit'>Submit</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>`
@@ -9855,6 +9875,7 @@ Hue.chat_search = function(filter=false)
 	}
 
 	$("#chat_search_filter").val(sfilter)
+	$("#chat_search_filter").focus()
 
 	if(!filter)
 	{
@@ -21254,6 +21275,13 @@ Hue.send_edit_messsage = function(id)
 
 	let edit_id = $(Hue.editing_message_container).data("id")
 
+	let third_person = false
+
+	if($(Hue.editing_message_container).hasClass("chat_content_container_third"))
+	{
+		third_person = true
+	}
+
 	Hue.stop_edit_message()
 	
 	if($(chat_content).text() === new_message)
@@ -21270,6 +21298,11 @@ Hue.send_edit_messsage = function(id)
 	{
 		Hue.remove_message(edit_id)
 		return false
+	}
+
+	if(third_person)
+	{
+		new_message = `/me ${new_message}`
 	}
 
 	Hue.process_message({message:new_message, edit_id:edit_id})
@@ -21303,7 +21336,7 @@ Hue.remove_message_from_chat = function(data)
 		{
 			let message = $(this).closest(".message")
 
-			if($(this).closest(".chat_container").find(".chat_content_container").length === 1)
+			if(message.hasClass("thirdperson"))
 			{
 				Hue.remove_from_chat_history(message)
 				message.remove()
@@ -21311,8 +21344,17 @@ Hue.remove_message_from_chat = function(data)
 
 			else
 			{
-				$(this).remove()
-				Hue.replace_in_chat_history(message)
+				if($(this).closest(".chat_container").find(".chat_content_container").length === 1)
+				{
+					Hue.remove_from_chat_history(message)
+					message.remove()
+				}
+
+				else
+				{
+					$(this).remove()
+					Hue.replace_in_chat_history(message)
+				}
 			}
 
 			return false

@@ -484,9 +484,10 @@ div#header_radio_playing_icon
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	width: 100%;
 }
 
-.normal_layout .chat_content_container
+.normal_layout .chat_content_container:not(.chat_content_container_third)
 {
 	margin-top: 0.3em;
 }
@@ -1690,6 +1691,8 @@ input[type=text], textarea
 {
 	display: flex;
 	flex-direction: row;
+	width: 100%;
+	position: relative;
 }
 
 .slider_container
