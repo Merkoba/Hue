@@ -5923,7 +5923,6 @@ Hue.update_chat = function(args={})
 		just_edited: false
 	}
 
-
 	Hue.fill_defaults(args, def_args)
 
 	if(Hue.check_ignored_words(args.message, args.username))
@@ -6165,8 +6164,8 @@ Hue.update_chat = function(args={})
 		</div>`
 
 		fmessage = $(s)
-
 		fmessage.find('.chat_content').eq(0).text(tpt)
+		fmessage.find(".chat_content_container").eq(0).data("original_message", tpt)
 	}
 
 	else
@@ -6242,6 +6241,8 @@ Hue.update_chat = function(args={})
 		}
 
 		fmessage = $(s)
+
+		fmessage.find(".chat_content_container").eq(0).data("original_message", args.message)
 
 		if(image_preview)
 		{
@@ -6397,7 +6398,6 @@ Hue.add_to_chat = function(args={})
 		fader: true
 	}
 
-
 	Hue.fill_defaults(args, def_args)
 
 	if(!args.message)
@@ -6431,6 +6431,7 @@ Hue.add_to_chat = function(args={})
 				if($(this).data("id") === args.id)
 				{
 					$(this).html(content_container.html())
+					$(this).data("original_message", content_container.data("original_message"))
 					$(this).find(".message_edited_label").css("display", "inline-block")
 					Hue.replace_in_chat_history($(this).closest(".message"))
 					Hue.chat_scroll_bottom(false, false)
@@ -21207,24 +21208,7 @@ Hue.edit_message = function(container)
 	Hue.editing_message_container = container
 	Hue.editing_message_area = area
 
-	let clone = $(chat_content).clone(true, true)
-
-	clone.find(".link_preview_title").each(function()
-	{
-		$(this).remove()
-	})
-
-	clone.find(".link_preview_image").each(function()
-	{
-		$(this).remove()
-	})
-
-	clone.find(".image_preview_image").each(function()
-	{
-		$(this).remove()
-	})
-
-	$(area).val(Hue.utilz.clean_string2(clone.text())).focus()
+	$(area).val($(container).data("original_message")).focus()
 
 	setTimeout(function()
 	{
