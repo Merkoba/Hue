@@ -467,6 +467,11 @@ div#header_radio_playing_icon
 	font-weight: bold;
 }
 
+.chat_third_content .chat_uname
+{
+	margin-right: 0.5em;
+}
+
 .compact_layout .chat_uname_container .chat_uname
 {
 	max-width: 100%;

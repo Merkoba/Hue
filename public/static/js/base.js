@@ -6146,7 +6146,7 @@ Hue.update_chat = function(args={})
 
 					<div class='chat_third_container'>
 						<div class='chat_third_content'>
-							<span class='chat_uname action'></span>&nbsp;<span class='${contclasses}' title='${nd}' data-date='${d}'></span>
+							<span class='chat_uname action'></span><span class='${contclasses}' title='${nd}' data-date='${d}'></span>
 						</div>
 					</div>
 
@@ -6293,6 +6293,7 @@ Hue.update_chat = function(args={})
 	}
 
 	chat_content_container.data("id", args.id)
+	chat_content_container.data("edited", args.edited)
 
 	if(!image_preview && !link_preview)
 	{
@@ -21197,12 +21198,18 @@ Hue.edit_message = function(container)
 	let edit_container = $(container).find(".message_edit_container").get(0)
 	let area = $(container).find(".message_edit_area").get(0)
 	let chat_content = $(container).find(".chat_content").get(0)
+	let edit_label = $(container).find(".message_edited_label").get(0)
+
+	if($(container).hasClass("chat_content_container_third"))
+	{
+		let uname = $(container).find(".chat_uname").get(0)
+		$(uname).css("display", "none")
+	}
 	
 	$(edit_container).css("display", "block")
-
 	$(chat_content).css("display", "none")
-
 	$(container).removeClass("chat_menu_button_main")
+	$(edit_label).css("display", "none")
 	
 	Hue.editing_message = true
 	Hue.editing_message_container = container
@@ -21230,8 +21237,20 @@ Hue.stop_edit_message = function()
 
 	let edit_container = $(Hue.editing_message_container).find(".message_edit_container").get(0)
 	let chat_content = $(Hue.editing_message_container).find(".chat_content").get(0)
+	let edit_label = $(Hue.editing_message_container).find(".message_edited_label").get(0)
 	
 	$(edit_container).css("display", "none")
+
+	if($(Hue.editing_message_container).data("edited"))
+	{
+		$(edit_label).css("display", "block")
+	}
+
+	if($(Hue.editing_message_container).hasClass("chat_content_container_third"))
+	{
+		let uname = $(Hue.editing_message_container).find(".chat_uname").get(0)
+		$(uname).css("display", "inline-block")
+	}
 
 	$(Hue.editing_message_area).val("")
 
