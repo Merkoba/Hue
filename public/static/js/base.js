@@ -183,7 +183,8 @@ Hue.commands =
 	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
 	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist',
 	'/accesslog', '/toggleactivtybar', '/thememode', '/synthkey',
-	'/togglemutesynth', '/speak', '/synthkeylocal', '/speaklocal'
+	'/togglemutesynth', '/speak', '/synthkeylocal', '/speaklocal',
+	'/unmaximize'
 ]
 
 Hue.user_settings =
@@ -3460,7 +3461,7 @@ Hue.generate_tv_maxer_context_items = function()
 		{
 			name: `TV ${n}%`, callback: function(key, opt)
 			{
-				Hue.unmax_media()
+				Hue.unmaximize_media()
 				Hue.do_media_tv_size_change(n)
 			}
 		}
@@ -3472,7 +3473,7 @@ Hue.generate_tv_maxer_context_items = function()
 		{
 			name: "Default", callback: function(key, opt)
 			{
-				Hue.unmax_media()
+				Hue.unmaximize_media()
 				Hue.set_default_tv_size()
 			}
 		}
@@ -8653,6 +8654,11 @@ Hue.execute_command = function(message, ans)
 	{
 		Hue.play_synth_voice(arg, Hue.username, true)
 	}
+
+	else if(Hue.oi_equals(cmd2, '/unmaximize'))
+	{
+		Hue.unmaximize_media()
+	}	
 
 	else
 	{
@@ -20473,7 +20479,7 @@ Hue.decrease_tv_percentage = function()
 	Hue.do_media_tv_size_change(size)
 }
 
-Hue.unmax_media = function()
+Hue.unmaximize_media = function()
 {
 	if(Hue.tv_is_maximized())
 	{
