@@ -21814,13 +21814,3 @@ Hue.scroll_input_to_bottom = function()
 	let input = $("#input")[0]
 	input.scrollTop = input.scrollHeight
 }
-
-Hue.get_media_images_position = function()
-{
-	return parseInt($("#media_image").css("order"))
-}
-
-Hue.get_media_tv_position = function()
-{
-	return parseInt($("#media_tv").css("order"))
-}
