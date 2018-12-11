@@ -3453,7 +3453,7 @@ Hue.generate_tv_maxer_context_items = function()
 {
 	let items = {}
 
-	for(let i=9; i>0; i--)
+	for(let i=10; i>=0; i--)
 	{
 		let n = i * 10
 
@@ -14016,8 +14016,10 @@ Hue.fix_media_margin = function()
 
 	else
 	{
+		$("#media_image").css("margin-top", "0")
 		$("#media_image").css("margin-bottom", "0")
 		$("#media_tv").css("margin-top", "0")
+		$("#media_tv").css("margin-bottom", "0")
 	}
 }
 
@@ -20343,9 +20345,11 @@ Hue.maxers_mouse_events = function()
 			return false
 		}
 
-		if(Hue.num_media_elements_visible() < 2)
+		let maximized = false
+
+		if(Hue.num_media_elements_visible() === 1)
 		{
-			return false
+			maximized = true
 		}
 
 		let direction = e.deltaY > 0 ? 'down' : 'up'
@@ -20364,6 +20368,33 @@ Hue.maxers_mouse_events = function()
 
 		if(direction === 'up')
 		{
+			if(maximized)
+			{
+				if(Hue.tv_is_maximized())
+				{
+					let tv_pos = Hue.get_setting("tv_display_position")
+
+					if(tv_pos === "top")
+					{
+						Hue.unmaximize_media()
+						Hue.do_media_tv_size_change(90)	
+					}
+				}
+
+				else if(Hue.images_is_maximized())
+				{
+					let tv_pos = Hue.get_setting("tv_display_position")
+
+					if(tv_pos === "bottom")
+					{
+						Hue.unmaximize_media()
+						Hue.do_media_tv_size_change(10)	
+					}
+				}
+
+				return
+			}
+
 			if(el.style.order == 1)
 			{
 				if(el.id === "media_tv")
@@ -20393,6 +20424,33 @@ Hue.maxers_mouse_events = function()
 
 		else if(direction === 'down')
 		{
+			if(maximized)
+			{
+				if(Hue.tv_is_maximized())
+				{
+					let tv_pos = Hue.get_setting("tv_display_position")
+
+					if(tv_pos === "bottom")
+					{
+						Hue.unmaximize_media()
+						Hue.do_media_tv_size_change(90)	
+					}
+				}
+
+				else if(Hue.images_is_maximized())
+				{
+					let tv_pos = Hue.get_setting("tv_display_position")
+
+					if(tv_pos === "top")
+					{
+						Hue.unmaximize_media()
+						Hue.do_media_tv_size_change(10)	
+					}
+				}
+
+				return
+			}
+
 			if(el.style.order == 1)
 			{
 				if(el.id === "media_tv")
@@ -20455,6 +20513,7 @@ Hue.maxers_mouse_events = function()
 	{
 		if(e.which === 2)
 		{
+			Hue.unmaximize_media()
 			Hue.set_default_tv_size()
 		}
 	})
@@ -20463,6 +20522,7 @@ Hue.maxers_mouse_events = function()
 	{
 		if(e.which === 2)
 		{
+			Hue.unmaximize_media()
 			Hue.set_default_tv_size()
 		}
 	})
@@ -20489,16 +20549,20 @@ Hue.set_default_media_size = function()
 Hue.increase_tv_percentage = function()
 {
 	let size = Hue.get_setting("tv_display_percentage")
+	
 	size += 10
 	size = Hue.utilz.round2(size, 10)
+
 	Hue.do_media_tv_size_change(size)
 }
 
 Hue.decrease_tv_percentage = function()
 {
 	let size = Hue.get_setting("tv_display_percentage")
+	
 	size -= 10
 	size = Hue.utilz.round2(size, 10)
+
 	Hue.do_media_tv_size_change(size)
 }
 
@@ -20517,9 +20581,31 @@ Hue.unmaximize_media = function()
 
 Hue.do_media_tv_size_change = function(size)
 {
-	if(size < 10 || size > 90)
+	if(size < 0 || size > 100)
 	{
 		return false
+	}
+
+	if(size === 0)
+	{
+		if(!Hue.images_is_maximized())
+		{
+			Hue.maximize_images()
+			Hue.show_infotip("Image Maximized")
+		}
+
+		return
+	}
+
+	if(size === 100)
+	{
+		if(!Hue.tv_is_maximized())
+		{
+			Hue.maximize_tv()
+			Hue.show_infotip("TV Maximized")
+		}
+
+		return
 	}
 
 	if(size === Hue.get_setting("tv_display_percentage"))
@@ -21727,4 +21813,14 @@ Hue.scroll_input_to_bottom = function()
 {
 	let input = $("#input")[0]
 	input.scrollTop = input.scrollHeight
+}
+
+Hue.get_media_images_position = function()
+{
+	return parseInt($("#media_image").css("order"))
+}
+
+Hue.get_media_tv_position = function()
+{
+	return parseInt($("#media_tv").css("order"))
 }
