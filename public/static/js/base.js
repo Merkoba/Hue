@@ -20608,11 +20608,17 @@ Hue.do_media_tv_size_change = function(size)
 		return
 	}
 
-	if(size === Hue.get_setting("tv_display_percentage"))
+	if(size !== Hue.get_setting("tv_display_percentage"))
 	{
-		return false
+		Hue.enable_setting_override("tv_display_percentage")
+		Hue.modify_setting(`tv_display_percentage ${size}`, false)
 	}
+	
+	Hue.notify_media_tv_size_change(size)
+}
 
+Hue.notify_media_tv_size_change = function(size)
+{
 	let info
 
 	if(size === Hue.global_settings_default_tv_display_percentage)
@@ -20625,8 +20631,6 @@ Hue.do_media_tv_size_change = function(size)
 		info = ""
 	}
 
-	Hue.enable_setting_override("tv_display_percentage")
-	Hue.modify_setting(`tv_display_percentage ${size}`, false)
 	Hue.show_infotip(`TV Size: ${size}%${info}`)
 }
 
