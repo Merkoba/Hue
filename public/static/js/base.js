@@ -20657,11 +20657,17 @@ Hue.do_chat_size_change = function(size)
 		return false
 	}
 
-	if(size === Hue.get_setting("chat_display_percentage"))
+	if(size !== Hue.get_setting("chat_display_percentage"))
 	{
-		return false
+		Hue.enable_setting_override("chat_display_percentage")
+		Hue.modify_setting(`chat_display_percentage ${size}`, false)
 	}
 
+	Hue.notify_chat_size_change(size)
+}
+
+Hue.notify_chat_size_change = function(size)
+{
 	let info
 
 	if(size === Hue.global_settings_default_chat_display_percentage)
@@ -20674,8 +20680,6 @@ Hue.do_chat_size_change = function(size)
 		info = ""
 	}
 
-	Hue.enable_setting_override("chat_display_percentage")
-	Hue.modify_setting(`chat_display_percentage ${size}`, false)
 	Hue.show_infotip(`Chat Size: ${size}%${info}`)
 }
 
