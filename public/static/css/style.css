@@ -1812,7 +1812,7 @@ input[type=text], textarea
 	height: 60px;
 	overflow: hidden;
 	background-color: #8f46a8;
-	box-shadow: 0px 7px 30px -12px rgba(0,0,0,0.5);
+	box-shadow: 0 0 1px grey;
 	border-radius:3px ;         
 }
 
