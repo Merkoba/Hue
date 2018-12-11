@@ -1816,7 +1816,7 @@ input[type=text], textarea
 	border-radius:3px ;         
 }
 
-.lockscreen_icon_menu
+#lockscreen_icon_menu
 {
 	position: relative;
 	float: right;
@@ -2458,4 +2458,9 @@ input[type=text], textarea
 .grey_font_color
 {
 	color: grey !important;
+}
+
+.grey_background_color_parent *
+{
+	background-color: grey !important;
 }
