@@ -501,6 +501,7 @@ div#header_radio_playing_icon
 {
 	font-size: 1em;
 	white-space: pre-wrap;
+	display: inline-block;
 }
 
 .normal_layout .chat_content
