@@ -2185,8 +2185,16 @@ Hue.show_iframe_video = function(src, play=true)
 
 	Hue.hide_videos("media_iframe_video_container")
 
-	$("#media_iframe_video").attr("src", src)
-	$("#media_iframe_poster").css("display", "none")
+	if(play)
+	{
+		$("#media_iframe_video").attr("src", src)
+		$("#media_iframe_poster").css("display", "none")
+	}
+
+	else
+	{
+		$("#media_iframe_poster").css("display", "block")
+	}
 
 	Hue.after_show_video(play)
 }

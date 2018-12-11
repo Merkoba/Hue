@@ -2329,7 +2329,6 @@ input[type=text], textarea
 
 #media_iframe_poster
 {
-	margin-top: 1rem;
 	position: absolute;
 	display: none;
 }
