@@ -21849,6 +21849,8 @@ Hue.lockscreen_turn_lights_off = function()
 {
 	$("#lockscreen_body").addClass("black_background_color")
 	$("#lockscreen_titulo_menu").addClass("black_background_color")
+	$("#lockscreen_principal").addClass("grey_font_color")
+	$("#lockscreen_lights_off_button").addClass("grey_font_color")
 	$("#lockscreen_lights_off_button").text("Turn Lights On")
 }
 
@@ -21857,4 +21859,6 @@ Hue.lockscreen_turn_lights_on = function()
 	$("#lockscreen_body").removeClass("black_background_color")
 	$("#lockscreen_titulo_menu").removeClass("black_background_color")	
 	$("#lockscreen_lights_off_button").text("Turn Lights Off")
+	$("#lockscreen_principal").removeClass("grey_font_color")
+	$("#lockscreen_lights_off_button").removeClass("grey_font_color")
 }

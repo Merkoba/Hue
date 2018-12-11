@@ -1829,7 +1829,6 @@ input[type=text], textarea
 	position: relative;
 	float: left;
 	margin-left: 20px;
-	color: #ffffff;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -2454,4 +2453,9 @@ input[type=text], textarea
 .black_background_color
 {
 	background-color: black !important;
+}
+
+.grey_font_color
+{
+	color: grey !important;
 }
