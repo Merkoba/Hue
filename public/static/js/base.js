@@ -12944,7 +12944,8 @@ Hue.get_room_state = function()
 		"radio_locked",
 		"radio_volume",
 		"screen_locked",
-		"synth_muted"
+		"synth_muted",
+		"lockscreen_lights_off"
 	]
 
 	for(let setting of settings)
@@ -18531,6 +18532,7 @@ Hue.arrange_media_setting_display_positions = function(type)
 
 Hue.lock_screen = function(save=true)
 {
+	Hue.process_lockscreen_lights_off()
 	Hue.msg_lockscreen.show()
 
 	if(Hue.get_setting("afk_on_lockscreen"))
@@ -21821,4 +21823,38 @@ Hue.scroll_input_to_bottom = function()
 {
 	let input = $("#input")[0]
 	input.scrollTop = input.scrollHeight
+}
+
+Hue.toggle_lockscreen_lights_off = function()
+{
+	Hue.room_state.lockscreen_lights_off = !Hue.room_state.lockscreen_lights_off
+	Hue.process_lockscreen_lights_off()
+	Hue.save_room_state()
+}
+
+Hue.process_lockscreen_lights_off = function()
+{
+	if(Hue.room_state.lockscreen_lights_off)
+	{
+		Hue.lockscreen_turn_lights_off()
+	}
+
+	else
+	{
+		Hue.lockscreen_turn_lights_on()
+	}
+}
+
+Hue.lockscreen_turn_lights_off = function()
+{
+	$("#lockscreen_body").addClass("black_background_color")
+	$("#lockscreen_titulo_menu").addClass("black_background_color")
+	$("#lockscreen_lights_off_button").text("Turn Lights On")
+}
+
+Hue.lockscreen_turn_lights_on = function()
+{
+	$("#lockscreen_body").removeClass("black_background_color")
+	$("#lockscreen_titulo_menu").removeClass("black_background_color")	
+	$("#lockscreen_lights_off_button").text("Turn Lights Off")
 }

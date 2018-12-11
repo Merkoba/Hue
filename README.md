@@ -568,6 +568,9 @@ If you want to remove it to start fresh:
 "room_state_default_synth_muted"
 >Whether the synth is muted by default.
 
+"room_state_default_lockscreen_lights_off"
+>Where the lockscreen will have the dark theme by default.
+
 "double_tap_key"
 >The key that triggers double tap.
 

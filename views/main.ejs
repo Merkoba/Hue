@@ -38,9 +38,9 @@
 		<script src="/static/js/utilz.js?version=30"></script>
 		<script src="/static/js/colorlib.js?version=13"></script>
 
-		<script src="/static/js/base.js?version=2474"></script>
+		<script src="/static/js/base.js?version=2475"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=521"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=522"/>
 
 		<script>
 
@@ -1581,11 +1581,11 @@
 
 		<script id='template_lockscreen' type='text/x-handlebars-template'>
 
-			<div class='lockscreen_body'>
-				<div class="lockscreen_principal action2 pointer" onclick="Hue.unlock_screen()">
-					<div class="lockscreen_menu">
-						<div class="lockscreen_titulo_menu">
-							<div class="lockscreen_titulo">
+			<div id='lockscreen_body' class='unselectable'>
+				<div id="lockscreen_principal" class="action2 pointer" onclick="Hue.unlock_screen()">
+					<div id="lockscreen_menu">
+						<div id="lockscreen_titulo_menu">
+							<div id="lockscreen_titulo">
 								<div>UNLOCK</div>
 							</div>
 							<div class="lockscreen_icon_menu">
@@ -1597,6 +1597,8 @@
 						</div>
 					</div> 
 				</div>
+
+				<div id='lockscreen_lights_off_button' onclick='Hue.toggle_lockscreen_lights_off()'>Turn Lights Off</div>
 			</div>
 
 		</script>		
