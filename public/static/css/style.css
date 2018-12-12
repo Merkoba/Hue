@@ -2331,6 +2331,7 @@ input[type=text], textarea
 {
 	position: absolute;
 	display: none;
+	font-size: 1.2em;
 }
 
 #synth_container
