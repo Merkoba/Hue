@@ -14188,6 +14188,8 @@ Hue.change_tv_visibility = function(play=true)
 {
 	if(Hue.room_tv_mode !== "disabled" && Hue.room_state.tv_enabled)
 	{
+		clearTimeout(Hue.stop_videos_timeout)
+
 		$("#media").css("display", "flex")
 
 		$("#media_tv").css("display", "flex")/
@@ -14224,7 +14226,10 @@ Hue.change_tv_visibility = function(play=true)
 
 		else if(num_visible === 1)
 		{
-			Hue.stop_videos()
+			Hue.stop_videos_timeout = setTimeout(function()
+			{
+				Hue.stop_videos()
+			}, 500)
 		}
 
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-on")
