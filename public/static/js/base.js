@@ -3477,7 +3477,17 @@ Hue.generate_tv_maxer_context_items = function()
 		}
 	}
 
-	let obj = Object.assign(items,
+	let obj = Object.assign(
+	{
+		swap:
+		{
+			name: "Swap", callback: function(key, opt)
+			{
+				Hue.swap_display_positions_2()
+			}
+		},
+	},
+	items,
 	{
 		def:
 		{
