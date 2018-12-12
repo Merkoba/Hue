@@ -18555,11 +18555,7 @@ Hue.swap_display_positions_2 = function()
 		np = "top"
 	}
 
-	if(Hue.active_settings("tv_display_position") !== "room_settings")
-	{
-		Hue.enable_setting_override("tv_display_position")
-	}
-
+	Hue.enable_setting_override("tv_display_position")
 	Hue.swap_display_positions("room_settings", np)
 }
 
@@ -20720,11 +20716,7 @@ Hue.do_media_tv_size_change = function(size)
 
 	if(size !== Hue.get_setting("tv_display_percentage"))
 	{
-		if(Hue.active_settings("tv_display_percentage") !== "room_settings")
-		{
-			Hue.enable_setting_override("tv_display_percentage")
-		}
-
+		Hue.enable_setting_override("tv_display_percentage")
 		Hue.modify_setting(`tv_display_percentage ${size}`, false)
 	}
 	
