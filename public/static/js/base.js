@@ -18534,9 +18534,9 @@ Hue.apply_media_positions = function()
 	Hue.fix_media_margin()
 }
 
-Hue.swap_display_positions = function(type)
-{	
-	let p = Hue[type].tv_display_position
+Hue.swap_display_positions_2 = function()
+{
+	let p = Hue.get_setting("tv_display_position")
 
 	let np
 
@@ -18548,6 +18548,31 @@ Hue.swap_display_positions = function(type)
 	else if(p === "bottom")
 	{
 		np = "top"
+	}
+
+	if(Hue.active_settings("tv_display_position") !== "room_settings")
+	{
+		Hue.enable_setting_override("tv_display_position")
+	}
+
+	Hue.swap_display_positions("room_settings", np)
+}
+
+Hue.swap_display_positions = function(type, np=false)
+{	
+	if(!np)
+	{
+		let p = Hue[type].tv_display_position
+
+		if(p === "top")
+		{
+			np = "bottom"
+		}
+
+		else if(p === "bottom")
+		{
+			np = "top"
+		}
 	}
 
 	Hue[type].tv_display_position = np
@@ -20428,8 +20453,15 @@ Hue.maxers_mouse_events = function()
 
 					if(tv_pos === "top")
 					{
-						Hue.unmaximize_media()
 						Hue.do_media_tv_size_change(90)	
+						Hue.unmaximize_media()
+					}
+
+					else
+					{
+						Hue.swap_display_positions_2()
+						Hue.do_media_tv_size_change(90)	
+						Hue.unmaximize_media()
 					}
 				}
 
@@ -20439,8 +20471,15 @@ Hue.maxers_mouse_events = function()
 
 					if(tv_pos === "bottom")
 					{
-						Hue.unmaximize_media()
 						Hue.do_media_tv_size_change(10)	
+						Hue.unmaximize_media()
+					}
+
+					else
+					{
+						Hue.swap_display_positions_2()
+						Hue.do_media_tv_size_change(10)	
+						Hue.unmaximize_media()
 					}
 				}
 
@@ -20484,8 +20523,15 @@ Hue.maxers_mouse_events = function()
 
 					if(tv_pos === "bottom")
 					{
-						Hue.unmaximize_media()
 						Hue.do_media_tv_size_change(90)	
+						Hue.unmaximize_media()
+					}
+
+					else
+					{
+						Hue.swap_display_positions_2()
+						Hue.do_media_tv_size_change(90)	
+						Hue.unmaximize_media()
 					}
 				}
 
@@ -20495,8 +20541,15 @@ Hue.maxers_mouse_events = function()
 
 					if(tv_pos === "top")
 					{
-						Hue.unmaximize_media()
 						Hue.do_media_tv_size_change(10)	
+						Hue.unmaximize_media()
+					}
+
+					else
+					{
+						Hue.swap_display_positions_2()
+						Hue.do_media_tv_size_change(10)	
+						Hue.unmaximize_media()
 					}
 				}
 
@@ -20662,7 +20715,11 @@ Hue.do_media_tv_size_change = function(size)
 
 	if(size !== Hue.get_setting("tv_display_percentage"))
 	{
-		Hue.enable_setting_override("tv_display_percentage")
+		if(Hue.active_settings("tv_display_percentage") !== "room_settings")
+		{
+			Hue.enable_setting_override("tv_display_percentage")
+		}
+
 		Hue.modify_setting(`tv_display_percentage ${size}`, false)
 	}
 	
