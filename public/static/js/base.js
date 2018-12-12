@@ -21684,6 +21684,7 @@ Hue.set_synth_muted = function(what=undefined)
 	{
 		$("#synth_volume_icon").removeClass("fa-volume-up")
 		$("#synth_volume_icon").addClass("fa-volume-off")
+		Hue.clear_synth_voice_queue()
 	}
 
 	else
@@ -21899,6 +21900,11 @@ Hue.play_synth_voice = function(text, username, local=false)
 Hue.clear_synth_voice = function()
 {
 	$("#synth_voice_input").val("")
+}
+
+Hue.clear_synth_voice_queue = function()
+{
+	Hue.synth_voice.cancel()
 }
 
 Hue.show_console_message = function()
