@@ -324,6 +324,7 @@ Hue.init = function()
 	Hue.setup_iframe_video()
 	Hue.setup_synth()
 	Hue.show_console_message()
+	Hue.setup_expand_image()
 
 	if(Hue.debug_functions)
 	{
@@ -13836,8 +13837,6 @@ Hue.show_modal_image = function(url, title, date)
 
 	$("#modal_image_header_info").text(t)
 
-	Hue.update_modal_scrollbar("image")
-
 	Hue.msg_modal_image.show(function()
 	{
 		Hue.set_modal_image_number()
@@ -16870,7 +16869,6 @@ Hue.setup_modal_image = function()
 		$("#modal_image_spinner").css("display", "none")
 		$("#modal_image").css("display", "block")
 		Hue.show_modal_image_resolution()
-		Hue.update_modal_scrollbar("image")
 	})
 
 	img.on("error", function()
@@ -16878,7 +16876,6 @@ Hue.setup_modal_image = function()
 		$("#modal_image_spinner").css("display", "none")
 		$("#modal_image").css("display", "none")
 		$("#modal_image_error").css("display", "block")
-		Hue.update_modal_scrollbar("image")
 	})
 
 	let f = function(e)
@@ -21975,10 +21972,31 @@ Hue.lockscreen_turn_lights_on = function()
 	$("#lockscreen_icon_menu").removeClass("grey_background_color_parent")
 }
 
+Hue.setup_expand_image = function()
+{
+	let img = $("#expand_image")
+
+	img[0].addEventListener("load", function()
+	{
+		img.css("display", "block")
+		$("#expand_image_spinner").css("display", "none")
+	})
+
+	img.on("error", function()
+	{
+		$("#expand_image_spinner").css("display", "none")
+		$("#expand_image").css("display", "none")
+		$("#expand_image_error").css("display", "block")
+	})
+}
+
 Hue.expand_image = function(src)
 {
-	Hue.msg_expand_image.show()
+	$("#expand_image").css("display", "none")
+	$("#expand_image_spinner").css("display", "block")
+	$("#expand_image_error").css("display", "none")
 	$("#expand_image").attr("src", src)
+	Hue.msg_expand_image.show()
 }
 
 Hue.hide_expand_image = function()

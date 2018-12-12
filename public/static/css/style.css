@@ -1142,7 +1142,7 @@ input[type=text], textarea
 	border: 1px solid currentColor;
 }
 
-#modal_image_error
+#modal_image_error, #expand_image_error
 {
 	font-size: 1.2em;	
 }
