@@ -14175,7 +14175,7 @@ Hue.toggle_tv = function(what=undefined, save=true)
 
 	if(Hue.tv_visible !== what)
 	{
-		Hue.change_tv_visibility()
+		Hue.change_tv_visibility(false)
 	}
 
 	if(save)
