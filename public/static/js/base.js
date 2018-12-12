@@ -6439,16 +6439,7 @@ Hue.add_to_chat = function(args={})
 			{
 				if($(this).data("id") === args.id)
 				{
-					if(content_container.hasClass("chat_content_container_third"))
-					{
-						$(this).find(".chat_content").eq(0).html($(content_container).find(".chat_content").eq(0).html())
-					}
-
-					else
-					{
-						$(this).html(content_container.html())
-					}
-					
+					$(this).html(content_container.html())
 					$(this).data(content_container.data())
 					$(this).find(".message_edited_label").css("display", "inline-block")
 					Hue.replace_in_chat_history($(this).closest(".message"))

@@ -631,6 +631,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			let id
 			let date
 			let edited
+			let uname
 
 			if(data.edit_id)
 			{
@@ -646,6 +647,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 						{
 							message.data.content = data.message
 							message.data.edited = true
+							uname = message.data.username
 							date = message.date
 							edited = true
 							break
@@ -671,6 +673,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				date = Date.now()
 				id = `${date}_${utilz.get_random_int(1, 1000)}`
+				uname = socket.hue_username
 				edited = false
 			}
 
@@ -678,7 +681,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				id: id,
 				user_id: socket.hue_user_id,
-				username: socket.hue_username,
+				username: uname,
 				message: data.message,
 				profile_image: socket.hue_profile_image,
 				date: date,
@@ -700,7 +703,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 						{
 							id: id,
 							user_id: socket.hue_user_id,
-							username: socket.hue_username,
+							username: uname,
 							content: data.message,
 							profile_image: socket.hue_profile_image,
 							link_title: response.title,
