@@ -426,6 +426,7 @@ Hue.setup_templates = function()
 	Hue.template_goto_room = Handlebars.compile($('#template_goto_room').html())
 	Hue.template_admin_activity = Handlebars.compile($('#template_admin_activity').html())
 	Hue.template_access_log = Handlebars.compile($('#template_access_log').html())
+	Hue.template_expand_image = Handlebars.compile($('#template_expand_image').html())
 }
 
 Hue.show_help = function(number=1, filter="")
@@ -6331,6 +6332,12 @@ Hue.update_chat = function(args={})
 				Hue.goto_bottom(false, false)
 			}
 		})
+
+		image_preview_image.click(function(e)
+		{
+			e.stopPropagation()
+			Hue.expand_image(image_preview_src_original)
+		})
 	}
 
 	let started = Hue.started
@@ -6361,6 +6368,12 @@ Hue.update_chat = function(args={})
 				}
 			})	
 		}
+
+		link_preview_image.click(function(e)
+		{
+			e.stopPropagation()
+			Hue.expand_image($(this).attr("src"))
+		})
 	}
 
 	fmessage.find(".whisper_link").each(function()
@@ -11639,6 +11652,34 @@ Hue.start_msg = function()
 		})
 	)
 
+	Hue.msg_expand_image = Msg.factory
+	(
+		Object.assign({}, common,
+		{
+			id: "expand_image",
+			preset: "window",
+			overlay_class: "!overlay_same_color",
+			after_create: function(instance)
+			{
+				Hue.after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				Hue.after_modal_show(instance)
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				Hue.after_modal_close(instance)
+				Hue.clear_modal_image_info()
+			}
+		})
+	)
+
 	Hue.msg_main_menu.set(Hue.template_main_menu())
 	Hue.msg_user_menu.set(Hue.template_user_menu())
 	Hue.msg_userlist.set(Hue.template_userlist())
@@ -11668,6 +11709,7 @@ Hue.start_msg = function()
 	Hue.msg_help.set(Hue.template_help())
 	Hue.msg_admin_activity.set(Hue.template_admin_activity())
 	Hue.msg_access_log.set(Hue.template_access_log())
+	Hue.msg_expand_image.set(Hue.template_expand_image())
 
 	Hue.msg_info.create()
 	Hue.msg_info2.create()
@@ -21871,4 +21913,15 @@ Hue.lockscreen_turn_lights_on = function()
 	$("#lockscreen_principal").removeClass("grey_font_color")
 	$("#lockscreen_lights_off_button").removeClass("grey_font_color")
 	$("#lockscreen_icon_menu").removeClass("grey_background_color_parent")
+}
+
+Hue.expand_image = function(src)
+{
+	Hue.msg_expand_image.show()
+	$("#expand_image").attr("src", src)
+}
+
+Hue.hide_expand_image = function()
+{
+	Hue.msg_expand_image.close()
 }
