@@ -3,6 +3,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const mongo = require('mongodb')
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
+	const reserved_usernames = ["The system", config.ads_setter].map(x => x.toLowerCase())
 
 	const rooms_version = 60
 	const users_version = 30
@@ -1236,6 +1237,12 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	{
 		return new Promise((resolve, reject) => 
 		{
+			if(reserved_usernames.includes(username.toLowerCase()))
+			{
+				resolve(false)
+				return
+			}
+
 			manager.get_user({_id:_id}, {username:1})
 
 			.then(user =>

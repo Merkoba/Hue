@@ -101,6 +101,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.synth_max_recent_users = config.synth_max_recent_users
 	c.vars.synth_max_voice_text = config.synth_max_voice_text
 
+	const reserved_usernames = ["The system", config.ads_setter].map(x => x.toLowerCase())
+
 	function check_url(req, res, next)
 	{
 		if(req.originalUrl.length > config.max_url_length)
@@ -265,6 +267,11 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		let username = req.body.username
 		let password = req.body.password 
 		let email = req.body.email
+
+		if(reserved_usernames.includes(username.toLowerCase()))
+		{
+			return false
+		}
 
 		if(username.length === 0 || username.length > config.max_username_length)
 		{
@@ -465,6 +472,12 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		if(username.length === 0 || username.length > config.max_max_username_length)
 		{
 			return false
+		}
+
+		if(reserved_usernames.includes(username.toLowerCase()))
+		{
+			res.json({taken:true})
+			return
 		}
 
 		db_manager.get_user({username:username}, {username:1}, false)
