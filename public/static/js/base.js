@@ -3533,27 +3533,41 @@ Hue.generate_chat_maxer_context_items = function()
 
 	let obj = Object.assign(
 	{
-		normal:
-		{
-			name: "Normal Font", callback: function(key, opt)
-			{
-				Hue.toggle_chat_font_size("normal")
-			}
-		},
-		big:
-		{
-			name: "Big Font", callback: function(key, opt)
-			{
-				Hue.toggle_chat_font_size("big")
-			}
-		},
 		very_big:
 		{
-			name: "Very Big Font", callback: function(key, opt)
+			name: "Very Big", callback: function(key, opt)
 			{
 				Hue.toggle_chat_font_size("very_big")
 			}
 		},
+		big:
+		{
+			name: "Big", callback: function(key, opt)
+			{
+				Hue.toggle_chat_font_size("big")
+			}
+		},
+		normal:
+		{
+			name: "Normal", callback: function(key, opt)
+			{
+				Hue.toggle_chat_font_size("normal")
+			}
+		},
+		small:
+		{
+			name: "Small", callback: function(key, opt)
+			{
+				Hue.toggle_chat_font_size("small")
+			}
+		},
+		very_small:
+		{
+			name: "Very Small", callback: function(key, opt)
+			{
+				Hue.toggle_chat_font_size("very_small")
+			}
+		}
 	}, items,
 	{
 		def:
