@@ -22180,7 +22180,10 @@ Hue.setup_local_storage = function()
 
 		else if(e.key === Hue.ls_room_settings)
 		{
-			Hue.reset_settings("room_settings", false)
+			if(e.url === document.location.href)
+			{
+				Hue.reset_settings("room_settings", false)
+			}
 		}
 	}, false)
 }
