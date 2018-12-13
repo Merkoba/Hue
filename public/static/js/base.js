@@ -20679,22 +20679,22 @@ Hue.maxers_mouse_events = function()
 		{
 			if(maximized)
 			{
-				return
-			}
-
-			Hue.maxer_wheel_timer(Hue.increase_media_percentage)
-		}
-
-		else if(direction === 'down')
-		{
-			if(maximized)
-			{
 				Hue.do_chat_size_change(90)	
 				Hue.show_media_items()
 				return
 			}
 
 			Hue.maxer_wheel_timer(Hue.decrease_media_percentage)
+		}
+
+		else if(direction === 'down')
+		{
+			if(maximized)
+			{
+				return
+			}
+
+			Hue.maxer_wheel_timer(Hue.increase_media_percentage)
 		}
 	}
 
