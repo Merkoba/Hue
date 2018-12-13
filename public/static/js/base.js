@@ -3518,7 +3518,7 @@ Hue.generate_chat_maxer_context_items = function()
 {
 	let items = {}
 
-	for(let i=9; i>0; i--)
+	for(let i=10; i>0; i--)
 	{
 		let n = i * 10
 
@@ -3527,6 +3527,11 @@ Hue.generate_chat_maxer_context_items = function()
 			name: `Chat ${n}%`, callback: function(key, opt)
 			{
 				Hue.do_chat_size_change(n)
+
+				if(n !== 100)
+				{
+					Hue.show_media_items()
+				}
 			}
 		}
 	}
@@ -14807,28 +14812,38 @@ Hue.toggle_media = function()
 {
 	if(Hue.tv_visible || Hue.images_visible)
 	{
-		if(Hue.tv_visible)
-		{
-			Hue.toggle_tv(false)
-		}
-
-		if(Hue.images_visible)
-		{
-			Hue.toggle_images(false)
-		}
+		Hue.hide_media_items()
 	}
 
 	else
 	{
-		if(!Hue.tv_visible)
-		{
-			Hue.toggle_tv(true)
-		}
+		Hue.show_media_items()
+	}
+}
 
-		if(!Hue.images_visible)
-		{
-			Hue.toggle_images(true)
-		}
+Hue.hide_media_items = function()
+{
+	if(Hue.tv_visible)
+	{
+		Hue.toggle_tv(false)
+	}
+
+	if(Hue.images_visible)
+	{
+		Hue.toggle_images(false)
+	}
+}
+
+Hue.show_media_items = function()
+{
+	if(!Hue.tv_visible)
+	{
+		Hue.toggle_tv(true)
+	}
+
+	if(!Hue.images_visible)
+	{
+		Hue.toggle_images(true)
 	}
 }
 
@@ -20650,20 +20665,34 @@ Hue.maxers_mouse_events = function()
 			return false
 		}
 
-		if(Hue.num_media_elements_visible() < 1)
+		let maximized = false
+
+		if(Hue.num_media_elements_visible() === 0)
 		{
-			return false
+			maximized = true
 		}
 
 		let direction = e.deltaY > 0 ? 'down' : 'up'
 
 		if(direction === 'up')
 		{
+			if(maximized)
+			{
+				return
+			}
+
 			Hue.maxer_wheel_timer(Hue.increase_media_percentage)
 		}
 
 		else if(direction === 'down')
 		{
+			if(maximized)
+			{
+				Hue.do_chat_size_change(90)	
+				Hue.show_media_items()
+				return
+			}
+
 			Hue.maxer_wheel_timer(Hue.decrease_media_percentage)
 		}
 	}
@@ -20813,9 +20842,16 @@ Hue.decrease_media_percentage = function()
 
 Hue.do_chat_size_change = function(size)
 {
-	if(size < 10 || size > 90)
+	if(size < 10 || size > 100)
 	{
 		return false
+	}
+
+	if(size === 100)
+	{
+		Hue.toggle_media()
+		Hue.show_infotip("Chat Maximized")
+		return
 	}
 
 	if(size !== Hue.get_setting("chat_display_percentage"))
