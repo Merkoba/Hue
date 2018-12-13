@@ -184,7 +184,7 @@ Hue.commands =
 	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist',
 	'/accesslog', '/toggleactivtybar', '/thememode', '/synthkey',
 	'/togglemutesynth', '/speak', '/synthkeylocal', '/speaklocal',
-	'/unmaximize'
+	'/unmaximize', '/maximizechat'
 ]
 
 Hue.user_settings =
@@ -8726,6 +8726,11 @@ Hue.execute_command = function(message, ans)
 	else if(Hue.oi_equals(cmd2, '/unmaximize'))
 	{
 		Hue.unmaximize_media()
+	}
+
+	else if(Hue.oi_equals(cmd2, '/maximizechat'))
+	{
+		Hue.toggle_media()
 	}	
 
 	else
