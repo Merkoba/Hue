@@ -14837,13 +14837,9 @@ Hue.hide_media_items = function()
 
 Hue.show_media_items = function()
 {
-	if(!Hue.tv_visible)
+	if(!Hue.tv_visible && !Hue.images_visible)
 	{
 		Hue.toggle_tv(true)
-	}
-
-	if(!Hue.images_visible)
-	{
 		Hue.toggle_images(true)
 	}
 }
