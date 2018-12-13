@@ -3580,6 +3580,7 @@ Hue.generate_chat_maxer_context_items = function()
 			name: "Default", callback: function(key, opt)
 			{
 				Hue.set_default_media_size()
+				Hue.show_media_items()
 			}
 		}
 	})
