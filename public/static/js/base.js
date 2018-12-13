@@ -14798,6 +14798,35 @@ Hue.hide_media = function()
 	$("#media").css("display", "none")
 }
 
+Hue.toggle_media = function()
+{
+	if(Hue.tv_visible || Hue.images_visible)
+	{
+		if(Hue.tv_visible)
+		{
+			Hue.toggle_tv(false)
+		}
+
+		if(Hue.images_visible)
+		{
+			Hue.toggle_images(false)
+		}
+	}
+
+	else
+	{
+		if(!Hue.tv_visible)
+		{
+			Hue.toggle_tv(true)
+		}
+
+		if(!Hue.images_visible)
+		{
+			Hue.toggle_images(true)
+		}
+	}
+}
+
 Hue.setup_active_media = function(data)
 {
 	Hue.room_images_mode = data.room_images_mode
