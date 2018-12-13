@@ -133,6 +133,8 @@ Hue.synth_timeout_delay = 800
 Hue.synth_recent_users = []
 Hue.synth_open = false
 Hue.synth_voice_speeches = []
+Hue.local_storage_to_save = {}
+Hue.local_storage_save_delay = 1000
 
 Hue.commands = 
 [
@@ -325,6 +327,7 @@ Hue.init = function()
 	Hue.setup_synth()
 	Hue.show_console_message()
 	Hue.setup_expand_image()
+	Hue.setup_local_storage()
 
 	if(Hue.debug_functions)
 	{
@@ -371,14 +374,52 @@ Hue.get_local_storage = function(ls_name)
 	return obj
 }
 
-Hue.save_local_storage = function(ls_name, obj)
+Hue.save_local_storage_timer = (function()
 {
-	if(typeof obj !== "string")
+	let timer
+
+	return function()
 	{
-		obj = JSON.stringify(obj)
+		clearTimeout(timer)
+
+		timer = setTimeout(function()
+		{
+			Hue.do_save_local_storage()
+		}, Hue.local_storage_save_delay)
+	}
+})()
+
+
+Hue.save_local_storage = function(ls_name, obj, force=false)
+{
+	Hue.local_storage_to_save[ls_name] = obj
+
+	if(force)
+	{
+		Hue.do_save_local_storage()
 	}
 
-	localStorage.setItem(ls_name, obj)
+	else
+	{
+		Hue.save_local_storage_timer()
+	}
+}
+
+Hue.do_save_local_storage = function()
+{
+	for(let ls_name in Hue.local_storage_to_save)
+	{
+		let obj = Hue.local_storage_to_save[ls_name]
+
+		if(typeof obj !== "string")
+		{
+			obj = JSON.stringify(obj)
+		}
+
+		localStorage.setItem(ls_name, obj)
+	}
+
+	Hue.local_storage_to_save = {}
 }
 
 Hue.remove_local_storage = function(ls_name)
@@ -11980,7 +12021,7 @@ Hue.close_all_popups = function(callback=false)
 Hue.empty_global_settings = function()
 {
 	Hue.global_settings = {}
-	Hue.save_global_settings()
+	Hue.save_global_settings(true)
 }
 
 Hue.get_global_settings = function()
@@ -12009,9 +12050,9 @@ Hue.get_global_settings = function()
 	}
 }
 
-Hue.save_global_settings = function()
+Hue.save_global_settings = function(force=false)
 {
-	Hue.save_local_storage(Hue.ls_global_settings, Hue.global_settings)
+	Hue.save_local_storage(Hue.ls_global_settings, Hue.global_settings, force)
 }
 
 Hue.start_settings_widgets = function(type)
@@ -12946,7 +12987,7 @@ Hue.setting_afk_disable_synth_action = function(type, save=true)
 Hue.empty_room_settings = function()
 {
 	Hue.room_settings = {}
-	Hue.save_room_settings()
+	Hue.save_room_settings(true)
 }
 
 Hue.get_room_settings = function()
@@ -12988,7 +13029,7 @@ Hue.get_room_settings = function()
 	}
 }
 
-Hue.save_room_settings = function()
+Hue.save_room_settings = function(force=false)
 {
 	let room_settings_all = Hue.get_local_storage(Hue.ls_room_settings)
 
@@ -12999,7 +13040,7 @@ Hue.save_room_settings = function()
 
 	room_settings_all[Hue.room_id] = Hue.room_settings
 
-	Hue.save_local_storage(Hue.ls_room_settings, room_settings_all)
+	Hue.save_local_storage(Hue.ls_room_settings, room_settings_all, force)
 }
 
 Hue.get_room_state = function()
@@ -17170,10 +17211,15 @@ Hue.confirm_reset_settings = function(type)
 	}
 }
 
-Hue.reset_settings = function(type)
+Hue.reset_settings = function(type, empty=true)
 {
-	Hue[`empty_${type}`]()
+	if(empty)
+	{
+		Hue[`empty_${type}`]()
+	}
+
 	Hue[`get_${type}`]()
+
 	Hue.start_settings_widgets(type)
 	Hue.call_setting_actions("global_settings", false)
 	Hue.call_setting_actions("room_settings", false)
@@ -22094,4 +22140,47 @@ Hue.expand_image = function(src)
 Hue.hide_expand_image = function()
 {
 	Hue.msg_expand_image.close()
+}
+
+Hue.is_empty_object = function(obj)
+{
+	return Object.keys(obj).length === 0 && obj.constructor === Object
+}
+
+Hue.setup_local_storage = function()
+{
+	window.addEventListener("storage", function(e)
+	{
+		if(e.key !== Hue.ls_global_settings && e.key !== Hue.ls_room_settings)
+		{
+			return false
+		}
+
+		let obj
+
+		try
+		{
+			obj = JSON.parse(e.newValue)
+		}
+
+		catch(err)
+		{
+			return false
+		}
+
+		if(Hue.is_empty_object(obj))
+		{
+			return false
+		}
+
+		if(e.key === Hue.ls_global_settings)
+		{
+			Hue.reset_settings("global_settings", false)
+		}
+
+		else if(e.key === Hue.ls_room_settings)
+		{
+			Hue.reset_settings("room_settings", false)
+		}
+	}, false)
 }
