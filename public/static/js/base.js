@@ -20723,6 +20723,7 @@ Hue.maxers_mouse_events = function()
 		if(e.which === 2)
 		{
 			Hue.set_default_media_size()
+			Hue.show_media_items()
 		}
 	})
 }
