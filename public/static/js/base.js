@@ -22238,12 +22238,14 @@ Hue.start_vimeo = function()
 		loop: false
 	}
 
-	Hue.vimeo_video_player = new Vimeo.Player("media_vimeo_video_container", options)
+	let video_player = new Vimeo.Player("media_vimeo_video_container", options)
 
-	Hue.vimeo_video_player.ready()
+	video_player.ready()
 
 	.then(()=>
 	{
+		Hue.vimeo_video_player = video_player
+
 		$("#media_vimeo_video_container").find("iframe").eq(0).attr("id", "media_vimeo_video").addClass("video_frame")
 
 		if((Hue.last_tv_type && Hue.last_tv_type === "vimeo") || Hue.current_tv().type === "vimeo")
