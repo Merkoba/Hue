@@ -9599,6 +9599,16 @@ Hue.set_tv_volume = function(nv=false)
 	{
 		Hue.twitch_video_player.setVolume(nv)
 	}
+
+	if(Hue.soundcloud_video_player !== undefined)
+	{
+		Hue.soundcloud_video_player.setVolume(vt)
+	}
+
+	if(Hue.vimeo_video_player !== undefined)
+	{
+		Hue.vimeo_video_player.setVolume(nv)
+	}
 }
 
 Hue.volume_increase = function()
