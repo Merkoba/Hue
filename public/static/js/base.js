@@ -9557,7 +9557,6 @@ Hue.set_radio_volume = function(nv=false, changed=true)
 	if(Hue.youtube_player !== undefined)
 	{
 		Hue.youtube_player.setVolume(vt)
-		Hue.youtube_player.unMute()
 	}
 
 	if(Hue.soundcloud_player !== undefined)
