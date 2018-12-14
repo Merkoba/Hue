@@ -2010,6 +2010,11 @@ Hue.stop_videos = function(clear_iframe=true)
 		Hue.soundcloud_video_player.pause()
 	}
 
+	if(Hue.vimeo_video_player !== undefined)
+	{
+		Hue.vimeo_video_player.pause()
+	}
+
 	$("#media_video")[0].pause()
 
 	if(clear_iframe)
@@ -2059,6 +2064,19 @@ Hue.play_video = function()
 		if(Hue.soundcloud_video_player !== undefined)
 		{
 			Hue.soundcloud_video_player.play()
+		}
+
+		else
+		{
+			Hue.play_video_on_load = true
+		}
+	}
+
+	else if(Hue.current_tv().type === "vimeo")
+	{
+		if(Hue.vimeo_video_player !== undefined)
+		{
+			Hue.vimeo_video_player.play()
 		}
 
 		else
