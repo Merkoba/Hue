@@ -25,6 +25,7 @@
 		"image-size": "~0.6.3",
 		"cheerio": "~1.0.0-rc.2",
 		"linkifyjs": "~2.1.7",
-		"redis": "~2.8.0"
+		"redis": "~2.8.0",
+		"vimeo": "~2.1.1"
 	}
 }

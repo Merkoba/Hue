@@ -377,6 +377,18 @@ const Utilz = function()
 		}
 	}
 
+	utilz.get_vimeo_id = function(src)
+	{
+		let matches = src.match(/https:\/\/vimeo.com\/(\d+)/)
+
+		if(matches)
+		{
+			return matches[1]
+		}
+
+		return false
+	}
+
 	utilz.synth_notes = 
 	[
 		"c3", "d3", "e3", "f3",  "g3", 

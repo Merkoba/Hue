@@ -14,6 +14,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const cheerio = require("cheerio")
 	const linkify = require("linkifyjs")
 	const redis = require("redis")
+	const Vimeo = require("vimeo").Vimeo
 
 	soundcloud.init(
 	{
@@ -21,8 +22,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		secret: `${sconfig.soundcloud_secret}`
 	})
 
-	const images_root = path.join(__dirname, config.images_directory)
+	const vimeo_client = new Vimeo
+	(
+		sconfig.vimeo_client_id,
+		sconfig.vimeo_secret,
+		sconfig.vimeo_access_token
+	)
 
+	const images_root = path.join(__dirname, config.images_directory)
 	const vtypes = ["voice1", "voice2", "voice3", "voice4"]
 	const roles = ["admin", "op"].concat(vtypes)
 	const image_types = ["image/jpeg", "image/png", "image/gif"]
@@ -1991,6 +1998,51 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 						handler.do_change_tv_source(socket, data)
 					}
 				})
+			}
+
+			else if(data.src.includes("vimeo.com"))
+			{
+				if(!config.vimeo_enabled)
+				{
+					return
+				}
+
+				let id = utilz.get_vimeo_id(data.src)
+
+				if(id)
+				{
+					vimeo_client.request(
+					{
+						method: 'GET',
+						path: `/videos/${id}`
+					}, function (err, response, status_code, headers) 
+					{
+						if(err) 
+						{
+							handler.user_emit(socket, 'videonotfound', {})
+							logger.log_error(err)
+							return false
+						}
+
+						if(response && response.name)
+						{
+							data.type = "vimeo"
+							data.title = response.name
+							handler.do_change_tv_source(socket, data)
+						}
+
+						else
+						{
+							handler.user_emit(socket, 'videonotfound', {})
+							return false
+						}
+					})
+				}
+
+				else
+				{
+					handler.user_emit(socket, 'videonotfound', {})
+				}
 			}
 
 			else

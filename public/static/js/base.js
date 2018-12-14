@@ -328,6 +328,7 @@ Hue.init = function()
 	Hue.show_console_message()
 	Hue.setup_expand_image()
 	Hue.setup_local_storage()
+	Hue.start_vimeo()
 
 	if(Hue.debug_functions)
 	{
@@ -2238,6 +2239,27 @@ Hue.show_iframe_video = function(src, play=true)
 	{
 		$("#media_iframe_poster").css("display", "block")
 	}
+
+	Hue.after_show_video(play)
+}
+
+Hue.show_vimeo_video = function(src, play=true)
+{
+	Hue.before_show_video()
+
+	Hue.hide_videos("media_vimeo_video_container")
+
+	let id = Hue.utilz.get_vimeo_id(src)
+
+	Hue.vimeo_video_player.loadVideo(id)
+
+	.then(() =>
+	{
+		if(play)
+		{
+			Hue.vimeo_video_player.play()
+		}
+	})
 
 	Hue.after_show_video(play)
 }
@@ -6924,6 +6946,16 @@ Hue.change = function(args={})
 			Hue.show_soundcloud_video(src, args.play)
 		}
 
+		else if(Hue.current_tv().type === "vimeo")
+		{
+			if(Hue.vimeo_video_player === undefined)
+			{
+				return false
+			}
+
+			Hue.show_vimeo_video(src, args.play)
+		}
+
 		else if(Hue.current_tv().type === "url")
 		{
 			Hue.show_video(src, args.play)
@@ -10481,6 +10513,15 @@ Hue.change_tv_source = function(src)
 			if(!Hue.soundcloud_enabled)
 			{
 				Hue.feedback("Soundcloud support is not enabled")
+				return
+			}
+		}
+
+		else if(src.includes("vimeo.com"))
+		{
+			if(!Hue.vimeo_enabled)
+			{
+				Hue.feedback("Vimeo support is not enabled")
 				return
 			}
 		}
@@ -22186,4 +22227,36 @@ Hue.setup_local_storage = function()
 			}
 		}
 	}, false)
+}
+
+Hue.start_vimeo = function()
+{
+	let options = 
+	{
+		id: 59777392,
+		width: 640,
+		loop: false
+	}
+
+	Hue.vimeo_video_player = new Vimeo.Player("media_vimeo_video_container", options)
+
+	Hue.vimeo_video_player.ready()
+
+	.then(()=>
+	{
+		$("#media_vimeo_video_container").find("iframe").eq(0).attr("id", "media_vimeo_video").addClass("video_frame")
+
+		if((Hue.last_tv_type && Hue.last_tv_type === "vimeo") || Hue.current_tv().type === "vimeo")
+		{
+			if(Hue.play_video_on_load)
+			{
+				Hue.change({type:"tv", notify:false, force:true, play:true})
+			}
+
+			else
+			{
+				Hue.change({type:"tv", notify:false})
+			}
+		}
+	})
 }

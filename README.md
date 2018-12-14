@@ -11,7 +11,7 @@ It provides 3 different media spots that can all be active at once, or just the 
 These are Images, TV, and Radio.
 Images can be any image, either uploaded, drawn (there's a built-in drawing pad to draw an image), or linked. Search queries can be enabled to search images on Imgur. When the image is clicked it opens a modal where current and previous images can be seen in full screen.
 
-TV can be any video link. It embeds videos from YouTube, Soundcloud, Twitch, video files, or even websites that are embeded in an iframe. Search queries can be enabled to search videos on YouTube.
+TV can be any video link. It embeds videos from YouTube, Soundcloud, Twitch, Vimeo, video files, or even websites that are embeded in an iframe. Search queries can be enabled to search videos on YouTube.
 
 Radio can be any radio, or audio, link. It embeds YouTube, Soundcloud, audio files, or radio streams. If it detects an Icecast stream it will try to fetch metadata to show live song information. Search queries can be enabled to search audio on YouTube.
 
@@ -79,7 +79,7 @@ Example of how to use user_config.secret.json:
 
 The admin email must go in superuser_emails in user_config.secret.json. It's used to take over control of the main room. The main room is created on first join, with no roles. To get admin on the room use /annex.
 
-To have a fully working system, as it is intended, getting all the API keys (YouTube, Twitch, Soundcloud, Imgur) is very recommended. If you don't need some of these, disable them in user_config.json (for example "youtube_enabled": false) Mailgun api key is necessary for account creation and password recovery, so it must be provided. A Google Recaptcha key is necessary to enable captcha verification on registration, though captcha support can be disabled ("recaptcha_enabled": false). Hosting of uploaded images through an S3 service is supported, yet optional. To enable S3 support, set "image_storage_s3_or_local" to "s3". Set API keys in user_config.secret.json.
+To have a fully working system, as it is intended, getting all the API keys (YouTube, Twitch, Soundcloud, Imgur, Vimeo) is very recommended. If you don't need some of these, disable them in user_config.json (for example "youtube_enabled": false) Mailgun api key is necessary for account creation and password recovery, so it must be provided. A Google Recaptcha key is necessary to enable captcha verification on registration, though captcha support can be disabled ("recaptcha_enabled": false). Hosting of uploaded images through an S3 service is supported, yet optional. To enable S3 support, set "image_storage_s3_or_local" to "s3". Set API keys in user_config.secret.json.
 
 Put the files in the directory you want it work and call "npm install". That should install all necessary packages. 
 
@@ -333,6 +333,9 @@ If you want to remove it to start fresh:
 
 "soundcloud_enabled"
 >Whether Soundcloud features are enabled.
+
+"vimeo_enabled"
+>Whether Vimeo features are enabled.
 
 "imgur_enabled"
 >Whether Imgur features are enabled.
@@ -789,6 +792,15 @@ This should be an array of strings of root domains.
 
 "twitch_client_id"
 >Twitch client id.
+
+"vimeo_client_id"
+>Vimeo client id.
+
+"vimeo_secret"
+>Vimeo secret key.
+
+"vimeo_access_token"
+>Vimeo access token.
 
 # Additional Notes
 
