@@ -240,7 +240,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.hue_typing_counter = 0
 		socket.hue_activity_counter = 0
 		socket.hue_synth_counter = 0
-		socket.hue_last_activity_trigger = Date.now()
+		socket.hue_last_activity_trigger = 0
 	}
 
 	handler.public.join_room = async function(socket, data)

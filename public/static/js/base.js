@@ -16859,6 +16859,8 @@ Hue.at_startup = function()
 	{
 		Hue.started_safe = true
 	}, 2000)
+
+	Hue.process_visibility()
 }
 
 Hue.show_image_history = function(filter=false)
