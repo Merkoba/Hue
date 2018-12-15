@@ -22305,10 +22305,24 @@ Hue.start_vimeo = function()
 
 Hue.get_ignored_usernames_list = function()
 {
-	Hue.ignored_usernames_list = Hue.get_setting("ignored_usernames").split("\n")
+	let list = Hue.get_setting("ignored_usernames").split("\n")
+
+	if(list.length === 1 && !list[0])
+	{
+		list = []
+	}
+
+	Hue.ignored_usernames_list =  list
 }
 
 Hue.get_accept_commands_from_list = function()
 {
-	Hue.accept_commands_from_list = Hue.get_setting("accept_commands_from").split("\n")
+	let list = Hue.get_setting("accept_commands_from").split("\n")
+
+	if(list.length === 1 && !list[0])
+	{
+		list = []
+	}
+
+	Hue.accept_commands_from_list = list
 }
