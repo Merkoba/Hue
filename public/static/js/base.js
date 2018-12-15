@@ -16213,12 +16213,6 @@ Hue.check_whisper_user = function(uname)
 		return false
 	}
 
-	if(uname === Hue.username)
-	{
-		Hue.feedback("You can't whisper to yourself")
-		return false
-	}
-
 	if(!Hue.usernames.includes(uname))
 	{
 		Hue.user_not_in_room()
@@ -16479,13 +16473,6 @@ Hue.send_whisper_user = function(message, draw_coords)
 	if(!Hue.can_chat)
 	{
 		$("#write_message_feedback").text("You don't have chat permission")
-		$("#write_message_feedback").css("display", "block")
-		return false
-	}
-
-	if(uname === Hue.username)
-	{
-		$("#write_message_feedback").text("You can't whisper to yourself")
 		$("#write_message_feedback").css("display", "block")
 		return false
 	}

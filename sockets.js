@@ -3966,11 +3966,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(data.username === socket.hue_username)
-		{
-			return handler.get_out(socket)
-		}
-
 		if(data.message === undefined)
 		{
 			return handler.get_out(socket)
@@ -4015,6 +4010,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			for(let socc of sockets)
 			{
+				if(socc.id === socket.id)
+				{
+					continue
+				}
+				
 				handler.user_emit(socc, 'whisper',
 				{
 					room: socket.hue_room_id,
