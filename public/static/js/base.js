@@ -17802,7 +17802,7 @@ Hue.set_toggler = function(type, el, action=false, update=true)
 
 		container.css("display", "block")
 		
-		$(el).html(`- ${$(el).html().substring(2)}`)
+		$(el).html(`- ${$(el).html().trim().substring(2)}`)
 
 		container.closest(".toggler_main_container")[0].scrollIntoView({block:"center"})
 	}
@@ -17816,7 +17816,7 @@ Hue.set_toggler = function(type, el, action=false, update=true)
 
 		container.css("display", "none")
 		
-		$(el).html(`+ ${$(el).html().substring(2)}`)
+		$(el).html(`+ ${$(el).html().trim().substring(2)}`)
 	}
 
 	if(update)
