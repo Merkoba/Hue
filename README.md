@@ -544,6 +544,9 @@ If you want to remove it to start fresh:
 "global_settings_default_afk_disable_synth"
 >Whether the synth is disabled on AFK.
 
+"global_settings_default_accept_commands_from"
+>List of usernames to accept commands from that are sent by whispers.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 

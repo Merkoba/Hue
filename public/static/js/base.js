@@ -210,6 +210,7 @@ Hue.user_settings =
 	at_startup: {widget_type:"textarea"},
 	afk_delay: {widget_type:"select"},
 	ignored_usernames: {widget_type:"textarea"},
+	accept_commands_from: {widget_type:"textarea"},
 	ignored_words: {widget_type:"textarea"},
 	show_joins: {widget_type:"checkbox"},
 	show_parts: {widget_type:"checkbox"},
@@ -329,6 +330,8 @@ Hue.init = function()
 	Hue.setup_expand_image()
 	Hue.setup_local_storage()
 	Hue.start_vimeo()
+	Hue.get_ignored_usernames_list()
+	Hue.get_accept_commands_from_list()
 
 	if(Hue.debug_functions)
 	{
@@ -5335,6 +5338,11 @@ Hue.change_input = function(s, to_end=true, focus=true)
 
 Hue.focus_input = function()
 {
+	if(Hue.modal_open)
+	{
+		return false
+	}
+
 	$("#input").focus()
 }
 
@@ -12495,7 +12503,7 @@ Hue.setting_ignored_usernames_action = function(type, save=true)
 
 	if(Hue.active_settings("ignored_usernames") === type)
 	{
-		Hue.generate_ignored_words_regex()
+		Hue.get_ignored_usernames_list()
 		Hue.check_activity_bar()
 	}
 
@@ -13045,6 +13053,25 @@ Hue.setting_synth_enabled_action = function(type, save=true)
 Hue.setting_afk_disable_synth_action = function(type, save=true)
 {
 	Hue[type].afk_disable_synth = $(`#${type}_afk_disable_synth`).prop("checked")
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_accept_commands_from_action = function(type, save=true)
+{
+	let unames = Hue.make_unique_lines(Hue.utilz.clean_string7($(`#${type}_accept_commands_from`).val()))
+
+	$(`#${type}_accept_commands_from`).val(unames)
+
+	Hue[type].accept_commands_from = unames
+
+	if(Hue.active_settings("ignored_usernames") === type)
+	{
+		Hue.get_accept_commands_from_list()
+	}
 
 	if(save)
 	{
@@ -16540,6 +16567,21 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 			return false
 		}
 
+		if(Hue.accept_commands_from_list.includes(data.username))
+		{
+			if(data.message && Hue.is_command(data.message))
+			{
+				Hue.process_message(
+				{
+					message: data.message,
+					to_history: false,
+					clr_input: false
+				})
+
+				return
+			}
+		}
+
 		f = function()
 		{
 			Hue.show_profile(data.username)
@@ -16711,24 +16753,6 @@ Hue.show_popup_message = function(data)
 			})
 		}
 	})
-}
-
-Hue.add_to_ignored_usernames = function(uname)
-{
-	let r = confirm("Are you sure?")
-
-	if(r)
-	{
-		let active = Hue.active_settings("ignored_usernames")
-
-		$(`#${active}_ignored_usernames`).val($(`#${active}_ignored_usernames`).val() + `\n${uname}`)
-
-		Hue.setting_ignored_usernames_action(active)
-
-		return true
-	}
-
-	return false
 }
 
 Hue.user_not_in_room = function()
@@ -17524,7 +17548,7 @@ Hue.user_is_ignored = function(uname)
 		return false
 	}
 
-	if(Hue.get_setting("ignored_usernames").includes(uname))
+	if(Hue.ignored_usernames_list.includes(uname))
 	{
 		return true
 	}
@@ -22290,4 +22314,14 @@ Hue.start_vimeo = function()
 			}
 		}
 	})
+}
+
+Hue.get_ignored_usernames_list = function()
+{
+	Hue.ignored_usernames_list = Hue.get_setting("ignored_usernames").split("\n")
+}
+
+Hue.get_accept_commands_from_list = function()
+{
+	Hue.accept_commands_from_list = Hue.get_setting("accept_commands_from").split("\n")
 }
