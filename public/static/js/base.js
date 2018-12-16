@@ -7441,10 +7441,11 @@ Hue.setup_commands = function()
 Hue.is_command = function(message)
 {
 	if(message.length >= 2
-	&& message[0] === '/'
-	&& message[1] !== '/'
-	&& !message.startsWith('/me ')
-	&& !message.startsWith('/em '))
+	&& message[0] === "/"
+	&& message[1] !== "/"
+	&& message[1] !== " "
+	&& !message.startsWith("/me ")
+	&& !message.startsWith("/em "))
 	{
 		return true
 	}
@@ -16558,13 +16559,7 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 		{
 			if(data.message && Hue.is_command(data.message))
 			{
-				Hue.process_message(
-				{
-					message: data.message,
-					to_history: false,
-					clr_input: false
-				})
-
+				Hue.execute_whisper_command(data.username, data.message)
 				return
 			}
 		}
@@ -22325,4 +22320,64 @@ Hue.get_accept_commands_from_list = function()
 	}
 
 	Hue.accept_commands_from_list = list
+}
+
+Hue.includes_critical_command = function(username, message, announce=true)
+{
+	let commands = 
+	[
+		"/changeusername",
+		"/changepassword",
+		"/changeemail",
+		"/systembroadcast",
+		"/systemrestart",
+		"/annex"
+	]
+
+	let split = message.split(" ")
+
+	for(let cmd of split)
+	{
+		let cmd2
+
+		if(Hue.is_command(cmd))
+		{
+			cmd2 = cmd.toLowerCase().split('').sort().join('')
+		}
+
+		else
+		{
+			continue
+		}
+
+		for(let command of commands)
+		{
+			if(Hue.oi_equals(cmd2, command))
+			{
+				if(announce)
+				{
+					Hue.feedback(`${username} attempted to run ${command} in your client`)
+				}
+
+				return true
+			}
+		}
+	}
+
+	return false
+}
+
+Hue.execute_whisper_command = function(username, message)
+{
+	if(Hue.includes_critical_command(username, message))
+	{
+		return false
+	}
+
+	Hue.process_message(
+	{
+		message: message,
+		to_history: false,
+		clr_input: false
+	})
 }
