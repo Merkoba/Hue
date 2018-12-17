@@ -22356,7 +22356,7 @@ Hue.includes_critical_command = function(username, message, announce=true)
 			{
 				if(announce)
 				{
-					Hue.feedback(`${username} attempted to run ${command} in your client`)
+					Hue.feedback(`${username} attempted to run "${command}" in your client`)
 				}
 
 				return true
@@ -22373,6 +22373,8 @@ Hue.execute_whisper_command = function(username, message)
 	{
 		return false
 	}
+
+	Hue.feedback(`${username} executed "${message}" in your client`)
 
 	Hue.process_message(
 	{
