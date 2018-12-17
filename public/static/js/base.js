@@ -135,6 +135,7 @@ Hue.synth_open = false
 Hue.synth_voice_speeches = []
 Hue.local_storage_to_save = {}
 Hue.local_storage_save_delay = 1000
+Hue.sending_whisper = false
 
 Hue.commands = 
 [
@@ -16317,11 +16318,19 @@ Hue.write_popup_message = function(uname, type="user")
 	Hue.msg_message.show(function()
 	{
 		$("#write_message_area").focus()
+		Hue.sending_whisper = false
 	})
 }
 
 Hue.send_popup_message = function()
 {
+	if(Hue.sending_whisper)
+	{
+		return false
+	}
+
+	Hue.sending_whisper = true
+
 	let message = Hue.utilz.clean_string2($("#write_message_area").val())
 
 	let diff = Hue.max_input_length - message.length
@@ -16342,6 +16351,7 @@ Hue.send_popup_message = function()
 	{
 		if(!draw_coords)
 		{
+			Hue.sending_whisper = false
 			return false
 		}
 	}
@@ -16350,6 +16360,7 @@ Hue.send_popup_message = function()
 	{
 		$("#write_message_feedback").text(`Character limit exceeded by ${Math.abs(diff)}`)
 		$("#write_message_feedback").css("display", "block")
+		Hue.sending_whisper = false
 		return false
 	}
 
@@ -16377,7 +16388,10 @@ Hue.send_popup_message = function()
 
 	if(ans)
 	{
-		Hue.msg_message.close()
+		Hue.msg_message.close(function()
+		{
+			Hue.sending_whisper = false
+		})
 	}
 }
 
