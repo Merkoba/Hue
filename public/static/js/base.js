@@ -217,6 +217,7 @@ Hue.user_settings =
 	show_parts: {widget_type:"checkbox"},
 	animate_scroll: {widget_type:"checkbox"},
 	new_messages_separator: {widget_type:"checkbox"},
+	autoscale_media: {widget_type:"checkbox"},
 	afk_disable_messages_beep: {widget_type:"checkbox"},
 	afk_disable_highlights_beep: {widget_type:"checkbox"},
 	afk_disable_media_change_beep: {widget_type:"checkbox"},
@@ -7152,6 +7153,7 @@ Hue.after_image_load = function()
 	Hue.current_image_date = Hue.current_image().date
 
 	Hue.get_dominant_theme()
+	Hue.check_scale_frames()
 	Hue.fix_image_frame()
 }
 
@@ -12592,6 +12594,21 @@ Hue.setting_new_messages_separator_action = function(type, save=true)
 	}
 }
 
+Hue.setting_autoscale_media_action = function(type, save=true)
+{
+	Hue[type].autoscale_media = $(`#${type}_autoscale_media`).prop("checked")
+
+	if(Hue.active_settings("autoscale_media") === type)
+	{
+		Hue.check_scale_frames()
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
 Hue.setting_afk_disable_messages_beep_action = function(type, save=true)
 {
 	Hue[type].afk_disable_messages_beep = $(`#${type}_afk_disable_messages_beep`).prop("checked")
@@ -14712,13 +14729,28 @@ Hue.update_user_profile_image = function(uname, pi)
 
 Hue.fix_visible_video_frame = function()
 {
+	let id = Hue.get_visible_video_frame_id()
+
+	if(id)
+	{
+		Hue.fix_frame(id)
+	}
+}
+
+Hue.get_visible_video_frame_id = function()
+{
+	let id = false
+
 	$(".video_frame").each(function()
 	{
 		if($(this).parent().css("display") !== "none")
 		{
-			Hue.fix_frame(this.id)
+			id = this.id
+			return false
 		}
 	})
+
+	return id
 }
 
 Hue.fix_image_frame = function()
@@ -14742,7 +14774,7 @@ Hue.fix_frames = function()
 	Hue.fix_image_frame()
 }
 
-Hue.fix_frame = function(frame_id)
+Hue.fix_frame = function(frame_id, test_parent_height=false)
 {
 	let id = `#${frame_id}`
 
@@ -14762,29 +14794,87 @@ Hue.fix_frame = function(frame_id)
 
 	let parent = frame.parent()
 	let parent_width = parent.width()
-	let parent_height = parent.height()
+	let parent_height = test_parent_height ? test_parent_height : parent.height()
 	let parent_ratio = parent_height / parent_width
 
 	let frame_width = frame.width()
 	let frame_height = frame.height()
 
+	let width, height
+
 	if(parent_ratio === frame_ratio)
 	{
-		frame.width(parent_width)
-		frame.height(parent_height)
+		width = parent_width
+		height = parent_height
 	}
 
 	else if(parent_ratio < frame_ratio)
 	{
-		frame.width(parent_height / frame_ratio)
-		frame.height(parent_height)
+		width = parent_height / frame_ratio
+		height = parent_height
 	}
 
 	else if(parent_ratio > frame_ratio)
 	{
-		frame.width(parent_width)
-		frame.height(parent_width * frame_ratio)
+		width = parent_width
+		height = parent_width * frame_ratio
 	}
+
+	if(!test_parent_height)
+	{
+		frame.width(width)
+		frame.height(height)
+	}
+
+	else
+	{
+		return {width:width, height:height}
+	}
+}
+
+Hue.check_scale_frames = function()
+{
+	if(Hue.get_setting("autoscale_media") && Hue.num_media_elements_visible() === 2)
+	{
+		Hue.scale_frames()
+	}
+}
+
+Hue.scale_frames = function()
+{
+	let height = $("#media").height()
+	let min_height = height / 8
+	let image_container_height = height / 2
+	let min_diff
+
+	for(let i=0; i<height; i++)
+	{
+		let res = Hue.fix_frame("media_image_frame", image_container_height)
+
+		let diff = image_container_height - res.height
+
+		if(diff < min_height)
+		{
+			break
+		}
+
+		if(min_diff === undefined || diff < min_diff)
+		{
+			min_diff = diff
+		}
+
+		else
+		{
+			break
+		}
+
+		image_container_height -= 1
+	}
+
+	let new_image_percentage = Hue.utilz.round2((image_container_height / height) * 100, 1)
+	let new_tv_percentage = 100 - new_image_percentage
+
+	Hue.do_media_tv_size_change(new_tv_percentage, false)
 }
 
 Hue.change_room_images_mode = function(what)
@@ -20903,7 +20993,7 @@ Hue.unmaximize_media = function()
 	}
 }
 
-Hue.do_media_tv_size_change = function(size)
+Hue.do_media_tv_size_change = function(size, notify=true)
 {
 	if(size < 0 || size > 100)
 	{
@@ -20937,8 +21027,11 @@ Hue.do_media_tv_size_change = function(size)
 		Hue.enable_setting_override("tv_display_percentage")
 		Hue.modify_setting(`tv_display_percentage ${size}`, false)
 	}
-	
-	Hue.notify_media_tv_size_change(size)
+
+	if(notify)
+	{
+		Hue.notify_media_tv_size_change(size)
+	}
 }
 
 Hue.notify_media_tv_size_change = function(size)

@@ -149,6 +149,7 @@
 	"global_settings_default_stop_tv_on_radio_play": true,
 	"global_settings_default_synth_enabled": true,
 	"global_settings_default_accept_commands_from": "",
+	"global_settings_default_autoscale_media": false,
 	"room_state_default_images_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_radio_enabled": true,

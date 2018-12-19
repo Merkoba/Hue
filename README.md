@@ -547,6 +547,9 @@ If you want to remove it to start fresh:
 "global_settings_default_accept_commands_from"
 >List of usernames to accept commands from that are sent by whispers.
 
+"global_settings_default_autoscale_media"
+>Wheter image/tv autoscaling will be enabled by default.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 
