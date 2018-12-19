@@ -3574,7 +3574,7 @@ Hue.generate_tv_maxer_context_items = function()
 		},
 		autoscale:
 		{
-			name: "Auto Off", callback: function(key, opt)
+			name: "Auto On", callback: function(key, opt)
 			{
 				Hue.modify_autoscale_media(true)
 			},
@@ -3585,7 +3585,7 @@ Hue.generate_tv_maxer_context_items = function()
 		},	
 		autoscaleb:
 		{
-			name: "Auto On", callback: function(key, opt)
+			name: "Auto Off", callback: function(key, opt)
 			{
 				Hue.modify_autoscale_media(false)
 			},
@@ -14856,7 +14856,7 @@ Hue.fix_frame = function(frame_id, test_parent_height=false)
 
 Hue.check_scale_frames = function()
 {
-	if(Hue.get_setting("autoscale_media") && Hue.num_media_elements_visible() === 2)
+	if(Hue.started && Hue.get_setting("autoscale_media") && Hue.tv_visible && Hue.images_visible)
 	{
 		Hue.scale_frames()
 	}
@@ -14875,11 +14875,6 @@ Hue.scale_frames = function()
 
 		let diff = image_container_height - res.height
 
-		if(diff < min_height)
-		{
-			break
-		}
-
 		if(min_diff === undefined || diff < min_diff)
 		{
 			min_diff = diff
@@ -14891,6 +14886,11 @@ Hue.scale_frames = function()
 		}
 
 		image_container_height -= 1
+
+		if(image_container_height < min_height)
+		{
+			break
+		}
 	}
 
 	let new_image_percentage = Hue.utilz.round2((image_container_height / height) * 100, 1)
