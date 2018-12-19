@@ -3572,6 +3572,28 @@ Hue.generate_tv_maxer_context_items = function()
 				Hue.swap_display_positions_2()
 			}
 		},
+		autoscale:
+		{
+			name: "Auto Off", callback: function(key, opt)
+			{
+				Hue.modify_autoscale_media(true)
+			},
+			visible: function(key, opt)
+			{
+				return !Hue.get_setting("autoscale_media")
+			}	
+		},	
+		autoscaleb:
+		{
+			name: "Auto On", callback: function(key, opt)
+			{
+				Hue.modify_autoscale_media(false)
+			},
+			visible: function(key, opt)
+			{
+				return Hue.get_setting("autoscale_media")
+			}	
+		}
 	},
 	items,
 	{
@@ -22489,4 +22511,10 @@ Hue.execute_whisper_command = function(username, message)
 		to_history: false,
 		clr_input: false
 	})
+}
+
+Hue.modify_autoscale_media = function(what)
+{
+	Hue.enable_setting_override("autoscale_media")
+	Hue.modify_setting(`autoscale_media ${what}`, false)
 }
