@@ -5363,8 +5363,17 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			let $ = cheerio.load(body)
 
-			response.title = utilz.clean_string2($("title").text().substring(0, config.max_title_length)) || ""
+			response.title = 
+			utilz.clean_string2($('meta[property="og:title"]').attr('content').substring(0, config.max_title_length)) ||
+			utilz.clean_string2($("title").eq(0).text().substring(0, config.max_title_length)) || ""
+
 			response.image = $('meta[property="og:image"]').attr('content') || ""
+
+			if(response.image.length > config.safe_limit_3)
+			{
+				response.image = ""
+			}
+			
 			response.url = url
 
 			if(redis_client_ready)
