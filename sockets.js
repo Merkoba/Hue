@@ -5365,14 +5365,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			let title = ""
 
-			if($('meta[property="og:title"]').length > 0)
-			{
-				title = utilz.clean_string2($('meta[property="og:title"]').eq(0).attr('content').substring(0, config.max_title_length))	
-			}
-
-			else if($("title").length > 0)
+			if($("title").length > 0)
 			{
 				title = utilz.clean_string2($("title").eq(0).text().substring(0, config.max_title_length)) || ""
+			}
+
+			else if($('meta[property="og:title"]').length > 0)
+			{
+				title = utilz.clean_string2($('meta[property="og:title"]').eq(0).attr('content').substring(0, config.max_title_length))	|| ""
 			}
 
 			response.title = title
