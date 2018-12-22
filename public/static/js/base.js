@@ -217,7 +217,6 @@ Hue.user_settings =
 	show_parts: {widget_type:"checkbox"},
 	animate_scroll: {widget_type:"checkbox"},
 	new_messages_separator: {widget_type:"checkbox"},
-	autoscale_media: {widget_type:"checkbox"},
 	afk_disable_messages_beep: {widget_type:"checkbox"},
 	afk_disable_highlights_beep: {widget_type:"checkbox"},
 	afk_disable_media_change_beep: {widget_type:"checkbox"},
@@ -3571,28 +3570,6 @@ Hue.generate_tv_maxer_context_items = function()
 			{
 				Hue.swap_display_positions_2()
 			}
-		},
-		autoscale:
-		{
-			name: "Auto On", callback: function(key, opt)
-			{
-				Hue.modify_autoscale_media(true)
-			},
-			visible: function(key, opt)
-			{
-				return !Hue.get_setting("autoscale_media")
-			}	
-		},	
-		autoscaleb:
-		{
-			name: "Auto Off", callback: function(key, opt)
-			{
-				Hue.modify_autoscale_media(false)
-			},
-			visible: function(key, opt)
-			{
-				return Hue.get_setting("autoscale_media")
-			}	
 		}
 	},
 	items,
@@ -7175,7 +7152,6 @@ Hue.after_image_load = function()
 	Hue.current_image_date = Hue.current_image().date
 
 	Hue.get_dominant_theme()
-	Hue.check_scale_frames()
 	Hue.fix_image_frame()
 }
 
@@ -12616,21 +12592,6 @@ Hue.setting_new_messages_separator_action = function(type, save=true)
 	}
 }
 
-Hue.setting_autoscale_media_action = function(type, save=true)
-{
-	Hue[type].autoscale_media = $(`#${type}_autoscale_media`).prop("checked")
-
-	if(Hue.active_settings("autoscale_media") === type)
-	{
-		Hue.check_scale_frames()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
 Hue.setting_afk_disable_messages_beep_action = function(type, save=true)
 {
 	Hue[type].afk_disable_messages_beep = $(`#${type}_afk_disable_messages_beep`).prop("checked")
@@ -14819,9 +14780,6 @@ Hue.fix_frame = function(frame_id, test_parent_height=false)
 	let parent_height = test_parent_height ? test_parent_height : parent.height()
 	let parent_ratio = parent_height / parent_width
 
-	let frame_width = frame.width()
-	let frame_height = frame.height()
-
 	let width, height
 
 	if(parent_ratio === frame_ratio)
@@ -14850,53 +14808,8 @@ Hue.fix_frame = function(frame_id, test_parent_height=false)
 
 	else
 	{
-		return {width:width, height:height}
+		return {width:width, height:height, parent_width:parent_width, parent_height:parent_height}
 	}
-}
-
-Hue.check_scale_frames = function()
-{
-	if(Hue.started && Hue.get_setting("autoscale_media") && Hue.tv_visible && Hue.images_visible)
-	{
-		Hue.scale_frames()
-	}
-}
-
-Hue.scale_frames = function()
-{
-	let height = $("#media").height()
-	let min_height = height / 8
-	let image_container_height = height / 2
-	let min_diff
-
-	for(let i=0; i<height; i++)
-	{
-		let res = Hue.fix_frame("media_image_frame", image_container_height)
-
-		let diff = image_container_height - res.height
-
-		if(min_diff === undefined || diff < min_diff)
-		{
-			min_diff = diff
-		}
-
-		else
-		{
-			break
-		}
-
-		image_container_height -= 1
-
-		if(image_container_height < min_height)
-		{
-			break
-		}
-	}
-
-	let new_image_percentage = Hue.utilz.round2((image_container_height / height) * 100, 1)
-	let new_tv_percentage = 100 - new_image_percentage
-
-	Hue.do_media_tv_size_change(new_tv_percentage, false)
 }
 
 Hue.change_room_images_mode = function(what)
@@ -22511,10 +22424,4 @@ Hue.execute_whisper_command = function(username, message)
 		to_history: false,
 		clr_input: false
 	})
-}
-
-Hue.modify_autoscale_media = function(what)
-{
-	Hue.enable_setting_override("autoscale_media")
-	Hue.modify_setting(`autoscale_media ${what}`, false)
 }
