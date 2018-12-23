@@ -20646,7 +20646,12 @@ Hue.maxers_mouse_events = function()
 {
 	let f = function(e)
 	{
-		if(e.ctrlKey || e.shiftKey)
+		if(e.ctrlKey)
+		{
+			return false
+		}
+
+		if(!e.shiftKey)
 		{
 			return false
 		}
@@ -20818,7 +20823,12 @@ Hue.maxers_mouse_events = function()
 
 	let f2 = function(e)
 	{
-		if(e.ctrlKey || e.shiftKey)
+		if(e.ctrlKey)
+		{
+			return false
+		}
+
+		if(!e.shiftKey)
 		{
 			return false
 		}
