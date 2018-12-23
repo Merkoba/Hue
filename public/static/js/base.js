@@ -9781,7 +9781,7 @@ Hue.alert_title = function()
 		return false
 	}
 
-	if(!Hue.app_focused)
+	if(!Hue.app_focused || Hue.room_state.screen_locked)
 	{
 		if(Hue.alert_mode === 0)
 		{
@@ -9798,7 +9798,7 @@ Hue.alert_title2 = function()
 		return false
 	}
 
-	if(!Hue.app_focused)
+	if(!Hue.app_focused || Hue.room_state.screen_locked)
 	{
 		if(Hue.alert_mode !== 2)
 		{
