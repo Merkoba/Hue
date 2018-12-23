@@ -18844,6 +18844,7 @@ Hue.arrange_media_setting_display_positions = function(type)
 
 Hue.lock_screen = function(save=true)
 {
+	Hue.room_state.screen_locked = true
 	Hue.process_lockscreen_lights_off()
 	Hue.msg_lockscreen.show()
 
@@ -18857,22 +18858,19 @@ Hue.lock_screen = function(save=true)
 
 	if(save)
 	{
-		Hue.room_state.screen_locked = true
 		Hue.save_room_state()
 	}
 }
 
 Hue.unlock_screen = function(save=true)
 {
+	Hue.room_state.screen_locked = false
 	Hue.msg_lockscreen.close()
-	Hue.afk = false 
-	Hue.app_focused = true
-	Hue.on_app_focused()
+	Hue.process_visibility()
 	Hue.execute_commands("on_unlockscreen")
 
 	if(save)
 	{
-		Hue.room_state.screen_locked = false
 		Hue.save_room_state()
 	}
 }
