@@ -136,6 +136,7 @@ Hue.synth_voice_speeches = []
 Hue.local_storage_to_save = {}
 Hue.local_storage_save_delay = 1000
 Hue.sending_whisper = false
+Hue.small_scroll_amount = 250
 
 Hue.commands = 
 [
@@ -5711,7 +5712,7 @@ Hue.check_scrollers = function()
 
 	let scrolltop = $ch.scrollTop()
 
-	if(max - scrolltop > 10)
+	if(max - scrolltop > Hue.small_scroll_amount)
 	{
 		if(scrolltop > 0)
 		{
