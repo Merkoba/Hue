@@ -3408,7 +3408,7 @@ Hue.start_toggle_radio_context_menu = function()
 				},
 				visible: function(key, opt)
 				{
-					return Hue.radio_started && Hue.stop_radio_delay !== 1
+					return Hue.stop_radio_delay !== 1
 				}
 			},
 			trs1b:
@@ -3419,7 +3419,7 @@ Hue.start_toggle_radio_context_menu = function()
 				},
 				visible: function(key, opt)
 				{
-					return Hue.radio_started && Hue.stop_radio_delay === 1
+					return Hue.stop_radio_delay === 1
 				}			
 			},
 			trs2:
@@ -3430,7 +3430,7 @@ Hue.start_toggle_radio_context_menu = function()
 				},
 				visible: function(key, opt)
 				{
-					return Hue.radio_started && Hue.stop_radio_delay !== 5
+					return Hue.stop_radio_delay !== 5
 				}
 			},
 			trs2b:
@@ -3441,7 +3441,7 @@ Hue.start_toggle_radio_context_menu = function()
 				},
 				visible: function(key, opt)
 				{
-					return Hue.radio_started && Hue.stop_radio_delay === 5
+					return Hue.stop_radio_delay === 5
 				}
 			},
 			trs3:
@@ -3452,7 +3452,7 @@ Hue.start_toggle_radio_context_menu = function()
 				},
 				visible: function(key, opt)
 				{
-					return Hue.radio_started && Hue.stop_radio_delay !== 10
+					return Hue.stop_radio_delay !== 10
 				}
 			},
 			trs3b:
@@ -3463,7 +3463,7 @@ Hue.start_toggle_radio_context_menu = function()
 				},
 				visible: function(key, opt)
 				{
-					return Hue.radio_started && Hue.stop_radio_delay === 10
+					return Hue.stop_radio_delay === 10
 				}
 			},
 			trs4:
@@ -3474,7 +3474,7 @@ Hue.start_toggle_radio_context_menu = function()
 				},
 				visible: function(key, opt)
 				{
-					return Hue.radio_started && Hue.stop_radio_delay !== 30
+					return Hue.stop_radio_delay !== 30
 				}
 			},
 			trs4b:
@@ -3485,7 +3485,7 @@ Hue.start_toggle_radio_context_menu = function()
 				},
 				visible: function(key, opt)
 				{
-					return Hue.radio_started && Hue.stop_radio_delay === 30
+					return Hue.stop_radio_delay === 30
 				}
 			},
 			trs5:
@@ -3496,7 +3496,7 @@ Hue.start_toggle_radio_context_menu = function()
 				},
 				visible: function(key, opt)
 				{
-					return Hue.radio_started && Hue.stop_radio_delay !== 60
+					return Hue.stop_radio_delay !== 60
 				}
 			},
 			trs5b:
@@ -3507,7 +3507,7 @@ Hue.start_toggle_radio_context_menu = function()
 				},
 				visible: function(key, opt)
 				{
-					return Hue.radio_started && Hue.stop_radio_delay === 60
+					return Hue.stop_radio_delay === 60
 				}
 			},
 			trrestart:
