@@ -3521,6 +3521,13 @@ Hue.start_toggle_radio_context_menu = function()
 					return Hue.radio_started
 				}
 			},
+		},
+		events:
+		{
+			show: function()
+			{
+				return Hue.radio_started
+			}
 		}
 	})
 }
