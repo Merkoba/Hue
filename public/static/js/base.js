@@ -18865,14 +18865,9 @@ Hue.lock_screen = function(save=true)
 Hue.unlock_screen = function(save=true)
 {
 	Hue.msg_lockscreen.close()
-
-	if(Hue.get_setting("afk_on_lockscreen"))
-	{
-		Hue.afk = false 
-		Hue.app_focused = true
-		Hue.on_app_focused()
-	}
-
+	Hue.afk = false 
+	Hue.app_focused = true
+	Hue.on_app_focused()
 	Hue.execute_commands("on_unlockscreen")
 
 	if(save)
