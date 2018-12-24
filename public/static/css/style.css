@@ -1,7 +1,7 @@
 @font-face 
 {
 	font-family: imported_font;
-	src: url(/static/css/opensans.ttf);
+	src: url(/static/css/OpenSans-Regular.ttf);
 }
 
 body, html
@@ -77,6 +77,7 @@ body, html
 	margin-left: 0.8rem;
 	margin-right: 0.8rem;
 	cursor: pointer;
+	align-items: center;
 }
 
 .activity_bar_text
