@@ -120,7 +120,6 @@
 	"global_settings_default_show_joins": true,
 	"global_settings_default_show_parts": true,
 	"global_settings_default_animate_scroll": true,
-	"global_settings_default_new_messages_separator": true,
 	"global_settings_default_afk_disable_messages_beep": true,
 	"global_settings_default_afk_disable_highlights_beep": true,
 	"global_settings_default_afk_disable_media_change_beep": true,

@@ -137,6 +137,9 @@ Hue.local_storage_to_save = {}
 Hue.local_storage_save_delay = 1000
 Hue.sending_whisper = false
 Hue.small_scroll_amount = 250
+Hue.fresh_messages_list = []
+Hue.max_fresh_messages = 100
+Hue.fresh_messages_duration = 2000
 
 Hue.commands = 
 [
@@ -217,7 +220,6 @@ Hue.user_settings =
 	show_joins: {widget_type:"checkbox"},
 	show_parts: {widget_type:"checkbox"},
 	animate_scroll: {widget_type:"checkbox"},
-	new_messages_separator: {widget_type:"checkbox"},
 	afk_disable_messages_beep: {widget_type:"checkbox"},
 	afk_disable_highlights_beep: {widget_type:"checkbox"},
 	afk_disable_media_change_beep: {widget_type:"checkbox"},
@@ -2572,13 +2574,7 @@ Hue.apply_theme = function()
 		color: ${font_color} !important;
 	}
 
-	.highlighted
-	{
-		background-color: ${background_color_2} !important;
-		color: ${font_color} !important;
-	}
-
-	.highlighted2
+	.highlighted, .highlighted2, .highlighted3
 	{
 		background-color: ${background_color_2} !important;
 		color: ${font_color} !important;
@@ -6556,11 +6552,6 @@ Hue.add_to_chat = function(args={})
 		return false
 	}
 
-	if(Hue.started && !Hue.app_focused)
-	{
-		Hue.add_separator(false)
-	}
-
 	let chat_area = $('#chat_area')
 	let last_message = $(".message").last()
 	let appended = false
@@ -6662,6 +6653,19 @@ Hue.add_to_chat = function(args={})
 	{
 		Hue.update_chat_scrollbar()
 		Hue.goto_bottom(false, false)
+	}
+
+	if(Hue.started && !Hue.app_focused)
+	{
+		if(content_container)
+		{
+			Hue.add_fresh_message(content_container)
+		}
+
+		else
+		{
+			Hue.add_fresh_message(args.message)
+		}
 	}
 
 	Hue.scroll_timer()
@@ -9909,6 +9913,7 @@ Hue.on_app_focused = function()
 		Hue.change_radio_when_focused = false
 	}
 
+	Hue.show_fresh_messages()
 	Hue.trigger_activity()
 }
 
@@ -9922,7 +9927,6 @@ Hue.on_app_unfocused = function()
 		}, Hue.get_setting("afk_delay"))
 	}
 
-	Hue.remove_separator(false)
 	Hue.update_chat_scrollbar()
 	Hue.check_scrollers()
 }
@@ -12575,24 +12579,6 @@ Hue.setting_show_parts_action = function(type, save=true)
 Hue.setting_animate_scroll_action = function(type, save=true)
 {
 	Hue[type].animate_scroll = $(`#${type}_animate_scroll`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-Hue.setting_new_messages_separator_action = function(type, save=true)
-{
-	Hue[type].new_messages_separator = $(`#${type}_new_messages_separator`).prop("checked")
-
-	if(Hue.active_settings("new_messages_separator") === type)
-	{
-		if(!Hue[type].new_messages_separator)
-		{
-			Hue.remove_separator()
-		}
-	}
 
 	if(save)
 	{
@@ -18175,57 +18161,6 @@ Hue.make_unique_lines = function(s)
 	return s
 }
 
-Hue.add_separator = function(update_scroll=true)
-{
-	if(!Hue.get_setting("new_messages_separator"))
-	{
-		return false
-	}
-
-	if($(".new_messages_separator").length > 0)
-	{
-		return false
-	}
-
-	let messageclasses
-
-	if(Hue.get_setting("chat_layout") === "normal")
-	{
-		messageclasses = "normal_layout"
-	}
-
-	else if(Hue.get_setting("chat_layout") === "compact")
-	{
-		messageclasses = "compact_layout"
-	}
-
-	let s = Hue.generate_vseparator("New Messages", "new_messages_separator")
-
-	let sep = $(s)
-
-	$("#chat_area").append(sep)
-
-	if(update_scroll)
-	{
-		Hue.update_chat_scrollbar()
-		Hue.goto_bottom()
-	}
-}
-
-Hue.remove_separator = function(update_scroll=true)
-{
-	$(".new_messages_separator").each(function()
-	{
-		$(this).remove()
-	})
-
-	if(update_scroll)
-	{
-		Hue.update_chat_scrollbar()
-		Hue.goto_bottom()
-	}
-}
-
 Hue.start_soundcloud = function()
 {
 	try
@@ -22435,4 +22370,34 @@ Hue.execute_whisper_command = function(username, message)
 		to_history: false,
 		clr_input: false
 	})
+}
+
+Hue.add_fresh_message = function(container)
+{
+	Hue.fresh_messages_list.push(container)
+
+	if(Hue.fresh_messages_list.length > Hue.max_fresh_messages)
+	{
+		Hue.fresh_messages_list.shift()
+	}
+}
+
+Hue.show_fresh_messages = function()
+{
+	if(Hue.fresh_messages_list.length === 0)
+	{
+		return false
+	}
+
+	for(let container of Hue.fresh_messages_list)
+	{
+		container.addClass("highlighted3")
+
+		setTimeout(function()
+		{
+			container.removeClass("highlighted3")
+		}, Hue.fresh_messages_duration)
+	}
+
+	Hue.fresh_messages_list = []
 }
