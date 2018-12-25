@@ -6463,6 +6463,8 @@ Hue.update_chat = function(args={})
 			e.stopPropagation()
 			Hue.expand_image(image_preview_src_original)
 		})
+
+		image_preview_el.find(".image_preview_url").eq(0).urlize()
 	}
 
 	let started = Hue.started
@@ -6499,6 +6501,8 @@ Hue.update_chat = function(args={})
 			e.stopPropagation()
 			Hue.expand_image($(this).attr("src"))
 		})
+
+		link_preview_el.find(".link_preview_url").eq(0).urlize()
 	}
 
 	fmessage.find(".whisper_link").each(function()

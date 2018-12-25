@@ -2234,7 +2234,6 @@ input[type=text], textarea
 
 .image_preview_url
 {
-	text-decoration: underline;
 	overflow-wrap: break-word;
 	word-break: break-word;
 }
@@ -2273,7 +2272,6 @@ input[type=text], textarea
 .link_preview_url
 {
 	font-size: 1em;
-	text-decoration: underline;
 	overflow-wrap: break-word;
 	word-break: break-word;
 }
