@@ -20805,7 +20805,37 @@ Hue.maxers_mouse_events = function()
 		}
 	}
 
+	$("#media_image_maxer")[0].addEventListener("mousedown", function(e)
+	{
+		e.preventDefault()
+	})
+
+	$("#media_image_maxer")[0].addEventListener("dblclick", function(e)
+	{
+		Hue.maximize_images()
+	})
+
+	$("#media_tv_maxer")[0].addEventListener("mousedown", function(e)
+	{
+		e.preventDefault()
+	})
+
+	$("#media_tv_maxer")[0].addEventListener("dblclick", function(e)
+	{
+		Hue.maximize_tv()
+	})
+
 	$("#chat_maxer")[0].addEventListener("wheel", f2)
+
+	$("#chat_maxer")[0].addEventListener("mousedown", function(e)
+	{
+		e.preventDefault()
+	})
+
+	$("#chat_maxer")[0].addEventListener("dblclick", function(e)
+	{
+		Hue.toggle_media()
+	})
 
 	$("#media_image_maxer").on("auxclick", function(e)
 	{
