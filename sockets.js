@@ -726,6 +726,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				handler.charge_ads(socket.hue_room_id)
 			}
+
+			rooms[socket.hue_room_id].modified = Date.now()
 		})
 	}
 
@@ -1748,6 +1750,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		rooms[socket.hue_room_id].current_radio_source = radioinfo.radio_source
 		rooms[socket.hue_room_id].current_radio_query = radioinfo.radio_query
 		rooms[socket.hue_room_id].last_radio_change = Date.now()
+		rooms[socket.hue_room_id].modified = Date.now()
 	}
 
 	handler.public.change_tv_source = async function(socket, data)
@@ -2246,6 +2249,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		rooms[socket.hue_room_id].current_tv_source = tvinfo.tv_source
 		rooms[socket.hue_room_id].current_tv_query = tvinfo.tv_query
 		rooms[socket.hue_room_id].last_tv_change = Date.now()
+		rooms[socket.hue_room_id].modified = Date.now()
 	}
 
 	handler.public.change_username = async function(socket, data)
@@ -3442,6 +3446,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		rooms[room_id].current_image_source = image_source
 		rooms[room_id].current_image_query = data.query
 		rooms[room_id].last_image_change = Date.now()
+		rooms[room_id].modified = Date.now()
 	}
 
 	handler.upload_profile_image = function(socket, data)
