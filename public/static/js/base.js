@@ -1495,6 +1495,11 @@ Hue.setup_image = function(mode, odata={})
 
 	if(mode === "change")
 	{
+		if(Hue.room_state.images_locked)
+		{
+			$("#footer_lock_images_icon").addClass("blinking")
+		}
+
 		Hue.change({type:"image"})
 	}
 }
@@ -1646,6 +1651,11 @@ Hue.setup_tv = function(mode, odata={})
 
 	if(mode === "change")
 	{
+		if(Hue.room_state.tv_locked)
+		{
+			$("#footer_lock_tv_icon").addClass("blinking")
+		}
+
 		Hue.change({type:"tv", force:true})
 	}
 
@@ -1797,6 +1807,11 @@ Hue.setup_radio = function(mode, odata={})
 
 	if(mode === "change")
 	{
+		if(Hue.room_state.radio_locked)
+		{
+			$("#footer_lock_radio_icon").addClass("blinking")
+		}
+
 		Hue.change({type:"radio", force:true})
 	}
 
@@ -6899,7 +6914,6 @@ Hue.change = function(args={})
 
 		if(Hue.room_state.images_locked && Hue.last_image_source && !args.current_source)
 		{
-			$("#footer_lock_images_icon").addClass("blinking")
 			return false
 		}
 
@@ -6907,8 +6921,6 @@ Hue.change = function(args={})
 		{
 			return false
 		}
-
-		$("#footer_lock_images_icon").removeClass("blinking")
 
 		if(Hue.background_mode === "mirror" || Hue.background_mode === "mirror_tiled")
 		{
@@ -6938,6 +6950,8 @@ Hue.change = function(args={})
 		}
 
 		setter = Hue.current_image().setter
+
+		$("#footer_lock_images_icon").removeClass("blinking")
 	}
 
 	else if(args.type === "tv")
@@ -6949,7 +6963,6 @@ Hue.change = function(args={})
 
 		if(Hue.room_state.tv_locked && Hue.last_tv_source && !args.current_source)
 		{
-			$("#footer_lock_tv_icon").addClass("blinking")
 			return false
 		}
 
@@ -6957,8 +6970,6 @@ Hue.change = function(args={})
 		{
 			return false
 		}
-
-		$("#footer_lock_tv_icon").removeClass("blinking")
 
 		let src
 		let source_changed
@@ -7039,6 +7050,8 @@ Hue.change = function(args={})
 		setter = Hue.current_tv().setter
 
 		Hue.play_video_on_load = false
+
+		$("#footer_lock_tv_icon").removeClass("blinking")
 	}
 
 	else if(args.type === "radio")
@@ -7050,7 +7063,6 @@ Hue.change = function(args={})
 
 		if(Hue.room_state.radio_locked && Hue.last_radio_source && !args.current_source)
 		{
-			$("#footer_lock_radio_icon").addClass("blinking")
 			return false
 		}
 
@@ -7058,8 +7070,6 @@ Hue.change = function(args={})
 		{
 			return false
 		}
-
-		$("#footer_lock_radio_icon").removeClass("blinking")
 
 		if(Hue.current_radio().type === "youtube")
 		{
@@ -7104,6 +7114,8 @@ Hue.change = function(args={})
 		}
 
 		setter = Hue.current_radio().setter
+
+		$("#footer_lock_radio_icon").removeClass("blinking")
 	}
 
 	else
@@ -15818,6 +15830,7 @@ Hue.change_lock_images = function()
 		$("#footer_lock_images_icon").removeClass("fa-lock")
 		$("#footer_lock_images_icon").addClass("fa-unlock-alt")
 		$("#footer_lock_images_icon").removeClass("border_bottom")
+		$("#footer_lock_images_icon").removeClass("blinking")
 
 		Hue.change({type:"image"})
 	}
@@ -15857,6 +15870,7 @@ Hue.change_lock_tv = function()
 		$("#footer_lock_tv_icon").removeClass("fa-lock")
 		$("#footer_lock_tv_icon").addClass("fa-unlock-alt")
 		$("#footer_lock_tv_icon").removeClass("border_bottom")
+		$("#footer_lock_tv_icon").removeClass("blinking")
 
 		Hue.change({type:"tv"})
 	}
@@ -15896,6 +15910,7 @@ Hue.change_lock_radio = function()
 		$("#footer_lock_radio_icon").removeClass("fa-lock")
 		$("#footer_lock_radio_icon").addClass("fa-unlock-alt")
 		$("#footer_lock_radio_icon").removeClass("border_bottom")
+		$("#footer_lock_radio_icon").removeClass("blinking")
 
 		Hue.change({type:"radio"})
 	}
