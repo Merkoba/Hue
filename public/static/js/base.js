@@ -22474,3 +22474,14 @@ Hue.show_fresh_messages = function()
 
 	Hue.fresh_messages_list = []
 }
+
+Hue.media_lock_valve = function(type)
+{
+	if(!Hue.room_state[`${type}_locked`])
+	{
+		return false
+	}
+
+	Hue[`toggle_lock_${type}`]()
+	Hue[`toggle_lock_${type}`]()
+}

@@ -39,7 +39,7 @@
 		<script src="/static/js/utilz.js?version=31"></script>
 		<script src="/static/js/colorlib.js?version=13"></script>
 
-		<script src="/static/js/base.js?version=2529"></script>
+		<script src="/static/js/base.js?version=2530"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=536"/>
 
@@ -330,7 +330,7 @@
 									<i id='footer_toggle_images_icon' class='fa fa-toggle-on'></i>
 								</div>
 								
-								<div class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_images()' title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'>
+								<div class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_images()' onauxclick="Hue.media_lock_valve('images')" title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'>
 									<i id='footer_lock_images_icon' class='fa fa-unlock-alt'></i>
 								</div>
 							</div>
@@ -347,7 +347,7 @@
 									<i class='fa fa-toggle-on' id='footer_toggle_tv_icon'></i>
 								</div>
 
-								<div class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_tv()' title="Lock/Unlock TV. Locked means it will stay the same even if media is changed by a user">
+								<div class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_tv()' onauxclick="Hue.media_lock_valve('tv')" title="Lock/Unlock TV. Locked means it will stay the same even if media is changed by a user">
 									<i class='fa fa-unlock-alt' id='footer_lock_tv_icon'></i>
 								</div>
 
@@ -366,7 +366,7 @@
 								</div>
 
 
-								<div class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_radio()' title="Lock/Unlock Radio. Locked means it will stay the same even if media is changed by a user">
+								<div class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_radio()' onauxclick="Hue.media_lock_valve('radio')" title="Lock/Unlock Radio. Locked means it will stay the same even if media is changed by a user">
 									<i class='fa fa-unlock-alt' id='footer_lock_radio_icon'></i>
 								</div>
 
