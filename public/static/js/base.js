@@ -6892,8 +6892,14 @@ Hue.change = function(args={})
 
 	if(args.type === "image")
 	{
-		if(!Hue.room_state.images_enabled || (Hue.room_state.images_locked && Hue.last_image_source && !args.current_source))
+		if(!Hue.room_state.images_enabled)
 		{
+			return false
+		}
+
+		if(Hue.room_state.images_locked && Hue.last_image_source && !args.current_source)
+		{
+			$("#footer_lock_images_icon").addClass("blinking")
 			return false
 		}
 
@@ -6901,6 +6907,8 @@ Hue.change = function(args={})
 		{
 			return false
 		}
+
+		$("#footer_lock_images_icon").removeClass("blinking")
 
 		if(Hue.background_mode === "mirror" || Hue.background_mode === "mirror_tiled")
 		{
@@ -6934,8 +6942,14 @@ Hue.change = function(args={})
 
 	else if(args.type === "tv")
 	{
-		if(!Hue.room_state.tv_enabled || (Hue.room_state.tv_locked && Hue.last_tv_source && !args.current_source))
+		if(!Hue.room_state.tv_enabled)
 		{
+			return false
+		}
+
+		if(Hue.room_state.tv_locked && Hue.last_tv_source && !args.current_source)
+		{
+			$("#footer_lock_tv_icon").addClass("blinking")
 			return false
 		}
 
@@ -6943,6 +6957,8 @@ Hue.change = function(args={})
 		{
 			return false
 		}
+
+		$("#footer_lock_tv_icon").removeClass("blinking")
 
 		let src
 		let source_changed
@@ -7027,8 +7043,14 @@ Hue.change = function(args={})
 
 	else if(args.type === "radio")
 	{
-		if(!Hue.room_state.radio_enabled || (Hue.room_state.radio_locked && Hue.last_radio_source && !args.current_source))
+		if(!Hue.room_state.radio_enabled)
 		{
+			return false
+		}
+
+		if(Hue.room_state.radio_locked && Hue.last_radio_source && !args.current_source)
+		{
+			$("#footer_lock_radio_icon").addClass("blinking")
 			return false
 		}
 
@@ -7036,6 +7058,8 @@ Hue.change = function(args={})
 		{
 			return false
 		}
+
+		$("#footer_lock_radio_icon").removeClass("blinking")
 
 		if(Hue.current_radio().type === "youtube")
 		{
