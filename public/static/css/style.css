@@ -1171,6 +1171,12 @@ input[type=text], textarea
 	justify-content: center;
 }
 
+#modal_image_header_toolbar
+{
+	display: flex;
+	flex-direction: row;
+}
+
 #modal_image_footer_info_container
 {
 	flex-grow: 1;

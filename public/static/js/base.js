@@ -140,6 +140,9 @@ Hue.small_scroll_amount = 250
 Hue.fresh_messages_list = []
 Hue.max_fresh_messages = 100
 Hue.fresh_messages_duration = 2000
+Hue.loaded_image = {}
+Hue.loaed_tv = {}
+Hue.loaded_radio = {}
 
 Hue.commands = 
 [
@@ -2362,7 +2365,7 @@ Hue.apply_background = function()
 
 	if(Hue.background_mode === "mirror" || Hue.background_mode === "mirror_tiled")
 	{
-		bg_image = Hue.current_image().source
+		bg_image = Hue.loaded_image.source
 	}
 
 	else
@@ -6914,7 +6917,7 @@ Hue.change = function(args={})
 			return false
 		}
 
-		if(Hue.room_state.images_locked && Hue.last_image_source && !args.current_source)
+		if(!args.item && Hue.room_state.images_locked && Hue.last_image_source && !args.current_source)
 		{
 			return false
 		}
@@ -6924,13 +6927,10 @@ Hue.change = function(args={})
 			return false
 		}
 
-		if(Hue.background_mode === "mirror" || Hue.background_mode === "mirror_tiled")
-		{
-			Hue.apply_background()
-		}
-
 		let src
 		let source_changed
+
+		let item = args.item ? args.item : Hue.current_image()
 
 		if(args.current_source && Hue.last_image_source)
 		{
@@ -6940,7 +6940,7 @@ Hue.change = function(args={})
 
 		else
 		{
-			src = Hue.current_image().source
+			src = item.source
 			source_changed = true
 		}		
 
@@ -6948,12 +6948,22 @@ Hue.change = function(args={})
 
 		if(source_changed)
 		{
-			Hue.last_image_source = Hue.current_image().source
+			Hue.last_image_source = item.source
 		}
 
-		setter = Hue.current_image().setter
+		setter = item.setter
 
-		$("#footer_lock_images_icon").removeClass("blinking")
+		if(!args.item || args.item === Hue.current_image())
+		{
+			$("#footer_lock_images_icon").removeClass("blinking")
+		}
+
+		Hue.loaded_image = item
+
+		if(Hue.background_mode === "mirror" || Hue.background_mode === "mirror_tiled")
+		{
+			Hue.apply_background()
+		}
 	}
 
 	else if(args.type === "tv")
@@ -7059,6 +7069,8 @@ Hue.change = function(args={})
 		{
 			$("#footer_lock_tv_icon").removeClass("blinking")
 		}
+
+		Hue.loaded_tv = item
 	}
 
 	else if(args.type === "radio")
@@ -7130,6 +7142,8 @@ Hue.change = function(args={})
 		{
 			$("#footer_lock_radio_icon").removeClass("blinking")
 		}
+
+		Hue.loaded_radio = item
 	}
 
 	else
@@ -7213,9 +7227,9 @@ Hue.start_image_events = function()
 
 Hue.after_image_load = function()
 {
-	Hue.current_image_source = Hue.current_image().source
-	Hue.current_image_info = Hue.current_image().info
-	Hue.current_image_date = Hue.current_image().date
+	Hue.current_image_source = Hue.loaded_image.source
+	Hue.current_image_info = Hue.loaded_image.info
+	Hue.current_image_date = Hue.loaded_image.date
 
 	Hue.get_dominant_theme()
 	Hue.fix_image_frame()
@@ -17200,6 +17214,14 @@ Hue.setup_modal_image = function()
 	$("#modal_image_footer_next").click(function(e)
 	{
 		Hue.modal_image_next_click()
+	})
+
+	$("#modal_image_toolbar_load").click(function(e)
+	{
+		let item = Hue.images_changed[Hue.current_modal_image_index]
+		Hue.change({type:"image", item:item, force:true})
+		Hue.close_all_modals()
+		Hue.toggle_lock_images(true)
 	})
 }
 
