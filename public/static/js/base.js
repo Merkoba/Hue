@@ -471,6 +471,7 @@ Hue.setup_templates = function()
 	Hue.template_draw_image = Handlebars.compile($('#template_draw_image').html())
 	Hue.template_credits = Handlebars.compile($('#template_credits').html())
 	Hue.template_open_url = Handlebars.compile($('#template_open_url').html())
+	Hue.template_open_url_2 = Handlebars.compile($('#template_open_url_2').html())
 	Hue.template_background_image_select = Handlebars.compile($('#template_background_image_select').html())
 	Hue.template_background_image_input = Handlebars.compile($('#template_background_image_input').html())
 	Hue.template_goto_room = Handlebars.compile($('#template_goto_room').html())
@@ -1635,7 +1636,7 @@ Hue.setup_tv = function(mode, odata={})
 
 		data.onclick = function()
 		{
-			Hue.open_url_menu(data.source)
+			Hue.open_url_menu(data.source, 2, data, "tv")
 		}
 	}
 
@@ -1791,7 +1792,7 @@ Hue.setup_radio = function(mode, odata={})
 
 		data.onclick = function()
 		{
-			Hue.open_url_menu(data.source)
+			Hue.open_url_menu(data.source, 2, data, "radio")
 		}
 	}
 
@@ -1886,7 +1887,7 @@ Hue.current_radio = function()
 	}
 }
 
-Hue.load_radio = function(src, type)
+Hue.load_radio = function(src, type, item, force=false)
 {
 	let radio_metadata = ""
 	
@@ -1958,9 +1959,9 @@ Hue.load_radio = function(src, type)
 			Hue.youtube_player.setVolume(Hue.get_nice_volume(Hue.room_state.radio_volume))
 		}
 
-		if(!Hue.room_state.radio_locked || !Hue.last_radio_source)
+		if(force || (!Hue.room_state.radio_locked || !Hue.last_radio_source))
 		{
-			Hue.push_played(false, {s1:Hue.current_radio().title, s2:src})
+			Hue.push_played(false, {s1:item.title, s2:src})
 		}
 
 		if(Hue.soundcloud_player !== undefined)
@@ -1992,9 +1993,9 @@ Hue.load_radio = function(src, type)
 			})
 		}
 
-		if(!Hue.room_state.radio_locked || !Hue.last_radio_source)
+		if(force || (!Hue.room_state.radio_locked || !Hue.last_radio_source))
 		{
-			Hue.push_played(false, {s1:Hue.current_radio().title, s2:src})
+			Hue.push_played(false, {s1:item.title, s2:src})
 		}
 
 		if(Hue.youtube_player !== undefined)
@@ -6831,7 +6832,8 @@ Hue.change = function(args={})
 		force: false,
 		play: true,
 		notify: true,
-		current_source: false
+		current_source: false,
+		item: false
 	}
 
 	Hue.fill_defaults(args, def_args)
@@ -6961,7 +6963,7 @@ Hue.change = function(args={})
 			return false
 		}
 
-		if(Hue.room_state.tv_locked && Hue.last_tv_source && !args.current_source)
+		if(!args.item && Hue.room_state.tv_locked && Hue.last_tv_source && !args.current_source)
 		{
 			return false
 		}
@@ -6974,6 +6976,8 @@ Hue.change = function(args={})
 		let src
 		let source_changed
 
+		let item = args.item ? args.item : Hue.current_tv()
+
 		if(args.current_source && Hue.last_tv_source)
 		{
 			src = Hue.last_tv_source
@@ -6982,11 +6986,11 @@ Hue.change = function(args={})
 
 		else
 		{
-			src = Hue.current_tv().source
+			src = item.source
 			source_changed = true
 		}
 
-		if(Hue.current_tv().type === "youtube")
+		if(item.type === "youtube")
 		{
 			if(Hue.youtube_video_player === undefined)
 			{
@@ -6996,7 +7000,7 @@ Hue.change = function(args={})
 			Hue.show_youtube_video(src, args.play)
 		}
 
-		else if(Hue.current_tv().type === "twitch")
+		else if(item.type === "twitch")
 		{
 			if(Hue.twitch_video_player === undefined)
 			{
@@ -7006,7 +7010,7 @@ Hue.change = function(args={})
 			Hue.show_twitch_video(src, args.play)
 		}
 
-		else if(Hue.current_tv().type === "soundcloud")
+		else if(item.type === "soundcloud")
 		{
 			if(Hue.soundcloud_video_player === undefined)
 			{
@@ -7016,7 +7020,7 @@ Hue.change = function(args={})
 			Hue.show_soundcloud_video(src, args.play)
 		}
 
-		else if(Hue.current_tv().type === "vimeo")
+		else if(item.type === "vimeo")
 		{
 			if(Hue.vimeo_video_player === undefined)
 			{
@@ -7026,12 +7030,12 @@ Hue.change = function(args={})
 			Hue.show_vimeo_video(src, args.play)
 		}
 
-		else if(Hue.current_tv().type === "url")
+		else if(item.type === "url")
 		{
 			Hue.show_video(src, args.play)
 		}
 
-		else if(Hue.current_tv().type === "iframe")
+		else if(item.type === "iframe")
 		{
 			Hue.show_iframe_video(src, args.play)
 		}
@@ -7043,15 +7047,18 @@ Hue.change = function(args={})
 
 		if(source_changed)
 		{
-			Hue.last_tv_source = Hue.current_tv().source
-			Hue.last_tv_type = Hue.current_tv().type
+			Hue.last_tv_source = item.source
+			Hue.last_tv_type = item.type
 		}
 
-		setter = Hue.current_tv().setter
+		setter = item.setter
 
 		Hue.play_video_on_load = false
 
-		$("#footer_lock_tv_icon").removeClass("blinking")
+		if(!args.item || args.item === Hue.current_tv())
+		{
+			$("#footer_lock_tv_icon").removeClass("blinking")
+		}
 	}
 
 	else if(args.type === "radio")
@@ -7061,7 +7068,7 @@ Hue.change = function(args={})
 			return false
 		}
 
-		if(Hue.room_state.radio_locked && Hue.last_radio_source && !args.current_source)
+		if(!args.item && Hue.room_state.radio_locked && Hue.last_radio_source && !args.current_source)
 		{
 			return false
 		}
@@ -7091,6 +7098,8 @@ Hue.change = function(args={})
 		let type
 		let source_changed
 
+		let item = args.item ? args.item : Hue.current_radio()
+
 		if(args.current_source && Hue.last_radio_source)
 		{
 			src = Hue.last_radio_source
@@ -7100,22 +7109,27 @@ Hue.change = function(args={})
 
 		else
 		{
-			src = Hue.current_radio().source
-			type = Hue.current_radio().type
+			src = item.source
+			type = item.type
 			source_changed = true
-		}		
+		}
 
-		Hue.load_radio(src, type)
+		let force = args.item ? true : false	
+
+		Hue.load_radio(src, type, item, force)
 
 		if(source_changed)
 		{
-			Hue.last_radio_source = Hue.current_radio().source
-			Hue.last_radio_type = Hue.current_radio().type
+			Hue.last_radio_source = item.source
+			Hue.last_radio_type = item.type
 		}
 
-		setter = Hue.current_radio().setter
+		setter = item.setter
 
-		$("#footer_lock_radio_icon").removeClass("blinking")
+		if(!args.item || args.item === item)
+		{
+			$("#footer_lock_radio_icon").removeClass("blinking")
+		}
 	}
 
 	else
@@ -19966,7 +19980,7 @@ Hue.format_command_aliases = function(cmds)
 	return s.slice(0, -1)
 }
 
-Hue.open_url_menu = function(src)
+Hue.open_url_menu = function(src, type=1, data=false, media_type=false)
 {
 	let n = 50
 
@@ -19982,7 +19996,19 @@ Hue.open_url_menu = function(src)
 		s = src
 	}
 
-	Hue.msg_info2.show([s, Hue.template_open_url()], function()
+	let template
+
+	if(type === 1)
+	{
+		template = Hue.template_open_url()
+	}
+
+	else if(type === 2)
+	{
+		template = Hue.template_open_url_2()
+	}
+
+	Hue.msg_info2.show([s, template], function()
 	{
 		$("#open_url_menu_open").click(function()
 		{
@@ -19995,6 +20021,16 @@ Hue.open_url_menu = function(src)
 			Hue.copy_string(src)
 			Hue.msg_info2.close()
 		})
+
+		if(type === 2)
+		{
+			$("#open_url_menu_load").click(function()
+			{
+				Hue.change({type:media_type, item:data, force:true})
+				Hue.close_all_modals()
+				Hue[`toggle_lock_${media_type}`](true)
+			})
+		}
 	})
 }
 

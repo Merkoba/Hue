@@ -39,7 +39,7 @@
 		<script src="/static/js/utilz.js?version=31"></script>
 		<script src="/static/js/colorlib.js?version=13"></script>
 
-		<script src="/static/js/base.js?version=2530"></script>
+		<script src="/static/js/base.js?version=2531"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=536"/>
 
@@ -320,7 +320,7 @@
 
 							<div id='footer_images_controls' class='footer_media_control'>
 
-								<div class='footer_text_small'>Images</div>
+								<div class='footer_text_small pointer' onclick='Hue.show_image_history()'>Images</div>
 
 								<div  id='footer_images_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_image_picker()' title="Change the Image">
 									<i  id='footer_images_icon' class='fa fa-camera'></i>
@@ -337,7 +337,7 @@
  	
 							<div id='footer_tv_controls' class='footer_media_control'>
 
-								<div class='footer_text_small'>TV</div>
+								<div class='footer_text_small pointer' onclick='Hue.show_tv_history()'>TV</div>
 
 								<div id='footer_tv_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_tv_picker()' title="Change the TV">
 									<i id='footer_tv_icon' class='fa fa-television'></i>
@@ -355,7 +355,7 @@
 
 							<div id='footer_radio_controls' class='footer_media_control'>
 
-								<div class='footer_text_small'>Radio</div>
+								<div class='footer_text_small pointer' onclick='Hue.show_radio_history()'>Radio</div>
 
 								<div id='footer_radio_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_radio_picker()' title="Change the Radio">
 									<i id='footer_radio_icon' class='fa fa-volume-up'></i>
@@ -1408,6 +1408,16 @@
 				<div class='bigger action inline pointer' id='open_url_menu_open'>Open&nbsp;URL</div>
 				<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
 				<div class='bigger action inline pointer' id='open_url_menu_copy'>Copy&nbsp;URL</div>
+			</div>
+		</script>
+
+		<script id='template_open_url_2' type='text/x-handlebars-template'>
+			<div class='flex_row_center unselectable' id='open_url_container'>
+				<div class='bigger action inline pointer' id='open_url_menu_open'>Open&nbsp;URL</div>
+				<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
+				<div class='bigger action inline pointer' id='open_url_menu_copy'>Copy&nbsp;URL</div>
+				<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
+				<div class='bigger action inline pointer' id='open_url_menu_load'>Load</div>
 			</div>
 		</script>
 
