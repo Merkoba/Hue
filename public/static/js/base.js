@@ -143,6 +143,10 @@ Hue.fresh_messages_duration = 2000
 Hue.loaded_image = {}
 Hue.loaed_tv = {}
 Hue.loaded_radio = {}
+Hue.autoscroll_amount = 20
+Hue.autoscroll_delay = 250
+Hue.autoscrolling = false
+Hue.chat_scrolled = false
 
 Hue.commands = 
 [
@@ -194,7 +198,7 @@ Hue.commands =
 	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist',
 	'/accesslog', '/toggleactivtybar', '/thememode', '/synthkey',
 	'/togglemutesynth', '/speak', '/synthkeylocal', '/speaklocal',
-	'/unmaximize', '/maximizechat'
+	'/unmaximize', '/maximizechat', '/autoscrollup', '/autoscrolldown'
 ]
 
 Hue.user_settings =
@@ -2615,6 +2619,16 @@ Hue.apply_theme = function()
 	{
 		background-color: ${background_color_a_2} !important;
 		color: ${font_color} !important;
+	}
+
+	.left_scroller
+	{
+		border-right: 1px ${color_4_a} solid;
+	}
+
+	.center_scroller
+	{
+		border-right: 1px ${color_4_a} solid;
 	}
 
 	.topbox_container
@@ -5699,6 +5713,7 @@ Hue.scroll_events = function()
 	$('#chat_area')[0].addEventListener("wheel", function(e)
 	{
 		$("#chat_area").stop()
+		Hue.clear_autoscroll()
 	})
 
 	$('#chat_area').scroll(function()
@@ -5733,8 +5748,9 @@ Hue.check_scrollers = function()
 	let max = $ch.prop('scrollHeight') - $ch.innerHeight()
 
 	let scrolltop = $ch.scrollTop()
+	let diff = max - scrolltop
 
-	if(max - scrolltop > Hue.small_scroll_amount)
+	if(diff > Hue.small_scroll_amount)
 	{
 		if(scrolltop > 0)
 		{
@@ -5744,6 +5760,7 @@ Hue.check_scrollers = function()
 		else
 		{
 			Hue.hide_top_scroller()
+			Hue.clear_autoscroll()
 		}
 
 		Hue.show_bottom_scroller()
@@ -5753,6 +5770,11 @@ Hue.check_scrollers = function()
 	{
 		Hue.hide_top_scroller()
 		Hue.hide_bottom_scroller()
+
+		if(diff <= 0)
+		{
+			Hue.clear_autoscroll()
+		}
 	}
 }
 
@@ -8918,6 +8940,16 @@ Hue.execute_command = function(message, ans)
 	else if(Hue.oi_equals(cmd2, '/maximizechat'))
 	{
 		Hue.toggle_media()
+	}
+
+	else if(Hue.oi_equals(cmd2, '/autoscrollup'))
+	{
+		Hue.autoscroll_up()
+	}
+
+	else if(Hue.oi_equals(cmd2, '/autoscrolldown'))
+	{
+		Hue.autoscroll_down()
 	}	
 
 	else
@@ -9205,12 +9237,15 @@ Hue.announce_new_username = function(data)
 
 Hue.goto_top = function(animate=true)
 {
+	Hue.clear_autoscroll()
 	Hue.scroll_chat_to(0, animate)
 	Hue.hide_top_scroller()
 }
 
 Hue.goto_bottom = function(force=false, animate=true)
 {
+	Hue.clear_autoscroll()
+
 	let $ch = $("#chat_area")
 
 	let max = $ch.prop('scrollHeight') - $ch.innerHeight()
@@ -9224,7 +9259,7 @@ Hue.goto_bottom = function(force=false, animate=true)
 
 	else
 	{
-		if($('#bottom_scroller_container').css('visibility') === 'hidden')
+		if(!Hue.chat_scrolled)
 		{
 			Hue.scroll_chat_to(max + 10, animate)
 		}
@@ -17976,11 +18011,13 @@ Hue.hide_top_scroller = function()
 Hue.show_bottom_scroller = function()
 {
 	$('#bottom_scroller_container').css('visibility', 'visible')
+	Hue.chat_scrolled = true
 }
 
 Hue.hide_bottom_scroller = function()
 {
 	$('#bottom_scroller_container').css('visibility', 'hidden')
+	Hue.chat_scrolled = false
 }
 
 Hue.scroll_chat_to = function(y, animate=true, d=500)
@@ -22542,4 +22579,48 @@ Hue.media_lock_valve = function(type)
 
 	Hue[`toggle_lock_${type}`]()
 	Hue[`toggle_lock_${type}`]()
+}
+
+Hue.autoscroll_up = function()
+{
+	if(Hue.autoscrolling)
+	{
+		Hue.clear_autoscroll()
+		return false
+	}
+
+	Hue.clear_autoscroll()
+
+	Hue.autoscroll_up_interval = setInterval(function()
+	{
+		Hue.scroll_up(Hue.autoscroll_amount)
+	}, Hue.autoscroll_delay)
+
+	Hue.autoscrolling = true
+}
+
+Hue.autoscroll_down = function()
+{
+	if(Hue.autoscrolling)
+	{
+		Hue.clear_autoscroll()
+		return false
+	}
+
+	Hue.clear_autoscroll()
+
+	Hue.autoscroll_up_interval = setInterval(function()
+	{
+		Hue.scroll_down(Hue.autoscroll_amount)
+	}, Hue.autoscroll_delay)
+
+	Hue.autoscrolling = true
+}
+
+Hue.clear_autoscroll = function()
+{
+	clearInterval(Hue.autoscroll_up_interval)
+	clearInterval(Hue.autoscroll_down_interval)
+	
+	Hue.autoscrolling = false
 }

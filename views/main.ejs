@@ -39,9 +39,9 @@
 		<script src="/static/js/utilz.js?version=31"></script>
 		<script src="/static/js/colorlib.js?version=13"></script>
 
-		<script src="/static/js/base.js?version=2532"></script>
+		<script src="/static/js/base.js?version=2533"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=537"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=538"/>
 
 		<script>
 
@@ -233,8 +233,8 @@
 
 						<div class='scroller_container top_scroller_container' id='top_scroller_container'>
 							<div id='top_scroller' class='left_scroller scroller action3 unselectable' onclick='Hue.goto_top()'>Go&nbsp;To&nbsp;Top</div>
-							<div class='hspacer3'></div>
-							<div id='up_scroller' class='right_scroller scroller action3 unselectable' onclick='Hue.activity_above()'>Your&nbsp;Activity&nbsp;Above</div>
+							<div class='center_scroller scroller action3 unselectable' onclick='Hue.autoscroll_up()'>Scroll</div>
+							<div id='up_scroller' class='right_scroller scroller action3 unselectable' onclick='Hue.activity_above()'>Your&nbsp;Activity</div>
 						</div>
 
 						<div class='maxer_container2'>
@@ -247,8 +247,8 @@
 
 						<div class='scroller_container bottom_scroller_container' id='bottom_scroller_container'>
 							<div id='bottom_scroller' class='left_scroller scroller action3 unselectable' onclick='Hue.goto_bottom(true)'>Go&nbsp;To&nbsp;Bottom</div>
-							<div class='hspacer3'></div>
-							<div id='down_scroller' class='right_scroller scroller action3 unselectable' onclick='Hue.activity_below()'>Your&nbsp;Activity&nbsp;Below</div>
+							<div class='center_scroller scroller action3 unselectable' onclick='Hue.autoscroll_down()'>Scroll</div>
+							<div id='down_scroller' class='right_scroller scroller action3 unselectable' onclick='Hue.activity_below()'>Your&nbsp;Activity</div>
 						</div>
 
 					</div>
@@ -1938,6 +1938,8 @@
 			<div class='info_item modal_item'>/speak x: Makes the voice synth say some text.</div>
 			<div class='info_item modal_item'>/speaklocal x: Makes the voice synth say some text only for that user.</div>
 			<div class='info_item modal_item'>/togglemutesynth: Mutes or unmutes the synth.</div>
+			<div class='info_item modal_item'>/autoscrollup: Slowly scrolls chat up automatically.</div>
+			<div class='info_item modal_item'>/autoscrolldown: Slowly scrolls chat down automatically.</div>
 			<div class='info_item modal_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil, and profile images in chat of whoever is typing will have a glow effect.</div>
 			<div class='info_item modal_item'>In some commands like /whisper the > character can be used to send 2 arguments. For instance, "/whisper Jack > hello my friend" will send a message to Jack directly.</div>
 			<div class='info_item modal_item'>Commands can be chained with &&. For instance "/tv The World && /maximizetv".</div>

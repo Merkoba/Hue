@@ -381,12 +381,17 @@ div#header_radio_playing_icon
 
 .left_scroller
 {
-	width: 50%;
+	width: 40%;
 }
 
 .right_scroller
 {
-	width: 50%;
+	width: 40%;
+}
+
+.center_scroller
+{
+	width: 20%;
 }
 
 .scroller:hover 
