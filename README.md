@@ -535,6 +535,15 @@ If you want to remove it to start fresh:
 "global_settings_default_stop_tv_on_radio_play"
 >Whether TV stops on radio play by default.
 
+"bypass_images_lock_on_own_change"
+>Whether images are forced to change even if they're locked, when you change them, by default.
+
+"bypass_tv_lock_on_own_change"
+>Whether tv are forced to change even if they're locked, when you change it, by default.
+
+"bypass_radio_lock_on_own_change"
+>Whether radio are forced to change even if they're locked, when you change it, by default.
+
 "global_settings_default_synth_enabled"
 >Whether the synth is enabled by default.
 

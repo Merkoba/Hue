@@ -257,6 +257,9 @@ Hue.user_settings =
 	show_link_previews: {widget_type:"checkbox"},
 	stop_radio_on_tv_play: {widget_type:"checkbox"},
 	stop_tv_on_radio_play: {widget_type:"checkbox"},
+	bypass_images_lock_on_own_change: {widget_type:"checkbox"},
+	bypass_tv_lock_on_own_change: {widget_type:"checkbox"},
+	bypass_radio_lock_on_own_change: {widget_type:"checkbox"},
 	synth_enabled: {widget_type:"checkbox"},
 	chat_display_percentage: {widget_type:"custom"},
 	tv_display_percentage: {widget_type:"custom"},
@@ -1503,12 +1506,19 @@ Hue.setup_image = function(mode, odata={})
 
 	if(mode === "change")
 	{
+		let bypass_lock = false
+
+		if(data.setter === Hue.username)
+		{
+			bypass_lock = Hue.get_setting("bypass_images_lock_on_own_change")
+		}
+
 		if(Hue.room_state.images_locked)
 		{
 			$("#footer_lock_images_icon").addClass("blinking")
 		}
 
-		Hue.change({type:"image"})
+		Hue.change({type:"image", bypass_lock:bypass_lock})
 	}
 }
 
@@ -1657,19 +1667,29 @@ Hue.setup_tv = function(mode, odata={})
 		Hue.push_tv_changed(data)
 	}
 
-	if(mode === "change")
+	if(mode === "change" || mode === "restart")
 	{
-		if(Hue.room_state.tv_locked)
+		let bypass_lock = false
+
+		if(data.setter === Hue.username)
 		{
-			$("#footer_lock_tv_icon").addClass("blinking")
+			bypass_lock = Hue.get_setting("bypass_tv_lock_on_own_change")
 		}
 
-		Hue.change({type:"tv", force:true})
-	}
+		if(mode === "change")
+		{
+			if(Hue.room_state.tv_locked)
+			{
+				$("#footer_lock_tv_icon").addClass("blinking")
+			}
 
-	else if(mode === "restart")
-	{
-		Hue.change({type:"tv", force:true, play:true})
+			Hue.change({type:"tv", force:true, bypass_lock:bypass_lock})
+		}
+
+		else if(mode === "restart")
+		{
+			Hue.change({type:"tv", force:true, play:true, bypass_lock:bypass_lock})
+		}
 	}
 }
 
@@ -1813,19 +1833,29 @@ Hue.setup_radio = function(mode, odata={})
 		Hue.push_radio_changed(data)
 	}
 
-	if(mode === "change")
+	if(mode === "change" || mode === "restart")
 	{
-		if(Hue.room_state.radio_locked)
+		let bypass_lock = false
+
+		if(data.setter === Hue.username)
 		{
-			$("#footer_lock_radio_icon").addClass("blinking")
+			bypass_lock = Hue.get_setting("bypass_radio_lock_on_own_change")
 		}
 
-		Hue.change({type:"radio", force:true})
-	}
+		if(mode === "change")
+		{
+			if(Hue.room_state.radio_locked)
+			{
+				$("#footer_lock_radio_icon").addClass("blinking")
+			}
 
-	else if(mode === "restart")
-	{
-		Hue.change({type:"radio", force:true, play:true})
+			Hue.change({type:"radio", force:true, bypass_lock:bypass_lock})
+		}
+
+		else if(mode === "restart")
+		{
+			Hue.change({type:"radio", force:true, play:true, bypass_lock:bypass_lock})
+		}
 	}
 }
 
@@ -6858,7 +6888,8 @@ Hue.change = function(args={})
 		play: true,
 		notify: true,
 		current_source: false,
-		item: false
+		item: false,
+		bypass_lock: false
 	}
 
 	Hue.fill_defaults(args, def_args)
@@ -6939,7 +6970,9 @@ Hue.change = function(args={})
 			return false
 		}
 
-		if(!args.item && Hue.room_state.images_locked && Hue.last_image_source && !args.current_source)
+		let locked = Hue.room_state.images_locked && !args.bypass_lock
+
+		if(!args.item && locked && Hue.last_image_source && !args.current_source)
 		{
 			return false
 		}
@@ -6995,7 +7028,9 @@ Hue.change = function(args={})
 			return false
 		}
 
-		if(!args.item && Hue.room_state.tv_locked && Hue.last_tv_source && !args.current_source)
+		let locked = Hue.room_state.tv_locked && !args.bypass_lock
+
+		if(!args.item && locked && Hue.last_tv_source && !args.current_source)
 		{
 			return false
 		}
@@ -7102,7 +7137,9 @@ Hue.change = function(args={})
 			return false
 		}
 
-		if(!args.item && Hue.room_state.radio_locked && Hue.last_radio_source && !args.current_source)
+		let locked = Hue.room_state.radio_locked && !args.bypass_lock
+
+		if(!args.item && locked && Hue.last_radio_source && !args.current_source)
 		{
 			return false
 		}
@@ -7148,7 +7185,12 @@ Hue.change = function(args={})
 			source_changed = true
 		}
 
-		let force = args.item ? true : false	
+		let force = false
+
+		if(args.item || args.bypass_lock)
+		{
+			force = true
+		}
 
 		Hue.load_radio(src, type, item, force)
 
@@ -13124,6 +13166,36 @@ Hue.setting_stop_radio_on_tv_play_action = function(type, save=true)
 Hue.setting_stop_tv_on_radio_play_action = function(type, save=true)
 {
 	Hue[type].stop_tv_on_radio_play = $(`#${type}_stop_tv_on_radio_play`).prop("checked")
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_bypass_images_lock_on_own_change_action = function(type, save=true)
+{
+	Hue[type].bypass_images_lock_on_own_change = $(`#${type}_bypass_images_lock_on_own_change`).prop("checked")
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_bypass_tv_lock_on_own_change_action = function(type, save=true)
+{
+	Hue[type].bypass_tv_lock_on_own_change = $(`#${type}_bypass_tv_lock_on_own_change`).prop("checked")
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_bypass_radio_lock_on_own_change_action = function(type, save=true)
+{
+	Hue[type].bypass_radio_lock_on_own_change = $(`#${type}_bypass_radio_lock_on_own_change`).prop("checked")
 
 	if(save)
 	{
