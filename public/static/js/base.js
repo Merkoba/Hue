@@ -144,7 +144,7 @@ Hue.loaded_image = {}
 Hue.loaed_tv = {}
 Hue.loaded_radio = {}
 Hue.autoscroll_amount = 20
-Hue.autoscroll_delay = 250
+Hue.autoscroll_delay = 400
 Hue.autoscrolling = false
 Hue.chat_scrolled = false
 
