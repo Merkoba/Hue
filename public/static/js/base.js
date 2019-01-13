@@ -9286,14 +9286,13 @@ Hue.goto_top = function(animate=true)
 
 Hue.goto_bottom = function(force=false, animate=true)
 {
-	Hue.clear_autoscroll()
-
 	let $ch = $("#chat_area")
 
 	let max = $ch.prop('scrollHeight') - $ch.innerHeight()
 
 	if(force)
 	{
+		Hue.clear_autoscroll()
 		Hue.scroll_chat_to(max + 10, animate)
 		Hue.hide_top_scroller()
 		Hue.hide_bottom_scroller()
@@ -9303,6 +9302,7 @@ Hue.goto_bottom = function(force=false, animate=true)
 	{
 		if(!Hue.chat_scrolled)
 		{
+			Hue.clear_autoscroll()
 			Hue.scroll_chat_to(max + 10, animate)
 		}
 	}
