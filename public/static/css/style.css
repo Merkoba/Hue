@@ -1816,7 +1816,7 @@ input[type=text], textarea
 	width: 320px;
 }
 
-#lockscreen_titulo_menu
+#lockscreen_title_menu
 {
 	position: relative;
 	float: left;
@@ -1836,7 +1836,7 @@ input[type=text], textarea
 	top:14px;
 }
 
-#lockscreen_titulo 
+#lockscreen_title 
 {
 	position: relative;
 	float: left;

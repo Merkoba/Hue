@@ -147,6 +147,7 @@ Hue.autoscroll_amount = 20
 Hue.autoscroll_delay = 400
 Hue.autoscrolling = false
 Hue.chat_scrolled = false
+Hue.lockscreen_peek_delay = 1000
 
 Hue.commands = 
 [
@@ -346,6 +347,7 @@ Hue.init = function()
 	Hue.start_vimeo()
 	Hue.get_ignored_usernames_list()
 	Hue.get_accept_commands_from_list()
+	Hue.setup_lockscreen()
 
 	if(Hue.debug_functions)
 	{
@@ -18965,6 +18967,23 @@ Hue.arrange_media_setting_display_positions = function(type)
 	$(`#${type}_display_position_tv`).css("order", tvo)	
 }
 
+Hue.setup_lockscreen = function()
+{
+	$("#lockscreen_title_menu").on("mouseenter", function()
+	{
+		Hue.lockscreen_peek_timeout = setTimeout(function()
+		{
+			$("#Msg-container-lockscreen").css("opacity", 0.2)
+		}, Hue.lockscreen_peek_delay)
+	})
+
+	$("#lockscreen_title_menu").on("mouseleave", function()
+	{
+		clearTimeout(Hue.lockscreen_peek_timeout)
+		$("#Msg-container-lockscreen").css("opacity", 1)
+	})
+}
+
 Hue.lock_screen = function(save=true)
 {
 	Hue.room_state.screen_locked = true
@@ -18987,6 +19006,8 @@ Hue.lock_screen = function(save=true)
 
 Hue.unlock_screen = function(save=true)
 {
+	clearTimeout(Hue.lockscreen_peek_timeout)
+
 	Hue.room_state.screen_locked = false
 	Hue.msg_lockscreen.close()
 	Hue.process_visibility()
@@ -22397,7 +22418,7 @@ Hue.process_lockscreen_lights_off = function()
 Hue.lockscreen_turn_lights_off = function()
 {
 	$("#lockscreen_body").addClass("black_background_color")
-	$("#lockscreen_titulo_menu").addClass("black_background_color")
+	$("#lockscreen_title_menu").addClass("black_background_color")
 	$("#lockscreen_principal").addClass("grey_font_color")
 	$("#lockscreen_lights_off_button").addClass("grey_font_color")
 	$("#lockscreen_icon_menu").addClass("grey_background_color_parent")
@@ -22407,7 +22428,7 @@ Hue.lockscreen_turn_lights_off = function()
 Hue.lockscreen_turn_lights_on = function()
 {
 	$("#lockscreen_body").removeClass("black_background_color")
-	$("#lockscreen_titulo_menu").removeClass("black_background_color")	
+	$("#lockscreen_title_menu").removeClass("black_background_color")	
 	$("#lockscreen_lights_off_button").text("Turn Lights Off")
 	$("#lockscreen_principal").removeClass("grey_font_color")
 	$("#lockscreen_lights_off_button").removeClass("grey_font_color")
