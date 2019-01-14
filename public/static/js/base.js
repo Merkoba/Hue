@@ -1481,6 +1481,27 @@ Hue.setup_image = function(mode, odata={})
 		data.source = Hue.default_image_source
 	}
 
+	if(data.source.startsWith("/"))
+	{
+		data.source = window.location.origin + data.source
+	}
+
+	else if(data.source.startsWith(window.location.origin))
+	{
+		if(!data.size)
+		{
+			for(let img of Hue.images_changed)
+			{
+				if(img.source === data.source)
+				{
+					data.type = img.type
+					data.size = img.size
+					break
+				}
+			}
+		}
+	}
+
 	data.info = `Setter: ${data.setter} | ${data.nice_date}`
 
 	if(data.type === "upload")
@@ -7316,9 +7337,7 @@ Hue.change = function(args={})
 Hue.show_image = function(src, force=false)
 {
 	$("#media_image_frame").attr("crossOrigin", "anonymous")
-
 	$("#media_image_error").css("display", "none")
-
 	$("#media_image_frame").css("display", "initial")
 
 	if(force || $("#media_image_frame").attr("src") !== src)
@@ -14303,16 +14322,6 @@ Hue.show_modal_image = function(url, title, date)
 	Hue.msg_modal_image.show(function()
 	{
 		Hue.set_modal_image_number()
-
-		if(url.startsWith("/"))
-		{
-			$("#modal_image_toolbar_change_container").css("display", "none")
-		}
-
-		else
-		{
-			$("#modal_image_toolbar_change_container").css("display", "flex")
-		}
 	})
 }
 
