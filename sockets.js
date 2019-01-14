@@ -3356,15 +3356,13 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			let info = await db_manager.get_room({_id:room_id}, {stored_images:1})
-
-			info.stored_images.unshift(data.fname)
+			rooms[room_id].stored_images.unshift(data.fname)
 
 			let spliced = false
 
-			if(info.stored_images.length > config.max_stored_images)
+			if(rooms[room_id].stored_images.length > config.max_stored_images)
 			{
-				let spliced = info.stored_images.splice(config.max_stored_images, info.stored_images.length)
+				spliced = rooms[room_id].stored_images.splice(config.max_stored_images, rooms[room_id].stored_images.length)
 			}
 
 			db_manager.update_room(room_id,
@@ -3373,7 +3371,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				image_setter: data.setter,
 				image_size: data.size,
 				image_date: date,
-				stored_images: info.stored_images,
+				stored_images: rooms[room_id].stored_images,
 				image_type: data.type,
 				image_query: data.query
 			})
@@ -4664,6 +4662,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			voice4_radio_permission: info.voice4_radio_permission,
 			voice4_synth_permission: info.voice4_synth_permission,
 			images_mode: info.images_mode,
+			stored_images: info.stored_images,
 			tv_mode: info.tv_mode,
 			radio_mode: info.radio_mode,
 			synth_mode: info.synth_mode,
