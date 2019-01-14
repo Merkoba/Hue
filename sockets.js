@@ -4545,7 +4545,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				if(!files)
 				{
-					return callback(false)
+					return callback(true)
 				}
 
 				files = files.filter(x => !x.startsWith("."))
@@ -4560,7 +4560,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					if(files.length === 1)
 					{
-						return callback(false)
+						return callback(true)
 					}
 
 					else

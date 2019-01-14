@@ -203,7 +203,7 @@
 	"tv_domain_list": [],
 	"radio_domain_white_or_black_list": "black",
 	"radio_domain_list": [],
-	"ads_enabled": true,
+	"ads_enabled": false,
 	"ads_path": "public/static/drizzle",
 	"ads_public_path": "/static/drizzle",
 	"ads_threshold": 200,
