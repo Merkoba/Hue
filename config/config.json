@@ -27,7 +27,7 @@
 	"default_topic": "No topic",
 	"default_topic_admin": "Check the main menu for administration options",
 	"redirect_url": "https://en.wikipedia.org/wiki/Special:Random",
-	"max_stored_images": 50,
+	"max_stored_images": 100,
 	"radio_metadata_interval_duration": 12000,
 	"radio_retry_metadata_delay": 120000,
 	"opacity_amount_1": 0.95,
