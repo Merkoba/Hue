@@ -199,7 +199,9 @@ Hue.commands =
 	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist',
 	'/accesslog', '/toggleactivtybar', '/thememode', '/synthkey',
 	'/togglemutesynth', '/speak', '/synthkeylocal', '/speaklocal',
-	'/unmaximize', '/maximizechat', '/autoscrollup', '/autoscrolldown'
+	'/unmaximize', '/maximizechat', '/autoscrollup', '/autoscrolldown',
+	'/loadnextimage', '/loadprevimage', '/loadnexttv', '/loadprevtv',
+	'/loadnextradio', '/loadprevradio'
 ]
 
 Hue.user_settings =
@@ -313,6 +315,9 @@ Hue.init = function()
 	Hue.start_main_menu_context_menu()
 	Hue.start_tv_maxer_context_menu()
 	Hue.start_chat_maxer_context_menu()
+	Hue.start_images_label_context_menu()
+	Hue.start_tv_label_context_menu()
+	Hue.start_radio_label_context_menu()
 	Hue.start_titles()
 	Hue.setup_show_profile()
 	Hue.setup_main_menu()
@@ -3751,6 +3756,90 @@ Hue.start_chat_maxer_context_menu = function()
 		zIndex: 9000000000,
 		className: "maxer_context",
 		items: Hue.generate_chat_maxer_context_items()
+	})
+}
+
+Hue.start_images_label_context_menu = function()
+{
+	$.contextMenu(
+	{
+		selector: "#footer_images_label",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		className: "maxer_context",
+		items:
+		{
+			mm0:
+			{
+				name: "Load Previous", callback: function(key, opt)
+				{
+					Hue.media_load_previous("images")
+				}
+			},
+			mm1:
+			{
+				name: "Load Next", callback: function(key, opt)
+				{
+					Hue.media_load_next("images")
+				}
+			}
+		}
+	})
+}
+
+Hue.start_tv_label_context_menu = function()
+{
+	$.contextMenu(
+	{
+		selector: "#footer_tv_label",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		className: "maxer_context",
+		items:
+		{
+			mm0:
+			{
+				name: "Load Previous", callback: function(key, opt)
+				{
+					Hue.media_load_previous("tv")
+				}
+			},
+			mm1:
+			{
+				name: "Load Next", callback: function(key, opt)
+				{
+					Hue.media_load_next("tv")
+				}
+			}
+		}
+	})
+}
+
+Hue.start_radio_label_context_menu = function()
+{
+	$.contextMenu(
+	{
+		selector: "#footer_radio_label",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		className: "maxer_context",
+		items:
+		{
+			mm0:
+			{
+				name: "Load Previous", callback: function(key, opt)
+				{
+					Hue.media_load_previous("radio")
+				}
+			},
+			mm1:
+			{
+				name: "Load Next", callback: function(key, opt)
+				{
+					Hue.media_load_next("radio")
+				}
+			}
+		}
 	})
 }
 
@@ -8994,6 +9083,36 @@ Hue.execute_command = function(message, ans)
 	else if(Hue.oi_equals(cmd2, '/autoscrolldown'))
 	{
 		Hue.autoscroll_down()
+	}
+
+	else if(Hue.oi_equals(cmd2, '/loadnextimage'))
+	{
+		Hue.media_load_next("images")
+	}
+
+	else if(Hue.oi_equals(cmd2, '/loadprevimage'))
+	{
+		Hue.media_load_previous("images")
+	}
+
+	else if(Hue.oi_equals(cmd2, '/loadnexttv'))
+	{
+		Hue.media_load_next("tv")
+	}
+
+	else if(Hue.oi_equals(cmd2, '/loadprevtv'))
+	{
+		Hue.media_load_previous("tv")
+	}
+
+	else if(Hue.oi_equals(cmd2, '/loadnextradio'))
+	{
+		Hue.media_load_next("radio")
+	}
+
+	else if(Hue.oi_equals(cmd2, '/loadprevradio'))
+	{
+		Hue.media_load_previous("radio")
 	}	
 
 	else
@@ -17345,9 +17464,14 @@ Hue.setup_modal_image = function()
 
 	$("#modal_image_toolbar_change").click(function(e)
 	{
-		let item = Hue.images_changed[Hue.current_modal_image_index]
-		Hue.change_image_source(item.source)
-		Hue.close_all_modals()
+		let r = confirm("This will change it for everyone. Are you sure?")
+
+		if(r)
+		{
+			let item = Hue.images_changed[Hue.current_modal_image_index]
+			Hue.change_image_source(item.source)
+			Hue.close_all_modals()
+		}
 	})
 }
 
@@ -20202,8 +20326,13 @@ Hue.open_url_menu = function(src, type=1, data=false, media_type=false)
 
 			$("#open_url_menu_change").click(function()
 			{
-				Hue[`change_${media_type}_source`](data.source)
-				Hue.close_all_modals()
+				let r = confirm("This will change it for everyone. Are you sure?")
+
+				if(r)
+				{
+					Hue[`change_${media_type}_source`](data.source)
+					Hue.close_all_modals()
+				}
 			})
 		}
 	})
@@ -22686,8 +22815,13 @@ Hue.show_fresh_messages = function()
 	Hue.fresh_messages_list = []
 }
 
-Hue.media_lock_valve = function(type)
+Hue.media_lock_valve = function(type, e)
 {
+	if(e.which !== 2)
+	{
+		return false
+	}
+
 	if(!Hue.room_state[`${type}_locked`])
 	{
 		return false
@@ -22739,4 +22873,63 @@ Hue.clear_autoscroll = function()
 	clearInterval(Hue.autoscroll_down_interval)
 	
 	Hue.autoscrolling = false
+}
+
+Hue.media_load_next = function(type)
+{
+	let type2 = type
+
+	if(type === "images")
+	{
+		type2 = "image"
+	}
+
+	if(Hue[`${type}_changed`].length < 2)
+	{
+		return true
+	}
+
+	let index = Hue[`${type}_changed`].indexOf(Hue[`loaded_${type2}`])
+
+	if(index < 0)
+	{
+		return true
+	}
+
+	if(index >= Hue[`${type}_changed`].length - 1)
+	{
+		return true
+	}
+
+	let item = Hue[`${type}_changed`][index + 1]
+
+	Hue.change({type:type2, item:item, force:true})
+	Hue[`toggle_lock_${type}`](true)
+}
+
+Hue.media_load_previous = function(type)
+{
+	let type2 = type
+
+	if(type === "images")
+	{
+		type2 = "image"
+	}
+
+	if(Hue[`${type}_changed`].length < 2)
+	{
+		return true
+	}
+
+	let index = Hue[`${type}_changed`].indexOf(Hue[`loaded_${type2}`])
+
+	if(index <= 0)
+	{
+		return true
+	}
+
+	let item = Hue[`${type}_changed`][index - 1]
+
+	Hue.change({type:type2, item:item, force:true})
+	Hue[`toggle_lock_${type}`](true)
 }

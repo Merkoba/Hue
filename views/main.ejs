@@ -39,7 +39,7 @@
 		<script src="/static/js/utilz.js?version=31"></script>
 		<script src="/static/js/colorlib.js?version=13"></script>
 
-		<script src="/static/js/base.js?version=2538"></script>
+		<script src="/static/js/base.js?version=2540"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=540"/>
 
@@ -320,7 +320,7 @@
 
 							<div id='footer_images_controls' class='footer_media_control'>
 
-								<div class='footer_text_small pointer' onclick='Hue.show_image_history()'>Images</div>
+								<div id="footer_images_label" class='footer_text_small pointer' onclick='Hue.show_image_history()'>Images</div>
 
 								<div  id='footer_images_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_image_picker()' title="Change the Image">
 									<i  id='footer_images_icon' class='fa fa-camera'></i>
@@ -330,14 +330,14 @@
 									<i id='footer_toggle_images_icon' class='fa fa-toggle-on'></i>
 								</div>
 								
-								<div class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_images()' onauxclick="Hue.media_lock_valve('images')" title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'>
+								<div id='footer_lock_images_icon_container' class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_images()' onauxclick="Hue.media_lock_valve('images', event)" title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'>
 									<i id='footer_lock_images_icon' class='fa fa-unlock-alt'></i>
 								</div>
 							</div>
  	
 							<div id='footer_tv_controls' class='footer_media_control'>
 
-								<div class='footer_text_small pointer' onclick='Hue.show_tv_history()'>TV</div>
+								<div id="footer_tv_label" class='footer_text_small pointer' onclick='Hue.show_tv_history()'>TV</div>
 
 								<div id='footer_tv_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_tv_picker()' title="Change the TV">
 									<i id='footer_tv_icon' class='fa fa-television'></i>
@@ -347,7 +347,7 @@
 									<i class='fa fa-toggle-on' id='footer_toggle_tv_icon'></i>
 								</div>
 
-								<div class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_tv()' onauxclick="Hue.media_lock_valve('tv')" title="Lock/Unlock TV. Locked means it will stay the same even if media is changed by a user">
+								<div id='footer_lock_tv_icon_container' class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_tv()' onauxclick="Hue.media_lock_valve('tv', event)" title="Lock/Unlock TV. Locked means it will stay the same even if media is changed by a user">
 									<i class='fa fa-unlock-alt' id='footer_lock_tv_icon'></i>
 								</div>
 
@@ -355,7 +355,7 @@
 
 							<div id='footer_radio_controls' class='footer_media_control'>
 
-								<div class='footer_text_small pointer' onclick='Hue.show_radio_history()'>Radio</div>
+								<div id="footer_radio_label" class='footer_text_small pointer' onclick='Hue.show_radio_history()'>Radio</div>
 
 								<div id='footer_radio_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_radio_picker()' title="Change the Radio">
 									<i id='footer_radio_icon' class='fa fa-volume-up'></i>
@@ -366,7 +366,7 @@
 								</div>
 
 
-								<div class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_radio()' onauxclick="Hue.media_lock_valve('radio')" title="Lock/Unlock Radio. Locked means it will stay the same even if media is changed by a user">
+								<div id='footer_lock_radio_icon_container' class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_radio()' onauxclick="Hue.media_lock_valve('radio', event)" title="Lock/Unlock Radio. Locked means it will stay the same even if media is changed by a user">
 									<i class='fa fa-unlock-alt' id='footer_lock_radio_icon'></i>
 								</div>
 
@@ -1969,6 +1969,12 @@
 			<div class='info_item modal_item'>/togglemutesynth: Mutes or unmutes the synth.</div>
 			<div class='info_item modal_item'>/autoscrollup: Slowly scrolls chat up automatically.</div>
 			<div class='info_item modal_item'>/autoscrolldown: Slowly scrolls chat down automatically.</div>
+			<div class='info_item modal_item'>/loadnextimage: Loads the next image.</div>
+			<div class='info_item modal_item'>/loadprevimage: Loads the previous image.</div>
+			<div class='info_item modal_item'>/loadnexttv: Loads the next tv item.</div>
+			<div class='info_item modal_item'>/loadprevtv: Loads the previous tv item.</div>
+			<div class='info_item modal_item'>/loadnextradio: Loads the next radio item.</div>
+			<div class='info_item modal_item'>/loadprevradio: Loads the previous radio item.</div>
 			<div class='info_item modal_item'>When anyone else is typing a chat message, the user menu icon turns into a pencil, and profile images in chat of whoever is typing will have a glow effect.</div>
 			<div class='info_item modal_item'>In some commands like /whisper the > character can be used to send 2 arguments. For instance, "/whisper Jack > hello my friend" will send a message to Jack directly.</div>
 			<div class='info_item modal_item'>Commands can be chained with &&. For instance "/tv The World && /maximizetv".</div>
