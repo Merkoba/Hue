@@ -143,8 +143,6 @@ Hue.fresh_messages_duration = 2000
 Hue.loaded_image = {}
 Hue.loaed_tv = {}
 Hue.loaded_radio = {}
-Hue.autoscroll_amount = 20
-Hue.autoscroll_delay = 400
 Hue.autoscrolling = false
 Hue.chat_scrolled = false
 Hue.lockscreen_peek_delay = 1000
@@ -264,6 +262,8 @@ Hue.user_settings =
 	bypass_tv_lock_on_own_change: {widget_type:"checkbox"},
 	bypass_radio_lock_on_own_change: {widget_type:"checkbox"},
 	synth_enabled: {widget_type:"checkbox"},
+	autoscroll_amount: {widget_type:"text"},
+	autoscroll_delay: {widget_type:"text"},
 	chat_display_percentage: {widget_type:"custom"},
 	tv_display_percentage: {widget_type:"custom"},
 	tv_display_position: {widget_type:"custom"}
@@ -13390,6 +13390,44 @@ Hue.setting_accept_commands_from_action = function(type, save=true)
 	}
 }
 
+Hue.setting_autoscroll_amount_action = function(type, save=true)
+{
+	let val = parseInt(Hue.utilz.clean_string2($(`#${type}_autoscroll_amount`).val()))
+
+	if(!val)
+	{
+		val = Hue.global_settings_default_autoscroll_amount
+	}
+
+	$(`#${type}_autoscroll_amount`).val(val)
+
+	Hue[type].autoscroll_amount = val
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_autoscroll_delay_action = function(type, save=true)
+{
+	let val = parseInt(Hue.utilz.clean_string2($(`#${type}_autoscroll_delay`).val()))
+
+	if(!val)
+	{
+		val = Hue.global_settings_default_autoscroll_delay
+	}
+
+	$(`#${type}_autoscroll_delay`).val(val)
+
+	Hue[type].autoscroll_delay = val
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
 Hue.empty_room_settings = function()
 {
 	Hue.room_settings = {}
@@ -22852,8 +22890,8 @@ Hue.autoscroll_up = function()
 
 	Hue.autoscroll_up_interval = setInterval(function()
 	{
-		Hue.scroll_up(Hue.autoscroll_amount)
-	}, Hue.autoscroll_delay)
+		Hue.scroll_up(Hue.get_setting("autoscroll_amount"))
+	}, Hue.get_setting("autoscroll_delay"))
 
 	Hue.autoscrolling = true
 }
@@ -22870,8 +22908,8 @@ Hue.autoscroll_down = function()
 
 	Hue.autoscroll_up_interval = setInterval(function()
 	{
-		Hue.scroll_down(Hue.autoscroll_amount)
-	}, Hue.autoscroll_delay)
+		Hue.scroll_down(Hue.get_setting("autoscroll_amount"))
+	}, Hue.get_setting("autoscroll_delay"))
 
 	Hue.autoscrolling = true
 }

@@ -151,6 +151,8 @@
 	"global_settings_default_bypass_images_lock_on_own_change": true,
 	"global_settings_default_bypass_tv_lock_on_own_change": true,
 	"global_settings_default_bypass_radio_lock_on_own_change": true,
+	"global_settings_default_autoscroll_amount": 20,
+	"global_settings_default_autoscroll_delay": 500,
 	"room_state_default_images_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_radio_enabled": true,
