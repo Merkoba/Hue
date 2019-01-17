@@ -262,8 +262,8 @@ Hue.user_settings =
 	bypass_tv_lock_on_own_change: {widget_type:"checkbox"},
 	bypass_radio_lock_on_own_change: {widget_type:"checkbox"},
 	synth_enabled: {widget_type:"checkbox"},
-	autoscroll_amount: {widget_type:"text"},
-	autoscroll_delay: {widget_type:"text"},
+	autoscroll_amount: {widget_type:"number"},
+	autoscroll_delay: {widget_type:"number"},
 	chat_display_percentage: {widget_type:"custom"},
 	tv_display_percentage: {widget_type:"custom"},
 	tv_display_position: {widget_type:"custom"}
@@ -12451,7 +12451,7 @@ Hue.modify_setting_widget = function(type, setting_name)
 		item.prop("checked", Hue[type][setting_name])
 	}
 
-	else if(widget_type === "textarea" || widget_type === "text")
+	else if(widget_type === "textarea" || widget_type === "text" || widget_type === "number")
 	{
 		item.val(Hue[type][setting_name])
 	}
@@ -12481,7 +12481,7 @@ Hue.start_settings_widgets_listeners = function(type)
 			item.change(() => {Hue[`setting_${setting}_action`](type)})
 		}
 
-		else if(widget_type === "textarea" || widget_type === "text")
+		else if(widget_type === "textarea" || widget_type === "text" || widget_type === "number")
 		{
 			item.blur(() => {Hue[`setting_${setting}_action`](type)})
 		}
