@@ -1,4 +1,4 @@
-![](https://i.imgur.com/egPOTus.gif)
+![](https://i.imgur.com/yNjjNiQ.jpg)
 
 # What Is It
 
