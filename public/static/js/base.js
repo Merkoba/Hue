@@ -1590,8 +1590,8 @@ Hue.push_images_changed = function(data)
 	
 	inner.text(data.message).urlize()
 	inner.attr("title", data.info)
-
 	inner.click(data.onclick)
+	el.data("obj", data)
 	
 	$("#image_history_container").prepend(el)
 
@@ -1769,8 +1769,8 @@ Hue.push_tv_changed = function(data)
 	
 	inner.text(data.message).urlize()
 	inner.attr("title", data.info)
-
 	inner.click(data.onclick)
+	el.data("obj", data)
 	
 	$("#tv_history_container").prepend(el)
 
@@ -1922,8 +1922,8 @@ Hue.push_radio_changed = function(data)
 	
 	inner.text(data.message).urlize()
 	inner.attr("title", data.info)
-
 	inner.click(data.onclick)
+	el.data("obj", data)
 	
 	$("#radio_history_container").prepend(el)
 
@@ -7326,6 +7326,21 @@ Hue.change = function(args={})
 	{
 		return false
 	}
+
+	$(`#${args.type}_history_container`).find(".media_history_item").each(function()
+	{
+		let obj = $(this).data("obj")
+
+		if(obj === Hue[`loaded_${args.type}`])
+		{
+			$(this).addClass("blinking")
+		}
+
+		else
+		{
+			$(this).removeClass("blinking")
+		}
+	})
 
 	if(args.notify && setter !== Hue.username)
 	{
