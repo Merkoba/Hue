@@ -17270,6 +17270,8 @@ Hue.at_startup = function()
 		Hue.started_safe = true
 	}, 2000)
 
+	Hue.add_blinks_first_media_history_items()
+
 	Hue.process_visibility()
 }
 
@@ -22994,4 +22996,30 @@ Hue.media_load_previous = function(type)
 
 	Hue.change({type:type2, item:item, force:true})
 	Hue[`toggle_lock_${type}`](true)
+}
+
+Hue.add_blinks_first_media_history_items = function()
+{
+	let el 
+	
+	el = $("#image_history_container").find(".media_history_item").eq(0)
+	
+	if(!el.hasClass("blinking_2"))
+	{
+		el.addClass("blinking_2")
+	}
+
+	el = $("#tv_history_container").find(".media_history_item").eq(0)
+	
+	if(!el.hasClass("blinking_2"))
+	{
+		el.addClass("blinking_2")
+	}
+
+	el = $("#radio_history_container").find(".media_history_item").eq(0)
+	
+	if(!el.hasClass("blinking_2"))
+	{
+		el.addClass("blinking_2")
+	}
 }
