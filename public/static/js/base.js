@@ -16246,8 +16246,8 @@ Hue.change_lock_radio = function()
 
 Hue.show_joined = function()
 {
-	Hue.show_topic()
 	Hue.feedback(`You joined ${Hue.room_name}`, {save:true})
+	Hue.show_topic()
 }
 
 Hue.show_media_menu = function()
