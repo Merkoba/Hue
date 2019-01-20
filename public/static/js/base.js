@@ -7333,12 +7333,12 @@ Hue.change = function(args={})
 
 		if(obj === Hue[`loaded_${args.type}`])
 		{
-			$(this).addClass("blinking")
+			$(this).addClass("blinking_2")
 		}
 
 		else
 		{
-			$(this).removeClass("blinking")
+			$(this).removeClass("blinking_2")
 		}
 	})
 

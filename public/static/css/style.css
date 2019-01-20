@@ -2518,3 +2518,15 @@ input[type=text], textarea
 	50%{opacity:0}
 	100%{opacity:1}
 }
+
+.blinking_2
+{
+	animation: blink_2 1s linear infinite;
+}
+
+@keyframes blink_2
+{
+	0%{opacity:1}
+	50%{opacity:0.5}
+	100%{opacity:1}
+}
