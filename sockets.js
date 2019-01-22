@@ -1626,7 +1626,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			handler.room_emit(socket, 'restarted_radio_source',
 			{
-				username: socket.hue_username
+				setter: socket.hue_username,
+				date: Date.now()
 			})
 		}
 
@@ -2123,7 +2124,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			handler.room_emit(socket, 'restarted_tv_source',
 			{
-				username: socket.hue_username
+				setter: socket.hue_username,
+				date: Date.now()
 			})
 		}
 

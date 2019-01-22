@@ -593,8 +593,9 @@ Hue.get_proper_media_url = function(type)
 Hue.show_media_source = function(what)
 {
 	let source = Hue.get_proper_media_url(what)
-	let setter = Hue[`${what}_setter`]
-	let date = Hue[`${what}_date`]
+	let current = Hue[`current_${what}`]()
+	let setter = current.setter
+	let date = current.nice_date
 
 	let s
 
@@ -656,7 +657,7 @@ Hue.show_topic = function()
 	{
 		if(Hue.topic_setter !== "")
 		{
-			Hue.feedback(`Topic: ${Hue.topic}`, {title:`Setter: ${Hue.topic_setter} | ${Hue.topic_date}`})
+			Hue.feedback(`Topic: ${Hue.topic}`, {title:`Setter: ${Hue.topic_setter} | ${Hue.topic_date} | ${Hue.nice_date()}`})
 		}
 
 		else
@@ -1020,7 +1021,7 @@ Hue.start_socket = function()
 
 		else if(data.type === 'restarted_tv_source')
 		{
-			Hue.setup_tv("restart")
+			Hue.setup_tv("restart", data)
 		}
 
 		else if(data.type === 'changed_radio_source')
@@ -1030,7 +1031,7 @@ Hue.start_socket = function()
 
 		else if(data.type === 'restarted_radio_source')
 		{
-			Hue.setup_radio("restart")
+			Hue.setup_radio("restart", data)
 		}
 
 		else if(data.type === 'profile_image_changed')
@@ -1627,7 +1628,9 @@ Hue.setup_tv = function(mode, odata={})
 	if(mode === "restart")
 	{
 		data = Hue.current_tv()
-		data.message = `${data.setter} restarted the tv`
+		data.message = `${odata.setter} restarted the tv`
+		data.date = odata.date
+		data.info += ` | ${Hue.nice_date(data.date)}`
 	}
 
 	else
@@ -1793,7 +1796,9 @@ Hue.setup_radio = function(mode, odata={})
 	if(mode === "restart")
 	{
 		data = Hue.current_radio()
-		data.message = `${data.setter} restarted the radio`
+		data.message = `${odata.setter} restarted the radio`
+		data.date = odata.date
+		data.info += ` | ${Hue.nice_date(data.date)}`
 	}
 
 	else
