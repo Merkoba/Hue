@@ -301,6 +301,13 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		}
 
+		let fields = {}
+
+		if(rooms[data.room_id])
+		{
+			fields = {log_messages:0, admin_log_messages:0, access_log_messages:0, stored_images:0}
+		}
+
 		if(data.alternative)
 		{
 			let ans = await db_manager.check_password(data.email, data.password,
@@ -325,13 +332,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			if(rooms[data.room_id])
 			{
 				get_log_messages = false
-			}
-
-			let fields = {}
-
-			if(rooms[data.room_id])
-			{
-				fields = {log_messages:0}
 			}
 
 			let info = await db_manager.get_room({_id:data.room_id}, fields)
@@ -368,13 +368,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				else
 				{
 					socket.hue_user_id = data.user_id
-
-					let fields = {}
-
-					if(rooms[data.room_id])
-					{
-						fields = {log_messages: 0}
-					}
 
 					let info = await db_manager.get_room({_id:data.room_id}, fields)
 
@@ -1396,7 +1389,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			rooms[socket.hue_room_id].log_messages = []
 			db_manager.update_room(socket.hue_room_id, {log_messages:[]})
-			rooms[socket.hue_room_id].log_messages_modifed = false
+			rooms[socket.hue_room_id].log_messages_modified = false
 			handler.room_emit(socket, 'log_cleared', {username:socket.hue_username, clear_room:data.clear_room})
 			handler.push_admin_log_message(socket, "cleared the log")
 		}
@@ -3307,7 +3300,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.do_change_image = async function(socket, data)
+	handler.do_change_image = function(socket, data)
 	{
 		let user_change
 		
@@ -4278,30 +4271,26 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.public.get_admin_activity = async function(socket, data)
+	handler.public.get_admin_activity = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {admin_log_messages:1})
-
-		let messages = info.admin_log_messages.concat(rooms[socket.hue_room_id].admin_log_messages)
+		let messages = rooms[socket.hue_room_id].admin_log_messages
 
 		handler.user_emit(socket, "receive_admin_activity", {messages:messages})
 	}
 
-	handler.public.get_access_log = async function(socket, data)
+	handler.public.get_access_log = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
 			return handler.get_out(socket)
 		}
 
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {access_log_messages:1})
-
-		let messages = info.access_log_messages.concat(rooms[socket.hue_room_id].access_log_messages)
+		let messages = rooms[socket.hue_room_id].access_log_messages
 
 		handler.user_emit(socket, "receive_access_log", {messages:messages})
 	}
@@ -4653,9 +4642,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			activity: false,
 			log: info.log,
 			log_messages: info.log_messages,
-			log_messages_modifed: false,
-			admin_log_messages: [],
-			access_log_messages: [],
+			admin_log_messages: info.admin_log_messages,
+			access_log_messages: info.access_log_messages,
+			log_messages_modified: false,
+			admin_log_messages_modified: false,
+			access_log_messages_modified: false,
 			userlist: {},
 			voice1_chat_permission: info.voice1_chat_permission,
 			voice1_images_permission: info.voice1_images_permission,
@@ -4713,22 +4704,22 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 					if(room.activity)
 					{
-						if(room.log_messages_modifed)
+						if(room.log_messages_modified)
 						{
 							db_manager.push_log_messages(room._id, room.log_messages)
-							room.log_messages_modifed = false
+							room.log_messages_modified = false
 						}
 
-						if(room.admin_log_messages.length > 0)
+						if(room.admin_log_messages_modified)
 						{
 							db_manager.push_admin_log_messages(room._id, room.admin_log_messages)
-							room.admin_log_messages = []
+							room.admin_log_messages_modified = false
 						}
 
-						if(room.access_log_messages.length > 0)
+						if(room.access_log_messages_modified)
 						{
 							db_manager.push_access_log_messages(room._id, room.access_log_messages)
-							room.access_log_messages = []
+							room.access_log_messages_modified = false
 						}
 
 						room.activity = false
@@ -5207,8 +5198,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			room_id = socket
 		}
 
-		rooms[room_id].activity = true
-
 		rooms[room_id].log_messages.push(message)
 
 		if(rooms[room_id].log_messages.length > config.max_log_messages)
@@ -5216,12 +5205,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			rooms[room_id].log_messages = rooms[room_id].log_messages.slice(rooms[room_id].log_messages.length - config.max_log_messages)
 		}
 
-		rooms[room_id].log_messages_modifed = true
+		rooms[room_id].log_messages_modified = true
+		rooms[room_id].activity = true
 	}
 
 	handler.push_admin_log_message = function(socket, content)
 	{
-		rooms[socket.hue_room_id].activity = true
 
 		let message =
 		{
@@ -5235,6 +5224,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		rooms[socket.hue_room_id].admin_log_messages.push(message)
+
+		if(rooms[socket.hue_room_id].admin_log_messages.length > config.max_admin_log_messages)
+		{
+			rooms[socket.hue_room_id].admin_log_messages = rooms[socket.hue_room_id].admin_log_messages.slice(rooms[socket.hue_room_id].admin_log_messages.length - config.max_admin_log_messages)
+		}
+
+		rooms[socket.hue_room_id].admin_log_messages_modified = true
+		rooms[socket.hue_room_id].activity = true
 	}
 
 	handler.push_access_log_message = function(socket, action)
@@ -5253,6 +5250,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		rooms[socket.hue_room_id].access_log_messages.push(message)
+
+		if(rooms[socket.hue_room_id].access_log_messages.length > config.max_access_log_messages)
+		{
+			rooms[socket.hue_room_id].access_log_messages = rooms[socket.hue_room_id].access_log_messages.slice(rooms[socket.hue_room_id].access_log_messages.length - config.max_access_log_messages)
+		}
+
+		rooms[socket.hue_room_id].access_log_messages_modified = true
+		rooms[socket.hue_room_id].activity = true
 	}
 
 	handler.check_domain_list = function(media_type, src)
