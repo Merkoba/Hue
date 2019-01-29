@@ -7663,9 +7663,11 @@ jQuery.fn.urlize = function(force=false, stop_propagation=true)
 							continue
 						}
 
+						let url = list[i].replace(/\'/g, "").replace(/\"/g, "")
+
 						let rep = new RegExp(Hue.escape_special_characters(list[i]), "g")
 
-						x = x.replace(rep, `<a class='${cls}' target='_blank' href='${list[i]}'>${list[i]}</a>`)
+						x = x.replace(rep, `<a class='${cls}' target='_blank' href='${url}'>${list[i]}</a>`)
 
 						listed.push(list[i])
 					}
