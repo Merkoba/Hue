@@ -996,7 +996,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	right: 0;
 	z-index: 999;
 	flex-direction: row;
-	height: 1.2rem;
+	height: 1.1rem;
 }
 
 .chat_menu_button
