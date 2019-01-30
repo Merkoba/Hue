@@ -10120,6 +10120,7 @@ Hue.alert_title = function()
 		{
 			Hue.alert_mode = 1
 			Hue.update_title()
+			Hue.after_any_alert_title()
 		}
 	}
 }
@@ -10137,7 +10138,16 @@ Hue.alert_title2 = function()
 		{
 			Hue.alert_mode = 2
 			Hue.update_title()
+			Hue.after_any_alert_title()
 		}
+	}
+}
+
+Hue.after_any_alert_title = function()
+{
+	if(Hue.room_state.screen_locked)
+	{
+		$("#lockscreen_title_info").text("(New Activity)")
 	}
 }
 
@@ -19249,6 +19259,8 @@ Hue.unlock_screen = function(save=true)
 	Hue.msg_lockscreen.close()
 	Hue.process_visibility()
 	Hue.execute_commands("on_unlockscreen")
+
+	$("#lockscreen_title_info").text("")
 
 	if(save)
 	{
