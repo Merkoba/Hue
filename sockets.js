@@ -4374,7 +4374,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.public.remove_message = function(socket, data)
+	handler.public.delete_message = function(socket, data)
 	{
 		if(!data.id)
 		{
@@ -4393,7 +4393,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					messages.splice(i, 1)
 
-					handler.room_emit(socket, 'message_removed',
+					handler.room_emit(socket, 'message_deleted',
 					{
 						id: message.data.id
 					})
@@ -5318,6 +5318,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		let url = links[0].href
 
+		if(url.includes('"') || url.includes("'"))
+		{
+			return callback({})
+		}
+
 		if(redis_client_ready)
 		{
 			redis_client.hgetall(`hue_link_${url}`, function(err, reply)
@@ -5355,7 +5360,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.get_link_metadata = function(url, callback)
 	{
-		let response = {}
+		let response = 
+		{
+			title: "",
+			image: "",
+			url: url
+		}
 
 		if(!url.startsWith("http://") && !url.startsWith("https://"))
 		{
@@ -5377,7 +5387,10 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		}
 
-		fetch(url)
+		fetch(url, 
+		{
+			timeout: 5000
+		})
 		
 		.then(res => 
 		{
@@ -5408,8 +5421,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				response.image = ""
 			}
-			
-			response.url = url
 
 			if(redis_client_ready)
 			{
@@ -5428,6 +5439,18 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		.catch(err =>
 		{
+			if(redis_client_ready)
+			{
+				redis_client.hmset
+				(
+					`hue_link_${url}`, 
+					"title", response.title, 
+					"image", response.image, 
+					"url", response.url,
+					"date", Date.now()
+				)
+			}
+
 			return callback(response)
 		})
 	}

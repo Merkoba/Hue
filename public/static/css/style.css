@@ -473,6 +473,11 @@ div#header_radio_playing_icon
 	font-weight: bold;
 }
 
+.chat_third_content
+{
+	line-height: 1.2rem;
+}
+
 .chat_third_content .chat_uname
 {
 	margin-right: 0.5em;
@@ -510,7 +515,7 @@ div#header_radio_playing_icon
 	display: inline-block;
 }
 
-.normal_layout .chat_content
+.chat_content
 {
 	line-height: 1.2em;
 }
@@ -726,6 +731,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 .icon4
 {
 	padding-right: 0.65rem;
+}
+
+.icon5
+{
+	font-size: 0.8rem;
 }
 
 #header_radio_volume_icon_plus
@@ -984,7 +994,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	right: 0;
 	z-index: 999;
 	flex-direction: row;
-	height: 1rem;
+	height: 1.2rem;
 }
 
 .chat_menu_button

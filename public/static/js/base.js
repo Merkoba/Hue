@@ -318,6 +318,7 @@ Hue.init = function()
 	Hue.start_images_label_context_menu()
 	Hue.start_tv_label_context_menu()
 	Hue.start_radio_label_context_menu()
+	Hue.start_chat_menu_context_menu()
 	Hue.start_titles()
 	Hue.setup_show_profile()
 	Hue.setup_main_menu()
@@ -1442,7 +1443,7 @@ Hue.start_socket = function()
 			Hue.push_to_activity_bar(data.username, Date.now())
 		}
 
-		else if(data.type === 'message_removed')
+		else if(data.type === 'message_deleted')
 		{
 			Hue.remove_message_from_chat(data)
 		}
@@ -3792,7 +3793,6 @@ Hue.start_images_label_context_menu = function()
 		selector: "#footer_images_label",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
-		className: "maxer_context",
 		items:
 		{
 			mm0:
@@ -3820,7 +3820,6 @@ Hue.start_tv_label_context_menu = function()
 		selector: "#footer_tv_label",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
-		className: "maxer_context",
 		items:
 		{
 			mm0:
@@ -3848,7 +3847,6 @@ Hue.start_radio_label_context_menu = function()
 		selector: "#footer_radio_label",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
-		className: "maxer_context",
 		items:
 		{
 			mm0:
@@ -3863,6 +3861,52 @@ Hue.start_radio_label_context_menu = function()
 				name: "Load Next", callback: function(key, opt)
 				{
 					Hue.media_load_next("radio")
+				}
+			}
+		}
+	})
+}
+
+Hue.start_chat_menu_context_menu = function()
+{
+	$.contextMenu(
+	{
+		selector: ".chat_menu_button_menu",
+		trigger: "left",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		items:
+		{
+			item1:
+			{
+				name: "Reply", callback: function(key, opt)
+				{
+					let el = $(this).closest(".chat_content_container").eq(0).find(".chat_content").get(0)
+					Hue.do_chat_reply(el)
+				}
+			},
+			item2:
+			{
+				name: "Edit", callback: function(key, opt)
+				{
+					let el = $(this).closest(".chat_content_container").get(0)
+					Hue.edit_message(el)
+				},
+				visible: function(key, opt)
+				{
+					return $(this).closest(".message").data("user_id") === Hue.user_id
+				}
+			},
+			item3:
+			{
+				name: "Delete", callback: function(key, opt)
+				{
+					let id = $(this).closest(".chat_content_container").eq(0).data("id")
+					Hue.delete_message(id)
+				},
+				visible: function(key, opt)
+				{
+					return $(this).closest(".message").data("user_id") === Hue.user_id
 				}
 			}
 		}
@@ -6146,18 +6190,6 @@ Hue.start_chat_mouse_events = function()
 		Hue.show_profile($(this).closest(".chat_message").find(".chat_uname").eq(0).text(), $(this).attr("src"))
 	})
 
-	$("#chat_area").on("dblclick", ".chat_menu_button_edit", function()
-	{
-		let container = $(this).closest(".chat_content_container").get(0)
-		Hue.edit_message(container)
-	})
-
-	$("#chat_area").on("dblclick", ".chat_menu_button_remove", function()
-	{
-		let id = $(this).closest(".chat_content_container").data("id")
-		Hue.remove_message(id)
-	})
-
 	$("#chat_area").on("click", ".message_edit_submit", function()
 	{
 		Hue.send_edit_messsage()
@@ -6430,12 +6462,7 @@ Hue.update_chat = function(args={})
 
 	let fmessage
 
-	let chat_menu_button_main_class = ""
-
-	if(args.id && args.user_id === Hue.user_id)
-	{
-		chat_menu_button_main_class = "chat_menu_button_main"
-	}
+	let chat_menu_button_main_class = "chat_menu_button_main"
 	
 	if(starts_me || args.third_person)
 	{
@@ -6462,14 +6489,11 @@ Hue.update_chat = function(args={})
 				<div class='brk chat_third_brk'>${args.brk}</div>
 				<div class='chat_content_container chat_content_container_third ${chat_menu_button_main_class}'>
 					<div class='chat_menu_button_container unselectable'>
-						<div class='chat_menu_button action chat_menu_button_edit' title='Double Click To Activate'>Edit</div>
-						<div class='chat_menu_button action chat_menu_button_remove' title='Double Click To Activate'>Remove</div>
+						<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
 					</div>
 
-					<div class='chat_third_container'>
-						<div class='chat_third_content'>
-							<span class='chat_uname action'></span><span class='${contclasses}' title='${nd}' data-date='${d}'></span>
-						</div>
+					<div class='chat_third_content'>
+						<span class='chat_uname action'></span><span class='${contclasses}' title='${nd}' data-date='${d}'></span>
 					</div>
 
 					<div class='message_edited_label'>(Edited)</div>
@@ -6511,8 +6535,7 @@ Hue.update_chat = function(args={})
 						<div class='chat_content_container ${chat_menu_button_main_class}'>
 
 							<div class='chat_menu_button_container unselectable'>
-								<div class='chat_menu_button action chat_menu_button_edit' title='Double Click To Activate'>Edit</div>
-								<div class='chat_menu_button action chat_menu_button_remove' title='Double Click To Activate'>Remove</div>
+								<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
 							</div>
 
 							<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
@@ -6542,8 +6565,7 @@ Hue.update_chat = function(args={})
 				<div class='chat_container'>
 					<div class='chat_content_container ${chat_menu_button_main_class}'>
 						<div class='chat_menu_button_container unselectable'>
-							<div class='chat_menu_button action chat_menu_button_edit' title='Double Click To Activate'>Edit</div>
-							<div class='chat_menu_button action chat_menu_button_remove' title='Double Click To Activate'>Remove</div>
+							<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
 						</div>
 
 						<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
@@ -13202,7 +13224,10 @@ Hue.setting_chat_layout_action = function(type, save=true)
 
 			if(r)
 			{
-				Hue.restart_client()
+				setTimeout(function()
+				{
+					Hue.restart_client()
+				}, Hue.local_storage_save_delay * 2)
 			}
 		}
 	}
@@ -20873,45 +20898,49 @@ Hue.start_reply_events = function(container_id, msg_instance)
 	{
 		if(e.button === 1)
 		{
-			if($(e.target).is("a"))
-			{
-				return false
-			}
-
-			let max = 100
-
-			let uname = $(this).closest(".chat_message").data("uname")
-
-			let text = $(this).text()
-
-			let add_dots = text.length > max
-
-			text = text.substring(0, max)
-
-			if(add_dots)
-			{
-				text += "..."
-			}
-
-			text = `*"${Hue.utilz.clean_string2(text)}"*`
-
-			if(uname)
-			{
-				text = `${uname} said: ${text}`
-			}
-
-			if(Hue.is_command(text))
-			{
-				text = `/${text}`
-			}
-
-			Hue.goto_bottom(true, false)
-
-			Hue.process_message({message:text, to_history:false})
-
+			Hue.do_chat_reply(e.target)
 			e.preventDefault()
 		}
 	})
+}
+
+Hue.do_chat_reply = function(target)
+{
+	if($(target).is("a"))
+	{
+		return false
+	}
+
+	let max = 100
+
+	let uname = $(target).closest(".chat_message").data("uname")
+
+	let text = $(target).text()
+
+	let add_dots = text.length > max
+
+	text = text.substring(0, max)
+
+	if(add_dots)
+	{
+		text += "..."
+	}
+
+	text = `*"${Hue.utilz.clean_string2(text)}"*`
+
+	if(uname)
+	{
+		text = `${uname} said: ${text}`
+	}
+
+	if(Hue.is_command(text))
+	{
+		text = `/${text}`
+	}
+
+	Hue.goto_bottom(true, false)
+
+	Hue.process_message({message:text, to_history:false})
 }
 
 Hue.replace_markdown = function(message, type="chat")
@@ -22092,6 +22121,7 @@ Hue.edit_message = function(container)
 	$(edit_container).css("display", "block")
 	$(chat_content).css("display", "none")
 	$(container).removeClass("chat_menu_button_main")
+	$(container).css("display", "block")
 	$(edit_label).css("display", "none")
 	
 	Hue.editing_message = true
@@ -22140,6 +22170,7 @@ Hue.stop_edit_message = function()
 	$(chat_content).css("display", "inline-block")
 
 	$(Hue.editing_message_container).addClass("chat_menu_button_main")
+	$(Hue.editing_message_container).css("display", "flex")
 	
 	Hue.editing_message = false
 	Hue.editing_message_container = false
@@ -22182,7 +22213,7 @@ Hue.send_edit_messsage = function(id)
 
 	if(new_message.length === 0)
 	{
-		Hue.remove_message(edit_id)
+		Hue.delete_message(edit_id)
 		return false
 	}
 
@@ -22194,24 +22225,24 @@ Hue.send_edit_messsage = function(id)
 	Hue.process_message({message:new_message, edit_id:edit_id})
 }
 
-Hue.remove_message = function(id)
+Hue.delete_message = function(id)
 {
 	if(!Hue.started_safe)
 	{
 		return false
 	}
 
-	let r = confirm("Are you sure you want to remove this message?")
+	let r = confirm("Are you sure you want to delete this message?")
 
 	if(r)
 	{
-		Hue.send_remove_message(id)
+		Hue.send_delete_message(id)
 	}
 }
 
-Hue.send_remove_message = function(id)
+Hue.send_delete_message = function(id)
 {
-	Hue.socket_emit("remove_message", {id:id})
+	Hue.socket_emit("delete_message", {id:id})
 }
 
 Hue.remove_message_from_chat = function(data)

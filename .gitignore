@@ -3,3 +3,6 @@
 
 /node_modules/*
 /electron/node_modules/*
+
+Thumbs.db
+desktop.ini
