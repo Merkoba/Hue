@@ -181,7 +181,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 		if(typeof room.image_type !== "string")
 		{
-			room.image_type = "upload"
+			room.image_type = "link"
 		}
 
 		if(typeof room.stored_images !== "object")

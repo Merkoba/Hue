@@ -5318,7 +5318,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		let url = links[0].href
 
-		if(url.includes('"') || url.includes("'"))
+		if(url.includes('"') || url.includes("'") || url.includes("*"))
 		{
 			return callback({})
 		}
