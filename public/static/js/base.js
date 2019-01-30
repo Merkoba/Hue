@@ -10119,7 +10119,6 @@ Hue.alert_title = function()
 		if(Hue.alert_mode === 0)
 		{
 			Hue.alert_mode = 1
-			Hue.update_title()
 			Hue.after_any_alert_title()
 		}
 	}
@@ -10137,7 +10136,6 @@ Hue.alert_title2 = function()
 		if(Hue.alert_mode !== 2)
 		{
 			Hue.alert_mode = 2
-			Hue.update_title()
 			Hue.after_any_alert_title()
 		}
 	}
@@ -10145,6 +10143,8 @@ Hue.alert_title2 = function()
 
 Hue.after_any_alert_title = function()
 {
+	Hue.update_title()
+
 	if(Hue.room_state.screen_locked)
 	{
 		$("#lockscreen_title_info").text("(New Activity)")
