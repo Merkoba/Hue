@@ -102,7 +102,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.synth_max_voice_text = config.synth_max_voice_text
 	c.vars.vimeo_enabled = config.vimeo_enabled
 
-	const reserved_usernames = ["The system", config.ads_setter].map(x => x.toLowerCase())
+	const reserved_usernames = ["The system", config.image_ads_setter].map(x => x.toLowerCase())
 
 	function check_url(req, res, next)
 	{

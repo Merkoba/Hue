@@ -4497,28 +4497,46 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		try
 		{
-			if(!config.ads_enabled)
+			if(config.image_ads_enabled)
 			{
-				return false
+				rooms[room_id].image_ad_charge += 1
+
+				if(rooms[room_id].image_ad_charge >= config.image_ads_threshold)
+				{
+					handler.attempt_show_image_ad(room_id, function(res)
+					{
+						if(res)
+						{
+							rooms[room_id].image_ad_charge = 0
+						}
+				
+						else
+						{
+							rooms[room_id].image_ad_charge = config.image_ads_threshold
+						}
+					})
+				}
 			}
 			
-			rooms[room_id].ad_charge += 1
-
-			if(rooms[room_id].ad_charge >= config.ads_threshold)
+			if(config.text_ads_enabled)
 			{
-				handler.attempt_show_ad(room_id, function(res)
-				{
-					if(res)
-					{
-						rooms[room_id].ad_charge = 0
-					}
-	
-					else
-					{
-						rooms[room_id].ad_charge = config.ads_threshold
-					}
-				})
+				rooms[room_id].text_ad_charge += 1
 
+				if(rooms[room_id].text_ad_charge >= config.text_ads_threshold)
+				{
+					handler.attempt_show_text_ad(room_id, function(res)
+					{
+						if(res)
+						{
+							rooms[room_id].text_ad_charge = 0
+						}
+					
+						else
+						{
+							rooms[room_id].text_ad_charge = config.text_ads_threshold
+						}
+					})
+				}
 			}
 		}
 
@@ -4528,7 +4546,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.attempt_show_ad = function(room_id, callback)
+	handler.attempt_show_image_ad = function(room_id, callback)
 	{
 		try
 		{
@@ -4539,13 +4557,19 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return callback(false)
 			}
 
-			if(Date.now() - room.last_image_change < config.ads_min_image_change)
+			if(Date.now() - room.last_image_change < config.image_ads_min_image_change)
 			{
 				return callback(false)
 			}
 
-			fs.readdir(path.join(__dirname, config.ads_path), function(err, files)
+			fs.readdir(path.join(__dirname, config.image_ads_path), function(err, files)
 			{
+				if(err)
+				{
+					logger.log_error(err)
+					return false
+				}
+
 				if(!files)
 				{
 					return callback(true)
@@ -4557,7 +4581,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				let file = files[index]
 				
-				let image_path = path.join(config.ads_public_path, file)
+				let image_path = path.join(config.image_ads_public_path, file)
 
 				if(image_path === room.current_image_source)
 				{
@@ -4572,7 +4596,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 						file = files[index]
 
-						image_path = path.join(config.ads_public_path, file)
+						image_path = path.join(config.image_ads_public_path, file)
 
 						if(image_path === room.current_image_source)
 						{
@@ -4584,11 +4608,54 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				let obj = {}
 
 				obj.fname = image_path
-				obj.setter = config.ads_setter
+				obj.setter = config.image_ads_setter
 				obj.size = 0
 				obj.type = "link"
 
 				handler.change_image(room_id, obj)
+
+				return callback(true)
+			})
+		}
+
+		catch(err)
+		{
+			logger.log_error(err)
+			return false
+		}
+	}
+
+	handler.attempt_show_text_ad = function(room_id, callback)
+	{
+		try
+		{
+			let room = rooms[room_id]
+
+			fs.readFile(path.join(__dirname, config.text_ads_json_location), function(err, content)
+			{
+				if(err)
+				{
+					logger.log_error(err)
+					return false
+				}
+
+				if(!content)
+				{
+					return callback(true)
+				}
+
+				let ads = JSON.parse(content)
+
+				if(ads.length === 0)
+				{
+					return callback(true)
+				}
+
+				let index = utilz.get_random_int(0, ads.length - 1)
+
+				let ad = ads[index]
+
+				handler.send_announcement_to_room(room_id, ad)
 
 				return callback(true)
 			})
@@ -4686,7 +4753,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			last_image_change: 0,
 			last_tv_change: 0,
 			last_radio_change: 0,
-			ad_charge: 0
+			image_ad_charge: 0,
+			text_ad_charge: 0
 		}
 
 		return obj
@@ -5066,6 +5134,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		args.type = type
 		io.emit('update', args)
+	}
+
+	handler.send_announcement_to_room = function(room_id, message)
+	{
+		handler.room_emit(room_id, "announcement", {message:message})
 	}
 
 	handler.add_spam = async function(socket)

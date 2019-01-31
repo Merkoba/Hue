@@ -46,7 +46,10 @@ Users can create their own room, where they are Admins as default. There's a coo
 
 There are Visited Rooms and Public Rooms lists. Visited Rooms shows the status of rooms you have visited recently, while Public Rooms show rooms that are set to public and have had activity recently.
 
+There is a global ad system that supports either image ads or text ads.
+
 Creating an account is email based. There is no third party auth, except an optional ReCaptcha. This is to retain some autonomy and avoid complexity. After registration, a confirmation link is sent, clicking it is required to activate the account and be able to login. There is a password recovery feature if a valid email is provided. Currently a Mailgun account is required to handle email sending. The username, password, and email can be changed. Email change requires a verification link in the new email address to be clicked.
+
 
 # Installation
 
@@ -112,6 +115,9 @@ If you ever need to access the MongoDB database:
 If you want to remove it to start fresh:
 
 >db.dropDatabase()
+
+If you're going to use text ads, create a json file called text_ads.json at the root (default location and name, this can be changed), which consists of an array of strings.
+For example: ["Ad #1", "Ad #2", "Ad #3"]
 
 # Configuration
 
@@ -706,23 +712,32 @@ This should be an array of strings of root domains.
 If it's a blacklist, radio sources from this domain will be rejected.
 This should be an array of strings of root domains.
 
-"ads_enabled"
+"image_ads_enabled"
 >Whether image ads are enabled.
 
-"ads_path"
+"image_ads_path"
 >The internal path where ad images are stored.
 
-"ads_public_path"
+"image_ads_public_path"
 >The public directory where ad images are stored.
 
-"ads_threshold"
->On how many chat messages sent to try to provide an ad.
+"image_ads_threshold"
+>On how many chat messages sent to try to provide an image ad.
 
-"ads_min_image_change"
+"image_ads_min_image_change"
 >At least this time has to pass after an image change for an ad to be displayed.
 
-"ads_setter"
+"image_ads_setter"
 >The name of the ad changer.
+
+"text_ads_enabled"
+>Whether text ads are enabled.
+
+"text_ads_json_location"
+>Location of the JSON file containing the ads strings.
+
+"text_ads_threshold"
+>On how many chat messages sent to try to provide a text ad.
 
 "max_activity_bar_delay"
 >How long until an item in the top activity bar becomes obsolete after not being updated.

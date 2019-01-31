@@ -3,7 +3,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const mongo = require('mongodb')
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
-	const reserved_usernames = ["The system", config.ads_setter].map(x => x.toLowerCase())
+	const reserved_usernames = ["The system", config.image_ads_setter].map(x => x.toLowerCase())
 
 	const rooms_version = 60
 	const users_version = 30

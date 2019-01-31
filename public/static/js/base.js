@@ -1457,6 +1457,11 @@ Hue.start_socket = function()
 		{
 			Hue.receive_synth_voice(data)
 		}
+
+		else if(data.type === 'announcement')
+		{
+			Hue.show_announcement(data)
+		}
 	})
 }
 
@@ -23072,4 +23077,12 @@ Hue.add_blinks_first_media_history_items = function()
 	{
 		el.addClass("blinking_2")
 	}
+}
+
+Hue.show_announcement = function(data)
+{
+	Hue.public_feedback(data.message, 
+	{
+		brk: "<i class='icon2c fa fa-star'></i>"
+	})
 }
