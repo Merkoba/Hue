@@ -4657,6 +4657,21 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				handler.send_announcement_to_room(room_id, ad)
 
+				if(rooms[room_id].log)
+				{
+					let message =
+					{
+						type: "announcement",
+						data:
+						{
+							message: ad
+						},
+						date: Date.now()
+					}
+
+					handler.push_log_message(room_id, message)
+				}
+
 				return callback(true)
 			})
 		}

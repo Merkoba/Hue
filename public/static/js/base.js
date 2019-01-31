@@ -14282,6 +14282,11 @@ Hue.show_log_messages = function()
 				{
 					Hue.show_reaction(data, date)
 				}
+
+				else if(type === "announcement")
+				{
+					Hue.show_announcement(data, date)
+				}
 			}
 		}
 	}
@@ -23079,10 +23084,11 @@ Hue.add_blinks_first_media_history_items = function()
 	}
 }
 
-Hue.show_announcement = function(data)
+Hue.show_announcement = function(data, date=Date.now())
 {
 	Hue.public_feedback(data.message, 
 	{
-		brk: "<i class='icon2c fa fa-star'></i>"
+		brk: "<i class='icon2c fa fa-star'></i>",
+		date: date
 	})
 }
