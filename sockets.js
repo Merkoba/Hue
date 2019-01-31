@@ -5477,7 +5477,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		fetch(url, 
 		{
-			timeout: 5000
+			timeout: config.link_fetch_timeout
 		})
 		
 		.then(res => 

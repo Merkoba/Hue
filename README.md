@@ -757,6 +757,9 @@ This should be an array of strings of root domains.
 "redis_max_link_age"
 >How old link data has to be to be fetched again.
 
+"link_fetch_timeout"
+>Maximum time to get a response when fetching link data.
+
 "synth_max_recent_users"
 >How many users fit in to the title of recent synth users when hovering the synth's volume icon.
 

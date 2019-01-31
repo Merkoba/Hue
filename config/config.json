@@ -221,6 +221,7 @@
 	"old_activity_min": 21600000,
 	"default_favicon_color": "rgb(192,109,207)",
 	"redis_max_link_age": 604800000,
+	"link_fetch_timeout": 5000,
 	"synth_max_recent_users": 10,
 	"synth_max_voice_text": 280,
 	"vimeo_enabled": true
