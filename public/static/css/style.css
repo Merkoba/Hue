@@ -2547,3 +2547,13 @@ input[type=text], textarea
 	50%{opacity:0.5}
 	100%{opacity:1}
 }
+
+.spoiler
+{
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}

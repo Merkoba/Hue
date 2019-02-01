@@ -304,6 +304,7 @@ Hue.init = function()
 	Hue.setup_chat()
 	Hue.start_chat_mouse_events()
 	Hue.start_chat_hover_events()
+	Hue.start_body_events()
 	Hue.start_played_click_events()
 	Hue.start_userlist_click_events()
 	Hue.start_roomlist_click_events()
@@ -2812,6 +2813,11 @@ Hue.apply_theme = function()
 	.synth_key_divider
 	{
 		background-color: ${slight_background} !important;
+	}
+
+	.spoiler
+	{
+		background-color: ${font_color} !important;
 	}
 
 	</style>
@@ -21020,7 +21026,24 @@ Hue.replace_markdown = function(message, type="chat")
 		if(n === 1)
 		{
 			changed = true
+			return `${g2}<span class='italic'>${g4}</span>`
+		}
+
+		else if(n === 2)
+		{
+			changed = true
 			return `${g2}<span class='underlined'>${g4}</span>`
+		}
+	})
+
+	text = text.replace(/(^|\s)(\|+)(?!\s)([^\|]*[^\|\s])\2(?!\S)/gm, function(g1, g2, g3, g4)
+	{
+		let n = g3.length
+
+		if(n === 2)
+		{
+			changed = true
+			return `${g2}<span class='spoiler' title='Click To Reveal'>${g4}</span>`
 		}
 	})
 
@@ -23090,5 +23113,14 @@ Hue.show_announcement = function(data, date=Date.now())
 	{
 		brk: "<i class='icon2c fa fa-star'></i>",
 		date: date
+	})
+}
+
+Hue.start_body_events = function()
+{
+	$("body").on("click", ".spoiler", function()
+	{
+		$(this).removeClass("spoiler")
+		$(this).removeAttr("title")
 	})
 }
