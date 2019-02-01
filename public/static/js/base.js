@@ -6359,8 +6359,6 @@ Hue.update_chat = function(args={})
 		messageclasses = "compact_layout"
 	}
 
-	let split = args.message.split(" ")
-
 	let image_preview = false
 	let image_preview_src = false
 	let image_preview_src_original = false
@@ -6369,106 +6367,20 @@ Hue.update_chat = function(args={})
 
 	if(!starts_me && Hue.get_setting("show_image_previews"))
 	{
-		let num_links = 0
-		
-		let link = false
+		let ans = Hue.make_image_preview(args.message)
 
-		for(let sp of split)
-		{
-			if((sp.startsWith("https://") || sp.startsWith("http://")))
-			{
-				num_links += 1
-				link = sp
-			}
-		}
-
-		if(num_links === 1 && link.includes("imgur.com"))
-		{
-			let code = Hue.utilz.get_imgur_image_code(link)
-
-			if(code)
-			{
-				let extension = Hue.utilz.get_extension(link)
-
-				image_preview_src_original = `https://i.imgur.com/${code}.${extension}`
-				image_preview_src = `https://i.imgur.com/${code}l.jpg`
-				image_preview_array = []
-
-				for(let sp of split)
-				{
-					if(sp === link)
-					{
-						image_preview_array.push(`<div class='image_preview action'><div class='image_preview_url'>${link}</div><img draggable="false" class="image_preview_image" src="${image_preview_src}"></div>`)
-					}
-
-					else
-					{
-						image_preview_array.push(Hue.make_html_safe(sp))
-					}
-				}
-
-				image_preview = image_preview_array.join(" ")
-			}
-		}
+		image_preview = ans.image_preview
+		image_preview_src = ans.image_preview_src
+		image_preview_src_original = ans.image_preview_src_original
 	}
 
 	let link_preview = false
 
 	if(!starts_me && !image_preview && args.link_url && Hue.get_setting("show_link_previews"))
 	{
-		let link_preview_s = false
+		let ans = Hue.make_link_preview(args.message, args.link_url, args.link_title, args.link_image)
 
-		if(args.link_title && args.link_image)
-		{
-			link_preview_s = 
-			`<div class='link_preview action'>
-				<div class='link_preview_url'>${Hue.make_html_safe(args.link_url)}</div>
-				<div class='spacer3'></div>
-				<div class='link_preview_title'>${Hue.make_html_safe(args.link_title)}</div>
-				<div class='spacer3'></div>
-				<div><img class='link_preview_image' src='${args.link_image}'></div>
-			</div>`
-		}
-
-		else if(args.link_title)
-		{
-			link_preview_s = 
-			`<div class='link_preview action'>
-				<div class='link_preview_url'>${Hue.make_html_safe(args.link_url)}</div>
-				<div class='spacer3'></div>
-				<div class='link_preview_title'>${Hue.make_html_safe(args.link_title)}</div>
-			</div>`
-		}
-
-		else if(args.link_image)
-		{
-			link_preview_s = 
-			`<div class='link_preview action'>
-				<div class='link_preview_url'>${args.link_url.substring(0, 100)}</div>
-				<div class='spacer3'></div>
-				<img class='link_preview_image' src='${args.link_image}'>
-			</div>`
-		}
-
-		if(link_preview_s)
-		{
-			let link_preview_array = []
-
-			for(let sp of split)
-			{
-				if(sp === args.link_url)
-				{
-					link_preview_array.push(link_preview_s)
-				}
-
-				else
-				{
-					link_preview_array.push(Hue.make_html_safe(sp))
-				}
-			}
-
-			link_preview = link_preview_array.join(" ")
-		}
+		link_preview = ans.link_preview
 	}
 
 	let fmessage
@@ -6596,7 +6508,6 @@ Hue.update_chat = function(args={})
 		}
 
 		fmessage = $(s)
-
 		fmessage.find(".chat_content_container").eq(0).data("original_message", args.message)
 
 		if(image_preview)
@@ -6657,73 +6568,12 @@ Hue.update_chat = function(args={})
 
 	if(image_preview)
 	{
-		let image_preview_el = fmessage.find(".image_preview").eq(0)
-
-		image_preview_el.click(function()
-		{
-			Hue.open_url_menu(image_preview_src_original)
-		})
-
-		let image_preview_image = image_preview_el.find(".image_preview_image").eq(0)
-
-		image_preview_image[0].addEventListener("load", function()
-		{
-			if(args.user_id === Hue.user_id || !started)
-			{
-				Hue.goto_bottom(true, false)
-			}
-
-			else
-			{
-				Hue.goto_bottom(false, false)
-			}
-		})
-
-		image_preview_image.click(function(e)
-		{
-			e.stopPropagation()
-			Hue.expand_image(image_preview_src_original)
-		})
-
-		image_preview_el.find(".image_preview_url").eq(0).urlize()
+		Hue.setup_image_preview(fmessage, image_preview_src_original, args.user_id)
 	}
-
-	let started = Hue.started
 
 	if(link_preview)
 	{
-		let link_preview_el = fmessage.find(".link_preview").eq(0)
-
-		link_preview_el.click(function()
-		{
-			Hue.open_url_menu(args.link_url)
-		})
-		
-		let link_preview_image = link_preview_el.find(".link_preview_image").eq(0)
-
-		if(link_preview_image.length > 0)
-		{
-			link_preview_image[0].addEventListener("load", function()
-			{
-				if(args.user_id === Hue.user_id || !started)
-				{
-					Hue.goto_bottom(true, false)
-				}
-
-				else
-				{
-					Hue.goto_bottom(false, false)
-				}
-			})	
-		}
-
-		link_preview_image.click(function(e)
-		{
-			e.stopPropagation()
-			Hue.expand_image($(this).attr("src"))
-		})
-
-		link_preview_el.find(".link_preview_url").eq(0).urlize()
+		Hue.setup_link_preview(fmessage, args.link_url, args.user_id)
 	}
 
 	fmessage.find(".whisper_link").each(function()
@@ -7525,7 +7375,11 @@ Hue.chat_announce = function(args={})
 		info2: "",
 		username: false,
 		open_profile: false,
-		public: false
+		public: false,
+		link_title: false,
+		link_image: false,
+		link_url: false,
+		preview_image: false
 	}
 
 	Hue.fill_defaults(args, def_args)
@@ -7603,6 +7457,28 @@ Hue.chat_announce = function(args={})
 		messageclasses += " compact_layout"
 	}
 
+	let image_preview = false
+	let image_preview_src = false
+	let image_preview_src_original = false
+
+	if(args.preview_image && Hue.get_setting("show_image_previews"))
+	{
+		let ans = Hue.make_image_preview(args.message)
+
+		image_preview = ans.image_preview
+		image_preview_src = ans.image_preview_src
+		image_preview_src_original = ans.image_preview_src_original
+	}
+
+	let link_preview = false
+
+	if(!image_preview && args.link_url && Hue.get_setting("show_link_previews"))
+	{
+		let ans = Hue.make_link_preview(args.message, args.link_url, args.link_title, args.link_image)
+
+		link_preview = ans.link_preview
+	}
+
 	let s = `
 	<div${containerid}class='${messageclasses}'>
 		<div class='${containerclasses}'>
@@ -7612,17 +7488,31 @@ Hue.chat_announce = function(args={})
 	</div>`
 
 	let fmessage = $(s)
-
 	let content = fmessage.find('.announcement_content').eq(0)
 
-	if(clickable)
+	if(image_preview)
 	{
-		content.text(args.message).urlize()
+		content.html(image_preview)
+	}
+
+	else if(link_preview)
+	{
+		content.html(link_preview)
 	}
 
 	else
 	{
 		content.text(args.message).urlize()
+	}
+
+	if(image_preview)
+	{
+		Hue.setup_image_preview(fmessage, image_preview_src_original, "none")
+	}
+
+	if(link_preview)
+	{
+		Hue.setup_link_preview(fmessage, args.link_url, "none")
 	}
 
 	if(args.onclick)
@@ -23112,7 +23002,11 @@ Hue.show_announcement = function(data, date=Date.now())
 	Hue.public_feedback(data.message, 
 	{
 		brk: "<i class='icon2c fa fa-star'></i>",
-		date: date
+		date: date,
+		preview_image: true,
+		link_title: data.link_title,
+		link_image: data.link_image,
+		link_url: data.link_url
 	})
 }
 
@@ -23123,4 +23017,194 @@ Hue.start_body_events = function()
 		$(this).removeClass("spoiler")
 		$(this).removeAttr("title")
 	})
+}
+
+Hue.make_image_preview = function(message)
+{
+	let ans = {}
+
+	ans.image_preview = false
+	ans.image_preview_src = false
+	ans.image_preview_src_original = false
+
+	let split = message.split(" ")
+	let num_links = 0
+	let link = false
+
+	for(let sp of split)
+	{
+		if((sp.startsWith("https://") || sp.startsWith("http://")))
+		{
+			num_links += 1
+			link = sp
+		}
+	}
+
+	if(num_links === 1 && link.includes("imgur.com"))
+	{
+		let code = Hue.utilz.get_imgur_image_code(link)
+
+		if(code)
+		{
+			let extension = Hue.utilz.get_extension(link)
+
+			ans.image_preview_src_original = `https://i.imgur.com/${code}.${extension}`
+			ans.image_preview_src = `https://i.imgur.com/${code}l.jpg`
+			ans.image_preview_array = []
+
+			for(let sp of split)
+			{
+				if(sp === link)
+				{
+					ans.image_preview_array.push(link)
+				}
+
+				else
+				{
+					ans.image_preview_array.push(Hue.make_html_safe(sp))
+				}
+			}
+
+			let text = ans.image_preview_array.join(" ")
+
+			ans.image_preview = `<div class='image_preview action'><div class='image_preview_url'>${text}</div><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}"></div>`
+		}
+	}
+
+	return ans
+}
+
+Hue.make_link_preview = function(message, link_url, link_title, link_image)
+{
+	let ans = {}
+
+	ans.link_preview = false
+
+	let split = message.split(" ")
+	let link_preview_s = false
+
+	if(link_title && link_image)
+	{
+		link_preview_s = 
+		`<div class='link_preview action'>
+			<div class='link_preview_url'>${Hue.make_html_safe(link_url)}</div>
+			<div class='spacer3'></div>
+			<div class='link_preview_title'>${Hue.make_html_safe(link_title)}</div>
+			<div class='spacer3'></div>
+			<div><img class='link_preview_image' src='${link_image}'></div>
+		</div>`
+	}
+
+	else if(link_title)
+	{
+		link_preview_s = 
+		`<div class='link_preview action'>
+			<div class='link_preview_url'>${Hue.make_html_safe(link_url)}</div>
+			<div class='spacer3'></div>
+			<div class='link_preview_title'>${Hue.make_html_safe(link_title)}</div>
+		</div>`
+	}
+
+	else if(link_image)
+	{
+		link_preview_s = 
+		`<div class='link_preview action'>
+			<div class='link_preview_url'>${link_url.substring(0, 100)}</div>
+			<div class='spacer3'></div>
+			<img class='link_preview_image' src='${link_image}'>
+		</div>`
+	}
+
+	if(link_preview_s)
+	{
+		let link_preview_array = []
+
+		for(let sp of split)
+		{
+			if(sp === link_url)
+			{
+				link_preview_array.push(link_preview_s)
+			}
+
+			else
+			{
+				link_preview_array.push(Hue.make_html_safe(sp))
+			}
+		}
+
+		ans.link_preview = link_preview_array.join(" ")
+	}
+
+	return ans
+}
+
+Hue.setup_image_preview = function(fmessage, image_preview_src_original, user_id)
+{
+	let started = Hue.started
+	let image_preview_el = fmessage.find(".image_preview").eq(0)
+
+	image_preview_el.click(function()
+	{
+		Hue.open_url_menu(image_preview_src_original)
+	})
+
+	let image_preview_image = image_preview_el.find(".image_preview_image").eq(0)
+
+	image_preview_image[0].addEventListener("load", function()
+	{
+		if(user_id === Hue.user_id || !started)
+		{
+			Hue.goto_bottom(true, false)
+		}
+
+		else
+		{
+			Hue.goto_bottom(false, false)
+		}
+	})
+
+	image_preview_image.click(function(e)
+	{
+		e.stopPropagation()
+		Hue.expand_image(image_preview_src_original.replace(".gifv", ".gif"))
+	})
+
+	image_preview_el.find(".image_preview_url").eq(0).urlize()
+}
+
+Hue.setup_link_preview = function(fmessage, link_url, user_id)
+{
+	let started = Hue.started
+	let link_preview_el = fmessage.find(".link_preview").eq(0)
+
+	link_preview_el.click(function()
+	{
+		Hue.open_url_menu(link_url)
+	})
+	
+	let link_preview_image = link_preview_el.find(".link_preview_image").eq(0)
+
+	if(link_preview_image.length > 0)
+	{
+		link_preview_image[0].addEventListener("load", function()
+		{
+			if(user_id === Hue.user_id || !started)
+			{
+				Hue.goto_bottom(true, false)
+			}
+
+			else
+			{
+				Hue.goto_bottom(false, false)
+			}
+		})	
+	}
+
+	link_preview_image.click(function(e)
+	{
+		e.stopPropagation()
+		Hue.expand_image($(this).attr("src").replace(".gifv", ".gif"))
+	})
+
+	link_preview_el.find(".link_preview_url").eq(0).urlize()
 }

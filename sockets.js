@@ -4657,21 +4657,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				handler.send_announcement_to_room(room_id, ad)
 
-				if(rooms[room_id].log)
-				{
-					let message =
-					{
-						type: "announcement",
-						data:
-						{
-							message: ad
-						},
-						date: Date.now()
-					}
-
-					handler.push_log_message(room_id, message)
-				}
-
 				return callback(true)
 			})
 		}
@@ -5153,7 +5138,34 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.send_announcement_to_room = function(room_id, message)
 	{
-		handler.room_emit(room_id, "announcement", {message:message})
+		handler.process_message_links(message, function(response)
+		{
+			handler.room_emit(room_id, "announcement", 
+			{
+				message: message,
+				link_title: response.title,
+				link_image: response.image,
+				link_url: response.url
+			})
+
+			if(rooms[room_id].log)
+			{
+				let message_ =
+				{
+					type: "announcement",
+					data:
+					{
+						message: message,
+						link_title: response.title,
+						link_image: response.image,
+						link_url: response.url
+					},
+					date: Date.now()
+				}
+
+				handler.push_log_message(room_id, message_)
+			}
+		})
 	}
 
 	handler.add_spam = async function(socket)
