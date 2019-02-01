@@ -544,6 +544,7 @@ div#header_radio_playing_icon
 {
 	flex-shrink: 0;
 	flex-grow: 0;
+	max-height: 2rem;
 }
 
 .compact_layout .brk

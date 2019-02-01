@@ -7402,14 +7402,7 @@ Hue.chat_announce = function(args={})
 	let messageclasses = "message announcement"
 	let containerclasses = "announcement_content_container"
 	let contclasses = "announcement_content"
-
-	let clickable = false
-
-	if(args.onclick || (args.username && args.open_profile))
-	{
-		containerclasses += " pointer action"
-		clickable = true
-	}
+	let brkclasses = "brk announcement_brk"
 
 	let containerid = " "
 
@@ -7479,16 +7472,23 @@ Hue.chat_announce = function(args={})
 		link_preview = ans.link_preview
 	}
 
+	if((args.onclick || (args.username && args.open_profile)) && !link_preview && !image_preview)
+	{
+		contclasses += " pointer action"
+		brkclasses += " pointer action"
+	}
+
 	let s = `
 	<div${containerid}class='${messageclasses}'>
 		<div class='${containerclasses}'>
-			<div class='brk announcement_brk'>${args.brk}</div>
+			<div class='${brkclasses}'>${args.brk}</div>
 			<div class='${contclasses}' title='${t}'></div>
 		</div>
 	</div>`
 
 	let fmessage = $(s)
 	let content = fmessage.find('.announcement_content').eq(0)
+	let brk = fmessage.find('.brk').eq(0)
 
 	if(image_preview)
 	{
@@ -7515,9 +7515,10 @@ Hue.chat_announce = function(args={})
 		Hue.setup_link_preview(fmessage, args.link_url, "none")
 	}
 
-	if(args.onclick)
+	if(args.onclick && !link_preview && !image_preview)
 	{
-		content.parent().on("click", args.onclick)
+		content.on("click", args.onclick)
+		brk.on("click", args.onclick)
 	}
 
 	else if(args.username && args.open_profile)
@@ -7528,6 +7529,7 @@ Hue.chat_announce = function(args={})
 		}
 
 		content.parent().on("click", pif)
+		brk.parent().on("click", pif)
 	}
 	
 	fmessage.data("public", args.public)
