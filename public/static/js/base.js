@@ -7493,26 +7493,18 @@ Hue.chat_announce = function(args={})
 	if(image_preview)
 	{
 		content.html(image_preview)
+		Hue.setup_image_preview(fmessage, image_preview_src_original, "none")
 	}
 
 	else if(link_preview)
 	{
 		content.html(link_preview)
+		Hue.setup_link_preview(fmessage, args.link_url, "none")
 	}
 
 	else
 	{
 		content.text(args.message).urlize()
-	}
-
-	if(image_preview)
-	{
-		Hue.setup_image_preview(fmessage, image_preview_src_original, "none")
-	}
-
-	if(link_preview)
-	{
-		Hue.setup_link_preview(fmessage, args.link_url, "none")
 	}
 
 	if(args.onclick && !link_preview && !image_preview)
