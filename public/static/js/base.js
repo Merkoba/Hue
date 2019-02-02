@@ -2851,7 +2851,7 @@ Hue.userjoin = function(data)
 
 			if(data.username !== Hue.username)
 			{
-				Hue.alert_title()
+				Hue.alert_title(1)
 				Hue.sound_notify("join")
 			}
 		}
@@ -6596,13 +6596,13 @@ Hue.update_chat = function(args={})
 	{
 		if(highlighted)
 		{
-			Hue.alert_title2()
+			Hue.alert_title(2)
 			Hue.sound_notify("highlight")
 		}
 
 		else
 		{
-			Hue.alert_title()
+			Hue.alert_title(1)
 			Hue.sound_notify("message")
 		}
 	}
@@ -7232,7 +7232,7 @@ Hue.change = function(args={})
 
 	if(args.notify && setter !== Hue.username)
 	{
-		Hue.alert_title()
+		Hue.alert_title(1)
 		Hue.sound_notify("media_change")
 	}
 }
@@ -7539,7 +7539,7 @@ Hue.chat_announce = function(args={})
 		
 		if(args.highlight)
 		{
-			Hue.alert_title2()
+			Hue.alert_title(2)
 			Hue.sound_notify("highlight")
 		}
 	}
@@ -10002,47 +10002,43 @@ Hue.sound_notify = function(type)
 	Hue.play_audio(sound)
 }
 
-Hue.alert_title = function()
+Hue.alert_title = function(mode)
 {
 	if(!Hue.started)
 	{
 		return false
 	}
 
-	if(!Hue.app_focused || Hue.room_state.screen_locked)
-	{
-		if(Hue.alert_mode === 0)
-		{
-			Hue.alert_mode = 1
-			Hue.after_any_alert_title()
-		}
-	}
-}
+	let modes = [1, 2]
 
-Hue.alert_title2 = function()
-{
-	if(!Hue.started)
+	if(!modes.includes(mode))
 	{
 		return false
 	}
-
-	if(!Hue.app_focused || Hue.room_state.screen_locked)
-	{
-		if(Hue.alert_mode !== 2)
-		{
-			Hue.alert_mode = 2
-			Hue.after_any_alert_title()
-		}
-	}
-}
-
-Hue.after_any_alert_title = function()
-{
-	Hue.update_title()
 
 	if(Hue.room_state.screen_locked)
 	{
-		$("#lockscreen_title_info").text("(New Activity)")
+		if(!$("#lockscreen_title_info").text())
+		{
+			console.log(123)
+			$("#lockscreen_title_info").text("(New Activity)")
+		}
+	}
+
+	if(!Hue.app_focused || Hue.room_state.screen_locked)
+	{
+		if(mode === 1 && Hue.alert_mode !== 0)
+		{
+			return false
+		}
+
+		if(mode === 2 && Hue.alert_mode === 2)
+		{
+			return false
+		}
+		
+		Hue.alert_mode = mode
+		Hue.update_title()
 	}
 }
 
@@ -17048,7 +17044,7 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 		})
 	}
 
-	Hue.alert_title2()
+	Hue.alert_title(2)
 	Hue.sound_notify("highlight")
 }
 
@@ -19128,6 +19124,7 @@ Hue.setup_lockscreen = function()
 	{
 		clearTimeout(Hue.lockscreen_peek_timeout)
 		$("#Msg-container-lockscreen").css("opacity", 1)
+		$("#lockscreen_title_info").text("")
 	})
 }
 
