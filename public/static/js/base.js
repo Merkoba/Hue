@@ -146,6 +146,7 @@ Hue.loaded_radio = {}
 Hue.autoscrolling = false
 Hue.chat_scrolled = false
 Hue.lockscreen_peek_delay = 1000
+Hue.lockscreen_peek_active = false
 
 Hue.commands = 
 [
@@ -19117,14 +19118,21 @@ Hue.setup_lockscreen = function()
 		Hue.lockscreen_peek_timeout = setTimeout(function()
 		{
 			$("#Msg-container-lockscreen").css("opacity", 0.2)
+			Hue.lockscreen_peek_active = true
 		}, Hue.lockscreen_peek_delay)
 	})
 
 	$("#lockscreen_title_menu").on("mouseleave", function()
 	{
 		clearTimeout(Hue.lockscreen_peek_timeout)
-		$("#Msg-container-lockscreen").css("opacity", 1)
-		$("#lockscreen_title_info").text("")
+
+		if(Hue.lockscreen_peek_active)
+		{
+			$("#Msg-container-lockscreen").css("opacity", 1)
+			$("#lockscreen_title_info").text("")
+		}
+
+		Hue.lockscreen_peek_active = false
 	})
 }
 
