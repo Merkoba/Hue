@@ -10021,7 +10021,6 @@ Hue.alert_title = function(mode)
 	{
 		if(!$("#lockscreen_title_info").text())
 		{
-			console.log(123)
 			$("#lockscreen_title_info").text("(New Activity)")
 		}
 	}
