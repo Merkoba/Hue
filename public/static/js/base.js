@@ -5457,7 +5457,15 @@ Hue.activate_key_detection = function()
 
 				if(e.key === "Escape")
 				{
-					Hue.clear_synth_voice()
+					if($("#synth_voice_input").val())
+					{
+						Hue.clear_synth_voice()
+					}
+
+					else
+					{
+						Hue.hide_synth(true)
+					}
 				}
 
 				return false
@@ -13383,7 +13391,7 @@ Hue.setting_synth_enabled_action = function(type, save=true)
 	{
 		if(!Hue[type].synth_enabled)
 		{
-			Hue.hide_synth()
+			Hue.hide_synth(true)
 		}
 	}
 
@@ -22389,7 +22397,7 @@ Hue.setup_synth = function()
 
 		if(!Hue.mouse_on_synth)
 		{
-			Hue.hide_synth()
+			Hue.hide_synth(true)
 		}
 	})
 
@@ -22444,16 +22452,23 @@ Hue.show_synth = function()
 	}
 }
 
-Hue.hide_synth = function()
+Hue.hide_synth = function(force=false)
 {
 	Hue.mouse_on_synth = false
 
-	if(Hue.synth_voice_input_focused)
+	if(!force && Hue.synth_voice_input_focused)
 	{
 		return false
 	}
 	
 	clearTimeout(Hue.synth_timeout)
+
+	let delay = Hue.synth_timeout_delay
+
+	if(force)
+	{
+		delay = 0
+	}
 
 	Hue.synth_timeout_2 = setTimeout(function()
 	{
@@ -22461,7 +22476,7 @@ Hue.hide_synth = function()
 		
 		Hue.clear_synth_voice()
 		Hue.synth_open = false
-	}, Hue.synth_timeout_delay)
+	}, delay)
 }
 
 Hue.send_synth_key = function(key)
@@ -22607,7 +22622,7 @@ Hue.play_synth_voice = function(text, username, local=false)
 	{
 		speech.onstart = function()
 		{
-			Hue.show_voice_box(username)
+			Hue.show_voice_box(username, text)
 		}
 
 		speech.onend = function()
@@ -22646,14 +22661,22 @@ Hue.show_console_message = function()
 	console.info(`%c${s}`, style)
 }
 
-Hue.show_voice_box = function(username)
+Hue.show_voice_box = function(username, text)
 {
-	let s = `
+	let h = $(`
 	<div class='recent_voice_box_item'>
-		<i class='fa fa-volume-up'></i>&nbsp;&nbsp;${Hue.make_html_safe(username)}
-	</div>`
+		<i class='fa fa-volume-up'></i>&nbsp;&nbsp;
+		<div class='voice_box_username'></div>&nbsp;&nbsp;
+		<div class='voice_box_message'></div>
+	</div>`)
 
-	$("#recent_voice_box_content").html(s)
+	let uname = h.find(".voice_box_username").eq(0)
+	uname.text(`${username}:`)
+
+	let message = h.find(".voice_box_message").eq(0)
+	message.text(text)
+
+	$("#recent_voice_box_content").html(h)
 	$("#recent_voice_box").css("display", "flex")
 }
 
