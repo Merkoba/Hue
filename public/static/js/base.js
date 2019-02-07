@@ -357,7 +357,6 @@ Hue.init = function()
 	Hue.get_ignored_usernames_list()
 	Hue.get_accept_commands_from_list()
 	Hue.setup_lockscreen()
-	Hue.setup_dynamic_titles()
 
 	if(Hue.debug_functions)
 	{
@@ -9664,10 +9663,12 @@ Hue.push_played = function(info, info2=false)
 
 	if(Hue.played[Hue.played.length - 1] !== s)
 	{
-		let title = Hue.nice_date()
+		let date = Date.now()
+
+		let title = Hue.nice_date(date)
 
 		let pi = `
-		<div class='played_item_inner pointer inline action' title='${title}'>
+		<div class='played_item_inner pointer inline action dynamic_title' title='${title}' data-otitle='${title}' data-date='${date}'>
 			<div class='pititle'></div><div class='piartist'></div>
 		</div>`
 
@@ -23106,6 +23107,12 @@ Hue.start_body_events = function()
 		$(this).removeClass("spoiler")
 		$(this).removeAttr("title")
 	})
+
+	$("body").on("mouseenter", ".dynamic_title", function()
+	{
+		let new_title = `${$(this).data("otitle")} (${Hue.get_timeago($(this).data("date"))})`
+		$(this).attr("title", new_title)
+	})
 }
 
 Hue.make_image_preview = function(message)
@@ -23296,17 +23303,6 @@ Hue.setup_link_preview = function(fmessage, link_url, user_id)
 	})
 
 	link_preview_el.find(".link_preview_url").eq(0).urlize()
-}
-
-Hue.setup_dynamic_titles = function()
-{
-	let containers = "#chat_area, #chat_search_container, .media_history_container, #highlights_container, #input_history_container, #userlist"
-	
-	$(containers).on("mouseenter", ".dynamic_title", function()
-	{
-		let new_title = `${$(this).data("otitle")} (${Hue.get_timeago($(this).data("date"))})`
-		$(this).attr("title", new_title)
-	})
 }
 
 Hue.get_timeago = function(date)
