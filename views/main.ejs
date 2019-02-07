@@ -40,7 +40,7 @@
 		<script src="/static/js/utilz.js?version=32"></script>
 		<script src="/static/js/colorlib.js?version=13"></script>
 
-		<script src="/static/js/base.js?version=2567"></script>
+		<script src="/static/js/base.js?version=2568"></script>
 
 		<link rel="stylesheet" href="/static/css/style.css?version=547"/>
 
@@ -211,7 +211,7 @@
 							<div class='synth_key_divider'></div>
 							<div class='synth_key action' id='synth_key_9'>9</div>
 							<div class='synth_key_divider'></div>
-							<div class='synth_key action' id='synth_key_10'>0</div>
+							<div class='synth_key action' id='synth_key_10'>10</div>
 						</div>
 
 						<div id='synth_voice_content'>
@@ -841,6 +841,7 @@
 						<div class='settings_window_category' data-category_container='settings_window_category_content_appearance_{{type}}' data-category='appearance'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Appearance</span><span class='settings_window_category_status'></span></div>
 						<div class='settings_window_category' data-category_container='settings_window_category_content_functions_{{type}}' data-category='functions'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Functions</span><span class='settings_window_category_status'></span></div>
 						<div class='settings_window_category' data-category_container='settings_window_category_content_media_{{type}}' data-category='media'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Media</span><span class='settings_window_category_status'></span></div>
+						<div class='settings_window_category' data-category_container='settings_window_category_content_synth_{{type}}' data-category='synth'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Synth</span><span class='settings_window_category_status'></span></div>
 						<div class='settings_window_category' data-category_container='settings_window_category_content_misc_{{type}}' data-category='misc'><span class='settings_window_category_status_filler invisible'></span><span class='settings_window_category_text'>Misc</span><span class='settings_window_category_status'></span></div>
 						<div class='spacer3'></div>
 						<div class='smaller_font_size pointer' onclick='Hue.confirm_reset_settings("{{type}}")'>Reset</div>
@@ -870,11 +871,6 @@
 						<div class='settings_item' data-setting='beep_on_user_joins'>
 							<div class="setting_title">Beep On User Joins</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_beep_on_user_joins">
-						</div>
-
-						<div class='settings_item' data-setting='synth_enabled'>
-							<div class="setting_title">Synth Enabled</div>
-							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_synth_enabled">
 						</div>
 
 					</div>
@@ -1251,6 +1247,75 @@
 							<div class="setting_title2">Bypass Radio Lock</div>
 							<div class="setting_title">When You Change</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_bypass_radio_lock_on_own_change">
+						</div>
+
+					</div>
+
+					<div class='settings_category settings_window_category_container' id='settings_window_category_content_synth_{{type}}' data-category='synth'>
+
+						<div class='settings_item' data-setting='synth_enabled'>
+							<div class="setting_title">Synth Enabled</div>
+							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_synth_enabled">
+						</div>
+										
+						<div class='settings_item' data-setting='speech_1'>
+							<div class="setting_title" title="This is spoken when middle clicking key #1">Speech #1</div>
+							<div class='spacer2'></div>
+							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_1"></textarea>
+						</div>
+										
+						<div class='settings_item' data-setting='speech_2'>
+							<div class="setting_title" title="This is spoken when middle clicking key #2">Speech #2</div>
+							<div class='spacer2'></div>
+							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_2"></textarea>
+						</div>
+										
+						<div class='settings_item' data-setting='speech_3'>
+							<div class="setting_title" title="This is spoken when middle clicking key #3">Speech #3</div>
+							<div class='spacer2'></div>
+							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_3"></textarea>
+						</div>
+										
+						<div class='settings_item' data-setting='speech_4'>
+							<div class="setting_title" title="This is spoken when middle clicking key #4">Speech #4</div>
+							<div class='spacer2'></div>
+							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_4"></textarea>
+						</div>
+										
+						<div class='settings_item' data-setting='speech_5'>
+							<div class="setting_title" title="This is spoken when middle clicking key #5">Speech #5</div>
+							<div class='spacer2'></div>
+							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_5"></textarea>
+						</div>
+										
+						<div class='settings_item' data-setting='speech_6'>
+							<div class="setting_title" title="This is spoken when middle clicking key #6">Speech #6</div>
+							<div class='spacer2'></div>
+							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_6"></textarea>
+						</div>
+										
+						<div class='settings_item' data-setting='speech_7'>
+							<div class="setting_title" title="This is spoken when middle clicking key #7">Speech #7</div>
+							<div class='spacer2'></div>
+							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_7"></textarea>
+						</div>
+										
+						<div class='settings_item' data-setting='speech_8'>
+							<div class="setting_title" title="This is spoken when middle clicking key #8">Speech #8</div>
+							<div class='spacer2'></div>
+							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_8"></textarea>
+						</div>
+										
+						<div class='settings_item' data-setting='speech_9'>
+							<div class="setting_title" title="This is spoken when middle clicking key #9">Speech #9</div>
+							<div class='spacer2'></div>
+							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_9"></textarea>
+						</div>
+										
+						<div class='settings_item' data-setting='speech_10'>
+							<div class="setting_title" title="This is spoken when middle clicking key #10">Speech #10</div>
+							<div class='spacer2'></div>
+							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_10"></textarea>
 						</div>
 
 					</div>

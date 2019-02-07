@@ -201,7 +201,7 @@ Hue.commands =
 	'/togglemutesynth', '/speak', '/synthkeylocal', '/speaklocal',
 	'/unmaximize', '/maximizechat', '/autoscrollup', '/autoscrolldown',
 	'/loadnextimage', '/loadprevimage', '/loadnexttv', '/loadprevtv',
-	'/loadnextradio', '/loadprevradio', '/img'
+	'/loadnextradio', '/loadprevradio', '/img', '/speech'
 ]
 
 Hue.user_settings =
@@ -266,15 +266,19 @@ Hue.user_settings =
 	synth_enabled: {widget_type:"checkbox"},
 	autoscroll_amount: {widget_type:"number"},
 	autoscroll_delay: {widget_type:"number"},
+	speech_1: {widget_type:"textarea"},
+	speech_2: {widget_type:"textarea"},
+	speech_3: {widget_type:"textarea"},
+	speech_4: {widget_type:"textarea"},
+	speech_5: {widget_type:"textarea"},
+	speech_6: {widget_type:"textarea"},
+	speech_7: {widget_type:"textarea"},
+	speech_8: {widget_type:"textarea"},
+	speech_9: {widget_type:"textarea"},
+	speech_10: {widget_type:"textarea"},
 	chat_display_percentage: {widget_type:"custom"},
 	tv_display_percentage: {widget_type:"custom"},
 	tv_display_position: {widget_type:"custom"}
-}
-
-Hue.synth_key_names =
-{
-	1: "one", 2:"two", 3:"three", 4:"four", 5:"five",
-	6: "six", 7:"seven", 8:"eight", 9:"nine", 10:"zero"
 }
 
 Hue.init = function()
@@ -9114,6 +9118,11 @@ Hue.execute_command = function(message, ans)
 		Hue.play_synth_voice(arg, Hue.username, true)
 	}
 
+	else if(Hue.oi_startswith(cmd2, '/speech'))
+	{
+		Hue.play_speech(arg)
+	}
+
 	else if(Hue.oi_equals(cmd2, '/unmaximize'))
 	{
 		Hue.unmaximize_media()
@@ -13461,6 +13470,246 @@ Hue.setting_autoscroll_delay_action = function(type, save=true)
 	$(`#${type}_autoscroll_delay`).val(val)
 
 	Hue[type].autoscroll_delay = val
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_speech_1_action = function(type, save=true)
+{
+	let speech = Hue.utilz.clean_string2($(`#${type}_speech_1`).val())
+
+	if(!speech)
+	{
+		speech = Hue.global_settings_default_speech_1
+	}
+
+	$(`#${type}_speech_1`).val(speech)
+
+	Hue[type].speech_1 = speech
+
+	if(Hue.active_settings("speech_1") === type)
+	{
+		Hue.set_synth_key_title(1)
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_speech_2_action = function(type, save=true)
+{
+	let speech = Hue.utilz.clean_string2($(`#${type}_speech_2`).val())
+
+	if(!speech)
+	{
+		speech = Hue.global_settings_default_speech_2
+	}
+
+	$(`#${type}_speech_2`).val(speech)
+
+	Hue[type].speech_2 = speech
+
+	if(Hue.active_settings("speech_2") === type)
+	{
+		Hue.set_synth_key_title(2)
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_speech_3_action = function(type, save=true)
+{
+	let speech = Hue.utilz.clean_string2($(`#${type}_speech_3`).val())
+
+	if(!speech)
+	{
+		speech = Hue.global_settings_default_speech_3
+	}
+
+	$(`#${type}_speech_3`).val(speech)
+
+	Hue[type].speech_3 = speech
+
+	if(Hue.active_settings("speech_3") === type)
+	{
+		Hue.set_synth_key_title(3)
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_speech_4_action = function(type, save=true)
+{
+	let speech = Hue.utilz.clean_string2($(`#${type}_speech_4`).val())
+
+	if(!speech)
+	{
+		speech = Hue.global_settings_default_speech_4
+	}
+
+	$(`#${type}_speech_4`).val(speech)
+
+	if(Hue.active_settings("speech_4") === type)
+	{
+		Hue.set_synth_key_title(4)
+	}
+
+	Hue[type].speech_4 = speech
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_speech_5_action = function(type, save=true)
+{
+	let speech = Hue.utilz.clean_string2($(`#${type}_speech_5`).val())
+
+	if(!speech)
+	{
+		speech = Hue.global_settings_default_speech_5
+	}
+
+	$(`#${type}_speech_5`).val(speech)
+
+	Hue[type].speech_5 = speech
+
+	if(Hue.active_settings("speech_5") === type)
+	{
+		Hue.set_synth_key_title(5)
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_speech_6_action = function(type, save=true)
+{
+	let speech = Hue.utilz.clean_string2($(`#${type}_speech_6`).val())
+
+	if(!speech)
+	{
+		speech = Hue.global_settings_default_speech_6
+	}
+
+	$(`#${type}_speech_6`).val(speech)
+
+	Hue[type].speech_6 = speech
+
+	if(Hue.active_settings("speech_6") === type)
+	{
+		Hue.set_synth_key_title(6)
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_speech_7_action = function(type, save=true)
+{
+	let speech = Hue.utilz.clean_string2($(`#${type}_speech_7`).val())
+
+	if(!speech)
+	{
+		speech = Hue.global_settings_default_speech_7
+	}
+
+	$(`#${type}_speech_7`).val(speech)
+
+	Hue[type].speech_7 = speech
+
+	if(Hue.active_settings("speech_7") === type)
+	{
+		Hue.set_synth_key_title(7)
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_speech_8_action = function(type, save=true)
+{
+	let speech = Hue.utilz.clean_string2($(`#${type}_speech_8`).val())
+
+	if(!speech)
+	{
+		speech = Hue.global_settings_default_speech_8
+	}
+
+	$(`#${type}_speech_8`).val(speech)
+
+	Hue[type].speech_8 = speech
+
+	if(Hue.active_settings("speech_8") === type)
+	{
+		Hue.set_synth_key_title(8)
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_speech_9_action = function(type, save=true)
+{
+	let speech = Hue.utilz.clean_string2($(`#${type}_speech_9`).val())
+
+	if(!speech)
+	{
+		speech = Hue.global_settings_default_speech_9
+	}
+
+	$(`#${type}_speech_9`).val(speech)
+
+	Hue[type].speech_9 = speech
+
+	if(Hue.active_settings("speech_9") === type)
+	{
+		Hue.set_synth_key_title(9)
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_speech_10_action = function(type, save=true)
+{
+	let speech = Hue.utilz.clean_string2($(`#${type}_speech_10`).val())
+
+	if(!speech)
+	{
+		speech = Hue.global_settings_default_speech_10
+	}
+
+	$(`#${type}_speech_10`).val(speech)
+
+	Hue[type].speech_10 = speech
+
+	if(Hue.active_settings("speech_10") === type)
+	{
+		Hue.set_synth_key_title(10)
+	}
 
 	if(save)
 	{
@@ -22371,13 +22620,7 @@ Hue.setup_synth = function()
 		if(e.which === 2)
 		{
 			let key = $(this).attr("id").replace("synth_key_", "")
-
-			let name = Hue.synth_key_names[key]
-
-			if(name)
-			{
-				Hue.send_synth_voice(name)
-			}
+			Hue.play_speech(key)
 		}
 	})
 
@@ -22399,6 +22642,12 @@ Hue.setup_synth = function()
 		{
 			Hue.hide_synth(true)
 		}
+	})
+
+	$(".synth_key").each(function()
+	{
+		let key = $(this).attr("id").replace("synth_key_", "")
+		Hue.set_synth_key_title(key)
 	})
 
 	Hue.set_synth_muted(Hue.room_state.synth_muted)
@@ -23331,4 +23580,28 @@ Hue.setup_link_preview = function(fmessage, link_url, user_id)
 Hue.get_timeago = function(date)
 {
 	return Hue.utilz.capitalize_words(timeago.format(date))
+}
+
+Hue.set_synth_key_title = function(key)
+{
+	$(`#synth_key_${key}`).attr("title", Hue.get_setting(`speech_${key}`))
+}
+
+Hue.play_speech = function(key)
+{
+	if(isNaN(key))
+	{
+		return false
+	}
+
+	key = parseInt(key)
+
+	if(key < 0 || key > Hue.utilz.synth_notes.length)
+	{
+		return false
+	}
+
+	let speech = Hue.get_setting(`speech_${key}`)
+
+	Hue.send_synth_voice(speech)
 }

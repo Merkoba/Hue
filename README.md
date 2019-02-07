@@ -541,6 +541,9 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "global_settings_default_stop_tv_on_radio_play"
 >Whether TV stops on radio play by default.
 
+"global_settings_default_speech_x"
+>Default programmed speech for each synth key to play on middle click or /speech command.
+
 "bypass_images_lock_on_own_change"
 >Whether images are forced to change even if they're locked, when you change them, by default.
 
