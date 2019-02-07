@@ -147,6 +147,7 @@ Hue.autoscrolling = false
 Hue.chat_scrolled = false
 Hue.lockscreen_peek_delay = 1000
 Hue.lockscreen_peek_active = false
+Hue.context_menu_open = false
 
 Hue.commands = 
 [
@@ -3259,6 +3260,18 @@ Hue.compare_userlist = function(a, b)
 	}
 }
 
+Hue.context_menu_events = 		
+{
+	show: function()
+	{
+		Hue.context_menu_open = true
+	},
+	hide: function()
+	{
+		Hue.context_menu_open = false
+	}
+}
+
 Hue.start_username_context_menu = function()
 {
 	$.contextMenu(
@@ -3266,6 +3279,7 @@ Hue.start_username_context_menu = function()
 		selector: ".ui_item_uname, .chat_uname, #show_profile_uname, .generic_uname, .admin_list_username",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
+		events: Hue.context_menu_events,
 		items:
 		{
 			cmvoice1:
@@ -3467,6 +3481,7 @@ Hue.start_played_context_menu = function()
 		selector: ".played_item_inner, #header_now_playing_controls",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
+		events: Hue.context_menu_events,
 		items:
 		{
 			cmenu1:
@@ -3534,6 +3549,7 @@ Hue.start_volume_context_menu = function()
 		selector: "#header_radio_volume_controls",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
+		events: Hue.context_menu_events,
 		className: 'volume_context',
 		items: Hue.generate_volume_context_items()
 	})
@@ -3546,6 +3562,7 @@ Hue.start_toggle_radio_context_menu = function()
 		selector: "#toggle_radio_state",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
+		events: Hue.context_menu_events,
 		className: 'toggle_radio_context',
 		items:
 		{
@@ -3699,6 +3716,7 @@ Hue.start_main_menu_context_menu = function()
 		selector: "#main_menu_icon",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
+		events: Hue.context_menu_events,
 		items:
 		{
 			mm0:
@@ -3762,6 +3780,7 @@ Hue.start_tv_maxer_context_menu = function()
 		selector: "#media_tv_maxer, #media_image_maxer",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
+		events: Hue.context_menu_events,
 		className: "maxer_context",
 		items: Hue.generate_tv_maxer_context_items()
 	})
@@ -3848,6 +3867,7 @@ Hue.start_chat_maxer_context_menu = function()
 		selector: "#chat_maxer",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
+		events: Hue.context_menu_events,
 		className: "maxer_context",
 		items: Hue.generate_chat_maxer_context_items()
 	})
@@ -3860,6 +3880,7 @@ Hue.start_images_label_context_menu = function()
 		selector: "#footer_images_label",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
+		events: Hue.context_menu_events,
 		items:
 		{
 			mm0:
@@ -3887,6 +3908,7 @@ Hue.start_tv_label_context_menu = function()
 		selector: "#footer_tv_label",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
+		events: Hue.context_menu_events,
 		items:
 		{
 			mm0:
@@ -3914,6 +3936,7 @@ Hue.start_radio_label_context_menu = function()
 		selector: "#footer_radio_label",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
+		events: Hue.context_menu_events,
 		items:
 		{
 			mm0:
@@ -3942,6 +3965,7 @@ Hue.start_chat_menu_context_menu = function()
 		trigger: "left",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
+		events: Hue.context_menu_events,
 		items:
 		{
 			item1:
@@ -15835,6 +15859,14 @@ Hue.setup_input = function()
 		if(Hue.editing_message)
 		{
 			Hue.stop_edit_message()
+		}
+	})
+
+	$("#input").on("focus", function()
+	{
+		if(Hue.context_menu_open)
+		{
+			$('.context-menu-list').trigger('contextmenu:hide')
 		}
 	})
 
