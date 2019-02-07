@@ -13560,12 +13560,12 @@ Hue.setting_speech_4_action = function(type, save=true)
 
 	$(`#${type}_speech_4`).val(speech)
 
+	Hue[type].speech_4 = speech
+	
 	if(Hue.active_settings("speech_4") === type)
 	{
 		Hue.set_synth_key_title(4)
 	}
-
-	Hue[type].speech_4 = speech
 
 	if(save)
 	{
