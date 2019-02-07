@@ -343,7 +343,7 @@ Hue.init = function()
 	Hue.setup_fonts()
 	Hue.setup_before_unload()
 	Hue.setup_jumpers()
-	Hue.start_reply_events()
+	Hue.start_chat_quote_events()
 	Hue.set_user_settings_titles()
 	Hue.maxers_mouse_events()
 	Hue.check_screen_lock()
@@ -3891,10 +3891,10 @@ Hue.start_chat_menu_context_menu = function()
 		{
 			item1:
 			{
-				name: "Reply", callback: function(key, opt)
+				name: "Quote", callback: function(key, opt)
 				{
 					let el = $(this).closest(".chat_content_container").eq(0).find(".chat_content").get(0)
-					Hue.do_chat_reply(el)
+					Hue.do_chat_quote(el)
 				}
 			},
 			item2:
@@ -20808,19 +20808,19 @@ Hue.check_prevent_default = function(e)
 	}
 }
 
-Hue.start_reply_events = function(container_id, msg_instance)
+Hue.start_chat_quote_events = function(container_id, msg_instance)
 {
 	$("#chat_area").on("mouseup", ".chat_content", function(e)
 	{
 		if(e.button === 1)
 		{
-			Hue.do_chat_reply(e.target)
+			Hue.do_chat_quote(e.target)
 			e.preventDefault()
 		}
 	})
 }
 
-Hue.do_chat_reply = function(target)
+Hue.do_chat_quote = function(target)
 {
 	if($(target).is("a"))
 	{
