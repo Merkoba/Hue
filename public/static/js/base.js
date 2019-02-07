@@ -6,7 +6,7 @@ Hue.debug_functions = false
 Hue.ls_global_settings = "global_settings_v1"
 Hue.ls_room_settings = "room_settings_v1"
 Hue.ls_room_state = "room_state_v1"
-Hue.ls_input_history = "input_history_v16"
+Hue.ls_input_history = "input_history_v17"
 Hue.ls_first_time = "first_time_v2"
 Hue.vtypes = ["voice1", "voice2", "voice3", "voice4"]
 Hue.roles = ["admin", "op"].concat(Hue.vtypes)
@@ -200,7 +200,7 @@ Hue.commands =
 	'/togglemutesynth', '/speak', '/synthkeylocal', '/speaklocal',
 	'/unmaximize', '/maximizechat', '/autoscrollup', '/autoscrolldown',
 	'/loadnextimage', '/loadprevimage', '/loadnexttv', '/loadprevtv',
-	'/loadnextradio', '/loadprevradio'
+	'/loadnextradio', '/loadprevradio', '/img'
 ]
 
 Hue.user_settings =
@@ -356,6 +356,7 @@ Hue.init = function()
 	Hue.get_ignored_usernames_list()
 	Hue.get_accept_commands_from_list()
 	Hue.setup_lockscreen()
+	Hue.setup_dynamic_titles()
 
 	if(Hue.debug_functions)
 	{
@@ -619,7 +620,7 @@ Hue.show_media_source = function(what)
 
 	if(setter !== '')
 	{
-		Hue.feedback(`${s} Source: ${source}`, {title:`Setter: ${setter} | ${date}`})
+		Hue.feedback(`${s} Source: ${source}`, {title:`Setter: ${setter} | ${date} | ${Hue.nice_date()}`})
 	}
 
 	else
@@ -1511,6 +1512,11 @@ Hue.setup_image = function(mode, odata={})
 		}
 	}
 
+	if(!data.date)
+	{
+		data.date = Date.now()
+	}
+
 	data.info = `Setter: ${data.setter} | ${data.nice_date}`
 
 	if(data.type === "upload")
@@ -1594,11 +1600,13 @@ Hue.push_images_changed = function(data)
 
 	Hue.images_changed.push(data)
 
-	let el = $("<div class='modal_item media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	let el = $("<div class='modal_item media_history_item'><div class='media_history_item_inner dynamic_title pointer inline'></div></div>")
 	let inner = el.find('.media_history_item_inner').eq(0)
 	
 	inner.text(data.message).urlize()
 	inner.attr("title", data.info)
+	inner.data("otitle", data.info)
+	inner.data("date", data.date)
 	inner.click(data.onclick)
 	el.data("obj", data)
 	
@@ -1696,6 +1704,11 @@ Hue.setup_tv = function(mode, odata={})
 		}
 	}
 
+	if(!data.date)
+	{
+		data.date = Date.now()
+	}
+
 	if(data.message)
 	{
 		Hue.announce_tv(data)
@@ -1775,11 +1788,13 @@ Hue.push_tv_changed = function(data)
 
 	Hue.tv_changed.push(data)
 
-	let el = $("<div class='modal_item media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	let el = $("<div class='modal_item media_history_item'><div class='media_history_item_inner dynamic_title pointer inline'></div></div>")
 	let inner = el.find('.media_history_item_inner').eq(0)
 	
 	inner.text(data.message).urlize()
 	inner.attr("title", data.info)
+	inner.data("otitle", data.info)
+	inner.data("date", data.date)
 	inner.click(data.onclick)
 	el.data("obj", data)
 	
@@ -1864,6 +1879,11 @@ Hue.setup_radio = function(mode, odata={})
 		}
 	}
 
+	if(!data.date)
+	{
+		data.date = Date.now()
+	}
+
 	if(data.message)
 	{
 		Hue.announce_radio(data)
@@ -1930,11 +1950,13 @@ Hue.push_radio_changed = function(data)
 
 	Hue.radio_changed.push(data)
 
-	let el = $("<div class='modal_item media_history_item'><div class='media_history_item_inner pointer inline'></div></div>")
+	let el = $("<div class='modal_item media_history_item'><div class='media_history_item_inner dynamic_title pointer inline'></div></div>")
 	let inner = el.find('.media_history_item_inner').eq(0)
 	
 	inner.text(data.message).urlize()
 	inner.attr("title", data.info)
+	inner.data("otitle", data.info)
+	inner.data("date", data.date)
 	inner.click(data.onclick)
 	el.data("obj", data)
 	
@@ -2836,7 +2858,14 @@ Hue.userjoin = function(data)
 {
 	Hue.clear_from_users_to_disconnect(data)
 
-	let added = Hue.addto_userlist(data.user_id, data.username, data.role, data.profile_image)
+	let added = Hue.add_to_userlist(
+	{
+		user_id: data.user_id,
+		username: data.username,
+		role: data.role,
+		profile_image: data.profile_image,
+		date_joined: data.date_joined
+	})
 
 	if(added)
 	{
@@ -2868,16 +2897,27 @@ Hue.update_usercount = function(usercount)
 	Hue.msg_userlist.set_title(s)
 }
 
-Hue.addto_userlist = function(id, uname, rol, pi)
+Hue.add_to_userlist = function(args={})
 {
+	let def_args =
+	{
+		user_id: false, 
+		username: false, 
+		role: false, 
+		profile_image: false,
+		date_joined: false
+	}
+
+	Hue.fill_defaults(args, def_args)
+
 	for(let i=0; i<Hue.userlist.length; i++)
 	{
-		if(Hue.userlist[i].username === uname)
+		if(Hue.userlist[i].username === args.username)
 		{
-			Hue.userlist[i].user_id = id
-			Hue.userlist[i].username = uname
-			Hue.userlist[i].role = rol
-			Hue.userlist[i].profile_image = pi
+			Hue.userlist[i].user_id = args.user_id
+			Hue.userlist[i].username = args.username
+			Hue.userlist[i].role = args.role
+			Hue.userlist[i].profile_image = args.profile_image
 
 			Hue.update_userlist()
 
@@ -2885,7 +2925,14 @@ Hue.addto_userlist = function(id, uname, rol, pi)
 		}
 	}
 
-	Hue.userlist.push({user_id: id, username:uname, role:rol, profile_image:pi})
+	Hue.userlist.push(
+	{
+		user_id: args.user_id, 
+		username: args.username, 
+		role: args.role, 
+		profile_image: args.profile_image,
+		date_joined: args.date_joined
+	})
 
 	Hue.update_userlist()
 
@@ -3105,7 +3152,7 @@ Hue.update_userlist = function()
 
 		Hue.usernames.push(item.username)
 
-		let h = $("<div class='modal_item userlist_item'><span class='ui_item_role'></span><span class='ui_item_uname action'></span></div>")
+		let h = $("<div class='modal_item userlist_item'><span class='ui_item_role'></span><span class='ui_item_uname action dynamic_title'></span></div>")
 
 		let p = Hue.role_tag(item.role)
 
@@ -3118,7 +3165,15 @@ Hue.update_userlist = function()
 			pel.css("padding-right", 0)
 		}
 
-		h.find('.ui_item_uname').eq(0).text(item.username)
+		let uname = h.find('.ui_item_uname')
+
+		uname.eq(0).text(item.username)
+
+		let t = `Joined: ${Hue.nice_date(item.date_joined)}`
+
+		uname.attr("title", t)
+		uname.data("otitle", t)
+		uname.data("date", item.date_joined)
 
 		s = s.add(h)
 	}
@@ -5601,14 +5656,16 @@ Hue.add_to_input_history = function(message, change_index=true)
 {
 	for(let i=0; i<Hue.input_history.length; i++)
 	{
-		if(Hue.input_history[i][0] === message)
+		if(Hue.input_history[i].message === message)
 		{
 			Hue.input_history.splice(i, 1)
 			break
 		}
 	}
 
-	let item = [message, Hue.nice_date()]
+	let date = Date.now()
+
+	let item = {message:message, date:date}
 
 	Hue.input_history.push(item)
 
@@ -5635,11 +5692,14 @@ Hue.save_input_history = function()
 
 Hue.push_to_input_history_window = function(item, update_scrollbar=true)
 {
-	let c = $(`<div class='modal_item input_history_item'></div>`)
+	let c = $(`<div class='modal_item input_history_item dynamic_title'></div>`)
 
-	c.attr("title", item[1])
+	let nd = Hue.nice_date(item.date)
 
-	c.text(item[0])
+	c.attr("title", nd)
+	c.data("otitle", nd)
+	c.data("date", item.date)
+	c.text(item.message)
 
 	$("#input_history_container").prepend(c)
 
@@ -5719,7 +5779,7 @@ Hue.input_history_change = function(direction)
 			return
 		}
 
-		v = Hue.input_history[Hue.input_history_index][0]
+		v = Hue.input_history[Hue.input_history_index].message
 	}
 
 	else
@@ -5746,7 +5806,7 @@ Hue.input_history_change = function(direction)
 			return
 		}
 
-		v = Hue.input_history[Hue.input_history_index][0]
+		v = Hue.input_history[Hue.input_history_index].message
 	}
 
 	Hue.change_input(v)
@@ -6309,7 +6369,7 @@ Hue.update_chat = function(args={})
 		args.message = args.message.slice(1)
 	}
 
-	let contclasses = "chat_content"
+	let contclasses = "chat_content dynamic_title"
 
 	let highlighted = false
 
@@ -6417,7 +6477,7 @@ Hue.update_chat = function(args={})
 					</div>
 
 					<div class='chat_third_content'>
-						<span class='chat_uname action'></span><span class='${contclasses}' title='${nd}' data-date='${d}'></span>
+						<span class='chat_uname action'></span><span class='${contclasses}' title='${nd}' data-otitle='${nd}' data-date='${d}'></span>
 					</div>
 
 					<div class='message_edited_label'>(Edited)</div>
@@ -6462,7 +6522,7 @@ Hue.update_chat = function(args={})
 								<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
 							</div>
 
-							<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
+							<div class='${contclasses}' title='${nd}' data-otitle='${nd}' data-date='${d}'></div>
 							
 							<div class='message_edited_label'>(Edited)</div>
 							
@@ -6492,7 +6552,7 @@ Hue.update_chat = function(args={})
 							<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
 						</div>
 
-						<div class='${contclasses}' title='${nd}' data-date='${d}'></div>
+						<div class='${contclasses}' title='${nd}' data-otitle='${nd}' data-date='${d}'></div>
 
 						<div class='message_edited_label'>(Edited)</div>
 
@@ -7402,7 +7462,7 @@ Hue.chat_announce = function(args={})
 
 	let messageclasses = "message announcement"
 	let containerclasses = "announcement_content_container"
-	let contclasses = "announcement_content"
+	let contclasses = "announcement_content dynamic_title"
 	let brkclasses = "brk announcement_brk"
 
 	let containerid = " "
@@ -7433,7 +7493,6 @@ Hue.chat_announce = function(args={})
 	if(args.title)
 	{
 		t = `${args.title}`
-
 	}
 
 	else
@@ -7483,7 +7542,7 @@ Hue.chat_announce = function(args={})
 	<div${containerid}class='${messageclasses}'>
 		<div class='${containerclasses}'>
 			<div class='${brkclasses}'>${args.brk}</div>
-			<div class='${contclasses}' title='${t}'></div>
+			<div class='${contclasses}' title='${t}' data-otitle='${t}' data-date='${d}'></div>
 		</div>
 	</div>`
 
@@ -8222,7 +8281,7 @@ Hue.execute_command = function(message, ans)
 		Hue.show_media_source("tv")
 	}
 
-	else if(Hue.oi_startswith(cmd2, '/image') || Hue.oi_startswith(cmd2, '/images'))
+	else if(Hue.oi_startswith(cmd2, '/image') || Hue.oi_startswith(cmd2, '/images') || Hue.oi_startswith(cmd2, '/img'))
 	{
 		Hue.change_image_source(arg)
 	}
@@ -23205,4 +23264,20 @@ Hue.setup_link_preview = function(fmessage, link_url, user_id)
 	})
 
 	link_preview_el.find(".link_preview_url").eq(0).urlize()
+}
+
+Hue.setup_dynamic_titles = function()
+{
+	let containers = "#chat_area, #chat_search_container, .media_history_container, #highlights_container, #input_history_container, #userlist"
+	
+	$(containers).on("mouseenter", ".dynamic_title", function()
+	{
+		let new_title = `${$(this).data("otitle")} (${Hue.get_timeago($(this).data("date"))})`
+		$(this).attr("title", new_title)
+	})
+}
+
+Hue.get_timeago = function(date)
+{
+	return Hue.utilz.capitalize_words(timeago.format(date))
 }

@@ -389,6 +389,16 @@ const Utilz = function()
 		return false
 	}
 
+	utilz.capitalize_words = function(s)
+	{
+		let ns = s.toLowerCase()
+		.split(' ')
+		.map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+		.join(' ')
+
+		return ns
+	}
+
 	utilz.synth_notes = 
 	[
 		"c3", "d3", "e3", "f3",  "g3", 

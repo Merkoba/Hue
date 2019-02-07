@@ -504,7 +504,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(!already_connected)
 		{
 			rooms[socket.hue_room_id].userlist[socket.hue_user_id] = {}
-			handler.update_user_in_userlist(socket)
+			handler.update_user_in_userlist(socket, true)
 		}
 
 		socket.hue_joining = false
@@ -587,7 +587,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				user_id: socket.hue_user_id,
 				username: socket.hue_username,
 				role: socket.hue_role,
-				profile_image: socket.hue_profile_image
+				profile_image: socket.hue_profile_image,
+				date_joined: Date.now()
 			})
 
 			handler.push_access_log_message(socket, "joined")
@@ -4937,7 +4938,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.update_user_in_userlist = function(socket)
+	handler.update_user_in_userlist = function(socket, first=false)
 	{
 		try
 		{
@@ -4949,6 +4950,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			user.profile_image = socket.hue_profile_image
 			user.email = socket.hue_email
 			user.last_activity_trigger = socket.hue_last_activity_trigger
+
+			if(first)
+			{
+				user.date_joined = Date.now()
+			}
 		}
 
 		catch(err)
@@ -5277,7 +5283,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				username: item.username,
 				role: item.role,
 				profile_image: item.profile_image,
-				last_activity_trigger: item.last_activity_trigger
+				last_activity_trigger: item.last_activity_trigger,
+				date_joined: item.date_joined
 			})
 		}
 
