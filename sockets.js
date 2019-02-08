@@ -2878,6 +2878,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			handler.room_emit(socket, "userdisconnect",
 			{
+				user_id: socket.hue_user_id,
 				username: socket.hue_username,
 				info1: socket.hue_info1,
 				role: socket.hue_role,

@@ -2916,7 +2916,7 @@ Hue.add_to_userlist = function(args={})
 
 	for(let i=0; i<Hue.userlist.length; i++)
 	{
-		if(Hue.userlist[i].username === args.username)
+		if(Hue.userlist[i].user_id === args.user_id)
 		{
 			Hue.userlist[i].user_id = args.user_id
 			Hue.userlist[i].username = args.username
@@ -2943,11 +2943,11 @@ Hue.add_to_userlist = function(args={})
 	return true
 }
 
-Hue.removefrom_userlist = function(uname)
+Hue.remove_from_userlist = function(user_id)
 {
 	for(let i=0; i<Hue.userlist.length; i++)
 	{
-		if(Hue.userlist[i].username === uname)
+		if(Hue.userlist[i].user_id === user_id)
 		{
 			Hue.userlist.splice(i, 1)
 			Hue.update_userlist()
@@ -11222,7 +11222,7 @@ Hue.start_user_disconnect_timeout = function(data)
 Hue.do_userdisconnect = function(data)
 {
 	Hue.clear_from_users_to_disconnect(data)
-	Hue.removefrom_userlist(data.username)
+	Hue.remove_from_userlist(data.user_id)
 	Hue.update_activity_bar()
 
 	if(Hue.get_setting("show_parts") && Hue.check_permission(data.role, "chat"))
