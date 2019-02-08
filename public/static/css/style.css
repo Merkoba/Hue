@@ -2448,6 +2448,7 @@ input[type=text], textarea
 	font-size: 1rem;
 	padding: 0.1rem;
 	box-sizing: border-box;
+	border-color: grey;
 }
 
 #recent_voice_box

@@ -20300,12 +20300,14 @@ Hue.setup_settings_window = function()
 {
 	$(".settings_main_window").on("click", ".settings_window_category", function(e)
 	{
-		Hue.change_settings_window_category(this)
+		let category = $(this).data("category")
+		Hue.change_settings_window_category(category)
 	})
 }
 
-Hue.change_settings_window_category = function(element)
+Hue.change_settings_window_category = function(category)
 {
+	let element = $(`#settings_window_category_${category}`)[0]
 	let main = $(element).closest(".settings_main_window")
 
 	main.find(".settings_window_category").each(function()
@@ -22628,6 +22630,14 @@ Hue.setup_synth = function()
 		Hue.set_synth_muted()
 	})
 
+	$("#synth_key_button_volume").on("auxclick", function(e)
+	{
+		if(e.which === 2)
+		{
+			Hue.open_user_settings_category("synth")
+		}
+	})
+
 	$("#synth_voice_input").on("focus", function()
 	{
 		Hue.synth_voice_input_focused = true
@@ -23603,4 +23613,10 @@ Hue.play_speech = function(key)
 	let speech = Hue.get_setting(`speech_${key}`)
 
 	Hue.send_synth_voice(speech)
+}
+
+Hue.open_user_settings_category = function(category, type="global_settings")
+{
+	Hue[`show_${type}`]()
+	Hue.change_settings_window_category(category)
 }
