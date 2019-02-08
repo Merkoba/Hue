@@ -20307,19 +20307,9 @@ Hue.setup_settings_window = function()
 
 Hue.change_settings_window_category = function(category)
 {
-	let type
+	let type = Hue.which_user_settings_window_is_open()
 
-	if(Hue.msg_global_settings.is_open())
-	{
-		type = "global_settings"
-	}
-
-	else if(Hue.msg_room_settings.is_open())
-	{
-		type = "room_settings"
-	}
-
-	else
+	if(!type)
 	{
 		return false
 	}
@@ -20477,33 +20467,9 @@ Hue.toggle_settings_windows = function(type)
 		return false
 	}
 
-	Hue[`msg_${type2}`].close(function()
-	{
-		$(`#settings_window_left_${type2} .settings_window_category`).each(function()
-		{
-			let el = this
+	let category = Hue.get_selected_user_settings_category(type2)
 
-			if($(el).data("selected_category"))
-			{
-				$(`#settings_window_left_${type} .settings_window_category`).each(function()
-				{
-					if($(el).data("category") === $(this).data("category"))
-					{
-						if(!$(this).data("selected_category"))
-						{
-							$(this).click()
-							
-							return false
-						}
-					}
-				})
-
-				return false
-			}
-		})
-
-		Hue[`show_${type}`]()
-	})
+	Hue.open_user_settings_category(category, type)
 }
 
 Hue.toggle_rooms_windows = function(type)
@@ -23636,4 +23602,39 @@ Hue.open_user_settings_category = function(category, type="global_settings")
 {
 	Hue[`show_${type}`]()
 	Hue.change_settings_window_category(category)
+}
+
+Hue.which_user_settings_window_is_open = function()
+{
+	let type = false
+
+	if(Hue.msg_global_settings.is_highest())
+	{
+		type = "global_settings"
+	}
+
+	else if(Hue.msg_room_settings.is_highest())
+	{
+		type = "room_settings"
+	}
+
+	return type
+}
+
+Hue.get_selected_user_settings_category = function(type)
+{
+	let category = false
+
+	$(`#settings_window_left_${type} .settings_window_category`).each(function()
+	{
+		let selected = $(this).data("selected_category")
+
+		if(selected)
+		{
+			category = $(this).data("category")
+			return false
+		}
+	})
+
+	return category
 }
