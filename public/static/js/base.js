@@ -20307,7 +20307,24 @@ Hue.setup_settings_window = function()
 
 Hue.change_settings_window_category = function(category)
 {
-	let element = $(`#settings_window_category_${category}`)[0]
+	let type
+
+	if(Hue.msg_global_settings.is_open())
+	{
+		type = "global_settings"
+	}
+
+	else if(Hue.msg_room_settings.is_open())
+	{
+		type = "room_settings"
+	}
+
+	else
+	{
+		return false
+	}
+
+	let element = $(`#settings_window_category_${category}_${type}`)[0]
 	let main = $(element).closest(".settings_main_window")
 
 	main.find(".settings_window_category").each(function()
