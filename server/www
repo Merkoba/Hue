@@ -100,8 +100,8 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 		}		
 
 		const utilz = require('../public/static/js/utilz.js')()
-		const db_manager = require('../db_manager.js')(db, config, sconfig, utilz, logger)
-		const app = require('../app')(db, db_manager, config, sconfig, utilz)
+		const db_manager = require('./db.js')(db, config, sconfig, utilz, logger)
+		const app = require('./app')(db, db_manager, config, sconfig, utilz)
 		const debug = require('debug')('hue:server')
 		const http = require('http')
 		
@@ -115,7 +115,7 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 
 		const io = require('socket.io').listen(server)
 
-		require('../sockets')(io, db_manager, config, sconfig, utilz, logger)
+		require('./sockets')(io, db_manager, config, sconfig, utilz, logger)
 
 		function onError(error) 
 		{

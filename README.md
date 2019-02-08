@@ -94,7 +94,7 @@ There is no need to create database tables, all of that is done automatically.
 
 Redis is now required, to store link metadata in database 10. Install and setup Redis.
 
-Go to the bin directory and run: 
+Go to the server directory and run: 
 
 >node www start
 
@@ -102,7 +102,7 @@ To run it properly in production you will have to configure Apache or some other
 
 Using pm2 is suggested to control the Node process.
 
->su - node -c "pm2 start /home/node/hue/bin/www --env production"
+>su - node -c "pm2 start /home/node/hue/server/www --env production"
 
 That's an example of starting it with the user "node" in a production environment.
 

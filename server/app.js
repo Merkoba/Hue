@@ -32,7 +32,7 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 
 	app.use(bodyParser.json())
 	app.use(bodyParser.urlencoded({extended: false}))
-	app.use(express.static(path.join(__dirname, 'public')))
+	app.use(express.static(path.join(__dirname, '../public')))
 
 	let sess =
 	{

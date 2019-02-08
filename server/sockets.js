@@ -29,7 +29,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		sconfig.vimeo_access_token
 	)
 
-	const images_root = path.join(__dirname, config.images_directory)
+	const root_path = path.join(__dirname, "../")
+	const images_root = path.join(root_path, config.images_directory)
 	const vtypes = ["voice1", "voice2", "voice3", "voice4"]
 	const roles = ["admin", "op"].concat(vtypes)
 	const image_types = ["image/jpeg", "image/png", "image/gif"]
@@ -4564,7 +4565,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return callback(false)
 			}
 
-			fs.readdir(path.join(__dirname, config.image_ads_path), function(err, files)
+			fs.readdir(path.join(root_path, config.image_ads_path), function(err, files)
 			{
 				if(err)
 				{
@@ -4633,7 +4634,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			let room = rooms[room_id]
 
-			fs.readFile(path.join(__dirname, config.text_ads_json_location), function(err, content)
+			fs.readFile(path.join(root_path, config.text_ads_json_location), function(err, content)
 			{
 				if(err)
 				{

@@ -223,7 +223,7 @@
 	"image_ads_min_image_change": 120000,
 	"image_ads_setter": "Sponsored Ad",
 	"text_ads_enabled": false,
-	"text_ads_json_location": "./text_ads.json",
+	"text_ads_json_location": "./data/text_ads.json",
 	"text_ads_threshold": 200,
 	"max_activity_bar_delay": 180000,
 	"activity_bar_interval": 30000,
