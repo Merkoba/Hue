@@ -11198,7 +11198,7 @@ Hue.clear_from_users_to_disconnect = function(data)
 	{
 		let u = Hue.users_to_disconnect[i]
 
-		if(u.username === data.username)
+		if(u.user_id === data.user_id)
 		{
 			clearTimeout(u.timeout)
 			Hue.users_to_disconnect.splice(i, 1)
