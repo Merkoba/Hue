@@ -5854,7 +5854,7 @@ Hue.setup_input_history = function()
 		if($(this).find('a').length === 0)
 		{
 			Hue.change_input($(this).text())
-			Hue.msg_input_history.close()
+			Hue.close_all_modals()
 		}
 	})
 }
