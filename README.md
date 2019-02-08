@@ -116,7 +116,7 @@ If you want to remove it to start fresh:
 
 >db.dropDatabase()
 
-If you're going to use text ads, create a json file called text_ads.json at the root (default location and name, this can be changed), which consists of an array of strings.
+If you're going to use text ads, create a json file called text_ads.json in /data (default name and location, this can be changed), which consists of an array of strings.
 For example: ["Ad #1", "Ad #2", "Ad #3"]
 
 # Configuration
