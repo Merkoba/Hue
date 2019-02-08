@@ -101,6 +101,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.synth_max_recent_users = config.synth_max_recent_users
 	c.vars.synth_max_voice_text = config.synth_max_voice_text
 	c.vars.vimeo_enabled = config.vimeo_enabled
+	c.vars.max_displayed_url = config.max_displayed_url
 
 	const reserved_usernames = ["The system", config.image_ads_setter].map(x => x.toLowerCase())
 

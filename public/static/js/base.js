@@ -7640,7 +7640,7 @@ Hue.chat_announce = function(args={})
 	}
 }
 
-jQuery.fn.urlize = function(force=false, stop_propagation=true)
+jQuery.fn.urlize = function(stop_propagation=true)
 {
 	let cls = "generic action"
 
@@ -7655,34 +7655,33 @@ jQuery.fn.urlize = function(force=false, stop_propagation=true)
 		{
 			let x = $(obj).html()
 
-			if(force)
-			{
-				x = `<a class='${cls}' target='_blank' href='${x}'>${x}</a>`
-			}
+			let list = x.match(/\bhttps?:\/\/\S+/g)
 
-			else
+			if(list)
 			{
-				let list = x.match(/\bhttps?:\/\/\S+/g)
+				let listed = []
 
-				if(list)
+				for(let i=0; i<list.length; i++)
 				{
-					let listed = []
-
-					for(let i=0; i<list.length; i++)
+					if(listed.includes(list[i]))
 					{
-						if(listed.includes(list[i]))
-						{
-							continue
-						}
-
-						let url = list[i].replace(/\'/g, "").replace(/\"/g, "")
-
-						let rep = new RegExp(Hue.escape_special_characters(list[i]), "g")
-
-						x = x.replace(rep, `<a class='${cls}' target='_blank' href='${url}'>${list[i]}</a>`)
-
-						listed.push(list[i])
+						continue
 					}
+
+					let url = list[i].replace(/\'/g, "").replace(/\"/g, "")
+
+					let rep = new RegExp(Hue.escape_special_characters(list[i]), "g")
+
+					let u = list[i]
+
+					if(u.length > Hue.max_displayed_url)
+					{
+						u = `${u.substring(0, Hue.max_displayed_url)}...`
+					}
+
+					x = x.replace(rep, `<a class='${cls}' target='_blank' href='${url}'>${u}</a>`)
+
+					listed.push(list[i])
 				}
 			}
 
