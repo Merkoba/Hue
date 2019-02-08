@@ -20469,6 +20469,8 @@ Hue.toggle_settings_windows = function(type)
 
 	let category = Hue.get_selected_user_settings_category(type2)
 
+	Hue[`msg_${type2}`].close()
+
 	Hue.open_user_settings_category(category, type)
 }
 
