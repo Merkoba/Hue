@@ -10916,13 +10916,16 @@ Hue.change_tv_source = function(src)
 					// OK
 				}
 
-				else
+				else if(Hue.utilz.image_extensions.includes(extension))
 				{
-					if(!Hue.iframes_enabled)
-					{
-						Hue.feedback("IFrame support is not enabled")
-						return false
-					}
+					Hue.feedback("That doesn't seem to be a video")
+					return false
+				}
+
+				else if(!Hue.iframes_enabled)
+				{
+					Hue.feedback("IFrame support is not enabled")
+					return false
 				}
 			}
 

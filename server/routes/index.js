@@ -59,6 +59,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.twitch_enabled = config.twitch_enabled
 	c.vars.soundcloud_enabled = config.soundcloud_enabled
 	c.vars.imgur_enabled = config.imgur_enabled
+	c.vars.iframes_enabled = config.iframes_enabled
 	c.vars.min_password_length = config.min_password_length
 	c.vars.max_password_length = config.max_password_length
 	c.vars.max_email_length = config.max_email_length
