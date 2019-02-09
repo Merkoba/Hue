@@ -346,6 +346,9 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "imgur_enabled"
 >Whether Imgur features are enabled.
 
+"iframes_enabled"
+>Whether embedded iframes are enabled.
+
 "antispam_banTime"
 >How much time in minutes a user is banned from the system after being detected as a spammer by the automatic spam detection system.
 

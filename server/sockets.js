@@ -2057,12 +2057,22 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 					else
 					{
+						if(!config.iframes_enabled)
+						{
+							return
+						}
+
 						data.type = "iframe"
 					}
 				}
 
 				else
 				{
+					if(!config.iframes_enabled)
+					{
+						return
+					}
+
 					data.type = "iframe"
 				}
 
