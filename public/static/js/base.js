@@ -23861,7 +23861,7 @@ Hue.setup_upload_comment = function()
 
 	img[0].addEventListener('load', function()
 	{
-		Hue.update_modal_scrollbar(msg_upload_comment.options.id)
+		Hue.update_modal_scrollbar(Hue.msg_upload_comment.options.id)
 	})
 
 	img.on("error", function()
