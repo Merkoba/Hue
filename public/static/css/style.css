@@ -2558,3 +2558,16 @@ input[type=text], textarea
 	-ms-user-select: none;
 	user-select: none;
 }
+
+#upload_comment_image_preview
+{
+	min-height: 100px;
+	min-width: 100px;
+	max-height: 500px;
+	max-width: 500px;
+}
+
+.announcement_comment
+{
+	margin-top: 0.25rem;
+}

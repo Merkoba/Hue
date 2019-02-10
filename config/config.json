@@ -196,6 +196,7 @@
 	"safe_limit_1": 100,
 	"safe_limit_2": 500,
 	"safe_limit_3": 1000,
+	"safe_limit_4": 200,
 	"data_max_items": 20,
 	"data_items_max_string_length": 5000,
 	"data_items_max_number_length": 20,

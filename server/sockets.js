@@ -78,7 +78,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		received: 0,
 		extension: null,
 		cancelled: false,
-		spsize: 0
+		spsize: 0,
+		comment: ""
 	}
 
 	let last_roomlist
@@ -1460,6 +1461,22 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
+		if(data.query)
+		{
+			if(data.query.length > config.safe_limit_1)
+			{
+				return handler.get_out(socket)
+			}
+		}
+
+		if(data.comment)
+		{
+			if(data.comment.length > config.safe_limit_4)
+			{
+				return handler.get_out(socket)
+			}
+		}
+
 		if(data.src !== utilz.clean_string2(data.src))
 		{
 			return handler.get_out(socket)
@@ -1622,7 +1639,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			handler.room_emit(socket, 'restarted_radio_source',
 			{
 				setter: socket.hue_username,
-				date: Date.now()
+				date: Date.now(),
+				comment: data.comment || ""
 			})
 		}
 
@@ -1679,6 +1697,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		let radioinfo = {}
 
 		let date = Date.now()
+		let query = data.query || ""
+		let comment = data.comment || ""
 
 		if(data.query === undefined)
 		{
@@ -1698,11 +1718,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			radioinfo.radio_type = data.type
 			radioinfo.radio_source = data.src
 			radioinfo.radio_title = data.title
-			radioinfo.radio_query = data.query
+			radioinfo.radio_query = query
 		}
-
+		
 		radioinfo.radio_setter = socket.hue_username
 		radioinfo.radio_date = date
+		radioinfo.radio_comment = comment
 
 		handler.room_emit(socket, 'changed_radio_source',
 		{
@@ -1711,7 +1732,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			radio_title: radioinfo.radio_title,
 			radio_setter: radioinfo.radio_setter,
 			radio_date: radioinfo.radio_date,
-			radio_query: radioinfo.radio_query
+			radio_query: radioinfo.radio_query,
+			radio_comment: radioinfo.radio_comment
 		})
 
 		db_manager.update_room(socket.hue_room_id,
@@ -1721,7 +1743,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			radio_title: radioinfo.radio_title,
 			radio_setter: radioinfo.radio_setter,
 			radio_date: radioinfo.radio_date,
-			radio_query: radioinfo.radio_query
+			radio_query: radioinfo.radio_query,
+			radio_comment: radioinfo.radio_comment
 		})
 
 		if(rooms[socket.hue_room_id].log)
@@ -1735,7 +1758,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					radio_source: radioinfo.radio_source,
 					radio_title: radioinfo.radio_title,
 					radio_setter: radioinfo.radio_setter,
-					radio_query: radioinfo.radio_query
+					radio_query: radioinfo.radio_query,
+					radio_comment: radioinfo.radio_comment
 				},
 				date: date
 			}
@@ -1764,6 +1788,22 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(data.src.length > config.max_tv_source_length)
 		{
 			return handler.get_out(socket)
+		}
+
+		if(data.query)
+		{
+			if(data.query.length > config.safe_limit_1)
+			{
+				return handler.get_out(socket)
+			}
+		}
+
+		if(data.comment)
+		{
+			if(data.comment.length > config.safe_limit_4)
+			{
+				return handler.get_out(socket)
+			}
 		}
 
 		if(data.src !== utilz.clean_string2(data.src))
@@ -2130,7 +2170,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			handler.room_emit(socket, 'restarted_tv_source',
 			{
 				setter: socket.hue_username,
-				date: Date.now()
+				date: Date.now(),
+				comment: data.comment || ""
 			})
 		}
 
@@ -2189,11 +2230,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		let tvinfo = {}
 
 		let date = Date.now()
-
-		if(data.query === undefined)
-		{
-			data.query = ""
-		}
+		let query = data.query || ""
+		let comment = data.comment || ""
 
 		if(data.src === 'default')
 		{
@@ -2208,11 +2246,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tvinfo.tv_type = data.type
 			tvinfo.tv_source = data.src
 			tvinfo.tv_title = data.title
-			tvinfo.tv_query = data.query
+			tvinfo.tv_query = query
 		}
-
+		
 		tvinfo.tv_setter = socket.hue_username
 		tvinfo.tv_date = date
+		tvinfo.tv_comment = comment
 
 		handler.room_emit(socket, 'changed_tv_source',
 		{
@@ -2221,7 +2260,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_title: tvinfo.tv_title,
 			tv_setter: tvinfo.tv_setter,
 			tv_date: tvinfo.tv_date,
-			tv_query: tvinfo.tv_query
+			tv_query: tvinfo.tv_query,
+			tv_comment: tvinfo.tv_comment
 		})
 
 		db_manager.update_room(socket.hue_room_id,
@@ -2231,7 +2271,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_title: tvinfo.tv_title,
 			tv_setter: tvinfo.tv_setter,
 			tv_date: tvinfo.tv_date,
-			tv_query: tvinfo.tv_query
+			tv_query: tvinfo.tv_query,
+			tv_comment: tvinfo.tv_comment
 		})
 
 		if(rooms[socket.hue_room_id].log)
@@ -2245,7 +2286,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					tv_source: tvinfo.tv_source,
 					tv_title: tvinfo.tv_title,
 					tv_setter: tvinfo.tv_setter,
-					tv_query: tvinfo.tv_query
+					tv_query: tvinfo.tv_query,
+					tv_comment: tvinfo.tv_comment
 				},
 				date: date
 			}
@@ -3063,6 +3105,22 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
+		if(data.query)
+		{
+			if(data.query.length > config.safe_limit_1)
+			{
+				return handler.get_out(socket)
+			}
+		}
+
+		if(data.comment)
+		{
+			if(data.comment.length > config.safe_limit_4)
+			{
+				return handler.get_out(socket)
+			}
+		}
+
 		if(data.src !== utilz.clean_string2(data.src))
 		{
 			return handler.get_out(socket)
@@ -3094,6 +3152,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			obj.setter = socket.hue_username
 			obj.size = 0
 			obj.type = "link"
+			obj.comment = data.comment
 
 			handler.change_image(socket, obj)
 
@@ -3146,6 +3205,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 								obj.setter = socket.hue_username
 								obj.size = 0
 								obj.type = "link"
+								obj.comment = data.comment
 
 								handler.change_image(socket, obj)
 
@@ -3165,6 +3225,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 									obj.setter = socket.hue_username
 									obj.size = 0
 									obj.type = "link"
+									obj.comment = data.comment
 
 									handler.change_image(socket, obj)
 
@@ -3204,6 +3265,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			obj.setter = socket.hue_username
 			obj.size = 0
 			obj.type = "link"
+			obj.comment = data.comment
 
 			handler.change_image(socket, obj)
 		}
@@ -3235,7 +3297,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		let fname = `${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.extension}`
 
-		fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data)
+		fs.writeFile(images_root + '/' + fname, data.image_file, function(err, data2)
 		{
 			if(err)
 			{
@@ -3250,6 +3312,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				obj.setter = socket.hue_username
 				obj.size = size
 				obj.type = "upload"
+				obj.comment = data.comment
 
 				handler.change_image(socket, obj)
 			}
@@ -3315,25 +3378,23 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.do_change_image = function(socket, data)
 	{
-		let user_change
-		
 		let room_id
 
 		if(typeof socket === "object")
 		{
-			user_change = true
 			room_id = socket.hue_room_id
 		}
 
 		else
 		{
-			user_change = false
 			room_id = socket
 		}
 
 		let image_source
 
 		let date = Date.now()
+
+		let comment = data.comment || ""
 
 		if(data.query === undefined)
 		{
@@ -3357,7 +3418,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				image_size: data.size,
 				image_date: date,
 				image_type: data.type,
-				image_query: data.query
+				image_query: data.query,
+				image_comment: comment
 			})
 		}
 
@@ -3395,7 +3457,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				image_date: date,
 				stored_images: rooms[room_id].stored_images,
 				image_type: data.type,
-				image_query: data.query
+				image_query: data.query,
+				image_comment: comment
 			})
 
 			if(spliced)
@@ -3441,7 +3504,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			image_size: data.size,
 			image_date: date,
 			image_type: data.type,
-			image_query: data.query
+			image_query: data.query,
+			image_comment: comment
 		})
 
 		if(rooms[room_id].log)
@@ -3455,7 +3519,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					image_setter: data.setter,
 					image_size: data.size,
 					image_type: data.type,
-					image_query: data.query
+					image_query: data.query,
+					image_comment: comment
 				},
 				date: date
 			}
@@ -3846,6 +3911,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return handler.get_out(socket)
 			}
 
+			if(data.comment)
+			{
+				if(data.comment.length > config.safe_limit_4)
+				{
+					return handler.get_out(socket)
+				}
+			}
+
 			data.extension = ext
 
 			files[key] = Object.assign({}, files_struct, data)
@@ -3904,7 +3977,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				handler.upload_image(socket,
 				{
 					image_file: full_file,
-					extension: file.extension
+					extension: file.extension,
+					comment: file.comment
 				})
 			}
 

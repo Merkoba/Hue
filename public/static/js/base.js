@@ -38,6 +38,7 @@ Hue.gtr = false
 Hue.imp = false
 Hue.biu = false
 Hue.alo = false
+Hue.upc = false
 Hue.minpo = false
 Hue.modal_open = false
 Hue.started = false
@@ -148,6 +149,8 @@ Hue.chat_scrolled = false
 Hue.lockscreen_peek_delay = 1000
 Hue.lockscreen_peek_active = false
 Hue.context_menu_open = false
+Hue.upload_comment_file = false
+Hue.upload_comment_type = false
 
 Hue.commands = 
 [
@@ -361,6 +364,7 @@ Hue.init = function()
 	Hue.get_ignored_usernames_list()
 	Hue.get_accept_commands_from_list()
 	Hue.setup_lockscreen()
+	Hue.setup_upload_comment()
 
 	if(Hue.debug_functions)
 	{
@@ -503,6 +507,7 @@ Hue.setup_templates = function()
 	Hue.template_admin_activity = Handlebars.compile($('#template_admin_activity').html())
 	Hue.template_access_log = Handlebars.compile($('#template_access_log').html())
 	Hue.template_expand_image = Handlebars.compile($('#template_expand_image').html())
+	Hue.template_upload_comment = Handlebars.compile($('#template_upload_comment').html())
 }
 
 Hue.show_help = function(number=1, filter="")
@@ -1482,6 +1487,7 @@ Hue.setup_image = function(mode, odata={})
 	data.size = odata.image_size
 	data.date = odata.image_date
 	data.query = odata.image_query
+	data.comment = odata.image_comment
 
 	data.nice_date = data.date ? Hue.nice_date(data.date) : Hue.nice_date()
 
@@ -1579,7 +1585,8 @@ Hue.announce_image = function(data)
 		date: data.date,
 		username: data.setter,
 		title: data.info,
-		onclick: data.onclick
+		onclick: data.onclick,
+		comment: data.comment
 	})
 }
 
@@ -1604,10 +1611,17 @@ Hue.push_images_changed = function(data)
 
 	Hue.images_changed.push(data)
 
-	let el = $("<div class='modal_item media_history_item'><div class='media_history_item_inner dynamic_title pointer inline'></div></div>")
+	let el = $(`
+	<div class='modal_item media_history_item'>
+		<div class='media_history_item_inner dynamic_title pointer inline'></div>
+		<div class='announcement_comment media_history_item_comment'></div>
+	</div>`)
+	
 	let inner = el.find('.media_history_item_inner').eq(0)
+	let comment = el.find('.media_history_item_comment').eq(0)
 	
 	inner.text(data.message).urlize()
+	comment.text(data.comment).urlize()
 	inner.attr("title", data.info)
 	inner.data("otitle", data.info)
 	inner.data("date", data.date)
@@ -1648,9 +1662,10 @@ Hue.setup_tv = function(mode, odata={})
 	if(mode === "restart")
 	{
 		data = Hue.current_tv()
-		data.message = `${odata.setter} restarted the tv`
 		data.date = odata.date
 		data.info += ` | ${Hue.nice_date(data.date)}`
+		data.message = `${odata.setter} restarted the tv`
+		data.comment = odata.comment
 	}
 
 	else
@@ -1663,6 +1678,7 @@ Hue.setup_tv = function(mode, odata={})
 		data.setter = odata.tv_setter
 		data.date = odata.tv_date
 		data.query = odata.tv_query
+		data.comment = odata.tv_comment
 
 		data.nice_date = data.date ? Hue.nice_date(data.date) : Hue.nice_date()
 
@@ -1759,7 +1775,8 @@ Hue.announce_tv = function(data)
 		onclick: data.onclick,
 		date: data.date,
 		type: data.type,
-		username: data.setter
+		username: data.setter,
+		comment: data.comment
 	})
 }
 
@@ -1792,10 +1809,17 @@ Hue.push_tv_changed = function(data)
 
 	Hue.tv_changed.push(data)
 
-	let el = $("<div class='modal_item media_history_item'><div class='media_history_item_inner dynamic_title pointer inline'></div></div>")
+	let el = $(`
+	<div class='modal_item media_history_item'>
+		<div class='media_history_item_inner dynamic_title pointer inline'></div>
+		<div class='announcement_comment media_history_item_comment'></div>
+	</div>`)
+	
 	let inner = el.find('.media_history_item_inner').eq(0)
+	let comment = el.find('.media_history_item_comment').eq(0)
 	
 	inner.text(data.message).urlize()
+	comment.text(data.comment).urlize()
 	inner.attr("title", data.info)
 	inner.data("otitle", data.info)
 	inner.data("date", data.date)
@@ -1823,9 +1847,10 @@ Hue.setup_radio = function(mode, odata={})
 	if(mode === "restart")
 	{
 		data = Hue.current_radio()
-		data.message = `${odata.setter} restarted the radio`
 		data.date = odata.date
 		data.info += ` | ${Hue.nice_date(data.date)}`
+		data.message = `${odata.setter} restarted the radio`
+		data.comment = odata.comment
 	}
 
 	else
@@ -1838,6 +1863,7 @@ Hue.setup_radio = function(mode, odata={})
 		data.setter = odata.radio_setter
 		data.date = odata.radio_date
 		data.query = odata.radio_query
+		data.comment = odata.radio_comment
 
 		data.nice_date = data.date ? Hue.nice_date(data.date) : Hue.nice_date()
 
@@ -1934,7 +1960,8 @@ Hue.announce_radio = function(data)
 		onclick: data.onclick,
 		date: data.date,
 		type: data.type,
-		username: data.setter
+		username: data.setter,
+		comment: data.comment
 	})
 }
 
@@ -1954,10 +1981,17 @@ Hue.push_radio_changed = function(data)
 
 	Hue.radio_changed.push(data)
 
-	let el = $("<div class='modal_item media_history_item'><div class='media_history_item_inner dynamic_title pointer inline'></div></div>")
+	let el = $(`
+	<div class='modal_item media_history_item'>
+		<div class='media_history_item_inner dynamic_title pointer inline'></div>
+		<div class='announcement_comment media_history_item_comment'></div>
+	</div>`)
+	
 	let inner = el.find('.media_history_item_inner').eq(0)
+	let comment = el.find('.media_history_item_comment').eq(0)
 	
 	inner.text(data.message).urlize()
+	comment.text(data.comment).urlize()
 	inner.attr("title", data.info)
 	inner.data("otitle", data.info)
 	inner.data("date", data.date)
@@ -2845,6 +2879,11 @@ Hue.apply_theme = function()
 	.spoiler
 	{
 		background-color: ${font_color} !important;
+	}
+
+	.announcement_comment
+	{
+		background-color: ${slight_background} !important;
 	}
 
 	</style>
@@ -4748,9 +4787,7 @@ Hue.start_dropzone = function()
 			return false
 		}
 
-		let name = file.name
-
-		let ext = name.split('.').pop(-1).toLowerCase()
+		let ext = file.name.split('.').pop(-1).toLowerCase()
 
 		if(ext !== 'jpg' && ext !== 'png' && ext !== 'jpeg' && ext !== 'gif')
 		{
@@ -4760,7 +4797,7 @@ Hue.start_dropzone = function()
 
 		Hue.dropzone.files = []
 
-		Hue.upload_file(file, "image_upload")
+		Hue.show_upload_comment(file, "image_upload")
 	})
 }
 
@@ -4777,7 +4814,8 @@ Hue.create_file_reader = function(file)
 			type: file.type,
 			size: file.size,
 			data: reader.result,
-			date: file.date
+			date: file.date,
+			comment: file.comment
 		})
 	})
 
@@ -5185,6 +5223,26 @@ Hue.activate_key_detection = function()
 						e.preventDefault()
 					}
 
+					else if(e.key === "Tab")
+					{
+						if(document.activeElement === $("#image_source_picker_input")[0])
+						{
+							$("#image_source_picker_input_comment").focus()
+						}
+
+						else if(document.activeElement === $("#image_source_picker_input_comment")[0])
+						{
+							$("#image_source_picker_input").focus()
+						}
+
+						else
+						{
+							$("#image_source_picker_input").focus()
+						}
+
+						e.preventDefault()
+					}
+
 					return
 				}
 			}
@@ -5201,6 +5259,26 @@ Hue.activate_key_detection = function()
 						{
 							Hue.change_tv_source(val)
 							Hue.msg_tv_picker.close()
+						}
+
+						e.preventDefault()
+					}
+
+					else if(e.key === "Tab")
+					{
+						if(document.activeElement === $("#tv_source_picker_input")[0])
+						{
+							$("#tv_source_picker_input_comment").focus()
+						}
+
+						else if(document.activeElement === $("#tv_source_picker_input_comment")[0])
+						{
+							$("#tv_source_picker_input").focus()
+						}
+
+						else
+						{
+							$("#tv_source_picker_input").focus()
 						}
 
 						e.preventDefault()
@@ -5227,7 +5305,39 @@ Hue.activate_key_detection = function()
 						e.preventDefault()
 					}
 
+					else if(e.key === "Tab")
+					{
+						if(document.activeElement === $("#radio_source_picker_input")[0])
+						{
+							$("#radio_source_picker_input_comment").focus()
+						}
+
+						else if(document.activeElement === $("#radio_source_picker_input_comment")[0])
+						{
+							$("#radio_source_picker_input").focus()
+						}
+
+						else
+						{
+							$("#radio_source_picker_input").focus()
+						}
+
+						e.preventDefault()
+					}
+
 					return
+				}
+			}
+
+			if(Hue.upc)
+			{
+				if(Hue.msg_upload_comment.is_highest())
+				{
+					if(e.key === "Enter")
+					{
+						Hue.process_upload_comment()
+						e.preventDefault()
+					}
 				}
 			}
 
@@ -7475,7 +7585,8 @@ Hue.chat_announce = function(args={})
 		link_title: false,
 		link_image: false,
 		link_url: false,
-		preview_image: false
+		preview_image: false,
+		comment: ""
 	}
 
 	Hue.fill_defaults(args, def_args)
@@ -7558,6 +7669,16 @@ Hue.chat_announce = function(args={})
 		image_preview_src_original = ans.image_preview_src_original
 	}
 
+	let comment = ""
+
+	if(args.comment)
+	{
+		comment = 
+		`<div class='announcement_comment'>
+			<div>${this.make_html_safe(args.comment)}</div>
+		</div>`	
+	}
+
 	let link_preview = false
 
 	if(!image_preview && args.link_url && Hue.get_setting("show_link_previews"))
@@ -7595,6 +7716,11 @@ Hue.chat_announce = function(args={})
 	{
 		content.html(link_preview)
 		Hue.setup_link_preview(fmessage, args.link_url, "none")
+	}
+
+	else if(comment)
+	{
+		content.html(args.message + comment).urlize()
 	}
 
 	else
@@ -9486,7 +9612,7 @@ Hue.goto_bottom = function(force=false, animate=true)
 	}
 }
 
-Hue.emit_change_image_source = function(url)
+Hue.emit_change_image_source = function(url, comment="")
 {
 	if(!Hue.can_images)
 	{
@@ -9494,7 +9620,7 @@ Hue.emit_change_image_source = function(url)
 		return false
 	}
 
-	Hue.socket_emit('change_image_source', {src:url})
+	Hue.socket_emit('change_image_source', {src:url, comment:comment})
 }
 
 Hue.get_radio_metadata_enabled = function()
@@ -10714,6 +10840,18 @@ Hue.change_radio_source = function(src)
 		return false
 	}
 
+	let r = Hue.get_media_change_inline_comment("radio", src)
+
+	src = r.source
+	
+	let comment = r.comment
+
+	if(comment.length > Hue.safe_limit_4)
+	{
+		Hue.feedback("Comment is too long")
+		return false
+	}
+
 	if(src.length === 0)
 	{
 		return false
@@ -10739,8 +10877,7 @@ Hue.change_radio_source = function(src)
 
 	else if(src === "default")
 	{
-		Hue.socket_emit('change_radio_source', {src:"default"})
-		return
+		// OK
 	}
 
 	else if(src === "prev" || src === "previous")
@@ -10800,6 +10937,12 @@ Hue.change_radio_source = function(src)
 
 	else if(src !== "restart" && src !== "reset")
 	{
+		if(src.length > Hue.safe_limit_1)
+		{
+			Hue.feedback("Query is too long")
+			return false
+		}
+
 		if(!Hue.youtube_enabled)
 		{
 			Hue.feedback("Invalid radio source")
@@ -10807,7 +10950,7 @@ Hue.change_radio_source = function(src)
 		}
 	}
 
-	Hue.socket_emit('change_radio_source', {src:src})
+	Hue.socket_emit('change_radio_source', {src:src, comment:comment})
 }
 
 Hue.change_tv_source = function(src)
@@ -10815,6 +10958,18 @@ Hue.change_tv_source = function(src)
 	if(!Hue.can_tv)
 	{
 		Hue.feedback("You don't have permission to change the tv")
+		return false
+	}
+
+	let r = Hue.get_media_change_inline_comment("tv", src)
+
+	src = r.source
+
+	let comment = r.comment
+
+	if(comment.length > Hue.safe_limit_4)
+	{
+		Hue.feedback("Comment is too long")
 		return false
 	}
 
@@ -10843,8 +10998,7 @@ Hue.change_tv_source = function(src)
 
 	else if(src === "default")
 	{
-		Hue.socket_emit('change_tv_source', {src:"default"})
-		return
+		// OK
 	}
 
 	else if(src === "prev" || src === "previous")
@@ -10942,6 +11096,12 @@ Hue.change_tv_source = function(src)
 
 	else if(src !== "restart" && src !== "reset")
 	{
+		if(src.length > Hue.safe_limit_1)
+		{
+			Hue.feedback("Query is too long")
+			return false
+		}
+
 		if(!Hue.youtube_enabled)
 		{
 			Hue.feedback("YouTube support is not enabled")
@@ -10949,7 +11109,7 @@ Hue.change_tv_source = function(src)
 		}
 	}
 
-	Hue.socket_emit('change_tv_source', {src:src})
+	Hue.socket_emit('change_tv_source', {src:src, comment:comment})
 }
 
 Hue.ban = function(uname)
@@ -11677,6 +11837,7 @@ Hue.start_msg = function()
 			{
 				Hue.after_modal_close(instance)
 				$("#image_source_picker_input").val("")
+				$("#image_source_picker_input_comment").val("")
 				Hue.iup = false
 			}
 		})
@@ -11705,6 +11866,7 @@ Hue.start_msg = function()
 			{
 				Hue.after_modal_close(instance)
 				$("#tv_source_picker_input").val("")
+				$("#tv_source_picker_input_comment").val("")
 				Hue.tup = false
 			}
 		})
@@ -11733,6 +11895,7 @@ Hue.start_msg = function()
 			{
 				Hue.after_modal_close(instance)
 				$("#radio_source_picker_input").val("")
+				$("#radio_source_picker_input_comment").val("")
 				Hue.rup = false
 			}
 		})
@@ -12197,6 +12360,37 @@ Hue.start_msg = function()
 		})
 	)
 
+	Hue.msg_upload_comment = Msg.factory
+	(
+		Object.assign({}, common, titlebar,
+		{
+			id: "upload_comment",
+			after_create: function(instance)
+			{
+				Hue.after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				Hue.after_modal_show(instance)
+				Hue.after_modal_set_or_show(instance)
+				Hue.upc = true
+			},
+			after_set: function(instance)
+			{
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				Hue.after_modal_close(instance)
+				Hue.clear_modal_image_info()
+				$("#upload_comment_input").val("")
+				Hue.upload_comment_file = false
+				Hue.upload_comment_type = false
+				Hue.upc = false
+			}
+		})
+	)
+
 	Hue.msg_main_menu.set(Hue.template_main_menu())
 	Hue.msg_user_menu.set(Hue.template_user_menu())
 	Hue.msg_userlist.set(Hue.template_userlist())
@@ -12227,6 +12421,7 @@ Hue.start_msg = function()
 	Hue.msg_admin_activity.set(Hue.template_admin_activity())
 	Hue.msg_access_log.set(Hue.template_access_log())
 	Hue.msg_expand_image.set(Hue.template_expand_image())
+	Hue.msg_upload_comment.set(Hue.template_upload_comment())
 
 	Hue.msg_info.create()
 	Hue.msg_info2.create()
@@ -12249,6 +12444,7 @@ Hue.start_msg = function()
 	Hue.msg_credits.set_title(Hue.credits_title)
 	Hue.msg_admin_activity.set_title("Admin Activity")
 	Hue.msg_access_log.set_title("Access Log")
+	Hue.msg_upload_comment.set_title("Add A Comment")
 
 	$("#global_settings_window_title").click(function()
 	{
@@ -15979,6 +16175,18 @@ Hue.change_image_source = function(src)
 		return false
 	}
 
+	let r = Hue.get_media_change_inline_comment("image", src)
+
+	src = r.source
+	
+	let comment = r.comment
+
+	if(comment.length > Hue.safe_limit_4)
+	{
+		Hue.feedback("Comment is too long")
+		return false
+	}
+
 	if(src.length === 0)
 	{
 		return false
@@ -16004,8 +16212,7 @@ Hue.change_image_source = function(src)
 
 	else if(src === "default")
 	{
-		Hue.emit_change_image_source("default")
-		return
+		// OK
 	}
 
 	else if(src === "prev" || src === "previous")
@@ -16043,15 +16250,20 @@ Hue.change_image_source = function(src)
 
 	else
 	{
+		if(src.length > Hue.safe_limit_1)
+		{
+			Hue.feedback("Query is too long")
+			return false
+		}
+
 		if(!Hue.imgur_enabled)
 		{
 			Hue.feedback("Imgur support is not enabled")
 			return false
 		}
-
 	}
 
-	Hue.emit_change_image_source(src)
+	Hue.emit_change_image_source(src, comment)
 }
 
 Hue.change_voice_permission = function(ptype, what)
@@ -23659,4 +23871,125 @@ Hue.get_selected_user_settings_category = function(type)
 	})
 
 	return category
+}
+
+Hue.get_media_change_inline_comment = function(type, source)
+{
+	let comment = $(`#${type}_source_picker_input_comment`).val()
+
+	if(comment)
+	{
+		// OK
+	}
+
+	else if(source.includes(">"))
+	{
+		let split = source.split(">")
+
+		source = split[0].trim()
+		comment = split.slice(1).join(">").trim()
+	}
+
+	else
+	{
+		let split = source.split(" ")
+
+		let url = ""
+		let cm = []
+
+		for(let sp of split)
+		{
+			if(sp.startsWith("http://") || sp.startsWith("https://"))
+			{
+				if(!url)
+				{
+					url = sp
+				}
+			}
+
+			else
+			{
+				cm.push(sp)
+			}
+		}
+
+		if(url)
+		{
+			source = url
+		}
+
+		if(cm.length > 0)
+		{
+			source = url
+			comment = cm.join(" ")
+		}
+	}
+
+	return {source:source, comment:comment}
+}
+
+Hue.show_upload_comment = function(file, type)
+{
+	let reader = new FileReader()
+
+	reader.onload = function(e) 
+	{
+		Hue.upload_comment_file = file
+		Hue.upload_comment_type = type
+
+		$("#upload_comment_image_preview").attr("src", e.target.result)
+
+		Hue.msg_upload_comment.show(function()
+		{
+			$("#upload_comment_submit").click(function()
+			{
+				Hue.process_upload_comment()
+			})
+
+			$("#upload_comment_input").focus()
+		})
+	}
+
+	reader.readAsDataURL(file)
+}
+
+Hue.setup_upload_comment = function()
+{
+	let img = $("#upload_comment_input")
+
+	img[0].addEventListener('load', function()
+	{
+		Hue.update_modal_scrollbar(msg_upload_comment.options.id)
+	})
+}
+
+Hue.process_upload_comment = function()
+{
+	if(!Hue.upc)
+	{
+		return false
+	}
+
+	Hue.upc = false
+
+	Hue.msg_upload_comment.close()
+
+	let file = Hue.upload_comment_file
+	let type = Hue.upload_comment_type
+
+	let comment = Hue.utilz.clean_string2($("#upload_comment_input").val())
+
+	if(comment.length > Hue.safe_limit_4)
+	{
+		return false
+	}
+
+	file.comment = comment
+	Hue.upload_file(file, type)
+}
+
+Hue.cancel_upload_comment = function()
+{
+	Hue.upc = false
+	Hue.msg_upload_comment.close()
 }

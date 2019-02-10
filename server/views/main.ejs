@@ -40,9 +40,9 @@
 		<script src="/static/js/utilz.js?version=32"></script>
 		<script src="/static/js/colorlib.js?version=13"></script>
 
-		<script src="/static/js/base.js?version=2577"></script>
+		<script src="/static/js/base.js?version=2578"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=548"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=549"/>
 
 		<script>
 
@@ -1561,6 +1561,16 @@
 			</div>
 		</script>
 
+		<script id='template_upload_comment' type='text/x-handlebars-template'>
+			<img id='upload_comment_image_preview'>
+			<div class='spacer3'></div>
+			<input type='text' id='upload_comment_input' class='input1' placeholder='Comment'>
+			<div class='spacer3'></div>
+			<div class='menu_item action inline' id='upload_comment_submit'>Upload</div>
+			<div class='hspacer3 inline'></div>
+			<div class='menu_item action inline' onclick='Hue.cancel_upload_comment()'>Cancel</div>
+		</script>
+
 		<script id='template_background_image_select' type='text/x-handlebars-template'>
 			<div class='flex_row_center unselectable'>
 				<div class='bigger action inline pointer' onclick='Hue.open_background_image_picker()'>Upload&nbsp;Image</div>
@@ -1650,10 +1660,11 @@
 			<i class='fa fa-camera'></i>
 			<div class='spacer3'></div>
 			Enter an image URL<br>Or an Imgur search term<br>Upload one from your computer<br>Or make a drawing
-			<div class='spacer3'></div>
 			<div title='Use this in the main chat input'>Command: /image x</div>
 			<div class='spacer3'></div>
-			<input type='text' id='image_source_picker_input' class='input1'>
+			<input type='text' id='image_source_picker_input' class='input1' placeholder='Search Term or URL'>
+			<div class='spacer3'></div>
+			<input type='text' id='image_source_picker_input_comment' class='input1' placeholder='Comment'>
 			<div class='spacer3'></div>
 			<div class='unselectable'>
 				<div id='image_file_picker' class='menu_item action inline unselectable' onclick='Hue.msg_image_picker.close()'>Upload</div>
@@ -1671,7 +1682,9 @@
 			<div class='spacer3'></div>
 			<div title='Use this in the main chat input'>Command: /tv x</div>
 			<div class='spacer3'></div>
-			<input type='text' id='tv_source_picker_input' class='input1'>
+			<input type='text' id='tv_source_picker_input' class='input1' placeholder='Search Term or URL'>
+			<div class='spacer3'></div>
+			<input type='text' id='tv_source_picker_input_comment' class='input1' placeholder='Comment'>
 			<div class='spacer3'></div>
 			<div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("restart_tv", "This will restart the tv for everyone. Are you sure?")'>Restart</div>
 			<span>&nbsp;|&nbsp;</span>
@@ -1685,7 +1698,9 @@
 			<div class='spacer3'></div>
 			<div title='Use this in the main chat input'>Command: /radio x</div>
 			<div class='spacer3'></div>
-			<input type='text' id='radio_source_picker_input' class='input1'>
+			<input type='text' id='radio_source_picker_input' class='input1' placeholder='Search Term or URL'>
+			<div class='spacer3'></div>
+			<input type='text' id='radio_source_picker_input_comment' class='input1' placeholder='Comment'>
 			<div class='spacer3'></div>
 			<div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("restart_radio", "This will restart the radio for everyone. Are you sure?")'>Restart</div>
 			<span>&nbsp;|&nbsp;</span>
