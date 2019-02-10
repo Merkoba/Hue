@@ -12376,7 +12376,7 @@ Hue.start_msg = function()
 	Hue.msg_credits.set_title(Hue.credits_title)
 	Hue.msg_admin_activity.set_title("Admin Activity")
 	Hue.msg_access_log.set_title("Access Log")
-	Hue.msg_upload_comment.set_title("Add A Comment")
+	Hue.msg_upload_comment.set_title("Add a Comment")
 
 	$("#global_settings_window_title").click(function()
 	{
