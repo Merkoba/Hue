@@ -6639,7 +6639,7 @@ Hue.update_chat = function(args={})
 
 		else
 		{
-			fmessage.find('.chat_content').eq(0).text(args.message)
+			fmessage.find('.chat_content').eq(0).text(Hue.replace_markdown(args.message))
 		}
 	}
 
@@ -6663,8 +6663,6 @@ Hue.update_chat = function(args={})
 	fmessage.data("highlighted", highlighted)
 	fmessage.data("uname", args.username)
 	fmessage.data("mode", "chat")
-
-	fmessage = Hue.replace_markdown(fmessage)
 
 	let chat_content_container = fmessage.find(".chat_content_container").eq(0)
 	let chat_content = fmessage.find(".chat_content").eq(0)
@@ -7598,7 +7596,7 @@ Hue.chat_announce = function(args={})
 			}
 		}
 
-		comment = `<div class='${cls}'>${this.make_html_safe(args.comment)}</div>`	
+		comment = `<div class='${cls}'>${Hue.replace_markdown(this.make_html_safe(args.comment))}</div>`	
 	}
 
 	let link_preview = false
@@ -17494,7 +17492,9 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 		remove_text_if_empty: true
 	})
 
-	data.content = Hue.replace_markdown(data.content, "whisper")
+	let text_item = $(data.content).find(".message_info_text").eq(0)
+
+	text_item.html(Hue.replace_markdown(text_item.text()))
 
 	$(data.content).find(".whisper_link").each(function()
 	{
@@ -21350,28 +21350,10 @@ Hue.do_chat_quote = function(target)
 	Hue.process_message({message:text, to_history:false})
 }
 
-Hue.replace_markdown = function(message, type="chat")
+Hue.replace_markdown = function(text)
 {
-	let text
-	let chat_content
-
-	if(type === "chat")
-	{
-		chat_content = $(message).find(".chat_content").eq(0)
-		text = chat_content.html()
-	}
-
-	else if(type === "whisper")
-	{
-		chat_content = $(message).find(".message_info_text").eq(0)
-		text = chat_content.html()
-	}
-
-	let changed = false
-
 	text = text.replace(/\[whisper\s+(.*?)\](.*?)\[\/whisper\]/gm, function(g1, g2, g3)
 	{
-		changed = true
 		return `<span class="whisper_link" data-whisper="${g2}" title="[Whisper] ${g2}">${g3.replace(/\s+/, "&nbsp;")}</span>`
 	})
 
@@ -21381,19 +21363,16 @@ Hue.replace_markdown = function(message, type="chat")
 
 		if(n === 1)
 		{
-			changed = true
 			return `${g2}<span class='italic'>${g4}</span>`
 		}
 
 		else if(n === 2)
 		{
-			changed = true
 			return `${g2}<span class='bold'>${g4}</span>`
 		}
 
 		else if(n === 3)
 		{
-			changed = true
 			return `${g2}<span class='italic bold'>${g4}</span>`
 		}
 	})
@@ -21404,13 +21383,11 @@ Hue.replace_markdown = function(message, type="chat")
 
 		if(n === 1)
 		{
-			changed = true
 			return `${g2}<span class='italic'>${g4}</span>`
 		}
 
 		else if(n === 2)
 		{
-			changed = true
 			return `${g2}<span class='underlined'>${g4}</span>`
 		}
 	})
@@ -21421,17 +21398,11 @@ Hue.replace_markdown = function(message, type="chat")
 
 		if(n === 2)
 		{
-			changed = true
 			return `${g2}<span class='spoiler' title='Click To Reveal'>${g4}</span>`
 		}
 	})
 
-	if(changed)
-	{
-		chat_content.html(text)
-	}
-
-	return message
+	return text
 }
 
 Hue.set_user_settings_titles = function()
@@ -23568,23 +23539,26 @@ Hue.make_image_preview = function(message)
 
 			ans.image_preview_src_original = `https://i.imgur.com/${code}.${extension}`
 			ans.image_preview_src = `https://i.imgur.com/${code}l.jpg`
-			ans.image_preview_array = []
+			
+			let text_array = []
 
 			for(let sp of split)
 			{
 				if(sp === link)
 				{
-					ans.image_preview_array.push(link)
+					// OK
 				}
 
 				else
 				{
-					ans.image_preview_array.push(Hue.make_html_safe(sp))
+					text_array.push(sp)
 				}
 			}
 
-			let text = ans.image_preview_array.join(" ")
+			let text = Hue.replace_markdown(Hue.make_html_safe(text_array.join(" ")))
+			text = `${text} ${link}`
 
+			// This is in a single line on purpose
 			ans.image_preview = `<div class='image_preview action'><div class='image_preview_url'>${text}</div><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}"></div>`
 		}
 	}
@@ -23635,22 +23609,24 @@ Hue.make_link_preview = function(message, link_url, link_title, link_image)
 
 	if(link_preview_s)
 	{
-		let link_preview_array = []
+		let text_array = []
 
 		for(let sp of split)
 		{
 			if(sp === link_url)
 			{
-				link_preview_array.push(link_preview_s)
+				// OK
 			}
 
 			else
 			{
-				link_preview_array.push(Hue.make_html_safe(sp))
+				text_array.push(sp)
 			}
 		}
 
-		ans.link_preview = link_preview_array.join(" ")
+		let text = Hue.replace_markdown(Hue.make_html_safe(text_array.join(" ")))
+
+		ans.link_preview = text + link_preview_s
 	}
 
 	return ans
@@ -23942,7 +23918,7 @@ Hue.create_media_history_item = function(data)
 
 	if(data.comment)
 	{
-		let c = Hue.make_html_safe(data.comment)
+		let c = Hue.replace_markdown(Hue.make_html_safe(data.comment))
 		comment.html(c).urlize()
 	}
 	
