@@ -2572,11 +2572,6 @@ input[type=text], textarea
 	max-width: 500px;
 }
 
-.announcement_comment, .media_history_item_comment
-{
-	font-style: italic;
-}
-
 .announcement_comment_highlighted
 {
 	box-shadow: inset 0 0 2px currentColor;
