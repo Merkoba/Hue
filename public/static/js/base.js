@@ -5966,8 +5966,6 @@ Hue.get_closest_autocomplete = function(element, w)
 
 Hue.tabbed = function(element)
 {
-	Hue.just_tabbed = false
-
 	if(!element.id)
 	{
 		return false
@@ -20440,6 +20438,8 @@ Hue.setup_autocomplete = function()
 {
 	$("body").on("keydown", "textarea, input[type='text']", function(e)
 	{
+		Hue.just_tabbed = false
+
 		if(e.key === "Tab")
 		{
 			let value = $(this).val()
