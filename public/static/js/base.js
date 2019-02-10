@@ -23885,6 +23885,9 @@ Hue.get_media_change_inline_comment = function(type, source)
 
 Hue.show_upload_comment = function(file, type)
 {
+	$("#upload_comment_image_feedback").css("display", "none")
+	$("#upload_comment_image_preview").css("display", "inline")
+	
 	let reader = new FileReader()
 
 	reader.onload = function(e) 
@@ -23910,11 +23913,17 @@ Hue.show_upload_comment = function(file, type)
 
 Hue.setup_upload_comment = function()
 {
-	let img = $("#upload_comment_input")
+	let img = $("#upload_comment_image_preview")
 
 	img[0].addEventListener('load', function()
 	{
 		Hue.update_modal_scrollbar(msg_upload_comment.options.id)
+	})
+
+	img.on("error", function()
+	{
+		$(this).css("display", "none")
+		$("#upload_comment_image_feedback").css("display", "inline")
 	})
 }
 

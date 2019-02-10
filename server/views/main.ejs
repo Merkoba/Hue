@@ -1563,12 +1563,15 @@
 
 		<script id='template_upload_comment' type='text/x-handlebars-template'>
 			<img id='upload_comment_image_preview'>
+			<div id='upload_comment_image_feedback'>Image seems to be corrupted</div>
 			<div class='spacer3'></div>
 			<input type='text' id='upload_comment_input' class='input1' placeholder='Comment'>
 			<div class='spacer3'></div>
-			<div class='menu_item action inline' id='upload_comment_submit'>Upload</div>
-			<div class='hspacer3 inline'></div>
-			<div class='menu_item action inline' onclick='Hue.cancel_upload_comment()'>Cancel</div>
+			<div class='unselectable'>
+				<div class='menu_item action inline' id='upload_comment_submit'>Upload</div>
+				<div class='hspacer3 inline'></div>
+				<div class='menu_item action inline' onclick='Hue.cancel_upload_comment()'>Cancel</div>
+			</div>
 		</script>
 
 		<script id='template_background_image_select' type='text/x-handlebars-template'>
