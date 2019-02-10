@@ -2257,17 +2257,17 @@ input[type=text], textarea
 	position: relative;
 }
 
-.normal_layout .image_preview_url, #chat_search_container .image_preview_url
+.normal_layout .image_preview_text, #chat_search_container .image_preview_text
 {
 	margin-bottom: 0.5rem;
 }
 
-.compact_layout .image_preview_url
+.compact_layout .image_preview_text
 {
 	margin-bottom: 0.2rem;
 }
 
-.image_preview_url
+.image_preview_text
 {
 	overflow-wrap: break-word;
 	word-break: break-word;

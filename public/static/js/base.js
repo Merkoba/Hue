@@ -23556,10 +23556,9 @@ Hue.make_image_preview = function(message)
 			}
 
 			let text = Hue.replace_markdown(Hue.make_html_safe(text_array.join(" ")))
-			text = `${text} ${link}`
 
 			// This is in a single line on purpose
-			ans.image_preview = `<div class='image_preview action'><div class='image_preview_url'>${text}</div><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}"></div>`
+			ans.image_preview = `<div class='image_preview action'><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}"><div class='image_preview_text'>${text}</div></div>`
 		}
 	}
 
@@ -23626,7 +23625,7 @@ Hue.make_link_preview = function(message, link_url, link_title, link_image)
 
 		let text = Hue.replace_markdown(Hue.make_html_safe(text_array.join(" ")))
 
-		ans.link_preview = text + link_preview_s
+		ans.link_preview = link_preview_s + text
 	}
 
 	return ans
@@ -23663,7 +23662,7 @@ Hue.setup_image_preview = function(fmessage, image_preview_src_original, user_id
 		Hue.expand_image(image_preview_src_original.replace(".gifv", ".gif"))
 	})
 
-	image_preview_el.find(".image_preview_url").eq(0).urlize()
+	image_preview_el.find(".image_preview_text").eq(0).urlize()
 }
 
 Hue.setup_link_preview = function(fmessage, link_url, user_id)
