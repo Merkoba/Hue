@@ -2574,7 +2574,6 @@ input[type=text], textarea
 
 .announcement_comment, .media_history_item
 {
-	margin-top: 0.25rem;
 	font-style: italic;
 }
 
