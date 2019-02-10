@@ -100,7 +100,7 @@ Go to the server directory and run:
 
 To run it properly in production you will have to configure Apache or some other webserver to use a reverse proxy. A sample vhost configuration for Apache (apache_vhost.conf) is included. For using https, LetsEncrypt is suggested.
 
-Using pm2 is suggested to control the Node process.
+Using pm2 is suggested to control the Node process. PM2 will likely use the user's home directory as root.
 
 >su - node -c "pm2 start hue/server/www --env production"
 
