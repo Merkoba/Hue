@@ -1611,22 +1611,7 @@ Hue.push_images_changed = function(data)
 
 	Hue.images_changed.push(data)
 
-	let el = $(`
-	<div class='modal_item media_history_item'>
-		<div class='media_history_item_inner dynamic_title pointer inline'></div>
-		<div class='announcement_comment media_history_item_comment'></div>
-	</div>`)
-	
-	let inner = el.find('.media_history_item_inner').eq(0)
-	let comment = el.find('.media_history_item_comment').eq(0)
-	
-	inner.text(data.message).urlize()
-	comment.text(data.comment).urlize()
-	inner.attr("title", data.info)
-	inner.data("otitle", data.info)
-	inner.data("date", data.date)
-	inner.click(data.onclick)
-	el.data("obj", data)
+	let el = Hue.create_media_history_item(data)
 	
 	$("#image_history_container").prepend(el)
 
@@ -1809,22 +1794,7 @@ Hue.push_tv_changed = function(data)
 
 	Hue.tv_changed.push(data)
 
-	let el = $(`
-	<div class='modal_item media_history_item'>
-		<div class='media_history_item_inner dynamic_title pointer inline'></div>
-		<div class='announcement_comment media_history_item_comment'></div>
-	</div>`)
-	
-	let inner = el.find('.media_history_item_inner').eq(0)
-	let comment = el.find('.media_history_item_comment').eq(0)
-	
-	inner.text(data.message).urlize()
-	comment.text(data.comment).urlize()
-	inner.attr("title", data.info)
-	inner.data("otitle", data.info)
-	inner.data("date", data.date)
-	inner.click(data.onclick)
-	el.data("obj", data)
+	let el = Hue.create_media_history_item(data)
 	
 	$("#tv_history_container").prepend(el)
 
@@ -1981,22 +1951,7 @@ Hue.push_radio_changed = function(data)
 
 	Hue.radio_changed.push(data)
 
-	let el = $(`
-	<div class='modal_item media_history_item'>
-		<div class='media_history_item_inner dynamic_title pointer inline'></div>
-		<div class='announcement_comment media_history_item_comment'></div>
-	</div>`)
-	
-	let inner = el.find('.media_history_item_inner').eq(0)
-	let comment = el.find('.media_history_item_comment').eq(0)
-	
-	inner.text(data.message).urlize()
-	comment.text(data.comment).urlize()
-	inner.attr("title", data.info)
-	inner.data("otitle", data.info)
-	inner.data("date", data.date)
-	inner.click(data.onclick)
-	el.data("obj", data)
+	let el = Hue.create_media_history_item(data)
 	
 	$("#radio_history_container").prepend(el)
 
@@ -23992,4 +23947,27 @@ Hue.cancel_upload_comment = function()
 {
 	Hue.upc = false
 	Hue.msg_upload_comment.close()
+}
+
+Hue.create_media_history_item = function(data)
+{
+	let el = $(`
+	<div class='modal_item media_history_item pointer action'>
+		<div class='media_history_item_inner dynamic_title inline'></div>
+		<div class='announcement_comment media_history_item_comment'></div>
+	</div>`)
+	
+	let inner = el.find('.media_history_item_inner').eq(0)
+	let comment = el.find('.media_history_item_comment').eq(0)
+	
+	inner.text(data.message).urlize()
+	comment.text(data.comment).urlize()
+
+	el.attr("title", data.info)
+	el.data("otitle", data.info)
+	el.data("date", data.date)
+	el.click(data.onclick)
+	el.data("obj", data)
+
+	return el
 }
