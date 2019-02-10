@@ -151,6 +151,7 @@ Hue.lockscreen_peek_active = false
 Hue.context_menu_open = false
 Hue.upload_comment_file = false
 Hue.upload_comment_type = false
+Hue.just_tabbed = false
 
 Hue.commands = 
 [
@@ -5180,21 +5181,7 @@ Hue.activate_key_detection = function()
 
 					else if(e.key === "Tab")
 					{
-						if(document.activeElement === $("#image_source_picker_input")[0])
-						{
-							$("#image_source_picker_input_comment").focus()
-						}
-
-						else if(document.activeElement === $("#image_source_picker_input_comment")[0])
-						{
-							$("#image_source_picker_input").focus()
-						}
-
-						else
-						{
-							$("#image_source_picker_input").focus()
-						}
-
+						Hue.do_media_picker_input_cycle("image")
 						e.preventDefault()
 					}
 
@@ -5221,21 +5208,7 @@ Hue.activate_key_detection = function()
 
 					else if(e.key === "Tab")
 					{
-						if(document.activeElement === $("#tv_source_picker_input")[0])
-						{
-							$("#tv_source_picker_input_comment").focus()
-						}
-
-						else if(document.activeElement === $("#tv_source_picker_input_comment")[0])
-						{
-							$("#tv_source_picker_input").focus()
-						}
-
-						else
-						{
-							$("#tv_source_picker_input").focus()
-						}
-
+						Hue.do_media_picker_input_cycle("tv")
 						e.preventDefault()
 					}
 
@@ -5262,21 +5235,7 @@ Hue.activate_key_detection = function()
 
 					else if(e.key === "Tab")
 					{
-						if(document.activeElement === $("#radio_source_picker_input")[0])
-						{
-							$("#radio_source_picker_input_comment").focus()
-						}
-
-						else if(document.activeElement === $("#radio_source_picker_input_comment")[0])
-						{
-							$("#radio_source_picker_input").focus()
-						}
-
-						else
-						{
-							$("#radio_source_picker_input").focus()
-						}
-
+						Hue.do_media_picker_input_cycle("radio")
 						e.preventDefault()
 					}
 
@@ -6007,6 +5966,8 @@ Hue.get_closest_autocomplete = function(element, w)
 
 Hue.tabbed = function(element)
 {
+	Hue.just_tabbed = false
+
 	if(!element.id)
 	{
 		return false
@@ -6068,6 +6029,8 @@ Hue.replace_tabbed = function(element, word)
 
 		info.tabbed_start = pos - result.length
 		info.tabbed_end = pos
+
+		Hue.just_tabbed = true
 	}
 }
 
@@ -7573,9 +7536,12 @@ Hue.chat_announce = function(args={})
 		containerid = ` id='${args.id}' `
 	}
 
+	let highlighted = false
+
 	if(args.highlight === true)
 	{
 		contclasses += " highlighted"
+		highlighted = true
 	}
 
 	let d
@@ -7628,8 +7594,19 @@ Hue.chat_announce = function(args={})
 
 	if(args.comment)
 	{
+		let cls = "announcement_comment"
+
+		if(args.username && args.username !== Hue.username)
+		{
+			if(!highlighted && Hue.check_highlights(args.comment))
+			{
+				cls += " announcement_comment_highlighted"
+				highlighted = true
+			}
+		}
+
 		comment = 
-		`<div class='announcement_comment'>
+		`<div class='${cls}'>
 			<div>${this.make_html_safe(args.comment)}</div>
 		</div>`	
 	}
@@ -7702,7 +7679,7 @@ Hue.chat_announce = function(args={})
 	
 	fmessage.data("public", args.public)
 	fmessage.data("date", d)
-	fmessage.data("highlighted", args.highlight)
+	fmessage.data("highlighted", highlighted)
 	fmessage.data("type", args.type)
 	fmessage.data("info1", args.info1)
 	fmessage.data("info2", args.info2)
@@ -7713,7 +7690,7 @@ Hue.chat_announce = function(args={})
 	{
 		Hue.add_to_chat({message:fmessage, save:args.save})
 		
-		if(args.highlight)
+		if(highlighted)
 		{
 			Hue.alert_title(2)
 			Hue.sound_notify("highlight")
@@ -23979,4 +23956,27 @@ Hue.create_media_history_item = function(data)
 	el.data("obj", data)
 
 	return el
+}
+
+Hue.do_media_picker_input_cycle = function(type)
+{
+	if(Hue.just_tabbed)
+	{
+		return false
+	}
+
+	if(document.activeElement === $(`#${type}_source_picker_input`)[0])
+	{
+		$(`#${type}_source_picker_input_comment`).focus()
+	}
+
+	else if(document.activeElement === $("#image_source_picker_input_comment")[0])
+	{
+		$(`#${type}_source_picker_input`).focus()
+	}
+
+	else
+	{
+		$(`#${type}_source_picker_input`).focus()
+	}
 }

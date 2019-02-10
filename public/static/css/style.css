@@ -2571,3 +2571,8 @@ input[type=text], textarea
 {
 	margin-top: 0.25rem;
 }
+
+.announcement_comment_highlighted
+{
+	box-shadow: inset 0 0 2px currentColor;
+}
