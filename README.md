@@ -102,7 +102,7 @@ To run it properly in production you will have to configure Apache or some other
 
 Using pm2 is suggested to control the Node process.
 
->su - node -c "pm2 start /home/node/hue/server/www --env production"
+>su - node -c "pm2 start hue/server/www --env production"
 
 That's an example of starting it with the user "node" in a production environment.
 
