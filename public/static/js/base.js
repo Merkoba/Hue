@@ -7598,10 +7598,7 @@ Hue.chat_announce = function(args={})
 			}
 		}
 
-		comment = 
-		`<div class='${cls}'>
-			${this.make_html_safe(args.comment)}
-		</div>`	
+		comment = `<div class='${cls}'>${this.make_html_safe(args.comment)}</div>`	
 	}
 
 	let link_preview = false

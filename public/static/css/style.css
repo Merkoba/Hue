@@ -2572,7 +2572,7 @@ input[type=text], textarea
 	max-width: 500px;
 }
 
-.announcement_comment, .media_history_item
+.announcement_comment, .media_history_item_comment
 {
 	font-style: italic;
 }
