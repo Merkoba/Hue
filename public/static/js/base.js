@@ -20202,7 +20202,7 @@ Hue.upload_draw_image = function()
 	$("#draw_image_area")[0].toBlob(function(blob)
 	{
 		blob.name = "draw_image.png"
-		Hue.upload_file(blob, "image_upload")
+		Hue.show_upload_comment(blob, "image_upload")
 		Hue.msg_draw_image.close()
 	}, 'image/png', 0.95)
 }
