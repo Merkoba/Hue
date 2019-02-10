@@ -741,6 +741,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 	font-size: 0.8rem;
 }
 
+.icon6
+{
+	font-size: 0.5rem;
+}
+
 #header_radio_volume_icon_plus
 {
 	margin-left: 0.8em;
@@ -2567,9 +2572,10 @@ input[type=text], textarea
 	max-width: 500px;
 }
 
-.announcement_comment
+.announcement_comment, .media_history_item
 {
 	margin-top: 0.25rem;
+	font-style: italic;
 }
 
 .announcement_comment_highlighted

@@ -2837,11 +2837,6 @@ Hue.apply_theme = function()
 		background-color: ${font_color} !important;
 	}
 
-	.announcement_comment
-	{
-		background-color: ${slight_background} !important;
-	}
-
 	</style>
 	`
 
@@ -7605,7 +7600,7 @@ Hue.chat_announce = function(args={})
 
 		comment = 
 		`<div class='${cls}'>
-			<div>${this.make_html_safe(args.comment)}</div>
+			${this.make_html_safe(args.comment)}
 		</div>`	
 	}
 
@@ -23940,15 +23935,20 @@ Hue.create_media_history_item = function(data)
 	let el = $(`
 	<div class='modal_item media_history_item pointer action'>
 		<div class='media_history_item_inner dynamic_title inline'></div>
-		<div class='announcement_comment media_history_item_comment'></div>
+		<div class='media_history_item_comment'></div>
 	</div>`)
 	
 	let inner = el.find('.media_history_item_inner').eq(0)
 	let comment = el.find('.media_history_item_comment').eq(0)
-	
-	inner.text(data.message).urlize()
-	comment.text(data.comment).urlize()
 
+	inner.text(data.message).urlize()
+
+	if(data.comment)
+	{
+		let c = Hue.make_html_safe(data.comment)
+		comment.html(c).urlize()
+	}
+	
 	el.attr("title", data.info)
 	el.data("otitle", data.info)
 	el.data("date", data.date)
