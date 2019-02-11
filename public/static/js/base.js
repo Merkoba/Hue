@@ -943,7 +943,7 @@ Hue.start_socket = function()
 		if(data.type === 'joined')
 		{
 			console.info("Joined Room")
-			
+
 			Hue.init_data = data
 			Hue.room_locked = data.room_locked
 
@@ -7663,57 +7663,64 @@ Hue.chat_announce = function(args={})
 
 jQuery.fn.urlize = function(stop_propagation=true)
 {
-	let cls = "generic action"
-
-	if(stop_propagation)
+	let html = this.html()
+	
+	if(!html || (!html.includes("http://") && !html.includes("https://")))
 	{
-		cls += " stop_propagation"
+		return false
+	}
+	
+	let split = html.split(" ")
+	let matches = []
+	let reg = /(?:^|\s)\"?(https?:\/\/(?:[^"|\s]*)+)/
+	
+	for(let s of split)
+	{
+		let result = reg.exec(s)
+
+		if(result)
+		{
+			matches.push(result[1])
+		}
 	}
 
-	if(this.length > 0)
+	if(matches.length > 0)
 	{
-		this.each(function(n, obj)
+		on_matches(matches, html, this)
+	}
+
+	function on_matches(matches, html, obj)
+	{
+		let cls = "generic action"
+
+		if(stop_propagation)
 		{
-			let x = $(obj).html()
+			cls += " stop_propagation"
+		}
+		
+		for(let i=0; i<matches.length; i++)
+		{
+			let url = matches[i]
 
-			let list = x.match(/\bhttps?:\/\/\S+/g)
+			let rep = new RegExp(Hue.escape_special_characters(matches[i]), "g")
 
-			if(list)
+			let u = matches[i]
+
+			if(u.length > Hue.config.max_displayed_url)
 			{
-				let listed = []
-
-				for(let i=0; i<list.length; i++)
-				{
-					if(listed.includes(list[i]))
-					{
-						continue
-					}
-
-					let url = list[i].replace(/\'/g, "").replace(/\"/g, "")
-
-					let rep = new RegExp(Hue.escape_special_characters(list[i]), "g")
-
-					let u = list[i]
-
-					if(u.length > Hue.config.max_displayed_url)
-					{
-						u = `${u.substring(0, Hue.config.max_displayed_url)}...`
-					}
-
-					x = x.replace(rep, `<a class='${cls}' target='_blank' href='${url}'>${u}</a>`)
-
-					listed.push(list[i])
-				}
+				u = `${u.substring(0, Hue.config.max_displayed_url)}...`
 			}
 
-			$(obj).html(x)
+			html = html.replace(rep, `<a class='${cls}' target='_blank' href='${url}'>${u}</a>`)
+		}
 
-			$(obj).find(".stop_propagation").each(function()
+		$(obj).html(html)
+
+		$(obj).find(".stop_propagation").each(function()
+		{
+			$(this).click(function(e)
 			{
-				$(this).click(function(e)
-				{
-					e.stopPropagation()
-				})
+				e.stopPropagation()
 			})
 		})
 	}
@@ -21277,7 +21284,12 @@ Hue.replace_markdown = function(text)
 {
 	text = text.replace(/\[whisper\s+(.*?)\](.*?)\[\/whisper\]/gm, function(g1, g2, g3)
 	{
-		return `<span class="whisper_link" data-whisper="${g2}" title="[Whisper] ${g2}">${g3.replace(/\s+/, "&nbsp;")}</span>`
+		return `<span class="whisper_link special_link" data-whisper="${g2}" title="[Whisper] ${g2}">${g3.replace(/\s+/, "&nbsp;")}</span>`
+	})
+
+	text = text.replace(/\[anchor\s+(.*?)\](.*?)\[\/anchor\]/gm, function(g1, g2, g3)
+	{
+		return `<a href='${g2}' class='stop_propagation anchor_link special_link' target='_blank'>${g3.replace(/\s+/, "&nbsp;")}</a>`
 	})
 
 	text = text.replace(/(^|\s)(\*+)(?!\s)([^*]*[^*\s])\2(?!\S)/gm, function(g1, g2, g3, g4)

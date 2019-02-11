@@ -2144,14 +2144,26 @@ input[type=text], textarea
 	display: inline-block;
 }
 
-.whisper_link
+.special_link
 {
 	cursor: pointer;
 	text-shadow: 0 0 1em currentColor;
 }
 
-.whisper_link:hover
+.special_link:hover
 {
+	text-decoration: underline;
+}
+
+a.special_link:link, a.special_link:visited
+{
+	color: inherit;
+	text-decoration: none;
+}
+
+a.special_link:hover
+{
+	color: inherit;
 	text-decoration: underline;
 }
 
