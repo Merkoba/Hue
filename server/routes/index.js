@@ -6,8 +6,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	const router = express.Router()
 
 	const c = {}
-
 	c.vars = {}
+	c.rvars = {}
 
 	for(let key in config)
 	{
@@ -737,11 +737,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	router.get('/message', check_url, function(req, res, next) 
 	{
 		let c = {}
-
 		c.vars = {}
-
 		c.vars.message2 = decodeURIComponent(req.query.message).replace(/\n/g, "<br>")
-
 		res.render('message', c)
 	})		
 
@@ -753,17 +750,17 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	router.get('/', [check_url, require_login], function(req, res, next) 
 	{
-		c.vars.room_id = config.main_room_id
-		c.vars.user_id = req.session.user_id
-		c.vars.jwt_token = req.jwt_token
+		c.rvars.room_id = config.main_room_id
+		c.rvars.user_id = req.session.user_id
+		c.rvars.jwt_token = req.jwt_token
 		res.render('main', c)
 	})
 	
 	router.get('/:id(\\w+)', [check_url, require_login], function(req, res, next) 
 	{
-		c.vars.room_id = req.params.id.substr(0, config.max_room_id_length)
-		c.vars.user_id = req.session.user_id
-		c.vars.jwt_token = req.jwt_token
+		c.rvars.room_id = req.params.id.substr(0, config.max_room_id_length)
+		c.rvars.user_id = req.session.user_id
+		c.rvars.jwt_token = req.jwt_token
 		res.render('main', c)
 	})
 

@@ -1,4 +1,5 @@
 const Hue = {}
+Hue.config = {}
 
 Hue.debug_socket = true
 Hue.debug_functions = false
@@ -571,7 +572,7 @@ Hue.change_room_name = function(arg)
 		return false
 	}
 
-	arg = Hue.utilz.clean_string2(arg.substring(0, Hue.max_room_name_length))
+	arg = Hue.utilz.clean_string2(arg.substring(0, Hue.config.max_room_name_length))
 
 	if(arg === Hue.room_name)
 	{
@@ -641,12 +642,12 @@ Hue.get_unset_topic = function()
 {
 	if(Hue.is_admin_or_op())
 	{
-		return Hue.default_topic_admin
+		return Hue.config.default_topic_admin
 	}
 
 	else
 	{
-		return Hue.default_topic
+		return Hue.config.default_topic
 	}
 }
 
@@ -893,7 +894,7 @@ Hue.check_emit_queue = function()
 		Hue.emit_queue_timeout = setTimeout(function()
 		{
 			Hue.check_emit_queue()
-		}, Hue.socket_emit_throttle)
+		}, Hue.config.socket_emit_throttle)
 	}
 
 	else
@@ -941,8 +942,9 @@ Hue.start_socket = function()
 	{
 		if(data.type === 'joined')
 		{
+			console.info("Joined Room")
+			
 			Hue.init_data = data
-
 			Hue.room_locked = data.room_locked
 
 			if(Hue.room_locked)
@@ -1497,7 +1499,7 @@ Hue.setup_image = function(mode, odata={})
 
 	if(!data.source)
 	{
-		data.source = Hue.default_image_source
+		data.source = Hue.config.default_image_source
 	}
 
 	if(data.source.startsWith("/"))
@@ -1614,9 +1616,9 @@ Hue.push_images_changed = function(data)
 	
 	$("#image_history_container").prepend(el)
 
-	if(Hue.images_changed.length > Hue.media_changed_crop_limit)
+	if(Hue.images_changed.length > Hue.config.media_changed_crop_limit)
 	{
-		Hue.images_changed = Hue.images_changed.slice(Hue.images_changed.length - Hue.media_changed_crop_limit)
+		Hue.images_changed = Hue.images_changed.slice(Hue.images_changed.length - Hue.config.media_changed_crop_limit)
 		$("#image_history_container").children().last().remove()
 	}
 
@@ -1673,9 +1675,9 @@ Hue.setup_tv = function(mode, odata={})
 
 		if(!data.source)
 		{
-			data.source = Hue.default_tv_source
-			data.type = Hue.default_tv_type
-			data.title = Hue.default_tv_title
+			data.source = Hue.config.default_tv_source
+			data.type = Hue.config.default_tv_type
+			data.title = Hue.config.default_tv_title
 		}
 
 		if(!data.title)
@@ -1797,9 +1799,9 @@ Hue.push_tv_changed = function(data)
 	
 	$("#tv_history_container").prepend(el)
 
-	if(Hue.tv_changed.length > Hue.media_changed_crop_limit)
+	if(Hue.tv_changed.length > Hue.config.media_changed_crop_limit)
 	{
-		Hue.tv_changed = Hue.tv_changed.slice(Hue.tv_changed.length - Hue.media_changed_crop_limit)
+		Hue.tv_changed = Hue.tv_changed.slice(Hue.tv_changed.length - Hue.config.media_changed_crop_limit)
 		$("#tv_history_container").children().last().remove()
 	}	
 
@@ -1843,9 +1845,9 @@ Hue.setup_radio = function(mode, odata={})
 
 		if(!data.source)
 		{
-			data.source = Hue.default_radio_source
-			data.type = Hue.default_radio_type
-			data.title = Hue.default_radio_title
+			data.source = Hue.config.default_radio_source
+			data.type = Hue.config.default_radio_type
+			data.title = Hue.config.default_radio_title
 		}
 
 		if(!data.title)
@@ -1954,9 +1956,9 @@ Hue.push_radio_changed = function(data)
 	
 	$("#radio_history_container").prepend(el)
 
-	if(Hue.radio_changed.length > Hue.media_changed_crop_limit)
+	if(Hue.radio_changed.length > Hue.config.media_changed_crop_limit)
 	{
-		Hue.radio_changed = Hue.radio_changed.slice(Hue.radio_changed.length - Hue.media_changed_crop_limit)
+		Hue.radio_changed = Hue.radio_changed.slice(Hue.radio_changed.length - Hue.config.media_changed_crop_limit)
 		$("#radio_history_container").children().last().remove()
 	}
 
@@ -2439,7 +2441,7 @@ Hue.set_background_image = function(data)
 
 	else
 	{
-		Hue.background_image = Hue.default_background_image_url
+		Hue.background_image = Hue.config.default_background_image_url
 	}
 
 	Hue.background_image_setter = data.background_image_setter
@@ -2552,7 +2554,7 @@ Hue.apply_theme = function()
 	}
 
 	let background_color = theme
-	let background_color_2 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.color_contrast_amount_1)
+	let background_color_2 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_1)
 	
 	let font_color
 
@@ -2563,11 +2565,11 @@ Hue.apply_theme = function()
 
 	else
 	{
-		font_color = Hue.colorlib.get_lighter_or_darker(background_color, Hue.color_contrast_amount_2)
+		font_color = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_2)
 	}
 
-	let background_color_a = Hue.colorlib.rgb_to_rgba(background_color, Hue.opacity_amount_1)
-	let background_color_a_2 = Hue.colorlib.rgb_to_rgba(background_color_2, Hue.opacity_amount_3)
+	let background_color_a = Hue.colorlib.rgb_to_rgba(background_color, Hue.config.opacity_amount_1)
+	let background_color_a_2 = Hue.colorlib.rgb_to_rgba(background_color_2, Hue.config.opacity_amount_3)
 
 	$('.bg0').css('background-color', background_color)
 	$('.bg1').css('background-color', background_color_a)
@@ -2575,11 +2577,11 @@ Hue.apply_theme = function()
 	$('.bg2').css('background-color', background_color_2)
 	$('.bg2').css('color', font_color)
 
-	let color_3 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.color_contrast_amount_3)
-	let color_4 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.color_contrast_amount_4)
-	let color_4_a = Hue.colorlib.rgb_to_rgba(color_4, Hue.opacity_amount_3)
-	let overlay_color = Hue.colorlib.rgb_to_rgba(color_3, Hue.opacity_amount_2)
-	let slight_background = Hue.colorlib.get_lighter_or_darker(background_color, Hue.color_contrast_amount_5)
+	let color_3 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_3)
+	let color_4 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_4)
+	let color_4_a = Hue.colorlib.rgb_to_rgba(color_4, Hue.config.opacity_amount_3)
+	let overlay_color = Hue.colorlib.rgb_to_rgba(color_3, Hue.config.opacity_amount_2)
+	let slight_background = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_5)
 	let cfsize = Hue.get_setting("chat_font_size")
 
 	if(cfsize === "very_small")
@@ -4255,9 +4257,9 @@ Hue.setup_main_menu = function()
 
 	$('#admin_background_image').on("error", function()
 	{
-		if($(this).attr("src") !== Hue.background_image_loading_url)
+		if($(this).attr("src") !== Hue.config.background_image_loading_url)
 		{
-			$(this).attr("src", Hue.background_image_loading_url)
+			$(this).attr("src", Hue.config.background_image_loading_url)
 		}
 	})
 }
@@ -4367,7 +4369,7 @@ Hue.config_admin_background_image = function()
 
 		else
 		{
-			$("#admin_background_image").attr("src", Hue.default_background_image_url)
+			$("#admin_background_image").attr("src", Hue.config.default_background_image_url)
 		}
 	}
 
@@ -4639,7 +4641,7 @@ Hue.create_room_submit = function()
 {
 	let data = {}
 
-	data.name = Hue.utilz.clean_string2($('#create_room_name').val().substring(0, Hue.max_room_name_length))
+	data.name = Hue.utilz.clean_string2($('#create_room_name').val().substring(0, Hue.config.max_room_name_length))
 
 	if(data.name === "")
 	{
@@ -4653,7 +4655,7 @@ Hue.create_room_submit = function()
 
 Hue.show_open_room = function(id)
 {
-	if(id === Hue.main_room_id)
+	if(id === Hue.config.main_room_id)
 	{
 		id = "/"
 	}
@@ -4704,7 +4706,7 @@ Hue.start_dropzone = function()
 	{
 		url: "/",
 		maxFiles: 1,
-		maxFilesize: Hue.max_image_size / 1024,
+		maxFilesize: Hue.config.max_image_size / 1024,
 		autoProcessQueue: false,
 		clickable: '#image_file_picker',
 		acceptedFiles: "image/jpeg,image/png,image/gif"
@@ -4729,7 +4731,7 @@ Hue.start_dropzone = function()
 
 		let size = file.size / 1024
 
-		if(size > Hue.max_image_size)
+		if(size > Hue.config.max_image_size)
 		{
 			Hue.dropzone.files = []
 			Hue.feedback("File is too big")
@@ -5059,7 +5061,7 @@ Hue.activate_key_detection = function()
 
 			if(Object.keys(Hue.keys_pressed).length === 1)
 			{
-				if(e.key === Hue.double_tap_key)
+				if(e.key === Hue.config.double_tap_key)
 				{
 					Hue.double_tap_key_pressed += 1
 
@@ -5074,7 +5076,7 @@ Hue.activate_key_detection = function()
 					}
 				}
 
-				else if(e.key === Hue.double_tap_key_2)
+				else if(e.key === Hue.config.double_tap_key_2)
 				{
 					Hue.double_tap_key_2_pressed += 1
 
@@ -5089,7 +5091,7 @@ Hue.activate_key_detection = function()
 					}
 				}
 
-				else if(e.key === Hue.double_tap_key_3)
+				else if(e.key === Hue.config.double_tap_key_3)
 				{
 					Hue.double_tap_key_3_pressed += 1
 
@@ -5582,7 +5584,7 @@ Hue.activate_key_detection = function()
 
 			else
 			{
-				Hue.scroll_up(Hue.big_keyboard_scroll)
+				Hue.scroll_up(Hue.config.big_keyboard_scroll)
 			}
 
 			e.preventDefault()
@@ -5598,7 +5600,7 @@ Hue.activate_key_detection = function()
 
 			else
 			{
-				Hue.scroll_down(Hue.big_keyboard_scroll)
+				Hue.scroll_down(Hue.config.big_keyboard_scroll)
 			}
 
 			e.preventDefault()
@@ -5723,9 +5725,9 @@ Hue.add_to_input_history = function(message, change_index=true)
 
 	Hue.push_to_input_history_window(item)
 
-	if(Hue.input_history.length > Hue.input_history_crop_limit)
+	if(Hue.input_history.length > Hue.config.input_history_crop_limit)
 	{
-		Hue.input_history = Hue.input_history.slice(Hue.input_history.length - Hue.input_history_crop_limit)
+		Hue.input_history = Hue.input_history.slice(Hue.input_history.length - Hue.config.input_history_crop_limit)
 		$(".input_history_item").last().remove()
 	}
 
@@ -6454,7 +6456,7 @@ Hue.update_chat = function(args={})
 
 	if(args.prof_image === "" || args.prof_image === undefined)
 	{
-		pi = Hue.default_profile_image_url
+		pi = Hue.config.default_profile_image_url
 	}
 
 	else
@@ -6605,9 +6607,9 @@ Hue.update_chat = function(args={})
 
 	fmessage.find('.chat_profile_image').eq(0).on("error", function()
 	{
-		if($(this).attr("src") !== Hue.default_profile_image_url)
+		if($(this).attr("src") !== Hue.config.default_profile_image_url)
 		{
-			$(this).attr("src", Hue.default_profile_image_url)
+			$(this).attr("src", Hue.config.default_profile_image_url)
 		}
 	})
 
@@ -6743,11 +6745,11 @@ Hue.add_to_chat = function(args={})
 	{
 		if(args.message.find(".chat_uname").eq(0).text() === last_message.find(".chat_uname").eq(0).text())
 		{
-			if(last_message.find(".chat_content").length < Hue.max_same_post_messages)
+			if(last_message.find(".chat_content").length < Hue.config.max_same_post_messages)
 			{
 				let date_diff = args.message.find('.chat_content').last().data("date") - last_message.find('.chat_content').last().data("date")
 
-				if(date_diff < Hue.max_same_post_diff)
+				if(date_diff < Hue.config.max_same_post_diff)
 				{
 					if(Hue.started && Hue.app_focused && args.fader)
 					{
@@ -6782,7 +6784,7 @@ Hue.add_to_chat = function(args={})
 
 		if(date && last_date)
 		{
-			if(date - last_date > Hue.old_activity_min)
+			if(date - last_date > Hue.config.old_activity_min)
 			{
 				chat_area.append(Hue.generate_vseparator(Hue.get_old_activity_message(last_date, date)))
 			}
@@ -6790,7 +6792,7 @@ Hue.add_to_chat = function(args={})
 
 		chat_area.append(args.message)
 
-		if($(".message").length > Hue.chat_crop_limit)
+		if($(".message").length > Hue.config.chat_crop_limit)
 		{
 			$("#chat_area > .message").eq(0).remove()
 		}
@@ -6839,9 +6841,9 @@ Hue.push_to_chat_history = function(message)
 {
 	Hue.chat_history.push(message.clone(true, true))
 
-	if(Hue.chat_history.length > Hue.chat_crop_limit)
+	if(Hue.chat_history.length > Hue.config.chat_crop_limit)
 	{
-		Hue.chat_history = Hue.chat_history.slice(Hue.chat_history.length - Hue.chat_crop_limit)
+		Hue.chat_history = Hue.chat_history.slice(Hue.chat_history.length - Hue.config.chat_crop_limit)
 	}
 }
 
@@ -7693,9 +7695,9 @@ jQuery.fn.urlize = function(stop_propagation=true)
 
 					let u = list[i]
 
-					if(u.length > Hue.max_displayed_url)
+					if(u.length > Hue.config.max_displayed_url)
 					{
-						u = `${u.substring(0, Hue.max_displayed_url)}...`
+						u = `${u.substring(0, Hue.config.max_displayed_url)}...`
 					}
 
 					x = x.replace(rep, `<a class='${cls}' target='_blank' href='${url}'>${u}</a>`)
@@ -8056,7 +8058,7 @@ Hue.process_message = function(args={})
 				}
 			}
 
-			if(num_lines > Hue.max_num_newlines)
+			if(num_lines > Hue.config.max_num_newlines)
 			{
 				if(args.callback)
 				{
@@ -8069,9 +8071,9 @@ Hue.process_message = function(args={})
 				}
 			}
 
-			if(args.message.length > Hue.max_input_length)
+			if(args.message.length > Hue.config.max_input_length)
 			{
-				args.message = args.message.substring(0, Hue.max_input_length)
+				args.message = args.message.substring(0, Hue.config.max_input_length)
 			}
 
 			Hue.socket_emit('sendchat', {message:args.message, edit_id:args.edit_id})
@@ -9203,7 +9205,7 @@ Hue.change_topic = function(dtopic)
 {
 	if(Hue.is_admin_or_op())
 	{
-		dtopic = Hue.utilz.clean_string2(dtopic.substring(0, Hue.max_topic_length))
+		dtopic = Hue.utilz.clean_string2(dtopic.substring(0, Hue.config.max_topic_length))
 
 		if(dtopic.length > 0)
 		{
@@ -9236,9 +9238,9 @@ Hue.topicadd = function(arg)
 			return
 		}
 
-		let ntopic = Hue.topic + Hue.topic_separator + arg
+		let ntopic = Hue.topic + Hue.config.topic_separator + arg
 
-		if(ntopic.length > Hue.max_topic_length)
+		if(ntopic.length > Hue.config.max_topic_length)
 		{
 			Hue.feedback("There is no more room to add that to the topic")
 			return
@@ -9257,7 +9259,7 @@ Hue.topictrim = function(n)
 {
 	if(Hue.is_admin_or_op())
 	{
-		let split = Hue.topic.split(Hue.topic_separator)
+		let split = Hue.topic.split(Hue.config.topic_separator)
 
 		if(split.length > 1)
 		{
@@ -9282,7 +9284,7 @@ Hue.topictrim = function(n)
 
 			if(split.length > 1)
 			{
-				let t = split.slice(0, -n).join(Hue.topic_separator)
+				let t = split.slice(0, -n).join(Hue.config.topic_separator)
 
 				if(t.length > 0)
 				{
@@ -9314,9 +9316,9 @@ Hue.topicstart = function(arg)
 			return
 		}
 
-		let ntopic = arg + Hue.topic_separator + Hue.topic
+		let ntopic = arg + Hue.config.topic_separator + Hue.topic
 
-		if(ntopic.length > Hue.max_topic_length)
+		if(ntopic.length > Hue.config.max_topic_length)
 		{
 			Hue.feedback("There is no more room to add that to the topic")
 			return
@@ -9335,7 +9337,7 @@ Hue.topictrimstart = function(n)
 {
 	if(Hue.is_admin_or_op())
 	{
-		let split = Hue.topic.split(Hue.topic_separator)
+		let split = Hue.topic.split(Hue.config.topic_separator)
 
 		if(split.length > 1)
 		{
@@ -9360,7 +9362,7 @@ Hue.topictrimstart = function(n)
 
 			if(split.length > 1)
 			{
-				let t = split.slice(n, split.length).join(Hue.topic_separator)
+				let t = split.slice(n, split.length).join(Hue.config.topic_separator)
 
 				if(t.length > 0)
 				{
@@ -9632,7 +9634,7 @@ Hue.on_radio_get_metadata_error = function(show_file=true, retry=true)
 		Hue.radio_metadata_fail_timeout = setTimeout(function()
 		{
 			Hue.radio_get_metadata = true
-		}, Hue.radio_retry_metadata_delay)
+		}, Hue.config.radio_retry_metadata_delay)
 	}
 
 	if(show_file)
@@ -9730,7 +9732,7 @@ Hue.push_played = function(info, info2=false)
 
 		Hue.played.push(s)
 
-		if(Hue.played.length > Hue.played_crop_limit)
+		if(Hue.played.length > Hue.config.played_crop_limit)
 		{
 			let els = $('#played').children()
 			els.slice(els.length - 1, els.length).remove()
@@ -9869,7 +9871,7 @@ Hue.start_metadata_loop = function()
 		{
 			Hue.get_radio_metadata()
 		}
-	}, Hue.radio_metadata_interval_duration)
+	}, Hue.config.setterradio_metadata_interval_duration)
 }
 
 Hue.start_volume_scroll = function()
@@ -10172,7 +10174,7 @@ Hue.remove_alert_title = function()
 
 Hue.set_title = function(s)
 {
-	document.title = s.substring(0, Hue.max_title_length)
+	document.title = s.substring(0, Hue.config.max_title_length)
 }
 
 Hue.update_title = function()
@@ -10193,7 +10195,7 @@ Hue.update_title = function()
 
 	if(Hue.topic !== '')
 	{
-		t += ` ${Hue.title_separator} ${Hue.topic}`
+		t += ` ${Hue.config.title_separator} ${Hue.topic}`
 	}
 
 	Hue.set_title(t)
@@ -10284,7 +10286,7 @@ Hue.copy_room_url = function()
 {
 	let r
 
-	if(Hue.room_id === Hue.main_room_id)
+	if(Hue.room_id === Hue.config.main_room_id)
 	{
 		r = ''
 	}
@@ -10606,7 +10608,7 @@ Hue.change_role = function(uname, rol)
 {
 	if(Hue.is_admin_or_op())
 	{
-		if(uname.length > 0 && uname.length <= Hue.max_max_username_length)
+		if(uname.length > 0 && uname.length <= Hue.config.max_max_username_length)
 		{
 			if(uname === Hue.username)
 			{
@@ -10739,7 +10741,7 @@ Hue.change_radio_source = function(src)
 	
 	let comment = r.comment
 
-	if(comment.length > Hue.safe_limit_4)
+	if(comment.length > Hue.config.safe_limit_4)
 	{
 		Hue.feedback("Comment is too long")
 		return false
@@ -10752,7 +10754,7 @@ Hue.change_radio_source = function(src)
 
 	src = Hue.utilz.clean_string2(src)
 
-	if(src.length > Hue.max_radio_source_length)
+	if(src.length > Hue.config.max_radio_source_length)
 	{
 		return false
 	}
@@ -10797,7 +10799,7 @@ Hue.change_radio_source = function(src)
 
 		if(src.includes("youtube.com") || src.includes("youtu.be"))
 		{
-			if(!Hue.youtube_enabled)
+			if(!Hue.config.youtube_enabled)
 			{
 				Hue.feedback("YouTube support is not enabled")
 				return
@@ -10806,7 +10808,7 @@ Hue.change_radio_source = function(src)
 
 		else if(src.includes("soundcloud.com"))
 		{
-			if(!Hue.soundcloud_enabled)
+			if(!Hue.config.soundcloud_enabled)
 			{
 				Hue.feedback("Soundcloud support is not enabled")
 				return
@@ -10830,13 +10832,13 @@ Hue.change_radio_source = function(src)
 
 	else if(src !== "restart" && src !== "reset")
 	{
-		if(src.length > Hue.safe_limit_1)
+		if(src.length > Hue.config.safe_limit_1)
 		{
 			Hue.feedback("Query is too long")
 			return false
 		}
 
-		if(!Hue.youtube_enabled)
+		if(!Hue.config.youtube_enabled)
 		{
 			Hue.feedback("Invalid radio source")
 			return
@@ -10860,7 +10862,7 @@ Hue.change_tv_source = function(src)
 
 	let comment = r.comment
 
-	if(comment.length > Hue.safe_limit_4)
+	if(comment.length > Hue.config.safe_limit_4)
 	{
 		Hue.feedback("Comment is too long")
 		return false
@@ -10873,7 +10875,7 @@ Hue.change_tv_source = function(src)
 
 	src = Hue.utilz.clean_string2(src)
 
-	if(src.length > Hue.max_tv_source_length)
+	if(src.length > Hue.config.max_tv_source_length)
 	{
 		return false
 	}
@@ -10918,7 +10920,7 @@ Hue.change_tv_source = function(src)
 
 		if(src.includes("youtube.com") || src.includes("youtu.be"))
 		{
-			if(Hue.utilz.get_youtube_id(src) && !Hue.youtube_enabled)
+			if(Hue.utilz.get_youtube_id(src) && !Hue.config.youtube_enabled)
 			{
 				Hue.feedback("YouTube support is not enabled")
 				return
@@ -10927,7 +10929,7 @@ Hue.change_tv_source = function(src)
 
 		else if(src.includes("twitch.tv"))
 		{
-			if(Hue.utilz.get_twitch_id(src) && !Hue.twitch_enabled)
+			if(Hue.utilz.get_twitch_id(src) && !Hue.config.twitch_enabled)
 			{
 				Hue.feedback("Twitch support is not enabled")
 				return
@@ -10936,7 +10938,7 @@ Hue.change_tv_source = function(src)
 
 		else if(src.includes("soundcloud.com"))
 		{
-			if(!Hue.soundcloud_enabled)
+			if(!Hue.config.soundcloud_enabled)
 			{
 				Hue.feedback("Soundcloud support is not enabled")
 				return
@@ -10945,7 +10947,7 @@ Hue.change_tv_source = function(src)
 
 		else if(src.includes("vimeo.com"))
 		{
-			if(!Hue.vimeo_enabled)
+			if(!Hue.config.vimeo_enabled)
 			{
 				Hue.feedback("Vimeo support is not enabled")
 				return
@@ -10969,7 +10971,7 @@ Hue.change_tv_source = function(src)
 					return false
 				}
 
-				else if(!Hue.iframes_enabled)
+				else if(!Hue.config.iframes_enabled)
 				{
 					Hue.feedback("IFrame support is not enabled")
 					return false
@@ -10978,7 +10980,7 @@ Hue.change_tv_source = function(src)
 
 			else
 			{
-				if(!Hue.iframes_enabled)
+				if(!Hue.config.iframes_enabled)
 				{
 					Hue.feedback("IFrame support is not enabled")
 					return false
@@ -10989,13 +10991,13 @@ Hue.change_tv_source = function(src)
 
 	else if(src !== "restart" && src !== "reset")
 	{
-		if(src.length > Hue.safe_limit_1)
+		if(src.length > Hue.config.safe_limit_1)
 		{
 			Hue.feedback("Query is too long")
 			return false
 		}
 
-		if(!Hue.youtube_enabled)
+		if(!Hue.config.youtube_enabled)
 		{
 			Hue.feedback("YouTube support is not enabled")
 			return
@@ -11009,7 +11011,7 @@ Hue.ban = function(uname)
 {
 	if(Hue.is_admin_or_op())
 	{
-		if(uname.length > 0 && uname.length <= Hue.max_max_username_length)
+		if(uname.length > 0 && uname.length <= Hue.config.max_max_username_length)
 		{
 			if(uname === Hue.username)
 			{
@@ -11031,7 +11033,7 @@ Hue.unban = function(uname)
 {
 	if(Hue.is_admin_or_op())
 	{
-		if(uname.length > 0 && uname.length <= Hue.max_max_username_length)
+		if(uname.length > 0 && uname.length <= Hue.config.max_max_username_length)
 		{
 			if(uname === Hue.username)
 			{
@@ -11091,7 +11093,7 @@ Hue.kick = function(uname)
 {
 	if(Hue.is_admin_or_op())
 	{
-		if(uname.length > 0 && uname.length <= Hue.max_max_username_length)
+		if(uname.length > 0 && uname.length <= Hue.config.max_max_username_length)
 		{
 			if(uname === Hue.username)
 			{
@@ -11286,7 +11288,7 @@ Hue.start_user_disconnect_timeout = function(data)
 	data.timeout = setTimeout(function()
 	{
 		Hue.do_userdisconnect(data)
-	}, Hue.disconnect_timeout_delay)
+	}, Hue.config.disconnect_timeout_delay)
 
 	Hue.users_to_disconnect.push(data)
 }
@@ -11637,7 +11639,7 @@ Hue.start_msg = function()
 				Hue.after_modal_close(instance)
 
 				$("#show_profile_uname").text("Loading")
-				$("#show_profile_image").attr("src", Hue.profile_image_loading_url)
+				$("#show_profile_image").attr("src", Hue.config.profile_image_loading_url)
 			}
 		})
 	)
@@ -12290,7 +12292,7 @@ Hue.start_msg = function()
 	Hue.msg_public_roomlist.set(Hue.template_roomlist({type:"public_roomlist"}))
 	Hue.msg_visited_roomlist.set(Hue.template_roomlist({type:"visited_roomlist"}))
 	Hue.msg_played.set(Hue.template_played())
-	Hue.msg_profile.set(Hue.template_profile({profile_image: Hue.profile_image_loading_url}))
+	Hue.msg_profile.set(Hue.template_profile({profile_image: Hue.config.profile_image_loading_url}))
 	Hue.msg_image_picker.set(Hue.template_image_picker())
 	Hue.msg_tv_picker.set(Hue.template_tv_picker())
 	Hue.msg_radio_picker.set(Hue.template_radio_picker())
@@ -12309,7 +12311,7 @@ Hue.start_msg = function()
 	Hue.msg_global_settings.set(Hue.template_global_settings({settings:Hue.template_settings({type:"global_settings"})}))
 	Hue.msg_room_settings.set(Hue.template_room_settings({settings:Hue.template_settings({type:"room_settings"})}))
 	Hue.msg_draw_image.set(Hue.template_draw_image())
-	Hue.msg_credits.set(Hue.template_credits({background_url:Hue.credits_background_url}))
+	Hue.msg_credits.set(Hue.template_credits({background_url:Hue.config.credits_background_url}))
 	Hue.msg_help.set(Hue.template_help())
 	Hue.msg_admin_activity.set(Hue.template_admin_activity())
 	Hue.msg_access_log.set(Hue.template_access_log())
@@ -12334,7 +12336,7 @@ Hue.start_msg = function()
 	Hue.msg_user_menu.set_title("<span id='user_menu_window_title' class='pointer'>User Menu</span>")
 	Hue.msg_media_menu.set_title("Media Menu")
 	Hue.msg_draw_image.set_title("Draw an Image")
-	Hue.msg_credits.set_title(Hue.credits_title)
+	Hue.msg_credits.set_title(Hue.config.credits_title)
 	Hue.msg_admin_activity.set_title("Admin Activity")
 	Hue.msg_access_log.set_title("Access Log")
 	Hue.msg_upload_comment.set_title("Add a Comment")
@@ -12568,7 +12570,7 @@ Hue.get_global_settings = function()
 	{
 		if(Hue.global_settings[setting] === undefined)
 		{
-			Hue.global_settings[setting] = Hue[`global_settings_default_${setting}`]
+			Hue.global_settings[setting] = Hue.config[`global_settings_default_${setting}`]
 			changed = true
 		}
 	}
@@ -13111,7 +13113,7 @@ Hue.setting_user_function_1_name_action = function(type, save=true)
 
 	if(!val)
 	{
-		val = Hue.global_settings_default_user_function_1_name
+		val = Hue.config.global_settings_default_user_function_1_name
 	}
 
 	$(`#${type}_user_function_1_name`).val(val)
@@ -13154,7 +13156,7 @@ Hue.setting_user_function_2_name_action = function(type, save=true)
 
 	if(!val)
 	{
-		val = Hue.global_settings_default_user_function_2_name
+		val = Hue.config.global_settings_default_user_function_2_name
 	}
 
 	$(`#${type}_user_function_2_name`).val(val)
@@ -13197,7 +13199,7 @@ Hue.setting_user_function_3_name_action = function(type, save=true)
 
 	if(!val)
 	{
-		val = Hue.global_settings_default_user_function_3_name
+		val = Hue.config.global_settings_default_user_function_3_name
 	}
 
 	$(`#${type}_user_function_3_name`).val(val)
@@ -13240,7 +13242,7 @@ Hue.setting_user_function_4_name_action = function(type, save=true)
 
 	if(!val)
 	{
-		val = Hue.global_settings_default_user_function_4_name
+		val = Hue.config.global_settings_default_user_function_4_name
 	}
 
 	$(`#${type}_user_function_4_name`).val(val)
@@ -13525,7 +13527,7 @@ Hue.setting_autoscroll_amount_action = function(type, save=true)
 
 	if(!val)
 	{
-		val = Hue.global_settings_default_autoscroll_amount
+		val = Hue.config.global_settings_default_autoscroll_amount
 	}
 
 	$(`#${type}_autoscroll_amount`).val(val)
@@ -13544,7 +13546,7 @@ Hue.setting_autoscroll_delay_action = function(type, save=true)
 
 	if(!val)
 	{
-		val = Hue.global_settings_default_autoscroll_delay
+		val = Hue.config.global_settings_default_autoscroll_delay
 	}
 
 	$(`#${type}_autoscroll_delay`).val(val)
@@ -13563,7 +13565,7 @@ Hue.setting_speech_1_action = function(type, save=true)
 
 	if(!speech)
 	{
-		speech = Hue.global_settings_default_speech_1
+		speech = Hue.config.global_settings_default_speech_1
 	}
 
 	$(`#${type}_speech_1`).val(speech)
@@ -13587,7 +13589,7 @@ Hue.setting_speech_2_action = function(type, save=true)
 
 	if(!speech)
 	{
-		speech = Hue.global_settings_default_speech_2
+		speech = Hue.config.global_settings_default_speech_2
 	}
 
 	$(`#${type}_speech_2`).val(speech)
@@ -13611,7 +13613,7 @@ Hue.setting_speech_3_action = function(type, save=true)
 
 	if(!speech)
 	{
-		speech = Hue.global_settings_default_speech_3
+		speech = Hue.config.global_settings_default_speech_3
 	}
 
 	$(`#${type}_speech_3`).val(speech)
@@ -13635,7 +13637,7 @@ Hue.setting_speech_4_action = function(type, save=true)
 
 	if(!speech)
 	{
-		speech = Hue.global_settings_default_speech_4
+		speech = Hue.config.global_settings_default_speech_4
 	}
 
 	$(`#${type}_speech_4`).val(speech)
@@ -13659,7 +13661,7 @@ Hue.setting_speech_5_action = function(type, save=true)
 
 	if(!speech)
 	{
-		speech = Hue.global_settings_default_speech_5
+		speech = Hue.config.global_settings_default_speech_5
 	}
 
 	$(`#${type}_speech_5`).val(speech)
@@ -13683,7 +13685,7 @@ Hue.setting_speech_6_action = function(type, save=true)
 
 	if(!speech)
 	{
-		speech = Hue.global_settings_default_speech_6
+		speech = Hue.config.global_settings_default_speech_6
 	}
 
 	$(`#${type}_speech_6`).val(speech)
@@ -13707,7 +13709,7 @@ Hue.setting_speech_7_action = function(type, save=true)
 
 	if(!speech)
 	{
-		speech = Hue.global_settings_default_speech_7
+		speech = Hue.config.global_settings_default_speech_7
 	}
 
 	$(`#${type}_speech_7`).val(speech)
@@ -13731,7 +13733,7 @@ Hue.setting_speech_8_action = function(type, save=true)
 
 	if(!speech)
 	{
-		speech = Hue.global_settings_default_speech_8
+		speech = Hue.config.global_settings_default_speech_8
 	}
 
 	$(`#${type}_speech_8`).val(speech)
@@ -13755,7 +13757,7 @@ Hue.setting_speech_9_action = function(type, save=true)
 
 	if(!speech)
 	{
-		speech = Hue.global_settings_default_speech_9
+		speech = Hue.config.global_settings_default_speech_9
 	}
 
 	$(`#${type}_speech_9`).val(speech)
@@ -13779,7 +13781,7 @@ Hue.setting_speech_10_action = function(type, save=true)
 
 	if(!speech)
 	{
-		speech = Hue.global_settings_default_speech_10
+		speech = Hue.config.global_settings_default_speech_10
 	}
 
 	$(`#${type}_speech_10`).val(speech)
@@ -13892,7 +13894,7 @@ Hue.get_room_state = function()
 	{
 		if(Hue.room_state[setting] === undefined)
 		{
-			Hue.room_state[setting] = Hue[`room_state_default_${setting}`]
+			Hue.room_state[setting] = Hue.config[`room_state_default_${setting}`]
 			changed = true
 		}
 	}
@@ -14144,9 +14146,9 @@ Hue.setup_user_menu = function()
 {
 	$("#user_menu_profile_image").on("error", function()
 	{
-		if($(this).attr("src") !== Hue.default_profile_image_url)
+		if($(this).attr("src") !== Hue.config.default_profile_image_url)
 		{
-			$(this).attr("src", Hue.default_profile_image_url)
+			$(this).attr("src", Hue.config.default_profile_image_url)
 		}
 	})
 
@@ -14414,13 +14416,13 @@ Hue.change_username = function(uname)
 
 Hue.change_password = function(passwd)
 {
-	if(passwd.length < Hue.min_password_length)
+	if(passwd.length < Hue.config.min_password_length)
 	{
-		Hue.feedback(`Password is too short. It must be at least ${Hue.min_password_length} characters long`)
+		Hue.feedback(`Password is too short. It must be at least ${Hue.config.min_password_length} characters long`)
 		return
 	}
 
-	if(passwd.length > Hue.max_password_length)
+	if(passwd.length > Hue.config.max_password_length)
 	{
 		Hue.feedback("Password is too long")
 		return
@@ -14454,7 +14456,7 @@ Hue.change_email = function(email)
 		return
 	}
 
-	if(email.length > Hue.max_email_length)
+	if(email.length > Hue.config.max_email_length)
 	{
 		Hue.feedback("Email is too long")
 		return
@@ -15276,7 +15278,7 @@ Hue.profile_image_selected = function(input)
 
 					rounded_canvas.toBlob(function(blob)
 					{
-						$("#user_menu_profile_image").attr("src", Hue.profile_image_loading_url)
+						$("#user_menu_profile_image").attr("src", Hue.config.profile_image_loading_url)
 						blob.name = "profile.png"
 						Hue.upload_file(blob, "profile_image_upload")
 						Hue.msg_info.close()
@@ -15293,8 +15295,8 @@ Hue.get_rounded_canvas = function(sourceCanvas)
 {
 	let canvas = document.createElement('canvas')
 	let context = canvas.getContext('2d')
-	let width = Hue.profile_image_diameter
-	let height = Hue.profile_image_diameter
+	let width = Hue.config.profile_image_diameter
+	let height = Hue.config.profile_image_diameter
 	canvas.width = width
 	canvas.height = height
 	context.imageSmoothingEnabled = true
@@ -15310,7 +15312,7 @@ Hue.setup_profile_image = function(pi)
 {
 	if(pi === "")
 	{
-		Hue.profile_image = Hue.default_profile_image_url
+		Hue.profile_image = Hue.config.default_profile_image_url
 	}
 
 	else
@@ -15349,7 +15351,7 @@ Hue.show_profile = function(uname, prof_image)
 
 		else
 		{
-			pi = Hue.default_profile_image_url
+			pi = Hue.config.default_profile_image_url
 		}
 	}
 
@@ -15363,9 +15365,9 @@ Hue.show_profile = function(uname, prof_image)
 
 	$("#show_profile_image").on("error", function()
 	{
-		if($(this).attr("src") !== Hue.default_profile_image_url)
+		if($(this).attr("src") !== Hue.config.default_profile_image_url)
 		{
-			$(this).attr("src", Hue.default_profile_image_url)
+			$(this).attr("src", Hue.config.default_profile_image_url)
 		}
 	})
 
@@ -15871,13 +15873,13 @@ Hue.background_image_selected = function(input)
 
 	$("#background_image_input").closest('form').get(0).reset()
 
-	if(size > Hue.max_image_size)
+	if(size > Hue.config.max_image_size)
 	{
 		Hue.msg_info.show("File is too big")
 		return false
 	}
 
-	$("#admin_background_image").attr("src", Hue.background_image_loading_url)
+	$("#admin_background_image").attr("src", Hue.config.background_image_loading_url)
 
 	Hue.upload_file(file, "background_image_upload")
 }
@@ -15915,7 +15917,7 @@ Hue.change_background_image_source = function(src)
 			return false
 		}
 
-		if(src.length > Hue.max_image_source_length)
+		if(src.length > Hue.config.max_image_source_length)
 		{
 			return false
 		}
@@ -15930,7 +15932,7 @@ Hue.change_background_image_source = function(src)
 
 	else
 	{
-		if(Hue.background_image === Hue.default_background_image_url)
+		if(Hue.background_image === Hue.config.default_background_image_url)
 		{
 			Hue.feedback("Background image is already set to that")
 			return false
@@ -16000,7 +16002,7 @@ Hue.change_background_tile_dimensions = function(dimensions)
 		return false
 	}
 
-	if(dimensions.length > Hue.safe_limit_1)
+	if(dimensions.length > Hue.config.safe_limit_1)
 	{
 		return false
 	}
@@ -16046,7 +16048,7 @@ Hue.change_image_source = function(src)
 	
 	let comment = r.comment
 
-	if(comment.length > Hue.safe_limit_4)
+	if(comment.length > Hue.config.safe_limit_4)
 	{
 		Hue.feedback("Comment is too long")
 		return false
@@ -16059,7 +16061,7 @@ Hue.change_image_source = function(src)
 
 	src = Hue.utilz.clean_string2(src)
 
-	if(src.length > Hue.max_image_source_length)
+	if(src.length > Hue.config.max_image_source_length)
 	{
 		return false
 	}
@@ -16115,13 +16117,13 @@ Hue.change_image_source = function(src)
 
 	else
 	{
-		if(src.length > Hue.safe_limit_1)
+		if(src.length > Hue.config.safe_limit_1)
 		{
 			Hue.feedback("Query is too long")
 			return false
 		}
 
-		if(!Hue.imgur_enabled)
+		if(!Hue.config.imgur_enabled)
 		{
 			Hue.feedback("Imgur support is not enabled")
 			return false
@@ -16192,9 +16194,9 @@ Hue.setup_input = function()
 
 		value = Hue.utilz.clean_string9(value)
 
-		if(value.length > Hue.max_input_length)
+		if(value.length > Hue.config.max_input_length)
 		{
-			value = value.substring(0, Hue.max_input_length)
+			value = value.substring(0, Hue.config.max_input_length)
 			Hue.change_input(value)
 		}
 
@@ -16374,7 +16376,7 @@ Hue.typing_remove_timer = (function()
 		timer = setTimeout(function()
 		{
 			Hue.hide_pencil()
-		}, Hue.max_typing_inactivity)
+		}, Hue.config.max_typing_inactivity)
 	}
 })()
 
@@ -16444,7 +16446,7 @@ Hue.show_aura = function(uname)
 	Hue.aura_timeouts[uname] = setTimeout(function()
 	{
 		Hue.remove_aura(uname)
-	}, Hue.max_typing_inactivity)
+	}, Hue.config.max_typing_inactivity)
 }
 
 Hue.remove_aura = function(uname)
@@ -16661,36 +16663,36 @@ Hue.refresh_radio = function()
 
 Hue.default_media_state = function(change_visibility=true)
 {
-	if(Hue.room_state.images_locked !== Hue.room_state_default_images_locked)
+	if(Hue.room_state.images_locked !== Hue.config.room_state_default_images_locked)
 	{
-		Hue.toggle_lock_images(Hue.room_state_default_images_locked, false)
+		Hue.toggle_lock_images(Hue.config.room_state_default_images_locked, false)
 	}
 
-	if(Hue.room_state.tv_locked !== Hue.room_state_default_tv_locked)
+	if(Hue.room_state.tv_locked !== Hue.config.room_state_default_tv_locked)
 	{
-		Hue.toggle_lock_tv(Hue.room_state_default_tv_locked, false)
+		Hue.toggle_lock_tv(Hue.config.room_state_default_tv_locked, false)
 	}
 
-	if(Hue.room_state.radio_locked !== Hue.room_state_default_radio_locked)
+	if(Hue.room_state.radio_locked !== Hue.config.room_state_default_radio_locked)
 	{
-		Hue.toggle_lock_radio(Hue.room_state_default_radio_locked, false)
+		Hue.toggle_lock_radio(Hue.config.room_state_default_radio_locked, false)
 	}
 
 	if(change_visibility)
 	{
-		if(Hue.room_state.images_enabled !== Hue.room_state_default_images_enabled)
+		if(Hue.room_state.images_enabled !== Hue.config.room_state_default_images_enabled)
 		{
-			Hue.toggle_images(Hue.room_state_default_images_enabled, false)
+			Hue.toggle_images(Hue.config.room_state_default_images_enabled, false)
 		}
 
-		if(Hue.room_state.tv_enabled !== Hue.room_state_default_tv_enabled)
+		if(Hue.room_state.tv_enabled !== Hue.config.room_state_default_tv_enabled)
 		{
-			Hue.toggle_tv(Hue.room_state_default_tv_enabled, false)
+			Hue.toggle_tv(Hue.config.room_state_default_tv_enabled, false)
 		}
 
-		if(Hue.room_state.radio_enabled !== Hue.room_state_default_radio_enabled)
+		if(Hue.room_state.radio_enabled !== Hue.config.room_state_default_radio_enabled)
 		{
-			Hue.toggle_radio(Hue.room_state_default_radio_enabled, false)
+			Hue.toggle_radio(Hue.config.room_state_default_radio_enabled, false)
 		}
 	}
 
@@ -17087,7 +17089,7 @@ Hue.send_popup_message = function()
 
 	let message = Hue.utilz.clean_string2($("#write_message_area").val())
 
-	let diff = Hue.max_input_length - message.length
+	let diff = Hue.config.max_input_length - message.length
 
 	let draw_coords
 
@@ -17101,7 +17103,7 @@ Hue.send_popup_message = function()
 		draw_coords = false
 	}
 
-	if(diff === Hue.max_input_length)
+	if(diff === Hue.config.max_input_length)
 	{
 		if(!draw_coords)
 		{
@@ -18012,7 +18014,7 @@ Hue.verify_email = function(code)
 		return
 	}
 
-	if(code.length > Hue.email_change_code_max_length)
+	if(code.length > Hue.config.email_change_code_max_length)
 	{
 		Hue.feedback("Invalid code")
 		return
@@ -18479,9 +18481,9 @@ Hue.room_item_fade = function(override, item)
 
 Hue.setup_setting_elements = function(type)
 {
-	$(`#${type}_double_tap_key`).text(Hue.double_tap_key)
-	$(`#${type}_double_tap_2_key`).text(Hue.double_tap_key_2)
-	$(`#${type}_double_tap_3_key`).text(Hue.double_tap_key_3)
+	$(`#${type}_double_tap_key`).text(Hue.config.double_tap_key)
+	$(`#${type}_double_tap_2_key`).text(Hue.config.double_tap_key_2)
+	$(`#${type}_double_tap_3_key`).text(Hue.config.double_tap_key_3)
 
 	Hue.setup_togglers(type)
 }
@@ -19374,7 +19376,7 @@ Hue.set_tv_display_percentage = function(v, type)
 
 	if(v === "default")
 	{
-		v = Hue.global_settings_default_tv_display_percentage
+		v = Hue.config.global_settings_default_tv_display_percentage
 	}
 
 	v = parseInt(v)
@@ -19406,7 +19408,7 @@ Hue.set_chat_display_percentage = function(v, type)
 
 	if(v === "default")
 	{
-		v = Hue.global_settings_default_chat_display_percentage
+		v = Hue.config.global_settings_default_chat_display_percentage
 	}
 
 	v = parseInt(v)
@@ -19656,7 +19658,7 @@ Hue.draw_message_add_click = function(x, y, dragging)
 	Hue.draw_message_click_y.push(y)
 	Hue.draw_message_drag.push(dragging)
 
-	if(Hue.draw_message_click_x.length > Hue.draw_coords_max_array_length)
+	if(Hue.draw_message_click_x.length > Hue.config.draw_coords_max_array_length)
 	{
 		Hue.draw_message_click_x.shift()
 		Hue.draw_message_click_y.shift()
@@ -20440,7 +20442,7 @@ Hue.show_credits = function()
 		if(!Hue.credits_audio)
 		{
 			Hue.credits_audio = new Audio()
-			Hue.credits_audio.src = Hue.credits_audio_url
+			Hue.credits_audio.src = Hue.config.credits_audio_url
 			Hue.credits_audio.setAttribute("loop", true)
 			Hue.credits_audio.play()
 		}
@@ -20870,14 +20872,14 @@ Hue.setup_user_function_switch_selects = function()
 			let n_user_function = Hue[type][`user_function_${num2}`]
 			let n_user_function_name = Hue[type][`user_function_${num2}_name`]
 
-			if(o_user_function_name === Hue[`global_settings_default_user_function_${num}_name`])
+			if(o_user_function_name === Hue.config[`global_settings_default_user_function_${num}_name`])
 			{
-				o_user_function_name = Hue[`global_settings_default_user_function_${num2}_name`]
+				o_user_function_name = Hue.config[`global_settings_default_user_function_${num2}_name`]
 			}
 
-			if(n_user_function_name === Hue[`global_settings_default_user_function_${num2}_name`])
+			if(n_user_function_name === Hue.config[`global_settings_default_user_function_${num2}_name`])
 			{
-				n_user_function_name = Hue[`global_settings_default_user_function_${num}_name`]
+				n_user_function_name = Hue.config[`global_settings_default_user_function_${num}_name`]
 			}
 
 			Hue[type][`user_function_${num}`] = n_user_function
@@ -21662,12 +21664,12 @@ Hue.maxers_mouse_events = function()
 
 Hue.set_default_tv_size = function()
 {
-	Hue.do_media_tv_size_change(Hue.global_settings_default_tv_display_percentage)	
+	Hue.do_media_tv_size_change(Hue.config.global_settings_default_tv_display_percentage)	
 }
 
 Hue.set_default_media_size = function()
 {
-	Hue.do_chat_size_change(Hue.global_settings_default_chat_display_percentage)
+	Hue.do_chat_size_change(Hue.config.global_settings_default_chat_display_percentage)
 }
 
 Hue.increase_tv_percentage = function()
@@ -21748,7 +21750,7 @@ Hue.notify_media_tv_size_change = function(size)
 {
 	let info
 
-	if(size === Hue.global_settings_default_tv_display_percentage)
+	if(size === Hue.config.global_settings_default_tv_display_percentage)
 	{
 		info = " (Default)"
 	}
@@ -21804,7 +21806,7 @@ Hue.notify_chat_size_change = function(size)
 {
 	let info
 
-	if(size === Hue.global_settings_default_chat_display_percentage)
+	if(size === Hue.config.global_settings_default_chat_display_percentage)
 	{
 		info = " (Default)"
 	}
@@ -21922,14 +21924,14 @@ Hue.wrap_functions = function()
 
 Hue.check_domain_list = function(media_type, src)
 {
-	let list_type = Hue[`${media_type}_domain_white_or_black_list`]
+	let list_type = Hue.config[`${media_type}_domain_white_or_black_list`]
 
 	if(list_type !== "white" && list_type !== "black")
 	{
 		return false
 	}
 
-	let list = Hue[`${media_type}_domain_list`]
+	let list = Hue.config[`${media_type}_domain_list`]
 
 	if(list.length === 0)
 	{
@@ -22089,7 +22091,7 @@ Hue.setup_activity_bar = function()
 	setInterval(function()
 	{
 		Hue.check_activity_bar()
-	}, Hue.activity_bar_interval)
+	}, Hue.config.activity_bar_interval)
 
 	setInterval(function()
 	{
@@ -22097,7 +22099,7 @@ Hue.setup_activity_bar = function()
 		{
 			Hue.trigger_activity()
 		}
-	}, Hue.activity_bar_trigger_interval)
+	}, Hue.config.activity_bar_trigger_interval)
 
 	if(Hue.get_setting("activity_bar"))
 	{
@@ -22122,7 +22124,7 @@ Hue.check_activity_bar = function(update=true)
 		return false
 	}
 
-	let d = Date.now() - Hue.max_activity_bar_delay
+	let d = Date.now() - Hue.config.max_activity_bar_delay
 
 	let new_top = []
 
@@ -22246,7 +22248,7 @@ Hue.update_activity_bar = function()
 
 			if(user)
 			{
-				let pi = user.profile_image || Hue.default_profile_image_url
+				let pi = user.profile_image || Hue.config.default_profile_image_url
 
 				let h = $(`
 				<div class='activity_bar_item action'>
@@ -22261,9 +22263,9 @@ Hue.update_activity_bar = function()
 
 				img_el.on("error", function()
 				{
-					if($(this).attr("src") !== Hue.default_profile_image_url)
+					if($(this).attr("src") !== Hue.config.default_profile_image_url)
 					{
-						$(this).attr("src", Hue.default_profile_image_url)
+						$(this).attr("src", Hue.config.default_profile_image_url)
 					}
 				})
 
@@ -22293,7 +22295,7 @@ Hue.push_to_activity_bar = function(uname, date)
 		return false
 	}
 
-	let d = Date.now() - Hue.max_activity_bar_delay
+	let d = Date.now() - Hue.config.max_activity_bar_delay
 
 	if(date < d)
 	{
@@ -22316,7 +22318,7 @@ Hue.push_to_activity_bar = function(uname, date)
 
 	Hue.activity_list.unshift({username:uname, date:date})
 
-	if(Hue.activity_list.length > Hue.max_activity_bar_items)
+	if(Hue.activity_list.length > Hue.config.max_activity_bar_items)
 	{
 		Hue.activity_list.pop()
 	}
@@ -22852,9 +22854,9 @@ Hue.push_to_synth_recent_users = function(data, type)
 		changed = true
 	}
 
-	if(Hue.synth_recent_users.length > Hue.synth_max_recent_users)
+	if(Hue.synth_recent_users.length > Hue.config.synth_max_recent_users)
 	{
-		Hue.synth_recent_users = Hue.synth_recent_users.slice(0, Hue.synth_max_recent_users)
+		Hue.synth_recent_users = Hue.synth_recent_users.slice(0, Hue.config.synth_max_recent_users)
 		changed = true
 	}
 
@@ -22877,7 +22879,7 @@ Hue.send_synth_voice = function(text=false)
 		text = Hue.utilz.clean_string2($("#synth_voice_input").val())
 	}
 
-	if(text.length === 0 || text.length > Hue.synth_max_voice_text)
+	if(text.length === 0 || text.length > Hue.config.synth_max_voice_text)
 	{
 		return false
 	}
@@ -23822,7 +23824,7 @@ Hue.process_upload_comment = function()
 
 	let comment = Hue.utilz.clean_string2($("#upload_comment_input").val())
 
-	if(comment.length > Hue.safe_limit_4)
+	if(comment.length > Hue.config.safe_limit_4)
 	{
 		return false
 	}

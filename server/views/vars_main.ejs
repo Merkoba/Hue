@@ -9,13 +9,36 @@
 			continue
 		}
 
-		%>Hue.<%-key%> = <%
+		%>Hue.config.<%-key%> = <%
 
 		if(typeof v === "string")
 		{
 			%>`<%-v%>`; <% 
 		}
 
+		else
+		{
+			%><%-JSON.stringify(v)%>; <%
+		}
+	}
+
+	for(let key in rvars)
+	{
+		let v = rvars[key]
+		
+		if(v === undefined)
+		{
+			console.error(`${key} is undefined`)
+			continue
+		}
+			
+		%>Hue.<%-key%> = <%
+			
+		if(typeof v === "string")
+		{
+			%>`<%-v%>`; <% 
+		}
+			
 		else
 		{
 			%><%-JSON.stringify(v)%>; <%
