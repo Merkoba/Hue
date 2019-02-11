@@ -2211,6 +2211,14 @@ input[type=text], textarea
 	cursor: pointer;
 	position: relative;
 	display: flex;
+	flex-direction: column;
+}
+
+.image_preview_url
+{
+	margin-bottom: 0.35rem;
+	overflow-wrap: break-word;
+	word-break: break-word;
 }
 
 .image_preview_text, .link_preview_text
@@ -2512,4 +2520,10 @@ input[type=text], textarea
 .announcement_comment_highlighted
 {
 	box-shadow: inset 0 0 2px currentColor;
+}
+
+.announcement_content_split
+{
+	display: flex;
+	flex-direction: column;
 }

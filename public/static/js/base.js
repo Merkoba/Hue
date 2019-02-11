@@ -6593,7 +6593,7 @@ Hue.update_chat = function(args={})
 
 		else
 		{
-			fmessage.find('.chat_content').eq(0).text(Hue.replace_markdown(args.message))
+			fmessage.find('.chat_content').eq(0).html(Hue.replace_markdown(Hue.make_html_safe(args.message)))
 		}
 	}
 
@@ -7479,7 +7479,8 @@ Hue.chat_announce = function(args={})
 
 	let messageclasses = "message announcement"
 	let containerclasses = "announcement_content_container"
-	let contclasses = "announcement_content dynamic_title"
+	let splitclasses = "announcement_content_split dynamic_title"
+	let contclasses = "announcement_content"
 	let brkclasses = "brk announcement_brk"
 
 	let containerid = " "
@@ -7551,6 +7552,11 @@ Hue.chat_announce = function(args={})
 		comment = `<div class='${cls}'>${Hue.replace_markdown(this.make_html_safe(args.comment))}</div>`	
 	}
 
+	else
+	{
+		comment = `<div class='announcement_comment'></div>`
+	}
+
 	let link_preview = false
 
 	if(!image_preview && args.link_url && Hue.get_setting("show_link_previews"))
@@ -7570,12 +7576,16 @@ Hue.chat_announce = function(args={})
 	<div${containerid}class='${messageclasses}'>
 		<div class='${containerclasses}'>
 			<div class='${brkclasses}'>${args.brk}</div>
-			<div class='${contclasses}' title='${t}' data-otitle='${t}' data-date='${d}'></div>
+			<div class='${splitclasses}' title='${t}' data-otitle='${t}' data-date='${d}'>
+				<div class='${contclasses}'></div>
+				${comment}
+			</div>
 		</div>
 	</div>`
 
 	let fmessage = $(s)
 	let content = fmessage.find('.announcement_content').eq(0)
+	let comment_el = fmessage.find('.announcement_comment').eq(0)
 	let brk = fmessage.find('.brk').eq(0)
 
 	if(image_preview)
@@ -7590,14 +7600,25 @@ Hue.chat_announce = function(args={})
 		Hue.setup_link_preview(fmessage, args.link_url, "none")
 	}
 
-	else if(comment)
-	{
-		content.html(args.message + comment).urlize()
-	}
-
 	else
 	{
 		content.text(args.message).urlize()
+	}
+
+	if(args.comment)
+	{
+		comment_el.urlize()
+
+		if(args.username)
+		{
+			comment_el.find(".whisper_link").each(function()
+			{
+				$(this).click(function(e)
+				{
+					Hue.process_write_whisper(`${args.username} > ${$(this).data("whisper")}`, false)
+				})
+			})
+		}
 	}
 
 	if(args.onclick && !link_preview && !image_preview)
@@ -23456,7 +23477,7 @@ Hue.make_image_preview = function(message)
 			}
 			
 			// This is in a single line on purpose
-			ans.image_preview = `<div class='image_preview action'><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}"></div>`
+			ans.image_preview = `<div class='image_preview action'><div class='image_preview_url'>${link}</div><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}"></div>`
 
 			let text = Hue.replace_markdown(Hue.make_html_safe(text_array.join(" ")))
 
@@ -23574,6 +23595,7 @@ Hue.setup_image_preview = function(fmessage, image_preview_src_original, user_id
 		Hue.expand_image(image_preview_src_original.replace(".gifv", ".gif"))
 	})
 
+	image_preview_el.find(".image_preview_url").eq(0).urlize()
 	image_preview_el.find(".image_preview_text").eq(0).urlize()
 }
 
@@ -23612,6 +23634,7 @@ Hue.setup_link_preview = function(fmessage, link_url, user_id)
 	})
 
 	link_preview_el.find(".link_preview_url").eq(0).urlize()
+	link_preview_el.find(".link_preview_text").eq(0).urlize()
 }
 
 Hue.get_timeago = function(date)
@@ -23817,8 +23840,8 @@ Hue.cancel_upload_comment = function()
 Hue.create_media_history_item = function(data)
 {
 	let el = $(`
-	<div class='modal_item media_history_item pointer action'>
-		<div class='media_history_item_inner dynamic_title inline'></div>
+	<div class='modal_item media_history_item dynamic_title'>
+		<div class='media_history_item_inner inline pointer action'></div>
 		<div class='media_history_item_comment'></div>
 	</div>`)
 	
@@ -23836,8 +23859,17 @@ Hue.create_media_history_item = function(data)
 	el.attr("title", data.info)
 	el.data("otitle", data.info)
 	el.data("date", data.date)
-	el.click(data.onclick)
 	el.data("obj", data)
+
+	inner.click(data.onclick)
+
+	comment.find(".whisper_link").each(function()
+	{
+		$(this).click(function(e)
+		{
+			Hue.process_write_whisper(`${data.setter} > ${$(this).data("whisper")}`, false)
+		})
+	})
 
 	return el
 }
