@@ -508,9 +508,6 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "global_settings_default_afk_on_lockscreen"
 >Whether the user will go afk when locking the screen by default.
 
-"global_settings_default_chat_layout"
->Default chat layout. Either "normal" or "compact".
-
 "global_settings_default_aliases"
 >Default command aliases.
 

@@ -451,20 +451,6 @@ div#header_radio_playing_icon
 	font-size: 1em;
 }
 
-.compact_layout .chat_uname_container
-{
-	display: flex;
-	flex-direction: row;
-	min-width: 4rem;
-	max-width: 4rem;
-	justify-content: flex-end;
-}
-
-.compact_layout .chat_uname_container
-{
-	padding-right: 0.5rem;
-}
-
 .chat_uname 
 {
 	cursor: pointer;
@@ -485,12 +471,6 @@ div#header_radio_playing_icon
 	margin-right: 0.5em;
 }
 
-.compact_layout .chat_uname_container .chat_uname
-{
-	max-width: 100%;
-	overflow: hidden;
-}
-
 .chat_container
 {
 	width: 100%;
@@ -505,7 +485,7 @@ div#header_radio_playing_icon
 	width: 100%;
 }
 
-.normal_layout .chat_content_container:not(.chat_content_container_third)
+.chat_content_container:not(.chat_content_container_third)
 {
 	margin-top: 0.3em;
 }
@@ -545,24 +525,6 @@ div#header_radio_playing_icon
 	flex-shrink: 0;
 	flex-grow: 0;
 	max-height: 2rem;
-}
-
-.compact_layout .brk
-{
-	min-width: 3.5rem;
-	max-width: 3.5rem;
-	text-align: right;
-	margin-right: 1rem;
-}
-
-.compact_layout .brk > *
-{
-	width: 1rem;
-	text-align: center;
-}
-
-.normal_layout .brk
-{
 	min-width: 45px;
 	max-width: 45px;
 	text-align: center;	
@@ -1139,18 +1101,11 @@ select
 	font-size: 1rem;
 }
 
-.message.normal_layout
+.message
 {
 	padding-left: 1.2rem;
 	padding-top: 1rem;
 	padding-bottom: 1rem;
-}
-
-.message.compact_layout
-{
-	padding-left: 0.5rem;
-	padding-top: 0.5rem;
-	padding-bottom: 0.5rem;
 }
 
 #chat_area > .message:last-child
@@ -2255,20 +2210,12 @@ input[type=text], textarea
 {
 	cursor: pointer;
 	position: relative;
+	display: flex;
 }
 
-.normal_layout .image_preview_text, #chat_search_container .image_preview_text
+.image_preview_text, .link_preview_text
 {
-	margin-bottom: 0.5rem;
-}
-
-.compact_layout .image_preview_text
-{
-	margin-bottom: 0.2rem;
-}
-
-.image_preview_text
-{
+	margin-top: 0.35rem;
 	overflow-wrap: break-word;
 	word-break: break-word;
 }
@@ -2286,22 +2233,12 @@ input[type=text], textarea
 	cursor: pointer;
 }
 
-.normal_layout .link_preview, #chat_search_container .link_preview
+.link_preview, #chat_search_container .link_preview
 {
-	margin-top: 0.5rem;
-	margin-bottom: 0.5rem;
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 	padding-left: 1rem;
 	padding-right: 1rem;
-}
-
-.compact_layout .link_preview
-{
-	padding-top: 0rem;
-	padding-bottom: 0rem;
-	padding-left: 0rem;
-	padding-right: 0rem;
 }
 
 .link_preview_url

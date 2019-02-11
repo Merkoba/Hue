@@ -254,7 +254,6 @@ Hue.user_settings =
 	on_lockscreen: {widget_type:"textarea"},
 	on_unlockscreen: {widget_type:"textarea"},
 	afk_on_lockscreen: {widget_type:"checkbox"},
-	chat_layout: {widget_type:"select"},
 	aliases: {widget_type:"textarea"},
 	other_words_to_autocomplete: {widget_type:"textarea"},
 	chat_font_size: {widget_type:"select"},
@@ -292,7 +291,6 @@ Hue.init = function()
 	Hue.get_global_settings()
 	Hue.get_room_settings()
 	Hue.get_room_state()
-	Hue.set_loaded_settings_state()
 	Hue.set_radio_volume()
 	Hue.start_msg()
 	Hue.start_settings_widgets("global_settings")
@@ -2765,7 +2763,7 @@ Hue.apply_theme = function()
 		max-height: ${profile_image_size} !important;
 	}
 
-	.normal_layout .brk
+	.brk
 	{
 		min-width: ${profile_image_size} !important;
 		max-width: ${profile_image_size} !important;
@@ -6466,16 +6464,6 @@ Hue.update_chat = function(args={})
 
 	let messageclasses
 
-	if(Hue.get_setting("chat_layout") === "normal")
-	{
-		messageclasses = "normal_layout"
-	}
-
-	else if(Hue.get_setting("chat_layout") === "compact")
-	{
-		messageclasses = "compact_layout"
-	}
-
 	let image_preview = false
 	let image_preview_src = false
 	let image_preview_src_original = false
@@ -6556,62 +6544,28 @@ Hue.update_chat = function(args={})
 
 	else
 	{
-		let s
-
-		if(Hue.get_setting("chat_layout") === "normal")
-		{
-			s = `
-			<div class='message chat_message normal_layout'>
-				<div class='chat_left_side'>
-					<div class='chat_profile_image_container unselectable action4'>
-						<img class='chat_profile_image' src='${pi}'>
-					</div>
+		let s = `
+		<div class='message chat_message'>
+			<div class='chat_left_side'>
+				<div class='chat_profile_image_container unselectable action4'>
+					<img class='chat_profile_image' src='${pi}'>
 				</div>
-				<div class='chat_right_side'>
-					<div class='chat_uname_container'>
-						<div class='chat_uname action'></div>
-					</div>
-					<div class='chat_container'>
-						<div class='chat_content_container ${chat_menu_button_main_class}'>
-
-							<div class='chat_menu_button_container unselectable'>
-								<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
-							</div>
-
-							<div class='${contclasses}' title='${nd}' data-otitle='${nd}' data-date='${d}'></div>
-							
-							<div class='message_edited_label'>(Edited)</div>
-							
-							<div class='message_edit_container'>
-								<textarea class='message_edit_area'></textarea>
-								<div class='message_edit_buttons unselectable'>
-									<div class='message_edit_button action message_edit_cancel'>Cancel</div>
-									<div class='message_edit_button action message_edit_submit'>Submit</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>`
-		}
-
-		else if(Hue.get_setting("chat_layout") === "compact")
-		{
-			s = `
-			<div class='message chat_message compact_layout'>
+			</div>
+			<div class='chat_right_side'>
 				<div class='chat_uname_container'>
-					<div class='chat_uname action'></div><div>:</div>
+					<div class='chat_uname action'></div>
 				</div>
 				<div class='chat_container'>
 					<div class='chat_content_container ${chat_menu_button_main_class}'>
+
 						<div class='chat_menu_button_container unselectable'>
 							<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
 						</div>
 
 						<div class='${contclasses}' title='${nd}' data-otitle='${nd}' data-date='${d}'></div>
-
+						
 						<div class='message_edited_label'>(Edited)</div>
-
+						
 						<div class='message_edit_container'>
 							<textarea class='message_edit_area'></textarea>
 							<div class='message_edit_buttons unselectable'>
@@ -6621,8 +6575,8 @@ Hue.update_chat = function(args={})
 						</div>
 					</div>
 				</div>
-			</div>`
-		}
+			</div>
+		</div>`
 
 		fmessage = $(s)
 		fmessage.find(".chat_content_container").eq(0).data("original_message", args.message)
@@ -6657,12 +6611,20 @@ Hue.update_chat = function(args={})
 		}
 	})
 
+	let has_embed = false
+
+	if(image_preview || link_preview)
+	{
+		has_embed = true
+	}
+
 	fmessage.data("user_id", args.user_id)
 	fmessage.data("public", args.public)
 	fmessage.data("date", d)
 	fmessage.data("highlighted", highlighted)
 	fmessage.data("uname", args.username)
 	fmessage.data("mode", "chat")
+	fmessage.data("has_embed", has_embed)
 
 	let chat_content_container = fmessage.find(".chat_content_container").eq(0)
 	let chat_content = fmessage.find(".chat_content").eq(0)
@@ -6775,7 +6737,9 @@ Hue.add_to_chat = function(args={})
 		}
 	}
 
-	if((args.message.hasClass("chat_message") && !args.message.hasClass("thirdperson")) && (last_message.hasClass("chat_message") && !last_message.hasClass("thirdperson")))
+	if((args.message.hasClass("chat_message") && !args.message.hasClass("thirdperson")) &&
+	(last_message.hasClass("chat_message") && !last_message.hasClass("thirdperson")) &&
+	!args.message.data("has_embed"))
 	{
 		if(args.message.find(".chat_uname").eq(0).text() === last_message.find(".chat_uname").eq(0).text())
 		{
@@ -6980,11 +6944,9 @@ Hue.get_old_activity_message = function(last_date, date)
 
 Hue.generate_vseparator = function(message="", classes="")
 {
-	let layout = `${Hue.get_setting("chat_layout")}_layout`
-	
 	let s =
 	`
-		<div class='message vseparator_container ${layout} ${classes}'>
+		<div class='message vseparator_container ${classes}'>
 			<div class='vseparator_line'></div>
 			<div class='vseparator_text'>${message}</div>
 			<div class='vseparator_line'></div>
@@ -7556,16 +7518,6 @@ Hue.chat_announce = function(args={})
 	else
 	{
 		t = Hue.nice_date(d)
-	}
-
-	if(Hue.get_setting("chat_layout") === "normal")
-	{
-		messageclasses += " normal_layout"
-	}
-
-	else if(Hue.get_setting("chat_layout") === "compact")
-	{
-		messageclasses += " compact_layout"
 	}
 
 	let image_preview = false
@@ -13342,34 +13294,6 @@ Hue.setting_afk_on_lockscreen_action = function(type, save=true)
 	}
 }
 
-Hue.setting_chat_layout_action = function(type, save=true)
-{
-	let mode = $(`#${type}_chat_layout option:selected`).val()
-
-	Hue[type].chat_layout = mode
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-
-	if(Hue.get_setting("chat_layout") !== loaded_chat_layout)
-	{
-		if(Hue.active_settings("chat_layout") === type)
-		{
-			let r = confirm("To apply this setting a restart is required. Do you want to restart now?")
-
-			if(r)
-			{
-				setTimeout(function()
-				{
-					Hue.restart_client()
-				}, Hue.local_storage_save_delay * 2)
-			}
-		}
-	}
-}
-
 Hue.setting_aliases_action = function(type, save=true)
 {
 	let cmds = Hue.utilz.clean_string7($(`#${type}_aliases`).val())
@@ -16480,19 +16404,8 @@ Hue.get_last_chat_message_by_username = function(ouname)
 
 Hue.add_aura = function(uname)
 {
-	let mode = Hue.get_setting("chat_layout")
-
-	if(mode === "normal")
-	{
-		let message = Hue.get_last_chat_message_by_username(uname)
-		$(message).find(".chat_profile_image_container").eq(0).addClass("aura")
-	}
-
-	else if(mode === "compact")
-	{
-		let message = Hue.get_last_chat_message_by_username(uname)
-		$(message).find(".chat_uname").eq(0).addClass("aura3")
-	}
+	let message = Hue.get_last_chat_message_by_username(uname)
+	$(message).find(".chat_profile_image_container").eq(0).addClass("aura")
 }
 
 Hue.show_aura = function(uname)
@@ -16517,16 +16430,8 @@ Hue.remove_aura = function(uname)
 {
 	clearTimeout(Hue.aura_timeouts[uname])
 
-	let mode = Hue.get_setting("chat_layout")
-
 	let cls = ".chat_profile_image_container.aura"
 	let aura = "aura"
-
-	if(mode === "compact")
-	{
-		cls = ".chat_uname.aura3"
-		aura = "aura3"
-	}
 
 	$(cls).each(function()
 	{
@@ -20494,11 +20399,6 @@ Hue.change_settings_window_category = function(category)
 	container.addClass("settings_window_category_container_selected")
 }
 
-Hue.set_loaded_settings_state = function()
-{
-	loaded_chat_layout = Hue.get_setting("chat_layout")
-}
-
 Hue.check_maxers = function()
 {
 	if(Hue.room_tv_mode !== "disabled" && Hue.room_images_mode !== "disabled")
@@ -23556,9 +23456,11 @@ Hue.make_image_preview = function(message)
 			}
 
 			let text = Hue.replace_markdown(Hue.make_html_safe(text_array.join(" ")))
+			let stext = `<div class='image_preview_text'>${text}</div>`
 
 			// This is in a single line on purpose
-			ans.image_preview = `<div class='image_preview action'><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}"><div class='image_preview_text'>${text}</div></div>`
+			ans.image_preview = `<div class='image_preview action'><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}"></div>`
+			ans.image_preview = ans.image_preview + stext
 		}
 	}
 
@@ -23625,7 +23527,9 @@ Hue.make_link_preview = function(message, link_url, link_title, link_image)
 
 		let text = Hue.replace_markdown(Hue.make_html_safe(text_array.join(" ")))
 
-		ans.link_preview = link_preview_s + text
+		let stext = `<div class='link_preview_text'>${text}</div>`
+
+		ans.link_preview = link_preview_s + stext
 	}
 
 	return ans
