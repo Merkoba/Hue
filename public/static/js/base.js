@@ -23454,13 +23454,17 @@ Hue.make_image_preview = function(message)
 					text_array.push(sp)
 				}
 			}
-
-			let text = Hue.replace_markdown(Hue.make_html_safe(text_array.join(" ")))
-			let stext = `<div class='image_preview_text'>${text}</div>`
-
+			
 			// This is in a single line on purpose
 			ans.image_preview = `<div class='image_preview action'><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}"></div>`
-			ans.image_preview = ans.image_preview + stext
+
+			let text = Hue.replace_markdown(Hue.make_html_safe(text_array.join(" ")))
+
+			if(text)
+			{
+				let stext = `<div class='image_preview_text'>${text}</div>`
+				ans.image_preview = ans.image_preview + stext
+			}
 		}
 	}
 
@@ -23525,11 +23529,15 @@ Hue.make_link_preview = function(message, link_url, link_title, link_image)
 			}
 		}
 
+		ans.link_preview = link_preview_s
+
 		let text = Hue.replace_markdown(Hue.make_html_safe(text_array.join(" ")))
 
-		let stext = `<div class='link_preview_text'>${text}</div>`
-
-		ans.link_preview = link_preview_s + stext
+		if(text)
+		{
+			let stext = `<div class='link_preview_text'>${text}</div>`
+			ans.link_preview = ans.link_preview + stext
+		}
 	}
 
 	return ans
