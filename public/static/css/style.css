@@ -331,15 +331,24 @@ div#header_radio_playing_icon
 	color: white;
 	border: 0px solid black;
 	padding-right: 1rem;
+	margin-right: 1rem;
 	outline: none;
 	font-family: inherit;
 	flex-grow: 1;
 	background-color: transparent;
 	color: inherit;
 	resize: none;
-	overflow: auto;
+	overflow-y: auto;
+	overflow-x: hidden;
 	position: relative;
 	height: calc(100% - 0.6rem);
+	overflow-wrap: break-word;
+	word-break: break-word;
+}
+
+#input::placeholder
+{
+	white-space: nowrap;
 }
 
 .scroller_container

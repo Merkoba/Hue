@@ -6139,6 +6139,7 @@ Hue.on_resize = function()
 	Hue.goto_bottom(false, false)
 	Hue.check_scrollers()
 	Hue.fix_input_clone()
+	Hue.check_input_clone_overflow(Hue.old_input_val)
 }
 
 Hue.setup_scrollbars = function()
