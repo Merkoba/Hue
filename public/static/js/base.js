@@ -153,7 +153,6 @@ Hue.context_menu_open = false
 Hue.upload_comment_file = false
 Hue.upload_comment_type = false
 Hue.just_tabbed = false
-Hue.input_placeholder_active = false
 Hue.update_input_placeholder_delay = 10000
 Hue.update_lockscreen_clock_delay = 10000
 Hue.screen_locked = false
@@ -269,6 +268,8 @@ Hue.user_settings =
 	stop_radio_on_tv_play: {widget_type:"checkbox"},
 	stop_tv_on_radio_play: {widget_type:"checkbox"},
 	show_input_placeholder: {widget_type:"checkbox"},
+	show_clock_in_input_placeholder: {widget_type:"checkbox"},
+	show_clock_in_lockscreen: {widget_type:"checkbox"},
 	bypass_images_lock_on_own_change: {widget_type:"checkbox"},
 	bypass_tv_lock_on_own_change: {widget_type:"checkbox"},
 	bypass_radio_lock_on_own_change: {widget_type:"checkbox"},
@@ -13838,6 +13839,36 @@ Hue.setting_show_input_placeholder_action = function(type, save=true)
 	}
 }
 
+Hue.setting_show_clock_in_input_placeholder_action = function(type, save=true)
+{
+	Hue[type].show_clock_in_input_placeholder = $(`#${type}_show_clock_in_input_placeholder`).prop("checked")
+
+	if(Hue.active_settings("show_clock_in_input_placeholder") === type)
+	{
+		Hue.setup_input_placeholder()
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_show_clock_in_lockscreen_action = function(type, save=true)
+{
+	Hue[type].show_clock_in_lockscreen = $(`#${type}_show_clock_in_lockscreen`).prop("checked")
+
+	if(Hue.active_settings("show_clock_in_lockscreen") === type)
+	{
+		Hue.setup_lockscreen_clock()
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
 Hue.empty_room_settings = function()
 {
 	Hue.room_settings = {}
@@ -16272,37 +16303,41 @@ Hue.setup_input_placeholder = function()
 {
 	if(Hue.get_setting("show_input_placeholder"))
 	{
-		if(Hue.input_placeholder_active)
-		{
-			return false
-		}
-
+		clearInterval(Hue.update_input_placeholder_interval)
 		Hue.update_input_placeholder()
-	
-		Hue.update_input_placeholder_interval = setInterval(function()
-		{
-			Hue.update_input_placeholder()
-		}, Hue.update_input_placeholder_delay)
 
-		Hue.input_placeholder_active = true
+		if(Hue.get_setting("show_clock_in_input_placeholder"))
+		{
+			Hue.update_input_placeholder_interval = setInterval(function()
+			{
+				Hue.update_input_placeholder()
+			}, Hue.update_input_placeholder_delay)
+		}
 	}
 
 	else
 	{
-		if(!Hue.input_placeholder_active)
-		{
-			return false
-		}
-
 		clearInterval(Hue.update_input_placeholder_interval)
 		$("#input").attr("placeholder", "")
-		Hue.input_placeholder_active = false
 	}
 }
 
 Hue.update_input_placeholder = function()
 {
-	let s = `(${Hue.clock_time()})  Hi ${Hue.username}, write something to ${Hue.room_name}`
+	let s
+
+	let info = `Hi ${Hue.username}, write something to ${Hue.room_name}`
+
+	if(Hue.get_setting("show_clock_in_input_placeholder"))
+	{
+		s = `(${Hue.clock_time()})  ${info}`
+	}
+
+	else
+	{
+		s = info
+	}
+
 	$("#input").attr("placeholder", s)
 }
 
@@ -19640,6 +19675,21 @@ Hue.setup_lockscreen = function()
 
 		Hue.lockscreen_peek_active = false
 	})
+
+	Hue.setup_lockscreen_clock()
+}
+
+Hue.setup_lockscreen_clock = function()
+{
+	if(Hue.get_setting("show_clock_in_lockscreen"))
+	{
+		$("#lockscreen_clock").css("display", "block")
+	}
+	
+	else
+	{
+		$("#lockscreen_clock").css("display", "none")
+	}
 }
 
 Hue.lock_screen = function(save=true)
@@ -19669,10 +19719,13 @@ Hue.lock_screen = function(save=true)
 
 	$("#lockscreen_clock").text(Hue.clock_time())
 
-	Hue.lockscreen_clock_interval = setInterval(function()
+	if(Hue.get_setting("show_clock_in_lockscreen"))
 	{
-		$("#lockscreen_clock").text(Hue.clock_time())
-	}, Hue.update_lockscreen_clock_delay)
+		Hue.lockscreen_clock_interval = setInterval(function()
+		{
+			$("#lockscreen_clock").text(Hue.clock_time())
+		}, Hue.update_lockscreen_clock_delay)
+	}
 }
 
 Hue.unlock_screen = function(save=true)
