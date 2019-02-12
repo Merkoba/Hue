@@ -37,6 +37,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const image_extensions = ["jpg", "jpeg", "png", "gif"]
 	const reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
 	const media_types = ["images", "tv", "radio", "synth"]
+	const filtered_fields = {log_messages:0, admin_log_messages:0, access_log_messages:0, stored_images:0}
 
 	const s3 = new aws.S3(
 	{
@@ -307,7 +308,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(rooms[data.room_id])
 		{
-			fields = {log_messages:0, admin_log_messages:0, access_log_messages:0, stored_images:0}
+			fields = filtered_fields
 		}
 
 		if(data.alternative)
@@ -328,13 +329,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			let userinfo = ans.user
 
 			socket.hue_user_id = userinfo._id.toString()
-
-			let get_log_messages = true
-
-			if(rooms[data.room_id])
-			{
-				get_log_messages = false
-			}
 
 			let info = await db_manager.get_room({_id:data.room_id}, fields)
 
@@ -399,7 +393,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.do_join = function(socket, info, userinfo)
+	handler.do_join = async function(socket, info, userinfo)
 	{
 		socket.hue_room_id = info._id.toString()
 		socket.hue_email = userinfo.email
@@ -481,6 +475,13 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(rooms[socket.hue_room_id] === undefined)
 		{
+			let key = Object.keys(filtered_fields)[0]
+
+			if(info[key] === undefined)
+			{
+				info = await db_manager.get_room({_id:data.room_id}, {})
+			}
+			
 			rooms[socket.hue_room_id] = handler.create_room_object(info)
 		}
 
@@ -4883,7 +4884,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					if(Object.keys(room.userlist).length === 0)
 					{
 						delete rooms[key]
-						continue
 					}
 				}
 			}

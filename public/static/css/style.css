@@ -2270,10 +2270,7 @@ a.special_link:hover
 
 .link_preview, #chat_search_container .link_preview
 {
-	padding-top: 1rem;
-	padding-bottom: 1rem;
-	padding-left: 1rem;
-	padding-right: 1rem;
+	padding: 0.8rem;
 }
 
 .link_preview_url
