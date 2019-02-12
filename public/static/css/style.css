@@ -348,7 +348,7 @@ div#header_radio_playing_icon
 
 #input::placeholder
 {
-	white-space: nowrap;
+	white-space: pre;
 }
 
 .scroller_container
