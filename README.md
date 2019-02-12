@@ -388,9 +388,6 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "global_settings_default_background_image"
 >Whether the uploaded image is shown in the background by default.
 
-"global_settings_default_custom_scrollbars"
->Whether custom scrollbars are enabled by default.
-
 "global_settings_default_sound_notifications"
 >Whether sound notifications are enabled by default.
 

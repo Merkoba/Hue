@@ -215,7 +215,6 @@ Hue.commands =
 Hue.user_settings =
 {
 	background_image: {widget_type:"checkbox"},
-	custom_scrollbars: {widget_type:"checkbox"},
 	beep_on_messages: {widget_type:"checkbox"},
 	beep_on_highlights: {widget_type:"checkbox"},
 	beep_on_media_change: {widget_type:"checkbox"},
@@ -350,7 +349,6 @@ Hue.init = function()
 	Hue.setup_mouse_events()
 	Hue.setup_draw_image()
 	Hue.setup_autocomplete()
-	Hue.start_other_scrollbars()
 	Hue.setup_user_function_titles()
 	Hue.setup_modal_image_number()
 	Hue.setup_command_aliases()
@@ -2849,6 +2847,16 @@ Hue.apply_theme = function()
 		color: ${color_3} !important;
 	}
 
+	::-webkit-scrollbar-thumb
+	{
+		background-color: ${slight_background} !important;
+	}
+
+	body, html
+	{
+		scrollbar-color: ${slight_background} transparent !important;
+	}
+
 	</style>
 	`
 
@@ -3192,8 +3200,6 @@ Hue.update_userlist = function()
 	{
 		Hue.do_modal_filter()
 	}
-
-	Hue.update_modal_scrollbar("userlist")
 }
 
 Hue.compare_userlist = function(a, b)
@@ -4108,8 +4114,6 @@ Hue.update_roomlist = function(type, roomlist)
 	{
 		Hue.do_modal_filter(type)
 	}
-
-	Hue.update_modal_scrollbar(type)
 }
 
 Hue.setup_main_menu = function()
@@ -4351,8 +4355,6 @@ Hue.config_admin_background_mode = function()
 		$("#admin_background_image_container").css("display", "none")
 		$("#admin_background_effect_container").css("display", "none")
 	}
-
-	Hue.update_modal_scrollbar("main_menu")
 }
 
 Hue.config_admin_background_tile_dimensions = function()
@@ -4433,8 +4435,6 @@ Hue.config_admin_text_color_mode = function()
 	{
 		$("#admin_text_color_container").css("display", "none")
 	}
-
-	Hue.update_modal_scrollbar("main_menu")
 }
 
 Hue.config_admin_text_color = function()
@@ -4567,8 +4567,6 @@ Hue.config_admin_theme_mode = function()
 	{
 		$("#admin_theme_mode_container").css("display", "none")
 	}
-
-	Hue.update_modal_scrollbar("main_menu")
 }
 
 Hue.config_admin_theme = function()
@@ -4630,8 +4628,6 @@ Hue.config_main_menu = function()
 	{
 		$("#admin_menu").css("display", "none")
 	}
-
-	Hue.update_modal_scrollbar("main_menu")
 }
 
 Hue.show_create_room = function()
@@ -5756,7 +5752,7 @@ Hue.save_input_history = function()
 	Hue.save_local_storage(Hue.ls_input_history, Hue.input_history)
 }
 
-Hue.push_to_input_history_window = function(item, update_scrollbar=true)
+Hue.push_to_input_history_window = function(item)
 {
 	let c = $(`<div class='modal_item input_history_item dynamic_title'></div>`)
 
@@ -5768,11 +5764,6 @@ Hue.push_to_input_history_window = function(item, update_scrollbar=true)
 	c.text(item.message)
 
 	$("#input_history_container").prepend(c)
-
-	if(update_scrollbar)
-	{
-		Hue.update_modal_scrollbar("input_history")
-	}
 }
 
 Hue.get_input_history = function()
@@ -5788,10 +5779,8 @@ Hue.get_input_history = function()
 
 	for(let item of Hue.input_history)
 	{
-		Hue.push_to_input_history_window(item, false)
+		Hue.push_to_input_history_window(item)
 	}
-
-	Hue.update_modal_scrollbar("input_history")
 }
 
 Hue.reset_input_history_index = function()
@@ -6135,178 +6124,10 @@ Hue.resize_timer = (function()
 Hue.on_resize = function()
 {
 	Hue.fix_frames()
-	Hue.update_chat_scrollbar()
 	Hue.goto_bottom(false, false)
 	Hue.check_scrollers()
 	Hue.fix_input_clone()
 	Hue.check_input_clone_overflow(Hue.old_input_val)
-}
-
-Hue.setup_scrollbars = function()
-{
-	Hue.remove_chat_scrollbar()
-	Hue.remove_modal_scrollbars()
-	Hue.remove_other_scrollbars()
-
-	if(Hue.get_setting("custom_scrollbars"))
-	{
-		Hue.start_chat_scrollbar()
-		Hue.start_modal_scrollbars()
-		Hue.start_other_scrollbars()
-	}
-
-	Hue.chat_scroll_bottom(false, false)
-}
-
-Hue.start_chat_scrollbar = function()
-{
-	Hue.chat_scrollbar = new PerfectScrollbar("#chat_area",
-	{
-		minScrollbarLength: 50,
-		suppressScrollX: true,
-		scrollingThreshold: 3000,
-		wheelSpeed: 0.8,
-		handlers: ['drag-thumb', 'wheel', 'touch']
-	})
-}
-
-Hue.remove_chat_scrollbar = function()
-{
-	if(Hue.chat_scrollbar !== undefined)
-	{
-		if(Hue.chat_scrollbar.element !== null)
-		{
-			Hue.chat_scrollbar.destroy()
-		}
-	}
-}
-
-Hue.update_chat_scrollbar = function()
-{
-	if(Hue.chat_scrollbar !== undefined)
-	{
-		if(Hue.chat_scrollbar.element !== null)
-		{
-			Hue.chat_scrollbar.update()
-		}
-	}
-}
-
-Hue.start_modal_scrollbars = function()
-{
-	for(let instance of Hue.get_modal_instances())
-	{
-		if(instance.options.preset !== "popup")
-		{
-			Hue.start_modal_scrollbar(instance.options.id)
-		}
-	}
-}
-
-Hue.start_other_scrollbars = function()
-{
-	$(".settings_category").each(function()
-	{
-		Hue.start_scrollbar(this)
-	})
-
-	$(".settings_window_left_content").each(function()
-	{
-		Hue.start_scrollbar(this)
-	})
-}
-
-Hue.remove_other_scrollbars = function()
-{
-	$(".settings_category").each(function()
-	{
-		$(this).getNiceScroll().remove()
-	})
-
-	$(".settings_window_left_content").each(function()
-	{
-		$(this).getNiceScroll().remove()
-	})
-}
-
-Hue.remove_modal_scrollbars = function()
-{
-	for(let instance of Hue.get_modal_instances())
-	{
-		if(instance.options.preset !== "popup")
-		{
-			Hue.remove_modal_scrollbar(instance.options.id)
-		}
-	}
-}
-
-Hue.start_modal_scrollbar = function(s)
-{
-	let ignore = ["global_settings", "room_settings"]
-	
-	if(ignore.includes(s))
-	{
-		return false
-	}
-
-	Hue.start_scrollbar($(`#Msg-content-container-${s}`))
-}
-
-Hue.start_scrollbar = function(element, visible=true)
-{
-	let cursorwidth
-
-	if(visible)
-	{
-		cursorwidth = "7px"
-	}
-
-	else
-	{
-		cursorwidth = "0px"
-	}
-
-	$(element).niceScroll
-	({
-		zindex: 9999999,
-		autohidemode: false,
-		cursorcolor: "#AFAFAF",
-		cursorborder: "0px solid white",
-		cursorwidth: cursorwidth,
-		horizrailenabled: false
-	})
-}
-
-Hue.remove_modal_scrollbar = function(s)
-{
-	$(`#Msg-content-container-${s}`).getNiceScroll().remove()
-}
-
-Hue.update_all_modal_scrollbars = function()
-{
-	for(let instance of Hue.msg_main_menu.instances())
-	{
-		Hue.update_modal_scrollbar(instance.options.id)
-	}	
-}
-
-Hue.update_modal_scrollbar = function(s)
-{
-	if(s === "global_settings" || s === "room_settings")
-	{
-		Hue.update_scrollbar($(`#settings_window_${s} .settings_window_category_container_selected`).eq(0))
-		Hue.update_scrollbar($(`#settings_window_left_content_${s}`))
-	}
-
-	else
-	{
-		Hue.update_scrollbar($(`#Msg-content-container-${s}`))
-	}
-}
-
-Hue.update_scrollbar = function(element)
-{
-	$(element).getNiceScroll().resize()
 }
 
 Hue.nice_date = function(date=Date.now())
@@ -6825,7 +6646,6 @@ Hue.add_to_chat = function(args={})
 
 	if(Hue.started)
 	{
-		Hue.update_chat_scrollbar()
 		Hue.goto_bottom(false, false)
 	}
 
@@ -7388,11 +7208,6 @@ Hue.start_image_events = function()
 			$("#media_image_frame").css("display", "none")
 			$("#media_image_error").css("display", "initial")
 		}
-	})
-
-	$("#admin_background_image")[0].addEventListener('load', function()
-	{
-		Hue.update_modal_scrollbar("main_menu")
 	})
 
 	$("#media_image_frame").height(0)
@@ -9769,8 +9584,6 @@ Hue.push_played = function(info, info2=false)
 		{
 			Hue.do_modal_filter()
 		}
-
-		Hue.update_modal_scrollbar("played")
 	}
 
 	Hue.show_now_playing()
@@ -10304,7 +10117,6 @@ Hue.on_app_unfocused = function()
 		}, Hue.get_setting("afk_delay"))
 	}
 
-	Hue.update_chat_scrollbar()
 	Hue.check_scrollers()
 }
 
@@ -10438,7 +10250,6 @@ Hue.chat_search = function(filter=false)
 	if(!filter)
 	{
 		$("#chat_search_container").html("Search for chat messages")
-		Hue.update_modal_scrollbar("chat_search")
 		return
 	}
 
@@ -10522,8 +10333,6 @@ Hue.chat_search = function(filter=false)
 
 	$("#chat_search_container").html(c)
 
-	Hue.update_modal_scrollbar("chat_search")
-
 	$('#Msg-content-container-search').scrollTop(0)
 }
 
@@ -10535,7 +10344,6 @@ Hue.fix_chat_scroll = function()
 
 Hue.chat_scroll_bottom = function(force=true, animate=true)
 {
-	Hue.update_chat_scrollbar()
 	Hue.fix_chat_scroll()
 	Hue.goto_bottom(force, animate)
 }
@@ -10545,7 +10353,6 @@ Hue.clear_chat = function()
 	$('#chat_area').html('<div><br><br><br><br></div>')
 
 	Hue.show_log_messages()
-	Hue.update_chat_scrollbar()
 	Hue.goto_bottom(true)
 	Hue.focus_input()
 }
@@ -12430,10 +12237,7 @@ Hue.info2_vars_to_false = function()
 
 Hue.after_modal_create = function(instance)
 {
-	if(Hue.get_setting("custom_scrollbars"))
-	{
-		Hue.start_modal_scrollbar(instance.options.id)
-	}
+
 }
 
 Hue.after_modal_show = function(instance)
@@ -12477,8 +12281,6 @@ Hue.reset_modal_filter = function(instance)
 
 Hue.after_modal_set_or_show = function(instance)
 {
-	Hue.update_modal_scrollbar(instance.options.id)
-
 	setTimeout(function()
 	{
 		if(instance.options.id === "global_settings" || instance.options.id === "room_settings")
@@ -12731,21 +12533,6 @@ Hue.setting_background_image_action = function(type, save=true)
 	{
 		Hue.apply_background()
 		Hue.apply_theme()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-Hue.setting_custom_scrollbars_action = function(type, save=true)
-{
-	Hue[type].custom_scrollbars = $(`#${type}_custom_scrollbars`).prop("checked")
-
-	if(Hue.active_settings("custom_scrollbars") === type)
-	{
-		Hue.setup_scrollbars()
 	}
 
 	if(save)
@@ -13392,7 +13179,6 @@ Hue.setting_chat_font_size_action = function(type, save=true)
 	if(Hue.active_settings("chat_font_size") === type)
 	{
 		Hue.apply_theme()
-		Hue.update_chat_scrollbar()
 		Hue.goto_bottom(true, false)
 	}
 }
@@ -14082,8 +13868,6 @@ Hue.do_modal_filter = function(id=false)
 
 		Hue[`${id}_filtered`] = false
 	}
-
-	Hue.update_modal_scrollbar(id)
 
 	$(`#Msg-content-container-${id}`).scrollTop(0)
 }
@@ -15115,7 +14899,6 @@ Hue.change_images_visibility = function()
 		Hue.fix_visible_video_frame()
 	}
 
-	Hue.update_chat_scrollbar()
 	Hue.goto_bottom(false, false)
 }
 
@@ -15209,7 +14992,6 @@ Hue.change_tv_visibility = function(play=true)
 		Hue.fix_image_frame()
 	}
 
-	Hue.update_chat_scrollbar()
 	Hue.goto_bottom(false, false)
 }
 
@@ -15328,8 +15110,6 @@ Hue.profile_image_selected = function(input)
 						cropper.setCropBoxData({left:left, right:top})
 
 						croppable = true
-
-						Hue.update_modal_scrollbar("info")
 					}
 				})
 
@@ -15394,10 +15174,7 @@ Hue.setup_profile_image = function(pi)
 
 Hue.setup_show_profile = function()
 {
-	$('#show_profile_image').get(0).addEventListener('load', function()
-	{
-		Hue.update_modal_scrollbar("profile")
-	})
+
 }
 
 Hue.show_profile = function(uname, prof_image)
@@ -15463,11 +15240,6 @@ Hue.show_profile = function(uname, prof_image)
 	{
 		$("#show_profile_buttons").css("display", "none")
 	}
-
-	Hue.msg_profile.show(function()
-	{
-		Hue.update_modal_scrollbar("profile")
-	})
 }
 
 Hue.profile_image_changed = function(data)
@@ -17695,8 +17467,6 @@ Hue.show_highlights = function(filter=false)
 			$("#highlights_filter").val(filter)
 			Hue.do_modal_filter()
 		}
-
-		Hue.update_modal_scrollbar("highlights")
 	})
 }
 
@@ -17868,9 +17638,7 @@ Hue.setup_fonts = function()
 
 Hue.on_fonts_loaded = function()
 {
-	Hue.update_chat_scrollbar()
 	Hue.goto_bottom(true, false)
-	Hue.update_all_modal_scrollbars()
 	Hue.create_input_clone()
 }
 
@@ -18218,10 +17986,7 @@ Hue.reset_settings = function(type, empty=true)
 
 Hue.setup_chat = function()
 {
-	if(Hue.get_setting("custom_scrollbars"))
-	{
-		Hue.start_chat_scrollbar()
-	}
+
 }
 
 Hue.execute_javascript = function(arg, show_result=true)
@@ -18687,7 +18452,7 @@ Hue.active_settings = function(name)
 	}
 }
 
-Hue.set_toggler = function(type, el, action=false, update=true)
+Hue.set_toggler = function(type, el, action=false)
 {
 	let container = $(el).next(`.${type}_toggle_container`)
 	
@@ -18720,11 +18485,6 @@ Hue.set_toggler = function(type, el, action=false, update=true)
 		
 		$(el).html(`+ ${$(el).html().trim().substring(2)}`)
 	}
-
-	if(update)
-	{
-		Hue.update_modal_scrollbar(type)
-	}
 }
 
 Hue.setup_togglers = function(type)
@@ -18742,20 +18502,16 @@ Hue.open_togglers = function(type)
 {
 	$(`.${type}_toggle`).each(function()
 	{
-		Hue.set_toggler(type, this, "open", false)
+		Hue.set_toggler(type, this, "open")
 	})
-
-	Hue.update_modal_scrollbar(type)
 }
 
 Hue.close_togglers = function(type)
 {
 	$(`.${type}_toggle`).each(function()
 	{
-		Hue.set_toggler(type, this, "close", false)
+		Hue.set_toggler(type, this, "close")
 	})
-
-	Hue.update_modal_scrollbar(type)
 }
 
 Hue.show_top_scroller = function()
@@ -22610,8 +22366,6 @@ Hue.edit_message = function(container)
 	}, 40)
 
 	area.scrollIntoView({block:"center"})
-
-	Hue.update_chat_scrollbar()
 	Hue.check_scrollers()
 }
 
@@ -23953,11 +23707,6 @@ Hue.show_upload_comment = function(file, type)
 Hue.setup_upload_comment = function()
 {
 	let img = $("#upload_comment_image_preview")
-
-	img[0].addEventListener('load', function()
-	{
-		Hue.update_modal_scrollbar(Hue.msg_upload_comment.options.id)
-	})
 
 	img.on("error", function()
 	{
