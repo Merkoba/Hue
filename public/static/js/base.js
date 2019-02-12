@@ -155,6 +155,8 @@ Hue.upload_comment_type = false
 Hue.just_tabbed = false
 Hue.input_placeholder_active = false
 Hue.update_input_placeholder_delay = 10000
+Hue.update_lockscreen_clock_delay = 10000
+Hue.screen_locked = false
 
 Hue.commands = 
 [
@@ -19642,7 +19644,13 @@ Hue.setup_lockscreen = function()
 
 Hue.lock_screen = function(save=true)
 {
+	if(Hue.screen_locked)
+	{
+		return false
+	}
+
 	Hue.room_state.screen_locked = true
+	Hue.screen_locked = true
 	Hue.process_lockscreen_lights_off()
 	Hue.msg_lockscreen.show()
 
@@ -19658,13 +19666,27 @@ Hue.lock_screen = function(save=true)
 	{
 		Hue.save_room_state()
 	}
+
+	$("#lockscreen_clock").text(Hue.clock_time())
+
+	Hue.lockscreen_clock_interval = setInterval(function()
+	{
+		$("#lockscreen_clock").text(Hue.clock_time())
+	}, Hue.update_lockscreen_clock_delay)
 }
 
 Hue.unlock_screen = function(save=true)
 {
+	if(!Hue.screen_locked)
+	{
+		return false
+	}
+
 	clearTimeout(Hue.lockscreen_peek_timeout)
+	clearInterval(Hue.lockscreen_clock_interval)
 
 	Hue.room_state.screen_locked = false
+	Hue.screen_locked = false
 	Hue.msg_lockscreen.close()
 	Hue.process_visibility()
 	Hue.execute_commands("on_unlockscreen")
@@ -23098,6 +23120,7 @@ Hue.lockscreen_turn_lights_off = function()
 	$("#lockscreen_lights_off_button").addClass("grey_font_color")
 	$("#lockscreen_icon_menu").addClass("grey_background_color_parent")
 	$("#lockscreen_lights_off_button").text("Turn Lights On")
+	$("#lockscreen_clock").addClass("grey_font_color")
 }
 
 Hue.lockscreen_turn_lights_on = function()
@@ -23106,6 +23129,7 @@ Hue.lockscreen_turn_lights_on = function()
 	$("#lockscreen_title_menu").removeClass("black_background_color")	
 	$("#lockscreen_lights_off_button").text("Turn Lights Off")
 	$("#lockscreen_principal").removeClass("grey_font_color")
+	$("#lockscreen_clock").removeClass("grey_font_color")
 	$("#lockscreen_lights_off_button").removeClass("grey_font_color")
 	$("#lockscreen_icon_menu").removeClass("grey_background_color_parent")
 }
