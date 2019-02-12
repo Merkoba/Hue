@@ -571,6 +571,9 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "global_settings_default_autoscroll_delay"
 >The delay of the interval for every autoscroll step in milliseconds.
 
+"global_settings_default_show_input_placeholder
+>Whether the input placeholder is enabled by default.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 

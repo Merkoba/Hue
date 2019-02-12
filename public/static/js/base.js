@@ -153,6 +153,8 @@ Hue.context_menu_open = false
 Hue.upload_comment_file = false
 Hue.upload_comment_type = false
 Hue.just_tabbed = false
+Hue.input_placeholder_active = false
+Hue.update_input_placeholder_delay = 10000
 
 Hue.commands = 
 [
@@ -264,6 +266,7 @@ Hue.user_settings =
 	show_link_previews: {widget_type:"checkbox"},
 	stop_radio_on_tv_play: {widget_type:"checkbox"},
 	stop_tv_on_radio_play: {widget_type:"checkbox"},
+	show_input_placeholder: {widget_type:"checkbox"},
 	bypass_images_lock_on_own_change: {widget_type:"checkbox"},
 	bypass_tv_lock_on_own_change: {widget_type:"checkbox"},
 	bypass_radio_lock_on_own_change: {widget_type:"checkbox"},
@@ -983,6 +986,7 @@ Hue.start_socket = function()
 			Hue.chat_scroll_bottom()
 			Hue.make_main_container_visible()
 			Hue.setup_activity_bar()
+			Hue.setup_input_placeholder()
 
 			Hue.at_startup()
 		}
@@ -2837,6 +2841,11 @@ Hue.apply_theme = function()
 		background-color: ${font_color} !important;
 	}
 
+	#input::placeholder
+	{
+		color: ${color_3} !important;
+	}
+
 	</style>
 	`
 
@@ -4085,7 +4094,7 @@ Hue.update_roomlist = function(type, roomlist)
 			topic = 'No topic set'
 		}
 
-		h.find('.roomlist_topic').eq(0).text(topic)
+		h.find('.roomlist_topic').eq(0).text(topic).urlize()
 
 		s = s.add(h)
 	}
@@ -6299,6 +6308,11 @@ Hue.update_scrollbar = function(element)
 Hue.nice_date = function(date=Date.now())
 {
 	return dateFormat(date, "dddd, mmmm dS, yyyy, h:MM:ss TT")
+}
+
+Hue.clock_time = function(date=Date.now())
+{
+	return dateFormat(date, "h:MM TT")
 }
 
 Hue.escape_special_characters = function(s)
@@ -9433,6 +9447,7 @@ Hue.announce_room_name_change = function(data)
 
 		Hue.set_room_name(data.name)
 		Hue.update_title()
+		Hue.update_input_placeholder()
 	}
 }
 
@@ -13806,6 +13821,21 @@ Hue.setting_speech_10_action = function(type, save=true)
 	}
 }
 
+Hue.setting_show_input_placeholder_action = function(type, save=true)
+{
+	Hue[type].show_input_placeholder = $(`#${type}_show_input_placeholder`).prop("checked")
+
+	if(Hue.active_settings("show_input_placeholder") === type)
+	{
+		Hue.setup_input_placeholder()
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
 Hue.empty_room_settings = function()
 {
 	Hue.room_settings = {}
@@ -16234,6 +16264,44 @@ Hue.setup_input = function()
 	})
 
 	Hue.old_input_val = $("#input").val()
+}
+
+Hue.setup_input_placeholder = function()
+{
+	if(Hue.get_setting("show_input_placeholder"))
+	{
+		if(Hue.input_placeholder_active)
+		{
+			return false
+		}
+
+		Hue.update_input_placeholder()
+	
+		Hue.update_input_placeholder_interval = setInterval(function()
+		{
+			Hue.update_input_placeholder()
+		}, Hue.update_input_placeholder_delay)
+
+		Hue.input_placeholder_active = true
+	}
+
+	else
+	{
+		if(!Hue.input_placeholder_active)
+		{
+			return false
+		}
+
+		clearInterval(Hue.update_input_placeholder_interval)
+		$("#input").attr("placeholder", "")
+		Hue.input_placeholder_active = false
+	}
+}
+
+Hue.update_input_placeholder = function()
+{
+	let s = `(${Hue.clock_time()})  Hi ${Hue.username}, write something to ${Hue.room_name}`
+	$("#input").attr("placeholder", s)
 }
 
 Hue.check_input_overflow = function()

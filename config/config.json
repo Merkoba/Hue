@@ -165,6 +165,7 @@
 	"global_settings_default_speech_8": "Eight",
 	"global_settings_default_speech_9": "Nine",
 	"global_settings_default_speech_10": "Ten",
+	"global_settings_default_show_input_placeholder": true,
 	"room_state_default_images_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_radio_enabled": true,

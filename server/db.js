@@ -477,7 +477,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		if(typeof room.access_log_messages !== "object")
 		{
 			room.access_log_messages = []
-		}		
+		}
 	}
 
 	manager.create_room = function(data)
