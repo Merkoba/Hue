@@ -4814,7 +4814,7 @@ Hue.upload_file = function(file, action)
 
 	file.reader = Hue.create_file_reader(file)
 
-	let slice = file.slice(0, Hue.upload_slice_size)
+	let slice = file.slice(0, Hue.config.upload_slice_size)
 
 	Hue.files[date] = file
 
@@ -4885,7 +4885,7 @@ Hue.cancel_file_upload = function(date, check=true)
 
 Hue.get_file_next = function(file)
 {
-	let next = Math.floor(((Hue.upload_slice_size * 1) / file.size) * 100)
+	let next = Math.floor(((Hue.config.upload_slice_size * 1) / file.size) * 100)
 
 	if(next > 100)
 	{
@@ -17847,9 +17847,9 @@ Hue.request_slice_upload = function(data)
 		return false
 	}
 
-	let place = data.current_slice * Hue.upload_slice_size
+	let place = data.current_slice * Hue.config.upload_slice_size
 
-	let slice = file.slice(place, place + Math.min(Hue.upload_slice_size, file.size - place))
+	let slice = file.slice(place, place + Math.min(Hue.config.upload_slice_size, file.size - place))
 
 	file.next = Hue.get_file_next(file)
 
@@ -17858,7 +17858,7 @@ Hue.request_slice_upload = function(data)
 		file.sending_last_slice = true
 	}
 
-	file.percentage = Math.floor(((Hue.upload_slice_size * data.current_slice) / file.size) * 100)
+	file.percentage = Math.floor(((Hue.config.upload_slice_size * data.current_slice) / file.size) * 100)
 
 	file.reader.readAsArrayBuffer(slice)
 
