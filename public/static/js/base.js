@@ -14341,8 +14341,14 @@ Hue.show_details = function(data)
 
 	h.find("#details_username").eq(0).text(Hue.username)
 	h.find("#details_email").eq(0).text(Hue.user_email)
-	h.find("#details_reg_date").eq(0).text(Hue.nice_date(Hue.user_reg_date))
-	h.find("#details_joined_room").eq(0).text(Hue.nice_date(Hue.date_joined))
+
+	h.find("#details_reg_date").eq(0).html(`
+	<div>${Hue.nice_date(Hue.user_reg_date)}</div>
+	</div>(${Hue.get_timeago(Hue.user_reg_date)})</div>`)
+
+	h.find("#details_joined_room").eq(0).html(`
+	<div>${Hue.nice_date(Hue.date_joined)}</div>
+	</div>(${Hue.get_timeago(Hue.date_joined)})</div>`)
 
 	Hue.msg_info2.show(["User Details", h.html()])
 }
