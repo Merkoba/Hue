@@ -5,8 +5,100 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 	const reserved_usernames = ["The system", config.image_ads_setter].map(x => x.toLowerCase())
 
-	const rooms_version = 60
-	const users_version = 30
+	const rooms_version = 69
+	const users_version = 39
+
+	const rooms_schema =
+	{
+		name:{type:"string", default:"No Name"},
+		image_source:{type:"string", default:""},
+		image_setter:{type:"string", default:""},
+		image_size:{type:"number", default:0},
+		image_date:{type:"number", default:0},
+		image_query:{type:"string", default:""},
+		image_type:{type:"string", default:"link"},
+		stored_images:{type:"object", default:[]},
+		topic:{type:"string", default:""},
+		topic_setter:{type:"string", default:""},
+		topic_date:{type:"number", default:0},
+		keys:{type:"object", default:{}},
+		radio_type:{type:"string", default:"radio"},
+		radio_source:{type:"string", default:""},
+		radio_title:{type:"string", default:""},
+		radio_setter:{type:"string", default:""},
+		radio_date:{type:"number", default:0},
+		radio_query:{type:"string", default:""},
+		tv_type:{type:"string", default:"tv"},
+		tv_source:{type:"string", default:""},
+		tv_title:{type:"string", default:""},
+		tv_setter:{type:"string", default:""},
+		tv_date:{type:"number", default:0},
+		tv_query:{type:"string", default:""},
+		images_mode:{type:"string", default:"enabled"},
+		tv_mode:{type:"string", default:"enabled"},
+		radio_mode:{type:"string", default:"enabled"},
+		synth_mode:{type:"string", default:"enabled"},
+		bans:{type:"object", default:[]},
+		log:{type:"boolean", default:true},
+		log_messages:{type:"object", default:[]},
+		admin_log_messages:{type:"object", default:[]},
+		access_log_messages:{type:"object", default:[]},
+		theme_mode:{type:"string", default:"custom"},
+		theme:{type:"string", default:"rgb(77,69,140)"},
+		background_image:{type:"string", default:""},
+		background_image_setter:{type:"string", default:""},
+		background_image_date:{type:"number", default:0},
+		background_image_type:{type:"string", default:"hosted"},
+		background_mode:{type:"string", default:"normal"},
+		background_effect:{type:"string", default:"none"},
+		background_tile_dimensions:{type:"string", default:"100px auto"},
+		text_color_mode:{type:"string", default:"automatic"},
+		text_color:{type:"string", default:"rgb(205,202,223)"},
+		modified:{type:"number", default:Date.now()},
+		public:{type:"boolean", default:true},
+		voice1_chat_permission:{type:"boolean", default:true},
+		voice1_images_permission:{type:"boolean", default:true},
+		voice1_tv_permission:{type:"boolean", default:true},
+		voice1_radio_permission:{type:"boolean", default:true},
+		voice1_synth_permission:{type:"boolean", default:true},
+		voice2_chat_permission:{type:"boolean", default:true},
+		voice2_images_permission:{type:"boolean", default:true},
+		voice2_tv_permission:{type:"boolean", default:true},
+		voice2_radio_permission:{type:"boolean", default:true},
+		voice2_synth_permission:{type:"boolean", default:true},
+		voice3_chat_permission:{type:"boolean", default:true},
+		voice3_images_permission:{type:"boolean", default:true},
+		voice3_tv_permission:{type:"boolean", default:true},
+		voice3_radio_permission:{type:"boolean", default:true},
+		voice3_synth_permission:{type:"boolean", default:true},
+		voice4_chat_permission:{type:"boolean", default:true},
+		voice4_images_permission:{type:"boolean", default:true},
+		voice4_tv_permission:{type:"boolean", default:true},
+		voice4_radio_permission:{type:"boolean", default:true},
+		voice4_synth_permission:{type:"boolean", default:true}
+	}
+
+	const users_schema = 
+	{
+		username:{type:"string", default:"", skip:true},
+		password:{type:"string", default:"", skip:true},
+		email:{type:"string", default:"", skip:true},
+		password_date:{type:"number", default:0},
+		password_reset_code:{type:"string", default:""},
+		password_reset_date:{type:"number", default:0},
+		password_reset_link_date:{type:"number", default:0},
+		visited_rooms:{type:"object", default:[]},
+		profile_image:{type:"string", default:""},
+		profile_image_version:{type:"number", default:0},
+		verified:{type:"boolean", default:false},
+		verification_code:{type:"string", default:""},
+		registration_date:{type:"number", default:0},
+		email_change_code:{type:"string", default:""},
+		email_change_date:{type:"number", default:0},
+		email_change_code_date:{type:"number", default:0},
+		create_room_date:{type:"number", default:0},
+		modified:{type:"number", default:Date.now()}
+	}
 
 	function get_random_key()
 	{
@@ -149,334 +241,19 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 	manager.room_fill_defaults = function(room)
 	{
-		if(typeof room.name !== "string")
+		for(let key in rooms_schema)
 		{
-			room.name = "No Name"
-		}
-		
-		if(typeof room.image_source !== "string")
-		{
-			room.image_source = ""
-		}
-		
-		if(typeof room.image_setter !== "string")
-		{
-			room.image_setter = ""
-		}
-		
-		if(typeof room.image_size !== "number")
-		{
-			room.image_size = 0
-		}
-		
-		if(typeof room.image_date !== "number")
-		{
-			room.image_date = 0
-		}	
+			let item = rooms_schema[key]
 
-		if(typeof room.image_query !== "string")
-		{
-			room.image_query = ""
-		}
+			if(item.skip)
+			{
+				continue
+			}
 
-		if(typeof room.image_type !== "string")
-		{
-			room.image_type = "link"
-		}
-
-		if(typeof room.stored_images !== "object")
-		{
-			room.stored_images = []
-		}
-		
-		if(typeof room.topic !== "string")
-		{
-			room.topic = ""
-		}
-		
-		if(typeof room.topic_setter !== "string")
-		{
-			room.topic_setter = ""
-		}
-		
-		if(typeof room.topic_date !== "number")
-		{
-			room.topic_date = 0
-		}
-		
-		if(typeof room.keys !== "object")
-		{
-			room.keys = {}
-		}
-
-		if(typeof room.radio_type !== "string")
-		{
-			room.radio_type = "radio"
-		}					
-		
-		if(typeof room.radio_source !== "string")
-		{
-			room.radio_source = ""
-		}
-
-		if(typeof room.radio_title !== "string")
-		{
-			room.radio_title = ""
-		}
-		
-		if(typeof room.radio_setter !== "string")
-		{
-			room.radio_setter = ""
-		}
-		
-		if(typeof room.radio_date !== "number")
-		{
-			room.radio_date = 0
-		}
-
-		if(typeof room.radio_query !== "string")
-		{
-			room.radio_query = ""
-		}
-
-		if(typeof room.tv_type !== "string")
-		{
-			room.tv_type = "tv"
-		}					
-		
-		if(typeof room.tv_source !== "string")
-		{
-			room.tv_source = ""
-		}
-
-		if(typeof room.tv_title !== "string")
-		{
-			room.tv_title = ""
-		}
-		
-		if(typeof room.tv_setter !== "string")
-		{
-			room.tv_setter = ""
-		}
-		
-		if(typeof room.tv_date !== "number")
-		{
-			room.tv_date = 0
-		}
-
-		if(typeof room.tv_query !== "string")
-		{
-			room.tv_query = ""
-		}	
-
-		if(typeof room.images_mode !== "string")
-		{
-			room.images_mode = "enabled"
-		}	
-
-		if(typeof room.tv_mode !== "string")
-		{
-			room.tv_mode = "enabled"
-		}
-
-		if(typeof room.radio_mode !== "string")
-		{
-			room.radio_mode = "enabled"
-		}
-
-		if(typeof room.synth_mode !== "string")
-		{
-			room.synth_mode = "enabled"
-		}	
-		
-		if(typeof room.bans !== "object")
-		{
-			room.bans = []
-		}
-
-		if(typeof room.log !== "boolean")
-		{
-			room.log = true
-		}
-
-		if(typeof room.log_messages !== "object")
-		{
-			room.log_messages = []
-		}
-
-		if(typeof room.theme_mode !== "string")
-		{
-			room.theme_mode = "custom"
-		}
-
-		if(typeof room.theme !== "string")
-		{
-			room.theme = "rgb(77,69,140)"
-		}
-
-		if(typeof room.background_image !== "string")
-		{
-			room.background_image = ""
-		}
-
-		if(typeof room.background_image_setter !== "string")
-		{
-			room.background_image_setter = ""
-		}
-
-		if(typeof room.background_image_date !== "number")
-		{
-			room.background_image_date = 0
-		}
-
-		if(typeof room.background_image_type !== "string")
-		{
-			room.background_image_type = "hosted"
-		}
-
-		if(typeof room.background_mode !== "string")
-		{
-			room.background_mode = "normal"
-		}
-
-		if(typeof room.background_effect !== "string")
-		{
-			room.background_effect = "none"
-		}
-
-		if(typeof room.background_tile_dimensions !== "string")
-		{
-			room.background_tile_dimensions = "100px auto"
-		}
-
-		if(typeof room.text_color_mode !== "string")
-		{
-			room.text_color_mode = "automatic"
-		}
-
-		if(typeof room.text_color !== "string")
-		{
-			room.text_color = "rgb(205,202,223)"
-		}
-		
-		if(typeof room.modified !== "number")
-		{
-			room.modified = Date.now()
-		}
-		
-		if(typeof room.public !== "boolean")
-		{
-			room.public = true
-		}
-
-		if(typeof room.voice1_chat_permission !== "boolean")
-		{
-			room.voice1_chat_permission = true
-		}	
-
-		if(typeof room.voice1_images_permission !== "boolean")
-		{
-			room.voice1_images_permission = true
-		}	
-
-		if(typeof room.voice1_tv_permission !== "boolean")
-		{
-			room.voice1_tv_permission = true
-		}	
-
-		if(typeof room.voice1_radio_permission !== "boolean")
-		{
-			room.voice1_radio_permission = true
-		}
-
-		if(typeof room.voice1_synth_permission !== "boolean")
-		{
-			room.voice1_synth_permission = true
-		}
-
-		if(typeof room.voice2_chat_permission !== "boolean")
-		{
-			room.voice2_chat_permission = true
-		}	
-
-		if(typeof room.voice2_images_permission !== "boolean")
-		{
-			room.voice2_images_permission = true
-		}	
-
-		if(typeof room.voice2_tv_permission !== "boolean")
-		{
-			room.voice2_tv_permission = true
-		}	
-
-		if(typeof room.voice2_radio_permission !== "boolean")
-		{
-			room.voice2_radio_permission = true
-		}
-
-		if(typeof room.voice2_synth_permission !== "boolean")
-		{
-			room.voice2_synth_permission = true
-		}
-
-		if(typeof room.voice3_chat_permission !== "boolean")
-		{
-			room.voice3_chat_permission = true
-		}	
-
-		if(typeof room.voice3_images_permission !== "boolean")
-		{
-			room.voice3_images_permission = true
-		}	
-
-		if(typeof room.voice3_tv_permission !== "boolean")
-		{
-			room.voice3_tv_permission = true
-		}	
-
-		if(typeof room.voice3_radio_permission !== "boolean")
-		{
-			room.voice3_radio_permission = true
-		}
-
-		if(typeof room.voice3_synth_permission !== "boolean")
-		{
-			room.voice3_synth_permission = true
-		}
-
-		if(typeof room.voice4_chat_permission !== "boolean")
-		{
-			room.voice4_chat_permission = true
-		}	
-
-		if(typeof room.voice4_images_permission !== "boolean")
-		{
-			room.voice4_images_permission = true
-		}	
-
-		if(typeof room.voice4_tv_permission !== "boolean")
-		{
-			room.voice4_tv_permission = true
-		}	
-
-		if(typeof room.voice4_radio_permission !== "boolean")
-		{
-			room.voice4_radio_permission = true
-		}
-
-		if(typeof room.voice4_synth_permission !== "boolean")
-		{
-			room.voice4_synth_permission = true
-		}
-
-		if(typeof room.admin_log_messages !== "object")
-		{
-			room.admin_log_messages = []
-		}
-
-		if(typeof room.access_log_messages !== "object")
-		{
-			room.access_log_messages = []
+			if(typeof room[key] !== item.type)
+			{
+				room[key] = item.default
+			}
 		}
 	}
 
@@ -596,6 +373,15 @@ module.exports = function(db, config, sconfig, utilz, logger)
 			}
 
 			fields.modified = Date.now()
+
+			let check = manager.validate_room(fields)
+
+			if(!check.passed)
+			{
+				console.error(check.message)
+				resolve(false)
+				return
+			}
 
 			db.collection('rooms').updateOne({_id:_id}, {$set:fields})
 
@@ -921,7 +707,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 						return
 					}
 
-					manager.user_fill_defaults(user)						
+					manager.user_fill_defaults(user)
 
 					user.version = users_version
 
@@ -958,85 +744,20 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 	manager.user_fill_defaults = function(user)
 	{
-		if(typeof user.password_date !== "number")
+		for(let key in users_schema)
 		{
-			user.password_date = 0
+			let item = users_schema[key]
+
+			if(item.skip)
+			{
+				continue
+			}
+
+			if(typeof user[key] !== item.type)
+			{
+				user[key] = item.default
+			}
 		}
-
-		if(typeof user.email !== "string")
-		{
-			user.email = ""
-		}
-
-		if(typeof user.password_reset_code !== "string")
-		{
-			user.password_reset_code = ""
-		}
-
-		if(typeof user.password_reset_date !== "number")
-		{
-			user.password_reset_date = 0
-		}
-
-		if(typeof user.password_reset_link_date !== "number")
-		{
-			user.password_reset_link_date = 0
-		}
-
-		if(typeof user.visited_rooms !== "object")
-		{
-			user.visited_rooms = []
-		}
-
-		if(typeof user.profile_image !== "string")
-		{
-			user.profile_image = ""
-		}
-
-		if(typeof user.profile_image_version !== "number")
-		{
-			user.profile_image_version = 0
-		}
-
-		if(typeof user.verified !== "boolean")
-		{
-			user.verified = false
-		}
-
-		if(typeof user.verification_code !== "string")
-		{
-			user.verification_code = ""
-		}
-
-		if(typeof user.registration_date !== "number")
-		{
-			user.registration_date = 0
-		}
-
-		if(typeof user.email_change_code !== "string")
-		{
-			user.email_change_code = ""
-		}
-
-		if(typeof user.email_change_date !== "number")
-		{
-			user.email_change_date = 0
-		}
-
-		if(typeof user.email_change_code_date !== "number")
-		{
-			user.email_change_code_date = 0
-		}
-
-		if(typeof user.create_room_date !== "number")
-		{
-			user.create_room_date = 0
-		}						
-
-		if(typeof user.modified !== "number")
-		{
-			user.modified = Date.now()
-		}		
 	}
 
 	manager.create_user = function(info)
@@ -1142,6 +863,15 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				{
 					fields.password = hash
 
+					let check = manager.validate_user(fields)
+
+					if(!check.passed)
+					{
+						console.error(check.message)
+						resolve(false)
+						return
+					}
+
 					db.collection('users').updateOne({_id:_id}, {$set:fields})
 
 					.then(ans =>
@@ -1170,6 +900,15 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 			else
 			{
+				let check = manager.validate_user(fields)
+
+				if(!check.passed)
+				{
+					console.error(check.message)
+					resolve(false)
+					return
+				}
+				
 				db.collection('users').updateOne({_id:_id}, {$set:fields})
 
 				.then(ans =>
@@ -1584,6 +1323,49 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})
 	}
 
+	manager.validate_room = function(fields)
+	{
+		for(let key in fields)
+		{
+			let item = rooms_schema[key]
+			let data = fields[key]
+
+			if(item)
+			{
+				let type = typeof data
+
+				if(type !== item.type)
+				{
+					let s = `Room validation failed on ${key}. Expected type ${item.type}, got type ${type}`
+					return {passed:false, message:s}
+				}
+			}
+		}
+
+		return {passed:true, message:"ok"}
+	}
+
+	manager.validate_user = function(fields)
+	{
+		for(let key in fields)
+		{
+			let item = users_schema[key]
+			let data = fields[key]
+
+			if(item)
+			{
+				let type = typeof data
+
+				if(type !== item.type)
+				{
+					let s = `User validation failed on ${key}. Expected type ${item.type}, got type ${type}`
+					return {passed:false, message:s}
+				}
+			}
+		}
+
+		return {passed:true, message:"ok"}
+	}
+
 	return manager
 }
-

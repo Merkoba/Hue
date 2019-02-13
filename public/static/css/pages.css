@@ -1,0 +1,145 @@
+body, html
+{
+	font-family: consolas, sans-serif;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-size: 18px;
+	background-color: white;
+	color: white;				
+	background-image: url("/static/_img/pages_background.gif");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;	
+}
+
+.main
+{
+	padding: 0;
+	margin: 0;
+	opacity: 0.95;
+	height: 100%;
+	width: 100%;
+	background-color: black;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;	
+	overflow: auto;			
+}
+
+.spacer1
+{
+	padding-top: 1.2em;
+	padding-bottom: 1.2em;
+}
+
+.spacer2
+{
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+.spacer3
+{
+	padding-top: 0.25em;
+	padding-bottom: 0.25em;
+}
+
+.spacer4
+{
+	padding-top: 0.8em;
+	padding-bottom: 0.8em;
+}
+
+input[type=text], input[type=password]
+{
+	padding: 0.2em;
+	border: 1px solid grey;
+	width: 14em;
+	font-size: 1.2em;
+	text-align: center;
+	background-color: black;
+	border: 1px solid white;
+	color: white;
+	outline: none;	
+}
+
+input[type=submit]
+{
+	background-color: black;
+	color: white;	
+	padding: 0.4em 1em 0.4em 1em;
+	border: 1px solid white;
+	font-size: 1em;
+	cursor: pointer;
+	border-radius: 20px;
+	outline: none;	
+}
+
+input[type=submit]:hover
+{
+	border: 1px solid #93c9ff;
+}
+
+.logo
+{
+	width: 10em;
+}
+
+a:hover, a:visited, a:link
+{
+	color: white;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+a:hover
+{
+	animation-duration: 500ms;
+	animation-name: glow;
+	animation-fill-mode: forwards;	
+}
+
+form
+{
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;		
+}
+
+.error
+{
+	color: #e6a4a4;
+}
+
+#username_taken
+{
+	display: none;
+}
+
+#email_taken
+{
+	display: none;
+}
+
+#message_container
+{
+	font-size: 1.4em;
+}
+
+.g-recaptcha > *
+{
+	margin: 0 auto;
+}
+
+@keyframes glow
+{	
+	0% {text-shadow: 0 0 0px}
+	100% {text-shadow: 0 0 1.2em}
+}
