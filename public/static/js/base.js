@@ -81,7 +81,7 @@ Hue.modal_image_open = false
 Hue.current_modal_image_index
 Hue.current_image_source = ""
 Hue.current_image_info = ""
-Hue.current_image_date = 0
+Hue.current_image_comment = ""
 Hue.filter_delay = 350
 Hue.resize_delay = 350
 Hue.double_tap_delay = 250
@@ -1549,7 +1549,7 @@ Hue.setup_image = function(mode, odata={})
 
 	data.onclick = function()
 	{
-		Hue.show_modal_image(data.source, data.info, data.nice_date)
+		Hue.show_modal_image({source:data.source, info:data.info, comment:data.comment})
 	}
 
 	if(data.message)
@@ -2855,6 +2855,11 @@ Hue.apply_theme = function()
 	body, html
 	{
 		scrollbar-color: ${slight_background} transparent !important;
+	}
+
+	.modal_subheader
+	{
+		background-color: ${color_4} !important;
 	}
 
 	</style>
@@ -7175,7 +7180,7 @@ Hue.show_current_image_modal = function(current=true)
 {
 	if(current)
 	{
-		Hue.show_modal_image(Hue.current_image_source, Hue.current_image_info, Hue.current_image_date)
+		Hue.show_modal_image({source:Hue.current_image_source, info:Hue.current_image_info, comment:Hue.current_image_comment})
 	}
 
 	else
@@ -7183,7 +7188,7 @@ Hue.show_current_image_modal = function(current=true)
 		if(Hue.images_changed.length > 0)
 		{
 			let data = Hue.images_changed[Hue.images_changed.length - 1]
-			Hue.show_modal_image(data.source, data.info, data.date)
+			Hue.show_modal_image({source:data.source, info:data.info, comment:data.comment})
 		}
 	}
 }
@@ -7218,7 +7223,7 @@ Hue.after_image_load = function()
 {
 	Hue.current_image_source = Hue.loaded_image.source
 	Hue.current_image_info = Hue.loaded_image.info
-	Hue.current_image_date = Hue.loaded_image.date
+	Hue.current_image_comment = Hue.loaded_image.comment
 
 	Hue.get_dominant_theme()
 	Hue.fix_image_frame()
@@ -14554,9 +14559,18 @@ Hue.show_log = function()
 	}
 }
 
-Hue.show_modal_image = function(url, title, date)
+Hue.show_modal_image = function(args={})
 {
-	if(!url)
+	let def_args =
+	{
+		source: false,
+		info: "",
+		comment: ""
+	}
+
+	Hue.fill_defaults(args, def_args)
+
+	if(!args.source)
 	{
 		if(Hue.images_changed.length > 0)
 		{
@@ -14571,18 +14585,6 @@ Hue.show_modal_image = function(url, title, date)
 		}
 	}
 
-	let t
-
-	if(title)
-	{
-		t = title
-	}
-
-	else
-	{
-		t = ""
-	}
-
 	let img = $("#modal_image")
 
 	img.css("display", "none")
@@ -14590,9 +14592,20 @@ Hue.show_modal_image = function(url, title, date)
 	$("#modal_image_spinner").css("display", "block")
 	$("#modal_image_error").css("display", "none")
 
-	img.attr("src", url)
+	img.attr("src", args.source)
 
-	$("#modal_image_header_info").text(t)
+	$("#modal_image_header_info").text(args.info)
+
+	if(args.comment)
+	{
+		$("#modal_image_subheader").text(args.comment)
+		$("#modal_image_subheader").css("display", "block")
+	}
+	
+	else
+	{
+		$("#modal_image_subheader").css("display", "none")
+	}
 
 	Hue.msg_modal_image.show(function()
 	{
@@ -14683,7 +14696,7 @@ Hue.modal_image_number_go = function()
 
 	if(ic)
 	{
-		Hue.show_modal_image(ic.source, ic.info, ic.date)
+		Hue.show_modal_image({source:ic.source, info:ic.info, comment:ic.comment})
 		Hue.msg_modal_image_number.close()
 	}
 }
@@ -17683,7 +17696,7 @@ Hue.modal_image_prev_click = function()
 
 	if(prev.source !== url)
 	{
-		Hue.show_modal_image(prev.source, prev.info, prev.date)
+		Hue.show_modal_image({source:prev.source, info:prev.info, comment:prev.comment})
 	}
 }
 
@@ -17702,7 +17715,7 @@ Hue.modal_image_next_click = function(e)
 
 	if(next.source !== url)
 	{
-		Hue.show_modal_image(next.source, next.info, next.date)
+		Hue.show_modal_image({source:next.source, info:next.info, comment:next.comment})
 	}
 }
 

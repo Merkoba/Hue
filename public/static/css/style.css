@@ -2533,3 +2533,8 @@ a.special_link:hover
 {
 	background-color: transparent !important;
 }
+
+.modal_subheader
+{
+	padding: 0.2rem;
+}
