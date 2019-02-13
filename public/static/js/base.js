@@ -16190,7 +16190,6 @@ Hue.check_input_clone_overflow = function(val)
 		{
 			$("#footer").css("height", "6rem")
 			Hue.footer_oversized = true
-			Hue.on_resize()
 		}
 	}
 
@@ -16200,7 +16199,6 @@ Hue.check_input_clone_overflow = function(val)
 		{
 			$("#footer").css("height", Hue.initial_footer_height)
 			Hue.footer_oversized = false
-			Hue.on_resize()
 		}
 	}
 }
