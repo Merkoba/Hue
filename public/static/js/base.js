@@ -4910,7 +4910,13 @@ Hue.change_upload_status = function(file, status, clear=false)
 	if(clear)
 	{
 		$(`#uploading_${file.date}`)
-		.find(".announcement_content_container").eq(0)
+		.find(".announcement_content").eq(0)
+		.off("click")
+		.removeClass("pointer")
+		.removeClass("action")
+
+		$(`#uploading_${file.date}`)
+		.find(".announcement_brk").eq(0)
 		.off("click")
 		.removeClass("pointer")
 		.removeClass("action")
@@ -10342,8 +10348,7 @@ Hue.chat_search = function(filter=false)
 	}
 
 	$("#chat_search_container").html(c)
-
-	$('#Msg-content-container-search').scrollTop(0)
+	Hue.scroll_modal_to_top("chat_search")
 }
 
 Hue.fix_chat_scroll = function()
@@ -13879,7 +13884,7 @@ Hue.do_modal_filter = function(id=false)
 		Hue[`${id}_filtered`] = false
 	}
 
-	$(`#Msg-content-container-${id}`).scrollTop(0)
+	Hue.scroll_modal_to_top(id)
 }
 
 Hue.show_input_history = function(filter=false)
@@ -23722,6 +23727,7 @@ Hue.show_upload_comment = function(file, type)
 			})
 
 			$("#upload_comment_input").focus()
+			Hue.scroll_modal_to_bottom("upload_comment")
 		})
 	}
 
@@ -23828,4 +23834,15 @@ Hue.do_media_picker_input_cycle = function(type)
 	{
 		$(`#${type}_source_picker_input`).focus()
 	}
+}
+
+Hue.scroll_modal_to_top = function(id)
+{
+	$(`#Msg-content-container-${id}`).scrollTop(0)
+}
+
+Hue.scroll_modal_to_bottom(id)
+{
+	let container = $(`#Msg-content-container-${id}`)[0]
+	container.scrollTop = container.scrollHeight
 }
