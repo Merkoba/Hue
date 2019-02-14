@@ -6126,13 +6126,17 @@ Hue.resize_timer = (function()
 	}
 })()
 
-Hue.on_resize = function()
+Hue.on_resize = function(check_clone=true)
 {
 	Hue.fix_frames()
 	Hue.goto_bottom(false, false)
 	Hue.check_scrollers()
 	Hue.fix_input_clone()
-	Hue.check_input_clone_overflow($("#input").val())
+
+	if(check_clone)
+	{
+		Hue.check_input_clone_overflow($("#input").val())
+	}
 }
 
 Hue.nice_date = function(date=Date.now())
@@ -16209,6 +16213,7 @@ Hue.check_input_clone_overflow = function(val)
 		{
 			$("#footer").css("height", "6rem")
 			Hue.footer_oversized = true
+			Hue.on_resize(false)
 		}
 	}
 
@@ -16218,6 +16223,7 @@ Hue.check_input_clone_overflow = function(val)
 		{
 			$("#footer").css("height", Hue.initial_footer_height)
 			Hue.footer_oversized = false
+			Hue.on_resize(false)
 		}
 	}
 }
