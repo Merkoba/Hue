@@ -1990,10 +1990,9 @@ Hue.current_radio = function()
 Hue.load_radio = function(src, type, item, force=false)
 {
 	let radio_metadata = ""
-	
 	Hue.radio_get_metadata = false
-	
 	clearTimeout(Hue.radio_metadata_fail_timeout)
+	Hue.stop_radio(false)
 
 	if(type === "radio")
 	{
@@ -2014,16 +2013,6 @@ Hue.load_radio = function(src, type, item, force=false)
 		if(Hue.radio_started)
 		{
 			$('#audio')[0].play()
-		}
-
-		if(Hue.youtube_player !== undefined)
-		{
-			Hue.youtube_player.pauseVideo()
-		}
-
-		if(Hue.soundcloud_player !== undefined)
-		{
-			Hue.soundcloud_player.pause()
 		}
 	}
 
@@ -2063,13 +2052,6 @@ Hue.load_radio = function(src, type, item, force=false)
 		{
 			Hue.push_played(false, {s1:item.title, s2:src})
 		}
-
-		if(Hue.soundcloud_player !== undefined)
-		{
-			Hue.soundcloud_player.pause()
-		}
-
-		$('#audio').attr('src', '')
 	}
 
 	else if(type === "soundcloud")
@@ -2097,13 +2079,6 @@ Hue.load_radio = function(src, type, item, force=false)
 		{
 			Hue.push_played(false, {s1:item.title, s2:src})
 		}
-
-		if(Hue.youtube_player !== undefined)
-		{
-			Hue.youtube_player.pauseVideo()
-		}
-
-		$('#audio').attr('src', '')
 	}
 
 	Hue.loaded_radio_source = src
@@ -2117,33 +2092,58 @@ Hue.load_radio = function(src, type, item, force=false)
 }
 
 Hue.stop_videos = function(clear_iframe=true)
-{
-	if(Hue.youtube_video_player !== undefined)
+{	
+	if(!Hue.loaded_tv)
 	{
-		Hue.youtube_video_player.pauseVideo()
+		return false
 	}
 
-	if(Hue.twitch_video_player !== undefined)
+	let type = Hue.loaded_tv.type
+
+	if(type === "youtube")
 	{
-		Hue.twitch_video_player.pause()
+		if(Hue.youtube_video_player !== undefined)
+		{
+			Hue.youtube_video_player.pauseVideo()
+		}
 	}
 
-	if(Hue.soundcloud_video_player !== undefined)
+	else if(type === "twitch")
 	{
-		Hue.soundcloud_video_player.pause()
+		if(Hue.twitch_video_player !== undefined)
+		{
+			Hue.twitch_video_player.pause()
+		}
 	}
 
-	if(Hue.vimeo_video_player !== undefined)
+	else if(type === "soundcloud")
 	{
-		Hue.vimeo_video_player.pause()
+		if(Hue.soundcloud_video_player !== undefined)
+		{
+			Hue.soundcloud_video_player.pause()
+		}
 	}
 
-	$("#media_video")[0].pause()
-
-	if(clear_iframe)
+	else if(type === "vimeo")
 	{
-		$("#media_iframe_video").attr("src", "")
-		$("#media_iframe_poster").css("display", "block")
+		if(Hue.vimeo_video_player !== undefined)
+		{
+			Hue.vimeo_video_player.pause()
+		}
+	}
+
+	else if(type === "url")
+	{
+		$("#media_video")[0].pause()
+	}
+
+	else if(type === "iframe")
+	{
+		if(clear_iframe)
+		{
+			$("#media_iframe_video").attr("src", "")
+			$("#media_iframe_poster").css("display", "block")
+		}
 	}
 }
 
@@ -9666,29 +9666,46 @@ Hue.start_radio = function()
 	}
 }
 
-Hue.stop_radio = function()
+Hue.stop_radio = function(complete_stop=true)
 {
-	$('#audio').attr("src", "")
-
-	if(Hue.youtube_player !== undefined)
+	if(Hue.loaded_radio)
 	{
-		Hue.youtube_player.pauseVideo()
+		let type = Hue.loaded_radio.type
+	
+		if(type === "radio")
+		{
+			$('#audio').attr("src", "")
+		}
+	
+		else if(type === "youtube")
+		{
+			if(Hue.youtube_player !== undefined)
+			{
+				Hue.youtube_player.stopVideo()
+			}
+		}
+	
+		else if(type === "soundcloud")
+		{
+			if(Hue.soundcloud_player !== undefined)
+			{
+				Hue.soundcloud_player.pause()
+			}
+		}
 	}
 
-	if(Hue.soundcloud_player !== undefined)
+	if(complete_stop)
 	{
-		Hue.soundcloud_player.pause()
-	}
+		$('#header_radio_playing_icon').css('display', 'none')
+		$('#header_radio_volume_area').css('display', 'none')
+		$('#toggle_now_playing_text').html('Start Radio')
 
-	$('#header_radio_playing_icon').css('display', 'none')
-	$('#header_radio_volume_area').css('display', 'none')
-	$('#toggle_now_playing_text').html('Start Radio')
+		Hue.radio_started = false
 
-	Hue.radio_started = false
-
-	if(Hue.stop_radio_timeout)
-	{
-		Hue.clear_automatic_stop_radio()
+		if(Hue.stop_radio_timeout)
+		{
+			Hue.clear_automatic_stop_radio()
+		}
 	}
 }
 
