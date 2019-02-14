@@ -14743,6 +14743,7 @@ Hue.show_image_picker = function()
 	Hue.msg_image_picker.show(function()
 	{
 		$("#image_source_picker_input").focus()
+		Hue.scroll_modal_to_bottom("image_picker")
 	})
 }
 
@@ -14757,6 +14758,7 @@ Hue.show_tv_picker = function()
 	Hue.msg_tv_picker.show(function()
 	{
 		$("#tv_source_picker_input").focus()
+		Hue.scroll_modal_to_bottom("tv_picker")
 	})
 }
 
@@ -14771,6 +14773,7 @@ Hue.show_radio_picker = function()
 	Hue.msg_radio_picker.show(function()
 	{
 		$("#radio_source_picker_input").focus()
+		Hue.scroll_modal_to_bottom("radio_picker")
 	})
 }
 
@@ -23841,7 +23844,7 @@ Hue.scroll_modal_to_top = function(id)
 	$(`#Msg-content-container-${id}`).scrollTop(0)
 }
 
-Hue.scroll_modal_to_bottom(id)
+Hue.scroll_modal_to_bottom = function(id)
 {
 	let container = $(`#Msg-content-container-${id}`)[0]
 	container.scrollTop = container.scrollHeight
