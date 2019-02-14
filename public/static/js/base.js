@@ -4663,7 +4663,7 @@ Hue.create_room_submit = function()
 
 Hue.create_room_suggest_name = function()
 {
-	let sentence = Hue.wordz.make_random_sentence(2)
+	let sentence = Hue.wordz.make_random_sentence(2, true)
 	$("#create_room_name").val(sentence)
 }
 
