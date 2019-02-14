@@ -6158,7 +6158,7 @@ Hue.clock_time = function(date=Date.now())
 
 Hue.escape_special_characters = function(s)
 {
-	return s.replace(/[^A-Za-z0-9]/g, '\\$&');
+	return s.replace(/[^A-Za-z0-9]/g, '\\$&')
 }
 
 Hue.start_chat_mouse_events = function()
