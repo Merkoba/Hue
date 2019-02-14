@@ -23693,12 +23693,7 @@ Hue.get_media_change_inline_comment = function(type, source)
 			}
 		}
 
-		if(url)
-		{
-			source = url
-		}
-
-		if(cm.length > 0)
+		if(url && cm.length > 0)
 		{
 			source = url
 			comment = cm.join(" ")
