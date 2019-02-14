@@ -48,6 +48,7 @@ Hue.afk = false
 Hue.alert_mode = 0
 Hue.commands_sorted = {}
 Hue.utilz = Utilz()
+Hue.wordz = Wordz()
 Hue.change_image_when_focused = false
 Hue.change_tv_when_focused = false
 Hue.change_radio_when_focused = false
@@ -4640,12 +4641,6 @@ Hue.show_create_room = function()
 	Hue.msg_info2.show(["Create Room", Hue.template_create_room()], function()
 	{
 		$("#create_room_name").focus()
-
-		$('#create_room_done').on("click", function()
-		{
-			Hue.create_room_submit()
-		})
-
 		Hue.crm = true
 	})
 }
@@ -4664,6 +4659,12 @@ Hue.create_room_submit = function()
 	data.public = JSON.parse($('#create_room_public option:selected').val())
 
 	Hue.create_room(data)
+}
+
+Hue.create_room_suggest_name = function()
+{
+	let sentence = Hue.wordz.make_random_sentence(2)
+	$("#create_room_name").val(sentence)
 }
 
 Hue.show_open_room = function(id)

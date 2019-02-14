@@ -2075,6 +2075,14 @@ input[type=text], textarea
 	justify-content: center;
 }
 
+.flex_row_column
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
 #admin_activity_container
 {
 	width: 22em;

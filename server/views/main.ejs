@@ -25,21 +25,22 @@
 		<script src="/static/js/Tone.js"></script>
 		<script src="/static/js/vimeo.player.min.js"></script>
 		<script src="/static/js/timeago.min.js"></script>
-
+		
 		<link rel="stylesheet" href="/static/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" href="/static/css/cropper.min.css?version=2">
 		<link rel="stylesheet" href="/static/css/spectrum.css">
 		<link rel="stylesheet" href="/static/css/spectrum.css">
 		<link rel="stylesheet" href="/static/js/contextmenu/jquery.contextMenu.min.css?version=2"> 
 		<link rel="stylesheet" href="/static/js/nstslider/jquery.nstSlider.min.css"> 
-
+		
 		<script src="/static/js/msg.min.js?version=27"></script>
 		<script src="/static/js/utilz.js?version=32"></script>
 		<script src="/static/js/colorlib.js?version=13"></script>
+		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2601"></script>
+		<script src="/static/js/base.js?version=2602"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=564"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=565"/>
 
 		<script>
 
@@ -1505,7 +1506,13 @@
 
 				<div class='spacer3'></div>
 
-				<input type="text" id="create_room_name" placeholder="Name">
+				<div class='flex_row_center'>
+					<i class='fa fa-question-circle invisible'></i>
+					<span class='hspacer1'></span>
+					<input type="text" id="create_room_name" placeholder="Name">
+					<span class='hspacer1'></span>
+					<i class='fa fa-question-circle pointer action' onclick='Hue.create_room_suggest_name()'></i>
+				</div>
 
 				<div class='unselectable'>
 
@@ -1518,8 +1525,8 @@
 
 					<div class='spacer3'></div>
 					<div class='spacer2'></div>
-
-					<div id='create_room_done' class='menu_item action inline'>Create</div>
+					
+					<div id='create_room_done' class='menu_item action inline' onclick='Hue.create_room_submit()'>Create</div>
 
 				</div>
 
