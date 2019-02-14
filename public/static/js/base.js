@@ -9662,7 +9662,7 @@ Hue.start_radio = function()
 
 	if(Hue.get_setting("stop_tv_on_radio_play"))
 	{
-		Hue.stop_videos(false)
+		Hue.stop_tv(false)
 	}
 }
 
