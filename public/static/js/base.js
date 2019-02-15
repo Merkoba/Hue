@@ -2093,57 +2093,32 @@ Hue.load_radio = function(src, type, item, force=false)
 
 Hue.stop_tv = function(clear_iframe=true)
 {	
-	if(!Hue.loaded_tv)
+	if(Hue.youtube_video_player !== undefined)
 	{
-		return false
+		Hue.youtube_video_player.pauseVideo()
 	}
 
-	let type = Hue.loaded_tv.type
-
-	if(type === "youtube")
+	if(Hue.twitch_video_player !== undefined)
 	{
-		if(Hue.youtube_video_player !== undefined)
-		{
-			Hue.youtube_video_player.pauseVideo()
-		}
+		Hue.twitch_video_player.pause()
 	}
 
-	else if(type === "twitch")
+	if(Hue.soundcloud_video_player !== undefined)
 	{
-		if(Hue.twitch_video_player !== undefined)
-		{
-			Hue.twitch_video_player.pause()
-		}
+		Hue.soundcloud_video_player.pause()
 	}
 
-	else if(type === "soundcloud")
+	if(Hue.vimeo_video_player !== undefined)
 	{
-		if(Hue.soundcloud_video_player !== undefined)
-		{
-			Hue.soundcloud_video_player.pause()
-		}
+		Hue.vimeo_video_player.pause()
 	}
 
-	else if(type === "vimeo")
-	{
-		if(Hue.vimeo_video_player !== undefined)
-		{
-			Hue.vimeo_video_player.pause()
-		}
-	}
+	$("#media_video")[0].pause()
 
-	else if(type === "url")
+	if(clear_iframe)
 	{
-		$("#media_video")[0].pause()
-	}
-
-	else if(type === "iframe")
-	{
-		if(clear_iframe)
-		{
-			$("#media_iframe_video").attr("src", "")
-			$("#media_iframe_poster").css("display", "block")
-		}
+		$("#media_iframe_video").attr("src", "")
+		$("#media_iframe_poster").css("display", "block")
 	}
 }
 
@@ -9668,30 +9643,16 @@ Hue.start_radio = function()
 
 Hue.stop_radio = function(complete_stop=true)
 {
-	if(Hue.loaded_radio)
+	$('#audio').attr("src", "")
+
+	if(Hue.youtube_player !== undefined)
 	{
-		let type = Hue.loaded_radio.type
-	
-		if(type === "radio")
-		{
-			$('#audio').attr("src", "")
-		}
-	
-		else if(type === "youtube")
-		{
-			if(Hue.youtube_player !== undefined)
-			{
-				Hue.youtube_player.stopVideo()
-			}
-		}
-	
-		else if(type === "soundcloud")
-		{
-			if(Hue.soundcloud_player !== undefined)
-			{
-				Hue.soundcloud_player.pause()
-			}
-		}
+		Hue.youtube_player.stopVideo()
+	}
+
+	if(Hue.soundcloud_player !== undefined)
+	{
+		Hue.soundcloud_player.pause()
 	}
 
 	if(complete_stop)
