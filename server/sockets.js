@@ -479,7 +479,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			if(info[key] === undefined)
 			{
-				info = await db_manager.get_room({_id:data.room_id}, {})
+				info = await db_manager.get_room({_id:socket.hue_room_id}, {})
 			}
 			
 			rooms[socket.hue_room_id] = handler.create_room_object(info)

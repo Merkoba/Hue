@@ -160,7 +160,7 @@ Hue.screen_locked = false
 
 Hue.commands = 
 [
-	'/me', '/clear', '/clearinput', '/unclear',
+	'/me', '/clear', '/clearinput',
 	'/users', '/room', '/publicrooms', '/visitedrooms',
 	'/roomname', '/roomnameedit', '/played', '/search',
 	'/role', '/voice1', '/voice2', '/voice3',
@@ -3967,6 +3967,20 @@ Hue.start_chat_menu_context_menu = function()
 				{
 					let el = $(this).closest(".chat_content_container").eq(0).find(".chat_content").get(0)
 					Hue.do_chat_quote(el)
+				},
+				visible: function(key, opt)
+				{
+					let message = $(this).closest(".message")
+
+					if(message.data("mode") === "chat")
+					{
+						if($(this).closest(".message").data("user_id") === Hue.user_id)
+						{
+							return true
+						}
+					}
+
+					return false
 				}
 			},
 			item2:
@@ -3978,19 +3992,158 @@ Hue.start_chat_menu_context_menu = function()
 				},
 				visible: function(key, opt)
 				{
-					return $(this).closest(".message").data("user_id") === Hue.user_id
+					let message = $(this).closest(".message")
+
+					if(message.data("mode") === "chat")
+					{
+						if($(this).closest(".message").data("user_id") === Hue.user_id)
+						{
+							return true
+						}
+					}
+
+					return false
 				}
 			},
 			item3:
 			{
 				name: "Delete", callback: function(key, opt)
 				{
-					let id = $(this).closest(".chat_content_container").eq(0).data("id")
-					Hue.delete_message(id)
+
 				},
 				visible: function(key, opt)
 				{
 					return $(this).closest(".message").data("user_id") === Hue.user_id
+				},
+				items:
+				{
+					opsure:
+					{
+						name: "I'm Sure", callback: function(key, opt)
+						{
+							let id = $(this).closest(".chat_content_container").eq(0).data("id")
+							Hue.delete_message(id, true)
+						}
+					}
+				}
+			},
+			item4:
+			{
+				name: "Change Image", callback: function(key, opt)
+				{
+
+				},
+				visible: function(key, opt)
+				{
+					let url = $(this).closest(".message").data("first_url")	
+
+					if(url)
+					{
+						let ok = Hue.change_image_source(url, true)
+		
+						if(ok)
+						{
+							return true
+						}
+					}
+					
+					return false
+				},
+				items:
+				{
+					opsure:
+					{
+						name: "I'm Sure", callback: function(key, opt)
+						{
+							let first_url = $(this).closest(".message").data("first_url")
+							Hue.change_image_source(first_url)
+						}
+					}
+				}
+			},
+			item5:
+			{
+				name: "Change TV", callback: function(key, opt)
+				{
+
+				},
+				visible: function(key, opt)
+				{
+					let url = $(this).closest(".message").data("first_url")	
+
+					if(url)
+					{
+						let ok = Hue.change_tv_source(url, true)
+		
+						if(ok)
+						{
+							return true
+						}
+					}
+					
+					return false
+				},
+				items:
+				{
+					opsure:
+					{
+						name: "I'm Sure", callback: function(key, opt)
+						{
+							let first_url = $(this).closest(".message").data("first_url")
+							Hue.change_tv_source(first_url)
+						}
+					}
+				}
+			},
+			item6:
+			{
+				name: "Change Radio", callback: function(key, opt)
+				{
+
+				},
+				visible: function(key, opt)
+				{
+					let url = $(this).closest(".message").data("first_url")	
+
+					if(url)
+					{
+						let ok = Hue.change_radio_source(url, true)
+		
+						if(ok)
+						{
+							return true
+						}
+					}
+					
+					return false
+				},
+				items:
+				{
+					opsure:
+					{
+						name: "I'm Sure", callback: function(key, opt)
+						{
+							let first_url = $(this).closest(".message").data("first_url")
+							Hue.change_radio_source(first_url)
+						}
+					}
+				}
+			},
+			item7:
+			{
+				name: "Hide", callback: function(key, opt)
+				{
+					
+				},
+				items:
+				{
+					opsure:
+					{
+						name: "I'm Sure", callback: function(key, opt)
+						{
+							Hue.hide_message_from_context_menu(this)
+						}
+					}
 				}
 			}
 		}
@@ -6322,8 +6475,6 @@ Hue.update_chat = function(args={})
 	}
 
 	let fmessage
-
-	let chat_menu_button_main_class = "chat_menu_button_main"
 	
 	if(starts_me || args.third_person)
 	{
@@ -6348,7 +6499,7 @@ Hue.update_chat = function(args={})
 		<div class='message chat_message thirdperson ${messageclasses}'>
 			<div class='chat_third_container'>
 				<div class='brk chat_third_brk'>${args.brk}</div>
-				<div class='chat_content_container chat_content_container_third ${chat_menu_button_main_class}'>
+				<div class='chat_content_container chat_content_container_third chat_menu_button_main'>
 					<div class='chat_menu_button_container unselectable'>
 						<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
 					</div>
@@ -6389,7 +6540,7 @@ Hue.update_chat = function(args={})
 					<div class='chat_uname action'></div>
 				</div>
 				<div class='chat_container'>
-					<div class='chat_content_container ${chat_menu_button_main_class}'>
+					<div class='chat_content_container chat_menu_button_main'>
 
 						<div class='chat_menu_button_container unselectable'>
 							<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
@@ -6451,6 +6602,23 @@ Hue.update_chat = function(args={})
 		has_embed = true
 	}
 
+	let first_url = false
+
+	if(image_preview)
+	{
+		first_url = image_preview_src_original
+	}
+
+	else if(link_preview)
+	{
+		first_url = args.link_url
+	}
+
+	else
+	{
+		first_url = Hue.utilz.get_first_url(args.message)
+	}
+
 	fmessage.data("user_id", args.user_id)
 	fmessage.data("public", args.public)
 	fmessage.data("date", d)
@@ -6458,6 +6626,7 @@ Hue.update_chat = function(args={})
 	fmessage.data("uname", args.username)
 	fmessage.data("mode", "chat")
 	fmessage.data("has_embed", has_embed)
+	fmessage.data("first_url", first_url)
 
 	let chat_content_container = fmessage.find(".chat_content_container").eq(0)
 	let chat_content = fmessage.find(".chat_content").eq(0)
@@ -7309,7 +7478,7 @@ Hue.chat_announce = function(args={})
 	let splitclasses = "announcement_content_split dynamic_title"
 	let contclasses = "announcement_content"
 	let brkclasses = "brk announcement_brk"
-
+	
 	let containerid = " "
 
 	if(args.id)
@@ -7399,11 +7568,31 @@ Hue.chat_announce = function(args={})
 		brkclasses += " pointer action"
 	}
 
+	let first_url = false
+
+	if(image_preview)
+	{
+		first_url = image_preview_src_original
+	}
+
+	else if(link_preview)
+	{
+		first_url = args.link_url
+	}
+
+	if(first_url)
+	{
+		splitclasses += " chat_menu_button_main"
+	}
+
 	let s = `
 	<div${containerid}class='${messageclasses}'>
 		<div class='${containerclasses}'>
 			<div class='${brkclasses}'>${args.brk}</div>
 			<div class='${splitclasses}' title='${t}' data-otitle='${t}' data-date='${d}'>
+				<div class='chat_menu_button_container unselectable'>
+					<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
+				</div>
 				<div class='${contclasses}'></div>
 				${comment}
 			</div>
@@ -7473,6 +7662,7 @@ Hue.chat_announce = function(args={})
 	fmessage.data("info2", args.info2)
 	fmessage.data("uname", args.username)
 	fmessage.data("mode", "announcement")
+	fmessage.data("first_url", first_url)
 
 	if(!ignore)
 	{
@@ -7964,11 +8154,6 @@ Hue.execute_command = function(message, ans)
 	else if(Hue.oi_equals(cmd2, '/clearinput'))
 	{
 		Hue.clear_input()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/unclear'))
-	{
-		Hue.unclear_chat()
 	}
 
 	else if(Hue.oi_equals(cmd2, '/users'))
@@ -10356,23 +10541,6 @@ Hue.clear_chat = function()
 	Hue.focus_input()
 }
 
-Hue.unclear_chat = function()
-{
-	Hue.clear_chat()
-
-	if(Hue.chat_history.length === 0)
-	{
-		return false
-	}
-
-	for(let el of Hue.chat_history)
-	{
-		Hue.add_to_chat({message:el.clone(true, true), save:false, notify:false, fader:false})
-	}
-
-	Hue.chat_scroll_bottom()
-}
-
 Hue.clear_input = function()
 {
 	Hue.change_input("")
@@ -10559,11 +10727,22 @@ Hue.announce_privacy_change = function(data)
 	})
 }
 
-Hue.change_radio_source = function(src)
+Hue.change_radio_source = function(src, just_check=false)
 {
+	let feedback = true
+
+	if(just_check)
+	{
+		feedback = false
+	}
+
 	if(!Hue.can_radio)
 	{
-		Hue.feedback("You don't have permission to change the radio")
+		if(feedback)
+		{
+			Hue.feedback("You don't have permission to change the radio")
+		}
+
 		return false
 	}
 
@@ -10575,7 +10754,11 @@ Hue.change_radio_source = function(src)
 
 	if(comment.length > Hue.config.safe_limit_4)
 	{
-		Hue.feedback("Comment is too long")
+		if(feedback)
+		{
+			Hue.feedback("Comment is too long")
+		}
+
 		return false
 	}
 
@@ -10598,7 +10781,11 @@ Hue.change_radio_source = function(src)
 
 	if(src === Hue.current_radio().source || src === Hue.current_radio().query)
 	{
-		Hue.feedback("Radio is already set to that")
+		if(feedback)
+		{
+			Hue.feedback("Radio is already set to that")
+		}
+
 		return false
 	}
 
@@ -10616,7 +10803,11 @@ Hue.change_radio_source = function(src)
 
 		else
 		{
-			Hue.feedback("No radio source before current one")
+			if(feedback)
+			{
+				Hue.feedback("No radio source before current one")
+			}
+
 			return false
 		}
 	}
@@ -10625,7 +10816,11 @@ Hue.change_radio_source = function(src)
 	{
 		if(Hue.check_domain_list("radio", src))
 		{
-			Hue.feedback("Radio sources from that domain are not allowed")
+			if(feedback)
+			{
+				Hue.feedback("Radio sources from that domain are not allowed")
+			}
+
 			return false
 		}
 
@@ -10633,8 +10828,12 @@ Hue.change_radio_source = function(src)
 		{
 			if(!Hue.config.youtube_enabled)
 			{
-				Hue.feedback("YouTube support is not enabled")
-				return
+				if(feedback)
+				{
+					Hue.feedback("YouTube support is not enabled")
+				}
+
+				return false
 			}
 		}
 
@@ -10642,8 +10841,12 @@ Hue.change_radio_source = function(src)
 		{
 			if(!Hue.config.soundcloud_enabled)
 			{
-				Hue.feedback("Soundcloud support is not enabled")
-				return
+				if(feedback)
+				{
+					Hue.feedback("Soundcloud support is not enabled")
+				}
+
+				return false
 			}
 		}
 
@@ -10655,7 +10858,11 @@ Hue.change_radio_source = function(src)
 			{
 				if(!Hue.utilz.audio_extensions.includes(extension))
 				{
-					Hue.feedback("That doesn't seem to be an audio")
+					if(feedback)
+					{
+						Hue.feedback("That doesn't seem to be an audio")
+					}
+
 					return false
 				}
 			}
@@ -10666,25 +10873,49 @@ Hue.change_radio_source = function(src)
 	{
 		if(src.length > Hue.config.safe_limit_1)
 		{
-			Hue.feedback("Query is too long")
+			if(feedback)
+			{
+				Hue.feedback("Query is too long")
+			}
+
 			return false
 		}
 
 		if(!Hue.config.youtube_enabled)
 		{
-			Hue.feedback("Invalid radio source")
-			return
+			if(feedback)
+			{
+				Hue.feedback("Invalid radio source")
+			}
+
+			return false
 		}
+	}
+
+	if(just_check)
+	{
+		return true
 	}
 
 	Hue.socket_emit('change_radio_source', {src:src, comment:comment})
 }
 
-Hue.change_tv_source = function(src)
+Hue.change_tv_source = function(src, just_check=false)
 {
+	let feedback = true
+
+	if(just_check)
+	{
+		feedback = false
+	}
+
 	if(!Hue.can_tv)
 	{
-		Hue.feedback("You don't have permission to change the tv")
+		if(feedback)
+		{
+			Hue.feedback("You don't have permission to change the tv")
+		}
+
 		return false
 	}
 
@@ -10696,7 +10927,11 @@ Hue.change_tv_source = function(src)
 
 	if(comment.length > Hue.config.safe_limit_4)
 	{
-		Hue.feedback("Comment is too long")
+		if(feedback)
+		{
+			Hue.feedback("Comment is too long")
+		}
+
 		return false
 	}
 
@@ -10719,7 +10954,11 @@ Hue.change_tv_source = function(src)
 
 	if(src === Hue.current_tv().source || src === Hue.current_tv().query)
 	{
-		Hue.feedback("TV is already set to that")
+		if(feedback)
+		{
+			Hue.feedback("TV is already set to that")
+		}
+
 		return false
 	}
 
@@ -10737,7 +10976,11 @@ Hue.change_tv_source = function(src)
 
 		else
 		{
-			Hue.feedback("No tv source before current one")
+			if(feedback)
+			{
+				Hue.feedback("No tv source before current one")
+			}
+			
 			return false
 		}
 	}
@@ -10746,7 +10989,11 @@ Hue.change_tv_source = function(src)
 	{
 		if(Hue.check_domain_list("tv", src))
 		{
-			Hue.feedback("TV sources from that domain are not allowed")
+			if(feedback)
+			{
+				Hue.feedback("TV sources from that domain are not allowed")
+			}
+
 			return false
 		}
 
@@ -10754,8 +11001,12 @@ Hue.change_tv_source = function(src)
 		{
 			if(Hue.utilz.get_youtube_id(src) && !Hue.config.youtube_enabled)
 			{
-				Hue.feedback("YouTube support is not enabled")
-				return
+				if(feedback)
+				{
+					Hue.feedback("YouTube support is not enabled")
+				}
+
+				return false
 			}
 		}
 
@@ -10763,8 +11014,12 @@ Hue.change_tv_source = function(src)
 		{
 			if(Hue.utilz.get_twitch_id(src) && !Hue.config.twitch_enabled)
 			{
-				Hue.feedback("Twitch support is not enabled")
-				return
+				if(feedback)
+				{
+					Hue.feedback("Twitch support is not enabled")
+				}
+
+				return false
 			}
 		}
 
@@ -10772,8 +11027,12 @@ Hue.change_tv_source = function(src)
 		{
 			if(!Hue.config.soundcloud_enabled)
 			{
-				Hue.feedback("Soundcloud support is not enabled")
-				return
+				if(feedback)
+				{
+					Hue.feedback("Soundcloud support is not enabled")
+				}
+
+				return false
 			}
 		}
 
@@ -10781,8 +11040,12 @@ Hue.change_tv_source = function(src)
 		{
 			if(!Hue.config.vimeo_enabled)
 			{
-				Hue.feedback("Vimeo support is not enabled")
-				return
+				if(feedback)
+				{
+					Hue.feedback("Vimeo support is not enabled")
+				}
+
+				return false
 			}
 		}
 
@@ -10799,13 +11062,21 @@ Hue.change_tv_source = function(src)
 
 				else if(Hue.utilz.image_extensions.includes(extension))
 				{
-					Hue.feedback("That doesn't seem to be a video")
+					if(feedback)
+					{
+						Hue.feedback("That doesn't seem to be a video")
+					}
+
 					return false
 				}
 
 				else if(!Hue.config.iframes_enabled)
 				{
-					Hue.feedback("IFrame support is not enabled")
+					if(feedback)
+					{
+						Hue.feedback("IFrame support is not enabled")
+					}
+
 					return false
 				}
 			}
@@ -10814,7 +11085,11 @@ Hue.change_tv_source = function(src)
 			{
 				if(!Hue.config.iframes_enabled)
 				{
-					Hue.feedback("IFrame support is not enabled")
+					if(feedback)
+					{
+						Hue.feedback("IFrame support is not enabled")
+					}
+
 					return false
 				}
 			}
@@ -10825,15 +11100,28 @@ Hue.change_tv_source = function(src)
 	{
 		if(src.length > Hue.config.safe_limit_1)
 		{
-			Hue.feedback("Query is too long")
+			if(feedback)
+			{
+				Hue.feedback("Query is too long")
+			}
+
 			return false
 		}
 
 		if(!Hue.config.youtube_enabled)
 		{
-			Hue.feedback("YouTube support is not enabled")
-			return
+			if(feedback)
+			{
+				Hue.feedback("YouTube support is not enabled")
+			}
+
+			return false
 		}
+	}
+
+	if(just_check)
+	{
+		return true
 	}
 
 	Hue.socket_emit('change_tv_source', {src:src, comment:comment})
@@ -15903,11 +16191,22 @@ Hue.announce_background_tile_dimensions_change = function(data)
 	Hue.apply_background()
 }
 
-Hue.change_image_source = function(src)
+Hue.change_image_source = function(src, just_check=false)
 {
+	let feedback = true
+
+	if(just_check)
+	{
+		feedback = false
+	}
+
 	if(!Hue.can_images)
 	{
-		Hue.feedback("You don't have permission to change images")
+		if(feedback)
+		{
+			Hue.feedback("You don't have permission to change images")
+		}
+
 		return false
 	}
 
@@ -15919,7 +16218,11 @@ Hue.change_image_source = function(src)
 
 	if(comment.length > Hue.config.safe_limit_4)
 	{
-		Hue.feedback("Comment is too long")
+		if(feedback)
+		{
+			Hue.feedback("Comment is too long")
+		}
+
 		return false
 	}
 
@@ -15942,7 +16245,11 @@ Hue.change_image_source = function(src)
 
 	if(src === Hue.current_image().source || src === Hue.current_image().query)
 	{
-		Hue.feedback("Image is already set to that")
+		if(feedback)
+		{
+			Hue.feedback("Image is already set to that")
+		}
+
 		return false
 	}
 
@@ -15960,7 +16267,11 @@ Hue.change_image_source = function(src)
 
 		else
 		{
-			Hue.feedback("No image source before current one")
+			if(feedback)
+			{
+				Hue.feedback("No image source before current one")
+			}
+
 			return false
 		}
 	}
@@ -15971,7 +16282,11 @@ Hue.change_image_source = function(src)
 
 		if(Hue.check_domain_list("images", src))
 		{
-			Hue.feedback("Image sources from that domain are not allowed")
+			if(feedback)
+			{
+				Hue.feedback("Image sources from that domain are not allowed")
+			}
+
 			return false
 		}
 
@@ -15979,7 +16294,11 @@ Hue.change_image_source = function(src)
 
 		if(!extension || !Hue.utilz.image_extensions.includes(extension))
 		{
-			Hue.feedback("That doesn't seem to be an image")
+			if(feedback)
+			{
+				Hue.feedback("That doesn't seem to be an image")
+			}
+
 			return false
 		}
 	}
@@ -15988,15 +16307,28 @@ Hue.change_image_source = function(src)
 	{
 		if(src.length > Hue.config.safe_limit_1)
 		{
-			Hue.feedback("Query is too long")
+			if(feedback)
+			{
+				Hue.feedback("Query is too long")
+			}
+
 			return false
 		}
 
 		if(!Hue.config.imgur_enabled)
 		{
-			Hue.feedback("Imgur support is not enabled")
+			if(feedback)
+			{
+				Hue.feedback("Imgur support is not enabled")
+			}
+			
 			return false
 		}
+	}
+
+	if(just_check)
+	{
+		return true
 	}
 
 	Hue.emit_change_image_source(src, comment)
@@ -22482,18 +22814,26 @@ Hue.send_edit_messsage = function(id)
 	Hue.process_message({message:new_message, edit_id:edit_id})
 }
 
-Hue.delete_message = function(id)
+Hue.delete_message = function(id, force=false)
 {
-	if(!Hue.started_safe)
-	{
-		return false
-	}
-
-	let r = confirm("Are you sure you want to delete this message?")
-
-	if(r)
+	if(force)
 	{
 		Hue.send_delete_message(id)
+	}
+
+	else
+	{
+		if(!Hue.started_safe)
+		{
+			return false
+		}
+	
+		let r = confirm("Are you sure you want to delete this message?")
+	
+		if(r)
+		{
+			Hue.send_delete_message(id)
+		}
 	}
 }
 
@@ -22509,33 +22849,61 @@ Hue.remove_message_from_chat = function(data)
 		if($(this).data("id") == data.id)
 		{
 			let message = $(this).closest(".message")
-
-			if(message.hasClass("thirdperson"))
-			{
-				Hue.remove_from_chat_history(message)
-				message.remove()
-			}
-
-			else
-			{
-				if($(this).closest(".chat_container").find(".chat_content_container").length === 1)
-				{
-					Hue.remove_from_chat_history(message)
-					message.remove()
-				}
-
-				else
-				{
-					$(this).remove()
-					Hue.replace_in_chat_history(message)
-				}
-			}
+			Hue.process_remove_chat_message(message)
 
 			return false
 		}
 	})
 
 	Hue.chat_scroll_bottom(false, false)
+}
+
+Hue.hide_message_from_context_menu = function(menu)
+{
+	let message = $(menu).closest(".message")
+	let mode = message.data("mode")
+
+	if(mode === "chat")
+	{
+		Hue.process_remove_chat_message(message)
+	}
+
+	else if(mode === "announcement")
+	{
+		Hue.process_remove_announcement(message)
+	}
+}
+
+Hue.process_remove_chat_message = function(message)
+{
+	let chat_content_container = $(message).find(".chat_content_container").eq(0)
+
+	if(message.hasClass("thirdperson"))
+	{
+		Hue.remove_from_chat_history(message)
+		message.remove()
+	}
+
+	else
+	{
+		if($(chat_content_container).closest(".chat_container").find(".chat_content_container").length === 1)
+		{
+			Hue.remove_from_chat_history(message)
+			message.remove()
+		}
+
+		else
+		{
+			$(chat_content_container).remove()
+			Hue.replace_in_chat_history(message)
+		}
+	}
+}
+
+Hue.process_remove_announcement = function(message)
+{
+	Hue.remove_from_chat_history(message)
+	message.remove()
 }
 
 Hue.setup_iframe_video = function()

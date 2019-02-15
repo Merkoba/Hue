@@ -399,6 +399,24 @@ const Utilz = function()
 		return ns
 	}
 
+	utilz.get_first_url = function(s)
+	{
+		if(s.includes("http://") || s.includes("https://"))
+		{
+			let split = s.split(" ")
+	
+			for(let word of split)
+			{
+				if(word.startsWith("http://") || word.startsWith("https://"))
+				{
+					return word
+				}
+			}
+		}
+
+		return false
+	}
+
 	utilz.synth_notes = 
 	[
 		"c3", "d3", "e3", "f3",  "g3", 
