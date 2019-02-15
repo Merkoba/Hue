@@ -1489,6 +1489,8 @@ Hue.setup_image = function(mode, odata={})
 {	
 	let data = {}
 	
+	data.id = odata.image_id
+	data.user_id = odata.image_user_id
 	data.type = odata.image_type
 	data.source = odata.image_source
 	data.setter = odata.image_setter
@@ -1593,7 +1595,9 @@ Hue.announce_image = function(data)
 		username: data.setter,
 		title: data.info,
 		onclick: data.onclick,
-		comment: data.comment
+		comment: data.comment,
+		type: "image_change",
+		item_id: data.id
 	})
 }
 
@@ -1664,6 +1668,8 @@ Hue.setup_tv = function(mode, odata={})
 	{
 		data = {}
 
+		data.id = odata.tv_id
+		data.user_id = odata.tv_user_id
 		data.type = odata.tv_type
 		data.source = odata.tv_source
 		data.title = odata.tv_title
@@ -1768,7 +1774,9 @@ Hue.announce_tv = function(data)
 		date: data.date,
 		type: data.type,
 		username: data.setter,
-		comment: data.comment
+		comment: data.comment,
+		type: "tv_change",
+		item_id: data.id
 	})
 }
 
@@ -1834,6 +1842,8 @@ Hue.setup_radio = function(mode, odata={})
 	{
 		data = {}
 
+		data.id = odata.radio_id
+		data.user_id = odata.radio_user_id
 		data.type = odata.radio_type
 		data.source = odata.radio_source
 		data.title = odata.radio_title
@@ -1938,7 +1948,9 @@ Hue.announce_radio = function(data)
 		date: data.date,
 		type: data.type,
 		username: data.setter,
-		comment: data.comment
+		comment: data.comment,
+		type: "radio_change",
+		item_id: data.id
 	})
 }
 
@@ -4012,7 +4024,32 @@ Hue.start_chat_menu_context_menu = function()
 				},
 				visible: function(key, opt)
 				{
-					return Hue.is_admin_or_op() || $(this).closest(".message").data("user_id") === Hue.user_id
+					let message = $(this).closest(".message")
+					let mode = message.data("mode")
+
+					if(mode === "chat")
+					{
+						if(Hue.is_admin_or_op() || $(this).closest(".message").data("user_id") === Hue.user_id)
+						{
+							return true
+						}
+					}
+
+					else if(mode === "announcement")
+					{
+						let type = message.data("type")
+						let id = message.data("item_id")
+
+						if(id)
+						{
+							if(type === "image_change" || type === "tv_change" || type === "radio_change")
+							{
+								return true
+							}
+						}
+					}
+
+					return false
 				},
 				items:
 				{
@@ -4020,8 +4057,28 @@ Hue.start_chat_menu_context_menu = function()
 					{
 						name: "I'm Sure", callback: function(key, opt)
 						{
-							let id = $(this).closest(".chat_content_container").eq(0).data("id")
-							Hue.delete_message(id, true)
+							let message = $(this).closest(".message")
+							let mode = message.data("mode")
+
+							if(mode === "chat")
+							{
+								let id = $(this).closest(".chat_content_container").eq(0).data("id")
+								Hue.delete_message(id, true)
+							}
+
+							else if(mode === "announcement")
+							{
+								let type = message.data("type")
+								let id = message.data("item_id")
+
+								if(id)
+								{
+									if(type === "image_change" || type === "tv_change" || type === "radio_change")
+									{
+										Hue.delete_message(id, true)
+									}
+								}
+							}
 						}
 					}
 				}
@@ -6865,7 +6922,7 @@ Hue.remove_from_chat_history = function(message)
 	{
 		let message2 = Hue.chat_history[i]
 
-		if(message.data("message_id") === message2.data("message_id"))
+		if($(message).data("message_id") === message2.data("message_id"))
 		{
 			Hue.chat_history.splice(i, 1)
 			return
@@ -7452,7 +7509,8 @@ Hue.chat_announce = function(args={})
 		link_image: false,
 		link_url: false,
 		preview_image: false,
-		comment: ""
+		comment: "",
+		item_id: false
 	}
 
 	Hue.fill_defaults(args, def_args)
@@ -7579,19 +7637,19 @@ Hue.chat_announce = function(args={})
 		first_url = args.link_url
 	}
 
-	if(first_url)
+	if(first_url || args.type === "image_change" || args.type === "tv_change" || args.type === "radio_change")
 	{
-		splitclasses += " chat_menu_button_main"
+		containerclasses += " chat_menu_button_main"
 	}
 
 	let s = `
 	<div${containerid}class='${messageclasses}'>
 		<div class='${containerclasses}'>
 			<div class='${brkclasses}'>${args.brk}</div>
+			<div class='chat_menu_button_container unselectable'>
+				<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
+			</div>
 			<div class='${splitclasses}' title='${t}' data-otitle='${t}' data-date='${d}'>
-				<div class='chat_menu_button_container unselectable'>
-					<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
-				</div>
 				<div class='${contclasses}'></div>
 				${comment}
 			</div>
@@ -7662,6 +7720,7 @@ Hue.chat_announce = function(args={})
 	fmessage.data("uname", args.username)
 	fmessage.data("mode", "announcement")
 	fmessage.data("first_url", first_url)
+	fmessage.data("item_id", args.item_id)
 
 	if(!ignore)
 	{
@@ -22815,6 +22874,11 @@ Hue.send_edit_messsage = function(id)
 
 Hue.delete_message = function(id, force=false)
 {
+	if(!id)
+	{
+		return false
+	}
+
 	if(force)
 	{
 		Hue.send_delete_message(id)
@@ -22843,14 +22907,59 @@ Hue.send_delete_message = function(id)
 
 Hue.remove_message_from_chat = function(data)
 {
-	$(".chat_content_container").each(function()
+	if(data.item_type === "chat")
 	{
-		if($(this).data("id") == data.id)
+		$(".chat_content_container").each(function()
 		{
-			Hue.process_remove_chat_message(this)
-			return false
+			if($(this).data("id") == data.id)
+			{
+				Hue.process_remove_chat_message(this)
+				return false
+			}
+		})
+	}
+
+	else if(data.item_type === "image" || data.item_type === "tv" || data.item_type === "radio")
+	{
+		$(".message.announcement").each(function()
+		{
+			if($(this).data("item_id") == data.id)
+			{
+				Hue.process_remove_announcement(this)
+				return false
+			}
+		})
+
+		if(data.item_type === "image")
+		{
+			if(Hue.loaded_image.id === data.id)
+			{
+				Hue.media_load_default("image")
+			}
+
+			Hue.remove_item_from_media_history("image", data.id)
 		}
-	})
+
+		else if(data.item_type === "tv")
+		{
+			if(Hue.loaded_tv.id === data.id)
+			{
+				Hue.media_load_default("tv")
+			}
+
+			Hue.remove_item_from_media_history("tv", data.id)
+		}
+
+		else if(data.item_type === "radio")
+		{
+			if(Hue.loaded_radio.id === data.id)
+			{
+				Hue.media_load_default("radio")
+			}
+			
+			Hue.remove_item_from_media_history("radio", data.id)
+		}
+	}
 
 	Hue.chat_scroll_bottom(false, false)
 }
@@ -22900,7 +23009,7 @@ Hue.process_remove_chat_message = function(chat_content_container)
 Hue.process_remove_announcement = function(message)
 {
 	Hue.remove_from_chat_history(message)
-	message.remove()
+	$(message).remove()
 }
 
 Hue.setup_iframe_video = function()
@@ -23683,6 +23792,11 @@ Hue.media_load_previous = function(type)
 	Hue[`toggle_lock_${type}`](true)
 }
 
+Hue.media_load_default = function(type)
+{
+	Hue[`setup_${type}`]("change", {})
+}
+
 Hue.add_blinks_first_media_history_items = function()
 {
 	let el 
@@ -24148,7 +24262,7 @@ Hue.create_media_history_item = function(data)
 	let comment = el.find('.media_history_item_comment').eq(0)
 
 	inner.text(data.message).urlize()
-
+	
 	if(data.comment)
 	{
 		let c = Hue.replace_markdown(Hue.make_html_safe(data.comment))
@@ -24159,6 +24273,7 @@ Hue.create_media_history_item = function(data)
 	el.data("otitle", data.info)
 	el.data("date", data.date)
 	el.data("obj", data)
+	el.data("item_id", data.id)
 
 	inner.click(data.onclick)
 
@@ -24171,6 +24286,29 @@ Hue.create_media_history_item = function(data)
 	})
 
 	return el
+}
+
+Hue.remove_item_from_media_history = function(type, id)
+{
+	let container = $(`#${type}_history_container`)
+
+	container.find(".media_history_item").each(function()
+	{
+		if($(this).data("item_id") === id)
+		{
+			$(this).remove()
+			return false
+		}
+	})
+
+	let type2 = type
+
+	if(type === "image")
+	{
+		type2 = "images"
+	}
+
+	Hue[`${type2}_changed`] = Hue[`${type2}_changed`].filter(x => x.id !== id)
 }
 
 Hue.do_media_picker_input_cycle = function(type)

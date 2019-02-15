@@ -532,6 +532,7 @@ div#header_radio_playing_icon
 .announcement_content_container
 {
 	display: inline-flex;
+	width: 100%;
 }
 
 .brk

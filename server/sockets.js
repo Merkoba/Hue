@@ -676,7 +676,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			else
 			{
 				date = Date.now()
-				id = `${date}_${utilz.get_random_int(1, 1000)}`
+				id = handler.generate_message_id()
 				uname = socket.hue_username
 				edited = false
 			}
@@ -1726,7 +1726,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		radioinfo.radio_date = date
 		radioinfo.radio_comment = comment
 
-		handler.room_emit(socket, 'changed_radio_source',
+		db_manager.update_room(socket.hue_room_id,
 		{
 			radio_type: radioinfo.radio_type,
 			radio_source: radioinfo.radio_source,
@@ -1737,8 +1737,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			radio_comment: radioinfo.radio_comment
 		})
 
-		db_manager.update_room(socket.hue_room_id,
+		let radio_id = handler.generate_message_id()
+
+		handler.room_emit(socket, 'changed_radio_source',
 		{
+			radio_id: radio_id,
 			radio_type: radioinfo.radio_type,
 			radio_source: radioinfo.radio_source,
 			radio_title: radioinfo.radio_title,
@@ -1755,6 +1758,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				type: "radio",
 				data:
 				{
+					id: radio_id,
+					user_id: socket.hue_user_id,
 					radio_type: radioinfo.radio_type,
 					radio_source: radioinfo.radio_source,
 					radio_title: radioinfo.radio_title,
@@ -2253,8 +2258,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		tvinfo.tv_setter = socket.hue_username
 		tvinfo.tv_date = date
 		tvinfo.tv_comment = comment
-
-		handler.room_emit(socket, 'changed_tv_source',
+		
+		db_manager.update_room(socket.hue_room_id,
 		{
 			tv_type: tvinfo.tv_type,
 			tv_source: tvinfo.tv_source,
@@ -2265,8 +2270,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_comment: tvinfo.tv_comment
 		})
 
-		db_manager.update_room(socket.hue_room_id,
+		let tv_id = handler.generate_message_id()
+
+		handler.room_emit(socket, 'changed_tv_source',
 		{
+			tv_id: tv_id,
 			tv_type: tvinfo.tv_type,
 			tv_source: tvinfo.tv_source,
 			tv_title: tvinfo.tv_title,
@@ -2283,6 +2291,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				type: "tv",
 				data:
 				{
+					id: tv_id,
+					user_id: socket.hue_user_id,
 					tv_type: tvinfo.tv_type,
 					tv_source: tvinfo.tv_source,
 					tv_title: tvinfo.tv_title,
@@ -3379,16 +3389,18 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.do_change_image = function(socket, data)
 	{
-		let room_id
+		let room_id, user_id
 
 		if(typeof socket === "object")
 		{
 			room_id = socket.hue_room_id
+			user_id = socket.hue_user_id
 		}
 
 		else
 		{
 			room_id = socket
+			user_id = "none"
 		}
 
 		let image_source
@@ -3498,8 +3510,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
+		let image_id = handler.generate_message_id()
+
 		handler.room_emit(room_id, 'changed_image_source',
 		{
+			image_id: image_id,
 			image_source: image_source,
 			image_setter: data.setter,
 			image_size: data.size,
@@ -3516,12 +3531,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				type: "image",
 				data:
 				{
+					id: image_id,
+					user_id: user_id,
+					image_comment: comment,
 					image_source: image_source,
 					image_setter: data.setter,
 					image_size: data.size,
 					image_type: data.type,
-					image_query: data.query,
-					image_comment: comment
+					image_query: data.query
 				},
 				date: date
 			}
@@ -4472,6 +4489,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		let messages = rooms[socket.hue_room_id].log_messages
 		let message
 		let message_index
+		let message_type
 		let deleted = false
 
 		for(let i=0; i<messages.length; i++)
@@ -4483,6 +4501,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				message = msg
 				message_index = i
 				message_id = msg.data.id
+				message_type = msg.type
 				break
 			}
 		}
@@ -4539,7 +4558,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				handler.room_emit(socket, 'message_deleted',
 				{
-					id: message_id
+					id: message_id,
+					item_type: message_type
 				})
 			}
 		}
@@ -5694,6 +5714,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			return callback(response)
 		})
+	}
+
+	handler.generate_message_id = function()
+	{
+		return `${Date.now()}_${utilz.get_random_int(1, 1000)}`
 	}
 
 	handler.start_room_loop()
