@@ -4462,7 +4462,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	handler.public.delete_message = function(socket, data)
+	handler.public.delete_message = async function(socket, data)
 	{
 		if(!data.id)
 		{
@@ -4470,29 +4470,77 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let messages = rooms[socket.hue_room_id].log_messages
+		let message
+		let message_index
+		let deleted = false
 
 		for(let i=0; i<messages.length; i++)
 		{
-			let message = messages[i]
+			let msg = messages[i]
 
-			if(message.data.id && message.data.id == data.id)
+			if(msg.data.id && msg.data.id == data.id)
 			{
-				if(message.data.user_id === socket.hue_user_id)
-				{
-					messages.splice(i, 1)
+				message = msg
+				message_index = i
+				message_id = msg.data.id
+				break
+			}
+		}
 
-					handler.room_emit(socket, 'message_deleted',
-					{
-						id: message.data.id
-					})
-
-					break
-				}
-
-				else
+		if(message)
+		{
+			if(!socket.hue_superuser && message.data.user_id !== socket.hue_user_id)
+			{
+				if(!handler.is_admin_or_op(socket))
 				{
 					return handler.get_out(socket)
 				}
+
+				let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:1})
+
+				let userinfo = await db_manager.get_user({_id:message.data.user_id}, {username:1})
+
+				if(!userinfo)
+				{
+					handler.user_emit(socket, 'user_not_found', {})
+					return false
+				}
+
+				let id = userinfo._id.toString()
+
+				let current_role = info.keys[id]
+
+				if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
+				{
+					handler.user_emit(socket, 'forbiddenuser', {})
+					return false
+				}
+
+				for(let i=0; i<messages.length; i++)
+				{
+					let msg = messages[i]
+
+					if(msg.data.id && msg.data.id == data.id)
+					{
+						deleted = true
+						messages.splice(i, 1)
+						break
+					}
+				}
+			}
+
+			else
+			{
+				deleted = true
+				messages.splice(message_index, 1)
+			}
+
+			if(deleted)
+			{
+				handler.room_emit(socket, 'message_deleted',
+				{
+					id: message_id
+				})
 			}
 		}
 	}

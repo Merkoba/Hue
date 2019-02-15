@@ -1488,7 +1488,7 @@ Hue.start_socket = function()
 Hue.setup_image = function(mode, odata={})
 {	
 	let data = {}
-
+	
 	data.type = odata.image_type
 	data.source = odata.image_source
 	data.setter = odata.image_setter
@@ -1589,7 +1589,6 @@ Hue.announce_image = function(data)
 	{
 		save: true,
 		brk: "<i class='icon2c fa fa-camera'></i>",
-		type: "image_change",
 		date: data.date,
 		username: data.setter,
 		title: data.info,
@@ -4013,7 +4012,7 @@ Hue.start_chat_menu_context_menu = function()
 				},
 				visible: function(key, opt)
 				{
-					return $(this).closest(".message").data("user_id") === Hue.user_id
+					return Hue.is_admin_or_op() || $(this).closest(".message").data("user_id") === Hue.user_id
 				},
 				items:
 				{
@@ -4141,7 +4140,7 @@ Hue.start_chat_menu_context_menu = function()
 					{
 						name: "I'm Sure", callback: function(key, opt)
 						{
-							Hue.hide_message_from_context_menu(this)
+							Hue.remove_message_from_context_menu(this)
 						}
 					}
 				}
@@ -22848,9 +22847,7 @@ Hue.remove_message_from_chat = function(data)
 	{
 		if($(this).data("id") == data.id)
 		{
-			let message = $(this).closest(".message")
-			Hue.process_remove_chat_message(message)
-
+			Hue.process_remove_chat_message(this)
 			return false
 		}
 	})
@@ -22858,14 +22855,14 @@ Hue.remove_message_from_chat = function(data)
 	Hue.chat_scroll_bottom(false, false)
 }
 
-Hue.hide_message_from_context_menu = function(menu)
+Hue.remove_message_from_context_menu = function(menu)
 {
 	let message = $(menu).closest(".message")
 	let mode = message.data("mode")
 
 	if(mode === "chat")
 	{
-		Hue.process_remove_chat_message(message)
+		Hue.process_remove_chat_message($(menu).closest(".chat_content_container"))
 	}
 
 	else if(mode === "announcement")
@@ -22874,9 +22871,9 @@ Hue.hide_message_from_context_menu = function(menu)
 	}
 }
 
-Hue.process_remove_chat_message = function(message)
+Hue.process_remove_chat_message = function(chat_content_container)
 {
-	let chat_content_container = $(message).find(".chat_content_container").eq(0)
+	let message = $(chat_content_container).closest(".message")
 
 	if(message.hasClass("thirdperson"))
 	{
