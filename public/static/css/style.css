@@ -2511,6 +2511,7 @@ a.special_link:hover
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+	cursor: pointer;
 }
 
 #upload_comment_image_preview

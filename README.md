@@ -577,6 +577,9 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "global_settings_default_show_clock_in_lockscreen
 >Whether the clock in the lockscreen is enabled by default.
 
+"global_settings_default_autoreveal_spoilers
+>Whether spoiler autoreveal is on by default.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 

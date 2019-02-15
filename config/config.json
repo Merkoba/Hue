@@ -167,6 +167,7 @@
 	"global_settings_default_show_input_placeholder": true,
 	"global_settings_default_show_clock_in_input_placeholder": true,
 	"global_settings_default_show_clock_in_lockscreen": true,
+	"global_settings_default_autoreveal_spoilers": false,
 	"room_state_default_images_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_radio_enabled": true,

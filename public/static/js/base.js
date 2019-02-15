@@ -273,6 +273,7 @@ Hue.user_settings =
 	bypass_images_lock_on_own_change: {widget_type:"checkbox"},
 	bypass_tv_lock_on_own_change: {widget_type:"checkbox"},
 	bypass_radio_lock_on_own_change: {widget_type:"checkbox"},
+	autoreveal_spoilers: {widget_type:"checkbox"},
 	synth_enabled: {widget_type:"checkbox"},
 	autoscroll_amount: {widget_type:"number"},
 	autoscroll_delay: {widget_type:"number"},
@@ -13654,6 +13655,16 @@ Hue.setting_show_clock_in_lockscreen_action = function(type, save=true)
 	}
 }
 
+Hue.setting_autoreveal_spoilers_action = function(type, save=true)
+{
+	Hue[type].autoreveal_spoilers = $(`#${type}_autoreveal_spoilers`).prop("checked")
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
 Hue.empty_room_settings = function()
 {
 	Hue.room_settings = {}
@@ -21242,15 +21253,18 @@ Hue.replace_markdown = function(text)
 		}
 	})
 
-	text = text.replace(/(^|\s)(\|+)(?!\s)([^\|]*[^\|\s])\2(?!\S)/gm, function(g1, g2, g3, g4)
+	if(!Hue.get_setting("autoreveal_spoilers"))
 	{
-		let n = g3.length
-
-		if(n === 2)
+		text = text.replace(/(^|\s)(\|+)(?!\s)([^\|]*[^\|\s])\2(?!\S)/gm, function(g1, g2, g3, g4)
 		{
-			return `${g2}<span class='spoiler' title='Click To Reveal'>${g4}</span>`
-		}
-	})
+			let n = g3.length
+	
+			if(n === 2)
+			{
+				return `${g2}<span class='spoiler' title='Click To Reveal'>${g4}</span>`
+			}
+		})
+	}
 
 	return text
 }
