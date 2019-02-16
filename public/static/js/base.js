@@ -157,6 +157,8 @@ Hue.just_tabbed = false
 Hue.update_input_placeholder_delay = 10000
 Hue.update_lockscreen_clock_delay = 10000
 Hue.screen_locked = false
+Hue.userlist_mode = "normal"
+Hue.usercount = 0
 
 Hue.commands = 
 [
@@ -2895,13 +2897,16 @@ Hue.userjoin = function(data)
 	}
 }
 
-Hue.update_usercount = function(usercount)
+Hue.update_usercount = function()
 {
-	let s = `${Hue.singular_or_plural(usercount, "Users")} Online`
-
-	$('#usercount').html(s)
-
-	Hue.msg_userlist.set_title(s)
+	let s = `${Hue.singular_or_plural(Hue.usercount, "Users")} Online`
+	
+	$('#usercount').text(s)
+	
+	if(Hue.userlist_mode === "normal")
+	{
+		Hue.msg_userlist.set_title(s)
+	}
 }
 
 Hue.add_to_userlist = function(args={})
@@ -3139,7 +3144,16 @@ Hue.start_userlist_click_events = function()
 	$("#userlist").on("click", ".ui_item_uname", function()
 	{
 		let uname = $(this).text()
-		Hue.show_profile(uname)
+
+		if(Hue.userlist_mode === "normal")
+		{
+			Hue.show_profile(uname)
+		}
+
+		else if(Hue.userlist_mode === "whisper")
+		{
+			Hue.update_whisper_users(uname)
+		}
 	})
 }
 
@@ -3185,7 +3199,8 @@ Hue.update_userlist = function()
 		s = s.add(h)
 	}
 
-	Hue.update_usercount(Hue.userlist.length)
+	Hue.usercount = Hue.userlist.length
+	Hue.update_usercount()
 
 	$('#userlist').html(s)
 
@@ -4865,8 +4880,20 @@ Hue.show_open_room = function(id)
 	})
 }
 
-Hue.show_userlist = function(filter=false)
+Hue.show_userlist = function(mode="normal", filter=false)
 {
+	Hue.userlist_mode = mode
+
+	if(mode === "normal")
+	{
+		Hue.update_usercount()
+	}
+
+	else if(mode === "whisper")
+	{
+		Hue.msg_userlist.set_title("Add or Remove a User")
+	}
+	
 	Hue.msg_userlist.show(function()
 	{
 		if(filter)
@@ -8221,7 +8248,7 @@ Hue.execute_command = function(message, ans)
 
 	else if(Hue.oi_startswith(cmd2, '/users'))
 	{
-		Hue.show_userlist(arg)
+		Hue.show_userlist("normal", arg)
 	}
 
 	else if(Hue.oi_equals(cmd2, '/publicrooms'))
@@ -15547,7 +15574,10 @@ Hue.setup_profile_image = function(pi)
 
 Hue.setup_show_profile = function()
 {
-
+	$("#show_profile_whisper").click(function()
+	{
+		Hue.write_popup_message([$("#show_profile_uname").text()])
+	})
 }
 
 Hue.show_profile = function(uname, prof_image)
@@ -15594,7 +15624,7 @@ Hue.show_profile = function(uname, prof_image)
 
 	$("#show_profile_image").attr("src", pi)
 
-	if(!Hue.can_chat || uname === Hue.username || !Hue.usernames.includes(uname))
+	if(!Hue.can_chat || !Hue.usernames.includes(uname))
 	{
 		$("#show_profile_whisper").css("display", "none")
 	}
@@ -17372,7 +17402,7 @@ Hue.send_inline_whisper = function(arg, show=true)
 
 Hue.write_popup_message = function(unames=[], type="user")
 {
-	let title 
+	let title
 
 	if(type === "user")
 	{
@@ -17384,7 +17414,12 @@ Hue.write_popup_message = function(unames=[], type="user")
 			}
 		}
 
-		title = {text:`Whisper to ${Hue.utilz.nice_list(unames)}`}
+		let f = function()
+		{
+			Hue.show_userlist("whisper")
+		}
+
+		title = {text:`Whisper to ${Hue.utilz.nice_list(unames)}`, onclick:f}
 	}
 
 	else if(type === "ops")
@@ -17423,6 +17458,38 @@ Hue.write_popup_message = function(unames=[], type="user")
 		$("#write_message_area").focus()
 		Hue.sending_whisper = false
 	})
+}
+
+Hue.update_whisper_users = function(uname)
+{
+	if(!Hue.message_unames.includes(uname))
+	{
+		Hue.message_unames.push(uname)
+	}
+
+	else
+	{
+		for(let i=0; i<Hue.message_unames.length; i++)
+		{
+			let u = Hue.message_unames[i]
+
+			if(u === uname)
+			{
+				Hue.message_unames.splice(i, 1)
+				break
+			}
+		}
+	}
+
+	let f = function()
+	{
+		Hue.show_userlist("whisper")
+	}
+
+	let title = {text:`Whisper to ${Hue.utilz.nice_list(Hue.message_unames)}`, onclick:f}
+
+	Hue.msg_message.set_title(Hue.make_safe(title))
+	Hue.msg_userlist.close()
 }
 
 Hue.send_popup_message = function(force=false)
