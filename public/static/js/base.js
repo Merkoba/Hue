@@ -15612,6 +15612,8 @@ Hue.show_profile = function(uname, prof_image)
 	{
 		$("#show_profile_buttons").css("display", "none")
 	}
+
+	Hue.msg_profile.show()
 }
 
 Hue.profile_image_changed = function(data)
