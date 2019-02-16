@@ -4490,6 +4490,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		let message
 		let message_index
 		let message_type
+		let message_username
+		let message_user_id
 		let deleted = false
 
 		for(let i=0; i<messages.length; i++)
@@ -4502,13 +4504,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				message_index = i
 				message_id = msg.data.id
 				message_type = msg.type
+				message_user_id = msg.data.user_id
 				break
 			}
 		}
 
 		if(message)
 		{
-			if(!socket.hue_superuser && message.data.user_id !== socket.hue_user_id)
+			if(message.data.user_id !== socket.hue_user_id)
 			{
 				if(!handler.is_admin_or_op(socket))
 				{
@@ -4526,13 +4529,16 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				}
 
 				let id = userinfo._id.toString()
-
 				let current_role = info.keys[id]
+				message_username = userinfo.username
 
-				if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
+				if(!socket.hue_superuser)
 				{
-					handler.user_emit(socket, 'forbiddenuser', {})
-					return false
+					if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
+					{
+						handler.user_emit(socket, 'forbiddenuser', {})
+						return false
+					}
 				}
 
 				for(let i=0; i<messages.length; i++)
@@ -4561,6 +4567,27 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					id: message_id,
 					item_type: message_type
 				})
+
+				if(message_user_id !== socket.hue_user_id && message_username)
+				{
+					if(message_type === "chat")
+					{
+						handler.push_admin_log_message(socket, `deleted a chat message from "${message_username}"`)
+					}
+				
+					else if(message_type === "image" || message_type === "tv" || message_type === "radio")
+					{
+						let a = "a"
+					
+						if(message_type === "image")
+						{
+							a = "an"
+						}
+
+						let s = `deleted ${a} ${message_type} change from "${message_username}"`
+						handler.push_admin_log_message(socket, s)
+					}
+				}
 			}
 		}
 	}
