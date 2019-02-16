@@ -41,6 +41,7 @@ Hue.biu = false
 Hue.alo = false
 Hue.upc = false
 Hue.minpo = false
+Hue.writing_reply = false
 Hue.modal_open = false
 Hue.started = false
 Hue.started_safe = false
@@ -159,6 +160,7 @@ Hue.update_lockscreen_clock_delay = 10000
 Hue.screen_locked = false
 Hue.userlist_mode = "normal"
 Hue.usercount = 0
+Hue.reply_original = ""
 
 Hue.commands = 
 [
@@ -516,6 +518,7 @@ Hue.setup_templates = function()
 	Hue.template_access_log = Handlebars.compile($('#template_access_log').html())
 	Hue.template_expand_image = Handlebars.compile($('#template_expand_image').html())
 	Hue.template_upload_comment = Handlebars.compile($('#template_upload_comment').html())
+	Hue.template_reply = Handlebars.compile($('#template_reply').html())
 }
 
 Hue.show_help = function(number=1, filter="")
@@ -2852,6 +2855,16 @@ Hue.apply_theme = function()
 		background-color: ${color_4} !important;
 	}
 
+	#reply_text
+	{
+		background-color: ${slight_background} !important;
+	}
+
+	.slight_background
+	{
+		background-color: ${slight_background} !important;
+	}
+
 	</style>
 	`
 
@@ -3989,10 +4002,10 @@ Hue.start_chat_menu_context_menu = function()
 		{
 			item1:
 			{
-				name: "Quote", callback: function(key, opt)
+				name: "Reply", callback: function(key, opt)
 				{
 					let el = $(this).closest(".chat_content_container").eq(0).find(".chat_content").get(0)
-					Hue.do_chat_quote(el)
+					Hue.start_reply(el)
 				},
 				visible: function(key, opt)
 				{
@@ -4000,10 +4013,7 @@ Hue.start_chat_menu_context_menu = function()
 
 					if(message.data("mode") === "chat")
 					{
-						if($(this).closest(".message").data("user_id") === Hue.user_id)
-						{
-							return true
-						}
+						return true
 					}
 
 					return false
@@ -5648,6 +5658,20 @@ Hue.activate_key_detection = function()
 				if(e.key === "Enter")
 				{
 					Hue.modal_image_number_go()
+				}
+			}
+
+			if(Hue.writing_reply)
+			{
+				if(Hue.msg_reply.is_highest())
+				{
+					if(e.key === "Enter" && !e.shiftKey)
+					{
+						Hue.submit_reply()
+						e.preventDefault()
+					}
+
+					return
 				}
 			}
 
@@ -12492,6 +12516,35 @@ Hue.start_msg = function()
 		})
 	)
 
+	Hue.msg_reply = Msg.factory
+	(
+		Object.assign({}, common, titlebar,
+		{
+			id: "reply",
+			window_width: "22em",
+			after_create: function(instance)
+			{
+				Hue.after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				Hue.after_modal_show(instance)
+				Hue.after_modal_set_or_show(instance)
+				Hue.writing_reply = true
+			},
+			after_set: function(instance)
+			{
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				Hue.after_modal_close(instance)
+				Hue.clear_modal_image_info()
+				Hue.writing_reply = false
+			}
+		})
+	)
+
 	Hue.msg_main_menu.set(Hue.template_main_menu())
 	Hue.msg_user_menu.set(Hue.template_user_menu())
 	Hue.msg_userlist.set(Hue.template_userlist())
@@ -12523,6 +12576,7 @@ Hue.start_msg = function()
 	Hue.msg_access_log.set(Hue.template_access_log())
 	Hue.msg_expand_image.set(Hue.template_expand_image())
 	Hue.msg_upload_comment.set(Hue.template_upload_comment())
+	Hue.msg_reply.set(Hue.template_reply())
 
 	Hue.msg_info.create()
 	Hue.msg_info2.create()
@@ -12546,6 +12600,7 @@ Hue.start_msg = function()
 	Hue.msg_admin_activity.set_title("Admin Activity")
 	Hue.msg_access_log.set_title("Access Log")
 	Hue.msg_upload_comment.set_title("Add a Comment")
+	Hue.msg_reply.set_title("Write a Reply")
 
 	$("#global_settings_window_title").click(function()
 	{
@@ -21743,13 +21798,13 @@ Hue.start_chat_quote_events = function(container_id, msg_instance)
 	{
 		if(e.button === 1)
 		{
-			Hue.do_chat_quote(e.target)
+			Hue.start_reply(e.target)
 			e.preventDefault()
 		}
 	})
 }
 
-Hue.do_chat_quote = function(target)
+Hue.start_reply = function(target)
 {
 	if($(target).is("a"))
 	{
@@ -21757,11 +21812,8 @@ Hue.do_chat_quote = function(target)
 	}
 
 	let max = 100
-
 	let uname = $(target).closest(".chat_message").data("uname")
-
 	let text = $(target).text()
-
 	let add_dots = text.length > max
 
 	text = text.substring(0, max)
@@ -21783,70 +21835,126 @@ Hue.do_chat_quote = function(target)
 		text = `/${text}`
 	}
 
-	Hue.goto_bottom(true, false)
+	Hue.show_reply(text)
+}
 
+Hue.show_reply = function(text)
+{	
+	let html = Hue.replace_markdown(Hue.make_html_safe(text))
+
+	Hue.reply_original = text
+
+	$("#reply_text").html(html)
+	$("#reply_input").val("")
+
+	Hue.msg_reply.show(function()
+	{
+		$("#reply_input").focus()
+	})
+}
+
+Hue.submit_reply = function()
+{
+	let reply = $("#reply_input").val().trim()
+	let text = `=${Hue.reply_original}=\n${reply}`
+
+	Hue.msg_reply.close()
+	Hue.goto_bottom(true, false)
 	Hue.process_message({message:text, to_history:false})
+}
+
+Hue.make_markdown_char_regex = function(char)
+{
+	let regex = `(^|\\s|\\[dummy\\-space\\])(${Hue.escape_special_characters(char)}+)(?!\\s)([^${char}]*[^${Hue.escape_special_characters(char)}\\s])\\2(?:$|\\s|\\[dummy\\-space\\])`
+
+	return new RegExp(regex, "gm")
 }
 
 Hue.replace_markdown = function(text)
 {
+	let replacements = 0
+
 	text = text.replace(/\[whisper\s+(.*?)\](.*?)\[\/whisper\]/gm, function(g1, g2, g3)
 	{
-		return `<span class="whisper_link special_link" data-whisper="${g2}" title="[Whisper] ${g2}">${g3.replace(/\s+/, "&nbsp;")}</span>`
+		return `<span class="whisper_link special_link" data-whisper="${g2}" title="[Whisper] ${g2}">[dummy-space]${g3.replace(/\s+/, "&nbsp;")}[dummy-space]</span>`
 	})
 
 	text = text.replace(/\[anchor\s+(.*?)\](.*?)\[\/anchor\]/gm, function(g1, g2, g3)
 	{
-		return `<a href='${g2}' class='stop_propagation anchor_link special_link' target='_blank'>${g3.replace(/\s+/, "&nbsp;")}</a>`
+		return `<a href='${g2}' class='stop_propagation anchor_link special_link' target='_blank'>[dummy-space]${g3.replace(/\s+/, "&nbsp;")}[dummy-space]</a>`
 	})
 
-	text = text.replace(/(^|\s)(\*+)(?!\s)([^*]*[^*\s])\2(?!\S)/gm, function(g1, g2, g3, g4)
+	text = text.replace(Hue.make_markdown_char_regex("*"), function(g1, g2, g3, g4)
 	{
 		let n = g3.length
 
 		if(n === 1)
 		{
-			return `${g2}<span class='italic'>${g4}</span>`
+			replacements += 1
+			return `${g2}<span class='italic'>[dummy-space]${g4}[dummy-space]</span>`
 		}
 
 		else if(n === 2)
 		{
-			return `${g2}<span class='bold'>${g4}</span>`
+			replacements += 1
+			return `${g2}<span class='bold'>[dummy-space]${g4}[dummy-space]</span>`
 		}
 
 		else if(n === 3)
 		{
-			return `${g2}<span class='italic bold'>${g4}</span>`
+			replacements += 1
+			return `${g2}<span class='italic bold'>[dummy-space]${g4}[dummy-space]</span>`
+		}
+	})
+	
+	text = text.replace(Hue.make_markdown_char_regex("_"), function(g1, g2, g3, g4)
+	{
+		let n = g3.length
+		
+		if(n === 1)
+		{
+			replacements += 1
+			return `${g2}<span class='italic'>[dummy-space]${g4}[dummy-space]</span>`
+		}
+		
+		else if(n === 2)
+		{
+			replacements += 1
+			return `${g2}<span class='underlined'>[dummy-space]${g4}[dummy-space]</span>`
 		}
 	})
 
-	text = text.replace(/(^|\s)(\_+)(?!\s)([^_]*[^_\s])\2(?!\S)/gm, function(g1, g2, g3, g4)
+	text = text.replace(Hue.make_markdown_char_regex("="), function(g1, g2, g3, g4)
 	{
 		let n = g3.length
-
+	
 		if(n === 1)
 		{
-			return `${g2}<span class='italic'>${g4}</span>`
-		}
-
-		else if(n === 2)
-		{
-			return `${g2}<span class='underlined'>${g4}</span>`
+			replacements += 1
+			return `${g2}<span class='slight_background'>[dummy-space]${g4}[dummy-space]</span>`
 		}
 	})
 
 	if(!Hue.get_setting("autoreveal_spoilers"))
 	{
-		text = text.replace(/(^|\s)(\|+)(?!\s)([^\|]*[^\|\s])\2(?!\S)/gm, function(g1, g2, g3, g4)
+		text = text.replace(Hue.make_markdown_char_regex("|"), function(g1, g2, g3, g4)
 		{
 			let n = g3.length
 	
 			if(n === 2)
 			{
-				return `${g2}<span class='spoiler' title='Click To Reveal'>${g4}</span>`
+				replacements += 1
+				return `${g2}<span class='spoiler' title='Click To Reveal'>[dummy-space]${g4}[dummy-space]</span>`
 			}
 		})
 	}
+	
+	if(replacements > 0)
+	{
+		return Hue.replace_markdown(text)
+	}
+
+	text = text.replace(/\[dummy\-space\]/gm, "")
 
 	return text
 }

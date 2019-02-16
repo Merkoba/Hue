@@ -615,17 +615,17 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-top: 0.8em;
 }
 
-#create_room_name
-{
-	width: 14em;
+.nice_input
+{	
+	width: 18em;
 	font-size: 1.2em;
 	text-align: center;
 	border: 1px solid grey;
 }
 
-.nice_input
+.nice_input_2
 {	
-	width: 18em;
+	width: 14em;
 	font-size: 1.2em;
 	text-align: center;
 	border: 1px solid grey;
@@ -1478,6 +1478,15 @@ input[type=text], textarea
 	resize: none;
 	font-size: 1em;
 	text-align: center;
+	overflow-x: hidden;
+}
+
+.setting_textarea3
+{
+	width: calc(100% - 0.5rem);
+	resize: none;
+	font-size: 1em;
+	text-align: left;
 	overflow-x: hidden;
 }
 
@@ -2547,4 +2556,10 @@ a.special_link:hover
 .modal_subheader
 {
 	padding: 0.2rem;
+}
+
+#reply_text
+{
+	font-size: 1.1em;
+	padding: 0.5rem;
 }

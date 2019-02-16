@@ -38,9 +38,9 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2620"></script>
+		<script src="/static/js/base.js?version=2622"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=568"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=569"/>
 
 		<script>
 
@@ -1514,7 +1514,7 @@
 				<div class='flex_row_center'>
 					<i class='fa fa-question-circle invisible'></i>
 					<span class='hspacer1'></span>
-					<input type="text" id="create_room_name" placeholder="Name">
+					<input type="text" id="create_room_name" class='nice_input_2' placeholder="Name">
 					<span class='hspacer1'></span>
 					<i class='fa fa-question-circle pointer action' onclick='Hue.create_room_suggest_name()'></i>
 				</div>
@@ -1952,6 +1952,14 @@
 			<input id='modal_image_number_input' type='number' class='setting_input_text_smaller'>
 			<div class='spacer3'></div>
 			<div id='modal_image_number_button' class='pointer bigger action inline unselectable'>Go To Image</div>
+		</script>
+
+		<script id='template_reply' type='text/x-handlebars-template'>
+			<div id='reply_text'></div>
+			<div class='spacer3'></div>
+			<textarea id='reply_input' class='setting_textarea3' rows=3></textarea>
+			<div class='spacer3'></div>
+			<div id='reply_submit' class='menu_item action inline unselectable' onclick='Hue.submit_reply()'>Reply</div>
 		</script>
 
 		<script id='template_help' type='text/x-handlebars-template'>
