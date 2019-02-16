@@ -17469,6 +17469,11 @@ Hue.update_whisper_users = function(uname)
 
 	else
 	{
+		if(Hue.message_unames.length === 1)
+		{
+			return false
+		}
+		
 		for(let i=0; i<Hue.message_unames.length; i++)
 		{
 			let u = Hue.message_unames[i]
