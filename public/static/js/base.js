@@ -92,7 +92,7 @@ Hue.check_scrollers_delay = 100
 Hue.requesting_roomlist = false
 Hue.emit_queue = []
 Hue.app_focused = true
-Hue.message_uname = ""
+Hue.message_unames = ""
 Hue.message_type = ""
 Hue.users_to_disconnect = []
 Hue.stop_radio_delay = 0
@@ -12005,6 +12005,7 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "message",
+			window_width: "26em",
 			close_on_overlay_click: false,
 			after_create: function(instance)
 			{
@@ -14609,7 +14610,7 @@ Hue.change_username = function(uname)
 		return
 	}
 
-	if(uname.length > Hue.max_username_length)
+	if(uname.length > Hue.config.max_username_length)
 	{
 		Hue.feedback("Username is too long")
 		return
@@ -17276,7 +17277,7 @@ Hue.check_whisper_user = function(uname)
 
 	if(!Hue.usernames.includes(uname))
 	{
-		Hue.user_not_in_room()
+		Hue.user_not_in_room(uname)
 		return false
 	}
 
@@ -17285,14 +17286,47 @@ Hue.check_whisper_user = function(uname)
 
 Hue.process_write_whisper = function(arg, show=true)
 {
+	let user = Hue.get_user_by_username(arg)
+
 	if(arg.includes(">"))
 	{
 		Hue.send_inline_whisper(arg, show)
 	}
 
+	else if(user)
+	{
+		Hue.write_popup_message([arg], "user")
+	}
+
+	else if(arg.includes("&&"))
+	{
+		let split = arg.split("&&").map(x => x.trim())
+		Hue.write_popup_message(split, "user")
+	}
+
 	else
 	{
-		Hue.write_popup_message(arg, "user")
+		let matches = Hue.get_matching_usernames(arg)
+
+		if(matches.length === 1)
+		{
+			let message = arg.replace(matches[0], "")
+			let arg2 = `${matches[0]} > ${message}`
+
+			Hue.send_inline_whisper(arg2, show)
+		}
+
+		else if(matches.length > 1)
+		{
+			Hue.feedback("Multiple usernames matched. Use the proper > syntax. For example /whisper bob > hi")
+			return false
+		}
+
+		else
+		{
+			Hue.user_not_in_room()
+			return false
+		}
 	}
 }
 
@@ -17300,45 +17334,57 @@ Hue.send_inline_whisper = function(arg, show=true)
 {
 	let split = arg.split(">")
 
-	let uname = split[0].trim()
-
-	if(!Hue.check_whisper_user(uname))
+	if(split.length < 2)
 	{
 		return false
 	}
 
-	if(split.length > 1)
-	{
-		let message = Hue.utilz.clean_string2(split.slice(1).join(">"))
+	let uname = split[0].trim()
+	let usplit = uname.split("&&")
+	let message = Hue.utilz.clean_string2(split.slice(1).join(">"))
 
-		if(!message)
+	if(!message)
+	{
+		return false
+	}
+
+	let approved = []
+
+	for(let u of usplit)
+	{
+		u = u.trim()
+
+		if(!Hue.check_whisper_user(u))
 		{
-			return false
+			continue
 		}
 
-		Hue.do_send_whisper_user(uname, message, false, show)
+		approved.push(u)
+	}
 
+	if(approved.length === 0)
+	{
 		return false
 	}
+	
+	Hue.do_send_whisper_user(approved, message, false, show)
 }
 
-Hue.write_popup_message = function(uname, type="user")
+Hue.write_popup_message = function(unames=[], type="user")
 {
 	let title 
 
 	if(type === "user")
 	{
-		if(!Hue.check_whisper_user(uname))
+		for(let u of unames)
 		{
-			return false
+			if(!Hue.check_whisper_user(u))
+			{
+				return false
+			}
 		}
 
-		let f = function()
-		{
-			Hue.show_profile(uname)
-		}
-
-		title = {text:`Whisper To ${uname}`, onclick:f}
+		title = {text:`Whisper to ${Hue.utilz.nice_list(unames)}`}
 	}
 
 	else if(type === "ops")
@@ -17349,7 +17395,7 @@ Hue.write_popup_message = function(uname, type="user")
 			return false
 		}
 
-		title = {text:"* Whisper To Operators *"}
+		title = {text:"* Whisper to Operators *"}
 	}
 
 	else if(type === "room")
@@ -17368,10 +17414,8 @@ Hue.write_popup_message = function(uname, type="user")
 		title = {text:"* Message To System *"}
 	}
 
-	Hue.message_uname = uname
-
+	Hue.message_unames = unames
 	Hue.message_type = type
-
 	Hue.msg_message.set_title(Hue.make_safe(title))
 
 	Hue.msg_message.show(function()
@@ -17381,7 +17425,7 @@ Hue.write_popup_message = function(uname, type="user")
 	})
 }
 
-Hue.send_popup_message = function()
+Hue.send_popup_message = function(force=false)
 {
 	if(Hue.sending_whisper)
 	{
@@ -17391,9 +17435,7 @@ Hue.send_popup_message = function()
 	Hue.sending_whisper = true
 
 	let message = Hue.utilz.clean_string2($("#write_message_area").val())
-
 	let diff = Hue.config.max_input_length - message.length
-
 	let draw_coords
 
 	if(Hue.draw_message_click_x.length > 0)
@@ -17427,7 +17469,7 @@ Hue.send_popup_message = function()
 
 	if(Hue.message_type === "user")
 	{
-		ans = Hue.send_whisper_user(message, draw_coords)
+		ans = Hue.send_whisper_user(message, draw_coords, force)
 	}
 
 	else if(Hue.message_type === "ops")
@@ -17452,9 +17494,14 @@ Hue.send_popup_message = function()
 			Hue.sending_whisper = false
 		})
 	}
+
+	else
+	{
+		Hue.sending_whisper = false
+	}
 }
 
-Hue.sent_popup_message_function = function(mode, message, draw_coords, data1=false)
+Hue.sent_popup_message_function = function(mode, message, draw_coords, data1=[])
 {
 	let cf = function(){}
 	let ff = function(){}
@@ -17465,7 +17512,7 @@ Hue.sent_popup_message_function = function(mode, message, draw_coords, data1=fal
 	if(mode === "whisper")
 	{
 		s1 = Hue.utilz.nonbreak("Send Another Whisper")
-		s2 = `Whisper sent to ${data1}`
+		s2 = `Whisper sent to ${Hue.utilz.nice_list(data1)}`
 
 		cf = function()
 		{
@@ -17474,7 +17521,7 @@ Hue.sent_popup_message_function = function(mode, message, draw_coords, data1=fal
 		
 		ff = function()
 		{
-			Hue.show_profile(data1)
+			Hue.show_profile(data1[0])
 		}
 	}
 
@@ -17508,7 +17555,8 @@ Hue.sent_popup_message_function = function(mode, message, draw_coords, data1=fal
 	{
 		text: message,
 		html: h,
-		remove_text_if_empty: true
+		remove_text_if_empty: true,
+		date: Date.now()
 	})
 
 	let f = function()
@@ -17535,11 +17583,11 @@ Hue.sent_popup_message_function = function(mode, message, draw_coords, data1=fal
 	return f
 }
 
-Hue.send_whisper_user = function(message, draw_coords)
+Hue.send_whisper_user = function(message, draw_coords, force=false)
 {
-	let uname = Hue.message_uname
+	let unames = Hue.message_unames
 
-	if(!uname)
+	if(!unames)
 	{
 		return false
 	}
@@ -17548,34 +17596,74 @@ Hue.send_whisper_user = function(message, draw_coords)
 	{
 		$("#write_message_feedback").text("You don't have chat permission")
 		$("#write_message_feedback").css("display", "block")
+
 		return false
 	}
 
-	if(!Hue.usernames.includes(uname))
+	let discarded = []
+	let approved = []
+
+	for(let u of unames)
 	{
-		$("#write_message_feedback").text("(User is not in the room)")
-		$("#write_message_feedback").css("display", "block")
+		if(!Hue.usernames.includes(u))
+		{
+			discarded.push(u)
+		}
+
+		else
+		{
+			approved.push(u)
+		}
+	}
+
+	if(!force)
+	{
+		if(discarded.length > 0)
+		{
+			let us = Hue.utilz.nice_list(discarded)
+			let w = discarded.length === 1 ? "is" : "are"
+			let dd = ""
+
+			if(unames.length > discarded.length)
+			{
+				dd = " Double click Send to send anyway"
+			}
+
+			$("#write_message_feedback").text(`(${us} ${w} not in the room)${dd}`)
+			$("#write_message_feedback").css("display", "block")
+
+			return false
+		}
+	}
+
+	if(approved.length === 0)
+	{
 		return false
 	}
 
-	Hue.do_send_whisper_user(uname, message, draw_coords)
+	Hue.do_send_whisper_user(approved, message, draw_coords)
 
 	return true
 }
 
-Hue.do_send_whisper_user = function(uname, message, draw_coords, show=true)
+Hue.do_send_whisper_user = function(unames, message, draw_coords, show=true)
 {
-	Hue.socket_emit('whisper', 
+	for(let u of unames)
 	{
-		username: uname, 
-		message: message, 
-		draw_coords: draw_coords
-	})
-
+		Hue.socket_emit('whisper', 
+		{
+			username: u, 
+			message: message, 
+			draw_coords: draw_coords
+		})
+	}
+	
 	if(show)
 	{
-		let f = Hue.sent_popup_message_function("whisper", message, draw_coords, uname)
-		Hue.feedback(`Whisper sent to ${uname}`, {onclick:f, save:true})
+		let f = Hue.sent_popup_message_function("whisper", message, draw_coords, unames)
+		let m = `Whisper sent to ${Hue.utilz.nice_list(unames)}`
+
+		Hue.feedback(m, {onclick:f, save:true})
 	}
 }
 
@@ -17619,6 +17707,8 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 		data.date = Date.now()
 	}
 
+	let nd = Hue.nice_date(data.date)
+
 	let f
 
 	if(data.username)
@@ -17647,7 +17737,13 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 
 	if(data.draw_coords)
 	{
-		ch = `<canvas id='draw_popup_area_${data.id}' class='draw_canvas' width='400px' height='300px' tabindex=1></canvas>`
+		ch = `<canvas 
+		id='draw_popup_area_${data.id}' 
+		class='draw_canvas dynamic_title' 
+		title='${nd}' data-otitle='${nd}' 
+		data-date='${data.date}' 
+		width='400px' height='300px' 
+		tabindex=1></canvas>`
 	}
 
 	else
@@ -17683,7 +17779,7 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 			h0 = ""
 		}
 
-		h = h0 + `<div class='small_button action inline show_message_reply_ops'>${Hue.utilz.nonbreak("Send Whisper To Operators")}</div>`
+		h = h0 + `<div class='small_button action inline show_message_reply_ops'>${Hue.utilz.nonbreak("Send Whisper to Operators")}</div>`
 	}
 
 	else if(type === "room")
@@ -17719,8 +17815,8 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 	{
 		text: data.message,
 		html: h,
-		title: Hue.nice_date(data.date),
-		remove_text_if_empty: true
+		remove_text_if_empty: true,
+		date: data.date
 	})
 
 	let text_item = $(data.content).find(".message_info_text").eq(0)
@@ -17789,7 +17885,7 @@ Hue.show_popup_message = function(data)
 	{
 		$(pop.content).find(".show_message_reply").eq(0).click(function()
 		{
-			Hue.write_popup_message(data.username)
+			Hue.write_popup_message([data.username])
 		})
 
 		$(pop.content).find(".show_message_reply_ops").eq(0).click(function()
@@ -17812,9 +17908,17 @@ Hue.show_popup_message = function(data)
 	})
 }
 
-Hue.user_not_in_room = function()
+Hue.user_not_in_room = function(uname)
 {
-	Hue.feedback("User is not in the room")
+	if(uname)
+	{
+		Hue.feedback(`${uname} is not in the room`)
+	}
+
+	else
+	{
+		Hue.feedback("User is not in the room")
+	}
 }
 
 Hue.annex = function(rol="admin")
@@ -18464,7 +18568,8 @@ Hue.make_safe = function(args={})
 		onclick: false,
 		html_unselectable: true,
 		title: false,
-		remove_text_if_empty: false
+		remove_text_if_empty: false,
+		date: false
 	}
 
 	Hue.fill_defaults(args, def_args)
@@ -18499,9 +18604,22 @@ Hue.make_safe = function(args={})
 			c_text.on("click", args.onclick)
 		}
 
-		if(args.title)
+		if(args.date)
 		{
-			c_text.attr("title", args.title)
+			let nd = Hue.nice_date(args.date)
+
+			c_text.data("date", args.date)
+			c_text.data("otitle", nd)
+			c_text.attr("title", nd)
+			c_text.addClass("dynamic_title")
+		}
+
+		else
+		{
+			if(args.title)
+			{
+				c_text.attr("title", args.title)
+			}
 		}
 	}
 
@@ -24345,4 +24463,33 @@ Hue.scroll_modal_to_bottom = function(id)
 {
 	let container = $(`#Msg-content-container-${id}`)[0]
 	container.scrollTop = container.scrollHeight
+}
+
+Hue.get_matching_usernames = function(s)
+{
+	let user = Hue.get_user_by_username(s)
+
+	if(user)
+	{
+		return [user.username]
+	}
+	
+	let split = s.split(" ")
+	let uname = split[0]
+	let matches = []
+
+	for(let i=0; i<split.length; i++)
+	{
+		if(i > 0)
+		{
+			uname = `${uname} ${split[i]}`
+		}
+
+		if(Hue.usernames.includes(uname))
+		{
+			matches.push(uname)
+		}
+	}
+
+	return matches
 }

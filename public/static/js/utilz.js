@@ -417,6 +417,33 @@ const Utilz = function()
 		return false
 	}
 
+	utilz.nice_list = function(list)
+	{
+		let s = ""
+
+		for(let i=0; i<list.length; i++)
+		{
+			let item = list[i]
+
+			if(i === 0)
+			{
+				s = item
+			}
+	
+			else if(i === list.length - 1)
+			{
+				s = `${s} and ${item}`
+			}
+	
+			else
+			{
+				s = `${s}, ${item}`
+			}
+		}
+
+		return s
+	}
+
 	utilz.synth_notes = 
 	[
 		"c3", "d3", "e3", "f3",  "g3", 
