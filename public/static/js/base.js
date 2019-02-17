@@ -18304,14 +18304,15 @@ Hue.start_generic_uname_click_events = function()
 
 Hue.electron_signal = function(func, data={})
 {
-	if(Hue["electron_api"] === undefined)
+	Hue.feedback("signal")
+	if(window["electron_api"] === undefined)
 	{
 		return false
 	}
 
-	if(Hue["electron_api"][func] !== undefined)
+	if(window["electron_api"][func] !== undefined)
 	{
-		Hue["electron_api"][func](data)
+		window["electron_api"][func](data)
 	}
 }
 

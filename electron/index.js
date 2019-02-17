@@ -1,9 +1,8 @@
-const main_url = "https://hue.merkoba.com/"
-// const main_url = "http://localhost:3210/"
+// const main_url = "https://hue.merkoba.com/"
+const main_url = "http://localhost:3210/"
 
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
-const url = require('url')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -17,7 +16,14 @@ function createWindow ()
 		width: 800, 
 		height: 600, 
 		frame:false, 
-		icon: path.join(__dirname, 'logo.png')		
+		icon: path.join(__dirname, 'logo.png'),
+		webPreferences:
+		{
+			nodeIntegration: true,
+			webviewTag: true,
+			preload: path.join(__dirname, 'preload.js'),
+			contextIsolation: false
+		}
 	})
 
 	win.maximize()
