@@ -6781,18 +6781,21 @@ Hue.update_chat = function(args={})
 		just_edited: args.just_edited
 	})
 
-	if(args.username !== Hue.username)
+	if(!args.edited)
 	{
-		if(highlighted)
+		if(args.username !== Hue.username)
 		{
-			Hue.alert_title(2)
-			Hue.sound_notify("highlight")
-		}
-
-		else
-		{
-			Hue.alert_title(1)
-			Hue.sound_notify("message")
+			if(highlighted)
+			{
+				Hue.alert_title(2)
+				Hue.sound_notify("highlight")
+			}
+	
+			else
+			{
+				Hue.alert_title(1)
+				Hue.sound_notify("message")
+			}
 		}
 	}
 }
