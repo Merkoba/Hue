@@ -38,9 +38,9 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2622"></script>
+		<script src="/static/js/base.js?version=2623"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=569"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=570"/>
 
 		<script>
 
@@ -1865,14 +1865,22 @@
 
 		<script id='template_message' type='text/x-handlebars-template'>
 			<div id='write_message_feedback'></div>
-			<textarea rows="3" id='write_message_area' tabindex=0></textarea>
+			<textarea rows="3" id='write_message_area' tabindex=0 placeholder="Write a Message (Optional)"></textarea>
 			<div class='spacer3'></div>
 			<canvas id='draw_message_area' class='draw_canvas' width='400px' height='300px' tabindex=1></canvas>
 			<div class='spacer3'></div>
 			<span class='unselectable'>
-				<div class='bigger pointer unselectable action inline' onclick='Hue.clear_draw_message_state()' tabindex=3>Clear Drawing</div>
+
+				<div class='bigger pointer unselectable action inline' 
+				onclick='Hue.clear_draw_message_state()' 
+				tabindex=3>Clear Drawing</div>
+
 				<span>&nbsp;|&nbsp;</span>
-				<div id='write_message_send_button' class='bigger pointer unselectable action inline' onclick='Hue.send_popup_message()' ondblclick='Hue.send_popup_message(true)' tabindex=4>Send</div>
+
+				<div id='write_message_send_button' 
+				class='bigger pointer unselectable action inline' 
+				onclick='Hue.send_popup_message()' 
+				ondblclick='Hue.send_popup_message(true)' tabindex=4>Send</div>
 			</span>
 		</script>
 
@@ -1957,7 +1965,7 @@
 		<script id='template_reply' type='text/x-handlebars-template'>
 			<div id='reply_text'></div>
 			<div class='spacer3'></div>
-			<textarea id='reply_input' class='setting_textarea3' rows=3></textarea>
+			<textarea id='reply_input' class='setting_textarea' rows=3 placeholder='Write a Reply (Optional)'></textarea>
 			<div class='spacer3'></div>
 			<div id='reply_submit' class='menu_item action inline unselectable' onclick='Hue.submit_reply()'>Reply</div>
 		</script>

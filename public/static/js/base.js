@@ -160,7 +160,9 @@ Hue.update_lockscreen_clock_delay = 10000
 Hue.screen_locked = false
 Hue.userlist_mode = "normal"
 Hue.usercount = 0
-Hue.reply_original = ""
+Hue.reply_text_raw = ""
+Hue.quote_max_length = 200
+Hue.markdown_regexes = {}
 
 Hue.commands = 
 [
@@ -298,6 +300,7 @@ Hue.user_settings =
 
 Hue.init = function()
 {
+	Hue.setup_markdown_regexes()
 	Hue.activate_key_detection()
 	Hue.setup_templates()
 	Hue.get_global_settings()
@@ -21811,39 +21814,31 @@ Hue.start_reply = function(target)
 		return false
 	}
 
-	let max = 100
 	let uname = $(target).closest(".chat_message").data("uname")
-	let text = $(target).text()
-	let add_dots = text.length > max
+	let text = $(target).closest(".chat_content_container").data("original_message")
 
-	text = text.substring(0, max)
+	if(!uname || !text)
+	{
+		return false
+	}
 
+	text = text.substring(0, Hue.quote_max_length)
+	let add_dots = text.length > Hue.quote_max_length
+	
 	if(add_dots)
 	{
 		text += "..."
 	}
+	
+	let text_html = `${Hue.replace_markdown(Hue.make_html_safe(`${text}`))}`
+	let html = `${uname} said: "${text_html}"`
+	Hue.reply_text_raw = `=${uname} said: "[dummy-space]${text}[dummy-space]"=`
 
-	text = `*"${Hue.utilz.clean_string2(text)}"*`
-
-	if(uname)
-	{
-		text = `${uname} said: ${text}`
-	}
-
-	if(Hue.is_command(text))
-	{
-		text = `/${text}`
-	}
-
-	Hue.show_reply(text)
+	Hue.show_reply(html)
 }
 
-Hue.show_reply = function(text)
+Hue.show_reply = function(html)
 {	
-	let html = Hue.replace_markdown(Hue.make_html_safe(text))
-
-	Hue.reply_original = text
-
 	$("#reply_text").html(html)
 	$("#reply_input").val("")
 
@@ -21856,105 +21851,129 @@ Hue.show_reply = function(text)
 Hue.submit_reply = function()
 {
 	let reply = $("#reply_input").val().trim()
-	let text = `=${Hue.reply_original}=\n${reply}`
 
 	Hue.msg_reply.close()
 	Hue.goto_bottom(true, false)
-	Hue.process_message({message:text, to_history:false})
+	Hue.process_message({message:Hue.reply_text_raw, to_history:false})
+	Hue.process_message({message:reply})
 }
 
 Hue.make_markdown_char_regex = function(char)
 {
-	let regex = `(^|\\s|\\[dummy\\-space\\])(${Hue.escape_special_characters(char)}+)(?!\\s)([^${char}]*[^${Hue.escape_special_characters(char)}\\s])\\2(?:$|\\s|\\[dummy\\-space\\])`
-
+	// Raw regex if "="" was the char 
+	// (^|\s|\[dummy\-space\])(\=+)(?!\s)(.*[^\=\s])\2($|\s|\[dummy\-space\])
+	let regex = `(^|\\s|\\[dummy\\-space\\])(${Hue.escape_special_characters(char)}+)(?!\\s)(.*[^${Hue.escape_special_characters(char)}\\s])\\2($|\\s|\\[dummy\\-space\\])`
 	return new RegExp(regex, "gm")
 }
 
-Hue.replace_markdown = function(text)
+Hue.setup_markdown_regexes = function()
 {
-	let replacements = 0
-
-	text = text.replace(/\[whisper\s+(.*?)\](.*?)\[\/whisper\]/gm, function(g1, g2, g3)
-	{
-		return `<span class="whisper_link special_link" data-whisper="${g2}" title="[Whisper] ${g2}">[dummy-space]${g3.replace(/\s+/, "&nbsp;")}[dummy-space]</span>`
-	})
-
-	text = text.replace(/\[anchor\s+(.*?)\](.*?)\[\/anchor\]/gm, function(g1, g2, g3)
-	{
-		return `<a href='${g2}' class='stop_propagation anchor_link special_link' target='_blank'>[dummy-space]${g3.replace(/\s+/, "&nbsp;")}[dummy-space]</a>`
-	})
-
-	text = text.replace(Hue.make_markdown_char_regex("*"), function(g1, g2, g3, g4)
+	Hue.markdown_regexes["*"] = {}
+	Hue.markdown_regexes["*"].regex = Hue.make_markdown_char_regex("*")
+	Hue.markdown_regexes["*"].replace_function = function(g1, g2, g3, g4, g5)
 	{
 		let n = g3.length
 
 		if(n === 1)
 		{
-			replacements += 1
-			return `${g2}<span class='italic'>[dummy-space]${g4}[dummy-space]</span>`
+			return `${g2}<span class='italic'>[dummy-space]${g4}[dummy-space]</span>${g5}`
 		}
 
 		else if(n === 2)
 		{
-			replacements += 1
-			return `${g2}<span class='bold'>[dummy-space]${g4}[dummy-space]</span>`
+			return `${g2}<span class='bold'>[dummy-space]${g4}[dummy-space]</span>${g5}`
 		}
 
 		else if(n === 3)
 		{
-			replacements += 1
-			return `${g2}<span class='italic bold'>[dummy-space]${g4}[dummy-space]</span>`
+			return `${g2}<span class='italic bold'>[dummy-space]${g4}[dummy-space]</span>${g5}`
 		}
-	})
+	}
 	
-	text = text.replace(Hue.make_markdown_char_regex("_"), function(g1, g2, g3, g4)
+	Hue.markdown_regexes["_"] = {}
+	Hue.markdown_regexes["_"].regex = Hue.make_markdown_char_regex("_")
+	Hue.markdown_regexes["_"].replace_function = function(g1, g2, g3, g4, g5)
 	{
 		let n = g3.length
 		
 		if(n === 1)
 		{
-			replacements += 1
-			return `${g2}<span class='italic'>[dummy-space]${g4}[dummy-space]</span>`
+			return `${g2}<span class='italic'>[dummy-space]${g4}[dummy-space]</span>${g5}`
 		}
 		
 		else if(n === 2)
 		{
-			replacements += 1
-			return `${g2}<span class='underlined'>[dummy-space]${g4}[dummy-space]</span>`
+			return `${g2}<span class='underlined'>[dummy-space]${g4}[dummy-space]</span>${g5}`
 		}
-	})
-
-	text = text.replace(Hue.make_markdown_char_regex("="), function(g1, g2, g3, g4)
+	}
+	
+	Hue.markdown_regexes["="] = {}
+	Hue.markdown_regexes["="].regex = Hue.make_markdown_char_regex("=")
+	Hue.markdown_regexes["="].replace_function = function(g1, g2, g3, g4, g5)
 	{
 		let n = g3.length
 	
 		if(n === 1)
 		{
-			replacements += 1
-			return `${g2}<span class='slight_background'>[dummy-space]${g4}[dummy-space]</span>`
+			return `${g2}<span class='slight_background'>[dummy-space]${g4}[dummy-space]</span>${g5}`
 		}
-	})
-
-	if(!Hue.get_setting("autoreveal_spoilers"))
-	{
-		text = text.replace(Hue.make_markdown_char_regex("|"), function(g1, g2, g3, g4)
-		{
-			let n = g3.length
-	
-			if(n === 2)
-			{
-				replacements += 1
-				return `${g2}<span class='spoiler' title='Click To Reveal'>[dummy-space]${g4}[dummy-space]</span>`
-			}
-		})
 	}
 	
-	if(replacements > 0)
+	Hue.markdown_regexes["|"] = {}
+	Hue.markdown_regexes["|"].regex = Hue.make_markdown_char_regex("|")
+	Hue.markdown_regexes["|"].replace_function = function(g1, g2, g3, g4, g5)
+	{
+		let n = g3.length
+	
+		if(n === 2)
+		{
+			return `${g2}<span class='spoiler' title='Click To Reveal'>[dummy-space]${g4}[dummy-space]</span>${g5}`
+		}
+	}
+
+	Hue.markdown_regexes["whisper_link"] = {}
+	Hue.markdown_regexes["whisper_link"].regex = new RegExp(`\\[whisper\\s+(.*?)\\](.*?)\\[\/whisper\\]`, "gm")
+	Hue.markdown_regexes["whisper_link"].replace_function = function(g1, g2, g3)
+	{
+		return `<span class="whisper_link special_link" data-whisper="${g2}" title="[Whisper] ${g2}">[dummy-space]${g3.replace(/\s+/, "&nbsp;")}[dummy-space]</span>`
+	}
+
+	Hue.markdown_regexes["anchor_link"] = {}
+	Hue.markdown_regexes["anchor_link"].regex = new RegExp(`\\[anchor\\s+(.*?)\\](.*?)\\[\/anchor\\]`, "gm")
+	Hue.markdown_regexes["anchor_link"].replace_function = function(g1, g2, g3)
+	{
+		return `<a href='${g2}' class='stop_propagation anchor_link special_link' target='_blank'>[dummy-space]${g3.replace(/\s+/, "&nbsp;")}[dummy-space]</a>`
+	}
+
+	Hue.markdown_regexes["dummy_space"] = {}
+	Hue.markdown_regexes["dummy_space"].regex = new RegExp(`\\[dummy\\-space\\]`, "gm")
+	Hue.markdown_regexes["dummy_space"].replace_function = function()
+	{
+		return ""
+	}
+}
+
+Hue.replace_markdown = function(text)
+{
+	let original_length = text.length
+
+	text = text.replace(Hue.markdown_regexes["whisper_link"].regex, Hue.markdown_regexes["whisper_link"].replace_function)
+	text = text.replace(Hue.markdown_regexes["whisper_link"].regex, Hue.markdown_regexes["whisper_link"].replace_function)
+	text = text.replace(Hue.markdown_regexes["*"].regex, Hue.markdown_regexes["*"].replace_function)
+	text = text.replace(Hue.markdown_regexes["_"].regex, Hue.markdown_regexes["_"].replace_function)
+	text = text.replace(Hue.markdown_regexes["="].regex, Hue.markdown_regexes["="].replace_function)
+	
+	if(!Hue.get_setting("autoreveal_spoilers"))
+	{
+		text = text.replace(Hue.markdown_regexes["|"].regex, Hue.markdown_regexes["|"].replace_function)
+	}
+	
+	if(text.length !== original_length)
 	{
 		return Hue.replace_markdown(text)
 	}
 
-	text = text.replace(/\[dummy\-space\]/gm, "")
+	text = text.replace(Hue.markdown_regexes["dummy_space"].regex, Hue.markdown_regexes["dummy_space"].replace_function)
 
 	return text
 }

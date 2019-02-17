@@ -1438,6 +1438,7 @@ input[type=text], textarea
 	width: 400px;
 	resize: none;
 	font-size: 1em;
+	text-align: center;
 }
 
 #draw_message_area
@@ -1478,15 +1479,6 @@ input[type=text], textarea
 	resize: none;
 	font-size: 1em;
 	text-align: center;
-	overflow-x: hidden;
-}
-
-.setting_textarea3
-{
-	width: calc(100% - 0.5rem);
-	resize: none;
-	font-size: 1em;
-	text-align: left;
 	overflow-x: hidden;
 }
 
@@ -2560,6 +2552,5 @@ a.special_link:hover
 
 #reply_text
 {
-	font-size: 1.1em;
 	padding: 0.5rem;
 }
