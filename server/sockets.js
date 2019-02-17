@@ -38,6 +38,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
 	const media_types = ["images", "tv", "radio", "synth"]
 	const filtered_fields = {log_messages:0, admin_log_messages:0, access_log_messages:0, stored_images:0}
+	const whisper_types = ["user", "ops", "broadcast", "system_broadcast"]
 
 	const s3 = new aws.S3(
 	{
@@ -4068,91 +4069,43 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.public.whisper = function(socket, data)
 	{
-		if(data.username === undefined)
+		if(!whisper_types.includes(data.type))
 		{
 			return handler.get_out(socket)
 		}
 
-		if(data.username.length === 0)
+		if(data.type === "user")
 		{
-			return handler.get_out(socket)
-		}
-
-		if(data.username.length > config.max_max_username_length)
-		{
-			return handler.get_out(socket)
-		}
-
-		if(data.message === undefined)
-		{
-			return handler.get_out(socket)
-		}
-
-		if(data.message.length === 0)
-		{
-			if(!data.draw_coords)
+			if(!handler.check_permission(socket, "chat"))
 			{
-				return handler.get_out(socket)
-			}
-		}
-
-		if(data.message.length > config.max_input_length)
-		{
-			return handler.get_out(socket)
-		}
-
-		if(data.message !== utilz.clean_string2(data.message))
-		{
-			return handler.get_out(socket)
-		}
-
-		if(data.draw_coords === undefined)
-		{
-			return handler.get_out(socket)
-		}
-
-		if(JSON.stringify(data.draw_coords).length > config.draw_coords_max_length)
-		{
-			return handler.get_out(socket)
-		}
-
-		if(!handler.check_permission(socket, "chat"))
-		{
-			return false
-		}
-
-		let sockets = handler.get_user_sockets_per_room_by_username(socket.hue_room_id, data.username)
-
-		if(sockets.length > 0)
-		{
-			for(let socc of sockets)
-			{
-				if(socc.id === socket.id)
-				{
-					continue
-				}
-				
-				handler.user_emit(socc, 'whisper',
-				{
-					room: socket.hue_room_id,
-					username: socket.hue_username,
-					message: data.message,
-					draw_coords: data.draw_coords
-				})
+				return false
 			}
 		}
 
 		else
 		{
-			handler.user_emit(socket, 'user_not_in_room', {})
+			if(!handler.is_admin_or_op(socket))
+			{
+				return handler.get_out(socket)
+			}
 		}
-	}
 
-	handler.public.whisper_ops = function(socket, data)
-	{
-		if(!handler.is_admin_or_op(socket))
+		if(data.type === "user")
 		{
-			return handler.get_out(socket)
+			if(data.username === undefined)
+			{
+				return handler.get_out(socket)
+			}
+	
+			if(data.username.length === 0)
+			{
+				return handler.get_out(socket)
+			}
+	
+			if(data.username.length > config.max_max_username_length)
+			{
+				return handler.get_out(socket)
+			}
 		}
 
 		if(data.message === undefined)
@@ -4173,7 +4126,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(data.message !== utilz.clean_string2(data.message))
+		if(data.message !== utilz.clean_string10(data.message))
+		{
+			return handler.get_out(socket)
+		}
+
+		if(data.message.split("\n").length > config.max_num_newlines)
 		{
 			return handler.get_out(socket)
 		}
@@ -4188,116 +4146,72 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		let sockets = handler.get_room_sockets(socket.hue_room_id)
-
-		for(let socc of sockets)
+		if(data.type === "user")
 		{
-			if(handler.is_admin_or_op(socc))
+			let sockets = handler.get_user_sockets_per_room_by_username(socket.hue_room_id, data.username)
+	
+			if(sockets.length > 0)
 			{
-				handler.user_emit(socc, 'whisper_ops',
+				for(let socc of sockets)
 				{
-					room: socket.hue_room_id,
-					username: socket.hue_username,
-					message: data.message,
-					draw_coords: data.draw_coords
-				})
+					if(socc.id === socket.id)
+					{
+						continue
+					}
+					
+					handler.user_emit(socc, 'whisper',
+					{
+						room: socket.hue_room_id,
+						username: socket.hue_username,
+						message: data.message,
+						draw_coords: data.draw_coords
+					})
+				}
 			}
-		}
-	}
-
-	handler.public.room_broadcast = function(socket, data)
-	{
-		if(!handler.is_admin_or_op(socket))
-		{
-			return handler.get_out(socket)
-		}
-
-		if(data.message === undefined)
-		{
-			return false
-		}
-
-		if(data.message.length === 0)
-		{
-			if(!data.draw_coords)
+	
+			else
 			{
-				return handler.get_out(socket)
+				handler.user_emit(socket, 'user_not_in_room', {})
 			}
 		}
 
-		if(data.message.length > config.max_input_length)
+		else if(data.type === "ops")
 		{
-			return handler.get_out(socket)
-		}
+			let sockets = handler.get_room_sockets(socket.hue_room_id)
 
-		if(data.message !== utilz.clean_string2(data.message))
-		{
-			return handler.get_out(socket)
-		}
-
-		if(data.draw_coords === undefined)
-		{
-			return handler.get_out(socket)
-		}
-
-		if(JSON.stringify(data.draw_coords).length > config.draw_coords_max_length)
-		{
-			return handler.get_out(socket)
-		}
-
-		handler.room_emit(socket, 'room_broadcast',
-		{
-			message: data.message,
-			username: socket.hue_username,
-			draw_coords: data.draw_coords
-		})
-	}
-
-	handler.public.system_broadcast = function(socket, data)
-	{
-		if(!socket.hue_superuser)
-		{
-			return handler.get_out(socket)
-		}
-
-		if(data.message === undefined)
-		{
-			return false
-		}
-
-		if(data.message.length === 0)
-		{
-			if(!data.draw_coords)
+			for(let socc of sockets)
 			{
-				return handler.get_out(socket)
+				if(handler.is_admin_or_op(socc))
+				{
+					handler.user_emit(socc, 'whisper_ops',
+					{
+						room: socket.hue_room_id,
+						username: socket.hue_username,
+						message: data.message,
+						draw_coords: data.draw_coords
+					})
+				}
 			}
 		}
 
-		if(data.message.length > config.max_input_length)
+		else if(data.type === "broadcast")
 		{
-			return handler.get_out(socket)
+			handler.room_emit(socket, 'room_broadcast',
+			{
+				message: data.message,
+				username: socket.hue_username,
+				draw_coords: data.draw_coords
+			})
 		}
 
-		if(data.message !== utilz.clean_string2(data.message))
+		else if(data.type === "system_broadcast")
 		{
-			return handler.get_out(socket)
+			handler.system_emit(socket, 'system_broadcast',
+			{
+				message: data.message,
+				draw_coords: data.draw_coords
+			})
 		}
-
-		if(data.draw_coords === undefined)
-		{
-			return handler.get_out(socket)
-		}
-
-		if(JSON.stringify(data.draw_coords).length > config.draw_coords_max_length)
-		{
-			return handler.get_out(socket)
-		}
-
-		handler.system_emit(socket, 'system_broadcast',
-		{
-			message: data.message,
-			draw_coords: data.draw_coords
-		})
 	}
 
 	handler.public.system_restart_signal = function(socket, data)

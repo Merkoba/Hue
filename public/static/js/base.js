@@ -5578,7 +5578,7 @@ Hue.activate_key_detection = function()
 			{
 				if(Hue.msg_message.is_highest())
 				{
-					if(e.key === "Enter")
+					if(e.key === "Enter" && !e.shiftKey)
 					{
 						Hue.send_popup_message()
 						e.preventDefault()
@@ -5693,7 +5693,7 @@ Hue.activate_key_detection = function()
 		{
 			Hue.focus_edit_area()
 
-			if(e.key === "Enter")
+			if(e.key === "Enter" && !e.shiftKey)
 			{
 				Hue.send_edit_messsage()
 				e.preventDefault()
@@ -17429,9 +17429,17 @@ Hue.send_inline_whisper = function(arg, show=true)
 
 	let uname = split[0].trim()
 	let usplit = uname.split("&&")
-	let message = Hue.utilz.clean_string2(split.slice(1).join(">"))
+	let message = Hue.utilz.clean_string10(split.slice(1).join(">"))
 
 	if(!message)
+	{
+		return false
+	}
+
+	let message_split = message.split("\n")
+	let num_lines = message_split.length
+
+	if(num_lines > Hue.config.max_num_newlines)
 	{
 		return false
 	}
@@ -17564,7 +17572,7 @@ Hue.send_popup_message = function(force=false)
 
 	Hue.sending_whisper = true
 
-	let message = Hue.utilz.clean_string2($("#write_message_area").val())
+	let message = Hue.utilz.clean_string10($("#write_message_area").val())
 	let diff = Hue.config.max_input_length - message.length
 	let draw_coords
 
@@ -17590,6 +17598,17 @@ Hue.send_popup_message = function(force=false)
 	else if(diff < 0)
 	{
 		$("#write_message_feedback").text(`Character limit exceeded by ${Math.abs(diff)}`)
+		$("#write_message_feedback").css("display", "block")
+		Hue.sending_whisper = false
+		return false
+	}
+
+	let message_split = message.split("\n")
+	let num_lines = message_split.length
+
+	if(num_lines > Hue.config.max_num_newlines)
+	{
+		$("#write_message_feedback").text(`Too many linebreaks`)
 		$("#write_message_feedback").css("display", "block")
 		Hue.sending_whisper = false
 		return false
@@ -17782,6 +17801,7 @@ Hue.do_send_whisper_user = function(unames, message, draw_coords, show=true)
 	{
 		Hue.socket_emit('whisper', 
 		{
+			type: "user",
 			username: u, 
 			message: message, 
 			draw_coords: draw_coords
@@ -17799,8 +17819,7 @@ Hue.do_send_whisper_user = function(unames, message, draw_coords, show=true)
 
 Hue.send_whisper_ops = function(message, draw_coords)
 {
-	Hue.socket_emit('whisper_ops', {message:message, draw_coords:draw_coords})
-
+	Hue.socket_emit('whisper', {type:"ops", message:message, draw_coords:draw_coords})
 	return true
 }
 
@@ -17812,15 +17831,13 @@ Hue.send_room_broadcast = function(message, draw_coords)
 		return false
 	}
 
-	Hue.socket_emit("room_broadcast", {message:message, draw_coords:draw_coords})
-
+	Hue.socket_emit("whisper", {type:"broadcast", message:message, draw_coords:draw_coords})
 	return true
 }
 
 Hue.send_system_broadcast = function(message, draw_coords)
 {
-	Hue.socket_emit("system_broadcast", {message:message, draw_coords:draw_coords})
-
+	Hue.socket_emit("whisper", {type:"system_broadcast", message:message, draw_coords:draw_coords})
 	return true
 }
 
@@ -17944,14 +17961,12 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 	data.content = Hue.make_safe(
 	{
 		text: data.message,
+		text_as_html: true,
+		text_classes: "popup_message_text",
 		html: h,
 		remove_text_if_empty: true,
 		date: data.date
 	})
-
-	let text_item = $(data.content).find(".message_info_text").eq(0)
-
-	text_item.html(Hue.replace_markdown(text_item.text()))
 
 	$(data.content).find(".whisper_link").each(function()
 	{
@@ -18693,6 +18708,8 @@ Hue.make_safe = function(args={})
 	let def_args =
 	{
 		text: "",
+		text_as_html: false,
+		text_classes: false,
 		html: false,
 		urlize: true,
 		onclick: false,
@@ -18715,18 +18732,41 @@ Hue.make_safe = function(args={})
 			c_text_classes += " pointer action"
 		}
 
+		if(args.text_classes)
+		{
+			c_text_classes += ` ${args.text_classes}`
+		}
+
 		c.append(`<div class='${c_text_classes}'></div>`)
 
 		let c_text = c.find(".message_info_text").eq(0)
 
-		if(args.urlize)
+		if(args.text_as_html)
 		{
-			c_text.text(args.text).urlize()
+			let h = Hue.replace_markdown(Hue.make_html_safe(args.text))
+
+			if(args.urlize)
+			{
+				c_text.html(h).urlize()
+			}
+
+			else
+			{
+				c_text.html(h)
+			}
 		}
 
 		else
 		{
-			c_text.text(args.text)
+			if(args.urlize)
+			{
+				c_text.text(args.text).urlize()
+			}
+
+			else
+			{
+				c_text.text(args.text)
+			}
 		}
 
 		if(args.onclick)

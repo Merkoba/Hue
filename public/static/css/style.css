@@ -2554,3 +2554,8 @@ a.special_link:hover
 {
 	padding: 0.5rem;
 }
+
+.popup_message_text
+{
+	white-space: pre-wrap;
+}
