@@ -4,11 +4,6 @@ window.electron_api = {}
 
 window.electron_api.highlighted = function(data)
 {
-	if(!document.hidden)
-	{
-		return false
-	}
-
 	electron_notify("Hue", "You were highlighted")
 }
 

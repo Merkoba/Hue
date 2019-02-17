@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"dependencies": {
-		"node-notifier": "~5.2.1"
+		"node-notifier": "~5.4.0"
 	},
 	"build": {
 		"appId": "com.merkoba.hue"
