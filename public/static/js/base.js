@@ -7913,28 +7913,9 @@ Hue.process_message = function(args={})
 	Hue.fill_defaults(args, def_args)
 
 	let message_split = args.message.split("\n")
-
 	let num_lines = message_split.length
 
-	if(num_lines === 1)
-	{
-		 args.message = args.message.trim()
-	}
-
-	else
-	{
-		let new_lines = []
-
-		for(let line of message_split)
-		{
-			if(line.trim().length > 0)
-			{
-				new_lines.push(line)
-			}
-		}
-
-		args.message = new_lines.join("\n")
-	}
+	args.message = Hue.clean_multiline(args.message)
 
 	if(num_lines === 1 && Hue.is_command(args.message) && !args.edit_id)
 	{
@@ -8178,7 +8159,7 @@ Hue.process_message = function(args={})
 	{
 		if(Hue.can_chat)
 		{
-			args.message = Hue.utilz.clean_string10(args.message)
+			args.message = Hue.utilz.clean_string10(Hue.clean_multiline(args.message))
 
 			if(args.message.length === 0)
 			{
@@ -17432,7 +17413,7 @@ Hue.send_inline_whisper = function(arg, show=true)
 
 	let uname = split[0].trim()
 	let usplit = uname.split("&&")
-	let message = Hue.utilz.clean_string10(split.slice(1).join(">"))
+	let message = Hue.utilz.clean_string10(Hue.clean_multiline(split.slice(1).join(">")))
 
 	if(!message)
 	{
@@ -24738,4 +24719,32 @@ Hue.get_matching_usernames = function(s)
 	}
 
 	return matches
+}
+
+Hue.clean_multiline = function(message)
+{
+	let message_split = message.split("\n")
+	let num_lines = message_split.length
+
+	if(num_lines === 1)
+	{
+		message = message.trim()
+	}
+
+	else
+	{
+		let new_lines = []
+
+		for(let line of message_split)
+		{
+			if(line.trim().length > 0)
+			{
+				new_lines.push(line)
+			}
+		}
+
+		message = new_lines.join("\n")
+	}
+
+	return message
 }
