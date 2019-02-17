@@ -21898,7 +21898,11 @@ Hue.submit_reply = function()
 	Hue.msg_reply.close()
 	Hue.goto_bottom(true, false)
 	Hue.process_message({message:Hue.reply_text_raw, to_history:false})
-	Hue.process_message({message:reply})
+
+	if(reply)
+	{
+		Hue.process_message({message:reply})
+	}
 }
 
 Hue.make_markdown_char_regex = function(char)
