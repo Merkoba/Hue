@@ -1570,7 +1570,7 @@ Hue.setup_image = function(mode, odata={})
 
 	if(data.message)
 	{
-		Hue.announce_image(data)
+		data.message_id = Hue.announce_image(data).message_id
 	}
 
 	if(mode === "change" || mode === "show")
@@ -1599,7 +1599,7 @@ Hue.setup_image = function(mode, odata={})
 
 Hue.announce_image = function(data)
 {
-	Hue.public_feedback(data.message,
+	return Hue.public_feedback(data.message,
 	{
 		save: true,
 		brk: "<i class='icon2c fa fa-camera'></i>",
@@ -1742,7 +1742,7 @@ Hue.setup_tv = function(mode, odata={})
 
 	if(data.message)
 	{
-		Hue.announce_tv(data)
+		data.message_id = Hue.announce_tv(data).message_id
 	}
 
 	if(mode === "change" || mode === "show")
@@ -1778,7 +1778,7 @@ Hue.setup_tv = function(mode, odata={})
 
 Hue.announce_tv = function(data)
 {
-	Hue.public_feedback(data.message,
+	return Hue.public_feedback(data.message,
 	{
 		save: true,
 		brk: "<i class='icon2c fa fa-television'></i>",
@@ -1917,7 +1917,7 @@ Hue.setup_radio = function(mode, odata={})
 
 	if(data.message)
 	{
-		Hue.announce_radio(data)
+		data.message_id = Hue.announce_radio(data).message_id
 	}
 
 	if(mode === "change" || mode === "show")
@@ -1953,7 +1953,7 @@ Hue.setup_radio = function(mode, odata={})
 
 Hue.announce_radio = function(data)
 {
-	Hue.public_feedback(data.message,
+	return Hue.public_feedback(data.message,
 	{
 		save: true,
 		brk: "<i class='icon2c fa fa-volume-up'></i>",
@@ -4276,8 +4276,8 @@ Hue.start_history_items_context_menu = function()
 				},
 				visible: function(key, opt)
 				{
-					let id = $(this).data("item_id")
-					let user_id = $(this).data("user_id")
+					let id = $(this).data("data").id
+					let user_id = $(this).data("data").user_id
 
 					if(!id || !user_id)
 					{
@@ -4297,7 +4297,7 @@ Hue.start_history_items_context_menu = function()
 					{
 						name: "I'm Sure", callback: function(key, opt)
 						{
-							let id = $(this).data("item_id")
+							let id = $(this).data("data").id
 	
 							if(id)
 							{
@@ -4320,7 +4320,7 @@ Hue.start_history_items_context_menu = function()
 						name: "I'm Sure", callback: function(key, opt)
 						{
 							let message
-							let id = $(this).data("item_id")
+							let id = $(this).data("data").id
 
 							$($(".announcement").get().reverse()).each(function()
 							{
@@ -6882,13 +6882,13 @@ Hue.update_chat = function(args={})
 		})
 	})
 
-	Hue.add_to_chat(
+	let message_id = Hue.add_to_chat(
 	{
 		message: fmessage, 
 		save: true, 
 		id: args.id, 
 		just_edited: args.just_edited
-	})
+	}).message_id
 
 	if(!args.edited)
 	{
@@ -6907,6 +6907,8 @@ Hue.update_chat = function(args={})
 			}
 		}
 	}
+
+	return {message_id:message_id}
 }
 
 Hue.add_to_chat = function(args={})
@@ -6936,7 +6938,7 @@ Hue.add_to_chat = function(args={})
 	let date = args.message.data("date")
 	let is_public = args.message.data("public")
 
-	let content_container
+	let content_container, message_id
 
 	if(mode === "chat")
 	{
@@ -6979,8 +6981,8 @@ Hue.add_to_chat = function(args={})
 					}
 
 					last_message.find(".chat_container").eq(0).append(content_container)
-
 					Hue.replace_in_chat_history(last_message)
+					message_id = last_message.data("message_id")
 
 					if(!last_message.data("highlighted"))
 					{
@@ -7019,10 +7021,12 @@ Hue.add_to_chat = function(args={})
 			$("#chat_area > .message").eq(0).remove()
 		}
 		
+		Hue.message_id += 1
+		args.message.data("message_id", Hue.message_id)
+		message_id = Hue.message_id
+
 		if(args.save)
 		{
-			Hue.message_id += 1
-			args.message.data("message_id", Hue.message_id)
 			Hue.push_to_chat_history(args.message)
 		}
 	}
@@ -7056,6 +7060,8 @@ Hue.add_to_chat = function(args={})
 	{
 		Hue.electron_signal("highlighted")
 	}
+
+	return {message_id:message_id}
 }
 
 Hue.push_to_chat_history = function(message)
@@ -7517,9 +7523,9 @@ Hue.change = function(args={})
 
 	$(`#${args.type}_history_container`).find(".media_history_item").each(function()
 	{
-		let obj = $(this).data("obj")
+		let data = $(this).data("data")
 
-		if(obj === Hue[`loaded_${args.type}`])
+		if(data === Hue[`loaded_${args.type}`])
 		{
 			$(this).addClass("blinking_2")
 		}
@@ -7890,9 +7896,11 @@ Hue.chat_announce = function(args={})
 	fmessage.data("item_id", args.item_id)
 	fmessage.data("user_id", args.user_id)
 
+	let message_id
+
 	if(!ignore)
 	{
-		Hue.add_to_chat({message:fmessage, save:args.save})
+		message_id = Hue.add_to_chat({message:fmessage, save:args.save}).message_id
 		
 		if(highlighted)
 		{
@@ -7900,6 +7908,8 @@ Hue.chat_announce = function(args={})
 			Hue.sound_notify("highlight")
 		}
 	}
+
+	return {message_id:message_id}
 }
 
 jQuery.fn.urlize = function(stop_propagation=true)
@@ -19578,7 +19588,7 @@ Hue.feedback = function(message, data=false)
 		obj.brk = `<div class='inline'>${obj.brk}</div>`
 	}
 
-	Hue.chat_announce(obj)
+	return Hue.chat_announce(obj)
 }
 
 Hue.public_feedback = function(message, data=false)
@@ -19601,7 +19611,7 @@ Hue.public_feedback = function(message, data=false)
 		obj.brk = `<div class='inline'>${obj.brk}</div>`
 	}
 
-	Hue.chat_announce(obj)
+	return Hue.chat_announce(obj)
 }
 
 Hue.make_unique_lines = function(s)
@@ -21890,11 +21900,11 @@ Hue.start_jump_events_2 = function(iclass)
 {
 	$(`.${iclass}`).on("click", ".jump_button", function()
 	{
-		let id = $(this).closest(".jump_button_container").data("item_id")
+		let message_id = $(this).closest(".jump_button_container").data("data").message_id
 
 		$($(".announcement").get().reverse()).each(function()
 		{
-			if($(this).data("item_id") === id)
+			if($(this).data("message_id") === message_id)
 			{
 				let el = this
 
@@ -24757,9 +24767,7 @@ Hue.create_media_history_item = function(data)
 	el.attr("title", data.info)
 	el.data("otitle", data.info)
 	el.data("date", data.date)
-	el.data("obj", data)
-	el.data("item_id", data.id)
-	el.data("user_id", data.user_id)
+	el.data("data", data)
 
 	inner.click(data.onclick)
 

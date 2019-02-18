@@ -5,8 +5,8 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 	const reserved_usernames = ["The system", config.image_ads_setter].map(x => x.toLowerCase())
 
-	const rooms_version = 72
-	const users_version = 42
+	const rooms_version = 73
+	const users_version = 43
 
 	const rooms_schema =
 	{
@@ -14,6 +14,9 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		topic:{type:"string", default:""},
 		topic_setter:{type:"string", default:""},
 		topic_date:{type:"number", default:0},
+		keys:{type:"object", default:{}},
+		stored_images:{type:"object", default:[]},
+		images_mode:{type:"string", default:"enabled"},
 		image_id:{type:"string", default:""},
 		image_user_id:{type:"string", default:""},
 		image_source:{type:"string", default:""},
@@ -22,8 +25,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		image_date:{type:"number", default:0},
 		image_query:{type:"string", default:""},
 		image_type:{type:"string", default:"link"},
-		stored_images:{type:"object", default:[]},
-		keys:{type:"object", default:{}},
+		image_comment:{type:"string", default:""},
 		radio_id:{type:"string", default:""},
 		radio_user_id:{type:"string", default:""},
 		radio_type:{type:"string", default:"radio"},
@@ -32,6 +34,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		radio_setter:{type:"string", default:""},
 		radio_date:{type:"number", default:0},
 		radio_query:{type:"string", default:""},
+		radio_comment:{type:"string", default:""},
 		tv_id:{type:"string", default:""},
 		tv_user_id:{type:"string", default:""},
 		tv_type:{type:"string", default:"tv"},
@@ -40,7 +43,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		tv_setter:{type:"string", default:""},
 		tv_date:{type:"number", default:0},
 		tv_query:{type:"string", default:""},
-		images_mode:{type:"string", default:"enabled"},
+		tv_comment:{type:"string", default:""},
 		tv_mode:{type:"string", default:"enabled"},
 		radio_mode:{type:"string", default:"enabled"},
 		synth_mode:{type:"string", default:"enabled"},
