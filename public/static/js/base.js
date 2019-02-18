@@ -952,9 +952,12 @@ Hue.start_socket = function()
 		}
 	})
 
-	Hue.socket.on('update', (data) =>
+	Hue.socket.on('update', (obj) =>
 	{
-		if(data.type === 'joined')
+		let type = obj.type
+		let data = obj.data
+
+		if(type === 'joined')
 		{
 			console.info("Joined Room")
 
@@ -1002,12 +1005,12 @@ Hue.start_socket = function()
 			Hue.at_startup()
 		}
 
-		else if(data.type === 'typing')
+		else if(type === 'typing')
 		{
 			Hue.show_typing(data)
 		}
 
-		else if(data.type === 'chat_message')
+		else if(type === 'chat_message')
 		{
 			Hue.update_chat(
 			{
@@ -1028,52 +1031,52 @@ Hue.start_socket = function()
 			Hue.remove_aura(data.username)
 		}
 
-		else if(data.type === 'request_slice_upload')
+		else if(type === 'request_slice_upload')
 		{
 			Hue.request_slice_upload(data)
 		}
 
-		else if(data.type === 'upload_ended')
+		else if(type === 'upload_ended')
 		{
 			Hue.upload_ended(data)
 		}
 
-		else if(data.type === 'changed_image_source')
+		else if(type === 'changed_image_source')
 		{
 			Hue.setup_image("change", data)
 		}
 
-		else if(data.type === 'changed_tv_source')
+		else if(type === 'changed_tv_source')
 		{
 			Hue.setup_tv("change", data)
 		}
 
-		else if(data.type === 'restarted_tv_source')
+		else if(type === 'restarted_tv_source')
 		{
 			Hue.setup_tv("restart", data)
 		}
 
-		else if(data.type === 'changed_radio_source')
+		else if(type === 'changed_radio_source')
 		{
 			Hue.setup_radio("change", data)
 		}
 
-		else if(data.type === 'restarted_radio_source')
+		else if(type === 'restarted_radio_source')
 		{
 			Hue.setup_radio("restart", data)
 		}
 
-		else if(data.type === 'profile_image_changed')
+		else if(type === 'profile_image_changed')
 		{
 			Hue.profile_image_changed(data)
 		}
 
-		else if(data.type === 'userjoin')
+		else if(type === 'userjoin')
 		{
 			Hue.userjoin(data)
 		}
 
-		else if(data.type === 'roomlist')
+		else if(type === 'roomlist')
 		{
 			Hue.update_roomlist(data.rtype, data.roomlist)
 
@@ -1088,47 +1091,47 @@ Hue.start_socket = function()
 			}
 		}
 
-		else if(data.type === 'upload_error')
+		else if(type === 'upload_error')
 		{
 			Hue.show_upload_error()
 		}
 
-		else if(data.type === 'topic_change')
+		else if(type === 'topic_change')
 		{
 			Hue.announce_topic_change(data)
 		}
 
-		else if(data.type === 'room_name_changed')
+		else if(type === 'room_name_changed')
 		{
 			Hue.announce_room_name_change(data)
 		}
 
-		else if(data.type === 'log_changed')
+		else if(type === 'log_changed')
 		{
 			Hue.announce_log_change(data)
 		}
 
-		else if(data.type === 'log_cleared')
+		else if(type === 'log_cleared')
 		{
 			Hue.announce_log_cleared(data)
 		}
 
-		else if(data.type === 'announce_role_change')
+		else if(type === 'announce_role_change')
 		{
 			Hue.announce_role_change(data)
 		}
 
-		else if(data.type === 'voices_resetted')
+		else if(type === 'voices_resetted')
 		{
 			Hue.announce_voices_resetted(data)
 		}
 
-		else if(data.type === 'announce_removedops')
+		else if(type === 'announce_removedops')
 		{
 			Hue.announce_removedops(data)
 		}
 
-		else if(data.type === 'announce_ban')
+		else if(type === 'announce_ban')
 		{
 			Hue.public_feedback(`${data.username1} banned ${data.username2}`,
 			{
@@ -1137,7 +1140,7 @@ Hue.start_socket = function()
 			})
 		}
 
-		else if(data.type === 'announce_unban')
+		else if(type === 'announce_unban')
 		{
 			Hue.public_feedback(`${data.username1} unbanned ${data.username2}`,
 			{
@@ -1146,347 +1149,347 @@ Hue.start_socket = function()
 			})
 		}
 
-		else if(data.type === 'announce_unban_all')
+		else if(type === 'announce_unban_all')
 		{
 			Hue.announce_unban_all(data)
 		}
 
-		else if(data.type === 'receive_banned_count')
+		else if(type === 'receive_banned_count')
 		{
 			Hue.receive_banned_count(data)
 		}
 
-		else if(data.type === 'nothingtounban')
+		else if(type === 'nothingtounban')
 		{
 			Hue.feedback("There was nothing to unban")
 		}
 
-		else if(data.type === 'nothingtoclear')
+		else if(type === 'nothingtoclear')
 		{
 			Hue.feedback("There was nothing to clear")
 		}
 
-		else if(data.type === 'listbans')
+		else if(type === 'listbans')
 		{
 			Hue.show_listbans(data)
 		}
 
-		else if(data.type === 'forbiddenuser')
+		else if(type === 'forbiddenuser')
 		{
 			Hue.forbiddenuser()
 		}
 
-		else if(data.type === 'nothing_was_found')
+		else if(type === 'nothing_was_found')
 		{
 			Hue.feedback("Nothing was found")
 		}
 
-		else if(data.type === 'user_not_found')
+		else if(type === 'user_not_found')
 		{
 			Hue.feedback("User doesn't exist")
 		}
 
-		else if(data.type === 'user_not_in_room')
+		else if(type === 'user_not_in_room')
 		{
 			Hue.user_not_in_room()
 		}
 
-		else if(data.type === 'noopstoremove')
+		else if(type === 'noopstoremove')
 		{
 			Hue.feedback("There were no ops to remove")
 		}
 
-		else if(data.type === 'novoicestoreset')
+		else if(type === 'novoicestoreset')
 		{
 			Hue.feedback("There were no voices to reset")
 		}
 
-		else if(data.type === 'isalready')
+		else if(type === 'isalready')
 		{
 			Hue.isalready(data.who, data.what)
 		}
 
-		else if(data.type === 'user_already_banned')
+		else if(type === 'user_already_banned')
 		{
 			Hue.feedback("User is already banned")
 		}
 
-		else if(data.type === 'user_already_unbanned')
+		else if(type === 'user_already_unbanned')
 		{
 			Hue.feedback("User is already unbanned")
 		}
 
-		else if(data.type === 'privacy_change')
+		else if(type === 'privacy_change')
 		{
 			Hue.announce_privacy_change(data)
 		}
 
-		else if(data.type === 'imagenotfound')
+		else if(type === 'imagenotfound')
 		{
 			Hue.feedback("The image couldn't be found")
 		}
 
-		else if(data.type === 'songnotfound')
+		else if(type === 'songnotfound')
 		{
 			Hue.feedback("The song couldn't be found")
 		}
 
-		else if(data.type === 'videonotfound')
+		else if(type === 'videonotfound')
 		{
 			Hue.feedback("The video couldn't be found")
 		}
 
-		else if(data.type === 'image_cooldown_wait')
+		else if(type === 'image_cooldown_wait')
 		{
 			Hue.feedback("The image was changed recently. You must wait a while before changing it again")
 		}
 
-		else if(data.type === 'tv_cooldown_wait')
+		else if(type === 'tv_cooldown_wait')
 		{
 			Hue.feedback("The tv was changed recently. You must wait a while before changing it again")
 		}
 
-		else if(data.type === 'radio_cooldown_wait')
+		else if(type === 'radio_cooldown_wait')
 		{
 			Hue.feedback("The radio was changed recently. You must wait a while before changing it again")
 		}
 
-		else if(data.type === 'room_created')
+		else if(type === 'room_created')
 		{
 			Hue.on_room_created(data)
 		}
 
-		else if(data.type === 'redirect')
+		else if(type === 'redirect')
 		{
 			Hue.goto_url(data.location)
 		}
 
-		else if(data.type === 'username_already_exists')
+		else if(type === 'username_already_exists')
 		{
 			Hue.feedback(`${data.username} already exists`)
 		}
 
-		else if(data.type === 'email_already_exists')
+		else if(type === 'email_already_exists')
 		{
 			Hue.feedback(`${data.email} already exists`)
 		}
 
-		else if(data.type === 'new_username')
+		else if(type === 'new_username')
 		{
 			Hue.announce_new_username(data)
 		}
 
-		else if(data.type === 'password_changed')
+		else if(type === 'password_changed')
 		{
 			Hue.password_changed(data)
 		}
 
-		else if(data.type === 'email_changed')
+		else if(type === 'email_changed')
 		{
 			Hue.email_changed(data)
 		}
 
-		else if(data.type === 'room_images_mode_change')
+		else if(type === 'room_images_mode_change')
 		{
 			Hue.announce_room_images_mode_change(data)
 		}
 
-		else if(data.type === 'room_tv_mode_change')
+		else if(type === 'room_tv_mode_change')
 		{
 			Hue.announce_room_tv_mode_change(data)
 		}
 
-		else if(data.type === 'room_radio_mode_change')
+		else if(type === 'room_radio_mode_change')
 		{
 			Hue.announce_room_radio_mode_change(data)
 		}
 
-		else if(data.type === 'room_synth_mode_change')
+		else if(type === 'room_synth_mode_change')
 		{
 			Hue.announce_room_synth_mode_change(data)
 		}
 
-		else if(data.type === 'theme_mode_changed')
+		else if(type === 'theme_mode_changed')
 		{
 			Hue.announce_theme_mode_change(data)
 		}
 
-		else if(data.type === 'theme_change')
+		else if(type === 'theme_change')
 		{
 			Hue.announce_theme_change(data)
 		}
 
-		else if(data.type === 'background_image_change')
+		else if(type === 'background_image_change')
 		{
 			Hue.announce_background_image_change(data)
 		}
 
-		else if(data.type === 'background_mode_changed')
+		else if(type === 'background_mode_changed')
 		{
 			Hue.announce_background_mode_change(data)
 		}
 
-		else if(data.type === 'background_effect_changed')
+		else if(type === 'background_effect_changed')
 		{
 			Hue.announce_background_effect_change(data)
 		}
 
-		else if(data.type === 'background_tile_dimensions_changed')
+		else if(type === 'background_tile_dimensions_changed')
 		{
 			Hue.announce_background_tile_dimensions_change(data)
 		}
 
-		else if(data.type === 'text_color_mode_changed')
+		else if(type === 'text_color_mode_changed')
 		{
 			Hue.announce_text_color_mode_change(data)
 		}
 
-		else if(data.type === 'text_color_changed')
+		else if(type === 'text_color_changed')
 		{
 			Hue.announce_text_color_change(data)
 		}
 
-		else if(data.type === 'voice_permission_change')
+		else if(type === 'voice_permission_change')
 		{
 			Hue.announce_voice_permission_change(data)
 		}
 
-		else if(data.type === 'userdisconnect')
+		else if(type === 'userdisconnect')
 		{
 			Hue.userdisconnect(data)
 		}
 
-		else if(data.type === 'othersdisconnected')
+		else if(type === 'othersdisconnected')
 		{
 			Hue.show_others_disconnected(data)
 		}
 
-		else if(data.type === 'whisper')
+		else if(type === 'whisper')
 		{
 			Hue.popup_message_received(data)
 		}
 
-		else if(data.type === 'whisper_ops')
+		else if(type === 'whisper_ops')
 		{
 			Hue.popup_message_received(data, "ops")
 		}
 
-		else if(data.type === 'room_broadcast')
+		else if(type === 'room_broadcast')
 		{
 			Hue.popup_message_received(data, "room")
 		}
 
-		else if(data.type === 'system_broadcast')
+		else if(type === 'system_broadcast')
 		{
 			Hue.popup_message_received(data, "system")
 		}
 
-		else if(data.type === 'system_restart_signal')
+		else if(type === 'system_restart_signal')
 		{
 			Hue.restart_client()
 		}
 
-		else if(data.type === 'error_occurred')
+		else if(type === 'error_occurred')
 		{
 			Hue.error_occurred()
 		}
 
-		else if(data.type === 'email_change_code_sent')
+		else if(type === 'email_change_code_sent')
 		{
 			Hue.feedback(`Verification code sent. Use the command sent to ${data.email}. Email might take a couple of minutes to arrive`)
 		}
 
-		else if(data.type === 'email_change_code_not_sent')
+		else if(type === 'email_change_code_not_sent')
 		{
 			Hue.feedback(`Verification code not sent yet. Use /changeemail [new_email] to get a verification code`)
 		}
 
-		else if(data.type === 'email_change_wait')
+		else if(type === 'email_change_wait')
 		{
 			Hue.feedback(`You must wait a while before changing the email again`)
 		}
 
-		else if(data.type === 'email_change_wrong_code')
+		else if(type === 'email_change_wrong_code')
 		{
 			Hue.feedback(`Code supplied didn't match`)
 		}
 
-		else if(data.type === 'email_change_expired_code')
+		else if(type === 'email_change_expired_code')
 		{
 			Hue.feedback(`Code supplied has expired`)
 		}
 
-		else if(data.type === 'create_room_wait')
+		else if(type === 'create_room_wait')
 		{
 			Hue.msg_info.show("You must wait a while before creating another room")
 		}
 
-		else if(data.type === 'pong_received')
+		else if(type === 'pong_received')
 		{
 			Hue.pong_received(data)
 		}
 
-		else if(data.type === 'reaction_received')
+		else if(type === 'reaction_received')
 		{
 			Hue.show_reaction(data)
 		}
 
-		else if(data.type === 'cannot_embed_iframe')
+		else if(type === 'cannot_embed_iframe')
 		{
 			Hue.feedback("That website cannot be embedded")
 		}
 
-		else if(data.type === 'same_image')
+		else if(type === 'same_image')
 		{
 			Hue.feedback("Image is already set to that")
 		}
 
-		else if(data.type === 'same_tv')
+		else if(type === 'same_tv')
 		{
 			Hue.feedback("TV is already set to that")
 		}
 
-		else if(data.type === 'same_radio')
+		else if(type === 'same_radio')
 		{
 			Hue.feedback("Radio is already set to that")
 		}
 
-		else if(data.type === 'receive_admin_activity')
+		else if(type === 'receive_admin_activity')
 		{
 			Hue.show_admin_activity(data.messages)
 		}
 
-		else if(data.type === 'receive_access_log')
+		else if(type === 'receive_access_log')
 		{
 			Hue.show_access_log(data.messages)
 		}
 
-		else if(data.type === 'receive_admin_list')
+		else if(type === 'receive_admin_list')
 		{
 			Hue.show_admin_list(data)
 		}
 
-		else if(data.type === 'activity_trigger')
+		else if(type === 'activity_trigger')
 		{
 			Hue.push_to_activity_bar(data.username, Date.now())
 		}
 
-		else if(data.type === 'message_deleted')
+		else if(type === 'message_deleted')
 		{
 			Hue.remove_message_from_chat(data)
 		}
 
-		else if(data.type === 'receive_synth_key')
+		else if(type === 'receive_synth_key')
 		{
 			Hue.receive_synth_key(data)
 		}
 
-		else if(data.type === 'receive_synth_voice')
+		else if(type === 'receive_synth_voice')
 		{
 			Hue.receive_synth_voice(data)
 		}
 
-		else if(data.type === 'announcement')
+		else if(type === 'announcement')
 		{
 			Hue.show_announcement(data)
 		}
@@ -1497,15 +1500,15 @@ Hue.setup_image = function(mode, odata={})
 {	
 	let data = {}
 	
-	data.id = odata.image_id
-	data.user_id = odata.image_user_id
-	data.type = odata.image_type
-	data.source = odata.image_source
-	data.setter = odata.image_setter
-	data.size = odata.image_size
-	data.date = odata.image_date
-	data.query = odata.image_query
-	data.comment = odata.image_comment
+	data.id = odata.id
+	data.user_id = odata.user_id
+	data.type = odata.type
+	data.source = odata.source
+	data.setter = odata.setter
+	data.size = odata.size
+	data.date = odata.date
+	data.query = odata.query
+	data.comment = odata.comment
 
 	data.nice_date = data.date ? Hue.nice_date(data.date) : Hue.nice_date()
 
@@ -1676,15 +1679,15 @@ Hue.setup_tv = function(mode, odata={})
 	{
 		data = {}
 
-		data.id = odata.tv_id
-		data.user_id = odata.tv_user_id
-		data.type = odata.tv_type
-		data.source = odata.tv_source
-		data.title = odata.tv_title
-		data.setter = odata.tv_setter
-		data.date = odata.tv_date
-		data.query = odata.tv_query
-		data.comment = odata.tv_comment
+		data.id = odata.id
+		data.user_id = odata.user_id
+		data.type = odata.type
+		data.source = odata.source
+		data.title = odata.title
+		data.setter = odata.setter
+		data.date = odata.date
+		data.query = odata.query
+		data.comment = odata.comment
 
 		data.nice_date = data.date ? Hue.nice_date(data.date) : Hue.nice_date()
 
@@ -1850,15 +1853,15 @@ Hue.setup_radio = function(mode, odata={})
 	{
 		data = {}
 
-		data.id = odata.radio_id
-		data.user_id = odata.radio_user_id
-		data.type = odata.radio_type
-		data.source = odata.radio_source
-		data.title = odata.radio_title
-		data.setter = odata.radio_setter
-		data.date = odata.radio_date
-		data.query = odata.radio_query
-		data.comment = odata.radio_comment
+		data.id = odata.id
+		data.user_id = odata.user_id
+		data.type = odata.type
+		data.source = odata.source
+		data.title = odata.title
+		data.setter = odata.setter
+		data.date = odata.date
+		data.query = odata.query
+		data.comment = odata.comment
 
 		data.nice_date = data.date ? Hue.nice_date(data.date) : Hue.nice_date()
 
@@ -14857,19 +14860,19 @@ Hue.show_log_messages = function()
 
 				else if(type === "image")
 				{
-					data.image_date = date
+					data.date = date
 					Hue.setup_image("show", data)
 				}
 
 				else if(type === "tv")
 				{
-					data.tv_date = date
+					data.date = date
 					Hue.setup_tv("show", data)
 				}
 
 				else if(type === "radio")
 				{
-					data.radio_date = date
+					data.date = date
 					Hue.setup_radio("show", data)
 				}
 
@@ -23254,7 +23257,7 @@ Hue.send_delete_message = function(id)
 
 Hue.remove_message_from_chat = function(data)
 {
-	if(data.item_type === "chat")
+	if(data.type === "chat")
 	{
 		$(".chat_content_container").each(function()
 		{
@@ -23266,7 +23269,7 @@ Hue.remove_message_from_chat = function(data)
 		})
 	}
 
-	else if(data.item_type === "image" || data.item_type === "tv" || data.item_type === "radio")
+	else if(data.type === "image" || data.type === "tv" || data.type === "radio")
 	{
 		$(".message.announcement").each(function()
 		{
@@ -23276,36 +23279,6 @@ Hue.remove_message_from_chat = function(data)
 				return false
 			}
 		})
-
-		if(data.item_type === "image")
-		{
-			if(Hue.loaded_image.id === data.id)
-			{
-				Hue.media_load_default("image")
-			}
-
-			Hue.remove_item_from_media_history("image", data.id)
-		}
-
-		else if(data.item_type === "tv")
-		{
-			if(Hue.loaded_tv.id === data.id)
-			{
-				Hue.media_load_default("tv")
-			}
-
-			Hue.remove_item_from_media_history("tv", data.id)
-		}
-
-		else if(data.item_type === "radio")
-		{
-			if(Hue.loaded_radio.id === data.id)
-			{
-				Hue.media_load_default("radio")
-			}
-			
-			Hue.remove_item_from_media_history("radio", data.id)
-		}
 	}
 
 	Hue.chat_scroll_bottom(false, false)

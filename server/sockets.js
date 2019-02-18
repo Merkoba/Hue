@@ -1490,6 +1490,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		data.src = data.src.replace(/youtu\.be\/(\w{11})/, "www.youtube.com/watch?v=$1")
+		data.setter = socket.hue_username
 
 		if(rooms[socket.hue_room_id].current_radio_source === data.src 
 		|| rooms[socket.hue_room_id].current_radio_query === data.src)
@@ -1723,9 +1724,16 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			radioinfo.radio_query = query
 		}
 		
-		radioinfo.radio_setter = socket.hue_username
+		radioinfo.radio_setter = data.setter
 		radioinfo.radio_date = date
 		radioinfo.radio_comment = comment
+
+		let user_id = socket.hue_user_id
+
+		if(!radioinfo.radio_setter)
+		{
+			user_id = ""
+		}
 
 		db_manager.update_room(socket.hue_room_id,
 		{
@@ -1742,14 +1750,15 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		handler.room_emit(socket, 'changed_radio_source',
 		{
-			radio_id: radio_id,
-			radio_type: radioinfo.radio_type,
-			radio_source: radioinfo.radio_source,
-			radio_title: radioinfo.radio_title,
-			radio_setter: radioinfo.radio_setter,
-			radio_date: radioinfo.radio_date,
-			radio_query: radioinfo.radio_query,
-			radio_comment: radioinfo.radio_comment
+			id: radio_id,
+			user_id: user_id,
+			type: radioinfo.radio_type,
+			source: radioinfo.radio_source,
+			title: radioinfo.radio_title,
+			setter: radioinfo.radio_setter,
+			date: radioinfo.radio_date,
+			query: radioinfo.radio_query,
+			comment: radioinfo.radio_comment
 		})
 
 		if(rooms[socket.hue_room_id].log)
@@ -1760,13 +1769,13 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				data:
 				{
 					id: radio_id,
-					user_id: socket.hue_user_id,
-					radio_type: radioinfo.radio_type,
-					radio_source: radioinfo.radio_source,
-					radio_title: radioinfo.radio_title,
-					radio_setter: radioinfo.radio_setter,
-					radio_query: radioinfo.radio_query,
-					radio_comment: radioinfo.radio_comment
+					user_id: user_id,
+					type: radioinfo.radio_type,
+					source: radioinfo.radio_source,
+					title: radioinfo.radio_title,
+					setter: radioinfo.radio_setter,
+					query: radioinfo.radio_query,
+					comment: radioinfo.radio_comment
 				},
 				date: date
 			}
@@ -1824,6 +1833,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		data.src = data.src.replace(/youtu\.be\/(\w{11})/, "www.youtube.com/watch?v=$1")
+		data.setter = socket.hue_username
 
 		if(rooms[socket.hue_room_id].current_tv_source === data.src 
 		|| rooms[socket.hue_room_id].current_tv_query === data.src)
@@ -2256,9 +2266,16 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tvinfo.tv_query = query
 		}
 		
-		tvinfo.tv_setter = socket.hue_username
+		tvinfo.tv_setter = data.setter
 		tvinfo.tv_date = date
 		tvinfo.tv_comment = comment
+
+		let user_id = socket.hue_user_id
+
+		if(!tvinfo.tv_setter)
+		{
+			user_id = ""
+		}
 		
 		db_manager.update_room(socket.hue_room_id,
 		{
@@ -2275,14 +2292,15 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		handler.room_emit(socket, 'changed_tv_source',
 		{
-			tv_id: tv_id,
-			tv_type: tvinfo.tv_type,
-			tv_source: tvinfo.tv_source,
-			tv_title: tvinfo.tv_title,
-			tv_setter: tvinfo.tv_setter,
-			tv_date: tvinfo.tv_date,
-			tv_query: tvinfo.tv_query,
-			tv_comment: tvinfo.tv_comment
+			id: tv_id,
+			user_id: user_id,
+			type: tvinfo.tv_type,
+			source: tvinfo.tv_source,
+			title: tvinfo.tv_title,
+			setter: tvinfo.tv_setter,
+			date: tvinfo.tv_date,
+			query: tvinfo.tv_query,
+			comment: tvinfo.tv_comment
 		})
 
 		if(rooms[socket.hue_room_id].log)
@@ -2293,13 +2311,13 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				data:
 				{
 					id: tv_id,
-					user_id: socket.hue_user_id,
-					tv_type: tvinfo.tv_type,
-					tv_source: tvinfo.tv_source,
-					tv_title: tvinfo.tv_title,
-					tv_setter: tvinfo.tv_setter,
-					tv_query: tvinfo.tv_query,
-					tv_comment: tvinfo.tv_comment
+					user_id: user_id,
+					type: tvinfo.tv_type,
+					source: tvinfo.tv_source,
+					title: tvinfo.tv_title,
+					setter: tvinfo.tv_setter,
+					query: tvinfo.tv_query,
+					comment: tvinfo.tv_comment
 				},
 				date: date
 			}
@@ -3160,7 +3178,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			let obj = {}
 
-			obj.fname = "default"
+			obj.src = "default"
 			obj.setter = socket.hue_username
 			obj.size = 0
 			obj.type = "link"
@@ -3213,7 +3231,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 							{
 								let obj = {}
 								obj.query = data.src
-								obj.fname = item.link
+								obj.src = item.link
 								obj.setter = socket.hue_username
 								obj.size = 0
 								obj.type = "link"
@@ -3233,7 +3251,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 								{
 									let obj = {}
 									obj.query = data.src
-									obj.fname = img.link
+									obj.src = img.link
 									obj.setter = socket.hue_username
 									obj.size = 0
 									obj.type = "link"
@@ -3273,7 +3291,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			let obj = {}
 
-			obj.fname = data.src
+			obj.src = data.src
 			obj.setter = socket.hue_username
 			obj.size = 0
 			obj.type = "link"
@@ -3320,7 +3338,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				let obj = {}
 
-				obj.fname = fname
+				obj.src = fname
 				obj.setter = socket.hue_username
 				obj.size = size
 				obj.type = "upload"
@@ -3335,14 +3353,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		if(data.type === "link")
 		{
-			handler.do_change_image(socket, data)
+			handler.do_change_image_source(socket, data)
 		}
 
 		else if(data.type === "upload")
 		{
 			if(config.image_storage_s3_or_local === "local")
 			{
-				handler.do_change_image(socket, data)
+				handler.do_change_image_source(socket, data)
 			}
 
 			else if(config.image_storage_s3_or_local === "s3")
@@ -3370,7 +3388,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						fs.unlink(`${images_root}/${data.fname}`, function(){})
 						data.fname = sconfig.s3_main_url + sconfig.s3_images_location + data.fname
-						handler.do_change_image(socket, data)
+						handler.do_change_image_source(socket, data)
 					})
 
 					.catch(err =>
@@ -3388,7 +3406,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	handler.do_change_image = function(socket, data)
+	handler.do_change_image_source = function(socket, data)
 	{
 		let room_id, user_id
 
@@ -3405,19 +3423,28 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let image_source
-
 		let date = Date.now()
-
 		let comment = data.comment || ""
+		let size = data.size || 0
 
 		if(data.query === undefined)
 		{
 			data.query = ""
 		}
 
+		if(!data.type)
+		{
+			data.type = "link"
+		}
+
+		if(!data.setter)
+		{
+			user_id = ""
+		}
+
 		if(data.type === "link")
 		{
-			image_source = data.fname
+			image_source = data.src
 
 			if(image_source === 'default')
 			{
@@ -3429,7 +3456,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				image_source: image_source,
 				image_setter: data.setter,
-				image_size: data.size,
+				image_size: size,
 				image_date: date,
 				image_type: data.type,
 				image_query: data.query,
@@ -3441,12 +3468,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(config.image_storage_s3_or_local === "local")
 			{
-				image_source = config.public_images_location + data.fname
+				image_source = config.public_images_location + data.src
 			}
 
 			else if(config.image_storage_s3_or_local === "s3")
 			{
-				image_source = data.fname
+				image_source = data.src
 			}
 
 			else
@@ -3454,7 +3481,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				return false
 			}
 
-			rooms[room_id].stored_images.unshift(data.fname)
+			rooms[room_id].stored_images.unshift(data.src)
 
 			let spliced = false
 
@@ -3467,7 +3494,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				image_source: image_source,
 				image_setter: data.setter,
-				image_size: data.size,
+				image_size: size,
 				image_date: date,
 				stored_images: rooms[room_id].stored_images,
 				image_type: data.type,
@@ -3515,14 +3542,15 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		handler.room_emit(room_id, 'changed_image_source',
 		{
-			image_id: image_id,
-			image_source: image_source,
-			image_setter: data.setter,
-			image_size: data.size,
-			image_date: date,
-			image_type: data.type,
-			image_query: data.query,
-			image_comment: comment
+			id: image_id,
+			user_id: user_id,
+			source: image_source,
+			setter: data.setter,
+			size: size,
+			date: date,
+			type: data.type,
+			query: data.query,
+			comment: comment
 		})
 
 		if(rooms[room_id].log)
@@ -3534,12 +3562,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					id: image_id,
 					user_id: user_id,
-					image_comment: comment,
-					image_source: image_source,
-					image_setter: data.setter,
-					image_size: data.size,
-					image_type: data.type,
-					image_query: data.query
+					comment: comment,
+					source: image_source,
+					setter: data.setter,
+					size: size,
+					type: data.type,
+					query: data.query
 				},
 				date: date
 			}
@@ -4406,6 +4434,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		let message_type
 		let message_username
 		let message_user_id
+		let message_source
 		let deleted = false
 
 		for(let i=0; i<messages.length; i++)
@@ -4416,9 +4445,10 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				message = msg
 				message_index = i
-				message_id = msg.data.id
 				message_type = msg.type
+				message_id = msg.data.id
 				message_user_id = msg.data.user_id
+				message_source = msg.data.source
 				break
 			}
 		}
@@ -4479,8 +4509,16 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				handler.room_emit(socket, 'message_deleted',
 				{
 					id: message_id,
-					item_type: message_type
+					type: message_type
 				})
+
+				if(message_type === "image" || message_type === "tv" || message_type === "radio")
+				{
+					if(rooms[socket.hue_room_id][`current_${message_type}_source`] === message_source)
+					{
+						handler[`do_change_${message_type}_source`](socket, {src:"default", setter:""})
+					}
+				}
 
 				if(message_user_id !== socket.hue_user_id && message_username)
 				{
@@ -4675,9 +4713,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				files = files.filter(x => !x.startsWith("."))
 
 				let index = utilz.get_random_int(0, files.length - 1)
-
 				let file = files[index]
-				
 				let image_path = path.join(config.image_ads_public_path, file)
 
 				if(image_path === room.current_image_source)
@@ -4704,7 +4740,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				
 				let obj = {}
 
-				obj.fname = image_path
+				obj.src = image_path
 				obj.setter = config.image_ads_setter
 				obj.size = 0
 				obj.type = "link"
@@ -5187,10 +5223,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.user_emit = function(socket, type, args={})
 	{
-		args.type = type
-		args.room = socket.hue_room_id
+		let obj = {}
 
-		socket.emit('update', args)
+		obj.type = type
+		obj.data = args
+
+		socket.emit('update', obj)
 	}
 
 	handler.room_emit = function(socket, type, args={})
@@ -5207,9 +5245,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			room_id = socket
 		}
 
-		args.type = type
+		let obj = {}
 
-		io.sockets.in(room_id).emit('update', args)
+		obj.type = type
+		obj.data = args
+
+		io.sockets.in(room_id).emit('update', obj)
 	}
 
 	handler.broadcast_emit = function(socket, type, args={})
@@ -5226,15 +5267,22 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			room_id = socket
 		}
 
-		args.type = type
+		let obj = {}
 
-		socket.broadcast.in(room_id).emit('update', args)
+		obj.type = type
+		obj.data = args
+
+		socket.broadcast.in(room_id).emit('update', obj)
 	}
 
 	handler.system_emit = function(socket, type, args={})
 	{
-		args.type = type
-		io.emit('update', args)
+		let obj = {}
+
+		obj.type = type
+		obj.data = args
+
+		io.emit('update', obj)
 	}
 
 	handler.send_announcement_to_room = function(room_id, message)
