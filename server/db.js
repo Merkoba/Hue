@@ -1340,6 +1340,12 @@ module.exports = function(db, config, sconfig, utilz, logger)
 					return {passed:false, message:s}
 				}
 			}
+
+			else
+			{
+				let s = `Room validation failed on ${key}. It does not exist in the database`
+				return {passed:false, message:s}
+			}
 		}
 
 		return {passed:true, message:"ok"}
