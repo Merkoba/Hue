@@ -655,6 +655,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					let message = messages[i]
 
+					if(message.type !== "chat")
+					{
+						continue
+					}
+
 					if(message.data.id === data.edit_id)
 					{
 						if(message.data.user_id === socket.hue_user_id)
@@ -664,6 +669,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 							uname = message.data.username
 							date = message.date
 							edited = true
+							rooms[socket.hue_room_id].log_messages_modified = true
+							rooms[socket.hue_room_id].activity = true
 							break
 						}
 
@@ -1402,6 +1409,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(info.log_messages.length > 0 || rooms[socket.hue_room_id].log_messages.length > 0)
 		{
 			rooms[socket.hue_room_id].log_messages = []
+			rooms[socket.hue_room_id].log_messages_modified = true
+			rooms[socket.hue_room_id].activity = true
 			db_manager.update_room(socket.hue_room_id, {log_messages:[]})
 			rooms[socket.hue_room_id].log_messages_modified = false
 			handler.room_emit(socket, 'log_cleared', {username:socket.hue_username, clear_room:data.clear_room})

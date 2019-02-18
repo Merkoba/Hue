@@ -5,12 +5,17 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 	const reserved_usernames = ["The system", config.image_ads_setter].map(x => x.toLowerCase())
 
-	const rooms_version = 71
-	const users_version = 41
+	const rooms_version = 72
+	const users_version = 42
 
 	const rooms_schema =
 	{
 		name:{type:"string", default:"No Name"},
+		topic:{type:"string", default:""},
+		topic_setter:{type:"string", default:""},
+		topic_date:{type:"number", default:0},
+		image_id:{type:"string", default:""},
+		image_user_id:{type:"string", default:""},
 		image_source:{type:"string", default:""},
 		image_setter:{type:"string", default:""},
 		image_size:{type:"number", default:0},
@@ -18,16 +23,17 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		image_query:{type:"string", default:""},
 		image_type:{type:"string", default:"link"},
 		stored_images:{type:"object", default:[]},
-		topic:{type:"string", default:""},
-		topic_setter:{type:"string", default:""},
-		topic_date:{type:"number", default:0},
 		keys:{type:"object", default:{}},
+		radio_id:{type:"string", default:""},
+		radio_user_id:{type:"string", default:""},
 		radio_type:{type:"string", default:"radio"},
 		radio_source:{type:"string", default:""},
 		radio_title:{type:"string", default:""},
 		radio_setter:{type:"string", default:""},
 		radio_date:{type:"number", default:0},
 		radio_query:{type:"string", default:""},
+		tv_id:{type:"string", default:""},
+		tv_user_id:{type:"string", default:""},
 		tv_type:{type:"string", default:"tv"},
 		tv_source:{type:"string", default:""},
 		tv_title:{type:"string", default:""},
@@ -429,7 +435,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 			.then(room =>
 			{
-				room.log_messages = room.log_messages.concat(messages)
+				room.log_messages = messages
 
 				if(room.log_messages.length > config.max_log_messages)
 				{
@@ -466,7 +472,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 			.then(room =>
 			{
-				room.admin_log_messages = room.admin_log_messages.concat(messages)
+				room.admin_log_messages = messages
 
 				if(room.admin_log_messages.length > config.max_admin_log_messages)
 				{
@@ -503,7 +509,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 			.then(room =>
 			{
-				room.access_log_messages = room.access_log_messages.concat(messages)
+				room.access_log_messages = messages
 
 				if(room.access_log_messages.length > config.max_access_log_messages)
 				{
