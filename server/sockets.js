@@ -1735,8 +1735,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			user_id = ""
 		}
 
+		let radio_id = handler.generate_message_id()
+
 		db_manager.update_room(socket.hue_room_id,
 		{
+			radio_id: radio_id,
+			radio_user_id: user_id,
 			radio_type: radioinfo.radio_type,
 			radio_source: radioinfo.radio_source,
 			radio_title: radioinfo.radio_title,
@@ -1745,8 +1749,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			radio_query: radioinfo.radio_query,
 			radio_comment: radioinfo.radio_comment
 		})
-
-		let radio_id = handler.generate_message_id()
 
 		handler.room_emit(socket, 'changed_radio_source',
 		{
@@ -1783,6 +1785,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			handler.push_log_message(socket, message)
 		}
 
+		rooms[socket.hue_room_id].current_radio_id = radio_id
+		rooms[socket.hue_room_id].current_radio_user_id = radio_user_id
 		rooms[socket.hue_room_id].current_radio_source = radioinfo.radio_source
 		rooms[socket.hue_room_id].current_radio_query = radioinfo.radio_query
 		rooms[socket.hue_room_id].last_radio_change = Date.now()
@@ -2276,9 +2280,13 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			user_id = ""
 		}
+
+		let tv_id = handler.generate_message_id()
 		
 		db_manager.update_room(socket.hue_room_id,
 		{
+			tv_id: tv_id,
+			tv_user_id: user_id,
 			tv_type: tvinfo.tv_type,
 			tv_source: tvinfo.tv_source,
 			tv_title: tvinfo.tv_title,
@@ -2287,8 +2295,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_query: tvinfo.tv_query,
 			tv_comment: tvinfo.tv_comment
 		})
-
-		let tv_id = handler.generate_message_id()
 
 		handler.room_emit(socket, 'changed_tv_source',
 		{
@@ -2325,6 +2331,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			handler.push_log_message(socket, message)
 		}
 
+		rooms[socket.hue_room_id].current_tv_id = tv_id
+		rooms[socket.hue_room_id].current_tv_user_id = tv_user_id
 		rooms[socket.hue_room_id].current_tv_source = tvinfo.tv_source
 		rooms[socket.hue_room_id].current_tv_query = tvinfo.tv_query
 		rooms[socket.hue_room_id].last_tv_change = Date.now()
@@ -3442,6 +3450,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			user_id = ""
 		}
 
+		let image_id = handler.generate_message_id()
+
 		if(data.type === "link")
 		{
 			image_source = data.src
@@ -3454,6 +3464,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			db_manager.update_room(room_id,
 			{
+				image_id: image_id,
+				image_user_id: user_id,
 				image_source: image_source,
 				image_setter: data.setter,
 				image_size: size,
@@ -3492,6 +3504,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			db_manager.update_room(room_id,
 			{
+				image_id: image_id,
+				image_user_id: user_id,
 				image_source: image_source,
 				image_setter: data.setter,
 				image_size: size,
@@ -3538,8 +3552,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		let image_id = handler.generate_message_id()
-
 		handler.room_emit(room_id, 'changed_image_source',
 		{
 			id: image_id,
@@ -3575,6 +3587,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			handler.push_log_message(socket, message)
 		}
 
+		rooms[room_id].current_image_id = image_id
+		rooms[room_id].current_image_user_id = image_user_id
 		rooms[room_id].current_image_source = image_source
 		rooms[room_id].current_image_query = data.query
 		rooms[room_id].last_image_change = Date.now()
@@ -4430,11 +4444,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		let messages = rooms[socket.hue_room_id].log_messages
 		let message
+		let message_id
+		let message_user_id
 		let message_index
 		let message_type
 		let message_username
-		let message_user_id
-		let message_source
 		let deleted = false
 
 		for(let i=0; i<messages.length; i++)
@@ -4448,7 +4462,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				message_type = msg.type
 				message_id = msg.data.id
 				message_user_id = msg.data.user_id
-				message_source = msg.data.source
 				break
 			}
 		}
@@ -4514,7 +4527,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				if(message_type === "image" || message_type === "tv" || message_type === "radio")
 				{
-					if(rooms[socket.hue_room_id][`current_${message_type}_source`] === message_source)
+					if(rooms[socket.hue_room_id][`current_${message_type}_id`] === message_id)
 					{
 						handler[`do_change_${message_type}_source`](socket, {src:"default", setter:""})
 					}
@@ -4873,10 +4886,16 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tv_mode: info.tv_mode,
 			radio_mode: info.radio_mode,
 			synth_mode: info.synth_mode,
+			current_image_id: info.image_id,
+			current_image_user_id: info.image_user_id,
 			current_image_source: info.image_source,
 			current_image_query: info.image_query,
+			current_tv_id: info.tv_id,
+			current_tv_user_id: info.tv_user_id,
 			current_tv_source: info.tv_source,
 			current_tv_query: info.tv_query,
+			current_radio_id: info.radio_id,
+			current_radio_user_id: info.radio_user_id,
 			current_radio_source: info.radio_source,
 			current_radio_query: info.radio_query,
 			topic: info.topic,
