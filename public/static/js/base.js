@@ -2692,7 +2692,7 @@ Hue.apply_theme = function()
 		color: ${font_color} !important;
 	}
 
-	.highlighted, .highlighted2, .highlighted3
+	.highlighted, .highlighted2, .highlighted3, .highlighted_chat_content
 	{
 		background-color: ${background_color_2} !important;
 		color: ${font_color} !important;
@@ -6636,7 +6636,7 @@ Hue.update_chat = function(args={})
 	{
 		if(Hue.check_highlights(args.message))
 		{
-			contclasses += " highlighted"
+			contclasses += " highlighted_chat_content"
 			highlighted = true
 		}
 	}
@@ -17220,18 +17220,38 @@ Hue.set_email = function(email)
 	Hue.user_email = email
 }
 
-Hue.generate_mentions_regex = function()
+Hue.generate_highlights_regex = function(word, case_insensitive=false, escape=true)
 {
-	let regexp = `(?:^|\\s+)(?:\\@)?(?:${Hue.escape_special_characters(Hue.username)})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.|\\:)`
+	// Raw regex if using the word "mad"
+	//(?:^|\s|\"|\[dummy\-space\])(?:\@)?(?:mad)(?:\'s)?(?:$|\s|\"|\[dummy\-space\]|\!|\?|\,|\.|\:)
 
-	if(Hue.get_setting("case_insensitive_username_highlights"))
+	let flags = "gm"
+
+	if(case_insensitive)
 	{
-		Hue.mentions_regex = new RegExp(regexp, "i")
+		flags += "i"
 	}
 
+	if(escape)
+	{
+		word = Hue.escape_special_characters(word)
+	}
+
+	let regex = new RegExp(`(?:^|\\s|\\"|\\[dummy\\-space\\])(?:\\@)?(?:${word})(?:\\'s)?(?:$|\\s|\\"|\\[dummy\\-space\\]|\\!|\\?|\\,|\\.|\\:)`, flags)
+	
+	return regex
+}
+
+Hue.generate_mentions_regex = function()
+{
+	if(Hue.get_setting("case_insensitive_username_highlights"))
+	{
+		Hue.mentions_regex = Hue.generate_highlights_regex(Hue.username, true, true)
+	}
+	
 	else
 	{
-		Hue.mentions_regex = new RegExp(regexp)
+		Hue.mentions_regex = Hue.generate_highlights_regex(Hue.username, false, true)
 	}
 }
 
@@ -17255,16 +17275,14 @@ Hue.generate_highlight_words_regex = function()
 
 	if(words.length > 0)
 	{
-		let regexp = `(?:^|\\s+)(?:\\@)?(?:${words})(?:\\'s)?(?:$|\\s+|\\!|\\?|\\,|\\.|\\:)`
-
 		if(Hue.get_setting("case_insensitive_words_highlights"))
 		{
-			Hue.highlight_words_regex = new RegExp(regexp, "i")
+			Hue.mentions_regex = Hue.generate_highlights_regex(Hue.username, true, false)
 		}
-
+		
 		else
 		{
-			Hue.highlight_words_regex = new RegExp(regexp)
+			Hue.mentions_regex = Hue.generate_highlights_regex(Hue.username, false, false)
 		}
 	}
 
@@ -21997,7 +22015,7 @@ Hue.start_reply = function(target)
 	
 	let text_html = `${Hue.replace_markdown(Hue.make_html_safe(`${text}`))}`
 	let html = `${uname} said: "${text_html}"`
-	Hue.reply_text_raw = `=${uname} said: "[dummy-space]${text}[dummy-space]"=`
+	Hue.reply_text_raw = `=[dummy-space]${uname} said: "[dummy-space]${text}[dummy-space]"[dummy-space]=`
 
 	Hue.show_reply(html)
 }

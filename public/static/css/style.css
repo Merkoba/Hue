@@ -2043,12 +2043,12 @@ input[type=text], textarea
 	box-shadow: 0 0 1em currentColor;
 }
 
-.highlighted
+.highlighted, .highlighted2
 {
 	box-shadow: inset 0 0 2px currentColor;
 }
 
-.highlighted2
+.highlighted_chat_content, .highlighted_chat_content > *
 {
 	box-shadow: inset 0 0 2px currentColor;
 }
