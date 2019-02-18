@@ -5,8 +5,8 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 	const reserved_usernames = ["The system", config.image_ads_setter].map(x => x.toLowerCase())
 
-	const rooms_version = 69
-	const users_version = 39
+	const rooms_version = 71
+	const users_version = 41
 
 	const rooms_schema =
 	{
