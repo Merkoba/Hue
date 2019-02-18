@@ -527,18 +527,27 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			log_messages: rooms[socket.hue_room_id].log_messages,
 			role: socket.hue_role,
 			public: info.public,
+			image_id: info.image_id,
+			image_user_id: info.image_user_id,
+			image_comment: info.image_comment,
 			image_type: info.image_type,
 			image_source: info.image_source,
 			image_setter: info.image_setter,
 			image_size: info.image_size,
 			image_date: info.image_date,
 			image_query: info.image_query,
+			tv_id: info.tv_id,
+			tv_user_id: info.tv_user_id,
+			tv_comment: info.tv_comment,
 			tv_type: info.tv_type,
 			tv_source: info.tv_source,
 			tv_title: info.tv_title,
 			tv_setter: info.tv_setter,
 			tv_date: info.tv_date,
 			tv_query: info.tv_query,
+			radio_id: info.radio_id,
+			radio_user_id: info.radio_user_id,
+			radio_comment: info.radio_comment,
 			radio_type: info.radio_type,
 			radio_source: info.radio_source,
 			radio_title: info.radio_title,
@@ -1786,7 +1795,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		rooms[socket.hue_room_id].current_radio_id = radio_id
-		rooms[socket.hue_room_id].current_radio_user_id = radio_user_id
+		rooms[socket.hue_room_id].current_radio_user_id = user_id
 		rooms[socket.hue_room_id].current_radio_source = radioinfo.radio_source
 		rooms[socket.hue_room_id].current_radio_query = radioinfo.radio_query
 		rooms[socket.hue_room_id].last_radio_change = Date.now()
@@ -2332,7 +2341,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		rooms[socket.hue_room_id].current_tv_id = tv_id
-		rooms[socket.hue_room_id].current_tv_user_id = tv_user_id
+		rooms[socket.hue_room_id].current_tv_user_id = user_id
 		rooms[socket.hue_room_id].current_tv_source = tvinfo.tv_source
 		rooms[socket.hue_room_id].current_tv_query = tvinfo.tv_query
 		rooms[socket.hue_room_id].last_tv_change = Date.now()
@@ -3588,7 +3597,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		rooms[room_id].current_image_id = image_id
-		rooms[room_id].current_image_user_id = image_user_id
+		rooms[room_id].current_image_user_id = user_id
 		rooms[room_id].current_image_source = image_source
 		rooms[room_id].current_image_query = data.query
 		rooms[room_id].last_image_change = Date.now()
