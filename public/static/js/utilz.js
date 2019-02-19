@@ -446,21 +446,11 @@ const Utilz = function()
 
 	utilz.is_url = function(s, case_insensitive=true)
 	{
-		if(case_insensitive)
-		{
-			s = s.toLowerCase()
-		}
-
 		return s.startsWith("http://") || s.startsWith("https://")
 	}
 
 	utilz.includes_url = function(s, case_insensitive=true)
 	{
-		if(case_insensitive)
-		{
-			s = s.toLowerCase()
-		}
-
 		return s.includes("http://") || s.includes("https://")
 	}
 
