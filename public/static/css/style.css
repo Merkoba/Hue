@@ -527,12 +527,14 @@ div#header_radio_playing_icon
 	overflow-wrap: break-word;
 	word-break: break-word;
 	font-size: 1rem;
+	display: flex;
+	flex-direction: row;
 }
 
 .announcement_content_container
 {
 	display: inline-flex;
-	width: 100%;
+	flex-grow: 1;
 }
 
 .brk

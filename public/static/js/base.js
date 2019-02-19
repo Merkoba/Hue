@@ -7902,8 +7902,8 @@ Hue.chat_announce = function(args={})
 
 	let s = `
 	<div${container_id}class='${message_classes}'>
+		<div class='${brk_classes}'>${args.brk}</div>
 		<div class='${container_classes}'>
-			<div class='${brk_classes}'>${args.brk}</div>
 			<div class='chat_menu_button_container unselectable'>
 				<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
 			</div>
@@ -24856,10 +24856,20 @@ Hue.cancel_upload_comment = function()
 
 Hue.create_media_history_item = function(data)
 {
+	let comment_classes = "media_history_item_comment"
+
+	if(data.comment && data.setter !== Hue.username)
+	{
+		if(Hue.check_highlights(data.comment))
+		{
+			comment_classes += " highlighted4"
+		}
+	}
+
 	let el = $(`
 	<div class='modal_item media_history_item dynamic_title jump_button_container'>
 		<div class='media_history_item_inner inline pointer action'></div>
-		<div class='media_history_item_comment'></div>
+		<div class='${comment_classes}'></div>
 		<div class='jump_button action unselectable'>Jump</div>
 	</div>`)
 	
