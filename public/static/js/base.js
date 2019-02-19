@@ -2655,7 +2655,7 @@ Hue.apply_theme = function()
 		color: ${font_color} !important;
 	}
 
-	.highlighted, .highlighted2, .highlighted3, .highlighted_chat_content
+	.highlighted, .highlighted2, .highlighted3, .highlighted4
 	{
 		background-color: ${background_color_2} !important;
 		color: ${font_color} !important;
@@ -6629,6 +6629,7 @@ Hue.update_chat = function(args={})
 		args.message = args.message.slice(1)
 	}
 
+	let containerclasses = "chat_content_container chat_menu_button_main"
 	let contclasses = "chat_content dynamic_title"
 
 	let highlighted = false
@@ -6637,7 +6638,7 @@ Hue.update_chat = function(args={})
 	{
 		if(Hue.check_highlights(args.message))
 		{
-			contclasses += " highlighted_chat_content"
+			contclasses += " highlighted4"
 			highlighted = true
 		}
 	}
@@ -6715,11 +6716,13 @@ Hue.update_chat = function(args={})
 			args.brk = "<i class='icon2c fa fa-user-circle'></i>"
 		}
 
+		containerclasses += " chat_content_container_third"
+
 		let s = `
 		<div class='message chat_message thirdperson ${messageclasses}'>
 			<div class='chat_third_container'>
 				<div class='brk chat_third_brk'>${args.brk}</div>
-				<div class='chat_content_container chat_content_container_third chat_menu_button_main'>
+				<div class='${containerclasses}'>
 					<div class='chat_menu_button_container unselectable'>
 						<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
 					</div>
@@ -6760,7 +6763,7 @@ Hue.update_chat = function(args={})
 					<div class='chat_uname action'></div>
 				</div>
 				<div class='chat_container'>
-					<div class='chat_content_container chat_menu_button_main'>
+					<div class='${containerclasses}'>
 
 						<div class='chat_menu_button_container unselectable'>
 							<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
@@ -10705,8 +10708,6 @@ Hue.chat_search = function(filter=false)
 				{
 					continue
 				}
-
-				let content = hcontent.text()
 
 				let cn = $(`
 				<div class='chat_search_result_item jump_button_container'>

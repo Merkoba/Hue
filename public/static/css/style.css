@@ -2054,9 +2054,10 @@ input[type=text], textarea
 	box-shadow: inset 0 0 2px currentColor;
 }
 
-.highlighted_chat_content, .highlighted_chat_content > *
+.highlighted4
 {
-	box-shadow: inset 0 0 2px currentColor;
+	box-shadow: 0 0 2px currentColor;
+	padding: 2px;
 }
 
 #credits_container
