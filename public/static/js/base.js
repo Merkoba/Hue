@@ -23589,11 +23589,11 @@ Hue.process_remove_chat_message = function(chat_content_container)
 
 Hue.process_remove_announcement = function(message)
 {
-	let id = $(message).data("item_id")
 	let type = $(message).data("type")
-
+	
 	if(type === "image_change" || type === "tv_change" || type === "radio_change")
 	{
+		let id = $(message).data("item_id")
 		Hue.remove_item_from_media_history(type.replace("_change", ""), id)
 	}
 	
@@ -24882,7 +24882,7 @@ Hue.remove_item_from_media_history = function(type, id)
 
 	container.find(".media_history_item").each(function()
 	{
-		if($(this).data("item_id") === id)
+		if($(this).data("data").id === id)
 		{
 			$(this).remove()
 			return false
