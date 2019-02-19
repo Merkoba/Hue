@@ -80,10 +80,7 @@ Hue.images_changed = []
 Hue.tv_changed = [] 
 Hue.radio_changed = []
 Hue.modal_image_open = false
-Hue.current_modal_image_index
-Hue.current_image_source = ""
-Hue.current_image_info = ""
-Hue.current_image_comment = ""
+Hue.current_image_data = {}
 Hue.filter_delay = 350
 Hue.resize_delay = 350
 Hue.double_tap_delay = 250
@@ -1565,14 +1562,14 @@ Hue.setup_image = function(mode, odata={})
 
 	data.message = `${data.setter} changed the image`
 
-	data.onclick = function()
-	{
-		Hue.show_modal_image({source:data.source, info:data.info, comment:data.comment})
-	}
-
 	if(data.message)
 	{
 		data.message_id = Hue.announce_image(data).message_id
+	}
+
+	data.onclick = function()
+	{
+		Hue.show_modal_image(data)
 	}
 
 	if(mode === "change" || mode === "show")
@@ -1621,18 +1618,6 @@ Hue.push_images_changed = function(data)
 	if(!data.setter)
 	{
 		data.info = "Default Image"
-	}
-
-	for(let i=0; i<Hue.images_changed.length; i++)
-	{
-		let img = Hue.images_changed[i]
-
-		if(img.source === data.source)
-		{
-			Hue.images_changed.splice(i, 1)
-			$("#image_history_container").children().eq(i).remove()
-			break
-		}
 	}
 
 	Hue.images_changed.push(data)
@@ -1811,18 +1796,6 @@ Hue.current_tv = function()
 
 Hue.push_tv_changed = function(data)
 {
-	for(let i=0; i<Hue.tv_changed.length; i++)
-	{
-		let tv = Hue.tv_changed[i]
-
-		if(tv.source === data.source)
-		{
-			Hue.tv_changed.splice(i, 1)
-			$("#tv_history_container").children().eq(i).remove()
-			break
-		}
-	}
-
 	Hue.tv_changed.push(data)
 
 	let el = Hue.create_media_history_item(data)
@@ -1973,18 +1946,6 @@ Hue.announce_radio = function(data)
 
 Hue.push_radio_changed = function(data)
 {
-	for(let i=0; i<Hue.radio_changed.length; i++)
-	{
-		let radio = Hue.radio_changed[i]
-
-		if(radio.source === data.source)
-		{
-			Hue.radio_changed.splice(i, 1)
-			$("#tv_history_container").children().eq(i).remove()
-			break
-		}
-	}
-
 	Hue.radio_changed.push(data)
 
 	let el = Hue.create_media_history_item(data)
@@ -7604,7 +7565,7 @@ Hue.show_current_image_modal = function(current=true)
 {
 	if(current)
 	{
-		Hue.show_modal_image({source:Hue.current_image_source, info:Hue.current_image_info, comment:Hue.current_image_comment})
+		Hue.show_modal_image(Hue.current_image_data)
 	}
 
 	else
@@ -7612,7 +7573,7 @@ Hue.show_current_image_modal = function(current=true)
 		if(Hue.images_changed.length > 0)
 		{
 			let data = Hue.images_changed[Hue.images_changed.length - 1]
-			Hue.show_modal_image({source:data.source, info:data.info, comment:data.comment})
+			Hue.show_modal_image(data)
 		}
 	}
 }
@@ -7645,10 +7606,7 @@ Hue.start_image_events = function()
 
 Hue.after_image_load = function()
 {
-	Hue.current_image_source = Hue.loaded_image.source
-	Hue.current_image_info = Hue.loaded_image.info
-	Hue.current_image_comment = Hue.loaded_image.comment
-
+	Hue.current_image_data = Hue.loaded_image
 	Hue.get_dominant_theme()
 	Hue.fix_image_frame()
 }
@@ -15194,18 +15152,9 @@ Hue.show_log = function()
 	}
 }
 
-Hue.show_modal_image = function(args={})
+Hue.show_modal_image = function(data)
 {
-	let def_args =
-	{
-		source: false,
-		info: "",
-		comment: ""
-	}
-
-	Hue.fill_defaults(args, def_args)
-
-	if(!args.source)
+	if(!data.source)
 	{
 		if(Hue.images_changed.length > 0)
 		{
@@ -15227,13 +15176,13 @@ Hue.show_modal_image = function(args={})
 	$("#modal_image_spinner").css("display", "block")
 	$("#modal_image_error").css("display", "none")
 
-	img.attr("src", args.source)
+	img.attr("src", data.source)
 
-	$("#modal_image_header_info").text(args.info)
+	$("#modal_image_header_info").text(data.info)
 
-	if(args.comment)
+	if(data.comment)
 	{
-		$("#modal_image_subheader").text(args.comment)
+		$("#modal_image_subheader").text(data.comment)
 		$("#modal_image_subheader").css("display", "block")
 	}
 	
@@ -15242,33 +15191,23 @@ Hue.show_modal_image = function(args={})
 		$("#modal_image_subheader").css("display", "none")
 	}
 
+	Hue.loaded_modal_image = data
+
 	Hue.msg_modal_image.show(function()
 	{
 		Hue.set_modal_image_number()
 	})
 }
 
-Hue.set_modal_image_number = function()
+Hue.set_modal_image_number = function(id)
 {
 	if(!Hue.modal_image_open)
 	{
 		return false
 	}
 
-	let url = $("#modal_image").attr("src")
-
-	let number = 0
-
-	for(let i=0; i<Hue.images_changed.length; i++)
-	{
-		let ic = Hue.images_changed[i]
-
-		if(ic.source === url)
-		{
-			number = i + 1
-			break
-		}
-	}
+	let index = Hue.images_changed.indexOf(Hue.loaded_modal_image)
+	let number = index + 1
 
 	let footer_text = `${number} of ${Hue.images_changed.length}`
 	$("#modal_image_footer_info").text(footer_text)
@@ -15331,7 +15270,7 @@ Hue.modal_image_number_go = function()
 
 	if(ic)
 	{
-		Hue.show_modal_image({source:ic.source, info:ic.info, comment:ic.comment})
+		Hue.show_modal_image(ic)
 		Hue.msg_modal_image_number.close()
 	}
 }
@@ -18558,10 +18497,7 @@ Hue.modal_image_prev_click = function()
 
 	let prev = Hue.images_changed[index]
 
-	if(prev.source !== url)
-	{
-		Hue.show_modal_image({source:prev.source, info:prev.info, comment:prev.comment})
-	}
+	Hue.show_modal_image(prev)
 }
 
 Hue.modal_image_next_click = function(e)
@@ -18573,14 +18509,9 @@ Hue.modal_image_next_click = function(e)
 		index = 0
 	}
 
-	let url = $("#modal_image").attr("src")
-
 	let next = Hue.images_changed[index]
 
-	if(next.source !== url)
-	{
-		Hue.show_modal_image({source:next.source, info:next.info, comment:next.comment})
-	}
+	Hue.show_modal_image(next)
 }
 
 Hue.setup_modal_image = function()
