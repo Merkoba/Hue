@@ -2242,6 +2242,7 @@ a.special_link:hover
 	margin-top: 0.35rem;
 	overflow-wrap: break-word;
 	word-break: break-word;
+	display: inline-block;
 }
 
 .image_preview_image

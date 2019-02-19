@@ -12,7 +12,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const soundcloud = require('node-soundcloud')
 	const image_dimensions = require('image-size')
 	const cheerio = require("cheerio")
-	const linkify = require("linkifyjs")
 	const redis = require("redis")
 	const Vimeo = require("vimeo").Vimeo
 
@@ -5596,14 +5595,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.process_message_links = function(message, callback)
 	{
-		let links = linkify.find(message)
+		let url = utilz.get_first_url(message)
 
-		if(!links || links.length !== 1)
+		if(!url)
 		{
 			return callback({})
 		}
-
-		let url = links[0].href
 
 		if(url.includes('"') || url.includes("'") || url.includes("*"))
 		{

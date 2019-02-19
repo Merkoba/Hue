@@ -6632,17 +6632,6 @@ Hue.update_chat = function(args={})
 	let containerclasses = "chat_content_container chat_menu_button_main"
 	let contclasses = "chat_content dynamic_title"
 
-	let highlighted = false
-
-	if(args.username !== Hue.username)
-	{
-		if(Hue.check_highlights(args.message))
-		{
-			contclasses += " highlighted4"
-			highlighted = true
-		}
-	}
-
 	let d
 
 	if(args.date)
@@ -6674,6 +6663,7 @@ Hue.update_chat = function(args={})
 	let image_preview = false
 	let image_preview_src = false
 	let image_preview_src_original = false
+	let image_preview_text = false
 
 	let starts_me = args.message.startsWith('/me ') || args.message.startsWith('/em ')
 
@@ -6684,15 +6674,51 @@ Hue.update_chat = function(args={})
 		image_preview = ans.image_preview
 		image_preview_src = ans.image_preview_src
 		image_preview_src_original = ans.image_preview_src_original
+		image_preview_text = ans.image_preview_text
 	}
 
 	let link_preview = false
+	let link_preview_text = false
 
 	if(!starts_me && !image_preview && args.link_url && Hue.get_setting("show_link_previews"))
 	{
 		let ans = Hue.make_link_preview(args.message, args.link_url, args.link_title, args.link_image)
-
 		link_preview = ans.link_preview
+		link_preview_text = ans.link_preview_text
+	}
+
+	let highlighted = false
+	let preview_text_classes = ""
+
+	if(args.username !== Hue.username)
+	{
+		if(image_preview && image_preview_text)
+		{
+			if(Hue.check_highlights(image_preview_text))
+			{
+				preview_text_classes += " highlighted4"
+				highlighted = true
+			}
+		}
+
+		else if(link_preview && link_preview_text)
+		{
+			if(Hue.check_highlights(link_preview_text))
+			{
+				console.log(123)
+				preview_text_classes += " highlighted4"
+				highlighted = true
+			}
+		}
+
+		else
+		{
+			if(Hue.check_highlights(args.message))
+			{
+				contclasses += " highlighted4"
+				highlighted = true
+			}
+		}
 	}
 
 	let fmessage
@@ -6791,11 +6817,13 @@ Hue.update_chat = function(args={})
 		if(image_preview)
 		{
 			fmessage.find('.chat_content').eq(0).html(image_preview)
+			fmessage.find('.image_preview_text').eq(0).addClass(preview_text_classes)
 		}
-
+		
 		else if(link_preview)
 		{
 			fmessage.find('.chat_content').eq(0).html(link_preview)
+			fmessage.find('.link_preview_text').eq(0).addClass(preview_text_classes)
 		}
 
 		else
@@ -7721,7 +7749,7 @@ Hue.chat_announce = function(args={})
 
 	if(args.highlight === true)
 	{
-		contclasses += " highlighted"
+		contclasses += " highlighted4"
 		highlighted = true
 	}
 
@@ -7771,7 +7799,7 @@ Hue.chat_announce = function(args={})
 		{
 			if(!highlighted && Hue.check_highlights(args.comment))
 			{
-				cls += " announcement_comment_highlighted"
+				cls += " highlighted4"
 				highlighted = true
 			}
 		}
@@ -24375,6 +24403,7 @@ Hue.make_image_preview = function(message)
 	ans.image_preview = false
 	ans.image_preview_src = false
 	ans.image_preview_src_original = false
+	ans.image_preview_text = false
 
 	let split = message.split(" ")
 	let num_links = 0
@@ -24423,6 +24452,7 @@ Hue.make_image_preview = function(message)
 			if(text)
 			{
 				let stext = `<div class='image_preview_text'>${text}</div>`
+				ans.image_preview_text = text
 				ans.image_preview = ans.image_preview + stext
 			}
 		}
@@ -24496,6 +24526,7 @@ Hue.make_link_preview = function(message, link_url, link_title, link_image)
 		if(text)
 		{
 			let stext = `<div class='link_preview_text'>${text}</div>`
+			ans.link_preview_text = text
 			ans.link_preview = ans.link_preview + stext
 		}
 	}
