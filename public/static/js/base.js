@@ -163,6 +163,8 @@ Hue.usercount = 0
 Hue.reply_text_raw = ""
 Hue.quote_max_length = 200
 Hue.markdown_regexes = {}
+Hue.handled_url = ""
+Hue.url_title_max_length = 50
 
 Hue.commands = 
 [
@@ -379,6 +381,7 @@ Hue.init = function()
 	Hue.get_accept_commands_from_list()
 	Hue.setup_lockscreen()
 	Hue.setup_upload_comment()
+	Hue.setup_drag_events()
 
 	if(Hue.debug_functions)
 	{
@@ -523,6 +526,7 @@ Hue.setup_templates = function()
 	Hue.template_expand_image = Handlebars.compile($('#template_expand_image').html())
 	Hue.template_upload_comment = Handlebars.compile($('#template_upload_comment').html())
 	Hue.template_reply = Handlebars.compile($('#template_reply').html())
+	Hue.template_handle_url = Handlebars.compile($('#template_handle_url').html())
 }
 
 Hue.show_help = function(number=1, filter="")
@@ -7916,7 +7920,7 @@ jQuery.fn.urlize = function(stop_propagation=true)
 {
 	let html = this.html()
 	
-	if(!html || (!html.includes("http://") && !html.includes("https://")))
+	if(!html || !Hue.utilz.includes_url(html))
 	{
 		return false
 	}
@@ -11029,7 +11033,7 @@ Hue.change_radio_source = function(src, just_check=false)
 		}
 	}
 
-	if(src.startsWith("http://") || src.startsWith("https://"))
+	if(Hue.utilz.is_url(src))
 	{
 		if(Hue.check_domain_list("radio", src))
 		{
@@ -11202,7 +11206,7 @@ Hue.change_tv_source = function(src, just_check=false)
 		}
 	}
 
-	if(src.startsWith("http://") || src.startsWith("https://"))
+	if(Hue.utilz.is_url(src))
 	{
 		if(Hue.check_domain_list("tv", src))
 		{
@@ -12653,6 +12657,32 @@ Hue.start_msg = function()
 		})
 	)
 
+	Hue.msg_handle_url = Msg.factory
+	(
+		Object.assign({}, common, titlebar,
+		{
+			id: "handle_url",
+			after_create: function(instance)
+			{
+				Hue.after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				Hue.after_modal_show(instance)
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				Hue.after_modal_close(instance)
+				Hue.clear_modal_image_info()
+			}
+		})
+	)
+
 	Hue.msg_main_menu.set(Hue.template_main_menu())
 	Hue.msg_user_menu.set(Hue.template_user_menu())
 	Hue.msg_userlist.set(Hue.template_userlist())
@@ -12685,6 +12715,7 @@ Hue.start_msg = function()
 	Hue.msg_expand_image.set(Hue.template_expand_image())
 	Hue.msg_upload_comment.set(Hue.template_upload_comment())
 	Hue.msg_reply.set(Hue.template_reply())
+	Hue.msg_handle_url.set(Hue.template_handle_url())
 
 	Hue.msg_info.create()
 	Hue.msg_info2.create()
@@ -12709,6 +12740,7 @@ Hue.start_msg = function()
 	Hue.msg_access_log.set_title("Access Log")
 	Hue.msg_upload_comment.set_title("Add a Comment")
 	Hue.msg_reply.set_title("Write a Reply")
+	Hue.msg_handle_url.set_title("What do you want to do with this URL?")
 
 	$("#global_settings_window_title").click(function()
 	{
@@ -16310,7 +16342,7 @@ Hue.change_background_image_source = function(src)
 
 	if(src !== "default")
 	{
-		if(!src.startsWith("http://") && !src.startsWith("https://"))
+		if(!Hue.utilz.is_url(src))
 		{
 			return false
 		}
@@ -16530,7 +16562,7 @@ Hue.change_image_source = function(src, just_check=false)
 		}
 	}
 
-	else if(src.startsWith("http://") || src.startsWith("https://"))
+	else if(Hue.utilz.is_url(src))
 	{
 		src = src.replace(/\.gifv/g, '.gif')
 
@@ -19762,7 +19794,7 @@ Hue.set_text_color = function(color)
 
 Hue.conditional_quotes = function(s)
 {
-	if(!s.includes(" ") && (s.startsWith("https://") || s.startsWith("http://")))
+	if(!s.includes(" ") && Hue.utilz.is_url(s))
 	{
 		return s
 	}
@@ -21437,18 +21469,16 @@ Hue.format_command_aliases = function(cmds)
 
 Hue.open_url_menu = function(src, type=1, data=false, media_type=false)
 {
-	let n = 50
+	let title
 
-	let s
-
-	if(src.length > n)
+	if(src.length > Hue.url_title_max_length)
 	{
-		s = `${src.substring(0, n)}...`
+		title = `${src.substring(0, Hue.url_title_max_length)}...`
 	}
 
 	else
 	{
-		s = src
+		title = src
 	}
 
 	let template
@@ -21463,7 +21493,7 @@ Hue.open_url_menu = function(src, type=1, data=false, media_type=false)
 		template = Hue.template_open_url_2()
 	}
 
-	Hue.msg_info2.show([s, template], function()
+	Hue.msg_info2.show([title, template], function()
 	{
 		$("#open_url_menu_open").click(function()
 		{
@@ -24359,7 +24389,7 @@ Hue.make_image_preview = function(message)
 
 	for(let sp of split)
 	{
-		if((sp.startsWith("https://") || sp.startsWith("http://")))
+		if(Hue.utilz.is_url(sp))
 		{
 			num_links += 1
 			link = sp
@@ -24649,7 +24679,7 @@ Hue.get_media_change_inline_comment = function(type, source)
 
 		for(let sp of split)
 		{
-			if(sp.startsWith("http://") || sp.startsWith("https://"))
+			if(Hue.utilz.is_url(sp))
 			{
 				if(!url)
 				{
@@ -24894,4 +24924,88 @@ Hue.clean_multiline = function(message)
 	}
 
 	return message
+}
+
+Hue.setup_drag_events = function()
+{
+	$("#main_container")[0].addEventListener("drop", function(e)
+	{
+		let text = e.dataTransfer.getData('text/plain').trim()
+		
+		if(text)
+		{
+			if(Hue.utilz.is_url(text))
+			{
+				if(Hue.change_image_source(text, true))
+				{
+					$("#handle_url_image_container").css("display", "inline-block")
+				}
+				
+				else
+				{
+					$("#handle_url_image_container").css("display", "none")
+				}
+			
+				if(Hue.change_tv_source(text, true))
+				{
+					$("#handle_url_tv_container").css("display", "inline-block")
+				}
+				
+				else
+				{
+					$("#handle_url_tv_container").css("display", "none")
+				}
+			
+				if(Hue.change_radio_source(text, true))
+				{
+					$("#handle_url_radio_container").css("display", "inline-block")
+				}
+				
+				else
+				{
+					$("#handle_url_radio_container").css("display", "none")
+				}
+
+				let title
+
+				if(text.length > Hue.url_title_max_length)
+				{
+					title = `${text.substring(0, Hue.url_title_max_length)}...`
+				}
+
+				else
+				{
+					title = text
+				}
+
+				Hue.handled_url = text
+				Hue.msg_handle_url.set_title(title)
+				Hue.msg_handle_url.show()
+			}
+		}
+	})
+
+	$("#handle_url_link").click(function()
+	{
+		Hue.process_message({message:Hue.handled_url})
+		Hue.close_all_modals()
+	})
+
+	$("#handle_url_image").click(function()
+	{
+		Hue.change_image_source(Hue.handled_url)
+		Hue.close_all_modals()
+	})
+
+	$("#handle_url_tv").click(function()
+	{
+		Hue.change_tv_source(Hue.handled_url)
+		Hue.close_all_modals()
+	})
+
+	$("#handle_url_radio").click(function()
+	{
+		Hue.change_radio_source(Hue.handled_url)
+		Hue.close_all_modals()
+	})
 }

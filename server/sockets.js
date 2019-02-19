@@ -1529,7 +1529,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return
 		}
 
-		if(data.src.startsWith("http://") || data.src.startsWith("https://"))
+		if(utilz.is_url(data.src))
 		{
 			if(handler.check_domain_list("radio", data.src))
 			{
@@ -1876,7 +1876,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return
 		}
 
-		if(data.src.startsWith("http://") || data.src.startsWith("https://"))
+		if(utilz.is_url(data.src))
 		{
 			if(handler.check_domain_list("tv", data.src))
 			{
@@ -3220,7 +3220,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			data.src = data.src.replace(/\.gifv/g,'.gif')
 		}
 
-		if(!data.src.startsWith("http://") && !data.src.startsWith("https://") && !data.src.startsWith("/"))
+		if(!utilz.is_url(data.src) && !data.src.startsWith("/"))
 		{
 			if(!config.imgur_enabled)
 			{
@@ -3801,7 +3801,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(data.src !== "default")
 		{
-			if(!data.src.startsWith("http://") && !data.src.startsWith("https://"))
+			if(!utilz.is_url(data.src))
 			{
 				return false
 			}
@@ -5654,7 +5654,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			url: url
 		}
 
-		if(!url.startsWith("http://") && !url.startsWith("https://"))
+		if(!utilz.is_url(url))
 		{
 			return callback(response)
 		}
