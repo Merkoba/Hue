@@ -4792,8 +4792,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		try
 		{
-			let room = rooms[room_id]
-
 			fs.readFile(path.join(root_path, config.text_ads_json_location), function(err, content)
 			{
 				if(err)

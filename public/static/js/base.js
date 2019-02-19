@@ -6661,8 +6661,8 @@ Hue.update_chat = function(args={})
 		args.message = args.message.slice(1)
 	}
 
-	let containerclasses = "chat_content_container chat_menu_button_main"
-	let contclasses = "chat_content dynamic_title"
+	let container_classes = "chat_content_container chat_menu_button_main"
+	let content_classes = "chat_content dynamic_title"
 
 	let d
 
@@ -6690,7 +6690,7 @@ Hue.update_chat = function(args={})
 		pi = args.prof_image
 	}
 
-	let messageclasses
+	let message_classes
 
 	let image_preview = false
 	let image_preview_src = false
@@ -6746,7 +6746,7 @@ Hue.update_chat = function(args={})
 		{
 			if(Hue.check_highlights(args.message))
 			{
-				contclasses += " highlighted4"
+				content_classes += " highlighted4"
 				highlighted = true
 			}
 		}
@@ -6773,19 +6773,19 @@ Hue.update_chat = function(args={})
 			args.brk = "<i class='icon2c fa fa-user-circle'></i>"
 		}
 
-		containerclasses += " chat_content_container_third"
+		container_classes += " chat_content_container_third"
 
 		let s = `
-		<div class='message chat_message thirdperson ${messageclasses}'>
+		<div class='message chat_message thirdperson ${message_classes}'>
 			<div class='chat_third_container'>
 				<div class='brk chat_third_brk'>${args.brk}</div>
-				<div class='${containerclasses}'>
+				<div class='${container_classes}'>
 					<div class='chat_menu_button_container unselectable'>
 						<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
 					</div>
 
 					<div class='chat_third_content'>
-						<span class='chat_uname action'></span><span class='${contclasses}' title='${nd}' data-otitle='${nd}' data-date='${d}'></span>
+						<span class='chat_uname action'></span><span class='${content_classes}' title='${nd}' data-otitle='${nd}' data-date='${d}'></span>
 					</div>
 
 					<div class='message_edited_label'>(Edited)</div>
@@ -6820,13 +6820,13 @@ Hue.update_chat = function(args={})
 					<div class='chat_uname action'></div>
 				</div>
 				<div class='chat_container'>
-					<div class='${containerclasses}'>
+					<div class='${container_classes}'>
 
 						<div class='chat_menu_button_container unselectable'>
 							<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
 						</div>
 
-						<div class='${contclasses}' title='${nd}' data-otitle='${nd}' data-date='${d}'></div>
+						<div class='${content_classes}' title='${nd}' data-otitle='${nd}' data-date='${d}'></div>
 						
 						<div class='message_edited_label'>(Edited)</div>
 						
@@ -7763,24 +7763,24 @@ Hue.chat_announce = function(args={})
 		}
 	}
 
-	let messageclasses = "message announcement"
-	let containerclasses = "announcement_content_container"
-	let splitclasses = "announcement_content_split dynamic_title"
-	let contclasses = "announcement_content"
-	let brkclasses = "brk announcement_brk"
+	let message_classes = "message announcement"
+	let container_classes = "announcement_content_container"
+	let split_classes = "announcement_content_split dynamic_title"
+	let content_classes = "announcement_content"
+	let brk_classes = "brk announcement_brk"
 	
-	let containerid = " "
+	let container_id = " "
 
 	if(args.id)
 	{
-		containerid = ` id='${args.id}' `
+		container_id = ` id='${args.id}' `
 	}
 
 	let highlighted = false
 
-	if(args.highlight === true)
+	if(args.highlight)
 	{
-		contclasses += " highlighted4"
+		content_classes += " highlighted4"
 		highlighted = true
 	}
 
@@ -7810,14 +7810,15 @@ Hue.chat_announce = function(args={})
 	let image_preview = false
 	let image_preview_src = false
 	let image_preview_src_original = false
+	let image_preview_text = false
 
 	if(args.preview_image && Hue.get_setting("show_image_previews"))
 	{
 		let ans = Hue.make_image_preview(args.message)
-
 		image_preview = ans.image_preview
 		image_preview_src = ans.image_preview_src
 		image_preview_src_original = ans.image_preview_src_original
+		image_preview_text = ans.image_preview_text
 	}
 
 	let comment = ""
@@ -7844,18 +7845,19 @@ Hue.chat_announce = function(args={})
 	}
 
 	let link_preview = false
+	let link_preview_text = false
 
 	if(!image_preview && args.link_url && Hue.get_setting("show_link_previews"))
 	{
 		let ans = Hue.make_link_preview(args.message, args.link_url, args.link_title, args.link_image)
-
 		link_preview = ans.link_preview
+		link_preview_text = ans.link_preview_text
 	}
 
 	if((args.onclick || (args.username && args.open_profile)) && !link_preview && !image_preview)
 	{
-		contclasses += " pointer action"
-		brkclasses += " pointer action"
+		content_classes += " pointer action"
+		brk_classes += " pointer action"
 	}
 
 	let first_url = false
@@ -7872,18 +7874,41 @@ Hue.chat_announce = function(args={})
 
 	if(first_url || args.type === "image_change" || args.type === "tv_change" || args.type === "radio_change")
 	{
-		containerclasses += " chat_menu_button_main"
+		container_classes += " chat_menu_button_main"
+	}
+
+	let preview_text_classes = ""
+
+	if(args.username !== Hue.username)
+	{
+		if(image_preview && image_preview_text)
+		{
+			if(Hue.check_highlights(image_preview_text))
+			{
+				preview_text_classes += " highlighted4"
+				highlighted = true
+			}
+		}
+
+		else if(link_preview && link_preview_text)
+		{
+			if(Hue.check_highlights(link_preview_text))
+			{
+				preview_text_classes += " highlighted4"
+				highlighted = true
+			}
+		}
 	}
 
 	let s = `
-	<div${containerid}class='${messageclasses}'>
-		<div class='${containerclasses}'>
-			<div class='${brkclasses}'>${args.brk}</div>
+	<div${container_id}class='${message_classes}'>
+		<div class='${container_classes}'>
+			<div class='${brk_classes}'>${args.brk}</div>
 			<div class='chat_menu_button_container unselectable'>
 				<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
 			</div>
-			<div class='${splitclasses}' title='${t}' data-otitle='${t}' data-date='${d}'>
-				<div class='${contclasses}'></div>
+			<div class='${split_classes}' title='${t}' data-otitle='${t}' data-date='${d}'>
+				<div class='${content_classes}'></div>
 				${comment}
 			</div>
 		</div>
@@ -7897,12 +7922,14 @@ Hue.chat_announce = function(args={})
 	if(image_preview)
 	{
 		content.html(image_preview)
+		content.find(".image_preview_text").eq(0).addClass(preview_text_classes)
 		Hue.setup_image_preview(fmessage, image_preview_src_original, "none")
 	}
-
+	
 	else if(link_preview)
 	{
 		content.html(link_preview)
+		content.find(".link_preview_text").eq(0).addClass(preview_text_classes)
 		Hue.setup_link_preview(fmessage, args.link_url, "none")
 	}
 
@@ -22074,7 +22101,7 @@ Hue.check_prevent_default = function(e)
 	}
 }
 
-Hue.start_chat_quote_events = function(container_id, msg_instance)
+Hue.start_chat_quote_events = function()
 {
 	$("#chat_area").on("mouseup", ".chat_content", function(e)
 	{
