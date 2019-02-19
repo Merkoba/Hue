@@ -17343,12 +17343,12 @@ Hue.generate_highlight_words_regex = function()
 	{
 		if(Hue.get_setting("case_insensitive_words_highlights"))
 		{
-			Hue.mentions_regex = Hue.generate_highlights_regex(Hue.username, true, false)
+			Hue.highlight_words_regex = Hue.generate_highlights_regex(words, true, false)
 		}
 		
 		else
 		{
-			Hue.mentions_regex = Hue.generate_highlights_regex(Hue.username, false, false)
+			Hue.highlight_words_regex = Hue.generate_highlights_regex(words, false, false)
 		}
 	}
 
