@@ -6705,7 +6705,6 @@ Hue.update_chat = function(args={})
 		{
 			if(Hue.check_highlights(link_preview_text))
 			{
-				console.log(123)
 				preview_text_classes += " highlighted4"
 				highlighted = true
 			}
@@ -24406,19 +24405,14 @@ Hue.make_image_preview = function(message)
 	ans.image_preview_text = false
 
 	let split = message.split(" ")
-	let num_links = 0
-	let link = false
+	let link = Hue.utilz.get_first_url(message)
 
-	for(let sp of split)
+	if(!link)
 	{
-		if(Hue.utilz.is_url(sp))
-		{
-			num_links += 1
-			link = sp
-		}
+		return ans
 	}
 
-	if(num_links === 1 && link.includes("imgur.com"))
+	if(link.includes("imgur.com"))
 	{
 		let code = Hue.utilz.get_imgur_image_code(link)
 
@@ -24566,7 +24560,7 @@ Hue.setup_image_preview = function(fmessage, image_preview_src_original, user_id
 	})
 
 	image_preview_el.find(".image_preview_url").eq(0).urlize()
-	image_preview_el.find(".image_preview_text").eq(0).urlize()
+	image_preview_el.parent().find(".image_preview_text").eq(0).urlize()
 }
 
 Hue.setup_link_preview = function(fmessage, link_url, user_id)
@@ -24604,7 +24598,7 @@ Hue.setup_link_preview = function(fmessage, link_url, user_id)
 	})
 
 	link_preview_el.find(".link_preview_url").eq(0).urlize()
-	link_preview_el.find(".link_preview_text").eq(0).urlize()
+	link_preview_el.parent().find(".link_preview_text").eq(0).urlize()
 }
 
 Hue.get_timeago = function(date)
