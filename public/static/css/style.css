@@ -1088,8 +1088,8 @@ select
 .message
 {
 	padding-left: 1.2rem;
-	padding-top: 1rem;
-	padding-bottom: 1rem;
+	padding-top: 0.8rem;
+	padding-bottom: 0.8rem;
 }
 
 #chat_area > .message:last-child
