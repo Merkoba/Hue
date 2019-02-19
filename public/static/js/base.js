@@ -341,6 +341,7 @@ Hue.init = function()
 	Hue.start_radio_label_context_menu()
 	Hue.start_chat_menu_context_menu()
 	Hue.start_history_items_context_menu()
+	Hue.start_msg_close_buttons_context_menu()
 	Hue.start_titles()
 	Hue.setup_show_profile()
 	Hue.setup_main_menu()
@@ -4299,6 +4300,37 @@ Hue.start_history_items_context_menu = function()
 								Hue.remove_message_from_context_menu(message)
 							}
 						}
+					}
+				}
+			}
+		}
+	})
+}
+
+Hue.start_msg_close_buttons_context_menu = function()
+{
+	$.contextMenu(
+	{
+		selector: ".Msg-window-inner-x",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		events: Hue.context_menu_events,
+		items:
+		{
+			mm0:
+			{
+				name: "Close All", callback: function(key, opt)
+				{
+					let container = $(this).closest(".Msg-container")
+
+					if(container.hasClass("Msg-container-modal"))
+					{
+						Hue.close_all_modals()
+					}
+
+					else if(container.hasClass("Msg-container-popup"))
+					{
+						Hue.close_all_popups()
 					}
 				}
 			}
@@ -11704,6 +11736,7 @@ Hue.start_msg = function()
 		show_effect_duration: [200, 200],
 		close_effect_duration: [200, 200],
 		clear_editables: true,
+		class: "modal",
 		before_show: function(instance)
 		{
 			if(Hue.room_state.screen_locked)
@@ -17446,6 +17479,7 @@ Hue.create_popup = function(position, id=false, after_close=false)
 		show_effect_duration: [0, 400],
 		close_effect_duration: [400, 0],
 		clear_editables: true,
+		class: "popup"
 	}
 
 	if(id)
@@ -17486,6 +17520,8 @@ Hue.create_popup = function(position, id=false, after_close=false)
 			window_inner_x_class: "!titlebar_inner_x"
 		})
 	)
+
+	z = pop
 
 	return pop
 }
