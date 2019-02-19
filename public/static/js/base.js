@@ -24938,32 +24938,32 @@ Hue.setup_drag_events = function()
 			{
 				if(Hue.change_image_source(text, true))
 				{
-					$("#handle_url_image_container").css("display", "inline-block")
+					$("#handle_url_image_container").removeClass("inactive")
 				}
 				
 				else
 				{
-					$("#handle_url_image_container").css("display", "none")
+					$("#handle_url_image_container").addClass("inactive")
 				}
 			
 				if(Hue.change_tv_source(text, true))
 				{
-					$("#handle_url_tv_container").css("display", "inline-block")
+					$("#handle_url_tv_container").removeClass("inactive")
 				}
 				
 				else
 				{
-					$("#handle_url_tv_container").css("display", "none")
+					$("#handle_url_tv_container").addClass("inactive")
 				}
 			
 				if(Hue.change_radio_source(text, true))
 				{
-					$("#handle_url_radio_container").css("display", "inline-block")
+					$("#handle_url_radio_container").removeClass("inactive")
 				}
 				
 				else
 				{
-					$("#handle_url_radio_container").css("display", "none")
+					$("#handle_url_radio_container").addClass("inactive")
 				}
 
 				let title

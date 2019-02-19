@@ -1622,6 +1622,12 @@ input[type=text], textarea
 	pointer-events: none;
 }
 
+.inactive
+{
+	opacity: 0.5;
+	pointer-events: none;
+}
+
 .settings_item
 {
 	padding-top: 1em;
