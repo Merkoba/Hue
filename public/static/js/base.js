@@ -160,10 +160,8 @@ Hue.update_lockscreen_clock_delay = 10000
 Hue.screen_locked = false
 Hue.userlist_mode = "normal"
 Hue.usercount = 0
-Hue.reply_text_raw = ""
 Hue.quote_max_length = 200
 Hue.markdown_regexes = {}
-Hue.handled_url = ""
 Hue.url_title_max_length = 50
 
 Hue.commands = 
@@ -382,6 +380,7 @@ Hue.init = function()
 	Hue.setup_lockscreen()
 	Hue.setup_upload_comment()
 	Hue.setup_drag_events()
+	Hue.setup_open_url()
 
 	if(Hue.debug_functions)
 	{
@@ -516,8 +515,6 @@ Hue.setup_templates = function()
 	Hue.template_lockscreen = Handlebars.compile($('#template_lockscreen').html())
 	Hue.template_draw_image = Handlebars.compile($('#template_draw_image').html())
 	Hue.template_credits = Handlebars.compile($('#template_credits').html())
-	Hue.template_open_url = Handlebars.compile($('#template_open_url').html())
-	Hue.template_open_url_2 = Handlebars.compile($('#template_open_url_2').html())
 	Hue.template_background_image_select = Handlebars.compile($('#template_background_image_select').html())
 	Hue.template_background_image_input = Handlebars.compile($('#template_background_image_input').html())
 	Hue.template_goto_room = Handlebars.compile($('#template_goto_room').html())
@@ -527,6 +524,7 @@ Hue.setup_templates = function()
 	Hue.template_upload_comment = Handlebars.compile($('#template_upload_comment').html())
 	Hue.template_reply = Handlebars.compile($('#template_reply').html())
 	Hue.template_handle_url = Handlebars.compile($('#template_handle_url').html())
+	Hue.template_open_url = Handlebars.compile($('#template_open_url').html())
 }
 
 Hue.show_help = function(number=1, filter="")
@@ -12683,6 +12681,32 @@ Hue.start_msg = function()
 		})
 	)
 
+	Hue.msg_open_url = Msg.factory
+	(
+		Object.assign({}, common, titlebar,
+		{
+			id: "open_url",
+			after_create: function(instance)
+			{
+				Hue.after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				Hue.after_modal_show(instance)
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				Hue.after_modal_close(instance)
+				Hue.clear_modal_image_info()
+			}
+		})
+	)
+
 	Hue.msg_main_menu.set(Hue.template_main_menu())
 	Hue.msg_user_menu.set(Hue.template_user_menu())
 	Hue.msg_userlist.set(Hue.template_userlist())
@@ -12716,6 +12740,7 @@ Hue.start_msg = function()
 	Hue.msg_upload_comment.set(Hue.template_upload_comment())
 	Hue.msg_reply.set(Hue.template_reply())
 	Hue.msg_handle_url.set(Hue.template_handle_url())
+	Hue.msg_open_url.set(Hue.template_open_url())
 
 	Hue.msg_info.create()
 	Hue.msg_info2.create()
@@ -12740,7 +12765,6 @@ Hue.start_msg = function()
 	Hue.msg_access_log.set_title("Access Log")
 	Hue.msg_upload_comment.set_title("Add a Comment")
 	Hue.msg_reply.set_title("Write a Reply")
-	Hue.msg_handle_url.set_title("What do you want to do with this URL?")
 
 	$("#global_settings_window_title").click(function()
 	{
@@ -21467,6 +21491,39 @@ Hue.format_command_aliases = function(cmds)
 	return s.slice(0, -1)
 }
 
+Hue.setup_open_url = function()
+{
+	$("#open_url_menu_open").click(function()
+	{
+		Hue.goto_url(Hue.open_url_src, "tab")
+		Hue.close_all_modals()
+	})
+
+	$("#open_url_menu_copy").click(function()
+	{
+		Hue.copy_string(Hue.open_url_src)
+		Hue.close_all_modals()
+	})
+
+	$("#open_url_menu_load").click(function()
+	{
+		Hue.change({type:Hue.open_url_media_type, item:Hue.open_url_data, force:true})
+		Hue[`toggle_lock_${Hue.open_url_media_type}`](true)
+		Hue.close_all_modals()
+	})
+
+	$("#open_url_menu_change").click(function()
+	{
+		let r = confirm("This will change it for everyone. Are you sure?")
+
+		if(r)
+		{
+			Hue[`change_${Hue.open_url_media_type}_source`](Hue.open_url_data.source)
+			Hue.close_all_modals()
+		}
+	})
+}
+
 Hue.open_url_menu = function(src, type=1, data=false, media_type=false)
 {
 	let title
@@ -21481,53 +21538,26 @@ Hue.open_url_menu = function(src, type=1, data=false, media_type=false)
 		title = src
 	}
 
-	let template
-
 	if(type === 1)
 	{
-		template = Hue.template_open_url()
+		$("#open_url_menu_load").css("display", "none")
+		$("#open_url_menu_change").css("display", "none")
 	}
-
+	
 	else if(type === 2)
 	{
-		template = Hue.template_open_url_2()
+		$("#open_url_menu_load").css("display", "inline-block")
+		$("#open_url_menu_change").css("display", "inline-block")
 	}
 
-	Hue.msg_info2.show([title, template], function()
-	{
-		$("#open_url_menu_open").click(function()
-		{
-			Hue.goto_url(src, "tab")
-			Hue.msg_info2.close()
-		})
+	Hue.fix_horizontal_separators("open_url_container")
+	
+	Hue.open_url_src = src
+	Hue.open_url_data = data
+	Hue.open_url_media_type = media_type
 
-		$("#open_url_menu_copy").click(function()
-		{
-			Hue.copy_string(src)
-			Hue.msg_info2.close()
-		})
-
-		if(type === 2)
-		{
-			$("#open_url_menu_load").click(function()
-			{
-				Hue.change({type:media_type, item:data, force:true})
-				Hue.close_all_modals()
-				Hue[`toggle_lock_${media_type}`](true)
-			})
-
-			$("#open_url_menu_change").click(function()
-			{
-				let r = confirm("This will change it for everyone. Are you sure?")
-
-				if(r)
-				{
-					Hue[`change_${media_type}_source`](data.source)
-					Hue.close_all_modals()
-				}
-			})
-		}
-	})
+	Hue.msg_open_url.set_title(title)
+	Hue.msg_open_url.show()
 }
 
 Hue.sdeb = function(s, show_date=false)
@@ -24938,33 +24968,35 @@ Hue.setup_drag_events = function()
 			{
 				if(Hue.change_image_source(text, true))
 				{
-					$("#handle_url_image_container").removeClass("inactive")
+					$("#handle_url_image").css("display", "inline-block")
 				}
 				
 				else
 				{
-					$("#handle_url_image_container").addClass("inactive")
+					$("#handle_url_image").css("display", "none")
 				}
 			
 				if(Hue.change_tv_source(text, true))
 				{
-					$("#handle_url_tv_container").removeClass("inactive")
+					$("#handle_url_tv").css("display", "inline-block")
 				}
 				
 				else
 				{
-					$("#handle_url_tv_container").addClass("inactive")
+					$("#handle_url_tv").css("display", "none")
 				}
 			
 				if(Hue.change_radio_source(text, true))
 				{
-					$("#handle_url_radio_container").removeClass("inactive")
+					$("#handle_url_radio").css("display", "inline-block")
 				}
 				
 				else
 				{
-					$("#handle_url_radio_container").addClass("inactive")
+					$("#handle_url_radio").css("display", "none")
 				}
+
+				Hue.fix_horizontal_separators("handle_url_container")
 
 				let title
 
@@ -25007,5 +25039,48 @@ Hue.setup_drag_events = function()
 	{
 		Hue.change_radio_source(Hue.handled_url)
 		Hue.close_all_modals()
+	})
+}
+
+Hue.fix_horizontal_separators = function(container_id)
+{
+	let n = 0
+	let ok = false
+	let container = $(`#${container_id}`)
+	let num_visible = container.find(".horizontal_item:not([style*='display: none'])").length
+
+	container.find("div").each(function()
+	{
+		if($(this).hasClass("horizontal_separator"))
+		{
+			if(ok)
+			{
+				$(this).css("display", "inline-block")
+				ok = false
+			}
+			
+			else
+			{
+				$(this).css("display", "none")
+			}
+		}
+
+		else
+		{
+			if($(this).css("display") !== "none")
+			{
+				n += 1
+
+				if(n < num_visible)
+				{
+					ok = true
+				}
+
+				else
+				{
+					ok = false
+				}
+			}
+		}
 	})
 }

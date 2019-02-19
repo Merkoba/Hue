@@ -34,13 +34,13 @@
 		<link rel="stylesheet" href="/static/css/jquery.nstSlider.min.css"> 
 		
 		<script src="/static/js/msg.min.js?version=27"></script>
-		<script src="/static/js/utilz.js?version=34"></script>
+		<script src="/static/js/utilz.js?version=35"></script>
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2637"></script>
+		<script src="/static/js/base.js?version=2639"></script>
 
-		<link rel="stylesheet" href="/static/css/style.css?version=573"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=574"/>
 
 		<script>
 
@@ -1539,27 +1539,14 @@
 		</script>
 
 		<script id='template_handle_url' type='text/x-handlebars-template'>
-			<div id="open_buttons" class='unselectable'>
-
-				<div id='handle_url_link_container' class='inline'>
-					<div id='handle_url_link' class='bigger action inline pointer'>Link&nbsp;URL</div>
-					<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
-				</div>
-
-				<div id='handle_url_image_container' class='inline'>
-					<div id='handle_url_image' class='bigger action inline pointer'>Change&nbsp;Image</div>
-					<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
-				</div>
-
-				<div id='handle_url_link_container' class='inline'>
-					<div id='handle_url_tv' class='bigger action inline pointer'>Change&nbsp;TV</div>
-					<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
-				</div>
-
-				<div id='handle_url_link_container' class='inline'>
-					<div id='handle_url_radio' class='bigger action inline pointer'>Change&nbsp;Radio</div>
-				</div>
-				
+			<div id='handle_url_container' class='unselectable'>
+				<div id='handle_url_link' class='horizontal_item bigger action inline pointer'>Link&nbsp;URL</div>
+				<div class='horizontal_separator inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
+				<div id='handle_url_image' class='horizontal_item bigger action inline pointer'>Change&nbsp;Image</div>
+				<div class='horizontal_separator inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
+				<div id='handle_url_tv' class='horizontal_item bigger action inline pointer'>Change&nbsp;TV</div>
+				<div class='horizontal_separator inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
+				<div id='handle_url_radio' class='horizontal_item bigger action inline pointer'>Change&nbsp;Radio</div>
 			</div>
 		</script>
 
@@ -1581,21 +1568,13 @@
 
 		<script id='template_open_url' type='text/x-handlebars-template'>
 			<div class='flex_row_center unselectable' id='open_url_container'>
-				<div class='bigger action inline pointer' id='open_url_menu_open'>Open&nbsp;URL</div>
-				<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
-				<div class='bigger action inline pointer' id='open_url_menu_copy'>Copy&nbsp;URL</div>
-			</div>
-		</script>
-
-		<script id='template_open_url_2' type='text/x-handlebars-template'>
-			<div class='flex_row_center unselectable' id='open_url_container'>
-				<div class='bigger action inline pointer' id='open_url_menu_open'>Open&nbsp;URL</div>
-				<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
-				<div class='bigger action inline pointer' id='open_url_menu_copy'>Copy&nbsp;URL</div>
-				<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
-				<div class='bigger action inline pointer' id='open_url_menu_load'>Load</div>
-				<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
-				<div class='bigger action inline pointer' id='open_url_menu_change'>Change</div>
+				<div class='horizontal_item bigger action inline pointer' id='open_url_menu_open'>Open&nbsp;URL</div>
+				<div class='horizontal_separator inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
+				<div class='horizontal_item bigger action inline pointer' id='open_url_menu_copy'>Copy&nbsp;URL</div>
+				<div class='horizontal_separator inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
+				<div class='horizontal_item bigger action inline pointer' id='open_url_menu_load'>Load</div>
+				<div class='horizontal_separator inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
+				<div class='horizontal_item bigger action inline pointer' id='open_url_menu_change'>Change</div>
 			</div>
 		</script>
 
