@@ -1562,14 +1562,14 @@ Hue.setup_image = function(mode, odata={})
 
 	data.message = `${data.setter} changed the image`
 
-	if(data.message)
-	{
-		data.message_id = Hue.announce_image(data).message_id
-	}
-
 	data.onclick = function()
 	{
 		Hue.show_modal_image(data)
+	}
+
+	if(data.message)
+	{
+		data.message_id = Hue.announce_image(data).message_id
 	}
 
 	if(mode === "change" || mode === "show")
@@ -15215,13 +15215,11 @@ Hue.set_modal_image_number = function(id)
 	if(number > 0)
 	{
 		$("#modal_image_number_input").val(number)
-		Hue.current_modal_image_index = number - 1
 	}
 
 	else
 	{
 		$("#modal_image_number_input").val(1)
-		Hue.current_modal_image_index = 0
 	}
 }
 
@@ -18486,14 +18484,12 @@ Hue.electron_signal = function(func, data={})
 
 Hue.modal_image_prev_click = function()
 {
-	let index = Hue.current_modal_image_index - 1
+	let index = Hue.images_changed.indexOf(Hue.loaded_modal_image) - 1
 
 	if(index < 0)
 	{
 		index = Hue.images_changed.length - 1
 	}
-
-	let url = $("#modal_image").attr("src")
 
 	let prev = Hue.images_changed[index]
 
@@ -18502,7 +18498,7 @@ Hue.modal_image_prev_click = function()
 
 Hue.modal_image_next_click = function(e)
 {
-	let index = Hue.current_modal_image_index + 1
+	let index = Hue.images_changed.indexOf(Hue.loaded_modal_image) + 1
 
 	if(index > Hue.images_changed.length - 1)
 	{
@@ -18581,7 +18577,7 @@ Hue.setup_modal_image = function()
 
 	$("#modal_image_toolbar_load").click(function(e)
 	{
-		let item = Hue.images_changed[Hue.current_modal_image_index]
+		let item = Hue.loaded_modal_image
 		Hue.change({type:"image", item:item, force:true})
 		Hue.close_all_modals()
 		Hue.toggle_lock_images(true)
@@ -18593,7 +18589,7 @@ Hue.setup_modal_image = function()
 
 		if(r)
 		{
-			let item = Hue.images_changed[Hue.current_modal_image_index]
+			let item = Hue.loaded_modal_image
 			Hue.change_image_source(item.source)
 			Hue.close_all_modals()
 		}
