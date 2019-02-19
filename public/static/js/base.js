@@ -5110,80 +5110,118 @@ Hue.create_file_reader = function(file)
 	{
 		Hue.socket_emit('slice_upload',
 		{
-			action: file.action,
-			name: file.name,
-			type: file.type,
-			size: file.size,
 			data: reader.result,
-			date: file.date,
-			comment: file.comment
+			action: file.hue_data.action,
+			name: file.hue_data.name,
+			type: file.hue_data.type,
+			size: file.hue_data.size,
+			date: file.hue_data.date,
+			comment: file.hue_data.comment
 		})
 	})
 
 	return reader
 }
 
-Hue.upload_file = function(file, action)
+Hue.upload_file = function(args={})
 {
-	if(action === "background_image_upload")
+	let def_args =
+	{
+		file: false,
+		action: false,
+		name: false,
+		comment: false
+	}
+
+	Hue.fill_defaults(args, def_args)
+
+	if(!args.file || !args.action)
+	{
+		return false
+	}
+
+	if(args.file.hue_data === undefined)
+	{
+		args.file.hue_data = {}
+	}
+
+	args.file.hue_data.action = args.action
+
+	if(args.name)
+	{
+		args.file.hue_data.name = args.name
+	}
+
+	else
+	{
+		args.file.hue_data.name = args.file.name
+	}
+
+	if(args.comment)
+	{
+		args.file.hue_data.comment = args.comment
+	}
+
+	if(args.file.hue_data.action === "background_image_upload")
 	{
 		for(let d in Hue.files)
 		{
 			let f = Hue.files[d]
 
-			if(f.action === "background_image_upload")
+			if(f.hue_data.action === "background_image_upload")
 			{
 				Hue.cancel_file_upload(d, false)
 			}
 		}
 	}
 
+	args.file.hue_data.size = args.file.size
+	args.file.hue_data.type = args.file.type
+
 	let date = Date.now()
 
-	file.date = date
+	args.file.hue_data.date = date
 
-	file.action = action
-
-	if(file.name !== undefined)
+	if(args.file.hue_data.name !== undefined)
 	{
-		file.name = Hue.utilz.clean_string5(file.name).replace(/.gifv/g, ".gif")
+		args.file.hue_data.name = Hue.utilz.clean_string5(args.file.hue_data.name).replace(/.gifv/g, ".gif")
 	}
 
 	else
 	{
-		file.name = "no_name"
+		args.file.hue_data.name = "no_name"
 	}
 
-	file.reader = Hue.create_file_reader(file)
+	args.file.hue_data.reader = Hue.create_file_reader(args.file)
 
-	let slice = file.slice(0, Hue.config.upload_slice_size)
+	let slice = args.file.slice(0, Hue.config.upload_slice_size)
 
-	Hue.files[date] = file
+	Hue.files[date] = args.file
 
-	file.next = Hue.get_file_next(file)
+	args.file.hue_data.next = Hue.get_file_next(args.file)
 
-	if(file.next >= 100)
+	if(args.file.hue_data.next >= 100)
 	{
-		file.sending_last_slice = true
+		args.file.hue_data.sending_last_slice = true
 	}
 
 	else
 	{
-		file.sending_last_slice = false
+		args.file.hue_data.sending_last_slice = false
 	}
 
-	file.percentage = 0
+	args.file.hue_data.percentage = 0
 
-	let message = `Uploading ${Hue.get_file_action_name(file.action)}: 0%`
+	let message = `Uploading ${Hue.get_file_action_name(args.file.hue_data.action)}: 0%`
 
 	let obj =
 	{
 		brk: "<i class='icon2c fa fa-info-circle'></i>",
 		id: `uploading_${date}`,
-		title: `Size: ${Hue.get_size_string(file.size / 1024)} | ${Hue.nice_date()}`
+		title: `Size: ${Hue.get_size_string(args.file.hue_data.size / 1024)} | ${Hue.nice_date()}`
 	}
 
-	if(!file.sending_last_slice)
+	if(!args.file.hue_data.sending_last_slice)
 	{
 		obj.onclick = function()
 		{
@@ -5193,7 +5231,7 @@ Hue.upload_file = function(file, action)
 
 	Hue.feedback(message, obj)
 
-	file.reader.readAsArrayBuffer(slice)
+	args.file.hue_data.reader.readAsArrayBuffer(slice)
 }
 
 Hue.cancel_file_upload = function(date, check=true)
@@ -5205,7 +5243,7 @@ Hue.cancel_file_upload = function(date, check=true)
 		return false
 	}
 
-	if(file.sending_last_slice)
+	if(file.hue_data.sending_last_slice)
 	{
 		return false
 	}
@@ -5214,7 +5252,7 @@ Hue.cancel_file_upload = function(date, check=true)
 
 	if(check)
 	{
-		if(file.action === "background_image_upload")
+		if(file.hue_data.action === "background_image_upload")
 		{
 			Hue.config_admin_background_image()
 		}
@@ -5227,7 +5265,7 @@ Hue.cancel_file_upload = function(date, check=true)
 
 Hue.get_file_next = function(file)
 {
-	let next = Math.floor(((Hue.config.upload_slice_size * 1) / file.size) * 100)
+	let next = Math.floor(((Hue.config.upload_slice_size * 1) / file.hue_data.size) * 100)
 
 	if(next > 100)
 	{
@@ -5239,19 +5277,19 @@ Hue.get_file_next = function(file)
 
 Hue.change_upload_status = function(file, status, clear=false)
 {
-	$(`#uploading_${file.date}`)
+	$(`#uploading_${file.hue_data.date}`)
 	.find(".announcement_content")
-	.eq(0).text(`Uploading ${Hue.get_file_action_name(file.action)}: ${status}`)
+	.eq(0).text(`Uploading ${Hue.get_file_action_name(file.hue_data.action)}: ${status}`)
 
 	if(clear)
 	{
-		$(`#uploading_${file.date}`)
+		$(`#uploading_${file.hue_data.date}`)
 		.find(".announcement_content").eq(0)
 		.off("click")
 		.removeClass("pointer")
 		.removeClass("action")
 
-		$(`#uploading_${file.date}`)
+		$(`#uploading_${file.hue_data.date}`)
 		.find(".announcement_brk").eq(0)
 		.off("click")
 		.removeClass("pointer")
@@ -15743,14 +15781,12 @@ Hue.profile_image_selected = function(input)
 					}
 
 					cropped_canvas = cropper.getCroppedCanvas()
-					
 					rounded_canvas = Hue.get_rounded_canvas(cropped_canvas)
 
-					rounded_canvas.toBlob(function(blob)
+					rounded_canvas.toBlob(function(file)
 					{
 						$("#user_menu_profile_image").attr("src", Hue.config.profile_image_loading_url)
-						blob.name = "profile.png"
-						Hue.upload_file(blob, "profile_image_upload")
+						Hue.upload_file({file:file, action:"profile_image_upload", name:"profile.png"})
 						Hue.msg_info.close()
 					}, 'image/png', 0.95)
 				}
@@ -16335,7 +16371,6 @@ Hue.background_image_input_action = function()
 Hue.background_image_selected = function(input)
 {
 	let file = input.files[0]
-
 	let size = file.size / 1024
 
 	$("#background_image_input").closest('form').get(0).reset()
@@ -16348,7 +16383,7 @@ Hue.background_image_selected = function(input)
 
 	$("#admin_background_image").attr("src", Hue.config.background_image_loading_url)
 
-	Hue.upload_file(file, "background_image_upload")
+	Hue.upload_file({file:file, action:"background_image_upload"})
 }
 
 Hue.change_background_image_source = function(src)
@@ -18695,20 +18730,20 @@ Hue.request_slice_upload = function(data)
 
 	let place = data.current_slice * Hue.config.upload_slice_size
 
-	let slice = file.slice(place, place + Math.min(Hue.config.upload_slice_size, file.size - place))
+	let slice = file.slice(place, place + Math.min(Hue.config.upload_slice_size, file.hue_data.size - place))
 
-	file.next = Hue.get_file_next(file)
+	file.hue_data.next = Hue.get_file_next(file)
 
-	if(file.next >= 100)
+	if(file.hue_data.next >= 100)
 	{
-		file.sending_last_slice = true
+		file.hue_data.sending_last_slice = true
 	}
 
-	file.percentage = Math.floor(((Hue.config.upload_slice_size * data.current_slice) / file.size) * 100)
+	file.hue_data.percentage = Math.floor(((Hue.config.upload_slice_size * data.current_slice) / file.hue_data.size) * 100)
 
-	file.reader.readAsArrayBuffer(slice)
+	file.hue_data.reader.readAsArrayBuffer(slice)
 
-	Hue.change_upload_status(file, `${file.percentage}%`)
+	Hue.change_upload_status(file, `${file.hue_data.percentage}%`)
 }
 
 Hue.upload_ended = function(data)
@@ -24794,8 +24829,7 @@ Hue.process_upload_comment = function()
 		return false
 	}
 
-	file.comment = comment
-	Hue.upload_file(file, type)
+	Hue.upload_file({file:file, action:type, comment:comment})
 }
 
 Hue.cancel_upload_comment = function()
