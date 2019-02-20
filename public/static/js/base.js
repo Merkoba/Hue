@@ -6651,20 +6651,11 @@ Hue.update_chat = function(args={})
 		args.message = args.message.slice(1)
 	}
 
+	let message_classes = "message chat_message"
 	let container_classes = "chat_content_container chat_menu_button_main"
 	let content_classes = "chat_content dynamic_title"
 
-	let d
-
-	if(args.date)
-	{
-		d = args.date
-	}
-
-	else
-	{
-		d = Date.now()
-	}
+	let d = args.date ? args.date : Date.now()
 
 	let nd = Hue.nice_date(d)
 
@@ -6679,11 +6670,8 @@ Hue.update_chat = function(args={})
 	{
 		pi = args.prof_image
 	}
-
-	let message_classes
-
+	
 	let image_preview = false
-	let image_preview_src = false
 	let image_preview_src_original = false
 	let image_preview_text = false
 
@@ -6694,7 +6682,6 @@ Hue.update_chat = function(args={})
 		let ans = Hue.make_image_preview(args.message)
 
 		image_preview = ans.image_preview
-		image_preview_src = ans.image_preview_src
 		image_preview_src_original = ans.image_preview_src_original
 		image_preview_text = ans.image_preview_text
 	}
@@ -6763,10 +6750,11 @@ Hue.update_chat = function(args={})
 			args.brk = "<i class='icon2c fa fa-user-circle'></i>"
 		}
 
+		message_classes += " thirdperson"
 		container_classes += " chat_content_container_third"
 
 		let s = `
-		<div class='message chat_message thirdperson ${message_classes}'>
+		<div class='${message_classes}'>
 			<div class='chat_third_container'>
 				<div class='brk chat_third_brk'>${args.brk}</div>
 				<div class='${container_classes}'>
@@ -6799,7 +6787,7 @@ Hue.update_chat = function(args={})
 	else
 	{
 		let s = `
-		<div class='message chat_message'>
+		<div class='${message_classes}'>
 			<div class='chat_left_side'>
 				<div class='chat_profile_image_container unselectable action4'>
 					<img class='chat_profile_image' src='${pi}'>
@@ -7754,7 +7742,7 @@ Hue.chat_announce = function(args={})
 	}
 
 	let message_classes = "message announcement"
-	let container_classes = "announcement_content_container"
+	let container_classes = "announcement_content_container chat_menu_button_main"
 	let split_classes = "announcement_content_split dynamic_title"
 	let content_classes = "announcement_content"
 	let brk_classes = "brk announcement_brk"
@@ -7774,31 +7762,10 @@ Hue.chat_announce = function(args={})
 		highlighted = true
 	}
 
-	let d
-	let t
-
-	if(args.date)
-	{
-		d = args.date
-	}
-
-	else
-	{
-		d = Date.now()
-	}
-
-	if(args.title)
-	{
-		t = `${args.title}`
-	}
-
-	else
-	{
-		t = Hue.nice_date(d)
-	}
+	let d = args.date ? args.date : Date.now()
+	let t = args.title ? args.title : Hue.nice_date(d)
 
 	let image_preview = false
-	let image_preview_src = false
 	let image_preview_src_original = false
 	let image_preview_text = false
 
@@ -7806,7 +7773,6 @@ Hue.chat_announce = function(args={})
 	{
 		let ans = Hue.make_image_preview(args.message)
 		image_preview = ans.image_preview
-		image_preview_src = ans.image_preview_src
 		image_preview_src_original = ans.image_preview_src_original
 		image_preview_text = ans.image_preview_text
 	}
@@ -7860,11 +7826,6 @@ Hue.chat_announce = function(args={})
 	else if(link_preview)
 	{
 		first_url = args.link_url
-	}
-
-	if(first_url || args.type === "image_change" || args.type === "tv_change" || args.type === "radio_change")
-	{
-		container_classes += " chat_menu_button_main"
 	}
 
 	let preview_text_classes = ""
