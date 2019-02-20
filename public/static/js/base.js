@@ -336,9 +336,7 @@ Hue.init = function()
 	Hue.start_main_menu_context_menu()
 	Hue.start_tv_maxer_context_menu()
 	Hue.start_chat_maxer_context_menu()
-	Hue.start_images_label_context_menu()
-	Hue.start_tv_label_context_menu()
-	Hue.start_radio_label_context_menu()
+	Hue.start_footer_media_label_context_menu()
 	Hue.start_chat_menu_context_menu()
 	Hue.start_history_items_context_menu()
 	Hue.start_msg_close_buttons_context_menu()
@@ -3879,86 +3877,38 @@ Hue.start_chat_maxer_context_menu = function()
 	})
 }
 
-Hue.start_images_label_context_menu = function()
+Hue.start_footer_media_label_context_menu = function()
 {
 	$.contextMenu(
 	{
-		selector: "#footer_images_label",
+		selector: ".footer_media_label ",
 		animation: {duration: 250, hide: 'fadeOut'},
 		zIndex: 9000000000,
 		events: Hue.context_menu_events,
 		items:
 		{
-			mm0:
-			{
-				name: "Load Previous", callback: function(key, opt)
-				{
-					Hue.media_load_previous("images")
-				}
-			},
 			mm1:
 			{
 				name: "Load Next", callback: function(key, opt)
 				{
-					Hue.media_load_next("images")
+					Hue.media_load_next($(this).data("type"))
+				},
+				visible: function(key, opt)
+				{
+					return Hue.media_load_next($(this).data("type"), true)
 				}
-			}
-		}
-	})
-}
-
-Hue.start_tv_label_context_menu = function()
-{
-	$.contextMenu(
-	{
-		selector: "#footer_tv_label",
-		animation: {duration: 250, hide: 'fadeOut'},
-		zIndex: 9000000000,
-		events: Hue.context_menu_events,
-		items:
-		{
+			},
 			mm0:
 			{
 				name: "Load Previous", callback: function(key, opt)
 				{
-					Hue.media_load_previous("tv")
+					Hue.media_load_previous($(this).data("type"))
+				},
+				visible: function(key, opt)
+				{
+					return Hue.media_load_previous($(this).data("type"), true)
 				}
 			},
-			mm1:
-			{
-				name: "Load Next", callback: function(key, opt)
-				{
-					Hue.media_load_next("tv")
-				}
-			}
-		}
-	})
-}
-
-Hue.start_radio_label_context_menu = function()
-{
-	$.contextMenu(
-	{
-		selector: "#footer_radio_label",
-		animation: {duration: 250, hide: 'fadeOut'},
-		zIndex: 9000000000,
-		events: Hue.context_menu_events,
-		items:
-		{
-			mm0:
-			{
-				name: "Load Previous", callback: function(key, opt)
-				{
-					Hue.media_load_previous("radio")
-				}
-			},
-			mm1:
-			{
-				name: "Load Next", callback: function(key, opt)
-				{
-					Hue.media_load_next("radio")
-				}
-			}
 		}
 	})
 }
@@ -24296,7 +24246,7 @@ Hue.clear_autoscroll = function()
 	Hue.autoscrolling = false
 }
 
-Hue.media_load_next = function(type)
+Hue.media_load_next = function(type, just_check=false)
 {
 	let type2 = type
 
@@ -24307,28 +24257,32 @@ Hue.media_load_next = function(type)
 
 	if(Hue[`${type}_changed`].length < 2)
 	{
-		return true
+		return false
 	}
 
 	let index = Hue[`${type}_changed`].indexOf(Hue[`loaded_${type2}`])
 
 	if(index < 0)
 	{
-		return true
+		return false
 	}
 
 	if(index >= Hue[`${type}_changed`].length - 1)
+	{
+		return false
+	}
+
+	if(just_check)
 	{
 		return true
 	}
 
 	let item = Hue[`${type}_changed`][index + 1]
-
 	Hue.change({type:type2, item:item, force:true})
 	Hue[`toggle_lock_${type}`](true)
 }
 
-Hue.media_load_previous = function(type)
+Hue.media_load_previous = function(type, just_check=false)
 {
 	let type2 = type
 
@@ -24339,18 +24293,22 @@ Hue.media_load_previous = function(type)
 
 	if(Hue[`${type}_changed`].length < 2)
 	{
-		return true
+		return false
 	}
 
 	let index = Hue[`${type}_changed`].indexOf(Hue[`loaded_${type2}`])
 
 	if(index <= 0)
 	{
+		return false
+	}
+
+	if(just_check)
+	{
 		return true
 	}
 
 	let item = Hue[`${type}_changed`][index - 1]
-
 	Hue.change({type:type2, item:item, force:true})
 	Hue[`toggle_lock_${type}`](true)
 }
