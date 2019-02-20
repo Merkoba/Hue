@@ -10702,7 +10702,15 @@ Hue.chat_search = function(filter=false)
 					<div class='jump_button action unselectable'>Jump</div>
 				</div>`)
 
-				cn.find(".chat_search_result_content").eq(0).html(hcontent.parent().clone(true, true))
+				let cnt = hcontent.parent().clone(true, true)
+				let brk = hcontent.closest(".announcement").find(".announcement_brk").eq(0).clone(true, true)
+				
+				let h = $("<div class='flex_row_column'></div>")
+				
+				h.append(brk)
+				h.append(cnt)
+				
+				cn.find(".chat_search_result_content").eq(0).html(h)
 				cn.data("message_id", message.data("message_id"))
 				c.append(cn)
 			}
@@ -18265,7 +18273,15 @@ Hue.show_highlights = function(filter=false)
 					let content = cn.find(".highlights_content").eq(0)
 					let announcement_content = message.find(".announcement_content").eq(0)
 
-					content.append(announcement_content.parent().clone(true, true))
+					let cnt = announcement_content.parent().clone(true, true)
+					let brk = announcement_content.closest(".announcement").find(".announcement_brk").eq(0).clone(true, true)
+				
+					let h = $("<div class='flex_row_column'></div>")
+				
+					h.append(brk)
+					h.append(cnt)
+
+					content.html(h)
 				}
 
 				$("#highlights_container").append(cn)
