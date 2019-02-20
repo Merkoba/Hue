@@ -4321,17 +4321,7 @@ Hue.start_msg_close_buttons_context_menu = function()
 			{
 				name: "Close All", callback: function(key, opt)
 				{
-					let container = $(this).closest(".Msg-container")
-
-					if(container.hasClass("Msg-container-modal"))
-					{
-						Hue.close_all_modals()
-					}
-
-					else if(container.hasClass("Msg-container-popup"))
-					{
-						Hue.close_all_popups()
-					}
+					Hue.proccess_msg_close_button(this)
 				}
 			}
 		}
@@ -24461,6 +24451,14 @@ Hue.start_body_events = function()
 		let new_title = `${$(this).data("otitle")} (${Hue.get_timeago($(this).data("date"))})`
 		$(this).attr("title", new_title)
 	})
+
+	$("body").on("auxclick", ".Msg-window-inner-x", function(e)
+	{
+		if(e.which === 2)
+		{
+			Hue.proccess_msg_close_button(this)
+		}
+	})
 }
 
 Hue.make_image_preview = function(message)
@@ -25148,4 +25146,19 @@ Hue.fix_horizontal_separators = function(container_id)
 			}
 		}
 	})
+}
+
+Hue.proccess_msg_close_button = function(button)
+{
+	let container = $(button).closest(".Msg-container")
+
+	if(container.hasClass("Msg-container-modal"))
+	{
+		Hue.close_all_modals()
+	}
+
+	else if(container.hasClass("Msg-container-popup"))
+	{
+		Hue.close_all_popups()
+	}
 }
