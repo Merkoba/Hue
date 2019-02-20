@@ -18,7 +18,6 @@ Hue.colorlib = ColorLib()
 Hue.played = []
 Hue.input_history = []
 Hue.input_history_index = 0
-Hue.chat_history = []
 Hue.userlist = []
 Hue.usernames = []
 Hue.role = ''
@@ -5977,15 +5976,20 @@ Hue.activate_key_detection = function()
 			return
 		}
 
+		delete Hue.keys_pressed[e.keyCode]
+	})
+
+	document.addEventListener('input', (e) =>
+	{
 		if(Hue.modal_open && Hue.active_modal)
 		{
-			if(Hue.active_modal.options.id !== "chat_search")
+			let id = Hue.active_modal.options.id
+
+			if(id !== "chat_search" && id !== "highlights")
 			{
 				Hue.do_modal_filter_timer()
 			}
 		}
-
-		delete Hue.keys_pressed[e.keyCode]
 	})
 }
 
@@ -6484,22 +6488,22 @@ Hue.escape_special_characters = function(s)
 
 Hue.start_chat_mouse_events = function()
 {
-	$("#chat_area").on("click", ".chat_uname", function()
+	$(".chat_area").on("click", ".chat_uname", function()
 	{
 		Hue.show_profile($(this).text(), $(this).data("prof_image"))
 	})
 
-	$("#chat_area").on("click", ".chat_profile_image", function()
+	$(".chat_area").on("click", ".chat_profile_image", function()
 	{
 		Hue.show_profile($(this).closest(".chat_message").find(".chat_uname").eq(0).text(), $(this).attr("src"))
 	})
 
-	$("#chat_area").on("click", ".message_edit_submit", function()
+	$(".chat_area").on("click", ".message_edit_submit", function()
 	{
 		Hue.send_edit_messsage()
 	})
 
-	$("#chat_area").on("click", ".message_edit_cancel", function()
+	$(".chat_area").on("click", ".message_edit_cancel", function()
 	{
 		Hue.stop_edit_message()
 	})
@@ -6794,7 +6798,6 @@ Hue.update_chat = function(args={})
 	let huname = fmessage.find('.chat_uname').eq(0)
 	
 	huname.text(args.username)
-
 	huname.data("prof_image", pi)
 
 	fmessage.find('.chat_profile_image').eq(0).on("error", function()
@@ -6907,7 +6910,6 @@ Hue.add_to_chat = function(args={})
 	let def_args =
 	{
 		message: false,
-		save: false,
 		notify: true,
 		id: false,
 		just_edited: false,
@@ -6944,7 +6946,6 @@ Hue.add_to_chat = function(args={})
 					$(this).html(content_container.html())
 					$(this).data(content_container.data())
 					$(this).find(".message_edited_label").css("display", "inline-block")
-					Hue.replace_in_chat_history($(this).closest(".message"))
 					Hue.chat_scroll_bottom(false, false)
 					return false
 				}
@@ -6972,7 +6973,6 @@ Hue.add_to_chat = function(args={})
 					}
 
 					last_message.find(".chat_container").eq(0).append(content_container)
-					Hue.replace_in_chat_history(last_message)
 					message_id = last_message.data("message_id")
 
 					if(!last_message.data("highlighted"))
@@ -7015,11 +7015,6 @@ Hue.add_to_chat = function(args={})
 		Hue.message_id += 1
 		args.message.data("message_id", Hue.message_id)
 		message_id = Hue.message_id
-
-		if(args.save)
-		{
-			Hue.push_to_chat_history(args.message)
-		}
 	}
 
 	if(Hue.started)
@@ -7053,44 +7048,6 @@ Hue.add_to_chat = function(args={})
 	}
 
 	return {message_id:message_id}
-}
-
-Hue.push_to_chat_history = function(message)
-{
-	Hue.chat_history.push(message.clone(true, true))
-
-	if(Hue.chat_history.length > Hue.config.chat_crop_limit)
-	{
-		Hue.chat_history = Hue.chat_history.slice(Hue.chat_history.length - Hue.config.chat_crop_limit)
-	}
-}
-
-Hue.replace_in_chat_history = function(message)
-{
-	for(let i=0; i<Hue.chat_history.length; i++)
-	{
-		let message2 = Hue.chat_history[i]
-
-		if(message.data("message_id") === message2.data("message_id"))
-		{
-			Hue.chat_history[i] = message
-			return
-		}
-	}
-}
-
-Hue.remove_from_chat_history = function(message)
-{
-	for(let i=0; i<Hue.chat_history.length; i++)
-	{
-		let message2 = Hue.chat_history[i]
-
-		if($(message).data("message_id") === message2.data("message_id"))
-		{
-			Hue.chat_history.splice(i, 1)
-			return
-		}
-	}
 }
 
 Hue.get_old_activity_message = function(last_date, date)
@@ -7656,7 +7613,6 @@ Hue.chat_announce = function(args={})
 		highlight: false,
 		title: false,
 		onclick: false,
-		save: false,
 		id: false,
 		date: false,
 		type: "normal",
@@ -7888,7 +7844,7 @@ Hue.chat_announce = function(args={})
 
 	if(!ignore)
 	{
-		message_id = Hue.add_to_chat({message:fmessage, save:args.save}).message_id
+		message_id = Hue.add_to_chat({message:fmessage}).message_id
 		
 		if(highlighted)
 		{
@@ -10605,129 +10561,58 @@ Hue.chat_search_timer = (function()
 	}
 })()
 
-Hue.show_chat_search = function(filter=false)
-{
-	Hue.msg_chat_search.show(function()
-	{
-		if(filter)
-		{
-			Hue.chat_search(filter)
-		}
-	})
-}
-
 Hue.reset_chat_search_filter = function()
 {
 	$("#chat_search_filter").val("")
-	Hue.chat_search()
+	$("#chat_search_container").html("")
+}
+
+Hue.show_chat_search = function(filter="")
+{
+	Hue.msg_chat_search.show(function()
+	{
+		Hue.chat_search(filter)
+	})
 }
 
 Hue.chat_search = function(filter=false)
 {
 	if(filter)
 	{
-		sfilter = filter
+		filter = filter.trim()
 	}
 
-	else
-	{
-		sfilter = ''
-	}
+	let sfilter = filter ? filter : ''
 
+	$("#chat_search_container").html("")
 	$("#chat_search_filter").val(sfilter)
 	$("#chat_search_filter").focus()
 
-	if(!filter)
+	if(filter)
 	{
-		$("#chat_search_container").html("Search for chat messages")
-		return
-	}
-
-	let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
-
-	let words = lc_value.split(" ")
-
-	let c = $("<div></div>")
-
-	if(Hue.chat_history.length > 0)
-	{
-		for(let message of Hue.chat_history.slice(0).reverse())
+		let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
+		let words = lc_value.split(" ").filter(x => x.trim() !== "")
+		let clone = $($("#chat_area").children().get().reverse()).clone(true, true)
+	
+		clone.each(function()
 		{
-			let show = true
-			let huname = message.find('.chat_uname').eq(0)
-			let hcontent = message.find('.chat_content')
-			let text = message.text().toLowerCase()
-
-			for(let word of words)
+			$(this).removeAttr("id")
+		})
+	
+		clone = clone.filter(function()
+		{
+			if($(this).hasClass("vseparator_container"))
 			{
-				if(!text.includes(word))
-				{
-					show = false
-					break
-				}
+				return false
 			}
 
-			if(!show)
-			{
-				continue
-			}
-
-			if(huname.length !== 0 && hcontent.length !== 0)
-			{
-				let cn = $(`
-				<div class='chat_search_result_item jump_button_container'>
-					<div class='chat_search_result_uname generic_uname inline action'></div>
-					<div class='chat_search_result_content'></div>
-					<div class='jump_button action unselectable'>Jump</div>
-				</div>`)
-
-				cn.find(".chat_search_result_uname").eq(0).text(huname.text())
-				cn.find(".chat_search_result_content").eq(0).html(hcontent.clone(true, true))
-				cn.data("message_id", message.data("message_id"))
-				c.append(cn)
-			}
-
-			else
-			{
-				let hcontent = message.find(".announcement_content").eq(0)
-
-				if(hcontent.length === 0)
-				{
-					continue
-				}
-
-				let cn = $(`
-				<div class='chat_search_result_item jump_button_container'>
-					<div class='chat_search_result_content'></div>
-					<div class='jump_button action unselectable'>Jump</div>
-				</div>`)
-
-				let cnt = hcontent.parent().clone(true, true)
-				let brk = hcontent.closest(".announcement").find(".announcement_brk").eq(0).clone(true, true)
-				
-				let h = $("<div class='flex_row_column'></div>")
-				
-				h.append(brk)
-				h.append(cnt)
-				
-				cn.find(".chat_search_result_content").eq(0).html(h)
-				cn.data("message_id", message.data("message_id"))
-				c.append(cn)
-			}
-		}
+			let text = $(this).text().toLowerCase()
+			return words.some(word => text.includes(word))
+		})
+		
+		clone.appendTo("#chat_search_container")
 	}
 
-	if(c.find(".chat_search_result_item").length === 0)
-	{
-		c = "No results"
-	}
-
-	else
-	{
-		c = c[0]
-	}
-
-	$("#chat_search_container").html(c)
 	Hue.scroll_modal_to_top("chat_search")
 }
 
@@ -10745,7 +10630,7 @@ Hue.chat_scroll_bottom = function(force=true, animate=true)
 
 Hue.clear_chat = function()
 {
-	$('#chat_area').html('<div><br><br><br><br></div>')
+	$('#chat_area').html("")
 
 	Hue.show_log_messages()
 	Hue.goto_bottom(true)
@@ -12187,33 +12072,6 @@ Hue.start_msg = function()
 		})
 	)
 
-	Hue.msg_highlights = Msg.factory
-	(
-		Object.assign({}, common, titlebar,
-		{
-			id: "highlights",
-			window_width: "24em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-				$("#highlights_filter").val("")
-			}
-		})
-	)
-
 	Hue.msg_image_history = Msg.factory
 	(
 		Object.assign({}, common, titlebar,
@@ -12323,7 +12181,7 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "chat_search",
-			window_width: "24em",
+			window_width: "40em",
 			after_create: function(instance)
 			{
 				Hue.after_modal_create(instance)
@@ -12341,6 +12199,33 @@ Hue.start_msg = function()
 			{
 				Hue.after_modal_close(instance)
 				Hue.reset_chat_search_filter()
+			}
+		})
+	)
+
+	Hue.msg_highlights = Msg.factory
+	(
+		Object.assign({}, common, titlebar,
+		{
+			id: "highlights",
+			window_width: "40em",
+			after_create: function(instance)
+			{
+				Hue.after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				Hue.after_modal_show(instance)
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				Hue.after_modal_close(instance)
+				Hue.reset_highlights_filter()
 			}
 		})
 	)
@@ -12847,7 +12732,7 @@ Hue.reset_modal_filter = function(instance)
 {
 	let id = instance.options.id
 
-	if(id === "info" || id === "info2" || id === "chat_search")
+	if(id === "info" || id === "info2" || id === "chat_search" || id === "highlights")
 	{
 		return false
 	}
@@ -14373,9 +14258,14 @@ Hue.save_room_state = function()
 
 Hue.start_filters = function()
 {
-	$("#chat_search_filter").on("keyup", function()
+	$("#chat_search_filter").on("input", function()
 	{
 		Hue.chat_search_timer()
+	})
+
+	$("#highlights_filter").on("input", function()
+	{
+		Hue.highlights_search_timer()
 	})
 }
 
@@ -14414,11 +14304,8 @@ Hue.do_modal_filter = function(id=false)
 	}
 
 	let value = filter.val()
-
 	let lc_value = Hue.utilz.clean_string2(value).toLowerCase()
-
 	let items = $(`#Msg-content-${id} .modal_item`)
-
 	let display = "block"
 
 	if(lc_value)
@@ -14428,7 +14315,6 @@ Hue.do_modal_filter = function(id=false)
 		items.each(function()
 		{
 			let item_value = $(this).text().toLowerCase()
-
 			let found = true
 
 			for(let word of words)
@@ -18228,72 +18114,96 @@ Hue.annex = function(rol="admin")
 	Hue.socket_emit('change_role', {username:Hue.username, role:rol})
 }
 
-Hue.show_highlights = function(filter=false)
+Hue.highlights_search_timer = (function()
+{
+	let timer
+
+	return function()
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function()
+		{
+			Hue.highlights_search($("#highlights_filter").val())
+		}, Hue.filter_delay)
+	}
+})()
+
+Hue.reset_highlights_filter = function()
+{
+	$("#highlights_filter").val("")
+	$("#highlights_container").html("")
+}
+
+Hue.show_highlights = function(filter="")
 {
 	Hue.msg_highlights.show(function()
 	{
-		$("#highlights_filter").focus()
-
-		$("#highlights_container").html("")
-
-		for(let message of Hue.chat_history.slice(0).reverse())
-		{
-			if(message.data("highlighted"))
-			{
-				let cn
-
-				if(message.hasClass("chat_message"))
-				{
-					let huname = message.find('.chat_uname').eq(0)
-					let hcontent = message.find('.chat_content')
-
-					cn = $(`
-					<div class='modal_item highlights_item jump_button_container'>
-						<div class='highlights_uname generic_uname inline action'></div>
-						<div class='highlights_content'></div>
-						<div class='jump_button action unselectable'>Jump</div>
-					</div>`)
-
-					cn.data("message_id", message.data("message_id"))
-
-					cn.find(".highlights_uname").eq(0).text(huname.text())
-					cn.find(".highlights_content").eq(0).html(hcontent.clone(true, true))
-				}
-
-				else if(message.hasClass("announcement"))
-				{
-					cn = $(`
-					<div class='highlights_item jump_button_container'>
-						<div class='highlights_content'></div>
-						<div class='jump_button action unselectable'>Jump</div>
-					</div>`)
-
-					cn.data("message_id", message.data("message_id"))
-
-					let content = cn.find(".highlights_content").eq(0)
-					let announcement_content = message.find(".announcement_content").eq(0)
-
-					let cnt = announcement_content.parent().clone(true, true)
-					let brk = announcement_content.closest(".announcement").find(".announcement_brk").eq(0).clone(true, true)
-				
-					let h = $("<div class='flex_row_column'></div>")
-				
-					h.append(brk)
-					h.append(cnt)
-
-					content.html(h)
-				}
-
-				$("#highlights_container").append(cn)
-			}
-		}
-
-		if(filter)
-		{
-			$("#highlights_filter").val(filter)
-			Hue.do_modal_filter()
-		}
+		Hue.highlights_search(filter)
 	})
+}
+
+Hue.highlights_search = function(filter=false)
+{
+	if(filter)
+	{
+		filter = filter.trim()
+	}
+
+	let sfilter = filter ? filter : ''
+
+	$("#highlights_container").html("")
+	$("#highlights_filter").val(sfilter)
+	$("#highlights_filter").focus()
+
+	let clone = $($("#chat_area").children().get().reverse()).clone(true, true)
+
+	clone.each(function()
+	{
+		$(this).removeAttr("id")
+	})
+
+	if(filter)
+	{
+		let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
+		let words = lc_value.split(" ").filter(x => x.trim() !== "")
+		
+		clone = clone.filter(function()
+		{
+			if(!$(this).data("highlighted"))
+			{
+				return false
+			}
+
+			if($(this).hasClass("vseparator_container"))
+			{
+				return false
+			}
+
+			let text = $(this).text().toLowerCase()
+			return words.some(word => text.includes(word))
+		})
+	}
+
+	else
+	{
+		clone = clone.filter(function()
+		{
+			if(!$(this).data("highlighted"))
+			{
+				return false
+			}
+
+			if($(this).hasClass("vseparator_container"))
+			{
+				return false
+			}
+		})
+	}
+	
+	clone.appendTo("#highlights_container")
+
+	Hue.scroll_modal_to_top("highlights")
 }
 
 Hue.execute_commands = function(setting)
@@ -19623,7 +19533,6 @@ Hue.public_feedback = function(message, data=false)
 	{
 		brk: "<i class='icon2c fa fa-info-circle'></i>",
 		message: message,
-		save: true,
 		public: true
 	}
 
@@ -21908,9 +21817,7 @@ Hue.start_jump_events = function(container_id)
 			if($(this).data("message_id") === id)
 			{
 				let el = this
-
 				el.scrollIntoView({block:"center"})
-
 				$(el).addClass("highlighted2")
 
 				setTimeout(function()
@@ -21937,9 +21844,7 @@ Hue.start_jump_events_2 = function(iclass)
 			if($(this).data("message_id") === message_id)
 			{
 				let el = this
-
 				el.scrollIntoView({block:"center"})
-
 				$(el).addClass("highlighted2")
 
 				setTimeout(function()
@@ -21965,8 +21870,6 @@ Hue.setup_jumpers = function()
 Hue.clear_room = function(data)
 {
 	Hue.clear_chat()
-
-	Hue.chat_history = []
 
 	Hue.images_changed = Hue.images_changed.slice(-1)
 	Hue.tv_changed = Hue.tv_changed.slice(-1)
@@ -23507,7 +23410,6 @@ Hue.process_remove_chat_message = function(chat_content_container)
 
 	if(message.hasClass("thirdperson"))
 	{
-		Hue.remove_from_chat_history(message)
 		message.remove()
 	}
 
@@ -23515,14 +23417,12 @@ Hue.process_remove_chat_message = function(chat_content_container)
 	{
 		if($(chat_content_container).closest(".chat_container").find(".chat_content_container").length === 1)
 		{
-			Hue.remove_from_chat_history(message)
 			message.remove()
 		}
 
 		else
 		{
 			$(chat_content_container).remove()
-			Hue.replace_in_chat_history(message)
 		}
 	}
 }
@@ -23537,7 +23437,6 @@ Hue.process_remove_announcement = function(message)
 		Hue.remove_item_from_media_history(type.replace("_change", ""), id)
 	}
 	
-	Hue.remove_from_chat_history(message)
 	$(message).remove()
 }
 

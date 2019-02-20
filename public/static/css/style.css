@@ -499,6 +499,11 @@ div#header_radio_playing_icon
 	width: 100%;
 }
 
+.chat_content_container_third
+{
+	margin-left: 1rem;
+}
+
 .chat_content_container:not(.chat_content_container_third)
 {
 	margin-top: 0.3em;
@@ -1085,6 +1090,11 @@ select
 	padding-left: 1.2rem;
 	padding-top: 0.8rem;
 	padding-bottom: 0.8rem;
+}
+
+#chat_area > .message:first-child
+{
+	margin-top: 1.5rem !important;
 }
 
 #chat_area > .message:last-child
@@ -2255,7 +2265,12 @@ a.special_link:hover
 	cursor: pointer;
 }
 
-.link_preview, #chat_search_container .link_preview
+#chat_search_container, #highlights_container
+{
+	text-align: left;
+}
+
+.link_preview
 {
 	padding: 0.8rem;
 }
