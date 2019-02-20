@@ -22158,6 +22158,11 @@ Hue.submit_reply = function()
 {
 	let reply = $("#reply_input").val().trim()
 
+	if(Hue.is_command(reply))
+	{
+		reply = `/${reply}`
+	}
+
 	Hue.msg_reply.close()
 	Hue.goto_bottom(true, false)
 	Hue.process_message({message:Hue.reply_text_raw, to_history:false})
