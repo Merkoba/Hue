@@ -3893,22 +3893,22 @@ Hue.start_footer_media_label_context_menu = function()
 				{
 					Hue.media_load_next($(this).data("type"))
 				},
-				visible: function(key, opt)
+				disabled: function(key, opt)
 				{
-					return Hue.media_load_next($(this).data("type"), true)
+					return !Hue.media_load_next($(this).data("type"), true)
 				}
 			},
-			mm0:
+			mm2:
 			{
 				name: "Load Previous", callback: function(key, opt)
 				{
 					Hue.media_load_previous($(this).data("type"))
 				},
-				visible: function(key, opt)
+				disabled: function(key, opt)
 				{
-					return Hue.media_load_previous($(this).data("type"), true)
+					return !Hue.media_load_previous($(this).data("type"), true)
 				}
-			},
+			}
 		}
 	})
 }
