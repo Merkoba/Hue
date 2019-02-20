@@ -2280,6 +2280,16 @@ a.special_link:hover
 	max-height: 500px;
 }
 
+.highlights_item .image_preview, .chat_search_result_item .image_preview
+{
+	align-items: center;
+}
+
+.highlights_item .link_preview, .chat_search_result_item .link_preview
+{
+	align-items: center;
+}
+
 .message_edit_container
 {
 	display: none;
