@@ -7868,8 +7868,8 @@ Hue.chat_announce = function(args={})
 			Hue.show_profile(args.username)
 		}
 
-		content.parent().on("click", pif)
-		brk.parent().on("click", pif)
+		content.on("click", pif)
+		brk.on("click", pif)
 	}
 	
 	fmessage.data("public", args.public)
