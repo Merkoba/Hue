@@ -162,6 +162,7 @@ Hue.markdown_regexes = {}
 Hue.url_title_max_length = 50
 Hue.show_media_history_state = ""
 Hue.max_chat_searches = 10
+Hue.add_to_chat_searches_delay = 2000
 
 Hue.commands = 
 [
@@ -10597,6 +10598,16 @@ Hue.show_chat_search = function(filter=false)
 }
 
 Hue.add_to_chat_searches = function(filter)
+{
+	clearTimeout(Hue.add_to_chat_searches_timeout)
+
+	Hue.add_to_chat_searches_timeout = setTimeout(function()
+	{
+		Hue.do_add_to_chat_searches(filter)
+	}, Hue.add_to_chat_searches_delay)
+}
+
+Hue.do_add_to_chat_searches = function(filter)
 {
 	for(let i=0; i<Hue.room_state.chat_searches.length; i++)
 	{
