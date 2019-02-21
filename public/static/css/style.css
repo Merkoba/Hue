@@ -914,32 +914,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-bottom: 0.8em;
 }
 
-.jump_button_container
-{
-	position: relative;
-}
-
-.jump_button
-{
-	display: none;
-	cursor: pointer;
-	font-weight: bold;
-	font-size: 0.8em;
-	position: absolute;
-	top: 1em;
-	right: 0;
-	z-index: 999;
-	padding-left: 0.5em;
-	padding-right: 0.5em;
-	padding-top: 0.3em;
-	padding-bottom: 0.3em;
-}
-
-.jump_button_container:hover > .jump_button
-{
-	display: inline-block;
-}
-
 .chat_menu_button_main
 {
 	position: relative;

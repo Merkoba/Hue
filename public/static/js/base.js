@@ -359,7 +359,6 @@ Hue.init = function()
 	Hue.setup_command_aliases()
 	Hue.setup_fonts()
 	Hue.setup_before_unload()
-	Hue.setup_jumpers()
 	Hue.start_chat_quote_events()
 	Hue.set_user_settings_titles()
 	Hue.maxers_mouse_events()
@@ -2728,7 +2727,7 @@ Hue.apply_theme = function()
 		max-width: ${profile_image_size} !important;
 	}
 
-	.jump_button, .chat_menu_button
+	.chat_menu_button
 	{
 		background-color: ${background_color_2} !important;
 	}
@@ -3911,6 +3910,18 @@ Hue.start_chat_menu_context_menu = function()
 		events: Hue.context_menu_events,
 		items:
 		{
+			item0:
+			{
+				name: "Jump", callback: function(key, opt)
+				{
+					let message_id = $(this).closest(".message").data("message_id")
+					Hue.jump_to_chat_message(message_id)
+				},
+				visible: function(key, opt)
+				{
+					return $(this).closest("#chat_area").length === 0
+				}
+			},
 			item1:
 			{
 				name: "Reply", callback: function(key, opt)
@@ -6451,7 +6462,7 @@ Hue.start_chat_hover_events = function()
 
 Hue.highlight_same_posts = function(uname, add=true)
 {
-	$(".message").each(function()
+	$("#chat_area > .message").each(function()
 	{
 		if($(this).data("uname") === uname)
 		{
@@ -6827,7 +6838,7 @@ Hue.add_to_chat = function(args={})
 	}
 
 	let chat_area = $('#chat_area')
-	let last_message = $(".message").last()
+	let last_message = $("#chat_area > .message").last()
 	let appended = false
 	let mode = args.message.data("mode")
 	let uname = args.message.data("uname")
@@ -6899,7 +6910,7 @@ Hue.add_to_chat = function(args={})
 			args.message.addClass("fader")
 		}
 
-		let last = $(".message").last()
+		let last = $("#chat_area > .message").last()
 
 		let last_date = last.data("date")
 
@@ -6913,7 +6924,7 @@ Hue.add_to_chat = function(args={})
 
 		chat_area.append(args.message)
 
-		if($(".message").length > Hue.config.chat_crop_limit)
+		if($("#chat_area > .message").length > Hue.config.chat_crop_limit)
 		{
 			$("#chat_area > .message").eq(0).remove()
 		}
@@ -18855,7 +18866,7 @@ Hue.activity_above = function(animate=true)
 	let up_scroller_height = $("#up_scroller").outerHeight()
 	let scrolltop = $("#chat_area").scrollTop()
 
-	$($(".message").get().reverse()).each(function()
+	$($("#chat_area > .message").get().reverse()).each(function()
 	{
 		let same_uname = false
 
@@ -18894,7 +18905,7 @@ Hue.activity_below = function(animate=true)
 	let chat_area_height = $("#chat_area").innerHeight()
 	let scrolltop = $("#chat_area").scrollTop()
 
-	$(".message").each(function()
+	$("#chat_area > .message").each(function()
 	{
 		let same_uname = false
 
@@ -21775,67 +21786,6 @@ Hue.show_admin_activity = function(messages)
 	})
 }
 
-Hue.start_jump_events = function(container_id)
-{
-	$(`#${container_id}`).on("click", ".jump_button", function()
-	{
-		let id = $(this).closest(".jump_button_container").data("message_id")
-
-		$($(".message").get().reverse()).each(function()
-		{
-			if($(this).data("message_id") === id)
-			{
-				let el = this
-				el.scrollIntoView({block:"center"})
-				$(el).addClass("highlighted2")
-
-				setTimeout(function()
-				{
-					$(el).removeClass("highlighted2")
-				}, 2000)
-
-				Hue.close_all_modals()
-
-				return false
-			}
-		})
-	})
-}
-
-Hue.start_jump_events_2 = function(iclass)
-{
-	$(`.${iclass}`).on("click", ".jump_button", function()
-	{
-		let message_id = $(this).closest(".jump_button_container").data("data").message_id
-
-		$($(".announcement").get().reverse()).each(function()
-		{
-			if($(this).data("message_id") === message_id)
-			{
-				let el = this
-				el.scrollIntoView({block:"center"})
-				$(el).addClass("highlighted2")
-
-				setTimeout(function()
-				{
-					$(el).removeClass("highlighted2")
-				}, 2000)
-
-				Hue.close_all_modals()
-
-				return false
-			}
-		})
-	})
-}
-
-Hue.setup_jumpers = function()
-{
-	Hue.start_jump_events("chat_search_container")
-	Hue.start_jump_events("highlights_container")
-	Hue.start_jump_events_2("media_history_container")
-}
-
 Hue.clear_room = function(data)
 {
 	Hue.clear_chat()
@@ -23118,7 +23068,7 @@ Hue.edit_last_message = function(reverse=false)
 		edit_found = false
 	}
 
-	$($(".message").get().reverse()).each(function()
+	$($("#chat_area > .message").get().reverse()).each(function()
 	{
 		if(found)
 		{
@@ -24920,4 +24870,26 @@ Hue.proccess_msg_close_button = function(button)
 	{
 		Hue.close_all_popups()
 	}
+}
+
+Hue.jump_to_chat_message = function(message_id)
+{
+	$("#chat_area > .message").each(function()
+	{
+		if($(this).data("message_id") === message_id)
+		{
+			let el = this
+			el.scrollIntoView({block:"center"})
+			$(el).addClass("highlighted2")
+	
+			setTimeout(function()
+			{
+				$(el).removeClass("highlighted2")
+			}, 2000)
+	
+			Hue.close_all_modals()
+	
+			return false
+		}
+	})
 }
