@@ -160,6 +160,7 @@ Hue.usercount = 0
 Hue.quote_max_length = 200
 Hue.markdown_regexes = {}
 Hue.url_title_max_length = 50
+Hue.show_media_history_state = ""
 
 Hue.commands = 
 [
@@ -1569,6 +1570,11 @@ Hue.setup_image = function(mode, odata={})
 		data.message_id = Hue.announce_image(data).message_id
 	}
 
+	if(!data.setter)
+	{
+		data.info = "Default Image"
+	}
+
 	if(mode === "change" || mode === "show")
 	{
 		Hue.push_images_changed(data)
@@ -1612,17 +1618,14 @@ Hue.announce_image = function(data)
 
 Hue.push_images_changed = function(data)
 {
-	if(!data.setter)
-	{
-		data.info = "Default Image"
-	}
-
 	Hue.images_changed.push(data)
 
 	if(Hue.images_changed.length > Hue.config.media_changed_crop_limit)
 	{
 		Hue.images_changed = Hue.images_changed.slice(Hue.images_changed.length - Hue.config.media_changed_crop_limit)
 	}
+
+	Hue.after_push_media_change("image")
 }
 
 Hue.current_image = function()
@@ -1789,6 +1792,8 @@ Hue.push_tv_changed = function(data)
 	{
 		Hue.tv_changed = Hue.tv_changed.slice(Hue.tv_changed.length - Hue.config.media_changed_crop_limit)
 	}
+
+	Hue.after_push_media_change("tv")
 }
 
 Hue.setup_radio = function(mode, odata={})
@@ -1929,6 +1934,8 @@ Hue.push_radio_changed = function(data)
 	{
 		Hue.radio_changed = Hue.radio_changed.slice(Hue.radio_changed.length - Hue.config.media_changed_crop_limit)
 	}
+
+	Hue.after_push_media_change("radio")
 }
 
 Hue.current_radio = function()
@@ -7368,20 +7375,7 @@ Hue.change = function(args={})
 		return false
 	}
 
-	$(`#${args.type}_history_container`).find(".media_history_item").each(function()
-	{
-		let data = $(this).data("data")
-
-		if(data === Hue[`loaded_${args.type}`])
-		{
-			$(this).addClass("blinking_2")
-		}
-
-		else
-		{
-			$(this).removeClass("blinking_2")
-		}
-	})
+	Hue.update_media_history_blinks(args.type)
 
 	if(args.notify && setter !== Hue.username)
 	{
@@ -18152,7 +18146,6 @@ Hue.on_double_tap_3 = function()
 Hue.at_startup = function()
 {
 	Hue.date_joined = Date.now()
-	
 	Hue.started = true
 
 	if(Hue.first_time)
@@ -18166,8 +18159,6 @@ Hue.at_startup = function()
 	{
 		Hue.started_safe = true
 	}, 2000)
-
-	Hue.add_blinks_first_media_history_items()
 
 	Hue.process_visibility()
 }
@@ -18192,6 +18183,7 @@ Hue.reset_media_history_filter = function(type)
 {
 	$(`#${type}_history_filter`).val("")
 	$(`#${type}_history_container`).html("")
+	Hue.show_media_history_state = false
 }
 
 Hue.show_media_history = function(type, filter=false)
@@ -18248,8 +18240,8 @@ Hue.show_media_history = function(type, filter=false)
 	}
 	
 	clone.appendTo(`#${type}_history_container`)
-
-	$(`#${type}_history_filter`).focus()
+	Hue.update_media_history_blinks(type)
+	Hue.show_media_history_state = type
 	
 	Hue[`msg_${type}_history`].show(function()
 	{
@@ -24150,30 +24142,22 @@ Hue.media_load_default = function(type)
 	Hue[`setup_${type}`]("change", {})
 }
 
-Hue.add_blinks_first_media_history_items = function()
+Hue.update_media_history_blinks = function(type)
 {
-	let el 
-	
-	el = $("#image_history_container").find(".media_history_item").eq(0)
-	
-	if(!el.hasClass("blinking_2"))
+	$(`#${type}_history_container`).find(".message").each(function()
 	{
-		el.addClass("blinking_2")
-	}
+		let item_id = $(this).data("item_id")
 
-	el = $("#tv_history_container").find(".media_history_item").eq(0)
-	
-	if(!el.hasClass("blinking_2"))
-	{
-		el.addClass("blinking_2")
-	}
+		if(item_id === Hue[`loaded_${type}`].id)
+		{
+			$(this).addClass("blinking_2")
+		}
 
-	el = $("#radio_history_container").find(".media_history_item").eq(0)
-	
-	if(!el.hasClass("blinking_2"))
-	{
-		el.addClass("blinking_2")
-	}
+		else
+		{
+			$(this).removeClass("blinking_2")
+		}
+	})
 }
 
 Hue.show_announcement = function(data, date=Date.now())
@@ -24875,4 +24859,12 @@ Hue.jump_to_chat_message = function(message_id)
 			return false
 		}
 	})
+}
+
+Hue.after_push_media_change = function(type)
+{
+	if(Hue.show_media_history_state === type)
+	{
+		Hue.show_media_history(type, $(`#${type}_history_filter`).val())
+	}
 }
