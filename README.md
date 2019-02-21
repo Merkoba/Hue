@@ -610,6 +610,9 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "room_state_default_lockscreen_lights_off"
 >Where the lockscreen will have the dark theme by default.
 
+"room_state_default_chat_searches"
+>Default chat searches list.
+
 "double_tap_key"
 >The key that triggers double tap.
 

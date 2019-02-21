@@ -161,7 +161,7 @@ Hue.quote_max_length = 200
 Hue.markdown_regexes = {}
 Hue.url_title_max_length = 50
 Hue.show_media_history_state = ""
-Hue.last_chat_search_filter = ""
+Hue.max_chat_searches = 10
 
 Hue.commands = 
 [
@@ -341,6 +341,7 @@ Hue.init = function()
 	Hue.start_footer_media_label_context_menu()
 	Hue.start_chat_menu_context_menu()
 	Hue.start_msg_close_buttons_context_menu()
+	Hue.start_footer_search_context_menu()
 	Hue.start_titles()
 	Hue.setup_show_profile()
 	Hue.setup_main_menu()
@@ -4190,6 +4191,52 @@ Hue.start_msg_close_buttons_context_menu = function()
 					Hue.proccess_msg_close_button(this)
 				}
 			}
+		}
+	})
+}
+
+Hue.generate_chat_search_context_items = function()
+{
+	let items = {}
+	
+	if(Hue.room_state.chat_searches.length === 0)
+	{
+		items.item0 = 
+		{
+			name: "No searches yet",
+			disabled: true
+		}
+	}
+	
+	let n = 0
+
+	for(let search of Hue.room_state.chat_searches)
+	{
+		items[`item_${n}`] = 
+		{
+			name: search, callback: function(key, opt)
+			{
+				Hue.show_chat_search(search)
+			}
+		}
+
+		n += 1
+	}
+
+	return items
+}
+
+Hue.start_footer_search_context_menu = function()
+{
+	$.contextMenu(
+	{
+		selector: "#footer_search_button",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		events: Hue.context_menu_events,
+		build: function($trigger, e)
+		{
+			return {items:Hue.generate_chat_search_context_items()}
 		}
 	})
 }
@@ -10481,9 +10528,9 @@ Hue.show_chat_search = function(filter=false)
 		filter = filter.trim()
 	}
 
-	else if(filter === false && Hue.last_chat_search_filter)
+	else if(filter === false && Hue.room_state.chat_searches.length > 0)
 	{
-		filter = Hue.last_chat_search_filter
+		filter = Hue.room_state.chat_searches[0]
 	}
 
 	let sfilter = filter ? filter : ''
@@ -10514,7 +10561,7 @@ Hue.show_chat_search = function(filter=false)
 		})
 		
 		clone.appendTo("#chat_search_container")
-		Hue.last_chat_search_filter = filter
+		Hue.add_to_chat_searches(filter)
 	}
 
 	Hue.msg_chat_search.show(function()
@@ -10522,6 +10569,27 @@ Hue.show_chat_search = function(filter=false)
 		$("#chat_search_filter").focus()
 		Hue.scroll_modal_to_top("chat_search")
 	})
+}
+
+Hue.add_to_chat_searches = function(filter)
+{
+	for(let i=0; i<Hue.room_state.chat_searches.length; i++)
+	{
+		if(Hue.room_state.chat_searches[i] === filter)
+		{
+			Hue.room_state.chat_searches.splice(i, 1)
+			break
+		}
+	}
+
+	Hue.room_state.chat_searches.unshift(filter)
+		
+	if(Hue.room_state.chat_searches.length > Hue.max_chat_searches)
+	{
+		Hue.room_state.chat_searches.pop()
+	}
+
+	Hue.save_room_state()
 }
 
 Hue.fix_chat_scroll = function()
@@ -14145,7 +14213,8 @@ Hue.get_room_state = function()
 		"radio_volume",
 		"screen_locked",
 		"synth_muted",
-		"lockscreen_lights_off"
+		"lockscreen_lights_off",
+		"chat_searches"
 	]
 
 	for(let setting of settings)
