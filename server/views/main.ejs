@@ -38,8 +38,8 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2674"></script>
-		<link rel="stylesheet" href="/static/css/style.css?version=587"/>
+		<script src="/static/js/base.js?version=2675"></script>
+		<link rel="stylesheet" href="/static/css/style.css?version=588"/>
 
 		<script>
 
@@ -417,7 +417,7 @@
 
 					<div class='spacer2'></div>
 
-					<span class='menu_item_smaller action' onclick='Hue.show_chat_search()'>Search</span>
+					<span class='menu_item_smaller action nicetitle' id='main_menu_search_button' onclick='Hue.show_chat_search()' title='Click or Right Click'>Search</span>
 
 					&nbsp;|&nbsp;
 
@@ -1665,7 +1665,13 @@
 		</script>	
 
 		<script id='template_chat_search' type='text/x-handlebars-template'>
-			<input type="text" id="chat_search_filter" data-mode='manual' class="filter_input" placeholder="Query">
+			<div class='flex_row_center sticky bg1'>
+				<i class='fa fa-history pointer action invisible'></i>
+				<div class='hspacer3 invisible'></div>
+				<input type="text" id="chat_search_filter" data-mode='manual' class="filter_input" placeholder="Query">
+				<div class='hspacer3'></div>
+				<i class='fa fa-history pointer action' id='chat_search_history_icon'></i>
+			</div>
 			<div class='spacer3'></div>
 			<div id='chat_search_container' class='chat_area align_left'></div>
 		</script>

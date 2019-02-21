@@ -4239,6 +4239,31 @@ Hue.start_footer_search_context_menu = function()
 			return {items:Hue.generate_chat_search_context_items()}
 		}
 	})
+
+	$.contextMenu(
+	{
+		selector: "#main_menu_search_button",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		events: Hue.context_menu_events,
+		build: function($trigger, e)
+		{
+			return {items:Hue.generate_chat_search_context_items()}
+		}
+	})
+
+	$.contextMenu(
+		{
+			selector: "#chat_search_history_icon",
+			animation: {duration: 250, hide: 'fadeOut'},
+			zIndex: 9000000000,
+			events: Hue.context_menu_events,
+			trigger: "left",
+			build: function($trigger, e)
+			{
+				return {items:Hue.generate_chat_search_context_items()}
+			}
+		})
 }
 
 Hue.singular_or_plural = function(n, s)

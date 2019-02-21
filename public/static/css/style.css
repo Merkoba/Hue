@@ -903,6 +903,13 @@ a.generic:link, a.generic:visited, a.generic:hover
 	z-index: 99;
 }
 
+.sticky
+{
+	top: 0px;
+	position: sticky;
+	z-index: 99;
+}
+
 .chat_search_result_item
 {
 	padding-top: 0.8em;
