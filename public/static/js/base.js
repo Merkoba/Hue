@@ -24159,9 +24159,9 @@ Hue.update_media_history_blinks = function(type)
 
 	$(`#${type}_history_container`).find(".message").each(function()
 	{
-		let item_id = $(this).data("item_id")
+		let message_id = $(this).data("message_id")
 
-		if(item_id === Hue[`loaded_${type}`].id)
+		if(message_id === Hue[`loaded_${type}`].message_id)
 		{
 			$(this).addClass("blinking_2")
 		}
