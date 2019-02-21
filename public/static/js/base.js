@@ -21388,17 +21388,7 @@ Hue.setup_open_url = function()
 
 Hue.open_url_menu = function(src, type=1, data=false, media_type=false)
 {
-	let title
-
-	if(src.length > Hue.url_title_max_length)
-	{
-		title = `${src.substring(0, Hue.url_title_max_length)}...`
-	}
-
-	else
-	{
-		title = src
-	}
+	let title = Hue.get_limited_title(src)
 
 	if(type === 1)
 	{
@@ -24770,17 +24760,7 @@ Hue.setup_drag_events = function()
 
 				Hue.fix_horizontal_separators("handle_url_container")
 
-				let title
-
-				if(text.length > Hue.url_title_max_length)
-				{
-					title = `${text.substring(0, Hue.url_title_max_length)}...`
-				}
-
-				else
-				{
-					title = text
-				}
+				let title = Hue.get_limited_title(text)
 
 				Hue.handled_url = text
 				Hue.msg_handle_url.set_title(title)
@@ -24900,4 +24880,21 @@ Hue.after_push_media_change = function(type)
 	{
 		Hue.show_media_history(type, $(`#${type}_history_filter`).val())
 	}
+}
+
+Hue.get_limited_title = function(src)
+{
+	let title
+
+	if(src.length > Hue.url_title_max_length)
+	{
+		title = `${src.substring(0, Hue.url_title_max_length)}...`
+	}
+
+	else
+	{
+		title = src
+	}
+
+	return title
 }
