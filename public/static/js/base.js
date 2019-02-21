@@ -1548,15 +1548,18 @@ Hue.setup_image = function(mode, odata={})
 	}
 
 	data.info = `Setter: ${data.setter} | ${data.nice_date}`
+	data.info_html = `Setter: ${Hue.make_html_safe(data.setter)} <span class='header_separator color_3'>|</span> ${data.nice_date}`
 
 	if(data.type === "upload")
 	{
 		data.info += ` | Size: ${Hue.get_size_string(data.size)}`
+		data.info_html += ` <span class='header_separator color_3'>|</span> Size: ${Hue.get_size_string(data.size)}`
 	}
 	
 	if(data.query)
 	{
 		data.info += ` | Search Term: "${data.query}"`
+		data.info_html += ` <span class='header_separator color_3'>|</span> Search Term: "${Hue.make_html_safe(data.query)}"`
 	}
 
 	data.message = `${data.setter} changed the image`
@@ -14995,7 +14998,7 @@ Hue.show_modal_image = function(data)
 
 	img.attr("src", data.source)
 
-	$("#modal_image_header_info").text(data.info)
+	$("#modal_image_header_info").html(data.info_html)
 
 	if(data.comment)
 	{
@@ -15097,13 +15100,13 @@ Hue.show_modal_image_resolution = function()
 	let w = img.naturalWidth
 	let h = img.naturalHeight
 
-	$("#modal_image_header_info").text($("#modal_image_header_info").text() + ` | Resolution: ${w}x${h}`)
+	$("#modal_image_header_info").html($("#modal_image_header_info").html() + ` <span class='header_separator color_3'>|</span> Resolution: ${w}x${h}`)
 }
 
 Hue.clear_modal_image_info = function()
 {
-	$("#modal_image_header_info").text("")
-	$("#modal_image_footer_info").text("")
+	$("#modal_image_header_info").html("")
+	$("#modal_image_footer_info").html("")
 }
 
 Hue.not_an_op = function()
