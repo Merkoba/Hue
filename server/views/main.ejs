@@ -38,9 +38,8 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2661"></script>
-
-		<link rel="stylesheet" href="/static/css/style.css?version=584"/>
+		<script src="/static/js/base.js?version=2662"></script>
+		<link rel="stylesheet" href="/static/css/style.css?version=585"/>
 
 		<script>
 
@@ -319,7 +318,7 @@
 
 							<div id='footer_images_controls' class='footer_media_control'>
 
-								<div id="footer_images_label" class='footer_media_label footer_text_small pointer nicetitle' title='Click or Right Click' onclick='Hue.show_image_history()' data-type="images">Images</div>
+								<div id="footer_images_label" class='footer_media_label footer_text_small pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("image")' data-type="images">Images</div>
 
 								<div  id='footer_images_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_image_picker()' title="Change the Image">
 									<i  id='footer_images_icon' class='fa fa-camera'></i>
@@ -336,7 +335,7 @@
  	
 							<div id='footer_tv_controls' class='footer_media_control'>
 
-								<div id="footer_tv_label" class='footer_media_label footer_text_small pointer nicetitle' title='Click or Right Click' onclick='Hue.show_tv_history()' data-type="tv">TV</div>
+								<div id="footer_tv_label" class='footer_media_label footer_text_small pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("tv")' data-type="tv">TV</div>
 
 								<div id='footer_tv_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_tv_picker()' title="Change the TV">
 									<i id='footer_tv_icon' class='fa fa-television'></i>
@@ -354,7 +353,7 @@
 
 							<div id='footer_radio_controls' class='footer_media_control'>
 
-								<div id="footer_radio_label" class='footer_media_label footer_text_small pointer nicetitle' title='Click or Right Click' onclick='Hue.show_radio_history()' data-type="radio">Radio</div>
+								<div id="footer_radio_label" class='footer_media_label footer_text_small pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("radio")' data-type="radio">Radio</div>
 
 								<div id='footer_radio_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_radio_picker()' title="Change the Radio">
 									<i id='footer_radio_icon' class='fa fa-volume-up'></i>
@@ -1645,12 +1644,6 @@
 			<div id='access_log_container'></div>
 		</script>
 
-		<script id='template_highlights' type='text/x-handlebars-template'>
-			<input type="text" id="highlights_filter" class="filter_input" placeholder="Filter">
-			<div class='spacer3'></div>
-			<div id='highlights_container'></div>
-		</script>
-
 		<script id='template_input_history' type='text/x-handlebars-template'>
 			<input type="text" id="input_history_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
@@ -1658,9 +1651,33 @@
 		</script>	
 
 		<script id='template_chat_search' type='text/x-handlebars-template'>
-			<input type="text" id="chat_search_filter" class="filter_input" placeholder="Query">
+			<input type="text" id="chat_search_filter" data-mode='manual' class="filter_input" placeholder="Query">
 			<div class='spacer3'></div>
-			<div id='chat_search_container' class='chat_area'></div>
+			<div id='chat_search_container' class='chat_area align_left'></div>
+		</script>
+
+		<script id='template_highlights' type='text/x-handlebars-template'>
+			<input type="text" id="highlights_filter" data-mode='manual' class="filter_input" placeholder="Filter">
+			<div class='spacer3'></div>
+			<div id='highlights_container' class='chat_area align_left'></div>
+		</script>
+
+		<script id='template_image_history' type='text/x-handlebars-template'>
+			<input type="text" id="image_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
+			<div class='spacer3'></div>
+			<div id='image_history_container' class='media_history_container chat_area chat_area_clone_center'></div>
+		</script>
+
+		<script id='template_tv_history' type='text/x-handlebars-template'>
+			<input type="text" id="tv_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
+			<div class='spacer3'></div>
+			<div id='tv_history_container' class='media_history_container chat_area chat_area_clone_center'></div>
+		</script>
+
+		<script id='template_radio_history' type='text/x-handlebars-template'>
+			<input type="text" id="radio_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
+			<div class='spacer3'></div>
+			<div id='radio_history_container' class='media_history_container chat_area chat_area_clone_center'></div>
 		</script>
 
 		<script id='template_profile' type='text/x-handlebars-template'>
@@ -1725,24 +1742,6 @@
 			<div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("restart_radio", "This will restart the radio for everyone. Are you sure?")'>Restart</div>
 			<span>&nbsp;|&nbsp;</span>
 			<div id='image_file_picker_draw' class='menu_item action inline unselectable' onclick='Hue.needs_confirm("radio_prev", "This will change the radio for everyone. Are you sure?")'>Previous</div>
-		</script>
-
-		<script id='template_image_history' type='text/x-handlebars-template'>
-			<input type="text" id="image_history_filter" class="filter_input" placeholder="Filter">
-			<div class='spacer3'></div>
-			<div id='image_history_container' class='media_history_container'></div>
-		</script>
-
-		<script id='template_tv_history' type='text/x-handlebars-template'>
-			<input type="text" id="tv_history_filter" class="filter_input" placeholder="Filter">
-			<div class='spacer3'></div>
-			<div id='tv_history_container' class='media_history_container'></div>
-		</script>
-
-		<script id='template_radio_history' type='text/x-handlebars-template'>
-			<input type="text" id="radio_history_filter" class="filter_input" placeholder="Filter">
-			<div class='spacer3'></div>
-			<div id='radio_history_container' class='media_history_container'></div>
 		</script>
 
 		<script id='template_modal_image' type='text/x-handlebars-template'>
@@ -1834,11 +1833,11 @@
 				
 				<div class='spacer3'></div>
 
-				<div class='menu_item action inline' onclick='Hue.show_image_history()'>Image History</div>
+				<div class='menu_item action inline' onclick='Hue.show_media_history("image")'>Image History</div>
 				<div></div>
-				<div class='menu_item action inline' onclick='Hue.show_tv_history()'>TV History</div>
+				<div class='menu_item action inline' onclick='Hue.show_media_history("tv")'>TV History</div>
 				<div></div>
-				<div class='menu_item action inline' onclick='Hue.show_radio_history()'>Radio History</div>
+				<div class='menu_item action inline' onclick='Hue.show_media_history("radio")'>Radio History</div>
 				
 				<div class='spacer3'></div>
 

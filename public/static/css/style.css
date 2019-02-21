@@ -212,6 +212,24 @@ div#header_radio_playing_icon
 	max-width: 100%;
 }
 
+.chat_area_clone_center
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.chat_area_clone_center .message, 
+.chat_area_clone_center .chat_menu_button_main
+{
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
 #media
 {
 	display: flex;
@@ -499,11 +517,6 @@ div#header_radio_playing_icon
 	width: 100%;
 }
 
-.chat_content_container_third
-{
-	margin-left: 1rem;
-}
-
 .chat_content_container:not(.chat_content_container_third)
 {
 	margin-top: 0.3em;
@@ -550,16 +563,7 @@ div#header_radio_playing_icon
 	min-width: 45px;
 	max-width: 45px;
 	text-align: center;	
-}
-
-.announcement .brk
-{
-	margin-right: 1em;
-}
-
-.highlights_item .brk, .chat_search_result_item .brk
-{
-	margin-bottom: 0.2rem;
+	margin-right: 1rem;
 }
 
 a.generic:link, a.generic:visited, a.generic:hover 
@@ -1085,11 +1089,15 @@ select
 
 .message
 {
-	padding-right: 0.5rem;
 	font-size: 1rem;
-	padding-left: 1.2rem;
 	padding-top: 0.8rem;
 	padding-bottom: 0.8rem;
+}
+
+#chat_area > .message
+{
+	padding-left: 1.2rem;
+	padding-right: 0.5rem;
 }
 
 #chat_area > .message:first-child
@@ -1530,11 +1538,6 @@ input[type=text], textarea
 .media_history_item .announcement_content
 {
 	font-size: 1em !important;
-}
-
-.media_history_item .announcement_brk
-{
-	display: none;
 }
 
 @keyframes fadein 
@@ -2265,9 +2268,14 @@ a.special_link:hover
 	cursor: pointer;
 }
 
-#chat_search_container, #highlights_container
+.align_left
 {
 	text-align: left;
+}
+
+.media_history_container .brk
+{
+	display: none;
 }
 
 .link_preview

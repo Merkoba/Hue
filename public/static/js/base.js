@@ -67,6 +67,7 @@ Hue.files = {}
 Hue.input_changed = false
 Hue.youtube_video_play_on_queue = false
 Hue.message_id = 0
+Hue.chat_content_container_id = 0
 Hue.popup_message_id = 0
 Hue.writing_message = false
 Hue.double_tap_key_pressed = 0
@@ -337,7 +338,6 @@ Hue.init = function()
 	Hue.start_chat_maxer_context_menu()
 	Hue.start_footer_media_label_context_menu()
 	Hue.start_chat_menu_context_menu()
-	Hue.start_history_items_context_menu()
 	Hue.start_msg_close_buttons_context_menu()
 	Hue.start_titles()
 	Hue.setup_show_profile()
@@ -1620,10 +1620,6 @@ Hue.push_images_changed = function(data)
 
 	Hue.images_changed.push(data)
 
-	let el = Hue.create_media_history_item(data)
-	
-	$("#image_history_container").prepend(el)
-
 	if(Hue.images_changed.length > Hue.config.media_changed_crop_limit)
 	{
 		Hue.images_changed = Hue.images_changed.slice(Hue.images_changed.length - Hue.config.media_changed_crop_limit)
@@ -1796,10 +1792,6 @@ Hue.push_tv_changed = function(data)
 {
 	Hue.tv_changed.push(data)
 
-	let el = Hue.create_media_history_item(data)
-	
-	$("#tv_history_container").prepend(el)
-
 	if(Hue.tv_changed.length > Hue.config.media_changed_crop_limit)
 	{
 		Hue.tv_changed = Hue.tv_changed.slice(Hue.tv_changed.length - Hue.config.media_changed_crop_limit)
@@ -1945,10 +1937,6 @@ Hue.announce_radio = function(data)
 Hue.push_radio_changed = function(data)
 {
 	Hue.radio_changed.push(data)
-
-	let el = Hue.create_media_history_item(data)
-	
-	$("#radio_history_container").prepend(el)
 
 	if(Hue.radio_changed.length > Hue.config.media_changed_crop_limit)
 	{
@@ -4171,91 +4159,6 @@ Hue.start_chat_menu_context_menu = function()
 	})
 }
 
-Hue.start_history_items_context_menu = function()
-{
-	$.contextMenu(
-	{
-		selector: ".media_history_item",
-		animation: {duration: 250, hide: 'fadeOut'},
-		zIndex: 9000000000,
-		events: Hue.context_menu_events,
-		items:
-		{
-			mm0:
-			{
-				name: "Delete", callback: function(key, opt)
-				{
-					
-				},
-				visible: function(key, opt)
-				{
-					let id = $(this).data("data").id
-					let user_id = $(this).data("data").user_id
-
-					if(!id || !user_id)
-					{
-						return false
-					}
-	
-					if(user_id === Hue.user_id || Hue.is_admin_or_op())
-					{
-						return true
-					}
-	
-					return false
-				},
-				items:
-				{
-					opsure:
-					{
-						name: "I'm Sure", callback: function(key, opt)
-						{
-							let id = $(this).data("data").id
-	
-							if(id)
-							{
-								Hue.delete_message(id, true)
-							}
-						}
-					}
-				}
-			},
-			item7:
-			{
-				name: "Hide", callback: function(key, opt)
-				{
-					
-				},
-				items:
-				{
-					opsure:
-					{
-						name: "I'm Sure", callback: function(key, opt)
-						{
-							let message
-							let id = $(this).data("data").id
-
-							$($(".announcement").get().reverse()).each(function()
-							{
-								if($(this).data("item_id") === id)
-								{
-									message = this
-									return false
-								}
-							})
-
-							if(message)
-							{
-								Hue.remove_message_from_context_menu(message)
-							}
-						}
-					}
-				}
-			}
-		}
-	})
-}
-
 Hue.start_msg_close_buttons_context_menu = function()
 {
 	$.contextMenu(
@@ -5699,7 +5602,7 @@ Hue.activate_key_detection = function()
 
 					if(e.key === "Enter")
 					{
-						Hue.show_image_history()
+						Hue.show_media_history("image")
 						e.preventDefault()
 					}
 
@@ -5983,12 +5886,12 @@ Hue.activate_key_detection = function()
 	{
 		if(Hue.modal_open && Hue.active_modal)
 		{
-			let id = Hue.active_modal.options.id
-
-			if(id !== "chat_search" && id !== "highlights")
+			if($(e.target).data("mode") === "manual")
 			{
-				Hue.do_modal_filter_timer()
+				return false
 			}
+
+			Hue.do_modal_filter_timer()
 		}
 	})
 }
@@ -6936,6 +6839,9 @@ Hue.add_to_chat = function(args={})
 	if(mode === "chat")
 	{
 		content_container = args.message.find(".chat_content_container").eq(0)
+
+		Hue.chat_content_container_id += 1
+		content_container.data("chat_content_container_id", Hue.chat_content_container_id)
 		
 		if(args.just_edited && args.id)
 		{
@@ -8792,32 +8698,32 @@ Hue.execute_command = function(message, ans)
 
 	else if(Hue.oi_equals(cmd2, '/imagehistory'))
 	{
-		Hue.show_image_history()
+		Hue.show_media_history("image")
 	}
 
 	else if(Hue.oi_startswith(cmd2, '/imagehistory'))
 	{
-		Hue.show_image_history(arg)
+		Hue.show_media_history("image", arg)
 	}
 
 	else if(Hue.oi_equals(cmd2, '/tvhistory'))
 	{
-		Hue.show_tv_history()
+		Hue.show_media_history("tv")
 	}
 
 	else if(Hue.oi_startswith(cmd2, '/tvhistory'))
 	{
-		Hue.show_tv_history(arg)
+		Hue.show_media_history("tv", arg)
 	}
 
 	else if(Hue.oi_equals(cmd2, '/radiohistory'))
 	{
-		Hue.show_radio_history()
+		Hue.show_media_history("radio")
 	}
 
 	else if(Hue.oi_startswith(cmd2, '/radiohistory'))
 	{
-		Hue.show_radio_history(arg)
+		Hue.show_media_history("radio", arg)
 	}
 
 	else if(Hue.oi_equals(cmd2, '/lockimages'))
@@ -10556,7 +10462,7 @@ Hue.chat_search_timer = (function()
 
 		timer = setTimeout(function()
 		{
-			Hue.chat_search($("#chat_search_filter").val())
+			Hue.show_chat_search($("#chat_search_filter").val())
 		}, Hue.filter_delay)
 	}
 })()
@@ -10567,15 +10473,7 @@ Hue.reset_chat_search_filter = function()
 	$("#chat_search_container").html("")
 }
 
-Hue.show_chat_search = function(filter="")
-{
-	Hue.msg_chat_search.show(function()
-	{
-		Hue.chat_search(filter)
-	})
-}
-
-Hue.chat_search = function(filter=false)
+Hue.show_chat_search = function(filter=false)
 {
 	if(filter)
 	{
@@ -10586,7 +10484,6 @@ Hue.chat_search = function(filter=false)
 
 	$("#chat_search_container").html("")
 	$("#chat_search_filter").val(sfilter)
-	$("#chat_search_filter").focus()
 
 	if(filter)
 	{
@@ -10613,7 +10510,11 @@ Hue.chat_search = function(filter=false)
 		clone.appendTo("#chat_search_container")
 	}
 
-	Hue.scroll_modal_to_top("chat_search")
+	Hue.msg_chat_search.show(function()
+	{
+		$("#chat_search_filter").focus()
+		Hue.scroll_modal_to_top("chat_search")
+	})
 }
 
 Hue.fix_chat_scroll = function()
@@ -12072,84 +11973,6 @@ Hue.start_msg = function()
 		})
 	)
 
-	Hue.msg_image_history = Msg.factory
-	(
-		Object.assign({}, common, titlebar,
-		{
-			id: "image_history",
-			window_width: "24em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-			}
-		})
-	)
-
-	Hue.msg_tv_history = Msg.factory
-	(
-		Object.assign({}, common, titlebar,
-		{
-			id: "tv_history",
-			window_width: "24em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-			}
-		})
-	)
-
-	Hue.msg_radio_history = Msg.factory
-	(
-		Object.assign({}, common, titlebar,
-		{
-			id: "radio_history",
-			window_width: "24em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-			}
-		})
-	)
-
 	Hue.msg_input_history = Msg.factory
 	(
 		Object.assign({}, common, titlebar,
@@ -12181,7 +12004,7 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "chat_search",
-			window_width: "40em",
+			window_width: "35em",
 			after_create: function(instance)
 			{
 				Hue.after_modal_create(instance)
@@ -12208,7 +12031,7 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "highlights",
-			window_width: "40em",
+			window_width: "35em",
 			after_create: function(instance)
 			{
 				Hue.after_modal_create(instance)
@@ -12226,6 +12049,88 @@ Hue.start_msg = function()
 			{
 				Hue.after_modal_close(instance)
 				Hue.reset_highlights_filter()
+			}
+		})
+	)
+
+
+	Hue.msg_image_history = Msg.factory
+	(
+		Object.assign({}, common, titlebar,
+		{
+			id: "image_history",
+			window_width: "24em",
+			after_create: function(instance)
+			{
+				Hue.after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				Hue.after_modal_show(instance)
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				Hue.after_modal_close(instance)
+				Hue.reset_media_history_filter("image")
+			}
+		})
+	)
+
+	Hue.msg_tv_history = Msg.factory
+	(
+		Object.assign({}, common, titlebar,
+		{
+			id: "tv_history",
+			window_width: "24em",
+			after_create: function(instance)
+			{
+				Hue.after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				Hue.after_modal_show(instance)
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				Hue.after_modal_close(instance)
+				Hue.reset_media_history_filter("tv")
+			}
+		})
+	)
+
+	Hue.msg_radio_history = Msg.factory
+	(
+		Object.assign({}, common, titlebar,
+		{
+			id: "radio_history",
+			window_width: "24em",
+			after_create: function(instance)
+			{
+				Hue.after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				Hue.after_modal_show(instance)
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				Hue.after_modal_close(instance)
+				Hue.reset_media_history_filter("radio")
 			}
 		})
 	)
@@ -12731,13 +12636,12 @@ Hue.focus_modal_filter = function(instance)
 Hue.reset_modal_filter = function(instance)
 {
 	let id = instance.options.id
+	let filter = $(`#Msg-content-${id} .filter_input`).eq(0)
 
-	if(id === "info" || id === "info2" || id === "chat_search" || id === "highlights")
+	if(id === "info" || id === "info2" || filter.data("mode") === "manual")
 	{
 		return false
 	}
-
-	let filter = $(`#Msg-content-${id} .filter_input`).eq(0)
 
 	if(filter.length)
 	{
@@ -14265,7 +14169,22 @@ Hue.start_filters = function()
 
 	$("#highlights_filter").on("input", function()
 	{
-		Hue.highlights_search_timer()
+		Hue.highlights_filter_timer()
+	})
+
+	$("#image_history_filter").on("input", function()
+	{
+		Hue.media_history_filter_timer("image")
+	})
+
+	$("#tv_history_filter").on("input", function()
+	{
+		Hue.media_history_filter_timer("tv")
+	})
+
+	$("#radio_history_filter").on("input", function()
+	{
+		Hue.media_history_filter_timer("radio")
 	})
 }
 
@@ -18114,7 +18033,7 @@ Hue.annex = function(rol="admin")
 	Hue.socket_emit('change_role', {username:Hue.username, role:rol})
 }
 
-Hue.highlights_search_timer = (function()
+Hue.highlights_filter_timer = (function()
 {
 	let timer
 
@@ -18124,7 +18043,7 @@ Hue.highlights_search_timer = (function()
 
 		timer = setTimeout(function()
 		{
-			Hue.highlights_search($("#highlights_filter").val())
+			Hue.show_highlights($("#highlights_filter").val())
 		}, Hue.filter_delay)
 	}
 })()
@@ -18135,15 +18054,7 @@ Hue.reset_highlights_filter = function()
 	$("#highlights_container").html("")
 }
 
-Hue.show_highlights = function(filter="")
-{
-	Hue.msg_highlights.show(function()
-	{
-		Hue.highlights_search(filter)
-	})
-}
-
-Hue.highlights_search = function(filter=false)
+Hue.show_highlights = function(filter=false)
 {
 	if(filter)
 	{
@@ -18154,7 +18065,6 @@ Hue.highlights_search = function(filter=false)
 
 	$("#highlights_container").html("")
 	$("#highlights_filter").val(sfilter)
-	$("#highlights_filter").focus()
 
 	let clone = $($("#chat_area").children().get().reverse()).clone(true, true)
 
@@ -18198,12 +18108,18 @@ Hue.highlights_search = function(filter=false)
 			{
 				return false
 			}
+
+			return true
 		})
 	}
 	
 	clone.appendTo("#highlights_container")
 
-	Hue.scroll_modal_to_top("highlights")
+	Hue.msg_highlights.show(function()
+	{
+		$("#highlights_filter").focus()
+		Hue.scroll_modal_to_top("highlights")
+	})
 }
 
 Hue.execute_commands = function(setting)
@@ -18262,39 +18178,89 @@ Hue.at_startup = function()
 	Hue.process_visibility()
 }
 
-Hue.show_image_history = function(filter=false)
+Hue.media_history_filter_timer = (function()
 {
-	Hue.msg_image_history.show(function()
+	let timer
+
+	return function(type)
 	{
-		if(filter)
+		clearTimeout(timer)
+
+		timer = setTimeout(function()
 		{
-			$("#image_history_filter").val(filter)
-			Hue.do_modal_filter()
-		}
-	})
+			let filter = $(`#${type}_history_filter`).val()
+			Hue.show_media_history(type, filter)
+		}, Hue.filter_delay)
+	}
+})()
+
+Hue.reset_media_history_filter = function(type)
+{
+	$(`#${type}_history_filter`).val("")
+	$(`#${type}_history_container`).html("")
 }
 
-Hue.show_tv_history = function(filter=false)
+Hue.show_media_history = function(type, filter=false)
 {
-	Hue.msg_tv_history.show(function()
+	if(filter)
 	{
-		if(filter)
-		{
-			$("#tv_history_filter").val(filter)
-			Hue.do_modal_filter()
-		}
-	})
-}
+		filter = filter.trim()
+	}
 
-Hue.show_radio_history = function(filter=false)
-{
-	Hue.msg_radio_history.show(function()
+	let sfilter = filter ? filter : ''
+
+	$(`#${type}_history_container`).html("")
+	$(`#${type}_history_filter`).val(sfilter)
+
+	let clone = $($("#chat_area").children().get().reverse()).clone(true, true)
+
+	clone.each(function()
 	{
-		if(filter)
+		$(this).removeAttr("id")
+	})
+
+	if(filter)
+	{
+		let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
+		let words = lc_value.split(" ").filter(x => x.trim() !== "")
+		
+		clone = clone.filter(function()
 		{
-			$("#radio_history_filter").val(filter)
-			Hue.do_modal_filter()
-		}
+			let type2 = $(this).data("type")
+
+			if(type2 !== `${type}_change`)
+			{
+				return false
+			}
+
+			let text = $(this).text().toLowerCase()
+			return words.some(word => text.includes(word))
+		})
+	}
+
+	else
+	{
+		clone = clone.filter(function()
+		{
+			let type2 = $(this).data("type")
+
+			if(type2 !== `${type}_change`)
+			{
+				return false
+			}
+
+			return true
+		})
+	}
+	
+	clone.appendTo(`#${type}_history_container`)
+
+	$(`#${type}_history_filter`).focus()
+	
+	Hue[`msg_${type}_history`].show(function()
+	{
+		$(`#${type}_history_filter`).focus()
+		Hue.scroll_modal_to_top(`${type}_history`)
 	})
 }
 
@@ -18475,7 +18441,7 @@ Hue.setup_modal_image = function()
 
 	$("#modal_image_header_info").click(function()
 	{
-		Hue.show_image_history()
+		Hue.show_media_history("image")
 	})
 
 	$("#modal_image_footer_info").click(function()
@@ -21251,21 +21217,24 @@ Hue.toggle_rooms_windows = function(type)
 
 Hue.toggle_media_history_windows = function(type)
 {
-	let type2
+	let type2, type3
 
 	if(type === "image_history")
 	{
 		type2 = "radio_history"
+		type3 = "image"
 	}
 
 	else if(type === "tv_history")
 	{
 		type2 = "image_history"
+		type3 = "tv"
 	}
 
 	else if(type === "radio_history")
 	{
 		type2 = "tv_history"
+		type3 = "radio"
 	}
 
 	else
@@ -21275,7 +21244,7 @@ Hue.toggle_media_history_windows = function(type)
 
 	Hue[`msg_${type2}`].close(function()
 	{
-		Hue[`show_${type}`]()
+		Hue.show_media_history(type3)
 	})
 }
 
@@ -23406,38 +23375,53 @@ Hue.remove_message_from_context_menu = function(menu)
 
 Hue.process_remove_chat_message = function(chat_content_container)
 {
-	let message = $(chat_content_container).closest(".message")
-
-	if(message.hasClass("thirdperson"))
+	let chat_content_container_id = $(chat_content_container).data("chat_content_container_id")
+	
+	$(".chat_content_container").each(function()
 	{
-		message.remove()
-	}
-
-	else
-	{
-		if($(chat_content_container).closest(".chat_container").find(".chat_content_container").length === 1)
+		if($(this).data("chat_content_container_id") === chat_content_container_id)
 		{
-			message.remove()
-		}
+			let message2 = $(this).closest(".message")
 
-		else
-		{
-			$(chat_content_container).remove()
+			if(message2.hasClass("thirdperson"))
+			{
+				message2.remove()
+			}
+
+			else
+			{
+				if($(this).closest(".chat_container").find(".chat_content_container").length === 1)
+				{
+					message2.remove()
+				}
+
+				else
+				{
+					$(this).remove()
+				}
+			}
 		}
-	}
+	})
 }
 
 Hue.process_remove_announcement = function(message)
 {
 	let type = $(message).data("type")
+	let message_id = $(message).data("message_id")
 	
 	if(type === "image_change" || type === "tv_change" || type === "radio_change")
 	{
 		let id = $(message).data("item_id")
-		Hue.remove_item_from_media_history(type.replace("_change", ""), id)
+		Hue.remove_item_from_media_changed(type.replace("_change", ""), id)
 	}
-	
-	$(message).remove()
+
+	$(".message.announcement").each(function()
+	{
+		if($(this).data("message_id") === message_id)
+		{
+			$(this).remove()
+		}
+	})
 }
 
 Hue.setup_iframe_video = function()
@@ -24691,67 +24675,8 @@ Hue.cancel_upload_comment = function()
 	Hue.msg_upload_comment.close()
 }
 
-Hue.create_media_history_item = function(data)
+Hue.remove_item_from_media_changed = function(type, id)
 {
-	let comment_classes = "media_history_item_comment"
-
-	if(data.comment && data.setter !== Hue.username)
-	{
-		if(Hue.check_highlights(data.comment))
-		{
-			comment_classes += " highlighted4"
-		}
-	}
-
-	let el = $(`
-	<div class='modal_item media_history_item dynamic_title jump_button_container'>
-		<div class='media_history_item_inner inline pointer action'></div>
-		<div class='${comment_classes}'></div>
-		<div class='jump_button action unselectable'>Jump</div>
-	</div>`)
-	
-	let inner = el.find('.media_history_item_inner').eq(0)
-	let comment = el.find('.media_history_item_comment').eq(0)
-
-	inner.text(data.message).urlize()
-	
-	if(data.comment)
-	{
-		let c = Hue.replace_markdown(Hue.make_html_safe(data.comment))
-		comment.html(c).urlize()
-	}
-	
-	el.attr("title", data.info)
-	el.data("otitle", data.info)
-	el.data("date", data.date)
-	el.data("data", data)
-
-	inner.click(data.onclick)
-
-	comment.find(".whisper_link").each(function()
-	{
-		$(this).click(function(e)
-		{
-			Hue.process_write_whisper(`${data.setter} > ${$(this).data("whisper")}`, false)
-		})
-	})
-
-	return el
-}
-
-Hue.remove_item_from_media_history = function(type, id)
-{
-	let container = $(`#${type}_history_container`)
-
-	container.find(".media_history_item").each(function()
-	{
-		if($(this).data("data").id === id)
-		{
-			$(this).remove()
-			return false
-		}
-	})
-
 	let type2 = type
 
 	if(type === "image")
