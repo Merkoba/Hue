@@ -1622,12 +1622,6 @@ Hue.push_images_changed = function(data)
 	if(Hue.images_changed.length > Hue.config.media_changed_crop_limit)
 	{
 		Hue.images_changed = Hue.images_changed.slice(Hue.images_changed.length - Hue.config.media_changed_crop_limit)
-		$("#image_history_container").children().last().remove()
-	}
-
-	if(Hue.image_history_filtered)
-	{
-		Hue.do_modal_filter()
 	}
 }
 
@@ -1794,12 +1788,6 @@ Hue.push_tv_changed = function(data)
 	if(Hue.tv_changed.length > Hue.config.media_changed_crop_limit)
 	{
 		Hue.tv_changed = Hue.tv_changed.slice(Hue.tv_changed.length - Hue.config.media_changed_crop_limit)
-		$("#tv_history_container").children().last().remove()
-	}	
-
-	if(Hue.tv_history_filtered)
-	{
-		Hue.do_modal_filter()
 	}
 }
 
@@ -1940,12 +1928,6 @@ Hue.push_radio_changed = function(data)
 	if(Hue.radio_changed.length > Hue.config.media_changed_crop_limit)
 	{
 		Hue.radio_changed = Hue.radio_changed.slice(Hue.radio_changed.length - Hue.config.media_changed_crop_limit)
-		$("#radio_history_container").children().last().remove()
-	}
-
-	if(Hue.radio_history_filtered)
-	{
-		Hue.do_modal_filter()
 	}
 }
 
@@ -16746,7 +16728,7 @@ Hue.get_last_chat_message_by_username = function(ouname)
 {
 	let found_message = false
 
-	$($(".message.chat_message").get().reverse()).each(function()
+	$($("#chat_area > .message.chat_message").get().reverse()).each(function()
 	{
 		let uname = $(this).data("uname")
 
