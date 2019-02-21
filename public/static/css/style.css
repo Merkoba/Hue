@@ -326,6 +326,15 @@ div#header_radio_playing_icon
 	font-size: 0.8em;	
 }
 
+.footer_icon3
+{
+	cursor: pointer;
+	flex-shrink: 1;
+	background-color: transparent;
+	color: inherit;
+	font-size: 0.8em;	
+}
+
 .footer_text
 {
 	margin-right: 0.8em;
@@ -337,15 +346,15 @@ div#header_radio_playing_icon
 	font-size: 0.8em;
 }
 
+.footer_text_small_2
+{
+	font-size: 0.8em;
+}
+
 #footer_media_menu
 {
 	margin-right: 1.2rem !important;
 	font-size: 0.8em;
-}
-
-.footer_media_control
-{
-	margin-right: 0.8em;
 }
 
 #input

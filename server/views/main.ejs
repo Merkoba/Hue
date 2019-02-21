@@ -38,8 +38,8 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2669"></script>
-		<link rel="stylesheet" href="/static/css/style.css?version=585"/>
+		<script src="/static/js/base.js?version=2670"></script>
+		<link rel="stylesheet" href="/static/css/style.css?version=586"/>
 
 		<script>
 
@@ -84,12 +84,12 @@
 								<div class='action pointer'><i class='icon fa fa-th-large'></i></div>
 							</div>
 
-							<div class='header_separator'>|</div>
+							<div class='header_separator color_3'>|</div>
 							<div class='pointer action' id='usercount' onclick='Hue.show_userlist()'></div>
 
 							<div id='header_radio'>
 								
-								<div class='header_separator'>|</div>
+								<div class='header_separator color_3'>|</div>
 
 								<div class='pointer action' id='toggle_radio_state' onclick='Hue.toggle_radio_state()'>
 									<div class='action pointer' id='header_radio_playing_icon'><i class='icon fa fa-volume-up'></i></div>
@@ -97,7 +97,7 @@
 								</div>
 
 								<div id='header_radio_volume_area'>
-									<div class='header_separator'>|</div>
+									<div class='header_separator color_3'>|</div>
 									<div id='header_radio_volume_controls'>
 										<div id='header_radio_volume_icon_minus' class='action pointer' onclick='Hue.volume_decrease()'><i class='pointer icon fa fa-minus'></i></div>
 										<div class='pointer action' onclick='Hue.volume_decrease()'>Volume:&nbsp;</div>
@@ -107,7 +107,7 @@
 								</div>
 
 								<div id='header_now_playing_area'>
-									<div class='header_separator'>|</div> 
+									<div class='header_separator color_3'>|</div> 
 									<div id='header_now_playing_controls' class='action' onclick='Hue.show_played()'>
 										<div class='pointer'>Now Playing:&nbsp;</div>
 										<div class='pointer' id='now_playing'>Loading</div>
@@ -117,7 +117,7 @@
 							</div>
 
 							<div id='header_topic'>
-								<div class='header_separator'>|</div>
+								<div class='header_separator color_3'>|</div>
 								<div id='header_topic_inner' class='action' onclick='Hue.show_status()'>
 									<div class='header_item'>Topic:&nbsp;</div>
 									<div class='header_item' id='header_topic_text'></div>
@@ -316,26 +316,36 @@
 
 						<div class='unselectable'>
 
+							<div class='footer_text_small_2 action pointer' onclick='Hue.show_highlights()'>Highlights</div>
+							
+							<span class='hspacer2 color_3'>|</span>
+							
+							<div class='footer_text_small_2 action pointer' onclick='Hue.show_chat_search()'>Search</div>
+							
+							<span class='hspacer2 color_3'>|</span>
+
 							<div id='footer_images_controls' class='footer_media_control'>
 
-								<div id="footer_images_label" class='footer_media_label footer_text_small pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("image")' data-type="images">Images</div>
+								<div id="footer_images_label" class='footer_media_label footer_text_small action pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("image")' data-type="images">Images</div>
 
 								<div  id='footer_images_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_image_picker()' title="Change the Image">
-									<i  id='footer_images_icon' class='fa fa-camera'></i>
+									<i id='footer_images_icon' class='fa fa-camera'></i>
 								</div>
 
 								<div class='pointer action nicetitle footer_icon2' onclick='Hue.toggle_images()' title='Show/Hide Images. Hidden means it will not be displayed or active'>
 									<i id='footer_toggle_images_icon' class='fa fa-toggle-on'></i>
 								</div>
 								
-								<div id='footer_lock_images_icon_container' class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_images()' onauxclick="Hue.media_lock_valve('images', event)" title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'>
+								<div id='footer_lock_images_icon_container' class='pointer action nicetitle footer_icon3' onclick='Hue.toggle_lock_images()' onauxclick="Hue.media_lock_valve('images', event)" title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'>
 									<i id='footer_lock_images_icon' class='fa fa-unlock-alt'></i>
 								</div>
 							</div>
+
+							<span class='hspacer2 color_3'>|</span>
  	
 							<div id='footer_tv_controls' class='footer_media_control'>
 
-								<div id="footer_tv_label" class='footer_media_label footer_text_small pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("tv")' data-type="tv">TV</div>
+								<div id="footer_tv_label" class='footer_media_label footer_text_small action pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("tv")' data-type="tv">TV</div>
 
 								<div id='footer_tv_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_tv_picker()' title="Change the TV">
 									<i id='footer_tv_icon' class='fa fa-television'></i>
@@ -345,15 +355,17 @@
 									<i class='fa fa-toggle-on' id='footer_toggle_tv_icon'></i>
 								</div>
 
-								<div id='footer_lock_tv_icon_container' class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_tv()' onauxclick="Hue.media_lock_valve('tv', event)" title="Lock/Unlock TV. Locked means it will stay the same even if media is changed by a user">
+								<div id='footer_lock_tv_icon_container' class='pointer action nicetitle footer_icon3' onclick='Hue.toggle_lock_tv()' onauxclick="Hue.media_lock_valve('tv', event)" title="Lock/Unlock TV. Locked means it will stay the same even if media is changed by a user">
 									<i class='fa fa-unlock-alt' id='footer_lock_tv_icon'></i>
 								</div>
 
- 							</div>
+							</div>
+							 
+							<span class='hspacer2 color_3'>|</span>
 
 							<div id='footer_radio_controls' class='footer_media_control'>
 
-								<div id="footer_radio_label" class='footer_media_label footer_text_small pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("radio")' data-type="radio">Radio</div>
+								<div id="footer_radio_label" class='footer_media_label footer_text_small action pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("radio")' data-type="radio">Radio</div>
 
 								<div id='footer_radio_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_radio_picker()' title="Change the Radio">
 									<i id='footer_radio_icon' class='fa fa-volume-up'></i>
@@ -364,11 +376,13 @@
 								</div>
 
 
-								<div id='footer_lock_radio_icon_container' class='pointer action nicetitle footer_icon' onclick='Hue.toggle_lock_radio()' onauxclick="Hue.media_lock_valve('radio', event)" title="Lock/Unlock Radio. Locked means it will stay the same even if media is changed by a user">
+								<div id='footer_lock_radio_icon_container' class='pointer action nicetitle footer_icon3' onclick='Hue.toggle_lock_radio()' onauxclick="Hue.media_lock_valve('radio', event)" title="Lock/Unlock Radio. Locked means it will stay the same even if media is changed by a user">
 									<i class='fa fa-unlock-alt' id='footer_lock_radio_icon'></i>
 								</div>
 
 							</div>
+
+							<span class='hspacer2 color_3'>|</span>
 
 							<div class='pointer action' onclick='Hue.show_media_menu()'>
 								<i id='footer_media_menu' class='fa fa-bars' id='footer_lock_images_icon'></i>

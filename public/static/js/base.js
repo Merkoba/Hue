@@ -161,6 +161,7 @@ Hue.quote_max_length = 200
 Hue.markdown_regexes = {}
 Hue.url_title_max_length = 50
 Hue.show_media_history_state = ""
+Hue.last_chat_search_filter = ""
 
 Hue.commands = 
 [
@@ -2810,6 +2811,16 @@ Hue.apply_theme = function()
 	.slight_background
 	{
 		background-color: ${slight_background} !important;
+	}
+
+	.slight_color
+	{
+		color: ${slight_background} !important;
+	}
+	
+	.color_3
+	{
+		color: ${color_3} !important;
 	}
 
 	</style>
@@ -10467,6 +10478,11 @@ Hue.show_chat_search = function(filter=false)
 		filter = filter.trim()
 	}
 
+	else if(filter === false && Hue.last_chat_search_filter)
+	{
+		filter = Hue.last_chat_search_filter
+	}
+
 	let sfilter = filter ? filter : ''
 
 	$("#chat_search_container").html("")
@@ -10495,6 +10511,7 @@ Hue.show_chat_search = function(filter=false)
 		})
 		
 		clone.appendTo("#chat_search_container")
+		Hue.last_chat_search_filter = filter
 	}
 
 	Hue.msg_chat_search.show(function()
