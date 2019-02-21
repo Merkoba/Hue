@@ -18240,8 +18240,8 @@ Hue.show_media_history = function(type, filter=false)
 	}
 	
 	clone.appendTo(`#${type}_history_container`)
-	Hue.update_media_history_blinks(type)
 	Hue.show_media_history_state = type
+	Hue.update_media_history_blinks(type)
 	
 	Hue[`msg_${type}_history`].show(function()
 	{
@@ -24144,6 +24144,11 @@ Hue.media_load_default = function(type)
 
 Hue.update_media_history_blinks = function(type)
 {
+	if(Hue.show_media_history_state !== type)
+	{
+		return false
+	}
+
 	$(`#${type}_history_container`).find(".message").each(function()
 	{
 		let item_id = $(this).data("item_id")
@@ -24863,7 +24868,7 @@ Hue.jump_to_chat_message = function(message_id)
 
 Hue.after_push_media_change = function(type)
 {
-	if(Hue.show_media_history_state === type)
+	if(Hue.started && Hue.show_media_history_state === type)
 	{
 		Hue.show_media_history(type, $(`#${type}_history_filter`).val())
 	}
