@@ -12516,8 +12516,8 @@ Hue.start_msg = function()
 	Hue.msg_info2.create()
 
 	Hue.msg_input_history.set_title("Input History")
-	Hue.msg_highlights.set_title("Highlights")
-	Hue.msg_chat_search.set_title("Search")
+	Hue.msg_highlights.set_title("<span id='highlights_window_title' class='pointer'>Highlights</span>")
+	Hue.msg_chat_search.set_title("<span id='chat_search_window_title' class='pointer'>Chat Search</span>")
 	Hue.msg_image_history.set_title("<span id='image_history_window_title' class='pointer'>Image History</span>")
 	Hue.msg_tv_history.set_title("<span id='tv_history_window_title' class='pointer'>TV History</span>")
 	Hue.msg_radio_history.set_title("<span id='radio_history_window_title' class='pointer'>Radio History</span>")
@@ -12538,47 +12538,57 @@ Hue.start_msg = function()
 
 	$("#global_settings_window_title").click(function()
 	{
-		Hue.toggle_settings_windows("room_settings")
+		Hue.toggle_settings_windows()
 	})
 
 	$("#room_settings_window_title").click(function()
 	{
-		Hue.toggle_settings_windows("global_settings")
+		Hue.toggle_settings_windows()
 	})
 
 	$("#public_rooms_window_title").click(function()
 	{
-		Hue.toggle_rooms_windows("visited_roomlist")
+		Hue.toggle_rooms_windows()
 	})
 
 	$("#visited_rooms_window_title").click(function()
 	{
-		Hue.toggle_rooms_windows("public_roomlist")
+		Hue.toggle_rooms_windows()
 	})
 
 	$("#image_history_window_title").click(function()
 	{
-		Hue.toggle_media_history_windows("tv_history")
+		Hue.toggle_media_history_windows()
 	})
 
 	$("#tv_history_window_title").click(function()
 	{
-		Hue.toggle_media_history_windows("radio_history")
+		Hue.toggle_media_history_windows()
 	})
 
 	$("#radio_history_window_title").click(function()
 	{
-		Hue.toggle_media_history_windows("image_history")
+		Hue.toggle_media_history_windows()
 	})
 
 	$("#main_menu_window_title").click(function()
 	{
-		Hue.toggle_menu_windows("user_menu")
+		Hue.toggle_menu_windows()
 	})
 
 	$("#user_menu_window_title").click(function()
 	{
-		Hue.toggle_menu_windows("main_menu")
+		Hue.toggle_menu_windows()
+	})
+
+	$("#chat_search_window_title").click(function()
+	{
+		Hue.toggle_search_windows()
+	})
+
+	$("#highlights_window_title").click(function()
+	{
+		Hue.toggle_search_windows()
 	})
 }
 
@@ -21150,112 +21160,110 @@ Hue.on_room_created = function(data)
 	Hue.show_open_room(data.id)
 }
 
-Hue.toggle_settings_windows = function(type)
+Hue.toggle_settings_windows = function()
 {
-	let type2
-
-	if(type === "global_settings")
+	let data = {}
+	
+	data["global_settings"] = function()
 	{
-		type2 = "room_settings"
+		Hue.show_room_settings()
 	}
 
-	else if(type === "room_settings")
+	data["room_settings"] = function()
 	{
-		type2 = "global_settings"
+		Hue.show_global_settings()
 	}
 
-	else
-	{
-		return false
-	}
-
-	let category = Hue.get_selected_user_settings_category(type2)
-
-	Hue[`msg_${type2}`].close()
-
-	Hue.open_user_settings_category(category, type)
+	Hue.process_window_toggle(data)
 }
 
-Hue.toggle_rooms_windows = function(type)
+Hue.toggle_rooms_windows = function()
 {
-	let type2
-
-	if(type === "public_roomlist")
+	let data = {}
+	
+	data["public_roomlist"] = function()
 	{
-		type2 = "visited_roomlist"
+		Hue.request_roomlist("", "visited_roomlist")
 	}
 
-	else if(type === "visited_roomlist")
+	data["visited_roomlist"] = function()
 	{
-		type2 = "public_roomlist"
+		Hue.request_roomlist("", "public_roomlist")
 	}
 
-	else
-	{
-		return false
-	}
-
-	Hue[`msg_${type2}`].close(function()
-	{
-		Hue.request_roomlist('', type)
-	})
+	Hue.process_window_toggle(data)
 }
 
-Hue.toggle_media_history_windows = function(type)
+Hue.toggle_media_history_windows = function()
 {
-	let type2, type3
-
-	if(type === "image_history")
+	let data = {}
+	
+	data["image_history"] = function()
 	{
-		type2 = "radio_history"
-		type3 = "image"
+		Hue.show_media_history("tv")
 	}
 
-	else if(type === "tv_history")
+	data["tv_history"] = function()
 	{
-		type2 = "image_history"
-		type3 = "tv"
+		Hue.show_media_history("radio")
 	}
 
-	else if(type === "radio_history")
+	data["radio_history"] = function()
 	{
-		type2 = "tv_history"
-		type3 = "radio"
+		Hue.show_media_history("image")
 	}
 
-	else
-	{
-		return false
-	}
-
-	Hue[`msg_${type2}`].close(function()
-	{
-		Hue.show_media_history(type3)
-	})
+	Hue.process_window_toggle(data)
 }
 
-Hue.toggle_menu_windows = function(type)
+Hue.toggle_menu_windows = function()
 {
-	let type2
-
-	if(type === "main_menu")
+	let data = {}
+	
+	data["main_menu"] = function()
 	{
-		type2 = "user_menu"
+		Hue.show_user_menu()
 	}
 
-	else if(type === "user_menu")
+	data["user_menu"] = function()
 	{
-		type2 = "main_menu"
+		Hue.show_main_menu()
 	}
 
-	else
+	Hue.process_window_toggle(data)
+}
+
+Hue.toggle_search_windows = function()
+{
+	let data = {}
+	
+	data["chat_search"] = function()
+	{
+		Hue.show_highlights()
+	}
+
+	data["highlights"] = function()
+	{
+		Hue.show_chat_search()
+	}
+
+	Hue.process_window_toggle(data)
+}
+
+Hue.process_window_toggle = function(data)
+{
+	let highest = Hue.msg_main_menu.highest_instance()
+	let current = highest.options.id
+	let next_func = data[current]
+
+	if(!current || !next_func)
 	{
 		return false
 	}
 
-	Hue[`msg_${type2}`].close(function()
+	Hue[`msg_${current}`].close(function()
 	{
-		Hue[`show_${type}`]()
+		next_func()
 	})
 }
 
