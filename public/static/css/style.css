@@ -895,7 +895,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 .filter_input
 {
 	top: 0px;
-	width: 12em;
+	width: 14em;
 	border: 1px solid grey;
 	font-size: 1.2em;
 	text-align: center;
