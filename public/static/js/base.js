@@ -98,6 +98,7 @@ Hue.aura_timeouts = {}
 Hue.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
 Hue.mouse_over_reactions = false
 Hue.reactions_hover_delay = 500
+Hue.reactions_hover_delay_2 = 1000
 Hue.user_functions = [1, 2, 3, 4, 5, 6, 7, 8]
 Hue.mouse_is_down = false
 Hue.draw_message_just_entered = false
@@ -162,6 +163,7 @@ Hue.markdown_regexes = {}
 Hue.url_title_max_length = 50
 Hue.show_media_history_state = ""
 Hue.add_to_chat_searches_delay = 2000
+Hue.reactions_box_open = false
 
 Hue.commands = 
 [
@@ -332,7 +334,6 @@ Hue.init = function()
 	Hue.scroll_events()
 	Hue.resize_events()
 	Hue.setup_commands()
-	Hue.setup_chat()
 	Hue.start_chat_mouse_events()
 	Hue.start_chat_hover_events()
 	Hue.start_body_events()
@@ -5939,7 +5940,7 @@ Hue.activate_key_detection = function()
 					Hue.goto_bottom(true, true)
 				}
 
-				Hue.hide_reactions()
+				Hue.hide_reactions_box()
 				e.preventDefault()
 				return
 			}
@@ -14437,7 +14438,7 @@ Hue.setup_user_menu = function()
 Hue.show_user_menu = function()
 {
 	clearTimeout(Hue.show_reactions_timeout)
-	Hue.hide_reactions()
+	Hue.hide_reactions_box()
 	Hue.msg_user_menu.show()
 }
 
@@ -18708,11 +18709,6 @@ Hue.reset_settings = function(type, empty=true)
 	}
 }
 
-Hue.setup_chat = function()
-{
-
-}
-
 Hue.execute_javascript = function(arg, show_result=true)
 {
 	let r
@@ -19837,7 +19833,7 @@ Hue.send_reaction = function(reaction_type)
 
 	Hue.socket_emit("send_reaction", {reaction_type:reaction_type})
 
-	Hue.hide_reactions()
+	Hue.hide_reactions_box()
 }
 
 Hue.show_reaction = function(data, date=false)
@@ -19924,7 +19920,7 @@ Hue.setup_reactions_box = function()
 	
 		Hue.show_reactions_timeout = setTimeout(function()
 		{
-			Hue.show_reactions()
+			Hue.show_reactions_box()
 		}, Hue.reactions_hover_delay)
 	},
 	
@@ -19946,6 +19942,22 @@ Hue.setup_reactions_box = function()
 		Hue.mouse_over_reactions = false
 		Hue.start_hide_reactions()
 	})
+
+	$("#chat_area").click(function()
+	{
+		if(Hue.reactions_box_open)
+		{
+			Hue.hide_reactions_box()
+		}
+	})
+
+	$("#input").click(function()
+	{
+		if(Hue.reactions_box_open)
+		{
+			Hue.hide_reactions_box()
+		}
+	})
 }
 
 Hue.start_hide_reactions = function()
@@ -19959,18 +19971,26 @@ Hue.start_hide_reactions = function()
 			return false
 		}
 
-		Hue.hide_reactions()
-	}, Hue.reactions_hover_delay)
+		Hue.hide_reactions_box()
+	}, Hue.reactions_hover_delay_2)
 }
 
-Hue.show_reactions = function()
+Hue.show_reactions_box = function()
 {
-	$("#reactions_box_container").css("display", "flex")
+	if(!Hue.reactions_box_open)
+	{
+		$("#reactions_box_container").css("display", "flex")
+		Hue.reactions_box_open = true
+	}
 }
 
-Hue.hide_reactions = function()
+Hue.hide_reactions_box = function()
 {
-	$("#reactions_box_container").css("display", "none")
+	if(Hue.reactions_box_open)
+	{
+		$("#reactions_box_container").css("display", "none")
+		Hue.reactions_box_open = false
+	}
 }
 
 Hue.run_user_function = function(n)
@@ -19991,7 +20011,7 @@ Hue.run_user_function = function(n)
 		Hue.go_to_user_settings_item(`user_function_${n}`)
 	}
 	
-	Hue.hide_reactions()
+	Hue.hide_reactions_box()
 }
 
 Hue.set_tv_display_percentage = function(v, type)
