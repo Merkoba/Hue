@@ -787,6 +787,9 @@ This should be an array of strings of root domains.
 "synth_max_voice_text"
 >Max length for the voice synth text.
 
+"max_chat_searches"
+>Maximum number of items stored in chat search history.
+
 
 ## The following reside in config.secret.json
 

@@ -161,7 +161,6 @@ Hue.quote_max_length = 200
 Hue.markdown_regexes = {}
 Hue.url_title_max_length = 50
 Hue.show_media_history_state = ""
-Hue.max_chat_searches = 10
 Hue.add_to_chat_searches_delay = 2000
 
 Hue.commands = 
@@ -10620,7 +10619,7 @@ Hue.do_add_to_chat_searches = function(filter)
 
 	Hue.room_state.chat_searches.unshift(filter)
 		
-	if(Hue.room_state.chat_searches.length > Hue.max_chat_searches)
+	if(Hue.room_state.chat_searches.length > Hue.config.max_chat_searches)
 	{
 		Hue.room_state.chat_searches.pop()
 	}
