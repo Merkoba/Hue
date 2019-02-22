@@ -97,7 +97,7 @@ Hue.stop_radio_delay = 0
 Hue.aura_timeouts = {}
 Hue.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
 Hue.mouse_over_reactions = false
-Hue.reactions_hover_delay = 800
+Hue.reactions_hover_delay = 500
 Hue.user_functions = [1, 2, 3, 4, 5, 6, 7, 8]
 Hue.mouse_is_down = false
 Hue.draw_message_just_entered = false
@@ -19218,7 +19218,6 @@ Hue.active_settings = function(name)
 Hue.set_toggler = function(type, el, action=false)
 {
 	let container = $(el).next(`.${type}_toggle_container`)
-	
 	let display = container.css('display')
 
 	if(display === "none")
@@ -19229,11 +19228,8 @@ Hue.set_toggler = function(type, el, action=false)
 		}
 
 		Hue.close_togglers(type)
-
 		container.css("display", "block")
-		
 		$(el).html(`- ${$(el).html().trim().substring(2)}`)
-
 		container.closest(".toggler_main_container")[0].scrollIntoView({block:"center"})
 	}
 
@@ -19245,7 +19241,6 @@ Hue.set_toggler = function(type, el, action=false)
 		}
 
 		container.css("display", "none")
-		
 		$(el).html(`+ ${$(el).html().trim().substring(2)}`)
 	}
 }
@@ -19988,6 +19983,12 @@ Hue.run_user_function = function(n)
 	if(Hue.get_setting(`user_function_${n}`))
 	{
 		Hue.execute_commands(`user_function_${n}`)
+	}
+
+	else
+	{
+		Hue.open_user_settings_category("functions")
+		Hue.go_to_user_settings_item(`user_function_${n}`)
 	}
 	
 	Hue.hide_reactions()
@@ -24419,6 +24420,39 @@ Hue.open_user_settings_category = function(category, type="global_settings")
 {
 	Hue[`show_${type}`]()
 	Hue.change_settings_window_category(category)
+}
+
+Hue.go_to_user_settings_item = function(setting)
+{
+	let type = Hue.which_user_settings_window_is_open()
+
+	$(`#${type}_container .settings_item`).each(function()
+	{
+		if($(this).data("setting") === setting)
+		{
+			let toggler_container = $(this).closest(".toggler_main_container")
+			let toggler = toggler_container.find(".toggler").eq(0)
+
+			if(toggler.length === 0)
+			{
+				toggler_container = $(this).find(".toggler_main_container").eq(0)
+				toggler = toggler_container.find(".toggler").eq(0)
+			}
+
+			if(toggler.length > 0)
+			{
+				Hue.set_toggler(type, toggler, "open")
+				toggler_container[0].scrollIntoView({block:"center"})
+			}
+
+			else
+			{
+				this.scrollIntoView({block:"center"})
+			}
+
+			return false
+		}
+	})
 }
 
 Hue.which_user_settings_window_is_open = function()
