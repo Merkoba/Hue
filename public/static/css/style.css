@@ -1265,6 +1265,11 @@ input[type=text], textarea
 	font-size: 1.2em;
 }
 
+.bigger2
+{
+	font-size: 1.4em;
+}
+
 .underlined
 {
 	text-decoration: underline;
@@ -1278,11 +1283,6 @@ input[type=text], textarea
 .bold
 {
 	font-weight: bold;
-}
-
-.bigger2
-{
-	font-size: 1.4em;
 }
 
 .padding1

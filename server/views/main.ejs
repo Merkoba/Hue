@@ -38,8 +38,8 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2680"></script>
-		<link rel="stylesheet" href="/static/css/style.css?version=589"/>
+		<script src="/static/js/base.js?version=2681"></script>
+		<link rel="stylesheet" href="/static/css/style.css?version=590"/>
 
 		<script>
 
@@ -1672,13 +1672,29 @@
 				<div class='hspacer3'></div>
 				<i class='fa fa-history pointer action' id='chat_search_history_icon'></i>
 			</div>
+
 			<div class='spacer3'></div>
+
+			<div id='chat_search_no_results' class='unselectable'>
+				<div class='spacer3'></div>
+				<div class='bigger'>No Results</div>
+				<div class='spacer3'></div>
+			</div>
+
 			<div id='chat_search_container' class='chat_area align_left'></div>
 		</script>
 
 		<script id='template_highlights' type='text/x-handlebars-template'>
 			<input type="text" id="highlights_filter" data-mode='manual' class="filter_input" placeholder="Filter">
+			
 			<div class='spacer3'></div>
+			
+			<div id='highlights_no_results' class='unselectable'>
+				<div class='spacer3'></div>
+				<div class='bigger'>No Highlights Yet</div>
+				<div class='spacer3'></div>
+			</div>
+
 			<div id='highlights_container' class='chat_area align_left'></div>
 		</script>
 

@@ -10544,6 +10544,7 @@ Hue.reset_chat_search_filter = function()
 {
 	$("#chat_search_filter").val("")
 	$("#chat_search_container").html("")
+	$("#chat_search_no_results").css("display", "none")
 }
 
 Hue.show_chat_search = function(filter=false)
@@ -10561,6 +10562,7 @@ Hue.show_chat_search = function(filter=false)
 	let sfilter = filter ? filter : ''
 
 	$("#chat_search_container").html("")
+	$("#chat_search_no_results").css("display", "none")
 	$("#chat_search_filter").val(sfilter)
 
 	if(filter)
@@ -10584,8 +10586,17 @@ Hue.show_chat_search = function(filter=false)
 			let text = $(this).text().toLowerCase()
 			return words.some(word => text.includes(word))
 		})
+
+		if(clone.children().length === 0)
+		{
+			$("#chat_search_no_results").css("display", "block")
+		}
+
+		else
+		{
+			clone.appendTo("#chat_search_container")
+		}
 		
-		clone.appendTo("#chat_search_container")
 		Hue.add_to_chat_searches(filter)
 	}
 
@@ -18174,6 +18185,7 @@ Hue.reset_highlights_filter = function()
 {
 	$("#highlights_filter").val("")
 	$("#highlights_container").html("")
+	$("#highlights_no_results").css("display", "none")
 }
 
 Hue.show_highlights = function(filter=false)
@@ -18187,6 +18199,7 @@ Hue.show_highlights = function(filter=false)
 
 	$("#highlights_container").html("")
 	$("#highlights_filter").val(sfilter)
+	$("#highlights_no_results").css("display", "none")
 
 	let clone = $($("#chat_area").children().get().reverse()).clone(true, true)
 
@@ -18234,8 +18247,17 @@ Hue.show_highlights = function(filter=false)
 			return true
 		})
 	}
+
+	if(clone.children().length === 0)
+	{
+		$("#highlights_no_results").css("display", "block")
+	}
+
+	else
+	{
+		clone.appendTo("#highlights_container")
+	}
 	
-	clone.appendTo("#highlights_container")
 
 	Hue.msg_highlights.show(function()
 	{
