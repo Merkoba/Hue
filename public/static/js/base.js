@@ -21866,14 +21866,19 @@ Hue.show_admin_activity = function(messages)
 	{
 		for(let message of messages)
 		{
+			let nice_date = Hue.nice_date(message.date)
+
 			let el = $(`
-			<div class='modal_item admin_activity_item'>
+			<div class='modal_item admin_activity_item dynamic_title' title='${nice_date}'>
 				<div class='admin_activity_message'></div>
 				<div class='admin_activity_date'></div>
 			</div>`)
 
 			el.find(".admin_activity_message").eq(0).text(`${message.data.username} ${message.data.content}`)
-			el.find(".admin_activity_date").eq(0).text(Hue.nice_date(message.date))
+			el.find(".admin_activity_date").eq(0).text(nice_date)
+
+			el.data("date", message.date)
+			el.data("otitle", nice_date)
 
 			$("#admin_activity_container").prepend(el)
 		}
@@ -22833,14 +22838,19 @@ Hue.show_access_log = function(messages)
 	{
 		for(let message of messages)
 		{
+			let nice_date = Hue.nice_date(message.date)
+
 			let el = $(`
-			<div class='modal_item access_log_item'>
+			<div class='modal_item access_log_item dynamic_title' title='${nice_date}'>
 				<div class='access_log_message'></div>
 				<div class='access_log_date'></div>
 			</div>`)
 
 			el.find(".access_log_message").eq(0).text(`${message.data.username} ${message.data.content}`)
-			el.find(".access_log_date").eq(0).text(Hue.nice_date(message.date))
+			el.find(".access_log_date").eq(0).text(nice_date)
+
+			el.data("date", message.date)
+			el.data("otitle", nice_date)
 
 			$("#access_log_container").prepend(el)
 		}
