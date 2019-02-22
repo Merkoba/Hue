@@ -310,6 +310,7 @@ Hue.init = function()
 	Hue.setup_markdown_regexes()
 	Hue.activate_key_detection()
 	Hue.setup_templates()
+	Hue.create_setting_user_function_actions()
 	Hue.get_global_settings()
 	Hue.get_room_settings()
 	Hue.get_room_state()
@@ -13449,46 +13450,6 @@ Hue.setting_function_name_do_action = function(number, type, save=true)
 	}
 }
 
-Hue.setting_user_function_1_name_action = function(type, save=true)
-{
-	Hue.setting_function_name_do_action(1, type, save)
-}
-
-Hue.setting_user_function_2_name_action = function(type, save=true)
-{
-	Hue.setting_function_name_do_action(2, type, save)
-}
-
-Hue.setting_user_function_3_name_action = function(type, save=true)
-{
-	Hue.setting_function_name_do_action(3, type, save)
-}
-
-Hue.setting_user_function_4_name_action = function(type, save=true)
-{
-	Hue.setting_function_name_do_action(4, type, save)
-}
-
-Hue.setting_user_function_5_name_action = function(type, save=true)
-{
-	Hue.setting_function_name_do_action(5, type, save)
-}
-
-Hue.setting_user_function_6_name_action = function(type, save=true)
-{
-	Hue.setting_function_name_do_action(6, type, save)
-}
-
-Hue.setting_user_function_7_name_action = function(type, save=true)
-{
-	Hue.setting_function_name_do_action(7, type, save)
-}
-
-Hue.setting_user_function_8_name_action = function(type, save=true)
-{
-	Hue.setting_function_name_do_action(8, type, save)
-}
-
 // Special function used for all User Function actions
 Hue.setting_function_do_action = function(number, type, save=true)
 {
@@ -13509,44 +13470,21 @@ Hue.setting_function_do_action = function(number, type, save=true)
 	}
 }
 
-Hue.setting_user_function_1_action = function(type, save=true)
+// Special function to create User Function actions
+Hue.create_setting_user_function_actions = function()
 {
-	Hue.setting_function_do_action(1, type, save)
-}
-
-Hue.setting_user_function_2_action = function(type, save=true)
-{
-	Hue.setting_function_do_action(2, type, save)
-}
-
-Hue.setting_user_function_3_action = function(type, save=true)
-{
-	Hue.setting_function_do_action(3, type, save)
-}
-
-Hue.setting_user_function_4_action = function(type, save=true)
-{
-	Hue.setting_function_do_action(4, type, save)
-}
-
-Hue.setting_user_function_5_action = function(type, save=true)
-{
-	Hue.setting_function_do_action(5, type, save)
-}
-
-Hue.setting_user_function_6_action = function(type, save=true)
-{
-	Hue.setting_function_do_action(6, type, save)
-}
-
-Hue.setting_user_function_7_action = function(type, save=true)
-{
-	Hue.setting_function_do_action(7, type, save)
-}
-
-Hue.setting_user_function_8_action = function(type, save=true)
-{
-	Hue.setting_function_do_action(8, type, save)
+	for(let i=1; i<Hue.user_functions.length+1; i++)
+	{
+		Hue[`setting_user_function_${i}_action`] = function(type, save=true)
+		{
+			Hue.setting_function_do_action(i, type, save)
+		}
+	
+		Hue[`setting_user_function_${i}_name_action`] = function(type, save=true)
+		{
+			Hue.setting_function_name_do_action(i, type, save)
+		}
+	}
 }
 
 Hue.setting_on_lockscreen_action = function(type, save=true)
