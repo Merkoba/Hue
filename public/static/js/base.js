@@ -16776,12 +16776,6 @@ Hue.get_last_chat_message_by_username = function(ouname)
 	return found_message
 }
 
-Hue.add_aura = function(uname)
-{
-	let message = Hue.get_last_chat_message_by_username(uname)
-	$(message).find(".chat_profile_image_container").eq(0).addClass("aura")
-}
-
 Hue.show_aura = function(uname)
 {
 	if(Hue.aura_timeouts[uname] === undefined)
@@ -16800,12 +16794,29 @@ Hue.show_aura = function(uname)
 	}, Hue.config.max_typing_inactivity)
 }
 
+Hue.add_aura = function(uname)
+{
+	let message = Hue.get_last_chat_message_by_username(uname)
+
+	if(message)
+	{
+		$(message).find(".chat_profile_image_container").eq(0).addClass("aura")
+	}
+	
+	let activity_bar_item = Hue.get_activity_bar_item_by_username(uname)
+
+	if(activity_bar_item)
+	{
+		$(activity_bar_item).find(".activity_bar_image_container").eq(0).addClass("aura")
+	}
+}
+
 Hue.remove_aura = function(uname)
 {
 	clearTimeout(Hue.aura_timeouts[uname])
 
-	let cls = ".chat_profile_image_container.aura"
 	let aura = "aura"
+	let cls = ".chat_profile_image_container.aura"
 
 	$(cls).each(function()
 	{
@@ -16814,6 +16825,21 @@ Hue.remove_aura = function(uname)
 		if(message.length > 0)
 		{
 			if(message.data("uname") === uname)
+			{
+				$(this).removeClass(aura)
+			}
+		}
+	})
+
+	cls = ".activity_bar_image_container.aura"
+
+	$(cls).each(function()
+	{
+		let activity_bar_item = $(this).closest(".activity_bar_item")
+
+		if(activity_bar_item.length > 0)
+		{
+			if(activity_bar_item.data("username") === uname)
 			{
 				$(this).removeClass(aura)
 			}
@@ -22939,21 +22965,6 @@ Hue.hide_activity_bar = function()
 	Hue.on_resize()
 }
 
-Hue.compare_activity_list = function(a, b)
-{
-	if(a.username < b.username)
-	{
-		return -1
-	}
-
-	if(a.username > b.username)
-	{
-		return 1
-	}
-
-	return 0
-}
-
 Hue.update_activity_bar = function()
 {
 	if(!Hue.get_setting("activity_bar"))
@@ -22963,14 +22974,41 @@ Hue.update_activity_bar = function()
 
 	let c = $("#activity_bar_content")
 
-	c.html("")
-
-	if(Hue.activity_list.length)
+	if(Hue.activity_list.length === 0)
 	{
-		let sorted_list = Hue.activity_list.slice(0).sort(Hue.compare_activity_list)
+		$("#activity_bar_no_activity").css("display", "block")
+		return false
+	}
 
-		for(let item of sorted_list)
+	$("#activity_bar_no_activity").css("display", "none")
+
+	let usernames_included = []
+	
+	$(".activity_bar_item").each(function()
+	{
+		let username = $(this).data("username")
+		let user = Hue.get_user_by_username(username)
+		
+		if(user && Hue.activity_list.some(item => item.username === username))
 		{
+			usernames_included.push(username)
+		}
+		
+		else
+		{
+			$(this).remove()
+		}
+	})
+
+	if(Hue.activity_list.length > usernames_included.length)
+	{
+		for(let item of Hue.activity_list)
+		{
+			if(usernames_included.includes(item.username))
+			{
+				continue
+			}
+
 			let user = Hue.get_user_by_username(item.username)
 
 			if(user)
@@ -22978,8 +23016,8 @@ Hue.update_activity_bar = function()
 				let pi = user.profile_image || Hue.config.default_profile_image_url
 
 				let h = $(`
-				<div class='activity_bar_item action'>
-					<div class='activity_bar_image_container'>
+				<div class='activity_bar_item'>
+					<div class='activity_bar_image_container action4'>
 						<img class='activity_bar_image' src='${pi}'>
 					</div>
 					<div class='activity_bar_text'></div>
@@ -22999,17 +23037,11 @@ Hue.update_activity_bar = function()
 				text_el.text(user.username)
 
 				h.data("username", user.username)
-
 				h.attr("title", item.username)
 
 				c.append(h)
 			}
 		}
-	}
-
-	else
-	{
-		c.text("No Recent Activity")
 	}
 }
 
@@ -23056,6 +23088,22 @@ Hue.push_to_activity_bar = function(uname, date)
 	{
 		Hue.update_activity_bar()
 	}
+}
+
+Hue.get_activity_bar_item_by_username = function(username)
+{
+	let item = false
+
+	$(".activity_bar_item").each(function()
+	{
+		if($(this).data("username") === username)
+		{
+			item = this
+			return false
+		}
+	})
+
+	return item
 }
 
 Hue.focus_edit_area = function()

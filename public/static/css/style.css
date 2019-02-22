@@ -77,8 +77,6 @@ body *
 	display: flex;
 	flex-direction: row;
 	max-width: 7rem;
-	white-space: nowrap;
-	overflow: hidden;
 	margin-left: 0.8rem;
 	margin-right: 0.8rem;
 	cursor: pointer;
@@ -87,6 +85,8 @@ body *
 
 .activity_bar_text
 {
+	white-space: nowrap;
+	overflow: hidden;
 	margin-left: 0.5rem;
 }
 
@@ -480,7 +480,7 @@ div#header_radio_playing_icon
 	cursor: pointer;
 }
 
-.chat_profile_image_container.aura
+.chat_profile_image_container.aura, .activity_bar_image_container.aura
 {
 	animation: spin 1s linear infinite;
 }
