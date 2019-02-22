@@ -24343,7 +24343,6 @@ Hue.make_image_preview = function(message)
 	ans.image_preview_src_original = false
 	ans.image_preview_text = false
 
-	let split = message.split(" ")
 	let link = Hue.utilz.get_first_url(message)
 
 	if(!link)
@@ -24362,32 +24361,14 @@ Hue.make_image_preview = function(message)
 			ans.image_preview_src_original = `https://i.imgur.com/${code}.${extension}`
 			ans.image_preview_src = `https://i.imgur.com/${code}l.jpg`
 			
-			let text_array = []
-
-			for(let sp of split)
-			{
-				if(sp === link)
-				{
-					// OK
-				}
-
-				else
-				{
-					text_array.push(sp)
-				}
-			}
-			
 			// This is in a single line on purpose
-			ans.image_preview = `<div class='image_preview action'><div class='image_preview_url'>${link}</div><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}"></div>`
+			ans.image_preview = `<div class='image_preview action'><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}"></div>`
 
-			let text = Hue.replace_markdown(Hue.make_html_safe(text_array.join(" ")))
+			let text = Hue.replace_markdown(Hue.make_html_safe(message))
+			let stext = `<div class='image_preview_text'>${text}</div>`
 
-			if(text)
-			{
-				let stext = `<div class='image_preview_text'>${text}</div>`
-				ans.image_preview_text = text
-				ans.image_preview = ans.image_preview + stext
-			}
+			ans.image_preview_text = message
+			ans.image_preview = stext + ans.image_preview
 		}
 	}
 
@@ -24397,18 +24378,13 @@ Hue.make_image_preview = function(message)
 Hue.make_link_preview = function(message, link_url, link_title, link_image)
 {
 	let ans = {}
-
 	ans.link_preview = false
-
-	let split = message.split(" ")
 	let link_preview_s = false
 
 	if(link_title && link_image)
 	{
 		link_preview_s = 
 		`<div class='link_preview action'>
-			<div class='link_preview_url'>${Hue.make_html_safe(link_url)}</div>
-			<div class='spacer3'></div>
 			<div class='link_preview_title'>${Hue.make_html_safe(link_title)}</div>
 			<div class='spacer3'></div>
 			<div><img class='link_preview_image' src='${link_image}'></div>
@@ -24419,8 +24395,6 @@ Hue.make_link_preview = function(message, link_url, link_title, link_image)
 	{
 		link_preview_s = 
 		`<div class='link_preview action'>
-			<div class='link_preview_url'>${Hue.make_html_safe(link_url)}</div>
-			<div class='spacer3'></div>
 			<div class='link_preview_title'>${Hue.make_html_safe(link_title)}</div>
 		</div>`
 	}
@@ -24429,39 +24403,19 @@ Hue.make_link_preview = function(message, link_url, link_title, link_image)
 	{
 		link_preview_s = 
 		`<div class='link_preview action'>
-			<div class='link_preview_url'>${link_url.substring(0, 100)}</div>
-			<div class='spacer3'></div>
 			<img class='link_preview_image' src='${link_image}'>
 		</div>`
 	}
 
 	if(link_preview_s)
 	{
-		let text_array = []
-
-		for(let sp of split)
-		{
-			if(sp === link_url)
-			{
-				// OK
-			}
-
-			else
-			{
-				text_array.push(sp)
-			}
-		}
-
 		ans.link_preview = link_preview_s
 
-		let text = Hue.replace_markdown(Hue.make_html_safe(text_array.join(" ")))
+		let text = Hue.replace_markdown(Hue.make_html_safe(message))
+		let stext = `<div class='link_preview_text'>${text}</div>`
 
-		if(text)
-		{
-			let stext = `<div class='link_preview_text'>${text}</div>`
-			ans.link_preview_text = text
-			ans.link_preview = ans.link_preview + stext
-		}
+		ans.link_preview_text = text
+		ans.link_preview = stext + ans.link_preview
 	}
 
 	return ans
@@ -24498,7 +24452,6 @@ Hue.setup_image_preview = function(fmessage, image_preview_src_original, user_id
 		Hue.expand_image(image_preview_src_original.replace(".gifv", ".gif"))
 	})
 
-	image_preview_el.find(".image_preview_url").eq(0).urlize()
 	image_preview_el.parent().find(".image_preview_text").eq(0).urlize()
 }
 

@@ -2230,16 +2230,9 @@ a.special_link:hover
 	flex-direction: column;
 }
 
-.image_preview_url
-{
-	margin-bottom: 0.35rem;
-	overflow-wrap: break-word;
-	word-break: break-word;
-}
-
 .image_preview_text, .link_preview_text
 {
-	margin-top: 0.35rem;
+	margin-bottom: 0.35rem;
 	overflow-wrap: break-word;
 	word-break: break-word;
 	display: inline-block;
@@ -2271,13 +2264,6 @@ a.special_link:hover
 .link_preview
 {
 	padding: 0.8rem;
-}
-
-.link_preview_url
-{
-	font-size: 1em;
-	overflow-wrap: break-word;
-	word-break: break-word;
 }
 
 .link_preview_title
