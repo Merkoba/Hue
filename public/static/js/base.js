@@ -10554,11 +10554,6 @@ Hue.show_chat_search = function(filter=false)
 		filter = filter.trim()
 	}
 
-	else if(filter === false && Hue.room_state.chat_searches.length > 0)
-	{
-		filter = Hue.room_state.chat_searches[0]
-	}
-
 	let sfilter = filter ? filter : ''
 
 	$("#chat_search_container").html("")
