@@ -24489,7 +24489,6 @@ Hue.setup_link_preview = function(fmessage, link_url, user_id)
 		Hue.expand_image($(this).attr("src").replace(".gifv", ".gif"))
 	})
 
-	link_preview_el.find(".link_preview_url").eq(0).urlize()
 	link_preview_el.parent().find(".link_preview_text").eq(0).urlize()
 }
 
