@@ -98,7 +98,7 @@ Hue.aura_timeouts = {}
 Hue.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
 Hue.mouse_over_reactions = false
 Hue.reactions_hover_delay = 800
-Hue.user_functions = [1, 2, 3, 4]
+Hue.user_functions = [1, 2, 3, 4, 5, 6, 7, 8]
 Hue.mouse_is_down = false
 Hue.draw_message_just_entered = false
 Hue.draw_image_just_entered = false
@@ -256,10 +256,18 @@ Hue.user_settings =
 	user_function_2: {widget_type:"textarea"},
 	user_function_3: {widget_type:"textarea"},
 	user_function_4: {widget_type:"textarea"},
+	user_function_5: {widget_type:"textarea"},
+	user_function_6: {widget_type:"textarea"},
+	user_function_7: {widget_type:"textarea"},
+	user_function_8: {widget_type:"textarea"},
 	user_function_1_name: {widget_type:"text"},
 	user_function_2_name: {widget_type:"text"},
 	user_function_3_name: {widget_type:"text"},
 	user_function_4_name: {widget_type:"text"},
+	user_function_5_name: {widget_type:"text"},
+	user_function_6_name: {widget_type:"text"},
+	user_function_7_name: {widget_type:"text"},
+	user_function_8_name: {widget_type:"text"},
 	on_lockscreen: {widget_type:"textarea"},
 	on_unlockscreen: {widget_type:"textarea"},
 	afk_on_lockscreen: {widget_type:"checkbox"},
@@ -522,6 +530,7 @@ Hue.setup_templates = function()
 	Hue.template_reply = Handlebars.compile($('#template_reply').html())
 	Hue.template_handle_url = Handlebars.compile($('#template_handle_url').html())
 	Hue.template_open_url = Handlebars.compile($('#template_open_url').html())
+	Hue.template_settings_user_function = Handlebars.compile($('#template_settings_user_function').html())
 }
 
 Hue.show_help = function(number=1, filter="")
@@ -5425,26 +5434,6 @@ Hue.activate_key_detection = function()
 				{
 					Hue.reset_double_tap_keys_pressed()
 				}
-
-				if(e.key === "F1")
-				{
-					Hue.run_user_function(1)
-				}
-
-				else if(e.key === "F2")
-				{
-					Hue.run_user_function(2)
-				}
-
-				else if(e.key === "F3")
-				{
-					Hue.run_user_function(3)
-				}
-
-				else if(e.key === "F4")
-				{
-					Hue.run_user_function(4)
-				}
 			}
 
 			else
@@ -5457,8 +5446,6 @@ Hue.activate_key_detection = function()
 		{
 			Hue.reset_double_tap_keys_pressed()
 		}
-		
-		Hue.check_prevent_default(e)
 
 		if(Hue.modal_open)
 		{
@@ -12628,8 +12615,25 @@ Hue.start_msg = function()
 	Hue.msg_modal_image_number.set(Hue.template_modal_image_number())
 	Hue.msg_lockscreen.set(Hue.template_lockscreen())
 	Hue.msg_locked.set(Hue.template_locked_menu())
-	Hue.msg_global_settings.set(Hue.template_global_settings({settings:Hue.template_settings({type:"global_settings"})}))
-	Hue.msg_room_settings.set(Hue.template_room_settings({settings:Hue.template_settings({type:"room_settings"})}))
+	
+	Hue.msg_global_settings.set(Hue.template_global_settings(
+	{
+		settings:Hue.template_settings(
+		{
+			type:"global_settings", 
+			user_functions: Hue.make_settings_user_functions("global_settings")
+		})
+	}))
+
+	Hue.msg_room_settings.set(Hue.template_room_settings(
+	{
+		settings:Hue.template_settings(
+		{
+			type:"room_settings",
+			user_functions: Hue.make_settings_user_functions("room_settings")
+		})
+	}))
+
 	Hue.msg_draw_image.set(Hue.template_draw_image())
 	Hue.msg_credits.set(Hue.template_credits({background_url:Hue.config.credits_background_url}))
 	Hue.msg_help.set(Hue.template_help())
@@ -13420,20 +13424,81 @@ Hue.setting_open_popup_messages_action = function(type, save=true)
 	}
 }
 
-Hue.setting_user_function_1_name_action = function(type, save=true)
+// Special function used for all User Function name actions
+Hue.setting_function_name_do_action = function(number, type, save=true)
 {
-	let val = Hue.utilz.clean_string2($(`#${type}_user_function_1_name`).val())
+	let val = Hue.utilz.clean_string2($(`#${type}_user_function_${number}_name`).val())
 
 	if(!val)
 	{
 		val = Hue.config.global_settings_default_user_function_1_name
 	}
 
-	$(`#${type}_user_function_1_name`).val(val)
+	$(`#${type}_user_function_${number}_name`).val(val)
 
-	Hue[type].user_function_1_name = val
+	Hue[type][`user_function_${number}_name`] = val
 
-	if(Hue.active_settings("user_function_1_name") === type)
+	if(Hue.active_settings(`user_function_${number}_name`) === type)
+	{
+		Hue.setup_user_function_titles()
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_user_function_1_name_action = function(type, save=true)
+{
+	Hue.setting_function_name_do_action(1, type, save)
+}
+
+Hue.setting_user_function_2_name_action = function(type, save=true)
+{
+	Hue.setting_function_name_do_action(2, type, save)
+}
+
+Hue.setting_user_function_3_name_action = function(type, save=true)
+{
+	Hue.setting_function_name_do_action(3, type, save)
+}
+
+Hue.setting_user_function_4_name_action = function(type, save=true)
+{
+	Hue.setting_function_name_do_action(4, type, save)
+}
+
+Hue.setting_user_function_5_name_action = function(type, save=true)
+{
+	Hue.setting_function_name_do_action(5, type, save)
+}
+
+Hue.setting_user_function_6_name_action = function(type, save=true)
+{
+	Hue.setting_function_name_do_action(6, type, save)
+}
+
+Hue.setting_user_function_7_name_action = function(type, save=true)
+{
+	Hue.setting_function_name_do_action(7, type, save)
+}
+
+Hue.setting_user_function_8_name_action = function(type, save=true)
+{
+	Hue.setting_function_name_do_action(8, type, save)
+}
+
+// Special function used for all User Function actions
+Hue.setting_function_do_action = function(number, type, save=true)
+{
+	let cmds = Hue.utilz.clean_string7($(`#${type}_user_function_${number}`).val())
+
+	$(`#${type}_user_function_${number}`).val(cmds)
+
+	Hue[type][`user_function_${number}`] = cmds
+
+	if(Hue.active_settings(`user_function_${number}`) === type)
 	{
 		Hue.setup_user_function_titles()
 	}
@@ -13446,150 +13511,42 @@ Hue.setting_user_function_1_name_action = function(type, save=true)
 
 Hue.setting_user_function_1_action = function(type, save=true)
 {
-	let cmds = Hue.utilz.clean_string7($(`#${type}_user_function_1`).val())
-
-	$(`#${type}_user_function_1`).val(cmds)
-
-	Hue[type].user_function_1 = cmds
-
-	if(Hue.active_settings("user_function_1") === type)
-	{
-		Hue.setup_user_function_titles()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-Hue.setting_user_function_2_name_action = function(type, save=true)
-{
-	let val = Hue.utilz.clean_string2($(`#${type}_user_function_2_name`).val())
-
-	if(!val)
-	{
-		val = Hue.config.global_settings_default_user_function_2_name
-	}
-
-	$(`#${type}_user_function_2_name`).val(val)
-
-	Hue[type].user_function_2_name = val
-
-	if(Hue.active_settings("user_function_2_name") === type)
-	{
-		Hue.setup_user_function_titles()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
+	Hue.setting_function_do_action(1, type, save)
 }
 
 Hue.setting_user_function_2_action = function(type, save=true)
 {
-	let cmds = Hue.utilz.clean_string7($(`#${type}_user_function_2`).val())
-
-	$(`#${type}_user_function_2`).val(cmds)
-
-	Hue[type].user_function_2 = cmds
-
-	if(Hue.active_settings("user_function_2") === type)
-	{
-		Hue.setup_user_function_titles()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-Hue.setting_user_function_3_name_action = function(type, save=true)
-{
-	let val = Hue.utilz.clean_string2($(`#${type}_user_function_3_name`).val())
-
-	if(!val)
-	{
-		val = Hue.config.global_settings_default_user_function_3_name
-	}
-
-	$(`#${type}_user_function_3_name`).val(val)
-
-	Hue[type].user_function_3_name = val
-
-	if(Hue.active_settings("user_function_3_name") === type)
-	{
-		Hue.setup_user_function_titles()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
+	Hue.setting_function_do_action(2, type, save)
 }
 
 Hue.setting_user_function_3_action = function(type, save=true)
 {
-	let cmds = Hue.utilz.clean_string7($(`#${type}_user_function_3`).val())
-
-	$(`#${type}_user_function_3`).val(cmds)
-
-	Hue[type].user_function_3 = cmds
-
-	if(Hue.active_settings("user_function_3") === type)
-	{
-		Hue.setup_user_function_titles()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-Hue.setting_user_function_4_name_action = function(type, save=true)
-{
-	let val = Hue.utilz.clean_string2($(`#${type}_user_function_4_name`).val())
-
-	if(!val)
-	{
-		val = Hue.config.global_settings_default_user_function_4_name
-	}
-
-	$(`#${type}_user_function_4_name`).val(val)
-
-	Hue[type].user_function_4_name = val
-
-	if(Hue.active_settings("user_function_4_name") === type)
-	{
-		Hue.setup_user_function_titles()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
+	Hue.setting_function_do_action(3, type, save)
 }
 
 Hue.setting_user_function_4_action = function(type, save=true)
 {
-	let cmds = Hue.utilz.clean_string7($(`#${type}_user_function_4`).val())
+	Hue.setting_function_do_action(4, type, save)
+}
 
-	$(`#${type}_user_function_4`).val(cmds)
+Hue.setting_user_function_5_action = function(type, save=true)
+{
+	Hue.setting_function_do_action(5, type, save)
+}
 
-	Hue[type].user_function_4 = cmds
+Hue.setting_user_function_6_action = function(type, save=true)
+{
+	Hue.setting_function_do_action(6, type, save)
+}
 
-	if(Hue.active_settings("user_function_4") === type)
-	{
-		Hue.setup_user_function_titles()
-	}
+Hue.setting_user_function_7_action = function(type, save=true)
+{
+	Hue.setting_function_do_action(7, type, save)
+}
 
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
+Hue.setting_user_function_8_action = function(type, save=true)
+{
+	Hue.setting_function_do_action(8, type, save)
 }
 
 Hue.setting_on_lockscreen_action = function(type, save=true)
@@ -20094,11 +20051,6 @@ Hue.run_user_function = function(n)
 	{
 		Hue.execute_commands(`user_function_${n}`)
 	}
-
-	else
-	{
-		Hue.feedback(`User Function ${n} doesn't do anything yet. You can set what it does in the User Settings`)
-	}
 	
 	Hue.hide_reactions()
 }
@@ -21307,12 +21259,14 @@ Hue.toggle_settings_windows = function()
 	
 	data["global_settings"] = function()
 	{
-		Hue.show_room_settings()
+		let category = Hue.get_selected_user_settings_category("global_settings")
+		Hue.open_user_settings_category(category, "room_settings")
 	}
-
+	
 	data["room_settings"] = function()
 	{
-		Hue.show_global_settings()
+		let category = Hue.get_selected_user_settings_category("room_settings")
+		Hue.open_user_settings_category(category, "global_settings")
 	}
 
 	Hue.process_window_toggle(data)
@@ -21943,20 +21897,6 @@ Hue.input_is_scrolled = function()
 {
 	let el = $("#input")[0]
 	return el.clientHeight < el.scrollHeight
-}
-
-Hue.check_prevent_default = function(e)
-{
-	let keys = 
-	[
-		"F1", "F2",
-		"F3", "F4"
-	]
-
-	if(keys.includes(e.key))
-	{
-		e.preventDefault()
-	}
 }
 
 Hue.start_chat_quote_events = function()
@@ -24980,4 +24920,26 @@ Hue.get_limited_title = function(src)
 	}
 
 	return title
+}
+
+Hue.make_settings_user_functions = function(type)
+{
+	let s = ""
+
+	for(let i=1; i<Hue.user_functions.length+1; i++)
+	{
+		let o = "<option value='0' selected>----</option>"
+
+		for(let j=1; j<Hue.user_functions.length+1; j++)
+		{
+			if(i !== j)
+			{
+				o += `<option value='${j}'>Switch With ${j}</option>`
+			}
+		}
+
+		s += Hue.template_settings_user_function({number:i, type:type, options:o})
+	}
+
+	return s
 }
