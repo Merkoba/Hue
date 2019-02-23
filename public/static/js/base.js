@@ -47,6 +47,7 @@ Hue.started_safe = false
 Hue.afk = false
 Hue.alert_mode = 0
 Hue.commands_sorted = {}
+Hue.commands_sorted_2 = {}
 Hue.utilz = Utilz()
 Hue.wordz = Wordz()
 Hue.change_image_when_focused = false
@@ -4199,7 +4200,7 @@ Hue.start_msg_close_buttons_context_menu = function()
 			{
 				name: "Close All", callback: function(key, opt)
 				{
-					Hue.proccess_msg_close_button(this)
+					Hue.process_msg_close_button(this)
 				}
 			}
 		}
@@ -7895,7 +7896,9 @@ Hue.setup_commands = function()
 
 	for(let command of Hue.commands)
 	{
-		Hue.commands_sorted[command] = command.split('').sort().join('')
+		let sorted = command.split('').sort().join('')
+		Hue.commands_sorted[command] = sorted
+		Hue.commands_sorted_2[sorted] = command
 	}
 
 	for(let key in Hue.commands_sorted)
@@ -7952,11 +7955,16 @@ Hue.process_message = function(args={})
 
 	if(num_lines === 1 && Hue.is_command(args.message) && !args.edit_id)
 	{
+		if(args.message.startsWith("/?"))
+		{
+			args.message = args.message.replace("/?", "/")
+			return Hue.process_message(args)
+		}
+
 		args.message = Hue.utilz.clean_string2(args.message)
 		
 		let and_split = args.message.split(" && ")
 		let lc_message = args.message.toLowerCase()
-
 		let more_stuff
 
 		if(lc_message.startsWith("/js ") || lc_message.startsWith("/js2 "))
@@ -8127,7 +8135,6 @@ Hue.process_message = function(args={})
 			}
 
 			Hue.commands_queue[cqid] = cmds
-
 			Hue.run_commands_queue(cqid)
 
 			if(args.callback)
@@ -8143,15 +8150,28 @@ Hue.process_message = function(args={})
 
 		let msplit = args.message.split(" ")
 		let alias_cmd = msplit[0].trim()
-		let alias = Hue.command_aliases[alias_cmd]
+		let alias_cmd_2, needs_confirm
+
+		if(alias_cmd.endsWith("?"))
+		{
+			alias_cmd_2 = alias_cmd.slice(0, -1)
+			needs_confirm = true
+		}
+
+		else
+		{
+			alias_cmd_2 = alias_cmd
+			needs_confirm = false
+		}
+
+		let alias = Hue.command_aliases[alias_cmd_2]
 
 		if(alias !== undefined)
 		{
 			let alias_arg = msplit.slice(1).join(" ").trim()
-
 			let full_alias = `${alias} ${alias_arg}`.trim()
 
-			if(alias_cmd.startsWith("/X"))
+			if(alias_cmd_2.startsWith("/X"))
 			{
 				args.to_history = false
 			}
@@ -8161,18 +8181,34 @@ Hue.process_message = function(args={})
 				Hue.add_to_input_history(args.message)
 			}
 
-			Hue.process_message(
+			if(needs_confirm)
 			{
-				message: full_alias,
-				to_history: false,
-				clr_input: args.clr_input
-			})
-			
+				if(confirm("Are you sure?"))
+				{
+					Hue.process_message(
+					{
+						message: full_alias,
+						to_history: false,
+						clr_input: args.clr_input
+					})
+				}
+			}
+
+			else
+			{
+				Hue.process_message(
+				{
+					message: full_alias,
+					to_history: false,
+					clr_input: args.clr_input
+				})
+			}
+
 			if(args.callback)
 			{
 				return args.callback()
 			}
-
+		
 			else
 			{
 				return false
@@ -8255,8 +8291,15 @@ Hue.process_message = function(args={})
 Hue.execute_command = function(message, ans)
 {
 	let split = message.toLowerCase().split(' ')
-	
 	let cmd = split[0]
+	let arg = split.slice(1).join(" ")
+	let needs_confirm = false
+
+	if(cmd.endsWith("?"))
+	{
+		cmd = cmd.slice(0, -1)
+		needs_confirm = true
+	}
 
 	if(cmd.length < 2)
 	{
@@ -8264,1086 +8307,33 @@ Hue.execute_command = function(message, ans)
 		return ans
 	}
 
-	let cmd2 = cmd.split('').sort().join('')
+	let cmd_sorted = cmd.split('').sort().join('')
+	let command = Hue.commands_sorted_2[cmd_sorted]
 
-	let arg
-
-	if(split.length > 1)
-	{
-		cmd2 += ' '
-
-		arg = message.substring(cmd2.length)
-	}
-
-	if(Hue.oi_equals(cmd2, '/clear'))
-	{
-		Hue.clear_chat()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/clearinput'))
-	{
-		Hue.clear_input()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/users'))
-	{
-		Hue.show_userlist()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/users'))
-	{
-		Hue.show_userlist("normal", arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/publicrooms'))
-	{
-		Hue.request_roomlist("", "public_roomlist")
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/publicrooms'))
-	{
-		Hue.request_roomlist(arg, "public_roomlist")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/visitedrooms'))
-	{
-		Hue.request_roomlist("", "visited_roomlist")
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/visitedrooms'))
-	{
-		Hue.request_roomlist(arg, "visited_roomlist")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/roomname'))
-	{
-		Hue.show_room()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/roomname'))
-	{
-		Hue.change_room_name(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/roomnameedit'))
-	{
-		Hue.room_name_edit()
-		ans.to_history = false
-		ans.clr_input = false
-	}
-
-	else if(Hue.oi_equals(cmd2, '/played'))
-	{
-		Hue.show_played()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/played'))
-	{
-		Hue.show_played(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/search'))
-	{
-		Hue.show_chat_search()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/search'))
-	{
-		Hue.show_chat_search(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/role'))
-	{
-		Hue.show_role()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/voice1'))
-	{
-		Hue.change_role(arg, "voice1")
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/voice2'))
-	{
-		Hue.change_role(arg, "voice2")
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/voice3'))
-	{
-		Hue.change_role(arg, "voice3")
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/voice4'))
-	{
-		Hue.change_role(arg, "voice4")
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/op'))
-	{
-		Hue.change_role(arg, "op")
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/admin'))
-	{
-		Hue.change_role(arg, "admin")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/resetvoices'))
-	{
-		Hue.reset_voices()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/removeops'))
-	{
-		Hue.remove_ops()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/ban'))
-	{
-		Hue.ban(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/unban'))
-	{
-		Hue.unban(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/unbanall'))
-	{
-		Hue.unban_all()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/bannedcount'))
-	{
-		Hue.get_banned_count()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/kick'))
-	{
-		Hue.kick(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/public'))
-	{
-		Hue.change_privacy(true)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/private'))
-	{
-		Hue.change_privacy(false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/privacy'))
-	{
-		Hue.show_public()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/log'))
-	{
-		Hue.show_log()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/enablelog'))
-	{
-		Hue.change_log(true)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/disablelog'))
-	{
-		Hue.change_log(false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/clearlog'))
-	{
-		Hue.clear_log()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/clearlog2'))
-	{
-		Hue.clear_log(true)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/radio'))
-	{
-		Hue.change_radio_source(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/radio'))
-	{
-		Hue.show_media_source("radio")
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/tv'))
-	{
-		Hue.change_tv_source(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/tv'))
-	{
-		Hue.show_media_source("tv")
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/image') || Hue.oi_startswith(cmd2, '/images') || Hue.oi_startswith(cmd2, '/img'))
-	{
-		Hue.change_image_source(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/image'))
-	{
-		Hue.show_media_source("image")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/status'))
-	{
-		Hue.show_status()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/topic'))
-	{
-		Hue.change_topic(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/topicadd'))
-	{
-		Hue.topicadd(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/topictrim'))
-	{
-		Hue.topictrim(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/topictrim'))
-	{
-		Hue.topictrim(1)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/topicaddstart'))
-	{
-		Hue.topicstart(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/topictrimstart'))
-	{
-		Hue.topictrimstart(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/topictrimstart'))
-	{
-		Hue.topictrimstart(1)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/topicedit'))
-	{
-		Hue.topicedit()
-		ans.to_history = false
-		ans.clr_input = false
-	}
-
-	else if(Hue.oi_equals(cmd2, '/topic'))
-	{
-		Hue.show_topic()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/room'))
-	{
-		Hue.show_room()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/help') || Hue.oi_equals(cmd2, '/help1'))
-	{
-		Hue.show_help(1)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/help') || Hue.oi_startswith(cmd2, '/help1'))
-	{
-		Hue.show_help(1, arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/help2'))
-	{
-		Hue.show_help(2)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/help2'))
-	{
-		Hue.show_help(2, arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/help3'))
-	{
-		Hue.show_help(3)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/help3'))
-	{
-		Hue.show_help(3, arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/stopradio'))
-	{
-		Hue.stop_radio()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/startradio'))
-	{
-		Hue.start_radio()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/radiovolume'))
-	{
-		Hue.change_volume_command(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/tvvolume'))
-	{
-		Hue.change_volume_command(arg, "tv")
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/volume'))
-	{
-		Hue.change_volume_command(arg)
-		Hue.change_volume_command(arg, "tv")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/history'))
-	{
-		Hue.show_input_history()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/history'))
-	{
-		Hue.show_input_history(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/changeusername'))
-	{
-		Hue.change_username(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/changepassword'))
-	{
-		Hue.change_password(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/changeemail'))
-	{
-		Hue.change_email(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/verifyemail'))
-	{
-		Hue.verify_email(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/details'))
-	{
-		Hue.show_details()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/logout'))
-	{
-		Hue.logout()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/fill'))
-	{
-		Hue.fill()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/shrug'))
-	{
-		Hue.shrug()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/afk'))
-	{
-		Hue.show_afk()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/disconnectothers'))
-	{
-		Hue.disconnect_others()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/whisper'))
-	{
-		Hue.process_write_whisper(arg, true)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/whisper2'))
-	{
-		Hue.process_write_whisper(arg, false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/whisperops'))
-	{
-		Hue.write_popup_message(false, "ops")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/broadcast'))
-	{
-		Hue.write_popup_message(false, "room")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/systembroadcast'))
-	{
-		Hue.write_popup_message(false, "system")
-		ans.to_history = false
-	}
-
-	else if(Hue.oi_equals(cmd2, '/systemrestart'))
-	{
-		Hue.send_system_restart_signal()
-		ans.to_history = false
-	}
-
-	else if(Hue.oi_equals(cmd2, '/annex'))
-	{
-		Hue.annex()
-		ans.to_history = false
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/annex'))
-	{
-		Hue.annex(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/highlights'))
-	{
-		Hue.show_highlights()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/highlights'))
-	{
-		Hue.show_highlights(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/lock'))
-	{
-		Hue.stop_and_lock(false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/unlock'))
-	{
-		Hue.default_media_state(false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/stopandlock'))
-	{
-		Hue.stop_and_lock()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/stop'))
-	{
-		Hue.stop_media()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/default'))
-	{
-		Hue.default_media_state()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/menu'))
-	{
-		Hue.show_main_menu()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/media'))
-	{
-		Hue.show_media_menu()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/user'))
-	{
-		Hue.show_user_menu()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/imagehistory'))
-	{
-		Hue.show_media_history("image")
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/imagehistory'))
-	{
-		Hue.show_media_history("image", arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/tvhistory'))
-	{
-		Hue.show_media_history("tv")
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/tvhistory'))
-	{
-		Hue.show_media_history("tv", arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/radiohistory'))
-	{
-		Hue.show_media_history("radio")
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/radiohistory'))
-	{
-		Hue.show_media_history("radio", arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/lockimages'))
-	{
-		Hue.toggle_lock_images(true)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/locktv'))
-	{
-		Hue.toggle_lock_tv(true)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/lockradio'))
-	{
-		Hue.toggle_lock_radio(true)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/unlockimages'))
-	{
-		Hue.toggle_lock_images(false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/unlocktv'))
-	{
-		Hue.toggle_lock_tv(false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/unlockradio'))
-	{
-		Hue.toggle_lock_radio(false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/togglelockimages'))
-	{
-		Hue.toggle_lock_images()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/togglelocktv'))
-	{
-		Hue.toggle_lock_tv()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/togglelockradio'))
-	{
-		Hue.toggle_lock_radio()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/showimages'))
-	{
-		Hue.toggle_images(true)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/showtv'))
-	{
-		Hue.toggle_tv(true)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/showradio'))
-	{
-		Hue.toggle_radio(true)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/hideimages'))
-	{
-		Hue.toggle_images(false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/hidetv'))
-	{
-		Hue.toggle_tv(false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/hideradio'))
-	{
-		Hue.toggle_radio(false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/toggleimages'))
-	{
-		Hue.toggle_images()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/toggletv'))
-	{
-		Hue.toggle_tv()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/toggleradio'))
-	{
-		Hue.toggle_radio()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/test'))
-	{
-		Hue.do_test()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/maximizeimages'))
-	{
-		Hue.maximize_images()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/maximizetv'))
-	{
-		Hue.maximize_tv()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/starttv'))
-	{
-		Hue.play_video()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/stoptv'))
-	{
-		Hue.stop_tv()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/openimage'))
-	{
-		Hue.show_current_image_modal()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/openlastimage'))
-	{
-		Hue.show_current_image_modal(false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/date'))
-	{
-		Hue.show_current_date()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/js'))
-	{
-		arg = arg.replace(/\s\/endjs/gi, "")
-		Hue.execute_javascript(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/js2'))
-	{
-		arg = arg.replace(/\s\/endjs/gi, "")
-		Hue.execute_javascript(arg, false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/changeimage'))
-	{
-		Hue.show_image_picker()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/changetv'))
-	{
-		Hue.show_tv_picker()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/changeradio'))
-	{
-		Hue.show_radio_picker()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/closeall'))
-	{
-		Hue.close_all_message()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/closeallmodals'))
-	{
-		Hue.close_all_modals()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/closeallpopups'))
-	{
-		Hue.close_all_popups()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/activityabove'))
-	{
-		Hue.activity_above(true)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/activityabove2'))
-	{
-		Hue.activity_above(false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/activitybelow'))
-	{
-		Hue.activity_below(true)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/activitybelow2'))
-	{
-		Hue.activity_below(false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/globalsettings'))
-	{
-		Hue.show_global_settings()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/roomsettings'))
-	{
-		Hue.show_room_settings()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/goto'))
-	{
-		Hue.goto_url(arg, "tab")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/toggleplayradio'))
-	{
-		Hue.toggle_play_radio()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/refreshimage'))
-	{
-		Hue.refresh_image()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/refreshtv'))
-	{
-		Hue.refresh_tv()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/refreshradio'))
-	{
-		Hue.refresh_radio()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/stopradioin'))
-	{
-		Hue.stop_radio_in(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/ping'))
-	{
-		Hue.ping_server()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/reactlike'))
-	{
-		Hue.send_reaction("like")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/reactlove'))
-	{
-		Hue.send_reaction("love")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/reacthappy'))
-	{
-		Hue.send_reaction("happy")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/reactmeh'))
-	{
-		Hue.send_reaction("meh")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/reactsad'))
-	{
-		Hue.send_reaction("sad")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/reactdislike'))
-	{
-		Hue.send_reaction("dislike")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/f1'))
-	{
-		Hue.run_user_function(1)
-		ans.to_history = false
-	}
-
-	else if(Hue.oi_equals(cmd2, '/f2'))
-	{
-		Hue.run_user_function(2)
-		ans.to_history = false
-	}
-
-	else if(Hue.oi_equals(cmd2, '/f3'))
-	{
-		Hue.run_user_function(3)
-		ans.to_history = false
-	}
-
-	else if(Hue.oi_equals(cmd2, '/f4'))
-	{
-		Hue.run_user_function(4)
-		ans.to_history = false
-	}
-
-	else if(Hue.oi_equals(cmd2, '/lockscreen'))
-	{
-		Hue.lock_screen()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/unlockscreen'))
+	if(!command)
 	{
-		Hue.unlock_screen()
+		Hue.feedback(`Invalid command "${cmd.slice(1)}". Maybe it is missing an argument. To start a message with / use //`)
+		return false
 	}
 
-	else if(Hue.oi_equals(cmd2, '/togglelockscreen'))
+	if(needs_confirm)
 	{
-		if(Hue.room_state.screen_locked)
+		if(confirm("Are you sure?"))
 		{
-			Hue.unlock_screen()
+			Hue.command_actions[command](arg, ans)
 		}
 
 		else
 		{
-			Hue.lock_screen()
+			return ans
 		}
 	}
-
-	else if(Hue.oi_equals(cmd2, '/drawimage'))
-	{
-		Hue.open_draw_image()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/say'))
-	{
-		Hue.process_message(
-		{
-			message: arg,
-			to_history: ans.to_history,
-			clr_input: ans.clr_input
-		})
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/input'))
-	{
-		arg = arg.replace(/\s\/endinput/gi, "")
-		Hue.change_input(arg)
-		ans.to_history = false
-		ans.clr_input = false
-	}
-
-	else if(Hue.oi_equals(cmd2, '/top'))
-	{
-		Hue.goto_top(true)
-	}
-	else if(Hue.oi_equals(cmd2, '/top2'))
-	{
-		Hue.goto_top(false)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/bottom'))
-	{
-		Hue.goto_bottom(true, true)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/bottom2'))
-	{
-		Hue.goto_bottom(true, false)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/background'))
-	{
-		Hue.change_background_image_source(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/whatis'))
-	{
-		Hue.inspect_command(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/refresh'))
-	{
-		Hue.restart_client()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/modifysetting'))
-	{
-		Hue.modify_setting(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/modifysetting2'))
-	{
-		Hue.modify_setting(arg, false)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/feedback'))
-	{
-		Hue.feedback(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/imagesmode'))
-	{
-		Hue.change_room_images_mode(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/tvmode'))
-	{
-		Hue.change_room_tv_mode(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/radiomode'))
-	{
-		Hue.change_room_radio_mode(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/theme'))
-	{
-		Hue.change_theme(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/thememode'))
-	{
-		Hue.change_theme_mode(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/textcolormode'))
-	{
-		Hue.change_text_color_mode(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/textcolor'))
-	{
-		Hue.change_text_color(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/backgroundmode'))
-	{
-		Hue.change_background_mode(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/backgroundeffect'))
-	{
-		Hue.change_background_effect(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/tiledimensions'))
-	{
-		Hue.change_background_tile_dimensions(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/adminactivity'))
-	{
-		Hue.request_admin_activity()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/adminactivity'))
-	{
-		Hue.request_admin_activity(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/accesslog'))
-	{
-		Hue.request_access_log()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/accesslog'))
-	{
-		Hue.request_access_log(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/togglefontsize'))
-	{
-		Hue.toggle_chat_font_size()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/adminlist'))
-	{
-		Hue.request_admin_list()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/toggleactivtybar'))
-	{
-		Hue.toggle_activity_bar()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/synthkey'))
-	{
-		Hue.send_synth_key(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/synthkeylocal'))
-	{
-		Hue.play_synth_key(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/togglemutesynth'))
-	{
-		Hue.set_synth_muted()
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/speak'))
-	{
-		Hue.send_synth_voice(arg)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/speaklocal'))
-	{
-		Hue.play_synth_voice(arg, Hue.username, true)
-	}
-
-	else if(Hue.oi_startswith(cmd2, '/speech'))
-	{
-		Hue.play_speech(arg)
-	}
-
-	else if(Hue.oi_equals(cmd2, '/unmaximize'))
-	{
-		Hue.unmaximize_media()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/maximizechat'))
-	{
-		Hue.toggle_media()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/autoscrollup'))
-	{
-		Hue.autoscroll_up()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/autoscrolldown'))
-	{
-		Hue.autoscroll_down()
-	}
-
-	else if(Hue.oi_equals(cmd2, '/loadnextimage'))
-	{
-		Hue.media_load_next("images")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/loadprevimage'))
-	{
-		Hue.media_load_previous("images")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/loadnexttv'))
-	{
-		Hue.media_load_next("tv")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/loadprevtv'))
-	{
-		Hue.media_load_previous("tv")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/loadnextradio'))
-	{
-		Hue.media_load_next("radio")
-	}
-
-	else if(Hue.oi_equals(cmd2, '/loadprevradio'))
-	{
-		Hue.media_load_previous("radio")
-	}	
-
+	
 	else
 	{
-		Hue.feedback(`Invalid command "${cmd.slice(1)}". Maybe it is missing an argument. To start a message with / use //`)
+		Hue.command_actions[command](arg, ans)
 	}
-
+	
 	return ans
 }
 
@@ -18528,9 +17518,7 @@ Hue.setup_modal_image = function()
 
 	$("#modal_image_toolbar_change").click(function(e)
 	{
-		let r = confirm("This will change it for everyone. Are you sure?")
-
-		if(r)
+		if(confirm("This will change it for everyone. Are you sure?"))
 		{
 			let item = Hue.loaded_modal_image
 			Hue.change_image_source(item.source)
@@ -18705,9 +17693,7 @@ Hue.confirm_reset_settings = function(type)
 		s = "Room Settings"
 	}
 
-	let r = confirm(`Are you sure you want to reset the ${s} to their initial state?`)
-
-	if(r)
+	if(confirm(`Are you sure you want to reset the ${s} to their initial state?`))
 	{
 		Hue.reset_settings(type)
 	}
@@ -19404,9 +18390,7 @@ Hue.needs_confirm = function(func, s=false)
 		s = "Are you sure?"
 	}
 
-	let r = confirm(s)
-
-	if(r)
+	if(confirm(s))
 	{
 		Hue[func]()
 	}
@@ -21377,7 +20361,6 @@ Hue.setup_command_aliases = function()
 		if(name[0] === "/" && name[1] !== "/")
 		{
 			let body = pieces.slice(1).join("=").trim()
-
 			Hue.command_aliases[name] = body
 		}
 	}
@@ -21436,9 +20419,7 @@ Hue.setup_open_url = function()
 
 	$("#open_url_menu_change").click(function()
 	{
-		let r = confirm("This will change it for everyone. Are you sure?")
-
-		if(r)
+		if(confirm("This will change it for everyone. Are you sure?"))
 		{
 			Hue[`change_${Hue.open_url_media_type}_source`](Hue.open_url_data.source)
 			Hue.close_all_modals()
@@ -21986,6 +20967,8 @@ Hue.setup_markdown_regexes = function()
 		{
 			return `${g2}<span class='italic bold'>[dummy-space]${g4}[dummy-space]</span>${g5}`
 		}
+
+		return g1
 	}
 	
 	Hue.markdown_regexes["_"] = {}
@@ -22003,6 +20986,8 @@ Hue.setup_markdown_regexes = function()
 		{
 			return `${g2}<span class='underlined'>[dummy-space]${g4}[dummy-space]</span>${g5}`
 		}
+
+		return g1
 	}
 	
 	Hue.markdown_regexes["="] = {}
@@ -22015,6 +21000,8 @@ Hue.setup_markdown_regexes = function()
 		{
 			return `${g2}<span class='slight_background'>[dummy-space]${g4}[dummy-space]</span>${g5}`
 		}
+
+		return g1
 	}
 	
 	Hue.markdown_regexes["|"] = {}
@@ -22027,6 +21014,8 @@ Hue.setup_markdown_regexes = function()
 		{
 			return `${g2}<span class='spoiler' title='Click To Reveal'>[dummy-space]${g4}[dummy-space]</span>${g5}`
 		}
+
+		return g1
 	}
 
 	Hue.markdown_regexes["whisper_link"] = {}
@@ -23335,9 +22324,7 @@ Hue.delete_message = function(id, force=false)
 			return false
 		}
 	
-		let r = confirm("Are you sure you want to delete this message?")
-	
-		if(r)
+		if(confirm("Are you sure you want to delete this message?"))
 		{
 			Hue.send_delete_message(id)
 		}
@@ -24292,7 +23279,7 @@ Hue.start_body_events = function()
 	{
 		if(e.which === 2)
 		{
-			Hue.proccess_msg_close_button(this)
+			Hue.process_msg_close_button(this)
 		}
 	})
 }
@@ -24900,7 +23887,7 @@ Hue.fix_horizontal_separators = function(container_id)
 	})
 }
 
-Hue.proccess_msg_close_button = function(button)
+Hue.process_msg_close_button = function(button)
 {
 	let container = $(button).closest(".Msg-container")
 
