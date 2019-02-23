@@ -298,7 +298,6 @@ Hue.command_actions =
 		{
 			Hue.request_roomlist("", "visited_roomlist")
 		}
-    
 	},
 	"/roomname": (arg, ans) =>
 	{
