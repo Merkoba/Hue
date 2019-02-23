@@ -1487,6 +1487,15 @@ input[type=text], textarea
 	overflow-x: hidden;
 }
 
+.setting_textarea3
+{
+	width: 19rem;
+	resize: none;
+	font-size: 1em;
+	text-align: center;
+	white-space: pre;
+}
+
 .setting_input_text
 {
 	width: calc(100% - 0.5rem);
