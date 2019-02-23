@@ -20118,10 +20118,8 @@ Hue.do_settings_filter = function(type, filter=false)
 		if(filter)
 		{
 			let text = Hue.utilz.clean_string2($(this).text()).toLowerCase()
-			let category = $(this).closest(".settings_category").data("category")
-			let text2 = `${text} ${category}`
 			
-			if(words.some(word => text2.includes(word)))
+			if(words.some(word => text.includes(word)))
 			{
 				$(this).css("display", "block")
 			}
