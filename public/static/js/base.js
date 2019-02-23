@@ -20172,7 +20172,7 @@ Hue.do_settings_filter = function(type, filter=false)
 
 	if(new_category)
 	{
-		Hue.change_settings_window_category(new_category)
+		Hue.change_settings_window_category(new_category, type)
 	}
 }
 
