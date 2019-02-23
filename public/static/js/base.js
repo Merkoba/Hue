@@ -166,61 +166,6 @@ Hue.show_media_history_state = ""
 Hue.add_to_chat_searches_delay = 2000
 Hue.reactions_box_open = false
 
-Hue.commands = 
-[
-	'/me', '/clear', '/clearinput',
-	'/users', '/room', '/publicrooms', '/visitedrooms',
-	'/roomname', '/roomnameedit', '/played', '/search',
-	'/role', '/voice1', '/voice2', '/voice3',
-	'/voice4', '/op', '/admin', '/resetvoices',
-	'/removeops', '/ban', '/unban', '/unbanall',
-	'/bannedcount', '/kick', '/public', '/private',
-	'/log', '/enablelog', '/disablelog', '/clearlog',
-	'/radio', '/tv', '/image',
-	'/privacy', '/status', '/topic', '/topicadd',
-	'/topictrim', '/topicaddstart', '/topictrimstart', '/topicedit',
-	'/help3', '/help2', '/help', '/stopradio',
-	'/startradio', '/radiovolume', '/tvvolume', '/volume',
-	'/history', '/logout', '/details', '/changeusername',
-	'/changepassword', '/changeemail', '/verifyemail', '/fill',
-	'/shrug', '/afk', '/disconnectothers', '/whisper',
-	'/whisper2', '/endwhisper', '/whisperops', '/annex',
-	'/highlights', '/lock', '/unlock', '/stopandlock',
-	'/stop', '/default', '/menu', '/media',
-	'/user', '/imagehistory', '/tvhistory', '/radiohistory',
-	'/lockimages', '/locktv', '/lockradio', '/unlockimages',
-	'/unlocktv', '/unlockradio', '/togglelockimages', '/togglelocktv',
-	'/togglelockradio', '/showimages', '/showtv', '/showradio',
-	'/hideimages', '/hidetv', '/hideradio', '/toggleimages',
-	'/toggletv', '/toggleradio', '/test', '/maximizeimages',
-	'/maximizetv', '/starttv', '/stoptv', '/openimage',
-	'/openlastimage', '/date', '/js', '/js2',
-	'/changeimage', '/changetv', '/chenlastimage', '/date',
-	'/js', '/js2', '/endjs', '/changeimage',
-	'/changetv', '/changeradio', '/closeall', '/closeallmodals',
-	'/closeallpopups', '/closeandwait', '/activityabove', '/activityabove2',
-	'/activitybelow', '/activitybelow2', '/globalsettings', '/roomsettings',
-	'/goto', '/broadcast', '/systembroadcast', '/systemrestart',
-	'/toggleplayradio', '/refreshimage', '/refreshtv', '/refreshradio',
-	'/stopradioin', '/ping', '/reactlike', '/reactlove',
-	'/reacthappy', '/reactmeh', '/reactsad', '/reactdislike',
-	'/f1', '/f2', '/f3', '/f4',
-	'/lockscreen', '/unlockscreen', '/togglelockscreen', '/drawimage',
-	'/joinvoicechat', '/leavevoicechat', '/say', '/sleep',
-	'/input', '/endinput', '/inputenter', '/top',
-	'/top2', '/bottom', '/bottom2', '/background',
-	'/whatis', '/refresh', '/modifysetting', '/modifysetting2',
-	'/feedback', '/imagesmode', '/tvmode', '/radiomode',
-	'/voicechatmode', '/voicepermission', '/theme', '/textcolormode',
-	'/textcolor', '/backgroundmode', '/tiledimensions', '/adminactivity',
-	'/clearlog2', '/togglefontsize', '/backgroundeffect', '/adminlist',
-	'/accesslog', '/toggleactivtybar', '/thememode', '/synthkey',
-	'/togglemutesynth', '/speak', '/synthkeylocal', '/speaklocal',
-	'/unmaximize', '/maximizechat', '/autoscrollup', '/autoscrolldown',
-	'/loadnextimage', '/loadprevimage', '/loadnexttv', '/loadprevtv',
-	'/loadnextradio', '/loadprevradio', '/speech'
-]
-
 Hue.user_settings =
 {
 	background_image: {widget_type:"checkbox"},
@@ -368,7 +313,6 @@ Hue.init = function()
 	Hue.setup_mouse_events()
 	Hue.setup_draw_image()
 	Hue.setup_autocomplete()
-	Hue.setup_user_function_titles()
 	Hue.setup_modal_image_number()
 	Hue.setup_command_aliases()
 	Hue.setup_fonts()
@@ -389,6 +333,7 @@ Hue.init = function()
 	Hue.setup_upload_comment()
 	Hue.setup_drag_events()
 	Hue.setup_open_url()
+	Hue.setup_user_functions()
 
 	if(Hue.debug_functions)
 	{
@@ -7892,6 +7837,13 @@ jQuery.fn.urlize = function(stop_propagation=true)
 
 Hue.setup_commands = function()
 {
+	Hue.commands = []
+
+	for(let key in Hue.command_actions)
+	{
+		Hue.commands.push(key)
+	}
+
 	Hue.commands.sort()
 
 	for(let command of Hue.commands)
@@ -19003,6 +18955,33 @@ Hue.hide_reactions_box = function()
 	}
 }
 
+Hue.setup_user_functions = function()
+{
+	for(let i=1; i<Hue.user_functions.length+1; i++)
+	{
+		$(`#user_function_button_${i}`).click(function()
+		{
+			Hue.run_user_function(i)
+		})
+	
+		$(`#user_function_button_${i}`).on("auxclick", function(e)
+		{
+			if(e.which === 2)
+			{
+				Hue.open_user_function_in_settings(i)
+			}
+		})
+	}
+
+	Hue.setup_user_function_titles()
+}
+
+Hue.open_user_function_in_settings = function(n)
+{
+	Hue.open_user_settings_category("functions")
+	Hue.go_to_user_settings_item(`user_function_${n}`)
+}
+
 Hue.run_user_function = function(n)
 {
 	if(!Hue.user_functions.includes(n))
@@ -19017,8 +18996,7 @@ Hue.run_user_function = function(n)
 
 	else
 	{
-		Hue.open_user_settings_category("functions")
-		Hue.go_to_user_settings_item(`user_function_${n}`)
+		Hue.open_user_function_in_settings(n)
 	}
 	
 	Hue.hide_reactions_box()
