@@ -886,8 +886,8 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .input_history_item
 {
-	padding-top: 1em;
-	padding-bottom: 1em;
+	padding-top: 0.8em;
+	padding-bottom: 0.8em;
 	cursor: pointer;
 	max-width: 26em;
 }

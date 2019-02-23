@@ -580,7 +580,7 @@ Hue.command_actions =
 		Hue.change_volume_command(arg)
 		Hue.change_volume_command(arg, "tv")
 	},
-	"/history": (arg, ans) =>
+	"/inputhistory": (arg, ans) =>
 	{
 		if(arg)
 		{
@@ -6958,17 +6958,13 @@ Hue.add_to_input_history = function(message, change_index=true)
 	}
 
 	let date = Date.now()
-
 	let item = {message:message, date:date}
 
 	Hue.input_history.push(item)
 
-	Hue.push_to_input_history_window(item)
-
 	if(Hue.input_history.length > Hue.config.input_history_crop_limit)
 	{
 		Hue.input_history = Hue.input_history.slice(Hue.input_history.length - Hue.config.input_history_crop_limit)
-		$(".input_history_item").last().remove()
 	}
 
 	if(change_index)
@@ -6984,20 +6980,6 @@ Hue.save_input_history = function()
 	Hue.save_local_storage(Hue.ls_input_history, Hue.input_history)
 }
 
-Hue.push_to_input_history_window = function(item)
-{
-	let c = $(`<div class='modal_item input_history_item dynamic_title'></div>`)
-
-	let nd = Hue.nice_date(item.date)
-
-	c.attr("title", nd)
-	c.data("otitle", nd)
-	c.data("date", item.date)
-	c.text(item.message)
-
-	$("#input_history_container").prepend(c)
-}
-
 Hue.get_input_history = function()
 {
 	Hue.input_history = Hue.get_local_storage(Hue.ls_input_history)
@@ -7008,11 +6990,6 @@ Hue.get_input_history = function()
 	}
 
 	Hue.reset_input_history_index()
-
-	for(let item of Hue.input_history)
-	{
-		Hue.push_to_input_history_window(item)
-	}
 }
 
 Hue.reset_input_history_index = function()
@@ -14122,6 +14099,21 @@ Hue.start_filters = function()
 	{
 		Hue.media_history_filter_timer("radio")
 	})
+
+	$("#global_settings_filter").on("input", function()
+	{
+		Hue.settings_filter_timer("global_settings")
+	})
+
+	$("#room_settings_filter").on("input", function()
+	{
+		Hue.settings_filter_timer("room_settings")
+	})
+
+	$("#input_history_filter").on("input", function()
+	{
+		Hue.input_history_filter_timer()
+	})
 }
 
 Hue.do_modal_filter_timer = (function()
@@ -14160,6 +14152,7 @@ Hue.do_modal_filter = function(id=false)
 
 	let value = filter.val().trim()
 	filter.val(value)
+	
 	let lc_value = Hue.utilz.clean_string2(value).toLowerCase()
 	let items = $(`#Msg-content-${id} .modal_item`)
 	let display = "block"
@@ -14171,18 +14164,8 @@ Hue.do_modal_filter = function(id=false)
 		items.each(function()
 		{
 			let item_value = $(this).text().toLowerCase()
-			let found = true
-
-			for(let word of words)
-			{
-				if(!item_value.includes(word))
-				{
-					found = false
-					break
-				}
-			}
-
-			if(found)
+			
+			if(words.some(word => item_value.includes(word)))
 			{
 				$(this).css("display", display)
 			}
@@ -14209,16 +14192,77 @@ Hue.do_modal_filter = function(id=false)
 	Hue.scroll_modal_to_top(id)
 }
 
+Hue.input_history_filter_timer = (function()
+{
+	let timer
+
+	return function()
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function()
+		{
+			Hue.show_input_history($("#input_history_filter").val())
+		}, Hue.filter_delay)
+	}
+})()
+
 Hue.show_input_history = function(filter=false)
 {
-	Hue.msg_input_history.show(function()
+	if(filter)
+	{
+		filter = filter.trim()
+	}
+
+	let sfilter = filter ? filter : ''
+
+	$("#input_history_container").html("")
+	$("#input_history_filter").val(sfilter)
+	$("#input_history_container").html("")
+
+	let words
+
+	if(filter)
+	{
+		let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
+		words = lc_value.split(" ").filter(x => x.trim() !== "")
+	}
+	
+	for(let item of Hue.input_history)
 	{
 		if(filter)
 		{
-			$("#input_history_filter").val(filter)
-			Hue.do_modal_filter()
+			let text = item.message.toLowerCase()
+	
+			if(words.some(word => text.includes(word)))
+			{
+				let c = $(`<div class='modal_item input_history_item dynamic_title'></div>`)
+				let nd = Hue.nice_date(item.date)
+	
+				c.attr("title", nd)
+				c.data("otitle", nd)
+				c.data("date", item.date)
+				c.text(item.message)
+	
+				$("#input_history_container").prepend(c)
+			}
 		}
-	})
+
+		else
+		{
+			let c = $(`<div class='modal_item input_history_item dynamic_title'></div>`)
+			let nd = Hue.nice_date(item.date)
+	
+			c.attr("title", nd)
+			c.data("otitle", nd)
+			c.data("date", item.date)
+			c.text(item.message)
+
+			$("#input_history_container").prepend(c)
+		}
+	}
+
+	Hue.msg_input_history.show()
 }
 
 onYouTubeIframeAPIReady = function()
@@ -21022,7 +21066,6 @@ Hue.setup_autocomplete = function()
 Hue.setup_settings = function()
 {
 	Hue.set_user_settings_titles()
-	Hue.setup_settings_filters()
 
 	let first_category = $("#global_settings_container .settings_window_category").eq(0).data("category")
 	Hue.change_settings_window_category(first_category, "global_settings")
@@ -21043,19 +21086,6 @@ Hue.settings_filter_timer = (function()
 		}, Hue.filter_delay)
 	}
 })()
-
-Hue.setup_settings_filters = function()
-{
-	$("#global_settings_filter").on("input", function()
-	{
-		Hue.settings_filter_timer("global_settings")
-	})
-
-	$("#room_settings_filter").on("input", function()
-	{
-		Hue.settings_filter_timer("room_settings")
-	})
-}
 
 Hue.do_settings_filter = function(type, filter=false)
 {
