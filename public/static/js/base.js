@@ -318,7 +318,6 @@ Hue.init = function()
 	Hue.setup_fonts()
 	Hue.setup_before_unload()
 	Hue.start_chat_quote_events()
-	Hue.set_user_settings_titles()
 	Hue.maxers_mouse_events()
 	Hue.check_screen_lock()
 	Hue.setup_iframe_video()
@@ -334,6 +333,8 @@ Hue.init = function()
 	Hue.setup_drag_events()
 	Hue.setup_open_url()
 	Hue.setup_user_functions()
+	Hue.setup_settings()
+
 
 	if(Hue.debug_functions)
 	{
@@ -17933,13 +17934,15 @@ Hue.user_is_ignored = function(uname)
 	return false
 }
 
-Hue.show_global_settings = function()
+Hue.show_global_settings = function(filter=false)
 {
+	Hue.do_settings_filter("global_settings", filter)
 	Hue.msg_global_settings.show()
 }
 
-Hue.show_room_settings = function()
+Hue.show_room_settings = function(filter=false)
 {
+	Hue.do_settings_filter("room_settings", filter)
 	Hue.msg_room_settings.show()
 }
 
@@ -20053,6 +20056,126 @@ Hue.setup_autocomplete = function()
 	})
 }
 
+Hue.setup_settings = function()
+{
+	Hue.set_user_settings_titles()
+	Hue.setup_settings_filters()
+
+	let first_category = $("#global_settings_container .settings_window_category").eq(0).data("category")
+	Hue.change_settings_window_category(first_category, "global_settings")
+	Hue.change_settings_window_category(first_category, "room_settings")
+}
+
+Hue.settings_filter_timer = (function()
+{
+	let timer
+
+	return function(type)
+	{
+		clearTimeout(timer)
+
+		timer = setTimeout(function()
+		{
+			Hue.do_settings_filter(type, $(`#${type}_filter`).val())
+		}, Hue.filter_delay)
+	}
+})()
+
+Hue.setup_settings_filters = function()
+{
+	$("#global_settings_filter").on("input", function()
+	{
+		Hue.settings_filter_timer("global_settings")
+	})
+
+	$("#room_settings_filter").on("input", function()
+	{
+		Hue.settings_filter_timer("room_settings")
+	})
+}
+
+Hue.do_settings_filter = function(type, filter=false)
+{
+	if(filter)
+	{
+		filter = filter.trim()
+	}
+
+	let sfilter = filter ? filter : ''
+
+	$(`#${type}_filter`).val(sfilter)
+
+	let words
+
+	if(filter)
+	{
+		let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
+		words = lc_value.split(" ").filter(x => x.trim() !== "")
+	}
+
+	$(`#${type}_container .settings_top_level_item`).each(function()
+	{
+		if(filter)
+		{
+			let text = Hue.utilz.clean_string2($(this).text()).toLowerCase()
+			let category = $(this).closest(".settings_category").data("category")
+			let text2 = `${text} ${category}`
+			
+			if(words.some(word => text2.includes(word)))
+			{
+				$(this).css("display", "block")
+			}
+			
+			else
+			{
+				$(this).css("display", "none")
+			}
+		}
+		
+		else
+		{
+			$(this).css("display", "block")
+		}
+	})
+
+	let current_category = Hue.get_selected_user_settings_category(type)
+	let current_category_visible = true
+	let active_category = false
+
+	$(`#${type}_container .settings_category`).each(function()
+	{
+		let category = $(this).data("category")
+		let count = $(this).find(".settings_top_level_item:not([style*='display: none'])").length
+
+		if(count === 0)
+		{
+			if(category === current_category)
+			{
+				current_category_visible = false
+			}
+
+			$(`#settings_window_category_${category}_${type}`).css("display", "none")
+		}
+		
+		else
+		{
+			if(!active_category)
+			{
+				active_category = category
+			}
+
+			$(`#settings_window_category_${category}_${type}`).css("display", "flex")
+		}
+	})
+
+	let new_category = current_category_visible ? current_category : active_category
+
+	if(new_category)
+	{
+		Hue.change_settings_window_category(new_category)
+	}
+}
+
 Hue.setup_settings_window = function()
 {
 	$(".settings_main_window").on("click", ".settings_window_category", function(e)
@@ -20062,9 +20185,9 @@ Hue.setup_settings_window = function()
 	})
 }
 
-Hue.change_settings_window_category = function(category)
+Hue.change_settings_window_category = function(category, type=false)
 {
-	let type = Hue.which_user_settings_window_is_open()
+	type = type ? type : Hue.which_user_settings_window_is_open()
 
 	if(!type)
 	{
@@ -20208,12 +20331,26 @@ Hue.toggle_settings_windows = function()
 	{
 		let category = Hue.get_selected_user_settings_category("global_settings")
 		Hue.open_user_settings_category(category, "room_settings")
+
+		let filter = $("#global_settings_filter").val()
+
+		if(filter)
+		{
+			Hue.do_settings_filter("room_settings", filter)
+		}
 	}
 	
 	data["room_settings"] = function()
 	{
 		let category = Hue.get_selected_user_settings_category("room_settings")
 		Hue.open_user_settings_category(category, "global_settings")
+
+		let filter = $("#room_settings_filter").val()
+
+		if(filter)
+		{
+			Hue.do_settings_filter("global_settings", filter)
+		}
 	}
 
 	Hue.process_window_toggle(data)

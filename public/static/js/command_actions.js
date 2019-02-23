@@ -771,12 +771,28 @@ Hue.command_actions['/activitybelow2'] = (arg, ans) =>
 
 Hue.command_actions['/globalsettings'] = (arg, ans) =>
 {
-    Hue.show_global_settings()
+    if(arg)
+    {
+        Hue.show_global_settings(arg)
+    }
+
+    else
+    {
+        Hue.show_global_settings()
+    }
 }
 
 Hue.command_actions['/roomsettings'] = (arg, ans) =>
 {
-    Hue.show_room_settings()
+    if(arg)
+    {
+        Hue.show_room_settings(arg)
+    }
+
+    else
+    {
+        Hue.show_room_settings()
+    }
 }
 
 Hue.command_actions['/goto'] = (arg, ans) =>
