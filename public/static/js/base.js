@@ -176,7 +176,7 @@ Hue.commands =
 	'/removeops', '/ban', '/unban', '/unbanall',
 	'/bannedcount', '/kick', '/public', '/private',
 	'/log', '/enablelog', '/disablelog', '/clearlog',
-	'/radio', '/tv', '/image', '/images',
+	'/radio', '/tv', '/image',
 	'/privacy', '/status', '/topic', '/topicadd',
 	'/topictrim', '/topicaddstart', '/topictrimstart', '/topicedit',
 	'/help3', '/help2', '/help', '/stopradio',
@@ -218,7 +218,7 @@ Hue.commands =
 	'/togglemutesynth', '/speak', '/synthkeylocal', '/speaklocal',
 	'/unmaximize', '/maximizechat', '/autoscrollup', '/autoscrolldown',
 	'/loadnextimage', '/loadprevimage', '/loadnexttv', '/loadprevtv',
-	'/loadnextradio', '/loadprevradio', '/img', '/speech'
+	'/loadnextradio', '/loadprevradio', '/speech'
 ]
 
 Hue.user_settings =
@@ -8313,7 +8313,7 @@ Hue.execute_command = function(message, ans)
 	if(!command)
 	{
 		Hue.feedback(`Invalid command "${cmd.slice(1)}". Maybe it is missing an argument. To start a message with / use //`)
-		return false
+		return ans
 	}
 
 	if(needs_confirm)
