@@ -7086,6 +7086,16 @@ Hue.setup_input_history = function()
 			Hue.close_all_modals()
 		}
 	})
+
+	$("#input_history_clear_icon").click(function()
+	{
+		if(confirm("Are you sure you want to clear the input history?"))
+		{
+			Hue.input_history = []
+			Hue.save_input_history()
+			Hue.show_input_history()
+		}
+	})
 }
 
 Hue.clear_tabbed = function(element)
@@ -10476,7 +10486,6 @@ Hue.show_chat_search = function(filter=false)
 
 	Hue.msg_chat_search.show(function()
 	{
-		$("#chat_search_filter").focus()
 		Hue.scroll_modal_to_top("chat_search")
 	})
 }
@@ -10506,7 +10515,7 @@ Hue.do_add_to_chat_searches = function(filter)
 		
 	if(Hue.room_state.chat_searches.length > Hue.config.max_chat_searches)
 	{
-		Hue.room_state.chat_searches.pop()
+		Hue.room_state.chat_searches = Hue.room_state.chat_searches.slice(0, Hue.config.max_chat_searches)
 	}
 
 	Hue.save_room_state()
@@ -11999,7 +12008,7 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "chat_search",
-			window_width: "35em",
+			window_width: "30em",
 			after_create: function(instance)
 			{
 				Hue.after_modal_create(instance)
@@ -12026,7 +12035,7 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "highlights",
-			window_width: "35em",
+			window_width: "30em",
 			after_create: function(instance)
 			{
 				Hue.after_modal_create(instance)
@@ -14262,7 +14271,20 @@ Hue.show_input_history = function(filter=false)
 		}
 	}
 
-	Hue.msg_input_history.show()
+	if(Hue.input_history.length > 0)
+	{
+		$("#input_history_clear_icon").removeClass("inactive")
+	}
+	
+	else
+	{
+		$("#input_history_clear_icon").addClass("inactive")
+	}
+
+	Hue.msg_input_history.show(function()
+	{
+		Hue.scroll_modal_to_top("input_history")
+	})
 }
 
 onYouTubeIframeAPIReady = function()
@@ -18131,11 +18153,9 @@ Hue.show_highlights = function(filter=false)
 	{
 		clone.appendTo("#highlights_container")
 	}
-	
 
 	Hue.msg_highlights.show(function()
 	{
-		$("#highlights_filter").focus()
 		Hue.scroll_modal_to_top("highlights")
 	})
 }
@@ -18275,7 +18295,6 @@ Hue.show_media_history = function(type, filter=false)
 	
 	Hue[`msg_${type}_history`].show(function()
 	{
-		$(`#${type}_history_filter`).focus()
 		Hue.scroll_modal_to_top(`${type}_history`)
 	})
 }
@@ -21165,6 +21184,8 @@ Hue.do_settings_filter = function(type, filter=false)
 	{
 		Hue.change_settings_window_category(new_category, type)
 	}
+
+	Hue.scroll_settings_window_to_top(type)
 }
 
 Hue.setup_settings_window = function()
@@ -24815,6 +24836,11 @@ Hue.scroll_modal_to_bottom = function(id)
 {
 	let container = $(`#Msg-content-container-${id}`)[0]
 	container.scrollTop = container.scrollHeight
+}
+
+Hue.scroll_settings_window_to_top = function(type)
+{
+	$(`#settings_window_right_${type}`).scrollTop(0)
 }
 
 Hue.get_matching_usernames = function(s)

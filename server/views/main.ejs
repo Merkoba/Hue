@@ -38,7 +38,7 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2700"></script>
+		<script src="/static/js/base.js?version=2702"></script>
 		<link rel="stylesheet" href="/static/css/style.css?version=594"/>
 
 		<script>
@@ -1573,8 +1573,16 @@
 		</script>
 
 		<script id='template_input_history' type='text/x-handlebars-template'>
-			<input type="text" id="input_history_filter" class="filter_input" placeholder="Filter" data-mode="manual">
+			<div class='flex_row_center sticky bg1'>
+				<i class='fa fa-trash-o pointer action invisible'></i>
+				<div class='hspacer3 invisible'></div>
+				<input type="text" id="input_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
+				<div class='hspacer3'></div>
+				<i class='fa fa-trash-o pointer action nicetitle' id='input_history_clear_icon' title="Clear"></i>
+			</div>
+
 			<div class='spacer3'></div>
+
 			<div id='input_history_container'></div>
 		</script>	
 
@@ -1584,7 +1592,7 @@
 				<div class='hspacer3 invisible'></div>
 				<input type="text" id="chat_search_filter" data-mode='manual' class="filter_input" placeholder="Query">
 				<div class='hspacer3'></div>
-				<i class='fa fa-history pointer action' id='chat_search_history_icon'></i>
+				<i class='fa fa-history pointer action nicetitle' id='chat_search_history_icon' title="Recent Searches"></i>
 			</div>
 
 			<div class='spacer3'></div>
@@ -2068,8 +2076,8 @@
 			<div class='info_item modal_item'>/activityabove2: Scrolls chat to activity pertaining you above without animating the scroll.</div>
 			<div class='info_item modal_item'>/activitybelow: Scrolls chat to activity pertaining you below.</div>
 			<div class='info_item modal_item'>/activitybelow2: Scrolls chat to activity pertaining you below without animating the scroll.</div>
-			<div class='info_item modal_item'>/globalsettings: Shows the global settings window.</div>
-			<div class='info_item modal_item'>/roomsettings: Shows the room settings window.</div>
+			<div class='info_item modal_item'>/globalsettings: Shows the global settings window. Accepts a filter as an argument.</div>
+			<div class='info_item modal_item'>/roomsettings: Shows the room settings window. Accepts a filter as an argument.</div>
 			<div class='info_item modal_item'>/goto: Goes to room ID or URL.</div>
 			<div class='info_item modal_item'>/ping: Pings the server and shows the delay from the moment it was sent to the moment it was received.</div>
 			<div class='info_item modal_item'>/reactlike: Sends reaction "like".</div>
