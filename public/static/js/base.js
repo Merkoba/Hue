@@ -341,6 +341,10 @@ Hue.command_actions =
 			Hue.show_chat_search()
 		}
 	},
+	"/clearsearches": (arg, ans) =>
+	{
+		Hue.clear_chat_searches()
+	},
 	"/role": (arg, ans) =>
 	{
 		Hue.show_role()
@@ -591,6 +595,10 @@ Hue.command_actions =
 		{  
 			Hue.show_input_history()
 		}
+	},
+	"/clearinputhistory": (arg, ans) =>
+	{
+		Hue.clear_input_history()
 	},
 	"/changeusername": (arg, ans) =>
 	{
@@ -5135,20 +5143,31 @@ Hue.generate_chat_search_context_items = function()
 			disabled: true
 		}
 	}
-	
-	let n = 0
 
-	for(let search of Hue.room_state.chat_searches)
+	else
 	{
-		items[`item_${n}`] = 
+		let n = 0
+	
+		for(let search of Hue.room_state.chat_searches)
 		{
-			name: search, callback: function(key, opt)
+			items[`item_${n}`] = 
 			{
-				Hue.show_chat_search(search)
+				name: search, callback: function(key, opt)
+				{
+					Hue.show_chat_search(search)
+				}
+			}
+	
+			n += 1
+		}
+	
+		items['clear'] = 
+		{
+			name: "Clear", icon:"fa-trash-o", callback: function(key, opt)
+			{
+				Hue.clear_chat_searches()
 			}
 		}
-
-		n += 1
 	}
 
 	return items
@@ -7091,11 +7110,16 @@ Hue.setup_input_history = function()
 	{
 		if(confirm("Are you sure you want to clear the input history?"))
 		{
-			Hue.input_history = []
-			Hue.save_input_history()
+			Hue.clear_input_history()
 			Hue.show_input_history()
 		}
 	})
+}
+
+Hue.clear_input_history = function()
+{
+	Hue.input_history = []
+	Hue.save_input_history()
 }
 
 Hue.clear_tabbed = function(element)
@@ -10518,6 +10542,12 @@ Hue.do_add_to_chat_searches = function(filter)
 		Hue.room_state.chat_searches = Hue.room_state.chat_searches.slice(0, Hue.config.max_chat_searches)
 	}
 
+	Hue.save_room_state()
+}
+
+Hue.clear_chat_searches = function()
+{
+	Hue.room_state.chat_searches = []
 	Hue.save_room_state()
 }
 
