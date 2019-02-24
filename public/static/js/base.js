@@ -9190,8 +9190,8 @@ Hue.process_message = function(args={})
 
 Hue.execute_command = function(message, ans)
 {
-	let split = message.toLowerCase().split(' ')
-	let cmd = split[0]
+	let split = message.split(' ')
+	let cmd = split[0].toLowerCase()
 	let arg = split.slice(1).join(" ")
 	let needs_confirm = false
 
