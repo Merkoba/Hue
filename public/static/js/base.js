@@ -3005,6 +3005,7 @@ Hue.stop_tv = function(clear_iframe=true)
 
 	if(Hue.twitch_video_player !== undefined)
 	{
+		clearTimeout(Hue.play_twitch_video_player_timeout)
 		Hue.twitch_video_player.pause()
 	}
 
@@ -3180,14 +3181,16 @@ Hue.show_twitch_video = function(src, play=true)
 
 	if(play)
 	{
-		setTimeout(function()
+		// This is a temporary workaround to ensure play is triggered
+		Hue.play_twitch_video_player_timeout = setTimeout(function()
 		{
 			Hue.twitch_video_player.play()
-		}, 500)
+		}, 1000)
 	}
 
 	else
 	{
+		clearTimeout(Hue.play_twitch_video_player_timeout)
 		Hue.twitch_video_player.pause()
 	}
 
