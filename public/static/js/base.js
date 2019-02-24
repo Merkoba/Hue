@@ -3132,7 +3132,6 @@ Hue.hide_videos = function(show)
 Hue.show_youtube_video = function(src, play=true)
 {
 	Hue.before_show_video()
-	
 	Hue.hide_videos("media_youtube_video_container")
 
 	let id = Hue.utilz.get_youtube_id(src)
@@ -3160,7 +3159,6 @@ Hue.show_youtube_video = function(src, play=true)
 Hue.show_twitch_video = function(src, play=true)
 {
 	Hue.before_show_video()
-
 	Hue.hide_videos("media_twitch_video_container")
 
 	let id = Hue.utilz.get_twitch_id(src)
@@ -3182,7 +3180,10 @@ Hue.show_twitch_video = function(src, play=true)
 
 	if(play)
 	{
-		Hue.twitch_video_player.play()
+		setTimeout(function()
+		{
+			Hue.twitch_video_player.play()
+		}, 500)
 	}
 
 	else
@@ -3196,7 +3197,6 @@ Hue.show_twitch_video = function(src, play=true)
 Hue.show_soundcloud_video = function(src, play=true)
 {
 	Hue.before_show_video()
-
 	Hue.hide_videos("media_soundcloud_video_container")
 
 	Hue.soundcloud_video_player.load(src,
@@ -3219,7 +3219,6 @@ Hue.show_soundcloud_video = function(src, play=true)
 Hue.show_video = function(src, play=true)
 {
 	Hue.before_show_video()
-
 	Hue.hide_videos("media_video_container")
 
 	let split = src.split('.')
@@ -3247,7 +3246,6 @@ Hue.show_video = function(src, play=true)
 Hue.show_iframe_video = function(src, play=true)
 {
 	Hue.before_show_video()
-
 	Hue.hide_videos("media_iframe_video_container")
 
 	if(play)
@@ -3267,7 +3265,6 @@ Hue.show_iframe_video = function(src, play=true)
 Hue.show_vimeo_video = function(src, play=true)
 {
 	Hue.before_show_video()
-
 	Hue.hide_videos("media_vimeo_video_container")
 
 	let id = Hue.utilz.get_vimeo_id(src)
