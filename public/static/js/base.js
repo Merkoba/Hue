@@ -3553,11 +3553,6 @@ Hue.apply_theme = function()
 		border: 1px solid ${font_color} !important;
 	}
 
-	.nicescroll-cursors
-	{
-		background-color: ${font_color} !important;
-	}
-
 	.modal_select
 	{
 		color: ${background_color} !important;
@@ -3734,9 +3729,19 @@ Hue.apply_theme = function()
 		background-color: ${slight_background} !important;
 	}
 
+	.Msg-container ::-webkit-scrollbar-thumb
+	{
+		background-color: ${color_4} !important;
+	}
+
 	body, html
 	{
 		scrollbar-color: ${slight_background} transparent !important;
+	}
+
+	.Msg-container
+	{
+		scrollbar-color: ${color_4} transparent !important;
 	}
 
 	.modal_subheader
