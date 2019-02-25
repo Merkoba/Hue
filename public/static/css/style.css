@@ -2547,6 +2547,13 @@ a.special_link:hover
 	max-width: 500px;
 }
 
+.announcement_comment
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
 .announcement_comment_highlighted
 {
 	box-shadow: inset 0 0 2px currentColor;

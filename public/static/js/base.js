@@ -8637,7 +8637,7 @@ Hue.chat_announce = function(args={})
 			}
 		}
 
-		comment = `<div class='${cls}'>${Hue.replace_markdown(this.make_html_safe(args.comment))}</div>`	
+		comment = `<div class='${cls}'><i class='fa fa-comment-o icon2'></i>&nbsp;&nbsp;${Hue.replace_markdown(this.make_html_safe(args.comment))}</div>`	
 	}
 
 	else
