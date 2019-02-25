@@ -29,17 +29,20 @@ Hue.loaded_radio_source = ""
 Hue.loaded_radio_type = "radio"
 Hue.loaded_radio_metadata = ""
 Hue.tab_info = {}
-Hue.crm = false
-Hue.orb = false
-Hue.rup = false
-Hue.tup = false
-Hue.iup = false
-Hue.gtr = false
-Hue.imp = false
-Hue.biu = false
-Hue.alo = false
-Hue.upc = false
-Hue.minpo = false
+Hue.create_room_open = false
+Hue.open_room_open = false
+Hue.radio_picker_open = false
+Hue.tv_picker_open = false
+Hue.image_picker_open = false
+Hue.goto_room_open = false
+Hue.import_settings_open = false
+Hue.background_image_input_open = false
+Hue.admin_list_open = false
+Hue.upload_comment_open = false
+Hue.modal_image_number_open = false
+Hue.change_user_username_open = false
+Hue.change_user_password_open = false
+Hue.change_user_email_open = false
 Hue.writing_reply = false
 Hue.modal_open = false
 Hue.started = false
@@ -1313,7 +1316,6 @@ Hue.init = function()
 	Hue.setup_user_functions()
 	Hue.setup_settings()
 
-
 	if(Hue.debug_functions)
 	{
 		Hue.wrap_functions()
@@ -1458,6 +1460,7 @@ Hue.setup_templates = function()
 	Hue.template_handle_url = Handlebars.compile($('#template_handle_url').html())
 	Hue.template_open_url = Handlebars.compile($('#template_open_url').html())
 	Hue.template_settings_user_function = Handlebars.compile($('#template_settings_user_function').html())
+	Hue.template_details = Handlebars.compile($('#template_details').html())
 }
 
 Hue.show_help = function(number=1, filter="")
@@ -1937,6 +1940,7 @@ Hue.start_socket = function()
 			Hue.make_main_container_visible()
 			Hue.setup_activity_bar()
 			Hue.setup_input_placeholder()
+			Hue.setup_details()
 
 			Hue.at_startup()
 		}
@@ -5833,7 +5837,7 @@ Hue.show_create_room = function()
 	Hue.msg_info2.show(["Create Room", Hue.template_create_room()], function()
 	{
 		$("#create_room_name").focus()
-		Hue.crm = true
+		Hue.create_room_open = true
 	})
 }
 
@@ -5868,7 +5872,7 @@ Hue.show_open_room = function(id)
 
 	Hue.msg_info2.show(["Open Room", Hue.template_open_room({id:id})], function()
 	{
-		Hue.orb = true
+		Hue.open_room_open = true
 	})
 }
 
@@ -6397,7 +6401,7 @@ Hue.activate_key_detection = function()
 				}
 			}
 
-			if(Hue.iup)
+			if(Hue.image_picker_open)
 			{
 				if(Hue.msg_image_picker.is_highest())
 				{
@@ -6424,7 +6428,7 @@ Hue.activate_key_detection = function()
 				}
 			}
 
-			if(Hue.tup)
+			if(Hue.tv_picker_open)
 			{
 				if(Hue.msg_tv_picker.is_highest())
 				{
@@ -6451,7 +6455,7 @@ Hue.activate_key_detection = function()
 				}
 			}
 
-			if(Hue.rup)
+			if(Hue.radio_picker_open)
 			{
 				if(Hue.msg_radio_picker.is_highest())
 				{
@@ -6478,7 +6482,7 @@ Hue.activate_key_detection = function()
 				}
 			}
 
-			if(Hue.upc)
+			if(Hue.upload_comment_open)
 			{
 				if(Hue.msg_upload_comment.is_highest())
 				{
@@ -6490,7 +6494,7 @@ Hue.activate_key_detection = function()
 				}
 			}
 
-			if(Hue.orb)
+			if(Hue.open_room_open)
 			{
 				if(Hue.msg_info2.is_highest())
 				{
@@ -6513,7 +6517,7 @@ Hue.activate_key_detection = function()
 				}
 			}
 
-			if(Hue.biu)
+			if(Hue.background_image_input_open)
 			{
 				if(Hue.msg_info2.is_highest())
 				{
@@ -6527,7 +6531,7 @@ Hue.activate_key_detection = function()
 				}
 			}
 
-			if(Hue.crm)
+			if(Hue.create_room_open)
 			{
 				if(Hue.msg_info2.is_highest())
 				{
@@ -6541,7 +6545,7 @@ Hue.activate_key_detection = function()
 				}
 			}
 
-			if(Hue.imp)
+			if(Hue.import_settings_open)
 			{
 				if(Hue.msg_info2.is_highest())
 				{
@@ -6555,7 +6559,7 @@ Hue.activate_key_detection = function()
 				}
 			}
 
-			if(Hue.gtr)
+			if(Hue.goto_room_open)
 			{
 				if(Hue.msg_info2.is_highest())
 				{
@@ -6651,7 +6655,7 @@ Hue.activate_key_detection = function()
 				}
 			}
 
-			if(Hue.minpo)
+			if(Hue.modal_image_number_open)
 			{
 				if(e.key === "Enter")
 				{
@@ -6666,6 +6670,48 @@ Hue.activate_key_detection = function()
 					if(e.key === "Enter" && !e.shiftKey)
 					{
 						Hue.submit_reply()
+						e.preventDefault()
+					}
+
+					return
+				}
+			}
+
+			if(Hue.change_user_username_open)
+			{
+				if(Hue.msg_info2.is_highest())
+				{
+					if(e.key === "Enter" && !e.shiftKey)
+					{
+						Hue.submit_change_username()
+						e.preventDefault()
+					}
+
+					return
+				}
+			}
+
+			if(Hue.change_user_password_open)
+			{
+				if(Hue.msg_info2.is_highest())
+				{
+					if(e.key === "Enter" && !e.shiftKey)
+					{
+						Hue.submit_change_password()
+						e.preventDefault()
+					}
+
+					return
+				}
+			}
+
+			if(Hue.change_user_email_open)
+			{
+				if(Hue.msg_info2.is_highest())
+				{
+					if(e.key === "Enter" && !e.shiftKey)
+					{
+						Hue.submit_change_email()
 						e.preventDefault()
 					}
 
@@ -9541,7 +9587,7 @@ Hue.announce_new_username = function(data)
 		}
 	}
 
-	if(Hue.alo)
+	if(Hue.admin_list_open)
 	{
 		Hue.request_admin_list()
 	}
@@ -10689,7 +10735,7 @@ Hue.announce_role_change = function(data)
 
 	Hue.replace_role_in_userlist(data.username2, data.role)
 
-	if(Hue.alo)
+	if(Hue.admin_list_open)
 	{
 		Hue.request_admin_list()
 	}
@@ -11396,7 +11442,7 @@ Hue.announce_removedops = function(data)
 
 	Hue.remove_ops_userlist()
 
-	if(Hue.alo)
+	if(Hue.admin_list_open)
 	{
 		Hue.request_admin_list()
 	}
@@ -11726,7 +11772,7 @@ Hue.start_msg = function()
 			{
 				Hue.after_modal_show(instance)
 				Hue.after_modal_set_or_show(instance)
-				Hue.minpo = true
+				Hue.modal_image_number_open = true
 			},
 			after_set: function(instance)
 			{
@@ -11735,7 +11781,7 @@ Hue.start_msg = function()
 			after_close: function(instance)
 			{
 				Hue.after_modal_close(instance)
-				Hue.minpo = false
+				Hue.modal_image_number_open = false
 			}
 		})
 	)
@@ -11874,7 +11920,7 @@ Hue.start_msg = function()
 			{
 				Hue.after_modal_show(instance)
 				Hue.after_modal_set_or_show(instance)
-				Hue.iup = true
+				Hue.image_picker_open = true
 			},
 			after_set: function(instance)
 			{
@@ -11885,7 +11931,7 @@ Hue.start_msg = function()
 				Hue.after_modal_close(instance)
 				$("#image_source_picker_input").val("")
 				$("#image_source_picker_input_comment").val("")
-				Hue.iup = false
+				Hue.image_picker_open = false
 			}
 		})
 	)
@@ -11903,7 +11949,7 @@ Hue.start_msg = function()
 			{
 				Hue.after_modal_show(instance)
 				Hue.after_modal_set_or_show(instance)
-				Hue.tup = true
+				Hue.tv_picker_open = true
 			},
 			after_set: function(instance)
 			{
@@ -11914,7 +11960,7 @@ Hue.start_msg = function()
 				Hue.after_modal_close(instance)
 				$("#tv_source_picker_input").val("")
 				$("#tv_source_picker_input_comment").val("")
-				Hue.tup = false
+				Hue.tv_picker_open = false
 			}
 		})
 	)
@@ -11932,7 +11978,7 @@ Hue.start_msg = function()
 			{
 				Hue.after_modal_show(instance)
 				Hue.after_modal_set_or_show(instance)
-				Hue.rup = true
+				Hue.radio_picker_open = true
 			},
 			after_set: function(instance)
 			{
@@ -11943,7 +11989,7 @@ Hue.start_msg = function()
 				Hue.after_modal_close(instance)
 				$("#radio_source_picker_input").val("")
 				$("#radio_source_picker_input_comment").val("")
-				Hue.rup = false
+				Hue.radio_picker_open = false
 			}
 		})
 	)
@@ -12425,7 +12471,7 @@ Hue.start_msg = function()
 			{
 				Hue.after_modal_show(instance)
 				Hue.after_modal_set_or_show(instance)
-				Hue.upc = true
+				Hue.upload_comment_open = true
 			},
 			after_set: function(instance)
 			{
@@ -12438,7 +12484,7 @@ Hue.start_msg = function()
 				$("#upload_comment_input").val("")
 				Hue.upload_comment_file = false
 				Hue.upload_comment_type = false
-				Hue.upc = false
+				Hue.upload_comment_open = false
 			}
 		})
 	)
@@ -12524,6 +12570,32 @@ Hue.start_msg = function()
 		})
 	)
 
+	Hue.msg_details = Msg.factory
+	(
+		Object.assign({}, common, titlebar,
+		{
+			id: "details",
+			after_create: function(instance)
+			{
+				Hue.after_modal_create(instance)
+			},
+			after_show: function(instance)
+			{
+				Hue.after_modal_show(instance)
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_set: function(instance)
+			{
+				Hue.after_modal_set_or_show(instance)
+			},
+			after_close: function(instance)
+			{
+				Hue.after_modal_close(instance)
+				Hue.clear_modal_image_info()
+			}
+		})
+	)
+
 	Hue.msg_main_menu.set(Hue.template_main_menu())
 	Hue.msg_user_menu.set(Hue.template_user_menu())
 	Hue.msg_userlist.set(Hue.template_userlist())
@@ -12575,6 +12647,7 @@ Hue.start_msg = function()
 	Hue.msg_reply.set(Hue.template_reply())
 	Hue.msg_handle_url.set(Hue.template_handle_url())
 	Hue.msg_open_url.set(Hue.template_open_url())
+	Hue.msg_details.set(Hue.template_details())
 
 	Hue.msg_info.create()
 	Hue.msg_info2.create()
@@ -12599,6 +12672,7 @@ Hue.start_msg = function()
 	Hue.msg_access_log.set_title("Access Log")
 	Hue.msg_upload_comment.set_title("Add a Comment")
 	Hue.msg_reply.set_title("Write a Reply")
+	Hue.msg_details.set_title("User Details")
 
 	$("#global_settings_window_title").click(function()
 	{
@@ -12663,12 +12737,15 @@ Hue.info_vars_to_false = function()
 
 Hue.info2_vars_to_false = function()
 {
-	Hue.crm = false
-	Hue.imp = false
-	Hue.gtr = false
-	Hue.orb = false
-	Hue.biu = false
-	Hue.alo = false
+	Hue.create_room_open = false
+	Hue.import_settings_open = false
+	Hue.goto_room_open = false
+	Hue.open_room_open = false
+	Hue.background_image_input_open = false
+	Hue.admin_list_open = false
+	Hue.change_user_username_open = false
+	Hue.change_user_password_open = false
+	Hue.change_user_email_open = false
 }
 
 Hue.after_modal_create = function(instance)
@@ -14673,50 +14750,78 @@ Hue.logout = function()
 	Hue.goto_url('/logout')
 }
 
-Hue.change_username = function(uname)
+Hue.change_username = function(uname, show_feedback=true)
 {
 	if(Hue.utilz.clean_string4(uname) !== uname)
 	{
-		Hue.feedback("Username contains invalid characters")
-		return
+		if(show_feedback)
+		{
+			Hue.feedback("Username contains invalid characters")
+		}
+
+		return false
 	}
 
 	if(uname.length === 0)
 	{
-		Hue.feedback("Username can't be empty")
-		return
+		if(show_feedback)
+		{
+			Hue.feedback("Username can't be empty")
+		}
+
+		return false
 	}
 
 	if(uname.length > Hue.config.max_username_length)
 	{
-		Hue.feedback("Username is too long")
-		return
+		if(show_feedback)
+		{
+			Hue.feedback("Username is too long")
+		}
+
+		return false
 	}
 
 	if(uname === Hue.username)
 	{
-		Hue.feedback("That's already your username")
-		return
+		if(show_feedback)
+		{
+			Hue.feedback("That's already your username")
+		}
+
+		return false
 	}
 
 	Hue.socket_emit("change_username", {username:uname})
+
+	return true
 }
 
-Hue.change_password = function(passwd)
+Hue.change_password = function(passwd, show_feedback=true)
 {
 	if(passwd.length < Hue.config.min_password_length)
 	{
-		Hue.feedback(`Password is too short. It must be at least ${Hue.config.min_password_length} characters long`)
-		return
+		if(show_feedback)
+		{
+			Hue.feedback(`Password is too short. It must be at least ${Hue.config.min_password_length} characters long`)
+		}
+
+		return false
 	}
 
 	if(passwd.length > Hue.config.max_password_length)
 	{
-		Hue.feedback("Password is too long")
-		return
+		if(show_feedback)
+		{
+			Hue.feedback("Password is too long")
+		}
+
+		return false
 	}
 
 	Hue.socket_emit("change_password", {password:passwd})
+
+	return true
 }
 
 Hue.password_changed = function(data)
@@ -14724,33 +14829,51 @@ Hue.password_changed = function(data)
 	Hue.feedback(`Password succesfully changed to ${data.password}. To force other clients connected to your account to disconnect you can use /disconnectothers`)
 }
 
-Hue.change_email = function(email)
+Hue.change_email = function(email, show_feedback=true)
 {
 	if(Hue.utilz.clean_string5(email) !== email)
 	{
-		Hue.feedback("Invalid email address")
-		return
+		if(show_feedback)
+		{
+			Hue.feedback("Invalid email address")
+		}
+
+		return false
 	}
 
 	if(email.length === 0)
 	{
-		Hue.feedback("Username can't be empty")
-		return
+		if(show_feedback)
+		{
+			Hue.feedback("Username can't be empty")
+		}
+
+		return false
 	}
 
 	if(!email.includes('@'))
 	{
-		Hue.feedback("Invalid email address")
-		return
+		if(show_feedback)
+		{
+			Hue.feedback("Invalid email address")
+		}
+
+		return false
 	}
 
 	if(email.length > Hue.config.max_email_length)
 	{
-		Hue.feedback("Email is too long")
-		return
+		if(show_feedback)
+		{
+			Hue.feedback("Email is too long")
+		}
+
+		return false
 	}
 
 	Hue.socket_emit("change_email", {email:email})
+
+	return true
 }
 
 Hue.email_changed = function(data)
@@ -14759,31 +14882,145 @@ Hue.email_changed = function(data)
 	Hue.feedback(`Email succesfully changed to ${data.email}`)
 }
 
+Hue.setup_details = function()
+{
+	$("#details_username").text(Hue.username)
+	$("#details_email").text(Hue.user_email)
+
+	let s = `<div>${Hue.nice_date(Hue.user_reg_date)}</div>
+	</div>(${Hue.get_timeago(Hue.user_reg_date)})</div>`
+
+	$("#details_reg_date").html(s)
+
+	s = `<div>${Hue.nice_date(Hue.date_joined)}</div>
+	</div>(${Hue.get_timeago(Hue.date_joined)})</div>`
+
+	$("#details_joined_room").html(s)
+
+	$("#details_change_username").click(function()
+	{
+		Hue.show_change_username()
+	})
+	
+	$("#details_change_password").click(function()
+	{
+		Hue.show_change_password()
+	})
+	
+	$("#details_change_email").click(function()
+	{
+		Hue.show_change_email()
+	})
+}
+
 Hue.show_details = function(data)
 {
-	let h = $("<div></div>")
+	Hue.msg_details.show()
+}
 
-	let info = ""
+Hue.show_change_username = function()
+{
+	let s = `
+	<input type='text' placeholder='New Username' id='change_username_input' class='nice_input_2'>
+	<div class='spacer3'></div>
+	<div class='inline action pointer bigger unselectable' id='change_username_submit'>Change</div>`
 
-	info += "<div class='info_item'><div class='info_title'>Username</div><div class='info_item_content' id='details_username'></div></div>"
-	info += "<div class='info_item'><div class='info_title'>Email</div><div class='info_item_content' id='details_email'></div></div>"
-	info += "<div class='info_item'><div class='info_title'>Account Created On</div><div class='info_item_content' id='details_reg_date'></div></div>"
-	info += "<div class='info_item'><div class='info_title'>Joined Room On</div><div class='info_item_content' id='details_joined_room'></div></div>"
+	Hue.msg_info2.show(["Change Username", s], function()
+	{
+		$("#change_username_input").focus()
 
-	h.append(info)
+		$("#change_username_submit").click(function()
+		{
+			Hue.submit_change_username()
+		})
 
-	h.find("#details_username").eq(0).text(Hue.username)
-	h.find("#details_email").eq(0).text(Hue.user_email)
+		Hue.change_user_username_open = true
+	})
+}
 
-	h.find("#details_reg_date").eq(0).html(`
-	<div>${Hue.nice_date(Hue.user_reg_date)}</div>
-	</div>(${Hue.get_timeago(Hue.user_reg_date)})</div>`)
+Hue.submit_change_username = function()
+{
+	let uname = $("#change_username_input").val().trim()
+			
+	if(Hue.change_username(uname, false))
+	{
+		Hue.close_all_modals()
+	}
 
-	h.find("#details_joined_room").eq(0).html(`
-	<div>${Hue.nice_date(Hue.date_joined)}</div>
-	</div>(${Hue.get_timeago(Hue.date_joined)})</div>`)
+	else
+	{
+		alert("Invalid username format")
+	}
+}
 
-	Hue.msg_info2.show(["User Details", h.html()])
+Hue.show_change_password = function()
+{
+	let s = `
+	<input type='text' placeholder='New Password' id='change_password_input' class='nice_input_2'>
+	<div class='spacer3'></div>
+	<div class='inline action pointer bigger unselectable' id='change_password_submit'>Change</div>`
+
+	Hue.msg_info2.show(["Change Password", s], function()
+	{
+		$("#change_password_input").focus()
+
+		$("#change_password_submit").click(function()
+		{
+			Hue.submit_change_password()
+		})
+
+		Hue.change_user_password_open = true
+	})
+}
+
+Hue.submit_change_password = function()
+{
+	let uname = $("#change_password_input").val().trim()
+		
+	if(Hue.change_password(uname, false))
+	{
+		Hue.close_all_modals()
+	}
+
+	else
+	{
+		alert("Invalid password format")
+	}
+}
+
+Hue.show_change_email = function()
+{
+	let s = `
+	<input type='text' placeholder='New Email' id='change_email_input' class='nice_input_2'>
+	<div class='spacer3'></div>
+	<div class='inline action pointer bigger unselectable' id='change_email_submit'>Change</div>`
+
+	Hue.msg_info2.show(["Change Email", s], function()
+	{
+		$("#change_email_input").focus()
+
+		$("#change_email_submit").click(function()
+		{
+			Hue.submit_change_email()
+		})
+
+		Hue.change_user_email_open = true
+	})
+}
+
+Hue.submit_change_email = function()
+{
+	let uname = $("#change_email_input").val().trim()
+			
+	if(Hue.change_email(uname, false))
+	{
+		Hue.close_all_modals()
+	}
+
+	else
+	{
+		alert("Invalid email format")
+	}
 }
 
 Hue.show_log_messages = function()
@@ -16126,7 +16363,7 @@ Hue.open_background_image_input = function()
 	Hue.msg_info2.show(["Change Background Image", Hue.template_background_image_input()], function()
 	{
 		$("#background_image_input_text").focus()
-		Hue.biu = true
+		Hue.background_image_input_open = true
 	})
 }
 
@@ -18678,8 +18915,7 @@ Hue.show_goto_room = function()
 	Hue.msg_info2.show(["Go To Room", Hue.template_goto_room()], function()
 	{
 		$("#goto_room_input").focus()
-
-		Hue.gtr = true
+		Hue.goto_room_open = true
 	})
 }
 
@@ -19459,7 +19695,7 @@ Hue.show_import_settings = function()
 			Hue.process_imported_settings()
 		})
 
-		Hue.imp = true
+		Hue.import_settings_open = true
 	})
 }
 
@@ -22900,7 +23136,7 @@ Hue.show_admin_list = function(data)
 
 	Hue.msg_info2.show(["Admin List", s[0]], function()
 	{
-		Hue.alo = true
+		Hue.admin_list_open = true
 	})
 }
 
@@ -24794,12 +25030,12 @@ Hue.setup_upload_comment = function()
 
 Hue.process_upload_comment = function()
 {
-	if(!Hue.upc)
+	if(!Hue.upload_comment_open)
 	{
 		return false
 	}
 
-	Hue.upc = false
+	Hue.upload_comment_open = false
 
 	Hue.msg_upload_comment.close()
 
@@ -24818,7 +25054,7 @@ Hue.process_upload_comment = function()
 
 Hue.cancel_upload_comment = function()
 {
-	Hue.upc = false
+	Hue.upload_comment_open = false
 	Hue.msg_upload_comment.close()
 }
 

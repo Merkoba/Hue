@@ -38,7 +38,7 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2705"></script>
+		<script src="/static/js/base.js?version=2706"></script>
 		<link rel="stylesheet" href="/static/css/style.css?version=594"/>
 
 		<script>
@@ -1866,6 +1866,36 @@
 				onclick='Hue.send_popup_message()' 
 				ondblclick='Hue.send_popup_message(true)' tabindex=4>Send</div>
 			</span>
+		</script>
+
+		<script id='template_details' type='text/x-handlebars-template'>
+			<div class='info_item'>
+				<div class='info_title'>Username</div>
+				<div class='info_item_content' id='details_username'></div>
+			</div>
+
+			<div class='info_item'>
+				<div class='info_title'>Email</div>
+				<div class='info_item_content' id='details_email'></div>
+			</div>
+
+			<div class='info_item'>
+				<div class='info_title'>Account Created On</div>
+				<div class='info_item_content' id='details_reg_date'></div>
+			</div>
+
+			<div class='info_item'>
+				<div class='info_title'>Joined Room On</div>
+				<div class='info_item_content' id='details_joined_room'></div>
+			</div>
+
+			<div class='spacer3'></div>
+			
+			<div id='details_change_username' class='inline action pointer'>Change Username</div>
+			<div class='spacer2'></div>
+			<div id='details_change_password' class='inline action pointer'>Change Password</div>
+			<div class='spacer2'></div>
+			<div id='details_change_email' class='inline action pointer'>Change Email</div>
 		</script>
 
 		<script id='template_draw_image' type='text/x-handlebars-template'>
