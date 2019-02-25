@@ -9825,21 +9825,21 @@ Hue.push_played = function(info, info2=false)
 
 		let pi = `
 		<div class='played_item_inner pointer inline action dynamic_title' title='${title}' data-otitle='${title}' data-date='${date}'>
-			<div class='pititle'></div><div class='piartist'></div>
+			<div class='played_item_title'></div><div class='played_item_artist'></div>
 		</div>`
 
 		let h = $(`<div class='modal_item played_item'>${pi}</div>`)
 
 		if(info)
 		{
-			h.find('.pititle').eq(0).text(info.title)
-			h.find('.piartist').eq(0).text(`by ${info.artist}`)
+			h.find('.played_item_title').eq(0).text(info.title)
+			h.find('.played_item_artist').eq(0).text(`by ${info.artist}`)
 		}
 
 		else
 		{
-			h.find('.pititle').eq(0).text(info2.s1)
-			h.find('.piartist').eq(0).text(`${info2.s2}`)
+			h.find('.played_item_title').eq(0).text(info2.s1)
+			h.find('.played_item_artist').eq(0).text(`${info2.s2}`)
 		}
 
 		let inner = h.find(".played_item_inner").eq(0)
