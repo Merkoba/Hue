@@ -14956,7 +14956,7 @@ Hue.submit_change_username = function()
 Hue.show_change_password = function()
 {
 	let s = `
-	<input type='text' placeholder='New Password' id='change_password_input' class='nice_input_2'>
+	<input type='password' placeholder='New Password' id='change_password_input' class='nice_input_2'>
 	<div class='spacer3'></div>
 	<div class='inline action pointer bigger unselectable' id='change_password_submit'>Change</div>`
 
