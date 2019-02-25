@@ -573,7 +573,7 @@ Hue.command_actions =
 	},
 	"/radiovolume": (arg, ans) =>
 	{
-		Hue.change_volume_command(arg)
+		Hue.change_volume_command(arg, "radio")
 	},
 	"/tvvolume": (arg, ans) =>
 	{
@@ -581,8 +581,7 @@ Hue.command_actions =
 	},
 	"/volume": (arg, ans) =>
 	{
-		Hue.change_volume_command(arg)
-		Hue.change_volume_command(arg, "tv")
+		Hue.change_volume_all(arg)
 	},
 	"/inputhistory": (arg, ans) =>
 	{
@@ -865,12 +864,10 @@ Hue.command_actions =
 	},
 	"/js": (arg, ans) =>
 	{
-		arg = arg.replace(/\s\/endjs/gi, "")
 		Hue.execute_javascript(arg)
 	},
 	"/js2": (arg, ans) =>
 	{
-		arg = arg.replace(/\s\/endjs/gi, "")
 		Hue.execute_javascript(arg, false)
 	},
 	"/changeimage": (arg, ans) =>
@@ -1035,17 +1032,11 @@ Hue.command_actions =
 	},
 	"/say": (arg, ans) =>
 	{
-		Hue.process_message(
-		{
-			message: arg,
-			to_history: ans.to_history,
-			clr_input: ans.clr_input
-		})
+		Hue.say_command(arg, ans)
 	},
 	"/input": (arg, ans) =>
 	{
-		arg = arg.replace(/\s\/endinput/gi, "")
-		Hue.change_input(arg)
+		Hue.input_command(arg)
 		ans.to_history = false
 		ans.clr_input = false
 	},
@@ -1235,6 +1226,378 @@ Hue.command_actions =
 	}
 }
 
+Hue.server_update_events =
+{
+	'joined': (data) =>
+	{
+		Hue.on_join(data)
+	},
+	'typing': (data) =>
+	{
+		Hue.show_typing(data)
+	},
+	'chat_message': (data) =>
+	{
+		Hue.on_chat_message(data)
+	},
+	'request_slice_upload': (data) =>
+	{
+		Hue.request_slice_upload(data)
+	},
+	'upload_ended': (data) =>
+	{
+		Hue.upload_ended(data)
+	},
+	'changed_image_source': (data) =>
+	{
+		Hue.setup_image("change", data)
+	},
+	'changed_tv_source': (data) =>
+	{
+		Hue.setup_tv("change", data)
+	},
+	'restarted_tv_source': (data) =>
+	{
+		Hue.setup_tv("restart", data)
+	},
+	'changed_radio_source': (data) =>
+	{
+		Hue.setup_radio("change", data)
+	},
+	'restarted_radio_source': (data) =>
+	{
+		Hue.setup_radio("restart", data)
+	},
+	'profile_image_changed': (data) =>
+	{
+		Hue.profile_image_changed(data)
+	},
+	'user_join': (data) =>
+	{
+		Hue.userjoin(data)
+	},
+	'receive_roomlist': (data) =>
+	{
+		Hue.on_roomlist_received(data)
+	},
+	'upload_error': (data) =>
+	{
+		Hue.show_upload_error()
+	},
+	'topic_change': (data) =>
+	{
+		Hue.announce_topic_change(data)
+	},
+	'room_name_changed': (data) =>
+	{
+		Hue.announce_room_name_change(data)
+	},
+	'log_changed': (data) =>
+	{
+		Hue.announce_log_change(data)
+	},
+	'log_cleared': (data) =>
+	{
+		Hue.announce_log_cleared(data)
+	},
+	'announce_role_change': (data) =>
+	{
+		Hue.announce_role_change(data)
+	},
+	'voices_resetted': (data) =>
+	{
+		Hue.announce_voices_resetted(data)
+	},
+	'announce_removedops': (data) =>
+	{
+		Hue.announce_removedops(data)
+	},
+	'announce_ban': (data) =>
+	{
+		Hue.announce_ban(data)
+	},
+	'announce_unban': (data) =>
+	{
+		Hue.announce_unban(data)
+	},
+	'announce_unban_all': (data) =>
+	{
+		Hue.announce_unban_all(data)
+	},
+	'receive_ban_count': (data) =>
+	{
+		Hue.receive_ban_count(data)
+	},
+	'nothing_to_unban': (data) =>
+	{
+		Hue.feedback("There was nothing to unban")
+	},
+	'nothing_to_clear': (data) =>
+	{
+		Hue.feedback("There was nothing to clear")
+	},
+	'forbidden_user': (data) =>
+	{
+		Hue.forbiddenuser()
+	},
+	'nothing_was_found': (data) =>
+	{
+		Hue.feedback("Nothing was found")
+	},
+	'user_not_found': (data) =>
+	{
+		Hue.feedback("User doesn't exist")
+	},
+	'user_not_in_room': (data) =>
+	{
+		Hue.user_not_in_room()
+	},
+	'no_ops_to_remove': (data) =>
+	{
+		Hue.feedback("There were no ops to remove")
+	},
+	'no_voices_to_reset': (data) =>
+	{
+		Hue.feedback("There were no voices to reset")
+	},
+	'is_already': (data) =>
+	{
+		Hue.is_already(data.who, data.what)
+	},
+	'user_already_banned': (data) =>
+	{
+		Hue.feedback("User is already banned")
+	},
+	'user_already_unbanned': (data) =>
+	{
+		Hue.feedback("User is already unbanned")
+	},
+	'privacy_change': (data) =>
+	{
+		Hue.announce_privacy_change(data)
+	},
+	'image_not_found': (data) =>
+	{
+		Hue.feedback("The image couldn't be found")
+	},
+	'song_not_found': (data) =>
+	{
+		Hue.feedback("The song couldn't be found")
+	},
+	'video_not_found': (data) =>
+	{
+		Hue.feedback("The video couldn't be found")
+	},
+	'image_cooldown_wait': (data) =>
+	{
+		Hue.feedback("The image was changed recently. You must wait a while before changing it again")
+	},
+	'tv_cooldown_wait': (data) =>
+	{
+		Hue.feedback("The tv was changed recently. You must wait a while before changing it again")
+	},
+	'radio_cooldown_wait': (data) =>
+	{
+		Hue.feedback("The radio was changed recently. You must wait a while before changing it again")
+	},
+	'room_created': (data) =>
+	{
+		Hue.on_room_created(data)
+	},
+	'redirect': (data) =>
+	{
+		Hue.goto_url(data.location)
+	},
+	'username_already_exists': (data) =>
+	{
+		Hue.feedback(`${data.username} already exists`)
+	},
+	'email_already_exists': (data) =>
+	{
+		Hue.feedback(`${data.email} already exists`)
+	},
+	'new_username': (data) =>
+	{
+		Hue.announce_new_username(data)
+	},
+	'password_changed': (data) =>
+	{
+		Hue.password_changed(data)
+	},
+	'email_changed': (data) =>
+	{
+		Hue.email_changed(data)
+	},
+	'room_images_mode_change': (data) =>
+	{
+		Hue.announce_room_images_mode_change(data)
+	},
+	'room_tv_mode_change': (data) =>
+	{
+		Hue.announce_room_tv_mode_change(data)
+	},
+	'room_radio_mode_change': (data) =>
+	{
+		Hue.announce_room_radio_mode_change(data)
+	},
+	'room_synth_mode_change': (data) =>
+	{
+		Hue.announce_room_synth_mode_change(data)
+	},
+	'theme_mode_changed': (data) =>
+	{
+		Hue.announce_theme_mode_change(data)
+	},
+	'theme_change': (data) =>
+	{
+		Hue.announce_theme_change(data)
+	},
+	'background_image_change': (data) =>
+	{
+		Hue.announce_background_image_change(data)
+	},
+	'background_mode_changed': (data) =>
+	{
+		Hue.announce_background_mode_change(data)
+	},
+	'background_effect_changed': (data) =>
+	{
+		Hue.announce_background_effect_change(data)
+	},
+	'background_tile_dimensions_changed': (data) =>
+	{
+		Hue.announce_background_tile_dimensions_change(data)
+	},
+	'text_color_mode_changed': (data) =>
+	{
+		Hue.announce_text_color_mode_change(data)
+	},
+	'text_color_changed': (data) =>
+	{
+		Hue.announce_text_color_change(data)
+	},
+	'voice_permission_change': (data) =>
+	{
+		Hue.announce_voice_permission_change(data)
+	},
+	'user_disconnect': (data) =>
+	{
+		Hue.userdisconnect(data)
+	},
+	'others_disconnected': (data) =>
+	{
+		Hue.show_others_disconnected(data)
+	},
+	'whisper': (data) =>
+	{
+		Hue.popup_message_received(data)
+	},
+	'whisper_ops': (data) =>
+	{
+		Hue.popup_message_received(data, "ops")
+	},
+	'room_broadcast': (data) =>
+	{
+		Hue.popup_message_received(data, "room")
+	},
+	'system_broadcast': (data) =>
+	{
+		Hue.popup_message_received(data, "system")
+	},
+	'system_restart_signal': (data) =>
+	{
+		Hue.restart_client()
+	},
+	'error_occurred': (data) =>
+	{
+		Hue.error_occurred()
+	},
+	'email_change_code_sent': (data) =>
+	{
+		Hue.feedback(`Verification code sent. Use the command sent to ${data.email}. Email might take a couple of minutes to arrive`)
+	},
+	'email_change_code_not_sent': (data) =>
+	{
+		Hue.feedback(`Verification code not sent yet. Use /changeemail [new_email] to get a verification code`)
+	},
+	'email_change_wait': (data) =>
+	{
+		Hue.feedback(`You must wait a while before changing the email again`)
+	},
+	'email_change_wrong_code': (data) =>
+	{
+		Hue.feedback(`Code supplied didn't match`)
+	},
+	'email_change_expired_code': (data) =>
+	{
+		Hue.feedback(`Code supplied has expired`)
+	},
+	'create_room_wait': (data) =>
+	{
+		Hue.msg_info.show("You must wait a while before creating another room")
+	},
+	'pong_received': (data) =>
+	{
+		Hue.pong_received(data)
+	},
+	'reaction_received': (data) =>
+	{
+		Hue.show_reaction(data)
+	},
+	'cannot_embed_iframe': (data) =>
+	{
+		Hue.feedback("That website cannot be embedded")
+	},
+	'same_image': (data) =>
+	{
+		Hue.feedback("Image is already set to that")
+	},
+	'same_tv': (data) =>
+	{
+		Hue.feedback("TV is already set to that")
+	},
+	'same_radio': (data) =>
+	{
+		Hue.feedback("Radio is already set to that")
+	},
+	'receive_admin_activity': (data) =>
+	{
+		Hue.show_admin_activity(data.messages)
+	},
+	'receive_access_log': (data) =>
+	{
+		Hue.show_access_log(data.messages)
+	},
+	'receive_admin_list': (data) =>
+	{
+		Hue.show_admin_list(data)
+	},
+	'receive_ban_list': (data) =>
+	{
+		Hue.show_ban_list(data)
+	},
+	'activity_trigger': (data) =>
+	{
+		Hue.push_to_activity_bar(data.username, Date.now())
+	},
+	'message_deleted': (data) =>
+	{
+		Hue.remove_message_from_chat(data)
+	},
+	'receive_synth_key': (data) =>
+	{
+		Hue.receive_synth_key(data)
+	},
+	'receive_synth_voice': (data) =>
+	{
+		Hue.receive_synth_voice(data)
+	},
+	'announcement': (data) =>
+	{
+		Hue.show_announcement(data)
+	}
+}
+
 Hue.init = function()
 {
 	Hue.setup_markdown_regexes()
@@ -1323,6 +1686,76 @@ Hue.init = function()
 	}
 
 	Hue.start_socket()
+}
+
+Hue.on_join = function(data)
+{
+	console.info("Joined Room")
+
+	Hue.init_data = data
+	Hue.room_locked = data.room_locked
+
+	if(Hue.room_locked)
+	{
+		Hue.start_locked_mode()
+		return false
+	}
+
+	Hue.room_name = data.room_name
+	Hue.set_username(data.username)
+	Hue.set_email(data.email)
+	Hue.user_reg_date = data.reg_date
+	Hue.setup_profile_image(data.profile_image)
+	Hue.userlist = data.userlist
+	Hue.update_userlist()
+	Hue.log_enabled = data.log
+	Hue.log_messages = data.log_messages
+	Hue.setup_theme_and_background(data)
+	Hue.apply_background()
+	Hue.apply_theme()
+	Hue.setup_active_media(data)
+	Hue.start_permissions(data)
+	Hue.is_public = data.public
+	Hue.set_role(data.role, false)
+	Hue.set_topic_info(data)
+	Hue.update_title()
+	Hue.setup_user_menu()
+	Hue.clear_chat()
+	Hue.check_firstime()
+	Hue.get_input_history()
+	Hue.show_joined()
+	Hue.start_active_media()
+	Hue.check_maxers()
+	Hue.config_main_menu()
+	Hue.start_metadata_loop()
+	Hue.chat_scroll_bottom()
+	Hue.make_main_container_visible()
+	Hue.setup_activity_bar()
+	Hue.setup_input_placeholder()
+	Hue.setup_details()
+
+	Hue.at_startup()
+}
+
+Hue.on_chat_message = function(data)
+{
+	Hue.update_chat(
+	{
+		id: data.id,
+		user_id: data.user_id,
+		username: data.username, 
+		message: data.message, 
+		prof_image: data.profile_image,
+		date: data.date,
+		link_title: data.link_title,
+		link_image: data.link_image,
+		link_url: data.link_url, 
+		edited: data.edited,
+		just_edited: data.just_edited
+	})
+	
+	Hue.hide_pencil()
+	Hue.remove_aura(data.username)
 }
 
 Hue.make_main_container_visible = function()
@@ -1897,538 +2330,9 @@ Hue.start_socket = function()
 		let type = obj.type
 		let data = obj.data
 
-		if(type === 'joined')
+		if(Hue.server_update_events[type])
 		{
-			console.info("Joined Room")
-
-			Hue.init_data = data
-			Hue.room_locked = data.room_locked
-
-			if(Hue.room_locked)
-			{
-				Hue.start_locked_mode()
-				return false
-			}
-
-			Hue.room_name = data.room_name
-			Hue.set_username(data.username)
-			Hue.set_email(data.email)
-			Hue.user_reg_date = data.reg_date
-			Hue.setup_profile_image(data.profile_image)
-			Hue.userlist = data.userlist
-			Hue.update_userlist()
-			Hue.log_enabled = data.log
-			Hue.log_messages = data.log_messages
-			Hue.setup_theme_and_background(data)
-			Hue.apply_background()
-			Hue.apply_theme()
-			Hue.setup_active_media(data)
-			Hue.start_permissions(data)
-			Hue.is_public = data.public
-			Hue.set_role(data.role, false)
-			Hue.set_topic_info(data)
-			Hue.update_title()
-			Hue.setup_user_menu()
-			Hue.clear_chat()
-			Hue.check_firstime()
-			Hue.get_input_history()
-			Hue.show_joined()
-			Hue.start_active_media()
-			Hue.check_maxers()
-			Hue.config_main_menu()
-			Hue.start_metadata_loop()
-			Hue.chat_scroll_bottom()
-			Hue.make_main_container_visible()
-			Hue.setup_activity_bar()
-			Hue.setup_input_placeholder()
-			Hue.setup_details()
-
-			Hue.at_startup()
-		}
-
-		else if(type === 'typing')
-		{
-			Hue.show_typing(data)
-		}
-
-		else if(type === 'chat_message')
-		{
-			Hue.update_chat(
-			{
-				id: data.id,
-				user_id: data.user_id,
-				username: data.username, 
-				message: data.message, 
-				prof_image: data.profile_image,
-				date: data.date,
-				link_title: data.link_title,
-				link_image: data.link_image,
-				link_url: data.link_url, 
-				edited: data.edited,
-				just_edited: data.just_edited
-			})
-
-			Hue.hide_pencil()
-			Hue.remove_aura(data.username)
-		}
-
-		else if(type === 'request_slice_upload')
-		{
-			Hue.request_slice_upload(data)
-		}
-
-		else if(type === 'upload_ended')
-		{
-			Hue.upload_ended(data)
-		}
-
-		else if(type === 'changed_image_source')
-		{
-			Hue.setup_image("change", data)
-		}
-
-		else if(type === 'changed_tv_source')
-		{
-			Hue.setup_tv("change", data)
-		}
-
-		else if(type === 'restarted_tv_source')
-		{
-			Hue.setup_tv("restart", data)
-		}
-
-		else if(type === 'changed_radio_source')
-		{
-			Hue.setup_radio("change", data)
-		}
-
-		else if(type === 'restarted_radio_source')
-		{
-			Hue.setup_radio("restart", data)
-		}
-
-		else if(type === 'profile_image_changed')
-		{
-			Hue.profile_image_changed(data)
-		}
-
-		else if(type === 'user_join')
-		{
-			Hue.userjoin(data)
-		}
-
-		else if(type === 'roomlist')
-		{
-			Hue.update_roomlist(data.rtype, data.roomlist)
-
-			if(data.rtype === "public_roomlist")
-			{
-				Hue.show_public_roomlist()
-			}
-
-			else if(data.rtype === "visited_roomlist")
-			{
-				Hue.show_visited_roomlist()
-			}
-		}
-
-		else if(type === 'upload_error')
-		{
-			Hue.show_upload_error()
-		}
-
-		else if(type === 'topic_change')
-		{
-			Hue.announce_topic_change(data)
-		}
-
-		else if(type === 'room_name_changed')
-		{
-			Hue.announce_room_name_change(data)
-		}
-
-		else if(type === 'log_changed')
-		{
-			Hue.announce_log_change(data)
-		}
-
-		else if(type === 'log_cleared')
-		{
-			Hue.announce_log_cleared(data)
-		}
-
-		else if(type === 'announce_role_change')
-		{
-			Hue.announce_role_change(data)
-		}
-
-		else if(type === 'voices_resetted')
-		{
-			Hue.announce_voices_resetted(data)
-		}
-
-		else if(type === 'announce_removedops')
-		{
-			Hue.announce_removedops(data)
-		}
-
-		else if(type === 'announce_ban')
-		{
-			Hue.public_feedback(`${data.username1} banned ${data.username2}`,
-			{
-				username: data.username1,
-				open_profile: true
-			})
-		}
-
-		else if(type === 'announce_unban')
-		{
-			Hue.announce_unban(data)
-		}
-
-		else if(type === 'announce_unban_all')
-		{
-			Hue.announce_unban_all(data)
-		}
-
-		else if(type === 'receive_ban_count')
-		{
-			Hue.receive_ban_count(data)
-		}
-
-		else if(type === 'nothing_to_unban')
-		{
-			Hue.feedback("There was nothing to unban")
-		}
-
-		else if(type === 'nothing_to_clear')
-		{
-			Hue.feedback("There was nothing to clear")
-		}
-
-		else if(type === 'forbidden_user')
-		{
-			Hue.forbiddenuser()
-		}
-
-		else if(type === 'nothing_was_found')
-		{
-			Hue.feedback("Nothing was found")
-		}
-
-		else if(type === 'user_not_found')
-		{
-			Hue.feedback("User doesn't exist")
-		}
-
-		else if(type === 'user_not_in_room')
-		{
-			Hue.user_not_in_room()
-		}
-
-		else if(type === 'no_ops_to_remove')
-		{
-			Hue.feedback("There were no ops to remove")
-		}
-
-		else if(type === 'no_voices_to_reset')
-		{
-			Hue.feedback("There were no voices to reset")
-		}
-
-		else if(type === 'is_already')
-		{
-			Hue.is_already(data.who, data.what)
-		}
-
-		else if(type === 'user_already_banned')
-		{
-			Hue.feedback("User is already banned")
-		}
-
-		else if(type === 'user_already_unbanned')
-		{
-			Hue.feedback("User is already unbanned")
-		}
-
-		else if(type === 'privacy_change')
-		{
-			Hue.announce_privacy_change(data)
-		}
-
-		else if(type === 'image_not_found')
-		{
-			Hue.feedback("The image couldn't be found")
-		}
-
-		else if(type === 'song_not_found')
-		{
-			Hue.feedback("The song couldn't be found")
-		}
-
-		else if(type === 'video_not_found')
-		{
-			Hue.feedback("The video couldn't be found")
-		}
-
-		else if(type === 'image_cooldown_wait')
-		{
-			Hue.feedback("The image was changed recently. You must wait a while before changing it again")
-		}
-
-		else if(type === 'tv_cooldown_wait')
-		{
-			Hue.feedback("The tv was changed recently. You must wait a while before changing it again")
-		}
-
-		else if(type === 'radio_cooldown_wait')
-		{
-			Hue.feedback("The radio was changed recently. You must wait a while before changing it again")
-		}
-
-		else if(type === 'room_created')
-		{
-			Hue.on_room_created(data)
-		}
-
-		else if(type === 'redirect')
-		{
-			Hue.goto_url(data.location)
-		}
-
-		else if(type === 'username_already_exists')
-		{
-			Hue.feedback(`${data.username} already exists`)
-		}
-
-		else if(type === 'email_already_exists')
-		{
-			Hue.feedback(`${data.email} already exists`)
-		}
-
-		else if(type === 'new_username')
-		{
-			Hue.announce_new_username(data)
-		}
-
-		else if(type === 'password_changed')
-		{
-			Hue.password_changed(data)
-		}
-
-		else if(type === 'email_changed')
-		{
-			Hue.email_changed(data)
-		}
-
-		else if(type === 'room_images_mode_change')
-		{
-			Hue.announce_room_images_mode_change(data)
-		}
-
-		else if(type === 'room_tv_mode_change')
-		{
-			Hue.announce_room_tv_mode_change(data)
-		}
-
-		else if(type === 'room_radio_mode_change')
-		{
-			Hue.announce_room_radio_mode_change(data)
-		}
-
-		else if(type === 'room_synth_mode_change')
-		{
-			Hue.announce_room_synth_mode_change(data)
-		}
-
-		else if(type === 'theme_mode_changed')
-		{
-			Hue.announce_theme_mode_change(data)
-		}
-
-		else if(type === 'theme_change')
-		{
-			Hue.announce_theme_change(data)
-		}
-
-		else if(type === 'background_image_change')
-		{
-			Hue.announce_background_image_change(data)
-		}
-
-		else if(type === 'background_mode_changed')
-		{
-			Hue.announce_background_mode_change(data)
-		}
-
-		else if(type === 'background_effect_changed')
-		{
-			Hue.announce_background_effect_change(data)
-		}
-
-		else if(type === 'background_tile_dimensions_changed')
-		{
-			Hue.announce_background_tile_dimensions_change(data)
-		}
-
-		else if(type === 'text_color_mode_changed')
-		{
-			Hue.announce_text_color_mode_change(data)
-		}
-
-		else if(type === 'text_color_changed')
-		{
-			Hue.announce_text_color_change(data)
-		}
-
-		else if(type === 'voice_permission_change')
-		{
-			Hue.announce_voice_permission_change(data)
-		}
-
-		else if(type === 'user_disconnect')
-		{
-			Hue.userdisconnect(data)
-		}
-
-		else if(type === 'others_disconnected')
-		{
-			Hue.show_others_disconnected(data)
-		}
-
-		else if(type === 'whisper')
-		{
-			Hue.popup_message_received(data)
-		}
-
-		else if(type === 'whisper_ops')
-		{
-			Hue.popup_message_received(data, "ops")
-		}
-
-		else if(type === 'room_broadcast')
-		{
-			Hue.popup_message_received(data, "room")
-		}
-
-		else if(type === 'system_broadcast')
-		{
-			Hue.popup_message_received(data, "system")
-		}
-
-		else if(type === 'system_restart_signal')
-		{
-			Hue.restart_client()
-		}
-
-		else if(type === 'error_occurred')
-		{
-			Hue.error_occurred()
-		}
-
-		else if(type === 'email_change_code_sent')
-		{
-			Hue.feedback(`Verification code sent. Use the command sent to ${data.email}. Email might take a couple of minutes to arrive`)
-		}
-
-		else if(type === 'email_change_code_not_sent')
-		{
-			Hue.feedback(`Verification code not sent yet. Use /changeemail [new_email] to get a verification code`)
-		}
-
-		else if(type === 'email_change_wait')
-		{
-			Hue.feedback(`You must wait a while before changing the email again`)
-		}
-
-		else if(type === 'email_change_wrong_code')
-		{
-			Hue.feedback(`Code supplied didn't match`)
-		}
-
-		else if(type === 'email_change_expired_code')
-		{
-			Hue.feedback(`Code supplied has expired`)
-		}
-
-		else if(type === 'create_room_wait')
-		{
-			Hue.msg_info.show("You must wait a while before creating another room")
-		}
-
-		else if(type === 'pong_received')
-		{
-			Hue.pong_received(data)
-		}
-
-		else if(type === 'reaction_received')
-		{
-			Hue.show_reaction(data)
-		}
-
-		else if(type === 'cannot_embed_iframe')
-		{
-			Hue.feedback("That website cannot be embedded")
-		}
-
-		else if(type === 'same_image')
-		{
-			Hue.feedback("Image is already set to that")
-		}
-
-		else if(type === 'same_tv')
-		{
-			Hue.feedback("TV is already set to that")
-		}
-
-		else if(type === 'same_radio')
-		{
-			Hue.feedback("Radio is already set to that")
-		}
-
-		else if(type === 'receive_admin_activity')
-		{
-			Hue.show_admin_activity(data.messages)
-		}
-
-		else if(type === 'receive_access_log')
-		{
-			Hue.show_access_log(data.messages)
-		}
-
-		else if(type === 'receive_admin_list')
-		{
-			Hue.show_admin_list(data)
-		}
-
-		else if(type === 'receive_ban_list')
-		{
-			Hue.show_ban_list(data)
-		}
-
-		else if(type === 'activity_trigger')
-		{
-			Hue.push_to_activity_bar(data.username, Date.now())
-		}
-
-		else if(type === 'message_deleted')
-		{
-			Hue.remove_message_from_chat(data)
-		}
-
-		else if(type === 'receive_synth_key')
-		{
-			Hue.receive_synth_key(data)
-		}
-
-		else if(type === 'receive_synth_voice')
-		{
-			Hue.receive_synth_voice(data)
-		}
-
-		else if(type === 'announcement')
-		{
-			Hue.show_announcement(data)
+			Hue.server_update_events[type](data)
 		}
 	})
 }
@@ -5253,6 +5157,21 @@ Hue.request_roomlist = function(filter="", type="public_roomlist")
 	{
 		Hue.requesting_roomlist = false
 	}, 1000)
+}
+
+Hue.on_roomlist_received = function(data)
+{
+	Hue.update_roomlist(data.type, data.roomlist)
+
+	if(data.type === "public_roomlist")
+	{
+		Hue.show_public_roomlist()
+	}
+
+	else if(data.type === "visited_roomlist")
+	{
+		Hue.show_visited_roomlist()
+	}
 }
 
 Hue.start_roomlist_click_events = function()
@@ -10151,6 +10070,12 @@ Hue.change_volume_command = function(arg, type="radio")
 	}
 }
 
+Hue.change_volume_all = function()
+{
+	Hue.change_volume_command(arg, "radio")
+	Hue.change_volume_command(arg, "tv")
+}
+
 Hue.sound_notify = function(type)
 {
 	if(!Hue.started)
@@ -11321,6 +11246,20 @@ Hue.kick = function(uname)
 	else
 	{
 		Hue.not_an_op()
+	}
+}
+
+Hue.announce_ban = function(data)
+{
+	Hue.public_feedback(`${data.username1} banned ${data.username2}`,
+	{
+		username: data.username1,
+		open_profile: true
+	})
+
+	if(Hue.ban_list_open)
+	{
+		Hue.request_ban_list()
 	}
 }
 
@@ -18989,6 +18928,8 @@ Hue.reset_settings = function(type, empty=true)
 
 Hue.execute_javascript = function(arg, show_result=true)
 {
+	arg = arg.replace(/\s\/endjs/gi, "")
+
 	let r
 
 	try
@@ -25441,4 +25382,20 @@ Hue.get_media_object_from_init_data = function(type)
 	}
 
 	return obj
+}
+
+Hue.say_command = function(arg, ans)
+{
+	Hue.process_message(
+	{
+		message: arg,
+		to_history: ans.to_history,
+		clr_input: ans.clr_input
+	})
+}
+
+Hue.input_command = function(arg)
+{
+	arg = arg.replace(/\s\/endinput/gi, "")
+	Hue.change_input(arg)
 }

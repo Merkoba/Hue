@@ -847,7 +847,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			handler.get_visited_roomlist(socket.hue_user_id, function(rooms)
 			{
-				handler.user_emit(socket, 'roomlist', {roomlist:rooms, rtype:data.type})
+				handler.user_emit(socket, 'receive_roomlist', {roomlist:rooms, type:data.type})
 			})
 		}
 
@@ -855,7 +855,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			handler.get_roomlist(function(rooms)
 			{
-				handler.user_emit(socket, 'roomlist', {roomlist:rooms, rtype:data.type})
+				handler.user_emit(socket, 'receive_roomlist', {roomlist:rooms, type:data.type})
 			})
 		}
 
