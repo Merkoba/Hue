@@ -38,7 +38,7 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2707"></script>
+		<script src="/static/js/base.js?version=2709"></script>
 		<link rel="stylesheet" href="/static/css/style.css?version=594"/>
 
 		<script>
@@ -735,39 +735,39 @@
 
 							<div class='spacer3'></div>
 
-							<div class='pointer underlined action inline' onclick='Hue.needs_confirm("reset_voices")'>Reset Voices</div>
+							<div class='pointer action inline' onclick='Hue.needs_confirm("reset_voices")'>Reset Voices</div>
 
-							<div class='spacer1'></div>
+							<div class='spacer2'></div>
 
-							<div class='pointer underlined action inline' onclick='Hue.needs_confirm("remove_ops")'>Remove Ops</div>
+							<div class='pointer action inline' onclick='Hue.needs_confirm("remove_ops")'>Remove Ops</div>
 							
-							<div class='spacer1'></div>
+							<div class='spacer2'></div>
 
-							<div class='pointer underlined action inline' onclick='Hue.get_banned_count()'>Banned Count</div>
+							<div class='pointer action inline' onclick='Hue.get_banned_count()'>Banned Count</div>
 							
-							<div class='spacer1'></div>
+							<div class='spacer2'></div>
 
-							<div class='pointer underlined action inline' onclick='Hue.needs_confirm("unban_all")'>Unban All</div>
+							<div class='pointer action inline' onclick='Hue.needs_confirm("unban_all")'>Unban All</div>
 
-							<div class='spacer1'></div>
+							<div class='spacer2'></div>
 							
-							<div class='pointer underlined action inline' onclick='Hue.request_admin_activity()'>Admin Activity</div>
+							<div class='pointer action inline' onclick='Hue.request_admin_activity()'>Admin Activity</div>
 
-							<div class='spacer1'></div>
+							<div class='spacer2'></div>
 							
-							<div class='pointer underlined action inline' onclick='Hue.request_access_log()'>Access Log</div>
+							<div class='pointer action inline' onclick='Hue.request_access_log()'>Access Log</div>
 
-							<div class='spacer1'></div>
+							<div class='spacer2'></div>
 							
-							<div class='pointer underlined action inline' onclick='Hue.request_admin_list()'>Admin List</div>
+							<div class='pointer action inline' onclick='Hue.request_admin_list()'>Admin List</div>
+							
+							<div class='spacer2'></div>
+							
+							<div class='pointer action inline' onclick='Hue.request_ban_list()'>Ban List</div>
 
-							<div class='spacer1'></div>
+							<div class='spacer2'></div>
 
-							<div class='pointer underlined action inline' onclick='Hue.needs_confirm("clear_log")'>Clear Log</div>
-
-							<div class='spacer1'></div>
-
-							<div class='pointer underlined action inline' onclick='Hue.needs_confirm("clear_log_and_room")'>Clear Log & Room</div>
+							<div class='pointer action inline' onclick='Hue.needs_confirm("clear_log")'>Clear Log</div>
 
 						</div>
 
@@ -2189,15 +2189,15 @@
 			<div class='info_item modal_item'>/public: Room appears in the public room list.</div>
 			<div class='info_item modal_item'>/enablelog: Enables logging of the room. Which allows users to see previous messages before they joined.</div>
 			<div class='info_item modal_item'>/disablelog: Disables logging.</div>
-			<div class='info_item modal_item'>/clearlog: Removes all messages from the log.</div>
-			<div class='info_item modal_item'>/clearlog2: Removes all messages from the log and resets client state for all the users in the room.</div>
+			<div class='info_item modal_item'>/clearlog: Removes all messages from the log and resets client state for all the users in the room.</div>
 			<div class='info_item modal_item'>/roomname x: Changes the name of the room.</div>
 			<div class='info_item modal_item'>/roomnameedit x: Puts the room name in the input, ready to be edited.</div>
 			<div class='info_item modal_item'>/kick x: Kicks a user out of the room.</div>
 			<div class='info_item modal_item'>/ban x: Bans a user from the room.</div>
 			<div class='info_item modal_item'>/unban x: Unbans a user from the room.</div>
 			<div class='info_item modal_item'>/unbanall: Removes all bans.</div>
-			<div class='info_item modal_item'>/bannedcount: Displays the number of banned users in the room.</div>
+			<div class='info_item modal_item'>/bancount: Displays the number of banned users in the room.</div>
+			<div class='info_item modal_item'>/banlist: Displays a list of banned users.</div>
 			<div class='info_item modal_item'>/theme x: Changes the theme to a specified rgb color.</div>
 			<div class='info_item modal_item'>/thememode x: Changes the theme mode. Valid modes include automatic and custom.</div>
 			<div class='info_item modal_item'>/textcolormode x: Changes the text color mode. Valid modes include automatic, and custom.</div>

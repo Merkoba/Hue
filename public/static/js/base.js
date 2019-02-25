@@ -38,6 +38,7 @@ Hue.goto_room_open = false
 Hue.import_settings_open = false
 Hue.background_image_input_open = false
 Hue.admin_list_open = false
+Hue.ban_list_open = false
 Hue.upload_comment_open = false
 Hue.modal_image_number_open = false
 Hue.change_user_username_open = false
@@ -396,9 +397,9 @@ Hue.command_actions =
 	{
 		Hue.unban_all()
 	},
-	"/bannedcount": (arg, ans) =>
+	"/bancount": (arg, ans) =>
 	{
-		Hue.get_banned_count()
+		Hue.get_ban_count()
 	},
 	"/kick": (arg, ans) =>
 	{
@@ -431,10 +432,6 @@ Hue.command_actions =
 	"/clearlog": (arg, ans) =>
 	{
 		Hue.clear_log()
-	},
-	"/clearlog2": (arg, ans) =>
-	{
-		Hue.clear_log(true)
 	},
 	"/radio": (arg, ans) =>
 	{
@@ -1163,6 +1160,10 @@ Hue.command_actions =
 	"/adminlist": (arg, ans) =>
 	{
 		Hue.request_admin_list()
+	},
+	"/banlist": (arg, ans) =>
+	{
+		Hue.request_ban_list()
 	},
 	"/toggleactivtybar": (arg, ans) =>
 	{
@@ -2011,7 +2012,7 @@ Hue.start_socket = function()
 			Hue.profile_image_changed(data)
 		}
 
-		else if(type === 'userjoin')
+		else if(type === 'user_join')
 		{
 			Hue.userjoin(data)
 		}
@@ -2082,11 +2083,7 @@ Hue.start_socket = function()
 
 		else if(type === 'announce_unban')
 		{
-			Hue.public_feedback(`${data.username1} unbanned ${data.username2}`,
-			{
-				username: data.username1,
-				open_profile: true
-			})
+			Hue.announce_unban(data)
 		}
 
 		else if(type === 'announce_unban_all')
@@ -2094,27 +2091,22 @@ Hue.start_socket = function()
 			Hue.announce_unban_all(data)
 		}
 
-		else if(type === 'receive_banned_count')
+		else if(type === 'receive_ban_count')
 		{
-			Hue.receive_banned_count(data)
+			Hue.receive_ban_count(data)
 		}
 
-		else if(type === 'nothingtounban')
+		else if(type === 'nothing_to_unban')
 		{
 			Hue.feedback("There was nothing to unban")
 		}
 
-		else if(type === 'nothingtoclear')
+		else if(type === 'nothing_to_clear')
 		{
 			Hue.feedback("There was nothing to clear")
 		}
 
-		else if(type === 'listbans')
-		{
-			Hue.show_listbans(data)
-		}
-
-		else if(type === 'forbiddenuser')
+		else if(type === 'forbidden_user')
 		{
 			Hue.forbiddenuser()
 		}
@@ -2134,19 +2126,19 @@ Hue.start_socket = function()
 			Hue.user_not_in_room()
 		}
 
-		else if(type === 'noopstoremove')
+		else if(type === 'no_ops_to_remove')
 		{
 			Hue.feedback("There were no ops to remove")
 		}
 
-		else if(type === 'novoicestoreset')
+		else if(type === 'no_voices_to_reset')
 		{
 			Hue.feedback("There were no voices to reset")
 		}
 
-		else if(type === 'isalready')
+		else if(type === 'is_already')
 		{
-			Hue.isalready(data.who, data.what)
+			Hue.is_already(data.who, data.what)
 		}
 
 		else if(type === 'user_already_banned')
@@ -2164,17 +2156,17 @@ Hue.start_socket = function()
 			Hue.announce_privacy_change(data)
 		}
 
-		else if(type === 'imagenotfound')
+		else if(type === 'image_not_found')
 		{
 			Hue.feedback("The image couldn't be found")
 		}
 
-		else if(type === 'songnotfound')
+		else if(type === 'song_not_found')
 		{
 			Hue.feedback("The song couldn't be found")
 		}
 
-		else if(type === 'videonotfound')
+		else if(type === 'video_not_found')
 		{
 			Hue.feedback("The video couldn't be found")
 		}
@@ -2294,12 +2286,12 @@ Hue.start_socket = function()
 			Hue.announce_voice_permission_change(data)
 		}
 
-		else if(type === 'userdisconnect')
+		else if(type === 'user_disconnect')
 		{
 			Hue.userdisconnect(data)
 		}
 
-		else if(type === 'othersdisconnected')
+		else if(type === 'others_disconnected')
 		{
 			Hue.show_others_disconnected(data)
 		}
@@ -2407,6 +2399,11 @@ Hue.start_socket = function()
 		else if(type === 'receive_admin_list')
 		{
 			Hue.show_admin_list(data)
+		}
+
+		else if(type === 'receive_ban_list')
+		{
+			Hue.show_ban_list(data)
 		}
 
 		else if(type === 'activity_trigger')
@@ -11261,15 +11258,15 @@ Hue.unban_all = function()
 	}
 }
 
-Hue.get_banned_count = function()
+Hue.get_ban_count = function()
 {
 	if(Hue.is_admin_or_op())
 	{
-		Hue.socket_emit('get_banned_count', {})
+		Hue.socket_emit('get_ban_count', {})
 	}
 }
 
-Hue.receive_banned_count = function(data)
+Hue.receive_ban_count = function(data)
 {
 	let s
 
@@ -11322,6 +11319,20 @@ Hue.kick = function(uname)
 	}
 }
 
+Hue.announce_unban = function(data)
+{
+	Hue.public_feedback(`${data.username1} unbanned ${data.username2}`,
+	{
+		username: data.username1,
+		open_profile: true
+	})
+
+	if(Hue.ban_list_open)
+	{
+		Hue.request_ban_list()
+	}
+}
+
 Hue.announce_unban_all = function(data)
 {
 	Hue.public_feedback(`${data.username} unbanned all banned users`,
@@ -11331,7 +11342,7 @@ Hue.announce_unban_all = function(data)
 	})
 }
 
-Hue.isalready = function(who, what)
+Hue.is_already = function(who, what)
 {
 	if(what === 'voice1')
 	{
@@ -11520,6 +11531,11 @@ Hue.do_userdisconnect = function(data)
 		else if(type === "banned")
 		{
 			s = `${data.username} was banned by ${data.info1}`
+
+			if(Hue.ban_list_open)
+			{
+				Hue.request_ban_list()
+			}
 		}
 
 		Hue.public_feedback(s,
@@ -12743,6 +12759,7 @@ Hue.info2_vars_to_false = function()
 	Hue.open_room_open = false
 	Hue.background_image_input_open = false
 	Hue.admin_list_open = false
+	Hue.ban_list_open = false
 	Hue.change_user_username_open = false
 	Hue.change_user_password_open = false
 	Hue.change_user_email_open = false
@@ -15059,17 +15076,17 @@ Hue.show_log_messages = function()
 
 	if(num_images === 0)
 	{
-		Hue.setup_image("show", Hue.init_data)
+		Hue.setup_image("show", Hue.get_media_object_from_init_data("image"))
 	}
 
 	if(num_tv === 0)
 	{
-		Hue.setup_tv("show", Hue.init_data)
+		Hue.setup_tv("show", Hue.get_media_object_from_init_data("tv"))
 	}
 
 	if(num_radio === 0)
 	{
-		Hue.setup_radio("show", Hue.init_data)
+		Hue.setup_radio("show", Hue.get_media_object_from_init_data("radio"))
 	}
 
 	if(Hue.log_messages && Hue.log_messages.length > 0)
@@ -15158,7 +15175,7 @@ Hue.change_log = function(log)
 	Hue.socket_emit("change_log", {log:log})
 }
 
-Hue.clear_log = function(clr_room=false)
+Hue.clear_log = function()
 {
 	if(!Hue.is_admin_or_op(Hue.role))
 	{
@@ -15166,12 +15183,7 @@ Hue.clear_log = function(clr_room=false)
 		return false
 	}
 
-	Hue.socket_emit("clear_log", {clear_room:clr_room})
-}
-
-Hue.clear_log_and_room = function(clr_room=false)
-{
-	Hue.clear_log(true)
+	Hue.socket_emit("clear_log", {})
 }
 
 Hue.announce_log_change = function(data)
@@ -15199,10 +15211,7 @@ Hue.announce_log_change = function(data)
 
 Hue.announce_log_cleared = function(data)
 {
-	if(data.clear_room)
-	{
-		Hue.clear_room()
-	}
+	Hue.clear_room()
 
 	Hue.public_feedback(`${data.username} cleared the log`,
 	{
@@ -22226,13 +22235,13 @@ Hue.clear_room = function(data)
 	Hue.tv_changed = Hue.tv_changed.slice(-1)
 	Hue.radio_changed = Hue.radio_changed.slice(-1)
 
-	$("#image_history_container").children().slice(1).remove()
-	$("#tv_history_container").children().slice(1).remove()
-	$("#radio_history_container").children().slice(1).remove()
-
 	Hue.announce_image(Hue.current_image())
 	Hue.announce_tv(Hue.current_tv())
 	Hue.announce_radio(Hue.current_radio())
+
+	Hue.update_media_history_blinks("image")
+	Hue.update_media_history_blinks("tv")
+	Hue.update_media_history_blinks("radio")
 
 	Hue.show_topic()
 }
@@ -23105,7 +23114,6 @@ Hue.request_admin_list = function()
 Hue.show_admin_list = function(data)
 {
 	let s = $("<div id='admin_list_container'></div>")
-
 	let i = 0
 
 	data.list.sort(Hue.compare_userlist)
@@ -23115,7 +23123,6 @@ Hue.show_admin_list = function(data)
 		i += 1
 
 		let hs = "<span class='admin_list_username'></span>&nbsp;&nbsp;<span class='admin_list_role'></span>"
-
 		let h = $(`<div class='admin_list_item'>${hs}</div>`)
 
 		h.find(".admin_list_username").eq(0).text(user.username)
@@ -23134,9 +23141,56 @@ Hue.show_admin_list = function(data)
 		s.append(h)
 	}
 
-	Hue.msg_info2.show(["Admin List", s[0]], function()
+	Hue.msg_info2.show([`Admin List (${data.list.length})`, s[0]], function()
 	{
 		Hue.admin_list_open = true
+	})
+}
+
+Hue.request_ban_list = function()
+{
+	if(!Hue.is_admin_or_op(Hue.role))
+	{
+		Hue.not_an_op()
+		return false
+	}
+
+	Hue.socket_emit("get_ban_list", {})
+}
+
+Hue.show_ban_list = function(data)
+{
+	let s = $("<div id='ban_list_container'></div>")
+	let i = 0
+
+	for(let user of data.list)
+	{
+		i += 1
+
+		let hs = "<span class='ban_list_username' title='Click To Unban'></span>"
+		let h = $(`<div class='ban_list_item'>${hs}</div>`)
+
+		h.find(".ban_list_username").eq(0).text(user.username)
+
+		h.click(function()
+		{
+			if(confirm(`Are you sure you want to unban ${user.username}`))
+			{
+				Hue.unban(user.username)
+			}
+		})
+
+		if(i < data.list.length)
+		{
+			h = h.add("<div class='spacer3'></div>")
+		}
+
+		s.append(h)
+	}
+
+	Hue.msg_info2.show([`Ban List (${data.list.length})`, s[0]], function()
+	{
+		Hue.ban_list_open = true
 	})
 }
 
@@ -25367,4 +25421,19 @@ Hue.make_settings_user_functions = function(type)
 	}
 
 	return s
+}
+
+Hue.get_media_object_from_init_data = function(type)
+{
+	let obj = {}
+
+	for(let key in Hue.init_data)
+	{
+		if(key.startsWith(`${type}_`))
+		{
+			obj[key.replace(`${type}_`, "")] = Hue.init_data[key]
+		}
+	}
+
+	return obj
 }

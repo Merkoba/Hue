@@ -2150,7 +2150,7 @@ input[type=text], textarea
 	z-index: 999;
 }
 
-.admin_list_item
+.admin_list_item, .ban_list_item
 {
 	font-size: 1.2rem;
 	cursor: pointer;

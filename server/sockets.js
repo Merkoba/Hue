@@ -594,7 +594,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(!already_connected)
 		{
-			handler.broadcast_emit(socket, 'userjoin',
+			handler.broadcast_emit(socket, 'user_join',
 			{
 				user_id: socket.hue_user_id,
 				username: socket.hue_username,
@@ -952,14 +952,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
 			{
-				handler.user_emit(socket, 'forbiddenuser', {})
+				handler.user_emit(socket, 'forbidden_user', {})
 				return false
 			}
 		}
 
 		if(current_role === data.role || (current_role === undefined && data.role === "voice1"))
 		{
-			handler.user_emit(socket, 'isalready', {what:data.role, who:data.username})
+			handler.user_emit(socket, 'is_already', {what:data.role, who:data.username})
 			return false
 		}
 
@@ -973,7 +973,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				if(socket.hue_username !== socc.hue_username && socc.hue_role === "admin")
 				{
-					handler.user_emit(socket, 'forbiddenuser', {})
+					handler.user_emit(socket, 'forbidden_user', {})
 					return false
 				}
 			}
@@ -1023,7 +1023,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(!removed)
 		{
-			handler.user_emit(socket, 'novoicestoreset', {})
+			handler.user_emit(socket, 'no_voices_to_reset', {})
 			return false
 		}
 
@@ -1068,7 +1068,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(!removed)
 		{
-			handler.user_emit(socket, 'noopstoremove', {})
+			handler.user_emit(socket, 'no_ops_to_remove', {})
 			return false
 		}
 
@@ -1119,7 +1119,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			if(((sockets[0].role === 'admin' || sockets[0].role === 'op') && socket.hue_role !== 'admin') || sockets[0].superuser)
 			{
-				handler.user_emit(socket, 'forbiddenuser', {})
+				handler.user_emit(socket, 'forbidden_user', {})
 				return false
 			}
 
@@ -1180,7 +1180,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
 		{
-			handler.user_emit(socket, 'forbiddenuser', {})
+			handler.user_emit(socket, 'forbidden_user', {})
 			return false
 		}
 
@@ -1198,7 +1198,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				if(socc.hue_superuser)
 				{
-					handler.user_emit(socket, 'forbiddenuser', {})
+					handler.user_emit(socket, 'forbidden_user', {})
 					return false
 				}
 
@@ -1310,11 +1310,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		else
 		{
-			handler.user_emit(socket, 'nothingtounban', {})
+			handler.user_emit(socket, 'nothing_to_unban', {})
 		}
 	}
 
-	handler.public.get_banned_count = async function(socket, data)
+	handler.public.get_ban_count = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
 		{
@@ -1335,7 +1335,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			count = info.bans.length
 		}
 
-		handler.user_emit(socket, 'receive_banned_count', {count:count})
+		handler.user_emit(socket, 'receive_ban_count', {count:count})
 	}
 
 	handler.public.change_log = async function(socket, data)
@@ -1393,40 +1393,18 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return handler.get_out(socket)
 		}
 
-		if(data.clear_room === undefined)
-		{
-			return handler.get_out(socket)
-		}
-
-		if(data.clear_room !== true && data.clear_room !== false)
-		{
-			return handler.get_out(socket)
-		}
-
-		let info = await db_manager.get_room({_id:socket.hue_room_id}, {log_messages:1})
-
-		if(info.log_messages.length > 0 || rooms[socket.hue_room_id].log_messages.length > 0)
+		if(rooms[socket.hue_room_id].log_messages.length > 0)
 		{
 			rooms[socket.hue_room_id].log_messages = []
-			rooms[socket.hue_room_id].log_messages_modified = true
-			rooms[socket.hue_room_id].activity = true
 			db_manager.update_room(socket.hue_room_id, {log_messages:[]})
 			rooms[socket.hue_room_id].log_messages_modified = false
-			handler.room_emit(socket, 'log_cleared', {username:socket.hue_username, clear_room:data.clear_room})
+			handler.room_emit(socket, 'log_cleared', {username:socket.hue_username})
 			handler.push_admin_log_message(socket, "cleared the log")
 		}
 
 		else
 		{
-			if(data.clear_room)
-			{
-				handler.room_emit(socket, 'log_cleared', {username:socket.hue_username, clear_room:data.clear_room})
-			}
-
-			else
-			{
-				handler.user_emit(socket, 'nothingtoclear', {})
-			}
+			handler.user_emit(socket, 'nothing_to_clear', {})
 		}
 	}
 
@@ -1563,7 +1541,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 					else
 					{
-						handler.user_emit(socket, 'songnotfound', {})
+						handler.user_emit(socket, 'song_not_found', {})
 						return false
 					}
 
@@ -1585,7 +1563,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 						else
 						{
-							handler.user_emit(socket, 'songnotfound', {})
+							handler.user_emit(socket, 'song_not_found', {})
 						}
 					})
 
@@ -1597,7 +1575,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				else
 				{
-					handler.user_emit(socket, 'songnotfound', {})
+					handler.user_emit(socket, 'song_not_found', {})
 					return false
 				}
 			}
@@ -1615,7 +1593,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					if(err)
 					{
-						handler.user_emit(socket, 'songnotfound', {})
+						handler.user_emit(socket, 'song_not_found', {})
 						logger.log_error(err)
 						return false
 					}
@@ -1695,13 +1673,13 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 						return
 					}
 
-					handler.user_emit(socket, 'songnotfound', {})
+					handler.user_emit(socket, 'song_not_found', {})
 					return false
 				}
 
 				else
 				{
-					handler.user_emit(socket, 'songnotfound', {})
+					handler.user_emit(socket, 'song_not_found', {})
 				}
 			})
 
@@ -1910,7 +1888,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 					else
 					{
-						handler.user_emit(socket, 'videonotfound', {})
+						handler.user_emit(socket, 'video_not_found', {})
 						return false
 					}
 
@@ -1932,21 +1910,21 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 						else
 						{
-							handler.user_emit(socket, 'videonotfound', {})
+							handler.user_emit(socket, 'video_not_found', {})
 							return false
 						}
 					})
 
 					.catch(err =>
 					{
-						handler.user_emit(socket, 'videonotfound', {})
+						handler.user_emit(socket, 'video_not_found', {})
 						logger.log_error(err)
 					})
 				}
 
 				else
 				{
-					handler.user_emit(socket, 'videonotfound', {})
+					handler.user_emit(socket, 'video_not_found', {})
 				}
 			}
 
@@ -1985,7 +1963,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 						.catch(err =>
 						{
-							handler.user_emit(socket, 'videonotfound', {})
+							handler.user_emit(socket, 'video_not_found', {})
 							logger.log_error(err)
 						})
 					}
@@ -2032,14 +2010,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 					else
 					{
-						handler.user_emit(socket, 'videonotfound', {})
+						handler.user_emit(socket, 'video_not_found', {})
 						return false
 					}
 				}
 
 				else
 				{
-					handler.user_emit(socket, 'videonotfound', {})
+					handler.user_emit(socket, 'video_not_found', {})
 				}
 			}
 
@@ -2056,7 +2034,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					if(err)
 					{
-						handler.user_emit(socket, 'videonotfound', {})
+						handler.user_emit(socket, 'video_not_found', {})
 						logger.log_error(err)
 						return false
 					}
@@ -2096,7 +2074,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						if(err) 
 						{
-							handler.user_emit(socket, 'videonotfound', {})
+							handler.user_emit(socket, 'video_not_found', {})
 							logger.log_error(err)
 							return false
 						}
@@ -2110,7 +2088,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 						else
 						{
-							handler.user_emit(socket, 'videonotfound', {})
+							handler.user_emit(socket, 'video_not_found', {})
 							return false
 						}
 					})
@@ -2118,7 +2096,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				else
 				{
-					handler.user_emit(socket, 'videonotfound', {})
+					handler.user_emit(socket, 'video_not_found', {})
 				}
 			}
 
@@ -2246,13 +2224,13 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 						return
 					}
 
-					handler.user_emit(socket, 'videonotfound', {})
+					handler.user_emit(socket, 'video_not_found', {})
 					return false
 				}
 
 				else
 				{
-					handler.user_emit(socket, 'videonotfound', {})
+					handler.user_emit(socket, 'video_not_found', {})
 				}
 			})
 
@@ -2984,7 +2962,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				type = 'disconnection'
 			}
 
-			handler.room_emit(socket, "userdisconnect",
+			handler.room_emit(socket, "user_disconnect",
 			{
 				user_id: socket.hue_user_id,
 				username: socket.hue_username,
@@ -3291,7 +3269,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					}
 				}
 
-				handler.user_emit(socket, 'imagenotfound', {})
+				handler.user_emit(socket, 'image_not_found', {})
 			})
 
 			.catch(err =>
@@ -4299,7 +4277,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		}
 
-		handler.user_emit(socket, 'othersdisconnected', {amount:amount})
+		handler.user_emit(socket, 'others_disconnected', {amount:amount})
 	}
 
 	handler.public.ping_server = function(socket, data)
@@ -4381,9 +4359,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:1})
-
 		let roles = {}
-		
 		let ids = []
 
 		for(let id in info.keys)
@@ -4399,7 +4375,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(ids.length === 0)
 		{
-			handler.user_emit(socket, 'nothing_was_found', {})
+			handler.user_emit(socket, 'receive_admin_list', {list:[]})
 			return false
 		}
 
@@ -4407,7 +4383,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(users.length === 0)
 		{
-			handler.user_emit(socket, 'nothing_was_found', {})
+			handler.user_emit(socket, 'receive_admin_list', {list:[]})
 			return false
 		}
 
@@ -4419,6 +4395,45 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		handler.user_emit(socket, 'receive_admin_list', {list:list})
+	}
+
+	handler.public.get_ban_list = async function(socket, data)
+	{
+		if(!handler.is_admin_or_op(socket))
+		{
+			return handler.get_out(socket)
+		}
+
+		let info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:1})
+		let ids = []
+
+		for(let id of info.bans)
+		{
+			ids.push(id)
+		}
+
+		if(ids.length === 0)
+		{
+			handler.user_emit(socket, 'receive_ban_list', {list:[]})
+			return false
+		}
+
+		let users = await db_manager.get_user({_id:{$in:ids}}, {username:1})
+
+		if(users.length === 0)
+		{
+			handler.user_emit(socket, 'receive_ban_list', {list:[]})
+			return false
+		}
+
+		let list = []
+
+		for(let user of users)
+		{
+			list.push({username:user.username})
+		}
+
+		handler.user_emit(socket, 'receive_ban_list', {list:list})
 	}
 
 	handler.public.activity_trigger = async function(socket, data)
@@ -4510,7 +4525,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
 					{
-						handler.user_emit(socket, 'forbiddenuser', {})
+						handler.user_emit(socket, 'forbidden_user', {})
 						return false
 					}
 				}
