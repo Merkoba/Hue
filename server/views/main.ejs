@@ -38,7 +38,7 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2713"></script>
+		<script src="/static/js/base.js?version=2715"></script>
 		<link rel="stylesheet" href="/static/css/style.css?version=596"/>
 
 		<script>
@@ -400,8 +400,8 @@
 
 		</div>
 
-		<script id='template_main_menu' type='text/x-handlebars-template'>
-			<div id='main_menu' class='unselectable'>
+		<script id='template_main_menu' type='text/x-handlebars-template' class='template'>
+			<div id='main_menu' class='unselecta``ble'>
 
 				<div class='menu_item action inline' onclick="Hue.request_roomlist('', 'visited_roomlist')">Visited Rooms</div>
 				<div></div>
@@ -779,7 +779,7 @@
 			</div>
 		</script>	
 
-		<script id='template_user_menu' type='text/x-handlebars-template'>
+		<script id='template_user_menu' type='text/x-handlebars-template' class='template'>
 
 			<div class='unselectable'>
 
@@ -845,7 +845,7 @@
 
 		</script>
 
-		<script id='template_settings' type='text/x-handlebars-template'>
+		<script id='template_settings' type='text/x-handlebars-template' class='template'>
 			<div id="settings_window_{{type}}" class='settings_main_window' data-settings_type='{{type}}'>
 
 				<div class="settings_window_left" id="settings_window_left_{{type}}">
@@ -1415,7 +1415,7 @@
 			</div>
 		</script>
 
-		<script id='template_global_settings' type='text/x-handlebars-template'>
+		<script id='template_global_settings' type='text/x-handlebars-template' class='template'>
 			<input type="text" class="filter_input" placeholder="Filter" id="global_settings_filter" data-mode="manual">
 			<div class='spacer4'></div>
 			<div id='global_settings_container' class='unselectable'>
@@ -1423,7 +1423,7 @@
 			</div>
 		</script>
 
-		<script id='template_room_settings' type='text/x-handlebars-template'>
+		<script id='template_room_settings' type='text/x-handlebars-template' class='template'>
 			<div id='room_settings_container' class='unselectable'>
 				<div>Global Settings can be overridden for the current room here</div>
 				<div class='spacer3'></div>
@@ -1433,7 +1433,7 @@
 			</div>
 		</script>		
 
-		<script id='template_create_room' type='text/x-handlebars-template'>
+		<script id='template_create_room' type='text/x-handlebars-template' class='template'>
 			<div id='create_room'>
 
 				<div class='spacer3'></div>
@@ -1465,7 +1465,7 @@
 			</div>
 		</script>
 
-		<script id='template_handle_url' type='text/x-handlebars-template'>
+		<script id='template_handle_url' type='text/x-handlebars-template' class='template'>
 			<div id='handle_url_container' class='unselectable'>
 				<div id='handle_url_link' class='horizontal_item bigger action inline pointer'>Link&nbsp;URL</div>
 				<div class='horizontal_separator header_separator inline color_3'>|</div>
@@ -1477,7 +1477,7 @@
 			</div>
 		</script>
 
-		<script id='template_open_room' type='text/x-handlebars-template'>
+		<script id='template_open_room' type='text/x-handlebars-template' class='template'>
 			<div id="open_buttons" class='unselectable'>
 
 				<div id='open_room_here' class='bigger action inline pointer' onclick='Hue.goto_url("{{id}}");Hue.msg_info2.close()'>
@@ -1493,7 +1493,7 @@
 			</div>
 		</script>
 
-		<script id='template_open_url' type='text/x-handlebars-template'>
+		<script id='template_open_url' type='text/x-handlebars-template' class='template'>
 			<div class='flex_row_center unselectable' id='open_url_container'>
 				<div class='horizontal_item bigger action inline pointer' id='open_url_menu_open'>Open&nbsp;URL</div>
 				<div class='horizontal_separator header_separator color_3'>|</div>
@@ -1505,7 +1505,7 @@
 			</div>
 		</script>
 
-		<script id='template_upload_comment' type='text/x-handlebars-template'>
+		<script id='template_upload_comment' type='text/x-handlebars-template' class='template'>
 			<img id='upload_comment_image_preview'>
 			<div id='upload_comment_image_feedback'>Image seems to be corrupted</div>
 			<div class='spacer3'></div>
@@ -1518,7 +1518,7 @@
 			</div>
 		</script>
 
-		<script id='template_background_image_select' type='text/x-handlebars-template'>
+		<script id='template_background_image_select' type='text/x-handlebars-template' class='template'>
 			<div class='flex_row_center unselectable'>
 				<div class='bigger action inline pointer' onclick='Hue.open_background_image_picker()'>Upload&nbsp;Image</div>
 				<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
@@ -1526,53 +1526,53 @@
 			</div>
 		</script>
 
-		<script id='template_background_image_input' type='text/x-handlebars-template'>
+		<script id='template_background_image_input' type='text/x-handlebars-template' class='template'>
 			<input id='background_image_input_text' class='nice_input' type='text' placeholder='Image URL'>
 			<div class='spacer3'></div>
 			<div class='menu_item action inline unselectable' onclick='Hue.background_image_input_action()'>Use This</div>
 		</script>
 
-		<script id='template_goto_room' type='text/x-handlebars-template'>
+		<script id='template_goto_room' type='text/x-handlebars-template' class='template'>
 			<input id='goto_room_input' class='nice_input' type='text' placeholder='Room ID or URL'>
 			<div class='spacer3'></div>
 			<div class='menu_item action inline unselectable' onclick='Hue.goto_room_action()'>Go There</div>
 		</script>
 
-		<script id='template_status' type='text/x-handlebars-template'>
+		<script id='template_status' type='text/x-handlebars-template' class='template'>
 				<div class='container_22'>{{{info}}}</div>
 		</script>
 
-		<script id='template_userlist' type='text/x-handlebars-template'>
+		<script id='template_userlist' type='text/x-handlebars-template' class='template'>
 			<input type="text" id="userlist_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='userlist'></div>
 		</script>
 		
-		<script id='template_roomlist' type='text/x-handlebars-template'>
+		<script id='template_roomlist' type='text/x-handlebars-template' class='template'>
 			<input type="text" id="{{type}}_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>	
 			<div id='{{type}}_container'></div>
 		</script>		
 		
-		<script id='template_played' type='text/x-handlebars-template'>
+		<script id='template_played' type='text/x-handlebars-template' class='template'>
 			<input type="text" id="played_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='played'></div>
 		</script>
 
-		<script id='template_admin_activity' type='text/x-handlebars-template'>
+		<script id='template_admin_activity' type='text/x-handlebars-template' class='template'>
 			<input type="text" id="admin_activity_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='admin_activity_container'></div>
 		</script>
 
-		<script id='template_access_log' type='text/x-handlebars-template'>
+		<script id='template_access_log' type='text/x-handlebars-template' class='template'>
 			<input type="text" id="access_log_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='access_log_container'></div>
 		</script>
 
-		<script id='template_input_history' type='text/x-handlebars-template'>
+		<script id='template_input_history' type='text/x-handlebars-template' class='template'>
 			<div class='flex_row_center sticky bg1'>
 				<i class='fa fa-trash-o pointer action invisible'></i>
 				<div class='hspacer3 invisible'></div>
@@ -1586,7 +1586,7 @@
 			<div id='input_history_container'></div>
 		</script>	
 
-		<script id='template_chat_search' type='text/x-handlebars-template'>
+		<script id='template_chat_search' type='text/x-handlebars-template' class='template'>
 			<div class='flex_row_center sticky bg1'>
 				<i class='fa fa-history pointer action invisible'></i>
 				<div class='hspacer3 invisible'></div>
@@ -1606,7 +1606,7 @@
 			<div id='chat_search_container' class='chat_area align_left'></div>
 		</script>
 
-		<script id='template_highlights' type='text/x-handlebars-template'>
+		<script id='template_highlights' type='text/x-handlebars-template' class='template'>
 			<input type="text" id="highlights_filter" data-mode='manual' class="filter_input" placeholder="Filter">
 			
 			<div class='spacer3'></div>
@@ -1620,25 +1620,25 @@
 			<div id='highlights_container' class='chat_area align_left'></div>
 		</script>
 
-		<script id='template_image_history' type='text/x-handlebars-template'>
+		<script id='template_image_history' type='text/x-handlebars-template' class='template'>
 			<input type="text" id="image_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='image_history_container' class='media_history_container chat_area chat_area_clone_center'></div>
 		</script>
 
-		<script id='template_tv_history' type='text/x-handlebars-template'>
+		<script id='template_tv_history' type='text/x-handlebars-template' class='template'>
 			<input type="text" id="tv_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='tv_history_container' class='media_history_container chat_area chat_area_clone_center'></div>
 		</script>
 
-		<script id='template_radio_history' type='text/x-handlebars-template'>
+		<script id='template_radio_history' type='text/x-handlebars-template' class='template'>
 			<input type="text" id="radio_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='radio_history_container' class='media_history_container chat_area chat_area_clone_center'></div>
 		</script>
 
-		<script id='template_profile' type='text/x-handlebars-template'>
+		<script id='template_profile' type='text/x-handlebars-template' class='template'>
 			<div id='show_profile_uname' class='bigger2'>Loading</div>
 			<div id='show_profile_role'></div>
 			<div class='spacer3'></div>
@@ -1651,7 +1651,7 @@
 			</div>
 		</script>
 
-		<script id='template_image_picker' type='text/x-handlebars-template'>
+		<script id='template_image_picker' type='text/x-handlebars-template' class='template'>
 			<i class='fa fa-camera'></i>
 			<div class='spacer3'></div>
 			Enter an image URL<br>Or an Imgur search term<br>Upload one from your computer<br>Or make a drawing
@@ -1670,7 +1670,7 @@
 			</div>
 		</script>
 
-		<script id='template_tv_picker' type='text/x-handlebars-template'>
+		<script id='template_tv_picker' type='text/x-handlebars-template' class='template'>
 			<i class='fa fa-television'></i>
 			<div class='spacer3'></div>
 			Enter a YouTube search term or URL<br>Or a Twitch channel/video URL<br>Or a video file/stream URL<br>
@@ -1686,7 +1686,7 @@
 			<div id='image_file_picker_draw' class='menu_item action inline unselectable' onclick='Hue.needs_confirm("tv_prev", "This will change the tv for everyone. Are you sure?")'>Previous</div>
 		</script>
 
-		<script id='template_radio_picker' type='text/x-handlebars-template'>
+		<script id='template_radio_picker' type='text/x-handlebars-template' class='template'>
 			<i class='fa fa-volume-up'></i>
 			<div class='spacer3'></div>
 			Enter a YouTube search term or URL<br>Or an audio file/stream URL<br>
@@ -1702,7 +1702,7 @@
 			<div id='image_file_picker_draw' class='menu_item action inline unselectable' onclick='Hue.needs_confirm("radio_prev", "This will change the radio for everyone. Are you sure?")'>Previous</div>
 		</script>
 
-		<script id='template_modal_image' type='text/x-handlebars-template'>
+		<script id='template_modal_image' type='text/x-handlebars-template' class='template'>
 
 			<div id='modal_image_background_image' class='background_image'></div>
 			
@@ -1742,7 +1742,7 @@
 
 		</script>
 
-		<script id='template_expand_image' type='text/x-handlebars-template'>
+		<script id='template_expand_image' type='text/x-handlebars-template' class='template'>
 			<div id='expand_image_background_image' class='background_image'></div>
 			
 			<div id="expand_image_container" onclick="Hue.hide_expand_image()" class="bg1 unselectable">
@@ -1752,7 +1752,7 @@
 			</div>
 		</script>
 
-		<script id='template_lockscreen' type='text/x-handlebars-template'>
+		<script id='template_lockscreen' type='text/x-handlebars-template' class='template'>
 
 			<div id='lockscreen_body' class='unselectable'>
 				<div id="lockscreen_clock"></div>
@@ -1778,7 +1778,7 @@
 
 		</script>		
 
-		<script id='template_media_menu' type='text/x-handlebars-template'>
+		<script id='template_media_menu' type='text/x-handlebars-template' class='template'>
 			<div class='unselectable'>
 
 				<div class='menu_item action inline' onclick='Hue.stop_and_lock(); Hue.hide_media_menu()'>Stop & Lock Everything</div>
@@ -1808,7 +1808,7 @@
 			</div>
 		</script>	
 
-		<script id='template_locked_menu' type='text/x-handlebars-template'>
+		<script id='template_locked_menu' type='text/x-handlebars-template' class='template'>
 			<div id='locked_menu' class='unselectable'>
 				<div>You are banned from this room</div>
 				<div class='spacer3'></div>
@@ -1824,7 +1824,7 @@
 			</div>
 		</script>
 
-		<script id='template_settings_user_function' type='text/x-handlebars-template'>
+		<script id='template_settings_user_function' type='text/x-handlebars-template' class='template'>
 			<div class='toggler_main_container settings_top_level_item'>
 				<div class="{{type}}_toggle toggler action pointer bold settings_container">+ User Function {{number}}</div>
 				<div class='{{type}}_toggle_container toggler_container'>
@@ -1847,7 +1847,7 @@
 			</div>
 		</script>
 
-		<script id='template_message' type='text/x-handlebars-template'>
+		<script id='template_message' type='text/x-handlebars-template' class='template'>
 			<div id='write_message_feedback'></div>
 			<textarea rows="3" id='write_message_area' tabindex=0 placeholder="Write a Message (Optional)"></textarea>
 			<div class='spacer3'></div>
@@ -1868,7 +1868,7 @@
 			</span>
 		</script>
 
-		<script id='template_details' type='text/x-handlebars-template'>
+		<script id='template_details' type='text/x-handlebars-template' class='template'>
 			<div class='info_item'>
 				<div class='info_title'>Username</div>
 				<div class='info_item_content' id='details_username'></div>
@@ -1898,7 +1898,7 @@
 			<div id='details_change_email' class='inline action pointer'>Change Email</div>
 		</script>
 
-		<script id='template_draw_image' type='text/x-handlebars-template'>
+		<script id='template_draw_image' type='text/x-handlebars-template' class='template'>
 			
 			<div id='draw_image_main'>
 
@@ -1962,7 +1962,7 @@
 
 		</script>
 
-		<script id='template_credits' type='text/x-handlebars-template'>
+		<script id='template_credits' type='text/x-handlebars-template' class='template'>
 
 			<div id='credits_container' class='unselectable'>
 				<img src='{{background_url}}' id='credits_background' draggable='false'>
@@ -1970,13 +1970,13 @@
 
 		</script>
 
-		<script id='template_modal_image_number' type='text/x-handlebars-template'>
+		<script id='template_modal_image_number' type='text/x-handlebars-template' class='template'>
 			<input id='modal_image_number_input' type='number' class='setting_input_text_smaller'>
 			<div class='spacer3'></div>
 			<div id='modal_image_number_button' class='pointer bigger action inline unselectable'>Go To Image</div>
 		</script>
 
-		<script id='template_reply' type='text/x-handlebars-template'>
+		<script id='template_reply' type='text/x-handlebars-template' class='template'>
 			<div id='reply_text'></div>
 			<div class='spacer3'></div>
 			<textarea id='reply_input' class='setting_textarea' rows=3 placeholder='Write a Reply (Optional)'></textarea>
@@ -1984,7 +1984,7 @@
 			<div id='reply_submit' class='menu_item action inline unselectable' onclick='Hue.submit_reply()'>Reply</div>
 		</script>
 
-		<script id='template_help' type='text/x-handlebars-template'>
+		<script id='template_help' type='text/x-handlebars-template' class='template'>
 
 			<input type="text" id="help_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer2'></div>
@@ -1992,7 +1992,7 @@
 
 		</script>
 
-		<script id='template_help1' type='text/x-handlebars-template'>
+		<script id='template_help1' type='text/x-handlebars-template' class='template'>
 
 			<div class='info_item modal_item'>Chat by typing anything.</div>
 			<div class='info_item modal_item'>All elements in the top and bottom bar are clickable.</div>
@@ -2005,7 +2005,7 @@
 
 		</script>
 
-		<script id='template_help2' type='text/x-handlebars-template'>
+		<script id='template_help2' type='text/x-handlebars-template' class='template'>
 			<div class='spacer3'></div>
 			<div class='info_item modal_item'>Escape clears the input, goes to the bottom, or closes modals.</div>
 			<div class='info_item modal_item'>Shift + Escape closes all modals and popups.</div>
@@ -2168,7 +2168,7 @@
 			</span>
 		</script>
 
-		<script id='template_help3' type='text/x-handlebars-template'>
+		<script id='template_help3' type='text/x-handlebars-template' class='template'>
 
 			<div class='info_item modal_item'>Most administration options are available in the main menu.</div>
 			<div class='info_item modal_item'>/topic x: Changes the topic of the room.</div>

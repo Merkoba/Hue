@@ -1850,51 +1850,11 @@ Hue.remove_local_storage = function(ls_name)
 
 Hue.setup_templates = function()
 {
-	Hue.template_main_menu = Handlebars.compile($('#template_main_menu').html())
-	Hue.template_create_room = Handlebars.compile($('#template_create_room').html())
-	Hue.template_open_room = Handlebars.compile($('#template_open_room').html())
-	Hue.template_userlist = Handlebars.compile($('#template_userlist').html())
-	Hue.template_roomlist = Handlebars.compile($('#template_roomlist').html())
-	Hue.template_played = Handlebars.compile($('#template_played').html())
-	Hue.template_status = Handlebars.compile($('#template_status').html())
-	Hue.template_help = Handlebars.compile($('#template_help').html())
-	Hue.template_help1 = Handlebars.compile($('#template_help1').html())
-	Hue.template_help2 = Handlebars.compile($('#template_help2').html())
-	Hue.template_help3 = Handlebars.compile($('#template_help3').html())
-	Hue.template_user_menu = Handlebars.compile($('#template_user_menu').html())
-	Hue.template_profile = Handlebars.compile($('#template_profile').html())
-	Hue.template_image_picker = Handlebars.compile($('#template_image_picker').html())
-	Hue.template_tv_picker = Handlebars.compile($('#template_tv_picker').html())
-	Hue.template_radio_picker = Handlebars.compile($('#template_radio_picker').html())
-	Hue.template_media_menu = Handlebars.compile($('#template_media_menu').html())
-	Hue.template_message = Handlebars.compile($('#template_message').html())
-	Hue.template_highlights = Handlebars.compile($('#template_highlights').html())
-	Hue.template_image_history = Handlebars.compile($('#template_image_history').html())
-	Hue.template_tv_history = Handlebars.compile($('#template_tv_history').html())
-	Hue.template_radio_history = Handlebars.compile($('#template_radio_history').html())
-	Hue.template_input_history = Handlebars.compile($('#template_input_history').html())
-	Hue.template_chat_search = Handlebars.compile($('#template_chat_search').html())
-	Hue.template_modal_image = Handlebars.compile($('#template_modal_image').html())
-	Hue.template_modal_image_number = Handlebars.compile($('#template_modal_image_number').html())
-	Hue.template_locked_menu = Handlebars.compile($('#template_locked_menu').html())
-	Hue.template_settings = Handlebars.compile($('#template_settings').html())
-	Hue.template_global_settings = Handlebars.compile($('#template_global_settings').html())
-	Hue.template_room_settings = Handlebars.compile($('#template_room_settings').html())
-	Hue.template_lockscreen = Handlebars.compile($('#template_lockscreen').html())
-	Hue.template_draw_image = Handlebars.compile($('#template_draw_image').html())
-	Hue.template_credits = Handlebars.compile($('#template_credits').html())
-	Hue.template_background_image_select = Handlebars.compile($('#template_background_image_select').html())
-	Hue.template_background_image_input = Handlebars.compile($('#template_background_image_input').html())
-	Hue.template_goto_room = Handlebars.compile($('#template_goto_room').html())
-	Hue.template_admin_activity = Handlebars.compile($('#template_admin_activity').html())
-	Hue.template_access_log = Handlebars.compile($('#template_access_log').html())
-	Hue.template_expand_image = Handlebars.compile($('#template_expand_image').html())
-	Hue.template_upload_comment = Handlebars.compile($('#template_upload_comment').html())
-	Hue.template_reply = Handlebars.compile($('#template_reply').html())
-	Hue.template_handle_url = Handlebars.compile($('#template_handle_url').html())
-	Hue.template_open_url = Handlebars.compile($('#template_open_url').html())
-	Hue.template_settings_user_function = Handlebars.compile($('#template_settings_user_function').html())
-	Hue.template_details = Handlebars.compile($('#template_details').html())
+	$(".template").each(function()
+	{
+		let id = $(this).attr("id")
+		Hue[id] = Handlebars.compile($(`#${id}`).html())
+	})
 }
 
 Hue.show_help = function(number=1, filter="")
@@ -11499,6 +11459,10 @@ Hue.start_msg = function()
 		close_effect_duration: [200, 200],
 		clear_editables: true,
 		class: "modal",
+		after_create: function(instance)
+		{
+			Hue.after_modal_create(instance)
+		},
 		before_show: function(instance)
 		{
 			if(Hue.room_state.screen_locked)
@@ -11506,6 +11470,19 @@ Hue.start_msg = function()
 				if(instance.options.id !== "lockscreen")
 				return false
 			}
+		},
+		after_show: function(instance)
+		{
+			Hue.after_modal_show(instance)
+			Hue.after_modal_set_or_show(instance)
+		},
+		after_set: function(instance)
+		{
+			Hue.after_modal_set_or_show(instance)
+		},
+		after_close: function(instance)
+		{
+			Hue.after_modal_close(instance)
 		}
 	}
 
@@ -11535,22 +11512,9 @@ Hue.start_msg = function()
 		{
 			id: "main_menu",
 			window_width: "22em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.close_togglers("main_menu")
 			}
 		})
@@ -11563,22 +11527,9 @@ Hue.start_msg = function()
 			id: "user_menu",
 			clear_editables: false,
 			window_width: "22em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.close_togglers("user_menu")
 			}
 		})
@@ -11589,24 +11540,7 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "userlist",
-			window_width: "22em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-			}
+			window_width: "22em"
 		})
 	)
 
@@ -11615,24 +11549,7 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "public_roomlist",
-			window_width: "26em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-			}
+			window_width: "26em"
 		})
 	)
 
@@ -11641,24 +11558,7 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "visited_roomlist",
-			window_width: "26em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-			}
+			window_width: "26em"
 		})
 	)
 
@@ -11667,24 +11567,7 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "played",
-			window_width: "26em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-			}
+			window_width: "26em"
 		})
 	)
 
@@ -11695,23 +11578,14 @@ Hue.start_msg = function()
 			id: "modal_image",
 			preset: "window",
 			overlay_class: "!overlay_same_color",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
 			after_show: function(instance)
 			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
+				common.after_show(instance)
 				Hue.modal_image_open = true
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
 			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.clear_modal_image_info()
 				Hue.msg_modal_image_number.close()
 				Hue.modal_image_open = false
@@ -11724,23 +11598,14 @@ Hue.start_msg = function()
 		Object.assign({}, common,
 		{
 			id: "modal_image_number",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
 			after_show: function(instance)
 			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
+				common.after_show(instance)
 				Hue.modal_image_number_open = true
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
 			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.modal_image_number_open = false
 			}
 		})
@@ -11752,24 +11617,7 @@ Hue.start_msg = function()
 		{
 			id: "lockscreen",
 			preset: "window",
-			overlay_class: "!overlay_same_color",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-			}
+			overlay_class: "!overlay_same_color"
 		})
 	)
 
@@ -11779,23 +11627,9 @@ Hue.start_msg = function()
 		{
 			id: "profile",
 			window_width: "22em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
-
+				common.after_close(instance)
 				$("#show_profile_uname").text("Loading")
 				$("#show_profile_image").attr("src", Hue.config.profile_image_loading_url)
 			}
@@ -11808,26 +11642,14 @@ Hue.start_msg = function()
 		{
 			id: "info",
 			window_height: "auto",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
 			before_show: function(instance)
 			{
+				common.before_show(instance)
 				Hue.info_vars_to_false()
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
 			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				instance.content.innerHTML = ""
 				Hue.info_vars_to_false()
 			}
@@ -11840,26 +11662,14 @@ Hue.start_msg = function()
 		{
 			id: "info2",
 			window_height: "auto",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
 			before_show: function(instance)
 			{
+				common.before_show(instance)
 				Hue.info2_vars_to_false()
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
 			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				instance.content.innerHTML = ""
 				instance.titlebar.innerHTML = ""
 				Hue.info2_vars_to_false()
@@ -11872,23 +11682,14 @@ Hue.start_msg = function()
 		Object.assign({}, common,
 		{
 			id: "image_picker",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
 			after_show: function(instance)
 			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
+				common.after_show(instance)
 				Hue.image_picker_open = true
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
 			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				$("#image_source_picker_input").val("")
 				$("#image_source_picker_input_comment").val("")
 				Hue.image_picker_open = false
@@ -11901,23 +11702,14 @@ Hue.start_msg = function()
 		Object.assign({}, common,
 		{
 			id: "tv_picker",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
 			after_show: function(instance)
 			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
+				common.after_show(instance)
 				Hue.tv_picker_open = true
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
 			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				$("#tv_source_picker_input").val("")
 				$("#tv_source_picker_input_comment").val("")
 				Hue.tv_picker_open = false
@@ -11930,23 +11722,14 @@ Hue.start_msg = function()
 		Object.assign({}, common,
 		{
 			id: "radio_picker",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
 			after_show: function(instance)
 			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
+				common.after_show(instance)
 				Hue.radio_picker_open = true
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
 			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				$("#radio_source_picker_input").val("")
 				$("#radio_source_picker_input_comment").val("")
 				Hue.radio_picker_open = false
@@ -11959,24 +11742,7 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "media_menu",
-			window_width: "22em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-			}
+			window_width: "22em"
 		})
 	)
 
@@ -11987,26 +11753,14 @@ Hue.start_msg = function()
 			id: "message",
 			window_width: "26em",
 			close_on_overlay_click: false,
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
 			after_show: function(instance)
 			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
+				common.after_show(instance)
 				Hue.writing_message = true
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
 			},
 			after_close: function(instance)
 			{
-				$("#write_message_area").val("")
-				$("#write_message_feedback").text("")
-				$("#write_message_feedback").css("display", "none")
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.writing_message = false
 				Hue.clear_draw_message_state()
 			}
@@ -12018,24 +11772,7 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "input_history",
-			window_width: "24em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-			}
+			window_width: "24em"
 		})
 	)
 
@@ -12045,22 +11782,9 @@ Hue.start_msg = function()
 		{
 			id: "chat_search",
 			window_width: "30em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.reset_chat_search_filter()
 			}
 		})
@@ -12072,22 +11796,9 @@ Hue.start_msg = function()
 		{
 			id: "highlights",
 			window_width: "30em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.reset_highlights_filter()
 			}
 		})
@@ -12100,22 +11811,9 @@ Hue.start_msg = function()
 		{
 			id: "image_history",
 			window_width: "24em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.reset_media_history_filter("image")
 			}
 		})
@@ -12127,22 +11825,9 @@ Hue.start_msg = function()
 		{
 			id: "tv_history",
 			window_width: "24em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.reset_media_history_filter("tv")
 			}
 		})
@@ -12154,22 +11839,9 @@ Hue.start_msg = function()
 		{
 			id: "radio_history",
 			window_width: "24em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.reset_media_history_filter("radio")
 			}
 		})
@@ -12186,23 +11858,6 @@ Hue.start_msg = function()
 			close_effect: "none",
 			enable_overlay: true,
 			window_class: "!no_effects",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-			}
 		})
 	)
 
@@ -12211,22 +11866,9 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "global_settings",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.close_togglers("global_settings")
 			}
 		})
@@ -12237,22 +11879,9 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "room_settings",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.close_togglers("room_settings")
 			}
 		})
@@ -12264,23 +11893,14 @@ Hue.start_msg = function()
 		{
 			id: "draw_image",
 			close_on_overlay_click: false,
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
 			after_show: function(instance)
 			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
+				common.after_show(instance)
 				Hue.draw_image_open = true
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
 			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.draw_image_open = false
 			}
 		})
@@ -12291,22 +11911,9 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "credits",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				if(Hue.credits_audio)
 				{
 					Hue.credits_audio.pause()
@@ -12319,24 +11926,7 @@ Hue.start_msg = function()
 	(
 		Object.assign({}, common, titlebar,
 		{
-			id: "help",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-			}
+			id: "help"
 		})
 	)
 
@@ -12344,24 +11934,7 @@ Hue.start_msg = function()
 	(
 		Object.assign({}, common, titlebar,
 		{
-			id: "admin_activity",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-			}
+			id: "admin_activity"
 		})
 	)
 
@@ -12369,24 +11942,7 @@ Hue.start_msg = function()
 	(
 		Object.assign({}, common, titlebar,
 		{
-			id: "access_log",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_close: function(instance)
-			{
-				Hue.after_modal_close(instance)
-			}
+			id: "access_log"
 		})
 	)
 
@@ -12397,22 +11953,9 @@ Hue.start_msg = function()
 			id: "expand_image",
 			preset: "window",
 			overlay_class: "!overlay_same_color",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.clear_modal_image_info()
 			}
 		})
@@ -12423,23 +11966,14 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "upload_comment",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
 			after_show: function(instance)
 			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
+				common.after_show(instance)
 				Hue.upload_comment_open = true
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
 			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.clear_modal_image_info()
 				$("#upload_comment_input").val("")
 				Hue.upload_comment_file = false
@@ -12455,23 +11989,14 @@ Hue.start_msg = function()
 		{
 			id: "reply",
 			window_width: "22em",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
 			after_show: function(instance)
 			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
+				common.after_show(instance)
 				Hue.writing_reply = true
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
 			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.clear_modal_image_info()
 				Hue.writing_reply = false
 			}
@@ -12483,22 +12008,9 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "handle_url",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.clear_modal_image_info()
 			}
 		})
@@ -12509,22 +12021,9 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "open_url",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.clear_modal_image_info()
 			}
 		})
@@ -12535,22 +12034,9 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "details",
-			after_create: function(instance)
-			{
-				Hue.after_modal_create(instance)
-			},
-			after_show: function(instance)
-			{
-				Hue.after_modal_show(instance)
-				Hue.after_modal_set_or_show(instance)
-			},
-			after_set: function(instance)
-			{
-				Hue.after_modal_set_or_show(instance)
-			},
 			after_close: function(instance)
 			{
-				Hue.after_modal_close(instance)
+				common.after_close(instance)
 				Hue.clear_modal_image_info()
 			}
 		})
