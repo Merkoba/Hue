@@ -11761,6 +11761,9 @@ Hue.start_msg = function()
 			after_close: function(instance)
 			{
 				common.after_close(instance)
+				$("#write_message_area").val("")
+				$("#write_message_feedback").text("")
+				$("#write_message_feedback").css("display", "none")
 				Hue.writing_message = false
 				Hue.clear_draw_message_state()
 			}
@@ -11857,7 +11860,7 @@ Hue.start_msg = function()
 			show_effect: "none",
 			close_effect: "none",
 			enable_overlay: true,
-			window_class: "!no_effects",
+			window_class: "!no_effects"
 		})
 	)
 
