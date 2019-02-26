@@ -14,6 +14,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	const cheerio = require("cheerio")
 	const redis = require("redis")
 	const Vimeo = require("vimeo").Vimeo
+	const he = require("he")
 
 	soundcloud.init(
 	{
@@ -1715,7 +1716,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			radioinfo.radio_type = data.type
 			radioinfo.radio_source = data.src
-			radioinfo.radio_title = data.title
+			radioinfo.radio_title = he.decode(data.title)
 			radioinfo.radio_query = query
 		}
 		
@@ -2261,7 +2262,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			tvinfo.tv_type = data.type
 			tvinfo.tv_source = data.src
-			tvinfo.tv_title = data.title
+			tvinfo.tv_title = he.decode(data.title)
 			tvinfo.tv_query = query
 		}
 		

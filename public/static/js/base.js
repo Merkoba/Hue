@@ -8613,7 +8613,7 @@ Hue.chat_announce = function(args={})
 
 	else
 	{
-		content.html(Hue.make_html_safe(args.message)).urlize()
+		content.text(args.message).urlize()
 	}
 
 	if(args.comment)
@@ -10021,7 +10021,7 @@ Hue.change_volume_command = function(arg, type="radio")
 	}
 }
 
-Hue.change_volume_all = function()
+Hue.change_volume_all = function(arg)
 {
 	Hue.change_volume_command(arg, "radio")
 	Hue.change_volume_command(arg, "tv")
