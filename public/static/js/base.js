@@ -18206,9 +18206,10 @@ Hue.setup_modal_image = function()
 	$("#modal_image_toolbar_load").click(function(e)
 	{
 		let item = Hue.loaded_modal_image
+		Hue.toggle_images(true)
 		Hue.change({type:"image", item:item, force:true})
-		Hue.close_all_modals()
 		Hue.toggle_lock_images(true)
+		Hue.close_all_modals()
 	})
 
 	$("#modal_image_toolbar_change").click(function(e)
@@ -21249,6 +21250,7 @@ Hue.setup_open_url = function()
 
 	$("#open_url_menu_load").click(function()
 	{
+		Hue[`toggle_${Hue.open_url_media_type}`](true)
 		Hue.change({type:Hue.open_url_media_type, item:Hue.open_url_data, force:true})
 		Hue[`toggle_lock_${Hue.open_url_media_type}`](true)
 		Hue.close_all_modals()
@@ -24114,11 +24116,18 @@ Hue.update_media_history_blinks = function(type)
 		return false
 	}
 
+	let loaded = Hue[`loaded_${type}`]
+
+	if(!loaded)
+	{
+		return false
+	}
+
 	$(`#${type}_history_container`).find(".message").each(function()
 	{
 		let message_id = $(this).data("message_id")
 
-		if(message_id === Hue[`loaded_${type}`].message_id)
+		if(message_id === loaded.message_id)
 		{
 			$(this).addClass("blinking_2")
 		}
