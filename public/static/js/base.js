@@ -14712,7 +14712,7 @@ Hue.show_modal_image = function(data)
 		$("#modal_image_toolbar_load").css("display", "none")
 	}
 
-	if(Hue.room_images_mode === "enabled")
+	if(Hue.change_image_source(data.source, true))
 	{
 		$("#modal_image_toolbar_change").css("display", "flex")
 	}
@@ -21302,7 +21302,7 @@ Hue.open_url_menu = function(src, type=1, data=false, media_type=false)
 			$("#open_url_menu_load").css("display", "none")
 		}
 
-		if(mode === "enabled")
+		if(Hue[`change_${media_type}_source`](src, true))
 		{
 			$("#open_url_menu_change").css("display", "inline-block")
 		}
