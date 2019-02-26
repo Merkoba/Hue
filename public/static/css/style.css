@@ -2243,11 +2243,6 @@ a.special_link:hover
 	text-align: left;
 }
 
-.media_history_container
-{
-	max-width: 25em;
-}
-
 .media_history_container .announcement_content_split
 {
 	align-items: center;
