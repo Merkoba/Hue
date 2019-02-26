@@ -1517,28 +1517,6 @@ input[type=text], textarea
 	text-align: center;
 }
 
-.media_history_container
-{
-	max-width: 25em;
-}
-
-.media_history_item .message
-{
-	padding-top: 0em !important;
-	padding-bottom: 0em !important;
-}
-
-.media_history_item
-{
-	padding-top: 0.8em;
-	padding-bottom: 0.8em;
-}
-
-.media_history_item .announcement_content
-{
-	font-size: 1em !important;
-}
-
 @keyframes fadein 
 {
 	from 
@@ -2263,6 +2241,16 @@ a.special_link:hover
 .align_left
 {
 	text-align: left;
+}
+
+.media_history_container
+{
+	max-width: 25em;
+}
+
+.media_history_container .announcement_content_split
+{
+	align-items: center;
 }
 
 .media_history_container .brk
