@@ -8305,8 +8305,6 @@ Hue.change = function(args={})
 		return false
 	}
 
-	Hue.update_media_history_blinks(args.type)
-
 	if(args.notify && setter !== Hue.username)
 	{
 		Hue.alert_title(1)
@@ -21668,19 +21666,32 @@ Hue.clear_room = function(data)
 {
 	Hue.clear_chat()
 
-	Hue.images_changed = Hue.images_changed.slice(-1)
-	Hue.tv_changed = Hue.tv_changed.slice(-1)
-	Hue.radio_changed = Hue.radio_changed.slice(-1)
+	let first_image = Hue.images_changed = Hue.images_changed.slice(-1)
+	let first_tv = Hue.tv_changed = Hue.tv_changed.slice(-1)
+	let first_radio = Hue.radio_changed = Hue.radio_changed.slice(-1)
 
-	Hue.announce_image(Hue.current_image())
-	Hue.announce_tv(Hue.current_tv())
-	Hue.announce_radio(Hue.current_radio())
+	Hue.loaded_image = undefined
+	Hue.loaded_tv = undefined
+	Hue.loaded_radio = undefined
 
-	Hue.update_media_history_blinks("image")
-	Hue.update_media_history_blinks("tv")
-	Hue.update_media_history_blinks("radio")
+	Hue.images_changed = []
+	Hue.tv_changed = []
+	Hue.radio_changed = []
 
-	Hue.show_topic()
+	Hue.clear_change_state()
+
+	Hue.setup_image("change", first_image)
+	Hue.setup_tv("change", first_tv)
+	Hue.setup_radio("change", first_radio)
+}
+
+Hue.clear_change_state = function()
+{
+	Hue.last_image_source = false
+	Hue.last_tv_source = false
+	Hue.last_tv_type = false
+	Hue.last_radio_source = false
+	Hue.last_radio_type = false
 }
 
 Hue.fillet = function(n)
@@ -24120,23 +24131,32 @@ Hue.update_media_history_blinks = function(type)
 
 	if(!loaded)
 	{
-		return false
-	}
-
-	$(`#${type}_history_container`).find(".message").each(function()
-	{
-		let message_id = $(this).data("message_id")
-
-		if(message_id === loaded.message_id)
-		{
-			$(this).addClass("blinking_2")
-		}
-
-		else
+		$(`#${type}_history_container`).find(".message").each(function()
 		{
 			$(this).removeClass("blinking_2")
-		}
-	})
+		})
+
+		let first = $(`#${type}_history_container`).find(".message").first()
+		first.addClass("blinking_2")
+	}
+
+	else
+	{
+		$(`#${type}_history_container`).find(".message").each(function()
+		{
+			let message_id = $(this).data("message_id")
+	
+			if(message_id === loaded.message_id)
+			{
+				$(this).addClass("blinking_2")
+			}
+	
+			else
+			{
+				$(this).removeClass("blinking_2")
+			}
+		})
+	}
 }
 
 Hue.show_announcement = function(data, date=Date.now())
@@ -24822,10 +24842,7 @@ Hue.jump_to_chat_message = function(message_id)
 
 Hue.after_push_media_change = function(type)
 {
-	if(Hue.started && Hue.show_media_history_state === type)
-	{
-		Hue.show_media_history(type, $(`#${type}_history_filter`).val())
-	}
+
 }
 
 Hue.get_limited_title = function(src)
