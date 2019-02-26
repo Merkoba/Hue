@@ -399,24 +399,6 @@ const Utilz = function()
 		return ns
 	}
 
-	utilz.get_first_url = function(s)
-	{
-		if(s.includes("http://") || s.includes("https://"))
-		{
-			let split = s.split(" ")
-	
-			for(let word of split)
-			{
-				if(word.startsWith("http://") || word.startsWith("https://"))
-				{
-					return word
-				}
-			}
-		}
-
-		return false
-	}
-
 	utilz.nice_list = function(list)
 	{
 		let s = ""
@@ -446,12 +428,63 @@ const Utilz = function()
 
 	utilz.is_url = function(s, case_insensitive=true)
 	{
-		return s.startsWith("http://") || s.startsWith("https://")
+		if(s.startsWith("http://") || s.startsWith("https://"))
+		{
+			if(s.endsWith("]"))
+			{
+				return false
+			}
+	
+			else if(s.endsWith('"'))
+			{
+				return false
+			}
+	
+			else if(s.endsWith("'"))
+			{
+				return false
+			}
+
+			return true
+		}
+
+		return false
 	}
 
 	utilz.includes_url = function(s, case_insensitive=true)
 	{
-		return s.includes("http://") || s.includes("https://")
+		let split = s.split(" ")
+
+		for(let word of split)
+		{
+			if(word)
+			{
+				if(utilz.is_url(word))
+				{
+					return true
+				}
+			}
+		}
+
+		return false
+	}
+
+	utilz.get_first_url = function(s)
+	{
+		let split = s.split(" ")
+
+		for(let word of split)
+		{
+			if(word)
+			{
+				if(utilz.is_url(word))
+				{
+					return word
+				}
+			}
+		}
+
+		return false
 	}
 
 	utilz.synth_notes = 

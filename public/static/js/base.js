@@ -2256,6 +2256,7 @@ Hue.do_socket_emit = function(obj)
 	if(Hue.debug_socket)
 	{
 		console.info(`Emit: ${obj.destination}`)
+		console.info(`${JSON.stringify(obj.data)}`)
 	}
 
 	obj.data.server_method_name = obj.destination
@@ -7701,13 +7702,7 @@ Hue.update_chat = function(args={})
 		Hue.setup_link_preview(fmessage, args.link_url, args.user_id)
 	}
 
-	fmessage.find(".whisper_link").each(function()
-	{
-		$(this).click(function()
-		{
-			Hue.process_write_whisper(`${args.username} > ${$(this).data("whisper")}`, false)
-		})
-	})
+	Hue.setup_whispers_click(fmessage, args.username)
 
 	let message_id = Hue.add_to_chat(
 	{
@@ -8585,7 +8580,7 @@ Hue.chat_announce = function(args={})
 			<div class='chat_menu_button_container unselectable'>
 				<i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
 			</div>
-			<div class='${split_classes}' title='${t}' data-otitle='${t}' data-date='${d}'>
+			<div class='${split_classes}'>
 				<div class='${content_classes}'></div>
 				${comment}
 			</div>
@@ -8595,7 +8590,12 @@ Hue.chat_announce = function(args={})
 	let fmessage = $(s)
 	let content = fmessage.find('.announcement_content').eq(0)
 	let comment_el = fmessage.find('.announcement_comment').eq(0)
+	let split = fmessage.find('.announcement_content_split').eq(0)
 	let brk = fmessage.find('.brk').eq(0)
+
+	split.attr("title", t)
+	split.data("otitle", t)
+	split.data("date", d)
 
 	if(image_preview)
 	{
@@ -8613,7 +8613,7 @@ Hue.chat_announce = function(args={})
 
 	else
 	{
-		content.text(args.message).urlize()
+		content.html(Hue.make_html_safe(args.message)).urlize()
 	}
 
 	if(args.comment)
@@ -8622,13 +8622,7 @@ Hue.chat_announce = function(args={})
 
 		if(args.username)
 		{
-			comment_el.find(".whisper_link").each(function()
-			{
-				$(this).click(function(e)
-				{
-					Hue.process_write_whisper(`${args.username} > ${$(this).data("whisper")}`, false)
-				})
-			})
+			Hue.setup_whispers_click(comment_el, args.username)
 		}
 	}
 
@@ -9697,11 +9691,10 @@ Hue.push_played = function(info, info2=false)
 	if(Hue.played[Hue.played.length - 1] !== s)
 	{
 		let date = Date.now()
-
-		let title = Hue.nice_date(date)
+		let nd = Hue.nice_date(date)
 
 		let pi = `
-		<div class='played_item_inner pointer inline action dynamic_title' title='${title}' data-otitle='${title}' data-date='${date}'>
+		<div class='played_item_inner pointer inline action dynamic_title' title='${nd}' data-otitle='${nd}' data-date='${date}'>
 			<div class='played_item_title'></div><div class='played_item_artist'></div>
 		</div>`
 
@@ -13984,14 +13977,14 @@ Hue.show_status = function()
 Hue.get_status_html = function()
 {
 	let h = $("<div></div>")
-
+	
 	let info = ""
 
 	info += "<div class='info_item'><div class='info_title'>Room Name</div><div class='info_item_content' id='status_room_name'></div></div>"
 
 	if(Hue.topic_setter)
 	{
-		info += `<div class='info_item' title='Setter: ${Hue.topic_setter} | ${Hue.topic_date}'><div class='info_title'>Topic</div><div class='info_item_content' id='status_topic'></div></div>`
+		info += `<div class='info_item' id='status_topic_item'><div class='info_title'>Topic</div><div class='info_item_content' id='status_topic'></div></div>`
 	}
 
 	else
@@ -14092,6 +14085,9 @@ Hue.get_status_html = function()
 	h.append(info)
 
 	h.find("#status_room_name").eq(0).text(Hue.room_name).urlize()
+
+	let topic_item = h.find("#status_topic_item").eq(0)
+	topic_item.attr("title", `Setter: ${Hue.topic_setter} | ${Hue.topic_date}`)
 
 	let t = h.find("#status_topic").eq(0)
 	
@@ -14694,8 +14690,9 @@ Hue.show_modal_image = function(data)
 
 	if(data.comment)
 	{
-		$("#modal_image_subheader").text(data.comment)
+		$("#modal_image_subheader").html(Hue.replace_markdown(Hue.make_html_safe(data.comment)))
 		$("#modal_image_subheader").css("display", "block")
+		Hue.setup_whispers_click($("#modal_image_subheader"), data.setter)
 	}
 	
 	else
@@ -14704,6 +14701,28 @@ Hue.show_modal_image = function(data)
 	}
 
 	Hue.loaded_modal_image = data
+
+	if(Hue.room_images_mode === "enabled" || Hue.room_images_mode === "locked")
+	{
+		$("#modal_image_toolbar_load").css("display", "block")
+	}
+	
+	else
+	{
+		$("#modal_image_toolbar_load").css("display", "none")
+	}
+
+	if(Hue.room_images_mode === "enabled")
+	{
+		$("#modal_image_toolbar_change").css("display", "flex")
+	}
+	
+	else
+	{
+		$("#modal_image_toolbar_change").css("display", "none")
+	}
+
+	Hue.fix_horizontal_separators("modal_image_header_info_container")
 
 	Hue.msg_modal_image.show(function()
 	{
@@ -17660,13 +17679,7 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 		date: data.date
 	})
 
-	$(data.content).find(".whisper_link").each(function()
-	{
-		$(this).click(function()
-		{
-			Hue.process_write_whisper(`${data.username} > ${$(this).data("whisper")}`, false)
-		})
-	})
+	Hue.setup_whispers_click(data.content, data.username)
 
 	data.title = Hue.make_safe(title)
 
@@ -21276,8 +21289,28 @@ Hue.open_url_menu = function(src, type=1, data=false, media_type=false)
 	
 	else if(type === 2)
 	{
-		$("#open_url_menu_load").css("display", "inline-block")
-		$("#open_url_menu_change").css("display", "inline-block")
+		let mtype = Hue.fix_images_string(media_type)
+		let mode = Hue[`room_${mtype}_mode`]
+
+		if(mode === "enabled" || mode === "locked")
+		{
+			$("#open_url_menu_load").css("display", "inline-block")
+		}
+
+		else
+		{
+			$("#open_url_menu_load").css("display", "none")
+		}
+
+		if(mode === "enabled")
+		{
+			$("#open_url_menu_change").css("display", "inline-block")
+		}
+
+		else
+		{
+			$("#open_url_menu_change").css("display", "none")
+		}
 	}
 
 	Hue.fix_horizontal_separators("open_url_container")
@@ -21288,6 +21321,12 @@ Hue.open_url_menu = function(src, type=1, data=false, media_type=false)
 
 	Hue.msg_open_url.set_title(title)
 	Hue.msg_open_url.show()
+}
+
+Hue.fix_images_string = function(s)
+{
+	let r = s === "image" ? "images" : s
+	return r
 }
 
 Hue.sdeb = function(s, show_date=false)
@@ -21879,7 +21918,7 @@ Hue.setup_markdown_regexes = function()
 	Hue.markdown_regexes["anchor_link"].regex = new RegExp(`\\[anchor\\s+(.*?)\\](.*?)\\[\/anchor\\]`, "gm")
 	Hue.markdown_regexes["anchor_link"].replace_function = function(g1, g2, g3)
 	{
-		return `<a href='${g2}' class='stop_propagation anchor_link special_link' target='_blank'>[dummy-space]${g3.replace(/\s+/, "&nbsp;")}[dummy-space]</a>`
+		return `<a href="${g2}" class="stop_propagation anchor_link special_link" target="_blank">[dummy-space]${g3.trim().replace(/\s+/, "&nbsp;")}[dummy-space]</a>`
 	}
 
 	Hue.markdown_regexes["dummy_space"] = {}
@@ -21895,7 +21934,7 @@ Hue.replace_markdown = function(text)
 	let original_length = text.length
 
 	text = text.replace(Hue.markdown_regexes["whisper_link"].regex, Hue.markdown_regexes["whisper_link"].replace_function)
-	text = text.replace(Hue.markdown_regexes["whisper_link"].regex, Hue.markdown_regexes["whisper_link"].replace_function)
+	text = text.replace(Hue.markdown_regexes["anchor_link"].regex, Hue.markdown_regexes["anchor_link"].replace_function)
 	text = text.replace(Hue.markdown_regexes["*"].regex, Hue.markdown_regexes["*"].replace_function)
 	text = text.replace(Hue.markdown_regexes["_"].regex, Hue.markdown_regexes["_"].replace_function)
 	text = text.replace(Hue.markdown_regexes["="].regex, Hue.markdown_regexes["="].replace_function)
@@ -24913,4 +24952,15 @@ Hue.input_command = function(arg)
 {
 	arg = arg.replace(/\s\/endinput/gi, "")
 	Hue.change_input(arg)
+}
+
+Hue.setup_whispers_click = function(content, username)
+{
+	$(content).find(".whisper_link").each(function()
+	{
+		$(this).click(function()
+		{
+			Hue.process_write_whisper(`${username} > ${$(this).data("whisper")}`, false)
+		})
+	})
 }
