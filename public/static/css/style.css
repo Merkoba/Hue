@@ -102,7 +102,7 @@ body *
 
 .activity_bar_image
 {
-	width: 100%;
+	width: 99%;
 }
 
 .columns_container
@@ -472,11 +472,13 @@ div#header_radio_playing_icon
 	max-height: 45px;
 	overflow: hidden;
 	border-radius: 50%;
+	position: sticky;
+	top: 2.5rem;
 }
 
 .chat_profile_image
 {
-	width: 100%;
+	width: 99%;
 	cursor: pointer;
 }
 
@@ -1307,7 +1309,7 @@ input[type=text], textarea
 
 .big_profile_image
 {
-	width: 100%;
+	width: 99%;
 }
 
 .bigger_profile_image_container
