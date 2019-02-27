@@ -203,6 +203,7 @@ Hue.user_settings =
 	afk_disable_tv_change: {widget_type:"checkbox"},
 	afk_disable_radio_change: {widget_type:"checkbox"},
 	afk_disable_synth: {widget_type:"checkbox"},
+	afk_disable_notifications: {widget_type:"checkbox"},
 	open_popup_messages: {widget_type:"checkbox"},
 	user_function_1: {widget_type:"textarea"},
 	user_function_2: {widget_type:"textarea"},
@@ -3672,8 +3673,7 @@ Hue.userjoin = function(data)
 
 			if(data.username !== Hue.username)
 			{
-				Hue.alert_title(1)
-				Hue.sound_notify("join")
+				Hue.on_activity("join")
 			}
 		}
 	}
@@ -7718,14 +7718,12 @@ Hue.update_chat = function(args={})
 		{
 			if(highlighted)
 			{
-				Hue.alert_title(2)
-				Hue.sound_notify("highlight")
+				Hue.on_highlight()
 			}
 	
 			else
 			{
-				Hue.alert_title(1)
-				Hue.sound_notify("message")
+				Hue.on_activity("message")
 			}
 		}
 	}
@@ -8302,8 +8300,7 @@ Hue.change = function(args={})
 
 	if(args.notify && setter !== Hue.username)
 	{
-		Hue.alert_title(1)
-		Hue.sound_notify("media_change")
+		Hue.on_activity("media_change")
 	}
 }
 
@@ -8663,8 +8660,7 @@ Hue.chat_announce = function(args={})
 		
 		if(highlighted)
 		{
-			Hue.alert_title(2)
-			Hue.sound_notify("highlight")
+			Hue.on_highlight()
 		}
 	}
 
@@ -10029,92 +10025,78 @@ Hue.change_volume_all = function(arg)
 
 Hue.sound_notify = function(type)
 {
-	if(!Hue.started)
-	{
-		return false
-	}
-
 	let sound
 
-	if(!Hue.app_focused)
+	if(type === "message")
 	{
-
-		if(type === "message")
-		{
-			if(!Hue.get_setting("beep_on_messages"))
-			{
-				return false
-			}
-
-			if(Hue.afk)
-			{
-				if(Hue.get_setting("afk_disable_messages_beep"))
-				{
-					return false
-				}
-			}
-
-			sound = "pup"
-		}
-
-		else if(type === "media_change")
-		{
-			if(!Hue.get_setting("beep_on_media_change"))
-			{
-				return false
-			}
-
-			if(Hue.afk)
-			{
-				if(Hue.get_setting("afk_disable_media_change_beep"))
-				{
-					return false
-				}
-			}
-
-			sound = "pup"
-		}
-
-		else if(type === "highlight")
-		{
-			if(!Hue.get_setting("beep_on_highlights"))
-			{
-				return false
-			}
-
-			if(Hue.afk)
-			{
-				if(Hue.get_setting("afk_disable_highlights_beep"))
-				{
-					return false
-				}
-			}
-
-			sound = "highlight"
-		}
-
-		else if(type === "join")
-		{
-			if(!Hue.get_setting("beep_on_user_joins"))
-			{
-				return false
-			}
-
-			if(Hue.afk)
-			{
-				if(Hue.get_setting("afk_disable_joins_beep"))
-				{
-					return false
-				}
-			}
-
-			sound = "join"
-		}
-
-		else
+		if(!Hue.get_setting("beep_on_messages"))
 		{
 			return false
 		}
+
+		if(Hue.afk)
+		{
+			if(Hue.get_setting("afk_disable_messages_beep"))
+			{
+				return false
+			}
+		}
+
+		sound = "pup"
+	}
+
+	else if(type === "media_change")
+	{
+		if(!Hue.get_setting("beep_on_media_change"))
+		{
+			return false
+		}
+
+		if(Hue.afk)
+		{
+			if(Hue.get_setting("afk_disable_media_change_beep"))
+			{
+				return false
+			}
+		}
+
+		sound = "pup"
+	}
+
+	else if(type === "highlight")
+	{
+		if(!Hue.get_setting("beep_on_highlights"))
+		{
+			return false
+		}
+
+		if(Hue.afk)
+		{
+			if(Hue.get_setting("afk_disable_highlights_beep"))
+			{
+				return false
+			}
+		}
+
+		sound = "highlight"
+	}
+
+	else if(type === "join")
+	{
+		if(!Hue.get_setting("beep_on_user_joins"))
+		{
+			return false
+		}
+
+		if(Hue.afk)
+		{
+			if(Hue.get_setting("afk_disable_joins_beep"))
+			{
+				return false
+			}
+		}
+
+		sound = "join"
 	}
 
 	else
@@ -10127,11 +10109,6 @@ Hue.sound_notify = function(type)
 
 Hue.alert_title = function(mode)
 {
-	if(!Hue.started)
-	{
-		return false
-	}
-
 	let modes = [1, 2]
 
 	if(!modes.includes(mode))
@@ -10139,29 +10116,18 @@ Hue.alert_title = function(mode)
 		return false
 	}
 
-	if(Hue.room_state.screen_locked)
+	if(mode === 1 && Hue.alert_mode !== 0)
 	{
-		if(!$("#lockscreen_title_info").text())
-		{
-			$("#lockscreen_title_info").text("(New Activity)")
-		}
+		return false
 	}
 
-	if(!Hue.app_focused || Hue.room_state.screen_locked)
+	if(mode === 2 && Hue.alert_mode === 2)
 	{
-		if(mode === 1 && Hue.alert_mode !== 0)
-		{
-			return false
-		}
-
-		if(mode === 2 && Hue.alert_mode === 2)
-		{
-			return false
-		}
-		
-		Hue.alert_mode = mode
-		Hue.update_title()
+		return false
 	}
+	
+	Hue.alert_mode = mode
+	Hue.update_title()
 }
 
 Hue.remove_alert_title = function()
@@ -10542,9 +10508,8 @@ Hue.check_firstime = function()
 	if(Hue.get_local_storage(Hue.ls_first_time) === null)
 	{
 		Hue.first_time = true
-
 		Hue.show_intro()
-
+		Hue.request_notifications_permission()
 		Hue.save_local_storage(Hue.ls_first_time, false)
 	}
 
@@ -13150,6 +13115,16 @@ Hue.setting_synth_enabled_action = function(type, save=true)
 Hue.setting_afk_disable_synth_action = function(type, save=true)
 {
 	Hue[type].afk_disable_synth = $(`#${type}_afk_disable_synth`).prop("checked")
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+Hue.setting_afk_disable_notifications_action = function(type, save=true)
+{
+	Hue[type].afk_disable_notifications = $(`#${type}_afk_disable_notifications`).prop("checked")
 
 	if(save)
 	{
@@ -17723,8 +17698,7 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 		})
 	}
 
-	Hue.alert_title(2)
-	Hue.sound_notify("highlight")
+	Hue.on_highlight()
 }
 
 Hue.show_popup_message = function(data)
@@ -24963,4 +24937,94 @@ Hue.setup_whispers_click = function(content, username)
 			Hue.process_write_whisper(`${username} > ${$(this).data("whisper")}`, false)
 		})
 	})
+}
+
+Hue.request_notifications_permission = function()
+{
+	Notification.requestPermission()
+}
+
+Hue.has_notifications_permission = function()
+{
+	return Notification.permission === "granted"
+}
+
+Hue.show_notification = function(s)
+{
+	if(!Hue.has_notifications_permission())
+	{
+		return false
+	}
+
+	let n = new Notification(s)
+
+	n.addEventListener("click", function(e)
+	{
+		window.focus()
+		e.target.close()
+	})
+}
+
+Hue.check_lockscreen_activity = function()
+{
+	if(Hue.room_state.screen_locked)
+	{
+		if(!$("#lockscreen_title_info").text())
+		{
+			$("#lockscreen_title_info").text("(New Activity)")
+		}
+	}
+}
+
+Hue.show_highlight_notification = function()
+{
+	if(!Hue.has_notifications_permission())
+	{
+		return false
+	}
+	
+	if(Hue.afk)
+	{
+		if(Hue.get_setting("afk_disable_notifications"))
+		{
+			return false
+		}
+	}
+
+	Hue.show_notification(`New highlight in ${Hue.room_name.substring(0, 40)}`)
+}
+
+Hue.on_highlight = function()
+{
+	if(!Hue.started)
+	{
+		return false
+	}
+
+	if(!Hue.app_focused || Hue.room_state.screen_locked)
+	{
+		Hue.alert_title(2)
+		Hue.check_lockscreen_activity()
+		Hue.show_highlight_notification()
+		Hue.sound_notify("highlight")
+	}
+}
+
+Hue.on_activity = function(sound=false)
+{
+	if(!Hue.started)
+	{
+		return false
+	}
+
+	if(!Hue.app_focused || Hue.room_state.screen_locked)
+	{
+		Hue.alert_title(1)
+		Hue.check_lockscreen_activity()
+
+		if(sound)
+		{
+			Hue.sound_notify(sound)
+		}
+	}
 }

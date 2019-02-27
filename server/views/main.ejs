@@ -38,7 +38,7 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2721"></script>
+		<script src="/static/js/base.js?version=2722"></script>
 		<link rel="stylesheet" href="/static/css/style.css?version=600"/>
 
 		<script>
@@ -832,8 +832,12 @@
 						<div class='pointer inline action' onclick='Hue.show_import_settings()'>Import Settings</div>
 						
 						<div class='spacer3'></div>
-
+						
 						<div class='pointer inline action' onclick='Hue.show_export_settings()'>Export Settings</div>
+						
+						<div class='spacer3'></div>
+
+						<div class='pointer inline action' onclick='Hue.request_notifications_permission()'>Enable Notifications</div>
 
 					</div>
 
@@ -1093,6 +1097,12 @@
 							<div class="setting_title2">On AFK</div>
 							<div class="setting_title">Disable Synth</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_synth">
+						</div>
+
+						<div class='settings_item settings_top_level_item' data-setting='afk_disable_notifications'>
+							<div class="setting_title2">On AFK</div>
+							<div class="setting_title">Disable Notifications</div>
+							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_notifications">
 						</div>
 
 						<div class='settings_item settings_top_level_item' data-setting='afk_on_lockscreen'>
