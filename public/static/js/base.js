@@ -9032,7 +9032,7 @@ Hue.process_message = function(args={})
 
 			if(needs_confirm)
 			{
-				if(confirm("Are you sure?"))
+				if(confirm(`Are you sure you want to execute ${alias_cmd_2}?`))
 				{
 					Hue.process_message(
 					{
@@ -9167,7 +9167,7 @@ Hue.execute_command = function(message, ans)
 
 	if(needs_confirm)
 	{
-		if(confirm("Are you sure?"))
+		if(confirm(`Are you sure you want to execute ${command}?`))
 		{
 			Hue.command_actions[command](arg, ans)
 		}
