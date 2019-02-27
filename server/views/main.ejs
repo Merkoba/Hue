@@ -39,7 +39,7 @@
 		<script src="/static/js/wordz.js?version=1"></script>
 
 		<script src="/static/js/base.js?version=2725"></script>
-		<link rel="stylesheet" href="/static/css/style.css?version=600"/>
+		<link rel="stylesheet" href="/static/css/style.css?version=601"/>
 
 		<script>
 
@@ -855,8 +855,6 @@
 				<div class="settings_window_left" id="settings_window_left_{{type}}">
 					<div class='settings_window_left_content' id='settings_window_left_content_{{type}}'>
 
-						<div class='spacer3'></div>
-
 						<div id='settings_window_category_afk_{{type}}' class='settings_window_category' data-category_container='settings_window_category_content_afk_{{type}}' data-category='afk'>
 							<span class='settings_window_category_status_filler invisible'></span>
 							<span class='settings_window_category_text'>AFK</span>
@@ -899,11 +897,8 @@
 							<span class='settings_window_category_status'></span>
 						</div>
 
-						<div class='spacer3'></div>
+						<div class='settings_reset_button smaller_font_size pointer' onclick='Hue.confirm_reset_settings("{{type}}")'>Reset</div>
 
-						<div class='smaller_font_size pointer' onclick='Hue.confirm_reset_settings("{{type}}")'>Reset</div>
-						
-						<div class='spacer3'></div>
 					</div>
 				</div>
 

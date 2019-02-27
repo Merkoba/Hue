@@ -827,6 +827,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-bottom: 0.6em;
 }
 
+.spacer7
+{
+	padding-top: 0.25em;
+	padding-bottom: 0.25em;
+}
+
 .hspacer1
 {
 	padding-left: 0.3em;
@@ -1619,6 +1625,12 @@ input[type=text], textarea
 {
 	padding-top: 1em;
 	padding-bottom: 1em;	
+}
+
+.settings_reset_button
+{
+	margin-top: 1rem;
+	margin-bottom: 0.5rem;
 }
 
 .container_22
