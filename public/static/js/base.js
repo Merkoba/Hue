@@ -24941,7 +24941,7 @@ Hue.setup_whispers_click = function(content, username)
 
 Hue.request_notifications_permission = function()
 {
-	if(Notification.permission === "granted")
+	if(Hue.has_notifications_permission())
 	{
 		Hue.msg_info.show("Notifications are already enabled")
 		return false
