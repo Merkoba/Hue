@@ -1624,13 +1624,13 @@ input[type=text], textarea
 .settings_container
 {
 	padding-top: 1em;
-	padding-bottom: 1em;	
+	padding-bottom: 1em;
 }
 
 .settings_reset_button
 {
 	margin-top: 1rem;
-	margin-bottom: 0.5rem;
+	margin-bottom: 0.4rem;
 }
 
 .container_22
@@ -1953,8 +1953,8 @@ input[type=text], textarea
 
 .settings_window_category
 {
-	margin-top: 0.5rem;
-	margin-bottom: 0.5rem;
+	margin-top: 0.4rem;
+	margin-bottom: 0.4rem;
 	cursor: pointer;
 	display: flex;
 	align-items: center;
