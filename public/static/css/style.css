@@ -2280,8 +2280,8 @@ a.special_link:hover
 
 .link_preview_image
 {
-	max-width: 250px;
-	max-height: 500px;
+	max-width: 180px;
+	max-height: 180px;
 }
 
 .highlights_item .image_preview, .chat_search_result_item .image_preview
