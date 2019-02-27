@@ -38,8 +38,8 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2725"></script>
-		<link rel="stylesheet" href="/static/css/style.css?version=602"/>
+		<script src="/static/js/base.js?version=2726"></script>
+		<link rel="stylesheet" href="/static/css/style.css?version=603"/>
 
 		<script>
 
@@ -1421,7 +1421,7 @@
 		</script>
 
 		<script id='template_global_settings' type='text/x-handlebars-template' class='template'>
-			<input type="text" class="filter_input" placeholder="Filter" id="global_settings_filter" data-mode="manual">
+			<input type="search" class="filter_input" placeholder="Filter" id="global_settings_filter" data-mode="manual">
 			<div class='spacer4'></div>
 			<div id='global_settings_container' class='unselectable'>
 				{{{settings}}}
@@ -1432,7 +1432,7 @@
 			<div id='room_settings_container' class='unselectable'>
 				<div>Global Settings can be overridden for the current room here</div>
 				<div class='spacer3'></div>
-				<input type="text" class="filter_input" placeholder="Filter" id="room_settings_filter" data-mode="manual">
+				<input type="search" class="filter_input" placeholder="Filter" id="room_settings_filter" data-mode="manual">
 				<div class='spacer4'></div>
 				{{{settings}}}
 			</div>
@@ -1548,31 +1548,31 @@
 		</script>
 
 		<script id='template_userlist' type='text/x-handlebars-template' class='template'>
-			<input type="text" id="userlist_filter" class="filter_input" placeholder="Filter">
+			<input type="search" id="userlist_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='userlist'></div>
 		</script>
 		
 		<script id='template_roomlist' type='text/x-handlebars-template' class='template'>
-			<input type="text" id="{{type}}_filter" class="filter_input" placeholder="Filter">
+			<input type="search" id="{{type}}_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>	
 			<div id='{{type}}_container'></div>
 		</script>		
 		
 		<script id='template_played' type='text/x-handlebars-template' class='template'>
-			<input type="text" id="played_filter" class="filter_input" placeholder="Filter">
+			<input type="search" id="played_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='played'></div>
 		</script>
 
 		<script id='template_admin_activity' type='text/x-handlebars-template' class='template'>
-			<input type="text" id="admin_activity_filter" class="filter_input" placeholder="Filter">
+			<input type="search" id="admin_activity_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='admin_activity_container'></div>
 		</script>
 
 		<script id='template_access_log' type='text/x-handlebars-template' class='template'>
-			<input type="text" id="access_log_filter" class="filter_input" placeholder="Filter">
+			<input type="search" id="access_log_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='access_log_container'></div>
 		</script>
@@ -1581,7 +1581,7 @@
 			<div class='flex_row_center sticky bg1'>
 				<i class='fa fa-trash-o pointer action invisible'></i>
 				<div class='hspacer3 invisible'></div>
-				<input type="text" id="input_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
+				<input type="search" id="input_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
 				<div class='hspacer3'></div>
 				<i class='fa fa-trash-o pointer action nicetitle' id='input_history_clear_icon' title="Clear"></i>
 			</div>
@@ -1595,7 +1595,7 @@
 			<div class='flex_row_center sticky bg1'>
 				<i class='fa fa-history pointer action invisible'></i>
 				<div class='hspacer3 invisible'></div>
-				<input type="text" id="chat_search_filter" data-mode='manual' class="filter_input" placeholder="Query">
+				<input type="search" id="chat_search_filter" data-mode='manual' class="filter_input" placeholder="Query">
 				<div class='hspacer3'></div>
 				<i class='fa fa-history pointer action nicetitle' id='chat_search_history_icon' title="Recent Searches"></i>
 			</div>
@@ -1604,7 +1604,7 @@
 
 			<div id='chat_search_no_results' class='unselectable'>
 				<div class='spacer3'></div>
-				<div class='bigger'>No Results</div>
+				<div class='bigger3'>No Results</div>
 				<div class='spacer3'></div>
 			</div>
 
@@ -1612,13 +1612,13 @@
 		</script>
 
 		<script id='template_highlights' type='text/x-handlebars-template' class='template'>
-			<input type="text" id="highlights_filter" data-mode='manual' class="filter_input" placeholder="Filter">
+			<input type="search" id="highlights_filter" data-mode='manual' class="filter_input" placeholder="Filter">
 			
 			<div class='spacer3'></div>
 			
 			<div id='highlights_no_results' class='unselectable'>
 				<div class='spacer3'></div>
-				<div class='bigger'>No Highlights Yet</div>
+				<div class='bigger3'>No Highlights Yet</div>
 				<div class='spacer3'></div>
 			</div>
 
@@ -1626,19 +1626,19 @@
 		</script>
 
 		<script id='template_image_history' type='text/x-handlebars-template' class='template'>
-			<input type="text" id="image_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
+			<input type="search" id="image_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='image_history_container' class='media_history_container chat_area chat_area_clone_center'></div>
 		</script>
 
 		<script id='template_tv_history' type='text/x-handlebars-template' class='template'>
-			<input type="text" id="tv_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
+			<input type="search" id="tv_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='tv_history_container' class='media_history_container chat_area chat_area_clone_center'></div>
 		</script>
 
 		<script id='template_radio_history' type='text/x-handlebars-template' class='template'>
-			<input type="text" id="radio_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
+			<input type="search" id="radio_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
 			<div class='spacer3'></div>
 			<div id='radio_history_container' class='media_history_container chat_area chat_area_clone_center'></div>
 		</script>
@@ -1987,7 +1987,7 @@
 
 		<script id='template_help' type='text/x-handlebars-template' class='template'>
 
-			<input type="text" id="help_filter" class="filter_input" placeholder="Filter">
+			<input type="search" id="help_filter" class="filter_input" placeholder="Filter">
 			<div class='spacer2'></div>
 			<div id="help_content"></div>
 

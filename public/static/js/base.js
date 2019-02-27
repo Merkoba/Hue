@@ -17838,7 +17838,7 @@ Hue.show_highlights = function(filter=false)
 		})
 	}
 
-	if(clone.children().length === 0)
+	if(clone.children().length === 0 && !filter)
 	{
 		$("#highlights_no_results").css("display", "block")
 	}
@@ -20754,7 +20754,7 @@ Hue.draw_image_change_mode = function()
 
 Hue.setup_autocomplete = function()
 {
-	$("body").on("keydown", "textarea, input[type='text']", function(e)
+	$("body").on("keydown", "textarea, input[type='text'], input[type='search']", function(e)
 	{
 		Hue.just_tabbed = false
 
@@ -20772,7 +20772,7 @@ Hue.setup_autocomplete = function()
 		Hue.clear_tabbed(this)
 	})
 
-	$("body").on("click", "textarea, input[type='text']", function(e)
+	$("body").on("click", "textarea, input[type='text'], input[type='search']", function(e)
 	{
 		Hue.clear_tabbed(this)
 	})

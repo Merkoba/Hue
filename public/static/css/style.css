@@ -1270,6 +1270,11 @@ input[type=text], textarea
 	font-size: 1.4em;
 }
 
+.bigger3
+{
+	font-size: 1.1em;
+}
+
 .underlined
 {
 	text-decoration: underline;
