@@ -8400,9 +8400,17 @@ Hue.get_dominant_theme = function()
 	}
 }
 
-Hue.get_size_string = function(size)
+Hue.get_size_string = function(size, mode=1)
 {
-	return `${parseFloat(size / 1024).toFixed(2)} MB`
+	if(mode === 1)
+	{
+		return `${parseFloat(size / 1024).toFixed(2)} MB`
+	}
+	
+	else if(mode === 2)
+	{
+		return `${parseFloat(size / 1024 / 1024).toFixed(2)} MB`
+	}
 }
 
 Hue.fill_defaults = function(args, def_args)
@@ -24534,6 +24542,10 @@ Hue.show_upload_comment = function(file, type)
 
 		$("#upload_comment_image_preview").attr("src", e.target.result)
 
+		Hue.msg_upload_comment.set_title(`${Hue.utilz.slice_string_end(file.name, 20)} (${Hue.get_size_string(file.size, 2)})`)
+
+		$("#Msg-titlebar-upload_comment").attr("title", file.name)
+		
 		Hue.msg_upload_comment.show(function()
 		{
 			$("#upload_comment_submit").click(function()

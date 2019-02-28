@@ -487,6 +487,23 @@ const Utilz = function()
 		return false
 	}
 
+	utilz.slice_string_end = function(s, n=10)
+	{
+		s = s.trim()
+		
+		let sliced = s.slice(-20).trim()
+
+		if(s.length > sliced.length)
+		{
+			return `...${sliced}`
+		}
+
+		else
+		{
+			return sliced
+		}
+	}
+
 	utilz.synth_notes = 
 	[
 		"c3", "d3", "e3", "f3",  "g3", 
