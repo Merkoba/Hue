@@ -24869,12 +24869,12 @@ Hue.jump_to_chat_message = function(message_id)
 		return false
 	}
 
-	el.scrollIntoView({block:"center"})
-	$(el).addClass("highlighted2")
+	el[0].scrollIntoView({block:"center"})
+	el.addClass("highlighted2")
 
 	setTimeout(function()
 	{
-		$(el).removeClass("highlighted2")
+		el.removeClass("highlighted2")
 	}, 2000)
 
 	Hue.close_all_modals()
