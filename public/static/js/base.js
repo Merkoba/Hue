@@ -166,7 +166,7 @@ Hue.usercount = 0
 Hue.quote_max_length = 200
 Hue.markdown_regexes = {}
 Hue.url_title_max_length = 50
-Hue.show_media_history_state = ""
+Hue.show_media_history_type = ""
 Hue.add_to_chat_searches_delay = 2000
 Hue.reactions_box_open = false
 
@@ -2433,7 +2433,7 @@ Hue.push_images_changed = function(data)
 		Hue.images_changed = Hue.images_changed.slice(Hue.images_changed.length - Hue.config.media_changed_crop_limit)
 	}
 
-	Hue.after_push_media_change("image")
+	Hue.after_push_media_change("image", data)
 }
 
 Hue.current_image = function()
@@ -2601,7 +2601,7 @@ Hue.push_tv_changed = function(data)
 		Hue.tv_changed = Hue.tv_changed.slice(Hue.tv_changed.length - Hue.config.media_changed_crop_limit)
 	}
 
-	Hue.after_push_media_change("tv")
+	Hue.after_push_media_change("tv", data)
 }
 
 Hue.setup_radio = function(mode, odata={})
@@ -2743,7 +2743,7 @@ Hue.push_radio_changed = function(data)
 		Hue.radio_changed = Hue.radio_changed.slice(Hue.radio_changed.length - Hue.config.media_changed_crop_limit)
 	}
 
-	Hue.after_push_media_change("radio")
+	Hue.after_push_media_change("radio", data)
 }
 
 Hue.current_radio = function()
@@ -7577,7 +7577,7 @@ Hue.update_chat = function(args={})
 		let s = `
 		<div class='${message_classes}'>
 			<div class='chat_left_side'>
-				<div class='chat_profile_image_container unselectable action4'>
+				<div class='chat_profile_image_container round_image_container unselectable action4'>
 					<img class='chat_profile_image' src='${pi}'>
 				</div>
 			</div>
@@ -7824,7 +7824,6 @@ Hue.add_to_chat = function(args={})
 		}
 
 		let last = $("#chat_area > .message").last()
-
 		let last_date = last.data("date")
 
 		if(date && last_date)
@@ -7844,6 +7843,7 @@ Hue.add_to_chat = function(args={})
 		
 		Hue.message_id += 1
 		args.message.data("message_id", Hue.message_id)
+		args.message.addClass(`message_id_${Hue.message_id}`)
 		message_id = Hue.message_id
 	}
 
@@ -8298,6 +8298,8 @@ Hue.change = function(args={})
 	{
 		return false
 	}
+
+	Hue.update_media_history_blinks()
 
 	if(args.notify && setter !== Hue.username)
 	{
@@ -17936,7 +17938,7 @@ Hue.reset_media_history_filter = function(type)
 {
 	$(`#${type}_history_filter`).val("")
 	$(`#${type}_history_container`).html("")
-	Hue.show_media_history_state = false
+	Hue.show_media_history_type = false
 }
 
 Hue.show_media_history = function(type, filter=false)
@@ -17993,13 +17995,42 @@ Hue.show_media_history = function(type, filter=false)
 	}
 	
 	clone.appendTo(`#${type}_history_container`)
-	Hue.show_media_history_state = type
-	Hue.update_media_history_blinks(type)
+	Hue.show_media_history_type = type
+	Hue.update_media_history_blinks()
 	
 	Hue[`msg_${type}_history`].show(function()
 	{
 		Hue.scroll_modal_to_top(`${type}_history`)
 	})
+}
+
+Hue.prepend_to_media_history = function(message_id)
+{
+	if(!Hue.started || !Hue.show_media_history_type)
+	{
+		return false
+	}
+
+	let type = Hue.show_media_history_type
+	let el = $(`#chat_area > .message_id_${message_id}`).eq(0)
+	let filter = $(`#${type}_history_filter`).val()
+		
+	if(filter)
+	{
+		let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
+		let words = lc_value.split(" ").filter(x => x.trim() !== "")
+		let text = el.text().toLowerCase()
+			
+		if(words.some(word => text.includes(word)))
+		{
+			$(`#${type}_history_container`).prepend(el)
+		}
+	}
+		
+	else
+	{
+		$(`#${type}_history_container`).prepend(el)
+	}
 }
 
 Hue.maximize_images = function()
@@ -22923,7 +22954,7 @@ Hue.update_activity_bar = function()
 
 				let h = $(`
 				<div class='activity_bar_item'>
-					<div class='activity_bar_image_container action4'>
+					<div class='activity_bar_image_container round_image_container action4'>
 						<img class='activity_bar_image' src='${pi}'>
 					</div>
 					<div class='activity_bar_text'></div>
@@ -23340,12 +23371,9 @@ Hue.process_remove_announcement = function(message)
 		Hue.remove_item_from_media_changed(type.replace("_change", ""), id)
 	}
 
-	$(".message.announcement").each(function()
+	$(`.message_id_${message_id}`).each(function()
 	{
-		if($(this).data("message_id") === message_id)
-		{
-			$(this).remove()
-		}
+		$(this).remove()
 	})
 }
 
@@ -24142,42 +24170,30 @@ Hue.media_load_default = function(type)
 	Hue[`setup_${type}`]("change", {})
 }
 
-Hue.update_media_history_blinks = function(type)
+Hue.update_media_history_blinks = function()
 {
-	if(Hue.show_media_history_state !== type)
+	if(!Hue.started || !Hue.show_media_history_type)
 	{
 		return false
 	}
 
+	let type = Hue.show_media_history_type
 	let loaded = Hue[`loaded_${type}`]
+
+	$(`#${type}_history_container`).find(".message").each(function()
+	{
+		$(this).removeClass("blinking_2")
+	})
 
 	if(!loaded)
 	{
-		$(`#${type}_history_container`).find(".message").each(function()
-		{
-			$(this).removeClass("blinking_2")
-		})
 
-		let first = $(`#${type}_history_container`).find(".message").first()
-		first.addClass("blinking_2")
+		$(`#${type}_history_container`).find(".message").first().addClass("blinking_2")
 	}
 
 	else
 	{
-		$(`#${type}_history_container`).find(".message").each(function()
-		{
-			let message_id = $(this).data("message_id")
-	
-			if(message_id === loaded.message_id)
-			{
-				$(this).addClass("blinking_2")
-			}
-	
-			else
-			{
-				$(this).removeClass("blinking_2")
-			}
-		})
+		$(`#${type}_history_container .message_id_${loaded.message_id}`).eq(0).addClass("blinking_2")
 	}
 }
 
@@ -24846,29 +24862,30 @@ Hue.process_msg_close_button = function(button)
 
 Hue.jump_to_chat_message = function(message_id)
 {
-	$("#chat_area > .message").each(function()
+	let el = $(`#chat_area > .message_id_${message_id}`).eq(0)
+
+	if(el.length === 0)
 	{
-		if($(this).data("message_id") === message_id)
-		{
-			let el = this
-			el.scrollIntoView({block:"center"})
-			$(el).addClass("highlighted2")
-	
-			setTimeout(function()
-			{
-				$(el).removeClass("highlighted2")
-			}, 2000)
-	
-			Hue.close_all_modals()
-	
-			return false
-		}
-	})
+		return false
+	}
+
+	el.scrollIntoView({block:"center"})
+	$(el).addClass("highlighted2")
+
+	setTimeout(function()
+	{
+		$(el).removeClass("highlighted2")
+	}, 2000)
+
+	Hue.close_all_modals()
 }
 
-Hue.after_push_media_change = function(type)
+Hue.after_push_media_change = function(type, data)
 {
-
+	if(Hue.show_media_history_type)
+	{
+		Hue.prepend_to_media_history(data.message_id)
+	}
 }
 
 Hue.get_limited_title = function(src)
