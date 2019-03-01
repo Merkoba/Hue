@@ -169,6 +169,12 @@ Hue.url_title_max_length = 50
 Hue.show_media_history_type = ""
 Hue.add_to_chat_searches_delay = 2000
 Hue.reactions_box_open = false
+Hue.youtube_loading = false
+Hue.twitch_loading = false
+Hue.soundcloud_loading = false
+Hue.vimeo_loading = false
+Hue.hls_loading = false
+Hue.tone_loading = false
 
 Hue.user_settings =
 {
@@ -1647,8 +1653,6 @@ Hue.init = function()
 	Hue.start_titles()
 	Hue.setup_show_profile()
 	Hue.setup_main_menu()
-	Hue.start_twitch()
-	Hue.start_soundcloud()
 	Hue.setup_input()
 	Hue.setup_input_history()
 	Hue.setup_modal_image()
@@ -1671,7 +1675,6 @@ Hue.init = function()
 	Hue.show_console_message()
 	Hue.setup_expand_image()
 	Hue.setup_local_storage()
-	Hue.start_vimeo()
 	Hue.get_ignored_usernames_list()
 	Hue.get_accept_commands_from_list()
 	Hue.setup_lockscreen()
@@ -3086,7 +3089,7 @@ Hue.show_soundcloud_video = function(src, play=true)
 	Hue.after_show_video(play)
 }
 
-Hue.show_video = function(src, play=true)
+Hue.show_video = async function(src, play=true)
 {
 	Hue.before_show_video()
 	Hue.hide_videos("media_video_container")
@@ -3095,7 +3098,7 @@ Hue.show_video = function(src, play=true)
 
 	if(split[split.length - 1] === "m3u8")
 	{
-		Hue.start_hls()
+		await Hue.start_hls()
 		Hue.hls.loadSource(src)
 		Hue.hls.attachMedia($("#media_video")[0])
 	}
@@ -8145,6 +8148,7 @@ Hue.change = function(args={})
 		{
 			if(Hue.youtube_video_player === undefined)
 			{
+				Hue.load_youtube()
 				return false
 			}
 
@@ -8155,6 +8159,7 @@ Hue.change = function(args={})
 		{
 			if(Hue.twitch_video_player === undefined)
 			{
+				Hue.start_twitch()
 				return false
 			}
 
@@ -8165,6 +8170,7 @@ Hue.change = function(args={})
 		{
 			if(Hue.soundcloud_video_player === undefined)
 			{
+				Hue.start_soundcloud()
 				return false
 			}
 
@@ -8175,6 +8181,7 @@ Hue.change = function(args={})
 		{
 			if(Hue.vimeo_video_player === undefined)
 			{
+				Hue.start_vimeo()
 				return false
 			}
 
@@ -8237,6 +8244,7 @@ Hue.change = function(args={})
 		{
 			if(Hue.youtube_player === undefined)
 			{
+				Hue.load_youtube()
 				return false
 			}
 		}
@@ -8245,6 +8253,7 @@ Hue.change = function(args={})
 		{
 			if(Hue.soundcloud_player === undefined)
 			{
+				Hue.start_soundcloud()
 				return false
 			}
 		}
@@ -13821,6 +13830,17 @@ Hue.show_input_history = function(filter=false)
 	})
 }
 
+Hue.load_youtube = function()
+{
+	if(Hue.youtube_loading)
+	{
+		return false
+	}
+
+	Hue.youtube_loading = true
+	Hue.load_script("https://www.youtube.com/iframe_api")
+}
+
 onYouTubeIframeAPIReady = function()
 {
 	Hue.yt_player = new YT.Player('youtube_player',
@@ -13896,8 +13916,17 @@ Hue.onYouTubePlayerReady2 = function()
 	}
 }
 
-Hue.start_twitch = function()
+Hue.start_twitch = async function()
 {
+	if(Hue.twitch_loading)
+	{
+		return false
+	}
+
+	Hue.twitch_loading = true
+
+	await Hue.load_script("https://player.twitch.tv/js/embed/v1.js")
+
 	try
 	{
 		let twch_video_player = new Twitch.Player("media_twitch_video_container",
@@ -14875,8 +14904,31 @@ Hue.start_titles = function()
 	})
 }
 
-Hue.start_hls = function()
+Hue.load_hls = async function()
 {
+	if(Hue.hls_loading)
+	{
+		return false
+	}
+
+	Hue.hls_loading = true
+
+	return new Promise(async (resolve, reject) => 
+	{
+		await Hue.load_script("/static/js/hls.js")
+		resolve()
+	})
+}
+
+Hue.start_hls = async function()
+{
+	if(!Hue.hls_loading)
+	{
+		await Hue.load_hls()
+	}
+
+	console.log(Hls)
+
 	Hue.hls = new Hls(
 	{
 		maxBufferSize: 5*1000*1000,
@@ -19274,15 +19326,32 @@ Hue.make_unique_lines = function(s)
 	return s
 }
 
-Hue.start_soundcloud = function()
+Hue.start_soundcloud = async function()
 {
+	if(Hue.soundcloud_loading)
+	{
+		return false
+	}
+
+	Hue.soundcloud_loading = true
+	
+	await Hue.load_script("https://w.soundcloud.com/player/api.js")
+
 	try
 	{
+		let src = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536'
+
+		$("#media_soundcloud_video_container").html(`<iframe width="640px" height="360px"
+		id='media_soundcloud_video' class='video_frame' src='${src}'></iframe>`)
+
+		$("body").append(`<iframe id='soundcloud_player' src='${src}'></iframe>`)
+
 		let _soundcloud_player = SC.Widget("soundcloud_player")
 		let _soundcloud_video_player = SC.Widget("media_soundcloud_video")
 		
 		_soundcloud_player.bind(SC.Widget.Events.READY, function()
 		{
+			console.log(1111111)
 			Hue.soundcloud_player = _soundcloud_player
 
 			if((Hue.last_radio_type && Hue.last_radio_type === "soundcloud") || Hue.current_radio().type === "soundcloud")
@@ -19295,6 +19364,7 @@ Hue.start_soundcloud = function()
 
 		_soundcloud_video_player.bind(SC.Widget.Events.READY, function()
 		{
+			console.log(222222222222)
 			Hue.soundcloud_video_player = _soundcloud_video_player
 
 			if((Hue.last_tv_type && Hue.last_tv_type === "soundcloud") || Hue.current_tv().type === "soundcloud")
@@ -23379,13 +23449,22 @@ Hue.setup_iframe_video = function()
 	})
 }
 
-Hue.setup_synth = function()
+Hue.start_synth = async function(n)
 {
+	if(Hue.tone_loading)
+	{
+		return false
+	}
+
+	Hue.tone_loading = true
+	
+	await Hue.load_script("/static/js/Tone.js")
+	
 	Hue.synth = new Tone.Synth(
 	{
 		oscillator:
 		{
-		  	type : 'triangle8'
+			type : 'triangle8'
 		},
 			envelope : {
 			attack : 2,
@@ -23395,6 +23474,11 @@ Hue.setup_synth = function()
 		}
 	}).toMaster()
 
+	Hue.play_synth_key(n)
+}
+
+Hue.setup_synth = function()
+{
 	Hue.synth_voice = window.speechSynthesis
 
 	$("#synth_container").on("mouseenter", function()
@@ -23565,9 +23649,15 @@ Hue.send_synth_key = function(key)
 Hue.play_synth_key = function(n)
 {
 	let key = Hue.utilz.synth_notes[n - 1]
-
+	
 	if(key)
 	{
+		if(Hue.synth === undefined)
+		{
+			Hue.start_synth(n)
+			return false
+		}
+
 		Hue.synth.triggerAttackRelease(key, 0.1)
 	}
 }
@@ -23882,8 +23972,17 @@ Hue.setup_local_storage = function()
 	}, false)
 }
 
-Hue.start_vimeo = function()
+Hue.start_vimeo = async function()
 {
+	if(Hue.vimeo_loading)
+	{
+		return false
+	}
+
+	Hue.vimeo_loading = true
+
+	await Hue.load_script("/static/js/vimeo.player.min.js")
+
 	let options = 
 	{
 		id: 59777392,
@@ -25057,4 +25156,19 @@ Hue.on_activity = function(sound=false)
 			Hue.sound_notify(sound)
 		}
 	}
+}
+
+Hue.load_script = function(source)
+{
+	console.info(`Loading script: ${source}`)
+
+	return new Promise((resolve, reject) => 
+	{
+		const script = document.createElement('script')
+		document.body.appendChild(script)
+		script.onload = resolve
+		script.onerror = reject
+		script.async = true
+		script.src = source
+	})
 }

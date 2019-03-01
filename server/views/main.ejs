@@ -18,13 +18,8 @@
 		<script src="/static/js/jquery.contextMenu.min.js?version=2"></script>
 		<script src="/static/js/jquery.ui.position.min.js?version=2"></script>
 		<script src="/static/js/socket.io.js"></script>
-		<script src="/static/js/hls.js"></script>
 		<script src="/static/js/jquery.nstSlider.min.js"></script>
-		<script src="/static/js/Tone.js"></script>
-		<script src="/static/js/vimeo.player.min.js"></script>
 		<script src="/static/js/timeago.min.js"></script>
-		<script src="https://player.twitch.tv/js/embed/v1.js"></script>
-		<script src="https://w.soundcloud.com/player/api.js"></script>
 		
 		<link rel="stylesheet" href="/static/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" href="/static/css/cropper.min.css?version=2">
@@ -38,7 +33,7 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2731"></script>
+		<script src="/static/js/base.js?version=2732"></script>
 		<link rel="stylesheet" href="/static/css/style.css?version=606"/>
 
 		<script>
@@ -48,10 +43,6 @@
 			$(function()
 			{
 				Hue.init()
-
-				let script = document.createElement('script')
-				script.src = "https://www.youtube.com/iframe_api"
-				document.head.appendChild(script)
 			})
 
 		</script>
@@ -283,9 +274,7 @@
 									<iframe width="640px" height="360px" id='media_iframe_video' class='video_frame'></iframe>
 								</div>
 
-								<div id='media_soundcloud_video_container' class='media_container'>
-									<iframe width="640px" height="360px" id='media_soundcloud_video' class='video_frame' src='https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536'></iframe>
-								</div>
+								<div id='media_soundcloud_video_container' class='media_container'></div>
 							
 								<div id='media_twitch_video_container' class='media_container'></div>
 
@@ -2240,8 +2229,6 @@
 		<form>
 			<input type='file' accept="image/jpeg, image/png, image/gif" id='background_image_input' class='nodisplay' onchange='Hue.background_image_selected(this)'>
 		</form>
-
-		<iframe id='soundcloud_player' src='https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536'></iframe>
 
 	</body>
 
