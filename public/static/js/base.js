@@ -3011,15 +3011,18 @@ Hue.hide_videos = function(show)
 {
 	$("#media_tv .media_container").each(function()
 	{
-		if($(this).attr("id") === show)
+		let id = $(this).attr("id")
+
+		if(id === show)
 		{
 			$(this).css("display", "flex")
 		}
 
 		else
 		{
-			$(this).html("")
-			$(this).css("display", "none")
+			let new_el = $(`<div id='${id}' class='media_container'></div>`)
+			new_el.css("display", "none")
+			$(this).replaceWith(new_el)
 		}
 	})
 
@@ -9887,18 +9890,21 @@ Hue.stop_radio = function(complete_stop=true)
 {
 	if(Hue.loaded_radio_type !== "radio")
 	{
-		$('#audio_player_container').html("")
+		let new_el = $(`<div id='audio_player_container'></div>`)
+		$("#audio_player_container").replaceWith(new_el)
 	}
 
 	if(Hue.loaded_radio_type !== "youtube")
 	{
-		$("#youtube_player_container").html("")
+		let new_el = $(`<div id='youtube_player_container'></div>`)
+		$("#youtube_player_container").replaceWith(new_el)
 		Hue.youtube_player = undefined
 	}
 
 	if(Hue.loaded_radio_type !== "soundcloud")
 	{
-		$("#soundcloud_player_container").html("")
+		let new_el = $(`<div id='soundcloud_player_container'></div>`)
+		$("#soundcloud_player_container").replaceWith(new_el)
 		Hue.soundcloud_player = undefined
 	}
 
@@ -25392,4 +25398,28 @@ Hue.load_script = function(source)
 		script.async = true
 		script.src = source
 	})
+}
+
+Hue.get_element_attributes = function(el)
+{
+	let node_array = Array.prototype.slice.call(el.attributes)
+
+	return node_array.reduce(function (attrs, attribute) 
+	{
+		attrs[attribute.name] = attribute.value
+		return attrs
+	}, {})
+}
+
+Hue.remove_all_data_attributes = function(el)
+{
+	let attributes = Hue.get_element_attributes(el)
+
+	for(let attr in attributes)
+	{
+		if(attr.startsWith("data-"))
+		{
+			$(el).removeAttr(attr)
+		}
+	}
 }
