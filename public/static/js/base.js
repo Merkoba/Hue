@@ -2409,19 +2409,12 @@ Hue.setup_image = function(mode, odata={})
 
 	if(mode === "change")
 	{
-		let bypass_lock = false
-
-		if(data.setter === Hue.username)
-		{
-			bypass_lock = Hue.get_setting("bypass_images_lock_on_own_change")
-		}
-
 		if(Hue.room_state.images_locked)
 		{
 			$("#footer_lock_images_icon").addClass("blinking")
 		}
 
-		Hue.change({type:"image", bypass_lock:bypass_lock})
+		Hue.change({type:"image"})
 	}
 }
 
@@ -2555,13 +2548,6 @@ Hue.setup_tv = function(mode, odata={})
 
 	if(mode === "change" || mode === "restart")
 	{
-		let bypass_lock = false
-
-		if(data.setter === Hue.username)
-		{
-			bypass_lock = Hue.get_setting("bypass_tv_lock_on_own_change")
-		}
-
 		if(mode === "change")
 		{
 			if(Hue.room_state.tv_locked)
@@ -2569,12 +2555,12 @@ Hue.setup_tv = function(mode, odata={})
 				$("#footer_lock_tv_icon").addClass("blinking")
 			}
 
-			Hue.change({type:"tv", force:true, bypass_lock:bypass_lock})
+			Hue.change({type:"tv", force:true})
 		}
 
 		else if(mode === "restart")
 		{
-			Hue.change({type:"tv", force:true, play:true, bypass_lock:bypass_lock})
+			Hue.change({type:"tv", force:true, play:true})
 		}
 	}
 }
@@ -2710,13 +2696,6 @@ Hue.setup_radio = function(mode, odata={})
 
 	if(mode === "change" || mode === "restart")
 	{
-		let bypass_lock = false
-
-		if(data.setter === Hue.username)
-		{
-			bypass_lock = Hue.get_setting("bypass_radio_lock_on_own_change")
-		}
-
 		if(mode === "change")
 		{
 			if(Hue.room_state.radio_locked)
@@ -2724,12 +2703,12 @@ Hue.setup_radio = function(mode, odata={})
 				$("#footer_lock_radio_icon").addClass("blinking")
 			}
 
-			Hue.change({type:"radio", force:true, bypass_lock:bypass_lock})
+			Hue.change({type:"radio", force:true})
 		}
 
 		else if(mode === "restart")
 		{
-			Hue.change({type:"radio", force:true, play:true, bypass_lock:bypass_lock})
+			Hue.change({type:"radio", force:true, play:true})
 		}
 	}
 }
@@ -8043,11 +8022,18 @@ Hue.change = function(args={})
 		play: true,
 		notify: true,
 		current_source: false,
-		item: false,
-		bypass_lock: false
+		item: false
 	}
 
 	Hue.fill_defaults(args, def_args)
+
+	let item = args.item ? args.item : Hue[`current_${args.type}`]()
+	let bypass_lock = false
+
+	if(item.setter === Hue.username)
+	{
+		bypass_lock = Hue.get_setting("bypass_tv_lock_on_own_change")
+	}
 
 	if(args.type === "image")
 	{
@@ -8125,7 +8111,7 @@ Hue.change = function(args={})
 			return false
 		}
 
-		let locked = Hue.room_state.images_locked && !args.bypass_lock
+		let locked = Hue.room_state.images_locked && !bypass_lock
 
 		if(!args.item && locked && Hue.last_image_source && !args.current_source)
 		{
@@ -8139,8 +8125,6 @@ Hue.change = function(args={})
 
 		let src
 		let source_changed
-
-		let item = args.item ? args.item : Hue.current_image()
 
 		if(args.current_source && Hue.last_image_source)
 		{
@@ -8183,7 +8167,7 @@ Hue.change = function(args={})
 			return false
 		}
 
-		let locked = Hue.room_state.tv_locked && !args.bypass_lock
+		let locked = Hue.room_state.tv_locked && !bypass_lock
 
 		if(!args.item && locked && Hue.last_tv_source && !args.current_source)
 		{
@@ -8197,8 +8181,6 @@ Hue.change = function(args={})
 
 		let src
 		let source_changed
-
-		let item = args.item ? args.item : Hue.current_tv()
 
 		if(args.current_source && Hue.last_tv_source)
 		{
@@ -8300,7 +8282,7 @@ Hue.change = function(args={})
 			return false
 		}
 
-		let locked = Hue.room_state.radio_locked && !args.bypass_lock
+		let locked = Hue.room_state.radio_locked && !bypass_lock
 
 		if(!args.item && locked && Hue.last_radio_source && !args.current_source)
 		{
@@ -8315,8 +8297,6 @@ Hue.change = function(args={})
 		let src
 		let type
 		let source_changed
-
-		let item = args.item ? args.item : Hue.current_radio()
 
 		if(args.current_source && Hue.last_radio_source)
 		{
@@ -8354,7 +8334,7 @@ Hue.change = function(args={})
 
 		let force = false
 
-		if(args.item || args.bypass_lock)
+		if(args.item || bypass_lock)
 		{
 			force = true
 		}
