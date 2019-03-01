@@ -2884,6 +2884,8 @@ Hue.load_radio = function(src, type, item, force=false)
 	{
 		Hue.get_radio_metadata()
 	}
+
+	Hue.set_radio_volume(false, false)
 }
 
 Hue.stop_tv = function(clear_iframe=true)
@@ -8310,26 +8312,6 @@ Hue.change = function(args={})
 			return false
 		}
 
-		if(Hue.current_radio().type === "youtube")
-		{
-			if(Hue.youtube_player === undefined)
-			{
-				Hue.youtube_player_requested = true
-				Hue.load_youtube()
-				return false
-			}
-		}
-
-		else if(Hue.current_radio().type === "soundcloud")
-		{
-			if(Hue.soundcloud_player === undefined)
-			{
-				Hue.soundcloud_player_requested = true
-				Hue.start_soundcloud()
-				return false
-			}
-		}
-
 		let src
 		let type
 		let source_changed
@@ -8348,6 +8330,26 @@ Hue.change = function(args={})
 			src = item.source
 			type = item.type
 			source_changed = true
+		}
+
+		if(item.type === "youtube")
+		{
+			if(Hue.youtube_player === undefined)
+			{
+				Hue.youtube_player_requested = true
+				Hue.load_youtube()
+				return false
+			}
+		}
+
+		else if(item.type === "soundcloud")
+		{
+			if(Hue.soundcloud_player === undefined)
+			{
+				Hue.soundcloud_player_requested = true
+				Hue.start_soundcloud()
+				return false
+			}
 		}
 
 		let force = false
@@ -14025,8 +14027,6 @@ Hue.on_youtube_player_ready = function()
 	{
 		Hue.change({type:"radio", notify:false})
 	}
-
-	Hue.set_radio_volume(false, false)
 }
 
 Hue.on_youtube_video_player_ready = function()
@@ -19545,8 +19545,6 @@ Hue.create_soundcloud_player = function()
 			{
 				Hue.change({type:"radio", notify:false})
 			}
-
-			Hue.set_radio_volume(false, false)
 		})
 	}
 
