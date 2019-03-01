@@ -14971,7 +14971,6 @@ Hue.change_images_visibility = function()
 	if(Hue.room_images_mode !== "disabled" && Hue.room_state.images_enabled)
 	{
 		$("#media").css("display", "flex")
-
 		$("#media_image").css("display", "flex")
 
 		Hue.fix_media_margin()
@@ -15051,8 +15050,7 @@ Hue.change_tv_visibility = function(play=true)
 		clearTimeout(Hue.stop_tv_timeout)
 
 		$("#media").css("display", "flex")
-
-		$("#media_tv").css("display", "flex")/
+		$("#media_tv").css("display", "flex")
 
 		Hue.fix_media_margin()
 
@@ -15142,10 +15140,8 @@ Hue.change_radio_visibility = function()
 	if(Hue.room_radio_mode !== "disabled" && Hue.room_state.radio_enabled)
 	{
 		$("#header_radio").css("display", "flex")
-
 		$("#footer_toggle_radio_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-on")
-
 		$("#header_topic").css("display", "none")
 
 		Hue.radio_visible = true
@@ -15168,10 +15164,8 @@ Hue.change_radio_visibility = function()
 		Hue.stop_radio()
 
 		$("#header_radio").css("display", "none")
-
 		$("#footer_toggle_radio_icon").removeClass("fa-toggle-on")
 		$("#footer_toggle_radio_icon").addClass("fa-toggle-off")
-
 		$("#header_topic").css("display", "flex")
 
 		Hue.radio_visible = false
