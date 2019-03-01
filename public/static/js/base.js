@@ -7836,8 +7836,7 @@ Hue.add_to_chat = function(args={})
 	}
 
 	if((args.message.hasClass("chat_message") && !args.message.hasClass("thirdperson")) &&
-	(last_message.hasClass("chat_message") && !last_message.hasClass("thirdperson")) &&
-	!args.message.data("has_embed"))
+	(last_message.hasClass("chat_message") && !last_message.hasClass("thirdperson")))
 	{
 		if(args.message.find(".chat_uname").eq(0).text() === last_message.find(".chat_uname").eq(0).text())
 		{
