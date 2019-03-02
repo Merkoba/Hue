@@ -169,6 +169,7 @@ Hue.url_title_max_length = 50
 Hue.show_media_history_type = ""
 Hue.add_to_chat_searches_delay = 2000
 Hue.reactions_box_open = false
+Hue.first_media_change = false
 
 Hue.youtube_loading = false
 Hue.youtube_loaded = false
@@ -1743,7 +1744,6 @@ Hue.on_join = function(data)
 	Hue.check_firstime()
 	Hue.get_input_history()
 	Hue.show_joined()
-	Hue.start_active_media()
 	Hue.check_maxers()
 	Hue.config_main_menu()
 	Hue.start_metadata_loop()
@@ -1752,6 +1752,7 @@ Hue.on_join = function(data)
 	Hue.setup_activity_bar()
 	Hue.setup_input_placeholder()
 	Hue.setup_details()
+	Hue.start_active_media()
 
 	Hue.at_startup()
 }
@@ -8023,12 +8024,12 @@ Hue.change = function(args={})
 		current_source: false,
 		item: false
 	}
-
+	
 	Hue.fill_defaults(args, def_args)
 
 	let item = args.item ? args.item : Hue[`current_${args.type}`]()
 	let bypass_lock = false
-
+	
 	if(item.setter === Hue.username)
 	{
 		bypass_lock = Hue.get_setting("bypass_tv_lock_on_own_change")
@@ -15171,19 +15172,20 @@ Hue.change_images_visibility = function()
 		$("#footer_toggle_images_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_images_icon").addClass("fa-toggle-on")	
 
-		Hue.change({type:"image"})
+		if(Hue.first_media_change)
+		{
+			Hue.change({type:"image"})
+		}
 
 		Hue.images_visible = true
-		
 		Hue.fix_image_frame()
 	}
 
 	else
 	{
 		$("#media_image").css("display", "none")
-
+		
 		Hue.fix_media_margin()
-
 		let num_visible = Hue.num_media_elements_visible()
 
 		if(num_visible === 0)
@@ -15250,15 +15252,18 @@ Hue.change_tv_visibility = function(play=true)
 		$("#footer_toggle_tv_icon").removeClass("fa-toggle-off")
 		$("#footer_toggle_tv_icon").addClass("fa-toggle-on")
 
-		Hue.change({type:"tv", force:false, play:false})
-
 		Hue.tv_visible = true
+		
+		if(Hue.first_media_change)
+		{
+			Hue.change({type:"tv", force:false, play:false})
+		}
 		
 		if(play)
 		{
 			Hue.play_video()
 		}
-		
+
 		Hue.fix_visible_video_frame()
 	}
 
@@ -15338,10 +15343,12 @@ Hue.change_radio_visibility = function()
 		$("#header_topic").css("display", "none")
 
 		Hue.radio_visible = true
-
 		let original_radio_source = Hue.loaded_radio_source
 
-		Hue.change({type:"radio", force:false, play:false})
+		if(Hue.first_media_change)
+		{
+			Hue.change({type:"radio", force:false, play:false})
+		}
 
 		if(Hue.loaded_radio_type === "radio")
 		{
@@ -16861,7 +16868,10 @@ Hue.change_lock_radio = function()
 		$("#footer_lock_radio_icon").removeClass("border_bottom")
 		$("#footer_lock_radio_icon").removeClass("blinking")
 
-		Hue.change({type:"radio"})
+		if(Hue.first_media_change)
+		{
+			Hue.change({type:"radio"})
+		}
 	}
 }
 
@@ -22007,6 +22017,8 @@ Hue.start_active_media = function()
 	Hue.change({type:"image"})
 	Hue.change({type:"tv"})
 	Hue.change({type:"radio"})
+
+	Hue.first_media_change = true
 }
 
 Hue.input_is_scrolled = function()
