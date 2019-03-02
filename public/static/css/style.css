@@ -2219,7 +2219,7 @@ a.special_link:hover
 	cursor: pointer;
 	position: relative;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 }
 
 .image_preview_text, .link_preview_text
