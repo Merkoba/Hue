@@ -601,6 +601,9 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "room_state_default_radio_volume"
 >Default volume for the radio.
 
+"room_state_default_tv_volume"
+>Default volume for the tv.
+
 "room_state_default_screen_locked"
 >Whether the screen will be locked by default.
 

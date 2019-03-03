@@ -119,7 +119,6 @@ Hue.radio_get_metadata_ongoing = false
 Hue.radio_get_metadata = false
 Hue.log_messages_processed = false
 Hue.command_aliases = {}
-Hue.play_video_on_load = false
 Hue.commands_queue = {}
 Hue.user_leaving = false
 Hue.admin_activity_filter_string = ""
@@ -2929,11 +2928,6 @@ Hue.play_video = function()
 		{
 			Hue.youtube_video_player.playVideo()
 		}
-
-		else
-		{
-			Hue.play_video_on_load = true
-		}
 	}
 
 	else if(Hue.current_tv().type === "twitch")
@@ -2941,11 +2935,6 @@ Hue.play_video = function()
 		if(Hue.twitch_video_player !== undefined)
 		{
 			Hue.twitch_video_player.play()
-		}
-
-		else
-		{
-			Hue.play_video_on_load = true
 		}
 	}
 
@@ -2955,11 +2944,6 @@ Hue.play_video = function()
 		{
 			Hue.soundcloud_video_player.play()
 		}
-
-		else
-		{
-			Hue.play_video_on_load = true
-		}
 	}
 
 	else if(Hue.current_tv().type === "vimeo")
@@ -2968,16 +2952,14 @@ Hue.play_video = function()
 		{
 			Hue.vimeo_video_player.play()
 		}
-
-		else
-		{
-			Hue.play_video_on_load = true
-		}
 	}
 
 	else if(Hue.current_tv().type === "url")
 	{
-		$("#media_video")[0].play()
+		if($("#media_video").length > 0)
+		{
+			$("#media_video")[0].play()
+		}
 	}
 
 	else if(Hue.current_tv().type === "iframe")
@@ -3240,6 +3222,8 @@ Hue.after_show_video = function(play)
 			Hue.stop_radio()
 		}
 	}
+
+	Hue.set_tv_volume(false, false)
 }
 
 Hue.setup_theme_and_background = function(data)
@@ -8280,8 +8264,6 @@ Hue.change = function(args={})
 
 		setter = item.setter
 
-		Hue.play_video_on_load = false
-
 		if(!args.item || args.item === Hue.current_tv())
 		{
 			$("#footer_lock_tv_icon").removeClass("blinking")
@@ -10074,8 +10056,13 @@ Hue.set_radio_volume = function(nv=false, changed=true)
 	}
 }
 
-Hue.set_tv_volume = function(nv=false)
+Hue.set_tv_volume = function(nv=false, changed=true)
 {
+	if(typeof nv !== "number")
+	{
+		nv = Hue.room_state.tv_volume
+	}
+
 	nv = Hue.utilz.round(nv, 1)
 
 	if(nv > 1)
@@ -10088,9 +10075,14 @@ Hue.set_tv_volume = function(nv=false)
 		nv = 0
 	}
 
+	Hue.room_state.tv_volume = nv
+
 	let vt = parseInt(Math.round((nv * 100)))
 
-	$('#media_video')[0].volume = nv
+	if($("#media_video").length > 0)
+	{
+		$('#media_video')[0].volume = nv
+	}
 
 	if(Hue.youtube_video_player !== undefined)
 	{
@@ -10110,6 +10102,11 @@ Hue.set_tv_volume = function(nv=false)
 	if(Hue.vimeo_video_player !== undefined)
 	{
 		Hue.vimeo_video_player.setVolume(nv)
+	}
+
+	if(changed)
+	{
+		Hue.save_room_state()
 	}
 }
 
@@ -13714,6 +13711,7 @@ Hue.get_room_state = function()
 		"tv_locked",
 		"radio_locked",
 		"radio_volume",
+		"tv_volume",
 		"screen_locked",
 		"synth_muted",
 		"lockscreen_lights_off",
