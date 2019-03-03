@@ -8900,12 +8900,6 @@ Hue.process_message = function(args={})
 
 	if(num_lines === 1 && Hue.is_command(args.message) && !args.edit_id)
 	{
-		if(args.message.startsWith("/?"))
-		{
-			args.message = args.message.replace("/?", "/")
-			return Hue.process_message(args)
-		}
-
 		args.message = Hue.utilz.clean_string2(args.message)
 		
 		let and_split = args.message.split(" && ")
@@ -9069,7 +9063,7 @@ Hue.process_message = function(args={})
 				{
 					if(args.callback)
 					{
-						return args.callback()
+						return args.callback(false)
 					}
 
 					else
@@ -9084,12 +9078,12 @@ Hue.process_message = function(args={})
 
 			if(args.callback)
 			{
-				return args.callback()
+				return args.callback(true)
 			}
-
+		
 			else
 			{
-				return false
+				return true
 			}
 		}
 
@@ -9137,6 +9131,19 @@ Hue.process_message = function(args={})
 						clr_input: args.clr_input
 					})
 				}
+
+				else
+				{
+					if(args.callback)
+					{
+						return args.callback(false)
+					}
+		
+					else
+					{
+						return false
+					}
+				}
 			}
 
 			else
@@ -9147,16 +9154,6 @@ Hue.process_message = function(args={})
 					to_history: false,
 					clr_input: args.clr_input
 				})
-			}
-
-			if(args.callback)
-			{
-				return args.callback()
-			}
-		
-			else
-			{
-				return false
 			}
 		}
 
@@ -9181,7 +9178,7 @@ Hue.process_message = function(args={})
 
 				if(args.callback)
 				{
-					return args.callback()
+					return args.callback(false)
 				}
 
 				else
@@ -9194,7 +9191,7 @@ Hue.process_message = function(args={})
 			{
 				if(args.callback)
 				{
-					return args.callback()
+					return args.callback(false)
 				}
 
 				else
@@ -9229,7 +9226,12 @@ Hue.process_message = function(args={})
 
 	if(args.callback)
 	{
-		return args.callback()
+		return args.callback(true)
+	}
+
+	else
+	{
+		return true
 	}
 }
 
@@ -25520,10 +25522,25 @@ Hue.do_math_calculation = async function(arg)
 
 	let s = `${arg} = **${r}**`
 
+	let id = `calc_${Date.now()}`
+
 	let f = function()
 	{
-		Hue.process_message({message:s, to_history:false})
+		Hue.process_message({message:s, to_history:false, callback:function(success)
+		{
+			if(success)
+			{
+				$(`#${id}`).remove()
+			}
+		}})
 	}
 
-	Hue.feedback(s, {comment:"Make Public", comment_icon:false, comment_onclick:f, replace_markdown:true})
+	Hue.feedback(s, 
+	{
+		comment: "Make Public", 
+		comment_icon: false, 
+		comment_onclick: f, 
+		replace_markdown: true,
+		id: id
+	})
 }
