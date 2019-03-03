@@ -170,6 +170,7 @@ Hue.show_media_history_type = ""
 Hue.add_to_chat_searches_delay = 2000
 Hue.reactions_box_open = false
 Hue.first_media_change = false
+Hue.calc_round_places = 10
 
 Hue.youtube_loading = false
 Hue.youtube_loaded = false
@@ -196,6 +197,7 @@ Hue.vimeo_video_player_request = false
 
 Hue.hls_loading = false
 Hue.tone_loading = false
+Hue.math_loading = false
 
 Hue.user_settings =
 {
@@ -1251,6 +1253,10 @@ Hue.command_actions =
 	"/loadprevradio": (arg, ans) =>
 	{
 		Hue.media_load_previous("radio")
+	},
+	"/calc": (arg, ans) =>
+	{
+		Hue.do_math_calculation(arg)
 	}
 }
 
@@ -8520,8 +8526,11 @@ Hue.chat_announce = function(args={})
 		link_url: false,
 		preview_image: false,
 		comment: "",
+		comment_icon: true,
+		comment_onclick: false,
 		item_id: false,
-		user_id: false
+		user_id: false,
+		replace_markdown: false
 	}
 
 	Hue.fill_defaults(args, def_args)
@@ -8592,7 +8601,17 @@ Hue.chat_announce = function(args={})
 			}
 		}
 
-		comment = `<div class='${cls}'><i class='fa fa-comment-o icon2'></i>&nbsp;&nbsp;${Hue.replace_markdown(this.make_html_safe(args.comment))}</div>`	
+		let c = Hue.replace_markdown(Hue.make_html_safe(args.comment))
+
+		if(args.comment_icon)
+		{
+			comment = `<div class='${cls}'><div class='announcement_comment_inner'><i class='fa fa-comment-o icon2'></i>&nbsp;&nbsp;${c}</div></div>`	
+		}
+		
+		else
+		{
+			comment = `<div class='${cls}'><div class='announcement_comment_inner'>${c}</div></div>`	
+		}
 	}
 
 	else
@@ -8667,7 +8686,7 @@ Hue.chat_announce = function(args={})
 
 	let fmessage = $(s)
 	let content = fmessage.find('.announcement_content').eq(0)
-	let comment_el = fmessage.find('.announcement_comment').eq(0)
+	let comment_el = fmessage.find('.announcement_comment_inner').eq(0)
 	let split = fmessage.find('.announcement_content_split').eq(0)
 	let brk = fmessage.find('.brk').eq(0)
 
@@ -8691,7 +8710,15 @@ Hue.chat_announce = function(args={})
 
 	else
 	{
-		content.text(args.message).urlize()
+		if(args.replace_markdown)
+		{
+			content.html(Hue.replace_markdown(Hue.make_html_safe(args.message))).urlize()
+		}
+
+		else
+		{
+			content.text(args.message).urlize()
+		}
 	}
 
 	if(args.comment)
@@ -8701,6 +8728,12 @@ Hue.chat_announce = function(args={})
 		if(args.username)
 		{
 			Hue.setup_whispers_click(comment_el, args.username)
+		}
+
+		if(args.comment_onclick)
+		{
+			comment_el.click(args.comment_onclick)
+			comment_el.addClass("special_link")
 		}
 	}
 
@@ -25452,4 +25485,47 @@ Hue.request_media = function(player, args)
 	{
 		Hue.start_vimeo()
 	}
+}
+
+Hue.do_math_calculation = async function(arg)
+{
+	if(Hue.math === undefined)
+	{
+		if(Hue.math_loading)
+		{
+			return false
+		}
+
+		Hue.math_loading = true
+
+		await Hue.load_script("/static/js/math.min.js")
+
+		Hue.math = math.create(
+		{
+			number: 'BigNumber',
+			precision: 64
+		})
+	}
+
+	let r
+
+	try
+	{
+		r = Hue.math.round(Hue.math.eval(arg), Hue.calc_round_places).toString()
+	}
+
+	catch(err)
+	{
+		Hue.feedback("Error")
+		return false
+	}
+
+	let s = `${arg} = **${r}**`
+
+	let f = function()
+	{
+		Hue.process_message({message:s, to_history:false})
+	}
+
+	Hue.feedback(s, {comment:"Make Public", comment_icon:false, comment_onclick:f, replace_markdown:true})
 }
