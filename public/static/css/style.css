@@ -2076,7 +2076,7 @@ input[type=text], textarea
 	justify-content: center;
 }
 
-.flex_row_column
+.flex_column_center
 {
 	display: flex;
 	flex-direction: column;

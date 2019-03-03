@@ -277,6 +277,11 @@ const Utilz = function()
 		return Math.round(value / place) * place
 	}
 
+	utilz.to_hundred = function(n)
+	{
+		return parseInt(Math.round((n * 100)))
+	}
+
 	utilz.humanize_seconds = function(input, separator=":")
 	{
 		let pad = function(input) 

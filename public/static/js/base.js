@@ -1640,13 +1640,14 @@ Hue.init = function()
 	Hue.get_global_settings()
 	Hue.get_room_settings()
 	Hue.get_room_state()
-	Hue.set_radio_volume()
 	Hue.start_msg()
 	Hue.start_settings_widgets("global_settings")
 	Hue.start_settings_widgets_listeners("global_settings")
 	Hue.start_settings_widgets("room_settings")
 	Hue.start_settings_widgets_listeners("room_settings")
 	Hue.setup_settings_windows()
+	Hue.set_radio_volume_widget()
+	Hue.start_media_menu_sliders()
 	Hue.start_filters()
 	Hue.start_image_events()
 	Hue.start_dropzone()
@@ -9989,17 +9990,27 @@ Hue.start_volume_scroll = function()
 
 		if(direction === 'up')
 		{
-			Hue.volume_increase()
+			Hue.radio_volume_increase()
 		}
 
 		else if(direction === 'down')
 		{
-			Hue.volume_decrease()
+			Hue.radio_volume_decrease()
 		}
 	})
 }
 
-Hue.set_radio_volume = function(nv=false, changed=true)
+Hue.set_radio_volume_widget = function(n=false)
+{
+	if(n === false)
+	{
+		n = Hue.room_state.radio_volume
+	}
+
+	$('#volume').text(`${Hue.utilz.to_hundred(n)} %`)
+}
+
+Hue.set_radio_volume = function(nv=false, changed=true, update_slider=true)
 {
 	if(typeof nv !== "number")
 	{
@@ -10020,7 +10031,7 @@ Hue.set_radio_volume = function(nv=false, changed=true)
 
 	Hue.room_state.radio_volume = nv
 
-	let vt = parseInt(Math.round((nv * 100)))
+	let vt = Hue.utilz.to_hundred(nv)
 
 	if($("#audio_player").length > 0)
 	{
@@ -10044,12 +10055,18 @@ Hue.set_radio_volume = function(nv=false, changed=true)
 
 	if(changed)
 	{
-		$('#volume').text(`${vt} %`)
+		Hue.set_radio_volume_widget(nv)
+
+		if(update_slider)
+		{
+			Hue.set_media_menu_radio_volume(nv)
+		}
+
 		Hue.save_room_state()
 	}
 }
 
-Hue.set_tv_volume = function(nv=false, changed=true)
+Hue.set_tv_volume = function(nv=false, changed=true, update_slider=true)
 {
 	if(typeof nv !== "number")
 	{
@@ -10070,7 +10087,7 @@ Hue.set_tv_volume = function(nv=false, changed=true)
 
 	Hue.room_state.tv_volume = nv
 
-	let vt = parseInt(Math.round((nv * 100)))
+	let vt = Hue.utilz.to_hundred(nv)
 
 	if($("#media_video").length > 0)
 	{
@@ -10099,11 +10116,16 @@ Hue.set_tv_volume = function(nv=false, changed=true)
 
 	if(changed)
 	{
+		if(update_slider)
+		{
+			Hue.set_media_menu_tv_volume(nv)
+		}
+
 		Hue.save_room_state()
 	}
 }
 
-Hue.volume_increase = function()
+Hue.radio_volume_increase = function()
 {
 	if(Hue.room_state.radio_volume === 1)
 	{
@@ -10115,7 +10137,7 @@ Hue.volume_increase = function()
 	Hue.set_radio_volume(nv)
 }
 
-Hue.volume_decrease = function()
+Hue.radio_volume_decrease = function()
 {
 	if(Hue.room_state.radio_volume === 0)
 	{
@@ -25533,4 +25555,79 @@ Hue.do_math_calculation = async function(arg)
 		replace_markdown: true,
 		id: id
 	})
+}
+
+Hue.start_media_menu_sliders = function()
+{
+	$("#media_menu_radio_volume").nstSlider(
+	{
+		"left_grip_selector": ".leftGrip",
+		"value_changed_callback": function(cause, val) 
+		{
+			if(cause === "init")
+			{
+				return false
+			}
+
+			let n = Hue.utilz.round(val / 100, 1)
+
+			if(Hue.room_state.radio_volume !== n)
+			{
+				Hue.set_radio_volume(n, true, false)
+			}
+		}
+	})
+
+	Hue.set_media_menu_radio_volume()
+	
+	$("#media_menu_tv_volume").nstSlider(
+	{
+		"left_grip_selector": ".leftGrip",
+		"value_changed_callback": function(cause, val) 
+		{
+			if(cause === "init")
+			{
+				return false
+			}
+
+			let n = Hue.utilz.round(val / 100, 1)
+			
+			if(Hue.room_state.tv_volume !== n)
+			{
+				Hue.set_tv_volume(n, true, false)
+			}
+		}
+	})
+
+	Hue.set_media_menu_tv_volume()
+}
+
+Hue.set_media_menu_radio_volume = function(n=false)
+{
+	if(n === false)
+	{
+		n = Hue.room_state.radio_volume
+	}
+
+	$("#media_menu_radio_volume").nstSlider('set_position', Hue.utilz.to_hundred(n))
+}
+
+Hue.set_media_menu_tv_volume = function(n=false)
+{
+	if(n === false)
+	{
+		n = Hue.room_state.tv_volume
+	}
+
+	$("#media_menu_tv_volume").nstSlider('set_position', Hue.utilz.to_hundred(n))
+}
+
+Hue.media_menu_radio_volume_double_click = function()
+{
+	$("#media_menu_radio_volume").nstSlider('set_position', 50)
+}
+
+Hue.media_menu_tv_volume_double_click = function()
+{
+	$("#media_menu_tv_volume").nstSlider('set_position', 50)
 }
