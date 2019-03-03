@@ -25609,6 +25609,21 @@ Hue.set_media_menu_radio_volume = function(n=false)
 		n = Hue.room_state.radio_volume
 	}
 
+	else if(n === "max")
+	{
+		n = 1
+	}
+
+	else if(n === "min")
+	{
+		n = 0
+	}
+
+	else if(n === "default")
+	{
+		n = Hue.config.room_state_default_radio_volume
+	}
+
 	$("#media_menu_radio_volume").nstSlider('set_position', Hue.utilz.to_hundred(n))
 }
 
@@ -25619,15 +25634,20 @@ Hue.set_media_menu_tv_volume = function(n=false)
 		n = Hue.room_state.tv_volume
 	}
 
+	else if(n === "max")
+	{
+		n = 1
+	}
+
+	else if(n === "min")
+	{
+		n = 0
+	}
+
+	else if(n === "default")
+	{
+		n = Hue.config.room_state_default_tv_volume
+	}
+
 	$("#media_menu_tv_volume").nstSlider('set_position', Hue.utilz.to_hundred(n))
-}
-
-Hue.media_menu_radio_volume_double_click = function()
-{
-	$("#media_menu_radio_volume").nstSlider('set_position', 50)
-}
-
-Hue.media_menu_tv_volume_double_click = function()
-{
-	$("#media_menu_tv_volume").nstSlider('set_position', 50)
 }
