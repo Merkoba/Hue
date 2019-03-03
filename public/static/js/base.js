@@ -6091,17 +6091,8 @@ Hue.change_upload_status = function(file, status, clear=false)
 
 	if(clear)
 	{
-		$(`#uploading_${file.hue_data.date}`)
-		.find(".announcement_content").eq(0)
-		.off("click")
-		.removeClass("pointer")
-		.removeClass("action")
-
-		$(`#uploading_${file.hue_data.date}`)
-		.find(".announcement_brk").eq(0)
-		.off("click")
-		.removeClass("pointer")
-		.removeClass("action")
+		$(`#uploading_${file.hue_data.date}`).remove()
+		Hue.goto_bottom(false, false)
 	}
 }
 
@@ -18536,7 +18527,6 @@ Hue.request_slice_upload = function(data)
 	}
 
 	let place = data.current_slice * Hue.config.upload_slice_size
-
 	let slice = file.slice(place, place + Math.min(Hue.config.upload_slice_size, file.hue_data.size - place))
 
 	file.hue_data.next = Hue.get_file_next(file)
@@ -18547,7 +18537,6 @@ Hue.request_slice_upload = function(data)
 	}
 
 	file.hue_data.percentage = Math.floor(((Hue.config.upload_slice_size * data.current_slice) / file.hue_data.size) * 100)
-
 	file.hue_data.reader.readAsArrayBuffer(slice)
 
 	Hue.change_upload_status(file, `${file.hue_data.percentage}%`)
@@ -25531,6 +25520,7 @@ Hue.do_math_calculation = async function(arg)
 			if(success)
 			{
 				$(`#${id}`).remove()
+				Hue.goto_bottom(false, false)
 			}
 		}})
 	}
