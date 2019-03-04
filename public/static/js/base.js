@@ -16810,7 +16810,7 @@ Hue.change_lock_images = function()
 		$("#footer_lock_images_icon").addClass("fa-lock")
 		$("#footer_lock_images_icon").addClass("border_bottom")
 
-		if(Hue.loaded_image && Hue.loaded_image !== Hue.current_image())
+		if(Hue.loaded_image !== Hue.current_image())
 		{
 			$("#footer_lock_images_icon").addClass("blinking")
 		}
@@ -16854,6 +16854,11 @@ Hue.change_lock_tv = function()
 		$("#footer_lock_tv_icon").removeClass("fa-unlock-alt")
 		$("#footer_lock_tv_icon").addClass("fa-lock")
 		$("#footer_lock_tv_icon").addClass("border_bottom")
+
+		if(Hue.loaded_tv !== Hue.current_tv())
+		{
+			$("#footer_lock_tv_icon").addClass("blinking")
+		}
 	}
 
 	else
@@ -16894,6 +16899,11 @@ Hue.change_lock_radio = function()
 		$("#footer_lock_radio_icon").removeClass("fa-unlock-alt")
 		$("#footer_lock_radio_icon").addClass("fa-lock")
 		$("#footer_lock_radio_icon").addClass("border_bottom")
+
+		if(Hue.loaded_radio !== Hue.current_radio())
+		{
+			$("#footer_lock_radio_icon").addClass("blinking")
+		}
 	}
 
 	else
