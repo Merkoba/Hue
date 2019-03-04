@@ -10125,28 +10125,52 @@ Hue.set_tv_volume = function(nv=false, changed=true, update_slider=true)
 	}
 }
 
-Hue.radio_volume_increase = function()
+Hue.radio_volume_increase = function(step=0.1)
 {
 	if(Hue.room_state.radio_volume === 1)
 	{
 		return false
 	}
 
-	let nv = Hue.room_state.radio_volume + 0.1
+	let nv = Hue.room_state.radio_volume + step
 
 	Hue.set_radio_volume(nv)
 }
 
-Hue.radio_volume_decrease = function()
+Hue.radio_volume_decrease = function(step=0.1)
 {
 	if(Hue.room_state.radio_volume === 0)
 	{
 		return false
 	}
 
-	let nv = Hue.room_state.radio_volume - 0.1
+	let nv = Hue.room_state.radio_volume - step
 
 	Hue.set_radio_volume(nv)
+}
+
+Hue.tv_volume_increase = function(step=0.1)
+{
+	if(Hue.room_state.tv_volume === 1)
+	{
+		return false
+	}
+
+	let nv = Hue.room_state.tv_volume + step
+
+	Hue.set_tv_volume(nv)
+}
+
+Hue.tv_volume_decrease = function(step=0.1)
+{
+	if(Hue.room_state.tv_volume === 0)
+	{
+		return false
+	}
+
+	let nv = Hue.room_state.tv_volume - step
+
+	Hue.set_tv_volume(nv)
 }
 
 Hue.change_volume_command = function(arg, type="radio")
@@ -25609,14 +25633,24 @@ Hue.set_media_menu_radio_volume = function(n=false)
 		n = Hue.room_state.radio_volume
 	}
 
-	else if(n === "max")
+	else if(n === "increase")
 	{
-		n = 1
+		n = Hue.room_state.radio_volume + 0.2
+
+		if(n > 1)
+		{
+			n = 1
+		}
 	}
 
-	else if(n === "min")
+	else if(n === "decrease")
 	{
-		n = 0
+		n = Hue.room_state.radio_volume - 0.2
+
+		if(n < 0)
+		{
+			n = 0
+		}
 	}
 
 	else if(n === "default")
@@ -25634,14 +25668,24 @@ Hue.set_media_menu_tv_volume = function(n=false)
 		n = Hue.room_state.tv_volume
 	}
 
-	else if(n === "max")
+	else if(n === "increase")
 	{
-		n = 1
+		n = Hue.room_state.tv_volume + 0.2
+
+		if(n > 1)
+		{
+			n = 1
+		}
 	}
 
-	else if(n === "min")
+	else if(n === "decrease")
 	{
-		n = 0
+		n = Hue.room_state.tv_volume - 0.2
+
+		if(n < 0)
+		{
+			n = 0
+		}
 	}
 
 	else if(n === "default")
