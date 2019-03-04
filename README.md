@@ -152,16 +152,16 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 >The title for the default tv.
 
 "default_tv_type"
->The type of the default_tv_source, either "url", "youtube", "twitch", "soundcloud" or "iframe".
+>The type of the default_tv_source, either "video", "youtube", "twitch", "soundcloud" or "iframe".
 
 "default_radio_source"
 >The default radio url used for new rooms or when "/radio default" is issued.
 
 "default_radio_title"
->The title for the default radio. This is what is shown in "Now Playing" on top. If radio source is of type "radio", the title will dynamically change to current playing song if the Icecast radio source is configured correctly.
+>The title for the default radio. This is what is shown in "Now Playing" on top. If radio source is of type "audio", the title will dynamically change to current playing song if the Icecast radio source is configured correctly.
 
 "default_radio_type"
->The type of the default_radio_source, either "radio", "youtube" or "soundcloud".
+>The type of the default_radio_source, either "audio", "youtube" or "soundcloud".
 
 "default_profile_image_url"
 >The location of the default profile image.
