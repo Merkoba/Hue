@@ -8097,7 +8097,7 @@ Hue.change = function(args={})
 			source_changed = true
 		}		
 
-		Hue.show_image(src, args.force)
+		Hue.show_image(item, args.force)
 
 		if(source_changed)
 		{
@@ -8318,15 +8318,15 @@ Hue.change = function(args={})
 	}
 }
 
-Hue.show_image = function(src, force=false)
+Hue.show_image = function(item, force=false)
 {
 	$("#media_image_frame").attr("crossOrigin", "anonymous")
 	$("#media_image_error").css("display", "none")
 	$("#media_image_frame").css("display", "initial")
 
-	if(force || $("#media_image_frame").attr("src") !== src)
+	if(force || $("#media_image_frame").attr("src") !== item.source)
 	{
-		$("#media_image_frame").attr("src", src)
+		$("#media_image_frame").attr("src", item.source)
 	}
 
 	else
