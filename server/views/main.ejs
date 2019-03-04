@@ -33,7 +33,7 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2748"></script>
+		<script src="/static/js/base.js?version=2749"></script>
 		<link rel="stylesheet" href="/static/css/style.css?version=609"/>
 
 		<script>
@@ -266,18 +266,13 @@
 							</div>
 
 							<div class='media_main_container' id='media_tv'>
-
-							
-							<div id='media_iframe_video_container' class='media_container'>
-								<div id='media_iframe_poster' class='pointer unselectable action'>Click Here To Load</div>
-								<iframe width="640px" height="360px" id='media_iframe_video' class='video_frame'></iframe>
-							</div>
 							
 							<div id='media_youtube_video_container' class='media_container'></div>
 							<div id='media_twitch_video_container' class='media_container'></div>
 							<div id='media_soundcloud_video_container' class='media_container'></div>
 							<div id='media_vimeo_video_container' class='media_container'></div>
-							<div id='media_video_container' class='media_container'></div>
+							<div id='media_video_video_container' class='media_container'></div>
+							<div id='media_iframe_video_container' class='media_container'></div>
 
 							<div class='maxer_container'>
 								<div id='media_tv_maxer' class='maxer'></div>
@@ -2236,10 +2231,12 @@
 		<audio id='audio_pup2' src='/static/audio/pup2.mp3?version=1' preload="auto"></audio>
 		<audio id='audio_join' src='/static/audio/join.mp3?version=2' preload="auto"></audio>
 		<audio id='audio_highlight' src='/static/audio/highlight.mp3?version=1' preload="auto"></audio>
-		
-		<div id='audio_player_container'></div>
-		<div id='youtube_player_container'></div>
-		<div id='soundcloud_player_container'></div>
+
+		<div id='media_radio'>
+			<div id='media_youtube_audio_container' class='media_radio_item'></div>
+			<div id='media_soundcloud_audio_container' class='media_radio_item'></div>
+			<div id='media_audio_audio_container' class='media_radio_item'></div>
+		</div>
 
 		<form>
 			<input type='file' accept="image/jpeg, image/png, image/gif" id='profile_image_picker' onchange='Hue.profile_image_selected(this)'>

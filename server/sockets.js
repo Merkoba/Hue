@@ -1627,7 +1627,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					}
 				}
 
-				data.type = "radio"
+				data.type = "audio"
 				data.title = ""
 				handler.do_change_radio_source(socket, data)
 			}
@@ -1706,7 +1706,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(data.src === 'default')
 		{
-			radioinfo.radio_type = "radio"
+			radioinfo.radio_type = "audio"
 			radioinfo.radio_source = ''
 			radioinfo.radio_title = ''
 			radioinfo.radio_query = 'default'
@@ -2109,7 +2109,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					if(utilz.video_extensions.includes(extension) || utilz.audio_extensions.includes(extension))
 					{
-						data.type = "url"
+						data.type = "video"
 					}
 
 					else
