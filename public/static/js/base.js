@@ -1670,7 +1670,7 @@ Hue.init = function()
 	Hue.start_footer_media_label_context_menu()
 	Hue.start_chat_menu_context_menu()
 	Hue.start_msg_close_buttons_context_menu()
-	Hue.start_footer_search_context_menu()
+	Hue.start_search_context_menus()
 	Hue.start_titles()
 	Hue.setup_show_profile()
 	Hue.setup_main_menu()
@@ -5063,20 +5063,8 @@ Hue.generate_chat_search_context_items = function()
 	return items
 }
 
-Hue.start_footer_search_context_menu = function()
+Hue.start_search_context_menus = function()
 {
-	$.contextMenu(
-	{
-		selector: "#footer_search_button",
-		animation: {duration: 250, hide: 'fadeOut'},
-		zIndex: 9000000000,
-		events: Hue.context_menu_events,
-		build: function($trigger, e)
-		{
-			return {items:Hue.generate_chat_search_context_items()}
-		}
-	})
-
 	$.contextMenu(
 	{
 		selector: "#main_menu_search_button",
@@ -5090,17 +5078,17 @@ Hue.start_footer_search_context_menu = function()
 	})
 
 	$.contextMenu(
+	{
+		selector: "#chat_search_history_icon",
+		animation: {duration: 250, hide: 'fadeOut'},
+		zIndex: 9000000000,
+		events: Hue.context_menu_events,
+		trigger: "left",
+		build: function($trigger, e)
 		{
-			selector: "#chat_search_history_icon",
-			animation: {duration: 250, hide: 'fadeOut'},
-			zIndex: 9000000000,
-			events: Hue.context_menu_events,
-			trigger: "left",
-			build: function($trigger, e)
-			{
-				return {items:Hue.generate_chat_search_context_items()}
-			}
-		})
+			return {items:Hue.generate_chat_search_context_items()}
+		}
+	})
 }
 
 Hue.singular_or_plural = function(n, s)
@@ -25447,30 +25435,6 @@ Hue.load_script = function(source)
 		script.async = true
 		script.src = source
 	})
-}
-
-Hue.get_element_attributes = function(el)
-{
-	let node_array = Array.prototype.slice.call(el.attributes)
-
-	return node_array.reduce(function (attrs, attribute) 
-	{
-		attrs[attribute.name] = attribute.value
-		return attrs
-	}, {})
-}
-
-Hue.remove_all_data_attributes = function(el)
-{
-	let attributes = Hue.get_element_attributes(el)
-
-	for(let attr in attributes)
-	{
-		if(attr.startsWith("data-"))
-		{
-			$(el).removeAttr(attr)
-		}
-	}
 }
 
 Hue.request_media = function(player, args)
