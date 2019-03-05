@@ -2255,14 +2255,22 @@ a.special_link:hover
 	text-align: left;
 }
 
-.media_history_container .announcement_content_split
+.media_history_container .announcement_content_split,
+#media_menu_loaded_media .announcement_content_split
 {
 	align-items: center;
 }
 
-.media_history_container .brk
+.media_history_container .brk, 
+#media_menu_loaded_media .brk
 {
 	display: none;
+}
+
+#media_menu_loaded_media .message
+{
+	padding-top: 0;
+	padding-bottom: 1.5rem;
 }
 
 .link_preview

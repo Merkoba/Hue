@@ -509,6 +509,8 @@ const Utilz = function()
 		}
 	}
 
+	utilz.media_types = ["image", "tv", "radio"]
+
 	utilz.synth_notes = 
 	[
 		"c3", "d3", "e3", "f3",  "g3", 

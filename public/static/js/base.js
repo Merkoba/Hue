@@ -41,6 +41,7 @@ Hue.modal_image_number_open = false
 Hue.change_user_username_open = false
 Hue.change_user_password_open = false
 Hue.change_user_email_open = false
+Hue.media_menu_open = false
 Hue.writing_reply = false
 Hue.modal_open = false
 Hue.started = false
@@ -164,6 +165,7 @@ Hue.add_to_chat_searches_delay = 2000
 Hue.reactions_box_open = false
 Hue.first_media_change = false
 Hue.calc_round_places = 10
+Hue.media_icons = {image: "fa-camera", tv: "fa-television", radio: "fa-volume-up"}
 
 Hue.youtube_loading = false
 Hue.youtube_loaded = false
@@ -8299,6 +8301,7 @@ Hue.change = function(args={})
 	}
 
 	Hue.update_media_history_blinks()
+	Hue.check_media_menu_loaded_media()
 
 	if(args.notify && setter !== Hue.username)
 	{
@@ -11822,7 +11825,17 @@ Hue.start_msg = function()
 		Object.assign({}, common, titlebar,
 		{
 			id: "media_menu",
-			window_width: "22em"
+			window_width: "22em",
+			after_show: function(instance)
+			{
+				common.after_show(instance)
+				Hue.media_menu_open = true
+			},
+			after_close: function(instance)
+			{
+				common.after_close(instance)
+				Hue.media_menu_open = false
+			}
 		})
 	)
 
@@ -14873,7 +14886,7 @@ Hue.show_modal_image = function(data)
 
 	Hue.loaded_modal_image = data
 
-	if(Hue.room_images_mode === "enabled" || Hue.room_images_mode === "locked")
+	if((Hue.room_images_mode === "enabled" || Hue.room_images_mode === "locked") && data !== Hue.loaded_image)
 	{
 		$("#modal_image_toolbar_load").css("display", "block")
 	}
@@ -16914,8 +16927,47 @@ Hue.show_joined = function()
 	Hue.show_topic()
 }
 
-Hue.show_media_menu = function()
+Hue.get_loaded_media_messages = function()
 {
+	let h = $("<div></div>")
+
+	for(let type of Hue.utilz.media_types)
+	{
+		let loaded_type = Hue[`loaded_${type}`]
+		
+		if(loaded_type)
+		{
+			let message_id = loaded_type.message_id
+			let message = $(`#chat_area > .message_id_${message_id}`).eq(0)
+
+			if(message.length > 0)
+			{
+				h.append(`<i class='fa ${Hue.media_icons[type]} icon2c'></i>`)
+				h.append("<div class='spacer2'></div>")
+				h.append(message.clone(true, true))
+			}
+		}
+	}
+
+	return h.children()
+}
+
+Hue.check_media_menu_loaded_media = function()
+{
+	if(Hue.media_menu_open)
+	{
+		Hue.update_media_menu_loaded_media()
+	}
+}
+
+Hue.update_media_menu_loaded_media = function()
+{
+	$("#media_menu_loaded_media").html(Hue.get_loaded_media_messages())
+}
+
+Hue.show_media_menu = function()
+{	
+	Hue.update_media_menu_loaded_media()
 	Hue.msg_media_menu.show()
 }
 
@@ -21604,12 +21656,12 @@ Hue.open_url_menu = function(args={})
 		$("#open_url_menu_copy_title").css("display", "none")
 	}
 	
-	if(args.media_type)
+	if(args.media_type && args.data)
 	{
 		let mtype = Hue.fix_images_string(args.media_type)
 		let mode = Hue[`room_${mtype}_mode`]
 
-		if(mode === "enabled" || mode === "locked")
+		if((mode === "enabled" || mode === "locked") && args.data !== Hue[`loaded_${args.media_type}`])
 		{
 			$("#open_url_menu_load").css("display", "inline-block")
 		}
@@ -23688,6 +23740,8 @@ Hue.process_remove_announcement = function(message)
 	{
 		$(this).remove()
 	})
+
+	Hue.check_media_menu_loaded_media()
 }
 
 Hue.setup_iframe_video = function()
