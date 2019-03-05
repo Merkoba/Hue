@@ -44,7 +44,7 @@ body *
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center center;
-	transform: scale(1.2,1.2);
+	transform: scale(1.2, 1.2);
 }
 
 .background_image_blur
