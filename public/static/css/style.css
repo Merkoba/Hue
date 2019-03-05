@@ -2270,7 +2270,7 @@ a.special_link:hover
 #media_menu_loaded_media .message
 {
 	padding-top: 0;
-	padding-bottom: 1.5rem;
+	padding-bottom: 0;
 }
 
 .link_preview
@@ -2601,4 +2601,16 @@ a.special_link:hover
 	justify-content: center;
 	overflow: hidden;
 	border-radius: 50%;
+}
+
+.spacer_line
+{
+	margin-top: 2em;
+	margin-bottom: 2em;
+	height: 1px;
+	border: none;
+	background-color: currentColor;
+	opacity: 0.2;
+	width: 100%;
+	position: relative;
 }

@@ -33,8 +33,8 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2751"></script>
-		<link rel="stylesheet" href="/static/css/style.css?version=611"/>
+		<script src="/static/js/base.js?version=2752"></script>
+		<link rel="stylesheet" href="/static/css/style.css?version=612"/>
 
 		<script>
 
@@ -1752,33 +1752,51 @@
 		<script id='template_media_menu' type='text/x-handlebars-template' class='template'>
 			<div class='unselectable flex_column_center'>
 
+				<div class='spacer3'></div>
+
 				<div id='media_menu_loaded_media' class='chat_area_clone_center'></div>
-
-				<div class='menu_item action inline' onclick='Hue.stop_and_lock(); Hue.hide_media_menu()'>Stop & Lock Everything</div>
-				<div></div>
-				<div class='menu_item action inline' onclick='Hue.stop_and_lock(false); Hue.hide_media_menu()'>Lock Everything</div>
-				<div></div>
-				<div class='menu_item action inline' onclick='Hue.default_media_state(false); Hue.hide_media_menu()'>Unlock Everything</div>
-				<div></div>
-				<div class='menu_item action inline' onclick='Hue.default_media_state(); Hue.hide_media_menu()'>Default State</div>
 				
+				<div class='spacer_line'></div>
+
+				<div class='pointer action inline' onclick='Hue.stop_and_lock(); Hue.hide_media_menu()'>Stop & Lock Everything</div>
+				<div class='spacer3'></div>
+				<div class='pointer action inline' onclick='Hue.stop_and_lock(false); Hue.hide_media_menu()'>Lock Everything</div>
+				<div class='spacer3'></div>
+				<div class='pointer action inline' onclick='Hue.default_media_state(false); Hue.hide_media_menu()'>Unlock Everything</div>
+				<div class='spacer3'></div>
+				<div class='pointer action inline' onclick='Hue.default_media_state(); Hue.hide_media_menu()'>Default State</div>
+				
+				<div class='spacer_line'></div>
+				
+				<div class='flex_row_center'>
+					<i class='fa fa-camera icon2c'></i>
+					<div class='hspacer2'></div>
+					<div class='pointer action inline' onclick='Hue.show_media_history("image")'>History</div>
+					&nbsp;&nbsp;|&nbsp;&nbsp;
+					<div class='pointer action inline' onclick='Hue.refresh_image(); Hue.hide_media_menu()'>Refresh</div>
+				</div>
+
+				<div class='spacer3'></div>
+				
+				<div class='flex_row_center'>
+					<i class='fa fa-television icon2c'></i>
+					<div class='hspacer2'></div>
+					<div class='pointer action inline' onclick='Hue.show_media_history("tv")'>History</div>
+					&nbsp;&nbsp;|&nbsp;&nbsp;
+					<div class='pointer action inline' onclick='Hue.refresh_tv(); Hue.hide_media_menu()'>Refresh</div>
+				</div>
+
 				<div class='spacer3'></div>
 
-				<div class='menu_item action inline' onclick='Hue.show_media_history("image")'>Image History</div>
-				<div></div>
-				<div class='menu_item action inline' onclick='Hue.show_media_history("tv")'>TV History</div>
-				<div></div>
-				<div class='menu_item action inline' onclick='Hue.show_media_history("radio")'>Radio History</div>
-				
-				<div class='spacer3'></div>
-				
-				<div class='menu_item action inline' onclick='Hue.refresh_image(); Hue.hide_media_menu()'>Refresh Image</div>
-				<div></div>
-				<div class='menu_item action inline' onclick='Hue.refresh_tv(); Hue.hide_media_menu()'>Refresh TV</div>
-				<div></div>
-				<div class='menu_item action inline' onclick='Hue.refresh_radio(); Hue.hide_media_menu()'>Refresh Radio</div>
-				
-				<div class='spacer8'></div>
+				<div class='flex_row_center'>
+					<i class='fa fa-volume-up icon2c'></i>
+					<div class='hspacer2'></div>
+					<div class='pointer action inline' onclick='Hue.show_media_history("radio")'>History</div>
+					&nbsp;&nbsp;|&nbsp;&nbsp;
+					<div class='pointer action inline' onclick='Hue.refresh_radio(); Hue.hide_media_menu()'>Refresh</div>
+				</div>
+
+				<div class='spacer_line'></div>
 				
 				<div class='setting_title'>Radio Volume</div>
 				<div class='slider_container'>

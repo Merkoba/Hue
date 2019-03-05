@@ -16930,6 +16930,7 @@ Hue.show_joined = function()
 Hue.get_loaded_media_messages = function()
 {
 	let h = $("<div></div>")
+	let changed = false
 
 	for(let type of Hue.utilz.media_types)
 	{
@@ -16942,11 +16943,22 @@ Hue.get_loaded_media_messages = function()
 
 			if(message.length > 0)
 			{
+				if(changed)
+				{
+					h.append("<div class='spacer8'></div>")
+				}
+
 				h.append(`<i class='fa ${Hue.media_icons[type]} icon2c'></i>`)
 				h.append("<div class='spacer2'></div>")
 				h.append(message.clone(true, true))
+				changed = true
 			}
 		}
+	}
+
+	if(!changed)
+	{
+		h.append("<div>No Media Loaded</div>")
 	}
 
 	return h.children()
