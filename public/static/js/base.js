@@ -18915,7 +18915,6 @@ Hue.make_safe = function(args={})
 
 		if(args.text || !args.remove_text_if_empty)
 		{
-			console.log(345)
 			sp = "message_info_html_spaced"
 		}
 
