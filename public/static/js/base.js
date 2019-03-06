@@ -4814,6 +4814,16 @@ Hue.start_chat_menu_context_menu = function()
 						{
 							return false
 						}
+
+						let user = Hue.get_user_by_id(user_id)
+
+						if(user)
+						{
+							if(!Hue.user_is_controllable(user))
+							{
+								return false
+							}
+						}
 						
 						if(Hue.is_admin_or_op() || user_id === Hue.user_id)
 						{
@@ -4835,6 +4845,16 @@ Hue.start_chat_menu_context_menu = function()
 								if(!user_id)
 								{
 									return false
+								}
+
+								let user = Hue.get_user_by_id(user_id)
+
+								if(user)
+								{
+									if(!Hue.user_is_controllable(user))
+									{
+										return false
+									}
 								}
 
 								if(user_id === Hue.user_id || Hue.is_admin_or_op())
@@ -25704,4 +25724,19 @@ Hue.set_media_menu_tv_volume = function(n=false)
 	}
 
 	$("#media_menu_tv_volume").nstSlider('set_position', Hue.utilz.to_hundred(n))
+}
+
+Hue.user_is_controllable = function(user)
+{
+	if(!Hue.is_admin_or_op())
+	{
+		return false
+	}
+
+	if((user.role === 'admin' || user.role === 'op') && Hue.role !== 'admin')
+	{
+		return false
+	}
+
+	return true
 }
