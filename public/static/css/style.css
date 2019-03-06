@@ -842,6 +842,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-bottom: 0.8em;
 }
 
+.spacer9
+{
+	padding-top: 0.3em;
+	padding-bottom: 0.3em;
+}
+
 .hspacer1
 {
 	padding-left: 0.3em;
