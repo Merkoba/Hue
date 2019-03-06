@@ -605,7 +605,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .played_item_title
 {
-	font-size: 1.1em;
 	font-weight: bold;
 }
 
@@ -661,25 +660,26 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .userlist_item
 {
-	padding-top: 0.5em;
-	padding-bottom: 0.5em;
+	padding-top: 0.35em;
+	padding-bottom: 0.35em;
 	overflow-wrap: break-word;
 	word-break: break-word;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	font-size: 1.2em;
 }
 
 .ui_item_role
 {
 	padding-right: 0.5em;
+	font-size: 0.9em;
 }
 
 .ui_item_uname
 {
 	cursor: pointer;
+	font-size: 1.2em;
 }
 
 .roomlist_item
