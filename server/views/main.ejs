@@ -33,8 +33,8 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2755"></script>
-		<link rel="stylesheet" href="/static/css/style.css?version=615"/>
+		<script src="/static/js/base.js?version=2756"></script>
+		<link rel="stylesheet" href="/static/css/style.css?version=616"/>
 
 		<script>
 
@@ -127,43 +127,31 @@
 					<div id='reactions_box'>
 
 						<i class='reaction_icon fa fa-thumbs-o-up pointer action nicetitle' onclick='Hue.send_reaction("like")' title="Like"></i>
-						
-						<div class='hspacer3'></div>
-						
 						<i class='reaction_icon fa fa-heart-o pointer action nicetitle' onclick='Hue.send_reaction("love")' title="Love"></i>
-
-						<div class='hspacer3'></div>
-
 						<i class='reaction_icon fa fa-smile-o pointer action nicetitle' onclick='Hue.send_reaction("happy")' title="Happy"></i>
 
-						<div class='hspacer3'>&nbsp;|&nbsp;</div>
+						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 
 						<i class='reaction_icon fa fa-thumbs-o-down pointer action nicetitle' onclick='Hue.send_reaction("dislike")' title="Dislike"></i>
-
-						<div class='hspacer3'></div>
-
 						<i class='reaction_icon fa fa-meh-o pointer action nicetitle' onclick='Hue.send_reaction("meh")' title="Meh"></i>
-
-						<div class='hspacer3'></div>
-
 						<i class='reaction_icon fa fa-frown-o pointer action nicetitle' onclick='Hue.send_reaction("sad")' title="Sad"></i>
 						
-						<div class='hspacer3'>&nbsp;|&nbsp;</div>
-						
+						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
+		
 						<div class='pointer action user_function_button' id='user_function_button_1'>F1</div>
-						<div class='hspacer3'>&nbsp;|&nbsp;</div>
+						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 						<div class='pointer action user_function_button' id='user_function_button_2'>F2</div>
-						<div class='hspacer3'>&nbsp;|&nbsp;</div>
+						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 						<div class='pointer action user_function_button' id='user_function_button_3'>F3</div>
-						<div class='hspacer3'>&nbsp;|&nbsp;</div>
+						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 						<div class='pointer action user_function_button' id='user_function_button_4'>F4</div>
-						<div class='hspacer3'>&nbsp;|&nbsp;</div>
+						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 						<div class='pointer action user_function_button' id='user_function_button_5'>F5</div>
-						<div class='hspacer3'>&nbsp;|&nbsp;</div>
+						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 						<div class='pointer action user_function_button' id='user_function_button_6'>F6</div>
-						<div class='hspacer3'>&nbsp;|&nbsp;</div>
+						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 						<div class='pointer action user_function_button' id='user_function_button_7'>F7</div>
-						<div class='hspacer3'>&nbsp;|&nbsp;</div>
+						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 						<div class='pointer action user_function_button' id='user_function_button_8'>F8</div>
 					</div>
 				</div>
@@ -313,7 +301,7 @@
 									<i id='footer_lock_images_icon' class='fa fa-unlock-alt'></i>
 								</div>
 								
-								<span class='hspacer2 color_3'>|</span>
+								<span class='footer_separator color_3'>|</span>
 							</div>
 							
 							<div id='footer_tv_controls' class='footer_media_control'>
@@ -332,7 +320,7 @@
 									<i class='fa fa-unlock-alt' id='footer_lock_tv_icon'></i>
 								</div>
 
-								<span class='hspacer2 color_3'>|</span>
+								<span class='footer_separator color_3'>|</span>
 							</div>
 							 
 							<div id='footer_radio_controls' class='footer_media_control'>
@@ -353,7 +341,7 @@
 									<i class='fa fa-unlock-alt' id='footer_lock_radio_icon'></i>
 								</div>
 								
-								<span class='hspacer2 color_3'>|</span>
+								<span class='footer_separator color_3'>|</span>
 							</div>
 
 							<div class='pointer action' onclick='Hue.show_media_menu()'>
@@ -371,29 +359,23 @@
 		<script id='template_main_menu' type='text/x-handlebars-template' class='template'>
 			<div id='main_menu' class='unselectable'>
 
-				<div class='menu_item action inline' onclick="Hue.request_roomlist('', 'visited_roomlist')">Visited Rooms</div>
-				<div></div>
-				<div class='menu_item action inline' onclick="Hue.request_roomlist('', 'public_roomlist')">Public Rooms</div>
-				<div></div>
-				<div class='menu_item action inline' onclick="Hue.show_goto_room()">Go To Room</div>
-				<div></div>
-				<div class='menu_item action inline' onclick="Hue.show_create_room()">Create Room</div>
+				<div class='flex_column_center'>
+					<div class='menu_item action' onclick="Hue.request_roomlist('', 'visited_roomlist')">Visited Rooms</div>
+					<div class='menu_item action' onclick="Hue.request_roomlist('', 'public_roomlist')">Public Rooms</div>
+					<div class='menu_item action' onclick="Hue.show_goto_room()">Go To Room</div>
+					<div class='menu_item action' onclick="Hue.show_create_room()">Create Room</div>
+				</div>
 
-				<div id='menu_smaller_container'>
+				<div id='menu_smaller_container' class='flex_column_center'>
 
-					<span class='menu_item_smaller action' onclick='Hue.show_help(1)'>Help</span>
-
-					<div class='spacer2'></div>
-
+					<div class='menu_item_smaller action' onclick='Hue.show_help(1)'>Help</div>
 					<div class='menu_item_smaller action' onclick='Hue.copy_room_url()'>Copy Room URL</div>
 
-					<div class='spacer2'></div>
-
-					<span class='menu_item_smaller action nicetitle' id='main_menu_search_button' onclick='Hue.show_chat_search()' title='Click or Right Click'>Search</span>
-
-					&nbsp;|&nbsp;
-
-					<span class='menu_item_smaller action' onclick='Hue.show_status()'>Status</span>
+					<div class='flex_row_center'>
+						<div class='menu_item_smaller_2 action' onclick='Hue.show_status()'>Status</div>
+						<div class='menu_item_smaller_2 color_3'>&nbsp;|&nbsp;</div>
+						<div class='menu_item_smaller_2 action nicetitle' id='main_menu_search_button' onclick='Hue.show_chat_search()' title='Click or Right Click'>Search</div>
+					</div>
 
 				</div>
 
@@ -401,37 +383,31 @@
 
 					<div class='menu_subsection_title'>Media</div>
 
-					<div class='small_padding_bottom'>Images</div>
+					<div class='main_menu_label'>Images</div>
 
-					<select id='admin_enable_images' class='modal_select'>
+					<select id='admin_enable_images' class='admin_container_1 modal_select'>
 						<option value="enabled">Enabled</option>
 						<option value="disabled">Disabled</option>
 						<option value="locked">Locked</option>
 					</select>
-
-					<div class='spacer1'></div>
 					
-					<div class='small_padding_bottom'>TV</div>
+					<div class='main_menu_label'>TV</div>
 
-					<select id='admin_enable_tv' class='modal_select'>
+					<select id='admin_enable_tv' class='admin_container_1 modal_select'>
 						<option value="enabled">Enabled</option>
 						<option value="disabled">Disabled</option>
 						<option value="locked">Locked</option>
 					</select>
 
-					<div class='spacer1'></div>
+					<div class='main_menu_label'>Radio</div>
 
-					<div class='small_padding_bottom'>Radio</div>
-
-					<select id='admin_enable_radio' class='modal_select'>
+					<select id='admin_enable_radio' class='admin_container_1 modal_select'>
 						<option value="enabled">Enabled</option>
 						<option value="disabled">Disabled</option>
 						<option value="locked">Locked</option>
 					</select>
 
-					<div class='spacer1'></div>
-
-					<div class='small_padding_bottom'>Synth</div>
+					<div class='main_menu_label'>Synth</div>
 
 					<select id='admin_enable_synth' class='modal_select'>
 						<option value="enabled">Enabled</option>
@@ -440,37 +416,33 @@
 
 					<div class='menu_subsection_title'>Theme</div>
 
-					<div class='small_padding_bottom'>Theme Mode</div>
+					<div class='main_menu_label'>Theme Mode</div>
 
-					<select class='modal_select' id='admin_theme_mode_select'>
+					<select class='admin_container_1 modal_select' id='admin_theme_mode_select'>
 						<option value="automatic">Automatic</option>
 						<option value="custom">Custom</option>
 					</select>
 
-					<div id='admin_theme_mode_container'>
-						<div class='spacer1'></div>
-						<div class='small_padding_bottom'>Theme</div>
+					<div class='admin_container_1' id='admin_theme_mode_container'>
+						<div class='main_menu_label'>Theme</div>
 						<input id='admin_theme'>
 					</div>
 
-					<div class='spacer1'></div>
-
-					<div class='small_padding_bottom'>Text Color Mode</div>
+					<div class='main_menu_label'>Text Color Mode</div>
 
 					<select class='modal_select' id='admin_text_color_mode_select'>
 						<option value="automatic">Automatic</option>
 						<option value="custom">Custom</option>
 					</select>
 
-					<div id='admin_text_color_container'>
-						<div class='spacer1'></div>
-						<div class='small_padding_bottom'>Text Color</div>
+					<div class='admin_container_2' id='admin_text_color_container'>
+						<div class='main_menu_label'>Text Color</div>
 						<input id='admin_text_color'>
 					</div>
 
 					<div class='menu_subsection_title'>Background</div>
 
-					<div class='small_padding_bottom'>Background Mode</div>
+					<div class='main_menu_label'>Background Mode</div>
 
 					<select class='modal_select' id='admin_background_mode_select'>
 						<option value="normal">Normal</option>
@@ -480,341 +452,121 @@
 						<option value="solid">Solid</option>
 					</select>
 					
-					<div id='admin_background_tile_dimensions_container'>
-						
-						<div class='spacer1'></div>
-
+					<div class='admin_container_2' id='admin_background_tile_dimensions_container'>
 						<div class='small_padding_bottom'>Tile Dimensions</div>
-
-						<input type='text' class='setting_input_text_small' id='admin_background_tile_dimensions' title='CSS background-size property (width and height). For example 200px 200px, 100px auto, auto 100px, or 100px 200px'>		
-
+						<input type='text' class='setting_input_text_small' id='admin_background_tile_dimensions' title='CSS background-size property (width and height). For example 200px 200px, 100px auto, auto 100px, or 100px 200px'>
 					</div>
 
-					<div id='admin_background_image_container'>
-						<div class='spacer1'></div>
+					<div class='admin_container_2' id='admin_background_image_container'>
 						<img class='small_square_image pointer' id='admin_background_image' onclick='Hue.open_background_image_select()'>
 					</div>
 
-					<div id='admin_background_effect_container'>
-
-						<div class='spacer1'></div>
-
-						<div class='small_padding_bottom'>Background Effect</div>
+					<div class='admin_container_2' id='admin_background_effect_container'>
+						<div class='main_menu_label'>Background Effect</div>
 
 						<select class='modal_select' id='admin_background_effect_select'>
 							<option value="none">None</option>
 							<option value="blur">Blur</option>
 						</select>
-						
 					</div>
 
 					<div class='menu_subsection_title'>Permissions</div>
 
-					<div class='toggler_main_container'>
-
-						<div class='toggler main_menu_toggle small_padding_bottom bold pointer action inline'>+ Voice 1 Permissions</div>
-
-						<div class='toggler_container main_menu_toggle_container'>
-
-							<div class='spacer3'></div>
-
-							<div class='setting_title'>Can Chat</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice1_chat_permission" data-ptype="voice1_chat_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change Images</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice1_images_permission" data-ptype="voice1_images_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the TV</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice1_tv_permission" data-ptype="voice1_tv_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the Radio</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice1_radio_permission" data-ptype="voice1_radio_permission">				
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Use The Synth</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice1_synth_permission" data-ptype="voice1_synth_permission">
-
-							<div class='spacer3'></div>
-
-						</div>
-
-					</div>
-					
-					<div class='spacer1'></div>
-
-					<div class='toggler_main_container'>
-
-						<div class='toggler main_menu_toggle small_padding_bottom bold pointer action inline'>+ Voice 2 Permissions</div>
-
-						<div class='toggler_container main_menu_toggle_container'>
-
-							<div class='spacer3'></div>
-
-							<div class='setting_title'>Can Chat</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice2_chat_permission" data-vtype="v2" data-ptype="voice2_chat_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change Images</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice2_images_permission" data-vtype="v2" data-ptype="voice2_images_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the TV</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice2_tv_permission" data-vtype="v2" data-ptype="voice2_tv_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the Radio</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice2_radio_permission" data-vtype="v2" data-ptype="voice2_radio_permission">
-
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Use The Synth</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice2_synth_permission" data-ptype="voice2_synth_permission">
-
-							<div class='spacer3'></div>
-
-						</div>
-
-					</div>
-					
-					<div class='spacer1'></div>
-
-					<div class='toggler_main_container'>
-
-						<div class='toggler main_menu_toggle small_padding_bottom bold pointer action inline'>+ Voice 3 Permissions</div>
-
-						<div class='toggler_container main_menu_toggle_container'>
-
-							<div class='spacer3'></div>
-
-							<div class='setting_title'>Can Chat</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice3_chat_permission" data-vtype="v3" data-ptype="voice3_chat_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change Images</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice3_images_permission" data-vtype="v3" data-ptype="voice3_images_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the TV</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice3_tv_permission" data-vtype="v3" data-ptype="voice3_tv_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the Radio</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice3_radio_permission" data-vtype="v3" data-ptype="voice3_radio_permission">
-
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Use The Synth</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice3_synth_permission" data-ptype="voice3_synth_permission">
-
-							<div class='spacer3'></div>
-
-						</div>
-
-					</div>
-
-					<div class='spacer1'></div>
-
-					<div class='toggler_main_container'>
-
-						<div class='toggler main_menu_toggle small_padding_bottom bold pointer action inline'>+ Voice 4 Permissions</div>
-						
-						<div class='toggler_container main_menu_toggle_container'>
-						
-							<div class='spacer3'></div>
-
-							<div class='setting_title'>Can Chat</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice4_chat_permission" data-vtype="v4" data-ptype="voice4_chat_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change Images</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice4_images_permission" data-vtype="v4" data-ptype="voice4_images_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the TV</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice4_tv_permission" data-vtype="v4" data-ptype="voice4_tv_permission">
-							
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Change the Radio</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice4_radio_permission" data-vtype="v4" data-ptype="voice4_radio_permission">
-
-							<div class='spacer1'></div>
-
-							<div class='setting_title'>Can Use The Synth</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice4_synth_permission" data-ptype="voice4_synth_permission">
-
-						</div>
-
-					</div>
+					<div>{{{permissions_containers}}}</div>
 					
 					<div class='menu_subsection_title2'>Room Config</div>
 
-					<div class='small_padding_bottom'>Privacy</div>
+					<div class='main_menu_label'>Privacy</div>
 
-					<select id='admin_privacy' class='modal_select'>
+					<select id='admin_privacy' class='admin_container_1 modal_select'>
 						<option value="true">Public</option>
 						<option value="false">Private</option>
 					</select>
 
-					<div class='spacer1'></div>
+					<div class='main_menu_label'>Log</div>
 
-					<div class='small_padding_bottom'>Log</div>
-
-					<select id='admin_log' class='modal_select'>
+					<select id='admin_log' class='admin_container_1 modal_select'>
 						<option value="true">Enabled</option>
 						<option value="false">Disabled</option>
 					</select>						
-
-					<div class='spacer1'></div>
-					<div class='spacer3'></div>
 					
-					<div class='small_padding_bottom'>Room Name</div>
+					<div class='main_menu_label'>Room Name</div>
 
-					<input type="text" class="setting_input_text" id="admin_room_name">
-
-					<div class='spacer1'></div>
+					<input type="text" class="admin_container_1 setting_input_text" id="admin_room_name">
 
 					<div class='small_padding_bottom'>Topic</div>
 
-					<textarea class='setting_textarea' rows=4 id="admin_topic"></textarea>
-
-					<div class='spacer1'></div>
-					<div class='spacer3'></div>
+					<textarea class='admin_container_1 setting_textarea' rows=4 id="admin_topic"></textarea>
 
 					<div class='toggler_main_container'>
 
-						<div class='toggler main_menu_toggle small_padding_bottom bold pointer action inline'>+ More</div>
+						<div class='toggler main_menu_toggle bold pointer action inline'>+ More</div>
 
 						<div class='toggler_container main_menu_toggle_container'>
 
-							<div class='spacer3'></div>
-
-							<div class='pointer action inline' onclick='Hue.needs_confirm("reset_voices")'>Reset Voices</div>
-
-							<div class='spacer2'></div>
-
-							<div class='pointer action inline' onclick='Hue.needs_confirm("remove_ops")'>Remove Ops</div>
-							
-							<div class='spacer2'></div>
-
-							<div class='pointer action inline' onclick='Hue.get_banned_count()'>Banned Count</div>
-							
-							<div class='spacer2'></div>
-
-							<div class='pointer action inline' onclick='Hue.needs_confirm("unban_all")'>Unban All</div>
-
-							<div class='spacer2'></div>
-							
-							<div class='pointer action inline' onclick='Hue.request_admin_activity()'>Admin Activity</div>
-
-							<div class='spacer2'></div>
-							
-							<div class='pointer action inline' onclick='Hue.request_access_log()'>Access Log</div>
-
-							<div class='spacer2'></div>
-							
-							<div class='pointer action inline' onclick='Hue.request_admin_list()'>Admin List</div>
-							
-							<div class='spacer2'></div>
-							
-							<div class='pointer action inline' onclick='Hue.request_ban_list()'>Ban List</div>
-
-							<div class='spacer2'></div>
-
-							<div class='pointer action inline' onclick='Hue.needs_confirm("clear_log")'>Clear Log</div>
+							<div id='main_menu_more_container' class='grid_column_center'>
+								<div class='pointer action' onclick='Hue.needs_confirm("reset_voices")'>Reset Voices</div>
+								<div class='pointer action' onclick='Hue.needs_confirm("remove_ops")'>Remove Ops</div>
+								<div class='pointer action' onclick='Hue.get_ban_count()'>Banned Count</div>
+								<div class='pointer action' onclick='Hue.needs_confirm("unban_all")'>Unban All</div>
+								<div class='pointer action' onclick='Hue.request_admin_activity()'>Admin Activity</div>
+								<div class='pointer action' onclick='Hue.request_access_log()'>Access Log</div>
+								<div class='pointer action' onclick='Hue.request_admin_list()'>Admin List</div>
+								<div class='pointer action' onclick='Hue.request_ban_list()'>Ban List</div>
+								<div class='pointer action' onclick='Hue.needs_confirm("clear_log")'>Clear Log</div>
+							</div>
 
 						</div>
 
 					</div>
-
-					<div class='spacer3'></div>
 
 				</div>
 			</div>
 		</script>	
 
 		<script id='template_user_menu' type='text/x-handlebars-template' class='template'>
-
 			<div class='unselectable'>
-
 				<div class='bigger2' id='user_menu_username'>Loading</div>
-
-				<div class='spacer3'></div>
 				
-				<div class='big_profile_image_container round_image_container'>
+				<div id='user_menu_profile_image_container' class='big_profile_image_container round_image_container'>
 					<img id='user_menu_profile_image' class='big_profile_image pointer unselectable' onclick='Hue.open_profile_image_picker()'>
 				</div>
 
-				<div class='spacer1'></div>
-
-				<div class='menu_item_smaller action' onclick='Hue.show_details()'>Details</div>
-
-				&nbsp;|&nbsp;
-
-				<div class='menu_item_smaller action' onclick='Hue.needs_confirm("logout")'>Logout</div>
-
-				<div class='spacer2'></div>
-
-				<div class='menu_item_smaller action' onclick='Hue.show_highlights()'>Highlights</div>
-
-				&nbsp;|&nbsp;
-
-				<div class='menu_item_smaller action' onclick='Hue.show_input_history()'>History</div>
-
-				<div class='spacer3'></div>
-				<div class='spacer3'></div>
-
-				<div class="action inline pointer" onclick="Hue.show_global_settings()">
-					Global&nbsp;Settings<div class='inline' id='user_menu_global_settings_status'></div>
-				</div>
-				<div class='spacer3'></div>
-				<div class="action inline pointer" onclick="Hue.show_room_settings()">
-					<div class='inline invisible' id='user_menu_room_settings_status_filler'></div>Room&nbsp;Settings<div class='inline' id='user_menu_room_settings_status'></div>
+				<div class='flex_row_center user_menu_items_container'>
+					<div class='menu_item_smaller_2 action' onclick='Hue.show_details()'>Details</div>
+					<div class='menu_item_smaller_2 color_3'>&nbsp;|&nbsp;</div>
+					<div class='menu_item_smaller_2 action' onclick='Hue.needs_confirm("logout")'>Logout</div>
 				</div>
 
-				<div class='spacer3'></div>
-				<div class='spacer3'></div>
+				<div class='flex_row_center user_menu_items_container_2'>
+					<div class='menu_item_smaller_2 action' onclick='Hue.show_highlights()'>Highlights</div>
+					<div class='menu_item_smaller_2 color_3'>&nbsp;|&nbsp;</div>
+					<div class='menu_item_smaller_2 action' onclick='Hue.show_input_history()'>History</div>
+				</div>
 
-				<div class='toggler_main_container'>
+				<div id='user_menu_settings_container'>
+					<div class="flex_row_center">
+						<div id='user_menu_global_settings' class="action pointer" onclick="Hue.show_global_settings()">Global&nbsp;Settings</div>
+					</div>
+					<div class="flex_row_center">
+						<div class='invisible' id='user_menu_room_settings_status_filler'></div>
+						<div class='action pointer' onclick="Hue.show_room_settings()">Room&nbsp;Settings</div>
+						<div id='user_menu_room_settings_status'></div>
+					</div>
+				</div>
 
-					<div class='toggler user_menu_toggle small_padding_bottom bold pointer action inline'>+ More</div>
+				<div id='user_menu_toggler_main' class='toggler_main_container'>
+					<div class='toggler user_menu_toggle small_padding_bottom bold pointer action'>+ More</div>
 
 					<div class='toggler_container user_menu_toggle_container'>
-
-						<div class='spacer3'></div>
-
-						<div class='pointer inline action' onclick='Hue.show_import_settings()'>Import Settings</div>
-						
-						<div class='spacer3'></div>
-						
-						<div class='pointer inline action' onclick='Hue.show_export_settings()'>Export Settings</div>
-						
-						<div class='spacer3'></div>
-
-						<div class='pointer inline action' onclick='Hue.request_notifications_permission()'>Enable Notifications</div>
-
+						<div id='user_menu_toggle_items' class='grid_column_center'>
+							<div class='pointer action' onclick='Hue.show_import_settings()'>Import Settings</div>
+							<div class='pointer action' onclick='Hue.show_export_settings()'>Export Settings</div>
+							<div class='pointer action' onclick='Hue.request_notifications_permission()'>Enable Notifications</div>
+						</div>
 					</div>
-
 				</div>
-				
-				<div class='spacer2'></div>
-
 			</div>
-
 		</script>
 
 		<script id='template_settings' type='text/x-handlebars-template' class='template'>
@@ -1084,8 +836,7 @@
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_key"></span>&nbsp;Tap</div>
 								<div class='{{type}}_toggle_container toggler_container'>
-									<div class="setting_title">(Each on a different line)</div>
-									<div class='spacer2'></div>
+									<div class="setting_title3">(Each on a different line)</div>
 									<textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_double_tap"></textarea>
 								</div>
 							</div>
@@ -1095,8 +846,7 @@
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_2_key"></span>&nbsp;Tap</div>
 								<div class='{{type}}_toggle_container toggler_container'>
-									<div class="setting_title">(Each on a different line)</div>
-									<div class='spacer2'></div>
+									<div class="setting_title3">(Each on a different line)</div>
 									<textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_double_tap_2"></textarea>
 								</div>
 							</div>
@@ -1106,8 +856,7 @@
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_3_key"></span>&nbsp;Tap</div>
 								<div class='{{type}}_toggle_container toggler_container'>
-									<div class="setting_title">(Each on a different line)</div>
-									<div class='spacer2'></div>
+									<div class="setting_title3">(Each on a different line)</div>
 									<textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_double_tap_3"></textarea>
 								</div>
 							</div>
@@ -1117,8 +866,7 @@
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ On Lock Screen</div>
 								<div class='{{type}}_toggle_container toggler_container'>
-									<div class="setting_title">(Each on a different line)</div>
-									<div class='spacer2'></div>
+									<div class="setting_title3">(Each on a different line)</div>
 									<textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_on_lockscreen"></textarea>
 								</div>
 							</div>
@@ -1128,8 +876,7 @@
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ On Unlock Screen</div>
 								<div class='{{type}}_toggle_container toggler_container'>
-									<div class="setting_title">(Each on a different line)</div>
-									<div class='spacer2'></div>
+									<div class="setting_title3">(Each on a different line)</div>
 									<textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_on_unlockscreen"></textarea>
 								</div>
 							</div>
@@ -1139,8 +886,7 @@
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ At Startup</div>
 								<div class='{{type}}_toggle_container toggler_container'>
-									<div class="setting_title">(Each on a different line)</div>
-									<div class='spacer2'></div>
+									<div class="setting_title3">(Each on a different line)</div>
 									<textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_at_startup"></textarea>
 								</div>
 							</div>
@@ -1150,8 +896,7 @@
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline" title="For example /sky = /tv touch the sky. If the alias starts with an X, for example, /X1 = /radio restart, it won't be saved to history when used">+ Aliases</div>
 								<div class='{{type}}_toggle_container toggler_container'>
-									<div class="setting_title">(Each on a different line)</div>
-									<div class='spacer2'></div>
+									<div class="setting_title3">(Each on a different line)</div>
 									<textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_aliases"></textarea>
 								</div>
 							</div>
@@ -1201,62 +946,52 @@
 						</div>
 										
 						<div class='settings_item settings_top_level_item' data-setting='speech_1'>
-							<div class="setting_title" title="This is spoken when middle clicking key #1">Speech #1</div>
-							<div class='spacer2'></div>
+							<div class="setting_title3" title="This is spoken when middle clicking key #1">Speech #1</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_1"></textarea>
 						</div>
 										
 						<div class='settings_item settings_top_level_item' data-setting='speech_2'>
-							<div class="setting_title" title="This is spoken when middle clicking key #2">Speech #2</div>
-							<div class='spacer2'></div>
+							<div class="setting_title3" title="This is spoken when middle clicking key #2">Speech #2</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_2"></textarea>
 						</div>
 										
 						<div class='settings_item settings_top_level_item' data-setting='speech_3'>
-							<div class="setting_title" title="This is spoken when middle clicking key #3">Speech #3</div>
-							<div class='spacer2'></div>
+							<div class="setting_title3" title="This is spoken when middle clicking key #3">Speech #3</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_3"></textarea>
 						</div>
 										
 						<div class='settings_item settings_top_level_item' data-setting='speech_4'>
-							<div class="setting_title" title="This is spoken when middle clicking key #4">Speech #4</div>
-							<div class='spacer2'></div>
+							<div class="setting_title3" title="This is spoken when middle clicking key #4">Speech #4</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_4"></textarea>
 						</div>
 										
 						<div class='settings_item settings_top_level_item' data-setting='speech_5'>
-							<div class="setting_title" title="This is spoken when middle clicking key #5">Speech #5</div>
-							<div class='spacer2'></div>
+							<div class="setting_title3" title="This is spoken when middle clicking key #5">Speech #5</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_5"></textarea>
 						</div>
 										
 						<div class='settings_item settings_top_level_item' data-setting='speech_6'>
-							<div class="setting_title" title="This is spoken when middle clicking key #6">Speech #6</div>
-							<div class='spacer2'></div>
+							<div class="setting_title3" title="This is spoken when middle clicking key #6">Speech #6</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_6"></textarea>
 						</div>
 										
 						<div class='settings_item settings_top_level_item' data-setting='speech_7'>
-							<div class="setting_title" title="This is spoken when middle clicking key #7">Speech #7</div>
-							<div class='spacer2'></div>
+							<div class="setting_title3" title="This is spoken when middle clicking key #7">Speech #7</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_7"></textarea>
 						</div>
 										
 						<div class='settings_item settings_top_level_item' data-setting='speech_8'>
-							<div class="setting_title" title="This is spoken when middle clicking key #8">Speech #8</div>
-							<div class='spacer2'></div>
+							<div class="setting_title3" title="This is spoken when middle clicking key #8">Speech #8</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_8"></textarea>
 						</div>
 										
 						<div class='settings_item settings_top_level_item' data-setting='speech_9'>
-							<div class="setting_title" title="This is spoken when middle clicking key #9">Speech #9</div>
-							<div class='spacer2'></div>
+							<div class="setting_title3" title="This is spoken when middle clicking key #9">Speech #9</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_9"></textarea>
 						</div>
 										
 						<div class='settings_item settings_top_level_item' data-setting='speech_10'>
-							<div class="setting_title" title="This is spoken when middle clicking key #10">Speech #10</div>
-							<div class='spacer2'></div>
+							<div class="setting_title3" title="This is spoken when middle clicking key #10">Speech #10</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_10"></textarea>
 						</div>
 
@@ -1328,8 +1063,7 @@
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Highlight</div>
 								<div class='{{type}}_toggle_container toggler_container'>
-									<div class="setting_title">(Each on a different line)</div>
-									<div class='spacer2'></div>
+									<div class="setting_title3">(Each on a different line)</div>
 									<textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_other_words_to_highlight"></textarea>
 								</div>
 							</div>
@@ -1339,8 +1073,7 @@
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Autocomplete</div>
 								<div class='{{type}}_toggle_container toggler_container'>
-									<div class="setting_title">(Each on a different line)</div>
-									<div class='spacer2'></div>
+									<div class="setting_title3">(Each on a different line)</div>
 									<textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_other_words_to_autocomplete"></textarea>
 								</div>
 							</div>
@@ -1350,8 +1083,7 @@
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ Usernames To Ignore</div>
 								<div class='{{type}}_toggle_container toggler_container'>
-									<div class="setting_title">(Each on a different line)</div>
-									<div class='spacer2'></div>
+									<div class="setting_title3">(Each on a different line)</div>
 									<textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_ignored_usernames"></textarea>
 								</div>
 							</div>
@@ -1361,8 +1093,7 @@
 							<div class='toggler_main_container'>
 								<div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Ignore</div>
 								<div class='{{type}}_toggle_container toggler_container'>
-									<div class="setting_title">(Each on a different line)</div>
-									<div class='spacer2'></div>
+									<div class="setting_title3">(Each on a different line)</div>
 									<textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_ignored_words"></textarea>
 								</div>
 							</div>
@@ -1375,8 +1106,7 @@
 								+ Accept Commands From<br>(Dangerous)
 								</div>
 								<div class='{{type}}_toggle_container toggler_container'>
-									<div class="setting_title">(Each on a different line)</div>
-									<div class='spacer2'></div>
+									<div class="setting_title3">(Each on a different line)</div>
 									<textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_accept_commands_from"></textarea>
 								</div>
 							</div>
@@ -1390,7 +1120,6 @@
 
 		<script id='template_global_settings' type='text/x-handlebars-template' class='template'>
 			<input type="search" class="filter_input" placeholder="Filter" id="global_settings_filter" data-mode="manual">
-			<div class='spacer4'></div>
 			<div id='global_settings_container' class='unselectable'>
 				{{{settings}}}
 			</div>
@@ -1399,42 +1128,27 @@
 		<script id='template_room_settings' type='text/x-handlebars-template' class='template'>
 			<div id='room_settings_container' class='unselectable'>
 				<div>Global Settings can be overridden for the current room here</div>
-				<div class='spacer3'></div>
 				<input type="search" class="filter_input" placeholder="Filter" id="room_settings_filter" data-mode="manual">
-				<div class='spacer4'></div>
 				{{{settings}}}
 			</div>
 		</script>		
 
 		<script id='template_create_room' type='text/x-handlebars-template' class='template'>
 			<div id='create_room'>
-
-				<div class='spacer3'></div>
-
 				<div class='flex_row_center'>
 					<i class='fa fa-question-circle invisible'></i>
-					<span class='hspacer1'></span>
 					<input type="text" id="create_room_name" class='nice_input_2' placeholder="Name">
-					<span class='hspacer1'></span>
 					<i class='fa fa-question-circle pointer action' onclick='Hue.create_room_suggest_name()'></i>
 				</div>
 
-				<div class='unselectable'>
-
-					<div class='spacer1'></div>	
-
+				<div class='flex_column_center unselectable'>
 					<select id='create_room_public' class='modal_select'>
 						<option value='true' selected>Public</option>
 						<option value='false'>Private</option>
 					</select>				
 
-					<div class='spacer3'></div>
-					<div class='spacer2'></div>
-					
-					<div id='create_room_done' class='menu_item action inline' onclick='Hue.create_room_submit()'>Create</div>
-
+					<div id='create_room_done' class='menu_item action' onclick='Hue.create_room_submit()'>Create</div>
 				</div>
-
 			</div>
 		</script>
 
@@ -1451,18 +1165,14 @@
 		</script>
 
 		<script id='template_open_room' type='text/x-handlebars-template' class='template'>
-			<div id="open_buttons" class='unselectable'>
-
-				<div id='open_room_here' class='bigger action inline pointer' onclick='Hue.goto_url("{{id}}");Hue.msg_info2.close()'>
+			<div id="open_buttons" class='flex_column_center unselectable'>
+				<div id='open_room_here' class='bigger action pointer' onclick='Hue.goto_url("{{id}}");Hue.msg_info2.close()'>
 					Open&nbsp;Here
 				</div>
 
-				<div class='spacer3'></div>
-
-				<div id='open_room_new_tab' class='bigger action inline pointer' onclick='Hue.goto_url("{{id}}", "tab");Hue.msg_info2.close()'>
+				<div id='open_room_new_tab' class='bigger action pointer' onclick='Hue.goto_url("{{id}}", "tab");Hue.msg_info2.close()'>
 					Open&nbsp;In&nbsp;New&nbsp;Tab
 				</div>
-
 			</div>
 		</script>
 
@@ -1482,35 +1192,39 @@
 
 		<script id='template_upload_comment' type='text/x-handlebars-template' class='template'>
 			<img id='upload_comment_image_preview'>
+			
 			<div id='upload_comment_image_feedback'>Image seems to be corrupted</div>
-			<div class='spacer3'></div>
-			<input type='text' id='upload_comment_input' class='input1' placeholder='Comment'>
-			<div class='spacer3'></div>
-			<div class='unselectable'>
-				<div class='menu_item action inline' id='upload_comment_submit'>Upload</div>
-				<div class='hspacer3 inline'></div>
-				<div class='menu_item action inline' onclick='Hue.cancel_upload_comment()'>Cancel</div>
+
+			<div id='upload_comment_controls' class='flex_column_center'>
+				<input type='text' id='upload_comment_input' class='input1' placeholder='Comment'>
+
+				<div class='flex_row_center unselectable'>
+					<div class='menu_item action' id='upload_comment_submit'>Upload</div>
+					<div class='menu_item action' onclick='Hue.cancel_upload_comment()'>Cancel</div>
+				</div>
 			</div>
 		</script>
 
 		<script id='template_background_image_select' type='text/x-handlebars-template' class='template'>
 			<div class='flex_row_center unselectable'>
 				<div class='bigger action inline pointer' onclick='Hue.open_background_image_picker()'>Upload&nbsp;Image</div>
-				<div class='inline'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
+				<div class='inline color_3'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
 				<div class='bigger action inline pointer' onclick='Hue.open_background_image_input()'>Use&nbsp;Image&nbsp;URL</div>
 			</div>
 		</script>
 
 		<script id='template_background_image_input' type='text/x-handlebars-template' class='template'>
-			<input id='background_image_input_text' class='nice_input' type='text' placeholder='Image URL'>
-			<div class='spacer3'></div>
-			<div class='menu_item action inline unselectable' onclick='Hue.background_image_input_action()'>Use This</div>
+			<div class='flex_column_center'>
+				<input id='background_image_input_text' class='nice_input' type='text' placeholder='Image URL'>
+				<div class='menu_item action unselectable' onclick='Hue.background_image_input_action()'>Use This</div>
+			</div>
 		</script>
 
 		<script id='template_goto_room' type='text/x-handlebars-template' class='template'>
-			<input id='goto_room_input' class='nice_input' type='text' placeholder='Room ID or URL'>
-			<div class='spacer3'></div>
-			<div class='menu_item action inline unselectable' onclick='Hue.goto_room_action()'>Go There</div>
+			<div class='flex_column_center'>
+				<input id='goto_room_input' class='nice_input' type='text' placeholder='Room ID or URL'>
+				<div class='menu_item action unselectable' onclick='Hue.goto_room_action()'>Go There</div>
+			</div>
 		</script>
 
 		<script id='template_status' type='text/x-handlebars-template' class='template'>
@@ -1519,44 +1233,35 @@
 
 		<script id='template_userlist' type='text/x-handlebars-template' class='template'>
 			<input type="search" id="userlist_filter" class="filter_input" placeholder="Filter">
-			<div class='spacer3'></div>
 			<div id='userlist'></div>
 		</script>
 		
 		<script id='template_roomlist' type='text/x-handlebars-template' class='template'>
 			<input type="search" id="{{type}}_filter" class="filter_input" placeholder="Filter">
-			<div class='spacer3'></div>	
 			<div id='{{type}}_container'></div>
 		</script>		
 		
 		<script id='template_played' type='text/x-handlebars-template' class='template'>
 			<input type="search" id="played_filter" class="filter_input" placeholder="Filter">
-			<div class='spacer3'></div>
 			<div id='played'></div>
 		</script>
 
 		<script id='template_admin_activity' type='text/x-handlebars-template' class='template'>
 			<input type="search" id="admin_activity_filter" class="filter_input" placeholder="Filter">
-			<div class='spacer3'></div>
 			<div id='admin_activity_container'></div>
 		</script>
 
 		<script id='template_access_log' type='text/x-handlebars-template' class='template'>
 			<input type="search" id="access_log_filter" class="filter_input" placeholder="Filter">
-			<div class='spacer3'></div>
 			<div id='access_log_container'></div>
 		</script>
 
 		<script id='template_input_history' type='text/x-handlebars-template' class='template'>
 			<div class='flex_row_center sticky bg1'>
 				<i class='fa fa-trash-o pointer action invisible'></i>
-				<div class='hspacer3 invisible'></div>
-				<input type="search" id="input_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
-				<div class='hspacer3'></div>
+				<input type="search" id="input_history_filter" data-mode='manual' class="filter_input_2" placeholder="Filter">
 				<i class='fa fa-trash-o pointer action nicetitle' id='input_history_clear_icon' title="Clear"></i>
 			</div>
-
-			<div class='spacer3'></div>
 
 			<div id='input_history_container'></div>
 		</script>	
@@ -1564,18 +1269,12 @@
 		<script id='template_chat_search' type='text/x-handlebars-template' class='template'>
 			<div class='flex_row_center sticky bg1'>
 				<i class='fa fa-history pointer action invisible'></i>
-				<div class='hspacer3 invisible'></div>
-				<input type="search" id="chat_search_filter" data-mode='manual' class="filter_input" placeholder="Query">
-				<div class='hspacer3'></div>
+				<input type="search" id="chat_search_filter" data-mode='manual' class="filter_input_2" placeholder="Query">
 				<i class='fa fa-history pointer action nicetitle' id='chat_search_history_icon' title="Recent Searches"></i>
 			</div>
 
-			<div class='spacer3'></div>
-
 			<div id='chat_search_no_results' class='unselectable'>
-				<div class='spacer3'></div>
 				<div class='bigger3'>No Results</div>
-				<div class='spacer3'></div>
 			</div>
 
 			<div id='chat_search_container' class='chat_area align_left'></div>
@@ -1584,12 +1283,8 @@
 		<script id='template_highlights' type='text/x-handlebars-template' class='template'>
 			<input type="search" id="highlights_filter" data-mode='manual' class="filter_input" placeholder="Filter">
 			
-			<div class='spacer3'></div>
-			
 			<div id='highlights_no_results' class='unselectable'>
-				<div class='spacer3'></div>
 				<div class='bigger3'>No Highlights Yet</div>
-				<div class='spacer3'></div>
 			</div>
 
 			<div id='highlights_container' class='chat_area align_left'></div>
@@ -1597,45 +1292,40 @@
 
 		<script id='template_image_history' type='text/x-handlebars-template' class='template'>
 			<input type="search" id="image_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
-			<div class='spacer3'></div>
 			<div id='image_history_container' class='media_history_container chat_area chat_area_clone_center'></div>
 		</script>
 
 		<script id='template_tv_history' type='text/x-handlebars-template' class='template'>
 			<input type="search" id="tv_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
-			<div class='spacer3'></div>
 			<div id='tv_history_container' class='media_history_container chat_area chat_area_clone_center'></div>
 		</script>
 
 		<script id='template_radio_history' type='text/x-handlebars-template' class='template'>
 			<input type="search" id="radio_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
-			<div class='spacer3'></div>
 			<div id='radio_history_container' class='media_history_container chat_area chat_area_clone_center'></div>
 		</script>
 
 		<script id='template_profile' type='text/x-handlebars-template' class='template'>
 			<div id='show_profile_uname' class='bigger2'>Loading</div>
 			<div id='show_profile_role'></div>
-			<div class='spacer3'></div>
 			<div class="bigger_profile_image_container round_image_container">
 				<img id='show_profile_image' class='bigger_profile_image unselectable' src="{{profile_image}}">
 			</div>
-			<div id='show_profile_buttons'>
-				<div class='spacer4'></div>
-				<span class='unselectable show_profile_button pointer action' id='show_profile_whisper'><i class='icon4 fa fa-envelope'></i>Send Whisper</span>
+			<div id='show_profile_buttons' class='flex_column_center'>
+				<div class='unselectable show_profile_button pointer action' id='show_profile_whisper'><i class='icon4 fa fa-envelope'></i>Send Whisper</div>
 			</div>
 		</script>
 
 		<script id='template_image_picker' type='text/x-handlebars-template' class='template'>
-			<i class='fa fa-camera'></i>
-			<div class='spacer3'></div>
-			Enter an image URL<br>Or an Imgur search term<br>Upload one from your computer<br>Or make a drawing
-			<div title='Use this in the main chat input'>Command: /image x</div>
-			<div class='spacer3'></div>
-			<input type='text' id='image_source_picker_input' class='input1' placeholder='Search Term or URL'>
-			<div class='spacer3'></div>
-			<input type='text' id='image_source_picker_input_comment' class='input1' placeholder='Comment'>
-			<div class='spacer3'></div>
+			<i class='fa fa-camera media_picker_icon'></i>
+			<div class='media_picker_info'>
+				Enter an image URL<br>Or an Imgur search term<br>Upload one from your computer<br>Or make a drawing
+				<div title='Use this in the main chat input'>Command: /image x</div>
+			</div>
+			<div class='flex_column_center'>
+				<input type='text' id='image_source_picker_input' class='input1 media_picker_input' placeholder='Search Term or URL'>
+				<input type='text' id='image_source_picker_input_comment' class='input1 media_picker_input' placeholder='Comment'>
+			</div>
 			<div class='unselectable'>
 				<div id='image_file_picker' class='menu_item action inline unselectable' onclick='Hue.msg_image_picker.close()'>Upload</div>
 				<span>&nbsp;|&nbsp;</span>
@@ -1646,32 +1336,30 @@
 		</script>
 
 		<script id='template_tv_picker' type='text/x-handlebars-template' class='template'>
-			<i class='fa fa-television'></i>
-			<div class='spacer3'></div>
-			Enter a YouTube search term or URL<br>Or a Twitch channel/video URL<br>Or a video file/stream URL<br>
-			<div class='spacer3'></div>
-			<div title='Use this in the main chat input'>Command: /tv x</div>
-			<div class='spacer3'></div>
-			<input type='text' id='tv_source_picker_input' class='input1' placeholder='Search Term or URL'>
-			<div class='spacer3'></div>
-			<input type='text' id='tv_source_picker_input_comment' class='input1' placeholder='Comment'>
-			<div class='spacer3'></div>
+			<i class='fa fa-television media_picker_icon'></i>
+			<div class='media_picker_info'>
+				Enter a YouTube search term or URL<br>Or a Twitch channel/video URL<br>Or a video file/stream URL<br>
+				<div title='Use this in the main chat input'>Command: /tv x</div>
+			</div>
+			<div class='flex_column_center'>
+				<input type='text' id='tv_source_picker_input' class='input1 media_picker_input' placeholder='Search Term or URL'>
+				<input type='text' id='tv_source_picker_input_comment' class='input1 media_picker_input' placeholder='Comment'>
+			</div>
 			<div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("restart_tv", "This will restart the tv for everyone. Are you sure?")'>Restart</div>
 			<span>&nbsp;|&nbsp;</span>
 			<div id='image_file_picker_draw' class='menu_item action inline unselectable' onclick='Hue.needs_confirm("tv_prev", "This will change the tv for everyone. Are you sure?")'>Previous</div>
 		</script>
 
 		<script id='template_radio_picker' type='text/x-handlebars-template' class='template'>
-			<i class='fa fa-volume-up'></i>
-			<div class='spacer3'></div>
-			Enter a YouTube search term or URL<br>Or an audio file/stream URL<br>
-			<div class='spacer3'></div>
-			<div title='Use this in the main chat input'>Command: /radio x</div>
-			<div class='spacer3'></div>
-			<input type='text' id='radio_source_picker_input' class='input1' placeholder='Search Term or URL'>
-			<div class='spacer3'></div>
-			<input type='text' id='radio_source_picker_input_comment' class='input1' placeholder='Comment'>
-			<div class='spacer3'></div>
+			<i class='fa fa-volume-up media_picker_icon'></i>
+			<div class='media_picker_info'>
+				Enter a YouTube search term or URL<br>Or an audio file/stream URL<br>
+				<div title='Use this in the main chat input'>Command: /radio x</div>
+			</div>
+			<div class='flex_column_center'>
+				<input type='text' id='radio_source_picker_input' class='input1 media_picker_input' placeholder='Search Term or URL'>
+				<input type='text' id='radio_source_picker_input_comment' class='input1 media_picker_input' placeholder='Comment'>
+			</div>
 			<div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("restart_radio", "This will restart the radio for everyone. Are you sure?")'>Restart</div>
 			<span>&nbsp;|&nbsp;</span>
 			<div id='image_file_picker_draw' class='menu_item action inline unselectable' onclick='Hue.needs_confirm("radio_prev", "This will change the radio for everyone. Are you sure?")'>Previous</div>
@@ -1750,10 +1438,7 @@
 		</script>		
 
 		<script id='template_media_menu' type='text/x-handlebars-template' class='template'>
-			<div class='unselectable flex_column_center'>
-
-				<div class='spacer9'></div>
-
+			<div id='media_menu_container' class='unselectable flex_column_center'>
 				<div id='media_menu_loaded_media'>
 					<div class='flex_row_center'>
 						<i class='fa fa-camera icon2c'></i>
@@ -1763,10 +1448,7 @@
 						<div class='pointer action inline' onclick='Hue.refresh_image(); Hue.hide_media_menu()'>Refresh</div>
 					</div>
 					
-					<div class='spacer2'></div>
-					<div id='media_menu_loaded_image' class='chat_area_clone_center'></div>
-
-					<div class='spacer8'></div>
+					<div id='media_menu_loaded_image' class='media_menu_loaded_media_container chat_area_clone_center'></div>
 				
 					<div class='flex_row_center'>
 						<i class='fa fa-television icon2c'></i>
@@ -1776,10 +1458,7 @@
 						<div class='pointer action inline' onclick='Hue.refresh_tv(); Hue.hide_media_menu()'>Refresh</div>
 					</div>
 
-					<div class='spacer2'></div>
-					<div id='media_menu_loaded_tv' class='chat_area_clone_center'></div>
-
-					<div class='spacer8'></div>
+					<div id='media_menu_loaded_tv' class='media_menu_loaded_media_container chat_area_clone_center'></div>
 
 					<div class='flex_row_center'>
 						<i class='fa fa-volume-up icon2c'></i>
@@ -1789,23 +1468,21 @@
 						<div class='pointer action inline' onclick='Hue.refresh_radio(); Hue.hide_media_menu()'>Refresh</div>
 					</div>
 
-					<div class='spacer2'></div>
-					<div id='media_menu_loaded_radio' class='chat_area_clone_center'></div>
+					<div id='media_menu_loaded_radio' class='media_menu_loaded_media_container chat_area_clone_center'></div>
 				</div>
 				
 				<div class='spacer_line'></div>
 
-				<div class='pointer action inline' onclick='Hue.stop_and_lock(); Hue.hide_media_menu()'>Stop & Lock Everything</div>
-				<div class='spacer3'></div>
-				<div class='pointer action inline' onclick='Hue.stop_and_lock(false); Hue.hide_media_menu()'>Lock Everything</div>
-				<div class='spacer3'></div>
-				<div class='pointer action inline' onclick='Hue.default_media_state(false); Hue.hide_media_menu()'>Unlock Everything</div>
-				<div class='spacer3'></div>
-				<div class='pointer action inline' onclick='Hue.default_media_state(); Hue.hide_media_menu()'>Default State</div>
+				<div id='media_menu_actions' class='grid_column_center'>
+					<div class='pointer action' onclick='Hue.stop_and_lock(); Hue.hide_media_menu()'>Stop & Lock Everything</div>
+					<div class='pointer action' onclick='Hue.stop_and_lock(false); Hue.hide_media_menu()'>Lock Everything</div>
+					<div class='pointer action' onclick='Hue.default_media_state(false); Hue.hide_media_menu()'>Unlock Everything</div>
+					<div class='pointer action' onclick='Hue.default_media_state(); Hue.hide_media_menu()'>Default State</div>
+				</div>
 				
 				<div class='spacer_line'></div>
 				
-				<div class='setting_title'>Radio Volume</div>
+				<div id='media_menu_radio_volume_title' class='setting_title'>Radio Volume</div>
 				<div class='slider_container'>
 					<div class='slider_icon_left pointer action' onclick="Hue.set_media_menu_radio_volume('decrease')"><i class='icon2 fa fa-minus'></i></div>
 					<div id='media_menu_radio_volume' class="slider nstSlider" data-range_min="0" data-range_max="100" data-cur_min="0">
@@ -1814,9 +1491,7 @@
 					<div class='slider_icon_right pointer action' onclick="Hue.set_media_menu_radio_volume('increase')"><i class='icon2b fa fa-plus'></i></div>
 				</div>
 				
-				<div class='spacer8'></div>
-				
-				<div class='setting_title'>TV Volume</div>
+				<div id='media_menu_tv_volume_title' class='setting_title'>TV Volume</div>
 				<div class='slider_container'>
 					<div class='slider_icon_left pointer action' onclick="Hue.set_media_menu_tv_volume('decrease')"><i class='icon2 fa fa-minus'></i></div>
 					<div id='media_menu_tv_volume' class="slider nstSlider" data-range_min="0" data-range_max="100" data-cur_min="0">
@@ -1824,25 +1499,19 @@
 					</div>
 					<div class='slider_icon_right pointer action' onclick="Hue.set_media_menu_tv_volume('increase')"><i class='icon2b fa fa-plus'></i></div>
 				</div>
-				
-				<div class='spacer9'></div>
-
 			</div>
 		</script>	
 
 		<script id='template_locked_menu' type='text/x-handlebars-template' class='template'>
 			<div id='locked_menu' class='unselectable'>
 				<div>You are banned from this room</div>
-				<div class='spacer3'></div>
-				<div class='menu_item action inline' onclick="Hue.request_roomlist('', 'visited_roomlist')">Visited Rooms</div>
-				<div></div>
-				<div class='menu_item action inline' onclick="Hue.request_roomlist('', 'public_roomlist')">Public Rooms</div>
-				<div></div>
-				<div class='menu_item action inline' onclick="Hue.show_goto_room()">Go To Room</div>
-				<div></div>
-				<div class='menu_item action inline' onclick='Hue.show_create_room()'>Create Room</div>
-				<div class='spacer3'></div>
-				<div class='menu_item_smaller action' onclick='Hue.needs_confirm("logout")'>Logout</div>
+				<div id='locked_menu_container' class='flex_column_center'>
+					<div class='menu_item action' onclick="Hue.request_roomlist('', 'visited_roomlist')">Visited Rooms</div>
+					<div class='menu_item action' onclick="Hue.request_roomlist('', 'public_roomlist')">Public Rooms</div>
+					<div class='menu_item action' onclick="Hue.show_goto_room()">Go To Room</div>
+					<div class='menu_item action' onclick='Hue.show_create_room()'>Create Room</div>
+				</div>
+				<div class='inline menu_item_smaller action' onclick='Hue.needs_confirm("logout")'>Logout</div>
 			</div>
 		</script>
 
@@ -1856,15 +1525,12 @@
 					</div>
 					<div class='settings_item' data-setting='user_function_{{number}}'>
 						<div class="setting_title2">Action</div>
-						<div class="setting_title">(Each on a different line)</div>
-						<div class='spacer2'></div>
+						<div class="setting_title3">(Each on a different line)</div>
 						<textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_user_function_{{number}}"></textarea>
 					</div>
-					<div class='spacer3'></div>
 					<select class='modal_select user_function_switch_select' data-number="{{number}}" data-type="{{type}}">
 						{{{options}}}
 					</select>
-					<div class='spacer3'></div>
 				</div>
 			</div>
 		</script>
@@ -1872,9 +1538,7 @@
 		<script id='template_message' type='text/x-handlebars-template' class='template'>
 			<div id='write_message_feedback'></div>
 			<textarea rows="3" id='write_message_area' tabindex=0 placeholder="Write a Message (Optional)"></textarea>
-			<div class='spacer3'></div>
 			<canvas id='draw_message_area' class='draw_canvas' width='400px' height='300px' tabindex=1></canvas>
-			<div class='spacer3'></div>
 			<span class='unselectable'>
 
 				<div class='bigger pointer unselectable action inline' 
@@ -1911,77 +1575,55 @@
 				<div class='info_item_content' id='details_joined_room'></div>
 			</div>
 
-			<div class='spacer3'></div>
+			<div id='details_change_buttons' class='grid_column_center'>
+				<div id='details_change_username' class=' action pointer'>Change Username</div>
+				<div id='details_change_password' class=' action pointer'>Change Password</div>
+				<div id='details_change_email' class=' action pointer'>Change Email</div>
+			</div>
 			
-			<div id='details_change_username' class='inline action pointer'>Change Username</div>
-			<div class='spacer2'></div>
-			<div id='details_change_password' class='inline action pointer'>Change Password</div>
-			<div class='spacer2'></div>
-			<div id='details_change_email' class='inline action pointer'>Change Email</div>
 		</script>
 
 		<script id='template_draw_image' type='text/x-handlebars-template' class='template'>
-			
 			<div id='draw_image_main'>
-
-				<span class='unselectable'>
-					
+				<div class='unselectable' id='draw_image_controls'>
 					<div id='draw_image_mode_select_pencil' class='pointer action modal_icon_container' onclick='Hue.set_draw_image_mode_input("pencil")'>
 						<i class='fa fa-pencil nicetitle' title='Pencil'></i>
-						<div class='hspacer3 inline'></div>
-						<input id='draw_image_pencil_color'>
-						
-						<div class='hspacer3 inline'></div>
 
-						<select id='draw_image_pencil_size' class='modal_select'>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-							<option value="9">9</option>
-							<option value="10">10</option>
-						</select>
+						<div id='draw_image_pencil_controls'>
+							<input id='draw_image_pencil_color'>
+
+							<select id='draw_image_pencil_size' class='modal_select'>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+								<option value="6">6</option>
+								<option value="7">7</option>
+								<option value="8">8</option>
+								<option value="9">9</option>
+								<option value="10">10</option>
+							</select>
+						</div>
 					</div>
-					
-					<div class='hspacer2 inline'></div>
-
 					<div id='draw_image_mode_select_bucket' class='pointer action modal_icon_container' onclick='Hue.set_draw_image_mode_input("bucket")'>
-						<i class='fa fa-adjust nicetitle' title='Bucket'></i>
-						<div class='hspacer3 inline'></div>
+						<i class='fa fa-adjust nicetitle' title='Bucket' id='draw_image_bucket_icon'></i>
 						<input id='draw_image_bucket_color'>
 					</div>
-
-					<div class='spacer3'></div>
-
-				</span>
+				</div>
 
 				<canvas id='draw_image_area' class='draw_canvas' width='1920px' height='1440px' tabindex=1></canvas>
 
-				<span class='unselectable'>
-
-					<div class='spacer3'></div>
-
-					<div class='bigger pointer action inline' onclick='Hue.draw_image_undo()'>Undo</div>
-					
-					<span class='hspacer1'>|</span>
-
-					<div class='bigger pointer action inline' onclick='Hue.draw_image_redo()'>Redo</div>
-					
-					<span class='hspacer1'>|</span>
-
-					<div class='bigger pointer action inline' onclick='Hue.needs_confirm("clear_draw_image_func")'>Clear</div>
-				
-					<span class='hspacer1'>|</span>
-
-					<div class='bigger pointer action inline' onclick='Hue.upload_draw_image()' tabindex=3>Upload</div>
-				</span>
-
+				<div id='draw_image_buttons' class='flex_row_center'>
+					<div class='bigger pointer action' onclick='Hue.draw_image_undo()'>Undo</div>
+					<div class='draw_image_buttons_separator color_3'>|</div>
+					<div class='bigger pointer action' onclick='Hue.draw_image_redo()'>Redo</div>
+					<div class='draw_image_buttons_separator color_3'>|</div>
+					<div class='bigger pointer action' onclick='Hue.needs_confirm("clear_draw_image_func")'>Clear</div>
+					<div class='draw_image_buttons_separator color_3'>|</div>
+					<div class='bigger pointer action' onclick='Hue.upload_draw_image()' tabindex=3>Upload</div>
+				</div>
 			</div>
-
 		</script>
 
 		<script id='template_credits' type='text/x-handlebars-template' class='template'>
@@ -1994,41 +1636,61 @@
 
 		<script id='template_modal_image_number' type='text/x-handlebars-template' class='template'>
 			<input id='modal_image_number_input' type='number' class='setting_input_text_smaller'>
-			<div class='spacer3'></div>
-			<div id='modal_image_number_button' class='pointer bigger action inline unselectable'>Go To Image</div>
+			<div id='modal_image_number_button' class='pointer bigger action unselectable'>Go To Image</div>
 		</script>
 
 		<script id='template_reply' type='text/x-handlebars-template' class='template'>
 			<div id='reply_text'></div>
-			<div class='spacer3'></div>
 			<textarea id='reply_input' class='setting_textarea' rows=3 placeholder='Write a Reply (Optional)'></textarea>
-			<div class='spacer3'></div>
-			<div id='reply_submit' class='menu_item action inline unselectable' onclick='Hue.submit_reply()'>Reply</div>
+			<div id='reply_submit' class='menu_item inline action unselectable' onclick='Hue.submit_reply()'>Reply</div>
+		</script>
+
+		<script id='template_main_menu_permissions_container' type='text/x-handlebars-template' class='template'>
+			<div class='toggler_main_container main_menu_permissions_toggler_item'>
+				<div class='toggler main_menu_toggle bold pointer action inline'>+ Voice {{number}} Permissions</div>
+				<div class='toggler_container main_menu_toggle_container'>
+					<div class='main_menu_permissions_container grid_column_center'>
+						<div>
+							<div class='setting_title'>Can Chat</div>
+							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice{{number}}_chat_permission" data-ptype="voice{{number}}_chat_permission">
+						</div>
+						<div>
+							<div class='setting_title'>Can Change Images</div>
+							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice{{number}}_images_permission" data-ptype="voice{{number}}_images_permission">
+						</div>
+						<div>
+							<div class='setting_title'>Can Change the TV</div>
+							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice{{number}}_tv_permission" data-ptype="voice{{number}}_tv_permission">
+						</div>
+						<div>
+							<div class='setting_title'>Can Change the Radio</div>
+							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice{{number}}_radio_permission" data-ptype="voice{{number}}_radio_permission">				
+						</div>
+						<div>
+							<div class='setting_title'>Can Use The Synth</div>
+							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice{{number}}_synth_permission" data-ptype="voice{{number}}_synth_permission">
+						</div>
+					</div>
+				</div>
+			</div>
 		</script>
 
 		<script id='template_help' type='text/x-handlebars-template' class='template'>
-
 			<input type="search" id="help_filter" class="filter_input" placeholder="Filter">
-			<div class='spacer2'></div>
 			<div id="help_content"></div>
-
 		</script>
 
 		<script id='template_help1' type='text/x-handlebars-template' class='template'>
-
 			<div class='info_item modal_item'>Chat by typing anything.</div>
 			<div class='info_item modal_item'>All elements in the top and bottom bar are clickable.</div>
 			<div class='info_item modal_item'>There are 3 main media elements that can be changed, images, tv and radio.</div>
 			<div class='info_item modal_item'>Media change has permission settings per room. So you might not be able to do certain actions depending on what settings the ops/admins have set.</div>
-			<div class='spacer3'></div>
-			<span class='unselectable'>
+			<div class='help_controls unselectable'>
 				<span class='help_link action' onclick='Hue.show_help(2)'>Additional Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action' onclick='Hue.show_help(3)'>Administration Features</span>
-			</span>
-
+			</div>
 		</script>
 
 		<script id='template_help2' type='text/x-handlebars-template' class='template'>
-			<div class='spacer3'></div>
 			<div class='info_item modal_item'>Escape clears the input, goes to the bottom, or closes modals.</div>
 			<div class='info_item modal_item'>Shift + Escape closes all modals and popups.</div>
 			<div class='info_item modal_item'>Page Up and Page Down make the chat scroll.</div>
@@ -2184,14 +1846,12 @@
 			<div class='info_item modal_item'>Markdown Available: *italic*, **bold**, ***italic and bold***, _italic_, __underlined__, ||spoiler||, =background=.</div>
 			<div class='info_item modal_item'>If a ? is added at the end of a command, like /topic?, a prompt will appear to confirm execution.</div>
 			<div class='info_item modal_item'>Middle clicking a chat message quotes it.</div>
-			<div class='spacer3'></div>
-			<span class='unselectable'>
+			<div class='help_controls unselectable'>
 				<span class='help_link action' onclick='Hue.show_help(1)'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action' onclick='Hue.show_help(3)'>Administration Features</span>			
-			</span>
+			</div>
 		</script>
 
 		<script id='template_help3' type='text/x-handlebars-template' class='template'>
-
 			<div class='info_item modal_item'>Most administration options are available in the main menu.</div>
 			<div class='info_item modal_item'>/topic x: Changes the topic of the room.</div>
 			<div class='info_item modal_item'>/topicadd x: Adds a section at the end of the topic.</div>
@@ -2239,10 +1899,9 @@
 			<div class='info_item modal_item'>Usernames have a context menu (right click) if you are an op or admin.</div>
 			<div class='info_item modal_item'>Check /help for information about how users interact in the room through chat, image uploads, or radio.</div>
 			<div class='info_item modal_item'>Currently automatic fetching of song metadata from internet radios are only supported for icecast2 servers. The metadada URL is gathered automatically. To work, the server needs to allow cross-domain requests and be HTTPS enabled if this system is being served through HTTPS.</div>
-			<div class='spacer3'></div>
-			<span class='unselectable'>
+			<div class='help_controls unselectable'>
 				<span class='help_link action' onclick='Hue.show_help(1)'>Basic Features</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='help_link action' onclick='Hue.show_help(2)'>Additional Features</span>
-			</span>
+			</div>
 		</script>		
 		
 		<audio id='audio_pup' src='/static/audio/pup.mp3?version=1' preload="auto"></audio>

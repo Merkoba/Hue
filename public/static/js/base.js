@@ -5229,6 +5229,18 @@ Hue.update_roomlist = function(type, roomlist)
 	}
 }
 
+Hue.make_main_menu_permissions_container = function()
+{
+	let s = ""
+
+	for(let i=1; i<Hue.vtypes.length + 1; i++)
+	{
+		s += Hue.template_main_menu_permissions_container({number:i})
+	}
+
+	return s
+}
+
 Hue.setup_main_menu = function()
 {
 	Hue.setup_togglers("main_menu")
@@ -12158,13 +12170,17 @@ Hue.start_msg = function()
 		})
 	)
 
-	Hue.msg_main_menu.set(Hue.template_main_menu())
+	Hue.msg_main_menu.set(Hue.template_main_menu(
+	{
+		permissions_containers: Hue.make_main_menu_permissions_container()
+	}))
+
 	Hue.msg_user_menu.set(Hue.template_user_menu())
 	Hue.msg_userlist.set(Hue.template_userlist())
 	Hue.msg_public_roomlist.set(Hue.template_roomlist({type:"public_roomlist"}))
 	Hue.msg_visited_roomlist.set(Hue.template_roomlist({type:"visited_roomlist"}))
 	Hue.msg_played.set(Hue.template_played())
-	Hue.msg_profile.set(Hue.template_profile({profile_image: Hue.config.profile_image_loading_url}))
+	Hue.msg_profile.set(Hue.template_profile({profile_image:Hue.config.profile_image_loading_url}))
 	Hue.msg_image_picker.set(Hue.template_image_picker())
 	Hue.msg_tv_picker.set(Hue.template_tv_picker())
 	Hue.msg_radio_picker.set(Hue.template_radio_picker())
@@ -14570,8 +14586,9 @@ Hue.show_change_username = function()
 {
 	let s = `
 	<input type='text' placeholder='New Username' id='change_username_input' class='nice_input_2'>
-	<div class='spacer3'></div>
-	<div class='inline action pointer bigger unselectable' id='change_username_submit'>Change</div>`
+	<div class='flex_row_center'>
+		<div class='action pointer bigger unselectable details_change_submit' id='change_username_submit'>Change</div>
+	</div>`
 
 	Hue.msg_info2.show(["Change Username", s], function()
 	{
@@ -14605,8 +14622,9 @@ Hue.show_change_password = function()
 {
 	let s = `
 	<input type='password' placeholder='New Password' id='change_password_input' class='nice_input_2'>
-	<div class='spacer3'></div>
-	<div class='inline action pointer bigger unselectable' id='change_password_submit'>Change</div>`
+	<div class='flex_row_center'>
+		<div class='action pointer bigger unselectable details_change_submit' id='change_password_submit'>Change</div>
+	</div>`
 
 	Hue.msg_info2.show(["Change Password", s], function()
 	{
@@ -14640,8 +14658,9 @@ Hue.show_change_email = function()
 {
 	let s = `
 	<input type='text' placeholder='New Email' id='change_email_input' class='nice_input_2'>
-	<div class='spacer3'></div>
-	<div class='inline action pointer bigger unselectable' id='change_email_submit'>Change</div>`
+	<div class='flex_row_center'>
+		<div class='action pointer bigger unselectable details_change_submit' id='change_email_submit'>Change</div>
+	</div>`
 
 	Hue.msg_info2.show(["Change Email", s], function()
 	{
@@ -15585,12 +15604,12 @@ Hue.show_profile = function(uname, prof_image)
 
 	else
 	{
-		$("#show_profile_whisper").css("display", "initial")
+		$("#show_profile_whisper").css("display", "block")
 	}
 
 	if($('.show_profile_button').filter(function() {return $(this).css('display') !== 'none'}).length)
 	{
-		$("#show_profile_buttons").css("display", "initial")
+		$("#show_profile_buttons").css("display", "flex")
 	}
 
 	else
@@ -17693,10 +17712,7 @@ Hue.sent_popup_message_function = function(mode, message, draw_coords, data1=[])
 		return false
 	}
 
-	let sp = "<div class='spacer3'></div>"
-
 	let h = `<div class='small_button action' id='modal_popup_feedback_send'>${s1}</div>`
-
 	let ch
 
 	if(draw_coords)
@@ -17900,7 +17916,7 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 	{
 		ch = `<canvas 
 		id='draw_popup_area_${data.id}' 
-		class='draw_canvas dynamic_title' 
+		class='draw_canvas dynamic_title draw_canvas_received' 
 		title='${nd}' data-otitle='${nd}' 
 		data-date='${data.date}' 
 		width='400px' height='300px' 
@@ -17932,7 +17948,7 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 
 		if(data.username !== Hue.username)
 		{
-			h0 = `<div class='small_button action inline show_message_reply'>${Hue.utilz.nonbreak("Send Whisper")}</div><div class='spacer2'></div>`
+			h0 = `<div class='small_button_2 action show_message_reply show_message_reply_with_spacing'>${Hue.utilz.nonbreak("Send Whisper")}</div>`
 		}
 
 		else
@@ -17940,7 +17956,7 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 			h0 = ""
 		}
 
-		h = h0 + `<div class='small_button action inline show_message_reply_ops'>${Hue.utilz.nonbreak("Send Whisper to Operators")}</div>`
+		h = `<div class='flex_column_center'>${h0}<div class='small_button_2 action show_message_reply_ops'>${Hue.utilz.nonbreak("Send Whisper to Operators")}</div></div>`
 	}
 
 	else if(type === "room")
@@ -17957,13 +17973,11 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 		h = false
 	}
 
-	let sp = "<div class='spacer3'></div>"
-
 	if(ch)
 	{
 		if(h)
 		{
-			h = ch + sp + h
+			h = ch + h
 		}
 		
 		else
@@ -18901,7 +18915,8 @@ Hue.make_safe = function(args={})
 
 		if(args.text || !args.remove_text_if_empty)
 		{
-			sp = "<div class='spacer3'></div>"
+			console.log(345)
+			sp = "message_info_html_spaced"
 		}
 
 		else
@@ -18909,7 +18924,7 @@ Hue.make_safe = function(args={})
 			sp = ""
 		}
 
-		c.append(`${sp}<div class='message_info_html'>${args.html}</div>`)
+		c.append(`<div class='message_info_html ${sp}'>${args.html}</div>`)
 
 		if(args.html_unselectable)
 		{
@@ -19465,10 +19480,8 @@ Hue.show_import_settings = function()
 	let s = `
 	<div class='container_22'>
 		Paste code generated by Export Settings
-		<div class='spacer3'></div>
 		<textarea id='import_settings_textarea' rows=5 class='setting_textarea'></textarea>
-		<div class='spacer3'></div>
-		<div class='menu_item inline action pointer' id='import_settings_apply'>Apply</div>
+		<div class='menu_item inline action pointer unselectable' id='import_settings_apply'>Apply</div>
 	</div>
 	`
 
@@ -19515,27 +19528,21 @@ Hue.show_export_settings = function()
 
 	let s = `
 	<div class='container_22'>
-		In case you want to export your settings from one browser to another.
-		<div class='spacer3'></div>
-		You can import either Global Settings, Room Settings, or both.
-		<div class='spacer3'></div>
-		Room Settings copies every room's settings, not just the current one.
-		<div class='spacer3'></div>
-		To do this, copy one of the codes below, and paste it in Import Settings in the other browser.
-		<div class='spacer3'></div>
-		<div class='spacer3'></div>
-		(a) Use this code if you want to import <span class='bold'>Global</span> and <span class='bold'>Room</span> Settings
-		<div class='spacer3'></div>
-		<textarea rows=5 class='setting_textarea'>${code}</textarea>
-		<div class='spacer3'></div>
-		<div class='spacer3'></div>
-		(b) Use this code if you only want to import <span class='bold'>Global</span> Settings
-		<div class='spacer3'></div>
-		<textarea rows=5 class='setting_textarea'>${code2}</textarea>
-		<div class='spacer3'></div>
-		<div class='spacer3'></div>
-		(c) Use this code if you only want to import <span class='bold'>Room</span> Settings
-		<div class='spacer3'></div>
+
+		<div id='export_settings_info'  class='grid_column_center'>
+			<div>In case you want to export your settings from one browser to another.</div>
+			<div>You can import either Global Settings, Room Settings, or both.</div>
+			<div>Room Settings copies every room's settings, not just the current one.</div>
+			<div>To do this, copy one of the codes below, and paste it in Import Settings in the other browser.</div>
+		</div>
+
+		<div class='export_settings_textarea_label'>(a) Use this code if you want to import <span class='bold'>Global</span> and <span class='bold'>Room</span> Settings</div>
+		<textarea rows=5 class='setting_textarea export_settings_textarea'>${code}</textarea>
+		
+		<div class='export_settings_textarea_label'>(b) Use this code if you only want to import <span class='bold'>Global</span> Settings</div>
+		<textarea rows=5 class='setting_textarea export_settings_textarea'>${code2}</textarea>
+
+		<div class='export_settings_textarea_label'>(c) Use this code if you only want to import <span class='bold'>Room</span> Settings</div>
 		<textarea rows=5 class='setting_textarea'>${code3}</textarea>
 	</div>
 	`
@@ -23014,17 +23021,14 @@ Hue.request_admin_list = function()
 
 Hue.show_admin_list = function(data)
 {
-	let s = $("<div id='admin_list_container'></div>")
-	let i = 0
+	let s = $("<div id='admin_list_container' class='grid_column_center'></div>")
 
 	data.list.sort(Hue.compare_userlist)
 
 	for(let user of data.list)
 	{
-		i += 1
-
-		let hs = "<span class='admin_list_username'></span>&nbsp;&nbsp;<span class='admin_list_role'></span>"
-		let h = $(`<div class='admin_list_item'>${hs}</div>`)
+		let hs = "<div class='flex_row_center'><div class='admin_list_username'></div>&nbsp;&nbsp;<div class='admin_list_role'></div></div>"
+		let h = $(`<div class='admin_list_item pointer action'>${hs}</div>`)
 
 		h.find(".admin_list_username").eq(0).text(user.username)
 		h.find(".admin_list_role").eq(0).text(`(${Hue.get_pretty_role_name(user.role)})`)
@@ -23033,11 +23037,6 @@ Hue.show_admin_list = function(data)
 		{
 			Hue.show_profile(user.username)
 		})
-
-		if(i < data.list.length)
-		{
-			h = h.add("<div class='spacer3'></div>")
-		}
 
 		s.append(h)
 	}
@@ -23061,15 +23060,12 @@ Hue.request_ban_list = function()
 
 Hue.show_ban_list = function(data)
 {
-	let s = $("<div id='ban_list_container'></div>")
-	let i = 0
+	let s = $("<div id='ban_list_container' class='grid_column_center'></div>")
 
 	for(let user of data.list)
 	{
-		i += 1
-
-		let hs = "<span class='ban_list_username' title='Click To Unban'></span>"
-		let h = $(`<div class='ban_list_item'>${hs}</div>`)
+		let hs = "<div class='flex_row_center'><div class='ban_list_username' title='Click To Unban'></div></div>"
+		let h = $(`<div class='ban_list_item pointer action'>${hs}</div>`)
 
 		h.find(".ban_list_username").eq(0).text(user.username)
 
@@ -23080,11 +23076,6 @@ Hue.show_ban_list = function(data)
 				Hue.unban(user.username)
 			}
 		})
-
-		if(i < data.list.length)
-		{
-			h = h.add("<div class='spacer3'></div>")
-		}
 
 		s.append(h)
 	}
@@ -24730,8 +24721,7 @@ Hue.make_link_preview = function(message, link_url, link_title, link_image)
 		link_preview_s = 
 		`<div class='link_preview action'>
 			<div class='link_preview_title'>${Hue.make_html_safe(link_title)}</div>
-			<div class='spacer3'></div>
-			<div><img class='link_preview_image' src='${link_image}'></div>
+			<div class='link_preview_image_with_title'><img class='link_preview_image' src='${link_image}'></div>
 		</div>`
 	}
 
@@ -24993,7 +24983,7 @@ Hue.get_media_change_inline_comment = function(type, source)
 Hue.show_upload_comment = function(file, type)
 {
 	$("#upload_comment_image_feedback").css("display", "none")
-	$("#upload_comment_image_preview").css("display", "inline")
+	$("#upload_comment_image_preview").css("display", "inline-block")
 	
 	let reader = new FileReader()
 
