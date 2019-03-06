@@ -664,7 +664,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	overflow-wrap: break-word;
-	word-break: break-word;	
+	word-break: break-word;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.2em;
 }
 
 .ui_item_role
@@ -674,7 +679,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .ui_item_uname
 {
-	font-size: 1.3em;	
 	cursor: pointer;
 }
 
