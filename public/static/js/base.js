@@ -16929,11 +16929,12 @@ Hue.show_joined = function()
 
 Hue.get_loaded_media_messages = function()
 {
-	let h = $("<div></div>")
-	let changed = false
+	let obj = {}
 
 	for(let type of Hue.utilz.media_types)
 	{
+		obj[type] = false
+
 		let loaded_type = Hue[`loaded_${type}`]
 		
 		if(loaded_type)
@@ -16943,25 +16944,12 @@ Hue.get_loaded_media_messages = function()
 
 			if(message.length > 0)
 			{
-				if(changed)
-				{
-					h.append("<div class='spacer8'></div>")
-				}
-
-				h.append(`<i class='fa ${Hue.media_icons[type]} icon2c'></i>`)
-				h.append("<div class='spacer2'></div>")
-				h.append(message.clone(true, true))
-				changed = true
+				obj[type] = message.clone(true, true)
 			}
 		}
 	}
 
-	if(!changed)
-	{
-		h.append("<div>No Media Loaded</div>")
-	}
-
-	return h.children()
+	return obj
 }
 
 Hue.check_media_menu_loaded_media = function()
@@ -16974,7 +16962,22 @@ Hue.check_media_menu_loaded_media = function()
 
 Hue.update_media_menu_loaded_media = function()
 {
-	$("#media_menu_loaded_media").html(Hue.get_loaded_media_messages())
+	let obj = Hue.get_loaded_media_messages()
+
+	for(let type of Hue.utilz.media_types)
+	{
+		if(obj[type])
+		{
+			$(`#media_menu_loaded_${type}`).html(obj[type])
+		}
+		
+		else
+		{
+			$(`#media_menu_loaded_${type}`).html("")
+		}
+	}
+
+	$("#media_menu_loaded_media").html()
 }
 
 Hue.show_media_menu = function()

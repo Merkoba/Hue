@@ -33,7 +33,7 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/wordz.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2752"></script>
+		<script src="/static/js/base.js?version=2753"></script>
 		<link rel="stylesheet" href="/static/css/style.css?version=612"/>
 
 		<script>
@@ -1754,7 +1754,44 @@
 
 				<div class='spacer3'></div>
 
-				<div id='media_menu_loaded_media' class='chat_area_clone_center'></div>
+				<div id='media_menu_loaded_media' class='chat_area_clone_center'>
+					<div class='flex_row_center'>
+						<i class='fa fa-camera icon2c'></i>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<div class='pointer action inline' onclick='Hue.show_media_history("image")'>History</div>
+						&nbsp;&nbsp;|&nbsp;&nbsp;
+						<div class='pointer action inline' onclick='Hue.refresh_image(); Hue.hide_media_menu()'>Refresh</div>
+					</div>
+					
+					<div class='spacer2'></div>
+					<div id='media_menu_loaded_image'></div>
+
+					<div class='spacer8'></div>
+				
+					<div class='flex_row_center'>
+						<i class='fa fa-television icon2c'></i>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<div class='pointer action inline' onclick='Hue.show_media_history("tv")'>History</div>
+						&nbsp;&nbsp;|&nbsp;&nbsp;
+						<div class='pointer action inline' onclick='Hue.refresh_tv(); Hue.hide_media_menu()'>Refresh</div>
+					</div>
+
+					<div class='spacer2'></div>
+					<div id='media_menu_loaded_tv'></div>
+
+					<div class='spacer8'></div>
+
+					<div class='flex_row_center'>
+						<i class='fa fa-volume-up icon2c'></i>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<div class='pointer action inline' onclick='Hue.show_media_history("radio")'>History</div>
+						&nbsp;&nbsp;|&nbsp;&nbsp;
+						<div class='pointer action inline' onclick='Hue.refresh_radio(); Hue.hide_media_menu()'>Refresh</div>
+					</div>
+
+					<div class='spacer2'></div>
+					<div id='media_menu_loaded_radio'></div>
+				</div>
 				
 				<div class='spacer_line'></div>
 
@@ -1766,36 +1803,6 @@
 				<div class='spacer3'></div>
 				<div class='pointer action inline' onclick='Hue.default_media_state(); Hue.hide_media_menu()'>Default State</div>
 				
-				<div class='spacer_line'></div>
-				
-				<div class='flex_row_center'>
-					<i class='fa fa-camera icon2c'></i>
-					<div class='hspacer2'></div>
-					<div class='pointer action inline' onclick='Hue.show_media_history("image")'>History</div>
-					&nbsp;&nbsp;|&nbsp;&nbsp;
-					<div class='pointer action inline' onclick='Hue.refresh_image(); Hue.hide_media_menu()'>Refresh</div>
-				</div>
-
-				<div class='spacer3'></div>
-				
-				<div class='flex_row_center'>
-					<i class='fa fa-television icon2c'></i>
-					<div class='hspacer2'></div>
-					<div class='pointer action inline' onclick='Hue.show_media_history("tv")'>History</div>
-					&nbsp;&nbsp;|&nbsp;&nbsp;
-					<div class='pointer action inline' onclick='Hue.refresh_tv(); Hue.hide_media_menu()'>Refresh</div>
-				</div>
-
-				<div class='spacer3'></div>
-
-				<div class='flex_row_center'>
-					<i class='fa fa-volume-up icon2c'></i>
-					<div class='hspacer2'></div>
-					<div class='pointer action inline' onclick='Hue.show_media_history("radio")'>History</div>
-					&nbsp;&nbsp;|&nbsp;&nbsp;
-					<div class='pointer action inline' onclick='Hue.refresh_radio(); Hue.hide_media_menu()'>Refresh</div>
-				</div>
-
 				<div class='spacer_line'></div>
 				
 				<div class='setting_title'>Radio Volume</div>
