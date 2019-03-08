@@ -14,7 +14,7 @@ Hue.debug_functions = false
 
 // This enables or disables script loading
 // This should be always true unless developing without an internet connection
-Hue.load_scripts = false
+Hue.load_scripts = true
 
 // Initial variables declarations
 Hue.config = {}
