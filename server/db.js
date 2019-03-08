@@ -1,13 +1,18 @@
 module.exports = function(db, config, sconfig, utilz, logger)
 {
+	// Initial declarations
 	const mongo = require('mongodb')
 	const bcrypt = require('bcrypt')
 	const mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
 	const reserved_usernames = ["The system", config.image_ads_setter].map(x => x.toLowerCase())
 
+	// Room and User versions
+	// These must be increased by 1 when the schema changes
 	const rooms_version = 73
 	const users_version = 43
 
+	// Room schema definition
+	// This is used to check types and fill defaults
 	const rooms_schema =
 	{
 		name:{type:"string", default:"No Name"},
@@ -87,6 +92,8 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		voice4_synth_permission:{type:"boolean", default:true}
 	}
 
+	// User schema definition
+	// This is used to check types and fill defaults
 	const users_schema = 
 	{
 		username:{type:"string", default:"", skip:true},
@@ -109,13 +116,10 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		modified:{type:"number", default:Date.now()}
 	}
 
-	function get_random_key()
-	{
-		return `_key_${Date.now()}_${utilz.get_random_string(12)}`
-	}
-
+	// Main object
 	const manager = {}
 
+	// Finds a room with the given query and fields to be fetched
 	manager.get_room = function(query, fields)
 	{
 		return new Promise((resolve, reject) => 
@@ -248,6 +252,8 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Fills undefined room properties
+	// Or properties that don't meet the specified type
 	manager.room_fill_defaults = function(room)
 	{
 		for(let key in rooms_schema)
@@ -266,6 +272,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Creates a room
 	manager.create_room = function(data)
 	{
 		return new Promise((resolve, reject) => 
@@ -306,6 +313,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})
 	}	
 
+	// Room creation started by a user
 	manager.user_create_room = function(data, force=false)
 	{
 		return new Promise((resolve, reject) => 
@@ -360,6 +368,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Updates a room
 	manager.update_room = function(_id, fields)
 	{
 		return new Promise((resolve, reject) =>
@@ -409,6 +418,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Finds rooms
 	manager.find_rooms = function(query)
 	{
 		return new Promise((resolve, reject) => 
@@ -430,6 +440,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Updates log messages
 	manager.push_log_messages = function(_id, messages)
 	{
 		return new Promise((resolve, reject) => 
@@ -467,6 +478,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Updates admin log messages
 	manager.push_admin_log_messages = function(_id, messages)
 	{
 		return new Promise((resolve, reject) => 
@@ -504,6 +516,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Updates access log messages
 	manager.push_access_log_messages = function(_id, messages)
 	{
 		return new Promise((resolve, reject) => 
@@ -541,6 +554,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})
 	}
 	
+	// Finds a user with the given query and fields to be fetched
 	manager.get_user = function(query, fields, verified=true)
 	{
 		return new Promise((resolve, reject) => 
@@ -694,6 +708,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})	
 	}
 
+	// Function to handle found users
 	manager.on_user_found = function(user)
 	{
 		return new Promise((resolve, reject) => 
@@ -751,6 +766,8 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Fills undefined user properties
+	// Or properties that don't meet the specified type
 	manager.user_fill_defaults = function(user)
 	{
 		for(let key in users_schema)
@@ -769,6 +786,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Creates a user
 	manager.create_user = function(info)
 	{
 		return new Promise((resolve, reject) => 
@@ -841,6 +859,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})	
 	}
 
+	// Updates the user
 	manager.update_user = function(_id, fields)
 	{
 		return new Promise((resolve, reject) => 
@@ -938,6 +957,8 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})	
 	}
 
+	// Checks if a user with a given email and password matches the stored password
+	// This uses bcrypt to compare with the encrypted password version
 	manager.check_password = function(email, password, fields={})
 	{
 		return new Promise((resolve, reject) => 
@@ -981,6 +1002,8 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})	
 	}
 
+	// Changes the username
+	// Checks if the username contains a reserved username
 	manager.change_username = function(_id, username)
 	{
 		return new Promise((resolve, reject) => 
@@ -1050,6 +1073,8 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})	
 	}
 
+	// Changes the email
+	// Sends a code verification email
 	manager.change_email = function(_id, email, verify_code=false)
 	{
 		return new Promise((resolve, reject) => 
@@ -1202,6 +1227,8 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})	
 	}
 
+	// Initiates password reset
+	// Sends a verification link email
 	manager.reset_user_password = function(email)
 	{
 		return new Promise((resolve, reject) => 
@@ -1279,6 +1306,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})		
 	}
 
+	// Saves room to visited rooms
 	manager.save_visited_room = function(user_id, room_id)
 	{
 		return new Promise((resolve, reject) => 
@@ -1332,6 +1360,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Checks fields types against the room schema types
 	manager.validate_room = function(fields)
 	{
 		for(let key in fields)
@@ -1360,6 +1389,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 		return {passed:true, message:"ok"}
 	}
 
+	// Checks fields types against the user schema types
 	manager.validate_user = function(fields)
 	{
 		for(let key in fields)

@@ -509,6 +509,52 @@ const Utilz = function()
 		}
 	}
 
+	utilz.replace_between = function(str, start, end, what)
+	{
+		return str.substring(0, start) + what + str.substring(end)
+	}
+
+	utilz.nice_date = function(date=Date.now())
+	{
+		return dateFormat(date, "dddd, mmmm dS, yyyy, h:MM:ss TT")
+	}
+
+	utilz.clock_time = function(date=Date.now())
+	{
+		return dateFormat(date, "h:MM TT")
+	}
+
+	utilz.escape_special_characters = function(s)
+	{
+		return s.replace(/[^A-Za-z0-9]/g, '\\$&')
+	}
+
+	utilz.get_size_string = function(size, mode=1)
+	{
+		if(mode === 1)
+		{
+			return `${parseFloat(size / 1024).toFixed(2)} MB`
+		}
+	
+		else if(mode === 2)
+		{
+			return `${parseFloat(size / 1024 / 1024).toFixed(2)} MB`
+		}
+	}
+
+	utilz.make_unique_lines = function(s)
+	{
+		let split = s.split('\n')
+		split = split.filter((v,i) => split.indexOf(v) === i)
+		s = split.join('\n')
+		return s
+	}
+
+	utilz.is_empty_object = function(obj)
+	{
+		return Object.keys(obj).length === 0 && obj.constructor === Object
+	}
+
 	utilz.media_types = ["image", "tv", "radio"]
 
 	utilz.synth_notes = 

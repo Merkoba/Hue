@@ -1,7 +1,9 @@
 const handler = function(io, db_manager, config, sconfig, utilz, logger)
 {
+	// Contains all public functions
 	handler.public = {}
 
+	// Initial declarations
 	const fs = require('fs')
 	const path = require('path')
 	const SocketAntiSpam = require('socket-anti-spam')
@@ -67,6 +69,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	// The higher this number is, the quicker it adds spam on image upload
 	const upload_spam_slice = 10
 
+	// Struct for file uploads
 	const files_struct =
 	{
 		action: null,
@@ -87,6 +90,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	let last_roomlist
 	let roomlist_lastget = 0
 
+	// Configure the anti-spam system
 	const antiSpam = new SocketAntiSpam(
 	{
 		banTime: config.antispam_banTime, // Ban time in minutes
@@ -104,6 +108,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.get_out(socket)
 	})
 
+	// Dont check if user has joined with these functions
 	const dont_check_joined = 
 	[
 		"join_room",
@@ -111,6 +116,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		"create_room"
 	]
 
+	// Don't add spam on these functions
+	// They add spam manually
 	const dont_add_spam = 
 	[
 		"slice_upload",
@@ -118,12 +125,15 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		"activity_trigger",
 		"send_synth_key"
 	]
+
+	// Check if user is locked from room with these functions
 	const check_locked = 
 	[
 		"roomlist",
 		"create_room"
 	]
 
+	// Start socker handler
 	io.on("connection", async function(socket)
 	{
 		try
@@ -143,6 +153,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			logger.log_error(err)
 		}
 
+		// Goes to a public function
+		// If there is no such public function the user is kicked out
 		socket.on('server_method', async function(data)
 		{
 			try
@@ -210,6 +222,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		})
 
+		// Socket disconnect handler
 		socket.on('disconnect', function(reason)
 		{
 			try
@@ -231,6 +244,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	})
 
+	// Sets initial hue_* variables on connection
 	handler.connection = function(socket)
 	{
 		socket.hue_pinged = false
@@ -247,6 +261,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.hue_last_activity_trigger = 0
 	}
 
+	// Attempts to join a room
 	handler.public.join_room = async function(socket, data)
 	{
 		if(socket.hue_joining || socket.hue_joined)
@@ -394,6 +409,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Does a room join after successful authentication
 	handler.do_join = async function(socket, info, userinfo)
 	{
 		socket.hue_room_id = info._id.toString()
@@ -608,6 +624,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Handles chat messages
 	handler.public.sendchat = function(socket, data)
 	{
 		if(data.message === undefined)
@@ -745,6 +762,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Handles topic changes
 	handler.public.change_topic = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -773,7 +791,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let info = await db_manager.get_room({_id:socket.hue_room_id}, {topic:1})
-
 		let new_topic = data.topic
 
 		if(new_topic !== info.topic)
@@ -802,6 +819,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Handles room name changes
 	handler.public.change_room_name = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -842,6 +860,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Find and provides a public or visited room list
 	handler.public.roomlist = function(socket, data)
 	{
 		if(data.type === "visited_roomlist")
@@ -866,6 +885,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Handles room creation
 	handler.public.create_room = async function(socket, data)
 	{
 		if(data.name.length === 0 || data.name.length > config.max_room_name_length)
@@ -903,6 +923,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, 'room_created', {id:ans._id.toString()})
 	}
 
+	// Handles role changes
 	handler.public.change_role = async function(socket, data)
 	{
 		if(!socket.hue_superuser && (!handler.is_admin_or_op(socket)))
@@ -936,7 +957,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:1})
-
 		let userinfo = await db_manager.get_user({username:data.username}, {username:1})
 
 		if(!userinfo)
@@ -946,7 +966,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let id = userinfo._id.toString()
-
 		let current_role = info.keys[id]
 
 		if(!socket.hue_superuser)
@@ -965,7 +984,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let sockets = handler.get_user_sockets_per_room(socket.hue_room_id, id)
-
 		let last_socc = false
 
 		for(let socc of sockets)
@@ -1002,6 +1020,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed the role of "${data.username}" to "${data.role}"`)
 	}
 
+	// Handles voice resets
 	handler.public.reset_voices = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -1010,7 +1029,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:1})
-
 		let removed = false
 
 		for(let key in info.keys)
@@ -1047,6 +1065,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, "resetted the voices")
 	}
 
+	// Handles ops removal
 	handler.public.remove_ops = async function(socket, data)
 	{
 		if(socket.hue_role !== 'admin')
@@ -1055,7 +1074,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:1})
-
 		let removed = false
 
 		for(let key in info.keys)
@@ -1092,6 +1110,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, "removed the ops")
 	}
 
+	// Handles user kicks
 	handler.public.kick = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -1143,6 +1162,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Handles user bans
 	handler.public.ban = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -1166,7 +1186,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:1, keys:1})
-
 		let userinfo = await db_manager.get_user({username:data.username}, {username:1})
 
 		if(!userinfo)
@@ -1176,7 +1195,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let id = userinfo._id.toString()
-
 		let current_role = info.keys[id]
 
 		if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
@@ -1228,6 +1246,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		db_manager.update_room(info._id, {bans:info.bans, keys:info.keys})
 	}
 
+	// Handles user unbans
 	handler.public.unban = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -1251,7 +1270,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:1, keys:1})
-
 		let userinfo = await db_manager.get_user({username:data.username}, {username:1})
 
 		if(!userinfo)
@@ -1289,6 +1307,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `unbanned "${data.username}"`)
 	}
 
+	// Unbans all banned users
 	handler.public.unban_all = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -1315,6 +1334,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Sends the number of users banned
 	handler.public.get_ban_count = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -1323,7 +1343,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let info = await db_manager.get_room({_id:socket.hue_room_id}, {bans:1})
-
 		let count
 
 		if(info.bans === '')
@@ -1339,6 +1358,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, 'receive_ban_count', {count:count})
 	}
 
+	// Handles log state changes
 	handler.public.change_log = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -1387,6 +1407,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Clears log messages
 	handler.public.clear_log = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -1409,6 +1430,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Changes privacy status
 	handler.public.change_privacy = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -1442,6 +1464,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, als)
 	}
 
+	// Handles radio source changes
 	handler.public.change_radio_source = async function(socket, data)
 	{
 		if(data.src === undefined)
@@ -1691,10 +1714,10 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Completes radio source changes
 	handler.do_change_radio_source = function(socket, data)
 	{
 		let radioinfo = {}
-
 		let date = Date.now()
 		let query = data.query || ""
 		let comment = data.comment || ""
@@ -1789,6 +1812,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		rooms[socket.hue_room_id].modified = Date.now()
 	}
 
+	// Handles tv source changes
 	handler.public.change_tv_source = async function(socket, data)
 	{
 		if(data.src === undefined)
@@ -2242,10 +2266,10 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Completes tv source changes
 	handler.do_change_tv_source = function(socket, data)
 	{
 		let tvinfo = {}
-
 		let date = Date.now()
 		let query = data.query || ""
 		let comment = data.comment || ""
@@ -2335,6 +2359,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		rooms[socket.hue_room_id].modified = Date.now()
 	}
 
+	// Changes usernames
 	handler.public.change_username = async function(socket, data)
 	{
 		if(data.username === undefined)
@@ -2358,7 +2383,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let old_username = socket.hue_username
-
 		let done = await db_manager.change_username(socket.hue_user_id, data.username)
 
 		if(done)
@@ -2386,6 +2410,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Changes passwords
 	handler.public.change_password = function(socket, data)
 	{
 		if(data.password === undefined)
@@ -2412,6 +2437,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, 'password_changed', {password:data.password})
 	}
 
+	// Changes emails
 	handler.public.change_email = async function(socket, data)
 	{
 		if(data.email === undefined)
@@ -2461,6 +2487,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Handles email verification codes
 	handler.public.verify_email = async function(socket, data)
 	{
 		if(utilz.clean_string5(data.code) !== data.code)
@@ -2526,6 +2553,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Handles images mode changes
 	handler.public.change_images_mode = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -2554,6 +2582,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed the image mode to "${data.what}"`)
 	}
 
+	// Handles tv mode changes
 	handler.public.change_tv_mode = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -2582,6 +2611,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed the tv mode to "${data.what}"`)
 	}
 
+	// Handles radio mode changes
 	handler.public.change_radio_mode = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -2610,6 +2640,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed the radio mode to "${data.what}"`)
 	}
 
+	// Handles synth mode changes
 	handler.public.change_synth_mode = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -2638,6 +2669,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed the synth mode to "${data.what}"`)
 	}
 
+	// Handles theme mode changes
 	handler.public.change_theme_mode = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -2664,6 +2696,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed the theme color mode to "${data.mode}"`)
 	}
 
+	// Handles theme changes
 	handler.public.change_theme = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -2700,6 +2733,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed the theme to "${data.color}"`)
 	}
 
+	// Handles background mode changes
 	handler.public.change_background_mode = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -2731,6 +2765,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed the background mode to "${data.mode}"`)
 	}
 
+	// Handles background effect changes
 	handler.public.change_background_effect = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -2759,6 +2794,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed the background effect to "${data.effect}"`)
 	}
 
+	// Handles background tile dimension changes
 	handler.public.change_background_tile_dimensions = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -2790,6 +2826,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed the background tile dimensions to "${data.dimensions}"`)
 	}
 
+	// Handles text color mode changes
 	handler.public.change_text_color_mode = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -2816,6 +2853,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed the text color mode to "${data.mode}"`)
 	}
 
+	// Handles text color changes
 	handler.public.change_text_color = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -2852,6 +2890,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed the text color to "${data.color}"`)
 	}
 
+	// Handles voice permission changes
 	handler.public.change_voice_permission = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -2892,12 +2931,14 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, `changed ${data.ptype} to "${data.what}"`)
 	}
 
+	// Do a socket disconnect
 	handler.do_disconnect = function(socc)
 	{
 		socc.disconnect()
 		return false
 	}
 
+	// On disconnect
 	handler.disconnect = function(socket)
 	{
 		if(socket.hue_user_id === undefined)
@@ -2976,6 +3017,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Sorts a room list by user count and modified date
 	handler.compare_roomlist = function(a, b)
 	{
 		if(a.usercount < b.usercount)
@@ -3004,6 +3046,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Gets a room's userlist
 	handler.get_userlist = function(room_id)
 	{
 		try
@@ -3030,17 +3073,19 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Get's a room's user count
 	handler.get_usercount = function(room_id)
 	{
 		return Object.keys(handler.get_userlist(room_id)).length
 	}
 
+	// Gets the public rooms list
+	// It will fetch it from cache if still fresh
 	handler.get_roomlist = async function(callback)
 	{
 		if(last_roomlist === undefined || (Date.now() - roomlist_lastget > config.roomlist_cache))
 		{
 			let roomlist = []
-
 			let md = Date.now() - config.roomlist_max_inactivity
 
 			for(let room_id in rooms)
@@ -3063,7 +3108,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			roomlist.sort(handler.compare_roomlist).splice(config.max_roomlist_items)
 
 			last_roomlist = roomlist
-
 			roomlist_lastget = Date.now()
 
 			callback(last_roomlist)
@@ -3075,12 +3119,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Gets the visited rooms list
 	handler.get_visited_roomlist = async function(user_id, callback)
 	{
 		let roomlist = []
-
 		let userinfo = await db_manager.get_user({_id:user_id}, {visited_rooms:1})
-
 		let mids = []
 
 		for(let id of userinfo.visited_rooms)
@@ -3122,6 +3165,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		callback(roomlist)
 	}
 
+	// Handles image source changes
 	handler.public.change_image_source = function(socket, data)
 	{
 		if(data.src === undefined)
@@ -3305,6 +3349,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Handles sliced image uploads
 	handler.upload_image = function(socket, data)
 	{
 		if(data.image_file === undefined)
@@ -3353,6 +3398,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Intermidiate step to change the image
 	handler.change_image = function(socket, data)
 	{
 		if(data.type === "link")
@@ -3410,6 +3456,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Completes image source changes
 	handler.do_change_image_source = function(socket, data)
 	{
 		let room_id, user_id
@@ -3591,6 +3638,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		rooms[room_id].modified = Date.now()
 	}
 
+	// Handles uploaded profile images
 	handler.upload_profile_image = function(socket, data)
 	{
 		if(data.image_file === undefined)
@@ -3629,6 +3677,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Intermidiate step to change profile images
 	handler.change_profile_image = function(socket, fname)
 	{
 		if(config.image_storage_s3_or_local === "local")
@@ -3676,14 +3725,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Completes profile image changes
 	handler.do_change_profile_image = async function(socket, fname)
 	{
 		let userinfo = await db_manager.get_user({_id:socket.hue_user_id}, {profile_image_version:1})
-
 		let new_ver = userinfo.profile_image_version + 1
-
 		let fver = `${fname}?ver=${new_ver}`
-
 		let image_url
 
 		if(config.image_storage_s3_or_local === "local")
@@ -3719,6 +3766,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Handles uploaded background images
 	handler.upload_background_image = function(socket, data)
 	{
 		if(data.image_file === undefined)
@@ -3755,6 +3803,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Handles background image source changes
 	handler.public.change_background_image_source = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -3797,6 +3846,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.do_change_background_image(socket, data.src, "external")
 	}
 
+	// Intermidiate step to change the background image
 	handler.change_background_image = function(socket, fname)
 	{
 		if(config.image_storage_s3_or_local === "local")
@@ -3844,10 +3894,10 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Completes background image changes
 	handler.do_change_background_image = async function(socket, fname, type)
 	{
 		let info = await db_manager.get_room({_id:socket.hue_room_id}, {background_image:1, background_image_type:1})
-
 		let image_url
 
 		if(type === "hosted")
@@ -3928,6 +3978,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.push_admin_log_message(socket, "changed the background image")
 	}
 
+	// Receives sliced files uploads and requests more slices
+	// Sends uploaded files to respective functions
 	handler.public.slice_upload = async function(socket, data)
 	{
 		if(data.action === "image_upload")
@@ -3944,7 +3996,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let key = `${socket.hue_user_id}_${data.date}`
-
 		let file = files[key]
 
 		if(!file)
@@ -4069,10 +4120,10 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Flags a file as cancelled
 	handler.public.cancel_upload = function(socket, data)
 	{
 		let key = `${socket.hue_user_id}_${data.date}`
-
 		let file = files[key]
 
 		if(file)
@@ -4081,6 +4132,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Handles typing signals
 	handler.public.typing = async function(socket, data)
 	{
 		if(!handler.check_permission(socket, "chat"))
@@ -4105,6 +4157,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.broadcast_emit(socket, 'typing', {username:socket.hue_username})
 	}
 
+	// Handles whispers
 	handler.public.whisper = function(socket, data)
 	{
 		if(!whisper_types.includes(data.type))
@@ -4252,6 +4305,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Sends system restart signals
 	handler.public.system_restart_signal = function(socket, data)
 	{
 		if(!socket.hue_superuser)
@@ -4262,6 +4316,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.system_emit(socket, 'system_restart_signal', {})
 	}
 
+	// Disconnect other sockets from user
 	handler.public.disconnect_others = function(socket, data)
 	{
 		let amount = 0
@@ -4281,11 +4336,13 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, 'others_disconnected', {amount:amount})
 	}
 
+	// Sends a pong response
 	handler.public.ping_server = function(socket, data)
 	{
 		handler.user_emit(socket, 'pong_received', {date:data.date})
 	}
 
+	// Handles reactions
 	handler.public.send_reaction = function(socket, data)
 	{
 		if(data.reaction_type === undefined)
@@ -4328,6 +4385,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Sends admin activity list
 	handler.public.get_admin_activity = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -4340,6 +4398,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, "receive_admin_activity", {messages:messages})
 	}
 
+	// Sends access log
 	handler.public.get_access_log = function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -4352,6 +4411,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, "receive_access_log", {messages:messages})
 	}
 
+	// Sends admin list
 	handler.public.get_admin_list = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -4398,6 +4458,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, 'receive_admin_list', {list:list})
 	}
 
+	// Sends ban list
 	handler.public.get_ban_list = async function(socket, data)
 	{
 		if(!handler.is_admin_or_op(socket))
@@ -4437,6 +4498,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.user_emit(socket, 'receive_ban_list', {list:list})
 	}
 
+	// Handles activity signals
 	handler.public.activity_trigger = async function(socket, data)
 	{
 		if(!handler.check_permission(socket, "chat"))
@@ -4468,6 +4530,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Deletes a message 
 	handler.public.delete_message = async function(socket, data)
 	{
 		if(!data.id)
@@ -4509,7 +4572,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				}
 
 				let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:1})
-
 				let userinfo = await db_manager.get_user({_id:message.data.user_id}, {username:1})
 
 				if(!userinfo)
@@ -4590,6 +4652,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Handles synth keys
 	handler.public.send_synth_key = async function(socket, data)
 	{
 		if(data.key === undefined)
@@ -4639,6 +4702,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Handles synth voices
 	handler.public.send_synth_voice = async function(socket, data)
 	{
 		if(data.text === undefined)
@@ -4674,6 +4738,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Charges ads
+	// When they reach the threshold they are fired
 	handler.charge_ads = function(room_id)
 	{
 		try
@@ -4727,6 +4793,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Tries to show an image ad
 	handler.attempt_show_image_ad = function(room_id, callback)
 	{
 		try
@@ -4804,6 +4871,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Tries to show a text ad
 	handler.attempt_show_text_ad = function(room_id, callback)
 	{
 		try
@@ -4829,7 +4897,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				}
 
 				let index = utilz.get_random_int(0, ads.length - 1)
-
 				let ad = ads[index]
 
 				handler.send_announcement_to_room(room_id, ad)
@@ -4845,6 +4912,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Checks if a user has the required media permission
 	handler.check_permission = function(socket, permission)
 	{
 		if(media_types.includes(permission))
@@ -4878,6 +4946,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Creates initial room objects
 	handler.create_room_object = function(info)
 	{
 		let obj =
@@ -4943,6 +5012,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		return obj
 	}
 
+	// Starts a loop to update data to the database
+	// It will only update data that has changed
 	handler.start_room_loop = function()
 	{
 		setInterval(function()
@@ -4990,6 +5061,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}, config.room_loop_interval)
 	}
 
+	// Starts a loop to check for stale files to be removed
+	// These are files that failed to be uploaded
 	handler.start_files_loop = function()
 	{
 		setInterval(function()
@@ -5014,6 +5087,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}, config.files_loop_interval)
 	}
 
+	// Checks if the user is already connected through another socket
 	handler.user_already_connected = function(socket)
 	{
 		try
@@ -5042,12 +5116,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Returns the list of sockets of a user in a room, by user id
 	handler.get_user_sockets_per_room = function(room_id, user_id)
 	{
 		try
 		{
 			let clients = []
-
 			let sockets = handler.get_room_sockets(room_id)
 
 			for(let socc of sockets)
@@ -5067,12 +5141,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Returns the list of sockets of a user in a room, by username
 	handler.get_user_sockets_per_room_by_username = function(room_id, username)
 	{
 		try
 		{
 			let clients = []
-
 			let sockets = handler.get_room_sockets(room_id)
 
 			for(let socc of sockets)
@@ -5092,12 +5166,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Gets the list of sockets of a room
 	handler.get_room_sockets = function(room_id)
 	{
 		try
 		{
 			let sockets = []
-
 			let ids = Object.keys(io.sockets.adapter.rooms[room_id].sockets)
 
 			for(let id of ids)
@@ -5119,6 +5193,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Updates a user's data in the user list
 	handler.update_user_in_userlist = function(socket, first=false)
 	{
 		try
@@ -5144,6 +5219,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Tries to redirect the user elsewhere and disconnects the socket
 	handler.get_out = function(socket)
 	{
 		try
@@ -5160,6 +5236,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Returns an image mime type by checking the extension
 	handler.get_content_type = function(fname)
 	{
 		if(typeof fname !== "string")
@@ -5173,7 +5250,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let split = fname.split('.')
-
 		let ext = split[split.length - 1]
 
 		if(ext === "jpg" || ext === "jpeg")
@@ -5197,6 +5273,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Checks if the image extension is valid
 	handler.valid_image_extension = function(ext)
 	{
 		if(image_extensions.includes(ext))
@@ -5207,6 +5284,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		return false
 	}
 
+	// Checks if a user has multiple simultaneous join attempts
 	handler.check_multipe_joins = function(socket)
 	{
 		try
@@ -5235,12 +5313,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Checks if a user exceeds the maximum amounts of sockets allowed per room
 	handler.check_socket_limit = function(socket)
 	{
 		try
 		{
 			let num = 0
-
 			let rooms = user_rooms[socket.hue_user_id]
 
 			if(!rooms)
@@ -5271,6 +5349,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Does an emit to a user
 	handler.user_emit = function(socket, type, args={})
 	{
 		let obj = {}
@@ -5281,6 +5360,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.emit('update', obj)
 	}
 
+	// Does an emit to a room
 	handler.room_emit = function(socket, type, args={})
 	{
 		let room_id 
@@ -5303,6 +5383,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		io.sockets.in(room_id).emit('update', obj)
 	}
 
+	// Does an emit to all the room except for the user
 	handler.broadcast_emit = function(socket, type, args={})
 	{
 		let room_id 
@@ -5325,6 +5406,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		socket.broadcast.in(room_id).emit('update', obj)
 	}
 
+	// Does a system wide emit
 	handler.system_emit = function(socket, type, args={})
 	{
 		let obj = {}
@@ -5335,6 +5417,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		io.emit('update', obj)
 	}
 
+	// Sends an announcement to a room
+	// This is used to send ads
 	handler.send_announcement_to_room = function(room_id, message)
 	{
 		handler.process_message_links(message, function(response)
@@ -5367,6 +5451,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Adds a spam point to the socket in the anti-spam system
 	handler.add_spam = async function(socket)
 	{
 		try
@@ -5381,6 +5466,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Tries to check if the data received is valid
+	// This is done by checking some limits
 	handler.check_data = function(data)
 	{
 		try
@@ -5402,7 +5489,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			for(key of keys)
 			{
 				let d = data[key]
-
 				let td = typeof d
 
 				if(td === "function")
@@ -5457,11 +5543,13 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Checks if socket is admin or op
 	handler.is_admin_or_op = function(socket)
 	{
 		return socket.hue_role === 'admin' || socket.hue_role === 'op'
 	}
 
+	// Prepares the user list to be sent on room joins
 	handler.prepare_userlist = function(userlist)
 	{
 		let userlist2 = []
@@ -5484,6 +5572,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		return userlist2
 	}
 
+	// Pushes a log message
 	handler.push_log_message = function(socket, message)
 	{
 		let room_id
@@ -5509,6 +5598,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		rooms[room_id].activity = true
 	}
 
+	// Pushes an admin log message
 	handler.push_admin_log_message = function(socket, content)
 	{
 
@@ -5534,6 +5624,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		rooms[socket.hue_room_id].activity = true
 	}
 
+	// Pushes an access log message
 	handler.push_access_log_message = function(socket, action)
 	{
 		rooms[socket.hue_room_id].activity = true
@@ -5560,6 +5651,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		rooms[socket.hue_room_id].activity = true
 	}
 
+	// Checks if a domain is black or white listed
 	handler.check_domain_list = function(media_type, src)
 	{
 		try
@@ -5579,7 +5671,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 
 			let domain = utilz.get_root(src)
-
 			let includes = list.includes(domain) || list.includes(`${domain}/`)
 
 			if(list_type === "white")
@@ -5607,6 +5698,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Checks if link data is available on Redis or tries to fetch metadata
 	handler.process_message_links = function(message, callback)
 	{
 		let url = utilz.get_first_url(message)
@@ -5656,6 +5748,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
+	// Tries to fetch a site's metadata 
 	handler.get_link_metadata = function(url, callback)
 	{
 		let response = 
@@ -5698,7 +5791,6 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		.then(body => 
 		{
 			let $ = cheerio.load(body)
-
 			let title = ""
 
 			if($("title").length > 0)
@@ -5753,6 +5845,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
+	// Generates IDs for messages
 	handler.generate_message_id = function()
 	{
 		return `${Date.now()}_${utilz.get_random_int(1, 1000)}`

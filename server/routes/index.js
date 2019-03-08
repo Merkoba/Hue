@@ -1,14 +1,18 @@
 module.exports = function(db_manager, config, sconfig, utilz)
 {
+	// Initial declarations
 	const jwt = require('jsonwebtoken')
 	const express = require('express')
 	const fetch = require('node-fetch')
 	const router = express.Router()
 
 	const c = {}
+	
 	c.vars = {}
 	c.rvars = {}
 
+	// Automatically includes all global settings and room state config options
+	
 	for(let key in config)
 	{
 		if(key.startsWith("global_settings_default") || key.startsWith("room_state_default"))
@@ -16,7 +20,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			c.vars[key] = config[key]
 		}
 	}
-
+	
+	// Fills the config object with relevant config options
 	c.vars.main_room_id = config.main_room_id
 	c.vars.default_image_source = config.default_image_source
 	c.vars.default_tv_source = config.default_tv_source
@@ -106,8 +111,11 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.max_displayed_url = config.max_displayed_url
 	c.vars.max_chat_searches = config.max_chat_searches
 
+	// Reserved usernames
+	// These can't be used on registration
 	const reserved_usernames = ["The system", config.image_ads_setter].map(x => x.toLowerCase())
 
+	// Checks if a URL length exceeds the limits
 	function check_url(req, res, next)
 	{
 		if(req.originalUrl.length > config.max_url_length)
@@ -129,6 +137,9 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		next()
 	}
 
+	// Checks if the user is logged in
+	// If they're logged in they receive a jwt token
+	// If not, they're redirected to the login page
 	function require_login(req, res, next)
 	{
 		let fromurl = encodeURIComponent(req.originalUrl)
@@ -172,8 +183,9 @@ module.exports = function(db_manager, config, sconfig, utilz)
 				console.error(err)
 			})
 		}
-	}	
+	}
 
+	// Login GET
 	router.get('/login', check_url, function(req, res, next) 
 	{
 		let c = {}
@@ -190,6 +202,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		res.render('login', c)
 	})
 
+	// Login POST
 	router.post('/login', function(req, res, next) 
 	{
 		let email = req.body.email
@@ -243,6 +256,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		})
 	})
 
+	// Register GET
 	router.get('/register', check_url, function(req, res, next) 
 	{
 		let c = {}
@@ -267,6 +281,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		res.render('register', c)
 	})
 
+	// Register POST
 	router.post('/register', function(req, res, next) 
 	{
 		let username = req.body.username
@@ -355,6 +370,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		}
 	})
 
+	// Complete registration
 	function do_register(req, res, next)
 	{
 		let username = req.body.username
@@ -408,6 +424,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		})		
 	}
 
+	// Verify with emailed registration code
 	router.get('/verify', check_url, function(req, res, next)
 	{
 		let token = req.query.token
@@ -470,6 +487,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		})
 	})	
 
+	// Checks if username is already in use
 	router.post('/check_username', function(req, res, next)	
 	{
 		let username = req.body.username
@@ -510,6 +528,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		})
 	})
 
+	// Checks if email is already in use
 	router.post('/check_email', function(req, res, next)	
 	{
 		let email = req.body.email
@@ -544,6 +563,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		})
 	})
 
+	// Goes to the recover password page
 	router.get('/recover', check_url, function(req, res, next) 
 	{
 		let c = {}
@@ -555,7 +575,8 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		res.render('recover', c)
 	})
-
+	
+	// Recover password POST
 	router.post('/recover', function(req, res, next) 
 	{
 		let email = req.body.email
@@ -615,6 +636,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		})
 	})
 
+	// Change password form
 	router.get('/change_password', check_url, function(req, res, next)
 	{
 		let token = req.query.token
@@ -677,6 +699,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		})
 	})
 
+	// Change password POST
 	router.post('/change_password', function(req, res, next)
 	{
 		let token = req.body.token
@@ -735,6 +758,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		})
 	})
 
+	// Shows a page with a message
 	router.get('/message', check_url, function(req, res, next) 
 	{
 		let c = {}
@@ -743,12 +767,14 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		res.render('message', c)
 	})		
 
+	// Logs out the user
 	router.get('/logout', function(req, res, next) 
 	{
 		req.session.destroy(function(){})
 		res.redirect('/login')
 	})	
 
+	// Enter root
 	router.get('/', [check_url, require_login], function(req, res, next) 
 	{
 		c.rvars.room_id = config.main_room_id
@@ -757,6 +783,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		res.render('main', c)
 	})
 	
+	// Enter a room
 	router.get('/:id(\\w+)', [check_url, require_login], function(req, res, next) 
 	{
 		c.rvars.room_id = req.params.id.substr(0, config.max_room_id_length)
