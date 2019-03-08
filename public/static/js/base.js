@@ -1,9 +1,20 @@
 const Hue = {}
-Hue.config = {}
 
+// This enables information about socket calls to the server in the console
+// Setting it to true is recommended
 Hue.debug_socket = true
+
+// This wraps all functions with a function
+// It shows every triggered function name
+// This is mainly to check for loops
+// Should be false unless debugging
 Hue.debug_functions = false
 
+// This enables or disables script loading
+// This should be always true unless developing without an internet connection
+Hue.load_scripts = false
+
+Hue.config = {}
 Hue.ls_global_settings = "global_settings_v1"
 Hue.ls_room_settings = "room_settings_v1"
 Hue.ls_room_state = "room_state_v1"
@@ -1837,7 +1848,6 @@ Hue.save_local_storage_timer = (function()
 	}
 })()
 
-
 Hue.save_local_storage = function(ls_name, obj, force=false)
 {
 	Hue.local_storage_to_save[ls_name] = obj
@@ -1983,7 +1993,6 @@ Hue.show_media_source = function(what)
 	let current = Hue[`current_${what}`]()
 	let setter = current.setter
 	let date = current.nice_date
-
 	let s
 
 	if(what === "image")
@@ -3389,9 +3398,7 @@ Hue.apply_theme = function()
 	}
 
 	let chat_font_size = `${cfsize_factor}rem`;
-
 	let profile_image_size = `${45 * cfsize_factor}px`
-
 	let background_color_topbox = background_color_2
 
 	if(Hue.get_setting("activity_bar"))
@@ -7116,7 +7123,6 @@ Hue.oi_startswith = function(str, what)
 Hue.get_closest_autocomplete = function(element, w)
 {
 	let info = Hue.tab_info[element.id]
-
 	let l = Hue.generate_words_to_autocomplete()
 	let wl = w.toLowerCase()
 	let has = false
@@ -7186,10 +7192,8 @@ Hue.tabbed = function(element)
 
 	let split = element.selectionStart
 	let value = element.value.replace(/\n/g, ' ')
-
 	let a = value.substring(0, split).match(/[^ ]*$/)[0]
 	let b = value.substring(split).match(/^[^ ]*/)[0]
-
 	let word = a + b
 
 	info.tabbed_start = split - a.length
@@ -7205,7 +7209,6 @@ Hue.tabbed = function(element)
 Hue.replace_tabbed = function(element, word)
 {
 	let info = Hue.tab_info[element.id]
-
 	let result = Hue.get_closest_autocomplete(element, word)
 
 	if(result)
@@ -7269,7 +7272,6 @@ Hue.check_scrollers = function()
 
 	let $ch = $("#chat_area")
 	let max = $ch.prop('scrollHeight') - $ch.innerHeight()
-
 	let scrolltop = $ch.scrollTop()
 	let diff = max - scrolltop
 
@@ -7474,11 +7476,8 @@ Hue.update_chat = function(args={})
 	let message_classes = "message chat_message"
 	let container_classes = "chat_content_container chat_menu_button_main"
 	let content_classes = "chat_content dynamic_title"
-
 	let d = args.date ? args.date : Date.now()
-
 	let nd = Hue.nice_date(d)
-
 	let pi
 
 	if(args.prof_image === "" || args.prof_image === undefined)
@@ -7494,7 +7493,6 @@ Hue.update_chat = function(args={})
 	let image_preview = false
 	let image_preview_src_original = false
 	let image_preview_text = false
-
 	let starts_me = args.message.startsWith('/me ') || args.message.startsWith('/em ')
 
 	if(!starts_me && Hue.get_setting("show_image_previews"))
@@ -7789,7 +7787,6 @@ Hue.add_to_chat = function(args={})
 	let uname = args.message.data("uname")
 	let date = args.message.data("date")
 	let is_public = args.message.data("public")
-
 	let content_container, message_id
 
 	if(mode === "chat")
@@ -7914,7 +7911,6 @@ Hue.add_to_chat = function(args={})
 Hue.get_old_activity_message = function(last_date, date)
 {
 	let diff = date - last_date
-
 	let s
 
 	if(diff < Hue.HOUR)
@@ -8531,7 +8527,6 @@ Hue.chat_announce = function(args={})
 
 	let d = args.date ? args.date : Date.now()
 	let t = args.title ? args.title : Hue.nice_date(d)
-
 	let image_preview = false
 	let image_preview_src_original = false
 	let image_preview_text = false
@@ -9546,7 +9541,6 @@ Hue.goto_top = function(animate=true)
 Hue.goto_bottom = function(force=false, animate=true)
 {
 	let $ch = $("#chat_area")
-
 	let max = $ch.prop('scrollHeight') - $ch.innerHeight()
 
 	if(force)
@@ -11932,7 +11926,6 @@ Hue.start_msg = function()
 		})
 	)
 
-
 	Hue.msg_image_history = Msg.factory
 	(
 		Object.assign({}, common, titlebar,
@@ -12518,7 +12511,6 @@ Hue.start_settings_widgets = function(type)
 Hue.modify_setting_widget = function(type, setting_name)
 {
 	let widget_type = Hue.user_settings[setting_name].widget_type
-
 	let item = $(`#${type}_${setting_name}`)
 
 	if(widget_type === "checkbox")
@@ -14962,7 +14954,6 @@ Hue.set_modal_image_number = function(id)
 
 	let index = Hue.images_changed.indexOf(Hue.loaded_modal_image)
 	let number = index + 1
-
 	let footer_text = `${number} of ${Hue.images_changed.length}`
 	$("#modal_image_footer_info").text(footer_text)
 	
@@ -15030,7 +15021,6 @@ Hue.modal_image_number_go = function()
 Hue.show_modal_image_resolution = function()
 {
 	let img = $("#modal_image")[0]
-
 	let w = img.naturalWidth
 	let h = img.naturalHeight
 
@@ -15556,9 +15546,7 @@ Hue.setup_show_profile = function()
 Hue.show_profile = function(uname, prof_image)
 {
 	let pi
-
 	let role = "Offline"
-
 	let user = Hue.get_user_by_username(uname)
 
 	if(user)
@@ -15704,9 +15692,7 @@ Hue.fix_frames = function()
 Hue.fix_frame = function(frame_id, test_parent_height=false)
 {
 	let id = `#${frame_id}`
-
 	let frame = $(id)
-
 	let frame_ratio
 
 	if(frame_id === "media_image_frame")
@@ -15723,7 +15709,6 @@ Hue.fix_frame = function(frame_id, test_parent_height=false)
 	let parent_width = parent.width()
 	let parent_height = test_parent_height ? test_parent_height : parent.height()
 	let parent_ratio = parent_height / parent_width
-
 	let width, height
 
 	if(parent_ratio === frame_ratio)
@@ -16519,7 +16504,6 @@ Hue.setup_input_placeholder = function()
 Hue.update_input_placeholder = function()
 {
 	let s
-
 	let info = `Hi ${Hue.username}, write something to ${Hue.room_name}`
 
 	if(Hue.get_setting("show_clock_in_input_placeholder"))
@@ -17175,7 +17159,6 @@ Hue.generate_mentions_regex = function()
 Hue.generate_highlight_words_regex = function()
 {
 	let words = ""
-
 	let lines = Hue.get_setting("other_words_to_highlight").split('\n')
 
 	for(let i=0; i<lines.length; i++)
@@ -17233,7 +17216,6 @@ Hue.check_highlights = function(message)
 Hue.generate_ignored_words_regex = function()
 {
 	let words = ""
-
 	let lines = Hue.get_setting("ignored_words").split('\n')
 
 	for(let i=0; i<lines.length; i++)
@@ -17687,9 +17669,7 @@ Hue.sent_popup_message_function = function(mode, message, draw_coords, data1=[])
 {
 	let cf = function(){}
 	let ff = function(){}
-
-	let s1
-	let s2
+	let s1, s2
 
 	if(mode === "whisper")
 	{
@@ -17885,7 +17865,6 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 	}
 
 	let nd = Hue.nice_date(data.date)
-
 	let f
 
 	if(data.username)
@@ -19520,7 +19499,6 @@ Hue.show_export_settings = function()
 {
 	let gsettings = localStorage.getItem(Hue.ls_global_settings)
 	let rsettings = localStorage.getItem(Hue.ls_room_settings)
-
 	let code = `let gsettings = ${gsettings}; Hue.save_local_storage(Hue.ls_global_settings, gsettings); let rsettings = ${rsettings}; Hue.save_local_storage(Hue.ls_room_settings, rsettings); Hue.restart_client()`
 	let code2 = `let gsettings = ${gsettings}; Hue.save_local_storage(Hue.ls_global_settings, gsettings); Hue.restart_client()`
 	let code3 = `let rsettings = ${rsettings}; Hue.save_local_storage(Hue.ls_room_settings, rsettings); Hue.restart_client()`
@@ -19911,7 +19889,6 @@ Hue.ping_server = function()
 Hue.pong_received = function(data)
 {
 	let d = (Date.now() - data.date)
-
 	let ds
 
 	if(d === 1)
@@ -20233,7 +20210,6 @@ Hue.apply_media_percentages = function()
 Hue.apply_media_positions = function()
 {
 	let p = Hue.get_setting("tv_display_position")
-
 	let tvp
 	let ip
 
@@ -20258,7 +20234,6 @@ Hue.apply_media_positions = function()
 Hue.swap_display_positions_2 = function()
 {
 	let p = Hue.get_setting("tv_display_position")
-
 	let np
 
 	if(p === "top")
@@ -20302,9 +20277,7 @@ Hue.swap_display_positions = function(type, np=false)
 Hue.arrange_media_setting_display_positions = function(type)
 {
 	let p = Hue[type].tv_display_position
-
-	let tvo
-	let imo
+	let tvo, imo
 
 	if(p === "top")
 	{
@@ -21126,11 +21099,9 @@ Hue.set_canvas_node_color = function(data, node, values, w)
 Hue.canvas_node_color_is_equal = function(a1, a2)
 {
 	let diff = 10
-
 	let c1 = Math.abs(a1[0] - a2[0]) <= diff
 	let c2 = Math.abs(a1[1] - a2[1]) <= diff
 	let c3 = Math.abs(a1[2] - a2[2]) <= diff
-
 	let alpha = Math.abs(a1[3] - a2[3]) <= diff
 
 	return (c1 && c2 && c3 && alpha)
@@ -21607,7 +21578,6 @@ Hue.setup_command_aliases = function()
 Hue.format_command_aliases = function(cmds)
 {
 	let aliases = cmds.split("\n")
-
 	let s = ""
 
 	for(let alias of aliases)
@@ -21773,7 +21743,6 @@ Hue.run_commands_queue = function(id)
 	}
 
 	let cmd = cmds.shift()
-
 	let lc_cmd = cmd.toLowerCase()
 
 	let obj = 	
@@ -22052,7 +22021,6 @@ Hue.change_voice_permission_command = function(arg)
 	let num = split[0]
 	let type = split[1]
 	let value = split[2]
-
 	let ptype = `voice${num}_${type}_permission`
 
 	if(Hue[ptype] === undefined)
@@ -22386,7 +22354,6 @@ Hue.set_user_settings_titles = function()
 Hue.toggle_chat_font_size = function(osize=false)
 {
 	let size = Hue.get_setting("chat_font_size")
-
 	let new_size = "normal"
 
 	if(osize)
@@ -22985,7 +22952,6 @@ Hue.check_domain_list = function(media_type, src)
 	}
 
 	let domain = Hue.utilz.get_root(src)
-
 	let includes = list.includes(domain) || list.includes(`${domain}/`)
 
 	if(list_type === "white")
@@ -23205,9 +23171,7 @@ Hue.check_activity_bar = function(update=true)
 	}
 
 	let d = Date.now() - Hue.config.max_activity_bar_delay
-
 	let new_top = []
-
 	let changed = false
 
 	for(let item of Hue.activity_list)
@@ -23605,11 +23569,8 @@ Hue.send_edit_messsage = function(id)
 	}
 
 	let chat_content = $(Hue.editing_message_container).find(".chat_content").get(0)
-
 	let new_message = Hue.editing_message_area.value.trim()
-
 	let edit_id = $(Hue.editing_message_container).data("id")
-
 	let third_person = false
 
 	if($(Hue.editing_message_container).hasClass("chat_content_container_third"))
@@ -24016,9 +23977,7 @@ Hue.receive_synth_key = function(data)
 Hue.push_to_synth_recent_users = function(data, type)
 {
 	let changed = false
-
 	let usernames = Hue.synth_recent_users.map(x => x.username)
-
 	let obj = {username:data.username, type:type, date:Date.now()}
 
 	if(!usernames.includes(data.username))
@@ -25036,7 +24995,6 @@ Hue.process_upload_comment = function()
 
 	let file = Hue.upload_comment_file
 	let type = Hue.upload_comment_type
-
 	let comment = Hue.utilz.clean_string2($("#upload_comment_input").val())
 
 	if(comment.length > Hue.config.safe_limit_4)
@@ -25502,6 +25460,11 @@ Hue.on_activity = function(sound=false)
 
 Hue.load_script = function(source)
 {
+	if(!Hue.load_scripts)
+	{
+		return false
+	}
+
 	console.info(`Loading script: ${source}`)
 
 	return new Promise((resolve, reject) => 
@@ -25575,7 +25538,6 @@ Hue.do_math_calculation = async function(arg)
 	}
 
 	let s = `${arg} = **${r}**`
-
 	let id = `calc_${Date.now()}`
 
 	let f = function()
