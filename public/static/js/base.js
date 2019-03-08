@@ -12,7 +12,7 @@ Hue.debug_functions = false
 
 // This enables or disables script loading
 // This should be always true unless developing without an internet connection
-Hue.load_scripts = false
+Hue.load_scripts = true
 
 Hue.config = {}
 Hue.ls_global_settings = "global_settings_v1"
