@@ -2953,3 +2953,8 @@ a.special_link:hover
 {
 	margin-top: 1rem;
 }
+
+.full_width
+{
+	width: 100%;
+}
