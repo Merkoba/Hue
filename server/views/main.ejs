@@ -33,8 +33,8 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/separator.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2760"></script>
-		<link rel="stylesheet" href="/static/css/style.css?version=618"/>
+		<script src="/static/js/base.js?version=2762"></script>
+		<link rel="stylesheet" href="/static/css/style.css?version=620"/>
 
 		<script>
 
@@ -1392,34 +1392,35 @@
 		</script>		
 
 		<script id='template_media_menu' type='text/x-handlebars-template' class='template'>
-			<div id='media_menu_container' class='unselectable flex_column_center'>
-				<div id='media_menu_loaded_media'>
-					<div class='flex_row_center' id='media_menu_image_options'>
+			<div id='media_menu_container' class='unselectable flex_column_center generic_vertical_separator'>
+				<div id='media_menu_loaded_media' class='generic_vertical_separator flex_column_center'>
+					<div>
 						<i class='fa fa-camera icon2c'></i>
-						<div class='pointer action inline' onclick='Hue.show_media_history("image")'>History</div>
-						<div class='pointer action inline' onclick='Hue.refresh_image(); Hue.hide_media_menu()'>Refresh</div>
+						<div class='flex_row_center media_menu_media_options' id='media_menu_image_options'>
+							<div class='pointer action inline' onclick='Hue.show_media_history("image")'>History</div>
+							<div class='pointer action inline' onclick='Hue.refresh_image(); Hue.hide_media_menu()'>Refresh</div>
+						</div>
+						<div id='media_menu_loaded_image' class='media_menu_loaded_media_container chat_area_clone_center'></div>
 					</div>
-					
-					<div id='media_menu_loaded_image' class='media_menu_loaded_media_container chat_area_clone_center'></div>
-				
-					<div class='flex_row_center' id='media_menu_tv_options'>
+
+					<div>
 						<i class='fa fa-television icon2c'></i>
-						<div class='pointer action inline' onclick='Hue.show_media_history("tv")'>History</div>
-						<div class='pointer action inline' onclick='Hue.refresh_tv(); Hue.hide_media_menu()'>Refresh</div>
+						<div class='flex_row_center media_menu_media_options' id='media_menu_tv_options'>
+							<div class='pointer action inline' onclick='Hue.show_media_history("tv")'>History</div>
+							<div class='pointer action inline' onclick='Hue.refresh_tv(); Hue.hide_media_menu()'>Refresh</div>
+						</div>
+						<div id='media_menu_loaded_tv' class='media_menu_loaded_media_container chat_area_clone_center'></div>
 					</div>
 
-					<div id='media_menu_loaded_tv' class='media_menu_loaded_media_container chat_area_clone_center'></div>
-
-					<div class='flex_row_center' id='media_menu_radio_options'>
+					<div>
 						<i class='fa fa-volume-up icon2c'></i>
-						<div class='pointer action inline' onclick='Hue.show_media_history("radio")'>History</div>
-						<div class='pointer action inline' onclick='Hue.refresh_radio(); Hue.hide_media_menu()'>Refresh</div>
+						<div class='flex_row_center media_menu_media_options' id='media_menu_radio_options'>
+							<div class='pointer action inline' onclick='Hue.show_media_history("radio")'>History</div>
+							<div class='pointer action inline' onclick='Hue.refresh_radio(); Hue.hide_media_menu()'>Refresh</div>
+						</div>
+						<div id='media_menu_loaded_radio' class='media_menu_loaded_media_container chat_area_clone_center'></div>
 					</div>
-
-					<div id='media_menu_loaded_radio' class='media_menu_loaded_media_container chat_area_clone_center'></div>
 				</div>
-				
-				<div class='spacer_line'></div>
 
 				<div id='media_menu_actions' class='grid_column_center'>
 					<div class='pointer action' onclick='Hue.stop_and_lock(); Hue.hide_media_menu()'>Stop & Lock Everything</div>
@@ -1427,25 +1428,25 @@
 					<div class='pointer action' onclick='Hue.default_media_state(false); Hue.hide_media_menu()'>Unlock Everything</div>
 					<div class='pointer action' onclick='Hue.default_media_state(); Hue.hide_media_menu()'>Default State</div>
 				</div>
-				
-				<div class='spacer_line'></div>
-				
-				<div id='media_menu_radio_volume_title' class='setting_title'>Radio Volume</div>
-				<div class='slider_container'>
-					<div class='slider_icon_left pointer action' onclick="Hue.set_media_menu_radio_volume('decrease')"><i class='icon2 fa fa-minus'></i></div>
-					<div id='media_menu_radio_volume' class="slider nstSlider" data-range_min="0" data-range_max="100" data-cur_min="0">
-						<div class="leftGrip" ondblclick="Hue.set_media_menu_radio_volume('default')"></div>
+
+				<div>
+					<div id='media_menu_radio_volume_title' class='setting_title'>Radio Volume</div>
+					<div class='slider_container'>
+						<div class='slider_icon_left pointer action' onclick="Hue.set_media_menu_radio_volume('decrease')"><i class='icon2 fa fa-minus'></i></div>
+						<div id='media_menu_radio_volume' class="slider nstSlider" data-range_min="0" data-range_max="100" data-cur_min="0">
+							<div class="leftGrip" ondblclick="Hue.set_media_menu_radio_volume('default')"></div>
+						</div>
+						<div class='slider_icon_right pointer action' onclick="Hue.set_media_menu_radio_volume('increase')"><i class='icon2b fa fa-plus'></i></div>
 					</div>
-					<div class='slider_icon_right pointer action' onclick="Hue.set_media_menu_radio_volume('increase')"><i class='icon2b fa fa-plus'></i></div>
-				</div>
-				
-				<div id='media_menu_tv_volume_title' class='setting_title'>TV Volume</div>
-				<div class='slider_container'>
-					<div class='slider_icon_left pointer action' onclick="Hue.set_media_menu_tv_volume('decrease')"><i class='icon2 fa fa-minus'></i></div>
-					<div id='media_menu_tv_volume' class="slider nstSlider" data-range_min="0" data-range_max="100" data-cur_min="0">
-						<div class="leftGrip" ondblclick="Hue.set_media_menu_tv_volume('default')"></div>
+					
+					<div id='media_menu_tv_volume_title' class='setting_title'>TV Volume</div>
+					<div class='slider_container'>
+						<div class='slider_icon_left pointer action' onclick="Hue.set_media_menu_tv_volume('decrease')"><i class='icon2 fa fa-minus'></i></div>
+						<div id='media_menu_tv_volume' class="slider nstSlider" data-range_min="0" data-range_max="100" data-cur_min="0">
+							<div class="leftGrip" ondblclick="Hue.set_media_menu_tv_volume('default')"></div>
+						</div>
+						<div class='slider_icon_right pointer action' onclick="Hue.set_media_menu_tv_volume('increase')"><i class='icon2b fa fa-plus'></i></div>
 					</div>
-					<div class='slider_icon_right pointer action' onclick="Hue.set_media_menu_tv_volume('increase')"><i class='icon2b fa fa-plus'></i></div>
 				</div>
 			</div>
 		</script>	

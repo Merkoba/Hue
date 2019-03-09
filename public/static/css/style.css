@@ -2405,15 +2405,24 @@ a.special_link:hover
 	margin-bottom: 0.6rem;
 }
 
-.media_menu_loaded_media_container
+.media_menu_media_options
 {
 	margin-top: 0.4rem;
 }
 
-#media_menu_loaded_image,
-#media_menu_loaded_tv
+.media_menu_loaded_media_container
 {
-	margin-bottom: 1.6rem;
+	margin-top: 0.8rem;
+}
+
+.media_menu_media_options > div:first-child
+{
+	margin-right: 0.8rem;
+}
+
+.media_menu_media_options > div
+{
+	text-decoration: underline;
 }
 
 #media_menu_tv_volume_title
@@ -2768,16 +2777,12 @@ a.special_link:hover
 	border-radius: 50%;
 }
 
-.spacer_line
+.vertical_separator
 {
-	margin-top: 1.8em;
-	margin-bottom: 1.8em;
 	height: 1px;
 	border: none;
 	background-color: currentColor;
 	opacity: 0.2;
-	width: 100%;
-	position: relative;
 }
 
 .grid_column_center

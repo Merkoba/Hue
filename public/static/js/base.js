@@ -1730,7 +1730,6 @@ Hue.init = function()
 	Hue.setup_user_functions()
 	Hue.setup_header()
 	Hue.setup_media_pickers()
-	Hue.setup_media_menu()
 	Hue.setup_generic_separators()
 
 	if(Hue.debug_functions)
@@ -17291,6 +17290,11 @@ Hue.get_loaded_media_messages = function()
 				obj[type] = message.clone(true, true)
 			}
 		}
+
+		else
+		{
+			obj[type] = "Not Loaded Yet"
+		}
 	}
 
 	return obj
@@ -26409,6 +26413,16 @@ Hue.setup_separators = function()
 		mode: "horizontal",
 		class: "color_3"
 	})
+
+	Hue.vertical_separator = Separator.factory(
+	{
+		mode: "vertical",
+		class: "vertical_separator",
+		html: "",
+		width: "100%",
+		margin_top: "1.8rem",
+		margin_bottom: "1.8rem"
+	})
 }
 
 // Updates header separators
@@ -26432,21 +26446,17 @@ Hue.setup_media_pickers = function()
 	}
 }
 
-// More media menu configurations
-Hue.setup_media_menu = function()
-{
-	for(let type of Hue.utilz.media_types)
-	{
-		Hue.horizontal_separator.separate($(`#media_menu_${type}_options`)[0])
-	}
-}
-
 // Applies separation to generic horizontal separator classes
 Hue.setup_generic_separators = function()
 {
 	$(".generic_horizontal_separator").each(function()
 	{
 		Hue.horizontal_separator.separate(this)
+	})
+
+	$(".generic_vertical_separator").each(function()
+	{
+		Hue.vertical_separator.separate(this)
 	})
 }
 
