@@ -356,12 +356,6 @@ div#header_radio_playing_icon
 	font-size: 0.8em;
 }
 
-.footer_separator
-{
-	margin-left: 0.8em;
-	margin-right: 0.8em;
-}
-
 #input
 {
 	font-size: 1rem;
@@ -1135,6 +1129,7 @@ input[type=text], textarea
 	height: 100%;
 	position: relative;
 	display: flex;
+	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 }
@@ -1493,12 +1488,6 @@ input[type=text], textarea
 	margin-top: 1rem;
 }
 
-.draw_image_buttons_separator
-{
-	margin-left: 0.8rem;
-	margin-right: 0.8rem;
-}
-
 #draw_image_mode_select_bucket
 {
 	margin-left: 1.6rem;
@@ -1770,10 +1759,9 @@ input[type=text], textarea
 	margin-left: 0;
 }
 
-.reactions_box_separator
+.reaction_icon:last-child
 {
-	margin-left: 0.4em;
-	margin-right: 0.4em;
+	margin-right: 0;
 }
 
 .chat_third_container
@@ -2383,6 +2371,11 @@ a.special_link:hover
 	text-align: left;
 }
 
+#media_menu_loaded_media
+{
+	width: 100%;
+}
+
 .media_history_container .announcement_content_split,
 #media_menu_loaded_media .announcement_content_split
 {
@@ -2709,11 +2702,6 @@ a.special_link:hover
 {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
-}
-
-#upload_comment_submit
-{
-	margin-right: 1rem;
 }
 
 #upload_comment_controls

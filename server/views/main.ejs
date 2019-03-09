@@ -31,10 +31,10 @@
 		<script src="/static/js/msg.min.js?version=27"></script>
 		<script src="/static/js/utilz.js?version=40"></script>
 		<script src="/static/js/colorlib.js?version=13"></script>
-		<script src="/static/js/wordz.js?version=1"></script>
+		<script src="/static/js/separator.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2759"></script>
-		<link rel="stylesheet" href="/static/css/style.css?version=617"/>
+		<script src="/static/js/base.js?version=2760"></script>
+		<link rel="stylesheet" href="/static/css/style.css?version=618"/>
 
 		<script>
 
@@ -68,29 +68,21 @@
 				</div>
 
 				<div id='header' class='unselectable bg2 panel'>
-
 					<div id='header_items'>
-
 						<div id='header_items_inner'>
-
 							<div id='main_menu_icon' class='pointer nicetitle action' onclick='Hue.show_main_menu()' title="Main Menu">
 								<div class='action pointer'><i class='icon fa fa-th-large'></i></div>
 							</div>
 
-							<div class='header_separator color_3'>|</div>
 							<div class='pointer action' id='usercount' onclick='Hue.show_userlist()'></div>
 
 							<div id='header_radio'>
-								
-								<div class='header_separator color_3'>|</div>
-
 								<div class='pointer action' id='toggle_radio_state' onclick='Hue.toggle_play_radio()'>
 									<div class='action pointer' id='header_radio_playing_icon'><i class='icon fa fa-volume-up'></i></div>
 									<div id='toggle_now_playing_text'>Start Radio</div>
 								</div>
 
 								<div id='header_radio_volume_area'>
-									<div class='header_separator color_3'>|</div>
 									<div id='header_radio_volume_controls'>
 										<div id='header_radio_volume_icon_minus' class='action pointer' onclick='Hue.radio_volume_decrease()'><i class='pointer icon fa fa-minus'></i></div>
 										<div class='pointer action' onclick='Hue.radio_volume_decrease()'>Volume:&nbsp;</div>
@@ -100,58 +92,44 @@
 								</div>
 
 								<div id='header_now_playing_area'>
-									<div class='header_separator color_3'>|</div> 
 									<div id='header_now_playing_controls' class='action' onclick='Hue.show_played()'>
 										<div class='pointer'>Now Playing:&nbsp;</div>
 										<div class='pointer' id='now_playing'>Loading</div>
 									</div>
 								</div>
-
 							</div>
 
 							<div id='header_topic'>
-								<div class='header_separator color_3'>|</div>
 								<div id='header_topic_inner' class='action' onclick='Hue.show_status()'>
 									<div class='header_item'>Topic:&nbsp;</div>
 									<div class='header_item' id='header_topic_text'></div>
 								</div>
 							</div>
-
 						</div>
-
 					</div>
-
 				</div>
 
 				<div class='unselectable' id='reactions_box_container'>
 					<div id='reactions_box'>
+						<div>
+							<i class='reaction_icon fa fa-thumbs-o-up pointer action nicetitle' onclick='Hue.send_reaction("like")' title="Like"></i>
+							<i class='reaction_icon fa fa-heart-o pointer action nicetitle' onclick='Hue.send_reaction("love")' title="Love"></i>
+							<i class='reaction_icon fa fa-smile-o pointer action nicetitle' onclick='Hue.send_reaction("happy")' title="Happy"></i>
+						</div>
 
-						<i class='reaction_icon fa fa-thumbs-o-up pointer action nicetitle' onclick='Hue.send_reaction("like")' title="Like"></i>
-						<i class='reaction_icon fa fa-heart-o pointer action nicetitle' onclick='Hue.send_reaction("love")' title="Love"></i>
-						<i class='reaction_icon fa fa-smile-o pointer action nicetitle' onclick='Hue.send_reaction("happy")' title="Happy"></i>
+						<div>
+							<i class='reaction_icon fa fa-thumbs-o-down pointer action nicetitle' onclick='Hue.send_reaction("dislike")' title="Dislike"></i>
+							<i class='reaction_icon fa fa-meh-o pointer action nicetitle' onclick='Hue.send_reaction("meh")' title="Meh"></i>
+							<i class='reaction_icon fa fa-frown-o pointer action nicetitle' onclick='Hue.send_reaction("sad")' title="Sad"></i>
+						</div>
 
-						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
-
-						<i class='reaction_icon fa fa-thumbs-o-down pointer action nicetitle' onclick='Hue.send_reaction("dislike")' title="Dislike"></i>
-						<i class='reaction_icon fa fa-meh-o pointer action nicetitle' onclick='Hue.send_reaction("meh")' title="Meh"></i>
-						<i class='reaction_icon fa fa-frown-o pointer action nicetitle' onclick='Hue.send_reaction("sad")' title="Sad"></i>
-						
-						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
-		
 						<div class='pointer action user_function_button' id='user_function_button_1'>F1</div>
-						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 						<div class='pointer action user_function_button' id='user_function_button_2'>F2</div>
-						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 						<div class='pointer action user_function_button' id='user_function_button_3'>F3</div>
-						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 						<div class='pointer action user_function_button' id='user_function_button_4'>F4</div>
-						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 						<div class='pointer action user_function_button' id='user_function_button_5'>F5</div>
-						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 						<div class='pointer action user_function_button' id='user_function_button_6'>F6</div>
-						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 						<div class='pointer action user_function_button' id='user_function_button_7'>F7</div>
-						<div class='reactions_box_separator'>&nbsp;|&nbsp;</div>
 						<div class='pointer action user_function_button' id='user_function_button_8'>F8</div>
 					</div>
 				</div>
@@ -283,10 +261,9 @@
 
 						<textarea id='input' size="1" rows="1"></textarea>
 
-						<div class='unselectable'>
+						<div id='footer_media_items' class='unselectable'>
 							
 							<div id='footer_images_controls' class='footer_media_control'>
-
 								<div id="footer_images_label" class='footer_media_label footer_text_small action pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("image")' data-type="images">Images</div>
 
 								<div  id='footer_images_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_image_picker()' title="Change the Image">
@@ -300,12 +277,9 @@
 								<div id='footer_lock_images_icon_container' class='pointer action nicetitle footer_icon3' onclick='Hue.toggle_lock_images()' onauxclick="Hue.media_lock_valve('images', event)" title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'>
 									<i id='footer_lock_images_icon' class='fa fa-unlock-alt'></i>
 								</div>
-								
-								<span class='footer_separator color_3'>|</span>
 							</div>
 							
 							<div id='footer_tv_controls' class='footer_media_control'>
-
 								<div id="footer_tv_label" class='footer_media_label footer_text_small action pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("tv")' data-type="tv">TV</div>
 
 								<div id='footer_tv_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_tv_picker()' title="Change the TV">
@@ -319,13 +293,9 @@
 								<div id='footer_lock_tv_icon_container' class='pointer action nicetitle footer_icon3' onclick='Hue.toggle_lock_tv()' onauxclick="Hue.media_lock_valve('tv', event)" title="Lock/Unlock TV. Locked means it will stay the same even if media is changed by a user">
 									<i class='fa fa-unlock-alt' id='footer_lock_tv_icon'></i>
 								</div>
-
-								<span class='footer_separator color_3'>|</span>
 							</div>
 							 
 							<div id='footer_radio_controls' class='footer_media_control'>
-							
-
 								<div id="footer_radio_label" class='footer_media_label footer_text_small action pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("radio")' data-type="radio">Radio</div>
 
 								<div id='footer_radio_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_radio_picker()' title="Change the Radio">
@@ -336,12 +306,9 @@
 									<i class='fa fa-toggle-on' id='footer_toggle_radio_icon'></i>
 								</div>
 
-
 								<div id='footer_lock_radio_icon_container' class='pointer action nicetitle footer_icon3' onclick='Hue.toggle_lock_radio()' onauxclick="Hue.media_lock_valve('radio', event)" title="Lock/Unlock Radio. Locked means it will stay the same even if media is changed by a user">
 									<i class='fa fa-unlock-alt' id='footer_lock_radio_icon'></i>
 								</div>
-								
-								<span class='footer_separator color_3'>|</span>
 							</div>
 
 							<div class='pointer action' onclick='Hue.show_media_menu()'>
@@ -371,10 +338,9 @@
 					<div class='menu_item_smaller action' onclick='Hue.show_help(1)'>Help</div>
 					<div class='menu_item_smaller action' onclick='Hue.copy_room_url()'>Copy Room URL</div>
 
-					<div class='flex_row_center'>
-						<div class='menu_item_smaller_2 action' onclick='Hue.show_status()'>Status</div>
-						<div class='menu_item_smaller_2 color_3'>&nbsp;|&nbsp;</div>
-						<div class='menu_item_smaller_2 action nicetitle' id='main_menu_search_button' onclick='Hue.show_chat_search()' title='Click or Right Click'>Search</div>
+					<div class='flex_row_center generic_horizontal_separator menu_item_smaller_2'>
+						<div class='action' onclick='Hue.show_status()'>Status</div>
+						<div class='action nicetitle' id='main_menu_search_button' onclick='Hue.show_chat_search()' title='Click or Right Click'>Search</div>
 					</div>
 
 				</div>
@@ -532,16 +498,14 @@
 					<img id='user_menu_profile_image' class='big_profile_image pointer unselectable' onclick='Hue.open_profile_image_picker()'>
 				</div>
 
-				<div class='flex_row_center user_menu_items_container'>
-					<div class='menu_item_smaller_2 action' onclick='Hue.show_details()'>Details</div>
-					<div class='menu_item_smaller_2 color_3'>&nbsp;|&nbsp;</div>
-					<div class='menu_item_smaller_2 action' onclick='Hue.needs_confirm("logout")'>Logout</div>
+				<div class='flex_row_center user_menu_items_container menu_item_smaller_2 generic_horizontal_separator'>
+					<div class='action' onclick='Hue.show_details()'>Details</div>
+					<div class='action' onclick='Hue.needs_confirm("logout")'>Logout</div>
 				</div>
 
-				<div class='flex_row_center user_menu_items_container_2'>
-					<div class='menu_item_smaller_2 action' onclick='Hue.show_highlights()'>Highlights</div>
-					<div class='menu_item_smaller_2 color_3'>&nbsp;|&nbsp;</div>
-					<div class='menu_item_smaller_2 action' onclick='Hue.show_input_history()'>History</div>
+				<div class='flex_row_center user_menu_items_container_2 menu_item_smaller_2 generic_horizontal_separator'>
+					<div class='action' onclick='Hue.show_highlights()'>Highlights</div>
+					<div class='action' onclick='Hue.show_input_history()'>History</div>
 				</div>
 
 				<div id='user_menu_settings_container'>
@@ -1153,14 +1117,11 @@
 		</script>
 
 		<script id='template_handle_url' type='text/x-handlebars-template' class='template'>
-			<div id='handle_url_container' class='unselectable'>
-				<div id='handle_url_link' class='horizontal_item bigger action inline pointer'>Link&nbsp;URL</div>
-				<div class='horizontal_separator header_separator inline color_3'>|</div>
-				<div id='handle_url_image' class='horizontal_item bigger action inline pointer'>Change&nbsp;Image</div>
-				<div class='horizontal_separator header_separator inline color_3'>|</div>
-				<div id='handle_url_tv' class='horizontal_item bigger action inline pointer'>Change&nbsp;TV</div>
-				<div class='horizontal_separator header_separator inline color_3'>|</div>
-				<div id='handle_url_radio' class='horizontal_item bigger action inline pointer'>Change&nbsp;Radio</div>
+			<div id='handle_url_container' class='flex_row_center unselectable'>
+				<div id='handle_url_link' class='bigger action inline pointer'>Link&nbsp;URL</div>
+				<div id='handle_url_image' class='bigger action inline pointer'>Change&nbsp;Image</div>
+				<div id='handle_url_tv' class='bigger action inline pointer'>Change&nbsp;TV</div>
+				<div id='handle_url_radio' class='bigger action inline pointer'>Change&nbsp;Radio</div>
 			</div>
 		</script>
 
@@ -1178,15 +1139,11 @@
 
 		<script id='template_open_url' type='text/x-handlebars-template' class='template'>
 			<div class='flex_row_center unselectable' id='open_url_container'>
-				<div class='horizontal_item bigger action inline pointer' id='open_url_menu_open'>Open&nbsp;URL</div>
-				<div class='horizontal_separator header_separator color_3'>|</div>
-				<div class='horizontal_item bigger action inline pointer' id='open_url_menu_copy'>Copy&nbsp;URL</div>
-				<div class='horizontal_separator header_separator color_3'>|</div>
-				<div class='horizontal_item bigger action inline pointer' id='open_url_menu_copy_title'>Copy&nbsp;Title</div>
-				<div class='horizontal_separator header_separator color_3'>|</div>
-				<div class='horizontal_item bigger action inline pointer' id='open_url_menu_load'>Load</div>
-				<div class='horizontal_separator header_separator color_3'>|</div>
-				<div class='horizontal_item bigger action inline pointer' id='open_url_menu_change'>Change</div>
+				<div class='bigger action inline pointer' id='open_url_menu_open'>Open&nbsp;URL</div>
+				<div class='bigger action inline pointer' id='open_url_menu_copy'>Copy&nbsp;URL</div>
+				<div class='bigger action inline pointer' id='open_url_menu_copy_title'>Copy&nbsp;Title</div>
+				<div class='bigger action inline pointer' id='open_url_menu_load'>Load</div>
+				<div class='bigger action inline pointer' id='open_url_menu_change'>Change</div>
 			</div>
 		</script>
 
@@ -1198,17 +1155,16 @@
 			<div id='upload_comment_controls' class='flex_column_center'>
 				<input type='text' id='upload_comment_input' class='input1' placeholder='Comment'>
 
-				<div class='flex_row_center unselectable'>
-					<div class='menu_item action' id='upload_comment_submit'>Upload</div>
+				<div class='flex_row_center unselectable generic_horizontal_separator'>
 					<div class='menu_item action' onclick='Hue.cancel_upload_comment()'>Cancel</div>
+					<div class='menu_item action' id='upload_comment_submit'>Upload</div>
 				</div>
 			</div>
 		</script>
 
 		<script id='template_background_image_select' type='text/x-handlebars-template' class='template'>
-			<div class='flex_row_center unselectable'>
+			<div class='flex_row_center unselectable' id='background_image_select_container'>
 				<div class='bigger action inline pointer' onclick='Hue.open_background_image_picker()'>Upload&nbsp;Image</div>
-				<div class='inline color_3'>&nbsp;&nbsp;|&nbsp;&nbsp;</div>
 				<div class='bigger action inline pointer' onclick='Hue.open_background_image_input()'>Use&nbsp;Image&nbsp;URL</div>
 			</div>
 		</script>
@@ -1326,12 +1282,10 @@
 				<input type='text' id='image_source_picker_input' class='input1 media_picker_input' placeholder='Search Term or URL'>
 				<input type='text' id='image_source_picker_input_comment' class='input1 media_picker_input' placeholder='Comment'>
 			</div>
-			<div class='unselectable'>
-				<div id='image_file_picker' class='menu_item action inline unselectable' onclick='Hue.msg_image_picker.close()'>Upload</div>
-				<span>&nbsp;|&nbsp;</span>
-				<div id='image_file_picker_draw' class='menu_item action inline unselectable' onclick='Hue.open_draw_image();Hue.msg_image_picker.close()'>Draw</div>
-				<span>&nbsp;|&nbsp;</span>
-				<div id='image_file_picker_draw' class='menu_item action inline unselectable' onclick='Hue.needs_confirm("image_prev", "This will change the image for everyone. Are you sure?")'>Previous</div>
+			<div class='unselectable flex_row_center' id='image_picker_options'>
+			<div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("image_prev", "This will change the image for everyone. Are you sure?")'>Previous</div>
+			<div class='menu_item action inline unselectable' onclick='Hue.open_draw_image();Hue.msg_image_picker.close()'>Draw</div>
+			<div id='image_file_picker' class='menu_item action inline unselectable' onclick='Hue.msg_image_picker.close()'>Upload</div>
 			</div>
 		</script>
 
@@ -1345,9 +1299,10 @@
 				<input type='text' id='tv_source_picker_input' class='input1 media_picker_input' placeholder='Search Term or URL'>
 				<input type='text' id='tv_source_picker_input_comment' class='input1 media_picker_input' placeholder='Comment'>
 			</div>
-			<div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("restart_tv", "This will restart the tv for everyone. Are you sure?")'>Restart</div>
-			<span>&nbsp;|&nbsp;</span>
-			<div id='image_file_picker_draw' class='menu_item action inline unselectable' onclick='Hue.needs_confirm("tv_prev", "This will change the tv for everyone. Are you sure?")'>Previous</div>
+			<div class='unselectable flex_row_center' id='tv_picker_options'>
+			<div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("tv_prev", "This will change the tv for everyone. Are you sure?")'>Previous</div>
+				<div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("restart_tv", "This will restart the tv for everyone. Are you sure?")'>Restart</div>
+			</div>
 		</script>
 
 		<script id='template_radio_picker' type='text/x-handlebars-template' class='template'>
@@ -1360,9 +1315,10 @@
 				<input type='text' id='radio_source_picker_input' class='input1 media_picker_input' placeholder='Search Term or URL'>
 				<input type='text' id='radio_source_picker_input_comment' class='input1 media_picker_input' placeholder='Comment'>
 			</div>
-			<div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("restart_radio", "This will restart the radio for everyone. Are you sure?")'>Restart</div>
-			<span>&nbsp;|&nbsp;</span>
-			<div id='image_file_picker_draw' class='menu_item action inline unselectable' onclick='Hue.needs_confirm("radio_prev", "This will change the radio for everyone. Are you sure?")'>Previous</div>
+			<div class='unselectable flex_row_center' id='radio_picker_options'>
+			<div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("radio_prev", "This will change the radio for everyone. Are you sure?")'>Previous</div>
+				<div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("restart_radio", "This will restart the radio for everyone. Are you sure?")'>Restart</div>
+			</div>
 		</script>
 
 		<script id='template_modal_image' type='text/x-handlebars-template' class='template'>
@@ -1373,11 +1329,9 @@
 
 				<div id='modal_image_header' class='panel unselectable bg2'>
 					<div id='modal_image_header_info_container'>
-						<div id='modal_image_header_info' class='horizontal_item action pointer'></div>
-						<div class='horizontal_separator header_separator color_3'>|</div>
-						<div id='modal_image_toolbar_load' class='horizontal_item action pointer'>Load</div>
-						<div class='horizontal_separator header_separator color_3'>|</div>
-						<div id='modal_image_toolbar_change' class='horizontal_item action pointer'>Change</div>
+						<div id='modal_image_header_info' class='action pointer'></div>
+						<div id='modal_image_toolbar_load' class='action pointer'>Load</div>
+						<div id='modal_image_toolbar_change' class='action pointer'>Change</div>
 					</div>
 				</div>
 
@@ -1440,31 +1394,25 @@
 		<script id='template_media_menu' type='text/x-handlebars-template' class='template'>
 			<div id='media_menu_container' class='unselectable flex_column_center'>
 				<div id='media_menu_loaded_media'>
-					<div class='flex_row_center'>
+					<div class='flex_row_center' id='media_menu_image_options'>
 						<i class='fa fa-camera icon2c'></i>
-						&nbsp;&nbsp;&nbsp;&nbsp;
 						<div class='pointer action inline' onclick='Hue.show_media_history("image")'>History</div>
-						&nbsp;&nbsp;|&nbsp;&nbsp;
 						<div class='pointer action inline' onclick='Hue.refresh_image(); Hue.hide_media_menu()'>Refresh</div>
 					</div>
 					
 					<div id='media_menu_loaded_image' class='media_menu_loaded_media_container chat_area_clone_center'></div>
 				
-					<div class='flex_row_center'>
+					<div class='flex_row_center' id='media_menu_tv_options'>
 						<i class='fa fa-television icon2c'></i>
-						&nbsp;&nbsp;&nbsp;&nbsp;
 						<div class='pointer action inline' onclick='Hue.show_media_history("tv")'>History</div>
-						&nbsp;&nbsp;|&nbsp;&nbsp;
 						<div class='pointer action inline' onclick='Hue.refresh_tv(); Hue.hide_media_menu()'>Refresh</div>
 					</div>
 
 					<div id='media_menu_loaded_tv' class='media_menu_loaded_media_container chat_area_clone_center'></div>
 
-					<div class='flex_row_center'>
+					<div class='flex_row_center' id='media_menu_radio_options'>
 						<i class='fa fa-volume-up icon2c'></i>
-						&nbsp;&nbsp;&nbsp;&nbsp;
 						<div class='pointer action inline' onclick='Hue.show_media_history("radio")'>History</div>
-						&nbsp;&nbsp;|&nbsp;&nbsp;
 						<div class='pointer action inline' onclick='Hue.refresh_radio(); Hue.hide_media_menu()'>Refresh</div>
 					</div>
 
@@ -1539,13 +1487,10 @@
 			<div id='write_message_feedback'></div>
 			<textarea rows="3" id='write_message_area' tabindex=0 placeholder="Write a Message (Optional)"></textarea>
 			<canvas id='draw_message_area' class='draw_canvas' width='400px' height='300px' tabindex=1></canvas>
-			<span class='unselectable'>
-
+			<span class='unselectable flex_row_center generic_horizontal_separator'>
 				<div class='bigger pointer unselectable action inline' 
 				onclick='Hue.clear_draw_message_state()' 
 				tabindex=3>Clear Drawing</div>
-
-				<span>&nbsp;|&nbsp;</span>
 
 				<div id='write_message_send_button' 
 				class='bigger pointer unselectable action inline' 
@@ -1614,13 +1559,10 @@
 
 				<canvas id='draw_image_area' class='draw_canvas' width='1920px' height='1440px' tabindex=1></canvas>
 
-				<div id='draw_image_buttons' class='flex_row_center'>
+				<div id='draw_image_buttons' class='unselectable flex_row_center'>
 					<div class='bigger pointer action' onclick='Hue.draw_image_undo()'>Undo</div>
-					<div class='draw_image_buttons_separator color_3'>|</div>
 					<div class='bigger pointer action' onclick='Hue.draw_image_redo()'>Redo</div>
-					<div class='draw_image_buttons_separator color_3'>|</div>
 					<div class='bigger pointer action' onclick='Hue.needs_confirm("clear_draw_image_func")'>Clear</div>
-					<div class='draw_image_buttons_separator color_3'>|</div>
 					<div class='bigger pointer action' onclick='Hue.upload_draw_image()' tabindex=3>Upload</div>
 				</div>
 			</div>

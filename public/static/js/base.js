@@ -65,7 +65,6 @@ Hue.alert_mode = 0
 Hue.commands_sorted = {}
 Hue.commands_sorted_2 = {}
 Hue.utilz = Utilz()
-Hue.wordz = Wordz()
 Hue.change_image_when_focused = false
 Hue.change_tv_when_focused = false
 Hue.change_radio_when_focused = false
@@ -205,6 +204,7 @@ Hue.vimeo_video_player_request = false
 Hue.hls_loading = false
 Hue.tone_loading = false
 Hue.math_loading = false
+Hue.wordz_loading = false
 
 // User settings object
 // Used to generate global and room settings
@@ -1650,6 +1650,7 @@ Hue.server_update_events =
 // This is the first function that gets executed
 Hue.init = function()
 {
+	Hue.setup_separators()
 	Hue.setup_markdown_regexes()
 	Hue.activate_key_detection()
 	Hue.setup_templates()
@@ -1727,6 +1728,10 @@ Hue.init = function()
 	Hue.setup_drag_events()
 	Hue.setup_open_url()
 	Hue.setup_user_functions()
+	Hue.setup_header()
+	Hue.setup_media_pickers()
+	Hue.setup_media_menu()
+	Hue.setup_generic_separators()
 
 	if(Hue.debug_functions)
 	{
@@ -2221,6 +2226,8 @@ Hue.setup_icons = function()
 	{
 		$("#footer_radio_icon_container").css("display", "none")
 	}
+
+	Hue.horizontal_separator.separate("footer_media_items")
 }
 
 // Shows the user's role
@@ -2433,18 +2440,18 @@ Hue.setup_image = function(mode, odata={})
 	}
 
 	data.info = `Setter: ${data.setter} | ${data.nice_date}`
-	data.info_html = `Setter: ${Hue.make_html_safe(data.setter)} <span class='header_separator color_3'>|</span> ${data.nice_date}`
+	data.info_html = `<div>Setter: ${Hue.make_html_safe(data.setter)}</div><div>${data.nice_date}</div>`
 
 	if(data.type === "upload")
 	{
 		data.info += ` | Size: ${Hue.utilz.get_size_string(data.size)}`
-		data.info_html += ` <span class='header_separator color_3'>|</span> Size: ${Hue.utilz.get_size_string(data.size)}`
+		data.info_html += `<div>Size: ${Hue.utilz.get_size_string(data.size)}</div>`
 	}
 	
 	if(data.query)
 	{
 		data.info += ` | Search Term: "${data.query}"`
-		data.info_html += ` <span class='header_separator color_3'>|</span> Search Term: "${Hue.make_html_safe(data.query)}"`
+		data.info_html += `<div>Search Term: "${Hue.make_html_safe(data.query)}"</div>`
 	}
 
 	data.message = `${data.setter} changed the image`
@@ -5942,8 +5949,13 @@ Hue.create_room_submit = function()
 }
 
 // Puts a random room name in the Create Room window's input
-Hue.create_room_suggest_name = function()
+Hue.create_room_suggest_name = async function()
 {
+	if(Hue.wordz === undefined)
+	{
+		await Hue.load_wordz()
+	}
+	
 	let sentence = Hue.wordz.make_random_sentence(2, true)
 	$("#create_room_name").val(sentence)
 }
@@ -10007,17 +10019,24 @@ Hue.push_played = function(info, info2=false)
 Hue.hide_now_playing = function()
 {
 	$('#header_now_playing_area').css('display', 'none')
+	Hue.horizontal_separator.separate("header_radio")
 }
 
 // Shows the Now Playing section in the header
 Hue.show_now_playing = function()
 {
 	$('#header_now_playing_area').css('display', 'flex')
+	Hue.horizontal_separator.separate("header_radio")
 }
 
 // Starts the loaded radio
 Hue.start_radio = function()
 {
+	if(!Hue.loaded_radio)
+	{
+		return false
+	}
+
 	if(Hue.loaded_radio.type === "audio")
 	{
 		$('#audio_player').attr("src", Hue.loaded_radio.source)
@@ -10053,6 +10072,8 @@ Hue.start_radio = function()
 	$('#header_radio_playing_icon').css('display', 'flex')
 	$('#header_radio_volume_area').css('display', 'flex')
 	$('#toggle_now_playing_text').html('Stop Radio')
+
+	Hue.horizontal_separator.separate("header_radio")
 
 	Hue.radio_started = true
 
@@ -10109,6 +10130,8 @@ Hue.stop_radio = function(complete_stop=true)
 		$('#header_radio_playing_icon').css('display', 'none')
 		$('#header_radio_volume_area').css('display', 'none')
 		$('#toggle_now_playing_text').html('Start Radio')
+
+		Hue.horizontal_separator.separate("header_radio")
 
 		Hue.radio_started = false
 
@@ -15080,6 +15103,8 @@ Hue.show_modal_image = function(data)
 
 	$("#modal_image_header_info").html(data.info_html)
 
+	Hue.horizontal_separator.separate("modal_image_header_info")
+
 	if(data.comment)
 	{
 		$("#modal_image_subheader").html(Hue.replace_markdown(Hue.make_html_safe(data.comment)))
@@ -15114,7 +15139,7 @@ Hue.show_modal_image = function(data)
 		$("#modal_image_toolbar_change").css("display", "none")
 	}
 
-	Hue.fix_horizontal_separators("modal_image_header_info_container")
+	Hue.horizontal_separator.separate("modal_image_header_info_container")
 
 	Hue.msg_modal_image.show(function()
 	{
@@ -15207,7 +15232,8 @@ Hue.show_modal_image_resolution = function()
 	let w = img.naturalWidth
 	let h = img.naturalHeight
 
-	$("#modal_image_header_info").html($("#modal_image_header_info").html() + ` <span class='header_separator color_3'>|</span> Resolution: ${w}x${h}`)
+	$("#modal_image_header_info").html(Hue.loaded_image.info_html + `<div>Resolution: ${w} x ${h}</div>`)
+	Hue.horizontal_separator.separate("modal_image_header_info")
 }
 
 // Clears image information in the modal image window
@@ -15295,6 +15321,7 @@ Hue.start_titles = function()
 }
 
 // Loads the HLS player for the <video> player
+// Returns a promise
 Hue.load_hls = async function()
 {
 	if(Hue.hls_loading)
@@ -15631,6 +15658,8 @@ Hue.change_radio_visibility = function()
 
 		Hue.radio_visible = false
 	}
+
+	Hue.update_header_separators()
 }
 
 // Opens the profile image picker to change the profile image
@@ -16277,6 +16306,7 @@ Hue.announce_theme_change = function(data)
 Hue.open_background_image_select = function()
 {
 	Hue.msg_info2.show(["Change Background Image", Hue.template_background_image_select()])
+	Hue.horizontal_separator.separate("background_image_select_container")
 }
 
 // If upload is chosen as the method to change the background image
@@ -20505,6 +20535,8 @@ Hue.setup_reactions_box = function()
 			Hue.hide_reactions_box()
 		}
 	})
+
+	Hue.horizontal_separator.separate("reactions_box")
 }
 
 // Starts a timeout to hide the reactions box when the mouse leaves the box
@@ -21104,6 +21136,7 @@ Hue.setup_draw_image = function()
 	})
 
 	Hue.draw_image_prepare_settings()
+	Hue.horizontal_separator.separate("draw_image_buttons")
 }
 
 // Prepares initial settings for the draw image window
@@ -22209,7 +22242,7 @@ Hue.open_url_menu = function(args={})
 		$("#open_url_menu_change").css("display", "none")
 	}
 
-	Hue.fix_horizontal_separators("open_url_container")
+	Hue.horizontal_separator.separate("open_url_container")
 	
 	Hue.open_url_source = args.source
 	Hue.open_url_data = args.data
@@ -25838,7 +25871,7 @@ Hue.setup_drag_events = function()
 					$("#handle_url_radio").css("display", "none")
 				}
 
-				Hue.fix_horizontal_separators("handle_url_container")
+				Hue.horizontal_separator.separate("handle_url_container")
 
 				let title = Hue.get_limited_title(text)
 
@@ -25871,53 +25904,6 @@ Hue.setup_drag_events = function()
 	{
 		Hue.change_radio_source(Hue.handled_url)
 		Hue.close_all_modals()
-	})
-}
-
-// Shows the necessary horizontal separators between items
-// Hides unneeded separators
-// This is to ensure proper separations like 'a | b | c' 
-// And not 'a || b | c |'
-Hue.fix_horizontal_separators = function(container_id)
-{
-	let n = 0
-	let ok = false
-	let container = $(`#${container_id}`)
-	let num_visible = container.find(".horizontal_item:not([style*='display: none'])").length
-
-	container.find("div").each(function()
-	{
-		if($(this).hasClass("horizontal_separator"))
-		{
-			if(ok)
-			{
-				$(this).css("display", "inline-block")
-				ok = false
-			}
-			
-			else
-			{
-				$(this).css("display", "none")
-			}
-		}
-
-		else
-		{
-			if($(this).css("display") !== "none")
-			{
-				n += 1
-
-				if(n < num_visible)
-				{
-					ok = true
-				}
-
-				else
-				{
-					ok = false
-				}
-			}
-		}
 	})
 }
 
@@ -26164,7 +26150,7 @@ Hue.on_activity = function(sound=false)
 }
 
 // Loads a Javascript file from a specified URL
-// Resolves the promise when the <script> is loaded
+// Resolves a promise when the <script> is loaded
 Hue.load_script = function(source)
 {
 	if(!Hue.load_scripts)
@@ -26411,4 +26397,74 @@ Hue.user_is_controllable = function(user)
 	}
 
 	return true
+}
+
+// Creates a Separator instance
+// This is used to apply horizontal separations between items
+// It takes into account un-displayed items to separate properly
+Hue.setup_separators = function()
+{
+	Hue.horizontal_separator = Separator.factory(
+	{
+		mode: "horizontal",
+		class: "color_3"
+	})
+}
+
+// Updates header separators
+Hue.update_header_separators = function()
+{
+	Hue.horizontal_separator.separate("header_items_inner")
+}
+
+// More header configurations
+Hue.setup_header = function()
+{
+	Hue.horizontal_separator.separate("header_radio")
+}
+
+// More media picker configurations
+Hue.setup_media_pickers = function()
+{
+	for(let type of Hue.utilz.media_types)
+	{
+		Hue.horizontal_separator.separate($(`#${type}_picker_options`)[0])
+	}
+}
+
+// More media menu configurations
+Hue.setup_media_menu = function()
+{
+	for(let type of Hue.utilz.media_types)
+	{
+		Hue.horizontal_separator.separate($(`#media_menu_${type}_options`)[0])
+	}
+}
+
+// Applies separation to generic horizontal separator classes
+Hue.setup_generic_separators = function()
+{
+	$(".generic_horizontal_separator").each(function()
+	{
+		Hue.horizontal_separator.separate(this)
+	})
+}
+
+// Loads the Wordz library
+// Returns a promise
+Hue.load_wordz = async function()
+{
+	if(Hue.wordz_loading)
+	{
+		return false
+	}
+	
+	Hue.wordz_loading = true
+		
+	return new Promise(async (resolve, reject) => 
+	{
+		await Hue.load_script("/static/js/wordz.js?version=1")
+		Hue.wordz = Wordz()
+		resolve()
+	})
 }
