@@ -292,8 +292,8 @@ Hue.user_settings =
 	speech_8: {widget_type:"textarea"},
 	speech_9: {widget_type:"textarea"},
 	speech_10: {widget_type:"textarea"},
-	chat_display_percentage: {widget_type:"custom"},
-	tv_display_percentage: {widget_type:"custom"},
+	chat_display_percentage: {widget_type:"range"},
+	tv_display_percentage: {widget_type:"range"},
 	tv_display_position: {widget_type:"custom"}
 }
 
@@ -1666,7 +1666,6 @@ Hue.init = function()
 	Hue.start_settings_widgets_listeners("room_settings")
 	Hue.setup_settings_windows()
 	Hue.set_radio_volume_widget()
-	Hue.start_media_menu_sliders()
 	Hue.start_filters()
 	Hue.start_image_events()
 	Hue.start_dropzone()
@@ -1731,6 +1730,7 @@ Hue.init = function()
 	Hue.setup_header()
 	Hue.setup_media_pickers()
 	Hue.setup_generic_separators()
+	Hue.setup_media_menu()
 
 	if(Hue.debug_functions)
 	{
@@ -3557,12 +3557,6 @@ Hue.apply_theme = function()
 	}
 
 	.highlighted, .highlighted2, .highlighted3, .highlighted4
-	{
-		background-color: ${background_color_2} !important;
-		color: ${font_color} !important;
-	}
-
-	.nstSlider
 	{
 		background-color: ${background_color_2} !important;
 		color: ${font_color} !important;
@@ -12819,7 +12813,13 @@ Hue.modify_setting_widget = function(type, setting_name)
 		item.prop("checked", Hue[type][setting_name])
 	}
 
-	else if(widget_type === "textarea" || widget_type === "text" || widget_type === "number")
+	else if
+	(
+		widget_type === "textarea" || 
+		widget_type === "text" || 
+		widget_type === "number" || 
+		widget_type === "range"
+	)
 	{
 		item.val(Hue[type][setting_name])
 	}
@@ -12853,47 +12853,15 @@ Hue.start_settings_widgets_listeners = function(type)
 		{
 			item.blur(() => {Hue[`setting_${setting}_action`](type)})
 		}
+
+		else if(widget_type === "range")
+		{
+			item.on("input change", function()
+			{
+				Hue[`setting_${setting}_action`](type)
+			})
+		}
 	}
-
-	$(`#${type}_tv_display_percentage`).nstSlider(
-	{
-		"left_grip_selector": ".leftGrip",
-		"value_changed_callback": function(cause, val) 
-		{
-			if(cause === "init")
-			{
-				return false
-			}
-
-			if(Hue[type].tv_display_percentage !== val)
-			{
-				Hue[type].tv_display_percentage = val
-				Hue[`save_${type}`]()
-				Hue.apply_media_percentages()
-			}
-		}
-	})
-
-	$(`#${type}_chat_display_percentage`).nstSlider(
-	{
-		"left_grip_selector": ".leftGrip",
-		"value_changed_callback": function(cause, val) 
-		{
-			if(cause === "init")
-			{
-				return false
-			}
-
-			if(Hue[type].chat_display_percentage !== val)
-			{
-				Hue[type].chat_display_percentage = val
-				Hue[`save_${type}`]()	
-				Hue.apply_media_percentages()
-			}
-		}
-	})
-
-	Hue.set_media_sliders(type)
 }
 
 // Executes all settings action functions
@@ -13796,6 +13764,42 @@ Hue.setting_show_clock_in_lockscreen_action = function(type, save=true)
 Hue.setting_autoreveal_spoilers_action = function(type, save=true)
 {
 	Hue[type].autoreveal_spoilers = $(`#${type}_autoreveal_spoilers`).prop("checked")
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+// Setting action for tv display percentage change
+Hue.setting_tv_display_percentage_action = function(type, save=true)
+{
+	let percentage = $(`#${type}_tv_display_percentage`).val()
+
+	if(Hue.active_settings("tv_display_percentage") === type)
+	{
+		Hue[type].tv_display_percentage = percentage
+		Hue[`save_${type}`]()
+		Hue.apply_media_percentages()
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+// Setting action for chat display percentage change
+Hue.setting_chat_display_percentage_action = function(type, save=true)
+{
+	let percentage = $(`#${type}_chat_display_percentage`).val()
+
+	if(Hue.active_settings("chat_display_percentage") === type)
+	{
+		Hue[type].chat_display_percentage = percentage
+		Hue[`save_${type}`]()
+		Hue.apply_media_percentages()
+	}
 
 	if(save)
 	{
@@ -19149,7 +19153,6 @@ Hue.reset_settings = function(type, empty=true)
 	Hue.start_settings_widgets(type)
 	Hue.call_setting_actions("global_settings", false)
 	Hue.call_setting_actions("room_settings", false)
-	Hue.set_media_sliders(type)
 	Hue.prepare_media_settings()
 
 	if(type === "room_settings")
@@ -19532,11 +19535,9 @@ Hue.start_room_settings_overriders = function()
 			}
 		}
 
-		if(setting === "chat_display_percentage" 
-		|| setting === "tv_display_percentage"
-		|| setting === "tv_display_position")
+		if(setting === "tv_display_position")
 		{
-			Hue.prepare_media_settings()
+			Hue.apply_media_positions()
 		}
 
 		Hue.check_room_settings_override()
@@ -20627,72 +20628,6 @@ Hue.run_user_function = function(n)
 	}
 	
 	Hue.hide_reactions_box()
-}
-
-// Changes the tv display slider to a given value from 10 to 90
-Hue.set_tv_display_percentage = function(v, type)
-{
-	if(v === undefined || type === undefined)
-	{
-		return false
-	}
-
-	if(v === "default")
-	{
-		v = Hue.config.global_settings_default_tv_display_percentage
-	}
-
-	v = parseInt(v)
-
-	if(!Number.isInteger(v))
-	{
-		return false
-	}
-
-	if(v < 10)
-	{
-		v = 10
-	}
-
-	else if(v > 90)
-	{
-		v = 90
-	}
-
-	$(`#${type}_tv_display_percentage`).nstSlider('set_position', v)
-}
-
-// Changes the chat display slider to a given value from 10 to 90
-Hue.set_chat_display_percentage = function(v, type)
-{
-	if(v === undefined || type === undefined)
-	{
-		return false
-	}
-
-	if(v === "default")
-	{
-		v = Hue.config.global_settings_default_chat_display_percentage
-	}
-
-	v = parseInt(v)
-
-	if(!Number.isInteger(v))
-	{
-		return false
-	}
-
-	if(v < 10)
-	{
-		v = 10
-	}
-
-	else if(v > 90)
-	{
-		v = 90
-	}
-
-	$(`#${type}_chat_display_percentage`).nstSlider('set_position', v)
 }
 
 // Applies percentages changes to the chat and media elements based on current state
@@ -21877,13 +21812,6 @@ Hue.prepare_media_settings = function()
 	Hue.apply_media_positions()
 }
 
-// Sets tv and chat sliders to current state
-Hue.set_media_sliders = function(type)
-{
-	Hue.set_tv_display_percentage(Hue[type].tv_display_percentage, type)
-	Hue.set_chat_display_percentage(Hue[type].chat_display_percentage, type)
-}
-
 // Sends an emit to change the image to the previous one
 Hue.image_prev = function()
 {
@@ -22541,12 +22469,6 @@ Hue.modify_setting = function(arg, show_feedback=true)
 		{
 			Hue.arrange_media_setting_display_positions(type)
 			Hue.apply_media_positions()
-		}
-
-		else if(setting === "tv_display_percentage" || "chat_display_percentage")
-		{
-			Hue.set_media_sliders(type)
-			Hue.apply_media_percentages()
 		}
 	}
 
@@ -26267,52 +26189,6 @@ Hue.do_math_calculation = async function(arg)
 	})
 }
 
-// Starts and setups radio and tv sliders in the media menu
-Hue.start_media_menu_sliders = function()
-{
-	$("#media_menu_radio_volume").nstSlider(
-	{
-		"left_grip_selector": ".leftGrip",
-		"value_changed_callback": function(cause, val) 
-		{
-			if(cause === "init")
-			{
-				return false
-			}
-
-			let n = Hue.utilz.round(val / 100, 1)
-
-			if(Hue.room_state.radio_volume !== n)
-			{
-				Hue.set_radio_volume(n, true, false)
-			}
-		}
-	})
-
-	Hue.set_media_menu_radio_volume()
-	
-	$("#media_menu_tv_volume").nstSlider(
-	{
-		"left_grip_selector": ".leftGrip",
-		"value_changed_callback": function(cause, val) 
-		{
-			if(cause === "init")
-			{
-				return false
-			}
-
-			let n = Hue.utilz.round(val / 100, 1)
-			
-			if(Hue.room_state.tv_volume !== n)
-			{
-				Hue.set_tv_volume(n, true, false)
-			}
-		}
-	})
-
-	Hue.set_media_menu_tv_volume()
-}
-
 // Sets the media menu radio slider
 Hue.set_media_menu_radio_volume = function(n=false)
 {
@@ -26346,7 +26222,9 @@ Hue.set_media_menu_radio_volume = function(n=false)
 		n = Hue.config.room_state_default_radio_volume
 	}
 
-	$("#media_menu_radio_volume").nstSlider('set_position', Hue.utilz.to_hundred(n))
+	$("#media_menu_radio_volume").val(n)
+
+	Hue.set_radio_volume(n, true, false)
 }
 
 // Sets the media menu tv slider
@@ -26382,7 +26260,9 @@ Hue.set_media_menu_tv_volume = function(n=false)
 		n = Hue.config.room_state_default_tv_volume
 	}
 
-	$("#media_menu_tv_volume").nstSlider('set_position', Hue.utilz.to_hundred(n))
+	$("#media_menu_tv_volume").val(n)
+
+	Hue.set_tv_volume(n, true, false)
 }
 
 // Checks if a user is controllable
@@ -26476,5 +26356,22 @@ Hue.load_wordz = async function()
 		await Hue.load_script("/static/js/wordz.js?version=1")
 		Hue.wordz = Wordz()
 		resolve()
+	})
+}
+
+// Additional media menu configurations
+Hue.setup_media_menu = function()
+{
+	Hue.set_media_menu_radio_volume()
+	Hue.set_media_menu_tv_volume()
+
+	$("#media_menu_radio_volume").on("input change", function()
+	{
+		Hue.set_radio_volume(parseFloat(this.value), true, false)
+	})
+	
+	$("#media_menu_tv_volume").on("input change", function()
+	{
+		Hue.set_tv_volume(parseFloat(this.value), true, false)
 	})
 }

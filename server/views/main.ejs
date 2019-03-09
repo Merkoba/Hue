@@ -18,7 +18,6 @@
 		<script src="/static/js/jquery.contextMenu.min.js?version=2"></script>
 		<script src="/static/js/jquery.ui.position.min.js?version=2"></script>
 		<script src="/static/js/socket.io.js"></script>
-		<script src="/static/js/jquery.nstSlider.min.js"></script>
 		<script src="/static/js/timeago.min.js"></script>
 		
 		<link rel="stylesheet" href="/static/css/font-awesome/css/font-awesome.min.css">
@@ -26,15 +25,14 @@
 		<link rel="stylesheet" href="/static/css/spectrum.css">
 		<link rel="stylesheet" href="/static/css/spectrum.css">
 		<link rel="stylesheet" href="/static/css/jquery.contextMenu.min.css?version=2"> 
-		<link rel="stylesheet" href="/static/css/jquery.nstSlider.min.css"> 
 		
 		<script src="/static/js/msg.min.js?version=27"></script>
 		<script src="/static/js/utilz.js?version=40"></script>
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/separator.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2763"></script>
-		<link rel="stylesheet" href="/static/css/style.css?version=621"/>
+		<script src="/static/js/base.js?version=2764"></script>
+		<link rel="stylesheet" href="/static/css/style.css?version=622"/>
 
 		<script>
 
@@ -681,9 +679,7 @@
 							<div class="setting_title">Chat/Media Percentages</div>
 							<div class='slider_container'>
 								<div class='slider_icon_left'><i class='icon2 fa fa-pencil'></i></div>
-								<div id='{{type}}_chat_display_percentage' class="slider nstSlider" data-range_min="10" data-range_max="90" data-cur_min="0">
-								    <div class="leftGrip" ondblclick='Hue.set_chat_display_percentage("default", "{{type}}")'></div>
-								</div>
+								<input type='range' id='{{type}}_chat_display_percentage' min="10" max="90" step="10" ondblclick='Hue.set_default_media_size()'>
 								<div class='slider_icon_right'><i class='icon2b fa fa-picture-o'></i></div>
 							</div>
 						</div>
@@ -692,9 +688,7 @@
 							<div class="setting_title">Image/TV Percentages</div>
 							<div class='slider_container'>
 								<div class='slider_icon_left'><i class='icon2 fa fa-camera'></i></div>
-								<div id='{{type}}_tv_display_percentage' class="slider nstSlider" data-range_min="10" data-range_max="90" data-cur_min="0">
-								    <div class="leftGrip" ondblclick='Hue.set_tv_display_percentage("default", "{{type}}")'></div>
-								</div>
+								<input type='range' id='{{type}}_tv_display_percentage' min="10" max="90" step="10" ondblclick='Hue.set_default_tv_size()'>
 								<div class='slider_icon_right'><i class='icon2b fa fa-television'></i></div>
 							</div>
 						</div>
@@ -1429,22 +1423,20 @@
 					<div class='pointer action' onclick='Hue.default_media_state(); Hue.hide_media_menu()'>Default State</div>
 				</div>
 
-				<div>
+				<div class='full_width'>
 					<div id='media_menu_radio_volume_title' class='setting_title'>Radio Volume</div>
 					<div class='slider_container'>
 						<div class='slider_icon_left pointer action' onclick="Hue.set_media_menu_radio_volume('decrease')"><i class='icon2 fa fa-minus'></i></div>
-						<div id='media_menu_radio_volume' class="slider nstSlider" data-range_min="0" data-range_max="100" data-cur_min="0">
-							<div class="leftGrip" ondblclick="Hue.set_media_menu_radio_volume('default')"></div>
-						</div>
+						<input type='range' id='media_menu_radio_volume' type="range" min="0" max="1" step="0.1" 
+						ondblclick='Hue.set_media_menu_radio_volume("default")'>
 						<div class='slider_icon_right pointer action' onclick="Hue.set_media_menu_radio_volume('increase')"><i class='icon2b fa fa-plus'></i></div>
 					</div>
 					
 					<div id='media_menu_tv_volume_title' class='setting_title'>TV Volume</div>
 					<div class='slider_container'>
 						<div class='slider_icon_left pointer action' onclick="Hue.set_media_menu_tv_volume('decrease')"><i class='icon2 fa fa-minus'></i></div>
-						<div id='media_menu_tv_volume' class="slider nstSlider" data-range_min="0" data-range_max="100" data-cur_min="0">
-							<div class="leftGrip" ondblclick="Hue.set_media_menu_tv_volume('default')"></div>
-						</div>
+						<input type='range' id='media_menu_tv_volume' type="range" min="0" max="1" step="0.1" 
+						ondblclick='Hue.set_media_menu_tv_volume("default")'>
 						<div class='slider_icon_right pointer action' onclick="Hue.set_media_menu_tv_volume('increase')"><i class='icon2b fa fa-plus'></i></div>
 					</div>
 				</div>

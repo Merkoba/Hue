@@ -1780,11 +1780,6 @@ input[type=text], textarea
 	align-items: center;
 }
 
-.nstSlider
-{
-	width: 10em !important;
-}
-
 .slider_icon_left
 {
 	width: 20px;
