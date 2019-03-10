@@ -20386,20 +20386,8 @@ Hue.ping_server = function()
 // Calculates how much time the pong response took to arrive
 Hue.pong_received = function(data)
 {
-	let d = (Date.now() - data.date)
-	let ds
-
-	if(d === 1)
-	{
-		ds = `${d} ms`
-	}
-
-	else
-	{
-		ds = `${d} ms`
-	}
-
-	Hue.feedback(`Pong: ${ds}`)
+	let nice_time = Hue.utilz.nice_time(Date.now(), data.date)
+	Hue.feedback(`Pong: ${nice_time}`)
 }
 
 // Sends a reaction to the chat

@@ -555,6 +555,42 @@ const Utilz = function()
 		return Object.keys(obj).length === 0 && obj.constructor === Object
 	}
 
+	utilz.nice_time = function(date1, date2)
+	{
+		let d = (date1 - date2)
+		let nt
+
+		if(d >= 1000)
+		{
+			let dm = utilz.round(d / 1000, 3)
+
+			if(dm === 1)
+			{
+				nt = `${dm} second`
+			}
+	
+			else
+			{
+				nt = `${dm} seconds`
+			}
+		}
+
+		else
+		{
+			if(d === 1)
+			{
+				nt = `${d} millisecond`
+			}
+	
+			else
+			{
+				nt = `${d} milliseconds`
+			}
+		}
+
+		return nt
+	}
+
 	utilz.media_types = ["image", "tv", "radio"]
 
 	utilz.synth_notes = 
