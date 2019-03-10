@@ -15243,8 +15243,11 @@ Hue.show_modal_image_resolution = function()
 	let w = img.naturalWidth
 	let h = img.naturalHeight
 
-	$("#modal_image_header_info").html(Hue.loaded_modal_image.info_html + `<div>Resolution: ${w} x ${h}</div>`)
-	Hue.horizontal_separator.separate("modal_image_header_info")
+	if(img.src === Hue.loaded_modal_image.source)
+	{
+		$("#modal_image_header_info").html(Hue.loaded_modal_image.info_html + `<div>Resolution: ${w} x ${h}</div>`)
+		Hue.horizontal_separator.separate("modal_image_header_info")
+	}
 }
 
 // Clears image information in the modal image window
