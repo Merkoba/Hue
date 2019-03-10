@@ -3544,7 +3544,7 @@ Hue.apply_theme = function()
 		border: 1px solid ${font_color} !important;
 	}
 
-	#reactions_box
+	#reactions_box_container
 	{
 		background-color: ${background_color_2} !important;
 		color: ${font_color} !important;
