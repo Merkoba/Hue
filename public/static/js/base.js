@@ -15093,15 +15093,17 @@ Hue.show_modal_image = function(data)
 		if(Hue.images_changed.length > 0)
 		{
 			Hue.show_current_image_modal(false)
-			return
+			return false
 		}
 
 		else
 		{
 			Hue.msg_info.show("No image loaded yet")
-			return
+			return false
 		}
 	}
+
+	Hue.loaded_modal_image = data
 
 	let img = $("#modal_image")
 
@@ -15127,8 +15129,6 @@ Hue.show_modal_image = function(data)
 	{
 		$("#modal_image_subheader").css("display", "none")
 	}
-
-	Hue.loaded_modal_image = data
 
 	if((Hue.room_images_mode === "enabled" || Hue.room_images_mode === "locked") && data !== Hue.loaded_image)
 	{
@@ -15235,7 +15235,7 @@ Hue.modal_image_number_go = function()
 	}
 }
 
-// Adds image resolution information to the image's information
+// Adds modal image resolution information to the modal image's information
 // This is disaplayed in the modal image window
 Hue.show_modal_image_resolution = function()
 {
@@ -15243,7 +15243,7 @@ Hue.show_modal_image_resolution = function()
 	let w = img.naturalWidth
 	let h = img.naturalHeight
 
-	$("#modal_image_header_info").html(Hue.loaded_image.info_html + `<div>Resolution: ${w} x ${h}</div>`)
+	$("#modal_image_header_info").html(Hue.loaded_modal_image.info_html + `<div>Resolution: ${w} x ${h}</div>`)
 	Hue.horizontal_separator.separate("modal_image_header_info")
 }
 
