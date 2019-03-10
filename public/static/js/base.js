@@ -1787,6 +1787,7 @@ Hue.on_join = function(data)
 	Hue.setup_input_placeholder()
 	Hue.setup_details()
 	Hue.start_active_media()
+	Hue.check_latest_highlight()
 
 	Hue.at_startup()
 }
@@ -7976,6 +7977,7 @@ Hue.add_to_chat = function(args={})
 	let uname = args.message.data("uname")
 	let date = args.message.data("date")
 	let is_public = args.message.data("public")
+	let highlighted = args.message.data("highlighted")
 	let content_container, message_id
 
 	if(mode === "chat")
@@ -8019,12 +8021,15 @@ Hue.add_to_chat = function(args={})
 						content_container.addClass("fader")
 					}
 
+					content_container.data("date", date)
+					content_container.data("highlighted", highlighted)
+
 					last_message.find(".chat_container").eq(0).append(content_container)
 					message_id = last_message.data("message_id")
 
 					if(!last_message.data("highlighted"))
 					{
-						last_message.data("highlighted", args.message.data("highlighted"))
+						last_message.data("highlighted", highlighted)
 					}
 
 					appended = true
@@ -8067,6 +8072,15 @@ Hue.add_to_chat = function(args={})
 	if(Hue.started)
 	{
 		Hue.goto_bottom(false, false)
+
+		if(highlighted)
+		{
+			if(Hue.room_state.last_highlight_date < date)
+			{
+				Hue.room_state.last_highlight_date = date
+				Hue.save_room_state()
+			}
+		}
 	}
 
 	if(Hue.started && !Hue.app_focused)
@@ -8089,7 +8103,7 @@ Hue.add_to_chat = function(args={})
 		Hue.push_to_activity_bar(uname, date)
 	}
 
-	if(args.notify && Hue.started && args.message.data("highlighted"))
+	if(args.notify && Hue.started && highlighted)
 	{
 		Hue.electron_signal("highlighted")
 	}
@@ -13895,7 +13909,8 @@ Hue.get_room_state = function()
 		"screen_locked",
 		"synth_muted",
 		"lockscreen_lights_off",
-		"chat_searches"
+		"chat_searches",
+		"last_highlight_date"
 	]
 
 	for(let setting of settings)
@@ -26371,4 +26386,57 @@ Hue.setup_media_menu = function()
 	{
 		Hue.set_tv_volume(parseFloat(this.value), true, false)
 	})
+}
+
+Hue.check_latest_highlight = function()
+{
+	let latest_highlight = Hue.get_latest_highlight()
+	
+	if(latest_highlight)
+	{
+		let date = $(latest_highlight).data("date")
+
+		if(date > Hue.room_state.last_highlight_date)
+		{
+			Hue.feedback(`Click here to see new highlights`,
+			{
+				onclick: function()
+				{
+					Hue.show_highlights()
+				}
+			})
+
+			Hue.room_state.last_highlight_date = date
+			Hue.save_room_state()
+		}
+	}
+}
+
+Hue.get_latest_highlight = function()
+{
+	let latest_highlight = false
+
+	$($("#chat_area .chat_content_container").get().reverse()).each(function()
+	{
+		if($(this).data("highlighted"))
+		{
+			latest_highlight = this
+			return false
+		}
+	})
+
+	$($("#chat_area > .message.announcement").get().reverse()).each(function()
+	{
+		if($(this).data("highlighted"))
+		{
+			if($(this).data("date") > $(latest_highlight).data("date"))
+			{
+				latest_highlight = this
+			}
+			
+			return false
+		}
+	})
+
+	return latest_highlight
 }

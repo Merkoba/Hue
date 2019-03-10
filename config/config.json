@@ -190,6 +190,7 @@
 	"room_state_default_synth_muted": false,
 	"room_state_default_lockscreen_lights_off": false,
 	"room_state_default_chat_searches": [],
+	"room_state_default_last_highlight_date": 0,
 	"double_tap_key": "Shift",
 	"double_tap_key_2": "Control",
 	"double_tap_key_3": "Tab",

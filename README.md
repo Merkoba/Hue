@@ -616,6 +616,9 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "room_state_default_chat_searches"
 >Default chat searches list.
 
+"room_state_default_last_highlight_date"
+>Default date to check for new highlights to announce at startup.
+
 "double_tap_key"
 >The key that triggers double tap.
 
