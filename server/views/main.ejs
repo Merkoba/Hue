@@ -31,7 +31,7 @@
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/separator.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2764"></script>
+		<script src="/static/js/base.js?version=2765"></script>
 		<link rel="stylesheet" href="/static/css/style.css?version=622"/>
 
 		<script>
@@ -678,18 +678,18 @@
 						<div class='settings_item settings_top_level_item' data-setting='chat_display_percentage'>
 							<div class="setting_title">Chat/Media Percentages</div>
 							<div class='slider_container'>
-								<div class='slider_icon_left'><i class='icon2 fa fa-pencil'></i></div>
+								<div class='slider_icon_left pointer action' onclick='Hue.decrease_media_percentage()'><i class='icon2 fa fa-pencil'></i></div>
 								<input type='range' id='{{type}}_chat_display_percentage' min="10" max="90" step="10" ondblclick='Hue.set_default_media_size()'>
-								<div class='slider_icon_right'><i class='icon2b fa fa-picture-o'></i></div>
+								<div class='slider_icon_right pointer action' onclick='Hue.increase_media_percentage()'><i class='icon2b fa fa-picture-o'></i></div>
 							</div>
 						</div>
 
 						<div class='settings_item settings_top_level_item' data-setting='tv_display_percentage'>
 							<div class="setting_title">Image/TV Percentages</div>
 							<div class='slider_container'>
-								<div class='slider_icon_left'><i class='icon2 fa fa-camera'></i></div>
+								<div class='slider_icon_left pointer action' onclick='Hue.decrease_tv_percentage()'><i class='icon2 fa fa-camera'></i></div>
 								<input type='range' id='{{type}}_tv_display_percentage' min="10" max="90" step="10" ondblclick='Hue.set_default_tv_size()'>
-								<div class='slider_icon_right'><i class='icon2b fa fa-television'></i></div>
+								<div class='slider_icon_right pointer action' onclick='Hue.increase_tv_percentage()'><i class='icon2b fa fa-television'></i></div>
 							</div>
 						</div>
 

@@ -3543,13 +3543,6 @@ Hue.apply_theme = function()
 		border: 1px solid ${font_color} !important;
 	}
 
-	.modal_select
-	{
-		color: ${background_color} !important;
-		background-color: ${font_color} !important;
-		border: 1px solid ${background_color_2} !important;
-	}
-
 	#reactions_box
 	{
 		background-color: ${background_color_2} !important;
@@ -13774,7 +13767,7 @@ Hue.setting_autoreveal_spoilers_action = function(type, save=true)
 // Setting action for tv display percentage change
 Hue.setting_tv_display_percentage_action = function(type, save=true)
 {
-	let percentage = $(`#${type}_tv_display_percentage`).val()
+	let percentage = parseInt($(`#${type}_tv_display_percentage`).val())
 
 	if(Hue.active_settings("tv_display_percentage") === type)
 	{
@@ -13792,7 +13785,7 @@ Hue.setting_tv_display_percentage_action = function(type, save=true)
 // Setting action for chat display percentage change
 Hue.setting_chat_display_percentage_action = function(type, save=true)
 {
-	let percentage = $(`#${type}_chat_display_percentage`).val()
+	let percentage = parseInt($(`#${type}_chat_display_percentage`).val())
 
 	if(Hue.active_settings("chat_display_percentage") === type)
 	{
@@ -23225,6 +23218,8 @@ Hue.unmaximize_media = function()
 // Does the change of tv display percentage
 Hue.do_media_tv_size_change = function(size, notify=true)
 {
+	size = parseInt(size)
+	
 	if(size < 0 || size > 100)
 	{
 		return false
@@ -23285,7 +23280,7 @@ Hue.notify_media_tv_size_change = function(size)
 // Gradually increases the chat display percentage
 Hue.increase_media_percentage = function()
 {
-	let size = Hue.get_setting("chat_display_percentage")
+	let size = parseInt(Hue.get_setting("chat_display_percentage"))
 	size += 10
 	size = Hue.utilz.round2(size, 10)
 	Hue.do_chat_size_change(size)
@@ -23294,7 +23289,7 @@ Hue.increase_media_percentage = function()
 // Gradually decreases the chat display percentage
 Hue.decrease_media_percentage = function()
 {
-	let size = Hue.get_setting("chat_display_percentage")
+	let size = parseInt(Hue.get_setting("chat_display_percentage"))
 	size -= 10
 	size = Hue.utilz.round2(size, 10)
 	Hue.do_chat_size_change(size)
@@ -23303,6 +23298,8 @@ Hue.decrease_media_percentage = function()
 // Changes that chat font size
 Hue.do_chat_size_change = function(size)
 {
+	size = parseInt(size)
+
 	if(size < 10 || size > 100)
 	{
 		return false
