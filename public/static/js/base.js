@@ -26388,6 +26388,8 @@ Hue.setup_media_menu = function()
 	})
 }
 
+// Checks if there are new highlights since the last load
+// If so, a clickable announcement appears which opens Highlights
 Hue.check_latest_highlight = function()
 {
 	let latest_highlight = Hue.get_latest_highlight()
@@ -26412,6 +26414,8 @@ Hue.check_latest_highlight = function()
 	}
 }
 
+// Gets the last highlighted message
+// Either a chat content container or an announcement
 Hue.get_latest_highlight = function()
 {
 	let latest_highlight = false
