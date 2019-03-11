@@ -2324,8 +2324,7 @@ Hue.do_socket_emit = function(obj)
 {
 	if(Hue.debug_socket)
 	{
-		console.info(`Emit: ${obj.destination}`)
-		console.info(`${JSON.stringify(obj.data)}`)
+		console.info(`Emit: ${obj.destination} | Data: ${JSON.stringify(obj.data)}`)
 	}
 
 	obj.data.server_method_name = obj.destination
@@ -26148,7 +26147,6 @@ Hue.get_latest_highlight = function()
 }
 
 // Centralized function to create debouncers
-// These are functions that get executed after not being called after a set delay
 Hue.create_debouncer = function(func, delay)
 {
 	return (function()
@@ -26177,8 +26175,7 @@ Hue.create_debouncers = function()
 		Hue.do_modal_filter()
 	}, Hue.filter_delay)
 
-	// This is used to save a localStorage object after x milliseconds
-	// The x milliseconds delay gets resetted on each call
+	// Debounce timer for saving a localStorage object
 	// This was done to avoid saving loops
 	Hue.save_local_storage_timer = Hue.create_debouncer(function()
 	{
