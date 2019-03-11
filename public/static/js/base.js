@@ -26147,6 +26147,8 @@ Hue.get_latest_highlight = function()
 	return latest_highlight
 }
 
+// Centralized function to create debouncers
+// These are functions that get executed after not being called after a set delay
 Hue.create_debouncer = function(func, delay)
 {
 	return (function()
