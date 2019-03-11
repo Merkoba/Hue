@@ -74,11 +74,6 @@ Hue.room_radio_mode = "enabled"
 Hue.radio_started = false
 Hue.background_image_setter = ""
 Hue.background_image_date = ""
-Hue.last_image_source = false
-Hue.last_tv_source = false
-Hue.last_tv_type = false
-Hue.last_radio_source = false
-Hue.last_radio_type = false
 Hue.files = {}
 Hue.input_changed = false
 Hue.youtube_video_play_on_queue = false
@@ -181,6 +176,9 @@ Hue.first_media_change = false
 Hue.calc_round_places = 10
 Hue.media_icons = {image: "fa-camera", tv: "fa-television", radio: "fa-volume-up"}
 Hue.typing_delay = 100
+Hue.loaded_image = {}
+Hue.loaded_tv = {}
+Hue.loaded_radio = {}
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -2901,7 +2899,7 @@ Hue.load_radio = function(item, force=false)
 			Hue.youtube_player.setVolume(Hue.get_nice_volume(Hue.room_state.radio_volume))
 		}
 
-		if(force || (!Hue.room_state.radio_locked || !Hue.last_radio_source))
+		if(force || (!Hue.room_state.radio_locked || !Hue.loaded_radio.source))
 		{
 			Hue.push_played(false, {s1:item.title, s2:item.source})
 		}
@@ -2928,7 +2926,7 @@ Hue.load_radio = function(item, force=false)
 			})
 		}
 
-		if(force || (!Hue.room_state.radio_locked || !Hue.last_radio_source))
+		if(force || (!Hue.room_state.radio_locked || !Hue.loaded_radio.source))
 		{
 			Hue.push_played(false, {s1:item.title, s2:item.source})
 		}
@@ -3079,13 +3077,13 @@ Hue.show_youtube_video = function(item, play=true)
 {
 	Hue.before_show_tv(item)
 
-	let id = Hue.utilz.get_youtube_id(src)
+	let id = Hue.utilz.get_youtube_id(item.source)
 
 	Hue.youtube_video_play_on_queue = play
 
 	if(id[0] === "video")
 	{
-		Hue.youtube_video_player.cueVideoById({videoId:id[1], startSeconds:Hue.utilz.get_youtube_time(src)})
+		Hue.youtube_video_player.cueVideoById({videoId:id[1], startSeconds:Hue.utilz.get_youtube_time(item.source)})
 	}
 
 	else if(id[0] === "list")
@@ -3311,7 +3309,7 @@ Hue.apply_background = function()
 {
 	let bg_image
 
-	if(Hue.loaded_image && (Hue.background_mode === "mirror" || Hue.background_mode === "mirror_tiled"))
+	if(Hue.loaded_image.source && (Hue.background_mode === "mirror" || Hue.background_mode === "mirror_tiled"))
 	{
 		bg_image = Hue.loaded_image.source
 	}
@@ -8126,7 +8124,7 @@ Hue.change = function(args={})
 
 	if(args.type === "image")
 	{
-		if(!args.force && Hue.last_image_source === Hue.current_image().source)
+		if(!args.force && Hue.loaded_image.source === Hue.current_image().source)
 		{
 			return false
 		}
@@ -8134,7 +8132,7 @@ Hue.change = function(args={})
 
 	else if(args.type === "tv")
 	{
-		if(!args.force && Hue.last_tv_source === Hue.current_tv().source)
+		if(!args.force && Hue.loaded_tv.source === Hue.current_tv().source)
 		{
 			return false
 		}
@@ -8142,7 +8140,7 @@ Hue.change = function(args={})
 
 	else if(args.type === "radio")
 	{
-		if(!args.force && Hue.last_radio_source === Hue.current_radio().source)
+		if(!args.force && Hue.loaded_radio.source === Hue.current_radio().source)
 		{
 			return false
 		}
@@ -8185,13 +8183,11 @@ Hue.change = function(args={})
 
 	if(args.type === "tv")
 	{
-		if(!Hue.last_tv_source && !args.force)
+		if(!Hue.loaded_tv.source && !args.force)
 		{
 			args.play = false
 		}
 	}
-
-	let setter = ""
 
 	if(args.type === "image")
 	{
@@ -8202,7 +8198,7 @@ Hue.change = function(args={})
 
 		let locked = Hue.room_state.images_locked && !bypass_lock
 
-		if(!args.item && locked && Hue.last_image_source && !args.current_source)
+		if(!args.item && locked && Hue.loaded_image.source && !args.current_source)
 		{
 			return false
 		}
@@ -8210,31 +8206,9 @@ Hue.change = function(args={})
 		if(Hue.room_images_mode === "disabled")
 		{
 			return false
-		}
-
-		let src
-		let source_changed
-
-		if(args.current_source && Hue.last_image_source)
-		{
-			src = Hue.last_image_source
-			source_changed = false
-		}
-
-		else
-		{
-			src = item.source
-			source_changed = true
-		}		
+		}	
 
 		Hue.show_image(item, args.force)
-
-		if(source_changed)
-		{
-			Hue.last_image_source = item.source
-		}
-
-		setter = item.setter
 
 		if(!args.item || args.item === Hue.current_image())
 		{
@@ -8258,7 +8232,7 @@ Hue.change = function(args={})
 
 		let locked = Hue.room_state.tv_locked && !bypass_lock
 
-		if(!args.item && locked && Hue.last_tv_source && !args.current_source)
+		if(!args.item && locked && Hue.loaded_tv.source && !args.current_source)
 		{
 			return false
 		}
@@ -8266,20 +8240,6 @@ Hue.change = function(args={})
 		if(Hue.room_tv_mode === "disabled")
 		{
 			return false
-		}
-
-		let source_changed
-
-		if(args.current_source && Hue.last_tv_source)
-		{
-			src = Hue.last_tv_source
-			source_changed = false
-		}
-
-		else
-		{
-			src = item.source
-			source_changed = true
 		}
 
 		if(item.type === "youtube")
@@ -8341,14 +8301,6 @@ Hue.change = function(args={})
 			return false
 		}
 
-		if(source_changed)
-		{
-			Hue.last_tv_source = item.source
-			Hue.last_tv_type = item.type
-		}
-
-		setter = item.setter
-
 		if(!args.item || args.item === Hue.current_tv())
 		{
 			$("#footer_lock_tv_icon").removeClass("blinking")
@@ -8366,7 +8318,7 @@ Hue.change = function(args={})
 
 		let locked = Hue.room_state.radio_locked && !bypass_lock
 
-		if(!args.item && locked && Hue.last_radio_source && !args.current_source)
+		if(!args.item && locked && Hue.loaded_radio.source && !args.current_source)
 		{
 			return false
 		}
@@ -8374,22 +8326,6 @@ Hue.change = function(args={})
 		if(Hue.room_radio_mode === "disabled")
 		{
 			return false
-		}
-
-		let source_changed
-
-		if(args.current_source && Hue.last_radio_source)
-		{
-			src = Hue.last_radio_source
-			type = Hue.last_radio_type
-			source_changed = false
-		}
-
-		else
-		{
-			src = item.source
-			type = item.type
-			source_changed = true
 		}
 
 		if(item.type === "youtube")
@@ -8419,14 +8355,6 @@ Hue.change = function(args={})
 
 		Hue.load_radio(item, force)
 
-		if(source_changed)
-		{
-			Hue.last_radio_source = item.source
-			Hue.last_radio_type = item.type
-		}
-
-		setter = item.setter
-
 		if(!args.item || args.item === item)
 		{
 			$("#footer_lock_radio_icon").removeClass("blinking")
@@ -8443,7 +8371,7 @@ Hue.change = function(args={})
 	Hue.update_media_history_blinks()
 	Hue.check_media_menu_loaded_media()
 
-	if(args.notify && setter !== Hue.username)
+	if(args.notify && item.setter !== Hue.username)
 	{
 		Hue.on_activity("media_change")
 	}
@@ -15497,7 +15425,7 @@ Hue.change_radio_visibility = function()
 
 		let original_radio_source = false
 
-		if(Hue.loaded_radio)
+		if(Hue.loaded_radio.source)
 		{
 			original_radio_source = Hue.loaded_radio.source
 		}
@@ -15507,7 +15435,7 @@ Hue.change_radio_visibility = function()
 			Hue.change({type:"radio", force:false, play:false})
 		}
 
-		if(Hue.loaded_radio && Hue.loaded_radio.type === "radio")
+		if(Hue.loaded_radio.type && Hue.loaded_radio.type === "radio")
 		{
 			if(original_radio_source && (original_radio_source === Hue.loaded_radio.source))
 			{
@@ -22303,29 +22231,17 @@ Hue.clear_room = function(data)
 	let first_tv = Hue.tv_changed = Hue.tv_changed.slice(-1)
 	let first_radio = Hue.radio_changed = Hue.radio_changed.slice(-1)
 
-	Hue.loaded_image = undefined
-	Hue.loaded_tv = undefined
-	Hue.loaded_radio = undefined
+	Hue.loaded_image = {}
+	Hue.loaded_tv = {}
+	Hue.loaded_radio = {}
 
 	Hue.images_changed = []
 	Hue.tv_changed = []
 	Hue.radio_changed = []
 
-	Hue.clear_change_state()
-
 	Hue.setup_image("change", first_image)
 	Hue.setup_tv("change", first_tv)
 	Hue.setup_radio("change", first_radio)
-}
-
-// Resets media change related variables
-Hue.clear_change_state = function()
-{
-	Hue.last_image_source = false
-	Hue.last_tv_source = false
-	Hue.last_tv_type = false
-	Hue.last_radio_source = false
-	Hue.last_radio_type = false
 }
 
 // A debugging function
