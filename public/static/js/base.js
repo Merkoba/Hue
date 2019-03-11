@@ -26167,6 +26167,8 @@ Hue.create_debouncer = function(func, delay)
 	})()
 }
 
+// Creates all debouncers
+// These are functions that get executed after not being called after a set delay
 Hue.create_debouncers = function()
 {
 	// Debounce timer for normal window filters
