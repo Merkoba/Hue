@@ -2350,7 +2350,8 @@ a.special_link:hover
 
 .image_preview_image
 {
-	max-width: 90%;
+	max-width: 500px;
+	max-height: 500px;
 }
 
 .link_preview
