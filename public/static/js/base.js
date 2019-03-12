@@ -2,6 +2,9 @@
 // All client variables and functions go here
 const Hue = {}
 
+// Load dates are used to check initial load performance
+Hue.load_date_1 = Date.now()
+
 // This enables information about socket calls to the server in the console
 // Setting it to true is recommended
 Hue.debug_socket = true
@@ -1738,12 +1741,16 @@ Hue.init = function()
 	}
 
 	Hue.start_socket()
+
+	Hue.load_date_2 = Date.now()
 }
 
 // What to do after the user's socket joins the room
 // This handles the first signal received after a successful connection
 Hue.on_join = function(data)
 {
+	Hue.load_date_3 = Date.now()
+
 	console.info("Joined Room")
 
 	Hue.init_data = data
@@ -18354,6 +18361,8 @@ Hue.at_startup = function()
 	}, 2000)
 
 	Hue.process_visibility()
+	Hue.load_date_4 = Date.now()
+	Hue.compare_load_dates()
 }
 
 // Resets media history filter of a certain type
@@ -26194,4 +26203,19 @@ Hue.create_debouncers = function()
 	{
 		Hue.hide_infotip()
 	}, Hue.hide_infotip_delay)
+}
+
+// Shows the time elapsed between load stages
+// Between file loaded and init ready
+// Between init ready and join
+// Between join and everything ready
+Hue.compare_load_dates = function()
+{
+	let time_1 = Hue.utilz.nice_time(Hue.load_date_1, Hue.load_date_2)
+	let time_2 = Hue.utilz.nice_time(Hue.load_date_2, Hue.load_date_3)
+	let time_3 = Hue.utilz.nice_time(Hue.load_date_3, Hue.load_date_4)
+
+	console.info(`Time from load to init ready: ${time_1}`)
+	console.info(`Time from init ready and join: ${time_2}`)
+	console.info(`Time from join to everything ready: ${time_3}`)
 }

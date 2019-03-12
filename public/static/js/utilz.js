@@ -557,7 +557,18 @@ const Utilz = function()
 
 	utilz.nice_time = function(date1, date2)
 	{
-		let d = (date1 - date2)
+		let d
+
+		if(date1 > date2)
+		{
+			d = (date1 - date2)
+		}
+
+		else
+		{
+			d = (date2 - date1)
+		}
+
 		let nt
 
 		if(d >= 1000)
