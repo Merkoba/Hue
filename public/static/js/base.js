@@ -9276,14 +9276,6 @@ Hue.change = function(args={})
 		}
 	}
 
-	if(args.type === "tv")
-	{
-		if(!Hue.loaded_tv.source && !args.force)
-		{
-			args.play = false
-		}
-	}
-
 	if(args.type === "image")
 	{
 		if(!Hue.room_state.images_enabled)
@@ -9335,6 +9327,11 @@ Hue.change = function(args={})
 		if(Hue.room_tv_mode === "disabled")
 		{
 			return false
+		}
+
+		if(!Hue.loaded_tv.source && !args.force)
+		{
+			args.play = false
 		}
 
 		if(item.type === "youtube")
@@ -23327,9 +23324,13 @@ Hue.clear_room = function(data)
 	Hue.tv_changed = []
 	Hue.radio_changed = []
 
-	Hue.setup_image("change", first_image)
-	Hue.setup_tv("change", first_tv)
-	Hue.setup_radio("change", first_radio)
+	Hue.setup_image("show", first_image)
+	Hue.setup_tv("show", first_tv)
+	Hue.setup_radio("show", first_radio)
+
+	Hue.change({type:"image"})
+	Hue.change({type:"tv"})
+	Hue.change({type:"radio"})
 }
 
 // A debugging function
