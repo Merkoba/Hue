@@ -22236,9 +22236,9 @@ Hue.clear_room = function(data)
 {
 	Hue.clear_chat()
 
-	let first_image = Hue.images_changed = Hue.images_changed.slice(-1)
-	let first_tv = Hue.tv_changed = Hue.tv_changed.slice(-1)
-	let first_radio = Hue.radio_changed = Hue.radio_changed.slice(-1)
+	let first_image = Hue.images_changed = Hue.images_changed.slice(-1)[0]
+	let first_tv = Hue.tv_changed = Hue.tv_changed.slice(-1)[0]
+	let first_radio = Hue.radio_changed = Hue.radio_changed.slice(-1)[0]
 
 	Hue.loaded_image = {}
 	Hue.loaded_tv = {}
