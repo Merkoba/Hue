@@ -26114,13 +26114,13 @@ Hue.create_debouncers = function()
 	}, Hue.double_tap_delay)
 
 	// Debounce timer for double tap 2
-	Hue.double_tap_timer = Hue.create_debouncer(function()
+	Hue.double_tap_2_timer = Hue.create_debouncer(function()
 	{
 		Hue.double_tap_key_2_pressed = 0
 	}, Hue.double_tap_delay)
 
 	// Debounce time for double tap 3
-	Hue.double_tap_timer = Hue.create_debouncer(function()
+	Hue.double_tap_3_timer = Hue.create_debouncer(function()
 	{
 		Hue.double_tap_key_3_pressed = 0
 	}, Hue.double_tap_delay)
