@@ -3027,6 +3027,12 @@ Hue.show_commands = function(filter="")
 	
 	Hue.msg_info2.show(["Commands", commands])
 	$("#commands_container").html(s)
+
+	if(filter)
+	{
+		$("#commands_filter").val(filter)
+		Hue.do_modal_filter()
+	}
 }
 
 // Show whether a room is public or private
