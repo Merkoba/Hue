@@ -213,90 +213,426 @@ Hue.wordz_loading = false
 // And to declare what widget is used in the settings windows
 Hue.user_settings =
 {
-	background_image: {widget_type:"checkbox"},
-	beep_on_messages: {widget_type:"checkbox"},
-	beep_on_highlights: {widget_type:"checkbox"},
-	beep_on_media_change: {widget_type:"checkbox"},
-	beep_on_user_joins: {widget_type:"checkbox"},
-	modal_effects: {widget_type:"checkbox"},
-	highlight_current_username: {widget_type:"checkbox"},
-	case_insensitive_username_highlights: {widget_type:"checkbox"},
-	case_insensitive_words_highlights: {widget_type:"checkbox"},
-	case_insensitive_ignored_words: {widget_type:"checkbox"},
-	ignored_words_exclude_same_user: {widget_type:"checkbox"},
-	other_words_to_highlight: {widget_type:"textarea"},
-	double_tap: {widget_type:"textarea"},
-	double_tap_2: {widget_type:"textarea"},
-	double_tap_3: {widget_type:"textarea"},
-	at_startup: {widget_type:"textarea"},
-	afk_delay: {widget_type:"select"},
-	ignored_usernames: {widget_type:"textarea"},
-	accept_commands_from: {widget_type:"textarea"},
-	ignored_words: {widget_type:"textarea"},
-	show_joins: {widget_type:"checkbox"},
-	show_parts: {widget_type:"checkbox"},
-	animate_scroll: {widget_type:"checkbox"},
-	afk_disable_messages_beep: {widget_type:"checkbox"},
-	afk_disable_highlights_beep: {widget_type:"checkbox"},
-	afk_disable_media_change_beep: {widget_type:"checkbox"},
-	afk_disable_joins_beep: {widget_type:"checkbox"},
-	afk_disable_image_change: {widget_type:"checkbox"},
-	afk_disable_tv_change: {widget_type:"checkbox"},
-	afk_disable_radio_change: {widget_type:"checkbox"},
-	afk_disable_synth: {widget_type:"checkbox"},
-	afk_disable_notifications: {widget_type:"checkbox"},
-	open_popup_messages: {widget_type:"checkbox"},
-	user_function_1: {widget_type:"textarea"},
-	user_function_2: {widget_type:"textarea"},
-	user_function_3: {widget_type:"textarea"},
-	user_function_4: {widget_type:"textarea"},
-	user_function_5: {widget_type:"textarea"},
-	user_function_6: {widget_type:"textarea"},
-	user_function_7: {widget_type:"textarea"},
-	user_function_8: {widget_type:"textarea"},
-	user_function_1_name: {widget_type:"text"},
-	user_function_2_name: {widget_type:"text"},
-	user_function_3_name: {widget_type:"text"},
-	user_function_4_name: {widget_type:"text"},
-	user_function_5_name: {widget_type:"text"},
-	user_function_6_name: {widget_type:"text"},
-	user_function_7_name: {widget_type:"text"},
-	user_function_8_name: {widget_type:"text"},
-	on_lockscreen: {widget_type:"textarea"},
-	on_unlockscreen: {widget_type:"textarea"},
-	afk_on_lockscreen: {widget_type:"checkbox"},
-	aliases: {widget_type:"textarea"},
-	other_words_to_autocomplete: {widget_type:"textarea"},
-	chat_font_size: {widget_type:"select"},
-	warn_before_closing: {widget_type:"checkbox"},
-	activity_bar: {widget_type:"checkbox"},
-	show_image_previews: {widget_type:"checkbox"},
-	show_link_previews: {widget_type:"checkbox"},
-	stop_radio_on_tv_play: {widget_type:"checkbox"},
-	stop_tv_on_radio_play: {widget_type:"checkbox"},
-	show_input_placeholder: {widget_type:"checkbox"},
-	show_clock_in_input_placeholder: {widget_type:"checkbox"},
-	show_clock_in_lockscreen: {widget_type:"checkbox"},
-	bypass_images_lock_on_own_change: {widget_type:"checkbox"},
-	bypass_tv_lock_on_own_change: {widget_type:"checkbox"},
-	bypass_radio_lock_on_own_change: {widget_type:"checkbox"},
-	autoreveal_spoilers: {widget_type:"checkbox"},
-	synth_enabled: {widget_type:"checkbox"},
-	autoscroll_amount: {widget_type:"number"},
-	autoscroll_delay: {widget_type:"number"},
-	speech_1: {widget_type:"textarea"},
-	speech_2: {widget_type:"textarea"},
-	speech_3: {widget_type:"textarea"},
-	speech_4: {widget_type:"textarea"},
-	speech_5: {widget_type:"textarea"},
-	speech_6: {widget_type:"textarea"},
-	speech_7: {widget_type:"textarea"},
-	speech_8: {widget_type:"textarea"},
-	speech_9: {widget_type:"textarea"},
-	speech_10: {widget_type:"textarea"},
-	chat_display_percentage: {widget_type:"range"},
-	tv_display_percentage: {widget_type:"range"},
-	tv_display_position: {widget_type:"custom"}
+	background_image: 
+	{
+		widget_type:"checkbox",
+		description: `Whether the background image is shown or not`
+	},
+	beep_on_messages: 
+	{
+		widget_type:"checkbox",
+		description: `Make a sound on new messages when the client is not visible`
+	},
+	beep_on_highlights: 
+	{
+		widget_type:"checkbox",
+		description: `Make a sound on new highlights when the client is not visible`
+	},
+	beep_on_media_change: 
+	{
+		widget_type:"checkbox",
+		description: `Make a sound on new media change announcements when the client is not visible`
+	},
+	beep_on_user_joins: 
+	{
+		widget_type:"checkbox",
+		description: `Make a sound when users join when the client is not visible`
+	},
+	modal_effects: 
+	{
+		widget_type:"checkbox",
+		description: `Whether animations for the modal windows are enabled or not`
+	},
+	highlight_current_username: 
+	{
+		widget_type:"checkbox",
+		description: `Whether messages containing the user's username must be highlighted`
+	},
+	case_insensitive_username_highlights: 
+	{
+		widget_type:"checkbox",
+		description: `Whether username highlight checks are case insensitive or not`
+	},
+	case_insensitive_words_highlights: 
+	{
+		widget_type:"checkbox",
+		description: `Whether 'other words' highlight checks are case insensitive or not`
+	},
+	case_insensitive_ignored_words: 
+	{
+		widget_type:"checkbox",
+		description: `Whether 'ignored words' highlight checks are case insensitive or not`
+	},
+	ignored_words_exclude_same_user: 
+	{
+		widget_type:"checkbox",
+		description: `Whether messages containing 'ignored words' should be ignored if coming from the user itself`
+	},
+	other_words_to_highlight: 
+	{
+		widget_type:"textarea",
+		description: `Words on messages to trigger highlights`
+	},
+	double_tap: 
+	{
+		widget_type:"textarea",
+		description: `Actions to perform after a Double Tap 1 trigger`
+	},
+	double_tap_2: 
+	{
+		widget_type:"textarea",
+		description: `Actions to perform after a Double Tap 2 trigger`
+	},
+	double_tap_3: 
+	{
+		widget_type:"textarea",
+		description: `Actions to perform after a Double Tap 3 trigger`
+	},
+	at_startup: 
+	{
+		widget_type:"textarea",
+		description: `Actions to perform after a successful startup`
+	},
+	afk_delay: 
+	{
+		widget_type:"select",
+		description: `How much time to consider the user as Away From Keyboard after the client loses visibility`
+	},
+	ignored_usernames: 
+	{
+		widget_type:"textarea",
+		description: `Ignore messages and actions from these users`
+	},
+	accept_commands_from: 
+	{
+		widget_type:"textarea",
+		description: `Accept remote command executions from these users`
+	},
+	ignored_words: 
+	{
+		widget_type:"textarea",
+		description: `Ignore messages that contain these words`
+	},
+	show_joins: 
+	{
+		widget_type:"checkbox",
+		description: `Whether a message should appear when users join`
+	},
+	show_parts: 
+	{
+		widget_type:"checkbox",
+		description: `Whether a message should appear when users leave`
+	},
+	animate_scroll: 
+	{
+		widget_type:"checkbox",
+		description: `Whether chat scroll animation is enabled in some cases or not at all`
+	},
+	afk_disable_messages_beep: 
+	{
+		widget_type:"checkbox",
+		description: `Whether alert sounds on new messages should be disabled when Away From Keyboard`
+	},
+	afk_disable_highlights_beep: 
+	{
+		widget_type:"checkbox",
+		description: `Whether alert sounds on new highlights should be disabled when Away From Keyboard`
+	},
+	afk_disable_media_change_beep: 
+	{
+		widget_type:"checkbox",
+		description: `Whether alert sounds on new media change announcements should be disabled when Away From Keyboard`
+	},
+	afk_disable_joins_beep: 
+	{
+		widget_type:"checkbox",
+		description: `Whether alert sounds on user joins should be disabled when Away From Keyboard`
+	},
+	afk_disable_image_change: 
+	{
+		widget_type:"checkbox",
+		description: `Whether automatic image change should be disabled when Away From Keyboard`
+	},
+	afk_disable_tv_change: 
+	{
+		widget_type:"checkbox",
+		description: `Whether automatic tv change should be disabled when Away From Keyboard`
+	},
+	afk_disable_radio_change: 
+	{
+		widget_type:"checkbox",
+		description: `Whether automatic radio change should be disabled when Away From Keyboard`
+	},
+	afk_disable_synth: 
+	{
+		widget_type:"checkbox",
+		description: `Whether the synth should be disabled when Away From Keyboard`
+	},
+	afk_disable_notifications: 
+	{
+		widget_type:"checkbox",
+		description: `Whether desktop notifications should be disabled when Away From Keyboard`
+	},
+	open_popup_messages: 
+	{
+		widget_type:"checkbox",
+		description: `Whether whisper messages received should open in a popup automatically apart from showing the chat notification`
+	},
+	user_function_1: 
+	{
+		widget_type:"textarea",
+		description: `Actions to perform when triggering User Function 1`
+	},
+	user_function_2: 
+	{
+		widget_type:"textarea",
+		description: `Actions to perform when triggering User Function 2`
+	},
+	user_function_3: 
+	{
+		widget_type:"textarea",
+		description: `Actions to perform when triggering User Function 3`
+	},
+	user_function_4: 
+	{
+		widget_type:"textarea",
+		description: `Actions to perform when triggering User Function 4`
+	},
+	user_function_5: 
+	{
+		widget_type:"textarea",
+		description: `Actions to perform when triggering User Function 5`
+	},
+	user_function_6: 
+	{
+		widget_type:"textarea",
+		description: `Actions to perform when triggering User Function 6`
+	},
+	user_function_7: 
+	{
+		widget_type:"textarea",
+		description: `Actions to perform when triggering User Function 7`
+	},
+	user_function_8: 
+	{
+		widget_type:"textarea",
+		description: `Actions to perform when triggering User Function 8`
+	},
+	user_function_1_name: 
+	{
+		widget_type:"text",
+		description: `Displayed name for User Function 1`
+	},
+	user_function_2_name: 
+	{
+		widget_type:"text",
+		description: `Displayed name for User Function 2`
+	},
+	user_function_3_name: 
+	{
+		widget_type:"text",
+		description: `Displayed name for User Function 3`
+	},
+	user_function_4_name: 
+	{
+		widget_type:"text",
+		description: `Displayed name for User Function 4`
+	},
+	user_function_5_name: 
+	{
+		widget_type:"text",
+		description: `Displayed name for User Function 5`
+	},
+	user_function_6_name: 
+	{
+		widget_type:"text",
+		description: `Displayed name for User Function 6`
+	},
+	user_function_7_name: 
+	{
+		widget_type:"text",
+		description: `Displayed name for User Function 7`
+	},
+	user_function_8_name: 
+	{
+		widget_type:"text",
+		description: `Displayed name for User Function 8`
+	},
+	on_lockscreen: 
+	{
+		widget_type:"textarea",
+		description: `Actions to perform when the screen gets locked`
+	},
+	on_unlockscreen: 
+	{
+		widget_type:"textarea",
+		description: `Actions to perform when the screen gets unlocked`
+	},
+	afk_on_lockscreen: 
+	{
+		widget_type:"checkbox",
+		description: `Whether the user goes Away From Keyboard immidiately after locking the screen`
+	},
+	aliases: 
+	{
+		widget_type:"textarea",
+		description: `Custom commands defined by the user, based on other commands`
+	},
+	other_words_to_autocomplete: 
+	{
+		widget_type:"textarea",
+		description: `Other words to be considered on Tab autocompletion`
+	},
+	chat_font_size: 
+	{
+		widget_type:"select",
+		description: `The font size of the chat area`
+	},
+	warn_before_closing: 
+	{
+		widget_type:"checkbox",
+		description: `Show a confirmation message in some cases when the client is going to be closed or refreshed`
+	},
+	activity_bar: 
+	{
+		widget_type:"checkbox",
+		description: `Whether the activity bar is visible or not`
+	},
+	show_image_previews: 
+	{
+		widget_type:"checkbox",
+		description: `Whether to show image previews on certain chat image links`
+	},
+	show_link_previews: 
+	{
+		widget_type:"checkbox",
+		description: `Whether to show related information of chat links when available`
+	},
+	stop_radio_on_tv_play: 
+	{
+		widget_type:"checkbox",
+		description: `Whether the radio should stop when a new tv item is played`
+	},
+	stop_tv_on_radio_play: 
+	{
+		widget_type:"checkbox",
+		description: `Whether the tv should stop when the radio is started`
+	},
+	show_input_placeholder: 
+	{
+		widget_type:"checkbox",
+		description: `Whether information inside the input should be shown`
+	},
+	show_clock_in_input_placeholder: 
+	{
+		widget_type:"checkbox",
+		description: `Whether the current time should be included in the input's information`
+	},
+	show_clock_in_lockscreen: 
+	{
+		widget_type:"checkbox",
+		description: `Whether the current time should be displayed in the lockscreen`
+	},
+	bypass_images_lock_on_own_change: 
+	{
+		widget_type:"checkbox",
+		description: `Whether an enabled image lock should be ignored if the change comes from the user itself`
+	},
+	bypass_tv_lock_on_own_change: 
+	{
+		widget_type:"checkbox",
+		description: `Whether an enabled tv lock should be ignored if the change comes from the user itself`
+	},
+	bypass_radio_lock_on_own_change: 
+	{
+		widget_type:"checkbox",
+		description: `Whether an enabled radio lock should be ignored if the change comes from the user itself`
+	},
+	autoreveal_spoilers: 
+	{
+		widget_type:"checkbox",
+		description: `Whether spoiler messages should be autorevealed`
+	},
+	synth_enabled: 
+	{
+		widget_type:"checkbox",
+		description: `Whether the synth is enabled`
+	},
+	autoscroll_amount: 
+	{
+		widget_type:"number",
+		description: `Pixel amount to scroll up or down on each tick on autoscroll`
+	},
+	autoscroll_delay: 
+	{
+		widget_type:"number",
+		description: `Perform an autoscroll tick after these milliseconds`
+	},
+	speech_1: 
+	{
+		widget_type:"textarea",
+		description: `Configured text/voice Speech #1 to use with the synth`
+	},
+	speech_2: 
+	{
+		widget_type:"textarea",
+		description: `Configured text/voice Speech #2 to use with the synth`
+	},
+	speech_3: 
+	{
+		widget_type:"textarea",
+		description: `Configured text/voice Speech #3 to use with the synth`
+	},
+	speech_4: 
+	{
+		widget_type:"textarea",
+		description: `Configured text/voice Speech #4 to use with the synth`
+	},
+	speech_5: 
+	{
+		widget_type:"textarea",
+		description: `Configured text/voice Speech #5 to use with the synth`
+	},
+	speech_6: 
+	{
+		widget_type:"textarea",
+		description: `Configured text/voice Speech #6 to use with the synth`
+	},
+	speech_7: 
+	{
+		widget_type:"textarea",
+		description: `Configured text/voice Speech #7 to use with the synth`
+	},
+	speech_8: 
+	{
+		widget_type:"textarea",
+		description: `Configured text/voice Speech #8 to use with the synth`
+	},
+	speech_9: 
+	{
+		widget_type:"textarea",
+		description: `Configured text/voice Speech #9 to use with the synth`
+	},
+	speech_10: 
+	{
+		widget_type:"textarea",
+		description: `Configured text/voice Speech #10 to use with the synth`
+	},
+	chat_display_percentage: 
+	{
+		widget_type:"range",
+		description: `What percentage width the chat area should have compared to the media area`
+	},
+	tv_display_percentage: 
+	{
+		widget_type:"range",
+		description: `What percentage height the tv should have compared the image`
+	},
+	tv_display_position: 
+	{
+		widget_type:"custom",
+		description: `The positions of the image and tv in the media area`
+	}
 }
 
 // Commands object
@@ -22492,10 +22828,12 @@ Hue.replace_markdown = function(text)
 // Sets the hover titles for the setttings widgets
 Hue.set_user_settings_titles = function()
 {
-	for(let setting in Hue.user_settings)
+	for(let key in Hue.user_settings)
 	{
-		$(`#global_settings_${setting}`).attr("title", setting)
-		$(`#room_settings_${setting}`).attr("title", setting)
+		let setting = Hue.user_settings[key]
+		let title = `${setting.description} (${key})`
+		$(`#global_settings_${key}`).attr("title", title)
+		$(`#room_settings_${key}`).attr("title", title)
 	}
 }
 
