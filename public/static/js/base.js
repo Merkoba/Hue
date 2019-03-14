@@ -215,423 +215,1257 @@ Hue.user_settings =
 {
 	background_image:
 	{
-		widget_type:"checkbox",
-		description: `Whether the background image is shown or not`
+		widget_type: "checkbox",
+		description: `Whether the background image is shown or not`,
+		action: (type, save=true) =>
+		{
+			Hue[type].background_image = $(`#${type}_background_image`).prop("checked")
+
+			if(Hue.active_settings("background_image") === type)
+			{
+				Hue.apply_background()
+				Hue.apply_theme()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	beep_on_messages:
 	{
-		widget_type:"checkbox",
-		description: `Make a sound on new messages when the client is not visible`
+		widget_type: "checkbox",
+		description: `Make a sound on new messages when the client is not visible`,
+		action: (type, save=true) =>
+		{
+			Hue[type].beep_on_messages = $(`#${type}_beep_on_messages`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	beep_on_highlights:
 	{
-		widget_type:"checkbox",
-		description: `Make a sound on new highlights when the client is not visible`
+		widget_type: "checkbox",
+		description: `Make a sound on new highlights when the client is not visible`,
+		action: (type, save=true) =>
+		{
+			Hue[type].beep_on_highlights = $(`#${type}_beep_on_highlights`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	beep_on_media_change:
 	{
-		widget_type:"checkbox",
-		description: `Make a sound on new media change announcements when the client is not visible`
+		widget_type: "checkbox",
+		description: `Make a sound on new media change announcements when the client is not visible`,
+		action: (type, save=true) =>
+		{
+			Hue[type].beep_on_media_change = $(`#${type}_beep_on_media_change`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	beep_on_user_joins:
 	{
-		widget_type:"checkbox",
-		description: `Make a sound when users join when the client is not visible`
+		widget_type: "checkbox",
+		description: `Make a sound when users join when the client is not visible`,
+		action: (type, save=true) =>
+		{
+			Hue[type].beep_on_user_joins = $(`#${type}_beep_on_user_joins`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	modal_effects:
 	{
-		widget_type:"checkbox",
-		description: `Whether animations for the modal windows are enabled or not`
+		widget_type: "checkbox",
+		description: `Whether animations for the modal windows are enabled or not`,
+		action: (type, save=true) =>
+		{
+			Hue[type].modal_effects = $(`#${type}_modal_effects`).prop("checked")
+
+			if(Hue.active_settings("modal_effects") === type)
+			{
+				for(let instance of Hue.get_all_msg_instances())
+				{
+					if($(instance.window).hasClass("no_effects"))
+					{
+						continue
+					}
+
+					if(Hue[type].modal_effects)
+					{
+						instance.options.show_effect = "fade"
+						instance.options.close_effect = "fade"
+					}
+
+					else
+					{
+						instance.options.show_effect = "none"
+						instance.options.close_effect = "none"
+					}
+				}
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	highlight_current_username:
 	{
-		widget_type:"checkbox",
-		description: `Whether messages containing the user's username must be highlighted`
+		widget_type: "checkbox",
+		description: `Whether messages containing the user's username must be highlighted`,
+		action: (type, save=true) =>
+		{
+			Hue[type].highlight_current_username = $(`#${type}_highlight_current_username`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	case_insensitive_username_highlights:
 	{
-		widget_type:"checkbox",
-		description: `Whether username highlight checks are case insensitive or not`
+		widget_type: "checkbox",
+		description: `Whether username highlight checks are case insensitive or not`,
+		action: (type, save=true) =>
+		{
+			Hue[type].case_insensitive_username_highlights = $(`#${type}_case_insensitive_username_highlights`).prop("checked")
+
+			if(Hue.active_settings("case_insensitive_username_highlights") === type)
+			{
+				Hue.generate_mentions_regex()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	case_insensitive_words_highlights:
 	{
-		widget_type:"checkbox",
-		description: `Whether 'other words' highlight checks are case insensitive or not`
+		widget_type: "checkbox",
+		description: `Whether 'other words' highlight checks are case insensitive or not`,
+		action: (type, save=true) =>
+		{
+			Hue[type].case_insensitive_words_highlights = $(`#${type}_case_insensitive_words_highlights`).prop("checked")
+
+			if(Hue.active_settings("case_insensitive_words_highlights") === type)
+			{
+				Hue.generate_highlight_words_regex()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	case_insensitive_ignored_words:
 	{
-		widget_type:"checkbox",
-		description: `Whether 'ignored words' highlight checks are case insensitive or not`
+		widget_type: "checkbox",
+		description: `Whether 'ignored words' highlight checks are case insensitive or not`,
+		action: (type, save=true) =>
+		{
+			Hue[type].case_insensitive_ignored_words = $(`#${type}_case_insensitive_ignored_words`).prop("checked")
+
+			if(Hue.active_settings("case_insensitive_ignored_words") === type)
+			{
+				Hue.generate_ignored_words_regex()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	ignored_words_exclude_same_user:
 	{
-		widget_type:"checkbox",
-		description: `Whether messages containing 'ignored words' should be ignored if coming from the user itself`
+		widget_type: "checkbox",
+		description: `Whether messages containing 'ignored words' should be ignored if coming from the user itself`,
+		action: (type, save=true) =>
+		{
+			Hue[type].ignored_words_exclude_same_user = $(`#${type}_ignored_words_exclude_same_user`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	other_words_to_highlight:
 	{
-		widget_type:"textarea",
-		description: `Words on messages to trigger highlights`
+		widget_type: "textarea",
+		description: `Words on messages to trigger highlights`,
+		action: (type, save=true) =>
+		{
+			let words = Hue.utilz.make_unique_lines(Hue.utilz.clean_string7($(`#${type}_other_words_to_highlight`).val()))
+
+			$(`#${type}_other_words_to_highlight`).val(words)
+
+			Hue[type].other_words_to_highlight = words
+
+			if(Hue.active_settings("other_words_to_highlight") === type)
+			{
+				Hue.generate_highlight_words_regex()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	double_tap:
 	{
-		widget_type:"textarea",
-		description: `Actions to perform after a Double Tap 1 trigger`
+		widget_type: "textarea",
+		description: `Actions to perform after a Double Tap 1 trigger`,
+		action: (type, save=true) =>
+		{
+			let cmds = Hue.utilz.clean_string7($(`#${type}_double_tap`).val())
+
+			$(`#${type}_double_tap`).val(cmds)
+
+			Hue[type].double_tap = cmds
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	double_tap_2:
 	{
-		widget_type:"textarea",
-		description: `Actions to perform after a Double Tap 2 trigger`
+		widget_type: "textarea",
+		description: `Actions to perform after a Double Tap 2 trigger`,
+		action: (type, save=true) =>
+		{
+			let cmds = Hue.utilz.clean_string7($(`#${type}_double_tap_2`).val())
+
+			$(`#${type}_double_tap_2`).val(cmds)
+
+			Hue[type].double_tap_2 = cmds
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	double_tap_3:
 	{
-		widget_type:"textarea",
-		description: `Actions to perform after a Double Tap 3 trigger`
+		widget_type: "textarea",
+		description: `Actions to perform after a Double Tap 3 trigger`,
+		action: (type, save=true) =>
+		{
+			let cmds = Hue.utilz.clean_string7($(`#${type}_double_tap_3`).val())
+
+			$(`#${type}_double_tap_3`).val(cmds)
+
+			Hue[type].double_tap_3 = cmds
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	at_startup:
 	{
-		widget_type:"textarea",
-		description: `Actions to perform after a successful startup`
+		widget_type: "textarea",
+		description: `Actions to perform after a successful startup`,
+		action: (type, save=true) =>
+		{
+			let cmds = Hue.utilz.clean_string7($(`#${type}_at_startup`).val())
+
+			$(`#${type}_at_startup`).val(cmds)
+
+			Hue[type].at_startup = cmds
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	afk_delay:
 	{
-		widget_type:"select",
-		description: `How much time to consider the user as Away From Keyboard after the client loses visibility`
+		widget_type: "select",
+		description: `How much time to consider the user as Away From Keyboard after the client loses visibility`,
+		action: (type, save=true) =>
+		{
+			let delay = $(`#${type}_afk_delay option:selected`).val()
+
+			if(delay !== "never")
+			{
+				delay = parseInt(delay)
+			}
+
+			Hue[type].afk_delay = delay
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	ignored_usernames:
 	{
-		widget_type:"textarea",
-		description: `Ignore messages and actions from these users`
+		widget_type: "textarea",
+		description: `Ignore messages and actions from these users`,
+		action: (type, save=true) =>
+		{
+			let unames = Hue.utilz.make_unique_lines(Hue.utilz.clean_string7($(`#${type}_ignored_usernames`).val()))
+
+			$(`#${type}_ignored_usernames`).val(unames)
+
+			Hue[type].ignored_usernames = unames
+
+			if(Hue.active_settings("ignored_usernames") === type)
+			{
+				Hue.get_ignored_usernames_list()
+				Hue.check_activity_bar()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	accept_commands_from:
 	{
-		widget_type:"textarea",
-		description: `Accept remote command executions from these users`
+		widget_type: "textarea",
+		description: `Accept remote command executions from these users`,
+		action: (type, save=true) =>
+		{
+			let unames = Hue.utilz.make_unique_lines(Hue.utilz.clean_string7($(`#${type}_accept_commands_from`).val()))
+
+			$(`#${type}_accept_commands_from`).val(unames)
+
+			Hue[type].accept_commands_from = unames
+
+			if(Hue.active_settings("ignored_usernames") === type)
+			{
+				Hue.get_accept_commands_from_list()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	ignored_words:
 	{
-		widget_type:"textarea",
-		description: `Ignore messages that contain these words`
+		widget_type: "textarea",
+		description: `Ignore messages that contain these words`,
+		action: (type, save=true) =>
+		{
+			let unames = Hue.utilz.make_unique_lines(Hue.utilz.clean_string7($(`#${type}_ignored_words`).val()))
+
+			$(`#${type}_ignored_words`).val(unames)
+
+			Hue[type].ignored_words = unames
+
+			if(Hue.active_settings("ignored_words") === type)
+			{
+				Hue.generate_ignored_words_regex()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	show_joins:
 	{
-		widget_type:"checkbox",
-		description: `Whether a message should appear when users join`
+		widget_type: "checkbox",
+		description: `Whether a message should appear when users join`,
+		action: (type, save=true) =>
+		{
+			Hue[type].show_joins = $(`#${type}_show_joins`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	show_parts:
 	{
-		widget_type:"checkbox",
-		description: `Whether a message should appear when users leave`
+		widget_type: "checkbox",
+		description: `Whether a message should appear when users leave`,
+		action: (type, save=true) =>
+		{
+			Hue[type].show_parts = $(`#${type}_show_parts`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	animate_scroll:
 	{
-		widget_type:"checkbox",
-		description: `Whether chat scroll animation is enabled in some cases or not at all`
+		widget_type: "checkbox",
+		description: `Whether chat scroll animation is enabled in some cases or not at all`,
+		action: (type, save=true) =>
+		{
+			Hue[type].animate_scroll = $(`#${type}_animate_scroll`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	afk_disable_messages_beep:
 	{
-		widget_type:"checkbox",
-		description: `Whether alert sounds on new messages should be disabled when Away From Keyboard`
+		widget_type: "checkbox",
+		description: `Whether alert sounds on new messages should be disabled when Away From Keyboard`,
+		action: (type, save=true) =>
+		{
+			Hue[type].afk_disable_messages_beep = $(`#${type}_afk_disable_messages_beep`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	afk_disable_highlights_beep:
 	{
-		widget_type:"checkbox",
-		description: `Whether alert sounds on new highlights should be disabled when Away From Keyboard`
+		widget_type: "checkbox",
+		description: `Whether alert sounds on new highlights should be disabled when Away From Keyboard`,
+		action: (type, save=true) =>
+		{
+			Hue[type].afk_disable_highlights_beep = $(`#${type}_afk_disable_highlights_beep`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	afk_disable_media_change_beep:
 	{
-		widget_type:"checkbox",
-		description: `Whether alert sounds on new media change announcements should be disabled when Away From Keyboard`
+		widget_type: "checkbox",
+		description: `Whether alert sounds on new media change announcements should be disabled when Away From Keyboard`,
+		action: (type, save=true) =>
+		{
+			Hue[type].afk_disable_media_change_beep = $(`#${type}_afk_disable_media_change_beep`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	afk_disable_joins_beep:
 	{
-		widget_type:"checkbox",
-		description: `Whether alert sounds on user joins should be disabled when Away From Keyboard`
+		widget_type: "checkbox",
+		description: `Whether alert sounds on user joins should be disabled when Away From Keyboard`,
+		action: (type, save=true) =>
+		{
+			Hue[type].afk_disable_joins_beep = $(`#${type}_afk_disable_joins_beep`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	afk_disable_image_change:
 	{
-		widget_type:"checkbox",
-		description: `Whether automatic image change should be disabled when Away From Keyboard`
+		widget_type: "checkbox",
+		description: `Whether automatic image change should be disabled when Away From Keyboard`,
+		action: (type, save=true) =>
+		{
+			Hue[type].afk_disable_image_change = $(`#${type}_afk_disable_image_change`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	afk_disable_tv_change:
 	{
-		widget_type:"checkbox",
-		description: `Whether automatic tv change should be disabled when Away From Keyboard`
+		widget_type: "checkbox",
+		description: `Whether automatic tv change should be disabled when Away From Keyboard`,
+		action: (type, save=true) =>
+		{
+			Hue[type].afk_disable_tv_change = $(`#${type}_afk_disable_tv_change`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	afk_disable_radio_change:
 	{
-		widget_type:"checkbox",
-		description: `Whether automatic radio change should be disabled when Away From Keyboard`
+		widget_type: "checkbox",
+		description: `Whether automatic radio change should be disabled when Away From Keyboard`,
+		action: (type, save=true) =>
+		{
+			Hue[type].afk_disable_radio_change = $(`#${type}_afk_disable_radio_change`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	afk_disable_synth:
 	{
-		widget_type:"checkbox",
-		description: `Whether the synth should be disabled when Away From Keyboard`
+		widget_type: "checkbox",
+		description: `Whether the synth should be disabled when Away From Keyboard`,
+		action: (type, save=true) =>
+		{
+			Hue[type].afk_disable_synth = $(`#${type}_afk_disable_synth`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	afk_disable_notifications:
 	{
-		widget_type:"checkbox",
-		description: `Whether desktop notifications should be disabled when Away From Keyboard`
+		widget_type: "checkbox",
+		description: `Whether desktop notifications should be disabled when Away From Keyboard`,
+		action: (type, save=true) =>
+		{
+			Hue[type].afk_disable_notifications = $(`#${type}_afk_disable_notifications`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	open_popup_messages:
 	{
-		widget_type:"checkbox",
-		description: `Whether whisper messages received should open in a popup automatically apart from showing the chat notification`
+		widget_type: "checkbox",
+		description: `Whether whisper messages received should open in a popup automatically apart from showing the chat notification`,
+		action: (type, save=true) =>
+		{
+			Hue[type].open_popup_messages = $(`#${type}_open_popup_messages`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	user_function_1:
 	{
-		widget_type:"textarea",
-		description: `Actions to perform when triggering User Function 1`
+		widget_type: "textarea",
+		description: `Actions to perform when triggering User Function 1`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_do_action(1, type, save)
+		}
 	},
 	user_function_2:
 	{
-		widget_type:"textarea",
-		description: `Actions to perform when triggering User Function 2`
+		widget_type: "textarea",
+		description: `Actions to perform when triggering User Function 2`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_do_action(2, type, save)
+		}
 	},
 	user_function_3:
 	{
-		widget_type:"textarea",
-		description: `Actions to perform when triggering User Function 3`
+		widget_type: "textarea",
+		description: `Actions to perform when triggering User Function 3`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_do_action(3, type, save)
+		}
 	},
 	user_function_4:
 	{
-		widget_type:"textarea",
-		description: `Actions to perform when triggering User Function 4`
+		widget_type: "textarea",
+		description: `Actions to perform when triggering User Function 4`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_do_action(4, type, save)
+		}
 	},
 	user_function_5:
 	{
-		widget_type:"textarea",
-		description: `Actions to perform when triggering User Function 5`
+		widget_type: "textarea",
+		description: `Actions to perform when triggering User Function 5`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_do_action(5, type, save)
+		}
 	},
 	user_function_6:
 	{
-		widget_type:"textarea",
-		description: `Actions to perform when triggering User Function 6`
+		widget_type: "textarea",
+		description: `Actions to perform when triggering User Function 6`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_do_action(6, type, save)
+		}
 	},
 	user_function_7:
 	{
-		widget_type:"textarea",
-		description: `Actions to perform when triggering User Function 7`
+		widget_type: "textarea",
+		description: `Actions to perform when triggering User Function 7`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_do_action(7, type, save)
+		}
 	},
 	user_function_8:
 	{
-		widget_type:"textarea",
-		description: `Actions to perform when triggering User Function 8`
+		widget_type: "textarea",
+		description: `Actions to perform when triggering User Function 8`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_do_action(8, type, save)
+		}
 	},
 	user_function_1_name:
 	{
-		widget_type:"text",
-		description: `Displayed name for User Function 1`
+		widget_type: "text",
+		description: `Displayed name for User Function 1`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_name_do_action(1, type, save)
+		}
 	},
 	user_function_2_name:
 	{
-		widget_type:"text",
-		description: `Displayed name for User Function 2`
+		widget_type: "text",
+		description: `Displayed name for User Function 2`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_name_do_action(2, type, save)
+		}
 	},
 	user_function_3_name:
 	{
-		widget_type:"text",
-		description: `Displayed name for User Function 3`
+		widget_type: "text",
+		description: `Displayed name for User Function 3`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_name_do_action(3, type, save)
+		}
 	},
 	user_function_4_name:
 	{
-		widget_type:"text",
-		description: `Displayed name for User Function 4`
+		widget_type: "text",
+		description: `Displayed name for User Function 4`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_name_do_action(4, type, save)
+		}
 	},
 	user_function_5_name:
 	{
-		widget_type:"text",
-		description: `Displayed name for User Function 5`
+		widget_type: "text",
+		description: `Displayed name for User Function 5`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_name_do_action(5, type, save)
+		}
 	},
 	user_function_6_name:
 	{
-		widget_type:"text",
-		description: `Displayed name for User Function 6`
+		widget_type: "text",
+		description: `Displayed name for User Function 6`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_name_do_action(6, type, save)
+		}
 	},
 	user_function_7_name:
 	{
-		widget_type:"text",
-		description: `Displayed name for User Function 7`
+		widget_type: "text",
+		description: `Displayed name for User Function 7`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_name_do_action(7, type, save)
+		}
 	},
 	user_function_8_name:
 	{
-		widget_type:"text",
-		description: `Displayed name for User Function 8`
+		widget_type: "text",
+		description: `Displayed name for User Function 8`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_function_name_do_action(8, type, save)
+		}
 	},
 	on_lockscreen:
 	{
-		widget_type:"textarea",
-		description: `Actions to perform when the screen gets locked`
+		widget_type: "textarea",
+		description: `Actions to perform when the screen gets locked`,
+		action: (type, save=true) =>
+		{
+			let cmds = Hue.utilz.clean_string7($(`#${type}_on_lockscreen`).val())
+
+			$(`#${type}_on_lockscreen`).val(cmds)
+
+			Hue[type].on_lockscreen = cmds
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	on_unlockscreen:
 	{
-		widget_type:"textarea",
-		description: `Actions to perform when the screen gets unlocked`
+		widget_type: "textarea",
+		description: `Actions to perform when the screen gets unlocked`,
+		action: (type, save=true) =>
+		{
+			let cmds = Hue.utilz.clean_string7($(`#${type}_on_unlockscreen`).val())
+
+			$(`#${type}_on_unlockscreen`).val(cmds)
+
+			Hue[type].on_unlockscreen = cmds
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	afk_on_lockscreen:
 	{
-		widget_type:"checkbox",
-		description: `Whether the user goes Away From Keyboard immidiately after locking the screen`
+		widget_type: "checkbox",
+		description: `Whether the user goes Away From Keyboard immidiately after locking the screen`,
+		action: (type, save=true) =>
+		{
+			Hue[type].afk_on_lockscreen = $(`#${type}_afk_on_lockscreen`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	aliases:
 	{
-		widget_type:"textarea",
-		description: `Custom commands defined by the user, based on other commands`
+		widget_type: "textarea",
+		description: `Custom commands defined by the user, based on other commands`,
+		action: (type, save=true) =>
+		{
+			let cmds = Hue.utilz.clean_string7($(`#${type}_aliases`).val())
+
+			cmds = Hue.format_command_aliases(cmds)
+
+			$(`#${type}_aliases`).val(cmds)
+
+			Hue[type].aliases = cmds
+
+			if(Hue.active_settings("aliases") === type)
+			{
+				Hue.setup_command_aliases()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	other_words_to_autocomplete:
 	{
-		widget_type:"textarea",
-		description: `Other words to be considered on Tab autocompletion`
+		widget_type: "textarea",
+		description: `Other words to be considered on Tab autocompletion`,
+		action: (type, save=true) =>
+		{
+			let words = Hue.utilz.make_unique_lines(Hue.utilz.clean_string7($(`#${type}_other_words_to_autocomplete`).val()))
+
+			$(`#${type}_other_words_to_autocomplete`).val(words)
+
+			Hue[type].other_words_to_autocomplete = words
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	chat_font_size:
 	{
-		widget_type:"select",
-		description: `The font size of the chat area`
+		widget_type: "select",
+		description: `The font size of the chat area`,
+		action: (type, save=true) =>
+		{
+			let fsize = $(`#${type}_chat_font_size option:selected`).val()
+
+			Hue[type].chat_font_size = fsize
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+
+			if(Hue.active_settings("chat_font_size") === type)
+			{
+				Hue.apply_theme()
+				Hue.goto_bottom(true, false)
+			}
+		}
 	},
 	warn_before_closing:
 	{
-		widget_type:"checkbox",
-		description: `Show a confirmation message in some cases when the client is going to be closed or refreshed`
+		widget_type: "checkbox",
+		description: `Show a confirmation message in some cases when the client is going to be closed or refreshed`,
+		action: (type, save=true) =>
+		{
+			Hue[type].warn_before_closing = $(`#${type}_warn_before_closing`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	activity_bar:
 	{
-		widget_type:"checkbox",
-		description: `Whether the activity bar is visible or not`
+		widget_type: "checkbox",
+		description: `Whether the activity bar is visible or not`,
+		action: (type, save=true) =>
+		{
+			Hue[type].activity_bar = $(`#${type}_activity_bar`).prop("checked")
+
+			if(Hue.active_settings("activity_bar") === type)
+			{
+				if(Hue[type].activity_bar)
+				{
+					Hue.show_activity_bar()
+				}
+
+				else
+				{
+					Hue.hide_activity_bar()
+				}
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	show_image_previews:
 	{
-		widget_type:"checkbox",
-		description: `Whether to show image previews on certain chat image links`
+		widget_type: "checkbox",
+		description: `Whether to show image previews on certain chat image links`,
+		action: (type, save=true) =>
+		{
+			Hue[type].show_image_previews = $(`#${type}_show_image_previews`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	show_link_previews:
 	{
-		widget_type:"checkbox",
-		description: `Whether to show related information of chat links when available`
+		widget_type: "checkbox",
+		description: `Whether to show related information of chat links when available`,
+		action: (type, save=true) =>
+		{
+			Hue[type].show_link_previews = $(`#${type}_show_link_previews`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	stop_radio_on_tv_play:
 	{
-		widget_type:"checkbox",
-		description: `Whether the radio should stop when a new tv item is played`
+		widget_type: "checkbox",
+		description: `Whether the radio should stop when a new tv item is played`,
+		action: (type, save=true) =>
+		{
+			Hue[type].stop_radio_on_tv_play = $(`#${type}_stop_radio_on_tv_play`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	stop_tv_on_radio_play:
 	{
-		widget_type:"checkbox",
-		description: `Whether the tv should stop when the radio is started`
+		widget_type: "checkbox",
+		description: `Whether the tv should stop when the radio is started`,
+		action: (type, save=true) =>
+		{
+			Hue[type].stop_tv_on_radio_play = $(`#${type}_stop_tv_on_radio_play`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	show_input_placeholder:
 	{
-		widget_type:"checkbox",
-		description: `Whether information inside the input should be shown`
+		widget_type: "checkbox",
+		description: `Whether information inside the input should be shown`,
+		action: (type, save=true) =>
+		{
+			Hue[type].show_input_placeholder = $(`#${type}_show_input_placeholder`).prop("checked")
+
+			if(Hue.active_settings("show_input_placeholder") === type)
+			{
+				Hue.setup_input_placeholder()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	show_clock_in_input_placeholder:
 	{
-		widget_type:"checkbox",
-		description: `Whether the current time should be included in the input's information`
+		widget_type: "checkbox",
+		description: `Whether the current time should be included in the input's information`,
+		action: (type, save=true) =>
+		{
+			Hue[type].show_clock_in_input_placeholder = $(`#${type}_show_clock_in_input_placeholder`).prop("checked")
+
+			if(Hue.active_settings("show_clock_in_input_placeholder") === type)
+			{
+				Hue.setup_input_placeholder()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	show_clock_in_lockscreen:
 	{
-		widget_type:"checkbox",
-		description: `Whether the current time should be displayed in the lockscreen`
+		widget_type: "checkbox",
+		description: `Whether the current time should be displayed in the lockscreen`,
+		action: (type, save=true) =>
+		{
+			Hue[type].show_clock_in_lockscreen = $(`#${type}_show_clock_in_lockscreen`).prop("checked")
+
+			if(Hue.active_settings("show_clock_in_lockscreen") === type)
+			{
+				Hue.setup_lockscreen_clock()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	bypass_images_lock_on_own_change:
 	{
-		widget_type:"checkbox",
-		description: `Whether an enabled image lock should be ignored if the change comes from the user itself`
+		widget_type: "checkbox",
+		description: `Whether an enabled image lock should be ignored if the change comes from the user itself`,
+		action: (type, save=true) =>
+		{
+			Hue[type].bypass_images_lock_on_own_change = $(`#${type}_bypass_images_lock_on_own_change`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	bypass_tv_lock_on_own_change:
 	{
-		widget_type:"checkbox",
-		description: `Whether an enabled tv lock should be ignored if the change comes from the user itself`
+		widget_type: "checkbox",
+		description: `Whether an enabled tv lock should be ignored if the change comes from the user itself`,
+		action: (type, save=true) =>
+		{
+			Hue[type].bypass_tv_lock_on_own_change = $(`#${type}_bypass_tv_lock_on_own_change`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	bypass_radio_lock_on_own_change:
 	{
-		widget_type:"checkbox",
-		description: `Whether an enabled radio lock should be ignored if the change comes from the user itself`
+		widget_type: "checkbox",
+		description: `Whether an enabled radio lock should be ignored if the change comes from the user itself`,
+		action: (type, save=true) =>
+		{
+			Hue[type].bypass_radio_lock_on_own_change = $(`#${type}_bypass_radio_lock_on_own_change`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	autoreveal_spoilers:
 	{
-		widget_type:"checkbox",
-		description: `Whether spoiler messages should be autorevealed`
+		widget_type: "checkbox",
+		description: `Whether spoiler messages should be autorevealed`,
+		action: (type, save=true) =>
+		{
+			Hue[type].autoreveal_spoilers = $(`#${type}_autoreveal_spoilers`).prop("checked")
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	synth_enabled:
 	{
-		widget_type:"checkbox",
-		description: `Whether the synth is enabled`
+		widget_type: "checkbox",
+		description: `Whether the synth is enabled`,
+		action: (type, save=true) =>
+		{
+			Hue[type].synth_enabled = $(`#${type}_synth_enabled`).prop("checked")
+
+			if(Hue.active_settings("synth_enabled") === type)
+			{
+				if(!Hue[type].synth_enabled)
+				{
+					Hue.hide_synth(true)
+				}
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	autoscroll_amount:
 	{
-		widget_type:"number",
-		description: `Pixel amount to scroll up or down on each tick on autoscroll`
+		widget_type: "number",
+		description: `Pixel amount to scroll up or down on each tick on autoscroll`,
+		action: (type, save=true) =>
+		{
+			let val = parseInt(Hue.utilz.clean_string2($(`#${type}_autoscroll_amount`).val()))
+
+			if(!val)
+			{
+				val = Hue.config.global_settings_default_autoscroll_amount
+			}
+
+			$(`#${type}_autoscroll_amount`).val(val)
+
+			Hue[type].autoscroll_amount = val
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	autoscroll_delay:
 	{
-		widget_type:"number",
-		description: `Perform an autoscroll tick after these milliseconds`
+		widget_type: "number",
+		description: `Perform an autoscroll tick after these milliseconds`,
+		action: (type, save=true) =>
+		{
+			let val = parseInt(Hue.utilz.clean_string2($(`#${type}_autoscroll_delay`).val()))
+
+			if(!val)
+			{
+				val = Hue.config.global_settings_default_autoscroll_delay
+			}
+
+			$(`#${type}_autoscroll_delay`).val(val)
+
+			Hue[type].autoscroll_delay = val
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	speech_1:
 	{
-		widget_type:"textarea",
-		description: `Configured text/voice Speech #1 to use with the synth`
+		widget_type: "textarea",
+		description: `Configured text/voice Speech #1 to use with the synth`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_speech_do_action(1, type, save)
+		}
 	},
 	speech_2:
 	{
-		widget_type:"textarea",
-		description: `Configured text/voice Speech #2 to use with the synth`
+		widget_type: "textarea",
+		description: `Configured text/voice Speech #2 to use with the synth`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_speech_do_action(2, type, save)
+		}
 	},
 	speech_3:
 	{
-		widget_type:"textarea",
-		description: `Configured text/voice Speech #3 to use with the synth`
+		widget_type: "textarea",
+		description: `Configured text/voice Speech #3 to use with the synth`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_speech_do_action(3, type, save)
+		}
 	},
 	speech_4:
 	{
-		widget_type:"textarea",
-		description: `Configured text/voice Speech #4 to use with the synth`
+		widget_type: "textarea",
+		description: `Configured text/voice Speech #4 to use with the synth`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_speech_do_action(4, type, save)
+		}
 	},
 	speech_5:
 	{
-		widget_type:"textarea",
-		description: `Configured text/voice Speech #5 to use with the synth`
+		widget_type: "textarea",
+		description: `Configured text/voice Speech #5 to use with the synth`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_speech_do_action(5, type, save)
+		}
 	},
 	speech_6:
 	{
-		widget_type:"textarea",
-		description: `Configured text/voice Speech #6 to use with the synth`
+		widget_type: "textarea",
+		description: `Configured text/voice Speech #6 to use with the synth`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_speech_do_action(6, type, save)
+		}
 	},
 	speech_7:
 	{
-		widget_type:"textarea",
-		description: `Configured text/voice Speech #7 to use with the synth`
+		widget_type: "textarea",
+		description: `Configured text/voice Speech #7 to use with the synth`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_speech_do_action(7, type, save)
+		}
 	},
 	speech_8:
 	{
-		widget_type:"textarea",
-		description: `Configured text/voice Speech #8 to use with the synth`
+		widget_type: "textarea",
+		description: `Configured text/voice Speech #8 to use with the synth`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_speech_do_action(8, type, save)
+		}
 	},
 	speech_9:
 	{
-		widget_type:"textarea",
-		description: `Configured text/voice Speech #9 to use with the synth`
+		widget_type: "textarea",
+		description: `Configured text/voice Speech #9 to use with the synth`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_speech_do_action(9, type, save)
+		}
 	},
 	speech_10:
 	{
-		widget_type:"textarea",
-		description: `Configured text/voice Speech #10 to use with the synth`
+		widget_type: "textarea",
+		description: `Configured text/voice Speech #10 to use with the synth`,
+		action: (type, save=true) =>
+		{
+			Hue.setting_speech_do_action(10, type, save)
+		}
 	},
 	chat_display_percentage:
 	{
-		widget_type:"range",
-		description: `What percentage width the chat area should have compared to the media area`
+		widget_type: "range",
+		description: `What percentage width the chat area should have compared to the media area`,
+		action: (type, save=true) =>
+		{
+			let percentage = parseInt($(`#${type}_chat_display_percentage`).val())
+
+			if(Hue.active_settings("chat_display_percentage") === type)
+			{
+				Hue[type].chat_display_percentage = percentage
+				Hue[`save_${type}`]()
+				Hue.apply_media_percentages()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	tv_display_percentage:
 	{
-		widget_type:"range",
-		description: `What percentage height the tv should have compared the image`
+		widget_type: "range",
+		description: `What percentage height the tv should have compared the image`,
+		action: (type, save=true) =>
+		{
+			let percentage = parseInt($(`#${type}_tv_display_percentage`).val())
+
+			if(Hue.active_settings("tv_display_percentage") === type)
+			{
+				Hue[type].tv_display_percentage = percentage
+				Hue[`save_${type}`]()
+				Hue.apply_media_percentages()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	},
 	tv_display_position:
 	{
-		widget_type:"custom",
-		description: `The positions of the image and tv in the media area`
+		widget_type: "squaro",
+		description: `The positions of the image and tv in the media area`,
+		action: (type, save=true) =>
+		{
+			Hue.arrange_media_setting_display_positions(type)
+
+			if(Hue.active_settings("tv_display_position") === type)
+			{
+				Hue.apply_media_positions()
+			}
+
+			if(save)
+			{
+				Hue[`save_${type}`]()
+			}
+		}
 	}
 }
 
@@ -2753,8 +3587,6 @@ Hue.init = function()
 	Hue.setup_markdown_regexes()
 	Hue.activate_key_detection()
 	Hue.setup_templates()
-	Hue.create_setting_user_function_actions()
-	Hue.create_setting_speech_actions()
 	Hue.get_global_settings()
 	Hue.get_room_settings()
 	Hue.get_room_state()
@@ -3938,8 +4770,10 @@ Hue.current_radio = function()
 
 // Loads the radio with the specified item
 // It only autplays it if the radio is started
-Hue.load_radio = function(item, force=false)
+Hue.load_radio = function(force=false)
 {
+	let item = Hue.loaded_radio
+
 	Hue.radio_get_metadata = false
 	clearTimeout(Hue.radio_metadata_fail_timeout)
 	Hue.stop_radio(false)
@@ -4168,8 +5002,10 @@ Hue.hide_tv = function(item)
 }
 
 // Loads a YouTube video
-Hue.show_youtube_video = function(item, play=true)
+Hue.show_youtube_video = function(play=true)
 {
+	let item = Hue.loaded_tv
+
 	Hue.before_show_tv(item)
 
 	let id = Hue.utilz.get_youtube_id(item.source)
@@ -4195,8 +5031,10 @@ Hue.show_youtube_video = function(item, play=true)
 }
 
 // Loads a Twitch video
-Hue.show_twitch_video = function(item, play=true)
+Hue.show_twitch_video = function(play=true)
 {
+	let item = Hue.loaded_tv
+
 	Hue.before_show_tv(item)
 
 	let id = Hue.utilz.get_twitch_id(item.source)
@@ -4235,8 +5073,10 @@ Hue.show_twitch_video = function(item, play=true)
 }
 
 // Loads a Soundcloud video
-Hue.show_soundcloud_video = function(item, play=true)
+Hue.show_soundcloud_video = function(play=true)
 {
+	let item = Hue.loaded_tv
+
 	Hue.before_show_tv(item)
 
 	Hue.soundcloud_video_player.load(item.source,
@@ -4257,8 +5097,10 @@ Hue.show_soundcloud_video = function(item, play=true)
 }
 
 // Loads a <video> video
-Hue.show_video_video = async function(item, play=true)
+Hue.show_video_video = async function(play=true)
 {
+	let item = Hue.loaded_tv
+
 	if($("#media_video").length === 0)
 	{
 		let s = `<video id='media_video'
@@ -4293,8 +5135,10 @@ Hue.show_video_video = async function(item, play=true)
 }
 
 // Loads an iframe as the tv
-Hue.show_iframe_video = function(item, play=true)
+Hue.show_iframe_video = function(play=true)
 {
+	let item = Hue.loaded_tv
+
 	if($("#media_iframe_video").length === 0)
 	{
 		let s = `<div id='media_iframe_poster' class='pointer unselectable action'>Click Here To Load</div>
@@ -4322,8 +5166,10 @@ Hue.show_iframe_video = function(item, play=true)
 }
 
 // Loads a Vimeo video
-Hue.show_vimeo_video = function(item, play=true)
+Hue.show_vimeo_video = function(play=true)
 {
+	let item = Hue.loaded_tv
+
 	Hue.before_show_tv(item)
 
 	let id = Hue.utilz.get_vimeo_id(item.source)
@@ -9328,71 +10174,24 @@ Hue.change = function(args={})
 			args.play = false
 		}
 
-		if(item.type === "youtube")
+		if(item.type !== "video" && item.type !== "iframe")
 		{
-			if(Hue.youtube_video_player === undefined)
+			if(Hue[`${item.type}_video_player`] === undefined)
 			{
-				Hue.request_media("youtube_video_player", args)
+				Hue.request_media(`${item.type}_video_player`, args)
 				return false
 			}
-
-			Hue.show_youtube_video(item, args.play)
 		}
+		
+		Hue.loaded_tv = item
 
-		else if(item.type === "twitch")
-		{
-			if(Hue.twitch_video_player === undefined)
-			{
-				Hue.request_media("twitch_video_player", args)
-				return false
-			}
-
-			Hue.show_twitch_video(item, args.play)
-		}
-
-		else if(item.type === "soundcloud")
-		{
-			if(Hue.soundcloud_video_player === undefined)
-			{
-				Hue.request_media("soundcloud_video_player", args)
-				return false
-			}
-
-			Hue.show_soundcloud_video(item, args.play)
-		}
-
-		else if(item.type === "vimeo")
-		{
-			if(Hue.vimeo_video_player === undefined)
-			{
-				Hue.request_media("vimeo_video_player", args)
-				return false
-			}
-
-			Hue.show_vimeo_video(item, args.play)
-		}
-
-		else if(item.type === "video")
-		{
-			Hue.show_video_video(item, args.play)
-		}
-
-		else if(item.type === "iframe")
-		{
-			Hue.show_iframe_video(item, args.play)
-		}
-
-		else
-		{
-			return false
-		}
+		Hue[`show_${item.type}_video`](args.play)
 
 		if(!args.item || args.item === Hue.current_tv())
 		{
 			$("#footer_lock_tv_icon").removeClass("blinking")
 		}
 
-		Hue.loaded_tv = item
 	}
 
 	else if(args.type === "radio")
@@ -9414,23 +10213,16 @@ Hue.change = function(args={})
 			return false
 		}
 
-		if(item.type === "youtube")
+		if(item.type !== "audio")
 		{
-			if(Hue.youtube_player === undefined)
+			if(Hue[`${item.type}_player`] === undefined)
 			{
-				Hue.request_media("youtube_player", args)
+				Hue.request_media(`${item.type}_player`, args)
 				return false
 			}
 		}
 
-		else if(item.type === "soundcloud")
-		{
-			if(Hue.soundcloud_player === undefined)
-			{
-				Hue.request_media("soundcloud_player", args)
-				return false
-			}
-		}
+		Hue.loaded_radio = item
 
 		let force = false
 
@@ -9445,8 +10237,6 @@ Hue.change = function(args={})
 		{
 			$("#footer_lock_radio_icon").removeClass("blinking")
 		}
-
-		Hue.loaded_radio = item
 	}
 
 	else
@@ -11082,7 +11872,7 @@ Hue.start_metadata_loop = function()
 		{
 			Hue.get_radio_metadata()
 		}
-	}, Hue.config.setterradio_metadata_interval_duration)
+	}, Hue.config.radio_metadata_interval_duration)
 }
 
 // Starts scroll events on the header radio volume control
@@ -13733,31 +14523,52 @@ Hue.modify_setting_widget = function(type, setting_name)
 			}
 		})
 	}
+
+	else if(widget_type === "squaro")
+	{
+		let main = item.find(".squaro_main").eq(0)
+		let secondary = item.find(".squaro_secondary").eq(0)
+
+		if(main.css("order") != 1 && Hue[type][setting_name] === "top")
+		{
+			main.css("order", 1)
+			secondary.css("order", 2)
+		}
+	}
 }
 
 // Starts listeners for settings windows widgets's change
 Hue.start_settings_widgets_listeners = function(type)
 {
-	for(let setting in Hue.user_settings)
+	for(let key in Hue.user_settings)
 	{
-		let widget_type = Hue.user_settings[setting].widget_type
-		let item = $(`#${type}_${setting}`)
+		let setting = Hue.user_settings[key]
+		let item = $(`#${type}_${key}`)
 
-		if(widget_type === "checkbox" || widget_type === "select")
+		if(setting.widget_type === "checkbox" || setting.widget_type === "select")
 		{
-			item.change(() => {Hue[`setting_${setting}_action`](type)})
+			item.change(() => {setting.action(type)})
 		}
 
-		else if(widget_type === "textarea" || widget_type === "text" || widget_type === "number")
+		else if(setting.widget_type === "textarea" || setting.widget_type === "text" || setting.widget_type === "number")
 		{
-			item.blur(() => {Hue[`setting_${setting}_action`](type)})
+			item.blur(() => {setting.action(type)})
 		}
 
-		else if(widget_type === "range")
+		else if(setting.widget_type === "range")
 		{
 			item.on("input change", function()
 			{
-				Hue[`setting_${setting}_action`](type)
+				setting.action(type)
+			})
+		}
+
+		else if(setting.widget_type === "squaro")
+		{
+			item.click(function()
+			{
+				Hue[type][key] = Hue[type][key] === "top" ? "bottom" : "top"
+				setting.action(type)
 			})
 		}
 	}
@@ -13766,943 +14577,10 @@ Hue.start_settings_widgets_listeners = function(type)
 // Executes all settings action functions
 Hue.call_setting_actions = function(type, save=true)
 {
-	for(let setting in Hue.global_settings)
+	for(let key in Hue.user_settings)
 	{
-		let action = Hue[`setting_${setting}_action`]
-
-		if(action !== undefined)
-		{
-			action(type, save)
-		}
-	}
-}
-
-// Setting action for background image change
-Hue.setting_background_image_action = function(type, save=true)
-{
-	Hue[type].background_image = $(`#${type}_background_image`).prop("checked")
-
-	if(Hue.active_settings("background_image") === type)
-	{
-		Hue.apply_background()
-		Hue.apply_theme()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for beep on messages change
-Hue.setting_beep_on_messages_action = function(type, save=true)
-{
-	Hue[type].beep_on_messages = $(`#${type}_beep_on_messages`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for beep on highlights change
-Hue.setting_beep_on_highlights_action = function(type, save=true)
-{
-	Hue[type].beep_on_highlights = $(`#${type}_beep_on_highlights`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for beep on media change change
-Hue.setting_beep_on_media_change_action = function(type, save=true)
-{
-	Hue[type].beep_on_media_change = $(`#${type}_beep_on_media_change`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for beep on user joins change
-Hue.setting_beep_on_user_joins_action = function(type, save=true)
-{
-	Hue[type].beep_on_user_joins = $(`#${type}_beep_on_user_joins`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for modal effects change
-Hue.setting_modal_effects_action = function(type, save=true)
-{
-	Hue[type].modal_effects = $(`#${type}_modal_effects`).prop("checked")
-
-	if(Hue.active_settings("modal_effects") === type)
-	{
-		for(let instance of Hue.get_all_msg_instances())
-		{
-			if($(instance.window).hasClass("no_effects"))
-			{
-				continue
-			}
-
-			if(Hue[type].modal_effects)
-			{
-				instance.options.show_effect = "fade"
-				instance.options.close_effect = "fade"
-			}
-
-			else
-			{
-				instance.options.show_effect = "none"
-				instance.options.close_effect = "none"
-			}
-		}
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for highlight current username change
-Hue.setting_highlight_current_username_action = function(type, save=true)
-{
-	Hue[type].highlight_current_username = $(`#${type}_highlight_current_username`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for case insensitive username highlights change
-Hue.setting_case_insensitive_username_highlights_action = function(type, save=true)
-{
-	Hue[type].case_insensitive_username_highlights = $(`#${type}_case_insensitive_username_highlights`).prop("checked")
-
-	if(Hue.active_settings("case_insensitive_username_highlights") === type)
-	{
-		Hue.generate_mentions_regex()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for case insensitive words highlights change
-Hue.setting_case_insensitive_words_highlights_action = function(type, save=true)
-{
-	Hue[type].case_insensitive_words_highlights = $(`#${type}_case_insensitive_words_highlights`).prop("checked")
-
-	if(Hue.active_settings("case_insensitive_words_highlights") === type)
-	{
-		Hue.generate_highlight_words_regex()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for case insensitive ignored words change
-Hue.setting_case_insensitive_ignored_words_action = function(type, save=true)
-{
-	Hue[type].case_insensitive_ignored_words = $(`#${type}_case_insensitive_ignored_words`).prop("checked")
-
-	if(Hue.active_settings("case_insensitive_ignored_words") === type)
-	{
-		Hue.generate_ignored_words_regex()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for other words to highlight change
-Hue.setting_other_words_to_highlight_action = function(type, save=true)
-{
-	let words = Hue.utilz.make_unique_lines(Hue.utilz.clean_string7($(`#${type}_other_words_to_highlight`).val()))
-
-	$(`#${type}_other_words_to_highlight`).val(words)
-
-	Hue[type].other_words_to_highlight = words
-
-	if(Hue.active_settings("other_words_to_highlight") === type)
-	{
-		Hue.generate_highlight_words_regex()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for double tap change
-Hue.setting_double_tap_action = function(type, save=true)
-{
-	let cmds = Hue.utilz.clean_string7($(`#${type}_double_tap`).val())
-
-	$(`#${type}_double_tap`).val(cmds)
-
-	Hue[type].double_tap = cmds
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for double tap 2 change
-Hue.setting_double_tap_2_action = function(type, save=true)
-{
-	let cmds = Hue.utilz.clean_string7($(`#${type}_double_tap_2`).val())
-
-	$(`#${type}_double_tap_2`).val(cmds)
-
-	Hue[type].double_tap_2 = cmds
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for double tap 3 change
-Hue.setting_double_tap_3_action = function(type, save=true)
-{
-	let cmds = Hue.utilz.clean_string7($(`#${type}_double_tap_3`).val())
-
-	$(`#${type}_double_tap_3`).val(cmds)
-
-	Hue[type].double_tap_3 = cmds
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for afk delay change
-Hue.setting_afk_delay_action = function(type, save=true)
-{
-	let delay = $(`#${type}_afk_delay option:selected`).val()
-
-	if(delay !== "never")
-	{
-		delay = parseInt(delay)
-	}
-
-	Hue[type].afk_delay = delay
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for at startup change
-Hue.setting_at_startup_action = function(type, save=true)
-{
-	let cmds = Hue.utilz.clean_string7($(`#${type}_at_startup`).val())
-
-	$(`#${type}_at_startup`).val(cmds)
-
-	Hue[type].at_startup = cmds
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for ignored usernames change
-Hue.setting_ignored_usernames_action = function(type, save=true)
-{
-	let unames = Hue.utilz.make_unique_lines(Hue.utilz.clean_string7($(`#${type}_ignored_usernames`).val()))
-
-	$(`#${type}_ignored_usernames`).val(unames)
-
-	Hue[type].ignored_usernames = unames
-
-	if(Hue.active_settings("ignored_usernames") === type)
-	{
-		Hue.get_ignored_usernames_list()
-		Hue.check_activity_bar()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for ignored words change
-Hue.setting_ignored_words_action = function(type, save=true)
-{
-	let unames = Hue.utilz.make_unique_lines(Hue.utilz.clean_string7($(`#${type}_ignored_words`).val()))
-
-	$(`#${type}_ignored_words`).val(unames)
-
-	Hue[type].ignored_words = unames
-
-	if(Hue.active_settings("ignored_words") === type)
-	{
-		Hue.generate_ignored_words_regex()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for ignored words exclude same user change
-Hue.setting_ignored_words_exclude_same_user_action = function(type, save=true)
-{
-	Hue[type].ignored_words_exclude_same_user = $(`#${type}_ignored_words_exclude_same_user`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for show joins change
-Hue.setting_show_joins_action = function(type, save=true)
-{
-	Hue[type].show_joins = $(`#${type}_show_joins`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for show parts change
-Hue.setting_show_parts_action = function(type, save=true)
-{
-	Hue[type].show_parts = $(`#${type}_show_parts`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for animate scroll change
-Hue.setting_animate_scroll_action = function(type, save=true)
-{
-	Hue[type].animate_scroll = $(`#${type}_animate_scroll`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for afk disable messages beep change
-Hue.setting_afk_disable_messages_beep_action = function(type, save=true)
-{
-	Hue[type].afk_disable_messages_beep = $(`#${type}_afk_disable_messages_beep`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action afk disable highlights beep change
-Hue.setting_afk_disable_highlights_beep_action = function(type, save=true)
-{
-	Hue[type].afk_disable_highlights_beep = $(`#${type}_afk_disable_highlights_beep`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for afk disable media change beep change
-Hue.setting_afk_disable_media_change_beep_action = function(type, save=true)
-{
-	Hue[type].afk_disable_media_change_beep = $(`#${type}_afk_disable_media_change_beep`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for afk disable joins beep change
-Hue.setting_afk_disable_joins_beep_action = function(type, save=true)
-{
-	Hue[type].afk_disable_joins_beep = $(`#${type}_afk_disable_joins_beep`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for afk disable image change change
-Hue.setting_afk_disable_image_change_action = function(type, save=true)
-{
-	Hue[type].afk_disable_image_change = $(`#${type}_afk_disable_image_change`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for afk disable tv change change
-Hue.setting_afk_disable_tv_change_action = function(type, save=true)
-{
-	Hue[type].afk_disable_tv_change = $(`#${type}_afk_disable_tv_change`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for afk disable radio change change
-Hue.setting_afk_disable_radio_change_action = function(type, save=true)
-{
-	Hue[type].afk_disable_radio_change = $(`#${type}_afk_disable_radio_change`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for open popup messages change
-Hue.setting_open_popup_messages_action = function(type, save=true)
-{
-	Hue[type].open_popup_messages = $(`#${type}_open_popup_messages`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Special function used for all User Function name actions
-Hue.setting_function_name_do_action = function(number, type, save=true)
-{
-	let val = Hue.utilz.clean_string2($(`#${type}_user_function_${number}_name`).val())
-
-	if(!val)
-	{
-		val = Hue.config[`global_settings_default_user_function_${number}_name`]
-	}
-
-	$(`#${type}_user_function_${number}_name`).val(val)
-
-	Hue[type][`user_function_${number}_name`] = val
-
-	if(Hue.active_settings(`user_function_${number}_name`) === type)
-	{
-		Hue.setup_user_function_titles()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Special function used for all User Function actions
-Hue.setting_function_do_action = function(number, type, save=true)
-{
-	let cmds = Hue.utilz.clean_string7($(`#${type}_user_function_${number}`).val())
-
-	$(`#${type}_user_function_${number}`).val(cmds)
-
-	Hue[type][`user_function_${number}`] = cmds
-
-	if(Hue.active_settings(`user_function_${number}`) === type)
-	{
-		Hue.setup_user_function_titles()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Special function to create User Function actions
-Hue.create_setting_user_function_actions = function()
-{
-	for(let i=1; i<Hue.user_functions.length+1; i++)
-	{
-		Hue[`setting_user_function_${i}_action`] = function(type, save=true)
-		{
-			Hue.setting_function_do_action(i, type, save)
-		}
-
-		Hue[`setting_user_function_${i}_name_action`] = function(type, save=true)
-		{
-			Hue.setting_function_name_do_action(i, type, save)
-		}
-	}
-}
-
-// Setting action for on lockscreen change
-Hue.setting_on_lockscreen_action = function(type, save=true)
-{
-	let cmds = Hue.utilz.clean_string7($(`#${type}_on_lockscreen`).val())
-
-	$(`#${type}_on_lockscreen`).val(cmds)
-
-	Hue[type].on_lockscreen = cmds
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for on unlockscreen change
-Hue.setting_on_unlockscreen_action = function(type, save=true)
-{
-	let cmds = Hue.utilz.clean_string7($(`#${type}_on_unlockscreen`).val())
-
-	$(`#${type}_on_unlockscreen`).val(cmds)
-
-	Hue[type].on_unlockscreen = cmds
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for on lockscreen change
-Hue.setting_afk_on_lockscreen_action = function(type, save=true)
-{
-	Hue[type].afk_on_lockscreen = $(`#${type}_afk_on_lockscreen`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for aliases change
-Hue.setting_aliases_action = function(type, save=true)
-{
-	let cmds = Hue.utilz.clean_string7($(`#${type}_aliases`).val())
-
-	cmds = Hue.format_command_aliases(cmds)
-
-	$(`#${type}_aliases`).val(cmds)
-
-	Hue[type].aliases = cmds
-
-	if(Hue.active_settings("aliases") === type)
-	{
-		Hue.setup_command_aliases()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for other words to autocomplete change
-Hue.setting_other_words_to_autocomplete_action = function(type, save=true)
-{
-	let words = Hue.utilz.make_unique_lines(Hue.utilz.clean_string7($(`#${type}_other_words_to_autocomplete`).val()))
-
-	$(`#${type}_other_words_to_autocomplete`).val(words)
-
-	Hue[type].other_words_to_autocomplete = words
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for chat font size change
-Hue.setting_chat_font_size_action = function(type, save=true)
-{
-	let fsize = $(`#${type}_chat_font_size option:selected`).val()
-
-	Hue[type].chat_font_size = fsize
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-
-	if(Hue.active_settings("chat_font_size") === type)
-	{
-		Hue.apply_theme()
-		Hue.goto_bottom(true, false)
-	}
-}
-
-// Setting action for warn before closing change
-Hue.setting_warn_before_closing_action = function(type, save=true)
-{
-	Hue[type].warn_before_closing = $(`#${type}_warn_before_closing`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for activity bar change
-Hue.setting_activity_bar_action = function(type, save=true)
-{
-	Hue[type].activity_bar = $(`#${type}_activity_bar`).prop("checked")
-
-	if(Hue.active_settings("activity_bar") === type)
-	{
-		if(Hue[type].activity_bar)
-		{
-			Hue.show_activity_bar()
-		}
-
-		else
-		{
-			Hue.hide_activity_bar()
-		}
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for show image previews change
-Hue.setting_show_image_previews_action = function(type, save=true)
-{
-	Hue[type].show_image_previews = $(`#${type}_show_image_previews`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for show link previews change
-Hue.setting_show_link_previews_action = function(type, save=true)
-{
-	Hue[type].show_link_previews = $(`#${type}_show_link_previews`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for stop radio on tv play change
-Hue.setting_stop_radio_on_tv_play_action = function(type, save=true)
-{
-	Hue[type].stop_radio_on_tv_play = $(`#${type}_stop_radio_on_tv_play`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for stop tv on radio play change
-Hue.setting_stop_tv_on_radio_play_action = function(type, save=true)
-{
-	Hue[type].stop_tv_on_radio_play = $(`#${type}_stop_tv_on_radio_play`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for bypass images lock on own change change
-Hue.setting_bypass_images_lock_on_own_change_action = function(type, save=true)
-{
-	Hue[type].bypass_images_lock_on_own_change = $(`#${type}_bypass_images_lock_on_own_change`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for bypass tv lock on own change change
-Hue.setting_bypass_tv_lock_on_own_change_action = function(type, save=true)
-{
-	Hue[type].bypass_tv_lock_on_own_change = $(`#${type}_bypass_tv_lock_on_own_change`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for bypass radio lock on own change change
-Hue.setting_bypass_radio_lock_on_own_change_action = function(type, save=true)
-{
-	Hue[type].bypass_radio_lock_on_own_change = $(`#${type}_bypass_radio_lock_on_own_change`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for synth enabled change
-Hue.setting_synth_enabled_action = function(type, save=true)
-{
-	Hue[type].synth_enabled = $(`#${type}_synth_enabled`).prop("checked")
-
-	if(Hue.active_settings("synth_enabled") === type)
-	{
-		if(!Hue[type].synth_enabled)
-		{
-			Hue.hide_synth(true)
-		}
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for afk disable synth change
-Hue.setting_afk_disable_synth_action = function(type, save=true)
-{
-	Hue[type].afk_disable_synth = $(`#${type}_afk_disable_synth`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for afk disable notifications change
-Hue.setting_afk_disable_notifications_action = function(type, save=true)
-{
-	Hue[type].afk_disable_notifications = $(`#${type}_afk_disable_notifications`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for accept commands from change
-Hue.setting_accept_commands_from_action = function(type, save=true)
-{
-	let unames = Hue.utilz.make_unique_lines(Hue.utilz.clean_string7($(`#${type}_accept_commands_from`).val()))
-
-	$(`#${type}_accept_commands_from`).val(unames)
-
-	Hue[type].accept_commands_from = unames
-
-	if(Hue.active_settings("ignored_usernames") === type)
-	{
-		Hue.get_accept_commands_from_list()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for autoscroll amount change
-Hue.setting_autoscroll_amount_action = function(type, save=true)
-{
-	let val = parseInt(Hue.utilz.clean_string2($(`#${type}_autoscroll_amount`).val()))
-
-	if(!val)
-	{
-		val = Hue.config.global_settings_default_autoscroll_amount
-	}
-
-	$(`#${type}_autoscroll_amount`).val(val)
-
-	Hue[type].autoscroll_amount = val
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for autoscroll delay change
-Hue.setting_autoscroll_delay_action = function(type, save=true)
-{
-	let val = parseInt(Hue.utilz.clean_string2($(`#${type}_autoscroll_delay`).val()))
-
-	if(!val)
-	{
-		val = Hue.config.global_settings_default_autoscroll_delay
-	}
-
-	$(`#${type}_autoscroll_delay`).val(val)
-
-	Hue[type].autoscroll_delay = val
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Special function used for all Speech actions
-Hue.setting_speech_do_action = function(number, type, save=true)
-{
-	let speech = Hue.utilz.clean_string2($(`#${type}_speech_${number}`).val())
-
-	if(!speech)
-	{
-		speech = Hue.config[`global_settings_default_speech_${number}`]
-	}
-
-	$(`#${type}_speech_${number}`).val(speech)
-
-	Hue[type][`speech_${number}`] = speech
-
-	if(Hue.active_settings(`speech_${number}`) === type)
-	{
-		Hue.set_synth_key_title(number)
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Special function to create Speech actions
-Hue.create_setting_speech_actions = function()
-{
-	for(let i=1; i<Hue.speeches.length+1; i++)
-	{
-		Hue[`setting_speech_${i}_action`] = function(type, save=true)
-		{
-			Hue.setting_speech_do_action(i, type, save)
-		}
-	}
-}
-
-// Setting action for show input placeholder change
-Hue.setting_show_input_placeholder_action = function(type, save=true)
-{
-	Hue[type].show_input_placeholder = $(`#${type}_show_input_placeholder`).prop("checked")
-
-	if(Hue.active_settings("show_input_placeholder") === type)
-	{
-		Hue.setup_input_placeholder()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for show clock in input placeholder change
-Hue.setting_show_clock_in_input_placeholder_action = function(type, save=true)
-{
-	Hue[type].show_clock_in_input_placeholder = $(`#${type}_show_clock_in_input_placeholder`).prop("checked")
-
-	if(Hue.active_settings("show_clock_in_input_placeholder") === type)
-	{
-		Hue.setup_input_placeholder()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for show clock in lockscreen change
-Hue.setting_show_clock_in_lockscreen_action = function(type, save=true)
-{
-	Hue[type].show_clock_in_lockscreen = $(`#${type}_show_clock_in_lockscreen`).prop("checked")
-
-	if(Hue.active_settings("show_clock_in_lockscreen") === type)
-	{
-		Hue.setup_lockscreen_clock()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for autoreveal spoilers change
-Hue.setting_autoreveal_spoilers_action = function(type, save=true)
-{
-	Hue[type].autoreveal_spoilers = $(`#${type}_autoreveal_spoilers`).prop("checked")
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for tv display percentage change
-Hue.setting_tv_display_percentage_action = function(type, save=true)
-{
-	let percentage = parseInt($(`#${type}_tv_display_percentage`).val())
-
-	if(Hue.active_settings("tv_display_percentage") === type)
-	{
-		Hue[type].tv_display_percentage = percentage
-		Hue[`save_${type}`]()
-		Hue.apply_media_percentages()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
-	}
-}
-
-// Setting action for chat display percentage change
-Hue.setting_chat_display_percentage_action = function(type, save=true)
-{
-	let percentage = parseInt($(`#${type}_chat_display_percentage`).val())
-
-	if(Hue.active_settings("chat_display_percentage") === type)
-	{
-		Hue[type].chat_display_percentage = percentage
-		Hue[`save_${type}`]()
-		Hue.apply_media_percentages()
-	}
-
-	if(save)
-	{
-		Hue[`save_${type}`]()
+		let setting = Hue.user_settings[key]
+		setting.action(type, save)
 	}
 }
 
@@ -20279,25 +20157,18 @@ Hue.start_room_settings_overriders = function()
 		}
 
 		Hue.room_item_fade(override, item)
-
 		Hue.room_settings[`${setting}_override`] = override
 
-		if(Hue[`setting_${setting}_action`] !== undefined)
-		{
-			if(override)
-			{
-				Hue[`setting_${setting}_action`]("room_settings", false)
-			}
+		let setting_obj = Hue.user_settings[setting]
 
-			else
-			{
-				Hue[`setting_${setting}_action`]("global_settings", false)
-			}
+		if(override)
+		{
+			setting_obj.action("room_settings", false)
 		}
 
-		if(setting === "tv_display_position")
+		else
 		{
-			Hue.apply_media_positions()
+			setting_obj.action("global_settings", false)
 		}
 
 		Hue.check_room_settings_override()
@@ -21425,46 +21296,8 @@ Hue.apply_media_positions = function()
 // Toggles display positions of image and tv
 Hue.swap_display_positions_2 = function()
 {
-	let p = Hue.get_setting("tv_display_position")
-	let np
-
-	if(p === "top")
-	{
-		np = "bottom"
-	}
-
-	else if(p === "bottom")
-	{
-		np = "top"
-	}
-
 	Hue.enable_setting_override("tv_display_position")
-	Hue.swap_display_positions("room_settings", np)
-}
-
-// Swaps and applies display position of images and tv
-Hue.swap_display_positions = function(type, np=false)
-{
-	if(!np)
-	{
-		let p = Hue[type].tv_display_position
-
-		if(p === "top")
-		{
-			np = "bottom"
-		}
-
-		else if(p === "bottom")
-		{
-			np = "top"
-		}
-	}
-
-	Hue[type].tv_display_position = np
-	Hue[`save_${type}`]()
-
-	Hue.arrange_media_setting_display_positions(type)
-	Hue.apply_media_positions()
+	Hue.swap_display_positions("room_settings")
 }
 
 // Applies the positions of image and tv
@@ -23193,24 +23026,11 @@ Hue.modify_setting = function(arg, show_feedback=true)
 		return false
 	}
 
+	let setting_obj = Hue.user_settings[setting]
+
 	Hue[type][setting] = value
-
-	if(Hue.user_settings[setting].widget_type === "custom")
-	{
-		if(setting === "tv_display_position")
-		{
-			Hue.arrange_media_setting_display_positions(type)
-			Hue.apply_media_positions()
-		}
-	}
-
-	else
-	{
-		Hue.modify_setting_widget(type, setting)
-
-		Hue[`setting_${setting}_action`](type, false)
-	}
-
+	Hue.modify_setting_widget(type, setting)
+	setting_obj.action(type, false)
 	Hue[`save_${type}`]()
 
 	if(show_feedback)
@@ -26827,17 +26647,17 @@ Hue.request_media = function(player, args)
 		Hue.load_youtube()
 	}
 
-	if(player === "soundcloud_player" || player === "soundcloud_video_player")
+	else if(player === "soundcloud_player" || player === "soundcloud_video_player")
 	{
 		Hue.start_soundcloud()
 	}
 
-	if(player === "twitch_video_player")
+	else if(player === "twitch_video_player")
 	{
 		Hue.start_twitch()
 	}
 
-	if(player === "vimeo_video_player")
+	else if(player === "vimeo_video_player")
 	{
 		Hue.start_vimeo()
 	}
@@ -27294,4 +27114,74 @@ Hue.compare_load_dates = function()
 	console.info(`Time from load to init ready: ${time_1}`)
 	console.info(`Time from init ready and join: ${time_2}`)
 	console.info(`Time from join to everything ready: ${time_3}`)
+}
+
+// Special function used for all Speech actions
+Hue.setting_speech_do_action = function(number, type, save=true)
+{
+	let speech = Hue.utilz.clean_string2($(`#${type}_speech_${number}`).val())
+
+	if(!speech)
+	{
+		speech = Hue.config[`global_settings_default_speech_${number}`]
+	}
+
+	$(`#${type}_speech_${number}`).val(speech)
+
+	Hue[type][`speech_${number}`] = speech
+
+	if(Hue.active_settings(`speech_${number}`) === type)
+	{
+		Hue.set_synth_key_title(number)
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+// Special function used for all User Function actions
+Hue.setting_function_do_action = function(number, type, save=true)
+{
+	let cmds = Hue.utilz.clean_string7($(`#${type}_user_function_${number}`).val())
+
+	$(`#${type}_user_function_${number}`).val(cmds)
+
+	Hue[type][`user_function_${number}`] = cmds
+
+	if(Hue.active_settings(`user_function_${number}`) === type)
+	{
+		Hue.setup_user_function_titles()
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
+}
+
+// Special function used for all User Function name actions
+Hue.setting_function_name_do_action = function(number, type, save=true)
+{
+	let val = Hue.utilz.clean_string2($(`#${type}_user_function_${number}_name`).val())
+
+	if(!val)
+	{
+		val = Hue.config[`global_settings_default_user_function_${number}_name`]
+	}
+
+	$(`#${type}_user_function_${number}_name`).val(val)
+
+	Hue[type][`user_function_${number}_name`] = val
+
+	if(Hue.active_settings(`user_function_${number}_name`) === type)
+	{
+		Hue.setup_user_function_titles()
+	}
+
+	if(save)
+	{
+		Hue[`save_${type}`]()
+	}
 }
