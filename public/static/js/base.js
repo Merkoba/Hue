@@ -10135,14 +10135,14 @@ Hue.change = function(args={})
 			return false
 		}
 
-		Hue.show_image(item, args.force)
+		Hue.loaded_image = item
+
+		Hue.show_image(args.force)
 
 		if(!args.item || args.item === Hue.current_image())
 		{
 			$("#footer_lock_images_icon").removeClass("blinking")
 		}
-
-		Hue.loaded_image = item
 
 		if(Hue.background_mode === "mirror" || Hue.background_mode === "mirror_tiled")
 		{
@@ -10231,7 +10231,7 @@ Hue.change = function(args={})
 			force = true
 		}
 
-		Hue.load_radio(item, force)
+		Hue.load_radio(force)
 
 		if(!args.item || args.item === item)
 		{
@@ -10254,8 +10254,10 @@ Hue.change = function(args={})
 }
 
 // Loads an image with a specified item
-Hue.show_image = function(item, force=false)
+Hue.show_image = function(force=false)
 {
+	let item = Hue.loaded_image
+
 	$("#media_image_frame").attr("crossOrigin", "anonymous")
 	$("#media_image_error").css("display", "none")
 	$("#media_image_frame").css("display", "initial")
