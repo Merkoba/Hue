@@ -602,6 +602,117 @@ const Utilz = function()
 		return nt
 	}
 
+	utilz.singular_or_plural = function(n, s)
+	{
+		let ss
+
+		if(n === 1)
+		{
+			ss = `${n} ${s.substring(0, s.length - 1)}`
+		}
+
+		else
+		{
+			ss = `${n} ${s}`
+		}
+
+		return ss
+	}
+
+	utilz.is_textbox = function(element)
+	{
+		let tag_name = element.tagName.toLowerCase()
+
+		if(tag_name === 'textarea') return true
+		if(tag_name !== 'input') return false
+
+		let type = element.getAttribute('type')
+
+		if(!type)
+		{
+			return false
+		}
+
+		type = type.toLowerCase(),
+
+		input_types =
+		[
+			'text',
+			'password',
+			'number',
+			'email',
+			'tel',
+			'url',
+			'search',
+			'date',
+			'datetime',
+			'datetime-local',
+			'time',
+			'month',
+			'week'
+		]
+
+		return input_types.includes(type)
+	}
+
+	utilz.conditional_quotes = function(s)
+	{
+		if(!s.includes(" ") && Hue.utilz.is_url(s))
+		{
+			return s
+		}
+
+		else
+		{
+			return `"${s}"`
+		}
+	}
+
+	utilz.clean_multiline = function(s)
+	{
+		let split = s.split("\n")
+		let num_lines = split.length
+
+		if(num_lines === 1)
+		{
+			s = s.trim()
+		}
+
+		else
+		{
+			let new_lines = []
+
+			for(let line of split)
+			{
+				if(line.trim().length > 0)
+				{
+					new_lines.push(line)
+				}
+			}
+
+			s = new_lines.join("\n")
+		}
+
+		return s
+	}
+
+	utilz.get_limited_string = function(s, n)
+	{
+		let title
+
+		if(s.length > Hue.url_title_max_length)
+		{
+			title = `${s.substring(0, n)}...`
+		}
+
+		else
+		{
+			title = s
+		}
+
+		return title
+	}
+
 	utilz.media_types = ["image", "tv", "radio"]
 
 	utilz.synth_notes =

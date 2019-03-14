@@ -1,0 +1,315 @@
+// Starts Dropzone events for file drag and drop events
+// This also handles normal uploads by clicking the Upload button
+Hue.start_dropzone = function()
+{
+    Hue.dropzone = new Dropzone("body",
+    {
+        url: "/",
+        maxFiles: 1,
+        maxFilesize: Hue.config.max_image_size / 1024,
+        autoProcessQueue: false,
+        clickable: '#image_file_picker',
+        acceptedFiles: "image/jpeg,image/png,image/gif"
+    })
+
+    Hue.dropzone.on("addedfile", function(file)
+    {
+        Hue.focus_input()
+
+        if(!Hue.can_images)
+        {
+            Hue.feedback("You don't have permission to change images")
+            Hue.dropzone.files = []
+            return false
+        }
+
+        if(Hue.dropzone.files.length > 1)
+        {
+            Hue.dropzone.files = []
+            return false
+        }
+
+        let size = file.size / 1024
+
+        if(size > Hue.config.max_image_size)
+        {
+            Hue.dropzone.files = []
+            Hue.feedback("File is too big")
+            return false
+        }
+
+        let ext = file.name.split('.').pop(-1).toLowerCase()
+
+        if(ext !== 'jpg' && ext !== 'png' && ext !== 'jpeg' && ext !== 'gif')
+        {
+            Hue.dropzone.files = []
+            return false
+        }
+
+        Hue.dropzone.files = []
+
+        Hue.show_upload_comment(file, "image_upload")
+    })
+}
+
+// Creates a file reader for files
+Hue.create_file_reader = function(file)
+{
+    let reader = new FileReader()
+
+    reader.addEventListener("loadend", function(e)
+    {
+        Hue.socket_emit('slice_upload',
+        {
+            data: reader.result,
+            action: file.hue_data.action,
+            name: file.hue_data.name,
+            type: file.hue_data.type,
+            size: file.hue_data.size,
+            date: file.hue_data.date,
+            comment: file.hue_data.comment
+        })
+    })
+
+    return reader
+}
+
+// Handles file uploads of different kinds
+// Sets all required data
+// Creates a file reader
+// Starts a sliced upload
+Hue.upload_file = function(args={})
+{
+    let def_args =
+    {
+        file: false,
+        action: false,
+        name: false,
+        comment: false
+    }
+
+    args = Object.assign(def_args, args)
+
+    if(!args.file || !args.action)
+    {
+        return false
+    }
+
+    if(args.file.hue_data === undefined)
+    {
+        args.file.hue_data = {}
+    }
+
+    args.file.hue_data.action = args.action
+
+    if(args.name)
+    {
+        args.file.hue_data.name = args.name
+    }
+
+    else
+    {
+        args.file.hue_data.name = args.file.name
+    }
+
+    if(args.comment)
+    {
+        args.file.hue_data.comment = args.comment
+    }
+
+    if(args.file.hue_data.action === "background_image_upload")
+    {
+        for(let d in Hue.files)
+        {
+            let f = Hue.files[d]
+
+            if(f.hue_data.action === "background_image_upload")
+            {
+                Hue.cancel_file_upload(d, false)
+            }
+        }
+    }
+
+    args.file.hue_data.size = args.file.size
+    args.file.hue_data.type = args.file.type
+
+    let date = Date.now()
+
+    args.file.hue_data.date = date
+
+    if(args.file.hue_data.name !== undefined)
+    {
+        args.file.hue_data.name = Hue.utilz.clean_string5(args.file.hue_data.name).replace(/.gifv/g, ".gif")
+    }
+
+    else
+    {
+        args.file.hue_data.name = "no_name"
+    }
+
+    args.file.hue_data.reader = Hue.create_file_reader(args.file)
+
+    let slice = args.file.slice(0, Hue.config.upload_slice_size)
+
+    Hue.files[date] = args.file
+    args.file.hue_data.next = Hue.get_file_next(args.file)
+
+    if(args.file.hue_data.next >= 100)
+    {
+        args.file.hue_data.sending_last_slice = true
+    }
+
+    else
+    {
+        args.file.hue_data.sending_last_slice = false
+    }
+
+    args.file.hue_data.percentage = 0
+
+    let message = `Uploading ${Hue.get_file_action_name(args.file.hue_data.action)}: 0%`
+
+    let obj =
+    {
+        brk: "<i class='icon2c fa fa-info-circle'></i>",
+        id: `uploading_${date}`,
+        title: `Size: ${Hue.utilz.get_size_string(args.file.hue_data.size / 1024)} | ${Hue.utilz.nice_date()}`
+    }
+
+    if(!args.file.hue_data.sending_last_slice)
+    {
+        obj.onclick = function()
+        {
+            Hue.cancel_file_upload(date)
+        }
+    }
+
+    Hue.feedback(message, obj)
+
+    args.file.hue_data.reader.readAsArrayBuffer(slice)
+}
+
+// Cancels a file upload
+// Deletes the local file and sends a signal to the server to try to cancel it on time
+Hue.cancel_file_upload = function(date, check=true)
+{
+    let file = Hue.files[date]
+
+    if(!file)
+    {
+        return false
+    }
+
+    if(file.hue_data.sending_last_slice)
+    {
+        return false
+    }
+
+    Hue.change_upload_status(file, "Cancelled", true)
+
+    if(check)
+    {
+        if(file.hue_data.action === "background_image_upload")
+        {
+            Hue.config_admin_background_image()
+        }
+    }
+
+    delete Hue.files[date]
+
+    Hue.socket_emit("cancel_upload", {date:date})
+}
+
+// Gets the percentage based on the next file slice to be uploaded
+// Last slice would be 100
+Hue.get_file_next = function(file)
+{
+    let next = Math.floor(((Hue.config.upload_slice_size * 1) / file.hue_data.size) * 100)
+
+    if(next > 100)
+    {
+        next = 100
+    }
+
+    return next
+}
+
+// Updates the upload status announcement based on upload progress
+Hue.change_upload_status = function(file, status, clear=false)
+{
+    $(`#uploading_${file.hue_data.date}`)
+    .find(".announcement_content")
+    .eq(0).text(`Uploading ${Hue.get_file_action_name(file.hue_data.action)}: ${status}`)
+
+    if(clear)
+    {
+        $(`#uploading_${file.hue_data.date}`).remove()
+        Hue.goto_bottom(false, false)
+    }
+}
+
+// Gets proper names for file upload types
+Hue.get_file_action_name = function(action)
+{
+    let s = ""
+
+    if(action === "image_upload")
+    {
+        s = "image"
+    }
+
+    else if(action === "profile_image_upload")
+    {
+        s = "profile image"
+    }
+
+    else if(action === "background_image_upload")
+    {
+        s = "background image"
+    }
+
+    return s
+}
+
+// This is called whenever the server asks for the next slice of a file upload
+Hue.request_slice_upload = function(data)
+{
+    let file = Hue.files[data.date]
+
+    if(!file)
+    {
+        return false
+    }
+
+    let place = data.current_slice * Hue.config.upload_slice_size
+    let slice = file.slice(place, place + Math.min(Hue.config.upload_slice_size, file.hue_data.size - place))
+
+    file.hue_data.next = Hue.get_file_next(file)
+
+    if(file.hue_data.next >= 100)
+    {
+        file.hue_data.sending_last_slice = true
+    }
+
+    file.hue_data.percentage = Math.floor(((Hue.config.upload_slice_size * data.current_slice) / file.hue_data.size) * 100)
+    file.hue_data.reader.readAsArrayBuffer(slice)
+
+    Hue.change_upload_status(file, `${file.hue_data.percentage}%`)
+}
+
+// What to do when a file upload finishes
+Hue.upload_ended = function(data)
+{
+    let file = Hue.files[data.date]
+
+    if(file)
+    {
+        Hue.change_upload_status(file, "100%", true)
+        delete Hue.files[data.date]
+    }
+}
+
+// Shows an error message on file upload failure
+Hue.show_upload_error = function()
+{
+    Hue.feedback("The image could not be uploaded")
+}

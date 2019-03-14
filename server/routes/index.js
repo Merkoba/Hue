@@ -110,6 +110,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.vars.vimeo_enabled = config.vimeo_enabled
 	c.vars.max_displayed_url = config.max_displayed_url
 	c.vars.max_chat_searches = config.max_chat_searches
+	c.vars.url_title_max_length = config.url_title_max_length
 
 	// Reserved usernames
 	// These can't be used on registration

@@ -99,7 +99,7 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 			})
 		}
 
-		const utilz = require('../public/static/js/utilz.js')()
+		const utilz = require('../public/static/js/libs/utilz.js')()
 		const db_manager = require('./db.js')(db, config, sconfig, utilz, logger)
 		const app = require('./app')(db, db_manager, config, sconfig, utilz)
 		const debug = require('debug')('hue:server')

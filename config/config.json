@@ -253,5 +253,6 @@
 	"link_fetch_timeout": 10000,
 	"link_max_title_length": 280,
 	"synth_max_recent_users": 10,
-	"synth_max_voice_text": 280
+	"synth_max_voice_text": 280,
+	"url_title_max_length": 50
 }
