@@ -796,6 +796,9 @@ This should be an array of strings of root domains.
 "max_chat_searches"
 >Maximum number of items stored in chat search history.
 
+"url_title_max_length"
+>Maximum length for urls to be shown fully in window titles. After this they get cropped and "..." is added.
+
 
 ## The following reside in config.secret.json
 
