@@ -25,7 +25,7 @@ const Utilz = function()
 	utilz.clean_string5 = function(s)
 	{
 		return s.replace(/\s+/g, '').trim()
-	}	
+	}
 
 	utilz.clean_string6 = function(s)
 	{
@@ -94,7 +94,7 @@ const Utilz = function()
 		}
 
 		return num
-	}	
+	}
 
 	utilz.get_random_string = function(n)
 	{
@@ -121,12 +121,12 @@ const Utilz = function()
 		v_id = id.length === 11 ? id : false
 
 		let list_match = url.match(/(?:\?|&)(list=[0-9A-Za-z_-]+)/)
-		
+
 		let index_match = url.match(/(?:\?|&)(index=[0-9]+)/)
 
 		if(list_match)
 		{
-			list_id = list_match[1].replace("list=", "")		
+			list_id = list_match[1].replace("list=", "")
 		}
 
 		if(list_id && !v_id)
@@ -161,9 +161,9 @@ const Utilz = function()
 			let first = false
 
 			let h = false
-			let m = false 
-			let s = false 
-			let t = false 
+			let m = false
+			let s = false
+			let t = false
 
 			for(let match of matches)
 			{
@@ -261,7 +261,7 @@ const Utilz = function()
 
 	utilz.object_to_array = function(obj)
 	{
-		return Object.keys(obj).map(function(key) 
+		return Object.keys(obj).map(function(key)
 		{
 			return obj[key]
 		})
@@ -284,12 +284,12 @@ const Utilz = function()
 
 	utilz.humanize_seconds = function(input, separator=":")
 	{
-		let pad = function(input) 
+		let pad = function(input)
 		{
 			return input < 10 ? "0" + input : input
 		}
 
-		let result = 
+		let result =
 		[
 			pad(Math.floor(input / 3600)),
 			pad(Math.floor(input % 3600 / 60)),
@@ -416,12 +416,12 @@ const Utilz = function()
 			{
 				s = item
 			}
-	
+
 			else if(i === list.length - 1)
 			{
 				s = `${s} and ${item}`
 			}
-	
+
 			else
 			{
 				s = `${s}, ${item}`
@@ -439,12 +439,12 @@ const Utilz = function()
 			{
 				return false
 			}
-	
+
 			else if(s.endsWith('"'))
 			{
 				return false
 			}
-	
+
 			else if(s.endsWith("'"))
 			{
 				return false
@@ -495,7 +495,7 @@ const Utilz = function()
 	utilz.slice_string_end = function(s, n=10)
 	{
 		s = s.trim()
-		
+
 		let sliced = s.slice(-20).trim()
 
 		if(s.length > sliced.length)
@@ -535,7 +535,7 @@ const Utilz = function()
 		{
 			return `${parseFloat(size / 1024).toFixed(2)} MB`
 		}
-	
+
 		else if(mode === 2)
 		{
 			return `${parseFloat(size / 1024 / 1024).toFixed(2)} MB`
@@ -579,7 +579,7 @@ const Utilz = function()
 			{
 				nt = `${dm} second`
 			}
-	
+
 			else
 			{
 				nt = `${dm} seconds`
@@ -592,7 +592,7 @@ const Utilz = function()
 			{
 				nt = `${d} millisecond`
 			}
-	
+
 			else
 			{
 				nt = `${d} milliseconds`
@@ -604,9 +604,9 @@ const Utilz = function()
 
 	utilz.media_types = ["image", "tv", "radio"]
 
-	utilz.synth_notes = 
+	utilz.synth_notes =
 	[
-		"c3", "d3", "e3", "f3",  "g3", 
+		"c3", "d3", "e3", "f3",  "g3",
 		"a3", "b3", "c4", "d4", "e4"
 	]
 

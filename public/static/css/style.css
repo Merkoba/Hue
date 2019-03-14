@@ -1,4 +1,4 @@
-@font-face 
+@font-face
 {
 	font-family: imported_font;
 	src: url(/static/css/OpenSans-Regular.ttf);
@@ -35,7 +35,7 @@ body *
 	pointer-events: none;
 }
 
-.background_image 
+.background_image
 {
 	position: fixed;
 	left: 0; right: 0;
@@ -129,7 +129,7 @@ body *
 	height: 2rem;
 	flex-direction: row;
 	justify-content: center;
-	align-items: center;	
+	align-items: center;
 }
 
 #header
@@ -189,7 +189,7 @@ div#header_radio_playing_icon
 	position: relative;
 	display: flex;
 	width: 100%;
-	max-height: 100%;	
+	max-height: 100%;
 	flex-direction: column;
 	flex-grow: 1;
 }
@@ -219,7 +219,7 @@ div#header_radio_playing_icon
 	justify-content: center;
 }
 
-.chat_area_clone_center .message, 
+.chat_area_clone_center .message,
 .chat_area_clone_center .chat_menu_button_main
 {
 	width: 100%;
@@ -232,7 +232,7 @@ div#header_radio_playing_icon
 #media
 {
 	display: flex;
-	width: 100%;	
+	width: 100%;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
@@ -302,7 +302,7 @@ div#header_radio_playing_icon
 	flex-grow: 1;
 	white-space: nowrap;
 	align-items: center;
-	justify-content: flex-start;	
+	justify-content: flex-start;
 }
 
 .footer_icon
@@ -322,7 +322,7 @@ div#header_radio_playing_icon
 	flex-shrink: 1;
 	background-color: transparent;
 	color: inherit;
-	font-size: 0.8em;	
+	font-size: 0.8em;
 }
 
 .footer_icon3
@@ -331,7 +331,7 @@ div#header_radio_playing_icon
 	flex-shrink: 1;
 	background-color: transparent;
 	color: inherit;
-	font-size: 0.8em;	
+	font-size: 0.8em;
 }
 
 .footer_text
@@ -386,10 +386,10 @@ div#header_radio_playing_icon
 {
 	position: absolute;
 	left: 0px;
-	width: calc(100% - 10px);	
+	width: calc(100% - 10px);
 	display: flex;
 	flex-direction: row;
-	visibility: hidden;	
+	visibility: hidden;
 }
 
 .top_scroller_container
@@ -398,7 +398,7 @@ div#header_radio_playing_icon
 }
 
 .bottom_scroller_container
-{	
+{
 	bottom: 0em;
 }
 
@@ -434,7 +434,7 @@ div#header_radio_playing_icon
 	width: 20%;
 }
 
-.scroller:hover 
+.scroller:hover
 {
 	background-color: rgba(71, 71, 71, 0.5);
 }
@@ -491,7 +491,7 @@ div#header_radio_playing_icon
 	font-size: 1em;
 }
 
-.chat_uname 
+.chat_uname
 {
 	cursor: pointer;
 	white-space: nowrap;
@@ -570,11 +570,11 @@ div#header_radio_playing_icon
 	max-height: 2rem;
 	min-width: 45px;
 	max-width: 45px;
-	text-align: center;	
+	text-align: center;
 	margin-right: 1rem;
 }
 
-a.generic:link, a.generic:visited, a.generic:hover 
+a.generic:link, a.generic:visited, a.generic:hover
 {
 	text-decoration: underline;
 	color: inherit;
@@ -613,7 +613,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	margin-top: 0.3em;
 }
 
-.menu_item 
+.menu_item
 {
 	font-size: 1.2em;
 	padding-top: 0.5em;
@@ -649,7 +649,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 }
 
 .nice_input
-{	
+{
 	width: 18em;
 	font-size: 1.2em;
 	text-align: center;
@@ -657,7 +657,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 }
 
 .nice_input_2
-{	
+{
 	width: 14em;
 	font-size: 1.2em;
 	text-align: center;
@@ -693,7 +693,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	padding-top: 1em;
 	padding-bottom: 1em;
 	overflow-wrap: break-word;
-	word-break: break-word;	
+	word-break: break-word;
 }
 
 .roomlist_name
@@ -814,7 +814,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 {
 	font-size: 1em !important;
 	overflow-wrap: break-word;
-	word-break: break-word;	
+	word-break: break-word;
 }
 
 #Msg-content-container-global_settings, #Msg-content-container-room_settings
@@ -1063,7 +1063,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 select
 {
-	font-size: 0.95em;	
+	font-size: 0.95em;
 }
 
 .modal_select
@@ -1107,7 +1107,7 @@ input[type=text], textarea
 
 #modal_image_error, #expand_image_error
 {
-	font-size: 1.2em;	
+	font-size: 1.2em;
 }
 
 #modal_image_header_info_container
@@ -1119,7 +1119,7 @@ input[type=text], textarea
 	justify-content: center;
 	align-items: center;
 	height: 100%;
-	position: relative;	
+	position: relative;
 }
 
 #modal_image_header_info
@@ -1149,7 +1149,7 @@ input[type=text], textarea
 	justify-content: center;
 	align-items: center;
 	height: 100%;
-	position: relative;	
+	position: relative;
 }
 
 #modal_image_footer_info
@@ -1186,7 +1186,7 @@ input[type=text], textarea
 	display: flex;
 	align-items: center;
 	height: 100%;
-	position: relative;	
+	position: relative;
 }
 
 #modal_image_container
@@ -1217,10 +1217,10 @@ input[type=text], textarea
 
 .pointer
 {
-	cursor: pointer;	
+	cursor: pointer;
 }
 
-.spinner1 
+.spinner1
 {
 	border: 10px solid;
 	border-top: 10px solid;
@@ -1233,7 +1233,7 @@ input[type=text], textarea
 	animation: spin 1.4s linear infinite;
 }
 
-@keyframes spin 
+@keyframes spin
 {
 	0% {transform:rotate(0deg)}
 	100% {transform:rotate(360deg)}
@@ -1310,7 +1310,7 @@ input[type=text], textarea
 	min-width: 300px;
 	max-width: 300px;
 	min-height: 300px;
-	max-height: 300px;		
+	max-height: 300px;
 }
 
 .bigger_profile_image
@@ -1329,7 +1329,7 @@ input[type=text], textarea
 	max-height: 50vh;
 }
 
-.cropper-view-box, .cropper-face 
+.cropper-view-box, .cropper-face
 {
 	border-radius: 50% !important;
 }
@@ -1353,7 +1353,7 @@ input[type=text], textarea
 
 .nowrap
 {
-	white-space: nowrap;	
+	white-space: nowrap;
 }
 
 #header_topic
@@ -1366,7 +1366,7 @@ input[type=text], textarea
 	max-width: 250px;
 	max-height: 250px;
 	min-height: 100px;
-	min-width: 100px;	
+	min-width: 100px;
 }
 
 .nodisplay
@@ -1398,7 +1398,7 @@ input[type=text], textarea
 	pointer-events: none;
 }
 
-#loading_spinner 
+#loading_spinner
 {
 	width: 80px;
 	height: 80px;
@@ -1406,23 +1406,23 @@ input[type=text], textarea
 	animation: rotate_plane 1.2s infinite ease-in-out;
 }
 
-@keyframes rotate_plane 
+@keyframes rotate_plane
 {
-	0% 
+	0%
 	{
 		-webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);
-		transform: perspective(120px) rotateX(0deg) rotateY(0deg); 
+		transform: perspective(120px) rotateX(0deg) rotateY(0deg);
 	}
-	50% 
+	50%
 	{
 		-webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
-		transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg); 
+		transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
 	}
-	100% 
+	100%
 	{
 		-webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-		transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg); 
-	} 
+		transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+	}
 }
 
 #footer_user_menu
@@ -1552,14 +1552,14 @@ input[type=text], textarea
 	text-align: center;
 }
 
-@keyframes fadein 
+@keyframes fadein
 {
-	from 
+	from
 	{
 		opacity: 0;
 	}
 
-	to 
+	to
 	{
 		opacity: 1;
 	}
@@ -1728,7 +1728,7 @@ input[type=text], textarea
 	justify-content: center;
 	position: fixed;
 	bottom: 2rem;
-	left: 0;	
+	left: 0;
 	flex-grow: 1;
 	flex-shrink: 0;
 	z-index: 99999;
@@ -1863,14 +1863,14 @@ input[type=text], textarea
 	color: #ffffff;
 }
 
-#lockscreen_principal * 
+#lockscreen_principal *
 {
 	padding: 0px;
 	text-align: center;
 	font-family: 'Open Sans', sans-serif;
 }
 
-#lockscreen_menu 
+#lockscreen_menu
 {
 	width: 320px;
 }
@@ -1884,7 +1884,7 @@ input[type=text], textarea
 	overflow: hidden;
 	background-color: #8f46a8;
 	box-shadow: 0 0 1px grey;
-	border-radius:3px ;         
+	border-radius:3px ;
 }
 
 #lockscreen_icon_menu
@@ -1895,7 +1895,7 @@ input[type=text], textarea
 	top:14px;
 }
 
-#lockscreen_title 
+#lockscreen_title
 {
 	position: relative;
 	float: left;
@@ -1911,7 +1911,7 @@ input[type=text], textarea
 	margin-left: 0.5rem;
 }
 
-.lockscreen_circle_1 
+.lockscreen_circle_1
 {
 	position: absolute;
 	top:-16px;
@@ -1959,7 +1959,7 @@ input[type=text], textarea
 	transform: scale(0);
 }
 
-.lockscreen_circle_4 
+.lockscreen_circle_4
 {
 	position: absolute;
 	top:-115px;
@@ -1989,7 +1989,7 @@ input[type=text], textarea
 	margin-bottom: 1rem;
 }
 
-@keyframes animation_circle_1 
+@keyframes animation_circle_1
 {
 	from {transform: scale(0)}
 	to {transform: scale(1)}
@@ -2218,7 +2218,7 @@ input[type=text], textarea
 
 .show_profile_button
 {
-	font-size: 1em;	
+	font-size: 1em;
 }
 
 #show_profile_role
@@ -2249,7 +2249,7 @@ input[type=text], textarea
 	grid-gap: 1rem;
 }
 
-.admin_list_item, 
+.admin_list_item,
 .ban_list_item
 {
 	font-size: 1.2rem;
@@ -2383,7 +2383,7 @@ a.special_link:hover
 	align-items: center;
 }
 
-.media_history_container .brk, 
+.media_history_container .brk,
 #media_menu_loaded_media .brk
 {
 	display: none;
@@ -2814,7 +2814,7 @@ a.special_link:hover
 .main_menu_permissions_toggler_item
 {
 	padding-top: 0.8rem;
-	padding-bottom: 0.8rem;	
+	padding-bottom: 0.8rem;
 }
 
 .main_menu_permissions_toggler_item:first-child
@@ -2872,7 +2872,7 @@ a.special_link:hover
 
 #goto_room_input
 {
-	margin-bottom: 1rem;	
+	margin-bottom: 1rem;
 }
 
 #background_image_input_text

@@ -7,12 +7,12 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	const router = express.Router()
 
 	const c = {}
-	
+
 	c.vars = {}
 	c.rvars = {}
 
 	// Automatically includes all global settings and room state config options
-	
+
 	for(let key in config)
 	{
 		if(key.startsWith("global_settings_default") || key.startsWith("room_state_default"))
@@ -20,7 +20,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			c.vars[key] = config[key]
 		}
 	}
-	
+
 	// Fills the config object with relevant config options
 	c.vars.main_room_id = config.main_room_id
 	c.vars.default_image_source = config.default_image_source
@@ -122,7 +122,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		{
 			return false
 		}
-		
+
 		if(req.params.id !== undefined)
 		{
 			let id = req.params.id.substr(0, config.max_room_id_length)
@@ -161,7 +161,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 					res.redirect(`/login?fromurl=${fromurl}`)
 				}
 
-				else 
+				else
 				{
 					jwt.sign(
 					{
@@ -186,7 +186,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	}
 
 	// Login GET
-	router.get('/login', check_url, function(req, res, next) 
+	router.get('/login', check_url, function(req, res, next)
 	{
 		let c = {}
 
@@ -203,7 +203,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	})
 
 	// Login POST
-	router.post('/login', function(req, res, next) 
+	router.post('/login', function(req, res, next)
 	{
 		let email = req.body.email
 		let password = req.body.password
@@ -236,7 +236,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 				else
 				{
 					res.redirect(fromurl)
-				}				
+				}
 			}
 
 			else
@@ -257,7 +257,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	})
 
 	// Register GET
-	router.get('/register', check_url, function(req, res, next) 
+	router.get('/register', check_url, function(req, res, next)
 	{
 		let c = {}
 
@@ -282,10 +282,10 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	})
 
 	// Register POST
-	router.post('/register', function(req, res, next) 
+	router.post('/register', function(req, res, next)
 	{
 		let username = req.body.username
-		let password = req.body.password 
+		let password = req.body.password
 		let email = req.body.email
 
 		if(reserved_usernames.includes(username.toLowerCase()))
@@ -333,7 +333,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 				return false
 			}
 
-			fetch('https://www.google.com/recaptcha/api/siteverify', 
+			fetch('https://www.google.com/recaptcha/api/siteverify',
 			{
 				method: 'POST',
 				body: `secret=${sconfig.recaptcha_secret_key}&response=${recaptcha_response}&remoteip=${remote_ip}`,
@@ -342,7 +342,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 			.then(res => res.json())
 
-			.then(json => 
+			.then(json =>
 			{
 				if(json.success)
 				{
@@ -374,7 +374,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	function do_register(req, res, next)
 	{
 		let username = req.body.username
-		let password = req.body.password 
+		let password = req.body.password
 		let email = req.body.email
 
 		db_manager.get_user({$or:[{username:username}, {email:email}]}, {username:1}, false)
@@ -387,7 +387,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 				.then(ans =>
 				{
-					let m 
+					let m
 
 					if(ans === "done")
 					{
@@ -421,7 +421,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		.catch(err =>
 		{
 			console.error(err)
-		})		
+		})
 	}
 
 	// Verify with emailed registration code
@@ -437,7 +437,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		if(token.indexOf('_') === -1)
 		{
 			return false
-		}		
+		}
 
 		let split = token.split('_')
 
@@ -458,13 +458,13 @@ module.exports = function(db_manager, config, sconfig, utilz)
 					.then(ans =>
 					{
 						let m = encodeURIComponent("Account successfully verified")
-						res.redirect(`/message?message=${m}`)						
+						res.redirect(`/message?message=${m}`)
 					})
 
 					.catch(err =>
 					{
 						console.error(err)
-					})					
+					})
 				}
 
 				else
@@ -485,10 +485,10 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		{
 			console.error(err)
 		})
-	})	
+	})
 
 	// Checks if username is already in use
-	router.post('/check_username', function(req, res, next)	
+	router.post('/check_username', function(req, res, next)
 	{
 		let username = req.body.username
 
@@ -529,7 +529,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	})
 
 	// Checks if email is already in use
-	router.post('/check_email', function(req, res, next)	
+	router.post('/check_email', function(req, res, next)
 	{
 		let email = req.body.email
 
@@ -564,7 +564,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	})
 
 	// Goes to the recover password page
-	router.get('/recover', check_url, function(req, res, next) 
+	router.get('/recover', check_url, function(req, res, next)
 	{
 		let c = {}
 
@@ -575,9 +575,9 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		res.render('recover', c)
 	})
-	
+
 	// Recover password POST
-	router.post('/recover', function(req, res, next) 
+	router.post('/recover', function(req, res, next)
 	{
 		let email = req.body.email
 
@@ -595,10 +595,10 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 		.then(result =>
 		{
-			let m 
+			let m
 
 			if(result)
-			{ 
+			{
 				if(result === "done")
 				{
 					m = encodeURIComponent(`If an email matched we will send a password reset link to ${email}\nEmail might take a couple of minutes to arrive`)
@@ -614,7 +614,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 				else if(result === "error")
 				{
 					m = encodeURIComponent("There was an error. Please try again later")
-					res.redirect(`/message?message=${m}`)					
+					res.redirect(`/message?message=${m}`)
 				}
 
 				else
@@ -720,7 +720,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			{
 				if(Date.now() - user.password_reset_link_date < config.password_reset_expiration)
 				{
-					let password = req.body.password 
+					let password = req.body.password
 
 					if(password.length === 0 || password.length < config.min_password_length || password.length > config.max_password_length)
 					{
@@ -735,7 +735,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 					})
 
 					m = encodeURIComponent("Password successfully changed")
-					res.redirect(`/message?message=${m}`)					
+					res.redirect(`/message?message=${m}`)
 				}
 
 				else
@@ -759,32 +759,32 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	})
 
 	// Shows a page with a message
-	router.get('/message', check_url, function(req, res, next) 
+	router.get('/message', check_url, function(req, res, next)
 	{
 		let c = {}
 		c.vars = {}
 		c.vars.message2 = decodeURIComponent(req.query.message).replace(/\n/g, "<br>")
 		res.render('message', c)
-	})		
+	})
 
 	// Logs out the user
-	router.get('/logout', function(req, res, next) 
+	router.get('/logout', function(req, res, next)
 	{
 		req.session.destroy(function(){})
 		res.redirect('/login')
-	})	
+	})
 
 	// Enter root
-	router.get('/', [check_url, require_login], function(req, res, next) 
+	router.get('/', [check_url, require_login], function(req, res, next)
 	{
 		c.rvars.room_id = config.main_room_id
 		c.rvars.user_id = req.session.user_id
 		c.rvars.jwt_token = req.jwt_token
 		res.render('main', c)
 	})
-	
+
 	// Enter a room
-	router.get('/:id(\\w+)', [check_url, require_login], function(req, res, next) 
+	router.get('/:id(\\w+)', [check_url, require_login], function(req, res, next)
 	{
 		c.rvars.room_id = req.params.id.substr(0, config.max_room_id_length)
 		c.rvars.user_id = req.session.user_id

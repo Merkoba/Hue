@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
-function normalizePort(val) 
+function normalizePort(val)
 {
 	let port = parseInt(val, 10)
 
-	if(isNaN(port)) 
+	if(isNaN(port))
 	{
 		return val
 	}
 
-	if(port >= 0) 
+	if(port >= 0)
 	{
 		return port
 	}
@@ -40,7 +40,7 @@ try
 
 catch(err)
 {
-	console.error(err)	
+	console.error(err)
 }
 
 const path = require('path')
@@ -48,25 +48,25 @@ const mongo = require('mongodb')
 const bcrypt = require('bcrypt')
 const winston = require('winston')
 
-mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client) 
+mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 {
 	if(err)
 	{
-		console.error(err) 
+		console.error(err)
 	}
 
 	else
 	{
-		const db = client.db("hue") 
+		const db = client.db("hue")
 
 		const logger = winston.createLogger(
 		{
 			format: winston.format.simple(),
-			transports: 
+			transports:
 			[
 				new winston.transports.File(
 				{
-					filename: path.join(__dirname, "../logs/error.log"), 
+					filename: path.join(__dirname, "../logs/error.log"),
 					level: "error",
 					timestamp: (new Date()).toLocaleTimeString()
 				})
@@ -97,14 +97,14 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 				level: "error",
 				message: msg
 			})
-		}		
+		}
 
 		const utilz = require('../public/static/js/utilz.js')()
 		const db_manager = require('./db.js')(db, config, sconfig, utilz, logger)
 		const app = require('./app')(db, db_manager, config, sconfig, utilz)
 		const debug = require('debug')('hue:server')
 		const http = require('http')
-		
+
 		app.set('port', port)
 
 		const server = http.createServer(app)
@@ -117,9 +117,9 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 
 		require('./sockets')(io, db_manager, config, sconfig, utilz, logger)
 
-		function onError(error) 
+		function onError(error)
 		{
-			if(error.syscall !== 'listen') 
+			if(error.syscall !== 'listen')
 			{
 				throw error
 			}
@@ -128,7 +128,7 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 				? 'Pipe ' + port
 				: 'Port ' + port
 
-			switch(error.code) 
+			switch(error.code)
 			{
 				case 'EACCES':
 					console.error(bind + ' requires elevated privileges')
@@ -145,7 +145,7 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 			}
 		}
 
-		function onListening() 
+		function onListening()
 		{
 			let addr = server.address()
 

@@ -94,7 +94,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 	// User schema definition
 	// This is used to check types and fill defaults
-	const users_schema = 
+	const users_schema =
 	{
 		username:{type:"string", default:"", skip:true},
 		password:{type:"string", default:"", skip:true},
@@ -122,7 +122,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	// Finds a room with the given query and fields to be fetched
 	manager.get_room = function(query, fields)
 	{
-		return new Promise((resolve, reject) => 
+		return new Promise((resolve, reject) =>
 		{
 			let num_fields = Object.keys(fields).length
 
@@ -275,12 +275,12 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	// Creates a room
 	manager.create_room = function(data)
 	{
-		return new Promise((resolve, reject) => 
+		return new Promise((resolve, reject) =>
 		{
 			room = {}
 
 			manager.room_fill_defaults(room)
-			
+
 			if(data.id !== undefined)
 			{
 				room._id = data.id
@@ -311,12 +311,12 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				return
 			})
 		})
-	}	
+	}
 
 	// Room creation started by a user
 	manager.user_create_room = function(data, force=false)
 	{
-		return new Promise((resolve, reject) => 
+		return new Promise((resolve, reject) =>
 		{
 			manager.get_user({_id:data.user_id}, {create_room_date:1})
 
@@ -356,7 +356,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 					reject(err)
 					logger.log_error(err)
 					return
-				})				
+				})
 			})
 
 			.catch(err =>
@@ -364,7 +364,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				reject(err)
 				logger.log_error(err)
 				return
-			})			
+			})
 		})
 	}
 
@@ -421,7 +421,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	// Finds rooms
 	manager.find_rooms = function(query)
 	{
-		return new Promise((resolve, reject) => 
+		return new Promise((resolve, reject) =>
 		{
 			db.collection('rooms').find(query).toArray()
 
@@ -443,7 +443,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	// Updates log messages
 	manager.push_log_messages = function(_id, messages)
 	{
-		return new Promise((resolve, reject) => 
+		return new Promise((resolve, reject) =>
 		{
 			manager.get_room({_id:_id}, {log_messages:1})
 
@@ -481,7 +481,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	// Updates admin log messages
 	manager.push_admin_log_messages = function(_id, messages)
 	{
-		return new Promise((resolve, reject) => 
+		return new Promise((resolve, reject) =>
 		{
 			manager.get_room({_id:_id}, {admin_log_messages:1})
 
@@ -519,7 +519,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	// Updates access log messages
 	manager.push_access_log_messages = function(_id, messages)
 	{
-		return new Promise((resolve, reject) => 
+		return new Promise((resolve, reject) =>
 		{
 			manager.get_room({_id:_id}, {access_log_messages:1})
 
@@ -553,11 +553,11 @@ module.exports = function(db, config, sconfig, utilz, logger)
 			})
 		})
 	}
-	
+
 	// Finds a user with the given query and fields to be fetched
 	manager.get_user = function(query, fields, verified=true)
 	{
-		return new Promise((resolve, reject) => 
+		return new Promise((resolve, reject) =>
 		{
 			let num_fields = Object.keys(fields).length
 
@@ -705,13 +705,13 @@ module.exports = function(db, config, sconfig, utilz, logger)
 					return
 				})
 			}
-		})	
+		})
 	}
 
 	// Function to handle found users
 	manager.on_user_found = function(user)
 	{
-		return new Promise((resolve, reject) => 
+		return new Promise((resolve, reject) =>
 		{
 			if(user && user.version !== users_version)
 			{
@@ -743,7 +743,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 						return
 					})
 
-					.catch(err => 
+					.catch(err =>
 					{
 						reject(err)
 						logger.log_error(err)
@@ -789,7 +789,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 	// Creates a user
 	manager.create_user = function(info)
 	{
-		return new Promise((resolve, reject) => 
+		return new Promise((resolve, reject) =>
 		{
 			bcrypt.hash(info.password, config.encryption_cost)
 
@@ -802,7 +802,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 					username: info.username,
 					password: hash,
 					password_date: Date.now(),
-					email: info.email, 
+					email: info.email,
 					verified: false,
 					verification_code: Date.now() + utilz.get_random_string(12),
 					registration_date: Date.now()
@@ -816,9 +816,9 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 				.then(result =>
 				{
-					let link = `${config.site_root}verify?token=${result.ops[0]._id}_${result.ops[0].verification_code}`					
+					let link = `${config.site_root}verify?token=${result.ops[0]._id}_${result.ops[0].verification_code}`
 
-					let data = 
+					let data =
 					{
 						from: `${config.delivery_email_name} <${config.delivery_email}>`,
 						to: info.email,
@@ -826,10 +826,10 @@ module.exports = function(db, config, sconfig, utilz, logger)
 						text: `Click the link to activate the account on ${config.site_root}. If you didn't register here, ignore this.\n\n${link}`
 					}
 
-					mailgun.messages().send(data, function(error, body) 
+					mailgun.messages().send(data, function(error, body)
 					{
 						if(error)
-						{				
+						{
 							resolve("error")
 							return
 						}
@@ -856,13 +856,13 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				logger.log_error(err)
 				return
 			})
-		})	
+		})
 	}
 
 	// Updates the user
 	manager.update_user = function(_id, fields)
 	{
-		return new Promise((resolve, reject) => 
+		return new Promise((resolve, reject) =>
 		{
 			if(_id !== undefined)
 			{
@@ -914,7 +914,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 						logger.log_error(err)
 						return
 					})
-					
+
 					return
 				})
 
@@ -936,7 +936,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 					resolve(false)
 					return
 				}
-				
+
 				db.collection('users').updateOne({_id:_id}, {$set:fields})
 
 				.then(ans =>
@@ -954,15 +954,15 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 				return
 			}
-		})	
+		})
 	}
 
 	// Checks if a user with a given email and password matches the stored password
 	// This uses bcrypt to compare with the encrypted password version
 	manager.check_password = function(email, password, fields={})
 	{
-		return new Promise((resolve, reject) => 
-		{	
+		return new Promise((resolve, reject) =>
+		{
 			Object.assign(fields, {password:1})
 
 			manager.get_user({email:email}, fields)
@@ -974,7 +974,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 					resolve({user:null, valid:false})
 				}
 
-				else 
+				else
 				{
 					bcrypt.compare(password, user.password)
 
@@ -999,14 +999,14 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				logger.log_error(err)
 				return
 			})
-		})	
+		})
 	}
 
 	// Changes the username
 	// Checks if the username contains a reserved username
 	manager.change_username = function(_id, username)
 	{
-		return new Promise((resolve, reject) => 
+		return new Promise((resolve, reject) =>
 		{
 			if(reserved_usernames.includes(username.toLowerCase()))
 			{
@@ -1048,7 +1048,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 								reject(err)
 								logger.log_error(err)
 								return
-							})							
+							})
 
 							resolve(true)
 							return
@@ -1070,16 +1070,16 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				logger.log_error(err)
 				return
 			})
-		})	
+		})
 	}
 
 	// Changes the email
 	// Sends a code verification email
 	manager.change_email = function(_id, email, verify_code=false)
 	{
-		return new Promise((resolve, reject) => 
-		{	
-			manager.get_user({_id:_id}, 
+		return new Promise((resolve, reject) =>
+		{
+			manager.get_user({_id:_id},
 			{
 				email: 1,
 				email_change_code: 1,
@@ -1097,7 +1097,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				}
 
 				else
-				{					
+				{
 					manager.get_user({email:email}, {email:1})
 
 					.then(user2 =>
@@ -1161,7 +1161,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 									let command = `/verifyemail ${code}`
 
-									let data = 
+									let data =
 									{
 										from: `${config.delivery_email_name} <${config.delivery_email}>`,
 										to: email,
@@ -1169,7 +1169,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 										text: `Enter the command while connected to a room in ${config.site_root} to confirm your email.\n\n${command}`
 									}
 
-									mailgun.messages().send(data, function(error, body) 
+									mailgun.messages().send(data, function(error, body)
 									{
 										if(error)
 										{
@@ -1179,7 +1179,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 										else
 										{
-											manager.update_user(user._id, 
+											manager.update_user(user._id,
 											{
 												email_change_code: code,
 												email_change_date: Date.now(),
@@ -1203,7 +1203,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 								else
 								{
 									resolve({message:"wait"})
-									return									
+									return
 								}
 							}
 						}
@@ -1224,14 +1224,14 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				logger.log_error(err)
 				return
 			})
-		})	
+		})
 	}
 
 	// Initiates password reset
 	// Sends a verification link email
 	manager.reset_user_password = function(email)
 	{
-		return new Promise((resolve, reject) => 
+		return new Promise((resolve, reject) =>
 		{
 			manager.get_user({email:email}, {email:1, password_reset_date:1})
 
@@ -1245,7 +1245,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 						let link = `${config.site_root}change_password?token=${user._id.toString()}_${code}`
 
-						let data = 
+						let data =
 						{
 							from: `${config.delivery_email_name} <${config.delivery_email}>`,
 							to: email,
@@ -1253,7 +1253,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 							text: `Click the link to reset your password on ${config.site_root}.\n\n${link}`
 						}
 
-						mailgun.messages().send(data, function(error, body) 
+						mailgun.messages().send(data, function(error, body)
 						{
 							if(error)
 							{
@@ -1263,7 +1263,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 
 							else
 							{
-								manager.update_user(user._id, 
+								manager.update_user(user._id,
 								{
 									password_reset_code: code,
 									password_reset_date: Date.now(),
@@ -1275,7 +1275,7 @@ module.exports = function(db, config, sconfig, utilz, logger)
 									reject(err)
 									logger.log_error(err)
 									return
-								})								
+								})
 
 								resolve("done")
 								return
@@ -1303,13 +1303,13 @@ module.exports = function(db, config, sconfig, utilz, logger)
 				logger.log_error(err)
 				return
 			})
-		})		
+		})
 	}
 
 	// Saves room to visited rooms
 	manager.save_visited_room = function(user_id, room_id)
 	{
-		return new Promise((resolve, reject) => 
+		return new Promise((resolve, reject) =>
 		{
 			manager.get_user({_id:user_id}, {visited_rooms:1})
 

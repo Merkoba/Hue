@@ -19,19 +19,19 @@
 		<script src="/static/js/jquery.ui.position.min.js?version=2"></script>
 		<script src="/static/js/socket.io.js"></script>
 		<script src="/static/js/timeago.min.js"></script>
-		
+
 		<link rel="stylesheet" href="/static/css/font-awesome/css/font-awesome.min.css">
 		<link rel="stylesheet" href="/static/css/cropper.min.css?version=2">
 		<link rel="stylesheet" href="/static/css/spectrum.css">
 		<link rel="stylesheet" href="/static/css/spectrum.css">
-		<link rel="stylesheet" href="/static/css/jquery.contextMenu.min.css?version=2"> 
-		
+		<link rel="stylesheet" href="/static/css/jquery.contextMenu.min.css?version=2">
+
 		<script src="/static/js/msg.min.js?version=28"></script>
 		<script src="/static/js/utilz.js?version=42"></script>
 		<script src="/static/js/colorlib.js?version=13"></script>
 		<script src="/static/js/separator.js?version=1"></script>
 
-		<script src="/static/js/base.js?version=2781"></script>
+		<script src="/static/js/base.js?version=2782"></script>
 		<link rel="stylesheet" href="/static/css/style.css?version=625"/>
 
 		<script>
@@ -217,7 +217,7 @@
 							<div class='media_main_container' id='media_image'>
 
 								<div class='media_container' id='media_image_container'>
-									
+
 									<img id='media_image_frame' class='pointer' draggable='false' onclick="Hue.show_current_image_modal()" crossOrigin="Anonymous">
 									<div id='media_image_error' class='pointer' onclick="Hue.show_current_image_modal()">Image failed to load</div>
 
@@ -230,7 +230,7 @@
 							</div>
 
 							<div class='media_main_container' id='media_tv'>
-							
+
 							<div id='media_youtube_video_container' class='media_container'></div>
 							<div id='media_twitch_video_container' class='media_container'></div>
 							<div id='media_soundcloud_video_container' class='media_container'></div>
@@ -260,7 +260,7 @@
 						<textarea id='input' size="1" rows="1"></textarea>
 
 						<div id='footer_media_items' class='unselectable'>
-							
+
 							<div id='footer_images_controls' class='footer_media_control'>
 								<div id="footer_images_label" class='footer_media_label footer_text_small action pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("image")' data-type="images">Images</div>
 
@@ -271,12 +271,12 @@
 								<div class='pointer action nicetitle footer_icon2' onclick='Hue.toggle_images()' title='Show/Hide Images. Hidden means it will not be displayed or active'>
 									<i id='footer_toggle_images_icon' class='fa fa-toggle-on'></i>
 								</div>
-								
+
 								<div id='footer_lock_images_icon_container' class='pointer action nicetitle footer_icon3' onclick='Hue.toggle_lock_images()' onauxclick="Hue.media_lock_valve('images', event)" title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'>
 									<i id='footer_lock_images_icon' class='fa fa-unlock-alt'></i>
 								</div>
 							</div>
-							
+
 							<div id='footer_tv_controls' class='footer_media_control'>
 								<div id="footer_tv_label" class='footer_media_label footer_text_small action pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("tv")' data-type="tv">TV</div>
 
@@ -292,7 +292,7 @@
 									<i class='fa fa-unlock-alt' id='footer_lock_tv_icon'></i>
 								</div>
 							</div>
-							 
+
 							<div id='footer_radio_controls' class='footer_media_control'>
 								<div id="footer_radio_label" class='footer_media_label footer_text_small action pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("radio")' data-type="radio">Radio</div>
 
@@ -354,7 +354,7 @@
 						<option value="disabled">Disabled</option>
 						<option value="locked">Locked</option>
 					</select>
-					
+
 					<div class='main_menu_label'>TV</div>
 
 					<select id='admin_enable_tv' class='admin_container_1 modal_select'>
@@ -415,7 +415,7 @@
 						<option value="mirror_tiled">Mirror Tiled</option>
 						<option value="solid">Solid</option>
 					</select>
-					
+
 					<div class='admin_container_2' id='admin_background_tile_dimensions_container'>
 						<div class='small_padding_bottom'>Tile Dimensions</div>
 						<input type='text' class='setting_input_text_small' id='admin_background_tile_dimensions' title='CSS background-size property (width and height). For example 200px 200px, 100px auto, auto 100px, or 100px 200px'>
@@ -437,7 +437,7 @@
 					<div class='menu_subsection_title'>Permissions</div>
 
 					<div>{{{permissions_containers}}}</div>
-					
+
 					<div class='menu_subsection_title2'>Room Config</div>
 
 					<div class='main_menu_label'>Privacy</div>
@@ -452,8 +452,8 @@
 					<select id='admin_log' class='admin_container_1 modal_select'>
 						<option value="true">Enabled</option>
 						<option value="false">Disabled</option>
-					</select>						
-					
+					</select>
+
 					<div class='main_menu_label'>Room Name</div>
 
 					<input type="text" class="admin_container_1 setting_input_text" id="admin_room_name">
@@ -486,12 +486,12 @@
 
 				</div>
 			</div>
-		</script>	
+		</script>
 
 		<script id='template_user_menu' type='text/x-handlebars-template' class='template'>
 			<div class='unselectable'>
 				<div class='bigger2' id='user_menu_username'>Loading</div>
-				
+
 				<div id='user_menu_profile_image_container' class='big_profile_image_container round_image_container'>
 					<img id='user_menu_profile_image' class='big_profile_image pointer unselectable' onclick='Hue.open_profile_image_picker()'>
 				</div>
@@ -723,7 +723,7 @@
 								<option value='never'>Never</option>
 							</select>
 						</div>
-							
+
 						<div class='settings_item settings_top_level_item' data-setting='afk_disable_messages_beep'>
 							<div class="setting_title2">On AFK</div>
 							<div class="setting_title">Disable Messages Beep</div>
@@ -902,52 +902,52 @@
 							<div class="setting_title">Synth Enabled</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_synth_enabled">
 						</div>
-										
+
 						<div class='settings_item settings_top_level_item' data-setting='speech_1'>
 							<div class="setting_title3" title="This is spoken when middle clicking key #1">Speech #1</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_1"></textarea>
 						</div>
-										
+
 						<div class='settings_item settings_top_level_item' data-setting='speech_2'>
 							<div class="setting_title3" title="This is spoken when middle clicking key #2">Speech #2</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_2"></textarea>
 						</div>
-										
+
 						<div class='settings_item settings_top_level_item' data-setting='speech_3'>
 							<div class="setting_title3" title="This is spoken when middle clicking key #3">Speech #3</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_3"></textarea>
 						</div>
-										
+
 						<div class='settings_item settings_top_level_item' data-setting='speech_4'>
 							<div class="setting_title3" title="This is spoken when middle clicking key #4">Speech #4</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_4"></textarea>
 						</div>
-										
+
 						<div class='settings_item settings_top_level_item' data-setting='speech_5'>
 							<div class="setting_title3" title="This is spoken when middle clicking key #5">Speech #5</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_5"></textarea>
 						</div>
-										
+
 						<div class='settings_item settings_top_level_item' data-setting='speech_6'>
 							<div class="setting_title3" title="This is spoken when middle clicking key #6">Speech #6</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_6"></textarea>
 						</div>
-										
+
 						<div class='settings_item settings_top_level_item' data-setting='speech_7'>
 							<div class="setting_title3" title="This is spoken when middle clicking key #7">Speech #7</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_7"></textarea>
 						</div>
-										
+
 						<div class='settings_item settings_top_level_item' data-setting='speech_8'>
 							<div class="setting_title3" title="This is spoken when middle clicking key #8">Speech #8</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_8"></textarea>
 						</div>
-										
+
 						<div class='settings_item settings_top_level_item' data-setting='speech_9'>
 							<div class="setting_title3" title="This is spoken when middle clicking key #9">Speech #9</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_9"></textarea>
 						</div>
-										
+
 						<div class='settings_item settings_top_level_item' data-setting='speech_10'>
 							<div class="setting_title3" title="This is spoken when middle clicking key #10">Speech #10</div>
 							<textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_10"></textarea>
@@ -956,7 +956,7 @@
 					</div>
 
 					<div class='settings_category settings_window_category_container' id='settings_window_category_content_misc_{{type}}' data-category='misc'>
-						
+
 						<div class='settings_item settings_top_level_item' data-setting='show_joins'>
 							<div class="setting_title">Show User Joins</div>
 							<input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_show_joins">
@@ -1059,7 +1059,7 @@
 
 						<div class='settings_item settings_top_level_item' data-setting='accept_commands_from'>
 							<div class='toggler_main_container'>
-								<div class="{{type}}_toggle toggler action pointer bold inline" 
+								<div class="{{type}}_toggle toggler action pointer bold inline"
 								title="Usernames here will be able to execute commands on your behalf">
 								+ Accept Commands From<br>(Dangerous)
 								</div>
@@ -1089,7 +1089,7 @@
 				<input type="search" class="filter_input" placeholder="Filter" id="room_settings_filter" data-mode="manual">
 				{{{settings}}}
 			</div>
-		</script>		
+		</script>
 
 		<script id='template_create_room' type='text/x-handlebars-template' class='template'>
 			<div id='create_room'>
@@ -1103,7 +1103,7 @@
 					<select id='create_room_public' class='modal_select'>
 						<option value='true' selected>Public</option>
 						<option value='false'>Private</option>
-					</select>				
+					</select>
 
 					<div id='create_room_done' class='menu_item action' onclick='Hue.create_room_submit()'>Create</div>
 				</div>
@@ -1143,7 +1143,7 @@
 
 		<script id='template_upload_comment' type='text/x-handlebars-template' class='template'>
 			<img id='upload_comment_image_preview'>
-			
+
 			<div id='upload_comment_image_feedback'>Image seems to be corrupted</div>
 
 			<div id='upload_comment_controls' class='flex_column_center'>
@@ -1185,12 +1185,12 @@
 			<input type="search" id="userlist_filter" class="filter_input" placeholder="Filter">
 			<div id='userlist'></div>
 		</script>
-		
+
 		<script id='template_roomlist' type='text/x-handlebars-template' class='template'>
 			<input type="search" id="{{type}}_filter" class="filter_input" placeholder="Filter">
 			<div id='{{type}}_container'></div>
-		</script>		
-		
+		</script>
+
 		<script id='template_played' type='text/x-handlebars-template' class='template'>
 			<input type="search" id="played_filter" class="filter_input" placeholder="Filter">
 			<div id='played'></div>
@@ -1214,7 +1214,7 @@
 			</div>
 
 			<div id='input_history_container'></div>
-		</script>	
+		</script>
 
 		<script id='template_chat_search' type='text/x-handlebars-template' class='template'>
 			<div class='flex_row_center sticky bg1'>
@@ -1232,7 +1232,7 @@
 
 		<script id='template_highlights' type='text/x-handlebars-template' class='template'>
 			<input type="search" id="highlights_filter" data-mode='manual' class="filter_input" placeholder="Filter">
-			
+
 			<div id='highlights_no_results' class='unselectable'>
 				<div class='bigger3'>No Highlights Yet</div>
 			</div>
@@ -1318,7 +1318,7 @@
 		<script id='template_modal_image' type='text/x-handlebars-template' class='template'>
 
 			<div id='modal_image_background_image' class='background_image'></div>
-			
+
 			<div class='columns_container'>
 
 				<div id='modal_image_header' class='panel unselectable bg2'>
@@ -1351,7 +1351,7 @@
 
 		<script id='template_expand_image' type='text/x-handlebars-template' class='template'>
 			<div id='expand_image_background_image' class='background_image'></div>
-			
+
 			<div id="expand_image_container" onclick="Hue.hide_expand_image()" class="bg1 unselectable">
 				<div id="expand_image_spinner" class='spinner1'></div>
 				<img id="expand_image">
@@ -1377,13 +1377,13 @@
 								<div class="lockscreen_circle_4"></div>
 							</div>
 						</div>
-					</div> 
+					</div>
 				</div>
 
 				<div id='lockscreen_lights_off_button' onclick='Hue.toggle_lockscreen_lights_off()' class='action'>Turn Lights Off</div>
 			</div>
 
-		</script>		
+		</script>
 
 		<script id='template_media_menu' type='text/x-handlebars-template' class='template'>
 			<div id='media_menu_container' class='unselectable flex_column_center generic_vertical_separator'>
@@ -1427,21 +1427,21 @@
 					<div id='media_menu_radio_volume_title' class='setting_title'>Radio Volume</div>
 					<div class='slider_container'>
 						<div class='slider_icon_left pointer action' onclick="Hue.set_media_menu_radio_volume('decrease')"><i class='icon2 fa fa-minus'></i></div>
-						<input type='range' id='media_menu_radio_volume' type="range" min="0" max="1" step="0.1" 
+						<input type='range' id='media_menu_radio_volume' type="range" min="0" max="1" step="0.1"
 						ondblclick='Hue.set_media_menu_radio_volume("default")'>
 						<div class='slider_icon_right pointer action' onclick="Hue.set_media_menu_radio_volume('increase')"><i class='icon2b fa fa-plus'></i></div>
 					</div>
-					
+
 					<div id='media_menu_tv_volume_title' class='setting_title'>TV Volume</div>
 					<div class='slider_container'>
 						<div class='slider_icon_left pointer action' onclick="Hue.set_media_menu_tv_volume('decrease')"><i class='icon2 fa fa-minus'></i></div>
-						<input type='range' id='media_menu_tv_volume' type="range" min="0" max="1" step="0.1" 
+						<input type='range' id='media_menu_tv_volume' type="range" min="0" max="1" step="0.1"
 						ondblclick='Hue.set_media_menu_tv_volume("default")'>
 						<div class='slider_icon_right pointer action' onclick="Hue.set_media_menu_tv_volume('increase')"><i class='icon2b fa fa-plus'></i></div>
 					</div>
 				</div>
 			</div>
-		</script>	
+		</script>
 
 		<script id='template_locked_menu' type='text/x-handlebars-template' class='template'>
 			<div id='locked_menu' class='unselectable'>
@@ -1481,13 +1481,13 @@
 			<textarea rows="3" id='write_message_area' tabindex=0 placeholder="Write a Message (Optional)"></textarea>
 			<canvas id='draw_message_area' class='draw_canvas' width='400px' height='300px' tabindex=1></canvas>
 			<span class='unselectable flex_row_center generic_horizontal_separator'>
-				<div class='bigger pointer unselectable action inline' 
-				onclick='Hue.clear_draw_message_state()' 
+				<div class='bigger pointer unselectable action inline'
+				onclick='Hue.clear_draw_message_state()'
 				tabindex=3>Clear Drawing</div>
 
-				<div id='write_message_send_button' 
-				class='bigger pointer unselectable action inline' 
-				onclick='Hue.send_popup_message()' 
+				<div id='write_message_send_button'
+				class='bigger pointer unselectable action inline'
+				onclick='Hue.send_popup_message()'
 				ondblclick='Hue.send_popup_message(true)' tabindex=4>Send</div>
 			</span>
 		</script>
@@ -1518,7 +1518,7 @@
 				<div id='details_change_password' class=' action pointer'>Change Password</div>
 				<div id='details_change_email' class=' action pointer'>Change Email</div>
 			</div>
-			
+
 		</script>
 
 		<script id='template_draw_image' type='text/x-handlebars-template' class='template'>
@@ -1599,7 +1599,7 @@
 						</div>
 						<div>
 							<div class='setting_title'>Can Change the Radio</div>
-							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice{{number}}_radio_permission" data-ptype="voice{{number}}_radio_permission">				
+							<input type="checkbox" class="admin_voice_permissions_checkbox" id="admin_voice{{number}}_radio_permission" data-ptype="voice{{number}}_radio_permission">
 						</div>
 						<div>
 							<div class='setting_title'>Can Use The Synth</div>
@@ -1623,8 +1623,8 @@
 		<script id='template_commands' type='text/x-handlebars-template' class='template'>
 			<input type="search" id="commands_filter" class="filter_input" placeholder="Filter">
 			<div id='commands_container'></div>
-		</script>	
-		
+		</script>
+
 		<audio id='audio_pup' src='/static/audio/pup.mp3?version=1' preload="auto"></audio>
 		<audio id='audio_pup2' src='/static/audio/pup2.mp3?version=1' preload="auto"></audio>
 		<audio id='audio_join' src='/static/audio/join.mp3?version=2' preload="auto"></audio>

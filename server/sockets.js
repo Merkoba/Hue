@@ -109,7 +109,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	})
 
 	// Dont check if user has joined with these functions
-	const dont_check_joined = 
+	const dont_check_joined =
 	[
 		"join_room",
 		"roomlist",
@@ -118,7 +118,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 	// Don't add spam on these functions
 	// They add spam manually
-	const dont_add_spam = 
+	const dont_add_spam =
 	[
 		"slice_upload",
 		"typing",
@@ -127,7 +127,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	]
 
 	// Check if user is locked from room with these functions
-	const check_locked = 
+	const check_locked =
 	[
 		"roomlist",
 		"create_room"
@@ -498,7 +498,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				info = await db_manager.get_room({_id:socket.hue_room_id}, {})
 			}
-			
+
 			rooms[socket.hue_room_id] = handler.create_room_object(info)
 		}
 
@@ -1324,7 +1324,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			db_manager.update_room(info._id, {bans:info.bans})
 
 			handler.room_emit(socket, 'announce_unban_all', {username:socket.hue_username})
-			
+
 			handler.push_admin_log_message(socket, "unbanned all banned users")
 		}
 
@@ -1392,7 +1392,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			handler.room_emit(socket, 'log_changed', {username:socket.hue_username, log:data.log})
 
 			let als
-			
+
 			if(data.log)
 			{
 				als = "enabled the log"
@@ -1448,7 +1448,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		handler.room_emit(socket, 'privacy_change', {username:socket.hue_username, what:data.what})
 
 		let als
-		
+
 		if(data.what)
 		{
 			als = "made the room public"
@@ -1511,7 +1511,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		data.src = data.src.replace(/youtu\.be\/(\w{11})/, "www.youtube.com/watch?v=$1")
 		data.setter = socket.hue_username
 
-		if(rooms[socket.hue_room_id].current_radio_source === data.src 
+		if(rooms[socket.hue_room_id].current_radio_source === data.src
 		|| rooms[socket.hue_room_id].current_radio_query === data.src)
 		{
 			handler.user_emit(socket, 'same_radio', {})
@@ -1548,8 +1548,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				if(id)
 				{
-					let st 
-					let pid 
+					let st
+					let pid
 
 					if(id[0] === "video")
 					{
@@ -1742,7 +1742,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			radioinfo.radio_title = he.decode(data.title)
 			radioinfo.radio_query = query
 		}
-		
+
 		radioinfo.radio_setter = data.setter
 		radioinfo.radio_date = date
 		radioinfo.radio_comment = comment
@@ -1859,7 +1859,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		data.src = data.src.replace(/youtu\.be\/(\w{11})/, "www.youtube.com/watch?v=$1")
 		data.setter = socket.hue_username
 
-		if(rooms[socket.hue_room_id].current_tv_source === data.src 
+		if(rooms[socket.hue_room_id].current_tv_source === data.src
 		|| rooms[socket.hue_room_id].current_tv_query === data.src)
 		{
 			handler.user_emit(socket, 'same_tv', {})
@@ -1896,8 +1896,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 				if(id)
 				{
-					let st 
-					let pid 
+					let st
+					let pid
 
 					if(id[0] === "video")
 					{
@@ -2095,9 +2095,9 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						method: 'GET',
 						path: `/videos/${id}`
-					}, function (err, response, status_code, headers) 
+					}, function (err, response, status_code, headers)
 					{
-						if(err) 
+						if(err)
 						{
 							handler.user_emit(socket, 'video_not_found', {})
 							logger.log_error(err)
@@ -2128,7 +2128,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			else
 			{
 				let extension = utilz.get_extension(data.src).toLowerCase()
-				
+
 				if(extension)
 				{
 					if(utilz.video_extensions.includes(extension) || utilz.audio_extensions.includes(extension))
@@ -2174,8 +2174,8 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					}
 
 					fetch(data.src)
-					
-					.then(res => 
+
+					.then(res =>
 					{
 						let xframe_options = res.headers.get('x-frame-options') || ""
 
@@ -2289,7 +2289,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			tvinfo.tv_title = he.decode(data.title)
 			tvinfo.tv_query = query
 		}
-		
+
 		tvinfo.tv_setter = data.setter
 		tvinfo.tv_date = date
 		tvinfo.tv_comment = comment
@@ -2302,7 +2302,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		let tv_id = handler.generate_message_id()
-		
+
 		db_manager.update_room(socket.hue_room_id,
 		{
 			tv_id: tv_id,
@@ -2742,10 +2742,10 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		if(
-			data.mode !== "normal" && 
-			data.mode !== "tiled" && 
-			data.mode !== "mirror" && 
-			data.mode !== "mirror_tiled" && 
+			data.mode !== "normal" &&
+			data.mode !== "tiled" &&
+			data.mode !== "mirror" &&
+			data.mode !== "mirror_tiled" &&
 			data.mode !== "solid")
 		{
 			return handler.get_out(socket)
@@ -2774,7 +2774,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 
 		if(
-			data.effect !== "none" && 
+			data.effect !== "none" &&
 			data.effect !== "blur")
 		{
 			return handler.get_out(socket)
@@ -2982,7 +2982,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 		if(socket.hue_joined)
 		{
-			let type 
+			let type
 
 			if(socket.hue_pinged)
 			{
@@ -3096,10 +3096,10 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 				{
 					roomlist.push(
 					{
-						id: room._id, 
-						name: room.name, 
-						topic: room.topic.substring(0, config.max_roomlist_topic_length), 
-						usercount: handler.get_usercount(room._id), 
+						id: room._id,
+						name: room.name,
+						topic: room.topic.substring(0, config.max_roomlist_topic_length),
+						usercount: handler.get_usercount(room._id),
 						modified: room.modified
 					})
 				}
@@ -3152,10 +3152,10 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			roomlist.push(
 			{
-				id: room._id.toString(), 
-				name: room.name, 
-				topic: room.topic.substring(0, config.max_roomlist_topic_length), 
-				usercount: handler.get_usercount(room._id.toString()), 
+				id: room._id.toString(),
+				name: room.name,
+				topic: room.topic.substring(0, config.max_roomlist_topic_length),
+				usercount: handler.get_usercount(room._id.toString()),
 				modified: room.modified
 			})
 		}
@@ -3209,7 +3209,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		if(rooms[socket.hue_room_id].current_image_source === data.src 
+		if(rooms[socket.hue_room_id].current_image_source === data.src
 		|| rooms[socket.hue_room_id].current_image_query === data.src)
 		{
 			handler.user_emit(socket, 'same_image', {})
@@ -3251,7 +3251,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 
 			fetch(`https://api.imgur.com/3/gallery/search/?q=${encodeURIComponent(data.src)}`,
 			{
-				headers: 
+				headers:
 				{
 					Authorization: `Client-ID ${sconfig.imgur_client_id}`
 				}
@@ -3320,7 +3320,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			.catch(err =>
 			{
 				logger.log_error(err)
-			})		
+			})
 		}
 
 		else
@@ -4187,12 +4187,12 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				return handler.get_out(socket)
 			}
-	
+
 			if(data.username.length === 0)
 			{
 				return handler.get_out(socket)
 			}
-	
+
 			if(data.username.length > config.max_max_username_length)
 			{
 				return handler.get_out(socket)
@@ -4240,7 +4240,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		if(data.type === "user")
 		{
 			let sockets = handler.get_user_sockets_per_room_by_username(socket.hue_room_id, data.username)
-	
+
 			if(sockets.length > 0)
 			{
 				for(let socc of sockets)
@@ -4249,7 +4249,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						continue
 					}
-					
+
 					handler.user_emit(socc, 'whisper',
 					{
 						room: socket.hue_room_id,
@@ -4259,7 +4259,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					})
 				}
 			}
-	
+
 			else
 			{
 				handler.user_emit(socket, 'user_not_in_room', {})
@@ -4360,9 +4360,9 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			return false
 		}
 
-		handler.room_emit(socket, 'reaction_received', 
+		handler.room_emit(socket, 'reaction_received',
 		{
-			username: socket.hue_username, 
+			username: socket.hue_username,
 			reaction_type: data.reaction_type,
 			profile_image: socket.hue_profile_image
 		})
@@ -4530,7 +4530,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		})
 	}
 
-	// Deletes a message 
+	// Deletes a message
 	handler.public.delete_message = async function(socket, data)
 	{
 		if(!data.id)
@@ -4634,11 +4634,11 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					{
 						handler.push_admin_log_message(socket, `deleted a chat message from "${message_username}"`)
 					}
-				
+
 					else if(message_type === "image" || message_type === "tv" || message_type === "radio")
 					{
 						let a = "a"
-					
+
 						if(message_type === "image")
 						{
 							a = "an"
@@ -4756,7 +4756,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 						{
 							rooms[room_id].image_ad_charge = 0
 						}
-				
+
 						else
 						{
 							rooms[room_id].image_ad_charge = config.image_ads_threshold
@@ -4764,7 +4764,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 					})
 				}
 			}
-			
+
 			if(config.text_ads_enabled)
 			{
 				rooms[room_id].text_ad_charge += 1
@@ -4777,7 +4777,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 						{
 							rooms[room_id].text_ad_charge = 0
 						}
-					
+
 						else
 						{
 							rooms[room_id].text_ad_charge = config.text_ads_threshold
@@ -4850,7 +4850,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 						}
 					}
 				}
-				
+
 				let obj = {}
 
 				obj.src = image_path
@@ -5363,7 +5363,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	// Does an emit to a room
 	handler.room_emit = function(socket, type, args={})
 	{
-		let room_id 
+		let room_id
 
 		if(typeof socket === "object")
 		{
@@ -5386,7 +5386,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	// Does an emit to all the room except for the user
 	handler.broadcast_emit = function(socket, type, args={})
 	{
-		let room_id 
+		let room_id
 
 		if(typeof socket === "object")
 		{
@@ -5423,7 +5423,7 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 	{
 		handler.process_message_links(message, function(response)
 		{
-			handler.room_emit(room_id, "announcement", 
+			handler.room_emit(room_id, "announcement",
 			{
 				message: message,
 				link_title: response.title,
@@ -5748,10 +5748,10 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 		}
 	}
 
-	// Tries to fetch a site's metadata 
+	// Tries to fetch a site's metadata
 	handler.get_link_metadata = function(url, callback)
 	{
-		let response = 
+		let response =
 		{
 			title: "",
 			image: "",
@@ -5778,17 +5778,17 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			}
 		}
 
-		fetch(url, 
+		fetch(url,
 		{
 			timeout: config.link_fetch_timeout
 		})
-		
-		.then(res => 
+
+		.then(res =>
 		{
 			return res.text()
 		})
-		
-		.then(body => 
+
+		.then(body =>
 		{
 			let $ = cheerio.load(body)
 			let title = ""
@@ -5816,9 +5816,9 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				redis_client.hmset
 				(
-					`hue_link_${url}`, 
-					"title", response.title, 
-					"image", response.image, 
+					`hue_link_${url}`,
+					"title", response.title,
+					"image", response.image,
 					"url", response.url,
 					"date", Date.now()
 				)
@@ -5833,9 +5833,9 @@ const handler = function(io, db_manager, config, sconfig, utilz, logger)
 			{
 				redis_client.hmset
 				(
-					`hue_link_${url}`, 
-					"title", response.title, 
-					"image", response.image, 
+					`hue_link_${url}`,
+					"title", response.title,
+					"image", response.image,
 					"url", response.url,
 					"date", Date.now()
 				)

@@ -12,13 +12,13 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 		uri: config.mongodb_path,
 		collection: 'sessions_1'
 	})
-	 
-	mongo_store.on('connected', function() 
+
+	mongo_store.on('connected', function()
 	{
 		mongo_store.client
 	})
-	 
-	mongo_store.on('error', function(error) 
+
+	mongo_store.on('error', function(error)
 	{
 		assert.ifError(error)
 		assert.ok(false)
@@ -28,7 +28,7 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 
 	app.set('views', path.join(__dirname, 'views'))
 	app.set('view engine', 'ejs')
-	app.set('trust proxy', 1)	
+	app.set('trust proxy', 1)
 
 	app.use(bodyParser.json())
 	app.use(bodyParser.urlencoded({extended: false}))
@@ -45,7 +45,7 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 
 	console.info(`ENV: ${app.get('env')}`)
 
-	if(app.get('env') === 'production' && config.https_enabled) 
+	if(app.get('env') === 'production' && config.https_enabled)
 	{
 		app.set('trust proxy', 1)
 		sess.cookie.secure = true
@@ -55,20 +55,20 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 
 	app.use('/', routes)
 
-	app.use(function(req, res, next) 
+	app.use(function(req, res, next)
 	{
 		let err = new Error('Not Found')
 		err.status = 404
 		next(err)
 	})
 
-	if(app.get('env') === 'development') 
+	if(app.get('env') === 'development')
 	{
-		app.use(function(err, req, res, next) 
+		app.use(function(err, req, res, next)
 		{
 			res.status(err.status || 500)
 
-			res.render('error', 
+			res.render('error',
 			{
 				message: err.message,
 				error: err
@@ -76,11 +76,11 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 		})
 	}
 
-	app.use(function(err, req, res, next) 
+	app.use(function(err, req, res, next)
 	{
 		res.status(err.status || 500)
 
-		res.render('error', 
+		res.render('error',
 		{
 			message: err.message,
 			error: {}
