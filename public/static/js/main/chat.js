@@ -3467,25 +3467,6 @@ Hue.show_highlights = function(filter=false)
     })
 }
 
-// Shows a browser notification alerting of a highlight
-Hue.show_highlight_notification = function()
-{
-    if(!Hue.has_notifications_permission())
-    {
-        return false
-    }
-
-    if(Hue.afk)
-    {
-        if(Hue.get_setting("afk_disable_notifications"))
-        {
-            return false
-        }
-    }
-
-    Hue.show_notification(`New highlight in ${Hue.room_name.substring(0, 40)}`)
-}
-
 // Starts the context menu for chat items
 // This is triggered by a normal click
 Hue.start_chat_menu_context_menu = function()

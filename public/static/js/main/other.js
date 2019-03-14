@@ -231,23 +231,6 @@ Hue.get_timeago = function(date)
 	return Hue.utilz.capitalize_words(timeago.format(date))
 }
 
-// Shows a browser notification
-Hue.show_notification = function(s)
-{
-	if(!Hue.has_notifications_permission())
-	{
-		return false
-	}
-
-	let n = new Notification(s)
-
-	n.addEventListener("click", function(e)
-	{
-		window.focus()
-		e.target.close()
-	})
-}
-
 // Loads a Javascript file from a specified URL
 // Resolves a promise when the <script> is loaded
 Hue.load_script = function(source)

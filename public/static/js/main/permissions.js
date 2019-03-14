@@ -146,21 +146,3 @@ Hue.check_permission = function(role=false, type=false)
 
     return false
 }
-
-// Triggers the browser notifications permission prompt if not yet active
-Hue.request_notifications_permission = function()
-{
-    if(Hue.has_notifications_permission())
-    {
-        Hue.msg_info.show("Notifications are already enabled")
-        return false
-    }
-
-    Notification.requestPermission()
-}
-
-// Checks if browser notification permission is already granted
-Hue.has_notifications_permission = function()
-{
-    return Notification.permission === "granted"
-}
