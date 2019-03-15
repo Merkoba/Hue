@@ -6,7 +6,12 @@ let content = ""
 
 for(let file of files)
 {
-    content += fs.readFileSync(`${dir_path}${file}`, "utf8")
+    if(file === "bundle.min.css")
+    {
+        continue
+    }
+
+    content += fs.readFileSync(`${dir_path}${file}`, "utf8") + "\n"
 }
 
 fs.writeFileSync(`${dir_path}bundle.min.css`, content, "utf8")

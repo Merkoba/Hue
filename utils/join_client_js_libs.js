@@ -20,7 +20,7 @@ for(let file of files)
     }
 
     let content = fs.readFileSync(`${dir_path}${file}`, "utf8")
-    minified += Terser.minify(content).code
+    minified += Terser.minify(content).code + "\n"
 }
 
 fs.writeFileSync(`${dir_path}bundle.min.js`, minified, "utf8")
