@@ -3,9 +3,10 @@
 
 /node_modules/*
 /electron/node_modules/*
-bundle.min.js
 
 Thumbs.db
 desktop.ini
 text_ads.json
 package-lock.json
+bundle.min.js
+bundle.min.css
