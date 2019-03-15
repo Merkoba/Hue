@@ -1,53 +1,50 @@
 const fs = require("fs")
 const Terser = require("terser")
-const root = "../public/static/js/main/"
 
-let files = 
-[
-   "init.js",
-   "settings.js",
-   "commands.js",
-   "draw.js",
-   "image.js",
-   "tv.js",
-   "radio.js",
-   "synth.js",
-   "media.js",
-   "players.js",
-   "main_menu.js",
-   "socket.js",
-   "chat.js",
-   "windows.js",
-   "window.js",
-   "whispers.js",
-   "uploads.js",
-   "theme.js",
-   "local_storage.js",
-   "permissions.js",
-   "users.js",
-   "user.js",
-   "roomlist.js",
-   "room.js",
-   "header.js",
-   "footer.js",
-   "lockscreen.js",
-   "audio.js",
-   "debouncers.js",
-   "debug.js",
-   "urls.js",
-   "visual.js",
-   "input.js",
-   "desktop_notifications.js",
-   "other.js"
-]
+let dir_path = "../public/static/js/main/"
+let minified = ""
+let manual = ["init.js"]
+let files = fs.readdirSync(dir_path)
 
-let files_obj = {}
+for(let file of manual)
+{
+    let content = fs.readFileSync(`${dir_path}${file}`, "utf8")
+    minified += Terser.minify(content).code
+}
 
 for(let file of files)
 {
-    files_obj[file] = fs.readFileSync(`${root}${file}`, "utf8")
+    if(manual.includes(file))
+    {
+        continue
+    }
+
+    let content = fs.readFileSync(`${dir_path}${file}`, "utf8")
+    minified += Terser.minify(content).code
 }
 
-let minified = Terser.minify(files_obj).code
+fs.writeFileSync(`${dir_path}bundle.min.js`, minified, "utf8")
 
-fs.writeFileSync(`${root}bundle.min.js`, minified, "utf8")
+dir_path = "../public/static/js/libs/"
+minified = ""
+manual = ["jquery.min.js"]
+files = fs.readdirSync(dir_path)
+
+for(let file of manual)
+{
+    let content = fs.readFileSync(`${dir_path}${file}`, "utf8")
+    minified += Terser.minify(content).code
+}
+
+for(let file of files)
+{
+    if(manual.includes(file))
+    {
+        continue
+    }
+
+    let content = fs.readFileSync(`${dir_path}${file}`, "utf8")
+    minified += Terser.minify(content).code
+}
+
+fs.writeFileSync(`${dir_path}bundle.min.js`, minified, "utf8")

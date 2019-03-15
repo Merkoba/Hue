@@ -3,7 +3,7 @@
 
 /node_modules/*
 /electron/node_modules/*
-/public/static/js/main/bundle.min.js
+bundle.min.js
 
 Thumbs.db
 desktop.ini
