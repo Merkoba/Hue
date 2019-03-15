@@ -24,27 +24,3 @@ for(let file of files)
 }
 
 fs.writeFileSync(`${dir_path}bundle.min.js`, minified, "utf8")
-
-dir_path = "../public/static/js/libs/"
-minified = ""
-manual = ["jquery.min.js"]
-files = fs.readdirSync(dir_path)
-
-for(let file of manual)
-{
-    let content = fs.readFileSync(`${dir_path}${file}`, "utf8")
-    minified += Terser.minify(content).code
-}
-
-for(let file of files)
-{
-    if(manual.includes(file))
-    {
-        continue
-    }
-
-    let content = fs.readFileSync(`${dir_path}${file}`, "utf8")
-    minified += Terser.minify(content).code
-}
-
-fs.writeFileSync(`${dir_path}bundle.min.js`, minified, "utf8")

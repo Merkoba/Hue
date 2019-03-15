@@ -310,7 +310,7 @@ Hue.start_vimeo = async function()
 
     Hue.vimeo_loading = true
 
-    await Hue.load_script("/static/js/libs/vimeo.player.min.js")
+    await Hue.load_script("/static/js/libs2/vimeo.player.min.js")
 
     Hue.vimeo_loaded = true
 
@@ -395,7 +395,7 @@ Hue.load_hls = async function()
 
     return new Promise(async (resolve, reject) =>
     {
-        await Hue.load_script("/static/js/libs/hls.js")
+        await Hue.load_script("/static/js/libs2/hls.js")
         resolve()
     })
 }

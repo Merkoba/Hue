@@ -266,7 +266,7 @@ Hue.do_math_calculation = async function(arg)
 
 		Hue.math_loading = true
 
-		await Hue.load_script("/static/js/libs/math.min.js")
+		await Hue.load_script("/static/js/libs2/math.min.js")
 
 		Hue.math = math.create(
 		{
@@ -326,7 +326,7 @@ Hue.load_wordz = async function()
 
 	return new Promise(async (resolve, reject) =>
 	{
-		await Hue.load_script("/static/js/libs/wordz.js?version=1")
+		await Hue.load_script("/static/js/libs2/wordz.js?version=1")
 		Hue.wordz = Wordz()
 		resolve()
 	})

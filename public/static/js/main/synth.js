@@ -8,7 +8,7 @@ Hue.start_synth = async function(n)
 
     Hue.tone_loading = true
 
-    await Hue.load_script("/static/js/libs/Tone.js")
+    await Hue.load_script("/static/js/libs2/Tone.js")
 
     Hue.synth = new Tone.Synth(
     {
