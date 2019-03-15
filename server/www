@@ -45,7 +45,6 @@ catch(err)
 
 const path = require('path')
 const mongo = require('mongodb')
-const bcrypt = require('bcrypt')
 const winston = require('winston')
 
 mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
