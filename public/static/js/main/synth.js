@@ -469,3 +469,28 @@ Hue.hide_voice_box = function()
 {
     $("#recent_voice_box").css("display", "none")
 }
+
+// Special function used for all Speech actions
+Hue.setting_speech_do_action = function(number, type, save=true)
+{
+    let speech = Hue.utilz.clean_string2($(`#${type}_speech_${number}`).val())
+
+    if(!speech)
+    {
+        speech = Hue.config[`global_settings_default_speech_${number}`]
+    }
+
+    $(`#${type}_speech_${number}`).val(speech)
+
+    Hue[type][`speech_${number}`] = speech
+
+    if(Hue.active_settings(`speech_${number}`) === type)
+    {
+        Hue.set_synth_key_title(number)
+    }
+
+    if(save)
+    {
+        Hue[`save_${type}`]()
+    }
+}

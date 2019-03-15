@@ -575,7 +575,7 @@ Hue.user_settings =
         description: `Actions to perform when triggering User Function 1`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_do_action(1, type, save)
+            Hue.setting_user_function_do_action(1, type, save)
         }
     },
     user_function_2:
@@ -584,7 +584,7 @@ Hue.user_settings =
         description: `Actions to perform when triggering User Function 2`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_do_action(2, type, save)
+            Hue.setting_user_function_do_action(2, type, save)
         }
     },
     user_function_3:
@@ -593,7 +593,7 @@ Hue.user_settings =
         description: `Actions to perform when triggering User Function 3`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_do_action(3, type, save)
+            Hue.setting_user_function_do_action(3, type, save)
         }
     },
     user_function_4:
@@ -602,7 +602,7 @@ Hue.user_settings =
         description: `Actions to perform when triggering User Function 4`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_do_action(4, type, save)
+            Hue.setting_user_function_do_action(4, type, save)
         }
     },
     user_function_5:
@@ -611,7 +611,7 @@ Hue.user_settings =
         description: `Actions to perform when triggering User Function 5`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_do_action(5, type, save)
+            Hue.setting_user_function_do_action(5, type, save)
         }
     },
     user_function_6:
@@ -620,7 +620,7 @@ Hue.user_settings =
         description: `Actions to perform when triggering User Function 6`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_do_action(6, type, save)
+            Hue.setting_user_function_do_action(6, type, save)
         }
     },
     user_function_7:
@@ -629,7 +629,7 @@ Hue.user_settings =
         description: `Actions to perform when triggering User Function 7`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_do_action(7, type, save)
+            Hue.setting_user_function_do_action(7, type, save)
         }
     },
     user_function_8:
@@ -638,7 +638,7 @@ Hue.user_settings =
         description: `Actions to perform when triggering User Function 8`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_do_action(8, type, save)
+            Hue.setting_user_function_do_action(8, type, save)
         }
     },
     user_function_1_name:
@@ -647,7 +647,7 @@ Hue.user_settings =
         description: `Displayed name for User Function 1`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_name_do_action(1, type, save)
+            Hue.setting_user_function_name_do_action(1, type, save)
         }
     },
     user_function_2_name:
@@ -656,7 +656,7 @@ Hue.user_settings =
         description: `Displayed name for User Function 2`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_name_do_action(2, type, save)
+            Hue.setting_user_function_name_do_action(2, type, save)
         }
     },
     user_function_3_name:
@@ -665,7 +665,7 @@ Hue.user_settings =
         description: `Displayed name for User Function 3`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_name_do_action(3, type, save)
+            Hue.setting_user_function_name_do_action(3, type, save)
         }
     },
     user_function_4_name:
@@ -674,7 +674,7 @@ Hue.user_settings =
         description: `Displayed name for User Function 4`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_name_do_action(4, type, save)
+            Hue.setting_user_function_name_do_action(4, type, save)
         }
     },
     user_function_5_name:
@@ -683,7 +683,7 @@ Hue.user_settings =
         description: `Displayed name for User Function 5`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_name_do_action(5, type, save)
+            Hue.setting_user_function_name_do_action(5, type, save)
         }
     },
     user_function_6_name:
@@ -692,7 +692,7 @@ Hue.user_settings =
         description: `Displayed name for User Function 6`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_name_do_action(6, type, save)
+            Hue.setting_user_function_name_do_action(6, type, save)
         }
     },
     user_function_7_name:
@@ -701,7 +701,7 @@ Hue.user_settings =
         description: `Displayed name for User Function 7`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_name_do_action(7, type, save)
+            Hue.setting_user_function_name_do_action(7, type, save)
         }
     },
     user_function_8_name:
@@ -710,7 +710,7 @@ Hue.user_settings =
         description: `Displayed name for User Function 8`,
         action: (type, save=true) =>
         {
-            Hue.setting_function_name_do_action(8, type, save)
+            Hue.setting_user_function_name_do_action(8, type, save)
         }
     },
     on_lockscreen:
@@ -1926,88 +1926,11 @@ Hue.show_export_settings = function()
     Hue.msg_info2.show(["Export Settings", s])
 }
 
-// Special function used for all Speech actions
-Hue.setting_speech_do_action = function(number, type, save=true)
-{
-    let speech = Hue.utilz.clean_string2($(`#${type}_speech_${number}`).val())
-
-    if(!speech)
-    {
-        speech = Hue.config[`global_settings_default_speech_${number}`]
-    }
-
-    $(`#${type}_speech_${number}`).val(speech)
-
-    Hue[type][`speech_${number}`] = speech
-
-    if(Hue.active_settings(`speech_${number}`) === type)
-    {
-        Hue.set_synth_key_title(number)
-    }
-
-    if(save)
-    {
-        Hue[`save_${type}`]()
-    }
-}
-
-// Special function used for all User Function actions
-Hue.setting_function_do_action = function(number, type, save=true)
-{
-    let cmds = Hue.utilz.clean_string7($(`#${type}_user_function_${number}`).val())
-
-    $(`#${type}_user_function_${number}`).val(cmds)
-
-    Hue[type][`user_function_${number}`] = cmds
-
-    if(Hue.active_settings(`user_function_${number}`) === type)
-    {
-        Hue.setup_user_function_titles()
-    }
-
-    if(save)
-    {
-        Hue[`save_${type}`]()
-    }
-}
-
-// Special function used for all User Function name actions
-Hue.setting_function_name_do_action = function(number, type, save=true)
-{
-    let val = Hue.utilz.clean_string2($(`#${type}_user_function_${number}_name`).val())
-
-    if(!val)
-    {
-        val = Hue.config[`global_settings_default_user_function_${number}_name`]
-    }
-
-    $(`#${type}_user_function_${number}_name`).val(val)
-
-    Hue[type][`user_function_${number}_name`] = val
-
-    if(Hue.active_settings(`user_function_${number}_name`) === type)
-    {
-        Hue.setup_user_function_titles()
-    }
-
-    if(save)
-    {
-        Hue[`save_${type}`]()
-    }
-}
-
 // Apply media percentages and positions
 Hue.prepare_media_settings = function()
 {
     Hue.apply_media_percentages()
     Hue.apply_media_positions()
-}
-
-// Opens the settings in the category where the user functions are and opens the toggler
-Hue.open_user_function_in_settings = function(n)
-{
-    Hue.open_user_settings_category("functions")
-    Hue.go_to_user_settings_item(`user_function_${n}`)
 }
 
 // Toggles between global and room settings windows when clicking the titlebar
@@ -2155,29 +2078,6 @@ Hue.change_settings_window_category = function(category, type=false)
 
     container.removeClass("settings_window_category_container")
     container.addClass("settings_window_category_container_selected")
-}
-
-// Makes the user functions controls for the settings windows
-Hue.make_settings_user_functions = function(type)
-{
-    let s = ""
-
-    for(let i=1; i<Hue.user_functions.length+1; i++)
-    {
-        let o = "<option value='0' selected>----</option>"
-
-        for(let j=1; j<Hue.user_functions.length+1; j++)
-        {
-            if(i !== j)
-            {
-                o += `<option value='${j}'>Switch With ${j}</option>`
-            }
-        }
-
-        s += Hue.template_settings_user_function({number:i, type:type, options:o})
-    }
-
-    return s
 }
 
 // Overrides a global setting by triggering a click on the room setting overrider
