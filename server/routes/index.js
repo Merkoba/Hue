@@ -12,7 +12,6 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	c.rvars = {}
 
 	// Automatically includes all global settings and room state config options
-
 	for(let key in config)
 	{
 		if(key.startsWith("global_settings_default") || key.startsWith("room_state_default"))
