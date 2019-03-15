@@ -94,6 +94,16 @@ There is no need to create database tables, all of that is done automatically.
 
 Redis is now required, to store link metadata in database 10. Install and setup Redis.
 
+Bundle the client's js files
+
+Go to /utils and do:
+
+>node join_client_main.js
+
+And:
+
+>node join_client_libs.js
+
 Go to the server directory and run: 
 
 >node www start
