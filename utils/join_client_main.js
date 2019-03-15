@@ -14,7 +14,7 @@ for(let file of manual)
 
 for(let file of files)
 {
-    if(manual.includes(file))
+    if(manual.includes(file) || file === "bundle.min.js")
     {
         continue
     }
