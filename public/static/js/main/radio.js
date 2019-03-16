@@ -125,6 +125,7 @@ Hue.announce_radio = function(data)
 {
     return Hue.public_feedback(data.message,
     {
+        id: data.id,
         save: true,
         brk: "<i class='icon2c fa fa-volume-up'></i>",
         title: data.info,
@@ -134,7 +135,6 @@ Hue.announce_radio = function(data)
         username: data.setter,
         comment: data.comment,
         type: "radio_change",
-        item_id: data.id,
         user_id: data.user_id,
         in_log: data.in_log
     })

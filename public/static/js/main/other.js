@@ -309,7 +309,7 @@ Hue.do_math_calculation = async function(arg)
 		comment_icon: false,
 		comment_onclick: f,
 		replace_markdown: true,
-		id: id
+		container_id: id
 	})
 }
 

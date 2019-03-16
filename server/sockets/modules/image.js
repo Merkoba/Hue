@@ -329,6 +329,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         }
 
         let image_id = handler.generate_message_id()
+        let room = vars.rooms[room_id]
 
         if(data.type === "link")
         {
@@ -371,13 +372,13 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 return false
             }
 
-            vars.rooms[room_id].stored_images.unshift(data.src)
+            room.stored_images.unshift(data.src)
 
             let spliced = false
 
-            if(vars.rooms[room_id].stored_images.length > config.max_stored_images)
+            if(room.stored_images.length > config.max_stored_images)
             {
-                spliced = vars.rooms[room_id].stored_images.splice(config.max_stored_images, vars.rooms[room_id].stored_images.length)
+                spliced = room.stored_images.splice(config.max_stored_images, room.stored_images.length)
             }
 
             db_manager.update_room(room_id,
@@ -388,7 +389,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 image_setter: data.setter,
                 image_size: size,
                 image_date: date,
-                stored_images: vars.rooms[room_id].stored_images,
+                stored_images: room.stored_images,
                 image_type: data.type,
                 image_query: data.query,
                 image_comment: comment
@@ -443,7 +444,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             comment: comment
         })
 
-        if(vars.rooms[room_id].log)
+        if(room.log)
         {
             let message =
             {
@@ -465,12 +466,12 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             handler.push_log_message(socket, message)
         }
 
-        vars.rooms[room_id].current_image_id = image_id
-        vars.rooms[room_id].current_image_user_id = user_id
-        vars.rooms[room_id].current_image_source = image_source
-        vars.rooms[room_id].current_image_query = data.query
-        vars.rooms[room_id].last_image_change = Date.now()
-        vars.rooms[room_id].modified = Date.now()
+        room.current_image_id = image_id
+        room.current_image_user_id = user_id
+        room.current_image_source = image_source
+        room.current_image_query = data.query
+        room.last_image_change = Date.now()
+        room.modified = Date.now()
     }
 
     // Handles images mode changes

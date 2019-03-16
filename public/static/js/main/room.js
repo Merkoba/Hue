@@ -802,7 +802,10 @@ Hue.clear_log = function(type, id=false)
 // Announces log changes
 Hue.announce_log_change = function(data)
 {
-    Hue.clear_room()
+    if(!data.log)
+    {
+        Hue.clear_room()
+    }
     
     let s
 

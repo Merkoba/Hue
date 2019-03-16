@@ -112,6 +112,7 @@ Hue.announce_tv = function(data)
 {
     return Hue.public_feedback(data.message,
     {
+        id: data.id,
         save: true,
         brk: "<i class='icon2c fa fa-television'></i>",
         title: data.info,
@@ -121,7 +122,6 @@ Hue.announce_tv = function(data)
         username: data.setter,
         comment: data.comment,
         type: "tv_change",
-        item_id: data.id,
         user_id: data.user_id,
         in_log: data.in_log
     })

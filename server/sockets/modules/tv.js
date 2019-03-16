@@ -490,6 +490,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         }
 
         let tv_id = handler.generate_message_id()
+        let room = vars.rooms[socket.hue_room_id]
 
         db_manager.update_room(socket.hue_room_id,
         {
@@ -517,7 +518,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             comment: tvinfo.tv_comment
         })
 
-        if(vars.rooms[socket.hue_room_id].log)
+        if(room.log)
         {
             let message =
             {
@@ -539,12 +540,12 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             handler.push_log_message(socket, message)
         }
 
-        vars.rooms[socket.hue_room_id].current_tv_id = tv_id
-        vars.rooms[socket.hue_room_id].current_tv_user_id = user_id
-        vars.rooms[socket.hue_room_id].current_tv_source = tvinfo.tv_source
-        vars.rooms[socket.hue_room_id].current_tv_query = tvinfo.tv_query
-        vars.rooms[socket.hue_room_id].last_tv_change = Date.now()
-        vars.rooms[socket.hue_room_id].modified = Date.now()
+        room.current_tv_id = tv_id
+        room.current_tv_user_id = user_id
+        room.current_tv_source = tvinfo.tv_source
+        room.current_tv_query = tvinfo.tv_query
+        room.last_tv_change = Date.now()
+        room.modified = Date.now()
     }
 
     // Handles tv mode changes

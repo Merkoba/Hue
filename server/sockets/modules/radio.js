@@ -291,6 +291,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         }
 
         let radio_id = handler.generate_message_id()
+        let room = vars.rooms[socket.hue_room_id]
 
         db_manager.update_room(socket.hue_room_id,
         {
@@ -318,7 +319,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             comment: radioinfo.radio_comment
         })
 
-        if(vars.rooms[socket.hue_room_id].log)
+        if(room.log)
         {
             let message =
             {
@@ -340,12 +341,12 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             handler.push_log_message(socket, message)
         }
 
-        vars.rooms[socket.hue_room_id].current_radio_id = radio_id
-        vars.rooms[socket.hue_room_id].current_radio_user_id = user_id
-        vars.rooms[socket.hue_room_id].current_radio_source = radioinfo.radio_source
-        vars.rooms[socket.hue_room_id].current_radio_query = radioinfo.radio_query
-        vars.rooms[socket.hue_room_id].last_radio_change = Date.now()
-        vars.rooms[socket.hue_room_id].modified = Date.now()
+        room.current_radio_id = radio_id
+        room.current_radio_user_id = user_id
+        room.current_radio_source = radioinfo.radio_source
+        room.current_radio_query = radioinfo.radio_query
+        room.last_radio_change = Date.now()
+        room.modified = Date.now()
     }
 
     // Handles radio mode changes

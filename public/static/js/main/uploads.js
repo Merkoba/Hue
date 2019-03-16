@@ -171,7 +171,7 @@ Hue.upload_file = function(args={})
     let obj =
     {
         brk: "<i class='icon2c fa fa-info-circle'></i>",
-        id: `uploading_${date}`,
+        container_id: `uploading_${date}`,
         title: `Size: ${Hue.utilz.get_size_string(args.file.hue_data.size / 1024)} | ${Hue.utilz.nice_date()}`
     }
 

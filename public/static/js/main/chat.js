@@ -659,9 +659,9 @@ Hue.update_chat = function(args={})
 
     let message_id = Hue.add_to_chat(
     {
+        id: args.id,
         message: fmessage,
         save: true,
-        id: args.id,
         just_edited: args.just_edited
     }).message_id
 
@@ -689,12 +689,13 @@ Hue.chat_announce = function(args={})
 {
     let def_args =
     {
+        id: false,
         brk: "",
         message: "",
         highlight: false,
         title: false,
         onclick: false,
-        id: false,
+        container_id: false,
         date: false,
         type: "normal",
         info1: "",
@@ -709,7 +710,6 @@ Hue.chat_announce = function(args={})
         comment: "",
         comment_icon: true,
         comment_onclick: false,
-        item_id: false,
         user_id: false,
         replace_markdown: false,
         in_log: true
@@ -740,9 +740,9 @@ Hue.chat_announce = function(args={})
 
     let container_id = " "
 
-    if(args.id)
+    if(args.container_id)
     {
-        container_id = ` id='${args.id}' `
+        container_id = ` id='${args.container_id}' `
     }
 
     let highlighted = false
@@ -935,6 +935,7 @@ Hue.chat_announce = function(args={})
         brk.on("click", pif)
     }
 
+    fmessage.data("id", args.id)
     fmessage.data("public", args.public)
     fmessage.data("date", d)
     fmessage.data("highlighted", highlighted)
@@ -944,7 +945,6 @@ Hue.chat_announce = function(args={})
     fmessage.data("uname", args.username)
     fmessage.data("mode", "announcement")
     fmessage.data("first_url", first_url)
-    fmessage.data("item_id", args.item_id)
     fmessage.data("user_id", args.user_id)
     fmessage.data("in_log", args.in_log)
 
@@ -968,9 +968,9 @@ Hue.add_to_chat = function(args={})
 {
     let def_args =
     {
+        id: false,
         message: false,
         notify: true,
-        id: false,
         just_edited: false,
         fader: true
     }
@@ -1857,7 +1857,7 @@ Hue.remove_message_from_chat = function(data)
     {
         $(".message.announcement").each(function()
         {
-            if($(this).data("item_id") == data.id)
+            if($(this).data("id") == data.id)
             {
                 Hue.process_remove_announcement(this)
                 return false
@@ -1925,7 +1925,7 @@ Hue.process_remove_announcement = function(message)
 
     if(type === "image_change" || type === "tv_change" || type === "radio_change")
     {
-        let id = $(message).data("item_id")
+        let id = $(message).data("id")
         Hue.remove_item_from_media_changed(type.replace("_change", ""), id)
     }
 
@@ -3702,7 +3702,7 @@ Hue.start_chat_menu_context_menu = function()
 
                     else if(mode === "announcement")
                     {
-                        let id = message.data("item_id")
+                        let id = message.data("id")
 
                         if(id)
                         {
@@ -3747,7 +3747,7 @@ Hue.start_chat_menu_context_menu = function()
 
                             else if(mode === "announcement")
                             {
-                                id = message.data("item_id")
+                                id = message.data("id")
                             }
                             
                             if(id)
@@ -3789,7 +3789,7 @@ Hue.start_chat_menu_context_menu = function()
 
                                     else if(mode === "announcement")
                                     {
-                                        id = message.data("item_id")
+                                        id = message.data("id")
                                     }
 
                                     Hue.clear_log("above", id)
@@ -3820,7 +3820,7 @@ Hue.start_chat_menu_context_menu = function()
 
                                     else if(mode === "announcement")
                                     {
-                                        id = message.data("item_id")
+                                        id = message.data("id")
                                     }
 
                                     Hue.clear_log("below", id)
@@ -3854,7 +3854,7 @@ Hue.start_chat_menu_context_menu = function()
                             return false
                         }
 
-                        if(message.data("item_id"))
+                        if(message.data("id"))
                         {
                             return true
                         }
@@ -4179,7 +4179,7 @@ Hue.show_announcement = function(data, date=Date.now())
 {
     Hue.public_feedback(data.message,
     {
-        item_id: data.id,
+        id: data.id,
         brk: "<i class='icon2c fa fa-star'></i>",
         date: date,
         preview_image: true,
@@ -4441,7 +4441,7 @@ Hue.remove_messages_after_id = function(id, direction)
     {
         $($("#chat_area > .announcement").get().reverse()).each(function()
         {
-            if($(this).data("item_id") === id)
+            if($(this).data("id") === id)
             {
                 index = $(this).index()
                 return false
