@@ -8,13 +8,13 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	const vars = {}
 	
 	// Fill the vars object
-	require("./vars")(vars, handler, io, db_manager, config, sconfig, utilz, logger)
+	require("./vars")(vars, handler, ...arguments)
 	
 	// Get the module file names and arguments
 	const modules = vars.fs.readdirSync(vars.path.join(__dirname, "modules"))
 	
 	// Arguments to send to modules
-	const module_arguments = [handler, vars, io, db_manager, config, sconfig, utilz, logger]
+	const module_arguments = [handler, vars, ...arguments]
 
 	// Fill the handler object
 	for(let module of modules)
