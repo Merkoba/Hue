@@ -714,6 +714,7 @@ const Utilz = function()
 	}
 
 	utilz.media_types = ["image", "tv", "radio"]
+	utilz.clear_log_types = ["all", "above", "below"]
 
 	utilz.synth_notes =
 	[

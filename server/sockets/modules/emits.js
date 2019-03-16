@@ -74,8 +74,11 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     {
         handler.process_message_links(message, function(response)
         {
+            let id = handler.generate_message_id()
+
             handler.room_emit(room_id, "announcement",
             {
+                id: id,
                 message: message,
                 link_title: response.title,
                 link_image: response.image,
@@ -86,15 +89,16 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             {
                 let message_ =
                 {
+                    id: id,
                     type: "announcement",
+                    date: Date.now(),
                     data:
                     {
                         message: message,
                         link_title: response.title,
                         link_image: response.image,
                         link_url: response.url
-                    },
-                    date: Date.now()
+                    }
                 }
 
                 handler.push_log_message(room_id, message_)

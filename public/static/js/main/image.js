@@ -14,6 +14,7 @@ Hue.setup_image = function(mode, odata={})
     data.date = odata.date
     data.query = odata.query
     data.comment = odata.comment
+    data.in_log = odata.in_log === undefined ? true : odata.in_log
 
     data.nice_date = data.date ? Hue.utilz.nice_date(data.date) : Hue.utilz.nice_date()
 
@@ -116,7 +117,8 @@ Hue.announce_image = function(data)
         comment: data.comment,
         type: "image_change",
         item_id: data.id,
-        user_id: data.user_id
+        user_id: data.user_id,
+        in_log: data.in_log
     })
 }
 

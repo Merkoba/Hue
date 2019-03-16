@@ -18,8 +18,11 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return false
         }
 
+        let id = handler.generate_message_id()
+
         handler.room_emit(socket, 'reaction_received',
         {
+            id: id,
             username: socket.hue_username,
             reaction_type: data.reaction_type,
             profile_image: socket.hue_profile_image
@@ -29,14 +32,15 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         {
             let message =
             {
+                id: id,
                 type: "reaction",
+                date: Date.now(),
                 data:
                 {
                     username: socket.hue_username,
                     reaction_type: data.reaction_type,
                     profile_image: socket.hue_profile_image
-                },
-                date: Date.now()
+                }
             }
 
             handler.push_log_message(socket, message)

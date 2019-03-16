@@ -360,7 +360,7 @@ Hue.show_topic = function()
 
 // Clears the chat and resets media change state
 // Re-makes initial media setups for current media
-Hue.clear_room = function(data)
+Hue.clear_room = function()
 {
     Hue.clear_chat()
 
@@ -773,20 +773,37 @@ Hue.change_log = function(log)
 }
 
 // Clears the log
-Hue.clear_log = function()
+Hue.clear_log = function(type, id=false)
 {
+    if(!Hue.utilz.clear_log_types.includes(type))
+    {
+        Hue.feedback(`Invalid type. Available types are: ${Hue.utilz.clear_log_types.join(", ")}`)
+        return false
+    }
+
+    if(type === "above" || type === "below")
+    {
+        if(!id)
+        {
+            Hue.feedback("A message ID needs to be provided for this operation")
+            return false
+        }
+    }
+
     if(!Hue.is_admin_or_op(Hue.role))
     {
         Hue.not_an_op()
         return false
     }
 
-    Hue.socket_emit("clear_log", {})
+    Hue.socket_emit("clear_log", {type:type, id:id})
 }
 
 // Announces log changes
 Hue.announce_log_change = function(data)
 {
+    Hue.clear_room()
+    
     let s
 
     if(data.log)
@@ -811,7 +828,15 @@ Hue.announce_log_change = function(data)
 // Announces that the log was cleared
 Hue.announce_log_cleared = function(data)
 {
-    Hue.clear_room()
+    if(data.type === "all")
+    {
+        Hue.clear_room()
+    }
+
+    else if(data.type === "above" || data.type === "below")
+    {
+        Hue.remove_messages_after_id(data.id, data.type)
+    }
 
     Hue.public_feedback(`${data.username} cleared the log`,
     {

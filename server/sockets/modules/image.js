@@ -447,10 +447,11 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         {
             let message =
             {
+                id: image_id,
                 type: "image",
+                date: date,
                 data:
                 {
-                    id: image_id,
                     user_id: user_id,
                     comment: comment,
                     source: image_source,
@@ -458,8 +459,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                     size: size,
                     type: data.type,
                     query: data.query
-                },
-                date: date
+                }
             }
 
             handler.push_log_message(socket, message)

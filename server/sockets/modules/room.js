@@ -115,11 +115,13 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         if(info.log !== data.log)
         {
+            let room = vars.rooms[socket.hue_room_id]
+
             if(!data.log)
             {
-                vars.rooms[socket.hue_room_id].log_messages = []
-
-                db_manager.update_room(socket.hue_room_id, {log:data.log, log_messages:[]})
+                room.log_messages = []
+                db_manager.update_room(socket.hue_room_id, {log:data.log, log_messages:room.log_messages})
+                room.log_messages_modified = false
             }
 
             else
@@ -127,7 +129,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 db_manager.update_room(socket.hue_room_id, {log:data.log})
             }
 
-            vars.rooms[socket.hue_room_id].log = data.log
+            room.log = data.log
 
             handler.room_emit(socket, 'log_changed', {username:socket.hue_username, log:data.log})
 
@@ -155,19 +157,83 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(vars.rooms[socket.hue_room_id].log_messages.length > 0)
+        if(data.type === undefined || data.id === undefined)
         {
-            vars.rooms[socket.hue_room_id].log_messages = []
-            db_manager.update_room(socket.hue_room_id, {log_messages:[]})
-            vars.rooms[socket.hue_room_id].log_messages_modified = false
-            handler.room_emit(socket, 'log_cleared', {username:socket.hue_username})
-            handler.push_admin_log_message(socket, "cleared the log")
+            return handler.get_out(socket)
         }
 
-        else
+        if(!utilz.clear_log_types.includes(data.type))
+        {
+            return handler.get_out(socket)
+        }
+
+        if(data.type === "above" || data.type === "below")
+        {
+            if(!data.id)
+            {
+                return handler.get_out(socket)
+            }
+        }
+
+        let room = vars.rooms[socket.hue_room_id]
+
+        if(room.log_messages.length === 0)
         {
             handler.user_emit(socket, 'nothing_to_clear', {})
+            return false
         }
+        
+        if(data.type === "all")
+        {
+            room.log_messages = []
+        }
+
+        else if(data.type === "above" || data.type === "below")
+        {
+            let index = false
+
+            for(let message of room.log_messages)
+            {
+                if(message.id === data.id)
+                {
+                    index = room.log_messages.indexOf(message)
+                    break
+                }
+            }
+
+            if(index === false)
+            {
+                handler.user_emit(socket, 'nothing_to_clear', {})
+                return false
+            }
+
+            if(data.type === "above")
+            {
+                if(index === 0)
+                {
+                    handler.user_emit(socket, 'nothing_to_clear', {})
+                    return false
+                }
+
+                room.log_messages = room.log_messages.slice(index)
+            }
+            
+            else if(data.type === "below")
+            {
+                if(index === room.log_messages.length - 1)
+                {
+                    handler.user_emit(socket, 'nothing_to_clear', {})
+                    return false
+                }
+                
+                room.log_messages = room.log_messages.slice(0, index + 1)
+            }
+        }
+
+        db_manager.push_log_messages(socket.hue_room_id, room.log_messages)
+        vars.rooms[socket.hue_room_id].log_messages_modified = false
+        handler.room_emit(socket, 'log_cleared', {type:data.type, id:data.id, username:socket.hue_username})
+        handler.push_admin_log_message(socket, "cleared the log")
     }
 
     // Changes privacy status

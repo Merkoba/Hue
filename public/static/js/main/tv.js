@@ -12,12 +12,13 @@ Hue.setup_tv = function(mode, odata={})
         data.info += ` | ${Hue.utilz.nice_date(data.date)}`
         data.message = `${odata.setter} restarted the tv`
         data.comment = odata.comment
+        data.in_log = odata.in_log === undefined ? true : odata.in_log
     }
-
+    
     else
     {
         data = {}
-
+        
         data.id = odata.id
         data.user_id = odata.user_id
         data.type = odata.type
@@ -27,8 +28,8 @@ Hue.setup_tv = function(mode, odata={})
         data.date = odata.date
         data.query = odata.query
         data.comment = odata.comment
-
         data.nice_date = data.date ? Hue.utilz.nice_date(data.date) : Hue.utilz.nice_date()
+        data.in_log = odata.in_log === undefined ? true : odata.in_log
 
         if(!data.setter)
         {
@@ -121,7 +122,8 @@ Hue.announce_tv = function(data)
         comment: data.comment,
         type: "tv_change",
         item_id: data.id,
-        user_id: data.user_id
+        user_id: data.user_id,
+        in_log: data.in_log
     })
 }
 

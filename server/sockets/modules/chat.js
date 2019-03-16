@@ -53,7 +53,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                         continue
                     }
 
-                    if(message.data.id === data.edit_id)
+                    if(message.id === data.edit_id)
                     {
                         if(message.data.user_id === socket.hue_user_id)
                         {
@@ -112,10 +112,11 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 {
                     let message =
                     {
+                        id: id,
                         type: "chat",
+                        date: date,
                         data:
                         {
-                            id: id,
                             user_id: socket.hue_user_id,
                             username: uname,
                             content: data.message,
@@ -124,8 +125,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                             link_image: response.image,
                             link_url: response.url,
                             edited: edited
-                        },
-                        date: date
+                        }
                     }
 
                     handler.push_log_message(socket, message)
@@ -177,7 +177,14 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        let messages = vars.rooms[socket.hue_room_id].log_messages
+        let room = vars.rooms[socket.hue_room_id]
+
+        if(!room.log)
+        {
+            return false
+        }
+
+        let messages = room.log_messages
         let message
         let message_id
         let message_user_id
@@ -190,12 +197,12 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         {
             let msg = messages[i]
 
-            if(msg.data.id && msg.data.id == data.id)
+            if(msg.id && msg.id == data.id)
             {
                 message = msg
                 message_index = i
                 message_type = msg.type
-                message_id = msg.data.id
+                message_id = msg.id
                 message_user_id = msg.data.user_id
                 break
             }
@@ -203,7 +210,18 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         if(message)
         {
-            if(message.data.user_id !== socket.hue_user_id)
+            if(!message.data.user_id)
+            {
+                if(!handler.is_admin_or_op(socket))
+                {
+                    return handler.get_out(socket)
+                }
+
+                deleted = true
+                messages.splice(message_index, 1)
+            }
+
+            else if(message.data.user_id !== socket.hue_user_id)
             {
                 if(!handler.is_admin_or_op(socket))
                 {
@@ -236,7 +254,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 {
                     let msg = messages[i]
 
-                    if(msg.data.id && msg.data.id == data.id)
+                    if(msg.id && msg.id == data.id)
                     {
                         deleted = true
                         messages.splice(i, 1)
@@ -261,7 +279,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
                 if(message_type === "image" || message_type === "tv" || message_type === "radio")
                 {
-                    if(vars.rooms[socket.hue_room_id][`current_${message_type}_id`] === message_id)
+                    if(room[`current_${message_type}_id`] === message_id)
                     {
                         handler[`do_change_${message_type}_source`](socket, {src:"default", setter:""})
                     }

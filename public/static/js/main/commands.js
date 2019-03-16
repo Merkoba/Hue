@@ -297,7 +297,7 @@ Hue.commands =
     {
         action: (arg, ans) =>
         {
-            Hue.clear_log()
+            Hue.clear_log("all")
         },
         description: `Removes all messages from the log and resets client state for all the users in the room`
     },

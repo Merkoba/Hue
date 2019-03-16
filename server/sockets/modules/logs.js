@@ -29,7 +29,6 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Pushes an admin log message
     handler.push_admin_log_message = function(socket, content)
     {
-
         let message =
         {
             type: "admin_activity",

@@ -521,10 +521,11 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         {
             let message =
             {
+                id: tv_id,
                 type: "tv",
+                date: date,
                 data:
                 {
-                    id: tv_id,
                     user_id: user_id,
                     type: tvinfo.tv_type,
                     source: tvinfo.tv_source,
@@ -532,8 +533,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                     setter: tvinfo.tv_setter,
                     query: tvinfo.tv_query,
                     comment: tvinfo.tv_comment
-                },
-                date: date
+                }
             }
 
             handler.push_log_message(socket, message)

@@ -711,7 +711,8 @@ Hue.chat_announce = function(args={})
         comment_onclick: false,
         item_id: false,
         user_id: false,
-        replace_markdown: false
+        replace_markdown: false,
+        in_log: true
     }
 
     args = Object.assign(def_args, args)
@@ -945,6 +946,7 @@ Hue.chat_announce = function(args={})
     fmessage.data("first_url", first_url)
     fmessage.data("item_id", args.item_id)
     fmessage.data("user_id", args.user_id)
+    fmessage.data("in_log", args.in_log)
 
     let message_id
 
@@ -1832,7 +1834,7 @@ Hue.send_delete_message = function(id)
 // Remove a message from the chat
 Hue.remove_message_from_chat = function(data)
 {
-    if(data.type === "chat")
+    if(data.type === "chat" || data.type === "reaction")
     {
         $(".chat_content_container").each(function()
         {
@@ -1844,7 +1846,14 @@ Hue.remove_message_from_chat = function(data)
         })
     }
 
-    else if(data.type === "image" || data.type === "tv" || data.type === "radio")
+    else if
+    (
+        data.type === "announcement" ||
+        data.type === "reaction" ||
+        data.type === "image" || 
+        data.type === "tv" || 
+        data.type === "radio"
+    )
     {
         $(".message.announcement").each(function()
         {
@@ -3533,110 +3542,6 @@ Hue.start_chat_menu_context_menu = function()
                     return false
                 }
             },
-            item3:
-            {
-                name: "Delete", callback: function(key, opt)
-                {
-
-                },
-                visible: function(key, opt)
-                {
-                    let message = $(this).closest(".message")
-                    let mode = message.data("mode")
-
-                    if(mode === "chat")
-                    {
-                        let user_id = $(this).closest(".message").data("user_id")
-
-                        if(!user_id)
-                        {
-                            return false
-                        }
-
-                        let user = Hue.get_user_by_id(user_id)
-
-                        if(user)
-                        {
-                            if(!Hue.user_is_controllable(user))
-                            {
-                                return false
-                            }
-                        }
-
-                        if(Hue.is_admin_or_op() || user_id === Hue.user_id)
-                        {
-                            return true
-                        }
-                    }
-
-                    else if(mode === "announcement")
-                    {
-                        let type = message.data("type")
-                        let id = message.data("item_id")
-
-                        if(id)
-                        {
-                            if(type === "image_change" || type === "tv_change" || type === "radio_change")
-                            {
-                                let user_id = message.data("user_id")
-
-                                if(!user_id)
-                                {
-                                    return false
-                                }
-
-                                let user = Hue.get_user_by_id(user_id)
-
-                                if(user)
-                                {
-                                    if(!Hue.user_is_controllable(user))
-                                    {
-                                        return false
-                                    }
-                                }
-
-                                if(user_id === Hue.user_id || Hue.is_admin_or_op())
-                                {
-                                    return true
-                                }
-                            }
-                        }
-                    }
-
-                    return false
-                },
-                items:
-                {
-                    opsure:
-                    {
-                        name: "I'm Sure", callback: function(key, opt)
-                        {
-                            let message = $(this).closest(".message")
-                            let mode = message.data("mode")
-
-                            if(mode === "chat")
-                            {
-                                let id = $(this).closest(".chat_content_container").eq(0).data("id")
-                                Hue.delete_message(id, true)
-                            }
-
-                            else if(mode === "announcement")
-                            {
-                                let type = message.data("type")
-                                let id = message.data("item_id")
-
-                                if(id)
-                                {
-                                    if(type === "image_change" || type === "tv_change" || type === "radio_change")
-                                    {
-                                        Hue.delete_message(id, true)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
             item4:
             {
                 name: "Change Image", callback: function(key, opt)
@@ -3754,6 +3659,208 @@ Hue.start_chat_menu_context_menu = function()
                             Hue.remove_message_from_context_menu(this)
                         }
                     }
+                }
+            },
+            itemdel:
+            {
+                name: "Delete", callback: function(key, opt)
+                {
+
+                },
+                visible: function(key, opt)
+                {
+                    if(!Hue.log_enabled)
+                    {
+                        return false
+                    }
+                    
+                    let message = $(this).closest(".message")
+                    let mode = message.data("mode")
+
+                    if(mode === "chat")
+                    {
+                        let user_id = $(this).closest(".message").data("user_id")
+
+                        if(user_id)
+                        {
+                            let user = Hue.get_user_by_id(user_id)
+    
+                            if(user)
+                            {
+                                if(!Hue.user_is_controllable(user))
+                                {
+                                    return false
+                                }
+                            }
+                        }
+
+                        if((user_id && user_id === Hue.user_id) || Hue.is_admin_or_op())
+                        {
+                            return true
+                        }
+                    }
+
+                    else if(mode === "announcement")
+                    {
+                        let id = message.data("item_id")
+
+                        if(id)
+                        {
+                            let user_id = message.data("user_id")
+
+                            if(user_id)
+                            {
+                                let user = Hue.get_user_by_id(user_id)
+    
+                                if(user)
+                                {
+                                    if(!Hue.user_is_controllable(user))
+                                    {
+                                        return false
+                                    }
+                                }
+                            }
+
+                            if((user_id && user_id === Hue.user_id) || Hue.is_admin_or_op())
+                            {
+                                return true
+                            }
+                        }
+                    }
+
+                    return false
+                },
+                items:
+                {
+                    opsure:
+                    {
+                        name: "I'm Sure", callback: function(key, opt)
+                        {
+                            let id = false
+                            let message = $(this).closest(".message")
+                            let mode = message.data("mode")
+
+                            if(mode === "chat")
+                            {
+                                id = $(this).closest(".chat_content_container").eq(0).data("id")
+                            }
+
+                            else if(mode === "announcement")
+                            {
+                                id = message.data("item_id")
+                            }
+                            
+                            if(id)
+                            {
+                                Hue.delete_message(id, true)
+                            }
+                        }
+                    }
+                }
+            },
+            item8:
+            {
+                name: "Clear Log", callback: function(key, opt)
+                {
+
+                },
+                items:
+                {
+                    above:
+                    {
+                        name: "Above This Point", callback: function(key, opt)
+                        {
+
+                        },
+                        items:
+                        {
+                            opsure:
+                            {
+                                name: "I'm Sure", callback: function(key, opt)
+                                {
+                                    let id
+                                    let message = $(this).closest(".message")
+                                    let mode = message.data("mode")
+
+                                    if(mode === "chat")
+                                    {
+                                        id = $(this).closest(".chat_content_container").data("id")
+                                    }
+
+                                    else if(mode === "announcement")
+                                    {
+                                        id = message.data("item_id")
+                                    }
+
+                                    Hue.clear_log("above", id)
+                                }
+                            }
+                        }
+                    },
+                    below:
+                    {
+                        name: "Below This Point", callback: function(key, opt)
+                        {
+
+                        },
+                        items:
+                        {
+                            opsure:
+                            {
+                                name: "I'm Sure", callback: function(key, opt)
+                                {
+                                    let id
+                                    let message = $(this).closest(".message")
+                                    let mode = message.data("mode")
+
+                                    if(mode === "chat")
+                                    {
+                                        id = $(this).closest(".chat_content_container").data("id")
+                                    }
+
+                                    else if(mode === "announcement")
+                                    {
+                                        id = message.data("item_id")
+                                    }
+
+                                    Hue.clear_log("below", id)
+                                }
+                            }
+                        }
+                    }
+                },
+                visible: function(key, opt)
+                {
+                    if(!Hue.log_enabled)
+                    {
+                        return false
+                    }
+
+                    let message = $(this).closest(".message")
+                    let mode = message.data("mode")
+
+                    if(mode === "chat")
+                    {
+                        if($(this).closest(".chat_content_container").data("id"))
+                        {
+                            return true
+                        }
+                    }
+
+                    else if(mode === "announcement")
+                    {
+                        if(!message.data("in_log"))
+                        {
+                            return false
+                        }
+
+                        if(message.data("item_id"))
+                        {
+                            return true
+                        }
+                    }
+
+                    return false
                 }
             }
         }
@@ -4072,6 +4179,7 @@ Hue.show_announcement = function(data, date=Date.now())
 {
     Hue.public_feedback(data.message,
     {
+        item_id: data.id,
         brk: "<i class='icon2c fa fa-star'></i>",
         date: date,
         preview_image: true,
@@ -4148,25 +4256,28 @@ Hue.show_log_messages = function()
         }
     }
 
+    // If there are no media items in the log, show the current room media
+
     if(num_images === 0)
     {
-        Hue.setup_image("show", Hue.get_media_object_from_init_data("image"))
+        Hue.setup_image("show", Object.assign(Hue.get_media_object_from_init_data("image"), {in_log: false}))
     }
 
     if(num_tv === 0)
     {
-        Hue.setup_tv("show", Hue.get_media_object_from_init_data("tv"))
+        Hue.setup_tv("show", Object.assign(Hue.get_media_object_from_init_data("tv"), {in_log: false}))
     }
 
     if(num_radio === 0)
     {
-        Hue.setup_radio("show", Hue.get_media_object_from_init_data("radio"))
+        Hue.setup_radio("show", Object.assign(Hue.get_media_object_from_init_data("radio"), {in_log: false}))
     }
 
     if(Hue.log_messages && Hue.log_messages.length > 0)
     {
         for(let message of Hue.log_messages)
         {
+            let id = message.id
             let type = message.type
             let data = message.data
             let date = message.date
@@ -4177,7 +4288,7 @@ Hue.show_log_messages = function()
                 {
                     Hue.update_chat(
                     {
-                        id: data.id,
+                        id: id,
                         user_id: data.user_id,
                         username: data.username,
                         message: data.content,
@@ -4193,29 +4304,34 @@ Hue.show_log_messages = function()
 
                 else if(type === "image")
                 {
+                    data.id = id
                     data.date = date
                     Hue.setup_image("show", data)
                 }
 
                 else if(type === "tv")
                 {
+                    data.id = id
                     data.date = date
                     Hue.setup_tv("show", data)
                 }
 
                 else if(type === "radio")
                 {
+                    data.id = id
                     data.date = date
                     Hue.setup_radio("show", data)
                 }
 
                 else if(type === "reaction")
                 {
+                    data.id = id
                     Hue.show_reaction(data, date)
                 }
 
                 else if(type === "announcement")
                 {
+                    data.id = id
                     Hue.show_announcement(data, date)
                 }
             }
@@ -4289,4 +4405,64 @@ Hue.public_feedback = function(message, data=false)
     }
 
     return Hue.chat_announce(obj)
+}
+
+// Remove message below a message with a certain ID
+Hue.remove_messages_after_id = function(id, direction)
+{
+    let index = false
+
+    $($("#chat_area .chat_content_container").get().reverse()).each(function()
+    {
+        if($(this).data("id") === id)
+        {
+            let container_index = $(this).index()
+            let message = $(this).closest(".message")
+
+            if($(this).closest(".chat_container").find(".chat_content_container").length > 1)
+            {
+                if(direction === "above")
+                {
+                    message.find(".chat_content_container").slice(0, container_index).remove()
+                }
+                
+                else if(direction === "below")
+                {
+                    message.find(".chat_content_container").slice(container_index + 1).remove()
+                }
+            }
+
+            index = message.index()
+            return false
+        }
+    })
+
+    if(index === false)
+    {
+        $($("#chat_area > .announcement").get().reverse()).each(function()
+        {
+            if($(this).data("item_id") === id)
+            {
+                index = $(this).index()
+                return false
+            }
+        })
+    }
+
+    if(index === false)
+    {
+        return false
+    }
+
+    if(direction === "above")
+    {
+        $("#chat_area > .message").slice(0, index).remove()
+    }
+    
+    else if(direction === "below")
+    {
+        $("#chat_area > .message").slice(index + 1).remove()
+    }
+
+    Hue.goto_bottom(true, false)
 }

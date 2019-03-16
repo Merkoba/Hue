@@ -322,10 +322,11 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         {
             let message =
             {
+                id: radio_id,
                 type: "radio",
+                date: date,
                 data:
                 {
-                    id: radio_id,
                     user_id: user_id,
                     type: radioinfo.radio_type,
                     source: radioinfo.radio_source,
@@ -333,8 +334,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                     setter: radioinfo.radio_setter,
                     query: radioinfo.radio_query,
                     comment: radioinfo.radio_comment
-                },
-                date: date
+                }
             }
 
             handler.push_log_message(socket, message)

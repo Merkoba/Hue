@@ -84,6 +84,7 @@ Hue.show_reaction = function(data, date=false)
 
     Hue.update_chat(
     {
+        id: data.id,
         brk: icon,
         message: message,
         username: data.username,
