@@ -354,7 +354,7 @@ Hue.apply_theme = function()
         background-color: ${color_4} !important;
     }
 
-    .chat_menu_button_main:hover
+    .chat_menu_button_main:hover, .chat_menu_button_main_selected
     {
         background-color: ${slight_background} !important;
     }

@@ -3487,6 +3487,17 @@ Hue.start_chat_menu_context_menu = function()
         animation: {duration: 250, hide: 'fadeOut'},
         zIndex: 9000000000,
         events: Hue.context_menu_events,
+        events: 
+        {
+            show: function(options)
+            {
+                $(this).closest(".chat_menu_button_main").addClass("chat_menu_button_main_selected")
+            },
+            hide: function(options)
+            {
+                $(this).closest(".chat_menu_button_main").removeClass("chat_menu_button_main_selected")
+            }
+        },
         items:
         {
             item0:

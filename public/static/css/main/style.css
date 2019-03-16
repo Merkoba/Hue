@@ -927,6 +927,11 @@ a.generic:link, a.generic:visited, a.generic:hover
 	position: relative;
 }
 
+.chat_menu_button_main_selected .chat_menu_button_container
+{
+	display: flex;
+}
+
 .chat_menu_button_container
 {
 	display: none;
