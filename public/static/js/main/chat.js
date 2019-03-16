@@ -4418,7 +4418,7 @@ Hue.public_feedback = function(message, data=false)
     return Hue.chat_announce(obj)
 }
 
-// Remove message below a message with a certain ID
+// Removes a message above or below a message with a certain ID
 Hue.remove_messages_after_id = function(id, direction)
 {
     let index = false
