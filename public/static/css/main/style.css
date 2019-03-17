@@ -2343,6 +2343,7 @@ a.special_link:hover
 	position: relative;
 	display: flex;
 	flex-direction: row;
+	align-items: flex-start;
 }
 
 .image_preview_text, .link_preview_text
@@ -2357,6 +2358,7 @@ a.special_link:hover
 {
 	max-width: 500px;
 	max-height: 500px;
+	object-fit: contain;
 }
 
 .link_preview
@@ -2452,6 +2454,7 @@ a.special_link:hover
 {
 	max-width: 180px;
 	max-height: 180px;
+	object-fit: contain;
 }
 
 .highlights_item .image_preview, .chat_search_result_item .image_preview
