@@ -942,64 +942,6 @@ Hue.tv_prev = function()
     Hue.msg_tv_picker.close()
 }
 
-// Generates the items for the tv maxer context menu
-Hue.generate_tv_maxer_context_items = function()
-{
-    let items = {}
-
-    for(let i=10; i>=0; i--)
-    {
-        let n = i * 10
-
-        items[`per${n}`] =
-        {
-            name: `TV ${n}%`, callback: function(key, opt)
-            {
-                Hue.unmaximize_media()
-                Hue.do_media_tv_size_change(n)
-            }
-        }
-    }
-
-    let obj = Object.assign(
-    {
-        swap:
-        {
-            name: "Swap", callback: function(key, opt)
-            {
-                Hue.swap_display_positions_2()
-            }
-        }
-    },
-    items,
-    {
-        def:
-        {
-            name: "Default", callback: function(key, opt)
-            {
-                Hue.unmaximize_media()
-                Hue.set_default_tv_size()
-            }
-        }
-    })
-
-    return obj
-}
-
-// Starts the tv maxer context menu
-Hue.start_tv_maxer_context_menu = function()
-{
-    $.contextMenu(
-    {
-        selector: "#media_tv_maxer, #media_image_maxer",
-        animation: {duration: 250, hide: 'fadeOut'},
-        zIndex: 9000000000,
-        events: Hue.context_menu_events,
-        className: "maxer_context",
-        items: Hue.generate_tv_maxer_context_items()
-    })
-}
-
 // Used to change the tv
 // Shows the tv picker window to input a URL
 Hue.show_tv_picker = function()

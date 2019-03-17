@@ -1037,28 +1037,6 @@ Hue.scroll_modal_to_bottom = function(id)
     container.scrollTop = container.scrollHeight
 }
 
-// Starts the context menu for modal and popup windows's close buttons
-Hue.start_msg_close_buttons_context_menu = function()
-{
-    $.contextMenu(
-    {
-        selector: ".Msg-window-inner-x",
-        animation: {duration: 250, hide: 'fadeOut'},
-        zIndex: 9000000000,
-        events: Hue.context_menu_events,
-        items:
-        {
-            mm0:
-            {
-                name: "Close All", callback: function(key, opt)
-                {
-                    Hue.process_msg_close_button(this)
-                }
-            }
-        }
-    })
-}
-
 // Creates a Msg popup
 Hue.create_popup = function(position, id=false, after_close=false)
 {

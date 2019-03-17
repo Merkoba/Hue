@@ -215,28 +215,6 @@ Hue.config_main_menu = function()
     }
 }
 
-// Starts the main menu context menu
-Hue.start_main_menu_context_menu = function()
-{
-    $.contextMenu(
-    {
-        selector: "#main_menu_icon",
-        animation: {duration: 250, hide: 'fadeOut'},
-        zIndex: 9000000000,
-        events: Hue.context_menu_events,
-        items:
-        {
-            mm0:
-            {
-                name: "About", callback: function(key, opt)
-                {
-                    Hue.show_credits()
-                }
-            }
-        }
-    })
-}
-
 // Checks or unchecks main menu voice permission checkboxes based on current state
 Hue.config_admin_permission_checkboxes = function()
 {

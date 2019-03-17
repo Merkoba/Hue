@@ -1058,43 +1058,6 @@ Hue.toggle_media_history_windows = function()
     Hue.process_window_toggle(data)
 }
 
-// Starts the context menu for the footer media labels
-Hue.start_footer_media_label_context_menu = function()
-{
-    $.contextMenu(
-    {
-        selector: ".footer_media_label ",
-        animation: {duration: 250, hide: 'fadeOut'},
-        zIndex: 9000000000,
-        events: Hue.context_menu_events,
-        items:
-        {
-            mm1:
-            {
-                name: "Load Next", callback: function(key, opt)
-                {
-                    Hue.media_load_next($(this).data("type"))
-                },
-                disabled: function(key, opt)
-                {
-                    return !Hue.media_load_next($(this).data("type"), true)
-                }
-            },
-            mm2:
-            {
-                name: "Load Previous", callback: function(key, opt)
-                {
-                    Hue.media_load_previous($(this).data("type"))
-                },
-                disabled: function(key, opt)
-                {
-                    return !Hue.media_load_previous($(this).data("type"), true)
-                }
-            }
-        }
-    })
-}
-
 // Updates the dimensions of a specified element
 // It grows the element as much as it can while maintaining the aspect ratio
 // This is done by making calculations with the element and parent's ratios
