@@ -12,14 +12,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	
 	// Get the module file names and arguments
 	const modules = vars.fs.readdirSync(vars.path.join(__dirname, "modules"))
-	
-	// Arguments to send to modules
-	const module_arguments = [handler, vars, ...arguments]
 
 	// Fill the handler object
 	for(let module of modules)
 	{
-		require(`./modules/${module}`)(...module_arguments)
+		require(`./modules/${module}`)(handler, vars, ...arguments)
 	}
 
 	// Start socker handler
