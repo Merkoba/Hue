@@ -1,5 +1,4 @@
-// Sets a variable on context menu show or hide events
-// This is to know whether a context menu is open
+// Sets events for all context menus
 Hue.context_menu_events =
 {
     show: function()
