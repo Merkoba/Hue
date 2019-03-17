@@ -3842,6 +3842,11 @@ Hue.start_chat_menu_context_menu = function()
                 },
                 visible: function(key, opt)
                 {
+                    if(!Hue.is_admin_or_op())
+                    {
+                        return false
+                    }
+                    
                     if(!Hue.log_enabled)
                     {
                         return false

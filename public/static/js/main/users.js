@@ -494,6 +494,11 @@ Hue.compare_userlist = function(a, b)
 // An admin can control other admins
 Hue.user_is_controllable = function(user)
 {
+    if(user.user_id === Hue.user_id)
+    {
+        return true
+    }
+    
     if(!Hue.is_admin_or_op())
     {
         return false
