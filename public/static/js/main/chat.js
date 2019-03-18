@@ -1983,9 +1983,11 @@ Hue.setup_input = function()
         '--expand',
         (value, event, tag) => 
         {
+            $("#footer").css("height", $("#footer").height())
             tag.style.height = 'auto'
             const height = tag.scrollHeight
             tag.style.height = ''
+            $("#footer").css("height", "auto")
             
             if(Hue.last_input_height && Hue.last_input_height !== height)
             {

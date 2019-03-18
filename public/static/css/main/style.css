@@ -374,7 +374,7 @@ div#header_radio_playing_icon
 	position: relative;
 	overflow-wrap: break-word;
 	word-break: break-word;
-	min-height: calc(100% - 0.6rem);
+	min-height: calc(2rem - 0.6rem);
 	max-height: 20rem;
 	height: calc(var(--expand) - 0.6rem);
 }
