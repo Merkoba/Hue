@@ -1999,6 +1999,11 @@ Hue.setup_input = function()
         ['input', 'paste', 'blur', 'reprocess']
     )
 
+    Hue.reprocess_input()
+}
+
+Hue.reprocess_input = function()
+{
     $("#input")[0].dispatchEvent(new Event('reprocess'))
 }
 
@@ -2045,18 +2050,11 @@ Hue.update_input_placeholder = function()
     $("#input").attr("placeholder", s)
 }
 
-// Checks if the input is overflowed
-Hue.check_input_overflow = function()
+// Checks if the input is active and overflowed
+Hue.input_oversized_active = function()
 {
     let input = $("#input")[0]
-
-    return input.clientHeight < input.scrollHeight
-}
-
-// Checks if the footer is in 'oversized' mode the input is focused
-Hue.footer_oversized_active = function()
-{
-    return Hue.footer_oversized && document.activeElement === $("#input")[0]
+    return document.activeElement === input && (input.clientHeight < input.scrollHeight)
 }
 
 // Checks if the user is typing a chat message to send a typing emit
@@ -2499,6 +2497,8 @@ Hue.change_input = function(s, to_end=true, focus=true)
     {
         Hue.focus_input()
     }
+
+    Hue.reprocess_input()
 }
 
 // Focuses the input

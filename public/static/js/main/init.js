@@ -143,7 +143,6 @@ Hue.YEAR = 31536000000
 Hue.editing_message = false
 Hue.editing_message_container = false
 Hue.editing_message_area = false
-Hue.footer_oversized = false
 Hue.synth_timeout_delay = 800
 Hue.synth_recent_users = []
 Hue.synth_open = false

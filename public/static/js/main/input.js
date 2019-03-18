@@ -513,7 +513,7 @@ Hue.activate_key_detection = function()
 
         else if(e.key === "ArrowUp")
         {
-            if(Hue.footer_oversized_active() && !e.shiftKey)
+            if(Hue.input_oversized_active() && !e.shiftKey)
             {
                 return
             }
@@ -540,7 +540,7 @@ Hue.activate_key_detection = function()
 
         else if(e.key === "ArrowDown")
         {
-            if(Hue.footer_oversized_active() && !e.shiftKey)
+            if(Hue.input_oversized_active() && !e.shiftKey)
             {
                 return
             }
