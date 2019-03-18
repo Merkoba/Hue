@@ -1,0 +1,42 @@
+<script id='template_user_menu' type='text/x-handlebars-template' class='template'>
+    <div class='unselectable'>
+        <div class='bigger2' id='user_menu_username'>Loading</div>
+
+        <div id='user_menu_profile_image_container' class='big_profile_image_container round_image_container'>
+            <img id='user_menu_profile_image' class='big_profile_image pointer unselectable' onclick='Hue.open_profile_image_picker()'>
+        </div>
+
+        <div class='flex_row_center user_menu_items_container menu_item_smaller_2 generic_horizontal_separator'>
+            <div class='action' onclick='Hue.show_details()'>Details</div>
+            <div class='action' onclick='Hue.needs_confirm("logout")'>Logout</div>
+        </div>
+
+        <div class='flex_row_center user_menu_items_container_2 menu_item_smaller_2 generic_horizontal_separator'>
+            <div class='action' onclick='Hue.show_highlights()'>Highlights</div>
+            <div class='action' onclick='Hue.show_input_history()'>History</div>
+        </div>
+
+        <div id='user_menu_settings_container'>
+            <div class="flex_row_center">
+                <div id='user_menu_global_settings' class="action pointer" onclick="Hue.show_global_settings()">Global&nbsp;Settings</div>
+            </div>
+            <div class="flex_row_center">
+                <div class='invisible' id='user_menu_room_settings_status_filler'></div>
+                <div class='action pointer' onclick="Hue.show_room_settings()">Room&nbsp;Settings</div>
+                <div id='user_menu_room_settings_status'></div>
+            </div>
+        </div>
+
+        <div id='user_menu_toggler_main' class='toggler_main_container'>
+            <div class='toggler user_menu_toggle small_padding_bottom bold pointer action'>+ More</div>
+
+            <div class='toggler_container user_menu_toggle_container'>
+                <div id='user_menu_toggle_items' class='grid_column_center'>
+                    <div class='pointer action' onclick='Hue.show_import_settings()'>Import Settings</div>
+                    <div class='pointer action' onclick='Hue.show_export_settings()'>Export Settings</div>
+                    <div class='pointer action' onclick='Hue.request_notifications_permission()'>Enable Notifications</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

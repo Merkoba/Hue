@@ -1,0 +1,14 @@
+<script id='template_upload_comment' type='text/x-handlebars-template' class='template'>
+    <img id='upload_comment_image_preview'>
+
+    <div id='upload_comment_image_feedback'>Image seems to be corrupted</div>
+
+    <div id='upload_comment_controls' class='flex_column_center'>
+        <input type='text' id='upload_comment_input' class='input1' placeholder='Comment'>
+
+        <div class='flex_row_center unselectable generic_horizontal_separator'>
+            <div class='menu_item action' onclick='Hue.cancel_upload_comment()'>Cancel</div>
+            <div class='menu_item action' id='upload_comment_submit'>Upload</div>
+        </div>
+    </div>
+</script>

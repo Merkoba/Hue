@@ -1,6 +1,9 @@
 module.exports = function(db_manager, config, sconfig, utilz)
 {
 	// Initial declarations
+	const fs = require('fs')
+	const path = require('path')
+	const ejs = require('ejs')
 	const jwt = require('jsonwebtoken')
 	const express = require('express')
 	const fetch = require('node-fetch')
@@ -17,6 +20,42 @@ module.exports = function(db_manager, config, sconfig, utilz)
 	
 	// Fill the config variables object
 	require("./vars")(c, config)
+
+	// Compile all templates
+
+	// Main handler object
+	const handler = {}
+	handler.public = {}
+
+	// This holds the templates html to pass to the body compilation
+	let templates_html = ""
+
+	// Get the template file names
+	const template_files = fs.readdirSync(path.join(__dirname, "../views/main/templates"))
+
+	// Get all the templates html
+	for(let file of template_files)
+	{
+		const template_path = path.join(__dirname, `../views/main/templates/${file}`)
+		templates_html += ejs.compile(fs.readFileSync(template_path, 'utf8'),
+		{
+			filename: template_path
+		})()
+	}
+
+	// Create the main body template
+
+	const body_html_path = path.join(__dirname, "../views/main/body.ejs")
+	
+	const compiled_body_html_template = ejs.compile(fs.readFileSync(body_html_path, 'utf8'),
+	{
+		filename: body_html_path
+	})
+
+	c.body_html = compiled_body_html_template(
+	{
+		templates: templates_html
+	})
 
 	// Reserved usernames
 	// These can't be used on registration

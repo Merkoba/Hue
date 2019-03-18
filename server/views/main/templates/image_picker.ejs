@@ -1,0 +1,16 @@
+<script id='template_image_picker' type='text/x-handlebars-template' class='template'>
+    <i class='fa fa-camera media_picker_icon'></i>
+    <div class='media_picker_info'>
+        Enter an image URL<br>Or an Imgur search term<br>Upload one from your computer<br>Or make a drawing
+        <div title='Use this in the main chat input'>Command: /image x</div>
+    </div>
+    <div class='flex_column_center'>
+        <input type='text' id='image_source_picker_input' class='input1 media_picker_input' placeholder='Search Term or URL'>
+        <input type='text' id='image_source_picker_input_comment' class='input1 media_picker_input' placeholder='Comment'>
+    </div>
+    <div class='unselectable flex_row_center' id='image_picker_options'>
+    <div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("image_prev", "This will change the image for everyone. Are you sure?")'>Previous</div>
+    <div class='menu_item action inline unselectable' onclick='Hue.open_draw_image();Hue.msg_image_picker.close()'>Draw</div>
+    <div id='image_file_picker' class='menu_item action inline unselectable' onclick='Hue.msg_image_picker.close()'>Upload</div>
+    </div>
+</script>
