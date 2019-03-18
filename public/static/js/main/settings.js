@@ -1933,40 +1933,6 @@ Hue.prepare_media_settings = function()
     Hue.apply_media_positions()
 }
 
-// Toggles between global and room settings windows when clicking the titlebar
-Hue.toggle_settings_windows = function()
-{
-    let data = {}
-
-    data["global_settings"] = function()
-    {
-        let category = Hue.get_selected_user_settings_category("global_settings")
-        Hue.open_user_settings_category(category, "room_settings")
-
-        let filter = $("#global_settings_filter").val()
-
-        if(filter)
-        {
-            Hue.do_settings_filter("room_settings", filter)
-        }
-    }
-
-    data["room_settings"] = function()
-    {
-        let category = Hue.get_selected_user_settings_category("room_settings")
-        Hue.open_user_settings_category(category, "global_settings")
-
-        let filter = $("#room_settings_filter").val()
-
-        if(filter)
-        {
-            Hue.do_settings_filter("global_settings", filter)
-        }
-    }
-
-    Hue.process_window_toggle(data)
-}
-
 // Opens a settings window and goes to a specific category
 Hue.open_user_settings_category = function(category, type="global_settings")
 {

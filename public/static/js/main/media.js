@@ -1035,29 +1035,6 @@ Hue.setup_media_pickers = function()
     }
 }
 
-// Toggles between media history windows when clicking the titlebar
-Hue.toggle_media_history_windows = function()
-{
-    let data = {}
-
-    data["image_history"] = function()
-    {
-        Hue.show_media_history("tv")
-    }
-
-    data["tv_history"] = function()
-    {
-        Hue.show_media_history("radio")
-    }
-
-    data["radio_history"] = function()
-    {
-        Hue.show_media_history("image")
-    }
-
-    Hue.process_window_toggle(data)
-}
-
 // Updates the dimensions of a specified element
 // It grows the element as much as it can while maintaining the aspect ratio
 // This is done by making calculations with the element and parent's ratios

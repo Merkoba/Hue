@@ -197,24 +197,6 @@ Hue.goto_room_action = function()
     Hue.show_open_room(id)
 }
 
-// Toggles between public and visited room lists when clicking the titlebar
-Hue.toggle_rooms_windows = function()
-{
-    let data = {}
-
-    data["public_roomlist"] = function()
-    {
-        Hue.request_roomlist("", "visited_roomlist")
-    }
-
-    data["visited_roomlist"] = function()
-    {
-        Hue.request_roomlist("", "public_roomlist")
-    }
-
-    Hue.process_window_toggle(data)
-}
-
 // Show feedback to the user after creating a room
 Hue.on_room_created = function(data)
 {

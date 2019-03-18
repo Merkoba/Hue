@@ -1101,3 +1101,77 @@ Hue.start_msg_close_buttons_context_menu = function()
         }
     })
 }
+
+// Generate the items for the chat search context menu
+Hue.generate_chat_search_context_items = function()
+{
+    let items = {}
+
+    if(Hue.room_state.chat_searches.length === 0)
+    {
+        items.item0 =
+        {
+            name: "No searches yet",
+            disabled: true
+        }
+    }
+
+    else
+    {
+        let n = 0
+
+        for(let search of Hue.room_state.chat_searches)
+        {
+            items[`item_${n}`] =
+            {
+                name: search, callback: function(key, opt)
+                {
+                    Hue.show_chat_search(search)
+                }
+            }
+
+            n += 1
+        }
+
+        items['clear'] =
+        {
+            name: "Clear", icon:"fa-trash-o", callback: function(key, opt)
+            {
+                Hue.clear_chat_searches()
+            }
+        }
+    }
+
+    return items
+}
+
+// Starts the chat search context menus
+// One for the Search menu option
+// One on the Search window which is triggered by a normal click
+Hue.start_search_context_menus = function()
+{
+    $.contextMenu(
+    {
+        selector: "#main_menu_search_button",
+        animation: {duration: 250, hide: 'fadeOut'},
+        zIndex: 9000000000,
+        events: Hue.context_menu_events,
+        build: function($trigger, e)
+        {
+            return {items:Hue.generate_chat_search_context_items()}
+        }
+    })
+
+    $.contextMenu(
+    {
+        selector: "#chat_search_history_icon",
+        animation: {duration: 250, hide: 'fadeOut'},
+        zIndex: 9000000000,
+        events: Hue.context_menu_events,
+        trigger: "left",
+        build: function($trigger, e)
+        {
+            return {items:Hue.generate_chat_search_context_items()}
+        }
+    })
+}

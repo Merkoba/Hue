@@ -545,21 +545,3 @@ Hue.config_admin_topic = function()
 
     $("#admin_topic").val(Hue.topic)
 }
-
-// Toggles between the main menu and user menu when clicking the titlebar
-Hue.toggle_menu_windows = function()
-{
-    let data = {}
-
-    data["main_menu"] = function()
-    {
-        Hue.show_user_menu()
-    }
-
-    data["user_menu"] = function()
-    {
-        Hue.show_main_menu()
-    }
-
-    Hue.process_window_toggle(data)
-}

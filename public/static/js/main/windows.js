@@ -1092,24 +1092,6 @@ Hue.create_popup = function(position, id=false, after_close=false)
     return pop
 }
 
-// Function to apply the defined toggles between windows
-Hue.process_window_toggle = function(data)
-{
-    let highest = Hue.msg_main_menu.highest_instance()
-    let current = highest.options.id
-    let next_func = data[current]
-
-    if(!current || !next_func)
-    {
-        return false
-    }
-
-    Hue[`msg_${current}`].close(function()
-    {
-        next_func()
-    })
-}
-
 // Changes the state of a toggler
 // If enabled, it will show the container and show a -
 // If disabled it will hide the container and show a +
@@ -1191,4 +1173,133 @@ Hue.process_msg_close_button = function(button)
     {
         Hue.close_all_popups()
     }
+}
+
+// Function to apply the defined toggles between windows
+Hue.process_window_toggle = function(data)
+{
+    let highest = Hue.msg_main_menu.highest_instance()
+    let current = highest.options.id
+    let next_func = data[current]
+
+    if(!current || !next_func)
+    {
+        return false
+    }
+
+    Hue[`msg_${current}`].close(function()
+    {
+        next_func()
+    })
+}
+
+// Toggles between the chat search and highlights windows when clicking the titlebar
+Hue.toggle_search_windows = function()
+{
+    let data = {}
+
+    data["chat_search"] = function()
+    {
+        Hue.show_highlights()
+    }
+
+    data["highlights"] = function()
+    {
+        Hue.show_chat_search()
+    }
+
+    Hue.process_window_toggle(data)
+}
+
+// Toggles between the main menu and user menu when clicking the titlebar
+Hue.toggle_menu_windows = function()
+{
+    let data = {}
+
+    data["main_menu"] = function()
+    {
+        Hue.show_user_menu()
+    }
+
+    data["user_menu"] = function()
+    {
+        Hue.show_main_menu()
+    }
+
+    Hue.process_window_toggle(data)
+}
+
+// Toggles between media history windows when clicking the titlebar
+Hue.toggle_media_history_windows = function()
+{
+    let data = {}
+
+    data["image_history"] = function()
+    {
+        Hue.show_media_history("tv")
+    }
+
+    data["tv_history"] = function()
+    {
+        Hue.show_media_history("radio")
+    }
+
+    data["radio_history"] = function()
+    {
+        Hue.show_media_history("image")
+    }
+
+    Hue.process_window_toggle(data)
+}
+
+// Toggles between public and visited room lists when clicking the titlebar
+Hue.toggle_rooms_windows = function()
+{
+    let data = {}
+
+    data["public_roomlist"] = function()
+    {
+        Hue.request_roomlist("", "visited_roomlist")
+    }
+
+    data["visited_roomlist"] = function()
+    {
+        Hue.request_roomlist("", "public_roomlist")
+    }
+
+    Hue.process_window_toggle(data)
+}
+
+// Toggles between global and room settings windows when clicking the titlebar
+Hue.toggle_settings_windows = function()
+{
+    let data = {}
+
+    data["global_settings"] = function()
+    {
+        let category = Hue.get_selected_user_settings_category("global_settings")
+        Hue.open_user_settings_category(category, "room_settings")
+
+        let filter = $("#global_settings_filter").val()
+
+        if(filter)
+        {
+            Hue.do_settings_filter("room_settings", filter)
+        }
+    }
+
+    data["room_settings"] = function()
+    {
+        let category = Hue.get_selected_user_settings_category("room_settings")
+        Hue.open_user_settings_category(category, "global_settings")
+
+        let filter = $("#room_settings_filter").val()
+
+        if(filter)
+        {
+            Hue.do_settings_filter("global_settings", filter)
+        }
+    }
+
+    Hue.process_window_toggle(data)
 }
