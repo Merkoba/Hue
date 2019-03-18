@@ -162,17 +162,11 @@ Hue.resize_events = function()
 }
 
 // What to do after a window resize
-Hue.on_resize = function(check_clone=true)
+Hue.on_resize = function()
 {
     Hue.fix_frames()
     Hue.goto_bottom(false, false)
     Hue.check_scrollers()
-    Hue.fix_input_clone()
-
-    if(check_clone)
-    {
-        Hue.check_input_clone_overflow($("#input").val())
-    }
 }
 
 // Setup events for application close or refresh

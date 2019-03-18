@@ -126,7 +126,7 @@ body *
 	display: flex;
 	flex-grow: 0;
 	flex-shrink: 0;
-	height: 2rem;
+	min-height: 2rem;
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
@@ -372,9 +372,11 @@ div#header_radio_playing_icon
 	overflow-y: auto;
 	overflow-x: hidden;
 	position: relative;
-	height: calc(100% - 0.6rem);
 	overflow-wrap: break-word;
 	word-break: break-word;
+	min-height: calc(100% - 0.6rem);
+	max-height: 20rem;
+	height: calc(var(--expand) - 0.6rem);
 }
 
 #input::placeholder

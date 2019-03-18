@@ -79,7 +79,6 @@ Hue.setup_fonts = function()
 Hue.on_fonts_loaded = function()
 {
     Hue.goto_bottom(true, false)
-    Hue.create_input_clone()
 }
 
 // Utility function to create safe html elements with certain options

@@ -1,76 +1,81 @@
 // JQuery function to turn url text into actual links
 jQuery.fn.urlize = function(stop_propagation=true)
 {
-    let html = this.html()
+    try
+    {
+        let html = this.html()
     
-    if(!html || !Hue.utilz.includes_url(html))
-    {
-        return false
-    }
-
-    let split = html.split(" ")
-    let matches = []
-    let reg = /(?:^|\s)\"?(https?:\/\/(?:[^"|\s]*)+)/
-
-    for(let s of split)
-    {
-        let result = reg.exec(s)
-
-        if(result)
+        if(!html || !Hue.utilz.includes_url(html))
         {
-            matches.push(result[1])
-        }
-    }
-
-    if(matches.length > 0)
-    {
-        on_matches(matches, html, this)
-    }
-
-    function on_matches(matches, html, obj)
-    {
-        let cls = "generic action"
-
-        if(stop_propagation)
-        {
-            cls += " stop_propagation"
+            return false
         }
 
-        let used_urls = []
+        let split = html.split(" ")
+        let matches = []
+        let reg = /(?:^|\s)\"?(https?:\/\/(?:[^"|\s]*)+)/
 
-        for(let i=0; i<matches.length; i++)
+        for(let s of split)
         {
-            let url = matches[i]
+            let result = reg.exec(s)
 
-            if(used_urls.includes(url))
+            if(result)
             {
-                continue
+                matches.push(result[1])
+            }
+        }
+
+        if(matches.length > 0)
+        {
+            on_matches(matches, html, this)
+        }
+
+        function on_matches(matches, html, obj)
+        {
+            let cls = "generic action"
+
+            if(stop_propagation)
+            {
+                cls += " stop_propagation"
             }
 
-            used_urls.push(url)
+            let used_urls = []
+
+            for(let i=0; i<matches.length; i++)
+            {
+                let url = matches[i]
+
+                if(used_urls.includes(url))
+                {
+                    continue
+                }
+
+                used_urls.push(url)
             
-            let rep = new RegExp(Hue.utilz.escape_special_characters(matches[i]), "g")
+                let rep = new RegExp(Hue.utilz.escape_special_characters(matches[i]), "g")
 
-            let u = matches[i]
+                let u = matches[i]
 
-            if(u.length > Hue.config.max_displayed_url)
-            {
-                u = `${u.substring(0, Hue.config.max_displayed_url)}...`
+                if(u.length > Hue.config.max_displayed_url)
+                {
+                    u = `${u.substring(0, Hue.config.max_displayed_url)}...`
+                }
+
+                html = html.replace(rep, `<a class='${cls}' target='_blank' href='${url}'>${u}</a>`)
             }
 
-            html = html.replace(rep, `<a class='${cls}' target='_blank' href='${url}'>${u}</a>`)
-        }
+            $(obj).html(html)
 
-        $(obj).html(html)
-
-        $(obj).find(".stop_propagation").each(function()
-        {
-            $(this).click(function(e)
+            $(obj).find(".stop_propagation").each(function()
             {
-                e.stopPropagation()
+                $(this).click(function(e)
+                {
+                    e.stopPropagation()
+                })
             })
-        })
+        }
     }
+
+    catch(err) {}
 }
 
 // Goes to a url

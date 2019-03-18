@@ -1958,8 +1958,6 @@ Hue.setup_input = function()
             Hue.check_typing()
             Hue.old_input_val = value
         }
-
-        Hue.check_input_clone_overflow(value)
     })
 
     $("#input").on("click", function()
@@ -1979,6 +1977,29 @@ Hue.setup_input = function()
     })
 
     Hue.old_input_val = $("#input").val()
+
+    computedVariables
+    (
+        '--expand',
+        (value, event, tag) => 
+        {
+            tag.style.height = 'auto'
+            const height = tag.scrollHeight
+            tag.style.height = ''
+            
+            if(Hue.last_input_height && Hue.last_input_height !== height)
+            {
+                Hue.resize_timer()
+            }
+
+            Hue.last_input_height = height
+            return height + 'px'
+        },
+        "#input",
+        ['input', 'paste', 'blur', 'reprocess']
+    )
+
+    $("#input")[0].dispatchEvent(new Event('reprocess'))
 }
 
 // Setups the input's placeholder
@@ -2030,99 +2051,6 @@ Hue.check_input_overflow = function()
     let input = $("#input")[0]
 
     return input.clientHeight < input.scrollHeight
-}
-
-// Creates the input clone
-// This is an invisible div that mirrors the input's state
-// This is used to check if the input should grow or not
-// by checking the clone's overflow
-// This is necessary because the clone is not bound to input size mode,
-// so it can be known if there's an overflow in any mode,
-// unlike with using the input alone
-Hue.create_input_clone = function()
-{
-    let clone = document.createElement("div")
-
-    clone.id = "input_clone"
-    clone.style.height = `${$("#input").height()}px`
-    clone.style.width = `${$("#input").width()}px`
-    clone.style.fontSize = $("#input").css("font-size")
-    clone.style.visibility = "hidden"
-    clone.style.position = "fixed"
-    clone.style.top = "0"
-    clone.style.left = "0"
-    clone.style.zIndex = "-1"
-    clone.style.overflowX = "hidden"
-    clone.style.overflowY = "hidden"
-    clone.style.overflowWrap = "break-word"
-    clone.style.wordBreak = "break-word"
-    clone.style.paddingRight = $("#input").css("padding-right")
-    clone.style.color = "red"
-    clone.style.backgroundColor = "black"
-    clone.style.textAlign = "left"
-    clone.style.whiteSpace = "pre-wrap"
-
-    document.body.appendChild(clone)
-
-    Hue.initial_input_scroll_height = $("#input_clone")[0].scrollHeight
-    Hue.initial_footer_height = $(".panel").css("height")
-    Hue.input_clone_created = true
-}
-
-// Sets the clone width to the input's width
-Hue.fix_input_clone = function()
-{
-    if(Hue.input_clone_created)
-    {
-        $("#input_clone").css("width", `${$("#input").width()}px`)
-    }
-}
-
-// Checks if the input clone is overflowed
-Hue.check_input_clone_overflow = function(val)
-{
-    if(!Hue.input_clone_created)
-    {
-        return false
-    }
-
-    $("#input_clone").text(val)
-
-    let overflowed
-
-    if(Hue.check_input_overflow())
-    {
-        $("#input_clone").css("overflow-y", "scroll")
-        overflowed = true
-    }
-
-    else
-    {
-        $("#input_clone").css("overflow-y", "hidden")
-        overflowed = false
-    }
-
-    let scroll_height = $("#input_clone")[0].scrollHeight
-
-    if(overflowed || (scroll_height > Hue.initial_input_scroll_height + 10))
-    {
-        if(!Hue.footer_oversized)
-        {
-            $("#footer").css("height", "6rem")
-            Hue.footer_oversized = true
-            Hue.on_resize(false)
-        }
-    }
-
-    else
-    {
-        if(Hue.footer_oversized)
-        {
-            $("#footer").css("height", Hue.initial_footer_height)
-            Hue.footer_oversized = false
-            Hue.on_resize(false)
-        }
-    }
 }
 
 // Checks if the footer is in 'oversized' mode the input is focused
@@ -2561,8 +2489,6 @@ Hue.scroll_down = function(n)
 Hue.change_input = function(s, to_end=true, focus=true)
 {
     $("#input").val(s)
-
-    Hue.check_input_clone_overflow(s)
 
     if(to_end)
     {
