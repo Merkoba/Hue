@@ -1,6 +1,7 @@
 // Setups theme and background variables from initial data
 Hue.setup_theme_and_background = function(data)
 {
+    Hue.get_css_variables()
     Hue.set_background_image(data)
 
     Hue.theme_mode = data.theme_mode
@@ -951,4 +952,12 @@ Hue.set_text_color = function(color)
 {
     Hue.text_color = color
     Hue.config_admin_text_color()
+}
+
+// Get declared CSS variables
+Hue.get_css_variables = function()
+{
+    let style = getComputedStyle(document.body)
+    Hue.css_var_panel_height = style.getPropertyValue("--panel-height")
+    Hue.css_var_panel_height_double = style.getPropertyValue("--panel-height-double")
 }

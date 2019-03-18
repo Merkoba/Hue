@@ -1,3 +1,9 @@
+:root 
+{
+	--panel-height: 2rem;
+	--panel-height-double: 4rem;
+}
+
 @font-face
 {
 	font-family: imported_font;
@@ -55,7 +61,7 @@ body *
 #activity_bar_container
 {
 	background-color: black;
-	height: 2rem;
+	height: var(--panel-height);
 	flex-shrink: 0;
 	overflow: hidden;
 }
@@ -126,7 +132,8 @@ body *
 	display: flex;
 	flex-grow: 0;
 	flex-shrink: 0;
-	min-height: 2rem;
+	height: var(--panel-height);
+	min-height: var(--panel-height);
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
@@ -374,7 +381,7 @@ div#header_radio_playing_icon
 	position: relative;
 	overflow-wrap: break-word;
 	word-break: break-word;
-	min-height: calc(2rem - 0.6rem);
+	min-height: calc(var(--panel-height) - 0.6rem);
 	max-height: 20rem;
 	height: calc(var(--expand) - 0.6rem);
 }
@@ -1734,7 +1741,7 @@ input[type=text], textarea
 	align-items: flex-start;
 	justify-content: center;
 	position: fixed;
-	bottom: 2rem;
+	bottom: var(--panel-height);
 	left: 0;
 	flex-grow: 1;
 	flex-shrink: 0;
@@ -1830,7 +1837,7 @@ input[type=text], textarea
 	align-items: center;
 	justify-content: center;
 	top: 0;
-	height: 2rem;
+	height: var(--panel-height);
 }
 
 .topbox_container:hover > .topbox
@@ -2241,7 +2248,7 @@ input[type=text], textarea
 #infotip_container
 {
 	position: fixed;
-	top: 2rem;
+	top: var(--panel-height);
 	right: 0;
 	padding: 0.2em;
 	background-color: black;
@@ -2524,7 +2531,7 @@ a.special_link:hover
 #synth_container
 {
 	position: fixed;
-	top: 2rem;
+	top: var(--panel-height);
 	min-height: 40px;
 	width: 700px;
 	z-index: 99999;

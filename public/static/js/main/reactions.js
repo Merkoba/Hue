@@ -147,6 +147,7 @@ Hue.setup_reactions_box = function()
     })
 
     Hue.horizontal_separator.separate("reactions_box")
+    Hue.position_reactions_box()
 }
 
 // Starts a timeout to hide the reactions box when the mouse leaves the box
@@ -183,4 +184,11 @@ Hue.hide_reactions_box = function()
         $("#reactions_box_container").css("display", "none")
         Hue.reactions_box_open = false
     }
+}
+
+// Sets the correct position of the reactions box
+Hue.position_reactions_box = function()
+{
+    let height = $("#footer").height()
+    $("#reactions_box_container").css("bottom", `${height}px`)
 }
