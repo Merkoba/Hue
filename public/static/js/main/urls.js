@@ -2,7 +2,7 @@
 jQuery.fn.urlize = function(stop_propagation=true)
 {
     let html = this.html()
-
+    
     if(!html || !Hue.utilz.includes_url(html))
     {
         return false
@@ -36,10 +36,21 @@ jQuery.fn.urlize = function(stop_propagation=true)
             cls += " stop_propagation"
         }
 
+        let used_urls = []
+
         for(let i=0; i<matches.length; i++)
         {
             let url = matches[i]
+
+            if(used_urls.includes(url))
+            {
+                continue
+            }
+
+            used_urls.push(url)
+            
             let rep = new RegExp(Hue.utilz.escape_special_characters(matches[i]), "g")
+
             let u = matches[i]
 
             if(u.length > Hue.config.max_displayed_url)
