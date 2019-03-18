@@ -57,17 +57,21 @@ Hue.setup_input = function()
             const height = tag.scrollHeight
             tag.style.height = ''
             $("#footer").css("height", "auto")
-            
-            if(Hue.last_input_height && Hue.last_input_height !== height)
-            {
-                Hue.resize_timer()
-            }
-
-            Hue.last_input_height = height
             return height + 'px'
         },
         "#input",
-        ['input', 'paste', 'blur', 'reprocess']
+        ['input', 'paste', 'blur', 'reprocess'],
+        {
+            afterChange: function(height)
+            {
+                if(Hue.last_input_height && Hue.last_input_height !== height)
+                {
+                    Hue.resize_timer()
+                }
+
+                Hue.last_input_height = height
+            }
+        }
     )
 
     Hue.reprocess_input()
