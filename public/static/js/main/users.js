@@ -696,10 +696,6 @@ Hue.show_activity_bar = function()
     $("#topbox_left_icon").removeClass("fa-caret-up")
     $("#topbox_left_icon").addClass("fa-caret-down")
 
-    $("#synth_container").css("top", Hue.css_var_panel_height_double)
-    $("#recent_voice_box").css("top", Hue.css_var_panel_height_double)
-    $("#infotip_container").css("top", Hue.css_var_panel_height_double)
-
     Hue.apply_theme()
     Hue.update_activity_bar()
     Hue.on_resize()
@@ -711,10 +707,6 @@ Hue.hide_activity_bar = function()
     $("#activity_bar_container").css("display", "none")
     $("#topbox_left_icon").removeClass("fa-caret-down")
     $("#topbox_left_icon").addClass("fa-caret-up")
-
-    $("#synth_container").css("top", Hue.css_var_panel_height)
-    $("#recent_voice_box").css("top", Hue.css_var_panel_height)
-    $("#infotip_container").css("top", Hue.css_var_panel_height)
 
     Hue.apply_theme()
     Hue.on_resize()

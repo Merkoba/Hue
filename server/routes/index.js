@@ -687,7 +687,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		c.rvars.room_id = config.main_room_id
 		c.rvars.user_id = req.session.user_id
 		c.rvars.jwt_token = req.jwt_token
-		res.render('main', c)
+		res.render('main/main', c)
 	})
 
 	// Enter a room
@@ -696,7 +696,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		c.rvars.room_id = req.params.id.substr(0, config.max_room_id_length)
 		c.rvars.user_id = req.session.user_id
 		c.rvars.jwt_token = req.jwt_token
-		res.render('main', c)
+		res.render('main/main', c)
 	})
 
 	return router

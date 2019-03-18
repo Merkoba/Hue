@@ -143,9 +143,10 @@ body *
 {
 	background-color: #262423;
 	color: white;
+	position: relative;
 }
 
-#header div
+#header_items div
 {
 	position: relative;
 	height: 100%;
@@ -291,16 +292,7 @@ div#header_radio_playing_icon
 {
 	background-color: #262423;
 	justify-content: flex-start !important;
-}
-
-#footer div
-{
 	position: relative;
-	height: 100%;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
 }
 
 #footer_items
@@ -310,6 +302,16 @@ div#header_radio_playing_icon
 	white-space: nowrap;
 	align-items: center;
 	justify-content: flex-start;
+}
+
+#footer_items div
+{
+	position: relative;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
 }
 
 .footer_icon
@@ -1740,8 +1742,8 @@ input[type=text], textarea
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: center;
-	position: fixed;
-	bottom: var(--panel-height);
+	position: absolute;
+	bottom: 100%;
 	left: 0;
 	flex-grow: 1;
 	flex-shrink: 0;
@@ -2247,8 +2249,8 @@ input[type=text], textarea
 
 #infotip_container
 {
-	position: fixed;
-	top: var(--panel-height);
+	position: absolute;
+	top: 100%;
 	right: 0;
 	padding: 0.2em;
 	background-color: black;
@@ -2530,8 +2532,8 @@ a.special_link:hover
 
 #synth_container
 {
-	position: fixed;
-	top: var(--panel-height);
+	position: absolute;
+	top: 100%;
 	min-height: 40px;
 	width: 700px;
 	z-index: 99999;
@@ -2615,8 +2617,9 @@ a.special_link:hover
 	display: none;
 	align-items: center;
 	justify-content: center;
-	position: fixed;
-	top: 4rem;
+	position: absolute;
+	top: 100%;
+	left: 0;
 	z-index: 99;
 	padding-left: 0.8rem;
 	padding-right: 0.8rem;

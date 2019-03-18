@@ -67,7 +67,6 @@ Hue.setup_input = function()
                 if(Hue.last_input_height && Hue.last_input_height !== height)
                 {
                     Hue.resize_timer()
-                    Hue.position_reactions_box()
                 }
 
                 Hue.last_input_height = height
