@@ -545,8 +545,7 @@ div#header_radio_playing_icon
 {
 	font-size: 1em;
 	white-space: pre-wrap;
-	display: flex;
-	flex-direction: column;
+	display: inline-block;
 }
 
 .chat_content

@@ -1735,7 +1735,7 @@ Hue.stop_edit_message = function()
 
     $(Hue.editing_message_area).val("")
 
-    $(chat_content).css("display", "flex")
+    $(chat_content).css("display", "inline-block")
 
     $(Hue.editing_message_container).addClass("chat_menu_button_main")
     $(Hue.editing_message_container).css("display", "flex")
