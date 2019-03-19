@@ -545,7 +545,8 @@ div#header_radio_playing_icon
 {
 	font-size: 1em;
 	white-space: pre-wrap;
-	display: inline-block;
+	display: flex;
+	flex-direction: column;
 }
 
 .chat_content
@@ -2381,6 +2382,7 @@ a.special_link:hover
 	align-items: center;
 	justify-content: flex-start;
 	padding: 1rem;
+	align-self: flex-start;
 }
 
 .link_preview_image_with_title
