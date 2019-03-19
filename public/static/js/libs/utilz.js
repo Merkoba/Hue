@@ -657,7 +657,7 @@ const Utilz = function()
 
 	utilz.conditional_quotes = function(s)
 	{
-		if(!s.includes(" ") && Hue.utilz.is_url(s))
+		if(!s.includes(" ") && utilz.is_url(s))
 		{
 			return s
 		}
@@ -700,7 +700,7 @@ const Utilz = function()
 	{
 		let title
 
-		if(s.length > Hue.url_title_max_length)
+		if(s.length > n)
 		{
 			title = `${s.substring(0, n)}...`
 		}

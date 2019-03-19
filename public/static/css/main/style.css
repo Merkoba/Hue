@@ -2376,13 +2376,30 @@ a.special_link:hover
 {
 	background-color: grey;
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
 	cursor: pointer;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem;
 }
 
 .link_preview_image_with_title
 {
-	margin-top: 1rem;
+	margin-left: 1rem;
+}
+
+.link_preview_title
+{
+	font-size: 1.1em;
+	overflow-wrap: break-word;
+	word-break: break-word;
+}
+
+.link_preview_image
+{
+	max-width: 180px;
+	max-height: 180px;
+	object-fit: contain;
 }
 
 .align_left
@@ -2447,25 +2464,6 @@ a.special_link:hover
 #media_menu_tv_volume_title
 {
 	margin-top: 1.6rem;
-}
-
-.link_preview
-{
-	padding: 0.8rem;
-}
-
-.link_preview_title
-{
-	font-size: 1.1em;
-	overflow-wrap: break-word;
-	word-break: break-word;
-}
-
-.link_preview_image
-{
-	max-width: 180px;
-	max-height: 180px;
-	object-fit: contain;
 }
 
 .highlights_item .image_preview, .chat_search_result_item .image_preview
