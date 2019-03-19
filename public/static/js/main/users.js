@@ -350,7 +350,7 @@ Hue.get_user_by_id = function(id)
 // Starts click events for usernames in the user list
 Hue.start_userlist_click_events = function()
 {
-    $("#userlist").on("click", ".ui_item_uname", function()
+    $("#userlist").on("click", ".userlist_item_uname", function()
     {
         let uname = $(this).text()
 
@@ -370,11 +370,25 @@ Hue.start_userlist_click_events = function()
 // Rebuilds the HTML of the user list window
 Hue.update_userlist = function()
 {
+    Hue.userlist.sort(Hue.compare_userlist)
+    Hue.usernames = []
+    
+    if(Hue.msg_userlist.is_open())
+    {
+        Hue.update_userlist_window()
+        Hue.check_userlist_visibility()
+    }
+
+    Hue.usercount = Hue.userlist.length
+    Hue.update_usercount()
+}
+
+// Fills the userlist window with user information
+Hue.update_userlist_window = function()
+{
     let s = $()
 
     s = s.add()
-    Hue.userlist.sort(Hue.compare_userlist)
-    Hue.usernames = []
 
     for(let i=0; i<Hue.userlist.length; i++)
     {
@@ -382,32 +396,35 @@ Hue.update_userlist = function()
 
         Hue.usernames.push(item.username)
 
-        let h = $("<div class='modal_item userlist_item'><span class='ui_item_role'></span><span class='ui_item_uname action dynamic_title'></span></div>")
-        let p = Hue.role_tag(item.role)
-        let pel = h.find('.ui_item_role').eq(0)
+        let h = $(`
+        <div class='modal_item userlist_item'>
+            <div class='userlist_item_profile_image_container round_image_container unselectable action4'>
+                <img class='userlist_item_profile_image' src=''>
+            </div>
+            <div class='userlist_item_details_container'>
+                <div class='userlist_item_uname action dynamic_title'></div>
+                <div class='userlist_item_role'></div>
+            </div>
+        </div>`)
 
-        pel.text(p)
+        let image = h.find(".userlist_item_profile_image").eq(0)
+        image.data("src", item.profile_image)
+        image.data("src_applied", false)
 
-        if(p === "")
-        {
-            pel.css("padding-right", 0)
-        }
+        let role_tag = Hue.role_tag(item.role)
+        let role_element = h.find('.userlist_item_role').eq(0)
+        role_element.text(role_tag)
 
-        let uname = h.find('.ui_item_uname')
-
+        let uname = h.find('.userlist_item_uname')
         uname.eq(0).text(item.username)
 
         let t = `Joined: ${Hue.utilz.nice_date(item.date_joined)}`
-
         uname.attr("title", t)
         uname.data("otitle", t)
         uname.data("date", item.date_joined)
 
         s = s.add(h)
     }
-
-    Hue.usercount = Hue.userlist.length
-    Hue.update_usercount()
 
     $('#userlist').html(s)
 
@@ -529,10 +546,42 @@ Hue.show_userlist = function(mode="normal", filter=false)
 
     Hue.msg_userlist.show(function()
     {
+        Hue.update_userlist()
+
         if(filter)
         {
             $("#userlist_filter").val(filter)
             Hue.do_modal_filter()
+        }
+    })
+}
+
+// Checks for visible items in the userlist window to apply actions
+Hue.check_userlist_visibility = function()
+{
+    let win = $("#Msg-window-userlist")
+    let window_height = win.height()
+    let window_offset = win.offset().top
+
+    $(".userlist_item").each(function()
+    {
+        if($(this).css("display") === "none")
+        {
+            return true
+        }
+
+        let item_offset = $(this).offset().top
+        let offset = item_offset - window_offset
+        
+        if(offset < window_height)
+        {
+            let image = $(this).find(".userlist_item_profile_image").eq(0)
+
+            if(!image.data("src_applied"))
+            {
+                image.attr("src", image.data("src"))
+                image.data("src-applied", true)
+            }
         }
     })
 }
@@ -1555,4 +1604,9 @@ Hue.annex = function(rol="admin")
     }
 
     Hue.socket_emit('change_role', {username:Hue.username, role:rol})
+}
+
+Hue.after_userlist_filtered = function()
+{
+    Hue.check_userlist_visibility()
 }

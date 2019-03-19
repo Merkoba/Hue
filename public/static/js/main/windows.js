@@ -98,7 +98,7 @@ Hue.start_msg = function()
         Object.assign({}, common, titlebar,
         {
             id: "userlist",
-            window_width: "22em"
+            window_width: "28em"
         })
     )
 
@@ -975,7 +975,8 @@ Hue.do_modal_filter = function(id=false)
         id = Hue.active_modal.options.id
     }
 
-    let filter = $(`#Msg-content-${id} .filter_input`).eq(0)
+    let win = $(`#Msg-content-${id}`)
+    let filter = win.find(".filter_input").eq(0)
 
     if(!filter.length)
     {
@@ -986,8 +987,19 @@ Hue.do_modal_filter = function(id=false)
     filter.val(value)
 
     let lc_value = Hue.utilz.clean_string2(value).toLowerCase()
-    let items = $(`#Msg-content-${id} .modal_item`)
-    let display = "block"
+    let items = win.find(".modal_item")
+    let display
+
+    if(!win.data("filter_display"))
+    {
+        display = items.first().css("display")
+        win.data("filter_display", display)
+    }
+
+    else
+    {
+        display = win.data("filter_display")
+    }
 
     if(lc_value)
     {
@@ -1022,6 +1034,11 @@ Hue.do_modal_filter = function(id=false)
     }
 
     Hue.scroll_modal_to_top(id)
+
+    if(Hue[`after_${id}_filtered`])
+    {
+        Hue[`after_${id}_filtered`]()
+    }
 }
 
 // Scrolls a modal window to the top

@@ -882,7 +882,7 @@ Hue.start_username_context_menu = function()
 {
     $.contextMenu(
     {
-        selector: ".ui_item_uname, .chat_uname, #show_profile_uname, .generic_uname, .admin_list_username",
+        selector: ".userlist_item_uname, .chat_uname, #show_profile_uname, .generic_uname, .admin_list_username",
         animation: {duration: 250, hide: 'fadeOut'},
         zIndex: 9000000000,
         events: Hue.context_menu_events,
