@@ -2731,8 +2731,8 @@ Hue.make_link_preview = function(message, link_url, link_title, link_image)
     {
         link_preview_s =
         `<div class='link_preview action'>
+        <div class='link_preview_image_with_title'><img class='link_preview_image' src='${link_image}'></div>
             <div class='link_preview_title'>${Hue.make_html_safe(link_title)}</div>
-            <div class='link_preview_image_with_title'><img class='link_preview_image' src='${link_image}'></div>
         </div>`
     }
 
