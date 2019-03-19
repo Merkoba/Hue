@@ -2379,7 +2379,7 @@ a.special_link:hover
 	flex-direction: row;
 	cursor: pointer;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-start;
 	padding: 1rem;
 }
 
