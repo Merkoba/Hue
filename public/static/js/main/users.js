@@ -550,9 +550,11 @@ Hue.show_userlist_window = function(mode="normal", filter=false)
         Hue.msg_userlist.set_title("Add or Remove a User")
     }
     
+    Hue.update_userlist_window()
+
     Hue.msg_userlist.show(function()
     {
-        Hue.update_userlist(true)
+        Hue.check_userlist_visibility()
 
         if(filter)
         {
@@ -579,7 +581,7 @@ Hue.check_userlist_visibility = function()
         let item_offset = $(this).offset().top
         let offset = item_offset - window_offset
         
-        if(offset < window_height)
+        if(offset > 0 && offset < window_height)
         {
             let image = $(this).find(".userlist_item_profile_image").eq(0)
 
@@ -594,7 +596,7 @@ Hue.check_userlist_visibility = function()
                 })
 
                 image.attr("src", image.data("src"))
-                image.data("src-applied", true)
+                image.data("src_applied", true)
             }
         }
     })
