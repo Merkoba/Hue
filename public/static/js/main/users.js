@@ -534,8 +534,8 @@ Hue.user_is_controllable = function(user)
     return true
 }
 
-// Shows the user list
-Hue.show_userlist = function(mode="normal", filter=false)
+// Shows the user list window
+Hue.show_userlist_window = function(mode="normal", filter=false)
 {
     Hue.userlist_mode = mode
 
@@ -549,10 +549,10 @@ Hue.show_userlist = function(mode="normal", filter=false)
         Hue.msg_userlist.set_title("Add or Remove a User")
     }
 
+    Hue.update_userlist()
+
     Hue.msg_userlist.show(function()
     {
-        Hue.update_userlist()
-
         if(filter)
         {
             $("#userlist_filter").val(filter)

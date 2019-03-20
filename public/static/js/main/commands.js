@@ -25,12 +25,12 @@ Hue.commands =
         {
             if(arg)
             {
-                Hue.show_userlist("normal", arg)
+                Hue.show_userlist_window("normal", arg)
             }
 
             else
             {
-                Hue.show_userlist()
+                Hue.show_userlist_window()
             }
         },
         description: `Shows the user list. Accepts a filter as an argument`

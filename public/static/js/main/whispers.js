@@ -130,7 +130,7 @@ Hue.write_popup_message = function(unames=[], type="user")
 
         let f = function()
         {
-            Hue.show_userlist("whisper")
+            Hue.show_userlist_window("whisper")
         }
 
         title = {text:`Whisper to ${Hue.utilz.nice_list(unames)}`, onclick:f}
@@ -203,7 +203,7 @@ Hue.update_whisper_users = function(uname)
 
     let f = function()
     {
-        Hue.show_userlist("whisper")
+        Hue.show_userlist_window("whisper")
     }
 
     let title = {text:`Whisper to ${Hue.utilz.nice_list(Hue.message_unames)}`, onclick:f}
