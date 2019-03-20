@@ -347,25 +347,6 @@ Hue.get_user_by_id = function(id)
     return false
 }
 
-// Starts click events for usernames in the user list
-Hue.start_userlist_click_events = function()
-{
-    $("#userlist").on("click", ".userlist_item_uname", function()
-    {
-        let uname = $(this).text()
-
-        if(Hue.userlist_mode === "normal")
-        {
-            Hue.show_profile(uname)
-        }
-
-        else if(Hue.userlist_mode === "whisper")
-        {
-            Hue.update_whisper_users(uname)
-        }
-    })
-}
-
 // Handles a user list update
 // Rebuilds the HTML of the user list window
 Hue.update_userlist = function()
@@ -381,6 +362,30 @@ Hue.update_userlist = function()
 
     Hue.usercount = Hue.userlist.length
     Hue.update_usercount()
+}
+
+// Some configurations for the userlist window
+Hue.setup_userlist_window = function()
+{
+    $("#userlist").on("click", ".userlist_item_username, .userlist_item_profile_image", function()
+    {
+        let uname = $(this).closest(".userlist_item").find(".userlist_item_username").eq(0).text()
+
+        if(Hue.userlist_mode === "normal")
+        {
+            Hue.show_profile(uname)
+        }
+
+        else if(Hue.userlist_mode === "whisper")
+        {
+            Hue.update_whisper_users(uname)
+        }
+    })
+
+    $('#Msg-content-container-userlist').scroll(function()
+    {
+        Hue.on_userlist_scroll()
+    })
 }
 
 // Fills the userlist window with user information
@@ -402,7 +407,7 @@ Hue.update_userlist_window = function()
                 <img class='userlist_item_profile_image' src=''>
             </div>
             <div class='userlist_item_details_container'>
-                <div class='userlist_item_uname action dynamic_title'></div>
+                <div class='userlist_item_username action dynamic_title'></div>
                 <div class='userlist_item_role'></div>
             </div>
         </div>`)
@@ -415,7 +420,7 @@ Hue.update_userlist_window = function()
         let role_element = h.find('.userlist_item_role').eq(0)
         role_element.text(role_tag)
 
-        let uname = h.find('.userlist_item_uname')
+        let uname = h.find('.userlist_item_username')
         uname.eq(0).text(item.username)
 
         let t = `Joined: ${Hue.utilz.nice_date(item.date_joined)}`
@@ -1606,7 +1611,14 @@ Hue.annex = function(rol="admin")
     Hue.socket_emit('change_role', {username:Hue.username, role:rol})
 }
 
+// This is fired after a userlist filter
 Hue.after_userlist_filtered = function()
+{
+    Hue.check_userlist_visibility()
+}
+
+// What happens after the userlist scroll debouncer triggers
+Hue.after_userlist_scroll = function()
 {
     Hue.check_userlist_visibility()
 }

@@ -704,7 +704,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	white-space: nowrap;
 }
 
-.userlist_item_uname
+.userlist_item_username
 {
 	cursor: pointer;
 	flex-shrink: 1;
