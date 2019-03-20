@@ -2,6 +2,7 @@
 {
 	--panel-height: 2rem;
 	--panel-height-double: 4rem;
+	--chat-profile-image-size: 45px;
 }
 
 @font-face
@@ -476,10 +477,10 @@ div#header_radio_playing_icon
 
 .chat_profile_image_container
 {
-	min-width: 50px;
-	max-width: 50px;
-	min-height: 50px;
-	max-height: 50px;
+	min-width: var(--chat-profile-image-size);
+	max-width: var(--chat-profile-image-size);
+	min-height: var(--chat-profile-image-size);
+	max-height: var(--chat-profile-image-size);
 	position: sticky;
 	top: 2.5rem;
 }
@@ -721,10 +722,10 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .userlist_item_profile_image_container
 {
-	min-width: 50px;
-	max-width: 50px;
-	min-height: 50px;
-	max-height: 50px;
+	min-width: var(--chat-profile-image-size);
+	max-width: var(--chat-profile-image-size);
+	min-height: var(--chat-profile-image-size);
+	max-height: var(--chat-profile-image-size);
 	margin-top: 0.2rem;
 }
 

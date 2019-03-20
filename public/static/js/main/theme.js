@@ -204,7 +204,7 @@ Hue.apply_theme = function()
     }
 
     let chat_font_size = `${cfsize_factor}rem`;
-    let profile_image_size = `${50 * cfsize_factor}px`
+    let profile_image_size = `${parseInt(Hue.css_var_chat_profile_image_size) * cfsize_factor}px`
     let background_color_topbox = background_color_2
 
     if(Hue.get_setting("activity_bar"))
@@ -960,4 +960,5 @@ Hue.get_css_variables = function()
     let style = getComputedStyle(document.body)
     Hue.css_var_panel_height = style.getPropertyValue("--panel-height")
     Hue.css_var_panel_height_double = style.getPropertyValue("--panel-height-double")
+    Hue.css_var_chat_profile_image_size = style.getPropertyValue("--chat-profile-image-size")
 }
