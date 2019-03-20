@@ -476,10 +476,10 @@ div#header_radio_playing_icon
 
 .chat_profile_image_container
 {
-	min-width: 45px;
-	max-width: 45px;
-	min-height: 45px;
-	max-height: 45px;
+	min-width: 50px;
+	max-width: 50px;
+	min-height: 50px;
+	max-height: 50px;
 	position: sticky;
 	top: 2.5rem;
 }

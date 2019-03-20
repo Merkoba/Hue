@@ -204,7 +204,7 @@ Hue.apply_theme = function()
     }
 
     let chat_font_size = `${cfsize_factor}rem`;
-    let profile_image_size = `${45 * cfsize_factor}px`
+    let profile_image_size = `${50 * cfsize_factor}px`
     let background_color_topbox = background_color_2
 
     if(Hue.get_setting("activity_bar"))
