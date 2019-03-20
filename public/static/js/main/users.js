@@ -548,11 +548,11 @@ Hue.show_userlist_window = function(mode="normal", filter=false)
     {
         Hue.msg_userlist.set_title("Add or Remove a User")
     }
-
-    Hue.update_userlist()
-
+    
     Hue.msg_userlist.show(function()
     {
+        Hue.update_userlist(true)
+
         if(filter)
         {
             $("#userlist_filter").val(filter)
