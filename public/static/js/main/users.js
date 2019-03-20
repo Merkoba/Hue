@@ -415,6 +415,7 @@ Hue.update_userlist_window = function()
         let image = h.find(".userlist_item_profile_image").eq(0)
         image.data("src", item.profile_image)
         image.data("src_applied", false)
+        image.attr("src", Hue.config.default_profile_image_url)
 
         let role_tag = Hue.role_tag(item.role)
         let role_element = h.find('.userlist_item_role').eq(0)
@@ -584,6 +585,14 @@ Hue.check_userlist_visibility = function()
 
             if(!image.data("src_applied"))
             {
+                image.on("error", function()
+                {
+                    if($(this).attr("src") !== Hue.config.default_profile_image_url)
+                    {
+                        $(this).attr("src", Hue.config.default_profile_image_url)
+                    }
+                })
+
                 image.attr("src", image.data("src"))
                 image.data("src-applied", true)
             }
