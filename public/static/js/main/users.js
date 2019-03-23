@@ -353,6 +353,11 @@ Hue.update_userlist = function()
 {
     Hue.userlist.sort(Hue.compare_userlist)
     Hue.usernames = []
+
+    for(let item of Hue.userlist)
+    {
+        Hue.usernames.push(item.username)
+    }
     
     if(Hue.msg_userlist.is_open())
     {
@@ -398,8 +403,6 @@ Hue.update_userlist_window = function()
     for(let i=0; i<Hue.userlist.length; i++)
     {
         let item = Hue.userlist[i]
-
-        Hue.usernames.push(item.username)
 
         let h = $(`
         <div class='modal_item userlist_item'>
