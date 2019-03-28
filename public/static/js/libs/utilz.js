@@ -458,15 +458,20 @@ const Utilz = function()
 
 	utilz.includes_url = function(s, case_insensitive=true)
 	{
-		let split = s.split(" ")
-
-		for(let word of split)
+		let split = s.split("\n")
+		
+		for(let line of split)
 		{
-			if(word)
+			let split2 = line.split(" ")
+	
+			for(let word of split2)
 			{
-				if(utilz.is_url(word))
+				if(word)
 				{
-					return true
+					if(utilz.is_url(word))
+					{
+						return true
+					}
 				}
 			}
 		}
@@ -476,15 +481,20 @@ const Utilz = function()
 
 	utilz.get_first_url = function(s)
 	{
-		let split = s.split(" ")
-
-		for(let word of split)
+		let split = s.split("\n")
+		
+		for(let line of split)
 		{
-			if(word)
+			let split2 = line.split(" ")
+	
+			for(let word of split2)
 			{
-				if(utilz.is_url(word))
+				if(word)
 				{
-					return word
+					if(utilz.is_url(word))
+					{
+						return word
+					}
 				}
 			}
 		}
