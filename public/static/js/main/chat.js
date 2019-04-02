@@ -3017,7 +3017,7 @@ Hue.goto_bottom = function(force=false, animate=true)
     if(force)
     {
         Hue.clear_autoscroll()
-        Hue.scroll_chat_to(max + 10, animate)
+        Hue.scroll_chat_to(max, animate)
         Hue.hide_top_scroller()
         Hue.hide_bottom_scroller()
     }
@@ -3027,7 +3027,7 @@ Hue.goto_bottom = function(force=false, animate=true)
         if(!Hue.chat_scrolled)
         {
             Hue.clear_autoscroll()
-            Hue.scroll_chat_to(max + 10, animate)
+            Hue.scroll_chat_to(max, animate)
         }
     }
 }
