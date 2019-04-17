@@ -120,7 +120,7 @@ Hue.create_debouncers = function()
     }, Hue.wheel_delay_2)
 
     // Debounce timer for settings filter
-    Hue.settings_filter_timer = Hue.create_debouncer(function()
+    Hue.settings_filter_timer = Hue.create_debouncer(function(type)
     {
         Hue.do_settings_filter(type, $(`#${type}_filter`).val())
     }, Hue.filter_delay)
