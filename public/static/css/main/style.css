@@ -575,6 +575,13 @@ div#header_radio_playing_icon
 	flex-grow: 1;
 }
 
+.announcement_comment_icon
+{
+	margin-top: 0.26rem;
+	margin-right: 0.5rem;
+	align-self: flex-start;
+}
+
 .brk
 {
 	flex-shrink: 0;
