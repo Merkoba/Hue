@@ -983,12 +983,13 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .chat_menu_button_main_selected .chat_menu_button_container
 {
-	display: block;
+	visibility: visible;
 }
 
 .chat_menu_button_container
 {
-	display: none;
+	display: block;
+	visibility: hidden;
 	cursor: pointer;
 	font-weight: bold;
 	font-size: 0.8rem;
@@ -1013,7 +1014,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .chat_menu_button_main:hover > .chat_menu_button_container
 {
-	display: block;
+	visibility: visible;
 }
 
 .generic_uname
