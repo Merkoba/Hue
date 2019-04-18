@@ -983,7 +983,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .chat_menu_button_main_selected .chat_menu_button_container
 {
-	display: flex;
+	display: block;
 }
 
 .chat_menu_button_container
@@ -1013,7 +1013,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .chat_menu_button_main:hover > .chat_menu_button_container
 {
-	display: flex;
+	display: block;
 }
 
 .generic_uname
