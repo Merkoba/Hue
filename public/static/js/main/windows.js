@@ -17,6 +17,8 @@ Hue.start_msg = function()
         close_effect_duration: [200, 200],
         clear_editables: true,
         class: "modal",
+        show_effect: "none",
+        close_effect: "none",
         after_create: function(instance)
         {
             Hue.after_modal_create(instance)
@@ -42,18 +44,6 @@ Hue.start_msg = function()
         {
             Hue.after_modal_close(instance)
         }
-    }
-
-    if(Hue.get_setting("modal_effects"))
-    {
-        common.show_effect = "fade"
-        common.close_effect = "fade"
-    }
-
-    else
-    {
-        common.show_effect = "none"
-        common.close_effect = "none"
     }
 
     let titlebar =
@@ -1062,7 +1052,9 @@ Hue.create_popup = function(position, id=false, after_close=false)
         show_effect_duration: [0, 400],
         close_effect_duration: [400, 0],
         clear_editables: true,
-        class: "popup"
+        class: "popup",
+        show_effect: "none",
+        close_effect: "none"
     }
 
     if(id)
@@ -1073,18 +1065,6 @@ Hue.create_popup = function(position, id=false, after_close=false)
     if(after_close)
     {
         common.after_close = after_close
-    }
-
-    if(Hue.get_setting("modal_effects"))
-    {
-        common.show_effect = "fade"
-        common.close_effect = "fade"
-    }
-
-    else
-    {
-        common.show_effect = "none"
-        common.close_effect = "none"
     }
 
     let edges_height = $("#footer").height()

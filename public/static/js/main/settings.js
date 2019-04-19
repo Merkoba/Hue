@@ -79,43 +79,6 @@ Hue.user_settings =
             }
         }
     },
-    modal_effects:
-    {
-        widget_type: "checkbox",
-        description: `Whether animations for the modal windows are enabled or not`,
-        action: (type, save=true) =>
-        {
-            Hue[type].modal_effects = $(`#${type}_modal_effects`).prop("checked")
-
-            if(Hue.active_settings("modal_effects") === type)
-            {
-                for(let instance of Hue.get_all_msg_instances())
-                {
-                    if($(instance.window).hasClass("no_effects"))
-                    {
-                        continue
-                    }
-
-                    if(Hue[type].modal_effects)
-                    {
-                        instance.options.show_effect = "fade"
-                        instance.options.close_effect = "fade"
-                    }
-
-                    else
-                    {
-                        instance.options.show_effect = "none"
-                        instance.options.close_effect = "none"
-                    }
-                }
-            }
-
-            if(save)
-            {
-                Hue[`save_${type}`]()
-            }
-        }
-    },
     highlight_current_username:
     {
         widget_type: "checkbox",

@@ -94,7 +94,6 @@
 	"max_displayed_url": 140,
 	"max_chat_searches": 10,
 	"global_settings_default_background_image": true,
-	"global_settings_default_modal_effects": true,
 	"global_settings_default_highlight_current_username": true,
 	"global_settings_default_case_insensitive_username_highlights": true,
 	"global_settings_default_case_insensitive_words_highlights": true,
