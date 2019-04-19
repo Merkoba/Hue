@@ -1029,18 +1029,18 @@ Hue.process_upload_comment = function()
     }
 
     Hue.upload_comment_open = false
-    Hue.msg_upload_comment.close()
-
+    
     let file = Hue.upload_comment_file
     let type = Hue.upload_comment_type
     let comment = Hue.utilz.clean_string2($("#upload_comment_input").val())
-
+    
     if(comment.length > Hue.config.safe_limit_4)
     {
         return false
     }
-
+    
     Hue.upload_file({file:file, action:type, comment:comment})
+    Hue.msg_upload_comment.close()
 }
 
 // Hides the image upload comment window
