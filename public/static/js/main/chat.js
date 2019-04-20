@@ -639,6 +639,8 @@ Hue.update_chat = function(args={})
 
     chat_content_container.data("id", args.id)
     chat_content_container.data("edited", args.edited)
+    chat_content_container.data("highlighted", highlighted)
+    chat_content_container.data("date", d)
 
     if(!image_preview && !link_preview)
     {
