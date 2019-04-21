@@ -127,4 +127,11 @@ module.exports = function(vars, handler, io, db_manager, config, sconfig, utilz,
         "roomlist",
         "create_room"
     ]
+
+    vars.fetch_2 = function(url, args={})
+    {
+        args.headers = args.headers || {}
+        args.headers['user-agent'] = 'Mozilla/5.0'
+        return vars.fetch(url, args)
+    }
 }

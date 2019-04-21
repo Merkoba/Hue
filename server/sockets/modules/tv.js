@@ -105,7 +105,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                         return false
                     }
 
-                    vars.fetch(`https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`)
+                    vars.fetch_2(`https://www.googleapis.com/youtube/v3/${st}?id=${pid}&fields=items(snippet(title))&part=snippet&key=${sconfig.youtube_api_key}`)
 
                     .then(function(res)
                     {
@@ -154,7 +154,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 {
                     if(id[0] === "video")
                     {
-                        vars.fetch(`https://api.twitch.tv/helix/videos?id=${id[1]}`,
+                        vars.fetch_2(`https://api.twitch.tv/helix/videos?id=${id[1]}`,
                         {
                             headers:
                             {
@@ -183,7 +183,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
                     else if(id[0] === "channel")
                     {
-                        vars.fetch(`https://api.twitch.tv/helix/streams?user_login=${id[1]}`,
+                        vars.fetch_2(`https://api.twitch.tv/helix/streams?user_login=${id[1]}`,
                         {
                             headers:
                             {
@@ -361,7 +361,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                         return false
                     }
 
-                    vars.fetch(data.src)
+                    vars.fetch_2(data.src)
 
                     .then(res =>
                     {
@@ -411,7 +411,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 return false
             }
 
-            vars.fetch(`https://www.googleapis.com/youtube/v3/search?q=${encodeURIComponent(data.src)}&type=video&fields=items(id,snippet(title))&part=snippet&maxResults=10&videoEmbeddable=true&key=${sconfig.youtube_api_key}`)
+            vars.fetch_2(`https://www.googleapis.com/youtube/v3/search?q=${encodeURIComponent(data.src)}&type=video&fields=items(id,snippet(title))&part=snippet&maxResults=10&videoEmbeddable=true&key=${sconfig.youtube_api_key}`)
 
             .then(function(res)
             {

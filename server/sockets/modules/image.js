@@ -84,7 +84,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 return false
             }
 
-            vars.fetch(`https://api.imgur.com/3/gallery/search/?q=${encodeURIComponent(data.src)}`,
+            vars.fetch_2(`https://api.imgur.com/3/gallery/search/?q=${encodeURIComponent(data.src)}`,
             {
                 headers:
                 {

@@ -127,7 +127,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             }
         }
 
-        vars.fetch(url,
+        vars.fetch_2(url,
         {
             timeout: config.link_fetch_timeout
         })
