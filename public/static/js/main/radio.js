@@ -550,7 +550,7 @@ Hue.change_radio_visibility = function()
 
         if(Hue.first_media_change)
         {
-            Hue.change({type:"radio", force:true, play:false})
+            Hue.change({type:"radio", force:true, play:false, current_source:Hue.room_state.radio_locked})
         }
 
         if(Hue.loaded_radio.type && Hue.loaded_radio.type === "radio")

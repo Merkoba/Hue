@@ -1153,7 +1153,23 @@ Hue.change = function(args={})
 
     args = Object.assign(def_args, args)
 
-    let item = args.item ? args.item : Hue[`current_${args.type}`]()
+    let item
+
+    if(args.item)
+    {
+        item = args.item
+    }
+
+    else if(args.current_source && Hue[`loaded_${args.type}`].source)
+    {
+        item = Hue[`loaded_${args.type}`]
+    }
+
+    else
+    {
+        item = Hue[`current_${args.type}`]()
+    }
+
     let bypass_lock = false
 
     if(item.setter === Hue.username)
