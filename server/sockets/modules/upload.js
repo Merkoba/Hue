@@ -29,7 +29,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 return false
             }
 
-            if(!vars.image_types.includes(data.type))
+            if(!utilz.image_types.includes(data.type))
             {
                 return handler.get_out(socket)
             }

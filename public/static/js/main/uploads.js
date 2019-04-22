@@ -9,7 +9,7 @@ Hue.start_dropzone = function()
         maxFilesize: Hue.config.max_image_size / 1024,
         autoProcessQueue: false,
         clickable: '#image_file_picker',
-        acceptedFiles: "image/jpeg,image/png,image/gif"
+        acceptedFiles: "image/jpeg,image/png,image/gif,image/webp"
     })
 
     Hue.dropzone.on("addedfile", function(file)
@@ -40,7 +40,7 @@ Hue.start_dropzone = function()
 
         let ext = file.name.split('.').pop(-1).toLowerCase()
 
-        if(ext !== 'jpg' && ext !== 'png' && ext !== 'jpeg' && ext !== 'gif')
+        if(!Hue.utilz.image_extensions.includes(ext))
         {
             Hue.dropzone.files = []
             return false

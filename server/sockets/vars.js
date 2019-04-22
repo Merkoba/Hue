@@ -32,7 +32,6 @@ module.exports = function(vars, handler, io, db_manager, config, sconfig, utilz,
     vars.images_root = vars.path.join(vars.root_path, config.images_directory)
     vars.vtypes = ["voice1", "voice2", "voice3", "voice4"]
     vars.roles = ["admin", "op"].concat(vars.vtypes)
-    vars.image_types = ["image/jpeg", "image/png", "image/gif"]
     vars.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
     vars.media_types = ["images", "tv", "radio", "synth"]
     vars.filtered_fields = {log_messages:0, admin_log_messages:0, access_log_messages:0, stored_images:0}

@@ -250,11 +250,11 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
             else if(config.image_storage_s3_or_local === "s3")
             {
-                vars.fs.readFile(`${vars.images_root}/${data.fname}`, (err, data2) =>
+                vars.fs.readFile(`${vars.images_root}/${data.src}`, (err, data2) =>
                 {
                     if(err)
                     {
-                        vars.fs.unlink(`${vars.images_root}/${data.fname}`, function(){})
+                        vars.fs.unlink(`${vars.images_root}/${data.src}`, function(){})
                         logger.log_error(err)
                         return
                     }
@@ -262,23 +262,23 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                     vars.s3.putObject(
                     {
                         ACL: "public-read",
-                        ContentType: handler.get_content_type(data.fname),
+                        ContentType: handler.get_content_type(data.src),
                         Body: data2,
                         Bucket: sconfig.s3_bucket_name,
-                        Key: `${sconfig.s3_images_location}${data.fname}`,
+                        Key: `${sconfig.s3_images_location}${data.src}`,
                         CacheControl: `max-age=${sconfig.s3_cache_max_age}`
                     }).promise()
 
                     .then(ans =>
                     {
-                        vars.fs.unlink(`${vars.images_root}/${data.fname}`, function(){})
-                        data.fname = sconfig.s3_main_url + sconfig.s3_images_location + data.fname
+                        vars.fs.unlink(`${vars.images_root}/${data.src}`, function(){})
+                        data.src = sconfig.s3_main_url + sconfig.s3_images_location + data.src
                         handler.do_change_image_source(socket, data)
                     })
 
                     .catch(err =>
                     {
-                        vars.fs.unlink(`${vars.images_root}/${data.fname}`, function(){})
+                        vars.fs.unlink(`${vars.images_root}/${data.src}`, function(){})
                         logger.log_error(err)
                     })
                 })
@@ -532,6 +532,11 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         else if(ext === "gif")
         {
             return "image/gif"
+        }
+
+        else if(ext === "webp")
+        {
+            return "image/webp"
         }
 
         else
