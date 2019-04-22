@@ -263,15 +263,15 @@ Hue.play_tv = function()
 }
 
 // Destroys all tv players that don't match the item's type
-// Make's the item's type visible
-Hue.hide_tv = function(item)
+// Makes the item's type visible
+Hue.hide_tv = function(item=false)
 {
     $("#media_tv .media_container").each(function()
     {
         let id = $(this).attr("id")
         let type = id.replace("media_", "").replace("_video_container", "")
 
-        if(item.type !== type)
+        if(!item || item.type !== type)
         {
             let new_el = $(`<div id='${id}' class='media_container'></div>`)
             new_el.css("display", "none")
@@ -781,7 +781,7 @@ Hue.change_tv_visibility = function(play=true)
 
         if(Hue.first_media_change)
         {
-            Hue.change({type:"tv", force:false, play:false})
+            Hue.change({type:"tv", force:true, play:false})
         }
 
         if(play)
@@ -794,6 +794,8 @@ Hue.change_tv_visibility = function(play=true)
 
     else
     {
+        Hue.hide_tv()
+
         $("#media_tv").css("display", "none")
 
         Hue.fix_media_margin()

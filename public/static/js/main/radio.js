@@ -550,7 +550,7 @@ Hue.change_radio_visibility = function()
 
         if(Hue.first_media_change)
         {
-            Hue.change({type:"radio", force:false, play:false})
+            Hue.change({type:"radio", force:true, play:false})
         }
 
         if(Hue.loaded_radio.type && Hue.loaded_radio.type === "radio")
@@ -564,6 +564,7 @@ Hue.change_radio_visibility = function()
 
     else
     {
+        Hue.hide_radio()
         Hue.stop_radio()
 
         $("#header_radio").css("display", "none")
@@ -899,14 +900,14 @@ Hue.start_radio = function()
 }
 
 // Destroys all unused radio players
-Hue.hide_radio = function(item)
+Hue.hide_radio = function(item=false)
 {
     $("#media_radio .media_radio_item").each(function()
     {
         let id = $(this).attr("id")
         let type = id.replace("media_", "").replace("_audio_container", "")
 
-        if(item.type !== type)
+        if(!item || item.type !== type)
         {
             let new_el = $(`<div id='${id}' class='media_radio_item'></div>`)
             $(this).replaceWith(new_el)
