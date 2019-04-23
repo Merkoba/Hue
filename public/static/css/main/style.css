@@ -591,6 +591,9 @@ div#header_radio_playing_icon
 	max-width: 45px;
 	text-align: center;
 	margin-right: 1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 a.generic:link, a.generic:visited, a.generic:hover

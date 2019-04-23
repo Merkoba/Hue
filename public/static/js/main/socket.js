@@ -445,10 +445,7 @@ Hue.start_socket = function()
     {
         if(Hue.started)
         {
-            setTimeout(function()
-            {
-                Hue.restart_client()
-            }, 2000)
+            Hue.show_refresh_button()
         }
     })
 
@@ -461,5 +458,17 @@ Hue.start_socket = function()
         {
             Hue.server_update_events[type](data)
         }
+    })
+}
+
+Hue.show_refresh_button = function()
+{
+    Hue.feedback("Disconnected. Click here to refresh",
+    {
+        onclick: function()
+        {
+            Hue.restart_client()
+        },
+        brk: "<i class='icon2c fa fa-plug'></i>"
     })
 }
