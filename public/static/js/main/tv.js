@@ -159,23 +159,23 @@ Hue.push_tv_changed = function(data)
 // Stops all defined tv players
 Hue.stop_tv = function(clear_iframe=true)
 {
-    if(Hue.youtube_video_player !== undefined)
+    if(Hue.youtube_video_player)
     {
         Hue.youtube_video_player.pauseVideo()
     }
 
-    if(Hue.twitch_video_player !== undefined)
+    if(Hue.twitch_video_player)
     {
         clearTimeout(Hue.play_twitch_video_player_timeout)
         Hue.twitch_video_player.pause()
     }
 
-    if(Hue.soundcloud_video_player !== undefined)
+    if(Hue.soundcloud_video_player)
     {
         Hue.soundcloud_video_player.pause()
     }
 
-    if(Hue.vimeo_video_player !== undefined)
+    if(Hue.vimeo_video_player)
     {
         Hue.vimeo_video_player.pause()
     }
@@ -204,7 +204,7 @@ Hue.play_tv = function()
 
     if(Hue.current_tv().type === "youtube")
     {
-        if(Hue.youtube_video_player !== undefined)
+        if(Hue.youtube_video_player)
         {
             Hue.youtube_video_player.playVideo()
         }
@@ -212,7 +212,7 @@ Hue.play_tv = function()
 
     else if(Hue.current_tv().type === "twitch")
     {
-        if(Hue.twitch_video_player !== undefined)
+        if(Hue.twitch_video_player)
         {
             Hue.twitch_video_player.play()
         }
@@ -220,7 +220,7 @@ Hue.play_tv = function()
 
     else if(Hue.current_tv().type === "soundcloud")
     {
-        if(Hue.soundcloud_video_player !== undefined)
+        if(Hue.soundcloud_video_player)
         {
             Hue.soundcloud_video_player.play()
         }
@@ -228,7 +228,7 @@ Hue.play_tv = function()
 
     else if(Hue.current_tv().type === "vimeo")
     {
-        if(Hue.vimeo_video_player !== undefined)
+        if(Hue.vimeo_video_player)
         {
             Hue.vimeo_video_player.play()
         }
@@ -990,22 +990,22 @@ Hue.set_tv_volume = function(nv=false, changed=true, update_slider=true)
         $('#media_video')[0].volume = nv
     }
 
-    if(Hue.youtube_video_player !== undefined)
+    if(Hue.youtube_video_player)
     {
         Hue.youtube_video_player.setVolume(vt)
     }
 
-    if(Hue.twitch_video_player !== undefined)
+    if(Hue.twitch_video_player)
     {
         Hue.twitch_video_player.setVolume(nv)
     }
 
-    if(Hue.soundcloud_video_player !== undefined)
+    if(Hue.soundcloud_video_player)
     {
         Hue.soundcloud_video_player.setVolume(vt)
     }
 
-    if(Hue.vimeo_video_player !== undefined)
+    if(Hue.vimeo_video_player)
     {
         Hue.vimeo_video_player.setVolume(nv)
     }

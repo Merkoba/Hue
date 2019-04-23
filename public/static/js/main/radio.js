@@ -199,7 +199,7 @@ Hue.load_radio = function(force=false)
 
     else if(item.type === "youtube")
     {
-        if(Hue.youtube_player !== undefined)
+        if(Hue.youtube_player)
         {
             let id = Hue.utilz.get_youtube_id(item.source)
 
@@ -237,7 +237,7 @@ Hue.load_radio = function(force=false)
 
     else if(item.type === "soundcloud")
     {
-        if(Hue.soundcloud_player !== undefined)
+        if(Hue.soundcloud_player)
         {
             Hue.soundcloud_player.load(item.source,
             {
@@ -856,7 +856,7 @@ Hue.start_radio = function()
 
     else if(Hue.loaded_radio.type === "youtube")
     {
-        if(Hue.youtube_player !== undefined)
+        if(Hue.youtube_player)
         {
             Hue.youtube_player.playVideo()
         }
@@ -869,7 +869,7 @@ Hue.start_radio = function()
 
     else if(Hue.loaded_radio.type === "soundcloud")
     {
-        if(Hue.soundcloud_player !== undefined)
+        if(Hue.soundcloud_player)
         {
             Hue.soundcloud_player.play()
         }
@@ -1043,7 +1043,7 @@ Hue.set_radio_volume = function(nv=false, changed=true, update_slider=true)
         $('#audio_player')[0].volume = Hue.room_state.radio_volume
     }
 
-    if(Hue.youtube_player !== undefined)
+    if(Hue.youtube_player)
     {
         if(vt > 0)
         {
@@ -1053,7 +1053,7 @@ Hue.set_radio_volume = function(nv=false, changed=true, update_slider=true)
         Hue.youtube_player.setVolume(vt)
     }
 
-    if(Hue.soundcloud_player !== undefined)
+    if(Hue.soundcloud_player)
     {
         Hue.soundcloud_player.setVolume(vt)
     }
