@@ -460,15 +460,3 @@ Hue.start_socket = function()
         }
     })
 }
-
-Hue.show_refresh_button = function()
-{
-    Hue.feedback("Disconnected. Click here to refresh",
-    {
-        onclick: function()
-        {
-            Hue.restart_client()
-        },
-        brk: "<i class='icon2c fa fa-plug'></i>"
-    })
-}

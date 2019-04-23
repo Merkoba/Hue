@@ -46,3 +46,17 @@ Hue.send_system_restart_signal = function()
 {
     Hue.socket_emit("system_restart_signal", {})
 }
+
+// Shows a message saying the client disconnects
+// When clicked the client is refreshed
+Hue.show_refresh_button = function()
+{
+    Hue.feedback("Disconnected. Click here to refresh",
+    {
+        onclick: function()
+        {
+            Hue.restart_client()
+        },
+        brk: "<i class='icon2c fa fa-plug'></i>"
+    })
+}
