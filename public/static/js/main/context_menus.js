@@ -110,7 +110,7 @@ Hue.start_chat_menu_context_menu = function()
                 },
                 visible: function(key, opt)
                 {
-                    let url = $(this).closest(".message").data("first_url")
+                    let url = $(this).closest(".chat_content_container").data("first_url")
 
                     if(url)
                     {
@@ -130,7 +130,7 @@ Hue.start_chat_menu_context_menu = function()
                     {
                         name: "I'm Sure", callback: function(key, opt)
                         {
-                            let first_url = $(this).closest(".message").data("first_url")
+                            let first_url = $(this).closest(".chat_content_container").data("first_url")
                             Hue.change_image_source(first_url)
                         }
                     }
@@ -144,7 +144,7 @@ Hue.start_chat_menu_context_menu = function()
                 },
                 visible: function(key, opt)
                 {
-                    let url = $(this).closest(".message").data("first_url")
+                    let url = $(this).closest(".chat_content_container").data("first_url")
 
                     if(url)
                     {
@@ -164,7 +164,7 @@ Hue.start_chat_menu_context_menu = function()
                     {
                         name: "I'm Sure", callback: function(key, opt)
                         {
-                            let first_url = $(this).closest(".message").data("first_url")
+                            let first_url = $(this).closest(".chat_content_container").data("first_url")
                             Hue.change_tv_source(first_url)
                         }
                     }
@@ -178,7 +178,7 @@ Hue.start_chat_menu_context_menu = function()
                 },
                 visible: function(key, opt)
                 {
-                    let url = $(this).closest(".message").data("first_url")
+                    let url = $(this).closest(".chat_content_container").data("first_url")
 
                     if(url)
                     {
@@ -198,7 +198,7 @@ Hue.start_chat_menu_context_menu = function()
                     {
                         name: "I'm Sure", callback: function(key, opt)
                         {
-                            let first_url = $(this).closest(".message").data("first_url")
+                            let first_url = $(this).closest(".chat_content_container").data("first_url")
                             Hue.change_radio_source(first_url)
                         }
                     }

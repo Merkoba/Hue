@@ -626,21 +626,21 @@ Hue.update_chat = function(args={})
     fmessage.data("uname", args.username)
     fmessage.data("mode", "chat")
     fmessage.data("has_embed", has_embed)
-    fmessage.data("first_url", first_url)
-
+    
     let chat_content_container = fmessage.find(".chat_content_container").eq(0)
     let chat_content = fmessage.find(".chat_content").eq(0)
     let edited_label = fmessage.find(".message_edited_label").eq(0)
-
+    
     if(args.edited)
     {
         edited_label.css("display", "block")
     }
-
+    
     chat_content_container.data("id", args.id)
     chat_content_container.data("edited", args.edited)
     chat_content_container.data("highlighted", highlighted)
     chat_content_container.data("date", d)
+    chat_content_container.data("first_url", first_url)
 
     if(!image_preview && !link_preview)
     {
