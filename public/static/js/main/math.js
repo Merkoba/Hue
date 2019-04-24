@@ -2,6 +2,12 @@
 // Includes controls to make a calculation public
 Hue.do_math_calculation = async function(arg)
 {
+    if(!arg)
+    {
+        Hue.feedback("You must provide a math calculation")
+        return false
+    }
+
     if(Hue.math === undefined)
     {
         if(Hue.math_loading)
