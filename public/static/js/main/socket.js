@@ -279,7 +279,7 @@ Hue.server_update_events =
     },
     'system_restart_signal': (data) =>
     {
-        Hue.restart_client()
+        Hue.show_refresh_button()
     },
     'error_occurred': (data) =>
     {
