@@ -346,7 +346,7 @@ Hue.sent_popup_message_function = function(mode, message, draw_coords, data1=[])
 
     if(ch)
     {
-        h = ch + sp + h
+        h = ch + h
     }
 
     let s = Hue.make_safe(
