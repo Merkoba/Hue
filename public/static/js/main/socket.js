@@ -279,7 +279,7 @@ Hue.server_update_events =
     },
     'system_restart_signal': (data) =>
     {
-        Hue.show_refresh_button()
+        Hue.show_reload_button()
     },
     'error_occurred': (data) =>
     {
@@ -445,7 +445,7 @@ Hue.start_socket = function()
     {
         if(Hue.started)
         {
-            Hue.show_refresh_button()
+            Hue.show_reload_button()
         }
     })
 

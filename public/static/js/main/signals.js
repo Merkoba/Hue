@@ -49,9 +49,9 @@ Hue.send_system_restart_signal = function()
 
 // Shows a message saying the client disconnects
 // When clicked the client is refreshed
-Hue.show_refresh_button = function()
+Hue.show_reload_button = function()
 {
-    Hue.feedback("Disconnected. Click here to refresh",
+    Hue.feedback("Disconnected. Click here to reload",
     {
         onclick: function()
         {
