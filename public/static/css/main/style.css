@@ -2432,6 +2432,10 @@ a.special_link:hover
 
 .link_preview_image_with_title
 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
 	margin-right: 1rem;
 }
 
