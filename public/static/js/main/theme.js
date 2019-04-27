@@ -161,7 +161,7 @@ Hue.apply_theme = function()
 
     let font_color
 
-    if(Hue.text_color_mode === "custom")
+    if(theme_mode === "room" && Hue.text_color_mode === "custom")
     {
         font_color = Hue.text_color
     }
