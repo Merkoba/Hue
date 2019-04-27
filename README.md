@@ -574,7 +574,10 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 >Whether it uses the room theme or a custom theme by default.
 
 "global_settings_default_theme_color
->Default color for custom themes.
+>Default color for custom theme.
+
+"global_settings_default_text_color
+>Default text color for custom theme.
 
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
