@@ -393,9 +393,6 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "global_settings_default_sound_notifications"
 >Whether sound notifications are enabled by default.
 
-"global_settings_default_modal_effects"
->Whether modal effects are enabled by default.
-
 "global_settings_default_highlight_current_username"
 >Whether current username triggers a highlight by default.
 
