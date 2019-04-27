@@ -161,16 +161,24 @@ Hue.apply_theme = function()
 
     let font_color
 
-    if(theme_mode === "room" && Hue.text_color_mode === "custom")
+    if(theme_mode === "room")
     {
-        font_color = Hue.text_color
+        if(Hue.text_color_mode === "custom")
+        {
+            font_color = Hue.text_color
+        }
+    
+        else
+        {
+            font_color = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_2)
+        }
     }
 
-    else
+    else if(theme_mode === "custom")
     {
-        font_color = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_2)
+        font_color = Hue.get_setting("text_color")
     }
-
+    
     let background_color_a = Hue.colorlib.rgb_to_rgba(background_color, Hue.config.opacity_amount_1)
     let background_color_a_2 = Hue.colorlib.rgb_to_rgba(background_color_2, Hue.config.opacity_amount_3)
 

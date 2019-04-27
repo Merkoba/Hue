@@ -1255,6 +1255,25 @@ Hue.user_settings =
                 Hue[`save_${type}`]()
             }
         }
+    },
+    text_color:
+    {
+        widget_type: "color",
+        description: `The text color to use if the user is using a custom theme mode`,
+        action: (type, save=true) =>
+        {
+            Hue[type].text_color = $(`#${type}_text_color`).val()
+
+            if(Hue.active_settings("text_color") === type)
+            {
+                Hue.apply_theme()
+            }
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
     }
 }
 
