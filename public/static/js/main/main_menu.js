@@ -75,17 +75,9 @@ Hue.setup_main_menu = function()
         Hue.change_theme_mode(what)
     })
 
-    $("#admin_theme").spectrum(
+    $("#admin_theme").change(function()
     {
-        preferredFormat: "rgb",
-        color: "#B5599A",
-        appendTo: "#admin_menu",
-        showInput: true,
-        clickoutFiresChange: false,
-        change: function(color)
-        {
-            Hue.change_theme(color.toRgbString())
-        }
+        Hue.change_theme($(this).val())
     })
 
     $('#admin_background_mode_select').change(function()
@@ -122,17 +114,9 @@ Hue.setup_main_menu = function()
         Hue.change_text_color_mode(what)
     })
 
-    $("#admin_text_color").spectrum(
+    $("#admin_text_color").change(function()
     {
-        preferredFormat: "rgb",
-        color: "#B5599A",
-        appendTo: "#admin_menu",
-        showInput: true,
-        clickoutFiresChange: false,
-        change: function(color)
-        {
-            Hue.change_text_color(color.toRgbString())
-        }
+        Hue.change_text_color($(this).val())
     })
 
     $('#admin_room_name').blur(function()
@@ -381,7 +365,7 @@ Hue.config_admin_text_color = function()
         return false
     }
 
-    $("#admin_text_color").spectrum("set", Hue.text_color)
+    $("#admin_text_color").val(Hue.text_color)
 }
 
 // Updates the privacy widget in the main menu based on current state
@@ -521,7 +505,7 @@ Hue.config_admin_theme = function()
         return false
     }
 
-    $("#admin_theme").spectrum("set", Hue.theme)
+    $("#admin_theme").val(Hue.theme)
 }
 
 // Updates the room name widget in the main menu based on current state

@@ -1042,7 +1042,7 @@ Hue.set_room_tv_mode = function(what)
 }
 
 // Does the change of tv display percentage
-Hue.do_media_tv_size_change = function(size, notify=true)
+Hue.do_media_tv_size_change = function(size, notify=true, override=true)
 {
     size = parseInt(size)
 
@@ -1075,7 +1075,6 @@ Hue.do_media_tv_size_change = function(size, notify=true)
 
     if(size !== Hue.get_setting("tv_display_percentage"))
     {
-        Hue.enable_setting_override("tv_display_percentage")
         Hue.modify_setting(`tv_display_percentage ${size}`, false)
     }
 
@@ -1093,6 +1092,7 @@ Hue.increase_tv_percentage = function()
     size += 10
     size = Hue.utilz.round2(size, 10)
 
+    Hue.enable_setting_override("tv_display_percentage")
     Hue.do_media_tv_size_change(size)
 }
 
@@ -1121,6 +1121,7 @@ Hue.decrease_tv_percentage = function()
     size -= 10
     size = Hue.utilz.round2(size, 10)
 
+    Hue.enable_setting_override("tv_display_percentage")
     Hue.do_media_tv_size_change(size)
 }
 

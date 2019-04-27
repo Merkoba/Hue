@@ -543,15 +543,6 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "global_settings_default_speech_x"
 >Default programmed speech for each synth key to play on middle click or /speech command.
 
-"bypass_images_lock_on_own_change"
->Whether images are forced to change even if they're locked, when you change them, by default.
-
-"bypass_tv_lock_on_own_change"
->Whether tv are forced to change even if they're locked, when you change it, by default.
-
-"bypass_radio_lock_on_own_change"
->Whether radio are forced to change even if they're locked, when you change it, by default.
-
 "global_settings_default_synth_enabled"
 >Whether the synth is enabled by default.
 
@@ -578,6 +569,12 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 
 "global_settings_default_autoreveal_spoilers
 >Whether spoiler autoreveal is on by default.
+
+"global_settings_default_theme_mode
+>Whether it uses the room theme or a custom theme by default.
+
+"global_settings_default_theme_color
+>Default color for custom themes.
 
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
@@ -617,6 +614,15 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 
 "room_state_default_last_highlight_date"
 >Default date to check for new highlights to announce at startup.
+
+"bypass_images_lock_on_own_change"
+>Whether images are forced to change even if they're locked, when you change them, by default.
+
+"bypass_tv_lock_on_own_change"
+>Whether tv are forced to change even if they're locked, when you change it, by default.
+
+"bypass_radio_lock_on_own_change"
+>Whether radio are forced to change even if they're locked, when you change it, by default.
 
 "double_tap_key"
 >The key that triggers double tap.

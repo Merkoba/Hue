@@ -1474,7 +1474,7 @@ Hue.commands =
         {
             Hue.change_theme(arg)
         },
-        description: `Changes the theme to a specified rgb color`
+        description: `Changes the theme to a specified hex color`
     },
     "/thememode":
     {
@@ -1498,7 +1498,7 @@ Hue.commands =
         {
             Hue.change_text_color(arg)
         },
-        description: `Changes the text color to a specified rgb color`
+        description: `Changes the text color to a specified hex color`
     },
     "/backgroundmode":
     {

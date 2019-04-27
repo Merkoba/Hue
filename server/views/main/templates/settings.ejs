@@ -79,6 +79,19 @@
 
             <div class='settings_category settings_window_category_container' id='settings_window_category_content_appearance_{{type}}' data-category='appearance'>
 
+                <div class='settings_item settings_top_level_item' data-setting='theme_mode'>
+                    <div class="setting_title">Theme Mode</div>
+                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_theme_mode">
+                        <option value='room'>Room Theme</option>
+                        <option value='custom'>Custom Theme</option>
+                    </select>
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='theme_color'>
+                    <div class="setting_title">Theme Color</div>
+                    <input type="color" class="{{type}}_settings_item_control setting_color" id="{{type}}_theme_color">
+                </div>
+
                 <div class='settings_item settings_top_level_item' data-setting='background_image'>
                     <div class="setting_title">Background Image</div>
                     <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_background_image">

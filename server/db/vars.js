@@ -10,7 +10,7 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
 
     // Room and User versions
     // These must be increased by 1 when the schema changes
-    vars.rooms_version = 73
+    vars.rooms_version = 74
     vars.users_version = 43
 
     // Room schema definition
@@ -60,7 +60,7 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
         admin_log_messages:{type:"object", default:[]},
         access_log_messages:{type:"object", default:[]},
         theme_mode:{type:"string", default:"custom"},
-        theme:{type:"string", default:"rgb(77,69,140)"},
+        theme:{type:"string", default:"#4d458c"},
         background_image:{type:"string", default:""},
         background_image_setter:{type:"string", default:""},
         background_image_date:{type:"number", default:0},
@@ -69,7 +69,7 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
         background_effect:{type:"string", default:"none"},
         background_tile_dimensions:{type:"string", default:"100px auto"},
         text_color_mode:{type:"string", default:"automatic"},
-        text_color:{type:"string", default:"rgb(205,202,223)"},
+        text_color:{type:"string", default:"#cdcadf"},
         modified:{type:"number", default:Date.now()},
         public:{type:"boolean", default:true},
         voice1_chat_permission:{type:"boolean", default:true},

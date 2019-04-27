@@ -202,58 +202,34 @@ Hue.setup_draw_image = function()
 // Prepares initial settings for the draw image window
 Hue.draw_image_prepare_settings = function()
 {
-    Hue.draw_image_pencil_color = "rgb(51, 51, 51)"
-    Hue.draw_image_bucket_color = "rgb(72, 152, 183)"
+    Hue.draw_image_pencil_color = "#333333"
+    Hue.draw_image_bucket_color = "#4898b7"
     Hue.draw_image_pencil_size = 4
 
     Hue.set_draw_image_mode_input("pencil")
 
-    $("#draw_image_pencil_color").spectrum(
+    $("#draw_image_pencil_color").val(Hue.draw_image_pencil_color)
+
+    $("#draw_image_pencil_color").click(function()
     {
-        preferredFormat: "rgb",
-        color: Hue.draw_image_pencil_color,
-        appendTo: "#draw_image_main",
-        showInput: true,
-        showPalette: true,
-        palette:
-        [
-            ["rgba(0, 0, 0, 0)"]
-        ],
-        showSelectionPalette: true,
-        maxSelectionSize: 15,
-        show: function()
-        {
-            Hue.set_draw_image_mode_input("pencil")
-        },
-        clickoutFiresChange: false,
-        change: function(color)
-        {
-            Hue.draw_image_pencil_color = color.toRgbString()
-        }
+        Hue.set_draw_image_mode_input("pencil")
     })
 
-    $("#draw_image_bucket_color").spectrum(
+    $("#draw_image_pencil_color").change(function()
     {
-        preferredFormat: "rgb",
-        color: Hue.draw_image_bucket_color,
-        appendTo: "#draw_image_main",
-        showInput: true,
-        showPalette: true,
-        palette:
-        [
-            ["rgba(0, 0, 0, 0)"]
-        ],
-        showSelectionPalette: true,
-        maxSelectionSize: 15,
-        show: function()
-        {
-            Hue.set_draw_image_mode_input("bucket")
-        },
-        clickoutFiresChange: false,
-        change: function(color)
-        {
-            Hue.draw_image_bucket_color = color.toRgbString()
-        }
+        Hue.draw_image_pencil_color = $(this).val()
+    })
+
+    $("#draw_image_bucket_color").val(Hue.draw_image_bucket_color)
+
+    $("#draw_image_bucket_color").click(function()
+    {
+        Hue.set_draw_image_mode_input("bucket")
+    })
+
+    $("#draw_image_bucket_color").change(function()
+    {
+        Hue.draw_image_bucket_color = $(this).val()
     })
 
     $("#draw_image_pencil_size").find('option').each(function()
@@ -339,7 +315,7 @@ Hue.clear_draw_image_state = function()
 {
     let context = Hue.draw_image_context
 
-    context.fillStyle = "rgb(255, 255, 255)";
+    context.fillStyle = "#ffffff";
     context.fillRect(0, 0, context.canvas.width, context.canvas.height)
 
     Hue.draw_image_snapshots =
@@ -582,7 +558,7 @@ Hue.draw_image_bucket_fill = function(x, y)
     let data = image_data.data
     let node = [y, x]
     let target_color = Hue.get_canvas_node_color(data, node, w)
-    let replacement_color = Hue.colorlib.rgb_to_array(Hue.draw_image_bucket_color)
+    let replacement_color = Hue.colorlib.hex_to_rgb(Hue.draw_image_bucket_color)
 
     replacement_color.push(255)
 

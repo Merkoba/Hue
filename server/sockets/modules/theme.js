@@ -45,7 +45,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(!utilz.validate_rgb(data.color))
+        if(!utilz.validate_hex(data.color))
         {
             return handler.get_out(socket)
         }
@@ -202,7 +202,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(!utilz.validate_rgb(data.color))
+        if(!utilz.validate_hex(data.color))
         {
             return handler.get_out(socket)
         }

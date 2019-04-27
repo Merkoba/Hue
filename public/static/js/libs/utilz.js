@@ -367,6 +367,21 @@ const Utilz = function()
 		return re.test(rgb)
 	}
 
+	utilz.validate_hex = function(hex, case_sensitive=true)
+	{
+		if(case_sensitive)
+		{
+			re = /^#[0-9a-f]{6}$/
+		}
+
+		else
+		{
+			re = /^#[0-9A-F]{6}$/i
+		}
+
+		return re.test(hex)
+	}
+
 	utilz.get_imgur_image_code = function(src)
 	{
 		let matches = src.match(/https\:\/\/(?:i.)?imgur.com\/(\w{7,8})(?:\.\w+)?$/)

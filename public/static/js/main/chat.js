@@ -2278,7 +2278,6 @@ Hue.do_chat_size_change = function(size)
 
     if(size !== Hue.get_setting("chat_display_percentage"))
     {
-        Hue.enable_setting_override("chat_display_percentage")
         Hue.modify_setting(`chat_display_percentage ${size}`, false)
     }
 

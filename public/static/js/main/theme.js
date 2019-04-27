@@ -131,15 +131,29 @@ Hue.set_theme = function(color)
 Hue.apply_theme = function()
 {
     let theme
+    let theme_mode = Hue.get_setting("theme_mode")
 
-    if(Hue.theme_mode === "automatic" && Hue.dominant_theme)
+    if(theme_mode === "room")
     {
-        theme = Hue.dominant_theme
+        if(Hue.theme_mode === "automatic" && Hue.dominant_theme)
+        {
+            theme = Hue.dominant_theme
+        }
+    
+        else
+        {
+            theme = Hue.theme
+        }
     }
 
-    else
+    else if(theme_mode === "custom")
     {
-        theme = Hue.theme
+        theme = Hue.get_setting("theme_color")
+    }
+
+    if(theme.startsWith("#"))
+    {
+        theme = Hue.colorlib.array_to_rgb(Hue.colorlib.hex_to_rgb(theme))
     }
 
     let background_color = theme
@@ -502,21 +516,16 @@ Hue.change_theme = function(color)
         return false
     }
 
-    color = Hue.utilz.clean_string5(color)
+    color = Hue.utilz.clean_string5(color).toLowerCase()
 
     if(color === undefined)
     {
         return false
     }
 
-    if(color.startsWith("rgba("))
+    if(!Hue.utilz.validate_hex(color))
     {
-        color = Hue.utilz.clean_string5(Hue.colorlib.rgba_to_rgb(color))
-    }
-
-    if(!Hue.utilz.validate_rgb(color))
-    {
-        Hue.feedback("Not a valid rgb value")
+        Hue.feedback("Not a valid hex color value")
         return false
     }
 
@@ -907,21 +916,16 @@ Hue.change_text_color = function(color)
         return false
     }
 
-    color = Hue.utilz.clean_string5(color)
+    color = Hue.utilz.clean_string5(color).toLowerCase()
 
     if(color === undefined)
     {
         return false
     }
 
-    if(color.startsWith("rgba("))
+    if(!Hue.utilz.validate_hex(color))
     {
-        color = Hue.utilz.clean_string5(Hue.colorlib.rgba_to_rgb(color))
-    }
-
-    if(!Hue.utilz.validate_rgb(color))
-    {
-        Hue.feedback("Not a valid rgb value")
+        Hue.feedback("Not a valid hex color value")
         return false
     }
 

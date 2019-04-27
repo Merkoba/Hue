@@ -50,6 +50,13 @@ Hue.apply_media_positions = function()
     Hue.fix_media_margin()
 }
 
+Hue.swap_display_positions = function()
+{
+    let type = Hue.active_settings("tv_display_position")
+    Hue[type].tv_display_position = Hue[type].tv_display_position === "top" ? "bottom" : "top"
+    Hue.apply_media_positions()
+}
+
 // Overrides the tv display position global setting automatically
 // Toggles display positions of image and tv
 Hue.swap_display_positions_2 = function()
@@ -503,6 +510,7 @@ Hue.increase_media_percentage = function()
     let size = parseInt(Hue.get_setting("chat_display_percentage"))
     size += 10
     size = Hue.utilz.round2(size, 10)
+    Hue.enable_setting_override("chat_display_percentage")
     Hue.do_chat_size_change(size)
 }
 
@@ -512,6 +520,7 @@ Hue.decrease_media_percentage = function()
     let size = parseInt(Hue.get_setting("chat_display_percentage"))
     size -= 10
     size = Hue.utilz.round2(size, 10)
+    Hue.enable_setting_override("chat_display_percentage")
     Hue.do_chat_size_change(size)
 }
 

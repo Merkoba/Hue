@@ -1166,11 +1166,10 @@ Hue.user_settings =
         action: (type, save=true) =>
         {
             let percentage = parseInt($(`#${type}_chat_display_percentage`).val())
+            Hue[type].chat_display_percentage = percentage
 
             if(Hue.active_settings("chat_display_percentage") === type)
             {
-                Hue[type].chat_display_percentage = percentage
-                Hue[`save_${type}`]()
                 Hue.apply_media_percentages()
             }
 
@@ -1187,11 +1186,10 @@ Hue.user_settings =
         action: (type, save=true) =>
         {
             let percentage = parseInt($(`#${type}_tv_display_percentage`).val())
+            Hue[type].tv_display_percentage = percentage
 
             if(Hue.active_settings("tv_display_percentage") === type)
             {
-                Hue[type].tv_display_percentage = percentage
-                Hue[`save_${type}`]()
                 Hue.apply_media_percentages()
             }
 
@@ -1212,6 +1210,44 @@ Hue.user_settings =
             if(Hue.active_settings("tv_display_position") === type)
             {
                 Hue.apply_media_positions()
+            }
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
+    theme_mode:
+    {
+        widget_type: "select",
+        description: `The theme mode, it either uses the room's theme color or a custom theme color`,
+        action: (type, save=true) =>
+        {
+            Hue[type].theme_mode = $(`#${type}_theme_mode option:selected`).val()
+
+            if(Hue.active_settings("theme_mode") === type)
+            {
+                Hue.apply_theme()
+            }
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
+    theme_color:
+    {
+        widget_type: "color",
+        description: `The theme color to use if the user is using a custom theme mode`,
+        action: (type, save=true) =>
+        {
+            Hue[type].theme_color = $(`#${type}_theme_color`).val()
+
+            if(Hue.active_settings("theme_color") === type)
+            {
+                Hue.apply_theme()
             }
 
             if(save)
@@ -1289,7 +1325,8 @@ Hue.modify_setting_widget = function(type, setting_name)
         widget_type === "textarea" ||
         widget_type === "text" ||
         widget_type === "number" ||
-        widget_type === "range"
+        widget_type === "range" ||
+        widget_type === "color"
     )
     {
         item.val(Hue[type][setting_name])
@@ -1329,12 +1366,22 @@ Hue.start_settings_widgets_listeners = function(type)
 
         if(setting.widget_type === "checkbox" || setting.widget_type === "select")
         {
-            item.change(() => {setting.action(type)})
+            item.change(() => setting.action(type))
         }
 
-        else if(setting.widget_type === "textarea" || setting.widget_type === "text" || setting.widget_type === "number")
+        else if
+        (
+            setting.widget_type === "textarea" || 
+            setting.widget_type === "text" || 
+            setting.widget_type === "number"
+        )
         {
-            item.blur(() => {setting.action(type)})
+            item.blur(() => setting.action(type))
+        }
+
+        else if(setting.widget_type === "color")
+        {
+            item.change(() => setting.action(type))
         }
 
         else if(setting.widget_type === "range")
