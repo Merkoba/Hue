@@ -794,6 +794,7 @@ Hue.update_activity_bar = function()
 
     if(Hue.activity_list.length === 0)
     {
+        Hue.clear_activity_bar_items()
         $("#activity_bar_no_activity").css("display", "block")
         return false
     }
@@ -924,6 +925,15 @@ Hue.get_activity_bar_item_by_username = function(username)
     })
 
     return item
+}
+
+// Removes all items on the activity bar
+Hue.clear_activity_bar_items = function()
+{
+    $("#activity_bar_content").find(".activity_bar_item").each(function()
+    {
+        $(this).remove()
+    })
 }
 
 // What to do when a user disconnects
