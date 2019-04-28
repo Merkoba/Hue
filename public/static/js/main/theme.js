@@ -39,7 +39,6 @@ Hue.apply_background = function()
     let background_mode = Hue.get_setting("background_mode")
     let background_url = Hue.get_setting("background_url")
     let tile_dimensions = Hue.get_setting("background_tile_dimensions")
-    let bypass = false
 
     if(background_mode === "room")
     {
@@ -68,7 +67,6 @@ Hue.apply_background = function()
         bg_image = background_url
         bg_mode = background_mode.replace("custom_", "")
         bg_tile_dimensions = tile_dimensions
-        bypass = true
     }
 
     if(Hue.background_image_enabled())
