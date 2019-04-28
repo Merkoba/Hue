@@ -387,9 +387,6 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "max_stored_images"
 >The amount of most recent images to have stored in a room. Each room has an array of images stored, when the array's length surpasses this number, the oldest image in it will get deleted, either locally or on the S3 bucket depending on settings.
 
-"global_settings_default_background_image"
->Whether the uploaded image is shown in the background by default.
-
 "global_settings_default_sound_notifications"
 >Whether sound notifications are enabled by default.
 
