@@ -3,26 +3,6 @@
 // And to declare what widget is used in the settings windows
 Hue.user_settings =
 {
-    background_image:
-    {
-        widget_type: "checkbox",
-        description: `Whether the background image is shown or not`,
-        action: (type, save=true) =>
-        {
-            Hue[type].background_image = $(`#${type}_background_image`).prop("checked")
-
-            if(Hue.active_settings("background_image") === type)
-            {
-                Hue.apply_background()
-                Hue.apply_theme()
-            }
-
-            if(save)
-            {
-                Hue[`save_${type}`]()
-            }
-        }
-    },
     beep_on_messages:
     {
         widget_type: "checkbox",
@@ -1221,7 +1201,7 @@ Hue.user_settings =
     theme_mode:
     {
         widget_type: "select",
-        description: `The theme mode, it either uses the room's theme color or a custom theme color`,
+        description: `It either uses the room's theme color or a custom theme color`,
         action: (type, save=true) =>
         {
             Hue[type].theme_mode = $(`#${type}_theme_mode option:selected`).val()
@@ -1267,6 +1247,46 @@ Hue.user_settings =
             if(Hue.active_settings("text_color") === type)
             {
                 Hue.apply_theme()
+            }
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
+    background_mode:
+    {
+        widget_type: "select",
+        description: `It either uses the room's background, a custom background, or no background`,
+        action: (type, save=true) =>
+        {
+            Hue[type].background_mode = $(`#${type}_background_mode option:selected`).val()
+
+            if(Hue.active_settings("background_mode") === type)
+            {
+                Hue.apply_background()
+            }
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
+    background_url:
+    {
+        widget_type: "text",
+        description: `The background url to use if the user is using a custom background`,
+        action: (type, save=true) =>
+        {
+            let src = Hue.utilz.clean_string5($(`#${type}_background_url`).val().replace(".gifv", ".gif"))
+            $(`#${type}_background_url`).val(src)
+            Hue[type].background_url = src
+
+            if(Hue.active_settings("background_url") === type)
+            {
+                Hue.apply_background()
             }
 
             if(save)

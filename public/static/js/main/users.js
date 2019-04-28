@@ -764,7 +764,6 @@ Hue.show_activity_bar = function()
     $("#topbox_left_icon").removeClass("fa-caret-up")
     $("#topbox_left_icon").addClass("fa-caret-down")
 
-    Hue.apply_theme()
     Hue.update_activity_bar()
     Hue.on_resize()
 }
@@ -776,7 +775,6 @@ Hue.hide_activity_bar = function()
     $("#topbox_left_icon").removeClass("fa-caret-down")
     $("#topbox_left_icon").addClass("fa-caret-up")
 
-    Hue.apply_theme()
     Hue.on_resize()
 }
 

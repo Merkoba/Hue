@@ -97,9 +97,18 @@
                     <input type="color" class="{{type}}_settings_item_control setting_color" id="{{type}}_text_color">
                 </div>
 
-                <div class='settings_item settings_top_level_item' data-setting='background_image'>
-                    <div class="setting_title">Background Image</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_background_image">
+                <div class='settings_item settings_top_level_item' data-setting='background_mode'>
+                    <div class="setting_title">Background Mode</div>
+                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_background_mode">
+                        <option value='room'>Room Background</option>
+                        <option value='custom'>Custom Background</option>
+                        <option value='disabled'>Disabled</option>
+                    </select>
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='background_url'>
+                    <div class="setting_title">Background URL</div>
+                    <input type="text" class="{{type}}_settings_item_control setting_text" id="{{type}}_background_url">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='animate_scroll'>

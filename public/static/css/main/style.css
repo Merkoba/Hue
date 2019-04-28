@@ -1573,6 +1573,15 @@ input[type=text], textarea
 	display: none;
 }
 
+.setting_text
+{
+	width: 19rem;
+	resize: none;
+	font-size: 1em;
+	text-align: center;
+	overflow-x: hidden;
+}
+
 .setting_textarea
 {
 	width: calc(100% - 0.5rem);
@@ -1770,6 +1779,7 @@ input[type=text], textarea
 {
 	padding-top: 1em;
 	padding-bottom: 1em;
+	width: 100%;
 }
 
 .settings_container

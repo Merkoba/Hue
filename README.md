@@ -579,6 +579,12 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "global_settings_default_text_color
 >Default text color for custom theme.
 
+"global_settings_default_background_mode"
+>Default background mode, either it uses the room's background or a custom background.
+
+"global_settings_default_background_url"
+>This is the default image url if using a custom background.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 
