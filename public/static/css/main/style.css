@@ -1573,15 +1573,6 @@ input[type=text], textarea
 	display: none;
 }
 
-.setting_text
-{
-	width: 19rem;
-	resize: none;
-	font-size: 1em;
-	text-align: center;
-	overflow-x: hidden;
-}
-
 .setting_textarea
 {
 	width: calc(100% - 0.5rem);
@@ -1628,6 +1619,15 @@ input[type=text], textarea
 	width: 100px;
 	font-size: 1em;
 	text-align: center;
+}
+
+.setting_input_text_2
+{
+	width: 19rem;
+	resize: none;
+	font-size: 1em;
+	text-align: center;
+	overflow-x: hidden;
 }
 
 @keyframes fadein
