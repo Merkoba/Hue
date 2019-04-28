@@ -1294,6 +1294,27 @@ Hue.user_settings =
                 Hue[`save_${type}`]()
             }
         }
+    },
+    background_tile_dimensions:
+    {
+        widget_type: "text",
+        description: `The background url to use if the user is using a custom background`,
+        action: (type, save=true) =>
+        {
+            let dimensions = Hue.utilz.clean_string2($(`#${type}_background_tile_dimensions`).val())
+            $(`#${type}_background_tile_dimensions`).val(dimensions)
+            Hue[type].background_tile_dimensions = dimensions
+
+            if(Hue.active_settings("background_tile_dimensions") === type)
+            {
+                Hue.apply_background()
+            }
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
     }
 }
 

@@ -101,14 +101,20 @@
                     <div class="setting_title">Background Mode</div>
                     <select class="{{type}}_settings_item_control modal_select" id="{{type}}_background_mode">
                         <option value='room'>Room Background</option>
-                        <option value='custom'>Custom Background</option>
-                        <option value='disabled'>Disabled</option>
+                        <option value='custom_normal'>Custom Normal</option>
+                        <option value='custom_tiled'>Custom Tiled</option>
+                        <option value='custom_solid'>Custom Solid</option>
                     </select>
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='background_url'>
                     <div class="setting_title">Background URL</div>
                     <input type="text" class="{{type}}_settings_item_control setting_text" id="{{type}}_background_url">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='background_tile_dimensions'>
+                    <div class="setting_title">Background Tile Dimensions</div>
+                    <input type="text" class="{{type}}_settings_item_control setting_text" id="{{type}}_background_tile_dimensions">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='animate_scroll'>

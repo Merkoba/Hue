@@ -181,6 +181,7 @@
 	"global_settings_default_text_color": "#d4d4d4",
 	"global_settings_default_background_mode": "room",
 	"global_settings_default_background_url": "",
+	"global_settings_default_background_tile_dimensions": "200px auto",
 	"room_state_default_images_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_radio_enabled": true,

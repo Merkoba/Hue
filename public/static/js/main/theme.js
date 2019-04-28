@@ -35,9 +35,11 @@ Hue.set_background_image = function(data)
 // Applies the background to all background elements
 Hue.apply_background = function()
 {
-    let bg_image
+    let bg_image, bg_mode, bg_tile_dimensions
     let background_mode = Hue.get_setting("background_mode")
     let background_url = Hue.get_setting("background_url")
+    let tile_dimensions = Hue.get_setting("background_tile_dimensions")
+    let bypass = false
 
     if(background_mode === "room")
     {
@@ -45,89 +47,90 @@ Hue.apply_background = function()
         {
             bg_image = Hue.loaded_image.source
         }
-
+    
         else
         {
             bg_image = Hue.background_image
         }
 
-        if(Hue.background_image_enabled())
-        {
-            $('.background_image').css('background-image', `url('${bg_image}')`)
-        }
-
-        else
-        {
-            $('.background_image').css('background-image', "none")
-        }
-
-        if(Hue.background_mode === "normal" || Hue.background_mode === "mirror")
-        {
-            $('.background_image').each(function()
-            {
-                $(this).removeClass("background_image_tiled")
-            })
-        }
-
-        else if(Hue.background_mode === "tiled" || Hue.background_mode === "mirror_tiled")
-        {
-            $('.background_image').each(function()
-            {
-                $(this).addClass("background_image_tiled")
-            })
-        }
-
-        if(Hue.background_effect === "blur" && Hue.background_mode !== "solid")
-        {
-            $('.background_image').each(function()
-            {
-                $(this).addClass("background_image_blur")
-            })
-        }
-
-        else
-        {
-            $('.background_image').each(function()
-            {
-                $(this).removeClass("background_image_blur")
-            })
-        }
-
-        let css = `
-        <style class='appended_background_style'>
-
-        .background_image_tiled
-        {
-            background-size: ${Hue.background_tile_dimensions} !important;
-            background-repeat: repeat !important;
-        }
-
-        </style>
-        `
-
-        $(".appended_background_style").each(function()
-        {
-            $(this).remove()
-        })
-
-        $("head").append(css)
+        bg_mode = Hue.background_mode
+        bg_tile_dimensions = Hue.background_tile_dimensions
     }
 
-    else if(background_mode === "custom" && background_url)
+    else if(background_mode.startsWith("custom"))
     {
-        $('.background_image').each(function()
+        if(!background_url)
         {
-            $('.background_image').css('background-image', `url('${background_url}')`)
-            $(this).removeClass("background_image_tiled")
-            $(this).removeClass("background_image_blur")
-        })
+            $('.background_image').css('background-image', "none")
+            return false
+        }
+
+        bg_image = background_url
+        bg_mode = background_mode.replace("custom_", "")
+        bg_tile_dimensions = tile_dimensions
+        bypass = true
+    }
+
+    if(Hue.background_image_enabled())
+    {
+        $('.background_image').css('background-image', `url('${bg_image}')`)
     }
 
     else
     {
         $('.background_image').css('background-image', "none")
-        return false
     }
+
+    if(bg_mode === "normal" || bg_mode === "mirror")
+    {
+        $('.background_image').each(function()
+        {
+            $(this).removeClass("background_image_tiled")
+        })
+    }
+
+    else if(bg_mode === "tiled" || bg_mode === "mirror_tiled")
+    {
+        $('.background_image').each(function()
+        {
+            $(this).addClass("background_image_tiled")
+        })
+    }
+
+    if(Hue.background_effect === "blur" && bg_mode !== "solid")
+    {
+        $('.background_image').each(function()
+        {
+            $(this).addClass("background_image_blur")
+        })
+    }
+
+    else
+    {
+        $('.background_image').each(function()
+        {
+            $(this).removeClass("background_image_blur")
+        })
+    }
+
+    let css = `
+    <style class='appended_background_style'>
+
+    .background_image_tiled
+    {
+        background-size: ${bg_tile_dimensions} !important;
+        background-repeat: repeat !important;
+    }
+
+    </style>
+    `
+
+    $(".appended_background_style").each(function()
+    {
+        $(this).remove()
+    })
+
+    $("head").append(css)
 }
 
 // Theme Mode setter
@@ -798,22 +801,30 @@ Hue.announce_background_tile_dimensions_change = function(data)
 // depending on the background mode and settings
 Hue.background_image_enabled = function()
 {
-    if(Hue.background_mode === "solid")
-    {
-        return false
-    }
+    let background_mode = Hue.get_setting("background_mode")
 
-    if(Hue.background_mode === "mirror" || Hue.background_mode === "mirror_tiled")
+    if(background_mode === "room")
     {
-        if(Hue.room_images_mode === "disabled")
+        if(Hue.background_mode === "solid")
         {
             return false
         }
+    
+        if(Hue.background_mode === "mirror" || Hue.background_mode === "mirror_tiled")
+        {
+            if(Hue.room_images_mode === "disabled")
+            {
+                return false
+            }
+        }
     }
 
-    if(Hue.get_setting("background_mode") !== "room")
+    else
     {
-        return false
+        if(background_mode === "custom_solid")
+        {
+            return false
+        }
     }
 
     return true
