@@ -1211,6 +1211,8 @@ Hue.user_settings =
                 Hue.apply_theme()
             }
 
+            Hue.check_hideable_settings()
+
             if(save)
             {
                 Hue[`save_${type}`]()
@@ -1267,6 +1269,8 @@ Hue.user_settings =
             {
                 Hue.apply_background()
             }
+
+            Hue.check_hideable_settings()
 
             if(save)
             {
@@ -1610,6 +1614,7 @@ Hue.setup_settings_windows = function()
     Hue.check_room_settings_override()
     Hue.setup_user_function_switch_selects()
     Hue.set_user_settings_titles()
+    Hue.check_hideable_settings()
 
     $(".settings_main_window").on("click", ".settings_window_category", function(e)
     {
@@ -2207,5 +2212,57 @@ Hue.do_settings_filter = function(type, filter=false)
         Hue.change_settings_window_category(new_category, type)
     }
 
+    if(!filter)
+    {
+        Hue.check_hideable_settings()
+    }
+
     Hue.scroll_settings_window_to_top(type)
+}
+
+Hue.hide_setting = function(type, name)
+{
+    $(`#${type}_${name}`).closest(".settings_top_level_item").css("display", "none")
+    $(`#${type}_${name}`).closest(".settings_top_level_item").addClass("hidden_setting")
+}
+
+Hue.unhide_setting = function(type, name)
+{
+    $(`#${type}_${name}`).closest(".settings_top_level_item").css("display", "block")
+    $(`#${type}_${name}`).closest(".settings_top_level_item").removeClass("hidden_setting")
+}
+
+Hue.check_hideable_settings = function()
+{
+    if(Hue.get_setting("theme_mode") === "room")
+    {
+        Hue.hide_setting("global_settings", "theme_color")
+        Hue.hide_setting("global_settings", "text_color")
+        Hue.hide_setting("room_settings", "theme_color")
+        Hue.hide_setting("room_settings", "text_color")
+    }
+    
+    else
+    {
+        Hue.unhide_setting("global_settings", "theme_color")
+        Hue.unhide_setting("global_settings", "text_color")
+        Hue.unhide_setting("room_settings", "theme_color")
+        Hue.unhide_setting("room_settings", "text_color")
+    }
+
+    if(Hue.get_setting("background_mode") === "room")
+    {
+        Hue.hide_setting("global_settings", "background_url")
+        Hue.hide_setting("global_settings", "background_tile_dimensions")
+        Hue.hide_setting("room_settings", "background_url")
+        Hue.hide_setting("room_settings", "background_tile_dimensions")
+    }
+    
+    else
+    {
+        Hue.unhide_setting("global_settings", "background_url")
+        Hue.unhide_setting("global_settings", "background_tile_dimensions")
+        Hue.unhide_setting("room_settings", "background_url")
+        Hue.unhide_setting("room_settings", "background_tile_dimensions")
+    }
 }
