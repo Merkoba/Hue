@@ -1075,3 +1075,39 @@ Hue.change_room_images_mode = function(what)
 
     Hue.socket_emit("change_images_mode", {what:what})
 }
+
+Hue.setup_image_picker = function()
+{
+    $("#image_source_picker_input").on("input", function()
+    {
+        Hue.check_image_picker()
+    })
+
+    Hue.check_image_picker()
+}
+
+Hue.check_image_picker = function(el)
+{
+    if($("#image_source_picker_input").val().trim().length > 0)
+    {
+        $("#image_file_picker").css("display", "none")
+        $("#image_picker_submit").css("display", "inline-block")
+    }
+    
+    else
+    {
+        $("#image_file_picker").css("display", "inline-block")
+        $("#image_picker_submit").css("display", "none")
+    }
+}
+
+Hue.image_picker_submit = function()
+{
+    let val = $("#image_source_picker_input").val().trim()
+
+    if(val !== "")
+    {
+        Hue.change_image_source(val)
+        Hue.msg_image_picker.close()
+    }
+}

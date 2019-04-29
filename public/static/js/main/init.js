@@ -349,6 +349,7 @@ Hue.on_join = function(data)
     Hue.start_active_media()
     Hue.check_latest_highlight()
     Hue.setup_userlist_window()
+    Hue.setup_image_picker()
 
     Hue.at_startup()
 }

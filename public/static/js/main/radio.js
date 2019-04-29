@@ -1270,3 +1270,14 @@ Hue.set_media_menu_radio_volume = function(n=false)
 
     Hue.set_radio_volume(n, true, false)
 }
+
+Hue.radio_picker_submit = function()
+{
+    let val = $("#radio_source_picker_input").val().trim()
+
+    if(val !== "")
+    {
+        Hue.change_radio_source(val)
+        Hue.msg_radio_picker.close()
+    }
+}

@@ -5,11 +5,12 @@
         <div title='Use this in the main chat input'>Command: /tv x</div>
     </div>
     <div class='flex_column_center'>
-        <input type='text' id='tv_source_picker_input' class='input1 media_picker_input' placeholder='Search Term or URL'>
-        <input type='text' id='tv_source_picker_input_comment' class='input1 media_picker_input' placeholder='Comment'>
+        <input type='search' id='tv_source_picker_input' class='input1 media_picker_input' placeholder='Search Term or URL'>
+        <input type='search' id='tv_source_picker_input_comment' class='input1 media_picker_input' placeholder='Comment'>
     </div>
     <div class='unselectable flex_row_center' id='tv_picker_options'>
-    <div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("tv_prev", "This will change the tv for everyone. Are you sure?")'>Previous</div>
+        <div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("tv_prev", "This will change the tv for everyone. Are you sure?")'>Previous</div>
         <div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("restart_tv", "This will restart the tv for everyone. Are you sure?")'>Restart</div>
+        <div id='tv_picker_submit' class='menu_item action inline unselectable' onclick='Hue.tv_picker_submit()'>Submit</div>
     </div>
 </script>

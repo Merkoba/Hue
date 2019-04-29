@@ -240,6 +240,7 @@ Hue.start_msg = function()
                 common.after_close(instance)
                 $("#image_source_picker_input").val("")
                 $("#image_source_picker_input_comment").val("")
+                Hue.check_image_picker()
                 Hue.image_picker_open = false
             }
         })

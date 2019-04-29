@@ -3049,3 +3049,8 @@ a.special_link:hover
 {
 	max-width: 28rem;
 }
+
+#image_picker_submit
+{
+	display: none;
+}

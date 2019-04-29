@@ -1247,3 +1247,14 @@ Hue.change_room_tv_mode = function(what)
 
     Hue.socket_emit("change_tv_mode", {what:what})
 }
+
+Hue.tv_picker_submit = function()
+{
+    let val = $("#tv_source_picker_input").val().trim()
+
+    if(val !== "")
+    {
+        Hue.change_tv_source(val)
+        Hue.msg_tv_picker.close()
+    }
+}
