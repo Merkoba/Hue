@@ -1791,7 +1791,7 @@ input[type=text], textarea
 .settings_reset_button
 {
 	margin-top: 1rem;
-	margin-bottom: 0.4rem;
+	margin-bottom: 1rem;
 }
 
 .container_22
@@ -2175,6 +2175,7 @@ input[type=text], textarea
 	flex-direction: column;
 	align-items: center;
 	width: 100%;
+	max-height: 100%;
 }
 
 .maxer_container
