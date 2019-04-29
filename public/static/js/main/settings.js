@@ -2250,7 +2250,9 @@ Hue.check_hideable_settings = function()
         Hue.unhide_setting("room_settings", "text_color")
     }
 
-    if(Hue.get_setting("background_mode") === "room")
+    let background_mode = Hue.get_setting("background_mode")
+
+    if(background_mode === "room" || background_mode === "custom_solid")
     {
         Hue.hide_setting("global_settings", "background_url")
         Hue.hide_setting("global_settings", "background_tile_dimensions")
@@ -2261,8 +2263,18 @@ Hue.check_hideable_settings = function()
     else
     {
         Hue.unhide_setting("global_settings", "background_url")
-        Hue.unhide_setting("global_settings", "background_tile_dimensions")
         Hue.unhide_setting("room_settings", "background_url")
-        Hue.unhide_setting("room_settings", "background_tile_dimensions")
+
+        if(background_mode === "custom_tiled")
+        {
+            Hue.unhide_setting("global_settings", "background_tile_dimensions")
+            Hue.unhide_setting("room_settings", "background_tile_dimensions")
+        }
+
+        else
+        {
+            Hue.hide_setting("global_settings", "background_tile_dimensions")
+            Hue.hide_setting("room_settings", "background_tile_dimensions")
+        }
     }
 }
