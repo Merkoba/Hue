@@ -888,6 +888,16 @@ This should be an array of strings of root domains.
 "vimeo_access_token"
 >Vimeo access token.
 
+
+# Join Flags
+
+>alternative
+Meant to be used for bots or similar, to connect without using the normal login portal.
+
+>no_message_log
+If true, the server will not send the message log on join.
+
+
 # Additional Notes
 
 To learn how to host a working internet radio refer to http://icecast.org/
