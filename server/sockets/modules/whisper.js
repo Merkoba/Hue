@@ -26,19 +26,22 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         if(data.type === "user")
         {
-            if(data.username === undefined)
+            if(!data.usernames || data.usernames.length === 0)
             {
                 return handler.get_out(socket)
             }
 
-            if(data.username.length === 0)
+            if(data.usernames.length > config.max_whisper_users)
             {
                 return handler.get_out(socket)
             }
 
-            if(data.username.length > config.max_max_username_length)
+            for(let username of data.usernames)
             {
-                return handler.get_out(socket)
+                if(!username.length || username.length > config.max_max_username_length)
+                {
+                    return handler.get_out(socket)
+                }
             }
         }
 
@@ -82,30 +85,33 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         if(data.type === "user")
         {
-            let sockets = handler.get_user_sockets_per_room_by_username(socket.hue_room_id, data.username)
-
-            if(sockets.length > 0)
+            for(let username of data.usernames)
             {
-                for(let socc of sockets)
+                let sockets = handler.get_user_sockets_per_room_by_username(socket.hue_room_id, username)
+    
+                if(sockets.length > 0)
                 {
-                    if(socc.id === socket.id)
+                    for(let socc of sockets)
                     {
-                        continue
+                        if(socc.id === socket.id)
+                        {
+                            continue
+                        }
+    
+                        handler.user_emit(socc, 'whisper',
+                        {
+                            room: socket.hue_room_id,
+                            username: socket.hue_username,
+                            message: data.message,
+                            draw_coords: data.draw_coords
+                        })
                     }
-
-                    handler.user_emit(socc, 'whisper',
-                    {
-                        room: socket.hue_room_id,
-                        username: socket.hue_username,
-                        message: data.message,
-                        draw_coords: data.draw_coords
-                    })
                 }
-            }
-
-            else
-            {
-                handler.user_emit(socket, 'user_not_in_room', {})
+    
+                else
+                {
+                    handler.user_emit(socket, 'user_not_in_room', {})
+                }
             }
         }
 

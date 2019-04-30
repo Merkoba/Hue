@@ -448,16 +448,13 @@ Hue.send_whisper_user = function(message, draw_coords, force=false)
 // Does the whisper of type user emit
 Hue.do_send_whisper_user = function(unames, message, draw_coords, show=true)
 {
-    for(let u of unames)
+    Hue.socket_emit('whisper',
     {
-        Hue.socket_emit('whisper',
-        {
-            type: "user",
-            username: u,
-            message: message,
-            draw_coords: draw_coords
-        })
-    }
+        type: "user",
+        usernames: unames,
+        message: message,
+        draw_coords: draw_coords
+    })
 
     if(show)
     {
