@@ -1319,6 +1319,43 @@ Hue.user_settings =
                 Hue[`save_${type}`]()
             }
         }
+    },
+    message_log:
+    {
+        widget_type: "checkbox",
+        description: `Whether the user requests the message log on load`,
+        action: (type, save=true) =>
+        {
+            Hue[type].message_log = $(`#${type}_message_log`).prop("checked")
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
+    chat_crop_limit:
+    {
+        widget_type: "number",
+        description: `Crop the chat area after this many messages`,
+        action: (type, save=true) =>
+        {
+            let val = parseInt(Hue.utilz.clean_string2($(`#${type}_chat_crop_limit`).val()))
+
+            if(!val)
+            {
+                val = Hue.config.global_settings_default_chat_crop_limit
+            }
+
+            $(`#${type}_chat_crop_limit`).val(val)
+
+            Hue[type].chat_crop_limit = val
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
     }
 }
 

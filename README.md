@@ -582,6 +582,15 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "global_settings_default_background_url"
 >This is the default image url if using a custom background.
 
+"global_settings_default_background_tile_dimensions"
+>This is the default background tile dimensions if using a custom background.
+
+"global_settings_default_message_log"
+>Whether users request the message log on load by default.
+
+"global_settings_default_chat_crop_limit"
+>How many chat messages to hold in the chat area by default.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 

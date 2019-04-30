@@ -438,7 +438,15 @@ Hue.start_socket = function()
 
     Hue.socket.on('connect', () =>
     {
-        Hue.socket_emit('join_room', {room_id:Hue.room_id, user_id:Hue.user_id, token:Hue.jwt_token})
+        let no_message_log = !Hue.get_setting("message_log")
+
+        Hue.socket_emit('join_room', 
+        {
+            room_id: Hue.room_id, 
+            user_id: Hue.user_id, 
+            token: Hue.jwt_token, 
+            no_message_log: no_message_log
+        })
     })
 
     Hue.socket.on('disconnect', (reason) =>
