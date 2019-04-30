@@ -81,6 +81,8 @@ function computedVariables(
         .filter(prop => prop.startsWith(name) && prop.endsWith('-value') === false)
         .forEach(prop => {
 
+          let oldValue = rule.style.getPropertyValue(prop)
+
           // Get the output of the supplied function
           let newValue = func(
             
@@ -93,6 +95,11 @@ function computedVariables(
             // and a reference to the original CSS rule or DOM node
             rule
           )
+
+          if(oldValue === newValue)
+          {
+            return
+          }
 
           // If a function for beforeChange was provided, run it now
           // This runs before the CSS changes are applied

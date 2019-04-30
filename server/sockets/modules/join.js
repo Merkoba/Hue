@@ -109,7 +109,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 return handler.do_disconnect(socket)
             }
 
-            handler.do_join(socket, info, userinfo)
+            handler.do_join(socket, info, userinfo, data)
 
             db_manager.save_visited_room(socket.hue_user_id, data.room_id)
         }
@@ -157,7 +157,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                         return handler.do_disconnect(socket)
                     }
 
-                    handler.do_join(socket, info, userinfo)
+                    handler.do_join(socket, info, userinfo, data)
 
                     db_manager.save_visited_room(socket.hue_user_id, data.room_id)
                 }
@@ -166,7 +166,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     }
 
     // Does a room join after successful authentication
-    handler.do_join = async function(socket, info, userinfo)
+    handler.do_join = async function(socket, info, userinfo, data)
     {
         socket.hue_room_id = info._id.toString()
         socket.hue_email = userinfo.email
@@ -286,7 +286,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         socket.hue_joining = false
         socket.hue_joined = true
 
-        handler.user_emit(socket, 'joined',
+        let user_data = 
         {
             room_locked: false,
             room_name: info.name,
@@ -296,7 +296,6 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             topic_date: info.topic_date,
             userlist: handler.prepare_userlist(handler.get_userlist(socket.hue_room_id)),
             log: info.log,
-            log_messages: vars.rooms[socket.hue_room_id].log_messages,
             role: socket.hue_role,
             public: info.public,
             image_id: info.image_id,
@@ -363,7 +362,19 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             voice4_synth_permission: info.voice4_synth_permission,
             email: socket.hue_email,
             reg_date: userinfo.registration_date
-        })
+        }
+
+        if(data.no_message_log)
+        {
+            user_data.log_messages = []
+        }
+        
+        else
+        {
+            user_data.log_messages = vars.rooms[socket.hue_room_id].log_messages
+        }
+
+        handler.user_emit(socket, 'joined', user_data)
 
         if(!already_connected)
         {

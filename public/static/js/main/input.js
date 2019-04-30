@@ -45,6 +45,7 @@ Hue.setup_input = function()
     })
 
     Hue.old_input_val = $("#input").val()
+    Hue.input_tag_scroll_height = $("#input")[0].scrollHeight
 
     // Resizes the input automatically based on content
     computedVariables
@@ -52,12 +53,16 @@ Hue.setup_input = function()
         '--expand',
         (value, event, tag) => 
         {
-            $("#footer").css("height", $("#footer").height())
-            tag.style.height = 'auto'
-            const height = tag.scrollHeight
-            tag.style.height = ''
-            $("#footer").css("height", "auto")
-            return height + 'px'
+            if(Hue.input_tag_scroll_height !== tag.scrollHeight)
+            {
+                $("#footer").css("height", $("#footer").height())
+                tag.style.height = 'auto'
+                Hue.input_tag_scroll_height = tag.scrollHeight
+                tag.style.height = ''
+                $("#footer").css("height", "auto")
+            }
+
+            return Hue.input_tag_scroll_height + 'px'
         },
         "#input",
         ['input', 'paste', 'blur', 'reprocess'],
