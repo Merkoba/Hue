@@ -1893,7 +1893,15 @@ Hue.set_user_settings_titles = function()
     for(let key in Hue.user_settings)
     {
         let setting = Hue.user_settings[key]
-        let title = `${setting.description} (${key})`
+        let value = Hue.config[`global_settings_default_${key}`]
+
+        if(typeof value === "string")
+        {
+            value = `"${value}"`
+        }
+
+        let title = `${setting.description} (${key}) (Default: ${value})`
+        
         $(`#global_settings_${key}`).attr("title", title)
         $(`#room_settings_${key}`).attr("title", title)
     }
