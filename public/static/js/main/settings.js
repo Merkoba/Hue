@@ -2257,18 +2257,22 @@ Hue.do_settings_filter = function(type, filter=false)
     Hue.scroll_settings_window_to_top(type)
 }
 
+// Makes a setting invisible
 Hue.hide_setting = function(type, name)
 {
     $(`#${type}_${name}`).closest(".settings_top_level_item").css("display", "none")
     $(`#${type}_${name}`).closest(".settings_top_level_item").addClass("hidden_setting")
 }
 
+// Makes a setting visible
 Hue.unhide_setting = function(type, name)
 {
     $(`#${type}_${name}`).closest(".settings_top_level_item").css("display", "block")
     $(`#${type}_${name}`).closest(".settings_top_level_item").removeClass("hidden_setting")
 }
 
+// Checks to see what settings should be invisible in the settings window
+// This depends on the state of other certain settings
 Hue.check_hideable_settings = function()
 {
     if(Hue.get_setting("theme_mode") === "room")
