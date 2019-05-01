@@ -111,9 +111,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     {
         try
         {
-            handler.user_emit(socket, 'redirect', {location:config.redirect_url})
             handler.do_disconnect(socket)
-
             return false
         }
 

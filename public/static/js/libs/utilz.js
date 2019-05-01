@@ -738,6 +738,39 @@ const Utilz = function()
 		return title
 	}
 
+	utilz.get_image_type = function(ext)
+	{
+		if(ext === "jpg" || ext === "jpeg")
+		{
+			return "image/jpeg"
+		}
+
+		else if(ext === "png")
+		{
+			return "image/png"
+		}
+
+		else if(ext === "gif")
+		{
+			return "image/gif"
+		}
+
+		else if(ext === "webp")
+		{
+			return "image/webp"
+		}
+
+		else if(ext === "bmp")
+		{
+			return "image/bmp"
+		}
+
+		else
+		{
+			return ""
+		}
+	}
+
 	utilz.media_types = ["image", "tv", "radio"]
 	utilz.clear_log_types = ["all", "above", "below"]
 
@@ -749,8 +782,8 @@ const Utilz = function()
 
 	utilz.video_extensions = ["mp4", "webm", "m3u8"]
 	utilz.audio_extensions = ["mp3", "ogg", "wav", "flac"]
-	utilz.image_extensions = ["jpg", "jpeg", "png", "gif", "webp"]
-	utilz.image_types = ["image/jpeg", "image/png", "image/gif", "image/webp"]
+	utilz.image_extensions = ["jpg", "jpeg", "png", "gif", "webp", "bmp"]
+	utilz.image_types = ["image/jpeg", "image/png", "image/gif", "image/webp", "image/bmp"]
 
 	return utilz
 }

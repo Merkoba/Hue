@@ -518,30 +518,13 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         let split = fname.split('.')
         let ext = split[split.length - 1]
+        let type = utilz.get_image_type(ext)
 
-        if(ext === "jpg" || ext === "jpeg")
+        if(!type)
         {
             return "image/jpeg"
         }
 
-        else if(ext === "png")
-        {
-            return "image/png"
-        }
-
-        else if(ext === "gif")
-        {
-            return "image/gif"
-        }
-
-        else if(ext === "webp")
-        {
-            return "image/webp"
-        }
-
-        else
-        {
-            return "image/jpeg"
-        }
+        return type
     }
 }

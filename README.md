@@ -204,9 +204,6 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 "default_topic_admin"
 >Default topic shown to admins.
 
-"redirect_url"
->Url used in some cases when the user needs to be disposed. For example when kicked from a room.
-
 "radio_metadata_interval_duration"
 >The interval in milliseconds to check for radio metadata. This only occurs when an internet radio url is set as the radio source, for example it won't check if there's a youtube video set.
 

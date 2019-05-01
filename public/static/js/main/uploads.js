@@ -9,7 +9,7 @@ Hue.start_dropzone = function()
         maxFilesize: Hue.config.max_image_size / 1024,
         autoProcessQueue: false,
         clickable: '#image_file_picker',
-        acceptedFiles: "image/jpeg,image/png,image/gif,image/webp"
+        acceptedFiles: "image/jpeg,image/png,image/gif,image/webp,image/bmp"
     })
 
     Hue.dropzone.on("addedfile", function(file)
