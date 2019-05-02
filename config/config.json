@@ -258,5 +258,7 @@
 	"synth_max_recent_users": 10,
 	"synth_max_voice_text": 280,
 	"url_title_max_length": 50,
-	"max_whisper_users": 10
+	"max_whisper_users": 10,
+	"max_bio_length": 500,
+	"max_bio_lines": 4
 }

@@ -700,14 +700,10 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .userlist_item
 {
-	margin-top: 1.4rem;
-	margin-bottom: 1.4rem;
+	margin-top: 1.8rem;
+	margin-bottom: 1.8rem;
 	overflow-wrap: break-word;
 	word-break: break-word;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: flex-start;
 }
 
 .userlist_item_details_container
@@ -734,6 +730,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 	font-size: 0.9em;
 	flex-shrink: 0;
 	margin-left: 0.5rem;
+}
+
+.userlist_item_bio
+{
+	margin-top: 0.4rem;
+	font-size: 0.9rem;
 }
 
 .userlist_item_profile_image_container
@@ -2306,6 +2308,11 @@ input[type=text], textarea
 }
 
 #show_profile_buttons
+{
+	margin-top: 2rem;
+}
+
+#show_profile_bio
 {
 	margin-top: 2rem;
 }

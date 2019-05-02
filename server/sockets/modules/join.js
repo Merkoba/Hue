@@ -90,7 +90,8 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 email: true,
                 username: true,
                 profile_image: true,
-                registration_date: true
+                registration_date: true,
+                bio: true
             })
 
             if(!ans.valid)
@@ -149,7 +150,8 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                         email: 1,
                         username: 1,
                         profile_image: 1,
-                        registration_date: 1
+                        registration_date: 1,
+                        bio: 1
                     })
 
                     if(!userinfo)
@@ -170,6 +172,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     {
         socket.hue_room_id = info._id.toString()
         socket.hue_email = userinfo.email
+        socket.hue_bio = userinfo.bio
         socket.hue_joining = true
 
         socket.join(socket.hue_room_id)
@@ -361,6 +364,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             voice4_radio_permission: info.voice4_radio_permission,
             voice4_synth_permission: info.voice4_synth_permission,
             email: socket.hue_email,
+            bio: socket.hue_bio,
             reg_date: userinfo.registration_date
         }
 
@@ -384,6 +388,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 username: socket.hue_username,
                 role: socket.hue_role,
                 profile_image: socket.hue_profile_image,
+                bio: socket.hue_bio,
                 date_joined: Date.now()
             })
 

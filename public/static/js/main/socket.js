@@ -368,6 +368,10 @@ Hue.server_update_events =
     'announcement': (data) =>
     {
         Hue.show_announcement(data)
+    },
+    'bio_changed': (data) =>
+    {
+        Hue.bio_changed(data)
     }
 }
 

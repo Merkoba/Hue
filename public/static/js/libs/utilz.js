@@ -73,6 +73,11 @@ const Utilz = function()
 		return s.replace(/^\/\s+/g, '/')
 	}
 
+	utilz.clean_string12 = function(s)
+	{
+		return s.replace(/[\n\r]+/g, '\n').replace(/ +/g, ' ').trim()
+	}
+
 	utilz.get_random_int = function(min, max, exclude=undefined)
 	{
 		let num = Math.floor(Math.random() * (max - min + 1) + min)

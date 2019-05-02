@@ -171,6 +171,73 @@ Hue.setup_details = function()
     {
         Hue.show_change_email()
     })
+
+    $("#details_bio_textarea").val(Hue.bio)
+
+    $("#details_bio_textarea").blur(function()
+    {
+        let value = Hue.utilz.clean_string12($(this).val())
+        
+        if(value !== Hue.bio)
+        {
+            let result = Hue.change_bio(value)
+
+            if(!result)
+            {
+                $(this).val(Hue.bio)
+            }
+
+            else
+            {
+                $(this).val(value)
+            }
+        }
+
+        else
+        {
+            $(this).val(value)
+        }
+    })
+}
+
+// Changes the user's bio
+Hue.change_bio = function(value)
+{
+    if(value !== Hue.utilz.clean_string12(value))
+    {
+        return false
+    }
+
+    if(value === Hue.bio)
+    {
+        return false
+    }
+
+    if(value.length > Hue.config.max_bio_length)
+    {
+        return false
+    }
+
+    if(value.split("\n").length > Hue.config.max_bio_lines)
+    {
+        return false
+    }
+
+    Hue.socket_emit("change_bio", {bio:value})
+
+    return true
+}
+
+// When any user changes their bio
+Hue.bio_changed = function(data)
+{
+    let user = Hue.get_user_by_username(data.username)
+    user.bio = data.bio
+
+    if(data.username === Hue.username)
+    {
+        Hue.set_bio(data.bio)
+    }
 }
 
 // Shows the user's details window
@@ -305,6 +372,12 @@ Hue.set_username = function(uname)
 Hue.set_email = function(email)
 {
     Hue.user_email = email
+}
+
+// Bio setter
+Hue.set_bio = function(bio)
+{
+    Hue.bio = bio
 }
 
 // Setups the user menu

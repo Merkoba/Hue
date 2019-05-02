@@ -318,6 +318,7 @@ Hue.on_join = function(data)
     Hue.room_name = data.room_name
     Hue.set_username(data.username)
     Hue.set_email(data.email)
+    Hue.set_bio(data.bio)
     Hue.user_reg_date = data.reg_date
     Hue.setup_profile_image(data.profile_image)
     Hue.userlist = data.userlist

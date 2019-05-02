@@ -194,6 +194,39 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         }
     }
 
+    // Handles bio changes
+    handler.public.change_bio = async function(socket, data)
+    {
+        if(data.bio.length > config.max_bio_length)
+        {
+            return handler.get_out(socket)
+        }
+        
+        if(data.bio.split("\n").length > config.max_bio_lines)
+        {
+            return handler.get_out(socket)
+        }
+
+        if(data.bio !== utilz.clean_string12(data.bio))
+        {
+            return handler.get_out(socket)
+        }
+
+        socket.hue_bio = data.bio
+        handler.update_user_in_userlist(socket)
+
+        await db_manager.update_user(socket.hue_user_id,
+        {
+            bio: socket.hue_bio
+        })
+
+        handler.room_emit(socket, 'bio_changed',
+        {
+            username: socket.hue_username,
+            bio: socket.hue_bio
+        })
+    }
+
     // Handles uploaded profile images
     handler.upload_profile_image = function(socket, data)
     {

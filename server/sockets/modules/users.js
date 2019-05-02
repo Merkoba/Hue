@@ -457,7 +457,8 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 role: item.role,
                 profile_image: item.profile_image,
                 last_activity_trigger: item.last_activity_trigger,
-                date_joined: item.date_joined
+                date_joined: item.date_joined,
+                bio: item.bio
             })
         }
 
@@ -622,6 +623,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             user.role = socket.hue_role
             user.profile_image = socket.hue_profile_image
             user.email = socket.hue_email
+            user.bio = socket.hue_bio
             user.last_activity_trigger = socket.hue_last_activity_trigger
 
             if(first)

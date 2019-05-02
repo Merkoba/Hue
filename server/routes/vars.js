@@ -98,4 +98,7 @@ module.exports = function(c, config)
     c.vars.max_displayed_url = config.max_displayed_url
     c.vars.max_chat_searches = config.max_chat_searches
     c.vars.url_title_max_length = config.url_title_max_length
+    c.vars.max_bio_length = config.max_bio_length
+    c.vars.max_bio_length = config.max_bio_length
+    c.vars.max_bio_lines = config.max_bio_lines
 }

@@ -88,7 +88,7 @@ Hue.start_msg = function()
         Object.assign({}, common, titlebar,
         {
             id: "userlist",
-            window_width: "28em"
+            window_width: "26em"
         })
     )
 

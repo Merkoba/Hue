@@ -69,7 +69,8 @@ Hue.userjoin = function(data)
         username: data.username,
         role: data.role,
         profile_image: data.profile_image,
-        date_joined: data.date_joined
+        date_joined: data.date_joined,
+        bio: data.bio
     })
 
     if(added)
@@ -114,7 +115,8 @@ Hue.add_to_userlist = function(args={})
         username: false,
         role: false,
         profile_image: false,
-        date_joined: false
+        date_joined: false,
+        bio: ""
     }
 
     args = Object.assign(def_args, args)
@@ -127,6 +129,7 @@ Hue.add_to_userlist = function(args={})
             Hue.userlist[i].username = args.username
             Hue.userlist[i].role = args.role
             Hue.userlist[i].profile_image = args.profile_image
+            Hue.userlist[i].bio = args.bio
 
             Hue.update_userlist()
 
@@ -140,7 +143,8 @@ Hue.add_to_userlist = function(args={})
         username: args.username,
         role: args.role,
         profile_image: args.profile_image,
-        date_joined: args.date_joined
+        date_joined: args.date_joined,
+        bio: args.bio
     })
 
     Hue.update_userlist()
@@ -406,12 +410,17 @@ Hue.update_userlist_window = function()
 
         let h = $(`
         <div class='modal_item userlist_item'>
-            <div class='userlist_item_profile_image_container round_image_container unselectable action4'>
-                <img class='userlist_item_profile_image' src=''>
-            </div>
-            <div class='userlist_item_details_container'>
-                <div class='userlist_item_username action dynamic_title'></div>
-                <div class='userlist_item_role'></div>
+            <div class='userlist_column flex_column_center'>
+                <div>
+                    <div class='userlist_item_profile_image_container round_image_container unselectable action4'>
+                        <img class='userlist_item_profile_image' src=''>
+                    </div>
+                    <div class='userlist_item_details_container'>
+                        <div class='userlist_item_username action dynamic_title'></div>
+                        <div class='userlist_item_role'></div>
+                    </div>
+                </div>
+                <div class='userlist_item_bio'></div>
             </div>
         </div>`)
 
@@ -424,13 +433,25 @@ Hue.update_userlist_window = function()
         let role_element = h.find('.userlist_item_role').eq(0)
         role_element.text(role_tag)
 
-        let uname = h.find('.userlist_item_username')
-        uname.eq(0).text(item.username)
+        let uname = h.find('.userlist_item_username').eq(0)
+        uname.text(item.username)
 
         let t = `Joined: ${Hue.utilz.nice_date(item.date_joined)}`
         uname.attr("title", t)
         uname.data("otitle", t)
         uname.data("date", item.date_joined)
+
+        let bio = h.find('.userlist_item_bio').eq(0)
+
+        if(item.bio)
+        {
+            bio.html(Hue.make_html_safe(item.bio).replace(/\n+/g, " <br> ")).urlize()
+        }
+
+        else
+        {
+            bio.css("display", "none")
+        }
 
         s = s.add(h)
     }
@@ -1170,11 +1191,13 @@ Hue.show_profile = function(uname, prof_image)
 {
     let pi
     let role = "Offline"
+    let bio = ""
     let user = Hue.get_user_by_username(uname)
 
     if(user)
     {
         role = Hue.get_pretty_role_name(user.role)
+        bio = user.bio
     }
 
     if(prof_image === "" || prof_image === undefined || prof_image === "undefined")
@@ -1197,6 +1220,7 @@ Hue.show_profile = function(uname, prof_image)
 
     $("#show_profile_uname").text(uname)
     $("#show_profile_role").text(`(${role})`)
+    $("#show_profile_bio").html(Hue.make_html_safe(bio).replace(/\n+/g, " <br> ")).urlize()
 
     $("#show_profile_image").on("error", function()
     {
