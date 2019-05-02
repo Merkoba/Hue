@@ -1723,6 +1723,17 @@ Hue.commands =
             Hue.do_math_calculation(arg)
         },
         description: `Does a mathematical calculation`
+    },
+    "/bio":
+    {
+        action: (arg, ans) =>
+        {
+            if(arg)
+            {
+                Hue.change_bio(arg)
+            }
+        },
+        description: `Changes the user's bio`
     }
 }
 
