@@ -994,6 +994,16 @@ Hue.add_to_chat = function(args={})
     let highlighted = args.message.data("highlighted")
     let content_container, message_id
 
+    let codes = args.message.find("pre code")
+
+    if(codes.length > 0)
+    {
+        codes.each(function() 
+        {
+            hljs.highlightBlock(this)
+        })
+    }
+
     if(mode === "chat")
     {
         content_container = args.message.find(".chat_content_container").eq(0)
@@ -1299,9 +1309,18 @@ Hue.highlight_same_posts = function(uname, add=true)
 // For example **this** or _this_
 Hue.make_markdown_char_regex = function(char)
 {
-    // Raw regex if "="" was the char
+    // Raw regex if "=" was the char
     // (^|\s|\[dummy\-space\])(\=+)(?!\s)(.*[^\=\s])\2($|\s|\[dummy\-space\])
     let regex = `(^|\\s|\\[dummy\\-space\\])(${Hue.utilz.escape_special_characters(char)}+)(?!\\s)(.*[^${Hue.utilz.escape_special_characters(char)}\\s])\\2($|\\s|\\[dummy\\-space\\])`
+    return new RegExp(regex, "gm")
+}
+
+// Regex generator for character based markdown but with whitespace and multiline support
+Hue.make_markdown_char_regex_2 = function(char)
+{
+    // Raw regex if "`" was the char
+    // (^|\s|\[dummy\-space\])(\`+)([\s\S]+[^\`])\2($|\s|\[dummy\-space\])
+    let regex = `(^|\\s|\\[dummy\\-space\\])(${Hue.utilz.escape_special_characters(char)}+)([\\s\\S]+[^${Hue.utilz.escape_special_characters(char)}])\\2($|\\s|\\[dummy\\-space\\])`
     return new RegExp(regex, "gm")
 }
 
@@ -1379,6 +1398,20 @@ Hue.setup_markdown_regexes = function()
         return g1
     }
 
+    Hue.markdown_regexes["`"] = {}
+    Hue.markdown_regexes["`"].regex = Hue.make_markdown_char_regex_2("`")
+    Hue.markdown_regexes["`"].replace_function = function(g1, g2, g3, g4, g5)
+    {
+        let n = g3.length
+
+        if(n === 3)
+        {
+            return `${g2}<pre><code>[dummy-space]${g4}[dummy-space]</code></pre>${g5}`
+        }
+
+        return g1
+    }
+
     Hue.markdown_regexes["whisper_link"] = {}
     Hue.markdown_regexes["whisper_link"].regex = new RegExp(`\\[whisper\\s+(.*?)\\](.*?)\\[\/whisper\\]`, "gm")
     Hue.markdown_regexes["whisper_link"].replace_function = function(g1, g2, g3)
@@ -1413,6 +1446,7 @@ Hue.replace_markdown = function(text)
     text = text.replace(Hue.markdown_regexes["*"].regex, Hue.markdown_regexes["*"].replace_function)
     text = text.replace(Hue.markdown_regexes["_"].regex, Hue.markdown_regexes["_"].replace_function)
     text = text.replace(Hue.markdown_regexes["="].regex, Hue.markdown_regexes["="].replace_function)
+    text = text.replace(Hue.markdown_regexes["`"].regex, Hue.markdown_regexes["`"].replace_function)
 
     if(!Hue.get_setting("autoreveal_spoilers"))
     {

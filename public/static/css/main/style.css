@@ -3085,3 +3085,8 @@ a.special_link:hover
 	border: 0px solid grey;
 	outline: none;
 }
+
+pre
+{
+	margin: 0;
+}
