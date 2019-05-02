@@ -2327,6 +2327,11 @@ input[type=text], textarea
 	margin-bottom: 0rem;
 }
 
+#show_profile_buttons > div:only-child
+{
+	margin-bottom: 0rem;
+}
+
 #show_profile_bio
 {
 	margin-top: 2rem;
