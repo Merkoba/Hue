@@ -708,6 +708,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .userlist_item_details_container
 {
+	margin-top: 0.4rem;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -727,7 +728,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .userlist_item_role
 {
-	font-size: 0.9em;
+	font-size: 0.8em;
 	flex-shrink: 0;
 	margin-left: 0.5rem;
 }
