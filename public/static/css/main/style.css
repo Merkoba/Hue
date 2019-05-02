@@ -3089,4 +3089,5 @@ a.special_link:hover
 pre
 {
 	margin: 0;
+	white-space: pre-wrap;
 }
