@@ -203,6 +203,7 @@ Hue.show_change_username = function()
 
     Hue.msg_info2.show(["Change Username", s], function()
     {
+        $("#change_username_input").val(Hue.username)
         $("#change_username_input").focus()
 
         $("#change_username_submit").click(function()

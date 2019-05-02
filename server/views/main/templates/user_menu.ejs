@@ -1,6 +1,8 @@
 <script id='template_user_menu' type='text/x-handlebars-template' class='template'>
     <div class='unselectable'>
-        <div class='bigger2' id='user_menu_username'>Loading</div>
+        <div id='user_menu_username_container'>
+            <div class='bigger2' id='user_menu_username' onclick='Hue.show_change_username()'>Loading</div>
+        </div>
 
         <div id='user_menu_profile_image_container' class='big_profile_image_container round_image_container'>
             <img id='user_menu_profile_image' class='big_profile_image pointer unselectable' onclick='Hue.open_profile_image_picker()'>

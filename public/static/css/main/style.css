@@ -1655,9 +1655,15 @@ input[type=text], textarea
 	animation: fadein 600ms linear;
 }
 
-#user_menu_username
+#user_menu_username_container
 {
 	margin-bottom: 1rem;
+}
+
+#user_menu_username
+{
+	cursor: pointer;
+	display: inline-block;
 }
 
 #user_menu_profile_image_container
@@ -3075,7 +3081,7 @@ a.special_link:hover
 
 #user_menu_bio_textarea
 {
-	margin-bottom: 1rem;
+	margin-bottom: 1.4rem;
 	border: 0px solid grey;
 	outline: none;
 }
