@@ -2317,19 +2317,9 @@ input[type=text], textarea
 	margin-top: 2rem;
 }
 
-#show_profile_buttons > div
+#show_profile_edit
 {
-	margin-bottom: 1rem;
-}
-
-#show_profile_buttons > div:last-child
-{
-	margin-bottom: 0rem;
-}
-
-#show_profile_buttons > div:only-child
-{
-	margin-bottom: 0rem;
+	margin-top: 1rem;
 }
 
 #show_profile_bio
