@@ -726,6 +726,24 @@ const Utilz = function()
 		return s
 	}
 
+	utilz.clean_multiline_2 = function(s)
+	{
+		let split = s.split("\n")
+		let num_lines = split.length
+
+		if(num_lines === 1)
+		{
+			s = s.trim()
+		}
+
+		else
+		{
+			s = s.trimRight()
+		}
+
+		return s
+	}
+
 	utilz.get_limited_string = function(s, n)
 	{
 		let title
