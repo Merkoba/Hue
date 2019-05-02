@@ -694,8 +694,9 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 #userlist
 {
-	margin-left: 2rem;
-	margin-right: 2rem;
+	margin-left: 1rem;
+	margin-right: 1rem;
+	text-align: center;
 }
 
 .userlist_item
@@ -704,6 +705,9 @@ a.generic:link, a.generic:visited, a.generic:hover
 	margin-bottom: 1.8rem;
 	overflow-wrap: break-word;
 	word-break: break-word;
+	display: inline-block;
+	margin-left: 2rem;
+	margin-right: 2rem;
 }
 
 .userlist_item_details_container
@@ -736,6 +740,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 {
 	margin-top: 0.4rem;
 	font-size: 0.9rem;
+	cursor: pointer;
 }
 
 .userlist_item_profile_image_container

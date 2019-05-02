@@ -376,7 +376,7 @@ Hue.update_userlist = function()
 // Some configurations for the userlist window
 Hue.setup_userlist_window = function()
 {
-    $("#userlist").on("click", ".userlist_item_username, .userlist_item_profile_image", function()
+    $("#userlist").on("click", ".userlist_item_username, .userlist_item_profile_image, .userlist_item_bio", function()
     {
         let uname = $(this).closest(".userlist_item").find(".userlist_item_username").eq(0).text()
 
@@ -445,7 +445,7 @@ Hue.update_userlist_window = function()
 
         if(item.bio)
         {
-            bio.html(Hue.make_html_safe(item.bio).replace(/\n+/g, " <br> ")).urlize()
+            bio.text(item.bio.substring(0, 100))
         }
 
         else
@@ -1184,6 +1184,14 @@ Hue.setup_show_profile = function()
     {
         Hue.write_popup_message([$("#show_profile_uname").text()])
     })
+
+    $("#show_profile_image").on("error", function()
+    {
+        if($(this).attr("src") !== Hue.config.default_profile_image_url)
+        {
+            $(this).attr("src", Hue.config.default_profile_image_url)
+        }
+    })
 }
 
 // Shows a user's profile window
@@ -1221,14 +1229,6 @@ Hue.show_profile = function(uname, prof_image)
     $("#show_profile_uname").text(uname)
     $("#show_profile_role").text(`(${role})`)
     $("#show_profile_bio").html(Hue.make_html_safe(bio).replace(/\n+/g, " <br> ")).urlize()
-
-    $("#show_profile_image").on("error", function()
-    {
-        if($(this).attr("src") !== Hue.config.default_profile_image_url)
-        {
-            $(this).attr("src", Hue.config.default_profile_image_url)
-        }
-    })
 
     $("#show_profile_image").attr("src", pi)
 
