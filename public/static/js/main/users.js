@@ -1268,7 +1268,28 @@ Hue.profile_image_changed = function(data)
 
     if(!Hue.user_is_ignored(data.username))
     {
-        Hue.public_feedback(`${data.username} changed the profile image`,
+        Hue.public_feedback(`${data.username} changed their profile image`,
+        {
+            username: data.username,
+            open_profile: true
+        })
+    }
+}
+
+// When any user changes their bio
+Hue.bio_changed = function(data)
+{
+    let user = Hue.get_user_by_username(data.username)
+    user.bio = data.bio
+
+    if(data.username === Hue.username)
+    {
+        Hue.set_bio(data.bio)
+    }
+
+    if(!Hue.user_is_ignored(data.username))
+    {
+        Hue.public_feedback(`${data.username} changed their bio`,
         {
             username: data.username,
             open_profile: true

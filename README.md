@@ -816,6 +816,12 @@ This should be an array of strings of root domains.
 "url_title_max_length"
 >Maximum length for urls to be shown fully in window titles. After this they get cropped and "..." is added.
 
+"max_bio_length"
+>Character length of user bios.
+
+"max_bio_lines"
+>Maximum number of linebreaks allowed in user bios.
+
 
 ## The following reside in config.secret.json
 

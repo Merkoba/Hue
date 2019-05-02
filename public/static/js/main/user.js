@@ -228,18 +228,6 @@ Hue.change_bio = function(value)
     return true
 }
 
-// When any user changes their bio
-Hue.bio_changed = function(data)
-{
-    let user = Hue.get_user_by_username(data.username)
-    user.bio = data.bio
-
-    if(data.username === Hue.username)
-    {
-        Hue.set_bio(data.bio)
-    }
-}
-
 // Shows the user's details window
 Hue.show_details = function(data)
 {
