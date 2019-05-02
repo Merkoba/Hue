@@ -445,7 +445,7 @@ Hue.update_userlist_window = function()
 
         if(item.bio)
         {
-            bio.text(item.bio.substring(0, 100))
+            bio.text(item.bio.substring(0, 50))
         }
 
         else

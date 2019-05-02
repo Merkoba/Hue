@@ -738,6 +738,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	margin-top: 0.2rem;
 	font-size: 0.9rem;
 	cursor: pointer;
+	max-width: 12rem;
 }
 
 .userlist_item_profile_image_container
