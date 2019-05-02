@@ -489,6 +489,17 @@ Hue.apply_theme = function()
         color: ${color_3} !important;
     }
 
+    #user_menu_bio_textarea
+    {
+        background-color: ${slight_background} !important;
+        color: ${font_color} !important;
+    }
+
+    #user_menu_bio_textarea::placeholder
+    {
+        color: ${color_3} !important;
+    }
+
     </style>
     `
 

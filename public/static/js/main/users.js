@@ -1185,6 +1185,11 @@ Hue.setup_show_profile = function()
         Hue.write_popup_message([$("#show_profile_uname").text()])
     })
 
+    $("#show_profile_edit").click(function()
+    {
+        Hue.show_user_menu()
+    })
+
     $("#show_profile_image").on("error", function()
     {
         if($(this).attr("src") !== Hue.config.default_profile_image_url)
@@ -1201,11 +1206,17 @@ Hue.show_profile = function(uname, prof_image)
     let role = "Offline"
     let bio = ""
     let user = Hue.get_user_by_username(uname)
+    let same_user = false
 
     if(user)
     {
         role = Hue.get_pretty_role_name(user.role)
         bio = user.bio
+
+        if(user.username === Hue.username)
+        {
+            same_user = true
+        }
     }
 
     if(prof_image === "" || prof_image === undefined || prof_image === "undefined")
@@ -1252,6 +1263,16 @@ Hue.show_profile = function(uname, prof_image)
         $("#show_profile_buttons").css("display", "none")
     }
 
+    if(same_user)
+    {
+        $("#show_profile_edit").css("display", "block")
+    }
+    
+    else
+    {
+        $("#show_profile_edit").css("display", "none")
+    }
+
     Hue.msg_profile.show()
 }
 
@@ -1287,7 +1308,7 @@ Hue.bio_changed = function(data)
         Hue.set_bio(data.bio)
     }
 
-    if(!Hue.user_is_ignored(data.username))
+    if(data.bio && !Hue.user_is_ignored(data.username))
     {
         Hue.public_feedback(`${data.username} changed their bio`,
         {

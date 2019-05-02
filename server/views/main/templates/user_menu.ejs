@@ -6,6 +6,8 @@
             <img id='user_menu_profile_image' class='big_profile_image pointer unselectable' onclick='Hue.open_profile_image_picker()'>
         </div>
 
+        <textarea id='user_menu_bio_textarea' class='setting_textarea' rows="3" placeholder="Write something about yourself"></textarea>
+
         <div class='flex_row_center user_menu_items_container menu_item_smaller_2 generic_horizontal_separator'>
             <div class='action' onclick='Hue.show_details()'>Details</div>
             <div class='action' onclick='Hue.needs_confirm("logout")'>Logout</div>
@@ -32,6 +34,9 @@
 
             <div class='toggler_container user_menu_toggle_container'>
                 <div id='user_menu_toggle_items' class='grid_column_center'>
+                    <div class='action pointer' onclick='Hue.show_change_username()'>Change Username</div>
+                    <div class='action pointer' onclick='Hue.show_change_password()'>Change Password</div>
+                    <div class='action pointer' onclick='Hue.show_change_email()'>Change Email</div>
                     <div class='pointer action' onclick='Hue.show_import_settings()'>Import Settings</div>
                     <div class='pointer action' onclick='Hue.show_export_settings()'>Export Settings</div>
                     <div class='pointer action' onclick='Hue.request_notifications_permission()'>Enable Notifications</div>

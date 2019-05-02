@@ -2317,6 +2317,16 @@ input[type=text], textarea
 	margin-top: 2rem;
 }
 
+#show_profile_buttons > div
+{
+	margin-bottom: 1rem;
+}
+
+#show_profile_buttons > div:last-child
+{
+	margin-bottom: 0rem;
+}
+
 #show_profile_bio
 {
 	margin-top: 2rem;
@@ -3005,9 +3015,9 @@ a.special_link:hover
 	margin-bottom: 1.5rem;
 }
 
-#details_change_buttons
+#user_menu_change_buttons
 {
-	margin-top: 1rem;
+	margin-bottom: 1rem;
 	grid-gap: 0.8rem;
 }
 
@@ -3066,4 +3076,11 @@ a.special_link:hover
 #image_picker_submit
 {
 	display: none;
+}
+
+#user_menu_bio_textarea
+{
+	margin-bottom: 1rem;
+	border: 0px solid grey;
+	outline: none;
 }

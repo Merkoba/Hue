@@ -156,48 +156,6 @@ Hue.setup_details = function()
     </div>(${Hue.get_timeago(Hue.date_joined)})</div>`
 
     $("#details_joined_room").html(s)
-
-    $("#details_change_username").click(function()
-    {
-        Hue.show_change_username()
-    })
-
-    $("#details_change_password").click(function()
-    {
-        Hue.show_change_password()
-    })
-
-    $("#details_change_email").click(function()
-    {
-        Hue.show_change_email()
-    })
-
-    $("#details_bio_textarea").val(Hue.bio)
-
-    $("#details_bio_textarea").blur(function()
-    {
-        let value = Hue.utilz.clean_string12($(this).val())
-        
-        if(value !== Hue.bio)
-        {
-            let result = Hue.change_bio(value)
-
-            if(!result)
-            {
-                $(this).val(Hue.bio)
-            }
-
-            else
-            {
-                $(this).val(value)
-            }
-        }
-
-        else
-        {
-            $(this).val(value)
-        }
-    })
 }
 
 // Changes the user's bio
@@ -263,7 +221,7 @@ Hue.submit_change_username = function()
 
     if(Hue.change_username(uname, false))
     {
-        Hue.close_all_modals()
+        Hue.msg_info2.close()
     }
 
     else
@@ -301,7 +259,7 @@ Hue.submit_change_password = function()
 
     if(Hue.change_password(uname, false))
     {
-        Hue.close_all_modals()
+        Hue.msg_info2.close()
     }
 
     else
@@ -339,7 +297,7 @@ Hue.submit_change_email = function()
 
     if(Hue.change_email(uname, false))
     {
-        Hue.close_all_modals()
+        Hue.msg_info2.close()
     }
 
     else
@@ -366,6 +324,7 @@ Hue.set_email = function(email)
 Hue.set_bio = function(bio)
 {
     Hue.bio = bio
+    $("#user_menu_bio_textarea").val(Hue.bio)
 }
 
 // Setups the user menu
@@ -380,6 +339,34 @@ Hue.setup_user_menu = function()
     })
 
     $("#user_menu_profile_image").attr("src", Hue.profile_image)
+
+    $("#user_menu_bio_textarea").val(Hue.bio)
+
+    $("#user_menu_bio_textarea").blur(function()
+    {
+        let value = Hue.utilz.clean_string12($(this).val())
+        
+        if(value !== Hue.bio)
+        {
+            let result = Hue.change_bio(value)
+
+            if(!result)
+            {
+                $(this).val(Hue.bio)
+            }
+
+            else
+            {
+                $(this).val(value)
+            }
+        }
+
+        else
+        {
+            $(this).val(value)
+        }
+    })
+
     Hue.setup_togglers("user_menu")
 }
 
