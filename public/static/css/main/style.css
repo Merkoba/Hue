@@ -701,13 +701,10 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .userlist_item
 {
-	margin-top: 1.4rem;
-	margin-bottom: 1.4rem;
+	margin: 1.2rem;
 	overflow-wrap: break-word;
 	word-break: break-word;
 	display: inline-block;
-	margin-left: 1.4rem;
-	margin-right: 1.4rem;
 }
 
 .userlist_item_details_container
