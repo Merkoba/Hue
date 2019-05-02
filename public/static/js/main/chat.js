@@ -17,7 +17,7 @@ Hue.process_message = function(args={})
     let message_split = args.message.split("\n")
     let num_lines = message_split.length
 
-    args.message = Hue.utilz.clean_multiline(args.message)
+    args.message = args.message.trim()
 
     if(num_lines === 1 && Hue.is_command(args.message) && !args.edit_id)
     {
@@ -289,7 +289,7 @@ Hue.process_message = function(args={})
     {
         if(Hue.can_chat)
         {
-            args.message = Hue.utilz.clean_string10(Hue.utilz.clean_multiline(args.message))
+            args.message = args.message.trim()
 
             if(args.message.length === 0)
             {

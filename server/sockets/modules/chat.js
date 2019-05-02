@@ -18,11 +18,6 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(data.message !== utilz.clean_string10(data.message))
-        {
-            return handler.get_out(socket)
-        }
-
         if(data.message.split("\n").length > config.max_num_newlines)
         {
             return handler.get_out(socket)
