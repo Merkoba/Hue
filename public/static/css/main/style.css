@@ -713,7 +713,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	margin-left: 1rem;
 	font-size: 1.2em;
 	white-space: nowrap;
 }
