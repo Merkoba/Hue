@@ -731,6 +731,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	font-size: 0.8em;
 	flex-shrink: 0;
 	margin-left: 0.5rem;
+	cursor: pointer;
 }
 
 .userlist_item_bio
@@ -738,7 +739,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	margin-top: 0.2rem;
 	font-size: 0.9rem;
 	cursor: pointer;
-	max-width: 12rem;
+	max-width: 10rem;
 }
 
 .userlist_item_profile_image_container

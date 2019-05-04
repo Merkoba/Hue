@@ -376,7 +376,7 @@ Hue.update_userlist = function()
 // Some configurations for the userlist window
 Hue.setup_userlist_window = function()
 {
-    $("#userlist").on("click", ".userlist_item_username, .userlist_item_profile_image, .userlist_item_bio", function()
+    $("#userlist").on("click", ".userlist_item_username, .userlist_item_profile_image, .userlist_item_bio, .userlist_item_role", function()
     {
         let uname = $(this).closest(".userlist_item").find(".userlist_item_username").eq(0).text()
 
