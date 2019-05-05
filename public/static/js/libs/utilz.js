@@ -730,6 +730,7 @@ const Utilz = function()
 	{
 		let split = s.split("\n")
 		let num_lines = split.length
+		let used = false
 
 		if(num_lines === 1)
 		{
@@ -738,7 +739,34 @@ const Utilz = function()
 
 		else
 		{
-			s = s.trimRight()
+			let new_lines = []
+
+			for(let line of split)
+			{
+				line = line.trimRight()
+				let add = false
+
+				if(line)
+				{
+					used = true
+					add = true
+				}
+
+				else
+				{
+					if(used)
+					{
+						add = true
+					}
+				}
+
+				if(add)
+				{
+					new_lines.push(line)
+				}
+			}
+
+			s = new_lines.join("\n")
 		}
 
 		return s
