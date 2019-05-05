@@ -955,6 +955,19 @@ Hue.clear_activity_bar_items = function()
     })
 }
 
+// Updates the profile image of an item in the activity bar
+Hue.update_activity_bar_image = function(username, src)
+{
+    $("#activity_bar_content").find(".activity_bar_item").each(function()
+    {
+        if($(this).data("username") === username)
+        {
+            $(this).find(".activity_bar_image").eq(0).attr("src", src)
+            return false
+        }
+    })
+}
+
 // What to do when a user disconnects
 Hue.userdisconnect = function(data)
 {
@@ -1295,6 +1308,8 @@ Hue.profile_image_changed = function(data)
             open_profile: true
         })
     }
+
+    Hue.update_activity_bar_image(data.username, data.profile_image)
 }
 
 // When any user changes their bio
