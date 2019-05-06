@@ -645,20 +645,6 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Adds a heart to a user
     handler.public.send_badge = async function(socket, data)
     {
-        socket.hue_badge_counter += 1
-
-        if(socket.hue_badge_counter >= 10)
-        {
-            let spam_ans = await handler.add_spam(socket)
-
-            if(!spam_ans)
-            {
-                return false
-            }
-
-            socket.hue_badge_counter = 0
-        }
-        
         if(!data.username || !data.type)
         {
             return handler.get_out(socket)

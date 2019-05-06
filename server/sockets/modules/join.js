@@ -14,7 +14,6 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         socket.hue_typing_counter = 0
         socket.hue_activity_counter = 0
         socket.hue_synth_counter = 0
-        socket.hue_badge_counter = 0
         socket.hue_last_activity_trigger = 0
         socket.hue_last_heart_date = Date.now()
     }
