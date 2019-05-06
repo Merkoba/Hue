@@ -1242,8 +1242,9 @@ Hue.show_profile = function(uname, prof_image)
             same_user = true
         }
 
-        Hue.open_profile_user = user
     }
+    
+    Hue.open_profile_username = uname
 
     if(prof_image === "" || prof_image === undefined || prof_image === "undefined")
     {
@@ -1769,7 +1770,7 @@ Hue.send_heart = function(username)
 // What happens when a user receives a heart
 Hue.on_heart_received = function(data)
 {
-    if(data.username === Hue.open_profile_user.username)
+    if(data.username === Hue.open_profile_username)
     {
         $("#show_profile_hearts_counter").text(data.hearts)
     }

@@ -179,7 +179,7 @@ Hue.typing_delay = 100
 Hue.loaded_image = {}
 Hue.loaded_tv = {}
 Hue.loaded_radio = {}
-Hue.open_profile_user = false
+Hue.open_profile_username = false
 Hue.send_heart_disabled = false
 
 // Initial media-loading variables declarations

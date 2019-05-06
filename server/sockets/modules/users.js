@@ -657,6 +657,11 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             socket.hue_hearts_counter = 0
         }
 
+        if(data.username === socket.hue_username)
+        {
+            return handler.get_out(socket)
+        }
+
         if(Date.now() - socket.hue_last_heart_date < config.send_heart_cooldown)
         {
             return false
