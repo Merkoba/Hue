@@ -70,7 +70,6 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
         background_tile_dimensions:{type:"string", default:"200px auto"},
         text_color_mode:{type:"string", default:"automatic"},
         text_color:{type:"string", default:"#cdcadf"},
-        modified:{type:"number", default:Date.now()},
         public:{type:"boolean", default:true},
         voice1_chat_permission:{type:"boolean", default:true},
         voice1_images_permission:{type:"boolean", default:true},
@@ -91,7 +90,8 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
         voice4_images_permission:{type:"boolean", default:true},
         voice4_tv_permission:{type:"boolean", default:true},
         voice4_radio_permission:{type:"boolean", default:true},
-        voice4_synth_permission:{type:"boolean", default:true}
+        voice4_synth_permission:{type:"boolean", default:true},
+        modified:{type:"number", default:Date.now()}
     }
 
     // User schema definition
