@@ -475,7 +475,6 @@ Hue.change_lock_radio = function()
     {
         $("#footer_lock_radio_icon").removeClass("fa-unlock-alt")
         $("#footer_lock_radio_icon").addClass("fa-lock")
-        $("#footer_lock_radio_icon").addClass("border_bottom")
 
         if(Hue.loaded_radio !== Hue.current_radio())
         {
@@ -487,7 +486,6 @@ Hue.change_lock_radio = function()
     {
         $("#footer_lock_radio_icon").removeClass("fa-lock")
         $("#footer_lock_radio_icon").addClass("fa-unlock-alt")
-        $("#footer_lock_radio_icon").removeClass("border_bottom")
         $("#footer_lock_radio_icon").removeClass("blinking")
 
         if(Hue.first_media_change)

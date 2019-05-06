@@ -174,13 +174,13 @@ Hue.add_to_chat_searches_delay = 2000
 Hue.reactions_box_open = false
 Hue.first_media_change = false
 Hue.calc_round_places = 10
-Hue.media_icons = {image: "fa-camera", tv: "fa-television", radio: "fa-volume-up"}
+Hue.media_icons = {image: "fa-camera", tv: "fa-tv", radio: "fa-volume-up"}
 Hue.typing_delay = 100
 Hue.loaded_image = {}
 Hue.loaded_tv = {}
 Hue.loaded_radio = {}
 Hue.open_profile_username = false
-Hue.send_heart_disabled = false
+Hue.send_badge_disabled = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

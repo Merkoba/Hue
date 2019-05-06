@@ -1245,27 +1245,6 @@ Hue.start_chat_mouse_events = function()
     {
         Hue.stop_edit_message()
     })
-
-    $(".chat_area").on("auxclick", ".chat_profile_image_container", function(e)
-    {
-        if(e.which === 2)
-        {
-            if($(this).hasClass("redrum"))
-            {
-                return false
-            }
-
-            $(this).addClass("redrum")
-            Hue.play_audio("death")
-
-            let el = this
-
-            setTimeout(function()
-            {
-                $(el).removeClass("redrum")
-            }, 500)
-        }
-    })
 }
 
 // Starts chat hover events

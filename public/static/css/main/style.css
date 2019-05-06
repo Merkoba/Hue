@@ -1570,7 +1570,7 @@ input[type=text], textarea
 
 #draw_image_bucket_icon
 {
-	margin-right: 1.6rem;
+	margin-right: 0.8rem;
 }
 
 #write_message_feedback
@@ -2096,7 +2096,7 @@ input[type=text], textarea
 
 #draw_image_pencil_size
 {
-	height: 33px;
+	height: 23px;
 }
 
 .modal_icon_selected
@@ -2333,6 +2333,17 @@ input[type=text], textarea
 }
 
 #show_profile_hearts_x
+{
+	margin-left: 0.5rem;
+	margin-right: 0.4rem;
+}
+
+#show_profile_skulls
+{
+	margin-top: 0.25rem;
+}
+
+#show_profile_skulls_x
 {
 	margin-left: 0.5rem;
 	margin-right: 0.4rem;
@@ -3102,13 +3113,22 @@ pre
 	white-space: pre-wrap;
 }
 
-.redrum
+#chat_area .heart_badge
 {
 	background-color: red;
-	box-shadow: inset 0 0 20px rgb(85, 16, 16);
 }
 
-.redrum > *
+#chat_area .skull_badge
+{
+	background-color: black;
+}
+
+#chat_area .profile_image_badge > .chat_profile_image
 {
 	display: none
+}
+
+#chat_area .profile_image_badge > .profile_image_badge_icon
+{
+	box-shadow: none;
 }

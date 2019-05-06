@@ -101,5 +101,5 @@ module.exports = function(c, config)
     c.vars.max_bio_length = config.max_bio_length
     c.vars.max_bio_length = config.max_bio_length
     c.vars.max_bio_lines = config.max_bio_lines
-    c.vars.send_heart_cooldown = config.send_heart_cooldown
+    c.vars.send_badge_cooldown = config.send_badge_cooldown
 }

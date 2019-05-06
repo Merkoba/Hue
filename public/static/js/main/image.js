@@ -902,7 +902,6 @@ Hue.change_lock_images = function()
     {
         $("#footer_lock_images_icon").removeClass("fa-unlock-alt")
         $("#footer_lock_images_icon").addClass("fa-lock")
-        $("#footer_lock_images_icon").addClass("border_bottom")
 
         if(Hue.loaded_image !== Hue.current_image())
         {
@@ -914,7 +913,6 @@ Hue.change_lock_images = function()
     {
         $("#footer_lock_images_icon").removeClass("fa-lock")
         $("#footer_lock_images_icon").addClass("fa-unlock-alt")
-        $("#footer_lock_images_icon").removeClass("border_bottom")
         $("#footer_lock_images_icon").removeClass("blinking")
 
         Hue.change({type:"image"})

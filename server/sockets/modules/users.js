@@ -459,7 +459,8 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 last_activity_trigger: item.last_activity_trigger,
                 date_joined: item.date_joined,
                 bio: item.bio,
-                hearts: item.hearts
+                hearts: item.hearts,
+                skulls: item.skulls
             })
         }
 
@@ -626,6 +627,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             user.email = socket.hue_email
             user.bio = socket.hue_bio
             user.hearts = socket.hue_hearts
+            user.skulls = socket.hue_skulls
             user.last_activity_trigger = socket.hue_last_activity_trigger
 
             if(first)
@@ -641,11 +643,11 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     }
 
     // Adds a heart to a user
-    handler.public.send_heart = async function(socket, data)
+    handler.public.send_badge = async function(socket, data)
     {
-        socket.hue_hearts_counter += 1
+        socket.hue_badge_counter += 1
 
-        if(socket.hue_hearts_counter >= 10)
+        if(socket.hue_badge_counter >= 10)
         {
             let spam_ans = await handler.add_spam(socket)
 
@@ -654,7 +656,17 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 return false
             }
 
-            socket.hue_hearts_counter = 0
+            socket.hue_badge_counter = 0
+        }
+        
+        if(!data.username || !data.type)
+        {
+            return handler.get_out(socket)
+        }
+
+        if(data.type !== "heart" && data.type !== "skull")
+        {
+            return handler.get_out(socket)
         }
 
         if(data.username === socket.hue_username)
@@ -662,12 +674,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(Date.now() - socket.hue_last_heart_date < config.send_heart_cooldown)
-        {
-            return false
-        }
-
-        if(!data.username)
+        if(Date.now() - socket.hue_last_heart_date < config.send_badge_cooldown)
         {
             return false
         }
@@ -680,23 +687,37 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         }
 
         let first_socket = sockets[0]
-        let hearts = first_socket.hue_hearts + 1
+        let badges
+        let prop = {}
+        let prop2 = {}
 
-        handler.modify_socket_properties(first_socket, {hue_hearts:hearts},
+        if(data.type === "heart")
         {
-            method: "heart_received",
+            badges = first_socket.hue_hearts + 1
+            prop.hue_hearts = badges
+            prop2.hearts = badges
+        }
+        
+        else if(data.type === "skull")
+        {
+            badges = first_socket.hue_skulls + 1
+            prop.hue_skulls = badges
+            prop2.skulls = badges
+        }
+
+        handler.modify_socket_properties(first_socket, prop,
+        {
+            method: "badge_received",
             data: 
             {
                 username: data.username,
-                hearts: hearts
+                badges: badges,
+                type: data.type
             }
         })
 
-        await db_manager.update_user(first_socket.hue_user_id,
-        {
-            hearts: first_socket.hue_hearts
-        })
-        
         socket.hue_last_heart_date = Date.now()
+
+        await db_manager.update_user(first_socket.hue_user_id, prop2)
     }
 }

@@ -114,7 +114,7 @@ Hue.announce_tv = function(data)
     {
         id: data.id,
         save: true,
-        brk: "<i class='icon2c fa fa-television'></i>",
+        brk: "<i class='icon2c fa fa-tv'></i>",
         title: data.info,
         onclick: data.onclick,
         date: data.date,
@@ -857,7 +857,6 @@ Hue.change_lock_tv = function()
     {
         $("#footer_lock_tv_icon").removeClass("fa-unlock-alt")
         $("#footer_lock_tv_icon").addClass("fa-lock")
-        $("#footer_lock_tv_icon").addClass("border_bottom")
 
         if(Hue.loaded_tv !== Hue.current_tv())
         {
@@ -869,7 +868,6 @@ Hue.change_lock_tv = function()
     {
         $("#footer_lock_tv_icon").removeClass("fa-lock")
         $("#footer_lock_tv_icon").addClass("fa-unlock-alt")
-        $("#footer_lock_tv_icon").removeClass("border_bottom")
         $("#footer_lock_tv_icon").removeClass("blinking")
 
         Hue.change({type:"tv"})

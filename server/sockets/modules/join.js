@@ -14,7 +14,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         socket.hue_typing_counter = 0
         socket.hue_activity_counter = 0
         socket.hue_synth_counter = 0
-        socket.hue_hearts_counter = 0
+        socket.hue_badge_counter = 0
         socket.hue_last_activity_trigger = 0
         socket.hue_last_heart_date = Date.now()
     }
@@ -92,7 +92,8 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             profile_image: 1,
             registration_date: 1,
             bio: 1,
-            hearts: 1
+            hearts: 1,
+            skulls: 1
         }
 
         if(data.alternative)
@@ -172,6 +173,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         socket.hue_email = userinfo.email
         socket.hue_bio = userinfo.bio
         socket.hue_hearts = userinfo.hearts
+        socket.hue_skulls = userinfo.skulls
         socket.hue_joining = true
 
         socket.join(socket.hue_room_id)
@@ -389,6 +391,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 profile_image: socket.hue_profile_image,
                 bio: socket.hue_bio,
                 hearts: socket.hue_hearts,
+                skulls: socket.hue_skulls,
                 date_joined: Date.now()
             })
 

@@ -71,7 +71,8 @@ Hue.userjoin = function(data)
         profile_image: data.profile_image,
         date_joined: data.date_joined,
         bio: data.bio,
-        hearts: data.hearts
+        hearts: data.hearts,
+        skulls: data.skulls
     })
 
     if(added)
@@ -118,7 +119,8 @@ Hue.add_to_userlist = function(args={})
         profile_image: false,
         date_joined: false,
         bio: "",
-        hearts: 0
+        hearts: 0,
+        skulls: 0
     }
 
     args = Object.assign(def_args, args)
@@ -133,6 +135,7 @@ Hue.add_to_userlist = function(args={})
             Hue.userlist[i].profile_image = args.profile_image
             Hue.userlist[i].bio = args.bio
             Hue.userlist[i].hearts = args.hearts
+            Hue.userlist[i].skulls = args.skulls
 
             Hue.update_userlist()
 
@@ -1061,6 +1064,11 @@ Hue.do_userdisconnect = function(data)
             username: data.username
         })
     }
+
+    if(Hue.open_profile_username === data.username)
+    {
+        Hue.show_profile(data.username, $("#show_profile_image").attr("src"))
+    }
 }
 
 // Announces that the operation cannot be applied to a certain user
@@ -1217,7 +1225,12 @@ Hue.setup_show_profile = function()
 
     $("#show_profile_hearts_icon").click(function()
     {
-        Hue.send_heart($("#show_profile_uname").text())
+        Hue.send_badge($("#show_profile_uname").text(), "heart")
+    })
+
+    $("#show_profile_skulls_icon").click(function()
+    {
+        Hue.send_badge($("#show_profile_uname").text(), "skull")
     })
 }
 
@@ -1228,6 +1241,7 @@ Hue.show_profile = function(uname, prof_image)
     let role = "Offline"
     let bio = ""
     let hearts = 0
+    let skulls = 0
     let user = Hue.get_user_by_username(uname)
     let same_user = false
 
@@ -1236,12 +1250,12 @@ Hue.show_profile = function(uname, prof_image)
         role = Hue.get_pretty_role_name(user.role)
         bio = user.bio
         hearts = user.hearts
+        skulls = user.skulls
 
         if(user.username === Hue.username)
         {
             same_user = true
         }
-
     }
     
     Hue.open_profile_username = uname
@@ -1274,6 +1288,7 @@ Hue.show_profile = function(uname, prof_image)
     {
         $("#show_profile_whisper").css("display", "none")
         $("#show_profile_hearts").css("display", "none")
+        $("#show_profile_skulls").css("display", "none")
     }
     
     else
@@ -1281,6 +1296,8 @@ Hue.show_profile = function(uname, prof_image)
         $("#show_profile_whisper").css("display", "block")
         $("#show_profile_hearts").css("display", "flex")
         $("#show_profile_hearts_counter").text(hearts)
+        $("#show_profile_skulls").css("display", "flex")
+        $("#show_profile_skulls_counter").text(skulls)
     }
 
     if(same_user)
@@ -1743,11 +1760,11 @@ Hue.after_userlist_scroll = function()
     Hue.check_userlist_visibility()
 }
 
-// Sends 1 heart to a user
+// Sends 1 badge to a user
 // This has a cooldown
-Hue.send_heart = function(username)
+Hue.send_badge = function(username, type)
 {
-    if(Hue.send_heart_disabled)
+    if(Hue.send_badge_disabled)
     {
         return false
     }
@@ -1757,21 +1774,73 @@ Hue.send_heart = function(username)
         return false
     }
 
-    Hue.socket_emit("send_heart", {username:username})
+    if(type !== "heart" && type !== "skull")
+    {
+        return false
+    }
 
-    Hue.send_heart_disabled = true
+    Hue.socket_emit("send_badge", {username:username, type:type})
+
+    Hue.send_badge_disabled = true
 
     setTimeout(function()
     {
-        Hue.send_heart_disabled = false
-    }, Hue.config.send_heart_cooldown)
+        Hue.send_badge_disabled = false
+    }, Hue.config.send_badge_cooldown)
 }
 
-// What happens when a user receives a heart
-Hue.on_heart_received = function(data)
+// What happens when a user receives a badge
+Hue.on_badge_received = function(data)
 {
     if(data.username === Hue.open_profile_username)
     {
-        $("#show_profile_hearts_counter").text(data.hearts)
+        if(data.type === "heart")
+        {
+            $("#show_profile_hearts_counter").text(data.badges)
+        }
+        
+        else if(data.type === "skull")
+        {
+            $("#show_profile_skulls_counter").text(data.badges)
+        }
+    }
+
+    let message = Hue.get_last_chat_message_by_username(data.username)
+    let profile_image_container = $(message).find(".chat_profile_image_container").eq(0)
+    
+    Hue.change_profile_image_badge(profile_image_container, data.type)
+}
+
+// Changes the profile image of a user receiving a badge
+Hue.change_profile_image_badge = function(profile_image_container, type)
+{
+    if(!profile_image_container.hasClass("profile_image_badge"))
+    {
+        profile_image_container.addClass(`${type}_badge`)
+        profile_image_container.addClass("profile_image_badge")
+
+        let icon
+
+        if(type === "heart")
+        {
+            icon = "fa fa-heart"
+        }
+
+        else if(type === "skull")
+        {
+            icon = "fa fa-skull"
+        }
+
+        profile_image_container.append(`<i class='${icon} profile_image_badge_icon ${type}_badge'>`)
+
+        setTimeout(function()
+        {
+            profile_image_container.removeClass(`${type}_badge`)
+            profile_image_container.removeClass(`profile_image_badge`)
+            profile_image_container.find(".profile_image_badge_icon").each(function()
+            {
+                $(this).remove()
+            })
+        }, 500)
     }
 }

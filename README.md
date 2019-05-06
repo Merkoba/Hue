@@ -822,8 +822,8 @@ This should be an array of strings of root domains.
 "max_bio_lines"
 >Maximum number of linebreaks allowed in user bios.
 
-"send_heart_cooldown"
->How much time sending a heart is disabled after the last heart sent.
+"send_badge_cooldown"
+>How much time sending a badge is disabled after the last badge sent.
 
 
 ## The following reside in config.secret.json
