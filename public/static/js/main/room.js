@@ -773,7 +773,7 @@ Hue.change_log = function(log)
 }
 
 // Clears the log
-Hue.clear_log = function(type, id=false)
+Hue.clear_log = function(type="all", id=false)
 {
     if(!Hue.utilz.clear_log_types.includes(type))
     {
