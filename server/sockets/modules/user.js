@@ -28,21 +28,15 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         if(done)
         {
-            for(let room_id of vars.user_rooms[socket.hue_user_id])
+            handler.modify_socket_properties(socket, {hue_username:data.username},
             {
-                for(let socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
-                {
-                    socc.hue_username = data.username
-                }
-
-                handler.update_user_in_userlist(socket)
-
-                handler.room_emit(room_id, 'new_username',
+                method: "new_username",
+                data:
                 {
                     username: data.username,
                     old_username: old_username
-                })
-            }
+                }
+            })
         }
 
         else
@@ -180,16 +174,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         else if(ans.message === "changed")
         {
-            for(let room_id of vars.user_rooms[socket.hue_user_id])
-            {
-                for(let socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
-                {
-                    socc.hue_email = data.email
-                }
-
-                handler.update_user_in_userlist(socket)
-            }
-
+            handler.modify_socket_properties(socket, {hue_email:data.email})
             handler.user_emit(socket, 'email_changed', {email:ans.email})
         }
     }
@@ -212,8 +197,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        socket.hue_bio = data.bio
-        handler.update_user_in_userlist(socket)
+        handler.modify_socket_properties(socket, {hue_bio:data.bio})
 
         await db_manager.update_user(socket.hue_user_id,
         {

@@ -70,7 +70,8 @@ Hue.userjoin = function(data)
         role: data.role,
         profile_image: data.profile_image,
         date_joined: data.date_joined,
-        bio: data.bio
+        bio: data.bio,
+        hearts: data.hearts
     })
 
     if(added)
@@ -116,7 +117,8 @@ Hue.add_to_userlist = function(args={})
         role: false,
         profile_image: false,
         date_joined: false,
-        bio: ""
+        bio: "",
+        hearts: 0
     }
 
     args = Object.assign(def_args, args)
@@ -130,6 +132,7 @@ Hue.add_to_userlist = function(args={})
             Hue.userlist[i].role = args.role
             Hue.userlist[i].profile_image = args.profile_image
             Hue.userlist[i].bio = args.bio
+            Hue.userlist[i].hearts = args.hearts
 
             Hue.update_userlist()
 
@@ -144,7 +147,8 @@ Hue.add_to_userlist = function(args={})
         role: args.role,
         profile_image: args.profile_image,
         date_joined: args.date_joined,
-        bio: args.bio
+        bio: args.bio,
+        hearts: args.hearts
     })
 
     Hue.update_userlist()
@@ -1210,6 +1214,11 @@ Hue.setup_show_profile = function()
             $(this).attr("src", Hue.config.default_profile_image_url)
         }
     })
+
+    $("#show_profile_hearts_icon").click(function()
+    {
+        Hue.send_heart($("#show_profile_uname").text())
+    })
 }
 
 // Shows a user's profile window
@@ -1218,6 +1227,7 @@ Hue.show_profile = function(uname, prof_image)
     let pi
     let role = "Offline"
     let bio = ""
+    let hearts = 0
     let user = Hue.get_user_by_username(uname)
     let same_user = false
 
@@ -1225,11 +1235,14 @@ Hue.show_profile = function(uname, prof_image)
     {
         role = Hue.get_pretty_role_name(user.role)
         bio = user.bio
+        hearts = user.hearts
 
         if(user.username === Hue.username)
         {
             same_user = true
         }
+
+        Hue.open_profile_user = user
     }
 
     if(prof_image === "" || prof_image === undefined || prof_image === "undefined")
@@ -1259,21 +1272,14 @@ Hue.show_profile = function(uname, prof_image)
     if(!Hue.can_chat || !Hue.usernames.includes(uname))
     {
         $("#show_profile_whisper").css("display", "none")
+        $("#show_profile_hearts").css("display", "none")
     }
-
+    
     else
     {
         $("#show_profile_whisper").css("display", "block")
-    }
-
-    if($('.show_profile_button').filter(function() {return $(this).css('display') !== 'none'}).length)
-    {
-        $("#show_profile_buttons").css("display", "flex")
-    }
-
-    else
-    {
-        $("#show_profile_buttons").css("display", "none")
+        $("#show_profile_hearts").css("display", "flex")
+        $("#show_profile_hearts_counter").text(hearts)
     }
 
     if(same_user)
@@ -1284,6 +1290,16 @@ Hue.show_profile = function(uname, prof_image)
     else
     {
         $("#show_profile_edit").css("display", "none")
+    }
+
+    if($('.show_profile_button').filter(function() {return $(this).css('display') !== 'none'}).length)
+    {
+        $("#show_profile_buttons").css("display", "flex")
+    }
+
+    else
+    {
+        $("#show_profile_buttons").css("display", "none")
     }
 
     Hue.msg_profile.show()
@@ -1724,4 +1740,37 @@ Hue.after_userlist_filtered = function()
 Hue.after_userlist_scroll = function()
 {
     Hue.check_userlist_visibility()
+}
+
+// Sends 1 heart to a user
+// This has a cooldown
+Hue.send_heart = function(username)
+{
+    if(Hue.send_heart_disabled)
+    {
+        return false
+    }
+
+    if(username === Hue.username)
+    {
+        return false
+    }
+
+    Hue.socket_emit("send_heart", {username:username})
+
+    Hue.send_heart_disabled = true
+
+    setTimeout(function()
+    {
+        Hue.send_heart_disabled = false
+    }, Hue.config.send_heart_cooldown)
+}
+
+// What happens when a user receives a heart
+Hue.on_heart_received = function(data)
+{
+    if(data.username === Hue.open_profile_user.username)
+    {
+        $("#show_profile_hearts_counter").text(data.hearts)
+    }
 }

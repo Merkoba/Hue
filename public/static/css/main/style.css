@@ -2319,7 +2319,7 @@ input[type=text], textarea
 
 #show_profile_buttons
 {
-	margin-top: 2rem;
+	margin-top: 1.6rem;
 }
 
 #show_profile_edit
@@ -2327,9 +2327,20 @@ input[type=text], textarea
 	margin-top: 1rem;
 }
 
+#show_profile_hearts
+{
+	margin-top: 1rem;
+}
+
+#show_profile_hearts_x
+{
+	margin-left: 0.5rem;
+	margin-right: 0.4rem;
+}
+
 #show_profile_bio
 {
-	margin-top: 2rem;
+	margin-top: 1rem;
 }
 
 #infotip_container

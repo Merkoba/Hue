@@ -458,7 +458,8 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 profile_image: item.profile_image,
                 last_activity_trigger: item.last_activity_trigger,
                 date_joined: item.date_joined,
-                bio: item.bio
+                bio: item.bio,
+                hearts: item.hearts
             })
         }
 
@@ -624,6 +625,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             user.profile_image = socket.hue_profile_image
             user.email = socket.hue_email
             user.bio = socket.hue_bio
+            user.hearts = socket.hue_hearts
             user.last_activity_trigger = socket.hue_last_activity_trigger
 
             if(first)
@@ -636,5 +638,60 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         {
             logger.log_error(err)
         }
+    }
+
+    // Adds a heart to a user
+    handler.public.send_heart = async function(socket, data)
+    {
+        socket.hue_hearts_counter += 1
+
+        if(socket.hue_hearts_counter >= 10)
+        {
+            let spam_ans = await handler.add_spam(socket)
+
+            if(!spam_ans)
+            {
+                return false
+            }
+
+            socket.hue_hearts_counter = 0
+        }
+
+        if(Date.now() - socket.hue_last_heart_date < config.send_heart_cooldown)
+        {
+            return false
+        }
+
+        if(!data.username)
+        {
+            return false
+        }
+
+        let sockets = handler.get_user_sockets_per_room_by_username(socket.hue_room_id, data.username)
+
+        if(sockets.length === 0)
+        {
+            return false
+        }
+
+        let first_socket = sockets[0]
+        let hearts = first_socket.hue_hearts + 1
+
+        handler.modify_socket_properties(first_socket, {hue_hearts:hearts},
+        {
+            method: "heart_received",
+            data: 
+            {
+                username: data.username,
+                hearts: hearts
+            }
+        })
+
+        await db_manager.update_user(first_socket.hue_user_id,
+        {
+            hearts: first_socket.hue_hearts
+        })
+        
+        socket.hue_last_heart_date = Date.now()
     }
 }

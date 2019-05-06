@@ -14,7 +14,9 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         socket.hue_typing_counter = 0
         socket.hue_activity_counter = 0
         socket.hue_synth_counter = 0
+        socket.hue_hearts_counter = 0
         socket.hue_last_activity_trigger = 0
+        socket.hue_last_heart_date = Date.now()
     }
 
     // Attempts to join a room
@@ -76,23 +78,26 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             }
         }
 
-        let fields = {}
+        let room_fields = {}
 
         if(vars.rooms[data.room_id])
         {
-            fields = vars.filtered_fields
+            room_fields = vars.filtered_fields
+        }
+
+        let user_fields = 
+        {
+            email: 1,
+            username: 1,
+            profile_image: 1,
+            registration_date: 1,
+            bio: 1,
+            hearts: 1
         }
 
         if(data.alternative)
         {
-            let ans = await db_manager.check_password(data.email, data.password,
-            {
-                email: true,
-                username: true,
-                profile_image: true,
-                registration_date: true,
-                bio: true
-            })
+            let ans = await db_manager.check_password(data.email, data.password, user_fields)
 
             if(!ans.valid)
             {
@@ -103,7 +108,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
             socket.hue_user_id = userinfo._id.toString()
 
-            let info = await db_manager.get_room({_id:data.room_id}, fields)
+            let info = await db_manager.get_room({_id:data.room_id}, room_fields)
 
             if(!info)
             {
@@ -138,21 +143,14 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 {
                     socket.hue_user_id = data.user_id
 
-                    let info = await db_manager.get_room({_id:data.room_id}, fields)
+                    let info = await db_manager.get_room({_id:data.room_id}, room_fields)
 
                     if(!info)
                     {
                         return handler.do_disconnect(socket)
                     }
 
-                    let userinfo = await db_manager.get_user({_id:socket.hue_user_id},
-                    {
-                        email: 1,
-                        username: 1,
-                        profile_image: 1,
-                        registration_date: 1,
-                        bio: 1
-                    })
+                    let userinfo = await db_manager.get_user({_id:socket.hue_user_id}, user_fields)
 
                     if(!userinfo)
                     {
@@ -173,6 +171,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         socket.hue_room_id = info._id.toString()
         socket.hue_email = userinfo.email
         socket.hue_bio = userinfo.bio
+        socket.hue_hearts = userinfo.hearts
         socket.hue_joining = true
 
         socket.join(socket.hue_room_id)
@@ -389,6 +388,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 role: socket.hue_role,
                 profile_image: socket.hue_profile_image,
                 bio: socket.hue_bio,
+                hearts: socket.hue_hearts,
                 date_joined: Date.now()
             })
 

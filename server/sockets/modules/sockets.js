@@ -208,4 +208,36 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             username: socket.hue_username
         })
     }
+
+    // Changes socket properties to all sockets of a user
+    handler.modify_socket_properties = function(socket, properties={}, after_room=false)
+    {
+        for(let room_id of vars.user_rooms[socket.hue_user_id])
+        {
+            let first_socc = false
+
+            for(let socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
+            {
+                for(let key in properties)
+                {
+                    socc[key] = properties[key]
+                }
+
+                if(!first_socc)
+                {
+                    first_socc = socc
+                }
+            }
+
+            if(first_socc)
+            {
+                handler.update_user_in_userlist(first_socc)
+                
+                if(after_room)
+                {
+                    handler.room_emit(room_id, after_room.method, after_room.data)
+                }
+            }
+        }
+    }
 }

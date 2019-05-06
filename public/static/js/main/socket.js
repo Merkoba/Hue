@@ -372,6 +372,10 @@ Hue.server_update_events =
     'bio_changed': (data) =>
     {
         Hue.bio_changed(data)
+    },
+    'heart_received': (data) =>
+    {
+        Hue.on_heart_received(data)
     }
 }
 

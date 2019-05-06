@@ -181,6 +181,7 @@ Hue.start_msg = function()
                 common.after_close(instance)
                 $("#show_profile_uname").text("Loading")
                 $("#show_profile_image").attr("src", Hue.config.profile_image_loading_url)
+                Hue.open_profile_user = false
             }
         })
     )
