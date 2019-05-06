@@ -2014,14 +2014,14 @@ Hue.show_typing = function(data)
 // Shows the typing pencil
 Hue.show_pencil = function()
 {
-    $("#footer_user_menu").addClass("fa-pencil")
+    $("#footer_user_menu").addClass("fa-pencil-alt")
     $("#footer_user_menu").removeClass("fa-user-circle")
 }
 
 // Hides the typing pencil
 Hue.hide_pencil = function()
 {
-    $("#footer_user_menu").removeClass("fa-pencil")
+    $("#footer_user_menu").removeClass("fa-pencil-alt")
     $("#footer_user_menu").addClass("fa-user-circle")
 }
 
