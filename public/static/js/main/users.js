@@ -1774,6 +1774,13 @@ Hue.send_badge = function(username, type)
         return false
     }
 
+    let user = Hue.get_user_by_username(username)
+
+    if(!user)
+    {
+        return false
+    }
+
     if(type !== "heart" && type !== "skull")
     {
         return false

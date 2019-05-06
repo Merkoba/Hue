@@ -1734,6 +1734,28 @@ Hue.commands =
             }
         },
         description: `Changes the user's bio`
+    },
+    "/badgeheart":
+    {
+        action: (arg, ans) =>
+        {
+            if(arg)
+            {
+                Hue.send_badge(arg, "heart")
+            }
+        },
+        description: `Sends a heart badge to a user`
+    },
+    "/badgeskull":
+    {
+        action: (arg, ans) =>
+        {
+            if(arg)
+            {
+                Hue.send_badge(arg, "skull")
+            }
+        },
+        description: `Sends a skull badge to a user`
     }
 }
 
