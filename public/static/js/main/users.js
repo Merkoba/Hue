@@ -1809,6 +1809,18 @@ Hue.on_badge_received = function(data)
     let profile_image_container = $(message).find(".chat_profile_image_container").eq(0)
     
     Hue.change_profile_image_badge(profile_image_container, data.type)
+    
+    let user = Hue.get_user_by_username(data.username)
+
+    if(data.type === "heart")
+    {
+        user.hearts += 1
+    }
+
+    if(data.type === "skull")
+    {
+        user.skulls += 1
+    }
 }
 
 // Changes the profile image of a user receiving a badge

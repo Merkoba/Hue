@@ -38,37 +38,37 @@ Hue.show_reaction = function(data, date=false)
 
     if(data.reaction_type === "like")
     {
-        icon = "<i class='icon2c fa fa-thumbs-o-up'></i>"
+        icon = "<i class='icon2c far fa-thumbs-up'></i>"
         message = `likes this`
     }
 
     else if(data.reaction_type === "love")
     {
-        icon = "<i class='icon2c fa fa-heart-o'></i>"
+        icon = "<i class='icon2c far fa-heart'></i>"
         message = `loves this`
     }
 
     else if(data.reaction_type === "happy")
     {
-        icon = "<i class='icon2c fa fa-smile-o'></i>"
+        icon = "<i class='icon2c far fa-smile'></i>"
         message = `is feeling happy`
     }
 
     else if(data.reaction_type === "meh")
     {
-        icon = "<i class='icon2c fa fa-meh-o'></i>"
+        icon = "<i class='icon2c far fa-meh'></i>"
         message = `is feeling meh`
     }
 
     else if(data.reaction_type === "sad")
     {
-        icon = "<i class='icon2c fa fa-frown-o'></i>"
+        icon = "<i class='icon2c far fa-frown'></i>"
         message = `is feeling sad`
     }
 
     else if(data.reaction_type === "dislike")
     {
-        icon = "<i class='icon2c fa fa-thumbs-o-down'></i>"
+        icon = "<i class='icon2c far fa-thumbs-down'></i>"
         message = `dislikes this`
     }
 
