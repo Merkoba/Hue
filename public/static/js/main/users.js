@@ -1804,11 +1804,6 @@ Hue.on_badge_received = function(data)
             $("#show_profile_skulls_counter").text(data.badges)
         }
     }
-
-    let message = Hue.get_last_chat_message_by_username(data.username)
-    let profile_image_container = $(message).find(".chat_profile_image_container").eq(0)
-    
-    Hue.change_profile_image_badge(profile_image_container, data.type)
     
     let user = Hue.get_user_by_username(data.username)
 
@@ -1820,6 +1815,15 @@ Hue.on_badge_received = function(data)
     if(data.type === "skull")
     {
         user.skulls += 1
+    }
+
+    console.log(1)
+
+    if(Hue.app_focused)
+    {
+        let message = Hue.get_last_chat_message_by_username(data.username)
+        let profile_image_container = $(message).find(".chat_profile_image_container").eq(0)
+        Hue.change_profile_image_badge(profile_image_container, data.type)
     }
 }
 
@@ -1853,6 +1857,6 @@ Hue.change_profile_image_badge = function(profile_image_container, type)
             {
                 $(this).remove()
             })
-        }, 500)
+        }, Hue.config.badge_feedback_duration)
     }
 }

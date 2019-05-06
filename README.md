@@ -825,6 +825,9 @@ This should be an array of strings of root domains.
 "send_badge_cooldown"
 >How much time sending a badge is disabled after the last badge sent.
 
+"badge_feedback_duration"
+>How long a profile image stays changed after a badge is received.
+
 
 ## The following reside in config.secret.json
 

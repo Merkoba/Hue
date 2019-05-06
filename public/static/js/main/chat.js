@@ -2051,6 +2051,11 @@ Hue.get_last_chat_message_by_username = function(ouname)
 // Starts timeout to remove them
 Hue.show_aura = function(uname)
 {
+    if(!Hue.app_focused)
+    {
+        return false
+    }
+    
     if(Hue.aura_timeouts[uname] === undefined)
     {
         Hue.add_aura(uname)
