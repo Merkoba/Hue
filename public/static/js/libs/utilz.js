@@ -822,6 +822,11 @@ const Utilz = function()
 		}
 	}
 
+	utilz.format_number = function(n)
+	{
+		return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+	}
+
 	utilz.media_types = ["image", "tv", "radio"]
 	utilz.clear_log_types = ["all", "above", "below"]
 

@@ -1295,9 +1295,10 @@ Hue.show_profile = function(uname, prof_image)
     {
         $("#show_profile_whisper").css("display", "block")
         $("#show_profile_hearts").css("display", "flex")
-        $("#show_profile_hearts_counter").text(hearts)
         $("#show_profile_skulls").css("display", "flex")
-        $("#show_profile_skulls_counter").text(skulls)
+        
+        Hue.set_hearts_counter(hearts)
+        Hue.set_skulls_counter(skulls)
     }
 
     if(same_user)
@@ -1803,12 +1804,12 @@ Hue.on_badge_received = function(data)
     {
         if(data.type === "heart")
         {
-            $("#show_profile_hearts_counter").text(data.badges)
+            Hue.set_hearts_counter(data.badges)
         }
         
         else if(data.type === "skull")
         {
-            $("#show_profile_skulls_counter").text(data.badges)
+            Hue.set_skulls_counter(data.badges)
         }
     }
     
@@ -1866,4 +1867,16 @@ Hue.change_profile_image_badge = function(profile_image_container, type)
             })
         }, Hue.config.badge_feedback_duration)
     }
+}
+
+// Sets the hearts counter in the profile window
+Hue.set_hearts_counter = function(hearts)
+{
+    $("#show_profile_hearts_counter").text(Hue.utilz.format_number(hearts))
+}
+
+// Sets the skulls counter in the profile window
+Hue.set_skulls_counter = function(skulls)
+{
+    $("#show_profile_skulls_counter").text(Hue.utilz.format_number(skulls))
 }
