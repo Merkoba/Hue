@@ -1145,6 +1145,7 @@ select
 	padding-left: 0.25em;
 	padding-right: 0.25em;
 	cursor: pointer;
+	min-width: 8rem;
 }
 
 .message
