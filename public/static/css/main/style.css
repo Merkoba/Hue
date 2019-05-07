@@ -2498,7 +2498,7 @@ a.special_link:hover
 	cursor: pointer;
 	align-items: center;
 	justify-content: flex-start;
-	padding: 1rem;
+	padding: 0.5rem;
 	align-self: flex-start;
 }
 
