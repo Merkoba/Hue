@@ -788,7 +788,7 @@ Hue.chat_announce = function(args={})
 
         if(args.comment_icon)
         {
-            comment = `<div class='${cls}'><div class='announcement_comment_inner flex_row_center'><i class='announcement_comment_icon fa fa-comment-o icon2'></i>${c}</div></div>`
+            comment = `<div class='${cls}'><div class='announcement_comment_inner flex_row_center'><i class='announcement_comment_icon far fa-comment icon2'></i>${c}</div></div>`
         }
 
         else
