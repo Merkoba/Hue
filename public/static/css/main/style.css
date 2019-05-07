@@ -1535,6 +1535,7 @@ input[type=text], textarea
 .draw_canvas
 {
 	outline: none;
+	display: block;
 }
 
 .draw_canvas_received

@@ -1059,7 +1059,7 @@ Hue.do_userdisconnect = function(data)
 
         Hue.public_feedback(s,
         {
-            brk: "<i class='icon2c fa fa-sign-out'></i>",
+            brk: "<i class='icon2c fas fa-sign-out-alt'></i>",
             save: true,
             username: data.username
         })
