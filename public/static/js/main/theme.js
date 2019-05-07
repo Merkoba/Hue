@@ -317,12 +317,12 @@ Hue.apply_theme = function()
 
     .left_scroller
     {
-        border-right: 1px ${color_4_a} solid;
+        border-right: 1px ${color_4_a} solid !important;
     }
 
     .center_scroller
     {
-        border-right: 1px ${color_4_a} solid;
+        border-right: 1px ${color_4_a} solid !important;
     }
 
     .topbox_container
@@ -498,6 +498,11 @@ Hue.apply_theme = function()
     #user_menu_bio_textarea::placeholder
     {
         color: ${color_3} !important;
+    }
+
+    .vertical_separator
+    {
+        color: ${color_4} !important;
     }
 
     </style>
