@@ -1825,8 +1825,6 @@ Hue.on_badge_received = function(data)
         user.skulls += 1
     }
 
-    console.log(1)
-
     if(Hue.app_focused)
     {
         let message = Hue.get_last_chat_message_by_username(data.username)
