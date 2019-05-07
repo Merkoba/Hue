@@ -2586,18 +2586,21 @@ Hue.get_latest_highlight = function()
         }
     })
 
-    $($("#chat_area > .message.announcement").get().reverse()).each(function()
+    if(latest_highlight)
     {
-        if($(this).data("highlighted"))
+        $($("#chat_area > .message.announcement").get().reverse()).each(function()
         {
-            if($(this).data("date") > $(latest_highlight).data("date"))
+            if($(this).data("highlighted"))
             {
-                latest_highlight = this
+                if($(this).data("date") > $(latest_highlight).data("date"))
+                {
+                    latest_highlight = this
+                }
+    
+                return false
             }
-
-            return false
-        }
-    })
+        })
+    }
 
     return latest_highlight
 }
