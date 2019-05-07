@@ -416,20 +416,25 @@ Hue.update_userlist_window = function()
         let item = Hue.userlist[i]
 
         let h = $(`
-        <div class='modal_item userlist_item'>
+        <div class='modal_item userlist_item dynamic_title'>
             <div class='userlist_column flex_column_center'>
                 <div>
                     <div class='userlist_item_profile_image_container round_image_container unselectable action4'>
                         <img class='userlist_item_profile_image' src=''>
                     </div>
                     <div class='userlist_item_details_container'>
-                        <div class='userlist_item_username action dynamic_title'></div>
+                        <div class='userlist_item_username action'></div>
                         <div class='userlist_item_role action'></div>
                     </div>
                 </div>
                 <div class='userlist_item_bio action'></div>
             </div>
         </div>`)
+
+        let t = `Joined: ${Hue.utilz.nice_date(item.date_joined)}`
+        h.attr("title", t)
+        h.data("otitle", t)
+        h.data("date", item.date_joined)
 
         let image = h.find(".userlist_item_profile_image").eq(0)
         image.data("src", item.profile_image)
@@ -442,11 +447,6 @@ Hue.update_userlist_window = function()
 
         let uname = h.find('.userlist_item_username').eq(0)
         uname.text(item.username)
-
-        let t = `Joined: ${Hue.utilz.nice_date(item.date_joined)}`
-        uname.attr("title", t)
-        uname.data("otitle", t)
-        uname.data("date", item.date_joined)
 
         let bio = h.find('.userlist_item_bio').eq(0)
 
