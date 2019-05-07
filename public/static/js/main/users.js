@@ -424,10 +424,10 @@ Hue.update_userlist_window = function()
                     </div>
                     <div class='userlist_item_details_container'>
                         <div class='userlist_item_username action dynamic_title'></div>
-                        <div class='userlist_item_role'></div>
+                        <div class='userlist_item_role action'></div>
                     </div>
                 </div>
-                <div class='userlist_item_bio'></div>
+                <div class='userlist_item_bio action'></div>
             </div>
         </div>`)
 

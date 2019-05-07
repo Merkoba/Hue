@@ -723,7 +723,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 	cursor: pointer;
 	flex-shrink: 1;
 	max-width: 10em;
-	overflow: hidden;
 }
 
 .userlist_item_role
