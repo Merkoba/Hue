@@ -92,6 +92,31 @@ Hue.userjoin = function(data)
                 Hue.on_activity("join")
             }
         }
+
+        Hue.update_user_last_message(data.user_id)
+    }
+}
+
+// Updates the user data with their last message
+Hue.update_user_last_message = function(user_id)
+{
+    let last_chat_message = Hue.get_last_chat_message_by_user_id(user_id)
+
+    if(!last_chat_message)
+    {
+        return false
+    }
+
+    let text = $(last_chat_message).find(".chat_content").last().text()
+
+    if(!text)
+    {
+        return false
+    }
+
+    if(last_chat_message)
+    {
+        Hue.replace_property_in_userlist_by_user_id(user_id, "last_message", text)
     }
 }
 
@@ -120,7 +145,8 @@ Hue.add_to_userlist = function(args={})
         date_joined: false,
         bio: "",
         hearts: 0,
-        skulls: 0
+        skulls: 0,
+        last_message: ""
     }
 
     args = Object.assign(def_args, args)
@@ -136,6 +162,7 @@ Hue.add_to_userlist = function(args={})
             Hue.userlist[i].bio = args.bio
             Hue.userlist[i].hearts = args.hearts
             Hue.userlist[i].skulls = args.skulls
+            Hue.userlist[i].last_message = args.last_message
 
             Hue.update_userlist()
 
@@ -152,7 +179,8 @@ Hue.add_to_userlist = function(args={})
         date_joined: args.date_joined,
         bio: args.bio,
         hearts: args.hearts,
-        skulls: args.skulls
+        skulls: args.skulls,
+        last_message: args.last_message
     })
 
     Hue.update_userlist()
@@ -174,34 +202,46 @@ Hue.remove_from_userlist = function(user_id)
     }
 }
 
-// Replaces the username of a user in the user list with a new username
-Hue.replace_uname_in_userlist = function(oldu, newu)
+// Replaces a property of a user in the userlist by username
+Hue.replace_property_in_userlist_by_username = function(username, prop, new_value, update=true)
 {
+    let changed = false
+
     for(let i=0; i<Hue.userlist.length; i++)
     {
-        if(Hue.userlist[i].username === oldu)
+        if(Hue.userlist[i].username === username)
         {
-            Hue.userlist[i].username = newu
+            Hue.userlist[i][prop] = new_value
+            changed = true
             break
         }
     }
 
-    Hue.update_userlist()
+    if(update && changed)
+    {
+        Hue.update_userlist()
+    }
 }
 
-// Replaces the role of a user in the user list with a new role
-Hue.replace_role_in_userlist = function(uname, rol)
+// Replaces a property of a user by user_id
+Hue.replace_property_in_userlist_by_user_id = function(user_id, prop, new_value, update=true)
 {
+    let changed = false
+
     for(let i=0; i<Hue.userlist.length; i++)
     {
-        if(Hue.userlist[i].username === uname)
+        if(Hue.userlist[i].user_id === user_id)
         {
-            Hue.userlist[i].role = rol
+            Hue.userlist[i][prop] = new_value
+            changed = true
             break
         }
     }
 
-    Hue.update_userlist()
+    if(update && changed)
+    {
+        Hue.update_userlist()
+    }
 }
 
 // Gets the role of a user by username
@@ -432,7 +472,14 @@ Hue.update_userlist_window = function()
             </div>
         </div>`)
 
-        let t = `Joined: ${Hue.utilz.nice_date(item.date_joined)}`
+        let last_message = ""
+
+        if(item.last_message)
+        {
+            last_message = `Last Message: ${item.last_message.substring(0, 100)}\n`
+        }
+
+        let t = `${last_message}${Hue.utilz.nice_date(item.date_joined)}`
         h.attr("title", t)
         h.data("otitle", t)
         h.data("date", item.date_joined)
@@ -1085,7 +1132,7 @@ Hue.forbidden_user = function()
 // Announces username changes
 Hue.announce_new_username = function(data)
 {
-    Hue.replace_uname_in_userlist(data.old_username, data.username)
+    Hue.replace_property_in_userlist_by_username(data.old_username, "username", data.username)
 
     let show = Hue.check_permission(Hue.get_role(data.username), "chat")
 
@@ -1485,7 +1532,7 @@ Hue.announce_role_change = function(data)
         open_profile: true
     })
 
-    Hue.replace_role_in_userlist(data.username2, data.role)
+    Hue.replace_property_in_userlist_by_username(data.username2, "role", data.role)
 
     if(Hue.admin_list_open)
     {

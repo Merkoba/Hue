@@ -686,6 +686,11 @@ Hue.update_chat = function(args={})
         }
     }
 
+    if(args.user_id)
+    {
+        Hue.replace_property_in_userlist_by_user_id(args.user_id, "last_message", args.message)
+    }
+
     return {message_id:message_id}
 }
 
@@ -2040,6 +2045,28 @@ Hue.get_last_chat_message_by_username = function(ouname)
         if(uname)
         {
             if(uname === ouname)
+            {
+                found_message = this
+                return false
+            }
+        }
+    })
+
+    return found_message
+}
+
+// Gets the most recent chat message by user_id
+Hue.get_last_chat_message_by_user_id = function(ouser_id)
+{
+    let found_message = false
+
+    $($("#chat_area > .message.chat_message").get().reverse()).each(function()
+    {
+        let user_id = $(this).data("user_id")
+
+        if(user_id)
+        {
+            if(user_id === ouser_id)
             {
                 found_message = this
                 return false
