@@ -151,7 +151,8 @@ Hue.add_to_userlist = function(args={})
         profile_image: args.profile_image,
         date_joined: args.date_joined,
         bio: args.bio,
-        hearts: args.hearts
+        hearts: args.hearts,
+        skulls: args.skulls
     })
 
     Hue.update_userlist()
@@ -420,7 +421,7 @@ Hue.update_userlist_window = function()
             <div class='userlist_column flex_column_center'>
                 <div>
                     <div class='userlist_item_profile_image_container round_image_container unselectable action4'>
-                        <img class='userlist_item_profile_image' src=''>
+                        <img class='userlist_item_profile_image profile_image' src=''>
                     </div>
                     <div class='userlist_item_details_container'>
                         <div class='userlist_item_username action'></div>
@@ -438,6 +439,7 @@ Hue.update_userlist_window = function()
 
         let image = h.find(".userlist_item_profile_image").eq(0)
         image.data("src", item.profile_image)
+        image.data("username", item.username)
         image.data("src_applied", false)
         image.attr("src", Hue.config.default_profile_image_url)
 
@@ -863,7 +865,7 @@ Hue.update_activity_bar = function()
                 let h = $(`
                 <div class='activity_bar_item'>
                     <div class='activity_bar_image_container round_image_container action4'>
-                        <img class='activity_bar_image' src='${pi}'>
+                        <img class='activity_bar_image profile_image' src='${pi}'>
                     </div>
                     <div class='activity_bar_text'></div>
                 </div>`)
@@ -878,6 +880,8 @@ Hue.update_activity_bar = function()
                         $(this).attr("src", Hue.config.default_profile_image_url)
                     }
                 })
+
+                img_el.data("username", user.username)
 
                 text_el.text(user.username)
 
@@ -1283,6 +1287,7 @@ Hue.show_profile = function(uname, prof_image)
     $("#show_profile_bio").html(Hue.make_html_safe(bio).replace(/\n+/g, " <br> ")).urlize()
 
     $("#show_profile_image").attr("src", pi)
+    $("#show_profile_image").data("username", uname)
 
     if(!Hue.can_chat || !Hue.usernames.includes(uname))
     {

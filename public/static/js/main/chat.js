@@ -530,7 +530,7 @@ Hue.update_chat = function(args={})
         <div class='${message_classes}'>
             <div class='chat_left_side'>
                 <div class='chat_profile_image_container round_image_container unselectable action4'>
-                    <img class='chat_profile_image' src='${pi}'>
+                    <img class='chat_profile_image profile_image' src='${pi}'>
                 </div>
             </div>
             <div class='chat_right_side'>
@@ -626,6 +626,9 @@ Hue.update_chat = function(args={})
     fmessage.data("uname", args.username)
     fmessage.data("mode", "chat")
     fmessage.data("has_embed", has_embed)
+
+    let profile_image = fmessage.find(".chat_profile_image").eq(0)
+    profile_image.data("username", args.username)
     
     let chat_content_container = fmessage.find(".chat_content_container").eq(0)
     let chat_content = fmessage.find(".chat_content").eq(0)

@@ -877,12 +877,30 @@ Hue.start_toggle_radio_context_menu = function()
     })
 }
 
-// Starts the context menu on username elements
-Hue.start_username_context_menu = function()
+// Gets the username depending on source element to use in the username context menu
+Hue.get_user_context_menu_username = function(el)
+{
+    let username 
+
+    if($(el).hasClass("profile_image"))
+    {
+        username = $(el).data("username")
+    }
+
+    else
+    {
+        username = $(el).text()
+    }
+
+    return username
+}
+
+// Starts the context menu on user elements
+Hue.start_user_context_menu = function()
 {
     $.contextMenu(
     {
-        selector: ".userlist_item_username, .chat_uname, #show_profile_uname, .generic_uname, .admin_list_username",
+        selector: ".userlist_item_username, .chat_uname, #show_profile_uname, .generic_uname, .admin_list_username, .activity_bar_text, .profile_image",
         animation: {duration: 250, hide: 'fadeOut'},
         zIndex: 9000000000,
         events: Hue.context_menu_events,
@@ -892,7 +910,7 @@ Hue.start_username_context_menu = function()
             {
                 name: "Voice 1", callback: function(key, opt)
                 {
-                    let arg = $(this).text()
+                    let arg = Hue.get_user_context_menu_username(this)
                     Hue.change_role(arg, "voice1")
                 },
                 visible: function(key, opt)
@@ -912,7 +930,7 @@ Hue.start_username_context_menu = function()
             {
                 name: "Voice 2", callback: function(key, opt)
                 {
-                    let arg = $(this).text()
+                    let arg = Hue.get_user_context_menu_username(this)
                     Hue.change_role(arg, "voice2")
                 },
                 visible: function(key, opt)
@@ -932,7 +950,7 @@ Hue.start_username_context_menu = function()
             {
                 name: "Voice 3", callback: function(key, opt)
                 {
-                    let arg = $(this).text()
+                    let arg = Hue.get_user_context_menu_username(this)
                     Hue.change_role(arg, "voice3")
                 },
                 visible: function(key, opt)
@@ -952,7 +970,7 @@ Hue.start_username_context_menu = function()
             {
                 name: "Voice 4", callback: function(key, opt)
                 {
-                    let arg = $(this).text()
+                    let arg = Hue.get_user_context_menu_username(this)
                     Hue.change_role(arg, "voice4")
                 },
                 visible: function(key, opt)
@@ -989,7 +1007,7 @@ Hue.start_username_context_menu = function()
                     {
                         name: "I'm Sure", callback: function(key, opt)
                         {
-                            let arg = $(this).text()
+                            let arg = Hue.get_user_context_menu_username(this)
                             Hue.change_role(arg, "op")
                         }
                     }
@@ -1016,7 +1034,7 @@ Hue.start_username_context_menu = function()
                     {
                         name: "I'm Sure", callback: function(key, opt)
                         {
-                            let arg = $(this).text()
+                            let arg = Hue.get_user_context_menu_username(this)
                             Hue.change_role(arg, "admin")
                         }
                     }
@@ -1043,7 +1061,7 @@ Hue.start_username_context_menu = function()
                     {
                         name: "I'm Sure", callback: function(key, opt)
                         {
-                            let arg = $(this).text()
+                            let arg = Hue.get_user_context_menu_username(this)
                             Hue.kick(arg)
                         }
                     }
@@ -1070,7 +1088,7 @@ Hue.start_username_context_menu = function()
                     {
                         name: "I'm Sure", callback: function(key, opt)
                         {
-                            let arg = $(this).text()
+                            let arg = Hue.get_user_context_menu_username(this)
                             Hue.ban(arg)
                         }
                     }
