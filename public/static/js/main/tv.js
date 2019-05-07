@@ -767,8 +767,6 @@ Hue.change_tv_visibility = function(play=true)
 {
     if(Hue.room_tv_mode !== "disabled" && Hue.room_state.tv_enabled)
     {
-        clearTimeout(Hue.stop_tv_timeout)
-
         $("#media").css("display", "flex")
         $("#media_tv").css("display", "flex")
 
@@ -805,14 +803,6 @@ Hue.change_tv_visibility = function(play=true)
         if(num_visible === 0)
         {
             Hue.hide_media()
-        }
-
-        else if(num_visible === 1)
-        {
-            Hue.stop_tv_timeout = setTimeout(function()
-            {
-                Hue.stop_tv()
-            }, 500)
         }
 
         $("#footer_toggle_tv_icon").removeClass("fa-toggle-on")
@@ -855,7 +845,7 @@ Hue.change_lock_tv = function()
 {
     if(Hue.room_state.tv_locked)
     {
-        $("#footer_lock_tv_icon").removeClass("fa-unlock")
+        $("#footer_lock_tv_icon").removeClass("fa-unlock-alt")
         $("#footer_lock_tv_icon").addClass("fa-lock")
 
         if(Hue.loaded_tv !== Hue.current_tv())
@@ -867,7 +857,7 @@ Hue.change_lock_tv = function()
     else
     {
         $("#footer_lock_tv_icon").removeClass("fa-lock")
-        $("#footer_lock_tv_icon").addClass("fa-unlock")
+        $("#footer_lock_tv_icon").addClass("fa-unlock-alt")
         $("#footer_lock_tv_icon").removeClass("blinking")
 
         Hue.change({type:"tv"})
