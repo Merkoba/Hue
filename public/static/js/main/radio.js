@@ -473,7 +473,7 @@ Hue.change_lock_radio = function()
 {
     if(Hue.room_state.radio_locked)
     {
-        $("#footer_lock_radio_icon").removeClass("fa-unlock-alt")
+        $("#footer_lock_radio_icon").removeClass("fa-unlock")
         $("#footer_lock_radio_icon").addClass("fa-lock")
 
         if(Hue.loaded_radio !== Hue.current_radio())
@@ -485,7 +485,7 @@ Hue.change_lock_radio = function()
     else
     {
         $("#footer_lock_radio_icon").removeClass("fa-lock")
-        $("#footer_lock_radio_icon").addClass("fa-unlock-alt")
+        $("#footer_lock_radio_icon").addClass("fa-unlock")
         $("#footer_lock_radio_icon").removeClass("blinking")
 
         if(Hue.first_media_change)
