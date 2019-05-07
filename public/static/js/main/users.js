@@ -472,14 +472,8 @@ Hue.update_userlist_window = function()
             </div>
         </div>`)
 
-        let last_message = ""
+        let t = Hue.get_user_info_title(item)
 
-        if(item.last_message)
-        {
-            last_message = `Last Message: ${item.last_message.substring(0, 100)}\n`
-        }
-
-        let t = `${last_message}${Hue.utilz.nice_date(item.date_joined)}`
         h.attr("title", t)
         h.data("otitle", t)
         h.data("date", item.date_joined)
@@ -1336,6 +1330,21 @@ Hue.show_profile = function(uname, prof_image)
     $("#show_profile_image").attr("src", pi)
     $("#show_profile_image").data("username", uname)
 
+    if(user)
+    {
+        let t = Hue.get_user_info_title(user)
+        $("#show_profile_image").attr("title", t)
+        $("#show_profile_image").data("otitle", t)
+        $("#show_profile_image").data("date", user.date_joined)
+        $("#show_profile_image").addClass("dynamic_title")
+    }
+    
+    else
+    {
+        $("#show_profile_image").attr("title", "")
+        $("#show_profile_image").removeClass("dynamic_title")
+    }
+
     if(!Hue.can_chat || !Hue.usernames.includes(uname))
     {
         $("#show_profile_whisper").css("display", "none")
@@ -1933,4 +1942,17 @@ Hue.set_hearts_counter = function(hearts)
 Hue.set_skulls_counter = function(skulls)
 {
     $("#show_profile_skulls_counter").text(Hue.utilz.format_number(skulls))
+}
+
+// Makes the title based on the last message and join date
+Hue.get_user_info_title = function(user)
+{
+    let last_message = ""
+
+    if(user.last_message)
+    {
+        last_message = `Last Message: ${user.last_message.substring(0, 100)}\n`
+    }
+
+    return `${last_message}Joined: ${Hue.utilz.nice_date(user.date_joined)}`
 }
