@@ -1153,7 +1153,7 @@ Hue.generate_chat_search_context_items = function()
 
         items['clear'] =
         {
-            name: "Clear", icon:"fa-trash-o", callback: function(key, opt)
+            name: "Clear", icon:"far fa-trash-alt", callback: function(key, opt)
             {
                 Hue.clear_chat_searches()
             }

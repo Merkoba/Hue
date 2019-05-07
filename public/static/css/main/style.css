@@ -1660,7 +1660,6 @@ input[type=text], textarea
 
 #user_menu_username
 {
-	cursor: pointer;
 	display: inline-block;
 }
 
