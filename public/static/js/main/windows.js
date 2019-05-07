@@ -64,6 +64,7 @@ Hue.start_msg = function()
             {
                 common.after_close(instance)
                 Hue.close_togglers("main_menu")
+                Hue.close_togglers("main_menu_permissions")
             }
         })
     )

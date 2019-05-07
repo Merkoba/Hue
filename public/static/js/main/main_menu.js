@@ -15,6 +15,7 @@ Hue.make_main_menu_permissions_container = function()
 Hue.setup_main_menu = function()
 {
     Hue.setup_togglers("main_menu")
+    Hue.setup_togglers("main_menu_permissions")
 
     $(".admin_voice_permissions_checkbox").each(function()
     {
@@ -190,7 +191,7 @@ Hue.config_main_menu = function()
         Hue.config_admin_room_name()
         Hue.config_admin_topic()
 
-        $("#admin_menu").css("display", "block")
+        $("#admin_menu").css("display", "grid")
     }
 
     else

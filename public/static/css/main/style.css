@@ -2275,6 +2275,12 @@ input[type=text], textarea
 	justify-content: center;
 }
 
+#admin_menu
+{
+	grid-gap: 1.2rem;
+	margin-top: 2rem;
+}
+
 #admin_activity_container
 {
 	width: 22em;
@@ -2931,8 +2937,7 @@ a.special_link:hover
 
 .main_menu_permissions_container
 {
-	padding-top: 2rem;
-	padding-bottom: 2rem;
+	margin-top: 2rem;
 	grid-gap: 2rem;
 }
 
@@ -2943,8 +2948,8 @@ a.special_link:hover
 
 .main_menu_permissions_toggler_item
 {
-	padding-top: 0.8rem;
-	padding-bottom: 0.8rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
 }
 
 .main_menu_permissions_toggler_item:first-child
@@ -2959,8 +2964,18 @@ a.special_link:hover
 
 #main_menu_more_container
 {
-	padding-top: 1rem;
 	grid-gap: 0.8rem;
+}
+
+.main_menu_category
+{
+	font-size: 1.1rem;
+}
+
+.main_menu_toggle_container
+{
+	margin-top: 2rem;
+	margin-bottom: 1rem;
 }
 
 .main_menu_label
