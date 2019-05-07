@@ -2279,6 +2279,12 @@ input[type=text], textarea
 {
 	grid-gap: 1.2rem;
 	margin-top: 2rem;
+	margin-bottom: 0.5rem;
+}
+
+#admin_menu .toggler_main_container:last-child .main_menu_toggle_container
+{
+	margin-bottom: 0;
 }
 
 #admin_activity_container
