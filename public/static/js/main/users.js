@@ -1830,8 +1830,12 @@ Hue.on_badge_received = function(data)
     if(Hue.app_focused)
     {
         let message = Hue.get_last_chat_message_by_username(data.username)
-        let profile_image_container = $(message).find(".chat_profile_image_container").eq(0)
-        Hue.change_profile_image_badge(profile_image_container, data.type)
+
+        if(message)
+        {
+            let profile_image_container = $(message).find(".chat_profile_image_container").eq(0)
+            Hue.change_profile_image_badge(profile_image_container, data.type)
+        }
     }
 }
 
