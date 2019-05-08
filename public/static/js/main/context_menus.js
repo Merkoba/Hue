@@ -906,6 +906,49 @@ Hue.start_user_context_menu = function()
         events: Hue.context_menu_events,
         items:
         {
+            cmwhisper:
+            {
+                name: "Whisper", callback = function(key, opt)
+                {
+                    let username = Hue.get_user_context_menu_username(this)
+                    Hue.process_write_whisper(username)
+                },
+                visible: function(key, opt)
+                {
+                    let username = Hue.get_user_context_menu_username(this)
+                    let user = Hue.get_user_by_username(username)
+                    return Boolean(user)
+                }
+            },
+            cmbadge:
+            {
+                name: "Badge",
+                items:
+                {
+                    bheart:
+                    {
+                        name: "Heart", icon:"far fa-heart", callback = function(key, opt)
+                        {
+                            let username = Hue.get_user_context_menu_username(this)
+                            Hue.send_badge(username, "heart")
+                        }
+                    },
+                    bskull:
+                    {
+                        name: "Skull", icon:"fas fa-skull", callback = function(key, opt)
+                        {
+                            let username = Hue.get_user_context_menu_username(this)
+                            Hue.send_badge(username, "skull")
+                        }
+                    }
+                },
+                visible: function(key, opt)
+                {
+                    let username = Hue.get_user_context_menu_username(this)
+                    let user = Hue.get_user_by_username(username)
+                    return username !== Hue.username && Boolean(user)
+                }
+            },
             cmvoice1:
             {
                 name: "Voice 1", callback: function(key, opt)
@@ -1052,7 +1095,9 @@ Hue.start_user_context_menu = function()
 
                     else
                     {
-                        return true
+                        let username = Hue.get_user_context_menu_username(this)
+                        let user = Hue.get_user_by_username(username)
+                        return Boolean(user)
                     }
                 },
                 items:

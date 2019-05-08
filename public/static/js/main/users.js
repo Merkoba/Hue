@@ -95,6 +95,11 @@ Hue.userjoin = function(data)
 
         Hue.update_user_last_message(data.user_id)
     }
+
+    if(Hue.open_profile_username === data.username)
+    {
+        Hue.show_profile(data.username, $("#show_profile_image").attr("src"))
+    }
 }
 
 // Updates the user data with their last message
@@ -1855,7 +1860,7 @@ Hue.send_badge = function(username, type)
     setTimeout(function()
     {
         Hue.send_badge_disabled = false
-    }, Hue.config.send_badge_cooldown)
+    }, Hue.config.send_badge_cooldown + 100)
 }
 
 // What happens when a user receives a badge
@@ -1901,35 +1906,61 @@ Hue.on_badge_received = function(data)
 // Changes the profile image of a user receiving a badge
 Hue.change_profile_image_badge = function(profile_image_container, type)
 {
-    if(!profile_image_container.hasClass("profile_image_badge"))
+    Hue.remove_badge_icons(profile_image_container)
+    profile_image_container.addClass(`${type}_badge`)
+    profile_image_container.addClass("profile_image_badge")
+
+    let icon
+
+    if(type === "heart")
     {
-        profile_image_container.addClass(`${type}_badge`)
-        profile_image_container.addClass("profile_image_badge")
-
-        let icon
-
-        if(type === "heart")
-        {
-            icon = "fa fa-heart"
-        }
-
-        else if(type === "skull")
-        {
-            icon = "fa fa-skull"
-        }
-
-        profile_image_container.append(`<i class='${icon} profile_image_badge_icon ${type}_badge'>`)
-
-        setTimeout(function()
-        {
-            profile_image_container.removeClass(`${type}_badge`)
-            profile_image_container.removeClass(`profile_image_badge`)
-            profile_image_container.find(".profile_image_badge_icon").each(function()
-            {
-                $(this).remove()
-            })
-        }, Hue.config.badge_feedback_duration)
+        icon = "fa fa-heart"
     }
+
+    else if(type === "skull")
+    {
+        icon = "fa fa-skull"
+    }
+
+    profile_image_container.append(`<i class='${icon} profile_image_badge_icon ${type}_badge'>`)
+
+    let number = profile_image_container.data("badge_feedback_number")
+
+    if(!number)
+    {
+        number = 1
+    }
+    
+    else
+    {
+        number += 1
+    }
+
+    profile_image_container.data("badge_feedback_number", number)
+
+    setTimeout(function()
+    {
+        let number_2 = profile_image_container.data("badge_feedback_number")
+
+        if(number !== number_2)
+        {
+            return false
+        }
+
+        Hue.remove_badge_icons(profile_image_container)
+    }, Hue.config.badge_feedback_duration)
+}
+
+// Removes badge icons from profile image container
+Hue.remove_badge_icons = function(profile_image_container)
+{
+    profile_image_container.removeClass("heart_badge")
+    profile_image_container.removeClass("skull_badge")
+    profile_image_container.removeClass(`profile_image_badge`)
+    profile_image_container.find(".profile_image_badge_icon").each(function()
+    {
+        $(this).remove()
+    })
 }
 
 // Sets the hearts counter in the profile window
