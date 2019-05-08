@@ -1049,48 +1049,28 @@ Hue.scroll_modal_to_bottom = function(id)
 }
 
 // Creates a Msg popup
-Hue.create_popup = function(position, id=false, after_close=false)
+Hue.create_popup = function(args={})
 {
-    let common =
+    let def_args =
     {
+        preset: "popup",
+        class: "popup",
+        position: "top",
         show_effect_duration: [0, 400],
         close_effect_duration: [400, 0],
         clear_editables: true,
-        class: "popup",
         show_effect: "none",
-        close_effect: "none"
+        close_effect: "none",
+        window_class: "!custom_popup",
+        enable_titlebar: true,
+        center_titlebar: true,
+        titlebar_class: "!custom_titlebar !unselectable",
+        window_inner_x_class: "!titlebar_inner_x",
+        edge_padding_y: $("#footer").height() + 20
     }
 
-    if(id)
-    {
-        common.id = id
-    }
-
-    if(after_close)
-    {
-        common.after_close = after_close
-    }
-
-    let edges_height = $("#footer").height()
-
-    let pop = Msg.factory
-    (
-        Object.assign({}, common,
-        {
-            preset: "popup",
-            edge_padding_y: edges_height + 20,
-            position: position,
-            window_class: "!custom_popup",
-            enable_titlebar: true,
-            center_titlebar: true,
-            titlebar_class: "!custom_titlebar !unselectable",
-            window_inner_x_class: "!titlebar_inner_x"
-        })
-    )
-
-    z = pop
-
-    return pop
+    args = Object.assign(def_args, args)
+    return Msg.factory(args)
 }
 
 // Changes the state of a toggler
@@ -1303,4 +1283,43 @@ Hue.toggle_settings_windows = function()
     }
 
     Hue.process_window_toggle(data)
+}
+
+// Makes popups used for events like join and part
+Hue.make_info_popup = function(username=false)
+{
+    let on_click = function(){}
+
+    if(username)
+    {
+        on_click = function()
+        {
+            Hue.show_profile(username)
+        }
+    }
+
+    return Hue.create_popup(
+    {
+        position: "bottomright", 
+        autoclose: true, 
+        autoclose_delay: 5000,
+        enable_titlebar: false,
+        window_x: "none",
+        content_class: "!info_popup",
+        window_width: "auto",
+        on_click: on_click
+    })
+}
+
+// Makes standard info popup items
+Hue.make_info_popup_item = function(icon, html, action=true)
+{
+    let classes = ""
+
+    if(action)
+    {
+        classes = "pointer action"
+    }
+
+    return `<div class='info_popup_item unselectable ${classes}'><i class='${icon} info_popup_icon'></i><div>${Hue.utilz.make_html_safe(html)}</div></div>`
 }

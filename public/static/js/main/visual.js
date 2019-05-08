@@ -122,7 +122,7 @@ Hue.make_safe = function(args={})
 
         if(args.text_as_html)
         {
-            let h = Hue.replace_markdown(Hue.make_html_safe(args.text))
+            let h = Hue.replace_markdown(Hue.utilz.make_html_safe(args.text))
 
             if(args.urlize)
             {
@@ -195,11 +195,4 @@ Hue.make_safe = function(args={})
     }
 
     return c[0]
-}
-
-// Turn a string into safe HTML by replacing < and > to safe versions
-Hue.make_html_safe = function(s)
-{
-    let replaced = s.replace(/\</g, "&lt;").replace(/\>/g, "&gt;")
-    return replaced
 }

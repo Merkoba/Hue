@@ -55,7 +55,7 @@ Hue.setup_image = function(mode, odata={})
     }
 
     data.info = `Setter: ${data.setter} | ${data.nice_date}`
-    data.info_html = `<div>Setter: ${Hue.make_html_safe(data.setter)}</div><div>${data.nice_date}</div>`
+    data.info_html = `<div>Setter: ${Hue.utilz.make_html_safe(data.setter)}</div><div>${data.nice_date}</div>`
 
     if(data.type === "upload")
     {
@@ -66,7 +66,7 @@ Hue.setup_image = function(mode, odata={})
     if(data.query)
     {
         data.info += ` | Search Term: "${data.query}"`
-        data.info_html += `<div>Search Term: "${Hue.make_html_safe(data.query)}"</div>`
+        data.info_html += `<div>Search Term: "${Hue.utilz.make_html_safe(data.query)}"</div>`
     }
 
     data.message = `${data.setter} changed the image`
@@ -609,7 +609,7 @@ Hue.show_modal_image = function(data)
 
     if(data.comment)
     {
-        $("#modal_image_subheader").html(Hue.replace_markdown(Hue.make_html_safe(data.comment)))
+        $("#modal_image_subheader").html(Hue.replace_markdown(Hue.utilz.make_html_safe(data.comment)))
         $("#modal_image_subheader").css("display", "block")
         Hue.setup_whispers_click($("#modal_image_subheader"), data.setter)
     }

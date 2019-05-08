@@ -77,14 +77,9 @@ Hue.user_join = function(data)
     {
         if(Hue.get_setting("show_joins") && Hue.check_permission(data.role, "chat"))
         {
-            Hue.public_feedback(`${data.username} has joined`,
-            {
-                brk: "<i class='icon2c fa fa-user-plus'></i>",
-                save: true,
-                username: data.username,
-                open_profile: true
-            })
-
+            let popup = Hue.make_info_popup(data.username)
+            popup.show(Hue.make_info_popup_item("fa fa-user-plus", `${data.username} has joined`))
+            
             if(data.username !== Hue.username)
             {
                 Hue.on_activity("join")
@@ -1066,12 +1061,8 @@ Hue.user_disconnect = function(data)
             }
         }
 
-        Hue.public_feedback(s,
-        {
-            brk: "<i class='icon2c fas fa-sign-out-alt'></i>",
-            save: true,
-            username: data.username
-        })
+        let popup = Hue.make_info_popup()
+        popup.show(Hue.make_info_popup_item("fas fa-sign-out-alt", s, false))
     }
 
     if(Hue.open_profile_username === data.username)
@@ -1289,7 +1280,7 @@ Hue.show_profile = function(uname, prof_image)
 
     $("#show_profile_uname").text(uname)
     $("#show_profile_role").text(`(${role})`)
-    $("#show_profile_bio").html(Hue.make_html_safe(bio).replace(/\n+/g, " <br> ")).urlize()
+    $("#show_profile_bio").html(Hue.utilz.make_html_safe(bio).replace(/\n+/g, " <br> ")).urlize()
 
     $("#show_profile_image").attr("src", pi)
     $("#show_profile_image").data("username", uname)

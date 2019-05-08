@@ -669,7 +669,7 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 // Shows and configures the whisper popup
 Hue.show_popup_message = function(data)
 {
-    let pop = Hue.create_popup("top", `popup_message_${data.id}`)
+    let pop = Hue.create_popup({position:"top", id:`popup_message_${data.id}`})
 
     pop.show([data.title, data.content], function()
     {

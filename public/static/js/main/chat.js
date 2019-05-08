@@ -578,7 +578,7 @@ Hue.update_chat = function(args={})
 
         else
         {
-            fmessage.find('.chat_content').eq(0).html(Hue.replace_markdown(Hue.make_html_safe(args.message)))
+            fmessage.find('.chat_content').eq(0).html(Hue.replace_markdown(Hue.utilz.make_html_safe(args.message)))
         }
     }
 
@@ -792,7 +792,7 @@ Hue.chat_announce = function(args={})
             }
         }
 
-        let c = Hue.replace_markdown(Hue.make_html_safe(args.comment))
+        let c = Hue.replace_markdown(Hue.utilz.make_html_safe(args.comment))
 
         if(args.comment_icon)
         {
@@ -903,7 +903,7 @@ Hue.chat_announce = function(args={})
     {
         if(args.replace_markdown)
         {
-            content.html(Hue.replace_markdown(Hue.make_html_safe(args.message))).urlize()
+            content.html(Hue.replace_markdown(Hue.utilz.make_html_safe(args.message))).urlize()
         }
 
         else
@@ -1510,7 +1510,7 @@ Hue.start_reply = function(target)
         text += "..."
     }
 
-    let quote = `${Hue.replace_markdown(Hue.make_html_safe(`${text}`))}`
+    let quote = `${Hue.replace_markdown(Hue.utilz.make_html_safe(`${text}`))}`
     Hue.reply_text_raw = `=[dummy-space]${uname} said: "[dummy-space]${text}[dummy-space]"[dummy-space]=`
 
     Hue.show_reply(uname, quote)
@@ -2788,7 +2788,7 @@ Hue.make_image_preview = function(message)
             // This is in a single line on purpose
             ans.image_preview = `<div class='image_preview action'><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}"></div>`
 
-            let text = Hue.replace_markdown(Hue.make_html_safe(message))
+            let text = Hue.replace_markdown(Hue.utilz.make_html_safe(message))
             let stext = `<div class='image_preview_text'>${text}</div>`
 
             ans.image_preview_text = message
@@ -2811,7 +2811,7 @@ Hue.make_link_preview = function(message, link_url, link_title, link_image)
         link_preview_s =
         `<div class='link_preview action'>
         <div class='link_preview_image_with_title'><img class='link_preview_image' src='${link_image}'></div>
-            <div class='link_preview_title'>${Hue.make_html_safe(link_title)}</div>
+            <div class='link_preview_title'>${Hue.utilz.make_html_safe(link_title)}</div>
         </div>`
     }
 
@@ -2819,7 +2819,7 @@ Hue.make_link_preview = function(message, link_url, link_title, link_image)
     {
         link_preview_s =
         `<div class='link_preview action'>
-            <div class='link_preview_title'>${Hue.make_html_safe(link_title)}</div>
+            <div class='link_preview_title'>${Hue.utilz.make_html_safe(link_title)}</div>
         </div>`
     }
 
@@ -2835,7 +2835,7 @@ Hue.make_link_preview = function(message, link_url, link_title, link_image)
     {
         ans.link_preview = link_preview_s
 
-        let text = Hue.replace_markdown(Hue.make_html_safe(message))
+        let text = Hue.replace_markdown(Hue.utilz.make_html_safe(message))
         let stext = `<div class='link_preview_text'>${text}</div>`
 
         ans.link_preview_text = text

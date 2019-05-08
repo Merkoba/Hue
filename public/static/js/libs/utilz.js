@@ -827,6 +827,12 @@ const Utilz = function()
 		return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 	}
 
+	// Turn a string into safe HTML by replacing < and > to safe versions
+	utilz.make_html_safe = function(s)
+	{
+		return s.replace(/\</g, "&lt;").replace(/\>/g, "&gt;")
+	}
+
 	utilz.media_types = ["image", "tv", "radio"]
 	utilz.clear_log_types = ["all", "above", "below"]
 

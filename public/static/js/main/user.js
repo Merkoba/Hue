@@ -557,22 +557,22 @@ Hue.show_intro = function()
     You can chat in this area. The icon on the left opens the user menu where you can change your profile image and other settings.
     When someone is typing a message the user menu icon turns into a pencil. Hovering this icon shows additional actions.`
 
-    Hue.create_popup("bottomleft").show(["Chat and User Menu", s])
+    Hue.create_popup({position:"bottomleft"}).show(["Chat and User Menu", s])
 
     s = `
     This area has media controls. You can use these to change the room's media or control what is displayed to you.`
 
-    Hue.create_popup("bottomright").show(["Media Controls", s])
+    Hue.create_popup({position:"bottomright"}).show(["Media Controls", s])
 
     s = `
     This area contains the room menu, user list, voice chat, and radio controls. Above that there's the Activty Bar which shows users that have shown activity recently.`
 
-    Hue.create_popup("top").show(["Top Panel", s])
+    Hue.create_popup({position:"top"}).show(["Top Panel", s])
 
     s = `
     You can lock the screen in this corner.`
 
-    Hue.create_popup("topright").show(["Lock Screen", s])
+    Hue.create_popup({position:"topright"}).show(["Lock Screen", s])
 
     s = `
     Close this to close all the popups.`
@@ -582,10 +582,10 @@ Hue.show_intro = function()
         Hue.close_all_popups()
     }
 
-    Hue.create_popup("topleft", false, f).show(["Close Popups", s])
+    Hue.create_popup({position:"topleft", after_close:f}).show(["Close Popups", s])
 
     s = `
     Please read all the popups.`
 
-    Hue.create_popup("center").show(["Welcome", s])
+    Hue.create_popup({position:"center"}).show(["Welcome", s])
 }

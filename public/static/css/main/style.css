@@ -3160,3 +3160,21 @@ pre
 {
 	box-shadow: none;
 }
+
+.info_popup_item
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.info_popup_icon
+{
+	margin-right: 1rem;
+}
+
+.info_popup
+{
+	padding: 0.8rem !important;
+}
