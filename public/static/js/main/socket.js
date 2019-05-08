@@ -47,7 +47,7 @@ Hue.server_update_events =
     },
     'user_join': (data) =>
     {
-        Hue.userjoin(data)
+        Hue.user_join(data)
     },
     'receive_roomlist': (data) =>
     {
@@ -255,7 +255,7 @@ Hue.server_update_events =
     },
     'user_disconnect': (data) =>
     {
-        Hue.userdisconnect(data)
+        Hue.user_disconnect(data)
     },
     'others_disconnected': (data) =>
     {

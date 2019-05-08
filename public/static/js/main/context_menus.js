@@ -916,8 +916,7 @@ Hue.start_user_context_menu = function()
                 visible: function(key, opt)
                 {
                     let username = Hue.get_user_context_menu_username(this)
-                    let user = Hue.get_user_by_username(username)
-                    return Boolean(user)
+                    return Hue.user_is_online_by_username(username)
                 }
             },
             cmbadge:
@@ -945,8 +944,7 @@ Hue.start_user_context_menu = function()
                 visible: function(key, opt)
                 {
                     let username = Hue.get_user_context_menu_username(this)
-                    let user = Hue.get_user_by_username(username)
-                    return username !== Hue.username && Boolean(user)
+                    return username !== Hue.username && Hue.user_is_online_by_username(username)
                 }
             },
             cmvoice1:
@@ -1096,8 +1094,7 @@ Hue.start_user_context_menu = function()
                     else
                     {
                         let username = Hue.get_user_context_menu_username(this)
-                        let user = Hue.get_user_by_username(username)
-                        return Boolean(user)
+                        return Hue.user_is_online_by_username(username)
                     }
                 },
                 items:

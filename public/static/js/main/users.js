@@ -59,10 +59,8 @@ Hue.show_username = function()
 }
 
 // This handles new users joining the room
-Hue.userjoin = function(data)
+Hue.user_join = function(data)
 {
-    Hue.clear_from_users_to_disconnect(data)
-
     let added = Hue.add_to_userlist(
     {
         user_id: data.user_id,
@@ -591,6 +589,13 @@ Hue.compare_userlist = function(a, b)
     }
 }
 
+// Returns true or false depending if the user is online
+Hue.user_is_online_by_username = function(username)
+{
+    let user = Hue.get_user_by_username(username)
+    return Boolean(user)
+}
+
 // Checks if a user is controllable
 // Basically a user's role is below the user's role
 // An admin can control other admins
@@ -1026,61 +1031,15 @@ Hue.update_activity_bar_image = function(username, src)
 }
 
 // What to do when a user disconnects
-Hue.userdisconnect = function(data)
+Hue.user_disconnect = function(data)
 {
-    let type = data.disconnection_type
-
-    if(type === "disconnection")
-    {
-        Hue.start_user_disconnect_timeout(data)
-    }
-
-    else
-    {
-        Hue.do_userdisconnect(data)
-    }
-}
-
-// Clears the disconnect timeout for a certain user
-Hue.clear_from_users_to_disconnect = function(data)
-{
-    for(let i=0; i<Hue.users_to_disconnect.length; i++)
-    {
-        let u = Hue.users_to_disconnect[i]
-
-        if(u.user_id === data.user_id)
-        {
-            clearTimeout(u.timeout)
-            Hue.users_to_disconnect.splice(i, 1)
-            break
-        }
-    }
-}
-
-// Starts a disconnect timeout for a certain user
-Hue.start_user_disconnect_timeout = function(data)
-{
-    Hue.clear_from_users_to_disconnect(data)
-
-    data.timeout = setTimeout(function()
-    {
-        Hue.do_userdisconnect(data)
-    }, Hue.config.disconnect_timeout_delay)
-
-    Hue.users_to_disconnect.push(data)
-}
-
-// After a disconnect timeout triggers this function is called
-Hue.do_userdisconnect = function(data)
-{
-    Hue.clear_from_users_to_disconnect(data)
     Hue.remove_from_userlist(data.user_id)
     Hue.update_activity_bar()
 
     if(Hue.get_setting("show_parts") && Hue.check_permission(data.role, "chat"))
     {
-        let type = data.disconnection_type
         let s
+        let type = data.disconnection_type
 
         if(type === "disconnection")
         {
