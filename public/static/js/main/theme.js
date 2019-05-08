@@ -505,6 +505,11 @@ Hue.apply_theme = function()
         color: ${color_4} !important;
     }
 
+    .room_menu_toggle_container 
+    {
+        background-color: ${slight_background} !important;
+    }
+
     </style>
     `
 

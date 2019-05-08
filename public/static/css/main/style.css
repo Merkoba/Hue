@@ -2276,7 +2276,6 @@ input[type=text], textarea
 
 #admin_menu
 {
-	grid-gap: 1.2rem;
 	margin-top: 2rem;
 	margin-bottom: 0.5rem;
 }
@@ -2977,10 +2976,18 @@ a.special_link:hover
 	font-size: 1.1rem;
 }
 
+.room_menu_toggle
+{
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
 .room_menu_toggle_container
 {
-	margin-top: 2rem;
-	margin-bottom: 1rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
 }
 
 .room_menu_label
