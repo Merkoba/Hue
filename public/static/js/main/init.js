@@ -106,6 +106,7 @@ Hue.emit_queue = []
 Hue.app_focused = true
 Hue.message_unames = ""
 Hue.message_type = ""
+Hue.users_to_disconnect = []
 Hue.stop_radio_delay = 0
 Hue.aura_timeouts = {}
 Hue.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
