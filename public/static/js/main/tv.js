@@ -845,7 +845,7 @@ Hue.change_lock_tv = function()
 {
     if(Hue.room_state.tv_locked)
     {
-        $("#footer_lock_tv_icon").removeClass("fa-unlock-alt")
+        $("#footer_lock_tv_icon").removeClass("fa-unlock")
         $("#footer_lock_tv_icon").addClass("fa-lock")
 
         if(Hue.loaded_tv !== Hue.current_tv())
@@ -857,7 +857,7 @@ Hue.change_lock_tv = function()
     else
     {
         $("#footer_lock_tv_icon").removeClass("fa-lock")
-        $("#footer_lock_tv_icon").addClass("fa-unlock-alt")
+        $("#footer_lock_tv_icon").addClass("fa-unlock")
         $("#footer_lock_tv_icon").removeClass("blinking")
 
         Hue.change({type:"tv"})
