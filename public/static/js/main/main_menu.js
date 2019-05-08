@@ -1,21 +1,21 @@
-// Builds the permission sections of the main menu through their template
-Hue.make_main_menu_permissions_container = function()
+// Builds the permission sections of the room menu through their template
+Hue.make_room_menu_permissions_container = function()
 {
     let s = ""
 
     for(let i=1; i<Hue.vtypes.length + 1; i++)
     {
-        s += Hue.template_main_menu_permissions_container({number:i})
+        s += Hue.template_room_menu_permissions_container({number:i})
     }
 
     return s
 }
 
-// Setups change events for the main menu widgets
-Hue.setup_main_menu = function()
+// Setups change events for the room menu widgets
+Hue.setup_room_menu = function()
 {
-    Hue.setup_togglers("main_menu")
-    Hue.setup_togglers("main_menu_permissions")
+    Hue.setup_togglers("room_menu")
+    Hue.setup_togglers("room_menu_permissions")
 
     $(".admin_voice_permissions_checkbox").each(function()
     {
@@ -161,15 +161,15 @@ Hue.setup_main_menu = function()
     })
 }
 
-// Shows the main menu
-Hue.show_main_menu = function()
+// Shows the room menu
+Hue.show_room_menu = function()
 {
-    Hue.msg_main_menu.show()
+    Hue.msg_room_menu.show()
 }
 
-// Configures the main menu
+// Configures the room menu
 // Updates all widgets with current state
-Hue.config_main_menu = function()
+Hue.config_room_menu = function()
 {
     if(Hue.is_admin_or_op())
     {
@@ -200,7 +200,7 @@ Hue.config_main_menu = function()
     }
 }
 
-// Checks or unchecks main menu voice permission checkboxes based on current state
+// Checks or unchecks room menu voice permission checkboxes based on current state
 Hue.config_admin_permission_checkboxes = function()
 {
     if(!Hue.is_admin_or_op())
@@ -214,7 +214,7 @@ Hue.config_admin_permission_checkboxes = function()
     })
 }
 
-// Updates the background widgets in the main menu based on current state
+// Updates the background widgets in the room menu based on current state
 Hue.config_admin_background_mode = function()
 {
     if(!Hue.is_admin_or_op())
@@ -274,7 +274,7 @@ Hue.config_admin_background_mode = function()
     }
 }
 
-// Updates background tile dimension widget in the main menu based on current state
+// Updates background tile dimension widget in the room menu based on current state
 Hue.config_admin_background_tile_dimensions = function()
 {
     if(!Hue.is_admin_or_op())
@@ -285,7 +285,7 @@ Hue.config_admin_background_tile_dimensions = function()
     $('#admin_background_tile_dimensions').val(Hue.background_tile_dimensions)
 }
 
-// Updates the background image widget in the main menu based on current state
+// Updates the background image widget in the room menu based on current state
 Hue.config_admin_background_image = function()
 {
     if(!Hue.is_admin_or_op())
@@ -319,7 +319,7 @@ Hue.config_admin_background_image = function()
     }
 }
 
-// Updates the background effect widget in the main menu based on current state
+// Updates the background effect widget in the room menu based on current state
 Hue.config_admin_background_effect = function()
 {
     $('#admin_background_effect_select').find('option').each(function()
@@ -331,7 +331,7 @@ Hue.config_admin_background_effect = function()
     })
 }
 
-// Updates the text color mode widget in the main menu based on current state
+// Updates the text color mode widget in the room menu based on current state
 Hue.config_admin_text_color_mode = function()
 {
     if(!Hue.is_admin_or_op())
@@ -358,7 +358,7 @@ Hue.config_admin_text_color_mode = function()
     }
 }
 
-// Updates the text color widget in the main menu based on current state
+// Updates the text color widget in the room menu based on current state
 Hue.config_admin_text_color = function()
 {
     if(!Hue.is_admin_or_op())
@@ -369,7 +369,7 @@ Hue.config_admin_text_color = function()
     $("#admin_text_color").val(Hue.text_color)
 }
 
-// Updates the privacy widget in the main menu based on current state
+// Updates the privacy widget in the room menu based on current state
 Hue.config_admin_privacy = function()
 {
     if(!Hue.is_admin_or_op())
@@ -386,7 +386,7 @@ Hue.config_admin_privacy = function()
     })
 }
 
-// Updates the log enabled widget in the main menu based on current state
+// Updates the log enabled widget in the room menu based on current state
 Hue.config_admin_log_enabled = function()
 {
     if(!Hue.is_admin_or_op())
@@ -403,7 +403,7 @@ Hue.config_admin_log_enabled = function()
     })
 }
 
-// Updates the room images mode widget in the main menu based on current state
+// Updates the room images mode widget in the room menu based on current state
 Hue.config_admin_room_images_mode = function()
 {
     if(!Hue.is_admin_or_op())
@@ -420,7 +420,7 @@ Hue.config_admin_room_images_mode = function()
     })
 }
 
-// Updates the room tv mode widget in the main menu based on current state
+// Updates the room tv mode widget in the room menu based on current state
 Hue.config_admin_room_tv_mode = function()
 {
     if(!Hue.is_admin_or_op())
@@ -437,7 +437,7 @@ Hue.config_admin_room_tv_mode = function()
     })
 }
 
-// Updates the room radio mode widget in the main menu based on current state
+// Updates the room radio mode widget in the room menu based on current state
 Hue.config_admin_room_radio_mode = function()
 {
     if(!Hue.is_admin_or_op())
@@ -454,7 +454,7 @@ Hue.config_admin_room_radio_mode = function()
     })
 }
 
-// Updates the room synth mode widget in the main menu based on current state
+// Updates the room synth mode widget in the room menu based on current state
 Hue.config_admin_room_synth_mode = function()
 {
     if(!Hue.is_admin_or_op())
@@ -471,7 +471,7 @@ Hue.config_admin_room_synth_mode = function()
     })
 }
 
-// Updates the theme mode widget in the main menu based on current state
+// Updates the theme mode widget in the room menu based on current state
 Hue.config_admin_theme_mode = function()
 {
     if(!Hue.is_admin_or_op())
@@ -498,7 +498,7 @@ Hue.config_admin_theme_mode = function()
     }
 }
 
-// Updates the theme widget in the main menu based on current state
+// Updates the theme widget in the room menu based on current state
 Hue.config_admin_theme = function()
 {
     if(!Hue.is_admin_or_op())
@@ -509,7 +509,7 @@ Hue.config_admin_theme = function()
     $("#admin_theme").val(Hue.theme)
 }
 
-// Updates the room name widget in the main menu based on current state
+// Updates the room name widget in the room menu based on current state
 Hue.config_admin_room_name = function()
 {
     if(!Hue.is_admin_or_op())
@@ -520,7 +520,7 @@ Hue.config_admin_room_name = function()
     $("#admin_room_name").val(Hue.room_name)
 }
 
-// Updates the topic widget in the main menu based on current state
+// Updates the topic widget in the room menu based on current state
 Hue.config_admin_topic = function()
 {
     if(!Hue.is_admin_or_op())

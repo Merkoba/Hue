@@ -1,5 +1,5 @@
-<script id='template_main_menu' type='text/x-handlebars-template' class='template'>
-    <div id='main_menu' class='unselectable'>
+<script id='template_room_menu' type='text/x-handlebars-template' class='template'>
+    <div id='room_menu' class='unselectable'>
 
         <div class='flex_column_center'>
             <div class='menu_item action' onclick="Hue.request_roomlist('', 'visited_roomlist')">Visited Rooms</div>
@@ -15,7 +15,7 @@
 
             <div class='flex_row_center generic_horizontal_separator menu_item_smaller_2'>
                 <div class='action' onclick='Hue.show_status()'>Status</div>
-                <div class='action nicetitle' id='main_menu_search_button' onclick='Hue.show_chat_search()' title='Click or Right Click'>Search</div>
+                <div class='action nicetitle' id='room_menu_search_button' onclick='Hue.show_chat_search()' title='Click or Right Click'>Search</div>
             </div>
 
         </div>
@@ -23,10 +23,10 @@
         <div id='admin_menu'>
 
             <div class='toggler_main_container'>
-                <div class='toggler main_menu_toggle bold pointer action inline main_menu_category'>+ Media</div>
+                <div class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ Media</div>
 
-                <div class='toggler_container main_menu_toggle_container'>
-                    <div class='main_menu_label'>Images</div>
+                <div class='toggler_container room_menu_toggle_container'>
+                    <div class='room_menu_label'>Images</div>
 
                     <select id='admin_enable_images' class='admin_container_1 modal_select'>
                         <option value="enabled">Enabled</option>
@@ -34,7 +34,7 @@
                         <option value="locked">Locked</option>
                     </select>
 
-                    <div class='main_menu_label'>TV</div>
+                    <div class='room_menu_label'>TV</div>
 
                     <select id='admin_enable_tv' class='admin_container_1 modal_select'>
                         <option value="enabled">Enabled</option>
@@ -42,7 +42,7 @@
                         <option value="locked">Locked</option>
                     </select>
 
-                    <div class='main_menu_label'>Radio</div>
+                    <div class='room_menu_label'>Radio</div>
 
                     <select id='admin_enable_radio' class='admin_container_1 modal_select'>
                         <option value="enabled">Enabled</option>
@@ -50,7 +50,7 @@
                         <option value="locked">Locked</option>
                     </select>
 
-                    <div class='main_menu_label'>Synth</div>
+                    <div class='room_menu_label'>Synth</div>
 
                     <select id='admin_enable_synth' class='modal_select'>
                         <option value="enabled">Enabled</option>
@@ -60,10 +60,10 @@
             </div>
 
             <div class='toggler_main_container'>
-                <div class='toggler main_menu_toggle bold pointer action inline main_menu_category'>+ Theme</div>
+                <div class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ Theme</div>
 
-                <div class='toggler_container main_menu_toggle_container'>
-                    <div class='main_menu_label'>Theme Mode</div>
+                <div class='toggler_container room_menu_toggle_container'>
+                    <div class='room_menu_label'>Theme Mode</div>
 
                     <select class='admin_container_1 modal_select' id='admin_theme_mode_select'>
                         <option value="automatic">Automatic</option>
@@ -71,11 +71,11 @@
                     </select>
 
                     <div class='admin_container_1' id='admin_theme_mode_container'>
-                        <div class='main_menu_label'>Theme</div>
+                        <div class='room_menu_label'>Theme</div>
                         <input type='color' id='admin_theme'>
                     </div>
 
-                    <div class='main_menu_label'>Text Color Mode</div>
+                    <div class='room_menu_label'>Text Color Mode</div>
 
                     <select class='modal_select' id='admin_text_color_mode_select'>
                         <option value="automatic">Automatic</option>
@@ -83,17 +83,17 @@
                     </select>
 
                     <div class='admin_container_2' id='admin_text_color_container'>
-                        <div class='main_menu_label'>Text Color</div>
+                        <div class='room_menu_label'>Text Color</div>
                         <input type='color' id='admin_text_color'>
                     </div>
                 </div>
             </div>
 
             <div class='toggler_main_container'>
-                <div class='toggler main_menu_toggle bold pointer action inline main_menu_category'>+ Background</div>
+                <div class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ Background</div>
 
-                <div class='toggler_container main_menu_toggle_container'>
-                    <div class='main_menu_label'>Background Mode</div>
+                <div class='toggler_container room_menu_toggle_container'>
+                    <div class='room_menu_label'>Background Mode</div>
 
                     <select class='modal_select' id='admin_background_mode_select'>
                         <option value="normal">Normal</option>
@@ -104,7 +104,7 @@
                     </select>
 
                     <div class='admin_container_2' id='admin_background_effect_container'>
-                        <div class='main_menu_label'>Background Effect</div>
+                        <div class='room_menu_label'>Background Effect</div>
 
                         <select class='modal_select' id='admin_background_effect_select'>
                             <option value="none">None</option>
@@ -124,32 +124,32 @@
             </div>
 
             <div class='toggler_main_container'>
-                <div class='toggler main_menu_toggle bold pointer action inline main_menu_category'>+ Permissions</div>
+                <div class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ Permissions</div>
 
-                <div class='toggler_container main_menu_toggle_container'>
+                <div class='toggler_container room_menu_toggle_container'>
                     <div>{{{permissions_containers}}}</div>
                 </div>
             </div>
 
             <div class='toggler_main_container'>
-                <div class='toggler main_menu_toggle bold pointer action inline main_menu_category'>+ Room Config</div>
+                <div class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ Room Config</div>
 
-                <div class='toggler_container main_menu_toggle_container'>
-                    <div class='main_menu_label'>Privacy</div>
+                <div class='toggler_container room_menu_toggle_container'>
+                    <div class='room_menu_label'>Privacy</div>
 
                     <select id='admin_privacy' class='admin_container_1 modal_select'>
                         <option value="true">Public</option>
                         <option value="false">Private</option>
                     </select>
 
-                    <div class='main_menu_label'>Log</div>
+                    <div class='room_menu_label'>Log</div>
 
                     <select id='admin_log' class='admin_container_1 modal_select'>
                         <option value="true">Enabled</option>
                         <option value="false">Disabled</option>
                     </select>
 
-                    <div class='main_menu_label'>Room Name</div>
+                    <div class='room_menu_label'>Room Name</div>
 
                     <input type="text" class="admin_container_1 setting_input_text" id="admin_room_name">
 
@@ -160,10 +160,10 @@
             </div>
 
             <div class='toggler_main_container'>
-                <div class='toggler main_menu_toggle bold pointer action inline main_menu_category'>+ More</div>
+                <div class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ More</div>
 
-                <div class='toggler_container main_menu_toggle_container'>
-                    <div id='main_menu_more_container' class='grid_column_center'>
+                <div class='toggler_container room_menu_toggle_container'>
+                    <div id='room_menu_more_container' class='grid_column_center'>
                         <div class='pointer action' onclick='Hue.write_popup_message(false, "room")'>Broadcast</div>
                         <div class='pointer action' onclick='Hue.write_popup_message(false, "ops")'>Whisper OPs</div>
                         <div class='pointer action' onclick='Hue.needs_confirm("reset_voices")'>Reset Voices</div>

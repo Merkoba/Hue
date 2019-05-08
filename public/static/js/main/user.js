@@ -565,7 +565,7 @@ Hue.show_intro = function()
     Hue.create_popup("bottomright").show(["Media Controls", s])
 
     s = `
-    This area contains the main menu, user list, voice chat, and radio controls. Above that there's the Activty Bar which shows users that have shown activity recently.`
+    This area contains the room menu, user list, voice chat, and radio controls. Above that there's the Activty Bar which shows users that have shown activity recently.`
 
     Hue.create_popup("top").show(["Top Panel", s])
 

@@ -579,12 +579,12 @@ Hue.start_tv_maxer_context_menu = function()
     })
 }
 
-// Starts the main menu context menu
-Hue.start_main_menu_context_menu = function()
+// Starts the room menu context menu
+Hue.start_room_menu_context_menu = function()
 {
     $.contextMenu(
     {
-        selector: "#main_menu_icon",
+        selector: "#room_menu_icon",
         animation: {duration: 250, hide: 'fadeOut'},
         zIndex: 9000000000,
         events: Hue.context_menu_events,
@@ -1170,7 +1170,7 @@ Hue.start_search_context_menus = function()
 {
     $.contextMenu(
     {
-        selector: "#main_menu_search_button",
+        selector: "#room_menu_search_button",
         animation: {duration: 250, hide: 'fadeOut'},
         zIndex: 9000000000,
         events: Hue.context_menu_events,

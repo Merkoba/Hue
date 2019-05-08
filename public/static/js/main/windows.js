@@ -54,17 +54,17 @@ Hue.start_msg = function()
         window_inner_x_class: "!titlebar_inner_x"
     }
 
-    Hue.msg_main_menu = Msg.factory
+    Hue.msg_room_menu = Msg.factory
     (
         Object.assign({}, common, titlebar,
         {
-            id: "main_menu",
+            id: "room_menu",
             window_width: "22em",
             after_close: function(instance)
             {
                 common.after_close(instance)
-                Hue.close_togglers("main_menu")
-                Hue.close_togglers("main_menu_permissions")
+                Hue.close_togglers("room_menu")
+                Hue.close_togglers("room_menu_permissions")
             }
         })
     )
@@ -598,9 +598,9 @@ Hue.start_msg = function()
         })
     )
 
-    Hue.msg_main_menu.set(Hue.template_main_menu(
+    Hue.msg_room_menu.set(Hue.template_room_menu(
     {
-        permissions_containers: Hue.make_main_menu_permissions_container()
+        permissions_containers: Hue.make_room_menu_permissions_container()
     }))
 
     Hue.msg_user_menu.set(Hue.template_user_menu())
@@ -668,7 +668,7 @@ Hue.start_msg = function()
     Hue.msg_public_roomlist.set_title("<span id='public_rooms_window_title' class='pointer'>Public Rooms</span>")
     Hue.msg_visited_roomlist.set_title("<span id='visited_rooms_window_title' class='pointer'>Visited Rooms</span>")
     Hue.msg_played.set_title("Recently Played")
-    Hue.msg_main_menu.set_title("<span id='main_menu_window_title' class='pointer'>Main Menu</span>")
+    Hue.msg_room_menu.set_title("<span id='room_menu_window_title' class='pointer'>Room Menu</span>")
     Hue.msg_user_menu.set_title("<span id='user_menu_window_title' class='pointer'>User Menu</span>")
     Hue.msg_media_menu.set_title("Media Menu")
     Hue.msg_draw_image.set_title("Draw an Image")
@@ -714,7 +714,7 @@ Hue.start_msg = function()
         Hue.toggle_media_history_windows()
     })
 
-    $("#main_menu_window_title").click(function()
+    $("#room_menu_window_title").click(function()
     {
         Hue.toggle_menu_windows()
     })
@@ -837,37 +837,37 @@ Hue.after_modal_close = function(instance)
 // Gets all Msg modal instances
 Hue.get_modal_instances = function()
 {
-    return Hue.msg_main_menu.higher_instances()
+    return Hue.msg_room_menu.higher_instances()
 }
 
 // Gets all Msg popup instances
 Hue.get_popup_instances = function()
 {
-    return Hue.msg_main_menu.lower_instances()
+    return Hue.msg_room_menu.lower_instances()
 }
 
 // Gets all Msg instances
 Hue.get_all_msg_instances = function()
 {
-    return Hue.msg_main_menu.instances()
+    return Hue.msg_room_menu.instances()
 }
 
 // Checks if any Msg instance is open
 Hue.any_msg_open = function()
 {
-    return Hue.msg_main_menu.any_open()
+    return Hue.msg_room_menu.any_open()
 }
 
 // Checks if any Msg modal instance is open
 Hue.any_modal_open = function()
 {
-    return Hue.msg_main_menu.any_higher_open()
+    return Hue.msg_room_menu.any_higher_open()
 }
 
 // Checks if any Msg popup instance is open
 Hue.any_popup_open = function()
 {
-    return Hue.msg_main_menu.any_lower_open()
+    return Hue.msg_room_menu.any_lower_open()
 }
 
 // Closes all Msg instances
@@ -875,12 +875,12 @@ Hue.close_all_msg = function(callback=false)
 {
     if(callback)
     {
-        Hue.msg_main_menu.close_all(callback)
+        Hue.msg_room_menu.close_all(callback)
     }
 
     else
     {
-        Hue.msg_main_menu.close_all()
+        Hue.msg_room_menu.close_all()
     }
 }
 
@@ -889,12 +889,12 @@ Hue.close_all_modals = function(callback=false)
 {
     if(callback)
     {
-        Hue.msg_main_menu.close_all_higher(callback)
+        Hue.msg_room_menu.close_all_higher(callback)
     }
 
     else
     {
-        Hue.msg_main_menu.close_all_higher()
+        Hue.msg_room_menu.close_all_higher()
     }
 }
 
@@ -903,12 +903,12 @@ Hue.close_all_popups = function(callback=false)
 {
     if(callback)
     {
-        Hue.msg_main_menu.close_all_lower(callback)
+        Hue.msg_room_menu.close_all_lower(callback)
     }
 
     else
     {
-        Hue.msg_main_menu.close_all_lower()
+        Hue.msg_room_menu.close_all_lower()
     }
 }
 
@@ -1179,7 +1179,7 @@ Hue.process_msg_close_button = function(button)
 // Function to apply the defined toggles between windows
 Hue.process_window_toggle = function(data)
 {
-    let highest = Hue.msg_main_menu.highest_instance()
+    let highest = Hue.msg_room_menu.highest_instance()
     let current = highest.options.id
     let next_func = data[current]
 
@@ -1212,19 +1212,19 @@ Hue.toggle_search_windows = function()
     Hue.process_window_toggle(data)
 }
 
-// Toggles between the main menu and user menu when clicking the titlebar
+// Toggles between the room menu and user menu when clicking the titlebar
 Hue.toggle_menu_windows = function()
 {
     let data = {}
 
-    data["main_menu"] = function()
+    data["room_menu"] = function()
     {
         Hue.show_user_menu()
     }
 
     data["user_menu"] = function()
     {
-        Hue.show_main_menu()
+        Hue.show_room_menu()
     }
 
     Hue.process_window_toggle(data)

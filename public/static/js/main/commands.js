@@ -730,29 +730,29 @@ Hue.commands =
         },
         description: `Sets media visibility and locks to the default state`
     },
-    "/menu":
+    "/roommenu":
     {
         action: (arg, ans) =>
         {
-            Hue.show_main_menu()
+            Hue.show_room_menu()
         },
-        description: `Shows the main menu`
+        description: `Shows the room menu`
     },
-    "/media":
-    {
-        action: (arg, ans) =>
-        {
-            Hue.show_media_menu()
-        },
-        description: `Shows the media menu`
-    },
-    "/user":
+    "/usermenu":
     {
         action: (arg, ans) =>
         {
             Hue.show_user_menu()
         },
         description: `Shows the user menu`
+    },
+    "/mediamenu":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.show_media_menu()
+        },
+        description: `Shows the media menu`
     },
     "/imagehistory":
     {

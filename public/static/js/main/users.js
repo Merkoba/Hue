@@ -1558,7 +1558,7 @@ Hue.set_role = function(rol, config=true)
 
     if(config)
     {
-        Hue.config_main_menu()
+        Hue.config_room_menu()
     }
 }
 
