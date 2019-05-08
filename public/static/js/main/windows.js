@@ -544,7 +544,7 @@ Hue.start_msg = function()
         Object.assign({}, common, titlebar,
         {
             id: "reply",
-            window_width: "22em",
+            window_width: "26em",
             after_show: function(instance)
             {
                 common.after_show(instance)

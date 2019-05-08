@@ -54,6 +54,7 @@ Hue.swap_display_positions = function()
 {
     let type = Hue.active_settings("tv_display_position")
     Hue[type].tv_display_position = Hue[type].tv_display_position === "top" ? "bottom" : "top"
+    Hue[`save_${type}`]()
     Hue.apply_media_positions()
 }
 
