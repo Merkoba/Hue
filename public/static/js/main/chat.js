@@ -1500,8 +1500,10 @@ Hue.start_reply = function(target)
         return false
     }
 
-    text = text.replace(/\n+/gm, " ").substring(0, Hue.quote_max_length)
-    let add_dots = text.length > Hue.quote_max_length
+    let rtext = text.replace(/\n+/gm, " ")
+    let add_dots = rtext.length > Hue.quote_max_length
+    
+    text = rtext.substring(0, Hue.quote_max_length)
 
     if(add_dots)
     {
