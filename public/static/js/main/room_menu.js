@@ -191,7 +191,7 @@ Hue.config_room_menu = function()
         Hue.config_admin_room_name()
         Hue.config_admin_topic()
 
-        $("#admin_menu").css("display", "grid")
+        $("#admin_menu").css("display", "block")
     }
 
     else

@@ -673,6 +673,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 #menu_smaller_container
 {
 	padding-top: 0.8em;
+	padding-bottom: 1rem;
 }
 
 .nice_input
@@ -2276,7 +2277,7 @@ input[type=text], textarea
 
 #admin_menu
 {
-	margin-top: 2rem;
+	margin-top: 1rem;
 	margin-bottom: 0.5rem;
 }
 
