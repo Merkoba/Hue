@@ -1500,7 +1500,7 @@ Hue.start_reply = function(target)
         return false
     }
 
-    text = text.substring(0, Hue.quote_max_length)
+    text = text.replace(/\n+/gm, " ").substring(0, Hue.quote_max_length)
     let add_dots = text.length > Hue.quote_max_length
 
     if(add_dots)
@@ -1508,18 +1508,19 @@ Hue.start_reply = function(target)
         text += "..."
     }
 
-    let text_html = `${Hue.replace_markdown(Hue.make_html_safe(`${text}`))}`
-    let html = `${uname} said: "${text_html}"`
+    let quote = `${Hue.replace_markdown(Hue.make_html_safe(`${text}`))}`
     Hue.reply_text_raw = `=[dummy-space]${uname} said: "[dummy-space]${text}[dummy-space]"[dummy-space]=`
 
-    Hue.show_reply(html)
+    Hue.show_reply(uname, quote)
 }
 
 // Show the reply window
-Hue.show_reply = function(html)
+Hue.show_reply = function(username, quote)
 {
-    $("#reply_text").html(html)
+    $("#reply_text").html(quote)
     $("#reply_input").val("")
+
+    Hue.msg_reply.set_title(`Re: ${username}`)
 
     Hue.msg_reply.show(function()
     {
