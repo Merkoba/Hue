@@ -466,6 +466,11 @@ Hue.start_socket = function()
             Hue.update_userlist()
             Hue.update_activity_bar()
             Hue.show_reload_button()
+
+            if(Hue.open_profile_username)
+            {
+                Hue.show_profile(Hue.open_profile_username)
+            }
         }
     })
 
