@@ -141,23 +141,6 @@ Hue.email_changed = function(data)
     Hue.feedback(`Email succesfully changed to ${data.email}`)
 }
 
-// Setups the user details window
-Hue.setup_details = function()
-{
-    $("#details_username").text(Hue.username)
-    $("#details_email").text(Hue.user_email)
-
-    let s = `<div>${Hue.utilz.nice_date(Hue.user_reg_date)}</div>
-    </div>(${Hue.get_timeago(Hue.user_reg_date)})</div>`
-
-    $("#details_reg_date").html(s)
-
-    s = `<div>${Hue.utilz.nice_date(Hue.date_joined)}</div>
-    </div>(${Hue.get_timeago(Hue.date_joined)})</div>`
-
-    $("#details_joined_room").html(s)
-}
-
 // Changes the user's bio
 Hue.change_bio = function(value)
 {
@@ -186,9 +169,27 @@ Hue.change_bio = function(value)
     return true
 }
 
+// Setups the user details window
+Hue.build_details = function()
+{
+    $("#details_username").text(Hue.username)
+    $("#details_email").text(Hue.user_email)
+
+    let s = `<div>${Hue.utilz.nice_date(Hue.user_reg_date)}</div>
+    </div>(${Hue.get_timeago(Hue.user_reg_date)})</div>`
+
+    $("#details_reg_date").html(s)
+
+    s = `<div>${Hue.utilz.nice_date(Hue.date_joined)}</div>
+    </div>(${Hue.get_timeago(Hue.date_joined)})</div>`
+
+    $("#details_joined_room").html(s)
+}
+
 // Shows the user's details window
 Hue.show_details = function(data)
 {
+    Hue.build_details()
     Hue.msg_details.show()
 }
 
