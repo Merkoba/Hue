@@ -1056,6 +1056,17 @@ Hue.create_popup = function(args={})
         Hue.popup_id += 1
         args.id = Hue.popup_id
     }
+    
+    let panel_size = $("#footer").height()
+    let edge_padding_y = panel_size + 20
+
+    if(args.position.includes("top"))
+    {
+        if(Hue.get_setting("activity_bar"))
+        {
+            edge_padding_y += panel_size
+        }
+    }
 
     let def_args =
     {
@@ -1065,14 +1076,14 @@ Hue.create_popup = function(args={})
         show_effect_duration: [0, 400],
         close_effect_duration: [400, 0],
         clear_editables: true,
-        show_effect: "none",
-        close_effect: "none",
+        show_effect: "fade",
+        close_effect: "fade",
         window_class: "!custom_popup",
         enable_titlebar: true,
         center_titlebar: true,
         titlebar_class: "!custom_titlebar !unselectable",
         window_inner_x_class: "!titlebar_inner_x",
-        edge_padding_y: $("#footer").height() + 20
+        edge_padding_y: edge_padding_y
     }
 
     args = Object.assign(def_args, args)
@@ -1311,7 +1322,7 @@ Hue.make_info_popup = function(username=false)
 
     let popup = Hue.create_popup(
     {
-        position: "bottomright", 
+        position: "topright", 
         autoclose: true, 
         autoclose_delay: Hue.config.info_popup_delay,
         enable_titlebar: false,
