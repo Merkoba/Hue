@@ -1963,6 +1963,11 @@ Hue.push_to_all_usernames = function(username)
         if(!Hue.all_usernames.includes(username))
         {
             Hue.all_usernames.push(username)
+
+            if(Hue.all_usernames.length > 1000)
+            {
+                Hue.all_usernames.shift()
+            }
         }
     }
 }

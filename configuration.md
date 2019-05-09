@@ -711,6 +711,9 @@ This should be an array of strings of root domains.
 "info_popup_delay"
 >How long info popups get displayed before they automatically close.
 
+"notifications_crop_limit"
+>How many notifications after the notifications items get cropped in the notifications window.
+
 
 ## The following reside in config.secret.json
 
