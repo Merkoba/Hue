@@ -181,6 +181,7 @@ Hue.loaded_tv = {}
 Hue.loaded_radio = {}
 Hue.open_profile_username = false
 Hue.send_badge_disabled = false
+Hue.info_popups = []
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

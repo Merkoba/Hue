@@ -1304,7 +1304,12 @@ Hue.make_info_popup = function(username=false)
         }
     }
 
-    return Hue.create_popup(
+    let after_close = function()
+    {
+        Hue.info_popups.shift()
+    }
+
+    let popup = Hue.create_popup(
     {
         position: "bottomright", 
         autoclose: true, 
@@ -1313,8 +1318,20 @@ Hue.make_info_popup = function(username=false)
         window_x: "none",
         content_class: "!info_popup",
         window_width: "auto",
-        on_click: on_click
+        on_click: on_click,
+        after_close: after_close,
+        close_on_escape: false
     })
+
+    Hue.info_popups.push(popup)
+
+    if(Hue.info_popups.length > Hue.config.max_info_popups)
+    {
+        Hue.info_popups.slice(0, Hue.info_popups.length - Hue.config.max_info_popups).map(pop => pop.close())
+        Hue.info_popups = Hue.info_popups.slice(-Hue.config.max_info_popups)
+    }
+
+    return popup
 }
 
 // Makes standard info popup items

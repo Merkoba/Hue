@@ -705,6 +705,9 @@ This should be an array of strings of root domains.
 "badge_feedback_duration"
 >How long a profile image stays changed after a badge is received.
 
+"max_info_popups"
+>How many info popups (bottom right) can be displayed at once. After this, the older ones get closed.
+
 
 ## The following reside in config.secret.json
 
