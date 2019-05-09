@@ -83,6 +83,7 @@ Hue.youtube_video_play_on_queue = false
 Hue.message_id = 0
 Hue.chat_content_container_id = 0
 Hue.popup_message_id = 0
+Hue.popup_id = 0
 Hue.writing_message = false
 Hue.double_tap_key_pressed = 0
 Hue.double_tap_key_2_pressed = 0

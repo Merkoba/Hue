@@ -1053,8 +1053,8 @@ Hue.create_popup = function(args={})
 {
     if(!args.id)
     {
-        Hue.popup_message_id += 1
-        args.id = Hue.popup_message_id
+        Hue.popup_id += 1
+        args.id = Hue.popup_id
     }
 
     let def_args =
