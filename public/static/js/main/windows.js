@@ -1051,6 +1051,12 @@ Hue.scroll_modal_to_bottom = function(id)
 // Creates a Msg popup
 Hue.create_popup = function(args={})
 {
+    if(!args.id)
+    {
+        Hue.popup_message_id += 1
+        args.id = Hue.popup_message_id
+    }
+
     let def_args =
     {
         preset: "popup",

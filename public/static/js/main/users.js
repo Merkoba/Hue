@@ -61,7 +61,7 @@ Hue.show_username = function()
 // This handles new users joining the room
 Hue.user_join = function(data)
 {
-    let added = Hue.add_to_userlist(
+    Hue.add_to_userlist(
     {
         user_id: data.user_id,
         username: data.username,
@@ -73,21 +73,18 @@ Hue.user_join = function(data)
         skulls: data.skulls
     })
 
-    if(added)
+    if(Hue.get_setting("show_joins") && Hue.check_permission(data.role, "chat"))
     {
-        if(Hue.get_setting("show_joins") && Hue.check_permission(data.role, "chat"))
+        let popup = Hue.make_info_popup(data.username)
+        popup.show(Hue.make_info_popup_item("fa fa-user-plus", `${data.username} has joined`))
+        
+        if(data.username !== Hue.username)
         {
-            let popup = Hue.make_info_popup(data.username)
-            popup.show(Hue.make_info_popup_item("fa fa-user-plus", `${data.username} has joined`))
-            
-            if(data.username !== Hue.username)
-            {
-                Hue.on_activity("join")
-            }
+            Hue.on_activity("join")
         }
-
-        Hue.update_user_last_message(data.user_id)
     }
+
+    Hue.update_user_last_message(data.user_id)
 
     if(Hue.open_profile_username === data.username)
     {
