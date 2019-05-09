@@ -708,6 +708,9 @@ This should be an array of strings of root domains.
 "max_info_popups"
 >How many info popups (bottom right) can be displayed at once. After this, the older ones get closed.
 
+"info_popup_delay"
+>How long info popups get displayed before they automatically close.
+
 
 ## The following reside in config.secret.json
 

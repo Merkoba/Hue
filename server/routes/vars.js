@@ -103,4 +103,5 @@ module.exports = function(c, config)
     c.vars.send_badge_cooldown = config.send_badge_cooldown
     c.vars.badge_feedback_duration = config.badge_feedback_duration
     c.vars.max_info_popups = config.max_info_popups
+    c.vars.info_popup_delay = config.info_popup_delay
 }

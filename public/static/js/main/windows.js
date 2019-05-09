@@ -1313,7 +1313,7 @@ Hue.make_info_popup = function(username=false)
     {
         position: "bottomright", 
         autoclose: true, 
-        autoclose_delay: 5000,
+        autoclose_delay: Hue.config.info_popup_delay,
         enable_titlebar: false,
         window_x: "none",
         content_class: "!info_popup",
