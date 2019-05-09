@@ -838,6 +838,7 @@ Hue.show_activity_bar = function()
     $("#topbox_left_icon").addClass("fa-caret-down")
 
     Hue.update_activity_bar()
+    Hue.apply_theme()
     Hue.on_resize()
 }
 
@@ -848,6 +849,7 @@ Hue.hide_activity_bar = function()
     $("#topbox_left_icon").removeClass("fa-caret-down")
     $("#topbox_left_icon").addClass("fa-caret-up")
 
+    Hue.apply_theme()
     Hue.on_resize()
 }
 
@@ -1951,4 +1953,16 @@ Hue.get_user_info_title = function(user)
     }
 
     return `${last_message}Joined: ${Hue.utilz.nice_date(user.date_joined)}`
+}
+
+// If username is valid and it is not in all_usernames add it
+Hue.push_to_all_usernames = function(username)
+{
+    if(username)
+    {
+        if(!Hue.all_usernames.includes(username))
+        {
+            Hue.all_usernames.push(username)
+        }
+    }
 }

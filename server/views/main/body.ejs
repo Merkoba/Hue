@@ -21,9 +21,10 @@
                 </div>
             </div>
 
-            <div class='unselectable action nicetitle pointer topbox_container position_right' onclick='Hue.lock_screen()' title="Lock Screen">
-                <div class='topbox'>
-                    <i id='topbox_right_icon' class='topbox_icon fa fa-lock'></i>
+            <div class='unselectable topbox_container position_right'>
+                <div class='topbox topbox_fixed'>
+                    <i id='topbox_right_icon_lock' class='action nicetitle pointer topbox_icon fas fa-lock' title="Lock Screen" onclick='Hue.lock_screen()'></i>
+                    <i id='topbox_right_icon_bell' class='action nicetitle pointer topbox_icon fas fa-bell' title="Notifications" onclick='Hue.show_notifications()'></i>
                 </div>
             </div>
 

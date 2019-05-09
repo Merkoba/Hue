@@ -691,6 +691,8 @@ Hue.update_chat = function(args={})
         Hue.replace_property_in_userlist_by_user_id(args.user_id, "last_message", args.message)
     }
 
+    Hue.push_to_all_usernames(args.username)
+
     return {message_id:message_id}
 }
 
@@ -969,6 +971,8 @@ Hue.chat_announce = function(args={})
             Hue.on_highlight()
         }
     }
+
+    Hue.push_to_all_usernames(args.username)
 
     return {message_id:message_id}
 }

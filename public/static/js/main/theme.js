@@ -217,6 +217,18 @@ Hue.apply_theme = function()
     let slight_background = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_5)
     let cfsize = Hue.get_setting("chat_font_size")
 
+    let topbox_background
+
+    if(Hue.get_setting("activity_bar"))
+    {
+        topbox_background = color_4
+    }
+
+    else
+    {
+        topbox_background = background_color_2
+    }
+
     if(cfsize === "very_small")
     {
         cfsize_factor = 0.5
@@ -508,6 +520,12 @@ Hue.apply_theme = function()
     .room_menu_toggle_container 
     {
         background-color: ${slight_background} !important;
+    }
+
+    .topbox
+    {
+        background-color: ${topbox_background} !important;
+        color: ${font_color} !important;
     }
 
     </style>

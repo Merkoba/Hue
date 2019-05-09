@@ -8,17 +8,25 @@ Hue.generate_words_to_autocomplete = function()
         susernames.push(`${uname}'s`)
     }
 
-    let words = Hue.commands_list
-    .concat(Hue.usernames)
-    .concat(susernames)
-    .concat(["@everyone"])
-    .concat(Object.keys(Hue.command_aliases))
+    let words = []
+
+    words.push 
+    (
+        ...Hue.commands_list,
+        ...Hue.usernames,
+        ...susernames,
+        ...["@everyone"],
+        ...Object.keys(Hue.command_aliases),
+        ...Hue.all_usernames
+    )
+
+    words = [...new Set(words)]
 
     let autocomplete = Hue.get_setting("other_words_to_autocomplete")
 
     if(autocomplete)
     {
-        words = words.concat(autocomplete.split('\n'))
+        words = words.push(...autocomplete.split('\n'))
     }
 
     words.sort()

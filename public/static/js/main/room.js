@@ -1035,3 +1035,57 @@ Hue.show_access_log = function(messages)
         Hue.do_modal_filter()
     })
 }
+
+// Pushes a new notification to the notifications window
+Hue.push_notification = function(icon, message)
+{
+    let d = Date.now()
+    let t = Hue.utilz.nice_date(d)
+
+    let icon_html = ""
+
+    if(icon)
+    {
+        icon_html = `<i class='${icon} notifications_icon'></i>`
+    }
+
+    let message_html = `<div class='notifications_messasge'>${Hue.utilz.make_html_safe(message)}</div>`
+
+    let item = $(`<div class='notifications_item modal_item'><div class='notifications_item_content dynamic_title'>${icon_html}${message_html}</div>`)
+    let content = item.find(".notifications_item_content").eq(0)
+
+    content.attr("title", t)
+    content.data("otitle", t)
+    content.data("date", d)
+
+    let items = $("#notifications_container .notifications_item")
+    let num_items = items.length
+
+    if(num_items === 0)
+    {
+        $("#notifications_container").html(item)
+    }
+
+    else
+    {
+        $("#notifications_container").prepend(item)
+    }
+
+    if(num_items > Hue.config.notifications_crop_limit)
+    {
+        $("#notifications_container .notifications_item").last().remove()
+    }
+}
+
+// Shows information about the recent info popups
+Hue.show_notifications = function(filter=false)
+{
+    Hue.msg_notifications.show(function()
+    {
+        if(filter)
+        {
+            $("#notifications_filter").val(filter)
+            Hue.do_modal_filter()
+        }
+    })
+}

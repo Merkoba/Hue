@@ -37,6 +37,7 @@ Hue.input_history = []
 Hue.input_history_index = 0
 Hue.userlist = []
 Hue.usernames = []
+Hue.all_usernames = []
 Hue.role = ''
 Hue.can_chat = false
 Hue.can_images = false

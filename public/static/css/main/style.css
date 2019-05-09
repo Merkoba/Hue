@@ -1917,7 +1917,7 @@ input[type=text], textarea
 	height: var(--panel-height);
 }
 
-.topbox_container:hover > .topbox
+.topbox_container:hover > .topbox:not(.topbox_fixed)
 {
 	visibility: visible;
 }
@@ -1932,10 +1932,15 @@ input[type=text], textarea
 	visibility: hidden;
 }
 
+.topbox_fixed
+{
+	visibility: visible;
+}
+
 .topbox_icon
 {
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
+	font-size: 0.9rem;
+	padding: 0.6rem;
 }
 
 #lockscreen_body
@@ -3177,4 +3182,25 @@ pre
 .info_popup
 {
 	padding: 0.8rem !important;
+}
+
+#notifications_container
+{
+	display: grid;
+	grid-gap: 1.2rem;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.notifications_item_content
+{
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.notifications_icon
+{
+	margin-bottom: 0.5rem;
 }

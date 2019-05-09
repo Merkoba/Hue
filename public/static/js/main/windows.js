@@ -598,6 +598,15 @@ Hue.start_msg = function()
         })
     )
 
+    Hue.msg_notifications = Msg.factory
+    (
+        Object.assign({}, common, titlebar,
+        {
+            id: "notifications",
+            window_width: "26rem"
+        })
+    )
+
     Hue.msg_room_menu.set(Hue.template_room_menu(
     {
         permissions_containers: Hue.make_room_menu_permissions_container()
@@ -624,6 +633,7 @@ Hue.start_msg = function()
     Hue.msg_modal_image_number.set(Hue.template_modal_image_number())
     Hue.msg_lockscreen.set(Hue.template_lockscreen())
     Hue.msg_locked.set(Hue.template_locked_menu())
+    Hue.msg_notifications.set(Hue.template_notifications())
 
     Hue.msg_global_settings.set(Hue.template_global_settings(
     {
@@ -678,6 +688,7 @@ Hue.start_msg = function()
     Hue.msg_upload_comment.set_title("Add a Comment")
     Hue.msg_reply.set_title("Write a Reply")
     Hue.msg_details.set_title("User Details")
+    Hue.msg_notifications.set_title("Notifications")
 
     $("#global_settings_window_title").click(function()
     {
@@ -1346,7 +1357,7 @@ Hue.make_info_popup = function(username=false)
 }
 
 // Makes standard info popup items
-Hue.make_info_popup_item = function(icon, html, action=true)
+Hue.make_info_popup_item = function(icon, message, action=true)
 {
     let classes = ""
 
@@ -1355,5 +1366,7 @@ Hue.make_info_popup_item = function(icon, html, action=true)
         classes = "pointer action"
     }
 
-    return `<div class='info_popup_item unselectable ${classes}'><i class='${icon} info_popup_icon'></i><div>${Hue.utilz.make_html_safe(html)}</div></div>`
+    Hue.push_notification(icon, message)
+
+    return `<div class='info_popup_item unselectable ${classes}'><i class='${icon} info_popup_icon'></i><div>${Hue.utilz.make_html_safe(message)}</div></div>`
 }

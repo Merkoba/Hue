@@ -1756,6 +1756,14 @@ Hue.commands =
             }
         },
         description: `Sends a skull badge to a user`
+    },
+    "/notifications":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.show_notifications(arg)
+        },
+        description: `Opens the notifications window. Accepts a filter as an argument`
     }
 }
 
