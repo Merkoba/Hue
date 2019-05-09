@@ -1037,7 +1037,7 @@ Hue.show_access_log = function(messages)
 }
 
 // Pushes a new notification to the notifications window
-Hue.push_notification = function(icon, message)
+Hue.push_notification = function(icon, message, on_click=false)
 {
     let d = Date.now()
     let t = Hue.utilz.nice_date(d)
@@ -1050,13 +1050,27 @@ Hue.push_notification = function(icon, message)
     }
 
     let message_html = `<div class='notifications_messasge'>${Hue.utilz.make_html_safe(message)}</div>`
+    let content_classes = ""
 
-    let item = $(`<div class='notifications_item modal_item'><div class='notifications_item_content dynamic_title'>${icon_html}${message_html}</div>`)
+    if(on_click)
+    {
+        content_classes = "pointer action"
+    }
+
+    let item = $(`<div class='notifications_item modal_item'><div class='notifications_item_content ${content_classes} dynamic_title'>${icon_html}${message_html}</div>`)
     let content = item.find(".notifications_item_content").eq(0)
 
     content.attr("title", t)
     content.data("otitle", t)
     content.data("date", d)
+
+    if(on_click)
+    {
+        content.click(function()
+        {
+            on_click()
+        })
+    }
 
     let items = $("#notifications_container .notifications_item")
     let num_items = items.length

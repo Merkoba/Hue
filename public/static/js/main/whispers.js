@@ -494,7 +494,6 @@ Hue.send_system_broadcast = function(message, draw_coords)
 
 // When receiving a whisper
 // A popup automatically appears unless configured not to
-// Shows a chat announcement that when click shows the whisper with text and drawings
 Hue.popup_message_received = function(data, type="user", announce=true)
 {
     if(!data.id)
@@ -629,6 +628,11 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 
         for(let p of Hue.get_popup_instances())
         {
+            if(!p.window || !p.window.id.includes("popup_message"))
+            {
+                continue
+            }
+
             if(p.window.id === `Msg-window-popup_message_${data.id}`)
             {
                 p.close(function()
@@ -637,7 +641,6 @@ Hue.popup_message_received = function(data, type="user", announce=true)
                 })
 
                 closing_popups = true
-
                 break
             }
         }
@@ -654,11 +657,18 @@ Hue.popup_message_received = function(data, type="user", announce=true)
         {
             Hue.popup_message_received(data, type, false)
         }
-
+    
         Hue.push_whisper(t, af)
-    }
 
-    Hue.on_highlight()
+        if(!Hue.get_setting("open_popup_messages"))
+        {
+            let popup = Hue.make_info_popup(af, false)
+            let item = Hue.make_info_popup_item({icon:"fa fa-envelope", message:t, push:false})
+            popup.show(item)
+        }
+
+        Hue.on_highlight()
+    }
 }
 
 // Shows and configures the whisper popup

@@ -1325,18 +1325,8 @@ Hue.toggle_settings_windows = function()
 }
 
 // Makes popups used for events like join and part
-Hue.make_info_popup = function(username=false)
+Hue.make_info_popup = function(on_click=function(){})
 {
-    let on_click = function(){}
-
-    if(username)
-    {
-        on_click = function()
-        {
-            Hue.show_profile(username)
-        }
-    }
-
     let after_close = function()
     {
         Hue.info_popups.shift()
@@ -1368,18 +1358,32 @@ Hue.make_info_popup = function(username=false)
 }
 
 // Makes standard info popup items
-Hue.make_info_popup_item = function(icon, message, action=true)
+Hue.make_info_popup_item = function(args={})
 {
+    let def_args =
+    {
+        icon: "",
+        messgage: "",
+        action: true,
+        push: true,
+        on_click: false
+    }
+
+    args = Object.assign(def_args, args)
+
     let classes = ""
 
-    if(action)
+    if(args.action)
     {
         classes = "pointer action"
     }
 
-    Hue.push_notification(icon, message)
+    if(args.push)
+    {
+        Hue.push_notification(args.icon, args.message, args.on_click)
+    }
 
-    return `<div class='info_popup_item unselectable ${classes}'><i class='${icon} info_popup_icon'></i><div>${Hue.utilz.make_html_safe(message)}</div></div>`
+    return `<div class='info_popup_item unselectable ${classes}'><i class='${args.icon} info_popup_icon'></i><div>${Hue.utilz.make_html_safe(args.message)}</div></div>`
 }
 
 // Makes action popups like for file upload progress

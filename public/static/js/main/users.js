@@ -75,8 +75,13 @@ Hue.user_join = function(data)
 
     if(Hue.get_setting("show_joins") && Hue.check_permission(data.role, "chat"))
     {
-        let popup = Hue.make_info_popup(data.username)
-        popup.show(Hue.make_info_popup_item("fa fa-user-plus", `${data.username} has joined`))
+        let f = function()
+        {
+            Hue.show_profile(data.username)
+        }
+        
+        let popup = Hue.make_info_popup(f)
+        popup.show(Hue.make_info_popup_item({icon:"fa fa-user-plus", message:`${data.username} has joined`, on_click:f}))
         
         if(data.username !== Hue.username)
         {
@@ -1068,7 +1073,7 @@ Hue.user_disconnect = function(data)
         if(mode === "normal")
         {
             let popup = Hue.make_info_popup()
-            popup.show(Hue.make_info_popup_item("fas fa-sign-out-alt", s, false))
+            popup.show(Hue.make_info_popup_item({icon:"fas fa-sign-out-alt", message:s, action:false}))
         }
 
         else if(mode === "action")
