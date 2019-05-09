@@ -1030,22 +1030,25 @@ Hue.user_disconnect = function(data)
 
     if(Hue.get_setting("show_parts") && Hue.check_permission(data.role, "chat"))
     {
-        let s
+        let s, mode
         let type = data.disconnection_type
 
         if(type === "disconnection")
         {
-            s = `${data.username} has left`
+            s = `${data.username} has left`,
+            mode = "normal"
         }
 
         else if(type === "pinged")
         {
-            s = `${data.username} has left (Ping Timeout)`
+            s = `${data.username} has left (Ping Timeout)`,
+            mode = "normal"
         }
 
         else if(type === "kicked")
         {
             s = `${data.username} was kicked by ${data.info1}`
+            mode = "action"
         }
 
         else if(type === "banned")
@@ -1056,10 +1059,25 @@ Hue.user_disconnect = function(data)
             {
                 Hue.request_ban_list()
             }
+
+            mode = "action"
         }
 
-        let popup = Hue.make_info_popup()
-        popup.show(Hue.make_info_popup_item("fas fa-sign-out-alt", s, false))
+        if(mode === "normal")
+        {
+            let popup = Hue.make_info_popup()
+            popup.show(Hue.make_info_popup_item("fas fa-sign-out-alt", s, false))
+        }
+
+        else if(mode === "action")
+        {
+            Hue.public_feedback(s,
+            {
+                brk: "<i class='icon2c fas fa-sign-out-alt'></i>",
+                save: true,
+                username: data.username
+            })
+        }
     }
 
     if(Hue.open_profile_username === data.username)
