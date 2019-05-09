@@ -3204,3 +3204,24 @@ pre
 {
 	margin-bottom: 0.5rem;
 }
+
+#whispers_container
+{
+	display: grid;
+	grid-gap: 1.2rem;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.whispers_item_content
+{
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.whispers_icon
+{
+	margin-bottom: 0.5rem;
+}

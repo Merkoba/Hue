@@ -607,6 +607,15 @@ Hue.start_msg = function()
         })
     )
 
+    Hue.msg_whispers = Msg.factory
+    (
+        Object.assign({}, common, titlebar,
+        {
+            id: "whispers",
+            window_width: "26rem"
+        })
+    )
+
     Hue.msg_room_menu.set(Hue.template_room_menu(
     {
         permissions_containers: Hue.make_room_menu_permissions_container()
@@ -634,6 +643,7 @@ Hue.start_msg = function()
     Hue.msg_lockscreen.set(Hue.template_lockscreen())
     Hue.msg_locked.set(Hue.template_locked_menu())
     Hue.msg_notifications.set(Hue.template_notifications())
+    Hue.msg_whispers.set(Hue.template_whispers())
 
     Hue.msg_global_settings.set(Hue.template_global_settings(
     {
@@ -689,6 +699,7 @@ Hue.start_msg = function()
     Hue.msg_reply.set_title("Write a Reply")
     Hue.msg_details.set_title("User Details")
     Hue.msg_notifications.set_title("Notifications")
+    Hue.msg_whispers.set_title("Whispers")
 
     $("#global_settings_window_title").click(function()
     {

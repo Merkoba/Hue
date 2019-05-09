@@ -105,4 +105,5 @@ module.exports = function(c, config)
     c.vars.max_info_popups = config.max_info_popups
     c.vars.info_popup_delay = config.info_popup_delay
     c.vars.notifications_crop_limit = config.notifications_crop_limit
+    c.vars.whispers_crop_limit = config.whispers_crop_limit
 }

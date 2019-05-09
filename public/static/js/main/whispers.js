@@ -655,12 +655,7 @@ Hue.popup_message_received = function(data, type="user", announce=true)
             Hue.popup_message_received(data, type, false)
         }
 
-        Hue.feedback(`${t} received`,
-        {
-            brk: "<i class='icon2c fa fa-envelope'></i>",
-            save: true,
-            onclick: af
-        })
+        Hue.push_whisper(t, af)
     }
 
     Hue.on_highlight()
@@ -737,5 +732,56 @@ Hue.setup_message_area = function()
     $('#draw_message_area').mouseenter(function(e)
     {
         Hue.draw_message_just_entered = true
+    })
+}
+
+// Pushes a new whisper to the whispers window
+Hue.push_whisper = function(message, onclick)
+{
+    let d = Date.now()
+    let t = Hue.utilz.nice_date(d)
+
+    let message_html = `<div class='whispers_messasge'>${Hue.utilz.make_html_safe(message)}</div>`
+    let item = $(`<div class='whispers_item modal_item'><div class='whispers_item_content action pointer dynamic_title'>${message_html}</div>`)
+    let content = item.find(".whispers_item_content").eq(0)
+
+    content.attr("title", t)
+    content.data("otitle", t)
+    content.data("date", d)
+    content.click(function()
+    {
+        Hue.msg_whispers.close()
+        onclick()
+    })
+
+    let items = $("#whispers_container .whispers_item")
+    let num_items = items.length
+
+    if(num_items === 0)
+    {
+        $("#whispers_container").html(item)
+    }
+
+    else
+    {
+        $("#whispers_container").prepend(item)
+    }
+
+    if(num_items > Hue.config.whispers_crop_limit)
+    {
+        $("#whispers_container .whispers_item").last().remove()
+    }
+}
+
+// Shows information about the recent whispers
+Hue.show_whispers = function(filter=false)
+{
+    Hue.msg_whispers.show(function()
+    {
+        if(filter)
+        {
+            $("#whispers_filter").val(filter)
+            Hue.do_modal_filter()
+        }
     })
 }
