@@ -3184,6 +3184,24 @@ pre
 	padding: 0.8rem !important;
 }
 
+.action_popup_item
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.action_popup_icon
+{
+	margin-right: 1rem;
+}
+
+.action_popup
+{
+	padding: 0.8rem !important;
+}
+
 #notifications_container
 {
 	display: grid;

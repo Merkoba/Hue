@@ -1381,3 +1381,74 @@ Hue.make_info_popup_item = function(icon, message, action=true)
 
     return `<div class='info_popup_item unselectable ${classes}'><i class='${icon} info_popup_icon'></i><div>${Hue.utilz.make_html_safe(message)}</div></div>`
 }
+
+// Makes action popups like for file upload progress
+Hue.show_action_popup = function(args={})
+{
+    let def_args =
+    {
+        id: false,
+        message: "",
+        icon: "",
+        title: "",
+        on_click: false,
+        after_close: function(){}
+    }
+
+    args = Object.assign(def_args, args)
+
+    let on_click = function(){}
+
+    if(args.on_click)
+    {
+        on_click = args.on_click
+    }
+
+    let enable_titlebar = Boolean(args.title)
+
+    let obj =
+    {
+        position: "bottomright", 
+        enable_titlebar: enable_titlebar,
+        content_class: "!action_popup",
+        window_width: "auto",
+        on_click: on_click,
+        after_close: args.after_close,
+        close_on_escape: false
+    }
+
+    if(args.id)
+    {
+        obj.id = args.id
+    }
+
+    let popup = Hue.create_popup(obj)
+
+    let classes = ""
+
+    if(args.on_click)
+    {
+        classes = "pointer action"
+    }
+
+    let icon = ""
+
+    if(args.icon)
+    {
+        icon = `<i class='${args.icon} action_popup_icon'></i>`
+    }
+
+    let html = `<div class='action_popup_item unselectable ${classes}'>${icon}<div class='action_popup_message'>${Hue.utilz.make_html_safe(args.message)}</div></div>`
+
+    if(args.title)
+    {
+        popup.show([args.title, html])
+    }
+
+    else
+    {
+        popup.show(html)
+    }
+
+    return popup
+}

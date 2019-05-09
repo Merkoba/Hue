@@ -166,24 +166,23 @@ Hue.upload_file = function(args={})
 
     args.file.hue_data.percentage = 0
 
-    let message = `Uploading ${Hue.get_file_action_name(args.file.hue_data.action)}: 0%`
-
     let obj =
     {
-        brk: "<i class='icon2c fa fa-info-circle'></i>",
-        container_id: `uploading_${date}`,
-        title: `Size: ${Hue.utilz.get_size_string(args.file.hue_data.size / 1024)} | ${Hue.utilz.nice_date()}`
+        message: `Uploading ${Hue.get_file_action_name(args.file.hue_data.action)}: 0%`,
+        icon: "fa fa-camera",
+        id: `uploading_${date}`,
+        title: `Size: ${Hue.utilz.get_size_string(args.file.hue_data.size / 1024)}`
     }
 
     if(!args.file.hue_data.sending_last_slice)
     {
-        obj.onclick = function()
+        obj.after_close = function()
         {
             Hue.cancel_file_upload(date)
         }
     }
 
-    Hue.feedback(message, obj)
+    args.file.hue_popup = Hue.show_action_popup(obj)
 
     args.file.hue_data.reader.readAsArrayBuffer(slice)
 }
@@ -236,14 +235,18 @@ Hue.get_file_next = function(file)
 // Updates the upload status announcement based on upload progress
 Hue.change_upload_status = function(file, status, clear=false)
 {
-    $(`#uploading_${file.hue_data.date}`)
-    .find(".announcement_content")
+    if(!file.hue_popup)
+    {
+        return false
+    }
+
+    $(file.hue_popup.content)
+    .find(".action_popup_message")
     .eq(0).text(`Uploading ${Hue.get_file_action_name(file.hue_data.action)}: ${status}`)
 
     if(clear)
     {
-        $(`#uploading_${file.hue_data.date}`).remove()
-        Hue.goto_bottom(false, false)
+        file.hue_popup.close()
     }
 }
 
