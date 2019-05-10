@@ -1279,3 +1279,21 @@ Hue.radio_picker_submit = function()
         Hue.msg_radio_picker.close()
     }
 }
+
+// Some configurations for the header radio widget
+Hue.setup_radio_widget = function()
+{
+    $("#toggle_radio_state").on("auxclick", function(e)
+    {
+        if(e.which === 2)
+        {
+            if(Hue.radio_started)
+            {
+                Hue.stop_radio()
+                Hue.start_radio()
+            }
+        }
+    })
+
+    Hue.set_radio_volume_widget()
+}
