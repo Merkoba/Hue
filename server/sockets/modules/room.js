@@ -28,33 +28,36 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        let info = await db_manager.get_room({_id:socket.hue_room_id}, {topic:1})
-        let new_topic = data.topic
+        let room = vars.rooms[socket.hue_room_id]
 
-        if(new_topic !== info.topic)
+        if(data.topic === room.topic)
         {
-            info.topic = new_topic
-            info.topic_setter = socket.hue_username
-            info.topic_date = Date.now()
-
-            handler.room_emit(socket, 'topic_change',
-            {
-                topic: info.topic,
-                topic_setter: info.topic_setter,
-                topic_date: info.topic_date
-            })
-
-            db_manager.update_room(info._id,
-            {
-                topic: info.topic,
-                topic_setter: info.topic_setter,
-                topic_date: info.topic_date
-            })
-
-            vars.rooms[socket.hue_room_id].topic = info.topic
-
-            handler.push_admin_log_message(socket, `changed the topic to "${info.topic}"`)
+            return false
         }
+
+        let info = {}
+
+        info.topic = data.topic
+        info.topic_setter = socket.hue_username
+        info.topic_date = Date.now()
+        
+        db_manager.update_room(socket.hue_room_id,
+        {
+            topic: info.topic,
+            topic_setter: info.topic_setter,
+            topic_date: info.topic_date
+        })
+
+        handler.room_emit(socket, 'topic_change',
+        {
+            topic: info.topic,
+            topic_setter: info.topic_setter,
+            topic_date: info.topic_date
+        })
+
+        vars.rooms[socket.hue_room_id].topic = info.topic
+
+        handler.push_admin_log_message(socket, `changed the topic to "${info.topic}"`)
     }
 
     // Handles room name changes
