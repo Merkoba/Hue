@@ -55,7 +55,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             topic_date: info.topic_date
         })
 
-        vars.rooms[socket.hue_room_id].topic = info.topic
+        room.topic = info.topic
 
         handler.push_admin_log_message(socket, `changed the topic to "${info.topic}"`)
     }
