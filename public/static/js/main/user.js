@@ -419,7 +419,7 @@ Hue.profile_image_selected = function(input)
 
         reader.onload = function(e)
         {
-            let s = "<img id='profile_image_canvas_image'><div id='profile_image_canvas_button' class='unselectable'>Crop and Upload</div>"
+            let s = "<img id='profile_image_canvas_image'><div><div id='profile_image_canvas_button' class='action pointer unselectable'>Crop and Upload</div></div>"
 
             Hue.msg_info.show(s, function()
             {
