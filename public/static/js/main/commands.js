@@ -1764,6 +1764,14 @@ Hue.commands =
             Hue.show_notifications(arg)
         },
         description: `Opens the notifications window. Accepts a filter as an argument`
+    },
+    "/whispers":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.show_whispers(arg)
+        },
+        description: `Opens the whispers window. Accepts a filter as an argument`
     }
 }
 
