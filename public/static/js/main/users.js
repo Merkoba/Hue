@@ -900,6 +900,9 @@ Hue.update_activity_bar = function()
 
         if(user && Hue.activity_list.some(item => item.username === username))
         {
+            let t = Hue.get_user_info_title(user, true)
+            $(this).attr("title", t)
+            $(this).data("otitle", t)
             usernames_included.push(username)
         }
 
@@ -913,12 +916,12 @@ Hue.update_activity_bar = function()
     {
         for(let item of Hue.activity_list)
         {
-            if(usernames_included.includes(item.username))
+            let user = Hue.get_user_by_username(item.username)
+
+            if(usernames_included.includes(user.username))
             {
                 continue
             }
-
-            let user = Hue.get_user_by_username(item.username)
 
             if(user)
             {
@@ -1909,17 +1912,19 @@ Hue.get_user_info_title = function(user, include_username=false)
     let last_message = ""
     let username = ""
 
+    if(include_username)
+    {
+        username = `${user.username}\n`
+    }
+    
     if(user.last_message)
     {
         last_message = `Last Message: ${user.last_message.substring(0, 100)}\n`
     }
 
-    if(include_username)
-    {
-        username = `${user.username}\n`
-    }
+    let joined = `Joined: ${Hue.utilz.nice_date(user.date_joined)}`
 
-    return `${username}${last_message}Joined: ${Hue.utilz.nice_date(user.date_joined)}`
+    return `${username}${last_message}${joined}`
 }
 
 // If username is valid and it is not in all_usernames add it
