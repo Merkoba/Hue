@@ -932,7 +932,7 @@ Hue.update_activity_bar = function()
                     <div class='activity_bar_image_container round_image_container action4'>
                         <img class='activity_bar_image profile_image' src='${pi}'>
                     </div>
-                    <div class='activity_bar_text'></div>
+                    <div class='activity_bar_text action'></div>
                 </div>`)
 
                 let text_el = h.find(".activity_bar_text").eq(0)
