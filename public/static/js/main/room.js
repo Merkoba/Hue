@@ -1079,7 +1079,7 @@ Hue.announce_room_change = function(username, message)
     }
 
     let popup = Hue.make_info_popup(f)
-    let item = Hue.make_info_popup_item({icon:"fa fa-info-circle", message:message, on_click:f})
+    let item = Hue.make_info_popup_item({message:message, on_click:f})
 
     popup.show(item)
 }
