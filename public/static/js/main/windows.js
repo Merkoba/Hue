@@ -1396,7 +1396,9 @@ Hue.show_action_popup = function(args={})
         icon: "",
         title: "",
         on_click: false,
-        after_close: function(){}
+        after_close: function(){},
+        autoclose: false,
+        titlebar: true
     }
 
     args = Object.assign(def_args, args)
@@ -1405,20 +1407,32 @@ Hue.show_action_popup = function(args={})
 
     if(args.on_click)
     {
-        on_click = args.on_click
+        on_click = function(instance)
+        {
+            instance.close()
+            args.on_click()
+        }
     }
 
-    let enable_titlebar = Boolean(args.title)
+    let x = "inner_right"
+
+    if(!args.titlebar)
+    {
+        x = "none"
+    }
 
     let obj =
     {
         position: "bottomright", 
-        enable_titlebar: enable_titlebar,
+        enable_titlebar: args.titlebar,
+        window_x: x,
         content_class: "!action_popup",
         window_width: "auto",
         on_click: on_click,
         after_close: args.after_close,
-        close_on_escape: false
+        close_on_escape: false,
+        autoclose: args.autoclose,
+        autoclose_delay: 5000
     }
 
     if(args.id)

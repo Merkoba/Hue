@@ -354,6 +354,7 @@ Hue.sent_popup_message_function = function(mode, message, draw_coords, data1=[])
         text: message,
         html: h,
         remove_text_if_empty: true,
+        no_spacing: true,
         date: Date.now()
     })
 
@@ -460,8 +461,8 @@ Hue.do_send_whisper_user = function(unames, message, draw_coords, show=true)
     {
         let f = Hue.sent_popup_message_function("whisper", message, draw_coords, unames)
         let m = `Whisper sent to ${Hue.utilz.nice_list(unames)}`
-
-        Hue.feedback(m, {onclick:f, save:true})
+        Hue.show_action_popup({icon:"fa fa-envelope", message:m, on_click:f, autoclose:true, titlebar:false})
+        Hue.push_whisper(m, f)
     }
 }
 
@@ -494,7 +495,7 @@ Hue.send_system_broadcast = function(message, draw_coords)
 
 // When receiving a whisper
 // A popup automatically appears unless configured not to
-Hue.popup_message_received = function(data, type="user", announce=true)
+Hue.popup_message_received = function(data, type="user", announce=true, method="popup")
 {
     if(!data.id)
     {
@@ -624,30 +625,38 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 
     if(!announce || Hue.get_setting("open_popup_messages"))
     {
-        let closing_popups = false
-
-        for(let p of Hue.get_popup_instances())
+        if(method === "popup")
         {
-            if(!p.window || !p.window.id.includes("popup_message"))
+            let closing_popups = false
+    
+            for(let p of Hue.get_popup_instances())
             {
-                continue
-            }
-
-            if(p.window.id === `Msg-window-popup_message_${data.id}`)
-            {
-                p.close(function()
+                if(!p.window || !p.window.id.includes("popup_message"))
                 {
-                    Hue.show_popup_message(data)
-                })
-
-                closing_popups = true
-                break
+                    continue
+                }
+    
+                if(p.window.id === `Msg-window-popup_message_${data.id}`)
+                {
+                    p.close(function()
+                    {
+                        Hue.show_popup_message(data)
+                    })
+    
+                    closing_popups = true
+                    break
+                }
+            }
+    
+            if(!closing_popups)
+            {
+                Hue.show_popup_message(data)
             }
         }
 
-        if(!closing_popups)
+        else if(method === "modal")
         {
-            Hue.show_popup_message(data)
+            Hue.show_popup_message(data, "modal")
         }
     }
 
@@ -655,7 +664,7 @@ Hue.popup_message_received = function(data, type="user", announce=true)
     {
         let af = function()
         {
-            Hue.popup_message_received(data, type, false)
+            Hue.popup_message_received(data, type, false, "modal")
         }
     
         Hue.push_whisper(t, af)
@@ -672,9 +681,19 @@ Hue.popup_message_received = function(data, type="user", announce=true)
 }
 
 // Shows and configures the whisper popup
-Hue.show_popup_message = function(data)
+Hue.show_popup_message = function(data, method="popup")
 {
-    let pop = Hue.create_popup({position:"top", id:`popup_message_${data.id}`})
+    let pop
+
+    if(method === "popup")
+    {
+        pop = Hue.create_popup({position:"top", id:`popup_message_${data.id}`})
+    }
+
+    else if(method === "modal")
+    {
+        pop = Hue.msg_info2
+    }
 
     pop.show([data.title, data.content], function()
     {
@@ -746,7 +765,7 @@ Hue.setup_message_area = function()
 }
 
 // Pushes a new whisper to the whispers window
-Hue.push_whisper = function(message, onclick)
+Hue.push_whisper = function(message, on_click)
 {
     let d = Date.now()
     let t = Hue.utilz.nice_date(d)
@@ -760,8 +779,7 @@ Hue.push_whisper = function(message, onclick)
     content.data("date", d)
     content.click(function()
     {
-        Hue.msg_whispers.close()
-        onclick()
+        on_click()
     })
 
     let items = $("#whispers_container .whispers_item")

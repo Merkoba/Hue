@@ -95,7 +95,8 @@ Hue.make_safe = function(args={})
         html_unselectable: true,
         title: false,
         remove_text_if_empty: false,
-        date: false
+        date: false,
+        no_spacing: false
     }
 
     args = Object.assign(def_args, args)
@@ -176,7 +177,7 @@ Hue.make_safe = function(args={})
     {
         let sp
 
-        if(args.text || !args.remove_text_if_empty)
+        if(!args.no_spacing && (args.text || !args.remove_text_if_empty))
         {
             sp = "message_info_html_spaced"
         }

@@ -429,7 +429,7 @@ Hue.do_socket_emit = function(obj)
 {
     if(Hue.debug_socket)
     {
-        console.info(`Emit: ${obj.destination} | Data: ${JSON.stringify(obj.data)}`)
+        console.info(`Emit: ${obj.destination} | Data: ${JSON.stringify(obj.data).substring(0, 250)}`)
     }
 
     obj.data.server_method_name = obj.destination
