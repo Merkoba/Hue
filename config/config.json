@@ -265,5 +265,6 @@
 	"send_badge_cooldown": 1000,
 	"badge_feedback_duration": 1000,
 	"max_info_popups": 5,
-	"info_popup_delay": 5000
+	"info_popup_delay": 5000,
+	"media_sync_cooldown": 5000
 }

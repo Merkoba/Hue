@@ -106,4 +106,5 @@ module.exports = function(c, config)
     c.vars.info_popup_delay = config.info_popup_delay
     c.vars.notifications_crop_limit = config.notifications_crop_limit
     c.vars.whispers_crop_limit = config.whispers_crop_limit
+    c.vars.media_sync_cooldown = config.media_sync_cooldown
 }

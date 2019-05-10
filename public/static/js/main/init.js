@@ -183,6 +183,7 @@ Hue.loaded_radio = {}
 Hue.open_profile_username = false
 Hue.send_badge_disabled = false
 Hue.info_popups = []
+Hue.last_media_sync = Date.now()
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

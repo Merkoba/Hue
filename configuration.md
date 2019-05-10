@@ -714,6 +714,9 @@ This should be an array of strings of root domains.
 "notifications_crop_limit"
 >How many notifications after the notifications items get cropped in the notifications window.
 
+"media_sync_cooldown"
+>Only allow client to respond to media sync requests after this amount of time has passed since last sync. This is to avoid other users to hijack a user through socket spam attacks.
+
 
 ## The following reside in config.secret.json
 
