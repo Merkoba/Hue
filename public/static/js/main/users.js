@@ -232,12 +232,14 @@ Hue.replace_property_in_userlist_by_username = function(username, prop, new_valu
 Hue.replace_property_in_userlist_by_user_id = function(user_id, prop, new_value, update=true)
 {
     let changed = false
+    let user
 
     for(let i=0; i<Hue.userlist.length; i++)
     {
         if(Hue.userlist[i].user_id === user_id)
         {
             Hue.userlist[i][prop] = new_value
+            user = Hue.userlist[i]
             changed = true
             break
         }
@@ -246,6 +248,11 @@ Hue.replace_property_in_userlist_by_user_id = function(user_id, prop, new_value,
     if(update && changed)
     {
         Hue.update_userlist()
+
+        if(Hue.open_profile_username === user.username)
+        {
+            Hue.show_profile(user.username)
+        }
     }
 }
 
