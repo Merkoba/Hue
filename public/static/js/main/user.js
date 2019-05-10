@@ -419,16 +419,23 @@ Hue.profile_image_selected = function(input)
 
         reader.onload = function(e)
         {
-            let s = "<img id='profile_image_canvas_image'><div><div id='profile_image_canvas_button' class='action pointer unselectable'>Crop and Upload</div></div>"
+            let s = `
+            <img id='profile_image_canvas_image'>
+            <div id='profile_image_canvas_buttons'>
+                <div id='profile_image_canvas_cancel' class='action pointer unselectable profile_image_canvas_button'>Cancel</div>
+                <div id='profile_image_canvas_upload' class='action pointer unselectable profile_image_canvas_button'>Upload</div>
+            </div>`
 
             Hue.msg_info.show(s, function()
             {
+                Hue.horizontal_separator.separate("profile_image_canvas_buttons")
+                
                 $('#profile_image_canvas_image').attr('src', e.target.result)
-
                 $("#profile_image_picker").closest('form').get(0).reset()
 
                 let image = $('#profile_image_canvas_image')[0]
-                let button = $('#profile_image_canvas_button')[0]
+                let cancel_button = $('#profile_image_canvas_cancel')[0]
+                let upload_button = $('#profile_image_canvas_upload')[0]
                 let croppable = false
 
                 let cropper = new Cropper(image,
@@ -451,7 +458,12 @@ Hue.profile_image_selected = function(input)
                     }
                 })
 
-                button.onclick = function()
+                cancel_button.onclick = function()
+                {
+                    Hue.msg_info.close()
+                }
+
+                upload_button.onclick = function()
                 {
                     let cropped_canvas
                     let rounded_canvas

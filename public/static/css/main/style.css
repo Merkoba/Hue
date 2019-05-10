@@ -1410,11 +1410,18 @@ input[type=text], textarea
 	border-radius: 50% !important;
 }
 
-#profile_image_canvas_button
+#profile_image_canvas_buttons
 {
-	font-size: 1.2em;
-	padding-top: 1em;
-	display: inline-block;
+	padding-top: 1rem;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.profile_image_canvas_button
+{
+	font-size: 1.2rem;
 }
 
 .small_padding_bottom
