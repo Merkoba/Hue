@@ -1343,8 +1343,7 @@ Hue.make_info_popup = function(on_click=function(){})
     let popup = Hue.create_popup(
     {
         position: "topright", 
-        autoclose: true, 
-        autoclose_delay: Hue.config.info_popup_delay,
+        autoclose: false, 
         enable_titlebar: false,
         window_x: "none",
         content_class: "!info_popup",
@@ -1356,6 +1355,16 @@ Hue.make_info_popup = function(on_click=function(){})
     })
 
     popup.hue_closing = false
+    
+    if(Hue.app_focused)
+    {
+        Hue.add_close_timeout_to_info_popup(popup)
+    }
+
+    else
+    {
+        popup.hue_close_timeout = false
+    }
 
     Hue.info_popups.push(popup)
 
@@ -1377,6 +1386,28 @@ Hue.make_info_popup = function(on_click=function(){})
 
     return popup
 }
+
+// Adds the close timeout to an info popup
+Hue.add_close_timeout_to_info_popup = function(popup)
+{
+    popup.hue_close_timeout = setTimeout(function()
+    {
+        popup.close()
+    }, Hue.config.info_popup_delay)
+}
+
+// Adds the close timeouts to info popups without them
+Hue.activate_info_popup_timeouts = function()
+{
+    for(let popup of Hue.info_popups)
+    {
+        if(!popup.hue_close_timeout)
+        {
+            Hue.add_close_timeout_to_info_popup(popup)
+        }
+    }
+}
+
 
 // Makes standard info popup items
 Hue.make_info_popup_item = function(args={})

@@ -134,6 +134,7 @@ Hue.on_app_focused = function()
         Hue.change_radio_when_focused = false
     }
 
+    Hue.activate_info_popup_timeouts()
     Hue.show_fresh_messages()
     Hue.trigger_activity()
 }
