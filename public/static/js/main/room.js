@@ -410,12 +410,7 @@ Hue.announce_room_name_change = function(data)
 {
     if(data.name !== Hue.room_name)
     {
-        Hue.public_feedback(`${data.username} changed the room name to: "${data.name}"`,
-        {
-            username: data.username,
-            open_profile: true
-        })
-
+        Hue.announce_room_change(data.username, `${data.username} changed the room name to: "${data.name}"`)
         Hue.set_room_name(data.name)
         Hue.update_title()
         Hue.update_input_placeholder()
@@ -627,23 +622,7 @@ Hue.announce_topic_change = function(data)
 {
     if(data.topic !== Hue.topic)
     {
-        let highlight = false
-
-        if(data.topic_setter !== Hue.username)
-        {
-            if(Hue.check_highlights(data.topic))
-            {
-                highlight = true
-            }
-        }
-
-        Hue.public_feedback(`${data.topic_setter} changed the topic to: "${data.topic}"`,
-        {
-            highlight: highlight,
-            username: data.topic_setter,
-            open_profile: true
-        })
-
+        Hue.announce_room_change(data.topic_setter, `${data.topic_setter} changed the topic to: "${data.topic}"`)
         Hue.set_topic_info(data)
         Hue.update_title()
     }
@@ -726,11 +705,7 @@ Hue.announce_privacy_change = function(data)
         s += ". The room won't appear in the public room list"
     }
 
-    Hue.public_feedback(s,
-    {
-        username: data.username,
-        open_profile: true
-    })
+    Hue.announce_room_change(data.username, s)
 }
 
 // Privacy setter
@@ -819,13 +794,8 @@ Hue.announce_log_change = function(data)
         s = `${data.username} cleared and disabled the log`
     }
 
-    Hue.public_feedback(s,
-    {
-        username: data.username,
-        open_profile: true
-    })
-
     Hue.set_log_enabled(data.log)
+    Hue.announce_room_change(data.username, s)
 }
 
 // Announces that the log was cleared
@@ -841,11 +811,7 @@ Hue.announce_log_cleared = function(data)
         Hue.remove_messages_after_id(data.id, data.type)
     }
 
-    Hue.public_feedback(`${data.username} cleared the log`,
-    {
-        username: data.username,
-        open_profile: true
-    })
+    Hue.announce_room_change(data.username, `${data.username} cleared the log`)
 }
 
 // Shows the log status
@@ -1102,4 +1068,18 @@ Hue.show_notifications = function(filter=false)
             Hue.do_modal_filter()
         }
     })
+}
+
+// Centralized function for room changes
+Hue.announce_room_change = function(username, message)
+{
+    let f = function()
+    {
+        Hue.show_profile(username)
+    }
+
+    let popup = Hue.make_info_popup(f)
+    let item = Hue.make_info_popup_item({icon:"fa fa-info-circle", message:message, on_click:f})
+
+    popup.show(item)
 }

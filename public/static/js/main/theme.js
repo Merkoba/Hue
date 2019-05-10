@@ -599,12 +599,7 @@ Hue.change_theme = function(color)
 // Announces theme mode change
 Hue.announce_theme_mode_change = function(data)
 {
-    Hue.public_feedback(`${data.username} changed the theme mode to ${data.mode}`,
-    {
-        username: data.username,
-        open_profile: true
-    })
-
+    Hue.announce_room_change(data.username, `${data.username} changed the theme mode to ${data.mode}`)
     Hue.set_theme_mode(data.mode)
     Hue.apply_theme()
 }
@@ -612,12 +607,7 @@ Hue.announce_theme_mode_change = function(data)
 // Announces theme change
 Hue.announce_theme_change = function(data)
 {
-    Hue.public_feedback(`${data.username} changed the theme to ${data.color}`,
-    {
-        username: data.username,
-        open_profile: true
-    })
-
+    Hue.announce_room_change(data.username, `${data.username} changed the theme to ${data.color}`)
     Hue.set_theme(data.color)
 }
 
@@ -742,12 +732,7 @@ Hue.change_background_image_source = function(src)
 // Announces background image changes
 Hue.announce_background_image_change = function(data)
 {
-    Hue.public_feedback(`${data.username} changed the background image`,
-    {
-        username: data.username,
-        open_profile: true
-    })
-
+    Hue.announce_room_change(data.username, `${data.username} changed the background image`)
     Hue.set_background_image(data)
 }
 
@@ -783,12 +768,7 @@ Hue.change_background_mode = function(mode)
 // Announces background mode changes
 Hue.announce_background_mode_change = function(data)
 {
-    Hue.public_feedback(`${data.username} changed the background mode to ${data.mode}`,
-    {
-        username: data.username,
-        open_profile: true
-    })
-
+    Hue.announce_room_change(data.username, `${data.username} changed the background mode to ${data.mode}`)
     Hue.set_background_mode(data.mode)
 }
 
@@ -824,12 +804,7 @@ Hue.change_background_tile_dimensions = function(dimensions)
 // Announces background tile dimensions changes
 Hue.announce_background_tile_dimensions_change = function(data)
 {
-    Hue.public_feedback(`${data.username} changed the background tile dimensions to ${data.dimensions}`,
-    {
-        username: data.username,
-        open_profile: true
-    })
-
+    Hue.announce_room_change(data.username, `${data.username} changed the background tile dimensions to ${data.dimensions}`)
     Hue.set_background_tile_dimensions(data.dimensions)
     Hue.apply_background()
 }
@@ -896,12 +871,7 @@ Hue.change_background_effect = function(effect)
 // Announces background effect changes
 Hue.announce_background_effect_change = function(data)
 {
-    Hue.public_feedback(`${data.username} changed the background effect to ${data.effect}`,
-    {
-        username: data.username,
-        open_profile: true
-    })
-
+    Hue.announce_room_change(data.username, `${data.username} changed the background effect to ${data.effect}`)
     Hue.set_background_effect(data.effect)
 }
 
@@ -955,12 +925,7 @@ Hue.change_text_color_mode = function(mode)
 // Announces text color mode changes
 Hue.announce_text_color_mode_change = function(data)
 {
-    Hue.public_feedback(`${data.username} changed the text color mode to ${data.mode}`,
-    {
-        username: data.username,
-        open_profile: true
-    })
-
+    Hue.announce_room_change(data.username, `${data.username} changed the text color mode to ${data.mode}`)
     Hue.set_text_color_mode(data.mode)
     Hue.apply_theme()
 }
@@ -1006,12 +971,7 @@ Hue.change_text_color = function(color)
 // Announces text color changes
 Hue.announce_text_color_change = function(data)
 {
-    Hue.public_feedback(`${data.username} changed the text color to ${data.color}`,
-    {
-        username: data.username,
-        open_profile: true
-    })
-
+    Hue.announce_room_change(data.username, `${data.username} changed the text color to ${data.color}`)
     Hue.set_text_color(data.color)
     Hue.apply_theme()
 }

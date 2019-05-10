@@ -1435,6 +1435,7 @@ input[type=text], textarea
 #header_topic
 {
 	display: none;
+	cursor: pointer;
 }
 
 .small_square_image

@@ -1327,9 +1327,17 @@ Hue.toggle_settings_windows = function()
 // Makes popups used for events like join and part
 Hue.make_info_popup = function(on_click=function(){})
 {
-    let after_close = function()
+    let before_close = function(instance)
     {
-        Hue.info_popups.shift()
+        instance.hue_closing = true
+    }
+
+    let after_close = function(instance)
+    {
+        if(!instance.hue_terminated)
+        {
+            Hue.info_popups.shift()
+        }
     }
 
     let popup = Hue.create_popup(
@@ -1342,15 +1350,28 @@ Hue.make_info_popup = function(on_click=function(){})
         content_class: "!info_popup",
         window_width: "auto",
         on_click: on_click,
+        before_close: before_close,
         after_close: after_close,
         close_on_escape: false
     })
+
+    popup.hue_closing = false
 
     Hue.info_popups.push(popup)
 
     if(Hue.info_popups.length > Hue.config.max_info_popups)
     {
-        Hue.info_popups.slice(0, Hue.info_popups.length - Hue.config.max_info_popups).map(pop => pop.close())
+        let remainder = Hue.info_popups.slice(0, Hue.info_popups.length - Hue.config.max_info_popups)
+
+        for(let pop of remainder)
+        {
+            if(!pop.hue_closing)
+            {
+                pop.hue_terminated = true
+                pop.close()
+            }
+        }
+
         Hue.info_popups = Hue.info_popups.slice(-Hue.config.max_info_popups)
     }
 

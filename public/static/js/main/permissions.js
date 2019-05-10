@@ -29,26 +29,20 @@ Hue.change_voice_permission = function(ptype, what)
 // Announces voice permission changes
 Hue.announce_voice_permission_change = function(data)
 {
+    let s 
+
     if(data.what)
     {
-        Hue.public_feedback(`${data.username} set ${data.ptype} to true`,
-        {
-            username: data.username,
-            open_profile: true
-        })
+        s = `${data.username} set ${data.ptype} to true`
     }
 
     else
     {
-        Hue.public_feedback(`${data.username} set ${data.ptype} to false`,
-        {
-            username: data.username,
-            open_profile: true
-        })
+        s = `${data.username} set ${data.ptype} to false`
     }
 
     Hue[data.ptype] = data.what
-
+    Hue.announce_room_change(data.username, s)
     Hue.check_permissions()
     Hue.config_admin_permission_checkboxes()
 }
