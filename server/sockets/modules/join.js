@@ -35,9 +35,10 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         {
             return handler.do_disconnect(socket)
         }
-
+        
         if(data.alternative)
         {
+            socket.hue_login_method = "alternative"
             data.email = data.email.trim()
             data.password = data.password.trim()
 
@@ -59,6 +60,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         else
         {
+            socket.hue_login_method = "normal"
             data.user_id = data.user_id.trim()
 
             if(data.user_id === undefined || data.token === undefined)

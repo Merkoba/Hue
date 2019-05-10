@@ -26,7 +26,7 @@ Hue.generate_words_to_autocomplete = function()
 
     if(autocomplete)
     {
-        words = words.push(...autocomplete.split('\n'))
+        words.push(...autocomplete.split('\n'))
     }
 
     words.sort()

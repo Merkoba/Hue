@@ -1772,6 +1772,17 @@ Hue.commands =
             Hue.show_whispers(arg)
         },
         description: `Opens the whispers window. Accepts a filter as an argument`
+    },
+    "/synctv":
+    {
+        action: (arg, ans) =>
+        {
+            if(arg)
+            {
+                Hue.sync_tv(arg)
+            }
+        },
+        description: `Syncs a TV video with another user's video progress`
     }
 }
 

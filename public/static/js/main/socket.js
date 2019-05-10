@@ -376,6 +376,14 @@ Hue.server_update_events =
     'badge_received': (data) =>
     {
         Hue.on_badge_received(data)
+    },
+    'report_tv_progress': (data) =>
+    {
+        Hue.report_tv_progress(data)
+    },
+    'receive_tv_progress': (data) =>
+    {
+        Hue.receive_tv_progress(data)
     }
 }
 

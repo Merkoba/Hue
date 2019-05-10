@@ -576,4 +576,50 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         handler.push_admin_log_message(socket, `changed the tv mode to "${data.what}"`)
     }
+
+    // Receives a request to ask another user for their tv video progress
+    handler.public.sync_tv = function(socket, data)
+    {
+        if(!data.username)
+        {
+            return handler.get_out(socket)
+        }
+
+        let sockets = handler.get_user_sockets_per_room_by_username(socket.hue_room_id, data.username)
+        let first_socket
+
+        for(let socc of sockets)
+        {
+            if(socc.hue_login_method === "normal")
+            {
+                first_socket = socc
+                break
+            }
+        }
+
+        if(!first_socket)
+        {
+            return false
+        }
+
+        handler.user_emit(first_socket, "report_tv_progress", {requester:socket.id})
+    }
+
+    // If a user response this sends the progress to another user
+    handler.public.report_tv_progress = function(socket, data)
+    {
+        if(!data.requester || !data.progress)
+        {
+            return handler.get_out(socket)
+        }
+
+        let requester_socket = handler.get_room_socket_by_id(socket.hue_room_id, data.requester)
+
+        if(!requester_socket)
+        {
+            return false
+        }
+
+        handler.user_emit(requester_socket, "receive_tv_progress", {progress:data.progress})
+    }
 }

@@ -79,6 +79,30 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         }
     }
 
+    // Returns the list of sockets of a user in a room, by socket id
+    handler.get_room_socket_by_id = function(room_id, id)
+    {
+        try
+        {
+            let sockets = handler.get_room_sockets(room_id)
+
+            for(let socc of sockets)
+            {
+                if(socc.id === id)
+                {
+                    return socc
+                }
+            }
+
+            return false
+        }
+
+        catch(err)
+        {
+            logger.log_error(err)
+        }
+    }
+
     // Gets the list of sockets of a room
     handler.get_room_sockets = function(room_id)
     {
