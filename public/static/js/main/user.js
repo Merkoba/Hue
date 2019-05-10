@@ -429,7 +429,7 @@ Hue.profile_image_selected = function(input)
             Hue.msg_info.show(s, function()
             {
                 Hue.horizontal_separator.separate("profile_image_canvas_buttons")
-                
+
                 $('#profile_image_canvas_image').attr('src', e.target.result)
                 $("#profile_image_picker").closest('form').get(0).reset()
 
@@ -441,7 +441,7 @@ Hue.profile_image_selected = function(input)
                 let cropper = new Cropper(image,
                 {
                     aspectRatio: 1,
-                    viewMode: 1,
+                    viewMode: 3,
                     ready: function()
                     {
                         let container_data = cropper.getContainerData()
