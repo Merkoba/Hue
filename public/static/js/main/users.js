@@ -925,7 +925,7 @@ Hue.update_activity_bar = function()
                 let pi = user.profile_image || Hue.config.default_profile_image_url
 
                 let h = $(`
-                <div class='activity_bar_item'>
+                <div class='activity_bar_item dynamic_title'>
                     <div class='activity_bar_image_container round_image_container action4'>
                         <img class='activity_bar_image profile_image' src='${pi}'>
                     </div>
@@ -944,11 +944,14 @@ Hue.update_activity_bar = function()
                 })
 
                 img_el.data("username", user.username)
-
                 text_el.text(user.username)
 
+                let t = Hue.get_user_info_title(user, true)
+
+                h.attr("title", t)
+                h.data("otitle", t)
+                h.data("date", user.date_joined)
                 h.data("username", user.username)
-                h.attr("title", item.username)
 
                 c.append(h)
             }
@@ -1901,16 +1904,22 @@ Hue.set_skulls_counter = function(skulls)
 }
 
 // Makes the title based on the last message and join date
-Hue.get_user_info_title = function(user)
+Hue.get_user_info_title = function(user, include_username=false)
 {
     let last_message = ""
+    let username = ""
 
     if(user.last_message)
     {
         last_message = `Last Message: ${user.last_message.substring(0, 100)}\n`
     }
 
-    return `${last_message}Joined: ${Hue.utilz.nice_date(user.date_joined)}`
+    if(include_username)
+    {
+        username = `${user.username}\n`
+    }
+
+    return `${username}${last_message}Joined: ${Hue.utilz.nice_date(user.date_joined)}`
 }
 
 // If username is valid and it is not in all_usernames add it
