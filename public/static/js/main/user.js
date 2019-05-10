@@ -434,7 +434,7 @@ Hue.profile_image_selected = function(input)
                 let cropper = new Cropper(image,
                 {
                     aspectRatio: 1,
-                    viewMode: 2,
+                    viewMode: 1,
                     ready: function()
                     {
                         let container_data = cropper.getContainerData()
