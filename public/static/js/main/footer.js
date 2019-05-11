@@ -60,8 +60,6 @@ Hue.setup_footer_icons = function()
     {
         $("#footer_radio_icon_container").css("display", "none")
     }
-
-    Hue.horizontal_separator.separate("footer_media_items")
 }
 
 // Setups more footer elements
@@ -74,4 +72,22 @@ Hue.setup_footer = function()
             $("#image_file_picker").click()
         }
     })
+
+    $("#footer_user_menu_container").on("auxclick", function(e)
+    {
+        if(e.which === 2)
+        {
+            Hue.show_global_settings()
+        }
+    })
+
+    $("#footer_media_menu_container").on("auxclick", function(e)
+    {
+        if(e.which === 2)
+        {
+            Hue.stop_media()
+        }
+    })
+
+    Hue.horizontal_separator.separate("footer_media_items")
 }
