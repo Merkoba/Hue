@@ -672,7 +672,7 @@ Hue.popup_message_received = function(data, type="user", announce=true, method="
         if(!Hue.get_setting("open_popup_messages"))
         {
             let popup = Hue.make_info_popup(af, false)
-            let item = Hue.make_info_popup_item({icon:"fa fa-envelope", message:t, push:false})
+            let item = Hue.make_info_popup_item({icon:"fa fa-envelope", message:t, push:false, type="whisper"})
             popup.show(item)
         }
 

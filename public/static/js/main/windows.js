@@ -1440,7 +1440,8 @@ Hue.make_info_popup_item = function(args={})
         messgage: "",
         action: true,
         push: true,
-        on_click: false
+        on_click: false,
+        type: ""
     }
 
     args = Object.assign(def_args, args)
@@ -1454,7 +1455,22 @@ Hue.make_info_popup_item = function(args={})
 
     if(args.push)
     {
-        Hue.push_notification(args.icon, args.message, args.on_click)
+        let push = true
+
+        if
+        (
+            args.type === "user_join" && !Hue.get_setting("save_user_join_notifications") ||
+            args.type === "user_part" && !Hue.get_setting("save_user_part_notifications") ||
+            args.type === "room" && !Hue.get_setting("save_room_notifications")
+        )
+        {
+            push = false
+        }
+
+        if(push)
+        {
+            Hue.push_notification(args.icon, args.message, args.on_click)
+        }
     }
 
     return `<div class='info_popup_item unselectable ${classes}'><i class='${args.icon} info_popup_icon'></i><div>${Hue.utilz.make_html_safe(args.message)}</div></div>`

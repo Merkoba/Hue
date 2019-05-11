@@ -1078,7 +1078,7 @@ Hue.show_room_notification = function(username, message)
         Hue.show_profile(username)
     }
 
-    let item = Hue.make_info_popup_item({message:message, on_click:f})
+    let item = Hue.make_info_popup_item({message:message, on_click:f, type:"room"})
     
     if(Hue.get_setting("room_notifications"))
     {

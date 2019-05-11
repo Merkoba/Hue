@@ -344,6 +344,20 @@ Hue.user_settings =
             }
         }
     },
+    save_user_join_notifications:
+    {
+        widget_type: "checkbox",
+        description: `Whether user join notifications should be saved in the notifications window`,
+        action: (type, save=true) =>
+        {
+            Hue[type].save_user_join_notifications = $(`#${type}_save_user_join_notifications`).prop("checked")
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
     user_part_notifications:
     {
         widget_type: "checkbox",
@@ -358,6 +372,20 @@ Hue.user_settings =
             }
         }
     },
+    save_user_part_notifications:
+    {
+        widget_type: "checkbox",
+        description: `Whether user part notifications should be saved in the notifications window`,
+        action: (type, save=true) =>
+        {
+            Hue[type].save_user_part_notifications = $(`#${type}_save_user_part_notifications`).prop("checked")
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
     room_notifications:
     {
         widget_type: "checkbox",
@@ -365,6 +393,20 @@ Hue.user_settings =
         action: (type, save=true) =>
         {
             Hue[type].room_notifications = $(`#${type}_room_notifications`).prop("checked")
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
+    save_room_notifications:
+    {
+        widget_type: "checkbox",
+        description: `Whether room notifications should be saved in the notifications window`,
+        action: (type, save=true) =>
+        {
+            Hue[type].save_room_notifications = $(`#${type}_save_room_notifications`).prop("checked")
 
             if(save)
             {
