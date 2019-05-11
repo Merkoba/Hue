@@ -77,6 +77,7 @@ Hue.setup_footer = function()
     {
         if(e.which === 2)
         {
+            Hue.clear_show_reactions_box()
             Hue.show_global_settings()
         }
     })
