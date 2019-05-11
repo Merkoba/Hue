@@ -522,7 +522,7 @@ Hue.check_firstime = function()
     {
         Hue.first_time = true
         Hue.show_intro()
-        Hue.request_notifications_permission()
+        Hue.request_desktop_notifications_permission()
         Hue.save_local_storage(Hue.ls_first_time, false)
     }
 

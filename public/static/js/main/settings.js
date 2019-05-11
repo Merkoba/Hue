@@ -372,6 +372,20 @@ Hue.user_settings =
             }
         }
     },
+    auto_close_notifications:
+    {
+        widget_type: "checkbox",
+        description: `Whether info popups are closed automatically after a delay or just show close buttons`,
+        action: (type, save=true) =>
+        {
+            Hue[type].auto_close_notifications = $(`#${type}_auto_close_notifications`).prop("checked")
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
     animate_scroll:
     {
         widget_type: "checkbox",
@@ -498,13 +512,13 @@ Hue.user_settings =
             }
         }
     },
-    afk_disable_notifications:
+    afk_disable_desktop_notifications:
     {
         widget_type: "checkbox",
         description: `Whether desktop notifications should be disabled when Away From Keyboard`,
         action: (type, save=true) =>
         {
-            Hue[type].afk_disable_notifications = $(`#${type}_afk_disable_notifications`).prop("checked")
+            Hue[type].afk_disable_desktop_notifications = $(`#${type}_afk_disable_desktop_notifications`).prop("checked")
 
             if(save)
             {

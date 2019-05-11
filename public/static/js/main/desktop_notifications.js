@@ -1,12 +1,12 @@
 7// Triggers the browser notifications permission prompt if not yet active
-Hue.request_notifications_permission = function()
+Hue.request_desktop_notifications_permission = function()
 {
     if(typeof Notification === "undefined")
     {
         return false
     }
 
-    if(Hue.has_notifications_permission())
+    if(Hue.has_desktop_notifications_permission())
     {
         Hue.msg_info.show("Notifications are already enabled")
         return false
@@ -16,7 +16,7 @@ Hue.request_notifications_permission = function()
 }
 
 // Checks if browser notification permission is already granted
-Hue.has_notifications_permission = function()
+Hue.has_desktop_notifications_permission = function()
 {
     if(typeof Notification === "undefined")
     {
@@ -27,14 +27,14 @@ Hue.has_notifications_permission = function()
 }
 
 // Shows a browser notification
-Hue.show_notification = function(s)
+Hue.show_desktop_notification = function(s)
 {
     if(typeof Notification === "undefined")
     {
         return false
     }
     
-    if(!Hue.has_notifications_permission())
+    if(!Hue.has_desktop_notifications_permission())
     {
         return false
     }
@@ -49,20 +49,20 @@ Hue.show_notification = function(s)
 }
 
 // Shows a browser notification alerting of a highlight
-Hue.show_highlight_notification = function()
+Hue.show_highlight_desktop_notification = function()
 {
-    if(!Hue.has_notifications_permission())
+    if(!Hue.has_desktop_notifications_permission())
     {
         return false
     }
 
     if(Hue.afk)
     {
-        if(Hue.get_setting("afk_disable_notifications"))
+        if(Hue.get_setting("afk_disable_desktop_notifications"))
         {
             return false
         }
     }
 
-    Hue.show_notification(`New highlight in ${Hue.room_name.substring(0, 40)}`)
+    Hue.show_desktop_notification(`New highlight in ${Hue.room_name.substring(0, 40)}`)
 }

@@ -2651,7 +2651,7 @@ Hue.on_highlight = function()
     {
         Hue.alert_title(2)
         Hue.check_lockscreen_activity()
-        Hue.show_highlight_notification()
+        Hue.show_highlight_desktop_notification()
         Hue.sound_notify("highlight")
     }
 }

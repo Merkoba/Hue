@@ -3,57 +3,55 @@
 
         <div class="settings_window_left" id="settings_window_left_{{type}}">
             <div class='settings_window_left_content' id='settings_window_left_content_{{type}}'>
-
-                <div id='settings_window_category_afk_{{type}}' class='settings_window_category' data-category_container='settings_window_category_content_afk_{{type}}' data-category='afk'>
+                <div id='settings_window_category_afk_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_afk_{{type}}' data-category='afk'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>AFK</span>
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_sound_{{type}}' class='settings_window_category' data-category_container='settings_window_category_content_sound_{{type}}' data-category='sound'>
+                <div id='settings_window_category_sound_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_sound_{{type}}' data-category='sound'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Sound</span>
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_appearance_{{type}}' class='settings_window_category' data-category_container='settings_window_category_content_appearance_{{type}}' data-category='appearance'>
+                <div id='settings_window_category_appearance_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_appearance_{{type}}' data-category='appearance'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Appearance</span>
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_notifications_{{type}}' class='settings_window_category' data-category_container='settings_window_category_content_notifications_{{type}}' data-category='notifications'>
+                <div id='settings_window_category_notifications_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_notifications_{{type}}' data-category='notifications'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Notifications</span>
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_functions_{{type}}' class='settings_window_category' data-category_container='settings_window_category_content_functions_{{type}}' data-category='functions'>
+                <div id='settings_window_category_functions_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_functions_{{type}}' data-category='functions'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Functions</span>
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_media_{{type}}' class='settings_window_category' data-category_container='settings_window_category_content_media_{{type}}' data-category='media'>
+                <div id='settings_window_category_media_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_media_{{type}}' data-category='media'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Media</span>
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_synth_{{type}}' class='settings_window_category' data-category_container='settings_window_category_content_synth_{{type}}' data-category='synth'>
+                <div id='settings_window_category_synth_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_synth_{{type}}' data-category='synth'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Synth</span>
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_misc_{{type}}' class='settings_window_category' data-category_container='settings_window_category_content_misc_{{type}}' data-category='misc'>
+                <div id='settings_window_category_misc_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_misc_{{type}}' data-category='misc'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Misc</span>
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div class='settings_reset_button smaller_font_size pointer' onclick='Hue.confirm_reset_settings("{{type}}")'>Reset</div>
-
+                <div class='settings_reset_button smaller_font_size action pointer' onclick='Hue.confirm_reset_settings("{{type}}")'>Reset</div>
             </div>
         </div>
 
@@ -273,10 +271,10 @@
                     <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_synth">
                 </div>
 
-                <div class='settings_item settings_top_level_item' data-setting='afk_disable_notifications'>
+                <div class='settings_item settings_top_level_item' data-setting='afk_disable_desktop_notifications'>
                     <div class="setting_title2">On AFK</div>
-                    <div class="setting_title">Disable Notifications</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_notifications">
+                    <div class="setting_title">Disable Desktop Notifications</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_desktop_notifications">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='afk_on_lockscreen'>
@@ -473,6 +471,12 @@
                     <div class="setting_title2">Show Room</div>
                     <div class="setting_title">Notifications</div>
                     <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_room_notifications">
+                </div>    
+
+                <div class='settings_item settings_top_level_item' data-setting='auto_close_notifications'>
+                    <div class="setting_title2">Auto Close</div>
+                    <div class="setting_title">Notifications</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_auto_close_notifications">
                 </div>    
             </div>
 

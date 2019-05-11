@@ -1340,12 +1340,21 @@ Hue.make_info_popup = function(on_click=function(){})
         }
     }
 
+    let autoclose = Hue.get_setting("auto_close_notifications")
+    let enable_titlebar = !autoclose
+    let window_x = "none"
+
+    if(enable_titlebar)
+    {
+        window_x = "inner_right"
+    }
+
     let popup = Hue.create_popup(
     {
         position: "topright", 
         autoclose: false, 
-        enable_titlebar: false,
-        window_x: "none",
+        enable_titlebar: enable_titlebar,
+        window_x: window_x,
         content_class: "!info_popup",
         window_width: "auto",
         on_click: on_click,
@@ -1354,11 +1363,19 @@ Hue.make_info_popup = function(on_click=function(){})
         close_on_escape: false
     })
 
+    if(enable_titlebar)
+    {
+        popup.set_title(Hue.utilz.nice_date())
+    }
+
     popup.hue_closing = false
     
     if(Hue.app_focused)
     {
-        Hue.add_close_timeout_to_info_popup(popup)
+        if(autoclose)
+        {
+            Hue.add_close_timeout_to_info_popup(popup)
+        }
     }
 
     else
@@ -1399,6 +1416,11 @@ Hue.add_close_timeout_to_info_popup = function(popup)
 // Adds the close timeouts to info popups without them
 Hue.activate_info_popup_timeouts = function()
 {
+    if(!Hue.get_setting("auto_close_notifications"))
+    {
+        return false
+    }
+
     for(let popup of Hue.info_popups)
     {
         if(!popup.hue_close_timeout)
