@@ -279,7 +279,7 @@ Hue.server_update_events =
     },
     'system_restart_signal': (data) =>
     {
-        Hue.show_reload_button()
+        Hue.disconnect_socket()
     },
     'error_occurred': (data) =>
     {
@@ -492,4 +492,10 @@ Hue.start_socket = function()
             Hue.server_update_events[type](data)
         }
     })
+}
+
+// Disconnects the user's socket
+Hue.disconnect_socket = function()
+{
+    Hue.socket.close()
 }
