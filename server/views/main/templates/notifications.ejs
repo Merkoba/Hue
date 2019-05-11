@@ -1,4 +1,9 @@
 <script id='template_notifications' type='text/x-handlebars-template' class='template'>
-    <input type="search" id="notifications_filter" class="filter_input" placeholder="Filter">
+    <div class='flex_row_center sticky bg1'>
+        <i class='fa fa-cog invisible'></i>
+        <input type="search" id="notifications_filter" class="filter_input_2 filter_padding" placeholder="Filter">
+        <i class='fa fa-cog pointer action nicetitle' id='notifications_configure_icon' title="Configure"></i>
+    </div>
+
     <div id='notifications_container'>No Notifications Yet</div>
 </script>

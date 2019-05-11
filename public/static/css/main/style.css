@@ -911,12 +911,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 	margin-top: 1rem;
 }
 
-#input_history_filter
-{
-	margin-left: 0.8rem;
-	margin-right: 0.8rem;
-}
-
 .input_history_item
 {
 	padding-top: 0.8em;
@@ -948,6 +942,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 	z-index: 99;
 }
 
+.filter_padding
+{
+	margin-left: 0.8rem;
+	margin-right: 0.8rem;
+}
+
 .sticky
 {
 	top: 0px;
@@ -963,12 +963,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 #chat_search_no_results
 {
 	margin-top: 2rem;
-}
-
-#chat_search_filter
-{
-	margin-left: 0.8rem;
-	margin-right: 0.8rem;
 }
 
 .chat_search_result_item
