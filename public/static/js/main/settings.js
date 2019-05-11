@@ -330,13 +330,13 @@ Hue.user_settings =
             }
         }
     },
-    show_joins:
+    user_join_notifications:
     {
         widget_type: "checkbox",
-        description: `Whether a message should appear when users join`,
+        description: `Whether an info popup should appear when users join`,
         action: (type, save=true) =>
         {
-            Hue[type].show_joins = $(`#${type}_show_joins`).prop("checked")
+            Hue[type].user_join_notifications = $(`#${type}_user_join_notifications`).prop("checked")
 
             if(save)
             {
@@ -344,13 +344,27 @@ Hue.user_settings =
             }
         }
     },
-    show_parts:
+    user_part_notifications:
     {
         widget_type: "checkbox",
-        description: `Whether a message should appear when users leave`,
+        description: `Whether an info popup should appear when users leave`,
         action: (type, save=true) =>
         {
-            Hue[type].show_parts = $(`#${type}_show_parts`).prop("checked")
+            Hue[type].user_part_notifications = $(`#${type}_user_part_notifications`).prop("checked")
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
+    room_notifications:
+    {
+        widget_type: "checkbox",
+        description: `Whether an info popup should appear on room change notifications`,
+        action: (type, save=true) =>
+        {
+            Hue[type].room_notifications = $(`#${type}_room_notifications`).prop("checked")
 
             if(save)
             {

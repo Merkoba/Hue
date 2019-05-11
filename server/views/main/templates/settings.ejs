@@ -22,6 +22,12 @@
                     <span class='settings_window_category_status'></span>
                 </div>
 
+                <div id='settings_window_category_notifications_{{type}}' class='settings_window_category' data-category_container='settings_window_category_content_notifications_{{type}}' data-category='notifications'>
+                    <span class='settings_window_category_status_filler invisible'></span>
+                    <span class='settings_window_category_text'>Notifications</span>
+                    <span class='settings_window_category_status'></span>
+                </div>
+
                 <div id='settings_window_category_functions_{{type}}' class='settings_window_category' data-category_container='settings_window_category_content_functions_{{type}}' data-category='functions'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Functions</span>
@@ -450,18 +456,27 @@
 
             </div>
 
+            <div class='settings_category settings_window_category_container' id='settings_window_category_content_notifications_{{type}}' data-category='misc'>
+                <div class='settings_item settings_top_level_item' data-setting='user_join_notifications'>
+                    <div class="setting_title2">Show User Join</div>
+                    <div class="setting_title">Notifications</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_user_join_notifications">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='user_part_notifications'>
+                    <div class="setting_title2">Show User Part</div>
+                    <div class="setting_title2">Notifications</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_user_part_notifications">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='room_notifications'>
+                    <div class="setting_title2">Show Room</div>
+                    <div class="setting_title">Notifications</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_room_notifications">
+                </div>    
+            </div>
+
             <div class='settings_category settings_window_category_container' id='settings_window_category_content_misc_{{type}}' data-category='misc'>
-
-                <div class='settings_item settings_top_level_item' data-setting='show_joins'>
-                    <div class="setting_title">Show User Joins</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_show_joins">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='show_parts'>
-                    <div class="setting_title">Show User Parts</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_show_parts">
-                </div>
-
                 <div class='settings_item settings_top_level_item' data-setting='warn_before_closing'>
                     <div class="setting_title">Warn On Close</div>
                     <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_warn_before_closing">

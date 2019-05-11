@@ -73,20 +73,22 @@ Hue.user_join = function(data)
         skulls: data.skulls
     })
 
-    if(Hue.get_setting("show_joins") && Hue.check_permission(data.role, "chat"))
+    let f = function()
     {
-        let f = function()
-        {
-            Hue.show_profile(data.username)
-        }
+        Hue.show_profile(data.username)
+    }
 
+    let item = Hue.make_info_popup_item({icon:"fa fa-user-plus", message:`${data.username} has joined`, on_click:f})
+    
+    if(!Hue.user_is_ignored(data.username) && Hue.get_setting("user_join_notifications"))
+    {
         let popup = Hue.make_info_popup(f)
-        popup.show(Hue.make_info_popup_item({icon:"fa fa-user-plus", message:`${data.username} has joined`, on_click:f}))
-        
-        if(data.username !== Hue.username)
-        {
-            Hue.on_activity("join")
-        }
+        popup.show(item)
+    }
+    
+    if(data.username !== Hue.username)
+    {
+        Hue.on_activity("join")
     }
 
     Hue.update_user_last_message(data.user_id)
@@ -1053,38 +1055,45 @@ Hue.user_disconnect = function(data)
     Hue.remove_from_userlist(data.user_id)
     Hue.update_activity_bar()
 
-    if(Hue.get_setting("show_parts") && Hue.check_permission(data.role, "chat"))
+    let s, mode
+    let type = data.disconnection_type
+
+    if(type === "disconnection")
     {
-        let s
-        let type = data.disconnection_type
+        s = `${data.username} has left`
+        mode = "normal"
+    }
 
-        if(type === "disconnection")
+    else if(type === "pinged")
+    {
+        s = `${data.username} has left (Ping Timeout)`
+        mode = "normal"
+    }
+
+    else if(type === "kicked")
+    {
+        s = `${data.username} was kicked by ${data.info1}`
+        mode = "action"
+    }
+
+    else if(type === "banned")
+    {
+        s = `${data.username} was banned by ${data.info1}`
+
+        if(Hue.ban_list_open)
         {
-            s = `${data.username} has left`
+            Hue.request_ban_list()
         }
 
-        else if(type === "pinged")
-        {
-            s = `${data.username} has left (Ping Timeout)`
-        }
+        mode = "action"
+    }
 
-        else if(type === "kicked")
-        {
-            s = `${data.username} was kicked by ${data.info1}`
-        }
-
-        else if(type === "banned")
-        {
-            s = `${data.username} was banned by ${data.info1}`
-
-            if(Hue.ban_list_open)
-            {
-                Hue.request_ban_list()
-            }
-        }
-
+    let item = Hue.make_info_popup_item({icon:"fas fa-sign-out-alt", message:s, action:false})
+    
+    if(mode === "normal" && !Hue.user_is_ignored(data.username) && Hue.get_setting("user_part_notifications"))
+    {
         let popup = Hue.make_info_popup()
-        popup.show(Hue.make_info_popup_item({icon:"fas fa-sign-out-alt", message:s, action:false}))
+        popup.show(item)
     }
 
     if(Hue.open_profile_username === data.username)
@@ -1113,12 +1122,12 @@ Hue.announce_new_username = function(data)
 
         if(show)
         {
-            Hue.announce_room_change(data.username, `${data.old_username} is now known as ${Hue.username}`)
+            Hue.show_room_notification(data.username, `${data.old_username} is now known as ${Hue.username}`)
         }
 
         else
         {
-            Hue.announce_room_change(data.username, `You are now known as ${data.username}`)
+            Hue.show_room_notification(data.username, `You are now known as ${data.username}`)
         }
     }
 
@@ -1126,7 +1135,7 @@ Hue.announce_new_username = function(data)
     {
         if(show)
         {
-            Hue.announce_room_change(data.username, `${data.old_username} is now known as ${data.username}`)
+            Hue.show_room_notification(data.username, `${data.old_username} is now known as ${data.username}`)
         }
     }
 
@@ -1363,7 +1372,7 @@ Hue.profile_image_changed = function(data)
 
     if(!Hue.user_is_ignored(data.username))
     {
-        Hue.announce_room_change(data.username, `${data.username} changed their profile image`)
+        Hue.show_room_notification(data.username, `${data.username} changed their profile image`)
     }
 
     Hue.update_activity_bar_image(data.username, data.profile_image)
@@ -1381,7 +1390,7 @@ Hue.bio_changed = function(data)
 
     if(data.bio && !Hue.user_is_ignored(data.username))
     {
-        Hue.announce_room_change(data.username, `${data.username} changed their bio`)
+        Hue.show_room_notification(data.username, `${data.username} changed their bio`)
     }
 }
 
@@ -1412,7 +1421,7 @@ Hue.remove_ops = function()
 // Announces that voices were resetted
 Hue.announce_voices_resetted = function(data)
 {
-    Hue.announce_room_change(data.username, `${data.username} resetted the voices`)
+    Hue.show_room_notification(data.username, `${data.username} resetted the voices`)
 
     if(Hue.role.startsWith('voice') && Hue.role !== "voice1")
     {
@@ -1425,7 +1434,7 @@ Hue.announce_voices_resetted = function(data)
 // Announces that ops were resetted
 Hue.announce_removedops = function(data)
 {
-    Hue.announce_room_change(data.username, `${data.username} removed all ops`)
+    Hue.show_room_notification(data.username, `${data.username} removed all ops`)
 
     if(Hue.role === 'op')
     {
@@ -1483,7 +1492,7 @@ Hue.announce_role_change = function(data)
         Hue.set_role(data.role)
     }
 
-    Hue.announce_room_change(data.username1, `${data.username1} gave ${data.role} to ${data.username2}`)
+    Hue.show_room_notification(data.username1, `${data.username1} gave ${data.role} to ${data.username2}`)
     Hue.replace_property_in_userlist_by_username(data.username2, "role", data.role)
 
     if(Hue.admin_list_open)
@@ -1632,7 +1641,7 @@ Hue.kick = function(uname)
 // Announces that a user was banned
 Hue.announce_ban = function(data)
 {
-    Hue.announce_room_change(data.username1, `${data.username1} banned ${data.username2}`)
+    Hue.show_room_notification(data.username1, `${data.username1} banned ${data.username2}`)
 
     if(Hue.ban_list_open)
     {
@@ -1643,7 +1652,7 @@ Hue.announce_ban = function(data)
 // Announces that a user was unbanned
 Hue.announce_unban = function(data)
 {
-    Hue.announce_room_change(data.username1, `${data.username1} unbanned ${data.username2}`)
+    Hue.show_room_notification(data.username1, `${data.username1} unbanned ${data.username2}`)
 
     if(Hue.ban_list_open)
     {
@@ -1654,7 +1663,7 @@ Hue.announce_unban = function(data)
 // Announces that all banned users were unbanned
 Hue.announce_unban_all = function(data)
 {
-    Hue.announce_room_change(data.username, `${data.username} unbanned all banned users`)
+    Hue.show_room_notification(data.username, `${data.username} unbanned all banned users`)
 }
 
 // Checks if a user already has a certain role

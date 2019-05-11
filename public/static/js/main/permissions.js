@@ -42,7 +42,7 @@ Hue.announce_voice_permission_change = function(data)
     }
 
     Hue[data.ptype] = data.what
-    Hue.announce_room_change(data.username, s)
+    Hue.show_room_notification(data.username, s)
     Hue.check_permissions()
     Hue.config_admin_permission_checkboxes()
 }

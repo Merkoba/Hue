@@ -410,7 +410,7 @@ Hue.announce_room_name_change = function(data)
 {
     if(data.name !== Hue.room_name)
     {
-        Hue.announce_room_change(data.username, `${data.username} changed the room name to: "${data.name}"`)
+        Hue.show_room_notification(data.username, `${data.username} changed the room name to: "${data.name}"`)
         Hue.set_room_name(data.name)
         Hue.update_title()
         Hue.update_input_placeholder()
@@ -622,7 +622,7 @@ Hue.announce_topic_change = function(data)
 {
     if(data.topic !== Hue.topic)
     {
-        Hue.announce_room_change(data.topic_setter, `${data.topic_setter} changed the topic to: "${data.topic}"`)
+        Hue.show_room_notification(data.topic_setter, `${data.topic_setter} changed the topic to: "${data.topic}"`)
         Hue.set_topic_info(data)
         Hue.update_title()
     }
@@ -705,7 +705,7 @@ Hue.announce_privacy_change = function(data)
         s += ". The room won't appear in the public room list"
     }
 
-    Hue.announce_room_change(data.username, s)
+    Hue.show_room_notification(data.username, s)
 }
 
 // Privacy setter
@@ -795,7 +795,7 @@ Hue.announce_log_change = function(data)
     }
 
     Hue.set_log_enabled(data.log)
-    Hue.announce_room_change(data.username, s)
+    Hue.show_room_notification(data.username, s)
 }
 
 // Announces that the log was cleared
@@ -811,7 +811,7 @@ Hue.announce_log_cleared = function(data)
         Hue.remove_messages_after_id(data.id, data.type)
     }
 
-    Hue.announce_room_change(data.username, `${data.username} cleared the log`)
+    Hue.show_room_notification(data.username, `${data.username} cleared the log`)
 }
 
 // Shows the log status
@@ -1071,15 +1071,18 @@ Hue.show_notifications = function(filter=false)
 }
 
 // Centralized function for room changes
-Hue.announce_room_change = function(username, message)
+Hue.show_room_notification = function(username, message)
 {
     let f = function()
     {
         Hue.show_profile(username)
     }
 
-    let popup = Hue.make_info_popup(f)
     let item = Hue.make_info_popup_item({message:message, on_click:f})
-
-    popup.show(item)
+    
+    if(Hue.get_setting("room_notifications"))
+    {
+        let popup = Hue.make_info_popup(f)
+        popup.show(item)
+    }
 }
