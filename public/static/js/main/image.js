@@ -959,12 +959,7 @@ Hue.set_room_images_mode = function(what)
 // Announces room images mode changes
 Hue.announce_room_images_mode_change = function(data)
 {
-    Hue.public_feedback(`${data.username} changed the images mode to ${data.what}`,
-    {
-        username: data.username,
-        open_profile: true
-    })
-
+    Hue.show_room_notification(data.username, `${data.username} changed the images mode to ${data.what}`)
     Hue.set_room_images_mode(data.what)
     Hue.change_images_visibility()
     Hue.check_permissions()

@@ -407,12 +407,7 @@ Hue.change_room_synth_mode = function(what)
 // Announces room synth mode changes
 Hue.announce_room_synth_mode_change = function(data)
 {
-    Hue.public_feedback(`${data.username} changed the synth mode to ${data.what}`,
-    {
-        username: data.username,
-        open_profile: true
-    })
-
+    Hue.show_room_notification(data.username, `${data.username} changed the synth mode to ${data.what}`)
     Hue.set_room_synth_mode(data.what)
     Hue.check_permissions()
 }

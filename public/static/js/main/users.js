@@ -1090,7 +1090,7 @@ Hue.user_disconnect = function(data)
 
     let item = Hue.make_info_popup_item({icon:"fas fa-sign-out-alt", message:s, action:false, type:"user_part"})
     
-    if(mode === "normal" && !Hue.user_is_ignored(data.username) && Hue.get_setting("user_part_notifications"))
+    if(mode === "action" || (!Hue.user_is_ignored(data.username) && Hue.get_setting("user_part_notifications")))
     {
         let popup = Hue.make_info_popup()
         popup.show(item)

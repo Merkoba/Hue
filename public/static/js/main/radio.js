@@ -1111,12 +1111,7 @@ Hue.show_played = function(filter=false)
 // Announces room radio mode changes
 Hue.announce_room_radio_mode_change = function(data)
 {
-    Hue.public_feedback(`${data.username} changed the radio mode to ${data.what}`,
-    {
-        username: data.username,
-        open_profile: true
-    })
-
+    Hue.show_room_notification(data.username, `${data.username} changed the radio mode to ${data.what}`)
     Hue.set_room_radio_mode(data.what)
     Hue.change_radio_visibility()
     Hue.check_permissions()

@@ -1122,12 +1122,7 @@ Hue.set_default_tv_size = function()
 // Announces room tv mode changes
 Hue.announce_room_tv_mode_change = function(data)
 {
-    Hue.public_feedback(`${data.username} changed the tv mode to ${data.what}`,
-    {
-        username: data.username,
-        open_profile: true
-    })
-
+    Hue.show_room_notification(data.username, `${data.username} changed the tv mode to ${data.what}`)
     Hue.set_room_tv_mode(data.what)
     Hue.change_tv_visibility(false)
     Hue.check_permissions()
