@@ -90,7 +90,7 @@ Hue.start_msg = function()
         {
             id: "userlist",
             window_min_width: "22em",
-            window_max_width: "38em"
+            window_max_width: "45em"
         })
     )
 
