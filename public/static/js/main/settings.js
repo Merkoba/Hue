@@ -1426,7 +1426,21 @@ Hue.user_settings =
                 Hue[`save_${type}`]()
             }
         }
-    }
+    },
+    autoconnect:
+    {
+        widget_type: "checkbox",
+        description: `Whether a user should autoconnect automatically after a socket disconnect`,
+        action: (type, save=true) =>
+        {
+            Hue[type].autoconnect = $(`#${type}_autoconnect`).prop("checked")
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
 }
 
 // Empties the global settings localStorage object

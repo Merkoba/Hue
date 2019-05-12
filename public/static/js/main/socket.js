@@ -473,11 +473,23 @@ Hue.start_socket = function()
             Hue.activity_list = []
             Hue.update_userlist()
             Hue.update_activity_bar()
-            Hue.show_reload_button()
-
+            
             if(Hue.open_profile_username)
             {
                 Hue.show_profile(Hue.open_profile_username)
+            }
+
+            if(Hue.get_setting("autoconnect"))
+            {
+                setTimeout(function()
+                {
+                    Hue.restart_client()
+                }, 5000)
+            }
+
+            else
+            {
+                Hue.show_reload_button()
             }
         }
     })
