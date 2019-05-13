@@ -772,7 +772,7 @@ Hue.after_image_load = function()
 {
     Hue.current_image_data = Hue.loaded_image
     $("#media_image_info").css("display", "initial")
-    Hue.set_frame_info($("#media_image_info")[0], Hue.loaded_image)
+    Hue.apply_media_info($("#media_image_info")[0], Hue.loaded_image)
     Hue.get_dominant_theme()
     Hue.fix_image_frame()
 }

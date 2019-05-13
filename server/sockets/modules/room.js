@@ -273,6 +273,34 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         handler.push_admin_log_message(socket, als)
     }
 
+    // Handles log state changes
+    handler.public.change_media_info = async function(socket, data)
+    {
+        if(!handler.is_admin_or_op(socket))
+        {
+            return handler.get_out(socket)
+        }
+
+        if(data.media_info !== "enabled" && data.media_info !== "disabled")
+        {
+            return handler.get_out(socket)
+        }
+
+        let info = await db_manager.get_room({_id:socket.hue_room_id}, {media_info:1})
+
+        if(info.media_info === data.media_info)
+        {
+            return false
+        }
+
+        db_manager.update_room(socket.hue_room_id,
+        {
+            media_info: data.media_info
+        })
+
+        handler.room_emit(socket, 'media_info_changed', {username:socket.hue_username, media_info:data.media_info})
+    }
+
     // Creates initial room objects
     handler.create_room_object = function(info)
     {

@@ -1066,7 +1066,7 @@ Hue.fix_frame = function(frame_id, test_parent_height=false)
     
     let parent = frame.parent()
     let info_height = 0
-    let info = frame.parent().find(".frame_info")
+    let info = frame.parent().find(".media_info")
     
     if(info.length > 0)
     {
@@ -1406,16 +1406,16 @@ Hue.check_media_maxers = function()
 }
 
 // Function that setups frame info items
-Hue.start_frame_info_events = function()
+Hue.start_media_info_events = function()
 {
-    $("#media").on("click", ".frame_info", function()
+    $("#media").on("click", ".media_info", function()
     {
         Hue.show_profile($(this).data("username"))
     })
 }
 
-// Sets a frame info item with proper information and events
-Hue.set_frame_info = function(element, item)
+// Sets a media info item with proper information and events
+Hue.apply_media_info = function(element, item)
 {
     let comment = item.comment ? `: ${item.comment}` : ""
     let info_text = item.setter + comment
@@ -1426,4 +1426,74 @@ Hue.set_frame_info = function(element, item)
     $(element).data("username", item.setter)
     $(element).data("otitle", title)
     $(element).data("date", item.date)
+}
+
+// Configures media info
+Hue.configure_media_info = function()
+{
+    let display
+
+    if(Hue.media_info === "enabled")
+    {
+        display = "block"
+    }
+
+    else if(Hue.media_info === "disabled")
+    {
+        display = "none"
+    }
+
+    let css = `
+    <style>
+        .media_info
+        {
+            display: ${display} !important;    
+        }
+    </style>`
+
+    $(".appended_media_info_style").each(function()
+    {
+        $(this).remove()
+    })
+
+    $("head").append(css)
+
+    Hue.fix_frames()
+}
+
+// Enables or disables media info
+Hue.change_media_info = function(media_info)
+{
+    if(!Hue.is_admin_or_op(Hue.role))
+    {
+        Hue.not_an_op()
+        return false
+    }
+
+    if(media_info !== "enabled" && media_info !== "disabled")
+    {
+        return false
+    }
+
+    if(media_info === Hue.media_info)
+    {
+        Hue.feedback(`Media info is already set to that`)
+    }
+
+    Hue.socket_emit("change_media_info", {media_info:media_info})
+}
+
+// Announces media info change and configures it
+Hue.media_info_changed = function(data)
+{
+    Hue.set_media_info(data.media_info)
+    Hue.show_room_notification(data.username, `${data.username} changed media info to ${data.media_info}`)
+}
+
+// Media info setter
+Hue.set_media_info = function(what)
+{
+    Hue.media_info = what
+    Hue.configure_media_info()
+    Hue.config_admin_media_info()
 }

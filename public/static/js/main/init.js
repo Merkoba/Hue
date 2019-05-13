@@ -293,7 +293,7 @@ Hue.init = function()
     Hue.setup_generic_separators()
     Hue.setup_media_menu()
     Hue.configure_notifications()
-    Hue.start_frame_info_events()
+    Hue.start_media_info_events()
 
     if(Hue.debug_functions)
     {
@@ -332,6 +332,7 @@ Hue.on_join = function(data)
     Hue.update_userlist()
     Hue.log_enabled = data.log
     Hue.log_messages = data.log_messages
+    Hue.set_media_info(data.media_info)
     Hue.setup_theme_and_background(data)
     Hue.apply_background()
     Hue.apply_theme()

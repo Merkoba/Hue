@@ -365,6 +365,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             voice4_tv_permission: info.voice4_tv_permission,
             voice4_radio_permission: info.voice4_radio_permission,
             voice4_synth_permission: info.voice4_synth_permission,
+            media_info: info.media_info,
             email: socket.hue_email,
             bio: socket.hue_bio,
             reg_date: userinfo.registration_date

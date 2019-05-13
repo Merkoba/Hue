@@ -59,7 +59,7 @@ Hue.create_youtube_video_player = function()
 
     let html = "<div id='media_youtube_video' class='video_frame'></div>"
     $("#media_youtube_video_container").html(html)
-    Hue.add_frame_info("media_youtube_video_container")
+    Hue.add_media_info("media_youtube_video_container")
 
     Hue.yt_video_player = new YT.Player('media_youtube_video',
     {
@@ -177,7 +177,7 @@ Hue.create_twitch_video_player = function()
 
             let iframe = $("#media_twitch_video_container").find("iframe").eq(0)
             iframe.attr("id", "media_twitch_video").addClass("video_frame")
-            Hue.add_frame_info("media_twitch_video_container")
+            Hue.add_media_info("media_twitch_video_container")
 
             if(Hue.twitch_video_player_request)
             {
@@ -274,7 +274,7 @@ Hue.create_soundcloud_video_player = function()
         $("#media_soundcloud_video_container").html(`<iframe width="640px" height="360px"
         id='media_soundcloud_video' class='video_frame' src='${src}'></iframe>`)
 
-        Hue.add_frame_info("media_soundcloud_video_container")
+        Hue.add_media_info("media_soundcloud_video_container")
 
         let _soundcloud_video_player = SC.Widget("media_soundcloud_video")
 
@@ -347,7 +347,7 @@ Hue.create_vimeo_video_player = function()
 
         let iframe = $("#media_vimeo_video_container").find("iframe").eq(0)
         iframe.attr("id", "media_vimeo_video").addClass("video_frame")
-        Hue.add_frame_info("media_vimeo_video_container")
+        Hue.add_media_info("media_vimeo_video_container")
 
         if(Hue.vimeo_video_player_request)
         {
@@ -423,8 +423,8 @@ Hue.start_hls = async function()
 }
 
 // Function to add a frame info after creating a player
-Hue.add_frame_info = function(container_id)
+Hue.add_media_info = function(container_id)
 {
-    let html = "<div class='frame_info action dynamic_title'></div>"
+    let html = "<div class='media_info action dynamic_title'></div>"
     $(`#${container_id}`).append(html)
 }

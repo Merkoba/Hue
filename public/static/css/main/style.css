@@ -290,7 +290,7 @@ div#header_radio_playing_icon
 	display: flex;
 }
 
-.frame_info
+.media_info
 {
 	margin-top: 0.333rem;
 	white-space: nowrap;

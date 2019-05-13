@@ -10,7 +10,7 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
 
     // Room and User versions
     // These must be increased by 1 when the schema changes
-    vars.rooms_version = 75
+    vars.rooms_version = 77
     vars.users_version = 46
 
     // Room schema definition
@@ -91,6 +91,7 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
         voice4_tv_permission:{type:"boolean", default:true},
         voice4_radio_permission:{type:"boolean", default:true},
         voice4_synth_permission:{type:"boolean", default:true},
+        media_info:{type:"string", default:"enabled"},
         modified:{type:"number", default:Date.now()}
     }
 

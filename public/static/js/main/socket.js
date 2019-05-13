@@ -384,6 +384,10 @@ Hue.server_update_events =
     'receive_tv_progress': (data) =>
     {
         Hue.receive_tv_progress(data)
+    },
+    'media_info_changed': (data) =>
+    {
+        Hue.media_info_changed(data)
     }
 }
 

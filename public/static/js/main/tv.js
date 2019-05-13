@@ -393,7 +393,7 @@ Hue.show_video_video = async function(play=true)
         let s = `<video id='media_video'
         class='video_frame' width="640px" height="360px"
         preload="metadata" poster="${Hue.config.default_video_url}" controls></video>
-        <div class='frame_info action'></div>`
+        <div class='media_info action'></div>`
 
         $("#media_video_video_container").html(s)
     }
@@ -486,8 +486,8 @@ Hue.before_show_tv = function(item)
 // This gets called after any tv video is loaded
 Hue.after_show_tv = function(play)
 {
-    let frame_info = $(`#media_${Hue.loaded_tv.type}_video_container`).find(".frame_info").get(0)
-    Hue.set_frame_info(frame_info, Hue.loaded_tv)
+    let media_info = $(`#media_${Hue.loaded_tv.type}_video_container`).find(".media_info").get(0)
+    Hue.apply_media_info(media_info, Hue.loaded_tv)
     Hue.fix_visible_video_frame()
     Hue.focus_input()
 
