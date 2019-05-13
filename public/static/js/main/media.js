@@ -1420,7 +1420,7 @@ Hue.set_frame_info = function(element, item)
     let comment = item.comment ? `: ${item.comment}` : ""
     let info_text = item.setter + comment
 
-    $(element).text(info_text)
+    $(element).text(info_text.substring(0, 80))
     $(element).attr("title", Hue.utilz.nice_date(item.date))
     $(element).data("username", item.setter)
 }
