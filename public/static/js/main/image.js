@@ -159,8 +159,6 @@ Hue.show_image = function(force=false)
     $("#media_image_frame").attr("crossOrigin", "anonymous")
     $("#media_image_error").css("display", "none")
     $("#media_image_frame").css("display", "initial")
-    $("#media_image_info").css("display", "initial")
-    $("#media_image_info").text(item.setter)
 
     if(force || $("#media_image_frame").attr("src") !== item.source)
     {
@@ -775,6 +773,8 @@ Hue.after_image_load = function()
     Hue.current_image_data = Hue.loaded_image
     Hue.get_dominant_theme()
     Hue.fix_image_frame()
+    $("#media_image_info").css("display", "initial")
+    $("#media_image_info").text(Hue.loaded_image.setter)
 }
 
 // Tries to get the dominant color of the image
