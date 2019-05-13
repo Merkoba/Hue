@@ -20,4 +20,13 @@ Hue.setup_header = function()
             $("#main_container").data("hue_rotated", !Boolean(rotated))
         }
     })
+
+    $("#usercount").on("auxclick", function(e)
+    {
+        if(e.which === 2)
+        {
+            let user = Hue.userlist[Hue.utilz.get_random_int(0, Hue.userlist.length - 1)]
+            Hue.show_profile(user.username)
+        }
+    })
 }

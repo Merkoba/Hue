@@ -1289,6 +1289,14 @@ Hue.setup_radio_widget = function()
             }
         }
     })
+    
+    $("#header_now_playing_controls").on("auxclick", function(e)
+    {
+        if(e.which === 2)
+        {
+            Hue.search_on('youtube', $(this).data('q'))
+        }
+    })
 
     Hue.set_radio_volume_widget()
 }
