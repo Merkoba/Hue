@@ -468,6 +468,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_chat_crop_limit"
 >How many chat messages to hold in the chat area by default.
 
+"global_settings_default_autoconnect"
+>Whether a user re-connects on socket disconnections by default.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 
