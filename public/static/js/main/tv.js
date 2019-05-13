@@ -531,7 +531,7 @@ Hue.change_tv_source = function(src, just_check=false)
 
     let comment = r.comment
 
-    if(comment.length > Hue.config.safe_limit_4)
+    if(comment.length > Hue.config.max_media_comment_length)
     {
         if(feedback)
         {

@@ -28,7 +28,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         if(data.comment)
         {
-            if(data.comment.length > config.safe_limit_4)
+            if(data.comment.length > config.max_media_comment_length)
             {
                 return handler.get_out(socket)
             }

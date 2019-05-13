@@ -720,6 +720,9 @@ This should be an array of strings of root domains.
 "media_sync_cooldown"
 >Only allow client to respond to media sync requests after this amount of time has passed since last sync. This is to avoid other users to hijack a user through socket spam attacks.
 
+"max_media_comment_length"
+>Maximum length of comments on media change.
+
 
 ## The following reside in config.secret.json
 

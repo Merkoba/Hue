@@ -107,4 +107,5 @@ module.exports = function(c, config)
     c.vars.notifications_crop_limit = config.notifications_crop_limit
     c.vars.whispers_crop_limit = config.whispers_crop_limit
     c.vars.media_sync_cooldown = config.media_sync_cooldown
+    c.vars.max_media_comment_length = config.max_media_comment_length
 }
