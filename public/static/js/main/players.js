@@ -57,8 +57,9 @@ Hue.create_youtube_video_player = function()
 {
     Hue.youtube_video_player_requested = false
 
-    let html = "<div id='media_youtube_video' class='video_frame'></div><div class='frame_info action'></div>"
+    let html = "<div id='media_youtube_video' class='video_frame'></div>"
     $("#media_youtube_video_container").html(html)
+    Hue.add_frame_info("media_youtube_video_container")
 
     Hue.yt_video_player = new YT.Player('media_youtube_video',
     {
@@ -176,7 +177,7 @@ Hue.create_twitch_video_player = function()
 
             let iframe = $("#media_twitch_video_container").find("iframe").eq(0)
             iframe.attr("id", "media_twitch_video").addClass("video_frame")
-            $("#media_twitch_video_container").append("<div class='frame_info action'></div>")
+            Hue.add_frame_info("media_twitch_video_container")
 
             if(Hue.twitch_video_player_request)
             {
@@ -271,7 +272,9 @@ Hue.create_soundcloud_video_player = function()
         let src = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536'
 
         $("#media_soundcloud_video_container").html(`<iframe width="640px" height="360px"
-        id='media_soundcloud_video' class='video_frame' src='${src}'></iframe><div class='frame_info action'>`)
+        id='media_soundcloud_video' class='video_frame' src='${src}'></iframe>`)
+
+        Hue.add_frame_info("media_soundcloud_video_container")
 
         let _soundcloud_video_player = SC.Widget("media_soundcloud_video")
 
@@ -344,7 +347,7 @@ Hue.create_vimeo_video_player = function()
 
         let iframe = $("#media_vimeo_video_container").find("iframe").eq(0)
         iframe.attr("id", "media_vimeo_video").addClass("video_frame")
-        $("#media_vimeo_video_container").append("<div class='frame_info action'></div>")
+        Hue.add_frame_info("media_vimeo_video_container")
 
         if(Hue.vimeo_video_player_request)
         {
@@ -417,4 +420,11 @@ Hue.start_hls = async function()
         maxBufferSize: 5*1000*1000,
         maxBufferLength: 10
     })
+}
+
+// Function to add a frame info after creating a player
+Hue.add_frame_info = function(container_id)
+{
+    let html = "<div class='frame_info action dynamic_title'></div>"
+    $(`#${container_id}`).append(html)
 }
