@@ -1413,3 +1413,14 @@ Hue.start_frame_info_events = function()
         Hue.show_profile($(this).data("username"))
     })
 }
+
+// Sets a frame info item with proper information and events
+Hue.set_frame_info = function(element, item)
+{
+    let comment = item.comment ? `: ${item.comment}` : ""
+    let info_text = item.setter + comment
+
+    $(element).text(info_text)
+    $(element).attr("title", Hue.utilz.nice_date(item.date))
+    $(element).data("username", item.setter)
+}

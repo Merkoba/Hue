@@ -486,13 +486,8 @@ Hue.before_show_tv = function(item)
 // This gets called after any tv video is loaded
 Hue.after_show_tv = function(play)
 {
-    let tv_comment = Hue.loaded_tv.comment ? `: ${Hue.loaded_tv.comment}` : ""
-    let info_text = Hue.loaded_tv.setter + tv_comment
-    let info = $(`#media_${Hue.loaded_tv.type}_video_container`).find(".frame_info").eq(0)
-    info.text(info_text)
-    info.attr("title", Hue.utilz.nice_date(Hue.loaded_tv.date))
-    info.data("username", Hue.loaded_tv.setter)
-   
+    let frame_info = $(`#media_${Hue.loaded_tv.type}_video_container`).find(".frame_info").get(0)
+    Hue.set_frame_info(frame_info, Hue.loaded_tv)
     Hue.fix_visible_video_frame()
     Hue.focus_input()
 

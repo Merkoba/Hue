@@ -770,11 +770,9 @@ Hue.start_image_events = function()
 // This runs after an image successfully loads
 Hue.after_image_load = function()
 {
-    $("#media_image_info").css("display", "initial")
-    $("#media_image_info").text(Hue.loaded_image.setter)
-    $("#media_image_info").attr("title", Hue.utilz.nice_date(Hue.loaded_image.date))
-    $("#media_image_info").data("username", Hue.loaded_image.setter)
     Hue.current_image_data = Hue.loaded_image
+    $("#media_image_info").css("display", "initial")
+    Hue.set_frame_info($("#media_image_info")[0], Hue.loaded_image)
     Hue.get_dominant_theme()
     Hue.fix_image_frame()
 }
