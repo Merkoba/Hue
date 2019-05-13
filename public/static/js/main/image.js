@@ -159,6 +159,8 @@ Hue.show_image = function(force=false)
     $("#media_image_frame").attr("crossOrigin", "anonymous")
     $("#media_image_error").css("display", "none")
     $("#media_image_frame").css("display", "initial")
+    $("#media_image_info").css("display", "initial")
+    $("#media_image_info").text(item.setter)
 
     if(force || $("#media_image_frame").attr("src") !== item.source)
     {
@@ -758,6 +760,7 @@ Hue.start_image_events = function()
         else
         {
             $("#media_image_frame").css("display", "none")
+            $("#media_image_info").css("display", "none")
             $("#media_image_error").css("display", "initial")
         }
     })

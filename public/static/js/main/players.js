@@ -57,8 +57,8 @@ Hue.create_youtube_video_player = function()
 {
     Hue.youtube_video_player_requested = false
 
-    let el = $("<div id='media_youtube_video' class='video_frame'></div>")
-    $("#media_youtube_video_container").html(el)
+    let html = "<div id='media_youtube_video' class='video_frame'></div><div class='frame_info action'></div>"
+    $("#media_youtube_video_container").html(html)
 
     Hue.yt_video_player = new YT.Player('media_youtube_video',
     {
@@ -174,7 +174,9 @@ Hue.create_twitch_video_player = function()
         {
             Hue.twitch_video_player = twch_video_player
 
-            $("#media_twitch_video_container").find("iframe").eq(0).attr("id", "media_twitch_video").addClass("video_frame")
+            let iframe = $("#media_twitch_video_container").find("iframe").eq(0)
+            iframe.attr("id", "media_twitch_video").addClass("video_frame")
+            $("#media_twitch_video_container").append("<div class='frame_info action'></div>")
 
             if(Hue.twitch_video_player_request)
             {
@@ -269,7 +271,7 @@ Hue.create_soundcloud_video_player = function()
         let src = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536'
 
         $("#media_soundcloud_video_container").html(`<iframe width="640px" height="360px"
-        id='media_soundcloud_video' class='video_frame' src='${src}'></iframe>`)
+        id='media_soundcloud_video' class='video_frame' src='${src}'></iframe><div class='frame_info action'>`)
 
         let _soundcloud_video_player = SC.Widget("media_soundcloud_video")
 
@@ -340,7 +342,9 @@ Hue.create_vimeo_video_player = function()
     {
         Hue.vimeo_video_player = video_player
 
-        $("#media_vimeo_video_container").find("iframe").eq(0).attr("id", "media_vimeo_video").addClass("video_frame")
+        let iframe = $("#media_vimeo_video_container").find("iframe").eq(0)
+        iframe.attr("id", "media_vimeo_video").addClass("video_frame")
+        $("#media_vimeo_video_container").append("<div class='frame_info action'></div>")
 
         if(Hue.vimeo_video_player_request)
         {

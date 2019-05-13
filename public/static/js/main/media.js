@@ -1063,10 +1063,18 @@ Hue.fix_frame = function(frame_id, test_parent_height=false)
     {
         frame_ratio = 0.5625
     }
-
+    
     let parent = frame.parent()
+    let info_height = 0
+    let info = frame.parent().find(".frame_info")
+    
+    if(info.length > 0)
+    {
+        info_height = info.eq(0).height()
+    }
+
     let parent_width = parent.width()
-    let parent_height = test_parent_height ? test_parent_height : parent.height()
+    let parent_height = test_parent_height ? test_parent_height : parent.height() - info_height
     let parent_ratio = parent_height / parent_width
     let width, height
 
@@ -1395,4 +1403,14 @@ Hue.check_media_maxers = function()
     {
         $(".maxer_container").css("display", "none")
     }
+}
+
+// Function that setups frame info items
+Hue.start_frame_info_events = function()
+{
+    $("#media").on("click", ".frame_info", function()
+    {
+        Hue.show_profile($(this).text())
+    })
+
 }

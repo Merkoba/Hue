@@ -293,6 +293,7 @@ Hue.init = function()
     Hue.setup_generic_separators()
     Hue.setup_media_menu()
     Hue.configure_notifications()
+    Hue.start_frame_info_events()
 
     if(Hue.debug_functions)
     {

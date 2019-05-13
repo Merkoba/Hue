@@ -280,6 +280,7 @@ div#header_radio_playing_icon
 	height: calc(100% - 4em);
 	width: calc(100% - 4.7em);
 	display: none;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 }
@@ -287,6 +288,13 @@ div#header_radio_playing_icon
 #media_image_container
 {
 	display: flex;
+}
+
+.frame_info
+{
+	margin-top: 0.5rem;
+	white-space: nowrap;
+	cursor: pointer;
 }
 
 #footer
