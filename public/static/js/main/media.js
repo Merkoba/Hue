@@ -1410,7 +1410,6 @@ Hue.start_frame_info_events = function()
 {
     $("#media").on("click", ".frame_info", function()
     {
-        Hue.show_profile($(this).text())
+        Hue.show_profile($(this).data("username"))
     })
-
 }
