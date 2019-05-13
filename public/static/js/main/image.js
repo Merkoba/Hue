@@ -775,6 +775,7 @@ Hue.after_image_load = function()
     Hue.fix_image_frame()
     $("#media_image_info").css("display", "initial")
     $("#media_image_info").text(Hue.loaded_image.setter)
+    $("#media_image_info").attr("title", Hue.utilz.nice_date(Hue.loaded_image.date))
 }
 
 // Tries to get the dominant color of the image
