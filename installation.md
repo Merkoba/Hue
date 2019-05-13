@@ -41,12 +41,6 @@ There is no need to create database tables, all of that is done automatically.
 
 Redis is now required, to store link metadata in database 10. Install and setup Redis.
 
-Bundle the client files
-
-Go to /utils and do:
-
->./bundle_all
-
 To run it properly in production you will have to configure Apache or some other webserver to use a reverse proxy. A sample vhost configuration for Apache (apache_vhost.conf) is included. For using https, LetsEncrypt is suggested.
 
 Using pm2 is suggested to control the Node process. PM2 will likely use the user's home directory as root.
