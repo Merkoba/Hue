@@ -292,7 +292,7 @@ div#header_radio_playing_icon
 
 .frame_info
 {
-	margin-top: 0.5rem;
+	margin-top: 0.333rem;
 	white-space: nowrap;
 	cursor: pointer;
 }
