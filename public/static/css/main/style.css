@@ -2334,7 +2334,7 @@ input[type=text], textarea
 
 .show_profile_button
 {
-	font-size: 0.8em;
+	font-size: 1em;
 }
 
 #show_profile_role
@@ -2349,7 +2349,7 @@ input[type=text], textarea
 
 #show_profile_edit
 {
-	margin-top: 1rem;
+	margin-top: 0.8rem;
 }
 
 #show_profile_hearts
