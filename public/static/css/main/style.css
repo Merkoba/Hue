@@ -2549,7 +2549,7 @@ a.special_link:hover
 	flex-direction: row;
 	align-items: center;
 	justify-content: flex-start;
-	margin-right: 1rem;
+	margin-right: 0.5rem;
 }
 
 .link_preview_title
