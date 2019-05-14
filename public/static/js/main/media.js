@@ -1415,16 +1415,29 @@ Hue.start_media_info_events = function()
 }
 
 // Sets a media info item with proper information and events
-Hue.apply_media_info = function(element, item)
+Hue.apply_media_info = function(element, item, mode)
 {
+    let info = ""
+    let title = ""
     let comment = item.comment ? `: ${item.comment}` : ""
-    let info_text = item.setter + comment
-    let title = Hue.utilz.nice_date(item.date)
+
+    if(mode === "tv" && !comment)
+    {
+        if(!item.title.toLowerCase().startsWith("http"))
+        {
+            title = `: ${item.title}`
+        }
+    }
+
+    info = comment || title || ""
+
+    let info_text = item.setter + info
+    let hover_title = Hue.utilz.nice_date(item.date)
 
     $(element).text(info_text.substring(0, 80))
-    $(element).attr("title", title)
+    $(element).attr("title", hover_title)
     $(element).data("username", item.setter)
-    $(element).data("otitle", title)
+    $(element).data("otitle", hover_title)
     $(element).data("date", item.date)
 }
 

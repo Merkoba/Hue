@@ -487,7 +487,7 @@ Hue.before_show_tv = function(item)
 Hue.after_show_tv = function(play)
 {
     let media_info = $(`#media_${Hue.loaded_tv.type}_video_container`).find(".media_info").get(0)
-    Hue.apply_media_info(media_info, Hue.loaded_tv)
+    Hue.apply_media_info(media_info, Hue.loaded_tv, "tv")
     Hue.fix_visible_video_frame()
     Hue.focus_input()
 
