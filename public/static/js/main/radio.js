@@ -475,19 +475,21 @@ Hue.change_lock_radio = function()
     {
         $("#footer_lock_radio_icon").removeClass("fa-unlock")
         $("#footer_lock_radio_icon").addClass("fa-lock")
-
+        $("#footer_lock_radio_label").css("display", "block")
+        
         if(Hue.loaded_radio !== Hue.current_radio())
         {
             $("#footer_lock_radio_icon").addClass("blinking")
         }
     }
-
+    
     else
     {
         $("#footer_lock_radio_icon").removeClass("fa-lock")
         $("#footer_lock_radio_icon").addClass("fa-unlock")
         $("#footer_lock_radio_icon").removeClass("blinking")
-
+        $("#footer_lock_radio_label").css("display", "none")
+        
         if(Hue.first_media_change)
         {
             Hue.change({type:"radio"})

@@ -374,6 +374,11 @@ div#header_radio_playing_icon
 	font-size: var(--panel-icon-font-size);
 }
 
+.footer_media_locked_label
+{
+	margin-right: 0;
+}
+
 #input
 {
 	font-size: 1rem;

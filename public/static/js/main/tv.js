@@ -850,19 +850,21 @@ Hue.change_lock_tv = function()
     {
         $("#footer_lock_tv_icon").removeClass("fa-unlock")
         $("#footer_lock_tv_icon").addClass("fa-lock")
-
+        $("#footer_lock_tv_label").css("display", "block")
+        
         if(Hue.loaded_tv !== Hue.current_tv())
         {
             $("#footer_lock_tv_icon").addClass("blinking")
         }
     }
-
+    
     else
     {
         $("#footer_lock_tv_icon").removeClass("fa-lock")
         $("#footer_lock_tv_icon").addClass("fa-unlock")
         $("#footer_lock_tv_icon").removeClass("blinking")
-
+        $("#footer_lock_tv_label").css("display", "none")
+        
         Hue.change({type:"tv"})
     }
 }
