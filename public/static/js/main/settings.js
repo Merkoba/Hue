@@ -1495,6 +1495,25 @@ Hue.user_settings =
                 Hue[`save_${type}`]()
             }
         }
+    },
+    transparent_panels:
+    {
+        widget_type: "checkbox",
+        description: `Whether panels get a slight transparency`,
+        action: (type, save=true) =>
+        {
+            Hue[type].transparent_panels = $(`#${type}_transparent_panels`).prop("checked")
+
+            if(Hue.active_settings("transparent_panels") === type)
+            {
+                Hue.apply_theme()
+            }
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
     }
 }
 

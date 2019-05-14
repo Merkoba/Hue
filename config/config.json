@@ -192,6 +192,7 @@
 	"global_settings_default_notifications_close_delay": 5000,
 	"global_settings_default_notifications_always_show_titlebar": false,
 	"global_settings_default_media_info": "room",
+	"global_settings_default_transparent_panels": true,
 	"room_state_default_images_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_radio_enabled": true,
