@@ -1492,6 +1492,7 @@ Hue.change_media_info = function(media_info)
 
     if(media_info !== "enabled" && media_info !== "disabled")
     {
+        Hue.feedback("Valid media info modes: enabled disabled")
         return false
     }
 

@@ -1783,6 +1783,14 @@ Hue.commands =
             }
         },
         description: `Syncs a TV video with another user's video progress`
+    },
+    "/mediainfo":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.change_media_info(arg)
+        },
+        description: `Changes the media info mode. Either enabled or disabled`
     }
 }
 
