@@ -846,27 +846,7 @@ Hue.toggle_lock_tv = function(what=undefined, save=true)
 // Applies changes to the tv footer lock icon
 Hue.change_lock_tv = function()
 {
-    if(Hue.room_state.tv_locked)
-    {
-        $("#footer_lock_tv_icon").removeClass("fa-unlock")
-        $("#footer_lock_tv_icon").addClass("fa-lock")
-        $("#footer_lock_tv_label").css("display", "block")
-        
-        if(Hue.loaded_tv !== Hue.current_tv())
-        {
-            $("#footer_lock_tv_icon").addClass("blinking")
-        }
-    }
-    
-    else
-    {
-        $("#footer_lock_tv_icon").removeClass("fa-lock")
-        $("#footer_lock_tv_icon").addClass("fa-unlock")
-        $("#footer_lock_tv_icon").removeClass("blinking")
-        $("#footer_lock_tv_label").css("display", "none")
-        
-        Hue.change({type:"tv"})
-    }
+    Hue.change_media_lock("tv")
 }
 
 // Checks if tv is maximized

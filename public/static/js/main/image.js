@@ -901,27 +901,7 @@ Hue.toggle_lock_images = function(what=undefined, save=true)
 // Applies changes to the image footer lock icon
 Hue.change_lock_images = function()
 {
-    if(Hue.room_state.images_locked)
-    {
-        $("#footer_lock_images_icon").removeClass("fa-unlock")
-        $("#footer_lock_images_icon").addClass("fa-lock")
-        $("#footer_lock_images_label").css("display", "block")
-        
-        if(Hue.loaded_image !== Hue.current_image())
-        {
-            $("#footer_lock_images_icon").addClass("blinking")
-        }
-    }
-    
-    else
-    {
-        $("#footer_lock_images_icon").removeClass("fa-lock")
-        $("#footer_lock_images_icon").addClass("fa-unlock")
-        $("#footer_lock_images_icon").removeClass("blinking")
-        $("#footer_lock_images_label").css("display", "none")
-
-        Hue.change({type:"image"})
-    }
+    Hue.change_media_lock("images")
 }
 
 // Returns 'images' if string is 'image'

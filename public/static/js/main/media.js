@@ -1497,3 +1497,40 @@ Hue.set_media_info = function(what)
     Hue.configure_media_info()
     Hue.config_admin_media_info()
 }
+
+// Toggles media locks for any type
+Hue.change_media_lock = function(type)
+{
+    let type2 = type
+
+    if(type === "images")
+    {
+        type2 = "image"
+    }
+
+    if(Hue.room_state[`${type}_locked`])
+    {
+        $(`#footer_lock_${type}_icon`).removeClass("fa-unlock")
+        $(`#footer_lock_${type}_icon`).addClass("fa-lock")
+        $(`#footer_lock_${type}_icon`).removeClass("footer_icon3")
+        $(`#footer_lock_${type}_icon`).addClass("footer_icon2")
+        $(`#footer_lock_${type}_label`).css("display", "block")
+    
+        if(Hue[`loaded_${type2}`] !== Hue[`current_${type2}`]())
+        {
+            $(`#footer_lock_${type}_icon`).addClass("blinking")
+        }
+    }
+
+    else
+    {
+        $(`#footer_lock_${type}_icon`).removeClass("fa-lock")
+        $(`#footer_lock_${type}_icon`).addClass("fa-unlock")
+        $(`#footer_lock_${type}_icon`).removeClass("blinking")
+        $(`#footer_lock_${type}_icon`).removeClass("footer_icon2")
+        $(`#footer_lock_${type}_icon`).addClass("footer_icon3")
+        $(`#footer_lock_${type}_label`).css("display", "none")
+
+        Hue.change({type:type2})
+    }
+}
