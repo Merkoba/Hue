@@ -190,6 +190,7 @@
 	"global_settings_default_chat_crop_limit": 500,
 	"global_settings_default_autoconnect": false,
 	"global_settings_default_notification_popup_delay": 5000,
+	"global_settings_default_notifications_always_show_titlebar": false,
 	"room_state_default_images_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_radio_enabled": true,

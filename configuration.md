@@ -474,6 +474,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_autoconnect"
 >Whether a user re-connects on socket disconnections by default.
 
+"global_settings_default_notifications_always_show_titlebar"
+>Whether notifications should have the titlebar even when they autoclose, by default.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 
