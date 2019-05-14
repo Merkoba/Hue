@@ -1432,7 +1432,14 @@ Hue.apply_media_info = function(element, item, mode)
     info = comment || title || ""
 
     let info_text = item.setter + info
-    let hover_title = Hue.utilz.nice_date(item.date)
+    let hover_title = ""
+
+    if(mode === "image" && item.type === "upload")
+    {
+        hover_title = `Size: ${Hue.utilz.get_size_string(item.size)}\n`
+    }
+
+    hover_title += Hue.utilz.nice_date(item.date)
 
     $(element).text(info_text.substring(0, 80))
     $(element).attr("title", hover_title)
