@@ -95,6 +95,14 @@ Hue.apply_background = function()
         })
     }
 
+    $('.background_image').each(function()
+    {
+        $(this).removeClass("background_image_blur")
+        $(this).removeClass("background_image_grayscale")
+        $(this).removeClass("background_image_saturate")
+        $(this).removeClass("background_image_brightness")
+    })
+
     if(Hue.background_effect === "blur" && bg_mode !== "solid")
     {
         $('.background_image').each(function()
@@ -103,11 +111,27 @@ Hue.apply_background = function()
         })
     }
 
-    else
+    else if(Hue.background_effect === "grayscale" && bg_mode !== "solid")
     {
         $('.background_image').each(function()
         {
-            $(this).removeClass("background_image_blur")
+            $(this).addClass("background_image_grayscale")
+        })
+    }
+
+    else if(Hue.background_effect === "saturate" && bg_mode !== "solid")
+    {
+        $('.background_image').each(function()
+        {
+            $(this).addClass("background_image_saturate")
+        })
+    }
+
+    else if(Hue.background_effect === "brightness" && bg_mode !== "solid")
+    {
+        $('.background_image').each(function()
+        {
+            $(this).addClass("background_image_brightness")
         })
     }
 
@@ -853,9 +877,14 @@ Hue.change_background_effect = function(effect)
         return false
     }
 
-    if(
+    if
+    (
         effect !== "none" &&
-        effect !== "blur")
+        effect !== "blur" &&
+        effect !== "grayscale" &&
+        effect !== "saturate" &&
+        effect !== "brightness"
+    )
     {
         Hue.feedback("Invalid background effect")
         return false

@@ -104,9 +104,14 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(
+        if
+        (
             data.effect !== "none" &&
-            data.effect !== "blur")
+            data.effect !== "blur" &&
+            data.effect !== "grayscale" &&
+            data.effect !== "saturate" &&
+            data.effect !== "brightness"
+        )
         {
             return handler.get_out(socket)
         }

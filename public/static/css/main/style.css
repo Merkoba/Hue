@@ -57,7 +57,22 @@ body *
 
 .background_image_blur
 {
-	filter: blur(10px);
+	filter: blur(8px);
+}
+
+.background_image_grayscale
+{
+	filter: grayscale(100);
+}
+
+.background_image_saturate
+{
+	filter: saturate(8);
+}
+
+.background_image_brightness
+{
+	filter: brightness(2.5);
 }
 
 #activity_bar_container
