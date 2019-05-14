@@ -273,7 +273,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         handler.push_admin_log_message(socket, als)
     }
 
-    // Handles log state changes
+    // Handles meda info changes
     handler.public.change_media_info = async function(socket, data)
     {
         if(!handler.is_admin_or_op(socket))
