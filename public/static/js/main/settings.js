@@ -1441,21 +1441,21 @@ Hue.user_settings =
             }
         }
     },
-    notification_popup_delay:
+    notifications_close_delay:
     {
         widget_type: "text",
         description: `How much time (ms) needs to pass before the notification popups close automatically`,
         action: (type, save=true) =>
         {
-            let delay = parseInt($(`#${type}_notification_popup_delay`).val())
+            let delay = parseInt($(`#${type}_notifications_close_delay`).val())
 
             if(isNaN(delay))
             {
-                delay = Hue.config.global_settings_default_notification_popup_delay
+                delay = Hue.config.global_settings_default_notifications_close_delay
             }
 
-            $(`#${type}_notification_popup_delay`).val(delay)
-            Hue[type].notification_popup_delay = delay
+            $(`#${type}_notifications_close_delay`).val(delay)
+            Hue[type].notifications_close_delay = delay
 
             if(save)
             {

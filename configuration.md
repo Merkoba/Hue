@@ -468,7 +468,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_chat_crop_limit"
 >How many chat messages to hold in the chat area by default.
 
-"global_settings_default_notification_popup_delay"
+"global_settings_default_notifications_close_delay"
 >How long notification popups get displayed before they automatically close, by default.
 
 "global_settings_default_autoconnect"

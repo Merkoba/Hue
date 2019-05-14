@@ -93,7 +93,7 @@ Hue.add_close_timeout_to_info_popup = function(popup)
     popup.hue_close_timeout = setTimeout(function()
     {
         popup.close()
-    }, Hue.get_setting("notification_popup_delay"))
+    }, Hue.get_setting("notifications_close_delay"))
 }
 
 // Adds the close timeouts to info popups without them
