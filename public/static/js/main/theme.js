@@ -307,7 +307,7 @@ Hue.apply_theme = function()
 
     #reactions_box_container
     {
-        background-color: ${background_color_2} !important;
+        background-color: ${color_4_a} !important;
         color: ${font_color} !important;
     }
 
