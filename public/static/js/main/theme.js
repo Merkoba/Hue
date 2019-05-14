@@ -202,17 +202,19 @@ Hue.apply_theme = function()
     }
     
     let background_color_a = Hue.colorlib.rgb_to_rgba(background_color, Hue.config.opacity_amount_1)
+    let background_color_2_alpha = Hue.colorlib.rgb_to_rgba(background_color_2, Hue.config.opacity_amount_1)
     let background_color_a_2 = Hue.colorlib.rgb_to_rgba(background_color_2, Hue.config.opacity_amount_3)
 
     $('.bg0').css('background-color', background_color)
     $('.bg1').css('background-color', background_color_a)
     $('.bg1').css('color', font_color)
-    $('.bg2').css('background-color', background_color_2)
+    $('.bg2').css('background-color', background_color_2_alpha)
     $('.bg2').css('color', font_color)
 
     let color_3 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_3)
     let color_4 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_4)
     let color_4_a = Hue.colorlib.rgb_to_rgba(color_4, Hue.config.opacity_amount_3)
+    let color_4_alpha = Hue.colorlib.rgb_to_rgba(color_4, Hue.config.opacity_amount_1)
     let overlay_color = Hue.colorlib.rgb_to_rgba(color_3, Hue.config.opacity_amount_2)
     let slight_background = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_5)
     let cfsize = Hue.get_setting("chat_font_size")
@@ -407,7 +409,7 @@ Hue.apply_theme = function()
 
     #activity_bar_container
     {
-        background-color: ${color_4} !important;
+        background-color: ${color_4_alpha} !important;
         color: ${font_color} !important;
     }
 
