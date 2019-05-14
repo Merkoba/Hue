@@ -425,6 +425,6 @@ Hue.start_hls = async function()
 // Function to add a frame info after creating a player
 Hue.add_media_info = function(container_id)
 {
-    let html = "<div class='media_info action dynamic_title'></div>"
+    let html = "<div class='media_info dynamic_title'></div>"
     $(`#${container_id}`).append(html)
 }

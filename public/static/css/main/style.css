@@ -310,6 +310,13 @@ div#header_radio_playing_icon
 	margin-top: 0.333rem;
 	white-space: nowrap;
 	cursor: pointer;
+	display: flex;
+	flex-direction: row;
+}
+
+.media_info_username
+{
+	font-weight: bold;
 }
 
 #footer

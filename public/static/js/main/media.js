@@ -1408,9 +1408,20 @@ Hue.check_media_maxers = function()
 // Function that setups frame info items
 Hue.start_media_info_events = function()
 {
-    $("#media").on("click", ".media_info", function()
+    $("#media").on("click", ".media_info_username", function()
     {
-        Hue.show_profile($(this).data("username"))
+        let username = $(this).closest(".media_info").data("username")
+        Hue.show_profile(username)
+    })
+
+    $("#media").on("click", ".media_info_details", function()
+    {
+        z = this
+        let media_info = $(this).closest(".media_info")
+        let item = media_info.data("item")
+        let mode = media_info.data("mode")
+
+        Hue.open_url_menu({source:item.source, data:item, media_type:mode})
     })
 }
 
@@ -1421,17 +1432,27 @@ Hue.apply_media_info = function(element, item, mode)
     let title = ""
     let comment = item.comment ? `: ${item.comment}` : ""
 
-    if(mode === "tv" && !comment)
+    if(mode === "tv")
     {
-        if(!item.title.toLowerCase().startsWith("http"))
+        if(!comment)
         {
-            title = `: ${item.title}`
+            if(!item.title.toLowerCase().startsWith("http"))
+            {
+                title = `: ${item.title}`
+            }
+        }
+    }
+
+    else if(mode === "image")
+    {
+        if(!comment)
+        {
+            title = `: ${item.source}`
         }
     }
 
     info = comment || title || ""
 
-    let info_text = item.setter + info
     let hover_title = ""
 
     if(mode === "image" && item.type === "upload")
@@ -1441,11 +1462,19 @@ Hue.apply_media_info = function(element, item, mode)
 
     hover_title += Hue.utilz.nice_date(item.date)
 
-    $(element).text(info_text.substring(0, 80))
+    let html = 
+    `
+        <div class='media_info_username pointer action'>${Hue.utilz.make_html_safe(item.setter)}</div>
+        <div class='media_info_details pointer action'>${Hue.utilz.make_html_safe(info)}</div>
+    `
+
+    $(element).html(html)
     $(element).attr("title", hover_title)
     $(element).data("username", item.setter)
     $(element).data("otitle", hover_title)
     $(element).data("date", item.date)
+    $(element).data("item", item)
+    $(element).data("mode", mode)
 }
 
 // Configures media info
@@ -1455,7 +1484,7 @@ Hue.configure_media_info = function()
 
     if(Hue.get_setting("media_info") === "custom_enabled")
     {
-        display = "block"
+        display = "flex"
     }
     
     if(Hue.get_setting("media_info") === "custom_disabled")
@@ -1465,7 +1494,7 @@ Hue.configure_media_info = function()
 
     else if(Hue.media_info === "enabled")
     {
-        display = "block"
+        display = "flex"
     }
 
     else if(Hue.media_info === "disabled")
