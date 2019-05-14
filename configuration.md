@@ -468,6 +468,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_chat_crop_limit"
 >How many chat messages to hold in the chat area by default.
 
+"global_settings_default_notification_popup_delay"
+>How long notification popups get displayed before they automatically close, by default.
+
 "global_settings_default_autoconnect"
 >Whether a user re-connects on socket disconnections by default.
 
@@ -710,9 +713,6 @@ This should be an array of strings of root domains.
 
 "max_info_popups"
 >How many info popups (bottom right) can be displayed at once. After this, the older ones get closed.
-
-"info_popup_delay"
->How long info popups get displayed before they automatically close.
 
 "notifications_crop_limit"
 >How many notifications after the notifications items get cropped in the notifications window.

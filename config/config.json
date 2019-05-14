@@ -189,6 +189,7 @@
 	"global_settings_default_message_log": true,
 	"global_settings_default_chat_crop_limit": 500,
 	"global_settings_default_autoconnect": false,
+	"global_settings_default_notification_popup_delay": 5000,
 	"room_state_default_images_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_radio_enabled": true,
@@ -271,7 +272,6 @@
 	"send_badge_cooldown": 1000,
 	"badge_feedback_duration": 1000,
 	"max_info_popups": 5,
-	"info_popup_delay": 5000,
 	"media_sync_cooldown": 5000,
 	"max_media_comment_length": 200
 }
