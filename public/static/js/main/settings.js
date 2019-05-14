@@ -2467,27 +2467,19 @@ Hue.check_hideable_settings = function()
     }
 }
 
-// Handles clicking the icons in chat percentage settings
-Hue.settings_chat_percentage_icon_click = function(type, mode)
+// Handles middle clicking the icons in chat percentage settings
+Hue.settings_chat_percentage_icon_middle_click = function(type, mode)
 {
     if(type !== Hue.active_settings("chat_display_percentage"))
     {
         return false
     }
 
-    if(mode === "increase")
-    {
-        Hue.increase_chat_percentage()
-    }
-    
-    else if(mode === "decrease")
-    {
-        Hue.decrease_chat_percentage()
-    }
+    Hue.do_chat_size_change(mode)
 }
 
 // Handles double clicking the chat percentage slider
-Hue.settings_chat_percentage_icon_double_click = function(type)
+Hue.settings_chat_percentage_slider_double_click = function(type)
 {
     if(type !== Hue.active_settings("chat_display_percentage"))
     {
@@ -2516,8 +2508,19 @@ Hue.settings_tv_percentage_icon_click = function(type, mode)
     }
 }
 
+// Handles middle clicking the icons in tv percentage settings
+Hue.settings_tv_percentage_icon_middle_click = function(type, mode)
+{
+    if(type !== Hue.active_settings("tv_display_percentage"))
+    {
+        return false
+    }
+
+    Hue.do_media_tv_size_change(mode)
+}
+
 // Handles double clicking the tv percentage slider
-Hue.settings_tv_percentage_icon_double_click = function(type)
+Hue.settings_tv_percentage_slider_double_click = function(type)
 {
     if(type !== Hue.active_settings("tv_display_percentage"))
     {

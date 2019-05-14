@@ -1017,6 +1017,16 @@ Hue.set_room_tv_mode = function(what)
 // Does the change of tv display percentage
 Hue.do_media_tv_size_change = function(size, notify=true, override=true)
 {
+    if(size === "max")
+    {
+        size = 90
+    }
+
+    else if(size === "min")
+    {
+        size = 10
+    }
+
     size = parseInt(size)
 
     if(size < 0 || size > 100)

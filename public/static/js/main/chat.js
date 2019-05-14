@@ -2357,6 +2357,16 @@ Hue.clear_chat = function()
 // Changes that chat font size
 Hue.do_chat_size_change = function(size)
 {
+    if(size === "max")
+    {
+        size = 90
+    }
+
+    else if(size === "min")
+    {
+        size = 10
+    }
+
     size = parseInt(size)
 
     if(size < 10 || size > 100)

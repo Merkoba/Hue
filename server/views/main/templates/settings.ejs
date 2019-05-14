@@ -186,18 +186,18 @@
                 <div class='settings_item settings_top_level_item' data-setting='chat_display_percentage'>
                     <div class="setting_title">Chat/Media Percentages</div>
                     <div class='slider_container'>
-                        <div class='slider_icon_left pointer action' onclick='Hue.settings_chat_percentage_icon_click("{{type}}", "increase")'><i class='icon2 fa fa-pencil-alt'></i></div>
-                        <input type='range' id='{{type}}_chat_display_percentage' min="10" max="90" step="10" ondblclick='Hue.settings_chat_percentage_icon_double_click("{{type}}")'>
-                        <div class='slider_icon_right pointer action' onclick='Hue.settings_chat_percentage_icon_click("{{type}}", "decrease")'><i class='icon2b far fa-image'></i></div>
+                        <div class='slider_icon_left pointer action' onclick='Hue.settings_chat_percentage_icon_click("{{type}}", "increase")' onauxclick='Hue.settings_chat_percentage_icon_middle_click("{{type}}", "min")'><i class='icon2 fa fa-pencil-alt'></i></div>
+                        <input type='range' id='{{type}}_chat_display_percentage' min="10" max="90" step="10" ondblclick='Hue.settings_chat_percentage_slider_double_click("{{type}}")'>
+                        <div class='slider_icon_right pointer action' onclick='Hue.settings_chat_percentage_icon_click("{{type}}", "decrease")' onauxclick='Hue.settings_chat_percentage_icon_middle_click("{{type}}", "max")'><i class='icon2b far fa-image'></i></div>
                     </div>
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='tv_display_percentage'>
                     <div class="setting_title">Image/TV Percentages</div>
                     <div class='slider_container'>
-                        <div class='slider_icon_left pointer action' onclick='Hue.settings_tv_percentage_icon_click("{{type}}", "increase")'><i class='icon2 fa fa-camera'></i></div>
-                        <input type='range' id='{{type}}_tv_display_percentage' min="10" max="90" step="10" ondblclick='Hue.settings_tv_percentage_icon_double_click("{{type}}")'>
-                        <div class='slider_icon_right pointer action' onclick='Hue.settings_tv_percentage_icon_click("{{type}}", "decrease")'><i class='icon2b fa fa-tv'></i></div>
+                        <div class='slider_icon_left pointer action' onclick='Hue.settings_tv_percentage_icon_click("{{type}}", "increase")' onauxclick='Hue.settings_tv_percentage_icon_middle_click("{{type}}", "min")'><i class='icon2 fa fa-camera'></i></div>
+                        <input type='range' id='{{type}}_tv_display_percentage' min="10" max="90" step="10" ondblclick='Hue.settings_tv_percentage_slider_double_click("{{type}}")'>
+                        <div class='slider_icon_right pointer action' onclick='Hue.settings_tv_percentage_icon_click("{{type}}", "decrease")' onauxclick='Hue.settings_tv_percentage_icon_middle_click("{{type}}", "max")'><i class='icon2b fa fa-tv'></i></div>
                     </div>
                 </div>
 
