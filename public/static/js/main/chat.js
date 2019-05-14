@@ -1240,12 +1240,12 @@ Hue.start_chat_mouse_events = function()
 {
     $(".chat_area").on("click", ".chat_uname", function()
     {
-        Hue.show_profile($(this).text(), $(this).data("prof_image"))
+        Hue.show_profile($(this).closest(".message").data("uname"), $(this).data("prof_image"))
     })
 
     $(".chat_area").on("click", ".chat_profile_image", function()
     {
-        Hue.show_profile($(this).closest(".chat_message").find(".chat_uname").eq(0).text(), $(this).attr("src"))
+        Hue.show_profile($(this).closest(".message").data("uname"), $(this).attr("src"))
     })
 
     $(".chat_area").on("click", ".message_edit_submit", function()
@@ -1256,6 +1256,22 @@ Hue.start_chat_mouse_events = function()
     $(".chat_area").on("click", ".message_edit_cancel", function()
     {
         Hue.stop_edit_message()
+    })
+
+    $(".chat_area").on("auxclick", ".chat_uname", function(e)
+    {
+        if(e.which === 2)
+        {
+            Hue.process_write_whisper($(this).closest(".message").data("uname"))
+        }
+    })
+
+    $(".chat_area").on("auxclick", ".chat_profile_image", function(e)
+    {
+        if(e.which === 2)
+        {
+            Hue.process_write_whisper($(this).closest(".message").data("uname"))
+        }
     })
 }
 
