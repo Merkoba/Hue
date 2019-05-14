@@ -370,7 +370,7 @@ div#header_radio_playing_icon
 
 #footer_media_menu
 {
-	margin-right: 1.2rem !important;
+	margin-right: 0.8rem !important;
 	font-size: var(--panel-icon-font-size);
 }
 
@@ -1517,7 +1517,7 @@ input[type=text], textarea
 #footer_user_menu
 {
 	width: 10px;
-	margin-left: 1.2rem;
+	margin-left: 0.8rem;
 }
 
 #write_message_info
