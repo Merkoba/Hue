@@ -1141,6 +1141,16 @@ Hue.set_media_menu_tv_volume = function(n=false)
             n = 0
         }
     }
+    
+    else if(n === "max")
+    {
+        n = 1
+    }
+    
+    else if(n === "min")
+    {
+        n = 0
+    }
 
     else if(n === "default")
     {

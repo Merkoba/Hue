@@ -1476,6 +1476,25 @@ Hue.user_settings =
                 Hue[`save_${type}`]()
             }
         }
+    },
+    media_info:
+    {
+        widget_type: "select",
+        description: `It either uses the room's media info, forces enabled, or, forces disabled`,
+        action: (type, save=true) =>
+        {
+            Hue[type].media_info = $(`#${type}_media_info option:selected`).val()
+
+            if(Hue.active_settings("media_info") === type)
+            {
+                Hue.configure_media_info()
+            }
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
     }
 }
 
@@ -2446,4 +2465,64 @@ Hue.check_hideable_settings = function()
             Hue.hide_setting("room_settings", "background_tile_dimensions")
         }
     }
+}
+
+// Handles clicking the icons in chat percentage settings
+Hue.settings_chat_percentage_icon_click = function(type, mode)
+{
+    if(type !== Hue.active_settings("chat_display_percentage"))
+    {
+        return false
+    }
+
+    if(mode === "increase")
+    {
+        Hue.increase_chat_percentage()
+    }
+    
+    else if(mode === "decrease")
+    {
+        Hue.decrease_chat_percentage()
+    }
+}
+
+// Handles double clicking the chat percentage slider
+Hue.settings_chat_percentage_icon_double_click = function(type)
+{
+    if(type !== Hue.active_settings("chat_display_percentage"))
+    {
+        return false
+    }
+
+    Hue.set_default_chat_size()
+}
+
+// Handles clicking the icons in tv percentage settings
+Hue.settings_tv_percentage_icon_click = function(type, mode)
+{
+    if(type !== Hue.active_settings("tv_display_percentage"))
+    {
+        return false
+    }
+
+    if(mode === "increase")
+    {
+        Hue.increase_tv_percentage()
+    }
+    
+    else if(mode === "decrease")
+    {
+        Hue.increase_tv_percentage()
+    }
+}
+
+// Handles double clicking the tv percentage slider
+Hue.settings_tv_percentage_icon_double_click = function(type)
+{
+    if(type !== Hue.active_settings("tv_display_percentage"))
+    {
+        return false
+    }
+
+    Hue.set_default_tv_size()
 }

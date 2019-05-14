@@ -409,7 +409,7 @@ Hue.maxers_mouse_events = function()
                 return
             }
 
-            Hue.maxer_wheel_timer(Hue.increase_media_percentage)
+            Hue.maxer_wheel_timer(Hue.increase_chat_percentage)
         }
 
         else if(direction === 'down')
@@ -421,7 +421,7 @@ Hue.maxers_mouse_events = function()
                 return
             }
 
-            Hue.maxer_wheel_timer(Hue.decrease_media_percentage)
+            Hue.maxer_wheel_timer(Hue.decrease_chat_percentage)
         }
     }
 
@@ -479,14 +479,14 @@ Hue.maxers_mouse_events = function()
     {
         if(e.which === 2)
         {
-            Hue.set_default_media_size()
+            Hue.set_default_chat_size()
             Hue.show_media_items()
         }
     })
 }
 
 // Sets the chat display percentage to default
-Hue.set_default_media_size = function()
+Hue.set_default_chat_size = function()
 {
     Hue.do_chat_size_change(Hue.config.global_settings_default_chat_display_percentage)
 }
@@ -506,7 +506,7 @@ Hue.unmaximize_media = function()
 }
 
 // Gradually increases the chat display percentage
-Hue.increase_media_percentage = function()
+Hue.increase_chat_percentage = function()
 {
     let size = parseInt(Hue.get_setting("chat_display_percentage"))
     size += 10
@@ -516,7 +516,7 @@ Hue.increase_media_percentage = function()
 }
 
 // Gradually decreases the chat display percentage
-Hue.decrease_media_percentage = function()
+Hue.decrease_chat_percentage = function()
 {
     let size = parseInt(Hue.get_setting("chat_display_percentage"))
     size -= 10
@@ -1453,7 +1453,17 @@ Hue.configure_media_info = function()
 {
     let display
 
-    if(Hue.media_info === "enabled")
+    if(Hue.get_setting("media_info") === "custom_enabled")
+    {
+        display = "block"
+    }
+    
+    if(Hue.get_setting("media_info") === "custom_disabled")
+    {
+        display = "none"
+    }
+
+    else if(Hue.media_info === "enabled")
     {
         display = "block"
     }

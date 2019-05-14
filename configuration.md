@@ -477,6 +477,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_notifications_always_show_titlebar"
 >Whether notifications should have the titlebar even when they autoclose, by default.
 
+"global_settings_default_media_info"
+>Default media info mode, either it uses the room's media info mode or a custom mode.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 
