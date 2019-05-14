@@ -2486,6 +2486,25 @@ Hue.check_hideable_settings = function()
     }
 }
 
+// Handles clicking the icons in chat percentage settings
+Hue.settings_chat_percentage_icon_click = function(type, mode)
+{
+    if(type !== Hue.active_settings("chat_display_percentage"))
+    {
+        return false
+    }
+
+    if(mode === "increase")
+    {
+        Hue.increase_chat_percentage()
+    }
+    
+    else if(mode === "decrease")
+    {
+        Hue.decrease_chat_percentage()
+    }
+}
+
 // Handles middle clicking the icons in chat percentage settings
 Hue.settings_chat_percentage_icon_middle_click = function(type, mode)
 {
@@ -2523,7 +2542,7 @@ Hue.settings_tv_percentage_icon_click = function(type, mode)
     
     else if(mode === "decrease")
     {
-        Hue.increase_tv_percentage()
+        Hue.decrease_tv_percentage()
     }
 }
 
