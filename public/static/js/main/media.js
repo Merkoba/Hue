@@ -1447,7 +1447,15 @@ Hue.apply_media_info = function(element, item, mode)
     {
         if(!comment)
         {
-            title = `: ${item.source}`
+            if(item.type === "link")
+            {
+                title = `: ${item.source}`
+            }
+
+            else if(item.type === "upload")
+            {
+                title = `: ${Hue.utilz.get_size_string(item.size)} upload`
+            }
         }
     }
 
