@@ -130,44 +130,15 @@ Hue.setup_drag_events = function()
 
         if(text)
         {
-            if(Hue.utilz.is_url(text))
+            if(!Hue.utilz.is_url(text))
             {
-                if(Hue.change_image_source(text, true))
-                {
-                    $("#handle_url_image").css("display", "inline-block")
-                }
-
-                else
-                {
-                    $("#handle_url_image").css("display", "none")
-                }
-
-                if(Hue.change_tv_source(text, true))
-                {
-                    $("#handle_url_tv").css("display", "inline-block")
-                }
-
-                else
-                {
-                    $("#handle_url_tv").css("display", "none")
-                }
-
-                if(Hue.change_radio_source(text, true))
-                {
-                    $("#handle_url_radio").css("display", "inline-block")
-                }
-
-                else
-                {
-                    $("#handle_url_radio").css("display", "none")
-                }
-
-                $("#handle_url_input").val(text)
-
-                Hue.horizontal_separator.separate("handle_url_container")
-                Hue.handled_url = text
-                Hue.msg_handle_url.show()
+                return false
             }
+
+            Hue.check_handle_url_options(text)
+            $("#handle_url_input").val(text)
+            Hue.handled_url = text
+            Hue.msg_handle_url.show()
         }
     })
 
@@ -198,7 +169,46 @@ Hue.setup_drag_events = function()
     $("#handle_url_input").on("input blur", function()
     {
         Hue.handled_url = $(this).val().trim()
+        Hue.check_handle_url_options(Hue.handled_url)
     })
+}
+
+// Changes button visibility based on url
+Hue.check_handle_url_options = function(url)
+{
+    let is_url = Hue.utilz.is_url(url)
+
+    if(is_url && Hue.change_image_source(url, true))
+    {
+        $("#handle_url_image").css("display", "inline-block")
+    }
+
+    else
+    {
+        $("#handle_url_image").css("display", "none")
+    }
+
+    if(is_url && Hue.change_tv_source(url, true))
+    {
+        $("#handle_url_tv").css("display", "inline-block")
+    }
+
+    else
+    {
+        $("#handle_url_tv").css("display", "none")
+    }
+
+    if(is_url && Hue.change_radio_source(url, true))
+    {
+        $("#handle_url_radio").css("display", "inline-block")
+    }
+
+    else
+    {
+        $("#handle_url_radio").css("display", "none")
+    }
+
+    Hue.horizontal_separator.separate("handle_url_container")
 }
 
 // Setups the Open URL picker window
