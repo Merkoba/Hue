@@ -23,6 +23,7 @@ module.exports = function(c, config)
     c.vars.opacity_amount_1 = config.opacity_amount_1
     c.vars.opacity_amount_2 = config.opacity_amount_2
     c.vars.opacity_amount_3 = config.opacity_amount_3
+    c.vars.opacity_amount_4 = config.opacity_amount_4
     c.vars.color_contrast_amount_1 = config.color_contrast_amount_1
     c.vars.color_contrast_amount_2 = config.color_contrast_amount_2
     c.vars.color_contrast_amount_3 = config.color_contrast_amount_3

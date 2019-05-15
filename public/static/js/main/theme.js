@@ -232,7 +232,7 @@ Hue.apply_theme = function()
     let color_4 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_4)
     let color_4_a = Hue.colorlib.rgb_to_rgba(color_4, Hue.config.opacity_amount_3)
     let color_4_alpha = Hue.colorlib.rgb_to_rgba(color_4, Hue.config.opacity_amount_1)
-    let overlay_color = Hue.colorlib.rgb_to_rgba(color_3, Hue.config.opacity_amount_2)
+    let overlay_color = Hue.colorlib.rgb_to_rgba(color_3, Hue.config.opacity_amount_4)
     let slight_background = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_5)
     let cfsize = Hue.get_setting("chat_font_size")
 
