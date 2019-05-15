@@ -468,14 +468,35 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_chat_crop_limit"
 >How many chat messages to hold in the chat area by default.
 
+"global_settings_default_user_join_notifications_method"
+>What method to use to notify user of user joins by default.
+
+"global_settings_default_user_part_notifications_method"
+>What method to use to notify user of user parts by default.
+
+"global_settings_default_room_notifications_method"
+>What method to use to notify user of room changes by default.
+
+"global_settings_default_save_user_join_notifications"
+>Whether to save user join notifications in the notifications window by default.
+
+"global_settings_default_save_user_part_notifications"
+>Whether to save user part notifications in the notifications window by default.
+
+"global_settings_default_save_room_notifications"
+>Whether to save room notifications in the notifications window by default.
+
+"global_settings_default_auto_close_popup_notifications"
+>Whether to autoclose popup notifications by default.
+
 "global_settings_default_notifications_close_delay"
 >How long notification popups get displayed before they automatically close, by default.
 
-"global_settings_default_autoconnect"
->Whether a user re-connects on socket disconnections by default.
-
 "global_settings_default_notifications_always_show_titlebar"
 >Whether notifications should have the titlebar even when they autoclose, by default.
+
+"global_settings_default_autoconnect"
+>Whether a user re-connects on socket disconnections by default.
 
 "global_settings_default_media_info"
 >Default media info mode, either it uses the room's media info mode or a custom mode.

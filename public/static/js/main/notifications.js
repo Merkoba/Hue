@@ -23,7 +23,7 @@ Hue.make_info_popup = function(on_click=function(){})
         }
     }
 
-    let autoclose = Hue.get_setting("auto_close_notifications")
+    let autoclose = Hue.get_setting("auto_close_popup_notifications")
     let enable_titlebar = !autoclose || Hue.get_setting("notifications_always_show_titlebar")
     let window_x = "none"
 
@@ -93,13 +93,13 @@ Hue.add_close_timeout_to_info_popup = function(popup)
     popup.hue_close_timeout = setTimeout(function()
     {
         popup.close()
-    }, Hue.get_setting("notifications_close_delay"))
+    }, Hue.get_setting("popup_notifications_close_delay"))
 }
 
 // Adds the close timeouts to info popups without them
 Hue.activate_info_popup_timeouts = function()
 {
-    if(!Hue.get_setting("auto_close_notifications"))
+    if(!Hue.get_setting("auto_close_popup_notifications"))
     {
         return false
     }
@@ -235,10 +235,20 @@ Hue.show_room_notification = function(username, message)
     }
 
     let item = Hue.make_info_popup_item({message:message, on_click:f, type:"room"})
-    
-    if(Hue.get_setting("room_notifications"))
+    let method = Hue.get_setting("room_notifications_method")
+
+    if(method === "popups")
     {
         let popup = Hue.make_info_popup(f)
         popup.show(item)
+    }
+
+    else if(method === "chat")
+    {
+        Hue.public_feedback(message,
+        {
+            username: username,
+            open_profile: true
+        })
     }
 }

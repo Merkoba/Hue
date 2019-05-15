@@ -44,6 +44,6 @@ Hue.execute_javascript = function(arg, show_result=true)
             Hue.msg_info2.show(["Executed Javascript", s])
         }
 
-        Hue.feedback(`js: ${r}`, {onclick:f, save:true})
+        Hue.feedback(`js: ${r}`, {onclick:f})
     }
 }

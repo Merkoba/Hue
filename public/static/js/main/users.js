@@ -80,10 +80,25 @@ Hue.user_join = function(data)
 
     let item = Hue.make_info_popup_item({icon:"fa fa-user-plus", message:`${data.username} has joined`, on_click:f, type:"user_join"})
     
-    if(!Hue.user_is_ignored(data.username) && Hue.get_setting("user_join_notifications"))
+    if(!Hue.user_is_ignored(data.username))
     {
-        let popup = Hue.make_info_popup(f)
-        popup.show(item)
+        let method = Hue.get_setting("user_join_notifications_method")
+
+        if(method === "popups")
+        {
+            let popup = Hue.make_info_popup(f)
+            popup.show(item)
+        }
+        
+        else if(method === "chat")
+        {
+            Hue.public_feedback(`${data.username} has joined`,
+            {
+                brk: "<i class='icon2c fa fa-user-plus'></i>",
+                username: data.username,
+                open_profile: true
+            })
+        }
     }
     
     if(data.username !== Hue.username)
@@ -1106,11 +1121,25 @@ Hue.user_disconnect = function(data)
     }
 
     let item = Hue.make_info_popup_item({icon:"fas fa-sign-out-alt", message:s, action:false, type:"user_part"})
-    
-    if(mode === "action" || (!Hue.user_is_ignored(data.username) && Hue.get_setting("user_part_notifications")))
+
+    if(!Hue.user_is_ignored(data.username) || mode === "action")
     {
-        let popup = Hue.make_info_popup()
-        popup.show(item)
+        let method = Hue.get_setting("user_part_notifications_method")
+
+        if(method === "popups")
+        {
+            let popup = Hue.make_info_popup()
+            popup.show(item)
+        }
+        
+        else if(method === "chat")
+        {
+            Hue.public_feedback(s,
+            {
+                brk: "<i class='icon2c fas fa-sign-out-alt'></i>",
+                username: data.username
+            })
+        }
     }
 
     if(Hue.open_profile_username === data.username)

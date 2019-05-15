@@ -330,13 +330,13 @@ Hue.user_settings =
             }
         }
     },
-    user_join_notifications:
+    user_join_notifications_method:
     {
-        widget_type: "checkbox",
-        description: `Whether an info popup should appear when users join`,
+        widget_type: "select",
+        description: `How user join notifications should be shown`,
         action: (type, save=true) =>
         {
-            Hue[type].user_join_notifications = $(`#${type}_user_join_notifications`).prop("checked")
+            Hue[type].user_join_notifications_method = $(`#${type}_user_join_notifications_method option:selected`).val()
 
             if(save)
             {
@@ -358,13 +358,13 @@ Hue.user_settings =
             }
         }
     },
-    user_part_notifications:
+    user_part_notifications_method:
     {
-        widget_type: "checkbox",
-        description: `Whether an info popup should appear when users leave`,
+        widget_type: "select",
+        description: `How user part notifications should be shown`,
         action: (type, save=true) =>
         {
-            Hue[type].user_part_notifications = $(`#${type}_user_part_notifications`).prop("checked")
+            Hue[type].user_part_notifications_method = $(`#${type}_user_part_notifications_method option:selected`).val()
 
             if(save)
             {
@@ -386,13 +386,13 @@ Hue.user_settings =
             }
         }
     },
-    room_notifications:
+    room_notifications_method:
     {
-        widget_type: "checkbox",
-        description: `Whether an info popup should appear on room change notifications`,
+        widget_type: "select",
+        description: `How room notifications should be shown`,
         action: (type, save=true) =>
         {
-            Hue[type].room_notifications = $(`#${type}_room_notifications`).prop("checked")
+            Hue[type].room_notifications_method = $(`#${type}_room_notifications_method option:selected`).val()
 
             if(save)
             {
@@ -414,13 +414,13 @@ Hue.user_settings =
             }
         }
     },
-    auto_close_notifications:
+    auto_close_popup_notifications:
     {
         widget_type: "checkbox",
         description: `Whether info popups are closed automatically after a delay or just show close buttons`,
         action: (type, save=true) =>
         {
-            Hue[type].auto_close_notifications = $(`#${type}_auto_close_notifications`).prop("checked")
+            Hue[type].auto_close_popup_notifications = $(`#${type}_auto_close_popup_notifications`).prop("checked")
 
             if(save)
             {
@@ -1441,21 +1441,21 @@ Hue.user_settings =
             }
         }
     },
-    notifications_close_delay:
+    popup_notifications_close_delay:
     {
         widget_type: "text",
         description: `How much time (ms) needs to pass before the notification popups close automatically`,
         action: (type, save=true) =>
         {
-            let delay = parseInt($(`#${type}_notifications_close_delay`).val())
+            let delay = parseInt($(`#${type}_popup_notifications_close_delay`).val())
 
             if(isNaN(delay))
             {
-                delay = Hue.config.global_settings_default_notifications_close_delay
+                delay = Hue.config.global_settings_default_popup_notifications_close_delay
             }
 
-            $(`#${type}_notifications_close_delay`).val(delay)
-            Hue[type].notifications_close_delay = delay
+            $(`#${type}_popup_notifications_close_delay`).val(delay)
+            Hue[type].popup_notifications_close_delay = delay
 
             if(save)
             {

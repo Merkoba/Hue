@@ -469,10 +469,14 @@
             </div>
 
             <div class='settings_category settings_window_category_container' id='settings_window_category_content_notifications_{{type}}' data-category='notifications'>
-                <div class='settings_item settings_top_level_item' data-setting='user_join_notifications'>
+                <div class='settings_item settings_top_level_item' data-setting='user_join_notifications_method'>
                     <div class="setting_title2">Show User Join</div>
                     <div class="setting_title">Notifications</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_user_join_notifications">
+                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_user_join_notifications_method">
+                        <option value='popups'>Popups</option>
+                        <option value='chat'>Chat</option>
+                        <option value='none'>Don't Show</option>
+                    </select>
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='save_user_join_notifications'>
@@ -481,10 +485,14 @@
                     <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_save_user_join_notifications">
                 </div>
 
-                <div class='settings_item settings_top_level_item' data-setting='user_part_notifications'>
+                <div class='settings_item settings_top_level_item' data-setting='user_part_notifications_method'>
                     <div class="setting_title2">Show User Part</div>
                     <div class="setting_title2">Notifications</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_user_part_notifications">
+                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_user_part_notifications_method">
+                        <option value='popups'>Popups</option>
+                        <option value='chat'>Chat</option>
+                        <option value='none'>Don't Show</option>
+                    </select>
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='save_user_part_notifications'>
@@ -496,7 +504,11 @@
                 <div class='settings_item settings_top_level_item' data-setting='room_notifications'>
                     <div class="setting_title2">Show Room</div>
                     <div class="setting_title">Notifications</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_room_notifications">
+                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_room_notifications_method">
+                        <option value='popups'>Popups</option>
+                        <option value='chat'>Chat</option>
+                        <option value='none'>Don't Show</option>
+                    </select>
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='save_room_notifications'>

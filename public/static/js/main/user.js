@@ -541,7 +541,7 @@ Hue.check_firstime = function()
 // Shows a feedback message upon joining the room
 Hue.show_joined = function()
 {
-    Hue.feedback(`You joined ${Hue.room_name}`, {save:true})
+    Hue.feedback(`You joined ${Hue.room_name}`, {})
     Hue.show_topic()
 }
 
