@@ -561,7 +561,7 @@ Hue.start_msg = function()
 
     Hue.msg_handle_url = Msg.factory
     (
-        Object.assign({}, common,
+        Object.assign({}, common, titlebar,
         {
             id: "handle_url",
             after_close: function(instance)
@@ -621,6 +621,24 @@ Hue.start_msg = function()
         permissions_containers: Hue.make_room_menu_permissions_container()
     }))
 
+    Hue.msg_global_settings.set(Hue.template_global_settings(
+    {
+        settings: Hue.template_settings(
+        {
+            type: "global_settings",
+            user_functions: Hue.make_settings_user_functions("global_settings")
+        })
+    }))
+
+    Hue.msg_room_settings.set(Hue.template_room_settings(
+    {
+        settings: Hue.template_settings(
+        {
+            type: "room_settings",
+            user_functions: Hue.make_settings_user_functions("room_settings")
+        })
+    }))
+
     Hue.msg_user_menu.set(Hue.template_user_menu())
     Hue.msg_userlist.set(Hue.template_userlist())
     Hue.msg_public_roomlist.set(Hue.template_roomlist({type:"public_roomlist"}))
@@ -644,25 +662,6 @@ Hue.start_msg = function()
     Hue.msg_locked.set(Hue.template_locked_menu())
     Hue.msg_notifications.set(Hue.template_notifications())
     Hue.msg_whispers.set(Hue.template_whispers())
-
-    Hue.msg_global_settings.set(Hue.template_global_settings(
-    {
-        settings: Hue.template_settings(
-        {
-            type: "global_settings",
-            user_functions: Hue.make_settings_user_functions("global_settings")
-        })
-    }))
-
-    Hue.msg_room_settings.set(Hue.template_room_settings(
-    {
-        settings: Hue.template_settings(
-        {
-            type: "room_settings",
-            user_functions: Hue.make_settings_user_functions("room_settings")
-        })
-    }))
-
     Hue.msg_draw_image.set(Hue.template_draw_image())
     Hue.msg_credits.set(Hue.template_credits({background_url:Hue.config.credits_background_url}))
     Hue.msg_admin_activity.set(Hue.template_admin_activity())
@@ -700,6 +699,7 @@ Hue.start_msg = function()
     Hue.msg_details.set_title("User Details")
     Hue.msg_notifications.set_title("Notifications")
     Hue.msg_whispers.set_title("Whispers")
+    Hue.msg_handle_url.set_title("Drag n' Drop")
 
     $("#global_settings_window_title").click(function()
     {
