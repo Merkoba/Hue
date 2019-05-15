@@ -24,7 +24,7 @@ Hue.make_info_popup = function(on_click=function(){})
     }
 
     let autoclose = Hue.get_setting("auto_close_popup_notifications")
-    let enable_titlebar = !autoclose || Hue.get_setting("notifications_always_show_titlebar")
+    let enable_titlebar = !autoclose || Hue.get_setting("popup_notifications_always_show_titlebar")
     let window_x = "none"
 
     if(enable_titlebar)

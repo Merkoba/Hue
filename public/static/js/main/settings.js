@@ -1463,13 +1463,13 @@ Hue.user_settings =
             }
         }
     },
-    notifications_always_show_titlebar:
+    popup_notifications_always_show_titlebar:
     {
         widget_type: "checkbox",
         description: `Whether notification popups should display the titlebar even when they autoclose`,
         action: (type, save=true) =>
         {
-            Hue[type].notifications_always_show_titlebar = $(`#${type}_notifications_always_show_titlebar`).prop("checked")
+            Hue[type].popup_notifications_always_show_titlebar = $(`#${type}_popup_notifications_always_show_titlebar`).prop("checked")
 
             if(save)
             {
