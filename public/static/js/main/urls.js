@@ -130,11 +130,6 @@ Hue.setup_drag_events = function()
 
         if(text)
         {
-            if(!Hue.utilz.is_url(text))
-            {
-                return false
-            }
-
             Hue.check_handle_url_options(text)
             $("#handle_url_input").val(text)
             Hue.handled_url = text
@@ -174,11 +169,19 @@ Hue.setup_drag_events = function()
 }
 
 // Changes button visibility based on url
-Hue.check_handle_url_options = function(url)
+Hue.check_handle_url_options = function(text)
 {
-    let is_url = Hue.utilz.is_url(url)
+    if(Hue.utilz.is_url(text))
+    {
+        $("#handle_url_link").css("display", "inline-block")
+    }
+    
+    else
+    {
+        $("#handle_url_link").css("display", "none")
+    }
 
-    if(is_url && Hue.change_image_source(url, true))
+    if(Hue.change_image_source(text, true))
     {
         $("#handle_url_image").css("display", "inline-block")
     }
@@ -188,7 +191,7 @@ Hue.check_handle_url_options = function(url)
         $("#handle_url_image").css("display", "none")
     }
 
-    if(is_url && Hue.change_tv_source(url, true))
+    if(Hue.change_tv_source(text, true))
     {
         $("#handle_url_tv").css("display", "inline-block")
     }
@@ -198,7 +201,7 @@ Hue.check_handle_url_options = function(url)
         $("#handle_url_tv").css("display", "none")
     }
 
-    if(is_url && Hue.change_radio_source(url, true))
+    if(Hue.change_radio_source(text, true))
     {
         $("#handle_url_radio").css("display", "inline-block")
     }
