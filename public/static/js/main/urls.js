@@ -137,7 +137,7 @@ Hue.setup_drag_events = function()
         }
     })
 
-    $("#handle_url_link").click(function()
+    $("#handle_url_chat").click(function()
     {
         Hue.process_message({message:Hue.handled_url})
         Hue.close_all_modals()
@@ -171,14 +171,14 @@ Hue.setup_drag_events = function()
 // Changes button visibility based on url
 Hue.check_handle_url_options = function(text)
 {
-    if(Hue.utilz.is_url(text))
+    if(text && text.length < Hue.config.max_input_length)
     {
-        $("#handle_url_link").css("display", "inline-block")
+        $("#handle_url_chat").css("display", "inline-block")
     }
-    
+
     else
     {
-        $("#handle_url_link").css("display", "none")
+        $("#handle_url_chat").css("display", "none")
     }
 
     if(Hue.change_image_source(text, true))
