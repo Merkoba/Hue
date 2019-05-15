@@ -162,12 +162,10 @@ Hue.setup_drag_events = function()
                     $("#handle_url_radio").css("display", "none")
                 }
 
+                $("#handle_url_input").val(text)
+
                 Hue.horizontal_separator.separate("handle_url_container")
-
-                let title = Hue.utilz.get_limited_string(text, Hue.config.url_title_max_length)
-
                 Hue.handled_url = text
-                Hue.msg_handle_url.set_title(title)
                 Hue.msg_handle_url.show()
             }
         }
@@ -195,6 +193,11 @@ Hue.setup_drag_events = function()
     {
         Hue.change_radio_source(Hue.handled_url)
         Hue.close_all_modals()
+    })
+
+    $("#handle_url_input").on("input blur", function()
+    {
+        Hue.handled_url = $(this).val().trim()
     })
 }
 
