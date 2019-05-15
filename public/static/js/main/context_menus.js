@@ -900,7 +900,7 @@ Hue.start_user_context_menu = function()
 {
     $.contextMenu(
     {
-        selector: ".userlist_item_username, .chat_uname, #show_profile_uname, .generic_uname, .admin_list_username, .activity_bar_text, .profile_image",
+        selector: ".userlist_item_username, .chat_uname, #show_profile_uname, .generic_uname, .admin_list_username, .activity_bar_text, .profile_image, .media_info_username",
         animation: {duration: 250, hide: 'fadeOut'},
         zIndex: 9000000000,
         events: Hue.context_menu_events,

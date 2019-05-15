@@ -1410,7 +1410,7 @@ Hue.start_media_info_events = function()
 {
     $("#media").on("click", ".media_info_username", function()
     {
-        let username = $(this).closest(".media_info").data("username")
+        let username = $(this).closest(".media_info").data("item").setter
         Hue.show_profile(username)
     })
 
@@ -1422,6 +1422,14 @@ Hue.start_media_info_events = function()
         let mode = media_info.data("mode")
 
         Hue.open_url_menu({source:item.source, data:item, media_type:mode})
+    })
+
+    $("#media").on("auxclick", ".media_info_username", function(e)
+    {
+        if(e.which === 2)
+        {
+            Hue.process_write_whisper($(this).closest(".media_info").data("item").setter)
+        }
     })
 }
 
@@ -1478,7 +1486,6 @@ Hue.apply_media_info = function(element, item, mode)
 
     $(element).html(html)
     $(element).attr("title", hover_title)
-    $(element).data("username", item.setter)
     $(element).data("otitle", hover_title)
     $(element).data("date", item.date)
     $(element).data("item", item)
