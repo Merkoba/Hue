@@ -1477,6 +1477,7 @@ Hue.apply_media_info = function(element, item, mode)
     }
 
     hover_title += Hue.utilz.nice_date(item.date)
+    info = info.substring(0, 80).trim()
 
     let html = 
     `
