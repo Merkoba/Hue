@@ -1444,10 +1444,7 @@ Hue.apply_media_info = function(element, item, mode)
     {
         if(!comment)
         {
-            if(!item.title.toLowerCase().startsWith("http"))
-            {
-                title = `: ${item.title}`
-            }
+            title = `: ${item.title}`
         }
     }
 
