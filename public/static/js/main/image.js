@@ -175,7 +175,7 @@ Hue.show_image = function(force=false)
 // It considers room state and permissions
 // It considers text or url to determine if it's valid
 // It includes a 'just check' flag to only return true or false
-Hue.change_image_source = function(src, just_check=false)
+Hue.change_image_source = function(src, just_check=false, comment="")
 {
     let feedback = true
 
@@ -194,11 +194,12 @@ Hue.change_image_source = function(src, just_check=false)
         return false
     }
 
-    let r = Hue.get_media_change_inline_comment("image", src)
-
-    src = r.source
-
-    let comment = r.comment
+    if(!comment)
+    {
+        let r = Hue.get_media_change_inline_comment("image", src)
+        src = r.source
+        comment = r.comment
+    }
 
     if(comment.length > Hue.config.max_media_comment_length)
     {
@@ -217,7 +218,7 @@ Hue.change_image_source = function(src, just_check=false)
 
     src = Hue.utilz.clean_string2(src)
 
-    if(src.length > Hue.config.max_image_source_length)
+    if(src.length > Hue.config.max_media_source_length)
     {
         return false
     }

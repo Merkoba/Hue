@@ -742,7 +742,7 @@ Hue.change_background_image_source = function(src)
             return false
         }
 
-        if(src.length > Hue.config.max_image_source_length)
+        if(src.length > Hue.config.max_media_source_length)
         {
             return false
         }

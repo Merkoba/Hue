@@ -13,7 +13,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(data.src.length > config.max_radio_source_length)
+        if(data.src.length > config.max_media_source_length)
         {
             return handler.get_out(socket)
         }

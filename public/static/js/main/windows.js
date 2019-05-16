@@ -567,7 +567,6 @@ Hue.start_msg = function()
             after_close: function(instance)
             {
                 common.after_close(instance)
-                Hue.clear_modal_image_info()
             }
         })
     )

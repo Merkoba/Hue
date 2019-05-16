@@ -156,14 +156,8 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "upload_slice_size"
 >The sice of file slices to be uploaded.
 
-"max_image_source_length"
->Maximum length of a image source url.
-
-"max_tv_source_length"
->Maximum length of a tv source url.
-
-"max_radio_source_length"
->Maximum length of a radio source url.
+"max_media_source_length"
+>Maximum length of a media source urls.
 
 "max_roomlist_items"
 >Maximum amount of items cached and shown when requesting the Public Rooms list.

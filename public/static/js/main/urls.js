@@ -132,39 +132,54 @@ Hue.setup_drag_events = function()
         {
             Hue.check_handle_url_options(text)
             $("#handle_url_input").val(text)
-            Hue.handled_url = text
+            $("#handle_url_comment").val("")
+            Hue.handled_url_input = text
+            Hue.handled_url_comment = ""
             Hue.msg_handle_url.show()
         }
     })
 
     $("#handle_url_chat").click(function()
     {
-        Hue.process_message({message:Hue.handled_url})
+        Hue.process_message({message:Hue.handled_url_input})
+        
+        if(Hue.handled_url_comment)
+        {
+            Hue.process_message({message:Hue.handled_url_comment})
+        }
+
         Hue.close_all_modals()
     })
 
     $("#handle_url_image").click(function()
     {
-        Hue.change_image_source(Hue.handled_url)
+        Hue.change_image_source(Hue.handled_url_input, false, Hue.handled_url_comment)
         Hue.close_all_modals()
     })
 
     $("#handle_url_tv").click(function()
     {
-        Hue.change_tv_source(Hue.handled_url)
+        Hue.change_tv_source(Hue.handled_url_input, false, Hue.handled_url_comment)
         Hue.close_all_modals()
     })
 
     $("#handle_url_radio").click(function()
     {
-        Hue.change_radio_source(Hue.handled_url)
+        Hue.change_radio_source(Hue.handled_url_input, false, Hue.handled_url_comment)
         Hue.close_all_modals()
     })
 
     $("#handle_url_input").on("input blur", function()
     {
-        Hue.handled_url = $(this).val().trim()
-        Hue.check_handle_url_options(Hue.handled_url)
+        Hue.handled_url_input = $(this).val().trim()
+        $("#handle_url_input").val(Hue.handled_url_input)
+        Hue.check_handle_url_options(Hue.handled_url_input)
+    })
+
+    $("#handle_url_comment").on("input blur", function()
+    {
+        Hue.handled_url_comment = $(this).val().substring(0, Hue.config.max_media_comment_length).trim()
+        $("#handle_url_comment").val(Hue.handled_url_comment)
     })
 }
 
