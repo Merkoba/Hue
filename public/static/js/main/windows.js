@@ -531,7 +531,7 @@ Hue.start_msg = function()
             {
                 common.after_close(instance)
                 Hue.clear_modal_image_info()
-                $("#upload_comment_input").val("")
+                $("#image_upload_comment_input").val("")
                 Hue.image_upload_comment_file = false
                 Hue.image_upload_comment_type = false
                 Hue.image_upload_comment_open = false
