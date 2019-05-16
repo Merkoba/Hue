@@ -270,7 +270,7 @@ Hue.open_url_menu = function(args={})
 
     Hue.open_url_title = args.title || args.data.title
 
-    if(Hue.open_url_title)
+    if(Hue.open_url_title && Hue.open_url_title !== args.source)
     {
         $("#open_url_menu_copy_title").css("display", "inline-block")
     }
