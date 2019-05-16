@@ -209,6 +209,8 @@ Hue.hls_loading = false
 Hue.tone_loading = false
 Hue.math_loading = false
 Hue.wordz_loading = false
+Hue.media_info_image_data = []
+Hue.media_info_tv_data = []
 
 // This runs after the application's load event
 // This is the first function that gets executed

@@ -1514,6 +1514,33 @@ Hue.user_settings =
                 Hue[`save_${type}`]()
             }
         }
+    },
+    media_info_max_length:
+    {
+        widget_type: "text",
+        description: `Maximum character length for media info`,
+        action: (type, save=true) =>
+        {
+            let length = parseInt($(`#${type}_media_info_max_length`).val())
+
+            if(isNaN(length))
+            {
+                length = Hue.config.global_settings_default_media_info_max_length
+            }
+
+            $(`#${type}_media_info_max_length`).val(length)
+            Hue[type].media_info_max_length = length
+
+            if(Hue.active_settings("transparent_panels") === type)
+            {
+                Hue.reapply_media_info()
+            }
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
     }
 }
 

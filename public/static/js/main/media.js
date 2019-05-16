@@ -1433,19 +1433,28 @@ Hue.start_media_info_events = function()
     })
 }
 
+// Refreshes image and tv media info
+Hue.reapply_media_info = function()
+{
+    Hue.apply_media_info(...Hue.media_info_image_data)
+    Hue.apply_media_info(...Hue.media_info_tv_data)
+}
+
 // Sets a media info item with proper information and events
 Hue.apply_media_info = function(element, item, mode)
 {
     let info = ""
     let title = ""
-    let comment = item.comment ? `: ${item.comment}` : ""
+    let comment = item.comment ? item.comment : ""
 
     if(mode === "tv")
     {
         if(!comment)
         {
-            title = `: ${item.title}`
+            title = item.title
         }
+
+        Hue.media_info_tv_data = [...arguments]
     }
 
     else if(mode === "image")
@@ -1454,14 +1463,16 @@ Hue.apply_media_info = function(element, item, mode)
         {
             if(item.type === "link")
             {
-                title = `: ${item.source}`
+                title = item.source
             }
 
             else if(item.type === "upload")
             {
-                title = `: ${Hue.utilz.get_size_string(item.size)} upload`
+                title = `${Hue.utilz.get_size_string(item.size)} upload`
             }
         }
+
+        Hue.media_info_image_data = [...arguments]
     }
 
     info = comment || title || ""
@@ -1474,12 +1485,12 @@ Hue.apply_media_info = function(element, item, mode)
     }
 
     hover_title += Hue.utilz.nice_date(item.date)
-    info = info.substring(0, 80).trim()
+    info = info.substring(0, Hue.get_setting("media_info_max_length")).trim()
 
     let html = 
     `
         <div class='media_info_username pointer action'>${Hue.utilz.make_html_safe(item.setter)}</div>
-        <div class='media_info_details pointer action'>${Hue.utilz.make_html_safe(info)}</div>
+        <div class='media_info_details pointer action'>: ${Hue.utilz.make_html_safe(info)}</div>
     `
 
     $(element).html(html)
