@@ -369,11 +369,6 @@ Hue.at_startup = function()
     Hue.date_joined = Date.now()
     Hue.started = true
 
-    if(Hue.first_time)
-    {
-        return false
-    }
-
     Hue.execute_commands("at_startup")
 
     setTimeout(function()
