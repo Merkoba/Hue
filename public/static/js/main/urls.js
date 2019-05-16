@@ -362,3 +362,9 @@ Hue.check_domain_list = function(media_type, src)
 
     return false
 }
+
+// Custom chat search to show links
+Hue.show_links = function()
+{
+    Hue.show_chat_search("http:// https://")
+}

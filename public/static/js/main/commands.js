@@ -1791,6 +1791,14 @@ Hue.commands =
             Hue.change_media_info(arg)
         },
         description: `Changes the media info mode. Either enabled or disabled`
+    },
+    "/links":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.show_links()
+        },
+        description: `Custom chat search to show links`
     }
 }
 

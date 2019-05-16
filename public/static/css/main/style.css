@@ -2566,8 +2566,8 @@ a.special_link:hover
 
 .link_preview_image
 {
-	max-width: 100px;
-	max-height: 100px;
+	max-width: 120px;
+	max-height: 120px;
 	object-fit: contain;
 }
 
