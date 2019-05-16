@@ -54,7 +54,7 @@ Hue.import_settings_open = false
 Hue.background_image_input_open = false
 Hue.admin_list_open = false
 Hue.ban_list_open = false
-Hue.upload_comment_open = false
+Hue.image_upload_comment_open = false
 Hue.modal_image_number_open = false
 Hue.change_user_username_open = false
 Hue.change_user_password_open = false
@@ -160,8 +160,8 @@ Hue.chat_scrolled = false
 Hue.lockscreen_peek_delay = 1000
 Hue.lockscreen_peek_active = false
 Hue.context_menu_open = false
-Hue.upload_comment_file = false
-Hue.upload_comment_type = false
+Hue.image_upload_comment_file = false
+Hue.image_upload_comment_type = false
 Hue.just_tabbed = false
 Hue.update_input_placeholder_delay = 10000
 Hue.update_lockscreen_clock_delay = 10000
@@ -284,7 +284,7 @@ Hue.init = function()
     Hue.get_ignored_usernames_list()
     Hue.get_accept_commands_from_list()
     Hue.setup_lockscreen()
-    Hue.setup_upload_comment()
+    Hue.setup_image_upload_comment()
     Hue.setup_drag_events()
     Hue.setup_open_url()
     Hue.setup_user_functions()

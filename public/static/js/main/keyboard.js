@@ -156,13 +156,13 @@ Hue.activate_key_detection = function()
                 }
             }
 
-            if(Hue.upload_comment_open)
+            if(Hue.image_upload_comment_open)
             {
-                if(Hue.msg_upload_comment.is_highest())
+                if(Hue.msg_image_upload_comment.is_highest())
                 {
                     if(e.key === "Enter")
                     {
-                        Hue.process_upload_comment()
+                        Hue.process_image_upload_comment()
                         e.preventDefault()
                     }
                 }

@@ -517,24 +517,24 @@ Hue.start_msg = function()
         })
     )
 
-    Hue.msg_upload_comment = Msg.factory
+    Hue.msg_image_upload_comment = Msg.factory
     (
         Object.assign({}, common, titlebar,
         {
-            id: "upload_comment",
+            id: "image_upload_comment",
             after_show: function(instance)
             {
                 common.after_show(instance)
-                Hue.upload_comment_open = true
+                Hue.image_upload_comment_open = true
             },
             after_close: function(instance)
             {
                 common.after_close(instance)
                 Hue.clear_modal_image_info()
                 $("#upload_comment_input").val("")
-                Hue.upload_comment_file = false
-                Hue.upload_comment_type = false
-                Hue.upload_comment_open = false
+                Hue.image_upload_comment_file = false
+                Hue.image_upload_comment_type = false
+                Hue.image_upload_comment_open = false
             }
         })
     )
@@ -667,7 +667,7 @@ Hue.start_msg = function()
     Hue.msg_admin_activity.set(Hue.template_admin_activity())
     Hue.msg_access_log.set(Hue.template_access_log())
     Hue.msg_expand_image.set(Hue.template_expand_image())
-    Hue.msg_upload_comment.set(Hue.template_upload_comment())
+    Hue.msg_image_upload_comment.set(Hue.template_image_upload_comment())
     Hue.msg_reply.set(Hue.template_reply())
     Hue.msg_handle_url.set(Hue.template_handle_url())
     Hue.msg_open_url.set(Hue.template_open_url())
@@ -694,7 +694,7 @@ Hue.start_msg = function()
     Hue.msg_credits.set_title(Hue.config.credits_title)
     Hue.msg_admin_activity.set_title("Admin Activity")
     Hue.msg_access_log.set_title("Access Log")
-    Hue.msg_upload_comment.set_title("Add a Comment")
+    Hue.msg_image_upload_comment.set_title("Add a Comment")
     Hue.msg_reply.set_title("Write a Reply")
     Hue.msg_details.set_title("User Details")
     Hue.msg_notifications.set_title("Notifications")

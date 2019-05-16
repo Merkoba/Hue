@@ -2887,7 +2887,7 @@ a.special_link:hover
 	cursor: pointer;
 }
 
-#upload_comment_image_preview
+#image_upload_comment_image_preview
 {
 	min-height: 100px;
 	min-width: 100px;
@@ -2895,13 +2895,13 @@ a.special_link:hover
 	max-width: 500px;
 }
 
-#upload_comment_input
+#image_upload_comment_input
 {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 }
 
-#upload_comment_controls
+#image_upload_comment_controls
 {
 	margin-top: 0.5rem;
 }

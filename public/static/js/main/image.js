@@ -952,32 +952,32 @@ Hue.announce_room_images_mode_change = function(data)
 }
 
 // Shows the window to add a comment to an image upload
-Hue.show_upload_comment = function(file, type)
+Hue.show_image_upload_comment = function(file, type)
 {
-    $("#upload_comment_image_feedback").css("display", "none")
-    $("#upload_comment_image_preview").css("display", "inline-block")
+    $("#image_upload_comment_image_feedback").css("display", "none")
+    $("#image_upload_comment_image_preview").css("display", "inline-block")
 
     let reader = new FileReader()
 
     reader.onload = function(e)
     {
-        Hue.upload_comment_file = file
-        Hue.upload_comment_type = type
+        Hue.image_upload_comment_file = file
+        Hue.image_upload_comment_type = type
 
-        $("#upload_comment_image_preview").attr("src", e.target.result)
+        $("#image_upload_comment_image_preview").attr("src", e.target.result)
 
-        Hue.msg_upload_comment.set_title(`${Hue.utilz.slice_string_end(file.name, 20)} (${Hue.utilz.get_size_string(file.size, 2)})`)
+        Hue.msg_image_upload_comment.set_title(`${Hue.utilz.slice_string_end(file.name, 20)} (${Hue.utilz.get_size_string(file.size, 2)})`)
 
-        $("#Msg-titlebar-upload_comment").attr("title", file.name)
+        $("#Msg-titlebar-image_upload_comment").attr("title", file.name)
 
-        Hue.msg_upload_comment.show(function()
+        Hue.msg_image_upload_comment.show(function()
         {
-            $("#upload_comment_submit").click(function()
+            $("#image_upload_comment_submit").click(function()
             {
-                Hue.process_upload_comment()
+                Hue.process_image_upload_comment()
             })
 
-            $("#upload_comment_input").focus()
+            $("#image_upload_comment_input").focus()
             Hue.scroll_modal_to_bottom("upload_comment")
         })
     }
@@ -986,31 +986,36 @@ Hue.show_upload_comment = function(file, type)
 }
 
 // Setups the upload image comment window
-Hue.setup_upload_comment = function()
+Hue.setup_image_upload_comment = function()
 {
-    let img = $("#upload_comment_image_preview")
+    let img = $("#image_upload_comment_image_preview")
 
     img.on("error", function()
     {
         $(this).css("display", "none")
-        $("#upload_comment_image_feedback").css("display", "inline")
+        $("#image_upload_comment_image_feedback").css("display", "inline")
+    })
+
+    $("#image_upload_comment_change").click(function()
+    {
+        Hue.msg_image_upload_comment.close()
     })
 }
 
 // Submits the upload image comment window
 // Uploads the file and the optional comment
-Hue.process_upload_comment = function()
+Hue.process_image_upload_comment = function()
 {
-    if(!Hue.upload_comment_open)
+    if(!Hue.image_upload_comment_open)
     {
         return false
     }
 
-    Hue.upload_comment_open = false
+    Hue.image_upload_comment_open = false
     
-    let file = Hue.upload_comment_file
-    let type = Hue.upload_comment_type
-    let comment = Hue.utilz.clean_string2($("#upload_comment_input").val())
+    let file = Hue.image_upload_comment_file
+    let type = Hue.image_upload_comment_type
+    let comment = Hue.utilz.clean_string2($("#image_upload_comment_input").val())
     
     if(comment.length > Hue.config.max_media_comment_length)
     {
@@ -1018,14 +1023,7 @@ Hue.process_upload_comment = function()
     }
     
     Hue.upload_file({file:file, action:type, comment:comment})
-    Hue.msg_upload_comment.close()
-}
-
-// Hides the image upload comment window
-Hue.cancel_upload_comment = function()
-{
-    Hue.upload_comment_open = false
-    Hue.msg_upload_comment.close()
+    Hue.msg_image_upload_comment.close()
 }
 
 // Changes the room images mode
