@@ -52,12 +52,12 @@ jQuery.fn.urlize = function(stop_propagation=true)
                 used_urls.push(url)
             
                 let rep = new RegExp(Hue.utilz.escape_special_characters(matches[i]), "g")
-
                 let u = matches[i]
+                let max = Hue.get_setting("max_displayed_url")
 
-                if(u.length > Hue.config.max_displayed_url)
+                if(u.length > max)
                 {
-                    u = `${u.substring(0, Hue.config.max_displayed_url)}...`
+                    u = `${u.substring(0, max)}...`
                 }
 
                 html = html.replace(rep, `<a class='${cls}' target='_blank' href='${url}'>${u}</a>`)

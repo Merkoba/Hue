@@ -1443,7 +1443,7 @@ Hue.user_settings =
     },
     popup_notifications_close_delay:
     {
-        widget_type: "text",
+        widget_type: "number",
         description: `How much time (ms) needs to pass before the notification popups close automatically`,
         action: (type, save=true) =>
         {
@@ -1517,7 +1517,7 @@ Hue.user_settings =
     },
     media_info_max_length:
     {
-        widget_type: "text",
+        widget_type: "number",
         description: `Maximum character length for media info`,
         action: (type, save=true) =>
         {
@@ -1535,6 +1535,28 @@ Hue.user_settings =
             {
                 Hue.reapply_media_info()
             }
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
+    max_displayed_url:
+    {
+        widget_type: "number",
+        description: `Maximum character length for URLs displayed in chat`,
+        action: (type, save=true) =>
+        {
+            let max = parseInt($(`#${type}_max_displayed_url`).val())
+
+            if(isNaN(max))
+            {
+                max = Hue.config.global_settings_default_max_displayed_url
+            }
+
+            $(`#${type}_max_displayed_url`).val(max)
+            Hue[type].max_displayed_url = max
 
             if(save)
             {
