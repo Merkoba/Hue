@@ -204,7 +204,7 @@ Hue.show_input_history = function(filter=false)
 
     for(let item of items)
     {
-        let c = $(`<div class='modal_item input_history_item dynamic_title'></div>`)
+        let c = $(`<div class='modal_item input_history_item dynamic_title action pointer'></div>`)
         let nd = Hue.utilz.nice_date(item.date)
 
         c.attr("title", nd)

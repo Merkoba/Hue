@@ -948,7 +948,6 @@ a.generic:link, a.generic:visited, a.generic:hover
 
 .input_history_item
 {
-	cursor: pointer;
 	max-width: 26em;
 }
 
