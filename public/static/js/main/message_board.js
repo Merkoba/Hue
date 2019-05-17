@@ -34,7 +34,18 @@ Hue.add_post_to_message_board = function(post)
     text.data("date", post.date)
     text.data("otitle", title)
 
-    $("#message_board_container").prepend(item)
+    let items = $("#message_board_container .message_board_item")
+    let num_items = items.length
+
+    if(num_items === 0)
+    {
+        $("#message_board_container").html(item)
+    }
+
+    else
+    {
+        $("#message_board_container").prepend(item)
+    }
 
     if($("#message_board_container").find(".message_board_item").length > Hue.config.max_message_board_posts)
     {
