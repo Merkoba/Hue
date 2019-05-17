@@ -1585,6 +1585,20 @@ Hue.user_settings =
                 Hue[`save_${type}`]()
             }
         }
+    },
+    text_animations:
+    {
+        widget_type: "checkbox",
+        description: `Whether chat text animations are enabled or not`,
+        action: (type, save=true) =>
+        {
+            Hue[type].text_animations = $(`#${type}_text_animations`).prop("checked")
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
     }
 }
 

@@ -469,6 +469,11 @@ Hue.update_chat = function(args={})
         }
     }
 
+    if(!link_preview && !image_preview)
+    {
+        content_classes += " message_text"
+    }
+
     let fmessage
 
     if(starts_me || args.third_person)
@@ -996,6 +1001,7 @@ Hue.add_to_chat = function(args={})
         return false
     }
 
+    let item_id = false
     let chat_area = $('#chat_area')
     let last_message = $("#chat_area > .message").last()
     let appended = false
@@ -1019,9 +1025,10 @@ Hue.add_to_chat = function(args={})
     if(mode === "chat")
     {
         content_container = args.message.find(".chat_content_container").eq(0)
-
         Hue.chat_content_container_id += 1
         content_container.data("chat_content_container_id", Hue.chat_content_container_id)
+        item_id = `chat_content_container_${Hue.chat_content_container_id}`
+        content_container.addClass(item_id)
 
         if(args.just_edited && args.id)
         {
@@ -1103,9 +1110,14 @@ Hue.add_to_chat = function(args={})
         }
 
         Hue.message_id += 1
-        args.message.data("message_id", Hue.message_id)
-        args.message.addClass(`message_id_${Hue.message_id}`)
         message_id = Hue.message_id
+        args.message.data("message_id", message_id)
+        args.message.addClass(`message_id_${message_id}`)
+
+        if(!item_id)
+        {
+            item_id = message_id
+        }
     }
 
     if(Hue.started)
@@ -1145,6 +1157,19 @@ Hue.add_to_chat = function(args={})
     if(args.notify && Hue.started && highlighted)
     {
         Hue.electron_signal("highlighted")
+    }
+
+    if(mode === "chat" && item_id && Hue.started && Hue.app_focused)
+    {
+        if(Hue.get_setting("text_animations"))
+        {
+            Scrambler(
+            {
+                target: `#chat_area .message_id_${message_id} .${item_id} .message_text`,
+                random: [500, 500],
+                speed: 20
+            })
+        }
     }
 
     return {message_id:message_id}
