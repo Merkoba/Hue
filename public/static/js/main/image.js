@@ -996,11 +996,6 @@ Hue.setup_image_upload_comment = function()
         $(this).css("display", "none")
         $("#image_upload_comment_image_feedback").css("display", "inline")
     })
-
-    $("#image_upload_comment_change").click(function()
-    {
-        Hue.msg_image_upload_comment.close()
-    })
 }
 
 // Submits the upload image comment window
