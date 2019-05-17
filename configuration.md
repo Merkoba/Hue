@@ -378,9 +378,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_chat_font_size"
 > Default font size for the chat. This is a term like "normal" or "small".
 
-"global_settings_default_text_animations"
-> Whether chat text animations are enabled by default.
-
 "global_settings_default_chat_profile_image_size"
 > Default profile image size for the chat. This is a term like "normal" or "small".
 
