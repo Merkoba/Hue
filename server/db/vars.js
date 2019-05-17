@@ -10,8 +10,8 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
 
     // Room and User versions
     // These must be increased by 1 when the schema changes
-    vars.rooms_version = 77
-    vars.users_version = 46
+    vars.rooms_version = 79
+    vars.users_version = 48
 
     // Room schema definition
     // This is used to check types and fill defaults
@@ -92,6 +92,7 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
         voice4_radio_permission:{type:"boolean", default:true},
         voice4_synth_permission:{type:"boolean", default:true},
         media_info:{type:"string", default:"enabled"},
+        message_board_posts:{type:"object", default:[]},
         modified:{type:"number", default:Date.now()}
     }
 
@@ -119,6 +120,7 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
         bio:{type:"string", default:""},
         hearts:{type:"number", default:0},
         skulls:{type:"number", default:0},
+        message_board_dates:{type:"object", default:[]},
         modified:{type:"number", default:Date.now()}
     }
 }

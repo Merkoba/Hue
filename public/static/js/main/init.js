@@ -26,6 +26,7 @@ Hue.ls_room_settings = "room_settings_v1"
 Hue.ls_room_state = "room_state_v1"
 Hue.ls_input_history = "input_history_v17"
 Hue.ls_first_time = "first_time_v2"
+Hue.ls_last_message_board_post_checked = "last_message_board_post_checked_v1"
 Hue.vtypes = ["voice1", "voice2", "voice3", "voice4"]
 Hue.roles = ["admin", "op"].concat(Hue.vtypes)
 Hue.topic = ''
@@ -184,6 +185,8 @@ Hue.open_profile_username = false
 Hue.send_badge_disabled = false
 Hue.info_popups = []
 Hue.last_media_sync = Date.now()
+Hue.writing_message_board_post = false
+Hue.message_board_posting_enabled = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -297,6 +300,7 @@ Hue.init = function()
     Hue.configure_notifications()
     Hue.start_media_info_events()
     Hue.setup_chat()
+    Hue.setup_message_board()
 
     if(Hue.debug_functions)
     {
@@ -361,6 +365,7 @@ Hue.on_join = function(data)
     Hue.check_latest_highlight()
     Hue.setup_userlist_window()
     Hue.setup_image_picker()
+    Hue.init_message_board(data)
 
     Hue.at_startup()
 }

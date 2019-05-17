@@ -15,14 +15,18 @@
 
             <% include header.ejs %>
 
-            <div class='unselectable action nicetitle pointer topbox_container position_left' onclick='Hue.toggle_activity_bar()' title="Toggle Activity Bar">
-                <div class='topbox'>
-                    <i id='topbox_left_icon' class='topbox_icon fa fa-caret-down'></i>
+            <div class='unselectable topbox_container position_left'>
+                <div class='topbox topbox_fixed'>
+                    <div class='nicetitle action nicetitle pointer flex_row_center' onclick='Hue.show_message_board()'>
+                        <i id='topbox_left_icon' class='topbox_icon fas fa-comment-dots' title="Show Message Board"></i>
+                        <div id='topbox_message_board_label' class='topbox_label'>Message Board</div>
+                    </div>
                 </div>
             </div>
 
             <div class='unselectable topbox_container position_right'>
                 <div class='topbox topbox_fixed'>
+                    <i id='topbox_left_icon' class='action nicetitle pointer topbox_icon fa fa-caret-down' title="Toggle Activity Bar" onclick='Hue.toggle_activity_bar()'></i>
                     <i id='topbox_right_icon_lock' class='action nicetitle pointer topbox_icon fas fa-lock' title="Lock Screen" onclick='Hue.lock_screen()'></i>
                     <i id='topbox_right_icon_envelope' class='action nicetitle pointer topbox_icon fa fa-envelope' title="Whispers" onclick='Hue.show_whispers()'></i>
                     <i id='topbox_right_icon_bell' class='action nicetitle pointer topbox_icon fas fa-bell' title="Notifications" onclick='Hue.show_notifications()'></i>

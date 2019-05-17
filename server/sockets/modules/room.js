@@ -361,7 +361,8 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             last_tv_change: 0,
             last_radio_change: 0,
             image_ad_charge: 0,
-            text_ad_charge: 0
+            text_ad_charge: 0,
+            message_board_posts: info.message_board_posts
         }
 
         return obj

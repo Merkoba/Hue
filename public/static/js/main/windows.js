@@ -615,6 +615,35 @@ Hue.start_msg = function()
         })
     )
 
+    Hue.msg_message_board = Msg.factory
+    (
+        Object.assign({}, common, titlebar,
+        {
+            id: "message_board",
+            window_width: "28rem"
+        })
+    )
+
+    Hue.msg_message_board_post = Msg.factory
+    (
+        Object.assign({}, common, titlebar,
+        {
+            id: "message_board_post",
+            window_width: "22rem",
+            after_show: function(instance)
+            {
+                common.after_show(instance)
+                Hue.writing_message_board_post = true
+            },
+            after_close: function(instance)
+            {
+                common.after_close(instance)
+                Hue.writing_message_board_post = false
+                $("#message_board_post_textarea").val("")
+            }
+        })
+    )
+
     Hue.msg_room_menu.set(Hue.template_room_menu(
     {
         permissions_containers: Hue.make_room_menu_permissions_container()
@@ -671,6 +700,8 @@ Hue.start_msg = function()
     Hue.msg_handle_url.set(Hue.template_handle_url())
     Hue.msg_open_url.set(Hue.template_open_url())
     Hue.msg_details.set(Hue.template_details())
+    Hue.msg_message_board.set(Hue.template_message_board())
+    Hue.msg_message_board_post.set(Hue.template_message_board_post())
 
     Hue.msg_info.create()
     Hue.msg_info2.create()
@@ -699,6 +730,8 @@ Hue.start_msg = function()
     Hue.msg_notifications.set_title("Notifications")
     Hue.msg_whispers.set_title("Whispers")
     Hue.msg_handle_url.set_title("Drag n' Drop")
+    Hue.msg_message_board.set_title("Message Board")
+    Hue.msg_message_board_post.set_title("Create A Post")
 
     $("#global_settings_window_title").click(function()
     {

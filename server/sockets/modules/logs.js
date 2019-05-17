@@ -15,15 +15,17 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             room_id = socket
         }
 
-        vars.rooms[room_id].log_messages.push(message)
+        let room = vars.rooms[room_id]
 
-        if(vars.rooms[room_id].log_messages.length > config.max_log_messages)
+        room.log_messages.push(message)
+
+        if(room.log_messages.length > config.max_log_messages)
         {
-            vars.rooms[room_id].log_messages = vars.rooms[room_id].log_messages.slice(vars.rooms[room_id].log_messages.length - config.max_log_messages)
+            room.log_messages = room.log_messages.slice(room.log_messages.length - config.max_log_messages)
         }
 
-        vars.rooms[room_id].log_messages_modified = true
-        vars.rooms[room_id].activity = true
+        room.log_messages_modified = true
+        room.activity = true
     }
 
     // Pushes an admin log message
@@ -40,22 +42,22 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             date: Date.now()
         }
 
-        vars.rooms[socket.hue_room_id].admin_log_messages.push(message)
+        let room = vars.rooms[socket.hue_room_id]
+
+        room.admin_log_messages.push(message)
 
         if(vars.rooms[socket.hue_room_id].admin_log_messages.length > config.max_admin_log_messages)
         {
-            vars.rooms[socket.hue_room_id].admin_log_messages = vars.rooms[socket.hue_room_id].admin_log_messages.slice(vars.rooms[socket.hue_room_id].admin_log_messages.length - config.max_admin_log_messages)
+            room.admin_log_messages =room.admin_log_messages.slice(vars.rooms[socket.hue_room_id].admin_log_messages.length - config.max_admin_log_messages)
         }
 
-        vars.rooms[socket.hue_room_id].admin_log_messages_modified = true
-        vars.rooms[socket.hue_room_id].activity = true
+        room.admin_log_messages_modified = true
+        room.activity = true
     }
 
     // Pushes an access log message
     handler.push_access_log_message = function(socket, action)
     {
-        vars.rooms[socket.hue_room_id].activity = true
-
         let message =
         {
             type: "access_activity",
@@ -67,14 +69,16 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             date: Date.now()
         }
 
-        vars.rooms[socket.hue_room_id].access_log_messages.push(message)
+        let room = vars.rooms[socket.hue_room_id]
 
-        if(vars.rooms[socket.hue_room_id].access_log_messages.length > config.max_access_log_messages)
+        room.access_log_messages.push(message)
+
+        if(room.access_log_messages.length > config.max_access_log_messages)
         {
-            vars.rooms[socket.hue_room_id].access_log_messages = vars.rooms[socket.hue_room_id].access_log_messages.slice(vars.rooms[socket.hue_room_id].access_log_messages.length - config.max_access_log_messages)
+            room.access_log_messages = room.access_log_messages.slice(room.access_log_messages.length - config.max_access_log_messages)
         }
 
-        vars.rooms[socket.hue_room_id].access_log_messages_modified = true
-        vars.rooms[socket.hue_room_id].activity = true
+        room.access_log_messages_modified = true
+        room.activity = true
     }
 }

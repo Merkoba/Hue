@@ -388,6 +388,14 @@ Hue.server_update_events =
     'media_info_changed': (data) =>
     {
         Hue.media_info_changed(data)
+    },
+    'new_message_board_post': (data) =>
+    {
+        Hue.on_message_board_received(data)
+    },
+    'last_message_board_post_date_update': (data) =>
+    {
+        Hue.last_message_board_post_date_update(data)
     }
 }
 

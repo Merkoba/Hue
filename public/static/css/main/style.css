@@ -1978,6 +1978,11 @@ input[type=text], textarea
 	padding: 0.6rem;
 }
 
+.topbox_label
+{
+	font-size: 0.8rem;
+}
+
 #lockscreen_body
 {
 	display: flex;
@@ -3294,6 +3299,18 @@ pre
 }
 
 #handle_url_comment
+{
+	margin-bottom: 1rem;
+}
+
+#message_board_container
+{
+	grid-gap: 1.5rem;
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+}
+
+#message_board_post_textarea
 {
 	margin-bottom: 1rem;
 }

@@ -104,4 +104,7 @@ module.exports = function(c, config)
     c.vars.whispers_crop_limit = config.whispers_crop_limit
     c.vars.media_sync_cooldown = config.media_sync_cooldown
     c.vars.max_media_comment_length = config.max_media_comment_length
+    c.vars.max_message_board_post_length = config.max_message_board_post_length
+    c.vars.message_board_post_delay = config.message_board_post_delay
+    c.vars.max_message_board_posts = config.max_message_board_posts
 }

@@ -197,6 +197,11 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
+        if(socket.hue_bio === data.bio)
+        {
+            return false
+        }
+
         handler.modify_socket_properties(socket, {hue_bio:data.bio})
 
         await db_manager.update_user(socket.hue_user_id,

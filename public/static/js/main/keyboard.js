@@ -261,6 +261,20 @@ Hue.activate_key_detection = function()
                 }
             }
 
+            if(Hue.writing_message_board_post)
+            {
+                if(Hue.msg_message_board_post.is_highest())
+                {
+                    if(e.key === "Enter" && !e.shiftKey)
+                    {
+                        Hue.submit_message_board_post()
+                        e.preventDefault()
+                    }
+
+                    return
+                }
+            }
+
             if(Hue.modal_image_open)
             {
                 if(Hue.msg_modal_image.is_highest())

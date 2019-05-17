@@ -94,7 +94,8 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             registration_date: 1,
             bio: 1,
             hearts: 1,
-            skulls: 1
+            skulls: 1,
+            message_board_dates: 1
         }
 
         if(data.alternative)
@@ -175,6 +176,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         socket.hue_bio = userinfo.bio
         socket.hue_hearts = userinfo.hearts
         socket.hue_skulls = userinfo.skulls
+        socket.hue_message_board_dates = userinfo.message_board_dates
         socket.hue_joining = true
 
         socket.join(socket.hue_room_id)
@@ -288,6 +290,17 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             handler.update_user_in_userlist(socket, true)
         }
 
+        let last_message_board_post_date = Date.now() - config.message_board_post_delay
+
+        for(let item of socket.hue_message_board_dates)
+        {
+            if(item.room_id === socket.hue_room_id)
+            {
+                last_message_board_post_date = item.date
+                break
+            }
+        }
+
         socket.hue_joining = false
         socket.hue_joined = true
 
@@ -368,17 +381,28 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             media_info: info.media_info,
             email: socket.hue_email,
             bio: socket.hue_bio,
-            reg_date: userinfo.registration_date
+            reg_date: userinfo.registration_date,
+            last_message_board_post_date: last_message_board_post_date
         }
 
         if(data.no_message_log)
         {
             user_data.log_messages = []
         }
-        
+
         else
         {
             user_data.log_messages = vars.rooms[socket.hue_room_id].log_messages
+        }
+
+        if(data.no_message_board_posts)
+        {
+            user_data.message_board_posts = []
+        }
+        
+        else
+        {
+            user_data.message_board_posts = vars.rooms[socket.hue_room_id].message_board_posts
         }
 
         handler.user_emit(socket, 'joined', user_data)
