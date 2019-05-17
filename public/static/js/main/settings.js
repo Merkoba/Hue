@@ -877,33 +877,6 @@ Hue.user_settings =
             }
         }
     },
-    activity_bar:
-    {
-        widget_type: "checkbox",
-        description: `Whether the activity bar is visible or not`,
-        action: (type, save=true) =>
-        {
-            Hue[type].activity_bar = $(`#${type}_activity_bar`).prop("checked")
-
-            if(Hue.active_settings("activity_bar") === type)
-            {
-                if(Hue[type].activity_bar)
-                {
-                    Hue.show_activity_bar()
-                }
-
-                else
-                {
-                    Hue.hide_activity_bar()
-                }
-            }
-
-            if(save)
-            {
-                Hue[`save_${type}`]()
-            }
-        }
-    },
     show_image_previews:
     {
         widget_type: "checkbox",

@@ -1116,10 +1116,7 @@ Hue.create_popup = function(args={})
 
     if(args.position.includes("top"))
     {
-        if(Hue.get_setting("activity_bar"))
-        {
-            edge_padding_y += panel_size
-        }
+        edge_padding_y += panel_size
     }
 
     let def_args =

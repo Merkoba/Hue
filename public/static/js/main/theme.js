@@ -254,18 +254,6 @@ Hue.apply_theme = function()
     
     $('.panel').css('background-color', panel_bg_color)
     $('.panel').css('color', font_color)
-    
-    let topbox_background
-    
-    if(Hue.get_setting("activity_bar"))
-    {
-        topbox_background = activity_bar_background
-    }
-    
-    else
-    {
-        topbox_background = panel_bg_color
-    }
 
     let css = `
     <style class='appended_theme_style'>
@@ -340,11 +328,6 @@ Hue.apply_theme = function()
     .center_scroller
     {
         border-right: 1px ${color_4_a} solid !important;
-    }
-
-    .topbox_container
-    {
-        color: ${font_color} !important;
     }
 
     .draw_canvas
@@ -506,12 +489,6 @@ Hue.apply_theme = function()
     .room_menu_toggle_container 
     {
         background-color: ${slight_background} !important;
-    }
-
-    .topbox
-    {
-        background-color: ${topbox_background} !important;
-        color: ${font_color} !important;
     }
 
     </style>

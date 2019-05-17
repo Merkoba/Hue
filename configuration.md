@@ -393,9 +393,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_tv_display_position"
 >Default position the tv will have in the split media area in new rooms. (top or bottom)
 
-"global_settings_default_activity_bar"
->Whether the activity bar at the top will be enabled by default in new rooms.
-
 "global_settings_default_show_image_previews"
 >Whether image links get a preview on the chat area by default. This only works with certain links, including direct Imgur links.
 

@@ -1580,14 +1580,6 @@ Hue.commands =
         },
         description: `Displays a list of banned users`
     },
-    "/toggleactivtybar":
-    {
-        action: (arg, ans) =>
-        {
-            Hue.toggle_activity_bar()
-        },
-        description: `Shows or hides the activity bar`
-    },
     "/synthkey":
     {
         action: (arg, ans) =>

@@ -791,16 +791,6 @@ Hue.setup_activity_bar = function()
         }
     }, Hue.config.activity_bar_trigger_interval)
 
-    if(Hue.get_setting("activity_bar"))
-    {
-        Hue.show_activity_bar()
-    }
-
-    else
-    {
-        Hue.hide_activity_bar()
-    }
-
     $("#activity_bar_container").on("click", ".activity_bar_item", function()
     {
         Hue.show_profile($(this).data("username"))
@@ -860,60 +850,11 @@ Hue.check_activity_bar = function(update=true)
     return changed
 }
 
-// Toggles the visibility of the activity bar
-Hue.toggle_activity_bar = function()
-{
-    let new_setting
-
-    if(Hue.get_setting("activity_bar"))
-    {
-        Hue.hide_activity_bar()
-        new_setting = false
-    }
-
-    else
-    {
-        Hue.show_activity_bar()
-        new_setting = true
-    }
-
-    Hue.enable_setting_override("activity_bar")
-    Hue.modify_setting(`activity_bar ${new_setting}`, false)
-}
-
-// Shows the activity bar
-Hue.show_activity_bar = function()
-{
-    $("#activity_bar_container").css("display", "block")
-    $("#topbox_left_icon").removeClass("fa-caret-up")
-    $("#topbox_left_icon").addClass("fa-caret-down")
-
-    Hue.update_activity_bar()
-    Hue.apply_theme()
-    Hue.on_resize()
-}
-
-// Hides the activity bar
-Hue.hide_activity_bar = function()
-{
-    $("#activity_bar_container").css("display", "none")
-    $("#topbox_left_icon").removeClass("fa-caret-down")
-    $("#topbox_left_icon").addClass("fa-caret-up")
-
-    Hue.apply_theme()
-    Hue.on_resize()
-}
-
 // Updates the activity bar
 // If items are still in the list they are not removed
 // This is to keep states like profile image rotation from being interrupted
 Hue.update_activity_bar = function()
 {
-    if(!Hue.get_setting("activity_bar"))
-    {
-        return false
-    }
-
     let c = $("#activity_bar_content")
 
     if(Hue.activity_list.length === 0)

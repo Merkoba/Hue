@@ -153,14 +153,14 @@ Hue.check_last_message_board_post = function()
     {
         if(!Hue.msg_message_board.is_open())
         {
-            $("#topbox_message_board_label").text("New Messages")
+            $("#activity_left_message_board_label").text("New Messages")
         }
-        
+
         Hue.save_local_storage(Hue.ls_last_message_board_post_checked, item.data("date"))
     }
     
     else
     {
-        $("#topbox_message_board_label").text("")
+        $("#activity_left_message_board_label").text("")
     }
 }
