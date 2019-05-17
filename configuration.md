@@ -252,9 +252,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_url_length"
 >Url lengths beyond this are ignored by the system. This is to avoid triggering actions on urls that are likely wrong or meant as an attack.
 
-"max_displayed_url"
->This is used to trim long displayed urls. The href itself remains untouched.
-
 "max_stored_images"
 >The amount of most recent images to have stored in a room. Each room has an array of images stored, when the array's length surpasses this number, the oldest image in it will get deleted, either locally or on the S3 bucket depending on settings.
 
