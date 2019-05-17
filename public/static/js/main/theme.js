@@ -259,12 +259,12 @@ Hue.apply_theme = function()
     
     if(Hue.get_setting("activity_bar"))
     {
-        topbox_background = color_4
+        topbox_background = activity_bar_background
     }
     
     else
     {
-        topbox_background = background_color_2
+        topbox_background = panel_bg_color
     }
 
     let css = `
