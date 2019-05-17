@@ -3386,3 +3386,80 @@ Hue.remove_messages_after_id = function(id, direction)
 
     Hue.goto_bottom(true, false)
 }
+
+// Changes chat font and profile image size
+Hue.apply_chat_style = function()
+{
+    let cfsize = Hue.get_setting("chat_font_size")
+    
+    if(cfsize === "very_small")
+    {
+        cfsize_factor = 0.5
+    }
+    
+    else if(cfsize === "small")
+    {
+        cfsize_factor = 0.8
+    }
+
+    else if(cfsize === "normal")
+    {
+        cfsize_factor = 1
+    }
+
+    else if(cfsize === "big")
+    {
+        cfsize_factor = 1.2
+    }
+
+    else if(cfsize === "very_big")
+    {
+        cfsize_factor = 1.5
+    }
+
+    else
+    {
+        cfsize_factor = 1
+    }
+
+    let chat_font_size = `${cfsize_factor}rem`;
+    let profile_image_size = `${Hue.get_setting("chat_profile_image_size") * cfsize_factor}px`
+
+    let css = `
+    <style class='appended_chat_style'>
+
+    .message
+    {
+        font-size: ${chat_font_size} !important;
+    }
+
+    .chat_profile_image_container
+    {
+        min-width: ${profile_image_size} !important;
+        max-width: ${profile_image_size} !important;
+        min-height: ${profile_image_size} !important;
+        max-height: ${profile_image_size} !important;
+    }
+
+    .brk
+    {
+        min-width: ${profile_image_size} !important;
+        max-width: ${profile_image_size} !important;
+    }
+
+    </style>
+    `
+
+    $(".appended_chat_style").each(function()
+    {
+        $(this).remove()
+    })
+
+    $("head").append(css)
+}
+
+// Setups some chat configs
+Hue.setup_chat = function()
+{
+    Hue.apply_chat_style()
+}

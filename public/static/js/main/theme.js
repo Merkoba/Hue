@@ -204,7 +204,6 @@ Hue.apply_theme = function()
 
     let background_color = theme
     let background_color_2 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_1)
-
     let font_color
 
     if(theme_mode === "room")
@@ -234,73 +233,39 @@ Hue.apply_theme = function()
     let color_4_alpha = Hue.colorlib.rgb_to_rgba(color_4, Hue.config.opacity_amount_1)
     let overlay_color = Hue.colorlib.rgb_to_rgba(color_3, Hue.config.opacity_amount_3)
     let slight_background = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_5)
-    let cfsize = Hue.get_setting("chat_font_size")
-
+    
     $('.bg0').css('background-color', background_color)
     $('.bg1').css('background-color', background_color_a)
     $('.bg1').css('color', font_color)
-
+    
     let panel_bg_color, activity_bar_background
-
+    
     if(Hue.get_setting("transparent_panels"))
     {
         panel_bg_color = background_color_2_alpha
         activity_bar_background = color_4_alpha
     }
-
+    
     else
     {
         panel_bg_color = background_color_2
         activity_bar_background = color_4
     }
-
+    
     $('.panel').css('background-color', panel_bg_color)
     $('.panel').css('color', font_color)
-
+    
     let topbox_background
-
+    
     if(Hue.get_setting("activity_bar"))
     {
         topbox_background = color_4
     }
-
+    
     else
     {
         topbox_background = background_color_2
     }
-
-    if(cfsize === "very_small")
-    {
-        cfsize_factor = 0.5
-    }
-
-    else if(cfsize === "small")
-    {
-        cfsize_factor = 0.8
-    }
-
-    else if(cfsize === "normal")
-    {
-        cfsize_factor = 1
-    }
-
-    else if(cfsize === "big")
-    {
-        cfsize_factor = 1.2
-    }
-
-    else if(cfsize === "very_big")
-    {
-        cfsize_factor = 1.5
-    }
-
-    else
-    {
-        cfsize_factor = 1
-    }
-
-    let chat_font_size = `${cfsize_factor}rem`;
-    let profile_image_size = `${parseInt(Hue.css_var_chat_profile_image_size) * cfsize_factor}px`
 
     let css = `
     <style class='appended_theme_style'>
@@ -404,25 +369,6 @@ Hue.apply_theme = function()
     {
         background-color: ${font_color} !important;
         color: ${font_color} !important;
-    }
-
-    .message
-    {
-        font-size: ${chat_font_size} !important;
-    }
-
-    .chat_profile_image_container
-    {
-        min-width: ${profile_image_size} !important;
-        max-width: ${profile_image_size} !important;
-        min-height: ${profile_image_size} !important;
-        max-height: ${profile_image_size} !important;
-    }
-
-    .brk
-    {
-        min-width: ${profile_image_size} !important;
-        max-width: ${profile_image_size} !important;
     }
 
     .chat_menu_button
@@ -1034,5 +980,10 @@ Hue.get_css_variables = function()
     let style = getComputedStyle(document.body)
     Hue.css_var_panel_height = style.getPropertyValue("--panel-height")
     Hue.css_var_panel_height_double = style.getPropertyValue("--panel-height-double")
-    Hue.css_var_chat_profile_image_size = style.getPropertyValue("--chat-profile-image-size")
+}
+
+// Change CSS variables
+Hue.change_css_variable = function(name, value)
+{
+    document.documentElement.style.setProperty(`--${name}`, value)
 }

@@ -836,8 +836,36 @@ Hue.user_settings =
 
             if(Hue.active_settings("chat_font_size") === type)
             {
-                Hue.apply_theme()
+                Hue.apply_chat_style()
                 Hue.goto_bottom(true, false)
+            }
+        }
+    },
+    chat_profile_image_size:
+    {
+        widget_type: "number",
+        description: `The size of profile images in the chat (pixels)`,
+        action: (type, save=true) =>
+        {
+            let pisize = parseInt($(`#${type}_chat_profile_image_size`).val())
+
+            if(isNaN(pisize))
+            {
+                pisize = Hue.config.global_settings_default_chat_profile_image_size
+            }
+
+            $(`#${type}_chat_profile_image_size`).val(pisize)
+            Hue[type].chat_profile_image_size = pisize
+
+            if(Hue.active_settings("chat_profile_image_size") === type)
+            {
+                Hue.apply_chat_style()
+                Hue.goto_bottom(true, false)
+            }
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
             }
         }
     },

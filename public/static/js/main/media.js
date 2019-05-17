@@ -1527,7 +1527,7 @@ Hue.configure_media_info = function()
     }
 
     let css = `
-    <style>
+    <style class='appended_media_info_style'>
         .media_info
         {
             display: ${display} !important;    

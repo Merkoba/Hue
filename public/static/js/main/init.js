@@ -296,6 +296,7 @@ Hue.init = function()
     Hue.setup_media_menu()
     Hue.configure_notifications()
     Hue.start_media_info_events()
+    Hue.setup_chat()
 
     if(Hue.debug_functions)
     {
