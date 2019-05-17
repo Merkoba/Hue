@@ -201,7 +201,11 @@
 
                 <div class='settings_item settings_top_level_item' data-setting='chat_profile_image_size'>
                     <div class="setting_title">Chat Profile Image Size</div>
-                    <input type="number" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_chat_profile_image_size">
+                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_chat_profile_image_size">
+                        <option value='small'>Small</option>
+                        <option value='normal'>Normal</option>
+                        <option value='big'>Big</option>
+                    </select>
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='chat_display_percentage'>

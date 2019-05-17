@@ -378,6 +378,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_chat_font_size"
 > Default font size for the chat. This is a term like "normal" or "small".
 
+"global_settings_default_chat_profile_image_size"
+> Default profile image size for the chat. This is a term like "normal" or "small".
+
 "global_settings_default_warn_before_closing"
 > Default setting of whether it should warn before closing the application/tab.
 
@@ -500,9 +503,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "global_settings_default_max_displayed_url"
 >Max amount of characters to use in displaying urls in chat by default.
-
-"global_settings_default_chat_profile_image_size"
->Default chat profile image size diameter. In pixels.
 
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.

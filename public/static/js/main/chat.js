@@ -3422,8 +3422,26 @@ Hue.apply_chat_style = function()
         cfsize_factor = 1
     }
 
+    let pfsize = Hue.get_setting("chat_profile_image_size")
+    let pfsize_pixels = 45
+    
+    if(pfsize === "small")
+    {
+        pfsize_pixels = 25
+    }
+
+    else if(pfsize === "normal")
+    {
+        pfsize_pixels = 45
+    }
+
+    else if(pfsize === "big")
+    {
+        pfsize_pixels = 65
+    }
+
     let font_size = `${cfsize_factor}rem`;
-    let pfsizepx = Hue.get_setting("chat_profile_image_size") * cfsize_factor
+    let pfsizepx = pfsize_pixels * cfsize_factor
     let profile_image_size = `${pfsizepx}px`
     let margin_div = pfsizepx / 45
     let profile_image_margin_top = "0"

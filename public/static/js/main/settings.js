@@ -822,39 +822,33 @@ Hue.user_settings =
     chat_font_size:
     {
         widget_type: "select",
-        description: `The font size of the chat area`,
+        description: `The font size of the chat`,
         action: (type, save=true) =>
         {
             let fsize = $(`#${type}_chat_font_size option:selected`).val()
 
             Hue[type].chat_font_size = fsize
 
-            if(save)
-            {
-                Hue[`save_${type}`]()
-            }
-
             if(Hue.active_settings("chat_font_size") === type)
             {
                 Hue.apply_chat_style()
                 Hue.goto_bottom(true, false)
             }
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
         }
     },
     chat_profile_image_size:
     {
-        widget_type: "number",
-        description: `The size of profile images in the chat (pixels)`,
+        widget_type: "select",
+        description: `The size of profile images in the chat`,
         action: (type, save=true) =>
         {
-            let pisize = parseInt($(`#${type}_chat_profile_image_size`).val())
+            let pisize = $(`#${type}_chat_profile_image_size option:selected`).val()
 
-            if(isNaN(pisize))
-            {
-                pisize = Hue.config.global_settings_default_chat_profile_image_size
-            }
-
-            $(`#${type}_chat_profile_image_size`).val(pisize)
             Hue[type].chat_profile_image_size = pisize
 
             if(Hue.active_settings("chat_profile_image_size") === type)
