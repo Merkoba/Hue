@@ -3422,15 +3422,23 @@ Hue.apply_chat_style = function()
         cfsize_factor = 1
     }
 
-    let chat_font_size = `${cfsize_factor}rem`;
-    let profile_image_size = `${Hue.get_setting("chat_profile_image_size") * cfsize_factor}px`
+    let font_size = `${cfsize_factor}rem`;
+    let pfsizepx = Hue.get_setting("chat_profile_image_size") * cfsize_factor
+    let profile_image_size = `${pfsizepx}px`
+    let margin_div = pfsizepx / 45
+    let profile_image_margin_top = "0"
+
+    if(margin_div < 1)
+    {
+        profile_image_margin_top = `${(10 / margin_div) / 10}px`
+    }
 
     let css = `
     <style class='appended_chat_style'>
 
     .message
     {
-        font-size: ${chat_font_size} !important;
+        font-size: ${font_size} !important;
     }
 
     .chat_profile_image_container
@@ -3439,6 +3447,7 @@ Hue.apply_chat_style = function()
         max-width: ${profile_image_size} !important;
         min-height: ${profile_image_size} !important;
         max-height: ${profile_image_size} !important;
+        margin-top: ${profile_image_margin_top} !important;
     }
 
     .brk
