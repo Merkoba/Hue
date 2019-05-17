@@ -186,38 +186,33 @@ Hue.show_input_history = function(filter=false)
         words = lc_value.split(" ").filter(x => x.trim() !== "")
     }
 
-    for(let item of Hue.input_history)
+    let items
+
+    if(filter)
     {
-        if(filter)
+        items = Hue.input_history.filter(function(item)
         {
             let text = item.message.toLowerCase()
+            return words.some(word => text.includes(word))
+        })
+    }
 
-            if(words.some(word => text.includes(word)))
-            {
-                let c = $(`<div class='modal_item input_history_item dynamic_title'></div>`)
-                let nd = Hue.utilz.nice_date(item.date)
+    else
+    {
+        items = Hue.input_history
+    }
 
-                c.attr("title", nd)
-                c.data("otitle", nd)
-                c.data("date", item.date)
-                c.text(item.message)
+    for(let item of items)
+    {
+        let c = $(`<div class='modal_item input_history_item dynamic_title'></div>`)
+        let nd = Hue.utilz.nice_date(item.date)
 
-                $("#input_history_container").prepend(c)
-            }
-        }
+        c.attr("title", nd)
+        c.data("otitle", nd)
+        c.data("date", item.date)
+        c.text(item.message)
 
-        else
-        {
-            let c = $(`<div class='modal_item input_history_item dynamic_title'></div>`)
-            let nd = Hue.utilz.nice_date(item.date)
-
-            c.attr("title", nd)
-            c.data("otitle", nd)
-            c.data("date", item.date)
-            c.text(item.message)
-
-            $("#input_history_container").prepend(c)
-        }
+        $("#input_history_container").prepend(c)
     }
 
     if(Hue.input_history.length > 0)
