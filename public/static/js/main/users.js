@@ -1494,6 +1494,7 @@ Hue.set_role = function(rol, config=true)
     Hue.role = rol
 
     Hue.check_permissions()
+    Hue.check_message_board_permissions()
 
     if(config)
     {

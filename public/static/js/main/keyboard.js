@@ -263,7 +263,7 @@ Hue.activate_key_detection = function()
 
             if(Hue.writing_message_board_post)
             {
-                if(Hue.msg_message_board_post.is_highest())
+                if(Hue.msg_message_board.is_highest())
                 {
                     if(e.key === "Enter" && !e.shiftKey)
                     {

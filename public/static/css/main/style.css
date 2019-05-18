@@ -3299,11 +3299,27 @@ pre
 #message_board_container
 {
 	grid-gap: 1.5rem;
-	margin-top: 2rem;
+	margin-top: 1rem;
 	margin-bottom: 1rem;
 }
 
 #message_board_post_textarea
 {
-	margin-bottom: 1rem;
+	margin-bottom: 2rem;
+}
+
+.message_board_delete
+{
+	display: none;
+	font-size: 0.8rem;
+}
+
+.message_board_container_admin .message_board_delete
+{
+	display: inline-block;
+}
+
+#activity_left_message_board_label
+{
+	padding-right: 0.6rem;
 }

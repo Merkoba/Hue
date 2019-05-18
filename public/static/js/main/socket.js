@@ -396,6 +396,10 @@ Hue.server_update_events =
     'last_message_board_post_date_update': (data) =>
     {
         Hue.last_message_board_post_date_update(data)
+    },
+    'message_board_post_deleted': (data) =>
+    {
+        Hue.remove_message_board_post(data)
     }
 }
 

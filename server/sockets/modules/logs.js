@@ -46,9 +46,9 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         room.admin_log_messages.push(message)
 
-        if(vars.rooms[socket.hue_room_id].admin_log_messages.length > config.max_admin_log_messages)
+        if(room.admin_log_messages.length > config.max_admin_log_messages)
         {
-            room.admin_log_messages =room.admin_log_messages.slice(vars.rooms[socket.hue_room_id].admin_log_messages.length - config.max_admin_log_messages)
+            room.admin_log_messages =room.admin_log_messages.slice(room.admin_log_messages.length - config.max_admin_log_messages)
         }
 
         room.admin_log_messages_modified = true

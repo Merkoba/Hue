@@ -50,7 +50,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     handler.push_message_board_post = function(socket, message)
     {
         let room = vars.rooms[socket.hue_room_id]
-        let item = {message:message, date:Date.now()}
+        let item = {message:message, date:Date.now(), id:handler.generate_message_board_post_id()}
 
         room.message_board_posts.push(item)
 
@@ -62,5 +62,39 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         db_manager.update_room(socket.hue_room_id, {message_board_posts:room.message_board_posts})
 
         return item
+    }
+
+    // Generates IDs for message board posts
+    handler.generate_message_board_post_id = function()
+    {
+        return `${Date.now()}_${utilz.get_random_int(1, 1000)}`
+    }
+
+    // Deletes a message board post if user is admin
+    handler.public.delete_message_board_post = async function(socket, data)
+    {
+        if(socket.hue_role !== "admin" && !socket.hue_superuser)
+        {
+            return handler.get_out(socket)
+        }
+
+        if(!data.id)
+        {
+            return handler.get_out(socket)
+        }
+
+        let room = vars.rooms[socket.hue_room_id]
+
+        for(let i=0; i<room.message_board_posts.length; i++)
+        {
+            let item = room.message_board_posts[i]
+
+            if(item.id === data.id)
+            {
+                room.message_board_posts.splice(i, 1)
+                handler.room_emit(socket, 'message_board_post_deleted', {id:data.id})
+                break
+            }
+        }
     }
 }
