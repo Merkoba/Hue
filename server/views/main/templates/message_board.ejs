@@ -1,4 +1,7 @@
 <script id='template_message_board' type='text/x-handlebars-template' class='template'>
-    <textarea id='message_board_post_textarea' class='setting_textarea' rows=3 placeholder="Write something anonymously"></textarea>
+    <div id='message_board_top' class='flex_row_center sticky bg1'>
+        <textarea id='message_board_post_textarea' class='setting_textarea' rows=3 placeholder="Write something anonymously"></textarea>
+        <input type="search" id="message_board_filter" class="filter_input" placeholder="Filter">
+    </div>
     <div id='message_board_container' class='grid_column_center'>No Posts Yet</div>
 </script>

@@ -3303,9 +3303,17 @@ pre
 	margin-bottom: 1rem;
 }
 
-#message_board_post_textarea
+#message_board_top
 {
-	margin-bottom: 2rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+#message_board_filter
+{
+	margin-top: 0.5rem;
 }
 
 .message_board_delete
