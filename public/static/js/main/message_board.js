@@ -151,6 +151,13 @@ Hue.last_message_board_post_date_update = function(data)
 // Changes the post icon accordingly
 Hue.check_message_board_delay = function()
 {
+    if(Hue.role === "admin")
+    {
+        $("#message_board_post_textarea").css("display", "block")
+        Hue.message_board_posting_enabled = true
+        return false
+    }
+    
     let date_diff = Date.now() - Hue.last_message_board_post_date
 
     clearTimeout(Hue.message_board_post_delay_timeout)

@@ -18,16 +18,19 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        for(let item of socket.hue_message_board_dates)
+        if(socket.hue_role !== "admin" && !socket.hue_superuser)
         {
-            if(item.room_id === socket.hue_room_id)
+            for(let item of socket.hue_message_board_dates)
             {
-                if(Date.now() - item.date < config.message_board_post_delay)
+                if(item.room_id === socket.hue_room_id)
                 {
-                    return false
+                    if(Date.now() - item.date < config.message_board_post_delay)
+                    {
+                        return false
+                    }
+    
+                    break
                 }
-
-                break
             }
         }
 
