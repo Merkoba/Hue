@@ -65,6 +65,12 @@ Hue.add_post_to_message_board = function(post)
     text.text(post.message).urlize()
 
     let title = Hue.utilz.nice_date(post.date)
+
+    if(post.id)
+    {
+        title = `${post.id.slice(-3)} | ${title}`
+    }
+
     text.attr("title", title)
     text.data("date", post.date)
     text.data("otitle", title)

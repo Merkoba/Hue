@@ -470,16 +470,11 @@ Hue.update_chat = function(args={})
     }
 
     let fmessage
-    let title
+    let title = nd
 
     if(args.id)
     {
-        title = `${args.id.slice(-3)} | ${nd}`
-    }
-
-    else
-    {
-        title = nd
+        title = `${args.id.slice(-3)} | ${title}`
     }
 
     if(starts_me || args.third_person)
