@@ -177,10 +177,15 @@ Hue.check_message_board_delay = function()
 // Checks if there are new message board posts
 Hue.check_last_message_board_post = function()
 {
-    let item = $("#message_board_container").find(".message_board_item").first()
-    let date = item.data("date")
+    let items = $("#message_board_container").find(".message_board_item")
 
-    if(date > Hue.last_message_board_post_checked)
+    if(items.length === 0)
+    {
+        $("#activity_left_message_board_label").text("")
+        return false
+    }
+
+    if(items.first().data("date") > Hue.last_message_board_post_checked)
     {
         if(!Hue.msg_message_board.is_open())
         {
@@ -266,7 +271,7 @@ Hue.get_last_message_board_post_checked = function()
 
     if(!Hue.last_message_board_post_checked)
     {
-        Hue.last_message_board_post_checked = Date.now()
+        Hue.last_message_board_post_checked = 0
         Hue.save_last_message_board_post_checked(Hue.last_message_board_post_checked)
     }
 }
