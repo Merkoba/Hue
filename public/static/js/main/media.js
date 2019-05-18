@@ -1419,33 +1419,18 @@ Hue.reapply_media_info = function()
 // Sets a media info item with proper information and events
 Hue.apply_media_info = function(element, item, mode)
 {
-    let info = ""
-    let title = ""
-    let comment = item.comment ? item.comment : ""
+    let custom_title
 
     if(mode === "tv")
     {
-        if(!comment)
-        {
-            title = item.title
-        }
-
         Hue.media_info_tv_data = [...arguments]
     }
 
     else if(mode === "image")
     {
-        if(!comment)
+        if(item.type === "upload")
         {
-            if(item.type === "link")
-            {
-                title = item.source
-            }
-
-            else if(item.type === "upload")
-            {
-                title = `${Hue.utilz.get_size_string(item.size)} upload`
-            }
+            custom_title = `${Hue.utilz.get_size_string(item.size)} upload`
         }
 
         Hue.media_info_image_data = [...arguments]
@@ -1453,7 +1438,7 @@ Hue.apply_media_info = function(element, item, mode)
 
     let hover_title = item.info
 
-    info = comment || title || ""
+    let info = item.comment || custom_title || item.title || item.source || ""
     info = info.substring(0, Hue.get_setting("media_info_max_length")).trim()
 
     let html = 
