@@ -393,9 +393,6 @@ Hue.change_images_visibility = function()
     {
         $("#media").css("display", "flex")
         $("#media_image").css("display", "flex")
-
-        Hue.fix_media_margin()
-
         $("#footer_toggle_images_icon").removeClass("fa-toggle-off")
         $("#footer_toggle_images_icon").addClass("fa-toggle-on")
 
@@ -412,7 +409,6 @@ Hue.change_images_visibility = function()
     {
         $("#media_image").css("display", "none")
 
-        Hue.fix_media_margin()
         let num_visible = Hue.num_media_elements_visible()
 
         if(num_visible === 0)

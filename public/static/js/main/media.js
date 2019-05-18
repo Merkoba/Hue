@@ -46,8 +46,6 @@ Hue.apply_media_positions = function()
 
     $("#media_image").css("order", ip)
     $("#media_tv").css("order", tvp)
-
-    Hue.fix_media_margin()
 }
 
 Hue.swap_display_positions = function()
@@ -63,7 +61,7 @@ Hue.swap_display_positions = function()
 Hue.swap_display_positions_2 = function()
 {
     Hue.enable_setting_override("tv_display_position")
-    Hue.swap_display_positions("room_settings")
+    Hue.swap_display_positions()
 }
 
 // Applies the positions of image and tv
@@ -577,42 +575,6 @@ Hue.num_media_elements_visible = function()
     })
 
     return num
-}
-
-// Adds and removes margins in an attempt to make the image and tv positions look better
-// This takes into account the position of each element (top or bottom)
-Hue.fix_media_margin = function()
-{
-    if(Hue.num_media_elements_visible() === 2)
-    {
-        let p = Hue.get_setting("tv_display_position")
-        let m1, m2
-
-        if(p === "top")
-        {
-            m1 = "margin-bottom"
-            m2 = "margin-top"
-        }
-
-        else if(p === "bottom")
-        {
-            m1 = "margin-top"
-            m2 = "margin-bottom"
-        }
-
-        $("#media_tv").css(m1, "-1rem")
-        $("#media_tv").css(m2, "0")
-        $("#media_image").css(m2, "-1rem")
-        $("#media_image").css(m1, "0")
-    }
-
-    else
-    {
-        $("#media_image").css("margin-top", "0")
-        $("#media_image").css("margin-bottom", "0")
-        $("#media_tv").css("margin-top", "0")
-        $("#media_tv").css("margin-bottom", "0")
-    }
 }
 
 // Quickly unlocks and locks a media type
@@ -1617,4 +1579,45 @@ Hue.change_media_lock = function(type)
 
         Hue.change({type:type2})
     }
+}
+
+// Changes the media layout between row and column
+Hue.change_media_layout = function(mode=false)
+{
+    if(!mode)
+    {
+        mode = Hue.get_setting("media_layout")
+    }
+
+    if(mode === "column")
+    {
+        $("#media_split").css("flex-direction", "column")
+        $(".media_main_container").css("width", "100%")
+        $(".media_main_container").css("height", "50%")
+    }
+
+    else if(mode === "row")
+    {
+        $("#media_split").css("flex-direction", "row")
+        $(".media_main_container").css("width", "50%")
+        $(".media_main_container").css("height", "100%")
+    }
+
+    Hue.fix_frames()
+}
+
+// Switches between row and column media layout mode
+Hue.swap_media_layout = function()
+{
+    let type = Hue.active_settings("media_layout")
+    Hue[type].media_layout = Hue[type].media_layout === "row" ? "column" : "row"
+    Hue[`save_${type}`]()
+    Hue.change_media_layout()
+}
+
+// Alternative function to swap media and overrides settings
+Hue.swap_media_layout_2 = function()
+{
+    Hue.enable_setting_override("media_layout")
+    Hue.swap_media_layout()
 }

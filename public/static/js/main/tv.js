@@ -773,9 +773,6 @@ Hue.change_tv_visibility = function(play=true)
     {
         $("#media").css("display", "flex")
         $("#media_tv").css("display", "flex")
-
-        Hue.fix_media_margin()
-
         $("#footer_toggle_tv_icon").removeClass("fa-toggle-off")
         $("#footer_toggle_tv_icon").addClass("fa-toggle-on")
 
@@ -799,8 +796,6 @@ Hue.change_tv_visibility = function(play=true)
         Hue.hide_tv()
 
         $("#media_tv").css("display", "none")
-
-        Hue.fix_media_margin()
 
         let num_visible = Hue.num_media_elements_visible()
 

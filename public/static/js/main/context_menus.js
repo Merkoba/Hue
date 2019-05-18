@@ -548,6 +548,13 @@ Hue.generate_tv_maxer_context_items = function()
             {
                 Hue.swap_display_positions_2()
             }
+        },
+        rotate:
+        {
+            name: "Rotate", callback: function(key, opt)
+            {
+                Hue.swap_media_layout_2()
+            }
         }
     },
     items,

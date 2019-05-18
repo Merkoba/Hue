@@ -1558,6 +1558,25 @@ Hue.user_settings =
                 Hue[`save_${type}`]()
             }
         }
+    },
+    media_layout:
+    {
+        widget_type: "select",
+        description: `It either uses the room's media info, forces enabled, or, forces disabled`,
+        action: (type, save=true) =>
+        {
+            Hue[type].media_layout = $(`#${type}_media_layout option:selected`).val()
+
+            if(Hue.active_settings("media_layout") === type)
+            {
+                Hue.change_media_layout()
+            }
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
     }
 }
 

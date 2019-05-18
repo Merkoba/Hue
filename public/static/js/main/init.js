@@ -301,6 +301,7 @@ Hue.init = function()
     Hue.start_media_info_events()
     Hue.setup_chat()
     Hue.setup_message_board()
+    Hue.change_media_layout()
 
     if(Hue.debug_functions)
     {
