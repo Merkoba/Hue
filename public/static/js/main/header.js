@@ -29,4 +29,20 @@ Hue.setup_header = function()
             Hue.show_profile(user.username)
         }
     })
+
+    $("#header_radio_volume_area").on("auxclick", function(e)
+    {
+        if(e.which === 2)
+        {
+            if(Hue.room_state.radio_volume !== 0)
+            {
+                Hue.set_radio_volume(0)
+            }
+            
+            else
+            {
+                Hue.set_radio_volume(1)
+            }
+        }
+    })
 }
