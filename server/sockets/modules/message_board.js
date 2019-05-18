@@ -37,12 +37,9 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         let item = handler.push_message_board_post(socket, data.message)
         handler.room_emit(socket, 'new_message_board_post', item)
 
-        for(let room_id of vars.user_rooms[socket.hue_user_id])
+        for(let socc of handler.get_user_sockets_per_room(socket.hue_room_id, socket.hue_user_id))
         {
-            for(let socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
-            {
-                handler.user_emit(socc, "last_message_board_post_date_update", {date:item.date})
-            }
+            handler.user_emit(socc, "last_message_board_post_date_update", {date:item.date})
         }
     }
 
