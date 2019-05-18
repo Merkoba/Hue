@@ -2247,7 +2247,7 @@ input[type=text], textarea
 	position: absolute;
 	right: 0;
 	height: 100%;
-	width: 0.5rem;
+	width: 0.6rem;
 	z-index: 999;
 	display: flex;
 	align-items: center;
