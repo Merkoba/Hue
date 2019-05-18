@@ -19,6 +19,11 @@ Hue.setup_message_board = function()
 
     $("#message_board_container").on("click", ".message_board_delete", function()
     {
+        if(Hue.role !== "admin")
+        {
+            return false
+        }
+        
         if(confirm('Are you sure?'))
         {
             let item = $(this).closest(".message_board_item")
