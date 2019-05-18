@@ -10,11 +10,25 @@ Hue.after_push_media_change = function(type, data)
 // Applies percentages changes to the chat and media elements based on current state
 Hue.apply_media_percentages = function()
 {
+    let mode = Hue.get_setting("media_layout")
     let p1 = Hue.get_setting("tv_display_percentage")
     let p2 = (100 - p1)
 
-    $("#media_tv").css("height", `${p1}%`)
-    $("#media_image").css("height", `${p2}%`)
+    if(mode === "column")
+    {
+        $("#media_tv").css("height", `${p1}%`)
+        $("#media_image").css("height", `${p2}%`)
+        $("#media_tv").css("width", "100%")
+        $("#media_image").css("width", "100%")
+    }
+
+    else if(mode === "row")
+    {
+        $("#media_tv").css("width", `${p1}%`)
+        $("#media_image").css("width", `${p2}%`)
+        $("#media_tv").css("height", "100%")
+        $("#media_image").css("height", "100%")
+    }
 
     let c1 = Hue.get_setting("chat_display_percentage")
     let c2 = (100 - c1)
@@ -1603,6 +1617,7 @@ Hue.change_media_layout = function(mode=false)
         $(".media_main_container").css("height", "100%")
     }
 
+    Hue.apply_media_percentages()
     Hue.fix_frames()
 }
 

@@ -1807,6 +1807,22 @@ Hue.commands =
             Hue.clear_message_board()
         },
         description: `Deletes all message board posts`
+    },
+    "/swap":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.swap_display_positions_2()
+        },
+        description: `Shortcut to change media positions`
+    },
+    "/rotate":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.swap_media_layout_2()
+        },
+        description: `Shortcut to change media layout`
     }
 }
 
