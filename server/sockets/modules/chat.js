@@ -161,7 +161,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Generates IDs for messages
     handler.generate_message_id = function()
     {
-        return `${Date.now()}_${utilz.get_random_int(1, 1000)}`
+        return `${Date.now()}_${utilz.random_sequence(3)}`
     }
 
     // Deletes a message

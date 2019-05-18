@@ -67,7 +67,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Generates IDs for message board posts
     handler.generate_message_board_post_id = function()
     {
-        return `${Date.now()}_${utilz.get_random_int(1, 1000)}`
+        return `${Date.now()}_${utilz.random_sequence(3)}`
     }
 
     // Deletes a message board post if user is admin

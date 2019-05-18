@@ -470,6 +470,17 @@ Hue.update_chat = function(args={})
     }
 
     let fmessage
+    let title
+
+    if(args.id)
+    {
+        title = `${args.id.slice(-3)} | ${nd}`
+    }
+
+    else
+    {
+        title = nd
+    }
 
     if(starts_me || args.third_person)
     {
@@ -503,7 +514,7 @@ Hue.update_chat = function(args={})
                     </div>
 
                     <div class='chat_third_content'>
-                        <span class='chat_uname action'></span><span class='${content_classes}' title='${nd}' data-otitle='${nd}' data-date='${d}'></span>
+                        <span class='chat_uname action'></span><span class='${content_classes}' title='${title}' data-otitle='${title}' data-date='${d}'></span>
                     </div>
 
                     <div class='message_edited_label'>(Edited)</div>
@@ -544,7 +555,7 @@ Hue.update_chat = function(args={})
                             <i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
                         </div>
 
-                        <div class='${content_classes}' title='${nd}' data-otitle='${nd}' data-date='${d}'></div>
+                        <div class='${content_classes}' title='${title}' data-otitle='${title}' data-date='${d}'></div>
 
                         <div class='message_edited_label'>(Edited)</div>
 

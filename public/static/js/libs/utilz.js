@@ -115,6 +115,18 @@ const Utilz = function()
 		return text
 	}
 
+	utilz.random_sequence = function(n)
+	{
+		let s = ""
+
+		for(let i=0; i<n; i++)
+		{
+			s += utilz.get_random_int(0, 9)
+		}
+
+		return s
+	}
+
 	utilz.get_youtube_id = function(url)
 	{
 		let v_id = false
