@@ -225,7 +225,7 @@ Hue.apply_theme = function()
     }
     
     let background_color_a = Hue.colorlib.rgb_to_rgba(background_color, Hue.config.opacity_amount_1)
-    let background_color_2_alpha = Hue.colorlib.rgb_to_rgba(background_color_2, Hue.config.opacity_amount_1)
+    let background_color_2_a_2ha = Hue.colorlib.rgb_to_rgba(background_color_2, Hue.config.opacity_amount_1)
     let background_color_a_2 = Hue.colorlib.rgb_to_rgba(background_color_2, Hue.config.opacity_amount_3)
     let color_3 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_3)
     let color_4 = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_4)
@@ -233,6 +233,7 @@ Hue.apply_theme = function()
     let color_4_alpha = Hue.colorlib.rgb_to_rgba(color_4, Hue.config.opacity_amount_1)
     let overlay_color = Hue.colorlib.rgb_to_rgba(color_3, Hue.config.opacity_amount_3)
     let slight_background = Hue.colorlib.get_lighter_or_darker(background_color, Hue.config.color_contrast_amount_5)
+    let slight_background_alpha = Hue.colorlib.rgb_to_rgba(slight_background, Hue.config.opacity_amount_3)
     
     $('.bg0').css('background-color', background_color)
     $('.bg1').css('background-color', background_color_a)
@@ -242,7 +243,7 @@ Hue.apply_theme = function()
     
     if(Hue.get_setting("transparent_panels"))
     {
-        panel_bg_color = background_color_2_alpha
+        panel_bg_color = background_color_2_a_2ha
         activity_bar_background = color_4_alpha
     }
     
@@ -356,22 +357,18 @@ Hue.apply_theme = function()
 
     .chat_menu_button
     {
-        background-color: ${background_color_2} !important;
-    }
-
-    .chat_menu_button
-    {
+        background-color: ${background_color_a_2} !important;
         border-left: 1px solid ${slight_background} !important;
     }
 
     .chat_menu_button:hover
     {
-        background-color: ${color_4} !important;
+        background-color: ${color_4_a} !important;
     }
 
     .chat_menu_button_main:hover, .chat_menu_button_main_selected
     {
-        background-color: ${slight_background} !important;
+        background-color: ${slight_background_alpha} !important;
     }
 
     #activity_bar_container
@@ -489,6 +486,12 @@ Hue.apply_theme = function()
     .room_menu_toggle_container 
     {
         background-color: ${slight_background} !important;
+    }
+
+    .backgrounded
+    {
+        background-color: ${slight_background_alpha} !important;
+        outline: 1px dotted ${color_4} !important;
     }
 
     </style>
