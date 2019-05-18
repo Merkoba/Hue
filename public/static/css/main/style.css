@@ -266,6 +266,7 @@ div#header_radio_playing_icon
 	overflow-y: auto;
 	flex-grow: 1;
 	max-width: 100%;
+	margin-left: 1rem;
 }
 
 .chat_area_clone_center
@@ -1216,12 +1217,6 @@ select
 	font-size: 1rem;
 	padding-top: 0.8rem;
 	padding-bottom: 0.8rem;
-}
-
-#chat_area > .message
-{
-	padding-left: 1.2rem;
-	padding-right: 0.5rem;
 }
 
 #chat_area > .message:first-child
