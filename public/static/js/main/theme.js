@@ -305,7 +305,7 @@ Hue.apply_theme = function()
 
     .highlighted, .highlighted2, .highlighted3, .highlighted4
     {
-        background-color: ${background_color_2} !important;
+        background-color: ${background_color_a_2} !important;
         color: ${font_color} !important;
     }
 
