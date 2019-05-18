@@ -54,7 +54,9 @@ Hue.setup_image = function(mode, odata={})
         data.date = Date.now()
     }
 
-    data.info = `Setter: ${data.setter} | ${data.nice_date}`
+    let gets = data.id ? `${data.id.slice(-3)} | ` : ""
+
+    data.info = `${gets}Setter: ${data.setter} | ${data.nice_date}`
     data.info_html = `<div>Setter: ${Hue.utilz.make_html_safe(data.setter)}</div><div>${data.nice_date}</div>`
 
     if(data.type === "upload")

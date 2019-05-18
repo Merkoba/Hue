@@ -73,7 +73,9 @@ Hue.setup_radio = function(mode, odata={})
             }
         }
 
-        data.info = `Setter: ${data.setter} | ${data.nice_date}`
+        let gets = data.id ? `${data.id.slice(-3)} | ` : ""
+
+        data.info = `${gets}Setter: ${data.setter} | ${data.nice_date}`
 
         if(data.query)
         {
