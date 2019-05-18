@@ -2247,23 +2247,17 @@ input[type=text], textarea
 	position: absolute;
 	right: 0;
 	height: 100%;
-	width: 0.8em;
+	width: 0.5rem;
 	z-index: 999;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
-.maxer_container2
+.maxer_container_left
 {
-	position: absolute;
+	right: unset;
 	left: 0;
-	height: 100%;
-	width: 0.8em;
-	z-index: 999;
-	display: flex;
-	align-items: center;
-	justify-content: center;
 }
 
 .maxer
