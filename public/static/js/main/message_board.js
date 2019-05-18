@@ -46,12 +46,6 @@ Hue.setup_message_board = function()
         Hue.writing_message_board_post = false
     })
 
-    let minutes = Math.round(Hue.config.message_board_post_delay / 60 / 1000)
-    let mins = minutes === 1 ? "minute" : "minutes"
-    let placeholder = `You can post once every ${minutes} ${mins}`
-
-    $("#message_board_post_textarea").attr("placeholder", placeholder)
-
     Hue.get_last_message_board_post_checked()
 }
 
@@ -157,7 +151,7 @@ Hue.check_message_board_delay = function()
         Hue.message_board_posting_enabled = true
         return false
     }
-    
+
     let date_diff = Date.now() - Hue.last_message_board_post_date
 
     clearTimeout(Hue.message_board_post_delay_timeout)
@@ -252,11 +246,18 @@ Hue.check_message_board_permissions = function()
     if(Hue.role === "admin")
     {
         $("#message_board_container").addClass("message_board_container_admin")
+        $("#message_board_post_textarea").attr("placeholder", "Write A Post")
     }
     
     else
     {
         $("#message_board_container").removeClass("message_board_container_admin")
+
+        let minutes = Math.round(Hue.config.message_board_post_delay / 60 / 1000)
+        let mins = minutes === 1 ? "minute" : "minutes"
+        let placeholder = `You can post once every ${minutes} ${mins}`
+
+        $("#message_board_post_textarea").attr("placeholder", placeholder)
     }
 }
 
