@@ -235,6 +235,6 @@ Hue.get_last_message_board_post_checked = function()
     if(!Hue.last_message_board_post_checked)
     {
         Hue.last_message_board_post_checked = Date.now()
-        Hue.save_local_storage(Hue.ls_last_message_board_post_checked, date)
+        Hue.save_local_storage(Hue.ls_last_message_board_post_checked, Hue.last_message_board_post_checked)
     }
 }
