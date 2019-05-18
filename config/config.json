@@ -278,6 +278,6 @@
 	"media_sync_cooldown": 5000,
 	"max_message_board_dates_items": 100,
 	"max_message_board_posts": 100,
-	"message_board_post_delay": 5000,
+	"message_board_post_delay": 3600000,
 	"max_message_board_post_length": 500
 }
