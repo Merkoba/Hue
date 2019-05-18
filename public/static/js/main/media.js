@@ -1032,7 +1032,7 @@ Hue.fix_frame = function(frame_id, test_parent_height=false)
     
     if(info.length > 0)
     {
-        info_height = info.eq(0).height()
+        info_height = info.eq(0).outerHeight(true)
     }
 
     let parent_width = parent.width()
