@@ -298,3 +298,21 @@ Hue.get_last_message_board_post_checked = function()
         Hue.save_last_message_board_post_checked(Hue.last_message_board_post_checked[Hue.room_id])
     }
 }
+
+// Deletes all message board posts
+Hue.clear_message_board = function()
+{
+    if(Hue.role !== "admin")
+    {
+        return false
+    }
+
+    Hue.socket_emit("clear_message_board", {})
+}
+
+// After the message board gets cleared
+Hue.on_message_board_cleared = function(data)
+{
+    $("#message_board_container").html("No Posts Yet")
+    Hue.show_room_notification(data.username, `${data.username} cleared the message board`)
+}

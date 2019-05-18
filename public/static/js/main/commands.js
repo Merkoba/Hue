@@ -1799,6 +1799,14 @@ Hue.commands =
             Hue.show_message_board()
         },
         description: `Opens the message board`
+    },
+    "/clearmessageboard":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.clear_message_board()
+        },
+        description: `Deletes all message board posts`
     }
 }
 

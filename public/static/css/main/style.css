@@ -3325,9 +3325,9 @@ pre
 	justify-content: center;
 }
 
-#message_board_filter
+#message_board_post_textarea
 {
-	margin-top: 0.5rem;
+	margin-bottom: 1rem;
 }
 
 .message_board_delete

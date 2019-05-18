@@ -92,9 +92,25 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             if(item.id === data.id)
             {
                 room.message_board_posts.splice(i, 1)
+                db_manager.update_room(socket.hue_room_id, {message_board_posts:room.message_board_posts})
                 handler.room_emit(socket, 'message_board_post_deleted', {id:data.id})
                 break
             }
         }
+    }
+
+    // Deletes all message board posts if user is admin
+    handler.public.clear_message_board = async function(socket, data)
+    {
+        if(socket.hue_role !== "admin" && !socket.hue_superuser)
+        {
+            return handler.get_out(socket)
+        }
+
+        let room = vars.rooms[socket.hue_room_id]
+
+        room.message_board_posts = []
+        db_manager.update_room(socket.hue_room_id, {message_board_posts:room.message_board_posts})
+        handler.room_emit(socket, 'message_board_cleared', {username:socket.hue_username})
     }
 }

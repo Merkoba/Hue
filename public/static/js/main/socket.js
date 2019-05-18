@@ -400,6 +400,10 @@ Hue.server_update_events =
     'message_board_post_deleted': (data) =>
     {
         Hue.remove_message_board_post(data)
+    },
+    'message_board_cleared': (data) =>
+    {
+        Hue.on_message_board_cleared(data)
     }
 }
 
