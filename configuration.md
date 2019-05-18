@@ -504,6 +504,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_media_layout"
 >Default media area (image, tv) layout, either column or row.
 
+"global_settings_default_chat_enabled"
+>Whether chat is enabled by default.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 

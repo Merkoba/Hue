@@ -1562,7 +1562,7 @@ Hue.user_settings =
     media_layout:
     {
         widget_type: "select",
-        description: `It either uses the room's media info, forces enabled, or, forces disabled`,
+        description: `The media (image, tv) layout, either column or row`,
         action: (type, save=true) =>
         {
             Hue[type].media_layout = $(`#${type}_media_layout option:selected`).val()
@@ -1570,6 +1570,25 @@ Hue.user_settings =
             if(Hue.active_settings("media_layout") === type)
             {
                 Hue.change_media_layout()
+            }
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
+    chat_enabled:
+    {
+        widget_type: "checkbox",
+        description: `Whether chat is visible or not`,
+        action: (type, save=true) =>
+        {
+            Hue[type].chat_enabled = $(`#${type}_chat_enabled`).prop("checked")
+
+            if(Hue.active_settings("chat_enabled") === type)
+            {
+                Hue.change_chat_visibility()
             }
 
             if(save)

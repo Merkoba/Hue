@@ -676,7 +676,7 @@ Hue.update_chat = function(args={})
         just_edited: args.just_edited
     }).message_id
 
-    if(!args.edited)
+    if(!args.edited && Hue.get_setting("chat_enabled"))
     {
         if(args.username !== Hue.username)
         {
@@ -972,7 +972,7 @@ Hue.chat_announce = function(args={})
     {
         message_id = Hue.add_to_chat({message:fmessage}).message_id
 
-        if(highlighted)
+        if(highlighted && Hue.get_setting("chat_enabled"))
         {
             Hue.on_highlight()
         }
@@ -1148,7 +1148,7 @@ Hue.add_to_chat = function(args={})
         Hue.push_to_activity_bar(uname, date)
     }
 
-    if(args.notify && Hue.started && highlighted)
+    if(args.notify && Hue.started && highlighted && Hue.get_setting("chat_enabled"))
     {
         Hue.electron_signal("highlighted")
     }
@@ -3495,4 +3495,22 @@ Hue.apply_chat_style = function()
 Hue.setup_chat = function()
 {
     Hue.apply_chat_style()
+}
+
+// Makes the chat visible or not
+Hue.change_chat_visibility = function()
+{
+    let enabled = Hue.get_setting("chat_enabled")
+
+    if(enabled)
+    {
+        $("#chat_main").css("display", "flex")
+    }
+    
+    else
+    {
+        $("#chat_main").css("display", "none")
+    }
+
+    Hue.fix_frames()
 }

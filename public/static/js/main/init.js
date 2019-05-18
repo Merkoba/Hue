@@ -302,6 +302,7 @@ Hue.init = function()
     Hue.setup_chat()
     Hue.setup_message_board()
     Hue.change_media_layout()
+    Hue.change_chat_visibility()
 
     if(Hue.debug_functions)
     {

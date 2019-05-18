@@ -194,6 +194,7 @@
 	"global_settings_default_transparent_panels": true,
 	"global_settings_default_max_displayed_url": 100,
 	"global_settings_default_media_layout": "column",
+	"global_settings_default_chat_enabled": true,
 	"room_state_default_images_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_radio_enabled": true,
