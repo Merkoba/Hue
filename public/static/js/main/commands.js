@@ -1791,6 +1791,14 @@ Hue.commands =
             Hue.show_links()
         },
         description: `Custom chat search to show links`
+    },
+    "/messageboard":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.show_message_board()
+        },
+        description: `Opens the message board`
     }
 }
 

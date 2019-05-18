@@ -23,7 +23,7 @@ Hue.setup_message_board = function()
         {
             return false
         }
-        
+
         if(confirm('Are you sure?'))
         {
             let item = $(this).closest(".message_board_item")
@@ -111,8 +111,9 @@ Hue.show_message_board = function()
 {
     Hue.msg_message_board.show(function()
     {
-        Hue.update_message_board_date()
+        Hue.update_last_message_post_checked()
         Hue.check_last_message_board_post()
+        $("#message_board_post_textarea").focus()
     })
 }
 
@@ -184,6 +185,11 @@ Hue.check_last_message_board_post = function()
         {
             $("#activity_left_message_board_label").text("New Posts")
         }
+
+        else
+        {
+            Hue.update_last_message_post_checked()
+        }
     }
     
     else
@@ -193,7 +199,7 @@ Hue.check_last_message_board_post = function()
 }
 
 // Updates the message board date local storage
-Hue.update_message_board_date = function()
+Hue.update_last_message_post_checked = function()
 {
     let item = $("#message_board_container").find(".message_board_item").first().find(".message_board_text").eq(0)
     let date = item.data("date")
@@ -201,8 +207,14 @@ Hue.update_message_board_date = function()
     if(date !== Hue.last_message_board_post_checked)
     {
         Hue.last_message_board_post_checked = date
-        Hue.save_local_storage(Hue.ls_last_message_board_post_checked, item.data("date"))
+        Hue.save_last_message_board_post_checked(item.data("date"))
     }
+}
+
+// Saves the last message board post check local storage
+Hue.save_last_message_board_post_checked = function(date)
+{
+    Hue.save_local_storage(Hue.ls_last_message_board_post_checked, date)
 }
 
 // Checks if the user is an admin and can delete posts in the message board
@@ -240,6 +252,6 @@ Hue.get_last_message_board_post_checked = function()
     if(!Hue.last_message_board_post_checked)
     {
         Hue.last_message_board_post_checked = Date.now()
-        Hue.save_local_storage(Hue.ls_last_message_board_post_checked, Hue.last_message_board_post_checked)
+        Hue.save_last_message_board_post_checked(Hue.last_message_board_post_checked)
     }
 }
