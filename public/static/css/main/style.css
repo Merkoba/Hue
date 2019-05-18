@@ -95,6 +95,11 @@ body *
 	justify-content: center;
 }
 
+#activity_bar_left .activity_icon:first-child
+{
+	padding-left: 0.8rem;
+}
+
 #activity_bar_right
 {
 	flex-grow: 0;
@@ -103,6 +108,11 @@ body *
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+}
+
+#activity_bar_right .activity_icon:last-child
+{
+	padding-right: 0.8rem;
 }
 
 #activity_bar_content
@@ -415,7 +425,9 @@ div#header_radio_playing_icon
 
 #footer_media_menu
 {
-	margin-right: 0.8rem !important;
+	padding: 0.6rem;
+	padding-right: 0.8rem;
+	padding-left: 0;
 	font-size: var(--panel-icon-font-size);
 }
 
@@ -1561,7 +1573,9 @@ input[type=text], textarea
 #footer_user_menu
 {
 	width: 10px;
-	margin-left: 0.8rem;
+	padding: 0.6rem;
+	padding-left: 0.8rem;
+	padding-right: 0;
 }
 
 #write_message_info
