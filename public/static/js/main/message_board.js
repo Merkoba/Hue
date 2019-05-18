@@ -65,6 +65,7 @@ Hue.add_post_to_message_board = function(post)
     </div>`)
     
     item.data("id", post.id)
+    item.data("date", post.date)
 
     let text = item.find(".message_board_text").eq(0)
     text.text(post.message).urlize()
@@ -176,14 +177,28 @@ Hue.check_message_board_delay = function()
 // Checks if there are new message board posts
 Hue.check_last_message_board_post = function()
 {
-    let item = $("#message_board_container").find(".message_board_item").first().find(".message_board_text").eq(0)
+    let item = $("#message_board_container").find(".message_board_item").first()
     let date = item.data("date")
 
     if(date > Hue.last_message_board_post_checked)
     {
         if(!Hue.msg_message_board.is_open())
         {
-            $("#activity_left_message_board_label").text("New Posts")
+            let count = 0
+
+            $("#message_board_container").find(".message_board_item").each(function()
+            {
+                if($(this).data("date") <= Hue.last_message_board_post_checked)
+                {
+                    return false
+                }
+
+                count += 1
+            })
+
+            let s = count === 1 ? "New Post" : "New Posts"
+
+            $("#activity_left_message_board_label").text(s)
         }
 
         else
@@ -201,13 +216,13 @@ Hue.check_last_message_board_post = function()
 // Updates the message board date local storage
 Hue.update_last_message_post_checked = function()
 {
-    let item = $("#message_board_container").find(".message_board_item").first().find(".message_board_text").eq(0)
+    let item = $("#message_board_container").find(".message_board_item").first()
     let date = item.data("date")
 
     if(date !== Hue.last_message_board_post_checked)
     {
         Hue.last_message_board_post_checked = date
-        Hue.save_last_message_board_post_checked(item.data("date"))
+        Hue.save_last_message_board_post_checked(date)
     }
 }
 
