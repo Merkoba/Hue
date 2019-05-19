@@ -3345,6 +3345,11 @@ pre
 	padding-right: 0.6rem;
 }
 
+#Msg-content-notebook
+{
+	padding: 0 !important;
+}
+
 #notebook_container
 {
 	position: relative;

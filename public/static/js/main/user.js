@@ -630,7 +630,15 @@ Hue.show_notebook = function()
 {
     Hue.msg_notebook.show(function()
     {
-        $("#notebook_textarea").val("\n\n" + Hue.get_notebook())
+        let notebook = Hue.get_notebook()
+        let value = notebook
+
+        if(value)
+        {
+            value = "\n\n" + value
+        }
+
+        $("#notebook_textarea").val("\n\n" + value)
         $("#notebook_textarea").focus()
         $("#notebook_textarea")[0].setSelectionRange(0, 0)
         $("#notebook_textarea").scrollTop(0)
