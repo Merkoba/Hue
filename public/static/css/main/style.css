@@ -2326,6 +2326,22 @@ input[type=text], textarea
 	justify-content: center;
 }
 
+.inline_flex_row_center
+{
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.inline_flex_column_center
+{
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
 #admin_menu
 {
 	margin-top: 1rem;
@@ -2412,6 +2428,11 @@ input[type=text], textarea
 }
 
 #show_profile_bio
+{
+	margin-top: 1rem;
+}
+
+#show_profile_audio_clip
 {
 	margin-top: 1rem;
 }
@@ -3123,6 +3144,11 @@ a.special_link:hover
 {
 	margin-bottom: 1rem;
 	grid-gap: 0.8rem;
+}
+
+#user_menu_notebook_container
+{
+	margin-bottom: 1rem;
 }
 
 #modal_popup_feedback_send

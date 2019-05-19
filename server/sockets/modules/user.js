@@ -327,20 +327,129 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             profile_image_version: new_ver
         })
 
-        for(let room_id of vars.user_rooms[socket.hue_user_id])
+        handler.modify_socket_properties(socket, {hue_profile_image:image_url},
         {
-            for(let socc of handler.get_user_sockets_per_room(room_id, socket.hue_user_id))
-            {
-                socc.hue_profile_image = image_url
-            }
-
-            handler.update_user_in_userlist(socket)
-
-            handler.room_emit(room_id, 'profile_image_changed',
+            method: "profile_image_changed",
+            data:
             {
                 username: socket.hue_username,
                 profile_image: image_url
+            }
+        })
+    }
+
+    // Handles uploaded audio clips
+    handler.upload_audio_clip = function(socket, data)
+    {
+        if(data.audio_file === undefined)
+        {
+            return handler.get_out(socket)
+        }
+
+        let size = data.audio_file.byteLength / 1024
+
+        if(size === 0 || (size > config.max_audio_clip_size))
+        {
+            handler.user_emit(socket, 'upload_error', {})
+            return false
+        }
+
+        let fname = `audio_clip_${socket.hue_user_id}.${data.extension}`
+
+        vars.fs.writeFile(vars.audio_root + '/' + fname, data.audio_file, function(err, data)
+        {
+            if(err)
+            {
+                handler.user_emit(socket, 'upload_error', {})
+            }
+
+            else
+            {
+                handler.change_audio_clip(socket, fname)
+            }
+        })
+    }
+
+    // Intermidiate step to change audio clips
+    handler.change_audio_clip = function(socket, fname)
+    {
+        if(config.audio_storage_s3_or_local === "local")
+        {
+            handler.do_change_audio_clip(socket, fname)
+        }
+
+        else if(config.audio_storage_s3_or_local === "s3")
+        {
+            vars.fs.readFile(`${vars.audio_root}/${fname}`, (err, data) =>
+            {
+                if(err)
+                {
+                    vars.fs.unlink(`${vars.audio_root}/${fname}`, function(){})
+                    return
+                }
+
+                vars.s3.putObject(
+                {
+                    ACL: "public-read",
+                    ContentType: handler.get_content_type(fname),
+                    Body: data,
+                    Bucket: sconfig.s3_bucket_name,
+                    Key: `${sconfig.s3_audio_location}${fname}`,
+                    CacheControl: `max-age=${sconfig.s3_cache_max_age}`
+                }).promise()
+
+                .then(ans =>
+                {
+                    vars.fs.unlink(`${vars.audio_root}/${fname}`, function(){})
+                    handler.do_change_audio_clip(socket, sconfig.s3_main_url + sconfig.s3_audio_location + fname)
+                })
+
+                .catch(err =>
+                {
+                    vars.fs.unlink(`${vars.audio_root}/${fname}`, function(){})
+                    logger.log_error(err)
+                })
             })
         }
+
+        else
+        {
+            return false
+        }
+    }
+
+    // Completes audio clip changes
+    handler.do_change_audio_clip = async function(socket, fname)
+    {
+        let userinfo = await db_manager.get_user({_id:socket.hue_user_id}, {audio_clip_version:1})
+        let new_ver = userinfo.audio_clip_version + 1
+        let fver = `${fname}?ver=${new_ver}`
+        let audio_clip_url
+
+        if(config.audio_storage_s3_or_local === "local")
+        {
+            audio_clip_url = config.public_audio_location + fver
+        }
+
+        else if(config.audio_storage_s3_or_local === "s3")
+        {
+            audio_clip_url = fver
+        }
+
+        let ans = await db_manager.update_user(socket.hue_user_id,
+        {
+            audio_clip: fver,
+            audio_clip_version: new_ver
+        })
+
+        handler.modify_socket_properties(socket, {hue_audio_clip:audio_clip_url},
+        {
+            method: "audio_clip_changed",
+            data:
+            {
+                username: socket.hue_username,
+                audio_clip: audio_clip_url
+            }
+        })
     }
 }

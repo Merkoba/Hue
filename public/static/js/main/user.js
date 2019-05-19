@@ -668,3 +668,24 @@ Hue.add_to_notebook = function(note, feedback=true)
         })
     }
 }
+
+// Opens the file picker to choose an audio clip
+Hue.select_audio_clip = function()
+{
+    $("#audio_clip_picker").click()
+}
+
+// When an audio clip gets selected from the file picker
+Hue.audio_clip_selected = function(input)
+{
+    let file = input.files[0]
+    let size = file.size / 1024
+
+    if(size > Hue.config.max_audio_clip_size)
+    {
+        Hue.msg_info.show("File is too big")
+        return false
+    }
+
+    Hue.upload_file({file:file, action:"audio_clip_upload"})
+}

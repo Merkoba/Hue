@@ -29,16 +29,19 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 return false
             }
 
-            if(!utilz.image_types.includes(data.type))
-            {
-                return handler.get_out(socket)
-            }
-
             let ext = data.name.split('.').pop(-1).toLowerCase()
 
-            if(!utilz.image_extensions.includes(ext))
+            if(data.kind === "image")
             {
-                return handler.get_out(socket)
+                if(!utilz.image_types.includes(data.type))
+                {
+                    return handler.get_out(socket)
+                }
+    
+                if(!utilz.image_extensions.includes(ext))
+                {
+                    return handler.get_out(socket)
+                }
             }
 
             if(data.comment)
@@ -50,11 +53,8 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             }
 
             data.extension = ext
-
             vars.files[key] = Object.assign({}, vars.files_struct, data)
-
             file = vars.files[key]
-
             file.data = []
         }
 
@@ -65,22 +65,34 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         }
 
         data.data = Buffer.from(new Uint8Array(data.data))
-
         file.data.push(data.data)
-
         file.slice++
-
         file.received += data.data.length
 
         let fsize = file.received / 1024
+        let spsize
 
-        if(fsize > config.max_image_size)
+        if(file.action === "image_upload" || file.action === "background_image_upload")
         {
-            delete vars.files[key]
-            return handler.get_out(socket)
+            if(fsize > config.max_image_size)
+            {
+                delete vars.files[key]
+                return handler.get_out(socket)
+            }
+            
+            spsize = Math.floor(fsize / (config.max_image_size / config.upload_spam_slice))
         }
 
-        let spsize = Math.floor(fsize / (config.max_image_size / vars.upload_spam_slice))
+        else if(file.action === "audio_clip_upload")
+        {
+            if(fsize > config.max_audio_clip_size)
+            {
+                delete vars.files[key]
+                return handler.get_out(socket)
+            }
+            
+            spsize = Math.floor(fsize / (config.max_audio_clip_size / config.upload_spam_slice))
+        }
 
         if(file.spsize !== spsize)
         {
@@ -125,6 +137,15 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 handler.upload_background_image(socket,
                 {
                     image_file: full_file,
+                    extension: file.extension
+                })
+            }
+
+            else if(data.action === "audio_clip_upload")
+            {
+                handler.upload_audio_clip(socket,
+                {
+                    audio_file: full_file,
                     extension: file.extension
                 })
             }

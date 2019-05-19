@@ -10,18 +10,30 @@
 
         <textarea id='user_menu_bio_textarea' class='setting_textarea' rows="3" placeholder="Write something about yourself"></textarea>
 
-        <div class='flex_row_center user_menu_items_container menu_item_smaller_2'>
-            <i class='user_menu_icon fas fa-book'></i><div class='action' onclick='Hue.show_notebook()'>Notebook</div>
+        <div>
+            <div class='inline_flex_row_center user_menu_items_container menu_item_smaller_2 action pointer'>
+                <i class='user_menu_icon far fa-play-circle'></i><div onclick='Hue.select_audio_clip()'>Audio Clip</div>
+            </div>
         </div>
 
-        <div class='flex_row_center user_menu_items_container menu_item_smaller_2 generic_horizontal_separator'>
-            <div class='action' onclick='Hue.show_details()'>Details</div>
-            <div class='action' onclick='Hue.needs_confirm("logout")'>Logout</div>
+        <div id='user_menu_notebook_container'>
+            <div class='inline_flex_row_center user_menu_items_container menu_item_smaller_2 action pointer'>
+                <i class='user_menu_icon fas fa-book'></i><div onclick='Hue.show_notebook()'>Notebook</div>
+            </div>
         </div>
 
-        <div class='flex_row_center user_menu_items_container_2 menu_item_smaller_2 generic_horizontal_separator'>
-            <div class='action' onclick='Hue.show_highlights()'>Highlights</div>
-            <div class='action' onclick='Hue.show_input_history()'>History</div>
+        <div>
+            <div class='inline_flex_row_center user_menu_items_container menu_item_smaller_2 generic_horizontal_separator'>
+                <div class='action' onclick='Hue.show_details()'>Details</div>
+                <div class='action' onclick='Hue.needs_confirm("logout")'>Logout</div>
+            </div>
+        </div>
+
+        <div>
+            <div class='inline_flex_row_center user_menu_items_container_2 menu_item_smaller_2 generic_horizontal_separator'>
+                <div class='action' onclick='Hue.show_highlights()'>Highlights</div>
+                <div class='action' onclick='Hue.show_input_history()'>History</div>
+            </div>
         </div>
 
         <div id='user_menu_settings_container'>

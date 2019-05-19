@@ -70,7 +70,8 @@ Hue.user_join = function(data)
         date_joined: data.date_joined,
         bio: data.bio,
         hearts: data.hearts,
-        skulls: data.skulls
+        skulls: data.skulls,
+        audio_clip: data.audio_clip
     })
 
     let f = function()
@@ -163,7 +164,8 @@ Hue.add_to_userlist = function(args={})
         bio: "",
         hearts: 0,
         skulls: 0,
-        last_message: ""
+        last_message: "",
+        audio_clip: false
     }
 
     args = Object.assign(def_args, args)
@@ -180,6 +182,7 @@ Hue.add_to_userlist = function(args={})
             Hue.userlist[i].hearts = args.hearts
             Hue.userlist[i].skulls = args.skulls
             Hue.userlist[i].last_message = args.last_message
+            Hue.userlist[i].audio_clip = args.audio_clip
 
             Hue.update_userlist()
 
@@ -197,7 +200,8 @@ Hue.add_to_userlist = function(args={})
         bio: args.bio,
         hearts: args.hearts,
         skulls: args.skulls,
-        last_message: args.last_message
+        last_message: args.last_message,
+        audio_clip: args.audio_clip
     })
 
     Hue.update_userlist()
@@ -1213,7 +1217,7 @@ Hue.setup_show_profile = function()
 {
     $("#show_profile_whisper").click(function()
     {
-        Hue.write_popup_message([$("#show_profile_uname").text()])
+        Hue.write_popup_message([Hue.open_profile_username])
     })
 
     $("#show_profile_edit").click(function()
@@ -1231,13 +1235,56 @@ Hue.setup_show_profile = function()
 
     $("#show_profile_hearts_icon").click(function()
     {
-        Hue.send_badge($("#show_profile_uname").text(), "heart")
+        Hue.send_badge(Hue.open_profile_username, "heart")
     })
 
     $("#show_profile_skulls_icon").click(function()
     {
-        Hue.send_badge($("#show_profile_uname").text(), "skull")
+        Hue.send_badge(Hue.open_profile_username, "skull")
     })
+
+    $("#show_profile_audio_clip").click(function()
+    {
+        if(!Hue.show_profile_audio_clip_started)
+        {
+            Hue.show_profile_audio = document.createElement("audio")
+            Hue.show_profile_audio.src = Hue.open_profile_user.audio_clip
+            
+            Hue.show_profile_audio.onended = function()
+            {
+                Hue.stop_show_profile_audio()
+            }
+
+            Hue.show_profile_audio.play()
+            
+            setTimeout(function()
+            {
+                Hue.stop_show_profile_audio()
+            }, Hue.config.max_audio_clip_duration)
+    
+            $("#show_profile_audio_clip_icon").removeClass("fa-play-circle")
+            $("#show_profile_audio_clip_icon").addClass("fa-pause-circle")
+
+            Hue.show_profile_audio_clip_started = true
+        }
+
+        else
+        {
+            Hue.stop_show_profile_audio()
+        }
+    })
+}
+
+// Stops the profile audio and restores default state
+Hue.stop_show_profile_audio = function()
+{
+    if(Hue.show_profile_audio)
+    {
+        Hue.show_profile_audio.pause()
+        Hue.show_profile_audio_clip_started = false
+        $("#show_profile_audio_clip_icon").addClass("fa-play-circle")
+        $("#show_profile_audio_clip_icon").removeClass("fa-pause-circle")
+    }
 }
 
 // Shows a user's profile window
@@ -1262,6 +1309,8 @@ Hue.show_profile = function(uname, prof_image)
         {
             same_user = true
         }
+
+        Hue.open_profile_user = user
     }
     
     Hue.open_profile_username = uname
@@ -1321,6 +1370,16 @@ Hue.show_profile = function(uname, prof_image)
         
         Hue.set_hearts_counter(hearts)
         Hue.set_skulls_counter(skulls)
+    }
+
+    if(user && user.audio_clip)
+    {
+        $("#show_profile_audio_clip").css("display", "inline-flex")
+    }
+    
+    else
+    {
+        $("#show_profile_audio_clip").css("display", "none")
     }
 
     if(same_user)
@@ -1939,4 +1998,17 @@ Hue.push_to_all_usernames = function(username)
             }
         }
     }
+}
+
+// When a user changes the audio audio clip
+Hue.audio_clip_changed = function(data)
+{
+    Hue.replace_property_in_userlist_by_username(data.username, "audio_clip", data.audio_clip, false)
+    
+    if(data.username === Hue.open_profile_username)
+    {
+        Hue.show_profile(data.username)
+    }
+
+    Hue.show_room_notification(data.username, `${data.username} changed their audio clip`)
 }

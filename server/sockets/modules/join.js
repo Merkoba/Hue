@@ -95,7 +95,8 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             bio: 1,
             hearts: 1,
             skulls: 1,
-            message_board_dates: 1
+            message_board_dates: 1,
+            audio_clip: 1
         }
 
         if(data.alternative)
@@ -226,6 +227,21 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         else
         {
             socket.hue_profile_image = userinfo.profile_image
+        }
+
+        if(userinfo.audio_clip === "")
+        {
+            socket.hue_audio_clip = ""
+        }
+
+        else if(!userinfo.audio_clip.includes(sconfig.s3_main_url))
+        {
+            socket.hue_audio_clip = config.public_audio_location + userinfo.audio_clip
+        }
+
+        else
+        {
+            socket.hue_audio_clip = userinfo.audio_clip
         }
 
         let background_image
@@ -418,6 +434,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 bio: socket.hue_bio,
                 hearts: socket.hue_hearts,
                 skulls: socket.hue_skulls,
+                audio_clip: socket.hue_audio_clip,
                 date_joined: Date.now()
             })
 

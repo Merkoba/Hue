@@ -185,6 +185,8 @@ Hue.start_msg = function()
                 $("#show_profile_uname").text("Loading")
                 $("#show_profile_image").attr("src", Hue.config.profile_image_loading_url)
                 Hue.open_profile_username = false
+                Hue.open_profile_user = false
+                Hue.stop_show_profile_audio()
             }
         })
     )

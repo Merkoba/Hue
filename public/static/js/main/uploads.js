@@ -183,7 +183,6 @@ Hue.upload_file = function(args={})
     }
 
     args.file.hue_popup = Hue.show_action_popup(obj)
-
     args.file.hue_data.reader.readAsArrayBuffer(slice)
 }
 

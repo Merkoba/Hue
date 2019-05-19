@@ -404,6 +404,10 @@ Hue.server_update_events =
     'message_board_cleared': (data) =>
     {
         Hue.on_message_board_cleared(data)
+    },
+    'audio_clip_changed': (data) =>
+    {
+        Hue.audio_clip_changed(data)
     }
 }
 

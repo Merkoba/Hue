@@ -30,6 +30,7 @@ module.exports = function(vars, handler, io, db_manager, config, sconfig, utilz,
 
     vars.root_path = vars.path.join(__dirname, "../../")
     vars.images_root = vars.path.join(vars.root_path, config.images_directory)
+    vars.audio_root = vars.path.join(vars.root_path, config.audio_directory)
     vars.vtypes = ["voice1", "voice2", "voice3", "voice4"]
     vars.roles = ["admin", "op"].concat(vars.vtypes)
     vars.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
@@ -59,9 +60,6 @@ module.exports = function(vars, handler, io, db_manager, config, sconfig, utilz,
     vars.rooms = {}
     vars.user_rooms = {}
     vars.files = {}
-
-    // The higher this number is, the quicker it adds spam on image upload
-    vars.upload_spam_slice = 10
 
     // Struct for file uploads
     vars.files_struct =

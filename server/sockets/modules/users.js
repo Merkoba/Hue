@@ -460,7 +460,8 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 date_joined: item.date_joined,
                 bio: item.bio,
                 hearts: item.hearts,
-                skulls: item.skulls
+                skulls: item.skulls,
+                audio_clip: item.audio_clip
             })
         }
 
@@ -629,6 +630,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             user.hearts = socket.hue_hearts
             user.skulls = socket.hue_skulls
             user.last_activity_trigger = socket.hue_last_activity_trigger
+            user.audio_clip = socket.hue_audio_clip
 
             if(first)
             {
