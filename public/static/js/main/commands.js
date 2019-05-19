@@ -1831,6 +1831,17 @@ Hue.commands =
             Hue.show_notebook()
         },
         description: `Opens the notebook`
+    },
+    "/note":
+    {
+        action: (arg, ans) =>
+        {
+            if(arg)
+            {
+                Hue.add_to_notebook(arg)
+            }
+        },
+        description: `Adds a note at the start of the notebook`
     }
 }
 

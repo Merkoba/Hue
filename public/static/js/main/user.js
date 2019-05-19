@@ -651,3 +651,20 @@ Hue.save_notebook = function()
     let value = $("#notebook_textarea").val().trim()
     Hue.save_local_storage(Hue.ls_notebook, value)
 }
+
+// Adds a string at the start of the notebook
+Hue.add_to_notebook = function(note, feedback=true)
+{
+    Hue.save_local_storage(Hue.ls_notebook, `${note}\n\n${Hue.get_notebook()}`)
+
+    if(feedback)
+    {
+        Hue.feedback("Not added to notebook",
+        {
+            onclick: function()
+            {
+                Hue.show_notebook()
+            }
+        })
+    }
+}
