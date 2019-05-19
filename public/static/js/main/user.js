@@ -659,7 +659,7 @@ Hue.add_to_notebook = function(note, feedback=true)
 
     if(feedback)
     {
-        Hue.feedback("Not added to notebook",
+        Hue.feedback("Note added to notebook",
         {
             onclick: function()
             {
