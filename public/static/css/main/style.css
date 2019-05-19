@@ -3353,6 +3353,8 @@ pre
 #notebook_container
 {
 	position: relative;
+	height: 30rem;
+	overflow: hidden;
 }
 
 #notebook_textarea
