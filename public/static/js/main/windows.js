@@ -637,7 +637,8 @@ Hue.start_msg = function()
         Object.assign({}, common, titlebar,
         {
             id: "notebook",
-            window_width: "28rem"
+            window_width: "28rem",
+            clear_editables: false
         })
     )
 

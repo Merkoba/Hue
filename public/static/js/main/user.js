@@ -638,7 +638,7 @@ Hue.show_notebook = function()
             value = "\n\n" + value
         }
 
-        $("#notebook_textarea").val("\n\n" + value)
+        $("#notebook_textarea").val(value)
         $("#notebook_textarea").focus()
         $("#notebook_textarea")[0].setSelectionRange(0, 0)
         $("#notebook_textarea").scrollTop(0)
