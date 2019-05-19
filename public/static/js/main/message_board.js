@@ -55,7 +55,7 @@ Hue.add_post_to_message_board = function(post)
     let item = $(`
     <div class='message_board_item modal_item'>
         <div class='message_board_text dynamic_title'></div>
-        <div><div class='message_board_delete action pointer inline'>Delete</div></div>
+        <div><div class='message_board_delete action pointer inline underlined'>Delete</div></div>
     </div>`)
     
     item.data("id", post.id)
