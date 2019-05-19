@@ -121,11 +121,11 @@ Hue.check_footer_media_rotate = function()
 {
     if(Hue.num_media_elements_visible() < 2)
     {
-        $("#footer_media_rotate").addClass("inactive")
+        $("#footer_media_rotate").addClass("faded")
     }
     
     else
     {
-        $("#footer_media_rotate").removeClass("inactive")
+        $("#footer_media_rotate").removeClass("faded")
     }
 }
