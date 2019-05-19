@@ -357,18 +357,18 @@ Hue.apply_theme = function()
 
     .chat_menu_button
     {
-        background-color: ${background_color_a_2} !important;
+        background-color: ${background_color_2} !important;
         border-left: 1px solid ${slight_background} !important;
     }
 
     .chat_menu_button:hover
     {
-        background-color: ${color_4_a} !important;
+        background-color: ${color_4} !important;
     }
 
     .chat_menu_button_main:hover, .chat_menu_button_main_selected
     {
-        background-color: ${slight_background_alpha} !important;
+        background-color: ${slight_background} !important;
     }
 
     #activity_bar_container
@@ -490,7 +490,7 @@ Hue.apply_theme = function()
 
     .backgrounded
     {
-        background-color: ${slight_background_alpha} !important;
+        background-color: ${slight_background} !important;
         outline: 1px dotted ${color_4} !important;
     }
 
