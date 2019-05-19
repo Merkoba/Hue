@@ -768,6 +768,9 @@ This should be an array of strings of root domains.
 "max_message_board_post_length"
 >How long message board posts can be.
 
+"notebook_background_source"
+>Location of the notebook background image.
+
 
 ## The following reside in config.secret.json
 

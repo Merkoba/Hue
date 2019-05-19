@@ -17,6 +17,12 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	// Other variables that shouldn't go in the config object
 	c.rvars = {}
+
+	// Variables sent to templates
+	const tvars = 
+	{
+		notebook_background_source: config.notebook_background_source
+	}
 	
 	// Fill the config variables object
 	require("./vars")(c, config)
@@ -42,7 +48,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 			filename: template_path
 		})
 		({
-			vars: c.vars
+			vars: tvars
 		})
 	}
 
