@@ -2148,7 +2148,7 @@ Hue.set_user_settings_titles = function()
 }
 
 // Modifies a setting manually instead of using the settings windows
-Hue.modify_setting = function(arg, show_feedback=true)
+Hue.modify_setting = function(arg, show_feedback=true, force=false)
 {
     let split = arg.split(" ")
 
@@ -2198,7 +2198,7 @@ Hue.modify_setting = function(arg, show_feedback=true)
     Hue[type][setting] = value
     Hue.modify_setting_widget(type, setting)
     setting_obj.action(type, false)
-    Hue[`save_${type}`]()
+    Hue[`save_${type}`](force)
 
     if(show_feedback)
     {

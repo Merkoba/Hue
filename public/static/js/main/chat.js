@@ -713,6 +713,7 @@ Hue.chat_announce = function(args={})
         highlight: false,
         title: false,
         onclick: false,
+        onmiddleclick: false,
         container_id: false,
         date: false,
         type: "normal",
@@ -828,7 +829,7 @@ Hue.chat_announce = function(args={})
         link_preview_text = ans.link_preview_text
     }
 
-    if((args.onclick || (args.username && args.open_profile)) && !link_preview && !image_preview)
+    if((args.onclick || args.onmiddleclick || (args.username && args.open_profile)) && !link_preview && !image_preview)
     {
         content_classes += " pointer action"
         brk_classes += " pointer action"
@@ -951,6 +952,17 @@ Hue.chat_announce = function(args={})
 
         content.on("click", pif)
         brk.on("click", pif)
+    }
+
+    if(args.onmiddleclick)
+    {
+        content.on("auxclick", function(e)
+        {
+            if(e.which === 2)
+            {
+                args.onmiddleclick()
+            }
+        })
     }
 
     fmessage.data("id", args.id)

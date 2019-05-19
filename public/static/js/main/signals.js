@@ -51,10 +51,15 @@ Hue.send_system_restart_signal = function()
 // When clicked the client is refreshed
 Hue.show_reload_button = function()
 {
-    Hue.feedback("Disconnected. Click here to reload",
+    Hue.feedback("Disconnected. Click to reload, or middle click to activate auto connect",
     {
         onclick: function()
         {
+            Hue.restart_client()
+        },
+        onmiddleclick: function()
+        {
+            Hue.modify_setting("autoconnect true", false, true)
             Hue.restart_client()
         },
         brk: "<i class='icon2c fa fa-plug'></i>"
