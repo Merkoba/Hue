@@ -54,6 +54,8 @@ Hue.start_msg = function()
         window_inner_x_class: "!titlebar_inner_x"
     }
 
+    // Start the instances
+
     Hue.msg_room_menu = Msg.factory
     (
         Object.assign({}, common, titlebar,
@@ -630,6 +632,17 @@ Hue.start_msg = function()
         })
     )
 
+    Hue.msg_notebook = Msg.factory
+    (
+        Object.assign({}, common, titlebar,
+        {
+            id: "notebook",
+            window_width: "28rem"
+        })
+    )
+
+    // Set the templates
+
     Hue.msg_room_menu.set(Hue.template_room_menu(
     {
         permissions_containers: Hue.make_room_menu_permissions_container()
@@ -687,9 +700,12 @@ Hue.start_msg = function()
     Hue.msg_open_url.set(Hue.template_open_url())
     Hue.msg_details.set(Hue.template_details())
     Hue.msg_message_board.set(Hue.template_message_board())
+    Hue.msg_notebook.set(Hue.template_notebook())
 
     Hue.msg_info.create()
     Hue.msg_info2.create()
+
+    // Set the titles
 
     Hue.msg_input_history.set_title("Input History")
     Hue.msg_highlights.set_title("<span id='highlights_window_title' class='pointer'>Highlights</span>")
@@ -716,6 +732,9 @@ Hue.start_msg = function()
     Hue.msg_whispers.set_title("Whispers")
     Hue.msg_handle_url.set_title("Drag n' Drop")
     Hue.msg_message_board.set_title("Message Board")
+    Hue.msg_notebook.set_title("Notebook")
+
+    // Titlebar click events
 
     $("#global_settings_window_title").click(function()
     {

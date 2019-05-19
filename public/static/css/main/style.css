@@ -1772,6 +1772,12 @@ input[type=text], textarea
 	grid-gap: 0.8rem;
 }
 
+.user_menu_icon
+{
+	margin-right: 0.5rem;
+	font-size: 0.8rem;
+}
+
 .small_button
 {
 	font-weight: bold;
@@ -3337,4 +3343,34 @@ pre
 #activity_left_message_board_label
 {
 	padding-right: 0.6rem;
+}
+
+#notebook_container
+{
+	position: relative;
+}
+
+#notebook_textarea
+{
+	width: 100%;
+	height: 30rem;
+	resize: none;
+	border: 0px solid grey;
+	outline: none;
+	font-size: 1.2rem;
+	padding: 0.5rem;
+	box-sizing: border-box;
+}
+
+#notebook_background
+{
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	max-width: 20rem;
+	z-index: -999;
+	min-width: 100%;
+	min-height: 100%;
+	object-fit: cover;
 }

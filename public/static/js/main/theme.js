@@ -494,6 +494,12 @@ Hue.apply_theme = function()
         outline: 1px dotted ${color_4} !important;
     }
 
+    #notebook_textarea
+    {
+        background-color: ${slight_background_alpha} !important;
+        color: ${font_color} !important;
+    }
+
     </style>
     `
 

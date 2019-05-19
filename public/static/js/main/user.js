@@ -608,3 +608,38 @@ Hue.show_intro = function()
 
     Hue.create_popup({position:"center"}).show(["Welcome", s])
 }
+
+// Setups the notebook
+Hue.setup_notebook = function()
+{
+    $("#notebook_textarea").on("blur", function()
+    {
+        Hue.save_notebook()
+    })
+}
+
+// Gets the notebook from local storage
+Hue.get_notebook = function()
+{
+    let notebook = Hue.get_local_storage(Hue.ls_notebook)
+    return notebook ? notebook : ""
+}
+
+// Opens the notebook
+Hue.show_notebook = function()
+{
+    Hue.msg_notebook.show(function()
+    {
+        $("#notebook_textarea").val("\n\n" + Hue.get_notebook())
+        $("#notebook_textarea").focus()
+        $("#notebook_textarea")[0].setSelectionRange(0, 0)
+        $("#notebook_textarea").scrollTop(0)
+    })
+}
+
+// Saves the notebook's content
+Hue.save_notebook = function()
+{
+    let value = $("#notebook_textarea").val().trim()
+    Hue.save_local_storage(Hue.ls_notebook, value)
+}

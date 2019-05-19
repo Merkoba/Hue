@@ -107,4 +107,5 @@ module.exports = function(c, config)
     c.vars.max_message_board_post_length = config.max_message_board_post_length
     c.vars.message_board_post_delay = config.message_board_post_delay
     c.vars.max_message_board_posts = config.max_message_board_posts
+    c.vars.notebook_background_source = config.notebook_background_source
 }

@@ -40,7 +40,10 @@ module.exports = function(db_manager, config, sconfig, utilz)
 		templates_html += ejs.compile(fs.readFileSync(template_path, 'utf8'),
 		{
 			filename: template_path
-		})()
+		})
+		({
+			vars: c.vars
+		})
 	}
 
 	// Create the main body template

@@ -10,6 +10,10 @@
 
         <textarea id='user_menu_bio_textarea' class='setting_textarea' rows="3" placeholder="Write something about yourself"></textarea>
 
+        <div class='flex_row_center user_menu_items_container menu_item_smaller_2'>
+            <i class='user_menu_icon fas fa-book'></i><div class='action' onclick='Hue.show_notebook()'>Notebook</div>
+        </div>
+
         <div class='flex_row_center user_menu_items_container menu_item_smaller_2 generic_horizontal_separator'>
             <div class='action' onclick='Hue.show_details()'>Details</div>
             <div class='action' onclick='Hue.needs_confirm("logout")'>Logout</div>

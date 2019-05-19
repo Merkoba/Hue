@@ -7,6 +7,7 @@
 	"images_directory": "public/static/img",
 	"public_images_location": "/static/img/",
 	"default_image_source": "/static/_img/default_image.gif",
+	"notebook_background_source": "/static/_img/notebook_background.gif",
 	"default_tv_source": "https://youtu.be/N-G2U0zHqpY",
 	"default_tv_title": "Grand Dad Metropolis",
 	"default_tv_type": "youtube",

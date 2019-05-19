@@ -48,10 +48,7 @@ Hue.do_save_local_storage = function()
     {
         let obj = Hue.local_storage_to_save[ls_name]
 
-        if(typeof obj !== "string")
-        {
-            obj = JSON.stringify(obj)
-        }
+        obj = JSON.stringify(obj)
 
         localStorage.setItem(ls_name, obj)
     }

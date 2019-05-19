@@ -1823,6 +1823,14 @@ Hue.commands =
             Hue.swap_media_layout_2()
         },
         description: `Shortcut to change media layout`
+    },
+    "/notebook":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.show_notebook()
+        },
+        description: `Opens the notebook`
     }
 }
 
