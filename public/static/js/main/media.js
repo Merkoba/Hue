@@ -249,6 +249,16 @@ Hue.maxers_mouse_events = function()
             el = $("#media_tv")[0]
         }
 
+        else if(e.target.id === "footer_media_rotate_icon")
+        {
+            el = $("#media_tv")[0]
+        }
+
+        else
+        {
+            return false
+        }
+
         if(direction === 'up')
         {
             if(maximized)
@@ -392,6 +402,7 @@ Hue.maxers_mouse_events = function()
 
     $("#media_tv_maxer")[0].addEventListener("wheel", f)
     $("#media_image_maxer")[0].addEventListener("wheel", f)
+    $("#footer_media_rotate")[0].addEventListener("wheel", f)
 
     let f2 = function(e)
     {
