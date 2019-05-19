@@ -429,6 +429,7 @@ Hue.change_images_visibility = function()
         Hue.fix_visible_video_frame()
     }
 
+    Hue.check_footer_media_rotate()
     Hue.goto_bottom(false, false)
 }
 

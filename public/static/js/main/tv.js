@@ -818,6 +818,7 @@ Hue.change_tv_visibility = function(play=true)
         Hue.fix_image_frame()
     }
 
+    Hue.check_footer_media_rotate()
     Hue.goto_bottom(false, false)
 }
 

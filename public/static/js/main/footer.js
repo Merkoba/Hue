@@ -90,5 +90,42 @@ Hue.setup_footer = function()
         }
     })
 
+    $("#footer_media_rotate").click(function()
+    {
+        if(Hue.num_media_elements_visible() < 2)
+        {
+            return false
+        }
+
+        Hue.swap_media_layout()
+    })
+
+    $("#footer_media_rotate").on("auxclick", function(e)
+    {
+        if(Hue.num_media_elements_visible() < 2)
+        {
+            return false
+        }
+
+        if(e.which === 2)
+        {
+            Hue.swap_display_positions_2()
+        }
+    })
+
     Hue.horizontal_separator.separate("footer_media_items")
+}
+
+// Checks how to handle the rotate icon
+Hue.check_footer_media_rotate = function()
+{
+    if(Hue.num_media_elements_visible() < 2)
+    {
+        $("#footer_media_rotate").addClass("inactive")
+    }
+    
+    else
+    {
+        $("#footer_media_rotate").removeClass("inactive")
+    }
 }
