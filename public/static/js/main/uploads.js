@@ -269,6 +269,11 @@ Hue.get_file_action_name = function(action)
         s = "background image"
     }
 
+    else if(action === "audio_clip_upload")
+    {
+        s = "audio clip"
+    }
+
     return s
 }
 
@@ -313,5 +318,5 @@ Hue.upload_ended = function(data)
 // Shows an error message on file upload failure
 Hue.show_upload_error = function()
 {
-    Hue.feedback("The image could not be uploaded")
+    Hue.feedback("The file could not be uploaded")
 }
