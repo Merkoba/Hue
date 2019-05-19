@@ -1256,11 +1256,6 @@ Hue.setup_show_profile = function()
             }
 
             Hue.show_profile_audio.play()
-            
-            setTimeout(function()
-            {
-                Hue.stop_show_profile_audio()
-            }, Hue.config.max_audio_clip_duration)
     
             $("#show_profile_audio_clip_icon").removeClass("fa-play-circle")
             $("#show_profile_audio_clip_icon").addClass("fa-pause-circle")
