@@ -188,7 +188,7 @@ Hue.check_last_message_board_post = function()
 
     if(items.length === 0)
     {
-        $("#activity_left_message_board_label").text("")
+        $("#activity_left_message_board_count").text("(0)")
         return false
     }
 
@@ -210,9 +210,7 @@ Hue.check_last_message_board_post = function()
                 count += 1
             })
 
-            let s = count === 1 ? "New Post" : "New Posts"
-
-            $("#activity_left_message_board_label").text(s)
+            $("#activity_left_message_board_count").text(`(${count})`)
         }
 
         else
@@ -223,7 +221,7 @@ Hue.check_last_message_board_post = function()
     
     else
     {
-        $("#activity_left_message_board_label").text("")
+        $("#activity_left_message_board_count").text("(0)")
     }
 }
 
