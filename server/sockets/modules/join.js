@@ -223,21 +223,17 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         else if(!userinfo.profile_image.includes(sconfig.s3_main_url))
         {
-            // This is to ensure backward compatibility
-            if(userinfo.profile_image.includes("?ver="))
-            {
-                socket.hue_profile_image = config.public_images_location + userinfo.profile_image
-            }
-            
-            else
-            {
-                socket.hue_profile_image = config.public_images_location + `${userinfo.profile_image}?ver=${userinfo.profile_image_version}`
-            }
+            socket.hue_profile_image = config.public_images_location + userinfo.profile_image
         }
 
         else
         {
             socket.hue_profile_image = userinfo.profile_image
+        }
+
+        if(socket.hue_profile_image && !socket.hue_profile_image.includes("?ver="))
+        {
+            socket.hue_profile_image += `?ver=${userinfo.profile_image_version}`
         }
 
         if(userinfo.audio_clip === "")
@@ -247,21 +243,17 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         else if(!userinfo.audio_clip.includes(sconfig.s3_main_url))
         {
-            // This is to ensure backward compatibility
-            if(userinfo.profile_image.includes("?ver="))
-            {
-                socket.hue_audio_clip = config.public_audio_location + userinfo.audio_clip
-            }
-
-            else
-            {
-                socket.hue_audio_clip = config.public_audio_location + userinfo.audio_clip + `${userinfo.audio_clip}?ver=${userinfo.audio_clip_version}`
-            }
+            socket.hue_audio_clip = config.public_audio_location + userinfo.audio_clip
         }
 
         else
         {
             socket.hue_audio_clip = userinfo.audio_clip
+        }
+
+        if(socket.hue_audio_clip && !socket.hue_audio_clip.includes("?ver="))
+        {
+            socket.hue_audio_clip += `?ver=${userinfo.audio_clip_version}`
         }
 
         let background_image
