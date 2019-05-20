@@ -1459,7 +1459,7 @@ input[type=text], textarea
 	display: none;
 }
 
-#profile_image_canvas_image
+#profile_image_cropper_image
 {
 	max-width: 50vw;
 	max-height: 50vh;
@@ -1470,7 +1470,7 @@ input[type=text], textarea
 	border-radius: 50% !important;
 }
 
-#profile_image_canvas_buttons
+#profile_image_cropper_buttons
 {
 	padding-top: 1rem;
 	display: flex;
@@ -1479,7 +1479,7 @@ input[type=text], textarea
 	justify-content: center;
 }
 
-.profile_image_canvas_button
+.profile_image_cropper_button
 {
 	font-size: 1.2rem;
 }

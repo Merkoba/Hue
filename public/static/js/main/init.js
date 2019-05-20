@@ -307,6 +307,7 @@ Hue.init = function()
     Hue.change_media_layout()
     Hue.change_chat_visibility()
     Hue.setup_notebook()
+    Hue.setup_profile_image_cropper()
 
     if(Hue.debug_functions)
     {

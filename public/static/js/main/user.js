@@ -341,7 +341,6 @@ Hue.setup_user_menu = function()
     })
 
     $("#user_menu_profile_image").attr("src", Hue.profile_image)
-
     $("#user_menu_bio_textarea").val(Hue.bio)
 
     $("#user_menu_bio_textarea").blur(function()
@@ -416,6 +415,42 @@ Hue.open_profile_image_picker = function()
     $("#profile_image_picker").click()
 }
 
+// Setups the profile image circular cropper
+Hue.setup_profile_image_cropper = function()
+{
+    $("#profile_image_cropper_upload").click(function()
+    {
+        let cropped_canvas
+        let rounded_canvas
+
+        if(!Hue.profile_image_croppable)
+        {
+            return
+        }
+
+        cropped_canvas = Hue.profile_image_cropper.getCroppedCanvas()
+        rounded_canvas = Hue.get_rounded_canvas(cropped_canvas)
+
+        rounded_canvas.toBlob(function(file)
+        {
+            $("#user_menu_profile_image").attr("src", Hue.config.profile_image_loading_url)
+            Hue.upload_file({file:file, action:"profile_image_upload", name:"profile.png"})
+            Hue.msg_profile_image_cropper.close()
+        }, 'image/png', 0.95)
+    })
+
+    $("#profile_image_cropper_change").click(function()
+    {
+        Hue.open_profile_image_picker()
+    })
+}
+
+// Resets the profile image cropper to default state
+Hue.reset_profile_image_cropper = function()
+{
+    $("#profile_image_cropper_image_container").html("<img id='profile_image_cropper_image'>")
+}
+
 // This is executed after a profile image has been selected in the file dialog
 Hue.profile_image_selected = function(input)
 {
@@ -425,70 +460,36 @@ Hue.profile_image_selected = function(input)
 
         reader.onload = function(e)
         {
-            let s = `
-            <img id='profile_image_canvas_image'>
-            <div id='profile_image_canvas_buttons'>
-                <div id='profile_image_canvas_cancel' class='action pointer unselectable profile_image_canvas_button'>Cancel</div>
-                <div id='profile_image_canvas_upload' class='action pointer unselectable profile_image_canvas_button'>Upload</div>
-            </div>`
+            Hue.reset_profile_image_cropper()
 
-            Hue.msg_info.show(s, function()
+            Hue.msg_profile_image_cropper.show(function()
             {
-                Hue.horizontal_separator.separate("profile_image_canvas_buttons")
+                Hue.horizontal_separator.separate("profile_image_cropper_buttons")
 
-                $('#profile_image_canvas_image').attr('src', e.target.result)
+                $('#profile_image_cropper_image').attr('src', e.target.result)
                 $("#profile_image_picker").closest('form').get(0).reset()
 
-                let image = $('#profile_image_canvas_image')[0]
-                let cancel_button = $('#profile_image_canvas_cancel')[0]
-                let upload_button = $('#profile_image_canvas_upload')[0]
-                let croppable = false
+                let image = $('#profile_image_cropper_image')[0]
+                Hue.profile_image_croppable = false
 
-                let cropper = new Cropper(image,
+                Hue.profile_image_cropper = new Cropper(image,
                 {
                     aspectRatio: 1,
                     viewMode: 3,
                     ready: function()
                     {
-                        let container_data = cropper.getContainerData()
+                        let container_data = Hue.profile_image_cropper.getContainerData()
 
-                        cropper.setCropBoxData({width:container_data.width, height:container_data.height})
+                        Hue.profile_image_cropper.setCropBoxData({width:container_data.width, height:container_data.height})
 
-                        let cropbox_data = cropper.getCropBoxData()
+                        let cropbox_data = Hue.profile_image_cropper.getCropBoxData()
                         let left = (container_data.width - cropbox_data.width) / 2
                         let top = (container_data.height - cropbox_data.height) / 2
 
-                        cropper.setCropBoxData({left:left, right:top})
-
-                        croppable = true
+                        Hue.profile_image_cropper.setCropBoxData({left:left, right:top})
+                        Hue.profile_image_croppable = true
                     }
                 })
-
-                cancel_button.onclick = function()
-                {
-                    Hue.msg_info.close()
-                }
-
-                upload_button.onclick = function()
-                {
-                    let cropped_canvas
-                    let rounded_canvas
-
-                    if(!croppable)
-                    {
-                        return
-                    }
-
-                    cropped_canvas = cropper.getCroppedCanvas()
-                    rounded_canvas = Hue.get_rounded_canvas(cropped_canvas)
-
-                    rounded_canvas.toBlob(function(file)
-                    {
-                        $("#user_menu_profile_image").attr("src", Hue.config.profile_image_loading_url)
-                        Hue.upload_file({file:file, action:"profile_image_upload", name:"profile.png"})
-                        Hue.msg_info.close()
-                    }, 'image/png', 0.95)
-                }
             })
         }
 
