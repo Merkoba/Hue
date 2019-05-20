@@ -91,12 +91,14 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             email: 1,
             username: 1,
             profile_image: 1,
+            profile_image_version: 1,
             registration_date: 1,
             bio: 1,
             hearts: 1,
             skulls: 1,
             message_board_dates: 1,
-            audio_clip: 1
+            audio_clip: 1,
+            audio_clip_version: 1
         }
 
         if(data.alternative)
@@ -221,7 +223,16 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         else if(!userinfo.profile_image.includes(sconfig.s3_main_url))
         {
-            socket.hue_profile_image = config.public_images_location + userinfo.profile_image
+            // This is to ensure backward compatibility
+            if(userinfo.profile_image.includes("?ver="))
+            {
+                socket.hue_profile_image = config.public_images_location + userinfo.profile_image
+            }
+            
+            else
+            {
+                socket.hue_profile_image = config.public_images_location + `${userinfo.profile_image}?ver=${userinfo.profile_image_version}`
+            }
         }
 
         else
@@ -236,7 +247,16 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         else if(!userinfo.audio_clip.includes(sconfig.s3_main_url))
         {
-            socket.hue_audio_clip = config.public_audio_location + userinfo.audio_clip
+            // This is to ensure backward compatibility
+            if(userinfo.profile_image.includes("?ver="))
+            {
+                socket.hue_audio_clip = config.public_audio_location + userinfo.audio_clip
+            }
+
+            else
+            {
+                socket.hue_audio_clip = config.public_audio_location + userinfo.audio_clip + `${userinfo.audio_clip}?ver=${userinfo.audio_clip_version}`
+            }
         }
 
         else

@@ -209,9 +209,9 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        let fname = `${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.extension}`
+        let file_name = `${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(0, 1000)}.${data.extension}`
 
-        vars.fs.writeFile(vars.images_root + '/' + fname, data.image_file, function(err, data2)
+        vars.fs.writeFile(vars.images_root + '/' + file_name, data.image_file, function(err, data2)
         {
             if(err)
             {
@@ -222,7 +222,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             {
                 let obj = {}
 
-                obj.src = fname
+                obj.src = file_name
                 obj.setter = socket.hue_username
                 obj.size = size
                 obj.type = "upload"
@@ -504,19 +504,19 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     }
 
     // Returns an image mime type by checking the extension
-    handler.get_content_type = function(fname)
+    handler.get_content_type = function(file_name)
     {
-        if(typeof fname !== "string")
+        if(typeof file_name !== "string")
         {
             return "image/jpeg"
         }
 
-        if(fname.length === 0)
+        if(file_name.length === 0)
         {
             return "image/jpeg"
         }
 
-        let split = fname.split('.')
+        let split = file_name.split('.')
         let ext = split[split.length - 1]
         let type = utilz.get_image_type(ext)
 

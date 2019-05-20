@@ -239,9 +239,9 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return false
         }
 
-        let fname = `profile_${socket.hue_user_id}.png`
+        let file_name = `profile_${socket.hue_user_id}.png`
 
-        vars.fs.writeFile(vars.images_root + '/' + fname, data.image_file, function(err, data)
+        vars.fs.writeFile(vars.images_root + '/' + file_name, data.image_file, function(err, data)
         {
             if(err)
             {
@@ -250,48 +250,48 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
             else
             {
-                handler.change_profile_image(socket, fname)
+                handler.change_profile_image(socket, file_name)
             }
         })
     }
 
     // Intermidiate step to change profile images
-    handler.change_profile_image = function(socket, fname)
+    handler.change_profile_image = function(socket, file_name)
     {
         if(config.image_storage_s3_or_local === "local")
         {
-            handler.do_change_profile_image(socket, fname)
+            handler.do_change_profile_image(socket, file_name)
         }
 
         else if(config.image_storage_s3_or_local === "s3")
         {
-            vars.fs.readFile(`${vars.images_root}/${fname}`, (err, data) =>
+            vars.fs.readFile(`${vars.images_root}/${file_name}`, (err, data) =>
             {
                 if(err)
                 {
-                    vars.fs.unlink(`${vars.images_root}/${fname}`, function(){})
+                    vars.fs.unlink(`${vars.images_root}/${file_name}`, function(){})
                     return
                 }
 
                 vars.s3.putObject(
                 {
                     ACL: "public-read",
-                    ContentType: handler.get_content_type(fname),
+                    ContentType: handler.get_content_type(file_name),
                     Body: data,
                     Bucket: sconfig.s3_bucket_name,
-                    Key: `${sconfig.s3_images_location}${fname}`,
+                    Key: `${sconfig.s3_images_location}${file_name}`,
                     CacheControl: `max-age=${sconfig.s3_cache_max_age}`
                 }).promise()
 
                 .then(ans =>
                 {
-                    vars.fs.unlink(`${vars.images_root}/${fname}`, function(){})
-                    handler.do_change_profile_image(socket, sconfig.s3_main_url + sconfig.s3_images_location + fname)
+                    vars.fs.unlink(`${vars.images_root}/${file_name}`, function(){})
+                    handler.do_change_profile_image(socket, sconfig.s3_main_url + sconfig.s3_images_location + file_name)
                 })
 
                 .catch(err =>
                 {
-                    vars.fs.unlink(`${vars.images_root}/${fname}`, function(){})
+                    vars.fs.unlink(`${vars.images_root}/${file_name}`, function(){})
                     logger.log_error(err)
                 })
             })
@@ -304,11 +304,11 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     }
 
     // Completes profile image changes
-    handler.do_change_profile_image = async function(socket, fname)
+    handler.do_change_profile_image = async function(socket, file_name)
     {
-        let userinfo = await db_manager.get_user({_id:socket.hue_user_id}, {profile_image_version:1})
+        let userinfo = await db_manager.get_user({_id:socket.hue_user_id}, {profile_image:1, profile_image_version:1})
         let new_ver = userinfo.profile_image_version + 1
-        let fver = `${fname}?ver=${new_ver}`
+        let fver = `${file_name}?ver=${new_ver}`
         let image_url
 
         if(config.image_storage_s3_or_local === "local")
@@ -321,9 +321,31 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             image_url = fver
         }
 
+        if(userinfo.profile_image && userinfo.profile_image !== file_name)
+        {
+            if(!file_name.includes(sconfig.s3_main_url))
+            {
+                vars.fs.unlink(`${vars.images_root}/${userinfo.profile_image}`, function(err){})
+            }
+    
+            else
+            {
+                vars.s3.deleteObject(
+                {
+                    Bucket: sconfig.s3_bucket_name,
+                    Key: userinfo.profile_image.replace(sconfig.s3_main_url, "")
+                }).promise()
+    
+                .catch(err =>
+                {
+                    logger.log_error(err)
+                })
+            }
+        }
+
         let ans = await db_manager.update_user(socket.hue_user_id,
         {
-            profile_image: fver,
+            profile_image: file_name,
             profile_image_version: new_ver
         })
 
@@ -354,9 +376,9 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return false
         }
 
-        let fname = `audio_clip_${socket.hue_user_id}.${data.extension}`
+        let file_name = `audio_clip_${socket.hue_user_id}.${data.extension}`
 
-        vars.fs.writeFile(vars.audio_root + '/' + fname, data.audio_file, function(err, data)
+        vars.fs.writeFile(vars.audio_root + '/' + file_name, data.audio_file, function(err, data)
         {
             if(err)
             {
@@ -365,48 +387,48 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
             else
             {
-                handler.change_audio_clip(socket, fname)
+                handler.change_audio_clip(socket, file_name)
             }
         })
     }
 
     // Intermidiate step to change audio clips
-    handler.change_audio_clip = function(socket, fname)
+    handler.change_audio_clip = function(socket, file_name)
     {
         if(config.audio_storage_s3_or_local === "local")
         {
-            handler.do_change_audio_clip(socket, fname)
+            handler.do_change_audio_clip(socket, file_name)
         }
 
         else if(config.audio_storage_s3_or_local === "s3")
         {
-            vars.fs.readFile(`${vars.audio_root}/${fname}`, (err, data) =>
+            vars.fs.readFile(`${vars.audio_root}/${file_name}`, (err, data) =>
             {
                 if(err)
                 {
-                    vars.fs.unlink(`${vars.audio_root}/${fname}`, function(){})
+                    vars.fs.unlink(`${vars.audio_root}/${file_name}`, function(){})
                     return
                 }
 
                 vars.s3.putObject(
                 {
                     ACL: "public-read",
-                    ContentType: handler.get_content_type(fname),
+                    ContentType: handler.get_content_type(file_name),
                     Body: data,
                     Bucket: sconfig.s3_bucket_name,
-                    Key: `${sconfig.s3_audio_location}${fname}`,
+                    Key: `${sconfig.s3_audio_location}${file_name}`,
                     CacheControl: `max-age=${sconfig.s3_cache_max_age}`
                 }).promise()
 
                 .then(ans =>
                 {
-                    vars.fs.unlink(`${vars.audio_root}/${fname}`, function(){})
-                    handler.do_change_audio_clip(socket, sconfig.s3_main_url + sconfig.s3_audio_location + fname)
+                    vars.fs.unlink(`${vars.audio_root}/${file_name}`, function(){})
+                    handler.do_change_audio_clip(socket, sconfig.s3_main_url + sconfig.s3_audio_location + file_name)
                 })
 
                 .catch(err =>
                 {
-                    vars.fs.unlink(`${vars.audio_root}/${fname}`, function(){})
+                    vars.fs.unlink(`${vars.audio_root}/${file_name}`, function(){})
                     logger.log_error(err)
                 })
             })
@@ -419,11 +441,11 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     }
 
     // Completes audio clip changes
-    handler.do_change_audio_clip = async function(socket, fname)
+    handler.do_change_audio_clip = async function(socket, file_name)
     {
-        let userinfo = await db_manager.get_user({_id:socket.hue_user_id}, {audio_clip_version:1})
+        let userinfo = await db_manager.get_user({_id:socket.hue_user_id}, {audio_clip:1, audio_clip_version:1})
         let new_ver = userinfo.audio_clip_version + 1
-        let fver = `${fname}?ver=${new_ver}`
+        let fver = `${file_name}?ver=${new_ver}`
         let audio_clip_url
 
         if(config.audio_storage_s3_or_local === "local")
@@ -436,9 +458,31 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             audio_clip_url = fver
         }
 
+        if(userinfo.audio_clip && userinfo.audio_clip !== file_name)
+        {
+            if(!file_name.includes(sconfig.s3_main_url))
+            {
+                vars.fs.unlink(`${vars.audio_root}/${userinfo.audio_clip}`, function(err){})
+            }
+    
+            else
+            {
+                vars.s3.deleteObject(
+                {
+                    Bucket: sconfig.s3_bucket_name,
+                    Key: userinfo.audio_clip.replace(sconfig.s3_main_url, "")
+                }).promise()
+    
+                .catch(err =>
+                {
+                    logger.log_error(err)
+                })
+            }
+        }
+
         let ans = await db_manager.update_user(socket.hue_user_id,
         {
-            audio_clip: fver,
+            audio_clip: file_name,
             audio_clip_version: new_ver
         })
 

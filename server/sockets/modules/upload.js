@@ -33,17 +33,31 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
             if(data.action.includes("image"))
             {
-                if(!utilz.image_extensions.includes(ext))
+                if(data.action === "profile_image_upload")
                 {
-                    return handler.get_out(socket)
+                    if(ext !== "png")
+                    {
+                        return handler.get_out(socket)
+                    }
+                }
+
+                else
+                {
+                    if(!utilz.image_extensions.includes(ext))
+                    {
+                        return handler.get_out(socket)
+                    }
                 }
             }
 
             else if(data.action.includes("audio"))
             {
-                if(!utilz.audio_extensions.includes(ext))
+                if(data.action === "audio_clip_upload")
                 {
-                    return handler.get_out(socket)
+                    if(!utilz.audio_extensions.includes(ext))
+                    {
+                        return handler.get_out(socket)
+                    }
                 }
             }
 
