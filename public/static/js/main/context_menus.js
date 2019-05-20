@@ -591,7 +591,7 @@ Hue.start_room_menu_context_menu = function()
 {
     $.contextMenu(
     {
-        selector: "#room_menu_icon",
+        selector: "#activity_left_room_menu_icon",
         animation: {duration: 250, hide: 'fadeOut'},
         zIndex: 9000000000,
         events: Hue.context_menu_events,

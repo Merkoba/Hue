@@ -1,5 +1,10 @@
 <div id='activity_bar_container' class='unselectable'>
     <div id='activity_bar_left'>
+        <i id='activity_left_room_menu_icon' class='activity_icon nicetitle pointer action fa fa-th-large' onclick='Hue.show_room_menu()' title="Room Menu"></i>
+        <div id='activity_left_users_container' class='nicetitle action nicetitle pointer flex_row_center' title="Users Online" onclick='Hue.show_userlist_window()'>
+            <i id='activity_left_users_icon' class='activity_icon fas fa-users'></i>
+            <div id='activity_left_users_count' class='activity_label'></div>
+        </div>
         <div class='nicetitle action nicetitle pointer flex_row_center' title="Message Board" onclick='Hue.show_message_board()'>
             <i id='activity_left_message_board_icon' class='activity_icon fas fa-comment-dots'></i>
             <div id='activity_left_message_board_label' class='activity_label'>Message Board</div>

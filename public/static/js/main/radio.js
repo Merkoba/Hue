@@ -517,7 +517,6 @@ Hue.change_radio_visibility = function()
         $("#header_radio").css("display", "flex")
         $("#footer_toggle_radio_icon").removeClass("fa-toggle-off")
         $("#footer_toggle_radio_icon").addClass("fa-toggle-on")
-        $("#header_topic").css("display", "none")
 
         Hue.radio_visible = true
 
@@ -550,7 +549,6 @@ Hue.change_radio_visibility = function()
         $("#header_radio").css("display", "none")
         $("#footer_toggle_radio_icon").removeClass("fa-toggle-on")
         $("#footer_toggle_radio_icon").addClass("fa-toggle-off")
-        $("#header_topic").css("display", "flex")
 
         Hue.radio_visible = false
     }

@@ -1496,7 +1496,7 @@ input[type=text], textarea
 
 #header_topic
 {
-	display: none;
+	display: flex;
 	cursor: pointer;
 }
 
@@ -1988,6 +1988,8 @@ input[type=text], textarea
 .activity_label
 {
 	font-size: 0.8rem;
+	margin-left: -0.2rem;
+	margin-right: 0.6rem;
 }
 
 #lockscreen_body
