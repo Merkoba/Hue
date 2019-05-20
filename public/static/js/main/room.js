@@ -1001,3 +1001,11 @@ Hue.show_access_log = function(messages)
         Hue.do_modal_filter()
     })
 }
+
+// Shows a window with the topic
+Hue.show_topic_window = function()
+{
+    let h = $(`<div id='topic_window_content'></div>`)
+    h.text(Hue.topic)
+    Hue.msg_info2.show(["Topic", h[0].outerHTML])
+}

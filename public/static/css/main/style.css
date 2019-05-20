@@ -3404,3 +3404,8 @@ pre
 	min-height: 100%;
 	object-fit: cover;
 }
+
+#topic_window_content
+{
+	font-size: 1.2rem;
+}
