@@ -19,10 +19,10 @@ Hue.get_room_state = function()
 
     let settings =
     [
-        "images_enabled",
+        "image_enabled",
         "tv_enabled",
         "radio_enabled",
-        "images_locked",
+        "image_locked",
         "tv_locked",
         "radio_locked",
         "radio_volume",
@@ -364,7 +364,7 @@ Hue.clear_room = function()
 {
     Hue.clear_chat()
 
-    let first_image = Hue.images_changed = Hue.images_changed.slice(-1)[0]
+    let first_image = Hue.image_changed = Hue.image_changed.slice(-1)[0]
     let first_tv = Hue.tv_changed = Hue.tv_changed.slice(-1)[0]
     let first_radio = Hue.radio_changed = Hue.radio_changed.slice(-1)[0]
 
@@ -372,7 +372,7 @@ Hue.clear_room = function()
     Hue.loaded_tv = {}
     Hue.loaded_radio = {}
 
-    Hue.images_changed = []
+    Hue.image_changed = []
     Hue.tv_changed = []
     Hue.radio_changed = []
 

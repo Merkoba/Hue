@@ -1,24 +1,24 @@
 // Sets visibility of footer media icons based on media permissions
 Hue.setup_footer_icons = function()
 {
-    if(Hue.room_images_mode === "disabled")
+    if(Hue.room_image_mode === "disabled")
     {
-        $("#footer_images_controls").css("display", "none")
+        $("#footer_image_controls").css("display", "none")
     }
 
     else
     {
-        $("#footer_images_controls").css("display", "flex")
+        $("#footer_image_controls").css("display", "flex")
     }
 
-    if(Hue.can_images)
+    if(Hue.can_image)
     {
-        $("#footer_images_icon_container").css("display", "flex")
+        $("#footer_image_icon_container").css("display", "flex")
     }
 
     else
     {
-        $("#footer_images_icon_container").css("display", "none")
+        $("#footer_image_icon_container").css("display", "none")
     }
 
     if(Hue.room_tv_mode === "disabled")
@@ -65,7 +65,7 @@ Hue.setup_footer_icons = function()
 // Setups more footer elements
 Hue.setup_footer = function()
 {
-    $("#footer_images_icon").on("auxclick", function(e)
+    $("#footer_image_icon").on("auxclick", function(e)
     {
         if(e.which === 2)
         {

@@ -3167,7 +3167,7 @@ Hue.show_log_messages = function()
         return false
     }
 
-    let num_images = 0
+    let num_image = 0
     let num_tv = 0
     let num_radio = 0
 
@@ -3179,7 +3179,7 @@ Hue.show_log_messages = function()
 
             if(type === "image")
             {
-                num_images += 1
+                num_image += 1
             }
 
             else if(type === "tv")
@@ -3196,7 +3196,7 @@ Hue.show_log_messages = function()
 
     // If there are no media items in the log, show the current room media
 
-    if(num_images === 0)
+    if(num_image === 0)
     {
         Hue.setup_image("show", Object.assign(Hue.get_media_object_from_init_data("image"), {in_log: false}))
     }

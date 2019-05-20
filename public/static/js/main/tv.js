@@ -813,7 +813,7 @@ Hue.change_tv_visibility = function(play=true)
         Hue.tv_visible = false
     }
 
-    if(Hue.images_visible)
+    if(Hue.image_visible)
     {
         Hue.fix_image_frame()
     }
@@ -852,7 +852,7 @@ Hue.change_lock_tv = function()
 // Checks if tv is maximized
 Hue.tv_is_maximized = function()
 {
-    return Hue.tv_visible && !Hue.images_visible
+    return Hue.tv_visible && !Hue.image_visible
 }
 
 // Maximizes the tv, hiding the image
@@ -860,14 +860,14 @@ Hue.maximize_tv = function()
 {
     if(Hue.tv_visible)
     {
-        if(Hue.images_visible)
+        if(Hue.image_visible)
         {
-            Hue.toggle_images(false, false)
+            Hue.toggle_image(false, false)
         }
 
         else
         {
-            Hue.toggle_images(true, false)
+            Hue.toggle_image(true, false)
         }
     }
 
@@ -875,9 +875,9 @@ Hue.maximize_tv = function()
     {
         Hue.toggle_tv(true, false)
 
-        if(Hue.images_visible)
+        if(Hue.image_visible)
         {
-            Hue.toggle_images(false, false)
+            Hue.toggle_image(false, false)
         }
     }
 
@@ -1036,9 +1036,9 @@ Hue.do_media_tv_size_change = function(size, notify=true, override=true)
 
     if(size === 0)
     {
-        if(!Hue.images_is_maximized())
+        if(!Hue.image_is_maximized())
         {
-            Hue.maximize_images()
+            Hue.maximize_image()
             Hue.show_infotip("Image Maximized")
         }
 

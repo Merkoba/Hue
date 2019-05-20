@@ -158,7 +158,7 @@ Hue.stop_and_lock = function(stop=true)
         Hue.stop_media()
     }
 
-    Hue.toggle_lock_images(true, false)
+    Hue.toggle_lock_image(true, false)
     Hue.toggle_lock_tv(true, false)
     Hue.toggle_lock_radio(true, false)
 
@@ -168,9 +168,9 @@ Hue.stop_and_lock = function(stop=true)
 // Sets media locks and visibility to default states
 Hue.default_media_state = function(change_visibility=true)
 {
-    if(Hue.room_state.images_locked !== Hue.config.room_state_default_images_locked)
+    if(Hue.room_state.image_locked !== Hue.config.room_state_default_image_locked)
     {
-        Hue.toggle_lock_images(Hue.config.room_state_default_images_locked, false)
+        Hue.toggle_lock_image(Hue.config.room_state_default_image_locked, false)
     }
 
     if(Hue.room_state.tv_locked !== Hue.config.room_state_default_tv_locked)
@@ -185,9 +185,9 @@ Hue.default_media_state = function(change_visibility=true)
 
     if(change_visibility)
     {
-        if(Hue.room_state.images_enabled !== Hue.config.room_state_default_images_enabled)
+        if(Hue.room_state.image_enabled !== Hue.config.room_state_default_image_enabled)
         {
-            Hue.toggle_images(Hue.config.room_state_default_images_enabled, false)
+            Hue.toggle_image(Hue.config.room_state_default_image_enabled, false)
         }
 
         if(Hue.room_state.tv_enabled !== Hue.config.room_state_default_tv_enabled)
@@ -281,7 +281,7 @@ Hue.maxers_mouse_events = function()
                     }
                 }
 
-                else if(Hue.images_is_maximized())
+                else if(Hue.image_is_maximized())
                 {
                     let tv_pos = Hue.get_setting("tv_display_position")
 
@@ -351,7 +351,7 @@ Hue.maxers_mouse_events = function()
                     }
                 }
 
-                else if(Hue.images_is_maximized())
+                else if(Hue.image_is_maximized())
                 {
                     let tv_pos = Hue.get_setting("tv_display_position")
 
@@ -455,7 +455,7 @@ Hue.maxers_mouse_events = function()
 
     $("#media_image_maxer")[0].addEventListener("dblclick", function(e)
     {
-        Hue.maximize_images()
+        Hue.maximize_image()
     })
 
     $("#media_tv_maxer")[0].addEventListener("mousedown", function(e)
@@ -522,9 +522,9 @@ Hue.unmaximize_media = function()
         Hue.maximize_tv()
     }
 
-    else if(Hue.images_is_maximized())
+    else if(Hue.image_is_maximized())
     {
-        Hue.maximize_images()
+        Hue.maximize_image()
     }
 }
 
@@ -551,14 +551,7 @@ Hue.decrease_chat_percentage = function()
 // Removes and item from a media changed array
 Hue.remove_item_from_media_changed = function(type, id)
 {
-    let type2 = type
-
-    if(type === "image")
-    {
-        type2 = "images"
-    }
-
-    Hue[`${type2}_changed`] = Hue[`${type2}_changed`].filter(x => x.id !== id)
+    Hue[`${type}_changed`] = Hue[`${type}_changed`].filter(x => x.id !== id)
 }
 
 // Tabs between media source and comment input on open pickers
@@ -623,19 +616,12 @@ Hue.media_lock_valve = function(type, e)
 // Locally loads next item of its respective media changed list
 Hue.media_load_next = function(type, just_check=false)
 {
-    let type2 = type
-
-    if(type === "images")
-    {
-        type2 = "image"
-    }
-
     if(Hue[`${type}_changed`].length < 2)
     {
         return false
     }
 
-    let index = Hue[`${type}_changed`].indexOf(Hue[`loaded_${type2}`])
+    let index = Hue[`${type}_changed`].indexOf(Hue[`loaded_${type}`])
 
     if(index < 0)
     {
@@ -653,26 +639,19 @@ Hue.media_load_next = function(type, just_check=false)
     }
 
     let item = Hue[`${type}_changed`][index + 1]
-    Hue.change({type:type2, item:item, force:true})
+    Hue.change({type:type, item:item, force:true})
     Hue[`toggle_lock_${type}`](true)
 }
 
 // Locally loads previous item of its respective media changed list
 Hue.media_load_previous = function(type, just_check=false)
 {
-    let type2 = type
-
-    if(type === "images")
-    {
-        type2 = "image"
-    }
-
     if(Hue[`${type}_changed`].length < 2)
     {
         return false
     }
 
-    let index = Hue[`${type}_changed`].indexOf(Hue[`loaded_${type2}`])
+    let index = Hue[`${type}_changed`].indexOf(Hue[`loaded_${type}`])
 
     if(index <= 0)
     {
@@ -685,7 +664,7 @@ Hue.media_load_previous = function(type, just_check=false)
     }
 
     let item = Hue[`${type}_changed`][index - 1]
-    Hue.change({type:type2, item:item, force:true})
+    Hue.change({type:type, item:item, force:true})
     Hue[`toggle_lock_${type}`](true)
 }
 
@@ -797,7 +776,7 @@ Hue.hide_media = function()
 // Makes the media area visible or not visible
 Hue.toggle_media = function()
 {
-    if(Hue.tv_visible || Hue.images_visible)
+    if(Hue.tv_visible || Hue.image_visible)
     {
         Hue.hide_media_items()
     }
@@ -816,26 +795,26 @@ Hue.hide_media_items = function()
         Hue.toggle_tv(false)
     }
 
-    if(Hue.images_visible)
+    if(Hue.image_visible)
     {
-        Hue.toggle_images(false)
+        Hue.toggle_image(false)
     }
 }
 
 // If both are not visible it makes them visible
 Hue.show_media_items = function()
 {
-    if(!Hue.tv_visible && !Hue.images_visible)
+    if(!Hue.tv_visible && !Hue.image_visible)
     {
         Hue.toggle_tv(true)
-        Hue.toggle_images(true)
+        Hue.toggle_image(true)
     }
 }
 
 // Setups media modes from initial data
 Hue.setup_active_media = function(data)
 {
-    Hue.room_images_mode = data.room_images_mode
+    Hue.room_image_mode = data.room_image_mode
     Hue.room_tv_mode = data.room_tv_mode
     Hue.room_radio_mode = data.room_radio_mode
     Hue.room_synth_mode = data.room_synth_mode
@@ -846,11 +825,11 @@ Hue.setup_active_media = function(data)
 // Changes media visibility and locks based on current state
 Hue.media_visibility_and_locks = function()
 {
-    Hue.change_images_visibility()
+    Hue.change_image_visibility()
     Hue.change_tv_visibility(false)
     Hue.change_radio_visibility()
 
-    Hue.change_lock_images()
+    Hue.change_lock_image()
     Hue.change_lock_tv()
     Hue.change_lock_radio()
 }
@@ -1243,19 +1222,19 @@ Hue.change = function(args={})
 
     if(args.type === "image")
     {
-        if(!Hue.room_state.images_enabled)
+        if(!Hue.room_state.image_enabled)
         {
             return false
         }
 
-        let locked = Hue.room_state.images_locked && !bypass_lock
+        let locked = Hue.room_state.image_locked && !bypass_lock
 
         if(!args.item && locked && Hue.loaded_image.source && !args.current_source)
         {
             return false
         }
 
-        if(Hue.room_images_mode === "disabled")
+        if(Hue.room_image_mode === "disabled")
         {
             return false
         }
@@ -1266,7 +1245,7 @@ Hue.change = function(args={})
 
         if(!args.item || args.item === Hue.current_image())
         {
-            $("#footer_lock_images_icon").removeClass("blinking")
+            $("#footer_lock_image_icon").removeClass("blinking")
         }
 
         if(Hue.background_mode === "mirror" || Hue.background_mode === "mirror_tiled")
@@ -1381,7 +1360,7 @@ Hue.change = function(args={})
 // Check if maxers should be displayed or not
 Hue.check_media_maxers = function()
 {
-    if(Hue.room_tv_mode !== "disabled" && Hue.room_images_mode !== "disabled")
+    if(Hue.room_tv_mode !== "disabled" && Hue.room_image_mode !== "disabled")
     {
         $(".maxer_container").css("display", "flex")
     }
@@ -1550,13 +1529,6 @@ Hue.set_media_info = function(what)
 // Toggles media locks for any type
 Hue.change_media_lock = function(type)
 {
-    let type2 = type
-
-    if(type === "images")
-    {
-        type2 = "image"
-    }
-
     if(Hue.room_state[`${type}_locked`])
     {
         $(`#footer_lock_${type}_icon`).removeClass("fa-unlock")
@@ -1565,7 +1537,7 @@ Hue.change_media_lock = function(type)
         $(`#footer_lock_${type}_icon`).addClass("footer_icon2")
         $(`#footer_lock_${type}_label`).css("display", "block")
     
-        if(Hue[`loaded_${type2}`] !== Hue[`current_${type2}`]())
+        if(Hue[`loaded_${type}`] !== Hue[`current_${type}`]())
         {
             $(`#footer_lock_${type}_icon`).addClass("blinking")
         }
@@ -1580,7 +1552,7 @@ Hue.change_media_lock = function(type)
         $(`#footer_lock_${type}_icon`).addClass("footer_icon3")
         $(`#footer_lock_${type}_label`).css("display", "none")
 
-        Hue.change({type:type2})
+        Hue.change({type:type})
     }
 }
 

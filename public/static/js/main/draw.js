@@ -121,7 +121,7 @@ Hue.canvas_redraw = function(args={})
 // Opens the draw image window
 Hue.open_draw_image = function()
 {
-    if(!Hue.can_images)
+    if(!Hue.can_image)
     {
         Hue.feedback("You don't have permission to draw images")
         return false
@@ -449,9 +449,9 @@ Hue.draw_image_add_click = function(x, y, dragging)
 // Turns the canvas drawing into a Blob and sends it to the server as an image upload
 Hue.upload_draw_image = function()
 {
-    if(!Hue.can_images)
+    if(!Hue.can_image)
     {
-        Hue.feedback("You don't have permission to change images")
+        Hue.feedback("You don't have permission to change the image")
         return false
     }
 

@@ -39,7 +39,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(!handler.check_permission(socket, "images"))
+        if(!handler.check_permission(socket, "image"))
         {
             return false
         }
@@ -160,7 +160,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         else
         {
-            if(handler.check_domain_list("images", data.src))
+            if(handler.check_domain_list("image", data.src))
             {
                 return false
             }
@@ -197,7 +197,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(!handler.check_permission(socket, "images"))
+        if(!handler.check_permission(socket, "image"))
         {
             return false
         }
@@ -475,7 +475,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     }
 
     // Handles images mode changes
-    handler.public.change_images_mode = function(socket, data)
+    handler.public.change_image_mode = function(socket, data)
     {
         if(!handler.is_admin_or_op(socket))
         {
@@ -487,14 +487,14 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        vars.rooms[socket.hue_room_id].images_mode = data.what
+        vars.rooms[socket.hue_room_id].image_mode = data.what
 
         db_manager.update_room(socket.hue_room_id,
         {
-            images_mode: data.what
+            image_mode: data.what
         })
 
-        handler.room_emit(socket, 'room_images_mode_change',
+        handler.room_emit(socket, 'room_image_mode_change',
         {
             what: data.what,
             username: socket.hue_username

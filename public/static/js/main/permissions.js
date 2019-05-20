@@ -86,25 +86,25 @@ Hue.change_voice_permission_command = function(arg)
 Hue.start_permissions = function(data)
 {
     Hue.voice1_chat_permission = data.voice1_chat_permission
-    Hue.voice1_images_permission = data.voice1_images_permission
+    Hue.voice1_image_permission = data.voice1_image_permission
     Hue.voice1_tv_permission = data.voice1_tv_permission
     Hue.voice1_radio_permission = data.voice1_radio_permission
     Hue.voice1_synth_permission = data.voice1_synth_permission
 
     Hue.voice2_chat_permission = data.voice2_chat_permission
-    Hue.voice2_images_permission = data.voice2_images_permission
+    Hue.voice2_image_permission = data.voice2_image_permission
     Hue.voice2_tv_permission = data.voice2_tv_permission
     Hue.voice2_radio_permission = data.voice2_radio_permission
     Hue.voice2_synth_permission = data.voice2_synth_permission
 
     Hue.voice3_chat_permission = data.voice3_chat_permission
-    Hue.voice3_images_permission = data.voice3_images_permission
+    Hue.voice3_image_permission = data.voice3_image_permission
     Hue.voice3_tv_permission = data.voice3_tv_permission
     Hue.voice3_radio_permission = data.voice3_radio_permission
     Hue.voice3_synth_permission = data.voice3_synth_permission
 
     Hue.voice4_chat_permission = data.voice4_chat_permission
-    Hue.voice4_images_permission = data.voice4_images_permission
+    Hue.voice4_image_permission = data.voice4_image_permission
     Hue.voice4_tv_permission = data.voice4_tv_permission
     Hue.voice4_radio_permission = data.voice4_radio_permission
     Hue.voice4_synth_permission = data.voice4_synth_permission
@@ -114,7 +114,7 @@ Hue.start_permissions = function(data)
 Hue.check_permissions = function()
 {
     Hue.can_chat = Hue.check_permission(Hue.role, "chat")
-    Hue.can_images = Hue.room_images_mode === "enabled" && Hue.check_permission(Hue.role, "images")
+    Hue.can_image = Hue.room_image_mode === "enabled" && Hue.check_permission(Hue.role, "image")
     Hue.can_tv = Hue.room_tv_mode === "enabled" && Hue.check_permission(Hue.role, "tv")
     Hue.can_radio = Hue.room_radio_mode === "enabled" && Hue.check_permission(Hue.role, "radio")
     Hue.can_synth = Hue.room_synth_mode === "enabled" && Hue.check_permission(Hue.role, "synth")

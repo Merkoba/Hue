@@ -27,11 +27,11 @@ Hue.setup_room_menu = function()
         })
     })
 
-    $('#admin_enable_images').change(function()
+    $('#admin_enable_image').change(function()
     {
-        let what = $('#admin_enable_images option:selected').val()
+        let what = $('#admin_enable_image option:selected').val()
 
-        Hue.change_room_images_mode(what)
+        Hue.change_room_image_mode(what)
     })
 
     $('#admin_enable_tv').change(function()
@@ -181,7 +181,7 @@ Hue.config_room_menu = function()
     if(Hue.is_admin_or_op())
     {
         Hue.config_admin_permission_checkboxes()
-        Hue.config_admin_room_images_mode()
+        Hue.config_admin_room_image_mode()
         Hue.config_admin_room_tv_mode()
         Hue.config_admin_room_radio_mode()
         Hue.config_admin_room_synth_mode()
@@ -422,17 +422,17 @@ Hue.config_admin_media_info = function()
     $("#admin_media_info").val(Hue.media_info)
 }
 
-// Updates the room images mode widget in the room menu based on current state
-Hue.config_admin_room_images_mode = function()
+// Updates the room image mode widget in the room menu based on current state
+Hue.config_admin_room_image_mode = function()
 {
     if(!Hue.is_admin_or_op())
     {
         return false
     }
 
-    $('#admin_enable_images').find('option').each(function()
+    $('#admin_enable_image').find('option').each(function()
     {
-        if($(this).val() === Hue.room_images_mode)
+        if($(this).val() === Hue.room_image_mode)
         {
             $(this).prop('selected', true)
         }

@@ -297,8 +297,7 @@ Hue.open_url_menu = function(args={})
 
     if(args.media_type && args.data)
     {
-        let mtype = Hue.fix_images_string(args.media_type)
-        let mode = Hue[`room_${mtype}_mode`]
+        let mode = Hue[`room_${args.media_type}_mode`]
 
         if((mode === "enabled" || mode === "locked") && args.data !== Hue[`loaded_${args.media_type}`])
         {

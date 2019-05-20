@@ -802,13 +802,13 @@ Hue.commands =
         },
         description: `Shows the radio history. Accepts a filter as an argument`
     },
-    "/lockimages":
+    "/lockimage":
     {
         action: (arg, ans) =>
         {
-            Hue.toggle_lock_images(true)
+            Hue.toggle_lock_image(true)
         },
-        description: `Locks images`
+        description: `Locks the image`
     },
     "/locktv":
     {
@@ -826,13 +826,13 @@ Hue.commands =
         },
         description: `Locks the radio`
     },
-    "/unlockimages":
+    "/unlockimage":
     {
         action: (arg, ans) =>
         {
-            Hue.toggle_lock_images(false)
+            Hue.toggle_lock_image(false)
         },
-        description: `Unlocks images`
+        description: `Unlocks the image`
     },
     "/unlocktv":
     {
@@ -850,13 +850,13 @@ Hue.commands =
         },
         description: `Unlocks the radio`
     },
-    "/togglelockimages":
+    "/togglelockimage":
     {
         action: (arg, ans) =>
         {
-            Hue.toggle_lock_images()
+            Hue.toggle_lock_image()
         },
-        description: `Toggles between lock and unlock images`
+        description: `Toggles between lock and unlock the image`
     },
     "/togglelocktv":
     {
@@ -874,13 +874,13 @@ Hue.commands =
         },
         description: `Toggles between lock and unlock the radio`
     },
-    "/showimages":
+    "/showimage":
     {
         action: (arg, ans) =>
         {
-            Hue.toggle_images(true)
+            Hue.toggle_image(true)
         },
-        description: `Makes images visible and active`
+        description: `Makes the image visible and active`
     },
     "/showtv":
     {
@@ -896,15 +896,15 @@ Hue.commands =
         {
             Hue.toggle_radio(true)
         },
-        description: `Makes the radio images visible and active`
+        description: `Makes the radio visible and active`
     },
-    "/hideimages":
+    "/hideimage":
     {
         action: (arg, ans) =>
         {
-            Hue.toggle_images(false)
+            Hue.toggle_image(false)
         },
-        description: `Makes images invisible and inactive`
+        description: `Makes the image invisible and inactive`
     },
     "/hidetv":
     {
@@ -920,15 +920,15 @@ Hue.commands =
         {
             Hue.toggle_radio(false)
         },
-        description: `Makes the radio images invisible and inactive`
+        description: `Makes the radio invisible and inactive`
     },
-    "/toggleimages":
+    "/toggleimage":
     {
         action: (arg, ans) =>
         {
-            Hue.toggle_images()
+            Hue.toggle_image()
         },
-        description: `Toggles between show and hide images`
+        description: `Toggles between show and hide the image`
     },
     "/toggletv":
     {
@@ -946,13 +946,13 @@ Hue.commands =
         },
         description: `Toggles between show and hide the radio`
     },
-    "/maximizeimages":
+    "/maximizeimage":
     {
         action: (arg, ans) =>
         {
-            Hue.maximize_images()
+            Hue.maximize_image()
         },
-        description: `Maximize/Restore images`
+        description: `Maximize/Restore the image`
     },
     "/maximizetv":
     {
@@ -1444,13 +1444,13 @@ Hue.commands =
         },
         description: `Displays a simple feedback information message for the user`
     },
-    "/imagesmode":
+    "/imagemode":
     {
         action: (arg, ans) =>
         {
-            Hue.change_room_images_mode(arg)
+            Hue.change_room_image_mode(arg)
         },
-        description: `Changes the images mode. Valid modes include enabled, disabled, and locked`
+        description: `Changes the image mode. Valid modes include enabled, disabled, and locked`
     },
     "/tvmode":
     {
@@ -1664,7 +1664,7 @@ Hue.commands =
     {
         action: (arg, ans) =>
         {
-            Hue.media_load_next("images")
+            Hue.media_load_next("image")
         },
         description: `Loads the next image`
     },
@@ -1672,7 +1672,7 @@ Hue.commands =
     {
         action: (arg, ans) =>
         {
-            Hue.media_load_previous("images")
+            Hue.media_load_previous("image")
         },
         description: `Loads the previous image`
     },

@@ -10,7 +10,7 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
 
     // Room and User versions
     // These must be increased by 1 when the schema changes
-    vars.rooms_version = 79
+    vars.rooms_version = 80
     vars.users_version = 49
 
     // Room schema definition
@@ -23,7 +23,7 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
         topic_date:{type:"number", default:0},
         keys:{type:"object", default:{}},
         stored_images:{type:"object", default:[]},
-        images_mode:{type:"string", default:"enabled"},
+        image_mode:{type:"string", default:"enabled"},
         image_id:{type:"string", default:""},
         image_user_id:{type:"string", default:""},
         image_source:{type:"string", default:""},
@@ -72,22 +72,22 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
         text_color:{type:"string", default:"#cdcadf"},
         public:{type:"boolean", default:true},
         voice1_chat_permission:{type:"boolean", default:true},
-        voice1_images_permission:{type:"boolean", default:true},
+        voice1_image_permission:{type:"boolean", default:true},
         voice1_tv_permission:{type:"boolean", default:true},
         voice1_radio_permission:{type:"boolean", default:true},
         voice1_synth_permission:{type:"boolean", default:true},
         voice2_chat_permission:{type:"boolean", default:true},
-        voice2_images_permission:{type:"boolean", default:true},
+        voice2_image_permission:{type:"boolean", default:true},
         voice2_tv_permission:{type:"boolean", default:true},
         voice2_radio_permission:{type:"boolean", default:true},
         voice2_synth_permission:{type:"boolean", default:true},
         voice3_chat_permission:{type:"boolean", default:true},
-        voice3_images_permission:{type:"boolean", default:true},
+        voice3_image_permission:{type:"boolean", default:true},
         voice3_tv_permission:{type:"boolean", default:true},
         voice3_radio_permission:{type:"boolean", default:true},
         voice3_synth_permission:{type:"boolean", default:true},
         voice4_chat_permission:{type:"boolean", default:true},
-        voice4_images_permission:{type:"boolean", default:true},
+        voice4_image_permission:{type:"boolean", default:true},
         voice4_tv_permission:{type:"boolean", default:true},
         voice4_radio_permission:{type:"boolean", default:true},
         voice4_synth_permission:{type:"boolean", default:true},

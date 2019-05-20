@@ -796,7 +796,7 @@ Hue.background_image_enabled = function()
     
         if(Hue.background_mode === "mirror" || Hue.background_mode === "mirror_tiled")
         {
-            if(Hue.room_images_mode === "disabled")
+            if(Hue.room_image_mode === "disabled")
             {
                 return false
             }

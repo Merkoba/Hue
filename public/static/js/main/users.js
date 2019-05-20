@@ -25,9 +25,9 @@ Hue.show_role = function()
         ps += 1
     }
 
-    if(Hue.can_images)
+    if(Hue.can_image)
     {
-        Hue.feedback("You have images permission")
+        Hue.feedback("You have image permission")
 
         ps += 1
     }

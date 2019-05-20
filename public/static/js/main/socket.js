@@ -201,9 +201,9 @@ Hue.server_update_events =
     {
         Hue.email_changed(data)
     },
-    'room_images_mode_change': (data) =>
+    'room_image_mode_change': (data) =>
     {
-        Hue.announce_room_images_mode_change(data)
+        Hue.announce_room_image_mode_change(data)
     },
     'room_tv_mode_change': (data) =>
     {

@@ -37,7 +37,7 @@ Hue.setup_image = function(mode, odata={})
     {
         if(!data.size)
         {
-            for(let img of Hue.images_changed)
+            for(let img of Hue.image_changed)
             {
                 if(img.source === data.source)
                 {
@@ -90,15 +90,15 @@ Hue.setup_image = function(mode, odata={})
 
     if(mode === "change" || mode === "show")
     {
-        Hue.push_images_changed(data)
+        Hue.push_image_changed(data)
         Hue.set_modal_image_number()
     }
 
     if(mode === "change")
     {
-        if(Hue.room_state.images_locked)
+        if(Hue.room_state.image_locked)
         {
-            $("#footer_lock_images_icon").addClass("blinking")
+            $("#footer_lock_image_icon").addClass("blinking")
         }
 
         Hue.change({type:"image"})
@@ -124,27 +124,27 @@ Hue.announce_image = function(data)
     })
 }
 
-// Pushes a changed image into the images changed array
-Hue.push_images_changed = function(data)
+// Pushes a changed image into the image changed array
+Hue.push_image_changed = function(data)
 {
-    Hue.images_changed.push(data)
+    Hue.image_changed.push(data)
 
-    if(Hue.images_changed.length > Hue.config.media_changed_crop_limit)
+    if(Hue.image_changed.length > Hue.config.media_changed_crop_limit)
     {
-        Hue.images_changed = Hue.images_changed.slice(Hue.images_changed.length - Hue.config.media_changed_crop_limit)
+        Hue.image_changed = Hue.image_changed.slice(Hue.image_changed.length - Hue.config.media_changed_crop_limit)
     }
 
     Hue.after_push_media_change("image", data)
 }
 
 // Returns the current room image
-// The last image in the images changed array
+// The last image in the image changed array
 // This is not necesarily the user's loaded image
 Hue.current_image = function()
 {
-    if(Hue.images_changed.length > 0)
+    if(Hue.image_changed.length > 0)
     {
-        return Hue.images_changed[Hue.images_changed.length - 1]
+        return Hue.image_changed[Hue.image_changed.length - 1]
     }
 
     else
@@ -186,11 +186,11 @@ Hue.change_image_source = function(src, just_check=false, comment="")
         feedback = false
     }
 
-    if(!Hue.can_images)
+    if(!Hue.can_image)
     {
         if(feedback)
         {
-            Hue.feedback("You don't have permission to change images")
+            Hue.feedback("You don't have permission to change the image")
         }
 
         return false
@@ -247,9 +247,9 @@ Hue.change_image_source = function(src, just_check=false, comment="")
 
     else if(src === "prev" || src === "previous")
     {
-        if(Hue.images_changed.length > 1)
+        if(Hue.image_changed.length > 1)
         {
-            src = Hue.images_changed[Hue.images_changed.length - 2].source
+            src = Hue.image_changed[Hue.image_changed.length - 2].source
         }
 
         else
@@ -267,7 +267,7 @@ Hue.change_image_source = function(src, just_check=false, comment="")
     {
         src = src.replace(/\.gifv/g, '.gif')
 
-        if(Hue.check_domain_list("images", src))
+        if(Hue.check_domain_list("image", src))
         {
             if(feedback)
             {
@@ -324,9 +324,9 @@ Hue.change_image_source = function(src, just_check=false, comment="")
 // Sends an emit to change the image source
 Hue.emit_change_image_source = function(url, comment="")
 {
-    if(!Hue.can_images)
+    if(!Hue.can_image)
     {
-        Hue.feedback("You don't have permission to change images")
+        Hue.feedback("You don't have permission to change the image")
         return false
     }
 
@@ -343,7 +343,7 @@ Hue.image_prev = function()
 // Updates dimensions of the image
 Hue.fix_image_frame = function()
 {
-    if(!Hue.images_visible)
+    if(!Hue.image_visible)
     {
         return false
     }
@@ -356,14 +356,14 @@ Hue.fix_image_frame = function()
     Hue.fix_frame("media_image_frame")
 }
 
-// Changes the images to visible or not visible
-Hue.toggle_images = function(what=undefined, save=true)
+// Changes the image to visible or not visible
+Hue.toggle_image = function(what=undefined, save=true)
 {
     if(what !== undefined)
     {
-        if(Hue.room_state.images_enabled !== what)
+        if(Hue.room_state.image_enabled !== what)
         {
-            Hue.room_state.images_enabled = what
+            Hue.room_state.image_enabled = what
         }
 
         else
@@ -374,12 +374,12 @@ Hue.toggle_images = function(what=undefined, save=true)
 
     else
     {
-        Hue.room_state.images_enabled = !Hue.room_state.images_enabled
+        Hue.room_state.image_enabled = !Hue.room_state.image_enabled
     }
 
-    if(Hue.images_visible !== what)
+    if(Hue.image_visible !== what)
     {
-        Hue.change_images_visibility()
+        Hue.change_image_visibility()
     }
 
     if(save)
@@ -389,21 +389,21 @@ Hue.toggle_images = function(what=undefined, save=true)
 }
 
 // Changes the image visibility based on current state
-Hue.change_images_visibility = function()
+Hue.change_image_visibility = function()
 {
-    if(Hue.room_images_mode !== "disabled" && Hue.room_state.images_enabled)
+    if(Hue.room_image_mode !== "disabled" && Hue.room_state.image_enabled)
     {
         $("#media").css("display", "flex")
         $("#media_image").css("display", "flex")
-        $("#footer_toggle_images_icon").removeClass("fa-toggle-off")
-        $("#footer_toggle_images_icon").addClass("fa-toggle-on")
+        $("#footer_toggle_image_icon").removeClass("fa-toggle-off")
+        $("#footer_toggle_image_icon").addClass("fa-toggle-on")
 
         if(Hue.first_media_change)
         {
             Hue.change({type:"image"})
         }
 
-        Hue.images_visible = true
+        Hue.image_visible = true
         Hue.fix_image_frame()
     }
 
@@ -418,10 +418,10 @@ Hue.change_images_visibility = function()
             Hue.hide_media()
         }
 
-        $("#footer_toggle_images_icon").removeClass("fa-toggle-on")
-        $("#footer_toggle_images_icon").addClass("fa-toggle-off")
+        $("#footer_toggle_image_icon").removeClass("fa-toggle-on")
+        $("#footer_toggle_image_icon").addClass("fa-toggle-off")
 
-        Hue.images_visible = false
+        Hue.image_visible = false
     }
 
     if(Hue.tv_visible)
@@ -436,14 +436,14 @@ Hue.change_images_visibility = function()
 // When clicking the Previous button in the image modal window
 Hue.modal_image_prev_click = function()
 {
-    let index = Hue.images_changed.indexOf(Hue.loaded_modal_image) - 1
+    let index = Hue.image_changed.indexOf(Hue.loaded_modal_image) - 1
 
     if(index < 0)
     {
-        index = Hue.images_changed.length - 1
+        index = Hue.image_changed.length - 1
     }
 
-    let prev = Hue.images_changed[index]
+    let prev = Hue.image_changed[index]
 
     Hue.show_modal_image(prev)
 }
@@ -451,14 +451,14 @@ Hue.modal_image_prev_click = function()
 // When clicking the Next button in the image modal window
 Hue.modal_image_next_click = function(e)
 {
-    let index = Hue.images_changed.indexOf(Hue.loaded_modal_image) + 1
+    let index = Hue.image_changed.indexOf(Hue.loaded_modal_image) + 1
 
-    if(index > Hue.images_changed.length - 1)
+    if(index > Hue.image_changed.length - 1)
     {
         index = 0
     }
 
-    let next = Hue.images_changed[index]
+    let next = Hue.image_changed[index]
 
     Hue.show_modal_image(next)
 }
@@ -532,9 +532,9 @@ Hue.setup_modal_image = function()
     $("#modal_image_toolbar_load").click(function(e)
     {
         let item = Hue.loaded_modal_image
-        Hue.toggle_images(true)
+        Hue.toggle_image(true)
         Hue.change({type:"image", item:item, force:true})
-        Hue.toggle_lock_images(true)
+        Hue.toggle_lock_image(true)
         Hue.close_all_modals()
     })
 
@@ -559,9 +559,9 @@ Hue.show_current_image_modal = function(current=true)
 
     else
     {
-        if(Hue.images_changed.length > 0)
+        if(Hue.image_changed.length > 0)
         {
-            let data = Hue.images_changed[Hue.images_changed.length - 1]
+            let data = Hue.image_changed[Hue.image_changed.length - 1]
             Hue.show_modal_image(data)
         }
     }
@@ -579,7 +579,7 @@ Hue.show_modal_image = function(data)
 {
     if(!data.source)
     {
-        if(Hue.images_changed.length > 0)
+        if(Hue.image_changed.length > 0)
         {
             Hue.show_current_image_modal(false)
             return false
@@ -619,7 +619,7 @@ Hue.show_modal_image = function(data)
         $("#modal_image_subheader").css("display", "none")
     }
 
-    if((Hue.room_images_mode === "enabled" || Hue.room_images_mode === "locked") && data !== Hue.loaded_image)
+    if((Hue.room_image_mode === "enabled" || Hue.room_image_mode === "locked") && data !== Hue.loaded_image)
     {
         $("#modal_image_toolbar_load").css("display", "block")
     }
@@ -655,9 +655,9 @@ Hue.set_modal_image_number = function(id)
         return false
     }
 
-    let index = Hue.images_changed.indexOf(Hue.loaded_modal_image)
+    let index = Hue.image_changed.indexOf(Hue.loaded_modal_image)
     let number = index + 1
-    let footer_text = `${number} of ${Hue.images_changed.length}`
+    let footer_text = `${number} of ${Hue.image_changed.length}`
     $("#modal_image_footer_info").text(footer_text)
 
     if(number > 0)
@@ -685,17 +685,17 @@ Hue.setup_modal_image_number = function()
 
         if(val < 1)
         {
-            $("#modal_image_number_input").val(Hue.images_changed.length)
+            $("#modal_image_number_input").val(Hue.image_changed.length)
         }
 
-        else if(val === Hue.images_changed.length + 1)
+        else if(val === Hue.image_changed.length + 1)
         {
             $("#modal_image_number_input").val(1)
         }
 
-        else if(val > Hue.images_changed.length)
+        else if(val > Hue.image_changed.length)
         {
-            $("#modal_image_number_input").val(Hue.images_changed.length)
+            $("#modal_image_number_input").val(Hue.image_changed.length)
         }
     })
 }
@@ -715,7 +715,7 @@ Hue.modal_image_number_go = function()
 {
     let val = parseInt($("#modal_image_number_input").val())
 
-    let ic = Hue.images_changed[val - 1]
+    let ic = Hue.image_changed[val - 1]
 
     if(ic)
     {
@@ -807,15 +807,15 @@ Hue.get_dominant_theme = function()
 }
 
 // Checks if the image is maximized
-Hue.images_is_maximized = function()
+Hue.image_is_maximized = function()
 {
-    return Hue.images_visible && !Hue.tv_visible
+    return Hue.image_visible && !Hue.tv_visible
 }
 
 // Maximizes the image, hiding the tv
-Hue.maximize_images = function()
+Hue.maximize_image = function()
 {
-    if(Hue.images_visible)
+    if(Hue.image_visible)
     {
         if(Hue.tv_visible)
         {
@@ -830,7 +830,7 @@ Hue.maximize_images = function()
 
     else
     {
-        Hue.toggle_images(true, false)
+        Hue.toggle_image(true, false)
 
         if(Hue.tv_visible)
         {
@@ -877,20 +877,20 @@ Hue.hide_expand_image = function()
     Hue.msg_expand_image.close()
 }
 
-// Enables or disables the images lock
-Hue.toggle_lock_images = function(what=undefined, save=true)
+// Enables or disables the image lock
+Hue.toggle_lock_image = function(what=undefined, save=true)
 {
     if(what !== undefined)
     {
-        Hue.room_state.images_locked = what
+        Hue.room_state.image_locked = what
     }
 
     else
     {
-        Hue.room_state.images_locked = !Hue.room_state.images_locked
+        Hue.room_state.image_locked = !Hue.room_state.image_locked
     }
 
-    Hue.change_lock_images()
+    Hue.change_lock_image()
 
     if(save)
     {
@@ -899,16 +899,9 @@ Hue.toggle_lock_images = function(what=undefined, save=true)
 }
 
 // Applies changes to the image footer lock icon
-Hue.change_lock_images = function()
+Hue.change_lock_image = function()
 {
-    Hue.change_media_lock("images")
-}
-
-// Returns 'images' if string is 'image'
-Hue.fix_images_string = function(s)
-{
-    let r = s === "image" ? "images" : s
-    return r
+    Hue.change_media_lock("image")
 }
 
 // Reloads the image with the same source
@@ -921,9 +914,9 @@ Hue.refresh_image = function()
 // Shows the image picker window to input a URL, draw, or upload a file
 Hue.show_image_picker = function()
 {
-    if(!Hue.can_images)
+    if(!Hue.can_image)
     {
-        Hue.feedback("You don't have images permission")
+        Hue.feedback("You don't have image permission")
         return false
     }
 
@@ -934,19 +927,19 @@ Hue.show_image_picker = function()
     })
 }
 
-// Room images mode setter
-Hue.set_room_images_mode = function(what)
+// Room image mode setter
+Hue.set_room_image_mode = function(what)
 {
-    Hue.room_images_mode = what
-    Hue.config_admin_room_images_mode()
+    Hue.room_image_mode = what
+    Hue.config_admin_room_image_mode()
 }
 
-// Announces room images mode changes
-Hue.announce_room_images_mode_change = function(data)
+// Announces room image mode changes
+Hue.announce_room_image_mode_change = function(data)
 {
-    Hue.show_room_notification(data.username, `${data.username} changed the images mode to ${data.what}`)
-    Hue.set_room_images_mode(data.what)
-    Hue.change_images_visibility()
+    Hue.show_room_notification(data.username, `${data.username} changed the image mode to ${data.what}`)
+    Hue.set_room_image_mode(data.what)
+    Hue.change_image_visibility()
     Hue.check_permissions()
     Hue.check_media_maxers()
 }
@@ -1021,8 +1014,8 @@ Hue.process_image_upload_comment = function()
     Hue.msg_image_upload_comment.close()
 }
 
-// Changes the room images mode
-Hue.change_room_images_mode = function(what)
+// Changes the room image mode
+Hue.change_room_image_mode = function(what)
 {
     if(!Hue.is_admin_or_op(Hue.role))
     {
@@ -1034,17 +1027,17 @@ Hue.change_room_images_mode = function(what)
 
     if(!modes.includes(what))
     {
-        Hue.feedback(`Valid images modes: ${modes.join(" ")}`)
+        Hue.feedback(`Valid image modes: ${modes.join(" ")}`)
         return false
     }
 
-    if(what === Hue.room_images_mode)
+    if(what === Hue.room_image_mode)
     {
-        Hue.feedback(`Images mode is already set to that`)
+        Hue.feedback(`Image mode is already set to that`)
         return false
     }
 
-    Hue.socket_emit("change_images_mode", {what:what})
+    Hue.socket_emit("change_image_mode", {what:what})
 }
 
 Hue.setup_image_picker = function()

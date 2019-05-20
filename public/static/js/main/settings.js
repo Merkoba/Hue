@@ -990,13 +990,13 @@ Hue.user_settings =
             }
         }
     },
-    bypass_images_lock_on_own_change:
+    bypass_image_lock_on_own_change:
     {
         widget_type: "checkbox",
         description: `Whether an enabled image lock should be ignored if the change comes from the user itself`,
         action: (type, save=true) =>
         {
-            Hue[type].bypass_images_lock_on_own_change = $(`#${type}_bypass_images_lock_on_own_change`).prop("checked")
+            Hue[type].bypass_image_lock_on_own_change = $(`#${type}_bypass_image_lock_on_own_change`).prop("checked")
 
             if(save)
             {

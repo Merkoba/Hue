@@ -32,22 +32,22 @@
 
         <div id='footer_media_items' class='unselectable'>
 
-            <div id='footer_images_controls' class='footer_media_control'>
-                <div id="footer_images_label" class='footer_media_label footer_text_small action pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("image")' data-type="images">Image</div>
+            <div id='footer_image_controls' class='footer_media_control'>
+                <div id="footer_image_label" class='footer_media_label footer_text_small action pointer nicetitle' title='Click or Right Click' onclick='Hue.show_media_history("image")' data-type="image">Image</div>
 
-                <div  id='footer_images_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_image_picker()' title="Change the Image">
-                    <i id='footer_images_icon' class='fa fa-camera'></i>
+                <div  id='footer_image_icon_container' class='pointer action nicetitle footer_icon2' onclick='Hue.show_image_picker()' title="Change the Image">
+                    <i id='footer_image_icon' class='fa fa-camera'></i>
                 </div>
 
-                <div class='pointer action nicetitle footer_icon2' onclick='Hue.toggle_images()' title='Show/Hide Images. Hidden means it will not be displayed or active'>
-                    <i id='footer_toggle_images_icon' class='fa fa-toggle-on'></i>
+                <div class='pointer action nicetitle footer_icon2' onclick='Hue.toggle_image()' title='Show/Hide Image. Hidden means it will not be displayed or active'>
+                    <i id='footer_toggle_image_icon' class='fa fa-toggle-on'></i>
                 </div>
 
-                <div id='footer_lock_images_icon_container' class='pointer action nicetitle footer_icon3' onclick='Hue.toggle_lock_images()' onauxclick="Hue.media_lock_valve('images', event)" title='Lock/Unlock Images. Locked means it will stay the same even if media is changed by a user'>
-                    <i id='footer_lock_images_icon' class='fa fa-unlock'></i>
+                <div id='footer_lock_image_icon_container' class='pointer action nicetitle footer_icon3' onclick='Hue.toggle_lock_image()' onauxclick="Hue.media_lock_valve('image', event)" title='Lock/Unlock Image. Locked means it will stay the same even if media is changed by a user'>
+                    <i id='footer_lock_image_icon' class='fa fa-unlock'></i>
                 </div>
 
-                <div id='footer_lock_images_label' class='footer_media_locked_label footer_text_small action pointer nicetitle' onclick='Hue.toggle_lock_images(false)' title='Click To Unlock'>(Locked)</div>
+                <div id='footer_lock_image_label' class='footer_media_locked_label footer_text_small action pointer nicetitle' onclick='Hue.toggle_lock_image(false)' title='Click To Unlock'>(Locked)</div>
             </div>
 
             <div id='footer_media_rotate' class='pointer action nicetitle footer_icon3' title="Click: Rotate | Middle Click: Swap">
@@ -91,7 +91,7 @@
             </div>
 
             <div id='footer_media_menu_container' class='pointer action' onclick='Hue.show_media_menu()'>
-                <i id='footer_media_menu' class='fa fa-bars' id='footer_lock_images_icon'></i>
+                <i id='footer_media_menu' class='fa fa-bars'></i>
             </div>
         </div>
     </div>

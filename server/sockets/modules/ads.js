@@ -62,7 +62,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         {
             let room = vars.rooms[room_id]
 
-            if(room.images_mode !== "enabled")
+            if(room.image_mode !== "enabled")
             {
                 return callback(false)
             }
