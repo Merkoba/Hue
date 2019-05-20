@@ -420,35 +420,42 @@ Hue.setup_profile_image_cropper = function()
 {
     $("#profile_image_cropper_upload").click(function()
     {
-        let cropped_canvas
-        let rounded_canvas
-
-        if(!Hue.profile_image_croppable)
+        Hue.profile_image_cropper.croppie('result', 
         {
-            return
-        }
+            type: "blob",
+            size: 
+            {
+                width: Hue.config.profile_image_diameter, 
+                height: Hue.config.profile_image_diameter
+            },
+            format: "png",
+            circle: true,
+            quality: 0.95
+        })
 
-        cropped_canvas = Hue.profile_image_cropper.getCroppedCanvas()
-        rounded_canvas = Hue.get_rounded_canvas(cropped_canvas)
-
-        rounded_canvas.toBlob(function(file)
+        .then(function(blob)
         {
             $("#user_menu_profile_image").attr("src", Hue.config.profile_image_loading_url)
-            Hue.upload_file({file:file, action:"profile_image_upload", name:"profile.png"})
+            Hue.upload_file({file:blob, action:"profile_image_upload", name:"profile.png"})
             Hue.msg_profile_image_cropper.close()
-        }, 'image/png', 0.95)
+        })
     })
 
     $("#profile_image_cropper_change").click(function()
     {
         Hue.open_profile_image_picker()
     })
+
+    Hue.horizontal_separator.separate("profile_image_cropper_buttons")
 }
 
 // Resets the profile image cropper to default state
 Hue.reset_profile_image_cropper = function()
 {
-    $("#profile_image_cropper_image_container").html("<img id='profile_image_cropper_image'>")
+    if(Hue.profile_image_cropper && Hue.profile_image_cropper.croppie)
+    {
+        Hue.profile_image_cropper.croppie('destroy')
+    }
 }
 
 // This is executed after a profile image has been selected in the file dialog
@@ -464,55 +471,34 @@ Hue.profile_image_selected = function(input)
 
             Hue.msg_profile_image_cropper.show(function()
             {
-                Hue.horizontal_separator.separate("profile_image_cropper_buttons")
+                $("#profile_image_picker").closest("form").get(0).reset()
 
-                $('#profile_image_cropper_image').attr('src', e.target.result)
-                $("#profile_image_picker").closest('form').get(0).reset()
-
-                let image = $('#profile_image_cropper_image')[0]
-                Hue.profile_image_croppable = false
-
-                Hue.profile_image_cropper = new Cropper(image,
+                Hue.profile_image_cropper = $("#profile_image_cropper").croppie(
                 {
-                    aspectRatio: 1,
-                    viewMode: 3,
-                    ready: function()
+                    viewport: 
                     {
-                        let container_data = Hue.profile_image_cropper.getContainerData()
+                        width: 200,
+                        height: 200,
+                        type: "circle"
+                    },
+                    boundary: { width: 350, height: 350}
+                })
 
-                        Hue.profile_image_cropper.setCropBoxData({width:container_data.width, height:container_data.height})
+                Hue.profile_image_cropper.croppie("bind", 
+                {
+                    url: e.target.result,
+                    points: []
+                })
 
-                        let cropbox_data = Hue.profile_image_cropper.getCropBoxData()
-                        let left = (container_data.width - cropbox_data.width) / 2
-                        let top = (container_data.height - cropbox_data.height) / 2
-
-                        Hue.profile_image_cropper.setCropBoxData({left:left, right:top})
-                        Hue.profile_image_croppable = true
-                    }
+                .then(function()
+                {
+                    Hue.profile_image_cropper.croppie("setZoom", 0)
                 })
             })
         }
 
         reader.readAsDataURL(input.files[0])
     }
-}
-
-// Creates a rounded canvas for the profile image picker
-Hue.get_rounded_canvas = function(sourceCanvas)
-{
-    let canvas = document.createElement('canvas')
-    let context = canvas.getContext('2d')
-    let width = Hue.config.profile_image_diameter
-    let height = Hue.config.profile_image_diameter
-    canvas.width = width
-    canvas.height = height
-    context.imageSmoothingEnabled = true
-    context.drawImage(sourceCanvas, 0, 0, width, height)
-    context.globalCompositeOperation = 'destination-in'
-    context.beginPath()
-    context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true)
-    context.fill()
-    return canvas
 }
 
 // Feedback that the user is not an operator

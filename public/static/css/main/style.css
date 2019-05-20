@@ -1459,20 +1459,15 @@ input[type=text], textarea
 	display: none;
 }
 
-#profile_image_cropper_image
+#profile_image_cropper
 {
-	max-width: 50vw;
-	max-height: 50vh;
-}
-
-.cropper-view-box, .cropper-face
-{
-	border-radius: 50% !important;
+	width: 400px;
+	height: 400px;
 }
 
 #profile_image_cropper_buttons
 {
-	padding-top: 1rem;
+	padding-top: 0.5rem;
 	display: flex;
 	flex-direction: row;
 	align-items: center;

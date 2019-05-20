@@ -239,7 +239,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return false
         }
 
-        let fname = `profile_${socket.hue_user_id}.jpg`
+        let fname = `profile_${socket.hue_user_id}.png`
 
         vars.fs.writeFile(vars.images_root + '/' + fname, data.image_file, function(err, data)
         {
