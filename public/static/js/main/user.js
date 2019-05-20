@@ -622,7 +622,7 @@ Hue.setup_notebook = function()
 Hue.get_notebook = function()
 {
     let notebook = Hue.get_local_storage(Hue.ls_notebook)
-    return notebook ? notebook : ""
+    return notebook ? notebook : {first_open:true, text:""}
 }
 
 // Opens the notebook
@@ -631,31 +631,43 @@ Hue.show_notebook = function()
     Hue.msg_notebook.show(function()
     {
         let notebook = Hue.get_notebook()
-        let value = notebook
+        let text = notebook.text
 
-        if(value)
+        if(text)
         {
-            value = "\n\n" + value
+            text = "\n\n" + text
         }
 
-        $("#notebook_textarea").val(value)
+        $("#notebook_textarea").val(text)
         $("#notebook_textarea").focus()
         $("#notebook_textarea")[0].setSelectionRange(0, 0)
         $("#notebook_textarea").scrollTop(0)
+
+        if(notebook.first_open)
+        {
+            Hue.msg_info.show("Notes are saved in your browser using local storage")
+        }
     })
 }
 
 // Saves the notebook's content
 Hue.save_notebook = function()
 {
-    let value = $("#notebook_textarea").val().trim()
-    Hue.save_local_storage(Hue.ls_notebook, value)
+    let text = $("#notebook_textarea").val().trim()
+    Hue.do_save_notebook(text)
+}
+
+// Completes the notebook save with a given text
+Hue.do_save_notebook = function(text)
+{
+    let obj = {first_open:false, text:text}
+    Hue.save_local_storage(Hue.ls_notebook, obj)
 }
 
 // Adds a string at the start of the notebook
 Hue.add_to_notebook = function(note, feedback=true)
 {
-    Hue.save_local_storage(Hue.ls_notebook, `${note}\n\n${Hue.get_notebook()}`)
+    Hue.do_save_notebook(`${note}\n\n${Hue.get_notebook().text}`)
 
     if(feedback)
     {
