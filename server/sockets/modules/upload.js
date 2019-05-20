@@ -33,11 +33,6 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
             if(data.action.includes("image"))
             {
-                if(!utilz.image_types.includes(data.type))
-                {
-                    return handler.get_out(socket)
-                }
-    
                 if(!utilz.image_extensions.includes(ext))
                 {
                     return handler.get_out(socket)
@@ -46,11 +41,6 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
             else if(data.action.includes("audio"))
             {
-                if(!utilz.audio_types.includes(data.type))
-                {
-                    return handler.get_out(socket)
-                }
-    
                 if(!utilz.audio_extensions.includes(ext))
                 {
                     return handler.get_out(socket)
