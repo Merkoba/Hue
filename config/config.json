@@ -75,7 +75,7 @@
 	"max_image_size": 11111,
 	"max_image_size_bytes": 11111111,
 	"max_profile_image_size": 1111,
-	"max_audio_clip_size": 1111,
+	"max_audio_clip_size": 5555,
 	"small_keyboard_scroll": 100,
 	"big_keyboard_scroll": 400,
 	"roomlist_cache": 120000,
