@@ -685,6 +685,12 @@ Hue.change_background_image_source = function(src)
         {
             return false
         }
+
+        if(Hue.check_domain_list("image", src))
+        {
+            Hue.feedback("Image sources from that domain are not allowed")
+            return false
+        }
     }
 
     else
