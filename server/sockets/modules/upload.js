@@ -83,7 +83,6 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         file.received += data.data.length
 
         let fsize = file.received / 1024
-        let spsize
 
         if(file.action === "image_upload" || file.action === "background_image_upload")
         {
@@ -93,9 +92,8 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 return handler.get_out(socket)
             }
             
-            spsize = Math.floor(fsize / (config.max_image_size / config.upload_spam_slice))
         }
-
+        
         else if(file.action === "audio_clip_upload")
         {
             if(fsize > config.max_audio_clip_size)
@@ -103,10 +101,10 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 delete vars.files[key]
                 return handler.get_out(socket)
             }
-            
-            spsize = Math.floor(fsize / (config.max_audio_clip_size / config.upload_spam_slice))
         }
 
+        let spsize = Math.floor(fsize / config.upload_spam_slice)
+        
         if(file.spsize !== spsize)
         {
             let spam_ans = await handler.add_spam(socket)
