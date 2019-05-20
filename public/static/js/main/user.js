@@ -645,7 +645,7 @@ Hue.show_notebook = function()
 
         if(notebook.first_open)
         {
-            Hue.msg_info.show("Notes are saved in your browser using local storage")
+            Hue.msg_info.show("Notes are saved in your browser using local storage.<br>You can also use the /note command to save notes quickly")
         }
     })
 }
