@@ -250,7 +250,7 @@
 	"radio_change_cooldown": 2000,
 	"max_sockets_per_user": 100,
 	"image_domain_white_or_black_list": "black",
-	"image_domain_list": ["https://i.imgur.com"],
+	"image_domain_list": [],
 	"tv_domain_white_or_black_list": "black",
 	"tv_domain_list": [],
 	"radio_domain_white_or_black_list": "black",
