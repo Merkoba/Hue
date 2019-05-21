@@ -294,7 +294,7 @@ Hue.apply_theme = function()
 
     .custom_popup
     {
-        border: 1px solid ${font_color} !important;
+        border: 1px solid ${color_4} !important;
     }
 
     #reactions_box_container
