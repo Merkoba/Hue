@@ -571,14 +571,19 @@ Hue.show_intro = function()
     Hue.create_popup({position:"bottomright"}).show(["Media Controls", s])
 
     s = `
-    This area contains the room menu, user list, voice chat, and radio controls. Above that there's the Activty Bar which shows users that have shown activity recently.`
+    Up here is the header with radio controls and topic display. Above that there's the activity bar which shows users that have shown activity recently.`
 
     Hue.create_popup({position:"top"}).show(["Top Panel", s])
 
     s = `
-    You can lock the screen in this corner.`
+    Some buttons here like the lock screen, whisper activity, and notifications.`
 
     Hue.create_popup({position:"topright"}).show(["Lock Screen", s])
+
+    s = `
+    Some buttons here like the room menu, user list, and the message board.`
+
+    Hue.create_popup({position:"topleft"}).show(["Close Popups", s])
 
     s = `
     Close this to close all the popups.`
@@ -588,12 +593,7 @@ Hue.show_intro = function()
         Hue.close_all_popups()
     }
 
-    Hue.create_popup({position:"topleft", after_close:f}).show(["Close Popups", s])
-
-    s = `
-    Please read all the popups.`
-
-    Hue.create_popup({position:"center"}).show(["Welcome", s])
+    Hue.create_popup({position:"center", after_close:f}).show(["Welcome", s])
 }
 
 // Setups the notebook
