@@ -622,7 +622,7 @@ Hue.announce_topic_change = function(data)
 {
     if(data.topic !== Hue.topic)
     {
-        Hue.show_room_notification(data.topic_setter, `${data.topic_setter} changed the topic to: "${data.topic}"`)
+        Hue.show_room_notification(data.topic_setter, `${data.topic_setter} changed the topic to: ${data.topic}`)
         Hue.set_topic_info(data)
         Hue.update_title()
     }
