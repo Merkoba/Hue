@@ -1994,6 +1994,7 @@ input[type=text], textarea
 {
 	font-size: 0.8rem;
 	margin-left: -0.2rem;
+	margin-right: 0.6rem;
 }
 
 #lockscreen_body
