@@ -1424,7 +1424,7 @@ Hue.setup_markdown_regexes = function()
 
         if(n === 1)
         {
-            return `${g2}<span class='backgrounded'>[dummy-space]${g4}[dummy-space]</span>${g5}`
+            return `${g2}<div class='backgrounded'>[dummy-space]${g4}[dummy-space]</div>${g5}`
         }
 
         return g1

@@ -3409,3 +3409,8 @@ pre
 {
 	font-size: 1.2rem;
 }
+
+.backgrounded
+{
+	display: inline-block;
+}
