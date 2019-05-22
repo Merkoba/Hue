@@ -1005,7 +1005,43 @@ Hue.show_access_log = function(messages)
 // Shows a window with the topic
 Hue.show_topic_window = function()
 {
-    let h = $(`<div id='topic_window_content'></div>`)
-    h.text(Hue.topic)
-    Hue.msg_info2.show(["Topic", h[0].outerHTML])
+    let edit_html = ""
+
+    if(Hue.is_admin_or_op())
+    {
+        edit_html = "<div><div id='topic_window_edit' class='pointer action inline'>Edit</div></div>"
+    }
+
+    let h = $(`
+    <div id='topic_window'>
+        <div id='topic_window_text'></div>
+        ${edit_html}
+    </div>`)
+    
+    let text = h.find("#topic_window_text").eq(0)
+    text.text(Hue.topic)
+
+    if(edit_html)
+    {
+        let edit = h.find("#topic_window_edit").eq(0)
+        
+        edit.click(function()
+        {
+            Hue.open_room_menu_section("room_config")
+        })
+    }
+
+    Hue.msg_info2.show(["Topic", h[0]])
+}
+
+// Opens the room menu and opens a specific section
+Hue.open_room_menu_section = function(name)
+{
+    Hue.msg_room_menu.show(function()
+    {
+        setTimeout(function()
+        {
+            $(`#room_menu_toggle_${name}`).click()
+        }, 200)
+    })
 }

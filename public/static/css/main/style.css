@@ -3417,9 +3417,14 @@ pre
 	object-fit: cover;
 }
 
-#topic_window_content
+#topic_window_text
 {
 	font-size: 1.2rem;
+}
+
+#topic_window_edit
+{
+	margin-top: 1rem;
 }
 
 .backgrounded
