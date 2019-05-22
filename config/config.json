@@ -195,7 +195,7 @@
 	"global_settings_default_chat_crop_limit": 500,
 	"global_settings_default_autoconnect": false,
 	"global_settings_default_media_info": "room",
-	"global_settings_default_media_info_max_length": 50,
+	"global_settings_default_media_info_max_length": 65,
 	"global_settings_default_transparent_panels": true,
 	"global_settings_default_max_displayed_url": 100,
 	"global_settings_default_media_layout": "column",
