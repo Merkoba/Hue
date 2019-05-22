@@ -1426,10 +1426,36 @@ Hue.apply_media_info = function(element, item, mode)
         Hue.media_info_image_data = [...arguments]
     }
 
-    let hover_title = item.info
+    let info = ""
 
-    let info = item.comment || custom_title || item.title || item.source || ""
+    if(item.comment)
+    {
+        info = item.comment
+    }
+
+    let title = custom_title || item.title || ""
+
+    if(title)
+    {
+        if(info)
+        {
+            info += " | "
+        }
+
+        info += title
+    }
+
+    if(!info)
+    {
+        if(item.source)
+        {
+            info = item.source
+        }
+    }
+
     info = info.substring(0, Hue.get_setting("media_info_max_length")).trim()
+    
+    let hover_title = item.info
 
     let html = 
     `
