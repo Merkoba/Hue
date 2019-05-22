@@ -149,7 +149,7 @@ body *
 {
 	display: flex;
 	flex-direction: row;
-	max-width: 5rem;
+	max-width: 7rem;
 	cursor: pointer;
 	align-items: center;
 	margin: auto;
