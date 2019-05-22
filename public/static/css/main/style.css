@@ -211,23 +211,23 @@ body *
 	justify-content: center;
 }
 
-#header_items
+div#header_items
 {
 	display: initial;
 }
 
-#header_items_inner
+div#header_items_inner
 {
 	display: inline-flex;
 	flex-direction: row;
 }
 
-#header_radio_volume_area
+div#header_radio_volume_area
 {
 	display: none;
 }
 
-#header_radio_playing_icon
+div#header_radio_playing_icon
 {
 	display: none;
 	margin-right: 0.8em;
