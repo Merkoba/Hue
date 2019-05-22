@@ -138,7 +138,7 @@ body *
 {
 	display: flex;
 	flex-direction: row;
-	max-width: 7rem;
+	max-width: 5rem;
 	margin-left: 0.8rem;
 	margin-right: 0.8rem;
 	cursor: pointer;
