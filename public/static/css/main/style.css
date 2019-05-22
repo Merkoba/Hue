@@ -92,7 +92,9 @@ body *
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-start;
+	width: 16rem;
+	overflow: hidden;
 }
 
 #activity_bar_left .activity_icon:first-child
@@ -108,6 +110,9 @@ body *
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+	justify-content: flex-end;
+	width: 16rem;
+	overflow: hidden;
 }
 
 #activity_bar_right .activity_icon:last-child
@@ -206,23 +211,23 @@ body *
 	justify-content: center;
 }
 
-div#header_items
+#header_items
 {
 	display: initial;
 }
 
-div#header_items_inner
+#header_items_inner
 {
 	display: inline-flex;
 	flex-direction: row;
 }
 
-div#header_radio_volume_area
+#header_radio_volume_area
 {
 	display: none;
 }
 
-div#header_radio_playing_icon
+#header_radio_playing_icon
 {
 	display: none;
 	margin-right: 0.8em;
@@ -1989,7 +1994,6 @@ input[type=text], textarea
 {
 	font-size: 0.8rem;
 	margin-left: -0.2rem;
-	margin-right: 0.6rem;
 }
 
 #lockscreen_body
