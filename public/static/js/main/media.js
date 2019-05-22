@@ -1430,7 +1430,7 @@ Hue.apply_media_info = function(element, item, mode)
 
     if(item.comment)
     {
-        info = item.comment
+        info = Hue.remove_markdown_from_message(item.comment)
     }
 
     let title = custom_title || item.title || ""

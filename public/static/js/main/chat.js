@@ -3526,3 +3526,16 @@ Hue.change_chat_visibility = function()
 
     Hue.fix_frames()
 }
+
+// Removes unwanted formatting from Hue chat messages
+Hue.remove_markdown_from_message = function(message)
+{
+    message = message.replace(/\=?\[dummy\-space\]\=?/gm, '')
+    
+    message = message.replace(/\[.*\](.+?)\[\/.*\]/gm, function(a, b)
+    {
+        return b
+    })
+
+    return message
+}
