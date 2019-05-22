@@ -129,9 +129,20 @@ body *
 	height: 100%;
 	align-items: center;
 	justify-content: center;
-	font-size: 0.8rem;
 	overflow: hidden;
 	flex-grow: 1;
+}
+
+#activity_bar_content_inner
+{
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	font-size: 0.8rem;
+	overflow: hidden;
+	flex-grow: 0;
+	height: 100%;
 }
 
 .activity_bar_item
@@ -139,10 +150,9 @@ body *
 	display: flex;
 	flex-direction: row;
 	max-width: 5rem;
-	margin-left: 0.8rem;
-	margin-right: 0.8rem;
 	cursor: pointer;
 	align-items: center;
+	margin: auto;
 }
 
 .activity_bar_text
@@ -150,6 +160,7 @@ body *
 	white-space: nowrap;
 	overflow: hidden;
 	margin-left: 0.5rem;
+	margin-right: 0.8rem;
 }
 
 .activity_bar_image_container
@@ -158,6 +169,7 @@ body *
 	max-width: 22px;
 	min-height: 22px;
 	max-height: 22px;
+	margin-left: 0.8rem;
 }
 
 .activity_bar_image

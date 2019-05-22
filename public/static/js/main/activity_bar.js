@@ -109,7 +109,7 @@ Hue.check_activity_bar = function(update=true)
 // This is to keep states like profile image rotation from being interrupted
 Hue.update_activity_bar = function()
 {
-    let c = $("#activity_bar_content")
+    let c = $("#activity_bar_content_inner")
 
     if(Hue.activity_list.length === 0)
     {
@@ -257,7 +257,7 @@ Hue.get_activity_bar_item_by_username = function(username)
 // Removes all items on the activity bar
 Hue.clear_activity_bar_items = function()
 {
-    $("#activity_bar_content").find(".activity_bar_item").each(function()
+    $("#activity_bar_content_inner").find(".activity_bar_item").each(function()
     {
         $(this).remove()
     })
@@ -266,7 +266,7 @@ Hue.clear_activity_bar_items = function()
 // Updates the profile image of an item in the activity bar
 Hue.update_activity_bar_image = function(username, src)
 {
-    $("#activity_bar_content").find(".activity_bar_item").each(function()
+    $("#activity_bar_content_inner").find(".activity_bar_item").each(function()
     {
         if($(this).data("username") === username)
         {
