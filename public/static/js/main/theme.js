@@ -500,6 +500,11 @@ Hue.apply_theme = function()
         color: ${font_color} !important;
     }
 
+    .room_menu_tree_container
+    {
+        background-color: ${color_4_alpha} !important;
+    }
+
     </style>
     `
 
@@ -628,7 +633,7 @@ Hue.background_image_selected = function(input)
     {
         return false
     }
-    
+
     let file = input.files[0]
     let size = file.size / 1024
 

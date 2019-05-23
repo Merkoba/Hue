@@ -3037,13 +3037,10 @@ a.special_link:hover
 
 .room_menu_tree_container
 {
-	margin-top: 2rem;
+	margin-top: 1rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
 	grid-gap: 2rem;
-}
-
-.room_menu_tree_container:last-child
-{
-	padding-bottom: 0;
 }
 
 .room_menu_tree_toggler_item
