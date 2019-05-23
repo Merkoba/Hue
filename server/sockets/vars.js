@@ -35,7 +35,7 @@ module.exports = function(vars, handler, io, db_manager, config, sconfig, utilz,
     vars.optypes = ["op_1", "op_2", "op_3", "op_4"]
     vars.roles = ["admin"].concat(vars.optypes).concat(vars.vtypes)
     vars.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
-    vars.media_types = ["images", "tv", "radio", "synth"]
+    vars.media_types = ["image", "tv", "radio", "synth"]
     vars.filtered_fields = {log_messages:0, admin_log_messages:0, access_log_messages:0, stored_images:0}
     vars.whisper_types = ["user", "ops", "broadcast", "system_broadcast"]
 

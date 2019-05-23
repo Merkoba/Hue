@@ -103,9 +103,11 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Checks if a user has the required media permission
     handler.check_permission = function(socket, permission)
     {
+        let room = vars.rooms[socket.hue_room_id]
+
         if(vars.media_types.includes(permission))
         {
-            let pmode = vars.rooms[socket.hue_room_id][`${permission}_mode`]
+            let pmode = room[`${permission}_mode`]
 
             if(pmode !== "enabled")
             {
@@ -120,12 +122,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         else if(vars.vtypes.includes(socket.hue_role))
         {
-            if(vars.rooms[socket.hue_room_id][`${socket.hue_role}_${permission}_permission`])
-            {
-                return true
-            }
-
-            return false
+            return room[`${socket.hue_role}_permissions`][permission]
         }
 
         else
