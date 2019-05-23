@@ -52,7 +52,6 @@ module.exports = function(db, db_manager, config, sconfig, utilz)
 	}
 
 	app.use(session(sess))
-
 	app.use('/', routes)
 
 	app.use(function(req, res, next)

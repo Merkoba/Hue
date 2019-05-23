@@ -109,14 +109,16 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 		const server = http.createServer(app)
 
 		server.listen(port)
-		server.on('error', onError)
-		server.on('listening', onListening)
+		server.on('error', on_error)
+		server.on('listening', on_listening)
 
 		const io = require('socket.io').listen(server)
 
-		require('./sockets/main')(io, db_manager, config, sconfig, utilz, logger)
+		const sockets_api = {}
 
-		function onError(error)
+		require('./sockets/main')(io, db_manager, config, sconfig, utilz, logger, sockets_api)
+
+		function on_error(error)
 		{
 			if(error.syscall !== 'listen')
 			{
@@ -144,7 +146,7 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 			}
 		}
 
-		function onListening()
+		function on_listening()
 		{
 			let addr = server.address()
 
@@ -154,5 +156,29 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 
 			debug('Listening on ' + bind)
 		}
+
+		function do_shutdown()
+		{
+			sockets_api.vars.exiting = true
+			sockets_api.handler.do_room_loop()
+
+			io.httpServer.close() 
+			io.close()
+
+			server.close(function()
+			{
+				process.exit(0)
+			})
+		}
+
+		// process.on('SIGINT', function()
+		// {
+		// 	do_shutdown()
+		// })
+
+		process.on('SIGTERM', function()
+		{
+			do_shutdown()
+		})
 	}
 })

@@ -1,4 +1,4 @@
-module.exports = function(io, db_manager, config, sconfig, utilz, logger)
+module.exports = function(io, db_manager, config, sconfig, utilz, logger, sockets_api)
 {
 	// Main handler object
 	const handler = {}
@@ -22,6 +22,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 	// Start socker handler
 	io.on("connection", async function(socket)
 	{
+		if(vars.exiting)
+		{
+			return false
+		}
+
 		try
 		{
 			let spam_ans = await handler.add_spam(socket)
@@ -43,6 +48,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		// If there is no such public function the user is kicked out
 		socket.on('server_method', async function(data)
 		{
+			if(vars.exiting)
+			{
+				return false
+			}
+			
 			try
 			{
 				if(!handler.check_data(data))
@@ -113,6 +123,11 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 		{
 			try
 			{
+				if(!reason)
+				{
+					reason = "unknown"
+				}
+
 				reason = reason.toLowerCase()
 
 				if(reason.includes('timeout'))
@@ -132,4 +147,7 @@ module.exports = function(io, db_manager, config, sconfig, utilz, logger)
 
 	handler.start_room_loop()
 	handler.start_files_loop()
+
+	sockets_api.handler = handler
+	sockets_api.vars = vars
 }

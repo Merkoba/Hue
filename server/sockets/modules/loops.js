@@ -6,47 +6,58 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     {
         setInterval(function()
         {
-            try
+            if(vars.exiting)
             {
-                for(let key in vars.rooms)
+                return false
+            }
+
+            handler.do_room_loop()
+        }, config.room_loop_interval)
+    }
+
+    // What to do on each room loop iteration
+    handler.do_room_loop = function()
+    {
+        try
+        {
+            for(let key in vars.rooms)
+            {
+                let room = vars.rooms[key]
+
+                if(room.activity)
                 {
-                    let room = vars.rooms[key]
-
-                    if(room.activity)
+                    if(room.log_messages_modified)
                     {
-                        if(room.log_messages_modified)
-                        {
-                            db_manager.push_log_messages(room._id, room.log_messages)
-                            room.log_messages_modified = false
-                        }
-
-                        if(room.admin_log_messages_modified)
-                        {
-                            db_manager.push_admin_log_messages(room._id, room.admin_log_messages)
-                            room.admin_log_messages_modified = false
-                        }
-
-                        if(room.access_log_messages_modified)
-                        {
-                            db_manager.push_access_log_messages(room._id, room.access_log_messages)
-                            room.access_log_messages_modified = false
-                        }
-
-                        room.activity = false
+                        db_manager.push_log_messages(room._id, room.log_messages)
+                        room.log_messages_modified = false
                     }
 
-                    if(Object.keys(room.userlist).length === 0)
+                    if(room.admin_log_messages_modified)
                     {
-                        delete vars.rooms[key]
+                        db_manager.push_admin_log_messages(room._id, room.admin_log_messages)
+                        room.admin_log_messages_modified = false
                     }
+
+                    if(room.access_log_messages_modified)
+                    {
+                        db_manager.push_access_log_messages(room._id, room.access_log_messages)
+                        room.access_log_messages_modified = false
+                    }
+
+                    room.activity = false
+                }
+
+                if(Object.keys(room.userlist).length === 0)
+                {
+                    delete vars.rooms[key]
                 }
             }
+        }
 
-            catch(err)
-            {
-                logger.log_error(err)
-            }
-        }, config.room_loop_interval)
+        catch(err)
+        {
+            logger.log_error(err)
+        }
     }
 
     // Starts a loop to check for stale files to be removed

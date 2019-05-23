@@ -132,4 +132,6 @@ module.exports = function(vars, handler, io, db_manager, config, sconfig, utilz,
         args.headers['user-agent'] = 'Mozilla/5.0'
         return vars.fetch(url, args)
     }
+
+    vars.exiting = false
 }
