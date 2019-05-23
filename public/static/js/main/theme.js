@@ -502,7 +502,7 @@ Hue.apply_theme = function()
 
     .room_menu_tree_container
     {
-        background-color: ${color_4_alpha} !important;
+        border: 1px solid ${color_4_alpha} !important;
     }
 
     </style>
