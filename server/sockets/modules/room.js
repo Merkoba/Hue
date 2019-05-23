@@ -3,7 +3,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles topic changes
     handler.public.change_topic = async function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "topic"))
         {
             return handler.get_out(socket)
         }
@@ -63,7 +63,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles room name changes
     handler.public.change_room_name = async function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "name"))
         {
             return handler.get_out(socket)
         }
@@ -104,7 +104,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles log state changes
     handler.public.change_log = async function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "log"))
         {
             return handler.get_out(socket)
         }
@@ -155,7 +155,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Clears log messages
     handler.public.clear_log = async function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "log"))
         {
             return handler.get_out(socket)
         }
@@ -242,7 +242,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Changes privacy status
     handler.public.change_privacy = function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "privacy"))
         {
             return handler.get_out(socket)
         }
@@ -276,7 +276,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles media info changes
     handler.public.change_media_info = async function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "media"))
         {
             return handler.get_out(socket)
         }
@@ -301,9 +301,129 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         handler.room_emit(socket, 'media_info_changed', {username:socket.hue_username, media_info:data.media_info})
     }
 
+    // Fills voice and op permissions objects
+    handler.fill_room_permissions = function(info)
+    {
+        let voice_changed = false
+        
+        let voice_properties = 
+        [
+            "chat",
+            "image",
+            "tv",
+            "radio",
+            "synth"
+        ]
+
+        let voice_properties_false =
+        [
+
+        ]
+
+        for(let i=1; i<=vars.vtypes.length; i++)
+        {
+            let p = info[`voice_${i}_permissions`]
+
+            for(let property of voice_properties)
+            {
+                if(p[property] === undefined)
+                {
+                    p[property] = !voice_properties_false.includes(property)
+                    voice_changed = true
+                }
+            }
+
+            for(let key in p)
+            {
+                if(!voice_properties.includes(key))
+                {
+                    delete p[key]
+                    voice_changed = true
+                }
+            }
+        }
+
+        let op_changed = false
+       
+        let op_properties = 
+        [
+            "theme",
+            "background",
+            "voice_roles",
+            "voice_permissions",
+            "privacy",
+            "log",
+            "topic",
+            "kick",
+            "ban",
+            "unban",
+            "delete_messages",
+            "media",
+            "name",
+            "whisper_ops",
+            "broadcast",
+            "message_board_no_restriction",
+            "message_board_delete"
+        ]
+
+        let op_properties_false =
+        [
+            "message_board_no_restriction",
+            "message_board_delete"
+        ]
+
+        for(let i=1; i<=vars.optypes.length; i++)
+        {
+            let p = info[`op_${i}_permissions`]
+
+            for(let property of op_properties)
+            {
+                if(p[property] === undefined)
+                {
+                    p[property] = !op_properties_false.includes(property)
+                    op_changed = true
+                }
+            }
+
+            for(let key in p)
+            {
+                if(!op_properties.includes(key))
+                {
+                    delete p[key]
+                    op_changed = true
+                }
+            }
+        }
+
+        if(voice_changed || op_changed)
+        {
+            let obj = {}
+
+            if(voice_changed)
+            {
+                obj.voice_1_permissions = info.voice_1_permissions,
+                obj.voice_2_permissions = info.voice_2_permissions,
+                obj.voice_3_permissions = info.voice_3_permissions,
+                obj.voice_4_permissions = info.voice_4_permissions
+            }
+
+            if(op_changed)
+            {
+                obj.op_1_permissions = info.op_1_permissions,
+                obj.op_2_permissions = info.op_2_permissions,
+                obj.op_3_permissions = info.op_3_permissions,
+                obj.op_4_permissions = info.op_4_permissions
+            }
+            
+            db_manager.update_room(info._id.toString(), obj)
+        }
+    }
+
     // Creates initial room objects
     handler.create_room_object = function(info)
     {
+        handler.fill_room_permissions(info)
+
         let obj =
         {
             _id: info._id.toString(),
@@ -316,26 +436,6 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             admin_log_messages_modified: false,
             access_log_messages_modified: false,
             userlist: {},
-            voice1_chat_permission: info.voice1_chat_permission,
-            voice1_image_permission: info.voice1_image_permission,
-            voice1_tv_permission: info.voice1_tv_permission,
-            voice1_radio_permission: info.voice1_radio_permission,
-            voice1_synth_permission: info.voice1_synth_permission,
-            voice2_chat_permission: info.voice2_chat_permission,
-            voice2_image_permission: info.voice2_image_permission,
-            voice2_tv_permission: info.voice2_tv_permission,
-            voice2_radio_permission: info.voice2_radio_permission,
-            voice2_synth_permission: info.voice2_synth_permission,
-            voice3_chat_permission: info.voice3_chat_permission,
-            voice3_image_permission: info.voice3_image_permission,
-            voice3_tv_permission: info.voice3_tv_permission,
-            voice3_radio_permission: info.voice3_radio_permission,
-            voice3_synth_permission: info.voice3_synth_permission,
-            voice4_chat_permission: info.voice4_chat_permission,
-            voice4_image_permission: info.voice4_image_permission,
-            voice4_tv_permission: info.voice4_tv_permission,
-            voice4_radio_permission: info.voice4_radio_permission,
-            voice4_synth_permission: info.voice4_synth_permission,
             image_mode: info.image_mode,
             stored_images: info.stored_images,
             tv_mode: info.tv_mode,
@@ -362,7 +462,15 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             last_radio_change: 0,
             image_ad_charge: 0,
             text_ad_charge: 0,
-            message_board_posts: info.message_board_posts
+            message_board_posts: info.message_board_posts,
+            voice_1_permissions: info.voice_1_permissions,
+            voice_2_permissions: info.voice_2_permissions,
+            voice_3_permissions: info.voice_3_permissions,
+            voice_4_permissions: info.voice_4_permissions,
+            op_1_permissions: info.op_1_permissions,
+            op_2_permissions: info.op_2_permissions,
+            op_3_permissions: info.op_3_permissions,
+            op_4_permissions: info.op_4_permissions
         }
 
         return obj

@@ -81,9 +81,13 @@ Hue.server_update_events =
     {
         Hue.announce_voices_resetted(data)
     },
-    'announce_removedops': (data) =>
+    'ops_resetted': (data) =>
     {
-        Hue.announce_removedops(data)
+        Hue.announce_ops_resetted(data)
+    },
+    'announce_removed_ops': (data) =>
+    {
+        Hue.announce_removed_ops(data)
     },
     'announce_ban': (data) =>
     {
@@ -132,6 +136,10 @@ Hue.server_update_events =
     'no_voices_to_reset': (data) =>
     {
         Hue.feedback("There were no voices to reset")
+    },
+    'no_ops_to_reset': (data) =>
+    {
+        Hue.feedback("There were no ops to reset")
     },
     'is_already': (data) =>
     {
@@ -252,6 +260,10 @@ Hue.server_update_events =
     'voice_permission_change': (data) =>
     {
         Hue.announce_voice_permission_change(data)
+    },
+    'op_permission_change': (data) =>
+    {
+        Hue.announce_op_permission_change(data)
     },
     'user_disconnect': (data) =>
     {

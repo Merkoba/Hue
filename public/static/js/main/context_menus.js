@@ -391,7 +391,7 @@ Hue.start_chat_menu_context_menu = function()
                 },
                 visible: function(key, opt)
                 {
-                    if(!Hue.is_admin_or_op())
+                    if(!Hue.check_op_permission(Hue.role, "log"))
                     {
                         return false
                     }
@@ -959,11 +959,11 @@ Hue.start_user_context_menu = function()
                 name: "Voice 1", callback: function(key, opt)
                 {
                     let arg = Hue.get_user_context_menu_username(this)
-                    Hue.change_role(arg, "voice1")
+                    Hue.change_role(arg, "voice_1")
                 },
                 visible: function(key, opt)
                 {
-                    if(!Hue.is_admin_or_op(Hue.role))
+                    if(!Hue.check_op_permission(Hue.role, "voice_roles"))
                     {
                         return false
                     }
@@ -979,11 +979,11 @@ Hue.start_user_context_menu = function()
                 name: "Voice 2", callback: function(key, opt)
                 {
                     let arg = Hue.get_user_context_menu_username(this)
-                    Hue.change_role(arg, "voice2")
+                    Hue.change_role(arg, "voice_2")
                 },
                 visible: function(key, opt)
                 {
-                    if(!Hue.is_admin_or_op(Hue.role))
+                    if(!Hue.check_op_permission(Hue.role, "voice_roles"))
                     {
                         return false
                     }
@@ -999,11 +999,11 @@ Hue.start_user_context_menu = function()
                 name: "Voice 3", callback: function(key, opt)
                 {
                     let arg = Hue.get_user_context_menu_username(this)
-                    Hue.change_role(arg, "voice3")
+                    Hue.change_role(arg, "voice_3")
                 },
                 visible: function(key, opt)
                 {
-                    if(!Hue.is_admin_or_op(Hue.role))
+                    if(!Hue.check_op_permission(Hue.role, "voice_roles"))
                     {
                         return false
                     }
@@ -1019,11 +1019,11 @@ Hue.start_user_context_menu = function()
                 name: "Voice 4", callback: function(key, opt)
                 {
                     let arg = Hue.get_user_context_menu_username(this)
-                    Hue.change_role(arg, "voice4")
+                    Hue.change_role(arg, "voice_4")
                 },
                 visible: function(key, opt)
                 {
-                    if(!Hue.is_admin_or_op(Hue.role))
+                    if(!Hue.check_op_permission(Hue.role, "voice_roles"))
                     {
                         return false
                     }
@@ -1034,20 +1034,12 @@ Hue.start_user_context_menu = function()
                     }
                 }
             },
-            cmop:
+            cmop1:
             {
-                name: "Op",
+                name: "Op 1",
                 visible: function(key, opt)
                 {
-                    if(Hue.role !== 'admin')
-                    {
-                        return false
-                    }
-
-                    else
-                    {
-                        return true
-                    }
+                    return Hue.role === 'admin'
                 },
                 items:
                 {
@@ -1056,7 +1048,64 @@ Hue.start_user_context_menu = function()
                         name: "I'm Sure", callback: function(key, opt)
                         {
                             let arg = Hue.get_user_context_menu_username(this)
-                            Hue.change_role(arg, "op")
+                            Hue.change_role(arg, "op_1")
+                        }
+                    }
+                }
+            },
+            cmop2:
+            {
+                name: "Op 2",
+                visible: function(key, opt)
+                {
+                    return Hue.role === 'admin'
+                },
+                items:
+                {
+                    opsure:
+                    {
+                        name: "I'm Sure", callback: function(key, opt)
+                        {
+                            let arg = Hue.get_user_context_menu_username(this)
+                            Hue.change_role(arg, "op_2")
+                        }
+                    }
+                }
+            },
+            cmop3:
+            {
+                name: "Op 3",
+                visible: function(key, opt)
+                {
+                    return Hue.role === 'admin'
+                },
+                items:
+                {
+                    opsure:
+                    {
+                        name: "I'm Sure", callback: function(key, opt)
+                        {
+                            let arg = Hue.get_user_context_menu_username(this)
+                            Hue.change_role(arg, "op_3")
+                        }
+                    }
+                }
+            },
+            cmop4:
+            {
+                name: "Op 4",
+                visible: function(key, opt)
+                {
+                    return Hue.role === 'admin'
+                },
+                items:
+                {
+                    opsure:
+                    {
+                        name: "I'm Sure", callback: function(key, opt)
+                        {
+                            let arg = Hue.get_user_context_menu_username(this)
+                            Hue.change_role(arg, "op_4")
                         }
                     }
                 }
@@ -1093,7 +1142,7 @@ Hue.start_user_context_menu = function()
                 name: "Kick",
                 visible: function(key, opt)
                 {
-                    if(!Hue.is_admin_or_op(Hue.role))
+                    if(!Hue.check_op_permission(Hue.role, "kick"))
                     {
                         return false
                     }
@@ -1121,7 +1170,7 @@ Hue.start_user_context_menu = function()
                 name: "Ban",
                 visible: function(key, opt)
                 {
-                    if(!Hue.is_admin_or_op(Hue.role))
+                    if(!Hue.check_op_permission(Hue.role, "ban"))
                     {
                         return false
                     }

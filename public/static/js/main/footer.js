@@ -60,6 +60,18 @@ Hue.setup_footer_icons = function()
     {
         $("#footer_radio_icon_container").css("display", "none")
     }
+
+    if(Hue.room_image_mode === "disabled" || Hue.room_tv_mode === "disabled")
+    {
+        $("#footer_media_rotate").css("display", "none")
+    }
+    
+    else
+    {
+        $("#footer_media_rotate").css("display", "flex")
+    }
+
+    Hue.update_footer_separators()
 }
 
 // Setups more footer elements
@@ -112,8 +124,6 @@ Hue.setup_footer = function()
             Hue.swap_display_positions_2()
         }
     })
-
-    Hue.horizontal_separator.separate("footer_media_items")
 }
 
 // Checks how to handle the rotate icon
@@ -128,4 +138,9 @@ Hue.check_footer_media_rotate = function()
     {
         $("#footer_media_rotate").removeClass("faded")
     }
+}
+
+Hue.update_footer_separators = function()
+{
+    Hue.horizontal_separator.separate("footer_media_items")
 }

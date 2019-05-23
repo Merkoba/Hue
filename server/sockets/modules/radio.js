@@ -352,7 +352,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles radio mode changes
     handler.public.change_radio_mode = function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "media"))
         {
             return handler.get_out(socket)
         }

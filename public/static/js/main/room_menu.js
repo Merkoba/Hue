@@ -1,11 +1,24 @@
 // Builds the permission sections of the room menu through their template
-Hue.make_room_menu_permissions_container = function()
+Hue.make_room_menu_voice_permissions_container = function()
 {
     let s = ""
 
-    for(let i=1; i<Hue.vtypes.length + 1; i++)
+    for(let i=1; i<=Hue.vtypes.length; i++)
     {
-        s += Hue.template_room_menu_permissions_container({number:i})
+        s += Hue.template_room_menu_voice_permissions_container({number:i})
+    }
+
+    return s
+}
+
+// Builds the op permission sections of the room menu through their template
+Hue.make_room_menu_op_permissions_container = function()
+{
+    let s = ""
+
+    for(let i=1; i<=Hue.optypes.length; i++)
+    {
+        s += Hue.template_room_menu_op_permissions_container({number:i})
     }
 
     return s
@@ -15,7 +28,8 @@ Hue.make_room_menu_permissions_container = function()
 Hue.setup_room_menu = function()
 {
     Hue.setup_togglers("room_menu")
-    Hue.setup_togglers("room_menu_permissions")
+    Hue.setup_togglers("room_menu_voice_permissions")
+    Hue.setup_togglers("room_menu_op_permissions")
 
     $(".admin_voice_permissions_checkbox").each(function()
     {
@@ -23,7 +37,17 @@ Hue.setup_room_menu = function()
         {
             let what = $(this).prop("checked")
 
-            Hue.change_voice_permission($(this).data("ptype"), what)
+            Hue.change_voice_permission($(this).data("vtype"), $(this).data("ptype"), what)
+        })
+    })
+
+    $(".admin_op_permissions_checkbox").each(function()
+    {
+        $(this).change(function()
+        {
+            let what = $(this).prop("checked")
+
+            Hue.change_op_permission($(this).data("optype"), $(this).data("ptype"), what)
         })
     })
 
@@ -198,6 +222,7 @@ Hue.config_room_menu = function()
         Hue.config_admin_room_name()
         Hue.config_admin_topic()
         Hue.config_admin_media_info()
+        Hue.config_admin_display()
 
         $("#admin_menu").css("display", "block")
     }
@@ -218,7 +243,14 @@ Hue.config_admin_permission_checkboxes = function()
 
     $(".admin_voice_permissions_checkbox").each(function()
     {
-        $(this).prop("checked", Hue[$(this).data("ptype")])
+        let what = Hue[`${$(this).data("vtype")}_permissions`][$(this).data("ptype")]
+        $(this).prop("checked", what)
+    })
+
+    $(".admin_op_permissions_checkbox").each(function()
+    {
+        let what = Hue[`${$(this).data("optype")}_permissions`][$(this).data("ptype")]
+        $(this).prop("checked", what)
     })
 }
 
@@ -548,4 +580,186 @@ Hue.config_admin_topic = function()
     }
 
     $("#admin_topic").val(Hue.topic)
+}
+
+// Configures what should be visible in the room menu according to role
+Hue.config_admin_display = function()
+{
+    if(Hue.role === "admin")
+    {
+        $("#room_menu_main_container_op_permissions").css("display", "block")
+        $("#room_menu_more_remove_ops").css("display", "block")
+    }
+    
+    else
+    {
+        $("#room_menu_main_container_op_permissions").css("display", "none")
+        $("#room_menu_more_remove_ops").css("display", "none")
+    }
+
+    if(Hue.check_op_permission(Hue.role, "media"))
+    {
+        $("#room_menu_main_container_media").css("display", "block")
+    }
+    
+    else
+    {
+        $("#room_menu_main_container_media").css("display", "none")
+    }
+
+    if(Hue.check_op_permission(Hue.role, "theme"))
+    {
+        $("#room_menu_main_container_theme").css("display", "block")
+    }
+    
+    else
+    {
+        $("#room_menu_main_container_theme").css("display", "none")
+    }
+
+    if(Hue.check_op_permission(Hue.role, "background"))
+    {
+        $("#room_menu_main_container_background").css("display", "block")
+    }
+    
+    else
+    {
+        $("#room_menu_main_container_background").css("display", "none")
+    }
+
+    if(Hue.check_op_permission(Hue.role, "voice_permissions"))
+    {
+        $("#room_menu_main_container_voice_permissions").css("display", "block")
+    }
+    
+    else
+    {
+        $("#room_menu_main_container_voice_permissions").css("display", "none")
+    }
+
+    let some_room_config = false
+
+    if(Hue.check_op_permission(Hue.role, "privacy"))
+    {
+        $("#room_menu_privacy_container").css("display", "block")
+        some_room_config = true
+    }
+    
+    else
+    {
+        $("#room_menu_privacy_container").css("display", "none")
+    }
+
+    if(Hue.check_op_permission(Hue.role, "log"))
+    {
+        $("#room_menu_log_container").css("display", "block")
+        some_room_config = true
+    }
+    
+    else
+    {
+        $("#room_menu_log_container").css("display", "none")
+    }
+
+    if(Hue.check_op_permission(Hue.role, "name"))
+    {
+        $("#room_menu_room_name_container").css("display", "block")
+        some_room_config = true
+    }
+    
+    else
+    {
+        $("#room_menu_room_name_container").css("display", "none")
+    }
+
+    if(Hue.check_op_permission(Hue.role, "topic"))
+    {
+        $("#room_menu_topic_container").css("display", "block")
+        some_room_config = true
+    }
+    
+    else
+    {
+        $("#room_menu_topic_container").css("display", "none")
+    }
+
+    if(some_room_config)
+    {
+        $("#room_menu_main_container_room_config").css("display", "block")
+    }
+    
+    else
+    {
+        $("#room_menu_main_container_room_config").css("display", "none")
+    }
+
+    if(Hue.check_op_permission(Hue.role, "broadcast"))
+    {
+        $("#room_menu_more_broadcast").css("display", "block")
+    }
+
+    else
+    {
+        $("#room_menu_more_broadcast").css("display", "none")
+    }
+
+    if(Hue.check_op_permission(Hue.role, "whisper_ops"))
+    {
+        $("#room_menu_more_whisper_ops").css("display", "block")
+    }
+
+    else
+    {
+        $("#room_menu_more_whisper_ops").css("display", "none")
+    }
+
+    if(Hue.check_op_permission(Hue.role, "voice_roles"))
+    {
+        $("#room_menu_more_reset_voices").css("display", "block")
+    }
+
+    else
+    {
+        $("#room_menu_more_reset_voices").css("display", "none")
+    }
+
+    if(Hue.check_op_permission(Hue.role, "voice_roles"))
+    {
+        $("#room_menu_more_reset_voices").css("display", "block")
+    }
+
+    else
+    {
+        $("#room_menu_more_reset_voices").css("display", "none")
+    }
+
+    if(Hue.check_op_permission(Hue.role, "unban"))
+    {
+        $("#room_menu_more_unban_all").css("display", "block")
+    }
+
+    else
+    {
+        $("#room_menu_more_unban_all").css("display", "none")
+    }
+
+    if(Hue.check_op_permission(Hue.role, "log"))
+    {
+        $("#room_menu_more_clear_log").css("display", "block")
+    }
+
+    else
+    {
+        $("#room_menu_more_clear_log").css("display", "none")
+    }
+
+    if(Hue.check_op_permission(Hue.role, "message_board_delete"))
+    {
+        $("#room_menu_more_clear_message_board").css("display", "block")
+    }
+
+    else
+    {
+        $("#room_menu_more_clear_message_board").css("display", "none")
+    }
 }

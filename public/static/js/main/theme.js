@@ -514,15 +514,16 @@ Hue.apply_theme = function()
 // Changes the theme mode
 Hue.change_theme_mode = function(mode)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "theme"))
     {
-        Hue.not_an_op()
         return false
     }
 
-    if(
+    if
+    (
         mode !== "automatic" &&
-        mode !== "custom")
+        mode !== "custom"
+    )
     {
         Hue.feedback("Invalid theme mode")
         return false
@@ -540,9 +541,8 @@ Hue.change_theme_mode = function(mode)
 // Changes the theme
 Hue.change_theme = function(color)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "theme"))
     {
-        Hue.not_an_op()
         return false
     }
 
@@ -624,6 +624,11 @@ Hue.background_image_input_action = function()
 // On background image selected for upload
 Hue.background_image_selected = function(input)
 {
+    if(!Hue.check_op_permission(Hue.role, "background"))
+    {
+        return false
+    }
+    
     let file = input.files[0]
     let size = file.size / 1024
 
@@ -643,9 +648,8 @@ Hue.background_image_selected = function(input)
 // Change the background image with a URL
 Hue.change_background_image_source = function(src)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "background"))
     {
-        Hue.not_an_op()
         return false
     }
 
@@ -717,9 +721,8 @@ Hue.announce_background_image_change = function(data)
 // Changes the background mode
 Hue.change_background_mode = function(mode)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "background"))
     {
-        Hue.not_an_op()
         return false
     }
 
@@ -753,9 +756,8 @@ Hue.announce_background_mode_change = function(data)
 // Changes background tile dimensions
 Hue.change_background_tile_dimensions = function(dimensions)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "background"))
     {
-        Hue.not_an_op()
         return false
     }
 
@@ -823,9 +825,8 @@ Hue.background_image_enabled = function()
 // Changes the background effect
 Hue.change_background_effect = function(effect)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "background"))
     {
-        Hue.not_an_op()
         return false
     }
 
@@ -884,9 +885,8 @@ Hue.set_background_tile_dimensions = function(dimensions)
 // Changes the text color mode
 Hue.change_text_color_mode = function(mode)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "theme"))
     {
-        Hue.not_an_op()
         return false
     }
 
@@ -923,9 +923,8 @@ Hue.set_text_color_mode = function(mode)
 // Changes the text color
 Hue.change_text_color = function(color)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "theme"))
     {
-        Hue.not_an_op()
         return false
     }
 

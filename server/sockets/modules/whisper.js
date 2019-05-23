@@ -16,9 +16,17 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             }
         }
 
-        else
+        else if(data.type === "ops")
         {
-            if(!handler.is_admin_or_op(socket))
+            if(!handler.check_op_permission(socket, "whisper_ops"))
+            {
+                return handler.get_out(socket)
+            }
+        }
+
+        else if(data.type === "broadcast")
+        {
+            if(!handler.check_op_permission(socket, "broadcast"))
             {
                 return handler.get_out(socket)
             }

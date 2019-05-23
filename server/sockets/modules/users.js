@@ -3,7 +3,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles role changes
     handler.public.change_role = async function(socket, data)
     {
-        if(!socket.hue_superuser && (!handler.is_admin_or_op(socket)))
+        if(!socket.hue_superuser && !handler.check_op_permission(socket, "voice_roles"))
         {
             return handler.get_out(socket)
         }
@@ -47,14 +47,14 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         if(!socket.hue_superuser)
         {
-            if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
+            if((current_role === 'admin' || current_role.startsWith('op')) && socket.hue_role !== 'admin')
             {
                 handler.user_emit(socket, 'forbidden_user', {})
                 return false
             }
         }
 
-        if(current_role === data.role || (current_role === undefined && data.role === "voice1"))
+        if(current_role === data.role || (current_role === undefined && data.role === "voice_1"))
         {
             handler.user_emit(socket, 'is_already', {what:data.role, who:data.username})
             return false
@@ -100,7 +100,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles voice resets
     handler.public.reset_voices = async function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "voice_roles"))
         {
             return handler.get_out(socket)
         }
@@ -110,7 +110,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         for(let key in info.keys)
         {
-            if(info.keys[key].startsWith("voice") && info.keys[key] !== "voice1")
+            if(info.keys[key].startsWith("voice") && info.keys[key] !== "voice_1")
             {
                 delete info.keys[key]
                 removed = true
@@ -127,19 +127,58 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         for(let socc of sockets)
         {
-            if(socc.hue_role.startsWith("voice") && socc.hue_role !== "voice1")
+            if(socc.hue_role.startsWith("voice") && socc.hue_role !== "voice_1")
             {
-                socc.hue_role = 'voice1'
-
+                socc.hue_role = 'voice_1'
                 handler.update_user_in_userlist(socc)
             }
         }
 
         db_manager.update_room(info._id, {keys:info.keys})
-
         handler.room_emit(socket, 'voices_resetted', {username:socket.hue_username})
-
         handler.push_admin_log_message(socket, "resetted the voices")
+    }
+
+    // Handles op resets
+    handler.public.reset_ops = async function(socket, data)
+    {
+        if(socket.hue_role !== "admin")
+        {
+            return handler.get_out(socket)
+        }
+
+        let info = await db_manager.get_room({_id:socket.hue_room_id}, {keys:1})
+        let changed = false
+
+        for(let key in info.keys)
+        {
+            if(info.keys[key].startsWith("op") && info.keys[key] !== "op_1")
+            {
+                info.keys[key] = "op_1"
+                changed = true
+            }
+        }
+
+        if(!changed)
+        {
+            handler.user_emit(socket, 'no_ops_to_reset', {})
+            return false
+        }
+
+        let sockets = handler.get_room_sockets(socket.hue_room_id)
+
+        for(let socc of sockets)
+        {
+            if(socc.hue_role.startsWith("op") && socc.hue_role !== "op_1")
+            {
+                socc.hue_role = 'op_1'
+                handler.update_user_in_userlist(socc)
+            }
+        }
+
+        db_manager.update_room(info._id, {keys:info.keys})
+        handler.room_emit(socket, 'ops_resetted', {username:socket.hue_username})
+        handler.push_admin_log_message(socket, "resetted the ops")
     }
 
     // Handles ops removal
@@ -155,7 +194,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         for(let key in info.keys)
         {
-            if(info.keys[key] === "op")
+            if(info.keys[key].startsWith("op"))
             {
                 delete info.keys[key]
                 removed = true
@@ -172,25 +211,22 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         for(let socc of sockets)
         {
-            if(socc.hue_role === 'op')
+            if(socc.hue_role.startsWith('op'))
             {
-                socc.hue_role = 'voice1'
-
+                socc.hue_role = 'voice_1'
                 handler.update_user_in_userlist(socc)
             }
         }
 
-        handler.room_emit(socket, 'announce_removedops', {username:socket.hue_username})
-
+        handler.room_emit(socket, 'announce_removed_ops', {username:socket.hue_username})
         db_manager.update_room(info._id, {keys:info.keys})
-
         handler.push_admin_log_message(socket, "removed the ops")
     }
 
     // Handles user kicks
     handler.public.kick = function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "kick"))
         {
             return handler.get_out(socket)
         }
@@ -214,7 +250,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         if(sockets.length > 0)
         {
-            if(((sockets[0].role === 'admin' || sockets[0].role === 'op') && socket.hue_role !== 'admin') || sockets[0].superuser)
+            if(((sockets[0].role === 'admin' || sockets[0].role.startsWith('op')) && socket.hue_role !== 'admin') || sockets[0].superuser)
             {
                 handler.user_emit(socket, 'forbidden_user', {})
                 return false
@@ -242,7 +278,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles user bans
     handler.public.ban = async function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "ban"))
         {
             return handler.get_out(socket)
         }
@@ -274,7 +310,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         let id = userinfo._id.toString()
         let current_role = info.keys[id]
 
-        if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
+        if((current_role === 'admin' || current_role.startsWith('op')) && socket.hue_role !== 'admin')
         {
             handler.user_emit(socket, 'forbidden_user', {})
             return false
@@ -326,7 +362,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles user unbans
     handler.public.unban = async function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "unban"))
         {
             return handler.get_out(socket)
         }
@@ -387,7 +423,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Unbans all banned users
     handler.public.unban_all = async function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "unban"))
         {
             return handler.get_out(socket)
         }
@@ -438,7 +474,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Checks if socket is admin or op
     handler.is_admin_or_op = function(socket)
     {
-        return socket.hue_role === 'admin' || socket.hue_role === 'op'
+        return socket.hue_role === 'admin' || socket.hue_role.startsWith('op')
     }
 
     // Prepares the user list to be sent on room joins
@@ -543,7 +579,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         {
             let role = info.keys[id]
 
-            if(role === "op" || role === "admin")
+            if(role.startsWith("op") || role === "admin")
             {
                 roles[id] = role
                 ids.push(id)

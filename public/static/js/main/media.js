@@ -1517,9 +1517,8 @@ Hue.configure_media_info = function()
 // Enables or disables media info
 Hue.change_media_info = function(media_info)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "media"))
     {
-        Hue.not_an_op()
         return false
     }
 

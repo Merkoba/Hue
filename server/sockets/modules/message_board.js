@@ -18,7 +18,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(socket.hue_role !== "admin" && !socket.hue_superuser)
+        if(!handler.check_op_permission(socket, "message_board_no_restriction") && !socket.hue_superuser)
         {
             for(let item of socket.hue_message_board_dates)
             {
@@ -70,10 +70,10 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         return `${Date.now()}_${utilz.random_sequence(3)}`
     }
 
-    // Deletes a message board post if user is admin
+    // Deletes a message board post
     handler.public.delete_message_board_post = async function(socket, data)
     {
-        if(socket.hue_role !== "admin" && !socket.hue_superuser)
+        if(!handler.check_op_permission(socket, "message_board_delete") && !socket.hue_superuser)
         {
             return handler.get_out(socket)
         }
@@ -99,10 +99,10 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         }
     }
 
-    // Deletes all message board posts if user is admin
+    // Deletes all message board posts
     handler.public.clear_message_board = async function(socket, data)
     {
-        if(socket.hue_role !== "admin" && !socket.hue_superuser)
+        if(!handler.check_op_permission(socket, "message_board_delete") && !socket.hue_superuser)
         {
             return handler.get_out(socket)
         }

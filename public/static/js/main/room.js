@@ -282,9 +282,8 @@ Hue.show_room = function()
 // Change the name of the room
 Hue.change_room_name = function(arg)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "name"))
     {
-        Hue.not_an_op()
         return false
     }
 
@@ -427,27 +426,24 @@ Hue.set_room_name = function(name)
 // Changes the topic
 Hue.change_topic = function(dtopic)
 {
-    if(Hue.is_admin_or_op())
+    if(!Hue.check_op_permission(Hue.role, "topic"))
     {
-        dtopic = Hue.utilz.clean_string2(dtopic.substring(0, Hue.config.max_topic_length))
-
-        if(dtopic.length > 0)
-        {
-            if(Hue.topic !== dtopic)
-            {
-                Hue.socket_emit('change_topic', {topic:dtopic})
-            }
-
-            else
-            {
-                Hue.feedback("Topic is already set to that")
-            }
-        }
+        return false
     }
 
-    else
+    dtopic = Hue.utilz.clean_string2(dtopic.substring(0, Hue.config.max_topic_length))
+
+    if(dtopic.length > 0)
     {
-        Hue.not_an_op()
+        if(Hue.topic !== dtopic)
+        {
+            Hue.socket_emit('change_topic', {topic:dtopic})
+        }
+
+        else
+        {
+            Hue.feedback("Topic is already set to that")
+        }
     }
 }
 
@@ -662,9 +658,8 @@ Hue.set_topic_info = function(data)
 // Changes the room privacy to public or private
 Hue.change_privacy = function(what)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "privacy"))
     {
-        Hue.not_an_op()
         return false
     }
 
@@ -725,9 +720,8 @@ Hue.set_log_enabled = function(what)
 // Enables or disables the log
 Hue.change_log = function(log)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "log"))
     {
-        Hue.not_an_op()
         return false
     }
 
@@ -750,6 +744,11 @@ Hue.change_log = function(log)
 // Clears the log
 Hue.clear_log = function(type="all", id=false)
 {
+    if(!Hue.check_op_permission(Hue.role, "log"))
+    {
+        return false
+    }
+
     if(!Hue.utilz.clear_log_types.includes(type))
     {
         Hue.feedback(`Invalid type. Available types are: ${Hue.utilz.clear_log_types.join(", ")}`)

@@ -1120,8 +1120,9 @@ Hue.announce_room_tv_mode_change = function(data)
     Hue.show_room_notification(data.username, `${data.username} changed the tv mode to ${data.what}`)
     Hue.set_room_tv_mode(data.what)
     Hue.change_tv_visibility(false)
-    Hue.check_permissions()
+    Hue.check_media_permissions()
     Hue.check_media_maxers()
+    Hue.update_footer_separators()
 }
 
 // Sets the media menu tv slider
@@ -1213,9 +1214,8 @@ Hue.fix_visible_video_frame = function()
 // Changes the room tv mode
 Hue.change_room_tv_mode = function(what)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "media"))
     {
-        Hue.not_an_op()
         return false
     }
 

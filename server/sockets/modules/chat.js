@@ -207,7 +207,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         {
             if(!message.data.user_id)
             {
-                if(!handler.is_admin_or_op(socket))
+                if(!handler.check_op_permission(socket, "delete_messages"))
                 {
                     return handler.get_out(socket)
                 }
@@ -218,7 +218,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
             else if(message.data.user_id !== socket.hue_user_id)
             {
-                if(!handler.is_admin_or_op(socket))
+                if(!handler.check_op_permission(socket, "delete_messages"))
                 {
                     return handler.get_out(socket)
                 }
@@ -238,7 +238,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
                 if(!socket.hue_superuser)
                 {
-                    if((current_role === 'admin' || current_role === 'op') && socket.hue_role !== 'admin')
+                    if((current_role === 'admin' || current_role.startsWith('op')) && socket.hue_role !== 'admin')
                     {
                         handler.user_emit(socket, 'forbidden_user', {})
                         return false

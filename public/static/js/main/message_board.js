@@ -19,7 +19,7 @@ Hue.setup_message_board = function()
 
     $("#message_board_container").on("click", ".message_board_delete", function()
     {
-        if(Hue.role !== "admin")
+        if(!Hue.check_op_permission(Hue.role, "message_board_delete"))
         {
             return false
         }
@@ -151,7 +151,7 @@ Hue.last_message_board_post_date_update = function(data)
 // Changes the post icon accordingly
 Hue.check_message_board_delay = function()
 {
-    if(Hue.role === "admin")
+    if(Hue.check_op_permission(Hue.role, "message_board_no_restriction"))
     {
         $("#message_board_post_textarea").css("display", "block")
         Hue.message_board_posting_enabled = true
@@ -244,24 +244,30 @@ Hue.save_last_message_board_post_checked = function(date)
     Hue.save_local_storage(Hue.ls_last_message_board_post_checked, Hue.last_message_board_post_checked)
 }
 
-// Checks if the user is an admin and can delete posts in the message board
+// Checks if the user can delete posts in the message board
 Hue.check_message_board_permissions = function()
 {
-    if(Hue.role === "admin")
+    if(Hue.check_op_permission(Hue.role, "message_board_no_restriction"))
     {
-        $("#message_board_container").addClass("message_board_container_admin")
         $("#message_board_post_textarea").attr("placeholder", "Write A Post")
     }
     
     else
     {
-        $("#message_board_container").removeClass("message_board_container_admin")
-
         let minutes = Math.round(Hue.config.message_board_post_delay / 60 / 1000)
         let mins = minutes === 1 ? "minute" : "minutes"
         let placeholder = `You can post once every ${minutes} ${mins}`
-
         $("#message_board_post_textarea").attr("placeholder", placeholder)
+    }
+
+    if(Hue.check_op_permission(Hue.role, "message_board_delete"))
+    {
+        $("#message_board_container").addClass("message_board_container_admin")
+    }
+
+    else
+    {
+        $("#message_board_container").removeClass("message_board_container_admin")
     }
 }
 
@@ -306,7 +312,7 @@ Hue.get_last_message_board_post_checked = function()
 // Deletes all message board posts
 Hue.clear_message_board = function()
 {
-    if(Hue.role !== "admin")
+    if(!Hue.check_op_permission(Hue.role, "message_board_delete"))
     {
         return false
     }

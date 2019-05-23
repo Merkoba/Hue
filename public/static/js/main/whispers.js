@@ -116,6 +116,22 @@ Hue.send_inline_whisper = function(arg, show=true)
 // Handles different whisper types
 Hue.write_popup_message = function(unames=[], type="user")
 {
+    if(type === "ops")
+    {
+        if(!Hue.check_op_permission(Hue.role, "whisper_ops"))
+        {
+            return false
+        }
+    }
+
+    else if(type === "room")
+    {
+        if(!Hue.check_op_permission(Hue.role, "broadcast"))
+        {
+            return false
+        }
+    }
+
     let title
 
     if(type === "user")
@@ -220,6 +236,22 @@ Hue.send_popup_message = function(force=false)
     if(Hue.sending_whisper)
     {
         return false
+    }
+
+    if(Hue.message_type === "ops")
+    {
+        if(!Hue.check_op_permission(Hue.role, "whisper_ops"))
+        {
+            return false
+        }
+    }
+
+    else if(Hue.message_type === "room")
+    {
+        if(!Hue.check_op_permission(Hue.role, "broadcast"))
+        {
+            return false
+        }
     }
 
     Hue.sending_whisper = true

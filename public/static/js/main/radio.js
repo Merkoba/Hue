@@ -1094,15 +1094,15 @@ Hue.announce_room_radio_mode_change = function(data)
     Hue.show_room_notification(data.username, `${data.username} changed the radio mode to ${data.what}`)
     Hue.set_room_radio_mode(data.what)
     Hue.change_radio_visibility()
-    Hue.check_permissions()
+    Hue.check_media_permissions()
+    Hue.update_footer_separators()
 }
 
 // Changes the room radio mode
 Hue.change_room_radio_mode = function(what)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "media"))
     {
-        Hue.not_an_op()
         return false
     }
 

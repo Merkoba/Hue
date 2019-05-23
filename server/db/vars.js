@@ -10,7 +10,7 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
 
     // Room and User versions
     // These must be increased by 1 when the schema changes
-    vars.rooms_version = 80
+    vars.rooms_version = 81
     vars.users_version = 49
 
     // Room schema definition
@@ -71,26 +71,14 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
         text_color_mode:{type:"string", default:"automatic"},
         text_color:{type:"string", default:"#cdcadf"},
         public:{type:"boolean", default:true},
-        voice1_chat_permission:{type:"boolean", default:true},
-        voice1_image_permission:{type:"boolean", default:true},
-        voice1_tv_permission:{type:"boolean", default:true},
-        voice1_radio_permission:{type:"boolean", default:true},
-        voice1_synth_permission:{type:"boolean", default:true},
-        voice2_chat_permission:{type:"boolean", default:true},
-        voice2_image_permission:{type:"boolean", default:true},
-        voice2_tv_permission:{type:"boolean", default:true},
-        voice2_radio_permission:{type:"boolean", default:true},
-        voice2_synth_permission:{type:"boolean", default:true},
-        voice3_chat_permission:{type:"boolean", default:true},
-        voice3_image_permission:{type:"boolean", default:true},
-        voice3_tv_permission:{type:"boolean", default:true},
-        voice3_radio_permission:{type:"boolean", default:true},
-        voice3_synth_permission:{type:"boolean", default:true},
-        voice4_chat_permission:{type:"boolean", default:true},
-        voice4_image_permission:{type:"boolean", default:true},
-        voice4_tv_permission:{type:"boolean", default:true},
-        voice4_radio_permission:{type:"boolean", default:true},
-        voice4_synth_permission:{type:"boolean", default:true},
+        voice_1_permissions:{type:"object", default:{}},
+        voice_2_permissions:{type:"object", default:{}},
+        voice_3_permissions:{type:"object", default:{}},
+        voice_4_permissions:{type:"object", default:{}},
+        op_1_permissions:{type:"object", default:{}},
+        op_2_permissions:{type:"object", default:{}},
+        op_3_permissions:{type:"object", default:{}},
+        op_4_permissions:{type:"object", default:{}},
         media_info:{type:"string", default:"enabled"},
         message_board_posts:{type:"object", default:[]},
         modified:{type:"number", default:Date.now()}

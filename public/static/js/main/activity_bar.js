@@ -196,7 +196,7 @@ Hue.push_to_activity_bar = function(uname, date)
 {
     let user = Hue.get_user_by_username(uname)
 
-    if(!user || !Hue.check_permission(user.role, "chat"))
+    if(!user || !Hue.check_media_permission(user.role, "chat"))
     {
         return false
     }

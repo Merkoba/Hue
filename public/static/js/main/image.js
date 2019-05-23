@@ -940,7 +940,7 @@ Hue.announce_room_image_mode_change = function(data)
     Hue.show_room_notification(data.username, `${data.username} changed the image mode to ${data.what}`)
     Hue.set_room_image_mode(data.what)
     Hue.change_image_visibility()
-    Hue.check_permissions()
+    Hue.check_media_permissions()
     Hue.check_media_maxers()
 }
 
@@ -1017,9 +1017,8 @@ Hue.process_image_upload_comment = function()
 // Changes the room image mode
 Hue.change_room_image_mode = function(what)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "media"))
     {
-        Hue.not_an_op()
         return false
     }
 

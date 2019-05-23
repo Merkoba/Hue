@@ -22,170 +22,207 @@
         </div>
 
         <div id='admin_menu'>
-            <div class='toggler_main_container'>
+            <div id='room_menu_main_container_media' class='toggler_main_container'>
                 <div id='room_menu_toggle_media' class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ Media</div>
 
                 <div class='toggler_container room_menu_toggle_container'>
-                    <div class='room_menu_label'>Image</div>
+                    <div class='room_menu_section_container'>
+                        <div class='room_menu_section'>
+                            <div class='room_menu_label'>Image</div>
+                            <select id='admin_enable_image' class='modal_select'>
+                                <option value="enabled">Enabled</option>
+                                <option value="disabled">Disabled</option>
+                                <option value="locked">Locked</option>
+                            </select>
+                        </div>
 
-                    <select id='admin_enable_image' class='admin_container_1 modal_select'>
-                        <option value="enabled">Enabled</option>
-                        <option value="disabled">Disabled</option>
-                        <option value="locked">Locked</option>
-                    </select>
+                        <div class='room_menu_section'>
+                            <div class='room_menu_label'>TV</div>
+                            <select id='admin_enable_tv' class='modal_select'>
+                                <option value="enabled">Enabled</option>
+                                <option value="disabled">Disabled</option>
+                                <option value="locked">Locked</option>
+                            </select>
+                        </div>
 
-                    <div class='room_menu_label'>TV</div>
+                        <div class='room_menu_section'>
+                            <div class='room_menu_label'>Radio</div>
+                            <select id='admin_enable_radio' class='modal_select'>
+                                <option value="enabled">Enabled</option>
+                                <option value="disabled">Disabled</option>
+                                <option value="locked">Locked</option>
+                            </select>
+                        </div>
 
-                    <select id='admin_enable_tv' class='admin_container_1 modal_select'>
-                        <option value="enabled">Enabled</option>
-                        <option value="disabled">Disabled</option>
-                        <option value="locked">Locked</option>
-                    </select>
+                        <div class='room_menu_section'>
+                            <div class='room_menu_label'>Synth</div>
+                            <select id='admin_enable_synth' class='modal_select'>
+                                <option value="enabled">Enabled</option>
+                                <option value="disabled">Disabled</option>
+                            </select>
+                        </div>
 
-                    <div class='room_menu_label'>Radio</div>
-
-                    <select id='admin_enable_radio' class='admin_container_1 modal_select'>
-                        <option value="enabled">Enabled</option>
-                        <option value="disabled">Disabled</option>
-                        <option value="locked">Locked</option>
-                    </select>
-
-                    <div class='room_menu_label'>Synth</div>
-
-                    <select id='admin_enable_synth' class='admin_container_1 modal_select'>
-                        <option value="enabled">Enabled</option>
-                        <option value="disabled">Disabled</option>
-                    </select>
-
-                    <div class='room_menu_label'>Media Info</div>
-
-                    <select id='admin_media_info' class='modal_select' title='This is the information below the Image and TV'>
-                        <option value="enabled">Enabled</option>
-                        <option value="disabled">Disabled</option>
-                    </select>
+                        <div class='room_menu_section'>
+                            <div class='room_menu_label'>Media Info</div>
+                            <select id='admin_media_info' class='modal_select' title='This is the information below the Image and TV'>
+                                <option value="enabled">Enabled</option>
+                                <option value="disabled">Disabled</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class='toggler_main_container'>
+            <div id='room_menu_main_container_theme' class='toggler_main_container'>
                 <div id='room_menu_toggle_theme' class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ Theme</div>
 
                 <div class='toggler_container room_menu_toggle_container'>
-                    <div class='room_menu_label'>Theme Mode</div>
+                    <div class='room_menu_section_container'>
+                        <div class='room_menu_section'>
+                            <div class='room_menu_label'>Theme Mode</div>
+                            <select class='modal_select' id='admin_theme_mode_select'>
+                                <option value="automatic">Automatic</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </div>
 
-                    <select class='admin_container_1 modal_select' id='admin_theme_mode_select'>
-                        <option value="automatic">Automatic</option>
-                        <option value="custom">Custom</option>
-                    </select>
+                        <div class='room_menu_section'>
+                            <div id='admin_theme_mode_container'>
+                                <div class='room_menu_label'>Theme</div>
+                                <input type='color' id='admin_theme'>
+                            </div>
+                        </div>
 
-                    <div class='admin_container_1' id='admin_theme_mode_container'>
-                        <div class='room_menu_label'>Theme</div>
-                        <input type='color' id='admin_theme'>
-                    </div>
+                        <div class='room_menu_section'>
+                            <div class='room_menu_label'>Text Color Mode</div>
+                            <select class='modal_select' id='admin_text_color_mode_select'>
+                                <option value="automatic">Automatic</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                        </div>
 
-                    <div class='room_menu_label'>Text Color Mode</div>
-
-                    <select class='modal_select' id='admin_text_color_mode_select'>
-                        <option value="automatic">Automatic</option>
-                        <option value="custom">Custom</option>
-                    </select>
-
-                    <div class='admin_container_2' id='admin_text_color_container'>
-                        <div class='room_menu_label'>Text Color</div>
-                        <input type='color' id='admin_text_color'>
+                        <div class='room_menu_section'>
+                            <div id='admin_text_color_container'>
+                                <div class='room_menu_label'>Text Color</div>
+                                <input type='color' id='admin_text_color'>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class='toggler_main_container'>
+            <div id='room_menu_main_container_background' class='toggler_main_container'>
                 <div id='room_menu_toggle_background' class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ Background</div>
 
                 <div class='toggler_container room_menu_toggle_container'>
-                    <div class='room_menu_label'>Background Mode</div>
+                    <div class='room_menu_section_container'>
+                        <div class='room_menu_section'>
+                            <div class='room_menu_label'>Background Mode</div>
+                            <select class='modal_select' id='admin_background_mode_select'>
+                                <option value="normal">Normal</option>
+                                <option value="tiled">Tiled</option>
+                                <option value="mirror">Mirror</option>
+                                <option value="mirror_tiled">Mirror Tiled</option>
+                                <option value="solid">Solid</option>
+                            </select>
+                        </div>
 
-                    <select class='modal_select' id='admin_background_mode_select'>
-                        <option value="normal">Normal</option>
-                        <option value="tiled">Tiled</option>
-                        <option value="mirror">Mirror</option>
-                        <option value="mirror_tiled">Mirror Tiled</option>
-                        <option value="solid">Solid</option>
-                    </select>
+                        <div class='room_menu_section'>
+                            <div id='admin_background_effect_container'>
+                                <div class='room_menu_label'>Background Effect</div>
+                                <select class='modal_select' id='admin_background_effect_select'>
+                                    <option value="none">None</option>
+                                    <option value="blur">Blur</option>
+                                    <option value="grayscale">Grayscale</option>
+                                    <option value="saturate">Saturate</option>
+                                    <option value="brightness">Brightness</option>
+                                </select>
+                            </div>
+                        </div>
 
-                    <div class='admin_container_2' id='admin_background_effect_container'>
-                        <div class='room_menu_label'>Background Effect</div>
+                        <div class='room_menu_section'>
+                            <div id='admin_background_tile_dimensions_container'>
+                                <div class='small_padding_bottom'>Tile Dimensions</div>
+                                <input type='text' class='setting_input_text_small' id='admin_background_tile_dimensions' title='CSS background-size property (width and height). For example 200px 200px, 100px auto, auto 100px, or 100px 200px'>
+                            </div>
+                        </div>
 
-                        <select class='modal_select' id='admin_background_effect_select'>
-                            <option value="none">None</option>
-                            <option value="blur">Blur</option>
-                            <option value="grayscale">Grayscale</option>
-                            <option value="saturate">Saturate</option>
-                            <option value="brightness">Brightness</option>
-                        </select>
-                    </div>
-
-                    <div class='admin_container_2' id='admin_background_tile_dimensions_container'>
-                        <div class='small_padding_bottom'>Tile Dimensions</div>
-                        <input type='text' class='setting_input_text_small' id='admin_background_tile_dimensions' title='CSS background-size property (width and height). For example 200px 200px, 100px auto, auto 100px, or 100px 200px'>
-                    </div>
-
-                    <div class='admin_container_2' id='admin_background_image_container'>
-                        <img class='small_square_image pointer' id='admin_background_image' onclick='Hue.open_background_image_select()'>
+                        <div class='room_menu_section'>
+                            <div id='admin_background_image_container'>
+                                <img class='small_square_image pointer' id='admin_background_image' onclick='Hue.open_background_image_select()'>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class='toggler_main_container'>
-                <div id='room_menu_toggle_permissions' class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ Permissions</div>
+            <div id='room_menu_main_container_voice_permissions' class='toggler_main_container'>
+                <div id='room_menu_toggle_voice_permissions' class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ Voice Permissions</div>
 
                 <div class='toggler_container room_menu_toggle_container'>
-                    <div>{{{permissions_containers}}}</div>
+                    <div>{{{voice_permissions_containers}}}</div>
                 </div>
             </div>
 
-            <div class='toggler_main_container'>
+            <div id='room_menu_main_container_op_permissions' class='toggler_main_container'>
+                <div id='room_menu_toggle_op_permissions' class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ Op Permissions</div>
+
+                <div class='toggler_container room_menu_toggle_container'>
+                    <div>{{{op_permissions_containers}}}</div>
+                </div>
+            </div>
+
+            <div id='room_menu_main_container_room_config' class='toggler_main_container'>
                 <div id='room_menu_toggle_room_config' class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ Room Config</div>
-
                 <div class='toggler_container room_menu_toggle_container'>
-                    <div class='room_menu_label'>Privacy</div>
+                    <div class='room_menu_section_container'>
+                        <div id='room_menu_privacy_container' class='room_menu_section'>
+                            <div class='room_menu_label'>Privacy</div>
+                            <select id='admin_privacy' class='modal_select'>
+                                <option value="true">Public</option>
+                                <option value="false">Private</option>
+                            </select>
+                        </div>
 
-                    <select id='admin_privacy' class='admin_container_1 modal_select'>
-                        <option value="true">Public</option>
-                        <option value="false">Private</option>
-                    </select>
+                        <div id='room_menu_log_container' class='room_menu_section'>
+                            <div class='room_menu_label'>Log</div>
+                            <select id='admin_log' class='modal_select'>
+                                <option value="true">Enabled</option>
+                                <option value="false">Disabled</option>
+                            </select>
+                        </div>
 
-                    <div class='room_menu_label'>Log</div>
-
-                    <select id='admin_log' class='admin_container_1 modal_select'>
-                        <option value="true">Enabled</option>
-                        <option value="false">Disabled</option>
-                    </select>
-
-                    <div class='room_menu_label'>Room Name</div>
-
-                    <input type="text" class="admin_container_1 setting_input_text" id="admin_room_name">
-
-                    <div class='small_padding_bottom'>Topic</div>
-
-                    <textarea class='setting_textarea' rows=4 id="admin_topic"></textarea>
+                        <div id='room_menu_room_name_container' class='room_menu_section'>
+                            <div class='room_menu_label'>Room Name</div>
+                            <input type="text" class="setting_input_text" id="admin_room_name">
+                        </div>
+                        
+                        <div id='room_menu_topic_container' class='room_menu_section'>
+                            <div class='small_padding_bottom'>Topic</div>
+                            <textarea class='setting_textarea' rows=4 id="admin_topic"></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class='toggler_main_container'>
+            <div id='room_menu_main_container_more' class='toggler_main_container'>
                 <div id='room_menu_toggle_more' class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ More</div>
 
                 <div class='toggler_container room_menu_toggle_container'>
                     <div id='room_menu_more_container' class='grid_column_center'>
-                        <div class='pointer action' onclick='Hue.write_popup_message(false, "room")'>Broadcast</div>
-                        <div class='pointer action' onclick='Hue.write_popup_message(false, "ops")'>Whisper OPs</div>
-                        <div class='pointer action' onclick='Hue.needs_confirm("reset_voices")'>Reset Voices</div>
-                        <div class='pointer action' onclick='Hue.needs_confirm("remove_ops")'>Remove Ops</div>
-                        <div class='pointer action' onclick='Hue.get_ban_count()'>Banned Count</div>
-                        <div class='pointer action' onclick='Hue.needs_confirm("unban_all")'>Unban All</div>
-                        <div class='pointer action' onclick='Hue.request_admin_activity()'>Admin Activity</div>
-                        <div class='pointer action' onclick='Hue.request_access_log()'>Access Log</div>
-                        <div class='pointer action' onclick='Hue.request_admin_list()'>Admin List</div>
-                        <div class='pointer action' onclick='Hue.request_ban_list()'>Ban List</div>
-                        <div class='pointer action' onclick='Hue.needs_confirm("clear_log")'>Clear Log</div>
-                        <div class='pointer action' onclick='Hue.needs_confirm("clear_message_board")'>Clear Message Board</div>
+                        <div id='room_menu_more_broadcast' class='pointer action' onclick='Hue.write_popup_message(false, "room")'>Broadcast</div>
+                        <div id='room_menu_more_whisper_ops' class='pointer action' onclick='Hue.write_popup_message(false, "ops")'>Whisper OPs</div>
+                        <div id='room_menu_more_reset_voices' class='pointer action' onclick='Hue.needs_confirm("reset_voices")'>Reset Voices</div>
+                        <div id='room_menu_more_reset_ops' class='pointer action' onclick='Hue.needs_confirm("reset_ops")'>Reset Ops</div>
+                        <div id='room_menu_more_remove_ops' class='pointer action' onclick='Hue.needs_confirm("remove_ops")'>Remove Ops</div>
+                        <div id='room_menu_more_banned_count' class='pointer action' onclick='Hue.get_ban_count()'>Banned Count</div>
+                        <div id='room_menu_more_unban_all' class='pointer action' onclick='Hue.needs_confirm("unban_all")'>Unban All</div>
+                        <div id='room_menu_more_admin_activity' class='pointer action' onclick='Hue.request_admin_activity()'>Admin Activity</div>
+                        <div id='room_menu_more_access_log' class='pointer action' onclick='Hue.request_access_log()'>Access Log</div>
+                        <div id='room_menu_more_admin_list' class='pointer action' onclick='Hue.request_admin_list()'>Admin List</div>
+                        <div id='room_menu_more_ban_list' class='pointer action' onclick='Hue.request_ban_list()'>Ban List</div>
+                        <div id='room_menu_more_clear_log' class='pointer action' onclick='Hue.needs_confirm("clear_log")'>Clear Log</div>
+                        <div id='room_menu_more_clear_message_board' class='pointer action' onclick='Hue.needs_confirm("clear_message_board")'>Clear Message Board</div>
                     </div>
                 </div>
             </div>

@@ -661,7 +661,8 @@ Hue.start_msg = function()
 
     Hue.msg_room_menu.set(Hue.template_room_menu(
     {
-        permissions_containers: Hue.make_room_menu_permissions_container()
+        voice_permissions_containers: Hue.make_room_menu_voice_permissions_container(),
+        op_permissions_containers: Hue.make_room_menu_op_permissions_container()
     }))
 
     Hue.msg_global_settings.set(Hue.template_global_settings(

@@ -969,6 +969,12 @@ a.generic:link, a.generic:visited, a.generic:hover
 	height: 1.5em;
 }
 
+.admin_op_permissions_checkbox
+{
+	width: 1.5em;
+	height: 1.5em;
+}
+
 .Msg-content
 {
 	font-size: 1em !important;
@@ -3029,29 +3035,29 @@ a.special_link:hover
 	margin: auto;
 }
 
-.room_menu_permissions_container
+.room_menu_tree_container
 {
 	margin-top: 2rem;
 	grid-gap: 2rem;
 }
 
-.room_menu_permissions_container:last-child
+.room_menu_tree_container:last-child
 {
 	padding-bottom: 0;
 }
 
-.room_menu_permissions_toggler_item
+.room_menu_tree_toggler_item
 {
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 }
 
-.room_menu_permissions_toggler_item:first-child
+.room_menu_tree_toggler_item:first-child
 {
 	padding-top: 0;
 }
 
-.room_menu_permissions_toggler_item:last-child
+.room_menu_tree_toggler_item:last-child
 {
 	padding-bottom: 0;
 }
@@ -3080,19 +3086,17 @@ a.special_link:hover
 	margin-bottom: 0.5rem;
 }
 
+.room_menu_section_container
+{
+	display: grid;
+	grid-gap: 2rem;
+	grid-auto-columns: auto;
+	align-items: center;
+}
+
 .room_menu_label
 {
 	padding-bottom: 0.5rem;
-}
-
-.admin_container_1
-{
-	margin-bottom: 2rem;
-}
-
-.admin_container_2
-{
-	margin-top: 2rem;
 }
 
 #create_room

@@ -3,7 +3,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles theme mode changes
     handler.public.change_theme_mode = function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "theme"))
         {
             return handler.get_out(socket)
         }
@@ -30,7 +30,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles theme changes
     handler.public.change_theme = function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "theme"))
         {
             return handler.get_out(socket)
         }
@@ -67,7 +67,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles background mode changes
     handler.public.change_background_mode = function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "background"))
         {
             return handler.get_out(socket)
         }
@@ -99,7 +99,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles background effect changes
     handler.public.change_background_effect = function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "background"))
         {
             return handler.get_out(socket)
         }
@@ -133,7 +133,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles background tile dimension changes
     handler.public.change_background_tile_dimensions = function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "background"))
         {
             return handler.get_out(socket)
         }
@@ -165,7 +165,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles text color mode changes
     handler.public.change_text_color_mode = function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "theme"))
         {
             return handler.get_out(socket)
         }
@@ -192,7 +192,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles text color changes
     handler.public.change_text_color = function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "theme"))
         {
             return handler.get_out(socket)
         }
@@ -266,7 +266,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles background image source changes
     handler.public.change_background_image_source = function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "background"))
         {
             return handler.get_out(socket)
         }

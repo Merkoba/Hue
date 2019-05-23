@@ -1,0 +1,29 @@
+<script id='template_room_menu_voice_permissions_container' type='text/x-handlebars-template' class='template'>
+    <div class='toggler_main_container room_menu_voice_permissions_toggler_item room_menu_tree_toggler_item'>
+        <div class='toggler room_menu_voice_permissions_toggle bold pointer action inline'>+ Voice {{number}} Permissions</div>
+        <div class='toggler_container room_menu_voice_permissions_toggle_container'>
+            <div class='room_menu_voice_permissions_container room_menu_tree_container grid_column_center'>
+                <div>
+                    <div class='setting_title'>Can Chat</div>
+                    <input type="checkbox" class="admin_voice_permissions_checkbox" data-vtype="voice_{{number}}" data-ptype="chat">
+                </div>
+                <div>
+                    <div class='setting_title'>Can Change the Image</div>
+                    <input type="checkbox" class="admin_voice_permissions_checkbox" data-vtype="voice_{{number}}" data-ptype="image">
+                </div>
+                <div>
+                    <div class='setting_title'>Can Change the TV</div>
+                    <input type="checkbox" class="admin_voice_permissions_checkbox" data-vtype="voice_{{number}}" data-ptype="tv">
+                </div>
+                <div>
+                    <div class='setting_title'>Can Change the Radio</div>
+                    <input type="checkbox" class="admin_voice_permissions_checkbox" data-vtype="voice_{{number}}" data-ptype="radio">
+                </div>
+                <div>
+                    <div class='setting_title'>Can Use The Synth</div>
+                    <input type="checkbox" class="admin_voice_permissions_checkbox" data-vtype="voice_{{number}}" data-ptype="synth">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

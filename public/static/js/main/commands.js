@@ -145,41 +145,65 @@ Hue.commands =
     {
         action: (arg, ans) =>
         {
-            Hue.change_role(arg, "voice1")
+            Hue.change_role(arg, "voice_1")
         },
-        description: `Gives voice 1 to a user`
+        description: `Gives voice_1 to a user`
     },
     "/voice2":
     {
         action: (arg, ans) =>
         {
-            Hue.change_role(arg, "voice2")
+            Hue.change_role(arg, "voice_2")
         },
-        description: `Gives voice 2 to a user`
+        description: `Gives voice_2 to a user`
     },
     "/voice3":
     {
         action: (arg, ans) =>
         {
-            Hue.change_role(arg, "voice3")
+            Hue.change_role(arg, "voice_3")
         },
-        description: `Gives voice 3 to a user`
+        description: `Gives voice_3 to a user`
     },
     "/voice4":
     {
         action: (arg, ans) =>
         {
-            Hue.change_role(arg, "voice4")
+            Hue.change_role(arg, "voice_4")
         },
-        description: `Gives voice 4 to a user`
+        description: `Gives voice_4 to a user`
     },
-    "/op":
+    "/op1":
     {
         action: (arg, ans) =>
         {
-            Hue.change_role(arg, "op")
+            Hue.change_role(arg, "op_1")
         },
-        description: `Gives op to a user. Ops can do anything an admin can do except more high level commands`
+        description: `Gives op_1 to a user`
+    },
+    "/op2":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.change_role(arg, "op_2")
+        },
+        description: `Gives op_2 to a user`
+    },
+    "/op3":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.change_role(arg, "op_3")
+        },
+        description: `Gives op_3 to a user`
+    },
+    "/op4":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.change_role(arg, "op_4")
+        },
+        description: `Gives op_4 to a user`
     },
     "/admin":
     {
@@ -195,7 +219,15 @@ Hue.commands =
         {
             Hue.reset_voices()
         },
-        description: `Turns all voices above 1 to voice 1`
+        description: `Turns all voices above 1 to voice_1`
+    },
+    "/resetops":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.reset_ops()
+        },
+        description: `Turns all ops above 1 to op_1`
     },
     "/removeops":
     {
