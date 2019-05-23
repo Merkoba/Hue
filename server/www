@@ -171,14 +171,22 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 			})
 		}
 
-		// process.on('SIGINT', function()
+		process.on('SIGINT', function()
+		{
+			if(process.env.NODE_ENV === "development")
+			{
+				process.exit(0);
+			}
+
+			else
+			{
+				do_shutdown()
+			}
+		})
+
+		// process.on('SIGTERM', function()
 		// {
 		// 	do_shutdown()
 		// })
-
-		process.on('SIGTERM', function()
-		{
-			do_shutdown()
-		})
 	}
 })
