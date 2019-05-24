@@ -1828,9 +1828,9 @@ Hue.commands =
     {
         action: (arg, ans) =>
         {
-            Hue.show_message_board()
+            Hue.show_message_board(arg)
         },
-        description: `Opens the message board`
+        description: `Opens the message board. Accepts a filter as an argument`
     },
     "/clearmessageboard":
     {
