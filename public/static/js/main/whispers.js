@@ -352,16 +352,18 @@ Hue.sent_popup_message_function = function(mode, message, draw_coords, data1=[])
     }
 
     let h = `<div class='small_button action' id='modal_popup_feedback_send'>${s1}</div>`
-    let ch
+    let ch, no_spacing
 
     if(draw_coords)
     {
         ch = "<canvas id='modal_popup_feedback_draw' class='draw_canvas' width='400px' height='300px' tabindex=1></canvas>"
+        no_spacing = false
     }
 
     else
     {
         ch = ""
+        no_spacing = true
     }
 
     if(ch)
@@ -374,13 +376,15 @@ Hue.sent_popup_message_function = function(mode, message, draw_coords, data1=[])
         text: message,
         html: h,
         remove_text_if_empty: true,
-        no_spacing: true,
+        no_spacing: no_spacing,
         date: Date.now()
     })
 
     let f = function()
     {
-        Hue.msg_info2.show([Hue.make_safe({text:s2, onclick:ff}), s], function()
+        let content = `<div class='whisper_info_container'>${s.outerHTML}</div>`
+
+        Hue.msg_info2.show([Hue.make_safe({text:s2, onclick:ff}), content], function()
         {
             $("#modal_popup_feedback_send").click(cf)
 
@@ -707,19 +711,21 @@ Hue.popup_message_received = function(data, type="user", announce=true, method="
 // Shows and configures the whisper popup
 Hue.show_popup_message = function(data, method="popup")
 {
-    let pop
+    let pop, content
 
     if(method === "popup")
     {
         pop = Hue.create_popup({position:"top", id:`popup_message_${data.id}`})
+        content = data.content
     }
 
     else if(method === "modal")
     {
         pop = Hue.msg_info2
+        content = `<div class='whisper_info_container'>${data.content.outerHTML}</div>`
     }
 
-    pop.show([data.title, data.content], function()
+    pop.show([data.title, content], function()
     {
         $(pop.content).find(".show_message_reply").eq(0).click(function()
         {
@@ -794,7 +800,7 @@ Hue.push_whisper = function(message, on_click)
     let d = Date.now()
     let t = Hue.utilz.nice_date(d)
 
-    let message_html = `<div class='whispers_messasge'>${Hue.utilz.make_html_safe(message)}</div>`
+    let message_html = `<div class='whispers_message'>${Hue.utilz.make_html_safe(message)}</div>`
     let item = $(`<div class='whispers_item modal_item'><div class='whispers_item_content action pointer dynamic_title'>${message_html}</div>`)
     let content = item.find(".whispers_item_content").eq(0)
 

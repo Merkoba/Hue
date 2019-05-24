@@ -1627,6 +1627,7 @@ input[type=text], textarea
 {
 	outline: none;
 	display: block;
+	margin: 0 auto;
 }
 
 .draw_canvas_received
@@ -3332,6 +3333,11 @@ pre
 	grid-gap: 1.2rem;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
+}
+
+.whisper_info_container
+{
+	max-width: 420px;
 }
 
 .whispers_item_content
