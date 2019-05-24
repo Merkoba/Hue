@@ -369,6 +369,7 @@ Hue.update_chat = function(args={})
         brk: false,
         public: true,
         link_title: false,
+        link_description: false,
         link_image: false,
         link_url: false,
         edited: false,
@@ -431,7 +432,14 @@ Hue.update_chat = function(args={})
 
     if(!starts_me && !image_preview && args.link_url && Hue.get_setting("show_link_previews"))
     {
-        let ans = Hue.make_link_preview(args.message, args.link_url, args.link_title, args.link_image)
+        let ans = Hue.make_link_preview(
+        {
+            message: args.message, 
+            image: args.link_image,
+            title: args.link_title, 
+            description: args.link_description
+        })
+
         link_preview = ans.link_preview
         link_preview_text = ans.link_preview_text
     }
@@ -723,6 +731,7 @@ Hue.chat_announce = function(args={})
         open_profile: false,
         public: false,
         link_title: false,
+        link_description: false,
         link_image: false,
         link_url: false,
         preview_image: false,
@@ -824,7 +833,14 @@ Hue.chat_announce = function(args={})
 
     if(!image_preview && args.link_url && Hue.get_setting("show_link_previews"))
     {
-        let ans = Hue.make_link_preview(args.message, args.link_url, args.link_title, args.link_image)
+        let ans = Hue.make_link_preview(
+        {
+            message: args.message, 
+            image: args.link_image,
+            title: args.link_title, 
+            description: args.link_description
+        })
+
         link_preview = ans.link_preview
         link_preview_text = ans.link_preview_text
     }
@@ -2267,6 +2283,7 @@ Hue.on_chat_message = function(data)
         prof_image: data.profile_image,
         date: data.date,
         link_title: data.link_title,
+        link_description: data.link_description,
         link_image: data.link_image,
         link_url: data.link_url,
         edited: data.edited,
@@ -2805,6 +2822,100 @@ Hue.show_highlights = function(filter=false)
     })
 }
 
+// Make link preview elements
+Hue.make_link_preview = function(args={})
+{
+    args.message = args.message ? args.message : ""
+    args.image = args.image ? args.image : ""
+    args.title = args.title ? args.title : ""
+    args.description = args.description ? args.description : ""
+
+    let ans = {}
+    ans.link_preview = false
+
+    let link_preview_classes = args.image ? "link_preview link_preview_with_image" : "link_preview link_preview_no_image"
+    let link_preview_image_classes = args.image ? "link_preview_image" : "nodisplay"
+    let link_preview_title_classes = args.title ? "link_preview_title action" : "nodisplay"
+    let link_preview_description_classes = args.description ? "link_preview_description" : "nodisplay"
+
+    let link_preview_text_content_classes = "link_preview_text_content"
+
+    if(args.title && args.description)
+    {
+        link_preview_text_content_classes += " link_preview_text_content_full"
+    }
+
+    if(!args.title && !args.description)
+    {
+        link_preview_text_content_classes = "nodisplay"
+    }
+
+    let link_preview_s =
+    `<div class='${link_preview_classes}'>
+        <img class='${link_preview_image_classes}' src='${args.image}'>
+        <div class='${link_preview_text_content_classes}'>
+            <div class='${link_preview_title_classes}'>${Hue.utilz.make_html_safe(args.title)}</div>
+            <div class='${link_preview_description_classes}'>${Hue.utilz.make_html_safe(args.description)}</div>
+        </div>
+    </div>`
+
+    if(link_preview_s)
+    {
+        ans.link_preview = link_preview_s
+
+        let text = Hue.replace_markdown(Hue.utilz.make_html_safe(args.message))
+        let stext = `<div class='link_preview_text'>${text}</div>`
+
+        ans.link_preview_text = text
+        ans.link_preview = stext + ans.link_preview
+    }
+
+    return ans
+}
+
+// Setups link preview elements
+Hue.setup_link_preview = function(fmessage, link_url, user_id)
+{
+    let started = Hue.started
+    let link_preview_el = fmessage.find(".link_preview").eq(0)
+    let link_preview_image = link_preview_el.find(".link_preview_image").eq(0)
+    let link_preview_title = link_preview_el.find(".link_preview_title").eq(0)
+
+    let f = function()
+    {
+        Hue.open_url_menu({source:link_url, title:link_preview_title.text()})
+    }
+
+    if(link_preview_title.length > 0)
+    {
+        link_preview_title.click(f)
+    }
+    
+    if(link_preview_image.length > 0)
+    {
+        link_preview_image.click(function(e)
+        {
+            e.stopPropagation()
+            Hue.expand_image($(this).attr("src").replace(".gifv", ".gif"))
+        })
+
+        link_preview_image[0].addEventListener("load", function()
+        {
+            if(user_id === Hue.user_id || !started)
+            {
+                Hue.goto_bottom(true, false)
+            }
+
+            else
+            {
+                Hue.goto_bottom(false, false)
+            }
+        })
+    }
+
+    link_preview_el.parent().find(".link_preview_text").eq(0).urlize()
+}
+
 // Makes image preview elements
 Hue.make_image_preview = function(message)
 {
@@ -2847,52 +2958,6 @@ Hue.make_image_preview = function(message)
     return ans
 }
 
-// Make link preview elements
-Hue.make_link_preview = function(message, link_url, link_title, link_image)
-{
-    let ans = {}
-    ans.link_preview = false
-    let link_preview_s = false
-
-    if(link_title && link_image)
-    {
-        link_preview_s =
-        `<div class='link_preview action'>
-        <div class='link_preview_image_with_title'><img class='link_preview_image' src='${link_image}'></div>
-            <div class='link_preview_title link_preview_title_with_image'>${Hue.utilz.make_html_safe(link_title)}</div>
-        </div>`
-    }
-
-    else if(link_title)
-    {
-        link_preview_s =
-        `<div class='link_preview action'>
-            <div class='link_preview_title'>${Hue.utilz.make_html_safe(link_title)}</div>
-        </div>`
-    }
-
-    else if(link_image)
-    {
-        link_preview_s =
-        `<div class='link_preview action'>
-            <img class='link_preview_image' src='${link_image}'>
-        </div>`
-    }
-
-    if(link_preview_s)
-    {
-        ans.link_preview = link_preview_s
-
-        let text = Hue.replace_markdown(Hue.utilz.make_html_safe(message))
-        let stext = `<div class='link_preview_text'>${text}</div>`
-
-        ans.link_preview_text = text
-        ans.link_preview = stext + ans.link_preview
-    }
-
-    return ans
-}
-
 // Setups image preview elements
 Hue.setup_image_preview = function(fmessage, image_preview_src_original, user_id)
 {
@@ -2926,45 +2991,6 @@ Hue.setup_image_preview = function(fmessage, image_preview_src_original, user_id
     })
 
     image_preview_el.parent().find(".image_preview_text").eq(0).urlize()
-}
-
-// Setups link preview elements
-Hue.setup_link_preview = function(fmessage, link_url, user_id)
-{
-    let started = Hue.started
-    let link_preview_el = fmessage.find(".link_preview").eq(0)
-    let link_preview_title = link_preview_el.find(".link_preview_title").eq(0)
-
-    link_preview_el.click(function()
-    {
-        Hue.open_url_menu({source:link_url, title:link_preview_title.text()})
-    })
-
-    let link_preview_image = link_preview_el.find(".link_preview_image").eq(0)
-
-    if(link_preview_image.length > 0)
-    {
-        link_preview_image[0].addEventListener("load", function()
-        {
-            if(user_id === Hue.user_id || !started)
-            {
-                Hue.goto_bottom(true, false)
-            }
-
-            else
-            {
-                Hue.goto_bottom(false, false)
-            }
-        })
-    }
-
-    link_preview_image.click(function(e)
-    {
-        e.stopPropagation()
-        Hue.expand_image($(this).attr("src").replace(".gifv", ".gif"))
-    })
-
-    link_preview_el.parent().find(".link_preview_text").eq(0).urlize()
 }
 
 // Sends a chat message through the say command
@@ -3122,6 +3148,7 @@ Hue.show_announcement = function(data, date=Date.now())
         date: date,
         preview_image: true,
         link_title: data.link_title,
+        link_description: data.link_description,
         link_image: data.link_image,
         link_url: data.link_url
     })
@@ -3232,6 +3259,7 @@ Hue.show_log_messages = function()
                         message: data.content,
                         prof_image: data.profile_image,
                         link_title: data.link_title,
+                        link_description: data.link_description,
                         link_image: data.link_image,
                         link_url: data.link_url,
                         date: date,

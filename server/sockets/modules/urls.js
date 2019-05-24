@@ -103,6 +103,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         let response =
         {
             title: "",
+            description: "",
             image: "",
             url: url
         }
@@ -140,23 +141,36 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         .then(body =>
         {
             let $ = vars.cheerio.load(body)
-            let title = ""
 
             if($("title").length > 0)
             {
-                title = utilz.clean_string2($("title").eq(0).text().substring(0, config.link_max_title_length)) || ""
+                response.title = utilz.clean_string2($("title").eq(0).text()) || ""
             }
 
             else if($('meta[property="og:title"]').length > 0)
             {
-                title = utilz.clean_string2($('meta[property="og:title"]').eq(0).attr('content').substring(0, config.link_max_title_length)) || ""
+                response.title = utilz.clean_string2($('meta[property="og:title"]').eq(0).attr('content')) || ""
             }
 
-            response.title = title
+            let title_add_dots = response.title.length > config.link_max_title_length
 
-            response.image = $('meta[property="og:image"]').attr('content') || ""
+            if(title_add_dots)
+            {
+                response.title = response.title.substring(0, config.link_max_title_length).trim() + "..."
+            }
 
-            if(response.image.length > config.safe_limit_3)
+            response.description = utilz.clean_string2($('meta[property="og:description"]').eq(0).attr('content')) || ""
+            
+            let description_add_dots = response.description.length > config.link_max_description_length
+            
+            if(description_add_dots)
+            {
+                response.description = response.description.substring(0, config.link_max_description_length).trim() + "..."
+            }
+            
+            response.image = $('meta[property="og:image"]').eq(0).attr('content') || ""
+
+            if(response.image.length > config.link_max_image_length)
             {
                 response.image = ""
             }
@@ -167,6 +181,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 (
                     `hue_link_${url}`,
                     "title", response.title,
+                    "description", response.description,
                     "image", response.image,
                     "url", response.url,
                     "date", Date.now()
@@ -184,6 +199,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 (
                     `hue_link_${url}`,
                     "title", response.title,
+                    "description", response.description,
                     "image", response.image,
                     "url", response.url,
                     "date", Date.now()

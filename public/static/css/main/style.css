@@ -2587,7 +2587,6 @@ a.special_link:hover
 	background-color: grey;
 	display: flex;
 	flex-direction: row;
-	cursor: pointer;
 	align-items: center;
 	justify-content: flex-start;
 	padding: 0.5rem;
@@ -2602,7 +2601,18 @@ a.special_link:hover
 	justify-content: flex-start;
 }
 
-.link_preview_title_with_image
+.link_preview_text_content
+{
+	display: flex;
+	flex-direction: column;
+}
+
+.link_preview_text_content_full .link_preview_title
+{
+	margin-bottom: 0.5rem;
+}
+
+.link_preview_with_image .link_preview_text_content
 {
 	margin-left: 1rem;
 	margin-right: 1rem;
@@ -2610,6 +2620,7 @@ a.special_link:hover
 
 .link_preview_title
 {
+	cursor: pointer;
 	font-size: 1.1em;
 	overflow-wrap: break-word;
 	word-break: break-word;
@@ -2617,6 +2628,7 @@ a.special_link:hover
 
 .link_preview_image
 {
+	cursor: pointer;
 	max-width: 120px;
 	max-height: 120px;
 	object-fit: contain;

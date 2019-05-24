@@ -81,6 +81,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 id: id,
                 message: message,
                 link_title: response.title,
+                link_description: response.description,
                 link_image: response.image,
                 link_url: response.url
             })
@@ -96,6 +97,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                     {
                         message: message,
                         link_title: response.title,
+                        link_description: response.description,
                         link_image: response.image,
                         link_url: response.url
                     }
