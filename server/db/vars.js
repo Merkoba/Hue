@@ -6,7 +6,7 @@ module.exports = function(vars, manager, db, config, sconfig, utilz, logger)
     vars.mongo = require('mongodb')
     vars.bcrypt = require('bcrypt')
     vars.mailgun = require('mailgun-js')({apiKey: sconfig.mailgun_api_key, domain: sconfig.mailgun_domain})
-    vars.reserved_usernames = ["The system", config.image_ads_setter].map(x => x.toLowerCase())
+    vars.reserved_usernames = [config.system_username, config.image_ads_setter].map(x => x.toLowerCase())
 
     // Room and User versions
     // These must be increased by 1 when the schema changes

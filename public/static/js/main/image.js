@@ -20,7 +20,7 @@ Hue.setup_image = function(mode, odata={})
 
     if(!data.setter)
     {
-        data.setter = "The system"
+        data.setter = Hue.config.system_username
     }
 
     if(!data.source)

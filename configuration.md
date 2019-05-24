@@ -774,6 +774,9 @@ This should be an array of strings of root domains.
 "notebook_background_source"
 >Location of the notebook background image.
 
+"system_username"
+>Reserved username for system messages.
+
 
 ## The following reside in config.secret.json
 

@@ -109,4 +109,5 @@ module.exports = function(c, config)
     c.vars.max_message_board_posts = config.max_message_board_posts
     c.vars.max_audio_clip_size = config.max_audio_clip_size
     c.vars.max_audio_clip_duration = config.max_audio_clip_duration
+    c.vars.system_username = config.system_username
 }

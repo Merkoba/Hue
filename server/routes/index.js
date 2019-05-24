@@ -68,7 +68,7 @@ module.exports = function(db_manager, config, sconfig, utilz)
 
 	// Reserved usernames
 	// These can't be used on registration
-	const reserved_usernames = ["The system", config.image_ads_setter].map(x => x.toLowerCase())
+	const reserved_usernames = [config.system_username, config.image_ads_setter].map(x => x.toLowerCase())
 
 	// Checks if a URL length exceeds the limits
 	function check_url(req, res, next)
