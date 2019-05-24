@@ -1960,7 +1960,7 @@ Hue.execute_command = function(message, ans)
 
     if(!command)
     {
-        let closest_command = Hue.get_closest_command(cmd_sorted)
+        let closest_command = Hue.get_closest_command(cmd)
 
         if(closest_command)
         {
@@ -2289,14 +2289,14 @@ Hue.command_sorted_equals = function(str, what)
 }
 
 // Gets the most similar command from a string
-Hue.get_closest_command = function(cmd_sorted)
+Hue.get_closest_command = function(cmd)
 {
     let highest_num = 0
     let highest_command = false
 
-    for(let command in Hue.commands_list_sorted_2)
+    for(let command of Hue.commands_list)
     {
-        let similarity = Hue.utilz.string_similarity(command, cmd_sorted)
+        let similarity = Hue.utilz.string_similarity(command, cmd)
 
         if(similarity >= 0.8 && similarity > highest_num)
         {
@@ -2305,5 +2305,5 @@ Hue.get_closest_command = function(cmd_sorted)
         }
     }
 
-    return Hue.commands_list_sorted_2[highest_command]
+    return highest_command
 }
