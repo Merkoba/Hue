@@ -39,7 +39,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(!handler.check_permission(socket, "tv"))
+        if(!handler.check_media_permission(socket, "tv"))
         {
             return false
         }

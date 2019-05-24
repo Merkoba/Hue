@@ -10,7 +10,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         if(data.type === "user")
         {
-            if(!handler.check_permission(socket, "chat"))
+            if(!handler.check_media_permission(socket, "chat"))
             {
                 return false
             }

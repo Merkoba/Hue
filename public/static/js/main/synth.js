@@ -381,9 +381,8 @@ Hue.set_synth_key_title = function(key)
 // Changes the room synth mode
 Hue.change_room_synth_mode = function(what)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "media"))
     {
-        Hue.not_an_op()
         return false
     }
 

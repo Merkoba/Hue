@@ -3,7 +3,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles synth mode changes
     handler.public.change_synth_mode = function(socket, data)
     {
-        if(!handler.is_admin_or_op(socket))
+        if(!handler.check_op_permission(socket, "media"))
         {
             return handler.get_out(socket)
         }
@@ -52,7 +52,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(!handler.check_permission(socket, "synth"))
+        if(!handler.check_media_permission(socket, "synth"))
         {
             return false
         }
@@ -102,7 +102,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(!handler.check_permission(socket, "synth"))
+        if(!handler.check_media_permission(socket, "synth"))
         {
             return false
         }

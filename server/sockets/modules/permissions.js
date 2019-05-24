@@ -101,7 +101,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     }
 
     // Checks if a user has the required media permission
-    handler.check_permission = function(socket, permission)
+    handler.check_media_permission = function(socket, permission)
     {
         let room = vars.rooms[socket.hue_room_id]
 

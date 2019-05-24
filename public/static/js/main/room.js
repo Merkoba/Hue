@@ -450,160 +450,148 @@ Hue.change_topic = function(dtopic)
 // Appends the topic with new text
 Hue.topicadd = function(arg)
 {
-    if(Hue.is_admin_or_op())
+    if(!Hue.check_op_permission(Hue.role, "topic"))
     {
-        arg = Hue.utilz.clean_string2(arg)
-
-        if(arg.length === 0)
-        {
-            return
-        }
-
-        let ntopic = Hue.topic + Hue.config.topic_separator + arg
-
-        if(ntopic.length > Hue.config.max_topic_length)
-        {
-            Hue.feedback("There is no more room to add that to the topic")
-            return
-        }
-
-        Hue.change_topic(ntopic)
+        return false
     }
 
-    else
+    arg = Hue.utilz.clean_string2(arg)
+
+    if(arg.length === 0)
     {
-        Hue.not_an_op()
+        return
     }
+
+    let ntopic = Hue.topic + Hue.config.topic_separator + arg
+
+    if(ntopic.length > Hue.config.max_topic_length)
+    {
+        Hue.feedback("There is no more room to add that to the topic")
+        return
+    }
+
+    Hue.change_topic(ntopic)
 }
 
 // Removes topic sections
 Hue.topictrim = function(n)
 {
-    if(Hue.is_admin_or_op())
+    if(!Hue.check_op_permission(Hue.role, "topic"))
     {
-        let split = Hue.topic.split(Hue.config.topic_separator)
+        return false
+    }
 
-        if(split.length > 1)
+    let split = Hue.topic.split(Hue.config.topic_separator)
+
+    if(split.length > 1)
+    {
+        if(!isNaN(n))
         {
-            if(!isNaN(n))
+            if(n < 1)
             {
-                if(n < 1)
-                {
-                    return false
-                }
-
-                if(n > split.length - 1)
-                {
-                    n = split.length - 1
-                }
-            }
-
-            else
-            {
-                Hue.feedback("Argument must be a number")
                 return false
             }
 
-            if(split.length > 1)
+            if(n > split.length - 1)
             {
-                let t = split.slice(0, -n).join(Hue.config.topic_separator)
-
-                if(t.length > 0)
-                {
-                    Hue.change_topic(t)
-                }
+                n = split.length - 1
             }
         }
 
         else
         {
-            Hue.feedback("Nothing to trim")
+            Hue.feedback("Argument must be a number")
+            return false
+        }
+
+        if(split.length > 1)
+        {
+            let t = split.slice(0, -n).join(Hue.config.topic_separator)
+
+            if(t.length > 0)
+            {
+                Hue.change_topic(t)
+            }
         }
     }
 
     else
     {
-        Hue.not_an_op()
+        Hue.feedback("Nothing to trim")
     }
 }
 
 // Prepends the topic with new text
 Hue.topicstart = function(arg)
 {
-    if(Hue.is_admin_or_op())
+    if(!Hue.check_op_permission(Hue.role, "topic"))
     {
-        arg = Hue.utilz.clean_string2(arg)
-
-        if(arg.length === 0)
-        {
-            return
-        }
-
-        let ntopic = arg + Hue.config.topic_separator + Hue.topic
-
-        if(ntopic.length > Hue.config.max_topic_length)
-        {
-            Hue.feedback("There is no more room to add that to the topic")
-            return
-        }
-
-        Hue.change_topic(ntopic)
+        return false
     }
 
-    else
+    arg = Hue.utilz.clean_string2(arg)
+
+    if(arg.length === 0)
     {
-        Hue.not_an_op()
+        return
     }
+
+    let ntopic = arg + Hue.config.topic_separator + Hue.topic
+
+    if(ntopic.length > Hue.config.max_topic_length)
+    {
+        Hue.feedback("There is no more room to add that to the topic")
+        return
+    }
+
+    Hue.change_topic(ntopic)
 }
 
 // Removes topic sections from the start
 Hue.topictrimstart = function(n)
 {
-    if(Hue.is_admin_or_op())
+    if(!Hue.check_op_permission(Hue.role, "topic"))
     {
-        let split = Hue.topic.split(Hue.config.topic_separator)
+        return false
+    }
+    
+    let split = Hue.topic.split(Hue.config.topic_separator)
 
-        if(split.length > 1)
+    if(split.length > 1)
+    {
+        if(!isNaN(n))
         {
-            if(!isNaN(n))
+            if(n < 1)
             {
-                if(n < 1)
-                {
-                    return false
-                }
-
-                if(n > split.length - 1)
-                {
-                    n = split.length - 1
-                }
-            }
-
-            else
-            {
-                Hue.feedback("Argument must be a number")
                 return false
             }
 
-            if(split.length > 1)
+            if(n > split.length - 1)
             {
-                let t = split.slice(n, split.length).join(Hue.config.topic_separator)
-
-                if(t.length > 0)
-                {
-                    Hue.change_topic(t)
-                }
+                n = split.length - 1
             }
         }
 
         else
         {
-            Hue.feedback("Nothing to trim")
+            Hue.feedback("Argument must be a number")
+            return false
+        }
+
+        if(split.length > 1)
+        {
+            let t = split.slice(n, split.length).join(Hue.config.topic_separator)
+
+            if(t.length > 0)
+            {
+                Hue.change_topic(t)
+            }
         }
     }
 
     else
     {
-        Hue.not_an_op()
+        Hue.feedback("Nothing to trim")
     }
 }
 
@@ -762,12 +750,6 @@ Hue.clear_log = function(type="all", id=false)
             Hue.feedback("A message ID needs to be provided for this operation")
             return false
         }
-    }
-
-    if(!Hue.is_admin_or_op(Hue.role))
-    {
-        Hue.not_an_op()
-        return false
     }
 
     Hue.socket_emit("clear_log", {type:type, id:id})
@@ -1006,7 +988,7 @@ Hue.show_topic_window = function()
 {
     let edit_html = ""
 
-    if(Hue.is_admin_or_op())
+    if(Hue.check_op_permission(Hue.role, "topic"))
     {
         edit_html = "<div><div id='topic_window_edit' class='pointer action inline'>Edit</div></div>"
     }

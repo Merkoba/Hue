@@ -204,7 +204,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles activity signals
     handler.public.activity_trigger = async function(socket, data)
     {
-        if(!handler.check_permission(socket, "chat"))
+        if(!handler.check_media_permission(socket, "chat"))
         {
             return false
         }

@@ -23,7 +23,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(!handler.check_permission(socket, "chat"))
+        if(!handler.check_media_permission(socket, "chat"))
         {
             return false
         }
@@ -136,7 +136,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     // Handles typing signals
     handler.public.typing = async function(socket, data)
     {
-        if(!handler.check_permission(socket, "chat"))
+        if(!handler.check_media_permission(socket, "chat"))
         {
             return false
         }

@@ -154,23 +154,11 @@ Hue.write_popup_message = function(unames=[], type="user")
 
     else if(type === "ops")
     {
-        if(!Hue.is_admin_or_op(Hue.role))
-        {
-            Hue.not_an_op()
-            return false
-        }
-
         title = {text:"* Whisper to Operators *"}
     }
 
     else if(type === "room")
     {
-        if(!Hue.is_admin_or_op(Hue.role))
-        {
-            Hue.not_an_op()
-            return false
-        }
-
         title = {text:"* Message To Room *"}
     }
 
@@ -501,6 +489,11 @@ Hue.do_send_whisper_user = function(unames, message, draw_coords, show=true)
 // Does the whisper of type operators emit
 Hue.send_whisper_ops = function(message, draw_coords)
 {
+    if(!Hue.check_op_permission(Hue.role, "whisper_ops"))
+    {
+        return false
+    }
+
     Hue.socket_emit('whisper', {type:"ops", message:message, draw_coords:draw_coords})
     return true
 }
@@ -508,9 +501,8 @@ Hue.send_whisper_ops = function(message, draw_coords)
 // Does the whisper of type room broadcast emit
 Hue.send_room_broadcast = function(message, draw_coords)
 {
-    if(!Hue.is_admin_or_op(Hue.role))
+    if(!Hue.check_op_permission(Hue.role, "broadcast"))
     {
-        Hue.not_an_op()
         return false
     }
 

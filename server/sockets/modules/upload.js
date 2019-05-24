@@ -6,7 +6,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
     {
         if(data.action === "image_upload")
         {
-            if(!handler.check_permission(socket, "image"))
+            if(!handler.check_media_permission(socket, "image"))
             {
                 return false
             }

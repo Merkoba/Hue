@@ -39,7 +39,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(!handler.check_permission(socket, "image"))
+        if(!handler.check_media_permission(socket, "image"))
         {
             return false
         }
@@ -197,7 +197,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(!handler.check_permission(socket, "image"))
+        if(!handler.check_media_permission(socket, "image"))
         {
             return false
         }
