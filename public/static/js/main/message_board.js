@@ -92,6 +92,11 @@ Hue.add_post_to_message_board = function(post)
     {
         $("#message_board_container").find(".message_board_item").last().remove()
     }
+
+    if(Hue.message_board_filtered)
+    {
+        Hue.do_modal_filter("message_board")
+    }
 }
 
 // Fills the message board with init data

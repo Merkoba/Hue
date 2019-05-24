@@ -832,21 +832,6 @@ Hue.info2_vars_to_false = function()
     Hue.change_user_email_open = false
 }
 
-// This is called after a modal is created
-Hue.after_modal_create = function(instance)
-{
-
-}
-
-// This is called after a modal is shown
-Hue.after_modal_show = function(instance)
-{
-    Hue.active_modal = instance
-    Hue.modal_open = true
-    Hue.blur_input()
-    Hue.focus_modal_filter(instance)
-}
-
 // Focuses the filter widget of a modal
 Hue.focus_modal_filter = function(instance)
 {
@@ -879,6 +864,21 @@ Hue.reset_modal_filter = function(instance)
     }
 }
 
+// This is called after a modal is created
+Hue.after_modal_create = function(instance)
+{
+
+}
+
+// This is called after a modal is shown
+Hue.after_modal_show = function(instance)
+{
+    Hue.active_modal = instance
+    Hue.modal_open = true
+    Hue.blur_input()
+    Hue.focus_modal_filter(instance)
+}
+
 // This is called after a modal is set or shown
 Hue.after_modal_set_or_show = function(instance)
 {
@@ -905,6 +905,11 @@ Hue.after_modal_close = function(instance)
         Hue.active_modal = false
         Hue.modal_open = false
         Hue.focus_input()
+    }
+
+    else
+    {
+        Hue.active_modal = Hue.get_highest_modal()
     }
 
     Hue.reset_modal_filter(instance)
@@ -944,6 +949,12 @@ Hue.any_modal_open = function()
 Hue.any_popup_open = function()
 {
     return Hue.msg_room_menu.any_lower_open()
+}
+
+// Gets the highest open Msg modal
+Hue.get_highest_modal = function()
+{
+    return Hue.msg_room_menu.highest_instance()
 }
 
 // Closes all Msg instances

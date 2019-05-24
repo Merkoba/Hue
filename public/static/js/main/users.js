@@ -596,7 +596,7 @@ Hue.update_userlist_window = function()
 
     if(Hue.userlist_filtered)
     {
-        Hue.do_modal_filter()
+        Hue.do_modal_filter("userlist")
     }
 }
 

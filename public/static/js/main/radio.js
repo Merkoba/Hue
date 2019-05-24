@@ -797,7 +797,7 @@ Hue.push_played = function(info, info2=false)
 
         if(Hue.played_filtered)
         {
-            Hue.do_modal_filter()
+            Hue.do_modal_filter("played")
         }
     }
 
