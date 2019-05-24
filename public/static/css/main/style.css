@@ -288,6 +288,7 @@ div#header_radio_playing_icon
 #chat_area > .message
 {
 	margin-left: 1rem;
+	margin-right: 0.5rem;
 }
 
 .chat_area_clone_center
