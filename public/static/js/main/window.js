@@ -175,7 +175,7 @@ Hue.setup_before_unload = function()
 {
     window.onbeforeunload = function(e)
     {
-        if(!Hue.user_leaving && Hue.get_setting("warn_before_closing"))
+        if(Hue.connected && !Hue.user_leaving && Hue.get_setting("warn_before_closing"))
         {
             return "Are you sure?"
         }

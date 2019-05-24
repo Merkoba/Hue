@@ -503,6 +503,8 @@ Hue.start_socket = function()
 
     Hue.socket.on('disconnect', (reason) =>
     {
+        Hue.connected = false
+        
         if(Hue.started)
         {
             Hue.userlist = []

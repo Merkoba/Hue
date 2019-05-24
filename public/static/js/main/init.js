@@ -191,6 +191,7 @@ Hue.info_popups = []
 Hue.last_media_sync = Date.now()
 Hue.writing_message_board_post = false
 Hue.message_board_posting_enabled = false
+Hue.connected = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -384,6 +385,7 @@ Hue.on_join = function(data)
 Hue.at_startup = function()
 {
     Hue.date_joined = Date.now()
+    Hue.connected = true
     Hue.started = true
 
     Hue.execute_commands("at_startup")
