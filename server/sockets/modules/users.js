@@ -698,7 +698,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        if(Date.now() - socket.hue_last_heart_date < config.send_badge_cooldown)
+        if(Date.now() - socket.hue_last_badge_date < config.send_badge_cooldown)
         {
             return false
         }
@@ -740,7 +740,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             }
         })
 
-        socket.hue_last_heart_date = Date.now()
+        socket.hue_last_badge_date = Date.now()
 
         await db_manager.update_user(first_socket.hue_user_id, prop2)
     }

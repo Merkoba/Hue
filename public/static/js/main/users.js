@@ -1571,12 +1571,20 @@ Hue.after_userlist_scroll = function()
     Hue.check_userlist_visibility()
 }
 
+Hue.setup_badges = function()
+{
+    Hue.start_badge_timeout()
+}
+
 // Sends 1 badge to a user
 // This has a cooldown
 Hue.send_badge = function(username, type)
 {
     if(Hue.send_badge_disabled)
     {
+        let n = Hue.utilz.round2(Hue.config.send_badge_cooldown / 1000, 1)
+        let s = n === 1 ? "1 second" : `${n} seconds`
+        Hue.msg_info.show(`You can send a badge every ${s}`)
         return false
     }
 
@@ -1601,6 +1609,12 @@ Hue.send_badge = function(username, type)
 
     Hue.send_badge_disabled = true
 
+    Hue.start_badge_timeout()
+}
+
+// Starts a timeout to enable badge sending
+Hue.start_badge_timeout = function()
+{
     setTimeout(function()
     {
         Hue.send_badge_disabled = false

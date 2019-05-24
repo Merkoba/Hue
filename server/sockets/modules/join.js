@@ -15,7 +15,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         socket.hue_activity_counter = 0
         socket.hue_synth_counter = 0
         socket.hue_last_activity_trigger = 0
-        socket.hue_last_heart_date = Date.now()
+        socket.hue_last_badge_date = Date.now()
     }
 
     // Attempts to join a room

@@ -186,7 +186,7 @@ Hue.loaded_radio = {}
 Hue.open_profile_username = false
 Hue.open_profile_user = false
 Hue.show_profile_audio_clip_started = false
-Hue.send_badge_disabled = false
+Hue.send_badge_disabled = true
 Hue.info_popups = []
 Hue.last_media_sync = Date.now()
 Hue.writing_message_board_post = false
@@ -309,6 +309,7 @@ Hue.init = function()
     Hue.change_chat_visibility()
     Hue.setup_notebook()
     Hue.setup_profile_image_cropper()
+    Hue.setup_badges()
 
     if(Hue.debug_functions)
     {
