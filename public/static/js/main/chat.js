@@ -3560,7 +3560,7 @@ Hue.remove_markdown_from_message = function(message)
 {
     message = message.replace(/\=?\[dummy\-space\]\=?/gm, '')
     
-    message = message.replace(/\[.*\](.+?)\[\/.*\]/gm, function(a, b)
+    message = message.replace(/\[.*?\](.+?)\[\/.*?\]/gm, function(a, b)
     {
         return b
     })
