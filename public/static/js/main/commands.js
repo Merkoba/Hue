@@ -1960,8 +1960,18 @@ Hue.execute_command = function(message, ans)
 
     if(!command)
     {
-        Hue.feedback(`Invalid command "${cmd.slice(1)}". Maybe it is missing an argument. To start a message with / use //`)
-        return ans
+        let closest_command = Hue.get_closest_command(cmd)
+
+        if(closest_command)
+        {
+            command = closest_command
+        }
+        
+        else
+        {
+            Hue.feedback(`Invalid command "${cmd.slice(1)}". Maybe it is missing an argument. To start a message with / use //`)
+            return ans
+        }
     }
 
     if(needs_confirm)
@@ -2276,4 +2286,24 @@ Hue.get_accept_commands_from_list = function()
 Hue.command_sorted_equals = function(str, what)
 {
     return str === Hue.commands_list_sorted[what]
+}
+
+// Gets the most similar command from a string
+Hue.get_closest_command = function(cmd)
+{
+    let highest_num = 0
+    let highest_command = false
+
+    for(let command of Hue.commands_list)
+    {
+        let similarity = Hue.utilz.string_similarity(cmd, command)
+
+        if(similarity >= 0.8 && similarity > highest_num)
+        {
+            highest_num = similarity
+            highest_command = command
+        }
+    }
+
+    return highest_command
 }
