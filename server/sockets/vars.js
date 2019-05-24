@@ -105,8 +105,7 @@ module.exports = function(vars, handler, io, db_manager, config, sconfig, utilz,
     vars.dont_check_joined =
     [
         "join_room",
-        "roomlist",
-        "create_room"
+        "roomlist"
     ]
 
     // Don't add spam on these functions
