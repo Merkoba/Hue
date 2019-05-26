@@ -430,7 +430,7 @@ Hue.update_chat = function(args={})
     let link_preview = false
     let link_preview_text = false
 
-    if(!starts_me && !image_preview && args.link_url && Hue.get_setting("show_link_previews"))
+    if(!starts_me && !image_preview && (args.link_title || args.link_description) && Hue.get_setting("show_link_previews"))
     {
         let ans = Hue.make_link_preview(
         {
@@ -831,7 +831,7 @@ Hue.chat_announce = function(args={})
     let link_preview = false
     let link_preview_text = false
 
-    if(!image_preview && args.link_url && Hue.get_setting("show_link_previews"))
+    if(!image_preview && (args.link_title || args.link_description) && Hue.get_setting("show_link_previews"))
     {
         let ans = Hue.make_link_preview(
         {

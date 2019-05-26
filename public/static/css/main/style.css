@@ -2589,7 +2589,7 @@ a.special_link:hover
 	background-color: grey;
 	display: flex;
 	flex-direction: row;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: flex-start;
 	padding: 0.5rem;
 	align-self: flex-start;
