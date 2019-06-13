@@ -1000,7 +1000,7 @@ Hue.show_topic_window = function()
     </div>`)
     
     let text = h.find("#topic_window_text").eq(0)
-    text.text(Hue.topic)
+    text.text(Hue.topic || "No topic yet")
 
     if(edit_html)
     {
