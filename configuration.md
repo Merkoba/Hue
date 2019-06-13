@@ -777,6 +777,12 @@ This should be an array of strings of root domains.
 "system_username"
 >Reserved username for system messages.
 
+"scramble_duration"
+>How long the scramble animation for chat messages lasts.
+
+"scramble_speed"
+>How often to change letters in the chat scramble animation.
+
 
 ## The following reside in config.secret.json
 

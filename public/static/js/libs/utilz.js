@@ -127,6 +127,25 @@ const Utilz = function()
 		return s
 	}
 
+	utilz.get_random_alphanumeric = function(exclude=false)
+	{
+		let chars = "abcdefghijklmnopqrstuvwxyz1234567890".split("")
+
+		if(exclude)
+		{
+			for(let i=0; i<chars.length; i++)
+			{
+				if(chars[i] === exclude)
+				{
+					chars.splice(i, 1)
+					break
+				}
+			}
+		}
+
+		return chars[utilz.get_random_int(0, chars.length - 1)]
+	}
+
 	utilz.get_youtube_id = function(url)
 	{
 		let v_id = false

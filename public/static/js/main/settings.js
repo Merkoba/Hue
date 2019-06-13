@@ -1596,6 +1596,20 @@ Hue.user_settings =
                 Hue[`save_${type}`]()
             }
         }
+    },
+    scramble_chat:
+    {
+        widget_type: "checkbox",
+        description: `Whether chat messages should have the scramble animation`,
+        action: (type, save=true) =>
+        {
+            Hue[type].scramble_chat = $(`#${type}_scramble_chat`).prop("checked")
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
     }
 }
 

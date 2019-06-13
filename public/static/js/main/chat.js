@@ -485,6 +485,11 @@ Hue.update_chat = function(args={})
         title = `${args.id.slice(-3)} | ${title}`
     }
 
+    if(!image_preview && !link_preview)
+    {
+        content_classes += " scramble_content"
+    }
+
     if(starts_me || args.third_person)
     {
         let tpt
@@ -1166,6 +1171,19 @@ Hue.add_to_chat = function(args={})
         else
         {
             Hue.add_fresh_message(args.message)
+        }
+    }
+
+    if(mode === "chat" && Hue.started && Hue.app_focused)
+    {
+        if(Hue.get_setting("scramble_chat"))
+        {
+            let item = content_container.find(".scramble_content").get(0)
+    
+            if(item)
+            {
+                Hue.scramble(item)
+            }
         }
     }
 
@@ -3566,4 +3584,62 @@ Hue.remove_markdown_from_message = function(message)
     })
 
     return message
+}
+
+// Starts the scrambling of a chat message
+Hue.scramble = function(element)
+{
+    let args = 
+    {
+        element: element,
+        text: $(element).text().trim(),
+        duration: Hue.config.scramble_duration, 
+        speed: Hue.config.scramble_speed, 
+        time: 0, 
+        original: $(element).text()
+    }
+
+    element.style.height = `${element.clientHeight}px`
+    Hue.do_scramble(args)
+}
+
+// Does a scrambling replacing characters with random alphanumeric characters
+Hue.do_scramble = function(args)
+{
+    let new_text = ""
+
+    if(args.time >= args.duration)
+    {
+        $(args.element).text(args.original)
+        args.element.style.height = "initial"
+        return false
+    }
+
+    for(let letter of args.text)
+    {
+        if(letter === " ")
+        {
+            new_text += letter
+        }
+
+        else
+        {
+            new_text += Hue.utilz.get_random_alphanumeric(letter)
+        }
+    }
+    
+    args.text = new_text
+    $(args.element).text(new_text)
+    let delay = Math.min((args.duration - args.time), args.speed)
+    args.time += delay
+    Hue.scramble_do_loop(delay, args)
+}
+
+// Starts a timeout for the next scrambling
+Hue.scramble_do_loop = function(delay, args)
+{
+    setTimeout(function()
+    {
+        Hue.do_scramble(args)
+    }, delay)
 }

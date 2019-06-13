@@ -110,4 +110,6 @@ module.exports = function(c, config)
     c.vars.max_audio_clip_size = config.max_audio_clip_size
     c.vars.max_audio_clip_duration = config.max_audio_clip_duration
     c.vars.system_username = config.system_username
+    c.vars.scramble_duration = config.scramble_duration
+    c.vars.scramble_speed = config.scramble_speed
 }
