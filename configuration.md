@@ -510,6 +510,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_chat_enabled"
 >Whether chat is enabled by default.
 
+"global_settings_default_scramble_chat"
+>Whether the chat scramble animation is enabled by default.
+
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 
