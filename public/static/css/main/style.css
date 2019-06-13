@@ -291,6 +291,11 @@ div#header_radio_playing_icon
 	margin-right: 0.5rem;
 }
 
+.chat_area_clone .chat_content
+{
+	height: initial !important;
+}
+
 .chat_area_clone_center
 {
 	display: flex;
