@@ -1176,7 +1176,7 @@ Hue.add_to_chat = function(args={})
 
     if(mode === "chat" && Hue.started && Hue.app_focused)
     {
-        if(Hue.get_setting("scramble_chat"))
+        if(uname !== Hue.username && Hue.get_setting("scramble_chat"))
         {
             let item = content_container.find(".scramble_content").get(0)
     
@@ -3617,7 +3617,7 @@ Hue.do_scramble = function(args)
 
     for(let letter of args.text)
     {
-        if(letter === " ")
+        if(letter === " " || letter === "\n")
         {
             new_text += letter
         }
