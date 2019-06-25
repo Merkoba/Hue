@@ -186,7 +186,7 @@ Hue.load_radio = function(force=false)
     {
         if($("#audio_player").length === 0)
         {
-            $("#media_audio_audio_container").html(`<audio id='audio_player' preload="metadata"></audio>`)
+            $("#media_audio_audio_container").html(`<audio id='audio_player' preload="none"></audio>`)
         }
 
         Hue.radio_get_metadata = true

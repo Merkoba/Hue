@@ -399,7 +399,7 @@ Hue.show_video_video = async function(play=true)
     {
         let s = `<video id='media_video'
         class='video_frame' width="640px" height="360px"
-        preload="metadata" poster="${Hue.config.default_video_url}" controls></video>
+        preload="none" poster="${Hue.config.default_video_url}" controls></video>
         <div class='media_info dynamic_title'></div>`
 
         $("#media_video_video_container").html(s)
