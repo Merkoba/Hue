@@ -159,7 +159,7 @@ Hue.push_tv_changed = function(data)
 }
 
 // Stops all defined tv players
-Hue.stop_tv = function(clear_iframe=true)
+Hue.stop_tv = function(hard_stop=true)
 {
     if(Hue.youtube_video_player)
     {
@@ -185,9 +185,14 @@ Hue.stop_tv = function(clear_iframe=true)
     if($("#media_video").length > 0)
     {
         $("#media_video")[0].pause()
+
+        if(hard_stop)
+        {
+            $("#media_video")[0].src = ""
+        }
     }
 
-    if(clear_iframe)
+    if(hard_stop)
     {
         $("#media_iframe_video").attr("src", "")
         $("#media_iframe_poster").css("display", "block")
@@ -796,6 +801,7 @@ Hue.change_tv_visibility = function(play=true)
 
     else
     {
+        Hue.stop_tv()
         Hue.hide_tv()
 
         $("#media_tv").css("display", "none")

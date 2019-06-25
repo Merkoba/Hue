@@ -146,7 +146,7 @@ Hue.hide_media_menu = function()
 // Stops the tv and radio
 Hue.stop_media = function()
 {
-    Hue.stop_tv()
+    Hue.stop_tv(false)
     Hue.stop_radio()
 }
 
@@ -769,7 +769,6 @@ Hue.get_media_object_from_init_data = function(type)
 Hue.hide_media = function()
 {
     Hue.stop_tv()
-
     $("#media").css("display", "none")
 }
 

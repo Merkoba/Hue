@@ -191,8 +191,6 @@ Hue.load_radio = function(force=false)
 
         Hue.radio_get_metadata = true
 
-        $('#audio_player').attr('src', item.source)
-
         if(Hue.radio_started)
         {
             $('#audio_player')[0].play()
