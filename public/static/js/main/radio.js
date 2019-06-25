@@ -543,8 +543,8 @@ Hue.change_radio_visibility = function()
 
     else
     {
-        Hue.hide_radio()
         Hue.stop_radio()
+        Hue.hide_radio()
 
         $("#header_radio").css("display", "none")
         $("#footer_toggle_radio_icon").removeClass("fa-toggle-on")
@@ -902,6 +902,7 @@ Hue.stop_radio = function(complete_stop=true)
     if($("#audio_player").length > 0)
     {
         $("#audio_player")[0].pause()
+        $("#audio_player")[0].src = ""
     }
 
     if(Hue.youtube_player)
