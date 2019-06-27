@@ -1262,7 +1262,7 @@ select
 	margin-bottom: 1.5rem !important;
 }
 
-input[type=text], textarea
+input[type=text], input[type=search], textarea, select
 {
 	background-color: white;
 	color: #222222;
