@@ -2641,6 +2641,8 @@ a.special_link:hover
 	max-width: 120px;
 	max-height: 120px;
 	object-fit: contain;
+	flex-grow: 0;
+	flex-shrink: 0;
 }
 
 .align_left
