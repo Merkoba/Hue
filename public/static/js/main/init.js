@@ -192,6 +192,7 @@ Hue.last_media_sync = Date.now()
 Hue.writing_message_board_post = false
 Hue.message_board_posting_enabled = false
 Hue.connected = false
+Hue.radio_started_date = 0
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

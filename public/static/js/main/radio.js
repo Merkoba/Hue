@@ -873,6 +873,8 @@ Hue.start_radio = function()
     {
         Hue.stop_tv(false)
     }
+
+    Hue.radio_started_date = Date.now()
 }
 
 // Destroys all unused radio players
@@ -928,6 +930,8 @@ Hue.stop_radio = function(complete_stop=true)
             Hue.clear_automatic_stop_radio()
         }
     }
+
+    Hue.radio_started_date = 0
 }
 
 // Toggles the radio on or off
@@ -1277,6 +1281,23 @@ Hue.setup_radio_widget = function()
                 Hue.start_radio()
             }
         }
+    })
+    
+    $("#toggle_radio_state").on("mouseenter", function(e)
+    {
+        let title 
+
+        if(Hue.radio_started_date)
+        {
+            title = `Started: ${Hue.utilz.capitalize_words(timeago.format(Hue.radio_started_date))}`
+        }
+
+        else
+        {
+            title = ""
+        }
+
+        $(this).attr("title", title)
     })
     
     $("#header_now_playing_controls").on("auxclick", function(e)
