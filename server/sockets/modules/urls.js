@@ -175,6 +175,15 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
                 response.image = ""
             }
 
+            if(response.image)
+            {
+                if(response.image.startsWith('/'))
+                {
+                    let ourl = new URL(url)
+                    response.image = `${ourl.protocol}//${ourl.hostname}${response.image}`
+                }
+            }
+
             if(vars.redis_client_ready)
             {
                 vars.redis_client.hmset
