@@ -3596,7 +3596,7 @@ Hue.scramble = function(element)
         duration: Hue.config.scramble_duration, 
         speed: Hue.config.scramble_speed, 
         time: 0, 
-        original: $(element).text()
+        original: $(element).clone(true, true)
     }
 
     element.style.height = `${element.clientHeight}px`
@@ -3610,8 +3610,7 @@ Hue.do_scramble = function(args)
 
     if(args.time >= args.duration)
     {
-        $(args.element).text(args.original)
-        args.element.style.height = "initial"
+        $(args.element).replaceWith(args.original)
         return false
     }
 
