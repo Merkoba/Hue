@@ -60,7 +60,7 @@ jQuery.fn.urlize = function(stop_propagation=true)
                     u = `${u.substring(0, max)}...`
                 }
 
-                html = html.replace(rep, `<a class='${cls}' target='_blank' href='${url}'>${u}</a>`)
+                html = html.replace(rep, `<a class="${cls}" target="_blank" href="${url}">${u}</a>`)
             }
 
             $(obj).html(html)
