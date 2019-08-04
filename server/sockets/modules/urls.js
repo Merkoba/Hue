@@ -177,10 +177,19 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
             if(response.image)
             {
-                if(response.image.startsWith('/'))
+                if(response.image[0] === '/')
                 {
                     let ourl = new URL(url)
-                    response.image = `${ourl.protocol}//${ourl.hostname}${response.image}`
+
+                    if(response.image[1] === '/')
+                    {
+                        response.image = `${ourl.protocol}${response.image}`
+                    }
+
+                    else
+                    {
+                        response.image = `${ourl.protocol}//${ourl.hostname}${response.image}`
+                    }
                 }
             }
 
