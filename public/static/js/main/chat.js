@@ -1484,7 +1484,12 @@ Hue.setup_markdown_regexes = function()
     {
         let n = g3.length
 
-        if(n === 3)
+        if(n == 1)
+        {
+            return `${g2}<pre class='inline_pre'><code>[dummy-space]${g4}[dummy-space]</code></pre>${g5}`
+        }
+
+        else if (n === 3)
         {
             return `${g2}<pre><code>[dummy-space]${g4}[dummy-space]</code></pre>${g5}`
         }
