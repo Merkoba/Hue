@@ -1846,6 +1846,7 @@ Hue.stop_edit_message = function()
     let edit_container = $(Hue.editing_message_container).find(".message_edit_container").get(0)
     let chat_content = $(Hue.editing_message_container).find(".chat_content").get(0)
     let edit_label = $(Hue.editing_message_container).find(".message_edited_label").get(0)
+    $(Hue.editing_message_container).removeClass("chat_menu_button_main_selected")
 
     $(edit_container).css("display", "none")
 
