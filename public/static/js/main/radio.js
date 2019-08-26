@@ -618,7 +618,7 @@ Hue.get_radio_metadata = function()
 
                         if(source.listenurl.includes(Hue.loaded_radio.source.split('/').pop()))
                         {
-                            if(source.artist !== undefined && source.title !== undefined)
+                            if(source.artist !== undefined || source.title !== undefined)
                             {
                                 break
                             }
@@ -637,7 +637,7 @@ Hue.get_radio_metadata = function()
                     return false
                 }
 
-                if(!source || source.artist === undefined || source.title === undefined)
+                if(!source || (source.artist === undefined && source.title === undefined))
                 {
                     Hue.on_radio_get_metadata_error()
                     return false
@@ -732,8 +732,29 @@ Hue.push_played = function(info, info2=false)
 
     if(info)
     {
-        s = `${info.title} - ${info.artist}`
-        q = `"${info.title}" by "${info.artist}"`
+        if(!info.title && !info.artist)
+        {
+            return false
+        }
+
+        if(info.title && info.artist)
+        {
+            s = `${info.title} - ${info.artist}`
+            q = `"${info.title}" by "${info.artist}"`
+        }
+        
+        else if(info.title)
+        {
+            s = info.title
+            q = `"${info.title}"`
+        }
+        
+        else if(info.artist)
+        {
+            s = info.artist
+            q = `"${info.artist}"`
+        }
+
         q2 = ""
     }
 
@@ -767,8 +788,15 @@ Hue.push_played = function(info, info2=false)
 
         if(info)
         {
-            h.find('.played_item_title').eq(0).text(info.title)
-            h.find('.played_item_artist').eq(0).text(`by ${info.artist}`)
+            if(info.title)
+            {
+                h.find('.played_item_title').eq(0).text(info.title)
+            }
+
+            if(info.artist)
+            {
+                h.find('.played_item_artist').eq(0).text(`by ${info.artist}`)
+            }
         }
 
         else
