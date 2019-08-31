@@ -112,8 +112,6 @@ Hue.setup_radio = function(mode, odata={})
                 $("#footer_lock_radio_icon").addClass("blinking")
             }
 
-            console.log(333333)
-
             Hue.change({type:"radio", force:true})
         }
 
@@ -192,6 +190,7 @@ Hue.load_radio = function(force=false)
         }
 
         Hue.radio_get_metadata = true
+        $('#audio_player').attr("src", item.source)
 
         if(Hue.radio_started)
         {
