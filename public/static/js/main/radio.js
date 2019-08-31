@@ -112,6 +112,8 @@ Hue.setup_radio = function(mode, odata={})
                 $("#footer_lock_radio_icon").addClass("blinking")
             }
 
+            console.log(333333)
+
             Hue.change({type:"radio", force:true})
         }
 

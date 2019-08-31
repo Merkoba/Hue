@@ -237,6 +237,24 @@ module.exports = function(manager, vars, db, config, sconfig, utilz, logger)
     {
         return new Promise((resolve, reject) =>
         {
+            manager.get_user({$or:[{username:info.username}, {email:info.email}]}, {username:1}, false)
+
+            .then(euser =>
+            {
+                if(euser)
+                {
+                    resolve("error")
+                    return
+                }
+            })
+
+            .catch(err =>
+            {
+                reject(err)
+                logger.log_error(err)
+                return
+            })
+
             vars.bcrypt.hash(info.password, config.encryption_cost)
 
             .then(hash =>
@@ -276,6 +294,15 @@ module.exports = function(manager, vars, db, config, sconfig, utilz, logger)
                     {
                         if(error)
                         {
+                            db.collection('users').deleteOne({_id: result.insertedId})
+
+                            .catch(err =>
+                            {
+                                reject(err)
+                                logger.log_error(err)
+                                return
+                            })
+
                             resolve("error")
                             return
                         }
