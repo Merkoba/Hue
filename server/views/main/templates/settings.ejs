@@ -35,6 +35,12 @@
                     <span class='settings_window_category_status'></span>
                 </div>
 
+                <div id='settings_window_category_confirms_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_confirms_{{type}}' data-category='confirms'>
+                    <span class='settings_window_category_status_filler invisible'></span>
+                    <span class='settings_window_category_text'>Confirms</span>
+                    <span class='settings_window_category_status'></span>
+                </div>
+
                 <div id='settings_window_category_media_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_media_{{type}}' data-category='media'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Media</span>
@@ -565,6 +571,33 @@
                     <div class="setting_title2">Popup Notifications</div>
                     <div class="setting_title">Close Delay</div>
                     <input type="number" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_popup_notifications_close_delay">
+                </div>
+            </div>
+
+            <div class='settings_category settings_window_category_container' id='settings_window_category_content_confirms_{{type}}' data-category='confirms'>
+                <div class='settings_item settings_top_level_item' data-setting='confirm_chat'>
+                    <div class="setting_title">Confirm Chat</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_confirm_chat">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='confirm_image'>
+                    <div class="setting_title">Confirm Image</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_confirm_image">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='confirm_tv'>
+                    <div class="setting_title">Confirm TV</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_confirm_tv">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='confirm_radio'>
+                    <div class="setting_title">Confirm Radio</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_confirm_radio">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='confirm_message_board'>
+                    <div class="setting_title">Confirm Message Board</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_confirm_message_board">
                 </div>
             </div>
 

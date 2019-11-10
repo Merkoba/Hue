@@ -739,6 +739,14 @@ Hue.change_tv_source = function(src, just_check=false, comment="")
         return true
     }
 
+    if(Hue.get_setting('confirm_tv'))
+    {
+        if(!confirm('Are you sure you want to change the tv here?'))
+        {
+            return
+        }
+    }
+
     Hue.socket_emit('change_tv_source', {src:src, comment:comment})
 }
 

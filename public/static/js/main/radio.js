@@ -446,6 +446,14 @@ Hue.change_radio_source = function(src, just_check=false, comment="")
         return true
     }
 
+    if(Hue.get_setting('confirm_radio'))
+    {
+        if(!confirm('Are you sure you want to change the radio here?'))
+        {
+            return
+        }
+    }
+
     Hue.socket_emit('change_radio_source', {src:src, comment:comment})
 }
 

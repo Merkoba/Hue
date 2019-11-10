@@ -323,6 +323,14 @@ Hue.process_message = function(args={})
             {
                 args.message = args.message.substring(0, Hue.config.max_input_length)
             }
+            
+            if(Hue.get_setting('confirm_chat'))
+            {
+                if(!confirm('Are you sure you want to send a chat message here?'))
+                {
+                    return
+                }
+            }
 
             Hue.socket_emit('sendchat', {message:args.message, edit_id:args.edit_id})
         }

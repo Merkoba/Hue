@@ -330,6 +330,14 @@ Hue.emit_change_image_source = function(url, comment="")
         return false
     }
 
+    if(Hue.get_setting('confirm_image'))
+    {
+        if(!confirm('Are you sure you want to change the image here?'))
+        {
+            return
+        }
+    }
+
     Hue.socket_emit('change_image_source', {src:url, comment:comment})
 }
 

@@ -1610,6 +1610,76 @@ Hue.user_settings =
                 Hue[`save_${type}`]()
             }
         }
+    },
+    confirm_chat:
+    {
+        widget_type: "checkbox",
+        description: `Whether to show a confirmation dialog when sending a chat message`,
+        action: (type, save=true) =>
+        {
+            Hue[type].confirm_chat = $(`#${type}_confirm_chat`).prop("checked")
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
+    confirm_image:
+    {
+        widget_type: "checkbox",
+        description: `Whether to show a confirmation dialog when changing the image`,
+        action: (type, save=true) =>
+        {
+            Hue[type].confirm_image = $(`#${type}_confirm_image`).prop("checked")
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
+    confirm_tv:
+    {
+        widget_type: "checkbox",
+        description: `Whether to show a confirmation dialog when changing the tv`,
+        action: (type, save=true) =>
+        {
+            Hue[type].confirm_tv = $(`#${type}_confirm_tv`).prop("checked")
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
+    confirm_radio:
+    {
+        widget_type: "checkbox",
+        description: `Whether to show a confirmation dialog when changing the radio`,
+        action: (type, save=true) =>
+        {
+            Hue[type].confirm_radio = $(`#${type}_confirm_radio`).prop("checked")
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
+    confirm_message_board:
+    {
+        widget_type: "checkbox",
+        description: `Whether to show a confirmation dialog when sending a board message`,
+        action: (type, save=true) =>
+        {
+            Hue[type].confirm_message_board = $(`#${type}_confirm_message_board`).prop("checked")
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
     }
 }
 

@@ -143,8 +143,15 @@ Hue.submit_message_board_post = function()
         return false
     }
 
-    $("#message_board_post_textarea").val("")
+    if(Hue.get_setting('confirm_message_board'))
+    {
+        if(!confirm('Are you sure you want to send a board message here?'))
+        {
+            return
+        }
+    }
 
+    $("#message_board_post_textarea").val("")
     Hue.socket_emit("message_board_post", {message:message})
 }
 
