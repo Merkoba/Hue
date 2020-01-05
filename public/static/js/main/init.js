@@ -2,9 +2,6 @@
 // All client variables and functions go here
 const Hue = {}
 
-// Load dates are used to check initial load performance
-Hue.load_date_1 = Date.now()
-
 // This enables information about socket calls to the server in the console
 // Setting it to true is recommended
 Hue.debug_socket = true
@@ -65,8 +62,6 @@ Hue.change_user_email_open = false
 Hue.media_menu_open = false
 Hue.writing_reply = false
 Hue.modal_open = false
-Hue.started = false
-Hue.started_safe = false
 Hue.afk = false
 Hue.alert_mode = 0
 Hue.commands_list_sorted = {}
@@ -95,9 +90,6 @@ Hue.double_tap_key_3_pressed = 0
 Hue.image_visible = true
 Hue.tv_visible = true
 Hue.radio_visible = true
-Hue.image_changed = []
-Hue.tv_changed = []
-Hue.radio_changed = []
 Hue.modal_image_open = false
 Hue.current_image_data = {}
 Hue.filter_delay = 350
@@ -131,7 +123,6 @@ Hue.highlight_same_posts_timeouts = {}
 Hue.highlight_same_posts_delay = 800
 Hue.radio_get_metadata_ongoing = false
 Hue.radio_get_metadata = false
-Hue.log_messages_processed = false
 Hue.command_aliases = {}
 Hue.commands_queue = {}
 Hue.user_leaving = false
@@ -193,6 +184,7 @@ Hue.writing_message_board_post = false
 Hue.message_board_posting_enabled = false
 Hue.connected = false
 Hue.radio_started_date = 0
+Hue.connections = 0
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -225,6 +217,8 @@ Hue.media_info_tv_data = []
 // This is the first function that gets executed
 Hue.init = function()
 {
+    Hue.load_date_1 = Date.now()
+
     Hue.create_debouncers()
     Hue.setup_separators()
     Hue.setup_markdown_regexes()
@@ -312,6 +306,11 @@ Hue.init = function()
     Hue.setup_notebook()
     Hue.setup_profile_image_cropper()
     Hue.setup_badges()
+    Hue.setup_image_picker()
+    Hue.setup_userlist_window()
+    Hue.setup_input_placeholder()
+    Hue.setup_user_menu()
+    Hue.setup_activity_bar()
 
     if(Hue.debug_functions)
     {
@@ -327,40 +326,48 @@ Hue.init = function()
 // This handles the first signal received after a successful connection
 Hue.on_join = function(data)
 {
+    Hue.connections += 1
+    Hue.started = false
+    Hue.started_safe = false
+    Hue.image_changed = []
+    Hue.tv_changed = []
+    Hue.radio_changed = []
+    Hue.log_messages_processed = false
+
     Hue.load_date_3 = Date.now()
-
     console.info("Joined Room")
-
-    Hue.init_data = data
+    
     Hue.room_locked = data.room_locked
 
-    if(Hue.room_locked)
+    if(data.room_locked)
     {
         Hue.start_locked_mode()
         return false
     }
 
+    Hue.init_data = data
     Hue.room_name = data.room_name
+    Hue.user_reg_date = data.reg_date
+    Hue.userlist = data.userlist
+    Hue.log_enabled = data.log
+    Hue.log_messages = data.log_messages
+    Hue.is_public = data.public
+
     Hue.set_username(data.username)
     Hue.set_email(data.email)
     Hue.set_bio(data.bio)
-    Hue.user_reg_date = data.reg_date
     Hue.setup_profile_image(data.profile_image)
-    Hue.userlist = data.userlist
     Hue.update_userlist()
-    Hue.log_enabled = data.log
-    Hue.log_messages = data.log_messages
     Hue.set_media_info(data.media_info)
     Hue.setup_theme_and_background(data)
     Hue.apply_background()
     Hue.apply_theme()
     Hue.setup_active_media(data)
     Hue.start_permissions(data)
-    Hue.is_public = data.public
     Hue.set_role(data.role, false)
     Hue.set_topic_info(data)
     Hue.update_title()
-    Hue.setup_user_menu()
+    Hue.update_user_menu()
     Hue.clear_chat()
     Hue.check_firstime()
     Hue.get_input_history()
@@ -370,13 +377,13 @@ Hue.on_join = function(data)
     Hue.start_metadata_loop()
     Hue.goto_bottom()
     Hue.make_main_container_visible()
-    Hue.setup_activity_bar()
-    Hue.setup_input_placeholder()
-    Hue.start_active_media()
     Hue.check_latest_highlight()
-    Hue.setup_userlist_window()
-    Hue.setup_image_picker()
     Hue.init_message_board(data)
+
+    if(Hue.connections === 1)
+    {
+        Hue.start_active_media()
+    }
 
     Hue.at_startup()
 }
@@ -389,7 +396,10 @@ Hue.at_startup = function()
     Hue.connected = true
     Hue.started = true
 
-    Hue.execute_commands("at_startup")
+    if(Hue.connections === 1)
+    {
+        Hue.execute_commands("at_startup")
+    }
 
     setTimeout(function()
     {

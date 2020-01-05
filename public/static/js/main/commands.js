@@ -1444,13 +1444,21 @@ Hue.commands =
         },
         description: `This can be used to inspect commands. If the command is an alias it will show what it is an alias of`
     },
+    "/reload":
+    {
+        action: (arg, ans) =>
+        {
+            Hue.reload_client()
+        },
+        description: `Loads everything again`
+    },
     "/refresh":
     {
         action: (arg, ans) =>
         {
-            Hue.restart_client()
+            Hue.refresh_client()
         },
-        description: `Refreshes/Restarts the client`
+        description: `Re-connects to the server without leaving`
     },
     "/modifysetting":
     {

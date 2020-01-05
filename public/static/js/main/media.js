@@ -686,11 +686,10 @@ Hue.update_media_history_blinks = function()
 
     if(!loaded)
     {
-
         $(`#${type}_history_container`).find(".message").first().addClass("blinking_2")
     }
 
-    else
+    else 
     {
         $(`#${type}_history_container .message_id_${loaded.message_id}`).eq(0).addClass("blinking_2")
     }
@@ -827,10 +826,13 @@ Hue.media_visibility_and_locks = function()
     Hue.change_image_visibility()
     Hue.change_tv_visibility(false)
     Hue.change_radio_visibility()
-
-    Hue.change_lock_image()
-    Hue.change_lock_tv()
-    Hue.change_lock_radio()
+    
+    if(Hue.connections === 1)
+    {
+        Hue.change_lock_image()
+        Hue.change_lock_tv()
+        Hue.change_lock_radio()
+    }
 }
 
 // Resets media history filter of a certain type
@@ -1575,7 +1577,7 @@ Hue.change_media_lock = function(type)
         $(`#footer_lock_${type}_icon`).removeClass("footer_icon2")
         $(`#footer_lock_${type}_icon`).addClass("footer_icon3")
         $(`#footer_lock_${type}_label`).css("display", "none")
-
+        
         Hue.change({type:type})
     }
 }

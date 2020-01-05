@@ -406,7 +406,7 @@ Hue.change_image_visibility = function()
         $("#footer_toggle_image_icon").removeClass("fa-toggle-off")
         $("#footer_toggle_image_icon").addClass("fa-toggle-on")
 
-        if(Hue.first_media_change)
+        if(Hue.first_media_change && Hue.started)
         {
             Hue.change({type:"image"})
         }
@@ -1079,6 +1079,6 @@ Hue.image_picker_submit = function()
     if(val !== "")
     {
         Hue.change_image_source(val)
-        Hue.msg_image_picker.close()
+        Hue.close_all_modals()
     }
 }

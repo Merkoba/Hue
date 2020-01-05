@@ -521,7 +521,7 @@ Hue.start_socket = function()
             {
                 setTimeout(function()
                 {
-                    Hue.restart_client()
+                    Hue.refresh_client()
                 }, 5000)
             }
 

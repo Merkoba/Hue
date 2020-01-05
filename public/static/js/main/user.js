@@ -340,9 +340,6 @@ Hue.setup_user_menu = function()
         }
     })
 
-    $("#user_menu_profile_image").attr("src", Hue.profile_image)
-    $("#user_menu_bio_textarea").val(Hue.bio)
-
     $("#user_menu_bio_textarea").blur(function()
     {
         let value = Hue.utilz.clean_string12($(this).val())
@@ -369,6 +366,13 @@ Hue.setup_user_menu = function()
     })
 
     Hue.setup_togglers("user_menu")
+}
+
+// Updates some user menu elements
+Hue.update_user_menu = function()
+{
+    $("#user_menu_profile_image").attr("src", Hue.profile_image)
+    $("#user_menu_bio_textarea").val(Hue.bio)
 }
 
 // Stops the reaction's box show timeout or hides it

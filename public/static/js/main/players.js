@@ -107,6 +107,7 @@ Hue.on_youtube_player_ready = function()
 // This gets executed when the tv YouTube player is ready
 Hue.on_youtube_video_player_ready = function()
 {
+    this.clear_activity_bar_items
     Hue.youtube_video_player = Hue.yt_video_player
 
     Hue.youtube_video_player.addEventListener("onStateChange", function(e)

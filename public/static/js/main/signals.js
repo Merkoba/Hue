@@ -1,8 +1,19 @@
-// Restarts the client
-Hue.restart_client = function()
+// Reloads the client
+Hue.reload_client = function()
 {
     Hue.user_leaving = true
     window.location = window.location
+}
+
+// Reconnect asynchronously
+Hue.refresh_client = function()
+{
+    if(Hue.room_locked || Hue.socket.connected)
+    {
+        return false
+    }
+
+    Hue.socket.connect()
 }
 
 // Send a signal to an Electron client
@@ -55,12 +66,12 @@ Hue.show_reload_button = function()
     {
         onclick: function()
         {
-            Hue.restart_client()
+            Hue.refresh_client()
         },
         onmiddleclick: function()
         {
             Hue.modify_setting("autoconnect true", false, true)
-            Hue.restart_client()
+            Hue.refresh_client()
         },
         brk: "<i class='icon2c fa fa-plug'></i>"
     })

@@ -102,6 +102,8 @@ Hue.add_post_to_message_board = function(post)
 // Fills the message board with init data
 Hue.init_message_board = function(data)
 {
+    $("#message_board_container").html("")
+    
     for(let post of data.message_board_posts)
     {
         Hue.add_post_to_message_board(post)

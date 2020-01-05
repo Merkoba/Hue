@@ -794,7 +794,7 @@ Hue.change_tv_visibility = function(play=true)
 
         Hue.tv_visible = true
 
-        if(Hue.first_media_change)
+        if(Hue.first_media_change && Hue.started)
         {
             Hue.change({type:"tv", force:true, play:false, current_source:Hue.room_state.tv_locked})
         }

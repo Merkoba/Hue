@@ -2,7 +2,7 @@
     <div id='media_menu_container' class='unselectable flex_column_center generic_vertical_separator'>
         <div id='media_menu_loaded_media' class='generic_vertical_separator flex_column_center'>
             <div class='full_width'>
-                <i class='fa fa-camera icon2c'></i>
+                <i class='fa fa-camera icon2c action pointer' onclick='Hue.show_image_picker()'></i>
                 <div class='flex_row_center media_menu_media_options' id='media_menu_image_options'>
                     <div class='pointer action inline' onclick='Hue.show_media_history("image")'>History</div>
                     <div class='pointer action inline' onclick='Hue.refresh_image(); Hue.hide_media_menu()'>Refresh</div>
@@ -11,7 +11,7 @@
             </div>
 
             <div class='full_width'>
-                <i class='fa fa-tv icon2c'></i>
+                <i class='fa fa-tv icon2c action pointer' onclick='Hue.show_tv_picker()'></i>
                 <div class='flex_row_center media_menu_media_options' id='media_menu_tv_options'>
                     <div class='pointer action inline' onclick='Hue.show_media_history("tv")'>History</div>
                     <div class='pointer action inline' onclick='Hue.refresh_tv(); Hue.hide_media_menu()'>Refresh</div>
@@ -20,7 +20,7 @@
             </div>
 
             <div class='full_width'>
-                <i class='fa fa-volume-up icon2c'></i>
+                <i class='fa fa-volume-up icon2c action pointer' onclick='Hue.show_radio_picker()'></i>
                 <div class='flex_row_center media_menu_media_options' id='media_menu_radio_options'>
                     <div class='pointer action inline' onclick='Hue.show_media_history("radio")'>History</div>
                     <div class='pointer action inline' onclick='Hue.refresh_radio(); Hue.hide_media_menu()'>Refresh</div>
