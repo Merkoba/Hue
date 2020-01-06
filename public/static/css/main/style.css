@@ -1956,14 +1956,20 @@ input[type=text], input[type=search], textarea, select
 	padding: 0.5rem;
 	font-size: 1.1rem;
 	white-space: nowrap;
-	padding-left: 0.8rem;
+	padding-left: 0rem;
 	padding-right: 0.8rem;
 }
 
 .reaction_icon
 {
-	margin-left: 0.4em;
-	margin-right: 0.4em;
+	margin-left: 0.4rem;
+	margin-right: 0.4rem;
+}
+
+.reaction_icon_2
+{
+	padding-left: 0.8rem;
+	margin-right: 0.4rem;
 }
 
 .reaction_icon:first-child
