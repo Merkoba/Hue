@@ -1030,6 +1030,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	position: sticky;
 	z-index: 99;
 	margin-bottom: 1rem;
+	border-radius: 30px;
 }
 
 .filter_input_2
@@ -1041,6 +1042,7 @@ a.generic:link, a.generic:visited, a.generic:hover
 	text-align: center;
 	position: sticky;
 	z-index: 99;
+	border-radius: 30px;
 }
 
 .filter_padding
@@ -1268,11 +1270,6 @@ input[type=text], input[type=search], textarea, select
 	color: #222222;
 	font-family: imported_font, sans-serif !important;
 	border: 1px solid currentColor;
-}
-
-input[type=search]
-{
-	border-radius: 30px;
 }
 
 #modal_image_error, #expand_image_error
