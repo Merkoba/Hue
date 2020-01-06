@@ -1268,6 +1268,7 @@ input[type=text], input[type=search], textarea, select
 	color: #222222;
 	font-family: imported_font, sans-serif !important;
 	border: 1px solid currentColor;
+	border-radius: 30px;
 }
 
 #modal_image_error, #expand_image_error
