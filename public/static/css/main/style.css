@@ -1931,14 +1931,10 @@ input[type=text], input[type=search], textarea, select
 	overflow: auto;
 }
 
-#recent_input_box
+.recent_input_item
 {
 	padding-left: 0.8rem;
 	padding-right: 0.8rem;
-}
-
-.recent_input_item
-{
 	margin-top: 0.25rem;
 	margin-bottom: 0.25rem;
 }
