@@ -1268,6 +1268,10 @@ input[type=text], input[type=search], textarea, select
 	color: #222222;
 	font-family: imported_font, sans-serif !important;
 	border: 1px solid currentColor;
+}
+
+input[type=search]
+{
 	border-radius: 30px;
 }
 
@@ -1928,11 +1932,6 @@ input[type=text], input[type=search], textarea, select
 	z-index: 99999;
 	max-width: 100vw;
 	overflow: auto;
-}
-
-#recent_input_box
-{
-
 }
 
 .recent_input_item
