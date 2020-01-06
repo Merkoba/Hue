@@ -1197,7 +1197,8 @@ Hue.show_radio_picker = function()
     Hue.msg_radio_picker.show(function()
     {
         $("#radio_source_picker_input").focus()
-        Hue.scroll_modal_to_bottom("radio_picker")
+        Hue.show_media_history("radio")
+        Hue.scroll_modal_to_top("radio_picker")
     })
 }
 

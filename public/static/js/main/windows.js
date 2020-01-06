@@ -140,6 +140,7 @@ Hue.start_msg = function()
                 common.after_close(instance)
                 Hue.clear_modal_image_info()
                 Hue.msg_modal_image_number.close()
+                Hue.msg_image_picker.close()
                 Hue.modal_image_open = false
             }
         })
@@ -237,6 +238,7 @@ Hue.start_msg = function()
         Object.assign({}, common,
         {
             id: "image_picker",
+            window_width: "24em",
             after_show: function(instance)
             {
                 common.after_show(instance)
@@ -248,6 +250,7 @@ Hue.start_msg = function()
                 $("#image_source_picker_input").val("")
                 $("#image_source_picker_input_comment").val("")
                 Hue.check_image_picker()
+                Hue.reset_media_history_filter("image")
                 Hue.image_picker_open = false
             }
         })
@@ -258,6 +261,7 @@ Hue.start_msg = function()
         Object.assign({}, common,
         {
             id: "tv_picker",
+            window_width: "24em",
             after_show: function(instance)
             {
                 common.after_show(instance)
@@ -268,6 +272,7 @@ Hue.start_msg = function()
                 common.after_close(instance)
                 $("#tv_source_picker_input").val("")
                 $("#tv_source_picker_input_comment").val("")
+                Hue.reset_media_history_filter("tv")
                 Hue.tv_picker_open = false
             }
         })
@@ -278,6 +283,7 @@ Hue.start_msg = function()
         Object.assign({}, common,
         {
             id: "radio_picker",
+            window_width: "24em",
             after_show: function(instance)
             {
                 common.after_show(instance)
@@ -288,6 +294,7 @@ Hue.start_msg = function()
                 common.after_close(instance)
                 $("#radio_source_picker_input").val("")
                 $("#radio_source_picker_input_comment").val("")
+                Hue.reset_media_history_filter("radio")
                 Hue.radio_picker_open = false
             }
         })
@@ -369,48 +376,6 @@ Hue.start_msg = function()
             {
                 common.after_close(instance)
                 Hue.reset_highlights_filter()
-            }
-        })
-    )
-
-    Hue.msg_image_history = Msg.factory
-    (
-        Object.assign({}, common, titlebar,
-        {
-            id: "image_history",
-            window_width: "24em",
-            after_close: function(instance)
-            {
-                common.after_close(instance)
-                Hue.reset_media_history_filter("image")
-            }
-        })
-    )
-
-    Hue.msg_tv_history = Msg.factory
-    (
-        Object.assign({}, common, titlebar,
-        {
-            id: "tv_history",
-            window_width: "24em",
-            after_close: function(instance)
-            {
-                common.after_close(instance)
-                Hue.reset_media_history_filter("tv")
-            }
-        })
-    )
-
-    Hue.msg_radio_history = Msg.factory
-    (
-        Object.assign({}, common, titlebar,
-        {
-            id: "radio_history",
-            window_width: "24em",
-            after_close: function(instance)
-            {
-                common.after_close(instance)
-                Hue.reset_media_history_filter("radio")
             }
         })
     )
@@ -695,9 +660,6 @@ Hue.start_msg = function()
     Hue.msg_media_menu.set(Hue.template_media_menu())
     Hue.msg_message.set(Hue.template_message())
     Hue.msg_highlights.set(Hue.template_highlights())
-    Hue.msg_image_history.set(Hue.template_image_history())
-    Hue.msg_tv_history.set(Hue.template_tv_history())
-    Hue.msg_radio_history.set(Hue.template_radio_history())
     Hue.msg_input_history.set(Hue.template_input_history())
     Hue.msg_chat_search.set(Hue.template_chat_search())
     Hue.msg_modal_image.set(Hue.template_modal_image())
@@ -728,9 +690,6 @@ Hue.start_msg = function()
     Hue.msg_input_history.set_title("Input History")
     Hue.msg_highlights.set_title("<span id='highlights_window_title' class='pointer'>Highlights</span>")
     Hue.msg_chat_search.set_title("<span id='chat_search_window_title' class='pointer'>Chat Search</span>")
-    Hue.msg_image_history.set_title("<span id='image_history_window_title' class='pointer'>Image History</span>")
-    Hue.msg_tv_history.set_title("<span id='tv_history_window_title' class='pointer'>TV History</span>")
-    Hue.msg_radio_history.set_title("<span id='radio_history_window_title' class='pointer'>Radio History</span>")
     Hue.msg_global_settings.set_title("<span id='global_settings_window_title' class='pointer'>Global Settings</span>")
     Hue.msg_room_settings.set_title("<span id='room_settings_window_title' class='pointer'>Room Settings</span>")
     Hue.msg_public_roomlist.set_title("<span id='public_rooms_window_title' class='pointer'>Public Rooms</span>")
@@ -773,21 +732,6 @@ Hue.start_msg = function()
     $("#visited_rooms_window_title").click(function()
     {
         Hue.toggle_rooms_windows()
-    })
-
-    $("#image_history_window_title").click(function()
-    {
-        Hue.toggle_media_history_windows()
-    })
-
-    $("#tv_history_window_title").click(function()
-    {
-        Hue.toggle_media_history_windows()
-    })
-
-    $("#radio_history_window_title").click(function()
-    {
-        Hue.toggle_media_history_windows()
     })
 
     $("#room_menu_window_title").click(function()
@@ -1012,21 +956,6 @@ Hue.start_filters = function()
         Hue.highlights_filter_timer()
     })
 
-    $("#image_history_filter").on("input", function()
-    {
-        Hue.media_history_filter_timer("image")
-    })
-
-    $("#tv_history_filter").on("input", function()
-    {
-        Hue.media_history_filter_timer("tv")
-    })
-
-    $("#radio_history_filter").on("input", function()
-    {
-        Hue.media_history_filter_timer("radio")
-    })
-
     $("#global_settings_filter").on("input", function()
     {
         Hue.settings_filter_timer("global_settings")
@@ -1041,6 +970,21 @@ Hue.start_filters = function()
     {
         Hue.input_history_filter_timer()
     })
+
+    $("#image_history_filter").on("input", function()
+    {
+        Hue.media_history_filter_timer("image")
+    })
+
+    $("#tv_history_filter").on("input", function()
+    {
+        Hue.media_history_filter_timer("tv")
+    })
+
+    $("#radio_history_filter").on("input", function()
+    {
+        Hue.media_history_filter_timer("radio")
+    })    
 }
 
 // Filter action for normal filter windows
@@ -1306,29 +1250,6 @@ Hue.toggle_menu_windows = function()
     data["user_menu"] = function()
     {
         Hue.show_room_menu()
-    }
-
-    Hue.process_window_toggle(data)
-}
-
-// Toggles between media history windows when clicking the titlebar
-Hue.toggle_media_history_windows = function()
-{
-    let data = {}
-
-    data["image_history"] = function()
-    {
-        Hue.show_media_history("tv")
-    }
-
-    data["tv_history"] = function()
-    {
-        Hue.show_media_history("radio")
-    }
-
-    data["radio_history"] = function()
-    {
-        Hue.show_media_history("image")
     }
 
     Hue.process_window_toggle(data)

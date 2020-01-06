@@ -900,11 +900,6 @@ Hue.show_media_history = function(type, filter=false)
     clone.appendTo(`#${type}_history_container`)
     Hue.show_media_history_type = type
     Hue.update_media_history_blinks()
-
-    Hue[`msg_${type}_history`].show(function()
-    {
-        Hue.scroll_modal_to_top(`${type}_history`)
-    })
 }
 
 // Prepends media history items if the window is open
@@ -933,7 +928,7 @@ Hue.prepend_to_media_history = function(message_id)
     }
 
     else
-    {
+    { 
         $(`#${type}_history_container`).prepend(el)
     }
 }

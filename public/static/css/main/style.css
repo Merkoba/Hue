@@ -3166,6 +3166,12 @@ a.special_link:hover
 	margin-bottom: 1rem;
 }
 
+.media_picker_hist
+{
+	margin-top: 0.8rem;
+	margin-bottom: 0.8rem;
+}
+
 #locked_menu_container
 {
 	margin-top: 1rem;

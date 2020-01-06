@@ -519,7 +519,7 @@ Hue.setup_modal_image = function()
 
     $("#modal_image_header_info").click(function()
     {
-        Hue.show_media_history("image")
+        Hue.show_image_picker()
     })
 
     $("#modal_image_footer_info").click(function()
@@ -931,7 +931,8 @@ Hue.show_image_picker = function()
     Hue.msg_image_picker.show(function()
     {
         $("#image_source_picker_input").focus()
-        Hue.scroll_modal_to_bottom("image_picker")
+        Hue.show_media_history("image")
+        Hue.scroll_modal_to_top("image_picker")
     })
 }
 

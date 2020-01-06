@@ -13,4 +13,7 @@
         <div class='menu_item action inline unselectable' onclick='Hue.needs_confirm("restart_tv", "This will restart the tv for everyone. Are you sure?")'>Restart</div>
         <div id='tv_picker_submit' class='menu_item action inline unselectable' onclick='Hue.tv_picker_submit()'>Submit</div>
     </div>
+    <div class='media_picker_hist unselectable'>History</div>
+    <input type="search" id="tv_history_filter" data-mode='manual' class="filter_input" placeholder="Filter">
+    <div id='tv_history_container' class='media_history_container chat_area chat_area_clone chat_area_clone_center'></div>
 </script>
