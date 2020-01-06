@@ -177,27 +177,32 @@ Hue.show_reactions_box = function()
     if(!Hue.reactions_box_open)
     {
         $("#recent_input_box").html("")
-        
-        let n = 0
-    
-        for(let item of Hue.input_history.slice(0).reverse())
+
+        let max = Hue.get_setting("max_recent_input_items")
+
+        if(max > 0)
         {
-            let m = item.message.trim()
-
-            if(m.length > 100 || m.includes("\n"))
+            let n = 0
+    
+            for(let item of Hue.input_history.slice(0).reverse())
             {
-                continue
-            }
+                let m = item.message.trim()
 
-            let message = Hue.utilz.make_html_safe(m)
-            let el = `<div class='recent_input_item action pointer'>${message}</div>`
-            $("#recent_input_box").prepend(el)
+                if(m.length > 100 || m.includes("\n"))
+                {
+                    continue
+                }
+
+                let message = Hue.utilz.make_html_safe(m)
+                let el = `<div class='recent_input_item action pointer'>${message}</div>`
+                $("#recent_input_box").prepend(el)
             
-            n += 1
+                n += 1
 
-            if(n >= 5)
-            {
-                break
+                if(n >= max)
+                {
+                    break
+                }
             }
         }
 

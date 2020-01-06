@@ -1680,7 +1680,29 @@ Hue.user_settings =
                 Hue[`save_${type}`]()
             }
         }
-    }
+    },
+    max_recent_input_items:
+    {
+        widget_type: "number",
+        description: `Maximum number of input items to be shown on the reaction box`,
+        action: (type, save=true) =>
+        {
+            let max = parseInt($(`#${type}_max_recent_input_items`).val())
+
+            if(isNaN(max))
+            {
+                max = Hue.config.global_settings_default_max_recent_input_items
+            }
+
+            $(`#${type}_max_recent_input_items`).val(max)
+            Hue[type].max_recent_input_items = max
+
+            if(save)
+            {
+                Hue[`save_${type}`]()
+            }
+        }
+    },
 }
 
 // Empties the global settings localStorage object
@@ -1797,14 +1819,17 @@ Hue.start_settings_widgets_listeners = function(type)
         else if
         (
             setting.widget_type === "textarea" || 
-            setting.widget_type === "text" || 
-            setting.widget_type === "number"
+            setting.widget_type === "text"
         )
         {
             item.blur(() => setting.action(type))
         }
 
-        else if(setting.widget_type === "color")
+        else if
+        (
+            setting.widget_type === "number" ||
+            setting.widget_type === "color"
+        )
         {
             item.change(() => setting.action(type))
         }

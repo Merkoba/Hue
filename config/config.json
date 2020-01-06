@@ -206,6 +206,7 @@
 	"global_settings_default_confirm_tv": false,
 	"global_settings_default_confirm_radio": false,
 	"global_settings_default_confirm_message_board": false,
+	"global_settings_default_max_recent_input_items": 10,
 	"room_state_default_image_enabled": true,
 	"room_state_default_tv_enabled": true,
 	"room_state_default_radio_enabled": true,
