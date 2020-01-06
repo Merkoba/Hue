@@ -1930,6 +1930,16 @@ input[type=text], input[type=search], textarea, select
 	overflow: auto;
 }
 
+#recent_input_box
+{
+
+}
+
+.recent_input_item
+{
+	margin: 0.5rem;
+}
+
 #reactions_box
 {
 	display: flex;

@@ -147,6 +147,12 @@ Hue.setup_reactions_box = function()
     })
 
     Hue.horizontal_separator.separate("reactions_box")
+
+    $("#recent_input_box").on("click", ".recent_input_item", function()
+    {
+        Hue.process_message({message:$(this).text()})
+        Hue.hide_reactions_box()
+    })
 }
 
 // Starts a timeout to hide the reactions box when the mouse leaves the box
@@ -170,6 +176,15 @@ Hue.show_reactions_box = function()
 {
     if(!Hue.reactions_box_open)
     {
+        $("#recent_input_box").html("")
+    
+        for(let item of Hue.input_history.slice(-5))
+        {
+            let message = Hue.utilz.make_html_safe(item.message.substring(0, 100))
+            let el = `<div class='recent_input_item action pointer'>${message}</div>`
+            $("#recent_input_box").append(el)
+        }
+
         $("#reactions_box_container").css("display", "flex")
         Hue.reactions_box_open = true
     }
