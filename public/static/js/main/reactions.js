@@ -191,7 +191,7 @@ Hue.show_reactions_box = function()
 
             let message = Hue.utilz.make_html_safe(m)
             let el = `<div class='recent_input_item action pointer'>${message}</div>`
-            $("#recent_input_box").append(el)
+            $("#recent_input_box").prepend(el)
             
             n += 1
 
