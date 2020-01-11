@@ -1161,6 +1161,7 @@ Hue.change = function(args={})
     {
         if(!args.force && Hue.loaded_image.source === Hue.current_image().source)
         {
+            Hue.loaded_image = item
             return false
         }
     }
@@ -1169,6 +1170,7 @@ Hue.change = function(args={})
     {
         if(!args.force && Hue.loaded_tv.source === Hue.current_tv().source)
         {
+            Hue.loaded_tv = item
             return false
         }
     }
@@ -1177,6 +1179,7 @@ Hue.change = function(args={})
     {
         if(!args.force && Hue.loaded_radio.source === Hue.current_radio().source)
         {
+            Hue.loaded_radio = item
             return false
         }
     }

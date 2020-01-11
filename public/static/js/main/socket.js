@@ -490,6 +490,7 @@ Hue.start_socket = function()
 
     Hue.socket.on('connect', () =>
     {
+        Hue.connecting = false
         let no_message_log = !Hue.get_setting("message_log")
 
         Hue.socket_emit('join_room', 

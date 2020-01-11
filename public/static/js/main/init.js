@@ -185,6 +185,7 @@ Hue.message_board_posting_enabled = false
 Hue.connected = false
 Hue.radio_started_date = 0
 Hue.connections = 0
+Hue.connecting = true
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -379,11 +380,7 @@ Hue.on_join = function(data)
     Hue.make_main_container_visible()
     Hue.check_latest_highlight()
     Hue.init_message_board(data)
-
-    if(Hue.connections === 1)
-    {
-        Hue.start_active_media()
-    }
+    Hue.start_active_media()
 
     Hue.at_startup()
 }
