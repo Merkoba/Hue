@@ -14,7 +14,7 @@ Hue.refresh_client = function()
     }
 
     Hue.connecting = true
-    Hue.socket.connect()
+    Hue.start_socket()
 }
 
 // Send a signal to an Electron client
