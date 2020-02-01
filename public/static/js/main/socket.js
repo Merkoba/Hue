@@ -502,34 +502,28 @@ Hue.start_socket = function()
         })
     })
 
+    Hue.socket.on('connect_error', () =>
+    {
+        if(Hue.connecting)
+        {
+            if(Hue.started)
+            {
+                setTimeout(function()
+                {
+                    Hue.connecting = false
+                    Hue.on_disconnect()
+                }, 3000)
+            }
+        }
+    })
+
     Hue.socket.on('disconnect', (reason) =>
     {
         Hue.connected = false
         
         if(Hue.started)
         {
-            Hue.userlist = []
-            Hue.activity_list = []
-            Hue.update_userlist()
-            Hue.update_activity_bar()
-            
-            if(Hue.open_profile_username)
-            {
-                Hue.show_profile(Hue.open_profile_username)
-            }
-
-            if(Hue.get_setting("autoconnect"))
-            {
-                setTimeout(function()
-                {
-                    Hue.refresh_client()
-                }, 5000)
-            }
-
-            else
-            {
-                Hue.show_reload_button()
-            }
+            Hue.on_disconnect()
         }
     })
 
@@ -543,6 +537,35 @@ Hue.start_socket = function()
             Hue.server_update_events[type](data)
         }
     })
+}
+
+// Actions on disconnect
+Hue.on_disconnect = function()
+{
+    Hue.userlist = []
+    Hue.activity_list = []
+    Hue.update_userlist()
+    Hue.update_activity_bar()
+            
+    if(Hue.open_profile_username)
+    {
+        Hue.show_profile(Hue.open_profile_username)
+    }
+
+    if(Hue.get_setting("autoconnect"))
+    {
+        Hue.feedback('Reconnecting...')
+
+        setTimeout(function()
+        {
+            Hue.refresh_client()
+        }, 3000)
+    }
+
+    else
+    {
+        Hue.show_reload_button()
+    }
 }
 
 // Disconnects the user's socket
