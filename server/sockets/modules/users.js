@@ -250,7 +250,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
 
         if(sockets.length > 0)
         {
-            if(((sockets[0].role === 'admin' || sockets[0].role.startsWith('op')) && socket.hue_role !== 'admin') || sockets[0].superuser)
+            if(((sockets[0].hue_role === 'admin' || sockets[0].hue_role.startsWith('op')) && socket.hue_role !== 'admin') || sockets[0].hue_superuser)
             {
                 handler.user_emit(socket, 'forbidden_user', {})
                 return false
