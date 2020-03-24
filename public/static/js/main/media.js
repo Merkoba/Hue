@@ -1154,7 +1154,7 @@ Hue.change = function(args={})
 
     if(item.setter === Hue.username)
     {
-        bypass_lock = Hue.get_setting("bypass_tv_lock_on_own_change")
+        bypass_lock = Hue.started && Hue.get_setting("bypass_tv_lock_on_own_change")
     }
 
     if(args.type === "image")
