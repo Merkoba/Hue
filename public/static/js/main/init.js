@@ -403,6 +403,11 @@ Hue.at_startup = function()
         Hue.started_safe = true
     }, 2000)
 
+    if(Hue.get_setting("show_clock_in_input_placeholder"))
+    {
+        Hue.update_input_placeholder()
+    }
+
     Hue.process_visibility()
     Hue.load_date_4 = Date.now()
     Hue.compare_load_dates()

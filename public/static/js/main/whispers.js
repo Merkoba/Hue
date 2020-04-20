@@ -637,19 +637,22 @@ Hue.popup_message_received = function(data, type="user", announce=true, method="
         }
     }
 
-    data.content = Hue.make_safe(
+    if(!data.content_made)
     {
-        text: data.message,
-        text_as_html: true,
-        text_classes: "popup_message_text",
-        html: h,
-        remove_text_if_empty: true,
-        date: data.date
-    })
-
-    Hue.setup_whispers_click(data.content, data.username)
-
-    data.title = Hue.make_safe(title)
+        data.content = Hue.make_safe(
+        {
+            text: data.message,
+            text_as_html: true,
+            text_classes: "popup_message_text",
+            html: h,
+            remove_text_if_empty: true,
+            date: data.date
+        })
+    
+        Hue.setup_whispers_click(data.content, data.username)
+        data.title = Hue.make_safe(title)
+        data.content_made = true
+    }
 
     if(!announce || Hue.get_setting("open_popup_messages"))
     {
@@ -712,20 +715,24 @@ Hue.popup_message_received = function(data, type="user", announce=true, method="
 Hue.show_popup_message = function(data, method="popup")
 {
     let pop, content
+    let dtitle = $(data.title).clone(true, true)[0]
+    let dcontent = $(data.content).clone(true, true)[0]
 
     if(method === "popup")
     {
         pop = Hue.create_popup({position:"top", id:`popup_message_${data.id}`})
-        content = data.content
+        content = dcontent
     }
 
     else if(method === "modal")
     {
         pop = Hue.msg_info2
-        content = `<div class='whisper_info_container'>${data.content.outerHTML}</div>`
+        cont = $("<div class='whisper_info_container'></div>")
+        cont.append($(data.content).clone(true, true))
+        content = dcontent
     }
 
-    pop.show([data.title, content], function()
+    pop.show([dtitle, content], function()
     {
         $(pop.content).find(".show_message_reply").eq(0).click(function()
         {
