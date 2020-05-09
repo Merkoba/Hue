@@ -44,6 +44,22 @@ Hue.setup_input = function()
         }
     })
 
+    $("#input").on("paste", function(e)
+    {
+        let items = (e.clipboardData || e.originalEvent.clipboardData).items
+
+        for(let index in items)
+        {
+            let item = items[index]
+
+            if(item.kind === 'file') 
+            {
+                Hue.dropzone.addFile(item.getAsFile())
+                return
+            }
+        }
+    })
+
     Hue.old_input_val = $("#input").val()
     Hue.input_tag_scroll_height = $("#input")[0].scrollHeight
 
