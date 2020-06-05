@@ -698,14 +698,9 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return handler.get_out(socket)
         }
 
-        let usockets = handler.get_user_sockets_per_room(socket.hue_room_id, socket.hue_user_id)
-
-        for(let socc of usockets)
+        if(Date.now() - socket.hue_last_badge_date < config.send_badge_cooldown)
         {
-            if(Date.now() - socc.hue_last_badge_date < config.send_badge_cooldown)
-            {
-                return false
-            }
+            return false
         }
 
         let sockets = handler.get_user_sockets_per_room_by_username(socket.hue_room_id, data.username)
@@ -745,7 +740,13 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             }
         })
 
-        socket.hue_last_badge_date = Date.now()
+        // Update  the badge date on every socket
+        let usockets = handler.get_user_sockets_per_room(socket.hue_room_id, socket.hue_user_id)
+        
+        for(let socc of usockets)
+        {
+            socc.hue_last_badge_date = Date.now()
+        }
 
         await db_manager.update_user(first_socket.hue_user_id, prop2)
     }
