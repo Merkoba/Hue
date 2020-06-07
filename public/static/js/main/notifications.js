@@ -17,9 +17,15 @@ Hue.make_info_popup = function(on_click=function(){})
 
     let after_close = function(instance)
     {
-        if(!instance.hue_terminated)
+        for(let i=0; i<Hue.info_popups.length; i++)
         {
-            Hue.info_popups.shift()
+            let pop = Hue.info_popups[i]
+
+            if(pop.options.id === instance.options.id)
+            {
+                Hue.info_popups.splice(i, 1)
+                break
+            }
         }
     }
 
@@ -74,11 +80,7 @@ Hue.make_info_popup = function(on_click=function(){})
 
         for(let pop of remainder)
         {
-            if(!pop.hue_closing)
-            {
-                pop.hue_terminated = true
-                pop.close()
-            }
+            Hue.close_popup(pop)
         }
 
         Hue.info_popups = Hue.info_popups.slice(-Hue.config.max_info_popups)
@@ -87,12 +89,21 @@ Hue.make_info_popup = function(on_click=function(){})
     return popup
 }
 
+// Attempts to close a popup
+Hue.close_popup = function(popup)
+{
+    if(!popup.hue_closing)
+    {
+        popup.close()
+    }
+}
+
 // Adds the close timeout to an info popup
 Hue.add_close_timeout_to_info_popup = function(popup)
 {
     popup.hue_close_timeout = setTimeout(function()
     {
-        popup.close()
+        Hue.close_popup(popup)
     }, Hue.get_setting("popup_notifications_close_delay"))
 }
 
