@@ -49,6 +49,7 @@ Hue.start_dropzone = function()
         Hue.dropzone.files = []
 
         Hue.show_image_upload_comment(file, "image_upload")
+        $("#image_upload_comment_input").focus()
     })
 }
 
