@@ -981,7 +981,6 @@ Hue.show_image_upload_comment = function(file, type)
 
             $("#image_upload_comment_input").focus()
             Hue.scroll_modal_to_bottom("image_upload_comment")
-            $("#image_upload_comment_input").focus()
         })
     }
 
