@@ -1579,15 +1579,23 @@ Hue.start_reply = function(target)
 
     let uname = $(target).closest(".chat_message").data("uname")
     let text = $(target).closest(".chat_content_container").data("original_message")
+    let selection = window.getSelection().toString()
+
+    if(selection) 
+    {
+        if(text.includes(selection)) 
+        {
+            text = selection
+        }
+    }
 
     if(!uname || !text)
     {
         return false
     }
 
-    let rtext = text.replace(/\n+/gm, " ")
+    let rtext = text.replace(/\n+/gm, " ").trim()
     let add_dots = rtext.length > Hue.quote_max_length
-    
     text = rtext.substring(0, Hue.quote_max_length)
 
     if(add_dots)
