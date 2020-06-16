@@ -12,7 +12,6 @@ module.exports = function(vars, handler, io, db_manager, config, sconfig, utilz,
     vars.image_dimensions = require('image-size')
     vars.cheerio = require("cheerio")
     vars.redis = require("redis")
-    vars.Vimeo = require("vimeo").Vimeo
     vars.he = require("he")
 
     vars.soundcloud.init(
@@ -20,13 +19,6 @@ module.exports = function(vars, handler, io, db_manager, config, sconfig, utilz,
         id: `${sconfig.soundcloud_id}`,
         secret: `${sconfig.soundcloud_secret}`
     })
-
-    vars.vimeo_client = new vars.Vimeo
-    (
-        sconfig.vimeo_client_id,
-        sconfig.vimeo_secret,
-        sconfig.vimeo_access_token
-    )
 
     vars.root_path = vars.path.join(__dirname, "../../")
     vars.images_root = vars.path.join(vars.root_path, config.images_directory)

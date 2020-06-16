@@ -267,34 +267,6 @@ const Utilz = function()
 		}
 	}
 
-	utilz.get_twitch_id = function(url)
-	{
-		let match = url.match(/.*twitch\.tv(?:\/videos)?\/(\w+)/)
-
-		if(match)
-		{
-			if(match[0].includes('twitch.tv/videos/'))
-			{
-				return ["video", match[1]]
-			}
-
-			else if(match[0].includes("clips.twitch.tv"))
-			{
-				return false
-			}
-
-			else
-			{
-				return ["channel", match[1]]
-			}
-		}
-
-		else
-		{
-			return false
-		}
-	}
-
 	utilz.object_to_array = function(obj)
 	{
 		return Object.keys(obj).map(function(key)
@@ -431,18 +403,6 @@ const Utilz = function()
 		{
 			return false
 		}
-	}
-
-	utilz.get_vimeo_id = function(src)
-	{
-		let matches = src.match(/https:\/\/vimeo.com\/(\d+)/)
-
-		if(matches)
-		{
-			return matches[1]
-		}
-
-		return false
 	}
 
 	utilz.capitalize_words = function(s)

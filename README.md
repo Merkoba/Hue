@@ -11,7 +11,7 @@ It provides 3 different media spots that can all be active at once, or just the 
 These are Images, TV, and Radio.
 Images can be any image, either uploaded, drawn (there's a built-in drawing pad to draw an image), or linked. Search queries can be enabled to search images on Imgur. When the image is clicked it opens a modal where current and previous images can be seen in full screen.
 
-TV can be any video link. It embeds videos from YouTube, Soundcloud, Twitch, Vimeo, video files, or even websites that are embeded in an iframe. Search queries can be enabled to search videos on YouTube.
+TV can be any video link. It embeds videos from YouTube, Soundcloud, video files, or even websites that are embedded in an iframe. Search queries can be enabled to search videos on YouTube.
 
 Radio can be any radio, or audio, link. It embeds YouTube, Soundcloud, audio files, or radio streams. If it detects an Icecast stream it will try to fetch metadata to show live song information. Search queries can be enabled to search audio on YouTube.
 
