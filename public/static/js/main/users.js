@@ -226,8 +226,6 @@ Hue.remove_from_userlist = function(user_id)
 // Replaces a property of a user in the userlist by username
 Hue.replace_property_in_userlist_by_username = function(username, prop, new_value, update=true)
 {
-    console.info("Dbg: 1")
-    console.info(`prop: ${prop}, username: ${username}`)
     let changed = false
 
     for(let i=0; i<Hue.userlist.length; i++)
@@ -242,7 +240,7 @@ Hue.replace_property_in_userlist_by_username = function(username, prop, new_valu
 
     if(update && changed)
     {
-        Hue.update_userlist()
+        Hue.update_userlist(prop)
 
         if(Hue.open_profile_username === username)
         {
@@ -254,7 +252,6 @@ Hue.replace_property_in_userlist_by_username = function(username, prop, new_valu
 // Replaces a property of a user by user_id
 Hue.replace_property_in_userlist_by_user_id = function(user_id, prop, new_value, update=true)
 {
-    console.info("Dbg: 2")
     let changed = false
     let user
 
@@ -271,7 +268,7 @@ Hue.replace_property_in_userlist_by_user_id = function(user_id, prop, new_value,
 
     if(update && changed)
     {
-        Hue.update_userlist()
+        Hue.update_userlist(prop)
 
         if(Hue.open_profile_username === user.username)
         {
@@ -481,9 +478,8 @@ Hue.get_user_by_id = function(id)
 
 // Handles a user list update
 // Rebuilds the HTML of the user list window
-Hue.update_userlist = function()
+Hue.update_userlist = function(prop="")
 {
-    console.info("Dbg: update_userlist")
     Hue.userlist.sort(Hue.compare_userlist)
     Hue.usernames = []
 
@@ -494,7 +490,20 @@ Hue.update_userlist = function()
     
     if(Hue.msg_userlist.is_open())
     {
-        Hue.update_userlist_window()
+        let uchange = true
+
+        if(prop) {
+            uchange = false
+
+            if(prop === "username" || prop == "bio" || prop === "profile_image") {
+                uchange = true
+            }
+        }
+
+        if(uchange) {
+            Hue.update_userlist_window()
+        }
+
         Hue.check_userlist_visibility()
     }
 
@@ -709,7 +718,6 @@ Hue.user_is_controllable = function(user)
 // Shows the user list window
 Hue.show_userlist_window = function(mode="normal", filter=false)
 {
-    console.info("Dbg: show_userlist_window")
     Hue.userlist_mode = mode
 
     if(mode === "normal")
