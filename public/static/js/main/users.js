@@ -480,6 +480,7 @@ Hue.get_user_by_id = function(id)
 // Rebuilds the HTML of the user list window
 Hue.update_userlist = function()
 {
+    console.info("Dbg: update_userlist")
     Hue.userlist.sort(Hue.compare_userlist)
     Hue.usernames = []
 
@@ -705,6 +706,7 @@ Hue.user_is_controllable = function(user)
 // Shows the user list window
 Hue.show_userlist_window = function(mode="normal", filter=false)
 {
+    console.info("Dbg: show_userlist_window")
     Hue.userlist_mode = mode
 
     if(mode === "normal")
