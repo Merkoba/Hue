@@ -226,6 +226,7 @@ Hue.remove_from_userlist = function(user_id)
 // Replaces a property of a user in the userlist by username
 Hue.replace_property_in_userlist_by_username = function(username, prop, new_value, update=true)
 {
+    console.info("Dbg: 1")
     let changed = false
 
     for(let i=0; i<Hue.userlist.length; i++)
@@ -252,6 +253,7 @@ Hue.replace_property_in_userlist_by_username = function(username, prop, new_valu
 // Replaces a property of a user by user_id
 Hue.replace_property_in_userlist_by_user_id = function(user_id, prop, new_value, update=true)
 {
+    console.info("Dbg: 2")
     let changed = false
     let user
 
