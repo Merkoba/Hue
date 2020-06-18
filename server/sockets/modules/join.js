@@ -395,7 +395,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             op_2_permissions: info.op_2_permissions,
             op_3_permissions: info.op_3_permissions,
             op_4_permissions: info.op_4_permissions,
-            email: socket.hue_email,
+            email: utilz.conceal_email(socket.hue_email),
             bio: socket.hue_bio,
             reg_date: userinfo.registration_date,
             last_message_board_post_date: last_message_board_post_date

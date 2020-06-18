@@ -890,6 +890,27 @@ const Utilz = function()
 		return costs[s2.length]
 	}
 
+	utilz.conceal_email = function(s) {
+		let split = s.split("@")
+		let uname = split[0]
+		let domain = split[1]
+		let new_uname = ""
+
+		for(let i=0; i<uname.length; i++) {
+			let letter = uname[i]
+
+			if(i == 0 || i == uname.length - 1) {
+				new_uname += letter
+			} else {
+				new_uname += "*"
+			}
+		}
+
+		uname = new_uname
+
+		return `${uname}@${domain}`
+	}
+
 	utilz.media_types = ["image", "tv", "radio"]
 	utilz.clear_log_types = ["all", "above", "below"]
 
