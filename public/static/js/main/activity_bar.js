@@ -157,7 +157,7 @@ Hue.update_activity_bar = function()
 
                 h.on("mouseover", function() {
                     let text = $(this).find(".activity_bar_text").eq(0)
-                    text.css("font-size", "1.1em")
+                    text.css("font-size", "1.2em")
                 })
 
                 h.on("mouseout", function() {
