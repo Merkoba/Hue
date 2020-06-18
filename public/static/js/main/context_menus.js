@@ -436,21 +436,20 @@ Hue.start_chat_menu_context_menu = function()
 Hue.generate_chat_maxer_context_items = function()
 {
     let items = {}
-    let def = Hue.config.global_settings_default_chat_display_percentage
 
     for(let i=10; i>0; i--)
     {
         let n = i * 10
-        let name = `Chat ${n}%`
         let p = Hue.get_setting("chat_display_percentage")
+        let class_name = ""
         
         if(p === n) {
-            name += " *"
+            class_name = "bold bigger"
         }
 
         items[`per${n}`] =
         {
-            name: name, callback: function(key, opt)
+            name: `Chat ${n}%`, callback: function(key, opt)
             {
                 Hue.do_chat_size_change(n)
 
@@ -458,8 +457,36 @@ Hue.generate_chat_maxer_context_items = function()
                 {
                     Hue.show_media_items()
                 }
-            }
+            },
+            className: class_name
         }
+    }
+
+    let size = Hue.get_setting("chat_font_size")
+    let c_very_big = ""
+    let c_big = ""
+    let c_normal = ""
+    let c_small = ""
+    let c_very_small = ""
+
+    if(size === "very_big") {
+        c_very_big = "bold bigger"
+    } 
+    
+    else if(size === "big") {
+        c_big = "bold bigger"
+    }
+
+    else if(size === "normal") {
+        c_normal = "bold bigger"
+    }
+
+    else if(size === "small") {
+        c_small = "bold bigger"
+    }
+
+    else if(size === "very_small") {
+        c_very_small = "bold bigger"
     }
 
     let obj = Object.assign(
@@ -469,35 +496,40 @@ Hue.generate_chat_maxer_context_items = function()
             name: "Very Big", callback: function(key, opt)
             {
                 Hue.toggle_chat_font_size("very_big")
-            }
+            },
+            className: c_very_big
         },
         big:
         {
             name: "Big", callback: function(key, opt)
             {
                 Hue.toggle_chat_font_size("big")
-            }
+            },
+            className: c_big
         },
         normal:
         {
             name: "Normal", callback: function(key, opt)
             {
                 Hue.toggle_chat_font_size("normal")
-            }
+            },
+            className: c_normal
         },
         small:
         {
             name: "Small", callback: function(key, opt)
             {
                 Hue.toggle_chat_font_size("small")
-            }
+            },
+            className: c_small
         },
         very_small:
         {
             name: "Very Small", callback: function(key, opt)
             {
                 Hue.toggle_chat_font_size("very_small")
-            }
+            },
+            className: c_very_small
         }
     }, items,
     {
@@ -541,20 +573,38 @@ Hue.generate_tv_maxer_context_items = function()
     for(let i=10; i>=0; i--)
     {
         let n = i * 10
-        let name = `TV ${n}%`
         let p = Hue.get_setting("tv_display_percentage")
-        
-        if(p === n) {
-            name += " *"
+        let class_name = ""
+
+        if(!Hue.room_state.image_enabled && Hue.room_state.tv_enabled) 
+        {
+            if(n === 100) {
+                class_name = "bold bigger"
+            }
+        }
+
+        else if(Hue.room_state.image_enabled && !Hue.room_state.tv_enabled) 
+        {
+            if(n === 0) {
+                class_name = "bold bigger"
+            }
+        }
+
+        else 
+        {
+            if(p === n) {
+                class_name = "bold bigger"
+            }
         }
 
         items[`per${n}`] =
         {
-            name: name, callback: function(key, opt)
+            name: `TV ${n}%`, callback: function(key, opt)
             {
                 Hue.unmaximize_media()
                 Hue.do_media_tv_size_change(n)
-            }
+            },
+            className: class_name
         }
     }
 
@@ -713,25 +763,20 @@ Hue.generate_volume_context_items = function()
     {
         let n = i * 10
         let n2 = i / 10
+        let name = `${n}%`
+        let class_name = ""
+        
+        if(n2 === Hue.room_state.radio_volume) {
+            class_name = "bold bigger"
+        }
 
         items[`vcm${n}`] =
         {
-            name: `${n}%`, callback: function(key, opt)
+            name: name, callback: function(key, opt)
             {
                 Hue.set_radio_volume(n2)
             },
-            disabled: function(key, opt)
-            {
-                if(n2 === Hue.room_state.radio_volume)
-                {
-                    return true
-                }
-
-                else
-                {
-                    return false
-                }
-            }
+            className: class_name
         }
     }
 
@@ -748,7 +793,11 @@ Hue.start_volume_context_menu = function()
         zIndex: 9000000000,
         events: Hue.context_menu_events,
         className: 'volume_context',
-        items: Hue.generate_volume_context_items()
+        build: function() {
+            return {
+                items: Hue.generate_volume_context_items(),
+            }
+        }
     })
 }
 

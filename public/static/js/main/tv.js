@@ -922,28 +922,6 @@ Hue.do_media_tv_size_change = function(size, notify=true, override=true)
         return false
     }
 
-    if(size === 0)
-    {
-        if(!Hue.image_is_maximized())
-        {
-            Hue.maximize_image()
-            Hue.show_infotip("Image Maximized")
-        }
-
-        return
-    }
-
-    if(size === 100)
-    {
-        if(!Hue.tv_is_maximized())
-        {
-            Hue.maximize_tv()
-            Hue.show_infotip("TV Maximized")
-        }
-
-        return
-    }
-
     if(size !== Hue.get_setting("tv_display_percentage"))
     {
         Hue.modify_setting(`tv_display_percentage ${size}`, false)
@@ -952,6 +930,24 @@ Hue.do_media_tv_size_change = function(size, notify=true, override=true)
     if(notify)
     {
         Hue.notify_media_tv_size_change(size)
+    }
+
+    if(size === 0)
+    {
+        if(!Hue.image_is_maximized())
+        {
+            Hue.maximize_image()
+            Hue.show_infotip("Image Maximized")
+        }
+    }
+
+    else if(size === 100)
+    {
+        if(!Hue.tv_is_maximized())
+        {
+            Hue.maximize_tv()
+            Hue.show_infotip("TV Maximized")
+        }
     }
 }
 
