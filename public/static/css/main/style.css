@@ -339,6 +339,7 @@ div#header_radio_playing_icon
 	width: 100%;
 	height: 100%;
 	align-items: center;
+	position: relative;
 }
 
 #media_image_error

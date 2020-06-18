@@ -229,35 +229,9 @@ Hue.maxers_mouse_events = function()
             return false
         }
 
-        let maximized = false
-
-        if(Hue.num_media_elements_visible() === 1)
-        {
-            maximized = true
-        }
-
+        let maximized = Hue.num_media_elements_visible() === 1
         let direction = e.deltaY > 0 ? 'down' : 'up'
-        let el
-
-        if(e.target.id === "media_image_maxer")
-        {
-            el = $("#media_image")[0]
-        }
-
-        else if(e.target.id === "media_tv_maxer")
-        {
-            el = $("#media_tv")[0]
-        }
-
-        else if(e.target.id === "footer_media_rotate_icon")
-        {
-            el = $("#media_tv")[0]
-        }
-
-        else
-        {
-            return false
-        }
+        let el = $("#media_tv")[0]
 
         if(direction === 'up')
         {
@@ -400,9 +374,7 @@ Hue.maxers_mouse_events = function()
         }
     }
 
-    $("#media_tv_maxer")[0].addEventListener("wheel", f)
-    $("#media_image_maxer")[0].addEventListener("wheel", f)
-    $("#footer_media_rotate")[0].addEventListener("wheel", f)
+    $("#media_maxer")[0].addEventListener("wheel", f)
 
     let f2 = function(e)
     {
@@ -448,26 +420,6 @@ Hue.maxers_mouse_events = function()
         }
     }
 
-    $("#media_image_maxer")[0].addEventListener("mousedown", function(e)
-    {
-        e.preventDefault()
-    })
-
-    // $("#media_image_maxer")[0].addEventListener("dblclick", function(e)
-    // {
-    //     Hue.maximize_image()
-    // })
-
-    $("#media_tv_maxer")[0].addEventListener("mousedown", function(e)
-    {
-        e.preventDefault()
-    })
-
-    // $("#media_tv_maxer")[0].addEventListener("dblclick", function(e)
-    // {
-    //     Hue.maximize_tv()
-    // })
-
     $("#chat_maxer")[0].addEventListener("wheel", f2)
 
     $("#chat_maxer")[0].addEventListener("mousedown", function(e)
@@ -480,16 +432,7 @@ Hue.maxers_mouse_events = function()
         Hue.toggle_media()
     })
 
-    $("#media_image_maxer").on("auxclick", function(e)
-    {
-        if(e.which === 2)
-        {
-            Hue.unmaximize_media()
-            Hue.set_default_tv_size()
-        }
-    })
-
-    $("#media_tv_maxer").on("auxclick", function(e)
+    $("#media_maxer").on("auxclick", function(e)
     {
         if(e.which === 2)
         {
@@ -584,7 +527,7 @@ Hue.num_media_elements_visible = function()
 {
     let num = 0
 
-    $("#media_split").children().each(function()
+    $("#media_split .media_main_container").each(function()
     {
         if($(this).css("display") !== "none")
         {

@@ -645,7 +645,7 @@ Hue.start_tv_maxer_context_menu = function()
 {
     $.contextMenu(
     {
-        selector: "#media_tv_maxer, #media_image_maxer",
+        selector: "#media_maxer",
         animation: {duration: 250, hide: 'fadeOut'},
         zIndex: 9000000000,
         events: Hue.context_menu_events,
