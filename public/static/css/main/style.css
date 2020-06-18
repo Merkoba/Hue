@@ -169,6 +169,7 @@ body *
 	overflow: hidden;
 	margin-left: 0.5rem;
 	margin-right: 0.8rem;
+	transition: text-shadow 500ms;
 }
 
 .activity_bar_image_container
@@ -178,6 +179,7 @@ body *
 	min-height: 22px;
 	max-height: 22px;
 	margin-left: 0.8rem;
+	transition: box-shadow 500ms;
 }
 
 .activity_bar_image
