@@ -149,10 +149,10 @@ Hue.update_activity_bar = function()
 
                 let h = $(`
                 <div class='activity_bar_item dynamic_title'>
-                    <div class='activity_bar_image_container round_image_container action4'>
+                    <div class='activity_bar_image_container round_image_container'>
                         <img class='activity_bar_image profile_image' src='${pi}'>
                     </div>
-                    <div class='activity_bar_text action'></div>
+                    <div class='activity_bar_text'></div>
                 </div>`)
 
                 let text_el = h.find(".activity_bar_text").eq(0)

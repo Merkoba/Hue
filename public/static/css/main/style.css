@@ -155,9 +155,12 @@ body *
 	margin: auto;
 }
 
-.activity_bar_item:hover 
-{
-	font-size: 1.2em;
+.activity_bar_item:hover .activity_bar_image_container {
+	box-shadow: 0 0 20px currentColor;
+}
+
+.activity_bar_item:hover .activity_bar_text {
+	text-shadow: 0 0 20px currentColor;
 }
 
 .activity_bar_text
