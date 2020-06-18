@@ -453,20 +453,20 @@ Hue.maxers_mouse_events = function()
         e.preventDefault()
     })
 
-    $("#media_image_maxer")[0].addEventListener("dblclick", function(e)
-    {
-        Hue.maximize_image()
-    })
+    // $("#media_image_maxer")[0].addEventListener("dblclick", function(e)
+    // {
+    //     Hue.maximize_image()
+    // })
 
     $("#media_tv_maxer")[0].addEventListener("mousedown", function(e)
     {
         e.preventDefault()
     })
 
-    $("#media_tv_maxer")[0].addEventListener("dblclick", function(e)
-    {
-        Hue.maximize_tv()
-    })
+    // $("#media_tv_maxer")[0].addEventListener("dblclick", function(e)
+    // {
+    //     Hue.maximize_tv()
+    // })
 
     $("#chat_maxer")[0].addEventListener("wheel", f2)
 

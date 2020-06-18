@@ -436,14 +436,21 @@ Hue.start_chat_menu_context_menu = function()
 Hue.generate_chat_maxer_context_items = function()
 {
     let items = {}
+    let def = Hue.config.global_settings_default_chat_display_percentage
 
     for(let i=10; i>0; i--)
     {
         let n = i * 10
+        let name = `Chat ${n}%`
+        let p = Hue.get_setting("chat_display_percentage")
+        
+        if(p === n) {
+            name += " *"
+        }
 
         items[`per${n}`] =
         {
-            name: `Chat ${n}%`, callback: function(key, opt)
+            name: name, callback: function(key, opt)
             {
                 Hue.do_chat_size_change(n)
 
@@ -517,7 +524,12 @@ Hue.start_chat_maxer_context_menu = function()
         zIndex: 9000000000,
         events: Hue.context_menu_events,
         className: "maxer_context",
-        items: Hue.generate_chat_maxer_context_items()
+        trigger: "left",
+        build: function() {
+            return {
+                items: Hue.generate_chat_maxer_context_items()
+            }
+        }
     })
 }
 
@@ -529,10 +541,16 @@ Hue.generate_tv_maxer_context_items = function()
     for(let i=10; i>=0; i--)
     {
         let n = i * 10
+        let name = `TV ${n}%`
+        let p = Hue.get_setting("tv_display_percentage")
+        
+        if(p === n) {
+            name += " *"
+        }
 
         items[`per${n}`] =
         {
-            name: `TV ${n}%`, callback: function(key, opt)
+            name: name, callback: function(key, opt)
             {
                 Hue.unmaximize_media()
                 Hue.do_media_tv_size_change(n)
@@ -577,12 +595,17 @@ Hue.start_tv_maxer_context_menu = function()
 {
     $.contextMenu(
     {
-        selector: "#media_tv_maxer, #media_image_maxer, #footer_media_rotate",
+        selector: "#media_tv_maxer, #media_image_maxer",
         animation: {duration: 250, hide: 'fadeOut'},
         zIndex: 9000000000,
         events: Hue.context_menu_events,
         className: "maxer_context",
-        items: Hue.generate_tv_maxer_context_items()
+        trigger: "left",
+        build: function() {
+            return {
+                items: Hue.generate_tv_maxer_context_items()
+            }
+        }
     })
 }
 
