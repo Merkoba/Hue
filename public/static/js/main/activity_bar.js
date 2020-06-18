@@ -155,16 +155,6 @@ Hue.update_activity_bar = function()
                     <div class='activity_bar_text action'></div>
                 </div>`)
 
-                h.on("mouseover", function() {
-                    let text = $(this).find(".activity_bar_text").eq(0)
-                    text.css("font-size", "1.2em")
-                })
-
-                h.on("mouseout", function() {
-                    let text = $(this).find(".activity_bar_text").eq(0)
-                    text.css("font-size", "1em")
-                })
-
                 let text_el = h.find(".activity_bar_text").eq(0)
                 let img_el = h.find(".activity_bar_image").eq(0)
 

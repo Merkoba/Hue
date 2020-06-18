@@ -163,6 +163,11 @@ body *
 	margin-right: 0.8rem;
 }
 
+.activity_bar_text:hover 
+{
+	font-size: 1.2em;
+}
+
 .activity_bar_image_container
 {
 	min-width: 22px;
