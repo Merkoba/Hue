@@ -439,7 +439,7 @@ Hue.generate_chat_maxer_context_items = function()
     let max = Hue.get_setting("chat_enabled") && (Hue.num_media_elements_visible() === 0)
     let per = Hue.get_setting("chat_display_percentage")
 
-    for(let i=10; i>0; i--)
+    for(let i=1; i<=10; i++)
     {
         let n = i * 10
         let class_name = ""
