@@ -503,8 +503,6 @@ Hue.update_userlist = function(prop="")
         if(uchange) {
             Hue.update_userlist_window()
         }
-
-        Hue.check_userlist_visibility()
     }
 
     Hue.usercount = Hue.userlist.length
@@ -536,11 +534,6 @@ Hue.setup_userlist_window = function()
             Hue.process_write_whisper($(this).data("username"))
         }
     })
-
-    $('#Msg-content-container-userlist').scroll(function()
-    {
-        Hue.on_userlist_scroll()
-    })
 }
 
 // Fills the userlist window with user information
@@ -559,7 +552,7 @@ Hue.update_userlist_window = function()
             <div class='userlist_column flex_column_center'>
                 <div>
                     <div class='userlist_item_profile_image_container round_image_container unselectable action4'>
-                        <img class='userlist_item_profile_image profile_image' src=''>
+                        <img class='userlist_item_profile_image profile_image' src='${item.profile_image}' loading='lazy'>
                     </div>
                     <div class='userlist_item_details_container'>
                         <div class='userlist_item_username action'></div>
@@ -578,10 +571,16 @@ Hue.update_userlist_window = function()
         h.data("username", item.username)
 
         let image = h.find(".userlist_item_profile_image").eq(0)
-        image.data("src", item.profile_image)
         image.data("username", item.username)
-        image.data("src_applied", false)
-        image.attr("src", Hue.config.default_profile_image_url)
+
+        image.on("error", function(e)
+        {   
+            console.log(e)
+            if($(this).attr("src") !== Hue.config.default_profile_image_url)
+            {
+                $(this).attr("src", Hue.config.default_profile_image_url)
+            }
+        })
 
         let role_tag = Hue.role_tag(item.role)
         let role_element = h.find('.userlist_item_role').eq(0)
@@ -734,50 +733,10 @@ Hue.show_userlist_window = function(mode="normal", filter=false)
 
     Hue.msg_userlist.show(function()
     {
-        Hue.check_userlist_visibility()
-
         if(filter)
         {
             $("#userlist_filter").val(filter)
             Hue.do_modal_filter()
-        }
-    })
-}
-
-// Checks for visible items in the userlist window to apply actions
-Hue.check_userlist_visibility = function()
-{
-    let win = $("#Msg-window-userlist")
-    let window_height = win.height()
-    let window_offset = win.offset().top
-
-    $(".userlist_item").each(function()
-    {
-        if($(this).css("display") === "none")
-        {
-            return true
-        }
-
-        let item_offset = $(this).offset().top
-        let offset = item_offset - window_offset
-        
-        if(offset > 0 && offset < window_height)
-        {
-            let image = $(this).find(".userlist_item_profile_image").eq(0)
-
-            if(!image.data("src_applied"))
-            {
-                image.on("error", function()
-                {
-                    if($(this).attr("src") !== Hue.config.default_profile_image_url)
-                    {
-                        $(this).attr("src", Hue.config.default_profile_image_url)
-                    }
-                })
-
-                image.attr("src", image.data("src"))
-                image.data("src_applied", true)
-            }
         }
     })
 }
@@ -1570,18 +1529,6 @@ Hue.annex = function(rol="admin")
     }
 
     Hue.socket_emit('change_role', {username:Hue.username, role:rol})
-}
-
-// This is fired after a userlist filter
-Hue.after_userlist_filtered = function()
-{
-    Hue.check_userlist_visibility()
-}
-
-// What happens after the userlist scroll debouncer triggers
-Hue.after_userlist_scroll = function()
-{
-    Hue.check_userlist_visibility()
 }
 
 Hue.setup_badges = function()

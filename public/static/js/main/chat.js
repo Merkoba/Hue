@@ -557,7 +557,7 @@ Hue.update_chat = function(args={})
         <div class='${message_classes}'>
             <div class='chat_left_side'>
                 <div class='chat_profile_image_container round_image_container unselectable action4'>
-                    <img class='chat_profile_image profile_image' src='${pi}'>
+                    <img class='chat_profile_image profile_image' src='${pi}' loading='lazy'>
                 </div>
             </div>
             <div class='chat_right_side'>
@@ -2892,7 +2892,7 @@ Hue.make_link_preview = function(args={})
 
     let link_preview_s =
     `<div class='${link_preview_classes}'>
-        <img class='${link_preview_image_classes}' src='${args.image}'>
+        <img class='${link_preview_image_classes}' src='${args.image}' loading='lazy'>
         <div class='${link_preview_text_content_classes}'>
             <div class='${link_preview_title_classes}'>${Hue.utilz.make_html_safe(args.title)}</div>
             <div class='${link_preview_description_classes}'>${Hue.utilz.make_html_safe(args.description)}</div>
@@ -2985,7 +2985,7 @@ Hue.make_image_preview = function(message)
             ans.image_preview_src = `https://i.imgur.com/${code}l.jpg`
 
             // This is in a single line on purpose
-            ans.image_preview = `<div class='image_preview action'><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}"></div>`
+            ans.image_preview = `<div class='image_preview action'><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}" loading="lazy"></div>`
 
             let text = Hue.replace_markdown(Hue.utilz.make_html_safe(message))
             let stext = `<div class='image_preview_text'>${text}</div>`

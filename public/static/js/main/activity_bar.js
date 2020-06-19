@@ -150,7 +150,7 @@ Hue.update_activity_bar = function()
                 let h = $(`
                 <div class='activity_bar_item dynamic_title'>
                     <div class='activity_bar_image_container round_image_container'>
-                        <img class='activity_bar_image profile_image' src='${pi}'>
+                        <img class='activity_bar_image profile_image' src='${pi}' loading='lazy'>
                     </div>
                     <div class='activity_bar_text'></div>
                 </div>`)

@@ -130,10 +130,4 @@ Hue.create_debouncers = function()
     {
         Hue.hide_infotip()
     }, Hue.hide_infotip_delay)
-
-    // Debounce timer for userlist scroll
-    Hue.on_userlist_scroll = Hue.create_debouncer(function()
-    {
-        Hue.after_userlist_scroll()
-    }, Hue.filter_delay)
 }
