@@ -436,16 +436,28 @@ Hue.start_chat_menu_context_menu = function()
 Hue.generate_chat_maxer_context_items = function()
 {
     let items = {}
+    let max = Hue.get_setting("chat_enabled") && (Hue.num_media_elements_visible() === 0)
+    let per = Hue.get_setting("chat_display_percentage")
 
     for(let i=10; i>0; i--)
     {
         let n = i * 10
-        let p = Hue.get_setting("chat_display_percentage")
         let class_name = ""
-        
-        if(p === n) {
-            class_name = "bold bigger"
+
+        if(max) 
+        {
+            if(n === 100) {
+                class_name = "bold bigger"
+            }
         }
+
+        else
+        {
+            if(per === n) {
+                class_name = "bold bigger"
+            }
+        }
+        
 
         items[`per${n}`] =
         {
@@ -580,9 +592,10 @@ Hue.generate_media_maxer_context_items = function()
         nums = nums.reverse()
     }
 
+    let per = Hue.get_setting("tv_display_percentage")
+
     for(let n of nums)
     {
-        let p = Hue.get_setting("tv_display_percentage")
         let class_name = ""
 
         if(!Hue.room_state.image_enabled && Hue.room_state.tv_enabled) 
@@ -601,7 +614,7 @@ Hue.generate_media_maxer_context_items = function()
 
         else 
         {
-            if(p === n) {
+            if(per === n) {
                 class_name = "bold bigger"
             }
         }
