@@ -397,7 +397,7 @@ Hue.maxers_mouse_events = function()
 
         let direction = e.deltaY > 0 ? 'down' : 'up'
 
-        if(direction === 'up')
+        if(direction === 'down')
         {
             if(maximized)
             {
@@ -407,7 +407,7 @@ Hue.maxers_mouse_events = function()
             Hue.maxer_wheel_timer(Hue.increase_chat_percentage)
         }
 
-        else if(direction === 'down')
+        else if(direction === 'up')
         {
             if(maximized)
             {
@@ -421,16 +421,6 @@ Hue.maxers_mouse_events = function()
     }
 
     $("#chat_maxer")[0].addEventListener("wheel", f2)
-
-    $("#chat_maxer")[0].addEventListener("mousedown", function(e)
-    {
-        e.preventDefault()
-    })
-
-    $("#chat_maxer")[0].addEventListener("dblclick", function(e)
-    {
-        Hue.toggle_media()
-    })
 
     $("#media_maxer").on("auxclick", function(e)
     {
