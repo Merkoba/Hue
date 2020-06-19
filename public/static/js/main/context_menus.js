@@ -566,13 +566,22 @@ Hue.start_chat_maxer_context_menu = function()
 }
 
 // Generates the items for the tv maxer context menu
-Hue.generate_tv_maxer_context_items = function()
+Hue.generate_media_maxer_context_items = function()
 {
     let items = {}
+    let pos = Hue.get_setting("tv_display_position")
+    let nums = []
 
-    for(let i=10; i>=0; i--)
+    for(let i=1; i<=10; i++) {
+        nums.push(i * 10)
+    }
+
+    if(pos === "bottom") {
+        nums = nums.reverse()
+    }
+
+    for(let n of nums)
     {
-        let n = i * 10
         let p = Hue.get_setting("tv_display_percentage")
         let class_name = ""
 
@@ -641,7 +650,7 @@ Hue.generate_tv_maxer_context_items = function()
 }
 
 // Starts the tv maxer context menu
-Hue.start_tv_maxer_context_menu = function()
+Hue.start_media_maxer_context_menu = function()
 {
     $.contextMenu(
     {
@@ -653,7 +662,7 @@ Hue.start_tv_maxer_context_menu = function()
         trigger: "left",
         build: function() {
             return {
-                items: Hue.generate_tv_maxer_context_items()
+                items: Hue.generate_media_maxer_context_items()
             }
         }
     })
