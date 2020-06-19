@@ -2429,7 +2429,7 @@ Hue.clear_chat = function()
     Hue.focus_input()
 }
 
-// Changes that chat display size
+// Changes the chat display size
 Hue.do_chat_size_change = function(size)
 {
     if(size === "max")
