@@ -467,7 +467,7 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
         handler.user_emit(first_socket, "report_tv_progress", {requester:socket.id})
     }
 
-    // If a user response this sends the progress to another user
+    // If a user responds this sends the progress to another user
     handler.public.report_tv_progress = function(socket, data)
     {
         if(!data.requester || !data.progress)
@@ -482,6 +482,6 @@ module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz,
             return false
         }
 
-        handler.user_emit(requester_socket, "receive_tv_progress", {progress:data.progress})
+        handler.user_emit(requester_socket, "receive_tv_progress", {progress:data.progress, type:data.type})
     }
 }

@@ -193,6 +193,10 @@ Hue.send_synth_key = function(key)
 
     key = parseInt(key)
 
+    if(isNaN(key)) {
+        return false
+    }
+
     if(key < 1 || key > Hue.utilz.synth_notes.length)
     {
         return false

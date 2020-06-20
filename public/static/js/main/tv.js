@@ -1134,28 +1134,27 @@ Hue.tv_picker_submit = function()
 // Checks if tv is abled to be synced with another user
 Hue.can_sync_tv = function()
 {
-    if(Date.now() - Hue.last_media_sync < Hue.config.media_sync_cooldown)
-    {
+    if(Date.now() - Hue.last_media_sync < Hue.config.media_sync_cooldown) {
         return false
     }
 
-    if(!Hue.room_state.tv_enabled)
-    {
+    if(!Hue.room_state.tv_enabled) {
         return false
     }
 
-    if(Hue.current_tv() !== Hue.loaded_tv)
-    {
-        return false
+    if(Hue.loaded_tv.type === "youtube") {
+        if(!Hue.youtube_video_player) {
+            return false
+        }
     }
 
-    if(Hue.loaded_tv.type !== "youtube")
-    {
-        return false
+    else if(Hue.loaded_tv.type === "video") {
+        if($("#media_video").length === 0) {
+            return false
+        }
     }
 
-    if(!Hue.youtube_video_player)
-    {
+    else {
         return false
     }
 
@@ -1181,34 +1180,54 @@ Hue.sync_tv = function(username)
 // Responds to a tv sync request to send it back to a user
 Hue.report_tv_progress = function(data)
 {
-    if(!Hue.can_sync_tv())
-    {
+    if(!Hue.can_sync_tv()) {
         return false
     }
 
-    let progress = Math.round(Hue.youtube_video_player.getCurrentTime())
+    let ttype = Hue.loaded_tv.type
+    let progress
 
-    if(progress)
-    {
+    if(ttype === "youtube") {
+        progress = Math.round(Hue.youtube_video_player.getCurrentTime())
+    }
+    
+    else if(ttype === "video") {
+        progress = Math.round($("#media_video")[0].currentTime)
+    }
+
+    if(progress) {
         Hue.last_media_sync = Date.now()
-        Hue.socket_emit("report_tv_progress", {requester:data.requester, progress:progress})
+        Hue.socket_emit("report_tv_progress", {requester:data.requester, progress:progress, type:ttype})
     }
 }
 
 // After the server sends a user's tv progress response
 Hue.receive_tv_progress = function(data)
 {
-    if(!Hue.can_sync_tv())
-    {
+    if(!Hue.can_sync_tv()) {
         return false
     }
 
-    let id = Hue.utilz.get_youtube_id(Hue.loaded_tv.source)
+    if(data.type === "youtube") {
+        if(Hue.loaded_tv.type !== "youtube") {
+            return false
+        }
 
-    Hue.youtube_video_play_on_queue = true
+        let id = Hue.utilz.get_youtube_id(Hue.loaded_tv.source)
+    
+        Hue.youtube_video_play_on_queue = true
+    
+        if(id[0] === "video") {
+            Hue.youtube_video_player.cueVideoById({videoId:id[1], startSeconds:data.progress})
+        }
+    }
 
-    if(id[0] === "video")
-    {
-        Hue.youtube_video_player.cueVideoById({videoId:id[1], startSeconds:data.progress})
+    else if(data.type === "video") {
+        if(Hue.loaded_tv.type !== "video") {
+            return false
+        }
+
+        $("#media_video")[0].currentTime = data.progress
+        $("#media_video")[0].play()
     }
 }
