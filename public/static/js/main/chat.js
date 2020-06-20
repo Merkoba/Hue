@@ -2941,7 +2941,7 @@ Hue.setup_link_preview = function(fmessage, link_url, user_id)
 
         link_preview_image[0].addEventListener("load", function()
         {
-            if(user_id === Hue.user_id || !started)
+            if(!started)
             {
                 Hue.goto_bottom(true, false)
             }
@@ -3013,7 +3013,7 @@ Hue.setup_image_preview = function(fmessage, image_preview_src_original, user_id
 
     image_preview_image[0].addEventListener("load", function()
     {
-        if(user_id === Hue.user_id || !started)
+        if(!started)
         {
             Hue.goto_bottom(true, false)
         }
