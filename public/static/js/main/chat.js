@@ -2941,15 +2941,7 @@ Hue.setup_link_preview = function(fmessage, link_url, user_id)
 
         link_preview_image[0].addEventListener("load", function()
         {
-            if(!started)
-            {
-                Hue.goto_bottom(true, false)
-            }
-
-            else
-            {
-                Hue.goto_bottom(false, false)
-            }
+            Hue.goto_bottom(false, false)
         })
     }
 
@@ -3013,15 +3005,7 @@ Hue.setup_image_preview = function(fmessage, image_preview_src_original, user_id
 
     image_preview_image[0].addEventListener("load", function()
     {
-        if(!started)
-        {
-            Hue.goto_bottom(true, false)
-        }
-
-        else
-        {
-            Hue.goto_bottom(false, false)
-        }
+        Hue.goto_bottom(false, false)
     })
 
     image_preview_image.click(function(e)
