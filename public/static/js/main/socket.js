@@ -542,6 +542,10 @@ Hue.start_socket = function()
 // Actions on disconnect
 Hue.on_disconnect = function()
 {
+    if(Hue.user_leaving) {
+        return
+    }
+    
     Hue.userlist = []
     Hue.activity_list = []
     Hue.update_userlist()
