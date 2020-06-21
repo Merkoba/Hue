@@ -291,7 +291,7 @@ Hue.server_update_events =
     },
     'system_restart_signal': (data) =>
     {
-        Hue.disconnect_socket()
+        Hue.reload_client()
     },
     'error_occurred': (data) =>
     {
