@@ -1,49 +1,49 @@
 // Centralized function to get localStorage objects
 Hue.get_local_storage = function (ls_name) {
-  let obj;
+  let obj
 
   if (localStorage[ls_name]) {
     try {
-      obj = JSON.parse(localStorage.getItem(ls_name));
+      obj = JSON.parse(localStorage.getItem(ls_name))
     } catch (err) {
-      localStorage.removeItem(ls_name);
-      obj = null;
+      localStorage.removeItem(ls_name)
+      obj = null
     }
   } else {
-    obj = null;
+    obj = null
   }
 
-  return obj;
-};
+  return obj
+}
 
 // Centralized function to save localStorage objects
 Hue.save_local_storage = function (ls_name, obj, force = false) {
-  Hue.local_storage_to_save[ls_name] = obj;
+  Hue.local_storage_to_save[ls_name] = obj
 
   if (force) {
-    Hue.do_save_local_storage();
+    Hue.do_save_local_storage()
   } else {
-    Hue.save_local_storage_timer();
+    Hue.save_local_storage_timer()
   }
-};
+}
 
 // Do the actual localStorage save
 Hue.do_save_local_storage = function () {
   for (let ls_name in Hue.local_storage_to_save) {
-    let obj = Hue.local_storage_to_save[ls_name];
+    let obj = Hue.local_storage_to_save[ls_name]
 
-    obj = JSON.stringify(obj);
+    obj = JSON.stringify(obj)
 
-    localStorage.setItem(ls_name, obj);
+    localStorage.setItem(ls_name, obj)
   }
 
-  Hue.local_storage_to_save = {};
-};
+  Hue.local_storage_to_save = {}
+}
 
 // Remove a localStorage object
 Hue.remove_local_storage = function (ls_name) {
-  localStorage.removeItem(ls_name);
-};
+  localStorage.removeItem(ls_name)
+}
 
 // Setups localStorage events
 Hue.setup_local_storage = function () {
@@ -55,32 +55,32 @@ Hue.setup_local_storage = function () {
         e.key !== Hue.ls_room_settings &&
         e.key !== Hue.ls_last_message_board_post_checked
       ) {
-        return false;
+        return false
       }
 
-      let obj;
+      let obj
 
       try {
-        obj = JSON.parse(e.newValue);
+        obj = JSON.parse(e.newValue)
       } catch (err) {
-        return false;
+        return false
       }
 
       if (Hue.utilz.is_empty_object(obj)) {
-        return false;
+        return false
       }
 
       if (e.key === Hue.ls_global_settings) {
-        Hue.reset_settings("global_settings", false);
+        Hue.reset_settings("global_settings", false)
       } else if (e.key === Hue.ls_room_settings) {
         if (e.url === document.location.href) {
-          Hue.reset_settings("room_settings", false);
+          Hue.reset_settings("room_settings", false)
         }
       } else if (e.key === Hue.ls_last_message_board_post_checked) {
-        Hue.get_last_message_board_post_checked();
-        Hue.check_last_message_board_post();
+        Hue.get_last_message_board_post_checked()
+        Hue.check_last_message_board_post()
       }
     },
     false
-  );
-};
+  )
+}

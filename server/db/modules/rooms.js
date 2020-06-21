@@ -2,20 +2,20 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
   // Finds a room with the given query and fields to be fetched
   manager.get_room = function (query, fields) {
     return new Promise((resolve, reject) => {
-      let num_fields = Object.keys(fields).length;
+      let num_fields = Object.keys(fields).length
 
       if (num_fields > 0) {
-        let has_zero = false;
+        let has_zero = false
 
         for (let key in fields) {
           if (fields[key] === 0) {
-            has_zero = true;
-            break;
+            has_zero = true
+            break
           }
         }
 
         if (!has_zero) {
-          fields.version = 1;
+          fields.version = 1
         }
       }
 
@@ -25,18 +25,18 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
           query._id !== config.main_room_id
         ) {
           try {
-            query._id = new vars.mongo.ObjectId(query._id);
+            query._id = new vars.mongo.ObjectId(query._id)
           } catch (err) {
-            resolve(false);
-            return;
+            resolve(false)
+            return
           }
         }
       }
 
-      let pfields = {};
+      let pfields = {}
 
       if (num_fields > 0) {
-        pfields = { projection: fields };
+        pfields = { projection: fields }
       }
 
       db.collection("rooms")
@@ -52,20 +52,20 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
                 })
 
                 .then((room) => {
-                  resolve(room);
-                  return;
+                  resolve(room)
+                  return
                 })
 
                 .catch((err) => {
-                  reject(err);
-                  logger.log_error(err);
-                  return;
-                });
+                  reject(err)
+                  logger.log_error(err)
+                  return
+                })
 
-              return;
+              return
             } else {
-              resolve(false);
-              return;
+              resolve(false)
+              return
             }
           }
 
@@ -74,95 +74,95 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
               .findOne({ _id: room._id }, {})
 
               .then((room) => {
-                manager.room_fill_defaults(room);
+                manager.room_fill_defaults(room)
 
-                room.version = vars.rooms_version;
+                room.version = vars.rooms_version
 
                 db.collection("rooms")
                   .updateOne({ _id: room._id }, { $set: room })
 
                   .then((ans) => {
-                    resolve(room);
-                    return;
+                    resolve(room)
+                    return
                   })
 
                   .catch((err) => {
-                    reject(err);
-                    logger.log_error(err);
-                    return;
-                  });
+                    reject(err)
+                    logger.log_error(err)
+                    return
+                  })
               })
 
               .catch((err) => {
-                reject(err);
-                logger.log_error(err);
-                return;
-              });
+                reject(err)
+                logger.log_error(err)
+                return
+              })
           } else {
-            resolve(room);
-            return;
+            resolve(room)
+            return
           }
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Fills undefined room properties
   // Or properties that don't meet the specified type
   manager.room_fill_defaults = function (room) {
     for (let key in vars.rooms_schema) {
-      let item = vars.rooms_schema[key];
+      let item = vars.rooms_schema[key]
 
       if (item.skip) {
-        continue;
+        continue
       }
 
       if (typeof room[key] !== item.type) {
-        room[key] = item.default;
+        room[key] = item.default
       }
     }
-  };
+  }
 
   // Creates a room
   manager.create_room = function (data) {
     return new Promise((resolve, reject) => {
-      room = {};
+      room = {}
 
-      manager.room_fill_defaults(room);
+      manager.room_fill_defaults(room)
 
       if (data.id !== undefined) {
-        room._id = data.id;
+        room._id = data.id
       }
 
       if (data.user_id !== undefined) {
-        room.keys[data.user_id] = "admin";
+        room.keys[data.user_id] = "admin"
       }
 
-      room.name = data.name !== undefined ? data.name : "No Name";
-      room.public = data.public !== undefined ? data.public : true;
+      room.name = data.name !== undefined ? data.name : "No Name"
+      room.public = data.public !== undefined ? data.public : true
 
-      room.version = vars.rooms_version;
+      room.version = vars.rooms_version
 
       db.collection("rooms")
         .insertOne(room)
 
         .then((result) => {
-          resolve(room);
-          return;
+          resolve(room)
+          return
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Room creation started by a user
   manager.user_create_room = function (data, force = false) {
@@ -176,8 +176,8 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
               Date.now() - user.create_room_date <
               config.create_room_cooldown
             ) {
-              resolve("wait");
-              return;
+              resolve("wait")
+              return
             }
           }
 
@@ -191,29 +191,29 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
                 })
 
                 .catch((err) => {
-                  reject(err);
-                  logger.log_error(err);
-                  return;
-                });
+                  reject(err)
+                  logger.log_error(err)
+                  return
+                })
 
-              resolve(ans);
-              return;
+              resolve(ans)
+              return
             })
 
             .catch((err) => {
-              reject(err);
-              logger.log_error(err);
-              return;
-            });
+              reject(err)
+              logger.log_error(err)
+              return
+            })
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Updates a room
   manager.update_room = function (_id, fields) {
@@ -221,39 +221,39 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
       if (_id !== undefined) {
         if (typeof _id === "string" && _id !== config.main_room_id) {
           try {
-            _id = new vars.mongo.ObjectId(_id);
+            _id = new vars.mongo.ObjectId(_id)
           } catch (err) {
-            resolve(false);
-            return;
+            resolve(false)
+            return
           }
         }
       }
 
-      fields.modified = Date.now();
+      fields.modified = Date.now()
 
-      let check = manager.validate_room(fields);
+      let check = manager.validate_room(fields)
 
       if (!check.passed) {
-        console.error(check.message);
-        resolve(false);
-        return;
+        console.error(check.message)
+        resolve(false)
+        return
       }
 
       db.collection("rooms")
         .updateOne({ _id: _id }, { $set: fields })
 
         .then((result) => {
-          resolve(true);
-          return;
+          resolve(true)
+          return
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Finds rooms
   manager.find_rooms = function (query) {
@@ -263,17 +263,17 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
         .toArray()
 
         .then((results) => {
-          resolve(results);
-          return;
+          resolve(results)
+          return
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Updates log messages
   manager.push_log_messages = function (_id, messages) {
@@ -282,34 +282,34 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
         .get_room({ _id: _id }, { log_messages: 1 })
 
         .then((room) => {
-          room.log_messages = messages;
+          room.log_messages = messages
 
           if (room.log_messages.length > config.max_log_messages) {
             room.log_messages = room.log_messages.slice(
               room.log_messages.length - config.max_log_messages
-            );
+            )
           }
 
           manager
             .update_room(_id, { log_messages: room.log_messages })
 
             .catch((err) => {
-              reject(err);
-              logger.log_error(err);
-              return;
-            });
+              reject(err)
+              logger.log_error(err)
+              return
+            })
 
-          resolve(true);
-          return;
+          resolve(true)
+          return
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Updates admin log messages
   manager.push_admin_log_messages = function (_id, messages) {
@@ -318,34 +318,34 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
         .get_room({ _id: _id }, { admin_log_messages: 1 })
 
         .then((room) => {
-          room.admin_log_messages = messages;
+          room.admin_log_messages = messages
 
           if (room.admin_log_messages.length > config.max_admin_log_messages) {
             room.admin_log_messages = room.admin_log_messages.slice(
               room.admin_log_messages.length - config.max_admin_log_messages
-            );
+            )
           }
 
           manager
             .update_room(_id, { admin_log_messages: room.admin_log_messages })
 
             .catch((err) => {
-              reject(err);
-              logger.log_error(err);
-              return;
-            });
+              reject(err)
+              logger.log_error(err)
+              return
+            })
 
-          resolve(true);
-          return;
+          resolve(true)
+          return
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Updates access log messages
   manager.push_access_log_messages = function (_id, messages) {
@@ -354,56 +354,56 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
         .get_room({ _id: _id }, { access_log_messages: 1 })
 
         .then((room) => {
-          room.access_log_messages = messages;
+          room.access_log_messages = messages
 
           if (
             room.access_log_messages.length > config.max_access_log_messages
           ) {
             room.access_log_messages = room.access_log_messages.slice(
               room.access_log_messages.length - config.max_access_log_messages
-            );
+            )
           }
 
           manager
             .update_room(_id, { access_log_messages: room.access_log_messages })
 
             .catch((err) => {
-              reject(err);
-              logger.log_error(err);
-              return;
-            });
+              reject(err)
+              logger.log_error(err)
+              return
+            })
 
-          resolve(true);
-          return;
+          resolve(true)
+          return
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Checks fields types against the room schema types
   manager.validate_room = function (fields) {
     for (let key in fields) {
-      let item = vars.rooms_schema[key];
-      let data = fields[key];
+      let item = vars.rooms_schema[key]
+      let data = fields[key]
 
       if (item) {
-        let type = typeof data;
+        let type = typeof data
 
         if (type !== item.type) {
-          let s = `Room validation failed on ${key}. Expected type ${item.type}, got type ${type}`;
-          return { passed: false, message: s };
+          let s = `Room validation failed on ${key}. Expected type ${item.type}, got type ${type}`
+          return { passed: false, message: s }
         }
       } else {
-        let s = `Room validation failed on ${key}. It does not exist in the database`;
-        return { passed: false, message: s };
+        let s = `Room validation failed on ${key}. It does not exist in the database`
+        return { passed: false, message: s }
       }
     }
 
-    return { passed: true, message: "ok" };
-  };
-};
+    return { passed: true, message: "ok" }
+  }
+}

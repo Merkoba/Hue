@@ -1,49 +1,49 @@
 // Setups the message board
 Hue.setup_message_board = function () {
   $("#message_board_post_icon").click(function () {
-    Hue.create_message_board_post();
-  });
+    Hue.create_message_board_post()
+  })
 
   $("#message_board_post_button").click(function () {
-    Hue.submit_message_board_post();
-  });
+    Hue.submit_message_board_post()
+  })
 
   $("#message_board_post_textarea").on("input blur", function () {
     let val = $(this)
       .val()
-      .substring(0, Hue.config.max_message_board_post_length);
-    $(this).val(val);
-  });
+      .substring(0, Hue.config.max_message_board_post_length)
+    $(this).val(val)
+  })
 
   $("#message_board_container").on(
     "click",
     ".message_board_delete",
     function () {
       if (!Hue.check_op_permission(Hue.role, "message_board_delete")) {
-        return false;
+        return false
       }
 
       if (confirm("Are you sure?")) {
-        let item = $(this).closest(".message_board_item");
-        let id = item.data("id");
+        let item = $(this).closest(".message_board_item")
+        let id = item.data("id")
 
         if (id) {
-          Hue.socket_emit("delete_message_board_post", { id: id });
+          Hue.socket_emit("delete_message_board_post", { id: id })
         }
       }
     }
-  );
+  )
 
   $("#message_board_post_textarea").on("focus", function () {
-    Hue.writing_message_board_post = true;
-  });
+    Hue.writing_message_board_post = true
+  })
 
   $("#message_board_post_textarea").on("blur", function () {
-    Hue.writing_message_board_post = false;
-  });
+    Hue.writing_message_board_post = false
+  })
 
-  Hue.get_last_message_board_post_checked();
-};
+  Hue.get_last_message_board_post_checked()
+}
 
 // Creates and adds an item to the message board
 Hue.add_post_to_message_board = function (post) {
@@ -51,202 +51,200 @@ Hue.add_post_to_message_board = function (post) {
     <div class='message_board_item modal_item'>
         <div class='message_board_text dynamic_title'></div>
         <div><div class='message_board_delete action pointer inline underlined'>Delete</div></div>
-    </div>`);
+    </div>`)
 
-  item.data("id", post.id);
-  item.data("date", post.date);
+  item.data("id", post.id)
+  item.data("date", post.date)
 
-  let text = item.find(".message_board_text").eq(0);
-  text.text(post.message).urlize();
+  let text = item.find(".message_board_text").eq(0)
+  text.text(post.message).urlize()
 
-  let title = Hue.utilz.nice_date(post.date);
+  let title = Hue.utilz.nice_date(post.date)
 
   if (post.id) {
-    title = `${post.id.slice(-3)} | ${title}`;
+    title = `${post.id.slice(-3)} | ${title}`
   }
 
-  text.attr("title", title);
-  text.data("date", post.date);
-  text.data("otitle", title);
+  text.attr("title", title)
+  text.data("date", post.date)
+  text.data("otitle", title)
 
-  let items = $("#message_board_container .message_board_item");
-  let num_items = items.length;
+  let items = $("#message_board_container .message_board_item")
+  let num_items = items.length
 
   if (num_items === 0) {
-    $("#message_board_container").html(item);
+    $("#message_board_container").html(item)
   } else {
-    $("#message_board_container").prepend(item);
+    $("#message_board_container").prepend(item)
   }
 
   if (
     $("#message_board_container").find(".message_board_item").length >
     Hue.config.max_message_board_posts
   ) {
-    $("#message_board_container").find(".message_board_item").last().remove();
+    $("#message_board_container").find(".message_board_item").last().remove()
   }
 
   if (Hue.message_board_filtered) {
-    Hue.do_modal_filter("message_board");
+    Hue.do_modal_filter("message_board")
   }
-};
+}
 
 // Fills the message board with init data
 Hue.init_message_board = function (data) {
-  $("#message_board_container").html("");
+  $("#message_board_container").html("")
 
   for (let post of data.message_board_posts) {
-    Hue.add_post_to_message_board(post);
+    Hue.add_post_to_message_board(post)
   }
 
-  Hue.last_message_board_post_date = data.last_message_board_post_date;
-  Hue.check_message_board_delay();
-  Hue.check_last_message_board_post();
-};
+  Hue.last_message_board_post_date = data.last_message_board_post_date
+  Hue.check_message_board_delay()
+  Hue.check_last_message_board_post()
+}
 
 // Shows the message board
 Hue.show_message_board = function (filter = false) {
   Hue.msg_message_board.show(function () {
-    Hue.update_last_message_post_checked();
-    Hue.check_last_message_board_post();
+    Hue.update_last_message_post_checked()
+    Hue.check_last_message_board_post()
 
     if (filter) {
-      $("#message_board_filter").val(filter);
-      Hue.do_modal_filter();
+      $("#message_board_filter").val(filter)
+      Hue.do_modal_filter()
     } else {
-      $("#message_board_post_textarea").focus();
+      $("#message_board_post_textarea").focus()
     }
-  });
-};
+  })
+}
 
 // Submits a message board post
 Hue.submit_message_board_post = function () {
-  let message = Hue.utilz.clean_string2(
-    $("#message_board_post_textarea").val()
-  );
+  let message = Hue.utilz.clean_string2($("#message_board_post_textarea").val())
 
   if (!message || message.length > Hue.config.max_message_board_post_length) {
-    return false;
+    return false
   }
 
   if (Hue.get_setting("confirm_message_board")) {
     if (!confirm("Are you sure you want to send a board message here?")) {
-      return;
+      return
     }
   }
 
-  $("#message_board_post_textarea").val("");
-  Hue.socket_emit("message_board_post", { message: message });
-};
+  $("#message_board_post_textarea").val("")
+  Hue.socket_emit("message_board_post", { message: message })
+}
 
 // When a new message board message arrives
 Hue.on_message_board_received = function (data) {
-  Hue.add_post_to_message_board(data);
-  Hue.check_last_message_board_post();
-};
+  Hue.add_post_to_message_board(data)
+  Hue.check_last_message_board_post()
+}
 
 // Updates last message board post date
 Hue.last_message_board_post_date_update = function (data) {
-  Hue.last_message_board_post_date = data.date;
-  Hue.check_message_board_delay();
-};
+  Hue.last_message_board_post_date = data.date
+  Hue.check_message_board_delay()
+}
 
 // Checks the message board last post date
 // Changes the post icon accordingly
 Hue.check_message_board_delay = function () {
   if (Hue.check_op_permission(Hue.role, "message_board_no_restriction")) {
-    $("#message_board_post_textarea").css("display", "block");
-    Hue.message_board_posting_enabled = true;
-    return false;
+    $("#message_board_post_textarea").css("display", "block")
+    Hue.message_board_posting_enabled = true
+    return false
   }
 
-  let date_diff = Date.now() - Hue.last_message_board_post_date;
+  let date_diff = Date.now() - Hue.last_message_board_post_date
 
-  clearTimeout(Hue.message_board_post_delay_timeout);
+  clearTimeout(Hue.message_board_post_delay_timeout)
 
   if (date_diff < Hue.config.message_board_post_delay) {
-    $("#message_board_post_textarea").css("display", "none");
+    $("#message_board_post_textarea").css("display", "none")
 
     Hue.message_board_post_delay_timeout = setTimeout(function () {
-      Hue.check_message_board_delay();
-    }, date_diff + 1000);
+      Hue.check_message_board_delay()
+    }, date_diff + 1000)
 
-    Hue.message_board_posting_enabled = false;
+    Hue.message_board_posting_enabled = false
   } else {
-    $("#message_board_post_textarea").css("display", "block");
-    Hue.message_board_posting_enabled = true;
+    $("#message_board_post_textarea").css("display", "block")
+    Hue.message_board_posting_enabled = true
   }
-};
+}
 
 // Checks if there are new message board posts
 Hue.check_last_message_board_post = function () {
-  let items = $("#message_board_container").find(".message_board_item");
+  let items = $("#message_board_container").find(".message_board_item")
 
   if (items.length === 0) {
-    $("#activity_left_message_board_count").text("(0)");
-    return false;
+    $("#activity_left_message_board_count").text("(0)")
+    return false
   }
 
-  let date = Hue.last_message_board_post_checked[Hue.room_id];
+  let date = Hue.last_message_board_post_checked[Hue.room_id]
 
   if (items.first().data("date") > date) {
     if (!Hue.msg_message_board.is_open()) {
-      let count = 0;
+      let count = 0
 
       $("#message_board_container")
         .find(".message_board_item")
         .each(function () {
           if ($(this).data("date") <= date) {
-            return false;
+            return false
           }
 
-          count += 1;
-        });
+          count += 1
+        })
 
-      $("#activity_left_message_board_count").text(`(${count})`);
+      $("#activity_left_message_board_count").text(`(${count})`)
     } else {
-      Hue.update_last_message_post_checked();
+      Hue.update_last_message_post_checked()
     }
   } else {
-    $("#activity_left_message_board_count").text("(0)");
+    $("#activity_left_message_board_count").text("(0)")
   }
-};
+}
 
 // Updates the message board date local storage
 Hue.update_last_message_post_checked = function () {
-  let item = $("#message_board_container").find(".message_board_item").first();
-  let date = item.data("date");
+  let item = $("#message_board_container").find(".message_board_item").first()
+  let date = item.data("date")
 
   if (date !== Hue.last_message_board_post_checked[Hue.room_id]) {
-    Hue.save_last_message_board_post_checked(date);
+    Hue.save_last_message_board_post_checked(date)
   }
-};
+}
 
 // Saves the last message board post check local storage
 Hue.save_last_message_board_post_checked = function (date) {
-  Hue.last_message_board_post_checked[Hue.room_id] = date;
+  Hue.last_message_board_post_checked[Hue.room_id] = date
   Hue.save_local_storage(
     Hue.ls_last_message_board_post_checked,
     Hue.last_message_board_post_checked
-  );
-};
+  )
+}
 
 // Checks if the user can delete posts in the message board
 Hue.check_message_board_permissions = function () {
   if (Hue.check_op_permission(Hue.role, "message_board_no_restriction")) {
-    $("#message_board_post_textarea").attr("placeholder", "Write A Post");
+    $("#message_board_post_textarea").attr("placeholder", "Write A Post")
   } else {
-    let minutes = Math.round(Hue.config.message_board_post_delay / 60 / 1000);
-    let mins = minutes === 1 ? "minute" : "minutes";
-    let placeholder = `You can post once every ${minutes} ${mins}`;
-    $("#message_board_post_textarea").attr("placeholder", placeholder);
+    let minutes = Math.round(Hue.config.message_board_post_delay / 60 / 1000)
+    let mins = minutes === 1 ? "minute" : "minutes"
+    let placeholder = `You can post once every ${minutes} ${mins}`
+    $("#message_board_post_textarea").attr("placeholder", placeholder)
   }
 
   if (Hue.check_op_permission(Hue.role, "message_board_delete")) {
-    $("#message_board_container").addClass("message_board_container_admin");
+    $("#message_board_container").addClass("message_board_container_admin")
   } else {
-    $("#message_board_container").removeClass("message_board_container_admin");
+    $("#message_board_container").removeClass("message_board_container_admin")
   }
-};
+}
 
 // Remove a post from the message board window
 Hue.remove_message_board_post = function (data) {
@@ -254,51 +252,51 @@ Hue.remove_message_board_post = function (data) {
     .find(".message_board_item")
     .each(function () {
       if ($(this).data("id") === data.id) {
-        $(this).remove();
-        return false;
+        $(this).remove()
+        return false
       }
-    });
-};
+    })
+}
 
 // Gets the last message board checked local storage
 Hue.get_last_message_board_post_checked = function () {
   Hue.last_message_board_post_checked = Hue.get_local_storage(
     Hue.ls_last_message_board_post_checked
-  );
+  )
 
-  let changed = false;
+  let changed = false
 
   if (!Hue.last_message_board_post_checked) {
-    Hue.last_message_board_post_checked = {};
-    changed = true;
+    Hue.last_message_board_post_checked = {}
+    changed = true
   }
 
   if (!Hue.last_message_board_post_checked[Hue.room_id]) {
-    Hue.last_message_board_post_checked[Hue.room_id] = 0;
-    changed = true;
+    Hue.last_message_board_post_checked[Hue.room_id] = 0
+    changed = true
   }
 
   if (changed) {
     Hue.save_last_message_board_post_checked(
       Hue.last_message_board_post_checked[Hue.room_id]
-    );
+    )
   }
-};
+}
 
 // Deletes all message board posts
 Hue.clear_message_board = function () {
   if (!Hue.check_op_permission(Hue.role, "message_board_delete")) {
-    return false;
+    return false
   }
 
-  Hue.socket_emit("clear_message_board", {});
-};
+  Hue.socket_emit("clear_message_board", {})
+}
 
 // After the message board gets cleared
 Hue.on_message_board_cleared = function (data) {
-  $("#message_board_container").html("No Posts Yet");
+  $("#message_board_container").html("No Posts Yet")
   Hue.show_room_notification(
     data.username,
     `${data.username} cleared the message board`
-  );
-};
+  )
+}

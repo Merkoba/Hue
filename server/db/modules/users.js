@@ -2,57 +2,57 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
   // Finds a user with the given query and fields to be fetched
   manager.get_user = function (query, fields, verified = true) {
     return new Promise((resolve, reject) => {
-      let num_fields = Object.keys(fields).length;
+      let num_fields = Object.keys(fields).length
 
-      let multiple = false;
+      let multiple = false
 
       if (num_fields > 0) {
-        let has_zero = false;
+        let has_zero = false
 
         for (let key in fields) {
           if (fields[key] === 0) {
-            has_zero = true;
-            break;
+            has_zero = true
+            break
           }
         }
 
         if (!has_zero) {
-          fields.version = 1;
+          fields.version = 1
         }
       }
 
       if (query._id !== undefined) {
         if (typeof query._id === "object") {
           if (query._id.$in !== undefined) {
-            let ids = [];
+            let ids = []
 
             for (let id of query._id.$in) {
-              ids.push(new vars.mongo.ObjectId(id));
+              ids.push(new vars.mongo.ObjectId(id))
             }
 
-            query._id.$in = ids;
+            query._id.$in = ids
 
-            multiple = true;
+            multiple = true
           }
         } else if (typeof query._id === "string") {
           try {
-            query._id = new vars.mongo.ObjectId(query._id);
+            query._id = new vars.mongo.ObjectId(query._id)
           } catch (err) {
-            resolve(false);
-            return;
+            resolve(false)
+            return
           }
         }
       }
 
-      let pfields = {};
+      let pfields = {}
 
       if (num_fields > 0) {
-        pfields = { projection: fields };
+        pfields = { projection: fields }
       }
 
       if (query.verified === undefined) {
         if (verified) {
-          query = { $and: [query, { verified: true }] };
+          query = { $and: [query, { verified: true }] }
         } else {
           query = {
             $and: [
@@ -68,7 +68,7 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
                 ],
               },
             ],
-          };
+          }
         }
       }
 
@@ -79,38 +79,38 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
 
           .then((users) => {
             if (users.length === 0) {
-              resolve([]);
-              return;
+              resolve([])
+              return
             }
 
-            let i = 0;
+            let i = 0
 
             for (let user of users) {
               manager
                 .on_user_found(user)
 
                 .then(() => {
-                  i += 1;
+                  i += 1
 
                   if (i === users.length) {
-                    resolve(users);
-                    return;
+                    resolve(users)
+                    return
                   }
                 })
 
                 .catch((err) => {
-                  reject(err);
-                  logger.log_error(err);
-                  return;
-                });
+                  reject(err)
+                  logger.log_error(err)
+                  return
+                })
             }
           })
 
           .catch((err) => {
-            reject(err);
-            logger.log_error(err);
-            return;
-          });
+            reject(err)
+            logger.log_error(err)
+            return
+          })
       } else {
         db.collection("users")
           .findOne(query, pfields)
@@ -120,19 +120,19 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
               .on_user_found(user)
 
               .then(() => {
-                resolve(user);
-                return;
-              });
+                resolve(user)
+                return
+              })
           })
 
           .catch((err) => {
-            reject(err);
-            logger.log_error(err);
-            return;
-          });
+            reject(err)
+            logger.log_error(err)
+            return
+          })
       }
-    });
-  };
+    })
+  }
 
   // Function to handle found users
   manager.on_user_found = function (user) {
@@ -143,60 +143,60 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
 
           .then((user) => {
             if (typeof user.username !== "string") {
-              resolve(false);
-              return;
+              resolve(false)
+              return
             }
 
             if (typeof user.password !== "string") {
-              resolve(false);
-              return;
+              resolve(false)
+              return
             }
 
-            manager.user_fill_defaults(user);
+            manager.user_fill_defaults(user)
 
-            user.version = vars.users_version;
+            user.version = vars.users_version
 
             db.collection("users")
               .updateOne({ _id: user._id }, { $set: user })
 
               .then((ans) => {
-                resolve(user);
-                return;
+                resolve(user)
+                return
               })
 
               .catch((err) => {
-                reject(err);
-                logger.log_error(err);
-                return;
-              });
+                reject(err)
+                logger.log_error(err)
+                return
+              })
           })
 
           .catch((err) => {
-            reject(err);
-            logger.log_error(err);
-            return;
-          });
+            reject(err)
+            logger.log_error(err)
+            return
+          })
       } else {
-        resolve(user);
+        resolve(user)
       }
-    });
-  };
+    })
+  }
 
   // Fills undefined user properties
   // Or properties that don't meet the specified type
   manager.user_fill_defaults = function (user) {
     for (let key in vars.users_schema) {
-      let item = vars.users_schema[key];
+      let item = vars.users_schema[key]
 
       if (item.skip) {
-        continue;
+        continue
       }
 
       if (typeof user[key] !== item.type) {
-        user[key] = item.default;
+        user[key] = item.default
       }
     }
-  };
+  }
 
   // Creates a user
   manager.create_user = function (info) {
@@ -210,22 +210,22 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
 
         .then((euser) => {
           if (euser) {
-            resolve("error");
-            return;
+            resolve("error")
+            return
           }
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
+          reject(err)
+          logger.log_error(err)
+          return
+        })
 
       vars.bcrypt
         .hash(info.password, config.encryption_cost)
 
         .then((hash) => {
-          let user = {};
+          let user = {}
 
           user = {
             username: info.username,
@@ -235,24 +235,24 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
             verified: false,
             verification_code: Date.now() + utilz.get_random_string(12),
             registration_date: Date.now(),
-          };
+          }
 
-          manager.user_fill_defaults(user);
+          manager.user_fill_defaults(user)
 
-          user.version = vars.users_version;
+          user.version = vars.users_version
 
           db.collection("users")
             .insertOne(user)
 
             .then((result) => {
-              let link = `${config.site_root}verify?token=${result.ops[0]._id}_${result.ops[0].verification_code}`;
+              let link = `${config.site_root}verify?token=${result.ops[0]._id}_${result.ops[0].verification_code}`
 
               let data = {
                 from: `${config.delivery_email_name} <${config.delivery_email}>`,
                 to: info.email,
                 subject: "Account Verification",
                 text: `Click the link to activate the account on ${config.site_root}. If you didn't register here, ignore this.\n\n${link}`,
-              };
+              }
 
               vars.mailgun.messages().send(data, function (error, body) {
                 if (error) {
@@ -260,34 +260,34 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
                     .deleteOne({ _id: result.insertedId })
 
                     .catch((err) => {
-                      reject(err);
-                      logger.log_error(err);
-                      return;
-                    });
+                      reject(err)
+                      logger.log_error(err)
+                      return
+                    })
 
-                  resolve("error");
-                  return;
+                  resolve("error")
+                  return
                 } else {
-                  resolve("done");
-                  return;
+                  resolve("done")
+                  return
                 }
-              });
+              })
             })
 
             .catch((err) => {
-              reject(err);
-              logger.log_error(err);
-              return;
-            });
+              reject(err)
+              logger.log_error(err)
+              return
+            })
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Updates the user
   manager.update_user = function (_id, fields) {
@@ -295,125 +295,125 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
       if (_id !== undefined) {
         if (typeof _id === "string") {
           try {
-            _id = new vars.mongo.ObjectId(_id);
+            _id = new vars.mongo.ObjectId(_id)
           } catch (err) {
-            resolve(false);
-            return;
+            resolve(false)
+            return
           }
         }
       }
 
-      fields.modified = Date.now();
+      fields.modified = Date.now()
 
       if (fields.password !== undefined) {
         vars.bcrypt
           .hash(fields.password, config.encryption_cost)
 
           .then((hash) => {
-            fields.password = hash;
+            fields.password = hash
 
-            let check = manager.validate_user(fields);
+            let check = manager.validate_user(fields)
 
             if (!check.passed) {
-              console.error(check.message);
-              resolve(false);
-              return;
+              console.error(check.message)
+              resolve(false)
+              return
             }
 
             db.collection("users")
               .updateOne({ _id: _id }, { $set: fields })
 
               .then((ans) => {
-                resolve(true);
-                return;
+                resolve(true)
+                return
               })
 
               .catch((err) => {
-                reject(err);
-                logger.log_error(err);
-                return;
-              });
+                reject(err)
+                logger.log_error(err)
+                return
+              })
 
-            return;
+            return
           })
 
           .catch((err) => {
-            reject(err);
-            logger.log_error(err);
-            return;
-          });
+            reject(err)
+            logger.log_error(err)
+            return
+          })
       } else {
-        let check = manager.validate_user(fields);
+        let check = manager.validate_user(fields)
 
         if (!check.passed) {
-          console.error(check.message);
-          resolve(false);
-          return;
+          console.error(check.message)
+          resolve(false)
+          return
         }
 
         db.collection("users")
           .updateOne({ _id: _id }, { $set: fields })
 
           .then((ans) => {
-            resolve(true);
-            return;
+            resolve(true)
+            return
           })
 
           .catch((err) => {
-            reject(err);
-            logger.log_error(err);
-            return;
-          });
+            reject(err)
+            logger.log_error(err)
+            return
+          })
 
-        return;
+        return
       }
-    });
-  };
+    })
+  }
 
   // Checks if a user with a given email and password matches the stored password
   // This uses bcrypt to compare with the encrypted password version
   manager.check_password = function (email, password, fields = {}) {
     return new Promise((resolve, reject) => {
-      Object.assign(fields, { password: 1 });
+      Object.assign(fields, { password: 1 })
 
       manager
         .get_user({ email: email }, fields)
 
         .then((user) => {
           if (!user) {
-            resolve({ user: null, valid: false });
+            resolve({ user: null, valid: false })
           } else {
             vars.bcrypt
               .compare(password, user.password)
 
               .then((valid) => {
-                resolve({ user: user, valid: valid });
-                return;
+                resolve({ user: user, valid: valid })
+                return
               })
 
               .catch((err) => {
-                reject(err);
-                logger.log_error(err);
-                return;
-              });
+                reject(err)
+                logger.log_error(err)
+                return
+              })
           }
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Changes the username
   // Checks if the username contains a reserved username
   manager.change_username = function (_id, username) {
     return new Promise((resolve, reject) => {
       if (vars.reserved_usernames.includes(username.toLowerCase())) {
-        resolve(false);
-        return;
+        resolve(false)
+        return
       }
 
       manager
@@ -421,16 +421,16 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
 
         .then((user) => {
           if (!user) {
-            resolve(false);
-            return;
+            resolve(false)
+            return
           } else {
             manager
               .get_user({ username: username }, { username: 1 })
 
               .then((user2) => {
                 if (user2) {
-                  resolve(false);
-                  return;
+                  resolve(false)
+                  return
                 } else {
                   manager
                     .update_user(_id, {
@@ -438,31 +438,31 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
                     })
 
                     .catch((err) => {
-                      reject(err);
-                      logger.log_error(err);
-                      return;
-                    });
+                      reject(err)
+                      logger.log_error(err)
+                      return
+                    })
 
-                  resolve(true);
-                  return;
+                  resolve(true)
+                  return
                 }
               })
 
               .catch((err) => {
-                reject(err);
-                logger.log_error(err);
-                return;
-              });
+                reject(err)
+                logger.log_error(err)
+                return
+              })
           }
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Changes the email
   // Sends a code verification email
@@ -482,21 +482,21 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
 
         .then((user) => {
           if (!user) {
-            resolve({ message: "error" });
-            return;
+            resolve({ message: "error" })
+            return
           } else {
             manager
               .get_user({ email: email }, { email: 1 })
 
               .then((user2) => {
                 if (user2) {
-                  resolve({ message: "duplicate" });
-                  return;
+                  resolve({ message: "duplicate" })
+                  return
                 } else {
                   if (verify_code) {
                     if (!user.email_change_code_date) {
-                      resolve({ message: "not_sent" });
-                      return;
+                      resolve({ message: "not_sent" })
+                      return
                     }
 
                     if (verify_code === user.email_change_code) {
@@ -511,46 +511,46 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
                           })
 
                           .catch((err) => {
-                            reject(err);
-                            logger.log_error(err);
-                            return;
-                          });
+                            reject(err)
+                            logger.log_error(err)
+                            return
+                          })
 
                         resolve({
                           message: "changed",
                           email: user.email_change_email,
-                        });
-                        return;
+                        })
+                        return
                       } else {
-                        resolve({ message: "expired_code" });
-                        return false;
+                        resolve({ message: "expired_code" })
+                        return false
                       }
                     } else {
-                      resolve({ message: "wrong_code" });
-                      return false;
+                      resolve({ message: "wrong_code" })
+                      return false
                     }
                   } else {
                     if (
                       Date.now() - user.email_change_date >
                       config.email_change_limit
                     ) {
-                      let code = Date.now() + utilz.get_random_string(12);
+                      let code = Date.now() + utilz.get_random_string(12)
 
-                      let command = `/verifyemail ${code}`;
+                      let command = `/verifyemail ${code}`
 
                       let data = {
                         from: `${config.delivery_email_name} <${config.delivery_email}>`,
                         to: email,
                         subject: "Confirm Email",
                         text: `Enter the command while connected to a room in ${config.site_root} to confirm your email.\n\n${command}`,
-                      };
+                      }
 
                       vars.mailgun
                         .messages()
                         .send(data, function (error, body) {
                           if (error) {
-                            resolve({ message: "error" });
-                            return;
+                            resolve({ message: "error" })
+                            return
                           } else {
                             manager
                               .update_user(user._id, {
@@ -561,38 +561,38 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
                               })
 
                               .catch((err) => {
-                                reject(err);
-                                logger.log_error(err);
-                                return;
-                              });
+                                reject(err)
+                                logger.log_error(err)
+                                return
+                              })
 
-                            resolve({ message: "sent_code" });
-                            return;
+                            resolve({ message: "sent_code" })
+                            return
                           }
-                        });
+                        })
                     } else {
-                      resolve({ message: "wait" });
-                      return;
+                      resolve({ message: "wait" })
+                      return
                     }
                   }
                 }
               })
 
               .catch((err) => {
-                reject(err);
-                logger.log_error(err);
-                return;
-              });
+                reject(err)
+                logger.log_error(err)
+                return
+              })
           }
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Initiates password reset
   // Sends a verification link email
@@ -607,23 +607,23 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
               Date.now() - user.password_reset_date >
               config.password_reset_limit
             ) {
-              let code = Date.now() + utilz.get_random_string(12);
+              let code = Date.now() + utilz.get_random_string(12)
 
               let link = `${
                 config.site_root
-              }change_password?token=${user._id.toString()}_${code}`;
+              }change_password?token=${user._id.toString()}_${code}`
 
               let data = {
                 from: `${config.delivery_email_name} <${config.delivery_email}>`,
                 to: email,
                 subject: "Password Reset",
                 text: `Click the link to reset your password on ${config.site_root}.\n\n${link}`,
-              };
+              }
 
               vars.mailgun.messages().send(data, function (error, body) {
                 if (error) {
-                  resolve("error");
-                  return;
+                  resolve("error")
+                  return
                 } else {
                   manager
                     .update_user(user._id, {
@@ -633,32 +633,32 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
                     })
 
                     .catch((err) => {
-                      reject(err);
-                      logger.log_error(err);
-                      return;
-                    });
+                      reject(err)
+                      logger.log_error(err)
+                      return
+                    })
 
-                  resolve("done");
-                  return;
+                  resolve("done")
+                  return
                 }
-              });
+              })
             } else {
-              resolve("limit");
-              return;
+              resolve("limit")
+              return
             }
           } else {
-            resolve(false);
-            return;
+            resolve(false)
+            return
           }
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Saves room to visited rooms
   manager.save_visited_room = function (user_id, room_id) {
@@ -667,45 +667,45 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
         .get_user({ _id: user_id }, { visited_rooms: 1 })
 
         .then((user) => {
-          let visited = user.visited_rooms;
+          let visited = user.visited_rooms
 
           for (let i = 0; i < visited.length; i++) {
-            let v = visited[i];
+            let v = visited[i]
 
             if (v === room_id) {
-              visited.splice(i, 1);
-              break;
+              visited.splice(i, 1)
+              break
             }
           }
 
-          visited.unshift(room_id);
+          visited.unshift(room_id)
 
           if (visited.length > config.max_visited_rooms_items) {
-            visited = visited.slice(0, config.max_visited_rooms_items);
+            visited = visited.slice(0, config.max_visited_rooms_items)
           }
 
           manager
             .update_user(user_id, { visited_rooms: visited })
 
             .then((ans) => {
-              resolve(ans);
-              return;
+              resolve(ans)
+              return
             })
 
             .catch((err) => {
-              reject(err);
-              logger.log_error(err);
-              return;
-            });
+              reject(err)
+              logger.log_error(err)
+              return
+            })
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Saves a message board post item
   manager.save_message_board_date = function (user_id, room_id) {
@@ -714,20 +714,20 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
         .get_user({ _id: user_id }, { message_board_dates: 1 })
 
         .then((user) => {
-          let message_board_dates = user.message_board_dates;
+          let message_board_dates = user.message_board_dates
 
           for (let i = 0; i < message_board_dates.length; i++) {
-            let item = message_board_dates[i];
+            let item = message_board_dates[i]
 
             if (item.room_id === room_id) {
-              message_board_dates.splice(i, 1);
-              break;
+              message_board_dates.splice(i, 1)
+              break
             }
           }
 
-          let item = { room_id: room_id, date: Date.now() };
+          let item = { room_id: room_id, date: Date.now() }
 
-          message_board_dates.unshift(item);
+          message_board_dates.unshift(item)
 
           if (
             message_board_dates.length > config.max_message_board_dates_items
@@ -735,48 +735,48 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
             message_board_dates = message_board_dates.slice(
               0,
               config.max_message_board_dates_items
-            );
+            )
           }
 
           manager
             .update_user(user_id, { message_board_dates: message_board_dates })
 
             .then((ans) => {
-              resolve(message_board_dates);
-              return;
+              resolve(message_board_dates)
+              return
             })
 
             .catch((err) => {
-              reject(err);
-              logger.log_error(err);
-              return;
-            });
+              reject(err)
+              logger.log_error(err)
+              return
+            })
         })
 
         .catch((err) => {
-          reject(err);
-          logger.log_error(err);
-          return;
-        });
-    });
-  };
+          reject(err)
+          logger.log_error(err)
+          return
+        })
+    })
+  }
 
   // Checks fields types against the user schema types
   manager.validate_user = function (fields) {
     for (let key in fields) {
-      let item = vars.users_schema[key];
-      let data = fields[key];
+      let item = vars.users_schema[key]
+      let data = fields[key]
 
       if (item) {
-        let type = typeof data;
+        let type = typeof data
 
         if (type !== item.type) {
-          let s = `User validation failed on ${key}. Expected type ${item.type}, got type ${type}`;
-          return { passed: false, message: s };
+          let s = `User validation failed on ${key}. Expected type ${item.type}, got type ${type}`
+          return { passed: false, message: s }
         }
       }
     }
 
-    return { passed: true, message: "ok" };
-  };
-};
+    return { passed: true, message: "ok" }
+  }
+}

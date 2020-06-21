@@ -1,22 +1,22 @@
 module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
   // Initial declarations
-  vars.fs = require("fs");
-  vars.path = require("path");
-  vars.mongo = require("mongodb");
-  vars.bcrypt = require("bcrypt");
+  vars.fs = require("fs")
+  vars.path = require("path")
+  vars.mongo = require("mongodb")
+  vars.bcrypt = require("bcrypt")
   vars.mailgun = require("mailgun-js")({
     apiKey: sconfig.mailgun_api_key,
     domain: sconfig.mailgun_domain,
-  });
+  })
   vars.reserved_usernames = [
     config.system_username,
     config.image_ads_setter,
-  ].map((x) => x.toLowerCase());
+  ].map((x) => x.toLowerCase())
 
   // Room and User versions
   // These must be increased by 1 when the schema changes
-  vars.rooms_version = 81;
-  vars.users_version = 49;
+  vars.rooms_version = 81
+  vars.users_version = 49
 
   // Room schema definition
   // This is used to check types and fill defaults
@@ -86,7 +86,7 @@ module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
     media_info: { type: "string", default: "enabled" },
     message_board_posts: { type: "object", default: [] },
     modified: { type: "number", default: Date.now() },
-  };
+  }
 
   // User schema definition
   // This is used to check types and fill defaults
@@ -115,5 +115,5 @@ module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
     audio_clip: { type: "string", default: "" },
     audio_clip_version: { type: "number", default: 0 },
     modified: { type: "number", default: Date.now() },
-  };
-};
+  }
+}

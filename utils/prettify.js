@@ -1,3 +1,3 @@
 #!/bin/bash
-prettier --write ../public/static/js/main
-prettier --write ../server/
+prettier --no-semi --write ../public/static/js/main
+prettier --no-semi --write ../server/

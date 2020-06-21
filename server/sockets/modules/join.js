@@ -10,72 +10,72 @@ module.exports = function (
 ) {
   // Sets initial hue_* variables on connection
   handler.connection = function (socket) {
-    socket.hue_pinged = false;
-    socket.hue_kicked = false;
-    socket.hue_banned = false;
-    socket.hue_joining = false;
-    socket.hue_joined = false;
-    socket.hue_superuser = false;
-    socket.hue_locked = false;
-    socket.hue_info1 = "";
-    socket.hue_typing_counter = 0;
-    socket.hue_activity_counter = 0;
-    socket.hue_synth_counter = 0;
-    socket.hue_last_activity_trigger = 0;
-    socket.hue_last_badge_date = Date.now();
-  };
+    socket.hue_pinged = false
+    socket.hue_kicked = false
+    socket.hue_banned = false
+    socket.hue_joining = false
+    socket.hue_joined = false
+    socket.hue_superuser = false
+    socket.hue_locked = false
+    socket.hue_info1 = ""
+    socket.hue_typing_counter = 0
+    socket.hue_activity_counter = 0
+    socket.hue_synth_counter = 0
+    socket.hue_last_activity_trigger = 0
+    socket.hue_last_badge_date = Date.now()
+  }
 
   // Attempts to join a room
   handler.public.join_room = async function (socket, data) {
     if (socket.hue_joining || socket.hue_joined) {
-      return false;
+      return false
     }
 
     if (data.room_id === undefined) {
-      return handler.do_disconnect(socket);
+      return handler.do_disconnect(socket)
     }
 
     if (data.room_id.length > config.max_room_id_length) {
-      return handler.do_disconnect(socket);
+      return handler.do_disconnect(socket)
     }
 
     if (data.alternative) {
-      socket.hue_login_method = "alternative";
-      data.email = data.email.trim();
-      data.password = data.password.trim();
+      socket.hue_login_method = "alternative"
+      data.email = data.email.trim()
+      data.password = data.password.trim()
 
       if (data.email === undefined || data.password === undefined) {
-        return handler.do_disconnect(socket);
+        return handler.do_disconnect(socket)
       }
 
       if (data.email > config.max_max_email_length) {
-        return handler.do_disconnect(socket);
+        return handler.do_disconnect(socket)
       }
 
       if (data.password.length > config.max_max_password_length) {
-        return handler.do_disconnect(socket);
+        return handler.do_disconnect(socket)
       }
     } else {
-      socket.hue_login_method = "normal";
-      data.user_id = data.user_id.trim();
+      socket.hue_login_method = "normal"
+      data.user_id = data.user_id.trim()
 
       if (data.user_id === undefined || data.token === undefined) {
-        return handler.do_disconnect(socket);
+        return handler.do_disconnect(socket)
       }
 
       if (data.user_id > config.max_user_id_length) {
-        return handler.do_disconnect(socket);
+        return handler.do_disconnect(socket)
       }
 
       if (data.token.length > config.max_jwt_token_length) {
-        return handler.do_disconnect(socket);
+        return handler.do_disconnect(socket)
       }
     }
 
-    let room_fields = {};
+    let room_fields = {}
 
     if (vars.rooms[data.room_id]) {
-      room_fields = vars.filtered_fields;
+      room_fields = vars.filtered_fields
     }
 
     let user_fields = {
@@ -90,205 +90,203 @@ module.exports = function (
       message_board_dates: 1,
       audio_clip: 1,
       audio_clip_version: 1,
-    };
+    }
 
     if (data.alternative) {
       let ans = await db_manager.check_password(
         data.email,
         data.password,
         user_fields
-      );
+      )
 
       if (!ans.valid) {
-        return handler.do_disconnect(socket);
+        return handler.do_disconnect(socket)
       }
 
-      let userinfo = ans.user;
+      let userinfo = ans.user
 
-      socket.hue_user_id = userinfo._id.toString();
+      socket.hue_user_id = userinfo._id.toString()
 
-      let info = await db_manager.get_room({ _id: data.room_id }, room_fields);
+      let info = await db_manager.get_room({ _id: data.room_id }, room_fields)
 
       if (!info) {
-        return handler.do_disconnect(socket);
+        return handler.do_disconnect(socket)
       }
 
-      handler.do_join(socket, info, userinfo, data);
+      handler.do_join(socket, info, userinfo, data)
 
-      db_manager.save_visited_room(socket.hue_user_id, data.room_id);
+      db_manager.save_visited_room(socket.hue_user_id, data.room_id)
     } else {
       vars.jwt.verify(data.token, sconfig.jwt_secret, async function (
         err,
         decoded
       ) {
         if (err) {
-          return handler.do_disconnect(socket);
+          return handler.do_disconnect(socket)
         } else if (
           decoded.data === undefined ||
           decoded.data.id === undefined
         ) {
-          return handler.do_disconnect(socket);
+          return handler.do_disconnect(socket)
         }
 
         if (decoded.data.id !== data.user_id) {
-          return handler.do_disconnect(socket);
+          return handler.do_disconnect(socket)
         } else {
-          socket.hue_user_id = data.user_id;
+          socket.hue_user_id = data.user_id
 
           let info = await db_manager.get_room(
             { _id: data.room_id },
             room_fields
-          );
+          )
 
           if (!info) {
-            return handler.do_disconnect(socket);
+            return handler.do_disconnect(socket)
           }
 
           let userinfo = await db_manager.get_user(
             { _id: socket.hue_user_id },
             user_fields
-          );
+          )
 
           if (!userinfo) {
-            return handler.do_disconnect(socket);
+            return handler.do_disconnect(socket)
           }
 
-          handler.do_join(socket, info, userinfo, data);
+          handler.do_join(socket, info, userinfo, data)
 
-          db_manager.save_visited_room(socket.hue_user_id, data.room_id);
+          db_manager.save_visited_room(socket.hue_user_id, data.room_id)
         }
-      });
+      })
     }
-  };
+  }
 
   // Does a room join after successful authentication
   handler.do_join = async function (socket, info, userinfo, data) {
-    socket.hue_room_id = info._id.toString();
-    socket.hue_email = userinfo.email;
-    socket.hue_bio = userinfo.bio;
-    socket.hue_hearts = userinfo.hearts;
-    socket.hue_skulls = userinfo.skulls;
-    socket.hue_message_board_dates = userinfo.message_board_dates;
-    socket.hue_joining = true;
+    socket.hue_room_id = info._id.toString()
+    socket.hue_email = userinfo.email
+    socket.hue_bio = userinfo.bio
+    socket.hue_hearts = userinfo.hearts
+    socket.hue_skulls = userinfo.skulls
+    socket.hue_message_board_dates = userinfo.message_board_dates
+    socket.hue_joining = true
 
-    socket.join(socket.hue_room_id);
+    socket.join(socket.hue_room_id)
 
     if (handler.check_multipe_joins(socket)) {
-      return handler.do_disconnect(socket);
+      return handler.do_disconnect(socket)
     }
 
     if (handler.check_socket_limit(socket)) {
-      return handler.do_disconnect(socket);
+      return handler.do_disconnect(socket)
     }
 
     if (sconfig.superuser_emails.includes(userinfo.email)) {
-      socket.hue_superuser = true;
+      socket.hue_superuser = true
     }
 
-    socket.hue_username = userinfo.username;
+    socket.hue_username = userinfo.username
 
     socket.hue_ip =
       socket.client.request.headers["x-forwarded-for"] ||
-      socket.client.conn.remoteAddress;
+      socket.client.conn.remoteAddress
 
     if (!socket.hue_superuser && info.bans.includes(socket.hue_user_id)) {
-      socket.leave(socket.hue_room_id);
-      socket.hue_locked = true;
+      socket.leave(socket.hue_room_id)
+      socket.hue_locked = true
 
       handler.user_emit(socket, "joined", {
         room_locked: true,
-      });
+      })
 
-      return false;
+      return false
     }
 
     if (userinfo.profile_image === "") {
-      socket.hue_profile_image = "";
+      socket.hue_profile_image = ""
     } else if (!userinfo.profile_image.includes(sconfig.s3_main_url)) {
       socket.hue_profile_image =
-        config.public_images_location + userinfo.profile_image;
+        config.public_images_location + userinfo.profile_image
     } else {
-      socket.hue_profile_image = userinfo.profile_image;
+      socket.hue_profile_image = userinfo.profile_image
     }
 
     if (
       socket.hue_profile_image &&
       !socket.hue_profile_image.includes("?ver=")
     ) {
-      socket.hue_profile_image += `?ver=${userinfo.profile_image_version}`;
+      socket.hue_profile_image += `?ver=${userinfo.profile_image_version}`
     }
 
     if (userinfo.audio_clip === "") {
-      socket.hue_audio_clip = "";
+      socket.hue_audio_clip = ""
     } else if (!userinfo.audio_clip.includes(sconfig.s3_main_url)) {
-      socket.hue_audio_clip =
-        config.public_audio_location + userinfo.audio_clip;
+      socket.hue_audio_clip = config.public_audio_location + userinfo.audio_clip
     } else {
-      socket.hue_audio_clip = userinfo.audio_clip;
+      socket.hue_audio_clip = userinfo.audio_clip
     }
 
     if (socket.hue_audio_clip && !socket.hue_audio_clip.includes("?ver=")) {
-      socket.hue_audio_clip += `?ver=${userinfo.audio_clip_version}`;
+      socket.hue_audio_clip += `?ver=${userinfo.audio_clip_version}`
     }
 
-    let background_image;
+    let background_image
 
     if (info.background_image === "") {
-      background_image = "";
+      background_image = ""
     } else if (info.background_image_type === "hosted") {
       if (!info.background_image.includes(sconfig.s3_main_url)) {
-        background_image =
-          config.public_images_location + info.background_image;
+        background_image = config.public_images_location + info.background_image
       } else {
-        background_image = info.background_image;
+        background_image = info.background_image
       }
     } else {
-      background_image = info.background_image;
+      background_image = info.background_image
     }
 
     if (vars.rooms[socket.hue_room_id] === undefined) {
-      let key = Object.keys(vars.filtered_fields)[0];
+      let key = Object.keys(vars.filtered_fields)[0]
 
       if (info[key] === undefined) {
-        info = await db_manager.get_room({ _id: socket.hue_room_id }, {});
+        info = await db_manager.get_room({ _id: socket.hue_room_id }, {})
       }
 
-      vars.rooms[socket.hue_room_id] = handler.create_room_object(info);
+      vars.rooms[socket.hue_room_id] = handler.create_room_object(info)
     }
 
-    socket.hue_role = info.keys[socket.hue_user_id];
+    socket.hue_role = info.keys[socket.hue_user_id]
 
     if (!vars.roles.includes(socket.hue_role)) {
-      socket.hue_role = "voice_1";
+      socket.hue_role = "voice_1"
     }
 
     if (vars.user_rooms[socket.hue_user_id] === undefined) {
-      vars.user_rooms[socket.hue_user_id] = [];
+      vars.user_rooms[socket.hue_user_id] = []
     }
 
     if (!vars.user_rooms[socket.hue_user_id].includes(socket.hue_room_id)) {
-      vars.user_rooms[socket.hue_user_id].push(socket.hue_room_id);
+      vars.user_rooms[socket.hue_user_id].push(socket.hue_room_id)
     }
 
-    let already_connected = handler.user_already_connected(socket);
+    let already_connected = handler.user_already_connected(socket)
 
     if (!already_connected) {
-      vars.rooms[socket.hue_room_id].userlist[socket.hue_user_id] = {};
-      handler.update_user_in_userlist(socket, true);
+      vars.rooms[socket.hue_room_id].userlist[socket.hue_user_id] = {}
+      handler.update_user_in_userlist(socket, true)
     }
 
     let last_message_board_post_date =
-      Date.now() - config.message_board_post_delay;
+      Date.now() - config.message_board_post_delay
 
     for (let item of socket.hue_message_board_dates) {
       if (item.room_id === socket.hue_room_id) {
-        last_message_board_post_date = item.date;
-        break;
+        last_message_board_post_date = item.date
+        break
       }
     }
 
-    socket.hue_joining = false;
-    socket.hue_joined = true;
+    socket.hue_joining = false
+    socket.hue_joined = true
 
     let user_data = {
       room_locked: false,
@@ -358,22 +356,22 @@ module.exports = function (
       bio: socket.hue_bio,
       reg_date: userinfo.registration_date,
       last_message_board_post_date: last_message_board_post_date,
-    };
+    }
 
     if (data.no_message_log) {
-      user_data.log_messages = [];
+      user_data.log_messages = []
     } else {
-      user_data.log_messages = vars.rooms[socket.hue_room_id].log_messages;
+      user_data.log_messages = vars.rooms[socket.hue_room_id].log_messages
     }
 
     if (data.no_message_board_posts) {
-      user_data.message_board_posts = [];
+      user_data.message_board_posts = []
     } else {
       user_data.message_board_posts =
-        vars.rooms[socket.hue_room_id].message_board_posts;
+        vars.rooms[socket.hue_room_id].message_board_posts
     }
 
-    handler.user_emit(socket, "joined", user_data);
+    handler.user_emit(socket, "joined", user_data)
 
     if (!already_connected) {
       handler.broadcast_emit(socket, "user_join", {
@@ -386,9 +384,9 @@ module.exports = function (
         skulls: socket.hue_skulls,
         audio_clip: socket.hue_audio_clip,
         date_joined: Date.now(),
-      });
+      })
 
-      handler.push_access_log_message(socket, "joined");
+      handler.push_access_log_message(socket, "joined")
     }
-  };
-};
+  }
+}

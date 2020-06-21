@@ -2,36 +2,36 @@
 Hue.load_youtube = async function (what = "") {
   if (Hue.youtube_loaded) {
     if (Hue.youtube_player_requested && Hue.youtube_player === undefined) {
-      Hue.create_youtube_player();
+      Hue.create_youtube_player()
     }
 
     if (
       Hue.youtube_video_player_requested &&
       Hue.youtube_video_player === undefined
     ) {
-      Hue.create_youtube_video_player();
+      Hue.create_youtube_video_player()
     }
 
-    return false;
+    return false
   }
 
   if (Hue.youtube_loading) {
-    return false;
+    return false
   }
 
-  Hue.youtube_loading = true;
+  Hue.youtube_loading = true
 
-  await Hue.load_script("https://www.youtube.com/iframe_api");
+  await Hue.load_script("https://www.youtube.com/iframe_api")
 
-  Hue.youtube_loaded = true;
-};
+  Hue.youtube_loaded = true
+}
 
 // Create radio YouTube player
 Hue.create_youtube_player = function () {
-  Hue.youtube_player_requested = false;
+  Hue.youtube_player_requested = false
 
-  let el = $("<div id='youtube_player'></div>");
-  $("#media_youtube_audio_container").html(el);
+  let el = $("<div id='youtube_player'></div>")
+  $("#media_youtube_audio_container").html(el)
 
   Hue.yt_player = new YT.Player("youtube_player", {
     events: {
@@ -43,16 +43,16 @@ Hue.create_youtube_player = function () {
       width: 640,
       height: 360,
     },
-  });
-};
+  })
+}
 
 // Create tv YouTube player
 Hue.create_youtube_video_player = function () {
-  Hue.youtube_video_player_requested = false;
+  Hue.youtube_video_player_requested = false
 
-  let html = "<div id='media_youtube_video' class='video_frame'></div>";
-  $("#media_youtube_video_container").html(html);
-  Hue.add_media_info("media_youtube_video_container");
+  let html = "<div id='media_youtube_video' class='video_frame'></div>"
+  $("#media_youtube_video_container").html(html)
+  Hue.add_media_info("media_youtube_video_container")
 
   Hue.yt_video_player = new YT.Player("media_youtube_video", {
     events: {
@@ -65,48 +65,48 @@ Hue.create_youtube_video_player = function () {
       height: 360,
       autoplay: 0,
     },
-  });
-};
+  })
+}
 
 // This gets executed when the YouTube iframe API is ready
 onYouTubeIframeAPIReady = function () {
   if (Hue.youtube_player_requested) {
-    Hue.create_youtube_player();
+    Hue.create_youtube_player()
   }
 
   if (Hue.youtube_video_player_requested) {
-    Hue.create_youtube_video_player();
+    Hue.create_youtube_video_player()
   }
-};
+}
 
 // This gets executed when the radio YouTube player is ready
 Hue.on_youtube_player_ready = function () {
-  Hue.youtube_player = Hue.yt_player;
+  Hue.youtube_player = Hue.yt_player
 
   if (Hue.youtube_player_request) {
-    Hue.change(Hue.youtube_player_request);
-    Hue.youtube_player_request = false;
+    Hue.change(Hue.youtube_player_request)
+    Hue.youtube_player_request = false
   }
-};
+}
 
 // This gets executed when the tv YouTube player is ready
 Hue.on_youtube_video_player_ready = function () {
-  this.clear_activity_bar_items;
-  Hue.youtube_video_player = Hue.yt_video_player;
+  this.clear_activity_bar_items
+  Hue.youtube_video_player = Hue.yt_video_player
 
   Hue.youtube_video_player.addEventListener("onStateChange", function (e) {
     if (e.data === 5) {
       if (Hue.youtube_video_play_on_queue) {
-        Hue.youtube_video_player.playVideo();
+        Hue.youtube_video_player.playVideo()
       }
     }
-  });
+  })
 
   if (Hue.youtube_video_player_request) {
-    Hue.change(Hue.youtube_video_player_request);
-    Hue.youtube_video_player_request = false;
+    Hue.change(Hue.youtube_video_player_request)
+    Hue.youtube_video_player_request = false
   }
-};
+}
 
 // Loads the Soundcloud script and creates players
 Hue.start_soundcloud = async function () {
@@ -115,91 +115,91 @@ Hue.start_soundcloud = async function () {
       Hue.soundcloud_player_requested &&
       Hue.soundcloud_player === undefined
     ) {
-      Hue.create_soundcloud_player();
+      Hue.create_soundcloud_player()
     }
 
     if (
       Hue.soundcloud_video_player_requested &&
       Hue.soundcloud_video_player === undefined
     ) {
-      Hue.create_soundcloud_video_player();
+      Hue.create_soundcloud_video_player()
     }
   }
 
   if (Hue.soundcloud_loading) {
-    return false;
+    return false
   }
 
-  Hue.soundcloud_loading = true;
+  Hue.soundcloud_loading = true
 
-  await Hue.load_script("https://w.soundcloud.com/player/api.js");
+  await Hue.load_script("https://w.soundcloud.com/player/api.js")
 
-  Hue.soundcloud_loaded = true;
+  Hue.soundcloud_loaded = true
 
   if (Hue.soundcloud_player_requested) {
-    Hue.create_soundcloud_player();
+    Hue.create_soundcloud_player()
   }
 
   if (Hue.soundcloud_video_player_requested) {
-    Hue.create_soundcloud_video_player();
+    Hue.create_soundcloud_video_player()
   }
-};
+}
 
 // Creates the radio Soundcloud player
 Hue.create_soundcloud_player = function () {
-  Hue.soundcloud_player_requested = false;
+  Hue.soundcloud_player_requested = false
 
   try {
     let src =
-      "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536";
+      "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536"
 
     $("#media_soundcloud_audio_container").html(
       `<iframe id='soundcloud_player' src='${src}'></iframe>`
-    );
+    )
 
-    let _soundcloud_player = SC.Widget("soundcloud_player");
+    let _soundcloud_player = SC.Widget("soundcloud_player")
 
     _soundcloud_player.bind(SC.Widget.Events.READY, function () {
-      Hue.soundcloud_player = _soundcloud_player;
+      Hue.soundcloud_player = _soundcloud_player
 
       if (Hue.soundcloud_player_request) {
-        Hue.change(Hue.soundcloud_player_request);
-        Hue.soundcloud_player_request = false;
+        Hue.change(Hue.soundcloud_player_request)
+        Hue.soundcloud_player_request = false
       }
-    });
+    })
   } catch (err) {
-    console.error("Soundcloud failed to load");
+    console.error("Soundcloud failed to load")
   }
-};
+}
 
 // Creates the tv Soundcloud player
 Hue.create_soundcloud_video_player = function () {
-  Hue.soundcloud_video_player_requested = false;
+  Hue.soundcloud_video_player_requested = false
 
   try {
     let src =
-      "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536";
+      "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536"
 
     $("#media_soundcloud_video_container")
       .html(`<iframe width="640px" height="360px"
-        id='media_soundcloud_video' class='video_frame' src='${src}'></iframe>`);
+        id='media_soundcloud_video' class='video_frame' src='${src}'></iframe>`)
 
-    Hue.add_media_info("media_soundcloud_video_container");
+    Hue.add_media_info("media_soundcloud_video_container")
 
-    let _soundcloud_video_player = SC.Widget("media_soundcloud_video");
+    let _soundcloud_video_player = SC.Widget("media_soundcloud_video")
 
     _soundcloud_video_player.bind(SC.Widget.Events.READY, function () {
-      Hue.soundcloud_video_player = _soundcloud_video_player;
+      Hue.soundcloud_video_player = _soundcloud_video_player
 
       if (Hue.soundcloud_video_player_request) {
-        Hue.change(Hue.soundcloud_video_player_request);
-        Hue.soundcloud_video_player_request = false;
+        Hue.change(Hue.soundcloud_video_player_request)
+        Hue.soundcloud_video_player_request = false
       }
-    });
+    })
   } catch (err) {
-    console.error("Soundcloud failed to load");
+    console.error("Soundcloud failed to load")
   }
-};
+}
 
 // Centralized function to request media player creation
 // For instance, if there's a YouTube tv change,
@@ -208,48 +208,48 @@ Hue.create_soundcloud_video_player = function () {
 // and the player gets created
 // A change event is called after player creation
 Hue.request_media = function (player, args) {
-  Hue[`${player}_requested`] = true;
-  Hue[`${player}_request`] = args;
+  Hue[`${player}_requested`] = true
+  Hue[`${player}_request`] = args
 
   if (player === "youtube_player" || player === "youtube_video_player") {
-    Hue.load_youtube();
+    Hue.load_youtube()
   } else if (
     player === "soundcloud_player" ||
     player === "soundcloud_video_player"
   ) {
-    Hue.start_soundcloud();
+    Hue.start_soundcloud()
   }
-};
+}
 
 // Loads the HLS player for the <video> player
 // Returns a promise
 Hue.load_hls = async function () {
   if (Hue.hls_loading) {
-    return false;
+    return false
   }
 
-  Hue.hls_loading = true;
+  Hue.hls_loading = true
 
   return new Promise(async (resolve, reject) => {
-    await Hue.load_script("/static/js/libs2/hls.js");
-    resolve();
-  });
-};
+    await Hue.load_script("/static/js/libs2/hls.js")
+    resolve()
+  })
+}
 
 // Starts the HLS player for the <video> player
 Hue.start_hls = async function () {
   if (!Hue.hls_loading) {
-    await Hue.load_hls();
+    await Hue.load_hls()
   }
 
   Hue.hls = new Hls({
     maxBufferSize: 5 * 1000 * 1000,
     maxBufferLength: 10,
-  });
-};
+  })
+}
 
 // Function to add a frame info after creating a player
 Hue.add_media_info = function (container_id) {
-  let html = "<div class='media_info dynamic_title'></div>";
-  $(`#${container_id}`).append(html);
-};
+  let html = "<div class='media_info dynamic_title'></div>"
+  $(`#${container_id}`).append(html)
+}
