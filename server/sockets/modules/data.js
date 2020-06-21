@@ -1,79 +1,65 @@
-module.exports = function(handler, vars, io, db_manager, config, sconfig, utilz, logger)
-{
-    // Tries to check if the data received is valid
-    // This is done by checking some limits
-    handler.check_data = function(data)
-    {
-        try
-        {
-            let m = data.server_method_name
+module.exports = function (
+  handler,
+  vars,
+  io,
+  db_manager,
+  config,
+  sconfig,
+  utilz,
+  logger
+) {
+  // Tries to check if the data received is valid
+  // This is done by checking some limits
+  handler.check_data = function (data) {
+    try {
+      let m = data.server_method_name;
 
-            if(m === undefined)
-            {
-                return false
-            }
+      if (m === undefined) {
+        return false;
+      }
 
-            let keys = Object.keys(data)
+      let keys = Object.keys(data);
 
-            if(keys.length > config.data_max_items)
-            {
-                return false
-            }
+      if (keys.length > config.data_max_items) {
+        return false;
+      }
 
-            for(key of keys)
-            {
-                let d = data[key]
-                let td = typeof d
+      for (key of keys) {
+        let d = data[key];
+        let td = typeof d;
 
-                if(td === "function")
-                {
-                    return false
-                }
-
-                if(m === "slice_upload")
-                {
-                    if(key === "data")
-                    {
-                        continue
-                    }
-                }
-
-                let s = JSON.stringify(d)
-
-                if(td === "number")
-                {
-                    if(s.length > config.data_items_max_number_length)
-                    {
-                        return false
-                    }
-                }
-
-                else
-                {
-                    if(key === "draw_coords")
-                    {
-                        if(s.length > config.draw_coords_max_length)
-                        {
-                            return false
-                        }
-                    }
-
-                    else
-                    {
-                        if(s.length > config.data_items_max_string_length)
-                        {
-                            return false
-                        }
-                    }
-                }
-            }
-
-            return true
+        if (td === "function") {
+          return false;
         }
 
-        catch(err)
-        {
-            return false
+        if (m === "slice_upload") {
+          if (key === "data") {
+            continue;
+          }
         }
+
+        let s = JSON.stringify(d);
+
+        if (td === "number") {
+          if (s.length > config.data_items_max_number_length) {
+            return false;
+          }
+        } else {
+          if (key === "draw_coords") {
+            if (s.length > config.draw_coords_max_length) {
+              return false;
+            }
+          } else {
+            if (s.length > config.data_items_max_string_length) {
+              return false;
+            }
+          }
+        }
+      }
+
+      return true;
+    } catch (err) {
+      return false;
     }
-}
+  };
+};
