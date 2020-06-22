@@ -186,6 +186,8 @@ Hue.connected = false
 Hue.radio_started_date = 0
 Hue.connections = 0
 Hue.connecting = true
+Hue.last_scroll_date = Date.now()
+Hue.recent_scroll_time = 1000
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
