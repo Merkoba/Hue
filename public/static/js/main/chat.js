@@ -2606,11 +2606,11 @@ Hue.scroll_events = function () {
   $("#chat_area")[0].addEventListener("wheel", function (e) {
     $("#chat_area").stop()
     Hue.clear_autoscroll()
+    Hue.last_scroll_date = Date.now()
   })
 
   $("#chat_area").scroll(function () {
     Hue.scroll_timer()
-    Hue.last_scroll_date = Date.now()
   })
 }
 
