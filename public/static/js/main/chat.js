@@ -2734,8 +2734,8 @@ Hue.goto_top = function (animate = true) {
 
 // Scrolls the chat to the bottom
 Hue.goto_bottom = function (force = false, animate = true) {
-  if(!force && Hue.started) {
-    if(Date.now() - Hue.last_scroll_date < Hue.recent_scroll_time) {
+  if (!force && Hue.started) {
+    if (Date.now() - Hue.last_scroll_date < Hue.recent_scroll_time) {
       return
     }
   }
