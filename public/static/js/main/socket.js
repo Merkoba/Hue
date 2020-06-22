@@ -328,7 +328,13 @@ Hue.server_update_events = {
 }
 
 // Centralized function to initiate a socket emit to the server
-Hue.socket_emit = function (destination, data) {
+Hue.socket_emit = function (destination, data, force = false) {
+  if (!force) {
+    if (!Hue.connected) {
+      return
+    }
+  }
+
   let obj = {
     destination: destination,
     data: data,
@@ -392,7 +398,7 @@ Hue.start_socket = function () {
       user_id: Hue.user_id,
       token: Hue.jwt_token,
       no_message_log: no_message_log,
-    })
+    }, true)
   })
 
   Hue.socket.on("connect_error", () => {
@@ -440,7 +446,9 @@ Hue.on_disconnect = function () {
   }
 
   if (Hue.get_setting("autoconnect")) {
-    Hue.feedback("Reconnecting...")
+    if ($("#reconnecting_feedback").length === 0) {
+      Hue.feedback("Reconnecting...", { container_id: "reconnecting_feedback" })
+    }
 
     setTimeout(function () {
       Hue.refresh_client()
