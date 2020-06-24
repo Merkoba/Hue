@@ -1477,6 +1477,11 @@ Hue.unignore_user = function (username) {
 
 // Show the ignored list
 Hue.show_ignored = function () {
+  if (Hue.ignored_usernames_list.length === 0) {
+    Hue.feedback("No users are ignored")
+    return false
+  }
+
   let s = `Ignored: ${Hue.ignored_usernames_list.join(", ")}`
   Hue.feedback(s)
 }
