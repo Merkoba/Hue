@@ -12,30 +12,38 @@ module.exports = function (
   // When they reach the threshold they are fired
   handler.charge_ads = function (room_id) {
     try {
-      if (config.image_ads_enabled) {
+      if (config.image_ads_enabled && !vars.rooms[room_id].attempting_image_ad) {
         vars.rooms[room_id].image_ad_charge += 1
 
         if (vars.rooms[room_id].image_ad_charge >= config.image_ads_threshold) {
+          vars.rooms[room_id].attempting_image_ad = true
+
           handler.attempt_show_image_ad(room_id, function (res) {
             if (res) {
               vars.rooms[room_id].image_ad_charge = 0
             } else {
               vars.rooms[room_id].image_ad_charge = config.image_ads_threshold
             }
+
+            vars.rooms[room_id].attempting_image_ad = false
           })
         }
       }
 
-      if (config.text_ads_enabled) {
+      if (config.text_ads_enabled && !vars.rooms[room_id].attempting_text_ad) {
         vars.rooms[room_id].text_ad_charge += 1
 
         if (vars.rooms[room_id].text_ad_charge >= config.text_ads_threshold) {
+          vars.rooms[room_id].attempting_text_ad = true
+
           handler.attempt_show_text_ad(room_id, function (res) {
             if (res) {
               vars.rooms[room_id].text_ad_charge = 0
             } else {
               vars.rooms[room_id].text_ad_charge = config.text_ads_threshold
             }
+
+            vars.rooms[room_id].attempting_text_ad = false
           })
         }
       }

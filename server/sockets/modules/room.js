@@ -416,6 +416,8 @@ module.exports = function (
       last_radio_change: 0,
       image_ad_charge: 0,
       text_ad_charge: 0,
+      attempting_image_ad: false,
+      attempting_text_ad: false,
       message_board_posts: info.message_board_posts,
       voice_1_permissions: info.voice_1_permissions,
       voice_2_permissions: info.voice_2_permissions,
