@@ -1435,3 +1435,48 @@ Hue.audio_clip_changed = function (data) {
     `${data.username} changed their audio clip`
   )
 }
+
+// Add a user to the ignore list
+Hue.ignore_user = function (username) {
+  let list = $(`#global_settings_ignored_usernames`)
+  let lines = list.val().split("\n")
+
+  for (let line of lines) {
+    if (line === username) {
+      Hue.feedback(`${username} is already ignored`)
+      return false
+    }
+  }
+
+  list.val(`${list.val()}\n${username}`)
+  Hue.feedback(`${username} ignored`)
+  Hue.user_settings.ignored_usernames.action("global_settings")
+}
+
+// Remove a user from the ignore list
+Hue.unignore_user = function (username) {
+  let list = $(`#global_settings_ignored_usernames`)
+  let lines = list.val().split("\n")
+  let new_lines = []
+
+  for (let line of lines) {
+    if (line !== username) {
+      new_lines.push(line)
+    }
+  }
+
+  if(lines.length == new_lines.length) {
+    Hue.feedback(`${username} is already unignored`)
+    return false
+  }
+  
+  list.val(new_lines.join("\n"))
+  Hue.feedback(`${username} unignored`)
+  Hue.user_settings.ignored_usernames.action("global_settings")
+}
+
+// Show the ignored list
+Hue.show_ignored = function () {
+  let s = `Ignored: ${Hue.ignored_usernames_list.join(", ")}`
+  Hue.feedback(s)
+}

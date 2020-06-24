@@ -1367,6 +1367,28 @@ Hue.commands = {
     },
     description: `Adds a note at the start of the notebook`,
   },
+  "/ignore": {
+    action: (arg, ans) => {
+      if (arg) {
+        Hue.ignore_user(arg)
+      }
+    },
+    description: `Adds a user to the ignored list`,
+  },
+  "/unignore": {
+    action: (arg, ans) => {
+      if (arg) {
+        Hue.unignore_user(arg)
+      }
+    },
+    description: `Removes a user from the ignored list`,
+  },
+  "/ignored": {
+    action: (arg, ans) => {
+      Hue.show_ignored()
+    },
+    description: `Shows the ignored list`,
+  },
 }
 
 // Setups commands based on the commands object

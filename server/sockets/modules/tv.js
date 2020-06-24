@@ -408,6 +408,7 @@ module.exports = function (
 
     handler.user_emit(first_socket, "report_tv_progress", {
       requester: socket.id,
+      requester_username: socket.hue_username
     })
   }
 
