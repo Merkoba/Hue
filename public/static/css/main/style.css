@@ -617,7 +617,7 @@ div#header_radio_playing_icon {
 .brk {
 	flex-shrink: 0;
 	flex-grow: 0;
-	height: 1.5rem;
+	max-height: 2rem;
 	min-width: 45px;
 	max-width: 45px;
 	text-align: center;
@@ -3065,6 +3065,7 @@ pre {
 
 .rounded_border {
 	color: inherit;
-	border: 1px solid currentColor;
+	border: 2px solid currentColor;
 	border-radius: 50px;
+	padding: 0.5rem;
 }
