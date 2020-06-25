@@ -2619,6 +2619,24 @@ a.special_link:hover {
 	}
 }
 
+.blinking_3 {
+	animation: blink_3 1.4s linear infinite;
+}
+
+@keyframes blink_3 {
+	0% {
+		opacity: 1
+	}
+
+	50% {
+		opacity: 0.2
+	}
+
+	100% {
+		opacity: 1
+	}
+}
+
 .spoiler {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
