@@ -1391,6 +1391,9 @@ Hue.commands = {
   },
 }
 
+// Alternative command names
+Hue.commands["/find"] = Hue.commands["/search"]
+
 // Setups commands based on the commands object
 // Makes sorted variations
 // Checks if anagrams collide
