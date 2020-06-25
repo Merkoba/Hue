@@ -1163,7 +1163,7 @@ Hue.make_markdown_char_regex = function (char) {
     char
   )}+)(?!\\s)(.*[^${Hue.utilz.escape_special_characters(
     char
-  )}\\s])\\2($|\\s|\\[dummy\\-space\\])`
+  )}\\s])\\2($|\\s|\\[dummy\\-space\\]|\:)`
   return new RegExp(regex, "gm")
 }
 
