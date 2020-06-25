@@ -476,6 +476,11 @@ Hue.apply_theme = function () {
         border: 1px solid ${color_4_alpha} !important;
     }
 
+    .shady
+    {
+      box-shadow: 0px 0px 0px 12px ${color_4} !important;
+    }
+
     </style>
     `
 

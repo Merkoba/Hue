@@ -3063,9 +3063,6 @@ pre {
 	overflow-x: initial;
 }
 
-.rounded_border {
-	color: inherit;
-	border: 2px solid currentColor;
-	border-radius: 50px;
-	padding: 0.5rem;
+.shady {
+	border-radius: 50%;
 }

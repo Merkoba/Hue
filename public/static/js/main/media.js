@@ -504,21 +504,21 @@ Hue.update_chat_media_feedback = function () {
   $("#chat_area > .announcement").each(function () {
     let icon = $(this).find(".announcement_brk").eq(0).find("i").eq(0)
     
-    if (icon.hasClass("rounded_border")) {
-      icon.removeClass("rounded_border")
+    if (icon.hasClass("shady")) {
+      icon.removeClass("shady")
     }
 
     if ($(this).data("type") === "image_change") {
       if ($(this).data("message_id") === Hue.loaded_image.message_id) {
-        icon.addClass("rounded_border")
+        icon.addClass("shady")
       }
     } else if ($(this).data("type") === "tv_change") {
       if ($(this).data("message_id") === Hue.loaded_tv.message_id) {
-        icon.addClass("rounded_border")
+        icon.addClass("shady")
       }
     } else if ($(this).data("type") === "radio_change") {
       if ($(this).data("message_id") === Hue.loaded_radio.message_id) {
-        icon.addClass("rounded_border")
+        icon.addClass("shady")
       }
     }
   })
