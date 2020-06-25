@@ -1265,6 +1265,14 @@ Hue.setup_markdown_regexes = function () {
     )}[dummy-space]</span>`
   }
 
+  Hue.markdown_regexes["horizontal_line"] = {}
+  Hue.markdown_regexes["horizontal_line"].regex = new RegExp(
+    `\\[line\\]`, "gm"
+  )
+  Hue.markdown_regexes["horizontal_line"].replace_function = function () {
+    return "<hr>"
+  }
+
   Hue.markdown_regexes["anchor_link"] = {}
   Hue.markdown_regexes["anchor_link"].regex = new RegExp(
     `\\[anchor\\s+(.*?)\\](.*?)\\[\/anchor\\]`,
@@ -1331,6 +1339,11 @@ Hue.replace_markdown = function (text) {
   text = text.replace(
     Hue.markdown_regexes["dummy_space"].regex,
     Hue.markdown_regexes["dummy_space"].replace_function
+  )
+
+  text = text.replace(
+    Hue.markdown_regexes["horizontal_line"].regex,
+    Hue.markdown_regexes["horizontal_line"].replace_function
   )
 
   return text
