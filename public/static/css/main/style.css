@@ -617,7 +617,7 @@ div#header_radio_playing_icon {
 .brk {
 	flex-shrink: 0;
 	flex-grow: 0;
-	max-height: 2rem;
+	height: 1.5rem;
 	min-width: 45px;
 	max-width: 45px;
 	text-align: center;
@@ -2619,24 +2619,6 @@ a.special_link:hover {
 	}
 }
 
-.blinking_3 {
-	animation: blink_3 1.4s linear infinite;
-}
-
-@keyframes blink_3 {
-	0% {
-		opacity: 1
-	}
-
-	50% {
-		opacity: 0.2
-	}
-
-	100% {
-		opacity: 1
-	}
-}
-
 .spoiler {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
@@ -3079,4 +3061,10 @@ pre {
 	padding-left: 0.2rem;
 	padding-right: 0.2rem;
 	overflow-x: initial;
+}
+
+.rounded_border {
+	color: inherit;
+	border: 1px solid currentColor;
+	border-radius: 50px;
 }
