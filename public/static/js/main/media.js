@@ -499,6 +499,31 @@ Hue.update_media_history_blinks = function () {
   }
 }
 
+// Adds style to the icons of active media messages
+Hue.update_chat_media_feedback = function () {
+  $(".announcement").each(function () {
+    let brk = $(this).find(".announcement_brk").eq(0)
+    
+    if (brk.hasClass("rounded_border")) {
+      brk.removeClass("rounded_border")
+    }
+
+    if ($(this).data("type") === "image_change") {
+      if ($(this).data("message_id") === Hue.loaded_image.message_id) {
+        brk.addClass("rounded_border")
+      }
+    } else if ($(this).data("type") === "tv_change") {
+      if ($(this).data("message_id") === Hue.loaded_tv.message_id) {
+        brk.addClass("rounded_border")
+      }
+    } else if ($(this).data("type") === "radio_change") {
+      if ($(this).data("message_id") === Hue.loaded_radio.message_id) {
+        brk.addClass("rounded_border")
+      }
+    }
+  })
+}
+
 // Tries to separate a comment from a URL when using change media commands
 // The proper way is to use '/image url > comment'
 // But if the > is ommitted it will still try to determine what each part is
@@ -1010,6 +1035,7 @@ Hue.change = function (args = {}) {
     return false
   }
 
+  Hue.update_chat_media_feedback()
   Hue.update_media_history_blinks()
   Hue.check_media_menu_loaded_media()
 
