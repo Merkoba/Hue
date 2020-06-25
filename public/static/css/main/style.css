@@ -3065,4 +3065,5 @@ pre {
 
 .shady {
 	border-radius: 50%;
+	animation: shady_grow 1.2s linear infinite;
 }

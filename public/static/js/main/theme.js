@@ -478,8 +478,21 @@ Hue.apply_theme = function () {
 
     .shady
     {
-      box-shadow: 0px 0px 0px 12px ${color_4} !important;
       background-color: ${color_4} !important;
+    }
+
+    @keyframes shady_grow {
+      0% {
+        box-shadow: 0px 0px 0px 12px ${color_4};
+      }
+
+      50% {
+        box-shadow: 0px 0px 0px 8px ${color_4};
+      }
+
+      100% {
+        box-shadow: 0px 0px 0px 12px ${color_4};
+      }
     }
 
     </style>
