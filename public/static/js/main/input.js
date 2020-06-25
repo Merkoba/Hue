@@ -171,7 +171,7 @@ Hue.input_to_end = function () {
 
 // Appends a linebreak to the input
 Hue.add_linebreak_to_input = function () {
-  Hue.add_to_input("\n")
+  Hue.utilz.insert_text_at_cursor("\n")
   Hue.scroll_input_to_bottom()
 }
 

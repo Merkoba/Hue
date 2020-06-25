@@ -911,6 +911,11 @@ const Utilz = function()
 		return `${uname}@${domain}`
 	}
 
+	utilz.insert_text_at_cursior = function (text) {
+		const [start, end] = [el.selectionStart, el.selectionEnd]
+		el.setRangeText(text, start, end, 'select')
+	}
+
 	utilz.media_types = ["image", "tv", "radio"]
 	utilz.clear_log_types = ["all", "above", "below"]
 
