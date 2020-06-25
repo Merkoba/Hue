@@ -501,7 +501,7 @@ Hue.update_media_history_blinks = function () {
 
 // Adds style to the icons of active media messages
 Hue.update_chat_media_feedback = function () {
-  $(".announcement").each(function () {
+  $("#chat_area > .announcement").each(function () {
     let brk = $(this).find(".announcement_brk").eq(0)
     
     if (brk.hasClass("rounded_border")) {
