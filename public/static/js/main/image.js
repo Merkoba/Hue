@@ -421,6 +421,12 @@ Hue.setup_modal_image = function () {
     }
   })
 
+  $("#modal_image_container").on("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.expand_modal_image()
+    }
+  })
+
   $("#modal_image_header_info").click(function () {
     Hue.show_image_picker()
   })

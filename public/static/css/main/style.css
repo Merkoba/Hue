@@ -3070,6 +3070,8 @@ pre {
 
 .expanded_modal_image {
 	overflow: auto !important;
+	justify-content: initial !important;
+	align-items: initial !important;
 }
 
 .expanded_modal_image #modal_image {
