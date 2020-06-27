@@ -231,17 +231,9 @@ Hue.maxers_mouse_events = function () {
       }
 
       if (el.style.order == 1) {
-        if (el.id === "media_tv") {
-          Hue.maxer_wheel_timer(Hue.decrease_tv_percentage)
-        } else if (el.id === "media_image") {
-          Hue.maxer_wheel_timer(Hue.increase_tv_percentage)
-        }
+        Hue.maxer_wheel_timer(Hue.decrease_tv_percentage)
       } else if (el.style.order == 2) {
-        if (el.id === "media_image") {
-          Hue.maxer_wheel_timer(Hue.decrease_tv_percentage)
-        } else if (el.id === "media_tv") {
-          Hue.maxer_wheel_timer(Hue.increase_tv_percentage)
-        }
+        Hue.maxer_wheel_timer(Hue.increase_tv_percentage)
       }
     } else if (direction === "down") {
       if (maximized) {
@@ -273,17 +265,9 @@ Hue.maxers_mouse_events = function () {
       }
 
       if (el.style.order == 1) {
-        if (el.id === "media_tv") {
-          Hue.maxer_wheel_timer(Hue.increase_tv_percentage)
-        } else if (el.id === "media_image") {
-          Hue.maxer_wheel_timer(Hue.decrease_tv_percentage)
-        }
+        Hue.maxer_wheel_timer(Hue.increase_tv_percentage)
       } else if (el.style.order == 2) {
-        if (el.id === "media_image") {
-          Hue.maxer_wheel_timer(Hue.increase_tv_percentage)
-        } else if (el.id === "media_tv") {
-          Hue.maxer_wheel_timer(Hue.decrease_tv_percentage)
-        }
+        Hue.maxer_wheel_timer(Hue.decrease_tv_percentage)
       }
     }
   }
