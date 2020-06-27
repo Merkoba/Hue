@@ -423,7 +423,7 @@ Hue.setup_modal_image = function () {
 
   $("#modal_image_container").on("auxclick", function (e) {
     if (e.which === 2) {
-      Hue.expand_modal_image()
+      Hue.goto_url($("#modal_image").attr("src"), "tab")
     }
   })
 
@@ -644,6 +644,12 @@ Hue.start_image_events = function () {
       $("#media_image_info").css("display", "none")
       $("#media_image_error").css("display", "initial")
       Hue.after_image_load()
+    }
+  })
+
+  $("#media_image_frame").on("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.goto_url($("#media_image_frame").attr("src"), "tab")
     }
   })
 
