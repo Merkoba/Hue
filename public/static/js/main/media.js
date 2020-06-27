@@ -179,9 +179,9 @@ Hue.default_media_state = function (change_visibility = true) {
 
 // Initial change for current media
 Hue.start_active_media = function () {
-  Hue.change({ type: "image" })
-  Hue.change({ type: "tv" })
-  Hue.change({ type: "radio" })
+  Hue.change({ type: "image", play: false})
+  Hue.change({ type: "tv", play: false})
+  Hue.change({ type: "radio", play: false})
 
   Hue.first_media_change = true
 }
