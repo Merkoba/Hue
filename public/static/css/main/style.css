@@ -3073,6 +3073,7 @@ pre {
 }
 
 .expanded_modal_image #modal_image {
+	width: 100%;
 	height: initial !important;
 	object-fit: initial !important;
 }
