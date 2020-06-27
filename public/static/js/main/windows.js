@@ -104,6 +104,7 @@ Hue.start_msg = function () {
       overlay_class: "!overlay_same_color",
       after_show: function (instance) {
         common.after_show(instance)
+        Hue.restore_modal_image()
         Hue.modal_image_open = true
       },
       after_close: function (instance) {

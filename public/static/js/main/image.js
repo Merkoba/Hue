@@ -398,6 +398,10 @@ Hue.setup_modal_image = function () {
       return false
     }
 
+    if ($("#modal_image_container").hasClass("expanded_modal_image")) {
+      return false
+    }
+
     let direction = e.deltaY > 0 ? "down" : "up"
 
     if (direction === "up") {
@@ -410,7 +414,11 @@ Hue.setup_modal_image = function () {
   $("#Msg-window-modal_image")[0].addEventListener("wheel", f)
 
   $("#modal_image_container").click(function () {
-    Hue.msg_modal_image.close()
+    if ($("#modal_image_container").hasClass("expanded_modal_image")) {
+      Hue.restore_modal_image()
+    } else {
+      Hue.msg_modal_image.close()
+    }
   })
 
   $("#modal_image_header_info").click(function () {
@@ -444,6 +452,26 @@ Hue.setup_modal_image = function () {
       Hue.close_all_modals()
     }
   })
+
+  $("#modal_image_toolbar_expand").click(function (e) {
+    if ($("#modal_image_container").hasClass("expanded_modal_image")) {
+      Hue.restore_modal_image()
+    } else {
+      Hue.expand_modal_image()
+    }
+  })
+}
+
+// Expand modal image to give it full height
+Hue.expand_modal_image = function () {
+  $("#modal_image_container").addClass("expanded_modal_image")
+  $("#modal_image_toolbar_expand").text("Restore")
+}
+
+// Restore expanded modal image
+Hue.restore_modal_image = function () {
+  $("#modal_image_container").removeClass("expanded_modal_image")
+  $("#modal_image_toolbar_expand").text("Expand")
 }
 
 // Opens the image modal with the current image
