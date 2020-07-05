@@ -320,7 +320,7 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      return false
+      return
     }
 
     if (Hue.synth_open) {
@@ -329,16 +329,28 @@ Hue.activate_key_detection = function () {
           Hue.send_synth_voice()
         }
 
-        if (e.key === "Escape") {
+        else if (e.key === "Escape") {
           if ($("#synth_voice_input").val()) {
             Hue.clear_synth_voice()
           } else {
             Hue.hide_synth(true)
           }
         }
+      } else {
+        let num = parseInt(e.key)
 
-        return false
+        if (!isNaN(num)) {
+          if (num === 0) {
+            num = 10
+          }
+
+          Hue.play_synth_key(num)
+        }
+        
+        e.preventDefault()
       }
+
+      return
     }
 
     if (!(e.ctrlKey && window.getSelection().toString() !== "")) {
