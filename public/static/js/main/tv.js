@@ -294,7 +294,8 @@ Hue.show_iframe_video = function (play = true) {
 
   if ($("#media_iframe_video").length === 0) {
     let s = `<div id='media_iframe_poster' class='pointer unselectable action'>Click Here To Load</div>
-        <iframe width="640px" height="360px" id='media_iframe_video' class='video_frame'></iframe>
+        <iframe sandbox="allow-same-origin allow-scripts allow-popups allow-forms" 
+        width="640px" height="360px" id='media_iframe_video' class='video_frame'></iframe>
         <div class='media_info dynamic_title'></div>`
 
     $("#media_iframe_video_container").html(s)
