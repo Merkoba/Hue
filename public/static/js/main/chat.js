@@ -290,6 +290,8 @@ Hue.update_chat = function (args = {}) {
     args.message = args.message.slice(1)
   }
 
+  args.message = Hue.replace_message_vars(args.id, args.message)
+
   let message_classes = "message chat_message"
   let container_classes = "chat_content_container chat_menu_button_main"
   let content_classes = "chat_content dynamic_title"
@@ -3125,4 +3127,13 @@ Hue.scramble_do_loop = function (delay, args) {
   setTimeout(function () {
     Hue.do_scramble(args)
   }, delay)
+}
+
+// Replace things like $id$ with the message id
+Hue.replace_message_vars = function (id, message) {
+  if (id) {
+    message = message.replace(/\$id\$/g, id)
+  }
+
+  return message
 }
