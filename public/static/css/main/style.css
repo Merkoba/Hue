@@ -3070,7 +3070,6 @@ pre {
 
 .shady {
 	animation: shady_grow 1.2s linear infinite;
-	border-radius: 50%;
 }
 
 .expanded_modal_image {
