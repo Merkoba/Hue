@@ -179,9 +179,18 @@ Hue.default_media_state = function (change_visibility = true) {
 
 // Initial change for current media
 Hue.start_active_media = function () {
-  Hue.change({ type: "image", play: false})
-  Hue.change({ type: "tv", play: false})
-  Hue.change({ type: "radio", play: false})
+  Hue.change({
+    type: "image",
+    play: false
+  })
+  Hue.change({
+    type: "tv",
+    play: false
+  })
+  Hue.change({
+    type: "radio",
+    play: false
+  })
 
   Hue.first_media_change = true
 }
@@ -431,7 +440,11 @@ Hue.media_load_next = function (type, just_check = false) {
   }
 
   let item = Hue[`${type}_changed`][index + 1]
-  Hue.change({ type: type, item: item, force: true })
+  Hue.change({
+    type: type,
+    item: item,
+    force: true
+  })
   Hue[`toggle_lock_${type}`](true)
 }
 
@@ -452,7 +465,11 @@ Hue.media_load_previous = function (type, just_check = false) {
   }
 
   let item = Hue[`${type}_changed`][index - 1]
-  Hue.change({ type: type, item: item, force: true })
+  Hue.change({
+    type: type,
+    item: item,
+    force: true
+  })
   Hue[`toggle_lock_${type}`](true)
 }
 
@@ -487,7 +504,7 @@ Hue.update_media_history_blinks = function () {
 Hue.update_chat_media_feedback = function () {
   $("#chat_area > .announcement").each(function () {
     let icon = $(this).find(".announcement_brk").eq(0).find("i").eq(0)
-    
+
     if (icon.hasClass("shady")) {
       icon.removeClass("shady")
     }
@@ -542,7 +559,10 @@ Hue.get_media_change_inline_comment = function (type, source) {
     }
   }
 
-  return { source: source, comment: comment }
+  return {
+    source: source,
+    comment: comment
+  }
 }
 
 // Creates a media object from initial data
@@ -775,9 +795,9 @@ Hue.fix_frame = function (frame_id, test_parent_height = false) {
   }
 
   let parent_width = parent.width()
-  let parent_height = test_parent_height
-    ? test_parent_height
-    : parent.height() - info_height
+  let parent_height = test_parent_height ?
+    test_parent_height :
+    parent.height() - info_height
   let parent_ratio = parent_height / parent_width
   let width, height
 
@@ -1050,7 +1070,11 @@ Hue.start_media_info_events = function () {
     let item = media_info.data("item")
     let mode = media_info.data("mode")
 
-    Hue.open_url_menu({ source: item.source, data: item, media_type: mode })
+    Hue.open_url_menu({
+      source: item.source,
+      data: item,
+      media_type: mode
+    })
   })
 
   $("#media").on("auxclick", ".media_info_username", function (e) {
@@ -1173,7 +1197,9 @@ Hue.change_media_info = function (media_info) {
     Hue.feedback(`Media info is already set to that`)
   }
 
-  Hue.socket_emit("change_media_info", { media_info: media_info })
+  Hue.socket_emit("change_media_info", {
+    media_info: media_info
+  })
 }
 
 // Announces media info change and configures it
@@ -1194,7 +1220,9 @@ Hue.set_media_info = function (what) {
 
 // Toggles media locks for any type
 Hue.change_media_lock = function (type) {
-  if (Hue.room_state[`${type}_locked`]) {
+  let room_mode = Hue[`room_${type}_mode`]
+
+  if (room_mode === "locked" || Hue.room_state[`${type}_locked`]) {
     $(`#footer_lock_${type}_icon`).removeClass("fa-unlock")
     $(`#footer_lock_${type}_icon`).addClass("fa-lock")
     $(`#footer_lock_${type}_icon`).removeClass("footer_icon3")
@@ -1212,7 +1240,9 @@ Hue.change_media_lock = function (type) {
     $(`#footer_lock_${type}_icon`).addClass("footer_icon3")
     $(`#footer_lock_${type}_label`).css("display", "none")
 
-    Hue.change({ type: type })
+    Hue.change({
+      type: type
+    })
   }
 }
 

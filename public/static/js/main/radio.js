@@ -420,21 +420,25 @@ Hue.change_radio_visibility = function () {
     $("#footer_toggle_radio_icon").removeClass("fa-toggle-off")
     $("#footer_toggle_radio_icon").addClass("fa-toggle-on")
 
-    Hue.radio_visible = true
-
     let original_radio_source = false
-
+    
     if (Hue.loaded_radio.source) {
       original_radio_source = Hue.loaded_radio.source
     }
 
-    if (Hue.first_media_change && Hue.started) {
-      Hue.change({
-        type: "radio",
-        force: true,
-        play: false,
-        current_source: Hue.room_state.radio_locked,
-      })
+    if (!Hue.radio_visible) {
+      Hue.radio_visible = true
+  
+      if (Hue.room_radio_mode === "enabled") {
+        if (Hue.first_media_change && Hue.started) {
+          Hue.change({
+            type: "radio",
+            force: true,
+            play: false,
+            current_source: Hue.room_state.radio_locked,
+          })
+        }
+      }
     }
 
     if (Hue.loaded_radio.type && Hue.loaded_radio.type === "radio") {
@@ -918,6 +922,7 @@ Hue.announce_room_radio_mode_change = function (data) {
   Hue.change_radio_visibility()
   Hue.check_media_permissions()
   Hue.update_footer_separators()
+  Hue.change_media_lock("radio")
 }
 
 // Changes the room radio mode

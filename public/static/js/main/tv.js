@@ -524,15 +524,19 @@ Hue.change_tv_visibility = function (play = true) {
     $("#footer_toggle_tv_icon").removeClass("fa-toggle-off")
     $("#footer_toggle_tv_icon").addClass("fa-toggle-on")
 
-    Hue.tv_visible = true
-
-    if (Hue.first_media_change && Hue.started) {
-      Hue.change({
-        type: "tv",
-        force: true,
-        play: false,
-        current_source: Hue.room_state.tv_locked,
-      })
+    if (!Hue.tv_visible) {
+      Hue.tv_visible = true
+      
+      if (Hue.room_tv_mode === "enabled") {
+        if (Hue.first_media_change && Hue.started) {
+          Hue.change({
+            type: "tv",
+            force: true,
+            play: false,
+            current_source: Hue.room_state.tv_locked,
+          })
+        }
+      }
     }
 
     if (play) {
@@ -802,6 +806,7 @@ Hue.announce_room_tv_mode_change = function (data) {
   Hue.check_media_permissions()
   Hue.check_media_maxers()
   Hue.update_footer_separators()
+  Hue.change_media_lock("tv")
 }
 
 // Sets the media menu tv slider

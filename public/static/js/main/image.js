@@ -803,6 +803,7 @@ Hue.announce_room_image_mode_change = function (data) {
   Hue.change_image_visibility()
   Hue.check_media_permissions()
   Hue.check_media_maxers()
+  Hue.change_media_lock("image")
 }
 
 // Shows the window to add a comment to an image upload
