@@ -747,11 +747,6 @@ Hue.hide_expand_image = function () {
   Hue.msg_expand_image.close()
 }
 
-// Applies changes to the image footer lock icon
-Hue.change_lock_image = function () {
-  Hue.change_media_lock_icon("image")
-}
-
 // Reloads the image with the same source
 Hue.refresh_image = function () {
   Hue.change({ type: "image", force: true, play: true, current_source: true })

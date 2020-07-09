@@ -372,11 +372,6 @@ Hue.change_radio_source = function (src, just_check = false, comment = "") {
   Hue.socket_emit("change_radio_source", { src: src, comment: comment })
 }
 
-// Applies changes to the radio footer lock icon
-Hue.change_lock_radio = function () {
-  Hue.change_media_lock_icon("radio")
-}
-
 // Makes the radio visible or not visible
 Hue.toggle_radio = function (what = undefined, save = true) {
   if (what !== undefined) {

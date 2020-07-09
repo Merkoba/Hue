@@ -14,10 +14,6 @@ Hue.setup_footer_icons = function () {
     } else {
       $(`#footer_${type}_icon_container`).css("display", "none")
     }
-
-    $(`#${type}_lock_area`).click(function () {
-      Hue.change_media_lock({type:type, feedback:true})
-    })
   }
 
   if (Hue.room_image_mode === "disabled" || Hue.room_tv_mode === "disabled") {
@@ -67,6 +63,14 @@ Hue.setup_footer = function () {
       Hue.swap_display_positions_2()
     }
   })
+
+  let media = ["image", "tv", "radio"]
+
+  for (let type of media) {
+    $(`#${type}_lock_area`).click(function () {
+      Hue.change_media_lock({type:type, feedback:true})
+    })
+  }
 }
 
 // Checks how to handle the rotate icon

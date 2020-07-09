@@ -615,9 +615,9 @@ Hue.media_visibility_and_locks = function () {
   Hue.change_radio_visibility()
 
   if (Hue.connections === 1) {
-    Hue.change_lock_image()
-    Hue.change_lock_tv()
-    Hue.change_lock_radio()
+    Hue.change_media_lock_icon("image")
+    Hue.change_media_lock_icon("tv")
+    Hue.change_media_lock_icon("radio")
   }
 }
 
@@ -1214,6 +1214,8 @@ Hue.change_media_lock = function(args) {
 
   args = Object.assign(def_args, args)
 
+  console.log(args)
+
   let room_mode = Hue[`room_${args.type}_mode`]
 
   if (room_mode !== "enabled") {
@@ -1230,7 +1232,7 @@ Hue.change_media_lock = function(args) {
     Hue.room_state[`${args.type}_locked`] = !Hue.room_state[`${args.type}_locked`]
   }
 
-  Hue[`change_lock_${args.type}`]()
+  Hue.change_media_lock_icon(args.type)
 
   if (args.save) {
     Hue.save_room_state()

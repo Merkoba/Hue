@@ -570,11 +570,6 @@ Hue.change_tv_visibility = function (play = true) {
   Hue.goto_bottom(false, false)
 }
 
-// Applies changes to the tv footer lock icon
-Hue.change_lock_tv = function () {
-  Hue.change_media_lock_icon("tv")
-}
-
 // Checks if tv is maximized
 Hue.tv_is_maximized = function () {
   return Hue.tv_visible && !Hue.image_visible
