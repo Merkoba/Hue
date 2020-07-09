@@ -127,9 +127,9 @@ Hue.stop_and_lock = function (stop = true) {
     Hue.stop_media()
   }
 
-  Hue.change_media_lock("image", true, false)
-  Hue.change_media_lock("tv", true, false)
-  Hue.change_media_lock("radio", true, false)
+  Hue.change_media_lock({type:"image", what:true, save:false})
+  Hue.change_media_lock({type:"tv", what:true, save:false})
+  Hue.change_media_lock({type:"radio", what:true, save:false})
 
   Hue.save_room_state()
 }
@@ -139,17 +139,17 @@ Hue.default_media_state = function (change_visibility = true) {
   if (
     Hue.room_state.image_locked !== Hue.config.room_state_default_image_locked
   ) {
-    Hue.change_media_lock("image", Hue.config.room_state_default_image_locked, false)
+    Hue.change_media_lock({type:"image", what:Hue.config.room_state_default_image_locked, save:false})
   }
 
   if (Hue.room_state.tv_locked !== Hue.config.room_state_default_tv_locked) {
-    Hue.change_media_lock("tv", Hue.config.room_state_default_tv_locked, false)
+    Hue.change_media_lock({type:"tv", what:Hue.config.room_state_default_tv_locked, save:false})
   }
 
   if (
     Hue.room_state.radio_locked !== Hue.config.room_state_default_radio_locked
   ) {
-    Hue.change_media_lock("radio", Hue.config.room_state_default_radio_locked, false)
+    Hue.change_media_lock({type:"radio", what:Hue.config.room_state_default_radio_locked, save:false})
   }
 
   if (change_visibility) {
@@ -402,21 +402,6 @@ Hue.num_media_elements_visible = function () {
   })
 
   return num
-}
-
-// Quickly unlocks and locks a media type
-// This is to change to the current media item in some sort of valve fashion
-Hue.media_lock_valve = function (type, e) {
-  if (e.which !== 2) {
-    return false
-  }
-
-  if (!Hue.room_state[`${type}_locked`]) {
-    return false
-  }
-
-  Hue[`toggle_lock_${type}`]()
-  Hue[`toggle_lock_${type}`]()
 }
 
 // Locally loads next item of its respective media changed list
@@ -1219,20 +1204,35 @@ Hue.set_media_info = function (what) {
 }
 
 // Change the lock of some media
-Hue.change_media_lock = function(type, what = undefined, save = true) {
-  if (Hue[`room_${type}_mode`] !== "enabled") {
+Hue.change_media_lock = function(args) {
+  let def_args = {
+    type: "",
+    what: undefined, 
+    save: true, 
+    feedback: false
+  }
+
+  args = Object.assign(def_args, args)
+
+  let room_mode = Hue[`room_${args.type}_mode`]
+
+  if (room_mode !== "enabled") {
+    if (args.feedback) {
+      Hue.feedback("This media is locked at the room level by an operator")
+    }
+
     return false
   }
   
-  if (what !== undefined) {
-    Hue.room_state[`${type}_locked`] = what
+  if (args.what !== undefined) {
+    Hue.room_state[`${args.type}_locked`] = args.what
   } else {
-    Hue.room_state[`${type}_locked`] = !Hue.room_state[`${type}_locked`]
+    Hue.room_state[`${args.type}_locked`] = !Hue.room_state[`${args.type}_locked`]
   }
 
-  Hue[`change_lock_${type}`]()
+  Hue[`change_lock_${args.type}`]()
 
-  if (save) {
+  if (args.save) {
     Hue.save_room_state()
   }
 }

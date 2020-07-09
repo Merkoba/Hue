@@ -1,39 +1,23 @@
 // Sets visibility of footer media icons based on media permissions
 Hue.setup_footer_icons = function () {
-  if (Hue.room_image_mode === "disabled") {
-    $("#footer_image_controls").css("display", "none")
-  } else {
-    $("#footer_image_controls").css("display", "flex")
-  }
+  let media = ["image", "tv", "radio"]
 
-  if (Hue.can_image) {
-    $("#footer_image_icon_container").css("display", "flex")
-  } else {
-    $("#footer_image_icon_container").css("display", "none")
-  }
+  for (let type of media) {
+    if (Hue[`room_${type}_mode`] === "disabled") {
+      $("#footer_image_controls").css("display", "none")
+    } else {
+      $("#footer_image_controls").css("display", "flex")
+    }
 
-  if (Hue.room_tv_mode === "disabled") {
-    $("#footer_tv_controls").css("display", "none")
-  } else {
-    $("#footer_tv_controls").css("display", "flex")
-  }
+    if (Hue[`can_${type}`]) {
+      $(`#footer_${type}_icon_container`).css("display", "flex")
+    } else {
+      $(`#footer_${type}_icon_container`).css("display", "none")
+    }
 
-  if (Hue.can_tv) {
-    $("#footer_tv_icon_container").css("display", "flex")
-  } else {
-    $("#footer_tv_icon_container").css("display", "none")
-  }
-
-  if (Hue.room_radio_mode === "disabled") {
-    $("#footer_radio_controls").css("display", "none")
-  } else {
-    $("#footer_radio_controls").css("display", "flex")
-  }
-
-  if (Hue.can_radio) {
-    $("#footer_radio_icon_container").css("display", "flex")
-  } else {
-    $("#footer_radio_icon_container").css("display", "none")
+    $(`#${type}_lock_area`).click(function () {
+      Hue.change_media_lock({type:type, feedback:true})
+    })
   }
 
   if (Hue.room_image_mode === "disabled" || Hue.room_tv_mode === "disabled") {

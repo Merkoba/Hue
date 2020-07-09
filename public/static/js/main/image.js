@@ -447,7 +447,7 @@ Hue.setup_modal_image = function () {
     let item = Hue.loaded_modal_image
     Hue.toggle_image(true)
     Hue.change({ type: "image", item: item, force: true })
-    Hue.change_media_lock("image", true)
+    Hue.change_media_lock({type:"image", what:true})
     Hue.close_all_modals()
   })
 
