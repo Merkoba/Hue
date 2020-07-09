@@ -372,24 +372,9 @@ Hue.change_radio_source = function (src, just_check = false, comment = "") {
   Hue.socket_emit("change_radio_source", { src: src, comment: comment })
 }
 
-// Enables or disables the radio lock
-Hue.toggle_lock_radio = function (what = undefined, save = true) {
-  if (what !== undefined) {
-    Hue.room_state.radio_locked = what
-  } else {
-    Hue.room_state.radio_locked = !Hue.room_state.radio_locked
-  }
-
-  Hue.change_lock_radio()
-
-  if (save) {
-    Hue.save_room_state()
-  }
-}
-
 // Applies changes to the radio footer lock icon
 Hue.change_lock_radio = function () {
-  Hue.change_media_lock("radio")
+  Hue.change_media_lock_icon("radio")
 }
 
 // Makes the radio visible or not visible
@@ -922,7 +907,7 @@ Hue.announce_room_radio_mode_change = function (data) {
   Hue.change_radio_visibility()
   Hue.check_media_permissions()
   Hue.update_footer_separators()
-  Hue.change_media_lock("radio")
+  Hue.change_media_lock_icon("radio")
 }
 
 // Changes the room radio mode

@@ -591,55 +591,55 @@ Hue.commands = {
   },
   "/lockimage": {
     action: (arg, ans) => {
-      Hue.toggle_lock_image(true)
+      Hue.change_media_lock("image", true)
     },
     description: `Locks the image`,
   },
   "/locktv": {
     action: (arg, ans) => {
-      Hue.toggle_lock_tv(true)
+      Hue.change_media_lock("tv", true)
     },
     description: `Locks the tv`,
   },
   "/lockradio": {
     action: (arg, ans) => {
-      Hue.toggle_lock_radio(true)
+      Hue.change_media_lock("radio", true)
     },
     description: `Locks the radio`,
   },
   "/unlockimage": {
     action: (arg, ans) => {
-      Hue.toggle_lock_image(false)
+      Hue.change_media_lock("image", false)
     },
     description: `Unlocks the image`,
   },
   "/unlocktv": {
     action: (arg, ans) => {
-      Hue.toggle_lock_tv(false)
+      Hue.change_media_lock("tv", false)
     },
     description: `Unlocks the tv`,
   },
   "/unlockradio": {
     action: (arg, ans) => {
-      Hue.toggle_lock_radio(false)
+      Hue.change_media_lock("radio", false)
     },
     description: `Unlocks the radio`,
   },
   "/togglelockimage": {
     action: (arg, ans) => {
-      Hue.toggle_lock_image()
+      Hue.change_media_lock("image")
     },
     description: `Toggles between lock and unlock the image`,
   },
   "/togglelocktv": {
     action: (arg, ans) => {
-      Hue.toggle_lock_tv()
+      Hue.change_media_lock("tv")
     },
     description: `Toggles between lock and unlock the tv`,
   },
   "/togglelockradio": {
     action: (arg, ans) => {
-      Hue.toggle_lock_radio()
+      Hue.change_media_lock("radio")
     },
     description: `Toggles between lock and unlock the radio`,
   },

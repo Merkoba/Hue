@@ -127,9 +127,9 @@ Hue.stop_and_lock = function (stop = true) {
     Hue.stop_media()
   }
 
-  Hue.toggle_lock_image(true, false)
-  Hue.toggle_lock_tv(true, false)
-  Hue.toggle_lock_radio(true, false)
+  Hue.change_media_lock("image", true, false)
+  Hue.change_media_lock("tv", true, false)
+  Hue.change_media_lock("radio", true, false)
 
   Hue.save_room_state()
 }
@@ -139,17 +139,17 @@ Hue.default_media_state = function (change_visibility = true) {
   if (
     Hue.room_state.image_locked !== Hue.config.room_state_default_image_locked
   ) {
-    Hue.toggle_lock_image(Hue.config.room_state_default_image_locked, false)
+    Hue.change_media_lock("image", Hue.config.room_state_default_image_locked, false)
   }
 
   if (Hue.room_state.tv_locked !== Hue.config.room_state_default_tv_locked) {
-    Hue.toggle_lock_tv(Hue.config.room_state_default_tv_locked, false)
+    Hue.change_media_lock("tv", Hue.config.room_state_default_tv_locked, false)
   }
 
   if (
     Hue.room_state.radio_locked !== Hue.config.room_state_default_radio_locked
   ) {
-    Hue.toggle_lock_radio(Hue.config.room_state_default_radio_locked, false)
+    Hue.change_media_lock("radio", Hue.config.room_state_default_radio_locked, false)
   }
 
   if (change_visibility) {
@@ -1218,8 +1218,27 @@ Hue.set_media_info = function (what) {
   Hue.config_admin_media_info()
 }
 
+// Change the lock of some media
+Hue.change_media_lock = function(type, what = undefined, save = true) {
+  if (Hue[`room_${type}_mode`] !== "enabled") {
+    return false
+  }
+  
+  if (what !== undefined) {
+    Hue.room_state[`${type}_locked`] = what
+  } else {
+    Hue.room_state[`${type}_locked`] = !Hue.room_state[`${type}_locked`]
+  }
+
+  Hue[`change_lock_${type}`]()
+
+  if (save) {
+    Hue.save_room_state()
+  }
+}
+
 // Toggles media locks for any type
-Hue.change_media_lock = function (type) {
+Hue.change_media_lock_icon = function (type) {
   let room_mode = Hue[`room_${type}_mode`]
 
   if (room_mode === "locked" || Hue.room_state[`${type}_locked`]) {

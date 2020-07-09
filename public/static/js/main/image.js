@@ -447,7 +447,7 @@ Hue.setup_modal_image = function () {
     let item = Hue.loaded_modal_image
     Hue.toggle_image(true)
     Hue.change({ type: "image", item: item, force: true })
-    Hue.toggle_lock_image(true)
+    Hue.change_media_lock("image", true)
     Hue.close_all_modals()
   })
 
@@ -747,24 +747,9 @@ Hue.hide_expand_image = function () {
   Hue.msg_expand_image.close()
 }
 
-// Enables or disables the image lock
-Hue.toggle_lock_image = function (what = undefined, save = true) {
-  if (what !== undefined) {
-    Hue.room_state.image_locked = what
-  } else {
-    Hue.room_state.image_locked = !Hue.room_state.image_locked
-  }
-
-  Hue.change_lock_image()
-
-  if (save) {
-    Hue.save_room_state()
-  }
-}
-
 // Applies changes to the image footer lock icon
 Hue.change_lock_image = function () {
-  Hue.change_media_lock("image")
+  Hue.change_media_lock_icon("image")
 }
 
 // Reloads the image with the same source
@@ -803,7 +788,7 @@ Hue.announce_room_image_mode_change = function (data) {
   Hue.change_image_visibility()
   Hue.check_media_permissions()
   Hue.check_media_maxers()
-  Hue.change_media_lock("image")
+  Hue.change_media_lock_icon("image")
 }
 
 // Shows the window to add a comment to an image upload

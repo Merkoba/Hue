@@ -570,24 +570,9 @@ Hue.change_tv_visibility = function (play = true) {
   Hue.goto_bottom(false, false)
 }
 
-// Enables or disables the tv lock
-Hue.toggle_lock_tv = function (what = undefined, save = true) {
-  if (what !== undefined) {
-    Hue.room_state.tv_locked = what
-  } else {
-    Hue.room_state.tv_locked = !Hue.room_state.tv_locked
-  }
-
-  Hue.change_lock_tv()
-
-  if (save) {
-    Hue.save_room_state()
-  }
-}
-
 // Applies changes to the tv footer lock icon
 Hue.change_lock_tv = function () {
-  Hue.change_media_lock("tv")
+  Hue.change_media_lock_icon("tv")
 }
 
 // Checks if tv is maximized
@@ -806,7 +791,7 @@ Hue.announce_room_tv_mode_change = function (data) {
   Hue.check_media_permissions()
   Hue.check_media_maxers()
   Hue.update_footer_separators()
-  Hue.change_media_lock("tv")
+  Hue.change_media_lock_icon("tv")
 }
 
 // Sets the media menu tv slider
