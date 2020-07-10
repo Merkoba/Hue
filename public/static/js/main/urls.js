@@ -211,12 +211,14 @@ Hue.setup_open_url = function () {
 
   $("#open_url_menu_load").click(function () {
     Hue[`toggle_${Hue.open_url_media_type}`](true)
+    
     Hue.change({
       type: Hue.open_url_media_type,
       item: Hue.open_url_data,
       force: true,
     })
-    Hue[`toggle_lock_${Hue.open_url_media_type}`](true)
+
+    Hue.change_media_lock({type:Hue.open_url_media_type, what:true})
     Hue.close_all_modals()
   })
 

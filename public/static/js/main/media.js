@@ -425,12 +425,14 @@ Hue.media_load_next = function (type, just_check = false) {
   }
 
   let item = Hue[`${type}_changed`][index + 1]
+
   Hue.change({
     type: type,
     item: item,
     force: true
   })
-  Hue[`toggle_lock_${type}`](true)
+
+  Hue.change_media_lock({type:type, what:true})
 }
 
 // Locally loads previous item of its respective media changed list
@@ -450,12 +452,14 @@ Hue.media_load_previous = function (type, just_check = false) {
   }
 
   let item = Hue[`${type}_changed`][index - 1]
+
   Hue.change({
     type: type,
     item: item,
     force: true
   })
-  Hue[`toggle_lock_${type}`](true)
+
+  Hue.change_media_lock({type:type, what:true})
 }
 
 // Updates blinking media history items to reflect which is the current loaded item
@@ -1213,8 +1217,6 @@ Hue.change_media_lock = function(args) {
   }
 
   args = Object.assign(def_args, args)
-
-  console.log(args)
 
   let room_mode = Hue[`room_${args.type}_mode`]
 

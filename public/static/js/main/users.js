@@ -458,7 +458,6 @@ Hue.update_userlist_window = function () {
     image.data("username", item.username)
 
     image.on("error", function (e) {
-      console.log(e)
       if ($(this).attr("src") !== Hue.config.default_profile_image_url) {
         $(this).attr("src", Hue.config.default_profile_image_url)
       }
