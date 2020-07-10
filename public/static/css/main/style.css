@@ -3062,3 +3062,7 @@ pre {
 	height: initial !important;
 	object-fit: initial !important;
 }
+
+.yuge {
+	font-size: 1.5em;
+}
