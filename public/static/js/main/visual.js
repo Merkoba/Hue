@@ -76,7 +76,6 @@ Hue.make_safe = function (args = {}) {
     html: false,
     urlize: true,
     onclick: false,
-    html_unselectable: true,
     title: false,
     remove_text_if_empty: false,
     date: false,
@@ -146,10 +145,6 @@ Hue.make_safe = function (args = {}) {
     }
 
     c.append(`<div class='message_info_html ${sp}'>${args.html}</div>`)
-
-    if (args.html_unselectable) {
-      c.find(".message_info_html").eq(0).addClass("unselectable")
-    }
   }
 
   return c[0]

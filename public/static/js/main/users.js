@@ -435,7 +435,7 @@ Hue.update_userlist_window = function () {
         <div class='modal_item userlist_item dynamic_title'>
             <div class='userlist_column flex_column_center'>
                 <div>
-                    <div class='userlist_item_profile_image_container round_image_container unselectable action4'>
+                    <div class='userlist_item_profile_image_container round_image_container action4'>
                         <img class='userlist_item_profile_image profile_image' src='${item.profile_image}' loading='lazy'>
                     </div>
                     <div class='userlist_item_details_container'>

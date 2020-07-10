@@ -2,13 +2,13 @@
     <div id='write_message_feedback'></div>
     <textarea rows="3" id='write_message_area' tabindex=0 placeholder="Write a Message (Optional)"></textarea>
     <canvas id='draw_message_area' class='draw_canvas' width='400px' height='300px' tabindex=1></canvas>
-    <span class='unselectable flex_row_center generic_horizontal_separator'>
-        <div class='bigger pointer unselectable action inline'
+    <span class='flex_row_center generic_horizontal_separator'>
+        <div class='bigger pointer action inline'
         onclick='Hue.clear_draw_message_state()'
         tabindex=3>Clear Drawing</div>
 
         <div id='write_message_send_button'
-        class='bigger pointer unselectable action inline'
+        class='bigger pointer action inline'
         onclick='Hue.send_popup_message()'
         ondblclick='Hue.send_popup_message(true)' tabindex=4>Send</div>
     </span>

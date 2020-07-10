@@ -393,7 +393,7 @@ Hue.update_chat = function (args = {}) {
             <div class='chat_third_container'>
                 <div class='brk chat_third_brk'>${args.brk}</div>
                 <div class='${container_classes}'>
-                    <div class='chat_menu_button_container unselectable'>
+                    <div class='chat_menu_button_container'>
                         <i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
                     </div>
 
@@ -405,7 +405,7 @@ Hue.update_chat = function (args = {}) {
 
                     <div class='message_edit_container'>
                         <textarea class='message_edit_area'></textarea>
-                        <div class='message_edit_buttons unselectable'>
+                        <div class='message_edit_buttons'>
                             <div class='message_edit_button action message_edit_cancel'>Cancel</div>
                             <div class='message_edit_button action message_edit_submit'>Submit</div>
                         </div>
@@ -421,7 +421,7 @@ Hue.update_chat = function (args = {}) {
     let s = `
         <div class='${message_classes}'>
             <div class='chat_left_side'>
-                <div class='chat_profile_image_container round_image_container unselectable action4'>
+                <div class='chat_profile_image_container round_image_container action4'>
                     <img class='chat_profile_image profile_image' src='${pi}' loading='lazy'>
                 </div>
             </div>
@@ -432,7 +432,7 @@ Hue.update_chat = function (args = {}) {
                 <div class='chat_container'>
                     <div class='${container_classes}'>
 
-                        <div class='chat_menu_button_container unselectable'>
+                        <div class='chat_menu_button_container'>
                             <i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
                         </div>
 
@@ -442,7 +442,7 @@ Hue.update_chat = function (args = {}) {
 
                         <div class='message_edit_container'>
                             <textarea class='message_edit_area'></textarea>
-                            <div class='message_edit_buttons unselectable'>
+                            <div class='message_edit_buttons'>
                                 <div class='message_edit_button action message_edit_cancel'>Cancel</div>
                                 <div class='message_edit_button action message_edit_submit'>Submit</div>
                             </div>
@@ -733,7 +733,7 @@ Hue.chat_announce = function (args = {}) {
     <div${container_id}class='${message_classes}'>
         <div class='${brk_classes}'>${args.brk}</div>
         <div class='${container_classes}'>
-            <div class='chat_menu_button_container unselectable'>
+            <div class='chat_menu_button_container'>
                 <i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
             </div>
             <div class='${split_classes}'>

@@ -38,7 +38,7 @@ Hue.start_msg = function () {
   let titlebar = {
     enable_titlebar: true,
     center_titlebar: true,
-    titlebar_class: "!custom_titlebar !unselectable",
+    titlebar_class: "!custom_titlebar",
     window_inner_x_class: "!titlebar_inner_x",
   }
 
@@ -935,7 +935,7 @@ Hue.create_popup = function (args = {}) {
     window_class: "!custom_popup",
     enable_titlebar: true,
     center_titlebar: true,
-    titlebar_class: "!custom_titlebar !unselectable",
+    titlebar_class: "!custom_titlebar",
     window_inner_x_class: "!titlebar_inner_x",
     edge_padding_y: edge_padding_y,
   }
@@ -1160,7 +1160,7 @@ Hue.show_action_popup = function (args = {}) {
     icon = `<i class='${args.icon} action_popup_icon'></i>`
   }
 
-  let html = `<div class='action_popup_item unselectable ${classes}'>${icon}<div class='action_popup_message'>${Hue.utilz.make_html_safe(
+  let html = `<div class='action_popup_item ${classes}'>${icon}<div class='action_popup_message'>${Hue.utilz.make_html_safe(
     args.message
   )}</div></div>`
 

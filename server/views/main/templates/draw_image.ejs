@@ -1,6 +1,6 @@
 <script id='template_draw_image' type='text/x-handlebars-template' class='template'>
     <div id='draw_image_main'>
-        <div class='unselectable' id='draw_image_controls'>
+        <div id='draw_image_controls'>
             <div id='draw_image_mode_select_pencil' class='pointer action modal_icon_container' onclick='Hue.set_draw_image_mode_input("pencil")'>
                 <i class='fa fa-pencil-alt nicetitle' title='Pencil'></i>
 
@@ -29,7 +29,7 @@
 
         <canvas id='draw_image_area' class='draw_canvas' width='1920px' height='1440px' tabindex=1></canvas>
 
-        <div id='draw_image_buttons' class='unselectable flex_row_center'>
+        <div id='draw_image_buttons' class='flex_row_center'>
             <div class='bigger pointer action' onclick='Hue.draw_image_undo()'>Undo</div>
             <div class='bigger pointer action' onclick='Hue.draw_image_redo()'>Redo</div>
             <div class='bigger pointer action' onclick='Hue.needs_confirm("clear_draw_image_func")'>Clear</div>

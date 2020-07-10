@@ -140,7 +140,7 @@ Hue.make_info_popup_item = function (args = {}) {
     }
   }
 
-  return `<div class='info_popup_item unselectable ${classes}'><i class='${
+  return `<div class='info_popup_item ${classes}'><i class='${
     args.icon
   } info_popup_icon'></i><div>${Hue.utilz.make_html_safe(
     args.message
