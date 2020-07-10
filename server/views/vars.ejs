@@ -1,22 +1,18 @@
 <% 
-	for(let key in vars)
-	{
+	for(let key in vars) {
 		let v = vars[key]
 
-		if(v === undefined)
-		{
+		if(v === undefined) {
 			continue
 		}
 
 		%>var <%-key%> = <%
 
-		if(typeof v === "string")
-		{
+		if(typeof v === "string") {
 			%>`<%-v%>`; <% 
 		}
 
-		else
-		{
+		else {
 			%><%-JSON.stringify(v)%>; <%
 		}
 	}
