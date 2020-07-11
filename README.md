@@ -6,6 +6,8 @@
 
 ![](https://i.imgur.com/1Ua6LEc.jpg)
 
+![](https://i.imgur.com/bDA6F5S.jpg)
+
 # What Is It
 
 Hue is a whole new platform to have fun with other people online.
