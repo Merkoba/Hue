@@ -6,7 +6,7 @@
 
 ![](https://i.imgur.com/1Ua6LEc.jpg)
 
-![](https://i.imgur.com/bDA6F5S.jpg)
+![](https://i.imgur.com/6SBOwB8.jpg)
 
 # What Is It
 
