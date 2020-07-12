@@ -161,7 +161,7 @@ module.exports = function (
       obj.type = "link"
       obj.comment = data.comment
 
-      handler.change_image(socket, obj)
+      handler.do_change_image_source(socket, obj)
     }
   }
 
@@ -205,54 +205,10 @@ module.exports = function (
           obj.type = "upload"
           obj.comment = data.comment
 
-          handler.change_image(socket, obj)
+          handler.do_change_image_source(socket, obj)
         }
       }
     )
-  }
-
-  // Intermidiate step to change the image
-  handler.change_image = function (socket, data) {
-    if (data.type === "link") {
-      handler.do_change_image_source(socket, data)
-    } else if (data.type === "upload") {
-      if (config.image_storage_s3_or_local === "local") {
-        handler.do_change_image_source(socket, data)
-      } else if (config.image_storage_s3_or_local === "s3") {
-        vars.fs.readFile(`${vars.images_root}/${data.src}`, (err, data2) => {
-          if (err) {
-            vars.fs.unlink(`${vars.images_root}/${data.src}`, function () {})
-            logger.log_error(err)
-            return
-          }
-
-          vars.s3
-            .putObject({
-              ACL: "public-read",
-              ContentType: handler.get_content_type(data.src),
-              Body: data2,
-              Bucket: sconfig.s3_bucket_name,
-              Key: `${sconfig.s3_images_location}${data.src}`,
-              CacheControl: `max-age=${sconfig.s3_cache_max_age}`,
-            })
-            .promise()
-
-            .then((ans) => {
-              vars.fs.unlink(`${vars.images_root}/${data.src}`, function () {})
-              data.src =
-                sconfig.s3_main_url + sconfig.s3_images_location + data.src
-              handler.do_change_image_source(socket, data)
-            })
-
-            .catch((err) => {
-              vars.fs.unlink(`${vars.images_root}/${data.src}`, function () {})
-              logger.log_error(err)
-            })
-        })
-      } else {
-        return false
-      }
-    }
   }
 
   // Completes image source changes
@@ -307,14 +263,7 @@ module.exports = function (
         image_comment: comment,
       })
     } else if (data.type === "upload") {
-      if (config.image_storage_s3_or_local === "local") {
-        image_source = config.public_images_location + data.src
-      } else if (config.image_storage_s3_or_local === "s3") {
-        image_source = data.src
-      } else {
-        return false
-      }
-
+      image_source = config.public_images_location + data.src
       room.stored_images.unshift(data.src)
 
       let spliced = false
@@ -341,22 +290,9 @@ module.exports = function (
 
       if (spliced) {
         for (let file_name of spliced) {
-          if (!file_name.includes(sconfig.s3_main_url)) {
-            vars.fs.unlink(`${vars.images_root}/${file_name}`, function (
-              err
-            ) {})
-          } else {
-            vars.s3
-              .deleteObject({
-                Bucket: sconfig.s3_bucket_name,
-                Key: file_name.replace(sconfig.s3_main_url, ""),
-              })
-              .promise()
-
-              .catch((err) => {
-                logger.log_error(err)
-              })
-          }
+          vars.fs.unlink(`${vars.images_root}/${file_name}`, function (
+            err
+          ) {})
         }
       }
     } else {

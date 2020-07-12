@@ -244,7 +244,7 @@ module.exports = function (
         if (err) {
           handler.user_emit(socket, "upload_error", {})
         } else {
-          handler.change_background_image(socket, fname)
+          handler.do_change_background_image(socket, fname)
         }
       }
     )
@@ -285,47 +285,6 @@ module.exports = function (
     handler.do_change_background_image(socket, data.src, "external")
   }
 
-  // Intermidiate step to change the background image
-  handler.change_background_image = function (socket, fname) {
-    if (config.image_storage_s3_or_local === "local") {
-      handler.do_change_background_image(socket, fname, "hosted")
-    } else if (config.image_storage_s3_or_local === "s3") {
-      vars.fs.readFile(`${vars.images_root}/${fname}`, (err, data) => {
-        if (err) {
-          vars.fs.unlink(`${vars.images_root}/${fname}`, function () {})
-          return
-        }
-
-        vars.s3
-          .putObject({
-            ACL: "public-read",
-            ContentType: handler.get_content_type(fname),
-            Body: data,
-            Bucket: sconfig.s3_bucket_name,
-            Key: `${sconfig.s3_images_location}${fname}`,
-            CacheControl: `max-age=${sconfig.s3_cache_max_age}`,
-          })
-          .promise()
-
-          .then((ans) => {
-            vars.fs.unlink(`${vars.images_root}/${fname}`, function () {})
-            handler.do_change_background_image(
-              socket,
-              sconfig.s3_main_url + sconfig.s3_images_location + fname,
-              "hosted"
-            )
-          })
-
-          .catch((err) => {
-            vars.fs.unlink(`${vars.images_root}/${fname}`, function () {})
-            logger.log_error(err)
-          })
-      })
-    } else {
-      return false
-    }
-  }
-
   // Completes background image changes
   handler.do_change_background_image = async function (socket, fname, type) {
     let info = await db_manager.get_room(
@@ -335,11 +294,7 @@ module.exports = function (
     let image_url
 
     if (type === "hosted") {
-      if (config.image_storage_s3_or_local === "local") {
-        image_url = config.public_images_location + fname
-      } else if (config.image_storage_s3_or_local === "s3") {
-        image_url = fname
-      }
+      image_url = config.public_images_location + fname
     } else {
       image_url = fname
     }
@@ -360,7 +315,7 @@ module.exports = function (
 
     let date = Date.now()
 
-    let ans = await db_manager.update_room(socket.hue_room_id, {
+    await db_manager.update_room(socket.hue_room_id, {
       background_image: fname,
       background_image_type: type,
       background_image_setter: socket.hue_username,
@@ -375,20 +330,7 @@ module.exports = function (
     })
 
     if (to_delete) {
-      if (!to_delete.includes(sconfig.s3_main_url)) {
-        vars.fs.unlink(`${vars.images_root}/${to_delete}`, function (err) {})
-      } else {
-        vars.s3
-          .deleteObject({
-            Bucket: sconfig.s3_bucket_name,
-            Key: to_delete.replace(sconfig.s3_main_url, ""),
-          })
-          .promise()
-
-          .catch((err) => {
-            logger.log_error(err)
-          })
-      }
+      vars.fs.unlink(`${vars.images_root}/${to_delete}`, function (err) {})
     }
 
     handler.push_admin_log_message(socket, "changed the background image")

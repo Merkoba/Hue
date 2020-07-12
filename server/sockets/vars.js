@@ -42,16 +42,6 @@ module.exports = function (
     stored_images: 0,
   }
   vars.whisper_types = ["user", "ops", "broadcast", "system_broadcast"]
-
-  vars.s3 = new vars.aws.S3({
-    apiVersion: sconfig.s3_api_version,
-    endpoint: sconfig.s3_endpoint_url,
-    credentials: {
-      accessKeyId: sconfig.s3_access_key,
-      secretAccessKey: sconfig.s3_secret_access_key,
-    },
-  })
-
   vars.redis_client_ready = false
   vars.redis_client = vars.redis.createClient()
 

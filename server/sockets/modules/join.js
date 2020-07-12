@@ -204,11 +204,9 @@ module.exports = function (
 
     if (userinfo.profile_image === "") {
       socket.hue_profile_image = ""
-    } else if (!userinfo.profile_image.includes(sconfig.s3_main_url)) {
+    } else {
       socket.hue_profile_image =
         config.public_images_location + userinfo.profile_image
-    } else {
-      socket.hue_profile_image = userinfo.profile_image
     }
 
     if (
@@ -220,10 +218,8 @@ module.exports = function (
 
     if (userinfo.audio_clip === "") {
       socket.hue_audio_clip = ""
-    } else if (!userinfo.audio_clip.includes(sconfig.s3_main_url)) {
-      socket.hue_audio_clip = config.public_audio_location + userinfo.audio_clip
     } else {
-      socket.hue_audio_clip = userinfo.audio_clip
+      socket.hue_audio_clip = config.public_audio_location + userinfo.audio_clip
     }
 
     if (socket.hue_audio_clip && !socket.hue_audio_clip.includes("?ver=")) {
@@ -235,11 +231,7 @@ module.exports = function (
     if (info.background_image === "") {
       background_image = ""
     } else if (info.background_image_type === "hosted") {
-      if (!info.background_image.includes(sconfig.s3_main_url)) {
-        background_image = config.public_images_location + info.background_image
-      } else {
-        background_image = info.background_image
-      }
+      background_image = config.public_images_location + info.background_image
     } else {
       background_image = info.background_image
     }
