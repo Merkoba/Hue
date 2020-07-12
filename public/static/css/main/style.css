@@ -3066,3 +3066,8 @@ pre {
 .yuge {
 	font-size: 1.5em;
 }
+
+.greentext {
+	background-color: black;
+	color: green;
+}

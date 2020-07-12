@@ -1263,6 +1263,12 @@ Hue.setup_markdown_regexes = function () {
     return g1
   }
 
+  Hue.markdown_regexes[">"] = {}
+  Hue.markdown_regexes[">"].regex = new RegExp("(^\&gt[^\>]+)", "gm")
+  Hue.markdown_regexes[">"].replace_function = function (g1) {
+    return `<div class='greentext'>${g1}</div>`
+  }
+
   Hue.markdown_regexes["whisper_link"] = {}
   Hue.markdown_regexes["whisper_link"].regex = new RegExp(
     `\\[whisper\\s+(.*?)\\](.*?)\\[\/whisper\\]`,
@@ -1341,6 +1347,10 @@ Hue.replace_markdown = function (text) {
   text = text.replace(
     Hue.markdown_regexes["!"].regex,
     Hue.markdown_regexes["!"].replace_function
+  )
+  text = text.replace(
+    Hue.markdown_regexes[">"].regex,
+    Hue.markdown_regexes[">"].replace_function
   )
 
   if (!Hue.get_setting("autoreveal_spoilers")) {
