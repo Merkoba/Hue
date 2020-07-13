@@ -441,9 +441,6 @@ div#header_radio_playing_icon {
 	min-height: calc(var(--panel-height) - 0.6rem);
 	max-height: 20rem;
 	height: calc(var(--expand) - 0.6rem);
-
-	/*  Fix depending on font: */
-	margin-top: 0.2rem;
 }
 
 #input::placeholder {
