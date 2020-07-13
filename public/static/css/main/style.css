@@ -5,11 +5,6 @@
 	--panel-icon-font-size: 0.8rem;
 }
 
-@font-face {
-	font-family: imported_font;
-	src: url(/static/css/fonts/Hack-Regular.ttf);
-}
-
 body,
 html {
 	width: 100%;
@@ -17,7 +12,7 @@ html {
 	margin: 0px;
 	padding: 0px;
 	font-size: 18px;
-	font-family: imported_font, sans-serif;
+	font-family: sans-serif;
 	background-color: #262423;
 	overflow: hidden;
 	background-color: rgb(24, 24, 24);
@@ -1103,7 +1098,7 @@ textarea,
 select {
 	background-color: white;
 	color: #222222;
-	font-family: imported_font, sans-serif !important;
+	font-family: sans-serif !important;
 	border: 1px solid currentColor;
 }
 
