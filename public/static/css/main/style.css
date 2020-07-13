@@ -7,7 +7,8 @@
 
 @font-face {
 	font-family: imported_font;
-	src: url(/static/css/fonts/OpenSans-Regular.ttf);
+	/* src: url(/static/css/fonts/OpenSans-Regular.ttf); */
+	src: url(/static/css/fonts/Inconsolata-Regular.ttf);
 }
 
 body,
@@ -440,6 +441,9 @@ div#header_radio_playing_icon {
 	min-height: calc(var(--panel-height) - 0.6rem);
 	max-height: 20rem;
 	height: calc(var(--expand) - 0.6rem);
+
+	/*  Fix for Inconsolata: */
+	margin-top: 0.3rem;
 }
 
 #input::placeholder {
