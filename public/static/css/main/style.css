@@ -3072,5 +3072,6 @@ pre {
 
 .greentext {
 	background-color: black;
-	color: #2ec42e
+	color: #2ec42e;
+	padding: 2px;
 }
