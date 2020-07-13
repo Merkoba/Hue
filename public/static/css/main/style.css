@@ -3,6 +3,12 @@
 	--panel-height-double: 4rem;
 	--userlist-profile-image-size: 45px;
 	--panel-icon-font-size: 0.8rem;
+	--app-font-family: imported_font, sans-serif;
+}
+
+@font-face {
+	font-family: imported_font;
+	src: url(/static/css/fonts/OpenSans-Regular.ttf);
 }
 
 body,
@@ -12,7 +18,7 @@ html {
 	margin: 0px;
 	padding: 0px;
 	font-size: 18px;
-	font-family: sans-serif;
+	font-family: var(--app-font-family);
 	background-color: #262423;
 	overflow: hidden;
 	background-color: rgb(24, 24, 24);
@@ -437,7 +443,7 @@ div#header_radio_playing_icon {
 	height: calc(var(--expand) - 0.6rem);
 
 	/*  Fix depending on font: */
-	margin-top: 0.18rem;
+	margin-top: 0.2rem;
 }
 
 #input::placeholder {
@@ -1098,7 +1104,7 @@ textarea,
 select {
 	background-color: white;
 	color: #222222;
-	font-family: sans-serif !important;
+	font-family: var(--app-font-family) !important;
 	border: 1px solid currentColor;
 }
 
