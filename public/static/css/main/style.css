@@ -437,7 +437,7 @@ div#header_radio_playing_icon {
 	height: calc(var(--expand) - 0.6rem);
 
 	/*  Fix depending on font: */
-	margin-top: 0.2rem;
+	margin-top: 0.18rem;
 }
 
 #input::placeholder {
