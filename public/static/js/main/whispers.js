@@ -395,11 +395,10 @@ Hue.do_send_whisper_user = function (
     )
     let m = `Whisper sent to ${Hue.utilz.nice_list(unames)}`
     Hue.show_action_popup({
+      title: "Whisper Sent",
       icon: "fa fa-envelope",
       message: m,
-      on_click: f,
-      autoclose: true,
-      titlebar: false,
+      on_click: f
     })
     Hue.push_whisper(m, f)
   }

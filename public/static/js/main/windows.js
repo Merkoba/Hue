@@ -1107,9 +1107,7 @@ Hue.show_action_popup = function (args = {}) {
     icon: "",
     title: "",
     on_click: false,
-    after_close: function () {},
-    autoclose: false,
-    titlebar: true,
+    after_close: function () {}
   }
 
   args = Object.assign(def_args, args)
@@ -1123,23 +1121,21 @@ Hue.show_action_popup = function (args = {}) {
     }
   }
 
-  let x = "inner_right"
-
-  if (!args.titlebar) {
-    x = "none"
-  }
-
   let obj = {
     position: "bottomright",
-    enable_titlebar: args.titlebar,
-    window_x: x,
+    enable_titlebar: true,
+    window_x: "inner_right",
     content_class: "!action_popup",
     window_width: "auto",
     on_click: on_click,
     after_close: args.after_close,
     close_on_escape: false,
-    autoclose: args.autoclose,
+    autoclose: true,
     autoclose_delay: 5000,
+  }
+
+  if (!args.title) {
+    args.title = "Action"
   }
 
   if (args.id) {
@@ -1164,11 +1160,6 @@ Hue.show_action_popup = function (args = {}) {
     args.message
   )}</div></div>`
 
-  if (args.title) {
-    Hue.show_popup(popup, [args.title, html])
-  } else {
-    Hue.show_popup(popup, html)
-  }
-
+  popup.show([args.title, html])
   return popup
 }
