@@ -1165,9 +1165,9 @@ Hue.show_action_popup = function (args = {}) {
   )}</div></div>`
 
   if (args.title) {
-    popup.show([args.title, html])
+    Hue.show_popup(popup, [args.title, html])
   } else {
-    popup.show(html)
+    Hue.show_popup(popup, html)
   }
 
   return popup

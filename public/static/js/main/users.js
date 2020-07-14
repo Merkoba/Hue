@@ -73,8 +73,7 @@ Hue.user_join = function (data) {
     let method = Hue.get_setting("user_join_notifications_method")
 
     if (method === "popups") {
-      let popup = Hue.make_info_popup(f)
-      popup.show(item)
+      Hue.show_popup(Hue.make_info_popup(f), item)
     } else if (method === "chat") {
       Hue.public_feedback(`${data.username} has joined`, {
         brk: "<i class='icon2c fa fa-user-plus'></i>",
@@ -653,8 +652,7 @@ Hue.user_disconnect = function (data) {
     let method = Hue.get_setting("user_part_notifications_method")
 
     if (method === "popups") {
-      let popup = Hue.make_info_popup()
-      popup.show(item)
+      Hue.show_popup(Hue.make_info_popup(), item)
     } else if (method === "chat") {
       Hue.public_feedback(s, {
         brk: "<i class='icon2c fas fa-sign-out-alt'></i>",

@@ -373,19 +373,6 @@ Hue.user_settings = {
       }
     },
   },
-  auto_close_popup_notifications: {
-    widget_type: "checkbox",
-    description: `Whether info popups are closed automatically after a delay or just show close buttons`,
-    action: (type, save = true) => {
-      Hue[type].auto_close_popup_notifications = $(
-        `#${type}_auto_close_popup_notifications`
-      ).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   animate_scroll: {
     widget_type: "checkbox",
     description: `Whether chat scroll animation is enabled in some cases or not at all`,
@@ -1260,19 +1247,6 @@ Hue.user_settings = {
 
       $(`#${type}_popup_notifications_close_delay`).val(delay)
       Hue[type].popup_notifications_close_delay = delay
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  popup_notifications_always_show_titlebar: {
-    widget_type: "checkbox",
-    description: `Whether notification popups should display the titlebar even when they autoclose`,
-    action: (type, save = true) => {
-      Hue[type].popup_notifications_always_show_titlebar = $(
-        `#${type}_popup_notifications_always_show_titlebar`
-      ).prop("checked")
 
       if (save) {
         Hue[`save_${type}`]()

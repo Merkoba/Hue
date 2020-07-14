@@ -7,100 +7,22 @@ Hue.configure_notifications = function () {
 
 // Makes popups used for events like join and part
 Hue.make_info_popup = function (on_click = function () {}) {
-  let before_close = function (instance) {
-    instance.hue_closing = true
-  }
-
-  let after_close = function (instance) {
-    for (let i = 0; i < Hue.info_popups.length; i++) {
-      let pop = Hue.info_popups[i]
-
-      if (pop.options.id === instance.options.id) {
-        Hue.info_popups.splice(i, 1)
-        break
-      }
-    }
-  }
-
-  let autoclose = Hue.get_setting("auto_close_popup_notifications")
-  let enable_titlebar =
-    !autoclose || Hue.get_setting("popup_notifications_always_show_titlebar")
-  let window_x = "none"
-
-  if (enable_titlebar) {
-    window_x = "inner_right"
-  }
+  let autoclose_delay = Hue.get_setting("popup_notifications_close_delay")
 
   let popup = Hue.create_popup({
     position: "topright",
-    autoclose: false,
-    enable_titlebar: enable_titlebar,
-    window_x: window_x,
+    autoclose: true,
+    autoclose_delay = autoclose_delay,
+    enable_titlebar: true,
+    window_x: "inner_right",
     content_class: "!info_popup",
     window_width: "auto",
     on_click: on_click,
-    before_close: before_close,
-    after_close: after_close,
     close_on_escape: false,
   })
 
-  if (enable_titlebar) {
-    popup.set_title(Hue.utilz.nice_date())
-  }
-
-  popup.hue_closing = false
-
-  if (Hue.app_focused) {
-    if (autoclose) {
-      Hue.add_close_timeout_to_info_popup(popup)
-    }
-  } else {
-    popup.hue_close_timeout = false
-  }
-
-  Hue.info_popups.push(popup)
-
-  if (Hue.info_popups.length > Hue.config.max_info_popups) {
-    let remainder = Hue.info_popups.slice(
-      0,
-      Hue.info_popups.length - Hue.config.max_info_popups
-    )
-
-    for (let pop of remainder) {
-      Hue.close_popup(pop)
-    }
-
-    Hue.info_popups = Hue.info_popups.slice(-Hue.config.max_info_popups)
-  }
-
+  popup.hue_date = Date.now()
   return popup
-}
-
-// Attempts to close a popup
-Hue.close_popup = function (popup) {
-  if (!popup.hue_closing) {
-    popup.close()
-  }
-}
-
-// Adds the close timeout to an info popup
-Hue.add_close_timeout_to_info_popup = function (popup) {
-  popup.hue_close_timeout = setTimeout(function () {
-    Hue.close_popup(popup)
-  }, Hue.get_setting("popup_notifications_close_delay"))
-}
-
-// Adds the close timeouts to info popups without them
-Hue.activate_info_popup_timeouts = function () {
-  if (!Hue.get_setting("auto_close_popup_notifications")) {
-    return false
-  }
-
-  for (let popup of Hue.info_popups) {
-    if (!popup.hue_close_timeout) {
-      Hue.add_close_timeout_to_info_popup(popup)
-    }
-  }
 }
 
 // Makes standard info popup items
@@ -220,12 +142,47 @@ Hue.show_room_notification = function (username, message) {
   let method = Hue.get_setting("room_notifications_method")
 
   if (method === "popups") {
-    let popup = Hue.make_info_popup(f)
-    popup.show(item)
+    Hue.show_popup(Hue.make_info_popup(f), item)
   } else if (method === "chat") {
     Hue.public_feedback(message, {
       username: username,
       open_profile: true,
     })
+  }
+}
+
+// Centralized function to show a popup
+Hue.show_popup = function (popup, html="") {
+  if (html) {
+    popup.set(html)
+  }
+
+  if (Hue.app_focused) {
+    if (popup.hue_date) {
+      popup.set_title(Hue.get_timeago(popup.hue_date))
+    }
+
+    popup.show()
+  } else {
+    Hue.add_to_info_popups(popup)
+  }
+}
+
+// Trigger stored notification popups
+Hue.show_info_popups = function () {
+  for (popup of Hue.info_popups) {
+    Hue.show_popup(popup)
+  }
+
+  Hue.info_popups = []
+}
+
+// Add popup to info popups list
+Hue.add_to_info_popups = function (popup) {
+  Hue.info_popups.push(popup)
+
+  if (Hue.info_popups.length > Hue.config.max_info_popups) {
+    Hue.info_popups.slice(0, Hue.info_popups.length - Hue.config.max_info_popups)
+    Hue.info_popups = Hue.info_popups.slice(-Hue.config.max_info_popups)
   }
 }

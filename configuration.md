@@ -474,14 +474,8 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_save_room_notifications"
 >Whether to save room notifications in the notifications window by default.
 
-"global_settings_default_auto_close_popup_notifications"
->Whether to autoclose popup notifications by default.
-
 "global_settings_default_notifications_close_delay"
 >How long notification popups get displayed before they automatically close, by default.
-
-"global_settings_default_notifications_always_show_titlebar"
->Whether notifications should have the titlebar even when they autoclose, by default.
 
 "global_settings_default_autoconnect"
 >Whether a user re-connects on socket disconnections by default.
