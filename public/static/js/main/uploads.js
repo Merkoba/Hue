@@ -145,6 +145,7 @@ Hue.upload_file = function (args = {}) {
     icon: "fa fa-camera",
     id: `uploading_${date}`,
     title: `Size: ${Hue.utilz.get_size_string(args.file.hue_data.size / 1024)}`,
+    autoclose: false
   }
 
   if (!args.file.hue_data.sending_last_slice) {

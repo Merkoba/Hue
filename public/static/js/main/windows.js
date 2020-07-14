@@ -1107,7 +1107,8 @@ Hue.show_action_popup = function (args = {}) {
     icon: "",
     title: "",
     on_click: false,
-    after_close: function () {}
+    after_close: function () {},
+    autoclose: true,
   }
 
   args = Object.assign(def_args, args)
@@ -1130,7 +1131,7 @@ Hue.show_action_popup = function (args = {}) {
     on_click: on_click,
     after_close: args.after_close,
     close_on_escape: false,
-    autoclose: true,
+    autoclose: args.autoclose,
     autoclose_delay: 5000,
   }
 
