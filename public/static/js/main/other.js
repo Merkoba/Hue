@@ -60,3 +60,41 @@ Hue.show_console_message = function () {
 
   console.info(`%c${s}`, style)
 }
+
+// Dynamically generate a favicon
+Hue.generate_favicon = function (mode) {
+  let color
+
+  if (mode === "default") {
+    color = "#C06DCF"
+  } else if (mode === "alert_1") {
+    color = "#4AB3DD"
+  } else if (mode === "alert_2") {
+    color = "#DD4A66"
+  } else {
+    return
+  }
+
+  let canvas = document.createElement("canvas")
+
+  canvas.height = 256
+  canvas.width = 256
+
+  let context = canvas.getContext("2d")
+  let center = canvas.height / 2
+  let side = 192
+  let side2 = 194
+
+  context.fillStyle = "rgb(16,16,16)"
+  context.fillRect(center - (side2 / 2), center - (side2 / 2), side2, side2)
+  context.fillStyle = color
+  context.fillRect(center - (side / 2), center - (side / 2), side, side)
+
+  let link = document.querySelector("link[rel*='icon']") || document.createElement('link')
+
+  link.type = 'image/x-icon'
+  link.rel = 'shortcut icon'
+  link.href = canvas.toDataURL()
+
+  document.getElementsByTagName('head')[0].appendChild(link)
+}

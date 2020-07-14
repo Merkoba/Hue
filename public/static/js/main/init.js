@@ -305,6 +305,7 @@ Hue.init = function () {
   Hue.setup_input_placeholder()
   Hue.setup_user_menu()
   Hue.setup_activity_bar()
+  Hue.generate_favicon("default")
 
   if (Hue.debug_functions) {
     Hue.wrap_functions()
