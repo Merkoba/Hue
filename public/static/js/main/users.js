@@ -776,6 +776,11 @@ Hue.setup_show_profile = function () {
     Hue.write_popup_message([Hue.open_profile_username])
   })
 
+  $("#show_profile_sync_tv").click(function () {
+    Hue.sync_tv(Hue.open_profile_username)
+    Hue.msg_profile.close()
+  })
+
   $("#show_profile_edit").click(function () {
     Hue.show_user_menu()
   })
@@ -909,6 +914,13 @@ Hue.show_profile = function (uname, prof_image) {
     $("#show_profile_edit").css("display", "none")
   }
 
+  if (uname !== Hue.username && Hue.room_state["tv_enabled"] 
+  && Hue.usernames.includes(uname)) {
+    $("#show_profile_sync_tv").css("display", "flex")
+  } else {
+    $("#show_profile_sync_tv").css("display", "none")
+  }
+
   if (
     $(".show_profile_button").filter(function () {
       return $(this).css("display") !== "none"
@@ -918,7 +930,7 @@ Hue.show_profile = function (uname, prof_image) {
   } else {
     $("#show_profile_buttons").css("display", "none")
   }
-
+  
   Hue.msg_profile.show()
 }
 
