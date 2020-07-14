@@ -880,8 +880,7 @@ Hue.add_to_chat = function (args = {}) {
     if (args.just_edited && args.id) {
       $(".chat_content_container").each(function () {
         if ($(this).data("id") === args.id) {
-          $(this).html(content_container.html())
-          $(this).data(content_container.data())
+          $(this).html(content_container.clone(true, true))
           $(this).find(".message_edited_label").css("display", "inline-block")
           Hue.goto_bottom(false, false)
           return false
@@ -2541,7 +2540,6 @@ Hue.make_link_preview = function (args = {}) {
 
 // Setups link preview elements
 Hue.setup_link_preview = function (fmessage, link_url, user_id) {
-  let started = Hue.started
   let link_preview_el = fmessage.find(".link_preview").eq(0)
   let link_preview_image = link_preview_el.find(".link_preview_image").eq(0)
   let link_preview_title = link_preview_el.find(".link_preview_title").eq(0)
@@ -2560,7 +2558,7 @@ Hue.setup_link_preview = function (fmessage, link_url, user_id) {
       Hue.expand_image($(this).attr("src").replace(".gifv", ".gif"))
     })
 
-    link_preview_image[0].addEventListener("load", function () {
+    link_preview_image.on("load", function () {
       Hue.goto_bottom(false, false)
     })
   }
@@ -2610,9 +2608,7 @@ Hue.make_image_preview = function (message) {
 Hue.setup_image_preview = function (
   fmessage,
   image_preview_src_original,
-  user_id
 ) {
-  let started = Hue.started
   let image_preview_el = fmessage.find(".image_preview").eq(0)
 
   image_preview_el.click(function () {
@@ -2621,7 +2617,7 @@ Hue.setup_image_preview = function (
 
   let image_preview_image = image_preview_el.find(".image_preview_image").eq(0)
 
-  image_preview_image[0].addEventListener("load", function () {
+  image_preview_image.on("load", function () {
     Hue.goto_bottom(false, false)
   })
 
