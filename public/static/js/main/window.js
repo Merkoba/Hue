@@ -26,6 +26,9 @@ Hue.remove_alert_title = function () {
   if (Hue.alert_mode > 0) {
     Hue.alert_mode = 0
     Hue.update_title()
+  }
+
+  if (Hue.favicon_mode > 0) {
     Hue.generate_favicon(0)
   }
 }
