@@ -188,6 +188,8 @@ Hue.connections = 0
 Hue.connecting = true
 Hue.last_scroll_date = Date.now()
 Hue.recent_scroll_time = 1000
+Hue.typing = false
+Hue.favicon_mode = 0
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -305,7 +307,7 @@ Hue.init = function () {
   Hue.setup_input_placeholder()
   Hue.setup_user_menu()
   Hue.setup_activity_bar()
-  Hue.generate_favicon("default")
+  Hue.generate_favicon(0)
 
   if (Hue.debug_functions) {
     Hue.wrap_functions()

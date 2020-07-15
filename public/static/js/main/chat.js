@@ -1853,12 +1853,20 @@ Hue.show_typing = function (data) {
 Hue.show_pencil = function () {
   $("#footer_user_menu").addClass("fa-pencil-alt")
   $("#footer_user_menu").removeClass("fa-user-circle")
+  
+  if (!Hue.app_focused) {
+    Hue.check_favicon(1)
+  }
+
+  Hue.typing = true
 }
 
 // Hides the typing pencil
 Hue.hide_pencil = function () {
   $("#footer_user_menu").removeClass("fa-pencil-alt")
   $("#footer_user_menu").addClass("fa-user-circle")
+  Hue.check_favicon()
+  Hue.typing = false
 }
 
 // Gets the most recent chat message by username

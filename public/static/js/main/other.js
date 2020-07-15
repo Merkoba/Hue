@@ -65,11 +65,11 @@ Hue.show_console_message = function () {
 Hue.generate_favicon = function (mode) {
   let color
 
-  if (mode === "default") {
+  if (mode === 0) {
     color = "#C06DCF"
-  } else if (mode === "alert_1") {
+  } else if (mode === 1) {
     color = "#4AB3DD"
-  } else if (mode === "alert_2") {
+  } else if (mode === 2) {
     color = "#DD4A66"
   } else {
     return
@@ -97,4 +97,18 @@ Hue.generate_favicon = function (mode) {
   link.href = canvas.toDataURL()
 
   document.getElementsByTagName('head')[0].appendChild(link)
+  Hue.favicon_mode = mode
+}
+
+// Apply favicon mode if necesssary
+Hue.check_favicon = function (mode=undefined) {
+  if (mode !== undefined) {
+    if (mode > Hue.favicon_mode) {
+      Hue.generate_favicon(mode)
+    }
+  } else {
+    if (Hue.alert_mode !== Hue.favicon_mode) {
+      Hue.generate_favicon(Hue.alert_mode)
+    }
+  }
 }
