@@ -681,24 +681,6 @@ This should be an array of strings of root domains.
 If it's a blacklist, radio sources from this domain will be rejected.
 This should be an array of strings of root domains.
 
-"image_ads_enabled"
->Whether image ads are enabled.
-
-"image_ads_path"
->The internal path where ad images are stored.
-
-"image_ads_public_path"
->The public directory where ad images are stored.
-
-"image_ads_threshold"
->On how many chat messages sent to try to provide an image ad.
-
-"image_ads_min_image_change"
->At least this time has to pass after an image change for an ad to be displayed.
-
-"image_ads_setter"
->The name of the ad changer.
-
 "text_ads_enabled"
 >Whether text ads are enabled.
 
