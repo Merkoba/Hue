@@ -9,8 +9,7 @@ module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
     domain: sconfig.mailgun_domain,
   })
   vars.reserved_usernames = [
-    config.system_username,
-    config.image_ads_setter,
+    config.system_username
   ].map((x) => x.toLowerCase())
 
   // Room and User versions
