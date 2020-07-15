@@ -429,8 +429,13 @@ Hue.start_msg = function () {
   Hue.msg_handle_url = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "handle_url",
+      after_show: function (instance) {
+        common.after_show(instance)
+        Hue.handle_url_open = true
+      },
       after_close: function (instance) {
         common.after_close(instance)
+        Hue.handle_url_open = false
       },
     })
   )

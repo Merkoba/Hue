@@ -190,6 +190,7 @@ Hue.last_scroll_date = Date.now()
 Hue.recent_scroll_time = 1000
 Hue.typing = false
 Hue.favicon_mode = 0
+Hue.handle_url_open = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

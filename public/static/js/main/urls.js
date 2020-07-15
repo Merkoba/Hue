@@ -98,31 +98,42 @@ Hue.search_on = function (site, q) {
   }
 }
 
+// Handle URLS
+Hue.handle_url = function (text) {
+  if (text) {
+    Hue.check_handle_url_options(text)
+    $("#handle_url_input").val(text)
+    $("#handle_url_comment").val("")
+    Hue.handled_url_input = text
+    Hue.handled_url_comment = ""
+    Hue.msg_handle_url.show(function () {
+      $("#handle_url_comment").focus()
+    })
+  }
+}
+
+// Handle url chat action
+Hue.handle_url_chat = function () {
+  let message = Hue.handled_url_input
+
+  if (Hue.handled_url_comment) {
+    message = `${Hue.handled_url_comment.trim()} ${message.trim()}`
+  }
+    
+  Hue.process_message({ message: message, handle_url: false })
+  Hue.close_all_modals()
+}
+
 // Setups drop listeners
 // This is used to display actions when dropping a URL
 // Like changing the tv when dropping a YouTube URL
 Hue.setup_drag_events = function () {
   $("#main_container")[0].addEventListener("drop", function (e) {
-    let text = e.dataTransfer.getData("text/plain").trim()
-
-    if (text) {
-      Hue.check_handle_url_options(text)
-      $("#handle_url_input").val(text)
-      $("#handle_url_comment").val("")
-      Hue.handled_url_input = text
-      Hue.handled_url_comment = ""
-      Hue.msg_handle_url.show()
-    }
+    Hue.handle_url(e.dataTransfer.getData("text/plain").trim())
   })
 
   $("#handle_url_chat").click(function () {
-    Hue.process_message({ message: Hue.handled_url_input })
-
-    if (Hue.handled_url_comment) {
-      Hue.process_message({ message: Hue.handled_url_comment })
-    }
-
-    Hue.close_all_modals()
+    Hue.handle_url_chat()
   })
 
   $("#handle_url_image").click(function () {
@@ -158,7 +169,6 @@ Hue.setup_drag_events = function () {
     Hue.handled_url_comment = $(this)
       .val()
       .substring(0, Hue.config.max_media_comment_length)
-      .trim()
     $("#handle_url_comment").val(Hue.handled_url_comment)
   })
 }

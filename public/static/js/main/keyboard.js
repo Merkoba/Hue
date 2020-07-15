@@ -294,6 +294,17 @@ Hue.activate_key_detection = function () {
         }
       }
 
+      if (Hue.handle_url_open) {
+        if (Hue.msg_handle_url.is_highest()) {
+          if (e.key === "Enter") {
+            Hue.handle_url_chat()
+            e.preventDefault()
+          }
+
+          return
+        }
+      }
+
       return
     }
 

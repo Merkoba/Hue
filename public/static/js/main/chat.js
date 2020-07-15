@@ -8,9 +8,18 @@ Hue.process_message = function (args = {}) {
     clr_input: true,
     callback: false,
     edit_id: false,
+    handle_url: true
   }
 
   args = Object.assign(def_args, args)
+
+  if (args.handle_url) {
+    if (args.message.startsWith("http") || args.message.startsWith("https")) {
+      Hue.handle_url(args.message)
+      Hue.clear_input()
+      return
+    }
+  }
 
   let message_split = args.message.split("\n")
   let num_lines = message_split.length
