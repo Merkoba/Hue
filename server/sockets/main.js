@@ -27,6 +27,10 @@ module.exports = function (
 
   // Start socker handler
   io.on("connection", async function (socket) {
+    if (!socket) {
+      return false
+    }
+    
     if (vars.exiting) {
       return false
     }

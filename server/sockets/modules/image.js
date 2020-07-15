@@ -67,7 +67,7 @@ module.exports = function (
       obj.type = "link"
       obj.comment = data.comment
 
-      handler.change_image(socket, obj)
+      handler.do_change_image(socket, obj)
 
       return
     } else {
@@ -112,7 +112,7 @@ module.exports = function (
                   obj.type = "link"
                   obj.comment = data.comment
 
-                  handler.change_image(socket, obj)
+                  handler.do_change_image(socket, obj)
 
                   return
                 }
@@ -127,7 +127,7 @@ module.exports = function (
                     obj.type = "link"
                     obj.comment = data.comment
 
-                    handler.change_image(socket, obj)
+                    handler.do_change_image(socket, obj)
 
                     return
                   }

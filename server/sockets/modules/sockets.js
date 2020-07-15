@@ -175,7 +175,6 @@ module.exports = function (
     }
 
     socket.hue_last_activity_trigger = Date.now()
-
     handler.update_user_in_userlist(socket)
 
     handler.room_emit(socket, "activity_trigger", {
