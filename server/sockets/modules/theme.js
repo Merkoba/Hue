@@ -244,7 +244,7 @@ module.exports = function (
         if (err) {
           handler.user_emit(socket, "upload_error", {})
         } else {
-          handler.do_change_background_image(socket, fname)
+          handler.do_change_background_image(socket, fname, "hosted")
         }
       }
     )
