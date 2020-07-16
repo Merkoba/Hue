@@ -161,7 +161,7 @@ module.exports = function (
       obj.type = "link"
       obj.comment = data.comment
 
-      handler.do_change_image_source(socket, obj)
+      handler.do_change_image(socket, obj)
     }
   }
 
@@ -205,14 +205,14 @@ module.exports = function (
           obj.type = "upload"
           obj.comment = data.comment
 
-          handler.do_change_image_source(socket, obj)
+          handler.do_change_image(socket, obj)
         }
       }
     )
   }
 
   // Completes image source changes
-  handler.do_change_image_source = function (socket, data) {
+  handler.do_change_image = function (socket, data) {
     let room_id, user_id
 
     if (typeof socket === "object") {
