@@ -101,8 +101,7 @@ Hue.apply_background = function () {
   let css = `
     <style class='appended_background_style'>
 
-    .background_image_tiled
-    {
+    .background_image_tiled {
         background-size: ${bg_tile_dimensions} !important;
         background-repeat: repeat !important;
     }
@@ -230,254 +229,208 @@ Hue.apply_theme = function () {
   let css = `
     <style class='appended_theme_style'>
 
-    .Msg-overlay
-    {
+    .Msg-overlay {
         background-color: ${overlay_color} !important;
         color: ${background_color} !important;
     }
 
-    .Msg-window, .overlay_same_color
-    {
+    .Msg-window, .overlay_same_color {
         background-color: ${background_color} !important;
         color: ${font_color} !important;
     }
 
-    .Msg-window-inner-x:hover
-    {
+    .Msg-window-inner-x:hover {
         background-color: ${background_color_2} !important;
     }
 
-    .custom_titlebar
-    {
+    .custom_titlebar {
         background-color: ${background_color_2} !important;
         color: ${font_color} !important;
     }
 
-    .titlebar_inner_x
-    {
+    .titlebar_inner_x {
         background-color: ${background_color_2} !important;
     }
 
-    .titlebar_inner_x:hover
-    {
+    .titlebar_inner_x:hover {
         background-color: ${background_color} !important;
     }
 
-    .custom_popup
-    {
+    .custom_popup {
         border: 2px solid ${color_4} !important;
     }
 
-    #reactions_box_container
-    {
+    #reactions_box_container {
         background-color: ${color_4} !important;
         color: ${font_color} !important;
     }
 
-    .highlighted, .highlighted2, .highlighted3, .highlighted4
-    {
+    .highlighted, .highlighted2, .highlighted3, .highlighted4 {
         background-color: ${background_color_a_2} !important;
         color: ${font_color} !important;
     }
 
-    .squaro
-    {
+    .squaro {
         background-color: ${background_color_2} !important;
         color: ${font_color} !important;
     }
 
-    .scroller
-    {
+    .scroller {
         background-color: ${background_color_a_2} !important;
         color: ${font_color} !important;
     }
 
-    .left_scroller
-    {
+    .left_scroller {
         border-right: 1px ${color_4_a} solid !important;
     }
 
-    .center_scroller
-    {
+    .center_scroller {
         border-right: 1px ${color_4_a} solid !important;
     }
 
-    .draw_canvas
-    {
+    .draw_canvas {
         background-color: ${background_color_a_2} !important;
         color: ${font_color} !important;
     }
 
-    .modal_icon_selected
-    {
+    .modal_icon_selected {
         background-color: ${background_color_a_2} !important;
         color: ${font_color} !important;
     }
 
-    .settings_window_left
-    {
+    .settings_window_left {
         background-color: ${background_color_2} !important;
         color: ${font_color} !important;
     }
 
-    .maxer
-    {
+    .maxer {
         background-color: ${font_color} !important;
         color: ${font_color} !important;
     }
 
-    .chat_menu_button
-    {
+    .chat_menu_button {
         background-color: ${background_color_2} !important;
         border-left: 1px solid ${slight_background} !important;
     }
 
-    .chat_menu_button:hover
-    {
+    .chat_menu_button:hover {
         background-color: ${color_4} !important;
     }
 
-    .chat_menu_button_main:hover, .chat_menu_button_main_selected
-    {
+    .chat_menu_button_main:hover, .chat_menu_button_main_selected {
         background-color: ${slight_background} !important;
     }
 
-    #activity_bar_container
-    {
+    #activity_bar_container {
         background-color: ${activity_bar_background} !important;
         color: ${font_color} !important;
     }
 
-    .link_preview
-    {
+    .link_preview {
         background-color: ${color_4_a} !important;
         color: ${font_color} !important;
     }
 
-    .message_edit_area
-    {
+    .message_edit_area {
         background-color: ${color_4_a} !important;
         color: ${font_color} !important;
     }
 
-    .synth_key
-    {
+    .synth_key {
         background-color: ${color_4} !important;
         color: ${font_color} !important;
     }
 
-    .synth_key_pressed
-    {
+    .synth_key_pressed {
         background-color: ${color_3} !important;
         color: ${font_color} !important;
     }
 
-    .synth_key_button
-    {
+    .synth_key_button {
         background-color: ${color_3} !important;
         color: ${font_color} !important;
     }
 
-    .synth_key_divider
-    {
+    .synth_key_divider {
         background-color: ${slight_background} !important;
     }
 
-    .spoiler
-    {
+    .spoiler {
         background-color: ${font_color} !important;
     }
 
-    #input::placeholder
-    {
+    #input::placeholder {
         color: ${color_3} !important;
     }
 
-    ::-webkit-scrollbar-thumb
-    {
+    ::-webkit-scrollbar-thumb {
         background-color: ${slight_background} !important;
     }
 
-    .Msg-container ::-webkit-scrollbar-thumb
-    {
+    .Msg-container ::-webkit-scrollbar-thumb {
         background-color: ${color_4} !important;
     }
 
-    body, html
-    {
+    body, html {
         scrollbar-color: ${slight_background} transparent !important;
     }
 
-    .Msg-container
-    {
+    .Msg-container {
         scrollbar-color: ${color_4} transparent !important;
     }
 
-    .modal_subheader
-    {
+    .modal_subheader {
         background-color: ${color_4} !important;
     }
 
-    #reply_text
-    {
+    #reply_text {
         background-color: ${slight_background} !important;
     }
 
-    .slight_background
-    {
+    .slight_background {
         background-color: ${slight_background} !important;
     }
 
-    .slight_color
-    {
+    .slight_color {
         color: ${slight_background} !important;
     }
 
-    .color_3
-    {
+    .color_3 {
         color: ${color_3} !important;
     }
 
-    #user_menu_bio_textarea
-    {
+    #user_menu_bio_textarea {
         background-color: ${slight_background} !important;
         color: ${font_color} !important;
     }
 
-    #user_menu_bio_textarea::placeholder
-    {
+    #user_menu_bio_textarea::placeholder {
         color: ${color_3} !important;
     }
 
-    .vertical_separator
-    {
+    .vertical_separator {
         color: ${color_4} !important;
     }
 
-    .room_menu_toggle_container 
-    {
+    .room_menu_toggle_container  {
         background-color: ${slight_background} !important;
     }
 
-    .backgrounded
-    {
+    .backgrounded {
         background-color: ${slight_background} !important;
         outline: 1px dotted ${color_4} !important;
     }
 
-    #notebook_textarea
-    {
+    #notebook_textarea {
         background-color: ${slight_background_alpha} !important;
         color: ${font_color} !important;
     }
 
-    .room_menu_tree_container
-    {
+    .room_menu_tree_container {
         border: 1px solid ${color_4_alpha} !important;
     }
 
-    .shady
-    {
+    .shady {
       box-shadow: 0px 0px 0px 0.8em ${color_4_a} !important;
       background-color: ${color_4_a} !important;
     }

@@ -3062,13 +3062,11 @@ Hue.apply_chat_style = function () {
   let css = `
     <style class='appended_chat_style'>
 
-    .message
-    {
+    .message {
         font-size: ${font_size} !important;
     }
 
-    .chat_profile_image_container
-    {
+    .chat_profile_image_container {
         min-width: ${profile_image_size} !important;
         max-width: ${profile_image_size} !important;
         min-height: ${profile_image_size} !important;
@@ -3076,8 +3074,7 @@ Hue.apply_chat_style = function () {
         margin-top: ${profile_image_margin_top} !important;
     }
 
-    .brk
-    {
+    .brk {
         min-width: ${profile_image_size} !important;
         max-width: ${profile_image_size} !important;
     }
