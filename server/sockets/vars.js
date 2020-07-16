@@ -14,7 +14,6 @@ module.exports = function (
   vars.SocketAntiSpam = require("socket-anti-spam")
   vars.fetch = require("node-fetch")
   vars.mongo = require("mongodb")
-  vars.aws = require("aws-sdk")
   vars.jwt = require("jsonwebtoken")
   vars.soundcloud = require("node-soundcloud")
   vars.image_dimensions = require("image-size")
