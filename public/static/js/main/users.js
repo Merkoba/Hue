@@ -112,7 +112,7 @@ Hue.update_user_last_message = function (user_id) {
 Hue.update_usercount = function () {
   let s = `${Hue.utilz.singular_or_plural(Hue.usercount, "Users")} Online`
 
-  $("#activity_left_users_count").text(`(${Hue.usercount})`)
+  $("#header_left_users_count").text(`(${Hue.usercount})`)
 
   if (Hue.userlist_mode === "normal") {
     Hue.msg_userlist.set_title(s)

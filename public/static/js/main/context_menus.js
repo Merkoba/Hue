@@ -531,7 +531,7 @@ Hue.start_media_maxer_context_menu = function () {
 // Starts the room menu context menu
 Hue.start_room_menu_context_menu = function () {
   $.contextMenu({
-    selector: "#activity_left_room_menu_icon",
+    selector: "#header_left_room_menu_icon",
     animation: { duration: 250, hide: "fadeOut" },
     zIndex: 9000000000,
     events: Hue.context_menu_events,

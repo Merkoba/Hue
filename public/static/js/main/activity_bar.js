@@ -11,11 +11,11 @@ Hue.setup_activity_bar = function () {
     }
   }, Hue.config.activity_bar_trigger_interval)
 
-  $("#activity_bar_container").on("click", ".activity_bar_item", function () {
+  $("#activity_bar").on("click", ".activity_bar_item", function () {
     Hue.show_profile($(this).data("username"))
   })
 
-  $("#activity_bar_container").on("auxclick", ".activity_bar_item", function (
+  $("#activity_bar").on("auxclick", ".activity_bar_item", function (
     e
   ) {
     if (e.which === 2) {
@@ -23,7 +23,7 @@ Hue.setup_activity_bar = function () {
     }
   })
 
-  $("#activity_left_room_menu_icon").on("auxclick", function (e) {
+  $("#header_left_room_menu_icon").on("auxclick", function (e) {
     if (e.which === 2) {
       let rotated = $("#main_container").data("hue_rotated")
       let degrees = rotated ? 0 : 180
@@ -33,7 +33,7 @@ Hue.setup_activity_bar = function () {
     }
   })
 
-  $("#activity_left_users_container").on("auxclick", function (e) {
+  $("#header_left_users_container").on("auxclick", function (e) {
     if (e.which === 2) {
       let user =
         Hue.userlist[Hue.utilz.get_random_int(0, Hue.userlist.length - 1)]
@@ -77,7 +77,7 @@ Hue.check_activity_bar = function (update = true) {
 // If items are still in the list they are not removed
 // This is to keep states like profile image rotation from being interrupted
 Hue.update_activity_bar = function () {
-  let c = $("#activity_bar_content_inner")
+  let c = $("#activity_bar_inner")
 
   if (Hue.activity_list.length === 0) {
     Hue.clear_activity_bar_items()
@@ -201,7 +201,7 @@ Hue.get_activity_bar_item_by_username = function (username) {
 
 // Removes all items on the activity bar
 Hue.clear_activity_bar_items = function () {
-  $("#activity_bar_content_inner")
+  $("#activity_bar_inner")
     .find(".activity_bar_item")
     .each(function () {
       $(this).remove()
@@ -210,7 +210,7 @@ Hue.clear_activity_bar_items = function () {
 
 // Updates the profile image of an item in the activity bar
 Hue.update_activity_bar_image = function (username, src) {
-  $("#activity_bar_content_inner")
+  $("#activity_bar_inner")
     .find(".activity_bar_item")
     .each(function () {
       if ($(this).data("username") === username) {
