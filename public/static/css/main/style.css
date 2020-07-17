@@ -2110,8 +2110,8 @@ select {
 }
 
 #infotip_container {
-	position: absolute;
-	top: 100%;
+	position: fixed;
+	top: var(--panel-height);
 	right: 0;
 	padding: 0.2em;
 	background-color: black;
