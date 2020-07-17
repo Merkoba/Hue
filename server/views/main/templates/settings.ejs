@@ -47,12 +47,6 @@
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_synth_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_synth_{{type}}' data-category='synth'>
-                    <span class='settings_window_category_status_filler invisible'></span>
-                    <span class='settings_window_category_text'>Synth</span>
-                    <span class='settings_window_category_status'></span>
-                </div>
-
                 <div id='settings_window_category_afk_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_afk_{{type}}' data-category='afk'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>AFK</span>
@@ -264,18 +258,6 @@
                     <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_tv_change">
                 </div>
 
-                <div class='settings_item settings_top_level_item' data-setting='afk_disable_radio_change'>
-                    <div class="setting_title2">On AFK</div>
-                    <div class="setting_title">Disable Radio Change</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_radio_change">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='afk_disable_synth'>
-                    <div class="setting_title2">On AFK</div>
-                    <div class="setting_title">Disable Synth</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_synth">
-                </div>
-
                 <div class='settings_item settings_top_level_item' data-setting='afk_disable_desktop_notifications'>
                     <div class="setting_title2">On AFK</div>
                     <div class="setting_title">Disable Desktop Notifications</div>
@@ -355,7 +337,7 @@
 
                 <div class='settings_item settings_top_level_item' data-setting='aliases'>
                     <div class='toggler_main_container'>
-                        <div class="{{type}}_toggle toggler action pointer bold inline" title="For example /sky = /tv touch the sky. If the alias starts with an X, for example, /X1 = /radio restart, it won't be saved to history when used">+ Aliases</div>
+                        <div class="{{type}}_toggle toggler action pointer bold inline" title="For example /sky = /tv touch the sky. If the alias starts with an X, for example, /X1 = /tv restart, it won't be saved to history when used">+ Aliases</div>
                         <div class='{{type}}_toggle_container toggler_container'>
                             <div class="setting_title3">(Each on a different line)</div>
                             <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_aliases"></textarea>
@@ -365,18 +347,6 @@
             </div>
 
             <div class='settings_category settings_window_category_container' id='settings_window_category_content_media_{{type}}' data-category='media'>
-                <div class='settings_item settings_top_level_item' data-setting='stop_radio_on_tv_play'>
-                    <div class="setting_title2">Stop Radio</div>
-                    <div class="setting_title">On TV Play</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_stop_radio_on_tv_play">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='stop_tv_on_radio_play'>
-                    <div class="setting_title2">Stop TV</div>
-                    <div class="setting_title">On Radio Play</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_stop_tv_on_radio_play">
-                </div>
-
                 <div class='settings_item settings_top_level_item' data-setting='bypass_image_lock_on_own_change'>
                     <div class="setting_title2">Bypass Image Lock</div>
                     <div class="setting_title">When You Change</div>
@@ -387,12 +357,6 @@
                     <div class="setting_title2">Bypass TV Lock</div>
                     <div class="setting_title">When You Change</div>
                     <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_bypass_tv_lock_on_own_change">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='bypass_radio_lock_on_own_change'>
-                    <div class="setting_title2">Bypass Radio Lock</div>
-                    <div class="setting_title">When You Change</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_bypass_radio_lock_on_own_change">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='media_info'>
@@ -446,63 +410,6 @@
                             <i class='fa fa-tv smaller_font_size'></i>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class='settings_category settings_window_category_container' id='settings_window_category_content_synth_{{type}}' data-category='synth'>
-                <div class='settings_item settings_top_level_item' data-setting='synth_enabled'>
-                    <div class="setting_title">Synth Enabled</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_synth_enabled">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='speech_1'>
-                    <div class="setting_title3" title="This is spoken when middle clicking key #1">Speech #1</div>
-                    <textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_1"></textarea>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='speech_2'>
-                    <div class="setting_title3" title="This is spoken when middle clicking key #2">Speech #2</div>
-                    <textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_2"></textarea>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='speech_3'>
-                    <div class="setting_title3" title="This is spoken when middle clicking key #3">Speech #3</div>
-                    <textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_3"></textarea>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='speech_4'>
-                    <div class="setting_title3" title="This is spoken when middle clicking key #4">Speech #4</div>
-                    <textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_4"></textarea>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='speech_5'>
-                    <div class="setting_title3" title="This is spoken when middle clicking key #5">Speech #5</div>
-                    <textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_5"></textarea>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='speech_6'>
-                    <div class="setting_title3" title="This is spoken when middle clicking key #6">Speech #6</div>
-                    <textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_6"></textarea>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='speech_7'>
-                    <div class="setting_title3" title="This is spoken when middle clicking key #7">Speech #7</div>
-                    <textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_7"></textarea>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='speech_8'>
-                    <div class="setting_title3" title="This is spoken when middle clicking key #8">Speech #8</div>
-                    <textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_8"></textarea>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='speech_9'>
-                    <div class="setting_title3" title="This is spoken when middle clicking key #9">Speech #9</div>
-                    <textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_9"></textarea>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='speech_10'>
-                    <div class="setting_title3" title="This is spoken when middle clicking key #10">Speech #10</div>
-                    <textarea rows=2 class="{{type}}_settings_item_control setting_textarea2" id="{{type}}_speech_10"></textarea>
                 </div>
             </div>
 
@@ -578,11 +485,6 @@
                     <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_confirm_tv">
                 </div>
 
-                <div class='settings_item settings_top_level_item' data-setting='confirm_radio'>
-                    <div class="setting_title">Confirm Radio</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_confirm_radio">
-                </div>
-
                 <div class='settings_item settings_top_level_item' data-setting='confirm_message_board'>
                     <div class="setting_title">Confirm Message Board</div>
                     <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_confirm_message_board">
@@ -653,11 +555,6 @@
                 <div class='settings_item settings_top_level_item' data-setting='autoscroll_delay'>
                     <div class="setting_title">Autoscroll Delay</div>
                     <input type="number" class="{{type}}_settings_item_control setting_input_text_smaller" id="{{type}}_autoscroll_delay">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='max_recent_input_items'>
-                    <div class="setting_title">Max Recent Input Items</div>
-                    <input type="number" min="0" class="{{type}}_settings_item_control setting_input_text_smaller" id="{{type}}_max_recent_input_items">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='other_words_to_highlight'>

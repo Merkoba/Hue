@@ -57,7 +57,7 @@ Hue.sound_notify = function (type) {
   Hue.play_audio(sound)
 }
 
-// Plays the <audio> radio player
+// Plays a sound
 Hue.play_audio = function (what) {
   $(`#audio_${what}`)[0].play()
 }

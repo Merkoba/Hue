@@ -150,15 +150,6 @@ Hue.setup_drag_events = function () {
     Hue.close_all_modals()
   })
 
-  $("#handle_url_radio").click(function () {
-    Hue.change_radio_source(
-      Hue.handled_url_input,
-      false,
-      Hue.handled_url_comment
-    )
-    Hue.close_all_modals()
-  })
-
   $("#handle_url_input").on("input blur", function () {
     Hue.handled_url_input = $(this).val().trim()
     $("#handle_url_input").val(Hue.handled_url_input)
@@ -191,12 +182,6 @@ Hue.check_handle_url_options = function (text) {
     $("#handle_url_tv").css("display", "inline-block")
   } else {
     $("#handle_url_tv").css("display", "none")
-  }
-
-  if (Hue.change_radio_source(text, true)) {
-    $("#handle_url_radio").css("display", "inline-block")
-  } else {
-    $("#handle_url_radio").css("display", "none")
   }
 
   Hue.horizontal_separator.separate("handle_url_container")

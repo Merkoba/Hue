@@ -213,14 +213,12 @@ Hue.apply_theme = function () {
   $(".bg1").css("background-color", background_color_a)
   $(".bg1").css("color", font_color)
 
-  let panel_bg_color, activity_bar_background
+  let panel_bg_color
 
   if (Hue.get_setting("transparent_panels")) {
     panel_bg_color = background_color_2_a_2ha
-    activity_bar_background = color_4_alpha
   } else {
     panel_bg_color = background_color_2
-    activity_bar_background = color_4
   }
 
   $(".panel").css("background-color", panel_bg_color)
@@ -321,11 +319,6 @@ Hue.apply_theme = function () {
         background-color: ${slight_background} !important;
     }
 
-    #activity_bar_container {
-        background-color: ${activity_bar_background} !important;
-        color: ${font_color} !important;
-    }
-
     .link_preview {
         background-color: ${color_4_a} !important;
         color: ${font_color} !important;
@@ -334,25 +327,6 @@ Hue.apply_theme = function () {
     .message_edit_area {
         background-color: ${color_4_a} !important;
         color: ${font_color} !important;
-    }
-
-    .synth_key {
-        background-color: ${color_4} !important;
-        color: ${font_color} !important;
-    }
-
-    .synth_key_pressed {
-        background-color: ${color_3} !important;
-        color: ${font_color} !important;
-    }
-
-    .synth_key_button {
-        background-color: ${color_3} !important;
-        color: ${font_color} !important;
-    }
-
-    .synth_key_divider {
-        background-color: ${slight_background} !important;
     }
 
     .spoiler {

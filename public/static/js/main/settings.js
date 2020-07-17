@@ -462,32 +462,6 @@ Hue.user_settings = {
       }
     },
   },
-  afk_disable_radio_change: {
-    widget_type: "checkbox",
-    description: `Whether automatic radio change should be disabled when Away From Keyboard`,
-    action: (type, save = true) => {
-      Hue[type].afk_disable_radio_change = $(
-        `#${type}_afk_disable_radio_change`
-      ).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  afk_disable_synth: {
-    widget_type: "checkbox",
-    description: `Whether the synth should be disabled when Away From Keyboard`,
-    action: (type, save = true) => {
-      Hue[type].afk_disable_synth = $(`#${type}_afk_disable_synth`).prop(
-        "checked"
-      )
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   afk_disable_desktop_notifications: {
     widget_type: "checkbox",
     description: `Whether desktop notifications should be disabled when Away From Keyboard`,
@@ -782,32 +756,6 @@ Hue.user_settings = {
       }
     },
   },
-  stop_radio_on_tv_play: {
-    widget_type: "checkbox",
-    description: `Whether the radio should stop when a new tv item is played`,
-    action: (type, save = true) => {
-      Hue[type].stop_radio_on_tv_play = $(
-        `#${type}_stop_radio_on_tv_play`
-      ).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  stop_tv_on_radio_play: {
-    widget_type: "checkbox",
-    description: `Whether the tv should stop when the radio is started`,
-    action: (type, save = true) => {
-      Hue[type].stop_tv_on_radio_play = $(
-        `#${type}_stop_tv_on_radio_play`
-      ).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   show_input_placeholder: {
     widget_type: "checkbox",
     description: `Whether information inside the input should be shown`,
@@ -885,19 +833,6 @@ Hue.user_settings = {
       }
     },
   },
-  bypass_radio_lock_on_own_change: {
-    widget_type: "checkbox",
-    description: `Whether an enabled radio lock should be ignored if the change comes from the user itself`,
-    action: (type, save = true) => {
-      Hue[type].bypass_radio_lock_on_own_change = $(
-        `#${type}_bypass_radio_lock_on_own_change`
-      ).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   autoreveal_spoilers: {
     widget_type: "checkbox",
     description: `Whether spoiler messages should be autorevealed`,
@@ -905,23 +840,6 @@ Hue.user_settings = {
       Hue[type].autoreveal_spoilers = $(`#${type}_autoreveal_spoilers`).prop(
         "checked"
       )
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  synth_enabled: {
-    widget_type: "checkbox",
-    description: `Whether the synth is enabled`,
-    action: (type, save = true) => {
-      Hue[type].synth_enabled = $(`#${type}_synth_enabled`).prop("checked")
-
-      if (Hue.active_settings("synth_enabled") === type) {
-        if (!Hue[type].synth_enabled) {
-          Hue.hide_synth(true)
-        }
-      }
 
       if (save) {
         Hue[`save_${type}`]()
@@ -968,76 +886,6 @@ Hue.user_settings = {
       if (save) {
         Hue[`save_${type}`]()
       }
-    },
-  },
-  speech_1: {
-    widget_type: "textarea",
-    description: `Configured text/voice Speech #1 to use with the synth`,
-    action: (type, save = true) => {
-      Hue.setting_speech_do_action(1, type, save)
-    },
-  },
-  speech_2: {
-    widget_type: "textarea",
-    description: `Configured text/voice Speech #2 to use with the synth`,
-    action: (type, save = true) => {
-      Hue.setting_speech_do_action(2, type, save)
-    },
-  },
-  speech_3: {
-    widget_type: "textarea",
-    description: `Configured text/voice Speech #3 to use with the synth`,
-    action: (type, save = true) => {
-      Hue.setting_speech_do_action(3, type, save)
-    },
-  },
-  speech_4: {
-    widget_type: "textarea",
-    description: `Configured text/voice Speech #4 to use with the synth`,
-    action: (type, save = true) => {
-      Hue.setting_speech_do_action(4, type, save)
-    },
-  },
-  speech_5: {
-    widget_type: "textarea",
-    description: `Configured text/voice Speech #5 to use with the synth`,
-    action: (type, save = true) => {
-      Hue.setting_speech_do_action(5, type, save)
-    },
-  },
-  speech_6: {
-    widget_type: "textarea",
-    description: `Configured text/voice Speech #6 to use with the synth`,
-    action: (type, save = true) => {
-      Hue.setting_speech_do_action(6, type, save)
-    },
-  },
-  speech_7: {
-    widget_type: "textarea",
-    description: `Configured text/voice Speech #7 to use with the synth`,
-    action: (type, save = true) => {
-      Hue.setting_speech_do_action(7, type, save)
-    },
-  },
-  speech_8: {
-    widget_type: "textarea",
-    description: `Configured text/voice Speech #8 to use with the synth`,
-    action: (type, save = true) => {
-      Hue.setting_speech_do_action(8, type, save)
-    },
-  },
-  speech_9: {
-    widget_type: "textarea",
-    description: `Configured text/voice Speech #9 to use with the synth`,
-    action: (type, save = true) => {
-      Hue.setting_speech_do_action(9, type, save)
-    },
-  },
-  speech_10: {
-    widget_type: "textarea",
-    description: `Configured text/voice Speech #10 to use with the synth`,
-    action: (type, save = true) => {
-      Hue.setting_speech_do_action(10, type, save)
     },
   },
   chat_display_percentage: {
@@ -1399,17 +1247,6 @@ Hue.user_settings = {
       }
     },
   },
-  confirm_radio: {
-    widget_type: "checkbox",
-    description: `Whether to show a confirmation dialog when changing the radio`,
-    action: (type, save = true) => {
-      Hue[type].confirm_radio = $(`#${type}_confirm_radio`).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   confirm_message_board: {
     widget_type: "checkbox",
     description: `Whether to show a confirmation dialog when sending a board message`,
@@ -1422,25 +1259,7 @@ Hue.user_settings = {
         Hue[`save_${type}`]()
       }
     },
-  },
-  max_recent_input_items: {
-    widget_type: "number",
-    description: `Maximum number of input items to be shown on the reaction box`,
-    action: (type, save = true) => {
-      let max = parseInt($(`#${type}_max_recent_input_items`).val())
-
-      if (isNaN(max)) {
-        max = Hue.config.global_settings_default_max_recent_input_items
-      }
-
-      $(`#${type}_max_recent_input_items`).val(max)
-      Hue[type].max_recent_input_items = max
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
+  }
 }
 
 // Empties the global settings localStorage object

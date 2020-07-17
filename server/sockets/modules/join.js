@@ -20,7 +20,6 @@ module.exports = function (
     socket.hue_info1 = ""
     socket.hue_typing_counter = 0
     socket.hue_activity_counter = 0
-    socket.hue_synth_counter = 0
     socket.hue_last_activity_trigger = 0
     socket.hue_last_badge_date = Date.now()
   }
@@ -311,20 +310,9 @@ module.exports = function (
       tv_setter: info.tv_setter,
       tv_date: info.tv_date,
       tv_query: info.tv_query,
-      radio_id: info.radio_id,
-      radio_user_id: info.radio_user_id,
-      radio_comment: info.radio_comment,
-      radio_type: info.radio_type,
-      radio_source: info.radio_source,
-      radio_title: info.radio_title,
-      radio_setter: info.radio_setter,
-      radio_date: info.radio_date,
-      radio_query: info.radio_query,
       profile_image: socket.hue_profile_image,
       room_image_mode: info.image_mode,
       room_tv_mode: info.tv_mode,
-      room_radio_mode: info.radio_mode,
-      room_synth_mode: info.synth_mode,
       theme_mode: info.theme_mode,
       theme: info.theme,
       background_image: background_image,

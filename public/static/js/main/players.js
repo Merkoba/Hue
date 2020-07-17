@@ -1,10 +1,6 @@
 // Loads YouTube script or creates players
 Hue.load_youtube = async function (what = "") {
   if (Hue.youtube_loaded) {
-    if (Hue.youtube_player_requested && Hue.youtube_player === undefined) {
-      Hue.create_youtube_player()
-    }
-
     if (
       Hue.youtube_video_player_requested &&
       Hue.youtube_video_player === undefined
@@ -24,26 +20,6 @@ Hue.load_youtube = async function (what = "") {
   await Hue.load_script("https://www.youtube.com/iframe_api")
 
   Hue.youtube_loaded = true
-}
-
-// Create radio YouTube player
-Hue.create_youtube_player = function () {
-  Hue.youtube_player_requested = false
-
-  let el = $("<div id='youtube_player'></div>")
-  $("#media_youtube_audio_container").html(el)
-
-  Hue.yt_player = new YT.Player("youtube_player", {
-    events: {
-      onReady: Hue.on_youtube_player_ready,
-    },
-    playerVars: {
-      iv_load_policy: 3,
-      rel: 0,
-      width: 640,
-      height: 360,
-    },
-  })
 }
 
 // Create tv YouTube player
@@ -70,22 +46,8 @@ Hue.create_youtube_video_player = function () {
 
 // This gets executed when the YouTube iframe API is ready
 onYouTubeIframeAPIReady = function () {
-  if (Hue.youtube_player_requested) {
-    Hue.create_youtube_player()
-  }
-
   if (Hue.youtube_video_player_requested) {
     Hue.create_youtube_video_player()
-  }
-}
-
-// This gets executed when the radio YouTube player is ready
-Hue.on_youtube_player_ready = function () {
-  Hue.youtube_player = Hue.yt_player
-
-  if (Hue.youtube_player_request) {
-    Hue.change(Hue.youtube_player_request)
-    Hue.youtube_player_request = false
   }
 }
 
@@ -112,13 +74,6 @@ Hue.on_youtube_video_player_ready = function () {
 Hue.start_soundcloud = async function () {
   if (Hue.soundcloud_loaded) {
     if (
-      Hue.soundcloud_player_requested &&
-      Hue.soundcloud_player === undefined
-    ) {
-      Hue.create_soundcloud_player()
-    }
-
-    if (
       Hue.soundcloud_video_player_requested &&
       Hue.soundcloud_video_player === undefined
     ) {
@@ -136,39 +91,8 @@ Hue.start_soundcloud = async function () {
 
   Hue.soundcloud_loaded = true
 
-  if (Hue.soundcloud_player_requested) {
-    Hue.create_soundcloud_player()
-  }
-
   if (Hue.soundcloud_video_player_requested) {
     Hue.create_soundcloud_video_player()
-  }
-}
-
-// Creates the radio Soundcloud player
-Hue.create_soundcloud_player = function () {
-  Hue.soundcloud_player_requested = false
-
-  try {
-    let src =
-      "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/301986536"
-
-    $("#media_soundcloud_audio_container").html(
-      `<iframe id='soundcloud_player' src='${src}'></iframe>`
-    )
-
-    let _soundcloud_player = SC.Widget("soundcloud_player")
-
-    _soundcloud_player.bind(SC.Widget.Events.READY, function () {
-      Hue.soundcloud_player = _soundcloud_player
-
-      if (Hue.soundcloud_player_request) {
-        Hue.change(Hue.soundcloud_player_request)
-        Hue.soundcloud_player_request = false
-      }
-    })
-  } catch (err) {
-    console.error("Soundcloud failed to load")
   }
 }
 
@@ -211,12 +135,9 @@ Hue.request_media = function (player, args) {
   Hue[`${player}_requested`] = true
   Hue[`${player}_request`] = args
 
-  if (player === "youtube_player" || player === "youtube_video_player") {
+  if (player === "youtube_video_player") {
     Hue.load_youtube()
-  } else if (
-    player === "soundcloud_player" ||
-    player === "soundcloud_video_player"
-  ) {
+  } else if (player === "soundcloud_video_player") {
     Hue.start_soundcloud()
   }
 }

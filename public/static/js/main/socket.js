@@ -24,12 +24,6 @@ Hue.server_update_events = {
   restarted_tv_source: (data) => {
     Hue.setup_tv("restart", data)
   },
-  changed_radio_source: (data) => {
-    Hue.setup_radio("change", data)
-  },
-  restarted_radio_source: (data) => {
-    Hue.setup_radio("restart", data)
-  },
   profile_image_changed: (data) => {
     Hue.profile_image_changed(data)
   },
@@ -136,11 +130,6 @@ Hue.server_update_events = {
       "The tv was changed recently. You must wait a while before changing it again"
     )
   },
-  radio_cooldown_wait: (data) => {
-    Hue.feedback(
-      "The radio was changed recently. You must wait a while before changing it again"
-    )
-  },
   room_created: (data) => {
     Hue.on_room_created(data)
   },
@@ -167,12 +156,6 @@ Hue.server_update_events = {
   },
   room_tv_mode_change: (data) => {
     Hue.announce_room_tv_mode_change(data)
-  },
-  room_radio_mode_change: (data) => {
-    Hue.announce_room_radio_mode_change(data)
-  },
-  room_synth_mode_change: (data) => {
-    Hue.announce_room_synth_mode_change(data)
   },
   theme_mode_changed: (data) => {
     Hue.announce_theme_mode_change(data)
@@ -265,9 +248,6 @@ Hue.server_update_events = {
   same_tv: (data) => {
     Hue.feedback("TV is already set to that")
   },
-  same_radio: (data) => {
-    Hue.feedback("Radio is already set to that")
-  },
   receive_admin_activity: (data) => {
     Hue.show_admin_activity(data.messages)
   },
@@ -285,12 +265,6 @@ Hue.server_update_events = {
   },
   message_deleted: (data) => {
     Hue.remove_message_from_chat(data)
-  },
-  receive_synth_key: (data) => {
-    Hue.receive_synth_key(data)
-  },
-  receive_synth_voice: (data) => {
-    Hue.receive_synth_voice(data)
   },
   announcement: (data) => {
     Hue.show_announcement(data)

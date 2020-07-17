@@ -687,13 +687,8 @@ const Utilz = function () {
 		el.setRangeText(text, start, end, 'select')
 	}
 
-	utilz.media_types = ["image", "tv", "radio"]
+	utilz.media_types = ["image", "tv"]
 	utilz.clear_log_types = ["all", "above", "below"]
-
-	utilz.synth_notes = [
-		"c3", "d3", "e3", "f3", "g3",
-		"a3", "b3", "c4", "d4", "e4"
-	]
 
 	utilz.video_extensions = ["mp4", "webm", "m3u8"]
 	utilz.audio_extensions = ["mp3", "ogg", "wav", "flac"]

@@ -91,20 +91,6 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.radio_picker_open) {
-        if (Hue.msg_radio_picker.is_highest()) {
-          if (e.key === "Enter") {
-            Hue.radio_picker_submit()
-            e.preventDefault()
-          } else if (e.key === "Tab") {
-            Hue.do_media_picker_input_cycle("radio")
-            e.preventDefault()
-          }
-
-          return
-        }
-      }
-
       if (Hue.image_upload_comment_open) {
         if (Hue.msg_image_upload_comment.is_highest()) {
           if (e.key === "Enter") {
@@ -329,36 +315,6 @@ Hue.activate_key_detection = function () {
         if (res) {
           e.preventDefault()
         }
-      }
-
-      return
-    }
-
-    if (Hue.synth_open) {
-      if (Hue.synth_voice_input_focused) {
-        if (e.key === "Enter") {
-          Hue.send_synth_voice()
-        }
-
-        else if (e.key === "Escape") {
-          if ($("#synth_voice_input").val()) {
-            Hue.clear_synth_voice()
-          } else {
-            Hue.hide_synth(true)
-          }
-        }
-      } else {
-        let num = parseInt(e.key)
-
-        if (!isNaN(num)) {
-          if (num === 0) {
-            num = 10
-          }
-
-          Hue.play_synth_key(num)
-        }
-        
-        e.preventDefault()
       }
 
       return

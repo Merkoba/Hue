@@ -238,16 +238,6 @@ Hue.commands = {
     },
     description: `Removes all messages from the log and resets client state for all the users in the room`,
   },
-  "/radio": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.change_radio_source(arg)
-      } else {
-        Hue.show_media_source("radio")
-      }
-    },
-    description: `Changes the radio using a search term or URL. "/radio restart" restarts the current radio for all users, in case it gets stuck. "/radio default" sets the radio to the site's default radio. "/radio prev" changes to the previous radio source`,
-  },
   "/tv": {
     action: (arg, ans) => {
       if (arg) {
@@ -346,35 +336,11 @@ Hue.commands = {
     },
     description: `Shows Commands`,
   },
-  "/stopradio": {
-    action: (arg, ans) => {
-      Hue.stop_radio()
-    },
-    description: `Stops the radio`,
-  },
-  "/startradio": {
-    action: (arg, ans) => {
-      Hue.start_radio()
-    },
-    description: `Starts the radio`,
-  },
-  "/radiovolume": {
-    action: (arg, ans) => {
-      Hue.change_volume_command(arg, "radio")
-    },
-    description: `Changes the volume of the radio`,
-  },
   "/tvvolume": {
     action: (arg, ans) => {
-      Hue.change_volume_command(arg, "tv")
+      Hue.change_tv_volume(arg)
     },
     description: `Changes the volume of the tv`,
-  },
-  "/volume": {
-    action: (arg, ans) => {
-      Hue.change_volume_all(arg)
-    },
-    description: `Changes the volume of the radio and the tv`,
   },
   "/inputhistory": {
     action: (arg, ans) => {
@@ -519,7 +485,8 @@ Hue.commands = {
   },
   "/unlock": {
     action: (arg, ans) => {
-      Hue.default_media_state(false)
+      Hue.change_media_lock({type:"image", what:false, feedback:true})
+      Hue.change_media_lock({type:"tv", what:false, feedback:true})
     },
     description: `Unlocks all media`,
   },
@@ -528,18 +495,6 @@ Hue.commands = {
       Hue.stop_and_lock()
     },
     description: `Stops and locks all media`,
-  },
-  "/stop": {
-    action: (arg, ans) => {
-      Hue.stop_media()
-    },
-    description: `Stops all media`,
-  },
-  "/default": {
-    action: (arg, ans) => {
-      Hue.default_media_state()
-    },
-    description: `Sets media visibility and locks to the default state`,
   },
   "/roommenu": {
     action: (arg, ans) => {
@@ -579,16 +534,6 @@ Hue.commands = {
     },
     description: `Shows the tv history. Accepts a filter as an argument`,
   },
-  "/radiohistory": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.show_media_history("radio", arg)
-      } else {
-        Hue.show_media_history("radio")
-      }
-    },
-    description: `Shows the radio history. Accepts a filter as an argument`,
-  },
   "/lockimage": {
     action: (arg, ans) => {
       Hue.change_media_lock({type:"image", what:true, feedback:true})
@@ -600,12 +545,6 @@ Hue.commands = {
       Hue.change_media_lock({type:"tv", what:true, feedback:true})
     },
     description: `Locks the tv`,
-  },
-  "/lockradio": {
-    action: (arg, ans) => {
-      Hue.change_media_lock({type:"radio", what:true, feedback:true})
-    },
-    description: `Locks the radio`,
   },
   "/unlockimage": {
     action: (arg, ans) => {
@@ -619,12 +558,6 @@ Hue.commands = {
     },
     description: `Unlocks the tv`,
   },
-  "/unlockradio": {
-    action: (arg, ans) => {
-      Hue.change_media_lock({type:"radio", what:false, feedback:true})
-    },
-    description: `Unlocks the radio`,
-  },
   "/togglelockimage": {
     action: (arg, ans) => {
       Hue.change_media_lock({type:"image", feedback:true})
@@ -636,12 +569,6 @@ Hue.commands = {
       Hue.change_media_lock({type:"tv", feedback:true})
     },
     description: `Toggles between lock and unlock the tv`,
-  },
-  "/togglelockradio": {
-    action: (arg, ans) => {
-      Hue.change_media_lock({type:"radio", feedback:true})
-    },
-    description: `Toggles between lock and unlock the radio`,
   },
   "/showimage": {
     action: (arg, ans) => {
@@ -655,12 +582,6 @@ Hue.commands = {
     },
     description: `Makes the tv visible and active`,
   },
-  "/showradio": {
-    action: (arg, ans) => {
-      Hue.toggle_radio(true)
-    },
-    description: `Makes the radio visible and active`,
-  },
   "/hideimage": {
     action: (arg, ans) => {
       Hue.toggle_image(false)
@@ -673,12 +594,6 @@ Hue.commands = {
     },
     description: `Makes the tv invisible and inactive`,
   },
-  "/hideradio": {
-    action: (arg, ans) => {
-      Hue.toggle_radio(false)
-    },
-    description: `Makes the radio invisible and inactive`,
-  },
   "/toggleimage": {
     action: (arg, ans) => {
       Hue.toggle_image()
@@ -690,12 +605,6 @@ Hue.commands = {
       Hue.toggle_tv()
     },
     description: `Toggles between show and hide the tv`,
-  },
-  "/toggleradio": {
-    action: (arg, ans) => {
-      Hue.toggle_radio()
-    },
-    description: `Toggles between show and hide the radio`,
   },
   "/maximizeimage": {
     action: (arg, ans) => {
@@ -762,12 +671,6 @@ Hue.commands = {
       Hue.show_tv_picker()
     },
     description: `Opens the window to change the tv`,
-  },
-  "/changeradio": {
-    action: (arg, ans) => {
-      Hue.show_radio_picker()
-    },
-    description: `Opens the window to change the radio`,
   },
   "/closeall": {
     action: (arg, ans) => {
@@ -837,12 +740,6 @@ Hue.commands = {
     },
     description: `Goes to room ID or URL`,
   },
-  "/toggleplayradio": {
-    action: (arg, ans) => {
-      Hue.toggle_play_radio()
-    },
-    description: `Starts or stops the radio`,
-  },
   "/refreshimage": {
     action: (arg, ans) => {
       Hue.refresh_image()
@@ -854,18 +751,6 @@ Hue.commands = {
       Hue.refresh_tv()
     },
     description: `Loads the tv again`,
-  },
-  "/refreshradio": {
-    action: (arg, ans) => {
-      Hue.refresh_radio()
-    },
-    description: `Loads the radio again`,
-  },
-  "/stopradioin": {
-    action: (arg, ans) => {
-      Hue.stop_radio_in(arg)
-    },
-    description: `Stops the radio automatically after the given x minutes`,
   },
   "/ping": {
     action: (arg, ans) => {
@@ -1085,12 +970,6 @@ Hue.commands = {
     },
     description: `Changes the tv mode. Valid modes include enabled, disabled, and locked`,
   },
-  "/radiomode": {
-    action: (arg, ans) => {
-      Hue.change_room_radio_mode(arg)
-    },
-    description: `Changes the radio mode. Valid modes include enabled, disabled, and locked`,
-  },
   "/theme": {
     action: (arg, ans) => {
       Hue.change_theme(arg)
@@ -1171,42 +1050,6 @@ Hue.commands = {
     },
     description: `Displays a list of banned users`,
   },
-  "/synthkey": {
-    action: (arg, ans) => {
-      Hue.send_synth_key(arg)
-    },
-    description: `Plays the synth key with that number`,
-  },
-  "/synthkeylocal": {
-    action: (arg, ans) => {
-      Hue.play_synth_key(arg)
-    },
-    description: `Plays the synth key only for the user`,
-  },
-  "/togglemutesynth": {
-    action: (arg, ans) => {
-      Hue.set_synth_muted()
-    },
-    description: `Mutes or unmutes the synth`,
-  },
-  "/speak": {
-    action: (arg, ans) => {
-      Hue.send_synth_voice(arg)
-    },
-    description: `Makes the voice synth say some text`,
-  },
-  "/speaklocal": {
-    action: (arg, ans) => {
-      Hue.play_synth_voice(arg, Hue.username, true)
-    },
-    description: `Makes the voice synth say some text only for that user`,
-  },
-  "/speech": {
-    action: (arg, ans) => {
-      Hue.play_speech(arg)
-    },
-    description: `Plays one of the configured speeches`,
-  },
   "/unmaximize": {
     action: (arg, ans) => {
       Hue.unmaximize_media()
@@ -1254,18 +1097,6 @@ Hue.commands = {
       Hue.media_load_previous("tv")
     },
     description: `Loads the previous tv item`,
-  },
-  "/loadnextradio": {
-    action: (arg, ans) => {
-      Hue.media_load_next("radio")
-    },
-    description: `Loads the next radio item`,
-  },
-  "/loadprevradio": {
-    action: (arg, ans) => {
-      Hue.media_load_previous("radio")
-    },
-    description: `Loads the previous radio item`,
   },
   "/calc": {
     action: (arg, ans) => {

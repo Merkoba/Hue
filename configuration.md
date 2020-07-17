@@ -36,15 +36,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "default_tv_type"
 >The type of the default_tv_source, either "video", "youtube", "soundcloud" or "iframe".
 
-"default_radio_source"
->The default radio url used for new rooms or when "/radio default" is issued.
-
-"default_radio_title"
->The title for the default radio. This is what is shown in "Now Playing" on top. If radio source is of type "audio", the title will dynamically change to current playing song if the Icecast radio source is configured correctly.
-
-"default_radio_type"
->The type of the default_radio_source, either "audio", "youtube" or "soundcloud".
-
 "default_profile_image_url"
 >The location of the default profile image.
 
@@ -83,12 +74,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "default_topic_admin"
 >Default topic shown to admins.
-
-"radio_metadata_interval_duration"
->The interval in milliseconds to check for radio metadata. This only occurs when an internet radio url is set as the radio source, for example it won't check if there's a youtube video set.
-
-"radio_retry_metadata_delay":
->After fetching the radio metadata fails, it will stop trying to fetch it. It will resume after this delay.
 
 "opacity_amount_x"
 >Opacity levels used through out the interface.
@@ -166,7 +151,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >Maximum displayed topic of a room in room lists. If topic is bigger it gets cropped.
 
 "max_log_messages"
->Maximum amount of messages to store in room logs. It stores chat messages and some notifications like image uploads and radio changes.
+>Maximum amount of messages to store in room logs. It stores chat messages and some notifications like image uploads and tv changes.
 
 "max_admin_log_messages"
 >Maximum amount of messages to store in room admin logs. It stores information about the most recent admin activity.
@@ -348,9 +333,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_afk_disable_tv_change"
 >Whether to disable tv change while afk by default.
 
-"global_settings_default_afk_disable_radio_change"
->Whether to disable radio change while afk by default.
-
 "global_settings_default_open_popup_messages"
 >Whether popup messages will open automatically when arrived by default.
 
@@ -395,21 +377,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "global_settings_default_show_link_previews"
 >Whether links get a preview on the chat area by default.
-
-"global_settings_default_stop_radio_on_tv_play"
->Whether radio stops on TV play by default.
-
-"global_settings_default_stop_tv_on_radio_play"
->Whether TV stops on radio play by default.
-
-"global_settings_default_speech_x"
->Default programmed speech for each synth key to play on middle click or /speech command.
-
-"global_settings_default_synth_enabled"
->Whether the synth is enabled by default.
-
-"global_settings_default_afk_disable_synth"
->Whether the synth is disabled on AFK.
 
 "global_settings_default_accept_commands_from"
 >List of usernames to accept commands from that are sent by whispers.
@@ -510,44 +477,14 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_confirm_tv"
 >Where to show confirm on tv change by default
 
-"global_settings_default_confirm_radio"
->Where to show confirm on radio change by default
-
 "global_settings_default_confirm_message_board"
 >Where to show confirm on board message by default
-
-"global_settings_default_max_recent_input_items"
->Maximum number of input items to be shown on the reaction box by default
-
-"room_state_default_images_enabled"
->Whether images will be enabled by default.
-
-"room_state_default_tv_enabled"
->Whether tv will be enabled by default.
-
-"room_state_default_radio_enabled"
->Whether radio will be enabled by default.
-
-"room_state_default_images_locked"
->Whether images will be locked by default.
-
-"room_state_default_tv_locked"
->Whether tv will be locked by default.
-
-"room_state_default_radio_locked"
->Whether radio will be locked by default.
-
-"room_state_default_radio_volume"
->Default volume for the radio.
 
 "room_state_default_tv_volume"
 >Default volume for the tv.
 
 "room_state_default_screen_locked"
 >Whether the screen will be locked by default.
-
-"room_state_default_synth_muted"
->Whether the synth is muted by default.
 
 "room_state_default_lockscreen_lights_off"
 >Where the lockscreen will have the dark theme by default.
@@ -563,9 +500,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "bypass_tv_lock_on_own_change"
 >Whether tv are forced to change even if they're locked, when you change it, by default.
-
-"bypass_radio_lock_on_own_change"
->Whether radio are forced to change even if they're locked, when you change it, by default.
 
 "double_tap_key"
 >The key that triggers double tap.
@@ -601,7 +535,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >Name used on system emails.
 
 "media_changed_crop_limit"
->How many items are stored in images_changed, tv_changed and radio_changed.
+>How many items are stored in images_changed and tv_changed.
 
 "email_change_limit"
 >How long a user must wait to perform another email verification.
@@ -651,9 +585,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "tv_change_cooldown"
 >How much it should wait in milliseconds before tv can be changed again after last change.
 
-"radio_change_cooldown"
->How much it should wait in milliseconds before radio can be changed again after last change.
-
 "max_sockets_per_user"
 >How many active sockets a user can have at the same time. After this limit all incoming socket connections are droppped.
 
@@ -671,14 +602,6 @@ This should be an array of strings of root domains.
 "tv_domain_list"
 >If this is a white list, only tv sources belonging to this domain will be accepted.
 If it's a blacklist, tv sources from this domain will be rejected.
-This should be an array of strings of root domains.
-
-"radio_domain_white_or_black_list"
->Whether radio_domain_list is a whitelist or a blacklist of domains. This should be "white" or "black".
-
-"radio_domain_list"
->If this is a white list, only radio sources belonging to this domain will be accepted.
-If it's a blacklist, radio sources from this domain will be rejected.
 This should be an array of strings of root domains.
 
 "text_ads_enabled"
@@ -713,12 +636,6 @@ This should be an array of strings of root domains.
 
 "link_max_title_length"
 >After this the title from fetched link metadata gets cropped.
-
-"synth_max_recent_users"
->How many users fit in to the title of recent synth users when hovering the synth's volume icon.
-
-"synth_max_voice_text"
->Max length for the voice synth text.
 
 "max_chat_searches"
 >Maximum number of items stored in chat search history.
@@ -778,7 +695,7 @@ This should be an array of strings of root domains.
 ## The following reside in config.secret.json
 
 "youtube_api_key"
->The Youtube v3 Api key used to fetch video information from urls or to search for videos by search terms using /radio.
+>The Youtube v3 Api key used to fetch video information from urls or to search for videos by search terms using /tv.
 
 "session_secret"
 >Used for express-session security. Change it to anything you want.

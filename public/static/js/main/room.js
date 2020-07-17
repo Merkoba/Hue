@@ -17,14 +17,10 @@ Hue.get_room_state = function () {
   let settings = [
     "image_enabled",
     "tv_enabled",
-    "radio_enabled",
     "image_locked",
     "tv_locked",
-    "radio_locked",
-    "radio_volume",
     "tv_volume",
     "screen_locked",
-    "synth_muted",
     "lockscreen_lights_off",
     "chat_searches",
     "last_highlight_date",
@@ -129,26 +125,6 @@ Hue.get_status_html = function () {
     info += `<div class='info_item_content' id='status_tv_date'></div></div>`
   }
 
-  if (Hue.current_radio().setter) {
-    info += "<div class='info_item'><div class='info_title'>Radio Setter</div>"
-    info += `<div class='info_item_content' id='status_radio_setter'></div></div>`
-  }
-
-  if (Hue.current_radio().title) {
-    info += "<div class='info_item'><div class='info_title'>Radio Title</div>"
-    info += `<div class='info_item_content' id='status_radio_title'></div></div>`
-  }
-
-  if (Hue.current_radio().source) {
-    info += "<div class='info_item'><div class='info_title'>Radio Source</div>"
-    info += `<div class='info_item_content' id='status_radio_source'></div></div>`
-  }
-
-  if (Hue.current_radio().nice_date) {
-    info += "<div class='info_item'><div class='info_title'>Radio Date</div>"
-    info += `<div class='info_item_content' id='status_radio_date'></div></div>`
-  }
-
   h.append(info)
 
   h.find("#status_room_name").eq(0).text(Hue.room_name).urlize()
@@ -193,26 +169,6 @@ Hue.get_status_html = function () {
   if (Hue.current_tv().nice_date) {
     t = h.find("#status_tv_date").eq(0)
     t.text(Hue.current_tv().nice_date)
-  }
-
-  if (Hue.current_radio().setter) {
-    t = h.find("#status_radio_setter").eq(0)
-    t.text(Hue.current_radio().setter)
-  }
-
-  if (Hue.current_radio().title) {
-    t = h.find("#status_radio_title").eq(0)
-    t.text(Hue.current_radio().title).urlize()
-  }
-
-  if (Hue.current_radio().source) {
-    t = h.find("#status_radio_source").eq(0)
-    t.text(Hue.get_proper_media_url("radio")).urlize()
-  }
-
-  if (Hue.current_radio().nice_date) {
-    t = h.find("#status_radio_date").eq(0)
-    t.text(Hue.current_radio().nice_date)
   }
 
   return h.html()
@@ -299,23 +255,18 @@ Hue.clear_room = function () {
 
   let first_image = (Hue.image_changed = Hue.image_changed.slice(-1)[0])
   let first_tv = (Hue.tv_changed = Hue.tv_changed.slice(-1)[0])
-  let first_radio = (Hue.radio_changed = Hue.radio_changed.slice(-1)[0])
 
   Hue.loaded_image = {}
   Hue.loaded_tv = {}
-  Hue.loaded_radio = {}
 
   Hue.image_changed = []
   Hue.tv_changed = []
-  Hue.radio_changed = []
 
   Hue.setup_image("show", first_image)
   Hue.setup_tv("show", first_tv)
-  Hue.setup_radio("show", first_radio)
 
   Hue.change({ type: "image" })
   Hue.change({ type: "tv" })
-  Hue.change({ type: "radio" })
 }
 
 // Copies the room url to the clipboard
@@ -513,15 +464,6 @@ Hue.set_topic_info = function (data) {
   Hue.topic = data.topic
   Hue.topic_setter = data.topic_setter
   Hue.topic_date = Hue.utilz.nice_date(data.topic_date)
-
-  if (Hue.topic) {
-    $("#header_topic_text").text(Hue.topic)
-  } else {
-    let t = Hue.get_unset_topic()
-
-    $("#header_topic_text").text(t)
-  }
-
   Hue.config_admin_topic()
 }
 

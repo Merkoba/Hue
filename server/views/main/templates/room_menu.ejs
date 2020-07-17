@@ -10,15 +10,15 @@
 
         <div id='menu_smaller_container' class='flex_column_center'>
 
-            <div class='menu_item_smaller action' onclick='Hue.show_help(1)'>Help</div>
+            <div class='menu_item_smaller action' onclick='Hue.show_status()'>Status</div>
             <div class='menu_item_smaller action' onclick='Hue.copy_room_url()'>Copy Room URL</div>
 
             <div class='flex_row_center generic_horizontal_separator menu_item_smaller'>
-                <div class='action' onclick='Hue.show_status()'>Status</div>
+                <div class='action' onclick='Hue.show_links(1)'>Links</div>
                 <div class='action nicetitle' id='room_menu_search_button' onclick='Hue.show_chat_search()' title='Click or Right Click'>Search</div>
             </div>
 
-            <div class='menu_item_smaller_2 action' onclick='Hue.show_links()'>Links</div>
+            <div class='menu_item_smaller_2 action' onclick='Hue.show_help(1)'>Help</div>
         </div>
 
         <div id='admin_menu'>
@@ -42,23 +42,6 @@
                                 <option value="enabled">Enabled</option>
                                 <option value="disabled">Disabled</option>
                                 <option value="locked">Locked</option>
-                            </select>
-                        </div>
-
-                        <div class='room_menu_section'>
-                            <div class='room_menu_label'>Radio</div>
-                            <select id='admin_enable_radio' class='modal_select'>
-                                <option value="enabled">Enabled</option>
-                                <option value="disabled">Disabled</option>
-                                <option value="locked">Locked</option>
-                            </select>
-                        </div>
-
-                        <div class='room_menu_section'>
-                            <div class='room_menu_label'>Synth</div>
-                            <select id='admin_enable_synth' class='modal_select'>
-                                <option value="enabled">Enabled</option>
-                                <option value="disabled">Disabled</option>
                             </select>
                         </div>
 

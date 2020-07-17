@@ -287,7 +287,7 @@ module.exports = function (
   handler.fill_room_permissions = function (info) {
     let voice_changed = false
 
-    let voice_properties = ["chat", "image", "tv", "radio", "synth"]
+    let voice_properties = ["chat", "image", "tv"]
 
     let voice_properties_false = []
 
@@ -393,8 +393,6 @@ module.exports = function (
       image_mode: info.image_mode,
       stored_images: info.stored_images,
       tv_mode: info.tv_mode,
-      radio_mode: info.radio_mode,
-      synth_mode: info.synth_mode,
       current_image_id: info.image_id,
       current_image_user_id: info.image_user_id,
       current_image_source: info.image_source,
@@ -403,17 +401,12 @@ module.exports = function (
       current_tv_user_id: info.tv_user_id,
       current_tv_source: info.tv_source,
       current_tv_query: info.tv_query,
-      current_radio_id: info.radio_id,
-      current_radio_user_id: info.radio_user_id,
-      current_radio_source: info.radio_source,
-      current_radio_query: info.radio_query,
       topic: info.topic,
       name: info.name,
       public: info.public,
       modified: Date.now(),
       last_image_change: 0,
       last_tv_change: 0,
-      last_radio_change: 0,
       text_ad_charge: 0,
       attempting_text_ad: false,
       message_board_posts: info.message_board_posts,

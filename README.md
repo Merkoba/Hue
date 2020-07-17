@@ -16,22 +16,17 @@ It allows real time communication while watching, or listening to media.
 
 It provides 3 different media spots that can all be active at once, or just the ones you, as an admin of the room want, or you, as the user want.
 
-These are Images, TV, and Radio.
+These are Images and TV.
 Images can be any image, either uploaded, drawn (there's a built-in drawing pad to draw an image), or linked. Search queries can be enabled to search images on Imgur. When the image is clicked it opens a modal where current and previous images can be seen in full screen.
 
 TV can be any video link. It embeds videos from YouTube, Soundcloud, video files, or even websites that are embedded in an iframe. Search queries can be enabled to search videos on YouTube.
 
-Radio can be any radio, or audio, link. It embeds YouTube, Soundcloud, audio files, or radio streams. If it detects an Icecast stream it will try to fetch metadata to show live song information. Search queries can be enabled to search audio on YouTube.
-
-The radio is shown and controlled on the top panel.
 Images and TV reside in the media area on the right.
 Images and TV can change their proportion or position.
 
 Any of these can be hidden (not visible, and inactive), or locked (it will stay the same for the user, even if the media was changed).
 
 Media domains can be configured to use a whitelist or a blacklist. This is to control if you want, for instance, only images from a trusted source.
-
-There's also a synthesizer which allows users to play notes or send text-to-speech messages.
 
 Room administrators have a lot of control over how the room looks and behaves.
 The room can change it's background color (called Theme), which changes the background color of the middle section and a contrast color for the panels.

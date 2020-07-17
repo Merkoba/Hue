@@ -478,7 +478,7 @@ Hue.show_intro = function () {
   Hue.create_popup({ position: "bottomright" }).show(["Media Controls", s])
 
   s = `
-    Up here is the header with radio controls and topic display. Above that there's the activity bar which shows users that have shown activity recently.`
+    This is the activity bar which shows users that have shown activity recently.`
 
   Hue.create_popup({ position: "top" }).show(["Top Panel", s])
 

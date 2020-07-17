@@ -1,6 +1,6 @@
 // Sets visibility of footer media icons based on media permissions
 Hue.setup_footer_icons = function () {
-  let media = ["image", "tv", "radio"]
+  let media = ["image", "tv"]
 
   for (let type of media) {
     if (Hue[`room_${type}_mode`] === "disabled") {
@@ -64,7 +64,7 @@ Hue.setup_footer = function () {
     }
   })
 
-  let media = ["image", "tv", "radio"]
+  let media = ["image", "tv"]
 
   for (let type of media) {
     $(`#${type}_lock_area`).click(function () {

@@ -227,24 +227,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_radio_picker = Msg.factory(
-    Object.assign({}, common, {
-      id: "radio_picker",
-      window_width: "24em",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.radio_picker_open = true
-      },
-      after_close: function (instance) {
-        common.after_close(instance)
-        $("#radio_source_picker_input").val("")
-        $("#radio_source_picker_input_comment").val("")
-        Hue.reset_media_history_filter("radio")
-        Hue.radio_picker_open = false
-      },
-    })
-  )
-
   Hue.msg_media_menu = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "media_menu",
@@ -547,7 +529,6 @@ Hue.start_msg = function () {
   )
   Hue.msg_image_picker.set(Hue.template_image_picker())
   Hue.msg_tv_picker.set(Hue.template_tv_picker())
-  Hue.msg_radio_picker.set(Hue.template_radio_picker())
   Hue.msg_media_menu.set(Hue.template_media_menu())
   Hue.msg_message.set(Hue.template_message())
   Hue.msg_highlights.set(Hue.template_highlights())
@@ -837,10 +818,6 @@ Hue.start_filters = function () {
   $("#tv_history_filter").on("input", function () {
     Hue.media_history_filter_timer("tv")
   })
-
-  $("#radio_history_filter").on("input", function () {
-    Hue.media_history_filter_timer("radio")
-  })
 }
 
 // Filter action for normal filter windows
@@ -922,7 +899,7 @@ Hue.create_popup = function (args = {}) {
   }
 
   let panel_size = $("#footer").height()
-  let edge_padding_y = panel_size + 20
+  let edge_padding_y = panel_size
 
   if (args.position.includes("top")) {
     edge_padding_y += panel_size

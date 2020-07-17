@@ -10,29 +10,15 @@
                 <i class='fa fa-tv icon2c action pointer' onclick='Hue.show_tv_picker()'></i>
                 <div id='media_menu_loaded_tv' class='media_menu_loaded_media_container chat_area_clone_center'></div>
             </div>
-
-            <div class='full_width'>
-                <i class='fa fa-volume-up icon2c action pointer' onclick='Hue.show_radio_picker()'></i>
-                <div id='media_menu_loaded_radio' class='media_menu_loaded_media_container chat_area_clone_center'></div>
-            </div>
         </div>
 
         <div id='media_menu_actions' class='grid_column_center'>
             <div class='pointer action' onclick='Hue.stop_and_lock(); Hue.hide_media_menu()'>Stop & Lock Everything</div>
             <div class='pointer action' onclick='Hue.stop_and_lock(false); Hue.hide_media_menu()'>Lock Everything</div>
             <div class='pointer action' onclick='Hue.default_media_state(false); Hue.hide_media_menu()'>Unlock Everything</div>
-            <div class='pointer action' onclick='Hue.default_media_state(); Hue.hide_media_menu()'>Default State</div>
         </div>
 
         <div class='full_width'>
-            <div id='media_menu_radio_volume_title' class='setting_title'>Radio Volume</div>
-            <div class='slider_container'>
-                <div class='slider_icon_left pointer action' onclick="Hue.set_media_menu_radio_volume('decrease')" onauxclick="Hue.set_media_menu_radio_volume('min')"><i class='icon2 fa fa-minus'></i></div>
-                <input type='range' id='media_menu_radio_volume' type="range" min="0" max="1" step="0.1"
-                ondblclick='Hue.set_media_menu_radio_volume("default")'>
-                <div class='slider_icon_right pointer action' onclick="Hue.set_media_menu_radio_volume('increase')" onauxclick="Hue.set_media_menu_radio_volume('max')"><i class='icon2b fa fa-plus'></i></div>
-            </div>
-
             <div id='media_menu_tv_volume_title' class='setting_title'>TV Volume</div>
             <div class='slider_container'>
                 <div class='slider_icon_left pointer action' onclick="Hue.set_media_menu_tv_volume('decrease')" onauxclick="Hue.set_media_menu_tv_volume('min')"><i class='icon2 fa fa-minus'></i></div>

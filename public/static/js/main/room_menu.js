@@ -62,18 +62,6 @@ Hue.setup_room_menu = function () {
     Hue.change_room_tv_mode(what)
   })
 
-  $("#admin_enable_radio").change(function () {
-    let what = $("#admin_enable_radio option:selected").val()
-
-    Hue.change_room_radio_mode(what)
-  })
-
-  $("#admin_enable_synth").change(function () {
-    let what = $("#admin_enable_synth option:selected").val()
-
-    Hue.change_room_synth_mode(what)
-  })
-
   $("#admin_privacy").change(function () {
     let what = JSON.parse($("#admin_privacy option:selected").val())
 
@@ -180,8 +168,6 @@ Hue.config_room_menu = function () {
     Hue.config_admin_permission_checkboxes()
     Hue.config_admin_room_image_mode()
     Hue.config_admin_room_tv_mode()
-    Hue.config_admin_room_radio_mode()
-    Hue.config_admin_room_synth_mode()
     Hue.config_admin_privacy()
     Hue.config_admin_log_enabled()
     Hue.config_admin_theme_mode()
@@ -409,36 +395,6 @@ Hue.config_admin_room_tv_mode = function () {
     .find("option")
     .each(function () {
       if ($(this).val() === Hue.room_tv_mode) {
-        $(this).prop("selected", true)
-      }
-    })
-}
-
-// Updates the room radio mode widget in the room menu based on current state
-Hue.config_admin_room_radio_mode = function () {
-  if (!Hue.is_admin_or_op()) {
-    return false
-  }
-
-  $("#admin_enable_radio")
-    .find("option")
-    .each(function () {
-      if ($(this).val() === Hue.room_radio_mode) {
-        $(this).prop("selected", true)
-      }
-    })
-}
-
-// Updates the room synth mode widget in the room menu based on current state
-Hue.config_admin_room_synth_mode = function () {
-  if (!Hue.is_admin_or_op()) {
-    return false
-  }
-
-  $("#admin_enable_synth")
-    .find("option")
-    .each(function () {
-      if ($(this).val() === Hue.room_synth_mode) {
         $(this).prop("selected", true)
       }
     })

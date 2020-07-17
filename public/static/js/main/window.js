@@ -111,11 +111,6 @@ Hue.on_app_focused = function () {
     Hue.change_tv_when_focused = false
   }
 
-  if (Hue.change_radio_when_focused) {
-    Hue.change({ type: "radio" })
-    Hue.change_radio_when_focused = false
-  }
-
   Hue.show_info_popups()
   Hue.show_fresh_messages()
   Hue.trigger_activity()

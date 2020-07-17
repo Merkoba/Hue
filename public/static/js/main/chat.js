@@ -1740,8 +1740,7 @@ Hue.remove_message_from_chat = function (data) {
     data.type === "announcement" ||
     data.type === "reaction" ||
     data.type === "image" ||
-    data.type === "tv" ||
-    data.type === "radio"
+    data.type === "tv"
   ) {
     $(".message.announcement").each(function () {
       if ($(this).data("id") == data.id) {
@@ -1801,8 +1800,7 @@ Hue.process_remove_announcement = function (message) {
 
   if (
     type === "image_change" ||
-    type === "tv_change" ||
-    type === "radio_change"
+    type === "tv_change"
   ) {
     let id = $(message).data("id")
     Hue.remove_item_from_media_changed(type.replace("_change", ""), id)
@@ -2809,7 +2807,6 @@ Hue.show_log_messages = function () {
 
   let num_image = 0
   let num_tv = 0
-  let num_radio = 0
 
   if (Hue.log_messages && Hue.log_messages.length > 0) {
     for (let message of Hue.log_messages) {
@@ -2819,8 +2816,6 @@ Hue.show_log_messages = function () {
         num_image += 1
       } else if (type === "tv") {
         num_tv += 1
-      } else if (type === "radio") {
-        num_radio += 1
       }
     }
   }
@@ -2840,15 +2835,6 @@ Hue.show_log_messages = function () {
     Hue.setup_tv(
       "show",
       Object.assign(Hue.get_media_object_from_init_data("tv"), {
-        in_log: false,
-      })
-    )
-  }
-
-  if (num_radio === 0) {
-    Hue.setup_radio(
-      "show",
-      Object.assign(Hue.get_media_object_from_init_data("radio"), {
         in_log: false,
       })
     )
@@ -2885,10 +2871,6 @@ Hue.show_log_messages = function () {
           data.id = id
           data.date = date
           Hue.setup_tv("show", data)
-        } else if (type === "radio") {
-          data.id = id
-          data.date = date
-          Hue.setup_radio("show", data)
         } else if (type === "reaction") {
           data.id = id
           Hue.show_reaction(data, date)

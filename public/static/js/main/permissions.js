@@ -137,12 +137,6 @@ Hue.check_media_permissions = function () {
     Hue.check_media_permission(Hue.role, "image")
   Hue.can_tv =
     Hue.room_tv_mode === "enabled" && Hue.check_media_permission(Hue.role, "tv")
-  Hue.can_radio =
-    Hue.room_radio_mode === "enabled" &&
-    Hue.check_media_permission(Hue.role, "radio")
-  Hue.can_synth =
-    Hue.room_synth_mode === "enabled" &&
-    Hue.check_media_permission(Hue.role, "synth")
 
   Hue.setup_footer_icons()
 }

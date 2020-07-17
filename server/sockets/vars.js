@@ -33,7 +33,7 @@ module.exports = function (
   vars.optypes = ["op_1", "op_2", "op_3", "op_4"]
   vars.roles = ["admin"].concat(vars.optypes).concat(vars.vtypes)
   vars.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
-  vars.media_types = ["image", "tv", "radio", "synth"]
+  vars.media_types = ["image", "tv"]
   vars.filtered_fields = {
     log_messages: 0,
     admin_log_messages: 0,
@@ -96,8 +96,7 @@ module.exports = function (
   vars.dont_add_spam = [
     "slice_upload",
     "typing",
-    "activity_trigger",
-    "send_synth_key",
+    "activity_trigger"
   ]
 
   // Check if user is locked from room with these functions

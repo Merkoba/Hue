@@ -115,64 +115,14 @@ Hue.hide_media_menu = function () {
   Hue.msg_media_menu.close()
 }
 
-// Stops the tv and radio
-Hue.stop_media = function () {
-  Hue.stop_tv(false)
-  Hue.stop_radio()
-}
-
-// Stops and locks all media (image, tv, radio)
+// Stops and locks all media (image, tv)
 Hue.stop_and_lock = function (stop = true) {
   if (stop) {
-    Hue.stop_media()
+    Hue.stop_tv()
   }
 
   Hue.change_media_lock({type:"image", what:true, save:false})
   Hue.change_media_lock({type:"tv", what:true, save:false})
-  Hue.change_media_lock({type:"radio", what:true, save:false})
-
-  Hue.save_room_state()
-}
-
-// Sets media locks and visibility to default states
-Hue.default_media_state = function (change_visibility = true) {
-  if (
-    Hue.room_state.image_locked !== Hue.config.room_state_default_image_locked
-  ) {
-    Hue.change_media_lock({type:"image", what:Hue.config.room_state_default_image_locked, save:false})
-  }
-
-  if (Hue.room_state.tv_locked !== Hue.config.room_state_default_tv_locked) {
-    Hue.change_media_lock({type:"tv", what:Hue.config.room_state_default_tv_locked, save:false})
-  }
-
-  if (
-    Hue.room_state.radio_locked !== Hue.config.room_state_default_radio_locked
-  ) {
-    Hue.change_media_lock({type:"radio", what:Hue.config.room_state_default_radio_locked, save:false})
-  }
-
-  if (change_visibility) {
-    if (
-      Hue.room_state.image_enabled !==
-      Hue.config.room_state_default_image_enabled
-    ) {
-      Hue.toggle_image(Hue.config.room_state_default_image_enabled, false)
-    }
-
-    if (
-      Hue.room_state.tv_enabled !== Hue.config.room_state_default_tv_enabled
-    ) {
-      Hue.toggle_tv(Hue.config.room_state_default_tv_enabled, false)
-    }
-
-    if (
-      Hue.room_state.radio_enabled !==
-      Hue.config.room_state_default_radio_enabled
-    ) {
-      Hue.toggle_radio(Hue.config.room_state_default_radio_enabled, false)
-    }
-  }
 
   Hue.save_room_state()
 }
@@ -185,10 +135,6 @@ Hue.start_active_media = function () {
   })
   Hue.change({
     type: "tv",
-    play: false
-  })
-  Hue.change({
-    type: "radio",
     play: false
   })
 
@@ -506,10 +452,6 @@ Hue.update_chat_media_feedback = function () {
       if ($(this).data("message_id") === Hue.loaded_tv.message_id) {
         icon.addClass("shady")
       }
-    } else if ($(this).data("type") === "radio_change") {
-      if ($(this).data("message_id") === Hue.loaded_radio.message_id) {
-        icon.addClass("shady")
-      }
     }
   })
 }
@@ -606,8 +548,6 @@ Hue.show_media_items = function () {
 Hue.setup_active_media = function (data) {
   Hue.room_image_mode = data.room_image_mode
   Hue.room_tv_mode = data.room_tv_mode
-  Hue.room_radio_mode = data.room_radio_mode
-  Hue.room_synth_mode = data.room_synth_mode
 
   Hue.media_visibility_and_locks()
 }
@@ -616,12 +556,10 @@ Hue.setup_active_media = function (data) {
 Hue.media_visibility_and_locks = function () {
   Hue.change_image_visibility()
   Hue.change_tv_visibility(false)
-  Hue.change_radio_visibility()
 
   if (Hue.connections === 1) {
     Hue.change_media_lock_icon("image")
     Hue.change_media_lock_icon("tv")
-    Hue.change_media_lock_icon("radio")
   }
 }
 
@@ -706,12 +644,7 @@ Hue.prepend_to_media_history = function (message_id) {
 
 // Additional media menu configurations
 Hue.setup_media_menu = function () {
-  Hue.set_media_menu_radio_volume()
   Hue.set_media_menu_tv_volume()
-
-  $("#media_menu_radio_volume").on("input change", function () {
-    Hue.set_radio_volume(parseFloat(this.value), true, false)
-  })
 
   $("#media_menu_tv_volume").on("input change", function () {
     Hue.set_tv_volume(parseFloat(this.value), true, false)
@@ -741,8 +674,6 @@ Hue.show_media_source = function (what) {
     s = "Image"
   } else if (what === "tv") {
     s = "TV"
-  } else if (what === "radio") {
-    s = "Radio"
   }
 
   if (setter !== "") {
@@ -820,28 +751,6 @@ Hue.fix_frames = function () {
   Hue.fix_image_frame()
 }
 
-// Handles volume change command for the specified type
-Hue.change_volume_command = function (arg, type = "radio") {
-  if (isNaN(arg)) {
-    Hue.feedback("Argument must be a number")
-    return false
-  } else {
-    let nv = arg / 100
-
-    if (type === "radio") {
-      Hue.set_radio_volume(nv)
-    } else if (type === "tv") {
-      Hue.set_tv_volume(nv)
-    }
-  }
-}
-
-// Changes the volume of the radio and the tv
-Hue.change_volume_all = function (arg) {
-  Hue.change_volume_command(arg, "radio")
-  Hue.change_volume_command(arg, "tv")
-}
-
 // Gets a volume number in percentage form
 // Like 20 or 100
 Hue.get_nice_volume = function (volume) {
@@ -889,11 +798,6 @@ Hue.change = function (args = {}) {
       Hue.loaded_tv = item
       return false
     }
-  } else if (args.type === "radio") {
-    if (!args.force && Hue.loaded_radio.source === Hue.current_radio().source) {
-      Hue.loaded_radio = item
-      return false
-    }
   } else {
     return false
   }
@@ -907,11 +811,6 @@ Hue.change = function (args = {}) {
     } else if (args.type === "tv") {
       if (Hue.get_setting("afk_disable_tv_change")) {
         Hue.change_tv_when_focused = true
-        return false
-      }
-    } else if (args.type === "radio") {
-      if (Hue.get_setting("afk_disable_radio_change")) {
-        Hue.change_radio_when_focused = true
         return false
       }
     }
@@ -983,46 +882,6 @@ Hue.change = function (args = {}) {
 
     if (!args.item || args.item === Hue.current_tv()) {
       $("#footer_lock_tv_icon").removeClass("blinking")
-    }
-  } else if (args.type === "radio") {
-    if (!Hue.room_state.radio_enabled) {
-      return false
-    }
-
-    let locked = Hue.room_state.radio_locked && !bypass_lock
-
-    if (
-      !args.item &&
-      locked &&
-      Hue.loaded_radio.source &&
-      !args.current_source
-    ) {
-      return false
-    }
-
-    if (Hue.room_radio_mode === "disabled") {
-      return false
-    }
-
-    if (item.type !== "audio") {
-      if (Hue[`${item.type}_player`] === undefined) {
-        Hue.request_media(`${item.type}_player`, args)
-        return false
-      }
-    }
-
-    Hue.loaded_radio = item
-
-    let force = false
-
-    if (args.item || bypass_lock) {
-      force = true
-    }
-
-    Hue.load_radio(force)
-
-    if (!args.item || args.item === item) {
-      $("#footer_lock_radio_icon").removeClass("blinking")
     }
   } else {
     return false

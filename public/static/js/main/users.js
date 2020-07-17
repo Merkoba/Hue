@@ -28,12 +28,6 @@ Hue.show_role = function () {
     ps += 1
   }
 
-  if (Hue.can_radio) {
-    Hue.feedback("You have radio permission")
-
-    ps += 1
-  }
-
   if (ps === 0) {
     Hue.feedback("You cannot interact")
   }

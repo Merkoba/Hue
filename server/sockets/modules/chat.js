@@ -242,8 +242,7 @@ module.exports = function (
 
         if (
           message_type === "image" ||
-          message_type === "tv" ||
-          message_type === "radio"
+          message_type === "tv"
         ) {
           if (room[`current_${message_type}_id`] === message_id) {
             handler[`do_change_${message_type}_source`](socket, {
@@ -261,8 +260,7 @@ module.exports = function (
             )
           } else if (
             message_type === "image" ||
-            message_type === "tv" ||
-            message_type === "radio"
+            message_type === "tv"
           ) {
             let a = "a"
 

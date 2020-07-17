@@ -41,12 +41,10 @@ Hue.all_usernames = []
 Hue.role = ""
 Hue.can_chat = false
 Hue.can_image = false
-Hue.can_radio = false
 Hue.can_tv = false
 Hue.tab_info = {}
 Hue.create_room_open = false
 Hue.open_room_open = false
-Hue.radio_picker_open = false
 Hue.tv_picker_open = false
 Hue.image_picker_open = false
 Hue.goto_room_open = false
@@ -69,11 +67,8 @@ Hue.commands_list_sorted_2 = {}
 Hue.utilz = Utilz()
 Hue.change_image_when_focused = false
 Hue.change_tv_when_focused = false
-Hue.change_radio_when_focused = false
 Hue.room_image_mode = "enabled"
 Hue.room_tv_mode = "enabled"
-Hue.room_radio_mode = "enabled"
-Hue.radio_started = false
 Hue.background_image_setter = ""
 Hue.background_image_date = ""
 Hue.files = {}
@@ -89,7 +84,6 @@ Hue.double_tap_key_2_pressed = 0
 Hue.double_tap_key_3_pressed = 0
 Hue.image_visible = true
 Hue.tv_visible = true
-Hue.radio_visible = true
 Hue.modal_image_open = false
 Hue.current_image_data = {}
 Hue.filter_delay = 350
@@ -103,14 +97,12 @@ Hue.emit_queue = []
 Hue.app_focused = true
 Hue.message_unames = ""
 Hue.message_type = ""
-Hue.stop_radio_delay = 0
 Hue.aura_timeouts = {}
 Hue.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
 Hue.mouse_over_reactions = false
 Hue.reactions_hover_delay = 500
 Hue.reactions_hover_delay_2 = 1000
 Hue.user_functions = [1, 2, 3, 4, 5, 6, 7, 8]
-Hue.speeches = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 Hue.mouse_is_down = false
 Hue.draw_message_just_entered = false
 Hue.draw_image_just_entered = false
@@ -121,8 +113,6 @@ Hue.draw_image_max_levels = 200
 Hue.draw_image_open = false
 Hue.highlight_same_posts_timeouts = {}
 Hue.highlight_same_posts_delay = 800
-Hue.radio_get_metadata_ongoing = false
-Hue.radio_get_metadata = false
 Hue.command_aliases = {}
 Hue.commands_queue = {}
 Hue.user_leaving = false
@@ -138,10 +128,6 @@ Hue.YEAR = 31536000000
 Hue.editing_message = false
 Hue.editing_message_container = false
 Hue.editing_message_area = false
-Hue.synth_timeout_delay = 500
-Hue.synth_recent_users = []
-Hue.synth_open = false
-Hue.synth_voice_speeches = []
 Hue.local_storage_to_save = {}
 Hue.local_storage_save_delay = 250
 Hue.sending_whisper = false
@@ -169,11 +155,10 @@ Hue.add_to_chat_searches_delay = 2000
 Hue.reactions_box_open = false
 Hue.first_media_change = false
 Hue.calc_round_places = 10
-Hue.media_icons = { image: "fa-camera", tv: "fa-tv", radio: "fa-volume-up" }
+Hue.media_icons = { image: "fa-camera", tv: "fa-tv" }
 Hue.typing_delay = 100
 Hue.loaded_image = {}
 Hue.loaded_tv = {}
-Hue.loaded_radio = {}
 Hue.open_profile_username = false
 Hue.open_profile_user = false
 Hue.show_profile_audio_clip_started = false
@@ -183,7 +168,6 @@ Hue.last_media_sync = Date.now()
 Hue.writing_message_board_post = false
 Hue.message_board_posting_enabled = false
 Hue.connected = false
-Hue.radio_started_date = 0
 Hue.connections = 0
 Hue.connecting = true
 Hue.last_scroll_date = Date.now()
@@ -195,17 +179,13 @@ Hue.handle_url_open = false
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
 Hue.youtube_loaded = false
-Hue.youtube_player_requested = false
-Hue.youtube_player_request = false
 Hue.youtube_video_player_requested = false
 Hue.youtube_video_player_request = false
 Hue.soundcloud_loading = false
 Hue.soundcloud_loaded = false
-Hue.soundcloud_player_requested = false
 Hue.soundcloud_video_player_requested = false
 Hue.soundcloud_video_player_request = false
 Hue.hls_loading = false
-Hue.tone_loading = false
 Hue.math_loading = false
 Hue.wordz_loading = false
 Hue.media_info_image_data = []
@@ -230,11 +210,9 @@ Hue.init = function () {
   Hue.start_settings_widgets("room_settings")
   Hue.start_settings_widgets_listeners("room_settings")
   Hue.setup_settings_windows()
-  Hue.setup_radio_widget()
   Hue.start_filters()
   Hue.start_image_events()
   Hue.start_dropzone()
-  Hue.start_volume_scroll()
   Hue.generate_highlight_words_regex()
   Hue.generate_ignored_words_regex()
   Hue.activate_visibility_listener()
@@ -245,13 +223,9 @@ Hue.init = function () {
   Hue.start_chat_mouse_events()
   Hue.start_chat_hover_events()
   Hue.start_body_events()
-  Hue.start_played_click_events()
   Hue.start_roomlist_click_events()
   Hue.start_generic_uname_click_events()
   Hue.start_user_context_menu()
-  Hue.start_played_context_menu()
-  Hue.start_volume_context_menu()
-  Hue.start_toggle_radio_context_menu()
   Hue.start_room_menu_context_menu()
   Hue.start_media_maxer_context_menu()
   Hue.start_chat_maxer_context_menu()
@@ -279,7 +253,6 @@ Hue.init = function () {
   Hue.maxers_mouse_events()
   Hue.check_screen_lock()
   Hue.setup_iframe_video()
-  Hue.setup_synth()
   Hue.show_console_message()
   Hue.setup_expand_image()
   Hue.setup_local_storage()
@@ -290,7 +263,6 @@ Hue.init = function () {
   Hue.setup_drag_events()
   Hue.setup_open_url()
   Hue.setup_user_functions()
-  Hue.setup_header()
   Hue.setup_media_pickers()
   Hue.setup_generic_separators()
   Hue.setup_media_menu()
@@ -327,7 +299,6 @@ Hue.on_join = function (data) {
   Hue.started_safe = false
   Hue.image_changed = []
   Hue.tv_changed = []
-  Hue.radio_changed = []
   Hue.log_messages_processed = false
 
   Hue.load_date_3 = Date.now()
@@ -369,7 +340,6 @@ Hue.on_join = function (data) {
   Hue.show_joined()
   Hue.check_media_maxers()
   Hue.config_room_menu()
-  Hue.start_metadata_loop()
   Hue.goto_bottom()
   Hue.make_main_container_visible()
   Hue.check_latest_highlight()

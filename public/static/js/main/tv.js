@@ -164,8 +164,6 @@ Hue.play_tv = function () {
     return false
   }
 
-  let played = true
-
   if (Hue.current_tv().type === "youtube") {
     if (Hue.youtube_video_player) {
       Hue.youtube_video_player.playVideo()
@@ -183,12 +181,6 @@ Hue.play_tv = function () {
     $("#media_iframe_poster").css("display", "none")
   } else {
     played = false
-  }
-
-  if (played) {
-    if (Hue.get_setting("stop_radio_on_tv_play")) {
-      Hue.stop_radio()
-    }
   }
 }
 
@@ -330,13 +322,6 @@ Hue.after_show_tv = function (play) {
   Hue.apply_media_info(media_info, Hue.loaded_tv, "tv")
   Hue.fix_visible_video_frame()
   Hue.focus_input()
-
-  if (play) {
-    if (Hue.get_setting("stop_radio_on_tv_play")) {
-      Hue.stop_radio()
-    }
-  }
-
   Hue.set_tv_volume(false, false)
 }
 
@@ -974,5 +959,16 @@ Hue.receive_tv_progress = function (data) {
 
     $("#media_video")[0].currentTime = data.progress
     $("#media_video")[0].play()
+  }
+}
+
+// Handles volume change command for the tv
+Hue.change_tv_volume = function (arg) {
+  if (isNaN(arg)) {
+    Hue.feedback("Argument must be a number")
+    return false
+  } else {
+    let nv = arg / 100
+    Hue.set_tv_volume(nv)
   }
 }
