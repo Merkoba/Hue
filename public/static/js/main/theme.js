@@ -274,6 +274,7 @@ Hue.apply_theme = function () {
     }
 
     .scroller {
+        border: 1px solid ${color_4_a} !important;
         background-color: ${background_color_a_2} !important;
         color: ${font_color} !important;
     }
