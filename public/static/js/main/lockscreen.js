@@ -18,6 +18,14 @@ Hue.setup_lockscreen = function () {
     Hue.lockscreen_peek_active = false
   })
 
+  $("#lockscreen_principal").click(function () {
+    Hue.unlock_screen()
+  })
+
+  $("#lockscreen_lights_off_button").click(function () {
+    Hue.toggle_lockscreen_lights_off()
+  })
+
   Hue.setup_lockscreen_clock()
 }
 

@@ -731,6 +731,10 @@ Hue.setup_expand_image = function () {
     $("#expand_image").css("display", "none")
     $("#expand_image_error").css("display", "block")
   })
+
+  $("#expand_image_container").click(function () {
+    Hue.hide_expand_image()
+  })
 }
 
 // Shows a window with an image at full size

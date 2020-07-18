@@ -487,7 +487,15 @@ Hue.open_background_image_select = function () {
   Hue.msg_info2.show([
     "Change Background Image",
     Hue.template_background_image_select(),
-  ])
+  ], function () {
+    $("#background_image_select_url").click(function () {
+      Hue.open_background_image_input()
+    })
+
+    $("#background_image_select_upload").click(function () {
+      Hue.open_background_image_picker()
+    })
+  })
   Hue.horizontal_separator.separate("background_image_select_container")
 }
 
@@ -505,6 +513,10 @@ Hue.open_background_image_input = function () {
   Hue.msg_info2.show(
     ["Change Background Image", Hue.template_background_image_input()],
     function () {
+      $("#background_image_input_submit").click(function () {
+        Hue.background_image_input_action()
+      })
+
       $("#background_image_input_text").focus()
       Hue.background_image_input_open = true
     }

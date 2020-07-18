@@ -1,7 +1,11 @@
 // Show the Help window
 Hue.show_help = function () {
   let help = Hue.template_help()
-  Hue.msg_info2.show(["Help", help])
+  Hue.msg_info2.show(["Help", help], function () {
+    $('#help_commands').click(function () {
+      Hue.show_commands()
+    })
+  })
 }
 
 // Copies a string to the clipboard

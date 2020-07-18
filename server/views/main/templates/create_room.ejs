@@ -3,7 +3,7 @@
         <div class='flex_row_center'>
             <i class='fa fa-question-circle invisible'></i>
             <input type="text" id="create_room_name" class='nice_input_2' placeholder="Name">
-            <i class='fa fa-question-circle pointer action' onclick='Hue.create_room_suggest_name()'></i>
+            <i id='create_room_suggest_name' class='fa fa-question-circle pointer action'></i>
         </div>
 
         <div class='flex_column_center'>
@@ -12,7 +12,7 @@
                 <option value='false'>Private</option>
             </select>
 
-            <div id='create_room_done' class='menu_item action' onclick='Hue.create_room_submit()'>Create</div>
+            <div id='create_room_done' class='menu_item action'>Create</div>
         </div>
     </div>
 </script>

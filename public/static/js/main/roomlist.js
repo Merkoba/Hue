@@ -103,6 +103,14 @@ Hue.update_roomlist = function (type, roomlist) {
 // Shows the Create Room window
 Hue.show_create_room = function () {
   Hue.msg_info2.show(["Create Room", Hue.template_create_room()], function () {
+    $("#create_room_suggest_name").click(function () {
+      Hue.create_room_suggest_name()
+    })
+
+    $("#create_room_done").click(function () {
+      Hue.create_room_submit()
+    })
+
     $("#create_room_name").focus()
     Hue.create_room_open = true
   })
@@ -144,6 +152,16 @@ Hue.show_open_room = function (id) {
   Hue.msg_info2.show(
     ["Open Room", Hue.template_open_room({ id: id })],
     function () {
+      $("#open_room_here").click(function () {
+        Hue.goto_url(id)
+        Hue.msg_info2.close()
+      })
+
+      $("#open_room_new_tab").click(function () {
+        Hue.goto_url(id, "tab")
+        Hue.msg_info2.close()
+      })
+
       Hue.open_room_open = true
     }
   )
@@ -162,6 +180,10 @@ Hue.show_visited_roomlist = function () {
 // Show the go to room window
 Hue.show_goto_room = function () {
   Hue.msg_info2.show(["Go To Room", Hue.template_goto_room()], function () {
+    $("#goto_room_submit").click(function () {
+      Hue.goto_room_action()
+    })
+
     $("#goto_room_input").focus()
     Hue.goto_room_open = true
   })

@@ -1387,6 +1387,13 @@ Hue.start_chat_reply_events = function () {
   })
 }
 
+// Setup reply
+Hue.setup_reply = function () {
+  $("#reply_submit").click(function () {
+    Hue.submit_reply()
+  })
+}
+
 // Prepare data to show the reply window
 Hue.start_reply = function (target) {
   if ($(target).is("a")) {

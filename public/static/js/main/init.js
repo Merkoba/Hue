@@ -283,6 +283,7 @@ Hue.init = function () {
   Hue.setup_media()
   Hue.setup_activity_bar()
   Hue.generate_favicon(0)
+  Hue.setup_reply()
 
   if (Hue.debug_functions) {
     Hue.wrap_functions()
