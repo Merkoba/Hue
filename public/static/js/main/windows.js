@@ -899,11 +899,7 @@ Hue.create_popup = function (args = {}) {
   }
 
   let panel_size = $("#footer").height()
-  let edge_padding_y = panel_size
-
-  if (args.position.includes("top")) {
-    edge_padding_y += panel_size
-  }
+  let edge_padding_y = panel_size * 2
 
   let def_args = {
     preset: "popup",
