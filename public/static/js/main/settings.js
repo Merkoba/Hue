@@ -1644,12 +1644,14 @@ Hue.modify_setting = function (arg, show_feedback = true, force = false) {
   let split = arg.split(" ")
 
   if (split.length < 2) {
+    Hue.feedback("Missing an argument")
     return false
   }
 
   let setting = split[0]
 
   if (Hue.user_settings[setting] === undefined) {
+    Hue.feedback("Invalid setting")
     return false
   }
 
