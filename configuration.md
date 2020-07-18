@@ -3,6 +3,9 @@
 Refer to [config.json](config/config.json) and [config.secret.json](config/config.secret.json) to check defaults.
 
 
+"db_name"
+>The database name Mongo will use. The database is created automatically at first launch. This setting allows trying different contexts by just changing the name, which is good for development and other cases.
+
 "https_enabled"
 >Defaults to true for security reasons. If deployed in a non-https environment set it to false. In order for it to be really enabled the Node environment must be set to production. If true, some non https media will be blocked. It's recommended to setup a full https site to conform to current standards. Check out Let's Encrypt.
 

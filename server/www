@@ -1,16 +1,13 @@
 #!/usr/bin/env node
 
-function normalizePort(val)
-{
+function normalizePort(val) {
 	let port = parseInt(val, 10)
 
-	if(isNaN(port))
-	{
+	if (isNaN(port)) {
 		return val
 	}
 
-	if(port >= 0)
-	{
+	if (port >= 0) {
 		return port
 	}
 
@@ -21,25 +18,17 @@ const port = normalizePort(process.env.PORT || "3210")
 const config = require('../config/config.json')
 const sconfig = require('../config/config.secret.json')
 
-try
-{
+try {
 	const user_config = require('../config/user_config.json')
 	Object.assign(config, user_config)
-}
-
-catch(err)
-{
+} catch (err) {
 	console.error(err)
 }
 
-try
-{
+try {
 	const user_sconfig = require('../config/user_config.secret.json')
 	Object.assign(sconfig, user_sconfig)
-}
-
-catch(err)
-{
+} catch (err) {
 	console.error(err)
 }
 
@@ -47,24 +36,18 @@ const path = require('path')
 const mongo = require('mongodb')
 const winston = require('winston')
 
-mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
-{
-	if(err)
-	{
+mongo.connect(config.mongodb_path, {
+	useNewUrlParser: true
+}, function (err, client) {
+	if (err) {
 		console.error(err)
-	}
+	} else {
+		const db = client.db(config.db_name)
 
-	else
-	{
-		const db = client.db("hue")
-
-		const logger = winston.createLogger(
-		{
+		const logger = winston.createLogger({
 			format: winston.format.simple(),
-			transports:
-			[
-				new winston.transports.File(
-				{
+			transports: [
+				new winston.transports.File({
 					filename: path.join(__dirname, "../logs/error.log"),
 					level: "error",
 					timestamp: (new Date()).toLocaleTimeString()
@@ -72,27 +55,22 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 			]
 		})
 
-		if(logger.log_error !== undefined)
-		{
+		if (logger.log_error !== undefined) {
 			console.error("logger.log_error is reserved")
 		}
 
-		logger.log_error = function(msg)
-		{
-			if(process.env.NODE_ENV === "development")
-			{
+		logger.log_error = function (msg) {
+			if (process.env.NODE_ENV === "development") {
 				console.error(msg)
 			}
 
-			if(msg instanceof Error)
-			{
+			if (msg instanceof Error) {
 				msg = JSON.stringify(msg.stack, null, 2).replace(/\\n/g, "\r\n")
 			}
 
 			msg = `${new Date().toLocaleString()}\r\n${msg}`
 
-			logger.log(
-			{
+			logger.log({
 				level: "error",
 				message: msg
 			})
@@ -118,19 +96,16 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 
 		require('./sockets/main')(io, db_manager, config, sconfig, utilz, logger, sockets_api)
 
-		function on_error(error)
-		{
-			if(error.syscall !== 'listen')
-			{
+		function on_error(error) {
+			if (error.syscall !== 'listen') {
 				throw error
 			}
 
-			let bind = typeof port === 'string'
-				? 'Pipe ' + port
-				: 'Port ' + port
+			let bind = typeof port === 'string' ?
+				'Pipe ' + port :
+				'Port ' + port
 
-			switch(error.code)
-			{
+			switch (error.code) {
 				case 'EACCES':
 					console.error(bind + ' requires elevated privileges')
 					process.exit(1)
@@ -146,40 +121,32 @@ mongo.connect(config.mongodb_path, {useNewUrlParser:true}, function(err, client)
 			}
 		}
 
-		function on_listening()
-		{
+		function on_listening() {
 			let addr = server.address()
 
-			let bind = typeof addr === 'string'
-				? 'pipe ' + addr
-				: 'port ' + addr.port
+			let bind = typeof addr === 'string' ?
+				'pipe ' + addr :
+				'port ' + addr.port
 
 			debug('Listening on ' + bind)
 		}
 
-		function do_shutdown()
-		{
+		function do_shutdown() {
 			sockets_api.vars.exiting = true
 			sockets_api.handler.do_room_loop()
 
-			io.httpServer.close() 
+			io.httpServer.close()
 			io.close()
 
-			server.close(function()
-			{
+			server.close(function () {
 				process.exit(0)
 			})
 		}
 
-		process.on('SIGINT', function()
-		{
-			if(process.env.NODE_ENV === "development")
-			{
+		process.on('SIGINT', function () {
+			if (process.env.NODE_ENV === "development") {
 				process.exit(0);
-			}
-
-			else
-			{
+			} else {
 				do_shutdown()
 			}
 		})

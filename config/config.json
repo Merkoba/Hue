@@ -1,4 +1,5 @@
 {
+	"db_name": "hue",
 	"https_enabled": true,
 	"site_root": "https://hue.merkoba.com/",
 	"main_room_id": "main",
