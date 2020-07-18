@@ -557,7 +557,7 @@ module.exports = function (
     let ids = []
 
     for (let id in info.keys) {
-      let role = info.keys[id] || "voice_1"
+      let role = info.keys[id] || vars.default_role
 
       if (role.startsWith("op") || role === "admin") {
         roles[id] = role
