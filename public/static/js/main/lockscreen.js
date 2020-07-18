@@ -41,11 +41,11 @@ Hue.setup_lockscreen_clock = function () {
 // Enables the lockscreen
 // The lockscreen is a special mode where the display is covered
 // The user is considered unfocused
-Hue.lock_screen = function (save = true) {
-  if (Hue.room_state.screen_locked) {
+Hue.lock_screen = function (save = true, force = false) {
+  if (!force && Hue.room_state.screen_locked) {
     return false
   }
-  
+
   Hue.stop_and_lock(true)
   Hue.room_state.screen_locked = true
   Hue.process_lockscreen_lights_off()
@@ -122,7 +122,7 @@ Hue.check_lockscreen_activity = function () {
 // Enables the lockscreen if the screen is locked in room state
 Hue.check_screen_lock = function () {
   if (Hue.room_state.screen_locked) {
-    Hue.lock_screen(false)
+    Hue.lock_screen(false, true)
   }
 }
 

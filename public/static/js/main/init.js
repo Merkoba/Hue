@@ -247,7 +247,6 @@ Hue.init = function () {
   Hue.setup_before_unload()
   Hue.start_chat_reply_events()
   Hue.maxers_mouse_events()
-  Hue.check_screen_lock()
   Hue.setup_iframe_video()
   Hue.show_console_message()
   Hue.setup_expand_image()
@@ -344,6 +343,7 @@ Hue.on_join = function (data) {
   Hue.check_latest_highlight()
   Hue.init_message_board(data)
   Hue.start_active_media()
+  Hue.check_screen_lock()
 
   Hue.at_startup()
 }
