@@ -154,6 +154,98 @@ Hue.setup_room_menu = function () {
 
     Hue.change_media_info(what)
   })
+
+  $("#room_menu_more_broadcast").click(function () {
+    Hue.write_popup_message(false, "room")
+  })
+
+  $("#room_menu_more_whisper_ops").click(function () {
+    Hue.write_popup_message(false, "ops")
+  })
+
+  $("#room_menu_more_reset_voices").click(function () {
+    Hue.needs_confirm("reset_voices")
+  })
+
+  $("#room_menu_more_reset_ops").click(function () {
+    Hue.needs_confirm("reset_ops")
+  })
+
+  $("#room_menu_more_remove_ops").click(function () {
+    Hue.needs_confirm("remove_ops")
+  })
+
+  $("#room_menu_more_banned_count").click(function () {
+    Hue.get_ban_count()
+  })
+
+  $("#room_menu_more_unban_all").click(function () {
+    Hue.needs_confirm("unban_all")
+  })
+
+  $("#room_menu_more_admin_activity").click(function () {
+    Hue.request_admin_activity()
+  })
+
+  $("#room_menu_more_access_log").click(function () {
+    Hue.request_access_log()
+  })
+
+  $("#room_menu_more_admin_list").click(function () {
+    Hue.request_admin_list()
+  })
+
+  $("#room_menu_more_ban_list").click(function () {
+    Hue.request_ban_list()
+  })
+
+  $("#room_menu_more_clear_log").click(function () {
+    Hue.needs_confirm("clear_log")
+  })
+
+  $("#room_menu_more_clear_message_board").click(function () {
+    Hue.needs_confirm("clear_message_board")
+  })
+
+  $("#room_menu_visited_rooms").click(function () {
+    Hue.request_roomlist('', 'visited_roomlist')
+  })
+
+  $("#room_menu_public_rooms").click(function () {
+    Hue.request_roomlist('', 'public_roomlist')
+  })
+
+  $("#room_menu_goto_room").click(function () {
+    Hue.show_goto_room()
+  })
+
+  $("#room_menu_create_room").click(function () {
+    Hue.show_create_room()
+  })
+
+  $("#room_menu_status").click(function () {
+    Hue.show_status()
+  })
+
+  $("#room_menu_copy_url").click(function () {
+    Hue.copy_room_url()
+  })
+
+  $("#room_menu_links").click(function () {
+    Hue.show_links(1)
+  })
+
+  $("#room_menu_search").click(function () {
+    Hue.show_chat_search()
+  })
+
+  $("#room_menu_help").click(function () {
+    Hue.show_help(1)
+  })
+
+  $("#admin_background_image").click(function () {
+    Hue.open_background_image_select()
+  })
 }
 
 // Shows the room menu

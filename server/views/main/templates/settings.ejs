@@ -59,7 +59,7 @@
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div class='settings_reset_button smaller_font_size action pointer' onclick='Hue.confirm_reset_settings("{{type}}")'>Reset</div>
+                <div id='{{type}}_reset' class='settings_reset_button smaller_font_size action pointer'>Reset</div>
             </div>
         </div>
 
@@ -385,18 +385,18 @@
                 <div class='settings_item settings_top_level_item' data-setting='chat_display_percentage'>
                     <div class="setting_title">Chat/Media Percentages</div>
                     <div class='slider_container'>
-                        <div class='slider_icon_left pointer action' onclick='Hue.settings_chat_percentage_icon_click("{{type}}", "decrease")' onauxclick='Hue.settings_chat_percentage_icon_middle_click("{{type}}", "min")'><i class='icon2 fa fa-pencil-alt'></i></div>
-                        <input type='range' id='{{type}}_chat_display_percentage' min="10" max="90" step="10" ondblclick='Hue.settings_chat_percentage_slider_double_click("{{type}}")'>
-                        <div class='slider_icon_right pointer action' onclick='Hue.settings_chat_percentage_icon_click("{{type}}", "increase")' onauxclick='Hue.settings_chat_percentage_icon_middle_click("{{type}}", "max")'><i class='icon2b far fa-image'></i></div>
+                        <div id='{{type}}_chat_percentage_decrease' class='slider_icon_left pointer action'><i class='icon2 fa fa-pencil-alt'></i></div>
+                        <input type='range' id='{{type}}_chat_display_percentage' min="10" max="90" step="10">
+                        <div id='{{type}}_chat_percentage_increase' class='slider_icon_right pointer action'><i class='icon2b far fa-image'></i></div>
                     </div>
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='tv_display_percentage'>
                     <div class="setting_title">Image/TV Percentages</div>
                     <div class='slider_container'>
-                        <div class='slider_icon_left pointer action' onclick='Hue.settings_tv_percentage_icon_click("{{type}}", "decrease")' onauxclick='Hue.settings_tv_percentage_icon_middle_click("{{type}}", "min")'><i class='icon2 fa fa-camera'></i></div>
-                        <input type='range' id='{{type}}_tv_display_percentage' min="10" max="90" step="10" ondblclick='Hue.settings_tv_percentage_slider_double_click("{{type}}")'>
-                        <div class='slider_icon_right pointer action' onclick='Hue.settings_tv_percentage_icon_click("{{type}}", "increase")' onauxclick='Hue.settings_tv_percentage_icon_middle_click("{{type}}", "max")'><i class='icon2b fa fa-tv'></i></div>
+                        <div id='{{type}}_tv_percentage_decrease' class='slider_icon_left pointer action'><i class='icon2 fa fa-camera'></i></div>
+                        <input type='range' id='{{type}}_tv_display_percentage' min="10" max="90" step="10">
+                        <div id='{{type}}_tv_percentage_increase' class='slider_icon_right pointer action' ><i class='icon2b fa fa-tv'></i></div>
                     </div>
                 </div>
 

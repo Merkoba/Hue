@@ -279,6 +279,8 @@ Hue.init = function () {
   Hue.setup_userlist_window()
   Hue.setup_input_placeholder()
   Hue.setup_user_menu()
+  Hue.setup_header()
+  Hue.setup_media()
   Hue.setup_activity_bar()
   Hue.generate_favicon(0)
 

@@ -2,23 +2,23 @@
     <div id='room_menu'>
 
         <div class='flex_column_center'>
-            <div class='menu_item action' onclick="Hue.request_roomlist('', 'visited_roomlist')">Visited Rooms</div>
-            <div class='menu_item action' onclick="Hue.request_roomlist('', 'public_roomlist')">Public Rooms</div>
-            <div class='menu_item action' onclick="Hue.show_goto_room()">Go To Room</div>
-            <div class='menu_item action' onclick="Hue.show_create_room()">Create Room</div>
+            <div id='room_menu_visited_rooms' class='menu_item action'>Visited Rooms</div>
+            <div id='room_menu_public_rooms' class='menu_item action'>Public Rooms</div>
+            <div id='room_menu_goto_room' class='menu_item action'>Go To Room</div>
+            <div id='room_menu_create_room' class='menu_item action'>Create Room</div>
         </div>
 
         <div id='menu_smaller_container' class='flex_column_center'>
 
-            <div class='menu_item_smaller action' onclick='Hue.show_status()'>Status</div>
-            <div class='menu_item_smaller action' onclick='Hue.copy_room_url()'>Copy Room URL</div>
+            <div id='room_menu_status' class='menu_item_smaller action'>Status</div>
+            <div id='room_menu_copy_url' class='menu_item_smaller action'>Copy Room URL</div>
 
             <div class='flex_row_center generic_horizontal_separator menu_item_smaller'>
-                <div class='action' onclick='Hue.show_links(1)'>Links</div>
-                <div class='action nicetitle' id='room_menu_search_button' onclick='Hue.show_chat_search()' title='Click or Right Click'>Search</div>
+                <div id='room_menu_links'class='action'>Links</div>
+                <div id='room_menu_search' class='action nicetitle' id='room_menu_search_button' title='Click or Right Click'>Search</div>
             </div>
 
-            <div class='menu_item_smaller_2 action' onclick='Hue.show_help(1)'>Help</div>
+            <div id='room_menu_help' class='menu_item_smaller_2 action'>Help</div>
         </div>
 
         <div id='admin_menu'>
@@ -123,7 +123,7 @@
                         </div>
 
                         <div id='admin_background_image_container' class='room_menu_section'>
-                            <img class='small_square_image pointer' id='admin_background_image' onclick='Hue.open_background_image_select()'>
+                            <img id='admin_background_image' class='small_square_image pointer'>
                         </div>
                     </div>
                 </div>
@@ -183,19 +183,19 @@
 
                 <div class='toggler_container room_menu_toggle_container'>
                     <div id='room_menu_more_container' class='grid_column_center'>
-                        <div id='room_menu_more_broadcast' class='pointer action' onclick='Hue.write_popup_message(false, "room")'>Broadcast</div>
-                        <div id='room_menu_more_whisper_ops' class='pointer action' onclick='Hue.write_popup_message(false, "ops")'>Whisper OPs</div>
-                        <div id='room_menu_more_reset_voices' class='pointer action' onclick='Hue.needs_confirm("reset_voices")'>Reset Voices</div>
-                        <div id='room_menu_more_reset_ops' class='pointer action' onclick='Hue.needs_confirm("reset_ops")'>Reset Ops</div>
-                        <div id='room_menu_more_remove_ops' class='pointer action' onclick='Hue.needs_confirm("remove_ops")'>Remove Ops</div>
-                        <div id='room_menu_more_banned_count' class='pointer action' onclick='Hue.get_ban_count()'>Banned Count</div>
-                        <div id='room_menu_more_unban_all' class='pointer action' onclick='Hue.needs_confirm("unban_all")'>Unban All</div>
-                        <div id='room_menu_more_admin_activity' class='pointer action' onclick='Hue.request_admin_activity()'>Admin Activity</div>
-                        <div id='room_menu_more_access_log' class='pointer action' onclick='Hue.request_access_log()'>Access Log</div>
-                        <div id='room_menu_more_admin_list' class='pointer action' onclick='Hue.request_admin_list()'>Admin List</div>
-                        <div id='room_menu_more_ban_list' class='pointer action' onclick='Hue.request_ban_list()'>Ban List</div>
-                        <div id='room_menu_more_clear_log' class='pointer action' onclick='Hue.needs_confirm("clear_log")'>Clear Log</div>
-                        <div id='room_menu_more_clear_message_board' class='pointer action' onclick='Hue.needs_confirm("clear_message_board")'>Clear Message Board</div>
+                        <div id='room_menu_more_broadcast' class='pointer action'>Broadcast</div>
+                        <div id='room_menu_more_whisper_ops' class='pointer action'>Whisper OPs</div>
+                        <div id='room_menu_more_reset_voices' class='pointer action'>Reset Voices</div>
+                        <div id='room_menu_more_reset_ops' class='pointer action'>Reset Ops</div>
+                        <div id='room_menu_more_remove_ops' class='pointer action'>Remove Ops</div>
+                        <div id='room_menu_more_banned_count' class='pointer action'>Banned Count</div>
+                        <div id='room_menu_more_unban_all' class='pointer action'>Unban All</div>
+                        <div id='room_menu_more_admin_activity' class='pointer action'>Admin Activity</div>
+                        <div id='room_menu_more_access_log' class='pointer action'>Access Log</div>
+                        <div id='room_menu_more_admin_list' class='pointer action'>Admin List</div>
+                        <div id='room_menu_more_ban_list' class='pointer action'>Ban List</div>
+                        <div id='room_menu_more_clear_log' class='pointer action'>Clear Log</div>
+                        <div id='room_menu_more_clear_message_board' class='pointer action'>Clear Message Board</div>
                     </div>
                 </div>
             </div>

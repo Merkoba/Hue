@@ -485,8 +485,7 @@ Hue.commands = {
   },
   "/unlock": {
     action: (arg, ans) => {
-      Hue.change_media_lock({type:"image", what:false, feedback:true})
-      Hue.change_media_lock({type:"tv", what:false, feedback:true})
+      Hue.unlock()
     },
     description: `Unlocks all media`,
   },

@@ -1,7 +1,7 @@
 <script id='template_draw_image' type='text/x-handlebars-template' class='template'>
     <div id='draw_image_main'>
         <div id='draw_image_controls'>
-            <div id='draw_image_mode_select_pencil' class='pointer action modal_icon_container' onclick='Hue.set_draw_image_mode_input("pencil")'>
+            <div id='draw_image_mode_select_pencil' class='pointer action modal_icon_container'>
                 <i class='fa fa-pencil-alt nicetitle' title='Pencil'></i>
 
                 <div id='draw_image_pencil_controls'>
@@ -21,7 +21,7 @@
                     </select>
                 </div>
             </div>
-            <div id='draw_image_mode_select_bucket' class='pointer action modal_icon_container' onclick='Hue.set_draw_image_mode_input("bucket")'>
+            <div id='draw_image_mode_select_bucket' class='pointer action modal_icon_container'>
                 <i class='fa fa-adjust nicetitle' title='Bucket' id='draw_image_bucket_icon'></i>
                 <input type='color' id='draw_image_bucket_color'>
             </div>
@@ -30,10 +30,10 @@
         <canvas id='draw_image_area' class='draw_canvas' width='1920px' height='1440px' tabindex=1></canvas>
 
         <div id='draw_image_buttons' class='flex_row_center'>
-            <div class='bigger pointer action' onclick='Hue.draw_image_undo()'>Undo</div>
-            <div class='bigger pointer action' onclick='Hue.draw_image_redo()'>Redo</div>
-            <div class='bigger pointer action' onclick='Hue.needs_confirm("clear_draw_image_func")'>Clear</div>
-            <div class='bigger pointer action' onclick='Hue.upload_draw_image()' tabindex=3>Upload</div>
+            <div id='draw_image_undo' class='bigger pointer action'>Undo</div>
+            <div id='draw_image_redo' class='bigger pointer action'>Redo</div>
+            <div id='draw_image_clear' class='bigger pointer action'>Clear</div>
+            <div id='draw_image_upload' class='bigger pointer action' tabindex=3>Upload</div>
         </div>
     </div>
 </script>

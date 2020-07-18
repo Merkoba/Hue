@@ -883,10 +883,10 @@ Hue.setup_image_picker = function () {
 
 Hue.check_image_picker = function (el) {
   if ($("#image_source_picker_input").val().trim().length > 0) {
-    $("#image_file_picker").css("display", "none")
+    $("#image_picker_upload").css("display", "none")
     $("#image_picker_submit").css("display", "inline-block")
   } else {
-    $("#image_file_picker").css("display", "inline-block")
+    $("#image_picker_upload").css("display", "inline-block")
     $("#image_picker_submit").css("display", "none")
   }
 }

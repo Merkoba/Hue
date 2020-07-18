@@ -6,7 +6,7 @@ Hue.start_dropzone = function () {
     maxFiles: 1,
     maxFilesize: Hue.config.max_image_size / 1024,
     autoProcessQueue: false,
-    clickable: "#image_file_picker, #image_upload_comment_change",
+    clickable: "#image_picker_upload, #image_upload_comment_change",
     acceptedFiles: "image/jpeg,image/png,image/gif,image/webp,image/bmp",
   })
 

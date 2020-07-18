@@ -1,11 +1,11 @@
 <div id='header' class='panel'>
     <div id='header_left'>
-        <i id='header_left_room_menu_icon' class='header_icon nicetitle pointer action fa fa-th-large' onclick='Hue.show_room_menu()' title="Room Menu"></i>
-        <div id='header_left_users_container' class='nicetitle action nicetitle pointer flex_row_center' title="Users Online" onclick='Hue.show_userlist_window()'>
+        <i id='header_left_room_menu_icon' class='header_icon nicetitle pointer action fa fa-th-large' title="Room Menu"></i>
+        <div id='header_left_users_container' class='nicetitle action nicetitle pointer flex_row_center' title="Users Online">
             <i id='header_left_users_icon' class='header_icon fas fa-users'></i>
             <div id='header_left_users_count' class='header_label'></div>
         </div>
-        <div class='nicetitle action nicetitle pointer flex_row_center' title="Message Board" onclick='Hue.show_message_board()'>
+        <div id='header_left_messageboard_container' class='nicetitle action nicetitle pointer flex_row_center' title="Message Board">
             <i id='header_left_message_board_icon' class='header_icon fas fa-comment-dots'></i>
             <div id='header_left_message_board_count' class='header_label'>Message Board</div>
         </div>
@@ -18,12 +18,8 @@
     </div>
 
     <div id='header_right'>
-        <i id='header_right_icon_lock' class='action nicetitle pointer header_icon fas fa-lock' title="Lock Screen" onclick='Hue.lock_screen()'></i>
-        <i id='header_right_icon_envelope' class='action nicetitle pointer header_icon fa fa-envelope' title="Whispers" onclick='Hue.show_whispers()'></i>
-        <i id='header_right_icon_bell' class='action nicetitle pointer header_icon fas fa-bell' title="Notifications" onclick='Hue.show_notifications()'></i>
+        <i id='header_right_icon_lock' class='action nicetitle pointer header_icon fas fa-lock' title="Lock Screen"></i>
+        <i id='header_right_icon_envelope' class='action nicetitle pointer header_icon fa fa-envelope' title="Whispers"></i>
+        <i id='header_right_icon_bell' class='action nicetitle pointer header_icon fas fa-bell' title="Notifications"></i>
     </div>
 </div>
-
-<div id='infotip_container'>
-    <div id='infotip'>hi</div>
-</div>	

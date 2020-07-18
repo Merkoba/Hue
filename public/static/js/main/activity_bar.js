@@ -22,24 +22,6 @@ Hue.setup_activity_bar = function () {
       Hue.process_write_whisper($(this).data("username"))
     }
   })
-
-  $("#header_left_room_menu_icon").on("auxclick", function (e) {
-    if (e.which === 2) {
-      let rotated = $("#main_container").data("hue_rotated")
-      let degrees = rotated ? 0 : 180
-
-      $("#main_container").css("transform", `rotateY(${degrees}deg)`)
-      $("#main_container").data("hue_rotated", !Boolean(rotated))
-    }
-  })
-
-  $("#header_left_users_container").on("auxclick", function (e) {
-    if (e.which === 2) {
-      let user =
-        Hue.userlist[Hue.utilz.get_random_int(0, Hue.userlist.length - 1)]
-      Hue.show_profile(user.username)
-    }
-  })
 }
 
 // Checks if the activity list has changed and the activity bar must be updated

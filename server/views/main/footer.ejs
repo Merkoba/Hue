@@ -1,30 +1,6 @@
 <div id='footer' class='panel'>
-    <div id='reactions_box_container'>
-        <div id='reactions_box'>
-            <div>
-                <i class='reaction_icon_2 far fa-thumbs-up pointer action nicetitle' onclick='Hue.send_reaction("like")' title="Like"></i>
-                <i class='reaction_icon far fa-heart pointer action nicetitle' onclick='Hue.send_reaction("love")' title="Love"></i>
-                <i class='reaction_icon far fa-smile pointer action nicetitle' onclick='Hue.send_reaction("happy")' title="Happy"></i>
-            </div>
-
-            <div>
-                <i class='reaction_icon far fa-thumbs-down pointer action nicetitle' onclick='Hue.send_reaction("dislike")' title="Dislike"></i>
-                <i class='reaction_icon far fa-meh pointer action nicetitle' onclick='Hue.send_reaction("meh")' title="Meh"></i>
-                <i class='reaction_icon far fa-frown pointer action nicetitle' onclick='Hue.send_reaction("sad")' title="Sad"></i>
-            </div>
-
-            <div class='pointer action user_function_button' id='user_function_button_1'>F1</div>
-            <div class='pointer action user_function_button' id='user_function_button_2'>F2</div>
-            <div class='pointer action user_function_button' id='user_function_button_3'>F3</div>
-            <div class='pointer action user_function_button' id='user_function_button_4'>F4</div>
-            <div class='pointer action user_function_button' id='user_function_button_5'>F5</div>
-            <div class='pointer action user_function_button' id='user_function_button_6'>F6</div>
-            <div class='pointer action user_function_button' id='user_function_button_7'>F7</div>
-            <div class='pointer action user_function_button' id='user_function_button_8'>F8</div>
-        </div>
-    </div>
     <div id='footer_items'>
-        <div id='footer_user_menu_container' class='pointer action' onclick="Hue.show_user_menu()">
+        <div id='footer_user_menu_container' class='pointer action'>
             <i id='footer_user_menu' class='fa fa-user-circle footer_icon'></i>
         </div>
 
@@ -33,11 +9,11 @@
         <div id='footer_media_items'>
 
             <div id='footer_image_controls' class='footer_media_control'>
-                <div id="footer_image_label" class='footer_media_label action pointer nicetitle' title='Click or Right Click' onclick='Hue.show_image_picker()' data-type="image">
+                <div id="footer_image_label" class='footer_media_label action pointer nicetitle' title='Click or Right Click' data-type="image">
                     <div class='footer_text_small'>Image</div><i id='footer_image_icon' class='fa fa-camera footer_icon2'></i>
                 </div>
 
-                <div class='pointer action nicetitle footer_icon2' onclick='Hue.toggle_image()' title='Show/Hide Image. Hidden means it will not be displayed or active'>
+                <div id='footer_image_toggler' class='pointer action nicetitle footer_icon2' title='Show/Hide Image. Hidden means it will not be displayed or active'>
                     <i id='footer_toggle_image_icon' class='fa fa-toggle-on'></i>
                 </div>
 
@@ -55,11 +31,11 @@
             </div>
 
             <div id='footer_tv_controls' class='footer_media_control'>
-                <div id="footer_tv_label" class='footer_media_label action pointer nicetitle' title='Click or Right Click' onclick='Hue.show_tv_picker()' data-type="tv">
+                <div id="footer_tv_label" class='footer_media_label action pointer nicetitle' title='Click or Right Click' data-type="tv">
                     <div class='footer_text_small'>TV</div><i id='footer_tv_icon' class='fa fa-tv footer_icon2'></i>
                 </div>
 
-                <div class='pointer action nicetitle footer_icon2' onclick='Hue.toggle_tv()' title="Show/Hide TV. Hidden means it will not be displayed or active">
+                <div id='footer_tv_toggler' class='pointer action nicetitle footer_icon2' title="Show/Hide TV. Hidden means it will not be displayed or active">
                     <i class='fa fa-toggle-on' id='footer_toggle_tv_icon'></i>
                 </div>
 
@@ -72,7 +48,7 @@
                 </div>
             </div>
 
-            <div id='footer_media_menu_container' class='pointer action' onclick='Hue.show_media_menu()'>
+            <div id='footer_media_menu_container' class='pointer action'>
                 <i id='footer_media_menu' class='fa fa-bars'></i>
             </div>
         </div>

@@ -189,6 +189,30 @@ Hue.setup_draw_image = function () {
     }
   })
 
+  $("#draw_image_mode_select_pencil").click(function () {
+    Hue.set_draw_image_mode_input("pencil")
+  })
+
+  $("#draw_image_mode_select_bucket").click(function () {
+    Hue.set_draw_image_mode_input("bucket")
+  })
+
+  $("#draw_image_undo").click(function () {
+    Hue.draw_image_undo()
+  })
+
+  $("#draw_image_redo").click(function () {
+    Hue.draw_image_redo()
+  })
+
+  $("#draw_image_clear").click(function () {
+    Hue.needs_confirm("clear_draw_image_func")
+  })
+
+  $("#draw_image_upload").click(function () {
+    Hue.upload_draw_image()
+  })
+
   Hue.draw_image_prepare_settings()
   Hue.horizontal_separator.separate("draw_image_buttons")
 }

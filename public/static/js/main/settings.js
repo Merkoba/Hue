@@ -1612,6 +1612,58 @@ Hue.setup_setting_elements = function (type) {
   $(`#${type}_double_tap_2_key`).text(Hue.config.double_tap_key_2)
   $(`#${type}_double_tap_3_key`).text(Hue.config.double_tap_key_3)
 
+  $(`#${type}_reset`).click(function () {
+    Hue.confirm_reset_settings(type)
+  })
+
+  $(`#${type}_chat_percentage_decrease`).click(function () {
+    Hue.settings_chat_percentage_icon_click(type, "decrease")
+  })
+
+  $(`#${type}_chat_percentage_decrease`).on("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.settings_chat_percentage_icon_middle_click(type, "min")
+    }
+  })
+
+  $(`#${type}_chat_percentage_increase`).click(function () {
+    Hue.settings_chat_percentage_icon_click(type, "increase")
+  })
+
+  $(`#${type}_chat_percentage_increase`).on("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.settings_chat_percentage_icon_middle_click(type, "max")
+    }
+  })
+
+  $(`#${type}_chat_display_percentage`).dblclick(function () {
+    Hue.settings_chat_percentage_slider_double_click(type)
+  })
+
+  $(`#${type}_tv_percentage_decrease`).click(function () {
+    Hue.settings_tv_percentage_icon_click(type, "decrease")
+  })
+
+  $(`#${type}_tv_percentage_decrease`).on("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.settings_tv_percentage_icon_middle_click(type, "min")
+    }
+  })
+
+  $(`#${type}_tv_percentage_increase`).click(function () {
+    Hue.settings_tv_percentage_icon_click(type, "increase")
+  })
+
+  $(`#${type}_tv_percentage_increase`).on("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.settings_tv_percentage_icon_middle_click(type, "max")
+    }
+  })
+
+  $(`#${type}_tv_display_percentage`).dblclick(function () {
+    Hue.settings_tv_percentage_slider_double_click(type)
+  })
+
   Hue.setup_togglers(type)
 }
 

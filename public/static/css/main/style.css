@@ -1044,6 +1044,7 @@ select {
 
 input[type=text],
 input[type=search],
+input[type=password],
 textarea,
 select {
 	background-color: white;
@@ -1610,8 +1611,8 @@ select {
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: center;
-	position: absolute;
-	bottom: 100%;
+	position: fixed;
+	bottom: var(--panel-height);
 	left: 0;
 	flex-grow: 1;
 	flex-shrink: 0;

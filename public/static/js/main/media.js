@@ -1,3 +1,14 @@
+// Setups media
+Hue.setup_media = function () {
+  $("#media_image_frame").click(function () {
+    Hue.show_current_image_modal()
+  })
+
+  $("#media_image_error").click(function () {
+    Hue.show_current_image_modal()
+  })
+}
+
 // What to do after pushing a new media changed item
 Hue.after_push_media_change = function (type, data) {
   if (Hue.show_media_history_type) {
@@ -123,7 +134,12 @@ Hue.stop_and_lock = function (stop = true) {
 
   Hue.change_media_lock({type:"image", what:true, save:false})
   Hue.change_media_lock({type:"tv", what:true, save:false})
+  Hue.save_room_state()
+}
 
+Hue.unlock = function () {
+  Hue.change_media_lock({type:"image", what:false, save:false})
+  Hue.change_media_lock({type:"tv", what:false, save:false})
   Hue.save_room_state()
 }
 
@@ -649,6 +665,49 @@ Hue.setup_media_menu = function () {
   $("#media_menu_tv_volume").on("input change", function () {
     Hue.set_tv_volume(parseFloat(this.value), true, false)
   })
+
+  $("#media_menu_image_icon").click(function () {
+    Hue.show_image_picker()
+  })
+
+  $("#media_menu_tv_icon").click(function () {
+    Hue.show_tv_picker()
+  })
+
+  $("#media_menu_stop_and_lock").click(function () {
+    Hue.stop_and_lock()
+    Hue.hide_media_menu()
+  })
+
+  $("#media_menu_lock").click(function () {
+    Hue.stop_and_lock(false)
+    Hue.hide_media_menu()
+  })
+
+  $("#media_menu_unlock").click(function () {
+    Hue.unlock()
+    Hue.hide_media_menu()
+  })
+
+  $("#media_menu_decrease_tv_volume").click(function () {
+    Hue.set_media_menu_tv_volume('decrease')
+  })
+
+  $("#media_menu_decrease_tv_volume").on("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.set_media_menu_tv_volume('min')
+    }
+  })
+
+  $("#media_menu_increase_tv_volume").click(function () {
+    Hue.set_media_menu_tv_volume('increase')
+  })
+
+  $("#media_menu_increase_tv_volume").on("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.set_media_menu_tv_volume('max')
+    }
+  })
 }
 
 // Format local sources that start with slash
@@ -690,6 +749,35 @@ Hue.setup_media_pickers = function () {
   for (let type of Hue.utilz.media_types) {
     Hue.horizontal_separator.separate($(`#${type}_picker_options`)[0])
   }
+
+  $("#image_picker_prev").click(function () {
+    Hue.needs_confirm("image_prev", "This will change the image for everyone. Are you sure?")
+  })
+
+  $("#image_picker_draw").click(function () {
+    Hue.open_draw_image()
+    Hue.msg_image_picker.close()
+  })
+
+  $("#image_picker_upload").click(function () {
+    Hue.msg_image_picker.close()
+  })
+
+  $("#image_picker_submit").click(function () {
+    Hue.image_picker_submit()
+  })
+
+  $("#tv_picker_prev").click(function () {
+    Hue.needs_confirm("tv_prev", "This will change the tv for everyone. Are you sure?")
+  })
+
+  $("#tv_picker_restart").click(function () {
+    Hue.needs_confirm("restart_tv", "This will restart the tv for everyone. Are you sure?")
+  })
+
+  $("#tv_picker_submit").click(function () {
+    Hue.tv_picker_submit()
+  })
 }
 
 // Updates the dimensions of a specified element

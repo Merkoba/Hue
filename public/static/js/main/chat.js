@@ -2047,7 +2047,7 @@ Hue.cant_chat = function () {
 // This is a message made by the user or one that is highlighted
 Hue.activity_above = function (animate = true) {
   let step = false
-  let up_scroller_height = $("#up_scroller").outerHeight()
+  let activity_up_scroller_height = $("#activity_up_scroller").outerHeight()
   let scrolltop = $("#chat_area").scrollTop()
 
   $($("#chat_area > .message").get().reverse()).each(function () {
@@ -2061,8 +2061,8 @@ Hue.activity_above = function (animate = true) {
     if (same_uname || $(this).data("highlighted")) {
       let p = $(this).position()
 
-      if (p.top < up_scroller_height) {
-        let diff = scrolltop + p.top - up_scroller_height
+      if (p.top < activity_up_scroller_height) {
+        let diff = scrolltop + p.top - activity_up_scroller_height
         Hue.scroll_chat_to(diff, animate)
         step = true
         return false
@@ -2079,8 +2079,8 @@ Hue.activity_above = function (animate = true) {
 // This is a message made by the user or one that is highlighted
 Hue.activity_below = function (animate = true) {
   let step = false
-  let up_scroller_height = $("#up_scroller").outerHeight()
-  let down_scroller_height = $("#down_scroller").outerHeight()
+  let activity_up_scroller_height = $("#activity_up_scroller").outerHeight()
+  let activity_down_scroller_height = $("#activity_down_scroller").outerHeight()
   let chat_area_height = $("#chat_area").innerHeight()
   let scrolltop = $("#chat_area").scrollTop()
 
@@ -2096,8 +2096,8 @@ Hue.activity_below = function (animate = true) {
       let p = $(this).position()
       let h = $(this).outerHeight()
 
-      if (p.top + h + down_scroller_height > chat_area_height) {
-        let diff = scrolltop + p.top - up_scroller_height
+      if (p.top + h + activity_down_scroller_height > chat_area_height) {
+        let diff = scrolltop + p.top - activity_up_scroller_height
         Hue.scroll_chat_to(diff, animate)
         step = true
         return false
@@ -3066,6 +3066,30 @@ Hue.apply_chat_style = function () {
 // Setups some chat configs
 Hue.setup_chat = function () {
   Hue.apply_chat_style()
+
+  $("#top_scroller").click(function () {
+    Hue.goto_top()
+  })
+
+  $("#top_autoscroller").click(function () {
+    Hue.autoscroll_up()
+  })
+
+  $("#activity_up_scroller").click(function () {
+    Hue.activity_above()
+  })
+
+  $("#bottom_scroller").click(function () {
+    Hue.goto_bottom(true)
+  })
+
+  $("#bottom_autoscroller").click(function () {
+    Hue.autoscroll_down()
+  })
+
+  $("#activity_down_scroller").click(function () {
+    Hue.activity_below()
+  })
 }
 
 // Makes the chat visible or not

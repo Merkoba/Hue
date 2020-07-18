@@ -298,6 +298,70 @@ Hue.setup_user_menu = function () {
   })
 
   Hue.setup_togglers("user_menu")
+
+  $("#user_menu_username").click(function () {
+    Hue.show_change_username()
+  })
+
+  $("#user_menu_profile_image").click(function () {
+    Hue.open_profile_image_picker()
+  })
+
+  $("#user_menu_audio_clip").click(function () {
+    Hue.select_audio_clip()
+  })
+
+  $("#user_menu_notebook").click(function () {
+    Hue.show_notebook()
+  })
+
+  $("#user_menu_details").click(function () {
+    Hue.show_details()
+  })
+
+  $("#user_menu_logout").click(function () {
+    Hue.needs_confirm("logout")
+  })
+
+  $("#user_menu_highlights").click(function () {
+    Hue.show_highlights()
+  })
+
+  $("#user_menu_history").click(function () {
+    Hue.show_input_history()
+  })
+
+  $("#user_menu_global_settings").click(function () {
+    Hue.show_global_settings()
+  })
+
+  $("#user_menu_rooom_settings").click(function () {
+    Hue.show_room_settings()
+  })
+
+  $("#user_menu_change_username").click(function () {
+    Hue.show_change_username()    
+  })
+
+  $("#user_menu_change_password").click(function () {
+    Hue.show_change_password()    
+  })
+
+  $("#user_menu_change_email").click(function () {
+    Hue.show_change_email()    
+  })
+
+  $("#user_menu_import_settings").click(function () {
+    Hue.show_import_settings()   
+  })
+
+  $("#user_menu_export_settings").click(function () {
+    Hue.show_export_settings()   
+  })
+
+  $("#user_menu_request_notifications").click(function () {
+    Hue.request_desktop_notifications_permission()
+  })
 }
 
 // Updates some user menu elements

@@ -29,7 +29,7 @@ Hue.setup_footer_icons = function () {
 Hue.setup_footer = function () {
   $("#footer_image_icon").on("auxclick", function (e) {
     if (e.which === 2) {
-      $("#image_file_picker").click()
+      $("#image_picker_upload").click()
     }
   })
 
@@ -71,6 +71,30 @@ Hue.setup_footer = function () {
       Hue.change_media_lock({type:type, feedback:true})
     })
   }
+
+  $("#footer_user_menu_container").click(function () {
+    Hue.show_user_menu()
+  })
+
+  $("#footer_image_label").click(function () {
+    Hue.show_image_picker()
+  })
+
+  $("#footer_image_toggler").click(function () {
+    Hue.toggle_image()
+  })
+
+  $("#footer_tv_label").click(function () {
+    Hue.show_tv_picker()
+  })
+
+  $("#footer_tv_toggler").click(function () {
+    Hue.toggle_tv()
+  })
+
+  $("#footer_media_menu_container").click(function () {
+    Hue.show_media_menu()
+  })
 }
 
 // Checks how to handle the rotate icon

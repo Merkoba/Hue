@@ -109,9 +109,8 @@ Hue.setup_reactions_box = function () {
 
   Hue.horizontal_separator.separate("reactions_box")
 
-  $("#recent_input_box").on("click", ".recent_input_item", function () {
-    Hue.process_message({ message: $(this).text() })
-    Hue.hide_reactions_box()
+  $("#reactions_box").on("click", ".reaction_icon", function () {
+    Hue.send_reaction($(this).data("kind"))
   })
 }
 

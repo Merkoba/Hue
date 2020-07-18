@@ -39,6 +39,12 @@
         <input type='file' accept="audio/mpeg, audio/ogg, audio/wav, audio/flac" id='audio_clip_picker' class='nodisplay' onchange='Hue.audio_clip_selected(this)'>
     </form>
 
+    <div id='infotip_container'>
+        <div id='infotip'>hi</div>
+    </div>
+
+    <% include reactions.ejs %>
+
     <%- templates %>
 
 </body>
