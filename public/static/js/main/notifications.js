@@ -19,7 +19,7 @@ Hue.make_info_popup = function (on_click = function () {}) {
     window_width: "auto",
     on_click: on_click,
     close_on_escape: false,
-  })
+  }, "info")
 
   popup.hue_date = Date.now()
   return popup
@@ -158,7 +158,7 @@ Hue.show_popup = function (popup, html="") {
   }
 
   if (Hue.app_focused) {
-    if (Hue.num_open_popups() >= Hue.config.max_info_popups) {
+    if (Hue.num_open_info_popups() >= Hue.config.max_info_popups) {
       return
     }
 
@@ -188,4 +188,18 @@ Hue.add_to_info_popups = function (popup) {
   if (Hue.info_popups.length > Hue.config.max_info_popups) {
     Hue.info_popups = Hue.info_popups.slice(-Hue.config.max_info_popups)
   }
+}
+
+// Get the number of visible info popups
+Hue.num_open_info_popups = function () {
+  let popups = Hue.get_popup_instances()
+  let num = 0
+
+  for (let popup of popups) {
+    if (popup.hue_type === "info" && popup.is_open()) {
+      num += 1
+    }
+  }
+
+  return num
 }

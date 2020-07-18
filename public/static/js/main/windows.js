@@ -738,11 +738,6 @@ Hue.get_popup_instances = function () {
   return Hue.msg_room_menu.lower_instances()
 }
 
-// Gets all Msg popup instances
-Hue.num_open_popups = function () {
-  return Hue.msg_room_menu.num_open_lower()
-}
-
 // Gets all Msg instances
 Hue.get_all_msg_instances = function () {
   return Hue.msg_room_menu.instances()
@@ -898,7 +893,7 @@ Hue.scroll_modal_to_bottom = function (id) {
 }
 
 // Creates a Msg popup
-Hue.create_popup = function (args = {}) {
+Hue.create_popup = function (args = {}, ptype = "unset") {
   if (!args.id) {
     Hue.popup_id += 1
     args.id = Hue.popup_id
@@ -926,7 +921,9 @@ Hue.create_popup = function (args = {}) {
   }
 
   args = Object.assign(def_args, args)
-  return Msg.factory(args)
+  let popup = Msg.factory(args)
+  popup.hue_type = ptype
+  return popup
 }
 
 // Changes the state of a toggler
