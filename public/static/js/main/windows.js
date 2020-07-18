@@ -135,7 +135,8 @@ Hue.start_msg = function () {
     Object.assign({}, common, {
       id: "lockscreen",
       preset: "window",
-      overlay_class: "!overlay_same_color",
+      close_on_escape: false,
+      overlay_class: "!overlay_same_color"
     })
   )
 
