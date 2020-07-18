@@ -183,9 +183,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "big_keyboard_scroll"
 >The amount scrolled in pixels for a bigger scroll. By using pageUp or pageDown.
 
-"afk_timeout_duration"
->When a user has had the tab unfocused (changing applications is currently not detected as being unfocused by browsers, so this means being on a different tab) for this amount of time, the user will be considered internally as afk. When afk is true it the tab won't load new changed images until the user focuses the tab again. This is to be avoid an abandoned tab from loading lots of images for no purpose, to save bandwidth.
-
 "roomlist_cache"
 >When the public rooms list is requested, it will get cached so subsequent requests won't trigger a whole analysis again, to save processing power. This controls how long that cache will be valid until it's time to generate it again with the next request.
 
@@ -315,24 +312,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_beep_on_user_joins"
 >Whether to beep by default on user joins.
 
-"global_settings_default_afk_disable_messages_beep"
->Whether to disable message beeps while afk by default.
-
-"global_settings_default_afk_disable_highlights_beep"
->Whether to disable highlight beeps while afk by default.
-
-"global_settings_default_afk_disable_media_change_beep"
->Whether to disable media change beeps while afk by default.
-
-"global_settings_default_afk_disable_joins_beep"
->Whether to disable join beeps while afk by default.
-
-"global_settings_default_afk_disable_image_change"
->Whether to disable image change while afk by default.
-
-"global_settings_default_afk_disable_tv_change"
->Whether to disable tv change while afk by default.
-
 "global_settings_default_open_popup_messages"
 >Whether popup messages will open automatically when arrived by default.
 
@@ -344,9 +323,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "global_settings_default_on_unlockscreen"
 >Default commands to execute when the screen is unlocked.
-
-"global_settings_default_afk_on_lockscreen"
->Whether the user will go afk when locking the screen by default.
 
 "global_settings_default_aliases"
 >Default command aliases.

@@ -45,12 +45,6 @@ Hue.show_highlight_desktop_notification = function () {
     return false
   }
 
-  if (Hue.afk) {
-    if (Hue.get_setting("afk_disable_desktop_notifications")) {
-      return false
-    }
-  }
-
   Hue.show_desktop_notification(
     `New highlight in ${Hue.room_name.substring(0, 40)}`
   )

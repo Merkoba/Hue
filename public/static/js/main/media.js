@@ -864,6 +864,10 @@ Hue.change = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
+  if (Hue.room_state.screen_locked) {
+    return
+  }
+
   let item
 
   if (args.item) {
@@ -892,20 +896,6 @@ Hue.change = function (args = {}) {
     }
   } else {
     return false
-  }
-
-  if (Hue.afk) {
-    if (args.type === "image") {
-      if (Hue.get_setting("afk_disable_image_change")) {
-        Hue.change_image_when_focused = true
-        return false
-      }
-    } else if (args.type === "tv") {
-      if (Hue.get_setting("afk_disable_tv_change")) {
-        Hue.change_tv_when_focused = true
-        return false
-      }
-    }
   }
 
   if (args.type === "image") {

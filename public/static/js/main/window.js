@@ -78,7 +78,7 @@ Hue.activate_visibility_listener = function () {
 // This runs after a visibility change
 // Does things depending if the client is visible or not
 Hue.process_visibility = function () {
-  if (Hue.room_state.screen_locked && Hue.get_setting("afk_on_lockscreen")) {
+  if (Hue.room_state.screen_locked) {
     return false
   }
 
@@ -93,24 +93,7 @@ Hue.process_visibility = function () {
 
 // This runs when the client regains visibility
 Hue.on_app_focused = function () {
-  if (Hue.afk_timer !== undefined) {
-    clearTimeout(Hue.afk_timer)
-  }
-
-  Hue.afk = false
-
   Hue.remove_alert_title()
-
-  if (Hue.change_image_when_focused) {
-    Hue.change({ type: "image" })
-    Hue.change_image_when_focused = false
-  }
-
-  if (Hue.change_tv_when_focused) {
-    Hue.change({ type: "tv" })
-    Hue.change_tv_when_focused = false
-  }
-
   Hue.show_info_popups()
   Hue.show_fresh_messages()
   Hue.trigger_activity()
@@ -118,12 +101,6 @@ Hue.on_app_focused = function () {
 
 // This runs when the client loses visibility
 Hue.on_app_unfocused = function () {
-  if (Hue.get_setting("afk_delay") !== "never") {
-    Hue.afk_timer = setTimeout(function () {
-      Hue.afk = true
-    }, Hue.get_setting("afk_delay"))
-  }
-
   Hue.check_scrollers()
 }
 

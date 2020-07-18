@@ -47,12 +47,6 @@
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_afk_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_afk_{{type}}' data-category='afk'>
-                    <span class='settings_window_category_status_filler invisible'></span>
-                    <span class='settings_window_category_text'>AFK</span>
-                    <span class='settings_window_category_status'></span>
-                </div>
-
                 <div id='settings_window_category_misc_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_misc_{{type}}' data-category='misc'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Misc</span>
@@ -203,71 +197,6 @@
                     <div class="setting_title2">Show Clock</div>
                     <div class="setting_title">In Lock Screen</div>
                     <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_show_clock_in_lockscreen">
-                </div>
-            </div>
-
-            <div class='settings_category settings_window_category_container_selected' id='settings_window_category_content_afk_{{type}}' data-category='afk'>
-                <div class='settings_item settings_top_level_item' data-setting='afk_delay'>
-                    <div class="setting_title">Go AFK On Unfocus</div>
-                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_afk_delay">
-                        <option value='0'>Instantly</option>
-                        <option value='60000'>After 1 Minute</option>
-                        <option value='120000'>After 2 Minutes</option>
-                        <option value='300000'>After 5 Minutes</option>
-                        <option value='600000'>After 10 Minutes</option>
-                        <option value='1200000'>After 20 Minutes</option>
-                        <option value='1800000'>After 30 Minutes</option>
-                        <option value='3600000'>After 1 Hour</option>
-                        <option value='never'>Never</option>
-                    </select>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='afk_disable_messages_beep'>
-                    <div class="setting_title2">On AFK</div>
-                    <div class="setting_title">Disable Messages Beep</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_messages_beep">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='afk_disable_highlights_beep'>
-                    <div class="setting_title2">On AFK</div>
-                    <div class="setting_title">Disable Highlights Beep</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_highlights_beep">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='afk_disable_media_change_beep'>
-                    <div class="setting_title2">On AFK</div>
-                    <div class="setting_title">Disable Media Change Beep</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_media_change_beep">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='afk_disable_joins_beep'>
-                    <div class="setting_title2">On AFK</div>
-                    <div class="setting_title">Disable Joins Beep</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_joins_beep">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='afk_disable_image_change'>
-                    <div class="setting_title2">On AFK</div>
-                    <div class="setting_title">Disable Image Change</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_image_change">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='afk_disable_tv_change'>
-                    <div class="setting_title2">On AFK</div>
-                    <div class="setting_title">Disable TV Change</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_tv_change">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='afk_disable_desktop_notifications'>
-                    <div class="setting_title2">On AFK</div>
-                    <div class="setting_title">Disable Desktop Notifications</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_disable_desktop_notifications">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='afk_on_lockscreen'>
-                    <div class="setting_title2">Go AFK</div>
-                    <div class="setting_title">On Lock Screen</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_afk_on_lockscreen">
                 </div>
             </div>
 

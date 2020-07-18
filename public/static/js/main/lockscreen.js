@@ -40,21 +40,16 @@ Hue.setup_lockscreen_clock = function () {
 
 // Enables the lockscreen
 // The lockscreen is a special mode where the display is covered
-// The user is considered unfocused and optionally afk automatically
+// The user is considered unfocused
 Hue.lock_screen = function (save = true) {
-  if (Hue.screen_locked) {
+  if (Hue.room_state.screen_locked) {
     return false
   }
-
+  
+  Hue.stop_and_lock(true)
   Hue.room_state.screen_locked = true
-  Hue.screen_locked = true
   Hue.process_lockscreen_lights_off()
   Hue.msg_lockscreen.show()
-
-  if (Hue.get_setting("afk_on_lockscreen")) {
-    Hue.afk = true
-    Hue.app_focused = false
-  }
 
   Hue.execute_commands("on_lockscreen")
 
@@ -73,7 +68,7 @@ Hue.lock_screen = function (save = true) {
 
 // Disables the lockscreen
 Hue.unlock_screen = function (save = true) {
-  if (!Hue.screen_locked) {
+  if (!Hue.room_state.screen_locked) {
     return false
   }
 
@@ -81,9 +76,9 @@ Hue.unlock_screen = function (save = true) {
   clearInterval(Hue.lockscreen_clock_interval)
 
   Hue.room_state.screen_locked = false
-  Hue.screen_locked = false
   Hue.msg_lockscreen.close()
   Hue.process_visibility()
+  Hue.unlock()
   Hue.execute_commands("on_unlockscreen")
 
   $("#lockscreen_title_info").text("")

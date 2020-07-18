@@ -406,12 +406,6 @@ Hue.commands = {
     },
     description: `Shows the shrug ascii`,
   },
-  "/afk": {
-    action: (arg, ans) => {
-      Hue.show_afk()
-    },
-    description: `Shows that the user went AFK`,
-  },
   "/disconnectothers": {
     action: (arg, ans) => {
       Hue.disconnect_others()

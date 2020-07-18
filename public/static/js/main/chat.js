@@ -2900,14 +2900,6 @@ Hue.shrug = function () {
   })
 }
 
-// Sends a simple afk chat message
-Hue.show_afk = function () {
-  Hue.process_message({
-    message: "/me is now AFK",
-    to_history: false,
-  })
-}
-
 // Centralized function to show local feedback messages
 Hue.feedback = function (message, data = false) {
   let obj = {

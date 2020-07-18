@@ -214,23 +214,6 @@ Hue.user_settings = {
       }
     },
   },
-  afk_delay: {
-    widget_type: "select",
-    description: `How much time to consider the user as Away From Keyboard after the client loses visibility`,
-    action: (type, save = true) => {
-      let delay = $(`#${type}_afk_delay option:selected`).val()
-
-      if (delay !== "never") {
-        delay = parseInt(delay)
-      }
-
-      Hue[type].afk_delay = delay
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   ignored_usernames: {
     widget_type: "textarea",
     description: `Ignore messages and actions from these users`,
@@ -378,97 +361,6 @@ Hue.user_settings = {
     description: `Whether chat scroll animation is enabled in some cases or not at all`,
     action: (type, save = true) => {
       Hue[type].animate_scroll = $(`#${type}_animate_scroll`).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  afk_disable_messages_beep: {
-    widget_type: "checkbox",
-    description: `Whether alert sounds on new messages should be disabled when Away From Keyboard`,
-    action: (type, save = true) => {
-      Hue[type].afk_disable_messages_beep = $(
-        `#${type}_afk_disable_messages_beep`
-      ).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  afk_disable_highlights_beep: {
-    widget_type: "checkbox",
-    description: `Whether alert sounds on new highlights should be disabled when Away From Keyboard`,
-    action: (type, save = true) => {
-      Hue[type].afk_disable_highlights_beep = $(
-        `#${type}_afk_disable_highlights_beep`
-      ).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  afk_disable_media_change_beep: {
-    widget_type: "checkbox",
-    description: `Whether alert sounds on new media change announcements should be disabled when Away From Keyboard`,
-    action: (type, save = true) => {
-      Hue[type].afk_disable_media_change_beep = $(
-        `#${type}_afk_disable_media_change_beep`
-      ).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  afk_disable_joins_beep: {
-    widget_type: "checkbox",
-    description: `Whether alert sounds on user joins should be disabled when Away From Keyboard`,
-    action: (type, save = true) => {
-      Hue[type].afk_disable_joins_beep = $(
-        `#${type}_afk_disable_joins_beep`
-      ).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  afk_disable_image_change: {
-    widget_type: "checkbox",
-    description: `Whether automatic image change should be disabled when Away From Keyboard`,
-    action: (type, save = true) => {
-      Hue[type].afk_disable_image_change = $(
-        `#${type}_afk_disable_image_change`
-      ).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  afk_disable_tv_change: {
-    widget_type: "checkbox",
-    description: `Whether automatic tv change should be disabled when Away From Keyboard`,
-    action: (type, save = true) => {
-      Hue[type].afk_disable_tv_change = $(
-        `#${type}_afk_disable_tv_change`
-      ).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  afk_disable_desktop_notifications: {
-    widget_type: "checkbox",
-    description: `Whether desktop notifications should be disabled when Away From Keyboard`,
-    action: (type, save = true) => {
-      Hue[type].afk_disable_desktop_notifications = $(
-        `#${type}_afk_disable_desktop_notifications`
-      ).prop("checked")
 
       if (save) {
         Hue[`save_${type}`]()
@@ -624,19 +516,6 @@ Hue.user_settings = {
       $(`#${type}_on_unlockscreen`).val(cmds)
 
       Hue[type].on_unlockscreen = cmds
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  afk_on_lockscreen: {
-    widget_type: "checkbox",
-    description: `Whether the user goes Away From Keyboard immidiately after locking the screen`,
-    action: (type, save = true) => {
-      Hue[type].afk_on_lockscreen = $(`#${type}_afk_on_lockscreen`).prop(
-        "checked"
-      )
 
       if (save) {
         Hue[`save_${type}`]()
