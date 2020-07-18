@@ -916,6 +916,7 @@ Hue.create_popup = function (args = {}) {
     titlebar_class: "!custom_titlebar",
     window_inner_x_class: "!titlebar_inner_x",
     edge_padding_y: edge_padding_y,
+    persistent: false
   }
 
   args = Object.assign(def_args, args)
