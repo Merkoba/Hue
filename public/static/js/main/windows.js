@@ -738,6 +738,11 @@ Hue.get_popup_instances = function () {
   return Hue.msg_room_menu.lower_instances()
 }
 
+// Gets all Msg popup instances
+Hue.num_open_popups = function () {
+  return Hue.msg_room_menu.num_open_lower()
+}
+
 // Gets all Msg instances
 Hue.get_all_msg_instances = function () {
   return Hue.msg_room_menu.instances()
