@@ -660,8 +660,25 @@ Hue.setup_whispers_click = function (content, username) {
     })
 }
 
+// Setups the message window
+Hue.setup_message_window = function () {
+  $("#write_message_send_button").click(function () {
+    Hue.send_popup_message()
+  })
+
+  $("#write_message_send_button").dblclick(function () {
+    Hue.send_popup_message(true)
+  })
+
+  $("#write_message_clear_drawing").click(function () {
+    Hue.clear_draw_message_state()
+  })
+
+  Hue.setup_message_draw_area()
+}
+
 // Setups the drawing area of write whisper windows
-Hue.setup_message_area = function () {
+Hue.setup_message_draw_area = function () {
   Hue.draw_message_context = $("#draw_message_area")[0].getContext("2d")
   Hue.clear_draw_message_state()
 

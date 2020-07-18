@@ -2,10 +2,10 @@
     <div id='locked_menu'>
         <div>You are banned from this room</div>
         <div id='locked_menu_container' class='flex_column_center'>
-            <div class='menu_item action' onclick="Hue.request_roomlist('', 'visited_roomlist')">Visited Rooms</div>
-            <div class='menu_item action' onclick="Hue.request_roomlist('', 'public_roomlist')">Public Rooms</div>
-            <div class='menu_item action' onclick="Hue.show_goto_room()">Go To Room</div>
+            <div id='locked_menu_visited_rooms' class='menu_item action'>Visited Rooms</div>
+            <div id='locked_menu_public_rooms' class='menu_item action'>Public Rooms</div>
+            <div id='locked_menu_goto_room' class='menu_item action'>Go To Room</div>
         </div>
-        <div class='inline menu_item_smaller action' onclick='Hue.needs_confirm("logout")'>Logout</div>
+        <div id='locked_menu_logout' class='inline menu_item_smaller action'>Logout</div>
     </div>
 </script>

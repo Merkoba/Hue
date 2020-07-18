@@ -304,7 +304,7 @@ Hue.server_update_events = {
 // Centralized function to initiate a socket emit to the server
 Hue.socket_emit = function (destination, data, force = false) {
   if (!force) {
-    if (!Hue.connected) {
+    if (!Hue.connected && !Hue.room_locked) {
       return
     }
   }

@@ -666,6 +666,10 @@ Hue.setup_media_menu = function () {
     Hue.set_tv_volume(parseFloat(this.value), true, false)
   })
 
+  $("#media_menu_tv_volume").dblclick(function () {
+    Hue.set_media_menu_tv_volume("default")
+  })
+
   $("#media_menu_image_icon").click(function () {
     Hue.show_image_picker()
   })

@@ -315,7 +315,7 @@ module.exports = function (
     }
 
     let id = userinfo._id.toString()
-    let current_role = info.keys[id]
+    let current_role = info.keys[id] || "voice_1"
 
     if (
       (current_role === "admin" || current_role.startsWith("op")) &&

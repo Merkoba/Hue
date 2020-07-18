@@ -242,7 +242,7 @@ Hue.init = function () {
   Hue.setup_footer()
   Hue.setup_reactions_box()
   Hue.prepare_media_settings()
-  Hue.setup_message_area()
+  Hue.setup_message_window()
   Hue.setup_draw_image()
   Hue.setup_autocomplete()
   Hue.setup_modal_image_number()
