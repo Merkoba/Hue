@@ -245,7 +245,7 @@ module.exports = function (
       vars.rooms[socket.hue_room_id] = handler.create_room_object(info)
     }
 
-    socket.hue_role = info.keys[socket.hue_user_id]
+    socket.hue_role = info.keys[socket.hue_user_id] || vars.default_role
 
     if (!vars.roles.includes(socket.hue_role)) {
       socket.hue_role = "voice_1"

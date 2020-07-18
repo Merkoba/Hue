@@ -207,7 +207,7 @@ module.exports = function (
         }
 
         let id = userinfo._id.toString()
-        let current_role = info.keys[id]
+        let current_role = info.keys[id] || vars.default_role
         message_username = userinfo.username
 
         if (!socket.hue_superuser) {

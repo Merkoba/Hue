@@ -71,6 +71,7 @@ module.exports = function (
 
   vars.last_roomlist
   vars.roomlist_last_get = 0
+  vars.default_role = "voice_1"
 
   // Configure the anti-spam system
   vars.anti_spam = new vars.SocketAntiSpam({

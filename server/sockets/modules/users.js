@@ -52,7 +52,7 @@ module.exports = function (
     }
 
     let id = userinfo._id.toString()
-    let current_role = info.keys[id]
+    let current_role = info.keys[id] || vars.default_role
 
     if (!socket.hue_superuser) {
       if (
@@ -123,10 +123,12 @@ module.exports = function (
       { _id: socket.hue_room_id },
       { keys: 1 }
     )
+
     let removed = false
+    let role = info.keys[key] || vars.default_role
 
     for (let key in info.keys) {
-      if (info.keys[key].startsWith("voice") && info.keys[key] !== "voice_1") {
+      if (role.startsWith("voice") && role !== "voice_1") {
         delete info.keys[key]
         removed = true
       }
@@ -163,10 +165,12 @@ module.exports = function (
       { _id: socket.hue_room_id },
       { keys: 1 }
     )
+
     let changed = false
+    let role = info.keys[key] || vars.default_role
 
     for (let key in info.keys) {
-      if (info.keys[key].startsWith("op") && info.keys[key] !== "op_1") {
+      if (role.startsWith("op") && role !== "op_1") {
         info.keys[key] = "op_1"
         changed = true
       }
@@ -203,10 +207,12 @@ module.exports = function (
       { _id: socket.hue_room_id },
       { keys: 1 }
     )
+
     let removed = false
+    let role = info.keys[key] || vars.default_role
 
     for (let key in info.keys) {
-      if (info.keys[key].startsWith("op")) {
+      if (role.startsWith("op")) {
         delete info.keys[key]
         removed = true
       }
@@ -315,7 +321,7 @@ module.exports = function (
     }
 
     let id = userinfo._id.toString()
-    let current_role = info.keys[id] || "voice_1"
+    let current_role = info.keys[id] || vars.default_role
 
     if (
       (current_role === "admin" || current_role.startsWith("op")) &&
@@ -551,7 +557,7 @@ module.exports = function (
     let ids = []
 
     for (let id in info.keys) {
-      let role = info.keys[id]
+      let role = info.keys[id] || "voice_1"
 
       if (role.startsWith("op") || role === "admin") {
         roles[id] = role
