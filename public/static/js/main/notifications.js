@@ -159,7 +159,6 @@ Hue.show_popup = function (popup, html="") {
 
   if (Hue.app_focused) {
     if (Hue.num_open_popups() >= Hue.config.max_info_popups) {
-      popup.destroy()
       return
     }
 
@@ -187,12 +186,6 @@ Hue.add_to_info_popups = function (popup) {
   Hue.info_popups.push(popup)
 
   if (Hue.info_popups.length > Hue.config.max_info_popups) {
-    let remainder = Hue.info_popups.slice(0, Hue.info_popups.length - Hue.config.max_info_popups)
-    
-    for (let popup of remainder) {
-      popup.destroy()
-    }
-
     Hue.info_popups = Hue.info_popups.slice(-Hue.config.max_info_popups)
   }
 }
