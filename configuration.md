@@ -480,6 +480,21 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_confirm_message_board"
 >Where to show confirm on board message by default
 
+"room_state_default_images_enabled"
+>Whether images will be enabled by default.
+
+"room_state_default_tv_enabled"
+>Whether tv will be enabled by default.
+
+"room_state_default_radio_enabled"
+>Whether radio will be enabled by default.
+
+"room_state_default_images_locked"
+>Whether images will be locked by default.
+
+"room_state_default_tv_locked"
+>Whether tv will be locked by default.
+
 "room_state_default_tv_volume"
 >Default volume for the tv.
 
