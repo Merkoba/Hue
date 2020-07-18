@@ -158,7 +158,6 @@ Hue.show_popup = function (popup, html="") {
   }
 
   if (Hue.app_focused) {
-    console.log(Hue.num_open_popups())
     if (Hue.num_open_popups() >= Hue.config.max_info_popups) {
       popup.destroy()
       return
