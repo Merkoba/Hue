@@ -25,8 +25,18 @@ Hue.setup_activity_bar = function () {
 // Check if it's ok to trigger activity
 Hue.check_trigger_activity = function () {
   if (Hue.app_focused && !Hue.screen_locked) {
-    Hue.trigger_activity()
+    if (Date.now() - Hue.last_activity_trigger >= Hue.config.activity_bar_trigger_interval) {
+      Hue.trigger_activity()
+    }
   }
+}
+
+// Sends an activity signal to the server
+// This is used to know which users might be active
+// This is used to display users in the activity bar
+Hue.trigger_activity = function () {
+  Hue.last_activity_trigger = Date.now()
+  Hue.socket_emit("activity_trigger", {})
 }
 
 // Checks if the activity list has changed and the activity bar must be updated

@@ -43,13 +43,6 @@ Hue.pong_received = function (data) {
   Hue.feedback(`Pong: ${nice_time}`)
 }
 
-// Sends an activity signal to the server
-// This is used to know which users might be active
-// This is used to display users in the activity bar
-Hue.trigger_activity = function () {
-  Hue.socket_emit("activity_trigger", {})
-}
-
 // Only for superusers
 // Sends a system restart signal that tells all clients to refresh
 Hue.send_system_restart_signal = function () {

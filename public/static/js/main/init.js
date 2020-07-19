@@ -119,6 +119,7 @@ Hue.keys_pressed = {}
 Hue.hide_infotip_delay = 2000
 Hue.active_modal = false
 Hue.activity_list = []
+Hue.last_activity_trigger = 0
 Hue.HOUR = 3600000
 Hue.DAY = 86400000
 Hue.YEAR = 31536000000
