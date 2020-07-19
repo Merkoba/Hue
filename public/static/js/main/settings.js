@@ -1646,12 +1646,6 @@ Hue.set_user_settings_titles = function () {
 // Modifies a setting manually instead of using the settings windows
 Hue.modify_setting = function (arg, show_feedback = true, force = false) {
   let split = arg.split(" ")
-
-  if (split.length < 2) {
-    Hue.feedback("Missing an argument")
-    return false
-  }
-
   let setting = split[0]
 
   if (Hue.user_settings[setting] === undefined) {
@@ -1659,14 +1653,22 @@ Hue.modify_setting = function (arg, show_feedback = true, force = false) {
     return false
   }
 
-  let value = split.slice(1).join(" ")
+  let value = ""
 
-  if (value === "true") {
-    value = true
-  } else if (value === "false") {
-    value = false
-  } else if (!isNaN(value)) {
-    value = Number(value)
+  if (split.length > 1) {
+    value = split.slice(1).join(" ")
+  }
+
+  if (value) {
+    if (value === "true") {
+      value = true
+    } else if (value === "false") {
+      value = false
+    } else if (!isNaN(value)) {
+      value = Number(value)
+    } else {
+      value = value.split("\\n").join("\n")
+    }
   }
 
   let type = Hue.active_settings(setting)
