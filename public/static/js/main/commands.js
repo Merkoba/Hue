@@ -1494,17 +1494,6 @@ Hue.format_command_aliases = function (cmds) {
 
 // Checks if a remote command includes a forbidden critical command
 Hue.includes_critical_command = function (username, message, announce = true) {
-  let commands = [
-    "/js",
-    "/js2",
-    "/changeusername",
-    "/changepassword",
-    "/changeemail",
-    "/systembroadcast",
-    "/systemrestart",
-    "/annex",
-  ]
-
   let split = message.split(" ")
 
   for (let cmd of split) {
@@ -1516,7 +1505,7 @@ Hue.includes_critical_command = function (username, message, announce = true) {
       continue
     }
 
-    for (let command of commands) {
+    for (let command of Hue.critical_commands) {
       if (Hue.command_sorted_equals(cmd2, command)) {
         if (announce) {
           Hue.feedback(
@@ -1562,6 +1551,10 @@ Hue.get_closest_command = function (cmd) {
       highest_num = similarity
       highest_command = command
     }
+  }
+
+  if (Hue.critical_commands.includes(highest_command)) {
+    highest_command = false
   }
 
   return highest_command

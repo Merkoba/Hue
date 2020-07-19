@@ -172,6 +172,17 @@ Hue.typing = false
 Hue.favicon_mode = 0
 Hue.handle_url_open = false
 
+Hue.critical_commands = [
+    "/js",
+    "/js2",
+    "/changeusername",
+    "/changepassword",
+    "/changeemail",
+    "/systembroadcast",
+    "/systemrestart",
+    "/annex"
+]
+
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
 Hue.youtube_loaded = false
