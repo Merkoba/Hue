@@ -25,7 +25,7 @@ Hue.setup_activity_bar = function () {
 // Check if it's ok to trigger activity
 Hue.check_trigger_activity = function () {
   if (Hue.app_focused && !Hue.screen_locked) {
-    if (Date.now() - Hue.last_activity_trigger >= Hue.config.activity_bar_trigger_interval) {
+    if (Date.now() - Hue.last_activity_trigger >= (Hue.config.activity_bar_trigger_interval / 2)) {
       Hue.trigger_activity()
     }
   }

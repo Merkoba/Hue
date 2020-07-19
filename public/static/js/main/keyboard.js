@@ -379,23 +379,25 @@ Hue.activate_key_detection = function () {
 
       return
     } else if (e.key === "PageUp") {
-      if (e.shiftKey) {
-        Hue.goto_top()
-      } else {
-        Hue.scroll_up(Hue.config.big_keyboard_scroll)
-      }
-
+      Hue.scroll_up(Hue.config.big_keyboard_scroll)
       e.preventDefault()
       return
     } else if (e.key === "PageDown") {
-      if (e.shiftKey) {
-        Hue.goto_bottom(true)
-      } else {
-        Hue.scroll_down(Hue.config.big_keyboard_scroll)
-      }
-
+      Hue.scroll_down(Hue.config.big_keyboard_scroll)
       e.preventDefault()
       return
+    } else if (e.key === "Home") {
+      if (e.ctrlKey) {
+        Hue.goto_top()
+        e.preventDefault()
+        return
+      }
+    } else if (e.key === "End") {
+      if (e.ctrlKey) {
+        Hue.goto_bottom(true, true)
+        e.preventDefault()
+        return
+      }
     } else if (e.key === "Escape") {
       if (!e.shiftKey) {
         if ($("#input").val().length > 0) {
