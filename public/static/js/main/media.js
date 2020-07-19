@@ -1030,17 +1030,16 @@ Hue.start_media_info_events = function () {
 
 // Refreshes image and tv media info
 Hue.reapply_media_info = function () {
-  Hue.apply_media_info($("#media_image_info")[0], Hue.loaded_image, "image")
-
-  let tv_media_info = $(`#media_${Hue.loaded_tv.type}_video_container`)
-    .find(".media_info")
-    .get(0)
-
-  Hue.apply_media_info(tv_media_info, Hue.loaded_tv, "tv")
+  Hue.apply_image_media_info()
+  Hue.apply_tv_media_info()
 }
 
 // Sets a media info item with proper information and events
 Hue.apply_media_info = function (element, item, mode) {
+  if (!Hue.room_state[`${mode}_enabled`]) {
+    return
+  }
+
   let custom_title
 
   if (mode === "tv") {

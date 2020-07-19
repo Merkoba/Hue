@@ -657,11 +657,16 @@ Hue.start_image_events = function () {
   $("#media_image_frame").width(0)
 }
 
+// Apply image media info
+Hue.apply_image_media_info = function () {
+  Hue.apply_media_info($("#media_image_info")[0], Hue.loaded_image, "image")
+}
+
 // This runs after an image successfully loads
 Hue.after_image_load = function (ok = true) {
   Hue.current_image_data = Hue.loaded_image
   $("#media_image_info").css("display", "initial")
-  Hue.apply_media_info($("#media_image_info")[0], Hue.loaded_image, "image")
+  Hue.apply_image_media_info()
 
   if (ok) {
     Hue.get_dominant_theme()

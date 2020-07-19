@@ -225,7 +225,7 @@ Hue.show_youtube_video = function (play = true) {
     return false
   }
 
-  Hue.after_show_tv(play)
+  Hue.after_show_tv()
 }
 
 // Loads a Soundcloud video
@@ -245,7 +245,7 @@ Hue.show_soundcloud_video = function (play = true) {
     },
   })
 
-  Hue.after_show_tv(play)
+  Hue.after_show_tv()
 }
 
 // Loads a <video> video
@@ -277,7 +277,7 @@ Hue.show_video_video = async function (play = true) {
     $("#media_video")[0].play()
   }
 
-  Hue.after_show_tv(play)
+  Hue.after_show_tv()
 }
 
 // Loads an iframe as the tv
@@ -304,7 +304,7 @@ Hue.show_iframe_video = function (play = true) {
     $("#media_iframe_poster").css("display", "block")
   }
 
-  Hue.after_show_tv(play)
+  Hue.after_show_tv()
 }
 
 // This gets called before any tv video is loaded
@@ -314,12 +314,18 @@ Hue.before_show_tv = function (item) {
   Hue.hls = undefined
 }
 
-// This gets called after any tv video is loaded
-Hue.after_show_tv = function (play) {
-  let media_info = $(`#media_${Hue.loaded_tv.type}_video_container`)
+// Apply tv media info
+Hue.apply_tv_media_info = function () {
+  let tv_media_info = $(`#media_${Hue.loaded_tv.type}_video_container`)
     .find(".media_info")
     .get(0)
-  Hue.apply_media_info(media_info, Hue.loaded_tv, "tv")
+
+  Hue.apply_media_info(tv_media_info, Hue.loaded_tv, "tv")
+}
+
+// This gets called after any tv video is loaded
+Hue.after_show_tv = function () {
+  Hue.apply_tv_media_info()
   Hue.fix_visible_video_frame()
   Hue.focus_input()
   Hue.set_tv_volume(false, false)
@@ -741,7 +747,7 @@ Hue.decrease_tv_percentage = function (override = true) {
   if (override) {
     Hue.enable_setting_override("tv_display_percentage")
   }
-  
+
   Hue.do_media_tv_size_change(size)
 }
 
