@@ -6,9 +6,7 @@ Hue.setup_activity_bar = function () {
   }, Hue.config.activity_bar_interval)
 
   setInterval(function () {
-    if (Hue.app_focused) {
-      Hue.trigger_activity()
-    }
+    Hue.check_trigger_activity()
   }, Hue.config.activity_bar_trigger_interval)
 
   $("#activity_bar").on("click", ".activity_bar_item", function () {
@@ -22,6 +20,13 @@ Hue.setup_activity_bar = function () {
       Hue.process_write_whisper($(this).data("username"))
     }
   })
+}
+
+// Check if it's ok to trigger activity
+Hue.check_trigger_activity = function () {
+  if (Hue.app_focused && !Hue.screen_locked) {
+    Hue.trigger_activity()
+  }
 }
 
 // Checks if the activity list has changed and the activity bar must be updated

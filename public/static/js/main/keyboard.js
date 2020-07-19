@@ -291,7 +291,7 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.room_state.screen_locked) {
+      if (Hue.screen_locked) {
         if (e.key === "Enter" || e.key === "Escape") {
           Hue.unlock_screen()
           e.preventDefault()

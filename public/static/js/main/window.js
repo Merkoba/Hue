@@ -78,7 +78,7 @@ Hue.activate_visibility_listener = function () {
 // This runs after a visibility change
 // Does things depending if the client is visible or not
 Hue.process_visibility = function () {
-  if (Hue.room_state.screen_locked) {
+  if (Hue.screen_locked) {
     return false
   }
 
@@ -96,7 +96,7 @@ Hue.on_app_focused = function () {
   Hue.remove_alert_title()
   Hue.show_info_popups()
   Hue.show_fresh_messages()
-  Hue.trigger_activity()
+  Hue.check_trigger_activity()
 }
 
 // This runs when the client loses visibility

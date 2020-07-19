@@ -1,6 +1,6 @@
 // Plays a sound notification depending on the type
 Hue.sound_notify = function (type) {
-  if (Hue.room_state.screen_locked) {
+  if (Hue.screen_locked) {
     return
   }
   

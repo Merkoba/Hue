@@ -19,7 +19,7 @@ Hue.start_msg = function () {
       Hue.after_modal_create(instance)
     },
     before_show: function (instance) {
-      if (Hue.room_state.screen_locked) {
+      if (Hue.screen_locked) {
         if (instance.options.id !== "lockscreen") return false
       }
     },

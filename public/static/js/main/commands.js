@@ -857,7 +857,7 @@ Hue.commands = {
   },
   "/togglelockscreen": {
     action: (arg, ans) => {
-      if (Hue.room_state.screen_locked) {
+      if (Hue.screen_locked) {
         Hue.unlock_screen()
       } else {
         Hue.lock_screen()

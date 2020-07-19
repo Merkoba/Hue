@@ -42,12 +42,12 @@ Hue.setup_lockscreen_clock = function () {
 // The lockscreen is a special mode where the display is covered
 // The user is considered unfocused
 Hue.lock_screen = function (save = true, force = false) {
-  if (!force && Hue.room_state.screen_locked) {
+  if (!force && Hue.screen_locked) {
     return false
   }
 
   Hue.stop_and_lock(true)
-  Hue.room_state.screen_locked = true
+  Hue.screen_locked = true
   Hue.process_lockscreen_lights_off()
   Hue.msg_lockscreen.show()
 
@@ -68,16 +68,17 @@ Hue.lock_screen = function (save = true, force = false) {
 
 // Disables the lockscreen
 Hue.unlock_screen = function (save = true) {
-  if (!Hue.room_state.screen_locked) {
+  if (!Hue.screen_locked) {
     return false
   }
 
   clearTimeout(Hue.lockscreen_peek_timeout)
   clearInterval(Hue.lockscreen_clock_interval)
 
-  Hue.room_state.screen_locked = false
+  Hue.screen_locked = false
   Hue.msg_lockscreen.close()
   Hue.process_visibility()
+  Hue.check_trigger_activity()
   Hue.unlock()
   Hue.execute_commands("on_unlockscreen")
 
@@ -112,7 +113,7 @@ Hue.lockscreen_turn_lights_on = function () {
 
 // Adds an indicator in the lockscreen if it's enabled and there's activity
 Hue.check_lockscreen_activity = function () {
-  if (Hue.room_state.screen_locked) {
+  if (Hue.screen_locked) {
     if (!$("#lockscreen_title_info").text()) {
       $("#lockscreen_title_info").text("(New Activity)")
     }
@@ -121,7 +122,7 @@ Hue.check_lockscreen_activity = function () {
 
 // Enables the lockscreen if the screen is locked in room state
 Hue.check_screen_lock = function () {
-  if (Hue.room_state.screen_locked) {
+  if (Hue.screen_locked) {
     Hue.lock_screen(false, true)
   }
 }

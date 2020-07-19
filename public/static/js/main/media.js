@@ -872,7 +872,7 @@ Hue.change = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
-  if (Hue.room_state.screen_locked) {
+  if (Hue.screen_locked) {
     return
   }
 

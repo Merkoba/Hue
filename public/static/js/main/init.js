@@ -171,6 +171,7 @@ Hue.recent_scroll_time = 1000
 Hue.typing = false
 Hue.favicon_mode = 0
 Hue.handle_url_open = false
+Hue.screen_locked = false
 
 Hue.critical_commands = [
     "/js",

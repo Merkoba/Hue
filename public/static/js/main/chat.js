@@ -2402,7 +2402,7 @@ Hue.on_highlight = function () {
     return false
   }
 
-  if (!Hue.app_focused || Hue.room_state.screen_locked) {
+  if (!Hue.app_focused || Hue.screen_locked) {
     Hue.alert_title(2)
     Hue.check_lockscreen_activity()
     Hue.show_highlight_desktop_notification()
@@ -2416,7 +2416,7 @@ Hue.on_activity = function (sound = false) {
     return false
   }
 
-  if (!Hue.app_focused || Hue.room_state.screen_locked) {
+  if (!Hue.app_focused || Hue.screen_locked) {
     Hue.alert_title(1)
     Hue.check_lockscreen_activity()
 
