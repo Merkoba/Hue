@@ -77,10 +77,9 @@ Hue.user_join = function (data) {
     }
   }
 
-  // if(data.username !== Hue.username)
-  // {
-  //     Hue.on_activity("join")
-  // }
+  if(data.username !== Hue.username) {
+      Hue.on_activity("join")
+  }
 
   Hue.update_user_last_message(data.user_id)
 

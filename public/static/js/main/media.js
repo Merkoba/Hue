@@ -313,20 +313,28 @@ Hue.unmaximize_media = function () {
 }
 
 // Gradually increases the chat display percentage
-Hue.increase_chat_percentage = function () {
+Hue.increase_chat_percentage = function (override = true) {
   let size = parseInt(Hue.get_setting("chat_display_percentage"))
   size += 10
   size = Hue.utilz.round2(size, 10)
-  Hue.enable_setting_override("chat_display_percentage")
+
+  if (override) {
+    Hue.enable_setting_override("chat_display_percentage")
+  }
+
   Hue.do_chat_size_change(size)
 }
 
 // Gradually decreases the chat display percentage
-Hue.decrease_chat_percentage = function () {
+Hue.decrease_chat_percentage = function (override = true) {
   let size = parseInt(Hue.get_setting("chat_display_percentage"))
   size -= 10
   size = Hue.utilz.round2(size, 10)
-  Hue.enable_setting_override("chat_display_percentage")
+
+  if (override) {
+    Hue.enable_setting_override("chat_display_percentage")
+  }
+
   Hue.do_chat_size_change(size)
 }
 
@@ -880,8 +888,12 @@ Hue.change = function (args = {}) {
 
   let bypass_lock = false
 
-  if (item.setter === Hue.username) {
-    bypass_lock = Hue.started && Hue.get_setting("bypass_tv_lock_on_own_change")
+  if (Hue.started && item.setter === Hue.username) {
+    if (args.type === "image") {
+      bypass_lock = Hue.get_setting("bypass_image_lock_on_own_change")
+    } else if (args.type === "tv") {
+      bypass_lock = Hue.get_setting("bypass_tv_lock_on_own_change")
+    }
   }
 
   if (args.type === "image") {

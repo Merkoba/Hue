@@ -718,13 +718,30 @@ Hue.do_media_tv_size_change = function (size, notify = true) {
 }
 
 // Increases the tv display percentage
-Hue.increase_tv_percentage = function () {
+Hue.increase_tv_percentage = function (override = true) {
   let size = Hue.get_setting("tv_display_percentage")
 
   size += 10
   size = Hue.utilz.round2(size, 10)
 
-  Hue.enable_setting_override("tv_display_percentage")
+  if (override) {
+    Hue.enable_setting_override("tv_display_percentage")
+  }
+
+  Hue.do_media_tv_size_change(size)
+}
+
+// Decreases the tv display percentage
+Hue.decrease_tv_percentage = function (override = true) {
+  let size = Hue.get_setting("tv_display_percentage")
+
+  size -= 10
+  size = Hue.utilz.round2(size, 10)
+
+  if (override) {
+    Hue.enable_setting_override("tv_display_percentage")
+  }
+  
   Hue.do_media_tv_size_change(size)
 }
 
@@ -740,17 +757,6 @@ Hue.get_visible_video_frame_id = function () {
   })
 
   return id
-}
-
-// Decreases the tv display percentage
-Hue.decrease_tv_percentage = function () {
-  let size = Hue.get_setting("tv_display_percentage")
-
-  size -= 10
-  size = Hue.utilz.round2(size, 10)
-
-  Hue.enable_setting_override("tv_display_percentage")
-  Hue.do_media_tv_size_change(size)
 }
 
 // Sets the tv display percentage to default

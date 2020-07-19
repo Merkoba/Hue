@@ -2010,9 +2010,9 @@ Hue.settings_chat_percentage_icon_click = function (type, mode) {
   }
 
   if (mode === "increase") {
-    Hue.increase_chat_percentage()
+    Hue.increase_chat_percentage(false)
   } else if (mode === "decrease") {
-    Hue.decrease_chat_percentage()
+    Hue.decrease_chat_percentage(false)
   }
 }
 
@@ -2041,9 +2041,9 @@ Hue.settings_tv_percentage_icon_click = function (type, mode) {
   }
 
   if (mode === "increase") {
-    Hue.increase_tv_percentage()
+    Hue.increase_tv_percentage(false)
   } else if (mode === "decrease") {
-    Hue.decrease_tv_percentage()
+    Hue.decrease_tv_percentage(false)
   }
 }
 

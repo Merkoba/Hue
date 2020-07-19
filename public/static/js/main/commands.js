@@ -891,7 +891,7 @@ Hue.commands = {
     },
     description: `Scrolls the chat to the top`,
   },
-  top2: {
+  "/top2": {
     action: (arg, ans) => {
       Hue.goto_top(false)
     },
