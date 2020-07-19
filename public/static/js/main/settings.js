@@ -255,6 +255,10 @@ Hue.user_settings = {
       if (save) {
         Hue[`save_${type}`]()
       }
+
+      if (unames) {
+        Hue.feedback("Your list of users to accept commands from was modified. This is dangerous and might not have been intended.")
+      }
     },
   },
   ignored_words: {
