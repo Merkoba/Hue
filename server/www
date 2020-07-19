@@ -143,17 +143,16 @@ mongo.connect(config.mongodb_path, {
 			})
 		}
 
-		process.on('SIGINT', function () {
-			if (process.env.NODE_ENV === "development") {
-				process.exit(0);
-			} else {
-				do_shutdown()
-			}
-		})
-
-		// process.on('SIGTERM', function()
-		// {
-		// 	do_shutdown()
+		// process.on('SIGINT', function () {
+		// 	if (process.env.NODE_ENV === "development") {
+		// 		process.exit(0);
+		// 	} else {
+		// 		do_shutdown()
+		// 	}
 		// })
+
+		process.on('SIGINT', function () {
+			do_shutdown()
+		})
 	}
 })
