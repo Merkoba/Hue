@@ -1045,6 +1045,7 @@ select {
 input[type=text],
 input[type=search],
 input[type=password],
+input[type=number],
 textarea,
 select {
 	background-color: white;
