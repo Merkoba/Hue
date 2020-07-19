@@ -388,13 +388,13 @@ Hue.activate_key_detection = function () {
       return
     } else if (e.key === "Home") {
       if (e.ctrlKey) {
-        Hue.goto_top()
+        Hue.goto_top(false)
         e.preventDefault()
         return
       }
     } else if (e.key === "End") {
       if (e.ctrlKey) {
-        Hue.goto_bottom(true, true)
+        Hue.goto_bottom(true, false)
         e.preventDefault()
         return
       }
