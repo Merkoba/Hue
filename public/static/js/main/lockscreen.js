@@ -78,7 +78,6 @@ Hue.unlock_screen = function (save = true) {
   Hue.screen_locked = false
   Hue.msg_lockscreen.close()
   Hue.process_visibility()
-  Hue.check_trigger_activity()
   Hue.unlock()
   Hue.execute_commands("on_unlockscreen")
 
