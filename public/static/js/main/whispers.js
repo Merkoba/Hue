@@ -400,7 +400,7 @@ Hue.do_send_whisper_user = function (
       message: m,
       on_click: f
     })
-    Hue.push_whisper(m, f)
+    Hue.push_whisper(m, f, true)
   }
 }
 
@@ -554,6 +554,7 @@ Hue.popup_message_received = function (
   }
 
   if (!announce || Hue.get_setting("open_popup_messages")) {
+    data.is_read = true
     if (method === "popup") {
       let closing_popups = false
 
@@ -578,14 +579,24 @@ Hue.popup_message_received = function (
     } else if (method === "modal") {
       Hue.show_popup_message(data, "modal")
     }
+  } else {
+    data.is_read = false
+    Hue.unread_whispers += 1
+    Hue.update_whispers_unread_count()
   }
 
   if (announce) {
     let af = function () {
+      if (!data.is_read) {
+        Hue.unread_whispers -= 1
+        data.window_content.text(data.window_text)
+        Hue.update_whispers_unread_count()
+      }
+
       Hue.popup_message_received(data, type, false, "modal")
     }
 
-    Hue.push_whisper(t, af)
+    Hue.push_whisper(t, af, data)
 
     if (!Hue.get_setting("open_popup_messages")) {
       let item = Hue.make_info_popup_item({
@@ -707,7 +718,7 @@ Hue.setup_message_draw_area = function () {
 }
 
 // Pushes a new whisper to the whispers window
-Hue.push_whisper = function (message, on_click) {
+Hue.push_whisper = function (message, on_click, data = {}) {
   let d = Date.now()
   let t = Hue.utilz.nice_date(d)
 
@@ -722,6 +733,13 @@ Hue.push_whisper = function (message, on_click) {
   content.attr("title", t)
   content.data("otitle", t)
   content.data("date", d)
+  data.window_content = content
+  data.window_text = content.text()
+
+  if (data.is_read !== undefined && !data.is_read) {
+    content.text(`${data.window_text} (unread)`)
+  }
+
   content.click(function () {
     on_click()
   })
@@ -748,4 +766,9 @@ Hue.show_whispers = function (filter = false) {
       Hue.do_modal_filter()
     }
   })
+}
+
+// Updates the whispers unread count
+Hue.update_whispers_unread_count = function () {
+  $("#header_right_whispers_count").text(Hue.unread_whispers)
 }

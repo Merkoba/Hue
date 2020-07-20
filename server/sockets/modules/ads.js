@@ -49,7 +49,14 @@ module.exports = function (
             return callback(true)
           }
 
-          let ads = JSON.parse(content)
+          let ads
+
+          try {
+            ads = JSON.parse(content)
+          } catch (err) {
+            logger.log_error(err)
+            return false
+          }
 
           if (ads.length === 0) {
             return callback(true)
