@@ -553,7 +553,8 @@ Hue.popup_message_received = function (
     data.content_made = true
   }
 
-  if (!announce || Hue.get_setting("open_popup_messages")) {
+  if ((!announce || Hue.get_setting("open_popup_messages"))
+  && Hue.get_open_whispers() < 5) {
     data.is_read = true
     if (method === "popup") {
       let closing_popups = false
@@ -581,14 +582,12 @@ Hue.popup_message_received = function (
     }
   } else {
     data.is_read = false
-    Hue.unread_whispers += 1
-    Hue.update_whispers_unread_count()
   }
 
   if (announce) {
     let af = function () {
       if (!data.is_read) {
-        Hue.unread_whispers -= 1
+        data.window_content.data("read", true)
         data.window_content.text(data.window_text)
         Hue.update_whispers_unread_count()
       }
@@ -597,6 +596,7 @@ Hue.popup_message_received = function (
     }
 
     Hue.push_whisper(t, af, data)
+    Hue.update_whispers_unread_count()
 
     if (!Hue.get_setting("open_popup_messages")) {
       let item = Hue.make_info_popup_item({
@@ -620,7 +620,7 @@ Hue.show_popup_message = function (data, method = "popup") {
   let dcontent = $(data.content).clone(true, true)[0]
 
   if (method === "popup") {
-    pop = Hue.create_popup({ position: "top", id: `popup_message_${data.id}` })
+    pop = Hue.create_popup({ position: "top", id: `popup_message_${data.id}` }, "whisper")
     content = dcontent
   } else if (method === "modal") {
     pop = Hue.msg_info2
@@ -738,7 +738,12 @@ Hue.push_whisper = function (message, on_click, data = {}) {
 
   if (data.is_read !== undefined && !data.is_read) {
     content.text(`${data.window_text} (unread)`)
+    read = false
+  } else {
+    read = true
   }
+
+  content.data("read", read)
 
   content.click(function () {
     on_click()
@@ -770,5 +775,31 @@ Hue.show_whispers = function (filter = false) {
 
 // Updates the whispers unread count
 Hue.update_whispers_unread_count = function () {
-  $("#header_right_whispers_count").text(Hue.unread_whispers)
+  $("#header_right_whispers_count").text(Hue.get_unread_whispers())
+}
+
+// Get a list of unread whispers
+Hue.get_unread_whispers = function () {
+  let num_unread = 0
+
+  $(".whispers_item_content").each(function () {
+    if (!$(this).data("read")) {
+      num_unread += 1
+    }
+  })
+
+  return num_unread
+}
+
+Hue.get_open_whispers = function () {
+  let popups = Hue.get_popup_instances()
+  let num = 0
+
+  for (let popup of popups) {
+    if (popup.hue_type === "whisper" && popup.is_open()) {
+      num += 1
+    }
+  }
+
+  return num
 }

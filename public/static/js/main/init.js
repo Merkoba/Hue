@@ -173,7 +173,6 @@ Hue.typing = false
 Hue.favicon_mode = 0
 Hue.handle_url_open = false
 Hue.screen_locked = false
-Hue.unread_whispers = 0
 
 Hue.critical_commands = [
     "/js",
