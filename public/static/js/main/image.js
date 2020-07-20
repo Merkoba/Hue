@@ -908,3 +908,10 @@ Hue.image_picker_submit = function () {
     Hue.close_all_modals()
   }
 }
+
+// Update data on reconnections
+Hue.fix_current_image_data = function () {
+  if (Hue.loaded_image && Hue.loaded_image !== Hue.current_image_data) {
+    Hue.current_image_data = Hue.loaded_image
+  }
+}

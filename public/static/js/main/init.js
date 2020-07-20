@@ -357,6 +357,7 @@ Hue.on_join = function (data) {
   Hue.init_message_board(data)
   Hue.start_active_media()
   Hue.check_screen_lock()
+  Hue.fix_current_image_data()
 
   Hue.at_startup()
 }
