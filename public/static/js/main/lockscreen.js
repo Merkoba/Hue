@@ -46,7 +46,7 @@ Hue.lock_screen = function (save = true, force = false) {
     return false
   }
 
-  Hue.stop_and_lock(true)
+  Hue.stop_tv()
   Hue.screen_locked = true
   Hue.process_lockscreen_lights_off()
   Hue.msg_lockscreen.show()
@@ -78,7 +78,8 @@ Hue.unlock_screen = function (save = true) {
   Hue.screen_locked = false
   Hue.msg_lockscreen.close()
   Hue.process_visibility()
-  Hue.unlock()
+  Hue.change({ type: "image" })
+  Hue.change({ type: "tv" })
   Hue.execute_commands("on_unlockscreen")
 
   $("#lockscreen_title_info").text("")

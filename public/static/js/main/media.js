@@ -1219,9 +1219,7 @@ Hue.change_media_lock_icon = function (type) {
     $(`#footer_lock_${type}_icon`).addClass("footer_icon3")
     $(`#footer_lock_${type}_label`).css("display", "none")
 
-    Hue.change({
-      type: type
-    })
+    Hue.change({ type: type })
   }
 }
 
