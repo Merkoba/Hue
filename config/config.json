@@ -75,6 +75,7 @@
 	"roomlist_cache": 120000,
 	"roomlist_max_inactivity": 172800000,
 	"youtube_enabled": true,
+	"twitch_enabled": true,
 	"soundcloud_enabled": true,
 	"imgur_enabled": true,
 	"iframes_enabled": true,

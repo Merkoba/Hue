@@ -23,9 +23,9 @@ Hue.setup_tv = function (mode, odata = {}) {
     data.date = odata.date
     data.query = odata.query
     data.comment = odata.comment
-    data.nice_date = data.date
-      ? Hue.utilz.nice_date(data.date)
-      : Hue.utilz.nice_date()
+    data.nice_date = data.date ?
+      Hue.utilz.nice_date(data.date) :
+      Hue.utilz.nice_date()
     data.in_log = odata.in_log === undefined ? true : odata.in_log
 
     if (!data.setter) {
@@ -63,7 +63,11 @@ Hue.setup_tv = function (mode, odata = {}) {
     }
 
     data.onclick = function () {
-      Hue.open_url_menu({ source: data.source, data: data, media_type: "tv" })
+      Hue.open_url_menu({
+        source: data.source,
+        data: data,
+        media_type: "tv"
+      })
     }
   }
 
@@ -85,9 +89,16 @@ Hue.setup_tv = function (mode, odata = {}) {
         $("#footer_lock_tv_icon").addClass("blinking")
       }
 
-      Hue.change({ type: "tv", force: true })
+      Hue.change({
+        type: "tv",
+        force: true
+      })
     } else if (mode === "restart") {
-      Hue.change({ type: "tv", force: true, play: true })
+      Hue.change({
+        type: "tv",
+        force: true,
+        play: true
+      })
     }
   }
 }
@@ -140,6 +151,10 @@ Hue.stop_tv = function (hard_stop = true) {
     Hue.youtube_video_player.pauseVideo()
   }
 
+  if (Hue.twitch_video_player) {
+    Hue.twitch_video_player.pause()
+  }
+
   if (Hue.soundcloud_video_player) {
     Hue.soundcloud_video_player.pause()
   }
@@ -167,6 +182,10 @@ Hue.play_tv = function () {
   if (Hue.current_tv().type === "youtube") {
     if (Hue.youtube_video_player) {
       Hue.youtube_video_player.playVideo()
+    }
+  } else if (Hue.current_tv().type === "twitch") {
+    if (Hue.twitch_video_player) {
+      Hue.twitch_video_player.play()
     }
   } else if (Hue.current_tv().type === "soundcloud") {
     if (Hue.soundcloud_video_player) {
@@ -207,11 +226,8 @@ Hue.hide_tv = function (item = false) {
 // Loads a YouTube video
 Hue.show_youtube_video = function (play = true) {
   let item = Hue.loaded_tv
-
   Hue.before_show_tv(item)
-
   let id = Hue.utilz.get_youtube_id(item.source)
-
   Hue.youtube_video_play_on_queue = play
 
   if (id[0] === "video") {
@@ -220,7 +236,10 @@ Hue.show_youtube_video = function (play = true) {
       startSeconds: Hue.utilz.get_youtube_time(item.source),
     })
   } else if (id[0] === "list") {
-    Hue.youtube_video_player.cuePlaylist({ list: id[1][0], index: id[1][1] })
+    Hue.youtube_video_player.cuePlaylist({
+      list: id[1][0],
+      index: id[1][1]
+    })
   } else {
     return false
   }
@@ -228,10 +247,33 @@ Hue.show_youtube_video = function (play = true) {
   Hue.after_show_tv()
 }
 
+// Loads a Twitch video
+Hue.show_twitch_video = function (play = true) {
+  let item = Hue.loaded_tv
+  Hue.before_show_tv(item)
+  let id = Hue.utilz.get_twitch_id(item.source)
+
+  if (id[0] === "video") {
+    Hue.twitch_video_player.setVideoSource(item.source)
+  } else if (id[0] === "channel") {
+    Hue.twitch_video_player.setChannel(id[1])
+  } else {
+    return false
+  }
+
+  if (play) {
+    Hue.twitch_video_player.play()
+  } else {
+    clearTimeout(Hue.play_twitch_video_player_timeout)
+    Hue.twitch_video_player.pause()
+  }
+
+  Hue.after_show_tv(play)
+}
+
 // Loads a Soundcloud video
 Hue.show_soundcloud_video = function (play = true) {
   let item = Hue.loaded_tv
-
   Hue.before_show_tv(item)
 
   Hue.soundcloud_video_player.load(item.source, {
@@ -415,6 +457,14 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
 
         return false
       }
+    } else if (src.includes("twitch.tv")) {
+      if (Hue.utilz.get_twitch_id(src) && !Hue.config.twitch_enabled) {
+        if (feedback) {
+          Hue.feedback("Twitch support is not enabled")
+        }
+
+        return false
+      }
     } else if (src.includes("soundcloud.com")) {
       if (!Hue.config.soundcloud_enabled) {
         if (feedback) {
@@ -483,7 +533,10 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
     }
   }
 
-  Hue.socket_emit("change_tv_source", { src: src, comment: comment })
+  Hue.socket_emit("change_tv_source", {
+    src: src,
+    comment: comment
+  })
 }
 
 // Toggles the tv visible or not visible
@@ -517,7 +570,7 @@ Hue.change_tv_visibility = function (play = true) {
 
     if (!Hue.tv_visible) {
       Hue.tv_visible = true
-      
+
       if (Hue.room_tv_mode === "enabled") {
         if (Hue.first_media_change && Hue.started) {
           Hue.change({
@@ -673,7 +726,12 @@ Hue.set_tv_volume = function (
 
 // Reloads the tv with the same source
 Hue.refresh_tv = function () {
-  Hue.change({ type: "tv", force: true, play: true, current_source: true })
+  Hue.change({
+    type: "tv",
+    force: true,
+    play: true,
+    current_source: true
+  })
 }
 
 // Sends a restart signal to reload the tv for everyone
@@ -862,7 +920,9 @@ Hue.change_room_tv_mode = function (what) {
     return false
   }
 
-  Hue.socket_emit("change_tv_mode", { what: what })
+  Hue.socket_emit("change_tv_mode", {
+    what: what
+  })
 }
 
 Hue.tv_picker_submit = function () {
@@ -909,7 +969,9 @@ Hue.sync_tv = function (username) {
     return false
   }
 
-  Hue.socket_emit("sync_tv", { username: username })
+  Hue.socket_emit("sync_tv", {
+    username: username
+  })
 }
 
 // Responds to a tv sync request to send it back to a user

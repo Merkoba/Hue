@@ -41,6 +41,7 @@ module.exports = function (c, config) {
   c.vars.default_topic = config.default_topic
   c.vars.default_topic_admin = config.default_topic_admin
   c.vars.youtube_enabled = config.youtube_enabled
+  c.vars.twitch_enabled = config.twitch_enabled
   c.vars.soundcloud_enabled = config.soundcloud_enabled
   c.vars.imgur_enabled = config.imgur_enabled
   c.vars.iframes_enabled = config.iframes_enabled

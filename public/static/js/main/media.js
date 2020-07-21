@@ -931,7 +931,6 @@ Hue.change = function (args = {}) {
     }
 
     Hue.loaded_image = item
-
     Hue.show_image(args.force)
 
     if (!args.item || args.item === Hue.current_image()) {

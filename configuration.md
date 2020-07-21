@@ -37,7 +37,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >The title for the default tv.
 
 "default_tv_type"
->The type of the default_tv_source, either "video", "youtube", "soundcloud" or "iframe".
+>The type of the default_tv_source, either "video", "youtube", "twitch", "soundcloud" or "iframe".
 
 "default_profile_image_url"
 >The location of the default profile image.
@@ -194,6 +194,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "youtube_enabled"
 >Whether Youtube features are enabled.
+
+"twitch_enabled"
+>Whether Twitch features are enabled.
 
 "soundcloud_enabled"
 >Whether Soundcloud features are enabled.
