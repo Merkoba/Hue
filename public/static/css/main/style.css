@@ -2390,15 +2390,15 @@ a.special_link:hover {
 }
 
 .black_background_color {
-	background-color: black !important;
+	background-color: rgb(34, 34, 34) !important;
 }
 
 .grey_font_color {
-	color: grey !important;
+	color: rgb(202, 202, 202) !important;
 }
 
 .grey_background_color_parent * {
-	background-color: grey !important;
+	background-color: rgb(202, 202, 202) !important;
 }
 
 #expand_image_container {
