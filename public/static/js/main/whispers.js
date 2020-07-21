@@ -553,8 +553,17 @@ Hue.popup_message_received = function (
     data.content_made = true
   }
 
-  if ((!announce || Hue.get_setting("open_popup_messages"))
-  && Hue.get_open_whispers() < 5) {
+  let open = !announce || Hue.get_setting("open_popup_messages")
+
+  if (open) {
+    if (method === "popup") {
+      if (Hue.get_open_whispers() >= 5) {
+        open = false
+      }
+    }
+  }
+
+  if (open) {
     data.is_read = true
     if (method === "popup") {
       let closing_popups = false
