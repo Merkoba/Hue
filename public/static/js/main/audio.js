@@ -3,6 +3,10 @@ Hue.sound_notify = function (type) {
   if (Hue.screen_locked) {
     return
   }
+
+  if (Date.now() - Hue.last_audio_date < Hue.audio_min_delay) {
+    return
+  }
   
   let sound
 
@@ -35,6 +39,7 @@ Hue.sound_notify = function (type) {
   }
 
   Hue.play_audio(sound)
+  Hue.last_audio_date = Date.now()
 }
 
 // Plays a sound
