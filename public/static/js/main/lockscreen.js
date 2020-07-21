@@ -119,13 +119,6 @@ Hue.check_lockscreen_activity = function () {
   }
 }
 
-// Enables the lockscreen if the screen is locked in room state
-Hue.check_screen_lock = function () {
-  if (Hue.screen_locked) {
-    Hue.lock_screen(false, true)
-  }
-}
-
 // Toggles between the light and dark lockscreen mode
 Hue.toggle_lockscreen_lights_off = function () {
   Hue.room_state.lockscreen_lights_off = !Hue.room_state.lockscreen_lights_off
