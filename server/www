@@ -27,16 +27,8 @@ const config_check_delay = 5000
 let config_mtime = ""
 
 function build_config() {
-	Object.keys(config).forEach(function(key) {
-		delete config[key]
-	})
-
-	Object.keys(sconfig).forEach(function(key) {
-		delete sconfig[key]
-	})
-
-	xconfig = JSON.parse(fs.readFileSync(config_path, 'utf8'))
-	xsconfig = JSON.parse(fs.readFileSync(sconfig_path, 'utf8'))
+	let xconfig = JSON.parse(fs.readFileSync(config_path, 'utf8'))
+	let xsconfig = JSON.parse(fs.readFileSync(sconfig_path, 'utf8'))
 
 	try {
 		let user_config = JSON.parse(fs.readFileSync(user_config_path, 'utf8'))
@@ -52,8 +44,18 @@ function build_config() {
 		console.error(err)
 	}
 
+	Object.keys(config).forEach(function(key) {
+		delete config[key]
+	})
+
 	Object.assign(config, xconfig)
+
+	Object.keys(sconfig).forEach(function(key) {
+		delete sconfig[key]
+	})
+
 	Object.assign(sconfig, xsconfig)
+
 	config.mtime = Date.now()
 	config_mtime = get_config_mtime()
 	console.info("Config Built")

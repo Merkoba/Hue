@@ -1046,15 +1046,3 @@ Hue.change_tv_volume = function (arg) {
     Hue.set_tv_volume(nv)
   }
 }
-
-// Create html tv containers
-Hue.create_tv_containers = function () {
-  let s = `
-    <div id='media_youtube_video_container' class='media_container'></div>
-    <div id='media_twitch_video_container' class='media_container'></div>
-    <div id='media_soundcloud_video_container' class='media_container'></div>
-    <div id='media_video_video_container' class='media_container'></div>
-    <div id='media_iframe_video_container' class='media_container'></div>`
-
-  $("#media_tv").html(s)
-}
