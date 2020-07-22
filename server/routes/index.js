@@ -7,71 +7,114 @@ module.exports = function (db_manager, config, sconfig, utilz) {
   const express = require("express")
   const fetch = require("node-fetch")
   const router = express.Router()
+  const view_check_delay = 5000
+  let config_mtime = 0
+  let view_mtime = ""
 
   // Object used to pass arguments
-  const c = {}
+  const view = {}
 
-  // Variables that should go in the config object
-  c.vars = {}
+  build_view()
+  start_view_check()
 
-  // Other variables that shouldn't go in the config object
-  c.rvars = {}
+  function build_view() {
+    Object.keys(view).forEach(function(key) {
+      delete view[key]
+    })
 
-  // Variables sent to templates
-  const tvars = {
-    notebook_background_source: config.notebook_background_source,
+    // Variables that should go in the config object
+    view.vars = {}
+
+    // Other variables that shouldn't go in the config object
+    view.rvars = {}
+
+    // Variables sent to templates
+    const tvars = {
+      notebook_background_source: config.notebook_background_source,
+    }
+
+    // Fill the config variables object
+    require("./vars")(view, config)
+
+    // Compile all templates
+
+    // Main handler object
+    const handler = {}
+    handler.public = {}
+
+    // This holds the templates html to pass to the body compilation
+    let templates_html = ""
+
+    // Get the template file names
+    const template_files = fs.readdirSync(
+      path.join(__dirname, "../views/main/templates")
+    )
+
+    // Get all the templates html
+    for (let file of template_files) {
+      const template_path = path.join(
+        __dirname,
+        `../views/main/templates/${file}`
+      )
+      templates_html += ejs.compile(fs.readFileSync(template_path, "utf8"), {
+        filename: template_path,
+      })({
+        vars: tvars,
+      })
+    }
+
+    // Create the main body template
+
+    const body_html_path = path.join(__dirname, "../views/main/body.ejs")
+
+    const compiled_body_html_template = ejs.compile(
+      fs.readFileSync(body_html_path, "utf8"),
+      {
+        filename: body_html_path,
+      }
+    )
+
+    view.body_html = compiled_body_html_template({
+      templates: templates_html,
+    })
+
+    // Reserved usernames
+    // These can't be used on registration
+    view.reserved_usernames = [
+      config.system_username
+    ].map((x) => x.toLowerCase())
+
+    view_mtime = get_view_mtime()
+    config_mtime = config.mtime
+    console.info("View Built")
   }
 
-  // Fill the config variables object
-  require("./vars")(c, config)
-
-  // Compile all templates
-
-  // Main handler object
-  const handler = {}
-  handler.public = {}
-
-  // This holds the templates html to pass to the body compilation
-  let templates_html = ""
-
-  // Get the template file names
-  const template_files = fs.readdirSync(
-    path.join(__dirname, "../views/main/templates")
-  )
-
-  // Get all the templates html
-  for (let file of template_files) {
-    const template_path = path.join(
-      __dirname,
-      `../views/main/templates/${file}`
-    )
-    templates_html += ejs.compile(fs.readFileSync(template_path, "utf8"), {
-      filename: template_path,
-    })({
-      vars: tvars,
+  function walkdir(dir, callback) {
+    fs.readdirSync(dir).forEach( f => {
+      let dirPath = path.join(dir, f)
+      let isDirectory = fs.statSync(dirPath).isDirectory()
+      isDirectory ? 
+        walkdir(dirPath, callback) : callback(path.join(dir, f))
     })
   }
 
-  // Create the main body template
+  function get_view_mtime() {
+    let mtime = ""
 
-  const body_html_path = path.join(__dirname, "../views/main/body.ejs")
+    walkdir(path.join(__dirname, "../views/main"), function (file) {
+      mtime += fs.statSync(file).mtime.toString()
+    })
 
-  const compiled_body_html_template = ejs.compile(
-    fs.readFileSync(body_html_path, "utf8"),
-    {
-      filename: body_html_path,
-    }
-  )
+    return mtime
+  }
 
-  c.body_html = compiled_body_html_template({
-    templates: templates_html,
-  })
-
-  // Reserved usernames
-  // These can't be used on registration
-  const reserved_usernames = [
-    config.system_username
-  ].map((x) => x.toLowerCase())
+  function start_view_check() {
+    setInterval(() => {
+      if (get_view_mtime() !== view_mtime || config.mtime !== config_mtime) {
+        build_view()
+      }
+    }, view_check_delay)
+  }
 
   // Checks if a URL length exceeds the limits
   function check_url(req, res, next) {
@@ -220,7 +263,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     let password = req.body.password
     let email = req.body.email
 
-    if (reserved_usernames.includes(username.toLowerCase())) {
+    if (view.reserved_usernames.includes(username.toLowerCase())) {
       return false
     }
 
@@ -419,7 +462,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       return false
     }
 
-    if (reserved_usernames.includes(username.toLowerCase())) {
+    if (view.reserved_usernames.includes(username.toLowerCase())) {
       res.json({ taken: true })
       return
     }
@@ -545,9 +588,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     }
 
     let split = token.split("_")
-
     let id = split[0]
-
     let code = split[1]
 
     db_manager
@@ -670,10 +711,10 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
   // Enter root
   router.get("/", [check_url, require_login], function (req, res, next) {
-    c.rvars.room_id = config.main_room_id
-    c.rvars.user_id = req.session.user_id
-    c.rvars.jwt_token = req.jwt_token
-    res.render("main/main", c)
+    view.rvars.room_id = config.main_room_id
+    view.rvars.user_id = req.session.user_id
+    view.rvars.jwt_token = req.jwt_token
+    res.render("main/main", view)
   })
 
   // Enter a room
@@ -682,10 +723,10 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     res,
     next
   ) {
-    c.rvars.room_id = req.params.id.substr(0, config.max_room_id_length)
-    c.rvars.user_id = req.session.user_id
-    c.rvars.jwt_token = req.jwt_token
-    res.render("main/main", c)
+    view.rvars.room_id = req.params.id.substr(0, config.max_room_id_length)
+    view.rvars.user_id = req.session.user_id
+    view.rvars.jwt_token = req.jwt_token
+    res.render("main/main", view)
   })
 
   return router
