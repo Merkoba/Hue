@@ -681,14 +681,25 @@ const Utilz = function () {
 		let split = s.split("@")
 		let uname = split[0]
 		let domain = split[1]
+
+		if (uname.length === 0 || domain.length === 0) {
+			return s
+		}
+
 		let new_uname = ""
 
-		for (let i = 0; i < uname.length; i++) {
-			let letter = uname[i]
-
-			if (i == 0 || i == uname.length - 1) {
-				new_uname += letter
-			} else {
+		if (uname.length > 2) {
+			for (let i = 0; i < uname.length; i++) {
+				let letter = uname[i]
+	
+				if (i === 0 || i === uname.length - 1) {
+					new_uname += letter
+				} else {
+					new_uname += "*"
+				}
+			}
+		} else {
+			for (let c of uname) {
 				new_uname += "*"
 			}
 		}
