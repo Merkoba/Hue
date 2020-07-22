@@ -214,6 +214,8 @@ Hue.init = function () {
   Hue.create_debouncers()
   Hue.create_image_containers()
   Hue.create_tv_containers()
+  Hue.create_audio_players()
+  Hue.create_file_pickers()
   Hue.setup_separators()
   Hue.setup_markdown_regexes()
   Hue.activate_key_detection()

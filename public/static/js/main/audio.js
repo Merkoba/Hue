@@ -46,3 +46,13 @@ Hue.sound_notify = function (type) {
 Hue.play_audio = function (what) {
   $(`#audio_${what}`)[0].play()
 }
+
+Hue.create_audio_players = function () {
+  let s = `
+    <audio id='audio_pup' src='/static/_audio/pup.mp3?version=1' preload="auto"></audio>
+    <audio id='audio_pup2' src='/static/_audio/pup2.mp3?version=1' preload="auto"></audio>
+    <audio id='audio_join' src='/static/_audio/join.mp3?version=2' preload="auto"></audio>
+    <audio id='audio_highlight' src='/static/_audio/highlight.mp3?version=1' preload="auto"></audio>`
+  
+  $("#audio_players").html(s)
+}

@@ -116,3 +116,21 @@ Hue.check_favicon = function (mode=undefined) {
     }
   }
 }
+
+// Create html file pickers
+Hue.create_file_pickers = function () {
+  let s = `
+    <form>
+        <input type='file' accept="image/jpeg, image/png, image/gif, image/webp, image/bmp" id='profile_image_picker' onchange='Hue.profile_image_selected(this)'>
+    </form>
+
+    <form>
+        <input type='file' accept="image/jpeg, image/png, image/gif, image/webp, image/bmp" id='background_image_input' class='nodisplay' onchange='Hue.background_image_selected(this)'>
+    </form>
+
+    <form>
+        <input type='file' accept="audio/mpeg, audio/ogg, audio/wav, audio/flac" id='audio_clip_picker' class='nodisplay' onchange='Hue.audio_clip_selected(this)'>
+    </form>`
+  
+  $("#file_pickers").html(s)
+}

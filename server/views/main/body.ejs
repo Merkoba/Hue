@@ -22,22 +22,8 @@
         </div>
     </div>
 
-    <audio id='audio_pup' src='/static/_audio/pup.mp3?version=1' preload="auto"></audio>
-    <audio id='audio_pup2' src='/static/_audio/pup2.mp3?version=1' preload="auto"></audio>
-    <audio id='audio_join' src='/static/_audio/join.mp3?version=2' preload="auto"></audio>
-    <audio id='audio_highlight' src='/static/_audio/highlight.mp3?version=1' preload="auto"></audio>
-
-    <form>
-        <input type='file' accept="image/jpeg, image/png, image/gif, image/webp, image/bmp" id='profile_image_picker' onchange='Hue.profile_image_selected(this)'>
-    </form>
-
-    <form>
-        <input type='file' accept="image/jpeg, image/png, image/gif, image/webp, image/bmp" id='background_image_input' class='nodisplay' onchange='Hue.background_image_selected(this)'>
-    </form>
-
-    <form>
-        <input type='file' accept="audio/mpeg, audio/ogg, audio/wav, audio/flac" id='audio_clip_picker' class='nodisplay' onchange='Hue.audio_clip_selected(this)'>
-    </form>
+    <div id='audio_players'></div>
+    <div id='file_pickers'></div>
 
     <div id='infotip_container'>
         <div id='infotip'>hi</div>
@@ -46,5 +32,4 @@
     <% include reactions.ejs %>
 
     <%- templates %>
-
 </body>
