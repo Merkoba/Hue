@@ -711,6 +711,10 @@ Hue.set_tv_volume = function (
     Hue.youtube_video_player.setVolume(vt)
   }
 
+  if (Hue.twitch_video_player) {
+    Hue.twitch_video_player.setVolume(nv)
+  }
+
   if (Hue.soundcloud_video_player) {
     Hue.soundcloud_video_player.setVolume(vt)
   }
