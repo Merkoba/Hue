@@ -56,9 +56,6 @@ function build_config() {
 	config.mtime = Date.now()
 	config_mtime = get_config_mtime()
 	console.info("Config Built")
-
-	console.log(config.youtube_enabled)
-
 }
 
 function get_config_mtime() {
