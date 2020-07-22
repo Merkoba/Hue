@@ -915,3 +915,15 @@ Hue.fix_current_image_data = function () {
     Hue.current_image_data = Hue.loaded_image
   }
 }
+
+// Create html image elements
+Hue.create_image_containers = function () {
+  let s = `
+    <div class='media_container' id='media_image_container'>
+        <img id='media_image_frame' class='pointer' draggable='false' crossOrigin="Anonymous">
+        <div id='media_image_error' class='pointer'>Image failed to load</div>
+        <div id='media_image_info' class='media_info dynamic_title'></div>
+    </div>`
+  
+    $("#media_image").html(s)
+}
