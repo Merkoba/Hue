@@ -264,6 +264,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     let email = req.body.email
 
     if (view.reserved_usernames.includes(username.toLowerCase())) {
+      already_exists(res, username, email)
       return false
     }
 
@@ -340,6 +341,17 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     }
   })
 
+  // Helper function
+  function already_exists(res, username, email) {
+    let m = encodeURIComponent("Username or email already exist")
+    let form_username = encodeURIComponent(username)
+    let form_email = encodeURIComponent(email)
+
+    res.redirect(
+      `/register?message=${m}&form_username=${form_username}&form_email=${form_email}`
+    )
+  }
+
   // Complete registration
   function do_register(req, res, next) {
     let username = req.body.username
@@ -380,13 +392,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
               console.error(err)
             })
         } else {
-          let m = encodeURIComponent("Username or email already exist")
-          let form_username = encodeURIComponent(username)
-          let form_email = encodeURIComponent(email)
-
-          res.redirect(
-            `/register?message=${m}&form_username=${form_username}&form_email=${form_email}`
-          )
+          already_exists(res, username, email)
         }
       })
 
@@ -444,70 +450,6 @@ module.exports = function (db_manager, config, sconfig, utilz) {
           let m = encodeURIComponent("The link has expired")
           res.redirect(`/message?message=${m}`)
         }
-      })
-
-      .catch((err) => {
-        console.error(err)
-      })
-  })
-
-  // Checks if username is already in use
-  router.post("/check_username", function (req, res, next) {
-    let username = req.body.username
-
-    if (
-      username.length === 0 ||
-      username.length > config.max_max_username_length
-    ) {
-      return false
-    }
-
-    if (view.reserved_usernames.includes(username.toLowerCase())) {
-      res.json({ taken: true })
-      return
-    }
-
-    db_manager
-      .get_user({ username: username }, { username: 1 }, false)
-
-      .then((user) => {
-        let taken
-
-        if (user) {
-          taken = true
-        } else {
-          taken = false
-        }
-
-        res.json({ taken: taken })
-      })
-
-      .catch((err) => {
-        console.error(err)
-      })
-  })
-
-  // Checks if email is already in use
-  router.post("/check_email", function (req, res, next) {
-    let email = req.body.email
-
-    if (email.length === 0 || email.length > config.max_max_email_length) {
-      return false
-    }
-
-    db_manager
-      .get_user({ email: email }, { email: 1 }, false)
-
-      .then((user) => {
-        let taken
-
-        if (user) {
-          taken = true
-        } else {
-          taken = false
-        }
-
-        res.json({ taken: taken })
       })
 
       .catch((err) => {

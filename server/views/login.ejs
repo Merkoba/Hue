@@ -8,49 +8,42 @@
 
 		<% include pages_imports.ejs %>
 
-		<script>			
+		<script>
 
-			function validate_form()
-			{
-				if(msg_info.is_open())
-				{
+			function validate_form() {
+				if (msg_info.is_open()) {
 					return false
 				}
-								
+
 				$("#login_email").val($("#login_email").val().trim())
-				
+
 				let email = $("#login_email").val()
 				let password = $("#login_password").val()
 
-				if(email.length === 0)
-				{
+				if (email.length === 0) {
 					set_message("Email can't be empty")
 					return false
 				}
 
-				if(password.length === 0)
-				{
+				if (password.length === 0) {
 					set_message("Password can't be empty")
 					return false
 				}
 
-				if(email.length > max_max_email_length)
-				{
+				if (email.length > max_max_email_length) {
 					set_message("Email is too long")
 					return false
 				}
 
-				if(password.length > max_max_password_length)
-				{
+				if (password.length > max_max_password_length) {
 					set_message("Password is too long")
 					return false
 				}
 
-				if(email.indexOf('@') === -1 || email.indexOf(' ') !== -1)
-				{
+				if (email.indexOf('@') === -1 || email.indexOf(' ') !== -1) {
 					set_message("Invalid email address")
 					return false
-				}				
+				}
 
 				$("#btn_login").prop("disabled", true)
 
@@ -95,8 +88,7 @@
 
 			$("#login_email").focus()
 
-			if(form_email && form_email !== "undefined")
-			{
+			if(form_email && form_email !== "undefined") {
 				$("#login_email").val(form_email)
 			}
 
