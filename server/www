@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const fs = require('fs')
+const path = require('path')
 
 function normalizePort(val) {
 	let port = parseInt(val, 10)
@@ -15,10 +16,10 @@ function normalizePort(val) {
 	return false
 }
 
-const config_path = '../config/config.json'
-const user_config_path = '../config/user_config.json'
-const sconfig_path = '../config/config.secret.json'
-const user_sconfig_path = '../config/user_config.secret.json'
+const config_path = path.join(__dirname, '../config/config.json')
+const user_config_path = path.join(__dirname, '../config/user_config.json')
+const sconfig_path = path.join(__dirname, '../config/config.secret.json')
+const user_sconfig_path = path.join(__dirname, '../config/user_config.secret.json')
 const config = {}
 const sconfig = {}
 const config_check_delay = 5000
@@ -60,10 +61,10 @@ function build_config() {
 
 function get_config_mtime() {
 	let mtime = ""
-	let files = fs.readdirSync('../config')
+	let files = fs.readdirSync(path.join(__dirname, "../config"))
 
 	for(let file of files) {
-		mtime += fs.statSync(`../config/${file}`).mtime.toString()
+		mtime += fs.statSync(path.join(__dirname, `../config/${file}`)).mtime.toString()
 	}
 
 	return mtime
@@ -82,7 +83,6 @@ const port = normalizePort(process.env.PORT || "3210")
 build_config()
 start_config_check()
 
-const path = require('path')
 const mongo = require('mongodb')
 const winston = require('winston')
 
