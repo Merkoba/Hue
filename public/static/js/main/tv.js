@@ -1047,7 +1047,7 @@ Hue.change_tv_volume = function (arg) {
   }
 }
 
-// Create html containers for tv players
+// Create html tv containers
 Hue.create_tv_containers = function () {
   let s = `
     <div id='media_youtube_video_container' class='media_container'></div>

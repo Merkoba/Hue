@@ -916,7 +916,7 @@ Hue.fix_current_image_data = function () {
   }
 }
 
-// Create html image elements
+// Create html image containers
 Hue.create_image_containers = function () {
   let s = `
     <div class='media_container' id='media_image_container'>
