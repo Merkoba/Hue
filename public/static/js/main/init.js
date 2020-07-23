@@ -176,6 +176,8 @@ Hue.handle_url_open = false
 Hue.screen_locked = false
 Hue.audio_min_delay = 3000
 Hue.audio_last_date = 0
+Hue.num_socket_in = 0
+Hue.num_socket_out = 0
 
 Hue.critical_commands = [
     "/js",
@@ -299,6 +301,7 @@ Hue.init = function () {
   Hue.setup_activity_bar()
   Hue.generate_favicon(0)
   Hue.setup_reply()
+  Hue.start_socket_stats()
 
   if (Hue.debug_functions) {
     Hue.wrap_functions()

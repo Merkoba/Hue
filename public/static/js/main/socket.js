@@ -319,6 +319,8 @@ Hue.socket_emit = function (destination, data, force = false) {
   if (Hue.emit_queue_timeout === undefined) {
     Hue.check_emit_queue()
   }
+
+  Hue.num_socket_in += 1
 }
 
 // Checks the socket emit queue to send the next emit
@@ -401,6 +403,8 @@ Hue.start_socket = function () {
     if (Hue.server_update_events[type]) {
       Hue.server_update_events[type](data)
     }
+
+    Hue.num_socket_out += 1
   })
 }
 
@@ -435,4 +439,15 @@ Hue.on_disconnect = function () {
 // Disconnects the user's socket
 Hue.disconnect_socket = function () {
   Hue.socket.close()
+}
+
+// Some stats in socket i/o
+Hue.start_socket_stats = function () {
+  setInterval(() => {
+    console.info("Socket Stats On Last Minute:")
+    console.info(`Socket Messsages IN: ${Hue.num_socket_in}`)
+    console.info(`Socket Messsages OUT: ${Hue.num_socket_out}`)
+    Hue.num_socket_in = 0
+    Hue.num_socket_out = 0
+  }, 60 * 1000);
 }
