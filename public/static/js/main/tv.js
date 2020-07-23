@@ -103,7 +103,7 @@ Hue.setup_tv = function (mode, odata = {}) {
   }
 }
 
-// Announced a tv change to the chat
+// Announce a tv change to the chat
 Hue.announce_tv = function (data) {
   return Hue.public_feedback(data.message, {
     id: data.id,
