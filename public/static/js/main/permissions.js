@@ -75,6 +75,8 @@ Hue.announce_voice_permission_change = function (data) {
   Hue.show_room_notification(data.username, s)
   Hue.check_media_permissions()
   Hue.config_admin_permission_checkboxes()
+  Hue.check_message_board_permissions()
+  Hue.check_message_board_delay()
 }
 
 // Announces op permission changes
@@ -135,8 +137,11 @@ Hue.check_media_permissions = function () {
   Hue.can_image =
     Hue.room_image_mode === "enabled" &&
     Hue.check_media_permission(Hue.role, "image")
+
   Hue.can_tv =
     Hue.room_tv_mode === "enabled" && Hue.check_media_permission(Hue.role, "tv")
+
+  Hue.can_messageboard = Hue.check_media_permission(Hue.role, "messageboard")
 
   Hue.setup_footer_icons()
 }

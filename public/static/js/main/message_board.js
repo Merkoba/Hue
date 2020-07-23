@@ -120,6 +120,10 @@ Hue.show_message_board = function (filter = false) {
 
 // Submits a message board post
 Hue.submit_message_board_post = function () {
+  if (!Hue.can_messageboard) {
+    return false
+  }
+  
   let message = Hue.utilz.clean_string2($("#message_board_post_textarea").val())
 
   if (!message || message.length > Hue.config.max_message_board_post_length) {
@@ -161,7 +165,7 @@ Hue.check_message_board_delay = function () {
 
   clearTimeout(Hue.message_board_post_delay_timeout)
 
-  if (date_diff < Hue.config.message_board_post_delay) {
+  if (!Hue.can_messageboard || date_diff < Hue.config.message_board_post_delay) {
     $("#message_board_post_textarea").css("display", "none")
 
     Hue.message_board_post_delay_timeout = setTimeout(function () {

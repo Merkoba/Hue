@@ -42,6 +42,7 @@ Hue.role = ""
 Hue.can_chat = false
 Hue.can_image = false
 Hue.can_tv = false
+Hue.can_messageboard = false
 Hue.tab_info = {}
 Hue.create_room_open = false
 Hue.open_room_open = false

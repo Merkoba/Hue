@@ -134,4 +134,13 @@ module.exports = function (
     let room = vars.rooms[socket.hue_room_id]
     return room[`${socket.hue_role}_permissions`][permission]
   }
+
+  // Fills unset properties on the objects
+  handler.check_voice_permissions = function (obj) {
+    if (obj.messageboard === undefined) {
+      obj.messageboard = true
+    }
+
+    return obj
+  }  
 }
