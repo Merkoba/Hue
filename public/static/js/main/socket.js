@@ -366,7 +366,7 @@ Hue.start_socket = function () {
   })
 
   Hue.socket.on("connect", () => {
-    console.log("(+) Socket Connected")
+    Hue.loginfo("Socket Connected", "color:green")
     Hue.connecting = false
     let no_message_log = !Hue.get_setting("message_log")
 
@@ -390,7 +390,7 @@ Hue.start_socket = function () {
   })
 
   Hue.socket.on("disconnect", (reason) => {
-    console.log("(-) Socket Disconnected")
+    Hue.loginfo("Socket Disconnected", "color:red")
     Hue.connected = false
 
     if (Hue.started) {
