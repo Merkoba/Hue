@@ -323,7 +323,7 @@ Hue.on_join = function (data) {
   Hue.log_messages_processed = false
 
   Hue.load_date_3 = Date.now()
-  console.info("Joined Room")
+  Hue.loginfo("Joined Room")
 
   Hue.room_locked = data.room_locked
 

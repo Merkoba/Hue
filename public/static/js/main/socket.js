@@ -347,7 +347,7 @@ Hue.check_emit_queue = function () {
 // Actually do the socket emit
 Hue.do_socket_emit = function (obj) {
   if (Hue.debug_socket) {
-    console.info(
+    Hue.loginfo(
       `Emit: ${obj.destination} | Data: ${JSON.stringify(obj.data).substring(
         0,
         250
@@ -446,9 +446,9 @@ Hue.disconnect_socket = function () {
 // Some stats in socket i/o
 Hue.start_socket_stats = function () {
   setInterval(() => {
-    console.info("Socket Stats On Last Minute:")
-    console.info(`Socket Messsages IN: ${Hue.num_socket_in}`)
-    console.info(`Socket Messsages OUT: ${Hue.num_socket_out}`)
+    Hue.loginfo("Socket Stats On Last Minute:")
+    Hue.loginfo(`Socket Messsages IN: ${Hue.num_socket_in}`)
+    Hue.loginfo(`Socket Messsages OUT: ${Hue.num_socket_out}`)
     Hue.num_socket_in = 0
     Hue.num_socket_out = 0
   }, 60 * 1000);

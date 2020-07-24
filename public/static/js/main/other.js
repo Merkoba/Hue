@@ -62,7 +62,7 @@ Hue.show_console_message = function () {
     "🤔 Want to work with us? It's pretty much 99.99% risks, some negligible fraction AI, a couple bureaucracies to keep people minimally pissed off, and a whole lot of creativity."
   let style = "font-size:1.4rem"
 
-  console.info(`%c${s}`, style)
+  Hue.loginfo(`%c${s}`, style)
 }
 
 // Dynamically generate a favicon
@@ -115,4 +115,9 @@ Hue.check_favicon = function (mode=undefined) {
       Hue.generate_favicon(Hue.alert_mode)
     }
   }
+}
+
+// Centralized console info printer
+Hue.loginfo = function (message, style="") {
+  console.info(`[${Hue.utilz.nice_date()}] ${message}`, style)
 }

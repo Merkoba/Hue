@@ -5,7 +5,7 @@ Hue.load_script = function (source) {
     return false
   }
 
-  console.info(`Loading script: ${source}`)
+  Hue.loginfo(`Loading script: ${source}`)
 
   return new Promise((resolve, reject) => {
     const script = document.createElement("script")

@@ -7,9 +7,9 @@ Hue.compare_load_dates = function () {
   let time_2 = Hue.utilz.nice_time(Hue.load_date_2, Hue.load_date_3)
   let time_3 = Hue.utilz.nice_time(Hue.load_date_3, Hue.load_date_4)
 
-  console.info(`Time from load to init ready: ${time_1}`)
-  console.info(`Time from init ready and join: ${time_2}`)
-  console.info(`Time from join to everything ready: ${time_3}`)
+  Hue.loginfo(`Time from load to init ready: ${time_1}`)
+  Hue.loginfo(`Time from init ready and join: ${time_2}`)
+  Hue.loginfo(`Time from join to everything ready: ${time_3}`)
 }
 
 // Used for debugging purposes
@@ -43,17 +43,17 @@ jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !"§ $%& /() =?* '<> #|;
   })
 }
 
-// Special console.info for debugging purposes
+// Special info for debugging purposes
 Hue.sdeb = function (s, show_date = false) {
   if (show_date) {
-    console.info(Hue.utilz.nice_date())
+    Hue.loginfo(Hue.utilz.nice_date())
   }
 
   for (let line of `${s}`.split("\n")) {
-    console.info(`>${line}<`)
+    Hue.loginfo(`>${line}<`)
   }
 
-  console.info("-------------")
+  Hue.loginfo("-------------")
 }
 
 // A debugging function
@@ -67,7 +67,7 @@ Hue.fillet = function (n) {
 Hue.wrap_function = function (func, name) {
   let wrapped = function () {
     let date = dateFormat(Date.now(), "h:MM:ss:l")
-    console.info(`${date} | Running: ${name}`)
+    Hue.loginfo(`${date} | Running: ${name}`)
     return func(...arguments)
   }
 
