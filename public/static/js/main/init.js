@@ -208,6 +208,8 @@ Hue.math_loading = false
 Hue.wordz_loading = false
 Hue.media_info_image_data = []
 Hue.media_info_tv_data = []
+Hue.lockscreen_info_default = "(Hover To Peek)"
+Hue.lockscreen_info_activity = "(New Activity)"
 
 // This runs after the application's load event
 // This is the first function that gets executed

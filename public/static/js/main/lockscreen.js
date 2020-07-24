@@ -12,7 +12,7 @@ Hue.setup_lockscreen = function () {
 
     if (Hue.lockscreen_peek_active) {
       $("#Msg-container-lockscreen").css("opacity", 1)
-      $("#lockscreen_title_info").text("")
+      $("#lockscreen_title_info").text(Hue.lockscreen_info_default)
     }
 
     Hue.lockscreen_peek_active = false
@@ -64,6 +64,8 @@ Hue.lock_screen = function (save = true, force = false) {
       $("#lockscreen_clock").text(Hue.utilz.clock_time())
     }, Hue.update_lockscreen_clock_delay)
   }
+
+  $("#lockscreen_title_info").text(Hue.lockscreen_info_default)
 }
 
 // Disables the lockscreen
@@ -114,8 +116,8 @@ Hue.lockscreen_turn_lights_on = function () {
 // Adds an indicator in the lockscreen if it's enabled and there's activity
 Hue.check_lockscreen_activity = function () {
   if (Hue.screen_locked) {
-    if (!$("#lockscreen_title_info").text()) {
-      $("#lockscreen_title_info").text("(New Activity)")
+    if ($("#lockscreen_title_info").text() === Hue.lockscreen_info_default) {
+      $("#lockscreen_title_info").text(Hue.lockscreen_info_activity)
     }
   }
 }
