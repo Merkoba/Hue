@@ -320,7 +320,7 @@ Hue.socket_emit = function (destination, data, force = false) {
     Hue.check_emit_queue()
   }
 
-  Hue.num_socket_in += 1
+  Hue.num_socket_out += 1
 }
 
 // Checks the socket emit queue to send the next emit
@@ -404,7 +404,7 @@ Hue.start_socket = function () {
       Hue.server_update_events[type](data)
     }
 
-    Hue.num_socket_out += 1
+    Hue.num_socket_in += 1
   })
 }
 
