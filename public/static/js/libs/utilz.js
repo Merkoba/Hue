@@ -418,8 +418,12 @@ const Utilz = function () {
 		return str.substring(0, start) + what + str.substring(end)
 	}
 
-	utilz.nice_date = function (date = Date.now()) {
-		return dateFormat(date, "dddd, mmmm dS, yyyy, h:MM:ss TT")
+	utilz.nice_date = function (date = Date.now(), mode="normal") {
+		if (mode === "normal") {
+			return dateFormat(date, "dddd, mmmm dS, yyyy, h:MM:ss TT")
+		} else if (mode === "log") {
+			return dateFormat(date, "d/m/yyyy, H:MM:ss")
+		}
 	}
 
 	utilz.clock_time = function (date = Date.now()) {
