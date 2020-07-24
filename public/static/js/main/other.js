@@ -119,5 +119,5 @@ Hue.check_favicon = function (mode=undefined) {
 
 // Centralized console info printer
 Hue.loginfo = function (message, style="") {
-  console.info(`%c[${Hue.utilz.nice_date()}] ${message}`, style)
+  console.info(`🤡 %c[${Hue.utilz.nice_date()}] ${message}`, style)
 }
