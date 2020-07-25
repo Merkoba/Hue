@@ -62,7 +62,7 @@ Hue.show_reload_button = function () {
         Hue.modify_setting("autoconnect true", false, true)
         Hue.refresh_client()
       },
-      brk: "<i class='icon2c fa fa-plug'></i>",
+      brk: "<i class='chat_icon fa fa-plug'></i>",
     }
   )
 }

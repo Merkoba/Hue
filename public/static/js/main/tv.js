@@ -108,7 +108,7 @@ Hue.announce_tv = function (data) {
   return Hue.public_feedback(data.message, {
     id: data.id,
     save: true,
-    brk: "<i class='icon2c fa fa-tv'></i>",
+    brk: "<i class='icon_chat fa fa-tv'></i>",
     title: data.info,
     onclick: data.onclick,
     date: data.date,

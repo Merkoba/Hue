@@ -97,7 +97,7 @@ Hue.announce_image = function (data) {
   return Hue.public_feedback(data.message, {
     id: data.id,
     save: true,
-    brk: "<i class='icon2c fa fa-camera'></i>",
+    brk: "<i class='chat_icon fa fa-camera'></i>",
     date: data.date,
     username: data.setter,
     title: data.info,

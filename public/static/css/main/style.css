@@ -768,6 +768,10 @@ a.generic:hover {
 	font-size: 0.5rem;
 }
 
+.chat_icon {
+	font-size: 1rem;
+}
+
 .dotted {
 	text-decoration: underline;
 	text-decoration-style: dotted;

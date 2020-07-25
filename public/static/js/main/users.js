@@ -70,7 +70,7 @@ Hue.user_join = function (data) {
       Hue.show_popup(Hue.make_info_popup(f), item)
     } else if (method === "chat") {
       Hue.public_feedback(`${data.username} has joined`, {
-        brk: "<i class='icon2c fa fa-user-plus'></i>",
+        brk: "<i class='chat_icon fa fa-user-plus'></i>",
         username: data.username,
         open_profile: true,
       })
@@ -648,7 +648,7 @@ Hue.user_disconnect = function (data) {
       Hue.show_popup(Hue.make_info_popup(), item)
     } else if (method === "chat") {
       Hue.public_feedback(s, {
-        brk: "<i class='icon2c fas fa-sign-out-alt'></i>",
+        brk: "<i class='chat_icon fas fa-sign-out-alt'></i>",
         username: data.username,
       })
     }

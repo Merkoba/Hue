@@ -383,7 +383,7 @@ Hue.update_chat = function (args = {}) {
     }
 
     if (!args.brk) {
-      args.brk = "<i class='icon2c fa fa-user-circle'></i>"
+      args.brk = "<i class='chat_icon fa fa-user-circle'></i>"
     }
 
     message_classes += " thirdperson"
@@ -2765,7 +2765,7 @@ Hue.clear_autoscroll = function () {
 Hue.show_announcement = function (data, date = Date.now()) {
   Hue.public_feedback(data.message, {
     id: data.id,
-    brk: "<i class='icon2c fa fa-star'></i>",
+    brk: "<i class='chat_icon fa fa-star'></i>",
     date: date,
     preview_image: true,
     link_title: data.link_title,
@@ -2903,7 +2903,7 @@ Hue.shrug = function () {
 // Centralized function to show local feedback messages
 Hue.feedback = function (message, data = false) {
   let obj = {
-    brk: "<i class='icon2c fa fa-info-circle'></i>",
+    brk: "<i class='chat_icon fa fa-info-circle'></i>",
     message: message,
     public: false,
   }
@@ -2922,7 +2922,7 @@ Hue.feedback = function (message, data = false) {
 // Centralized function to show public announcement messages
 Hue.public_feedback = function (message, data = false) {
   let obj = {
-    brk: "<i class='icon2c fa fa-info-circle'></i>",
+    brk: "<i class='chat_icon fa fa-info-circle'></i>",
     message: message,
     public: true,
   }

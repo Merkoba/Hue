@@ -29,22 +29,22 @@ Hue.show_reaction = function (data, date = false) {
   let message
 
   if (data.reaction_type === "like") {
-    icon = "<i class='icon2c far fa-thumbs-up'></i>"
+    icon = "<i class='chat_icon far fa-thumbs-up'></i>"
     message = `likes this`
   } else if (data.reaction_type === "love") {
-    icon = "<i class='icon2c far fa-heart'></i>"
+    icon = "<i class='chat_icon far fa-heart'></i>"
     message = `loves this`
   } else if (data.reaction_type === "happy") {
-    icon = "<i class='icon2c far fa-smile'></i>"
+    icon = "<i class='chat_icon far fa-smile'></i>"
     message = `is feeling happy`
   } else if (data.reaction_type === "meh") {
-    icon = "<i class='icon2c far fa-meh'></i>"
+    icon = "<i class='chat_icon far fa-meh'></i>"
     message = `is feeling meh`
   } else if (data.reaction_type === "sad") {
-    icon = "<i class='icon2c far fa-frown'></i>"
+    icon = "<i class='chat_icon far fa-frown'></i>"
     message = `is feeling sad`
   } else if (data.reaction_type === "dislike") {
-    icon = "<i class='icon2c far fa-thumbs-down'></i>"
+    icon = "<i class='chat_icon far fa-thumbs-down'></i>"
     message = `dislikes this`
   } else {
     return false

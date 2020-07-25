@@ -207,7 +207,7 @@ Hue.on_room_created = function (data) {
   }
 
   Hue.feedback("Room Created", {
-    brk: "<i class='icon2c fa fa-key'></i>",
+    brk: "<i class='chat_icon fa fa-key'></i>",
     onclick: onclick,
     save: true,
   })
