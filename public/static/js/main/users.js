@@ -689,6 +689,8 @@ Hue.announce_new_username = function (data) {
         `You are now known as ${data.username}`
       )
     }
+
+    Hue.update_input_placeholder()
   } else {
     if (show) {
       Hue.show_room_notification(

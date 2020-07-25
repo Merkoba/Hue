@@ -21,17 +21,6 @@ Hue.setup_lockscreen = function () {
   $("#lockscreen_principal").click(function () {
     Hue.unlock_screen()
   })
-
-  Hue.setup_lockscreen_clock()
-}
-
-// Setups the optional clock that appears in the lockscreen
-Hue.setup_lockscreen_clock = function () {
-  if (Hue.get_setting("show_clock_in_lockscreen")) {
-    $("#lockscreen_clock").css("display", "block")
-  } else {
-    $("#lockscreen_clock").css("display", "none")
-  }
 }
 
 // Enables the lockscreen
@@ -52,14 +41,6 @@ Hue.lock_screen = function (save = true, force = false) {
     Hue.save_room_state()
   }
 
-  $("#lockscreen_clock").text(Hue.utilz.clock_time())
-
-  if (Hue.get_setting("show_clock_in_lockscreen")) {
-    Hue.lockscreen_clock_interval = setInterval(function () {
-      $("#lockscreen_clock").text(Hue.utilz.clock_time())
-    }, Hue.update_lockscreen_clock_delay)
-  }
-
   $("#lockscreen_title_info").text(Hue.lockscreen_info_default)
 }
 
@@ -70,7 +51,6 @@ Hue.unlock_screen = function (save = true) {
   }
 
   clearTimeout(Hue.lockscreen_peek_timeout)
-  clearInterval(Hue.lockscreen_clock_interval)
 
   Hue.screen_locked = false
   Hue.msg_lockscreen.close()

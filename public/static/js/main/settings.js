@@ -647,43 +647,7 @@ Hue.user_settings = {
         `#${type}_show_input_placeholder`
       ).prop("checked")
 
-      if (Hue.active_settings("show_input_placeholder") === type) {
-        Hue.setup_input_placeholder()
-      }
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  show_clock_in_input_placeholder: {
-    widget_type: "checkbox",
-    description: `Whether the current time should be included in the input's information`,
-    action: (type, save = true) => {
-      Hue[type].show_clock_in_input_placeholder = $(
-        `#${type}_show_clock_in_input_placeholder`
-      ).prop("checked")
-
-      if (Hue.active_settings("show_clock_in_input_placeholder") === type) {
-        Hue.setup_input_placeholder()
-      }
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  show_clock_in_lockscreen: {
-    widget_type: "checkbox",
-    description: `Whether the current time should be displayed in the lockscreen`,
-    action: (type, save = true) => {
-      Hue[type].show_clock_in_lockscreen = $(
-        `#${type}_show_clock_in_lockscreen`
-      ).prop("checked")
-
-      if (Hue.active_settings("show_clock_in_lockscreen") === type) {
-        Hue.setup_lockscreen_clock()
-      }
+      Hue.update_input_placeholder()
 
       if (save) {
         Hue[`save_${type}`]()

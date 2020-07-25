@@ -1719,6 +1719,11 @@ select {
 	flex-direction: column;
 }
 
+#lockscreen_header {
+	font-size: 2rem;
+	margin-bottom: 1.5rem;
+}
+
 #lockscreen_principal {
 	color: #ffffff;
 }
@@ -1833,17 +1838,12 @@ select {
 }
 
 #lockscreen_info {
-	margin-top: 1rem;
+	margin-top: 1.5rem;
 	font-size: 1rem;
 }
 
 #lockscreen_info > div {
 	margin-bottom: 0.5rem;
-}
-
-#lockscreen_clock {
-	font-size: 2rem;
-	margin-bottom: 1rem;
 }
 
 @keyframes animation_circle_1 {

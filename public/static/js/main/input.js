@@ -85,34 +85,14 @@ Hue.reprocess_input = function () {
   $("#input")[0].dispatchEvent(new Event("reprocess"))
 }
 
-// Setups the input's placeholder
-Hue.setup_input_placeholder = function () {
-  if (Hue.get_setting("show_input_placeholder")) {
-    clearInterval(Hue.update_input_placeholder_interval)
-    Hue.update_input_placeholder()
-
-    if (Hue.get_setting("show_clock_in_input_placeholder")) {
-      Hue.update_input_placeholder_interval = setInterval(function () {
-        Hue.update_input_placeholder()
-      }, Hue.update_input_placeholder_delay)
-    }
-  } else {
-    clearInterval(Hue.update_input_placeholder_interval)
-    $("#input").attr("placeholder", "")
-  }
-}
-
 // Updates the input's placeholder
 Hue.update_input_placeholder = function () {
-  let s
-  let info = `Hi ${Hue.username}, write something to ${Hue.room_name}`
-
-  if (Hue.get_setting("show_clock_in_input_placeholder")) {
-    s = `(${Hue.utilz.clock_time()})  ${info}`
-  } else {
-    s = info
+  let s = ""
+  
+  if (Hue.get_setting("show_input_placeholder")) {
+    s = `Hi ${Hue.username}, write something to ${Hue.room_name}`
   }
-
+  
   $("#input").attr("placeholder", s)
 }
 

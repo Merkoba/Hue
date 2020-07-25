@@ -142,8 +142,6 @@ Hue.context_menu_open = false
 Hue.image_upload_comment_file = false
 Hue.image_upload_comment_type = false
 Hue.just_tabbed = false
-Hue.update_input_placeholder_delay = 10000
-Hue.update_lockscreen_clock_delay = 10000
 Hue.userlist_mode = "normal"
 Hue.usercount = 0
 Hue.quote_max_length = 200
@@ -296,7 +294,6 @@ Hue.init = function () {
   Hue.setup_badges()
   Hue.setup_image_picker()
   Hue.setup_userlist_window()
-  Hue.setup_input_placeholder()
   Hue.setup_user_menu()
   Hue.setup_header()
   Hue.setup_media()
@@ -369,6 +366,7 @@ Hue.on_join = function (data) {
   Hue.init_message_board(data)
   Hue.start_active_media()
   Hue.fix_current_image_data()
+  Hue.update_input_placeholder()
 
   Hue.at_startup()
 }
@@ -387,10 +385,6 @@ Hue.at_startup = function () {
   setTimeout(function () {
     Hue.started_safe = true
   }, 2000)
-
-  if (Hue.get_setting("show_clock_in_input_placeholder")) {
-    Hue.update_input_placeholder()
-  }
 
   Hue.process_visibility()
   Hue.load_date_4 = Date.now()
