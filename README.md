@@ -1,12 +1,8 @@
-![](https://i.imgur.com/NL56icm.jpg)
+![](https://i.imgur.com/bSNwmRv.jpg)
 
-![](https://i.imgur.com/Q5FmeKN.jpg)
+![](https://i.imgur.com/gtEwjvv.jpg)
 
-![](https://i.imgur.com/EBhIQNS.jpg)
-
-![](https://i.imgur.com/1Ua6LEc.jpg)
-
-![](https://i.imgur.com/6SBOwB8.jpg)
+![](https://i.imgur.com/0JSoq8b.jpg)
 
 # What Is It
 
