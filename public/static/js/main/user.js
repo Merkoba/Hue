@@ -640,8 +640,10 @@ Hue.show_audio_clip_menu = function () {
     })
 
     $("#remove_audio_clip").click(function () {
-      Hue.socket_emit("remove_audio_clip", {})
-      Hue.msg_info2.close()
+      Hue.needs_confirm_2(function () {
+        Hue.socket_emit("remove_audio_clip", {})
+        Hue.msg_info2.close()
+      })
     })
 
     Hue.horizontal_separator.separate("background_image_select_container")

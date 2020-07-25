@@ -41,6 +41,18 @@ Hue.needs_confirm = function (func, s = false) {
   }
 }
 
+// Wrapper to show a confirmation dialog before running a function
+// This one takes a full function and not just the name
+Hue.needs_confirm_2 = function (func, s = false) {
+  if (!s) {
+    s = "Are you sure?"
+  }
+
+  if (confirm(s)) {
+    func()
+  }
+}
+
 // Show the credits
 Hue.show_credits = function () {
   Hue.msg_credits.show(function () {
