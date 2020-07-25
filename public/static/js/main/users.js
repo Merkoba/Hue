@@ -1432,10 +1432,12 @@ Hue.audio_clip_changed = function (data) {
     Hue.show_profile(data.username)
   }
 
-  Hue.show_room_notification(
-    data.username,
-    `${data.username} changed their audio clip`
-  )
+  if (data.audio_clip) {
+    Hue.show_room_notification(
+      data.username,
+      `${data.username} changed their audio clip`
+    )
+  }
 }
 
 // Add a user to the ignore list
