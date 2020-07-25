@@ -1310,7 +1310,7 @@ select {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #442b4b;
+	background-color: #b17fbf;
 	transition: opacity 1.6s linear;
 	pointer-events: none;
 }
@@ -1318,7 +1318,7 @@ select {
 #loading_spinner {
 	width: 80px;
 	height: 80px;
-	background-color: #ba9bba;
+	background-color: #8f46a8;
 	animation: rotate_plane 1.2s infinite ease-in-out;
 }
 
