@@ -22,6 +22,10 @@ module.exports = function (
       return handler.get_out(socket)
     }
 
+    if (!handler.check_media_permission(socket, "messageboard")) {
+      return false
+    }
+
     if (
       !handler.check_op_permission(socket, "message_board_no_restriction") &&
       !socket.hue_superuser
