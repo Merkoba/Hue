@@ -20,7 +20,6 @@ Hue.get_room_state = function () {
     "image_locked",
     "tv_locked",
     "tv_volume",
-    "lockscreen_lights_off",
     "chat_searches",
     "last_highlight_date",
   ]

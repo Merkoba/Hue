@@ -1310,7 +1310,7 @@ select {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #b17fbf;
+	background-color: #442b4b;
 	transition: opacity 1.6s linear;
 	pointer-events: none;
 }
@@ -1318,7 +1318,7 @@ select {
 #loading_spinner {
 	width: 80px;
 	height: 80px;
-	background-color: #8f46a8;
+	background-color: #ba9bba;
 	animation: rotate_plane 1.2s infinite ease-in-out;
 }
 
@@ -1714,8 +1714,8 @@ select {
 	justify-content: center;
 	width: 100%;
 	height: 100%;
-	color: white;
-	background-color: #b17fbf;
+	color: rgb(202, 202, 202);
+	background-color: rgb(34, 34, 34);
 	flex-direction: column;
 }
 
@@ -1739,7 +1739,7 @@ select {
 	width: 100%;
 	height: 60px;
 	overflow: hidden;
-	background-color: #8f46a8;
+	background-color: rgb(34, 34, 34);
 	box-shadow: 0 0 1px grey;
 	border-radius: 3px;
 }
@@ -1749,6 +1749,10 @@ select {
 	float: right;
 	margin-right: 20px;
 	top: 14px;
+}
+
+#lockscreen_icon_menu * {
+	background-color: rgb(202, 202, 202);
 }
 
 #lockscreen_title {
@@ -1771,7 +1775,7 @@ select {
 	left: -16px;
 	width: 64px;
 	height: 64px;
-	background-color: #ffffff;
+	background-color: var(--app-color-3);
 	opacity: 0.3;
 	z-index: 0;
 	border-radius: 50%;
@@ -1786,7 +1790,7 @@ select {
 	left: -46px;
 	width: 128px;
 	height: 128px;
-	background-color: #ffffff;
+	background-color: var(--app-color-3);
 	opacity: 0.2;
 	z-index: 0;
 	border-radius: 50%;
@@ -1802,7 +1806,7 @@ select {
 	left: -80px;
 	width: 192px;
 	height: 192px;
-	background-color: #ffffff;
+	background-color: var(--app-color-3);
 	opacity: 0.1;
 	z-index: 0;
 	border-radius: 50%;
@@ -1818,7 +1822,7 @@ select {
 	left: -116px;
 	width: 256px;
 	height: 256px;
-	background-color: #ffffff;
+	background-color: var(--app-color-3);
 	opacity: 0.1;
 	z-index: 0;
 	border-radius: 50%;
@@ -1828,10 +1832,13 @@ select {
 	transform: scale(0);
 }
 
-#lockscreen_lights_off_button {
+#lockscreen_info {
 	margin-top: 1rem;
 	font-size: 1rem;
-	cursor: pointer;
+}
+
+#lockscreen_info > div {
+	margin-bottom: 0.5rem;
 }
 
 #lockscreen_clock {
@@ -2387,18 +2394,6 @@ a.special_link:hover {
 	padding: 1em !important;
 	padding-top: 0.3em !important;
 	padding-bottom: 0.3em !important;
-}
-
-.black_background_color {
-	background-color: rgb(34, 34, 34) !important;
-}
-
-.grey_font_color {
-	color: rgb(202, 202, 202) !important;
-}
-
-.grey_background_color_parent * {
-	background-color: rgb(202, 202, 202) !important;
 }
 
 #expand_image_container {

@@ -483,9 +483,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "room_state_default_screen_locked"
 >Whether the screen will be locked by default.
 
-"room_state_default_lockscreen_lights_off"
->Where the lockscreen will have the dark theme by default.
-
 "room_state_default_chat_searches"
 >Default chat searches list.
 
