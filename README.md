@@ -4,13 +4,15 @@
 
 ![](https://i.imgur.com/0JSoq8b.jpg)
 
+![](https://i.imgur.com/iIxUwfu.jpg)
+
+![](https://i.imgur.com/CJknFIJ.jpg)
+
 # What Is It
 
-Hue is a whole new platform to have fun with other people online.
+Hue allows real time communication while watching, or listening to media.
 
-It allows real time communication while watching, or listening to media.
-
-It provides 3 different media spots that can all be active at once, or just the ones you, as an admin of the room want, or you, as the user want.
+It provides different media spots that can all be active at once, or just the ones you, as an admin of the room want, or you, as the user want.
 
 These are Images and TV.
 Images can be any image, either uploaded, drawn (there's a built-in drawing pad to draw an image), or linked. Search queries can be enabled to search images on Imgur. When the image is clicked it opens a modal where current and previous images can be seen in full screen.
