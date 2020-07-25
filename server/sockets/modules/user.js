@@ -292,6 +292,11 @@ module.exports = function (
     )
   }
 
+  // Remove the audio clip
+  handler.public.remove_audio_clip = function (socket, data) {
+    handler.do_change_audio_clip(socket, "")
+  }
+
   // Completes audio clip changes
   handler.do_change_audio_clip = async function (socket, file_name) {
     let userinfo = await db_manager.get_user(
@@ -299,15 +304,22 @@ module.exports = function (
       { audio_clip: 1, audio_clip_version: 1 }
     )
     let new_ver = userinfo.audio_clip_version + 1
-    let fver = `${file_name}?ver=${new_ver}`
-    let audio_clip_url
-
-    audio_clip_url = config.public_audio_location + fver
 
     if (userinfo.audio_clip && userinfo.audio_clip !== file_name) {
       vars.fs.unlink(`${vars.audio_root}/${userinfo.audio_clip}`, function (
         err
       ) {})
+    } else {
+      if (!file_name) {
+        return false
+      }
+    }
+
+    let audio_clip_url = ""
+
+    if (file_name) {
+      let fver = `${file_name}?ver=${new_ver}`
+      audio_clip_url = config.public_audio_location + fver
     }
 
     await db_manager.update_user(socket.hue_user_id, {

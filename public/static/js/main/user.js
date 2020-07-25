@@ -308,7 +308,11 @@ Hue.setup_user_menu = function () {
   })
 
   $("#user_menu_audio_clip").click(function () {
-    Hue.select_audio_clip()
+    if (Hue.get_user_by_username("mad").audio_clip) {
+      Hue.show_audio_clip_menu()
+    } else {
+      Hue.select_audio_clip()
+    }
   })
 
   $("#user_menu_notebook").click(function () {
@@ -625,6 +629,23 @@ Hue.add_to_notebook = function (note, feedback = true) {
       },
     })
   }
+}
+
+// Shows some options for the audio clip
+Hue.show_audio_clip_menu = function () {
+  Hue.msg_info2.show(["Change Audio Clip", Hue.template_audio_clip_menu()], function () {
+    $("#upload_audio_clip").click(function () {
+      Hue.select_audio_clip()
+      Hue.msg_info2.close()
+    })
+
+    $("#remove_audio_clip").click(function () {
+      Hue.socket_emit("remove_audio_clip", {})
+      Hue.msg_info2.close()
+    })
+
+    Hue.horizontal_separator.separate("background_image_select_container")
+  })
 }
 
 // Opens the file picker to choose an audio clip
