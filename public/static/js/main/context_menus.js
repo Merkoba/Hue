@@ -546,36 +546,6 @@ Hue.start_room_menu_context_menu = function () {
   })
 }
 
-// Starts the context menu for the footer media labels
-Hue.start_footer_media_label_context_menu = function () {
-  $.contextMenu({
-    selector: ".footer_media_label ",
-    animation: { duration: 250, hide: "fadeOut" },
-    zIndex: 9000000000,
-    events: Hue.context_menu_events,
-    items: {
-      mm1: {
-        name: "Load Next",
-        callback: function (key, opt) {
-          Hue.media_load_next($(this).data("type"))
-        },
-        disabled: function (key, opt) {
-          return !Hue.media_load_next($(this).data("type"), true)
-        },
-      },
-      mm2: {
-        name: "Load Previous",
-        callback: function (key, opt) {
-          Hue.media_load_previous($(this).data("type"))
-        },
-        disabled: function (key, opt) {
-          return !Hue.media_load_previous($(this).data("type"), true)
-        },
-      },
-    },
-  })
-}
-
 // Gets the username depending on source element to use in the username context menu
 Hue.get_user_context_menu_username = function (el) {
   let username

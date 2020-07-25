@@ -247,7 +247,6 @@ Hue.init = function () {
   Hue.start_room_menu_context_menu()
   Hue.start_media_maxer_context_menu()
   Hue.start_chat_maxer_context_menu()
-  Hue.start_footer_media_label_context_menu()
   Hue.start_chat_menu_context_menu()
   Hue.start_msg_close_buttons_context_menu()
   Hue.start_search_context_menus()

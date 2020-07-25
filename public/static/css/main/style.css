@@ -1,8 +1,8 @@
 :root {
-	--panel-height: 2rem;
-	--panel-height-double: 4rem;
+	--panel-height: 38px;
+	--panel-height-double: 76px;
+	--panel-font-size: 18px;
 	--userlist-profile-image-size: 45px;
-	--panel-icon-font-size: 0.8rem;
 	--app-font-family: imported_font, sans-serif;
 }
 
@@ -154,13 +154,18 @@ body * {
 	margin-left: 0.5rem;
 	margin-right: 0.8rem;
 	transition: text-shadow 500ms;
+	font-size: var(--panel-font-size);
+}
+
+#activity_bar_no_activity {
+	font-size: var(--panel-font-size);
 }
 
 .activity_bar_image_container {
-	min-width: 22px;
-	max-width: 22px;
-	min-height: 22px;
-	max-height: 22px;
+	min-width: calc(var(--panel-height) * 0.7);
+	max-width: calc(var(--panel-height) * 0.7);
+	min-height: calc(var(--panel-height) * 0.7);
+	max-height: calc(var(--panel-height) * 0.7);
 	margin-left: 0.8rem;
 	transition: box-shadow 500ms;
 }
@@ -332,7 +337,7 @@ body * {
 	flex-shrink: 1;
 	background-color: transparent;
 	color: inherit;
-	font-size: var(--panel-icon-font-size);
+	font-size: var(--panel-font-size);
 }
 
 .footer_icon2 {
@@ -341,7 +346,7 @@ body * {
 	flex-shrink: 1;
 	background-color: transparent;
 	color: inherit;
-	font-size: var(--panel-icon-font-size);
+	font-size: var(--panel-font-size);
 }
 
 .footer_icon3 {
@@ -349,7 +354,7 @@ body * {
 	flex-shrink: 1;
 	background-color: transparent;
 	color: inherit;
-	font-size: var(--panel-icon-font-size);
+	font-size: var(--panel-font-size);
 }
 
 .footer_text {
@@ -369,7 +374,7 @@ body * {
 	padding: 0.6rem;
 	padding-right: 0.8rem;
 	padding-left: 0;
-	font-size: var(--panel-icon-font-size);
+	font-size: var(--panel-font-size);
 }
 
 .footer_media_locked_label {
@@ -377,7 +382,7 @@ body * {
 }
 
 #input {
-	font-size: 1rem;
+	font-size: var(--panel-font-size);
 	color: white;
 	border: 0px solid black;
 	padding-right: 1rem;
@@ -400,6 +405,7 @@ body * {
 
 #input::placeholder {
 	white-space: pre;
+	font-size: var(--panel-font-size);
 }
 
 .scroller_container {
@@ -1698,12 +1704,12 @@ select {
 }
 
 .header_icon {
-	font-size: var(--panel-icon-font-size);
-	padding: 0.6rem;
+	font-size: var(--panel-font-size);
+	padding: calc(var(--panel-font-size) * 0.8);
 }
 
 .header_label {
-	font-size: 0.8rem;
+	font-size: var(--panel-font-size);
 	margin-left: -0.2rem;
 	margin-right: 0.6rem;
 }
