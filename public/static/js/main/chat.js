@@ -2057,7 +2057,7 @@ Hue.cant_chat = function () {
 
 // Find the next chat message above that involves the user
 // This is a message made by the user or one that is highlighted
-Hue.activity_above = function (animate = true) {
+Hue.activity_above = function () {
   let step = false
   let activity_up_scroller_height = $("#activity_up_scroller").outerHeight()
   let scrolltop = $("#chat_area").scrollTop()
@@ -2080,7 +2080,7 @@ Hue.activity_above = function (animate = true) {
           return true
         }
 
-        Hue.scroll_chat_to(diff, animate)
+        Hue.scroll_chat_to(diff)
         step = true
         return false
       }
@@ -2088,13 +2088,13 @@ Hue.activity_above = function (animate = true) {
   })
 
   if (!step) {
-    Hue.goto_top(animate)
+    Hue.goto_top()
   }
 }
 
 // Find the next chat message below that involves the user
 // This is a message made by the user or one that is highlighted
-Hue.activity_below = function (animate = true) {
+Hue.activity_below = function () {
   let step = false
   let activity_up_scroller_height = $("#activity_up_scroller").outerHeight()
   let activity_down_scroller_height = $("#activity_down_scroller").outerHeight()
@@ -2120,7 +2120,7 @@ Hue.activity_below = function (animate = true) {
           return true
         }
 
-        Hue.scroll_chat_to(diff, animate)
+        Hue.scroll_chat_to(diff)
         step = true
         return false
       }
@@ -2128,7 +2128,7 @@ Hue.activity_below = function (animate = true) {
   })
 
   if (!step) {
-    Hue.goto_bottom(true, animate)
+    Hue.goto_bottom(true)
   }
 }
 
@@ -2182,26 +2182,13 @@ Hue.notify_chat_size_change = function (size) {
 }
 
 // Scrolls the chat to a certain vertical position
-Hue.scroll_chat_to = function (scroll_top, animate = true, delay = 500) {
-  $("#chat_area").stop()
-
-  if (
-    Hue.started &&
-    Hue.app_focused &&
-    animate &&
-    Hue.get_setting("animate_scroll")
-  ) {
-    $("#chat_area").animate({ scrollTop: scroll_top }, delay, function () {
-      Hue.check_scrollers()
-    })
-  } else {
-    $("#chat_area").scrollTop(scroll_top)
-  }
+Hue.scroll_chat_to = function (scroll_top) {
+  $("#chat_area").scrollTop(scroll_top)
 }
 
 // Scrolls the chat up
 Hue.scroll_up = function (n) {
-  Hue.scroll_chat_to($("#chat_area").scrollTop() - n, false)
+  Hue.scroll_chat_to($("#chat_area").scrollTop() - n)
 }
 
 // Scrolls the chat down
@@ -2212,7 +2199,7 @@ Hue.scroll_down = function (n) {
   if (max - $ch.scrollTop < n) {
     Hue.scroll_chat_to(max + 10)
   } else {
-    Hue.scroll_chat_to($ch.scrollTop() + n, false)
+    Hue.scroll_chat_to($ch.scrollTop() + n)
   }
 }
 
@@ -2707,10 +2694,6 @@ Hue.hide_bottom_scroller = function () {
 
 // Updates scrollers state based on scroll position
 Hue.check_scrollers = function () {
-  if ($("#chat_area").is(":animated")) {
-    return false
-  }
-
   if (Hue.autoscrolling) {
     return false
   }
@@ -2724,7 +2707,7 @@ Hue.check_scrollers = function () {
     if (scrolltop > 0) {
       Hue.show_top_scroller()
     } else {
-      // Hue.hide_top_scroller()
+      Hue.hide_top_scroller()
       Hue.clear_autoscroll()
     }
 
@@ -2796,14 +2779,14 @@ Hue.show_announcement = function (data, date = Date.now()) {
 }
 
 // Scrolls the chat to the top
-Hue.goto_top = function (animate = true) {
+Hue.goto_top = function () {
   Hue.clear_autoscroll()
-  Hue.scroll_chat_to(0, animate)
-  // Hue.hide_top_scroller()
+  Hue.scroll_chat_to(0)
+  Hue.hide_top_scroller()
 }
 
 // Scrolls the chat to the bottom
-Hue.goto_bottom = function (force = false, animate = true) {
+Hue.goto_bottom = function (force = false) {
   if (!force && Hue.started) {
     if (Date.now() - Hue.last_scroll_date < Hue.recent_scroll_time) {
       return
@@ -2815,13 +2798,13 @@ Hue.goto_bottom = function (force = false, animate = true) {
 
   if (force) {
     Hue.clear_autoscroll()
-    Hue.scroll_chat_to(max, animate)
-    // Hue.hide_top_scroller()
+    Hue.scroll_chat_to(max)
+    Hue.show_top_scroller()
     Hue.hide_bottom_scroller()
   } else {
     if (!Hue.chat_scrolled) {
       Hue.clear_autoscroll()
-      Hue.scroll_chat_to(max, animate)
+      Hue.scroll_chat_to(max)
     }
   }
 }
