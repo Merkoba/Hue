@@ -2703,17 +2703,17 @@ Hue.check_scrollers = function () {
   let scrolltop = $ch.scrollTop()
   let diff = max - scrolltop
 
-  if (diff > Hue.small_scroll_amount) {
-    if (scrolltop > 0) {
-      Hue.show_top_scroller()
-    } else {
-      Hue.hide_top_scroller()
-      Hue.clear_autoscroll()
-    }
 
+  if (scrolltop === 0) {
+    Hue.hide_top_scroller()
+    Hue.clear_autoscroll()
+  } else {
+    Hue.show_top_scroller()
+  }
+
+  if (diff > Hue.small_scroll_amount) {
     Hue.show_bottom_scroller()
   } else {
-    // Hue.hide_top_scroller()
     Hue.hide_bottom_scroller()
 
     if (diff <= 0) {
