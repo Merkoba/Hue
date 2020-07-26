@@ -12,7 +12,7 @@ Hue.make_info_popup = function (on_click = function () {}) {
   let popup = Hue.create_popup({
     position: "topright",
     autoclose: true,
-    autoclose_delay = autoclose_delay,
+    autoclose_delay: autoclose_delay,
     enable_titlebar: true,
     window_x: "inner_right",
     content_class: "!info_popup",
@@ -62,9 +62,19 @@ Hue.make_info_popup_item = function (args = {}) {
     }
   }
 
-  return `<div class='info_popup_item ${classes}'><i class='${
-    args.icon
-  } info_popup_icon'></i><div>${Hue.utilz.make_html_safe(
+  let icon = ""
+
+  if (!args.icon) {
+    args.icon = "info"
+  }
+
+  if (args.icon) {
+    icon = `<svg class='other_icon info_popup_icon'><use href='#icon_${args.icon}'></svg>`
+  }
+
+  return `<div class='info_popup_item ${classes}'>
+  ${icon}
+  <div>${Hue.utilz.make_html_safe(
     args.message
   )}</div></div>`
 }

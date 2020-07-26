@@ -1,8 +1,10 @@
 <script id='template_notifications' type='text/x-handlebars-template' class='template'>
     <div class='flex_row_center sticky bg1'>
-        <i class='fa fa-cog invisible'></i>
+        <svg class='other_icon invisible'><use href='#icon_cog'></svg>
         <input type="text" id="notifications_filter" class="filter_input_2 filter_padding" placeholder="Filter">
-        <i class='fa fa-cog pointer action nicetitle' id='notifications_configure_icon' title="Configure"></i>
+        <svg class='other_icon action pointer nicetitle' id='notifications_configure_icon' title="Configure">
+            <use href='#icon_cog'>
+        </svg>
     </div>
 
     <div id='notifications_container'>No Notifications Yet</div>

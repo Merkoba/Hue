@@ -133,3 +133,13 @@ Hue.check_favicon = function (mode=undefined) {
 Hue.loginfo = function (message, style="") {
   console.info(`🤡 %c(${Hue.utilz.nice_date(Date.now(), "log")}) %c${message}`, "color:blue", style)
 }
+
+// Centralized function to return a chat icon svg
+Hue.get_chat_icon = function (name) {
+  return `<svg class='chat_icon'><use href='#icon_${name}'></svg>`
+}
+
+// Centralized function to return an icon
+Hue.get_icon = function (name, cls="") {
+  return `<svg class='other_icon ${cls}'><use href='#icon_${name}'></svg>`
+}

@@ -584,7 +584,6 @@ Hue.start_user_context_menu = function () {
         items: {
           bheart: {
             name: "Heart",
-            icon: "far fa-heart",
             callback: function (key, opt) {
               let username = Hue.get_user_context_menu_username(this)
               Hue.send_badge(username, "heart")
@@ -592,7 +591,6 @@ Hue.start_user_context_menu = function () {
           },
           bskull: {
             name: "Skull",
-            icon: "fas fa-skull",
             callback: function (key, opt) {
               let username = Hue.get_user_context_menu_username(this)
               Hue.send_badge(username, "skull")
@@ -828,7 +826,6 @@ Hue.generate_chat_search_context_items = function () {
 
     items["clear"] = {
       name: "Clear",
-      icon: "far fa-trash-alt",
       callback: function (key, opt) {
         Hue.clear_chat_searches()
       },
@@ -843,7 +840,7 @@ Hue.generate_chat_search_context_items = function () {
 // One on the Search window which is triggered by a normal click
 Hue.start_search_context_menus = function () {
   $.contextMenu({
-    selector: "#room_menu_search_button",
+    selector: "#room_menu_search",
     animation: { duration: 250, hide: "fadeOut" },
     zIndex: 9000000000,
     events: Hue.context_menu_events,

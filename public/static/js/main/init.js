@@ -151,7 +151,6 @@ Hue.add_to_chat_searches_delay = 2000
 Hue.reactions_box_open = false
 Hue.first_media_change = false
 Hue.calc_round_places = 10
-Hue.media_icons = { image: "fa-camera", tv: "fa-tv" }
 Hue.typing_delay = 100
 Hue.loaded_image = {}
 Hue.loaded_tv = {}

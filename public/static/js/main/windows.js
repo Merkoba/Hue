@@ -1137,7 +1137,7 @@ Hue.show_action_popup = function (args = {}) {
   let icon = ""
 
   if (args.icon) {
-    icon = `<i class='${args.icon} action_popup_icon'></i>`
+    icon = Hue.get_icon(args.icon, "action_popup_icon")
   }
 
   let html = `<div class='action_popup_item ${classes}'>${icon}<div class='action_popup_message'>${Hue.utilz.make_html_safe(

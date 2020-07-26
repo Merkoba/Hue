@@ -302,18 +302,26 @@
                 <div class='settings_item settings_top_level_item' data-setting='chat_display_percentage'>
                     <div class="setting_title">Chat/Media Percentages</div>
                     <div class='slider_container'>
-                        <div id='{{type}}_chat_percentage_decrease' class='slider_icon_left pointer action'><i class='icon2 fa fa-pencil-alt'></i></div>
+                        <div id='{{type}}_chat_percentage_decrease' class='slider_icon_left pointer action'>
+                            <svg class='other_icon'><use href='#icon_pencil'</svg>
+                        </div>
                         <input type='range' id='{{type}}_chat_display_percentage' min="10" max="90" step="10">
-                        <div id='{{type}}_chat_percentage_increase' class='slider_icon_right pointer action'><i class='icon2b far fa-image'></i></div>
+                        <div id='{{type}}_chat_percentage_increase' class='slider_icon_right pointer action'>
+                            <svg class='other_icon'><use href='#icon_image'</svg>
+                        </div>
                     </div>
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='tv_display_percentage'>
                     <div class="setting_title">Image/TV Percentages</div>
                     <div class='slider_container'>
-                        <div id='{{type}}_tv_percentage_decrease' class='slider_icon_left pointer action'><i class='icon2 fa fa-camera'></i></div>
+                        <div id='{{type}}_tv_percentage_decrease' class='slider_icon_left pointer action'>
+                            <svg class='other_icon'><use href='#icon_image'</svg>
+                        </div>
                         <input type='range' id='{{type}}_tv_display_percentage' min="10" max="90" step="10">
-                        <div id='{{type}}_tv_percentage_increase' class='slider_icon_right pointer action' ><i class='icon2b fa fa-tv'></i></div>
+                        <div id='{{type}}_tv_percentage_increase' class='slider_icon_right pointer action'>
+                            <svg class='other_icon'><use href='#icon_tv'</svg>
+                        </div>
                     </div>
                 </div>
 
@@ -321,10 +329,10 @@
                     <div class="setting_title">Media Positions</div>
                     <div id='{{type}}_tv_display_position' class='squaro_container pointer action2'>
                         <div class='squaro squaro_secondary' id='{{type}}_display_position_image'>
-                            <i class='fa fa-camera smaller_font_size'></i>
+                            <svg class='other_icon'><use href='#icon_image'</svg>
                         </div>
                         <div class='squaro squaro_main' id='{{type}}_display_position_tv'>
-                            <i class='fa fa-tv smaller_font_size'></i>
+                            <svg class='other_icon'><use href='#icon_tv'</svg>
                         </div>
                     </div>
                 </div>

@@ -108,7 +108,7 @@ Hue.announce_tv = function (data) {
   return Hue.public_feedback(data.message, {
     id: data.id,
     save: true,
-    brk: "<i class='icon_chat fa fa-tv'></i>",
+    brk: Hue.get_chat_icon("tv"),
     title: data.info,
     onclick: data.onclick,
     date: data.date,
@@ -565,8 +565,7 @@ Hue.change_tv_visibility = function (play = true) {
   if (Hue.room_tv_mode !== "disabled" && Hue.room_state.tv_enabled) {
     $("#media").css("display", "flex")
     $("#media_tv").css("display", "flex")
-    $("#footer_toggle_tv_icon").removeClass("fa-toggle-off")
-    $("#footer_toggle_tv_icon").addClass("fa-toggle-on")
+    $("#footer_toggle_tv_icon").find("use").eq(0).attr("href", "#icon_toggle-on")
 
     if (!Hue.tv_visible) {
       Hue.tv_visible = true
@@ -600,8 +599,7 @@ Hue.change_tv_visibility = function (play = true) {
       Hue.hide_media()
     }
 
-    $("#footer_toggle_tv_icon").removeClass("fa-toggle-on")
-    $("#footer_toggle_tv_icon").addClass("fa-toggle-off")
+    $("#footer_toggle_tv_icon").find("use").eq(0).attr("href", "#icon_toggle-off")
 
     Hue.tv_visible = false
   }

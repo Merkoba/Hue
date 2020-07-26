@@ -383,7 +383,7 @@ Hue.update_chat = function (args = {}) {
     }
 
     if (!args.brk) {
-      args.brk = "<i class='chat_icon fa fa-user-circle'></i>"
+      args.brk = Hue.get_chat_icon("info")
     }
 
     message_classes += " thirdperson"
@@ -395,7 +395,9 @@ Hue.update_chat = function (args = {}) {
                 <div class='brk chat_third_brk'>${args.brk}</div>
                 <div class='${container_classes}'>
                     <div class='chat_menu_button_container'>
-                        <i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
+                      <svg class='other_icon chat_menu_button action chat_menu_button_menu'>
+                        <use href='#icon_ellipsis'>
+                      </svg>
                     </div>
 
                     <div class='chat_third_content'>
@@ -434,7 +436,9 @@ Hue.update_chat = function (args = {}) {
                     <div class='${container_classes}'>
 
                         <div class='chat_menu_button_container'>
-                            <i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
+                            <svg class='other_icon chat_menu_button action chat_menu_button_menu'>
+                              <use href='#icon_ellipsis'>
+                            </svg>
                         </div>
 
                         <div class='${content_classes}' title='${title}' data-otitle='${title}' data-date='${d}'></div>
@@ -668,7 +672,8 @@ Hue.chat_announce = function (args = {}) {
     let c = Hue.replace_markdown(Hue.utilz.make_html_safe(args.comment))
 
     if (args.comment_icon) {
-      comment = `<div class='${cls}'><div class='announcement_comment_inner flex_row_center'><i class='announcement_comment_icon far fa-comment icon2'></i>${c}</div></div>`
+      comment = `<div class='${cls}'><div class='announcement_comment_inner flex_row_center'>
+      <svg class='announcement_comment_icon chat_icon'><use href='#icon_comment'></svg>${c}</div></div>`
     } else {
       comment = `<div class='${cls}'><div class='announcement_comment_inner flex_row_center'>${c}</div></div>`
     }
@@ -735,7 +740,9 @@ Hue.chat_announce = function (args = {}) {
         <div class='${brk_classes}'>${args.brk}</div>
         <div class='${container_classes}'>
             <div class='chat_menu_button_container'>
-                <i class='icon5 fa fa-ellipsis-h chat_menu_button action chat_menu_button_menu'></i>
+                <svg class='other_icon chat_menu_button chat_menu_button_menu'>
+                  <use href='#icon_ellipsis'>
+                </svg>
             </div>
             <div class='${split_classes}'>
                 <div class='${content_classes}'></div>
@@ -1857,8 +1864,7 @@ Hue.show_typing = function (data) {
 
 // Shows the typing pencil
 Hue.show_pencil = function () {
-  $("#footer_user_menu").addClass("fa-pencil-alt")
-  $("#footer_user_menu").removeClass("fa-user-circle")
+  $("#footer_user_menu").find("use").eq(0).attr("href", "#icon_pencil")
   
   if (!Hue.app_focused) {
     Hue.check_favicon(1)
@@ -1869,8 +1875,7 @@ Hue.show_pencil = function () {
 
 // Hides the typing pencil
 Hue.hide_pencil = function () {
-  $("#footer_user_menu").removeClass("fa-pencil-alt")
-  $("#footer_user_menu").addClass("fa-user-circle")
+  $("#footer_user_menu").find("use").eq(0).attr("href", "#icon_user")
   Hue.check_favicon()
   Hue.typing = false
 }
@@ -2765,7 +2770,7 @@ Hue.clear_autoscroll = function () {
 Hue.show_announcement = function (data, date = Date.now()) {
   Hue.public_feedback(data.message, {
     id: data.id,
-    brk: "<i class='chat_icon fa fa-star'></i>",
+    brk: Hue.get_chat_icon("star"),
     date: date,
     preview_image: true,
     link_title: data.link_title,
@@ -2903,7 +2908,7 @@ Hue.shrug = function () {
 // Centralized function to show local feedback messages
 Hue.feedback = function (message, data = false) {
   let obj = {
-    brk: "<i class='chat_icon fa fa-info-circle'></i>",
+    brk: Hue.get_chat_icon("info"),
     message: message,
     public: false,
   }
@@ -2922,7 +2927,7 @@ Hue.feedback = function (message, data = false) {
 // Centralized function to show public announcement messages
 Hue.public_feedback = function (message, data = false) {
   let obj = {
-    brk: "<i class='chat_icon fa fa-info-circle'></i>",
+    brk: Hue.get_chat_icon("info"),
     message: message,
     public: true,
   }

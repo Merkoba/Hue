@@ -57,7 +57,7 @@ Hue.user_join = function (data) {
   }
 
   let item = Hue.make_info_popup_item({
-    icon: "fa fa-user-plus",
+    icon: "user-plus",
     message: `${data.username} has joined`,
     on_click: f,
     type: "user_join",
@@ -70,7 +70,7 @@ Hue.user_join = function (data) {
       Hue.show_popup(Hue.make_info_popup(f), item)
     } else if (method === "chat") {
       Hue.public_feedback(`${data.username} has joined`, {
-        brk: "<i class='chat_icon fa fa-user-plus'></i>",
+        brk: Hue.get_chat_icon("user-plus"),
         username: data.username,
         open_profile: true,
       })
@@ -635,7 +635,7 @@ Hue.user_disconnect = function (data) {
   }
 
   let item = Hue.make_info_popup_item({
-    icon: "fas fa-sign-out-alt",
+    icon: "sign-out",
     message: s,
     action: false,
     type: "user_part",
@@ -648,7 +648,7 @@ Hue.user_disconnect = function (data) {
       Hue.show_popup(Hue.make_info_popup(), item)
     } else if (method === "chat") {
       Hue.public_feedback(s, {
-        brk: "<i class='chat_icon fas fa-sign-out-alt'></i>",
+        brk: Hue.get_chat_icon("sign-out"),
         username: data.username,
       })
     }
@@ -803,8 +803,7 @@ Hue.setup_show_profile = function () {
 
       Hue.show_profile_audio.play()
 
-      $("#show_profile_audio_clip_icon").removeClass("fa-play-circle")
-      $("#show_profile_audio_clip_icon").addClass("fa-pause-circle")
+      $("#show_profile_audio_clip_icon").find("use").eq(0).attr("href", "#icon_pause")
 
       Hue.show_profile_audio_clip_started = true
     } else {
@@ -818,8 +817,7 @@ Hue.stop_show_profile_audio = function () {
   if (Hue.show_profile_audio) {
     Hue.show_profile_audio.pause()
     Hue.show_profile_audio_clip_started = false
-    $("#show_profile_audio_clip_icon").addClass("fa-play-circle")
-    $("#show_profile_audio_clip_icon").removeClass("fa-pause-circle")
+    $("#show_profile_audio_clip_icon").find("use").eq(0).attr("href", "#icon_play")
   }
 }
 
@@ -1340,13 +1338,15 @@ Hue.change_profile_image_badge = function (profile_image_container, type) {
   let icon
 
   if (type === "heart") {
-    icon = "fa fa-heart"
+    icon = "heart"
   } else if (type === "skull") {
-    icon = "fa fa-skull"
+    icon = "skull"
   }
 
   profile_image_container.append(
-    `<i class='${icon} profile_image_badge_icon ${type}_badge'>`
+    `<svg class='other_icon profile_image_badge_icon ${type}_badge'>
+      <use href='#icon_${icon}'>
+    </svg>`
   )
 
   let number = profile_image_container.data("badge_feedback_number")

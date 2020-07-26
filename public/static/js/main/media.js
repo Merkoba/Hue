@@ -462,7 +462,7 @@ Hue.update_media_history_blinks = function () {
 // Adds style to the icons of active media messages
 Hue.update_chat_media_feedback = function () {
   $("#chat_area > .announcement").each(function () {
-    let icon = $(this).find(".announcement_brk").eq(0).find("i").eq(0)
+    let icon = $(this).find(".announcement_brk").eq(0).find("svg").eq(0)
 
     if (icon.hasClass("shady")) {
       icon.removeClass("shady")
@@ -1201,8 +1201,7 @@ Hue.change_media_lock_icon = function (type) {
   let room_mode = Hue[`room_${type}_mode`]
 
   if (room_mode === "locked" || Hue.room_state[`${type}_locked`]) {
-    $(`#footer_lock_${type}_icon`).removeClass("fa-unlock")
-    $(`#footer_lock_${type}_icon`).addClass("fa-lock")
+    $(`#footer_lock_${type}_icon`).find("use").eq(0).attr("href", "#icon_locked")
     $(`#footer_lock_${type}_icon`).removeClass("footer_icon3")
     $(`#footer_lock_${type}_icon`).addClass("footer_icon2")
     $(`#footer_lock_${type}_label`).css("display", "block")
@@ -1211,8 +1210,7 @@ Hue.change_media_lock_icon = function (type) {
       $(`#footer_lock_${type}_icon`).addClass("blinking")
     }
   } else {
-    $(`#footer_lock_${type}_icon`).removeClass("fa-lock")
-    $(`#footer_lock_${type}_icon`).addClass("fa-unlock")
+    $(`#footer_lock_${type}_icon`).find("use").eq(0).attr("href", "#icon_unlocked")
     $(`#footer_lock_${type}_icon`).removeClass("blinking")
     $(`#footer_lock_${type}_icon`).removeClass("footer_icon2")
     $(`#footer_lock_${type}_icon`).addClass("footer_icon3")

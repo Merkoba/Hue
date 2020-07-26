@@ -63,6 +63,24 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       })
     }
 
+    // Compile svg files
+
+    const svg_path = path.join(__dirname, "../views/main/svg")
+    const svg_files = fs.readdirSync(svg_path)
+
+    // Get all the svg html
+
+    let svg_templates = "<div id='svg_templates' class='nodisplay'>"
+
+    for (let file of svg_files) {
+      let h = fs.readFileSync(path.join(svg_path, file), "utf8").trim()
+      let name = `icon_${file.replace('.svg', '')}`
+      h = h.replace("<svg", `<svg id="${name}" fill="currentColor"`)
+      svg_templates += `\n${h}\n`
+    }
+
+    svg_templates += "</div>"
+
     // Create the main body template
 
     const body_html_path = path.join(__dirname, "../views/main/body.ejs")
@@ -76,6 +94,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
     view.body_html = compiled_body_html_template({
       templates: templates_html,
+      svg: svg_templates
     })
 
     // Reserved usernames

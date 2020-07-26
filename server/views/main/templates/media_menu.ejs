@@ -2,12 +2,12 @@
     <div id='media_menu_container' class='flex_column_center generic_vertical_separator'>
         <div id='media_menu_loaded_media' class='generic_vertical_separator flex_column_center'>
             <div class='full_width'>
-                <i id='media_menu_image_icon' class='fa fa-camera chat_icon action pointer'></i>
+                <svg id='media_menu_image_icon' class='other_icon action pointer'><use href='#icon_image'></svg>
                 <div id='media_menu_loaded_image' class='media_menu_loaded_media_container chat_area_clone_center'></div>
             </div>
 
             <div class='full_width'>
-                <i id='media_menu_tv_icon' class='fa fa-tv chat_icon action pointer'></i>
+                <svg id='media_menu_tv_icon' class='other_icon action pointer'><use href='#icon_tv'></use></svg>
                 <div id='media_menu_loaded_tv' class='media_menu_loaded_media_container chat_area_clone_center'></div>
             </div>
         </div>
@@ -21,9 +21,13 @@
         <div class='full_width'>
             <div id='media_menu_tv_volume_title' class='setting_title'>TV Volume</div>
             <div class='slider_container'>
-                <div id='media_menu_decrease_tv_volume' class='slider_icon_left pointer action'><i class='icon2 fa fa-minus'></i></div>
+                <div id='media_menu_decrease_tv_volume' class='slider_icon_left pointer action'>
+                    <svg class='other_icon'><use href='#icon_minus'</svg>
+                </div>
                 <input type='range' id='media_menu_tv_volume' type="range" min="0" max="1" step="0.1">
-                <div id='media_menu_increase_tv_volume' class='slider_icon_right pointer action'><i class='icon2b fa fa-plus'></i></div>
+                <div id='media_menu_increase_tv_volume' class='slider_icon_right pointer action'>
+                    <svg class='other_icon'><use href='#icon_plus'</svg>
+                </div>
             </div>
         </div>
     </div>

@@ -1,8 +1,14 @@
 <script id='template_chat_search' type='text/x-handlebars-template' class='template'>
     <div class='flex_row_center sticky bg1'>
-        <i class='fa fa-history invisible'></i>
+        <svg class='other_icon invisible'>
+            <use href='#icon_sync'></use>
+        </svg>
+
         <input type="text" id="chat_search_filter" data-mode='manual' class="filter_input_2 filter_padding" placeholder="Query">
-        <i class='fa fa-history pointer action nicetitle' id='chat_search_history_icon' title="Recent Searches"></i>
+        
+        <svg class='other_icon pointer nicetitle' id='chat_search_history_icon' title="Recent Searches">
+            <use href='#icon_sync'></use>
+        </svg>
     </div>
 
     <div id='chat_search_no_results'>

@@ -142,7 +142,7 @@ Hue.upload_file = function (args = {}) {
     message: `Uploading ${Hue.get_file_action_name(
       args.file.hue_data.action
     )}: 0%`,
-    icon: "fa fa-camera",
+    icon: "image",
     id: `uploading_${date}`,
     title: `Size: ${Hue.utilz.get_size_string(args.file.hue_data.size / 1024)}`,
     autoclose: false

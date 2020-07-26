@@ -404,7 +404,7 @@ Hue.apply_theme = function () {
     }
 
     .shady {
-      box-shadow: 0px 0px 10px 10px ${color_4_a} !important;
+      box-shadow: 0px 0px 5px 5px ${color_4_a} !important;
       background-color: ${color_4_a} !important;
     }
 

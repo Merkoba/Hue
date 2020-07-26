@@ -97,7 +97,7 @@ Hue.announce_image = function (data) {
   return Hue.public_feedback(data.message, {
     id: data.id,
     save: true,
-    brk: "<i class='chat_icon fa fa-camera'></i>",
+    brk: Hue.get_chat_icon("image"),
     date: data.date,
     username: data.setter,
     title: data.info,
@@ -319,8 +319,7 @@ Hue.change_image_visibility = function () {
   if (Hue.room_image_mode !== "disabled" && Hue.room_state.image_enabled) {
     $("#media").css("display", "flex")
     $("#media_image").css("display", "flex")
-    $("#footer_toggle_image_icon").removeClass("fa-toggle-off")
-    $("#footer_toggle_image_icon").addClass("fa-toggle-on")
+    $("#footer_toggle_image_icon").find("use").eq(0).attr("href", "#icon_toggle-on")
 
     if (Hue.first_media_change && Hue.started) {
       Hue.change({ type: "image" })
@@ -337,8 +336,7 @@ Hue.change_image_visibility = function () {
       Hue.hide_media()
     }
 
-    $("#footer_toggle_image_icon").removeClass("fa-toggle-on")
-    $("#footer_toggle_image_icon").addClass("fa-toggle-off")
+    $("#footer_toggle_image_icon").find("use").eq(0).attr("href", "#icon_toggle-off")
 
     Hue.image_visible = false
   }
