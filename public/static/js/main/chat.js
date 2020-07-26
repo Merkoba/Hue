@@ -395,7 +395,7 @@ Hue.update_chat = function (args = {}) {
                 <div class='brk chat_third_brk'>${args.brk}</div>
                 <div class='${container_classes}'>
                     <div class='chat_menu_button_container'>
-                      <svg class='other_icon chat_menu_button action chat_menu_button_menu'>
+                      <svg class='other_icon chat_menu_button chat_menu_button_menu'>
                         <use href='#icon_ellipsis'>
                       </svg>
                     </div>
@@ -436,7 +436,7 @@ Hue.update_chat = function (args = {}) {
                     <div class='${container_classes}'>
 
                         <div class='chat_menu_button_container'>
-                            <svg class='other_icon chat_menu_button action chat_menu_button_menu'>
+                            <svg class='other_icon chat_menu_button chat_menu_button_menu'>
                               <use href='#icon_ellipsis'>
                             </svg>
                         </div>
@@ -2726,6 +2726,7 @@ Hue.check_scrollers = function () {
 Hue.autoscroll_up = function () {
   if (Hue.autoscrolling) {
     Hue.clear_autoscroll()
+    Hue.check_scrollers()
     return false
   }
 
@@ -2744,6 +2745,7 @@ Hue.autoscroll_up = function () {
 Hue.autoscroll_down = function () {
   if (Hue.autoscrolling) {
     Hue.clear_autoscroll()
+    Hue.check_scrollers()
     return false
   }
 
