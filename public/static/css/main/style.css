@@ -399,6 +399,7 @@ body * {
 
 .top_scroller_container {
 	top: 0em;
+	visibility: visible;
 }
 
 .bottom_scroller_container {

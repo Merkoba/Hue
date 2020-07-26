@@ -2075,6 +2075,11 @@ Hue.activity_above = function (animate = true) {
 
       if (p.top < activity_up_scroller_height) {
         let diff = scrolltop + p.top - activity_up_scroller_height
+        
+        if (scrolltop - diff < 50) {
+          return true
+        }
+
         Hue.scroll_chat_to(diff, animate)
         step = true
         return false
@@ -2110,6 +2115,11 @@ Hue.activity_below = function (animate = true) {
 
       if (p.top + h + activity_down_scroller_height > chat_area_height) {
         let diff = scrolltop + p.top - activity_up_scroller_height
+
+        if (diff - scrolltop < 50) {
+          return true
+        }
+
         Hue.scroll_chat_to(diff, animate)
         step = true
         return false
@@ -2701,6 +2711,10 @@ Hue.check_scrollers = function () {
     return false
   }
 
+  if (Hue.autoscrolling) {
+    return false
+  }
+
   let $ch = $("#chat_area")
   let max = $ch.prop("scrollHeight") - $ch.innerHeight()
   let scrolltop = $ch.scrollTop()
@@ -2710,13 +2724,13 @@ Hue.check_scrollers = function () {
     if (scrolltop > 0) {
       Hue.show_top_scroller()
     } else {
-      Hue.hide_top_scroller()
+      // Hue.hide_top_scroller()
       Hue.clear_autoscroll()
     }
 
     Hue.show_bottom_scroller()
   } else {
-    Hue.hide_top_scroller()
+    // Hue.hide_top_scroller()
     Hue.hide_bottom_scroller()
 
     if (diff <= 0) {
@@ -2739,6 +2753,7 @@ Hue.autoscroll_up = function () {
   }, Hue.get_setting("autoscroll_delay"))
 
   Hue.autoscrolling = true
+  Hue.show_bottom_scroller()
 }
 
 // Starts chat autoscrolling downwards
@@ -2784,7 +2799,7 @@ Hue.show_announcement = function (data, date = Date.now()) {
 Hue.goto_top = function (animate = true) {
   Hue.clear_autoscroll()
   Hue.scroll_chat_to(0, animate)
-  Hue.hide_top_scroller()
+  // Hue.hide_top_scroller()
 }
 
 // Scrolls the chat to the bottom
@@ -2801,7 +2816,7 @@ Hue.goto_bottom = function (force = false, animate = true) {
   if (force) {
     Hue.clear_autoscroll()
     Hue.scroll_chat_to(max, animate)
-    Hue.hide_top_scroller()
+    // Hue.hide_top_scroller()
     Hue.hide_bottom_scroller()
   } else {
     if (!Hue.chat_scrolled) {
