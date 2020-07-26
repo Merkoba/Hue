@@ -2694,8 +2694,8 @@ Hue.hide_bottom_scroller = function () {
 
 // Updates scrollers state based on scroll position
 Hue.check_scrollers = function () {
-  if (Hue.autoscrolling) {
-    return false
+  if (Hue.autoscrolling && Hue.autoscroll_direction === "up") {
+    return
   }
 
   let $ch = $("#chat_area")
@@ -2735,8 +2735,9 @@ Hue.autoscroll_up = function () {
     Hue.scroll_up(Hue.get_setting("autoscroll_amount"))
   }, Hue.get_setting("autoscroll_delay"))
 
-  Hue.autoscrolling = true
   Hue.show_bottom_scroller()
+  Hue.autoscrolling = true
+  Hue.autoscroll_direction = "up"
 }
 
 // Starts chat autoscrolling downwards
@@ -2753,6 +2754,7 @@ Hue.autoscroll_down = function () {
   }, Hue.get_setting("autoscroll_delay"))
 
   Hue.autoscrolling = true
+  Hue.autoscroll_direction = "down"
 }
 
 // Clears autoscrolling intervals
