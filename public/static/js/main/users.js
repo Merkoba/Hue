@@ -1338,7 +1338,7 @@ Hue.change_profile_image_badge = function (profile_image_container, type) {
   let icon
 
   if (type === "heart") {
-    icon = "heart"
+    icon = "heart-solid"
   } else if (type === "skull") {
     icon = "skull"
   }
