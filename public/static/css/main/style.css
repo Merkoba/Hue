@@ -1716,18 +1716,14 @@ svg.action:hover {
 	justify-content: center;
 	width: 100%;
 	height: 100%;
-	color: rgb(202, 202, 202);
-	background-color: rgb(34, 34, 34);
+	color: var(--font_color);
+	background-color: var(--background-color);
 	flex-direction: column;
 }
 
 #lockscreen_header {
 	font-size: 2rem;
 	margin-bottom: 1.5rem;
-}
-
-#lockscreen_principal {
-	color: #ffffff;
 }
 
 #lockscreen_principal * {
@@ -1746,7 +1742,7 @@ svg.action:hover {
 	width: 100%;
 	height: 60px;
 	overflow: hidden;
-	background-color: rgb(34, 34, 34);
+	background-color: var(--slight_background);
 	box-shadow: 0 0 1px grey;
 	border-radius: 3px;
 }
@@ -1782,7 +1778,7 @@ svg.action:hover {
 	left: -16px;
 	width: 64px;
 	height: 64px;
-	background-color: var(--app-color-3);
+	background-color: var(--slight_background);
 	opacity: 0.3;
 	z-index: 0;
 	border-radius: 50%;
@@ -1797,7 +1793,7 @@ svg.action:hover {
 	left: -46px;
 	width: 128px;
 	height: 128px;
-	background-color: var(--app-color-3);
+	background-color: var(--slight_background);
 	opacity: 0.2;
 	z-index: 0;
 	border-radius: 50%;
@@ -1813,7 +1809,7 @@ svg.action:hover {
 	left: -80px;
 	width: 192px;
 	height: 192px;
-	background-color: var(--app-color-3);
+	background-color: var(--slight_background);
 	opacity: 0.1;
 	z-index: 0;
 	border-radius: 50%;
@@ -1829,7 +1825,7 @@ svg.action:hover {
 	left: -116px;
 	width: 256px;
 	height: 256px;
-	background-color: var(--app-color-3);
+	background-color: var(--slight_background);
 	opacity: 0.1;
 	z-index: 0;
 	border-radius: 50%;
