@@ -383,7 +383,7 @@ Hue.update_chat = function (args = {}) {
     }
 
     if (!args.brk) {
-      args.brk = Hue.get_chat_icon("info")
+      args.brk = Hue.get_chat_icon("user")
     }
 
     message_classes += " thirdperson"
