@@ -2737,6 +2737,7 @@ pre {
 
 #chat_area .heart_badge {
 	background-color: red;
+	color: white;
 }
 
 #chat_area .skull_badge {
