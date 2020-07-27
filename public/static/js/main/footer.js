@@ -33,19 +33,6 @@ Hue.setup_footer = function () {
     }
   })
 
-  $("#footer_user_menu_container").on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.clear_show_reactions_box()
-      Hue.show_global_settings()
-    }
-  })
-
-  $("#footer_media_menu_container").on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.stop_media()
-    }
-  })
-
   $("#footer_media_rotate").click(function () {
     if (Hue.num_media_elements_visible() < 2) {
       return false
@@ -72,8 +59,17 @@ Hue.setup_footer = function () {
     })
   }
 
-  $("#footer_user_menu_container").click(function () {
+  $("#footer_user_menu").click(function () {
     Hue.show_user_menu()
+  })
+
+  $("#footer_reactions").click(function () {
+    if (Hue.reactions_box_open) {
+      Hue.hide_reactions_box()
+    } else {
+      Hue.show_reactions_box()
+      Hue.start_hide_reactions()
+    }
   })
 
   $("#footer_image_label").click(function () {

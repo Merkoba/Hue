@@ -536,7 +536,7 @@ Hue.show_others_disconnected = function (data) {
 Hue.show_intro = function () {
   let s = `
     You can chat in this area. The icon on the left opens the user menu where you can change your profile image and other settings.
-    When someone is typing a message the user menu icon turns into a pencil. Hovering this icon shows additional actions.`
+    When someone is typing a message the user menu icon turns into a pencil. There is also a button for reactions and functions.`
 
   Hue.create_popup({ position: "bottomleft" }).show(["Chat and User Menu", s])
 

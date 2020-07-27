@@ -348,6 +348,10 @@ body * {
 	margin-left: -0.7rem;
 }
 
+#footer_reactions {
+	margin-left: -0.7rem;
+}
+
 #footer_media_menu {
 	padding: 0.6rem;
 	padding-right: 0.7rem;
@@ -380,7 +384,6 @@ body * {
 	min-height: calc(var(--panel-height) - 0.6rem);
 	max-height: 20rem;
 	height: calc(var(--expand) - 0.6rem);
-	margin-left: 0.5rem;
 }
 
 #input::placeholder {
@@ -1593,34 +1596,29 @@ svg.action:hover {
 	display: flex;
 	position: relative;
 	height: 100%;
-	flex-grow: 0;
-	flex-shrink: 0;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
 	padding: 0.5rem;
 	font-size: 1.1rem;
 	white-space: nowrap;
-	padding-left: 0rem;
-	padding-right: 0.8rem;
+	height: 100%;
+	flex-grow: 0;
+	flex-shrink: 0;
+	flex-direction: column;
+	align-items: center;
+	align-items: flex-start;
+}
+
+#reactions_functions {
+	margin-bottom: 1rem;
+}
+
+.user_function_button {
+	margin-left: 0.4rem;
+	margin-right: 0.4rem;
 }
 
 .reaction_icon {
 	margin-left: 0.4rem;
 	margin-right: 0.4rem;
-}
-
-.reaction_icon_2 {
-	padding-left: 0.8rem;
-	margin-right: 0.4rem;
-}
-
-.reaction_icon:first-child {
-	margin-left: 0;
-}
-
-.reaction_icon:last-child {
-	margin-right: 0;
 }
 
 .chat_third_container {

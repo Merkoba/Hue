@@ -69,20 +69,6 @@ Hue.show_reaction = function (data, date = false) {
 // This is the box that appears on user menu hover
 // It includes reactions as well as user functions
 Hue.setup_reactions_box = function () {
-  $("#footer_user_menu_container").hover(
-    function () {
-      clearTimeout(Hue.hide_reactions_timeout)
-
-      Hue.show_reactions_timeout = setTimeout(function () {
-        Hue.show_reactions_box()
-      }, Hue.reactions_hover_delay)
-    },
-
-    function () {
-      Hue.start_hide_reactions()
-    }
-  )
-
   $("#reactions_box_container").hover(
     function () {
       Hue.mouse_over_reactions = true
@@ -107,7 +93,7 @@ Hue.setup_reactions_box = function () {
     }
   })
 
-  Hue.horizontal_separator.separate("reactions_box")
+  Hue.horizontal_separator.separate("reactions_icons")
 
   $("#reactions_box").on("click", ".reaction_icon", function () {
     Hue.send_reaction($(this).data("kind"))
@@ -124,7 +110,7 @@ Hue.start_hide_reactions = function () {
     }
 
     Hue.hide_reactions_box()
-  }, Hue.reactions_hover_delay_2)
+  }, Hue.reactions_hover_delay)
 }
 
 // Shows the reactions box
