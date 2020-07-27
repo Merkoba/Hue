@@ -686,13 +686,18 @@ Hue.setup_media_menu = function () {
     Hue.show_tv_picker()
   })
 
-  $("#media_menu_stop_and_lock").click(function () {
-    Hue.stop_and_lock()
+  $("#media_menu_stop").click(function () {
+    Hue.stop_media()
     Hue.hide_media_menu()
   })
 
   $("#media_menu_lock").click(function () {
     Hue.stop_and_lock(false)
+    Hue.hide_media_menu()
+  })
+
+  $("#media_menu_stop_and_lock").click(function () {
+    Hue.stop_and_lock()
     Hue.hide_media_menu()
   })
 

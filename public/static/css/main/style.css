@@ -2314,7 +2314,7 @@ a.special_link:hover {
 	padding-bottom: 0;
 }
 
-#media_menu_actions {
+.media_menu_actions {
 	grid-gap: 1rem;
 }
 
