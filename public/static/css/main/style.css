@@ -24,6 +24,7 @@ html {
 	background-color: rgb(24, 24, 24);
 	background-repeat: no-repeat;
 	background-position: center;
+	scrollbar-color: var(--slight_background) transparent;
 }
 
 body * {
@@ -67,6 +68,11 @@ body * {
 
 .background_image_brightness {
 	filter: brightness(2.5);
+}
+
+.background_image_tiled {
+	background-size: var(--bg_tile_dimension);
+	background-repeat: repeat;
 }
 
 #header {
@@ -302,6 +308,7 @@ body * {
 	cursor: pointer;
 	display: flex;
 	flex-direction: row;
+	display: var(--media_info_display);    
 }
 
 .media_info_username {
@@ -385,6 +392,7 @@ body * {
 #input::placeholder {
 	white-space: pre;
 	font-size: var(--panel-font-size);
+	color: var(--color_3);
 }
 
 .scroller_container {
@@ -406,9 +414,7 @@ body * {
 
 .scroller {
 	height: 2em;
-	background-color: rgba(57, 57, 57, 0.7);
 	color: white;
-	border: 0px solid #2D2D2D;
 	outline: none;
 	font-family: inherit;
 	display: flex;
@@ -418,18 +424,24 @@ body * {
 	z-index: 99;
 	padding-left: 2em;
 	padding-right: 2em;
+	border: 1px solid var(--color_4_a);
+	background-color: var(--background_color_a_2);
+	color: var(--font_color);
 }
 
 .left_scroller {
 	width: 40%;
+	border-right: 1px var(--color_4_a) solid;
 }
 
 .right_scroller {
 	width: 40%;
+	border-right: 1px var(--color_4_a) solid;
 }
 
 .center_scroller {
 	width: 20%;
+	border-right: 1px var(--color_4_a) solid;
 }
 
 .scroller:hover {
@@ -458,10 +470,11 @@ body * {
 }
 
 .chat_profile_image_container {
-	min-width: 45px;
-	max-width: 45px;
-	min-height: 45px;
-	max-height: 45px;
+	min-width: var(--profile_image_size);
+	max-width: var(--profile_image_size);
+	min-height: var(--profile_image_size);
+	max-height: var(--profile_image_size);
+	margin-top: var(--profile_image_margin_top);
 	position: sticky;
 	top: 2.5rem;
 }
@@ -553,13 +566,13 @@ body * {
 	flex-shrink: 0;
 	flex-grow: 0;
 	max-height: 2rem;
-	min-width: 45px;
-	max-width: 45px;
 	text-align: center;
 	margin-right: 1rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	min-width: var(--profile_image_size);
+	max-width: var(--profile_image_size);
 }
 
 a.generic:link,
@@ -759,10 +772,18 @@ a.generic:hover {
 	height: 1.5em;
 }
 
+.Msg-container {
+	scrollbar-color: var(--color_4) transparent !important;
+}
+
+.Msg-container ::-webkit-scrollbar-thumb {
+	background-color: var(--color_4) !important;
+}
+
 .Msg-content {
 	font-size: 1em !important;
-	overflow-wrap: break-word;
-	word-break: break-word;
+	overflow-wrap: break-word !important;
+	word-break: break-word !important;
 }
 
 #Msg-content-container-global_settings,
@@ -881,10 +902,20 @@ a.generic:hover {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	background-color: var(--background_color_2);
+	border-left: 1px solid var(--slight_background);
+}
+
+.chat_menu_button:hover {
+	background-color: var(--color_4);
 }
 
 .chat_menu_button_main:hover>.chat_menu_button_container {
 	visibility: visible;
+}
+
+.chat_menu_button_main:hover, .chat_menu_button_main_selected {
+	background-color: var(--slight_background);
 }
 
 .generic_uname {
@@ -992,6 +1023,7 @@ select {
 	font-size: 1rem;
 	padding-top: 0.8rem;
 	padding-bottom: 0.8rem;
+	font-size: var(--chat_font_size);
 }
 
 #chat_area>.message:first-child {
@@ -1333,6 +1365,8 @@ select {
 	outline: none;
 	display: block;
 	margin: 0 auto;
+	background-color: var(--background_color_a_2);
+	color: var(--font_color);
 }
 
 .draw_canvas_received {
@@ -1587,6 +1621,8 @@ svg.action:hover {
 	z-index: 99999;
 	max-width: 100vw;
 	overflow: auto;
+	background-color: var(--color_4);
+	color: var(--font_color);
 }
 
 #reactions_box {
@@ -1646,10 +1682,11 @@ svg.action:hover {
 	display: flex;
 	width: 3em;
 	height: 3em;
-	background-color: grey;
 	justify-content: center;
 	align-items: center;
 	box-shadow: 0 0 2px currentColor;
+	background-color: var(--background_color_2);
+	color: var(--font_color);
 }
 
 .squaro_container {
@@ -1830,7 +1867,9 @@ svg.action:hover {
 }
 
 .modal_icon_selected {
-	box-shadow: 0 0 2px currentColor
+	box-shadow: 0 0 2px currentColor;
+	background-color: var(--background_color_a_2);
+	color: var(--font_color);
 }
 
 .sp-palette {
@@ -1854,6 +1893,8 @@ svg.action:hover {
 	justify-content: center;
 	width: 200px;
 	overflow: auto;
+	background-color: var(--background_color_2);
+	color: var(--font_color);
 }
 
 .settings_window_right {
@@ -1929,10 +1970,11 @@ svg.action:hover {
 	height: 100%;
 	width: 100%;
 	border-radius: 10px;
-	color: white;
 	cursor: pointer;
 	opacity: 0;
 	transition: opacity 1200ms, box-shadow 1200ms;
+	background-color: var(--font_color);
+	color: var(--font_color);
 }
 
 .maxer_container:hover .maxer,
@@ -1949,6 +1991,11 @@ svg.action:hover {
 .highlighted4 {
 	box-shadow: 0 0 2px currentColor;
 	padding: 2px;
+}
+
+.highlighted, .highlighted2, .highlighted3, .highlighted4 {
+	background-color: var(--background_color_a_2);
+	color: var(--font_color);
 }
 
 #credits_container {
@@ -2194,13 +2241,14 @@ a.special_link:hover {
 }
 
 .link_preview {
-	background-color: grey;
 	display: flex;
 	flex-direction: row;
 	align-items: flex-start;
 	justify-content: flex-start;
 	padding: 0.5rem;
 	align-self: flex-start;
+	background-color: var(--color_4_a);
+	color: var(--font_color);
 }
 
 .link_preview_image_with_title {
@@ -2313,6 +2361,8 @@ a.special_link:hover {
 	border: 1px solid grey;
 	position: relative;
 	width: 100%;
+	background-color: var(--color_4_a);
+	color: var(--font_color);
 }
 
 .message_edit_buttons {
@@ -2413,6 +2463,7 @@ a.special_link:hover {
 
 .spoiler {
 	cursor: pointer;
+	background-color: var(--font_color);
 }
 
 #image_upload_comment_image_preview {
@@ -2453,12 +2504,18 @@ a.special_link:hover {
 	background-color: transparent !important;
 }
 
+::-webkit-scrollbar-thumb {
+	background-color: var(--slight_background);
+}
+
 .modal_subheader {
 	padding: 0.2rem;
+	background-color: var(--color_4);
 }
 
 #reply_text {
 	padding: 0.5rem;
+	background-color: var(--slight_background);
 }
 
 #reply_input {
@@ -2483,6 +2540,7 @@ a.special_link:hover {
 	border: none;
 	background-color: currentColor;
 	opacity: 0.2;
+	color: var(--color_4);
 }
 
 .grid_column_center {
@@ -2501,6 +2559,7 @@ a.special_link:hover {
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 	grid-gap: 2rem;
+	border: 1px solid var(--color_4_alpha);
 }
 
 .room_menu_tree_toggler_item {
@@ -2534,6 +2593,7 @@ a.special_link:hover {
 	padding-bottom: 1rem;
 	margin-top: 0.5rem;
 	margin-bottom: 0.5rem;
+	background-color: var(--slight_background);
 }
 
 .room_menu_section_container {
@@ -2663,6 +2723,12 @@ a.special_link:hover {
 	margin-bottom: 1rem;
 	border: 0px solid grey;
 	outline: none;
+	background-color: var(--slight_background);
+	color: var(--font_color);
+}
+
+#user_menu_bio_textarea::placeholder {
+	color: var(--color_3);
 }
 
 pre {
@@ -2815,6 +2881,8 @@ pre {
 	font-size: 1.2rem;
 	padding: 0.5rem;
 	box-sizing: border-box;
+	background-color: var(--slight_background_alpha);
+	color: var(--font_color);
 }
 
 #notebook_background {
@@ -2839,6 +2907,8 @@ pre {
 
 .backgrounded {
 	display: inline-block;
+	background-color: var(--slight_background);
+	outline: 1px dotted var(--color_4);
 }
 
 .inline_pre {
@@ -2855,6 +2925,8 @@ pre {
 
 .shady {
 	animation: shady_grow 1.2s linear infinite;
+	box-shadow: 0px 0px 8px 8px var(--color_4_a);
+	background-color: var(--color_4_a);
 }
 
 .expanded_modal_image {
@@ -2877,4 +2949,47 @@ pre {
 	background-color: black;
 	color: #2ec42e;
 	padding: 2px;
+}
+
+.color_3 {
+	color: var(--color_3);	
+}
+
+.slight_color {
+	color: var(--slight_background);
+}
+
+.slight_background {
+	background-color: var(--slight_background);
+}
+
+.custom_popup {
+	border: 2px solid var(--color_4);
+}
+
+.titlebar_inner_x {
+	background-color: var(--background_color_2);
+}
+
+.titlebar_inner_x:hover {
+	background-color: var(--background_color);
+}
+
+.custom_titlebar {
+	background-color: var(--background_color_2) !important;
+	color: var(--font_color) !important;
+}
+
+.Msg-overlay {
+	background-color: var(--overlay_color) !important;
+	color: var(--background_color) !important;
+}
+
+.Msg-window, .overlay_same_color {
+	background-color: var(--background_color) !important;
+	color: var(--font_color) !important;
+}
+
+.Msg-window-inner-x:hover {
+	background-color: var(--background_color_2) !important;
 }

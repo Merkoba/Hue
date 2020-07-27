@@ -1096,32 +1096,21 @@ Hue.apply_media_info = function (element, item, mode) {
 
 // Configures media info
 Hue.configure_media_info = function () {
-  let display
+  let media_info_display
 
   if (Hue.get_setting("media_info") === "custom_enabled") {
-    display = "flex"
+    media_info_display = "flex"
   }
 
   if (Hue.get_setting("media_info") === "custom_disabled") {
-    display = "none"
+    media_info_display = "none"
   } else if (Hue.media_info === "enabled") {
-    display = "flex"
+    media_info_display = "flex"
   } else if (Hue.media_info === "disabled") {
-    display = "none"
+    media_info_display = "none"
   }
 
-  let css = `
-    <style class='appended_media_info_style'>
-        .media_info {
-            display: ${display} !important;    
-        }
-    </style>`
-
-  $(".appended_media_info_style").each(function () {
-    $(this).remove()
-  })
-
-  $("head").append(css)
+  document.documentElement.style.setProperty('--media_info_display', media_info_display)
 
   Hue.fix_frames()
 }

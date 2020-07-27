@@ -3029,7 +3029,7 @@ Hue.apply_chat_style = function () {
     pfsize_pixels = 65
   }
 
-  let font_size = `${cfsize_factor}rem`
+  let chat_font_size = `${cfsize_factor}rem`
   let pfsizepx = pfsize_pixels * cfsize_factor
   let profile_image_size = `${pfsizepx}px`
   let margin_div = pfsizepx / 45
@@ -3039,34 +3039,9 @@ Hue.apply_chat_style = function () {
     profile_image_margin_top = `${10 / margin_div / 10}px`
   }
 
-  let css = `
-    <style class='appended_chat_style'>
-
-    .message {
-        font-size: ${font_size} !important;
-    }
-
-    .chat_profile_image_container {
-        min-width: ${profile_image_size} !important;
-        max-width: ${profile_image_size} !important;
-        min-height: ${profile_image_size} !important;
-        max-height: ${profile_image_size} !important;
-        margin-top: ${profile_image_margin_top} !important;
-    }
-
-    .brk {
-        min-width: ${profile_image_size} !important;
-        max-width: ${profile_image_size} !important;
-    }
-
-    </style>
-    `
-
-  $(".appended_chat_style").each(function () {
-    $(this).remove()
-  })
-
-  $("head").append(css)
+  document.documentElement.style.setProperty('--chat_font_size', chat_font_size)
+  document.documentElement.style.setProperty('--profile_image_size', profile_image_size)
+  document.documentElement.style.setProperty('--profile_image_margin_top', profile_image_margin_top)
 }
 
 // Setups some chat configs
