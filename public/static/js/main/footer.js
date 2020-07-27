@@ -78,6 +78,12 @@ Hue.setup_footer = function () {
     }
   })
 
+  $("#footer_reactions").on("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.send_reaction("like")
+    }
+  })
+
   $("#footer_image_label").click(function () {
     Hue.show_image_picker()
   })
