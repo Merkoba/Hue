@@ -306,7 +306,6 @@ body * {
 	margin-top: 0.333rem;
 	white-space: nowrap;
 	cursor: pointer;
-	display: flex;
 	flex-direction: row;
 	display: var(--media_info_display);    
 }

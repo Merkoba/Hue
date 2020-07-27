@@ -663,7 +663,7 @@ Hue.apply_image_media_info = function () {
 // This runs after an image successfully loads
 Hue.after_image_load = function (ok = true) {
   Hue.current_image_data = Hue.loaded_image
-  $("#media_image_info").css("display", "initial")
+  $("#media_image_info").css("display", "var(--media_info_display)")
   Hue.apply_image_media_info()
 
   if (ok) {
