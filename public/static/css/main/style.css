@@ -1653,6 +1653,10 @@ svg.action:hover {
 	margin-right: 0.4rem;
 }
 
+.reactions_icon_label {
+	margin-left: 0.5rem;
+}
+
 .chat_third_container {
 	display: flex;
 	flex-direction: row;

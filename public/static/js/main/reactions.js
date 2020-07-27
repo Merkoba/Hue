@@ -93,6 +93,7 @@ Hue.setup_reactions_box = function () {
     }
   })
 
+  Hue.horizontal_separator.separate("reactions_functions")
   Hue.horizontal_separator.separate("reactions_icons")
 
   $("#reactions_box").on("click", ".reaction_icon", function () {
