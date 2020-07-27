@@ -1402,7 +1402,7 @@ select {
 }
 
 .setting_textarea {
-	width: calc(100% - 0.5rem);
+	width: 90%;
 	resize: none;
 	font-size: 1em;
 	text-align: center;
@@ -1426,7 +1426,7 @@ select {
 }
 
 .setting_input_text {
-	width: calc(100% - 0.5rem);
+	width: 90%;
 	font-size: 1em;
 	text-align: center;
 }
