@@ -4,23 +4,28 @@ Hue.input_is_scrolled = function () {
   return el.clientHeight < el.scrollHeight
 }
 
+// On input change
+Hue.on_input_change = function () {
+  let value = $("#input").val()
+
+  value = Hue.utilz.clean_string9(value)
+
+  if (value.length > Hue.config.max_input_length) {
+    value = value.substring(0, Hue.config.max_input_length)
+    Hue.change_input(value)
+  }
+
+  if (Hue.old_input_val !== value) {
+    Hue.input_changed = true
+    Hue.check_typing()
+    Hue.old_input_val = value
+  }
+}
+
 // Setups events for the main input
 Hue.setup_input = function () {
   $("#input").on("input", function () {
-    let value = $("#input").val()
-
-    value = Hue.utilz.clean_string9(value)
-
-    if (value.length > Hue.config.max_input_length) {
-      value = value.substring(0, Hue.config.max_input_length)
-      Hue.change_input(value)
-    }
-
-    if (Hue.old_input_val !== value) {
-      Hue.input_changed = true
-      Hue.check_typing()
-      Hue.old_input_val = value
-    }
+    Hue.on_input_change()
   })
 
   $("#input").on("click", function () {
@@ -115,6 +120,15 @@ Hue.add_to_input = function (what) {
   Hue.change_input(`${$("#input").val() + what}`)
 }
 
+// Inserts text on current caret position
+Hue.insert_to_input = function (what) {
+  let el = $("#input")[0]
+  let [start, end] = [el.selectionStart, el.selectionEnd]
+  let part1 = el.value.substring(0, start)
+  let part2 = el.value.substring(end, el.value.length)
+  Hue.change_input(`${part1}${what}${part2}`)
+}
+
 // Changes the input
 Hue.change_input = function (s, to_end = true, focus = true) {
   $("#input").val(s)
@@ -151,7 +165,7 @@ Hue.input_to_end = function () {
 
 // Appends a linebreak to the input
 Hue.add_linebreak_to_input = function () {
-  Hue.utilz.insert_text_at_cursor("\n")
+  Hue.insert_to_input("\n")
   Hue.scroll_input_to_bottom()
 }
 
