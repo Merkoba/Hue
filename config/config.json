@@ -59,7 +59,7 @@
 	"rooms_loop_interval": 30000,
 	"files_loop_interval": 30000,
 	"files_loop_max_diff": 20000,
-	"upload_slice_size": 50000,
+	"upload_slice_size": 100000,
 	"max_media_source_length": 800,
 	"max_media_comment_length": 200,
 	"max_roomlist_items": 100,
