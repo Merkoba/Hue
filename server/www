@@ -58,7 +58,7 @@ function build_config() {
 
 	config.mtime = Date.now()
 	config_mtime = get_config_mtime()
-	console.info("Config Built")
+	console.info(`Config Built - ${Date.now()}`)
 }
 
 function get_config_mtime() {

@@ -725,6 +725,8 @@ Hue.setup_media_menu = function () {
       Hue.set_media_menu_tv_volume('max')
     }
   })
+
+  Hue.horizontal_separator.separate("media_menu_actions_1")
 }
 
 // Format local sources that start with slash
