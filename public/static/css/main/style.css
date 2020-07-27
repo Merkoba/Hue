@@ -669,7 +669,8 @@ a.generic:hover {
 .userlist_item_username {
 	cursor: pointer;
 	flex-shrink: 1;
-	max-width: 10em;
+	max-width: 9rem;
+	overflow: hidden;
 }
 
 .userlist_item_role {
@@ -1778,7 +1779,7 @@ svg.action:hover {
 	left: -16px;
 	width: 64px;
 	height: 64px;
-	background-color: var(--slight_background);
+	background-color: var(--slight_background_alpha);
 	opacity: 0.3;
 	z-index: 0;
 	border-radius: 50%;
@@ -1793,7 +1794,7 @@ svg.action:hover {
 	left: -46px;
 	width: 128px;
 	height: 128px;
-	background-color: var(--slight_background);
+	background-color: var(--slight_background_alpha);
 	opacity: 0.2;
 	z-index: 0;
 	border-radius: 50%;
@@ -1809,7 +1810,7 @@ svg.action:hover {
 	left: -80px;
 	width: 192px;
 	height: 192px;
-	background-color: var(--slight_background);
+	background-color: var(--slight_background_alpha);
 	opacity: 0.1;
 	z-index: 0;
 	border-radius: 50%;
@@ -1825,7 +1826,7 @@ svg.action:hover {
 	left: -116px;
 	width: 256px;
 	height: 256px;
-	background-color: var(--slight_background);
+	background-color: var(--slight_background_alpha);
 	opacity: 0.1;
 	z-index: 0;
 	border-radius: 50%;
