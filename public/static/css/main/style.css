@@ -1536,7 +1536,7 @@ svg.action:hover {
 	filter: drop-shadow( 0 0px 5px currentColor);
 }
 
-.action svg:hover {
+.action:hover svg {
 	filter: drop-shadow( 0 0px 5px currentColor);
 }
 
