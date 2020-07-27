@@ -150,6 +150,7 @@ Hue.show_reactions_box = function () {
 // Hides the reactions box
 Hue.hide_reactions_box = function () {
   if (Hue.reactions_box_open) {
+    clearTimeout(Hue.hide_reactions_timeout)
     $("#reactions_box_container").css("display", "none")
     Hue.reactions_box_open = false
   }
