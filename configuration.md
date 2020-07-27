@@ -303,9 +303,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_show_parts"
 >Whether to show user parts by default.
 
-"global_settings_default_animate_scroll"
->Whether to animate chat scroll by default.
-
 "global_settings_default_beep_on_messages"
 >Whether to beep by default on chat messages.
 

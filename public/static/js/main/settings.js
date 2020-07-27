@@ -360,17 +360,6 @@ Hue.user_settings = {
       }
     },
   },
-  animate_scroll: {
-    widget_type: "checkbox",
-    description: `Whether chat scroll animation is enabled in some cases or not at all`,
-    action: (type, save = true) => {
-      Hue[type].animate_scroll = $(`#${type}_animate_scroll`).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   open_popup_messages: {
     widget_type: "checkbox",
     description: `Whether whisper messages received should open in a popup automatically apart from showing the chat notification`,
