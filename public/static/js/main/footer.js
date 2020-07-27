@@ -63,6 +63,12 @@ Hue.setup_footer = function () {
     Hue.show_user_menu()
   })
 
+  $("#footer_user_menu").on("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.show_global_settings()
+    }
+  })
+
   $("#footer_reactions").click(function () {
     if (Hue.reactions_box_open) {
       Hue.hide_reactions_box()
@@ -88,8 +94,14 @@ Hue.setup_footer = function () {
     Hue.toggle_tv()
   })
 
-  $("#footer_media_menu_container").click(function () {
+  $("#footer_media_menu").click(function () {
     Hue.show_media_menu()
+  })
+
+  $("#footer_media_menu").on("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.stop_media()
+    }
   })
 }
 

@@ -344,10 +344,6 @@ body * {
 	margin-right: 0.3em;
 }
 
-#footer_user_menu {
-	margin-left: -0.7rem;
-}
-
 #footer_reactions {
 	margin-left: -0.7rem;
 }
@@ -1307,6 +1303,7 @@ select {
 	padding: 0.6rem;
 	padding-left: 0.8rem;
 	padding-right: 0;
+	margin-left: -0.7rem;
 }
 
 #write_message_info {

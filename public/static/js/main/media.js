@@ -129,7 +129,7 @@ Hue.hide_media_menu = function () {
 // Stops and locks all media (image, tv)
 Hue.stop_and_lock = function (stop = true) {
   if (stop) {
-    Hue.stop_tv()
+    Hue.stop_media()
   }
 
   Hue.change_media_lock({type:"image", what:true, save:false})
@@ -1252,4 +1252,9 @@ Hue.swap_media_layout = function () {
 Hue.swap_media_layout_2 = function () {
   Hue.enable_setting_override("media_layout")
   Hue.swap_media_layout()
+}
+
+// Stop all media
+Hue.stop_media = function () {
+  Hue.stop_tv()
 }
