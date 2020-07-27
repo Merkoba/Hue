@@ -56,7 +56,7 @@
 	"max_log_messages": 250,
 	"max_admin_log_messages": 250,
 	"max_access_log_messages": 250,
-	"room_loop_interval": 30000,
+	"rooms_loop_interval": 30000,
 	"files_loop_interval": 30000,
 	"files_loop_max_diff": 20000,
 	"upload_slice_size": 50000,

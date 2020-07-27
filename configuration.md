@@ -132,7 +132,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_room_id_length"
 >Arbitrary big number to avoid big urls from being considered as valid room ids. Mongo ids are approximately 24 chars in length as for 2017.
 
-"room_loop_interval"
+"rooms_loop_interval"
 >The interval in milliseconds for the loop that saves iterates through a rooms object which is updated through chat activity and saves it to the database. This loops is to avoid saving data, like log messages, to the database on every message.
 
 "files_loop_interval"

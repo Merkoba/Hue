@@ -185,7 +185,7 @@ mongo.connect(config.mongodb_path, {
 
 		function do_shutdown() {
 			sockets_api.vars.exiting = true
-			sockets_api.handler.do_room_loop()
+			sockets_api.handler.rooms_timeout_action()
 
 			io.httpServer.close()
 			io.close()

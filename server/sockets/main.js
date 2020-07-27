@@ -121,8 +121,8 @@ module.exports = function (
     })
   })
 
-  handler.start_room_loop()
-  handler.start_files_loop()
+  handler.start_rooms_timeout()
+  handler.start_files_timeout()
 
   sockets_api.handler = handler
   sockets_api.vars = vars
