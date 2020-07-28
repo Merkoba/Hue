@@ -7,7 +7,9 @@ Hue.setup_user_functions = function () {
 
     $(`#user_function_button_${i}`).on("auxclick", function (e) {
       if (e.which === 2) {
-        Hue.open_user_function_in_settings(i)
+        setTimeout(() => {
+          Hue.open_user_function_in_settings(i)
+        }, 100);
       }
     })
   }

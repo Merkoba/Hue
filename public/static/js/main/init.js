@@ -250,7 +250,6 @@ Hue.init = function () {
   Hue.start_chat_menu_context_menu()
   Hue.start_msg_close_buttons_context_menu()
   Hue.start_search_context_menus()
-  Hue.start_titles()
   Hue.setup_show_profile()
   Hue.setup_room_menu()
   Hue.setup_input()

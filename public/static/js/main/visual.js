@@ -38,23 +38,6 @@ Hue.make_main_container_visible = function () {
   }, 1600)
 }
 
-// Starts custom 'nice titles' using Tippy
-Hue.start_titles = function () {
-  $(".nicetitle").each(function () {
-    tippy(this, {
-      delay: [1000, 100],
-      animation: "scale",
-      hideOnClick: true,
-      duration: 100,
-      arrow: true,
-      performance: true,
-      size: "regular",
-      arrowSize: "small",
-      zIndex: 99999999999,
-    })
-  })
-}
-
 // Setup font loading events
 Hue.setup_fonts = function () {
   document.fonts.ready.then(function () {

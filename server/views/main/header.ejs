@@ -1,10 +1,12 @@
 <div id='header' class='panel'>
     <div id='header_left'>
-        <svg id='header_left_room_menu_icon' class='header_icon nicetitle pointer action' title="Room Menu">
-            <use href='#icon_cube'>
-        </svg>
-
-        <div id='header_left_users_container' class='nicetitle action nicetitle pointer flex_row_center' title="Users Online">
+        <div title='Room Menu'>
+            <svg id='header_left_room_menu_icon' class='action pointer header_icon'>
+                <use href='#icon_cube'>
+            </svg>
+        </div>
+        
+        <div id='header_left_users_container' class='action pointer flex_row_center' title='Users Online'>
             <svg id='header_left_users_icon' class='header_icon'>
                 <use href='#icon_robot'>
             </svg>
@@ -12,7 +14,7 @@
             <div id='header_left_users_count' class='header_label'></div>
         </div>
 
-        <div id='header_left_messageboard_container' class='nicetitle action nicetitle pointer flex_row_center' title="Message Board">
+        <div id='header_left_messageboard_container' class='action pointer flex_row_center' title='Message Board'>
             <svg id='header_left_message_board_icon' class='header_icon'>
                 <use href='#icon_comment'>
             </svg>
@@ -28,18 +30,24 @@
     </div>
 
     <div id='header_right'>
-        <svg id='header_right_icon_bell' class='action nicetitle pointer header_icon' title="Notifications">
-            <use href='#icon_bell'>
-        </svg>
+        <div title='Notifications'>
+            <svg id='header_right_icon_bell' class='action pointer header_icon'>
+                <use href='#icon_bell'>
+            </svg>
+        </div>
 
-        <svg id='header_right_icon_envelope' class='action nicetitle pointer header_icon' title="Whispers">
-            <use href='#icon_envelope'>
-        </svg>
+        <div title='Whispers' class='flex_row_center action pointer'>
+            <svg id='header_right_icon_envelope' class='header_icon'>
+                <use href='#icon_envelope'>
+            </svg>
+            
+            <div id='header_right_whispers_count' class='header_label'>(0)</div>
+        </div>
 
-        <div id='header_right_whispers_count' class='header_label'>(0)</div>
-
-        <svg id='header_right_icon_lock' class='action nicetitle pointer header_icon' title="Lock Screen">
-            <use href='#icon_locked'>
-        </svg>
+        <div title='Lock Screen'>
+            <svg id='header_right_icon_lock' class='action pointer header_icon'>
+                <use href='#icon_locked'>
+            </svg>
+        </div>
     </div>
 </div>
