@@ -67,9 +67,9 @@ Hue.create_debouncers = function () {
     Hue.socket_emit("typing", {})
   }, Hue.typing_delay)
 
-  // Debounce timer to hide the typing pencil
+  // Debounce timer to hide the typing actions
   Hue.typing_remove_timer = Hue.create_debouncer(function () {
-    Hue.hide_pencil()
+    Hue.hide_typing()
   }, Hue.config.max_typing_inactivity)
 
   // Debounce timer for highlights filter

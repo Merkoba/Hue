@@ -1850,22 +1850,15 @@ Hue.check_typing = function () {
 }
 
 // When a typing signal is received
-// It shows the typing pencil
 // And animates profile images
 Hue.show_typing = function (data) {
   if (Hue.user_is_ignored(data.username)) {
     return false
   }
 
-  Hue.show_pencil()
   Hue.typing_remove_timer()
   Hue.show_aura(data.username)
-}
 
-// Shows the typing pencil
-Hue.show_pencil = function () {
-  $("#footer_user_menu").find("use").eq(0).attr("href", "#icon_pencil")
-  
   if (!Hue.app_focused) {
     Hue.check_favicon(1)
   }
@@ -1873,9 +1866,14 @@ Hue.show_pencil = function () {
   Hue.typing = true
 }
 
-// Hides the typing pencil
-Hue.hide_pencil = function () {
-  $("#footer_user_menu").find("use").eq(0).attr("href", "#icon_user")
+
+
+// Stops the typing actions
+Hue.hide_typing = function () {
+  if (!Hue.typing) {
+    return
+  }
+
   Hue.check_favicon()
   Hue.typing = false
 }
@@ -2046,7 +2044,7 @@ Hue.on_chat_message = function (data) {
     just_edited: data.just_edited,
   })
 
-  Hue.hide_pencil()
+  Hue.hide_typing()
   Hue.remove_aura(data.username)
 }
 
