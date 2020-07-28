@@ -97,16 +97,12 @@ body * {
 	justify-content: flex-end;
 }
 
-.header_side > div:first-child {
-	margin-left: 1rem;
-}
-
-.header_side > div {
+#header_right:last-child {
 	margin-right: 1rem;
 }
 
-.header_side .activity_icon:first-child {
-	padding-left: 0.8rem;
+#header_left:first-child {
+	margin-left: 1rem;
 }
 
 #activity_bar {
@@ -130,6 +126,7 @@ body * {
 	overflow: hidden;
 	flex-grow: 0;
 	height: 100%;
+	gap: 1.25rem;
 }
 
 .activity_bar_item {
@@ -138,7 +135,6 @@ body * {
 	max-width: 7rem;
 	cursor: pointer;
 	align-items: center;
-	margin: auto;
 }
 
 .activity_bar_item:hover .activity_bar_image_container {
@@ -153,7 +149,6 @@ body * {
 	white-space: nowrap;
 	overflow: hidden;
 	margin-left: 0.5rem;
-	margin-right: 0.8rem;
 	transition: text-shadow 500ms;
 	font-size: var(--panel-font-size);
 }
@@ -167,7 +162,6 @@ body * {
 	max-width: calc(var(--panel-height) * 0.7);
 	min-height: calc(var(--panel-height) * 0.7);
 	max-height: calc(var(--panel-height) * 0.7);
-	margin-left: 0.8rem;
 	transition: box-shadow 500ms;
 }
 
