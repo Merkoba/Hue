@@ -175,6 +175,7 @@ Hue.audio_last_date = 0
 Hue.num_socket_in = 0
 Hue.num_socket_out = 0
 Hue.autoscroll_direction
+Hue.last_autoscroll_diff = 0
 
 Hue.critical_commands = [
     "/js",

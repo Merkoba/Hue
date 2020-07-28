@@ -2186,19 +2186,26 @@ Hue.scroll_chat_to = function (scroll_top) {
 
 // Scrolls the chat up
 Hue.scroll_up = function (n) {
-  Hue.scroll_chat_to($("#chat_area").scrollTop() - n)
+  let diff = $("#chat_area").scrollTop() - n
+  Hue.scroll_chat_to(diff)
+  return diff
 }
 
 // Scrolls the chat down
 Hue.scroll_down = function (n) {
   let $ch = $("#chat_area")
   let max = $ch.prop("scrollHeight") - $ch.innerHeight()
+  let diff
 
   if (max - $ch.scrollTop < n) {
-    Hue.scroll_chat_to(max + 10)
+    diff = max + 10
   } else {
-    Hue.scroll_chat_to($ch.scrollTop() + n)
+    diff = $ch.scrollTop() + n
   }
+
+  Hue.scroll_chat_to(diff)
+
+  return diff
 }
 
 // Generates a regex with a specified string to check for highlights
@@ -2731,7 +2738,13 @@ Hue.autoscroll_up = function () {
   Hue.clear_autoscroll()
 
   Hue.autoscroll_up_interval = setInterval(function () {
-    Hue.scroll_up(Hue.get_setting("autoscroll_amount"))
+    let diff = Hue.scroll_up(Hue.get_setting("autoscroll_amount"))
+    
+    if (Hue.last_autoscroll_diff === diff) {
+      Hue.clear_autoscroll()
+    } else {
+      Hue.last_autoscroll_diff = diff
+    }
   }, Hue.get_setting("autoscroll_delay"))
 
   Hue.show_bottom_scroller()
@@ -2749,8 +2762,14 @@ Hue.autoscroll_down = function () {
 
   Hue.clear_autoscroll()
 
-  Hue.autoscroll_up_interval = setInterval(function () {
-    Hue.scroll_down(Hue.get_setting("autoscroll_amount"))
+  Hue.autoscroll_down_interval = setInterval(function () {
+    let diff = Hue.scroll_down(Hue.get_setting("autoscroll_amount"))
+
+    if (Hue.last_autoscroll_diff === diff) {
+      Hue.clear_autoscroll()
+    } else {
+      Hue.last_autoscroll_diff = diff
+    }
   }, Hue.get_setting("autoscroll_delay"))
 
   Hue.autoscrolling = true
@@ -2762,6 +2781,7 @@ Hue.clear_autoscroll = function () {
   clearInterval(Hue.autoscroll_up_interval)
   clearInterval(Hue.autoscroll_down_interval)
 
+  Hue.last_autoscroll_diff = 0
   Hue.autoscrolling = false
 }
 

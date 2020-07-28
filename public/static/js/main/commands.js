@@ -685,27 +685,15 @@ Hue.commands = {
   },
   "/activityabove": {
     action: (arg, ans) => {
-      Hue.activity_above(true)
+      Hue.activity_above()
     },
     description: `Scrolls chat to activity pertaining you above`,
   },
-  "/activityabove2": {
-    action: (arg, ans) => {
-      Hue.activity_above(false)
-    },
-    description: `Scrolls chat to activity pertaining you above without animating the scroll`,
-  },
   "/activitybelow": {
     action: (arg, ans) => {
-      Hue.activity_below(true)
+      Hue.activity_below()
     },
     description: `Scrolls chat to activity pertaining you below`,
-  },
-  "/activitybelow2": {
-    action: (arg, ans) => {
-      Hue.activity_below(false)
-    },
-    description: `Scrolls chat to activity pertaining you below without animating the scroll`,
   },
   "/globalsettings": {
     action: (arg, ans) => {
