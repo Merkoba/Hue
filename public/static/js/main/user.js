@@ -545,23 +545,17 @@ Hue.show_intro = function () {
 
   Hue.create_popup({ position: "bottomright" }).show(["Media Controls", s])
 
-  s = `
-    This is the activity bar which shows users that have shown activity recently.`
+  s = `This side shows the users online and recently present users.`
 
-  Hue.create_popup({ position: "top" }).show(["Top Panel", s])
+  Hue.create_popup({ position: "topleft" }).show(["Top Left", s])
 
-  s = `
-    Some buttons here like the lock screen, whisper activity, and notifications.`
+  s = `Some useful buttons here.`
 
-  Hue.create_popup({ position: "topright" }).show(["Lock Screen", s])
+  Hue.create_popup({ position: "topright" }).show(["Top Right", s])
 
-  s = `
-    Some buttons here like the room menu, user list, and the message board.`
+  s = `Close this to close all the popups.`
 
-  Hue.create_popup({ position: "topleft" }).show(["Close Popups", s])
-
-  s = `
-    Close this to close all the popups.`
+  Hue.create_popup({ position: "center" }).show(["Close Popups", s])
 
   let f = () => {
     Hue.close_all_popups()
