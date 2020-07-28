@@ -459,9 +459,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "room_state_default_tv_enabled"
 >Whether tv will be enabled by default.
 
-"room_state_default_radio_enabled"
->Whether radio will be enabled by default.
-
 "room_state_default_images_locked"
 >Whether images will be locked by default.
 
