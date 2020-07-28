@@ -784,7 +784,7 @@ Hue.show_whispers = function (filter = false) {
 
 // Updates the whispers unread count
 Hue.update_whispers_unread_count = function () {
-  $("#header_right_whispers_count").text(Hue.get_unread_whispers())
+  $("#header_whispers_count").text(`(${Hue.get_unread_whispers()})`)
 }
 
 // Get a list of unread whispers

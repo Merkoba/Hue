@@ -1,25 +1,15 @@
 <div id='header' class='panel'>
-    <div id='header_left'>
-        <div id='header_room_menu' title='Room Menu'>
-            <svg id='header_left_room_menu_icon' class='action pointer header_icon'>
-                <use href='#icon_cube'>
-            </svg>
-        </div>
+    <div id='header_left' class='header_side'>
+        <div id='header_room_menu' class='action pointer'>Room</div>
         
-        <div id='header_left_users_container' class='action pointer flex_row_center' title='Users Online'>
-            <svg id='header_left_users_icon' class='header_icon'>
-                <use href='#icon_robot'>
-            </svg>
-
-            <div id='header_left_users_count' class='header_label'></div>
+        <div id='header_users' class='action pointer flex_row_center'>
+            <div>Users</div>
+            <div id='header_users_count' class='header_label'></div>
         </div>
 
-        <div id='header_left_messageboard_container' class='action pointer flex_row_center' title='Message Board'>
-            <svg id='header_left_message_board_icon' class='header_icon'>
-                <use href='#icon_comment'>
-            </svg>
-
-            <div id='header_left_message_board_count' class='header_label'>(0)</div>
+        <div id='header_message_board' class='action pointer flex_row_center'>
+            <div>Board</div>
+            <div id='header_message_board_count' class='header_label'>(0)</div>
         </div>
     </div>
 
@@ -29,25 +19,16 @@
         </div>
     </div>
 
-    <div id='header_right'>
-        <div title='Notifications'>
-            <svg id='header_right_icon_bell' class='action pointer header_icon'>
-                <use href='#icon_bell'>
-            </svg>
+    <div id='header_right' class='header_side'>
+        <div id='header_notifications' class='action pointer'>
+            Notifications
         </div>
 
         <div id='header_whispers' title='Whispers' class='flex_row_center action pointer'>
-            <svg id='header_right_icon_envelope' class='header_icon'>
-                <use href='#icon_envelope'>
-            </svg>
-            
-            <div id='header_right_whispers_count' class='header_label'>(0)</div>
+            <div>Whispers</div>
+            <div id='header_whispers_count' class='header_label'>(0)</div>
         </div>
 
-        <div title='Lock Screen'>
-            <svg id='header_right_icon_lock' class='action pointer header_icon'>
-                <use href='#icon_locked'>
-            </svg>
-        </div>
+        <div id='header_lock_screen' class='action pointer'>Lock</div>
     </div>
 </div>

@@ -1,6 +1,10 @@
 // Setups the header
 Hue.setup_header = function () {
-  $("#header_left_room_menu_icon").on("auxclick", function (e) {
+  $("#header_room_menu").click(function () {
+    Hue.show_room_menu()
+  })
+
+  $("#header_room_menu").on("auxclick", function (e) {
     if (e.which === 2) {
       let rotated = $("#main_container").data("hue_rotated")
       let degrees = rotated ? 0 : 180
@@ -10,7 +14,11 @@ Hue.setup_header = function () {
     }
   })
 
-  $("#header_left_users_container").on("auxclick", function (e) {
+  $("#header_users").click(function () {
+    Hue.show_userlist_window()
+  })
+
+  $("#header_users").on("auxclick", function (e) {
     if (e.which === 2) {
       let user =
         Hue.userlist[Hue.utilz.get_random_int(0, Hue.userlist.length - 1)]
@@ -18,27 +26,19 @@ Hue.setup_header = function () {
     }
   })
 
-  $("#header_left_room_menu_icon").click(function () {
-    Hue.show_room_menu()
-  })
-
-  $("#header_left_users_container").click(function () {
-    Hue.show_userlist_window()
-  })
-
-  $("#header_left_messageboard_container").click(function () {
+  $("#header_message_board").click(function () {
     Hue.show_message_board()
   })
 
-  $("#header_right_icon_lock").click(function () {
-    Hue.lock_screen()
+  $("#header_notifications").click(function () {
+    Hue.show_notifications()
   })
 
-  $("#header_right_icon_envelope").click(function () {
+  $("#header_whispers").click(function () {
     Hue.show_whispers()
   })
 
-  $("#header_right_icon_bell").click(function () {
-    Hue.show_notifications()
+  $("#header_lock_screen").click(function () {
+    Hue.lock_screen()
   })
 }

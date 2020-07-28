@@ -184,7 +184,7 @@ Hue.check_last_message_board_post = function () {
   let items = $("#message_board_container").find(".message_board_item")
 
   if (items.length === 0) {
-    $("#header_left_message_board_count").text("(0)")
+    $("#header_message_board_count").text("(0)")
     return false
   }
 
@@ -204,12 +204,12 @@ Hue.check_last_message_board_post = function () {
           count += 1
         })
 
-      $("#header_left_message_board_count").text(`(${count})`)
+      $("#header_message_board_count").text(`(${count})`)
     } else {
       Hue.update_last_message_post_checked()
     }
   } else {
-    $("#header_left_message_board_count").text("(0)")
+    $("#header_message_board_count").text("(0)")
   }
 }
 

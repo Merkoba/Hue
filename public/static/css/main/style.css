@@ -83,35 +83,31 @@ body * {
 	overflow: hidden;
 }
 
-#header_left {
+.header_side {
 	flex-grow: 0;
 	flex-shrink: 0;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: flex-start;
-	width: 14rem;
+	width: 20rem;
 	overflow: hidden;
-}
-
-#header_left .activity_icon:first-child {
-	padding-left: 0.8rem;
 }
 
 #header_right {
-	flex-grow: 0;
-	flex-shrink: 0;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
 	justify-content: flex-end;
-	width: 14rem;
-	overflow: hidden;
 }
 
-#header_right .activity_icon:last-child {
-	padding-right: 0.8rem;
+.header_side > div:first-child {
+	margin-left: 1rem;
+}
+
+.header_side > div {
+	margin-right: 1rem;
+}
+
+.header_side .activity_icon:first-child {
+	padding-left: 0.8rem;
 }
 
 #activity_bar {
@@ -1699,15 +1695,9 @@ svg.action:hover {
 	align-items: center;
 }
 
-.header_icon {
-	width: calc(var(--icon-size) * 2);
-	height: var(--icon-size);
-}
-
 .header_label {
 	font-size: var(--panel-font-size);
-	margin-left: -0.2rem;
-	margin-right: 0.6rem;
+	margin-left: 0.5rem;
 }
 
 #lockscreen_body {
@@ -2992,12 +2982,4 @@ pre {
 
 .Msg-window-inner-x:hover {
 	background-color: var(--background_color_2) !important;
-}
-
-#header_room_menu {
-	margin-top: 0.2rem;
-}
-
-#header_whispers {
-	margin-top: -0.2rem;
 }
