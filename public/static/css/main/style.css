@@ -2993,3 +2993,11 @@ pre {
 .Msg-window-inner-x:hover {
 	background-color: var(--background_color_2) !important;
 }
+
+#header_room_menu {
+	margin-top: 0.2rem;
+}
+
+#header_whispers {
+	margin-top: -0.2rem;
+}
