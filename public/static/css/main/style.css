@@ -413,7 +413,6 @@ body * {
 
 .scroller {
 	height: 2em;
-	color: white;
 	outline: none;
 	font-family: inherit;
 	display: flex;
@@ -444,7 +443,7 @@ body * {
 }
 
 .scroller:hover {
-	background-color: rgba(71, 71, 71, 0.5);
+	background-color: var(--slight_background_alpha);
 }
 
 .chat_message {
