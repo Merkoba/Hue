@@ -2742,6 +2742,7 @@ Hue.autoscroll_up = function () {
     
     if (Hue.last_autoscroll_diff === diff) {
       Hue.clear_autoscroll()
+      Hue.check_scrollers()
     } else {
       Hue.last_autoscroll_diff = diff
     }
@@ -2767,6 +2768,7 @@ Hue.autoscroll_down = function () {
 
     if (Hue.last_autoscroll_diff === diff) {
       Hue.clear_autoscroll()
+      Hue.check_scrollers()
     } else {
       Hue.last_autoscroll_diff = diff
     }
