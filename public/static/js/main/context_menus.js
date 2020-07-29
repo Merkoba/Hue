@@ -349,72 +349,15 @@ Hue.generate_chat_maxer_context_items = function () {
     }
   }
 
-  let size = Hue.get_setting("chat_font_size")
-  let c_very_big = ""
-  let c_big = ""
-  let c_normal = ""
-  let c_small = ""
-  let c_very_small = ""
-
-  if (size === "very_big") {
-    c_very_big = "bold bigger"
-  } else if (size === "big") {
-    c_big = "bold bigger"
-  } else if (size === "normal") {
-    c_normal = "bold bigger"
-  } else if (size === "small") {
-    c_small = "bold bigger"
-  } else if (size === "very_small") {
-    c_very_small = "bold bigger"
-  }
-
   let obj = Object.assign(
-    {
-      very_big: {
-        name: "Very Big",
-        callback: function (key, opt) {
-          Hue.toggle_chat_font_size("very_big")
-        },
-        className: c_very_big,
-      },
-      big: {
-        name: "Big",
-        callback: function (key, opt) {
-          Hue.toggle_chat_font_size("big")
-        },
-        className: c_big,
-      },
-      normal: {
-        name: "Normal",
-        callback: function (key, opt) {
-          Hue.toggle_chat_font_size("normal")
-        },
-        className: c_normal,
-      },
-      small: {
-        name: "Small",
-        callback: function (key, opt) {
-          Hue.toggle_chat_font_size("small")
-        },
-        className: c_small,
-      },
-      very_small: {
-        name: "Very Small",
-        callback: function (key, opt) {
-          Hue.toggle_chat_font_size("very_small")
-        },
-        className: c_very_small,
-      },
-    },
     items,
     {
       def: {
         name: "Default",
         callback: function (key, opt) {
-          Hue.set_default_chat_size()
           Hue.show_media_items()
         },
-      },
+      }
     }
   )
 

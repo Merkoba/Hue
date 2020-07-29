@@ -553,42 +553,6 @@ Hue.user_settings = {
       }
     },
   },
-  chat_font_size: {
-    widget_type: "select",
-    description: `The font size of the chat`,
-    action: (type, save = true) => {
-      let fsize = $(`#${type}_chat_font_size option:selected`).val()
-
-      Hue[type].chat_font_size = fsize
-
-      if (Hue.active_settings("chat_font_size") === type) {
-        Hue.apply_chat_style()
-        Hue.goto_bottom(true, false)
-      }
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  chat_profile_image_size: {
-    widget_type: "select",
-    description: `The size of profile images in the chat`,
-    action: (type, save = true) => {
-      let pisize = $(`#${type}_chat_profile_image_size option:selected`).val()
-
-      Hue[type].chat_profile_image_size = pisize
-
-      if (Hue.active_settings("chat_profile_image_size") === type) {
-        Hue.apply_chat_style()
-        Hue.goto_bottom(true, false)
-      }
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   warn_before_closing: {
     widget_type: "checkbox",
     description: `Show a confirmation message in some cases when the client is going to be closed or refreshed`,

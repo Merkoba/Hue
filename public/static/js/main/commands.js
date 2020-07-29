@@ -1013,12 +1013,6 @@ Hue.commands = {
     },
     description: `Shows the Access Log`,
   },
-  "togglefontsize": {
-    action: (arg, ans) => {
-      Hue.toggle_chat_font_size()
-    },
-    description: `Toggles chat font size between normal, big, and very big`,
-  },
   "adminlist": {
     action: (arg, ans) => {
       Hue.request_admin_list()
