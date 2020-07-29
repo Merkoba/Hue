@@ -357,7 +357,6 @@ body * {
 
 #input {
 	font-size: var(--panel-font-size);
-	color: white;
 	border: 0px solid black;
 	padding-right: 1rem;
 	margin-right: 1rem;
@@ -2975,4 +2974,25 @@ pre {
 
 .Msg-window-inner-x:hover {
 	background-color: var(--background_color_2) !important;
+}
+
+#footer_search_input {
+	width: 20rem;
+	height: var(--panel-height);
+	position: relative;
+	color: inherit;
+	margin-right: 1rem;
+	background-color: transparent;
+	box-shadow: inset 0 0 5px var(--color_3);
+	border: 0px solid var(--color_4_a);
+	font-size: 1rem;
+	outline: none;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+}
+
+#footer_search_input::placeholder {
+	white-space: pre;
+	font-size: var(--panel-font-size);
+	color: var(--color_3);
 }
