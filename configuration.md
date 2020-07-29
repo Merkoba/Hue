@@ -417,9 +417,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_transparent_panels"
 >Whether panels get a slight transparency by default.
 
-"global_settings_default_max_displayed_url"
->Max amount of characters to use in displaying urls in chat by default.
-
 "global_settings_default_media_layout"
 >Default media area (image, tv) layout, either column or row.
 

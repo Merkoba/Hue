@@ -153,7 +153,6 @@
 	"global_settings_default_autoconnect": false,
 	"global_settings_default_media_info": "room",
 	"global_settings_default_transparent_panels": true,
-	"global_settings_default_max_displayed_url": 100,
 	"global_settings_default_media_layout": "column",
 	"global_settings_default_scramble_chat": true,
 	"global_settings_default_confirm_chat": false,
