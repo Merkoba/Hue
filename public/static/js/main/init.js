@@ -277,7 +277,6 @@ Hue.init = function () {
   Hue.setup_chat()
   Hue.setup_message_board()
   Hue.change_media_layout()
-  Hue.change_chat_visibility()
   Hue.setup_notebook()
   Hue.setup_profile_image_cropper()
   Hue.setup_badges()

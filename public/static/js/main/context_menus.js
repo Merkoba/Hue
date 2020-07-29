@@ -318,8 +318,7 @@ Hue.start_chat_menu_context_menu = function () {
 // Generate the items for the chat maxer context menu
 Hue.generate_chat_maxer_context_items = function () {
   let items = {}
-  let max =
-    Hue.get_setting("chat_enabled") && Hue.num_media_elements_visible() === 0
+  let max = Hue.num_media_elements_visible() === 0
   let per = Hue.get_setting("chat_display_percentage")
 
   for (let i = 1; i <= 10; i++) {

@@ -948,21 +948,6 @@ Hue.user_settings = {
       }
     },
   },
-  chat_enabled: {
-    widget_type: "checkbox",
-    description: `Whether chat is visible or not`,
-    action: (type, save = true) => {
-      Hue[type].chat_enabled = $(`#${type}_chat_enabled`).prop("checked")
-
-      if (Hue.active_settings("chat_enabled") === type) {
-        Hue.change_chat_visibility()
-      }
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   scramble_chat: {
     widget_type: "checkbox",
     description: `Whether chat messages should have the scramble animation`,

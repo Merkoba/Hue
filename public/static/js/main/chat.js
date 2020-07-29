@@ -557,7 +557,7 @@ Hue.update_chat = function (args = {}) {
     just_edited: args.just_edited,
   }).message_id
 
-  if (!args.edited && Hue.get_setting("chat_enabled")) {
+  if (!args.edited) {
     if (args.username !== Hue.username) {
       if (highlighted) {
         Hue.on_highlight()
@@ -832,7 +832,7 @@ Hue.chat_announce = function (args = {}) {
   if (!ignore) {
     message_id = Hue.add_to_chat({ message: fmessage }).message_id
 
-    if (highlighted && Hue.get_setting("chat_enabled")) {
+    if (highlighted) {
       Hue.on_highlight()
     }
   }
@@ -1011,8 +1011,7 @@ Hue.add_to_chat = function (args = {}) {
   if (
     args.notify &&
     Hue.started &&
-    highlighted &&
-    Hue.get_setting("chat_enabled")
+    highlighted
   ) {
     Hue.electron_signal("highlighted")
   }
@@ -3019,19 +3018,6 @@ Hue.setup_chat = function () {
   $("#activity_down_scroller").click(function () {
     Hue.activity_below()
   })
-}
-
-// Makes the chat visible or not
-Hue.change_chat_visibility = function () {
-  let enabled = Hue.get_setting("chat_enabled")
-
-  if (enabled) {
-    $("#chat_main").css("display", "flex")
-  } else {
-    $("#chat_main").css("display", "none")
-  }
-
-  Hue.fix_frames()
 }
 
 // Removes unwanted formatting from Hue chat messages
