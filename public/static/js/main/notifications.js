@@ -87,10 +87,10 @@ Hue.push_notification = function (icon, message, on_click = false) {
   let icon_html = ""
 
   if (icon) {
-    icon_html = `<i class='${icon} notifications_icon'></i>`
+    icon_html = `<svg class='other_icon notifications_icon'><use href='#icon_${icon}'></svg>`
   }
 
-  let message_html = `<div class='notifications_messasge'>${Hue.utilz.make_html_safe(
+  let message_html = `<div class='notifications_message'>${Hue.utilz.make_html_safe(
     message
   )}</div>`
   let content_classes = ""
