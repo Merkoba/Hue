@@ -2916,7 +2916,7 @@ pre {
 
 .shady {
 	animation: shady_grow 1.2s linear infinite;
-	box-shadow: 0px 0px 8px 8px var(--color_4_a);
+	box-shadow: 0px 0px 8px 0.3rem var(--color_4_a);
 	background-color: var(--color_4_a);
 }
 
