@@ -331,9 +331,11 @@ Hue.activate_key_detection = function () {
 
     if ($("#footer_search_input")[0] === document.activeElement) {
       if (e.key === "Enter") {
-        Hue.process_search_input()
+        Hue.process_footer_search_input()
+      } else if (e.key === "Escape") {
+        Hue.clear_footer_search_input()
       }
-      
+
       return
     }
 

@@ -825,7 +825,7 @@ Hue.generate_chat_search_context_items = function () {
     }
 
     items["clear"] = {
-      name: "Clear",
+      name: "- Clear Chat History -",
       callback: function (key, opt) {
         Hue.clear_chat_searches()
       },
@@ -850,7 +850,7 @@ Hue.start_search_context_menus = function () {
   })
 
   $.contextMenu({
-    selector: "#chat_search_history_icon",
+    selector: "#chat_search_history_icon, #footer_search_history_icon",
     animation: { duration: 250, hide: "fadeOut" },
     zIndex: 9000000000,
     events: Hue.context_menu_events,

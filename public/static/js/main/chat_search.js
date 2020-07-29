@@ -86,8 +86,13 @@ Hue.clear_chat_searches = function () {
 }
 
 // Process the footer search input
-Hue.process_search_input = function () {
+Hue.process_footer_search_input = function () {
   let value = $("#footer_search_input").val().trim()
   Hue.show_chat_search(value)
+  Hue.clear_footer_search_input()
+}
+
+// Clears the footer chat search input
+Hue.clear_footer_search_input = function () {
   $("#footer_search_input").val("")
 }
