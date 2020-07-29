@@ -1034,12 +1034,6 @@ Hue.start_media_info_events = function () {
   })
 }
 
-// Refreshes image and tv media info
-Hue.reapply_media_info = function () {
-  Hue.apply_image_media_info()
-  Hue.apply_tv_media_info()
-}
-
 // Sets a media info item with proper information and events
 Hue.apply_media_info = function (element, item, mode) {
   if (!Hue.room_state[`${mode}_enabled`]) {
