@@ -609,6 +609,7 @@ Hue.chat_announce = function (args = {}) {
     user_id: false,
     replace_markdown: false,
     in_log: true,
+    media_source: ""
   }
 
   args = Object.assign(def_args, args)
@@ -824,6 +825,7 @@ Hue.chat_announce = function (args = {}) {
   fmessage.data("first_url", first_url)
   fmessage.data("user_id", args.user_id)
   fmessage.data("in_log", args.in_log)
+  fmessage.data("media_source", args.media_source)
 
   let message_id
 

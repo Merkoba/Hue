@@ -32,7 +32,16 @@ Hue.show_chat_search = function (filter = false) {
       }
 
       let text = $(this).text().toLowerCase()
-      return words.some((word) => text.includes(word))
+      let text_cmp = words.some((word) => text.includes(word))
+      
+      let source_cmp = false
+      let media_source = $(this).data("media_source")
+      
+      if (media_source) {
+        source_cmp = words.some((word) => media_source.includes(word))
+      }
+
+      return text_cmp || source_cmp
     })
 
     if (clone.children().length === 0) {
