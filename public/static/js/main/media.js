@@ -1080,7 +1080,7 @@ Hue.apply_media_info = function (element, item, mode) {
     }
   }
 
-  info = info.substring(0, Hue.get_setting("media_info_max_length")).trim()
+  info = info.substring(0, Hue.media_info_max_length).trim()
 
   let hover_title = item.info
 
