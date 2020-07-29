@@ -1996,10 +1996,10 @@ Hue.jump_to_chat_message = function (message_id) {
   }
 
   el[0].scrollIntoView({ block: "center" })
-  el.addClass("highlighted2")
+  el.addClass("blinkattention")
 
   setTimeout(function () {
-    el.removeClass("highlighted2")
+    el.removeClass("blinkattention")
   }, 2000)
 
   Hue.close_all_modals()

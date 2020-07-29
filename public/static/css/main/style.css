@@ -1979,6 +1979,13 @@ svg.action:hover {
 	color: var(--font_color);
 }
 
+.blinkattention {
+	box-shadow: inset 0 0 2px currentColor;
+	background-color: var(--background_color_a_2);
+	color: var(--font_color);
+	animation: blink 0.5s linear infinite;
+}
+
 #credits_container {
 	background-color: black;
 }
