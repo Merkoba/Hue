@@ -41,7 +41,4 @@ Hue.setup_header = function () {
   $("#header_lock_screen").click(function () {
     Hue.lock_screen()
   })
-
-  Hue.horizontal_separator.separate("header")
-  Hue.horizontal_separator.separate("header_right")
 }
