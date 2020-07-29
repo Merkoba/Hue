@@ -2990,7 +2990,7 @@ pre {
 #footer_search {
 	width: 20rem;
 	height: var(--panel-height) !important;
-	box-shadow: inset 0 0 5px var(--color_3);
+	box-shadow: inset 0 0 2px var(--color_3);
 	margin-right: 1rem;
 }
 
