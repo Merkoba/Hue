@@ -7,7 +7,7 @@ jQuery.fn.urlize = function (stop_propagation = true) {
       return false
     }
 
-    let split = html.split(" ")
+    let split = html.split(/\s+/)
     let matches = []
     let reg = /(?:^|\s)\"?(https?:\/\/(?:[^"|\s]*)+)/
 
