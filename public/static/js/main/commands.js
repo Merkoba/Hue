@@ -1492,7 +1492,7 @@ Hue.includes_critical_command = function (username, message, announce = true) {
     let cmd2
 
     if (Hue.is_command(cmd)) {
-      cmd2 = cmd.toLowerCase().split("").sort().join("")
+      cmd2 = cmd.toLowerCase().split("").sort().join("").substring(1)
     } else {
       continue
     }
@@ -1550,4 +1550,18 @@ Hue.get_closest_command = function (cmd) {
   }
 
   return highest_command
+}
+
+// Setups critical commands
+Hue.setup_critical_commands = function () {
+  Hue.critical_commands = [
+    "js",
+    "js2",
+    "changeusername",
+    "changepassword",
+    "changeemail",
+    "systembroadcast",
+    "systemrestart",
+    "annex"
+  ]
 }

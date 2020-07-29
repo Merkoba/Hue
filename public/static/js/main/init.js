@@ -177,17 +177,6 @@ Hue.num_socket_out = 0
 Hue.autoscroll_direction
 Hue.last_autoscroll_diff = 0
 
-Hue.critical_commands = [
-    "/js",
-    "/js2",
-    "/changeusername",
-    "/changepassword",
-    "/changeemail",
-    "/systembroadcast",
-    "/systemrestart",
-    "/annex"
-]
-
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
 Hue.youtube_loaded = false
@@ -299,6 +288,7 @@ Hue.init = function () {
   Hue.generate_favicon(0)
   Hue.setup_reply()
   Hue.start_socket_stats()
+  Hue.setup_critical_commands()
 
   if (Hue.debug_functions) {
     Hue.wrap_functions()
