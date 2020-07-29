@@ -90,7 +90,7 @@ module.exports = function (
   })
 
   // Dont check if user has joined with these functions
-  vars.dont_check_joined = ["join_room", "roomlist"]
+  vars.dont_check_joined = ["join_room"]
 
   // Don't add spam on these functions
   // They add spam manually
