@@ -240,5 +240,6 @@
 	"upload_spam_slice": 650,
 	"system_username": "The System",
 	"scramble_duration": 500,
-	"scramble_speed": 50
+	"scramble_speed": 50,
+	"commands_prefix": "/"
 }

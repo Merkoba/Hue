@@ -2,19 +2,19 @@
 // Used to populate the commands list
 // Actions for each command are declared here
 Hue.commands = {
-  "/clear": {
+  "clear": {
     action: (arg, ans) => {
       Hue.clear_chat()
     },
     description: `Clears the chat`,
   },
-  "/clearinput": {
+  "clearinput": {
     action: (arg, ans) => {
       Hue.clear_input()
     },
     description: `Clears the text input`,
   },
-  "/users": {
+  "users": {
     action: (arg, ans) => {
       if (arg) {
         Hue.show_userlist_window("normal", arg)
@@ -24,7 +24,7 @@ Hue.commands = {
     },
     description: `Shows the user list. Accepts a filter as an argument`,
   },
-  "/publicrooms": {
+  "publicrooms": {
     action: (arg, ans) => {
       if (arg) {
         Hue.request_roomlist(arg, "public_roomlist")
@@ -34,7 +34,7 @@ Hue.commands = {
     },
     description: `Shows the public room list. Accepts a filter as an argument`,
   },
-  "/visitedrooms": {
+  "visitedrooms": {
     action: (arg, ans) => {
       if (arg) {
         Hue.request_roomlist(arg, "visited_roomlist")
@@ -44,7 +44,7 @@ Hue.commands = {
     },
     description: `Shows the visited room list. Accepts a filter as an argument`,
   },
-  "/roomname": {
+  "roomname": {
     action: (arg, ans) => {
       if (arg) {
         Hue.change_room_name(arg)
@@ -54,7 +54,7 @@ Hue.commands = {
     },
     description: `Changes the name of the room`,
   },
-  "/roomnameedit": {
+  "roomnameedit": {
     action: (arg, ans) => {
       Hue.room_name_edit()
       ans.to_history = false
@@ -62,7 +62,7 @@ Hue.commands = {
     },
     description: `Puts the room name in the input, ready to be edited`,
   },
-  "/played": {
+  "played": {
     action: (arg, ans) => {
       if (arg) {
         Hue.show_played(arg)
@@ -72,7 +72,7 @@ Hue.commands = {
     },
     description: `Shows the list of songs played. Accepts a filter as an argument`,
   },
-  "/search": {
+  "search": {
     action: (arg, ans) => {
       if (arg) {
         Hue.show_chat_search(arg)
@@ -82,163 +82,163 @@ Hue.commands = {
     },
     description: `Opens the search window. Accepts a query as an argument`,
   },
-  "/clearsearches": {
+  "clearsearches": {
     action: (arg, ans) => {
       Hue.clear_chat_searches()
     },
     description: `Clears the saved recent searches`,
   },
-  "/role": {
+  "role": {
     action: (arg, ans) => {
       Hue.show_role()
     },
     description: `Shows your role and permissions`,
   },
-  "/voice1": {
+  "voice1": {
     action: (arg, ans) => {
       Hue.change_role(arg, "voice_1")
     },
     description: `Gives voice_1 to a user`,
   },
-  "/voice2": {
+  "voice2": {
     action: (arg, ans) => {
       Hue.change_role(arg, "voice_2")
     },
     description: `Gives voice_2 to a user`,
   },
-  "/voice3": {
+  "voice3": {
     action: (arg, ans) => {
       Hue.change_role(arg, "voice_3")
     },
     description: `Gives voice_3 to a user`,
   },
-  "/voice4": {
+  "voice4": {
     action: (arg, ans) => {
       Hue.change_role(arg, "voice_4")
     },
     description: `Gives voice_4 to a user`,
   },
-  "/op1": {
+  "op1": {
     action: (arg, ans) => {
       Hue.change_role(arg, "op_1")
     },
     description: `Gives op_1 to a user`,
   },
-  "/op2": {
+  "op2": {
     action: (arg, ans) => {
       Hue.change_role(arg, "op_2")
     },
     description: `Gives op_2 to a user`,
   },
-  "/op3": {
+  "op3": {
     action: (arg, ans) => {
       Hue.change_role(arg, "op_3")
     },
     description: `Gives op_3 to a user`,
   },
-  "/op4": {
+  "op4": {
     action: (arg, ans) => {
       Hue.change_role(arg, "op_4")
     },
     description: `Gives op_4 to a user`,
   },
-  "/admin": {
+  "admin": {
     action: (arg, ans) => {
       Hue.change_role(arg, "admin")
     },
     description: `Gives admin to a user. This gives a user the same rights as the original admin`,
   },
-  "/resetvoices": {
+  "resetvoices": {
     action: (arg, ans) => {
       Hue.reset_voices()
     },
     description: `Turns all voices above 1 to voice_1`,
   },
-  "/resetops": {
+  "resetops": {
     action: (arg, ans) => {
       Hue.reset_ops()
     },
     description: `Turns all ops above 1 to op_1`,
   },
-  "/removeops": {
+  "removeops": {
     action: (arg, ans) => {
       Hue.remove_ops()
     },
     description: `Removes all op roles`,
   },
-  "/ban": {
+  "ban": {
     action: (arg, ans) => {
       Hue.ban(arg)
     },
     description: `Bans a user from the room`,
   },
-  "/unban": {
+  "unban": {
     action: (arg, ans) => {
       Hue.unban(arg)
     },
     description: `Unbans a user from the room`,
   },
-  "/unbanall": {
+  "unbanall": {
     action: (arg, ans) => {
       Hue.unban_all()
     },
     description: `Removes all bans`,
   },
-  "/bancount": {
+  "bancount": {
     action: (arg, ans) => {
       Hue.get_ban_count()
     },
     description: `Displays the number of banned users in the room`,
   },
-  "/kick": {
+  "kick": {
     action: (arg, ans) => {
       Hue.kick(arg)
     },
     description: `Kicks a user out of the room`,
   },
-  "/public": {
+  "public": {
     action: (arg, ans) => {
       Hue.change_privacy(true)
     },
     description: `Room appears in the public room list`,
   },
-  "/private": {
+  "private": {
     action: (arg, ans) => {
       Hue.change_privacy(false)
     },
     description: `Room doesn\'t appear in the public room list`,
   },
-  "/privacy": {
+  "privacy": {
     action: (arg, ans) => {
       Hue.show_public()
     },
     description: `Shows if a room is public or private`,
   },
-  "/log": {
+  "log": {
     action: (arg, ans) => {
       Hue.show_log()
     },
     description: `Shows if the log is enabled or disabled`,
   },
-  "/enablelog": {
+  "enablelog": {
     action: (arg, ans) => {
       Hue.change_log(true)
     },
     description: `Enables logging of the room. Which allows users to see previous messages before they joined`,
   },
-  "/disablelog": {
+  "disablelog": {
     action: (arg, ans) => {
       Hue.change_log(false)
     },
     description: `Disables logging`,
   },
-  "/clearlog": {
+  "clearlog": {
     action: (arg, ans) => {
       Hue.clear_log("all")
     },
     description: `Removes all messages from the log and resets client state for all the users in the room`,
   },
-  "/tv": {
+  "tv": {
     action: (arg, ans) => {
       if (arg) {
         Hue.change_tv_source(arg)
@@ -246,9 +246,9 @@ Hue.commands = {
         Hue.show_media_source("tv")
       }
     },
-    description: `Changes the TV using a search term or URL. "/tv restart" restarts the current video for all users, in case it gets stuck. To link a Youtube playlist the URL must be a pure playlist URL without a video ID. "/tv default" sets the tv to the site's default tv. "/tv prev" changes to the previous tv source`,
+    description: `Changes the TV using a search term or URL. "${Hue.config.commands_prefix}tv restart" restarts the current video for all users, in case it gets stuck. To link a Youtube playlist the URL must be a pure playlist URL without a video ID. "${Hue.config.commands_prefix}tv default" sets the tv to the site's default tv. "${Hue.config.commands_prefix}tv prev" changes to the previous tv source`,
   },
-  "/image": {
+  "image": {
     action: (arg, ans) => {
       if (arg) {
         Hue.change_image_source(arg)
@@ -256,15 +256,15 @@ Hue.commands = {
         Hue.show_media_source("image")
       }
     },
-    description: `Sends an image to be uploaded by URL. "/image default" sets the image to the site's default image. "/image prev" changes to the previous image source`,
+    description: `Sends an image to be uploaded by URL. "${Hue.config.commands_prefix}image default" sets the image to the site's default image. "${Hue.config.commands_prefix}image prev" changes to the previous image source`,
   },
-  "/status": {
+  "status": {
     action: (arg, ans) => {
       Hue.show_status()
     },
     description: `Shows the room status window`,
   },
-  "/topic": {
+  "topic": {
     action: (arg, ans) => {
       if (arg) {
         Hue.change_topic(arg)
@@ -274,13 +274,13 @@ Hue.commands = {
     },
     description: `Changes the topic of the room`,
   },
-  "/topicadd": {
+  "topicadd": {
     action: (arg, ans) => {
       Hue.topicadd(arg)
     },
     description: `Adds a section at the end of the topic`,
   },
-  "/topictrim": {
+  "topictrim": {
     action: (arg, ans) => {
       if (arg) {
         Hue.topictrim(arg)
@@ -290,13 +290,13 @@ Hue.commands = {
     },
     description: `Removes a section from the end of the topic, where the optional x is the number of trims you want to do`,
   },
-  "/topicaddstart": {
+  "topicaddstart": {
     action: (arg, ans) => {
       Hue.topicstart(arg)
     },
     description: `Adds a section at the start of the topic`,
   },
-  "/topictrimstart": {
+  "topictrimstart": {
     action: (arg, ans) => {
       if (arg) {
         Hue.topictrimstart(arg)
@@ -306,7 +306,7 @@ Hue.commands = {
     },
     description: `Removes a section from the start of the topic, where the optional x is the number of trims you want to do`,
   },
-  "/topicedit": {
+  "topicedit": {
     action: (arg, ans) => {
       Hue.topicedit()
       ans.to_history = false
@@ -314,19 +314,19 @@ Hue.commands = {
     },
     description: `Puts the topic in the input, ready to be edited`,
   },
-  "/room": {
+  "room": {
     action: (arg, ans) => {
       Hue.show_room()
     },
     description: `Shows the room name`,
   },
-  "/help": {
+  "help": {
     action: (arg, ans) => {
       Hue.show_help()
     },
     description: `Shows Help`,
   },
-  "/commands": {
+  "commands": {
     action: (arg, ans) => {
       if (arg) {
         Hue.show_commands(arg)
@@ -336,13 +336,13 @@ Hue.commands = {
     },
     description: `Shows Commands`,
   },
-  "/tvvolume": {
+  "tvvolume": {
     action: (arg, ans) => {
       Hue.change_tv_volume(arg)
     },
     description: `Changes the volume of the tv`,
   },
-  "/inputhistory": {
+  "inputhistory": {
     action: (arg, ans) => {
       if (arg) {
         Hue.show_input_history(arg)
@@ -352,105 +352,105 @@ Hue.commands = {
     },
     description: `Shows the input history. Accepts a filter as an argument`,
   },
-  "/clearinputhistory": {
+  "clearinputhistory": {
     action: (arg, ans) => {
       Hue.clear_input_history()
     },
     description: `Clears the input history`,
   },
-  "/changeusername": {
+  "changeusername": {
     action: (arg, ans) => {
       Hue.change_username(arg)
     },
     description: `Changes the account username`,
   },
-  "/changepassword": {
+  "changepassword": {
     action: (arg, ans) => {
       Hue.change_password(arg)
     },
     description: `Changes the account password`,
   },
-  "/changeemail": {
+  "changeemail": {
     action: (arg, ans) => {
       Hue.change_email(arg)
     },
     description: `Changes the account email`,
   },
-  "/verifyemail": {
+  "verifyemail": {
     action: (arg, ans) => {
       Hue.verify_email(arg)
     },
     description: `Used to verify an email email with a received code`,
   },
-  "/details": {
+  "details": {
     action: (arg, ans) => {
       Hue.show_details()
     },
     description: `Shows the account details`,
   },
-  "/logout": {
+  "logout": {
     action: (arg, ans) => {
       Hue.logout()
     },
     description: `Ends the user session`,
   },
-  "/fill": {
+  "fill": {
     action: (arg, ans) => {
       Hue.fill()
     },
     description: `Used for debugging purposes`,
   },
-  "/shrug": {
+  "shrug": {
     action: (arg, ans) => {
       Hue.shrug()
     },
     description: `Shows the shrug ascii`,
   },
-  "/disconnectothers": {
+  "disconnectothers": {
     action: (arg, ans) => {
       Hue.disconnect_others()
     },
     description: `Disconnects other connected account clients`,
   },
-  "/whisper": {
+  "whisper": {
     action: (arg, ans) => {
       Hue.process_write_whisper(arg, true)
     },
     description: `Opens a window to write a whisper to x user. If the argument contains the &gt; character it will use the inline method where the username is whatever is to the left of the &gt; and the message whatever is to the right of it, and send the message directly without using the window`,
   },
-  "/whisper2": {
+  "whisper2": {
     action: (arg, ans) => {
       Hue.process_write_whisper(arg, false)
     },
-    description: `Same as /whisper but it doesn't show feedback when sent through the inline format, for example "/whisper2 user > message". Useful for making calls to bots without filling your own chat too much`,
+    description: `Same as ${Hue.config.commands_prefix}whisper but it doesn't show feedback when sent through the inline format, for example "${Hue.config.commands_prefix}whisper2 user > message". Useful for making calls to bots without filling your own chat too much`,
   },
-  "/whisperops": {
+  "whisperops": {
     action: (arg, ans) => {
       Hue.write_popup_message(false, "ops")
     },
     description: `Opens a window to write a whisper to ops and admins`,
   },
-  "/broadcast": {
+  "broadcast": {
     action: (arg, ans) => {
       Hue.write_popup_message(false, "room")
     },
     description: `Opens a window to write a message to be sent to the entire room`,
   },
-  "/systembroadcast": {
+  "systembroadcast": {
     action: (arg, ans) => {
       Hue.write_popup_message(false, "system")
       ans.to_history = false
     },
     description: `(Only for superusers) Opens a window to write a message to be sent to the entire system`,
   },
-  "/systemrestart": {
+  "systemrestart": {
     action: (arg, ans) => {
       Hue.send_system_restart_signal()
       ans.to_history = false
     },
     description: `(Only for superusers) Sends a signal to every connected client to restart the application`,
   },
-  "/annex": {
+  "annex": {
     action: (arg, ans) => {
       if (arg) {
         Hue.annex(arg)
@@ -461,7 +461,7 @@ Hue.commands = {
     },
     description: `(Only for superusers) Used to change the user's role`,
   },
-  "/highlights": {
+  "highlights": {
     action: (arg, ans) => {
       if (arg) {
         Hue.show_highlights(arg)
@@ -471,43 +471,43 @@ Hue.commands = {
     },
     description: `Shows chat messages where you were highlighted. Accepts a filter as an argument`,
   },
-  "/lock": {
+  "lock": {
     action: (arg, ans) => {
       Hue.stop_and_lock(false)
     },
     description: `Locks all media`,
   },
-  "/unlock": {
+  "unlock": {
     action: (arg, ans) => {
       Hue.unlock()
     },
     description: `Unlocks all media`,
   },
-  "/stopandlock": {
+  "stopandlock": {
     action: (arg, ans) => {
       Hue.stop_and_lock()
     },
     description: `Stops and locks all media`,
   },
-  "/roommenu": {
+  "roommenu": {
     action: (arg, ans) => {
       Hue.show_room_menu()
     },
     description: `Shows the room menu`,
   },
-  "/usermenu": {
+  "usermenu": {
     action: (arg, ans) => {
       Hue.show_user_menu()
     },
     description: `Shows the user menu`,
   },
-  "/mediamenu": {
+  "mediamenu": {
     action: (arg, ans) => {
       Hue.show_media_menu()
     },
     description: `Shows the media menu`,
   },
-  "/imagehistory": {
+  "imagehistory": {
     action: (arg, ans) => {
       if (arg) {
         Hue.show_media_history("image", arg)
@@ -517,7 +517,7 @@ Hue.commands = {
     },
     description: `Shows the image history. Accepts a filter as an argument`,
   },
-  "/tvhistory": {
+  "tvhistory": {
     action: (arg, ans) => {
       if (arg) {
         Hue.show_media_history("tv", arg)
@@ -527,175 +527,175 @@ Hue.commands = {
     },
     description: `Shows the tv history. Accepts a filter as an argument`,
   },
-  "/lockimage": {
+  "lockimage": {
     action: (arg, ans) => {
       Hue.change_media_lock({type:"image", what:true, feedback:true})
     },
     description: `Locks the image`,
   },
-  "/locktv": {
+  "locktv": {
     action: (arg, ans) => {
       Hue.change_media_lock({type:"tv", what:true, feedback:true})
     },
     description: `Locks the tv`,
   },
-  "/unlockimage": {
+  "unlockimage": {
     action: (arg, ans) => {
       Hue.change_media_lock({type:"image", what:false, feedback:true})
     },
     description: `Unlocks the image`,
   },
-  "/unlocktv": {
+  "unlocktv": {
     action: (arg, ans) => {
       Hue.change_media_lock({type:"tv", what:false, feedback:true})
     },
     description: `Unlocks the tv`,
   },
-  "/togglelockimage": {
+  "togglelockimage": {
     action: (arg, ans) => {
       Hue.change_media_lock({type:"image", feedback:true})
     },
     description: `Toggles between lock and unlock the image`,
   },
-  "/togglelocktv": {
+  "togglelocktv": {
     action: (arg, ans) => {
       Hue.change_media_lock({type:"tv", feedback:true})
     },
     description: `Toggles between lock and unlock the tv`,
   },
-  "/showimage": {
+  "showimage": {
     action: (arg, ans) => {
       Hue.toggle_image(true)
     },
     description: `Makes the image visible and active`,
   },
-  "/showtv": {
+  "showtv": {
     action: (arg, ans) => {
       Hue.toggle_tv(true)
     },
     description: `Makes the tv visible and active`,
   },
-  "/hideimage": {
+  "hideimage": {
     action: (arg, ans) => {
       Hue.toggle_image(false)
     },
     description: `Makes the image invisible and inactive`,
   },
-  "/hidetv": {
+  "hidetv": {
     action: (arg, ans) => {
       Hue.toggle_tv(false)
     },
     description: `Makes the tv invisible and inactive`,
   },
-  "/toggleimage": {
+  "toggleimage": {
     action: (arg, ans) => {
       Hue.toggle_image()
     },
     description: `Toggles between show and hide the image`,
   },
-  "/toggletv": {
+  "toggletv": {
     action: (arg, ans) => {
       Hue.toggle_tv()
     },
     description: `Toggles between show and hide the tv`,
   },
-  "/maximizeimage": {
+  "maximizeimage": {
     action: (arg, ans) => {
       Hue.maximize_image()
     },
     description: `Maximize/Restore the image`,
   },
-  "/maximizetv": {
+  "maximizetv": {
     action: (arg, ans) => {
       Hue.maximize_tv()
     },
     description: `Maximize/Restore the tv`,
   },
-  "/starttv": {
+  "starttv": {
     action: (arg, ans) => {
       Hue.play_tv()
     },
     description: `Starts the tv`,
   },
-  "/stoptv": {
+  "stoptv": {
     action: (arg, ans) => {
       Hue.stop_tv(false)
     },
     description: `Stops the tv`,
   },
-  "/openimage": {
+  "openimage": {
     action: (arg, ans) => {
       Hue.show_current_image_modal()
     },
     description: `Opens the image modal with the current image`,
   },
-  "/openlastimage": {
+  "openlastimage": {
     action: (arg, ans) => {
       Hue.show_current_image_modal(false)
     },
     description: `Opens the image modal with the latest announced image`,
   },
-  "/date": {
+  "date": {
     action: (arg, ans) => {
       Hue.show_current_date()
     },
     description: `Shows current date`,
   },
-  "/js": {
+  "js": {
     action: (arg, ans) => {
       Hue.execute_javascript(arg)
     },
     description: `Executes a javascript operation`,
   },
-  "/js2": {
+  "js2": {
     action: (arg, ans) => {
       Hue.execute_javascript(arg, false)
     },
     description: `Executes a javascript operation without showing the result`,
   },
-  "/changeimage": {
+  "changeimage": {
     action: (arg, ans) => {
       Hue.show_image_picker()
     },
     description: `Opens window to change the image`,
   },
-  "/changetv": {
+  "changetv": {
     action: (arg, ans) => {
       Hue.show_tv_picker()
     },
     description: `Opens the window to change the tv`,
   },
-  "/closeall": {
+  "closeall": {
     action: (arg, ans) => {
       Hue.close_all_message()
     },
     description: `Closes all the modal windows and popups`,
   },
-  "/closeallmodals": {
+  "closeallmodals": {
     action: (arg, ans) => {
       Hue.close_all_modals()
     },
     description: `Closes all the modal windows`,
   },
-  "/closeallpopups": {
+  "closeallpopups": {
     action: (arg, ans) => {
       Hue.close_all_popups()
     },
     description: `Closes all the popups`,
   },
-  "/activityabove": {
+  "activityabove": {
     action: (arg, ans) => {
       Hue.activity_above()
     },
     description: `Scrolls chat to activity pertaining you above`,
   },
-  "/activitybelow": {
+  "activitybelow": {
     action: (arg, ans) => {
       Hue.activity_below()
     },
     description: `Scrolls chat to activity pertaining you below`,
   },
-  "/globalsettings": {
+  "globalsettings": {
     action: (arg, ans) => {
       if (arg) {
         Hue.show_global_settings(arg)
@@ -705,7 +705,7 @@ Hue.commands = {
     },
     description: `Shows the global settings window. Accepts a filter as an argument`,
   },
-  "/roomsettings": {
+  "roomsettings": {
     action: (arg, ans) => {
       if (arg) {
         Hue.show_room_settings(arg)
@@ -715,135 +715,135 @@ Hue.commands = {
     },
     description: `Shows the room settings window. Accepts a filter as an argument`,
   },
-  "/goto": {
+  "goto": {
     action: (arg, ans) => {
       Hue.goto_url(arg, "tab")
     },
     description: `Goes to room ID or URL`,
   },
-  "/refreshimage": {
+  "refreshimage": {
     action: (arg, ans) => {
       Hue.refresh_image()
     },
     description: `Loads the image again`,
   },
-  "/refreshtv": {
+  "refreshtv": {
     action: (arg, ans) => {
       Hue.refresh_tv()
     },
     description: `Loads the tv again`,
   },
-  "/ping": {
+  "ping": {
     action: (arg, ans) => {
       Hue.ping_server()
     },
     description: `Pings the server and shows the delay from the moment it was sent to the moment it was received`,
   },
-  "/reactlike": {
+  "reactlike": {
     action: (arg, ans) => {
       Hue.send_reaction("like")
     },
     description: `Sends reaction "like"`,
   },
-  "/reactlove": {
+  "reactlove": {
     action: (arg, ans) => {
       Hue.send_reaction("love")
     },
     description: `Sends reaction "love"`,
   },
-  "/reacthappy": {
+  "reacthappy": {
     action: (arg, ans) => {
       Hue.send_reaction("happy")
     },
     description: `Sends reaction "happy"`,
   },
-  "/reactmeh": {
+  "reactmeh": {
     action: (arg, ans) => {
       Hue.send_reaction("meh")
     },
     description: `Sends reaction "meh"`,
   },
-  "/reactsad": {
+  "reactsad": {
     action: (arg, ans) => {
       Hue.send_reaction("sad")
     },
     description: `Sends reaction "sad"`,
   },
-  "/reactdislike": {
+  "reactdislike": {
     action: (arg, ans) => {
       Hue.send_reaction("dislike")
     },
     description: `Sends reaction "dislike"`,
   },
-  "/f1": {
+  "f1": {
     action: (arg, ans) => {
       Hue.run_user_function(1)
       ans.to_history = false
     },
     description: `Runs User Function 1`,
   },
-  "/f2": {
+  "f2": {
     action: (arg, ans) => {
       Hue.run_user_function(2)
       ans.to_history = false
     },
     description: `Runs User Function 2`,
   },
-  "/f3": {
+  "f3": {
     action: (arg, ans) => {
       Hue.run_user_function(3)
       ans.to_history = false
     },
     description: `Runs User Function 3`,
   },
-  "/f4": {
+  "f4": {
     action: (arg, ans) => {
       Hue.run_user_function(4)
       ans.to_history = false
     },
     description: `Runs User Function 4`,
   },
-  "/f5": {
+  "f5": {
     action: (arg, ans) => {
       Hue.run_user_function(5)
       ans.to_history = false
     },
     description: `Runs User Function 5`,
   },
-  "/f6": {
+  "f6": {
     action: (arg, ans) => {
       Hue.run_user_function(6)
       ans.to_history = false
     },
     description: `Runs User Function 6`,
   },
-  "/f7": {
+  "f7": {
     action: (arg, ans) => {
       Hue.run_user_function(7)
       ans.to_history = false
     },
     description: `Runs User Function 7`,
   },
-  "/f8": {
+  "f8": {
     action: (arg, ans) => {
       Hue.run_user_function(8)
       ans.to_history = false
     },
     description: `Runs User Function 8`,
   },
-  "/lockscreen": {
+  "lockscreen": {
     action: (arg, ans) => {
       Hue.lock_screen()
     },
     description: `Locks the screen`,
   },
-  "/unlockscreen": {
+  "unlockscreen": {
     action: (arg, ans) => {
       Hue.unlock_screen()
     },
     description: `Unlocks the screen`,
   },
-  "/togglelockscreen": {
+  "togglelockscreen": {
     action: (arg, ans) => {
       if (Hue.screen_locked) {
         Hue.unlock_screen()
@@ -853,19 +853,19 @@ Hue.commands = {
     },
     description: `Locks or unlocks the screen`,
   },
-  "/drawimage": {
+  "drawimage": {
     action: (arg, ans) => {
       Hue.open_draw_image()
     },
     description: `Opens the window to draw an image`,
   },
-  "/say": {
+  "say": {
     action: (arg, ans) => {
       Hue.say_command(arg, ans)
     },
     description: `Sends a normal chat message. Useful if you want to make a chain of commands that starts with a message`,
   },
-  "/input": {
+  "input": {
     action: (arg, ans) => {
       Hue.input_command(arg)
       ans.to_history = false
@@ -873,127 +873,127 @@ Hue.commands = {
     },
     description: `Adds text to the input`,
   },
-  "/top": {
+  "top": {
     action: (arg, ans) => {
       Hue.goto_top(true)
     },
     description: `Scrolls the chat to the top`,
   },
-  "/top2": {
+  "top2": {
     action: (arg, ans) => {
       Hue.goto_top(false)
     },
     description: `Scrolls the chat to the top`,
   },
-  "/bottom": {
+  "bottom": {
     action: (arg, ans) => {
       Hue.goto_bottom(true, true)
     },
     description: `Scrolls the chat to the bottom`,
   },
-  "/bottom2": {
+  "bottom2": {
     action: (arg, ans) => {
       Hue.goto_bottom(true, false)
     },
     description: `Scrolls the chat to the bottom without animating the scroll`,
   },
-  "/background": {
+  "background": {
     action: (arg, ans) => {
       Hue.change_background_image_source(arg)
     },
     description: `Changes the background image to a specified URL`,
   },
-  "/whatis": {
+  "whatis": {
     action: (arg, ans) => {
       Hue.inspect_command(arg)
     },
     description: `This can be used to inspect commands. If the command is an alias it will show what it is an alias of`,
   },
-  "/reload": {
+  "reload": {
     action: (arg, ans) => {
       Hue.reload_client()
     },
     description: `Loads everything again`,
   },
-  "/refresh": {
+  "refresh": {
     action: (arg, ans) => {
       Hue.refresh_client()
     },
     description: `Re-connects to the server without leaving`,
   },
-  "/modifysetting": {
+  "modifysetting": {
     action: (arg, ans) => {
       Hue.modify_setting(arg)
     },
     description: `This can be used to change user settings directly. This requires the internal name of the setting and the value`,
   },
-  "/modifysetting2": {
+  "modifysetting2": {
     action: (arg, ans) => {
       Hue.modify_setting(arg, false)
     },
     description: `Same as /modifysetting but it doesn't show feedback on completion`,
   },
-  "/feedback": {
+  "feedback": {
     action: (arg, ans) => {
       Hue.feedback(arg)
     },
     description: `Displays a simple feedback information message for the user`,
   },
-  "/imagemode": {
+  "imagemode": {
     action: (arg, ans) => {
       Hue.change_room_image_mode(arg)
     },
     description: `Changes the image mode. Valid modes include enabled, disabled, and locked`,
   },
-  "/tvmode": {
+  "tvmode": {
     action: (arg, ans) => {
       Hue.change_room_tv_mode(arg)
     },
     description: `Changes the tv mode. Valid modes include enabled, disabled, and locked`,
   },
-  "/theme": {
+  "theme": {
     action: (arg, ans) => {
       Hue.change_theme(arg)
     },
     description: `Changes the theme to a specified hex color`,
   },
-  "/thememode": {
+  "thememode": {
     action: (arg, ans) => {
       Hue.change_theme_mode(arg)
     },
     description: `Changes the theme mode. Valid modes include automatic and custom`,
   },
-  "/textcolormode": {
+  "textcolormode": {
     action: (arg, ans) => {
       Hue.change_text_color_mode(arg)
     },
     description: `Changes the text color mode. Valid modes include automatic, and custom`,
   },
-  "/textcolor": {
+  "textcolor": {
     action: (arg, ans) => {
       Hue.change_text_color(arg)
     },
     description: `Changes the text color to a specified hex color`,
   },
-  "/backgroundmode": {
+  "backgroundmode": {
     action: (arg, ans) => {
       Hue.change_background_mode(arg)
     },
     description: `Changes the background mode. Valid modes include normal, tiled, mirror, mirror_tiled, and solid`,
   },
-  "/backgroundeffect": {
+  "backgroundeffect": {
     action: (arg, ans) => {
       Hue.change_background_effect(arg)
     },
     description: `Changes the background effect mode. Valid modes include none and blur`,
   },
-  "/tiledimensions": {
+  "tiledimensions": {
     action: (arg, ans) => {
       Hue.change_background_tile_dimensions(arg)
     },
     description: `Changes the dimension for tiled backgrounds`,
   },
-  "/adminactivity": {
+  "adminactivity": {
     action: (arg, ans) => {
       if (arg) {
         Hue.request_admin_activity(arg)
@@ -1003,7 +1003,7 @@ Hue.commands = {
     },
     description: `Shows recent activity by ops and admins. Accepts a filter as an argument`,
   },
-  "/accesslog": {
+  "accesslog": {
     action: (arg, ans) => {
       if (arg) {
         Hue.request_access_log(arg)
@@ -1013,79 +1013,79 @@ Hue.commands = {
     },
     description: `Shows the Access Log`,
   },
-  "/togglefontsize": {
+  "togglefontsize": {
     action: (arg, ans) => {
       Hue.toggle_chat_font_size()
     },
     description: `Toggles chat font size between normal, big, and very big`,
   },
-  "/adminlist": {
+  "adminlist": {
     action: (arg, ans) => {
       Hue.request_admin_list()
     },
     description: `Shows the list of ops and admins of the room`,
   },
-  "/banlist": {
+  "banlist": {
     action: (arg, ans) => {
       Hue.request_ban_list()
     },
     description: `Displays a list of banned users`,
   },
-  "/unmaximize": {
+  "unmaximize": {
     action: (arg, ans) => {
       Hue.unmaximize_media()
     },
     description: `Un-maximizes media`,
   },
-  "/maximizechat": {
+  "maximizechat": {
     action: (arg, ans) => {
       Hue.toggle_media()
     },
     description: `Maximize/Restore the chat`,
   },
-  "/autoscrollup": {
+  "autoscrollup": {
     action: (arg, ans) => {
       Hue.autoscroll_up()
     },
     description: `Slowly scrolls chat up automatically`,
   },
-  "/autoscrolldown": {
+  "autoscrolldown": {
     action: (arg, ans) => {
       Hue.autoscroll_down()
     },
     description: `Slowly scrolls chat down automatically`,
   },
-  "/loadnextimage": {
+  "loadnextimage": {
     action: (arg, ans) => {
       Hue.media_load_next("image")
     },
     description: `Loads the next image`,
   },
-  "/loadprevimage": {
+  "loadprevimage": {
     action: (arg, ans) => {
       Hue.media_load_previous("image")
     },
     description: `Loads the previous image`,
   },
-  "/loadnexttv": {
+  "loadnexttv": {
     action: (arg, ans) => {
       Hue.media_load_next("tv")
     },
     description: `Loads the next tv item`,
   },
-  "/loadprevtv": {
+  "loadprevtv": {
     action: (arg, ans) => {
       Hue.media_load_previous("tv")
     },
     description: `Loads the previous tv item`,
   },
-  "/calc": {
+  "calc": {
     action: (arg, ans) => {
       Hue.do_math_calculation(arg)
     },
     description: `Does a mathematical calculation`,
   },
-  "/bio": {
+  "bio": {
     action: (arg, ans) => {
       if (arg) {
         Hue.change_bio(arg)
@@ -1093,7 +1093,7 @@ Hue.commands = {
     },
     description: `Changes the user's bio`,
   },
-  "/badgeheart": {
+  "badgeheart": {
     action: (arg, ans) => {
       if (arg) {
         Hue.send_badge(arg, "heart")
@@ -1101,7 +1101,7 @@ Hue.commands = {
     },
     description: `Sends a heart badge to a user`,
   },
-  "/badgeskull": {
+  "badgeskull": {
     action: (arg, ans) => {
       if (arg) {
         Hue.send_badge(arg, "skull")
@@ -1109,19 +1109,19 @@ Hue.commands = {
     },
     description: `Sends a skull badge to a user`,
   },
-  "/notifications": {
+  "notifications": {
     action: (arg, ans) => {
       Hue.show_notifications(arg)
     },
     description: `Opens the notifications window. Accepts a filter as an argument`,
   },
-  "/whispers": {
+  "whispers": {
     action: (arg, ans) => {
       Hue.show_whispers(arg)
     },
     description: `Opens the whispers window. Accepts a filter as an argument`,
   },
-  "/synctv": {
+  "synctv": {
     action: (arg, ans) => {
       if (arg) {
         Hue.sync_tv(arg)
@@ -1129,49 +1129,49 @@ Hue.commands = {
     },
     description: `Syncs a TV video with another user's video progress`,
   },
-  "/mediainfo": {
+  "mediainfo": {
     action: (arg, ans) => {
       Hue.change_media_info(arg)
     },
     description: `Changes the media info mode. Either enabled or disabled`,
   },
-  "/links": {
+  "links": {
     action: (arg, ans) => {
       Hue.show_links()
     },
     description: `Custom chat search to show links`,
   },
-  "/messageboard": {
+  "messageboard": {
     action: (arg, ans) => {
       Hue.show_message_board(arg)
     },
     description: `Opens the message board. Accepts a filter as an argument`,
   },
-  "/clearmessageboard": {
+  "clearmessageboard": {
     action: (arg, ans) => {
       Hue.clear_message_board()
     },
     description: `Deletes all message board posts`,
   },
-  "/swap": {
+  "swap": {
     action: (arg, ans) => {
       Hue.swap_display_positions_2()
     },
     description: `Shortcut to change media positions`,
   },
-  "/rotate": {
+  "rotate": {
     action: (arg, ans) => {
       Hue.swap_media_layout_2()
     },
     description: `Shortcut to change media layout`,
   },
-  "/notebook": {
+  "notebook": {
     action: (arg, ans) => {
       Hue.show_notebook()
     },
     description: `Opens the notebook`,
   },
-  "/note": {
+  "note": {
     action: (arg, ans) => {
       if (arg) {
         Hue.add_to_notebook(arg)
@@ -1179,7 +1179,7 @@ Hue.commands = {
     },
     description: `Adds a note at the start of the notebook`,
   },
-  "/ignore": {
+  "ignore": {
     action: (arg, ans) => {
       if (arg) {
         Hue.ignore_user(arg)
@@ -1187,7 +1187,7 @@ Hue.commands = {
     },
     description: `Adds a user to the ignored list`,
   },
-  "/unignore": {
+  "unignore": {
     action: (arg, ans) => {
       if (arg) {
         Hue.unignore_user(arg)
@@ -1195,7 +1195,7 @@ Hue.commands = {
     },
     description: `Removes a user from the ignored list`,
   },
-  "/ignored": {
+  "ignored": {
     action: (arg, ans) => {
       Hue.show_ignored()
     },
@@ -1203,17 +1203,16 @@ Hue.commands = {
   },
 }
 
-// Alternative command names
-Hue.commands["/find"] = Hue.commands["/search"]
-
 // Setups commands based on the commands object
 // Makes sorted variations
 // Checks if anagrams collide
 Hue.setup_commands = function () {
   Hue.commands_list = []
+  Hue.commands_list_with_prefix = []
 
   for (let key in Hue.commands) {
     Hue.commands_list.push(key)
+    Hue.commands_list_with_prefix.push(Hue.config.commands_prefix + key)
   }
 
   Hue.commands_list.sort()
@@ -1243,11 +1242,11 @@ Hue.setup_commands = function () {
 Hue.is_command = function (message) {
   if (
     message.length >= 2 &&
-    message[0] === "/" &&
-    message[1] !== "/" &&
+    message[0] === Hue.config.commands_prefix &&
+    message[1] !== Hue.config.commands_prefix &&
     message[1] !== " " &&
-    !message.startsWith("/me ") &&
-    !message.startsWith("/em ")
+    !message.startsWith(`${Hue.config.commands_prefix}me `) &&
+    !message.startsWith(`${Hue.config.commands_prefix}em `)
   ) {
     return true
   }
@@ -1263,6 +1262,10 @@ Hue.execute_command = function (message, ans) {
   let cmd = split[0].toLowerCase()
   let arg = split.slice(1).join(" ")
   let needs_confirm = false
+
+  if (cmd.startsWith(Hue.config.commands_prefix)) {
+    cmd = cmd.substring(1)
+  }
 
   if (cmd.endsWith("?")) {
     cmd = cmd.slice(0, -1)
@@ -1284,9 +1287,8 @@ Hue.execute_command = function (message, ans) {
       command = closest_command
     } else {
       Hue.feedback(
-        `Invalid command "${cmd.slice(
-          1
-        )}". Maybe it is missing an argument. To start a message with / use //`
+        `Invalid command "${cmd}". Maybe it is missing an argument. 
+        To start a message with ${Hue.config.commands_prefix} use ${Hue.config.commands_prefix}${Hue.config.commands_prefix}`
       )
       return ans
     }
@@ -1342,8 +1344,9 @@ Hue.run_commands_queue = function (id) {
     },
   }
 
-  if (lc_cmd.startsWith("/sleep") || lc_cmd === "/sleep") {
-    let n = parseInt(lc_cmd.replace("/sleep ", ""))
+  if (lc_cmd.startsWith(`${Hue.config.commands_prefix}sleep`) || 
+  lc_cmd === `${Hue.config.commands_prefix}sleep`) {
+    let n = parseInt(lc_cmd.replace(`${Hue.config.commands_prefix}sleep `, ""))
 
     if (isNaN(n)) {
       n = 1000
@@ -1352,11 +1355,11 @@ Hue.run_commands_queue = function (id) {
     setTimeout(function () {
       Hue.run_commands_queue(id)
     }, n)
-  } else if (lc_cmd === "/closeandwait") {
+  } else if (lc_cmd === `${Hue.config.commands_prefix}closeandwait`) {
     Hue.close_all_modals(function () {
       Hue.run_commands_queue(id)
     })
-  } else if (lc_cmd === "/inputenter") {
+  } else if (lc_cmd === `${Hue.config.commands_prefix}inputenter`) {
     let val = $("#input").val()
 
     if (val.length > 0) {
@@ -1373,8 +1376,8 @@ Hue.run_commands_queue = function (id) {
 
 // Gives feedback on what type of command a command is
 Hue.inspect_command = function (cmd) {
-  if (!cmd.startsWith("/")) {
-    cmd = `/${cmd}`
+  if (!cmd.startsWith(Hue.config.commands_prefix)) {
+    cmd = `${Hue.config.commands_prefix}${cmd}`
   }
 
   let s = cmd
@@ -1447,7 +1450,8 @@ Hue.setup_command_aliases = function () {
       continue
     }
 
-    if (name[0] === "/" && name[1] !== "/") {
+    if (name[0] === Hue.config.commands_prefix && 
+    name[1] !== Hue.config.commands_prefix) {
       let body = pieces.slice(1).join("=").trim()
       Hue.command_aliases[name] = body
     }
@@ -1466,10 +1470,10 @@ Hue.format_command_aliases = function (cmds) {
       continue
     }
 
-    let name = `/${Hue.utilz.clean_string5(pieces[0]).replace(/\//g, "")}`
+    let name = `${Hue.config.commands_prefix}${Hue.utilz.clean_string5(pieces[0]).replace(/\//g, "")}`
 
-    if (name[0] !== "/") {
-      name = "/" + name
+    if (name[0] !== Hue.config.commands_prefix) {
+      name = `${Hue.config.commands_prefix}name`
     }
 
     let body = pieces.slice(1).join("=").trim()

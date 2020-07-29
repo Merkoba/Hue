@@ -9,7 +9,7 @@ Hue.generate_words_to_autocomplete = function () {
   let words = []
 
   words.push(
-    ...Hue.commands_list,
+    ...Hue.commands_list_with_prefix,
     ...Hue.usernames,
     ...susernames,
     ...["@everyone"],

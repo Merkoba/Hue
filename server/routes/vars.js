@@ -103,4 +103,5 @@ module.exports = function (c, config) {
   c.vars.system_username = config.system_username
   c.vars.scramble_duration = config.scramble_duration
   c.vars.scramble_speed = config.scramble_speed
+  c.vars.commands_prefix = config.commands_prefix
 }

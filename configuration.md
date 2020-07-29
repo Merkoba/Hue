@@ -673,6 +673,10 @@ This should be an array of strings of root domains.
 "scramble_speed"
 >How often to change letters in the chat scramble animation.
 
+"commands_prefix"
+The character before commands.
+For example "/" in "/somecommand"
+
 
 ## The following reside in config.secret.json
 

@@ -25,15 +25,15 @@ Hue.process_message = function (args = {}) {
     let lc_message = args.message.toLowerCase()
     let more_stuff
 
-    if (lc_message.startsWith("/js ") || lc_message.startsWith("/js2 ")) {
-      more_stuff = lc_message.includes("/endjs")
-    } else if (lc_message.startsWith("/input ")) {
-      more_stuff = args.message.includes("/endinput")
+    if (lc_message.startsWith(`${Hue.config.commands_prefix}js `) || lc_message.startsWith(`${Hue.config.commands_prefix}js2 `)) {
+      more_stuff = lc_message.includes(`${Hue.config.commands_prefix}endjs`)
+    } else if (lc_message.startsWith(`${Hue.config.commands_prefix}input `)) {
+      more_stuff = args.message.includes(`${Hue.config.commands_prefix}endinput`)
     } else if (
-      lc_message.startsWith("/whisper ") ||
-      lc_message.startsWith("/whisper2 ")
+      lc_message.startsWith(`${Hue.config.commands_prefix}whisper `) ||
+      lc_message.startsWith(`${Hue.config.commands_prefix}whisper2 `)
     ) {
-      more_stuff = args.message.includes("/endwhisper")
+      more_stuff = args.message.includes(`${Hue.config.commands_prefix}endwhisper`)
     } else {
       more_stuff = true
     }
@@ -55,7 +55,7 @@ Hue.process_message = function (args = {}) {
         let lc_sp = sp.toLowerCase()
 
         if (cmd_mode === "js") {
-          if (lc_sp === "/endjs") {
+          if (lc_sp === `${Hue.config.commands_prefix}endjs`) {
             cmds.push(cmd)
             cmd = ""
             cmd_mode = "normal"
@@ -63,7 +63,7 @@ Hue.process_message = function (args = {}) {
             cmd += ` ${sp}`
           }
         } else if (cmd_mode === "input") {
-          if (lc_sp === "/endinput") {
+          if (lc_sp === `${Hue.config.commands_prefix}endinput`) {
             cmds.push(cmd)
             cmd = ""
             cmd_mode = "normal"
@@ -71,7 +71,7 @@ Hue.process_message = function (args = {}) {
             cmd += ` ${sp}`
           }
         } else if (cmd_mode === "whisper") {
-          if (lc_sp === "/endwhisper") {
+          if (lc_sp === `${Hue.config.commands_prefix}endwhisper`) {
             cmds.push(cmd)
             cmd = ""
             cmd_mode = "normal"
@@ -89,11 +89,11 @@ Hue.process_message = function (args = {}) {
             if (sp !== "&&") {
               cmd = sp
 
-              if (lc_sp === "/js" || lc_sp === "/js2") {
+              if (lc_sp === `${Hue.config.commands_prefix}js` || lc_sp === `${Hue.config.commands_prefix}js2`) {
                 cmd_mode = "js"
-              } else if (lc_sp === "/input") {
+              } else if (lc_sp === `${Hue.config.commands_prefix}input`) {
                 cmd_mode = "input"
-              } else if (lc_sp === "/whisper" || lc_sp === "/whisper2") {
+              } else if (lc_sp === `${Hue.config.commands_prefix}whisper` || lc_sp === `${Hue.config.commands_prefix}whisper2`) {
                 cmd_mode = "whisper"
               }
             }
@@ -161,7 +161,7 @@ Hue.process_message = function (args = {}) {
       let alias_arg = msplit.slice(1).join(" ").trim()
       let full_alias = `${alias} ${alias_arg}`.trim()
 
-      if (alias_cmd_2.startsWith("/X")) {
+      if (alias_cmd_2.startsWith(`${Hue.config.commands_prefix}X`)) {
         args.to_history = false
       }
 
@@ -287,7 +287,7 @@ Hue.update_chat = function (args = {}) {
     }
   }
 
-  if (args.message.startsWith("//")) {
+  if (args.message.startsWith(Hue.config.commands_prefix + Hue.config.commands_prefix)) {
     args.message = args.message.slice(1)
   }
 
@@ -310,7 +310,7 @@ Hue.update_chat = function (args = {}) {
   let image_preview_src_original = false
   let image_preview_text = false
   let starts_me =
-    args.message.startsWith("/me ") || args.message.startsWith("/em ")
+    args.message.startsWith(`${Hue.config.commands_prefix}me `) || args.message.startsWith(`${Hue.config.commands_prefix}em `)
 
   if (!starts_me && Hue.get_setting("show_image_previews")) {
     let ans = Hue.make_image_preview(args.message)
@@ -1841,8 +1841,8 @@ Hue.check_typing = function () {
   let tval = val.trim()
 
   if (Hue.can_chat && tval !== "") {
-    if (tval[0] === "/") {
-      if (tval[1] !== "/" && !tval.startsWith("/me ")) {
+    if (tval[0] === Hue.config.commands_prefix) {
+      if (tval[1] !== Hue.config.commands_prefix && !tval.startsWith(`${Hue.config.commands_prefix}me `)) {
         return false
       }
     }
