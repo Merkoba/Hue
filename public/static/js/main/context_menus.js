@@ -355,7 +355,7 @@ Hue.generate_chat_maxer_context_items = function () {
         name: "Default",
         callback: function (key, opt) {
           Hue.show_media_items()
-        },
+        }
       }
     }
   )
@@ -424,20 +424,6 @@ Hue.generate_media_maxer_context_items = function () {
   }
 
   let obj = Object.assign(
-    {
-      swap: {
-        name: "Swap",
-        callback: function (key, opt) {
-          Hue.swap_display_positions_2()
-        },
-      },
-      rotate: {
-        name: "Rotate",
-        callback: function (key, opt) {
-          Hue.swap_media_layout_2()
-        },
-      },
-    },
     items,
     {
       def: {
@@ -445,8 +431,8 @@ Hue.generate_media_maxer_context_items = function () {
         callback: function (key, opt) {
           Hue.unmaximize_media()
           Hue.set_default_tv_size()
-        },
-      },
+        }
+      }
     }
   )
 
