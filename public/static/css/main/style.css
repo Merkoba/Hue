@@ -24,7 +24,7 @@ html {
 	background-color: rgb(24, 24, 24);
 	background-repeat: no-repeat;
 	background-position: center;
-	scrollbar-color: var(--slight_background) transparent;
+	scrollbar-color: transparent transparent;
 }
 
 body * {
@@ -2491,11 +2491,11 @@ a.special_link:hover {
 }
 
 ::-webkit-scrollbar-track-piece {
-	background-color: transparent !important;
+	background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: var(--slight_background);
+	background-color: transparent;
 }
 
 .modal_subheader {
