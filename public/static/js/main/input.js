@@ -175,7 +175,7 @@ Hue.scroll_input_to_bottom = function () {
   input.scrollTop = input.scrollHeight
 }
 
-// Handles the /input command
+// Handles the input command
 Hue.input_command = function (arg) {
   arg = arg.replace(/\s\/endinput/gi, "")
   Hue.change_input(arg)

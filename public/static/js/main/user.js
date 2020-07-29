@@ -70,7 +70,7 @@ Hue.change_password = function (passwd, show_feedback = true) {
 // Feedback on password change
 Hue.password_changed = function (data) {
   Hue.feedback(
-    `Password succesfully changed to ${data.password}. To force other clients connected to your account to disconnect you can use /disconnectothers`
+    `Password succesfully changed to ${data.password}. To force other clients connected to your account to disconnect you can use ${Hue.config.commands_prefix}disconnectothers`
   )
 }
 
@@ -594,7 +594,7 @@ Hue.show_notebook = function () {
 
     if (notebook.first_open) {
       Hue.msg_info.show(
-        "Notes are saved in your browser using local storage.<br>You can also use the /note command to save notes quickly"
+        `Notes are saved in your browser using local storage.<br>You can also use the ${Hue.config.commands_prefix}note command to save notes quickly`
       )
     }
   })

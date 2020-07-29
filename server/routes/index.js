@@ -37,6 +37,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
     // Variables sent to templates
     const tvars = {
       notebook_background_source: config.notebook_background_source,
+      commands_prefix: config.commands_prefix,
     }
 
     // Fill the config variables object

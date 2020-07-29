@@ -249,7 +249,7 @@
 
                 <div class='settings_item settings_top_level_item' data-setting='aliases'>
                     <div class='toggler_main_container'>
-                        <div class="{{type}}_toggle toggler action pointer bold inline" title="For example /sky = /tv touch the sky. If the alias starts with an X, for example, /X1 = /tv restart, it won't be saved to history when used">+ Aliases</div>
+                        <div class="{{type}}_toggle toggler action pointer bold inline" title="For example <%= vars.commands_prefix %>sky = <%= vars.commands_prefix %>tv touch the sky. If the alias starts with an X, for example, <%= vars.commands_prefix %>X1 = <%= vars.commands_prefix %>tv restart, it won't be saved to history when used">+ Aliases</div>
                         <div class='{{type}}_toggle_container toggler_container'>
                             <div class="setting_title3">(Each on a different line)</div>
                             <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_aliases"></textarea>

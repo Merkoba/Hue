@@ -218,7 +218,7 @@ Hue.server_update_events = {
   },
   email_change_code_not_sent: (data) => {
     Hue.feedback(
-      `Verification code not sent yet. Use /changeemail [new_email] to get a verification code`
+      `Verification code not sent yet. Use ${Hue.config.commands_prefix}changeemail [new_email] to get a verification code`
     )
   },
   email_change_wait: (data) => {

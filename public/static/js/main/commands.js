@@ -931,7 +931,7 @@ Hue.commands = {
     action: (arg, ans) => {
       Hue.modify_setting(arg, false)
     },
-    description: `Same as /modifysetting but it doesn't show feedback on completion`,
+    description: `Same as ${Hue.config.commands_prefix}modifysetting but it doesn't show feedback on completion`,
   },
   "feedback": {
     action: (arg, ans) => {
