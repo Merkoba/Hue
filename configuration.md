@@ -12,9 +12,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "site_root"
 >The root url where the system will work. Needs a slash at the end.
 
-"image_storage_s3_or_local"
->Whether to serve images locally or hosted on an S3 service.
-
 "main_room_id"
 >The name of the main room. This is the room that will be joined when going to the root url. This room is created automatically when first joined. To get ownership of the room "/claim secretpass" is needed.
 
@@ -238,7 +235,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >Url lengths beyond this are ignored by the system. This is to avoid triggering actions on urls that are likely wrong or meant as an attack.
 
 "max_stored_images"
->The amount of most recent images to have stored in a room. Each room has an array of images stored, when the array's length surpasses this number, the oldest image in it will get deleted, either locally or on the S3 bucket depending on settings.
+>The amount of most recent images to have stored in a room. Each room has an array of images stored, when the array's length surpasses this number, the oldest image in it will get deleted.
 
 "global_settings_default_sound_notifications"
 >Whether sound notifications are enabled by default.
@@ -691,30 +688,6 @@ For example "/" in "/somecommand"
 
 "mailgun_domain"
 >The domain registered in mailgun.com
-
-"s3_access_key"
->The access key of an S3 service.
-
-"s3_secret_access_key"
->The secret access key of an S3 service.
-
-"s3_api_version"
->The api version to use when creating the s3 object.
-
-"s3_endpoint_url"
->The location where your S3 bucket resides. It can look like https://s3-us-west-1.amazonaws.com/. Slash at the end is important.
-
-"s3_main_url"
->The url of your S3 bucket. It can look like https://s3-us-west-1.amazonaws.com/merkoba/. Slash at the end is important.
-
-"s3_bucket_name"
->The name of the S3 bucket.
-
-"s3_images_location"
->The directory inside the bucket where the images will reside, with a slash at the end.
-
-"s3_cache_max_age"
->How long before an image is considered expired and needed to be fetched again by users. A big number is advised to preserve resources.
 
 "jwt_secret"
 >Secret key for the jwt system when logging in.
