@@ -825,7 +825,7 @@ Hue.generate_chat_search_context_items = function () {
     }
 
     items["clear"] = {
-      name: "- Clear Chat History -",
+      name: "- Clear Search History -",
       callback: function (key, opt) {
         Hue.clear_chat_searches()
       },
