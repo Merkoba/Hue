@@ -330,12 +330,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_other_words_to_autocomplete"
 >Default words to autocomplete besides usernames and commands.
 
-"global_settings_default_chat_font_size"
-> Default font size for the chat. This is a term like "normal" or "small".
-
-"global_settings_default_chat_profile_image_size"
-> Default profile image size for the chat. This is a term like "normal" or "small".
-
 "global_settings_default_warn_before_closing"
 > Default setting of whether it should warn before closing the application/tab.
 
@@ -420,9 +414,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_media_info"
 >Default media info mode, either it uses the room's media info mode or a custom mode.
 
-"global_settings_default_media_info_max_length"
->Default media info maximum amount of characters.
-
 "global_settings_default_transparent_panels"
 >Whether panels get a slight transparency by default.
 
@@ -431,9 +422,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "global_settings_default_media_layout"
 >Default media area (image, tv) layout, either column or row.
-
-"global_settings_default_chat_enabled"
->Whether chat is enabled by default.
 
 "global_settings_default_scramble_chat"
 >Whether the chat scramble animation is enabled by default.
