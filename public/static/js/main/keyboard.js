@@ -331,9 +331,9 @@ Hue.activate_key_detection = function () {
 
     if ($("#footer_search_input")[0] === document.activeElement) {
       if (e.key === "Enter") {
-        Hue.show_chat_search($("#footer_search_input").val().trim())
-        $("#footer_search_input").val("")
+        Hue.process_search_input()
       }
+      
       return
     }
 

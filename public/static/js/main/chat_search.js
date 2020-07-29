@@ -84,3 +84,10 @@ Hue.clear_chat_searches = function () {
   Hue.room_state.chat_searches = []
   Hue.save_room_state()
 }
+
+// Process the footer search input
+Hue.process_search_input = function () {
+  let value = $("#footer_search_input").val().trim()
+  Hue.show_chat_search(value)
+  $("#footer_search_input").val("")
+}
