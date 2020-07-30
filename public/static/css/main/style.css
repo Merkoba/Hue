@@ -326,7 +326,7 @@ body * {
 	flex-shrink: 1;
 	background-color: transparent;
 	color: inherit;
-	width: calc(var(--icon_size) * 1.8);
+	width: calc(var(--icon_size) * 1.6);
 	height: var(--icon_size);
 }
 
@@ -341,13 +341,17 @@ body * {
 #footer_media_menu {
 	padding: 0.6rem;
 	padding-right: 0.7rem;
-	padding-left: 0;
 	width: var(--icon_size);
 	height: var(--icon_size);
 }
 
 .footer_media_locked_label {
 	margin-right: 0;
+}
+
+#footer .separator-separator {
+	margin-left: 0.5rem !important;
+	margin-right: 0.5rem !important;
 }
 
 #input {
@@ -1312,10 +1316,8 @@ select {
 }
 
 #footer_user_menu {
-	padding: 0.6rem;
-	padding-left: 0.8rem;
-	padding-right: 0;
-	margin-left: -0.7rem;
+	padding-left: 0.3rem;
+	padding-right: 0.3rem;
 }
 
 #write_message_info {

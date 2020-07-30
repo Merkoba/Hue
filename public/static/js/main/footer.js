@@ -99,5 +99,5 @@ Hue.check_footer_media_rotate = function () {
 }
 
 Hue.update_footer_separators = function () {
-  Hue.horizontal_separator.separate("footer_media_items")
+  Hue.horizontal_separator_no_margin.separate("footer_media_items")
 }

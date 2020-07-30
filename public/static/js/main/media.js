@@ -1232,8 +1232,6 @@ Hue.change_media_lock_icon = function (type) {
 
   if (room_mode === "locked" || Hue.room_state[`${type}_locked`]) {
     $(`#footer_lock_${type}_icon`).find("use").eq(0).attr("href", "#icon_locked")
-    $(`#footer_lock_${type}_icon`).removeClass("footer_icon3")
-    $(`#footer_lock_${type}_icon`).addClass("footer_icon2")
     $(`#footer_lock_${type}_label`).css("display", "block")
 
     if (Hue[`loaded_${type}`] !== Hue[`current_${type}`]()) {
@@ -1242,8 +1240,6 @@ Hue.change_media_lock_icon = function (type) {
   } else {
     $(`#footer_lock_${type}_icon`).find("use").eq(0).attr("href", "#icon_unlocked")
     $(`#footer_lock_${type}_icon`).removeClass("blinking")
-    $(`#footer_lock_${type}_icon`).removeClass("footer_icon2")
-    $(`#footer_lock_${type}_icon`).addClass("footer_icon3")
     $(`#footer_lock_${type}_label`).css("display", "none")
 
     Hue.change({ type: type })
