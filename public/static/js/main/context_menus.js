@@ -349,8 +349,7 @@ Hue.generate_chat_maxer_context_items = function () {
   }
 
   let obj = Object.assign(
-    items,
-    {
+    items, {
       def: {
         name: "Default",
         callback: function (key, opt) {
@@ -386,7 +385,7 @@ Hue.generate_media_maxer_context_items = function () {
   let pos = Hue.get_setting("tv_display_position")
   let nums = []
 
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 0; i <= 10; i++) {
     nums.push(i * 10)
   }
 
@@ -424,8 +423,7 @@ Hue.generate_media_maxer_context_items = function () {
   }
 
   let obj = Object.assign(
-    items,
-    {
+    items, {
       def: {
         name: "Default",
         callback: function (key, opt) {
