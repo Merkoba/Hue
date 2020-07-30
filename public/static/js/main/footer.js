@@ -40,7 +40,15 @@ Hue.setup_footer = function () {
   let media = ["image", "tv"]
 
   for (let type of media) {
-    $(`#${type}_lock_area`).click(function () {
+    $(`#footer_${type}_label`).click(function () {
+      Hue[`show_${type}_picker`]()
+    })
+
+    $(`#footer_${type}_toggler`).click(function () {
+      Hue.toggle_media({type:type, feedback:true})
+    })
+
+    $(`#footer_${type}_lock`).click(function () {
       Hue.change_media_lock({type:type, feedback:true})
     })
   }
@@ -68,22 +76,6 @@ Hue.setup_footer = function () {
     if (e.which === 2) {
       Hue.send_reaction("like")
     }
-  })
-
-  $("#footer_image_label").click(function () {
-    Hue.show_image_picker()
-  })
-
-  $("#footer_image_toggler").click(function () {
-    Hue.toggle_image()
-  })
-
-  $("#footer_tv_label").click(function () {
-    Hue.show_tv_picker()
-  })
-
-  $("#footer_tv_toggler").click(function () {
-    Hue.toggle_tv()
   })
 
   $("#footer_media_menu").click(function () {

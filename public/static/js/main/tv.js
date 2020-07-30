@@ -540,27 +540,6 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
   })
 }
 
-// Toggles the tv visible or not visible
-Hue.toggle_tv = function (what = undefined, save = true) {
-  if (what !== undefined) {
-    if (Hue.room_state.tv_enabled !== what) {
-      Hue.room_state.tv_enabled = what
-    } else {
-      save = false
-    }
-  } else {
-    Hue.room_state.tv_enabled = !Hue.room_state.tv_enabled
-  }
-
-  if (Hue.tv_visible !== what) {
-    Hue.change_tv_visibility(false)
-  }
-
-  if (save) {
-    Hue.save_room_state()
-  }
-}
-
 // Changes the tv visibility based on current state
 Hue.change_tv_visibility = function (play = true) {
   if (Hue.room_tv_mode !== "disabled" && Hue.room_state.tv_enabled) {
@@ -622,15 +601,15 @@ Hue.tv_is_maximized = function () {
 Hue.maximize_tv = function () {
   if (Hue.tv_visible) {
     if (Hue.image_visible) {
-      Hue.toggle_image(false, false)
+      Hue.toggle_media({type:"image", what:false, save:false})
     } else {
-      Hue.toggle_image(true, false)
+      Hue.toggle_media({type:"image", what:true, save:false})
     }
   } else {
-    Hue.toggle_tv(true, false)
+    Hue.toggle_media({type:"tv", what:true, save:false})
 
     if (Hue.image_visible) {
-      Hue.toggle_image(false, false)
+      Hue.toggle_media({type:"image", what:false, save:false})
     }
   }
 

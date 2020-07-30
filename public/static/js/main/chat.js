@@ -2127,7 +2127,7 @@ Hue.do_chat_size_change = function (size) {
   }
 
   if (size === 100) {
-    Hue.toggle_media()
+    Hue.toggle_media_area()
     Hue.show_infotip("Chat Maximized")
     return
   }

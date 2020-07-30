@@ -541,7 +541,7 @@ Hue.hide_media = function () {
 }
 
 // Makes the media area visible or not visible
-Hue.toggle_media = function () {
+Hue.toggle_media_area = function () {
   if (Hue.tv_visible || Hue.image_visible) {
     Hue.hide_media_items()
   } else {
@@ -552,19 +552,19 @@ Hue.toggle_media = function () {
 // Hides media items if visible
 Hue.hide_media_items = function () {
   if (Hue.tv_visible) {
-    Hue.toggle_tv(false)
+    Hue.toggle_media({type:"tv", what:false})
   }
 
   if (Hue.image_visible) {
-    Hue.toggle_image(false)
+    Hue.toggle_media({type:"image", what:false})
   }
 }
 
 // If both are not visible it makes them visible
 Hue.show_media_items = function () {
   if (!Hue.tv_visible && !Hue.image_visible) {
-    Hue.toggle_tv(true)
-    Hue.toggle_image(true)
+    Hue.toggle_media({type:"tv", what:true})
+    Hue.toggle_media({type:"image", what:true})
   }
 }
 
@@ -1152,6 +1152,46 @@ Hue.set_media_info = function (what) {
   Hue.config_admin_media_info()
 }
 
+// Toggles media visibility
+Hue.toggle_media = function (args) {
+  let def_args = {
+    type: "",
+    what: undefined, 
+    save: true,
+    feedback: false
+  }
+
+  args = Object.assign(def_args, args)
+
+  let room_mode = Hue[`room_${args.type}_mode`]
+
+  if (room_mode === "disabled") {
+    if (args.feedback) {
+      Hue.feedback("This media is disabled at the room level")
+    }
+
+    return false
+  }
+
+  if (args.what !== undefined) {
+    if (Hue.room_state[`${args.type}_enabled`] !== args.what) {
+      Hue.room_state[`${args.type}_enabled`] = args.what
+    } else {
+      save = false
+    }
+  } else {
+    Hue.room_state[`${args.type}_enabled`] = !Hue.room_state[`${args.type}_enabled`]
+  }
+
+  if (Hue[`${args.type}_visible`] !== args.what) {
+    Hue[`change_${args.type}_visibility`]()
+  }
+
+  if (args.save) {
+    Hue.save_room_state()
+  }
+}
+
 // Change the lock of some media
 Hue.change_media_lock = function(args) {
   let def_args = {
@@ -1165,9 +1205,9 @@ Hue.change_media_lock = function(args) {
 
   let room_mode = Hue[`room_${args.type}_mode`]
 
-  if (room_mode !== "enabled") {
+  if (room_mode === "locked") {
     if (args.feedback) {
-      Hue.feedback("This media is locked at the room level by an operator")
+      Hue.feedback("This media is locked at the room level")
     }
 
     return false

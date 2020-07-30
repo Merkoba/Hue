@@ -565,37 +565,37 @@ Hue.commands = {
   },
   "showimage": {
     action: (arg, ans) => {
-      Hue.toggle_image(true)
+      Hue.toggle_media({type:"image", what:true})
     },
     description: `Makes the image visible and active`,
   },
   "showtv": {
     action: (arg, ans) => {
-      Hue.toggle_tv(true)
+      Hue.toggle_media({type:"tv", what:true})
     },
     description: `Makes the tv visible and active`,
   },
   "hideimage": {
     action: (arg, ans) => {
-      Hue.toggle_image(false)
+      Hue.toggle_media({type:"image", what:false})
     },
     description: `Makes the image invisible and inactive`,
   },
   "hidetv": {
     action: (arg, ans) => {
-      Hue.toggle_tv(false)
+      Hue.toggle_media({type:"tv", what:false})
     },
     description: `Makes the tv invisible and inactive`,
   },
   "toggleimage": {
     action: (arg, ans) => {
-      Hue.toggle_image()
+      Hue.toggle_media({type:"image"})
     },
     description: `Toggles between show and hide the image`,
   },
   "toggletv": {
     action: (arg, ans) => {
-      Hue.toggle_tv()
+      Hue.toggle_media({type:"tv"})
     },
     description: `Toggles between show and hide the tv`,
   },
@@ -1033,7 +1033,7 @@ Hue.commands = {
   },
   "maximizechat": {
     action: (arg, ans) => {
-      Hue.toggle_media()
+      Hue.toggle_media_area()
     },
     description: `Maximize/Restore the chat`,
   },

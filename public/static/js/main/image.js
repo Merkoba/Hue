@@ -294,27 +294,6 @@ Hue.fix_image_frame = function () {
   Hue.fix_frame("media_image_frame")
 }
 
-// Changes the image to visible or not visible
-Hue.toggle_image = function (what = undefined, save = true) {
-  if (what !== undefined) {
-    if (Hue.room_state.image_enabled !== what) {
-      Hue.room_state.image_enabled = what
-    } else {
-      save = false
-    }
-  } else {
-    Hue.room_state.image_enabled = !Hue.room_state.image_enabled
-  }
-
-  if (Hue.image_visible !== what) {
-    Hue.change_image_visibility()
-  }
-
-  if (save) {
-    Hue.save_room_state()
-  }
-}
-
 // Changes the image visibility based on current state
 Hue.change_image_visibility = function () {
   if (Hue.room_image_mode !== "disabled" && Hue.room_state.image_enabled) {
@@ -444,7 +423,7 @@ Hue.setup_modal_image = function () {
 
   $("#modal_image_toolbar_load").click(function (e) {
     let item = Hue.loaded_modal_image
-    Hue.toggle_image(true)
+    Hue.toggle_media({type:"image", what:true})
     Hue.change({ type: "image", item: item, force: true })
     Hue.change_media_lock({type:"image", what:true})
     Hue.close_all_modals()
@@ -705,15 +684,15 @@ Hue.image_is_maximized = function () {
 Hue.maximize_image = function () {
   if (Hue.image_visible) {
     if (Hue.tv_visible) {
-      Hue.toggle_tv(false, false)
+      Hue.toggle_media({type:"tv", what:false, save:false})
     } else {
-      Hue.toggle_tv(true, false)
+      Hue.toggle_media({type:"tv", what:true, save:false})
     }
   } else {
-    Hue.toggle_image(true, false)
+    Hue.toggle_media({type:"image", what:true, save:false})
 
     if (Hue.tv_visible) {
-      Hue.toggle_tv(false, false)
+      Hue.toggle_media({type:"tv", what:false, save:false})
     }
   }
 
