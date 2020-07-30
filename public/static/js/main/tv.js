@@ -939,10 +939,6 @@ Hue.tv_picker_submit = function () {
 
 // Checks if tv is abled to be synced with another user
 Hue.can_sync_tv = function () {
-  if (Date.now() - Hue.last_media_sync < Hue.config.media_sync_cooldown) {
-    return false
-  }
-
   if (!Hue.room_state.tv_enabled) {
     return false
   }
@@ -997,14 +993,16 @@ Hue.report_tv_progress = function (data) {
   }
 
   if (progress) {
-    Hue.last_media_sync = Date.now()
     Hue.socket_emit("report_tv_progress", {
       requester: data.requester,
       progress: progress,
       type: ttype,
     })
 
-    Hue.feedback(`${data.requester_username} synced their tv with yours`)
+    Hue.show_room_notification(
+      data.request_username,
+      `${data.requester_username} synced their tv with yours`
+    )
   }
 }
 
