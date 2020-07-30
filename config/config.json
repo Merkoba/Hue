@@ -226,7 +226,6 @@
 	"send_badge_cooldown": 10000,
 	"badge_feedback_duration": 1000,
 	"max_info_popups": 5,
-	"media_sync_cooldown": 5000,
 	"max_message_board_dates_items": 100,
 	"max_message_board_posts": 100,
 	"message_board_post_delay": 3600000,

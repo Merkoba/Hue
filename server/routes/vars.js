@@ -73,8 +73,7 @@ module.exports = function (c, config) {
   c.vars.credits_background_url = config.credits_background_url
   c.vars.credits_audio_url = config.credits_audio_url
   c.vars.credits_title = config.credits_title
-  c.vars.image_domain_white_or_black_list =
-    config.image_domain_white_or_black_list
+  c.vars.image_domain_white_or_black_list = config.image_domain_white_or_black_list
   c.vars.image_domain_list = config.image_domain_list
   c.vars.tv_domain_white_or_black_list = config.tv_domain_white_or_black_list
   c.vars.tv_domain_list = config.tv_domain_list
@@ -93,7 +92,6 @@ module.exports = function (c, config) {
   c.vars.max_info_popups = config.max_info_popups
   c.vars.notifications_crop_limit = config.notifications_crop_limit
   c.vars.whispers_crop_limit = config.whispers_crop_limit
-  c.vars.media_sync_cooldown = config.media_sync_cooldown
   c.vars.max_media_comment_length = config.max_media_comment_length
   c.vars.max_message_board_post_length = config.max_message_board_post_length
   c.vars.message_board_post_delay = config.message_board_post_delay
