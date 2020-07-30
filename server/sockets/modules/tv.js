@@ -415,6 +415,10 @@ module.exports = function (
     let first_socket
 
     for (let socc of sockets) {
+      if (socc.id === socket.id) {
+        continue
+      }
+
       if (socc.hue_login_method === "normal") {
         first_socket = socc
         break

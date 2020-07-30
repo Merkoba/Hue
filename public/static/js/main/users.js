@@ -905,7 +905,7 @@ Hue.show_profile = function (uname, prof_image) {
     $("#show_profile_edit").css("display", "none")
   }
 
-  if (uname !== Hue.username && Hue.room_state["tv_enabled"] 
+  if (Hue.room_state["tv_enabled"] 
   && Hue.usernames.includes(uname)) {
     $("#show_profile_sync_tv").css("display", "flex")
   } else {
