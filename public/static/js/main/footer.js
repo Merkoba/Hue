@@ -33,22 +33,8 @@ Hue.setup_footer = function () {
     }
   })
 
-  $("#footer_media_rotate").click(function () {
-    if (Hue.num_media_elements_visible() < 2) {
-      return false
-    }
-
-    Hue.swap_media_layout()
-  })
-
-  $("#footer_media_rotate").on("auxclick", function (e) {
-    if (Hue.num_media_elements_visible() < 2) {
-      return false
-    }
-
-    if (e.which === 2) {
-      Hue.swap_display_positions_2()
-    }
+  $("#footer_swaprotate").click(function () {
+    Hue.show_swaprotate()
   })
 
   let media = ["image", "tv"]

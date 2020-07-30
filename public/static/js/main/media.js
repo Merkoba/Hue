@@ -1248,3 +1248,38 @@ Hue.swap_media_layout_2 = function () {
 Hue.stop_media = function () {
   Hue.stop_tv()
 }
+
+// Shows the swap rotate menu
+Hue.show_swaprotate = function () {
+  Hue.msg_info2.show(["Swap or Rotate Media", Hue.template_swaprotate()], function () {
+    $("#swaprotate_swap").click(function () {
+      Hue.swap_media()
+      Hue.msg_info2.close()
+    })
+
+    $("#swaprotate_rotate").click(function () {
+      Hue.rotate_media()
+      Hue.msg_info2.close()
+    })
+
+    Hue.horizontal_separator.separate("swaprotate_container")
+  })
+}
+
+// Swaps media
+Hue.swap_media = function () {
+  if (Hue.num_media_elements_visible() < 2) {
+    return false
+  }
+  
+  Hue.swap_display_positions_2()
+}
+
+// Rotates media
+Hue.rotate_media = function () {
+  if (Hue.num_media_elements_visible() < 2) {
+    return false
+  }
+
+  Hue.swap_media_layout()
+}
