@@ -2137,6 +2137,7 @@ Hue.do_chat_size_change = function (size) {
   if (size === 100) {
     Hue.toggle_media_area()
     Hue.show_infotip("Chat Maximized")
+    Hue.modify_setting(`chat_display_percentage ${Hue.config.global_settings_default_chat_display_percentage}`, false)
     return
   }
 
@@ -3092,4 +3093,58 @@ Hue.replace_message_vars = function (id, message) {
   }
 
   return message
+}
+
+// Gradually increases the chat display percentage
+Hue.increase_chat_percentage = function (override = true) {
+  let size = parseInt(Hue.get_setting("chat_display_percentage"))
+  size += 10
+  size = Hue.utilz.round2(size, 10)
+
+  if (override) {
+    Hue.enable_setting_override("chat_display_percentage")
+  }
+
+  Hue.do_chat_size_change(size)
+}
+
+// Gradually decreases the chat display percentage
+Hue.decrease_chat_percentage = function (override = true) {
+  let size = parseInt(Hue.get_setting("chat_display_percentage"))
+  size -= 10
+  size = Hue.utilz.round2(size, 10)
+
+  if (override) {
+    Hue.enable_setting_override("chat_display_percentage")
+  }
+
+  Hue.do_chat_size_change(size)
+}
+
+// Sets the chat display percentage to default
+Hue.set_default_chat_size = function () {
+  Hue.do_chat_size_change(
+    Hue.config.global_settings_default_chat_display_percentage
+  )
+}
+
+// Adds style to the icons of active media messages
+Hue.update_chat_media_feedback = function () {
+  $("#chat_area > .announcement").each(function () {
+    let icon = $(this).find(".announcement_brk").eq(0).find("svg").eq(0)
+
+    if (icon.hasClass("shady")) {
+      icon.removeClass("shady")
+    }
+
+    if ($(this).data("type") === "image_change") {
+      if ($(this).data("message_id") === Hue.loaded_image.message_id) {
+        icon.addClass("shady")
+      }
+    } else if ($(this).data("type") === "tv_change") {
+      if ($(this).data("message_id") === Hue.loaded_tv.message_id) {
+        icon.addClass("shady")
+      }
+    }
+  })
 }

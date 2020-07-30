@@ -754,13 +754,13 @@ Hue.do_media_tv_size_change = function (size, notify = true) {
     if (!Hue.image_is_maximized()) {
       Hue.maximize_image()
       Hue.show_infotip("Image Maximized")
-      Hue.modify_setting(`tv_display_percentage 50`, false)
+      Hue.modify_setting(`tv_display_percentage ${Hue.config.global_settings_default_tv_display_percentage}`, false)
     }
   } else if (size === 100) {
     if (!Hue.tv_is_maximized()) {
       Hue.maximize_tv()
       Hue.show_infotip("TV Maximized")
-      Hue.modify_setting(`tv_display_percentage 50`, false)
+      Hue.modify_setting(`tv_display_percentage ${Hue.config.global_settings_default_tv_display_percentage}`, false)
     }
   }
 }

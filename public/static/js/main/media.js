@@ -296,13 +296,6 @@ Hue.maxers_mouse_events = function () {
   })
 }
 
-// Sets the chat display percentage to default
-Hue.set_default_chat_size = function () {
-  Hue.do_chat_size_change(
-    Hue.config.global_settings_default_chat_display_percentage
-  )
-}
-
 // If the image or tv is maximized it unmaximizes it so both are shown
 Hue.unmaximize_media = function () {
   if (Hue.tv_is_maximized()) {
@@ -310,32 +303,6 @@ Hue.unmaximize_media = function () {
   } else if (Hue.image_is_maximized()) {
     Hue.maximize_image()
   }
-}
-
-// Gradually increases the chat display percentage
-Hue.increase_chat_percentage = function (override = true) {
-  let size = parseInt(Hue.get_setting("chat_display_percentage"))
-  size += 10
-  size = Hue.utilz.round2(size, 10)
-
-  if (override) {
-    Hue.enable_setting_override("chat_display_percentage")
-  }
-
-  Hue.do_chat_size_change(size)
-}
-
-// Gradually decreases the chat display percentage
-Hue.decrease_chat_percentage = function (override = true) {
-  let size = parseInt(Hue.get_setting("chat_display_percentage"))
-  size -= 10
-  size = Hue.utilz.round2(size, 10)
-
-  if (override) {
-    Hue.enable_setting_override("chat_display_percentage")
-  }
-
-  Hue.do_chat_size_change(size)
 }
 
 // Removes and item from a media changed array
@@ -457,27 +424,6 @@ Hue.update_media_history_blinks = function () {
       .eq(0)
       .addClass("blinking_2")
   }
-}
-
-// Adds style to the icons of active media messages
-Hue.update_chat_media_feedback = function () {
-  $("#chat_area > .announcement").each(function () {
-    let icon = $(this).find(".announcement_brk").eq(0).find("svg").eq(0)
-
-    if (icon.hasClass("shady")) {
-      icon.removeClass("shady")
-    }
-
-    if ($(this).data("type") === "image_change") {
-      if ($(this).data("message_id") === Hue.loaded_image.message_id) {
-        icon.addClass("shady")
-      }
-    } else if ($(this).data("type") === "tv_change") {
-      if ($(this).data("message_id") === Hue.loaded_tv.message_id) {
-        icon.addClass("shady")
-      }
-    }
-  })
 }
 
 // Tries to separate a comment from a URL when using change media commands
