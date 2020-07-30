@@ -339,7 +339,15 @@ Hue.activate_key_detection = function () {
       return
     }
 
-    if (!(e.ctrlKey && window.getSelection().toString() !== "")) {
+    let focus = true
+
+    if (e.key === "Control") {
+      focus = false
+    } else if (e.ctrlKey && window.getSelection().toString() !== "") {
+      focus = false
+    }
+
+    if (focus) {
       Hue.focus_input()
     }
 
