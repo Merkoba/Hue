@@ -917,7 +917,7 @@ Hue.show_profile = function (uname, prof_image) {
       return $(this).css("display") !== "none"
     }).length
   ) {
-    $("#show_profile_buttons").css("display", "flex")
+    $("#show_profile_buttons").css("display", "grid")
   } else {
     $("#show_profile_buttons").css("display", "none")
   }

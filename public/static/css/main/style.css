@@ -91,7 +91,7 @@ body * {
 	align-items: center;
 	justify-content: flex-start;
 	overflow: hidden;
-	width: 18rem;
+	width: 15rem;
 }
 
 #header_right {
@@ -119,9 +119,6 @@ body * {
 	overflow: hidden;
 	flex-grow: 0;
 	height: 100%;
-	gap: 1.25rem;
-	padding-left: 1.25rem;
-	padding-right: 1.25rem;
 }
 
 .activity_bar_item {
@@ -130,6 +127,8 @@ body * {
 	max-width: 7rem;
 	cursor: pointer;
 	align-items: center;
+	padding-left: 0.6rem;
+	padding-right: 0.6rem;
 }
 
 .activity_bar_item:hover .activity_bar_image_container {
@@ -2085,7 +2084,7 @@ svg.action:hover {
 
 #show_profile_buttons {
 	margin-top: 1.6rem;
-	gap: 0.5rem;
+	grid-gap: 0.5rem;
 }
 
 #show_profile_edit {
@@ -2540,11 +2539,24 @@ a.special_link:hover {
 .grid_column_center {
 	display: grid;
 	grid-auto-columns: auto;
+	grid-auto-flow: column;
 	align-items: center;
 	justify-content: center;
 }
 
 .grid_column_center>* {
+	margin: auto;
+}
+
+.grid_row_center {
+	display: grid;
+	grid-auto-rows: auto;
+	grid-auto-flow: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.grid_row_center>* {
 	margin: auto;
 }
 
