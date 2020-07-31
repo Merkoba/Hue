@@ -112,7 +112,6 @@ body * {
 
 #activity_bar_inner {
 	position: relative;
-	flex-direction: row;
 	align-items: center;
 	font-size: 0.8rem;
 	overflow: hidden;
