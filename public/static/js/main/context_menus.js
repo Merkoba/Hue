@@ -321,7 +321,7 @@ Hue.generate_chat_maxer_context_items = function () {
   let max = Hue.num_media_elements_visible() === 0
   let per = Hue.get_setting("chat_display_percentage")
 
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 9; i >= 1; i--) {
     let n = i * 10
     let class_name = ""
 
@@ -339,10 +339,6 @@ Hue.generate_chat_maxer_context_items = function () {
       name: `Chat ${n}%`,
       callback: function (key, opt) {
         Hue.do_chat_size_change(n)
-
-        if (n !== 100) {
-          Hue.show_media_items()
-        }
       },
       className: class_name,
     }
@@ -353,7 +349,7 @@ Hue.generate_chat_maxer_context_items = function () {
       def: {
         name: "Default",
         callback: function (key, opt) {
-          Hue.show_media_items()
+          Hue.set_default_chat_size()
         }
       }
     }
@@ -385,7 +381,7 @@ Hue.generate_media_maxer_context_items = function () {
   let pos = Hue.get_setting("tv_display_position")
   let nums = []
 
-  for (let i = 0; i <= 10; i++) {
+  for (let i = 1; i <= 9; i++) {
     nums.push(i * 10)
   }
 

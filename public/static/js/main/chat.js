@@ -2145,6 +2145,10 @@ Hue.do_chat_size_change = function (size) {
     Hue.modify_setting(`chat_display_percentage ${size}`, false)
   }
 
+  if (size !== 100) {
+    Hue.show_media_items()
+  }
+
   Hue.notify_chat_size_change(size)
 }
 
