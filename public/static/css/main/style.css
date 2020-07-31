@@ -119,6 +119,8 @@ body * {
 	overflow: hidden;
 	flex-grow: 0;
 	height: 100%;
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
 .activity_bar_item {
