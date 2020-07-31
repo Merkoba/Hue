@@ -2541,24 +2541,11 @@ a.special_link:hover {
 .grid_column_center {
 	display: grid;
 	grid-auto-columns: auto;
-	grid-auto-flow: column;
 	align-items: center;
 	justify-content: center;
 }
 
-.grid_column_center>* {
-	margin: auto;
-}
-
-.grid_row_center {
-	display: grid;
-	grid-auto-rows: auto;
-	grid-auto-flow: row;
-	align-items: center;
-	justify-content: center;
-}
-
-.grid_row_center>* {
+.grid_column_center> * {
 	margin: auto;
 }
 
