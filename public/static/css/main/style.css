@@ -383,7 +383,7 @@ body * {
 .scroller_container {
 	position: absolute;
 	left: 0rem;
-	width: calc(100% - 10px);
+	width: 100%;
 	display: flex;
 	flex-direction: row;
 	visibility: hidden;
