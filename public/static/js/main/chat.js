@@ -1847,8 +1847,6 @@ Hue.show_typing = function (data) {
   Hue.typing = true
 }
 
-
-
 // Stops the typing actions
 Hue.hide_typing = function () {
   if (!Hue.typing) {
@@ -2693,7 +2691,6 @@ Hue.check_scrollers = function () {
   let max = $ch.prop("scrollHeight") - $ch.innerHeight()
   let scrolltop = $ch.scrollTop()
   let diff = max - scrolltop
-
 
   if (scrolltop === 0) {
     Hue.hide_top_scroller()
