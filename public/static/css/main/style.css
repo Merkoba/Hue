@@ -329,7 +329,7 @@ body * {
 }
 
 .footer_text {
-	margin-right: 0.3em;
+	margin-right: 0.4em;
 }
 
 #footer_reactions {
@@ -341,10 +341,6 @@ body * {
 	padding-right: 0.7rem;
 	width: var(--icon_size);
 	height: var(--icon_size);
-}
-
-.footer_media_locked_label {
-	margin-right: 0;
 }
 
 #footer .separator-separator {
