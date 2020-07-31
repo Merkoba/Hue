@@ -112,15 +112,15 @@ body * {
 
 #activity_bar_inner {
 	position: relative;
-	display: flex;
 	flex-direction: row;
 	align-items: center;
 	font-size: 0.8rem;
 	overflow: hidden;
 	flex-grow: 0;
 	height: 100%;
-	padding-left: 1rem;
-	padding-right: 1rem;
+	padding-left: 1.25rem;
+	padding-right: 1.25rem;
+	grid-gap: 1.25rem;
 }
 
 .activity_bar_item {
@@ -129,8 +129,6 @@ body * {
 	max-width: 7rem;
 	cursor: pointer;
 	align-items: center;
-	padding-left: 0.6rem;
-	padding-right: 0.6rem;
 }
 
 .activity_bar_item:hover .activity_bar_image_container {
@@ -2546,6 +2544,17 @@ a.special_link:hover {
 }
 
 .grid_column_center> * {
+	margin: auto;
+}
+
+.grid_row_center {
+	display: grid;
+	grid-auto-flow: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.grid_row_center> * {
 	margin: auto;
 }
 
