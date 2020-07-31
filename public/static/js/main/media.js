@@ -647,11 +647,6 @@ Hue.setup_media_menu = function () {
     Hue.hide_media_menu()
   })
 
-  $("#media_menu_unlock").click(function () {
-    Hue.unlock()
-    Hue.hide_media_menu()
-  })
-
   $("#media_menu_decrease_tv_volume").click(function () {
     Hue.set_media_menu_tv_volume('decrease')
   })
