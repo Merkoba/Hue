@@ -3028,3 +3028,9 @@ pre {
 .flex_start {
 	justify-content: flex-start !important;
 }
+
+.swaprotate_label {
+	padding-bottom: 1rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}

@@ -37,6 +37,12 @@ Hue.setup_footer = function () {
     Hue.show_swaprotate()
   })
 
+  $("#footer_swaprotate").on("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.rotate_media()
+    }
+  })
+
   let media = ["image", "tv"]
 
   for (let type of media) {
