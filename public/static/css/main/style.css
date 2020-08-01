@@ -1547,8 +1547,8 @@ svg.action:hover {
 	pointer-events: initial !important;
 }
 
-#room_settings_filter {
-	margin-top: 1rem;
+#room_settings_info {
+	margin-bottom: 1rem;
 }
 
 .faded {

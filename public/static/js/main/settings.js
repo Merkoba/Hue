@@ -1409,7 +1409,31 @@ Hue.setup_setting_elements = function (type) {
     Hue.settings_tv_percentage_slider_double_click(type)
   })
 
+  $(`#${type}_switch`).click(function () {
+    Hue.settings_window_switch(type)
+  })
+
   Hue.setup_togglers(type)
+}
+
+// Switch between global and room settings
+Hue.settings_window_switch = function (from) {
+  Hue[`msg_${from}`].close(function () {
+    let dest = "global_settings"
+
+    if (from === "global_settings") {
+      dest = "room_settings"
+    }
+
+    let category = Hue.get_selected_user_settings_category(from)
+    Hue.open_user_settings_category(category, dest)
+
+    let filter = $(`#${from}_filter`).val()
+
+    if (filter) {
+      Hue.do_settings_filter(dest, filter)
+    }
+  })
 }
 
 // Checks for room settings overrides to show or not indicators of change,

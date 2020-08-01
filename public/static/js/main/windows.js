@@ -562,18 +562,11 @@ Hue.start_msg = function () {
 
   // Set the titles
 
-  Hue.msg_input_history.set_title("Input History")
   Hue.msg_highlights.set_title(
     "<span id='highlights_window_title' class='pointer'>Highlights</span>"
   )
   Hue.msg_chat_search.set_title(
     "<span id='chat_search_window_title' class='pointer'>Chat Search</span>"
-  )
-  Hue.msg_global_settings.set_title(
-    "<span id='global_settings_window_title' class='pointer'>Global Settings</span>"
-  )
-  Hue.msg_room_settings.set_title(
-    "<span id='room_settings_window_title' class='pointer'>Room Settings</span>"
   )
   Hue.msg_public_roomlist.set_title(
     "<span id='public_rooms_window_title' class='pointer'>Public Rooms</span>"
@@ -588,6 +581,10 @@ Hue.start_msg = function () {
   Hue.msg_user_menu.set_title(
     "<span id='user_menu_window_title' class='pointer'>User Menu</span>"
   )
+
+  Hue.msg_input_history.set_title("Input History")
+  Hue.msg_global_settings.set_title("Global Settings")
+  Hue.msg_room_settings.set_title("Room Settings")
   Hue.msg_media_menu.set_title("Media Menu")
   Hue.msg_draw_image.set_title("Draw an Image")
   Hue.msg_credits.set_title(Hue.config.credits_title)
@@ -604,14 +601,6 @@ Hue.start_msg = function () {
   Hue.msg_profile_image_cropper.set_title("Crop A Circle")
 
   // Titlebar click events
-
-  $("#global_settings_window_title").click(function () {
-    Hue.toggle_settings_windows()
-  })
-
-  $("#room_settings_window_title").click(function () {
-    Hue.toggle_settings_windows()
-  })
 
   $("#public_rooms_window_title").click(function () {
     Hue.toggle_rooms_windows()
@@ -1048,35 +1037,6 @@ Hue.toggle_rooms_windows = function () {
 
   data["visited_roomlist"] = function () {
     Hue.request_roomlist("", "public_roomlist")
-  }
-
-  Hue.process_window_toggle(data)
-}
-
-// Toggles between global and room settings windows when clicking the titlebar
-Hue.toggle_settings_windows = function () {
-  let data = {}
-
-  data["global_settings"] = function () {
-    let category = Hue.get_selected_user_settings_category("global_settings")
-    Hue.open_user_settings_category(category, "room_settings")
-
-    let filter = $("#global_settings_filter").val()
-
-    if (filter) {
-      Hue.do_settings_filter("room_settings", filter)
-    }
-  }
-
-  data["room_settings"] = function () {
-    let category = Hue.get_selected_user_settings_category("room_settings")
-    Hue.open_user_settings_category(category, "global_settings")
-
-    let filter = $("#room_settings_filter").val()
-
-    if (filter) {
-      Hue.do_settings_filter("global_settings", filter)
-    }
   }
 
   Hue.process_window_toggle(data)
