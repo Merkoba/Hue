@@ -1258,5 +1258,5 @@ Hue.rotate_media = function () {
     return false
   }
 
-  Hue.swap_media_layout()
+  Hue.swap_media_layout_2()
 }
