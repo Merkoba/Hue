@@ -143,3 +143,8 @@ Hue.get_chat_icon = function (name) {
 Hue.get_icon = function (name, cls="") {
   return `<svg class='other_icon ${cls}'><use href='#icon_${name}'></svg>`
 }
+
+// Setups maxers
+Hue.setup_maxers = function () {
+  $(".maxer").attr("title", "Click or Shift+Wheel")
+}

@@ -289,6 +289,7 @@ Hue.init = function () {
   Hue.setup_reply()
   Hue.start_socket_stats()
   Hue.setup_critical_commands()
+  Hue.setup_maxers()
 
   if (Hue.debug_functions) {
     Hue.wrap_functions()
