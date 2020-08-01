@@ -63,12 +63,6 @@ Hue.setup_footer = function () {
     Hue.show_user_menu()
   })
 
-  $("#footer_user_menu").on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.show_global_settings()
-    }
-  })
-
   $("#footer_reactions").click(function () {
     if (Hue.reactions_box_open) {
       Hue.hide_reactions_box()

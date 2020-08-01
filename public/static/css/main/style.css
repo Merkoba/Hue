@@ -802,6 +802,7 @@ a.generic:hover {
 	z-index: 99;
 	margin-bottom: 1rem;
 	border-radius: 1.7647rem;
+	outline: none;
 }
 
 .filter_input_2 {
@@ -813,6 +814,7 @@ a.generic:hover {
 	position: sticky;
 	z-index: 99;
 	border-radius: 1.7647rem;
+	outline: none;
 }
 
 .filter_padding {
