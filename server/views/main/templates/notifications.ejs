@@ -1,10 +1,16 @@
 <script id='template_notifications' type='text/x-handlebars-template' class='template'>
     <div class='flex_row_center sticky bg1'>
-        <svg class='other_icon action pointer' id='notifications_configure_icon' title="Configure">
-            <use href='#icon_cog'>
-        </svg>
+        <div title='Configure'>
+            <svg class='other_icon action pointer' id='notifications_configure_icon'>
+                <use href='#icon_cog'>
+            </svg>
+        </div>
+
         <input type="text" id="notifications_filter" class="filter_input_2 filter_padding" placeholder="Filter">
-        <svg class='other_icon invisible'><use href='#icon_cog'></svg>
+
+        <div>
+            <svg class='other_icon invisible'><use href='#icon_cog'></svg>
+        </div>
     </div>
 
     <div id='notifications_container'>No Notifications Yet</div>
