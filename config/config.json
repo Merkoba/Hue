@@ -128,7 +128,7 @@
 	"global_settings_default_on_lockscreen": "",
 	"global_settings_default_on_unlockscreen": "",
 	"global_settings_default_chat_display_percentage": 40,
-	"global_settings_default_tv_display_percentage": 50,
+	"global_settings_default_tv_display_percentage": 60,
 	"global_settings_default_tv_display_position": "bottom",
 	"global_settings_default_aliases": "",
 	"global_settings_default_other_words_to_autocomplete": "",
