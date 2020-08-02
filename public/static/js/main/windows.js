@@ -464,7 +464,6 @@ Hue.start_msg = function () {
       after_close: function (instance) {
         common.after_close(instance)
         Hue.writing_message_board_post = false
-        $("#message_board_post_textarea").val("")
       },
     })
   )
