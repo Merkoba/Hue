@@ -932,36 +932,6 @@ a.generic:hover {
 	text-align: center;
 }
 
-#youtube_player {
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: -99999999999;
-}
-
-#soundcloud_player {
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: -99999999999;
-}
-
-.volume_context {
-	min-width: 5em !important;
-	max-width: 10em !important;
-	text-align: center !important;
-	padding: 0 !important;
-	padding-top: 0.2em !important;
-	padding-bottom: 0.2em !important;
-	border: 0rem solid grey !important;
-}
-
-.volume_context .context-menu-item {
-	padding: 0 !important;
-	padding-top: 0.3em !important;
-	padding-bottom: 0.3em !important;
-}
-
 .info_item {
 	padding-top: 1em;
 	padding-bottom: 1em;
