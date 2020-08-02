@@ -205,7 +205,7 @@ Hue.setup_open_url = function () {
   })
 
   $("#open_url_menu_load").click(function () {
-    Hue[`toggle_${Hue.open_url_media_type}`](true)
+    Hue.toggle_media({type:Hue.open_url_media_type, what:true})
     
     Hue.change({
       type: Hue.open_url_media_type,
