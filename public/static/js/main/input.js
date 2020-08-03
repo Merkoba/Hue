@@ -54,40 +54,6 @@ Hue.setup_input = function () {
   })
 
   Hue.old_input_val = $("#input").val()
-  Hue.input_tag_scroll_height = $("#input")[0].scrollHeight
-
-  // Resizes the input automatically based on content
-  computedVariables(
-    "--expand",
-    (value, event, tag) => {
-      if (Hue.input_tag_scroll_height !== tag.scrollHeight) {
-        $("#footer").css("height", $("#footer").height())
-        tag.style.height = "auto"
-        Hue.input_tag_scroll_height = tag.scrollHeight
-        tag.style.height = ""
-        $("#footer").css("height", "auto")
-      }
-
-      return Hue.input_tag_scroll_height + "px"
-    },
-    "#input",
-    ["input", "paste", "blur", "reprocess"],
-    {
-      afterChange: function (height) {
-        if (Hue.last_input_height && Hue.last_input_height !== height) {
-          Hue.resize_timer()
-        }
-
-        Hue.last_input_height = height
-      },
-    }
-  )
-
-  Hue.reprocess_input()
-}
-
-Hue.reprocess_input = function () {
-  $("#input")[0].dispatchEvent(new Event("reprocess"))
 }
 
 // Updates the input's placeholder
@@ -140,8 +106,6 @@ Hue.change_input = function (s, to_end = true, focus = true) {
   if (focus) {
     Hue.focus_input()
   }
-
-  Hue.reprocess_input()
 }
 
 // Focuses the input
