@@ -90,6 +90,7 @@ Hue.input_history_change = function (direction) {
     v = Hue.input_history[Hue.input_history_index].message
   }
 
+  Hue.stop_fixed_input()
   Hue.change_input(v)
 }
 

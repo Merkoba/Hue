@@ -36,6 +36,10 @@ Hue.on_input_change = function () {
 
 // Removes fixed input
 Hue.start_fixed_input = function () {
+  if (Hue.fixed_input) {
+    return
+  }
+
   $("#input").addClass("fixed_input")
   $("#footer_search").addClass("fixed_footer_search")
   Hue.fixed_input = true
@@ -43,6 +47,10 @@ Hue.start_fixed_input = function () {
 
 // Removes fixed input
 Hue.stop_fixed_input = function () {
+  if (!Hue.fixed_input) {
+    return
+  }
+
   $("#input").removeClass("fixed_input")
   $("#footer_search").removeClass("fixed_footer_search")
   Hue.fixed_input = false
