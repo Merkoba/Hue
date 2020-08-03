@@ -70,7 +70,6 @@ Hue.room_tv_mode = "enabled"
 Hue.background_image_setter = ""
 Hue.background_image_date = ""
 Hue.files = {}
-Hue.input_changed = false
 Hue.youtube_video_play_on_queue = false
 Hue.message_id = 0
 Hue.chat_content_container_id = 0

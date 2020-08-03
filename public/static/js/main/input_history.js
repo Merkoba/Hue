@@ -54,22 +54,6 @@ Hue.input_history_change = function (direction) {
     return false
   }
 
-  if (Hue.input_changed) {
-    Hue.input_changed = false
-
-    let input_val = $("#input").val().trim()
-
-    if (input_val !== "") {
-      Hue.add_to_input_history(input_val, false)
-
-      if (direction === "up") {
-        Hue.input_history_index = Hue.input_history.length - 1
-      } else {
-        Hue.input_history_index = Hue.input_history.length
-      }
-    }
-  }
-
   let v
 
   if (direction === "up") {

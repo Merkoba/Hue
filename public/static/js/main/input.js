@@ -17,7 +17,6 @@ Hue.on_input_change = function () {
   }
 
   if (Hue.old_input_val !== value) {
-    Hue.input_changed = true
     Hue.check_typing()
     Hue.old_input_val = value
   }
@@ -29,7 +28,7 @@ Hue.on_input_change = function () {
       Hue.start_fixed_input()
     }
   } else {
-    if (!value) {
+    if (!value || !value.includes("\n")) {
       Hue.stop_fixed_input()
     }
   }
@@ -38,12 +37,14 @@ Hue.on_input_change = function () {
 // Removes fixed input
 Hue.start_fixed_input = function () {
   $("#input").addClass("fixed_input")
+  $("#footer_search").addClass("fixed_footer_search")
   Hue.fixed_input = true
 }
 
 // Removes fixed input
 Hue.stop_fixed_input = function () {
   $("#input").removeClass("fixed_input")
+  $("#footer_search").removeClass("fixed_footer_search")
   Hue.fixed_input = false
 }
 
