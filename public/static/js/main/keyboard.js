@@ -435,8 +435,9 @@ Hue.activate_key_detection = function () {
       }
     } else if (e.key === "Escape") {
       if (!e.shiftKey) {
+        Hue.clear_input()
+        
         if ($("#input").val().length > 0) {
-          Hue.clear_input()
           Hue.reset_input_history_index()
         } else {
           Hue.goto_bottom(true, true)

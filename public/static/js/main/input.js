@@ -27,10 +27,6 @@ Hue.on_input_change = function () {
     if (overflow || value.includes("\n")) {
       Hue.start_fixed_input()
     }
-  } else {
-    if (!value) {
-      Hue.stop_fixed_input()
-    }
   }
 }
 
@@ -42,6 +38,12 @@ Hue.start_fixed_input = function () {
 
   $("#input").addClass("fixed_input")
   $("#footer_search").addClass("fixed_footer_search")
+
+  if (!$("#input").val().trim()) {
+    $("#input").val("")
+  }
+
+  $("#input").attr("placeholder", "Enter twice to post")
   Hue.fixed_input = true
 }
 
@@ -53,6 +55,7 @@ Hue.stop_fixed_input = function () {
 
   $("#input").removeClass("fixed_input")
   $("#footer_search").removeClass("fixed_footer_search")
+  Hue.update_input_placeholder()
   Hue.fixed_input = false
 }
 
