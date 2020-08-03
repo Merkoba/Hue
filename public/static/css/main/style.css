@@ -375,8 +375,8 @@ body * {
 	bottom: var(--panel_height) !important;
 	height: 15rem !important;
 	width: 70% !important;
-	background-color: var(--color_4) !important;
-	box-shadow: inset 0 0 0.25rem currentColor !important;
+	background-color: var(--background_color_2) !important;
+	box-shadow: inset 0 0 0.2rem currentColor !important;
 	padding: 0.25rem !important;
 }
 
