@@ -43,7 +43,7 @@ Hue.start_fixed_input = function () {
     $("#input").val("")
   }
 
-  $("#input").attr("placeholder", "Enter twice to post")
+  $("#input").attr("placeholder", "Press Enter twice to post")
   Hue.fixed_input = true
 }
 
