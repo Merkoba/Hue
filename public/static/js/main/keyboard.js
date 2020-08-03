@@ -397,10 +397,18 @@ Hue.activate_key_detection = function () {
 
       return
     } else if (e.key === "PageUp") {
+      if (Hue.fixed_input) {
+        return
+      }
+      
       Hue.scroll_up(Hue.config.big_keyboard_scroll)
       e.preventDefault()
       return
     } else if (e.key === "PageDown") {
+      if (Hue.fixed_input) {
+        return
+      }
+      
       Hue.scroll_down(Hue.config.big_keyboard_scroll)
       e.preventDefault()
       return

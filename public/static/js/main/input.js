@@ -28,7 +28,7 @@ Hue.on_input_change = function () {
       Hue.start_fixed_input()
     }
   } else {
-    if (!value || !value.includes("\n")) {
+    if (!value) {
       Hue.stop_fixed_input()
     }
   }
