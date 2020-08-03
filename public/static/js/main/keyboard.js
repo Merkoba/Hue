@@ -365,7 +365,7 @@ Hue.activate_key_detection = function () {
       e.preventDefault()
       return
     } else if (e.key === "ArrowUp") {
-      if (Hue.input_oversized_active() && !e.shiftKey) {
+      if (Hue.fixed_input && !e.shiftKey) {
         return
       }
 
@@ -381,7 +381,7 @@ Hue.activate_key_detection = function () {
 
       return
     } else if (e.key === "ArrowDown") {
-      if (Hue.input_oversized_active() && !e.shiftKey) {
+      if (Hue.fixed_input && !e.shiftKey) {
         return
       }
 

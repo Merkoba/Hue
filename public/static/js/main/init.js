@@ -177,6 +177,7 @@ Hue.autoscroll_direction
 Hue.last_autoscroll_diff = 0
 Hue.max_displayed_url = 100
 Hue.media_info_max_length = 65
+Hue.fixed_input = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

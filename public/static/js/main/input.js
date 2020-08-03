@@ -20,11 +20,19 @@ Hue.on_input_change = function () {
     Hue.check_typing()
     Hue.old_input_val = value
   }
+
+  if (value.includes("\n")) {
+    $("#input").addClass("fixed_input")
+    Hue.fixed_input = true
+  } else {
+    $("#input").removeClass("fixed_input")
+    Hue.fixed_input = false
+  }
 }
 
 // Setups events for the main input
 Hue.setup_input = function () {
-  $("#input").on("input", function () {
+  $("#input").on("input, keyup", function () {
     Hue.on_input_change()
   })
 
@@ -65,14 +73,6 @@ Hue.update_input_placeholder = function () {
   }
   
   $("#input").attr("placeholder", s)
-}
-
-// Checks if the input is active and overflowed
-Hue.input_oversized_active = function () {
-  let input = $("#input")[0]
-  return (
-    document.activeElement === input && input.clientHeight < input.scrollHeight
-  )
 }
 
 // Clears the input
