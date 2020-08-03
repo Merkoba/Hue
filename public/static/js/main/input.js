@@ -6,7 +6,8 @@ Hue.input_is_scrolled = function () {
 
 // On input change
 Hue.on_input_change = function () {
-  let value = $("#input").val()
+  let el = $("#input")
+  let value = el.val()
 
   value = Hue.utilz.clean_string9(value)
 
@@ -21,13 +22,29 @@ Hue.on_input_change = function () {
     Hue.old_input_val = value
   }
 
-  if (value.includes("\n")) {
-    $("#input").addClass("fixed_input")
-    Hue.fixed_input = true
+  if (!Hue.fixed_input) {
+    let overflow = el[0].clientHeight < el[0].scrollHeight
+  
+    if (overflow || value.includes("\n")) {
+      Hue.start_fixed_input()
+    }
   } else {
-    $("#input").removeClass("fixed_input")
-    Hue.fixed_input = false
+    if (!value) {
+      Hue.stop_fixed_input()
+    }
   }
+}
+
+// Removes fixed input
+Hue.start_fixed_input = function () {
+  $("#input").addClass("fixed_input")
+  Hue.fixed_input = true
+}
+
+// Removes fixed input
+Hue.stop_fixed_input = function () {
+  $("#input").removeClass("fixed_input")
+  Hue.fixed_input = false
 }
 
 // Setups events for the main input
@@ -79,6 +96,7 @@ Hue.update_input_placeholder = function () {
 Hue.clear_input = function () {
   Hue.change_input("")
   Hue.old_input_val = ""
+  Hue.stop_fixed_input()
 }
 
 // Appends to the input
