@@ -287,8 +287,12 @@ Hue.update_chat = function (args = {}) {
     }
   }
 
-  if (args.message.startsWith(Hue.config.commands_prefix + Hue.config.commands_prefix)) {
-    args.message = args.message.slice(1)
+  let num_lines = args.message.split("\n").length
+
+  if (num_lines === 1) {
+    if (args.message.startsWith(Hue.config.commands_prefix + Hue.config.commands_prefix)) {
+      args.message = args.message.slice(1)
+    }
   }
 
   args.message = Hue.replace_message_vars(args.id, args.message)

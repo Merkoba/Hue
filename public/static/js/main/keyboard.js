@@ -360,13 +360,6 @@ Hue.activate_key_detection = function () {
         if (val.length === 0) {
           Hue.goto_bottom(true)
         } else {
-          if (Hue.fixed_input) {
-            let match = val.match(/\n(?=\n*$)/g)
-            if (!match || match.length < 1) {
-              return
-            }
-          }
-
           Hue.process_message({ message: val })
         }
       }

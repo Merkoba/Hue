@@ -367,6 +367,8 @@ body * {
 	min-height: calc(var(--panel_height) - 0.6rem);
 	max-height: 20rem;
 	height: calc(var(--expand) - 0.6rem);
+	-moz-tab-size: 1.4rem;
+	tab-size: 1.4rem;
 }
 
 .fixed_input {
