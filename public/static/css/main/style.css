@@ -519,11 +519,7 @@ body * {
 
 .chat_content {
 	font-size: 1em;
-	white-space: pre-wrap;
 	display: inline-block;
-}
-
-.chat_content {
 	line-height: 1.2em;
 }
 
