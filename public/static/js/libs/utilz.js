@@ -685,6 +685,47 @@ const Utilz = function () {
 		return costs[s2.length]
 	}
 
+	utilz.untab_string = function (s) {
+		s = s.replace(/\t/gm, "  ")
+
+		let lines = s.split("\n")
+
+		if (lines.length <= 1) {
+			return s
+		}
+
+		let ns = []
+		let pos = -1
+
+		for (let line of lines) {
+			let m = line.match(/^\s+/)
+			
+			if (m) {
+				let n = m[0].length
+				if (pos === -1 || n < pos) {
+					pos = n
+				}
+        
+				ns.push(n)
+			}
+		}
+    
+		let new_lines = []
+
+		let spaces = ""
+      
+		for (let i=0; i<pos; i++) {
+			spaces += " "
+		}
+    
+		for (let line of lines) {    
+			let re = new RegExp(`(^${spaces})`)
+			new_lines.push(line.replace(re, ""))
+		}
+    
+		return new_lines.join("\n")
+	}
+
 	utilz.conceal_email = function (s) {
 		let split = s.split("@")
 		let uname = split[0]

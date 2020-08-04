@@ -17,6 +17,7 @@ Hue.process_message = function (args = {}) {
   let num_lines = message_split.length
 
   args.message = Hue.utilz.clean_multiline_2(args.message)
+  args.message = Hue.utilz.untab_string(args.message)
 
   if (num_lines === 1 && Hue.is_command(args.message) && !args.edit_id) {
     args.message = Hue.utilz.clean_string2(args.message)
