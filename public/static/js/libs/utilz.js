@@ -701,6 +701,7 @@ const Utilz = function () {
 			
 			if (m) {
 				let n = m[0].length
+				
 				if (pos === -1 || n < pos) {
 					pos = n
 				}
