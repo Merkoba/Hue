@@ -697,16 +697,22 @@ const Utilz = function () {
 		let pos = -1
 
 		for (let line of lines) {
+			if (!line.trim()) {
+				continue
+			}
+
 			let m = line.match(/^\s+/)
 			
 			if (m) {
 				let n = m[0].length
-				
+
 				if (pos === -1 || n < pos) {
 					pos = n
 				}
         
 				ns.push(n)
+			} else {
+				return s
 			}
 		}
     

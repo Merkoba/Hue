@@ -1686,7 +1686,7 @@ Hue.send_edit_messsage = function (id) {
   if (third_person) {
     new_message = `/me ${new_message}`
   }
-
+  
   Hue.process_message({ message: new_message, edit_id: edit_id })
 }
 
