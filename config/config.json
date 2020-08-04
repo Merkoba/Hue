@@ -127,7 +127,7 @@
 	"global_settings_default_open_popup_messages": true,
 	"global_settings_default_on_lockscreen": "",
 	"global_settings_default_on_unlockscreen": "",
-	"global_settings_default_chat_display_percentage": 50,
+	"global_settings_default_chat_display_percentage": 40,
 	"global_settings_default_tv_display_percentage": 60,
 	"global_settings_default_tv_display_position": "bottom",
 	"global_settings_default_aliases": "",
