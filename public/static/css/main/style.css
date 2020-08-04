@@ -3032,3 +3032,7 @@ pre {
 	padding-left: 1rem;
 	padding-right: 1rem;
 }
+
+.chat_hr {
+	border: 0.1rem solid var(--color_4);
+}

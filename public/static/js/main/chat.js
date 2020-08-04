@@ -1288,7 +1288,7 @@ Hue.setup_markdown_regexes = function () {
     `\\[line\\]`, "gm"
   )
   Hue.markdown_regexes["horizontal_line"].replace_function = function () {
-    return "<hr>"
+    return "<hr class='chat_hr'>"
   }
 
   Hue.markdown_regexes["anchor_link"] = {}
