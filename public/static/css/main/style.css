@@ -2846,6 +2846,16 @@ pre {
 	display: inline-block;
 }
 
+.message_board_item {
+	position: relative;
+	width: 100%;
+}
+
+.message_board_text {
+	white-space: pre-wrap;
+	background-color: var(--color_4_a);
+}
+
 #Msg-content-notebook {
 	padding: 0 !important;
 }

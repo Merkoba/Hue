@@ -460,7 +460,7 @@ Hue.start_msg = function () {
   Hue.msg_message_board = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "message_board",
-      window_width: "28rem",
+      window_width: "30rem",
       after_close: function (instance) {
         common.after_close(instance)
         Hue.writing_message_board_post = false

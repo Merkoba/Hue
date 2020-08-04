@@ -6,7 +6,7 @@ const Utilz = function () {
 	}
 
 	utilz.clean_string2 = function (s) {
-		return s.replace(/\s+/g, ' ').trim()
+		return s.replace(/ +/g, ' ').trim()
 	}
 
 	utilz.clean_string3 = function (s) {
@@ -18,11 +18,11 @@ const Utilz = function () {
 	}
 
 	utilz.clean_string5 = function (s) {
-		return s.replace(/\s+/g, '').trim()
+		return s.replace(/ +/g, '').trim()
 	}
 
 	utilz.clean_string6 = function (s) {
-		return s.replace(/\s+/g, ' ')
+		return s.replace(/ +/g, ' ')
 	}
 
 	utilz.clean_string7 = function (s) {
