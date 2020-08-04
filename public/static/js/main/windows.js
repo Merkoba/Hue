@@ -47,7 +47,7 @@ Hue.start_msg = function () {
   Hue.msg_room_menu = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "room_menu",
-      window_width: "22em",
+      window_width: "22rem",
       after_close: function (instance) {
         common.after_close(instance)
         Hue.close_togglers("room_menu")
@@ -60,7 +60,7 @@ Hue.start_msg = function () {
     Object.assign({}, common, titlebar, {
       id: "user_menu",
       clear_editables: false,
-      window_width: "22em",
+      window_width: "22rem",
       after_close: function (instance) {
         common.after_close(instance)
         Hue.close_togglers("user_menu")
@@ -71,29 +71,29 @@ Hue.start_msg = function () {
   Hue.msg_userlist = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "userlist",
-      window_min_width: "22em",
-      window_max_width: "45em",
+      window_min_width: "22rem",
+      window_max_width: "45rem",
     })
   )
 
   Hue.msg_public_roomlist = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "public_roomlist",
-      window_width: "26em",
+      window_width: "26rem",
     })
   )
 
   Hue.msg_visited_roomlist = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "visited_roomlist",
-      window_width: "26em",
+      window_width: "26rem",
     })
   )
 
   Hue.msg_played = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "played",
-      window_width: "26em",
+      window_width: "26rem",
     })
   )
 
@@ -143,7 +143,7 @@ Hue.start_msg = function () {
   Hue.msg_profile = Msg.factory(
     Object.assign({}, common, {
       id: "profile",
-      window_width: "22em",
+      window_width: "22rem",
       after_close: function (instance) {
         common.after_close(instance)
         $("#show_profile_uname").text("Loading")
@@ -194,7 +194,7 @@ Hue.start_msg = function () {
   Hue.msg_image_picker = Msg.factory(
     Object.assign({}, common, {
       id: "image_picker",
-      window_width: "24em",
+      window_width: "24rem",
       after_show: function (instance) {
         common.after_show(instance)
         Hue.image_picker_open = true
@@ -213,7 +213,7 @@ Hue.start_msg = function () {
   Hue.msg_tv_picker = Msg.factory(
     Object.assign({}, common, {
       id: "tv_picker",
-      window_width: "24em",
+      window_width: "24rem",
       after_show: function (instance) {
         common.after_show(instance)
         Hue.tv_picker_open = true
@@ -231,7 +231,7 @@ Hue.start_msg = function () {
   Hue.msg_media_menu = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "media_menu",
-      window_width: "22em",
+      window_width: "22rem",
       after_show: function (instance) {
         common.after_show(instance)
         Hue.media_menu_open = true
@@ -246,7 +246,7 @@ Hue.start_msg = function () {
   Hue.msg_message = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "message",
-      window_width: "26em",
+      window_width: "26rem",
       close_on_overlay_click: false,
       after_show: function (instance) {
         common.after_show(instance)
@@ -266,14 +266,14 @@ Hue.start_msg = function () {
   Hue.msg_input_history = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "input_history",
-      window_width: "24em",
+      window_width: "24rem",
     })
   )
 
   Hue.msg_chat_search = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "chat_search",
-      window_width: "30em",
+      window_width: "30rem",
       after_close: function (instance) {
         common.after_close(instance)
         Hue.reset_chat_search_filter()
@@ -284,7 +284,7 @@ Hue.start_msg = function () {
   Hue.msg_highlights = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "highlights",
-      window_width: "30em",
+      window_width: "30rem",
       after_close: function (instance) {
         common.after_close(instance)
         Hue.reset_highlights_filter()
@@ -396,7 +396,7 @@ Hue.start_msg = function () {
   Hue.msg_reply = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "reply",
-      window_width: "26em",
+      window_width: "26rem",
       after_show: function (instance) {
         common.after_show(instance)
         Hue.writing_reply = true
