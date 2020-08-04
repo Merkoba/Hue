@@ -70,7 +70,7 @@ Hue.change_password = function (passwd, show_feedback = true) {
 // Feedback on password change
 Hue.password_changed = function (data) {
   Hue.feedback(
-    `Password succesfully changed to ${data.password}. To force other clients connected to your account to disconnect you can use ${Hue.config.commands_prefix}disconnectothers`
+    `Password succesfully changed. To force other clients connected to your account to disconnect you can use ${Hue.config.commands_prefix}disconnectothers`
   )
 }
 
