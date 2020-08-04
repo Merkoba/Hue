@@ -133,15 +133,19 @@ Hue.insert_to_input = function (what) {
 
 // Changes the input
 Hue.change_input = function (s, to_end = true, focus = true) {
-  $("#input").val(s)
+  Hue.stop_fixed_input()
 
+  $("#input").val(s)
+  
   if (to_end) {
     Hue.input_to_end()
   }
-
+  
   if (focus) {
     Hue.focus_input()
   }
+
+  Hue.check_fixed_input()
 }
 
 // Focuses the input
@@ -167,7 +171,6 @@ Hue.input_to_end = function () {
 Hue.add_linebreak_to_input = function () {
   Hue.insert_to_input("\n")
   Hue.scroll_input_to_bottom()
-  Hue.check_fixed_input()
 }
 
 // Scrolls input to bottom when it's overflowed
