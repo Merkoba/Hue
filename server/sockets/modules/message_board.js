@@ -14,7 +14,7 @@ module.exports = function (
       return handler.get_out(socket)
     }
 
-    if (data.message !== utilz.clean_string2(data.message)) {
+    if (data.message !== utilz.clean_string2b(data.message)) {
       return handler.get_out(socket)
     }
 
