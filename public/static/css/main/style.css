@@ -4,6 +4,7 @@
 	--icon_size: 1.4rem;
 	--app_font_family: imported_font, sans-serif;
 	--profile_image_size: 2.6471rem;
+	--tab-size: 1.6rem;
 }
 
 @font-face {
@@ -367,8 +368,8 @@ body * {
 	min-height: calc(var(--panel_height) - 0.6rem);
 	max-height: 20rem;
 	height: calc(var(--expand) - 0.6rem);
-	-moz-tab-size: 1.4rem;
-	tab-size: 1.4rem;
+	-moz-tab-size: var(--tab-size);
+	tab-size: var(--tab-size);
 }
 
 .fixed_input {
@@ -2912,8 +2913,8 @@ pre {
 	background-color: var(--color_4_a);
 	font-size: 0.9rem;
 	padding: 0.5rem;
-	-moz-tab-size: 1.4rem;
-	tab-size: 1.4rem;
+	-moz-tab-size: var(--tab-size);
+	tab-size: var(--tab-size);
 }
 
 .shady {
