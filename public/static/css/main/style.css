@@ -2909,6 +2909,7 @@ pre {
 .precode {
 	background-color: var(--color_4_a);
 	font-size: 0.9rem;
+	padding: 0.5rem;
 }
 
 .shady {
