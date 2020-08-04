@@ -869,8 +869,11 @@ Hue.add_to_chat = function (args = {}) {
   let content_container, message_id
 
   let codes = args.message.find("pre code")
+  let code_cls = ""
 
   if (codes.length > 0) {
+    code_cls = "no_pre_wrap"
+
     codes.each(function () {
       hljs.highlightBlock(this)
     })
@@ -878,6 +881,7 @@ Hue.add_to_chat = function (args = {}) {
 
   if (mode === "chat") {
     content_container = args.message.find(".chat_content_container").eq(0)
+    content_container.find(".chat_content").eq(0).addClass(code_cls)
     Hue.chat_content_container_id += 1
     content_container.data(
       "chat_content_container_id",

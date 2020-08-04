@@ -519,8 +519,13 @@ body * {
 
 .chat_content {
 	font-size: 1em;
+	white-space: pre-wrap;
 	display: inline-block;
 	line-height: 1.2em;
+}
+
+.no_pre_wrap {
+	white-space: initial;
 }
 
 .thirdperson * {
