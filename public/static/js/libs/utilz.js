@@ -687,7 +687,6 @@ const Utilz = function () {
 
 	utilz.untab_string = function (s) {
 		s = s.replace(/\t/gm, "  ")
-
 		let lines = s.split("\n")
 
 		if (lines.length <= 1) {
@@ -711,7 +710,6 @@ const Utilz = function () {
 		}
     
 		let new_lines = []
-
 		let spaces = ""
       
 		for (let i=0; i<pos; i++) {
