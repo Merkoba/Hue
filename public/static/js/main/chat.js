@@ -868,20 +868,8 @@ Hue.add_to_chat = function (args = {}) {
   let highlighted = args.message.data("highlighted")
   let content_container, message_id
 
-  let codes = args.message.find("pre code")
-  let code_cls = ""
-
-  if (codes.length > 0) {
-    code_cls = "no_pre_wrap"
-
-    codes.each(function () {
-      hljs.highlightBlock(this)
-    })
-  }
-
   if (mode === "chat") {
     content_container = args.message.find(".chat_content_container").eq(0)
-    content_container.find(".chat_content").eq(0).addClass(code_cls)
     Hue.chat_content_container_id += 1
     content_container.data(
       "chat_content_container_id",
@@ -1249,20 +1237,6 @@ Hue.setup_markdown_regexes = function () {
     return g1
   }
 
-  Hue.markdown_regexes["`"] = {}
-  Hue.markdown_regexes["`"].regex = Hue.make_markdown_char_regex_2("`")
-  Hue.markdown_regexes["`"].replace_function = function (g1, g2, g3, g4, g5) {
-    let n = g3.length
-
-    if (n == 1) {
-      return `${g2}<pre class='inline_pre'><code>[dummy-space]${g4}[dummy-space]</code></pre>${g5}`
-    } else if (n === 3) {
-      return `${g2}<pre><code>[dummy-space]${g4}[dummy-space]</code></pre>${g5}`
-    }
-
-    return g1
-  }
-
   Hue.markdown_regexes["!"] = {}
   Hue.markdown_regexes["!"].regex = Hue.make_markdown_char_regex("!")
   Hue.markdown_regexes["!"].replace_function = function (g1, g2, g3, g4, g5) {
@@ -1361,10 +1335,6 @@ Hue.replace_markdown = function (text) {
     Hue.markdown_regexes["="].replace_function
   )
   text = text.replace(
-    Hue.markdown_regexes["`"].regex,
-    Hue.markdown_regexes["`"].replace_function
-  )
-  text = text.replace(
     Hue.markdown_regexes["!"].regex,
     Hue.markdown_regexes["!"].replace_function
   )
@@ -1393,6 +1363,19 @@ Hue.replace_markdown = function (text) {
     Hue.markdown_regexes["horizontal_line"].regex,
     Hue.markdown_regexes["horizontal_line"].replace_function
   )
+  
+  let num_lines = 0
+  
+  for (let line of text.split("\n")) {
+    if (line.trim()) {
+      num_lines += 1
+
+      if (num_lines > 1) {
+        text = `<pre class='precode'><code>${text}</code></pre>`
+        break
+      }
+    }
+  }
 
   return text
 }

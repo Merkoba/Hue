@@ -2895,16 +2895,8 @@ pre {
 	outline: 0.0588rem dotted var(--color_4);
 }
 
-.inline_pre {
-	display: inline;
-}
-
-.inline_pre>code.hljs {
-	display: inline;
-	padding: 0;
-	padding-left: 0.2rem;
-	padding-right: 0.2rem;
-	overflow-x: initial;
+.precode {
+	background-color: var(--color_4_a);
 }
 
 .shady {
