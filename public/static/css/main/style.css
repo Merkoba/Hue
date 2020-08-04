@@ -2854,6 +2854,7 @@ pre {
 .message_board_text {
 	white-space: pre-wrap;
 	background-color: var(--color_4_a);
+	padding: 0.5rem;
 }
 
 #Msg-content-notebook {
