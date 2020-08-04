@@ -26,12 +26,11 @@ Hue.on_input_change = function () {
 // Check if fixed input should start
 Hue.check_fixed_input = function () {
   let el = $("#input")
-  let value = el.val()
 
   if (!Hue.fixed_input) {
     let overflow = el[0].clientHeight < el[0].scrollHeight
   
-    if (overflow || value.includes("\n")) {
+    if (overflow || el.val().includes("\n")) {
       Hue.start_fixed_input()
     }
   }
@@ -168,6 +167,7 @@ Hue.input_to_end = function () {
 Hue.add_linebreak_to_input = function () {
   Hue.insert_to_input("\n")
   Hue.scroll_input_to_bottom()
+  Hue.check_fixed_input()
 }
 
 // Scrolls input to bottom when it's overflowed
