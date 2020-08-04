@@ -170,3 +170,15 @@ Hue.show_input_history = function (filter = false) {
     Hue.scroll_modal_to_top("input_history")
   })
 }
+
+// Replaces an item in input history
+Hue.replace_in_input_history = function (original, replacement) {
+  for (let i=0; i<Hue.input_history.length; i++) {
+    let item = Hue.input_history[i]
+
+    if (item.message === original) {
+      Hue.input_history[i].message = replacement
+      break
+    }
+  }
+}

@@ -1594,8 +1594,9 @@ Hue.edit_message = function (container) {
   Hue.editing_message = true
   Hue.editing_message_container = container
   Hue.editing_message_area = area
+  Hue.editing_original_message = $(container).data("original_message")
 
-  $(area).val($(container).data("original_message")).focus()
+  $(area).val(Hue.editing_original_message).focus()
 
   setTimeout(function () {
     area.setSelectionRange(area.value.length, area.value.length)
@@ -1687,7 +1688,8 @@ Hue.send_edit_messsage = function (id) {
     new_message = `/me ${new_message}`
   }
   
-  Hue.process_message({ message: new_message, edit_id: edit_id })
+  Hue.process_message({ message: new_message, edit_id: edit_id, to_history: false })
+  Hue.replace_in_input_history(Hue.editing_original_message, new_message)
 }
 
 // Deletes a message
