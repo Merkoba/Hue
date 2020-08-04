@@ -6,8 +6,7 @@ Hue.input_is_scrolled = function () {
 
 // On input change
 Hue.on_input_change = function () {
-  let el = $("#input")
-  let value = el.val()
+  let value = $("#input").val()
 
   value = Hue.utilz.clean_string9(value)
 
@@ -20,6 +19,14 @@ Hue.on_input_change = function () {
     Hue.check_typing()
     Hue.old_input_val = value
   }
+
+  Hue.check_fixed_input()
+}
+
+// Check if fixed input should start
+Hue.check_fixed_input = function () {
+  let el = $("#input")
+  let value = el.val()
 
   if (!Hue.fixed_input) {
     let overflow = el[0].clientHeight < el[0].scrollHeight
@@ -61,7 +68,7 @@ Hue.stop_fixed_input = function () {
 
 // Setups events for the main input
 Hue.setup_input = function () {
-  $("#input").on("input, keyup", function () {
+  $("#input").on("input", function () {
     Hue.on_input_change()
   })
 

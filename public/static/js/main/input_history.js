@@ -92,6 +92,7 @@ Hue.input_history_change = function (direction) {
 
   Hue.stop_fixed_input()
   Hue.change_input(v)
+  Hue.check_fixed_input()
 }
 
 // Setups input history window events
