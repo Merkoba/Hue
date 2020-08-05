@@ -139,7 +139,7 @@ Hue.open_user_function_in_settings = function (n) {
 
 // Special function used for all User Function actions
 Hue.setting_user_function_do_action = function (number, type, save = true) {
-  let cmds = Hue.utilz.clean_string7(
+  let cmds = Hue.utilz.remove_multiple_empty_lines(
     $(`#${type}_user_function_${number}`).val()
   )
 

@@ -16,12 +16,10 @@ Hue.process_message = function (args = {}) {
   let message_split = args.message.split("\n")
   let num_lines = message_split.length
 
-  args.message = Hue.utilz.clean_multiline_2(args.message)
+  args.message = Hue.utilz.remove_multiple_empty_lines(args.message)
   args.message = Hue.utilz.untab_string(args.message)
 
   if (num_lines === 1 && Hue.is_command(args.message) && !args.edit_id) {
-    args.message = Hue.utilz.clean_string2(args.message)
-
     let and_split = args.message.split(" && ")
     let lc_message = args.message.toLowerCase()
     let more_stuff
@@ -202,8 +200,6 @@ Hue.process_message = function (args = {}) {
     }
   } else {
     if (Hue.can_chat) {
-      args.message = Hue.utilz.clean_multiline_2(args.message)
-
       if (args.message.length === 0) {
         Hue.clear_input()
 

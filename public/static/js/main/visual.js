@@ -70,6 +70,7 @@ Hue.make_safe = function (args = {}) {
     remove_text_if_empty: false,
     date: false,
     no_spacing: false,
+    replace_markdown: true
   }
 
   args = Object.assign(def_args, args)
@@ -92,7 +93,11 @@ Hue.make_safe = function (args = {}) {
     let c_text = c.find(".message_info_text").eq(0)
 
     if (args.text_as_html) {
-      let h = Hue.replace_markdown(Hue.utilz.make_html_safe(args.text))
+      let h = Hue.utilz.make_html_safe(args.text)
+
+      if (args.replace_markdown) {
+        h = Hue.replace_markdown(h)
+      }
 
       if (args.urlize) {
         c_text.html(h).urlize()

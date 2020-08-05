@@ -235,7 +235,7 @@ Hue.save_last_message_board_post_checked = function (date) {
 // Checks if the user can delete posts in the message board
 Hue.check_message_board_permissions = function () {
   if (Hue.check_op_permission(Hue.role, "message_board_no_restriction")) {
-    $("#message_board_post_textarea").attr("placeholder", "Write A Post")
+    $("#message_board_post_textarea").attr("placeholder", "Shift+Enter To Post")
   } else {
     let minutes = Math.round(Hue.config.message_board_post_delay / 60 / 1000)
     let mins = minutes === 1 ? "minute" : "minutes"

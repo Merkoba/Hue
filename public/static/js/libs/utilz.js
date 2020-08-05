@@ -29,16 +29,21 @@ const Utilz = function () {
 		return s.replace(/\s+/g, ' ')
 	}
 
-	utilz.clean_string7 = function (s) {
+	utilz.remove_multiple_empty_lines = function (s, level = 1) {
 		let ns = []
-
+		let charge = 0
 		let split = s.split('\n')
 
 		for (let line of split) {
-			let ps = line.replace(/[ \t\f\v]+/g, ' ').trim()
-
-			if (ps !== "") {
-				ns.push(ps)
+			if (line.trim() === "") {
+				if (charge < level) {
+					ns.push(line)
+				}
+        
+				charge += 1
+			} else {
+				charge = 0
+				ns.push(line)
 			}
 		}
 
@@ -538,61 +543,6 @@ const Utilz = function () {
 		} else {
 			return `"${s}"`
 		}
-	}
-
-	utilz.clean_multiline = function (s) {
-		let split = s.split("\n")
-		let num_lines = split.length
-
-		if (num_lines === 1) {
-			s = s.trim()
-		} else {
-			let new_lines = []
-
-			for (let line of split) {
-				if (line.trim().length > 0) {
-					new_lines.push(line)
-				}
-			}
-
-			s = new_lines.join("\n")
-		}
-
-		return s
-	}
-
-	utilz.clean_multiline_2 = function (s) {
-		let split = s.split("\n")
-		let num_lines = split.length
-		let used = false
-
-		if (num_lines === 1) {
-			s = s.trim()
-		} else {
-			let new_lines = []
-
-			for (let line of split) {
-				line = line.trimRight()
-				let add = false
-
-				if (line) {
-					used = true
-					add = true
-				} else {
-					if (used) {
-						add = true
-					}
-				}
-
-				if (add) {
-					new_lines.push(line)
-				}
-			}
-
-			s = new_lines.join("\n")
-		}
-
-		return s
 	}
 
 	utilz.get_limited_string = function (s, n) {

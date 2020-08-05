@@ -138,7 +138,7 @@ Hue.user_settings = {
     description: `Words on messages to trigger highlights`,
     action: (type, save = true) => {
       let words = Hue.utilz.make_unique_lines(
-        Hue.utilz.clean_string7($(`#${type}_other_words_to_highlight`).val())
+        Hue.utilz.remove_multiple_empty_lines($(`#${type}_other_words_to_highlight`).val())
       )
 
       $(`#${type}_other_words_to_highlight`).val(words)
@@ -158,7 +158,7 @@ Hue.user_settings = {
     widget_type: "textarea",
     description: `Actions to perform after a Double Tap 1 trigger`,
     action: (type, save = true) => {
-      let cmds = Hue.utilz.clean_string7($(`#${type}_double_tap`).val())
+      let cmds = Hue.utilz.remove_multiple_empty_lines($(`#${type}_double_tap`).val())
 
       $(`#${type}_double_tap`).val(cmds)
 
@@ -173,7 +173,7 @@ Hue.user_settings = {
     widget_type: "textarea",
     description: `Actions to perform after a Double Tap 2 trigger`,
     action: (type, save = true) => {
-      let cmds = Hue.utilz.clean_string7($(`#${type}_double_tap_2`).val())
+      let cmds = Hue.utilz.remove_multiple_empty_lines($(`#${type}_double_tap_2`).val())
 
       $(`#${type}_double_tap_2`).val(cmds)
 
@@ -188,7 +188,7 @@ Hue.user_settings = {
     widget_type: "textarea",
     description: `Actions to perform after a Double Tap 3 trigger`,
     action: (type, save = true) => {
-      let cmds = Hue.utilz.clean_string7($(`#${type}_double_tap_3`).val())
+      let cmds = Hue.utilz.remove_multiple_empty_lines($(`#${type}_double_tap_3`).val())
 
       $(`#${type}_double_tap_3`).val(cmds)
 
@@ -203,7 +203,7 @@ Hue.user_settings = {
     widget_type: "textarea",
     description: `Actions to perform after a successful startup`,
     action: (type, save = true) => {
-      let cmds = Hue.utilz.clean_string7($(`#${type}_at_startup`).val())
+      let cmds = Hue.utilz.remove_multiple_empty_lines($(`#${type}_at_startup`).val())
 
       $(`#${type}_at_startup`).val(cmds)
 
@@ -219,7 +219,7 @@ Hue.user_settings = {
     description: `Ignore messages and actions from these users`,
     action: (type, save = true) => {
       let unames = Hue.utilz.make_unique_lines(
-        Hue.utilz.clean_string7($(`#${type}_ignored_usernames`).val())
+        Hue.utilz.remove_multiple_empty_lines($(`#${type}_ignored_usernames`).val())
       )
 
       $(`#${type}_ignored_usernames`).val(unames)
@@ -241,7 +241,7 @@ Hue.user_settings = {
     description: `Accept remote command executions from these users`,
     action: (type, save = true) => {
       let unames = Hue.utilz.make_unique_lines(
-        Hue.utilz.clean_string7($(`#${type}_accept_commands_from`).val())
+        Hue.utilz.remove_multiple_empty_lines($(`#${type}_accept_commands_from`).val())
       )
 
       $(`#${type}_accept_commands_from`).val(unames)
@@ -266,7 +266,7 @@ Hue.user_settings = {
     description: `Ignore messages that contain these words`,
     action: (type, save = true) => {
       let unames = Hue.utilz.make_unique_lines(
-        Hue.utilz.clean_string7($(`#${type}_ignored_words`).val())
+        Hue.utilz.remove_multiple_empty_lines($(`#${type}_ignored_words`).val())
       )
 
       $(`#${type}_ignored_words`).val(unames)
@@ -489,7 +489,7 @@ Hue.user_settings = {
     widget_type: "textarea",
     description: `Actions to perform when the screen gets locked`,
     action: (type, save = true) => {
-      let cmds = Hue.utilz.clean_string7($(`#${type}_on_lockscreen`).val())
+      let cmds = Hue.utilz.remove_multiple_empty_lines($(`#${type}_on_lockscreen`).val())
 
       $(`#${type}_on_lockscreen`).val(cmds)
 
@@ -504,7 +504,7 @@ Hue.user_settings = {
     widget_type: "textarea",
     description: `Actions to perform when the screen gets unlocked`,
     action: (type, save = true) => {
-      let cmds = Hue.utilz.clean_string7($(`#${type}_on_unlockscreen`).val())
+      let cmds = Hue.utilz.remove_multiple_empty_lines($(`#${type}_on_unlockscreen`).val())
 
       $(`#${type}_on_unlockscreen`).val(cmds)
 
@@ -519,7 +519,7 @@ Hue.user_settings = {
     widget_type: "textarea",
     description: `Custom commands defined by the user, based on other commands`,
     action: (type, save = true) => {
-      let cmds = Hue.utilz.clean_string7($(`#${type}_aliases`).val())
+      let cmds = Hue.utilz.remove_multiple_empty_lines($(`#${type}_aliases`).val())
 
       cmds = Hue.format_command_aliases(cmds)
 
@@ -541,7 +541,7 @@ Hue.user_settings = {
     description: `Other words to be considered on Tab autocompletion`,
     action: (type, save = true) => {
       let words = Hue.utilz.make_unique_lines(
-        Hue.utilz.clean_string7($(`#${type}_other_words_to_autocomplete`).val())
+        Hue.utilz.remove_multiple_empty_lines($(`#${type}_other_words_to_autocomplete`).val())
       )
 
       $(`#${type}_other_words_to_autocomplete`).val(words)

@@ -55,7 +55,7 @@ Hue.send_inline_whisper = function (arg, show = true) {
   let uname = split[0].trim()
   let usplit = uname.split("&&")
   let message = Hue.utilz.clean_string10(
-    Hue.utilz.clean_multiline(split.slice(1).join(">"))
+    Hue.utilz.remove_multiple_empty_lines(split.slice(1).join(">"))
   )
 
   if (!message) {
@@ -185,7 +185,7 @@ Hue.send_popup_message = function (force = false) {
 
   Hue.sending_whisper = true
 
-  let message = Hue.utilz.clean_string10($("#write_message_area").val())
+  let message = Hue.utilz.remove_multiple_empty_lines($("#write_message_area").val()).trim()
   let diff = Hue.config.max_input_length - message.length
   let draw_coords
 
@@ -546,6 +546,7 @@ Hue.popup_message_received = function (
       html: h,
       remove_text_if_empty: true,
       date: data.date,
+      replace_markdown: false
     })
 
     Hue.setup_whispers_click(data.content, data.username)
