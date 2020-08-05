@@ -141,7 +141,6 @@
 	"global_settings_default_autoscroll_amount": 20,
 	"global_settings_default_autoscroll_delay": 500,
 	"global_settings_default_show_input_placeholder": true,
-	"global_settings_default_autoreveal_spoilers": false,
 	"global_settings_default_theme_mode": "room",
 	"global_settings_default_theme_color": "#272727",
 	"global_settings_default_text_color": "#d4d4d4",

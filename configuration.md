@@ -360,9 +360,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_show_input_placeholder
 >Whether the input placeholder is enabled by default.
 
-"global_settings_default_autoreveal_spoilers
->Whether spoiler autoreveal is on by default.
-
 "global_settings_default_theme_mode
 >Whether it uses the room theme or a custom theme by default.
 

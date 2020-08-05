@@ -2436,11 +2436,6 @@ a.special_link:hover {
 	}
 }
 
-.spoiler {
-	cursor: pointer;
-	background-color: var(--font_color);
-}
-
 #image_upload_comment_image_preview {
 	max-height: 29.4118rem;
 	max-width: 29.4118rem;

@@ -633,19 +633,6 @@ Hue.user_settings = {
       }
     },
   },
-  autoreveal_spoilers: {
-    widget_type: "checkbox",
-    description: `Whether spoiler messages should be autorevealed`,
-    action: (type, save = true) => {
-      Hue[type].autoreveal_spoilers = $(`#${type}_autoreveal_spoilers`).prop(
-        "checked"
-      )
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   autoscroll_amount: {
     widget_type: "number",
     description: `Pixel amount to scroll up or down on each tick on autoscroll`,
