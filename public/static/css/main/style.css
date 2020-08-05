@@ -367,7 +367,7 @@ body * {
 	word-break: break-word;
 	min-height: calc(var(--panel_height) - 0.6rem);
 	max-height: 20rem;
-	height: calc(var(--expand) - 0.6rem);
+	height: calc(var(--panel_height) - 0.6rem);
 	-moz-tab-size: var(--tab-size);
 	tab-size: var(--tab-size);
 }
