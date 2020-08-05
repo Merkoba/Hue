@@ -1214,18 +1214,6 @@ Hue.setup_markdown_regexes = function () {
     return g1
   }
 
-  Hue.markdown_regexes["="] = {}
-  Hue.markdown_regexes["="].regex = Hue.make_markdown_char_regex("=")
-  Hue.markdown_regexes["="].replace_function = function (g1, g2, g3, g4, g5) {
-    let n = g3.length
-
-    if (n === 1) {
-      return `${g2}<div class='backgrounded'>[dummy-space]${g4}[dummy-space]</div>${g5}`
-    }
-
-    return g1
-  }
-
   Hue.markdown_regexes["!"] = {}
   Hue.markdown_regexes["!"].regex = Hue.make_markdown_char_regex("!")
   Hue.markdown_regexes["!"].replace_function = function (g1, g2, g3, g4, g5) {
@@ -1318,10 +1306,6 @@ Hue.replace_markdown = function (text, multilines = true) {
   text = text.replace(
     Hue.markdown_regexes["_"].regex,
     Hue.markdown_regexes["_"].replace_function
-  )
-  text = text.replace(
-    Hue.markdown_regexes["="].regex,
-    Hue.markdown_regexes["="].replace_function
   )
   text = text.replace(
     Hue.markdown_regexes["!"].regex,

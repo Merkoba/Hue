@@ -2898,12 +2898,6 @@ pre {
 	margin-top: 1rem;
 }
 
-.backgrounded {
-	display: inline-block;
-	background-color: var(--slight_background);
-	outline: 0.0588rem dotted var(--color_4);
-}
-
 .precode {
 	background-color: var(--color_4_a);
 	font-size: 0.9rem;
