@@ -49,7 +49,6 @@ Hue.start_fixed_input = function () {
     $("#input").val("")
   }
 
-  $("#input").attr("placeholder", "Press Enter twice to post")
   Hue.fixed_input = true
 }
 
@@ -61,7 +60,6 @@ Hue.stop_fixed_input = function () {
 
   $("#input").removeClass("fixed_input")
   $("#footer_search").removeClass("fixed_footer_search")
-  Hue.update_input_placeholder()
   Hue.fixed_input = false
 }
 
