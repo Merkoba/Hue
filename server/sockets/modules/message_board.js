@@ -14,10 +14,6 @@ module.exports = function (
       return handler.get_out(socket)
     }
 
-    if (data.message !== utilz.clean_string2b(data.message)) {
-      return handler.get_out(socket)
-    }
-
     if (data.message.length > config.max_message_board_post_length) {
       return handler.get_out(socket)
     }

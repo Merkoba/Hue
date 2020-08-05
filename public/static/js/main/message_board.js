@@ -124,7 +124,7 @@ Hue.submit_message_board_post = function () {
     return false
   }
   
-  let message = Hue.utilz.clean_string2b($("#message_board_post_textarea").val())
+  let message = Hue.utilz.remove_multiple_empty_lines($("#message_board_post_textarea").val()).trim()
 
   if (!message || message.length > Hue.config.max_message_board_post_length) {
     return false
