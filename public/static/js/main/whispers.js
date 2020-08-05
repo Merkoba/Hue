@@ -54,9 +54,7 @@ Hue.send_inline_whisper = function (arg, show = true) {
 
   let uname = split[0].trim()
   let usplit = uname.split("&&")
-  let message = Hue.utilz.clean_string10(
-    Hue.utilz.remove_multiple_empty_lines(split.slice(1).join(">"))
-  )
+  let message = Hue.utilz.clean_string2(split.slice(1).join(">"))
 
   if (!message) {
     return false
