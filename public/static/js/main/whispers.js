@@ -203,6 +203,10 @@ Hue.send_popup_message = function (force = false) {
 
 // On whisper received
 Hue.whisper_received = function (data) {
+  if (Hue.ignored_usernames_list.includes(data.username)) {
+    return false
+  }
+
   let message = `Whisper from ${data.username}`
   let func = function () { Hue.show_whisper(data) }
   let item = Hue.make_info_popup_item({icon: "envelope", message: message})
