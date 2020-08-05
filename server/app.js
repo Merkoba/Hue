@@ -5,6 +5,7 @@ module.exports = function (db, db_manager, config, sconfig, utilz) {
   const bodyParser = require("body-parser")
   const routes = require("./routes/index")(db_manager, config, sconfig, utilz)
   const MongoDBStore = require("connect-mongodb-session")(session)
+  const rateLimit = require("express-rate-limit");
 
   const mongo_store = new MongoDBStore({
     uri: config.mongodb_path,
@@ -22,9 +23,23 @@ module.exports = function (db, db_manager, config, sconfig, utilz) {
 
   let app = express()
 
+  app.set("trust proxy", 1)
+
+  // Limit to x reqs per y mins
+  const limiter = rateLimit({
+    windowMs: 10 * 60 * 1000,
+    max: 10
+  })
+
+  // Apply the limiter to these routes
+  app.use("/change_password/", limiter);
+  app.use("/recover/", limiter);
+  app.use("/verify/", limiter);
+  app.use("/login/", limiter);
+  app.use("/register/", limiter);
+
   app.set("views", path.join(__dirname, "views"))
   app.set("view engine", "ejs")
-  app.set("trust proxy", 1)
 
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({ extended: false }))
