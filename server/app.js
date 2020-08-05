@@ -28,7 +28,7 @@ module.exports = function (db, db_manager, config, sconfig, utilz) {
   // Limit to x reqs per y mins
   const limiter = rateLimit({
     windowMs: 10 * 60 * 1000,
-    max: 10
+    max: 20
   })
 
   // Apply the limiter to these routes
@@ -37,6 +37,8 @@ module.exports = function (db, db_manager, config, sconfig, utilz) {
   app.use("/verify/", limiter);
   app.use("/login/", limiter);
   app.use("/register/", limiter);
+  app.get("/", limiter);
+  app.get("/:id(\\w+)", limiter);
 
   app.set("views", path.join(__dirname, "views"))
   app.set("view engine", "ejs")
