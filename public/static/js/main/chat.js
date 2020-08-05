@@ -1,5 +1,5 @@
 // Process user's input messages
-// Checks if it's a command and executes it
+// Checks if it is a command and executes it
 // Or sends a chat message to the server
 Hue.process_message = function (args = {}) {
   let def_args = {
