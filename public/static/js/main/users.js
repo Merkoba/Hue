@@ -1077,13 +1077,12 @@ Hue.announce_role_change = function (data) {
 // Role setter for user
 Hue.set_role = function (rol, config = true) {
   Hue.role = rol
-
   Hue.check_media_permissions()
   Hue.check_message_board_permissions()
-  Hue.check_message_board_delay()
-
+  
   if (config) {
     Hue.config_room_menu()
+    Hue.check_message_board_delay()
   }
 }
 
