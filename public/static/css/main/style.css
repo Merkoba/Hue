@@ -1306,7 +1306,7 @@ select {
 }
 
 #write_message_area {
-	width: 23.5294rem;
+	width: 100%;
 	resize: none;
 	font-size: 1em;
 	text-align: center;
@@ -1316,6 +1316,7 @@ select {
 	cursor: crosshair;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
+	width: 100%;
 }
 
 #draw_image_area {
