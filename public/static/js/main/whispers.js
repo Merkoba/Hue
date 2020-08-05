@@ -236,11 +236,15 @@ Hue.show_whisper = function (data) {
   }
 
   Hue.msg_sent_message.set_title(Hue.make_safe({text: title, onclick: title_func }))
+  
+  let message_html = Hue.replace_markdown(data.message)
 
   Hue.msg_sent_message.show(function () {
-    $("#sent_message_text").text(data.message)
+    $("#sent_message_text").html(message_html)
     $("#sent_message_button").html(button_html)
     $("#sent_message_button").click(button_func)
+    
+    Hue.setup_whispers_click($("#sent_message_text"), usr[0])
 
     let canvas = $("#sent_message_drawing")[0]
     
