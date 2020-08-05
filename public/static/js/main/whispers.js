@@ -83,50 +83,33 @@ Hue.send_inline_whisper = function (arg, show = true) {
     return false
   }
 
-  Hue.do_send_whisper_user(approved, message, false, show)
+  Hue.do_send_whisper({message: message, usernames: approved, draw_coords: false}, show)
 }
 
 // Shows the window to write whispers
-// Handles different whisper types
 Hue.write_popup_message = function (unames = [], type = "user") {
-  if (type === "ops") {
-    if (!Hue.check_op_permission(Hue.role, "whisper_ops")) {
-      return false
-    }
-  } else if (type === "room") {
-    if (!Hue.check_op_permission(Hue.role, "broadcast")) {
+  for (let u of unames) {
+    if (!Hue.check_whisper_user(u)) {
       return false
     }
   }
 
-  let title
-
-  if (type === "user") {
-    for (let u of unames) {
-      if (!Hue.check_whisper_user(u)) {
-        return false
-      }
-    }
-
-    let f = function () {
-      Hue.show_userlist_window("whisper")
-    }
-
-    title = { text: `Whisper to ${Hue.utilz.nice_list(unames)}`, onclick: f }
-  } else if (type === "ops") {
-    title = { text: "* Whisper to Operators *" }
-  } else if (type === "room") {
-    title = { text: "* Message To Room *" }
-  } else if (type === "system") {
-    title = { text: "* Message To System *" }
+  let f = function () {
+    Hue.show_userlist_window("whisper")
   }
+
+  let title = { text: `Whisper to ${Hue.utilz.nice_list(unames)}`, onclick: f }
 
   Hue.message_unames = unames
-  Hue.message_type = type
   Hue.msg_message.set_title(Hue.make_safe(title))
 
   Hue.msg_message.show(function () {
     $("#write_message_area").focus()
+
+    if (type === "user") {
+      Hue.show_message_feedback("Click titlebar to add more users")
+    }
+
     Hue.sending_whisper = false
   })
 }
@@ -171,16 +154,6 @@ Hue.send_popup_message = function (force = false) {
     return false
   }
 
-  if (Hue.message_type === "ops") {
-    if (!Hue.check_op_permission(Hue.role, "whisper_ops")) {
-      return false
-    }
-  } else if (Hue.message_type === "room") {
-    if (!Hue.check_op_permission(Hue.role, "broadcast")) {
-      return false
-    }
-  }
-
   Hue.sending_whisper = true
 
   let message = Hue.utilz.remove_multiple_empty_lines($("#write_message_area").val()).trim()
@@ -203,10 +176,7 @@ Hue.send_popup_message = function (force = false) {
       return false
     }
   } else if (diff < 0) {
-    $("#write_message_feedback").text(
-      `Character limit exceeded by ${Math.abs(diff)}`
-    )
-    $("#write_message_feedback").css("display", "block")
+    Hue.show_message_feedback(`Character limit exceeded by ${Math.abs(diff)}`)
     Hue.sending_whisper = false
     return false
   }
@@ -215,23 +185,12 @@ Hue.send_popup_message = function (force = false) {
   let num_lines = message_split.length
 
   if (num_lines > Hue.config.max_num_newlines) {
-    $("#write_message_feedback").text(`Too many linebreaks`)
-    $("#write_message_feedback").css("display", "block")
+    Hue.show_message_feedback("Too many linebreaks")
     Hue.sending_whisper = false
     return false
   }
 
-  let ans
-
-  if (Hue.message_type === "user") {
-    ans = Hue.send_whisper_user(message, draw_coords, force)
-  } else if (Hue.message_type === "ops") {
-    ans = Hue.send_whisper_ops(message, draw_coords)
-  } else if (Hue.message_type === "room") {
-    ans = Hue.send_room_broadcast(message, draw_coords)
-  } else if (Hue.message_type === "system") {
-    ans = Hue.send_system_broadcast(message, draw_coords)
-  }
+  let ans = Hue.send_whisper(message, draw_coords, force)
 
   if (ans) {
     Hue.msg_message.close(function () {
@@ -242,84 +201,77 @@ Hue.send_popup_message = function (force = false) {
   }
 }
 
-// Confirmation when a whisper was sent
-// Configured to recreate the whisper when clicked
-Hue.sent_popup_message_function = function (
-  mode,
-  message,
-  draw_coords,
-  data1 = []
-) {
-  let cf = function () {}
-  let ff = function () {}
-  let s1, s2
+// On whisper received
+Hue.whisper_received = function (data) {
+  let message = `Whisper from ${data.username}`
+  let func = function () { Hue.show_whisper(data) }
+  let item = Hue.make_info_popup_item({icon: "envelope", message: message})
+  data.notification = Hue.push_whisper(message, func, false)
+  Hue.show_popup(Hue.make_info_popup(func), item)
+}
 
-  if (mode === "whisper") {
-    s1 = Hue.utilz.nonbreak("Send Another Whisper")
-    s2 = `Whisper sent to ${Hue.utilz.nice_list(data1)}`
+// Shows a whisper message
+Hue.show_whisper = function (data) {
+  let title_func = function () {}
+  let button_func = function () {}
+  let title, button_html
+  let usr
 
-    cf = function () {
-      Hue.write_popup_message(data1)
-    }
-
-    ff = function () {
-      Hue.show_profile(data1[0])
-    }
+  if (data.usernames === undefined) {
+    title = `Whisper from ${data.username}`
+    usr = [data.username]
   } else {
-    return false
+    title = `Whisper sent to ${Hue.utilz.nice_list(data.usernames)}`
+    usr = data.usernames
   }
 
-  let h = `<div class='small_button action' id='modal_popup_feedback_send'>${s1}</div>`
-  let ch, no_spacing
+  button_html = Hue.utilz.nonbreak("Send Whisper")
 
-  if (draw_coords) {
-    ch =
-      "<canvas id='modal_popup_feedback_draw' class='draw_canvas' width='400px' height='300px' tabindex=1></canvas>"
-    no_spacing = false
-  } else {
-    ch = ""
-    no_spacing = true
+  button_func = function () {
+    Hue.write_popup_message(usr)
   }
 
-  if (ch) {
-    h = ch + h
+  title_func = function () {
+    Hue.show_profile(usr[0])
   }
 
-  let s = Hue.make_safe({
-    text: message,
-    html: h,
-    remove_text_if_empty: true,
-    no_spacing: no_spacing,
-    date: Date.now(),
+  Hue.msg_sent_message.set_title(Hue.make_safe({text: title, onclick: title_func }))
+
+  Hue.msg_sent_message.show(function () {
+    $("#sent_message_text").text(data.message)
+    $("#sent_message_button").html(button_html)
+    $("#sent_message_button").click(button_func)
+
+    let canvas = $("#sent_message_drawing")[0]
+    
+    if (data.draw_coords) {
+      let context = canvas.getContext("2d")
+
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      Hue.canvas_redraw({
+        context: context,
+        click_x: data.draw_coords[0],
+        click_y: data.draw_coords[1],
+        drag: data.draw_coords[2],
+      })
+
+      $(canvas).css("display", "block")
+    } else {
+      $(canvas).css("display", "none")
+    }
   })
 
-  let f = function () {
-    let content = `<div class='whisper_info_container'>${s.outerHTML}</div>`
-
-    Hue.msg_info2.show(
-      [Hue.make_safe({ text: s2, onclick: ff }), content],
-      function () {
-        $("#modal_popup_feedback_send").click(cf)
-
-        if (draw_coords) {
-          let context = $("#modal_popup_feedback_draw")[0].getContext("2d")
-
-          Hue.canvas_redraw({
-            context: context,
-            click_x: draw_coords[0],
-            click_y: draw_coords[1],
-            drag: draw_coords[2],
-          })
-        }
-      }
-    )
+  if (!data.notification.data("read")) {
+    let text = data.notification.text().replace(/\s\(unread\)$/, "")
+    data.notification.text(text)
+    data.notification.data("read", true)
+    Hue.update_whispers_unread_count()
   }
-
-  return f
 }
 
 // Sends a whisper to user(s)
-Hue.send_whisper_user = function (message, draw_coords, force = false) {
+Hue.send_whisper = function (message, draw_coords, force = false) {
   let unames = Hue.message_unames
 
   if (!unames) {
@@ -327,9 +279,7 @@ Hue.send_whisper_user = function (message, draw_coords, force = false) {
   }
 
   if (!Hue.can_chat) {
-    $("#write_message_feedback").text("You don't have chat permission")
-    $("#write_message_feedback").css("display", "block")
-
+    Hue.show_message_feedback("You don't have chat permission")
     return false
   }
 
@@ -354,9 +304,7 @@ Hue.send_whisper_user = function (message, draw_coords, force = false) {
         dd = " Double click Send to send anyway"
       }
 
-      $("#write_message_feedback").text(`(${us} ${w} not in the room)${dd}`)
-      $("#write_message_feedback").css("display", "block")
-
+      Hue.show_message_feedback(`(${us} ${w} not in the room)${dd}`)
       return false
     }
   }
@@ -365,303 +313,30 @@ Hue.send_whisper_user = function (message, draw_coords, force = false) {
     return false
   }
 
-  Hue.do_send_whisper_user(approved, message, draw_coords)
-
+  Hue.do_send_whisper({message: message, usernames: approved, draw_coords: draw_coords})
   return true
 }
 
-// Does the whisper of type user emit
-Hue.do_send_whisper_user = function (
-  unames,
-  message,
-  draw_coords,
-  show = true
-) {
-  Hue.socket_emit("whisper", {
-    type: "user",
-    usernames: unames,
-    message: message,
-    draw_coords: draw_coords,
-  })
+// Does the whisper emit
+Hue.do_send_whisper = function (data, show = true) {
+  Hue.socket_emit("whisper", data)
 
   if (show) {
-    let f = Hue.sent_popup_message_function(
-      "whisper",
-      message,
-      draw_coords,
-      unames
-    )
-    let m = `Whisper sent to ${Hue.utilz.nice_list(unames)}`
+    let func = function () {
+      Hue.show_whisper(data)
+    }
+
+    let msg = `Whisper sent to ${Hue.utilz.nice_list(data.usernames)}`
+
     Hue.show_action_popup({
       title: "Whisper Sent",
       icon: "envelope",
-      message: m,
-      on_click: f
-    })
-    Hue.push_whisper(m, f, true)
-  }
-}
-
-// Does the whisper of type operators emit
-Hue.send_whisper_ops = function (message, draw_coords) {
-  if (!Hue.check_op_permission(Hue.role, "whisper_ops")) {
-    return false
-  }
-
-  Hue.socket_emit("whisper", {
-    type: "ops",
-    message: message,
-    draw_coords: draw_coords,
-  })
-  return true
-}
-
-// Does the whisper of type room broadcast emit
-Hue.send_room_broadcast = function (message, draw_coords) {
-  if (!Hue.check_op_permission(Hue.role, "broadcast")) {
-    return false
-  }
-
-  Hue.socket_emit("whisper", {
-    type: "broadcast",
-    message: message,
-    draw_coords: draw_coords,
-  })
-  return true
-}
-
-// Does the whisper of type system broadcast emit
-Hue.send_system_broadcast = function (message, draw_coords) {
-  Hue.socket_emit("whisper", {
-    type: "system_broadcast",
-    message: message,
-    draw_coords: draw_coords,
-  })
-  return true
-}
-
-// When receiving a whisper
-// A popup automatically appears unless configured not to
-Hue.popup_message_received = function (
-  data,
-  type = "user",
-  announce = true,
-  method = "popup"
-) {
-  if (!data.id) {
-    Hue.popup_message_id += 1
-    data.id = Hue.popup_message_id
-  }
-
-  if (!data.date) {
-    data.date = Date.now()
-  }
-
-  let nd = Hue.utilz.nice_date(data.date)
-  let f
-
-  if (data.username) {
-    if (Hue.user_is_ignored(data.username)) {
-      return false
-    }
-
-    if (Hue.accept_commands_from_list.includes(data.username)) {
-      if (data.message && Hue.is_command(data.message)) {
-        Hue.execute_whisper_command(data.username, data.message)
-        return
-      }
-    }
-
-    f = function () {
-      Hue.show_profile(data.username)
-    }
-  }
-
-  let ch
-
-  if (data.draw_coords) {
-    ch = `<canvas
-        id='draw_popup_area_${data.id}'
-        class='draw_canvas dynamic_title draw_canvas_received'
-        title='${nd}' data-otitle='${nd}'
-        data-date='${data.date}'
-        width='400px' height='300px'
-        tabindex=1></canvas>`
-  } else {
-    ch = false
-  }
-
-  let t
-  let title
-  let h
-
-  if (type === "user") {
-    t = `Whisper from ${data.username}`
-    title = { text: t, onclick: f }
-    h = `<div class='small_button action inline show_message_reply'>${Hue.utilz.nonbreak(
-      "Send Whisper"
-    )}</div>`
-  } else if (type === "ops") {
-    t = `Whisper (To Operators) from ${data.username}`
-    title = { text: t, onclick: f }
-
-    let h0
-
-    if (data.username !== Hue.username) {
-      h0 = `<div class='small_button_2 action show_message_reply show_message_reply_with_spacing'>${Hue.utilz.nonbreak(
-        "Send Whisper"
-      )}</div>`
-    } else {
-      h0 = ""
-    }
-
-    h = `<div class='flex_column_center'>${h0}<div class='small_button_2 action show_message_reply_ops'>${Hue.utilz.nonbreak(
-      "Send Whisper to Operators"
-    )}</div></div>`
-  } else if (type === "room") {
-    t = `Room Message from ${data.username}`
-    title = { text: t, onclick: f }
-    h = false
-  } else if (type === "system") {
-    t = "System Message"
-    title = { text: t }
-    h = false
-  }
-
-  if (ch) {
-    if (h) {
-      h = ch + h
-    } else {
-      h = ch
-    }
-  }
-
-  if (!data.content_made) {
-    data.content = Hue.make_safe({
-      text: data.message,
-      text_as_html: true,
-      text_classes: "popup_message_text",
-      html: h,
-      remove_text_if_empty: true,
-      date: data.date
+      message: msg,
+      on_click: func
     })
 
-    Hue.setup_whispers_click(data.content, data.username)
-    data.title = Hue.make_safe(title)
-    data.content_made = true
+    data.notification = Hue.push_whisper(msg, func, true)
   }
-
-  let open = !announce || Hue.get_setting("open_popup_messages")
-
-  if (open) {
-    if (method === "popup") {
-      if (Hue.get_open_whispers() >= 5) {
-        open = false
-      }
-    }
-  }
-
-  if (open) {
-    data.is_read = true
-    if (method === "popup") {
-      let closing_popups = false
-
-      for (let p of Hue.get_popup_instances()) {
-        if (!p.window || !p.window.id.includes("popup_message")) {
-          continue
-        }
-
-        if (p.window.id === `Msg-window-popup_message_${data.id}`) {
-          p.close(function () {
-            Hue.show_popup_message(data)
-          })
-
-          closing_popups = true
-          break
-        }
-      }
-
-      if (!closing_popups) {
-        Hue.show_popup_message(data)
-      }
-    } else if (method === "modal") {
-      Hue.show_popup_message(data, "modal")
-    }
-  } else {
-    data.is_read = false
-  }
-
-  if (announce) {
-    let af = function () {
-      if (!data.is_read) {
-        data.window_content.data("read", true)
-        data.window_content.text(data.window_text)
-        Hue.update_whispers_unread_count()
-      }
-
-      Hue.popup_message_received(data, type, false, "modal")
-    }
-
-    Hue.push_whisper(t, af, data)
-    Hue.update_whispers_unread_count()
-
-    if (!Hue.get_setting("open_popup_messages")) {
-      let item = Hue.make_info_popup_item({
-        icon: "envelope",
-        message: t,
-        push: false,
-        type: "whisper",
-      })
-
-      Hue.show_popup(Hue.make_info_popup(af, false), item)
-    }
-
-    Hue.on_highlight()
-  }
-}
-
-// Shows and configures the whisper popup
-Hue.show_popup_message = function (data, method = "popup") {
-  let pop, content
-  let dtitle = $(data.title).clone(true, true)[0]
-  let dcontent = $(data.content).clone(true, true)[0]
-
-  if (method === "popup") {
-    pop = Hue.create_popup({ position: "top", id: `popup_message_${data.id}` }, "whisper")
-    content = dcontent
-  } else if (method === "modal") {
-    pop = Hue.msg_info2
-    cont = $("<div class='whisper_info_container'></div>")
-    cont.append($(data.content).clone(true, true))
-    content = dcontent
-  }
-
-  pop.show([dtitle, content], function () {
-    $(pop.content)
-      .find(".show_message_reply")
-      .eq(0)
-      .click(function () {
-        Hue.write_popup_message([data.username])
-      })
-
-    $(pop.content)
-      .find(".show_message_reply_ops")
-      .eq(0)
-      .click(function () {
-        Hue.write_popup_message(false, "ops")
-      })
-
-    if (data.draw_coords) {
-      let context = $(`#draw_popup_area_${data.id}`)[0].getContext("2d")
-
-      Hue.canvas_redraw({
-        context: context,
-        click_x: data.draw_coords[0],
-        click_y: data.draw_coords[1],
-        drag: data.draw_coords[2],
-      })
-    }
-  })
 }
 
 // Setups whispers click events
@@ -725,7 +400,7 @@ Hue.setup_message_draw_area = function () {
 }
 
 // Pushes a new whisper to the whispers window
-Hue.push_whisper = function (message, on_click, data = {}) {
+Hue.push_whisper = function (message, on_click, read) {
   let d = Date.now()
   let t = Hue.utilz.nice_date(d)
 
@@ -740,17 +415,13 @@ Hue.push_whisper = function (message, on_click, data = {}) {
   content.attr("title", t)
   content.data("otitle", t)
   content.data("date", d)
-  data.window_content = content
-  data.window_text = content.text()
-
-  if (data.is_read !== undefined && !data.is_read) {
-    content.text(`${data.window_text} (unread)`)
-    read = false
-  } else {
-    read = true
-  }
-
   content.data("read", read)
+
+  if (read) {
+    content.text(message)
+  } else {
+    content.text(`${message} (unread)`)
+  }
 
   content.click(function () {
     on_click()
@@ -768,6 +439,10 @@ Hue.push_whisper = function (message, on_click, data = {}) {
   if (num_items > Hue.config.whispers_crop_limit) {
     $("#whispers_container .whispers_item").last().remove()
   }
+
+  Hue.update_whispers_unread_count()
+
+  return content
 }
 
 // Shows information about the recent whispers
@@ -798,6 +473,7 @@ Hue.get_unread_whispers = function () {
   return num_unread
 }
 
+// Gets open whispers
 Hue.get_open_whispers = function () {
   let popups = Hue.get_popup_instances()
   let num = 0
@@ -809,4 +485,15 @@ Hue.get_open_whispers = function () {
   }
 
   return num
+}
+
+// Shows the message feedback
+Hue.show_message_feedback = function (s) {
+  $("#write_message_feedback").text(s)
+  $("#write_message_feedback").css("display", "block")
+}
+
+// Hides the message feedback
+Hue.hide_message_feedback = function () {
+
 }

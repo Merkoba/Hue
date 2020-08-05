@@ -424,25 +424,6 @@ Hue.commands = {
     },
     description: `Same as ${Hue.config.commands_prefix}whisper but it doesn't show feedback when sent through the inline format, for example "${Hue.config.commands_prefix}whisper2 user > message". Useful for making calls to bots without filling your own chat too much`,
   },
-  "whisperops": {
-    action: (arg, ans) => {
-      Hue.write_popup_message(false, "ops")
-    },
-    description: `Opens a window to write a whisper to ops and admins`,
-  },
-  "broadcast": {
-    action: (arg, ans) => {
-      Hue.write_popup_message(false, "room")
-    },
-    description: `Opens a window to write a message to be sent to the entire room`,
-  },
-  "systembroadcast": {
-    action: (arg, ans) => {
-      Hue.write_popup_message(false, "system")
-      ans.to_history = false
-    },
-    description: `(Only for superusers) Opens a window to write a message to be sent to the entire system`,
-  },
   "systemrestart": {
     action: (arg, ans) => {
       Hue.send_system_restart_signal()

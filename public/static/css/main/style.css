@@ -1305,13 +1305,6 @@ select {
 	max-width: 30rem;
 }
 
-#write_message_area {
-	width: 100%;
-	resize: none;
-	font-size: 1em;
-	text-align: center;
-}
-
 #draw_message_area {
 	cursor: crosshair;
 	margin-top: 1rem;
@@ -1410,6 +1403,14 @@ select {
 
 .setting_input_text_2 {
 	width: 19rem;
+	resize: none;
+	font-size: 1em;
+	text-align: center;
+	overflow-x: hidden;
+}
+
+.full_textarea {
+	width: 100%;
 	resize: none;
 	font-size: 1em;
 	text-align: center;
@@ -3030,4 +3031,8 @@ pre {
 
 .chat_hr {
 	border: 0.1rem solid var(--color_4);
+}
+
+#sent_message_container {
+	grid-gap: 1rem;
 }

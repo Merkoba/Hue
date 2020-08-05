@@ -93,7 +93,6 @@ Hue.requesting_roomlist = false
 Hue.emit_queue = []
 Hue.app_focused = true
 Hue.message_unames = ""
-Hue.message_type = ""
 Hue.aura_timeouts = {}
 Hue.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
 Hue.mouse_over_reactions = false

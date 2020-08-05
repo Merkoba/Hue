@@ -40,7 +40,6 @@ module.exports = function (
     access_log_messages: 0,
     stored_images: 0,
   }
-  vars.whisper_types = ["user", "ops", "broadcast", "system_broadcast"]
   vars.redis_client_ready = false
   vars.redis_client = vars.redis.createClient()
 

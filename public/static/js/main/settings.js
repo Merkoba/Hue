@@ -360,19 +360,6 @@ Hue.user_settings = {
       }
     },
   },
-  open_popup_messages: {
-    widget_type: "checkbox",
-    description: `Whether whisper messages received should open in a popup automatically apart from showing the chat notification`,
-    action: (type, save = true) => {
-      Hue[type].open_popup_messages = $(`#${type}_open_popup_messages`).prop(
-        "checked"
-      )
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   user_function_1: {
     widget_type: "textarea",
     description: `Actions to perform when triggering User Function 1`,

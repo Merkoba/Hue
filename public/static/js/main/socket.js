@@ -194,16 +194,7 @@ Hue.server_update_events = {
     Hue.show_others_disconnected(data)
   },
   whisper: (data) => {
-    Hue.popup_message_received(data)
-  },
-  whisper_ops: (data) => {
-    Hue.popup_message_received(data, "ops")
-  },
-  room_broadcast: (data) => {
-    Hue.popup_message_received(data, "room")
-  },
-  system_broadcast: (data) => {
-    Hue.popup_message_received(data, "system")
+    Hue.whisper_received(data)
   },
   system_restart_signal: (data) => {
     Hue.reload_client()

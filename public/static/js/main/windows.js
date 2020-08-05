@@ -263,6 +263,13 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_sent_message = Msg.factory(
+    Object.assign({}, common, titlebar, {
+      id: "sent_message",
+      window_width: "26rem"
+    })
+  )
+
   Hue.msg_input_history = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "input_history",
@@ -531,6 +538,7 @@ Hue.start_msg = function () {
   Hue.msg_tv_picker.set(Hue.template_tv_picker())
   Hue.msg_media_menu.set(Hue.template_media_menu())
   Hue.msg_message.set(Hue.template_message())
+  Hue.msg_sent_message.set(Hue.template_sent_message())
   Hue.msg_highlights.set(Hue.template_highlights())
   Hue.msg_input_history.set(Hue.template_input_history())
   Hue.msg_chat_search.set(Hue.template_chat_search())
