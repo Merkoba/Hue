@@ -3037,6 +3037,10 @@ pre {
 	grid-gap: 1rem;
 }
 
+.sent_message_text {
+	white-space: pre-wrap;
+}
+
 .Msg-window.whisper_width {
 	width: 26rem !important;
 }

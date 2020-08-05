@@ -882,7 +882,7 @@ Hue.scroll_modal_to_bottom = function (id) {
 Hue.create_popup = function (args = {}, ptype = "unset") {
   if (!args.id) {
     Hue.popup_id += 1
-    args.id = `popup_${Hue.modal_id}`
+    args.id = `popup_${Hue.popup_id}`
   }
 
   let panel_size = $("#footer").height()
