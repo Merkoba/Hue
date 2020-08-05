@@ -160,28 +160,6 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.writing_message) {
-        if (Hue.msg_message.is_highest()) {
-          if (e.key === "Enter" && e.shiftKey) {
-            Hue.send_popup_message()
-            e.preventDefault()
-          }
-
-          return
-        }
-      }
-
-      if (Hue.writing_message_board_post) {
-        if (Hue.msg_message_board.is_highest()) {
-          if (e.key === "Enter" && e.shiftKey) {
-            Hue.submit_message_board_post()
-            e.preventDefault()
-          }
-
-          return
-        }
-      }
-
       if (Hue.modal_image_open) {
         if (Hue.msg_modal_image.is_highest()) {
           if (e.key === "ArrowLeft") {
