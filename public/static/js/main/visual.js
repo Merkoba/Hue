@@ -69,8 +69,7 @@ Hue.make_safe = function (args = {}) {
     title: false,
     remove_text_if_empty: false,
     date: false,
-    no_spacing: false,
-    replace_markdown: true
+    no_spacing: false
   }
 
   args = Object.assign(def_args, args)
@@ -94,10 +93,7 @@ Hue.make_safe = function (args = {}) {
 
     if (args.text_as_html) {
       let h = Hue.utilz.make_html_safe(args.text)
-
-      if (args.replace_markdown) {
-        h = Hue.replace_markdown(h)
-      }
+      h = Hue.replace_markdown(h, false)
 
       if (args.urlize) {
         c_text.html(h).urlize()

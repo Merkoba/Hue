@@ -545,8 +545,7 @@ Hue.popup_message_received = function (
       text_classes: "popup_message_text",
       html: h,
       remove_text_if_empty: true,
-      date: data.date,
-      replace_markdown: false
+      date: data.date
     })
 
     Hue.setup_whispers_click(data.content, data.username)

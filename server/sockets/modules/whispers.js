@@ -61,11 +61,6 @@ module.exports = function (
       return handler.get_out(socket)
     }
 
-    if (data.message !== utilz.remove_multiple_empty_lines(data.message).trim()) {
-      console.log(utilz.remove_multiple_empty_lines(data.message).trim())
-      return handler.get_out(socket)
-    }
-
     if (data.message.split("\n").length > config.max_num_newlines) {
       return handler.get_out(socket)
     }

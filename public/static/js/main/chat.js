@@ -1312,7 +1312,7 @@ Hue.setup_markdown_regexes = function () {
 // Passes text through all markdown regexes doing the appropiate replacements
 // It runs in recursion until no more replacements are found
 // This is to allow replacements in any order
-Hue.replace_markdown = function (text) {
+Hue.replace_markdown = function (text, multilines = true) {
   let original_length = text.length
 
   text = text.replace(
@@ -1364,16 +1364,18 @@ Hue.replace_markdown = function (text) {
     Hue.markdown_regexes["horizontal_line"].regex,
     Hue.markdown_regexes["horizontal_line"].replace_function
   )
-  
-  let num_lines = 0
-  
-  for (let line of text.split("\n")) {
-    if (line.trim()) {
-      num_lines += 1
 
-      if (num_lines > 1) {
-        text = `<pre class='precode'><code>${text}</code></pre>`
-        break
+  if (multilines) {
+    let num_lines = 0
+    
+    for (let line of text.split("\n")) {
+      if (line.trim()) {
+        num_lines += 1
+  
+        if (num_lines > 1) {
+          text = `<pre class='precode'><code>${text}</code></pre>`
+          break
+        }
       }
     }
   }
