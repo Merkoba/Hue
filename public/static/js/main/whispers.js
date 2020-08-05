@@ -206,8 +206,15 @@ Hue.whisper_received = function (data) {
   let message = `Whisper from ${data.username}`
   let func = function () { Hue.show_whisper(data) }
   let item = Hue.make_info_popup_item({icon: "envelope", message: message})
-  data.notification = Hue.push_whisper(message, func, false)
-  Hue.show_popup(Hue.make_info_popup(func), item)
+
+  let open = Hue.get_setting("open_popup_messages")
+  data.notification = Hue.push_whisper(message, func, open)
+  
+  if (open) {
+    Hue.show_whisper(data)
+  } else {
+    Hue.show_popup(Hue.make_info_popup(func), item)
+  }
 }
 
 // Shows a whisper message
@@ -234,19 +241,22 @@ Hue.show_whisper = function (data) {
   title_func = function () {
     Hue.show_profile(usr[0])
   }
-
-  Hue.msg_sent_message.set_title(Hue.make_safe({text: title, onclick: title_func }))
   
+  let modal = Hue.create_modal({window_class: "!whisper_width"}, "whisper")
+  modal.set(Hue.template_sent_message())
+  modal.set_title(Hue.make_safe({text: title, onclick: title_func }))
   let message_html = Hue.replace_markdown(data.message)
 
-  Hue.msg_sent_message.show(function () {
-    $("#sent_message_text").html(message_html)
-    $("#sent_message_button").html(button_html)
-    $("#sent_message_button").click(button_func)
+  modal.show(function () {
+    let container = modal.content
+    let text_el = $(container).find(".sent_message_text").eq(0)
+    text_el.html(message_html)
+    let button_el = $(container).find(".sent_message_button").eq(0)
+    button_el.html(button_html)
+    button_el.click(button_func)
     
-    Hue.setup_whispers_click($("#sent_message_text"), usr[0])
-
-    let canvas = $("#sent_message_drawing")[0]
+    Hue.setup_whispers_click(text_el, usr[0])
+    let canvas =  $(container).find(".sent_message_drawing")[0]
     
     if (data.draw_coords) {
       let context = canvas.getContext("2d")
@@ -477,27 +487,8 @@ Hue.get_unread_whispers = function () {
   return num_unread
 }
 
-// Gets open whispers
-Hue.get_open_whispers = function () {
-  let popups = Hue.get_popup_instances()
-  let num = 0
-
-  for (let popup of popups) {
-    if (popup.hue_type === "whisper" && popup.is_open()) {
-      num += 1
-    }
-  }
-
-  return num
-}
-
 // Shows the message feedback
 Hue.show_message_feedback = function (s) {
   $("#write_message_feedback").text(s)
   $("#write_message_feedback").css("display", "block")
-}
-
-// Hides the message feedback
-Hue.hide_message_feedback = function () {
-
 }

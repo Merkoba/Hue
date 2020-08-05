@@ -312,6 +312,9 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_beep_on_user_joins"
 >Whether to beep by default on user joins.
 
+"global_settings_default_open_popup_messages"
+>Whether popup messages will open automatically when arrived by default.
+
 "global_settings_default_tv_height"
 >The % height the tv will take by default when the image is also displayed.
 

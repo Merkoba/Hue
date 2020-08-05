@@ -3033,6 +3033,21 @@ pre {
 	border: 0.1rem solid var(--color_4);
 }
 
-#sent_message_container {
+.sent_message_container {
 	grid-gap: 1rem;
+}
+
+.Msg-window.whisper_width {
+	width: 26rem !important;
+}
+
+.spoiler {
+	cursor: pointer;
+	background-color: var(--font_color);
+}
+
+.backgrounded {
+	display: inline-block;
+	background-color: var(--slight_background);
+	outline: 0.0588rem dotted var(--color_4);
 }

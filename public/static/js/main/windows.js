@@ -9,8 +9,6 @@ Hue.setup_templates = function () {
 // Starts and configures all Msg modal instances
 Hue.start_msg = function () {
   let common = {
-    show_effect_duration: [200, 200],
-    close_effect_duration: [200, 200],
     clear_editables: true,
     class: "modal",
     show_effect: "none",
@@ -260,13 +258,6 @@ Hue.start_msg = function () {
         Hue.writing_message = false
         Hue.clear_draw_message_state()
       },
-    })
-  )
-
-  Hue.msg_sent_message = Msg.factory(
-    Object.assign({}, common, titlebar, {
-      id: "sent_message",
-      window_width: "26rem"
     })
   )
 
@@ -538,7 +529,6 @@ Hue.start_msg = function () {
   Hue.msg_tv_picker.set(Hue.template_tv_picker())
   Hue.msg_media_menu.set(Hue.template_media_menu())
   Hue.msg_message.set(Hue.template_message())
-  Hue.msg_sent_message.set(Hue.template_sent_message())
   Hue.msg_highlights.set(Hue.template_highlights())
   Hue.msg_input_history.set(Hue.template_input_history())
   Hue.msg_chat_search.set(Hue.template_chat_search())
@@ -892,7 +882,7 @@ Hue.scroll_modal_to_bottom = function (id) {
 Hue.create_popup = function (args = {}, ptype = "unset") {
   if (!args.id) {
     Hue.popup_id += 1
-    args.id = Hue.popup_id
+    args.id = `popup_${Hue.modal_id}`
   }
 
   let panel_size = $("#footer").height()
@@ -902,8 +892,6 @@ Hue.create_popup = function (args = {}, ptype = "unset") {
     preset: "popup",
     class: "popup",
     position: "top",
-    show_effect_duration: [0, 400],
-    close_effect_duration: [400, 0],
     clear_editables: true,
     show_effect: "none",
     close_effect: "none",
@@ -921,6 +909,31 @@ Hue.create_popup = function (args = {}, ptype = "unset") {
   let popup = Msg.factory(args)
   popup.hue_type = ptype
   return popup
+}
+
+// Creates a Msg popup
+Hue.create_modal = function (args = {}, ptype = "unset") {
+  if (!args.id) {
+    Hue.modal_id += 1
+    args.id = `modal_${Hue.modal_id}`
+  }
+
+  let def_args = {
+    class: "modal",
+    clear_editables: true,
+    show_effect: "none",
+    close_effect: "none",
+    enable_titlebar: true,
+    center_titlebar: true,
+    titlebar_class: "!custom_titlebar",
+    window_inner_x_class: "!titlebar_inner_x",
+    persistent: false
+  }
+
+  args = Object.assign(def_args, args)
+  let modal = Msg.factory(args)
+  modal.hue_type = ptype
+  return modal
 }
 
 // Changes the state of a toggler
