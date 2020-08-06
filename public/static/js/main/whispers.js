@@ -209,7 +209,7 @@ Hue.whisper_received = function (data) {
 
   let message = `Whisper from ${data.username}`
   let func = function () { Hue.show_whisper(data) }
-  let item = Hue.make_info_popup_item({icon: "envelope", message: message})
+  let item = Hue.make_info_popup_item({icon: "envelope", message: message, push: false})
 
   let open = Hue.get_setting("open_popup_messages")
   data.notification = Hue.push_whisper(message, func, open)
@@ -346,7 +346,7 @@ Hue.do_send_whisper = function (data, show = true) {
     }
 
     let msg = `Whisper sent to ${Hue.utilz.nice_list(data.usernames)}`
-    let item = Hue.make_info_popup_item({icon: "envelope", message: msg})
+    let item = Hue.make_info_popup_item({icon: "envelope", message: msg, push: false})
     Hue.show_popup(Hue.make_info_popup(func), item)
     data.notification = Hue.push_whisper(msg, func, true)
   }
