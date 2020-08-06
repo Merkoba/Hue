@@ -43,7 +43,7 @@
 	"max_whispers_post_length": 2000,
 	"max_input_length": 2500,
 	"max_topic_length": 2000,
-	"max_username_length": 30,
+	"max_username_length": 20,
 	"max_max_username_length": 300,
 	"min_password_length": 3,
 	"max_password_length": 200,

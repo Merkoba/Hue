@@ -22,7 +22,7 @@ module.exports = function (
       return handler.get_out(socket)
     }
 
-    if (utilz.clean_string4(data.username) !== data.username) {
+    if (utilz.clean_username(data.username) !== data.username) {
       return handler.get_out(socket)
     }
 

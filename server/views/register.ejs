@@ -131,7 +131,7 @@
 					return false
 				}
 
-				if (username !== utilz.clean_string4(username)) {
+				if (username !== utilz.clean_username(username)) {
 					set_message("Username contains invalid characters. Only letters, numbers, and some special characters are allowed")
 					return false
 				}

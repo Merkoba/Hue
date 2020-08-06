@@ -17,8 +17,8 @@ const Utilz = function () {
 		return s.replace(/[\\"']/g, '')
 	}
 
-	utilz.clean_string4 = function (s) {
-		return s.replace(/[^a-z0-9 ]+/gi, "").replace(/ +/g, " ").trim()
+	utilz.clean_username = function (s) {
+		return s.replace(/[^a-z0-9]+/gi, "").replace(/ +/g, " ").trim()
 	}
 
 	utilz.clean_string5 = function (s) {

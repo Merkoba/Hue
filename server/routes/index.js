@@ -300,7 +300,7 @@ module.exports = function (db_manager, config, sconfig, utilz) {
       return false
     }
 
-    if (username !== utilz.clean_string4(username)) {
+    if (username !== utilz.clean_username(username)) {
       return false
     }
 

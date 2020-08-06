@@ -5,7 +5,7 @@ Hue.logout = function () {
 
 // Changes the user's username
 Hue.change_username = function (uname, show_feedback = true) {
-  if (Hue.utilz.clean_string4(uname) !== uname) {
+  if (Hue.utilz.clean_username(uname) !== uname) {
     if (show_feedback) {
       Hue.feedback("Username contains invalid characters")
     }
