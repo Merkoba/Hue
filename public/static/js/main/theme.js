@@ -192,10 +192,6 @@ Hue.apply_theme = function () {
     Hue.config.opacity_amount_3
   )
 
-  $(".bg0").css("background-color", background_color)
-  $(".bg1").css("background-color", background_color_a)
-  $(".bg1").css("color", font_color)
-
   let panel_bg_color
 
   if (Hue.get_setting("transparent_panels")) {
@@ -215,6 +211,7 @@ Hue.apply_theme = function () {
   document.documentElement.style.setProperty('--slight_background_alpha', slight_background_alpha)
   document.documentElement.style.setProperty('--font_color', font_color)
   document.documentElement.style.setProperty('--background_color_2', background_color_2)
+  document.documentElement.style.setProperty('--background_color_a', background_color_a)
   document.documentElement.style.setProperty('--background_color_a_2', background_color_a_2)
   document.documentElement.style.setProperty('--background_color', background_color)
   document.documentElement.style.setProperty('--overlay_color', overlay_color)

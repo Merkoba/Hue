@@ -3055,3 +3055,12 @@ pre {
 	background-color: var(--slight_background);
 	outline: 0.0588rem dotted var(--color_4);
 }
+
+.bg0 {
+	background-color: var(--background_color);
+}
+
+.bg1 {
+	background-color: var(--background_color_a);
+	color: var(--font_color);
+}
