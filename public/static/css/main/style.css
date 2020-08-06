@@ -780,6 +780,10 @@ a.generic:hover {
 	word-break: break-word !important;
 }
 
+.Msg-window.whisper_width {
+	width: 30rem !important;
+}
+
 #Msg-content-container-global_settings,
 #Msg-content-container-room_settings {
 	overflow: hidden !important;
@@ -1309,7 +1313,10 @@ select {
 	cursor: crosshair;
 	margin-top: 1rem;
 	margin-bottom: 1rem;
-	width: 100%;
+}
+
+#write_message_drawing_info {
+	padding-top: 1rem;
 }
 
 #draw_image_area {
@@ -3039,10 +3046,6 @@ pre {
 
 .sent_message_text {
 	white-space: pre-wrap;
-}
-
-.Msg-window.whisper_width {
-	width: 26rem !important;
 }
 
 .spoiler {
