@@ -155,14 +155,6 @@ Hue.setup_room_menu = function () {
     Hue.change_media_info(what)
   })
 
-  $("#room_menu_more_broadcast").click(function () {
-    Hue.write_popup_message(false, "room")
-  })
-
-  $("#room_menu_more_whisper_ops").click(function () {
-    Hue.write_popup_message(false, "ops")
-  })
-
   $("#room_menu_more_reset_voices").click(function () {
     Hue.needs_confirm("reset_voices")
   })
@@ -608,18 +600,6 @@ Hue.config_admin_display = function () {
     $("#room_menu_main_container_room_config").css("display", "block")
   } else {
     $("#room_menu_main_container_room_config").css("display", "none")
-  }
-
-  if (Hue.check_op_permission(Hue.role, "broadcast")) {
-    $("#room_menu_more_broadcast").css("display", "block")
-  } else {
-    $("#room_menu_more_broadcast").css("display", "none")
-  }
-
-  if (Hue.check_op_permission(Hue.role, "whisper_ops")) {
-    $("#room_menu_more_whisper_ops").css("display", "block")
-  } else {
-    $("#room_menu_more_whisper_ops").css("display", "none")
   }
 
   if (Hue.check_op_permission(Hue.role, "voice_roles")) {

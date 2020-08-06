@@ -325,8 +325,6 @@ module.exports = function (
       "delete_messages",
       "media",
       "name",
-      "whisper_ops",
-      "broadcast",
       "message_board_no_restriction",
       "message_board_delete",
     ]
