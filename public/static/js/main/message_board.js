@@ -96,7 +96,9 @@ Hue.add_post_to_message_board = function (post) {
 
 // Fills the message board with init data
 Hue.init_message_board = function (data) {
-  $("#message_board_container").html("")
+  if (data.message_board_posts.length > 0) {
+    $("#message_board_container").html("")
+  }
 
   for (let post of data.message_board_posts) {
     Hue.add_post_to_message_board(post)
@@ -268,6 +270,10 @@ Hue.remove_message_board_post = function (data) {
         return false
       }
     })
+  
+  if ($(".message_board_item").length === 0) {
+    $("#message_board_container").text("No Posts Yet")
+  }
 }
 
 // Gets the last message board checked local storage
@@ -306,7 +312,7 @@ Hue.clear_message_board = function () {
 
 // After the message board gets cleared
 Hue.on_message_board_cleared = function (data) {
-  $("#message_board_container").html("No Posts Yet")
+  $("#message_board_container").text("No Posts Yet")
   Hue.show_room_notification(
     data.username,
     `${data.username} cleared the message board`
