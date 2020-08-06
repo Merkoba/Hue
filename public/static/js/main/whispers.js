@@ -157,7 +157,7 @@ Hue.send_popup_message = function (force = false) {
   Hue.sending_whisper = true
 
   let message = Hue.utilz.remove_multiple_empty_lines($("#write_message_area").val()).trim()
-  let diff = Hue.config.max_input_length - message.length
+  let diff = Hue.config.max_whispers_post_length - message.length
   let draw_coords
 
   if (Hue.draw_message_click_x.length > 0) {
@@ -170,7 +170,7 @@ Hue.send_popup_message = function (force = false) {
     draw_coords = false
   }
 
-  if (diff === Hue.config.max_input_length) {
+  if (diff === Hue.config.max_whispers_post_length) {
     if (!draw_coords) {
       Hue.sending_whisper = false
       return false
@@ -346,14 +346,8 @@ Hue.do_send_whisper = function (data, show = true) {
     }
 
     let msg = `Whisper sent to ${Hue.utilz.nice_list(data.usernames)}`
-
-    Hue.show_action_popup({
-      title: "Whisper Sent",
-      icon: "envelope",
-      message: msg,
-      on_click: func
-    })
-
+    let item = Hue.make_info_popup_item({icon: "envelope", message: msg})
+    Hue.show_popup(Hue.make_info_popup(func), item)
     data.notification = Hue.push_whisper(msg, func, true)
   }
 }

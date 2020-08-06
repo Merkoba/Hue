@@ -41,7 +41,7 @@ module.exports = function (
       }
     }
 
-    if (data.message.length > config.max_input_length) {
+    if (data.message.length > config.max_whispers_post_length) {
       return handler.get_out(socket)
     }
 

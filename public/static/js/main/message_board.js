@@ -148,6 +148,12 @@ Hue.submit_message_board_post = function () {
 Hue.on_message_board_received = function (data) {
   Hue.add_post_to_message_board(data)
   Hue.check_last_message_board_post()
+
+  let item = Hue.make_info_popup_item({icon: "pencil", message: "New message board post"})
+
+  Hue.show_popup(Hue.make_info_popup(function () {
+    Hue.show_message_board()
+  }), item)
 }
 
 // Updates last message board post date
