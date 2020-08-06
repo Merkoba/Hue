@@ -61,7 +61,17 @@ module.exports = function (
       return
     }
 
-    handler.user_emit(socket, "room_created", { id: ans._id.toString() })
+    let data2 = {
+      id: ans._id.toString(),
+      username: socket.hue_username,
+      public: data.public
+    }
+
+    if (data.public) {
+      handler.room_emit(socket, "room_created", data2)
+    } else {
+      handler.user_emit(socket, "room_created", data2)
+    }
   }
 
   // Sorts a room list by user count and modified date

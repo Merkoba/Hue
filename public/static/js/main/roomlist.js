@@ -206,7 +206,15 @@ Hue.on_room_created = function (data) {
     Hue.show_open_room(data.id)
   }
 
-  Hue.feedback("Room Created", {
+  let msg
+
+  if (data.public) {
+    msg = `${data.username} created a room`
+  } else {
+    msg = "Room Created"
+  }
+
+  Hue.feedback(msg, {
     brk: Hue.get_chat_icon("key"),
     onclick: onclick,
     save: true,
