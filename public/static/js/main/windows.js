@@ -244,7 +244,7 @@ Hue.start_msg = function () {
   Hue.msg_message = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "message",
-      window_width: "30rem",
+      window_width: "28rem",
       close_on_overlay_click: false,
       after_show: function (instance) {
         common.after_show(instance)
