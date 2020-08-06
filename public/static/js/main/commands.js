@@ -431,6 +431,13 @@ Hue.commands = {
     },
     description: `(Only for superusers) Sends a signal to every connected client to restart the application`,
   },
+  "systembroadcast": {
+    action: (arg, ans) => {
+      Hue.system_broadcast()
+      ans.to_history = false
+    },
+    description: `(Only for superusers) Sends a whisper to every connected client`,
+  },
   "annex": {
     action: (arg, ans) => {
       if (arg) {

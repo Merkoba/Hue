@@ -83,14 +83,21 @@ Hue.send_inline_whisper = function (arg, show = true) {
     return false
   }
 
-  Hue.do_send_whisper({message: message, usernames: approved, draw_coords: false}, show)
+  Hue.do_send_whisper({message: message, usernames: approved, 
+    draw_coords: false, type: "user"}, show)
 }
 
 // Shows the window to write whispers
 Hue.write_popup_message = function (unames = [], type = "user") {
-  for (let u of unames) {
-    if (!Hue.check_whisper_user(u)) {
+  if (unames.length === 0) {
+    if (type === "user") {
       return false
+    }
+  } else {
+    for (let u of unames) {
+      if (!Hue.check_whisper_user(u)) {
+        return false
+      }
     }
   }
 
@@ -98,16 +105,25 @@ Hue.write_popup_message = function (unames = [], type = "user") {
     Hue.show_userlist_window("whisper")
   }
 
-  let title = { text: `Whisper to ${Hue.utilz.nice_list(unames)}`, onclick: f }
+  let title 
+
+  if (type === "user") {
+    title = { text: `Whisper to ${Hue.utilz.nice_list(unames)}`, onclick: f }
+  } else {
+    title = { text: `Whisper (${type})`}
+  }
 
   Hue.message_unames = unames
   Hue.msg_message.set_title(Hue.make_safe(title))
+  Hue.message_type = type
 
   Hue.msg_message.show(function () {
     $("#write_message_area").focus()
 
     if (type === "user") {
       Hue.show_message_feedback("Click titlebar to add more users")
+    } else if (type === "system_broadcast") {
+      Hue.show_message_feedback("This will send a whisper to every user")
     }
 
     Hue.sending_whisper = false
@@ -257,8 +273,13 @@ Hue.show_whisper = function (data) {
     let text_el = $(container).find(".sent_message_text").eq(0)
     text_el.html(message_html)
     let button_el = $(container).find(".sent_message_button").eq(0)
-    button_el.html(button_html)
-    button_el.click(button_func)
+
+    if (data.type === "user") {
+      button_el.html(button_html)
+      button_el.click(button_func)
+    } else {
+      button_el.css("display", "none")
+    }
     
     Hue.setup_whispers_click(text_el, usr[0])
     let canvas =  $(container).find(".sent_message_drawing")[0]
@@ -291,6 +312,13 @@ Hue.show_whisper = function (data) {
 
 // Sends a whisper to user(s)
 Hue.send_whisper = function (message, draw_coords, force = false) {
+  if (Hue.message_type === "system_broadcast") {
+    Hue.do_send_whisper({message: message, usernames: [], 
+      draw_coords: draw_coords, type: Hue.message_type})
+    
+    return true
+  }
+
   let unames = Hue.message_unames
 
   if (!unames) {
@@ -332,7 +360,9 @@ Hue.send_whisper = function (message, draw_coords, force = false) {
     return false
   }
 
-  Hue.do_send_whisper({message: message, usernames: approved, draw_coords: draw_coords})
+  Hue.do_send_whisper({message: message, usernames: approved, 
+    draw_coords: draw_coords, type: Hue.message_type})
+
   return true
 }
 
@@ -345,7 +375,14 @@ Hue.do_send_whisper = function (data, show = true) {
       Hue.show_whisper(data)
     }
 
-    let msg = `Whisper sent to ${Hue.utilz.nice_list(data.usernames)}`
+    let msg = ""
+    
+    if (data.type === "user") {
+      msg = `Whisper sent to ${Hue.utilz.nice_list(data.usernames)}`
+    } else if (data.type === "system_broadcast") {
+      msg = "System Broadcast Sent"
+    }
+
     let item = Hue.make_info_popup_item({icon: "envelope", message: msg, push: false})
     Hue.show_popup(Hue.make_info_popup(func), item)
     data.notification = Hue.push_whisper(msg, func, true)

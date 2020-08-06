@@ -196,6 +196,9 @@ Hue.server_update_events = {
   whisper: (data) => {
     Hue.whisper_received(data)
   },
+  system_broadcast: (data) => {
+    Hue.whisper_received(data)
+  },
   system_restart_signal: (data) => {
     Hue.reload_client()
   },

@@ -1249,6 +1249,11 @@ Hue.annex = function (rol = "admin") {
   Hue.socket_emit("change_role", { username: Hue.username, role: rol })
 }
 
+// Superuser command to send a system broadcast
+Hue.system_broadcast = function (rol = "admin") {
+  Hue.write_popup_message([], "system_broadcast")
+}
+
 Hue.setup_badges = function () {
   Hue.start_badge_timeout()
 }
