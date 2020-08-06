@@ -233,7 +233,7 @@
 	"max_message_board_post_length": 2000,
 	"max_audio_clip_duration": 30000,
 	"upload_spam_slice": 650,
-	"system_username": "The System",
+	"system_username": "El Systema",
 	"scramble_duration": 500,
 	"scramble_speed": 50,
 	"commands_prefix": "/"

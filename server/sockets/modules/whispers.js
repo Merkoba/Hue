@@ -94,7 +94,7 @@ module.exports = function (
       }
     } else if (data.type === "system_broadcast") {
       handler.system_emit(socket, "system_broadcast", {
-        username: "The System",
+        username: config.system_username,
         message: data.message,
         draw_coords: data.draw_coords,
         type: data.type
