@@ -13,6 +13,12 @@ Hue.check_whisper_user = function (uname) {
   return true
 }
 
+// Wrapper to process write whisper by id
+Hue.process_write_whisper_by_user_id = function (id) {
+  let user = Hue.get_user_by_user_id(id)
+  Hue.process_write_whisper(user.username)
+}
+
 // Processes whisper commands to determine how to handle the operation
 Hue.process_write_whisper = function (arg, show = true) {
   let user = Hue.get_user_by_username(arg)

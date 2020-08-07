@@ -864,6 +864,7 @@ Hue.add_to_chat = function (args = {}) {
   let appended = false
   let mode = args.message.data("mode")
   let uname = args.message.data("uname")
+  let user_id = args.message.data("user_id")
   let date = args.message.data("date")
   let is_public = args.message.data("public")
   let highlighted = args.message.data("highlighted")
@@ -986,7 +987,7 @@ Hue.add_to_chat = function (args = {}) {
   }
 
   if (mode === "chat" && Hue.started && Hue.app_focused) {
-    if (uname !== Hue.username && Hue.get_setting("scramble_chat")) {
+    if (user_id !== Hue.user_id && Hue.get_setting("scramble_chat")) {
       let item = content_container.find(".scramble_content").get(0)
 
       if (item) {
@@ -997,8 +998,8 @@ Hue.add_to_chat = function (args = {}) {
 
   Hue.scroll_timer()
 
-  if (is_public && uname && date) {
-    Hue.push_to_activity_bar(uname, date)
+  if (is_public && user_id && date) {
+    Hue.push_to_activity_bar(user_id, date)
   }
 
   if (
@@ -1825,12 +1826,18 @@ Hue.check_typing = function () {
 // When a typing signal is received
 // And animates profile images
 Hue.show_typing = function (data) {
-  if (Hue.user_is_ignored(data.username)) {
+  let user = Hue.get_user_by_user_id(data.user_id)
+
+  if (!user) {
+    return false
+  }
+
+  if (Hue.user_is_ignored(user.username)) {
     return false
   }
 
   Hue.typing_remove_timer()
-  Hue.show_aura(data.username)
+  Hue.show_aura(user.user_id)
 
   if (!Hue.app_focused) {
     Hue.check_favicon(1)
@@ -1887,32 +1894,32 @@ Hue.get_last_chat_message_by_user_id = function (ouser_id) {
 
 // Gives or maintains aura classes
 // Starts timeout to remove them
-Hue.show_aura = function (uname) {
+Hue.show_aura = function (id) {
   if (!Hue.app_focused) {
     return false
   }
 
-  if (Hue.aura_timeouts[uname] === undefined) {
-    Hue.add_aura(uname)
+  if (Hue.aura_timeouts[id] === undefined) {
+    Hue.add_aura(id)
   } else {
-    clearTimeout(Hue.aura_timeouts[uname])
+    clearTimeout(Hue.aura_timeouts[id])
   }
 
-  Hue.aura_timeouts[uname] = setTimeout(function () {
-    Hue.remove_aura(uname)
+  Hue.aura_timeouts[id] = setTimeout(function () {
+    Hue.remove_aura(id)
   }, Hue.config.max_typing_inactivity)
 }
 
 // Adds the aura class to the profile image of the latest chat message of a user
 // This class makes the profile image glow and rotate
-Hue.add_aura = function (uname) {
-  let message = Hue.get_last_chat_message_by_username(uname)
+Hue.add_aura = function (id) {
+  let message = Hue.get_last_chat_message_by_user_id(id)
 
   if (message) {
     $(message).find(".chat_profile_image_container").eq(0).addClass("aura")
   }
 
-  let activity_bar_item = Hue.get_activity_bar_item_by_username(uname)
+  let activity_bar_item = Hue.get_activity_bar_item_by_user_id(id)
 
   if (activity_bar_item) {
     $(activity_bar_item)
@@ -1923,8 +1930,8 @@ Hue.add_aura = function (uname) {
 }
 
 // Removes the aura class from messages from a user
-Hue.remove_aura = function (uname) {
-  clearTimeout(Hue.aura_timeouts[uname])
+Hue.remove_aura = function (id) {
+  clearTimeout(Hue.aura_timeouts[id])
 
   let aura = "aura"
   let cls = ".chat_profile_image_container.aura"
@@ -1933,7 +1940,7 @@ Hue.remove_aura = function (uname) {
     let message = $(this).closest(".chat_message")
 
     if (message.length > 0) {
-      if (message.data("uname") === uname) {
+      if (message.data("user_id") === id) {
         $(this).removeClass(aura)
       }
     }
@@ -1945,13 +1952,13 @@ Hue.remove_aura = function (uname) {
     let activity_bar_item = $(this).closest(".activity_bar_item")
 
     if (activity_bar_item.length > 0) {
-      if (activity_bar_item.data("username") === uname) {
+      if (activity_bar_item.data("user_id") === id) {
         $(this).removeClass(aura)
       }
     }
   })
 
-  Hue.aura_timeouts[uname] = undefined
+  Hue.aura_timeouts[id] = undefined
 }
 
 // Jumps to a chat message in the chat area
@@ -2016,7 +2023,7 @@ Hue.on_chat_message = function (data) {
   })
 
   Hue.hide_typing()
-  Hue.remove_aura(data.username)
+  Hue.remove_aura(data.user_id)
 }
 
 // Shows feedback if user doesn't have chat permission

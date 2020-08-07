@@ -257,7 +257,7 @@ module.exports = function (
       {
         method: "profile_image_changed",
         data: {
-          username: socket.hue_username,
+          user_id: socket.hue_user_id,
           profile_image: image_url,
         },
       }

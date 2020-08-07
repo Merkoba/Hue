@@ -137,7 +137,7 @@ module.exports = function (
       socket.hue_typing_counter = 0
     }
 
-    handler.broadcast_emit(socket, "typing", { username: socket.hue_username })
+    handler.broadcast_emit(socket, "typing", { user_id: socket.hue_user_id })
   }
 
   // Generates IDs for messages

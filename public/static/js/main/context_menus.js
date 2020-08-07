@@ -173,7 +173,7 @@ Hue.start_chat_menu_context_menu = function () {
             let user_id = $(this).closest(".message").data("user_id")
 
             if (user_id) {
-              let user = Hue.get_user_by_id(user_id)
+              let user = Hue.get_user_by_user_id(user_id)
 
               if (user) {
                 if (!Hue.user_is_controllable(user)) {
@@ -192,7 +192,7 @@ Hue.start_chat_menu_context_menu = function () {
               let user_id = message.data("user_id")
 
               if (user_id) {
-                let user = Hue.get_user_by_id(user_id)
+                let user = Hue.get_user_by_user_id(user_id)
 
                 if (user) {
                   if (!Hue.user_is_controllable(user)) {

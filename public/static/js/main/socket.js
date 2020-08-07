@@ -255,7 +255,7 @@ Hue.server_update_events = {
     Hue.show_ban_list(data)
   },
   activity_trigger: (data) => {
-    Hue.push_to_activity_bar(data.username, Date.now())
+    Hue.push_to_activity_bar(data.user_id, Date.now())
   },
   message_deleted: (data) => {
     Hue.remove_message_from_chat(data)

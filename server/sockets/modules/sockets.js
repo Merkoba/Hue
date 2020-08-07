@@ -177,9 +177,7 @@ module.exports = function (
     socket.hue_last_activity_trigger = Date.now()
     handler.update_user_in_userlist(socket)
 
-    handler.room_emit(socket, "activity_trigger", {
-      username: socket.hue_username,
-    })
+    handler.room_emit(socket, "activity_trigger", { user_id: socket.hue_user_id })
   }
 
   // Changes socket properties to all sockets of a user

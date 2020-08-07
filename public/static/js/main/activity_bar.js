@@ -10,14 +10,14 @@ Hue.setup_activity_bar = function () {
   }, Hue.config.activity_bar_trigger_interval)
 
   $("#activity_bar").on("click", ".activity_bar_item", function () {
-    Hue.show_profile($(this).data("username"))
+    Hue.show_profile_by_user_id($(this).data("user_id"))
   })
 
   $("#activity_bar").on("auxclick", ".activity_bar_item", function (
     e
   ) {
     if (e.which === 2) {
-      Hue.process_write_whisper($(this).data("username"))
+      Hue.process_write_whisper_by_user_id($(this).data("user_id"))
     }
   })
 }
@@ -50,9 +50,9 @@ Hue.check_activity_bar = function (update = true) {
   let changed = false
 
   for (let item of Hue.activity_list) {
-    let user = Hue.get_user_by_username(item.username)
+    let user = Hue.get_user_by_user_id(item.user_id)
 
-    if (item.date > d && user && !Hue.user_is_ignored(item.username)) {
+    if (item.date > d && user && !Hue.user_is_ignored(user.username)) {
       new_top.push(item)
     } else {
       changed = true
@@ -84,27 +84,27 @@ Hue.update_activity_bar = function () {
 
   $("#activity_bar_no_activity").css("display", "none")
 
-  let usernames_included = []
+  let ids_included = []
 
   $(".activity_bar_item").each(function () {
-    let username = $(this).data("username")
-    let user = Hue.get_user_by_username(username)
+    let id = $(this).data("user_id")
+    let user = Hue.get_user_by_user_id(id)
 
-    if (user && Hue.activity_list.some((item) => item.username === username)) {
+    if (user && Hue.activity_list.some((item) => item.user_id === id)) {
       let t = Hue.get_user_info_title(user, true)
       $(this).attr("title", t)
       $(this).data("otitle", t)
-      usernames_included.push(username)
+      ids_included.push(id)
     } else {
       $(this).remove()
     }
   })
 
-  if (Hue.activity_list.length > usernames_included.length) {
+  if (Hue.activity_list.length > ids_included.length) {
     for (let item of Hue.activity_list) {
-      let user = Hue.get_user_by_username(item.username)
+      let user = Hue.get_user_by_user_id(item.user_id)
 
-      if (usernames_included.includes(user.username)) {
+      if (ids_included.includes(user.user_id)) {
         continue
       }
 
@@ -112,12 +112,12 @@ Hue.update_activity_bar = function () {
         let pi = user.profile_image || Hue.config.default_profile_image_url
 
         let h = $(`
-                <div class='activity_bar_item dynamic_title'>
-                    <div class='activity_bar_image_container round_image_container'>
-                        <img class='activity_bar_image profile_image' src='${pi}' loading='lazy'>
-                    </div>
-                    <div class='activity_bar_text'></div>
-                </div>`)
+          <div class='activity_bar_item dynamic_title'>
+              <div class='activity_bar_image_container round_image_container'>
+                  <img class='activity_bar_image profile_image' src='${pi}' loading='lazy'>
+              </div>
+              <div class='activity_bar_text'></div>
+          </div>`)
 
         let text_el = h.find(".activity_bar_text").eq(0)
         let img_el = h.find(".activity_bar_image").eq(0)
@@ -128,7 +128,7 @@ Hue.update_activity_bar = function () {
           }
         })
 
-        img_el.data("username", user.username)
+        img_el.data("user_id", user.user_id)
         text_el.text(user.username)
 
         let t = Hue.get_user_info_title(user, true)
@@ -136,7 +136,7 @@ Hue.update_activity_bar = function () {
         h.attr("title", t)
         h.data("otitle", t)
         h.data("date", user.date_joined)
-        h.data("username", user.username)
+        h.data("user_id", user.user_id)
 
         c.append(h)
       }
@@ -145,8 +145,12 @@ Hue.update_activity_bar = function () {
 }
 
 // Pushes a user to the activity list and updates the activity bar
-Hue.push_to_activity_bar = function (uname, date) {
-  let user = Hue.get_user_by_username(uname)
+Hue.push_to_activity_bar = function (id, date) {
+  let user = Hue.get_user_by_user_id(id)
+
+  if (!user) {
+    return false
+  }
 
   if (!user || !Hue.check_media_permission(user.role, "chat")) {
     return false
@@ -158,18 +162,18 @@ Hue.push_to_activity_bar = function (uname, date) {
     return false
   }
 
-  if (Hue.user_is_ignored(uname)) {
+  if (Hue.user_is_ignored(user.username)) {
     return false
   }
 
   for (let i = 0; i < Hue.activity_list.length; i++) {
-    if (Hue.activity_list[i].username === uname) {
+    if (Hue.activity_list[i].user_id === id) {
       Hue.activity_list.splice(i, 1)
       break
     }
   }
 
-  Hue.activity_list.unshift({ username: uname, date: date })
+  Hue.activity_list.unshift({ user_id: id, date: date })
 
   if (Hue.activity_list.length > Hue.config.max_activity_bar_items) {
     Hue.activity_list.pop()
@@ -183,11 +187,11 @@ Hue.push_to_activity_bar = function (uname, date) {
 }
 
 // Gets an activity bar item by username
-Hue.get_activity_bar_item_by_username = function (username) {
+Hue.get_activity_bar_item_by_user_id = function (id) {
   let item = false
 
   $(".activity_bar_item").each(function () {
-    if ($(this).data("username") === username) {
+    if ($(this).data("user_id") === id) {
       item = this
       return false
     }
@@ -206,13 +210,25 @@ Hue.clear_activity_bar_items = function () {
 }
 
 // Updates the profile image of an item in the activity bar
-Hue.update_activity_bar_image = function (username, src) {
+Hue.update_activity_bar_image = function (id, src) {
   $("#activity_bar_inner")
     .find(".activity_bar_item")
     .each(function () {
-      if ($(this).data("username") === username) {
+      if ($(this).data("user_id") === id) {
         $(this).find(".activity_bar_image").eq(0).attr("src", src)
         return false
       }
     })
+}
+
+// Updates the username of an activity bar item
+Hue.update_activity_bar_username = function (id, uname) {
+  $("#activity_bar_inner")
+  .find(".activity_bar_item")
+  .each(function () {
+    if ($(this).data("user_id") === id) {
+      $(this).find(".activity_bar_text").eq(0).text(uname)
+      return false
+    }
+  }) 
 }

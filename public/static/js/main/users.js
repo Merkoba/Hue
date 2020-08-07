@@ -355,7 +355,7 @@ Hue.get_user_by_username = function (uname) {
 }
 
 // Gets a user from the user list by ID
-Hue.get_user_by_id = function (id) {
+Hue.get_user_by_user_id = function (id) {
   for (let user of Hue.userlist) {
     if (user.user_id === id) {
       return user
@@ -585,11 +585,11 @@ Hue.sort_userlist_by_activity_trigger = function (a, b) {
 }
 
 // Updates the profile image of a user in the userlist
-Hue.update_user_profile_image = function (uname, pi) {
+Hue.update_user_profile_image = function (id, pi) {
   for (let i = 0; i < Hue.userlist.length; i++) {
     let user = Hue.userlist[i]
 
-    if (user.username === uname) {
+    if (user.user_id === id) {
       Hue.userlist[i].profile_image = pi
       return
     }
@@ -703,6 +703,9 @@ Hue.announce_new_username = function (data) {
   if (Hue.admin_list_open) {
     Hue.request_admin_list()
   }
+
+  let user = Hue.get_user_by_username(data.username)
+  Hue.update_activity_bar_username(user.user_id, user.username)
 }
 
 // Check whether a user is ignored by checking the ignored usernames list
@@ -821,6 +824,12 @@ Hue.stop_show_profile_audio = function () {
   }
 }
 
+// Wrapper to show profile  by id
+Hue.show_profile_by_user_id = function (id) {
+  let user = Hue.get_user_by_user_id(id)
+  Hue.show_profile(user.username)
+}
+
 // Shows a user's profile window
 Hue.show_profile = function (uname, prof_image) {
   let pi
@@ -927,21 +936,27 @@ Hue.show_profile = function (uname, prof_image) {
 
 // Announces a user's profile image change
 Hue.profile_image_changed = function (data) {
-  if (data.username === Hue.username) {
+  let user = Hue.get_user_by_user_id(data.user_id)
+
+  if (!user) {
+    return false
+  }
+
+  if (data.user_id === Hue.user_id) {
     Hue.profile_image = data.profile_image
     $("#user_menu_profile_image").attr("src", Hue.profile_image)
   }
 
-  Hue.update_user_profile_image(data.username, data.profile_image)
+  Hue.update_user_profile_image(data.user_id, data.profile_image)
 
   if (!Hue.user_is_ignored(data.username)) {
     Hue.show_room_notification(
-      data.username,
+      user.username,
       `${data.username} changed their profile image`
     )
   }
 
-  Hue.update_activity_bar_image(data.username, data.profile_image)
+  Hue.update_activity_bar_image(data.user_id, data.profile_image)
 }
 
 // When any user changes their bio
