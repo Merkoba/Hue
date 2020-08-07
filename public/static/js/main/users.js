@@ -952,7 +952,7 @@ Hue.profile_image_changed = function (data) {
   if (!Hue.user_is_ignored(data.username)) {
     Hue.show_room_notification(
       user.username,
-      `${data.username} changed their profile image`
+      `${user.username} changed their profile image`
     )
   }
 
