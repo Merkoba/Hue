@@ -949,7 +949,7 @@ Hue.profile_image_changed = function (data) {
 
   Hue.update_user_profile_image(data.user_id, data.profile_image)
 
-  if (!Hue.user_is_ignored(data.username)) {
+  if (!Hue.user_is_ignored(user.username)) {
     Hue.show_room_notification(
       user.username,
       `${user.username} changed their profile image`
