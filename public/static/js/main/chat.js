@@ -1220,7 +1220,7 @@ Hue.setup_markdown_regexes = function () {
     let n = g3.length
 
     if (n === 1) {
-      return `${g2}<div class='backgrounded'>[dummy-space]${g4}[dummy-space]</div>${g5}`
+      return `${g2}<span class='backgrounded'>[dummy-space]${g4}[dummy-space]</span>${g5}`
     }
 
     return g1
@@ -1244,7 +1244,7 @@ Hue.setup_markdown_regexes = function () {
     let n = g3.length
 
     if (n === 2) {
-      return `${g2}<div class='yuge'>[dummy-space]${g4}[dummy-space]</div>${g5}`
+      return `${g2}<span class='yuge'>[dummy-space]${g4}[dummy-space]</span>${g5}`
     }
 
     return g1
@@ -1261,7 +1261,7 @@ Hue.setup_markdown_regexes = function () {
       return g1
     }
 
-    return `<div class='greentext'>${g1}</div>`
+    return `<span class='greentext'>${g1}</span>`
   }
 
   Hue.markdown_regexes["whisper_link"] = {}

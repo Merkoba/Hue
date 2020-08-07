@@ -3054,7 +3054,6 @@ pre {
 }
 
 .backgrounded {
-	display: inline-block;
 	background-color: var(--slight_background);
 	outline: 0.0588rem dotted var(--color_4);
 }
