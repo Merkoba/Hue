@@ -126,7 +126,7 @@ body * {
 .activity_bar_item {
 	display: flex;
 	flex-direction: row;
-	max-width: 7rem;
+	max-width: 9rem;
 	cursor: pointer;
 	align-items: center;
 }
