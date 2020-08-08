@@ -8,16 +8,16 @@
 
         <div class="columns_container">
 
-            <% include header.ejs %>
+            <%- include('header.ejs'); %>
 
             <div class='rows_container bg1' id="main_rows_container">
 
-                <% include chat.ejs %>
-                <% include media.ejs %>
+                <%- include('chat.ejs'); %>
+                <%- include('media.ejs'); %>
 
             </div>
 
-            <% include footer.ejs %>
+            <%- include('footer.ejs'); %>
 
         </div>
     </div>
@@ -48,7 +48,7 @@
         <div id='infotip'>hi</div>
     </div>
 
-    <% include reactions.ejs %>
+    <%- include('reactions.ejs'); %>
 
     <%- templates %>
     

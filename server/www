@@ -89,7 +89,8 @@ const mongo = require('mongodb')
 const winston = require('winston')
 
 mongo.connect(config.mongodb_path, {
-	useNewUrlParser: true
+	useNewUrlParser: true,
+	useUnifiedTopology: true
 }, function (err, client) {
 	if (err) {
 		console.error(err)

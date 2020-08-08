@@ -1,11 +1,11 @@
 <!-- T:29 -->
 <!-- X:11 -->
 
-<% include ../doctype.ejs %>
+<%- include('../doctype.ejs'); %>
 
 <html>
 	<head>
-		<% include ../meta.ejs %>
+		<%- include('../meta.ejs'); %>
 
 		<title><%= vars.default_title %></title>
 
@@ -17,7 +17,7 @@
 
 		<script>
 
-			<% include vars.ejs %>
+			<%- include('vars.ejs'); %>
 
 			$(function() {
 				Hue.init()

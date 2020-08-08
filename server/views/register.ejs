@@ -1,4 +1,4 @@
-<% include doctype.ejs %>
+<%- include('doctype.ejs'); %>
 
 <html>
 
@@ -6,7 +6,7 @@
 
 	<title><%-vars.register_title%></title>
 
-	<% include pages_imports.ejs %>
+	<%- include('pages_imports.ejs'); %>
 
 	<script src='https://www.google.com/recaptcha/api.js'></script>
 
