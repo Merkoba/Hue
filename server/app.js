@@ -28,7 +28,7 @@ module.exports = function (db, db_manager, config, sconfig, utilz) {
   // Limit to x reqs per y mins
   const limiter = rateLimit({
     windowMs: 10 * 60 * 1000,
-    max: 20
+    max: 50
   })
 
   // Apply the limiter to these routes
