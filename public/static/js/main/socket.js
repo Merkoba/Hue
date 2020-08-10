@@ -225,7 +225,7 @@ Hue.server_update_events = {
     Hue.feedback(`Code supplied has expired`)
   },
   create_room_wait: (data) => {
-    Hue.msg_info.show("You must wait a while before creating another room")
+    Hue.create_room_cooldown_message()
   },
   pong_received: (data) => {
     Hue.pong_received(data)

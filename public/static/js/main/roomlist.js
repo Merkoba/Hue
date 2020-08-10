@@ -222,3 +222,17 @@ Hue.on_room_created = function (data) {
 
   Hue.show_open_room(data.id)
 }
+
+// Message to show when the create room cooldown is not over
+Hue.create_room_cooldown_message = function () {
+  let mins = Math.round(Hue.config.create_room_cooldown / 1000 / 60)
+  let s
+  
+  if (mins === 1) {
+    s = "minute"
+  } else {
+    s = "minutes"
+  }
+
+  Hue.msg_info.show(`You must wait ${mins} ${s} between room creation`)
+}
