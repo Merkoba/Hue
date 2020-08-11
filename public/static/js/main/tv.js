@@ -541,7 +541,7 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
 }
 
 // Changes the tv visibility based on current state
-Hue.change_tv_visibility = function (play = true) {
+Hue.change_tv_visibility = function (play = false) {
   if (Hue.room_tv_mode !== "disabled" && Hue.room_state.tv_enabled) {
     $("#media").css("display", "flex")
     $("#media_tv").css("display", "flex")
