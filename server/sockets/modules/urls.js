@@ -11,9 +11,9 @@ module.exports = function (
   // Checks if a domain is black or white listed
   handler.check_domain_list = function (media_type, src) {
     try {
-      let list_type = config[`${media_type}_domain_white_or_black_list`]
+      let list_type = config[`${media_type}_domain_allow_or_deny_list`]
 
-      if (list_type !== "white" && list_type !== "black") {
+      if (list_type !== "allow" && list_type !== "deny") {
         return false
       }
 
@@ -26,11 +26,11 @@ module.exports = function (
       let domain = utilz.get_root(src)
       let includes = list.includes(domain) || list.includes(`${domain}/`)
 
-      if (list_type === "white") {
+      if (list_type === "allow") {
         if (!includes) {
           return true
         }
-      } else if (list_type === "black") {
+      } else if (list_type === "deny") {
         if (includes) {
           return true
         }

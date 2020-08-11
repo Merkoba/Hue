@@ -549,16 +549,16 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_sockets_per_user"
 >How many active sockets a user can have at the same time. After this limit all incoming socket connections are droppped.
 
-"images_domain_white_or_black_list"
->Whether images_domain_list is a whitelist or a blacklist of domains. This should be "white" or "black".
+"images_domain_allow_or_deny_list"
+>Whether images_domain_list is a whitelist or a blacklist of domains. This should be "allow" or "deny".
 
 "images_domain_list"
 >If this is a white list, only image sources belonging to this domain will be accepted.
 If it's a blacklist, image sources from this domain will be rejected.
 This should be an array of strings of root domains.
 
-"tv_domain_white_or_black_list"
->Whether tv_domain_list is a whitelist or a blacklist of domains. This should be "white" or "black".
+"tv_domain_allow_or_deny_list"
+>Whether tv_domain_list is a whitelist or a blacklist of domains. This should be "allow" or "deny".
 
 "tv_domain_list"
 >If this is a white list, only tv sources belonging to this domain will be accepted.

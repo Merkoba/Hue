@@ -285,9 +285,9 @@ Hue.open_url_menu = function (args = {}) {
 
 // Checks if a URL of a media type is from a blacklisted or whitelisted domain
 Hue.check_domain_list = function (media_type, src) {
-  let list_type = Hue.config[`${media_type}_domain_white_or_black_list`]
+  let list_type = Hue.config[`${media_type}_domain_allow_or_deny_list`]
 
-  if (list_type !== "white" && list_type !== "black") {
+  if (list_type !== "allow" && list_type !== "deny") {
     return false
   }
 
@@ -300,11 +300,11 @@ Hue.check_domain_list = function (media_type, src) {
   let domain = Hue.utilz.get_root(src)
   let includes = list.includes(domain) || list.includes(`${domain}/`)
 
-  if (list_type === "white") {
+  if (list_type === "allow") {
     if (!includes) {
       return true
     }
-  } else if (list_type === "black") {
+  } else if (list_type === "deny") {
     if (includes) {
       return true
     }
