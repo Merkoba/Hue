@@ -142,7 +142,6 @@ Hue.image_upload_comment_type = false
 Hue.just_tabbed = false
 Hue.userlist_mode = "normal"
 Hue.usercount = 0
-Hue.quote_max_length = 200
 Hue.markdown_regexes = {}
 Hue.show_media_history_type = ""
 Hue.add_to_chat_searches_delay = 2000

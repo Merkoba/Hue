@@ -104,4 +104,5 @@ module.exports = function (c, config) {
   c.vars.scramble_speed = config.scramble_speed
   c.vars.commands_prefix = config.commands_prefix
   c.vars.create_room_cooldown = config.create_room_cooldown
+  c.vars.quote_max_length = config.quote_max_length
 }

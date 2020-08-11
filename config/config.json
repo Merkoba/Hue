@@ -236,5 +236,6 @@
 	"system_username": "El Systema",
 	"scramble_duration": 500,
 	"scramble_speed": 50,
-	"commands_prefix": "/"
+	"commands_prefix": "/",
+	"quote_max_length": 100
 }

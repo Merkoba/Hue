@@ -1313,17 +1313,35 @@ Hue.setup_markdown_regexes = function () {
 // Passes text through all markdown regexes doing the appropiate replacements
 // It runs in recursion until no more replacements are found
 // This is to allow replacements in any order
-Hue.replace_markdown = function (text, multilines = true) {
+Hue.replace_markdown = function (text, multilines = true, filter = false) {
   let original_length = text.length
 
-  text = text.replace(
-    Hue.markdown_regexes["whisper_link"].regex,
-    Hue.markdown_regexes["whisper_link"].replace_function
-  )
-  text = text.replace(
-    Hue.markdown_regexes["anchor_link"].regex,
-    Hue.markdown_regexes["anchor_link"].replace_function
-  )
+  if (filter) {
+    text = text.replace(Hue.markdown_regexes["whisper_link"].regex, "")
+    text = text.replace(Hue.markdown_regexes["anchor_link"].regex, "")
+    text = text.replace(Hue.markdown_regexes["horizontal_line"].regex, "")
+    text = text.replace(Hue.markdown_regexes["|"].regex, " (spoiler) ")
+  } else {
+    text = text.replace(
+      Hue.markdown_regexes["whisper_link"].regex,
+      Hue.markdown_regexes["whisper_link"].replace_function
+    )
+    text = text.replace(
+      Hue.markdown_regexes["anchor_link"].regex,
+      Hue.markdown_regexes["anchor_link"].replace_function
+    )
+    text = text.replace(
+      Hue.markdown_regexes["horizontal_line"].regex,
+      Hue.markdown_regexes["horizontal_line"].replace_function
+    )
+    if (!Hue.get_setting("autoreveal_spoilers")) {
+      text = text.replace(
+        Hue.markdown_regexes["|"].regex,
+        Hue.markdown_regexes["|"].replace_function
+      )
+    }
+  }
+
   text = text.replace(
     Hue.markdown_regexes["*"].regex,
     Hue.markdown_regexes["*"].replace_function
@@ -1345,13 +1363,6 @@ Hue.replace_markdown = function (text, multilines = true) {
     Hue.markdown_regexes[">"].replace_function
   )
 
-  if (!Hue.get_setting("autoreveal_spoilers")) {
-    text = text.replace(
-      Hue.markdown_regexes["|"].regex,
-      Hue.markdown_regexes["|"].replace_function
-    )
-  }
-
   if (text.length !== original_length) {
     return Hue.replace_markdown(text)
   }
@@ -1359,11 +1370,6 @@ Hue.replace_markdown = function (text, multilines = true) {
   text = text.replace(
     Hue.markdown_regexes["dummy_space"].regex,
     Hue.markdown_regexes["dummy_space"].replace_function
-  )
-
-  text = text.replace(
-    Hue.markdown_regexes["horizontal_line"].regex,
-    Hue.markdown_regexes["horizontal_line"].replace_function
   )
 
   if (multilines) {
@@ -1423,18 +1429,23 @@ Hue.start_reply = function (target) {
     return false
   }
 
+  text = $(`<div>${Hue.replace_markdown(text, false, true)}</div>`).text()
+
+  if (!text) {
+    return
+  }
+
   let rtext = text.replace(/\n+/gm, " ").trim()
-  let add_dots = rtext.length > Hue.quote_max_length
-  text = rtext.substring(0, Hue.quote_max_length)
+  let add_dots = rtext.length > Hue.config.quote_max_length
+  text = rtext.substring(0, Hue.config.quote_max_length).trim()
 
   if (add_dots) {
     text += "..."
   }
 
-  let quote = `${Hue.replace_markdown(Hue.utilz.make_html_safe(`${text}`))}`
   Hue.reply_text_raw = `=[dummy-space]${uname} said: "[dummy-space]${text}[dummy-space]"[dummy-space]=`
 
-  Hue.show_reply(uname, quote)
+  Hue.show_reply(uname, text)
 }
 
 // Show the reply window
