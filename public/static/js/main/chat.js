@@ -1431,7 +1431,8 @@ Hue.start_reply = function (target) {
 
   text = $(`<div>${Hue.replace_markdown(text, false, true)}</div>`).text()
 
-  if (!text) {
+  if (!text || !text.match(/\w/)) {
+    Hue.feedback("Can't quote that")
     return
   }
 
