@@ -152,7 +152,7 @@ Hue.on_message_board_received = function (data) {
   Hue.check_last_message_board_post()
 
   let func = function () { Hue.show_message_board() }
-  let item = Hue.make_info_popup_item({icon: "pencil", message: "New message board post", onclick:func, push: false})
+  let item = Hue.make_info_popup_item({icon: "pencil", message: "New message board post", on_click:func})
   Hue.show_popup(Hue.make_info_popup(func), item)
 }
 
