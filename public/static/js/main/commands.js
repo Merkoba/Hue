@@ -1284,6 +1284,8 @@ Hue.execute_command = function (message, ans) {
     if (!Hue.superuser) {
       Hue.feedback("You don't have permission to run that command")
       return ans
+    } else {
+      needs_confirm = true
     }
   }
 
