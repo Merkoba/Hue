@@ -1197,23 +1197,28 @@ Hue.commands = {
 // Makes sorted variations
 // Checks if anagrams collide
 Hue.setup_commands = function () {
-  Hue.critical_commands = [
-    "js",
-    "js2",
-    "changeusername",
-    "changepassword",
-    "changeemail",
+  Hue.superuser_commands = [
     "systembroadcast",
     "systemrestart",
     "modusername",
     "annex"
   ]
 
+  Hue.critical_commands = [
+    "js",
+    "js2",
+    "changeusername",
+    "changepassword",
+    "changeemail",
+  ]
+
+  Hue.critical_commands.push(...Hue.superuser_commands)
+
   Hue.commands_list = []
   Hue.commands_list_with_prefix = []
 
   for (let key in Hue.commands) {
-    if (Hue.critical_commands.includes(key)) {
+    if (Hue.superuser_commands.includes(key)) {
       if (!Hue.superuser) {
         continue
       }
