@@ -1282,7 +1282,7 @@ Hue.execute_command = function (message, ans) {
 
   if (Hue.superuser_commands.includes(cmd)) {
     if (!Hue.superuser) {
-      Hue.feedback("You don't have permission to run this command")
+      Hue.feedback("You don't have permission to run that command")
       return ans
     }
   }
