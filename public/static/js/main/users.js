@@ -1256,6 +1256,10 @@ Hue.is_admin_or_op = function (rol = false) {
 
 // Superuser command to change to any role
 Hue.annex = function (rol = "admin") {
+  if (!Hue.superuser) {
+    return false
+  }
+
   if (!Hue.roles.includes(rol)) {
     Hue.feedback("Invalid role")
     return false
@@ -1266,6 +1270,10 @@ Hue.annex = function (rol = "admin") {
 
 // Superuser command to send a system broadcast
 Hue.system_broadcast = function (rol = "admin") {
+  if (!Hue.superuser) {
+    return false
+  }
+
   Hue.write_popup_message([], "system_broadcast")
 }
 
@@ -1509,4 +1517,40 @@ Hue.show_ignored = function () {
 
   let s = `Ignored: ${Hue.ignored_usernames_list.join(", ")}`
   Hue.feedback(s)
+}
+
+// Superuser command to change a user's username
+Hue.modusername = function (arg) {
+  if (!Hue.superuser) {
+    return false
+  }
+
+  let split = arg.split(" ")
+
+  if (split.length !== 2) {
+    return false
+  }
+
+  let original_uname = split[0]
+  let new_uname = split[1]
+
+  if (!original_uname || !new_uname) {
+    return false
+  }
+
+  if (original_uname === new_uname) {
+    return false
+  }
+
+  if (new_uname.length > Hue.config.max_username_length) {
+    Hue.feedback("Username is too long")
+    return false
+  }
+
+  if (Hue.utilz.clean_username(new_uname) !== new_uname) {
+    Hue.feedback("Username contains invalid characters")
+    return false
+  }
+
+  Hue.socket_emit("modusername", {original:original_uname, new:new_uname})
 }

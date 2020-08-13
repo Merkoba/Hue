@@ -334,6 +334,7 @@ module.exports = function (
       op_4_permissions: info.op_4_permissions,
       email: utilz.conceal_email(socket.hue_email),
       bio: socket.hue_bio,
+      superuser:socket.hue_superuser,
       reg_date: userinfo.registration_date,
       last_message_board_post_date: last_message_board_post_date,
     }

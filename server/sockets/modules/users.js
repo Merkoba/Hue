@@ -695,7 +695,7 @@ module.exports = function (
       prop2.skulls = badges
     }
 
-    handler.modify_socket_properties(first_socket, prop, {
+    handler.modify_socket_properties(first_socket.hue_user_id, prop, {
       method: "badge_received",
       data: {
         username: data.username,
@@ -715,5 +715,61 @@ module.exports = function (
     }
 
     await db_manager.update_user(first_socket.hue_user_id, prop2)
+  }
+
+  // Superuser function to change a user's username
+  handler.public.modusername = async function (socket, data) {
+    if (!socket.hue_superuser) {
+      return handler.get_out(socket)
+    }
+
+    if (!data.original || !data.new) {
+      return false
+    }
+
+    if (data.original === data.new) {
+      return false
+    }
+  
+    if (data.new.length > config.max_username_length) {
+      return false
+    }
+  
+    if (utilz.clean_username(data.new) !== data.new) {
+      return false
+    }
+
+    let userinfo = await db_manager.get_user(
+      { username: data.original },
+      { username: 1 }
+    )
+
+    if (!userinfo) {
+      handler.user_emit(socket, "user_not_found", {})
+      return false
+    }
+
+    let done = await db_manager.change_username(
+      userinfo._id,
+      data.new
+    )
+  
+    if (done) {
+      handler.modify_socket_properties(
+        userinfo._id.toString(),
+        { hue_username: data.new },
+        {
+          method: "new_username",
+          data: {
+            username: data.new,
+            old_username: data.original,
+          },
+        }
+      )
+    } else {
+      handler.user_emit(socket, "username_already_exists", {
+        username: data.new,
+      })
+    }
   }
 }

@@ -45,7 +45,7 @@ module.exports = function (
       socket.hue_user_id,
       socket.hue_room_id
     )
-    handler.modify_socket_properties(socket, {
+    handler.modify_socket_properties(socket.hue_user_id, {
       hue_message_board_dates: message_board_dates,
     })
 

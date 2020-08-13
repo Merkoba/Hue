@@ -226,7 +226,6 @@ Hue.init = function () {
   Hue.copypaste_events()
   Hue.scroll_events()
   Hue.resize_events()
-  Hue.setup_commands()
   Hue.start_chat_mouse_events()
   Hue.start_chat_hover_events()
   Hue.start_body_events()
@@ -287,7 +286,6 @@ Hue.init = function () {
   Hue.generate_favicon(0)
   Hue.setup_reply()
   Hue.start_socket_stats()
-  Hue.setup_critical_commands()
   Hue.setup_maxers()
 
   if (Hue.debug_functions) {
@@ -308,6 +306,7 @@ Hue.on_join = function (data) {
   Hue.image_changed = []
   Hue.tv_changed = []
   Hue.log_messages_processed = false
+  Hue.superuser = data.superuser
 
   Hue.load_date_3 = Date.now()
   Hue.loginfo("Joined Room")
@@ -327,6 +326,7 @@ Hue.on_join = function (data) {
   Hue.log_messages = data.log_messages
   Hue.is_public = data.public
 
+  Hue.setup_commands()
   Hue.set_username(data.username)
   Hue.set_email(data.email)
   Hue.set_bio(data.bio)

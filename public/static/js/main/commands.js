@@ -449,6 +449,14 @@ Hue.commands = {
     },
     description: `(Only for superusers) Used to change the user's role`,
   },
+  "modusername": {
+    action: (arg, ans) => {
+      if (arg) {
+        Hue.modusername(arg)
+      }
+    },
+    description: `(Only for superusers) Used to change a user's username`,
+  },
   "highlights": {
     action: (arg, ans) => {
       if (arg) {
@@ -1189,10 +1197,28 @@ Hue.commands = {
 // Makes sorted variations
 // Checks if anagrams collide
 Hue.setup_commands = function () {
+  Hue.critical_commands = [
+    "js",
+    "js2",
+    "changeusername",
+    "changepassword",
+    "changeemail",
+    "systembroadcast",
+    "systemrestart",
+    "modusername",
+    "annex"
+  ]
+
   Hue.commands_list = []
   Hue.commands_list_with_prefix = []
 
   for (let key in Hue.commands) {
+    if (Hue.critical_commands.includes(key)) {
+      if (!Hue.superuser) {
+        continue
+      }
+    }
+
     Hue.commands_list.push(key)
     Hue.commands_list_with_prefix.push(Hue.config.commands_prefix + key)
   }
@@ -1532,18 +1558,4 @@ Hue.get_closest_command = function (cmd) {
   }
 
   return highest_command
-}
-
-// Setups critical commands
-Hue.setup_critical_commands = function () {
-  Hue.critical_commands = [
-    "js",
-    "js2",
-    "changeusername",
-    "changepassword",
-    "changeemail",
-    "systembroadcast",
-    "systemrestart",
-    "annex"
-  ]
 }

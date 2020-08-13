@@ -34,7 +34,7 @@ module.exports = function (
 
     if (done) {
       handler.modify_socket_properties(
-        socket,
+        socket.hue_user_id,
         { hue_username: data.username },
         {
           method: "new_username",
@@ -155,7 +155,7 @@ module.exports = function (
       })
       return
     } else if (ans.message === "changed") {
-      handler.modify_socket_properties(socket, { hue_email: data.email })
+      handler.modify_socket_properties(socket.hue_user_id, { hue_email: data.email })
       handler.user_emit(socket, "email_changed", { email: ans.email })
     }
   }
@@ -178,7 +178,7 @@ module.exports = function (
       return false
     }
 
-    handler.modify_socket_properties(socket, { hue_bio: data.bio })
+    handler.modify_socket_properties(socket.hue_user_id, { hue_bio: data.bio })
 
     await db_manager.update_user(socket.hue_user_id, {
       bio: socket.hue_bio,
@@ -252,7 +252,7 @@ module.exports = function (
     })
 
     handler.modify_socket_properties(
-      socket,
+      socket.hue_user_id,
       { hue_profile_image: image_url },
       {
         method: "profile_image_changed",
@@ -328,7 +328,7 @@ module.exports = function (
     })
 
     handler.modify_socket_properties(
-      socket,
+      socket.hue_user_id,
       { hue_audio_clip: audio_clip_url },
       {
         method: "audio_clip_changed",
