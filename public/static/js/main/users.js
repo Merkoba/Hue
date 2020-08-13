@@ -1256,10 +1256,6 @@ Hue.is_admin_or_op = function (rol = false) {
 
 // Superuser command to change to any role
 Hue.annex = function (rol = "admin") {
-  if (!Hue.superuser) {
-    return false
-  }
-
   if (!Hue.roles.includes(rol)) {
     Hue.feedback("Invalid role")
     return false
@@ -1270,10 +1266,6 @@ Hue.annex = function (rol = "admin") {
 
 // Superuser command to send a system broadcast
 Hue.system_broadcast = function (rol = "admin") {
-  if (!Hue.superuser) {
-    return false
-  }
-
   Hue.write_popup_message([], "system_broadcast")
 }
 
@@ -1521,10 +1513,6 @@ Hue.show_ignored = function () {
 
 // Superuser command to change a user's username
 Hue.modusername = function (arg) {
-  if (!Hue.superuser) {
-    return false
-  }
-  
   let original_uname, new_uname
 
   if (arg.includes(" > ")) {

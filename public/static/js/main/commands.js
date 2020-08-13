@@ -1280,6 +1280,13 @@ Hue.execute_command = function (message, ans) {
     cmd = cmd.substring(1)
   }
 
+  if (Hue.superuser_commands.includes(cmd)) {
+    if (!Hue.superuser) {
+      Hue.feedback("You don't have permission to run this command")
+      return ans
+    }
+  }
+
   if (cmd.endsWith("?")) {
     cmd = cmd.slice(0, -1)
     needs_confirm = true
