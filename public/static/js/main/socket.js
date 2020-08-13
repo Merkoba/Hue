@@ -293,6 +293,9 @@ Hue.server_update_events = {
   audio_clip_changed: (data) => {
     Hue.audio_clip_changed(data)
   },
+  done: (data) => {
+    Hue.feedback("Done")
+  },
 }
 
 // Centralized function to initiate a socket emit to the server

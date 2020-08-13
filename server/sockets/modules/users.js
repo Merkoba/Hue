@@ -766,6 +766,8 @@ module.exports = function (
           },
         }
       )
+
+      handler.user_emit(socket, "done", {})
     } else {
       handler.user_emit(socket, "username_already_exists", {
         username: data.new,

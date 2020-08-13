@@ -186,6 +186,10 @@ module.exports = function (
     properties = {},
     after_room = false
   ) {
+    if (!vars.user_rooms[user_id]) {
+      return
+    }
+
     for (let room_id of vars.user_rooms[user_id]) {
       let first_socc = false
 
