@@ -1304,6 +1304,7 @@ Hue.execute_command = function (message, ans) {
 
   if (!command) {
     let closest_command = Hue.get_closest_command(cmd)
+    console.log(closest_command)
 
     if (closest_command) {
       command = closest_command
@@ -1418,15 +1419,15 @@ Hue.inspect_command = function (cmd) {
 // Executes a remote command received through a whisper
 // This only gets executed if the sender is whitelisted,
 // for remote command execution
-Hue.execute_whisper_command = function (username, message) {
-  if (Hue.includes_critical_command(username, message)) {
+Hue.execute_whisper_command = function (data) {
+  if (Hue.includes_critical_command(data.username, data.message)) {
     return false
   }
 
-  Hue.feedback(`${username} executed "${message}" in your client`)
+  Hue.feedback(`${data.username} executed "${data.message}" in your client`)
 
   Hue.process_message({
-    message: message,
+    message: data.message,
     to_history: false,
     clr_input: false,
   })
@@ -1572,4 +1573,258 @@ Hue.get_closest_command = function (cmd) {
   }
 
   return highest_command
+}
+
+// Process user's input messages
+// Checks if it is a command and executes it
+// Or sends a chat message to the server
+Hue.process_message = function (args = {}) {
+  let def_args = {
+    message: "",
+    to_history: true,
+    clr_input: true,
+    callback: false,
+    edit_id: false,
+    handle_url: true
+  }
+
+  args = Object.assign(def_args, args)
+
+  let message_split = args.message.split("\n")
+  let num_lines = message_split.length
+
+  args.message = Hue.utilz.remove_multiple_empty_lines(args.message)
+  args.message = Hue.utilz.untab_string(args.message).trimEnd()
+
+  if (num_lines === 1 && Hue.is_command(args.message) && !args.edit_id) {
+    let and_split = args.message.split(" && ")
+    let lc_message = args.message.toLowerCase()
+    let more_stuff
+
+    if (lc_message.startsWith(`${Hue.config.commands_prefix}js `) || lc_message.startsWith(`${Hue.config.commands_prefix}js2 `)) {
+      more_stuff = lc_message.includes(`${Hue.config.commands_prefix}endjs`)
+    } else if (lc_message.startsWith(`${Hue.config.commands_prefix}input `)) {
+      more_stuff = args.message.includes(`${Hue.config.commands_prefix}endinput`)
+    } else if (
+      lc_message.startsWith(`${Hue.config.commands_prefix}whisper `) ||
+      lc_message.startsWith(`${Hue.config.commands_prefix}whisper2 `)
+    ) {
+      more_stuff = args.message.includes(`${Hue.config.commands_prefix}endwhisper`)
+    } else {
+      more_stuff = true
+    }
+
+    if (and_split.length > 1 && more_stuff) {
+      if (args.to_history) {
+        Hue.add_to_input_history(args.message)
+      }
+
+      Hue.clear_input()
+
+      let ssplit = args.message.split(" ")
+      let cmds = []
+      let cmd = ""
+      let cmd_mode = "normal"
+
+      for (let p = 0; p < ssplit.length; p++) {
+        let sp = ssplit[p]
+        let lc_sp = sp.toLowerCase()
+
+        if (cmd_mode === "js") {
+          if (lc_sp === `${Hue.config.commands_prefix}endjs`) {
+            cmds.push(cmd)
+            cmd = ""
+            cmd_mode = "normal"
+          } else {
+            cmd += ` ${sp}`
+          }
+        } else if (cmd_mode === "input") {
+          if (lc_sp === `${Hue.config.commands_prefix}endinput`) {
+            cmds.push(cmd)
+            cmd = ""
+            cmd_mode = "normal"
+          } else {
+            cmd += ` ${sp}`
+          }
+        } else if (cmd_mode === "whisper") {
+          if (lc_sp === `${Hue.config.commands_prefix}endwhisper`) {
+            cmds.push(cmd)
+            cmd = ""
+            cmd_mode = "normal"
+          } else {
+            cmd += ` ${sp}`
+          }
+        } else {
+          if (Hue.command_aliases[sp] !== undefined) {
+            ssplit.splice(p, 1, ...Hue.command_aliases[sp].split(" "))
+            p -= 1
+            continue
+          }
+
+          if (cmd === "") {
+            if (sp !== "&&") {
+              cmd = sp
+
+              if (lc_sp === `${Hue.config.commands_prefix}js` || lc_sp === `${Hue.config.commands_prefix}js2`) {
+                cmd_mode = "js"
+              } else if (lc_sp === `${Hue.config.commands_prefix}input`) {
+                cmd_mode = "input"
+              } else if (lc_sp === `${Hue.config.commands_prefix}whisper` || lc_sp === `${Hue.config.commands_prefix}whisper2`) {
+                cmd_mode = "whisper"
+              }
+            }
+          } else {
+            if (sp === "&&") {
+              cmds.push(cmd)
+              cmd = ""
+            } else {
+              cmd += ` ${sp}`
+            }
+          }
+        }
+      }
+
+      if (cmd) {
+        cmds.push(cmd)
+      }
+
+      let qcmax = 0
+      let cqid
+
+      while (true) {
+        cqid = Hue.utilz.get_random_string(5) + Date.now()
+
+        if (Hue.commands_queue[cqid] === undefined) {
+          break
+        }
+
+        qcmax += 1
+
+        if (qcmax >= 100) {
+          if (args.callback) {
+            return args.callback(false)
+          } else {
+            return false
+          }
+        }
+      }
+
+      Hue.commands_queue[cqid] = cmds
+      Hue.run_commands_queue(cqid)
+
+      if (args.callback) {
+        return args.callback(true)
+      } else {
+        return true
+      }
+    }
+
+    let msplit = args.message.split(" ")
+    let alias_cmd = msplit[0].trim()
+    let alias_cmd_2, needs_confirm
+
+    if (alias_cmd.endsWith("?")) {
+      alias_cmd_2 = alias_cmd.slice(0, -1)
+      needs_confirm = true
+    } else {
+      alias_cmd_2 = alias_cmd
+      needs_confirm = false
+    }
+
+    let alias = Hue.command_aliases[alias_cmd_2]
+
+    if (alias !== undefined) {
+      let alias_arg = msplit.slice(1).join(" ").trim()
+      let full_alias = `${alias} ${alias_arg}`.trim()
+
+      if (alias_cmd_2.startsWith(`${Hue.config.commands_prefix}X`)) {
+        args.to_history = false
+      }
+
+      if (args.to_history) {
+        Hue.add_to_input_history(args.message)
+      }
+
+      if (needs_confirm) {
+        if (confirm(`Are you sure you want to execute ${alias_cmd_2}?`)) {
+          Hue.process_message({
+            message: full_alias,
+            to_history: false,
+            clr_input: args.clr_input,
+          })
+        } else {
+          if (args.callback) {
+            return args.callback(false)
+          } else {
+            return false
+          }
+        }
+      } else {
+        Hue.process_message({
+          message: full_alias,
+          to_history: false,
+          clr_input: args.clr_input,
+        })
+      }
+    } else {
+      let ans = Hue.execute_command(args.message, {
+        to_history: args.to_history,
+        clr_input: args.clr_input,
+      })
+
+      args.to_history = ans.to_history
+      args.clr_input = ans.clr_input
+    }
+  } else {
+    if (Hue.can_chat) {
+      if (args.message.length === 0) {
+        Hue.clear_input()
+
+        if (args.callback) {
+          return args.callback(false)
+        } else {
+          return false
+        }
+      }
+
+      if (num_lines > Hue.config.max_num_newlines) {
+        if (args.callback) {
+          return args.callback(false)
+        } else {
+          return false
+        }
+      }
+
+      if (args.message.length > Hue.config.max_input_length) {
+        args.message = args.message.substring(0, Hue.config.max_input_length)
+      }
+
+      if (Hue.get_setting("confirm_chat")) {
+        if (!confirm("Are you sure you want to send a chat message here?")) {
+          return
+        }
+      }
+
+      Hue.socket_emit("sendchat", {
+        message: args.message,
+        edit_id: args.edit_id,
+      })
+    } else {
+      Hue.cant_chat()
+    }
+  }
+
+  if (args.to_history) {
+    Hue.add_to_input_history(args.message)
+  }
+
+  if (args.clr_input) {
+    Hue.clear_input()
+  }
+
+  if (args.callback) {
+    return args.callback(true)
+  } else {
+    return true
+  }
 }
