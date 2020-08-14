@@ -2913,6 +2913,7 @@ pre {
 
 .precode {
 	background-color: var(--color_4_a);
+	font-family: monospace;
 	font-size: 0.9rem;
 	padding: 0.5rem;
 	-moz-tab-size: var(--tab-size);
@@ -2942,9 +2943,11 @@ pre {
 }
 
 .greentext {
-	background-color: black;
+	background-color: #171515;
 	color: #2ec42e;
 	padding: 0.1176rem;
+	font-family: monospace;
+	font-size: 0.9rem;
 }
 
 .color_3 {
