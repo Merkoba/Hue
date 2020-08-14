@@ -360,11 +360,11 @@ Hue.user_settings = {
       }
     },
   },
-  open_popup_messages: {
+  open_messages: {
     widget_type: "checkbox",
-    description: `Whether whisper messages received should open in a popup automatically apart from showing the chat notification`,
+    description: `Whether messages received should open in a window automatically`,
     action: (type, save = true) => {
-      Hue[type].open_popup_messages = $(`#${type}_open_popup_messages`).prop(
+      Hue[type].open_messages = $(`#${type}_open_messages`).prop(
         "checked"
       )
 
