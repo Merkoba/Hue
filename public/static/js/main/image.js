@@ -106,7 +106,10 @@ Hue.announce_image = function (data) {
     type: "image_change",
     user_id: data.user_id,
     in_log: data.in_log,
-    media_source: data.source
+    media_source: data.source,
+    onmiddleclick: function () {
+      Hue.goto_url(data.source, "tab")
+    }
   })
 }
 

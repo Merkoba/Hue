@@ -1305,7 +1305,6 @@ Hue.execute_command = function (message, ans) {
 
   if (!command) {
     let closest_command = Hue.get_closest_command(cmd)
-    console.log(closest_command)
 
     if (closest_command) {
       command = closest_command

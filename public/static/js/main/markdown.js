@@ -92,7 +92,7 @@ Hue.setup_markdown_regexes = function () {
   }
 
   Hue.markdown_regexes[">"] = {}
-  Hue.markdown_regexes[">"].regex = new RegExp("^(&gt;.*)", "gm")
+  Hue.markdown_regexes[">"].regex = new RegExp("^\\s*(&gt;.*)", "gm")
   Hue.markdown_regexes[">"].replace_function = function (g1) {
     return `<span class='greentext'>${g1}</span>`
   }
