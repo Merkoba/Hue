@@ -240,7 +240,7 @@ Hue.whisper_received = function (data) {
   let func = function () { Hue.show_whisper(data) }
   let item = Hue.make_info_popup_item({icon: "envelope", message: message, push: false})
 
-  let open = Hue.get_setting("open_messages")
+  let open = Hue.get_setting("open_whispers_automatically")
   data.notification = Hue.push_whisper(message, func, open)
   
   if (open) {

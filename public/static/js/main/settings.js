@@ -360,11 +360,11 @@ Hue.user_settings = {
       }
     },
   },
-  open_messages: {
+  open_whispers_automatically: {
     widget_type: "checkbox",
     description: `Whether messages received should open in a window automatically`,
     action: (type, save = true) => {
-      Hue[type].open_messages = $(`#${type}_open_messages`).prop(
+      Hue[type].open_whispers_automatically = $(`#${type}_open_whispers_automatically`).prop(
         "checked"
       )
 

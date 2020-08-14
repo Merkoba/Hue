@@ -125,7 +125,7 @@
 	"global_settings_default_save_user_part_notifications": true,
 	"global_settings_default_save_room_notifications": true,
 	"global_settings_default_popup_notifications_close_delay": 5000,
-	"global_settings_default_open_messages": true,
+	"global_settings_default_open_whispers_automatically": true,
 	"global_settings_default_autoreveal_spoilers": false,
 	"global_settings_default_on_lockscreen": "",
 	"global_settings_default_on_unlockscreen": "",
