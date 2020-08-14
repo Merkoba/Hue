@@ -1210,6 +1210,7 @@ Hue.setup_commands = function () {
     "changeusername",
     "changepassword",
     "changeemail",
+    "logout"
   ]
 
   Hue.critical_commands.push(...Hue.superuser_commands)
