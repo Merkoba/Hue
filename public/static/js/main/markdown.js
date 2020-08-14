@@ -92,17 +92,9 @@ Hue.setup_markdown_regexes = function () {
   }
 
   Hue.markdown_regexes[">"] = {}
-  Hue.markdown_regexes[">"].regex = new RegExp("^&gt;\\s*(?:(?!&gt;).)+", "gm")
+  Hue.markdown_regexes[">"].regex = new RegExp("^(&gt;.*)", "gm")
   Hue.markdown_regexes[">"].replace_function = function (g1) {
-    if (g1.trim() === "&gt;") {
-      return g1
-    }
-
-    if (g1.trim() === "&gt;_") {
-      return g1
-    }
-
-    return `<span class='greentext'>&gt; ${g1.replace("&gt;", "").trim()}</span>`
+    return `<span class='greentext'>${g1}</span>`
   }
 
   Hue.markdown_regexes["whisper_link"] = {}
