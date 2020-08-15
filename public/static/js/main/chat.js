@@ -209,10 +209,6 @@ Hue.update_chat = function (args = {}) {
       .find(".chat_content_container")
       .eq(0)
       .data("original_message", args.message)
-    fmessage
-      .find(".chat_profile_image_container")
-      .eq(0)
-      .attr("title", args.username)
 
     if (image_preview) {
       fmessage.find(".chat_content").eq(0).html(image_preview)
