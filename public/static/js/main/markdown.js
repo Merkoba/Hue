@@ -2,24 +2,24 @@
 // For example **this** or _this_
 Hue.make_markdown_char_regex = function (char) {
   // Raw regex if "=" was the char
-  // (^|\s|\[dummy\-space\])(\=+)(?!\s)(.*[^\=\s])\2($|\s|\[dummy\-space\])
-  let regex = `(^|\\s|\\[dummy\\-space\\])(${Hue.utilz.escape_special_characters(
+  // (^|\s|\[)(\=+)(?!\s)(.*[^\=\s])\2($|\s)
+  let regex = `(^|\\s)(${Hue.utilz.escape_special_characters(
     char
   )}+)(?!\\s)(.*[^${Hue.utilz.escape_special_characters(
     char
-  )}\\s])\\2($|\\s|\\[dummy\\-space\\]|\:)`
+  )}\\s])\\2($|\\s|\:)`
   return new RegExp(regex, "gm")
 }
 
 // Regex generator for character based markdown but with whitespace and multiline support
 Hue.make_markdown_char_regex_2 = function (char) {
   // Raw regex if "`" was the char
-  // (^|\s|\[dummy\-space\])(\`+)([\s\S]+[^\`])\2($|\s|\[dummy\-space\])
-  let regex = `(^|\\s|\\[dummy\\-space\\])(${Hue.utilz.escape_special_characters(
+  // (^|\s)(\`+)([\s\S]+[^\`])\2($|\s)
+  let regex = `(^|\\s)(${Hue.utilz.escape_special_characters(
     char
   )}+)([\\s\\S]+[^${Hue.utilz.escape_special_characters(
     char
-  )}])\\2($|\\s|\\[dummy\\-space\\])`
+  )}])\\2($|\\s)`
   return new RegExp(regex, "gm")
 }
 
@@ -31,11 +31,11 @@ Hue.setup_markdown_regexes = function () {
     let n = g3.length
 
     if (n === 1) {
-      return `${g2}<span class='italic'>[dummy-space]${g4}[dummy-space]</span>${g5}`
+      return `${g2}<span class='italic'>${g4}</span>${g5}`
     } else if (n === 2) {
-      return `${g2}<span class='bold'>[dummy-space]${g4}[dummy-space]</span>${g5}`
+      return `${g2}<span class='bold'>${g4}</span>${g5}`
     } else if (n === 3) {
-      return `${g2}<span class='italic bold'>[dummy-space]${g4}[dummy-space]</span>${g5}`
+      return `${g2}<span class='italic bold'>${g4}</span>${g5}`
     }
 
     return g1
@@ -47,9 +47,9 @@ Hue.setup_markdown_regexes = function () {
     let n = g3.length
 
     if (n === 1) {
-      return `${g2}<span class='italic'>[dummy-space]${g4}[dummy-space]</span>${g5}`
+      return `${g2}<span class='italic'>${g4}</span>${g5}`
     } else if (n === 2) {
-      return `${g2}<span class='underlined'>[dummy-space]${g4}[dummy-space]</span>${g5}`
+      return `${g2}<span class='underlined'>${g4}</span>${g5}`
     }
 
     return g1
@@ -61,7 +61,7 @@ Hue.setup_markdown_regexes = function () {
     let n = g3.length
 
     if (n === 1) {
-      return `${g2}<span class='backgrounded'>[dummy-space]${g4}[dummy-space]</span>${g5}`
+      return `${g2}<span class='backgrounded'>${g4}</span>${g5}`
     }
 
     return g1
@@ -73,7 +73,7 @@ Hue.setup_markdown_regexes = function () {
     let n = g3.length
 
     if (n === 2) {
-      return `${g2}<span class='spoiler' title='Click To Reveal'>[dummy-space]${g4}[dummy-space]</span>${g5}`
+      return `${g2}<span class='spoiler' title='Click To Reveal'>${g4}</span>${g5}`
     }
 
     return g1
@@ -85,7 +85,7 @@ Hue.setup_markdown_regexes = function () {
     let n = g3.length
 
     if (n === 2) {
-      return `${g2}<span class='yuge'>[dummy-space]${g4}[dummy-space]</span>${g5}`
+      return `${g2}<span class='yuge'>${g4}</span>${g5}`
     }
 
     return g1
@@ -121,10 +121,8 @@ Hue.setup_markdown_regexes = function () {
     g2,
     g3
   ) {
-    return `<span class="whisper_link special_link" data-whisper="${g2}" title="[Whisper] ${g2}">[dummy-space]${g3.replace(
-      /\s+/,
-      "&nbsp;"
-    )}[dummy-space]</span>`
+    return `<span class="whisper_link special_link" data-whisper="${g2}" title="[Whisper] ${g2}">
+    ${g3.replace(/\s+/, "&nbsp;")}</span>`
   }
 
   Hue.markdown_regexes["horizontal_line"] = {}
@@ -141,18 +139,8 @@ Hue.setup_markdown_regexes = function () {
     "gm"
   )
   Hue.markdown_regexes["anchor_link"].replace_function = function (g1, g2, g3) {
-    return `<a href="${g2}" class="stop_propagation anchor_link special_link" target="_blank">[dummy-space]${g3
-      .trim()
-      .replace(/\s+/, "&nbsp;")}[dummy-space]</a>`
-  }
-
-  Hue.markdown_regexes["dummy_space"] = {}
-  Hue.markdown_regexes["dummy_space"].regex = new RegExp(
-    `\\[dummy\\-space\\]`,
-    "gm"
-  )
-  Hue.markdown_regexes["dummy_space"].replace_function = function () {
-    return ""
+    return `<a href="${g2}" class="stop_propagation anchor_link special_link" target="_blank">
+    ${g3.trim().replace(/\s+/, "&nbsp;")}</a>`
   }
 }
 
@@ -213,11 +201,6 @@ Hue.replace_markdown = function (text, multilines = true, filter = false) {
     return Hue.replace_markdown(text, multilines, filter)
   }
 
-  text = text.replace(
-    Hue.markdown_regexes["dummy_space"].regex,
-    Hue.markdown_regexes["dummy_space"].replace_function
-  )
-
   if (multilines) {
     let num_lines = 0
     
@@ -236,10 +219,8 @@ Hue.replace_markdown = function (text, multilines = true, filter = false) {
   return text
 }
 
-// Removes unwanted formatting from Hue chat messages
+// Removes unwanted formatting from chat messages
 Hue.remove_markdown_from_message = function (message) {
-  message = message.replace(/\=?\[dummy\-space\]\=?/gm, "")
-
   message = message.replace(/\[.*?\](.+?)\[\/.*?\]/gm, function (a, b) {
     return b
   })

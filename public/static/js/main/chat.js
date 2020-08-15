@@ -954,7 +954,7 @@ Hue.start_reply = function (target) {
     text += "..."
   }
 
-  Hue.reply_text_raw = `=[dummy-space]${uname} said: "[dummy-space]${text}[dummy-space]"[dummy-space]=`
+  Hue.reply_text_raw = `>> ${uname} said: "${text}"`
 
   Hue.show_reply(uname, text)
 }
@@ -1731,9 +1731,9 @@ Hue.generate_highlights_regex = function (
   }
 
   // Raw regex if using the word "mad"
-  //(?:^|\s|\"|\[dummy\-space\])(?:\@)?(?:mad)(?:\'s)?(?:$|\s|\"|\[dummy\-space\]|\!|\?|\,|\.|\:)
+  //(?:^|\s|\")(?:\@)?(?:mad)(?:\'s)?(?:$|\s|\"|\!|\?|\,|\.|\:)
   let regex = new RegExp(
-    `(?:^|\\s|\\"|\\[dummy\\-space\\])(?:\\@)?(?:${word})(?:\\'s)?(?:$|\\s|\\"|\\[dummy\\-space\\]|\\!|\\?|\\,|\\.|\\:)`,
+    `(?:^|\\s|\\")(?:\\@)?(?:${word})(?:\\'s)?(?:$|\\s|\\"|\\!|\\?|\\,|\\.|\\:)`,
     flags
   )
 
