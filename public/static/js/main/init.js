@@ -107,8 +107,6 @@ Hue.draw_image_scale = 2.4
 Hue.draw_image_num_strokes_save = 500
 Hue.draw_image_max_levels = 200
 Hue.draw_image_open = false
-Hue.highlight_same_posts_timeouts = {}
-Hue.highlight_same_posts_delay = 800
 Hue.command_aliases = {}
 Hue.commands_queue = {}
 Hue.user_leaving = false
@@ -227,7 +225,6 @@ Hue.init = function () {
   Hue.scroll_events()
   Hue.resize_events()
   Hue.start_chat_mouse_events()
-  Hue.start_chat_hover_events()
   Hue.start_body_events()
   Hue.start_roomlist_click_events()
   Hue.start_generic_uname_click_events()

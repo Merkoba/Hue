@@ -871,58 +871,6 @@ Hue.start_chat_mouse_events = function () {
   })
 }
 
-// Starts chat hover events
-Hue.start_chat_hover_events = function () {
-  $("#chat_area").on(
-    "mouseenter",
-    ".chat_uname, .chat_profile_image, .brk",
-    function () {
-      let uname = $(this).closest(".message").data("uname")
-
-      if (!uname) {
-        return false
-      }
-
-      clearTimeout(Hue.highlight_same_posts_timeouts[uname])
-
-      Hue.highlight_same_posts_timeouts[uname] = setTimeout(function () {
-        Hue.highlight_same_posts(uname, true)
-      }, Hue.highlight_same_posts_delay)
-    }
-  )
-
-  $("#chat_area").on(
-    "mouseleave",
-    ".chat_uname, .chat_profile_image, .brk",
-    function () {
-      let uname = $(this).closest(".message").data("uname")
-
-      if (!uname) {
-        return false
-      }
-
-      clearTimeout(Hue.highlight_same_posts_timeouts[uname])
-
-      if ($(this).closest(".message").hasClass("highlighted")) {
-        Hue.highlight_same_posts(uname, false)
-      }
-    }
-  )
-}
-
-// Highlights posts related to the same user
-Hue.highlight_same_posts = function (uname, add = true) {
-  $("#chat_area > .message").each(function () {
-    if ($(this).data("uname") === uname) {
-      if (add) {
-        $(this).addClass("highlighted")
-      } else {
-        $(this).removeClass("highlighted")
-      }
-    }
-  })
-}
-
 // Setup reply
 Hue.setup_reply = function () {
   $("#reply_submit").click(function () {
