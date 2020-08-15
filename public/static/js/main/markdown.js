@@ -92,9 +92,23 @@ Hue.setup_markdown_regexes = function () {
   }
 
   Hue.markdown_regexes[">"] = {}
-  Hue.markdown_regexes[">"].regex = new RegExp("^\\s*(&gt;.*)", "gm")
-  Hue.markdown_regexes[">"].replace_function = function (g1) {
-    return `<span class='greentext'>${g1}</span>`
+  Hue.markdown_regexes[">"].regex = new RegExp("^\\s*((?:&gt;)+).*", "gm")
+  Hue.markdown_regexes[">"].replace_function = function (g1, g2) {
+    let m = g2.match(/&gt;/g)
+
+    if (!m) {
+      return false
+    }
+
+    let num = m.length
+
+    if (num === 1) {
+      return `<span class='colortext greentext'>${g1}</span>`
+    } else if (num === 2) {
+      return `<span class='colortext bluetext'>${g1}</span>`
+    } else {
+      return `<span class='colortext redtext'>${g1}</span>`
+    }
   }
 
   Hue.markdown_regexes["whisper_link"] = {}

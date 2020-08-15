@@ -2942,12 +2942,23 @@ pre {
 	font-size: 1.5em;
 }
 
-.greentext {
-	background-color: #171515;
-	color: #2ec42e;
+.colortext {
 	padding: 0.1176rem;
 	font-family: monospace;
 	font-size: 0.9rem;
+	background-color: #171515;
+}
+
+.greentext {
+	color: #28b328;
+}
+
+.bluetext {
+	color: #7a64e2;
+}
+
+.redtext {
+	color: #e05239;
 }
 
 .color_3 {
