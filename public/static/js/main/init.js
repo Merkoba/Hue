@@ -253,7 +253,6 @@ Hue.init = function () {
   Hue.setup_command_aliases()
   Hue.setup_fonts()
   Hue.setup_before_unload()
-  Hue.start_chat_reply_events()
   Hue.maxers_mouse_events()
   Hue.setup_iframe_video()
   Hue.show_console_message()
