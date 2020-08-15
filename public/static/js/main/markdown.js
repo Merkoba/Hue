@@ -11,18 +11,6 @@ Hue.make_markdown_char_regex = function (char) {
   return new RegExp(regex, "gm")
 }
 
-// Regex generator for character based markdown but with whitespace and multiline support
-Hue.make_markdown_char_regex_2 = function (char) {
-  // Raw regex if "`" was the char
-  // (^|\s)(\`+)([\s\S]+[^\`])\2($|\s)
-  let regex = `(^|\\s)(${Hue.utilz.escape_special_characters(
-    char
-  )}+)([\\s\\S]+[^${Hue.utilz.escape_special_characters(
-    char
-  )}])\\2($|\\s)`
-  return new RegExp(regex, "gm")
-}
-
 // Makes and prepares the markdown regexes
 Hue.setup_markdown_regexes = function () {
   Hue.markdown_regexes["*"] = {}
@@ -86,6 +74,18 @@ Hue.setup_markdown_regexes = function () {
 
     if (n === 2) {
       return `${g2}<span class='yuge'>${g4}</span>${g5}`
+    }
+
+    return g1
+  }
+
+  Hue.markdown_regexes["$"] = {}
+  Hue.markdown_regexes["$"].regex = Hue.make_markdown_char_regex("$")
+  Hue.markdown_regexes["$"].replace_function = function (g1, g2, g3, g4, g5) {
+    let n = g3.length
+
+    if (n === 1) {
+      return `${g2}<span class='generic_uname'>${g4}</span>${g5}`
     }
 
     return g1
@@ -191,6 +191,10 @@ Hue.replace_markdown = function (text, multilines = true, filter = false) {
   text = text.replace(
     Hue.markdown_regexes["!"].regex,
     Hue.markdown_regexes["!"].replace_function
+  )
+  text = text.replace(
+    Hue.markdown_regexes["$"].regex,
+    Hue.markdown_regexes["$"].replace_function
   )
   text = text.replace(
     Hue.markdown_regexes[">"].regex,

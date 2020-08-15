@@ -839,21 +839,28 @@ Hue.start_chat_mouse_events = function () {
     Hue.stop_edit_message()
   })
 
-  $(".chat_area").on("auxclick", ".chat_uname", function (e) {
-    if (e.which === 2) {
+  $(".chat_area").on("mouseup", ".chat_uname", function (e) {
+    if (e.button === 1) {
+      e.preventDefault()
+      e.stopPropagation()
       Hue.process_write_whisper($(this).closest(".message").data("uname"))
     }
   })
 
-  $(".chat_area").on("auxclick", ".chat_profile_image", function (e) {
-    if (e.which === 2) {
+  $(".chat_area").on("mouseup", ".chat_profile_image", function (e) {
+    if (e.button === 1) {
+      e.preventDefault()
+      e.stopPropagation()
       Hue.process_write_whisper($(this).closest(".message").data("uname"))
     }
   })
 
-  $(".chat_area").on("auxclick", ".chat_content", function (e) {
-    if (e.which === 2) {
-      Hue.start_reply(e.target)
+  $(".chat_area").on("mouseup", ".chat_content", function (e) {
+    if (e.button === 1) {
+      if (Hue.start_reply(e.target)) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
     }
   })
 }
@@ -954,9 +961,9 @@ Hue.start_reply = function (target) {
     text += "..."
   }
 
-  Hue.reply_text_raw = `>> ${uname} said: "${text}"`
-
+  Hue.reply_text_raw = `>> $${uname}$: "${text}"`
   Hue.show_reply(uname, text)
+  return true
 }
 
 // Show the reply window
