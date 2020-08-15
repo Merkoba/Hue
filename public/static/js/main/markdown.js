@@ -92,7 +92,7 @@ Hue.setup_markdown_regexes = function () {
   }
 
   Hue.markdown_regexes[">"] = {}
-  Hue.markdown_regexes[">"].regex = new RegExp("^\\s*((?:&gt;)+).*", "gm")
+  Hue.markdown_regexes[">"].regex = new RegExp("^ *((?:&gt;)+).*", "gm")
   Hue.markdown_regexes[">"].replace_function = function (g1, g2) {
     let m = g2.match(/&gt;/g)
 
@@ -210,7 +210,7 @@ Hue.replace_markdown = function (text, multilines = true, filter = false) {
   )
 
   if (text.length !== original_length) {
-    return Hue.replace_markdown(text)
+    return Hue.replace_markdown(text, multilines, filter)
   }
 
   text = text.replace(
