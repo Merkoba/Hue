@@ -906,8 +906,8 @@ Hue.highlight_same_posts = function (uname, add = true) {
 
 // Start events related to chat reply
 Hue.start_chat_reply_events = function () {
-  $("#chat_area").on("mouseup", ".chat_content", function (e) {
-    if (e.button === 1) {
+  $(".chat_area").on("auxclick", ".chat_content", function (e) {
+    if (e.which === 2) {
       Hue.start_reply(e.target)
       e.preventDefault()
     }
