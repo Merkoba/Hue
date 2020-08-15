@@ -854,7 +854,6 @@ Hue.start_chat_mouse_events = function () {
   $(".chat_area").on("auxclick", ".chat_content", function (e) {
     if (e.which === 2) {
       Hue.start_reply(e.target)
-      e.preventDefault()
     }
   })
 }
