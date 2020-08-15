@@ -336,7 +336,7 @@ Hue.chat_announce = function (args = {}) {
     highlight: false,
     title: false,
     onclick: false,
-    onmiddleclick: false,
+    on_middle_click: false,
     container_id: false,
     date: false,
     type: "normal",
@@ -450,12 +450,15 @@ Hue.chat_announce = function (args = {}) {
 
   if (
     (args.onclick ||
-      args.onmiddleclick ||
+      args.on_middle_click ||
       (args.username && args.open_profile)) &&
     !link_preview &&
     !image_preview
   ) {
     content_classes += " pointer action"
+  }
+
+  if (args.username) {
     brk_classes += " pointer action"
   }
 
@@ -540,22 +543,25 @@ Hue.chat_announce = function (args = {}) {
     }
   }
 
+  let pif = function () {
+    Hue.show_profile(args.username)
+  }
+
   if (args.onclick && !link_preview && !image_preview) {
     content.on("click", args.onclick)
-    brk.on("click", args.onclick)
   } else if (args.username && args.open_profile) {
-    let pif = function () {
-      Hue.show_profile(args.username)
-    }
-
     content.on("click", pif)
     brk.on("click", pif)
   }
 
-  if (args.onmiddleclick) {
+  if (args.username) {
+    brk.on("click", pif)
+  }
+
+  if (args.on_middle_click) {
     content.on("auxclick", function (e) {
       if (e.which === 2) {
-        args.onmiddleclick()
+        args.on_middle_click()
       }
     })
   }

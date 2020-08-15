@@ -787,6 +787,10 @@ Hue.setup_show_profile = function () {
     }
   })
 
+  $("#show_profile_search").click(function () {
+    Hue.show_chat_search(Hue.open_profile_username)
+  })
+
   $("#show_profile_hearts_icon").click(function () {
     Hue.send_badge(Hue.open_profile_username, "heart")
   })
