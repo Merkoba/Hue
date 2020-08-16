@@ -2948,6 +2948,10 @@ pre {
 	background-color: #171515;
 }
 
+.colortext .generic_uname {
+	font-size: 0.9rem;
+}
+
 .greentext {
 	color: #28b328;
 }
