@@ -903,9 +903,9 @@ Hue.start_reply = function (target) {
     return
   }
 
-  let rtext = text.replace(/\n+/gm, " ").trim()
-  let add_dots = rtext.length > Hue.config.quote_max_length
-  text = rtext.substring(0, Hue.config.quote_max_length).trim()
+  text = Hue.utilz.clean_string2(text)
+  let add_dots = text.length > Hue.config.quote_max_length
+  text = text.substring(0, Hue.config.quote_max_length).trim()
 
   if (add_dots) {
     text += "..."
