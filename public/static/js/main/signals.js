@@ -58,7 +58,7 @@ Hue.show_reload_button = function () {
       onclick: function () {
         Hue.refresh_client()
       },
-      onmiddleclick: function () {
+      on_middle_click: function () {
         Hue.modify_setting("autoconnect true", false, true)
         Hue.refresh_client()
       },

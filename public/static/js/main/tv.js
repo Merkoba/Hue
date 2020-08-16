@@ -119,7 +119,7 @@ Hue.announce_tv = function (data) {
     user_id: data.user_id,
     in_log: data.in_log,
     media_source: data.source,
-    onmiddleclick: function () {
+    on_middle_click: function () {
       Hue.goto_url(data.source, "tab")
     }
   })
