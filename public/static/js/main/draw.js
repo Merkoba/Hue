@@ -212,9 +212,6 @@ Hue.setup_draw_image = function () {
   $("#draw_image_upload").click(function () {
     Hue.upload_draw_image()
   })
-
-  Hue.draw_image_prepare_settings()
-  Hue.horizontal_separator.separate("draw_image_buttons")
   
   let select = ""
   
@@ -223,6 +220,9 @@ Hue.setup_draw_image = function () {
   }
 
   $("#draw_image_pencil_size").html(select)
+
+  Hue.draw_image_prepare_settings()
+  Hue.horizontal_separator.separate("draw_image_buttons")
 }
 
 // Prepares initial settings for the draw image window
