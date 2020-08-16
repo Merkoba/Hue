@@ -66,3 +66,9 @@ Hue.show_reload_button = function () {
     }
   )
 }
+
+// When the system suggests a refresh
+Hue.system_restart_signal = function () {
+  let item = Hue.make_info_popup_item({icon: "info", message: "Refresh is recommended"})
+  Hue.show_popup(Hue.make_info_popup(), item)
+}

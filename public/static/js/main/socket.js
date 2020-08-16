@@ -200,7 +200,7 @@ Hue.server_update_events = {
     Hue.whisper_received(data)
   },
   system_restart_signal: (data) => {
-    Hue.reload_client()
+    Hue.system_restart_signal()
   },
   error_occurred: (data) => {
     Hue.error_occurred()
