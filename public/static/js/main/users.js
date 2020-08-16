@@ -777,10 +777,6 @@ Hue.setup_show_profile = function () {
     Hue.msg_profile.close()
   })
 
-  $("#show_profile_edit").click(function () {
-    Hue.show_user_menu()
-  })
-
   $("#show_profile_image").on("error", function () {
     if ($(this).attr("src") !== Hue.config.default_profile_image_url) {
       $(this).attr("src", Hue.config.default_profile_image_url)
@@ -910,12 +906,6 @@ Hue.show_profile = function (uname, prof_image) {
     $("#show_profile_audio_clip").css("display", "inline-flex")
   } else {
     $("#show_profile_audio_clip").css("display", "none")
-  }
-
-  if (same_user) {
-    $("#show_profile_edit").css("display", "block")
-  } else {
-    $("#show_profile_edit").css("display", "none")
   }
 
   if (Hue.room_state["tv_enabled"] 
