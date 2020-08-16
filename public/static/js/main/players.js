@@ -144,33 +144,6 @@ Hue.request_media = function (player, args) {
   }
 }
 
-// Loads the HLS player for the <video> player
-// Returns a promise
-Hue.load_hls = async function () {
-  if (Hue.hls_loading) {
-    return false
-  }
-
-  Hue.hls_loading = true
-
-  return new Promise(async (resolve, reject) => {
-    await Hue.load_script("/static/js/libs2/hls.js")
-    resolve()
-  })
-}
-
-// Starts the HLS player for the <video> player
-Hue.start_hls = async function () {
-  if (!Hue.hls_loading) {
-    await Hue.load_hls()
-  }
-
-  Hue.hls = new Hls({
-    maxBufferSize: 5 * 1000 * 1000,
-    maxBufferLength: 10,
-  })
-}
-
 // Function to add a frame info after creating a player
 Hue.add_media_info = function (container_id) {
   let html = "<div class='media_info dynamic_title'></div>"

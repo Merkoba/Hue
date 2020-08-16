@@ -308,16 +308,7 @@ Hue.show_video_video = async function (play = true) {
   }
 
   Hue.before_show_tv(item)
-
-  let split = item.source.split(".")
-
-  if (split[split.length - 1] === "m3u8") {
-    await Hue.start_hls()
-    Hue.hls.loadSource(item.source)
-    Hue.hls.attachMedia($("#media_video")[0])
-  } else {
-    $("#media_video").prop("src", item.source)
-  }
+  $("#media_video").prop("src", item.source)
 
   if (play) {
     $("#media_video")[0].play()
@@ -357,7 +348,6 @@ Hue.show_iframe_video = function (play = true) {
 Hue.before_show_tv = function (item) {
   Hue.stop_tv()
   Hue.hide_tv(item)
-  Hue.hls = undefined
 }
 
 // Apply tv media info

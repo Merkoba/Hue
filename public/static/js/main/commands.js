@@ -1069,12 +1069,6 @@ Hue.commands = {
     },
     description: `Loads the previous tv item`,
   },
-  "calc": {
-    action: (arg, ans) => {
-      Hue.do_math_calculation(arg)
-    },
-    description: `Does a mathematical calculation`,
-  },
   "bio": {
     action: (arg, ans) => {
       if (arg) {
