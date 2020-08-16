@@ -103,10 +103,6 @@ Hue.update_roomlist = function (type, roomlist) {
 // Shows the Create Room window
 Hue.show_create_room = function () {
   Hue.msg_info2.show(["Create Room", Hue.template_create_room()], function () {
-    $("#create_room_suggest_name").click(function () {
-      Hue.create_room_suggest_name()
-    })
-
     $("#create_room_done").click(function () {
       Hue.create_room_submit()
     })
@@ -131,16 +127,6 @@ Hue.create_room_submit = function () {
   data.public = JSON.parse($("#create_room_public option:selected").val())
 
   Hue.create_room(data)
-}
-
-// Puts a random room name in the Create Room window's input
-Hue.create_room_suggest_name = async function () {
-  if (Hue.wordz === undefined) {
-    await Hue.load_wordz()
-  }
-
-  let sentence = Hue.wordz.make_random_sentence(2, true)
-  $("#create_room_name").val(sentence)
 }
 
 // Shows the Open Room window where the user selects how to open a room

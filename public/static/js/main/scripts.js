@@ -16,19 +16,3 @@ Hue.load_script = function (source) {
     script.src = source
   })
 }
-
-// Loads the Wordz library
-// Returns a promise
-Hue.load_wordz = async function () {
-  if (Hue.wordz_loading) {
-    return false
-  }
-
-  Hue.wordz_loading = true
-
-  return new Promise(async (resolve, reject) => {
-    await Hue.load_script("/static/js/libs2/wordz.js?version=1")
-    Hue.wordz = Wordz()
-    resolve()
-  })
-}
