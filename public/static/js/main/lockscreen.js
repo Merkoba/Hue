@@ -4,6 +4,7 @@ Hue.setup_lockscreen = function () {
     Hue.lockscreen_peek_timeout = setTimeout(function () {
       $("#Msg-container-lockscreen").css("opacity", 0.2)
       Hue.lockscreen_peek_active = true
+      Hue.remove_alert_title()
     }, Hue.lockscreen_peek_delay)
   })
 
