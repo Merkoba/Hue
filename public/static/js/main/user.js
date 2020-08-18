@@ -315,10 +315,6 @@ Hue.setup_user_menu = function () {
     }
   })
 
-  $("#user_menu_notebook").click(function () {
-    Hue.show_notebook()
-  })
-
   $("#user_menu_details").click(function () {
     Hue.show_details()
   })
@@ -562,67 +558,6 @@ Hue.show_intro = function () {
   }
 
   Hue.create_popup({ position: "center", after_close: f }).show(["Welcome", s])
-}
-
-// Setups the notebook
-Hue.setup_notebook = function () {
-  $("#notebook_textarea").on("blur", function () {
-    Hue.save_notebook()
-  })
-}
-
-// Gets the notebook from local storage
-Hue.get_notebook = function () {
-  let notebook = Hue.get_local_storage(Hue.ls_notebook)
-  return notebook ? notebook : { first_open: true, text: "" }
-}
-
-// Opens the notebook
-Hue.show_notebook = function () {
-  Hue.msg_notebook.show(function () {
-    let notebook = Hue.get_notebook()
-    let text = notebook.text
-
-    if (text) {
-      text = "\n\n" + text
-    }
-
-    $("#notebook_textarea").val(text)
-    $("#notebook_textarea").focus()
-    $("#notebook_textarea")[0].setSelectionRange(0, 0)
-    $("#notebook_textarea").scrollTop(0)
-
-    if (notebook.first_open) {
-      Hue.msg_info.show(
-        `Notes are saved in your browser using local storage.<br>You can also use the ${Hue.config.commands_prefix}note command to save notes quickly`
-      )
-    }
-  })
-}
-
-// Saves the notebook's content
-Hue.save_notebook = function () {
-  let text = $("#notebook_textarea").val().trim()
-  Hue.do_save_notebook(text)
-}
-
-// Completes the notebook save with a given text
-Hue.do_save_notebook = function (text) {
-  let obj = { first_open: false, text: text }
-  Hue.save_local_storage(Hue.ls_notebook, obj)
-}
-
-// Adds a string at the start of the notebook
-Hue.add_to_notebook = function (note, feedback = true) {
-  Hue.do_save_notebook(`${note}\n\n${Hue.get_notebook().text}`)
-
-  if (feedback) {
-    Hue.feedback("Note added to notebook", {
-      onclick: function () {
-        Hue.show_notebook()
-      },
-    })
-  }
 }
 
 // Shows some options for the audio clip

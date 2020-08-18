@@ -1453,6 +1453,10 @@ select {
 	margin-bottom: 1rem;
 }
 
+#user_menu_audio_clip {
+	margin-bottom: 1rem;
+}
+
 #user_menu_settings_container {
 	margin-top: 1rem;
 }
@@ -2640,10 +2644,6 @@ a.special_link:hover {
 	grid-gap: 0.8rem;
 }
 
-#user_menu_notebook_container {
-	margin-bottom: 1rem;
-}
-
 #modal_popup_feedback_send {
 	margin-top: 1rem;
 }
@@ -2852,29 +2852,6 @@ pre {
 	white-space: pre-wrap;
 	background-color: var(--color_4_a);
 	padding: 0.5rem;
-}
-
-#Msg-content-notebook {
-	padding: 0 !important;
-}
-
-#notebook_container {
-	position: relative;
-	height: 30rem;
-	overflow: hidden;
-}
-
-#notebook_textarea {
-	width: 100%;
-	height: 30rem;
-	resize: none;
-	border: 0rem solid grey;
-	outline: none;
-	font-size: 1.2rem;
-	padding: 0.5rem;
-	box-sizing: border-box;
-	background-color: var(--slight_background_alpha);
-	color: var(--font_color);
 }
 
 #topic_window_text {

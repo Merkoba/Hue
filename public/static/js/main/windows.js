@@ -454,14 +454,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_notebook = Msg.factory(
-    Object.assign({}, common, titlebar, {
-      id: "notebook",
-      window_width: "28rem",
-      clear_editables: false,
-    })
-  )
-
   Hue.msg_profile_image_cropper = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "profile_image_cropper",
@@ -536,7 +528,6 @@ Hue.start_msg = function () {
   Hue.msg_open_url.set(Hue.template_open_url())
   Hue.msg_details.set(Hue.template_details())
   Hue.msg_message_board.set(Hue.template_message_board())
-  Hue.msg_notebook.set(Hue.template_notebook())
   Hue.msg_profile_image_cropper.set(Hue.template_profile_image_cropper())
 
   Hue.msg_info.create()
@@ -578,7 +569,6 @@ Hue.start_msg = function () {
   Hue.msg_whispers.set_title("Whispers")
   Hue.msg_handle_url.set_title("Drag n' Drop")
   Hue.msg_message_board.set_title("Message Board")
-  Hue.msg_notebook.set_title("Notebook")
   Hue.msg_profile_image_cropper.set_title("Crop A Circle")
 
   // Titlebar click events
