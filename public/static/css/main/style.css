@@ -1744,6 +1744,10 @@ svg.action:hover {
 	height: 100%;
 }
 
+#lockscreen_title_info {
+	margin-left: 0.5rem;
+}
+
 .lockscreen_circle_1 {
 	position: absolute;
 	top: -0.9412rem;
