@@ -224,7 +224,6 @@ Hue.init = function () {
   Hue.start_roomlist_click_events()
   Hue.start_generic_uname_click_events()
   Hue.start_user_context_menu()
-  Hue.start_room_menu_context_menu()
   Hue.start_media_maxer_context_menu()
   Hue.start_chat_maxer_context_menu()
   Hue.start_chat_menu_context_menu()

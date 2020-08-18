@@ -797,10 +797,6 @@ a.generic:hover {
 	background-color: #b17fbf !important;
 }
 
-#Msg-content-credits {
-	padding: 0 !important;
-}
-
 #input_history_container {
 	margin-top: 2rem;
 	margin-bottom: 1rem;
@@ -1978,15 +1974,6 @@ svg.action:hover {
 	background-color: var(--background_color_a_2);
 	color: var(--font_color);
 	animation: blink 0.5s linear infinite;
-}
-
-#credits_container {
-	background-color: black;
-}
-
-#credits_background {
-	width: 47.0588rem;
-	height: auto;
 }
 
 .border_bottom {

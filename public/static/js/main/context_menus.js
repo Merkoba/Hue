@@ -450,24 +450,6 @@ Hue.start_media_maxer_context_menu = function () {
   })
 }
 
-// Starts the room menu context menu
-Hue.start_room_menu_context_menu = function () {
-  $.contextMenu({
-    selector: "#header_left_room_menu_icon",
-    animation: { duration: 250, hide: "fadeOut" },
-    zIndex: 9000000000,
-    events: Hue.context_menu_events,
-    items: {
-      mm0: {
-        name: "About",
-        callback: function (key, opt) {
-          Hue.show_credits()
-        },
-      },
-    },
-  })
-}
-
 // Gets the username depending on source element to use in the username context menu
 Hue.get_user_context_menu_username = function (el) {
   let username

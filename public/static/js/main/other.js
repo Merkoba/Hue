@@ -53,21 +53,6 @@ Hue.needs_confirm_2 = function (func, s = false) {
   }
 }
 
-// Show the credits
-Hue.show_credits = function () {
-  Hue.msg_credits.show(function () {
-    if (!Hue.credits_audio) {
-      Hue.credits_audio = new Audio()
-      Hue.credits_audio.src = Hue.config.credits_audio_url
-      Hue.credits_audio.setAttribute("loop", true)
-      Hue.credits_audio.play()
-    } else {
-      Hue.credits_audio.currentTime = 0
-      Hue.credits_audio.play()
-    }
-  })
-}
-
 // Prints an informational console message
 Hue.show_console_message = function () {
   let s =
