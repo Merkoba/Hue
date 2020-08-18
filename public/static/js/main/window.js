@@ -17,7 +17,6 @@ Hue.alert_title = function (mode) {
   }
 
   Hue.alert_mode = mode
-  Hue.update_title()
   Hue.generate_favicon(mode)
 }
 
@@ -25,7 +24,6 @@ Hue.alert_title = function (mode) {
 Hue.remove_alert_title = function () {
   if (Hue.alert_mode > 0) {
     Hue.alert_mode = 0
-    Hue.update_title()
   }
 
   if (Hue.favicon_mode > 0) {
@@ -39,17 +37,9 @@ Hue.set_title = function (s) {
 }
 
 // Updates the tab title
-// Taking into account the alert mode, room name, and topic
+// Taking into account the room name and topic
 Hue.update_title = function () {
-  let t = ""
-
-  if (Hue.alert_mode === 1) {
-    t += "(*) "
-  } else if (Hue.alert_mode === 2) {
-    t += "(!) "
-  }
-
-  t += Hue.room_name
+  let t = Hue.room_name
 
   if (Hue.topic !== "") {
     t += ` ${Hue.config.title_separator} ${Hue.topic}`
