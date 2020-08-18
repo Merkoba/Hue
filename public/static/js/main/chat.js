@@ -1873,25 +1873,24 @@ Hue.on_highlight = function () {
 
   if (!Hue.app_focused || Hue.screen_locked) {
     Hue.alert_title(2)
-    Hue.check_lockscreen_activity()
     Hue.show_highlight_desktop_notification()
     Hue.sound_notify("highlight")
   }
 }
 
 // What to do after general activity
-Hue.on_activity = function (sound = false) {
+Hue.on_activity = function (type) {
   if (!Hue.started) {
     return false
   }
 
   if (!Hue.app_focused || Hue.screen_locked) {
-    Hue.alert_title(1)
-    Hue.check_lockscreen_activity()
 
-    if (sound) {
-      Hue.sound_notify(sound)
+    if (type === "message" || type === "media_change") {
+      Hue.alert_title(1)
     }
+
+    Hue.sound_notify(type)
   }
 }
 

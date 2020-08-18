@@ -12,7 +12,6 @@ Hue.setup_lockscreen = function () {
 
     if (Hue.lockscreen_peek_active) {
       $("#Msg-container-lockscreen").css("opacity", 1)
-      $("#lockscreen_title_info").text(Hue.lockscreen_info_default)
       Hue.remove_alert_title()
     }
 
@@ -41,8 +40,6 @@ Hue.lock_screen = function (save = true, force = false) {
   if (save) {
     Hue.save_room_state()
   }
-
-  $("#lockscreen_title_info").text(Hue.lockscreen_info_default)
 }
 
 // Disables the lockscreen
@@ -60,18 +57,7 @@ Hue.unlock_screen = function (save = true) {
   Hue.change({ type: "tv" })
   Hue.execute_commands("on_unlockscreen")
 
-  $("#lockscreen_title_info").text("")
-
   if (save) {
     Hue.save_room_state()
-  }
-}
-
-// Adds an indicator in the lockscreen if it's enabled and there's activity
-Hue.check_lockscreen_activity = function () {
-  if (Hue.screen_locked) {
-    if ($("#lockscreen_title_info").text() === Hue.lockscreen_info_default) {
-      $("#lockscreen_title_info").text(Hue.lockscreen_info_activity)
-    }
   }
 }
