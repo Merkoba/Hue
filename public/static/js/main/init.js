@@ -168,7 +168,6 @@ Hue.audio_min_delay = 3000
 Hue.last_audio_date = 0
 Hue.num_socket_in = 0
 Hue.num_socket_out = 0
-Hue.autoscroll_direction
 Hue.last_autoscroll_diff = 0
 Hue.max_displayed_url = 100
 Hue.media_info_max_length = 65
