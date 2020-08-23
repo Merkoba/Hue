@@ -302,7 +302,8 @@ body * {
 	position: absolute;
 	background-color: black;
 	padding: 0.5rem;
-	font-size: 1.2rem;
+	font-size: 1.1rem;
+	font-family: monospace;
 }
 
 #footer {
