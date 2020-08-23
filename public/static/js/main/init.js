@@ -113,6 +113,7 @@ Hue.admin_activity_filter_string = ""
 Hue.access_log_filter_string = ""
 Hue.keys_pressed = {}
 Hue.hide_infotip_delay = 2000
+Hue.hide_media_reactions_delay = 2000
 Hue.active_modal = false
 Hue.activity_list = []
 Hue.last_activity_trigger = 0
@@ -235,7 +236,7 @@ Hue.init = function () {
   Hue.setup_input_history()
   Hue.setup_modal_image()
   Hue.setup_footer()
-  Hue.setup_reactions_box()
+  Hue.setup_reactions()
   Hue.prepare_media_settings()
   Hue.setup_message_window()
   Hue.setup_draw_image()

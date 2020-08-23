@@ -297,6 +297,13 @@ body * {
 	font-weight: bold;
 }
 
+.media_reactions {
+	display: none;
+	position: absolute;
+	background-color: black;
+	padding: 0.5rem;
+}
+
 #footer {
 	background-color: #262423;
 	justify-content: flex-start !important;

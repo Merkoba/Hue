@@ -33,6 +33,7 @@ module.exports = function (
   vars.optypes = ["op_1", "op_2", "op_3", "op_4"]
   vars.roles = ["admin"].concat(vars.optypes).concat(vars.vtypes)
   vars.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
+  vars.reaction_targets = ["chat", "image", "tv"]
   vars.media_types = ["image", "tv"]
   vars.filtered_fields = {
     log_messages: 0,

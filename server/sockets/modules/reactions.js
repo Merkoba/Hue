@@ -10,14 +10,18 @@ module.exports = function (
 ) {
   // Handles sending reactions
   handler.public.send_reaction = function (socket, data) {
-    if (data.reaction_type === undefined) {
-      return handler.get_out(socket)
+    if (!data.reaction_type || !data.reaction_target) {
+      return false
     }
-
+    
     if (!vars.reaction_types.includes(data.reaction_type)) {
-      return handler.get_out(socket)
+      return false
     }
-
+    
+    if (!vars.reaction_targets.includes(data.reaction_target)) {
+      return false
+    }
+    
     if (!handler.check_media_permission(socket, "chat")) {
       return false
     }
@@ -28,6 +32,7 @@ module.exports = function (
       id: id,
       username: socket.hue_username,
       reaction_type: data.reaction_type,
+      reaction_target: data.reaction_target,
       profile_image: socket.hue_profile_image,
     })
 
@@ -39,6 +44,7 @@ module.exports = function (
         data: {
           username: socket.hue_username,
           reaction_type: data.reaction_type,
+          reaction_target: data.reaction_target,
           profile_image: socket.hue_profile_image,
         },
       }

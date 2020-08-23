@@ -10,9 +10,18 @@ Hue.send_reaction = function (reaction_type) {
     return false
   }
 
-  Hue.socket_emit("send_reaction", { reaction_type: reaction_type })
-
+  Hue.reaction_type = reaction_type
   Hue.hide_reactions_box()
+  Hue.msg_reaction_target.show()
+}
+
+// Sends the reaction signal
+Hue.do_send_reaction = function () {
+  if (!Hue.reaction_type || !Hue.reaction_target) {
+    return false
+  }
+  
+  Hue.socket_emit("send_reaction", { reaction_type: Hue.reaction_type, reaction_target: Hue.reaction_target })
 }
 
 // Shows a message depending on the reaction type
@@ -50,25 +59,46 @@ Hue.show_reaction = function (data, date = false) {
     return false
   }
 
-  let f = function () {
-    Hue.show_profile(data.username, data.profile_image)
-  }
+  if (data.reaction_target === "chat") {
+    Hue.update_chat({
+      id: data.id,
+      brk: icon,
+      message: message,
+      username: data.username,
+      prof_image: data.profile_image,
+      third_person: true,
+      date: d,
+    })
+  } else {
+    if (!Hue.started) {
+      return false
+    }
 
-  Hue.update_chat({
-    id: data.id,
-    brk: icon,
-    message: message,
-    username: data.username,
-    prof_image: data.profile_image,
-    third_person: true,
-    date: d,
-  })
+    let html = `<div class='flex_row_center'>${icon}&nbsp;&nbsp;${Hue.utilz.make_html_safe(data.username)} ${message}</div>`
+    if (data.reaction_target === "image") {
+      if (!Hue.image_visible) {
+        return false
+      }
+
+      $("#media_image_reactions").css("display", "block")
+      $("#media_image_reactions").html(html)
+      Hue.media_image_reactions_timer()
+    } else if (data.reaction_target === "tv") {
+      if (!Hue.tv_visible) {
+        return false
+      }
+
+      $("#media_tv_reactions").css("display", "block")
+      $("#media_tv_reactions").html(html)
+      Hue.media_tv_reactions_timer()
+    }
+  }
 }
 
 // Setups the reaction box's events
 // This is the box that appears on user menu hover
 // It includes reactions as well as user functions
-Hue.setup_reactions_box = function () {
+Hue.setup_reactions = function () {
   $("#reactions_box_container").hover(
     function () {
       Hue.mouse_over_reactions = true
@@ -98,6 +128,24 @@ Hue.setup_reactions_box = function () {
 
   $("#reactions_box").on("click", ".reaction_icon", function () {
     Hue.send_reaction($(this).data("kind"))
+  })
+
+  let on_target_click = function (target) {
+    Hue.reaction_target = target
+    Hue.msg_reaction_target.close()
+    Hue.do_send_reaction()
+  }
+
+  $("#reaction_target_chat").click(function () {
+    on_target_click("chat")
+  })
+
+  $("#reaction_target_image").click(function () {
+    on_target_click("image")
+  })
+
+  $("#reaction_target_tv").click(function () {
+    on_target_click("tv")
   })
 }
 
