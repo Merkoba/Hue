@@ -334,6 +334,10 @@ Hue.change_image_visibility = function () {
 
 // When clicking the Previous button in the image modal window
 Hue.modal_image_prev_click = function () {
+  if (Hue.image_changed.length < 2) {
+    return
+  }
+
   let index = Hue.image_changed.indexOf(Hue.loaded_modal_image) - 1
 
   if (index < 0) {
@@ -347,6 +351,10 @@ Hue.modal_image_prev_click = function () {
 
 // When clicking the Next button in the image modal window
 Hue.modal_image_next_click = function (e) {
+  if (Hue.image_changed.length < 2) {
+    return
+  }
+
   let index = Hue.image_changed.indexOf(Hue.loaded_modal_image) + 1
 
   if (index > Hue.image_changed.length - 1) {
