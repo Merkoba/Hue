@@ -87,6 +87,7 @@ Hue.on_app_focused = function () {
   Hue.show_info_popups()
   Hue.show_fresh_messages()
   Hue.check_trigger_activity()
+  Hue.focus_input()
 }
 
 // This runs when the client loses visibility
