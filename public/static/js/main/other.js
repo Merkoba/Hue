@@ -66,10 +66,8 @@ Hue.show_console_message = function () {
 Hue.generate_favicon = function (mode) {
   let color
 
-  if (mode === 0) {
+  if (mode < 2) {
     color = "#C06DCF"
-  } else if (mode === 1) {
-    color = "#4AB3DD"
   } else if (mode === 2) {
     color = "#DD4A66"
   } else {
@@ -83,8 +81,15 @@ Hue.generate_favicon = function (mode) {
 
   let context = canvas.getContext("2d")
   let center = canvas.height / 2
-  let side = 192
-  let side2 = 194
+  let side, side2
+
+  if (mode === 0) {
+    side = 112
+    side2 = 114
+  } else {
+    side = 192
+    side2 = 194
+  }
 
   context.fillStyle = "rgb(16,16,16)"
   context.fillRect(center - (side2 / 2), center - (side2 / 2), side2, side2)
