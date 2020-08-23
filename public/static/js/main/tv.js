@@ -85,7 +85,7 @@ Hue.setup_tv = function (mode, odata = {}) {
 
   if (mode === "change" || mode === "restart") {
     if (mode === "change") {
-      if (Hue.room_state.tv_locked) {
+      if (Hue.tv_locked) {
         $("#footer_lock_tv_icon").addClass("blinking")
       }
 

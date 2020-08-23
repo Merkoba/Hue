@@ -132,14 +132,14 @@ Hue.stop_and_lock = function (stop = true) {
     Hue.stop_media()
   }
 
-  Hue.change_media_lock({type:"image", what:true, save:false})
-  Hue.change_media_lock({type:"tv", what:true, save:false})
+  Hue.change_media_lock({type:"image", what:true})
+  Hue.change_media_lock({type:"tv", what:true})
   Hue.save_room_state()
 }
 
 Hue.unlock = function () {
-  Hue.change_media_lock({type:"image", what:false, save:false})
-  Hue.change_media_lock({type:"tv", what:false, save:false})
+  Hue.change_media_lock({type:"image", what:false})
+  Hue.change_media_lock({type:"tv", what:false})
   Hue.save_room_state()
 }
 
@@ -863,7 +863,7 @@ Hue.change = function (args = {}) {
       return false
     }
 
-    let locked = Hue.room_state.image_locked && !bypass_lock
+    let locked = Hue.image_locked && !bypass_lock
 
     if (
       !args.item &&
@@ -896,7 +896,7 @@ Hue.change = function (args = {}) {
       return false
     }
 
-    let locked = Hue.room_state.tv_locked && !bypass_lock
+    let locked = Hue.tv_locked && !bypass_lock
 
     if (!args.item && locked && Hue.loaded_tv.source && !args.current_source) {
       return false
@@ -1137,8 +1137,7 @@ Hue.toggle_media = function (args) {
 Hue.change_media_lock = function(args) {
   let def_args = {
     type: "",
-    what: undefined, 
-    save: true, 
+    what: undefined,  
     feedback: false
   }
 
@@ -1155,23 +1154,19 @@ Hue.change_media_lock = function(args) {
   }
   
   if (args.what !== undefined) {
-    Hue.room_state[`${args.type}_locked`] = args.what
+    Hue[`${args.type}_locked`] = args.what
   } else {
-    Hue.room_state[`${args.type}_locked`] = !Hue.room_state[`${args.type}_locked`]
+    Hue[`${args.type}_locked`] = !Hue[`${args.type}_locked`]
   }
 
   Hue.change_media_lock_icon(args.type)
-
-  if (args.save) {
-    Hue.save_room_state()
-  }
 }
 
 // Toggles media locks for any type
 Hue.change_media_lock_icon = function (type) {
   let room_mode = Hue[`room_${type}_mode`]
 
-  if (room_mode === "locked" || Hue.room_state[`${type}_locked`]) {
+  if (room_mode === "locked" || Hue[`${type}_locked`]) {
     $(`#footer_lock_${type}_icon`).find("use").eq(0).attr("href", "#icon_locked")
     $(`#footer_lock_${type}_label`).css("display", "block")
 

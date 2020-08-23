@@ -84,7 +84,7 @@ Hue.setup_image = function (mode, odata = {}) {
   }
 
   if (mode === "change") {
-    if (Hue.room_state.image_locked) {
+    if (Hue.image_locked) {
       $("#footer_lock_image_icon").addClass("blinking")
     }
 

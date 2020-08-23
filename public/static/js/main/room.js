@@ -17,8 +17,6 @@ Hue.get_room_state = function () {
   let settings = [
     "image_enabled",
     "tv_enabled",
-    "image_locked",
-    "tv_locked",
     "tv_volume",
     "chat_searches",
     "last_highlight_date",
