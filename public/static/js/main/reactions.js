@@ -18,13 +18,13 @@ Hue.send_reaction = function (reaction_type) {
 // Show the reaction target window
 Hue.show_reaction_target = function () {
   if (Hue.image_visible) {
-    $("#reaction_target_image").css("display", "block")
+    $("#reaction_target_image").css("display", "grid")
   } else {
     $("#reaction_target_image").css("display", "none")
   }
 
   if (Hue.tv_visible) {
-    $("#reaction_target_tv").css("display", "block")
+    $("#reaction_target_tv").css("display", "grid")
   } else {
     $("#reaction_target_tv").css("display", "none")
   }

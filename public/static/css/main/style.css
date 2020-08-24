@@ -1646,6 +1646,10 @@ svg.action:hover {
 	margin-left: 0.5rem;
 }
 
+.reaction_target_item {
+	grid-gap: 0.25rem;
+}
+
 .chat_third_container {
 	display: flex;
 	flex-direction: row;
