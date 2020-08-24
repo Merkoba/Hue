@@ -948,17 +948,6 @@ Hue.user_settings = {
       }
     },
   },
-  scramble_chat: {
-    widget_type: "checkbox",
-    description: `Whether chat messages should have the scramble animation`,
-    action: (type, save = true) => {
-      Hue[type].scramble_chat = $(`#${type}_scramble_chat`).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   confirm_chat: {
     widget_type: "checkbox",
     description: `Whether to show a confirmation dialog when sending a chat message`,

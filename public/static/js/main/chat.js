@@ -116,10 +116,6 @@ Hue.update_chat = function (args = {}) {
     title = `${args.id.slice(-3)} | ${title}`
   }
 
-  if (!image_preview && !link_preview) {
-    content_classes += " scramble_content"
-  }
-
   if (starts_me || args.third_person) {
     let tpt
 
@@ -684,7 +680,11 @@ Hue.add_to_chat = function (args = {}) {
 
   if (!appended) {
     if (Hue.started && Hue.app_focused && args.fader) {
-      args.message.addClass("fader")
+      if (content_container) {
+        content_container.addClass("fader")
+      } else {
+        args.message.addClass("fader")
+      }
     }
 
     let last = $("#chat_area > .message").last()
@@ -731,16 +731,6 @@ Hue.add_to_chat = function (args = {}) {
       Hue.add_fresh_message(content_container)
     } else {
       Hue.add_fresh_message(args.message)
-    }
-  }
-
-  if (mode === "chat" && Hue.started && Hue.app_focused) {
-    if (user_id !== Hue.user_id && Hue.get_setting("scramble_chat")) {
-      let item = content_container.find(".scramble_content").get(0)
-
-      if (item) {
-        Hue.scramble(item)
-      }
     }
   }
 
@@ -2505,52 +2495,6 @@ Hue.setup_chat = function () {
   $("#activity_down_scroller").click(function () {
     Hue.activity_below()
   })
-}
-
-// Starts the scrambling of a chat message
-Hue.scramble = function (element) {
-  let args = {
-    element: element,
-    text: $(element).text().trim(),
-    duration: Hue.config.scramble_duration,
-    speed: Hue.config.scramble_speed,
-    time: 0,
-    original: $(element).clone(true, true),
-  }
-
-  element.style.height = `${element.clientHeight}px`
-  Hue.do_scramble(args)
-}
-
-// Does a scrambling replacing characters with random alphanumeric characters
-Hue.do_scramble = function (args) {
-  let new_text = ""
-
-  if (args.time >= args.duration) {
-    $(args.element).replaceWith(args.original)
-    return false
-  }
-
-  for (let letter of args.text) {
-    if (letter === " " || letter === "\n") {
-      new_text += letter
-    } else {
-      new_text += Hue.utilz.get_random_alphanumeric(letter)
-    }
-  }
-
-  args.text = new_text
-  $(args.element).text(new_text)
-  let delay = Math.min(args.duration - args.time, args.speed)
-  args.time += delay
-  Hue.scramble_do_loop(delay, args)
-}
-
-// Starts a timeout for the next scrambling
-Hue.scramble_do_loop = function (delay, args) {
-  setTimeout(function () {
-    Hue.do_scramble(args)
-  }, delay)
 }
 
 // Replace things like $id$ with the message id

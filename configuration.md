@@ -417,9 +417,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_media_layout"
 >Default media area (image, tv) layout, either column or row.
 
-"global_settings_default_scramble_chat"
->Whether the chat scramble animation is enabled by default.
-
 "global_settings_default_confirm_chat"
 >Where to show confirm on chat message by default
 
@@ -633,12 +630,6 @@ This should be an array of strings of root domains.
 
 "system_username"
 >Reserved username for system messages.
-
-"scramble_duration"
->How long the scramble animation for chat messages lasts.
-
-"scramble_speed"
->How often to change letters in the chat scramble animation.
 
 "commands_prefix"
 The character before commands.

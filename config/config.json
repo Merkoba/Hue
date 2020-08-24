@@ -154,7 +154,6 @@
 	"global_settings_default_media_info": "room",
 	"global_settings_default_transparent_panels": true,
 	"global_settings_default_media_layout": "column",
-	"global_settings_default_scramble_chat": true,
 	"global_settings_default_confirm_chat": false,
 	"global_settings_default_confirm_image": false,
 	"global_settings_default_confirm_tv": false,
@@ -228,8 +227,6 @@
 	"max_audio_clip_duration": 30000,
 	"upload_spam_slice": 650,
 	"system_username": "El Systema",
-	"scramble_duration": 500,
-	"scramble_speed": 50,
 	"commands_prefix": "/",
 	"quote_max_length": 100
 }

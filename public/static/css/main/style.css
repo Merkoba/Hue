@@ -1425,22 +1425,30 @@ select {
 	width: 100%;
 	resize: none;
 	font-size: 1em;
-	text-align: center;
+	text-align: center0
 	overflow-x: hidden;
 }
 
 @keyframes fadein {
-	from {
-		opacity: 0;
+	0% {
+		opacity: 0
 	}
 
-	to {
-		opacity: 1;
+	25% {
+		opacity: 0.8
+	}
+
+	50% {
+		opacity: 0
+	}
+
+	100% {
+		opacity: 1
 	}
 }
 
 #chat_area .fader {
-	animation: fadein 600ms linear;
+	animation: fadein linear 600ms;
 }
 
 #user_menu_username_container {
