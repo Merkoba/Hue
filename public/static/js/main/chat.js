@@ -659,11 +659,7 @@ Hue.add_to_chat = function (args = {}) {
 
         if (date_diff < Hue.config.max_same_post_diff) {
           if (Hue.started && Hue.app_focused && args.fader) {
-            if (uname === Hue.username) {
-              content_container.addClass("fader2")
-            } else {
-              content_container.addClass("fader")
-            }
+            content_container.addClass("fader")
           }
 
           content_container.data("date", date)
@@ -684,15 +680,7 @@ Hue.add_to_chat = function (args = {}) {
 
   if (!appended) {
     if (Hue.started && Hue.app_focused && args.fader) {
-      if (content_container) {
-        if (uname === Hue.username) {
-          content_container.addClass("fader2")
-        } else {
-          content_container.addClass("fader")
-        }
-      } else {
-        args.message.addClass("fader2")
-      }
+      args.message.addClass("fader")
     }
 
     let last = $("#chat_area > .message").last()
