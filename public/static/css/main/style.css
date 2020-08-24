@@ -1451,6 +1451,20 @@ select {
 	animation: fadein linear 600ms;
 }
 
+@keyframes fadein2 {
+	0% {
+		opacity: 0
+	}
+
+	100% {
+		opacity: 1
+	}
+}
+
+#chat_area .fader2 {
+	animation: fadein2 linear 600ms;
+}
+
 #user_menu_username_container {
 	margin-bottom: 1rem;
 }
