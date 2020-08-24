@@ -12,7 +12,13 @@ Hue.send_reaction = function (reaction_type) {
 
   Hue.reaction_type = reaction_type
   Hue.hide_reactions_box()
-  Hue.show_reaction_target()
+
+  if (Hue.image_visible || Hue.tv_visible) {
+    Hue.show_reaction_target()
+  } else {
+    Hue.reaction_target = "chat"
+    Hue.do_send_reaction()
+  }
 }
 
 // Show the reaction target window
