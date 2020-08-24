@@ -12,6 +12,24 @@ Hue.send_reaction = function (reaction_type) {
 
   Hue.reaction_type = reaction_type
   Hue.hide_reactions_box()
+  Hue.show_reaction_target()
+}
+
+// Show the reaction target window
+Hue.show_reaction_target = function () {
+  if (Hue.image_visible) {
+    $("#reaction_target_image").css("display", "block")
+  } else {
+    $("#reaction_target_image").css("display", "none")
+  }
+
+  if (Hue.tv_visible) {
+    $("#reaction_target_tv").css("display", "block")
+  } else {
+    $("#reaction_target_tv").css("display", "none")
+  }
+
+  Hue.horizontal_separator.separate("reaction_target_container")
   Hue.msg_reaction_target.show()
 }
 
