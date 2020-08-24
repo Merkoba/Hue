@@ -34,14 +34,6 @@ Hue.setup_message_board = function () {
     }
   )
 
-  $("#message_board_post_textarea").on("focus", function () {
-    Hue.writing_message_board_post = true
-  })
-
-  $("#message_board_post_textarea").on("blur", function () {
-    Hue.writing_message_board_post = false
-  })
-
   $("#message_board_publish").click(function () {
     Hue.submit_message_board_post()
   })
@@ -153,7 +145,10 @@ Hue.on_message_board_received = function (data) {
 
   let func = function () { Hue.show_message_board() }
   let item = Hue.make_info_popup_item({icon: "pencil", message: "New message board post", on_click:func})
-  Hue.show_popup(Hue.make_info_popup(func), item)
+
+  if (!Hue.message_board_open) {
+    Hue.show_popup(Hue.make_info_popup(func), item)
+  }
 }
 
 // Updates last message board post date
@@ -166,7 +161,7 @@ Hue.last_message_board_post_date_update = function (data) {
 // Changes the post icon accordingly
 Hue.check_message_board_delay = function () {
   if (Hue.check_op_permission(Hue.role, "message_board_no_restriction")) {
-    $("#message_board_post_textarea").css("display", "block")
+    $("#message_board_top").css("display", "block")
     Hue.message_board_posting_enabled = true
     return false
   }
@@ -176,7 +171,7 @@ Hue.check_message_board_delay = function () {
   clearTimeout(Hue.message_board_post_delay_timeout)
 
   if (!Hue.can_messageboard || date_diff < Hue.config.message_board_post_delay) {
-    $("#message_board_post_textarea").css("display", "none")
+    $("#message_board_top").css("display", "none")
 
     Hue.message_board_post_delay_timeout = setTimeout(function () {
       Hue.check_message_board_delay()
@@ -184,7 +179,7 @@ Hue.check_message_board_delay = function () {
 
     Hue.message_board_posting_enabled = false
   } else {
-    $("#message_board_post_textarea").css("display", "block")
+    $("#message_board_top").css("display", "block")
     Hue.message_board_posting_enabled = true
   }
 }

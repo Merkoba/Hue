@@ -453,9 +453,13 @@ Hue.start_msg = function () {
     Object.assign({}, common, titlebar, {
       id: "message_board",
       window_width: "30rem",
+      after_show: function (instance) {
+        common.after_show(instance)
+        Hue.message_board_open = true
+      },
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.writing_message_board_post = false
+        Hue.message_board_open = false
       },
     })
   )
