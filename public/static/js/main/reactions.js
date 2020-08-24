@@ -130,6 +130,15 @@ Hue.setup_reactions = function () {
     Hue.send_reaction($(this).data("kind"))
   })
 
+  $("#reactions_box").on("auxclick", ".reaction_icon", function (e) {
+    if (e.which === 2) {
+      Hue.reaction_type = $(this).data("kind")
+      Hue.reaction_target = "chat"
+      Hue.hide_reactions_box()
+      Hue.do_send_reaction()
+    }
+  })
+
   let on_target_click = function (target) {
     Hue.reaction_target = target
     Hue.msg_reaction_target.close()
