@@ -88,10 +88,6 @@ Hue.show_reaction = function (data, date = false) {
       date: d,
     })
   } else {
-    if (!Hue.started) {
-      return false
-    }
-
     let html = `<div class='flex_row_center'>${icon}&nbsp;${Hue.utilz.make_html_safe(data.username)} ${message}</div>`
     if (data.reaction_target === "image") {
       if (!Hue.image_visible) {
