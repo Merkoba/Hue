@@ -12,24 +12,18 @@ Hue.send_reaction = function (reaction_type) {
 
   Hue.reaction_type = reaction_type
   Hue.hide_reactions_box()
-
-  if (Hue.image_visible || Hue.tv_visible) {
-    Hue.show_reaction_target()
-  } else {
-    Hue.reaction_target = "chat"
-    Hue.do_send_reaction()
-  }
+  Hue.show_reaction_target()
 }
 
 // Show the reaction target window
 Hue.show_reaction_target = function () {
-  if (Hue.image_visible) {
+  if (Hue.image_visible && Hue.current_is_loaded("image")) {
     $("#reaction_target_image").css("display", "grid")
   } else {
     $("#reaction_target_image").css("display", "none")
   }
 
-  if (Hue.tv_visible) {
+  if (Hue.tv_visible && Hue.current_is_loaded("tv")) {
     $("#reaction_target_tv").css("display", "grid")
   } else {
     $("#reaction_target_tv").css("display", "none")
@@ -96,7 +90,7 @@ Hue.show_reaction = function (data, date = false) {
   } else {
     let html = `<div class='flex_row_center'>${icon}&nbsp;${Hue.utilz.make_html_safe(data.username)} ${message}</div>`
     if (data.reaction_target === "image") {
-      if (!Hue.image_visible) {
+      if (!Hue.image_visible || !Hue.current_is_loaded("image")) {
         return false
       }
 
@@ -104,7 +98,7 @@ Hue.show_reaction = function (data, date = false) {
       $("#media_image_reactions").html(html)
       Hue.media_image_reactions_timer()
     } else if (data.reaction_target === "tv") {
-      if (!Hue.tv_visible) {
+      if (!Hue.tv_visible || !Hue.current_is_loaded("tv")) {
         return false
       }
 
