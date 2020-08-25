@@ -678,19 +678,16 @@ Hue.announce_new_username = function (data) {
   if (Hue.username === data.old_username) {
     Hue.set_username(data.username)
 
-    if (show) {
-      Hue.show_room_notification(
-        data.username,
-        `${data.old_username} is now known as ${Hue.username}`
-      )
-    } else {
-      Hue.show_room_notification(
-        data.username,
-        `You are now known as ${data.username}`
-      )
-    }
+    Hue.show_room_notification(
+      data.username,
+      `You are now known as ${data.username}`
+    )
 
     Hue.update_input_placeholder()
+
+    if (Hue.details_open) {
+      Hue.show_details()
+    }
   } else {
     if (show) {
       Hue.show_room_notification(

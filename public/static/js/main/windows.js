@@ -353,11 +353,7 @@ Hue.start_msg = function () {
     Object.assign({}, common, {
       id: "expand_image",
       preset: "window",
-      overlay_class: "!overlay_same_color",
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.clear_modal_image_info()
-      },
+      overlay_class: "!overlay_same_color"
     })
   )
 
@@ -370,7 +366,6 @@ Hue.start_msg = function () {
       },
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.clear_modal_image_info()
         $("#image_upload_comment_input").val("")
         Hue.image_upload_comment_file = false
         Hue.image_upload_comment_type = false
@@ -389,7 +384,6 @@ Hue.start_msg = function () {
       },
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.clear_modal_image_info()
         Hue.writing_reply = false
       },
     })
@@ -411,11 +405,7 @@ Hue.start_msg = function () {
 
   Hue.msg_open_url = Msg.factory(
     Object.assign({}, common, titlebar, {
-      id: "open_url",
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.clear_modal_image_info()
-      },
+      id: "open_url"
     })
   )
 
@@ -428,9 +418,13 @@ Hue.start_msg = function () {
   Hue.msg_details = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "details",
+      after_show: function (instance) {
+        common.after_show(instance)
+        Hue.details_open = true
+      },
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.clear_modal_image_info()
+        Hue.details_open = false
       },
     })
   )

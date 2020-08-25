@@ -2680,6 +2680,11 @@ a.special_link:hover {
 	margin-bottom: 1rem;
 }
 
+#details_buttons {
+	margin-top: 1rem;
+	grid-gap: 0.5rem;
+}
+
 .details_change_submit {
 	margin-top: 1rem;
 }
