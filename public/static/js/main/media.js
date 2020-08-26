@@ -1260,3 +1260,23 @@ Hue.rotate_media = function () {
 Hue.current_is_loaded = function (type) {
   return Hue[`loaded_${type}`].source === Hue[`current_${type}`]().source
 }
+
+// Get html for media info items
+Hue.get_media_info_html = function (type) {
+  return `<div class='media_info_container grid_row_center'>
+    <div id='media_${type}_info' class='media_info dynamic_title'></div>
+    <div class='media_info_separator'>|</div>
+    <div class='media_like_button action pointer' data-type='${type}'>Like</div>
+  </div>`
+}
+
+// Some initial media info setups
+Hue.start_media_info = function () {
+  $("#media_image_container").append(Hue.get_media_info_html("image"))
+
+  $(".media_main_container").on("click", ".media_like_button", function () {
+    Hue.reaction_target = $(this).data("type")
+    Hue.reaction_type = 'like'
+    Hue.do_send_reaction()
+  })
+}

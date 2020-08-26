@@ -3053,3 +3053,8 @@ pre {
 	background-color: var(--background_color_a);
 	color: var(--font_color);
 }
+
+.media_info_separator {
+	margin-left: 0.5rem;
+	margin-right: 0.5rem;
+}

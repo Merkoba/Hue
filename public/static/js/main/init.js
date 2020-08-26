@@ -170,7 +170,7 @@ Hue.num_socket_in = 0
 Hue.num_socket_out = 0
 Hue.last_autoscroll_diff = 0
 Hue.max_displayed_url = 100
-Hue.media_info_max_length = 65
+Hue.media_info_max_length = 60
 Hue.fixed_input = false
 Hue.image_locked = false
 Hue.tv_locked = false
@@ -276,6 +276,7 @@ Hue.init = function () {
   Hue.setup_reply()
   Hue.start_socket_stats()
   Hue.setup_maxers()
+  Hue.start_media_info()
 
   if (Hue.debug_functions) {
     Hue.wrap_functions()

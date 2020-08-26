@@ -146,8 +146,7 @@ Hue.request_media = function (player, args) {
 
 // Function to add a frame info after creating a player
 Hue.add_media_info = function (container_id) {
-  let html = "<div class='media_info dynamic_title'></div>"
-  $(`#${container_id}`).append(html)
+  $(`#${container_id}`).append(Hue.get_media_info_html("tv"))
 }
 
 // Loads Twitch script and creates player

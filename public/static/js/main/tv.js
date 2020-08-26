@@ -302,7 +302,7 @@ Hue.show_video_video = async function (play = true) {
     let s = `<video id='media_video'
         class='video_frame' width="640px" height="360px"
         preload="none" poster="${Hue.config.default_video_url}" controls></video>
-        <div class='media_info dynamic_title'></div>`
+        ${Hue.get_media_info_html("tv")}`
 
     $("#media_video_video_container").html(s)
   }
@@ -325,7 +325,7 @@ Hue.show_iframe_video = function (play = true) {
     let s = `<div id='media_iframe_poster' class='pointer action'>Click Here To Load</div>
         <iframe sandbox="allow-same-origin allow-scripts allow-popups allow-forms" 
         width="640px" height="360px" id='media_iframe_video' class='video_frame'></iframe>
-        <div class='media_info dynamic_title'></div>`
+        ${Hue.get_media_info_html("tv")}`
 
     $("#media_iframe_video_container").html(s)
 
