@@ -285,21 +285,6 @@ body * {
 	display: flex;
 }
 
-.media_info_container {
-	margin-top: 0.333rem;
-}
-
-.media_info {
-	white-space: nowrap;
-	cursor: pointer;
-	flex-direction: row;
-	display: var(--media_info_display);    
-}
-
-.media_info_username {
-	font-weight: bold;
-}
-
 .media_reactions {
 	display: none;
 	position: absolute;
@@ -3061,4 +3046,20 @@ pre {
 .media_info_separator {
 	margin-left: 0.5rem;
 	margin-right: 0.5rem;
+}
+
+.media_info_container {
+	margin-top: 0.333rem;
+	display: var(--media_info_display);
+}
+
+.media_info {
+	white-space: nowrap;
+	cursor: pointer;
+	flex-direction: row;
+	display: flex;   
+}
+
+.media_info_username {
+	font-weight: bold;
 }

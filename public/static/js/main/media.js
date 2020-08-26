@@ -1041,13 +1041,13 @@ Hue.configure_media_info = function () {
   let media_info_display
 
   if (Hue.get_setting("media_info") === "custom_enabled") {
-    media_info_display = "flex"
+    media_info_display = "grid"
   }
 
   if (Hue.get_setting("media_info") === "custom_disabled") {
     media_info_display = "none"
   } else if (Hue.media_info === "enabled") {
-    media_info_display = "flex"
+    media_info_display = "grid"
   } else if (Hue.media_info === "disabled") {
     media_info_display = "none"
   }
@@ -1258,7 +1258,7 @@ Hue.rotate_media = function () {
 
 // Get html for media info items
 Hue.get_media_info_html = function (type) {
-  return `<div class='media_info_container grid_row_center'>
+  return `<div id='media_${type}_info_container' class='media_info_container grid_row_center'>
     <div id='media_${type}_info' class='media_info dynamic_title'></div>
     <div class='media_info_separator'>|</div>
     <div class='media_like_button action pointer' data-type='${type}'>Like</div>

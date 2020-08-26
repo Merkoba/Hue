@@ -630,7 +630,6 @@ Hue.start_image_events = function () {
       $("#media_image_frame").attr("src", $("#media_image_frame").attr("src"))
     } else {
       $("#media_image_frame").css("display", "none")
-      $("#media_image_info").css("display", "none")
       $("#media_image_error").css("display", "initial")
       Hue.after_image_load()
     }
@@ -654,7 +653,6 @@ Hue.apply_image_media_info = function () {
 // This runs after an image successfully loads
 Hue.after_image_load = function (ok = true) {
   Hue.current_image_data = Hue.loaded_image
-  $("#media_image_info").css("display", "var(--media_info_display)")
   Hue.apply_image_media_info()
 
   if (ok) {
