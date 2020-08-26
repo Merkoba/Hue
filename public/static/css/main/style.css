@@ -303,7 +303,8 @@ body * {
 .media_reactions {
 	display: none;
 	position: absolute;
-	background-color: black;
+	background-color: rgb(24, 24, 24);
+	border: 0.2rem solid rgb(75, 75, 75);
 	padding: 0.5rem;
 	font-size: 1.1rem;
 	font-family: monospace;
