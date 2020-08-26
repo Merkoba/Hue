@@ -1256,11 +1256,6 @@ Hue.rotate_media = function () {
   Hue.swap_media_layout_2()
 }
 
-// True if the current media is the current media
-Hue.current_is_loaded = function (type) {
-  return Hue[`loaded_${type}`].source === Hue[`current_${type}`]().source
-}
-
 // Get html for media info items
 Hue.get_media_info_html = function (type) {
   return `<div class='media_info_container grid_row_center'>

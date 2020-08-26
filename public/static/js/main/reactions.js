@@ -17,13 +17,13 @@ Hue.send_reaction = function (reaction_type) {
 
 // Show the reaction target window
 Hue.show_reaction_target = function () {
-  if (Hue.image_visible && Hue.current_is_loaded("image")) {
+  if (Hue.image_visible) {
     $("#reaction_target_image").css("display", "grid")
   } else {
     $("#reaction_target_image").css("display", "none")
   }
 
-  if (Hue.tv_visible && Hue.current_is_loaded("tv")) {
+  if (Hue.tv_visible) {
     $("#reaction_target_tv").css("display", "grid")
   } else {
     $("#reaction_target_tv").css("display", "none")
@@ -38,12 +38,23 @@ Hue.do_send_reaction = function () {
   if (!Hue.reaction_type || !Hue.reaction_target) {
     return false
   }
+
+  if (Hue.reaction_target === "chat") {
+    Hue.reaction_source = ""
+  } else {
+    Hue.reaction_source = Hue[`loaded_${Hue.reaction_target}`].source
+  }
   
-  Hue.socket_emit("send_reaction", { reaction_type: Hue.reaction_type, reaction_target: Hue.reaction_target })
+  Hue.socket_emit("send_reaction", { 
+    reaction_type: Hue.reaction_type, 
+    reaction_target: Hue.reaction_target,
+    reaction_source: Hue.reaction_source
+  })
 }
 
 // Shows a message depending on the reaction type
 Hue.show_reaction = function (data, date = false) {
+  console.log(data)
   let d
 
   if (date) {
@@ -90,15 +101,23 @@ Hue.show_reaction = function (data, date = false) {
   } else {
     let html = `<div class='flex_row_center'>${icon}&nbsp;${Hue.utilz.make_html_safe(data.username)} ${message}</div>`
     if (data.reaction_target === "image") {
-      if (!Hue.image_visible || !Hue.current_is_loaded("image")) {
+      if (!Hue.image_visible) {
         return false
       }
+
+      if (Hue.loaded_image.source !== data.reaction_source) {
+        return false
+      }      
 
       $("#media_image_reactions").css("display", "block")
       $("#media_image_reactions").html(html)
       Hue.media_image_reactions_timer()
     } else if (data.reaction_target === "tv") {
-      if (!Hue.tv_visible || !Hue.current_is_loaded("tv")) {
+      if (!Hue.tv_visible) {
+        return false
+      }
+
+      if (Hue.loaded_tv.source !== data.reaction_source) {
         return false
       }
 

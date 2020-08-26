@@ -21,6 +21,12 @@ module.exports = function (
     if (!vars.reaction_targets.includes(data.reaction_target)) {
       return false
     }
+
+    if (data.reaction_source) {
+      if (data.reaction_source.length > config.max_media_source_length) {
+        return false
+      }
+    }
     
     if (!handler.check_media_permission(socket, "chat")) {
       return false
@@ -33,6 +39,7 @@ module.exports = function (
       username: socket.hue_username,
       reaction_type: data.reaction_type,
       reaction_target: data.reaction_target,
+      reaction_source: data.reaction_source,
       profile_image: socket.hue_profile_image,
     })
 
@@ -46,6 +53,7 @@ module.exports = function (
             username: socket.hue_username,
             reaction_type: data.reaction_type,
             reaction_target: data.reaction_target,
+            reaction_source: data.reaction_source,
             profile_image: socket.hue_profile_image,
           },
         }
