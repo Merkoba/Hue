@@ -285,8 +285,11 @@ body * {
 	display: flex;
 }
 
-.media_info {
+.media_info_container {
 	margin-top: 0.333rem;
+}
+
+.media_info {
 	white-space: nowrap;
 	cursor: pointer;
 	flex-direction: row;
