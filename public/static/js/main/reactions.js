@@ -54,7 +54,6 @@ Hue.do_send_reaction = function () {
 
 // Shows a message depending on the reaction type
 Hue.show_reaction = function (data, date = false) {
-  console.log(data)
   let d
 
   if (date) {
