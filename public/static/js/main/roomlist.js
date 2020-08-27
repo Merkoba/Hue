@@ -206,7 +206,9 @@ Hue.on_room_created = function (data) {
     save: true,
   })
 
-  Hue.show_open_room(data.id)
+  if (data.username === Hue.username) {
+    Hue.show_open_room(data.id)
+  }
 }
 
 // Message to show when the create room cooldown is not over
