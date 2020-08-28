@@ -109,7 +109,7 @@ Hue.show_reaction = function (data, date = false) {
       }      
 
       $("#media_image_reactions").css("display", "block")
-      $("#media_image_reactions").html(html)
+      $("#media_image_reactions").append(html)
       Hue.media_image_reactions_timer()
     } else if (data.reaction_target === "tv") {
       if (!Hue.tv_visible) {
@@ -121,7 +121,7 @@ Hue.show_reaction = function (data, date = false) {
       }
 
       $("#media_tv_reactions").css("display", "block")
-      $("#media_tv_reactions").html(html)
+      $("#media_tv_reactions").append(html)
       Hue.media_tv_reactions_timer()
     }
   }
