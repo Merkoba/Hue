@@ -260,7 +260,7 @@ Hue.commands = {
   },
   "status": {
     action: (arg, ans) => {
-      Hue.show_status()
+      Hue.show_room_status()
     },
     description: `Shows the room status window`,
   },

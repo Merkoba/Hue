@@ -48,17 +48,18 @@ Hue.save_room_state = function () {
 }
 
 // Shows a window with room details
-Hue.show_status = function () {
-  let data = {}
-  data.room_name = Hue.room_name
-  data.topic = Hue.topic
-  data.privacy = Hue.is_public ? "Public" : "Private"
-  data.log = Hue.log_enabled ? "Enabled" : "Disabled"
+Hue.show_room_status = function () {
+  let name = Hue.room_name
+  let topic = Hue.topic
+  let privacy = Hue.is_public ? "Public" : "Private"
+  let log = Hue.log_enabled ? "Enabled" : "Disabled"
 
-  Hue.msg_info2.show([
-    "Room Status",
-    Hue.template_status({ data: data }),
-  ])
+  Hue.msg_room_status.show(function () {
+    $("#room_status_name").text(name)
+    $("#room_status_topic").text(topic)
+    $("#room_status_privacy").text(privacy)
+    $("#room_status_log").text(log)
+  })
 }
 
 // Show whether a room is public or private
@@ -181,6 +182,10 @@ Hue.announce_room_name_change = function (data) {
     Hue.set_room_name(data.name)
     Hue.update_title()
     Hue.update_input_placeholder()
+  }
+
+  if (Hue.room_status_open) {
+    Hue.show_room_status()
   }
 }
 
@@ -336,6 +341,10 @@ Hue.announce_topic_change = function (data) {
     Hue.set_topic_info(data)
     Hue.update_title()
   }
+
+  if (Hue.room_status_open) {
+    Hue.show_room_status()
+  }
 }
 
 // Sets topic data with received data
@@ -388,6 +397,10 @@ Hue.announce_privacy_change = function (data) {
   }
 
   Hue.show_room_notification(data.username, s)
+
+  if (Hue.room_status_open) {
+    Hue.show_room_status()
+  }
 }
 
 // Privacy setter
@@ -460,6 +473,10 @@ Hue.announce_log_change = function (data) {
 
   Hue.set_log_enabled(data.log)
   Hue.show_room_notification(data.username, s)
+
+  if (Hue.room_status_open) {
+    Hue.show_room_status()
+  }
 }
 
 // Announces that the log was cleared

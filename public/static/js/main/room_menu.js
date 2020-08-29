@@ -216,7 +216,7 @@ Hue.setup_room_menu = function () {
   })
 
   $("#room_menu_status").click(function () {
-    Hue.show_status()
+    Hue.show_room_status()
   })
 
   $("#room_menu_copy_url").click(function () {
