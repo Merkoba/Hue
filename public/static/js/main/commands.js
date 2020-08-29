@@ -1417,7 +1417,7 @@ Hue.show_commands = function (filter = "") {
 
   for (let key in Hue.commands) {
     let setting = Hue.commands[key]
-    s += `<div class='info_item modal_item'>${key}: ${setting.description}</div>`
+    s += `<div class='info_item modal_item'>${Hue.config.commands_prefix}${key}: ${setting.description}</div>`
   }
 
   Hue.msg_info2.show(["Commands", commands])

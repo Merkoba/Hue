@@ -1464,7 +1464,7 @@ Hue.ignore_user = function (username) {
     }
   }
 
-  list.val(`${list.val()}\n${username}`)
+  list.val(`${list.val()}\n${username}`.trim())
   Hue.feedback(`${username} ignored`)
   Hue.user_settings.ignored_usernames.action("global_settings")
 }
