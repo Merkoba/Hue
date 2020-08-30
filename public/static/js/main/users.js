@@ -828,21 +828,21 @@ Hue.show_profile_by_user_id = function (id) {
 }
 
 // Shows a user's profile window
-Hue.show_profile = function (uname, prof_image = false, uid = false) {
+Hue.show_profile = function (username, profile_image = false, user_id = false) {
   let pi
   let role = "Offline"
-  let user_id = ""
+  let uid = ""
   let bio = ""
   let hearts = 0
   let skulls = 0
-  let user = Hue.get_user_by_username(uname)
+  let user = Hue.get_user_by_username(username)
 
   if (user) {
     role = Hue.get_pretty_role_name(user.role)
     bio = user.bio
     hearts = user.hearts
     skulls = user.skulls
-    user_id = `ID: ${user.user_id}`
+    uid = `ID: ${user.user_id}`
 
     if (user.username === Hue.username) {
       same_user = true
@@ -850,15 +850,15 @@ Hue.show_profile = function (uname, prof_image = false, uid = false) {
 
     Hue.open_profile_user = user
   } else {
-    if (uid) {
-      user_id = `ID: ${uid}`
+    if (user_id) {
+      uid = `ID: ${user_id}`
     }
   }
 
-  Hue.open_profile_username = uname
+  Hue.open_profile_username = username
 
-  if (prof_image) {
-    pi = prof_image
+  if (profile_image) {
+    pi = profile_image
   } else {
     if (user && user.profile_image) {
       pi = user.profile_image
@@ -867,15 +867,15 @@ Hue.show_profile = function (uname, prof_image = false, uid = false) {
     }
   }
 
-  $("#show_profile_uname").text(uname)
-  $("#show_profile_uname").attr("title", user_id)
+  $("#show_profile_uname").text(username)
+  $("#show_profile_uname").attr("title", uid)
   $("#show_profile_role").text(`(${role})`)
   $("#show_profile_bio")
     .html(Hue.utilz.make_html_safe(bio).replace(/\n+/g, " <br> "))
     .urlize()
 
   $("#show_profile_image").attr("src", pi)
-  $("#show_profile_image").data("username", uname)
+  $("#show_profile_image").data("username", username)
 
   if (user) {
     let t = Hue.get_user_info_title(user)
@@ -888,7 +888,7 @@ Hue.show_profile = function (uname, prof_image = false, uid = false) {
     $("#show_profile_image").removeClass("dynamic_title")
   }
 
-  if (!Hue.can_chat || !Hue.usernames.includes(uname)) {
+  if (!Hue.can_chat || !Hue.usernames.includes(username)) {
     $("#show_profile_whisper").css("display", "none")
     $("#show_profile_hearts").css("display", "none")
     $("#show_profile_skulls").css("display", "none")
@@ -908,7 +908,7 @@ Hue.show_profile = function (uname, prof_image = false, uid = false) {
   }
 
   if (Hue.room_state["tv_enabled"] 
-  && Hue.usernames.includes(uname)) {
+  && Hue.usernames.includes(username)) {
     $("#show_profile_sync_tv").css("display", "flex")
   } else {
     $("#show_profile_sync_tv").css("display", "none")
