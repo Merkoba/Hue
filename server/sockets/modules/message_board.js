@@ -95,15 +95,8 @@ module.exports = function (
 
   // Deletes a message board post
   handler.public.delete_message_board_post = async function (socket, data) {
-    if (
-      !handler.check_op_permission(socket, "message_board_delete") &&
-      !socket.hue_superuser
-    ) {
-      return handler.get_out(socket)
-    }
-
     if (!data.id) {
-      return handler.get_out(socket)
+      return false
     }
 
     let room = vars.rooms[socket.hue_room_id]
@@ -112,6 +105,14 @@ module.exports = function (
       let item = room.message_board_posts[i]
 
       if (item.id === data.id) {
+        if (item.user_id !== socket.hue_user_id) {
+          if (
+            !handler.check_op_permission(socket, "message_board_delete") &&
+            !socket.hue_superuser
+          ) {
+            return false
+          }
+        }
         room.message_board_posts.splice(i, 1)
         db_manager.update_room(socket.hue_room_id, {
           message_board_posts: room.message_board_posts,
