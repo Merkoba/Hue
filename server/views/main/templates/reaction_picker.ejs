@@ -1,15 +1,6 @@
-<div id='reactions_box_container'>
-    <div id='reactions_box'>
-        <div id='reactions_functions' class='flex_row_center'>
-            <div class='pointer action user_function_button' id='user_function_button_1'>F1</div>
-            <div class='pointer action user_function_button' id='user_function_button_2'>F2</div>
-            <div class='pointer action user_function_button' id='user_function_button_3'>F3</div>
-            <div class='pointer action user_function_button' id='user_function_button_4'>F4</div>
-            <div class='pointer action user_function_button' id='user_function_button_5'>F5</div>
-            <div class='pointer action user_function_button' id='user_function_button_6'>F6</div>
-        </div>
-
-        <div id='reactions_icons' class='flex_row_center'>
+<script id='template_reaction_picker' type='text/x-handlebars-template' class='template'>
+    <div id='reaction_picker'>
+        <div id='reactions_good' class='flex_row_center generic_horizontal_separator'>
             <div class='flex_row_center action pointer reaction_icon' data-kind="like">
                 <svg class='other_icon'><use href='#icon_thumbs-up'></svg>
                 <div class='reactions_icon_label'>Like</div>
@@ -24,7 +15,9 @@
                 <svg class='other_icon'> <use href='#icon_happy'></svg>
                 <div class='reactions_icon_label'>Happy</div>
             </div>
+        </div>
 
+        <div id='reactions_bad' class='flex_row_center generic_horizontal_separator'>
             <div class='flex_row_center action pointer reaction_icon' data-kind="dislike">
                 <svg class='other_icon'><use href='#icon_thumbs-down'></svg>
                 <div class='reactions_icon_label'>Dislike</div>
@@ -41,3 +34,4 @@
         </div>
     </div>
 </div>
+</script>

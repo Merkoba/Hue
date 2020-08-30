@@ -1261,7 +1261,7 @@ Hue.get_media_info_html = function (type) {
   return `<div id='media_${type}_info_container' class='media_info_container grid_row_center'>
     <div id='media_${type}_info' class='media_info dynamic_title'></div>
     <div class='media_info_separator'>|</div>
-    <div class='media_like_button action pointer' data-type='${type}'>Like</div>
+    <div class='media_react_button action pointer' data-type='${type}'>React</div>
   </div>`
 }
 
@@ -1269,9 +1269,7 @@ Hue.get_media_info_html = function (type) {
 Hue.start_media_info = function () {
   $("#media_image_container").append(Hue.get_media_info_html("image"))
 
-  $(".media_main_container").on("click", ".media_like_button", function () {
-    Hue.reaction_target = $(this).data("type")
-    Hue.reaction_type = 'like'
-    Hue.do_send_reaction()
+  $(".media_main_container").on("click", ".media_react_button", function () {
+    Hue.show_reaction_picker($(this).data("type"))
   })
 }

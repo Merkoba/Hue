@@ -63,18 +63,12 @@ Hue.setup_footer = function () {
     Hue.show_user_menu()
   })
 
-  $("#footer_reactions").click(function () {
-    if (Hue.reactions_box_open) {
-      Hue.hide_reactions_box()
+  $("#footer_chat_functions").click(function () {
+    if (Hue.chat_functions_box_open) {
+      Hue.hide_chat_functions_box()
     } else {
-      Hue.show_reactions_box()
-      Hue.start_hide_reactions()
-    }
-  })
-
-  $("#footer_reactions").on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.send_reaction("like")
+      Hue.show_chat_functions_box()
+      Hue.start_hide_chat_functions()
     }
   })
 

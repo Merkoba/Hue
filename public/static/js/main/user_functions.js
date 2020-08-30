@@ -29,7 +29,7 @@ Hue.run_user_function = function (n) {
     Hue.open_user_function_in_settings(n)
   }
 
-  Hue.hide_reactions_box()
+  Hue.hide_chat_functions_box()
 }
 
 // Setups the user function switch feature

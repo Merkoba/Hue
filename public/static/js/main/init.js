@@ -95,8 +95,8 @@ Hue.app_focused = true
 Hue.message_unames = ""
 Hue.aura_timeouts = {}
 Hue.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
-Hue.mouse_over_reactions = false
-Hue.reactions_hover_delay = 3000
+Hue.mouse_over_chat_functions = false
+Hue.chat_functions_hover_delay = 3000
 Hue.user_functions = [1, 2, 3, 4, 5, 6]
 Hue.mouse_is_down = false
 Hue.draw_message_just_entered = false
@@ -143,7 +143,7 @@ Hue.usercount = 0
 Hue.markdown_regexes = {}
 Hue.show_media_history_type = ""
 Hue.add_to_chat_searches_delay = 2000
-Hue.reactions_box_open = false
+Hue.chat_functions_box_open = false
 Hue.first_media_change = false
 Hue.calc_round_places = 10
 Hue.typing_delay = 100
@@ -236,6 +236,7 @@ Hue.init = function () {
   Hue.setup_modal_image()
   Hue.setup_footer()
   Hue.setup_reactions()
+  Hue.setup_chat_functions()
   Hue.prepare_media_settings()
   Hue.setup_message_window()
   Hue.setup_draw_image()

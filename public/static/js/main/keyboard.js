@@ -414,7 +414,7 @@ Hue.activate_key_detection = function () {
           Hue.goto_bottom(true, true)
         }
 
-        Hue.hide_reactions_box()
+        Hue.hide_chat_functions_box()
         e.preventDefault()
         return
       }

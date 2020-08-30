@@ -735,41 +735,113 @@ Hue.commands = {
     },
     description: `Pings the server and shows the delay from the moment it was sent to the moment it was received`,
   },
-  "reactlike": {
+  "reactlikechat": {
     action: (arg, ans) => {
-      Hue.send_reaction("like")
+      Hue.send_reaction("like", "chat")
     },
-    description: `Sends reaction "like"`,
+    description: `Sends reaction "like" to Chat`,
   },
-  "reactlove": {
+  "reactlovechat": {
     action: (arg, ans) => {
-      Hue.send_reaction("love")
+      Hue.send_reaction("love", "chat")
     },
-    description: `Sends reaction "love"`,
+    description: `Sends reaction "love" to Chat`,
   },
-  "reacthappy": {
+  "reacthappychat": {
     action: (arg, ans) => {
-      Hue.send_reaction("happy")
+      Hue.send_reaction("happy", "chat")
     },
-    description: `Sends reaction "happy"`,
+    description: `Sends reaction "happy" to Chat`,
   },
-  "reactmeh": {
+  "reactmehchat": {
     action: (arg, ans) => {
-      Hue.send_reaction("meh")
+      Hue.send_reaction("meh", "chat")
     },
-    description: `Sends reaction "meh"`,
+    description: `Sends reaction "meh" to Chat`,
   },
-  "reactsad": {
+  "reactsadchat": {
     action: (arg, ans) => {
-      Hue.send_reaction("sad")
+      Hue.send_reaction("sad", "chat")
     },
-    description: `Sends reaction "sad"`,
+    description: `Sends reaction "sad" to Chat`,
   },
-  "reactdislike": {
+  "reactdislikechat": {
     action: (arg, ans) => {
-      Hue.send_reaction("dislike")
+      Hue.send_reaction("dislike", "chat")
     },
-    description: `Sends reaction "dislike"`,
+    description: `Sends reaction "dislike" to Chat`,
+  },
+  "reactlikeimage": {
+    action: (arg, ans) => {
+      Hue.send_reaction("like", "image")
+    },
+    description: `Sends reaction "like" to Image`,
+  },
+  "reactloveimage": {
+    action: (arg, ans) => {
+      Hue.send_reaction("love", "image")
+    },
+    description: `Sends reaction "love" to Image`,
+  },
+  "reacthappyimage": {
+    action: (arg, ans) => {
+      Hue.send_reaction("happy", "image")
+    },
+    description: `Sends reaction "happy" to Image`,
+  },
+  "reactmehimage": {
+    action: (arg, ans) => {
+      Hue.send_reaction("meh", "image")
+    },
+    description: `Sends reaction "meh" to Image`,
+  },
+  "reactsadimage": {
+    action: (arg, ans) => {
+      Hue.send_reaction("sad", "image")
+    },
+    description: `Sends reaction "sad" to Image`,
+  },
+  "reactdislikeimage": {
+    action: (arg, ans) => {
+      Hue.send_reaction("dislike", "image")
+    },
+    description: `Sends reaction "dislike" to Image`,
+  },
+  "reactliketv": {
+    action: (arg, ans) => {
+      Hue.send_reaction("like", "tv")
+    },
+    description: `Sends reaction "like" to TV`,
+  },
+  "reactlovetv": {
+    action: (arg, ans) => {
+      Hue.send_reaction("love", "tv")
+    },
+    description: `Sends reaction "love" to TV`,
+  },
+  "reacthappytv": {
+    action: (arg, ans) => {
+      Hue.send_reaction("happy", "tv")
+    },
+    description: `Sends reaction "happy" to TV`,
+  },
+  "reactmehtv": {
+    action: (arg, ans) => {
+      Hue.send_reaction("meh", "tv")
+    },
+    description: `Sends reaction "meh" to TV`,
+  },
+  "reactsadtv": {
+    action: (arg, ans) => {
+      Hue.send_reaction("sad", "tv")
+    },
+    description: `Sends reaction "sad" to TV`,
+  },
+  "reactdisliketv": {
+    action: (arg, ans) => {
+      Hue.send_reaction("dislike", "tv")
+    },
+    description: `Sends reaction "dislike" to TV`,
   },
   "f1": {
     action: (arg, ans) => {
@@ -812,20 +884,6 @@ Hue.commands = {
       ans.to_history = false
     },
     description: `Runs User Function 6`,
-  },
-  "f7": {
-    action: (arg, ans) => {
-      Hue.run_user_function(7)
-      ans.to_history = false
-    },
-    description: `Runs User Function 7`,
-  },
-  "f8": {
-    action: (arg, ans) => {
-      Hue.run_user_function(8)
-      ans.to_history = false
-    },
-    description: `Runs User Function 8`,
   },
   "lockscreen": {
     action: (arg, ans) => {

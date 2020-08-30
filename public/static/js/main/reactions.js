@@ -1,6 +1,17 @@
+// Setup reactions
+Hue.setup_reactions = function () {
+  $("#reaction_picker").on("click", ".reaction_icon", function () {
+    Hue.send_reaction($(this).data("kind"), Hue.reaction_target)
+    Hue.msg_reaction_picker.close()
+  })
+}
+
 // Sends a reaction to the chat
-// Like 'happy
-Hue.send_reaction = function (reaction_type) {
+Hue.send_reaction = function (reaction_type, reaction_target) {
+  if (!reaction_type || !reaction_target) {
+    return false
+  }
+
   if (!Hue.can_chat) {
     Hue.feedback("You don't have permission to chat")
     return false
@@ -10,45 +21,16 @@ Hue.send_reaction = function (reaction_type) {
     return false
   }
 
-  Hue.reaction_type = reaction_type
-  Hue.hide_reactions_box()
-  Hue.show_reaction_target()
-}
+  let reaction_source = ""
 
-// Show the reaction target window
-Hue.show_reaction_target = function () {
-  if (Hue.image_visible) {
-    $("#reaction_target_image").css("display", "grid")
-  } else {
-    $("#reaction_target_image").css("display", "none")
+  if (reaction_target !== "chat") {
+    reaction_source = Hue[`loaded_${reaction_target}`].source
   }
 
-  if (Hue.tv_visible) {
-    $("#reaction_target_tv").css("display", "grid")
-  } else {
-    $("#reaction_target_tv").css("display", "none")
-  }
-
-  Hue.horizontal_separator.separate("reaction_target_container")
-  Hue.msg_reaction_target.show()
-}
-
-// Sends the reaction signal
-Hue.do_send_reaction = function () {
-  if (!Hue.reaction_type || !Hue.reaction_target) {
-    return false
-  }
-
-  if (Hue.reaction_target === "chat") {
-    Hue.reaction_source = ""
-  } else {
-    Hue.reaction_source = Hue[`loaded_${Hue.reaction_target}`].source
-  }
-  
   Hue.socket_emit("send_reaction", { 
-    reaction_type: Hue.reaction_type, 
-    reaction_target: Hue.reaction_target,
-    reaction_source: Hue.reaction_source
+    reaction_type: reaction_type, 
+    reaction_target: reaction_target,
+    reaction_source: reaction_source
   })
 }
 
@@ -131,121 +113,8 @@ Hue.show_reaction = function (data, date = false) {
   }
 }
 
-// Setups the reaction box's events
-// This is the box that appears on user menu hover
-// It includes reactions as well as user functions
-Hue.setup_reactions = function () {
-  $("#reactions_box_container").hover(
-    function () {
-      Hue.mouse_over_reactions = true
-      clearTimeout(Hue.hide_reactions_timeout)
-    },
-
-    function () {
-      Hue.mouse_over_reactions = false
-      Hue.start_hide_reactions()
-    }
-  )
-
-  $("#chat_area").click(function () {
-    if (Hue.reactions_box_open) {
-      Hue.hide_reactions_box()
-    }
-  })
-
-  $("#input").click(function () {
-    if (Hue.reactions_box_open) {
-      Hue.hide_reactions_box()
-    }
-  })
-
-  Hue.horizontal_separator.separate("reactions_functions")
-  Hue.horizontal_separator.separate("reactions_icons")
-
-  $("#reactions_box").on("click", ".reaction_icon", function () {
-    Hue.send_reaction($(this).data("kind"))
-  })
-
-  $("#reactions_box").on("auxclick", ".reaction_icon", function (e) {
-    if (e.which === 2) {
-      Hue.reaction_type = $(this).data("kind")
-      Hue.reaction_target = "chat"
-      Hue.hide_reactions_box()
-      Hue.do_send_reaction()
-    }
-  })
-
-  let on_target_click = function (target) {
-    Hue.reaction_target = target
-    Hue.msg_reaction_target.close()
-    Hue.do_send_reaction()
-  }
-
-  $("#reaction_target_chat").click(function () {
-    on_target_click("chat")
-  })
-
-  $("#reaction_target_image").click(function () {
-    on_target_click("image")
-  })
-
-  $("#reaction_target_tv").click(function () {
-    on_target_click("tv")
-  })
-}
-
-// Starts a timeout to hide the reactions box when the mouse leaves the box
-Hue.start_hide_reactions = function () {
-  clearTimeout(Hue.show_reactions_timeout)
-
-  Hue.hide_reactions_timeout = setTimeout(function () {
-    if (Hue.mouse_over_reactions) {
-      return false
-    }
-
-    Hue.hide_reactions_box()
-  }, Hue.reactions_hover_delay)
-}
-
-// Shows the reactions box
-Hue.show_reactions_box = function () {
-  if (!Hue.reactions_box_open) {
-    $("#recent_input_box").html("")
-
-    let max = Hue.get_setting("max_recent_input_items")
-
-    if (max > 0) {
-      let n = 0
-
-      for (let item of Hue.input_history.slice(0).reverse()) {
-        let m = item.message.trim()
-
-        if (m.length > 100 || m.includes("\n")) {
-          continue
-        }
-
-        let message = Hue.utilz.make_html_safe(m)
-        let el = `<div class='recent_input_item action pointer'>${message}</div>`
-        $("#recent_input_box").prepend(el)
-
-        n += 1
-
-        if (n >= max) {
-          break
-        }
-      }
-    }
-
-    $("#reactions_box_container").css("display", "flex")
-    Hue.reactions_box_open = true
-  }
-}
-
-// Hides the reactions box
-Hue.hide_reactions_box = function () {
-  if (Hue.reactions_box_open) {
-    clearTimeout(Hue.hide_reactions_timeout)
-    $("#reactions_box_container").css("display", "none")
-    Hue.reactions_box_open = false
-  }
+// Show the reaction picker
+Hue.show_reaction_picker = function (target) {
+  Hue.reaction_target = target
+  Hue.msg_reaction_picker.show()
 }

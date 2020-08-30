@@ -371,14 +371,14 @@ Hue.update_user_menu = function () {
 }
 
 // Stops the reaction's box show timeout or hides it
-Hue.clear_show_reactions_box = function () {
-  clearTimeout(Hue.show_reactions_timeout)
-  Hue.hide_reactions_box()
+Hue.clear_show_chat_functions_box = function () {
+  clearTimeout(Hue.show_chat_functions_timeout)
+  Hue.hide_chat_functions_box()
 }
 
 // Shows the user menu
 Hue.show_user_menu = function () {
-  Hue.clear_show_reactions_box()
+  Hue.clear_show_chat_functions_box()
   Hue.msg_user_menu.show()
 }
 
