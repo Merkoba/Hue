@@ -824,11 +824,11 @@ Hue.stop_show_profile_audio = function () {
 // Wrapper to show profile  by id
 Hue.show_profile_by_user_id = function (id) {
   let user = Hue.get_user_by_user_id(id)
-  Hue.show_profile(user.username)
+  Hue.show_profile(user.username, false, id)
 }
 
 // Shows a user's profile window
-Hue.show_profile = function (uname, prof_image) {
+Hue.show_profile = function (uname, prof_image, uid = false) {
   let pi
   let role = "Offline"
   let user_id = ""
@@ -849,15 +849,15 @@ Hue.show_profile = function (uname, prof_image) {
     }
 
     Hue.open_profile_user = user
+  } else {
+    if (uid) {
+      user_id = `ID: ${uid}`
+    }
   }
 
   Hue.open_profile_username = uname
 
-  if (
-    prof_image === "" ||
-    prof_image === undefined ||
-    prof_image === "undefined"
-  ) {
+  if (!prof_image) {
     if (user && user.profile_image) {
       pi = user.profile_image
     } else {

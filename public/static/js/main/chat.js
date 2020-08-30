@@ -807,16 +807,20 @@ Hue.generate_vseparator = function (message = "", classes = "") {
 // Starts chat mouse events
 Hue.start_chat_mouse_events = function () {
   $(".chat_area").on("click", ".chat_uname", function () {
+    let m = $(this).closest(".message")
     Hue.show_profile(
-      $(this).closest(".message").data("uname"),
-      $(this).data("prof_image")
+      m.data("uname"),
+      $(this).data("prof_image"),
+      m.data("user_id")
     )
   })
 
   $(".chat_area").on("click", ".chat_profile_image", function () {
+    let m = $(this).closest(".message")
     Hue.show_profile(
-      $(this).closest(".message").data("uname"),
-      $(this).attr("src")
+      m.data("uname"),
+      $(this).attr("src"),
+      m.data("user_id")
     )
   })
 
