@@ -2837,6 +2837,10 @@ pre {
 	width: 100%;
 }
 
+.message_board_username {
+	margin-bottom: 0.5rem;
+}
+
 .message_board_text {
 	white-space: pre-wrap;
 	background-color: var(--color_4_a);

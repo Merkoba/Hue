@@ -66,6 +66,7 @@ module.exports = function (
   handler.push_message_board_post = function (socket, message) {
     let room = vars.rooms[socket.hue_room_id]
     let item = {
+      username: socket.hue_username,
       message: message,
       date: Date.now(),
       id: handler.generate_message_board_post_id(),
