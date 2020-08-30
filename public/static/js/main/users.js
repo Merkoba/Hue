@@ -828,7 +828,7 @@ Hue.show_profile_by_user_id = function (id) {
 }
 
 // Shows a user's profile window
-Hue.show_profile = function (uname, prof_image, uid = false) {
+Hue.show_profile = function (uname, prof_image = false, uid = false) {
   let pi
   let role = "Offline"
   let user_id = ""
@@ -857,14 +857,14 @@ Hue.show_profile = function (uname, prof_image, uid = false) {
 
   Hue.open_profile_username = uname
 
-  if (!prof_image) {
+  if (prof_image) {
+    pi = prof_image
+  } else {
     if (user && user.profile_image) {
       pi = user.profile_image
     } else {
       pi = Hue.config.default_profile_image_url
     }
-  } else {
-    pi = prof_image
   }
 
   $("#show_profile_uname").text(uname)
