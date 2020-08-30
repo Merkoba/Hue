@@ -687,13 +687,7 @@ Hue.show_media_source = function (what) {
   let current = Hue[`current_${what}`]()
   let setter = current.setter
   let date = current.nice_date
-  let s
-
-  if (what === "image") {
-    s = "Image"
-  } else if (what === "tv") {
-    s = "TV"
-  }
+  let s = Hue.media_string(what)
 
   if (setter !== "") {
     Hue.feedback(`${s} Source: ${source}`, {
@@ -1272,4 +1266,15 @@ Hue.start_media_info = function () {
   $(".media_main_container").on("click", ".media_react_button", function () {
     Hue.show_reaction_picker($(this).data("type"))
   })
+}
+
+// Get proper media string
+Hue.media_string = function (what) {
+  if (what === "chat") {
+    return "Chat"
+  } else if (what === "image") {
+    return "Image"
+  } else if (what === "tv") {
+    return "TV"
+  }
 }

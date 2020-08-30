@@ -116,5 +116,6 @@ Hue.show_reaction = function (data, date = false) {
 // Show the reaction picker
 Hue.show_reaction_picker = function (target) {
   Hue.reaction_target = target
+  Hue.msg_reaction_picker.set_title(`React to ${Hue.media_string(target)}`)
   Hue.msg_reaction_picker.show()
 }
