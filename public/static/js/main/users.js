@@ -831,17 +831,18 @@ Hue.show_profile_by_user_id = function (id) {
 Hue.show_profile = function (uname, prof_image) {
   let pi
   let role = "Offline"
+  let user_id = ""
   let bio = ""
   let hearts = 0
   let skulls = 0
   let user = Hue.get_user_by_username(uname)
-  let same_user = false
 
   if (user) {
     role = Hue.get_pretty_role_name(user.role)
     bio = user.bio
     hearts = user.hearts
     skulls = user.skulls
+    user_id = `ID: ${user.user_id}`
 
     if (user.username === Hue.username) {
       same_user = true
@@ -867,6 +868,7 @@ Hue.show_profile = function (uname, prof_image) {
   }
 
   $("#show_profile_uname").text(uname)
+  $("#show_profile_uname").attr("title", user_id)
   $("#show_profile_role").text(`(${role})`)
   $("#show_profile_bio")
     .html(Hue.utilz.make_html_safe(bio).replace(/\n+/g, " <br> "))

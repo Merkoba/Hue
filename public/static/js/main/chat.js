@@ -223,6 +223,7 @@ Hue.update_chat = function (args = {}) {
   let huname = fmessage.find(".chat_uname").eq(0)
 
   huname.text(args.username)
+  huname.attr("title", `ID: ${args.user_id}`)
   huname.data("prof_image", pi)
 
   fmessage
