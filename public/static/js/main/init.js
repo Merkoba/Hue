@@ -154,7 +154,6 @@ Hue.open_profile_user = false
 Hue.show_profile_audio_clip_started = false
 Hue.send_badge_disabled = true
 Hue.info_popups = []
-Hue.message_board_posting_enabled = false
 Hue.connected = false
 Hue.connections = 0
 Hue.connecting = true

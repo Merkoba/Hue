@@ -224,6 +224,12 @@ Hue.check_message_board_permissions = function () {
   } else {
     $("#message_board_container").removeClass("message_board_container_admin")
   }
+
+  if (Hue.can_messageboard) {
+    $("#message_board_top").css("display", "block")
+  } else {
+    $("#message_board_top").css("display", "none")
+  }
 }
 
 // Remove a post from the message board window
