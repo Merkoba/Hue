@@ -1090,7 +1090,6 @@ Hue.set_role = function (rol, config = true) {
   
   if (config) {
     Hue.config_room_menu()
-    Hue.check_message_board_delay()
   }
 }
 

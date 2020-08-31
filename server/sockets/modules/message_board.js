@@ -26,40 +26,8 @@ module.exports = function (
       return false
     }
 
-    if (
-      !handler.check_op_permission(socket, "message_board_no_restriction") &&
-      !socket.hue_superuser
-    ) {
-      for (let item of socket.hue_message_board_dates) {
-        if (item.room_id === socket.hue_room_id) {
-          if (Date.now() - item.date < config.message_board_post_delay) {
-            return false
-          }
-
-          break
-        }
-      }
-    }
-
-    let message_board_dates = await db_manager.save_message_board_date(
-      socket.hue_user_id,
-      socket.hue_room_id
-    )
-    handler.modify_socket_properties(socket.hue_user_id, {
-      hue_message_board_dates: message_board_dates,
-    })
-
     let item = handler.push_message_board_post(socket, data.message)
     handler.room_emit(socket, "new_message_board_post", item)
-
-    for (let socc of handler.get_user_sockets_per_room(
-      socket.hue_room_id,
-      socket.hue_user_id
-    )) {
-      handler.user_emit(socc, "last_message_board_post_date_update", {
-        date: item.date,
-      })
-    }
   }
 
   // Pushes pushing room message board posts

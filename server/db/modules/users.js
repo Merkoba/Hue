@@ -707,60 +707,6 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
     })
   }
 
-  // Saves a message board post item
-  manager.save_message_board_date = function (user_id, room_id) {
-    return new Promise((resolve, reject) => {
-      manager
-        .get_user({ _id: user_id }, { message_board_dates: 1 })
-
-        .then((user) => {
-          let message_board_dates = user.message_board_dates
-
-          for (let i = 0; i < message_board_dates.length; i++) {
-            let item = message_board_dates[i]
-
-            if (item.room_id === room_id) {
-              message_board_dates.splice(i, 1)
-              break
-            }
-          }
-
-          let item = { room_id: room_id, date: Date.now() }
-
-          message_board_dates.unshift(item)
-
-          if (
-            message_board_dates.length > config.max_message_board_dates_items
-          ) {
-            message_board_dates = message_board_dates.slice(
-              0,
-              config.max_message_board_dates_items
-            )
-          }
-
-          manager
-            .update_user(user_id, { message_board_dates: message_board_dates })
-
-            .then((ans) => {
-              resolve(message_board_dates)
-              return
-            })
-
-            .catch((err) => {
-              reject(err)
-              logger.log_error(err)
-              return
-            })
-        })
-
-        .catch((err) => {
-          reject(err)
-          logger.log_error(err)
-          return
-        })
-    })
-  }
-
   // Checks fields types against the user schema types
   manager.validate_user = function (fields) {
     for (let key in fields) {

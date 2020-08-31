@@ -86,7 +86,6 @@ module.exports = function (
       bio: 1,
       hearts: 1,
       skulls: 1,
-      message_board_dates: 1,
       audio_clip: 1,
       audio_clip_version: 1,
     }
@@ -167,7 +166,6 @@ module.exports = function (
     socket.hue_bio = userinfo.bio
     socket.hue_hearts = userinfo.hearts
     socket.hue_skulls = userinfo.skulls
-    socket.hue_message_board_dates = userinfo.message_board_dates
     socket.hue_joining = true
 
     socket.join(socket.hue_room_id)
@@ -266,16 +264,6 @@ module.exports = function (
       handler.update_user_in_userlist(socket, true)
     }
 
-    let last_message_board_post_date =
-      Date.now() - config.message_board_post_delay
-
-    for (let item of socket.hue_message_board_dates) {
-      if (item.room_id === socket.hue_room_id) {
-        last_message_board_post_date = item.date
-        break
-      }
-    }
-
     socket.hue_joining = false
     socket.hue_joined = true
 
@@ -336,7 +324,6 @@ module.exports = function (
       bio: socket.hue_bio,
       superuser:socket.hue_superuser,
       reg_date: userinfo.registration_date,
-      last_message_board_post_date: last_message_board_post_date,
     }
 
     if (data.no_message_log) {

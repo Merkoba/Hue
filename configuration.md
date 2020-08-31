@@ -616,14 +616,8 @@ This should be an array of strings of root domains.
 "max_media_comment_length"
 >Maximum length of comments on media change.
 
-"max_message_board_dates_items"
->Limit on the user dates object that stores last message board dates per room
-
 "max_message_board_posts"
 >How big the message board is. How many posts it stores.
-
-"message_board_post_delay"
->How much a user must wait before posting again to the room's message board.
 
 "max_message_board_post_length"
 >How long message board posts can be.

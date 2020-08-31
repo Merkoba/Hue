@@ -99,7 +99,6 @@ module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
     bio: { type: "string", default: "" },
     hearts: { type: "number", default: 0 },
     skulls: { type: "number", default: 0 },
-    message_board_dates: { type: "object", default: [] },
     audio_clip: { type: "string", default: "" },
     audio_clip_version: { type: "number", default: 0 },
     modified: { type: "number", default: Date.now() },

@@ -76,7 +76,6 @@ Hue.announce_voice_permission_change = function (data) {
   Hue.check_media_permissions()
   Hue.config_admin_permission_checkboxes()
   Hue.check_message_board_permissions()
-  Hue.check_message_board_delay()
 }
 
 // Announces op permission changes
@@ -87,7 +86,6 @@ Hue.announce_op_permission_change = function (data) {
   Hue.show_room_notification(data.username, s)
   Hue.config_room_menu()
   Hue.check_message_board_permissions()
-  Hue.check_message_board_delay()
 }
 
 // Handle the voice permission command

@@ -111,8 +111,6 @@ Hue.init_message_board = function (data) {
     Hue.add_post_to_message_board(post)
   }
 
-  Hue.last_message_board_post_date = data.last_message_board_post_date
-  Hue.check_message_board_delay()
   Hue.check_last_message_board_post()
 }
 
@@ -163,39 +161,6 @@ Hue.on_message_board_received = function (data) {
 
   if (!Hue.message_board_open) {
     Hue.show_popup(Hue.make_info_popup(func), item)
-  }
-}
-
-// Updates last message board post date
-Hue.last_message_board_post_date_update = function (data) {
-  Hue.last_message_board_post_date = data.date
-  Hue.check_message_board_delay()
-}
-
-// Checks the message board last post date
-// Changes the post icon accordingly
-Hue.check_message_board_delay = function () {
-  if (Hue.check_op_permission(Hue.role, "message_board_no_restriction")) {
-    $("#message_board_top").css("display", "block")
-    Hue.message_board_posting_enabled = true
-    return false
-  }
-
-  let date_diff = Date.now() - Hue.last_message_board_post_date
-
-  clearTimeout(Hue.message_board_post_delay_timeout)
-
-  if (!Hue.can_messageboard || date_diff < Hue.config.message_board_post_delay) {
-    $("#message_board_top").css("display", "none")
-
-    Hue.message_board_post_delay_timeout = setTimeout(function () {
-      Hue.check_message_board_delay()
-    }, date_diff + 1000)
-
-    Hue.message_board_posting_enabled = false
-  } else {
-    $("#message_board_top").css("display", "block")
-    Hue.message_board_posting_enabled = true
   }
 }
 
@@ -254,15 +219,6 @@ Hue.save_last_message_board_post_checked = function (date) {
 
 // Checks if the user can delete posts in the message board
 Hue.check_message_board_permissions = function () {
-  if (Hue.check_op_permission(Hue.role, "message_board_no_restriction")) {
-    $("#message_board_post_textarea").attr("placeholder", "Write Something")
-  } else {
-    let minutes = Math.round(Hue.config.message_board_post_delay / 60 / 1000)
-    let mins = minutes === 1 ? "minute" : "minutes"
-    let placeholder = `You can post once every ${minutes} ${mins}`
-    $("#message_board_post_textarea").attr("placeholder", placeholder)
-  }
-
   if (Hue.check_op_permission(Hue.role, "message_board_delete")) {
     $("#message_board_container").addClass("message_board_container_admin")
   } else {

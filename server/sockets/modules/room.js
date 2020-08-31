@@ -325,12 +325,10 @@ module.exports = function (
       "delete_messages",
       "media",
       "name",
-      "message_board_no_restriction",
       "message_board_delete",
     ]
 
     let op_properties_false = [
-      "message_board_no_restriction",
       "message_board_delete",
     ]
 
