@@ -259,9 +259,6 @@ Hue.update_chat = function (args = {}) {
   fmessage.data("mode", "chat")
   fmessage.data("has_embed", has_embed)
 
-  let profile_image = fmessage.find(".chat_profile_image").eq(0)
-  profile_image.data("username", args.username)
-
   let chat_content_container = fmessage.find(".chat_content_container").eq(0)
   let chat_content = fmessage.find(".chat_content").eq(0)
   let edited_label = fmessage.find(".message_edited_label").eq(0)

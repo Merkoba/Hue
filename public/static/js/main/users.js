@@ -398,18 +398,12 @@ Hue.update_userlist = function (prop = "") {
 // Some configurations for the userlist window
 Hue.setup_userlist_window = function () {
   $("#userlist").on("click", ".userlist_item", function () {
-    let uname = $(this).data("username")
+    let username = $(this).find(".userlist_item_username").eq(0).text()
 
     if (Hue.userlist_mode === "normal") {
-      Hue.show_profile(uname)
+      Hue.show_profile(username)
     } else if (Hue.userlist_mode === "whisper") {
-      Hue.update_whisper_users(uname)
-    }
-  })
-
-  $("#userlist").on("auxclick", ".userlist_item", function (e) {
-    if (e.which === 2) {
-      Hue.process_write_whisper($(this).data("username"))
+      Hue.update_whisper_users(username)
     }
   })
 }
@@ -444,10 +438,8 @@ Hue.update_userlist_window = function () {
     h.attr("title", t)
     h.data("otitle", t)
     h.data("date", item.date_joined)
-    h.data("username", item.username)
 
     let image = h.find(".userlist_item_profile_image").eq(0)
-    image.data("username", item.username)
 
     image.on("error", function (e) {
       if ($(this).attr("src") !== Hue.config.default_profile_image_url) {
@@ -875,7 +867,6 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
     .urlize()
 
   $("#show_profile_image").attr("src", pi)
-  $("#show_profile_image").data("username", username)
 
   if (user) {
     let t = Hue.get_user_info_title(user)
