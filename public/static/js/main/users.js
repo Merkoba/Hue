@@ -1036,28 +1036,28 @@ Hue.announce_removed_ops = function (data) {
 }
 
 // Changes a user's role
-Hue.change_role = function (uname, rol) {
+Hue.change_role = function (username, role) {
   if (!Hue.check_op_permission(Hue.role, "voice_roles")) {
     return false
   }
 
-  if (uname.length > 0 && uname.length <= Hue.config.max_max_username_length) {
-    if (uname === Hue.username) {
+  if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
+    if (username === Hue.username) {
       Hue.feedback("You can't assign a role to yourself")
       return false
     }
 
-    if ((rol === "admin" || rol.startsWith("op")) && Hue.role !== "admin") {
+    if ((role === "admin" || role.startsWith("op")) && Hue.role !== "admin") {
       Hue.forbidden_user()
       return false
     }
 
-    if (!Hue.roles.includes(rol)) {
+    if (!Hue.roles.includes(role)) {
       Hue.feedback("Invalid role")
       return false
     }
 
-    Hue.socket_emit("change_role", { username: uname, role: rol })
+    Hue.socket_emit("change_role", { username: username, role: role })
   }
 }
 

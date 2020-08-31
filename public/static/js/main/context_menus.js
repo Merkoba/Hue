@@ -450,24 +450,11 @@ Hue.start_media_maxer_context_menu = function () {
   })
 }
 
-// Gets the username depending on source element to use in the username context menu
-Hue.get_user_context_menu_username = function (el) {
-  let username
-
-  if ($(el).hasClass("profile_image")) {
-    username = $(el).data("username")
-  } else {
-    username = $(el).text()
-  }
-
-  return username
-}
-
 // Starts the context menu on user elements
 Hue.start_user_context_menu = function () {
   $.contextMenu({
     selector:
-      ".userlist_item_username, .chat_uname, #show_profile_uname, .generic_uname, .admin_list_username, .activity_bar_text, .profile_image, .media_info_username",
+      ".chat_uname, #show_profile_uname, .generic_uname",
     animation: { duration: 250, hide: "fadeOut" },
     zIndex: 9000000000,
     events: Hue.context_menu_events,
@@ -475,11 +462,11 @@ Hue.start_user_context_menu = function () {
       cmwhisper: {
         name: "Whisper",
         callback: function (key, opt) {
-          let username = Hue.get_user_context_menu_username(this)
+          let username = this.text()
           Hue.process_write_whisper(username)
         },
         visible: function (key, opt) {
-          let username = Hue.get_user_context_menu_username(this)
+          let username = this.text()
           return Hue.user_is_online_by_username(username)
         },
       },
@@ -489,20 +476,20 @@ Hue.start_user_context_menu = function () {
           bheart: {
             name: "Heart",
             callback: function (key, opt) {
-              let username = Hue.get_user_context_menu_username(this)
+              let username = this.text()
               Hue.send_badge(username, "heart")
             },
           },
           bskull: {
             name: "Skull",
             callback: function (key, opt) {
-              let username = Hue.get_user_context_menu_username(this)
+              let username = this.text()
               Hue.send_badge(username, "skull")
             },
           },
         },
         visible: function (key, opt) {
-          let username = Hue.get_user_context_menu_username(this)
+          let username = this.text()
           return (
             username !== Hue.username &&
             Hue.user_is_online_by_username(username)
@@ -512,7 +499,7 @@ Hue.start_user_context_menu = function () {
       cmvoice1: {
         name: "Voice 1",
         callback: function (key, opt) {
-          let arg = Hue.get_user_context_menu_username(this)
+          let arg = this.text()
           Hue.change_role(arg, "voice_1")
         },
         visible: function (key, opt) {
@@ -526,7 +513,7 @@ Hue.start_user_context_menu = function () {
       cmvoice2: {
         name: "Voice 2",
         callback: function (key, opt) {
-          let arg = Hue.get_user_context_menu_username(this)
+          let arg = this.text()
           Hue.change_role(arg, "voice_2")
         },
         visible: function (key, opt) {
@@ -540,7 +527,7 @@ Hue.start_user_context_menu = function () {
       cmvoice3: {
         name: "Voice 3",
         callback: function (key, opt) {
-          let arg = Hue.get_user_context_menu_username(this)
+          let arg = this.text()
           Hue.change_role(arg, "voice_3")
         },
         visible: function (key, opt) {
@@ -554,7 +541,7 @@ Hue.start_user_context_menu = function () {
       cmvoice4: {
         name: "Voice 4",
         callback: function (key, opt) {
-          let arg = Hue.get_user_context_menu_username(this)
+          let arg = this.text()
           Hue.change_role(arg, "voice_4")
         },
         visible: function (key, opt) {
@@ -574,7 +561,7 @@ Hue.start_user_context_menu = function () {
           opsure: {
             name: "I'm Sure",
             callback: function (key, opt) {
-              let arg = Hue.get_user_context_menu_username(this)
+              let arg = this.text()
               Hue.change_role(arg, "op_1")
             },
           },
@@ -589,7 +576,7 @@ Hue.start_user_context_menu = function () {
           opsure: {
             name: "I'm Sure",
             callback: function (key, opt) {
-              let arg = Hue.get_user_context_menu_username(this)
+              let arg = this.text()
               Hue.change_role(arg, "op_2")
             },
           },
@@ -604,7 +591,7 @@ Hue.start_user_context_menu = function () {
           opsure: {
             name: "I'm Sure",
             callback: function (key, opt) {
-              let arg = Hue.get_user_context_menu_username(this)
+              let arg = this.text()
               Hue.change_role(arg, "op_3")
             },
           },
@@ -619,7 +606,7 @@ Hue.start_user_context_menu = function () {
           opsure: {
             name: "I'm Sure",
             callback: function (key, opt) {
-              let arg = Hue.get_user_context_menu_username(this)
+              let arg = this.text()
               Hue.change_role(arg, "op_4")
             },
           },
@@ -638,7 +625,7 @@ Hue.start_user_context_menu = function () {
           adminsure: {
             name: "I'm Sure",
             callback: function (key, opt) {
-              let arg = Hue.get_user_context_menu_username(this)
+              let arg = this.text()
               Hue.change_role(arg, "admin")
             },
           },
@@ -650,7 +637,7 @@ Hue.start_user_context_menu = function () {
           if (!Hue.check_op_permission(Hue.role, "kick")) {
             return false
           } else {
-            let username = Hue.get_user_context_menu_username(this)
+            let username = this.text()
             return Hue.user_is_online_by_username(username)
           }
         },
@@ -658,7 +645,7 @@ Hue.start_user_context_menu = function () {
           kicksure: {
             name: "I'm Sure",
             callback: function (key, opt) {
-              let arg = Hue.get_user_context_menu_username(this)
+              let arg = this.text()
               Hue.kick(arg)
             },
           },
@@ -677,7 +664,7 @@ Hue.start_user_context_menu = function () {
           bansure: {
             name: "I'm Sure",
             callback: function (key, opt) {
-              let arg = Hue.get_user_context_menu_username(this)
+              let arg = this.text()
               Hue.ban(arg)
             },
           },
