@@ -9,7 +9,7 @@ Hue.show_help = function () {
 }
 
 // Copies a string to the clipboard
-Hue.copy_string = function (s, sound = true) {
+Hue.copy_string = function (s) {
   let textareaEl = document.createElement("textarea")
 
   document.body.appendChild(textareaEl)
@@ -19,10 +19,6 @@ Hue.copy_string = function (s, sound = true) {
 
   document.execCommand("copy")
   document.body.removeChild(textareaEl)
-
-  if (sound) {
-    Hue.play_audio("pup2")
-  }
 }
 
 // Feedback that an error occurred

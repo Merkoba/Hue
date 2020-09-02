@@ -814,7 +814,7 @@ Hue.change = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
-  if (Hue.screen_locked) {
+  if (!Hue.app_focused || Hue.screen_locked) {
     return
   }
 

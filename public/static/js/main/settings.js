@@ -2,58 +2,6 @@
 // Used to generate global and room settings
 // And to declare what widget is used in the settings windows
 Hue.user_settings = {
-  beep_on_messages: {
-    widget_type: "checkbox",
-    description: `Make a sound on new messages when the client is not visible`,
-    action: (type, save = true) => {
-      Hue[type].beep_on_messages = $(`#${type}_beep_on_messages`).prop(
-        "checked"
-      )
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  beep_on_highlights: {
-    widget_type: "checkbox",
-    description: `Make a sound on new highlights when the client is not visible`,
-    action: (type, save = true) => {
-      Hue[type].beep_on_highlights = $(`#${type}_beep_on_highlights`).prop(
-        "checked"
-      )
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  beep_on_media_change: {
-    widget_type: "checkbox",
-    description: `Make a sound on new media change announcements when the client is not visible`,
-    action: (type, save = true) => {
-      Hue[type].beep_on_media_change = $(`#${type}_beep_on_media_change`).prop(
-        "checked"
-      )
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  beep_on_user_joins: {
-    widget_type: "checkbox",
-    description: `Make a sound when users join when the client is not visible`,
-    action: (type, save = true) => {
-      Hue[type].beep_on_user_joins = $(`#${type}_beep_on_user_joins`).prop(
-        "checked"
-      )
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   highlight_current_username: {
     widget_type: "checkbox",
     description: `Whether messages containing the user's username must be highlighted`,

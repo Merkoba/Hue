@@ -83,6 +83,8 @@ Hue.process_visibility = function () {
 
 // This runs when the client regains visibility
 Hue.on_app_focused = function () {
+  Hue.change({type: "image", force: false, play: false})
+  Hue.change({type: "tv", force: false, play: false})
   Hue.remove_alert_title()
   Hue.show_info_popups()
   Hue.show_fresh_messages()
