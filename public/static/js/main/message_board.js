@@ -246,6 +246,8 @@ Hue.remove_message_board_post = function (data) {
   if ($(".message_board_item").length === 0) {
     $("#message_board_container").text("No Posts Yet")
   }
+
+  Hue.check_last_message_board_post()
 }
 
 // Gets the last message board checked local storage
