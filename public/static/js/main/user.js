@@ -331,12 +331,8 @@ Hue.setup_user_menu = function () {
     Hue.show_input_history()
   })
 
-  $("#user_menu_global_settings").click(function () {
+  $("#user_menu_settings").click(function () {
     Hue.show_global_settings()
-  })
-
-  $("#user_menu_rooom_settings").click(function () {
-    Hue.show_room_settings()
   })
 
   $("#user_menu_change_username").click(function () {

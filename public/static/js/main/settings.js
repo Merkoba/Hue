@@ -1376,8 +1376,6 @@ Hue.settings_window_switch = function (from) {
 // Checks for room settings overrides to show or not indicators of change,
 // in each category and in the user menu
 Hue.check_room_settings_override = function () {
-  let override = false
-
   $("#settings_window_left_room_settings .settings_window_category").each(
     function () {
       $(this).find(".settings_window_category_status").eq(0).html("")
@@ -1415,13 +1413,6 @@ Hue.check_room_settings_override = function () {
         }
       }
     }
-  }
-
-  if (override) {
-    $("#user_menu_room_settings_status").html("&nbsp;*")
-    $("#user_menu_room_settings_status_filler").html("&nbsp;*")
-  } else {
-    $("#user_menu_room_settings_status").html("")
   }
 }
 
