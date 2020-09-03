@@ -157,22 +157,6 @@ Hue.clear_room = function () {
   Hue.change({ type: "tv" })
 }
 
-// Copies the room url to the clipboard
-Hue.copy_room_url = function () {
-  let r
-
-  if (Hue.room_id === Hue.config.main_room_id) {
-    r = ""
-  } else {
-    r = "/" + Hue.room_id
-  }
-
-  let url = window.location.origin + r
-
-  Hue.copy_string(url)
-  Hue.msg_info.show("Copied.")
-}
-
 // Announces room name changes
 Hue.announce_room_name_change = function (data) {
   if (data.name !== Hue.room_name) {

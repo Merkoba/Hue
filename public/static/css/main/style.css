@@ -1456,12 +1456,9 @@ select {
 	margin-bottom: 1rem;
 }
 
-#user_menu_settings_container {
+#user_menu_button_container {
 	margin-top: 1rem;
-}
-
-#user_menu_global_settings {
-	margin-bottom: 0.8rem;
+	grid-gap: 1rem;
 }
 
 #user_menu_toggler_main {

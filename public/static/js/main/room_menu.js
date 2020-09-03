@@ -219,10 +219,6 @@ Hue.setup_room_menu = function () {
     Hue.show_room_status()
   })
 
-  $("#room_menu_copy_url").click(function () {
-    Hue.copy_room_url()
-  })
-
   $("#room_menu_links").click(function () {
     Hue.show_links(1)
   })
