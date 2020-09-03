@@ -2000,11 +2000,6 @@ svg.action:hover {
 	justify-content: center;
 }
 
-#admin_menu {
-	margin-top: 1rem;
-	margin-bottom: 0.5rem;
-}
-
 #admin_menu .toggler_main_container:last-child .room_menu_toggle_container {
 	margin-bottom: 0;
 }
