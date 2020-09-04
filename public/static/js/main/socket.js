@@ -430,6 +430,8 @@ Hue.on_disconnect = function () {
   } else {
     Hue.show_reload_button()
   }
+
+  Hue.generate_favicon(-1)
 }
 
 // Disconnects the user's socket

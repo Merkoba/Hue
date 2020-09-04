@@ -61,8 +61,10 @@ Hue.show_console_message = function () {
 // Dynamically generate a favicon
 Hue.generate_favicon = function (mode) {
   let color
-
-  if (mode < 2) {
+  
+  if (mode === -1) {
+    color = "#808080"
+  } else if (mode === 0 || mode === 1) {
     color = "#C06DCF"
   } else if (mode === 2) {
     color = "#DD4A66"
@@ -79,7 +81,7 @@ Hue.generate_favicon = function (mode) {
   let center = canvas.height / 2
   let side, side2
 
-  if (mode === 0) {
+  if (mode === -1 || mode === 0) {
     side = 112
     side2 = 114
   } else {
