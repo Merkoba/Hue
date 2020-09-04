@@ -85,7 +85,7 @@ Hue.setup_markdown_regexes = function () {
     let n = g3.length
 
     if (n === 1) {
-      return `${g2}<span class='generic_uname'>${g4}</span>${g5}`
+      return `${g2}<span class='generic_uname action'>${g4}</span>${g5}`
     }
 
     return g1
