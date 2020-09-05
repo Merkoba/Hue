@@ -459,43 +459,6 @@ Hue.start_user_context_menu = function () {
     zIndex: 9000000000,
     events: Hue.context_menu_events,
     items: {
-      cmwhisper: {
-        name: "Whisper",
-        callback: function (key, opt) {
-          let username = this.text()
-          Hue.process_write_whisper(username)
-        },
-        visible: function (key, opt) {
-          let username = this.text()
-          return Hue.user_is_online_by_username(username)
-        },
-      },
-      cmbadge: {
-        name: "Badge",
-        items: {
-          bheart: {
-            name: "Heart",
-            callback: function (key, opt) {
-              let username = this.text()
-              Hue.send_badge(username, "heart")
-            },
-          },
-          bskull: {
-            name: "Skull",
-            callback: function (key, opt) {
-              let username = this.text()
-              Hue.send_badge(username, "skull")
-            },
-          },
-        },
-        visible: function (key, opt) {
-          let username = this.text()
-          return (
-            username !== Hue.username &&
-            Hue.user_is_online_by_username(username)
-          )
-        },
-      },
       cmvoice1: {
         name: "Voice 1",
         callback: function (key, opt) {
