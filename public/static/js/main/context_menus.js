@@ -453,8 +453,8 @@ Hue.start_media_maxer_context_menu = function () {
 // Starts the context menu on user elements
 Hue.start_user_context_menu = function () {
   $.contextMenu({
-    selector:
-      ".chat_uname, #show_profile_uname, .generic_uname",
+    selector: "#show_profile_uname",
+    trigger: "left",
     animation: { duration: 250, hide: "fadeOut" },
     zIndex: 9000000000,
     events: Hue.context_menu_events,
@@ -509,6 +509,15 @@ Hue.start_user_context_menu = function () {
             return true
           }
         },
+        items: {
+          opsure: {
+            name: "I'm Sure",
+            callback: function (key, opt) {
+              let arg = this.text()
+              Hue.change_role(arg, "voice_1")
+            },
+          },
+        },
       },
       cmvoice2: {
         name: "Voice 2",
@@ -522,6 +531,15 @@ Hue.start_user_context_menu = function () {
           } else {
             return true
           }
+        },
+        items: {
+          opsure: {
+            name: "I'm Sure",
+            callback: function (key, opt) {
+              let arg = this.text()
+              Hue.change_role(arg, "voice_2")
+            },
+          },
         },
       },
       cmvoice3: {
@@ -537,6 +555,15 @@ Hue.start_user_context_menu = function () {
             return true
           }
         },
+        items: {
+          opsure: {
+            name: "I'm Sure",
+            callback: function (key, opt) {
+              let arg = this.text()
+              Hue.change_role(arg, "voice_3")
+            },
+          },
+        },
       },
       cmvoice4: {
         name: "Voice 4",
@@ -550,6 +577,15 @@ Hue.start_user_context_menu = function () {
           } else {
             return true
           }
+        },
+        items: {
+          opsure: {
+            name: "I'm Sure",
+            callback: function (key, opt) {
+              let arg = this.text()
+              Hue.change_role(arg, "voice_4")
+            },
+          },
         },
       },
       cmop1: {

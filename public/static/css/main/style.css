@@ -621,7 +621,6 @@ a.generic:hover {
 
 #menu_smaller_container {
 	padding-top: 0.8em;
-	padding-bottom: 1rem;
 }
 
 .nice_input {
@@ -1998,6 +1997,10 @@ svg.action:hover {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+}
+
+#admin_menu {
+	margin-top: 0.8rem;
 }
 
 #admin_menu .toggler_main_container:last-child .room_menu_toggle_container {
