@@ -810,6 +810,7 @@ Hue.change = function (args = {}) {
     notify: true,
     current_source: false,
     item: false,
+    bypass_lock: false
   }
 
   args = Object.assign(def_args, args)
@@ -847,9 +848,11 @@ Hue.change = function (args = {}) {
       return false
     }
 
+    let locked = Hue.image_locked && !args.bypass_lock
+
     if (
       !args.item &&
-      Hue.image_locked &&
+      locked &&
       Hue.loaded_image.source &&
       !args.current_source
     ) {
@@ -878,8 +881,9 @@ Hue.change = function (args = {}) {
       return false
     }
 
-    if (!args.item && Hue.tv_locked && Hue.loaded_tv.source
-    && !args.current_source) {
+    let locked = Hue.tv_locked && !args.bypass_lock
+
+    if (!args.item && locked && Hue.loaded_tv.source && !args.current_source) {
       return false
     }
 

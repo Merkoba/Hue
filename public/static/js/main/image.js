@@ -88,7 +88,8 @@ Hue.setup_image = function (mode, odata = {}) {
       $("#footer_lock_image_icon").addClass("blinking")
     }
 
-    Hue.change({ type: "image" })
+    let bypass_lock = data.user_id === Hue.user_id
+    Hue.change({ type: "image", bypass_lock: bypass_lock })
   }
 }
 
