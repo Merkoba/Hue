@@ -555,32 +555,6 @@ Hue.user_settings = {
       }
     },
   },
-  bypass_image_lock_on_own_change: {
-    widget_type: "checkbox",
-    description: `Whether an enabled image lock should be ignored if the change comes from the user itself`,
-    action: (type, save = true) => {
-      Hue[type].bypass_image_lock_on_own_change = $(
-        `#${type}_bypass_image_lock_on_own_change`
-      ).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  bypass_tv_lock_on_own_change: {
-    widget_type: "checkbox",
-    description: `Whether an enabled tv lock should be ignored if the change comes from the user itself`,
-    action: (type, save = true) => {
-      Hue[type].bypass_tv_lock_on_own_change = $(
-        `#${type}_bypass_tv_lock_on_own_change`
-      ).prop("checked")
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   autoreveal_spoilers: {
     widget_type: "checkbox",
     description: `Whether spoiler messages should be autorevealed`,

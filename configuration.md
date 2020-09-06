@@ -13,7 +13,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >The root url where the system will work. Needs a slash at the end.
 
 "main_room_id"
->The name of the main room. This is the room that will be joined when going to the root url. This room is created automatically when first joined. To get ownership of the room "/claim secretpass" is needed.
+>The name of the main room. This is the room that will be joined when going to the root url. This room is created automatically when first joined.
 
 "default_main_room_name"
 >The default name of the main room. Just like any room, this can be changed later.
@@ -70,7 +70,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >The title of the registration page.
 
 "default_topic"
->The shown topic when the room has been created or claimed and there is no topic yet.
+>The shown topic when the room is created.
 
 "default_topic_admin"
 >Default topic shown to admins.
@@ -187,7 +187,7 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 >When the public rooms list is requested, it will get cached so subsequent requests won't trigger a whole analysis again, to save processing power. This controls how long that cache will be valid until it's time to generate it again with the next request.
 
 "roomlist_max_inactivity"
->Rooms have a "modified" property updated after most operations inside the room. The public roomlist considers rooms that are a) Public b) Claimed and c) Current date - modified date is lower than this configuration.
+>Rooms have a "modified" property updated after most operations inside the room.
 
 "youtube_enabled"
 >Whether Youtube features are enabled.
@@ -434,12 +434,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "room_state_default_last_highlight_date"
 >Default date to check for new highlights to announce at startup.
-
-"bypass_images_lock_on_own_change"
->Whether images are forced to change even if they're locked, when you change them, by default.
-
-"bypass_tv_lock_on_own_change"
->Whether tv are forced to change even if they're locked, when you change it, by default.
 
 "double_tap_key"
 >The key that triggers double tap.

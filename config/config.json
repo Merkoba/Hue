@@ -133,8 +133,6 @@
 	"global_settings_default_show_image_previews": true,
 	"global_settings_default_show_link_previews": true,
 	"global_settings_default_accept_commands_from": "",
-	"global_settings_default_bypass_image_lock_on_own_change": true,
-	"global_settings_default_bypass_tv_lock_on_own_change": true,
 	"global_settings_default_autoscroll_amount": 20,
 	"global_settings_default_autoscroll_delay": 500,
 	"global_settings_default_show_input_placeholder": true,

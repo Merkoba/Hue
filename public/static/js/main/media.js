@@ -828,16 +828,6 @@ Hue.change = function (args = {}) {
     item = Hue[`current_${args.type}`]()
   }
 
-  let bypass_lock = false
-
-  if (Hue.started && item.setter === Hue.username) {
-    if (args.type === "image") {
-      bypass_lock = Hue.get_setting("bypass_image_lock_on_own_change")
-    } else if (args.type === "tv") {
-      bypass_lock = Hue.get_setting("bypass_tv_lock_on_own_change")
-    }
-  }
-
   if (args.type === "image") {
     if (!args.force && Hue.loaded_image.source === Hue.current_image().source) {
       Hue.loaded_image = item
@@ -857,11 +847,9 @@ Hue.change = function (args = {}) {
       return false
     }
 
-    let locked = Hue.image_locked && !bypass_lock
-
     if (
       !args.item &&
-      locked &&
+      Hue.image_locked &&
       Hue.loaded_image.source &&
       !args.current_source
     ) {
@@ -890,9 +878,8 @@ Hue.change = function (args = {}) {
       return false
     }
 
-    let locked = Hue.tv_locked && !bypass_lock
-
-    if (!args.item && locked && Hue.loaded_tv.source && !args.current_source) {
+    if (!args.item && Hue.tv_locked && Hue.loaded_tv.source
+    && !args.current_source) {
       return false
     }
 
