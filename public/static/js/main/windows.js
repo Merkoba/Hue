@@ -144,7 +144,7 @@ Hue.start_msg = function () {
       window_width: "22rem",
       after_close: function (instance) {
         common.after_close(instance)
-        $("#show_profile_uname").text("Loading")
+        $("#show_profile_username").text("Loading")
         $("#show_profile_image").attr(
           "src",
           Hue.config.profile_image_loading_url

@@ -859,8 +859,8 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
     }
   }
 
-  $("#show_profile_uname").text(username)
-  $("#show_profile_uname").attr("title", uid)
+  $("#show_profile_username").text(username)
+  $("#show_profile_username").attr("title", uid)
   $("#show_profile_role").text(`(${role})`)
   $("#show_profile_bio")
     .html(Hue.utilz.make_html_safe(bio).replace(/\n+/g, " <br> "))
@@ -914,6 +914,8 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   } else {
     $("#show_profile_buttons").css("display", "none")
   }
+
+  $("#show_profile_user").data("username", username)
   
   Hue.msg_profile.show()
 }
