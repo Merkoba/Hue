@@ -12,6 +12,11 @@
 	src: url(/static/css/fonts/OpenSans-Regular.ttf);
 }
 
+@font-face {
+	font-family: imported_font_mono;
+	src: url(/static/css/fonts/CutiveMono-Regular.ttf);
+}
+
 body,
 html {
 	width: 100%;
@@ -289,10 +294,9 @@ body * {
 	display: none;
 	position: absolute;
 	background-color: rgb(24, 24, 24);
-	border: 0.2rem solid rgb(75, 75, 75);
+	border: 0.15rem solid rgb(75, 75, 75);
 	padding: 0.5rem;
-	font-size: 1.1rem;
-	font-family: monospace;
+	font-family: imported_font_mono;
 	pointer-events: none;
 }
 
@@ -2852,11 +2856,13 @@ pre {
 
 .precode {
 	background-color: var(--color_4_a);
-	font-family: monospace;
-	font-size: 0.9rem;
 	padding: 0.5rem;
 	-moz-tab-size: var(--tab-size);
 	tab-size: var(--tab-size);
+}
+
+.precode code {
+	font-family: imported_font_mono;
 }
 
 .shady {
@@ -2883,13 +2889,8 @@ pre {
 
 .colortext {
 	padding: 0.1176rem;
-	font-family: monospace;
-	font-size: 0.9rem;
+	font-family: imported_font_mono;
 	background-color: #171515;
-}
-
-.colortext .generic_uname {
-	font-size: 0.9rem;
 }
 
 .greentext {
