@@ -2897,6 +2897,7 @@ pre {
 
 .colortext .generic_uname {
 	font-size: 0.9rem;
+	text-decoration: underline;
 }
 
 .greentext {
