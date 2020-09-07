@@ -2863,6 +2863,7 @@ pre {
 
 .precode code {
 	font-family: imported_font_mono;
+	font-size: 0.9rem;
 }
 
 .shady {
@@ -2891,6 +2892,7 @@ pre {
 	padding: 0.1176rem;
 	font-family: imported_font_mono;
 	background-color: #171515;
+	font-size: 0.9rem;
 }
 
 .greentext {
