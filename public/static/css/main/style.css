@@ -2895,6 +2895,10 @@ pre {
 	font-size: 0.9rem;
 }
 
+.colortext .generic_uname {
+	font-size: 0.9rem;
+}
+
 .greentext {
 	color: #99cf99;
 }
