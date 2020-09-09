@@ -20,6 +20,10 @@ Hue.get_room_state = function () {
     "tv_volume",
     "chat_searches",
     "last_highlight_date",
+    "chat_display_percentage",
+    "tv_display_percentage",
+    "tv_display_position",
+    "media_layout"
   ]
 
   for (let setting of settings) {

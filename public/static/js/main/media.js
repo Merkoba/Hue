@@ -18,8 +18,8 @@ Hue.after_push_media_change = function (type, data) {
 
 // Applies percentages changes to the chat and media elements based on current state
 Hue.apply_media_percentages = function () {
-  let mode = Hue.get_setting("media_layout")
-  let p1 = Hue.get_setting("tv_display_percentage")
+  let mode = Hue.room_state.media_layout
+  let p1 = Hue.room_state.tv_display_percentage
   let p2 = 100 - p1
 
   if (mode === "column") {
@@ -34,7 +34,7 @@ Hue.apply_media_percentages = function () {
     $("#media_image").css("height", "100%")
   }
 
-  let c1 = Hue.get_setting("chat_display_percentage")
+  let c1 = Hue.room_state.chat_display_percentage
   let c2 = 100 - c1
 
   $("#chat_main").css("width", `${c1}%`)
@@ -45,7 +45,7 @@ Hue.apply_media_percentages = function () {
 
 // Applies the image and tv positions based on current state
 Hue.apply_media_positions = function () {
-  let p = Hue.get_setting("tv_display_position")
+  let p = Hue.room_state.tv_display_position
   let tvp
   let ip
 
@@ -62,35 +62,10 @@ Hue.apply_media_positions = function () {
 }
 
 Hue.swap_display_positions = function () {
-  let type = Hue.active_settings("tv_display_position")
-  Hue[type].tv_display_position =
-    Hue[type].tv_display_position === "top" ? "bottom" : "top"
-  Hue[`save_${type}`]()
+  Hue.room_state.tv_display_position =
+    Hue.room_state.tv_display_position === "top" ? "bottom" : "top"
+  Hue.save_room_state()
   Hue.apply_media_positions()
-}
-
-// Overrides the tv display position global setting automatically
-// Toggles display positions of image and tv
-Hue.swap_display_positions_2 = function () {
-  Hue.enable_setting_override("tv_display_position")
-  Hue.swap_display_positions()
-}
-
-// Applies the positions of image and tv
-Hue.arrange_media_setting_display_positions = function (type) {
-  let p = Hue[type].tv_display_position
-  let tvo, imo
-
-  if (p === "top") {
-    tvo = 1
-    imo = 2
-  } else if (p === "bottom") {
-    tvo = 2
-    imo = 1
-  }
-
-  $(`#${type}_display_position_image`).css("order", imo)
-  $(`#${type}_display_position_tv`).css("order", tvo)
 }
 
 // If the media menu is open the loaded media section is updated
@@ -175,24 +150,24 @@ Hue.maxers_mouse_events = function () {
     if (direction === "up") {
       if (maximized) {
         if (Hue.tv_is_maximized()) {
-          let tv_pos = Hue.get_setting("tv_display_position")
+          let tv_pos = Hue.room_state.tv_display_position
 
           if (tv_pos === "top") {
             Hue.do_media_tv_size_change(90)
             Hue.unmaximize_media()
           } else {
-            Hue.swap_display_positions_2()
+            Hue.swap_display_positions()
             Hue.do_media_tv_size_change(90)
             Hue.unmaximize_media()
           }
         } else if (Hue.image_is_maximized()) {
-          let tv_pos = Hue.get_setting("tv_display_position")
+          let tv_pos = Hue.room_state.tv_display_position
 
           if (tv_pos === "bottom") {
             Hue.do_media_tv_size_change(10)
             Hue.unmaximize_media()
           } else {
-            Hue.swap_display_positions_2()
+            Hue.swap_display_positions()
             Hue.do_media_tv_size_change(10)
             Hue.unmaximize_media()
           }
@@ -209,24 +184,24 @@ Hue.maxers_mouse_events = function () {
     } else if (direction === "down") {
       if (maximized) {
         if (Hue.tv_is_maximized()) {
-          let tv_pos = Hue.get_setting("tv_display_position")
+          let tv_pos = Hue.room_state.tv_display_position
 
           if (tv_pos === "bottom") {
             Hue.do_media_tv_size_change(90)
             Hue.unmaximize_media()
           } else {
-            Hue.swap_display_positions_2()
+            Hue.swap_display_positions()
             Hue.do_media_tv_size_change(90)
             Hue.unmaximize_media()
           }
         } else if (Hue.image_is_maximized()) {
-          let tv_pos = Hue.get_setting("tv_display_position")
+          let tv_pos = Hue.room_state.tv_display_position
 
           if (tv_pos === "top") {
             Hue.do_media_tv_size_change(10)
             Hue.unmaximize_media()
           } else {
-            Hue.swap_display_positions_2()
+            Hue.swap_display_positions()
             Hue.do_media_tv_size_change(10)
             Hue.unmaximize_media()
           }
@@ -1170,7 +1145,7 @@ Hue.change_media_lock_icon = function (type) {
 // Changes the media layout between row and column
 Hue.change_media_layout = function (mode = false) {
   if (!mode) {
-    mode = Hue.get_setting("media_layout")
+    mode = Hue.room_state.media_layout
   }
 
   if (mode === "column") {
@@ -1189,16 +1164,9 @@ Hue.change_media_layout = function (mode = false) {
 
 // Switches between row and column media layout mode
 Hue.swap_media_layout = function () {
-  let type = Hue.active_settings("media_layout")
-  Hue[type].media_layout = Hue[type].media_layout === "row" ? "column" : "row"
-  Hue[`save_${type}`]()
+  Hue.room_state.media_layout = Hue.room_state.media_layout === "row" ? "column" : "row"
+  Hue.save_room_state()
   Hue.change_media_layout()
-}
-
-// Alternative function to swap media and overrides settings
-Hue.swap_media_layout_2 = function () {
-  Hue.enable_setting_override("media_layout")
-  Hue.swap_media_layout()
 }
 
 // Stop all media
@@ -1229,7 +1197,7 @@ Hue.swap_media = function () {
     return false
   }
   
-  Hue.swap_display_positions_2()
+  Hue.swap_display_positions()
 }
 
 // Rotates media
@@ -1238,7 +1206,7 @@ Hue.rotate_media = function () {
     return false
   }
 
-  Hue.swap_media_layout_2()
+  Hue.swap_media_layout()
 }
 
 // Get html for media info items

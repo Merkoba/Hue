@@ -321,15 +321,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_warn_before_closing"
 > Default setting of whether it should warn before closing the application/tab.
 
-"global_settings_default_chat_display_percentage"
->Default percentage of the width the chat area will have in new rooms.
-
-"global_settings_default_tv_display_percentage"
->Default percentage of the height the tv will have in the split media area in new rooms.
-
-"global_settings_default_tv_display_position"
->Default position the tv will have in the split media area in new rooms. (top or bottom)
-
 "global_settings_default_show_image_previews"
 >Whether image links get a preview on the chat area by default. This only works with certain links, including direct Imgur links.
 
@@ -384,9 +375,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_transparent_panels"
 >Whether panels get a slight transparency by default.
 
-"global_settings_default_media_layout"
->Default media area (image, tv) layout, either column or row.
-
 "global_settings_default_confirm_chat"
 >Where to show confirm on chat message by default
 
@@ -416,6 +404,18 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "room_state_default_last_highlight_date"
 >Default date to check for new highlights to announce at startup.
+
+"room_state_default_chat_display_percentage"
+>Default percentage of the width the chat area will have in new rooms.
+
+"room_state_default_tv_display_percentage"
+>Default percentage of the height the tv will have in the split media area in new rooms.
+
+"room_state_default_tv_display_position"
+>Default position the tv will have in the split media area in new rooms. (top or bottom)
+
+"room_state_default_media_layout"
+>Default media area (image, tv) layout, either column or row.
 
 "double_tap_key"
 >The key that triggers double tap.

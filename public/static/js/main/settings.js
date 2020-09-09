@@ -532,53 +532,6 @@ Hue.user_settings = {
       }
     },
   },
-  chat_display_percentage: {
-    widget_type: "range",
-    description: `What percentage width the chat area should have compared to the media area`,
-    action: (type, save = true) => {
-      let percentage = parseInt($(`#${type}_chat_display_percentage`).val())
-      Hue[type].chat_display_percentage = percentage
-
-      if (Hue.active_settings("chat_display_percentage") === type) {
-        Hue.apply_media_percentages()
-      }
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  tv_display_percentage: {
-    widget_type: "range",
-    description: `What percentage height the tv should have compared the image`,
-    action: (type, save = true) => {
-      let percentage = parseInt($(`#${type}_tv_display_percentage`).val())
-      Hue[type].tv_display_percentage = percentage
-
-      if (Hue.active_settings("tv_display_percentage") === type) {
-        Hue.apply_media_percentages()
-      }
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  tv_display_position: {
-    widget_type: "squaro",
-    description: `The positions of the image and tv in the media area`,
-    action: (type, save = true) => {
-      Hue.arrange_media_setting_display_positions(type)
-
-      if (Hue.active_settings("tv_display_position") === type) {
-        Hue.apply_media_positions()
-      }
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   theme_mode: {
     widget_type: "select",
     description: `It either uses the room's theme color or a custom theme color`,
@@ -777,21 +730,6 @@ Hue.user_settings = {
       }
     },
   },
-  media_layout: {
-    widget_type: "select",
-    description: `The media (image, tv) layout, either column or row`,
-    action: (type, save = true) => {
-      Hue[type].media_layout = $(`#${type}_media_layout option:selected`).val()
-
-      if (Hue.active_settings("media_layout") === type) {
-        Hue.change_media_layout()
-      }
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   confirm_chat: {
     widget_type: "checkbox",
     description: `Whether to show a confirmation dialog when sending a chat message`,
@@ -879,8 +817,6 @@ Hue.start_settings_widgets = function (type) {
   for (let setting in Hue.user_settings) {
     Hue.modify_setting_widget(type, setting)
   }
-
-  Hue.arrange_media_setting_display_positions(type)
 }
 
 // Updates a setting widget based on the setting state
@@ -904,14 +840,6 @@ Hue.modify_setting_widget = function (type, setting_name) {
         $(this).prop("selected", true)
       }
     })
-  } else if (widget_type === "squaro") {
-    let main = item.find(".squaro_main").eq(0)
-    let secondary = item.find(".squaro_secondary").eq(0)
-
-    if (main.css("order") != 1 && Hue[type][setting_name] === "top") {
-      main.css("order", 1)
-      secondary.css("order", 2)
-    }
   }
 }
 
@@ -938,11 +866,6 @@ Hue.start_settings_widgets_listeners = function (type) {
       item.change(() => setting.action(type))
     } else if (setting.widget_type === "range") {
       item.on("input change", function () {
-        setting.action(type)
-      })
-    } else if (setting.widget_type === "squaro") {
-      item.click(function () {
-        Hue[type][key] = Hue[type][key] === "top" ? "bottom" : "top"
         setting.action(type)
       })
     }
@@ -1192,54 +1115,6 @@ Hue.setup_setting_elements = function (type) {
 
   $(`#${type}_reset`).click(function () {
     Hue.confirm_reset_settings(type)
-  })
-
-  $(`#${type}_chat_percentage_decrease`).click(function () {
-    Hue.settings_chat_percentage_icon_click(type, "decrease")
-  })
-
-  $(`#${type}_chat_percentage_decrease`).on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.settings_chat_percentage_icon_middle_click(type, "min")
-    }
-  })
-
-  $(`#${type}_chat_percentage_increase`).click(function () {
-    Hue.settings_chat_percentage_icon_click(type, "increase")
-  })
-
-  $(`#${type}_chat_percentage_increase`).on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.settings_chat_percentage_icon_middle_click(type, "max")
-    }
-  })
-
-  $(`#${type}_chat_display_percentage`).dblclick(function () {
-    Hue.settings_chat_percentage_slider_double_click(type)
-  })
-
-  $(`#${type}_tv_percentage_decrease`).click(function () {
-    Hue.settings_tv_percentage_icon_click(type, "decrease")
-  })
-
-  $(`#${type}_tv_percentage_decrease`).on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.settings_tv_percentage_icon_middle_click(type, "min")
-    }
-  })
-
-  $(`#${type}_tv_percentage_increase`).click(function () {
-    Hue.settings_tv_percentage_icon_click(type, "increase")
-  })
-
-  $(`#${type}_tv_percentage_increase`).on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.settings_tv_percentage_icon_middle_click(type, "max")
-    }
-  })
-
-  $(`#${type}_tv_display_percentage`).dblclick(function () {
-    Hue.settings_tv_percentage_slider_double_click(type)
   })
 
   $(`#${type}_switch`).click(function () {
@@ -1717,66 +1592,4 @@ Hue.check_hideable_settings = function () {
       Hue.hide_setting("room_settings", "background_tile_dimensions")
     }
   }
-}
-
-// Handles clicking the icons in chat percentage settings
-Hue.settings_chat_percentage_icon_click = function (type, mode) {
-  if (type !== Hue.active_settings("chat_display_percentage")) {
-    return false
-  }
-
-  if (mode === "increase") {
-    Hue.increase_chat_percentage(false)
-  } else if (mode === "decrease") {
-    Hue.decrease_chat_percentage(false)
-  }
-}
-
-// Handles middle clicking the icons in chat percentage settings
-Hue.settings_chat_percentage_icon_middle_click = function (type, mode) {
-  if (type !== Hue.active_settings("chat_display_percentage")) {
-    return false
-  }
-
-  Hue.do_chat_size_change(mode)
-}
-
-// Handles double clicking the chat percentage slider
-Hue.settings_chat_percentage_slider_double_click = function (type) {
-  if (type !== Hue.active_settings("chat_display_percentage")) {
-    return false
-  }
-
-  Hue.set_default_chat_size()
-}
-
-// Handles clicking the icons in tv percentage settings
-Hue.settings_tv_percentage_icon_click = function (type, mode) {
-  if (type !== Hue.active_settings("tv_display_percentage")) {
-    return false
-  }
-
-  if (mode === "increase") {
-    Hue.increase_tv_percentage(false)
-  } else if (mode === "decrease") {
-    Hue.decrease_tv_percentage(false)
-  }
-}
-
-// Handles middle clicking the icons in tv percentage settings
-Hue.settings_tv_percentage_icon_middle_click = function (type, mode) {
-  if (type !== Hue.active_settings("tv_display_percentage")) {
-    return false
-  }
-
-  Hue.do_media_tv_size_change(mode)
-}
-
-// Handles double clicking the tv percentage slider
-Hue.settings_tv_percentage_slider_double_click = function (type) {
-  if (type !== Hue.active_settings("tv_display_percentage")) {
-    return false
-  }
-
-  Hue.set_default_tv_size()
 }

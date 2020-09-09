@@ -29,12 +29,6 @@
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_media_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_media_{{type}}' data-category='media'>
-                    <span class='settings_window_category_status_filler invisible'></span>
-                    <span class='settings_window_category_text'>Media</span>
-                    <span class='settings_window_category_status'></span>
-                </div>
-
                 <div id='settings_window_category_lists_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_lists_{{type}}' data-category='lists'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Lists</span>
@@ -210,63 +204,6 @@
                 </div>
             </div>
 
-            <div class='settings_category settings_window_category_container' id='settings_window_category_content_media_{{type}}' data-category='media'>
-                <div class='settings_item settings_top_level_item' data-setting='media_info'>
-                    <div class="setting_title">Media Info</div>
-                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_media_info">
-                        <option value='room'>Use Room Setting</option>
-                        <option value='custom_enabled'>Custom Enabled</option>
-                        <option value='custom_disabled'>Custom Disabled</option>
-                    </select>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='media_layout'>
-                    <div class="setting_title">Media Layout</div>
-                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_media_layout">
-                        <option value='column'>Column</option>
-                        <option value='row'>Row</option>
-                    </select>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='chat_display_percentage'>
-                    <div class="setting_title">Chat/Media Percentages</div>
-                    <div class='slider_container'>
-                        <div id='{{type}}_chat_percentage_decrease' class='slider_icon_left pointer action'>
-                            <svg class='other_icon'><use href='#icon_pencil'</svg>
-                        </div>
-                        <input type='range' id='{{type}}_chat_display_percentage' min="10" max="90" step="10">
-                        <div id='{{type}}_chat_percentage_increase' class='slider_icon_right pointer action'>
-                            <svg class='other_icon'><use href='#icon_image'</svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='tv_display_percentage'>
-                    <div class="setting_title">Image/TV Percentages</div>
-                    <div class='slider_container'>
-                        <div id='{{type}}_tv_percentage_decrease' class='slider_icon_left pointer action'>
-                            <svg class='other_icon'><use href='#icon_image'</svg>
-                        </div>
-                        <input type='range' id='{{type}}_tv_display_percentage' min="10" max="90" step="10">
-                        <div id='{{type}}_tv_percentage_increase' class='slider_icon_right pointer action'>
-                            <svg class='other_icon'><use href='#icon_tv'</svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='tv_display_position'>
-                    <div class="setting_title">Media Positions</div>
-                    <div id='{{type}}_tv_display_position' class='squaro_container pointer action2'>
-                        <div class='squaro squaro_secondary' id='{{type}}_display_position_image'>
-                            <svg class='other_icon'><use href='#icon_image'</svg>
-                        </div>
-                        <div class='squaro squaro_main' id='{{type}}_display_position_tv'>
-                            <svg class='other_icon'><use href='#icon_tv'</svg>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class='settings_category settings_window_category_container' id='settings_window_category_content_confirms_{{type}}' data-category='confirms'>
                 <div class='settings_item settings_top_level_item' data-setting='confirm_chat'>
                     <div class="setting_title">Confirm Chat</div>
@@ -399,6 +336,15 @@
                     <div class="setting_title2">Popup Notifications</div>
                     <div class="setting_title">Close Delay</div>
                     <input type="number" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_popup_notifications_close_delay">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='media_info'>
+                    <div class="setting_title">Media Info</div>
+                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_media_info">
+                        <option value='room'>Use Room Setting</option>
+                        <option value='custom_enabled'>Custom Enabled</option>
+                        <option value='custom_disabled'>Custom Disabled</option>
+                    </select>
                 </div>
             </div>
         </div>

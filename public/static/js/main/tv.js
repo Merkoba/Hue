@@ -735,9 +735,9 @@ Hue.do_media_tv_size_change = function (size, notify = true) {
     return false
   }
 
-  if (size !== Hue.get_setting("tv_display_percentage")) {
-    Hue.modify_setting(`tv_display_percentage ${size}`, false)
-  }
+  Hue.room_state.tv_display_percentage = size
+  Hue.save_room_state()
+  Hue.apply_media_percentages()
 
   if (notify) {
     Hue.notify_media_tv_size_change(size)
@@ -747,42 +747,28 @@ Hue.do_media_tv_size_change = function (size, notify = true) {
     if (!Hue.image_is_maximized()) {
       Hue.maximize_image()
       Hue.show_infotip("Image Maximized")
-      Hue.modify_setting(`tv_display_percentage ${Hue.config.global_settings_default_tv_display_percentage}`, false)
     }
   } else if (size === 100) {
     if (!Hue.tv_is_maximized()) {
       Hue.maximize_tv()
       Hue.show_infotip("TV Maximized")
-      Hue.modify_setting(`tv_display_percentage ${Hue.config.global_settings_default_tv_display_percentage}`, false)
     }
   }
 }
 
 // Increases the tv display percentage
-Hue.increase_tv_percentage = function (override = true) {
-  let size = Hue.get_setting("tv_display_percentage")
-
+Hue.increase_tv_percentage = function () {
+  let size = Hue.room_state.tv_display_percentage
   size += 10
   size = Hue.utilz.round2(size, 10)
-
-  if (override) {
-    Hue.enable_setting_override("tv_display_percentage")
-  }
-
   Hue.do_media_tv_size_change(size)
 }
 
 // Decreases the tv display percentage
-Hue.decrease_tv_percentage = function (override = true) {
-  let size = Hue.get_setting("tv_display_percentage")
-
+Hue.decrease_tv_percentage = function () {
+  let size = Hue.room_state.tv_display_percentage
   size -= 10
   size = Hue.utilz.round2(size, 10)
-
-  if (override) {
-    Hue.enable_setting_override("tv_display_percentage")
-  }
-
   Hue.do_media_tv_size_change(size)
 }
 
@@ -803,7 +789,7 @@ Hue.get_visible_video_frame_id = function () {
 // Sets the tv display percentage to default
 Hue.set_default_tv_size = function () {
   Hue.do_media_tv_size_change(
-    Hue.config.global_settings_default_tv_display_percentage
+    Hue.config.room_state_default_tv_display_percentage
   )
 }
 
@@ -854,7 +840,7 @@ Hue.set_media_menu_tv_volume = function (n = false) {
 Hue.notify_media_tv_size_change = function (size) {
   let info
 
-  if (size === Hue.config.global_settings_default_tv_display_percentage) {
+  if (size === Hue.config.room_state_default_tv_display_percentage) {
     info = " (Default)"
   } else {
     info = ""

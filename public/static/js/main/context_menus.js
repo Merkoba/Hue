@@ -319,7 +319,7 @@ Hue.start_chat_menu_context_menu = function () {
 Hue.generate_chat_maxer_context_items = function () {
   let items = {}
   let max = Hue.num_media_elements_visible() === 0
-  let per = Hue.get_setting("chat_display_percentage")
+  let per = Hue.room_state.chat_display_percentage
 
   for (let i = 9; i >= 1; i--) {
     let n = i * 10
@@ -378,7 +378,7 @@ Hue.start_chat_maxer_context_menu = function () {
 // Generates the items for the tv maxer context menu
 Hue.generate_media_maxer_context_items = function () {
   let items = {}
-  let pos = Hue.get_setting("tv_display_position")
+  let pos = Hue.room_state.tv_display_position
   let nums = []
 
   for (let i = 1; i <= 9; i++) {
@@ -389,7 +389,7 @@ Hue.generate_media_maxer_context_items = function () {
     nums = nums.reverse()
   }
 
-  let per = Hue.get_setting("tv_display_percentage")
+  let per = Hue.room_state.tv_display_percentage
 
   for (let n of nums) {
     let class_name = ""

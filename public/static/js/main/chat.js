@@ -1601,18 +1601,12 @@ Hue.do_chat_size_change = function (size) {
   if (size === 100) {
     Hue.toggle_media_area()
     Hue.show_infotip("Chat Maximized")
-    Hue.modify_setting(`chat_display_percentage ${Hue.config.global_settings_default_chat_display_percentage}`, false)
     return
   }
 
-  if (size !== Hue.get_setting("chat_display_percentage")) {
-    Hue.modify_setting(`chat_display_percentage ${size}`, false)
-  }
-
-  if (size !== 100) {
-    Hue.show_media_items()
-  }
-
+  Hue.room_state.chat_display_percentage = size
+  Hue.save_room_state()
+  Hue.apply_media_percentages()
   Hue.notify_chat_size_change(size)
 }
 
@@ -1620,7 +1614,7 @@ Hue.do_chat_size_change = function (size) {
 Hue.notify_chat_size_change = function (size) {
   let info
 
-  if (size === Hue.config.global_settings_default_chat_display_percentage) {
+  if (size === Hue.config.room_state_default_chat_display_percentage) {
     info = " (Default)"
   } else {
     info = ""
@@ -2497,35 +2491,25 @@ Hue.replace_message_vars = function (id, message) {
 }
 
 // Gradually increases the chat display percentage
-Hue.increase_chat_percentage = function (override = true) {
-  let size = parseInt(Hue.get_setting("chat_display_percentage"))
+Hue.increase_chat_percentage = function () {
+  let size = parseInt(Hue.room_state.chat_display_percentage)
   size += 10
   size = Hue.utilz.round2(size, 10)
-
-  if (override) {
-    Hue.enable_setting_override("chat_display_percentage")
-  }
-
   Hue.do_chat_size_change(size)
 }
 
 // Gradually decreases the chat display percentage
-Hue.decrease_chat_percentage = function (override = true) {
-  let size = parseInt(Hue.get_setting("chat_display_percentage"))
+Hue.decrease_chat_percentage = function () {
+  let size = parseInt(Hue.room_state.chat_display_percentage)
   size -= 10
   size = Hue.utilz.round2(size, 10)
-
-  if (override) {
-    Hue.enable_setting_override("chat_display_percentage")
-  }
-
   Hue.do_chat_size_change(size)
 }
 
 // Sets the chat display percentage to default
 Hue.set_default_chat_size = function () {
   Hue.do_chat_size_change(
-    Hue.config.global_settings_default_chat_display_percentage
+    Hue.config.room_state_default_chat_display_percentage
   )
 }
 

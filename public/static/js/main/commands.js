@@ -1215,13 +1215,13 @@ Hue.commands = {
   },
   "swap": {
     action: (arg, ans) => {
-      Hue.swap_display_positions_2()
+      Hue.swap_display_positions()
     },
     description: `Shortcut to change media positions`,
   },
   "rotate": {
     action: (arg, ans) => {
-      Hue.swap_media_layout_2()
+      Hue.swap_media_layout()
     },
     description: `Shortcut to change media layout`,
   },

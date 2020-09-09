@@ -1636,24 +1636,6 @@ svg.action:hover {
 	margin-left: 0.5882rem;
 }
 
-.squaro {
-	display: flex;
-	width: 3em;
-	height: 3em;
-	justify-content: center;
-	align-items: center;
-	box-shadow: 0 0 0.1176rem currentColor;
-	background-color: var(--background_color_2);
-	color: var(--font_color);
-}
-
-.squaro_container {
-	display: inline-flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-}
-
 .header_container {
 	height: var(--icon_size);
 }
