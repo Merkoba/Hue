@@ -536,7 +536,7 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
                     ) {
                       let code = Date.now() + utilz.get_random_string(12)
 
-                      let command = `/verifyemail ${code}`
+                      let command = `${config.commands_prefix}verifyemail ${code}`
 
                       let data = {
                         from: `${config.delivery_email_name} <${config.delivery_email}>`,
