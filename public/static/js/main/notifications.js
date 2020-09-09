@@ -45,21 +45,7 @@ Hue.make_info_popup_item = function (args = {}) {
   }
 
   if (args.push) {
-    let push = true
-
-    if (
-      (args.type === "user_join" &&
-        !Hue.get_setting("save_user_join_notifications")) ||
-      (args.type === "user_part" &&
-        !Hue.get_setting("save_user_part_notifications")) ||
-      (args.type === "room" && !Hue.get_setting("save_room_notifications"))
-    ) {
-      push = false
-    }
-
-    if (push) {
-      Hue.push_notification(args.icon, args.message, args.on_click)
-    }
+    Hue.push_notification(args.icon, args.message, args.on_click)
   }
 
   let icon = ""

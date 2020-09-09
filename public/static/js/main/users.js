@@ -64,17 +64,7 @@ Hue.user_join = function (data) {
   })
 
   if (!Hue.user_is_ignored(data.username)) {
-    let method = Hue.get_setting("user_join_notifications_method")
-
-    if (method === "popups") {
-      Hue.show_popup(Hue.make_info_popup(f), item)
-    } else if (method === "chat") {
-      Hue.public_feedback(`${data.username} has joined`, {
-        brk: Hue.get_chat_icon("user-plus"),
-        username: data.username,
-        open_profile: true,
-      })
-    }
+    Hue.show_popup(Hue.make_info_popup(f), item)
   }
 
   if(data.username !== Hue.username) {
@@ -634,16 +624,7 @@ Hue.user_disconnect = function (data) {
   })
 
   if (!Hue.user_is_ignored(data.username) || mode === "action") {
-    let method = Hue.get_setting("user_part_notifications_method")
-
-    if (method === "popups") {
-      Hue.show_popup(Hue.make_info_popup(), item)
-    } else if (method === "chat") {
-      Hue.public_feedback(s, {
-        brk: Hue.get_chat_icon("sign-out"),
-        username: data.username,
-      })
-    }
+    Hue.show_popup(Hue.make_info_popup(), item)
   }
 
   if (Hue.open_profile_username === data.username) {

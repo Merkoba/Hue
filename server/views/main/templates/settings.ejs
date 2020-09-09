@@ -17,12 +17,6 @@
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_notifications_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_notifications_{{type}}' data-category='notifications'>
-                    <span class='settings_window_category_status_filler invisible'></span>
-                    <span class='settings_window_category_text'>Notifications</span>
-                    <span class='settings_window_category_status'></span>
-                </div>
-
                 <div id='settings_window_category_functions_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_functions_{{type}}' data-category='functions'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Functions</span>
@@ -38,6 +32,12 @@
                 <div id='settings_window_category_media_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_media_{{type}}' data-category='media'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Media</span>
+                    <span class='settings_window_category_status'></span>
+                </div>
+
+                <div id='settings_window_category_lists_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_lists_{{type}}' data-category='lists'>
+                    <span class='settings_window_category_status_filler invisible'></span>
+                    <span class='settings_window_category_text'>Lists</span>
                     <span class='settings_window_category_status'></span>
                 </div>
 
@@ -67,6 +67,21 @@
                 <div class='settings_item settings_top_level_item' data-setting='autoreveal_spoilers'>
                     <div class="setting_title">Auto-Reveal Spoilers</div>
                     <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_autoreveal_spoilers">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='chat_crop_limit'>
+                    <div class="setting_title">Chat Crop Limit</div>
+                    <input type="number" class="{{type}}_settings_item_control setting_input_text_smaller" id="{{type}}_chat_crop_limit">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='autoscroll_amount'>
+                    <div class="setting_title">Autoscroll Amount</div>
+                    <input type="number" class="{{type}}_settings_item_control setting_input_text_smaller" id="{{type}}_autoscroll_amount">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='autoscroll_delay'>
+                    <div class="setting_title">Autoscroll Delay</div>
+                    <input type="number" class="{{type}}_settings_item_control setting_input_text_smaller" id="{{type}}_autoscroll_delay">
                 </div>
             </div>
 
@@ -252,62 +267,6 @@
                 </div>
             </div>
 
-            <div class='settings_category settings_window_category_container' id='settings_window_category_content_notifications_{{type}}' data-category='notifications'>
-                <div class='settings_item settings_top_level_item' data-setting='user_join_notifications_method'>
-                    <div class="setting_title2">Show User Join</div>
-                    <div class="setting_title">Notifications</div>
-                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_user_join_notifications_method">
-                        <option value='popups'>Popups</option>
-                        <option value='chat'>Chat</option>
-                        <option value='none'>Don't Show</option>
-                    </select>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='save_user_join_notifications'>
-                    <div class="setting_title2">Save User Join</div>
-                    <div class="setting_title">Notifications</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_save_user_join_notifications">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='user_part_notifications_method'>
-                    <div class="setting_title2">Show User Part</div>
-                    <div class="setting_title2">Notifications</div>
-                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_user_part_notifications_method">
-                        <option value='popups'>Popups</option>
-                        <option value='chat'>Chat</option>
-                        <option value='none'>Don't Show</option>
-                    </select>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='save_user_part_notifications'>
-                    <div class="setting_title2">Save User Part</div>
-                    <div class="setting_title2">Notifications</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_save_user_part_notifications">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='room_notifications'>
-                    <div class="setting_title2">Show Room</div>
-                    <div class="setting_title">Notifications</div>
-                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_room_notifications_method">
-                        <option value='popups'>Popups</option>
-                        <option value='chat'>Chat</option>
-                        <option value='none'>Don't Show</option>
-                    </select>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='save_room_notifications'>
-                    <div class="setting_title2">Save Room</div>
-                    <div class="setting_title">Notifications</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_save_room_notifications">
-                </div> 
-
-                <div class='settings_item settings_top_level_item' data-setting='popup_notifications_close_delay'>
-                    <div class="setting_title2">Popup Notifications</div>
-                    <div class="setting_title">Close Delay</div>
-                    <input type="number" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_popup_notifications_close_delay">
-                </div>
-            </div>
-
             <div class='settings_category settings_window_category_container' id='settings_window_category_content_confirms_{{type}}' data-category='confirms'>
                 <div class='settings_item settings_top_level_item' data-setting='confirm_chat'>
                     <div class="setting_title">Confirm Chat</div>
@@ -330,72 +289,7 @@
                 </div>
             </div>
 
-            <div class='settings_category settings_window_category_container' id='settings_window_category_content_misc_{{type}}' data-category='misc'>
-                <div class='settings_item settings_top_level_item' data-setting='warn_before_closing'>
-                    <div class="setting_title">Warn On Close</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_warn_before_closing">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='open_whispers_automatically'>
-                    <div class="setting_title2">Open Whispers</div>
-                    <div class="setting_title">Automatically</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_open_whispers_automatically">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='highlight_current_username'>
-                    <div class="setting_title">Highlight Username</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_highlight_current_username">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='case_insensitive_username_highlights'>
-                    <div class="setting_title2">Case Insensitive</div>
-                    <div class="setting_title">Username Highlights</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_username_highlights">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='case_insensitive_words_highlights'>
-                    <div class="setting_title2">Case Insensitive</div>
-                    <div class="setting_title">Words Highlights</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_words_highlights">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='case_insensitive_ignored_words'>
-                    <div class="setting_title2">Case Insensitive</div>
-                    <div class="setting_title">Ignored Words</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_ignored_words">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='ignored_words_exclude_same_user'>
-                    <div class="setting_title2">Don't Ignore Words</div>
-                    <div class="setting_title">From Yourself</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_ignored_words_exclude_same_user">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='message_log'>
-                    <div class="setting_title">Enable Message Log</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_message_log">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='autoconnect'>
-                    <div class="setting_title">Auto Connect</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_autoconnect">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='chat_crop_limit'>
-                    <div class="setting_title">Chat Crop Limit</div>
-                    <input type="number" class="{{type}}_settings_item_control setting_input_text_smaller" id="{{type}}_chat_crop_limit">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='autoscroll_amount'>
-                    <div class="setting_title">Autoscroll Amount</div>
-                    <input type="number" class="{{type}}_settings_item_control setting_input_text_smaller" id="{{type}}_autoscroll_amount">
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='autoscroll_delay'>
-                    <div class="setting_title">Autoscroll Delay</div>
-                    <input type="number" class="{{type}}_settings_item_control setting_input_text_smaller" id="{{type}}_autoscroll_delay">
-                </div>
-
+            <div class='settings_category settings_window_category_container' id='settings_window_category_content_lists_{{type}}' data-category='lists'>
                 <div class='settings_item settings_top_level_item' data-setting='other_words_to_highlight'>
                     <div class='toggler_main_container'>
                         <div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Highlight</div>
@@ -447,6 +341,64 @@
                             <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_accept_commands_from"></textarea>
                         </div>
                     </div>
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='highlight_current_username'>
+                    <div class="setting_title">Highlight Username</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_highlight_current_username">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='case_insensitive_username_highlights'>
+                    <div class="setting_title2">Case Insensitive</div>
+                    <div class="setting_title">Username Highlights</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_username_highlights">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='case_insensitive_words_highlights'>
+                    <div class="setting_title2">Case Insensitive</div>
+                    <div class="setting_title">Words Highlights</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_words_highlights">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='case_insensitive_ignored_words'>
+                    <div class="setting_title2">Case Insensitive</div>
+                    <div class="setting_title">Ignored Words</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_ignored_words">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='ignored_words_exclude_same_user'>
+                    <div class="setting_title2">Don't Ignore Words</div>
+                    <div class="setting_title">From Yourself</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_ignored_words_exclude_same_user">
+                </div>
+            </div>
+
+            <div class='settings_category settings_window_category_container' id='settings_window_category_content_misc_{{type}}' data-category='misc'>
+                <div class='settings_item settings_top_level_item' data-setting='warn_before_closing'>
+                    <div class="setting_title">Warn On Close</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_warn_before_closing">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='open_whispers_automatically'>
+                    <div class="setting_title2">Open Whispers</div>
+                    <div class="setting_title">Automatically</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_open_whispers_automatically">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='message_log'>
+                    <div class="setting_title">Enable Message Log</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_message_log">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='autoconnect'>
+                    <div class="setting_title">Auto Connect</div>
+                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_autoconnect">
+                </div>
+
+                <div class='settings_item settings_top_level_item' data-setting='popup_notifications_close_delay'>
+                    <div class="setting_title2">Popup Notifications</div>
+                    <div class="setting_title">Close Delay</div>
+                    <input type="number" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_popup_notifications_close_delay">
                 </div>
             </div>
         </div>
