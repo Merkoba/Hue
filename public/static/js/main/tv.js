@@ -729,7 +729,7 @@ Hue.do_media_tv_size_change = function (size, notify = true) {
     size = 10
   }
 
-  size = parseInt(size)
+  size = Hue.utilz.nearest_ten(parseInt(size))
 
   if (size < 0 || size > 100) {
     return false

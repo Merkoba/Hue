@@ -314,7 +314,9 @@ Hue.update_chat = function (args = {}) {
 
   Hue.push_to_all_usernames(args.username)
 
-  return { message_id: message_id }
+  return {
+    message_id: message_id
+  }
 }
 
 // This generates all announcements inserted into the chat
@@ -573,7 +575,9 @@ Hue.chat_announce = function (args = {}) {
   let message_id
 
   if (!ignore) {
-    message_id = Hue.add_to_chat({ message: fmessage }).message_id
+    message_id = Hue.add_to_chat({
+      message: fmessage
+    }).message_id
 
     if (highlighted) {
       Hue.on_highlight()
@@ -582,7 +586,9 @@ Hue.chat_announce = function (args = {}) {
 
   Hue.push_to_all_usernames(args.username)
 
-  return { message_id: message_id }
+  return {
+    message_id: message_id
+  }
 }
 
 // This is a centralized function to insert all chat or announcement messages into the chat
@@ -742,7 +748,9 @@ Hue.add_to_chat = function (args = {}) {
     Hue.electron_signal("highlighted")
   }
 
-  return { message_id: message_id }
+  return {
+    message_id: message_id
+  }
 }
 
 // Generates a string to indicate how much time has passed between one date and another
@@ -926,10 +934,15 @@ Hue.submit_reply = function () {
 
   Hue.msg_reply.close()
   Hue.goto_bottom(true, false)
-  Hue.process_message({ message: Hue.reply_text_raw, to_history: false })
+  Hue.process_message({
+    message: Hue.reply_text_raw,
+    to_history: false
+  })
 
   if (reply) {
-    Hue.process_message({ message: reply })
+    Hue.process_message({
+      message: reply
+    })
   }
 }
 
@@ -1068,7 +1081,9 @@ Hue.edit_message = function (container) {
     area.setSelectionRange(area.value.length, area.value.length)
   }, 40)
 
-  area.scrollIntoView({ block: "center" })
+  area.scrollIntoView({
+    block: "center"
+  })
   Hue.check_scrollers()
 }
 
@@ -1153,8 +1168,12 @@ Hue.send_edit_messsage = function (id) {
   if (third_person) {
     new_message = `/me ${new_message}`
   }
-  
-  Hue.process_message({ message: new_message, edit_id: edit_id, to_history: false })
+
+  Hue.process_message({
+    message: new_message,
+    edit_id: edit_id,
+    to_history: false
+  })
   Hue.replace_in_input_history(Hue.editing_original_message, new_message)
 }
 
@@ -1179,7 +1198,9 @@ Hue.delete_message = function (id, force = false) {
 
 // Makes the delete message emit
 Hue.send_delete_message = function (id) {
-  Hue.socket_emit("delete_message", { id: id })
+  Hue.socket_emit("delete_message", {
+    id: id
+  })
 }
 
 // Remove a message from the chat
@@ -1237,7 +1258,7 @@ Hue.process_remove_chat_message = function (chat_content_container) {
       } else {
         if (
           $(this).closest(".chat_container").find(".chat_content_container")
-            .length === 1
+          .length === 1
         ) {
           message2.remove()
         } else {
@@ -1438,7 +1459,9 @@ Hue.jump_to_chat_message = function (message_id) {
     return false
   }
 
-  el[0].scrollIntoView({ block: "center" })
+  el[0].scrollIntoView({
+    block: "center"
+  })
   el.addClass("blinkattention")
 
   setTimeout(function () {
@@ -1518,7 +1541,7 @@ Hue.activity_above = function () {
 
       if (p.top < activity_up_scroller_height) {
         let diff = scrolltop + p.top - activity_up_scroller_height
-        
+
         if (scrolltop - diff < 50) {
           return true
         }
@@ -1592,7 +1615,7 @@ Hue.do_chat_size_change = function (size) {
     size = 10
   }
 
-  size = parseInt(size)
+  size = Hue.utilz.nearest_ten(parseInt(size))
 
   if (size < 10 || size > 100) {
     return false
@@ -1944,18 +1967,18 @@ Hue.make_link_preview = function (args = {}) {
   let ans = {}
   ans.link_preview = false
 
-  let link_preview_classes = args.image
-    ? "link_preview link_preview_with_image"
-    : "link_preview link_preview_no_image"
-  let link_preview_image_classes = args.image
-    ? "link_preview_image"
-    : "nodisplay"
-  let link_preview_title_classes = args.title
-    ? "link_preview_title action"
-    : "nodisplay"
-  let link_preview_description_classes = args.description
-    ? "link_preview_description"
-    : "nodisplay"
+  let link_preview_classes = args.image ?
+    "link_preview link_preview_with_image" :
+    "link_preview link_preview_no_image"
+  let link_preview_image_classes = args.image ?
+    "link_preview_image" :
+    "nodisplay"
+  let link_preview_title_classes = args.title ?
+    "link_preview_title action" :
+    "nodisplay"
+  let link_preview_description_classes = args.description ?
+    "link_preview_description" :
+    "nodisplay"
 
   let link_preview_text_content_classes = "link_preview_text_content"
 
@@ -2001,7 +2024,10 @@ Hue.setup_link_preview = function (fmessage, link_url) {
   let link_preview_title = link_preview_el.find(".link_preview_title").eq(0)
 
   let f = function () {
-    Hue.open_url_menu({ source: link_url, title: link_preview_title.text() })
+    Hue.open_url_menu({
+      source: link_url,
+      title: link_preview_title.text()
+    })
   }
 
   if (link_preview_title.length > 0) {
@@ -2066,7 +2092,9 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
   let image_preview_el = fmessage.find(".image_preview").eq(0)
 
   image_preview_el.click(function () {
-    Hue.open_url_menu({ source: image_preview_src_original })
+    Hue.open_url_menu({
+      source: image_preview_src_original
+    })
   })
 
   let image_preview_image = image_preview_el.find(".image_preview_image").eq(0)
@@ -2173,7 +2201,7 @@ Hue.autoscroll_up = function () {
 
   Hue.autoscroll_up_interval = setInterval(function () {
     let diff = Hue.scroll_up(Hue.get_setting("autoscroll_amount"))
-    
+
     if (Hue.last_autoscroll_diff === diff) {
       Hue.clear_autoscroll()
       Hue.check_scrollers()
@@ -2410,7 +2438,7 @@ Hue.remove_messages_after_id = function (id, direction) {
 
       if (
         $(this).closest(".chat_container").find(".chat_content_container")
-          .length > 1
+        .length > 1
       ) {
         if (direction === "above") {
           message

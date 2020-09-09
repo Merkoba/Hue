@@ -1213,6 +1213,18 @@ Hue.commands = {
     },
     description: `Deletes all message board posts`,
   },
+  "chatsize": {
+    action: (arg, ans) => {
+      Hue.do_chat_size_change(arg)
+    },
+    description: `Change the percentage of the Chat area`,
+  },
+  "tvsize": {
+    action: (arg, ans) => {
+      Hue.do_media_tv_size_change(arg)
+    },
+    description: `Change the percentage of the TV area`,
+  },
   "swap": {
     action: (arg, ans) => {
       Hue.swap_display_positions()
