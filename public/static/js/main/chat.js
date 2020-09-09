@@ -1812,14 +1812,9 @@ Hue.check_latest_highlight = function () {
     let date = $(latest_highlight).data("date")
 
     if (date > Hue.room_state.last_highlight_date) {
-      Hue.feedback(`Click here to see new highlights`, {
-        onclick: function () {
-          Hue.show_highlights()
-        },
-      })
-
       Hue.room_state.last_highlight_date = date
       Hue.save_room_state()
+      Hue.show_highlights()
     }
   }
 }
