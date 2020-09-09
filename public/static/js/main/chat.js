@@ -1613,6 +1613,8 @@ Hue.do_chat_size_change = function (size) {
     size = 90
   } else if (size === "min") {
     size = 10
+  } else if (size === "default") {
+    size = Hue.config.room_state_default_chat_display_percentage
   }
 
   size = Hue.utilz.nearest_ten(parseInt(size))
@@ -2536,9 +2538,7 @@ Hue.decrease_chat_percentage = function () {
 
 // Sets the chat display percentage to default
 Hue.set_default_chat_size = function () {
-  Hue.do_chat_size_change(
-    Hue.config.room_state_default_chat_display_percentage
-  )
+  Hue.do_chat_size_change("default")
 }
 
 // Adds style to the icons of active media messages

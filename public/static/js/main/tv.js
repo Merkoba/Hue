@@ -727,6 +727,8 @@ Hue.do_media_tv_size_change = function (size, notify = true) {
     size = 90
   } else if (size === "min") {
     size = 10
+  } else if (size === "default") {
+    size = Hue.config.room_state_default_tv_display_percentage
   }
 
   size = Hue.utilz.nearest_ten(parseInt(size))
@@ -788,9 +790,7 @@ Hue.get_visible_video_frame_id = function () {
 
 // Sets the tv display percentage to default
 Hue.set_default_tv_size = function () {
-  Hue.do_media_tv_size_change(
-    Hue.config.room_state_default_tv_display_percentage
-  )
+  Hue.do_media_tv_size_change("default")
 }
 
 // Announces room tv mode changes
