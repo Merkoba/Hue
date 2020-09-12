@@ -115,8 +115,10 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
   // Fills undefined room properties
   // Or properties that don't meet the specified type
   manager.room_fill_defaults = function (room) {
-    for (let key in vars.rooms_schema) {
-      let item = vars.rooms_schema[key]
+    let schema = vars.rooms_schema()
+
+    for (let key in schema) {
+      let item = schema[key]
 
       if (item.skip) {
         continue
@@ -388,7 +390,8 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
   // Checks fields types against the room schema types
   manager.validate_room = function (fields) {
     for (let key in fields) {
-      let item = vars.rooms_schema[key]
+      let schema = vars.rooms_schema()
+      let item = schema[key]
       let data = fields[key]
 
       if (item) {

@@ -185,8 +185,10 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
   // Fills undefined user properties
   // Or properties that don't meet the specified type
   manager.user_fill_defaults = function (user) {
-    for (let key in vars.users_schema) {
-      let item = vars.users_schema[key]
+    let schema = vars.users_schema()
+
+    for (let key in schema) {
+      let item = schema[key]
 
       if (item.skip) {
         continue
@@ -710,7 +712,8 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
   // Checks fields types against the user schema types
   manager.validate_user = function (fields) {
     for (let key in fields) {
-      let item = vars.users_schema[key]
+      let schema = vars.users_schema()
+      let item = schema[key]
       let data = fields[key]
 
       if (item) {
