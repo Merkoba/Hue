@@ -133,7 +133,7 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
   // Creates a room
   manager.create_room = function (data) {
     return new Promise((resolve, reject) => {
-      room = {}
+      let room = {}
 
       manager.room_fill_defaults(room)
 
@@ -390,7 +390,7 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
   // Checks fields types against the room schema types
   manager.validate_room = function (fields) {
     let schema = vars.rooms_schema()
-    
+
     for (let key in fields) {
       let item = schema[key]
       let data = fields[key]
