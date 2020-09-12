@@ -389,8 +389,9 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
 
   // Checks fields types against the room schema types
   manager.validate_room = function (fields) {
+    let schema = vars.rooms_schema()
+    
     for (let key in fields) {
-      let schema = vars.rooms_schema()
       let item = schema[key]
       let data = fields[key]
 

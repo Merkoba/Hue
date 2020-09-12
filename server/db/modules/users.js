@@ -711,8 +711,9 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
 
   // Checks fields types against the user schema types
   manager.validate_user = function (fields) {
+    let schema = vars.users_schema()
+    
     for (let key in fields) {
-      let schema = vars.users_schema()
       let item = schema[key]
       let data = fields[key]
 
