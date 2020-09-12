@@ -345,10 +345,6 @@ Hue.activate_key_detection = function () {
       e.preventDefault()
       return
     } else if (e.key === "ArrowUp") {
-      if (Hue.fixed_input && !e.shiftKey) {
-        return
-      }
-
       if (e.shiftKey) {
         Hue.input_history_change("up")
         e.preventDefault()
@@ -361,10 +357,6 @@ Hue.activate_key_detection = function () {
 
       return
     } else if (e.key === "ArrowDown") {
-      if (Hue.fixed_input && !e.shiftKey) {
-        return
-      }
-
       if (e.shiftKey) {
         Hue.input_history_change("down")
         e.preventDefault()
@@ -377,18 +369,10 @@ Hue.activate_key_detection = function () {
 
       return
     } else if (e.key === "PageUp") {
-      if (Hue.fixed_input) {
-        return
-      }
-
       Hue.scroll_up(Hue.config.big_keyboard_scroll)
       e.preventDefault()
       return
     } else if (e.key === "PageDown") {
-      if (Hue.fixed_input) {
-        return
-      }
-
       Hue.scroll_down(Hue.config.big_keyboard_scroll)
       e.preventDefault()
       return

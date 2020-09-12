@@ -19,48 +19,6 @@ Hue.on_input_change = function () {
     Hue.check_typing()
     Hue.old_input_val = value
   }
-
-  Hue.check_fixed_input()
-}
-
-// Check if fixed input should start
-Hue.check_fixed_input = function () {
-  let el = $("#input")
-
-  if (!Hue.fixed_input) {
-    let overflow = el[0].clientHeight < el[0].scrollHeight
-  
-    if (overflow || el.val().includes("\n")) {
-      Hue.start_fixed_input()
-    }
-  }
-}
-
-// Removes fixed input
-Hue.start_fixed_input = function () {
-  if (Hue.fixed_input) {
-    return
-  }
-
-  $("#input").addClass("fixed_input")
-  $("#footer_search").addClass("fixed_footer_search")
-
-  if (!$("#input").val().trim()) {
-    $("#input").val("")
-  }
-
-  Hue.fixed_input = true
-}
-
-// Removes fixed input
-Hue.stop_fixed_input = function () {
-  if (!Hue.fixed_input) {
-    return
-  }
-
-  $("#input").removeClass("fixed_input")
-  $("#footer_search").removeClass("fixed_footer_search")
-  Hue.fixed_input = false
 }
 
 // Setups events for the main input
@@ -112,7 +70,6 @@ Hue.update_input_placeholder = function () {
 Hue.clear_input = function () {
   Hue.change_input("")
   Hue.old_input_val = ""
-  Hue.stop_fixed_input()
 }
 
 // Appends to the input
@@ -131,8 +88,6 @@ Hue.insert_to_input = function (what) {
 
 // Changes the input
 Hue.change_input = function (s, to_end = true, focus = true) {
-  Hue.stop_fixed_input()
-
   $("#input").val(s)
   
   if (to_end) {
@@ -142,8 +97,6 @@ Hue.change_input = function (s, to_end = true, focus = true) {
   if (focus) {
     Hue.focus_input()
   }
-
-  Hue.check_fixed_input()
 }
 
 // Focuses the input
