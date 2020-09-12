@@ -679,10 +679,6 @@ Hue.setup_media_pickers = function () {
     Hue.horizontal_separator.separate($(`#${type}_picker_options`)[0])
   }
 
-  $("#image_picker_prev").click(function () {
-    Hue.needs_confirm("image_prev", "This will change the image for everyone. Are you sure?")
-  })
-
   $("#image_picker_draw").click(function () {
     Hue.open_draw_image()
     Hue.msg_image_picker.close()
@@ -694,10 +690,6 @@ Hue.setup_media_pickers = function () {
 
   $("#image_picker_submit").click(function () {
     Hue.image_picker_submit()
-  })
-
-  $("#tv_picker_prev").click(function () {
-    Hue.needs_confirm("tv_prev", "This will change the tv for everyone. Are you sure?")
   })
 
   $("#tv_picker_restart").click(function () {

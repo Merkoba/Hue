@@ -631,12 +631,6 @@ Hue.tv_volume_decrease = function (step = 0.1) {
   Hue.set_tv_volume(nv)
 }
 
-// Sends an emit to change the tv to the previous one
-Hue.tv_prev = function () {
-  Hue.change_tv_source("prev")
-  Hue.msg_tv_picker.close()
-}
-
 // Used to change the tv
 // Shows the tv picker window to input a URL
 Hue.show_tv_picker = function () {

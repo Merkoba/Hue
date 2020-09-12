@@ -279,12 +279,6 @@ Hue.emit_change_image_source = function (url, comment = "") {
   Hue.socket_emit("change_image_source", { src: url, comment: comment })
 }
 
-// Sends an emit to change the image to the previous one
-Hue.image_prev = function () {
-  Hue.change_image_source("prev")
-  Hue.msg_image_picker.close()
-}
-
 // Updates dimensions of the image
 Hue.fix_image_frame = function () {
   if (!Hue.image_visible) {
