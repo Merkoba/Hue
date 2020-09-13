@@ -13,7 +13,7 @@
 		"express": "~4.17.1",
 		"express-session": "~1.17.1",
 		"jsonwebtoken": "~8.5.1",
-		"node-fetch": "~2.6.0",
+		"node-fetch": "~2.6.1",
 		"socket.io": "~2.3.0",
 		"socket-anti-spam": "~2.0.0",
 		"connect-mongodb-session": "~2.4.0",
