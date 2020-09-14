@@ -110,7 +110,13 @@ Hue.update_chat = function (args = {}) {
   }
 
   let fmessage
-  let title = nd
+  let title = ""
+
+  if (args.just_edited) {
+    title += "Edited | "
+  }
+
+  title = title + nd
 
   if (args.id) {
     title = `${args.id.slice(-3)} | ${title}`
