@@ -1205,6 +1205,10 @@ select {
 	font-size: 1.2rem;
 }
 
+.profile_icon {
+	margin-bottom: 0.5rem;
+}
+
 .small_padding_bottom {
 	padding-bottom: 0.5em;
 }
