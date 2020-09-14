@@ -73,7 +73,24 @@ module.exports = function (
       let item = room.message_board_posts[i]
 
       if (item.id === data.id) {
+        let info = await db_manager.get_room(
+          { _id: socket.hue_room_id },
+          { keys: 1 }
+        )
+        
+        let current_role = info.keys[item.user_id] || vars.default_role
+
         if (item.user_id !== socket.hue_user_id) {
+          if (!socket.hue_superuser) {
+            if (
+              (current_role === "admin" || current_role.startsWith("op")) &&
+              socket.hue_role !== "admin"
+            ) {
+              handler.user_emit(socket, "forbidden_user", {})
+              return false
+            }
+          }
+
           if (
             !handler.check_op_permission(socket, "message_board_delete") &&
             !socket.hue_superuser
@@ -81,13 +98,17 @@ module.exports = function (
             return false
           }
         }
+
         room.message_board_posts.splice(i, 1)
+
         db_manager.update_room(socket.hue_room_id, {
           message_board_posts: room.message_board_posts,
         })
+
         handler.room_emit(socket, "message_board_post_deleted", {
           id: data.id,
         })
+
         break
       }
     }
