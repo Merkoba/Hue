@@ -9,11 +9,6 @@
 
 @font-face {
 	font-family: imported_font;
-	src: url(/static/css/fonts/OpenSans-Regular.ttf);
-}
-
-@font-face {
-	font-family: imported_font_mono;
 	src: url(/static/css/fonts/PTMono-Regular.ttf);
 }
 
@@ -23,7 +18,7 @@ html {
 	height: 100%;
 	margin: 0rem;
 	padding: 0rem;
-	font-size: 17px;
+	font-size: 16px;
 	font-family: var(--app_font_family);
 	background-color: #262423;
 	overflow: hidden;
@@ -296,7 +291,6 @@ body * {
 	background-color: rgb(24, 24, 24);
 	border: 0.15rem solid rgb(75, 75, 75);
 	padding: 0.5rem;
-	font-family: imported_font_mono;
 	pointer-events: none;
 }
 
@@ -368,9 +362,7 @@ body * {
 	position: relative;
 	overflow-wrap: break-word;
 	word-break: break-word;
-	min-height: calc(var(--panel_height) - 0.6rem);
-	max-height: 20rem;
-	height: calc(var(--panel_height) - 0.6rem);
+	height: 100%;
 	-moz-tab-size: var(--tab-size);
 	tab-size: var(--tab-size);
 }
@@ -2832,8 +2824,7 @@ pre {
 }
 
 .precode code {
-	font-family: imported_font_mono;
-	font-size: 0.9rem;
+	font-family: var(--app_font_family);
 }
 
 .shady {
@@ -2860,13 +2851,10 @@ pre {
 
 .colortext {
 	padding: 0.2rem;
-	font-family: imported_font_mono;
 	background-color: #171515;
-	font-size: 0.9rem;
 }
 
 .colortext .generic_uname {
-	font-size: 0.9rem;
 	text-decoration: underline;
 }
 
