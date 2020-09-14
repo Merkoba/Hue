@@ -1122,7 +1122,11 @@ Hue.send_edit_messsage = function (id) {
   let chat_content = $(Hue.editing_message_container)
     .find(".chat_content")
     .get(0)
-  let new_message = Hue.editing_message_area.value.trim()
+
+  let new_message = Hue.editing_message_area.value
+  new_message = Hue.utilz.remove_multiple_empty_lines(new_message)
+  new_message = Hue.utilz.untab_string(new_message).trimEnd()
+
   let edit_id = $(Hue.editing_message_container).data("id")
   let third_person = false
 
@@ -1156,6 +1160,7 @@ Hue.send_edit_messsage = function (id) {
     edit_id: edit_id,
     to_history: false
   })
+
   Hue.replace_in_input_history(Hue.editing_original_message, new_message)
 }
 
