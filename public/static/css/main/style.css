@@ -542,12 +542,11 @@ body * {
 .brk {
 	flex-shrink: 0;
 	flex-grow: 0;
-	max-height: 2rem;
 	text-align: center;
 	margin-right: 1rem;
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
 	min-width: var(--profile_image_size);
 	max-width: var(--profile_image_size);
 }
