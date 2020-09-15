@@ -335,7 +335,6 @@ Hue.on_join = function (data) {
   Hue.show_joined()
   Hue.check_media_maxers()
   Hue.config_room_menu()
-  Hue.goto_bottom()
   Hue.make_main_container_visible()
   Hue.check_latest_highlight()
   Hue.init_message_board(data)
@@ -355,6 +354,10 @@ Hue.at_startup = function () {
 
   if (Hue.connections === 1) {
     Hue.execute_commands("at_startup")
+
+    setTimeout(() => {
+      Hue.goto_bottom(true)
+    }, 800)
   }
 
   setTimeout(function () {

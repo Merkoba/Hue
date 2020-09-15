@@ -2268,6 +2268,10 @@ Hue.goto_top = function () {
 
 // Scrolls the chat to the bottom
 Hue.goto_bottom = function (force = false) {
+  if (!Hue.started) {
+    return
+  }
+  
   if (!force && Hue.started) {
     if (Date.now() - Hue.last_scroll_date < Hue.recent_scroll_time) {
       return
