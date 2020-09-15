@@ -4,7 +4,7 @@
 	--icon_size: 1.4rem;
 	--chat_icon_size: 1.2rem;
 	--app_font_family: imported_font, sans-serif;
-	--profile_image_size: 2.6471rem;
+	--profile_image_size: 2.14rem;
 	--tab-size: 1.6rem;
 }
 
@@ -212,6 +212,7 @@ body * {
 	overflow-y: auto;
 	flex-grow: 1;
 	max-width: 100%;
+	margin-top: 2rem;
 	margin-bottom: 2rem;
 }
 
@@ -971,14 +972,6 @@ select {
 	padding-right: 0.25em;
 	cursor: pointer;
 	min-width: 8rem;
-}
-
-#chat_area>.message:first-child {
-	margin-top: 1.5rem !important;
-}
-
-#chat_area>.message:last-child {
-	margin-bottom: 1.5rem !important;
 }
 
 input[type=text],
