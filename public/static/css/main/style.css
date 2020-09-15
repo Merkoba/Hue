@@ -212,6 +212,12 @@ body * {
 	overflow-y: auto;
 	flex-grow: 1;
 	max-width: 100%;
+	margin-bottom: 2rem;
+}
+
+.chat_area {
+	display: grid;
+	grid-gap: 1.2rem;
 }
 
 #chat_area>.message {
@@ -827,7 +833,7 @@ a.generic:hover {
 }
 
 #chat_search_container {
-	margin-top: 1rem;
+	margin-top: 2rem;
 }
 
 #chat_search_no_results {
@@ -965,12 +971,6 @@ select {
 	padding-right: 0.25em;
 	cursor: pointer;
 	min-width: 8rem;
-}
-
-.message {
-	font-size: 1rem;
-	padding-top: 0.8rem;
-	padding-bottom: 0.8rem;
 }
 
 #chat_area>.message:first-child {
@@ -2217,6 +2217,10 @@ a.special_link:hover {
 
 #media_menu_loaded_media {
 	width: 100%;
+}
+
+.media_history_container {
+	margin-top: 0.8rem;
 }
 
 .media_history_container .announcement_content_split,
