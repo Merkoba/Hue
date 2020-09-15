@@ -2821,12 +2821,6 @@ pre {
 	font-family: var(--app_font_family);
 }
 
-.shady {
-	animation: shady_grow 1.2s linear infinite;
-	box-shadow: 0rem 0rem 0.4706rem 0.3rem var(--color_4_a);
-	background-color: var(--color_4_a);
-}
-
 .expanded_modal_image {
 	overflow: auto !important;
 	justify-content: initial !important;

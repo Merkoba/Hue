@@ -2533,24 +2533,3 @@ Hue.decrease_chat_percentage = function () {
 Hue.set_default_chat_size = function () {
   Hue.do_chat_size_change("default")
 }
-
-// Adds style to the icons of active media messages
-Hue.update_chat_media_feedback = function () {
-  $("#chat_area > .announcement").each(function () {
-    let icon = $(this).find(".announcement_brk").eq(0).find("svg").eq(0)
-
-    if (icon.hasClass("shady")) {
-      icon.removeClass("shady")
-    }
-
-    if ($(this).data("type") === "image_change") {
-      if ($(this).data("message_id") === Hue.loaded_image.message_id) {
-        icon.addClass("shady")
-      }
-    } else if ($(this).data("type") === "tv_change") {
-      if ($(this).data("message_id") === Hue.loaded_tv.message_id) {
-        icon.addClass("shady")
-      }
-    }
-  })
-}

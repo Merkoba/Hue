@@ -880,7 +880,6 @@ Hue.change = function (args = {}) {
     return false
   }
 
-  Hue.update_chat_media_feedback()
   Hue.update_media_history_blinks()
   Hue.check_media_menu_loaded_media()
 
