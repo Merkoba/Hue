@@ -185,24 +185,6 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.draw_image_open) {
-        if (e.key === " ") {
-          Hue.draw_image_change_mode()
-        }
-
-        if (e.key === "z") {
-          if (e.ctrlKey) {
-            Hue.draw_image_undo()
-          }
-        }
-
-        if (e.key === "y") {
-          if (e.ctrlKey) {
-            Hue.draw_image_redo()
-          }
-        }
-      }
-
       if (Hue.writing_reply) {
         if (Hue.msg_reply.is_highest()) {
           if (e.key === "Enter" && !e.shiftKey) {

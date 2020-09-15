@@ -313,21 +313,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_draw_image = Msg.factory(
-    Object.assign({}, common, titlebar, {
-      id: "draw_image",
-      close_on_overlay_click: false,
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.draw_image_open = true
-      },
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.draw_image_open = false
-      },
-    })
-  )
-
   Hue.msg_room_status = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "room_status",
@@ -522,7 +507,6 @@ Hue.start_msg = function () {
   Hue.msg_locked.set(Hue.template_locked_menu())
   Hue.msg_notifications.set(Hue.template_notifications())
   Hue.msg_whispers.set(Hue.template_whispers())
-  Hue.msg_draw_image.set(Hue.template_draw_image())
   Hue.msg_room_status.set(Hue.template_room_status())
   Hue.msg_admin_activity.set(Hue.template_admin_activity())
   Hue.msg_access_log.set(Hue.template_access_log())
@@ -565,7 +549,6 @@ Hue.start_msg = function () {
   Hue.msg_global_settings.set_title("Global Settings")
   Hue.msg_room_settings.set_title("Room Settings")
   Hue.msg_media_menu.set_title("Media Menu")
-  Hue.msg_draw_image.set_title("Draw an Image")
   Hue.msg_room_status.set_title("Room Status")
   Hue.msg_admin_activity.set_title("Admin Activity")
   Hue.msg_access_log.set_title("Access Log")

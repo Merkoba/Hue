@@ -99,12 +99,6 @@ Hue.chat_functions_hover_delay = 3000
 Hue.user_functions = [1, 2, 3, 4, 5, 6]
 Hue.mouse_is_down = false
 Hue.draw_message_just_entered = false
-Hue.draw_image_just_entered = false
-Hue.draw_image_mode = "pencil"
-Hue.draw_image_scale = 2.4
-Hue.draw_image_num_strokes_save = 500
-Hue.draw_image_max_levels = 200
-Hue.draw_image_open = false
 Hue.command_aliases = {}
 Hue.commands_queue = {}
 Hue.user_leaving = false
@@ -234,7 +228,6 @@ Hue.init = function () {
   Hue.setup_chat_functions()
   Hue.prepare_media_settings()
   Hue.setup_message_window()
-  Hue.setup_draw_image()
   Hue.setup_autocomplete()
   Hue.setup_command_aliases()
   Hue.setup_fonts()

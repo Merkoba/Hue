@@ -1274,46 +1274,12 @@ select {
 	padding-top: 1rem;
 }
 
-#draw_image_area {
-	cursor: crosshair;
-	width: 47.0588rem;
-	height: 35.2941rem;
-}
-
 .draw_canvas {
 	outline: none;
 	display: block;
 	margin: 0 auto;
 	background-color: var(--background_color_a_2);
 	color: var(--font_color);
-}
-
-.draw_canvas_received {
-	margin-bottom: 1rem;
-}
-
-#draw_image_controls {
-	margin-bottom: 1rem;
-}
-
-#draw_image_pencil_controls {
-	margin-left: 0.8rem;
-}
-
-#draw_image_pencil_size {
-	margin-left: 0.5rem;
-}
-
-#draw_image_buttons {
-	margin-top: 1rem;
-}
-
-#draw_image_mode_select_bucket {
-	margin-left: 1.6rem;
-}
-
-#draw_image_bucket_icon {
-	margin-right: 0.8rem;
 }
 
 #write_message_feedback {
@@ -1759,10 +1725,6 @@ svg.action:hover {
 	align-items: center;
 	justify-content: center;
 	padding: 0.5rem;
-}
-
-#draw_image_pencil_size {
-	height: 1.3529rem;
 }
 
 .modal_icon_selected {

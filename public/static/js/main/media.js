@@ -679,11 +679,6 @@ Hue.setup_media_pickers = function () {
     Hue.horizontal_separator.separate($(`#${type}_picker_options`)[0])
   }
 
-  $("#image_picker_draw").click(function () {
-    Hue.open_draw_image()
-    Hue.msg_image_picker.close()
-  })
-
   $("#image_picker_upload").click(function () {
     Hue.msg_image_picker.close()
   })

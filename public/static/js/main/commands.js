@@ -925,12 +925,6 @@ Hue.commands = {
     },
     description: `Locks or unlocks the screen`,
   },
-  "drawimage": {
-    action: (arg, ans) => {
-      Hue.open_draw_image()
-    },
-    description: `Opens the window to draw an image`,
-  },
   "say": {
     action: (arg, ans) => {
       Hue.say_command(arg, ans)

@@ -302,7 +302,7 @@ Hue.show_whisper = function (data) {
 
       context.clearRect(0, 0, canvas.width, canvas.height);
 
-      Hue.canvas_redraw({
+      Hue.redraw_draw_message_canvas({
         context: context,
         click_x: data.draw_coords[0],
         click_y: data.draw_coords[1],
@@ -460,6 +460,81 @@ Hue.setup_message_draw_area = function () {
   $("#draw_message_area").mouseenter(function (e) {
     Hue.draw_message_just_entered = true
   })
+}
+
+// Registers a click to the drawing area of a write whisper window
+Hue.draw_message_add_click = function (x, y, dragging) {
+  Hue.draw_message_click_x.push(x)
+  Hue.draw_message_click_y.push(y)
+  Hue.draw_message_drag.push(dragging)
+
+  if (
+    Hue.draw_message_click_x.length > Hue.config.draw_coords_max_array_length
+  ) {
+    Hue.draw_message_click_x.shift()
+    Hue.draw_message_click_y.shift()
+    Hue.draw_message_drag.shift()
+  }
+}
+
+// Redraws the drawing area of a write whisper window
+Hue.redraw_draw_message = function () {
+  Hue.redraw_draw_message_canvas({
+    context: Hue.draw_message_context,
+    click_x: Hue.draw_message_click_x,
+    click_y: Hue.draw_message_click_y,
+    drag: Hue.draw_message_drag
+  })
+}
+
+// Redraws the drawing message area
+Hue.redraw_draw_message_canvas = function (args = {}) {
+  let def_args = {
+    context: false,
+    click_x: false,
+    click_y: false,
+    drag: false,
+  }
+
+  args = Object.assign(def_args, args)
+
+  args.context.clearRect(
+    0, 0,
+    args.context.canvas.width,
+    args.context.canvas.height
+  )
+
+  args.context.lineJoin = "round"
+
+  for (let i = 0; i < args.click_x.length; i++) {
+    args.context.beginPath()
+
+    if (args.drag[i] && i) {
+      args.context.moveTo(args.click_x[i - 1], args.click_y[i - 1])
+    } else {
+      args.context.moveTo(args.click_x[i] - 1, args.click_y[i])
+    }
+
+    args.context.lineTo(args.click_x[i], args.click_y[i])
+    args.context.closePath()
+    args.context.strokeStyle = $("#draw_message_area").css("color")
+    args.context.lineWidth = 2
+    args.context.stroke()
+  }
+}
+
+// Clears the drawing area of a write whisper window
+Hue.clear_draw_message_state = function () {
+  Hue.draw_message_click_x = []
+  Hue.draw_message_click_y = []
+  Hue.draw_message_drag = []
+
+  Hue.draw_message_context.clearRect(
+    0,
+    0,
+    Hue.draw_message_context.canvas.width,
+    Hue.draw_message_context.canvas.height
+  )
 }
 
 // Pushes a new whisper to the whispers window
