@@ -119,7 +119,7 @@ Hue.check_favicon = function (mode=undefined) {
 
 // Centralized console info printer
 Hue.loginfo = function (message, style="") {
-  console.info(`🤡 %c(${Hue.utilz.nice_date(Date.now(), "log")}) %c${message}`, "color:blue", style)
+  console.info(`🤡 %c(${Hue.utilz.nice_date(Date.now())}) %c${message}`, "color:blue", style)
 }
 
 // Centralized function to return a chat icon svg

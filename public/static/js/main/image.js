@@ -59,9 +59,6 @@ Hue.setup_image = function (mode, odata = {}) {
 
   if (data.query) {
     data.info += ` | Search Term: "${data.query}"`
-    data.info_html += `<div>Search Term: "${Hue.utilz.make_html_safe(
-      data.query
-    )}"</div>`
   }
 
   data.message = `${data.setter} changed the image`
@@ -607,7 +604,7 @@ Hue.show_modal_image_resolution = function () {
 
   if (img.src === Hue.loaded_modal_image.source) {
     $("#modal_image_header_info").html(
-      Hue.loaded_modal_image.info_html + `<div>Resolution: ${w} x ${h}</div>`
+      Hue.loaded_modal_image.info_html + `<div>${w} x ${h}</div>`
     )
     Hue.horizontal_separator.separate("modal_image_header_info")
   }
