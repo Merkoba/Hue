@@ -374,11 +374,10 @@ body * {
 	overflow-y: auto;
 	overflow-x: hidden;
 	position: relative;
-	overflow-wrap: break-word;
-	word-break: break-word;
 	height: 100%;
 	-moz-tab-size: var(--tab-size);
 	tab-size: var(--tab-size);
+	white-space: nowrap;
 }
 
 #input::placeholder {
