@@ -2900,6 +2900,7 @@ pre {
 .custom_titlebar {
 	background-color: var(--background_color_2) !important;
 	color: var(--font_color) !important;
+	white-space: nowrap !important; 
 }
 
 #footer_search {
