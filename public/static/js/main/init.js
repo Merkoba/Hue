@@ -293,7 +293,7 @@ Hue.on_join = function (data) {
   Hue.superuser = data.superuser
 
   Hue.load_date_3 = Date.now()
-  Hue.loginfo("Joined Room")
+  Hue.loginfo("Joined Room 123")
 
   Hue.room_locked = data.room_locked
 
