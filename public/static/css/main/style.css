@@ -212,8 +212,6 @@ body * {
 	overflow-y: auto;
 	flex-grow: 1;
 	max-width: 100%;
-	margin-top: 2rem;
-	margin-bottom: 2rem;
 }
 
 .chat_area {
@@ -221,9 +219,17 @@ body * {
 	grid-gap: 1.2rem;
 }
 
-#chat_area>.message {
+#chat_area > .message {
 	margin-left: 1rem;
 	margin-right: 0.5rem;
+}
+
+#chat_area > .message:first-child {
+	padding-top: 1.5rem;
+}
+
+#chat_area > .message:last-child {
+	padding-bottom: 1.5rem;
 }
 
 .chat_area_clone .chat_content {
