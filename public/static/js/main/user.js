@@ -558,7 +558,7 @@ Hue.show_intro = function () {
 
 // Shows some options for the audio clip
 Hue.show_audio_clip_menu = function () {
-  Hue.msg_info2.show(["Change Audio Clip", Hue.template_audio_clip_menu()], function () {
+  Hue.msg_info2.show(["Audio Clip", Hue.template_audio_clip_menu()], function () {
     $("#upload_audio_clip").click(function () {
       Hue.select_audio_clip()
       Hue.msg_info2.close()
