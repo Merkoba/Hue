@@ -1023,28 +1023,7 @@ select {
 	flex-direction: row;
 }
 
-#modal_image_footer_info_container {
-	flex-grow: 1;
-	flex-shrink: 1;
-	text-align: center;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
-	position: relative;
-}
-
-#modal_image_footer_info {
-	flex-grow: 0;
-	flex-shrink: 1;
-	height: 100%;
-	position: relative;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
-.modal_image_footer_button {
+.modal_image_arrow_button {
 	cursor: pointer;
 	z-index: 10;
 	flex-grow: 0;
@@ -1053,14 +1032,14 @@ select {
 	padding-right: 0.5em;
 }
 
-#modal_image_footer_prev {
+#modal_image_arrow_prev {
 	display: flex;
 	align-items: center;
 	height: 100%;
 	position: relative;
 }
 
-#modal_image_footer_next {
+#modal_image_arrow_next {
 	display: flex;
 	align-items: center;
 	height: 100%;
@@ -1084,10 +1063,6 @@ select {
 	object-fit: contain;
 	width: calc(100% - 4rem);
 	height: calc(100% - 4rem);
-}
-
-#modal_image_number_button {
-	margin-top: 1rem;
 }
 
 .pointer {

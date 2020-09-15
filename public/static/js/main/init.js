@@ -53,7 +53,6 @@ Hue.background_image_input_open = false
 Hue.admin_list_open = false
 Hue.ban_list_open = false
 Hue.image_upload_comment_open = false
-Hue.modal_image_number_open = false
 Hue.change_user_username_open = false
 Hue.change_user_password_open = false
 Hue.change_user_email_open = false
@@ -237,7 +236,6 @@ Hue.init = function () {
   Hue.setup_message_window()
   Hue.setup_draw_image()
   Hue.setup_autocomplete()
-  Hue.setup_modal_image_number()
   Hue.setup_command_aliases()
   Hue.setup_fonts()
   Hue.setup_before_unload()

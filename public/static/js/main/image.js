@@ -79,7 +79,6 @@ Hue.setup_image = function (mode, odata = {}) {
 
   if (mode === "change" || mode === "show") {
     Hue.push_image_changed(data)
-    Hue.set_modal_image_number()
   }
 
   if (mode === "change") {
@@ -414,15 +413,11 @@ Hue.setup_modal_image = function () {
     Hue.show_image_picker()
   })
 
-  $("#modal_image_footer_info").click(function () {
-    Hue.show_modal_image_number()
-  })
-
-  $("#modal_image_footer_prev").click(function (e) {
+  $("#modal_image_arrow_prev").click(function (e) {
     Hue.modal_image_prev_click()
   })
 
-  $("#modal_image_footer_next").click(function (e) {
+  $("#modal_image_arrow_next").click(function (e) {
     Hue.modal_image_next_click()
   })
 
@@ -478,7 +473,6 @@ Hue.show_current_image_modal = function (current = true) {
 // Clears image information in the modal image window
 Hue.clear_modal_image_info = function () {
   $("#modal_image_header_info").html("")
-  $("#modal_image_footer_info").html("")
 }
 
 // Shows the modal image window
@@ -536,65 +530,7 @@ Hue.show_modal_image = function (data) {
   Hue.horizontal_separator.separate("modal_image_header_info_container")
 
   Hue.msg_modal_image.show(function () {
-    Hue.set_modal_image_number()
   })
-}
-
-// Sets the image number in the modal image window
-Hue.set_modal_image_number = function (id) {
-  if (!Hue.modal_image_open) {
-    return false
-  }
-
-  let index = Hue.image_changed.indexOf(Hue.loaded_modal_image)
-  let number = index + 1
-  let footer_text = `${number} of ${Hue.image_changed.length}`
-  $("#modal_image_footer_info").text(footer_text)
-
-  if (number > 0) {
-    $("#modal_image_number_input").val(number)
-  } else {
-    $("#modal_image_number_input").val(1)
-  }
-}
-
-// Setups the image number widget in the modal image window
-Hue.setup_modal_image_number = function () {
-  $("#modal_image_number_button").click(function () {
-    Hue.modal_image_number_go()
-  })
-
-  $("#modal_image_number_input").on("input", function () {
-    let val = parseInt($("#modal_image_number_input").val())
-
-    if (val < 1) {
-      $("#modal_image_number_input").val(Hue.image_changed.length)
-    } else if (val === Hue.image_changed.length + 1) {
-      $("#modal_image_number_input").val(1)
-    } else if (val > Hue.image_changed.length) {
-      $("#modal_image_number_input").val(Hue.image_changed.length)
-    }
-  })
-}
-
-// Shows the modal image widget
-Hue.show_modal_image_number = function () {
-  Hue.msg_modal_image_number.show(function () {
-    $("#modal_image_number_input").focus()
-    $("#modal_image_number_input").select()
-  })
-}
-
-// Goes to a specified image number in the modal image window
-Hue.modal_image_number_go = function () {
-  let val = parseInt($("#modal_image_number_input").val())
-
-  let ic = Hue.image_changed[val - 1]
-
-  if (ic) {
-    Hue.show_modal_image(ic)
-    Hue.msg_modal_image_number.close()
-  }
 }
 
 // Adds modal image resolution information to the modal image's information

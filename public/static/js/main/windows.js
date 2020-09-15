@@ -108,23 +108,8 @@ Hue.start_msg = function () {
       after_close: function (instance) {
         common.after_close(instance)
         Hue.clear_modal_image_info()
-        Hue.msg_modal_image_number.close()
         Hue.msg_image_picker.close()
         Hue.modal_image_open = false
-      },
-    })
-  )
-
-  Hue.msg_modal_image_number = Msg.factory(
-    Object.assign({}, common, {
-      id: "modal_image_number",
-      after_show: function (instance) {
-        common.after_show(instance)
-        Hue.modal_image_number_open = true
-      },
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.modal_image_number_open = false
       },
     })
   )
@@ -533,7 +518,6 @@ Hue.start_msg = function () {
   Hue.msg_input_history.set(Hue.template_input_history())
   Hue.msg_chat_search.set(Hue.template_chat_search())
   Hue.msg_modal_image.set(Hue.template_modal_image())
-  Hue.msg_modal_image_number.set(Hue.template_modal_image_number())
   Hue.msg_lockscreen.set(Hue.template_lockscreen())
   Hue.msg_locked.set(Hue.template_locked_menu())
   Hue.msg_notifications.set(Hue.template_notifications())

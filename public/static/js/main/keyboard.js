@@ -181,11 +181,6 @@ Hue.activate_key_detection = function () {
             e.preventDefault()
           }
 
-          if (e.key === " ") {
-            Hue.show_modal_image_number()
-            e.preventDefault()
-          }
-
           return
         }
       }
@@ -205,12 +200,6 @@ Hue.activate_key_detection = function () {
           if (e.ctrlKey) {
             Hue.draw_image_redo()
           }
-        }
-      }
-
-      if (Hue.modal_image_number_open) {
-        if (e.key === "Enter") {
-          Hue.modal_image_number_go()
         }
       }
 
