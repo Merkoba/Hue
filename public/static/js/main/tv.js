@@ -56,11 +56,13 @@ Hue.setup_tv = function (mode, odata = {}) {
 
     let gets = data.id ? `${data.id.slice(-3)} | ` : ""
 
-    data.info = `${gets}Setter: ${data.setter} | ${data.nice_date}`
+    data.info = `${gets}Setter: ${data.setter}`
 
     if (data.query) {
       data.info += ` | Search Term: "${data.query}"`
     }
+  
+    data.info += ` | ${data.nice_date}`
 
     data.onclick = function () {
       Hue.open_url_menu({
