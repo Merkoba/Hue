@@ -65,4 +65,5 @@ For example: ["Ad #1", "Ad #2", "Ad #3"]
 Build the client js and css files:
 
 >cd utils
+
 >./bundle_all
