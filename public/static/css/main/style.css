@@ -2,6 +2,7 @@
 	--panel_height: 2.2rem;
 	--panel_font_size: 1rem;
 	--icon_size: 1.4rem;
+	--chat_icon_size: 1.2rem;
 	--app_font_family: imported_font, sans-serif;
 	--profile_image_size: 2.6471rem;
 	--tab-size: 1.6rem;
@@ -702,8 +703,8 @@ a.generic:hover {
 }
 
 .chat_icon {
-	width: var(--icon_size);
-	height: var(--icon_size);
+	width: var(--chat_icon_size);
+	height: var(--chat_icon_size);
 }
 
 .other_icon {
