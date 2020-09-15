@@ -354,10 +354,6 @@ Hue.at_startup = function () {
 
   if (Hue.connections === 1) {
     Hue.execute_commands("at_startup")
-
-    setTimeout(() => {
-      Hue.goto_bottom(true)
-    }, 800)
   }
 
   setTimeout(function () {
@@ -367,4 +363,8 @@ Hue.at_startup = function () {
   Hue.process_visibility()
   Hue.load_date_4 = Date.now()
   Hue.compare_load_dates()
+
+  setTimeout(() => {
+    Hue.goto_bottom(true)
+  }, 800)
 }
