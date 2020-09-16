@@ -2,7 +2,6 @@
 	--panel_height: 2.2rem;
 	--panel_font_size: 1rem;
 	--icon_size: 1.4rem;
-	--chat_icon_size: 1.2rem;
 	--app_font_family: imported_font, sans-serif;
 	--profile_image_size: 2.14rem;
 	--tab-size: 1.6rem;
@@ -10,7 +9,7 @@
 
 @font-face {
 	font-family: imported_font;
-	src: url(/static/css/fonts/LiberationMono-Regular.ttf);
+	src: url(/static/css/fonts/OpenSans-Regular.ttf);
 }
 
 body,
@@ -19,7 +18,7 @@ html {
 	height: 100%;
 	margin: 0rem;
 	padding: 0rem;
-	font-size: 16px;
+	font-size: 17px;
 	font-family: var(--app_font_family);
 	background-color: #262423;
 	overflow: hidden;
@@ -215,7 +214,7 @@ body * {
 
 .chat_area {
 	display: grid;
-	grid-gap: 1.2rem;
+	grid-gap: 1.4rem;
 }
 
 #chat_area > .message {
@@ -713,8 +712,8 @@ a.generic:hover {
 }
 
 .chat_icon {
-	width: var(--chat_icon_size);
-	height: var(--chat_icon_size);
+	width: var(--icon_size);
+	height: var(--icon_size);
 }
 
 .other_icon {
