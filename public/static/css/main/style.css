@@ -382,7 +382,7 @@ body * {
 #input::placeholder {
 	white-space: pre;
 	font-size: var(--panel_font_size);
-	color: var(--color_3);
+	color: var(--color_4);
 }
 
 .scroller_container {
@@ -1987,14 +1987,17 @@ svg.action:hover {
 
 #infotip_container {
 	position: fixed;
-	top: var(--panel_height);
+	top: 0;
 	left: 50%;
 	transform: translateX(-50%);
-	padding: 0.5rem;
-	background-color: black;
+	height: var(--panel_height);
+	width: 20rem;
+	background-color: var(--color_4);
 	color: white;
 	display: none;
 	z-index: 999;
+	align-items: center;
+	justify-content: center;
 }
 
 #admin_list_container,
@@ -2583,7 +2586,7 @@ a.special_link:hover {
 }
 
 #user_menu_bio_textarea::placeholder {
-	color: var(--color_3);
+	color: var(--color_4);
 }
 
 pre {
@@ -2794,8 +2797,8 @@ pre {
 	color: #e28b7b;
 }
 
-.color_3 {
-	color: var(--color_3);	
+.color_4 {
+	color: var(--color_4);	
 }
 
 .slight_color {
@@ -2842,7 +2845,7 @@ pre {
 #footer_search {
 	width: 14rem;
 	height: var(--panel_height) !important;
-	box-shadow: inset 0 0 0.1176rem var(--color_3);
+	box-shadow: inset 0 0 0.1176rem var(--color_4);
 	margin-right: 1.2rem;
 }
 
@@ -2870,7 +2873,7 @@ pre {
 #footer_search_input::placeholder {
 	white-space: pre;
 	font-size: var(--panel_font_size);
-	color: var(--color_3);
+	color: var(--color_4);
 }
 
 .flex_start {
