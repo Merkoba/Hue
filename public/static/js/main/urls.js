@@ -248,7 +248,7 @@ Hue.open_url_menu = function (args = {}) {
     ) {
       $("#open_url_menu_load").text("Load")
     } else {
-      $("#open_url_menu_load").text("Restart")
+      $("#open_url_menu_load").text("Reload")
     }
 
     if (Hue[`change_${args.media_type}_source`](args.source, true)) {

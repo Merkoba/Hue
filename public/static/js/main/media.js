@@ -687,7 +687,7 @@ Hue.setup_media_pickers = function () {
     Hue.image_picker_submit()
   })
 
-  $("#tv_picker_restart").click(function () {
+  $("#tv_picker_reload").click(function () {
     if (Hue.loaded_tv) {
       Hue.load_media("tv", Hue.loaded_tv)
     }
