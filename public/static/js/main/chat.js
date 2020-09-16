@@ -1319,11 +1319,6 @@ Hue.show_typing = function (data) {
 
   Hue.typing_remove_timer()
   Hue.show_aura(user.user_id)
-
-  if (!Hue.app_focused) {
-    Hue.check_favicon(1)
-  }
-
   Hue.typing = true
 }
 
@@ -1333,7 +1328,6 @@ Hue.hide_typing = function () {
     return
   }
 
-  Hue.check_favicon()
   Hue.typing = false
 }
 

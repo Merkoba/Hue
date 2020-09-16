@@ -104,19 +104,6 @@ Hue.generate_favicon = function (mode) {
   Hue.favicon_mode = mode
 }
 
-// Apply favicon mode if necesssary
-Hue.check_favicon = function (mode=undefined) {
-  if (mode !== undefined) {
-    if (mode > Hue.favicon_mode) {
-      Hue.generate_favicon(mode)
-    }
-  } else {
-    if (Hue.alert_mode !== Hue.favicon_mode) {
-      Hue.generate_favicon(Hue.alert_mode)
-    }
-  }
-}
-
 // Centralized console info printer
 Hue.loginfo = function (message, style="") {
   console.info(`🤡 %c(${Hue.utilz.nice_date(Date.now())}) %c${message}`, "color:blue", style)
