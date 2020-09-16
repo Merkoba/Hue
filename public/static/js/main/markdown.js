@@ -103,11 +103,11 @@ Hue.setup_markdown_regexes = function () {
     let num = m.length
 
     if (num === 1) {
-      return `<span class='colortext greentext'>${g1}</span>`
+      return `<div class='colortext greentext'>${g1}</div>`
     } else if (num === 2) {
-      return `<span class='colortext bluetext'>${g1}</span>`
+      return `<div class='colortext bluetext'>${g1}</div>`
     } else {
-      return `<span class='colortext redtext'>${g1}</span>`
+      return `<div class='colortext redtext'>${g1}</div>`
     }
   }
 
