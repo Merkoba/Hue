@@ -1988,8 +1988,9 @@ svg.action:hover {
 #infotip_container {
 	position: fixed;
 	top: var(--panel_height);
-	right: 0;
-	padding: 0.2em;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 0.5rem;
 	background-color: black;
 	color: white;
 	display: none;
