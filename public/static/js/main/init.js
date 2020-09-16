@@ -254,7 +254,6 @@ Hue.init = function () {
   Hue.change_media_layout()
   Hue.setup_profile_image_cropper()
   Hue.setup_badges()
-  Hue.setup_image_picker()
   Hue.setup_userlist_window()
   Hue.setup_user_menu()
   Hue.setup_header()

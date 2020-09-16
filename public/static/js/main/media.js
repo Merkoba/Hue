@@ -688,7 +688,11 @@ Hue.setup_media_pickers = function () {
   })
 
   $("#tv_picker_restart").click(function () {
-    Hue.needs_confirm("restart_tv", "This will restart the tv for everyone. Are you sure?")
+    if (Hue.loaded_tv) {
+      Hue.load_media("tv", Hue.loaded_tv)
+    }
+
+    Hue.close_all_modals()
   })
 
   $("#tv_picker_submit").click(function () {
@@ -1222,4 +1226,15 @@ Hue.media_string = function (what) {
   } else if (what === "tv") {
     return "TV"
   }
+}
+
+// Load or restart media
+Hue.load_media = function (type, data) {
+  Hue.toggle_media({type:type, what:true})
+    
+  Hue.change({
+    type: type,
+    item: data,
+    force: true
+  })
 }

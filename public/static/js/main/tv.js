@@ -2,75 +2,64 @@
 // This handles tv objects received live from the server or from logged messages
 // This is the entry function for tv objects to get registered, announced, and be ready for use
 Hue.setup_tv = function (mode, odata = {}) {
-  let data
+  let data = {}
 
-  if (mode === "restart") {
-    data = Hue.current_tv()
-    data.date = odata.date
-    data.info += ` | ${Hue.utilz.nice_date(data.date)}`
-    data.message = `${odata.setter} restarted the tv`
-    data.comment = odata.comment
-    data.in_log = odata.in_log === undefined ? true : odata.in_log
-  } else {
-    data = {}
+  data.id = odata.id
+  data.user_id = odata.user_id
+  data.type = odata.type
+  data.source = odata.source
+  data.title = odata.title
+  data.setter = odata.setter
+  data.date = odata.date
+  data.query = odata.query
+  data.comment = odata.comment
+  data.nice_date = data.date ?
+    Hue.utilz.nice_date(data.date) :
+    Hue.utilz.nice_date()
+  data.in_log = odata.in_log === undefined ? true : odata.in_log
 
-    data.id = odata.id
-    data.user_id = odata.user_id
-    data.type = odata.type
-    data.source = odata.source
-    data.title = odata.title
-    data.setter = odata.setter
-    data.date = odata.date
-    data.query = odata.query
-    data.comment = odata.comment
-    data.nice_date = data.date ?
-      Hue.utilz.nice_date(data.date) :
-      Hue.utilz.nice_date()
-    data.in_log = odata.in_log === undefined ? true : odata.in_log
+  if (!data.setter) {
+    data.setter = Hue.config.system_username
+  }
 
-    if (!data.setter) {
-      data.setter = Hue.config.system_username
+  if (!data.source) {
+    data.source = Hue.config.default_tv_source
+    data.type = Hue.config.default_tv_type
+    data.title = Hue.config.default_tv_title
+  }
+
+  if (!data.title) {
+    data.title = data.source
+  }
+
+  data.message = `${
+    data.setter
+  } changed the tv to: ${Hue.utilz.conditional_quotes(data.title)}`
+
+  if (data.type === "youtube") {
+    let time = Hue.utilz.get_youtube_time(data.source)
+
+    if (time !== 0) {
+      data.message += ` (At ${Hue.utilz.humanize_seconds(time)})`
     }
+  }
 
-    if (!data.source) {
-      data.source = Hue.config.default_tv_source
-      data.type = Hue.config.default_tv_type
-      data.title = Hue.config.default_tv_title
-    }
+  let gets = data.id ? `${data.id.slice(-3)} | ` : ""
 
-    if (!data.title) {
-      data.title = data.source
-    }
+  data.info = `${gets}Setter: ${data.setter}`
 
-    data.message = `${
-      data.setter
-    } changed the tv to: ${Hue.utilz.conditional_quotes(data.title)}`
+  if (data.query) {
+    data.info += ` | Search Term: "${data.query}"`
+  }
 
-    if (data.type === "youtube") {
-      let time = Hue.utilz.get_youtube_time(data.source)
+  data.info += ` | ${data.nice_date}`
 
-      if (time !== 0) {
-        data.message += ` (At ${Hue.utilz.humanize_seconds(time)})`
-      }
-    }
-
-    let gets = data.id ? `${data.id.slice(-3)} | ` : ""
-
-    data.info = `${gets}Setter: ${data.setter}`
-
-    if (data.query) {
-      data.info += ` | Search Term: "${data.query}"`
-    }
-  
-    data.info += ` | ${data.nice_date}`
-
-    data.onclick = function () {
-      Hue.open_url_menu({
-        source: data.source,
-        data: data,
-        media_type: "tv"
-      })
-    }
+  data.onclick = function () {
+    Hue.open_url_menu({
+      source: data.source,
+      data: data,
+      media_type: "tv"
+    })
   }
 
   if (!data.date) {
@@ -85,7 +74,7 @@ Hue.setup_tv = function (mode, odata = {}) {
     Hue.push_tv_changed(data)
   }
 
-  if (mode === "change" || mode === "restart") {
+  if (mode === "change") {
     let bypass_lock = data.user_id === Hue.user_id
 
     if (mode === "change") {
@@ -96,13 +85,6 @@ Hue.setup_tv = function (mode, odata = {}) {
       Hue.change({
         type: "tv",
         force: true,
-        bypass_lock: bypass_lock
-      })
-    } else if (mode === "restart") {
-      Hue.change({
-        type: "tv",
-        force: true,
-        play: true,
         bypass_lock: bypass_lock
       })
     }
@@ -426,18 +408,6 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
     }
 
     return false
-  } else if (src === "default") {
-    // OK
-  } else if (src === "prev" || src === "previous") {
-    if (Hue.tv_changed.length > 1) {
-      src = Hue.tv_changed[Hue.tv_changed.length - 2].source
-    } else {
-      if (feedback) {
-        Hue.feedback("No tv source before current one")
-      }
-
-      return false
-    }
   }
 
   if (Hue.utilz.is_url(src)) {
@@ -504,22 +474,6 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
           return false
         }
       }
-    }
-  } else if (src !== "restart" && src !== "reset") {
-    if (src.length > Hue.config.safe_limit_1) {
-      if (feedback) {
-        Hue.feedback("Query is too long")
-      }
-
-      return false
-    }
-
-    if (!Hue.config.youtube_enabled) {
-      if (feedback) {
-        Hue.feedback("YouTube support is not enabled")
-      }
-
-      return false
     }
   }
 
@@ -703,12 +657,6 @@ Hue.refresh_tv = function () {
     play: true,
     current_source: true
   })
-}
-
-// Sends a restart signal to reload the tv for everyone
-Hue.restart_tv = function () {
-  Hue.change_tv_source("restart")
-  Hue.msg_tv_picker.close()
 }
 
 // Room tv mode setter

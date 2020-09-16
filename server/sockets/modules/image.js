@@ -58,21 +58,7 @@ module.exports = function (
       return false
     }
 
-    if (data.src === "default") {
-      let obj = {}
-
-      obj.src = "default"
-      obj.setter = socket.hue_username
-      obj.size = 0
-      obj.type = "link"
-      obj.comment = data.comment
-
-      handler.do_change_image(socket, obj)
-
-      return
-    } else {
-      data.src = data.src.replace(/\.gifv/g, ".gif")
-    }
+    data.src = data.src.replace(/\.gifv/g, ".gif")
 
     if (!utilz.is_url(data.src) && !data.src.startsWith("/")) {
       if (!config.imgur_enabled) {
@@ -245,11 +231,6 @@ module.exports = function (
 
     if (data.type === "link") {
       image_source = data.src
-
-      if (image_source === "default") {
-        image_source = ""
-        data.query = "default"
-      }
 
       db_manager.update_room(room_id, {
         image_id: image_id,

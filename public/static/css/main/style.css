@@ -2574,10 +2574,6 @@ a.special_link:hover {
 	max-width: 28rem;
 }
 
-#image_picker_submit {
-	display: none;
-}
-
 #user_menu_bio_textarea {
 	margin-bottom: 1rem;
 	border: 0rem solid grey;

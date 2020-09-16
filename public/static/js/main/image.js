@@ -204,18 +204,6 @@ Hue.change_image_source = function (src, just_check = false, comment = "") {
     }
 
     return false
-  } else if (src === "default") {
-    // OK
-  } else if (src === "prev" || src === "previous") {
-    if (Hue.image_changed.length > 1) {
-      src = Hue.image_changed[Hue.image_changed.length - 2].source
-    } else {
-      if (feedback) {
-        Hue.feedback("No image source before current one")
-      }
-
-      return false
-    }
   } else if (Hue.utilz.is_url(src)) {
     src = src.replace(/\.gifv/g, ".gif")
 
@@ -797,24 +785,6 @@ Hue.change_room_image_mode = function (what) {
   }
 
   Hue.socket_emit("change_image_mode", { what: what })
-}
-
-Hue.setup_image_picker = function () {
-  $("#image_source_picker_input").on("input", function () {
-    Hue.check_image_picker()
-  })
-
-  Hue.check_image_picker()
-}
-
-Hue.check_image_picker = function (el) {
-  if ($("#image_source_picker_input").val().trim().length > 0) {
-    $("#image_picker_upload").css("display", "none")
-    $("#image_picker_submit").css("display", "inline-block")
-  } else {
-    $("#image_picker_upload").css("display", "inline-block")
-    $("#image_picker_submit").css("display", "none")
-  }
 }
 
 Hue.image_picker_submit = function () {

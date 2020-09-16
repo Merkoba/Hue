@@ -205,15 +205,7 @@ Hue.setup_open_url = function () {
   })
 
   $("#open_url_menu_load").click(function () {
-    Hue.toggle_media({type:Hue.open_url_media_type, what:true})
-    
-    Hue.change({
-      type: Hue.open_url_media_type,
-      item: Hue.open_url_data,
-      force: true,
-    })
-
-    Hue.change_media_lock({type:Hue.open_url_media_type, what:true})
+    Hue.load_media(Hue.open_url_media_type, Hue.open_url_data)
     Hue.close_all_modals()
   })
 
@@ -248,14 +240,15 @@ Hue.open_url_menu = function (args = {}) {
 
   if (args.media_type && args.data) {
     let mode = Hue[`room_${args.media_type}_mode`]
+    $("#open_url_menu_load").css("display", "inline-block")
 
     if (
       (mode === "enabled" || mode === "locked") &&
       args.data !== Hue[`loaded_${args.media_type}`]
     ) {
-      $("#open_url_menu_load").css("display", "inline-block")
+      $("#open_url_menu_load").text("Load")
     } else {
-      $("#open_url_menu_load").css("display", "none")
+      $("#open_url_menu_load").text("Restart")
     }
 
     if (Hue[`change_${args.media_type}_source`](args.source, true)) {

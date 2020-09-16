@@ -21,9 +21,6 @@ Hue.server_update_events = {
   changed_tv_source: (data) => {
     Hue.setup_tv("change", data)
   },
-  restarted_tv_source: (data) => {
-    Hue.setup_tv("restart", data)
-  },
   profile_image_changed: (data) => {
     Hue.profile_image_changed(data)
   },

@@ -64,11 +64,6 @@ module.exports = function (
       return false
     }
 
-    if (data.src === "default") {
-      handler.do_change_tv_source(socket, data)
-      return
-    }
-
     if (utilz.is_url(data.src)) {
       if (handler.check_domain_list("tv", data.src)) {
         return false
@@ -232,12 +227,6 @@ module.exports = function (
           handler.do_change_tv_source(socket, data)
         }
       }
-    } else if (data.src === "restart" || data.src === "reset") {
-      handler.room_emit(socket, "restarted_tv_source", {
-        setter: socket.hue_username,
-        date: Date.now(),
-        comment: data.comment || "",
-      })
     } else {
       if (!config.youtube_enabled) {
         return false
@@ -295,18 +284,10 @@ module.exports = function (
     let query = data.query || ""
     let comment = data.comment || ""
 
-    if (data.src === "default") {
-      tvinfo.tv_type = "tv"
-      tvinfo.tv_source = ""
-      tvinfo.tv_title = ""
-      tvinfo.tv_query = "default"
-    } else {
-      tvinfo.tv_type = data.type
-      tvinfo.tv_source = data.src
-      tvinfo.tv_title = vars.he.decode(data.title)
-      tvinfo.tv_query = query
-    }
-
+    tvinfo.tv_type = data.type
+    tvinfo.tv_source = data.src
+    tvinfo.tv_title = vars.he.decode(data.title)
+    tvinfo.tv_query = query
     tvinfo.tv_setter = data.setter
     tvinfo.tv_date = date
     tvinfo.tv_comment = comment

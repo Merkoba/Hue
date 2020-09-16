@@ -246,7 +246,7 @@ Hue.commands = {
         Hue.show_media_source("tv")
       }
     },
-    description: `Changes the TV using a search term or URL. "${Hue.config.commands_prefix}tv restart" restarts the current video for all users, in case it gets stuck. To link a Youtube playlist the URL must be a pure playlist URL without a video ID. "${Hue.config.commands_prefix}tv default" sets the tv to the site's default tv. "${Hue.config.commands_prefix}tv prev" changes to the previous tv source`,
+    description: "Changes the TV using a search term or URL.",
   },
   "image": {
     action: (arg, ans) => {
@@ -256,7 +256,7 @@ Hue.commands = {
         Hue.show_media_source("image")
       }
     },
-    description: `Sends an image to be uploaded by URL. "${Hue.config.commands_prefix}image default" sets the image to the site's default image. "${Hue.config.commands_prefix}image prev" changes to the previous image source`,
+    description: "Changes the image with a URL",
   },
   "status": {
     action: (arg, ans) => {
