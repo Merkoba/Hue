@@ -382,7 +382,7 @@ body * {
 #input::placeholder {
 	white-space: pre;
 	font-size: var(--panel_font_size);
-	color: var(--color_4);
+	color: var(--color_3);
 }
 
 .scroller_container {
@@ -2586,7 +2586,7 @@ a.special_link:hover {
 }
 
 #user_menu_bio_textarea::placeholder {
-	color: var(--color_4);
+	color: var(--color_3);
 }
 
 pre {
@@ -2873,7 +2873,7 @@ pre {
 #footer_search_input::placeholder {
 	white-space: pre;
 	font-size: var(--panel_font_size);
-	color: var(--color_4);
+	color: var(--color_3);
 }
 
 .flex_start {
