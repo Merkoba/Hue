@@ -1078,7 +1078,11 @@ Hue.toggle_media = function (args) {
     Hue[`change_${args.type}_visibility`]()
   }
 
-  if (args.save) {
+  let p = Hue.room_state.tv_display_percentage
+
+  if (p === 0 || p === 100) {
+    Hue.set_default_tv_size()
+  } else if (args.save) {
     Hue.save_room_state()
   }
 }
