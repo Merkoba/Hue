@@ -1029,16 +1029,6 @@ select {
 	flex-shrink: 0;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
-}
-
-#modal_image_arrow_prev {
-	display: flex;
-	align-items: center;
-	height: 100%;
-	position: relative;
-}
-
-#modal_image_arrow_next {
 	display: flex;
 	align-items: center;
 	height: 100%;
