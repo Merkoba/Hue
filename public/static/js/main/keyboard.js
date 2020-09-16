@@ -303,14 +303,10 @@ Hue.activate_key_detection = function () {
     if (e.key === "Enter") {
       let val = $("#input").val()
 
-      if (e.shiftKey) {
-        Hue.add_linebreak_to_input()
+      if (val.length === 0) {
+        Hue.goto_bottom(true)
       } else {
-        if (val.length === 0) {
-          Hue.goto_bottom(true)
-        } else {
-          Hue.process_message({ message: val })
-        }
+        Hue.process_message({ message: val })
       }
 
       e.preventDefault()

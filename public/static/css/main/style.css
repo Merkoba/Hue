@@ -375,7 +375,6 @@ body * {
 	height: 100%;
 	-moz-tab-size: var(--tab-size);
 	tab-size: var(--tab-size);
-	white-space: nowrap;
 }
 
 #input::placeholder {

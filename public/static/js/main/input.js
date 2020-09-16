@@ -8,13 +8,6 @@ Hue.input_is_scrolled = function () {
 Hue.on_input_change = function () {
   let value = $("#input").val()
 
-  value = Hue.utilz.clean_string9(value)
-
-  if (value.length > Hue.config.max_input_length) {
-    value = value.substring(0, Hue.config.max_input_length)
-    Hue.change_input(value)
-  }
-
   if (Hue.old_input_val !== value) {
     Hue.check_typing()
     Hue.old_input_val = value
