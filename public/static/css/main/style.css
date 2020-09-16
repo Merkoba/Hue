@@ -1991,13 +1991,14 @@ svg.action:hover {
 	left: 50%;
 	transform: translateX(-50%);
 	height: var(--panel_height);
-	width: 20rem;
 	background-color: var(--color_4);
 	color: white;
 	display: none;
 	z-index: 999;
 	align-items: center;
 	justify-content: center;
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
 #admin_list_container,
