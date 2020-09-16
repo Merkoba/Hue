@@ -140,3 +140,17 @@ Hue.make_safe = function (args = {}) {
 
   return c[0]
 }
+
+// Shows the infotip
+Hue.show_infotip = function (s) {
+  $("#infotip").text(s)
+  $("#infotip_container").css("display", "flex")
+  $("#activity_bar_inner").css("display", "none")
+  Hue.infotip_timer()
+}
+
+// Hides the infotip
+Hue.hide_infotip = function () {
+  $("#infotip_container").css("display", "none")
+  $("#activity_bar_inner").css("display", "grid")
+}
