@@ -2284,7 +2284,6 @@ Hue.goto_bottom = function (force = false) {
   if (force) {
     Hue.clear_autoscroll()
     Hue.scroll_chat_to(max)
-    Hue.show_top_scroller()
     Hue.hide_bottom_scroller()
   } else {
     if (!Hue.chat_scrolled) {

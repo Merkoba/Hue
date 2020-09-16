@@ -200,7 +200,6 @@ body * {
 }
 
 #chat_area_parent {
-	display: flex;
 	flex-grow: 1;
 	max-width: 100%;
 	max-height: 100%;
@@ -210,8 +209,8 @@ body * {
 	position: relative;
 	overflow-x: hidden;
 	overflow-y: auto;
-	flex-grow: 1;
 	max-width: 100%;
+	max-height: 100%;
 }
 
 .chat_area {
