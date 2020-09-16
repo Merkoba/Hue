@@ -835,12 +835,8 @@ a.generic:hover {
 	z-index: 99;
 }
 
-#chat_search_container {
-	margin-top: 2rem;
-}
-
-#chat_search_no_results {
-	margin-top: 2rem;
+#chat_search_top {
+	margin-bottom: 1.8rem;
 }
 
 .chat_search_result_item {
