@@ -98,7 +98,6 @@ Hue.mouse_over_chat_functions = false
 Hue.chat_functions_hover_delay = 3000
 Hue.user_functions = [1, 2, 3, 4, 5, 6]
 Hue.mouse_is_down = false
-Hue.draw_message_just_entered = false
 Hue.command_aliases = {}
 Hue.commands_queue = {}
 Hue.user_leaving = false

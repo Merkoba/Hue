@@ -246,7 +246,6 @@ Hue.start_msg = function () {
         $("#write_message_feedback").text("")
         $("#write_message_feedback").css("display", "none")
         Hue.writing_message = false
-        Hue.clear_draw_message_state()
       },
     })
   )

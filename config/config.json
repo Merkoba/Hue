@@ -178,8 +178,6 @@
 	"data_items_max_number_length": 20,
 	"profile_image_diameter": 300,
 	"max_num_newlines": 100,
-	"draw_coords_max_length": 15000,
-	"draw_coords_max_array_length": 1000,
 	"image_change_cooldown": 5000,
 	"tv_change_cooldown": 5000,
 	"max_sockets_per_user": 100,

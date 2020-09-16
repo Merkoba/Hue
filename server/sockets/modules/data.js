@@ -44,15 +44,9 @@ module.exports = function (
           if (s.length > config.data_items_max_number_length) {
             return false
           }
-        } else {
-          if (key === "draw_coords") {
-            if (s.length > config.draw_coords_max_length) {
-              return false
-            }
-          } else {
-            if (s.length > config.data_items_max_string_length) {
-              return false
-            }
+        } else { 
+          if (s.length > config.data_items_max_string_length) {
+            return false
           }
         }
       }

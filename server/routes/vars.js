@@ -69,7 +69,6 @@ module.exports = function (c, config) {
   c.vars.safe_limit_4 = config.safe_limit_4
   c.vars.profile_image_diameter = config.profile_image_diameter
   c.vars.max_num_newlines = config.max_num_newlines
-  c.vars.draw_coords_max_array_length = config.draw_coords_max_array_length
   c.vars.image_domain_allow_or_deny_list = config.image_domain_allow_or_deny_list
   c.vars.image_domain_list = config.image_domain_list
   c.vars.tv_domain_allow_or_deny_list = config.tv_domain_allow_or_deny_list

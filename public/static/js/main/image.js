@@ -667,7 +667,7 @@ Hue.refresh_image = function () {
 }
 
 // Used to change the image
-// Shows the image picker window to input a URL, draw, or upload a file
+// Shows the image picker window to input a URL, or upload a file
 Hue.show_image_picker = function () {
   if (!Hue.can_image) {
     Hue.feedback("You don't have image permission")

@@ -489,12 +489,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_num_newlines"
 >Maximum amount of newlines allowed per message.
 
-"draw_coords_max_length"
->Maximum string length for the draw coordinate arrays.
-
-"draw_coords_max_array_length"
->Maximum array length for each of the draw coordinate arrays.
-
 "image_change_cooldown"
 >How much it should wait in milliseconds before images can be changed again after last change.
 

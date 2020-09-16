@@ -9,7 +9,7 @@ Hue allows real time communication while watching, or listening to media.
 It provides different media spots that can all be active at once, or just the ones you, as an admin of the room want, or you, as the user want.
 
 These are Images and TV.
-Images can be any image, either uploaded, drawn (there's a built-in drawing pad to draw an image), or linked. Search queries can be enabled to search images on Imgur. When the image is clicked it opens a modal where current and previous images can be seen in full screen.
+Images can be any image, either uploaded or linked. Search queries can be enabled to search images on Imgur. When the image is clicked it opens a modal where current and previous images can be seen in full screen.
 
 TV can be any video link. It embeds videos from YouTube, Soundcloud, video files, or even websites that are embedded in an iframe. Search queries can be enabled to search videos on YouTube.
 
@@ -29,7 +29,7 @@ Admins can also enable, disable, or lock (nobody can change it, not) media.
 There's a user system. Admins, Operators, Voice 1, Voice 2, Voice 3, and Voice 4.
 Admins and Operators have basically the same rights, except only Admins can add or remove Operators or other Admins. They have access to the room controls, which are located in the Room Menu at the top. The 4 different types of Voice users can be configured to suit what works best for your room. For instance you can say Voice 1 has all features enabled, but Voice 2 can't change the TV. Users can be kicked or banned too.
 
-There's a real time private message system called Whispers. You can send a Whisper to another user as long as they are online. A popup message will appear in their screen, to which they can reply. Whispers are only visible to the senders and receivers. There's a drawing pad to send drawings in the Whispers. This Whisper system is also good for controlling bots (see Huebot), since orders can be sent to them to trigger an action.
+There's a real time private message system called Whispers. You can send a Whisper to another user as long as they are online. A popup message will appear in their screen, to which they can reply. Whispers are only visible to the senders and receivers. This Whisper system is also good for controlling bots (see Huebot), since orders can be sent to them to trigger an action.
 
 There's a User Settings system that configures many features of the application for users on a personal level. This consists of two categories, Global Settings, and Room Settings. These are both the same settings except whatever is changed in Global Settings affects all rooms, whereas in Room Settings, when a setting is overriden, it affects only the current room.
 

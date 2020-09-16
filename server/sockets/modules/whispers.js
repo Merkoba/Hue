@@ -44,9 +44,7 @@ module.exports = function (
     }
 
     if (data.message.length === 0) {
-      if (!data.draw_coords) {
-        return handler.get_out(socket)
-      }
+      return handler.get_out(socket)
     }
 
     if (data.message.length > config.max_whispers_post_length) {
@@ -54,16 +52,6 @@ module.exports = function (
     }
 
     if (data.message.split("\n").length > config.max_num_newlines) {
-      return handler.get_out(socket)
-    }
-
-    if (data.draw_coords === undefined) {
-      return handler.get_out(socket)
-    }
-
-    if (
-      JSON.stringify(data.draw_coords).length > config.draw_coords_max_length
-    ) {
       return handler.get_out(socket)
     }
 
@@ -84,7 +72,6 @@ module.exports = function (
               room: socket.hue_room_id,
               username: socket.hue_username,
               message: data.message,
-              draw_coords: data.draw_coords,
               type: data.type
             })
           }
@@ -96,7 +83,6 @@ module.exports = function (
       handler.system_emit(socket, "system_broadcast", {
         username: config.system_username,
         message: data.message,
-        draw_coords: data.draw_coords,
         type: data.type
       })
     }

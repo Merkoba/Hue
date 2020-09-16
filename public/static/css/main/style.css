@@ -1252,27 +1252,13 @@ select {
 	max-width: 30rem;
 }
 
-#draw_message_area {
-	cursor: crosshair;
-	margin-top: 1rem;
-	margin-bottom: 1rem;
-}
-
-#write_message_drawing_info {
-	padding-top: 1rem;
-}
-
-.draw_canvas {
-	outline: none;
-	display: block;
-	margin: 0 auto;
-	background-color: var(--background_color_a_2);
-	color: var(--font_color);
-}
-
 #write_message_feedback {
 	padding-bottom: 1.2em;
 	display: none;
+}
+
+#write_message_send_button {
+	padding-top: 1rem;
 }
 
 .setting_textarea {

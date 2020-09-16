@@ -89,8 +89,7 @@ Hue.send_inline_whisper = function (arg, show = true) {
     return false
   }
 
-  Hue.do_send_whisper({message: message, usernames: approved, 
-    draw_coords: false, type: "user"}, show)
+  Hue.do_send_whisper({message: message, usernames: approved, type: "user"}, show)
 }
 
 // Shows the window to write whispers
@@ -170,7 +169,6 @@ Hue.update_whisper_users = function (uname) {
 
 // Submits the whisper window form
 // Handles different types of whispers
-// Includes text and drawings
 Hue.send_popup_message = function (force = false) {
   if (Hue.sending_whisper) {
     return false
@@ -180,23 +178,10 @@ Hue.send_popup_message = function (force = false) {
 
   let message = Hue.utilz.remove_multiple_empty_lines($("#write_message_area").val()).trim()
   let diff = Hue.config.max_whispers_post_length - message.length
-  let draw_coords
-
-  if (Hue.draw_message_click_x.length > 0) {
-    draw_coords = [
-      Hue.draw_message_click_x,
-      Hue.draw_message_click_y,
-      Hue.draw_message_drag,
-    ]
-  } else {
-    draw_coords = false
-  }
 
   if (diff === Hue.config.max_whispers_post_length) {
-    if (!draw_coords) {
-      Hue.sending_whisper = false
-      return false
-    }
+    Hue.sending_whisper = false
+    return false
   } else if (diff < 0) {
     Hue.show_message_feedback(`Character limit exceeded by ${Math.abs(diff)}`)
     Hue.sending_whisper = false
@@ -212,7 +197,7 @@ Hue.send_popup_message = function (force = false) {
     return false
   }
 
-  let ans = Hue.send_whisper(message, draw_coords, force)
+  let ans = Hue.send_whisper(message, force)
 
   if (ans) {
     Hue.msg_message.close(function () {
@@ -295,24 +280,6 @@ Hue.show_whisper = function (data) {
     }
     
     Hue.setup_whispers_click(text_el, usr[0])
-    let canvas =  $(container).find(".sent_message_drawing")[0]
-    
-    if (data.draw_coords) {
-      let context = canvas.getContext("2d")
-
-      context.clearRect(0, 0, canvas.width, canvas.height);
-
-      Hue.redraw_draw_message_canvas({
-        context: context,
-        click_x: data.draw_coords[0],
-        click_y: data.draw_coords[1],
-        drag: data.draw_coords[2],
-      })
-
-      $(canvas).css("display", "block")
-    } else {
-      $(canvas).css("display", "none")
-    }
   })
 
   if (!data.notification.data("read")) {
@@ -324,11 +291,9 @@ Hue.show_whisper = function (data) {
 }
 
 // Sends a whisper to user(s)
-Hue.send_whisper = function (message, draw_coords, force = false) {
+Hue.send_whisper = function (message, force = false) {
   if (Hue.message_type === "system_broadcast") {
-    Hue.do_send_whisper({message: message, usernames: [], 
-      draw_coords: draw_coords, type: Hue.message_type})
-    
+    Hue.do_send_whisper({message: message, usernames: [], type: Hue.message_type})
     return true
   }
 
@@ -373,8 +338,7 @@ Hue.send_whisper = function (message, draw_coords, force = false) {
     return false
   }
 
-  Hue.do_send_whisper({message: message, usernames: approved, 
-    draw_coords: draw_coords, type: Hue.message_type})
+  Hue.do_send_whisper({message: message, usernames: approved, type: Hue.message_type})
 
   return true
 }
@@ -425,116 +389,6 @@ Hue.setup_message_window = function () {
   $("#write_message_send_button").dblclick(function () {
     Hue.send_popup_message(true)
   })
-
-  $("#write_message_clear_drawing").click(function () {
-    Hue.clear_draw_message_state()
-  })
-
-  Hue.setup_message_draw_area()
-}
-
-// Setups the drawing area of write whisper windows
-Hue.setup_message_draw_area = function () {
-  Hue.draw_message_context = $("#draw_message_area")[0].getContext("2d")
-  Hue.clear_draw_message_state()
-
-  $("#draw_message_area").mousedown(function (e) {
-    Hue.draw_message_just_entered = false
-    Hue.draw_message_add_click(e.offsetX, e.offsetY, false)
-    Hue.redraw_draw_message()
-  })
-
-  $("#draw_message_area").mousemove(function (e) {
-    if (Hue.mouse_is_down) {
-      Hue.draw_message_add_click(
-        e.offsetX,
-        e.offsetY,
-        !Hue.draw_message_just_entered
-      )
-      Hue.redraw_draw_message()
-    }
-
-    Hue.draw_message_just_entered = false
-  })
-
-  $("#draw_message_area").mouseenter(function (e) {
-    Hue.draw_message_just_entered = true
-  })
-}
-
-// Registers a click to the drawing area of a write whisper window
-Hue.draw_message_add_click = function (x, y, dragging) {
-  Hue.draw_message_click_x.push(x)
-  Hue.draw_message_click_y.push(y)
-  Hue.draw_message_drag.push(dragging)
-
-  if (
-    Hue.draw_message_click_x.length > Hue.config.draw_coords_max_array_length
-  ) {
-    Hue.draw_message_click_x.shift()
-    Hue.draw_message_click_y.shift()
-    Hue.draw_message_drag.shift()
-  }
-}
-
-// Redraws the drawing area of a write whisper window
-Hue.redraw_draw_message = function () {
-  Hue.redraw_draw_message_canvas({
-    context: Hue.draw_message_context,
-    click_x: Hue.draw_message_click_x,
-    click_y: Hue.draw_message_click_y,
-    drag: Hue.draw_message_drag
-  })
-}
-
-// Redraws the drawing message area
-Hue.redraw_draw_message_canvas = function (args = {}) {
-  let def_args = {
-    context: false,
-    click_x: false,
-    click_y: false,
-    drag: false,
-  }
-
-  args = Object.assign(def_args, args)
-
-  args.context.clearRect(
-    0, 0,
-    args.context.canvas.width,
-    args.context.canvas.height
-  )
-
-  args.context.lineJoin = "round"
-
-  for (let i = 0; i < args.click_x.length; i++) {
-    args.context.beginPath()
-
-    if (args.drag[i] && i) {
-      args.context.moveTo(args.click_x[i - 1], args.click_y[i - 1])
-    } else {
-      args.context.moveTo(args.click_x[i] - 1, args.click_y[i])
-    }
-
-    args.context.lineTo(args.click_x[i], args.click_y[i])
-    args.context.closePath()
-    args.context.strokeStyle = $("#draw_message_area").css("color")
-    args.context.lineWidth = 2
-    args.context.stroke()
-  }
-}
-
-// Clears the drawing area of a write whisper window
-Hue.clear_draw_message_state = function () {
-  Hue.draw_message_click_x = []
-  Hue.draw_message_click_y = []
-  Hue.draw_message_drag = []
-
-  Hue.draw_message_context.clearRect(
-    0,
-    0,
-    Hue.draw_message_context.canvas.width,
-    Hue.draw_message_context.canvas.height
-  )
 }
 
 // Pushes a new whisper to the whispers window
