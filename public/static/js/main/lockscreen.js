@@ -26,22 +26,18 @@ Hue.setup_lockscreen = function () {
 // Enables the lockscreen
 // The lockscreen is a special mode where the display is covered
 // The user is considered unfocused
-Hue.lock_screen = function (save = true, force = false) {
-  if (!force && Hue.screen_locked) {
+Hue.lock_screen = function () {
+  if (Hue.screen_locked) {
     return false
   }
 
   Hue.stop_tv()
   Hue.screen_locked = true
   Hue.msg_lockscreen.show()
-
-  if (save) {
-    Hue.save_room_state()
-  }
 }
 
 // Disables the lockscreen
-Hue.unlock_screen = function (save = true) {
+Hue.unlock_screen = function () {
   if (!Hue.screen_locked) {
     return false
   }
@@ -54,8 +50,4 @@ Hue.unlock_screen = function (save = true) {
   Hue.change({ type: "image", force: false, play: false})
   Hue.change({ type: "tv", force: false, play: false})
   Hue.execute_commands("on_unlockscreen")
-
-  if (save) {
-    Hue.save_room_state()
-  }
 }
