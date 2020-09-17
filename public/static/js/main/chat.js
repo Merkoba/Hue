@@ -93,17 +93,17 @@ Hue.update_chat = function (args = {}) {
   if (args.username !== Hue.username) {
     if (image_preview && image_preview_text) {
       if (Hue.check_highlights(image_preview_text)) {
-        preview_text_classes += " highlighted4"
+        preview_text_classes += " highlighted_message"
         highlighted = true
       }
     } else if (link_preview && link_preview_text) {
       if (Hue.check_highlights(link_preview_text)) {
-        preview_text_classes += " highlighted4"
+        preview_text_classes += " highlighted_message"
         highlighted = true
       }
     } else {
       if (Hue.check_highlights(args.message)) {
-        content_classes += " highlighted4"
+        content_classes += " highlighted_message"
         highlighted = true
       }
     }
@@ -377,7 +377,7 @@ Hue.chat_announce = function (args = {}) {
   let highlighted = false
 
   if (args.highlight) {
-    content_classes += " highlighted4"
+    content_classes += " highlighted_message"
     highlighted = true
   }
 
@@ -401,7 +401,7 @@ Hue.chat_announce = function (args = {}) {
 
     if (args.username && args.username !== Hue.username) {
       if (!highlighted && Hue.check_highlights(args.comment)) {
-        cls += " highlighted4"
+        cls += " highlighted_message"
         highlighted = true
       }
     }
@@ -464,12 +464,12 @@ Hue.chat_announce = function (args = {}) {
   if (args.username !== Hue.username) {
     if (image_preview && image_preview_text) {
       if (Hue.check_highlights(image_preview_text)) {
-        preview_text_classes += " highlighted4"
+        preview_text_classes += " highlighted_message"
         highlighted = true
       }
     } else if (link_preview && link_preview_text) {
       if (Hue.check_highlights(link_preview_text)) {
-        preview_text_classes += " highlighted4"
+        preview_text_classes += " highlighted_message"
         highlighted = true
       }
     }

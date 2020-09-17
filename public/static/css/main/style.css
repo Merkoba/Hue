@@ -1812,23 +1812,15 @@ svg.action:hover {
 	box-shadow: 0 0 1em currentColor;
 }
 
-.highlighted,
-.highlighted2 {
-	box-shadow: inset 0 0 0.1176rem currentColor;
-}
-
-.highlighted4 {
+.highlighted_message {
+	background-color: var(--background_color_a_2);
+	color: var(--font_color);
 	box-shadow: 0 0 0.1176rem currentColor;
 	padding: 0.1176rem;
 }
 
-.highlighted, .highlighted2, .highlighted4 {
-	background-color: var(--background_color_a_2);
-	color: var(--font_color);
-}
-
 .fresh_message {
-	background: linear-gradient(.25turn, var(--background_color_a_2), 50%, transparent);
+	background: linear-gradient(.25turn, var(--color_4_a), 50%, transparent);
 }
 
 .blinkattention {
