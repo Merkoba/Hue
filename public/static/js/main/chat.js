@@ -961,7 +961,11 @@ Hue.show_fresh_messages = function () {
   }
 
   for (let container of Hue.fresh_messages_list) {
-    container.addClass("fader")
+    container.addClass("highlighted3")
+
+    setTimeout(function () {
+      container.removeClass("highlighted3")
+    }, Hue.fresh_messages_duration)
   }
 
   Hue.fresh_messages_list = []
