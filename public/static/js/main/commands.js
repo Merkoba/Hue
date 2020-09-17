@@ -861,48 +861,6 @@ Hue.commands = {
     },
     description: `Opens reaction picker for TV`,
   },
-  "f1": {
-    action: (arg, ans) => {
-      Hue.run_user_function(1)
-      ans.to_history = false
-    },
-    description: `Runs User Function 1`,
-  },
-  "f2": {
-    action: (arg, ans) => {
-      Hue.run_user_function(2)
-      ans.to_history = false
-    },
-    description: `Runs User Function 2`,
-  },
-  "f3": {
-    action: (arg, ans) => {
-      Hue.run_user_function(3)
-      ans.to_history = false
-    },
-    description: `Runs User Function 3`,
-  },
-  "f4": {
-    action: (arg, ans) => {
-      Hue.run_user_function(4)
-      ans.to_history = false
-    },
-    description: `Runs User Function 4`,
-  },
-  "f5": {
-    action: (arg, ans) => {
-      Hue.run_user_function(5)
-      ans.to_history = false
-    },
-    description: `Runs User Function 5`,
-  },
-  "f6": {
-    action: (arg, ans) => {
-      Hue.run_user_function(6)
-      ans.to_history = false
-    },
-    description: `Runs User Function 6`,
-  },
   "lockscreen": {
     action: (arg, ans) => {
       Hue.lock_screen()
@@ -973,7 +931,7 @@ Hue.commands = {
     action: (arg, ans) => {
       Hue.inspect_command(arg)
     },
-    description: `This can be used to inspect commands. If the command is an alias it will show what it is an alias of`,
+    description: `This can be used to inspect commands`,
   },
   "reload": {
     action: (arg, ans) => {
@@ -1458,9 +1416,7 @@ Hue.inspect_command = function (cmd) {
 
   let s = cmd
 
-  if (Hue.command_aliases[cmd] !== undefined) {
-    s += ` is an alias to: "${Hue.command_aliases[cmd]}"`
-  } else if (Hue.commands_list.includes(cmd)) {
+  if (Hue.commands_list.includes(cmd)) {
     s += `: ${Hue.commands[cmd].description}`
   } else {
     s += ` is not a valid command`
@@ -1503,61 +1459,6 @@ Hue.show_commands = function (filter = "") {
     $("#commands_filter").val(filter)
     Hue.do_modal_filter()
   }
-}
-
-// Creates the command aliases object
-// Used in autocomplete and command execution
-// Command aliases are custom commands based on normal commands
-Hue.setup_command_aliases = function () {
-  let aliases = Hue.get_setting("aliases").split("\n")
-
-  Hue.command_aliases = {}
-
-  for (let alias of aliases) {
-    let pieces = alias.split("=")
-
-    if (pieces.length < 2) {
-      continue
-    }
-
-    let name = pieces[0].trim()
-
-    if (name.length < 2) {
-      continue
-    }
-
-    if (name[0] === Hue.config.commands_prefix && 
-    name[1] !== Hue.config.commands_prefix) {
-      let body = pieces.slice(1).join("=").trim()
-      Hue.command_aliases[name] = body
-    }
-  }
-}
-
-// Formats command alias to proper format upon save
-Hue.format_command_aliases = function (cmds) {
-  let aliases = cmds.split("\n")
-  let s = ""
-
-  for (let alias of aliases) {
-    let pieces = alias.split("=")
-
-    if (pieces.length < 2) {
-      continue
-    }
-
-    let name = `${Hue.config.commands_prefix}${Hue.utilz.clean_string5(pieces[0]).replace(/\//g, "")}`
-
-    if (name[0] !== Hue.config.commands_prefix) {
-      name = `${Hue.config.commands_prefix}name`
-    }
-
-    let body = pieces.slice(1).join("=").trim()
-
-    s += `${name} = ${body}\n`
-  }
-
-  return s.slice(0, -1)
 }
 
 // Checks if a remote command includes a forbidden critical command
@@ -1708,12 +1609,6 @@ Hue.process_message = function (args = {}) {
             cmd += ` ${sp}`
           }
         } else {
-          if (Hue.command_aliases[sp] !== undefined) {
-            ssplit.splice(p, 1, ...Hue.command_aliases[sp].split(" "))
-            p -= 1
-            continue
-          }
-
           if (cmd === "") {
             if (sp !== "&&") {
               cmd = sp
@@ -1772,62 +1667,13 @@ Hue.process_message = function (args = {}) {
       }
     }
 
-    let msplit = args.message.split(" ")
-    let alias_cmd = msplit[0].trim()
-    let alias_cmd_2, needs_confirm
+    let ans = Hue.execute_command(args.message, {
+      to_history: args.to_history,
+      clr_input: args.clr_input,
+    })
 
-    if (alias_cmd.endsWith("?")) {
-      alias_cmd_2 = alias_cmd.slice(0, -1)
-      needs_confirm = true
-    } else {
-      alias_cmd_2 = alias_cmd
-      needs_confirm = false
-    }
-
-    let alias = Hue.command_aliases[alias_cmd_2]
-
-    if (alias !== undefined) {
-      let alias_arg = msplit.slice(1).join(" ").trim()
-      let full_alias = `${alias} ${alias_arg}`.trim()
-
-      if (alias_cmd_2.startsWith(`${Hue.config.commands_prefix}X`)) {
-        args.to_history = false
-      }
-
-      if (args.to_history) {
-        Hue.add_to_input_history(args.message)
-      }
-
-      if (needs_confirm) {
-        if (confirm(`Are you sure you want to execute ${alias_cmd_2}?`)) {
-          Hue.process_message({
-            message: full_alias,
-            to_history: false,
-            clr_input: args.clr_input,
-          })
-        } else {
-          if (args.callback) {
-            return args.callback(false)
-          } else {
-            return false
-          }
-        }
-      } else {
-        Hue.process_message({
-          message: full_alias,
-          to_history: false,
-          clr_input: args.clr_input,
-        })
-      }
-    } else {
-      let ans = Hue.execute_command(args.message, {
-        to_history: args.to_history,
-        clr_input: args.clr_input,
-      })
-
-      args.to_history = ans.to_history
-      args.clr_input = ans.clr_input
-    }
+    args.to_history = ans.to_history
+    args.clr_input = ans.clr_input
   } else {
     if (Hue.can_chat) {
       if (args.message.length === 0) {

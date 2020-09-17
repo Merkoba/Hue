@@ -9,51 +9,6 @@ Hue.activate_key_detection = function () {
       e.preventDefault()
     }
 
-    if (
-      !(
-        Hue.utilz.is_textbox(document.activeElement) &&
-        document.activeElement.value.trim()
-      ) &&
-      Hue.keys_pressed[e.keyCode] === undefined &&
-      !e.repeat
-    ) {
-      Hue.keys_pressed[e.keyCode] = true
-
-      if (Object.keys(Hue.keys_pressed).length === 1) {
-        if (e.key === Hue.config.double_tap_key) {
-          Hue.double_tap_key_pressed += 1
-
-          if (Hue.double_tap_key_pressed === 2) {
-            Hue.on_double_tap()
-          } else {
-            Hue.double_tap_timer()
-          }
-        } else if (e.key === Hue.config.double_tap_key_2) {
-          Hue.double_tap_key_2_pressed += 1
-
-          if (Hue.double_tap_key_2_pressed === 2) {
-            Hue.on_double_tap_2()
-          } else {
-            Hue.double_tap_2_timer()
-          }
-        } else if (e.key === Hue.config.double_tap_key_3) {
-          Hue.double_tap_key_3_pressed += 1
-
-          if (Hue.double_tap_key_3_pressed === 2) {
-            Hue.on_double_tap_3()
-          } else {
-            Hue.double_tap_3_timer()
-          }
-        } else {
-          Hue.reset_double_tap_keys_pressed()
-        }
-      } else {
-        Hue.reset_double_tap_keys_pressed()
-      }
-    } else {
-      Hue.reset_double_tap_keys_pressed()
-    }
-
     if (Hue.modal_open) {
       if (e.key === "Escape") {
         if (e.shiftKey) {
@@ -365,7 +320,6 @@ Hue.activate_key_detection = function () {
           Hue.goto_bottom(true, true)
         }
 
-        Hue.hide_chat_functions_box()
         e.preventDefault()
         return
       }
@@ -376,8 +330,6 @@ Hue.activate_key_detection = function () {
     if (!Hue.started) {
       return
     }
-
-    delete Hue.keys_pressed[e.keyCode]
   })
 
   document.addEventListener("input", (e) => {
@@ -389,26 +341,4 @@ Hue.activate_key_detection = function () {
       Hue.do_modal_filter_timer()
     }
   })
-}
-
-// Resets double tap key press state
-Hue.reset_double_tap_keys_pressed = function () {
-  Hue.double_tap_key_pressed = 0
-  Hue.double_tap_key_2_pressed = 0
-  Hue.double_tap_key_3_pressed = 0
-}
-
-// On double tap 1 action
-Hue.on_double_tap = function () {
-  Hue.execute_commands("double_tap")
-}
-
-// On double tap 2 action
-Hue.on_double_tap_2 = function () {
-  Hue.execute_commands("double_tap_2")
-}
-
-// On double tap 3 action
-Hue.on_double_tap_3 = function () {
-  Hue.execute_commands("double_tap_3")
 }

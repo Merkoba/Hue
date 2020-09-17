@@ -59,10 +59,6 @@ Hue.activate_visibility_listener = function () {
     },
     false
   )
-
-  window.onblur = function () {
-    Hue.keys_pressed = {}
-  }
 }
 
 // This runs after a visibility change

@@ -35,8 +35,6 @@ Hue.lock_screen = function (save = true, force = false) {
   Hue.screen_locked = true
   Hue.msg_lockscreen.show()
 
-  Hue.execute_commands("on_lockscreen")
-
   if (save) {
     Hue.save_room_state()
   }

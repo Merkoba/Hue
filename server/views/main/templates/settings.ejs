@@ -17,12 +17,6 @@
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_functions_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_functions_{{type}}' data-category='functions'>
-                    <span class='settings_window_category_status_filler invisible'></span>
-                    <span class='settings_window_category_text'>Functions</span>
-                    <span class='settings_window_category_status'></span>
-                </div>
-
                 <div id='settings_window_category_confirms_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_confirms_{{type}}' data-category='confirms'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Confirms</span>
@@ -126,81 +120,6 @@
                 <div class='settings_item settings_top_level_item' data-setting='show_input_placeholder'>
                     <div class="setting_title">Show Input Placeholder</div>
                     <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_show_input_placeholder">
-                </div>
-            </div>
-
-            <div class='settings_category settings_window_category_container' id='settings_window_category_content_functions_{{type}}' data-category='functions'>
-
-                <div id='settings_user_functions_container_{{type}}'>{{{user_functions}}}</div>
-
-                <div class='settings_item settings_top_level_item' data-setting='double_tap'>
-                    <div class='toggler_main_container'>
-                        <div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_key"></span>&nbsp;Tap</div>
-                        <div class='{{type}}_toggle_container toggler_container'>
-                            <div class="setting_title3">(Each on a different line)</div>
-                            <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_double_tap"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='double_tap_2'>
-                    <div class='toggler_main_container'>
-                        <div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_2_key"></span>&nbsp;Tap</div>
-                        <div class='{{type}}_toggle_container toggler_container'>
-                            <div class="setting_title3">(Each on a different line)</div>
-                            <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_double_tap_2"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='double_tap_3'>
-                    <div class='toggler_main_container'>
-                        <div class="{{type}}_toggle toggler action pointer bold inline">+ On Double&nbsp;<span class='underlined' id="{{type}}_double_tap_3_key"></span>&nbsp;Tap</div>
-                        <div class='{{type}}_toggle_container toggler_container'>
-                            <div class="setting_title3">(Each on a different line)</div>
-                            <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_double_tap_3"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='on_lockscreen'>
-                    <div class='toggler_main_container'>
-                        <div class="{{type}}_toggle toggler action pointer bold inline">+ On Lock Screen</div>
-                        <div class='{{type}}_toggle_container toggler_container'>
-                            <div class="setting_title3">(Each on a different line)</div>
-                            <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_on_lockscreen"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='on_unlockscreen'>
-                    <div class='toggler_main_container'>
-                        <div class="{{type}}_toggle toggler action pointer bold inline">+ On Unlock Screen</div>
-                        <div class='{{type}}_toggle_container toggler_container'>
-                            <div class="setting_title3">(Each on a different line)</div>
-                            <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_on_unlockscreen"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='at_startup'>
-                    <div class='toggler_main_container'>
-                        <div class="{{type}}_toggle toggler action pointer bold inline">+ At Startup</div>
-                        <div class='{{type}}_toggle_container toggler_container'>
-                            <div class="setting_title3">(Each on a different line)</div>
-                            <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_at_startup"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class='settings_item settings_top_level_item' data-setting='aliases'>
-                    <div class='toggler_main_container'>
-                        <div class="{{type}}_toggle toggler action pointer bold inline" title="For example <%= vars.commands_prefix %>sky = <%= vars.commands_prefix %>tv touch the sky. If the alias starts with an X, for example, <%= vars.commands_prefix %>X1 = <%= vars.commands_prefix %>reload, it won't be saved to history when used">+ Aliases</div>
-                        <div class='{{type}}_toggle_container toggler_container'>
-                            <div class="setting_title3">(Each on a different line)</div>
-                            <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_aliases"></textarea>
-                        </div>
-                    </div>
                 </div>
             </div>
 

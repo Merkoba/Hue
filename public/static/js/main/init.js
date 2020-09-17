@@ -75,16 +75,12 @@ Hue.popup_message_id = 0
 Hue.popup_id = 0
 Hue.modal_id = 0
 Hue.writing_message = false
-Hue.double_tap_key_pressed = 0
-Hue.double_tap_key_2_pressed = 0
-Hue.double_tap_key_3_pressed = 0
 Hue.image_visible = true
 Hue.tv_visible = true
 Hue.modal_image_open = false
 Hue.current_image_data = {}
 Hue.filter_delay = 350
 Hue.resize_delay = 350
-Hue.double_tap_delay = 250
 Hue.wheel_delay = 100
 Hue.wheel_delay_2 = 25
 Hue.check_scrollers_delay = 100
@@ -94,16 +90,11 @@ Hue.app_focused = true
 Hue.message_unames = ""
 Hue.aura_timeouts = {}
 Hue.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
-Hue.mouse_over_chat_functions = false
-Hue.chat_functions_hover_delay = 3000
-Hue.user_functions = [1, 2, 3, 4, 5, 6]
 Hue.mouse_is_down = false
-Hue.command_aliases = {}
 Hue.commands_queue = {}
 Hue.user_leaving = false
 Hue.admin_activity_filter_string = ""
 Hue.access_log_filter_string = ""
-Hue.keys_pressed = {}
 Hue.hide_infotip_delay = 2000
 Hue.hide_media_reactions_delay = 2000
 Hue.active_modal = false
@@ -132,7 +123,6 @@ Hue.usercount = 0
 Hue.markdown_regexes = {}
 Hue.show_media_history_type = ""
 Hue.add_to_chat_searches_delay = 2000
-Hue.chat_functions_box_open = false
 Hue.first_media_change = false
 Hue.calc_round_places = 10
 Hue.typing_delay = 100
@@ -224,11 +214,9 @@ Hue.init = function () {
   Hue.setup_modal_image()
   Hue.setup_footer()
   Hue.setup_reactions()
-  Hue.setup_chat_functions()
   Hue.prepare_media_settings()
   Hue.setup_message_window()
   Hue.setup_autocomplete()
-  Hue.setup_command_aliases()
   Hue.setup_fonts()
   Hue.setup_before_unload()
   Hue.maxers_mouse_events()
@@ -242,7 +230,6 @@ Hue.init = function () {
   Hue.setup_image_upload_comment()
   Hue.setup_drag_events()
   Hue.setup_open_url()
-  Hue.setup_user_functions()
   Hue.setup_media_pickers()
   Hue.setup_generic_separators()
   Hue.setup_media_menu()
@@ -338,10 +325,6 @@ Hue.at_startup = function () {
   Hue.date_joined = Date.now()
   Hue.connected = true
   Hue.started = true
-
-  if (Hue.connections === 1) {
-    Hue.execute_commands("at_startup")
-  }
 
   setTimeout(function () {
     Hue.started_safe = true

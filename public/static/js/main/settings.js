@@ -102,66 +102,6 @@ Hue.user_settings = {
       }
     },
   },
-  double_tap: {
-    widget_type: "textarea",
-    description: `Actions to perform after a Double Tap 1 trigger`,
-    action: (type, save = true) => {
-      let cmds = Hue.utilz.remove_multiple_empty_lines($(`#${type}_double_tap`).val())
-
-      $(`#${type}_double_tap`).val(cmds)
-
-      Hue[type].double_tap = cmds
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  double_tap_2: {
-    widget_type: "textarea",
-    description: `Actions to perform after a Double Tap 2 trigger`,
-    action: (type, save = true) => {
-      let cmds = Hue.utilz.remove_multiple_empty_lines($(`#${type}_double_tap_2`).val())
-
-      $(`#${type}_double_tap_2`).val(cmds)
-
-      Hue[type].double_tap_2 = cmds
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  double_tap_3: {
-    widget_type: "textarea",
-    description: `Actions to perform after a Double Tap 3 trigger`,
-    action: (type, save = true) => {
-      let cmds = Hue.utilz.remove_multiple_empty_lines($(`#${type}_double_tap_3`).val())
-
-      $(`#${type}_double_tap_3`).val(cmds)
-
-      Hue[type].double_tap_3 = cmds
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  at_startup: {
-    widget_type: "textarea",
-    description: `Actions to perform after a successful startup`,
-    action: (type, save = true) => {
-      let cmds = Hue.utilz.remove_multiple_empty_lines($(`#${type}_at_startup`).val())
-
-      $(`#${type}_at_startup`).val(cmds)
-
-      Hue[type].at_startup = cmds
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   ignored_usernames: {
     widget_type: "textarea",
     description: `Ignore messages and actions from these users`,
@@ -237,169 +177,6 @@ Hue.user_settings = {
       Hue[type].open_whispers_automatically = $(`#${type}_open_whispers_automatically`).prop(
         "checked"
       )
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  user_function_1: {
-    widget_type: "textarea",
-    description: `Actions to perform when triggering User Function 1`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_do_action(1, type, save)
-    },
-  },
-  user_function_2: {
-    widget_type: "textarea",
-    description: `Actions to perform when triggering User Function 2`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_do_action(2, type, save)
-    },
-  },
-  user_function_3: {
-    widget_type: "textarea",
-    description: `Actions to perform when triggering User Function 3`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_do_action(3, type, save)
-    },
-  },
-  user_function_4: {
-    widget_type: "textarea",
-    description: `Actions to perform when triggering User Function 4`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_do_action(4, type, save)
-    },
-  },
-  user_function_5: {
-    widget_type: "textarea",
-    description: `Actions to perform when triggering User Function 5`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_do_action(5, type, save)
-    },
-  },
-  user_function_6: {
-    widget_type: "textarea",
-    description: `Actions to perform when triggering User Function 6`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_do_action(6, type, save)
-    },
-  },
-  user_function_7: {
-    widget_type: "textarea",
-    description: `Actions to perform when triggering User Function 7`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_do_action(7, type, save)
-    },
-  },
-  user_function_8: {
-    widget_type: "textarea",
-    description: `Actions to perform when triggering User Function 8`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_do_action(8, type, save)
-    },
-  },
-  user_function_1_name: {
-    widget_type: "text",
-    description: `Displayed name for User Function 1`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_name_do_action(1, type, save)
-    },
-  },
-  user_function_2_name: {
-    widget_type: "text",
-    description: `Displayed name for User Function 2`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_name_do_action(2, type, save)
-    },
-  },
-  user_function_3_name: {
-    widget_type: "text",
-    description: `Displayed name for User Function 3`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_name_do_action(3, type, save)
-    },
-  },
-  user_function_4_name: {
-    widget_type: "text",
-    description: `Displayed name for User Function 4`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_name_do_action(4, type, save)
-    },
-  },
-  user_function_5_name: {
-    widget_type: "text",
-    description: `Displayed name for User Function 5`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_name_do_action(5, type, save)
-    },
-  },
-  user_function_6_name: {
-    widget_type: "text",
-    description: `Displayed name for User Function 6`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_name_do_action(6, type, save)
-    },
-  },
-  user_function_7_name: {
-    widget_type: "text",
-    description: `Displayed name for User Function 7`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_name_do_action(7, type, save)
-    },
-  },
-  user_function_8_name: {
-    widget_type: "text",
-    description: `Displayed name for User Function 8`,
-    action: (type, save = true) => {
-      Hue.setting_user_function_name_do_action(8, type, save)
-    },
-  },
-  on_lockscreen: {
-    widget_type: "textarea",
-    description: `Actions to perform when the screen gets locked`,
-    action: (type, save = true) => {
-      let cmds = Hue.utilz.remove_multiple_empty_lines($(`#${type}_on_lockscreen`).val())
-
-      $(`#${type}_on_lockscreen`).val(cmds)
-
-      Hue[type].on_lockscreen = cmds
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  on_unlockscreen: {
-    widget_type: "textarea",
-    description: `Actions to perform when the screen gets unlocked`,
-    action: (type, save = true) => {
-      let cmds = Hue.utilz.remove_multiple_empty_lines($(`#${type}_on_unlockscreen`).val())
-
-      $(`#${type}_on_unlockscreen`).val(cmds)
-
-      Hue[type].on_unlockscreen = cmds
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
-  aliases: {
-    widget_type: "textarea",
-    description: `Custom commands defined by the user, based on other commands`,
-    action: (type, save = true) => {
-      let cmds = Hue.utilz.remove_multiple_empty_lines($(`#${type}_aliases`).val())
-
-      cmds = Hue.format_command_aliases(cmds)
-
-      $(`#${type}_aliases`).val(cmds)
-
-      Hue[type].aliases = cmds
-
-      if (Hue.active_settings("aliases") === type) {
-        Hue.setup_command_aliases()
-      }
 
       if (save) {
         Hue[`save_${type}`]()
@@ -979,7 +756,6 @@ Hue.setup_settings_windows = function () {
   Hue.set_room_settings_overriders()
   Hue.start_room_settings_overriders()
   Hue.check_room_settings_override()
-  Hue.setup_user_function_switch_selects()
   Hue.set_user_settings_titles()
   Hue.check_hideable_settings()
 
@@ -1094,10 +870,6 @@ Hue.settings_window_item_fade = function (override, item) {
 
 // Sets up more settings elements
 Hue.setup_setting_elements = function (type) {
-  $(`#${type}_double_tap_key`).text(Hue.config.double_tap_key)
-  $(`#${type}_double_tap_2_key`).text(Hue.config.double_tap_key_2)
-  $(`#${type}_double_tap_3_key`).text(Hue.config.double_tap_key_3)
-
   $(`#${type}_reset`).click(function () {
     Hue.confirm_reset_settings(type)
   })

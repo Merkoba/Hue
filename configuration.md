@@ -255,36 +255,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_other_words_to_highlight"
 >Other words to trigger highlights apart from the current username, by default.
 
-"global_settings_default_double_tap"
->What command or string to trigger on double tap by default.
-
-"global_settings_default_double_tap_2"
->What command or string to trigger on double tap 2 by default.
-
-"global_settings_default_double_tap_3"
->What command or string to trigger on double tap 3 by default.
-
-"global_settings_default_user_function_1_name"
->What name User Function 1 will have by default.
-
-"global_settings_default_user_function_2_name"
->What name User Function 2 will have by default.
-
-"global_settings_default_user_function_3_name"
->What name User Function 3 will have by default.
-
-"global_settings_default_user_function_1"
->What command or string to trigger when User Function 1 is used by default.
-
-"global_settings_default_user_function_2"
->What command or string to trigger when User Function 2 is used by default.
-
-"global_settings_default_user_function_3"
->What command or string to trigger when User Function 3 is used by default.
-
-"global_settings_default_at_startup"
->What command or string to trigger at startup.
-
 "global_settings_default_ignored_usernames"
 >What usernames to be ignored by default.
 
@@ -305,15 +275,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "global_settings_default_tv_height"
 >The % height the tv will take by default when the image is also displayed.
-
-"global_settings_default_on_lockscreen"
->Default commands to execute when the screen is locked.
-
-"global_settings_default_on_unlockscreen"
->Default commands to execute when the screen is unlocked.
-
-"global_settings_default_aliases"
->Default command aliases.
 
 "global_settings_default_other_words_to_autocomplete"
 >Default words to autocomplete besides usernames and commands.
@@ -413,15 +374,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "room_state_default_media_layout"
 >Default media area (image, tv) layout, either column or row.
-
-"double_tap_key"
->The key that triggers double tap.
-
-"double_tap_key_2"
->The key that triggers double tap 2.
-
-"double_tap_key_3"
->The key that triggers double tap 3.
 
 "jwt_expiration"
 >How long jwt will be valid after login.

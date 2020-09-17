@@ -63,13 +63,8 @@ Hue.setup_footer = function () {
     Hue.show_user_menu()
   })
 
-  $("#footer_chat_functions").click(function () {
-    if (Hue.chat_functions_box_open) {
-      Hue.hide_chat_functions_box()
-    } else {
-      Hue.show_chat_functions_box()
-      Hue.start_hide_chat_functions()
-    }
+  $("#footer_chat_react").click(function () {
+    Hue.show_reaction_picker("chat")
   })
 
   $("#footer_media_menu").click(function () {

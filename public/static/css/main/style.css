@@ -342,10 +342,6 @@ body * {
 	margin-right: 0.4em;
 }
 
-#footer_chat_functions {
-	margin-left: -0.7rem;
-}
-
 #footer_media_menu {
 	padding: 0.6rem;
 	padding-right: 0.7rem;
@@ -1469,32 +1465,6 @@ svg.action:hover {
 	width: 22em;
 }
 
-#chat_functions_box_container {
-	display: none;
-	flex-direction: column;
-	align-items: flex-start;
-	justify-content: center;
-	position: fixed;
-	bottom: var(--panel_height);
-	left: 0;
-	flex-grow: 1;
-	flex-shrink: 0;
-	z-index: 99999;
-	max-width: 100vw;
-	overflow: auto;
-	background-color: var(--color_4);
-	color: var(--font_color);
-}
-
-#chat_functions_box {
-	padding: 0.5rem;
-}
-
-.user_function_button {
-	margin-left: 0.4rem;
-	margin-right: 0.4rem;
-}
-
 .reaction_icon {
 	margin-left: 0.4rem;
 	margin-right: 0.4rem;
@@ -2482,11 +2452,6 @@ a.special_link:hover {
 	margin-bottom: 1rem;
 }
 
-.user_function_switch_select {
-	margin-top: 1rem;
-	margin-bottom: 1.5rem;
-}
-
 #user_menu_change_buttons {
 	margin-bottom: 1rem;
 	grid-gap: 0.8rem;
@@ -2813,6 +2778,10 @@ pre {
 	height: var(--panel_height) !important;
 	box-shadow: inset 0 0 0.1176rem var(--color_4);
 	margin-right: 1.2rem;
+}
+
+#footer_chat_react {
+	margin-left: -0.7rem;
 }
 
 .fixed_footer_search {

@@ -13,7 +13,6 @@ Hue.generate_words_to_autocomplete = function () {
     ...Hue.usernames,
     ...susernames,
     ...["@everyone"],
-    ...Object.keys(Hue.command_aliases),
     ...Hue.all_usernames
   )
 

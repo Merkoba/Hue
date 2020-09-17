@@ -463,19 +463,13 @@ Hue.start_msg = function () {
 
   Hue.msg_global_settings.set(
     Hue.template_global_settings({
-      settings: Hue.template_settings({
-        type: "global_settings",
-        user_functions: Hue.make_settings_user_functions("global_settings"),
-      }),
+      settings: Hue.template_settings({ type: "global_settings" })
     })
   )
 
   Hue.msg_room_settings.set(
     Hue.template_room_settings({
-      settings: Hue.template_settings({
-        type: "room_settings",
-        user_functions: Hue.make_settings_user_functions("room_settings"),
-      }),
+      settings: Hue.template_settings({ type: "room_settings" })
     })
   )
 

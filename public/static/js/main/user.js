@@ -366,15 +366,8 @@ Hue.update_user_menu = function () {
   $("#user_menu_bio_textarea").val(Hue.bio)
 }
 
-// Stops the reaction's box show timeout or hides it
-Hue.clear_show_chat_functions_box = function () {
-  clearTimeout(Hue.show_chat_functions_timeout)
-  Hue.hide_chat_functions_box()
-}
-
 // Shows the user menu
 Hue.show_user_menu = function () {
-  Hue.clear_show_chat_functions_box()
   Hue.msg_user_menu.show()
 }
 
