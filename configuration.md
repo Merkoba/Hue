@@ -354,9 +354,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "room_state_default_tv_volume"
 >Default volume for the tv.
 
-"room_state_default_screen_locked"
->Whether the screen will be locked by default.
-
 "room_state_default_chat_searches"
 >Default chat searches list.
 
