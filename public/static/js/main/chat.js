@@ -722,14 +722,6 @@ Hue.add_to_chat = function (args = {}) {
     }
   }
 
-  if (Hue.started && !Hue.app_focused) {
-    if (content_container) {
-      Hue.add_fresh_message(content_container)
-    } else {
-      Hue.add_fresh_message(args.message)
-    }
-  }
-
   Hue.scroll_timer()
 
   if (is_public && user_id && date) {
@@ -940,34 +932,6 @@ Hue.submit_reply = function () {
       message: reply
     })
   }
-}
-
-// Adds a message to the fresh message list
-// This is a list of messages to temporarily highlight when a user refocus the client
-// This is to give an indicator of fresh changes
-Hue.add_fresh_message = function (container) {
-  Hue.fresh_messages_list.push(container)
-
-  if (Hue.fresh_messages_list.length > Hue.max_fresh_messages) {
-    Hue.fresh_messages_list.shift()
-  }
-}
-
-// Temporarily highlights recent messages since last focus
-Hue.show_fresh_messages = function () {
-  if (Hue.fresh_messages_list.length === 0) {
-    return false
-  }
-
-  for (let container of Hue.fresh_messages_list) {
-    container.addClass("highlighted3")
-
-    setTimeout(function () {
-      container.removeClass("highlighted3")
-    }, Hue.fresh_messages_duration)
-  }
-
-  Hue.fresh_messages_list = []
 }
 
 // Focuses the message edit textbox
