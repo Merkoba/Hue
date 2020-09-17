@@ -159,6 +159,8 @@ Hue.max_displayed_url = 70
 Hue.media_info_max_length = 60
 Hue.image_locked = false
 Hue.tv_locked = false
+Hue.fresh_messages_list = []
+Hue.max_fresh_messages = 100
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
