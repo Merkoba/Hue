@@ -291,22 +291,12 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_global_settings = Msg.factory(
+  Hue.msg_settings = Msg.factory(
     Object.assign({}, common, titlebar, {
-      id: "global_settings",
+      id: "settings",
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.close_togglers("global_settings")
-      },
-    })
-  )
-
-  Hue.msg_room_settings = Msg.factory(
-    Object.assign({}, common, titlebar, {
-      id: "room_settings",
-      after_close: function (instance) {
-        common.after_close(instance)
-        Hue.close_togglers("room_settings")
+        Hue.close_togglers("settings")
       },
     })
   )
@@ -461,18 +451,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_global_settings.set(
-    Hue.template_global_settings({
-      settings: Hue.template_settings({ type: "global_settings" })
-    })
-  )
-
-  Hue.msg_room_settings.set(
-    Hue.template_room_settings({
-      settings: Hue.template_settings({ type: "room_settings" })
-    })
-  )
-
   Hue.msg_user_menu.set(Hue.template_user_menu())
   Hue.msg_userlist.set(Hue.template_userlist())
   Hue.msg_public_roomlist.set(
@@ -511,6 +489,7 @@ Hue.start_msg = function () {
   Hue.msg_message_board.set(Hue.template_message_board())
   Hue.msg_profile_image_cropper.set(Hue.template_profile_image_cropper())
   Hue.msg_reaction_picker.set(Hue.template_reaction_picker())
+  Hue.msg_settings.set(Hue.template_settings())
 
   Hue.msg_info.create()
   Hue.msg_info2.create()
@@ -538,8 +517,7 @@ Hue.start_msg = function () {
   )
 
   Hue.msg_input_history.set_title("Input History")
-  Hue.msg_global_settings.set_title("Global Settings")
-  Hue.msg_room_settings.set_title("Room Settings")
+  Hue.msg_settings.set_title("Settings")
   Hue.msg_media_menu.set_title("Media Menu")
   Hue.msg_room_status.set_title("Room Status")
   Hue.msg_admin_activity.set_title("Admin Activity")
@@ -587,7 +565,6 @@ Hue.info_vars_to_false = function () {}
 // Sets all info window 2 variables to false
 Hue.info2_vars_to_false = function () {
   Hue.create_room_open = false
-  Hue.import_settings_open = false
   Hue.goto_room_open = false
   Hue.open_room_open = false
   Hue.background_image_input_open = false
@@ -642,16 +619,11 @@ Hue.after_modal_show = function (instance) {
 // This is called after a modal is set or shown
 Hue.after_modal_set_or_show = function (instance) {
   setTimeout(function () {
-    if (
-      instance.options.id === "global_settings" ||
-      instance.options.id === "room_settings"
-    ) {
+    if (instance.options.id === "settings") {
       $(
-        `#settings_window_${instance.options.id} .settings_window_category_container_selected`
+        `#settings_window .settings_window_category_container_selected`
       ).get(0).scrollTop = 0
-      $(`#settings_window_left_content_${instance.options.id}`).get(
-        0
-      ).scrollTop = 0
+      $("#settings_window_left_content").get(0).scrollTop = 0
     } else {
       instance.content_container.scrollTop = 0
     }
@@ -743,12 +715,8 @@ Hue.start_filters = function () {
     Hue.highlights_filter_timer()
   })
 
-  $("#global_settings_filter").on("input", function () {
-    Hue.settings_filter_timer("global_settings")
-  })
-
-  $("#room_settings_filter").on("input", function () {
-    Hue.settings_filter_timer("room_settings")
+  $("#settings_filter").on("input", function () {
+    Hue.settings_filter_timer("settings")
   })
 
   $("#input_history_filter").on("input", function () {

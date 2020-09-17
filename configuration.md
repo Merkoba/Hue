@@ -237,112 +237,112 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_stored_images"
 >The amount of most recent images to have stored in a room. Each room has an array of images stored, when the array's length surpasses this number, the oldest image in it will get deleted.
 
-"global_settings_default_sound_notifications"
+"settings_default_sound_notifications"
 >Whether sound notifications are enabled by default.
 
-"global_settings_default_highlight_current_username"
+"settings_default_highlight_current_username"
 >Whether current username triggers a highlight by default.
 
-"global_settings_default_case_insensitive_username_highlights"
+"settings_default_case_insensitive_username_highlights"
 >Whether highlights for current username are case insensitive by default.
 
-"global_settings_default_case_insensitive_words_highlights"
+"settings_default_case_insensitive_words_highlights"
 >Whether highlights for specified words are case insensitive by default.
 
-"global_settings_default_case_insensitive_ignored_words"
+"settings_default_case_insensitive_ignored_words"
 >Whether ignored words are case insensitive by default
 
-"global_settings_default_other_words_to_highlight"
+"settings_default_other_words_to_highlight"
 >Other words to trigger highlights apart from the current username, by default.
 
-"global_settings_default_ignored_usernames"
+"settings_default_ignored_usernames"
 >What usernames to be ignored by default.
 
-"global_settings_default_ignored_words"
+"settings_default_ignored_words"
 >What words to be ignored by default.
 
-"global_settings_default_ignored_words_exclude_same_user"
+"settings_default_ignored_words_exclude_same_user"
 >Whether ignored words apply to the same user by default.
 
-"global_settings_default_show_joins"
+"settings_default_show_joins"
 >Whether to show user joins by default.
 
-"global_settings_default_show_parts"
+"settings_default_show_parts"
 >Whether to show user parts by default.
 
-"global_settings_default_open_whispers_automatically"
+"settings_default_open_whispers_automatically"
 >Whether popup messages will open automatically when arrived by default.
 
-"global_settings_default_tv_height"
+"settings_default_tv_height"
 >The % height the tv will take by default when the image is also displayed.
 
-"global_settings_default_other_words_to_autocomplete"
+"settings_default_other_words_to_autocomplete"
 >Default words to autocomplete besides usernames and commands.
 
-"global_settings_default_warn_before_closing"
+"settings_default_warn_before_closing"
 > Default setting of whether it should warn before closing the application/tab.
 
-"global_settings_default_show_image_previews"
+"settings_default_show_image_previews"
 >Whether image links get a preview on the chat area by default. This only works with certain links, including direct Imgur links.
 
-"global_settings_default_show_link_previews"
+"settings_default_show_link_previews"
 >Whether links get a preview on the chat area by default.
 
-"global_settings_default_accept_commands_from"
+"settings_default_accept_commands_from"
 >List of usernames to accept commands from that are sent by whispers.
 
-"global_settings_default_autoscroll_amount"
+"settings_default_autoscroll_amount"
 >How many pixels to autoscroll the chat on each step.
 
-"global_settings_default_autoscroll_delay"
+"settings_default_autoscroll_delay"
 >The delay of the interval for every autoscroll step in milliseconds.
 
-"global_settings_default_show_input_placeholder
+"settings_default_show_input_placeholder
 >Whether the input placeholder is enabled by default.
 
-"global_settings_default_theme_mode
+"settings_default_theme_mode
 >Whether it uses the room theme or a custom theme by default.
 
-"global_settings_default_theme_color
+"settings_default_theme_color
 >Default color for custom theme.
 
-"global_settings_default_text_color
+"settings_default_text_color
 >Default text color for custom theme.
 
-"global_settings_default_background_mode"
+"settings_default_background_mode"
 >Default background mode, either it uses the room's background or a custom background.
 
-"global_settings_default_background_url"
+"settings_default_background_url"
 >This is the default image url if using a custom background.
 
-"global_settings_default_background_tile_dimensions"
+"settings_default_background_tile_dimensions"
 >This is the default background tile dimensions if using a custom background.
 
-"global_settings_default_message_log"
+"settings_default_message_log"
 >Whether users request the message log on load by default.
 
-"global_settings_default_chat_crop_limit"
+"settings_default_chat_crop_limit"
 >How many chat messages to hold in the chat area by default.
 
-"global_settings_default_notifications_close_delay"
+"settings_default_notifications_close_delay"
 >How long notification popups get displayed before they automatically close, by default.
 
-"global_settings_default_autoconnect"
+"settings_default_autoconnect"
 >Whether a user re-connects on socket disconnections by default.
 
-"global_settings_default_transparent_panels"
+"settings_default_transparent_panels"
 >Whether panels get a slight transparency by default.
 
-"global_settings_default_confirm_chat"
+"settings_default_confirm_chat"
 >Where to show confirm on chat message by default
 
-"global_settings_default_confirm_image"
+"settings_default_confirm_image"
 >Where to show confirm on image change by default
 
-"global_settings_default_confirm_tv"
+"settings_default_confirm_tv"
 >Where to show confirm on tv change by default
 
-"global_settings_default_confirm_message_board"
+"settings_default_confirm_message_board"
 >Where to show confirm on board message by default
 
 "room_state_default_images_enabled"

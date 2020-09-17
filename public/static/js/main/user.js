@@ -332,7 +332,7 @@ Hue.setup_user_menu = function () {
   })
 
   $("#user_menu_settings").click(function () {
-    Hue.show_global_settings()
+    Hue.show_settings()
   })
 
   $("#user_menu_change_username").click(function () {
@@ -345,14 +345,6 @@ Hue.setup_user_menu = function () {
 
   $("#user_menu_change_email").click(function () {
     Hue.show_change_email()    
-  })
-
-  $("#user_menu_import_settings").click(function () {
-    Hue.show_import_settings()   
-  })
-
-  $("#user_menu_export_settings").click(function () {
-    Hue.show_export_settings()   
   })
 
   $("#user_menu_request_notifications").click(function () {

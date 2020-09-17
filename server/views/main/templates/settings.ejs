@@ -1,82 +1,83 @@
 <script id='template_settings' type='text/x-handlebars-template' class='template'>
-    <div id="settings_window_{{type}}" class='settings_main_window' data-settings_type='{{type}}'>
+    <input type="text" class="filter_input filter_padding" placeholder="Filter" id="settings_filter" data-mode="manual">
+    
+    <div id="settings_window" class='settings_main_window'>
+        <div class="settings_window_left" id="settings_window_left">
 
-        <div class="settings_window_left" id="settings_window_left_{{type}}">
+            <div class='settings_window_left_content' id='settings_window_left_content'>
 
-            <div class='settings_window_left_content' id='settings_window_left_content_{{type}}'>
-
-                <div id='settings_window_category_chat_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_chat_{{type}}' data-category='chat'>
+                <div id='settings_window_category_chat' class='settings_window_category action' data-category_container='settings_window_category_content_chat' data-category='chat'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Chat</span>
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_appearance_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_appearance_{{type}}' data-category='appearance'>
+                <div id='settings_window_category_appearance' class='settings_window_category action' data-category_container='settings_window_category_content_appearance' data-category='appearance'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Appearance</span>
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_confirms_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_confirms_{{type}}' data-category='confirms'>
+                <div id='settings_window_category_confirms' class='settings_window_category action' data-category_container='settings_window_category_content_confirms' data-category='confirms'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Confirms</span>
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_lists_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_lists_{{type}}' data-category='lists'>
+                <div id='settings_window_category_lists' class='settings_window_category action' data-category_container='settings_window_category_content_lists' data-category='lists'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Lists</span>
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='settings_window_category_misc_{{type}}' class='settings_window_category action' data-category_container='settings_window_category_content_misc_{{type}}' data-category='misc'>
+                <div id='settings_window_category_misc' class='settings_window_category action' data-category_container='settings_window_category_content_misc' data-category='misc'>
                     <span class='settings_window_category_status_filler invisible'></span>
                     <span class='settings_window_category_text'>Misc</span>
                     <span class='settings_window_category_status'></span>
                 </div>
 
-                <div id='{{type}}_reset' class='settings_reset_button smaller_font_size action pointer'>Reset</div>
+                <div id='settings_reset' class='settings_reset_button smaller_font_size action pointer'>Reset</div>
             </div>
         </div>
 
-        <div class="settings_window_right" id="settings_window_right_{{type}}">
+        <div class="settings_window_right" id="settings_window_right">
 
-            <div class='settings_category settings_window_category_container' id='settings_window_category_content_chat_{{type}}' data-category='chat'>
+            <div class='settings_category settings_window_category_container' id='settings_window_category_content_chat' data-category='chat'>
                 <div class='settings_item settings_top_level_item' data-setting='show_image_previews'>
                     <div class="setting_title">Show Image Previews</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_show_image_previews">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_show_image_previews">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='show_link_previews'>
                     <div class="setting_title">Show Link Previews</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_show_link_previews">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_show_link_previews">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='autoreveal_spoilers'>
                     <div class="setting_title">Auto-Reveal Spoilers</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_autoreveal_spoilers">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_autoreveal_spoilers">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='chat_crop_limit'>
                     <div class="setting_title">Chat Crop Limit</div>
-                    <input type="number" class="{{type}}_settings_item_control setting_input_text_smaller" id="{{type}}_chat_crop_limit">
+                    <input type="number" class="settings_item_control setting_input_text_smaller" id="settings_chat_crop_limit">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='autoscroll_amount'>
                     <div class="setting_title">Autoscroll Amount</div>
-                    <input type="number" class="{{type}}_settings_item_control setting_input_text_smaller" id="{{type}}_autoscroll_amount">
+                    <input type="number" class="settings_item_control setting_input_text_smaller" id="settings_autoscroll_amount">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='autoscroll_delay'>
                     <div class="setting_title">Autoscroll Delay</div>
-                    <input type="number" class="{{type}}_settings_item_control setting_input_text_smaller" id="{{type}}_autoscroll_delay">
+                    <input type="number" class="settings_item_control setting_input_text_smaller" id="settings_autoscroll_delay">
                 </div>
             </div>
 
-            <div class='settings_category settings_window_category_container' id='settings_window_category_content_appearance_{{type}}' data-category='appearance'>
+            <div class='settings_category settings_window_category_container' id='settings_window_category_content_appearance' data-category='appearance'>
                 <div class='settings_item settings_top_level_item' data-setting='theme_mode'>
                     <div class="setting_title">Theme Mode</div>
-                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_theme_mode">
+                    <select class="settings_item_control modal_select" id="settings_theme_mode">
                         <option value='room'>Use Room Setting</option>
                         <option value='custom'>Custom Theme</option>
                     </select>
@@ -84,17 +85,17 @@
 
                 <div class='settings_item settings_top_level_item' data-setting='theme_color'>
                     <div class="setting_title">Theme Color</div>
-                    <input type="color" class="{{type}}_settings_item_control setting_color" id="{{type}}_theme_color">
+                    <input type="color" class="settings_item_control setting_color" id="settings_theme_color">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='text_color'>
                     <div class="setting_title">Text Color</div>
-                    <input type="color" class="{{type}}_settings_item_control setting_color" id="{{type}}_text_color">
+                    <input type="color" class="settings_item_control setting_color" id="settings_text_color">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='background_mode'>
                     <div class="setting_title">Background Mode</div>
-                    <select class="{{type}}_settings_item_control modal_select" id="{{type}}_background_mode">
+                    <select class="settings_item_control modal_select" id="settings_background_mode">
                         <option value='room'>Use Room Setting</option>
                         <option value='custom_normal'>Custom Normal</option>
                         <option value='custom_tiled'>Custom Tiled</option>
@@ -104,157 +105,157 @@
 
                 <div class='settings_item settings_top_level_item' data-setting='background_url'>
                     <div class="setting_title">Background URL</div>
-                    <input type="text" class="{{type}}_settings_item_control setting_input_text_2" id="{{type}}_background_url">
+                    <input type="text" class="settings_item_control setting_input_text_2" id="settings_background_url">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='background_tile_dimensions'>
                     <div class="setting_title">Background Tile Dimensions</div>
-                    <input type="text" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_background_tile_dimensions">
+                    <input type="text" class="settings_item_control setting_input_text_small" id="settings_background_tile_dimensions">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='transparent_panels'>
                     <div class="setting_title">Transparent Panels</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_transparent_panels">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_transparent_panels">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='show_input_placeholder'>
                     <div class="setting_title">Show Input Placeholder</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_show_input_placeholder">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_show_input_placeholder">
                 </div>
             </div>
 
-            <div class='settings_category settings_window_category_container' id='settings_window_category_content_confirms_{{type}}' data-category='confirms'>
+            <div class='settings_category settings_window_category_container' id='settings_window_category_content_confirms' data-category='confirms'>
                 <div class='settings_item settings_top_level_item' data-setting='confirm_chat'>
                     <div class="setting_title">Confirm Chat</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_confirm_chat">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_confirm_chat">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='confirm_image'>
                     <div class="setting_title">Confirm Image</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_confirm_image">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_confirm_image">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='confirm_tv'>
                     <div class="setting_title">Confirm TV</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_confirm_tv">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_confirm_tv">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='confirm_message_board'>
                     <div class="setting_title">Confirm Message Board</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_confirm_message_board">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_confirm_message_board">
                 </div>
             </div>
 
-            <div class='settings_category settings_window_category_container' id='settings_window_category_content_lists_{{type}}' data-category='lists'>
+            <div class='settings_category settings_window_category_container' id='settings_window_category_content_lists' data-category='lists'>
                 <div class='settings_item settings_top_level_item' data-setting='other_words_to_highlight'>
                     <div class='toggler_main_container'>
-                        <div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Highlight</div>
-                        <div class='{{type}}_toggle_container toggler_container'>
+                        <div class="settings_toggle toggler action pointer bold inline">+ Words To Highlight</div>
+                        <div class='settings_toggle_container toggler_container'>
                             <div class="setting_title3">(Each on a different line)</div>
-                            <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_other_words_to_highlight"></textarea>
+                            <textarea rows=5 class="settings_item_control setting_textarea3" id="settings_other_words_to_highlight"></textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='other_words_to_autocomplete'>
                     <div class='toggler_main_container'>
-                        <div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Autocomplete</div>
-                        <div class='{{type}}_toggle_container toggler_container'>
+                        <div class="settings_toggle toggler action pointer bold inline">+ Words To Autocomplete</div>
+                        <div class='settings_toggle_container toggler_container'>
                             <div class="setting_title3">(Each on a different line)</div>
-                            <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_other_words_to_autocomplete"></textarea>
+                            <textarea rows=5 class="settings_item_control setting_textarea3" id="settings_other_words_to_autocomplete"></textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='ignored_usernames'>
                     <div class='toggler_main_container'>
-                        <div class="{{type}}_toggle toggler action pointer bold inline">+ Usernames To Ignore</div>
-                        <div class='{{type}}_toggle_container toggler_container'>
+                        <div class="settings_toggle toggler action pointer bold inline">+ Usernames To Ignore</div>
+                        <div class='settings_toggle_container toggler_container'>
                             <div class="setting_title3">(Each on a different line)</div>
-                            <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_ignored_usernames"></textarea>
+                            <textarea rows=5 class="settings_item_control setting_textarea3" id="settings_ignored_usernames"></textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='ignored_words'>
                     <div class='toggler_main_container'>
-                        <div class="{{type}}_toggle toggler action pointer bold inline">+ Words To Ignore</div>
-                        <div class='{{type}}_toggle_container toggler_container'>
+                        <div class="settings_toggle toggler action pointer bold inline">+ Words To Ignore</div>
+                        <div class='settings_toggle_container toggler_container'>
                             <div class="setting_title3">(Each on a different line)</div>
-                            <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_ignored_words"></textarea>
+                            <textarea rows=5 class="settings_item_control setting_textarea3" id="settings_ignored_words"></textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='accept_commands_from'>
                     <div class='toggler_main_container'>
-                        <div class="{{type}}_toggle toggler action pointer bold inline"
+                        <div class="settings_toggle toggler action pointer bold inline"
                         title="Usernames here will be able to execute commands on your behalf">
                         + Accept Commands From<br>(Dangerous)
                         </div>
-                        <div class='{{type}}_toggle_container toggler_container'>
+                        <div class='settings_toggle_container toggler_container'>
                             <div class="setting_title3">(Each on a different line)</div>
-                            <textarea rows=5 class="{{type}}_settings_item_control setting_textarea3" id="{{type}}_accept_commands_from"></textarea>
+                            <textarea rows=5 class="settings_item_control setting_textarea3" id="settings_accept_commands_from"></textarea>
                         </div>
                     </div>
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='highlight_current_username'>
                     <div class="setting_title">Highlight Username</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_highlight_current_username">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_highlight_current_username">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='case_insensitive_username_highlights'>
                     <div class="setting_title2">Case Insensitive</div>
                     <div class="setting_title">Username Highlights</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_username_highlights">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_case_insensitive_username_highlights">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='case_insensitive_words_highlights'>
                     <div class="setting_title2">Case Insensitive</div>
                     <div class="setting_title">Words Highlights</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_words_highlights">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_case_insensitive_words_highlights">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='case_insensitive_ignored_words'>
                     <div class="setting_title2">Case Insensitive</div>
                     <div class="setting_title">Ignored Words</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_case_insensitive_ignored_words">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_case_insensitive_ignored_words">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='ignored_words_exclude_same_user'>
                     <div class="setting_title2">Don't Ignore Words</div>
                     <div class="setting_title">From Yourself</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_ignored_words_exclude_same_user">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_ignored_words_exclude_same_user">
                 </div>
             </div>
 
-            <div class='settings_category settings_window_category_container' id='settings_window_category_content_misc_{{type}}' data-category='misc'>
+            <div class='settings_category settings_window_category_container' id='settings_window_category_content_misc' data-category='misc'>
                 <div class='settings_item settings_top_level_item' data-setting='warn_before_closing'>
                     <div class="setting_title">Warn On Close</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_warn_before_closing">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_warn_before_closing">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='open_whispers_automatically'>
                     <div class="setting_title2">Open Whispers</div>
                     <div class="setting_title">Automatically</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_open_whispers_automatically">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_open_whispers_automatically">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='message_log'>
                     <div class="setting_title">Enable Message Log</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_message_log">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_message_log">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='autoconnect'>
                     <div class="setting_title">Auto Connect</div>
-                    <input type="checkbox" class="{{type}}_settings_item_control setting_checkbox" id="{{type}}_autoconnect">
+                    <input type="checkbox" class="settings_item_control setting_checkbox" id="settings_autoconnect">
                 </div>
 
                 <div class='settings_item settings_top_level_item' data-setting='popup_notifications_close_delay'>
                     <div class="setting_title2">Popup Notifications</div>
                     <div class="setting_title">Close Delay</div>
-                    <input type="number" class="{{type}}_settings_item_control setting_input_text_small" id="{{type}}_popup_notifications_close_delay">
+                    <input type="number" class="settings_item_control setting_input_text_small" id="settings_popup_notifications_close_delay">
                 </div>
             </div>
         </div>

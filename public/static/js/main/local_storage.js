@@ -51,8 +51,7 @@ Hue.setup_local_storage = function () {
     "storage",
     function (e) {
       if (
-        e.key !== Hue.ls_global_settings &&
-        e.key !== Hue.ls_room_settings &&
+        e.key !== Hue.ls_settings &&
         e.key !== Hue.ls_last_message_board_post_checked
       ) {
         return false
@@ -70,12 +69,8 @@ Hue.setup_local_storage = function () {
         return false
       }
 
-      if (e.key === Hue.ls_global_settings) {
-        Hue.reset_settings("global_settings", false)
-      } else if (e.key === Hue.ls_room_settings) {
-        if (e.url === document.location.href) {
-          Hue.reset_settings("room_settings", false)
-        }
+      if (e.key === Hue.ls_settings) {
+        Hue.reset_settings(false)
       } else if (e.key === Hue.ls_last_message_board_post_checked) {
         Hue.get_last_message_board_post_checked()
         Hue.check_last_message_board_post()

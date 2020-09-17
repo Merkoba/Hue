@@ -93,17 +93,6 @@ Hue.activate_key_detection = function () {
         }
       }
 
-      if (Hue.import_settings_open) {
-        if (Hue.msg_info2.is_highest()) {
-          if (e.key === "Enter") {
-            Hue.process_imported_settings()
-            e.preventDefault()
-          }
-
-          return
-        }
-      }
-
       if (Hue.goto_room_open) {
         if (Hue.msg_info2.is_highest()) {
           if (e.key === "Enter") {

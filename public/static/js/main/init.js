@@ -18,8 +18,7 @@ Hue.load_scripts = true
 
 // Initial variables declarations
 Hue.config = {}
-Hue.ls_global_settings = "global_settings_v1"
-Hue.ls_room_settings = "room_settings_v1"
+Hue.ls_settings = "settings_v1"
 Hue.ls_room_state = "room_state_v1"
 Hue.ls_input_history = "input_history_v17"
 Hue.ls_first_time = "first_time_v2"
@@ -48,7 +47,6 @@ Hue.open_room_open = false
 Hue.tv_picker_open = false
 Hue.image_picker_open = false
 Hue.goto_room_open = false
-Hue.import_settings_open = false
 Hue.background_image_input_open = false
 Hue.admin_list_open = false
 Hue.ban_list_open = false
@@ -179,14 +177,11 @@ Hue.init = function () {
   Hue.setup_markdown_regexes()
   Hue.activate_key_detection()
   Hue.setup_templates()
-  Hue.get_global_settings()
-  Hue.get_room_settings()
+  Hue.get_settings()
   Hue.get_room_state()
   Hue.start_msg()
-  Hue.start_settings_widgets("global_settings")
-  Hue.start_settings_widgets_listeners("global_settings")
-  Hue.start_settings_widgets("room_settings")
-  Hue.start_settings_widgets_listeners("room_settings")
+  Hue.start_settings_widgets()
+  Hue.start_settings_widgets_listeners()
   Hue.setup_settings_windows()
   Hue.start_filters()
   Hue.start_image_events()

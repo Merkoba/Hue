@@ -771,8 +771,7 @@ a.generic:hover {
 	width: 28rem !important;
 }
 
-#Msg-content-container-global_settings,
-#Msg-content-container-room_settings {
+#Msg-content-container-settings {
 	overflow: hidden !important;
 }
 
@@ -1423,16 +1422,6 @@ svg.action:hover {
 	text-shadow: 0 0 0.7059rem currentColor;
 }
 
-.room_settings_overrider_container {
-	padding-top: 0.4em;
-	padding-bottom: 0.4em;
-	pointer-events: initial !important;
-}
-
-#room_settings_info {
-	margin-bottom: 1rem;
-}
-
 .faded {
 	opacity: 0.5;
 }
@@ -1447,11 +1436,6 @@ svg.action:hover {
 }
 
 .settings_item {
-	padding-top: 1em;
-	padding-bottom: 1em;
-}
-
-.settings_container {
 	padding-top: 1em;
 	padding-bottom: 1em;
 }
@@ -2459,24 +2443,6 @@ a.special_link:hover {
 
 #modal_popup_feedback_send {
 	margin-top: 1rem;
-}
-
-.export_settings_textarea {
-	margin-bottom: 2rem;
-}
-
-.export_settings_textarea_label {
-	margin-bottom: 1rem;
-}
-
-#export_settings_info {
-	grid-gap: 1rem;
-	margin-bottom: 2rem;
-}
-
-#import_settings_textarea {
-	margin-top: 1rem;
-	margin-bottom: 1rem;
 }
 
 #details_buttons {

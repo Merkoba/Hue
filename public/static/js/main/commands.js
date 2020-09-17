@@ -691,25 +691,11 @@ Hue.commands = {
     },
     description: `Scrolls chat to activity pertaining you below`,
   },
-  "globalsettings": {
+  "settings": {
     action: (arg, ans) => {
-      if (arg) {
-        Hue.show_global_settings(arg)
-      } else {
-        Hue.show_global_settings()
-      }
+      Hue.show_settings(arg)
     },
-    description: `Shows the global settings window. Accepts a filter as an argument`,
-  },
-  "roomsettings": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.show_room_settings(arg)
-      } else {
-        Hue.show_room_settings()
-      }
-    },
-    description: `Shows the room settings window. Accepts a filter as an argument`,
+    description: `Shows the settings window. Accepts a filter as an argument`,
   },
   "goto": {
     action: (arg, ans) => {
