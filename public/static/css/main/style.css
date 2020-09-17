@@ -1822,9 +1822,13 @@ svg.action:hover {
 	padding: 0.1176rem;
 }
 
-.highlighted, .highlighted2, .highlighted3, .highlighted4 {
+.highlighted, .highlighted2, .highlighted4 {
 	background-color: var(--background_color_a_2);
 	color: var(--font_color);
+}
+
+.fresh_message {
+	background: linear-gradient(.25turn, var(--background_color_a_2), 50%, transparent);
 }
 
 .blinkattention {

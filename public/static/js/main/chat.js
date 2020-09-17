@@ -961,10 +961,10 @@ Hue.show_fresh_messages = function () {
   }
 
   for (let container of Hue.fresh_messages_list) {
-    container.addClass("highlighted3")
+    container.addClass("fresh_message")
 
     setTimeout(function () {
-      container.removeClass("highlighted3")
+      container.removeClass("fresh_message")
     }, Hue.fresh_messages_duration)
   }
 
