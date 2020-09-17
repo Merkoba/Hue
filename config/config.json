@@ -136,7 +136,6 @@
 	"global_settings_default_message_log": true,
 	"global_settings_default_chat_crop_limit": 500,
 	"global_settings_default_autoconnect": false,
-	"global_settings_default_media_info": "room",
 	"global_settings_default_transparent_panels": true,
 	"global_settings_default_confirm_chat": false,
 	"global_settings_default_confirm_image": false,

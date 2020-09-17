@@ -311,7 +311,6 @@ module.exports = function (
       background_tile_dimensions: info.background_tile_dimensions,
       text_color_mode: info.text_color_mode,
       text_color: info.text_color,
-      media_info: info.media_info,
       voice_1_permissions: handler.check_voice_permissions(info.voice_1_permissions),
       voice_2_permissions: handler.check_voice_permissions(info.voice_2_permissions),
       voice_3_permissions: handler.check_voice_permissions(info.voice_3_permissions),

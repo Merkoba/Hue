@@ -72,7 +72,6 @@ module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
       op_2_permissions: { type: "object", default: {} },
       op_3_permissions: { type: "object", default: {} },
       op_4_permissions: { type: "object", default: {} },
-      media_info: { type: "string", default: "enabled" },
       message_board_posts: { type: "object", default: [] },
       modified: { type: "number", default: Date.now() },
     }

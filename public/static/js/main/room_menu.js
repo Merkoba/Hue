@@ -149,12 +149,6 @@ Hue.setup_room_menu = function () {
     }
   })
 
-  $("#admin_media_info").change(function () {
-    let what = $("#admin_media_info option:selected").val()
-
-    Hue.change_media_info(what)
-  })
-
   $("#room_menu_more_reset_voices").click(function () {
     Hue.needs_confirm("reset_voices")
   })
@@ -252,7 +246,6 @@ Hue.config_room_menu = function () {
     Hue.config_admin_text_color()
     Hue.config_admin_room_name()
     Hue.config_admin_topic()
-    Hue.config_admin_media_info()
     Hue.config_admin_display()
 
     $("#admin_menu").css("display", "block")
@@ -431,15 +424,6 @@ Hue.config_admin_log_enabled = function () {
         $(this).prop("selected", true)
       }
     })
-}
-
-// Updates the media info widget in the room menu based on current state
-Hue.config_admin_media_info = function () {
-  if (!Hue.is_admin_or_op()) {
-    return false
-  }
-
-  $("#admin_media_info").val(Hue.media_info)
 }
 
 // Updates the room image mode widget in the room menu based on current state

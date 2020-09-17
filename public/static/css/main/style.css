@@ -2894,7 +2894,7 @@ pre {
 
 .media_info_container {
 	margin-top: 0.333rem;
-	display: var(--media_info_display);
+	display: grid;
 }
 
 .media_info {

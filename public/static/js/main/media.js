@@ -896,41 +896,8 @@ Hue.check_media_maxers = function () {
   }
 }
 
-// Function that setups frame info items
-Hue.start_media_info_events = function () {
-  $("#media").on("click", ".media_info_username", function () {
-    let username = $(this).closest(".media_info").data("item").setter
-    Hue.show_profile(username)
-  })
-
-  $("#media").on("click", ".media_info_details", function () {
-    z = this
-    let media_info = $(this).closest(".media_info")
-    let item = media_info.data("item")
-    let mode = media_info.data("mode")
-
-    Hue.open_url_menu({
-      source: item.source,
-      data: item,
-      media_type: mode
-    })
-  })
-
-  $("#media").on("auxclick", ".media_info_username", function (e) {
-    if (e.which === 2) {
-      Hue.process_write_whisper(
-        $(this).closest(".media_info").data("item").setter
-      )
-    }
-  })
-}
-
 // Sets a media info item with proper information and events
 Hue.apply_media_info = function (element, item, mode) {
-  if (!Hue.room_state[`${mode}_enabled`]) {
-    return
-  }
-
   let custom_title
 
   if (mode === "tv") {
@@ -984,63 +951,6 @@ Hue.apply_media_info = function (element, item, mode) {
   $(element).data("date", item.date)
   $(element).data("item", item)
   $(element).data("mode", mode)
-}
-
-// Configures media info
-Hue.configure_media_info = function () {
-  let media_info_display
-
-  if (Hue.get_setting("media_info") === "custom_enabled") {
-    media_info_display = "grid"
-  }
-
-  if (Hue.get_setting("media_info") === "custom_disabled") {
-    media_info_display = "none"
-  } else if (Hue.media_info === "enabled") {
-    media_info_display = "grid"
-  } else if (Hue.media_info === "disabled") {
-    media_info_display = "none"
-  }
-
-  document.documentElement.style.setProperty('--media_info_display', media_info_display)
-
-  Hue.fix_frames()
-}
-
-// Enables or disables media info
-Hue.change_media_info = function (media_info) {
-  if (!Hue.check_op_permission(Hue.role, "media")) {
-    return false
-  }
-
-  if (media_info !== "enabled" && media_info !== "disabled") {
-    Hue.feedback("Valid media info modes: enabled disabled")
-    return false
-  }
-
-  if (media_info === Hue.media_info) {
-    Hue.feedback(`Media info is already set to that`)
-  }
-
-  Hue.socket_emit("change_media_info", {
-    media_info: media_info
-  })
-}
-
-// Announces media info change and configures it
-Hue.media_info_changed = function (data) {
-  Hue.set_media_info(data.media_info)
-  Hue.show_room_notification(
-    data.username,
-    `${data.username} changed media info to ${data.media_info}`
-  )
-}
-
-// Media info setter
-Hue.set_media_info = function (what) {
-  Hue.media_info = what
-  Hue.configure_media_info()
-  Hue.config_admin_media_info()
 }
 
 // Toggles media visibility
@@ -1215,6 +1125,24 @@ Hue.get_media_info_html = function (type) {
 // Some initial media info setups
 Hue.start_media_info = function () {
   $("#media_image_container").append(Hue.get_media_info_html("image"))
+
+  $("#media").on("click", ".media_info_username", function () {
+    let username = $(this).closest(".media_info").data("item").setter
+    Hue.show_profile(username)
+  })
+
+  $("#media").on("click", ".media_info_details", function () {
+    z = this
+    let media_info = $(this).closest(".media_info")
+    let item = media_info.data("item")
+    let mode = media_info.data("mode")
+
+    Hue.open_url_menu({
+      source: item.source,
+      data: item,
+      media_type: mode
+    })
+  })
 
   $(".media_main_container").on("click", ".media_react_button", function () {
     Hue.show_reaction_picker($(this).data("type"))

@@ -698,21 +698,6 @@ Hue.user_settings = {
       }
     },
   },
-  media_info: {
-    widget_type: "select",
-    description: `It either uses the room's media info, forces enabled, or, forces disabled`,
-    action: (type, save = true) => {
-      Hue[type].media_info = $(`#${type}_media_info option:selected`).val()
-
-      if (Hue.active_settings("media_info") === type) {
-        Hue.configure_media_info()
-      }
-
-      if (save) {
-        Hue[`save_${type}`]()
-      }
-    },
-  },
   transparent_panels: {
     widget_type: "checkbox",
     description: `Whether panels get a slight transparency`,

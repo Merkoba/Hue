@@ -369,9 +369,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "global_settings_default_autoconnect"
 >Whether a user re-connects on socket disconnections by default.
 
-"global_settings_default_media_info"
->Default media info mode, either it uses the room's media info mode or a custom mode.
-
 "global_settings_default_transparent_panels"
 >Whether panels get a slight transparency by default.
 
