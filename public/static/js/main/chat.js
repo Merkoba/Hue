@@ -726,7 +726,8 @@ Hue.add_to_chat = function (args = {}) {
     if (content_container) {
       Hue.add_fresh_message(content_container)
     } else {
-      Hue.add_fresh_message(args.message)
+      let container = args.message.find(".announcement_content_container").eq(0)
+      Hue.add_fresh_message(container)
     }
   }
 
@@ -960,7 +961,11 @@ Hue.show_fresh_messages = function () {
   }
 
   for (let container of Hue.fresh_messages_list) {
-    container.addClass("fader")
+    container.addClass("highlighted3")
+
+    setTimeout(function () {
+      container.removeClass("highlighted3")
+    }, Hue.fresh_messages_duration)
   }
 
   Hue.fresh_messages_list = []
