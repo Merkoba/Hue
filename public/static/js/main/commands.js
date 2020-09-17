@@ -1316,21 +1316,6 @@ Hue.execute_command = function (message, ans) {
   return ans
 }
 
-// Executes commands from a setting
-Hue.execute_commands = function (setting) {
-  if (Hue.get_setting(setting)) {
-    let cmds = Hue.get_setting(setting).split("\n")
-
-    for (let cmd of cmds) {
-      Hue.process_message({
-        message: cmd,
-        to_history: false,
-        clr_input: false,
-      })
-    }
-  }
-}
-
 // Starts the execution of a chain of commands
 // Used with chained commands like '/a && /b && /c'
 Hue.run_commands_queue = function (id) {

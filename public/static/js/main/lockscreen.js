@@ -49,5 +49,4 @@ Hue.unlock_screen = function () {
   Hue.process_visibility()
   Hue.change({ type: "image", force: false, play: false})
   Hue.change({ type: "tv", force: false, play: false})
-  Hue.execute_commands("on_unlockscreen")
 }
