@@ -220,7 +220,6 @@ Hue.init = function () {
   Hue.setup_expand_image()
   Hue.setup_local_storage()
   Hue.get_ignored_usernames_list()
-  Hue.get_accept_commands_from_list()
   Hue.setup_lockscreen()
   Hue.setup_image_upload_comment()
   Hue.setup_drag_events()

@@ -1204,17 +1204,6 @@ Hue.setup_commands = function () {
     "annex"
   ]
 
-  Hue.critical_commands = [
-    "js",
-    "js2",
-    "changeusername",
-    "changepassword",
-    "changeemail",
-    "logout"
-  ]
-
-  Hue.critical_commands.push(...Hue.superuser_commands)
-
   Hue.commands_list = []
   Hue.commands_list_with_prefix = []
 
@@ -1411,23 +1400,6 @@ Hue.inspect_command = function (cmd) {
   Hue.feedback(s)
 }
 
-// Executes a remote command received through a whisper
-// This only gets executed if the sender is whitelisted,
-// for remote command execution
-Hue.execute_whisper_command = function (data) {
-  if (Hue.includes_critical_command(data.username, data.message)) {
-    return false
-  }
-
-  Hue.feedback(`${data.username} executed "${data.message}" in your client`)
-
-  Hue.process_message({
-    message: data.message,
-    to_history: false,
-    clr_input: false,
-  })
-}
-
 // Show the Commands window
 Hue.show_commands = function (filter = "") {
   let commands = Hue.template_commands()
@@ -1447,48 +1419,6 @@ Hue.show_commands = function (filter = "") {
   }
 }
 
-// Checks if a remote command includes a forbidden critical command
-Hue.includes_critical_command = function (username, message, announce = true) {
-  let split = message.split(" ")
-
-  for (let cmd of split) {
-    let cmd2
-
-    if (Hue.is_command(cmd)) {
-      cmd2 = cmd.toLowerCase().split("").sort().join("").substring(1)
-    } else {
-      continue
-    }
-
-    for (let command of Hue.critical_commands) {
-      if (Hue.command_sorted_equals(cmd2, command)) {
-        if (announce) {
-          Hue.feedback(
-            `${username} attempted to run "${command}" in your client`
-          )
-        }
-
-        return true
-      }
-    }
-  }
-
-  return false
-}
-
-// Gets the list of users from whom the user accepts remote command execution
-// This allows a user to whitelist other users so they can execute commands for them through whispers
-// This is dangerous and care should be taken to ensure this list is not exploited
-Hue.get_accept_commands_from_list = function () {
-  let list = Hue.get_setting("accept_commands_from").split("\n")
-
-  if (list.length === 1 && !list[0]) {
-    list = []
-  }
-
-  Hue.accept_commands_from_list = list
-}
-
 // Checks if a string, in any alphabetical order, matches a command
 Hue.command_sorted_equals = function (str, what) {
   return str === Hue.commands_list_sorted[what]
@@ -1506,10 +1436,6 @@ Hue.get_closest_command = function (cmd) {
       highest_num = similarity
       highest_command = command
     }
-  }
-
-  if (Hue.critical_commands.includes(highest_command)) {
-    highest_command = false
   }
 
   return highest_command

@@ -214,13 +214,6 @@ Hue.whisper_received = function (data) {
     return false
   }
 
-  if (Hue.is_command(data.message)) {
-    if (Hue.get_setting("accept_commands_from").split("\n").includes(data.username)) {
-      Hue.execute_whisper_command(data)
-      return
-    }
-  }
-
   let message = `Whisper from ${data.username}`
   let func = function () { Hue.show_whisper(data) }
   let item = Hue.make_info_popup_item({icon: "envelope", message: message, push: false})

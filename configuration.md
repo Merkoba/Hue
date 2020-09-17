@@ -288,9 +288,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_show_link_previews"
 >Whether links get a preview on the chat area by default.
 
-"settings_default_accept_commands_from"
->List of usernames to accept commands from that are sent by whispers.
-
 "settings_default_autoscroll_amount"
 >How many pixels to autoscroll the chat on each step.
 

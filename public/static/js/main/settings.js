@@ -109,27 +109,6 @@ Hue.user_settings = {
       }
     },
   },
-  accept_commands_from: {
-    widget_type: "textarea",
-    description: `Accept remote command executions from these users`,
-    action: (save = true) => {
-      let unames = Hue.utilz.make_unique_lines(
-        Hue.utilz.remove_multiple_empty_lines($(`#settings_accept_commands_from`).val())
-      )
-
-      $(`#settings_accept_commands_from`).val(unames)
-      Hue.settings.accept_commands_from = unames
-      Hue.get_accept_commands_from_list()
-
-      if (save) {
-        Hue.save_settings()
-      }
-
-      if (unames) {
-        Hue.feedback("Your list of users to accept commands from was modified. This is dangerous and might not have been intended.")
-      }
-    },
-  },
   ignored_words: {
     widget_type: "textarea",
     description: `Ignore messages that contain these words`,
