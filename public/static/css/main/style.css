@@ -2804,11 +2804,6 @@ pre {
 	background-color: var(--font_color);
 }
 
-.backgrounded {
-	background-color: var(--slight_background);
-	outline: 0.0588rem dotted var(--color_4);
-}
-
 .bg0 {
 	background-color: var(--background_color);
 }
