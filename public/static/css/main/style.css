@@ -2,14 +2,9 @@
 	--panel_height: 2.2rem;
 	--panel_font_size: 1rem;
 	--icon_size: 1.4rem;
-	--app_font_family: imported_font, sans-serif;
+	--app_font_family: sans-serif, monospace;
 	--profile_image_size: 2.5rem;
 	--tab-size: 1.6rem;
-}
-
-@font-face {
-	font-family: imported_font;
-	src: url(/static/css/fonts/OpenSans-Regular.ttf);
 }
 
 body,
