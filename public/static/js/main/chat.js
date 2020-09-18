@@ -1589,10 +1589,6 @@ Hue.activity_below = function () {
 // Clears the chat area
 Hue.clear_chat = function () {
   $("#chat_area").html("")
-
-  Hue.show_log_messages()
-  Hue.goto_bottom(true)
-  Hue.focus_input()
 }
 
 // Changes the chat display size
@@ -2290,16 +2286,12 @@ Hue.goto_bottom = function (force = false) {
 }
 
 // Fills the chat and media changes with log messages from initial data
-Hue.show_log_messages = function () {
-  if (Hue.log_messages_processed) {
-    return false
-  }
-
+Hue.show_log_messages = function (log_messages) {
   let num_image = 0
   let num_tv = 0
 
-  if (Hue.log_messages && Hue.log_messages.length > 0) {
-    for (let message of Hue.log_messages) {
+  if (log_messages && log_messages.length > 0) {
+    for (let message of log_messages) {
       let type = message.type
 
       if (type === "image") {
@@ -2330,8 +2322,8 @@ Hue.show_log_messages = function () {
     )
   }
 
-  if (Hue.log_messages && Hue.log_messages.length > 0) {
-    for (let message of Hue.log_messages) {
+  if (log_messages && log_messages.length > 0) {
+    for (let message of log_messages) {
       let id = message.id
       let type = message.type
       let data = message.data
@@ -2371,8 +2363,6 @@ Hue.show_log_messages = function () {
       }
     }
   }
-
-  Hue.log_messages_processed = true
 }
 
 // Sends a simple shrug chat message

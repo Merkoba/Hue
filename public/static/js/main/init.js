@@ -259,7 +259,6 @@ Hue.on_join = function (data) {
   Hue.started_safe = false
   Hue.image_changed = []
   Hue.tv_changed = []
-  Hue.log_messages_processed = false
   Hue.superuser = data.superuser
 
   Hue.load_date_3 = Date.now()
@@ -277,7 +276,6 @@ Hue.on_join = function (data) {
   Hue.user_reg_date = data.reg_date
   Hue.userlist = data.userlist
   Hue.log_enabled = data.log
-  Hue.log_messages = data.log_messages
   Hue.is_public = data.public
 
   Hue.setup_commands()
@@ -297,6 +295,7 @@ Hue.on_join = function (data) {
   Hue.update_title()
   Hue.update_user_menu()
   Hue.clear_chat()
+  Hue.show_log_messages(data.log_messages)
   Hue.check_firstime()
   Hue.get_input_history()
   Hue.show_joined()

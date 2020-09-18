@@ -4,7 +4,7 @@
 Hue.commands = {
   "clear": {
     action: (arg, ans) => {
-      Hue.clear_chat()
+      Hue.clear_room()
     },
     description: `Clears the chat`,
   },
