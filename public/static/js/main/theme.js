@@ -27,33 +27,19 @@ Hue.set_background_image = function (data) {
 // Applies the background to all background elements
 Hue.apply_background = function () {
   let bg_image, bg_mode, bg_tile_dimensions
-  let background_mode = Hue.get_setting("background_mode")
-  let background_url = Hue.get_setting("background_url")
-  let tile_dimensions = Hue.get_setting("background_tile_dimensions")
 
-  if (background_mode === "room") {
-    if (
-      Hue.loaded_image.source &&
-      (Hue.background_mode === "mirror" ||
-        Hue.background_mode === "mirror_tiled")
-    ) {
-      bg_image = Hue.loaded_image.source
-    } else {
-      bg_image = Hue.background_image
-    }
-
-    bg_mode = Hue.background_mode
-    bg_tile_dimensions = Hue.background_tile_dimensions
-  } else if (background_mode.startsWith("custom")) {
-    if (!background_url) {
-      $(".background_image").css("background-image", "none")
-      return false
-    }
-
-    bg_image = background_url
-    bg_mode = background_mode.replace("custom_", "")
-    bg_tile_dimensions = tile_dimensions
+  if (
+    Hue.loaded_image.source &&
+    (Hue.background_mode === "mirror" ||
+      Hue.background_mode === "mirror_tiled")
+  ) {
+    bg_image = Hue.loaded_image.source
+  } else {
+    bg_image = Hue.background_image
   }
+
+  bg_mode = Hue.background_mode
+  bg_tile_dimensions = Hue.background_tile_dimensions
 
   if (Hue.background_image_enabled()) {
     $(".background_image").css("background-image", `url('${bg_image}')`)
@@ -118,16 +104,11 @@ Hue.set_theme = function (color) {
 // Older declarations get removed
 Hue.apply_theme = function () {
   let theme
-  let theme_mode = Hue.get_setting("theme_mode")
 
-  if (theme_mode === "room") {
-    if (Hue.theme_mode === "automatic" && Hue.dominant_theme) {
-      theme = Hue.dominant_theme
-    } else {
-      theme = Hue.theme
-    }
-  } else if (theme_mode === "custom") {
-    theme = Hue.get_setting("theme_color")
+  if (Hue.theme_mode === "automatic" && Hue.dominant_theme) {
+    theme = Hue.dominant_theme
+  } else {
+    theme = Hue.theme
   }
 
   if (theme.startsWith("#")) {
@@ -141,17 +122,13 @@ Hue.apply_theme = function () {
   )
   let font_color
 
-  if (theme_mode === "room") {
-    if (Hue.text_color_mode === "custom") {
-      font_color = Hue.text_color
-    } else {
-      font_color = Hue.colorlib.get_lighter_or_darker(
-        background_color,
-        Hue.config.color_contrast_amount_2
-      )
-    }
-  } else if (theme_mode === "custom") {
-    font_color = Hue.get_setting("text_color")
+  if (Hue.text_color_mode === "custom") {
+    font_color = Hue.text_color
+  } else {
+    font_color = Hue.colorlib.get_lighter_or_darker(
+      background_color,
+      Hue.config.color_contrast_amount_2
+    )
   }
 
   let background_color_a = Hue.colorlib.rgb_to_rgba(
@@ -487,23 +464,15 @@ Hue.announce_background_tile_dimensions_change = function (data) {
 // Check whether a background image should be enabled,
 // depending on the background mode and settings
 Hue.background_image_enabled = function () {
-  let background_mode = Hue.get_setting("background_mode")
+  if (Hue.background_mode === "solid") {
+    return false
+  }
 
-  if (background_mode === "room") {
-    if (Hue.background_mode === "solid") {
-      return false
-    }
-
-    if (
-      Hue.background_mode === "mirror" ||
-      Hue.background_mode === "mirror_tiled"
-    ) {
-      if (Hue.room_image_mode === "disabled") {
-        return false
-      }
-    }
-  } else {
-    if (background_mode === "custom_solid") {
+  if (
+    Hue.background_mode === "mirror" ||
+    Hue.background_mode === "mirror_tiled"
+  ) {
+    if (Hue.room_image_mode === "disabled") {
       return false
     }
   }

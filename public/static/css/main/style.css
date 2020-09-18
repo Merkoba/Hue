@@ -708,6 +708,12 @@ a.generic:hover {
 	text-underline-position: under;
 }
 
+#settings_container {
+	padding-top: 1rem;
+	grid-gap: 1.6rem;
+	padding-bottom: 0.5rem;
+}
+
 .setting_title {
 	padding-bottom: 0.5em;
 }
@@ -755,10 +761,6 @@ a.generic:hover {
 
 .Msg-window.whisper_width {
 	width: 28rem !important;
-}
-
-#Msg-content-container-settings {
-	overflow: hidden !important;
 }
 
 #Msg-overlay-locked {
@@ -1421,16 +1423,6 @@ svg.action:hover {
 	pointer-events: none;
 }
 
-.settings_item {
-	padding-top: 1em;
-	padding-bottom: 1em;
-}
-
-.settings_reset_button {
-	margin-top: 1rem;
-	margin-bottom: 1rem;
-}
-
 .container_22 {
 	width: 22em;
 }
@@ -1643,79 +1635,6 @@ svg.action:hover {
 
 .sp-palette {
 	max-width: 3.8235rem !important;
-}
-
-.settings_main_window {
-	display: flex;
-	flex-direction: row;
-	width: 50vw;
-	height: 50vh;
-	max-width: 47.0588rem;
-	max-height: 47.0588rem;
-	margin-top: 1rem;
-}
-
-.settings_window_left {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	width: 11.7647rem;
-	overflow: auto;
-	background-color: var(--background_color_2);
-	color: var(--font_color);
-}
-
-.settings_window_right {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: calc(100% - 11.76rem);
-	overflow: auto;
-}
-
-.settings_window_category {
-	margin-top: 0.4rem;
-	margin-bottom: 0.4rem;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-shrink: 0;
-	flex-grow: 0;
-	border-bottom: 0.0588rem solid transparent;
-}
-
-.settings_window_category_text {
-	font-size: 1.2em;
-}
-
-.settings_window_category_status {
-	font-size: 0.8em;
-}
-
-.settings_window_category_status_filler {
-	font-size: 0.8em;
-}
-
-.settings_window_category_container {
-	display: none;
-}
-
-.settings_window_category_container_selected {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 100%;
-}
-
-.settings_window_left_content {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	width: 100%;
-	max-height: 100%;
 }
 
 .maxer_container {

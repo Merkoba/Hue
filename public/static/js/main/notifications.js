@@ -1,10 +1,3 @@
-// Some notification configurations
-Hue.configure_notifications = function () {
-  $("#notifications_configure_icon").click(function () {
-    Hue.open_user_settings_category("notifications")
-  })
-}
-
 // Makes popups used for events like join and part
 Hue.make_info_popup = function (on_click = function () {}) {
   let autoclose_delay = Hue.get_setting("popup_notifications_close_delay")

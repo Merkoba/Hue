@@ -221,7 +221,6 @@ Hue.init = function () {
   Hue.setup_media_pickers()
   Hue.setup_generic_separators()
   Hue.setup_media_menu()
-  Hue.configure_notifications()
   Hue.setup_chat()
   Hue.setup_message_board()
   Hue.change_media_layout()

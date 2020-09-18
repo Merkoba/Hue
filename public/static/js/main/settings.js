@@ -129,91 +129,6 @@ Hue.user_settings = {
       }
     },
   },
-  theme_mode: {
-    widget_type: "select",
-    description: `It either uses the room's theme color or a custom theme color`,
-    action: (save = true) => {
-      Hue.settings.theme_mode = $(`#settings_theme_mode option:selected`).val()
-      Hue.apply_theme()
-      Hue.check_hideable_settings()
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  theme_color: {
-    widget_type: "color",
-    description: `The theme color to use if the user is using a custom theme mode`,
-    action: (save = true) => {
-      Hue.settings.theme_color = $(`#settings_theme_color`).val()
-      Hue.apply_theme()
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  text_color: {
-    widget_type: "color",
-    description: `The text color to use if the user is using a custom theme mode`,
-    action: (save = true) => {
-      Hue.settings.text_color = $(`#settings_text_color`).val()
-      Hue.apply_theme()
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  background_mode: {
-    widget_type: "select",
-    description: `It either uses the room's background, a custom background, or no background`,
-    action: (save = true) => {
-      Hue.settings.background_mode = $(
-        `#settings_background_mode option:selected`
-      ).val()
-
-      Hue.apply_background()
-      Hue.check_hideable_settings()
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  background_url: {
-    widget_type: "text",
-    description: `The background url to use if the user is using a custom background`,
-    action: (save = true) => {
-      let src = Hue.utilz.clean_string5(
-        $(`#settings_background_url`).val().replace(".gifv", ".gif")
-      )
-      $(`#settings_background_url`).val(src)
-      Hue.settings.background_url = src
-      Hue.apply_background()
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  background_tile_dimensions: {
-    widget_type: "text",
-    description: `The background url to use if the user is using a custom background`,
-    action: (save = true) => {
-      let dimensions = Hue.utilz.clean_string2(
-        $(`#settings_background_tile_dimensions`).val()
-      )
-      $(`#settings_background_tile_dimensions`).val(dimensions)
-      Hue.settings.background_tile_dimensions = dimensions
-      Hue.apply_background()
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
   message_log: {
     widget_type: "checkbox",
     description: `Whether the user requests the message log on load`,
@@ -412,43 +327,24 @@ Hue.reset_settings = function (empty = true) {
   Hue.prepare_media_settings()
 }
 
-// Scrolls a settings window to the top
-Hue.scroll_settings_window_to_top = function () {
-  $("#settings_window_right").scrollTop(0)
-}
-
 // Show the settings window
 Hue.show_settings = function (filter = false) {
-  Hue.do_settings_filter(filter)
-  Hue.msg_settings.show()
+  Hue.msg_settings.show(function () {
+    if (filter) {
+      $("#settings_filter").val(filter)
+      Hue.do_modal_filter()
+    }
+  })
 }
 
 // Setup the settings windows
 Hue.setup_settings_windows = function () {
   Hue.setup_setting_elements()
   Hue.set_user_settings_titles()
-  Hue.check_hideable_settings()
-
-  $(".settings_main_window").on("click", ".settings_window_category", function (
-    e
-  ) {
-    let category = $(this).data("category")
-    Hue.change_settings_window_category(category)
-  })
-
-  let first_category = $("#settings_window .settings_window_category")
-    .eq(0)
-    .data("category")
-
-  Hue.change_settings_window_category(first_category)
 }
 
 // Sets up more settings elements
-Hue.setup_setting_elements = function (type) {
-  $("#settings_reset").click(function () {
-    Hue.confirm_reset_settings()
-  })
-
+Hue.setup_setting_elements = function () {
   Hue.setup_togglers("settings")
 }
 
@@ -468,7 +364,7 @@ Hue.set_user_settings_titles = function () {
     }
 
     let title = `${setting.description} (${key}) (Default: ${value})`
-    $(`#settings_${key}`).closest(".settings_top_level_item").attr("title", title)
+    $(`#settings_${key}`).closest(".settings_item").attr("title", title)
   }
 }
 
@@ -526,166 +422,16 @@ Hue.prepare_media_settings = function () {
   Hue.apply_media_positions()
 }
 
-// Opens a settings window and goes to a specific category
-Hue.open_user_settings_category = function (category) {
-  Hue.show_settings()
-  Hue.change_settings_window_category(category)
-}
-
-// Gets the selected settings window category
-Hue.get_selected_user_settings_category = function () {
-  let category = false
-
-  $(`#settings_window_left .settings_window_category`).each(
-    function () {
-      let selected = $(this).data("selected_category")
-
-      if (selected) {
-        category = $(this).data("category")
-        return false
-      }
-    }
-  )
-
-  return category
-}
-
-// Change the active category in a settings window
-Hue.change_settings_window_category = function (category) {
-  let element = $(`#settings_window_category_${category}`)[0]
-  let main = $(element).closest(".settings_main_window")
-
-  main.find(".settings_window_category").each(function () {
-    $(this)
-      .find(".settings_window_category_text")
-      .eq(0)
-      .removeClass("border_bottom")
-    $(this).data("selected_category", false)
-  })
-
-  $(element)
-    .find(".settings_window_category_text")
-    .eq(0)
-    .addClass("border_bottom")
-  $(element).data("selected_category", true)
-
-  main.find(".settings_window_category_container_selected").each(function () {
-    $(this).removeClass("settings_window_category_container_selected")
-    $(this).addClass("settings_window_category_container")
-  })
-
-  let container = $(`#${$(element).data("category_container")}`)
-
-  container.removeClass("settings_window_category_container")
-  container.addClass("settings_window_category_container_selected")
-}
-
-// Filter a settings window
-Hue.do_settings_filter = function (filter = false) {
-  if (filter) {
-    filter = filter.trim()
-  }
-
-  let words
-  let sfilter = filter ? filter : ""
-  $("#settings_filter").val(sfilter)
-
-  if (filter) {
-    let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
-    words = lc_value.split(" ").filter((x) => x.trim() !== "")
-  }
-
-  $(`#settings_window .settings_top_level_item`).each(function () {
-    if (filter) {
-      let text = Hue.utilz.clean_string2($(this).text()).toLowerCase()
-
-      if (words.some((word) => text.includes(word))) {
-        $(this).css("display", "block")
-      } else {
-        $(this).css("display", "none")
-      }
-    } else {
-      $(this).css("display", "block")
-    }
-  })
-
-  let current_category = Hue.get_selected_user_settings_category()
-  let current_category_visible = true
-  let active_category = false
-
-  $(`#settings_window .settings_category`).each(function () {
-    let category = $(this).data("category")
-    let count = $(this).find(
-      ".settings_top_level_item:not([style*='display: none'])"
-    ).length
-
-    if (count === 0) {
-      if (category === current_category) {
-        current_category_visible = false
-      }
-
-      $(`#settings_window_category_${category}`).css("display", "none")
-    } else {
-      if (!active_category) {
-        active_category = category
-      }
-
-      $(`#settings_window_category_${category}`).css("display", "flex")
-    }
-  })
-
-  let new_category = current_category_visible ?
-    current_category :
-    active_category
-
-  if (new_category) {
-    Hue.change_settings_window_category(new_category)
-  }
-
-  if (!filter) {
-    Hue.check_hideable_settings()
-  }
-
-  Hue.scroll_settings_window_to_top()
-}
-
 // Makes a setting invisible
 Hue.hide_setting = function (name) {
   $(`#settings_${name}`)
-    .closest(".settings_top_level_item")
+    .closest(".settings_item")
     .css("display", "none").addClass("hidden_setting")
 }
 
 // Makes a setting visible
 Hue.unhide_setting = function (name) {
   $(`#settings_${name}`)
-    .closest(".settings_top_level_item")
+    .closest(".settings_item")
     .css("display", "block").removeClass("hidden_setting")
-}
-
-// Checks to see what settings should be invisible in the settings window
-// This depends on the state of other certain settings
-Hue.check_hideable_settings = function () {
-  if (Hue.get_setting("theme_mode") === "room") {
-    Hue.hide_setting("theme_color")
-    Hue.hide_setting("text_color")
-  } else {
-    Hue.unhide_setting("theme_color")
-    Hue.unhide_setting("text_color")
-  }
-
-  let background_mode = Hue.get_setting("background_mode")
-
-  if (background_mode === "room" || background_mode === "custom_solid") {
-    Hue.hide_setting("background_url")
-    Hue.hide_setting("background_tile_dimensions")
-  } else {
-    Hue.unhide_setting("background_url")
-
-    if (background_mode === "custom_tiled") {
-      Hue.unhide_setting("background_tile_dimensions")
-    } else {
-      Hue.hide_setting("background_tile_dimensions")
-    }
-  }
 }

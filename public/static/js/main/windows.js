@@ -294,6 +294,7 @@ Hue.start_msg = function () {
   Hue.msg_settings = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "settings",
+      window_width: "25rem",
       after_close: function (instance) {
         common.after_close(instance)
         Hue.close_togglers("settings")
@@ -620,14 +621,7 @@ Hue.after_modal_show = function (instance) {
 // This is called after a modal is set or shown
 Hue.after_modal_set_or_show = function (instance) {
   setTimeout(function () {
-    if (instance.options.id === "settings") {
-      $(
-        `#settings_window .settings_window_category_container_selected`
-      ).eq(0).parent()[0].scrollTop = 0
-      $("#settings_window_left_content").eq(0).parent()[0].scrollTop = 0
-    } else {
-      instance.content_container.scrollTop = 0
-    }
+    instance.content_container.scrollTop = 0
   }, 100)
 }
 
@@ -714,10 +708,6 @@ Hue.start_filters = function () {
 
   $("#highlights_filter").on("input", function () {
     Hue.highlights_filter_timer()
-  })
-
-  $("#settings_filter").on("input", function () {
-    Hue.settings_filter_timer("settings")
   })
 
   $("#input_history_filter").on("input", function () {

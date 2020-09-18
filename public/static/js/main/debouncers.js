@@ -85,7 +85,7 @@ Hue.create_debouncers = function () {
 
   // Debounce timer for settings filter
   Hue.settings_filter_timer = Hue.create_debouncer(function () {
-    Hue.do_settings_filter($("#settings_filter").val())
+    Hue.show_settings($("#settings_filter").val())
   }, Hue.filter_delay)
 
   // Debounce timer to hide the infotip
