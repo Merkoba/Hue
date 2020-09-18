@@ -2,7 +2,8 @@ module.exports = function (c, config) {
   // Automatically includes all global settings and room state config options
   for (let key in config) {
     if (
-      key.startsWith("settings_default")
+      key.startsWith("settings_default") ||
+      key.startsWith("room_state_default")
     ) {
       c.vars[key] = config[key]
     }
