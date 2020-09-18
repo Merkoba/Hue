@@ -2096,29 +2096,13 @@ a.special_link:hover {
 	padding-bottom: 0;
 }
 
-.media_menu_actions {
-	grid-gap: 1rem;
-}
-
 #media_menu_container {
 	margin-top: 0.6rem;
 	margin-bottom: 0.6rem;
 }
 
-.media_menu_media_options {
-	margin-top: 0.4rem;
-}
-
 .media_menu_loaded_media_container {
 	margin-top: 0.8rem;
-}
-
-.media_menu_media_options>div:first-child {
-	margin-right: 0.8rem;
-}
-
-.media_menu_media_options>div {
-	text-decoration: underline;
 }
 
 .highlights_item .image_preview,

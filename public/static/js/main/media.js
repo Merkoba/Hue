@@ -607,21 +607,6 @@ Hue.setup_media_menu = function () {
     Hue.show_tv_picker()
   })
 
-  $("#media_menu_stop").click(function () {
-    Hue.stop_media()
-    Hue.hide_media_menu()
-  })
-
-  $("#media_menu_lock").click(function () {
-    Hue.stop_and_lock(false)
-    Hue.hide_media_menu()
-  })
-
-  $("#media_menu_stop_and_lock").click(function () {
-    Hue.stop_and_lock()
-    Hue.hide_media_menu()
-  })
-
   $("#media_menu_decrease_tv_volume").click(function () {
     Hue.set_media_menu_tv_volume('decrease')
   })
@@ -641,8 +626,6 @@ Hue.setup_media_menu = function () {
       Hue.set_media_menu_tv_volume('max')
     }
   })
-
-  Hue.horizontal_separator.separate("media_menu_actions_1")
 }
 
 // Format local sources that start with slash
