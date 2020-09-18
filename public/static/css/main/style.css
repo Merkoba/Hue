@@ -2445,8 +2445,11 @@ a.special_link:hover {
 	margin-top: 1rem;
 }
 
+#details_container {
+	grid-gap: 2rem;
+}
+
 #details_buttons {
-	margin-top: 1rem;
 	grid-gap: 0.5rem;
 }
 

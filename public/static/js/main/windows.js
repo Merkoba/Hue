@@ -392,6 +392,7 @@ Hue.start_msg = function () {
   Hue.msg_details = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "details",
+      window_width: "22rem",
       after_show: function (instance) {
         common.after_show(instance)
         Hue.details_open = true
