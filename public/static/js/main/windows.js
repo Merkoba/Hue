@@ -623,8 +623,8 @@ Hue.after_modal_set_or_show = function (instance) {
     if (instance.options.id === "settings") {
       $(
         `#settings_window .settings_window_category_container_selected`
-      ).get(0).scrollTop = 0
-      $("#settings_window_left_content").get(0).scrollTop = 0
+      ).eq(0).parent()[0].scrollTop = 0
+      $("#settings_window_left_content").eq(0).parent()[0].scrollTop = 0
     } else {
       instance.content_container.scrollTop = 0
     }
