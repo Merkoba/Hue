@@ -1534,7 +1534,7 @@ Hue.activity_above = function () {
           return true
         }
 
-        Hue.scroll_chat_to(diff - 20)
+        Hue.scroll_chat_to(diff - 10)
         step = true
         return false
       }
@@ -1574,7 +1574,7 @@ Hue.activity_below = function () {
           return true
         }
 
-        Hue.scroll_chat_to(diff - 20)
+        Hue.scroll_chat_to(diff - 10)
         step = true
         return false
       }
