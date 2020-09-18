@@ -159,6 +159,7 @@ Hue.clear_room = function () {
 
   Hue.change({ type: "image" })
   Hue.change({ type: "tv" })
+  Hue.goto_bottom(true)
 }
 
 // Announces room name changes
