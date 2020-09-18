@@ -82,21 +82,6 @@ Hue.user_settings = {
       }
     },
   },
-  show_input_placeholder: {
-    widget_type: "checkbox",
-    description: `Whether information inside the input should be shown`,
-    action: (save = true) => {
-      Hue.settings.show_input_placeholder = $(
-        `#settings_show_input_placeholder`
-      ).prop("checked")
-
-      Hue.update_input_placeholder()
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
   autoreveal_spoilers: {
     widget_type: "checkbox",
     description: `Whether spoiler messages should be autorevealed`,
@@ -166,21 +151,6 @@ Hue.user_settings = {
 
       $(`#settings_popup_notifications_close_delay`).val(delay)
       Hue.settings.popup_notifications_close_delay = delay
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  transparent_panels: {
-    widget_type: "checkbox",
-    description: `Whether panels get a slight transparency`,
-    action: (save = true) => {
-      Hue.settings.transparent_panels = $(`#settings_transparent_panels`).prop(
-        "checked"
-      )
-
-      Hue.apply_theme()
 
       if (save) {
         Hue.save_settings()

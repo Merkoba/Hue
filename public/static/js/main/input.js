@@ -50,12 +50,7 @@ Hue.setup_input = function () {
 
 // Updates the input's placeholder
 Hue.update_input_placeholder = function () {
-  let s = ""
-  
-  if (Hue.get_setting("show_input_placeholder")) {
-    s = `Hi ${Hue.username}, write something to ${Hue.room_name}`
-  }
-  
+  let s = `Hi ${Hue.username}, write something to ${Hue.room_name}`
   $("#input").attr("placeholder", s)
 }
 

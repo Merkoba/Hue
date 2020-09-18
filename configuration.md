@@ -267,9 +267,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_show_link_previews"
 >Whether links get a preview on the chat area by default.
 
-"settings_default_show_input_placeholder
->Whether the input placeholder is enabled by default.
-
 "settings_default_theme_mode
 >Whether it uses the room theme or a custom theme by default.
 
@@ -299,9 +296,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "settings_default_autoconnect"
 >Whether a user re-connects on socket disconnections by default.
-
-"settings_default_transparent_panels"
->Whether panels get a slight transparency by default.
 
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.

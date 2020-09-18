@@ -169,15 +169,7 @@ Hue.apply_theme = function () {
     Hue.config.opacity_amount_3
   )
 
-  let panel_bg_color
-
-  if (Hue.get_setting("transparent_panels")) {
-    panel_bg_color = background_color_2_a_2ha
-  } else {
-    panel_bg_color = background_color_2
-  }
-
-  $(".panel").css("background-color", panel_bg_color)
+  $(".panel").css("background-color", background_color_2_a_2ha)
   $(".panel").css("color", font_color)
 
   document.documentElement.style.setProperty('--color_4', color_4)
