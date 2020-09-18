@@ -577,6 +577,17 @@ Hue.info2_vars_to_false = function () {
   Hue.change_user_email_open = false
 }
 
+// Starts automatic modal filters
+Hue.start_modal_filters = function () {
+  $(".filter_input").each(function () {
+    if ($(this).data("mode") !== "manual") {
+      $(this).on("input", function () {
+        Hue.do_modal_filter_timer()
+      })
+    }
+  })
+}
+
 // Focuses the filter widget of a modal
 Hue.focus_modal_filter = function (instance) {
   let filter = $(`#Msg-content-${instance.options.id}`)

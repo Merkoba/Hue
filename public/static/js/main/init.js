@@ -234,6 +234,7 @@ Hue.init = function () {
   Hue.start_socket_stats()
   Hue.setup_maxers()
   Hue.start_media_info()
+  Hue.start_modal_filters()
 
   if (Hue.debug_functions) {
     Hue.wrap_functions()

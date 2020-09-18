@@ -314,20 +314,4 @@ Hue.activate_key_detection = function () {
       }
     }
   })
-
-  document.addEventListener("keyup", (e) => {
-    if (!Hue.started) {
-      return
-    }
-  })
-
-  document.addEventListener("input", (e) => {
-    if (Hue.modal_open && Hue.active_modal) {
-      if ($(e.target).data("mode") === "manual") {
-        return false
-      }
-
-      Hue.do_modal_filter_timer()
-    }
-  })
 }
