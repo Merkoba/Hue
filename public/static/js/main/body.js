@@ -12,12 +12,6 @@ Hue.start_body_events = function () {
     $(this).attr("title", new_title)
   })
 
-  $("body").on("auxclick", ".Msg-window-inner-x", function (e) {
-    if (e.which === 2) {
-      Hue.process_msg_close_button(this)
-    }
-  })
-
   $("body").mousedown(function () {
     Hue.mouse_is_down = true
   })

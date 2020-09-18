@@ -18,14 +18,6 @@ Hue.setup_header = function () {
     Hue.show_userlist_window()
   })
 
-  $("#header_users").on("auxclick", function (e) {
-    if (e.which === 2) {
-      let user =
-        Hue.userlist[Hue.utilz.get_random_int(0, Hue.userlist.length - 1)]
-      Hue.show_profile(user.username)
-    }
-  })
-
   $("#header_message_board").click(function () {
     Hue.show_message_board()
   })

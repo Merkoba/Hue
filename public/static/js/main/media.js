@@ -255,20 +255,6 @@ Hue.maxers_mouse_events = function () {
   }
 
   $("#chat_maxer")[0].addEventListener("wheel", f2)
-
-  $("#media_maxer").on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.unmaximize_media()
-      Hue.set_default_tv_size()
-    }
-  })
-
-  $("#chat_maxer").on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.set_default_chat_size()
-      Hue.show_media_items()
-    }
-  })
 }
 
 // If the image or tv is maximized it unmaximizes it so both are shown
@@ -611,20 +597,8 @@ Hue.setup_media_menu = function () {
     Hue.set_media_menu_tv_volume('decrease')
   })
 
-  $("#media_menu_decrease_tv_volume").on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.set_media_menu_tv_volume('min')
-    }
-  })
-
   $("#media_menu_increase_tv_volume").click(function () {
     Hue.set_media_menu_tv_volume('increase')
-  })
-
-  $("#media_menu_increase_tv_volume").on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.set_media_menu_tv_volume('max')
-    }
   })
 }
 

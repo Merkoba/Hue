@@ -27,20 +27,8 @@ Hue.setup_footer_icons = function () {
 
 // Setups more footer elements
 Hue.setup_footer = function () {
-  $("#footer_image_icon").on("auxclick", function (e) {
-    if (e.which === 2) {
-      $("#image_picker_upload").click()
-    }
-  })
-
   $("#footer_swaprotate").click(function () {
     Hue.show_swaprotate()
-  })
-
-  $("#footer_swaprotate").on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.rotate_media()
-    }
   })
 
   let media = ["image", "tv"]
@@ -69,12 +57,6 @@ Hue.setup_footer = function () {
 
   $("#footer_media_menu").click(function () {
     Hue.show_media_menu()
-  })
-
-  $("#footer_media_menu").on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.stop_media()
-    }
   })
 }
 

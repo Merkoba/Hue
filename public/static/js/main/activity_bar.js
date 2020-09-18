@@ -12,14 +12,6 @@ Hue.setup_activity_bar = function () {
   $("#activity_bar").on("click", ".activity_bar_item", function () {
     Hue.show_profile_by_user_id($(this).data("user_id"))
   })
-
-  $("#activity_bar").on("auxclick", ".activity_bar_item", function (
-    e
-  ) {
-    if (e.which === 2) {
-      Hue.process_write_whisper_by_user_id($(this).data("user_id"))
-    }
-  })
 }
 
 // Check if it's ok to trigger activity
