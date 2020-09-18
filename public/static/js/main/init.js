@@ -22,7 +22,6 @@ Hue.ls_settings = "settings_v1"
 Hue.ls_room_state = "room_state_v1"
 Hue.ls_input_history = "input_history_v17"
 Hue.ls_first_time = "first_time_v2"
-Hue.ls_last_message_board_post_checked = "last_message_board_post_checked_v4"
 Hue.vtypes = ["voice_1", "voice_2", "voice_3", "voice_4"]
 Hue.optypes = ["op_1", "op_2", "op_3", "op_4"]
 Hue.roles = ["admin"].concat(Hue.optypes).concat(Hue.vtypes)

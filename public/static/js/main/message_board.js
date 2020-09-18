@@ -33,8 +33,6 @@ Hue.setup_message_board = function () {
   $("#message_board_publish").click(function () {
     Hue.submit_message_board_post()
   })
-  
-  Hue.get_last_message_board_post_checked()
 }
 
 // Creates and adds an item to the message board
@@ -173,7 +171,7 @@ Hue.check_last_message_board_post = function () {
     return false
   }
 
-  let date = Hue.last_message_board_post_checked[Hue.room_id]
+  let date = Hue.room_state.last_message_board_post
 
   if (items.first().data("date") > date) {
     if (!Hue.msg_message_board.is_open()) {
@@ -203,18 +201,10 @@ Hue.update_last_message_post_checked = function () {
   let item = $("#message_board_container").find(".message_board_item").first()
   let date = item.data("date")
 
-  if (date !== Hue.last_message_board_post_checked[Hue.room_id]) {
-    Hue.save_last_message_board_post_checked(date)
+  if (date !== Hue.room_state.last_message_board_post) {
+    Hue.room_state.last_message_board_post = date
+    Hue.save_room_state()
   }
-}
-
-// Saves the last message board post check local storage
-Hue.save_last_message_board_post_checked = function (date) {
-  Hue.last_message_board_post_checked[Hue.room_id] = date
-  Hue.save_local_storage(
-    Hue.ls_last_message_board_post_checked,
-    Hue.last_message_board_post_checked
-  )
 }
 
 // Checks if the user can delete posts in the message board
@@ -248,31 +238,6 @@ Hue.remove_message_board_post = function (data) {
   }
 
   Hue.check_last_message_board_post()
-}
-
-// Gets the last message board checked local storage
-Hue.get_last_message_board_post_checked = function () {
-  Hue.last_message_board_post_checked = Hue.get_local_storage(
-    Hue.ls_last_message_board_post_checked
-  )
-
-  let changed = false
-
-  if (!Hue.last_message_board_post_checked) {
-    Hue.last_message_board_post_checked = {}
-    changed = true
-  }
-
-  if (!Hue.last_message_board_post_checked[Hue.room_id]) {
-    Hue.last_message_board_post_checked[Hue.room_id] = 0
-    changed = true
-  }
-
-  if (changed) {
-    Hue.save_last_message_board_post_checked(
-      Hue.last_message_board_post_checked[Hue.room_id]
-    )
-  }
 }
 
 // Deletes all message board posts

@@ -130,6 +130,7 @@
 	"room_state_default_tv_display_percentage": 60,
 	"room_state_default_tv_display_position": "bottom",
 	"room_state_default_media_layout": "column",
+	"room_state_default_last_message_board_post": 0,
 	"jwt_expiration": 30000,
 	"max_jwt_token_length": 300,
 	"max_user_id_length": 100,

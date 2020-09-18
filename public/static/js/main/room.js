@@ -23,7 +23,8 @@ Hue.get_room_state = function () {
     "chat_display_percentage",
     "tv_display_percentage",
     "tv_display_position",
-    "media_layout"
+    "media_layout",
+    "last_message_board_post"
   ]
 
   for (let setting of settings) {
@@ -47,7 +48,6 @@ Hue.save_room_state = function () {
   }
 
   room_state_all[Hue.room_id] = Hue.room_state
-
   Hue.save_local_storage(Hue.ls_room_state, room_state_all)
 }
 
