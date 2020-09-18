@@ -95,7 +95,7 @@ Hue.user_settings = {
   },
   chat_crop_limit: {
     widget_type: "number",
-    description: `Crop the chat area after this many messages`,
+    description: `Crop the chat area after these many messages`,
     action: (save = true) => {
       let val = parseInt(
         Hue.utilz.clean_string2($(`#settings_chat_crop_limit`).val())
@@ -119,25 +119,6 @@ Hue.user_settings = {
     description: `Whether a user should autoconnect automatically after a socket disconnect`,
     action: (save = true) => {
       Hue.settings.autoconnect = $(`#settings_autoconnect`).prop("checked")
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  popup_notifications_close_delay: {
-    widget_type: "number",
-    description: `How much time (ms) needs to pass before the notification popups close automatically`,
-    action: (save = true) => {
-      let delay = parseInt($(`#settings_popup_notifications_close_delay`).val())
-
-      if (isNaN(delay)) {
-        delay =
-          Hue.config.settings_default_popup_notifications_close_delay
-      }
-
-      $(`#settings_popup_notifications_close_delay`).val(delay)
-      Hue.settings.popup_notifications_close_delay = delay
 
       if (save) {
         Hue.save_settings()

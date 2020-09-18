@@ -146,6 +146,7 @@ Hue.tv_locked = false
 Hue.fresh_messages_list = []
 Hue.max_fresh_messages = 100
 Hue.fresh_messages_duration = 3000
+Hue.notifications_close_delay = 5000
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

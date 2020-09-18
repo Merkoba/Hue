@@ -1,6 +1,6 @@
 // Makes popups used for events like join and part
 Hue.make_info_popup = function (on_click = function () {}) {
-  let autoclose_delay = Hue.get_setting("popup_notifications_close_delay")
+  let autoclose_delay = Hue.notifications_close_delay
 
   let popup = Hue.create_popup({
     position: "topright",
