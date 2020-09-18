@@ -83,7 +83,7 @@ Hue.update_media_menu_loaded_media = function () {
     if (obj[type]) {
       $(`#media_menu_loaded_${type}`).html(obj[type])
     } else {
-      $(`#media_menu_loaded_${type}`).html("")
+      $(`#media_menu_loaded_${type}`).html("Not loaded yet")
     }
   }
 
