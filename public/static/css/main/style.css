@@ -411,7 +411,6 @@ body * {
 	background-color: var(--background_color_a_2);
 	color: var(--font_color);
 	flex-grow: 1;
-	border-right: 0.0588rem var(--color_4_a) solid;
 }
 
 .scroller:hover {
