@@ -237,26 +237,14 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_stored_images"
 >The amount of most recent images to have stored in a room. Each room has an array of images stored, when the array's length surpasses this number, the oldest image in it will get deleted.
 
-"settings_default_sound_notifications"
->Whether sound notifications are enabled by default.
-
 "settings_default_highlight_current_username"
 >Whether current username triggers a highlight by default.
 
 "settings_default_case_insensitive_username_highlights"
 >Whether highlights for current username are case insensitive by default.
 
-"settings_default_show_joins"
->Whether to show user joins by default.
-
-"settings_default_show_parts"
->Whether to show user parts by default.
-
 "settings_default_open_whispers_automatically"
 >Whether popup messages will open automatically when arrived by default.
-
-"settings_default_tv_height"
->The % height the tv will take by default when the image is also displayed.
 
 "settings_default_warn_before_closing"
 > Default setting of whether it should warn before closing the application/tab.
@@ -267,23 +255,8 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_show_link_previews"
 >Whether links get a preview on the chat area by default.
 
-"settings_default_theme_mode
->Whether it uses the room theme or a custom theme by default.
-
-"settings_default_theme_color
->Default color for custom theme.
-
-"settings_default_text_color
->Default text color for custom theme.
-
-"settings_default_background_mode"
->Default background mode, either it uses the room's background or a custom background.
-
-"settings_default_background_url"
->This is the default image url if using a custom background.
-
-"settings_default_background_tile_dimensions"
->This is the default background tile dimensions if using a custom background.
+"settings_default_autoreveal_spoilers"
+>Where spoilers should be revealed by default.
 
 "settings_default_message_log"
 >Whether users request the message log on load by default.
