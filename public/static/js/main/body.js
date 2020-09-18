@@ -1,10 +1,5 @@
 // Starts body events
 Hue.start_body_events = function () {
-  $("body").on("click", ".spoiler", function () {
-    $(this).removeClass("spoiler")
-    $(this).removeAttr("title")
-  })
-  
   $("body").on("mouseenter", ".dynamic_title", function () {
     let new_title = `${$(this).data("otitle")} (${Hue.get_timeago(
       $(this).data("date")

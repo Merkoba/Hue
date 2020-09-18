@@ -255,9 +255,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_show_link_previews"
 >Whether links get a preview on the chat area by default.
 
-"settings_default_autoreveal_spoilers"
->Where spoilers should be revealed by default.
-
 "settings_default_message_log"
 >Whether users request the message log on load by default.
 

@@ -2691,11 +2691,6 @@ pre {
 	white-space: pre-wrap;
 }
 
-.spoiler {
-	cursor: pointer;
-	background-color: var(--font_color);
-}
-
 .bg0 {
 	background-color: var(--background_color);
 }

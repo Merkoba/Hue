@@ -82,19 +82,6 @@ Hue.user_settings = {
       }
     },
   },
-  autoreveal_spoilers: {
-    widget_type: "checkbox",
-    description: `Whether spoiler messages should be autorevealed`,
-    action: (save = true) => {
-      Hue.settings.autoreveal_spoilers = $(`#settings_autoreveal_spoilers`).prop(
-        "checked"
-      )
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
   message_log: {
     widget_type: "checkbox",
     description: `Whether the user requests the message log on load`,
