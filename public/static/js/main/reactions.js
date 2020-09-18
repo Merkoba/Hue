@@ -35,11 +35,7 @@ Hue.send_reaction = function (reaction_type, reaction_target) {
 }
 
 // Shows a message depending on the reaction type
-Hue.show_reaction = function (data, date = false) {
-  if (Hue.user_is_ignored(data.username)) {
-    return false
-  }
-  
+Hue.show_reaction = function (data, date = false) {  
   let d
 
   if (date) {

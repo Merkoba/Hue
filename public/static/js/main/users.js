@@ -63,9 +63,7 @@ Hue.user_join = function (data) {
     type: "user_join",
   })
 
-  if (!Hue.user_is_ignored(data.username)) {
-    Hue.show_popup(Hue.make_info_popup(f), item)
-  }
+  Hue.show_popup(Hue.make_info_popup(f), item)
 
   if(data.username !== Hue.username) {
       Hue.on_activity("join")
@@ -578,54 +576,36 @@ Hue.update_user_profile_image = function (id, pi) {
   }
 }
 
-// Gets the ignored usernames list
-Hue.get_ignored_usernames_list = function () {
-  let list = Hue.get_setting("ignored_usernames").split("\n")
-
-  if (list.length === 1 && !list[0]) {
-    list = []
-  }
-
-  Hue.ignored_usernames_list = list
-}
-
 // What to do when a user disconnects
 Hue.user_disconnect = function (data) {
   Hue.remove_from_userlist(data.user_id)
   Hue.update_activity_bar()
 
-  let s, mode
+  let message
   let type = data.disconnection_type
 
   if (type === "disconnection") {
-    s = `${data.username} has left`
-    mode = "normal"
+    message = `${data.username} has left`
   } else if (type === "pinged") {
-    s = `${data.username} has left (Ping Timeout)`
-    mode = "normal"
+    message = `${data.username} has left (Ping Timeout)`
   } else if (type === "kicked") {
-    s = `${data.username} was kicked by ${data.info1}`
-    mode = "action"
+    message = `${data.username} was kicked by ${data.info1}`
   } else if (type === "banned") {
-    s = `${data.username} was banned by ${data.info1}`
+    message = `${data.username} was banned by ${data.info1}`
 
     if (Hue.ban_list_open) {
       Hue.request_ban_list()
     }
-
-    mode = "action"
   }
 
   let item = Hue.make_info_popup_item({
     icon: "sign-out",
-    message: s,
+    message: message,
     action: false,
     type: "user_part",
   })
 
-  if (!Hue.user_is_ignored(data.username) || mode === "action") {
-    Hue.show_popup(Hue.make_info_popup(), item)
-  }
+  Hue.show_popup(Hue.make_info_popup(), item)
 
   if (Hue.open_profile_username === data.username) {
     Hue.show_profile(data.username, $("#show_profile_image").attr("src"))
@@ -676,19 +656,6 @@ Hue.announce_new_username = function (data) {
 
   let user = Hue.get_user_by_username(data.username)
   Hue.update_activity_bar_username(user.user_id, user.username)
-}
-
-// Check whether a user is ignored by checking the ignored usernames list
-Hue.user_is_ignored = function (uname) {
-  if (uname === Hue.username) {
-    return false
-  }
-
-  if (Hue.ignored_usernames_list.includes(uname)) {
-    return true
-  }
-
-  return false
 }
 
 // Returns feedback on wether a user is in the room or not
@@ -916,12 +883,10 @@ Hue.profile_image_changed = function (data) {
 
   Hue.update_user_profile_image(data.user_id, data.profile_image)
 
-  if (!Hue.user_is_ignored(user.username)) {
-    Hue.show_room_notification(
-      user.username,
-      `${user.username} changed their profile image`
-    )
-  }
+  Hue.show_room_notification(
+    user.username,
+    `${user.username} changed their profile image`
+  )
 
   Hue.update_activity_bar_image(data.user_id, data.profile_image)
 }
@@ -934,7 +899,7 @@ Hue.bio_changed = function (data) {
     Hue.set_bio(data.bio)
   }
 
-  if (data.bio && !Hue.user_is_ignored(data.username)) {
+  if (data.bio) {
     Hue.show_room_notification(
       data.username,
       `${data.username} changed their bio`
@@ -1425,56 +1390,6 @@ Hue.audio_clip_changed = function (data) {
       `${data.username} changed their audio clip`
     )
   }
-}
-
-// Add a user to the ignore list
-Hue.ignore_user = function (username) {
-  let list = $(`#settings_ignored_usernames`)
-  let lines = list.val().split("\n")
-
-  for (let line of lines) {
-    if (line === username) {
-      Hue.feedback(`${username} is already ignored`)
-      return false
-    }
-  }
-
-  list.val(`${list.val()}\n${username}`.trim())
-  Hue.feedback(`${username} ignored`)
-  Hue.user_settings.ignored_usernames.action()
-}
-
-// Remove a user from the ignore list
-Hue.unignore_user = function (username) {
-  let list = $(`#settings_ignored_usernames`)
-  let lines = list.val().split("\n")
-  let new_lines = []
-
-  for (let line of lines) {
-    if (line !== username) {
-      new_lines.push(line)
-    }
-  }
-
-  if(lines.length == new_lines.length) {
-    Hue.feedback(`${username} is already unignored`)
-    return false
-  }
-  
-  list.val(new_lines.join("\n"))
-  Hue.feedback(`${username} unignored`)
-  Hue.user_settings.ignored_usernames.action()
-}
-
-// Show the ignored list
-Hue.show_ignored = function () {
-  if (Hue.ignored_usernames_list.length === 0) {
-    Hue.feedback("No users are ignored")
-    return false
-  }
-
-  let s = `Ignored: ${Hue.ignored_usernames_list.join(", ")}`
-  Hue.feedback(s)
 }
 
 // Superuser command to change a user's username

@@ -213,7 +213,6 @@ Hue.init = function () {
   Hue.show_console_message()
   Hue.setup_expand_image()
   Hue.setup_local_storage()
-  Hue.get_ignored_usernames_list()
   Hue.setup_lockscreen()
   Hue.setup_image_upload_comment()
   Hue.setup_drag_events()

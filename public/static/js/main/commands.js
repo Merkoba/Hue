@@ -1156,29 +1156,7 @@ Hue.commands = {
       Hue.swap_media_layout()
     },
     description: `Shortcut to change media layout`,
-  },
-  "ignore": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.ignore_user(arg)
-      }
-    },
-    description: `Adds a user to the ignored list`,
-  },
-  "unignore": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.unignore_user(arg)
-      }
-    },
-    description: `Removes a user from the ignored list`,
-  },
-  "ignored": {
-    action: (arg, ans) => {
-      Hue.show_ignored()
-    },
-    description: `Shows the ignored list`,
-  },
+  }
 }
 
 // Setups commands based on the commands object

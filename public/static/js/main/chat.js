@@ -20,12 +20,6 @@ Hue.update_chat = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
-  if (args.username) {
-    if (Hue.user_is_ignored(args.username)) {
-      return false
-    }
-  }
-
   let num_lines = args.message.split("\n").length
 
   if (num_lines === 1) {
@@ -346,14 +340,6 @@ Hue.chat_announce = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
-  let ignore = false
-
-  if (args.username) {
-    if (Hue.user_is_ignored(args.username)) {
-      ignore = true
-    }
-  }
-
   let message_classes = "message announcement"
   let container_classes = "announcement_content_container chat_menu_button_main"
   let split_classes = "announcement_content_split dynamic_title"
@@ -561,16 +547,12 @@ Hue.chat_announce = function (args = {}) {
   fmessage.data("in_log", args.in_log)
   fmessage.data("media_source", args.media_source)
 
-  let message_id
+  let message_id = Hue.add_to_chat({
+    message: fmessage
+  }).message_id
 
-  if (!ignore) {
-    message_id = Hue.add_to_chat({
-      message: fmessage
-    }).message_id
-
-    if (highlighted) {
-      Hue.on_highlight()
-    }
+  if (highlighted) {
+    Hue.on_highlight()
   }
 
   Hue.push_to_all_usernames(args.username)
@@ -1303,10 +1285,6 @@ Hue.show_typing = function (data) {
   let user = Hue.get_user_by_user_id(data.user_id)
 
   if (!user) {
-    return false
-  }
-
-  if (Hue.user_is_ignored(user.username)) {
     return false
   }
 

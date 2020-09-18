@@ -30,25 +30,6 @@ Hue.user_settings = {
       }
     },
   },
-  ignored_usernames: {
-    widget_type: "textarea",
-    description: `Ignore messages and actions from these users`,
-    action: (save = true) => {
-      let unames = Hue.utilz.make_unique_lines(
-        Hue.utilz.remove_multiple_empty_lines($(`#settings_ignored_usernames`).val())
-      )
-
-      $(`#settings_ignored_usernames`).val(unames)
-
-      Hue.settings.ignored_usernames = unames
-      Hue.get_ignored_usernames_list()
-      Hue.check_activity_bar()
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
   open_whispers_automatically: {
     widget_type: "checkbox",
     description: `Whether messages received should open in a window automatically`,

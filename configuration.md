@@ -246,9 +246,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_case_insensitive_username_highlights"
 >Whether highlights for current username are case insensitive by default.
 
-"settings_default_ignored_usernames"
->What usernames to be ignored by default.
-
 "settings_default_show_joins"
 >Whether to show user joins by default.
 

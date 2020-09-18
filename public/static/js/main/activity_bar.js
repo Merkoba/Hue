@@ -44,7 +44,7 @@ Hue.check_activity_bar = function (update = true) {
   for (let item of Hue.activity_list) {
     let user = Hue.get_user_by_user_id(item.user_id)
 
-    if (item.date > d && user && !Hue.user_is_ignored(user.username)) {
+    if (item.date > d && user) {
       new_top.push(item)
     } else {
       changed = true
@@ -151,10 +151,6 @@ Hue.push_to_activity_bar = function (id, date) {
   let d = Date.now() - Hue.config.max_activity_bar_delay
 
   if (date < d) {
-    return false
-  }
-
-  if (Hue.user_is_ignored(user.username)) {
     return false
   }
 

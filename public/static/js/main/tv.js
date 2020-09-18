@@ -873,10 +873,6 @@ Hue.sync_tv = function (username) {
 
 // Responds to a tv sync request to send it back to a user
 Hue.report_tv_progress = function (data) {
-  if (Hue.user_is_ignored(data.requester_username)) {
-    return false
-  }
-
   if (!Hue.can_sync_tv()) {
     return false
   }
