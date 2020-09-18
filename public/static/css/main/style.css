@@ -413,12 +413,12 @@ body * {
 }
 
 .left_scroller {
-	width: 40%;
+	flex-grow: 1;
 	border-right: 0.0588rem var(--color_4_a) solid;
 }
 
 .right_scroller {
-	width: 40%;
+	flex-grow: 1;
 	border-right: 0.0588rem var(--color_4_a) solid;
 }
 
