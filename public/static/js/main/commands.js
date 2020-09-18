@@ -1047,18 +1047,6 @@ Hue.commands = {
     },
     description: `Maximize/Restore the chat`,
   },
-  "autoscrollup": {
-    action: (arg, ans) => {
-      Hue.autoscroll_up()
-    },
-    description: `Slowly scrolls chat up automatically`,
-  },
-  "autoscrolldown": {
-    action: (arg, ans) => {
-      Hue.autoscroll_down()
-    },
-    description: `Slowly scrolls chat down automatically`,
-  },
   "loadnextimage": {
     action: (arg, ans) => {
       Hue.media_load_next("image")

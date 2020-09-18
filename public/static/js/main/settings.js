@@ -223,48 +223,6 @@ Hue.user_settings = {
       }
     },
   },
-  autoscroll_amount: {
-    widget_type: "number",
-    description: `Pixel amount to scroll up or down on each tick on autoscroll`,
-    action: (save = true) => {
-      let val = parseInt(
-        Hue.utilz.clean_string2($(`#settings_autoscroll_amount`).val())
-      )
-
-      if (!val) {
-        val = Hue.config.settings_default_autoscroll_amount
-      }
-
-      $(`#settings_autoscroll_amount`).val(val)
-
-      Hue.settings.autoscroll_amount = val
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  autoscroll_delay: {
-    widget_type: "number",
-    description: `Perform an autoscroll tick after these milliseconds`,
-    action: (save = true) => {
-      let val = parseInt(
-        Hue.utilz.clean_string2($(`#settings_autoscroll_delay`).val())
-      )
-
-      if (!val) {
-        val = Hue.config.settings_default_autoscroll_delay
-      }
-
-      $(`#settings_autoscroll_delay`).val(val)
-
-      Hue.settings.autoscroll_delay = val
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
   theme_mode: {
     widget_type: "select",
     description: `It either uses the room's theme color or a custom theme color`,

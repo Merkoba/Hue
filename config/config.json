@@ -104,8 +104,6 @@
 	"settings_default_warn_before_closing": false,
 	"settings_default_show_image_previews": true,
 	"settings_default_show_link_previews": true,
-	"settings_default_autoscroll_amount": 20,
-	"settings_default_autoscroll_delay": 500,
 	"settings_default_show_input_placeholder": true,
 	"settings_default_theme_mode": "room",
 	"settings_default_theme_color": "#272727",

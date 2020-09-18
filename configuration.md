@@ -288,12 +288,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_show_link_previews"
 >Whether links get a preview on the chat area by default.
 
-"settings_default_autoscroll_amount"
->How many pixels to autoscroll the chat on each step.
-
-"settings_default_autoscroll_delay"
->The delay of the interval for every autoscroll step in milliseconds.
-
 "settings_default_show_input_placeholder
 >Whether the input placeholder is enabled by default.
 

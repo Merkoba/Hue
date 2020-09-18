@@ -2112,8 +2112,6 @@ Hue.say_command = function (arg, ans) {
 Hue.scroll_events = function () {
   $("#chat_area")[0].addEventListener("wheel", function (e) {
     $("#chat_area").stop()
-    Hue.clear_autoscroll()
-    Hue.last_scroll_date = Date.now()
   })
 
   $("#chat_area").scroll(function () {
@@ -2149,10 +2147,6 @@ Hue.hide_bottom_scroller = function () {
 
 // Updates scrollers state based on scroll position
 Hue.check_scrollers = function () {
-  if (Hue.autoscrolling && Hue.autoscroll_direction === "up") {
-    return
-  }
-
   let $ch = $("#chat_area")
   let max = $ch.prop("scrollHeight") - $ch.innerHeight()
   let scrolltop = $ch.scrollTop()
@@ -2160,7 +2154,6 @@ Hue.check_scrollers = function () {
 
   if (scrolltop === 0) {
     Hue.hide_top_scroller()
-    Hue.clear_autoscroll()
   } else {
     Hue.show_top_scroller()
   }
@@ -2169,71 +2162,7 @@ Hue.check_scrollers = function () {
     Hue.show_bottom_scroller()
   } else {
     Hue.hide_bottom_scroller()
-
-    if (diff <= 0) {
-      Hue.clear_autoscroll()
-    }
   }
-}
-
-// Starts chat autoscrolling upwards
-Hue.autoscroll_up = function () {
-  if (Hue.autoscrolling) {
-    Hue.clear_autoscroll()
-    Hue.check_scrollers()
-    return false
-  }
-
-  Hue.clear_autoscroll()
-
-  Hue.autoscroll_up_interval = setInterval(function () {
-    let diff = Hue.scroll_up(Hue.get_setting("autoscroll_amount"))
-
-    if (Hue.last_autoscroll_diff === diff) {
-      Hue.clear_autoscroll()
-      Hue.check_scrollers()
-    } else {
-      Hue.last_autoscroll_diff = diff
-    }
-  }, Hue.get_setting("autoscroll_delay"))
-
-  Hue.show_bottom_scroller()
-  Hue.autoscrolling = true
-  Hue.autoscroll_direction = "up"
-}
-
-// Starts chat autoscrolling downwards
-Hue.autoscroll_down = function () {
-  if (Hue.autoscrolling) {
-    Hue.clear_autoscroll()
-    Hue.check_scrollers()
-    return false
-  }
-
-  Hue.clear_autoscroll()
-
-  Hue.autoscroll_down_interval = setInterval(function () {
-    let diff = Hue.scroll_down(Hue.get_setting("autoscroll_amount"))
-
-    if (Hue.last_autoscroll_diff === diff) {
-      Hue.clear_autoscroll()
-      Hue.check_scrollers()
-    } else {
-      Hue.last_autoscroll_diff = diff
-    }
-  }, Hue.get_setting("autoscroll_delay"))
-
-  Hue.autoscrolling = true
-  Hue.autoscroll_direction = "down"
-}
-
-// Clears autoscrolling intervals
-Hue.clear_autoscroll = function () {
-  clearInterval(Hue.autoscroll_up_interval)
-  clearInterval(Hue.autoscroll_down_interval)
-
-  Hue.last_autoscroll_diff = 0
-  Hue.autoscrolling = false
 }
 
 // Shows a system announcement
@@ -2253,7 +2182,6 @@ Hue.show_announcement = function (data, date = Date.now()) {
 
 // Scrolls the chat to the top
 Hue.goto_top = function () {
-  Hue.clear_autoscroll()
   Hue.scroll_chat_to(0)
   Hue.hide_top_scroller()
 }
@@ -2263,23 +2191,15 @@ Hue.goto_bottom = function (force = false) {
   if (!Hue.started) {
     return
   }
-  
-  if (!force && Hue.started) {
-    if (Date.now() - Hue.last_scroll_date < Hue.recent_scroll_time) {
-      return
-    }
-  }
 
   let $ch = $("#chat_area")
   let max = $ch.prop("scrollHeight") - $ch.innerHeight()
 
   if (force) {
-    Hue.clear_autoscroll()
     Hue.scroll_chat_to(max)
     Hue.hide_bottom_scroller()
   } else {
     if (!Hue.chat_scrolled) {
-      Hue.clear_autoscroll()
       Hue.scroll_chat_to(max)
     }
   }
@@ -2472,20 +2392,12 @@ Hue.setup_chat = function () {
     Hue.goto_top()
   })
 
-  $("#top_autoscroller").click(function () {
-    Hue.autoscroll_up()
-  })
-
   $("#activity_up_scroller").click(function () {
     Hue.activity_above()
   })
 
   $("#bottom_scroller").click(function () {
     Hue.goto_bottom(true)
-  })
-
-  $("#bottom_autoscroller").click(function () {
-    Hue.autoscroll_down()
   })
 
   $("#activity_down_scroller").click(function () {
