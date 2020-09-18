@@ -294,7 +294,7 @@ Hue.start_msg = function () {
   Hue.msg_settings = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "settings",
-      window_width: "25rem",
+      window_width: "24rem",
       after_close: function (instance) {
         common.after_close(instance)
         Hue.close_togglers("settings")
