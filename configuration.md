@@ -246,23 +246,8 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_case_insensitive_username_highlights"
 >Whether highlights for current username are case insensitive by default.
 
-"settings_default_case_insensitive_words_highlights"
->Whether highlights for specified words are case insensitive by default.
-
-"settings_default_case_insensitive_ignored_words"
->Whether ignored words are case insensitive by default
-
-"settings_default_other_words_to_highlight"
->Other words to trigger highlights apart from the current username, by default.
-
 "settings_default_ignored_usernames"
 >What usernames to be ignored by default.
-
-"settings_default_ignored_words"
->What words to be ignored by default.
-
-"settings_default_ignored_words_exclude_same_user"
->Whether ignored words apply to the same user by default.
 
 "settings_default_show_joins"
 >Whether to show user joins by default.
@@ -275,9 +260,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "settings_default_tv_height"
 >The % height the tv will take by default when the image is also displayed.
-
-"settings_default_other_words_to_autocomplete"
->Default words to autocomplete besides usernames and commands.
 
 "settings_default_warn_before_closing"
 > Default setting of whether it should warn before closing the application/tab.
@@ -323,18 +305,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "settings_default_transparent_panels"
 >Whether panels get a slight transparency by default.
-
-"settings_default_confirm_chat"
->Where to show confirm on chat message by default
-
-"settings_default_confirm_image"
->Where to show confirm on image change by default
-
-"settings_default_confirm_tv"
->Where to show confirm on tv change by default
-
-"settings_default_confirm_message_board"
->Where to show confirm on board message by default
 
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.

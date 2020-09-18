@@ -30,66 +30,6 @@ Hue.user_settings = {
       }
     },
   },
-  case_insensitive_words_highlights: {
-    widget_type: "checkbox",
-    description: `Whether 'other words' highlight checks are case insensitive or not`,
-    action: (save = true) => {
-      Hue.settings.case_insensitive_words_highlights = $(
-        `#settings_case_insensitive_words_highlights`
-      ).prop("checked")
-
-      Hue.generate_highlight_words_regex()
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  case_insensitive_ignored_words: {
-    widget_type: "checkbox",
-    description: `Whether 'ignored words' highlight checks are case insensitive or not`,
-    action: (save = true) => {
-      Hue.settings.case_insensitive_ignored_words = $(
-        `#settings_case_insensitive_ignored_words`
-      ).prop("checked")
-
-      Hue.generate_ignored_words_regex()
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  ignored_words_exclude_same_user: {
-    widget_type: "checkbox",
-    description: `Whether messages containing 'ignored words' should be ignored if coming from the user itself`,
-    action: (save = true) => {
-      Hue.settings.ignored_words_exclude_same_user = $(
-        `#settings_ignored_words_exclude_same_user`
-      ).prop("checked")
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  other_words_to_highlight: {
-    widget_type: "textarea",
-    description: `Words on messages to trigger highlights`,
-    action: (save = true) => {
-      let words = Hue.utilz.make_unique_lines(
-        Hue.utilz.remove_multiple_empty_lines($(`#settings_other_words_to_highlight`).val())
-      )
-
-      $(`#settings_other_words_to_highlight`).val(words)
-      Hue.settings.other_words_to_highlight = words
-      Hue.generate_highlight_words_regex()
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
   ignored_usernames: {
     widget_type: "textarea",
     description: `Ignore messages and actions from these users`,
@@ -109,23 +49,6 @@ Hue.user_settings = {
       }
     },
   },
-  ignored_words: {
-    widget_type: "textarea",
-    description: `Ignore messages that contain these words`,
-    action: (save = true) => {
-      let unames = Hue.utilz.make_unique_lines(
-        Hue.utilz.remove_multiple_empty_lines($(`#settings_ignored_words`).val())
-      )
-
-      $(`#settings_ignored_words`).val(unames)
-      Hue.settings.ignored_words = unames
-      Hue.generate_ignored_words_regex()
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
   open_whispers_automatically: {
     widget_type: "checkbox",
     description: `Whether messages received should open in a window automatically`,
@@ -133,23 +56,6 @@ Hue.user_settings = {
       Hue.settings.open_whispers_automatically = $(`#settings_open_whispers_automatically`).prop(
         "checked"
       )
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  other_words_to_autocomplete: {
-    widget_type: "textarea",
-    description: `Other words to be considered on Tab autocompletion`,
-    action: (save = true) => {
-      let words = Hue.utilz.make_unique_lines(
-        Hue.utilz.remove_multiple_empty_lines($(`#settings_other_words_to_autocomplete`).val())
-      )
-
-      $(`#settings_other_words_to_autocomplete`).val(words)
-
-      Hue.settings.other_words_to_autocomplete = words
 
       if (save) {
         Hue.save_settings()
@@ -379,52 +285,6 @@ Hue.user_settings = {
       )
 
       Hue.apply_theme()
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  confirm_chat: {
-    widget_type: "checkbox",
-    description: `Whether to show a confirmation dialog when sending a chat message`,
-    action: (save = true) => {
-      Hue.settings.confirm_chat = $(`#settings_confirm_chat`).prop("checked")
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  confirm_image: {
-    widget_type: "checkbox",
-    description: `Whether to show a confirmation dialog when changing the image`,
-    action: (save = true) => {
-      Hue.settings.confirm_image = $(`#settings_confirm_image`).prop("checked")
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  confirm_tv: {
-    widget_type: "checkbox",
-    description: `Whether to show a confirmation dialog when changing the tv`,
-    action: (save = true) => {
-      Hue.settings.confirm_tv = $(`#settings_confirm_tv`).prop("checked")
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
-  confirm_message_board: {
-    widget_type: "checkbox",
-    description: `Whether to show a confirmation dialog when sending a board message`,
-    action: (save = true) => {
-      Hue.settings.confirm_message_board = $(
-        `#settings_confirm_message_board`
-      ).prop("checked")
 
       if (save) {
         Hue.save_settings()

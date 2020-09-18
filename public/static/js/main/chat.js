@@ -20,10 +20,6 @@ Hue.update_chat = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
-  if (Hue.check_ignored_words(args.message, args.username)) {
-    return false
-  }
-
   if (args.username) {
     if (Hue.user_is_ignored(args.username)) {
       return false
@@ -351,10 +347,6 @@ Hue.chat_announce = function (args = {}) {
   args = Object.assign(def_args, args)
 
   let ignore = false
-
-  if (Hue.check_ignored_words(args.message, args.username)) {
-    ignore = true
-  }
 
   if (args.username) {
     if (Hue.user_is_ignored(args.username)) {
@@ -1702,105 +1694,11 @@ Hue.generate_mentions_regex = function () {
   }
 }
 
-// Generates highlight words regex using the highlights regex
-Hue.generate_highlight_words_regex = function () {
-  let words = ""
-  let lines = Hue.get_setting("other_words_to_highlight").split("\n")
-
-  for (let i = 0; i < lines.length; i++) {
-    let line = lines[i]
-
-    words += Hue.utilz.escape_special_characters(line)
-
-    if (i < lines.length - 1) {
-      words += "|"
-    }
-  }
-
-  if (words.length > 0) {
-    if (Hue.get_setting("case_insensitive_words_highlights")) {
-      Hue.highlight_words_regex = Hue.generate_highlights_regex(
-        words,
-        true,
-        false
-      )
-    } else {
-      Hue.highlight_words_regex = Hue.generate_highlights_regex(
-        words,
-        false,
-        false
-      )
-    }
-  } else {
-    Hue.highlight_words_regex = false
-  }
-}
-
 // Checks for highlights using the mentions regex and the highlight words regex
 Hue.check_highlights = function (message) {
   if (Hue.get_setting("highlight_current_username")) {
     if (message.search(Hue.mentions_regex) !== -1) {
       return true
-    }
-  }
-
-  if (Hue.highlight_words_regex) {
-    if (message.search(Hue.highlight_words_regex) !== -1) {
-      return true
-    }
-  }
-
-  return false
-}
-
-// Generates the ignored words regex using highlights regex
-Hue.generate_ignored_words_regex = function () {
-  let words = ""
-  let lines = Hue.get_setting("ignored_words").split("\n")
-
-  for (let i = 0; i < lines.length; i++) {
-    let line = lines[i]
-
-    words += Hue.utilz.escape_special_characters(line)
-
-    if (i < lines.length - 1) {
-      words += "|"
-    }
-  }
-
-  if (words.length > 0) {
-    if (Hue.get_setting("case_insensitive_ignored_words")) {
-      Hue.ignored_words_regex = Hue.generate_highlights_regex(
-        words,
-        true,
-        false
-      )
-    } else {
-      Hue.ignored_words_regex = Hue.generate_highlights_regex(
-        words,
-        false,
-        false
-      )
-    }
-  } else {
-    Hue.ignored_words_regex = false
-  }
-}
-
-// Checks for ignored words on chat messages and announcements
-// Using ignored words regex
-Hue.check_ignored_words = function (message = "", uname = "") {
-  if (Hue.ignored_words_regex) {
-    if (message.search(Hue.ignored_words_regex) !== -1) {
-      if (
-        uname &&
-        uname === Hue.username &&
-        Hue.get_setting("ignored_words_exclude_same_user")
-      ) {
-        return false
-      } else {
-        return true
-      }
     }
   }
 

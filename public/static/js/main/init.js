@@ -182,8 +182,6 @@ Hue.init = function () {
   Hue.start_filters()
   Hue.start_image_events()
   Hue.start_dropzone()
-  Hue.generate_highlight_words_regex()
-  Hue.generate_ignored_words_regex()
   Hue.activate_visibility_listener()
   Hue.copypaste_events()
   Hue.scroll_events()

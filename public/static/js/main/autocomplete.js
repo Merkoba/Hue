@@ -12,20 +12,10 @@ Hue.generate_words_to_autocomplete = function () {
     ...Hue.commands_list_with_prefix,
     ...Hue.usernames,
     ...susernames,
-    ...["@everyone"],
     ...Hue.all_usernames
   )
 
-  words = [...new Set(words)]
-
-  let autocomplete = Hue.get_setting("other_words_to_autocomplete")
-
-  if (autocomplete) {
-    words.push(...autocomplete.split("\n"))
-  }
-
   words.sort()
-
   return words
 }
 
