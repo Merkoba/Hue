@@ -1528,13 +1528,13 @@ Hue.activity_above = function () {
       let p = $(this).position()
 
       if (p.top < activity_up_scroller_height) {
-        let diff = scrolltop + p.top - activity_up_scroller_height
+        let diff = scrolltop + p.top - activity_up_scroller_height - 10
 
         if (scrolltop - diff < 50) {
           return true
         }
 
-        Hue.scroll_chat_to(diff - 10)
+        Hue.scroll_chat_to(diff)
         step = true
         return false
       }
@@ -1568,13 +1568,13 @@ Hue.activity_below = function () {
       let h = $(this).outerHeight()
 
       if (p.top + h + activity_down_scroller_height > chat_area_height) {
-        let diff = scrolltop + p.top - activity_up_scroller_height
+        let diff = scrolltop + p.top - activity_up_scroller_height - 10
 
         if (diff - scrolltop < 50) {
           return true
         }
 
-        Hue.scroll_chat_to(diff - 10)
+        Hue.scroll_chat_to(diff)
         step = true
         return false
       }
