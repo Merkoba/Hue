@@ -410,20 +410,7 @@ body * {
 	border: 0.0588rem solid var(--color_4_a);
 	background-color: var(--background_color_a_2);
 	color: var(--font_color);
-}
-
-.left_scroller {
 	flex-grow: 1;
-	border-right: 0.0588rem var(--color_4_a) solid;
-}
-
-.right_scroller {
-	flex-grow: 1;
-	border-right: 0.0588rem var(--color_4_a) solid;
-}
-
-.center_scroller {
-	width: 20%;
 	border-right: 0.0588rem var(--color_4_a) solid;
 }
 
