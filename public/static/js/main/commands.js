@@ -381,26 +381,6 @@ Hue.commands = {
     },
     description: `Shows the media menu`,
   },
-  "imagehistory": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.show_media_history("image", arg)
-      } else {
-        Hue.show_media_history("image")
-      }
-    },
-    description: `Shows the image history. Accepts a filter as an argument`,
-  },
-  "tvhistory": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.show_media_history("tv", arg)
-      } else {
-        Hue.show_media_history("tv")
-      }
-    },
-    description: `Shows the tv history. Accepts a filter as an argument`,
-  },
   "lockimage": {
     action: (arg, ans) => {
       Hue.change_media_lock({type:"image", what:true, feedback:true})
