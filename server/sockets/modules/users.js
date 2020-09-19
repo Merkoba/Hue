@@ -56,7 +56,7 @@ module.exports = function (
 
     if (!socket.hue_superuser) {
       if (
-        (current_role === "admin" || current_role.startsWith("op")) &&
+        (current_role === "admin" || current_role === "op") &&
         socket.hue_role !== "admin"
       ) {
         handler.user_emit(socket, "forbidden_user", {})
@@ -139,7 +139,7 @@ module.exports = function (
     if (sockets.length > 0) {
       if (
         ((sockets[0].hue_role === "admin" ||
-          sockets[0].hue_role.startsWith("op")) &&
+          sockets[0].hue_role === "op") &&
           socket.hue_role !== "admin") ||
         sockets[0].hue_superuser
       ) {
@@ -198,7 +198,7 @@ module.exports = function (
     let current_role = info.keys[id] || vars.default_role
 
     if (
-      (current_role === "admin" || current_role.startsWith("op")) &&
+      (current_role === "admin" || current_role === "op") &&
       socket.hue_role !== "admin"
     ) {
       handler.user_emit(socket, "forbidden_user", {})
@@ -325,7 +325,7 @@ module.exports = function (
 
   // Checks if socket is admin or op
   handler.is_admin_or_op = function (socket) {
-    return socket.hue_role === "admin" || socket.hue_role.startsWith("op")
+    return socket.hue_role === "admin" || socket.hue_role === "op"
   }
 
   // Prepares the user list to be sent on room joins
@@ -401,7 +401,7 @@ module.exports = function (
     for (let id in info.keys) {
       let role = info.keys[id] || vars.default_role
 
-      if (role.startsWith("op") || role === "admin") {
+      if (role === "op" || role === "admin") {
         roles[id] = role
         ids.push(id)
       }

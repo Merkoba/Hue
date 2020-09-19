@@ -204,7 +204,7 @@ module.exports = function (
 
         if (!socket.hue_superuser) {
           if (
-            (current_role === "admin" || current_role.startsWith("op")) &&
+            (current_role === "admin" || current_role === "op") &&
             socket.hue_role !== "admin"
           ) {
             handler.user_emit(socket, "forbidden_user", {})
