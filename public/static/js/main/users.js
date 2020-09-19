@@ -374,7 +374,7 @@ Hue.compare_userlist = function (a, b) {
     b.role = "voice"
   }
 
-  if (a.role.startsWith("voice") && b.role.startsWith("voice")) {
+  if (a.role === "voice" && b.role === "voice") {
     if (a.role < b.role) {
       return 1
     } else if (a.role > b.role) {
@@ -424,7 +424,7 @@ Hue.user_is_controllable = function (user) {
   }
 
   if (
-    (user.role === "admin" || user.role.startsWith("op")) &&
+    (user.role === "admin" || user.role === "op") &&
     Hue.role !== "admin"
   ) {
     return false
@@ -817,7 +817,7 @@ Hue.change_role = function (username, role) {
       return false
     }
 
-    if ((role === "admin" || role.startsWith("op")) && Hue.role !== "admin") {
+    if ((role === "admin" || role === "op") && Hue.role !== "admin") {
       Hue.forbidden_user()
       return false
     }
@@ -939,7 +939,7 @@ Hue.kick = function (uname) {
 
     let rol = Hue.get_role(uname)
 
-    if ((rol === "admin" || rol.startsWith("op")) && Hue.role !== "admin") {
+    if ((rol === "admin" || rol === "op") && Hue.role !== "admin") {
       Hue.forbidden_user()
       return false
     }
@@ -1005,7 +1005,7 @@ Hue.is_admin_or_op = function (rol = false) {
     r = Hue.role
   }
 
-  if (r === "admin" || r.startsWith("op")) {
+  if (r === "admin" || r === "op") {
     return true
   } else {
     return false
