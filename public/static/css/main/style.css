@@ -2246,7 +2246,7 @@ a.special_link:hover {
 
 .room_menu_section_container {
 	display: grid;
-	grid-gap: 2rem;
+	grid-gap: 1.6rem;
 	grid-auto-columns: auto;
 	align-items: center;
 }
@@ -2505,14 +2505,6 @@ pre {
 	white-space: pre-wrap;
 	background-color: var(--color_4_a);
 	padding: 0.5rem;
-}
-
-#topic_window_text {
-	font-size: 1.2rem;
-}
-
-#topic_window_edit {
-	margin-top: 1rem;
 }
 
 .precode {
