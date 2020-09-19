@@ -87,26 +87,24 @@ module.exports = function (
       })
 
       if (!data.edit_id) {
-        if (vars.rooms[socket.hue_room_id].log) {
-          let message = {
-            id: id,
-            type: "chat",
-            date: date,
-            data: {
-              user_id: socket.hue_user_id,
-              username: uname,
-              content: data.message,
-              profile_image: socket.hue_profile_image,
-              link_title: response.title,
-              link_description: response.description,
-              link_image: response.image,
-              link_url: response.url,
-              edited: edited,
-            },
+        let message = {
+          id: id,
+          type: "chat",
+          date: date,
+          data: {
+            user_id: socket.hue_user_id,
+            username: uname,
+            content: data.message,
+            profile_image: socket.hue_profile_image,
+            link_title: response.title,
+            link_description: response.description,
+            link_image: response.image,
+            link_url: response.url,
+            edited: edited,
           }
-
-          handler.push_log_message(socket, message)
         }
+
+        handler.push_log_message(socket, message)
 
         handler.charge_ads(socket.hue_room_id)
       }
@@ -144,11 +142,6 @@ module.exports = function (
     }
 
     let room = vars.rooms[socket.hue_room_id]
-
-    if (!room.log) {
-      return false
-    }
-
     let messages = room.log_messages
     let message
     let message_id

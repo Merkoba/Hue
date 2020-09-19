@@ -5,101 +5,6 @@ Hue.create_room = function (data) {
   })
 }
 
-// Request a room list to the server
-// Either a public or a visited room list
-Hue.request_roomlist = function (filter = "", type = "public_roomlist") {
-  if (Hue.requesting_roomlist) {
-    return false
-  }
-
-  Hue.requesting_roomlist = true
-  Hue[`${type}_filter_string`] = filter
-  Hue.socket_emit("roomlist", { type: type })
-
-  setTimeout(function () {
-    Hue.requesting_roomlist = false
-  }, 1000)
-}
-
-// Handles a received room list
-// Either a public or a visited room list
-Hue.on_roomlist_received = function (data) {
-  Hue.update_roomlist(data.type, data.roomlist)
-
-  if (data.type === "public_roomlist") {
-    Hue.show_public_roomlist()
-  } else if (data.type === "visited_roomlist") {
-    Hue.show_visited_roomlist()
-  }
-}
-
-// Starts click events on room list items
-Hue.start_roomlist_click_events = function () {
-  $("#public_roomlist_container").on(
-    "click",
-    ".roomlist_item_inner",
-    function () {
-      Hue.show_open_room($(this).data("room_id"))
-    }
-  )
-
-  $("#visited_roomlist_container").on(
-    "click",
-    ".roomlist_item_inner",
-    function () {
-      Hue.show_open_room($(this).data("room_id"))
-    }
-  )
-}
-
-// Builds the room list window items with received data
-Hue.update_roomlist = function (type, roomlist) {
-  $(`#${type}_filter`).val(Hue[`${type}_filter_string`])
-
-  let s = $()
-
-  s = s.add()
-
-  for (let i = 0; i < roomlist.length; i++) {
-    let c = `<div class='roomlist_item_inner pointer inline action' data-room_id='${roomlist[i].id}'>
-            <div class='roomlist_name'></div><div class='roomlist_topic'></div>
-            <div class='roomlist_here'></div><div class='roomlist_count'></div>
-        </div>`
-
-    let h = $(`<div class='modal_item roomlist_item'>${c}</div>`)
-
-    h.find(".roomlist_name").eq(0).text(roomlist[i].name)
-    h.find(".roomlist_count")
-      .eq(0)
-      .text(Hue.utilz.singular_or_plural(roomlist[i].usercount, "users"))
-
-    if (roomlist[i].id === Hue.room_id) {
-      h.find(".roomlist_here")
-        .eq(0)
-        .text("You are here")
-        .css("display", "block")
-    }
-
-    let topic
-
-    if (roomlist[i].topic.length > 0) {
-      topic = roomlist[i].topic
-    } else {
-      topic = "No topic set"
-    }
-
-    h.find(".roomlist_topic").eq(0).text(topic).urlize()
-
-    s = s.add(h)
-  }
-
-  $(`#${type}_container`).html(s)
-
-  if (Hue[`${type}_filter_string`] !== "") {
-    Hue.do_modal_filter(type)
-  }
-}
-
 // Shows the Create Room window
 Hue.show_create_room = function () {
   Hue.msg_info2.show(["Create Room", Hue.template_create_room()], function () {
@@ -123,8 +28,6 @@ Hue.create_room_submit = function () {
   if (data.name === "") {
     return false
   }
-
-  data.public = JSON.parse($("#create_room_public option:selected").val())
 
   Hue.create_room(data)
 }
@@ -153,62 +56,21 @@ Hue.show_open_room = function (id) {
   )
 }
 
-// Shows the public room list
-Hue.show_public_roomlist = function () {
-  Hue.msg_public_roomlist.show()
-}
-
-// Shows the visited room list
-Hue.show_visited_roomlist = function () {
-  Hue.msg_visited_roomlist.show()
-}
-
-// Show the go to room window
-Hue.show_goto_room = function () {
-  Hue.msg_info2.show(["Go To Room", Hue.template_goto_room()], function () {
-    $("#goto_room_submit").click(function () {
-      Hue.goto_room_action()
-    })
-
-    $("#goto_room_input").focus()
-    Hue.goto_room_open = true
-  })
-}
-
-// On go to room window submit
-Hue.goto_room_action = function () {
-  let id = $("#goto_room_input").val().trim()
-
-  if (id.length === 0) {
-    return false
-  }
-
-  Hue.show_open_room(id)
-}
-
 // Show feedback to the user after creating a room
 Hue.on_room_created = function (data) {
   let onclick = function () {
     Hue.show_open_room(data.id)
   }
 
-  let msg
+  let msg = 
 
-  if (data.public) {
-    msg = `${data.username} created a room`
-  } else {
-    msg = "Room Created"
-  }
-
-  Hue.feedback(msg, {
+  Hue.feedback("Room Created", {
     brk: Hue.get_chat_icon("key"),
     onclick: onclick,
     save: true,
   })
 
-  if (data.username === Hue.username) {
-    Hue.show_open_room(data.id)
-  }
+  Hue.show_open_room(data.id)
 }
 
 // Message to show when the create room cooldown is not over

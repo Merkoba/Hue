@@ -112,8 +112,6 @@ module.exports = function (
       }
 
       handler.do_join(socket, info, userinfo, data)
-
-      db_manager.save_visited_room(socket.hue_user_id, data.room_id)
     } else {
       vars.jwt.verify(data.token, sconfig.jwt_secret, async function (
         err,
@@ -152,8 +150,6 @@ module.exports = function (
           }
 
           handler.do_join(socket, info, userinfo, data)
-
-          db_manager.save_visited_room(socket.hue_user_id, data.room_id)
         }
       })
     }
@@ -277,7 +273,6 @@ module.exports = function (
       userlist: handler.prepare_userlist(
         handler.get_userlist(socket.hue_room_id)
       ),
-      log: info.log,
       role: socket.hue_role,
       public: info.public,
       image_id: info.image_id,

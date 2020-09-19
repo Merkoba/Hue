@@ -53,16 +53,9 @@ Hue.save_room_state = function () {
 
 // Shows a window with room details
 Hue.show_room_status = function () {
-  let name = Hue.room_name
-  let topic = Hue.topic
-  let privacy = Hue.is_public ? "Public" : "Private"
-  let log = Hue.log_enabled ? "Enabled" : "Disabled"
-
   Hue.msg_room_status.show(function () {
-    $("#room_status_name").text(name)
-    $("#room_status_topic").text(topic)
-    $("#room_status_privacy").text(privacy)
-    $("#room_status_log").text(log)
+    $("#room_status_name").text(Hue.room_name)
+    $("#room_status_topic").text(Hue.topic)
   })
 }
 
@@ -236,75 +229,6 @@ Hue.set_topic_info = function (data) {
   Hue.config_admin_topic()
 }
 
-// Changes the room privacy to public or private
-Hue.change_privacy = function (what) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
-    return false
-  }
-
-  if (Hue.is_public === what) {
-    if (what) {
-      Hue.feedback("Room is already public")
-    } else {
-      Hue.feedback("Room is already private")
-    }
-
-    return false
-  }
-
-  Hue.socket_emit("change_privacy", { what: what })
-}
-
-// Announces a privacy change
-Hue.announce_privacy_change = function (data) {
-  Hue.set_privacy(data.what)
-
-  let s
-
-  if (Hue.is_public) {
-    s = `${data.username} made the room public`
-    s += ". The room will appear in the public room list"
-  } else {
-    s = `${data.username} made the room private`
-    s += ". The room won't appear in the public room list"
-  }
-
-  Hue.show_room_notification(data.username, s)
-
-  if (Hue.room_status_open) {
-    Hue.show_room_status()
-  }
-}
-
-// Privacy setter
-Hue.set_privacy = function (what) {
-  Hue.is_public = what
-  Hue.config_admin_privacy()
-}
-
-// Log enabled setter
-Hue.set_log_enabled = function (what) {
-  Hue.log_enabled = what
-  Hue.config_admin_log_enabled()
-}
-
-// Enables or disables the log
-Hue.change_log = function (log) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
-    return false
-  }
-
-  if (log === Hue.log_enabled) {
-    if (log) {
-      Hue.feedback("Log is already enabled")
-    } else {
-      Hue.feedback("Log is already disabled")
-    }
-  }
-
-  Hue.socket_emit("change_log", { log: log })
-}
-
 // Clears the log
 Hue.clear_log = function (type = "all", id = false) {
   if (!Hue.is_admin_or_op(Hue.role)) {
@@ -330,28 +254,6 @@ Hue.clear_log = function (type = "all", id = false) {
   Hue.socket_emit("clear_log", { type: type, id: id })
 }
 
-// Announces log changes
-Hue.announce_log_change = function (data) {
-  if (!data.log) {
-    Hue.clear_room()
-  }
-
-  let s
-
-  if (data.log) {
-    s = `${data.username} enabled the log`
-  } else {
-    s = `${data.username} cleared and disabled the log`
-  }
-
-  Hue.set_log_enabled(data.log)
-  Hue.show_room_notification(data.username, s)
-
-  if (Hue.room_status_open) {
-    Hue.show_room_status()
-  }
-}
-
 // Announces that the log was cleared
 Hue.announce_log_cleared = function (data) {
   if (data.type === "all") {
@@ -361,15 +263,6 @@ Hue.announce_log_cleared = function (data) {
   }
 
   Hue.show_room_notification(data.username, `${data.username} cleared the log`)
-}
-
-// Shows the log status
-Hue.show_log = function () {
-  if (Hue.log_enabled) {
-    Hue.feedback("Log is enabled")
-  } else {
-    Hue.feedback("Log is disabled")
-  }
 }
 
 // Requests the admin activity list from the server

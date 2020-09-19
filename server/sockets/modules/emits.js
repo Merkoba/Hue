@@ -79,22 +79,20 @@ module.exports = function (
         link_url: response.url,
       })
 
-      if (vars.rooms[room_id].log) {
-        let message_ = {
-          id: id,
-          type: "announcement",
-          date: Date.now(),
-          data: {
-            message: message,
-            link_title: response.title,
-            link_description: response.description,
-            link_image: response.image,
-            link_url: response.url,
-          },
-        }
-
-        handler.push_log_message(room_id, message_)
+      let message_ = {
+        id: id,
+        type: "announcement",
+        date: Date.now(),
+        data: {
+          message: message,
+          link_title: response.title,
+          link_description: response.description,
+          link_image: response.image,
+          link_url: response.url,
+        },
       }
+
+      handler.push_log_message(room_id, message_)
     })
   }
 

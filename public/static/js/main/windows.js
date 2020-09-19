@@ -82,20 +82,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_public_roomlist = Msg.factory(
-    Object.assign({}, common, titlebar, {
-      id: "public_roomlist",
-      window_width: "26rem",
-    })
-  )
-
-  Hue.msg_visited_roomlist = Msg.factory(
-    Object.assign({}, common, titlebar, {
-      id: "visited_roomlist",
-      window_width: "26rem",
-    })
-  )
-
   Hue.msg_played = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "played",
@@ -444,12 +430,6 @@ Hue.start_msg = function () {
   Hue.msg_room_menu.set(Hue.template_room_menu())
   Hue.msg_user_menu.set(Hue.template_user_menu())
   Hue.msg_userlist.set(Hue.template_userlist())
-  Hue.msg_public_roomlist.set(
-    Hue.template_roomlist({ type: "public_roomlist" })
-  )
-  Hue.msg_visited_roomlist.set(
-    Hue.template_roomlist({ type: "visited_roomlist" })
-  )
   Hue.msg_played.set(Hue.template_played())
   Hue.msg_profile.set(
     Hue.template_profile({
@@ -491,12 +471,6 @@ Hue.start_msg = function () {
   Hue.msg_chat_search.set_title(
     "<span id='chat_search_window_title' class='pointer'>Chat Search</span>"
   )
-  Hue.msg_public_roomlist.set_title(
-    "<span id='public_rooms_window_title' class='pointer'>Public Rooms</span>"
-  )
-  Hue.msg_visited_roomlist.set_title(
-    "<span id='visited_rooms_window_title' class='pointer'>Visited Rooms</span>"
-  )
   Hue.msg_played.set_title("Recently Played")
   Hue.msg_room_menu.set_title(
     "<span id='room_menu_window_title' class='pointer'>Room Menu</span>"
@@ -520,14 +494,6 @@ Hue.start_msg = function () {
   Hue.msg_reaction_picker.set_title("React With")
 
   // Titlebar click events
-
-  $("#public_rooms_window_title").click(function () {
-    Hue.toggle_rooms_windows()
-  })
-
-  $("#visited_rooms_window_title").click(function () {
-    Hue.toggle_rooms_windows()
-  })
 
   $("#room_menu_window_title").click(function () {
     Hue.toggle_menu_windows()
@@ -950,21 +916,6 @@ Hue.toggle_menu_windows = function () {
 
   data["user_menu"] = function () {
     Hue.show_room_menu()
-  }
-
-  Hue.process_window_toggle(data)
-}
-
-// Toggles between public and visited room lists when clicking the titlebar
-Hue.toggle_rooms_windows = function () {
-  let data = {}
-
-  data["public_roomlist"] = function () {
-    Hue.request_roomlist("", "visited_roomlist")
-  }
-
-  data["visited_roomlist"] = function () {
-    Hue.request_roomlist("", "public_roomlist")
   }
 
   Hue.process_window_toggle(data)

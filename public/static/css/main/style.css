@@ -667,31 +667,6 @@ a.generic:hover {
 	cursor: pointer;
 }
 
-.roomlist_item {
-	padding-top: 1em;
-	padding-bottom: 1em;
-	overflow-wrap: break-word;
-	word-break: break-word;
-}
-
-.roomlist_name {
-	font-size: 1.2em;
-	font-weight: bold;
-}
-
-.roomlist_topic {
-	padding-top: 0.3em;
-}
-
-.roomlist_count {
-	padding-top: 0.3em;
-}
-
-.roomlist_here {
-	padding-top: 0.3em;
-	display: none;
-}
-
 .chat_icon {
 	width: var(--icon_size);
 	height: var(--icon_size);
@@ -2254,9 +2229,8 @@ a.special_link:hover {
 	margin-right: 0.8rem;
 }
 
-#create_room_public {
-	margin-top: 2rem;
-	margin-bottom: 1rem;
+#create_room_done {
+	margin-top: 1rem;
 }
 
 #open_room_new_tab {

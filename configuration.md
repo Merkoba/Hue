@@ -141,20 +141,11 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_media_source_length"
 >Maximum length of a media source urls.
 
-"max_roomlist_items"
->Maximum amount of items cached and shown when requesting the Public Rooms list.
-
-"max_roomlist_topic_length"
->Maximum displayed topic of a room in room lists. If topic is bigger it gets cropped.
-
 "max_log_messages"
 >Maximum amount of messages to store in room logs. It stores chat messages and some notifications like image uploads and tv changes.
 
 "max_admin_log_messages"
 >Maximum amount of messages to store in room admin logs. It stores information about the most recent admin activity.
-
-"max_visited_rooms_items"
->Maximum amount of items shown in the Visited Rooms list.
 
 "max_title_length"
 >Maximum length for the tab's title. Title consists of "room_name - topic" and is set automatically. If title is bigger it gets cropped.
@@ -176,12 +167,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "big_keyboard_scroll"
 >The amount scrolled in pixels for a bigger scroll. By using pageUp or pageDown.
-
-"roomlist_cache"
->When the public rooms list is requested, it will get cached so subsequent requests won't trigger a whole analysis again, to save processing power. This controls how long that cache will be valid until it's time to generate it again with the next request.
-
-"roomlist_max_inactivity"
->Rooms have a "modified" property updated after most operations inside the room.
 
 "youtube_enabled"
 >Whether Youtube features are enabled.

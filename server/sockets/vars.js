@@ -66,8 +66,6 @@ module.exports = function (
     comment: "",
   }
 
-  vars.last_roomlist
-  vars.roomlist_last_get = 0
   vars.default_role = "voice"
 
   // Configure the anti-spam system
@@ -98,7 +96,7 @@ module.exports = function (
   ]
 
   // Check if user is locked from room with these functions
-  vars.check_locked = ["roomlist", "create_room"]
+  vars.check_locked = ["create_room"]
 
   vars.fetch_2 = function (url, args = {}) {
     args.headers = args.headers || {}

@@ -2,12 +2,6 @@
 Hue.setup_room_menu = function () {
   Hue.setup_togglers("room_menu")
 
-  $("#admin_privacy").change(function () {
-    let what = JSON.parse($("#admin_privacy option:selected").val())
-
-    Hue.change_privacy(what)
-  })
-
   $("#admin_log").change(function () {
     let what = JSON.parse($("#admin_log option:selected").val())
 
@@ -113,18 +107,6 @@ Hue.setup_room_menu = function () {
     Hue.needs_confirm("clear_message_board")
   })
 
-  $("#room_menu_visited_rooms").click(function () {
-    Hue.request_roomlist('', 'visited_roomlist')
-  })
-
-  $("#room_menu_public_rooms").click(function () {
-    Hue.request_roomlist('', 'public_roomlist')
-  })
-
-  $("#room_menu_goto_room").click(function () {
-    Hue.show_goto_room()
-  })
-
   $("#room_menu_create_room").click(function () {
     Hue.show_create_room()
   })
@@ -133,8 +115,8 @@ Hue.setup_room_menu = function () {
     Hue.show_room_status()
   })
 
-  $("#room_menu_help").click(function () {
-    Hue.show_help(1)
+  $("#room_menu_commands").click(function () {
+    Hue.show_commands()
   })
 
   $("#admin_background_image").click(function () {
@@ -151,8 +133,6 @@ Hue.show_room_menu = function () {
 // Updates all widgets with current state
 Hue.config_room_menu = function () {
   if (Hue.is_admin_or_op()) {
-    Hue.config_admin_privacy()
-    Hue.config_admin_log_enabled()
     Hue.config_admin_theme_mode()
     Hue.config_admin_theme()
     Hue.config_admin_background_mode()
@@ -291,36 +271,6 @@ Hue.config_admin_text_color = function () {
   }
 
   $("#admin_text_color").val(Hue.text_color)
-}
-
-// Updates the privacy widget in the room menu based on current state
-Hue.config_admin_privacy = function () {
-  if (!Hue.is_admin_or_op()) {
-    return false
-  }
-
-  $("#admin_privacy")
-    .find("option")
-    .each(function () {
-      if (JSON.parse($(this).val()) === Hue.is_public) {
-        $(this).prop("selected", true)
-      }
-    })
-}
-
-// Updates the log enabled widget in the room menu based on current state
-Hue.config_admin_log_enabled = function () {
-  if (!Hue.is_admin_or_op()) {
-    return false
-  }
-
-  $("#admin_log")
-    .find("option")
-    .each(function () {
-      if (JSON.parse($(this).val()) === Hue.log_enabled) {
-        $(this).prop("selected", true)
-      }
-    })
 }
 
 // Updates the theme mode widget in the room menu based on current state

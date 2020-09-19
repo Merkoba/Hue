@@ -1,22 +1,10 @@
 <script id='template_room_menu' type='text/x-handlebars-template' class='template'>
     <div id='room_menu'>
 
-        <div class='flex_column_center'>
-            <div id='room_menu_visited_rooms' class='menu_item action'>Visited Rooms</div>
-            <div id='room_menu_public_rooms' class='menu_item action'>Public Rooms</div>
-            <div id='room_menu_goto_room' class='menu_item action'>Go To Room</div>
-            <div id='room_menu_create_room' class='menu_item action'>Create Room</div>
-        </div>
+        <div id='room_menu_status' class='menu_item action'>Room Status</div>
+        <div id='room_menu_create_room' class='menu_item action'>Create Room</div>
+        <div id='room_menu_commands' class='menu_item action'>Commands</div>
 
-        <div id='menu_smaller_container' class='flex_column_center'>
-
-            
-            <div class='flex_row_center generic_horizontal_separator menu_item_smaller'>
-                <div id='room_menu_status' class='action'>Status</div>
-                <div id='room_menu_help' class='action'>Help</div>
-            </div>
-
-        </div>
         <div id='admin_menu'>
             <div id='room_menu_main_container_theme' class='toggler_main_container'>
                 <div id='room_menu_toggle_theme' class='toggler room_menu_toggle bold pointer action inline room_menu_category'>+ Theme</div>
@@ -103,22 +91,6 @@
                         <div id='room_menu_topic_container' class='room_menu_section'>
                             <div class='small_padding_bottom'>Topic</div>
                             <textarea class='setting_textarea' rows=4 id="admin_topic"></textarea>
-                        </div>
-
-                        <div id='room_menu_privacy_container' class='room_menu_section'>
-                            <div class='room_menu_label'>Privacy</div>
-                            <select id='admin_privacy' class='modal_select'>
-                                <option value="true">Public</option>
-                                <option value="false">Private</option>
-                            </select>
-                        </div>
-
-                        <div id='room_menu_log_container' class='room_menu_section'>
-                            <div class='room_menu_label'>Log</div>
-                            <select id='admin_log' class='modal_select'>
-                                <option value="true">Enabled</option>
-                                <option value="false">Disabled</option>
-                            </select>
                         </div>
                     </div>
                 </div>

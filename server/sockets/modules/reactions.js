@@ -40,22 +40,20 @@ module.exports = function (
     })
 
     if (data.reaction_target === "chat") {
-      if (vars.rooms[socket.hue_room_id].log) {
-        let message = {
-          id: id,
-          type: "reaction",
-          date: Date.now(),
-          data: {
-            username: socket.hue_username,
-            reaction_type: data.reaction_type,
-            reaction_target: data.reaction_target,
-            reaction_source: data.reaction_source,
-            profile_image: socket.hue_profile_image,
-          },
-        }
-
-        handler.push_log_message(socket, message)
+      let message = {
+        id: id,
+        type: "reaction",
+        date: Date.now(),
+        data: {
+          username: socket.hue_username,
+          reaction_type: data.reaction_type,
+          reaction_target: data.reaction_target,
+          reaction_source: data.reaction_source,
+          profile_image: socket.hue_profile_image,
+        },
       }
+
+      handler.push_log_message(socket, message)
     }
   }
 }

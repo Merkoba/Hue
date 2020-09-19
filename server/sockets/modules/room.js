@@ -105,54 +105,6 @@ module.exports = function (
     }
   }
 
-  // Handles log state changes
-  handler.public.change_log = async function (socket, data) {
-    if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
-    }
-
-    if (data.log !== true && data.log !== false) {
-      return handler.get_out(socket)
-    }
-
-    let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
-      { log: 1 }
-    )
-
-    if (info.log !== data.log) {
-      let room = vars.rooms[socket.hue_room_id]
-
-      if (!data.log) {
-        room.log_messages = []
-        db_manager.update_room(socket.hue_room_id, {
-          log: data.log,
-          log_messages: room.log_messages,
-        })
-        room.log_messages_modified = false
-      } else {
-        db_manager.update_room(socket.hue_room_id, { log: data.log })
-      }
-
-      room.log = data.log
-
-      handler.room_emit(socket, "log_changed", {
-        username: socket.hue_username,
-        log: data.log,
-      })
-
-      let als
-
-      if (data.log) {
-        als = "enabled the log"
-      } else {
-        als = "disabled the log"
-      }
-
-      handler.push_admin_log_message(socket, als)
-    }
-  }
-
   // Clears log messages
   handler.public.clear_log = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
@@ -224,42 +176,11 @@ module.exports = function (
     handler.push_admin_log_message(socket, "cleared the log")
   }
 
-  // Changes privacy status
-  handler.public.change_privacy = function (socket, data) {
-    if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
-    }
-
-    if (data.what !== true && data.what !== false) {
-      return handler.get_out(socket)
-    }
-
-    db_manager.update_room(socket.hue_room_id, { public: data.what })
-
-    handler.room_emit(socket, "privacy_change", {
-      username: socket.hue_username,
-      what: data.what,
-    })
-
-    let als
-
-    if (data.what) {
-      als = "made the room public"
-    } else {
-      als = "made the room private"
-    }
-
-    vars.rooms[socket.hue_room_id].public = data.what
-
-    handler.push_admin_log_message(socket, als)
-  }
-
   // Creates initial room objects
   handler.create_room_object = function (info) {
     let obj = {
       _id: info._id.toString(),
       activity: false,
-      log: info.log,
       log_messages: info.log_messages,
       admin_log_messages: info.admin_log_messages,
       log_messages_modified: false,

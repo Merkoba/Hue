@@ -146,8 +146,6 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
       }
 
       room.name = data.name !== undefined ? data.name : "No Name"
-      room.public = data.public !== undefined ? data.public : true
-
       room.version = vars.rooms_version
 
       db.collection("rooms")

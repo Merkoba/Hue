@@ -24,26 +24,6 @@ Hue.commands = {
     },
     description: `Shows the user list. Accepts a filter as an argument`,
   },
-  "publicrooms": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.request_roomlist(arg, "public_roomlist")
-      } else {
-        Hue.request_roomlist("", "public_roomlist")
-      }
-    },
-    description: `Shows the public room list. Accepts a filter as an argument`,
-  },
-  "visitedrooms": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.request_roomlist(arg, "visited_roomlist")
-      } else {
-        Hue.request_roomlist("", "visited_roomlist")
-      }
-    },
-    description: `Shows the visited room list. Accepts a filter as an argument`,
-  },
   "roomname": {
     action: (arg, ans) => {
       if (arg) {
@@ -130,30 +110,6 @@ Hue.commands = {
     },
     description: `Kicks a user out of the room`,
   },
-  "public": {
-    action: (arg, ans) => {
-      Hue.change_privacy(true)
-    },
-    description: `Room appears in the public room list`,
-  },
-  "private": {
-    action: (arg, ans) => {
-      Hue.change_privacy(false)
-    },
-    description: `Room doesn\'t appear in the public room list`,
-  },
-  "privacy": {
-    action: (arg, ans) => {
-      Hue.show_public()
-    },
-    description: `Shows if a room is public or private`,
-  },
-  "log": {
-    action: (arg, ans) => {
-      Hue.show_log()
-    },
-    description: `Shows if the log is enabled or disabled`,
-  },
   "enablelog": {
     action: (arg, ans) => {
       Hue.change_log(true)
@@ -213,12 +169,6 @@ Hue.commands = {
       Hue.show_room()
     },
     description: `Shows the room name`,
-  },
-  "help": {
-    action: (arg, ans) => {
-      Hue.show_help()
-    },
-    description: `Shows Help`,
   },
   "commands": {
     action: (arg, ans) => {

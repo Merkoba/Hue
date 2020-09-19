@@ -321,24 +321,22 @@ module.exports = function (
       comment: tvinfo.tv_comment,
     })
 
-    if (room.log) {
-      let message = {
-        id: tv_id,
-        type: "tv",
-        date: date,
-        data: {
-          user_id: user_id,
-          type: tvinfo.tv_type,
-          source: tvinfo.tv_source,
-          title: tvinfo.tv_title,
-          setter: tvinfo.tv_setter,
-          query: tvinfo.tv_query,
-          comment: tvinfo.tv_comment,
-        },
-      }
-
-      handler.push_log_message(socket, message)
+    let message = {
+      id: tv_id,
+      type: "tv",
+      date: date,
+      data: {
+        user_id: user_id,
+        type: tvinfo.tv_type,
+        source: tvinfo.tv_source,
+        title: tvinfo.tv_title,
+        setter: tvinfo.tv_setter,
+        query: tvinfo.tv_query,
+        comment: tvinfo.tv_comment,
+      },
     }
+
+    handler.push_log_message(socket, message)
 
     room.current_tv_id = tv_id
     room.current_tv_user_id = user_id

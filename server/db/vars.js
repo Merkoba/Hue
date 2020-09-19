@@ -46,7 +46,6 @@ module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
       tv_query: { type: "string", default: "" },
       tv_comment: { type: "string", default: "" },
       bans: { type: "object", default: [] },
-      log: { type: "boolean", default: true },
       log_messages: { type: "object", default: [] },
       admin_log_messages: { type: "object", default: [] },
       theme_mode: { type: "string", default: "custom" },
@@ -60,7 +59,6 @@ module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
       background_mode: { type: "string", default: "solid" },
       background_effect: { type: "string", default: "none" },
       background_tile_dimensions: { type: "string", default: "200px auto" },
-      public: { type: "boolean", default: true },
       message_board_posts: { type: "object", default: [] },
       modified: { type: "number", default: Date.now() },
     }
@@ -77,7 +75,6 @@ module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
       password_reset_code: { type: "string", default: "" },
       password_reset_date: { type: "number", default: 0 },
       password_reset_link_date: { type: "number", default: 0 },
-      visited_rooms: { type: "object", default: [] },
       profile_image: { type: "string", default: "" },
       profile_image_version: { type: "number", default: 0 },
       verified: { type: "boolean", default: false },

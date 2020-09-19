@@ -288,24 +288,22 @@ module.exports = function (
       comment: comment,
     })
 
-    if (room.log) {
-      let message = {
-        id: image_id,
-        type: "image",
-        date: date,
-        data: {
-          user_id: user_id,
-          comment: comment,
-          source: image_source,
-          setter: data.setter,
-          size: size,
-          type: data.type,
-          query: data.query,
-        },
+    let message = {
+      id: image_id,
+      type: "image",
+      date: date,
+      data: {
+        user_id: user_id,
+        comment: comment,
+        source: image_source,
+        setter: data.setter,
+        size: size,
+        type: data.type,
+        query: data.query,
       }
-
-      handler.push_log_message(socket, message)
     }
+
+    handler.push_log_message(socket, message)
 
     room.current_image_id = image_id
     room.current_image_user_id = user_id

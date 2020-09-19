@@ -27,9 +27,6 @@ Hue.server_update_events = {
   user_join: (data) => {
     Hue.user_join(data)
   },
-  receive_roomlist: (data) => {
-    Hue.on_roomlist_received(data)
-  },
   upload_error: (data) => {
     Hue.show_upload_error()
   },
@@ -95,9 +92,6 @@ Hue.server_update_events = {
   },
   user_already_unbanned: (data) => {
     Hue.feedback("User is already unbanned")
-  },
-  privacy_change: (data) => {
-    Hue.announce_privacy_change(data)
   },
   image_not_found: (data) => {
     Hue.feedback("The image couldn't be found")

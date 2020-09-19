@@ -662,53 +662,6 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
     })
   }
 
-  // Saves room to visited rooms
-  manager.save_visited_room = function (user_id, room_id) {
-    return new Promise((resolve, reject) => {
-      manager
-        .get_user({ _id: user_id }, { visited_rooms: 1 })
-
-        .then((user) => {
-          let visited = user.visited_rooms
-
-          for (let i = 0; i < visited.length; i++) {
-            let v = visited[i]
-
-            if (v === room_id) {
-              visited.splice(i, 1)
-              break
-            }
-          }
-
-          visited.unshift(room_id)
-
-          if (visited.length > config.max_visited_rooms_items) {
-            visited = visited.slice(0, config.max_visited_rooms_items)
-          }
-
-          manager
-            .update_user(user_id, { visited_rooms: visited })
-
-            .then((ans) => {
-              resolve(ans)
-              return
-            })
-
-            .catch((err) => {
-              reject(err)
-              logger.log_error(err)
-              return
-            })
-        })
-
-        .catch((err) => {
-          reject(err)
-          logger.log_error(err)
-          return
-        })
-    })
-  }
-
   // Checks fields types against the user schema types
   manager.validate_user = function (fields) {
     let schema = vars.users_schema()
