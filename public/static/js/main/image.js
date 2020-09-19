@@ -162,14 +162,6 @@ Hue.change_image_source = function (src, just_check = false, comment = "") {
     feedback = false
   }
 
-  if (!Hue.can_image) {
-    if (feedback) {
-      Hue.feedback("You don't have permission to change the image")
-    }
-
-    return false
-  }
-
   if (!comment) {
     let r = Hue.get_media_change_inline_comment("image", src)
     src = r.source
@@ -251,11 +243,6 @@ Hue.change_image_source = function (src, just_check = false, comment = "") {
 
 // Sends an emit to change the image source
 Hue.emit_change_image_source = function (url, comment = "") {
-  if (!Hue.can_image) {
-    Hue.feedback("You don't have permission to change the image")
-    return false
-  }
-
   Hue.socket_emit("change_image_source", { src: url, comment: comment })
 }
 
@@ -274,7 +261,7 @@ Hue.fix_image_frame = function () {
 
 // Changes the image visibility based on current state
 Hue.change_image_visibility = function () {
-  if (Hue.room_image_mode !== "disabled" && Hue.room_state.image_enabled) {
+  if (Hue.room_state.image_enabled) {
     $("#media").css("display", "flex")
     $("#media_image").css("display", "flex")
     $("#footer_toggle_image_icon").find("use").eq(0).attr("href", "#icon_toggle-on")
@@ -495,7 +482,7 @@ Hue.show_modal_image = function (data) {
   }
 
   if (
-    (Hue.room_image_mode === "enabled" || Hue.room_image_mode === "locked") &&
+    (Hue.room_state.image_enabled || Hue.image_locked) &&
     data !== Hue.loaded_image
   ) {
     $("#modal_image_toolbar_load").css("display", "block")
@@ -663,22 +650,11 @@ Hue.refresh_image = function () {
 // Used to change the image
 // Shows the image picker window to input a URL, or upload a file
 Hue.show_image_picker = function () {
-  if (!Hue.can_image) {
-    Hue.feedback("You don't have image permission")
-    return false
-  }
-
   Hue.msg_image_picker.show(function () {
     $("#image_source_picker_input").focus()
     Hue.show_media_history("image")
     Hue.scroll_modal_to_top("image_picker")
   })
-}
-
-// Room image mode setter
-Hue.set_room_image_mode = function (what) {
-  Hue.room_image_mode = what
-  Hue.config_admin_room_image_mode()
 }
 
 // Announces room image mode changes
@@ -687,9 +663,8 @@ Hue.announce_room_image_mode_change = function (data) {
     data.username,
     `${data.username} changed the image mode to ${data.what}`
   )
-  Hue.set_room_image_mode(data.what)
+
   Hue.change_image_visibility()
-  Hue.check_media_permissions()
   Hue.check_media_maxers()
   Hue.change_media_lock_icon("image")
 }
@@ -758,27 +733,6 @@ Hue.process_image_upload_comment = function () {
 
   Hue.upload_file({ file: file, action: type, comment: comment })
   Hue.msg_image_upload_comment.close()
-}
-
-// Changes the room image mode
-Hue.change_room_image_mode = function (what) {
-  if (!Hue.check_op_permission(Hue.role, "media")) {
-    return false
-  }
-
-  let modes = ["enabled", "disabled", "locked"]
-
-  if (!modes.includes(what)) {
-    Hue.feedback(`Valid image modes: ${modes.join(" ")}`)
-    return false
-  }
-
-  if (what === Hue.room_image_mode) {
-    Hue.feedback(`Image mode is already set to that`)
-    return false
-  }
-
-  Hue.socket_emit("change_image_mode", { what: what })
 }
 
 Hue.image_picker_submit = function () {

@@ -10,7 +10,7 @@ module.exports = function (
 ) {
   // Handles theme mode changes
   handler.public.change_theme_mode = function (socket, data) {
-    if (!handler.check_op_permission(socket, "theme")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -35,7 +35,7 @@ module.exports = function (
 
   // Handles theme changes
   handler.public.change_theme = function (socket, data) {
-    if (!handler.check_op_permission(socket, "theme")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -68,7 +68,7 @@ module.exports = function (
 
   // Handles background mode changes
   handler.public.change_background_mode = function (socket, data) {
-    if (!handler.check_op_permission(socket, "background")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -99,7 +99,7 @@ module.exports = function (
 
   // Handles background effect changes
   handler.public.change_background_effect = function (socket, data) {
-    if (!handler.check_op_permission(socket, "background")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -130,7 +130,7 @@ module.exports = function (
 
   // Handles background tile dimension changes
   handler.public.change_background_tile_dimensions = function (socket, data) {
-    if (!handler.check_op_permission(socket, "background")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -159,7 +159,7 @@ module.exports = function (
 
   // Handles text color mode changes
   handler.public.change_text_color_mode = function (socket, data) {
-    if (!handler.check_op_permission(socket, "theme")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -184,7 +184,7 @@ module.exports = function (
 
   // Handles text color changes
   handler.public.change_text_color = function (socket, data) {
-    if (!handler.check_op_permission(socket, "theme")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -252,7 +252,7 @@ module.exports = function (
 
   // Handles background image source changes
   handler.public.change_background_image_source = function (socket, data) {
-    if (!handler.check_op_permission(socket, "background")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 

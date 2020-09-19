@@ -366,14 +366,6 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
     feedback = false
   }
 
-  if (!Hue.can_tv) {
-    if (feedback) {
-      Hue.feedback("You don't have permission to change the tv")
-    }
-
-    return false
-  }
-
   if (!comment) {
     let r = Hue.get_media_change_inline_comment("tv", src)
     src = r.source
@@ -489,7 +481,7 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
 
 // Changes the tv visibility based on current state
 Hue.change_tv_visibility = function (play = false) {
-  if (Hue.room_tv_mode !== "disabled" && Hue.room_state.tv_enabled) {
+  if (Hue.room_state.tv_enabled) {
     $("#media").css("display", "flex")
     $("#media_tv").css("display", "flex")
     $("#footer_toggle_tv_icon").find("use").eq(0).attr("href", "#icon_toggle-on")
@@ -497,7 +489,7 @@ Hue.change_tv_visibility = function (play = false) {
     if (!Hue.tv_visible) {
       Hue.tv_visible = true
 
-      if (Hue.room_tv_mode === "enabled") {
+      if (Hue.room_state.tv_enabled) {
         if (Hue.first_media_change && Hue.started) {
           Hue.change({
             type: "tv",
@@ -584,11 +576,6 @@ Hue.tv_volume_decrease = function (step = 0.1) {
 // Used to change the tv
 // Shows the tv picker window to input a URL
 Hue.show_tv_picker = function () {
-  if (!Hue.can_tv) {
-    Hue.feedback("You don't have tv permission")
-    return false
-  }
-
   Hue.msg_tv_picker.show(function () {
     $("#tv_source_picker_input").focus()
     Hue.show_media_history("tv")
@@ -651,12 +638,6 @@ Hue.refresh_tv = function () {
     play: true,
     current_source: true
   })
-}
-
-// Room tv mode setter
-Hue.set_room_tv_mode = function (what) {
-  Hue.room_tv_mode = what
-  Hue.config_admin_room_tv_mode()
 }
 
 // Does the change of tv display percentage
@@ -737,9 +718,8 @@ Hue.announce_room_tv_mode_change = function (data) {
     data.username,
     `${data.username} changed the tv mode to ${data.what}`
   )
-  Hue.set_room_tv_mode(data.what)
+
   Hue.change_tv_visibility(false)
-  Hue.check_media_permissions()
   Hue.check_media_maxers()
   Hue.update_footer_separators()
   Hue.change_media_lock_icon("tv")
@@ -801,29 +781,6 @@ Hue.fix_visible_video_frame = function () {
   if (id) {
     Hue.fix_frame(id)
   }
-}
-
-// Changes the room tv mode
-Hue.change_room_tv_mode = function (what) {
-  if (!Hue.check_op_permission(Hue.role, "media")) {
-    return false
-  }
-
-  let modes = ["enabled", "disabled", "locked"]
-
-  if (!modes.includes(what)) {
-    Hue.feedback(`Valid tv modes: ${modes.join(" ")}`)
-    return false
-  }
-
-  if (what === Hue.room_tv_mode) {
-    Hue.feedback(`TV mode is already set to that`)
-    return false
-  }
-
-  Hue.socket_emit("change_tv_mode", {
-    what: what
-  })
 }
 
 Hue.tv_picker_submit = function () {

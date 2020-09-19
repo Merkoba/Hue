@@ -188,7 +188,7 @@ Hue.apply_theme = function () {
 
 // Changes the theme mode
 Hue.change_theme_mode = function (mode) {
-  if (!Hue.check_op_permission(Hue.role, "theme")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -207,7 +207,7 @@ Hue.change_theme_mode = function (mode) {
 
 // Changes the theme
 Hue.change_theme = function (color) {
-  if (!Hue.check_op_permission(Hue.role, "theme")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -301,7 +301,7 @@ Hue.background_image_input_action = function () {
 
 // On background image selected for upload
 Hue.background_image_selected = function (input) {
-  if (!Hue.check_op_permission(Hue.role, "background")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -325,7 +325,7 @@ Hue.background_image_selected = function (input) {
 
 // Change the background image with a URL
 Hue.change_background_image_source = function (src) {
-  if (!Hue.check_op_permission(Hue.role, "background")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -386,7 +386,7 @@ Hue.announce_background_image_change = function (data) {
 
 // Changes the background mode
 Hue.change_background_mode = function (mode) {
-  if (!Hue.check_op_permission(Hue.role, "background")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -420,7 +420,7 @@ Hue.announce_background_mode_change = function (data) {
 
 // Changes background tile dimensions
 Hue.change_background_tile_dimensions = function (dimensions) {
-  if (!Hue.check_op_permission(Hue.role, "background")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -464,7 +464,7 @@ Hue.background_image_enabled = function () {
     Hue.background_mode === "mirror" ||
     Hue.background_mode === "mirror_tiled"
   ) {
-    if (Hue.room_image_mode === "disabled") {
+    if (!Hue.room_state.image_enabled) {
       return false
     }
   }
@@ -474,7 +474,7 @@ Hue.background_image_enabled = function () {
 
 // Changes the background effect
 Hue.change_background_effect = function (effect) {
-  if (!Hue.check_op_permission(Hue.role, "background")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -528,7 +528,7 @@ Hue.set_background_tile_dimensions = function (dimensions) {
 
 // Changes the text color mode
 Hue.change_text_color_mode = function (mode) {
-  if (!Hue.check_op_permission(Hue.role, "theme")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -563,7 +563,7 @@ Hue.set_text_color_mode = function (mode) {
 
 // Changes the text color
 Hue.change_text_color = function (color) {
-  if (!Hue.check_op_permission(Hue.role, "theme")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 

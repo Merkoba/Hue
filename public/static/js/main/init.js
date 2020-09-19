@@ -22,9 +22,7 @@ Hue.ls_settings = "settings_v1"
 Hue.ls_room_state = "room_state_v1"
 Hue.ls_input_history = "input_history_v17"
 Hue.ls_first_time = "first_time_v2"
-Hue.vtypes = ["voice_1", "voice_2", "voice_3"]
-Hue.optypes = ["op_1", "op_2", "op_3"]
-Hue.roles = ["admin"].concat(Hue.optypes).concat(Hue.vtypes)
+Hue.roles = ["admin", "op", "voice"]
 Hue.topic = ""
 Hue.topic_setter = ""
 Hue.topic_date = ""
@@ -36,9 +34,6 @@ Hue.userlist = []
 Hue.usernames = []
 Hue.all_usernames = []
 Hue.role = ""
-Hue.can_chat = false
-Hue.can_image = false
-Hue.can_tv = false
 Hue.can_messageboard = false
 Hue.tab_info = {}
 Hue.create_room_open = false
@@ -60,8 +55,6 @@ Hue.alert_mode = 0
 Hue.commands_list_sorted = {}
 Hue.commands_list_sorted_2 = {}
 Hue.utilz = Utilz()
-Hue.room_image_mode = "enabled"
-Hue.room_tv_mode = "enabled"
 Hue.background_image_setter = ""
 Hue.background_image_date = ""
 Hue.files = {}
@@ -91,7 +84,6 @@ Hue.mouse_is_down = false
 Hue.commands_queue = {}
 Hue.user_leaving = false
 Hue.admin_activity_filter_string = ""
-Hue.access_log_filter_string = ""
 Hue.hide_infotip_delay = 2000
 Hue.hide_media_reactions_delay = 2000
 Hue.active_modal = false
@@ -148,6 +140,7 @@ Hue.max_fresh_messages = 100
 Hue.fresh_messages_duration = 3000
 Hue.notifications_close_delay = 5000
 Hue.chat_crop_limit = 500
+Hue.userlist_open = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -284,8 +277,7 @@ Hue.on_join = function (data) {
   Hue.setup_theme_and_background(data)
   Hue.apply_background()
   Hue.apply_theme()
-  Hue.setup_active_media(data)
-  Hue.start_permissions(data)
+  Hue.setup_active_media()
   Hue.set_role(data.role, false)
   Hue.set_topic_info(data)
   Hue.update_title()

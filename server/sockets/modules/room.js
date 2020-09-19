@@ -10,7 +10,7 @@ module.exports = function (
 ) {
   // Handles topic changes
   handler.public.change_topic = async function (socket, data) {
-    if (!handler.check_op_permission(socket, "topic")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -64,7 +64,7 @@ module.exports = function (
 
   // Handles room name changes
   handler.public.change_room_name = async function (socket, data) {
-    if (!handler.check_op_permission(socket, "name")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -107,7 +107,7 @@ module.exports = function (
 
   // Handles log state changes
   handler.public.change_log = async function (socket, data) {
-    if (!handler.check_op_permission(socket, "log")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -155,7 +155,7 @@ module.exports = function (
 
   // Clears log messages
   handler.public.clear_log = async function (socket, data) {
-    if (!handler.check_op_permission(socket, "log")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -226,7 +226,7 @@ module.exports = function (
 
   // Changes privacy status
   handler.public.change_privacy = function (socket, data) {
-    if (!handler.check_op_permission(socket, "privacy")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -254,110 +254,18 @@ module.exports = function (
     handler.push_admin_log_message(socket, als)
   }
 
-  // Fills voice and op permissions objects
-  handler.fill_room_permissions = function (info) {
-    let voice_changed = false
-
-    let voice_properties = ["chat", "image", "tv"]
-
-    let voice_properties_false = []
-
-    for (let i = 1; i <= vars.vtypes.length; i++) {
-      let p = info[`voice_${i}_permissions`]
-
-      for (let property of voice_properties) {
-        if (p[property] === undefined) {
-          p[property] = !voice_properties_false.includes(property)
-          voice_changed = true
-        }
-      }
-
-      for (let key in p) {
-        if (!voice_properties.includes(key)) {
-          delete p[key]
-          voice_changed = true
-        }
-      }
-    }
-
-    let op_changed = false
-
-    let op_properties = [
-      "theme",
-      "background",
-      "voice_roles",
-      "voice_permissions",
-      "privacy",
-      "log",
-      "topic",
-      "kick",
-      "ban",
-      "unban",
-      "delete_messages",
-      "media",
-      "name",
-      "message_board_delete",
-    ]
-
-    let op_properties_false = [
-      "message_board_delete",
-    ]
-
-    for (let i = 1; i <= vars.optypes.length; i++) {
-      let p = info[`op_${i}_permissions`]
-
-      for (let property of op_properties) {
-        if (p[property] === undefined) {
-          p[property] = !op_properties_false.includes(property)
-          op_changed = true
-        }
-      }
-
-      for (let key in p) {
-        if (!op_properties.includes(key)) {
-          delete p[key]
-          op_changed = true
-        }
-      }
-    }
-
-    if (voice_changed || op_changed) {
-      let obj = {}
-
-      if (voice_changed) {
-        ;(obj.voice_1_permissions = info.voice_1_permissions),
-          (obj.voice_2_permissions = info.voice_2_permissions),
-          (obj.voice_3_permissions = info.voice_3_permissions)
-      }
-
-      if (op_changed) {
-        ;(obj.op_1_permissions = info.op_1_permissions),
-          (obj.op_2_permissions = info.op_2_permissions),
-          (obj.op_3_permissions = info.op_3_permissions)
-      }
-
-      db_manager.update_room(info._id.toString(), obj)
-    }
-  }
-
   // Creates initial room objects
   handler.create_room_object = function (info) {
-    handler.fill_room_permissions(info)
-
     let obj = {
       _id: info._id.toString(),
       activity: false,
       log: info.log,
       log_messages: info.log_messages,
       admin_log_messages: info.admin_log_messages,
-      access_log_messages: info.access_log_messages,
       log_messages_modified: false,
       admin_log_messages_modified: false,
-      access_log_messages_modified: false,
       userlist: {},
-      image_mode: info.image_mode,
       stored_images: info.stored_images,
-      tv_mode: info.tv_mode,
       current_image_id: info.image_id,
       current_image_user_id: info.image_user_id,
       current_image_source: info.image_source,
@@ -374,13 +282,7 @@ module.exports = function (
       last_tv_change: 0,
       text_ad_charge: 0,
       attempting_text_ad: false,
-      message_board_posts: info.message_board_posts,
-      voice_1_permissions: info.voice_1_permissions,
-      voice_2_permissions: info.voice_2_permissions,
-      voice_3_permissions: info.voice_3_permissions,
-      op_1_permissions: info.op_1_permissions,
-      op_2_permissions: info.op_2_permissions,
-      op_3_permissions: info.op_3_permissions,
+      message_board_posts: info.message_board_posts
     }
 
     return obj

@@ -67,8 +67,6 @@ module.exports = function (
         role: socket.hue_role,
         disconnection_type: type,
       })
-
-      handler.push_access_log_message(socket, "left")
     }
   }
 

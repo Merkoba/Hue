@@ -40,14 +40,6 @@ module.exports = function (
             room.admin_log_messages_modified = false
           }
 
-          if (room.access_log_messages_modified) {
-            db_manager.push_access_log_messages(
-              room._id,
-              room.access_log_messages
-            )
-            room.access_log_messages_modified = false
-          }
-
           room.activity = false
         }
 

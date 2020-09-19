@@ -11,12 +11,6 @@ module.exports = function (
   // Receives sliced files uploads and requests more slices
   // Sends uploaded files to respective functions
   handler.public.slice_upload = async function (socket, data) {
-    if (data.action === "image_upload") {
-      if (!handler.check_media_permission(socket, "image")) {
-        return false
-      }
-    }
-
     if (data.data.length > config.upload_slice_size) {
       return handler.get_out(socket)
     }

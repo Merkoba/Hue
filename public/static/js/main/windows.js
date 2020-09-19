@@ -71,6 +71,14 @@ Hue.start_msg = function () {
       id: "userlist",
       window_min_width: "22rem",
       window_max_width: "45rem",
+      after_show: function (instance) {
+        common.after_show(instance)
+        Hue.userlist_open = true
+      },
+      after_close: function (instance) {
+        common.after_close(instance)
+        Hue.userlist_open = false
+      },
     })
   )
 
@@ -323,12 +331,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_access_log = Msg.factory(
-    Object.assign({}, common, titlebar, {
-      id: "access_log",
-    })
-  )
-
   Hue.msg_expand_image = Msg.factory(
     Object.assign({}, common, {
       id: "expand_image",
@@ -446,13 +448,7 @@ Hue.start_msg = function () {
 
   // Set the templates
 
-  Hue.msg_room_menu.set(
-    Hue.template_room_menu({
-      voice_permissions_containers: Hue.make_room_menu_voice_permissions_container(),
-      op_permissions_containers: Hue.make_room_menu_op_permissions_container(),
-    })
-  )
-
+  Hue.msg_room_menu.set(Hue.template_room_menu())
   Hue.msg_user_menu.set(Hue.template_user_menu())
   Hue.msg_userlist.set(Hue.template_userlist())
   Hue.msg_public_roomlist.set(
@@ -481,7 +477,6 @@ Hue.start_msg = function () {
   Hue.msg_whispers.set(Hue.template_whispers())
   Hue.msg_room_status.set(Hue.template_room_status())
   Hue.msg_admin_activity.set(Hue.template_admin_activity())
-  Hue.msg_access_log.set(Hue.template_access_log())
   Hue.msg_expand_image.set(Hue.template_expand_image())
   Hue.msg_image_upload_comment.set(Hue.template_image_upload_comment())
   Hue.msg_reply.set(Hue.template_reply())
@@ -523,7 +518,6 @@ Hue.start_msg = function () {
   Hue.msg_media_menu.set_title("Media Menu")
   Hue.msg_room_status.set_title("Room Status")
   Hue.msg_admin_activity.set_title("Admin Activity")
-  Hue.msg_access_log.set_title("Access Log")
   Hue.msg_image_upload_comment.set_title("Add a Comment")
   Hue.msg_reply.set_title("Write a Reply")
   Hue.msg_details.set_title("User Details")

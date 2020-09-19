@@ -82,7 +82,7 @@ Hue.show_room = function () {
 
 // Change the name of the room
 Hue.change_room_name = function (arg) {
-  if (!Hue.check_op_permission(Hue.role, "name")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -187,7 +187,7 @@ Hue.set_room_name = function (name) {
 
 // Changes the topic
 Hue.change_topic = function (dtopic) {
-  if (!Hue.check_op_permission(Hue.role, "topic")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -202,123 +202,6 @@ Hue.change_topic = function (dtopic) {
       Hue.feedback("Topic is already set to that")
     }
   }
-}
-
-// Appends the topic with new text
-Hue.topicadd = function (arg) {
-  if (!Hue.check_op_permission(Hue.role, "topic")) {
-    return false
-  }
-
-  arg = Hue.utilz.clean_string2(arg)
-
-  if (arg.length === 0) {
-    return
-  }
-
-  let ntopic = Hue.topic + Hue.config.topic_separator + arg
-
-  if (ntopic.length > Hue.config.max_topic_length) {
-    Hue.feedback("There is no more room to add that to the topic")
-    return
-  }
-
-  Hue.change_topic(ntopic)
-}
-
-// Removes topic sections
-Hue.topictrim = function (n) {
-  if (!Hue.check_op_permission(Hue.role, "topic")) {
-    return false
-  }
-
-  let split = Hue.topic.split(Hue.config.topic_separator)
-
-  if (split.length > 1) {
-    if (!isNaN(n)) {
-      if (n < 1) {
-        return false
-      }
-
-      if (n > split.length - 1) {
-        n = split.length - 1
-      }
-    } else {
-      Hue.feedback("Argument must be a number")
-      return false
-    }
-
-    if (split.length > 1) {
-      let t = split.slice(0, -n).join(Hue.config.topic_separator)
-
-      if (t.length > 0) {
-        Hue.change_topic(t)
-      }
-    }
-  } else {
-    Hue.feedback("Nothing to trim")
-  }
-}
-
-// Prepends the topic with new text
-Hue.topicstart = function (arg) {
-  if (!Hue.check_op_permission(Hue.role, "topic")) {
-    return false
-  }
-
-  arg = Hue.utilz.clean_string2(arg)
-
-  if (arg.length === 0) {
-    return
-  }
-
-  let ntopic = arg + Hue.config.topic_separator + Hue.topic
-
-  if (ntopic.length > Hue.config.max_topic_length) {
-    Hue.feedback("There is no more room to add that to the topic")
-    return
-  }
-
-  Hue.change_topic(ntopic)
-}
-
-// Removes topic sections from the start
-Hue.topictrimstart = function (n) {
-  if (!Hue.check_op_permission(Hue.role, "topic")) {
-    return false
-  }
-
-  let split = Hue.topic.split(Hue.config.topic_separator)
-
-  if (split.length > 1) {
-    if (!isNaN(n)) {
-      if (n < 1) {
-        return false
-      }
-
-      if (n > split.length - 1) {
-        n = split.length - 1
-      }
-    } else {
-      Hue.feedback("Argument must be a number")
-      return false
-    }
-
-    if (split.length > 1) {
-      let t = split.slice(n, split.length).join(Hue.config.topic_separator)
-
-      if (t.length > 0) {
-        Hue.change_topic(t)
-      }
-    }
-  } else {
-    Hue.feedback("Nothing to trim")
-  }
-}
-
-// Changes the input with the topic to be edited
-Hue.topicedit = function () {
-  Hue.change_input(`/topic ${Hue.topic}`)
 }
 
 // Announces topic changes
@@ -355,7 +238,7 @@ Hue.set_topic_info = function (data) {
 
 // Changes the room privacy to public or private
 Hue.change_privacy = function (what) {
-  if (!Hue.check_op_permission(Hue.role, "privacy")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -407,7 +290,7 @@ Hue.set_log_enabled = function (what) {
 
 // Enables or disables the log
 Hue.change_log = function (log) {
-  if (!Hue.check_op_permission(Hue.role, "log")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -424,7 +307,7 @@ Hue.change_log = function (log) {
 
 // Clears the log
 Hue.clear_log = function (type = "all", id = false) {
-  if (!Hue.check_op_permission(Hue.role, "log")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -605,54 +488,11 @@ Hue.show_ban_list = function (data) {
   })
 }
 
-// Requests the access log
-Hue.request_access_log = function (filter = "") {
-  if (!Hue.is_admin_or_op(Hue.role)) {
-    Hue.not_an_op()
-    return false
-  }
-
-  Hue.access_log_filter_string = filter
-
-  Hue.socket_emit("get_access_log", {})
-}
-
-// Shows the access log
-Hue.show_access_log = function (messages) {
-  $("#access_log_container").html("")
-
-  Hue.msg_access_log.show(function () {
-    for (let message of messages) {
-      let nice_date = Hue.utilz.nice_date(message.date)
-
-      let el = $(`
-            <div class='modal_item access_log_item dynamic_title' title='${nice_date}'>
-                <div class='access_log_message'></div>
-                <div class='access_log_date'></div>
-            </div>`)
-
-      el.find(".access_log_message")
-        .eq(0)
-        .text(`${message.data.username} ${message.data.content}`)
-      el.find(".access_log_date").eq(0).text(nice_date)
-
-      el.data("date", message.date)
-      el.data("otitle", nice_date)
-
-      $("#access_log_container").prepend(el)
-    }
-
-    $("#access_log_filter").val(Hue.access_log_filter_string)
-
-    Hue.do_modal_filter()
-  })
-}
-
 // Shows a window with the topic
 Hue.show_topic_window = function () {
   let edit_html = ""
 
-  if (Hue.check_op_permission(Hue.role, "topic")) {
+  if (Hue.is_admin_or_op(Hue.role)) {
     edit_html =
       "<div><div id='topic_window_edit' class='pointer action inline'>Edit</div></div>"
   }

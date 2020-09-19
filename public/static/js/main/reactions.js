@@ -12,11 +12,6 @@ Hue.send_reaction = function (reaction_type, reaction_target) {
     return false
   }
 
-  if (!Hue.can_chat) {
-    Hue.feedback("You don't have permission to chat")
-    return false
-  }
-
   if (!Hue.reaction_types.includes(reaction_type)) {
     return false
   }

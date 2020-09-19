@@ -88,71 +88,23 @@ Hue.commands = {
     },
     description: `Clears the saved recent searches`,
   },
-  "role": {
+  "voice": {
     action: (arg, ans) => {
-      Hue.show_role()
+      Hue.change_role(arg, "voice")
     },
-    description: `Shows your role and permissions`,
+    description: `Gives voice to a user`,
   },
-  "voice1": {
+  "op": {
     action: (arg, ans) => {
-      Hue.change_role(arg, "voice_1")
+      Hue.change_role(arg, "op")
     },
-    description: `Gives voice_1 to a user`,
-  },
-  "voice2": {
-    action: (arg, ans) => {
-      Hue.change_role(arg, "voice_2")
-    },
-    description: `Gives voice_2 to a user`,
-  },
-  "voice3": {
-    action: (arg, ans) => {
-      Hue.change_role(arg, "voice_3")
-    },
-    description: `Gives voice_3 to a user`,
-  },
-  "op1": {
-    action: (arg, ans) => {
-      Hue.change_role(arg, "op_1")
-    },
-    description: `Gives op_1 to a user`,
-  },
-  "op2": {
-    action: (arg, ans) => {
-      Hue.change_role(arg, "op_2")
-    },
-    description: `Gives op_2 to a user`,
-  },
-  "op3": {
-    action: (arg, ans) => {
-      Hue.change_role(arg, "op_3")
-    },
-    description: `Gives op_3 to a user`,
+    description: `Gives op to a user`,
   },
   "admin": {
     action: (arg, ans) => {
       Hue.change_role(arg, "admin")
     },
     description: `Gives admin to a user. This gives a user the same rights as the original admin`,
-  },
-  "resetvoices": {
-    action: (arg, ans) => {
-      Hue.reset_voices()
-    },
-    description: `Turns all voices above 1 to voice_1`,
-  },
-  "resetops": {
-    action: (arg, ans) => {
-      Hue.reset_ops()
-    },
-    description: `Turns all ops above 1 to op_1`,
-  },
-  "removeops": {
-    action: (arg, ans) => {
-      Hue.remove_ops()
-    },
-    description: `Removes all op roles`,
   },
   "ban": {
     action: (arg, ans) => {
@@ -255,46 +207,6 @@ Hue.commands = {
       }
     },
     description: `Changes the topic of the room`,
-  },
-  "topicadd": {
-    action: (arg, ans) => {
-      Hue.topicadd(arg)
-    },
-    description: `Adds a section at the end of the topic`,
-  },
-  "topictrim": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.topictrim(arg)
-      } else {
-        Hue.topictrim(1)
-      }
-    },
-    description: `Removes a section from the end of the topic, where the optional x is the number of trims you want to do`,
-  },
-  "topicaddstart": {
-    action: (arg, ans) => {
-      Hue.topicstart(arg)
-    },
-    description: `Adds a section at the start of the topic`,
-  },
-  "topictrimstart": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.topictrimstart(arg)
-      } else {
-        Hue.topictrimstart(1)
-      }
-    },
-    description: `Removes a section from the start of the topic, where the optional x is the number of trims you want to do`,
-  },
-  "topicedit": {
-    action: (arg, ans) => {
-      Hue.topicedit()
-      ans.to_history = false
-      ans.clr_input = false
-    },
-    description: `Puts the topic in the input, ready to be edited`,
   },
   "room": {
     action: (arg, ans) => {
@@ -871,23 +783,11 @@ Hue.commands = {
     },
     description: `Scrolls the chat to the top`,
   },
-  "top2": {
-    action: (arg, ans) => {
-      Hue.goto_top(false)
-    },
-    description: `Scrolls the chat to the top`,
-  },
   "bottom": {
     action: (arg, ans) => {
-      Hue.goto_bottom(true, true)
+      Hue.goto_bottom(true)
     },
     description: `Scrolls the chat to the bottom`,
-  },
-  "bottom2": {
-    action: (arg, ans) => {
-      Hue.goto_bottom(true, false)
-    },
-    description: `Scrolls the chat to the bottom without animating the scroll`,
   },
   "background": {
     action: (arg, ans) => {
@@ -930,18 +830,6 @@ Hue.commands = {
       Hue.feedback(arg)
     },
     description: `Displays a simple feedback information message for the user`,
-  },
-  "imagemode": {
-    action: (arg, ans) => {
-      Hue.change_room_image_mode(arg)
-    },
-    description: `Changes the image mode. Valid modes include enabled, disabled, and locked`,
-  },
-  "tvmode": {
-    action: (arg, ans) => {
-      Hue.change_room_tv_mode(arg)
-    },
-    description: `Changes the tv mode. Valid modes include enabled, disabled, and locked`,
   },
   "theme": {
     action: (arg, ans) => {
@@ -994,16 +882,6 @@ Hue.commands = {
       }
     },
     description: `Shows recent activity by ops and admins. Accepts a filter as an argument`,
-  },
-  "accesslog": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.request_access_log(arg)
-      } else {
-        Hue.request_access_log()
-      }
-    },
-    description: `Shows the Access Log`,
   },
   "adminlist": {
     action: (arg, ans) => {
@@ -1520,36 +1398,32 @@ Hue.process_message = function (args = {}) {
     args.to_history = ans.to_history
     args.clr_input = ans.clr_input
   } else {
-    if (Hue.can_chat) {
-      if (args.message.length === 0) {
-        Hue.clear_input()
+    if (args.message.length === 0) {
+      Hue.clear_input()
 
-        if (args.callback) {
-          return args.callback(false)
-        } else {
-          return false
-        }
+      if (args.callback) {
+        return args.callback(false)
+      } else {
+        return false
       }
-
-      if (num_lines > Hue.config.max_num_newlines) {
-        if (args.callback) {
-          return args.callback(false)
-        } else {
-          return false
-        }
-      }
-
-      if (args.message.length > Hue.config.max_input_length) {
-        args.message = args.message.substring(0, Hue.config.max_input_length)
-      }
-
-      Hue.socket_emit("sendchat", {
-        message: args.message,
-        edit_id: args.edit_id,
-      })
-    } else {
-      Hue.cant_chat()
     }
+
+    if (num_lines > Hue.config.max_num_newlines) {
+      if (args.callback) {
+        return args.callback(false)
+      } else {
+        return false
+      }
+    }
+
+    if (args.message.length > Hue.config.max_input_length) {
+      args.message = args.message.substring(0, Hue.config.max_input_length)
+    }
+
+    Hue.socket_emit("sendchat", {
+      message: args.message,
+      edit_id: args.edit_id,
+    })
   }
 
   if (args.to_history) {

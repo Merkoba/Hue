@@ -349,44 +349,6 @@ module.exports = function (manager, vars, db, config, sconfig, utilz, logger) {
     })
   }
 
-  // Updates access log messages
-  manager.push_access_log_messages = function (_id, messages) {
-    return new Promise((resolve, reject) => {
-      manager
-        .get_room({ _id: _id }, { access_log_messages: 1 })
-
-        .then((room) => {
-          room.access_log_messages = messages
-
-          if (
-            room.access_log_messages.length > config.max_access_log_messages
-          ) {
-            room.access_log_messages = room.access_log_messages.slice(
-              room.access_log_messages.length - config.max_access_log_messages
-            )
-          }
-
-          manager
-            .update_room(_id, { access_log_messages: room.access_log_messages })
-
-            .catch((err) => {
-              reject(err)
-              logger.log_error(err)
-              return
-            })
-
-          resolve(true)
-          return
-        })
-
-        .catch((err) => {
-          reject(err)
-          logger.log_error(err)
-          return
-        })
-    })
-  }
-
   // Checks fields types against the room schema types
   manager.validate_room = function (fields) {
     let schema = vars.rooms_schema()

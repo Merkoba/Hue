@@ -17,10 +17,6 @@ module.exports = function (
     }
 
     if (data.type === "user") {
-      if (!handler.check_media_permission(socket, "chat")) {
-        return false
-      }
-  
       if (!data.usernames || data.usernames.length === 0) {
         return handler.get_out(socket)
       }

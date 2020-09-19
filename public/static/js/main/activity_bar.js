@@ -144,7 +144,7 @@ Hue.push_to_activity_bar = function (id, date) {
     return false
   }
 
-  if (!user || !Hue.check_media_permission(user.role, "chat")) {
+  if (!user) {
     return false
   }
 

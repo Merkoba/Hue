@@ -1267,7 +1267,7 @@ Hue.check_typing = function () {
 
   let tval = val.trim()
 
-  if (Hue.can_chat && tval !== "") {
+  if (tval !== "") {
     if (tval[0] === Hue.config.commands_prefix) {
       if (tval[1] !== Hue.config.commands_prefix && !tval.startsWith(`${Hue.config.commands_prefix}me `)) {
         return false
@@ -1471,11 +1471,6 @@ Hue.on_chat_message = function (data) {
 
   Hue.hide_typing()
   Hue.remove_aura(data.user_id)
-}
-
-// Shows feedback if user doesn't have chat permission
-Hue.cant_chat = function () {
-  Hue.feedback("You don't have permission to chat")
 }
 
 // Find the next chat message above that involves the user

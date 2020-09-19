@@ -1,38 +1,3 @@
-// Shows the user's role
-Hue.show_role = function () {
-  if (Hue.role === "admin") {
-    Hue.feedback("You are an admin")
-  } else if (Hue.role.startsWith("op")) {
-    Hue.feedback("You are an op")
-  } else if (Hue.role.startsWith("voice")) {
-    Hue.feedback(`You have ${Hue.role}`)
-  }
-
-  let ps = 0
-
-  if (Hue.can_chat) {
-    Hue.feedback("You have chat permission")
-
-    ps += 1
-  }
-
-  if (Hue.can_image) {
-    Hue.feedback("You have image permission")
-
-    ps += 1
-  }
-
-  if (Hue.can_tv) {
-    Hue.feedback("You have tv permission")
-
-    ps += 1
-  }
-
-  if (ps === 0) {
-    Hue.feedback("You cannot interact")
-  }
-}
-
 // Shows the user's username
 Hue.show_username = function () {
   Hue.feedback(`Username: ${Hue.username}`)
@@ -233,45 +198,6 @@ Hue.get_role = function (uname) {
   }
 }
 
-// Sets all voice roles to voice_1
-Hue.reset_voices_userlist = function () {
-  for (let i = 0; i < Hue.userlist.length; i++) {
-    if (
-      Hue.userlist[i].role.startsWith("voice") &&
-      Hue.userlist[i].role !== "voice_1"
-    ) {
-      Hue.userlist[i].role = "voice_1"
-    }
-  }
-
-  Hue.update_userlist()
-}
-
-// Sets all op roles to op_1
-Hue.reset_ops_userlist = function () {
-  for (let i = 0; i < Hue.userlist.length; i++) {
-    if (
-      Hue.userlist[i].role.startsWith("op") &&
-      Hue.userlist[i].role !== "op_1"
-    ) {
-      Hue.userlist[i].role = "op_1"
-    }
-  }
-
-  Hue.update_userlist()
-}
-
-// Sets all op roles to voice_1
-Hue.remove_ops_userlist = function () {
-  for (let i = 0; i < Hue.userlist.length; i++) {
-    if (Hue.userlist[i].role.startsWith("op")) {
-      Hue.userlist[i].role = "voice_1"
-    }
-  }
-
-  Hue.update_userlist()
-}
-
 // Gets the short form of a specified role
 // These are displayed next to the usernames in the user list
 Hue.role_tag = function (p) {
@@ -279,18 +205,10 @@ Hue.role_tag = function (p) {
 
   if (p === "admin") {
     s = "[A]"
-  } else if (p === "op_1") {
-    s = "[Op1]"
-  } else if (p === "op_2") {
-    s = "[Op2]"
-  } else if (p === "op_3") {
-    s = "[Op3]"
-  } else if (p === "voice_1") {
-    s = "[V1]"
-  } else if (p === "voice_2") {
-    s = "[V2]"
-  } else if (p === "voice_3") {
-    s = "[V3]"
+  } else if (p === "op") {
+    s = "[Op]"
+  } else if (p === "voice") {
+    s = "[V]"
   } else {
     s = ""
   }
@@ -304,18 +222,10 @@ Hue.get_pretty_role_name = function (p) {
 
   if (p === "admin") {
     s = "Admin"
-  } else if (p === "op_1") {
-    s = "Op 1"
-  } else if (p === "op_2") {
-    s = "Op 2"
-  } else if (p === "op_3") {
-    s = "Op 3"
-  } else if (p === "voice_1") {
-    s = "Voice 1"
-  } else if (p === "voice_2") {
-    s = "Voice 2"
-  } else if (p === "voice_3") {
-    s = "Voice 3"
+  } else if (p === "op") {
+    s = "Op"
+  } else if (p === "voice") {
+    s = "Voice"
   } else {
     s = ""
   }
@@ -453,15 +363,15 @@ Hue.update_userlist_window = function () {
 }
 
 // Used to sort the user list by order of roles
-// Admins at the top, voice_1 at the bottom, etc
+// Admins at the top, voice at the bottom, etc
 // It sorts in alphabetical order on equal roles
 Hue.compare_userlist = function (a, b) {
   if (a.role === "") {
-    a.role = "voice_1"
+    a.role = "voice"
   }
 
   if (b.role === "") {
-    b.role = "voice_1"
+    b.role = "voice"
   }
 
   if (a.role.startsWith("voice") && b.role.startsWith("voice")) {
@@ -618,8 +528,6 @@ Hue.announce_new_username = function (data) {
     data.username
   )
 
-  let show = Hue.check_media_permission(Hue.get_role(data.username), "chat")
-
   if (Hue.username === data.old_username) {
     Hue.set_username(data.username)
 
@@ -634,12 +542,10 @@ Hue.announce_new_username = function (data) {
       Hue.show_details()
     }
   } else {
-    if (show) {
-      Hue.show_room_notification(
-        data.username,
-        `${data.old_username} is now known as ${data.username}`
-      )
-    }
+    Hue.show_room_notification(
+      data.username,
+      `${data.old_username} is now known as ${data.username}`
+    )
   }
 
   if (Hue.admin_list_open) {
@@ -819,7 +725,7 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
     $("#show_profile_image").removeClass("dynamic_title")
   }
 
-  if (!Hue.can_chat || !Hue.usernames.includes(username)) {
+  if (!Hue.usernames.includes(username)) {
     $("#show_profile_whisper").css("display", "none")
     $("#show_profile_hearts").css("display", "none")
     $("#show_profile_skulls").css("display", "none")
@@ -899,76 +805,9 @@ Hue.bio_changed = function (data) {
   }
 }
 
-// Resets all voice users to voice_1
-Hue.reset_voices = function () {
-  if (!Hue.check_op_permission(Hue.role, "voice_roles")) {
-    return false
-  }
-
-  Hue.socket_emit("reset_voices", {})
-}
-
-// Resets all op users to op_1
-Hue.reset_ops = function () {
-  if (Hue.role !== "admin") {
-    return false
-  }
-
-  Hue.socket_emit("reset_ops", {})
-}
-
-// Resets all op users to voice_1
-Hue.remove_ops = function () {
-  if (Hue.role !== "admin") {
-    return false
-  }
-
-  Hue.socket_emit("remove_ops", {})
-}
-
-// Announces that voices were resetted
-Hue.announce_voices_resetted = function (data) {
-  Hue.show_room_notification(
-    data.username,
-    `${data.username} resetted the voices`
-  )
-
-  if (Hue.role.startsWith("voice") && Hue.role !== "voice_1") {
-    Hue.set_role("voice_1")
-  }
-
-  Hue.reset_voices_userlist()
-}
-
-// Announces that ops were resetted
-Hue.announce_ops_resetted = function (data) {
-  Hue.show_room_notification(data.username, `${data.username} resetted the ops`)
-
-  if (Hue.role.startsWith("op") && Hue.role !== "op_1") {
-    Hue.set_role("op_1")
-  }
-
-  Hue.reset_ops_userlist()
-}
-
-// Announces that ops were resetted
-Hue.announce_removed_ops = function (data) {
-  Hue.show_room_notification(data.username, `${data.username} removed all ops`)
-
-  if (Hue.role.startsWith("op")) {
-    Hue.set_role("voice_1")
-  }
-
-  Hue.remove_ops_userlist()
-
-  if (Hue.admin_list_open) {
-    Hue.request_admin_list()
-  }
-}
-
 // Changes a user's role
 Hue.change_role = function (username, role) {
-  if (!Hue.check_op_permission(Hue.role, "voice_roles")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -1011,12 +850,15 @@ Hue.announce_role_change = function (data) {
   if (Hue.admin_list_open) {
     Hue.request_admin_list()
   }
+
+  if (Hue.userlist_open) {
+    Hue.update_userlist_window()
+  }
 }
 
 // Role setter for user
 Hue.set_role = function (rol, config = true) {
   Hue.role = rol
-  Hue.check_media_permissions()
   Hue.check_message_board_permissions()
   
   if (config) {
@@ -1026,7 +868,7 @@ Hue.set_role = function (rol, config = true) {
 
 // Bans a user
 Hue.ban = function (uname) {
-  if (!Hue.check_op_permission(Hue.role, "ban")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -1042,7 +884,7 @@ Hue.ban = function (uname) {
 
 // Unbans a user
 Hue.unban = function (uname) {
-  if (!Hue.check_op_permission(Hue.role, "unban")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -1058,7 +900,7 @@ Hue.unban = function (uname) {
 
 // Unbans all banned users
 Hue.unban_all = function () {
-  if (!Hue.check_op_permission(Hue.role, "unban")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 
@@ -1080,7 +922,7 @@ Hue.receive_ban_count = function (data) {
 
 // Kicks a user
 Hue.kick = function (uname) {
-  if (!Hue.check_op_permission(Hue.role, "kick")) {
+  if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
 

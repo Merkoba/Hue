@@ -38,10 +38,6 @@ module.exports = function (
       return handler.get_out(socket)
     }
 
-    if (!handler.check_media_permission(socket, "image")) {
-      return false
-    }
-
     if (
       vars.rooms[socket.hue_room_id].current_image_source === data.src ||
       vars.rooms[socket.hue_room_id].current_image_query === data.src
@@ -159,10 +155,6 @@ module.exports = function (
 
     if (data.extension === undefined) {
       return handler.get_out(socket)
-    }
-
-    if (!handler.check_media_permission(socket, "image")) {
-      return false
     }
 
     let size = data.image_file.byteLength / 1024
@@ -321,37 +313,6 @@ module.exports = function (
     room.current_image_query = data.query
     room.last_image_change = Date.now()
     room.modified = Date.now()
-  }
-
-  // Handles images mode changes
-  handler.public.change_image_mode = function (socket, data) {
-    if (!handler.check_op_permission(socket, "media")) {
-      return handler.get_out(socket)
-    }
-
-    if (
-      data.what !== "enabled" &&
-      data.what !== "disabled" &&
-      data.what !== "locked"
-    ) {
-      return handler.get_out(socket)
-    }
-
-    vars.rooms[socket.hue_room_id].image_mode = data.what
-
-    db_manager.update_room(socket.hue_room_id, {
-      image_mode: data.what,
-    })
-
-    handler.room_emit(socket, "room_image_mode_change", {
-      what: data.what,
-      username: socket.hue_username,
-    })
-
-    handler.push_admin_log_message(
-      socket,
-      `changed the image mode to "${data.what}"`
-    )
   }
 
   // Returns an image mime type by checking the extension

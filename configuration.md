@@ -153,9 +153,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "max_admin_log_messages"
 >Maximum amount of messages to store in room admin logs. It stores information about the most recent admin activity.
 
-"max_access_log_messages"
->Maximum amount of messages to store in room access logs. It stores information about user join and quit activity.
-
 "max_visited_rooms_items"
 >Maximum amount of items shown in the Visited Rooms list.
 

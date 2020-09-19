@@ -16,7 +16,7 @@ Hue.setup_footer_icons = function () {
     }
   }
 
-  if (Hue.room_image_mode === "disabled" || Hue.room_tv_mode === "disabled") {
+  if (!Hue.room_state.image_enabled || !Hue.room_state.tv_enabled) {
     $("#footer_media_rotate").css("display", "none")
   } else {
     $("#footer_media_rotate").css("display", "flex")

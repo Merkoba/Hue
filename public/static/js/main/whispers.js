@@ -1,10 +1,5 @@
 // Checks if a user is in the room to receive a whisper
 Hue.check_whisper_user = function (uname) {
-  if (!Hue.can_chat) {
-    Hue.cant_chat()
-    return false
-  }
-
   if (!Hue.usernames.includes(uname)) {
     Hue.user_not_in_room(uname)
     return false
@@ -289,11 +284,6 @@ Hue.send_whisper = function (message, force = false) {
   let unames = Hue.message_unames
 
   if (!unames) {
-    return false
-  }
-
-  if (!Hue.can_chat) {
-    Hue.show_message_feedback("You don't have chat permission")
     return false
   }
 

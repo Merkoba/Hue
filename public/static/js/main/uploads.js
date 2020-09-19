@@ -13,12 +13,6 @@ Hue.start_dropzone = function () {
   Hue.dropzone.on("addedfile", function (file) {
     Hue.focus_input()
 
-    if (!Hue.can_image) {
-      Hue.feedback("You don't have permission to change the image")
-      Hue.dropzone.files = []
-      return false
-    }
-
     if (Hue.dropzone.files.length > 1) {
       Hue.dropzone.files = []
       return false

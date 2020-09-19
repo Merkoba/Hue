@@ -12,7 +12,7 @@ module.exports = function (
   handler.public.change_role = async function (socket, data) {
     if (
       !socket.hue_superuser &&
-      !handler.check_op_permission(socket, "voice_roles")
+      !handler.is_admin_or_op(socket)
     ) {
       return handler.get_out(socket)
     }
@@ -66,7 +66,7 @@ module.exports = function (
 
     if (
       current_role === data.role ||
-      (current_role === undefined && data.role === "voice_1")
+      (current_role === undefined && data.role === "voice")
     ) {
       handler.user_emit(socket, "is_already", {
         what: data.role,
@@ -113,135 +113,9 @@ module.exports = function (
     )
   }
 
-  // Handles voice resets
-  handler.public.reset_voices = async function (socket, data) {
-    if (!handler.check_op_permission(socket, "voice_roles")) {
-      return handler.get_out(socket)
-    }
-
-    let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
-      { keys: 1 }
-    )
-
-    let removed = false
-    let role = info.keys[key] || vars.default_role
-
-    for (let key in info.keys) {
-      if (role.startsWith("voice") && role !== "voice_1") {
-        delete info.keys[key]
-        removed = true
-      }
-    }
-
-    if (!removed) {
-      handler.user_emit(socket, "no_voices_to_reset", {})
-      return false
-    }
-
-    let sockets = handler.get_room_sockets(socket.hue_room_id)
-
-    for (let socc of sockets) {
-      if (socc.hue_role.startsWith("voice") && socc.hue_role !== "voice_1") {
-        socc.hue_role = "voice_1"
-        handler.update_user_in_userlist(socc)
-      }
-    }
-
-    db_manager.update_room(info._id, { keys: info.keys })
-    handler.room_emit(socket, "voices_resetted", {
-      username: socket.hue_username,
-    })
-    handler.push_admin_log_message(socket, "resetted the voices")
-  }
-
-  // Handles op resets
-  handler.public.reset_ops = async function (socket, data) {
-    if (socket.hue_role !== "admin") {
-      return handler.get_out(socket)
-    }
-
-    let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
-      { keys: 1 }
-    )
-
-    let changed = false
-    let role = info.keys[key] || vars.default_role
-
-    for (let key in info.keys) {
-      if (role.startsWith("op") && role !== "op_1") {
-        info.keys[key] = "op_1"
-        changed = true
-      }
-    }
-
-    if (!changed) {
-      handler.user_emit(socket, "no_ops_to_reset", {})
-      return false
-    }
-
-    let sockets = handler.get_room_sockets(socket.hue_room_id)
-
-    for (let socc of sockets) {
-      if (socc.hue_role.startsWith("op") && socc.hue_role !== "op_1") {
-        socc.hue_role = "op_1"
-        handler.update_user_in_userlist(socc)
-      }
-    }
-
-    db_manager.update_room(info._id, { keys: info.keys })
-    handler.room_emit(socket, "ops_resetted", {
-      username: socket.hue_username,
-    })
-    handler.push_admin_log_message(socket, "resetted the ops")
-  }
-
-  // Handles ops removal
-  handler.public.remove_ops = async function (socket, data) {
-    if (socket.hue_role !== "admin") {
-      return handler.get_out(socket)
-    }
-
-    let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
-      { keys: 1 }
-    )
-
-    let removed = false
-    let role = info.keys[key] || vars.default_role
-
-    for (let key in info.keys) {
-      if (role.startsWith("op")) {
-        delete info.keys[key]
-        removed = true
-      }
-    }
-
-    if (!removed) {
-      handler.user_emit(socket, "no_ops_to_remove", {})
-      return false
-    }
-
-    let sockets = handler.get_room_sockets(socket.hue_room_id)
-
-    for (let socc of sockets) {
-      if (socc.hue_role.startsWith("op")) {
-        socc.hue_role = "voice_1"
-        handler.update_user_in_userlist(socc)
-      }
-    }
-
-    handler.room_emit(socket, "announce_removed_ops", {
-      username: socket.hue_username,
-    })
-    db_manager.update_room(info._id, { keys: info.keys })
-    handler.push_admin_log_message(socket, "removed the ops")
-  }
-
   // Handles user kicks
   handler.public.kick = function (socket, data) {
-    if (!handler.check_op_permission(socket, "kick")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -290,7 +164,7 @@ module.exports = function (
 
   // Handles user bans
   handler.public.ban = async function (socket, data) {
-    if (!handler.check_op_permission(socket, "ban")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -368,7 +242,7 @@ module.exports = function (
 
   // Handles user unbans
   handler.public.unban = async function (socket, data) {
-    if (!handler.check_op_permission(socket, "unban")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -425,7 +299,7 @@ module.exports = function (
 
   // Unbans all banned users
   handler.public.unban_all = async function (socket, data) {
-    if (!handler.check_op_permission(socket, "unban")) {
+    if (!handler.is_admin_or_op(socket)) {
       return handler.get_out(socket)
     }
 
@@ -509,17 +383,6 @@ module.exports = function (
     let messages = vars.rooms[socket.hue_room_id].admin_log_messages
 
     handler.user_emit(socket, "receive_admin_activity", { messages: messages })
-  }
-
-  // Sends access log
-  handler.public.get_access_log = function (socket, data) {
-    if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
-    }
-
-    let messages = vars.rooms[socket.hue_room_id].access_log_messages
-
-    handler.user_emit(socket, "receive_access_log", { messages: messages })
   }
 
   // Sends admin list

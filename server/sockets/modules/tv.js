@@ -38,10 +38,6 @@ module.exports = function (
       return handler.get_out(socket)
     }
 
-    if (!handler.check_media_permission(socket, "tv")) {
-      return false
-    }
-
     data.src = data.src.replace(
       /youtu\.be\/(\w{11})/,
       "www.youtube.com/watch?v=$1"
@@ -350,37 +346,6 @@ module.exports = function (
     room.current_tv_query = tvinfo.tv_query
     room.last_tv_change = Date.now()
     room.modified = Date.now()
-  }
-
-  // Handles tv mode changes
-  handler.public.change_tv_mode = function (socket, data) {
-    if (!handler.check_op_permission(socket, "media")) {
-      return handler.get_out(socket)
-    }
-
-    if (
-      data.what !== "enabled" &&
-      data.what !== "disabled" &&
-      data.what !== "locked"
-    ) {
-      return handler.get_out(socket)
-    }
-
-    vars.rooms[socket.hue_room_id].tv_mode = data.what
-
-    db_manager.update_room(socket.hue_room_id, {
-      tv_mode: data.what,
-    })
-
-    handler.room_emit(socket, "room_tv_mode_change", {
-      what: data.what,
-      username: socket.hue_username,
-    })
-
-    handler.push_admin_log_message(
-      socket,
-      `changed the tv mode to "${data.what}"`
-    )
   }
 
   // Receives a request to ask another user for their tv video progress

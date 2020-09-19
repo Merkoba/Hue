@@ -26,10 +26,6 @@ module.exports = function (
       return handler.get_out(socket)
     }
 
-    if (!handler.check_media_permission(socket, "chat")) {
-      return false
-    }
-
     handler.process_message_links(data.message, function (response) {
       let id
       let date
@@ -121,10 +117,6 @@ module.exports = function (
 
   // Handles typing signals
   handler.public.typing = async function (socket, data) {
-    if (!handler.check_media_permission(socket, "chat")) {
-      return false
-    }
-
     socket.hue_typing_counter += 1
 
     if (socket.hue_typing_counter >= 50) {
@@ -181,14 +173,14 @@ module.exports = function (
 
     if (message) {
       if (!message.data.user_id) {
-        if (!handler.check_op_permission(socket, "delete_messages")) {
+        if (!handler.is_admin_or_op(socket)) {
           return handler.get_out(socket)
         }
 
         deleted = true
         messages.splice(message_index, 1)
       } else if (message.data.user_id !== socket.hue_user_id) {
-        if (!handler.check_op_permission(socket, "delete_messages")) {
+        if (!handler.is_admin_or_op(socket)) {
           return handler.get_out(socket)
         }
 

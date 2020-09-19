@@ -29,16 +29,13 @@ module.exports = function (
   vars.root_path = vars.path.join(__dirname, "../../")
   vars.images_root = vars.path.join(vars.root_path, config.images_directory)
   vars.audio_root = vars.path.join(vars.root_path, config.audio_directory)
-  vars.vtypes = ["voice_1", "voice_2", "voice_3"]
-  vars.optypes = ["op_1", "op_2", "op_3"]
-  vars.roles = ["admin"].concat(vars.optypes).concat(vars.vtypes)
+  vars.roles = ["admin", "op", "voice"]
   vars.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
   vars.reaction_targets = ["chat", "image", "tv"]
   vars.media_types = ["image", "tv"]
   vars.filtered_fields = {
     log_messages: 0,
     admin_log_messages: 0,
-    access_log_messages: 0,
     stored_images: 0,
   }
   vars.redis_client_ready = false
@@ -71,7 +68,7 @@ module.exports = function (
 
   vars.last_roomlist
   vars.roomlist_last_get = 0
-  vars.default_role = "voice_1"
+  vars.default_role = "voice"
 
   // Configure the anti-spam system
   vars.anti_spam = new vars.SocketAntiSpam({

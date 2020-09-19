@@ -246,7 +246,7 @@ module.exports = function (
     socket.hue_role = info.keys[socket.hue_user_id] || vars.default_role
 
     if (!vars.roles.includes(socket.hue_role)) {
-      socket.hue_role = "voice_1"
+      socket.hue_role = "voice"
     }
 
     if (vars.user_rooms[socket.hue_user_id] === undefined) {
@@ -299,8 +299,6 @@ module.exports = function (
       tv_date: info.tv_date,
       tv_query: info.tv_query,
       profile_image: socket.hue_profile_image,
-      room_image_mode: info.image_mode,
-      room_tv_mode: info.tv_mode,
       theme_mode: info.theme_mode,
       theme: info.theme,
       background_image: background_image,
@@ -311,12 +309,6 @@ module.exports = function (
       background_tile_dimensions: info.background_tile_dimensions,
       text_color_mode: info.text_color_mode,
       text_color: info.text_color,
-      voice_1_permissions: handler.check_voice_permissions(info.voice_1_permissions),
-      voice_2_permissions: handler.check_voice_permissions(info.voice_2_permissions),
-      voice_3_permissions: handler.check_voice_permissions(info.voice_3_permissions),
-      op_1_permissions: info.op_1_permissions,
-      op_2_permissions: info.op_2_permissions,
-      op_3_permissions: info.op_3_permissions,
       email: utilz.conceal_email(socket.hue_email),
       bio: socket.hue_bio,
       superuser:socket.hue_superuser,
@@ -346,8 +338,6 @@ module.exports = function (
         audio_clip: socket.hue_audio_clip,
         date_joined: Date.now(),
       })
-
-      handler.push_access_log_message(socket, "joined")
     }
   }
 }

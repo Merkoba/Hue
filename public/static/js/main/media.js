@@ -476,10 +476,7 @@ Hue.show_media_items = function () {
 }
 
 // Setups media modes from initial data
-Hue.setup_active_media = function (data) {
-  Hue.room_image_mode = data.room_image_mode
-  Hue.room_tv_mode = data.room_tv_mode
-
+Hue.setup_active_media = function () {
   Hue.media_visibility_and_locks()
 }
 
@@ -782,7 +779,7 @@ Hue.change = function (args = {}) {
       return false
     }
 
-    if (Hue.room_image_mode === "disabled") {
+    if (!Hue.room_state.image_enabled) {
       return false
     }
 
@@ -810,7 +807,7 @@ Hue.change = function (args = {}) {
       return false
     }
 
-    if (Hue.room_tv_mode === "disabled") {
+    if (!Hue.room_state.tv_enabled) {
       return false
     }
 
@@ -846,7 +843,7 @@ Hue.change = function (args = {}) {
 
 // Check if maxers should be displayed or not
 Hue.check_media_maxers = function () {
-  if (Hue.room_tv_mode !== "disabled" && Hue.room_image_mode !== "disabled") {
+  if (Hue.room_state.image_enabled && Hue.room_state.tv_enabled) {
     $(".maxer_container").css("display", "flex")
   } else {
     $(".maxer_container").css("display", "none")

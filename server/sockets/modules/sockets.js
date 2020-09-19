@@ -158,10 +158,6 @@ module.exports = function (
 
   // Handles activity signals
   handler.public.activity_trigger = async function (socket, data) {
-    if (!handler.check_media_permission(socket, "chat")) {
-      return false
-    }
-
     socket.hue_activity_counter += 1
 
     if (socket.hue_activity_counter >= 2) {

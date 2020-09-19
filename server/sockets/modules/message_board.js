@@ -22,10 +22,6 @@ module.exports = function (
       return handler.get_out(socket)
     }
 
-    if (!handler.check_media_permission(socket, "messageboard")) {
-      return false
-    }
-
     let item = handler.push_message_board_post(socket, data.message)
     handler.room_emit(socket, "new_message_board_post", item)
   }
@@ -92,7 +88,7 @@ module.exports = function (
           }
 
           if (
-            !handler.check_op_permission(socket, "message_board_delete") &&
+            !handler.is_admin_or_op(socket) &&
             !socket.hue_superuser
           ) {
             return false
@@ -117,7 +113,7 @@ module.exports = function (
   // Deletes all message board posts
   handler.public.clear_message_board = async function (socket, data) {
     if (
-      !handler.check_op_permission(socket, "message_board_delete") &&
+      !handler.is_admin_or_op(socket) &&
       !socket.hue_superuser
     ) {
       return handler.get_out(socket)

@@ -48,15 +48,6 @@ Hue.server_update_events = {
   announce_role_change: (data) => {
     Hue.announce_role_change(data)
   },
-  voices_resetted: (data) => {
-    Hue.announce_voices_resetted(data)
-  },
-  ops_resetted: (data) => {
-    Hue.announce_ops_resetted(data)
-  },
-  announce_removed_ops: (data) => {
-    Hue.announce_removed_ops(data)
-  },
   announce_ban: (data) => {
     Hue.announce_ban(data)
   },
@@ -178,12 +169,6 @@ Hue.server_update_events = {
   text_color_changed: (data) => {
     Hue.announce_text_color_change(data)
   },
-  voice_permission_change: (data) => {
-    Hue.announce_voice_permission_change(data)
-  },
-  op_permission_change: (data) => {
-    Hue.announce_op_permission_change(data)
-  },
   user_disconnect: (data) => {
     Hue.user_disconnect(data)
   },
@@ -241,9 +226,6 @@ Hue.server_update_events = {
   },
   receive_admin_activity: (data) => {
     Hue.show_admin_activity(data.messages)
-  },
-  receive_access_log: (data) => {
-    Hue.show_access_log(data.messages)
   },
   receive_admin_list: (data) => {
     Hue.show_admin_list(data)

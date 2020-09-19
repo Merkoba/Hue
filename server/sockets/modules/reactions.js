@@ -27,10 +27,6 @@ module.exports = function (
         return false
       }
     }
-    
-    if (!handler.check_media_permission(socket, "chat")) {
-      return false
-    }
 
     let id = handler.generate_message_id()
 
