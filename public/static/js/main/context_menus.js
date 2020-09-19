@@ -459,7 +459,7 @@ Hue.start_user_context_menu = function () {
     zIndex: 9000000000,
     events: Hue.context_menu_events,
     items: {
-      cmvoice1: {
+      d1: {
         name: "Voice",
         visible: function (key, opt) {
           if (!Hue.is_admin_or_op(Hue.role)) {
@@ -549,6 +549,16 @@ Hue.start_user_context_menu = function () {
               Hue.ban(arg)
             },
           },
+        },
+      },
+      cmvoiced: {
+        name: "This menu is meant for operators",
+        visible: function (key, opt) {
+          if (!Hue.is_admin_or_op(Hue.role)) {
+            return true
+          } else {
+            return false
+          }
         },
       },
     },
