@@ -70,7 +70,6 @@ Hue.change_op_permission = function (optype, ptype, what) {
 // Announces voice permission changes
 Hue.announce_voice_permission_change = function (data) {
   let s = `${data.username} set ${data.vtype}.${data.ptype} to ${data.what}`
-
   Hue[`${data.vtype}_permissions`][data.ptype] = data.what
   Hue.show_room_notification(data.username, s)
   Hue.check_media_permissions()

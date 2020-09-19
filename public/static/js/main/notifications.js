@@ -128,16 +128,8 @@ Hue.show_room_notification = function (username, message) {
     on_click: f,
     type: "room",
   })
-  let method = Hue.get_setting("room_notifications_method")
 
-  if (method === "popups") {
-    Hue.show_popup(Hue.make_info_popup(f), item)
-  } else if (method === "chat") {
-    Hue.public_feedback(message, {
-      username: username,
-      open_profile: true,
-    })
-  }
+  Hue.show_popup(Hue.make_info_popup(f), item)
 }
 
 // Centralized function to show a popup
