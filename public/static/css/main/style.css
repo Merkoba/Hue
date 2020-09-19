@@ -2520,6 +2520,7 @@ pre {
 .colortext {
 	display: inline-block;
 	padding: 0.2rem;
+	padding-top: 0;
 	background-color: #171515;
 }
 
