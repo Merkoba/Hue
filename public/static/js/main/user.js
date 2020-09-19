@@ -327,10 +327,6 @@ Hue.setup_user_menu = function () {
     Hue.show_highlights()
   })
 
-  $("#user_menu_history").click(function () {
-    Hue.show_input_history()
-  })
-
   $("#user_menu_settings").click(function () {
     Hue.show_settings()
   })

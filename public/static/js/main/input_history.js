@@ -12,33 +12,15 @@ Hue.add_to_input_history = function (message, change_index = true) {
 
   Hue.input_history.push(item)
 
-  if (Hue.input_history.length > Hue.config.input_history_crop_limit) {
+  if (Hue.input_history.length > Hue.input_history_crop_limit) {
     Hue.input_history = Hue.input_history.slice(
-      Hue.input_history.length - Hue.config.input_history_crop_limit
+      Hue.input_history.length - Hue.input_history_crop_limit
     )
   }
 
   if (change_index) {
     Hue.reset_input_history_index()
   }
-
-  Hue.save_input_history()
-}
-
-// Saves the input history localStorage object
-Hue.save_input_history = function () {
-  Hue.save_local_storage(Hue.ls_input_history, Hue.input_history)
-}
-
-// Gets the input history localStorage object
-Hue.get_input_history = function () {
-  Hue.input_history = Hue.get_local_storage(Hue.ls_input_history)
-
-  if (Hue.input_history === null) {
-    Hue.input_history = []
-  }
-
-  Hue.reset_input_history_index()
 }
 
 // Resets the input history item index
@@ -91,84 +73,6 @@ Hue.input_history_change = function (direction) {
   }
 
   Hue.change_input(v)
-}
-
-// Setups input history window events
-Hue.setup_input_history = function () {
-  $("#input_history_container").on("click", ".input_history_item", function () {
-    if ($(this).find("a").length === 0) {
-      Hue.change_input($(this).text())
-      Hue.close_all_modals()
-    }
-  })
-
-  $("#input_history_clear_icon").click(function () {
-    if (confirm("Are you sure you want to clear the input history?")) {
-      Hue.clear_input_history()
-      Hue.show_input_history()
-    }
-  })
-}
-
-// Empties the input history localStorage object
-Hue.clear_input_history = function () {
-  Hue.input_history = []
-  Hue.save_input_history()
-}
-
-// Shows the input history window
-Hue.show_input_history = function (filter = false) {
-  if (filter) {
-    filter = filter.trim()
-  }
-
-  let sfilter = filter ? filter : ""
-
-  $("#input_history_container").html("")
-  $("#input_history_filter").val(sfilter)
-  $("#input_history_container").html("")
-
-  let words
-
-  if (filter) {
-    let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
-    words = lc_value.split(" ").filter((x) => x.trim() !== "")
-  }
-
-  let items
-
-  if (filter) {
-    items = Hue.input_history.filter(function (item) {
-      let text = item.message.toLowerCase()
-      return words.some((word) => text.includes(word))
-    })
-  } else {
-    items = Hue.input_history
-  }
-
-  for (let item of items) {
-    let c = $(
-      `<div class='modal_item input_history_item dynamic_title action pointer'></div>`
-    )
-    let nd = Hue.utilz.nice_date(item.date)
-
-    c.attr("title", nd)
-    c.data("otitle", nd)
-    c.data("date", item.date)
-    c.text(item.message)
-
-    $("#input_history_container").prepend(c)
-  }
-
-  if (Hue.input_history.length > 0) {
-    $("#input_history_clear_icon").removeClass("inactive")
-  } else {
-    $("#input_history_clear_icon").addClass("inactive")
-  }
-
-  Hue.msg_input_history.show(function () {
-    Hue.scroll_modal_to_top("input_history")
-  })
 }
 
 // Replaces an item in input history

@@ -20,7 +20,6 @@ Hue.load_scripts = true
 Hue.config = {}
 Hue.ls_settings = "settings_v1"
 Hue.ls_room_state = "room_state_v1"
-Hue.ls_input_history = "input_history_v17"
 Hue.ls_first_time = "first_time_v2"
 Hue.roles = ["admin", "op", "voice"]
 Hue.topic = ""
@@ -30,6 +29,7 @@ Hue.colorlib = ColorLib()
 Hue.played = []
 Hue.input_history = []
 Hue.input_history_index = 0
+Hue.input_history_crop_limit = 20
 Hue.userlist = []
 Hue.usernames = []
 Hue.all_usernames = []
@@ -194,7 +194,6 @@ Hue.init = function () {
   Hue.setup_show_profile()
   Hue.setup_room_menu()
   Hue.setup_input()
-  Hue.setup_input_history()
   Hue.setup_modal_image()
   Hue.setup_footer()
   Hue.setup_reactions()
@@ -285,7 +284,6 @@ Hue.on_join = function (data) {
   Hue.clear_chat()
   Hue.show_log_messages(data.log_messages)
   Hue.check_firstime()
-  Hue.get_input_history()
   Hue.show_joined()
   Hue.check_media_maxers()
   Hue.config_room_menu()

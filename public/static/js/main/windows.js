@@ -258,13 +258,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_input_history = Msg.factory(
-    Object.assign({}, common, titlebar, {
-      id: "input_history",
-      window_width: "24rem",
-    })
-  )
-
   Hue.msg_chat_search = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "chat_search",
@@ -468,7 +461,6 @@ Hue.start_msg = function () {
   Hue.msg_media_menu.set(Hue.template_media_menu())
   Hue.msg_message.set(Hue.template_message())
   Hue.msg_highlights.set(Hue.template_highlights())
-  Hue.msg_input_history.set(Hue.template_input_history())
   Hue.msg_chat_search.set(Hue.template_chat_search())
   Hue.msg_modal_image.set(Hue.template_modal_image())
   Hue.msg_lockscreen.set(Hue.template_lockscreen())
@@ -513,7 +505,6 @@ Hue.start_msg = function () {
     "<span id='user_menu_window_title' class='pointer'>User Menu</span>"
   )
 
-  Hue.msg_input_history.set_title("Input History")
   Hue.msg_settings.set_title("Settings")
   Hue.msg_media_menu.set_title("Media Menu")
   Hue.msg_room_status.set_title("Room Status")
@@ -713,10 +704,6 @@ Hue.start_filters = function () {
 
   $("#highlights_filter").on("input", function () {
     Hue.highlights_filter_timer()
-  })
-
-  $("#input_history_filter").on("input", function () {
-    Hue.input_history_filter_timer()
   })
 
   $("#image_history_filter").on("input", function () {

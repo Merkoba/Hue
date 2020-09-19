@@ -35,7 +35,6 @@
 	"color_contrast_amount_4": 0.2,
 	"color_contrast_amount_5": 0.05,
 	"played_crop_limit": 500,
-	"input_history_crop_limit": 500,
 	"media_changed_crop_limit": 500,
 	"notifications_crop_limit": 500,
 	"whispers_crop_limit": 500,

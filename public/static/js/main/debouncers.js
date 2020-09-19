@@ -42,11 +42,6 @@ Hue.create_debouncers = function () {
     Hue.show_chat_search($("#chat_search_filter").val())
   }, Hue.filter_delay)
 
-  // Debounce timer for input history filter
-  Hue.input_history_filter_timer = Hue.create_debouncer(function () {
-    Hue.show_input_history($("#input_history_filter").val())
-  }, Hue.filter_delay)
-
   // Debounce typing timer to send a typing emit
   Hue.typing_timer = Hue.create_debouncer(function () {
     Hue.socket_emit("typing", {})

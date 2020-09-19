@@ -761,16 +761,6 @@ a.generic:hover {
 	background-color: #b17fbf !important;
 }
 
-#input_history_container {
-	margin-top: 2rem;
-	margin-bottom: 1rem;
-	grid-gap: 1.5rem;
-}
-
-.input_history_item {
-	max-width: 26em;
-}
-
 .filter_input {
 	top: 0rem;
 	width: 14em;

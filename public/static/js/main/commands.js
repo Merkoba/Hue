@@ -236,22 +236,6 @@ Hue.commands = {
     },
     description: `Changes the volume of the tv`,
   },
-  "inputhistory": {
-    action: (arg, ans) => {
-      if (arg) {
-        Hue.show_input_history(arg)
-      } else {
-        Hue.show_input_history()
-      }
-    },
-    description: `Shows the input history. Accepts a filter as an argument`,
-  },
-  "clearinputhistory": {
-    action: (arg, ans) => {
-      Hue.clear_input_history()
-    },
-    description: `Clears the input history`,
-  },
   "changeusername": {
     action: (arg, ans) => {
       Hue.change_username(arg)
