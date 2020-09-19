@@ -161,10 +161,6 @@ Hue.setup_room_menu = function () {
     Hue.needs_confirm("remove_ops")
   })
 
-  $("#room_menu_more_banned_count").click(function () {
-    Hue.get_ban_count()
-  })
-
   $("#room_menu_more_unban_all").click(function () {
     Hue.needs_confirm("unban_all")
   })

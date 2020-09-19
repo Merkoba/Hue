@@ -1065,13 +1065,6 @@ Hue.unban_all = function () {
   Hue.socket_emit("unban_all", {})
 }
 
-// Gets the number of users banned
-Hue.get_ban_count = function () {
-  if (Hue.is_admin_or_op()) {
-    Hue.socket_emit("get_ban_count", {})
-  }
-}
-
 // Shows a window with the number of users banned
 Hue.receive_ban_count = function (data) {
   let s

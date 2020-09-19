@@ -449,27 +449,6 @@ module.exports = function (
     }
   }
 
-  // Sends the number of users banned
-  handler.public.get_ban_count = async function (socket, data) {
-    if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
-    }
-
-    let info = await db_manager.get_room(
-      { _id: socket.hue_room_id },
-      { bans: 1 }
-    )
-    let count
-
-    if (info.bans === "") {
-      count = 0
-    } else {
-      count = info.bans.length
-    }
-
-    handler.user_emit(socket, "receive_ban_count", { count: count })
-  }
-
   // Checks if socket is admin or op
   handler.is_admin_or_op = function (socket) {
     return socket.hue_role === "admin" || socket.hue_role.startsWith("op")

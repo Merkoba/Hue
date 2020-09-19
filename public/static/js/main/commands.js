@@ -172,12 +172,6 @@ Hue.commands = {
     },
     description: `Removes all bans`,
   },
-  "bancount": {
-    action: (arg, ans) => {
-      Hue.get_ban_count()
-    },
-    description: `Displays the number of banned users in the room`,
-  },
   "kick": {
     action: (arg, ans) => {
       Hue.kick(arg)
