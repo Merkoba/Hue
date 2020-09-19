@@ -82,17 +82,6 @@ Hue.user_settings = {
       }
     },
   },
-  message_log: {
-    widget_type: "checkbox",
-    description: `Whether the user requests the message log on load`,
-    action: (save = true) => {
-      Hue.settings.message_log = $(`#settings_message_log`).prop("checked")
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
   autoconnect: {
     widget_type: "checkbox",
     description: `Whether a user should autoconnect automatically after a socket disconnect`,

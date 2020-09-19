@@ -325,13 +325,9 @@ module.exports = function (
 
     if (data.no_message_log) {
       user_data.log_messages = []
-    } else {
-      user_data.log_messages = vars.rooms[socket.hue_room_id].log_messages
-    }
-
-    if (data.no_message_board_posts) {
       user_data.message_board_posts = []
     } else {
+      user_data.log_messages = vars.rooms[socket.hue_room_id].log_messages
       user_data.message_board_posts =
         vars.rooms[socket.hue_room_id].message_board_posts
     }

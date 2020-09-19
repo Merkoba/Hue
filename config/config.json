@@ -95,7 +95,6 @@
 	"settings_default_warn_before_closing": false,
 	"settings_default_show_image_previews": true,
 	"settings_default_show_link_previews": true,
-	"settings_default_message_log": true,
 	"settings_default_autoconnect": false,
 	"room_state_default_image_enabled": true,
 	"room_state_default_tv_enabled": true,
