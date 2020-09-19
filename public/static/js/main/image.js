@@ -657,18 +657,6 @@ Hue.show_image_picker = function () {
   })
 }
 
-// Announces room image mode changes
-Hue.announce_room_image_mode_change = function (data) {
-  Hue.show_room_notification(
-    data.username,
-    `${data.username} changed the image mode to ${data.what}`
-  )
-
-  Hue.change_image_visibility()
-  Hue.check_media_maxers()
-  Hue.change_media_lock_icon("image")
-}
-
 // Shows the window to add a comment to an image upload
 Hue.show_image_upload_comment = function (file, type) {
   $("#image_upload_comment_image_feedback").css("display", "none")

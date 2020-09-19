@@ -2,18 +2,6 @@
 Hue.setup_room_menu = function () {
   Hue.setup_togglers("room_menu")
 
-  $("#admin_enable_image").change(function () {
-    let what = $("#admin_enable_image option:selected").val()
-
-    Hue.change_room_image_mode(what)
-  })
-
-  $("#admin_enable_tv").change(function () {
-    let what = $("#admin_enable_tv option:selected").val()
-
-    Hue.change_room_tv_mode(what)
-  })
-
   $("#admin_privacy").change(function () {
     let what = JSON.parse($("#admin_privacy option:selected").val())
 

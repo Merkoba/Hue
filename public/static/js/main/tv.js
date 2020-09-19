@@ -712,19 +712,6 @@ Hue.set_default_tv_size = function () {
   Hue.do_media_tv_size_change("default")
 }
 
-// Announces room tv mode changes
-Hue.announce_room_tv_mode_change = function (data) {
-  Hue.show_room_notification(
-    data.username,
-    `${data.username} changed the tv mode to ${data.what}`
-  )
-
-  Hue.change_tv_visibility(false)
-  Hue.check_media_maxers()
-  Hue.update_footer_separators()
-  Hue.change_media_lock_icon("tv")
-}
-
 // Sets the media menu tv slider
 Hue.set_media_menu_tv_volume = function (n = false) {
   if (n === false) {
