@@ -34,7 +34,6 @@ Hue.userlist = []
 Hue.usernames = []
 Hue.all_usernames = []
 Hue.role = ""
-Hue.can_messageboard = false
 Hue.tab_info = {}
 Hue.create_room_open = false
 Hue.open_room_open = false

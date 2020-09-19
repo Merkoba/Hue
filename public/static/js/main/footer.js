@@ -8,12 +8,6 @@ Hue.setup_footer_icons = function () {
     } else {
       $("#footer_image_controls").css("display", "flex")
     }
-
-    if (Hue[`can_${type}`]) {
-      $(`#footer_${type}_icon_container`).css("display", "flex")
-    } else {
-      $(`#footer_${type}_icon_container`).css("display", "none")
-    }
   }
 
   if (!Hue.room_state.image_enabled || !Hue.room_state.tv_enabled) {

@@ -128,11 +128,7 @@ Hue.show_message_board = function (filter = false) {
 }
 
 // Submits a message board post
-Hue.submit_message_board_post = function () {
-  if (!Hue.can_messageboard) {
-    return false
-  }
-  
+Hue.submit_message_board_post = function () {  
   let message = Hue.utilz.remove_multiple_empty_lines($("#message_board_post_textarea").val()).trim()
 
   if (!message || message.length > Hue.config.max_message_board_post_length) {
@@ -207,12 +203,6 @@ Hue.check_message_board_permissions = function () {
     $("#message_board_container").addClass("message_board_container_admin")
   } else {
     $("#message_board_container").removeClass("message_board_container_admin")
-  }
-
-  if (Hue.can_messageboard) {
-    $("#message_board_top").css("display", "block")
-  } else {
-    $("#message_board_top").css("display", "none")
   }
 }
 

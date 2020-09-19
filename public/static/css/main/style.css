@@ -2458,13 +2458,6 @@ pre {
 	justify-content: unset !important;
 }
 
-#message_board_top {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-
 #message_board_post_textarea {
 	margin-bottom: 1rem;
 }
@@ -2525,6 +2518,7 @@ pre {
 }
 
 .colortext {
+	display: inline-block;
 	padding: 0.2rem;
 	background-color: #171515;
 }
