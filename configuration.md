@@ -81,9 +81,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "color_contrast_amount_x"
 >Color contrast levels used through out the interface.
 
-"chat_crop_limit"
->After this number of chat messages on the screen, the oldest ones will start to get removed so there's always this maximum amount of messages displayed. This is to avoid having a huge amount of text in memory in case it is opened for a long time.
-
 "played_crop_limit"
 >Same as chat_crop limit but for items displayed when "Now Playing" is clicked.
 
@@ -257,9 +254,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "settings_default_message_log"
 >Whether users request the message log on load by default.
-
-"settings_default_chat_crop_limit"
->How many chat messages to hold in the chat area by default.
 
 "settings_default_notifications_close_delay"
 >How long notification popups get displayed before they automatically close, by default.

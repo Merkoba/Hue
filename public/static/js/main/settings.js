@@ -93,27 +93,6 @@ Hue.user_settings = {
       }
     },
   },
-  chat_crop_limit: {
-    widget_type: "number",
-    description: `Crop the chat area after these many messages`,
-    action: (save = true) => {
-      let val = parseInt(
-        Hue.utilz.clean_string2($(`#settings_chat_crop_limit`).val())
-      )
-
-      if (!val) {
-        val = Hue.config.settings_default_chat_crop_limit
-      }
-
-      $(`#settings_chat_crop_limit`).val(val)
-
-      Hue.settings.chat_crop_limit = val
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
-  },
   autoconnect: {
     widget_type: "checkbox",
     description: `Whether a user should autoconnect automatically after a socket disconnect`,

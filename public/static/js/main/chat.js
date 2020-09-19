@@ -671,11 +671,10 @@ Hue.add_to_chat = function (args = {}) {
     chat_area.append(args.message)
 
     let length = $("#chat_area > .message").length
-    let limit = Hue.get_setting("chat_crop_limit")
 
-    if (length > limit) {
+    if (length > Hue.chat_crop_limit) {
       $("#chat_area")
-        .find(`.message:lt(${length - limit})`)
+        .find(`.message:lt(${length - Hue.chat_crop_limit})`)
         .remove()
     }
 
