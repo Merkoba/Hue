@@ -327,15 +327,13 @@ module.exports = function (
       if (voice_changed) {
         ;(obj.voice_1_permissions = info.voice_1_permissions),
           (obj.voice_2_permissions = info.voice_2_permissions),
-          (obj.voice_3_permissions = info.voice_3_permissions),
-          (obj.voice_4_permissions = info.voice_4_permissions)
+          (obj.voice_3_permissions = info.voice_3_permissions)
       }
 
       if (op_changed) {
         ;(obj.op_1_permissions = info.op_1_permissions),
           (obj.op_2_permissions = info.op_2_permissions),
-          (obj.op_3_permissions = info.op_3_permissions),
-          (obj.op_4_permissions = info.op_4_permissions)
+          (obj.op_3_permissions = info.op_3_permissions)
       }
 
       db_manager.update_room(info._id.toString(), obj)
@@ -380,11 +378,9 @@ module.exports = function (
       voice_1_permissions: info.voice_1_permissions,
       voice_2_permissions: info.voice_2_permissions,
       voice_3_permissions: info.voice_3_permissions,
-      voice_4_permissions: info.voice_4_permissions,
       op_1_permissions: info.op_1_permissions,
       op_2_permissions: info.op_2_permissions,
       op_3_permissions: info.op_3_permissions,
-      op_4_permissions: info.op_4_permissions,
     }
 
     return obj

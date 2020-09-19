@@ -67,11 +67,9 @@ module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
       voice_1_permissions: { type: "object", default: {} },
       voice_2_permissions: { type: "object", default: {} },
       voice_3_permissions: { type: "object", default: {} },
-      voice_4_permissions: { type: "object", default: {} },
       op_1_permissions: { type: "object", default: {} },
       op_2_permissions: { type: "object", default: {} },
       op_3_permissions: { type: "object", default: {} },
-      op_4_permissions: { type: "object", default: {} },
       message_board_posts: { type: "object", default: [] },
       modified: { type: "number", default: Date.now() },
     }

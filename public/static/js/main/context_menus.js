@@ -528,29 +528,6 @@ Hue.start_user_context_menu = function () {
           },
         },
       },
-      cmvoice4: {
-        name: "Voice 4",
-        callback: function (key, opt) {
-          let arg = this.data("username")
-          Hue.change_role(arg, "voice_4")
-        },
-        visible: function (key, opt) {
-          if (!Hue.check_op_permission(Hue.role, "voice_roles")) {
-            return false
-          } else {
-            return true
-          }
-        },
-        items: {
-          opsure: {
-            name: "I'm Sure",
-            callback: function (key, opt) {
-              let arg = this.data("username")
-              Hue.change_role(arg, "voice_4")
-            },
-          },
-        },
-      },
       cmop1: {
         name: "Op 1",
         visible: function (key, opt) {
@@ -592,21 +569,6 @@ Hue.start_user_context_menu = function () {
             callback: function (key, opt) {
               let arg = this.data("username")
               Hue.change_role(arg, "op_3")
-            },
-          },
-        },
-      },
-      cmop4: {
-        name: "Op 4",
-        visible: function (key, opt) {
-          return Hue.role === "admin"
-        },
-        items: {
-          opsure: {
-            name: "I'm Sure",
-            callback: function (key, opt) {
-              let arg = this.data("username")
-              Hue.change_role(arg, "op_4")
             },
           },
         },

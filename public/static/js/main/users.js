@@ -285,16 +285,12 @@ Hue.role_tag = function (p) {
     s = "[Op2]"
   } else if (p === "op_3") {
     s = "[Op3]"
-  } else if (p === "op_4") {
-    s = "[Op4]"
   } else if (p === "voice_1") {
     s = "[V1]"
   } else if (p === "voice_2") {
     s = "[V2]"
   } else if (p === "voice_3") {
     s = "[V3]"
-  } else if (p === "voice_4") {
-    s = "[V4]"
   } else {
     s = ""
   }
@@ -314,16 +310,12 @@ Hue.get_pretty_role_name = function (p) {
     s = "Op 2"
   } else if (p === "op_3") {
     s = "Op 3"
-  } else if (p === "op_4") {
-    s = "Op 4"
   } else if (p === "voice_1") {
     s = "Voice 1"
   } else if (p === "voice_2") {
     s = "Voice 2"
   } else if (p === "voice_3") {
     s = "Voice 3"
-  } else if (p === "voice_4") {
-    s = "Voice 4"
   } else {
     s = ""
   }

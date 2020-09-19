@@ -112,12 +112,6 @@ Hue.commands = {
     },
     description: `Gives voice_3 to a user`,
   },
-  "voice4": {
-    action: (arg, ans) => {
-      Hue.change_role(arg, "voice_4")
-    },
-    description: `Gives voice_4 to a user`,
-  },
   "op1": {
     action: (arg, ans) => {
       Hue.change_role(arg, "op_1")
@@ -135,12 +129,6 @@ Hue.commands = {
       Hue.change_role(arg, "op_3")
     },
     description: `Gives op_3 to a user`,
-  },
-  "op4": {
-    action: (arg, ans) => {
-      Hue.change_role(arg, "op_4")
-    },
-    description: `Gives op_4 to a user`,
   },
   "admin": {
     action: (arg, ans) => {

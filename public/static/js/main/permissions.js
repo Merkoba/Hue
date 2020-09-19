@@ -120,12 +120,10 @@ Hue.start_permissions = function (data) {
   Hue.voice_1_permissions = data.voice_1_permissions
   Hue.voice_2_permissions = data.voice_2_permissions
   Hue.voice_3_permissions = data.voice_3_permissions
-  Hue.voice_4_permissions = data.voice_4_permissions
 
   Hue.op_1_permissions = data.op_1_permissions
   Hue.op_2_permissions = data.op_2_permissions
   Hue.op_3_permissions = data.op_3_permissions
-  Hue.op_4_permissions = data.op_4_permissions
 }
 
 // Setups variables that determine if a user has permission to use certain media
