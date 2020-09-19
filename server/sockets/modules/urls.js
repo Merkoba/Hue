@@ -8,40 +8,6 @@ module.exports = function (
   utilz,
   logger
 ) {
-  // Checks if a domain is black or white listed
-  handler.check_domain_list = function (media_type, src) {
-    try {
-      let list_type = config[`${media_type}_domain_allow_or_deny_list`]
-
-      if (list_type !== "allow" && list_type !== "deny") {
-        return false
-      }
-
-      let list = config[`${media_type}_domain_list`]
-
-      if (list.length === 0) {
-        return false
-      }
-
-      let domain = utilz.get_root(src)
-      let includes = list.includes(domain) || list.includes(`${domain}/`)
-
-      if (list_type === "allow") {
-        if (!includes) {
-          return true
-        }
-      } else if (list_type === "deny") {
-        if (includes) {
-          return true
-        }
-      }
-
-      return false
-    } catch (err) {
-      logger.log_error(err)
-    }
-  }
-
   // Checks if link data is available on Redis or tries to fetch metadata
   handler.process_message_links = function (message, callback) {
     let url = utilz.get_first_url(message)

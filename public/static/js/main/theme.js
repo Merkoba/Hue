@@ -358,11 +358,6 @@ Hue.change_background_image_source = function (src) {
     if (!extension || !Hue.utilz.image_extensions.includes(extension)) {
       return false
     }
-
-    if (Hue.check_domain_list("image", src)) {
-      Hue.feedback("Image sources from that domain are not allowed")
-      return false
-    }
   } else {
     if (Hue.background_image === Hue.config.default_background_image_url) {
       Hue.feedback("Background image is already set to that")

@@ -198,15 +198,6 @@ Hue.change_image_source = function (src, just_check = false, comment = "") {
     return false
   } else if (Hue.utilz.is_url(src)) {
     src = src.replace(/\.gifv/g, ".gif")
-
-    if (Hue.check_domain_list("image", src)) {
-      if (feedback) {
-        Hue.feedback("Image sources from that domain are not allowed")
-      }
-
-      return false
-    }
-
     let extension = Hue.utilz.get_extension(src).toLowerCase()
 
     if (!extension || !Hue.utilz.image_extensions.includes(extension)) {

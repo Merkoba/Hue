@@ -125,10 +125,6 @@ module.exports = function (
           logger.log_error(err)
         })
     } else {
-      if (handler.check_domain_list("image", data.src)) {
-        return false
-      }
-
       let extension = utilz.get_extension(data.src).toLowerCase()
 
       if (!extension || !utilz.image_extensions.includes(extension)) {

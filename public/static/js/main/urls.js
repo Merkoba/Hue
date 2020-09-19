@@ -276,36 +276,6 @@ Hue.open_url_menu = function (args = {}) {
   Hue.msg_open_url.show()
 }
 
-// Checks if a URL of a media type is from a blacklisted or whitelisted domain
-Hue.check_domain_list = function (media_type, src) {
-  let list_type = Hue.config[`${media_type}_domain_allow_or_deny_list`]
-
-  if (list_type !== "allow" && list_type !== "deny") {
-    return false
-  }
-
-  let list = Hue.config[`${media_type}_domain_list`]
-
-  if (list.length === 0) {
-    return false
-  }
-
-  let domain = Hue.utilz.get_root(src)
-  let includes = list.includes(domain) || list.includes(`${domain}/`)
-
-  if (list_type === "allow") {
-    if (!includes) {
-      return true
-    }
-  } else if (list_type === "deny") {
-    if (includes) {
-      return true
-    }
-  }
-
-  return false
-}
-
 // Custom chat search to show links
 Hue.show_links = function () {
   Hue.show_chat_search("http:// https://")

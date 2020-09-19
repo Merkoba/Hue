@@ -61,10 +61,6 @@ module.exports = function (
     }
 
     if (utilz.is_url(data.src)) {
-      if (handler.check_domain_list("tv", data.src)) {
-        return false
-      }
-
       if (data.src.includes("youtube.com") || data.src.includes("youtu.be")) {
         if (!config.youtube_enabled) {
           return

@@ -403,14 +403,6 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
   }
 
   if (Hue.utilz.is_url(src)) {
-    if (Hue.check_domain_list("tv", src)) {
-      if (feedback) {
-        Hue.feedback("TV sources from that domain are not allowed")
-      }
-
-      return false
-    }
-
     if (src.includes("youtube.com") || src.includes("youtu.be")) {
       if (Hue.utilz.get_youtube_id(src) && !Hue.config.youtube_enabled) {
         if (feedback) {
