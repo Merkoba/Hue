@@ -582,7 +582,6 @@ Hue.add_to_chat = function (args = {}) {
   let last_message = $("#chat_area > .message").last()
   let appended = false
   let mode = args.message.data("mode")
-  let uname = args.message.data("uname")
   let user_id = args.message.data("user_id")
   let date = args.message.data("date")
   let is_public = args.message.data("public")
