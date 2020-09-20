@@ -4,12 +4,12 @@
 Hue.setup_separators = function () {
   Hue.horizontal_separator = Separator.factory({
     mode: "horizontal",
-    class: "color_3",
+    class: "separator",
   })
 
   Hue.horizontal_separator_no_margin = Separator.factory({
     mode: "horizontal",
-    class: "color_3",
+    class: "separator",
     margin_left: 0,
     margin_right: 0
   })

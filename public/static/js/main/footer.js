@@ -1,24 +1,3 @@
-// Sets visibility of footer media icons based on media permissions
-Hue.setup_footer_icons = function () {
-  let media = ["image", "tv"]
-
-  for (let type of media) {
-    if (Hue[`room_${type}_mode`] === "disabled") {
-      $("#footer_image_controls").css("display", "none")
-    } else {
-      $("#footer_image_controls").css("display", "flex")
-    }
-  }
-
-  if (!Hue.room_state.image_enabled || !Hue.room_state.tv_enabled) {
-    $("#footer_media_rotate").css("display", "none")
-  } else {
-    $("#footer_media_rotate").css("display", "flex")
-  }
-
-  Hue.update_footer_separators()
-}
-
 // Setups more footer elements
 Hue.setup_footer = function () {
   $("#footer_swaprotate").click(function () {
@@ -52,6 +31,8 @@ Hue.setup_footer = function () {
   $("#footer_media_menu").click(function () {
     Hue.show_media_menu()
   })
+
+  Hue.horizontal_separator_no_margin.separate("footer_media_items")
 }
 
 // Checks how to handle the rotate icon
@@ -61,8 +42,4 @@ Hue.check_footer_media_rotate = function () {
   } else {
     $("#footer_media_rotate").removeClass("faded")
   }
-}
-
-Hue.update_footer_separators = function () {
-  Hue.horizontal_separator_no_margin.separate("footer_media_items")
 }

@@ -349,7 +349,11 @@ body * {
 	height: var(--icon_size);
 }
 
-#footer .separator-separator {
+.separator {
+	color: var(--color_3);
+}
+
+#footer .separator {
 	margin-left: 0.5rem !important;
 	margin-right: 0.5rem !important;
 }
