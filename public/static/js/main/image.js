@@ -546,31 +546,7 @@ Hue.after_image_load = function (ok = true) {
   Hue.apply_image_media_info()
 
   if (ok) {
-    Hue.get_dominant_theme()
     Hue.fix_image_frame()
-  }
-}
-
-// Tries to get the dominant color of the image
-Hue.get_dominant_theme = function () {
-  try {
-    let color = Hue.colorlib.get_dominant(
-      $("#media_image_frame")[0],
-      1,
-      true
-    )[0]
-
-    if (color) {
-      Hue.dominant_theme = color
-
-      if (Hue.theme_mode === "automatic") {
-        Hue.apply_theme()
-      }
-    } else {
-      Hue.dominant_theme = false
-    }
-  } catch (err) {
-    Hue.dominant_theme = false
   }
 }
 

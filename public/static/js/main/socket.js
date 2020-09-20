@@ -133,9 +133,6 @@ Hue.server_update_events = {
   email_changed: (data) => {
     Hue.email_changed(data)
   },
-  theme_mode_changed: (data) => {
-    Hue.announce_theme_mode_change(data)
-  },
   theme_change: (data) => {
     Hue.announce_theme_change(data)
   },

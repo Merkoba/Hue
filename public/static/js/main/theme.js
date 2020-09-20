@@ -1,7 +1,6 @@
 // Setups theme and background variables from initial data
 Hue.setup_theme_and_background = function (data) {
   Hue.set_background_image(data)
-  Hue.theme_mode = data.theme_mode
   Hue.theme = data.theme
   Hue.background_mode = data.background_mode
   Hue.background_effect = data.background_effect
@@ -85,12 +84,6 @@ Hue.apply_background = function () {
   document.documentElement.style.setProperty('--bg_tile_dimensions', bg_tile_dimensions)
 }
 
-// Theme Mode setter
-Hue.set_theme_mode = function (mode) {
-  Hue.theme_mode = mode
-  Hue.config_admin_theme_mode()
-}
-
 // Theme setter
 Hue.set_theme = function (color) {
   Hue.theme = color
@@ -103,13 +96,7 @@ Hue.set_theme = function (color) {
 // The CSS declarations are inserted into the DOM
 // Older declarations get removed
 Hue.apply_theme = function () {
-  let theme
-
-  if (Hue.theme_mode === "automatic" && Hue.dominant_theme) {
-    theme = Hue.dominant_theme
-  } else {
-    theme = Hue.theme
-  }
+  let theme = Hue.theme
 
   if (theme.startsWith("#")) {
     theme = Hue.colorlib.array_to_rgb(Hue.colorlib.hex_to_rgb(theme))
@@ -186,25 +173,6 @@ Hue.apply_theme = function () {
   document.documentElement.style.setProperty('--overlay_color', overlay_color)
 }
 
-// Changes the theme mode
-Hue.change_theme_mode = function (mode) {
-  if (!Hue.is_admin_or_op(Hue.role)) {
-    return false
-  }
-
-  if (mode !== "automatic" && mode !== "custom") {
-    Hue.feedback("Invalid theme mode")
-    return false
-  }
-
-  if (mode === Hue.theme_mode) {
-    Hue.feedback(`Theme mode is already ${Hue.theme_mode}`)
-    return false
-  }
-
-  Hue.socket_emit("change_theme_mode", { mode: mode })
-}
-
 // Changes the theme
 Hue.change_theme = function (color) {
   if (!Hue.is_admin_or_op(Hue.role)) {
@@ -228,16 +196,6 @@ Hue.change_theme = function (color) {
   }
 
   Hue.socket_emit("change_theme", { color: color })
-}
-
-// Announces theme mode change
-Hue.announce_theme_mode_change = function (data) {
-  Hue.show_room_notification(
-    data.username,
-    `${data.username} changed the theme mode to ${data.mode}`
-  )
-  Hue.set_theme_mode(data.mode)
-  Hue.apply_theme()
 }
 
 // Announces theme change

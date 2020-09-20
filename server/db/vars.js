@@ -48,7 +48,6 @@ module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
       bans: { type: "object", default: [] },
       log_messages: { type: "object", default: [] },
       admin_log_messages: { type: "object", default: [] },
-      theme_mode: { type: "string", default: "custom" },
       theme: { type: "string", default: "#36393f" },
       text_color_mode: { type: "string", default: "automatic" },
       text_color: { type: "string", default: "#dcddde" },

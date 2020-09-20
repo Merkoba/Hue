@@ -8,12 +8,6 @@ Hue.setup_room_menu = function () {
     Hue.change_log(what)
   })
 
-  $("#admin_theme_mode_select").change(function () {
-    let what = $("#admin_theme_mode_select option:selected").val()
-
-    Hue.change_theme_mode(what)
-  })
-
   $("#admin_theme").change(function () {
     Hue.change_theme($(this).val())
   })
@@ -133,7 +127,6 @@ Hue.show_room_menu = function () {
 // Updates all widgets with current state
 Hue.config_room_menu = function () {
   if (Hue.is_admin_or_op()) {
-    Hue.config_admin_theme_mode()
     Hue.config_admin_theme()
     Hue.config_admin_background_mode()
     Hue.config_admin_background_effect()
@@ -271,27 +264,6 @@ Hue.config_admin_text_color = function () {
   }
 
   $("#admin_text_color").val(Hue.text_color)
-}
-
-// Updates the theme mode widget in the room menu based on current state
-Hue.config_admin_theme_mode = function () {
-  if (!Hue.is_admin_or_op()) {
-    return false
-  }
-
-  $("#admin_theme_mode_select")
-    .find("option")
-    .each(function () {
-      if ($(this).val() === Hue.theme_mode) {
-        $(this).prop("selected", true)
-      }
-    })
-
-  if (Hue.theme_mode === "custom") {
-    $("#admin_theme_mode_container").css("display", "block")
-  } else {
-    $("#admin_theme_mode_container").css("display", "none")
-  }
 }
 
 // Updates the theme widget in the room menu based on current state

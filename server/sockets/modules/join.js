@@ -294,7 +294,6 @@ module.exports = function (
       tv_date: info.tv_date,
       tv_query: info.tv_query,
       profile_image: socket.hue_profile_image,
-      theme_mode: info.theme_mode,
       theme: info.theme,
       background_image: background_image,
       background_image_setter: info.background_image_setter,

@@ -8,31 +8,6 @@ module.exports = function (
   utilz,
   logger
 ) {
-  // Handles theme mode changes
-  handler.public.change_theme_mode = function (socket, data) {
-    if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
-    }
-
-    if (data.mode !== "automatic" && data.mode !== "custom") {
-      return handler.get_out(socket)
-    }
-
-    db_manager.update_room(socket.hue_room_id, {
-      theme_mode: data.mode,
-    })
-
-    handler.room_emit(socket, "theme_mode_changed", {
-      mode: data.mode,
-      username: socket.hue_username,
-    })
-
-    handler.push_admin_log_message(
-      socket,
-      `changed the theme color mode to "${data.mode}"`
-    )
-  }
-
   // Handles theme changes
   handler.public.change_theme = function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {

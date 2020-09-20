@@ -751,12 +751,6 @@ Hue.commands = {
     },
     description: `Changes the theme to a specified hex color`,
   },
-  "thememode": {
-    action: (arg, ans) => {
-      Hue.change_theme_mode(arg)
-    },
-    description: `Changes the theme mode. Valid modes include automatic and custom`,
-  },
   "textcolormode": {
     action: (arg, ans) => {
       Hue.change_text_color_mode(arg)
