@@ -22,7 +22,7 @@ Media domains can be configured to use a whitelist or a blacklist. This is to co
 
 Room administrators have a lot of control over how the room looks and behaves.
 The room can change it's background color (called Theme), which changes the background color of the middle section and a contrast color for the panels.
-The room can have a background image which is visible enough to not mess with the text readability. This background can be a normal image, a tiled image, the current Image mirrored, the current Image mirrored and tiled, or just a solid color (no image). There's also background effects available like Blur for background images.
+The room can have a background image which is visible enough to not mess with the text readability. This background can be a normal image, a tiled image, or just a solid color (no image). There's also background effects available like Blur for background images.
 
 Admins can also enable, disable, or lock (nobody can change it, not) media.
 

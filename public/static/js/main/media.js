@@ -789,13 +789,6 @@ Hue.change = function (args = {}) {
     if (!args.item || args.item === Hue.current_image()) {
       $("#footer_lock_image_icon").removeClass("blinking")
     }
-
-    if (
-      Hue.background_mode === "mirror" ||
-      Hue.background_mode === "mirror_tiled"
-    ) {
-      Hue.apply_background()
-    }
   } else if (args.type === "tv") {
     if (!Hue.room_state.tv_enabled) {
       return false

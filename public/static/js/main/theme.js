@@ -25,20 +25,9 @@ Hue.set_background_image = function (data) {
 
 // Applies the background to all background elements
 Hue.apply_background = function () {
-  let bg_image, bg_mode, bg_tile_dimensions
-
-  if (
-    Hue.loaded_image.source &&
-    (Hue.background_mode === "mirror" ||
-      Hue.background_mode === "mirror_tiled")
-  ) {
-    bg_image = Hue.loaded_image.source
-  } else {
-    bg_image = Hue.background_image
-  }
-
-  bg_mode = Hue.background_mode
-  bg_tile_dimensions = Hue.background_tile_dimensions
+  let bg_image = Hue.background_image
+  let bg_mode = Hue.background_mode
+  let bg_tile_dimensions = Hue.background_tile_dimensions
 
   if (Hue.background_image_enabled()) {
     $(".background_image").css("background-image", `url('${bg_image}')`)
@@ -46,11 +35,11 @@ Hue.apply_background = function () {
     $(".background_image").css("background-image", "none")
   }
 
-  if (bg_mode === "normal" || bg_mode === "mirror") {
+  if (bg_mode === "normal") {
     $(".background_image").each(function () {
       $(this).removeClass("background_image_tiled")
     })
-  } else if (bg_mode === "tiled" || bg_mode === "mirror_tiled") {
+  } else if (bg_mode === "tiled") {
     $(".background_image").each(function () {
       $(this).addClass("background_image_tiled")
     })
@@ -346,8 +335,6 @@ Hue.change_background_mode = function (mode) {
   if (
     mode !== "normal" &&
     mode !== "tiled" &&
-    mode !== "mirror" &&
-    mode !== "mirror_tiled" &&
     mode !== "solid"
   ) {
     Hue.feedback("Invalid background mode")
@@ -411,15 +398,6 @@ Hue.announce_background_tile_dimensions_change = function (data) {
 Hue.background_image_enabled = function () {
   if (Hue.background_mode === "solid") {
     return false
-  }
-
-  if (
-    Hue.background_mode === "mirror" ||
-    Hue.background_mode === "mirror_tiled"
-  ) {
-    if (!Hue.room_state.image_enabled) {
-      return false
-    }
   }
 
   return true

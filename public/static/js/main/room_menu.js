@@ -173,14 +173,6 @@ Hue.config_admin_background_mode = function () {
     $("#admin_background_tile_dimensions_container").css("display", "block")
     $("#admin_background_image_container").css("display", "block")
     $("#admin_background_effect_container").css("display", "block")
-  } else if (Hue.background_mode === "mirror") {
-    $("#admin_background_tile_dimensions_container").css("display", "none")
-    $("#admin_background_image_container").css("display", "none")
-    $("#admin_background_effect_container").css("display", "block")
-  } else if (Hue.background_mode === "mirror_tiled") {
-    $("#admin_background_tile_dimensions_container").css("display", "block")
-    $("#admin_background_image_container").css("display", "none")
-    $("#admin_background_effect_container").css("display", "block")
   } else if (Hue.background_mode === "solid") {
     $("#admin_background_tile_dimensions_container").css("display", "none")
     $("#admin_background_image_container").css("display", "none")

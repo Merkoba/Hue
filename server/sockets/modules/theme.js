@@ -50,8 +50,6 @@ module.exports = function (
     if (
       data.mode !== "normal" &&
       data.mode !== "tiled" &&
-      data.mode !== "mirror" &&
-      data.mode !== "mirror_tiled" &&
       data.mode !== "solid"
     ) {
       return handler.get_out(socket)

@@ -767,7 +767,7 @@ Hue.commands = {
     action: (arg, ans) => {
       Hue.change_background_mode(arg)
     },
-    description: `Changes the background mode. Valid modes include normal, tiled, mirror, mirror_tiled, and solid`,
+    description: `Changes the background mode. Valid modes include normal, tiled, and solid`,
   },
   "backgroundeffect": {
     action: (arg, ans) => {
