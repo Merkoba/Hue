@@ -139,8 +139,6 @@ Hue.current_image = function () {
 // Loads an image with a specified item
 Hue.show_image = function (force = false) {
   let item = Hue.loaded_image
-
-  $("#media_image_frame").attr("crossOrigin", "anonymous")
   $("#media_image_error").css("display", "none")
   $("#media_image_frame").css("display", "initial")
 
@@ -515,14 +513,9 @@ Hue.start_image_events = function () {
   })
 
   $("#media_image_frame").on("error", function () {
-    if ($("#media_image_frame")[0].hasAttribute("crossOrigin")) {
-      $("#media_image_frame").removeAttr("crossOrigin")
-      $("#media_image_frame").attr("src", $("#media_image_frame").attr("src"))
-    } else {
-      $("#media_image_frame").css("display", "none")
-      $("#media_image_error").css("display", "initial")
-      Hue.after_image_load()
-    }
+    $("#media_image_frame").css("display", "none")
+    $("#media_image_error").css("display", "initial")
+    Hue.after_image_load()
   })
 
   $("#media_image_frame").on("auxclick", function (e) {
