@@ -11,23 +11,23 @@ module.exports = function (
   // Handles topic changes
   handler.public.change_topic = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.topic === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.topic.length === 0) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.topic.length > config.max_topic_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.topic !== utilz.clean_string2(data.topic)) {
-      return handler.get_out(socket)
+      return false
     }
 
     let room = vars.rooms[socket.hue_room_id]
@@ -65,18 +65,18 @@ module.exports = function (
   // Handles room name changes
   handler.public.change_room_name = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (
       data.name.length === 0 ||
       data.name.length > config.max_room_name_length
     ) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.name !== utilz.clean_string2(data.name)) {
-      return handler.get_out(socket)
+      return false
     }
 
     let info = await db_manager.get_room(
@@ -108,20 +108,20 @@ module.exports = function (
   // Clears log messages
   handler.public.clear_log = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.type === undefined || data.id === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (!utilz.clear_log_types.includes(data.type)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.type === "above" || data.type === "below") {
       if (!data.id) {
-        return handler.get_out(socket)
+        return false
       }
     }
 

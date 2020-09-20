@@ -99,7 +99,7 @@ module.exports = function (
   // Sends system restart signals
   handler.public.system_restart_signal = function (socket, data) {
     if (!socket.hue_superuser) {
-      return handler.get_out(socket)
+      return false
     }
 
     handler.system_emit(socket, "system_restart_signal", {})

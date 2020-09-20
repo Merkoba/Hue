@@ -12,7 +12,7 @@ module.exports = function (
   // Sends uploaded files to respective functions
   handler.public.slice_upload = async function (socket, data) {
     if (data.data.length > config.upload_slice_size) {
-      return handler.get_out(socket)
+      return false
     }
 
     let key = `${socket.hue_user_id}_${data.date}`
@@ -30,24 +30,24 @@ module.exports = function (
       if (data.action.includes("image")) {
         if (data.action === "profile_image_upload") {
           if (ext !== "png") {
-            return handler.get_out(socket)
+            return false
           }
         } else {
           if (!utilz.image_extensions.includes(ext)) {
-            return handler.get_out(socket)
+            return false
           }
         }
       } else if (data.action.includes("audio")) {
         if (data.action === "audio_clip_upload") {
           if (!utilz.audio_extensions.includes(ext)) {
-            return handler.get_out(socket)
+            return false
           }
         }
       }
 
       if (data.comment) {
         if (data.comment.length > config.safe_limit_4) {
-          return handler.get_out(socket)
+          return false
         }
       }
 
@@ -75,12 +75,12 @@ module.exports = function (
     ) {
       if (fsize > config.max_image_size) {
         delete vars.files[key]
-        return handler.get_out(socket)
+        return false
       }
     } else if (file.action === "audio_clip_upload") {
       if (fsize > config.max_audio_clip_size) {
         delete vars.files[key]
-        return handler.get_out(socket)
+        return false
       }
     }
 

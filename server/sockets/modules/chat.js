@@ -11,19 +11,19 @@ module.exports = function (
   // Handles chat messages
   handler.public.sendchat = function (socket, data) {
     if (data.message === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.message.length === 0) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.message.length > config.max_input_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.message.split("\n").length > config.max_num_newlines) {
-      return handler.get_out(socket)
+      return false
     }
 
     handler.process_message_links(data.message, function (response) {
@@ -53,7 +53,7 @@ module.exports = function (
               vars.rooms[socket.hue_room_id].activity = true
               break
             } else {
-              return handler.get_out(socket)
+              return false
             }
           }
         }
@@ -138,7 +138,7 @@ module.exports = function (
   // Deletes a message
   handler.public.delete_message = async function (socket, data) {
     if (!data.id) {
-      return handler.get_out(socket)
+      return false
     }
 
     let room = vars.rooms[socket.hue_room_id]
@@ -167,14 +167,14 @@ module.exports = function (
     if (message) {
       if (!message.data.user_id) {
         if (!handler.is_admin_or_op(socket)) {
-          return handler.get_out(socket)
+          return false
         }
 
         deleted = true
         messages.splice(message_index, 1)
       } else if (message.data.user_id !== socket.hue_user_id) {
         if (!handler.is_admin_or_op(socket)) {
-          return handler.get_out(socket)
+          return false
         }
 
         let info = await db_manager.get_room(

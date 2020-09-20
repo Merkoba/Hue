@@ -11,31 +11,31 @@ module.exports = function (
   // Handles tv source changes
   handler.public.change_tv_source = async function (socket, data) {
     if (data.src === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.src.length === 0) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.src.length > config.max_media_source_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.query) {
       if (data.query.length > config.safe_limit_1) {
-        return handler.get_out(socket)
+        return false
       }
     }
 
     if (data.comment) {
       if (data.comment.length > config.max_media_comment_length) {
-        return handler.get_out(socket)
+        return false
       }
     }
 
     if (data.src !== utilz.clean_string2(data.src)) {
-      return handler.get_out(socket)
+      return false
     }
 
     data.src = data.src.replace(
@@ -345,7 +345,7 @@ module.exports = function (
   // Receives a request to ask another user for their tv video progress
   handler.public.sync_tv = function (socket, data) {
     if (!data.username) {
-      return handler.get_out(socket)
+      return false
     }
 
     let sockets = handler.get_user_sockets_per_room_by_username(
@@ -378,7 +378,7 @@ module.exports = function (
   // If a user responds this sends the progress to another user
   handler.public.report_tv_progress = function (socket, data) {
     if (!data.requester || !data.progress) {
-      return handler.get_out(socket)
+      return false
     }
 
     let requester_socket = handler.get_room_socket_by_id(

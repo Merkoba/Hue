@@ -11,19 +11,19 @@ module.exports = function (
   // Changes usernames
   handler.public.change_username = async function (socket, data) {
     if (data.username === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username.length === 0) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username.length > config.max_username_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (utilz.clean_username(data.username) !== data.username) {
-      return handler.get_out(socket)
+      return false
     }
 
     let old_username = socket.hue_username
@@ -54,18 +54,18 @@ module.exports = function (
   // Changes passwords
   handler.public.change_password = function (socket, data) {
     if (data.password === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (
       data.password.length === 0 ||
       data.password.length < config.min_password_length
     ) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.password.length > config.max_password_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     db_manager.update_user(socket.hue_user_id, {
@@ -79,19 +79,19 @@ module.exports = function (
   // Changes emails
   handler.public.change_email = async function (socket, data) {
     if (data.email === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (!data.email.includes("@") || data.email.includes(" ")) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.email.length > config.max_email_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (utilz.clean_string5(data.email) !== data.email) {
-      return handler.get_out(socket)
+      return false
     }
 
     let ans = await db_manager.change_email(socket.hue_user_id, data.email)
@@ -116,15 +116,15 @@ module.exports = function (
   // Handles email verification codes
   handler.public.verify_email = async function (socket, data) {
     if (utilz.clean_string5(data.code) !== data.code) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.code.length === 0) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.code.length > config.email_change_code_max_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     let ans = await db_manager.change_email(
@@ -163,15 +163,15 @@ module.exports = function (
   // Handles bio changes
   handler.public.change_bio = async function (socket, data) {
     if (data.bio.length > config.max_bio_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.bio.split("\n").length > config.max_bio_lines) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.bio !== utilz.clean_string12(data.bio)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (socket.hue_bio === data.bio) {
@@ -193,7 +193,7 @@ module.exports = function (
   // Handles uploaded profile images
   handler.upload_profile_image = function (socket, data) {
     if (data.image_file === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     let dimensions = vars.image_dimensions(data.image_file)
@@ -202,7 +202,7 @@ module.exports = function (
       dimensions.width !== config.profile_image_diameter ||
       dimensions.height !== config.profile_image_diameter
     ) {
-      return handler.get_out(socket)
+      return false
     }
 
     let size = data.image_file.byteLength / 1024
@@ -267,7 +267,7 @@ module.exports = function (
   // Handles uploaded audio clips
   handler.upload_audio_clip = function (socket, data) {
     if (data.audio_file === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     let size = data.audio_file.byteLength / 1024

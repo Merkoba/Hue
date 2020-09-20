@@ -14,27 +14,27 @@ module.exports = function (
       !socket.hue_superuser &&
       !handler.is_admin_or_op(socket)
     ) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username.length === 0) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username.length > config.max_max_username_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (!vars.roles.includes(data.role)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (!socket.hue_superuser && socket.hue_username === data.username) {
-      return handler.get_out(socket)
+      return false
     }
 
     let info = await db_manager.get_room(
@@ -116,19 +116,19 @@ module.exports = function (
   // Handles user kicks
   handler.public.kick = function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username.length === 0) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username.length > config.max_max_username_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     let sockets = handler.get_user_sockets_per_room_by_username(
@@ -165,19 +165,19 @@ module.exports = function (
   // Handles user bans
   handler.public.ban = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username.length === 0) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username.length > config.max_max_username_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     let info = await db_manager.get_room(
@@ -243,19 +243,19 @@ module.exports = function (
   // Handles user unbans
   handler.public.unban = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username.length === 0) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username.length > config.max_max_username_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     let info = await db_manager.get_room(
@@ -300,7 +300,7 @@ module.exports = function (
   // Unbans all banned users
   handler.public.unban_all = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     let info = await db_manager.get_room(
@@ -377,7 +377,7 @@ module.exports = function (
   // Sends admin activity list
   handler.public.get_admin_activity = function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     let messages = vars.rooms[socket.hue_room_id].admin_log_messages
@@ -388,7 +388,7 @@ module.exports = function (
   // Sends admin list
   handler.public.get_admin_list = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     let info = await db_manager.get_room(
@@ -434,7 +434,7 @@ module.exports = function (
   // Sends ban list
   handler.public.get_ban_list = async function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     let info = await db_manager.get_room(
@@ -498,15 +498,15 @@ module.exports = function (
   // Adds a heart to a user
   handler.public.send_badge = async function (socket, data) {
     if (!data.username || !data.type) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.type !== "heart" && data.type !== "skull") {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.username === socket.hue_username) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (Date.now() - socket.hue_last_badge_date < config.send_badge_cooldown) {
@@ -562,7 +562,7 @@ module.exports = function (
   // Superuser function to change a user's username
   handler.public.modusername = async function (socket, data) {
     if (!socket.hue_superuser) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (!data.original || !data.new) {

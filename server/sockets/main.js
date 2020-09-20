@@ -56,32 +56,32 @@ module.exports = function (
 
       try {
         if (!handler.check_data(data)) {
-          return handler.get_out(socket)
+          return false
         }
 
         let m = data.server_method_name
 
         if (handler.public[m] === undefined) {
-          return handler.get_out(socket)
+          return false
         }
 
         if (m === undefined) {
-          return handler.get_out(socket)
+          return false
         }
 
         if (!data || typeof data !== "object") {
-          return handler.get_out(socket)
+          return false
         }
 
         if (!vars.dont_check_joined.includes(m)) {
           if (!socket.hue_joined) {
-            return handler.get_out(socket)
+            return false
           }
         } else {
           if (vars.check_locked.includes(m)) {
             if (!socket.hue_joined) {
               if (!socket.hue_locked) {
-                return handler.get_out(socket)
+                return false
               }
             }
           }

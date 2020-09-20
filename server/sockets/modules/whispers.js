@@ -12,17 +12,17 @@ module.exports = function (
   handler.public.whisper = function (socket, data) {
     if (data.type === "system_broadcast") {
       if (!socket.hue_superuser) {
-        return handler.get_out(socket)
+        return false
       }
     }
 
     if (data.type === "user") {
       if (!data.usernames || data.usernames.length === 0) {
-        return handler.get_out(socket)
+        return false
       }
   
       if (data.usernames.length > config.max_whisper_users) {
-        return handler.get_out(socket)
+        return false
       }
   
       for (let username of data.usernames) {
@@ -30,25 +30,25 @@ module.exports = function (
           !username.length ||
           username.length > config.max_max_username_length
         ) {
-          return handler.get_out(socket)
+          return false
         }
       }
     }
 
     if (data.message === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.message.length === 0) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.message.length > config.max_whispers_post_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.message.split("\n").length > config.max_num_newlines) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.type === "user") {

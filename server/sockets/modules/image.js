@@ -11,31 +11,31 @@ module.exports = function (
   // Handles image source changes
   handler.public.change_image_source = function (socket, data) {
     if (data.src === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.src.length === 0) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.src.length > config.max_media_source_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.query) {
       if (data.query.length > config.safe_limit_1) {
-        return handler.get_out(socket)
+        return false
       }
     }
 
     if (data.comment) {
       if (data.comment.length > config.max_media_comment_length) {
-        return handler.get_out(socket)
+        return false
       }
     }
 
     if (data.src !== utilz.clean_string2(data.src)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (
@@ -146,17 +146,17 @@ module.exports = function (
   // Handles sliced image uploads
   handler.upload_image = function (socket, data) {
     if (data.image_file === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.extension === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     let size = data.image_file.byteLength / 1024
 
     if (size === 0 || size > config.max_image_size) {
-      return handler.get_out(socket)
+      return false
     }
 
     let file_name = `${socket.hue_room_id}_${Date.now()}_${utilz.get_random_int(

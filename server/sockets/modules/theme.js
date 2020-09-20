@@ -11,19 +11,19 @@ module.exports = function (
   // Handles theme changes
   handler.public.change_theme = function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.color === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.color !== utilz.clean_string5(data.color)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (!utilz.validate_hex(data.color)) {
-      return handler.get_out(socket)
+      return false
     }
 
     db_manager.update_room(socket.hue_room_id, {
@@ -44,7 +44,7 @@ module.exports = function (
   // Handles background mode changes
   handler.public.change_background_mode = function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (
@@ -52,7 +52,7 @@ module.exports = function (
       data.mode !== "tiled" &&
       data.mode !== "solid"
     ) {
-      return handler.get_out(socket)
+      return false
     }
 
     db_manager.update_room(socket.hue_room_id, {
@@ -73,7 +73,7 @@ module.exports = function (
   // Handles background effect changes
   handler.public.change_background_effect = function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (
@@ -83,7 +83,7 @@ module.exports = function (
       data.effect !== "saturate" &&
       data.effect !== "brightness"
     ) {
-      return handler.get_out(socket)
+      return false
     }
 
     db_manager.update_room(socket.hue_room_id, {
@@ -104,15 +104,15 @@ module.exports = function (
   // Handles background tile dimension changes
   handler.public.change_background_tile_dimensions = function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.dimensions.length > config.safe_limit_1) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.dimensions !== utilz.clean_string2(data.dimensions)) {
-      return handler.get_out(socket)
+      return false
     }
 
     db_manager.update_room(socket.hue_room_id, {
@@ -133,11 +133,11 @@ module.exports = function (
   // Handles text color mode changes
   handler.public.change_text_color_mode = function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.mode !== "automatic" && data.mode !== "custom") {
-      return handler.get_out(socket)
+      return false
     }
 
     db_manager.update_room(socket.hue_room_id, {
@@ -158,19 +158,19 @@ module.exports = function (
   // Handles text color changes
   handler.public.change_text_color = function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.color === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.color !== utilz.clean_string5(data.color)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (!utilz.validate_hex(data.color)) {
-      return handler.get_out(socket)
+      return false
     }
 
     db_manager.update_room(socket.hue_room_id, {
@@ -191,11 +191,11 @@ module.exports = function (
   // Handles uploaded background images
   handler.upload_background_image = function (socket, data) {
     if (data.image_file === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.extension === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     let size = data.image_file.byteLength / 1024
@@ -226,19 +226,19 @@ module.exports = function (
   // Handles background image source changes
   handler.public.change_background_image_source = function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.src === undefined) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.src.length === 0) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.src.length > config.max_media_source_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.src !== "default") {

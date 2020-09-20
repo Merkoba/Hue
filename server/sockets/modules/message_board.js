@@ -11,15 +11,15 @@ module.exports = function (
   // Handles message board posting
   handler.public.message_board_post = async function (socket, data) {
     if (!data.message) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.message.length > config.max_message_board_post_length) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.message.split("\n").length > config.max_num_newlines) {
-      return handler.get_out(socket)
+      return false
     }
 
     let item = handler.push_message_board_post(socket, data.message)
@@ -116,7 +116,7 @@ module.exports = function (
       !handler.is_admin_or_op(socket) &&
       !socket.hue_superuser
     ) {
-      return handler.get_out(socket)
+      return false
     }
 
     let room = vars.rooms[socket.hue_room_id]

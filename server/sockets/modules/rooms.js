@@ -14,11 +14,11 @@ module.exports = function (
       data.name.length === 0 ||
       data.name.length > config.max_room_name_length
     ) {
-      return handler.get_out(socket)
+      return false
     }
 
     if (data.name !== utilz.clean_string2(data.name)) {
-      return handler.get_out(socket)
+      return false
     }
 
     data.user_id = socket.hue_user_id
