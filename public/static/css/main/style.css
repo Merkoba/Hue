@@ -9,7 +9,7 @@
 
 @font-face {
 	font-family: imported_font;
-	src: url(/static/css/fonts/OpenSans-Regular.ttf);
+	src: url(/static/css/fonts/Roboto-Regular.ttf);
 }
 
 body,
@@ -1627,7 +1627,6 @@ svg.action:hover {
 	color: var(--font_color);
 	box-shadow: 0 0 0.1176rem currentColor;
 	padding: 0.2rem;
-	padding-top: 0;
 }
 
 .fresh_message {
@@ -2491,7 +2490,6 @@ pre {
 .colortext {
 	display: inline-block;
 	padding: 0.2rem;
-	padding-top: 0;
 	background-color: #171515;
 }
 
