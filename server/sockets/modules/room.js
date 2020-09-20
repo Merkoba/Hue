@@ -173,7 +173,8 @@ module.exports = function (
       id: data.id,
       username: socket.hue_username,
     })
-    handler.push_admin_log_message(socket, "cleared the log")
+    
+    handler.push_admin_log_message(socket, `cleared the log (${data.type})`)
   }
 
   // Creates initial room objects
