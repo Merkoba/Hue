@@ -222,6 +222,11 @@ body * {
 	margin-right: 0.5rem;
 }
 
+#chat_area .chat_content_container,
+#chat_area .announcement {
+	animation: fadein linear 600ms;
+}
+
 #chat_area > .message:first-child {
 	padding-top: 1.8rem;
 }
@@ -1261,10 +1266,6 @@ select {
 	}
 }
 
-#chat_area .fader {
-	animation: fadein linear 600ms;
-}
-
 #user_menu_username_container {
 	margin-bottom: 1rem;
 }
@@ -1635,13 +1636,6 @@ svg.action:hover {
 
 .fresh_message {
 	background: linear-gradient(.25turn, var(--color_4_a), 50%, transparent);
-}
-
-.blinkattention {
-	box-shadow: inset 0 0 0.1176rem currentColor;
-	background-color: var(--background_color_a_2);
-	color: var(--font_color);
-	animation: blink 0.5s linear infinite;
 }
 
 .border_bottom {

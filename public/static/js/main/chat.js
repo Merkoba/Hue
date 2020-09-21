@@ -568,8 +568,7 @@ Hue.add_to_chat = function (args = {}) {
     id: false,
     message: false,
     notify: true,
-    just_edited: false,
-    fader: true,
+    just_edited: false
   }
 
   args = Object.assign(def_args, args)
@@ -631,10 +630,6 @@ Hue.add_to_chat = function (args = {}) {
           last_message.find(".chat_content").last().data("date")
 
         if (date_diff < Hue.config.max_same_post_diff) {
-          if (Hue.started && Hue.app_focused && args.fader) {
-            content_container.addClass("fader")
-          }
-
           content_container.data("date", date)
           content_container.data("highlighted", highlighted)
 
@@ -652,10 +647,6 @@ Hue.add_to_chat = function (args = {}) {
   }
 
   if (!appended) {
-    if (Hue.started && Hue.app_focused && args.fader) {
-      args.message.addClass("fader")
-    }
-
     let last = $("#chat_area > .message").last()
     let last_date = last.data("date")
 
@@ -1415,14 +1406,12 @@ Hue.jump_to_chat_message = function (message_id) {
     return false
   }
 
-  el[0].scrollIntoView({
-    block: "center"
-  })
-  el.addClass("blinkattention")
+  el[0].scrollIntoView({ block: "center" })
+  el.css("opacity", 0)
 
-  setTimeout(function () {
-    el.removeClass("blinkattention")
-  }, 2000)
+  setTimeout(() => {
+    el.css("opacity", 1)
+  }, 250);
 
   Hue.close_all_modals()
 }
