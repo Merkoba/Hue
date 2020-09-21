@@ -4,7 +4,7 @@
 	--icon_size: 1.4rem;
 	--app_font_family: imported_font, sans-serif;
 	--profile_image_size: 2.5rem;
-	--tab-size: 1.6rem;
+	--tab_size: 1.6rem;
 }
 
 @font-face {
@@ -378,8 +378,6 @@ body * {
 	overflow-x: hidden;
 	position: relative;
 	height: 100%;
-	-moz-tab-size: var(--tab-size);
-	tab-size: var(--tab-size);
 }
 
 #input::placeholder {
@@ -1886,7 +1884,7 @@ a.special_link:hover {
 }
 
 .link_preview_text_content_full .link_preview_title {
-	margin-bottom: 0.5rem;
+	margin-bottom: 0.3rem;
 }
 
 .link_preview_with_image .link_preview_text_content {
@@ -2461,8 +2459,8 @@ pre {
 .precode {
 	background-color: var(--color_4_a);
 	padding: 0.5rem;
-	-moz-tab-size: var(--tab-size);
-	tab-size: var(--tab-size);
+	-moz-tab-size: var(--tab_size);
+	tab-size: var(--tab_size);
 }
 
 .precode code {
