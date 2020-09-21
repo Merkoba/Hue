@@ -58,6 +58,10 @@ module.exports = function (db_manager, config, sconfig, utilz) {
 
     // Get all the templates html
     for (let file of template_files) {
+      if (!file.endsWith(".ejs")) {
+        continue
+      }
+
       const template_path = path.join(
         __dirname,
         `../views/main/templates/${file}`

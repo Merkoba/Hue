@@ -22,6 +22,10 @@ module.exports = function (
 
   // Fill the handler object
   for (let module of modules) {
+    if (!module.endsWith(".js")) {
+      continue
+    }
+
     require(`./modules/${module}`)(handler, vars, ...arguments)
   }
 
