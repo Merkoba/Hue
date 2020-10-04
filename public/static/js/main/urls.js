@@ -239,13 +239,9 @@ Hue.open_url_menu = function (args = {}) {
   }
 
   if (args.media_type && args.data) {
-    let mode = Hue[`room_${args.media_type}_mode`]
     $("#open_url_menu_load").css("display", "inline-block")
 
-    if (
-      (mode === "enabled" || mode === "locked") &&
-      args.data !== Hue[`loaded_${args.media_type}`]
-    ) {
+    if (args.data !== Hue[`loaded_${args.media_type}`]) {
       $("#open_url_menu_load").text("Load")
     } else {
       $("#open_url_menu_load").text("Reload")

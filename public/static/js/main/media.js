@@ -911,16 +911,6 @@ Hue.toggle_media = function (args) {
 
   args = Object.assign(def_args, args)
 
-  let room_mode = Hue[`room_${args.type}_mode`]
-
-  if (room_mode === "disabled") {
-    if (args.feedback) {
-      Hue.feedback("This media is disabled at the room level")
-    }
-
-    return false
-  }
-
   if (args.what !== undefined) {
     if (Hue.room_state[`${args.type}_enabled`] !== args.what) {
       Hue.room_state[`${args.type}_enabled`] = args.what
@@ -953,16 +943,6 @@ Hue.change_media_lock = function(args) {
   }
 
   args = Object.assign(def_args, args)
-
-  let room_mode = Hue[`room_${args.type}_mode`]
-
-  if (room_mode === "locked") {
-    if (args.feedback) {
-      Hue.feedback("This media is locked at the room level")
-    }
-
-    return false
-  }
   
   if (args.what !== undefined) {
     Hue[`${args.type}_locked`] = args.what
@@ -975,9 +955,7 @@ Hue.change_media_lock = function(args) {
 
 // Toggles media locks for any type
 Hue.change_media_lock_icon = function (type) {
-  let room_mode = Hue[`room_${type}_mode`]
-
-  if (room_mode === "locked" || Hue[`${type}_locked`]) {
+  if (Hue[`${type}_locked`]) {
     $(`#footer_lock_${type}_icon`).find("use").eq(0).attr("href", "#icon_locked")
     $(`#footer_lock_${type}_label`).css("display", "block")
 
