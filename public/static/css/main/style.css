@@ -2119,6 +2119,8 @@ a.special_link:hover {
 #reply_input {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
+	text-align: center;
+	width: 99%;
 }
 
 .popup_message_text {
