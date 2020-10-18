@@ -803,13 +803,18 @@ Hue.sync_tv = function (username) {
   }
 
   Hue.socket_emit("sync_tv", {
-    username: username
+    username: username,
+    tv_source: Hue.loaded_tv.source
   })
 }
 
 // Responds to a tv sync request to send it back to a user
 Hue.report_tv_progress = function (data) {
   if (!Hue.can_sync_tv()) {
+    return false
+  }
+
+  if (Hue.loaded_tv.source !== data.tv_source) {
     return false
   }
 

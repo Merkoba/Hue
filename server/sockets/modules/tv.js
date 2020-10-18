@@ -352,6 +352,7 @@ module.exports = function (
       socket.hue_room_id,
       data.username
     )
+
     let first_socket
 
     for (let socc of sockets) {
@@ -371,7 +372,8 @@ module.exports = function (
 
     handler.user_emit(first_socket, "report_tv_progress", {
       requester: socket.id,
-      requester_username: socket.hue_username
+      requester_username: socket.hue_username,
+      tv_source: data.tv_source
     })
   }
 
