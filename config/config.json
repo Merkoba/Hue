@@ -153,5 +153,5 @@
 	"upload_spam_slice": 650,
 	"system_username": "El Systema",
 	"commands_prefix": "/",
-	"quote_max_length": 100
+	"quote_max_length": 60
 }
