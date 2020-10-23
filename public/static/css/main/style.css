@@ -2440,7 +2440,8 @@ pre {
 
 .message_board_delete {
 	display: none;
-	font-size: 0.8rem;
+	font-size: 0.9rem;
+	margin-top: 0.3rem;
 }
 
 .message_board_container_admin .message_board_delete {
