@@ -1137,17 +1137,18 @@ Hue.show_commands = function (filter = "") {
     s += `<div class='info_item modal_item'>${Hue.config.commands_prefix}${key}: ${setting.description}</div>`
   }
 
-  Hue.msg_info2.show(["Commands", commands])
-  $("#commands_container").html(s)
+  Hue.msg_info2.show(["Commands", commands], function () {
+    $("#commands_container").html(s)
 
-  $("#commands_filter").on("input", function () {
-    Hue.do_modal_filter_timer()
+    $("#commands_filter").on("input", function () {
+      Hue.do_modal_filter_timer()
+    })
+
+    if (filter) {
+      $("#commands_filter").val(filter)
+      Hue.do_modal_filter()
+    }
   })
-
-  if (filter) {
-    $("#commands_filter").val(filter)
-    Hue.do_modal_filter()
-  }
 }
 
 // Checks if a string, in any alphabetical order, matches a command
