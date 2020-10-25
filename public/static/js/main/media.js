@@ -500,14 +500,8 @@ Hue.reset_media_history_filter = function (type) {
 
 // Shows and/or filters media history of a certain type
 Hue.show_media_history = function (type, filter = false) {
-  if (filter) {
-    filter = filter.trim()
-  }
-
-  let sfilter = filter ? filter : ""
-
   $(`#${type}_history_container`).html("")
-  $(`#${type}_history_filter`).val(sfilter)
+  $(`#${type}_history_filter`).val(filter ? filter : "")
 
   let clone = $($("#chat_area").children().get().reverse()).clone(true, true)
 
@@ -517,7 +511,6 @@ Hue.show_media_history = function (type, filter = false) {
 
   if (filter) {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
-    let words = lc_value.split(" ").filter((x) => x.trim() !== "")
 
     clone = clone.filter(function () {
       let type2 = $(this).data("type")
@@ -527,7 +520,7 @@ Hue.show_media_history = function (type, filter = false) {
       }
 
       let text = $(this).text().toLowerCase()
-      return words.some((word) => text.includes(word))
+      return text.includes(lc_value)
     })
   } else {
     clone = clone.filter(function () {
@@ -559,10 +552,9 @@ Hue.prepend_to_media_history = function (message_id) {
 
   if (filter) {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
-    let words = lc_value.split(" ").filter((x) => x.trim() !== "")
     let text = el.text().toLowerCase()
 
-    if (words.some((word) => text.includes(word))) {
+    if (text.includes(lc_value)) {
       $(`#${type}_history_container`).prepend(el)
     }
   } else {

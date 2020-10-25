@@ -7,19 +7,12 @@ Hue.reset_chat_search_filter = function () {
 
 // Shows the chat search window
 Hue.show_chat_search = function (filter = false) {
-  if (filter) {
-    filter = filter.trim()
-  }
-
-  let sfilter = filter ? filter : ""
-
   $("#chat_search_container").html("")
   $("#chat_search_no_results").css("display", "none")
-  $("#chat_search_filter").val(sfilter)
+  $("#chat_search_filter").val(filter ? filter : "")
 
   if (filter) {
     let lc_value = Hue.utilz.clean_string2(filter).toLowerCase()
-    let words = lc_value.split(" ").filter((x) => x.trim() !== "")
     let clone = $($("#chat_area").children().get().reverse()).clone(true, true)
 
     clone.each(function () {
@@ -32,13 +25,13 @@ Hue.show_chat_search = function (filter = false) {
       }
 
       let text = $(this).text().toLowerCase()
-      let text_cmp = words.some((word) => text.includes(word))
+      let text_cmp = text.includes(lc_value)
       
       let source_cmp = false
       let media_source = $(this).data("media_source")
       
       if (media_source) {
-        source_cmp = words.some((word) => media_source.includes(word))
+        source_cmp = media_source.includes(lc_value)
       }
 
       return text_cmp || source_cmp

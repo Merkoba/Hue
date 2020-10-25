@@ -699,8 +699,6 @@ Hue.do_modal_filter = function (id = false) {
   }
 
   let value = filter.val().trim()
-  filter.val(value)
-
   let lc_value = Hue.utilz.clean_string2(value).toLowerCase()
   let items = win.find(".modal_item")
   let display
@@ -713,12 +711,10 @@ Hue.do_modal_filter = function (id = false) {
   }
 
   if (lc_value) {
-    let words = lc_value.split(" ")
-
     items.each(function () {
       let item_value = $(this).text().toLowerCase()
 
-      if (words.some((word) => item_value.includes(word))) {
+      if (item_value.includes(lc_value)) {
         $(this).css("display", display)
       } else {
         $(this).css("display", "none")
