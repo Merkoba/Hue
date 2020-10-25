@@ -924,6 +924,14 @@ Hue.commands = {
       Hue.swap_media_layout()
     },
     description: `Shortcut to change media layout`,
+  },
+  "profile": {
+    action: (arg, ans) => {
+      if (arg) {
+        Hue.show_profile(arg)
+      }
+    },
+    description: `Show a user profile`,
   }
 }
 
@@ -1131,6 +1139,10 @@ Hue.show_commands = function (filter = "") {
 
   Hue.msg_info2.show(["Commands", commands])
   $("#commands_container").html(s)
+
+  $("#commands_filter").on("input", function () {
+    Hue.do_modal_filter_timer()
+  })
 
   if (filter) {
     $("#commands_filter").val(filter)
