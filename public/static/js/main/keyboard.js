@@ -275,7 +275,7 @@ Hue.activate_key_detection = function () {
         Hue.scroll_down(Hue.config.small_keyboard_scroll)
         e.preventDefault()
       } else {
-        Hue.goto_bottom(true, true)
+        Hue.goto_bottom(true)
       }
 
       return
@@ -295,7 +295,7 @@ Hue.activate_key_detection = function () {
       }
     } else if (e.key === "End") {
       if (e.ctrlKey) {
-        Hue.goto_bottom(true, false)
+        Hue.goto_bottom(true)
         e.preventDefault()
         return
       }
@@ -306,7 +306,7 @@ Hue.activate_key_detection = function () {
         
         if ($("#input").val().length > 0) {
         } else {
-          Hue.goto_bottom(true, true)
+          Hue.goto_bottom(true)
         }
 
         e.preventDefault()

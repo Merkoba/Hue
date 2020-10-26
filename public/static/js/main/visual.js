@@ -54,7 +54,7 @@ Hue.setup_fonts = function () {
 
 // After the font finished loading
 Hue.on_fonts_loaded = function () {
-  Hue.goto_bottom(true, false)
+  Hue.goto_bottom(true)
 }
 
 // Utility function to create safe html elements with certain options

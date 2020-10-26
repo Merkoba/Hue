@@ -27,11 +27,6 @@ Hue.create_debouncers = function () {
     Hue.do_save_local_storage()
   }, Hue.local_storage_save_delay)
 
-  // Debounce timer for scroll events
-  Hue.scroll_timer = Hue.create_debouncer(function () {
-    Hue.check_scrollers()
-  }, Hue.check_scrollers_delay)
-
   // Debounce window resize timer
   Hue.resize_timer = Hue.create_debouncer(function () {
     Hue.on_resize()

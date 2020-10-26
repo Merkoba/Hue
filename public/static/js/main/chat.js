@@ -602,7 +602,7 @@ Hue.add_to_chat = function (args = {}) {
       $(".chat_content_container").each(function () {
         if ($(this).data("id") === args.id) {
           $(this).replaceWith(content_container.clone(true, true))
-          Hue.goto_bottom(false, false)
+          Hue.goto_bottom()
           return false
         }
       })
@@ -675,7 +675,7 @@ Hue.add_to_chat = function (args = {}) {
   }
 
   if (Hue.started) {
-    Hue.goto_bottom(false, false)
+    Hue.check_scrollers()
 
     if (highlighted) {
       if (Hue.room_state.last_highlight_date < date) {
@@ -693,8 +693,6 @@ Hue.add_to_chat = function (args = {}) {
       Hue.add_fresh_message(container)
     }
   }
-
-  Hue.scroll_timer()
 
   if (is_public && user_id && date) {
     Hue.push_to_activity_bar(user_id, date)
@@ -893,7 +891,7 @@ Hue.submit_reply = function () {
   }
 
   Hue.msg_reply.close()
-  Hue.goto_bottom(true, false)
+  Hue.goto_bottom(true)
   Hue.process_message({
     message: Hue.reply_text_raw,
     to_history: false
@@ -1080,7 +1078,7 @@ Hue.stop_edit_message = function () {
   Hue.editing_message_container = false
   Hue.editing_message_area = false
 
-  Hue.goto_bottom(false, false)
+  Hue.goto_bottom()
 }
 
 // Submits a chat message edit
@@ -1183,7 +1181,7 @@ Hue.remove_message_from_chat = function (data) {
     })
   }
 
-  Hue.goto_bottom(false, false)
+  Hue.goto_bottom()
 }
 
 // Removes a chat message from the chat, when triggered through the context menu
@@ -1594,6 +1592,7 @@ Hue.scroll_chat_to = function (scroll_top) {
 Hue.scroll_up = function (n) {
   let diff = $("#chat_area").scrollTop() - n
   Hue.scroll_chat_to(diff)
+  Hue.check_scrollers("up")
   return diff
 }
 
@@ -1602,15 +1601,15 @@ Hue.scroll_down = function (n) {
   let $ch = $("#chat_area")
   let max = $ch.prop("scrollHeight") - $ch.innerHeight()
   let diff
-
+  
   if (max - $ch.scrollTop < n) {
     diff = max + 10
   } else {
     diff = $ch.scrollTop() + n
   }
-
+  
   Hue.scroll_chat_to(diff)
-
+  Hue.check_scrollers()
   return diff
 }
 
@@ -1886,7 +1885,7 @@ Hue.setup_link_preview = function (fmessage, link_url) {
     })
 
     link_preview_image.on("load", function () {
-      Hue.goto_bottom(false, false)
+      Hue.goto_bottom()
       Hue.check_scrollers()
     })
   }
@@ -1945,7 +1944,7 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
   let image_preview_image = image_preview_el.find(".image_preview_image").eq(0)
 
   image_preview_image.on("load", function () {
-    Hue.goto_bottom(false, false)
+    Hue.goto_bottom()
     Hue.check_scrollers()
   })
 
@@ -1969,11 +1968,11 @@ Hue.say_command = function (arg, ans) {
 // Starts chat area scroll events
 Hue.scroll_events = function () {
   $("#chat_area")[0].addEventListener("wheel", function (e) {
-    $("#chat_area").stop()
-  })
-
-  $("#chat_area").scroll(function () {
-    Hue.scroll_timer()
+    if (e.deltaY < 0) {
+      Hue.check_scrollers("up")
+    } else {
+      Hue.check_scrollers()
+    }
   })
 }
 
@@ -2004,7 +2003,7 @@ Hue.hide_bottom_scroller = function () {
 }
 
 // Updates scrollers state based on scroll position
-Hue.check_scrollers = function () {
+Hue.check_scrollers = function (direction = "down") {
   let $ch = $("#chat_area")
   let max = $ch.prop("scrollHeight") - $ch.innerHeight()
   let scrolltop = $ch.scrollTop()
@@ -2016,10 +2015,11 @@ Hue.check_scrollers = function () {
     Hue.show_top_scroller()
   }
 
-  if (diff > Hue.small_scroll_amount) {
+  if (direction === "up") {
     Hue.show_bottom_scroller()
-  } else {
+  } else if (diff < Hue.small_scroll_amount) {
     Hue.hide_bottom_scroller()
+    Hue.goto_bottom()
   }
 }
 
@@ -2241,7 +2241,7 @@ Hue.remove_messages_after_id = function (id, direction) {
       .remove()
   }
 
-  Hue.goto_bottom(true, false)
+  Hue.goto_bottom(true)
 }
 
 // Setups some chat configs

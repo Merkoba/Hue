@@ -72,7 +72,6 @@ Hue.filter_delay = 350
 Hue.resize_delay = 350
 Hue.wheel_delay = 100
 Hue.wheel_delay_2 = 25
-Hue.check_scrollers_delay = 100
 Hue.emit_queue = []
 Hue.app_focused = true
 Hue.message_unames = ""

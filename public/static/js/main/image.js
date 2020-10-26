@@ -280,7 +280,7 @@ Hue.change_image_visibility = function () {
   }
 
   Hue.check_footer_media_rotate()
-  Hue.goto_bottom(false, false)
+  Hue.goto_bottom()
 }
 
 // When clicking the Previous button in the image modal window

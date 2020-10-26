@@ -516,7 +516,7 @@ Hue.change_tv_visibility = function (play = false) {
   }
 
   Hue.check_footer_media_rotate()
-  Hue.goto_bottom(false, false)
+  Hue.goto_bottom()
 }
 
 // Checks if tv is maximized

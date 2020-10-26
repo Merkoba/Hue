@@ -103,7 +103,7 @@ Hue.resize_events = function () {
 // What to do after a window resize
 Hue.on_resize = function () {
   Hue.fix_frames()
-  Hue.goto_bottom(false, false)
+  Hue.goto_bottom()
   Hue.check_scrollers()
 }
 
