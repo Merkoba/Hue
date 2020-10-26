@@ -2004,10 +2004,8 @@ Hue.hide_bottom_scroller = function () {
 
 // Updates scrollers state based on scroll position
 Hue.check_scrollers = function (direction = "down") {
-  let $ch = $("#chat_area")
-  let max = $ch.prop("scrollHeight") - $ch.innerHeight()
-  let scrolltop = $ch.scrollTop()
-  let diff = max - scrolltop
+  let area = $("#chat_area")
+  let scrolltop = area.scrollTop()
 
   if (scrolltop === 0) {
     Hue.hide_top_scroller()
@@ -2017,9 +2015,13 @@ Hue.check_scrollers = function (direction = "down") {
 
   if (direction === "up") {
     Hue.show_bottom_scroller()
-  } else if (diff < Hue.small_scroll_amount) {
-    Hue.hide_bottom_scroller()
-    Hue.goto_bottom()
+  } else {
+    let max = area.prop("scrollHeight") - area.innerHeight()
+    let diff = max - scrolltop
+    if (diff < Hue.small_scroll_amount) {
+      Hue.hide_bottom_scroller()
+      Hue.goto_bottom()
+    }
   }
 }
 
