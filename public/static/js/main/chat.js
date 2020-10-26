@@ -602,7 +602,7 @@ Hue.add_to_chat = function (args = {}) {
       $(".chat_content_container").each(function () {
         if ($(this).data("id") === args.id) {
           $(this).replaceWith(content_container.clone(true, true))
-          Hue.goto_bottom()
+          Hue.check_scrollers()
           return false
         }
       })
