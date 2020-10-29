@@ -308,6 +308,7 @@ Hue.at_startup = function () {
 
   setTimeout(() => {
     Hue.goto_bottom(true)
+    Hue.check_scrollers("down", false)
   }, 800)
 
   if (Hue.connections === 1) {
