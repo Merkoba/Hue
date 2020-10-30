@@ -883,6 +883,7 @@ Hue.start_reply = function (target) {
 Hue.show_reply = function (username, quote) {
   $("#reply_text").html(quote)
   $("#reply_input").val("")
+  Hue.old_reply_input_val = ""
 
   Hue.msg_reply.set_title(`Re: ${username}`)
 
