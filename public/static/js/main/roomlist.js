@@ -62,8 +62,6 @@ Hue.on_room_created = function (data) {
     Hue.show_open_room(data.id)
   }
 
-  let msg = 
-
   Hue.feedback("Room Created", {
     brk: Hue.get_chat_icon("key"),
     onclick: onclick,
