@@ -73,7 +73,7 @@ Hue.resize_delay = 350
 Hue.wheel_delay = 100
 Hue.wheel_delay_2 = 25
 Hue.emit_queue = []
-Hue.app_focused = true
+Hue.app_focused = false
 Hue.message_unames = ""
 Hue.aura_timeouts = {}
 Hue.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
@@ -95,7 +95,6 @@ Hue.editing_message_area = false
 Hue.local_storage_to_save = {}
 Hue.local_storage_save_delay = 250
 Hue.sending_whisper = false
-Hue.small_scroll_amount = 250
 Hue.chat_scrolled = false
 Hue.lockscreen_peek_delay = 500
 Hue.lockscreen_peek_active = false
@@ -308,7 +307,6 @@ Hue.at_startup = function () {
 
   setTimeout(() => {
     Hue.goto_bottom(true)
-    Hue.check_scrollers("down", false)
   }, 800)
 
   if (Hue.connections === 1) {

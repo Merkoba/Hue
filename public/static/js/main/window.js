@@ -90,7 +90,7 @@ Hue.on_app_focused = function () {
 
 // This runs when the client loses visibility
 Hue.on_app_unfocused = function () {
-  Hue.check_scrollers()
+  Hue.goto_bottom()
 }
 
 // Starts window resize events
@@ -104,7 +104,6 @@ Hue.resize_events = function () {
 Hue.on_resize = function () {
   Hue.fix_frames()
   Hue.goto_bottom()
-  Hue.check_scrollers()
 }
 
 // Setup events for application close or refresh
