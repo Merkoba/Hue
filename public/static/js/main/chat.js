@@ -2000,7 +2000,7 @@ Hue.check_scrollers = function () {
   let area = $("#chat_area")
   let scrolltop = area.scrollTop()
 
-  if (scrolltop === 0) {
+  if (scrolltop < 5) {
     Hue.hide_top_scroller()
   } else {
     Hue.show_top_scroller()
