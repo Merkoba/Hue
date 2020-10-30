@@ -50,7 +50,6 @@ Hue.change_user_email_open = false
 Hue.media_menu_open = false
 Hue.writing_reply = false
 Hue.modal_open = false
-Hue.alert_mode = 0
 Hue.commands_list_sorted = {}
 Hue.commands_list_sorted_2 = {}
 Hue.utilz = Utilz()
@@ -243,6 +242,7 @@ Hue.on_join = function (data) {
   Hue.image_changed = []
   Hue.tv_changed = []
   Hue.superuser = data.superuser
+  Hue.alert_mode = 0
 
   Hue.load_date_3 = Date.now()
   Hue.loginfo("Joined Room")
