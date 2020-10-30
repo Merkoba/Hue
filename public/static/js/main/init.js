@@ -136,6 +136,8 @@ Hue.fresh_messages_duration = 3000
 Hue.notifications_close_delay = 5000
 Hue.chat_crop_limit = 500
 Hue.userlist_open = false
+Hue.old_input_val = ""
+Hue.old_reply_input_val = ""
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

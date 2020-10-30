@@ -826,6 +826,15 @@ Hue.setup_reply = function () {
   $("#reply_submit").click(function () {
     Hue.submit_reply()
   })
+
+  $("#reply_input").on("input", function () {
+    let value = $(this).val()
+
+    if (Hue.old_reply_input_val !== value) {
+      Hue.check_typing("reply")
+      Hue.old_reply_input_val = value
+    }
+  })
 }
 
 // Prepare data to show the reply window
@@ -1247,14 +1256,26 @@ Hue.process_remove_announcement = function (message) {
 
 // Checks if the user is typing a chat message to send a typing emit
 // If the message appears to be a command it is ignored
-Hue.check_typing = function () {
-  let val = $("#input").val()
+Hue.check_typing = function (mode = "input") {
+  let tval
 
-  if (val.length < Hue.old_input_val.length) {
-    return false
+  if (mode === "input") {
+    let val = $("#input").val()
+  
+    if (val.length < Hue.old_input_val.length) {
+      return false
+    }
+  
+    tval = val.trim()
+  } else if (mode === "reply") {
+    let val = $("#reply_input").val()
+  
+    if (val.length < Hue.old_reply_input_val.length) {
+      return false
+    }
+  
+    tval = val.trim()
   }
-
-  let tval = val.trim()
 
   if (tval !== "") {
     if (tval[0] === Hue.config.commands_prefix) {
