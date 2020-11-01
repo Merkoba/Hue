@@ -30,8 +30,6 @@ module.exports = function (
   vars.images_root = vars.path.join(vars.root_path, config.images_directory)
   vars.audio_root = vars.path.join(vars.root_path, config.audio_directory)
   vars.roles = ["admin", "op", "voice"]
-  vars.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
-  vars.reaction_targets = ["chat", "image", "tv"]
   vars.media_types = ["image", "tv"]
   vars.filtered_fields = {
     log_messages: 0,

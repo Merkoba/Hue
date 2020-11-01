@@ -1034,8 +1034,6 @@ Hue.rotate_media = function () {
 Hue.get_media_info_html = function (type) {
   return `<div id='media_${type}_info_container' class='media_info_container grid_row_center'>
     <div id='media_${type}_info' class='media_info dynamic_title'></div>
-    <div class='media_info_separator'>|</div>
-    <div class='media_react_button action pointer' data-type='${type}'>React</div>
   </div>`
 }
 
@@ -1059,10 +1057,6 @@ Hue.start_media_info = function () {
       data: item,
       media_type: mode
     })
-  })
-
-  $(".media_main_container").on("click", ".media_react_button", function () {
-    Hue.show_reaction_picker($(this).data("type"))
   })
 }
 

@@ -82,16 +82,4 @@ Hue.create_debouncers = function () {
   Hue.infotip_timer = Hue.create_debouncer(function () {
     Hue.hide_infotip()
   }, Hue.hide_infotip_delay)
-
-  // Debounce timer to hide media image reactions
-  Hue.media_image_reactions_timer = Hue.create_debouncer(function () {
-    $("#media_image_reactions").html("")
-    $("#media_image_reactions").css("display", "none")
-  }, Hue.hide_media_reactions_delay)
-  
-  // Debounce timer to hide media tv reactions
-  Hue.media_tv_reactions_timer = Hue.create_debouncer(function () {
-    $("#media_tv_reactions").html("")
-    $("#media_tv_reactions").css("display", "none")
-  }, Hue.hide_media_reactions_delay)
 }

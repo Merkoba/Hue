@@ -508,8 +508,7 @@ Hue.show_others_disconnected = function (data) {
 // Show an intro with popups when a user first joins the site
 Hue.show_intro = function () {
   let s = `
-    You can chat in this area. The icon on the left opens the user menu where you can change your profile image and other settings.
-    There is also a button for reactions and functions.`
+    You can chat in this area. The icon on the left opens the user menu where you can change your profile image and other settings.`
 
   Hue.create_popup({ position: "bottomleft" }).show(["Chat and User Menu", s])
 

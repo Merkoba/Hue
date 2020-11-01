@@ -1171,7 +1171,7 @@ Hue.send_delete_message = function (id) {
 
 // Remove a message from the chat
 Hue.remove_message_from_chat = function (data) {
-  if (data.type === "chat" || data.type === "reaction") {
+  if (data.type === "chat") {
     $(".chat_content_container").each(function () {
       if ($(this).data("id") == data.id) {
         Hue.process_remove_chat_message(this)
@@ -1180,7 +1180,6 @@ Hue.remove_message_from_chat = function (data) {
     })
   } else if (
     data.type === "announcement" ||
-    data.type === "reaction" ||
     data.type === "image" ||
     data.type === "tv"
   ) {
@@ -2147,9 +2146,6 @@ Hue.show_log_messages = function (log_messages) {
           data.id = id
           data.date = date
           Hue.setup_tv("show", data)
-        } else if (type === "reaction") {
-          data.id = id
-          Hue.show_reaction(data, date)
         } else if (type === "announcement") {
           data.id = id
           Hue.show_announcement(data, date)

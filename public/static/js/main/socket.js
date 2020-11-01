@@ -197,9 +197,6 @@ Hue.server_update_events = {
   pong_received: (data) => {
     Hue.pong_received(data)
   },
-  reaction_received: (data) => {
-    Hue.show_reaction(data)
-  },
   cannot_embed_iframe: (data) => {
     Hue.feedback("That website cannot be embedded")
   },

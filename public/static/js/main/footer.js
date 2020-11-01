@@ -24,10 +24,6 @@ Hue.setup_footer = function () {
     Hue.show_user_menu()
   })
 
-  $("#footer_chat_react").click(function () {
-    Hue.show_reaction_picker("chat")
-  })
-
   $("#footer_media_menu").click(function () {
     Hue.show_media_menu()
   })

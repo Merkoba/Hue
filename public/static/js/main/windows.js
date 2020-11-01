@@ -219,12 +219,6 @@ Hue.start_msg = function () {
     })
   )
 
-  Hue.msg_reaction_picker = Msg.factory(
-    Object.assign({}, common, titlebar, {
-      id: "reactions"
-    })
-  )
-
   Hue.msg_message = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "message",
@@ -457,7 +451,6 @@ Hue.start_msg = function () {
   Hue.msg_details.set(Hue.template_details())
   Hue.msg_message_board.set(Hue.template_message_board())
   Hue.msg_profile_image_cropper.set(Hue.template_profile_image_cropper())
-  Hue.msg_reaction_picker.set(Hue.template_reaction_picker())
   Hue.msg_settings.set(Hue.template_settings())
 
   Hue.msg_info.create()
@@ -491,7 +484,6 @@ Hue.start_msg = function () {
   Hue.msg_handle_url.set_title("Drag n' Drop")
   Hue.msg_message_board.set_title("Message Board")
   Hue.msg_profile_image_cropper.set_title("Crop A Circle")
-  Hue.msg_reaction_picker.set_title("React With")
 
   // Titlebar click events
 

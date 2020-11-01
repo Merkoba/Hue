@@ -75,13 +75,11 @@ Hue.emit_queue = []
 Hue.app_focused = false
 Hue.message_unames = ""
 Hue.aura_timeouts = {}
-Hue.reaction_types = ["like", "love", "happy", "meh", "sad", "dislike"]
 Hue.mouse_is_down = false
 Hue.commands_queue = {}
 Hue.user_leaving = false
 Hue.admin_activity_filter_string = ""
 Hue.hide_infotip_delay = 2000
-Hue.hide_media_reactions_delay = 2000
 Hue.active_modal = false
 Hue.activity_list = []
 Hue.last_activity_trigger = 0
@@ -192,7 +190,6 @@ Hue.init = function () {
   Hue.setup_input()
   Hue.setup_modal_image()
   Hue.setup_footer()
-  Hue.setup_reactions()
   Hue.prepare_media_settings()
   Hue.setup_message_window()
   Hue.setup_autocomplete()
