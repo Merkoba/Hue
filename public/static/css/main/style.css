@@ -25,11 +25,11 @@ html {
 	background-color: rgb(24, 24, 24);
 	background-repeat: no-repeat;
 	background-position: center;
-	scrollbar-color: transparent transparent;
+	scrollbar-color: transparent transparent !important;
 }
 
 body * {
-	scrollbar-width: thin;
+	scrollbar-width: thin !important;
 }
 
 #main_container {
@@ -2077,15 +2077,15 @@ a.special_link:hover {
 }
 
 ::-webkit-scrollbar {
-	width: 0.4706rem;
+	width: 0.4706rem !important;
 }
 
 ::-webkit-scrollbar-track-piece {
-	background-color: transparent;
+	background-color: transparent !important;
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: transparent;
+	background-color: transparent !important;
 }
 
 .modal_subheader {
