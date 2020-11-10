@@ -133,7 +133,7 @@ Hue.start_active_media = function () {
 }
 
 // Mouse events for maxers
-Hue.maxers_mouse_events = function () {
+Hue.setup_maxers = function () {
   let f = function (e) {
     if (e.ctrlKey) {
       return false
@@ -255,6 +255,21 @@ Hue.maxers_mouse_events = function () {
   }
 
   $("#chat_maxer")[0].addEventListener("wheel", f2)
+
+  $("#media_maxer").on("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.set_default_tv_size()
+    }
+  })
+
+  $("#chat_maxer").on("auxclick", function (e) {
+    if (e.which === 2) {
+      Hue.set_default_chat_size()
+    }
+  })
+
+  $("#media_maxer").attr("title", "Media Maxer")
+  $("#chat_maxer").attr("title", "Chat Maxer")
 }
 
 // If the image or tv is maximized it unmaximizes it so both are shown

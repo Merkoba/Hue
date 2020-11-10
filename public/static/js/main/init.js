@@ -198,7 +198,6 @@ Hue.init = function () {
   Hue.setup_autocomplete()
   Hue.setup_fonts()
   Hue.setup_before_unload()
-  Hue.maxers_mouse_events()
   Hue.setup_iframe_video()
   Hue.show_console_message()
   Hue.setup_expand_image()
