@@ -1,3 +1,5 @@
+// TS: 1
+
 // Main Hue Object
 // All client variables and functions go here
 const Hue = {}
