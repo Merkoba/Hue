@@ -254,6 +254,7 @@ Hue.show_whisper = function (data) {
     let container = modal.content
     let text_el = $(container).find(".sent_message_text").eq(0)
     text_el.html(message_html)
+    text_el.urlize()
     let button_el = $(container).find(".sent_message_button").eq(0)
 
     if (data.type === "user") {
