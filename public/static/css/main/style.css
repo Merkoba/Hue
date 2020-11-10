@@ -2344,7 +2344,7 @@ pre {
 #notifications_container {
 	display: grid;
 	grid-gap: 1.5rem;
-	margin-top: 1.8rem;
+	margin-top: 1.2rem;
 	margin-bottom: 1rem;
 }
 
@@ -2362,7 +2362,7 @@ pre {
 #whispers_container {
 	display: grid;
 	grid-gap: 1.2rem;
-	margin-top: 1rem;
+	margin-top: 1.2rem;
 	margin-bottom: 1rem;
 }
 
