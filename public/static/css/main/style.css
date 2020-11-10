@@ -418,7 +418,7 @@ body * {
 
 .scroller_smaller {
 	flex-grow: 0;
-	width: 2rem;
+	width: 1rem;
 }
 
 .scroller:hover {
