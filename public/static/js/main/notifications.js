@@ -105,6 +105,11 @@ Hue.push_notification = function (icon, message, on_click = false) {
   if (num_items > Hue.config.notifications_crop_limit) {
     $("#notifications_container .notifications_item").last().remove()
   }
+
+  if (Hue.notifications_count < 100) {
+    Hue.notifications_count += 1
+    $("#header_notifications_count").text(`(${Hue.notifications_count})`)
+  }
 }
 
 // Shows information about the recent info popups
@@ -114,6 +119,9 @@ Hue.show_notifications = function (filter = false) {
       $("#notifications_filter").val(filter)
       Hue.do_modal_filter()
     }
+
+    Hue.notifications_count = 0
+    $("#header_notifications_count").text("(0)")
   })
 }
 
