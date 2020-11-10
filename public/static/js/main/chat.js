@@ -2033,6 +2033,8 @@ Hue.check_scrollers = function () {
   if (diff < 5) {
     Hue.hide_bottom_scroller()
   } else {
+    let per = 100 - (parseInt((scrolltop / max) * 100))
+    Hue.show_infotip(`Scroll: ${per}%`)
     Hue.show_bottom_scroller()
   }
 }
