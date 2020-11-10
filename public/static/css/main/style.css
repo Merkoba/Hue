@@ -214,6 +214,7 @@ body * {
 	overflow-y: auto;
 	max-width: 100%;
 	max-height: 100%;
+	scrollbar-width: none !important;
 }
 
 .chat_area {
