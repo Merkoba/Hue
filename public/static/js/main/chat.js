@@ -677,6 +677,10 @@ Hue.add_to_chat = function (args = {}) {
   if (Hue.started) {
     Hue.goto_bottom()
 
+    if (Hue.chat_scrolled) {
+      Hue.check_scrollers()
+    }
+
     if (highlighted) {
       if (Hue.room_state.last_highlight_date < date) {
         Hue.room_state.last_highlight_date = date
@@ -1582,27 +1586,12 @@ Hue.do_chat_size_change = function (size) {
   if (size === 100) {
     Hue.toggle_media_area()
     Hue.set_default_chat_size()
-    Hue.show_infotip("Chat Maximized")
     return
   }
 
   Hue.room_state.chat_display_percentage = size
   Hue.save_room_state()
   Hue.apply_media_percentages()
-  Hue.notify_chat_size_change(size)
-}
-
-// Shows the chat display percentage in the infotip
-Hue.notify_chat_size_change = function (size) {
-  let info
-
-  if (size === Hue.config.room_state_default_chat_display_percentage) {
-    info = " (Default)"
-  } else {
-    info = ""
-  }
-
-  Hue.show_infotip(`Chat Size: ${size}%${info}`)
 }
 
 // Scrolls the chat to a certain vertical position
@@ -2032,14 +2021,11 @@ Hue.check_scrollers = function () {
 
   if (diff < 5) {
     Hue.hide_bottom_scroller()
-
-    if (Hue.infotip_mode === "scroll") {
-      Hue.hide_infotip()
-    }
+    $("#bottom_scroller_info").html("100%")
   } else {
-    let per = 100 - (parseInt((scrolltop / max) * 100))
-    Hue.show_infotip(`Scroll: ${per}%`, "scroll")
     Hue.show_bottom_scroller()
+    let info = `${(parseInt((scrolltop / max) * 100))}%`
+    $("#bottom_scroller_info").html(info)
   }
 }
 

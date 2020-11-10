@@ -77,9 +77,4 @@ Hue.create_debouncers = function () {
   Hue.settings_filter_timer = Hue.create_debouncer(function () {
     Hue.show_settings($("#settings_filter").val())
   }, Hue.filter_delay)
-
-  // Debounce timer to hide the infotip
-  Hue.infotip_timer = Hue.create_debouncer(function () {
-    Hue.hide_infotip()
-  }, Hue.hide_infotip_delay)
 }

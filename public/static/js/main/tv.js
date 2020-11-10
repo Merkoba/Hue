@@ -633,7 +633,7 @@ Hue.refresh_tv = function () {
 }
 
 // Does the change of tv display percentage
-Hue.do_media_tv_size_change = function (size, notify = true) {
+Hue.do_media_tv_size_change = function (size) {
   if (size === "max") {
     size = 90
   } else if (size === "min") {
@@ -652,19 +652,13 @@ Hue.do_media_tv_size_change = function (size, notify = true) {
   Hue.save_room_state()
   Hue.apply_media_percentages()
 
-  if (notify) {
-    Hue.notify_media_tv_size_change(size)
-  }
-
   if (size === 0) {
     if (!Hue.image_is_maximized()) {
       Hue.maximize_image()
-      Hue.show_infotip("Image Maximized")
     }
   } else if (size === 100) {
     if (!Hue.tv_is_maximized()) {
       Hue.maximize_tv()
-      Hue.show_infotip("TV Maximized")
     }
   }
 }
@@ -731,19 +725,6 @@ Hue.set_media_menu_tv_volume = function (n = false) {
   $("#media_menu_tv_volume").val(n)
 
   Hue.set_tv_volume(n, true, false)
-}
-
-// Shows the new tv display percentage in the infotip
-Hue.notify_media_tv_size_change = function (size) {
-  let info
-
-  if (size === Hue.config.room_state_default_tv_display_percentage) {
-    info = " (Default)"
-  } else {
-    info = ""
-  }
-
-  Hue.show_infotip(`TV Size: ${size}%${info}`)
 }
 
 // Setup for the tv iframe

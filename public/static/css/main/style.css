@@ -416,6 +416,11 @@ body * {
 	flex-grow: 1;
 }
 
+.scroller_smaller {
+	flex-grow: 0;
+	width: 2rem;
+}
+
 .scroller:hover {
 	background-color: var(--slight_background_alpha);
 }
@@ -1728,22 +1733,6 @@ svg.action:hover {
 
 #show_profile_audio_clip {
 	margin-top: 1rem;
-}
-
-#infotip_container {
-	position: fixed;
-	top: 0;
-	left: 50%;
-	transform: translateX(-50%);
-	height: var(--panel_height);
-	background-color: var(--color_4);
-	color: white;
-	display: none;
-	z-index: 999;
-	align-items: center;
-	justify-content: center;
-	padding-left: 1rem;
-	padding-right: 1rem;
 }
 
 #admin_list_container,
