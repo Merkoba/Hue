@@ -138,6 +138,7 @@ Hue.chat_crop_limit = 500
 Hue.userlist_open = false
 Hue.old_input_val = ""
 Hue.old_reply_input_val = ""
+Hue.infotip_mode = ""
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
