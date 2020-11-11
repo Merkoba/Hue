@@ -2067,7 +2067,6 @@ Hue.goto_bottom = function (force = false) {
 
   if (scroll) {
     Hue.scroll_chat_to(max)
-    Hue.check_scrollers()
   }
 }
 
@@ -2261,6 +2260,7 @@ Hue.setup_chat = function () {
 
   $("#bottom_scroller").click(function () {
     Hue.goto_bottom(true)
+    Hue.check_scrollers()
   })
 
   $("#activity_down_scroller").click(function () {
