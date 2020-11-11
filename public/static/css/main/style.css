@@ -2470,7 +2470,6 @@ pre {
 }
 
 #footer_search {
-	width: 14rem;
 	height: var(--panel_height) !important;
 	box-shadow: inset 0 0 0.1176rem var(--color_4);
 	margin-right: 1.2rem;
@@ -2485,7 +2484,7 @@ pre {
 }
 
 #footer_search_input {
-	width: 100%;
+	width: 10rem;
 	height: 100%;
 	position: relative;
 	color: inherit;
