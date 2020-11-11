@@ -1185,6 +1185,7 @@ select {
 }
 
 #footer_user_menu {
+	padding: 0.6rem;
 	padding-left: 0.3rem;
 	padding-right: 0.3rem;
 }
