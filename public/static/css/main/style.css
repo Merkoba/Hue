@@ -339,6 +339,11 @@ body * {
 	height: var(--icon_size);
 }
 
+.footer_icon_label {
+	margin-left: 0.15rem;
+	margin-right: 0.5rem;
+}
+
 .footer_text {
 	margin-right: 0.4em;
 }
@@ -1884,6 +1889,10 @@ a.special_link:hover {
 
 .media_menu_loaded_media_container {
 	margin-top: 0.8rem;
+}
+
+#media_menu_rotate {
+	margin-left: 3rem;
 }
 
 .highlights_item .image_preview,

@@ -352,7 +352,6 @@ Hue.after_show_tv = function () {
   Hue.apply_tv_media_info()
   Hue.fix_visible_video_frame()
   Hue.focus_input()
-  Hue.set_tv_volume(false, false)
 }
 
 // Attempts to change the tv source
@@ -543,28 +542,6 @@ Hue.maximize_tv = function () {
   Hue.save_room_state()
 }
 
-// Increases the tv volume
-Hue.tv_volume_increase = function (step = 0.1) {
-  if (Hue.room_state.tv_volume === 1) {
-    return false
-  }
-
-  let nv = Hue.room_state.tv_volume + step
-
-  Hue.set_tv_volume(nv)
-}
-
-// Decreases the tv volume
-Hue.tv_volume_decrease = function (step = 0.1) {
-  if (Hue.room_state.tv_volume === 0) {
-    return false
-  }
-
-  let nv = Hue.room_state.tv_volume - step
-
-  Hue.set_tv_volume(nv)
-}
-
 // Used to change the tv
 // Shows the tv picker window to input a URL
 Hue.show_tv_picker = function () {
@@ -573,53 +550,6 @@ Hue.show_tv_picker = function () {
     Hue.show_media_history("tv")
     Hue.scroll_modal_to_top("tv_picker")
   })
-}
-
-// Sets the tv volume
-Hue.set_tv_volume = function (
-  nv = false,
-  changed = true,
-  update_slider = true
-) {
-  if (typeof nv !== "number") {
-    nv = Hue.room_state.tv_volume
-  }
-
-  nv = Hue.utilz.round(nv, 1)
-
-  if (nv > 1) {
-    nv = 1
-  } else if (nv < 0) {
-    nv = 0
-  }
-
-  Hue.room_state.tv_volume = nv
-
-  let vt = Hue.utilz.to_hundred(nv)
-
-  if ($("#media_video").length > 0) {
-    $("#media_video")[0].volume = nv
-  }
-
-  if (Hue.youtube_video_player) {
-    Hue.youtube_video_player.setVolume(vt)
-  }
-
-  if (Hue.twitch_video_player) {
-    Hue.twitch_video_player.setVolume(nv)
-  }
-
-  if (Hue.soundcloud_video_player) {
-    Hue.soundcloud_video_player.setVolume(vt)
-  }
-
-  if (changed) {
-    if (update_slider) {
-      Hue.set_media_menu_tv_volume(nv)
-    }
-
-    Hue.save_room_state()
-  }
 }
 
 // Reloads the tv with the same source
@@ -696,35 +626,6 @@ Hue.get_visible_video_frame_id = function () {
 // Sets the tv display percentage to default
 Hue.set_default_tv_size = function () {
   Hue.do_media_tv_size_change("default")
-}
-
-// Sets the media menu tv slider
-Hue.set_media_menu_tv_volume = function (n = false) {
-  if (n === false) {
-    n = Hue.room_state.tv_volume
-  } else if (n === "increase") {
-    n = Hue.room_state.tv_volume + 0.2
-
-    if (n > 1) {
-      n = 1
-    }
-  } else if (n === "decrease") {
-    n = Hue.room_state.tv_volume - 0.2
-
-    if (n < 0) {
-      n = 0
-    }
-  } else if (n === "max") {
-    n = 1
-  } else if (n === "min") {
-    n = 0
-  } else if (n === "default") {
-    n = Hue.config.room_state_default_tv_volume
-  }
-
-  $("#media_menu_tv_volume").val(n)
-
-  Hue.set_tv_volume(n, true, false)
 }
 
 // Setup for the tv iframe
@@ -850,16 +751,5 @@ Hue.receive_tv_progress = function (data) {
 
     $("#media_video")[0].currentTime = data.progress
     $("#media_video")[0].play()
-  }
-}
-
-// Handles volume change command for the tv
-Hue.change_tv_volume = function (arg) {
-  if (isNaN(arg)) {
-    Hue.feedback("Argument must be a number")
-    return false
-  } else {
-    let nv = arg / 100
-    Hue.set_tv_volume(nv)
   }
 }

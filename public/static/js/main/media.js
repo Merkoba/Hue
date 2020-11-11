@@ -439,30 +439,12 @@ Hue.prepend_to_media_history = function (message_id) {
 
 // Additional media menu configurations
 Hue.setup_media_menu = function () {
-  Hue.set_media_menu_tv_volume()
-
-  $("#media_menu_tv_volume").on("input change", function () {
-    Hue.set_tv_volume(parseFloat(this.value), true, false)
-  })
-
-  $("#media_menu_tv_volume").dblclick(function () {
-    Hue.set_media_menu_tv_volume("default")
-  })
-
   $("#media_menu_image_icon").click(function () {
     Hue.show_image_picker()
   })
 
   $("#media_menu_tv_icon").click(function () {
     Hue.show_tv_picker()
-  })
-
-  $("#media_menu_decrease_tv_volume").click(function () {
-    Hue.set_media_menu_tv_volume('decrease')
-  })
-
-  $("#media_menu_increase_tv_volume").click(function () {
-    Hue.set_media_menu_tv_volume('increase')
   })
 
   $("#media_menu_swap").click(function () {
@@ -608,12 +590,6 @@ Hue.fix_frame = function (frame_id, test_parent_height = false) {
 Hue.fix_frames = function () {
   Hue.fix_visible_video_frame()
   Hue.fix_image_frame()
-}
-
-// Gets a volume number in percentage form
-// Like 20 or 100
-Hue.get_nice_volume = function (volume) {
-  return parseInt(Math.round(volume * 100))
 }
 
 // This handles all media load

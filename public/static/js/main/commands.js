@@ -180,12 +180,6 @@ Hue.commands = {
     },
     description: `Shows Commands`,
   },
-  "tvvolume": {
-    action: (arg, ans) => {
-      Hue.change_tv_volume(arg)
-    },
-    description: `Changes the volume of the tv`,
-  },
   "changeusername": {
     action: (arg, ans) => {
       Hue.change_username(arg)

@@ -91,7 +91,6 @@
 	"settings_default_autoconnect": false,
 	"room_state_default_image_enabled": true,
 	"room_state_default_tv_enabled": true,
-	"room_state_default_tv_volume": 1,
 	"room_state_default_chat_searches": [],
 	"room_state_default_last_highlight_date": 0,
 	"room_state_default_chat_display_percentage": 40,
