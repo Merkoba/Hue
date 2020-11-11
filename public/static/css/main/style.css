@@ -1859,36 +1859,21 @@ a.special_link:hover {
 	text-align: left;
 }
 
-#media_menu_loaded_media {
-	width: 100%;
-}
-
 .media_history_container {
 	margin-top: 0.8rem;
 }
 
-.media_history_container .announcement_content_split,
-#media_menu_loaded_media .announcement_content_split {
+.media_history_container .announcement_content_split {
 	align-items: center;
 }
 
-.media_history_container .brk,
-#media_menu_loaded_media .brk {
+.media_history_container .brk {
 	display: none;
-}
-
-#media_menu_loaded_media .message {
-	padding-top: 0;
-	padding-bottom: 0;
 }
 
 #media_menu_container {
 	margin-top: 0.6rem;
 	margin-bottom: 0.6rem;
-}
-
-.media_menu_loaded_media_container {
-	margin-top: 0.8rem;
 }
 
 #media_menu_rotate {

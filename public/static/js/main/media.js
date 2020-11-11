@@ -68,31 +68,8 @@ Hue.swap_display_positions = function () {
   Hue.apply_media_positions()
 }
 
-// If the media menu is open the loaded media section is updated
-Hue.check_media_menu_loaded_media = function () {
-  if (Hue.media_menu_open) {
-    Hue.update_media_menu_loaded_media()
-  }
-}
-
-// Updates the loaded media section of the media menu
-Hue.update_media_menu_loaded_media = function () {
-  let obj = Hue.get_loaded_media_messages()
-
-  for (let type of Hue.utilz.media_types) {
-    if (obj[type]) {
-      $(`#media_menu_loaded_${type}`).html(obj[type])
-    } else {
-      $(`#media_menu_loaded_${type}`).html("Not loaded yet")
-    }
-  }
-
-  $("#media_menu_loaded_media").html()
-}
-
 // Shows the media menu
 Hue.show_media_menu = function () {
-  Hue.update_media_menu_loaded_media()
   Hue.msg_media_menu.show()
 }
 
@@ -700,7 +677,6 @@ Hue.change = function (args = {}) {
   }
 
   Hue.update_media_history_blinks()
-  Hue.check_media_menu_loaded_media()
 
   if (args.notify && item.setter !== Hue.username) {
     Hue.on_activity("media_change")

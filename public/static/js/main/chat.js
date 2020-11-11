@@ -1254,8 +1254,6 @@ Hue.process_remove_announcement = function (message) {
   $(`.message_id_${message_id}`).each(function () {
     $(this).remove()
   })
-
-  Hue.check_media_menu_loaded_media()
 }
 
 // Checks if the user is typing a chat message to send a typing emit
@@ -1438,30 +1436,6 @@ Hue.jump_to_chat_message = function (message_id) {
   }, 250);
 
   Hue.close_all_modals()
-}
-
-// Returns an object with clones of the announcement messages of every loaded media
-Hue.get_loaded_media_messages = function () {
-  let obj = {}
-
-  for (let type of Hue.utilz.media_types) {
-    obj[type] = false
-
-    let loaded_type = Hue[`loaded_${type}`]
-
-    if (loaded_type) {
-      let message_id = loaded_type.message_id
-      let message = $(`#chat_area > .message_id_${message_id}`).eq(0)
-
-      if (message.length > 0) {
-        obj[type] = message.clone(true, true)
-      }
-    } else {
-      obj[type] = "Not Loaded Yet"
-    }
-  }
-
-  return obj
 }
 
 // What to do after receiving a chat message from the server
