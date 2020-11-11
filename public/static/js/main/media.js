@@ -132,146 +132,6 @@ Hue.start_active_media = function () {
   Hue.first_media_change = true
 }
 
-// Mouse events for maxers
-Hue.setup_maxers = function () {
-  let f = function (e) {
-    if (e.ctrlKey) {
-      return false
-    }
-
-    if (!e.shiftKey) {
-      return false
-    }
-
-    let maximized = Hue.num_media_elements_visible() === 1
-    let direction = e.deltaY > 0 ? "down" : "up"
-    let el = $("#media_tv")[0]
-
-    if (direction === "up") {
-      if (maximized) {
-        if (Hue.tv_is_maximized()) {
-          let tv_pos = Hue.room_state.tv_display_position
-
-          if (tv_pos === "top") {
-            Hue.do_media_tv_size_change(90)
-            Hue.unmaximize_media()
-          } else {
-            Hue.swap_display_positions()
-            Hue.do_media_tv_size_change(90)
-            Hue.unmaximize_media()
-          }
-        } else if (Hue.image_is_maximized()) {
-          let tv_pos = Hue.room_state.tv_display_position
-
-          if (tv_pos === "bottom") {
-            Hue.do_media_tv_size_change(10)
-            Hue.unmaximize_media()
-          } else {
-            Hue.swap_display_positions()
-            Hue.do_media_tv_size_change(10)
-            Hue.unmaximize_media()
-          }
-        }
-
-        return
-      }
-
-      if (el.style.order == 1) {
-        Hue.maxer_wheel_timer(Hue.decrease_tv_percentage)
-      } else if (el.style.order == 2) {
-        Hue.maxer_wheel_timer(Hue.increase_tv_percentage)
-      }
-    } else if (direction === "down") {
-      if (maximized) {
-        if (Hue.tv_is_maximized()) {
-          let tv_pos = Hue.room_state.tv_display_position
-
-          if (tv_pos === "bottom") {
-            Hue.do_media_tv_size_change(90)
-            Hue.unmaximize_media()
-          } else {
-            Hue.swap_display_positions()
-            Hue.do_media_tv_size_change(90)
-            Hue.unmaximize_media()
-          }
-        } else if (Hue.image_is_maximized()) {
-          let tv_pos = Hue.room_state.tv_display_position
-
-          if (tv_pos === "top") {
-            Hue.do_media_tv_size_change(10)
-            Hue.unmaximize_media()
-          } else {
-            Hue.swap_display_positions()
-            Hue.do_media_tv_size_change(10)
-            Hue.unmaximize_media()
-          }
-        }
-
-        return
-      }
-
-      if (el.style.order == 1) {
-        Hue.maxer_wheel_timer(Hue.increase_tv_percentage)
-      } else if (el.style.order == 2) {
-        Hue.maxer_wheel_timer(Hue.decrease_tv_percentage)
-      }
-    }
-  }
-
-  $("#media_maxer")[0].addEventListener("wheel", f)
-
-  let f2 = function (e) {
-    if (e.ctrlKey) {
-      return false
-    }
-
-    if (!e.shiftKey) {
-      return false
-    }
-
-    let maximized = false
-
-    if (Hue.num_media_elements_visible() === 0) {
-      maximized = true
-    }
-
-    let direction = e.deltaY > 0 ? "down" : "up"
-
-    if (direction === "down") {
-      if (maximized) {
-        return
-      }
-
-      Hue.maxer_wheel_timer(Hue.increase_chat_percentage)
-    } else if (direction === "up") {
-      if (maximized) {
-        Hue.do_chat_size_change(90)
-        Hue.show_media_items()
-        return
-      }
-
-      Hue.maxer_wheel_timer(Hue.decrease_chat_percentage)
-    }
-  }
-
-  $("#chat_maxer")[0].addEventListener("wheel", f2)
-
-  $("#media_maxer").on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.set_default_tv_size()
-    }
-  })
-
-  $("#chat_maxer").on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.set_default_chat_size()
-    }
-  })
-
-  $("#media_maxer").attr("title", "Media Maxer")
-  $("#chat_maxer").attr("title", "Chat Maxer")
-}
-
 // If the image or tv is maximized it unmaximizes it so both are shown
 Hue.unmaximize_media = function () {
   if (Hue.tv_is_maximized()) {
@@ -604,6 +464,36 @@ Hue.setup_media_menu = function () {
   $("#media_menu_increase_tv_volume").click(function () {
     Hue.set_media_menu_tv_volume('increase')
   })
+
+  $("#media_menu_swap").click(function () {
+    Hue.swap_media()
+  })
+
+  $("#media_menu_rotate").click(function () {
+    Hue.rotate_media()
+  })
+
+  $("#media_menu_tv_size").find("option").each(function () {
+    if ($(this).val() == Hue.room_state.tv_display_percentage) {
+      $(this).prop("selected", true)
+    }
+  })
+
+  $("#media_menu_chat_size").find("option").each(function () {
+    if ($(this).val() == Hue.room_state.chat_display_percentage) {
+      $(this).prop("selected", true)
+    }
+  })
+
+  $("#media_menu_tv_size").on("change", function () {
+    let size = $("#media_menu_tv_size option:selected").val()
+    Hue.do_media_tv_size_change(size)
+  })
+
+  $("#media_menu_chat_size").on("change", function () {
+    let size = $("#media_menu_chat_size option:selected").val()
+    Hue.do_chat_size_change(size)
+  })
 }
 
 // Format local sources that start with slash
@@ -841,15 +731,6 @@ Hue.change = function (args = {}) {
   }
 }
 
-// Check if maxers should be displayed or not
-Hue.check_media_maxers = function () {
-  if (Hue.room_state.image_enabled && Hue.room_state.tv_enabled) {
-    $(".maxer_container").css("display", "flex")
-  } else {
-    $(".maxer_container").css("display", "none")
-  }
-}
-
 // Sets a media info item with proper information and events
 Hue.apply_media_info = function (element, item, mode) {
   let custom_title
@@ -1008,23 +889,6 @@ Hue.swap_media_layout = function () {
 // Stop all media
 Hue.stop_media = function () {
   Hue.stop_tv()
-}
-
-// Shows the swap rotate menu
-Hue.show_swaprotate = function () {
-  Hue.msg_info2.show(["Swap or Rotate Media", Hue.template_swaprotate()], function () {
-    $("#swaprotate_swap").click(function () {
-      Hue.swap_media()
-      Hue.msg_info2.close()
-    })
-
-    $("#swaprotate_rotate").click(function () {
-      Hue.rotate_media()
-      Hue.msg_info2.close()
-    })
-
-    Hue.horizontal_separator.separate("swaprotate_container")
-  })
 }
 
 // Swaps media

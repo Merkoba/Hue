@@ -1,9 +1,5 @@
 // Setups more footer elements
 Hue.setup_footer = function () {
-  $("#footer_swaprotate").click(function () {
-    Hue.show_swaprotate()
-  })
-
   let media = ["image", "tv"]
 
   for (let type of media) {

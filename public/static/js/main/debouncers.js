@@ -68,11 +68,6 @@ Hue.create_debouncers = function () {
     Hue.modal_image_next_click()
   }, Hue.wheel_delay)
 
-  // Debounce timer for maxers, like chat and media maxers
-  Hue.maxer_wheel_timer = Hue.create_debouncer(function (func) {
-    func()
-  }, Hue.wheel_delay_2)
-
   // Debounce timer for settings filter
   Hue.settings_filter_timer = Hue.create_debouncer(function () {
     Hue.show_settings($("#settings_filter").val())
