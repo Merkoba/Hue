@@ -2231,11 +2231,6 @@ a.special_link:hover {
 	margin-bottom: 1rem;
 }
 
-#locked_menu_container {
-	margin-top: 1rem;
-	margin-bottom: 1rem;
-}
-
 #user_menu_change_buttons {
 	margin-bottom: 1rem;
 	grid-gap: 0.8rem;
