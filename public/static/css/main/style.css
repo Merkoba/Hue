@@ -501,7 +501,7 @@ body * {
 }
 
 .chat_content_container:not(.chat_content_container_third) {
-	margin-top: 0.3em;
+	margin-top: 0.2em;
 }
 
 .chat_content {
