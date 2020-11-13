@@ -363,6 +363,24 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
 
   if (just_check) {
     feedback = false
+  } else {
+    // Show confirmation on possibly disruptive changes
+    // doesn't apply if last change is by same user
+
+    let c = Hue.current_tv()
+    let d = Hue.disruptive_media_minutes
+
+    if (c.user_id !== Hue.user_id) {
+      if (Date.now() - c.date < 60 * 1000 * d) {
+        Hue.show_confirm("Confirm TV Change", 
+        `TV was changed less than ${d} minutes ago`, 
+        function () {
+          Hue.do_tv_change(src, comment)
+        })
+
+        return false
+      }
+    }
   }
 
   if (!comment) {
@@ -464,6 +482,11 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
     return true
   }
 
+  Hue.do_tv_change(src, comment)
+}
+
+// Do tv change socket emit
+Hue.do_tv_change = function (src, comment) {
   Hue.socket_emit("change_tv_source", {
     src: src,
     comment: comment

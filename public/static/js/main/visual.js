@@ -140,3 +140,23 @@ Hue.make_safe = function (args = {}) {
 
   return c[0]
 }
+
+// Setups the confirm window
+Hue.setup_confirm = function () {
+  $("#confirm_button_confirm").click(function () {
+    Hue.msg_confirm.close()
+    Hue.confirm_action()
+  })
+
+  $("#confirm_button_cancel").click(function () {
+    Hue.msg_confirm.close()
+  })
+}
+
+// Shows the confirm window
+Hue.show_confirm = function (title, message, action) {
+  $("#confirm_message").text(message)
+  Hue.confirm_action = action
+  Hue.msg_confirm.set_title(title)
+  Hue.msg_confirm.show()
+}

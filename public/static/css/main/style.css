@@ -848,7 +848,11 @@ a.generic:hover {
 }
 
 .chat_menu_button_main:hover, .chat_menu_button_main_selected {
-	background-color: var(--slight_background);
+	background-color: var(--slight_background) !important;
+}
+
+.chat_menu_button_main:hover div, .chat_menu_button_main_selected div {
+	background-color: var(--slight_background) !important;
 }
 
 .generic_uname {
@@ -2547,4 +2551,8 @@ pre {
 	padding: 0.6rem;
 	padding-left: 0.3rem;
 	padding-right: 0.3rem;
+}
+
+#confirm_buttons {
+	margin-top: 1rem;
 }

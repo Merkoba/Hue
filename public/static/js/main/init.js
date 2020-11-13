@@ -138,6 +138,8 @@ Hue.userlist_open = false
 Hue.old_input_val = ""
 Hue.old_reply_input_val = ""
 Hue.notifications_count = 0
+Hue.confirm_action = function () {}
+Hue.disruptive_media_minutes = 2
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -220,6 +222,7 @@ Hue.init = function () {
   Hue.start_socket_stats()
   Hue.start_media_info()
   Hue.start_modal_filters()
+  Hue.setup_confirm()
 
   if (Hue.debug_functions) {
     Hue.wrap_functions()

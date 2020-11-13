@@ -419,6 +419,12 @@ Hue.start_msg = function () {
     })
   )
 
+  Hue.msg_confirm = Msg.factory(
+    Object.assign({}, common, titlebar, {
+      id: "confirm"
+    })
+  )
+
   // Set the templates
 
   Hue.msg_room_menu.set(Hue.template_room_menu())
@@ -452,6 +458,7 @@ Hue.start_msg = function () {
   Hue.msg_message_board.set(Hue.template_message_board())
   Hue.msg_profile_image_cropper.set(Hue.template_profile_image_cropper())
   Hue.msg_settings.set(Hue.template_settings())
+  Hue.msg_confirm.set(Hue.template_confirm())
 
   Hue.msg_info.create()
   Hue.msg_info2.create()
@@ -484,6 +491,7 @@ Hue.start_msg = function () {
   Hue.msg_handle_url.set_title("Drag n' Drop")
   Hue.msg_message_board.set_title("Message Board")
   Hue.msg_profile_image_cropper.set_title("Crop A Circle")
+  Hue.msg_confirm.set_title("Confirm Action")
 
   // Titlebar click events
 
