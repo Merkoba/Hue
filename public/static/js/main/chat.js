@@ -1870,6 +1870,10 @@ Hue.setup_link_preview = function (fmessage, link_url) {
     link_preview_image.on("load", function () {
       Hue.goto_bottom()
     })
+
+    link_preview_image.on("error", function () {
+      Hue.goto_bottom()
+    })
   }
 
   link_preview_el.parent().find(".link_preview_text").eq(0).urlize()
@@ -1926,6 +1930,10 @@ Hue.setup_image_preview = function (fmessage, image_preview_src_original) {
   let image_preview_image = image_preview_el.find(".image_preview_image").eq(0)
 
   image_preview_image.on("load", function () {
+    Hue.goto_bottom()
+  })
+
+  image_preview_image.on("error", function () {
     Hue.goto_bottom()
   })
 
