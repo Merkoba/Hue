@@ -1836,7 +1836,6 @@ a.special_link:hover {
 
 .link_preview_title {
 	cursor: pointer;
-	font-size: 1.1em;
 	overflow-wrap: break-word;
 	word-break: break-word;
 }
