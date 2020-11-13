@@ -408,7 +408,7 @@ body * {
 }
 
 .scroller {
-	height: 2em;
+	height: 1.6em;
 	outline: none;
 	font-family: inherit;
 	display: flex;
