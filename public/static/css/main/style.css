@@ -843,12 +843,14 @@ a.generic:hover {
 	background-color: var(--color_4);
 }
 
-.chat_menu_button_main:hover>.chat_menu_button_container {
+.chat_menu_button_main:hover > .chat_menu_button_container {
 	visibility: visible;
+	transition-delay: 0.25s;
 }
 
 .chat_menu_button_main:hover, .chat_menu_button_main_selected {
-	box-shadow: 0 0 0.35rem var(--color_4_a);
+	box-shadow: 0 0 0.45rem var(--color_4);
+	transition-delay: 0.25s;
 }
 
 .generic_uname {
