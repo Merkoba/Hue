@@ -848,11 +848,7 @@ a.generic:hover {
 }
 
 .chat_menu_button_main:hover, .chat_menu_button_main_selected {
-	background-color: var(--slight_background) !important;
-}
-
-.chat_menu_button_main:hover div, .chat_menu_button_main_selected div {
-	background-color: var(--slight_background) !important;
+	box-shadow: 0 0 0.35rem var(--color_4_a);
 }
 
 .generic_uname {
