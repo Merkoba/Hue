@@ -421,7 +421,15 @@ Hue.start_msg = function () {
 
   Hue.msg_confirm = Msg.factory(
     Object.assign({}, common, titlebar, {
-      id: "confirm"
+      id: "confirm",
+      after_show: function (instance) {
+        common.after_show(instance)
+        Hue.confirm_open = true
+      },
+      after_close: function (instance) {
+        common.after_close(instance)
+        Hue.confirm_open = false
+      },
     })
   )
 

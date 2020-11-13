@@ -140,6 +140,7 @@ Hue.old_reply_input_val = ""
 Hue.notifications_count = 0
 Hue.confirm_action = function () {}
 Hue.disruptive_media_minutes = 2
+Hue.confirm_open = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

@@ -193,6 +193,17 @@ Hue.activate_key_detection = function () {
         return
       }
 
+      if (Hue.confirm_open) {
+        if (Hue.msg_confirm.is_highest()) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            Hue.on_confirm()
+            e.preventDefault()
+          }
+
+          return
+        }
+      }
+
       return
     }
 
