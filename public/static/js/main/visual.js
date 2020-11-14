@@ -154,7 +154,14 @@ Hue.setup_confirm = function () {
 
 // Shows the confirm window
 Hue.show_confirm = function (title, message, action) {
-  $("#confirm_message").text(message)
+  if (message) {
+    $("#confirm_message").text(message)
+    $("#confirm_message").css("display", "block")
+  } else {
+    $("#confirm_message").text("")
+    $("#confirm_message").css("display", "none")
+  }
+
   Hue.confirm_action = action
   Hue.msg_confirm.set_title(title)
   Hue.msg_confirm.show()

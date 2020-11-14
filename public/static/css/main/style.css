@@ -845,12 +845,12 @@ a.generic:hover {
 
 .chat_menu_button_main:hover > .chat_menu_button_container {
 	visibility: visible;
-	transition-delay: 0.25s;
+	transition-delay: 0.2s;
 }
 
 .chat_menu_button_main:hover, .chat_menu_button_main_selected {
 	box-shadow: 0 0 0.45rem var(--color_4);
-	transition-delay: 0.25s;
+	transition-delay: 0.2s;
 }
 
 .generic_uname {
@@ -2550,6 +2550,6 @@ pre {
 	padding-right: 0.3rem;
 }
 
-#confirm_buttons {
-	margin-top: 1rem;
+#confirm_message {
+	margin-bottom: 1rem;
 }

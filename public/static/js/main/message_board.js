@@ -19,13 +19,13 @@ Hue.setup_message_board = function () {
     "click",
     ".message_board_delete",
     function () {
-      if (confirm("Are you sure?")) {
-        let item = $(this).closest(".message_board_item")
-        let id = item.data("id")
+      let item = $(this).closest(".message_board_item")
+      let id = item.data("id")
 
-        if (id) {
+      if (id) {
+        Hue.show_confirm("Delete Message", "", function () {
           Hue.socket_emit("delete_message_board_post", { id: id })
-        }
+        })
       }
     }
   )

@@ -388,11 +388,11 @@ Hue.setup_modal_image = function () {
   })
 
   $("#modal_image_toolbar_change").click(function (e) {
-    if (confirm("This will change it for everyone. Are you sure?")) {
+    Hue.show_confirm("Change Image", "This will change it for everyone", function () {
       let item = Hue.loaded_modal_image
       Hue.change_image_source(item.source)
       Hue.close_all_modals()
-    }
+    })
   })
 
   $("#modal_image_toolbar_expand").click(function (e) {

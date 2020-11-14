@@ -1160,9 +1160,9 @@ Hue.delete_message = function (id, force = false) {
       return false
     }
 
-    if (confirm("Are you sure you want to delete this message?")) {
+    Hue.show_confirm("Delete Message", "", function () {
       Hue.send_delete_message(id)
-    }
+    })
   }
 }
 

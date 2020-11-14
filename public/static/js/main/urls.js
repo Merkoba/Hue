@@ -210,10 +210,11 @@ Hue.setup_open_url = function () {
   })
 
   $("#open_url_menu_change").click(function () {
-    if (confirm("This will change it for everyone. Are you sure?")) {
+    Hue.show_confirm(`Change ${Hue.media_string(Hue.open_url_media_type)}`, 
+    "This will change it for everyone", function () {
       Hue[`change_${Hue.open_url_media_type}_source`](Hue.open_url_data.source)
       Hue.close_all_modals()
-    }
+    })
   })
 }
 

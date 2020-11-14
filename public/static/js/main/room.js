@@ -367,9 +367,9 @@ Hue.show_ban_list = function (data) {
     h.find(".ban_list_username").eq(0).text(user.username)
 
     h.click(function () {
-      if (confirm(`Are you sure you want to unban ${user.username}`)) {
+      Hue.show_confirm(`Unban ${user.username}`, "", function () {
         Hue.unban(user.username)
-      }
+      })
     })
 
     s.append(h)

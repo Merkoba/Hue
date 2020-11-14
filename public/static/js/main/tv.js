@@ -372,7 +372,7 @@ Hue.change_tv_source = function (src, just_check = false, comment = "") {
 
     if (c.user_id !== Hue.user_id) {
       if (Date.now() - c.date < 60 * 1000 * d) {
-        Hue.show_confirm("Confirm TV Change", 
+        Hue.show_confirm("Change TV", 
         `TV was changed less than ${d} minutes ago by ${c.setter}`, 
         function () {
           Hue.do_tv_change(src, comment)
