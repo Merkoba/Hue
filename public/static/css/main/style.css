@@ -229,7 +229,7 @@ body * {
 
 .chat_area {
 	display: grid;
-	grid-gap: 1.4rem;
+	grid-gap: 1.2rem;
 }
 
 #chat_area > .message {
@@ -243,11 +243,11 @@ body * {
 }
 
 #chat_area > .message:first-child {
-	padding-top: 1.8rem;
+	padding-top: 1.5rem;
 }
 
 #chat_area > .message:last-child {
-	padding-bottom: 1.8rem;
+	padding-bottom: 1.5rem;
 }
 
 .chat_area_clone .chat_content {
