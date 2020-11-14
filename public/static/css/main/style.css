@@ -828,8 +828,8 @@ a.generic:hover {
 }
 
 .chat_menu_button {
-	padding-left: 0.8rem;
-	padding-right: 0.8rem;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
 	position: relative;
 	height: 100%;
 	display: inline-flex;
