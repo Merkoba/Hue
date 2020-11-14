@@ -1834,7 +1834,6 @@ a.special_link:hover {
 }
 
 .link_preview_title {
-	cursor: pointer;
 	overflow-wrap: break-word;
 	word-break: break-word;
 }

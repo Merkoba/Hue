@@ -1801,7 +1801,7 @@ Hue.make_link_preview = function (args = {}) {
     "link_preview_image" :
     "nodisplay"
   let link_preview_title_classes = args.title ?
-    "link_preview_title action" :
+    "link_preview_title" :
     "nodisplay"
   let link_preview_description_classes = args.description ?
     "link_preview_description" :
@@ -1855,10 +1855,6 @@ Hue.setup_link_preview = function (fmessage, link_url) {
       source: link_url,
       title: link_preview_title.text()
     })
-  }
-
-  if (link_preview_title.length > 0) {
-    link_preview_title.click(f)
   }
 
   if (link_preview_image.length > 0) {
