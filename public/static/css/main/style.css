@@ -831,6 +831,7 @@ a.generic:hover {
 	padding-left: 0.5rem;
 	padding-right: 0.5rem;
 	position: relative;
+	width: 1.2rem;
 	height: 100%;
 	display: inline-flex;
 	align-items: center;
