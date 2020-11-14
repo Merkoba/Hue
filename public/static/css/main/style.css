@@ -824,7 +824,7 @@ a.generic:hover {
 	right: 0;
 	z-index: 999;
 	flex-direction: row;
-	height: 1.2rem;
+	height: 100%;
 }
 
 .chat_menu_button {
@@ -837,6 +837,7 @@ a.generic:hover {
 	justify-content: center;
 	background-color: var(--background_color_2);
 	border-left: 0.0588rem solid var(--slight_background);
+	opacity: 0.5;
 }
 
 .chat_menu_button:hover {
