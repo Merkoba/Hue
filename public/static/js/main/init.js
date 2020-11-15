@@ -259,7 +259,6 @@ Hue.on_join = function (data) {
   Hue.room_name = data.room_name
   Hue.user_reg_date = data.reg_date
   Hue.userlist = data.userlist
-  Hue.is_public = data.public
 
   Hue.setup_commands()
   Hue.set_username(data.username)

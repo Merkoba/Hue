@@ -226,12 +226,6 @@ Hue.update_chat = function (args = {}) {
       }
     })
 
-  let has_embed = false
-
-  if (image_preview || link_preview) {
-    has_embed = true
-  }
-
   let first_url = false
 
   if (image_preview) {
@@ -248,7 +242,6 @@ Hue.update_chat = function (args = {}) {
   fmessage.data("highlighted", highlighted)
   fmessage.data("uname", args.username)
   fmessage.data("mode", "chat")
-  fmessage.data("has_embed", has_embed)
 
   let chat_content_container = fmessage.find(".chat_content_container").eq(0)
   let chat_content = fmessage.find(".chat_content").eq(0)

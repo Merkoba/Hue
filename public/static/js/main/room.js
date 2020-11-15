@@ -58,15 +58,6 @@ Hue.show_room_status = function () {
   })
 }
 
-// Show whether a room is public or private
-Hue.show_public = function () {
-  if (Hue.is_public) {
-    Hue.feedback("This room is public")
-  } else {
-    Hue.feedback("This room is private")
-  }
-}
-
 // Show the room name
 Hue.show_room = function () {
   Hue.feedback(`Room: ${Hue.room_name}`)

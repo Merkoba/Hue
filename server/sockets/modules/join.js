@@ -274,7 +274,6 @@ module.exports = function (
         handler.get_userlist(socket.hue_room_id)
       ),
       role: socket.hue_role,
-      public: info.public,
       image_id: info.image_id,
       image_user_id: info.image_user_id,
       image_comment: info.image_comment,
