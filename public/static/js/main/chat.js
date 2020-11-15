@@ -806,7 +806,7 @@ Hue.start_chat_mouse_events = function () {
     }
   })
 
-  $(".chat_area").on("mouseup", ".chat_content", function (e) {
+  $(".chat_area").on("mouseup", ".chat_content_container", function (e) {
     if (e.button === 1) {
       if (Hue.start_reply(e.target)) {
         e.preventDefault()
