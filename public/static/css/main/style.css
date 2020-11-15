@@ -1702,8 +1702,8 @@ svg.action:hover {
 }
 
 #show_profile_info {
-	margin-top: 2rem;
-	grid-gap: 1rem;
+	margin-top: 1.6rem;
+	grid-gap: 0.8rem;
 }
 
 #admin_list_container,

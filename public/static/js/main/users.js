@@ -723,13 +723,6 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
 
   $("#show_profile_info").html("")
   let show_info = false
-
-  if (uid) {
-    let item = document.createElement("div")
-    item.textContent = uid
-    $("#show_profile_info").append(item)
-    show_info = true
-  }
   
   if (user) {
     let item = document.createElement("div")
@@ -737,6 +730,13 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
     let timeago = Hue.get_timeago(user.date_joined)
     item.textContent = `Joined: ${timeago}`
     item.title = nicedate
+    $("#show_profile_info").append(item)
+    show_info = true
+  }
+
+  if (uid) {
+    let item = document.createElement("div")
+    item.textContent = uid
     $("#show_profile_info").append(item)
     show_info = true
   }
