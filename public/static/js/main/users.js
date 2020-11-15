@@ -1143,7 +1143,7 @@ Hue.set_skulls_counter = function (skulls) {
   $("#show_profile_skulls_counter").text(Hue.utilz.format_number(skulls))
 }
 
-// Makes the title based on the and join date
+// Makes the title based on the join date
 Hue.get_user_info_title = function (user) {
   return `Joined: ${Hue.utilz.nice_date(user.date_joined)}`
 }
