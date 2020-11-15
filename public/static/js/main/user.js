@@ -156,6 +156,7 @@ Hue.build_details = function () {
     </div>(${Hue.get_timeago(Hue.date_joined)})</div>`
 
   $("#details_joined_room").html(s)
+  $("#details_id").html(`ID: ${Hue.user_id}`)
 }
 
 // Shows the user's details window
