@@ -83,9 +83,6 @@ Hue.update_activity_bar = function () {
     let user = Hue.get_user_by_user_id(id)
 
     if (user && Hue.activity_list.some((item) => item.user_id === id)) {
-      let t = Hue.get_user_info_title(user)
-      $(this).attr("title", t)
-      $(this).data("otitle", t)
       ids_included.push(id)
     } else {
       $(this).remove()
@@ -104,7 +101,7 @@ Hue.update_activity_bar = function () {
         let pi = user.profile_image || Hue.config.default_profile_image_url
 
         let h = $(`
-          <div class='activity_bar_item dynamic_title'>
+          <div class='activity_bar_item'>
               <div class='activity_bar_image_container round_image_container'>
                   <img class='activity_bar_image profile_image' src='${pi}' loading='lazy'>
               </div>
@@ -122,14 +119,7 @@ Hue.update_activity_bar = function () {
 
         img_el.data("user_id", user.user_id)
         text_el.text(user.username)
-
-        let t = Hue.get_user_info_title(user)
-
-        h.attr("title", t)
-        h.data("otitle", t)
-        h.data("date", user.date_joined)
         h.data("user_id", user.user_id)
-
         c.append(h)
       }
     }

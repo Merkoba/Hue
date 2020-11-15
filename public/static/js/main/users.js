@@ -284,7 +284,7 @@ Hue.update_userlist_window = function () {
     let item = Hue.userlist[i]
 
     let h = $(`
-        <div class='modal_item userlist_item dynamic_title'>
+        <div class='modal_item userlist_item'>
             <div class='userlist_column flex_column_center'>
                 <div>
                     <div class='userlist_item_profile_image_container round_image_container action4'>
@@ -298,12 +298,6 @@ Hue.update_userlist_window = function () {
                 <div class='userlist_item_bio action'></div>
             </div>
         </div>`)
-
-    let t = Hue.get_user_info_title(item)
-
-    h.attr("title", t)
-    h.data("otitle", t)
-    h.data("date", item.date_joined)
 
     let image = h.find(".userlist_item_profile_image").eq(0)
 
@@ -682,24 +676,12 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   }
 
   $("#show_profile_username").text(username)
-  $("#show_profile_username").attr("title", uid)
   $("#show_profile_role").text(`(${role})`)
   $("#show_profile_bio")
     .html(Hue.utilz.make_html_safe(bio).replace(/\n+/g, " <br> "))
     .urlize()
 
   $("#show_profile_image").attr("src", pi)
-
-  if (user) {
-    let t = Hue.get_user_info_title(user)
-    $("#show_profile_image").attr("title", t)
-    $("#show_profile_image").data("otitle", t)
-    $("#show_profile_image").data("date", user.date_joined)
-    $("#show_profile_image").addClass("dynamic_title")
-  } else {
-    $("#show_profile_image").attr("title", "")
-    $("#show_profile_image").removeClass("dynamic_title")
-  }
 
   if (!Hue.usernames.includes(username)) {
     $("#show_profile_whisper").css("display", "none")
@@ -738,6 +720,32 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   }
 
   $("#show_profile_user").data("username", username)
+
+  $("#show_profile_info").html("")
+  let show_info = false
+
+  if (uid) {
+    let item = document.createElement("div")
+    item.textContent = uid
+    $("#show_profile_info").append(item)
+    show_info = true
+  }
+  
+  if (user) {
+    let item = document.createElement("div")
+    let nicedate = Hue.utilz.nice_date(user.date_joined)
+    let timeago = Hue.get_timeago(user.date_joined)
+    item.textContent = `Joined: ${timeago}`
+    item.title = nicedate
+    $("#show_profile_info").append(item)
+    show_info = true
+  }
+
+  if (show_info) {
+    $("#show_profile_info").css("display", "grid")
+  } else {
+    $("#show_profile_info").css("display", "none")
+  }
   
   Hue.msg_profile.show()
 }
@@ -1141,11 +1149,6 @@ Hue.set_hearts_counter = function (hearts) {
 // Sets the skulls counter in the profile window
 Hue.set_skulls_counter = function (skulls) {
   $("#show_profile_skulls_counter").text(Hue.utilz.format_number(skulls))
-}
-
-// Makes the title based on the join date
-Hue.get_user_info_title = function (user) {
-  return `Joined: ${Hue.utilz.nice_date(user.date_joined)}`
 }
 
 // If username is valid and it is not in all_usernames add it

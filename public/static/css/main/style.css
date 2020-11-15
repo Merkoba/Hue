@@ -1701,6 +1701,11 @@ svg.action:hover {
 	margin-top: 1rem;
 }
 
+#show_profile_info {
+	margin-top: 2rem;
+	grid-gap: 1rem;
+}
+
 #admin_list_container,
 #ban_list_container {
 	grid-gap: 1rem;
