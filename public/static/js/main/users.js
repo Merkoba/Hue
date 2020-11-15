@@ -34,29 +34,8 @@ Hue.user_join = function (data) {
       Hue.on_activity("join")
   }
 
-  Hue.update_user_last_message(data.user_id)
-
   if (Hue.open_profile_username === data.username) {
     Hue.show_profile(data.username, $("#show_profile_image").attr("src"))
-  }
-}
-
-// Updates the user data with their last message
-Hue.update_user_last_message = function (user_id) {
-  let last_chat_message = Hue.get_last_chat_message_by_user_id(user_id)
-
-  if (!last_chat_message) {
-    return false
-  }
-
-  let text = $(last_chat_message).find(".chat_content").last().text()
-
-  if (!text) {
-    return false
-  }
-
-  if (last_chat_message) {
-    Hue.replace_property_in_userlist_by_user_id(user_id, "last_message", text)
   }
 }
 
@@ -82,7 +61,6 @@ Hue.add_to_userlist = function (args = {}) {
     bio: "",
     hearts: 0,
     skulls: 0,
-    last_message: "",
     audio_clip: false,
   }
 
@@ -97,7 +75,6 @@ Hue.add_to_userlist = function (args = {}) {
       Hue.userlist[i].bio = args.bio
       Hue.userlist[i].hearts = args.hearts
       Hue.userlist[i].skulls = args.skulls
-      Hue.userlist[i].last_message = args.last_message
       Hue.userlist[i].audio_clip = args.audio_clip
 
       Hue.update_userlist()
@@ -115,7 +92,6 @@ Hue.add_to_userlist = function (args = {}) {
     bio: args.bio,
     hearts: args.hearts,
     skulls: args.skulls,
-    last_message: args.last_message,
     audio_clip: args.audio_clip,
   })
 
@@ -1167,22 +1143,9 @@ Hue.set_skulls_counter = function (skulls) {
   $("#show_profile_skulls_counter").text(Hue.utilz.format_number(skulls))
 }
 
-// Makes the title based on the last message and join date
-Hue.get_user_info_title = function (user, include_username = false) {
-  let last_message = ""
-  let username = ""
-
-  if (include_username) {
-    username = `${user.username}\n`
-  }
-
-  if (user.last_message) {
-    last_message = `Last Message: ${user.last_message.substring(0, 100)}\n`
-  }
-
-  let joined = `Joined: ${Hue.utilz.nice_date(user.date_joined)}`
-
-  return `${username}${last_message}${joined}`
+// Makes the title based on the and join date
+Hue.get_user_info_title = function (user) {
+  return `Joined: ${Hue.utilz.nice_date(user.date_joined)}`
 }
 
 // If username is valid and it is not in all_usernames add it

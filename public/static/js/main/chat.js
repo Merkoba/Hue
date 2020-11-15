@@ -291,14 +291,6 @@ Hue.update_chat = function (args = {}) {
     }
   }
 
-  if (args.user_id) {
-    Hue.replace_property_in_userlist_by_user_id(
-      args.user_id,
-      "last_message",
-      args.message
-    )
-  }
-
   Hue.push_to_all_usernames(args.username)
 
   return {

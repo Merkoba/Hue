@@ -4,6 +4,7 @@ Hue.start_body_events = function () {
     let new_title = `${$(this).data("otitle")} (${Hue.get_timeago(
       $(this).data("date")
     )})`
+
     $(this).attr("title", new_title)
   })
 

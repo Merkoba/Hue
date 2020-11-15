@@ -83,7 +83,7 @@ Hue.update_activity_bar = function () {
     let user = Hue.get_user_by_user_id(id)
 
     if (user && Hue.activity_list.some((item) => item.user_id === id)) {
-      let t = Hue.get_user_info_title(user, true)
+      let t = Hue.get_user_info_title(user)
       $(this).attr("title", t)
       $(this).data("otitle", t)
       ids_included.push(id)
@@ -123,7 +123,7 @@ Hue.update_activity_bar = function () {
         img_el.data("user_id", user.user_id)
         text_el.text(user.username)
 
-        let t = Hue.get_user_info_title(user, true)
+        let t = Hue.get_user_info_title(user)
 
         h.attr("title", t)
         h.data("otitle", t)
