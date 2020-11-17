@@ -141,6 +141,7 @@ Hue.notifications_count = 0
 Hue.confirm_action = function () {}
 Hue.disruptive_media_minutes = 3
 Hue.confirm_open = false
+Hue.footer_expanded = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

@@ -8,18 +8,13 @@
 
         <textarea id='input' size='1' rows='1' wrap='off'></textarea>
 
-        <div id='footer_search' class='flex_start'>
-            <div title="Recent Searches">
-                <svg class='other_icon action pointer' id='footer_search_history_icon'>
-                    <use href='#icon_sync'></use>
-                </svg>
-            </div>
-
-            <input id='footer_search_input' type='text' placeholder='Search'>
+        <div id='footer_actions' class='generic_horizontal_separator'>
+            <div id='footer_expand' class='pointer action footer_actions_item'>Expand</div>
+            <div id='footer_search' class='pointer action footer_actions_item'>Search</div>
+            <div></div>
         </div>
 
         <div id='footer_media_items'>
-
             <div id='footer_image_controls' class='footer_media_control'>
                 <div id="footer_image_label" class='footer_media_label action pointer' title='Change the Image' data-type="image">
                     <svg id='footer_image_icon' class='panel_icon'><use href='#icon_image'></svg>

@@ -233,16 +233,6 @@ Hue.activate_key_detection = function () {
       return
     }
 
-    if ($("#footer_search_input")[0] === document.activeElement) {
-      if (e.key === "Enter") {
-        Hue.process_footer_search_input()
-      } else if (e.key === "Escape") {
-        Hue.clear_footer_search_input()
-      }
-
-      return
-    }
-
     let focus = true
 
     if (e.key === "Control") {
@@ -256,6 +246,16 @@ Hue.activate_key_detection = function () {
     }
 
     if (e.key === "Enter") {
+      if (e.shiftKey) {
+        Hue.toggle_footer_expand()
+        e.preventDefault()
+        return
+      }
+
+      if (Hue.footer_expanded) {
+        return false
+      }
+
       let val = $("#input").val()
 
       if (val.length === 0) {
@@ -267,6 +267,10 @@ Hue.activate_key_detection = function () {
       e.preventDefault()
       return
     } else if (e.key === "ArrowUp") {
+      if (Hue.footer_expanded) {
+        return false
+      }
+
       if (e.shiftKey) {
         Hue.input_history_change("up")
         e.preventDefault()
@@ -279,6 +283,10 @@ Hue.activate_key_detection = function () {
 
       return
     } else if (e.key === "ArrowDown") {
+      if (Hue.footer_expanded) {
+        return false
+      }
+      
       if (e.shiftKey) {
         Hue.input_history_change("down")
         e.preventDefault()

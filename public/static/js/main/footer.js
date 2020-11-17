@@ -24,7 +24,29 @@ Hue.setup_footer = function () {
     Hue.show_media_menu()
   })
 
+  $("#footer_expand").click(function () {
+    Hue.toggle_footer_expand()
+  })
+
+  $("#footer_search").click(function () {
+    Hue.show_chat_search()
+  })
+
   Hue.horizontal_separator_no_margin.separate("footer_media_items")
+}
+
+// Enables or disables footer expand
+Hue.toggle_footer_expand = function () {
+  if (Hue.footer_expanded) {
+    $("#footer").removeClass("footer_expanded")
+    $("#footer_expand").text("Expand")
+  } else {
+    $("#footer").addClass("footer_expanded")
+    $("#footer_expand").text("Restore")
+  }
+
+  Hue.footer_expanded = !Hue.footer_expanded
+  Hue.goto_bottom()
 }
 
 // Checks how to handle the rotate icon
