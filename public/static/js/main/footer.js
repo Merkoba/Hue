@@ -47,6 +47,7 @@ Hue.toggle_footer_expand = function () {
 
   Hue.footer_expanded = !Hue.footer_expanded
   Hue.goto_bottom()
+  Hue.fix_frames()
 }
 
 // Checks how to handle the rotate icon
