@@ -21,17 +21,6 @@ Hue.refresh_client = function () {
   Hue.start_socket()
 }
 
-// Send a signal to an Electron client
-Hue.electron_signal = function (func, data = {}) {
-  if (window["electron_api"] === undefined) {
-    return false
-  }
-
-  if (window["electron_api"][func] !== undefined) {
-    window["electron_api"][func](data)
-  }
-}
-
 // Simple emit to check server response
 Hue.ping_server = function () {
   Hue.socket_emit("ping_server", { date: Date.now() })

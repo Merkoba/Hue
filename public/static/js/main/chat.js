@@ -686,14 +686,6 @@ Hue.add_to_chat = function (args = {}) {
     Hue.push_to_activity_bar(user_id, date)
   }
 
-  if (
-    args.notify &&
-    Hue.started &&
-    highlighted
-  ) {
-    Hue.electron_signal("highlighted")
-  }
-
   return {
     message_id: message_id
   }
