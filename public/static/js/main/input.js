@@ -69,7 +69,7 @@ Hue.clear_input = function () {
   if (val) {
     Hue.last_input_text = val
   }
-  
+
   Hue.change_input("")
   Hue.old_input_val = ""
 }
@@ -153,4 +153,6 @@ Hue.input_submit = function () {
   
     Hue.disable_footer_expand()
   }
+
+  Hue.last_input_text = ""
 }
