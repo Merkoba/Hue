@@ -247,13 +247,11 @@ Hue.activate_key_detection = function () {
 
     if (e.key === "Enter") {
       if (e.shiftKey) {
-        Hue.toggle_footer_expand()
-        e.preventDefault()
-        return
-      }
+        if (!Hue.footer_expanded) {
+          Hue.enable_footer_expand()
+        }
 
-      if (Hue.footer_expanded) {
-        return false
+        return
       }
 
       let val = $("#input").val()
@@ -262,6 +260,10 @@ Hue.activate_key_detection = function () {
         Hue.goto_bottom(true)
       } else {
         Hue.process_message({ message: val })
+
+        if (Hue.footer_expanded) {
+          Hue.disable_footer_expand()
+        }
       }
 
       e.preventDefault()
@@ -320,6 +322,11 @@ Hue.activate_key_detection = function () {
       }
     } else if (e.key === "Escape") {
       if (!e.shiftKey) {
+        if (Hue.footer_expanded) {
+          Hue.disable_footer_expand()
+          return
+        }
+
         Hue.clear_input()
         Hue.reset_input_history_index()
         

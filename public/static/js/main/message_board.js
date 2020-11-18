@@ -60,7 +60,7 @@ Hue.add_post_to_message_board = function (post) {
   username.html(`Posted By: ${uname}`)
 
   let text = item.find(".message_board_text").eq(0)
-  text.html(Hue.replace_markdown(Hue.utilz.make_html_safe(post.message), false)).urlize()
+  text.html(Hue.replace_markdown(Hue.utilz.make_html_safe(post.message))).urlize()
 
   let title = Hue.utilz.nice_date(post.date)
 

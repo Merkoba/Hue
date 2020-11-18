@@ -38,13 +38,28 @@ Hue.setup_footer = function () {
 // Enables or disables footer expand
 Hue.toggle_footer_expand = function () {
   if (Hue.footer_expanded) {
-    $("#footer").removeClass("footer_expanded")
-    $("#footer_expand").text("Expand")
+    Hue.disable_footer_expand()
   } else {
-    $("#footer").addClass("footer_expanded")
-    $("#footer_expand").text("Restore")
+    Hue.enable_footer_expand()
   }
+}
 
+// Enabled footer expand
+Hue.enable_footer_expand = function () {
+  $("#footer").addClass("footer_expanded")
+  $("#footer_expand").text("Restore")
+  Hue.after_footer_expand_change()
+}
+
+// Disable footer expand
+Hue.disable_footer_expand = function () {
+  $("#footer").removeClass("footer_expanded")
+  $("#footer_expand").text("Expand")
+  Hue.after_footer_expand_change()
+}
+
+// After footer expand change
+Hue.after_footer_expand_change = function () {
   Hue.footer_expanded = !Hue.footer_expanded
   Hue.goto_bottom()
   Hue.fix_frames()
