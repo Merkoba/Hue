@@ -138,9 +138,13 @@ Hue.input_command = function (arg) {
 
 // Does a submit action from the input
 Hue.input_submit = function () {
-  Hue.process_message({
-    message: $("#input").val()
-  })
+  let val = $("#input").val()
 
-  Hue.disable_footer_expand()
+  if (val) {
+    Hue.process_message({
+      message: $("#input").val()
+    })
+  
+    Hue.disable_footer_expand()
+  }
 }
