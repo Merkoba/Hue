@@ -64,6 +64,12 @@ Hue.update_input_placeholder = function () {
 
 // Clears the input
 Hue.clear_input = function () {
+  let val = $("#input").val()
+
+  if (val) {
+    Hue.last_input_text = val
+  }
+  
   Hue.change_input("")
   Hue.old_input_val = ""
 }

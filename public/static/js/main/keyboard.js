@@ -332,8 +332,11 @@ Hue.activate_key_detection = function () {
         } else {
           if ($("#input").val()) {
             Hue.clear_input()
-            Hue.reset_input_history_index()
+          } else {
+            Hue.change_input(Hue.last_input_text)  
           }
+
+          Hue.reset_input_history_index()
         }
         
         e.preventDefault()
