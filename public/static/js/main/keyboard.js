@@ -327,14 +327,15 @@ Hue.activate_key_detection = function () {
           return
         }
 
-        Hue.clear_input()
-        Hue.reset_input_history_index()
-        
-        if ($("#input").val().length > 0) {
-        } else {
+        if (Hue.chat_scrolled) {
           Hue.goto_bottom(true)
+        } else {
+          if ($("#input").val()) {
+            Hue.clear_input()
+            Hue.reset_input_history_index()
+          }
         }
-
+        
         e.preventDefault()
         return
       }
