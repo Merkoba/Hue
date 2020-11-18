@@ -6,11 +6,19 @@ Hue.input_is_scrolled = function () {
 
 // On input change
 Hue.on_input_change = function () {
-  let value = $("#input").val()
-
+  let input = $("#input")[0]
+  let value = $(input).val()
   if (Hue.old_input_val !== value) {
     Hue.check_typing()
     Hue.old_input_val = value
+
+    if (input.clientHeight < input.scrollHeight) {
+      Hue.enable_footer_expand()
+    }
+
+    if (!value) {
+      Hue.disable_footer_expand()
+    }
   }
 }
 
@@ -77,11 +85,11 @@ Hue.insert_to_input = function (what) {
 // Changes the input
 Hue.change_input = function (s, to_end = true, focus = true) {
   $("#input").val(s)
-  
+
   if (to_end) {
     Hue.input_to_end()
   }
-  
+
   if (focus) {
     Hue.focus_input()
   }
@@ -111,7 +119,7 @@ Hue.add_linebreak_to_input = function () {
   if (!$("#input").val().trim()) {
     return false
   }
-  
+
   Hue.insert_to_input("\n")
   Hue.scroll_input_to_bottom()
 }
@@ -126,4 +134,13 @@ Hue.scroll_input_to_bottom = function () {
 Hue.input_command = function (arg) {
   arg = arg.replace(/\s\/endinput/gi, "")
   Hue.change_input(arg)
+}
+
+// Does a submit action from the input
+Hue.input_submit = function () {
+  Hue.process_message({
+    message: $("#input").val()
+  })
+
+  Hue.disable_footer_expand()
 }

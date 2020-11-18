@@ -263,11 +263,7 @@ Hue.activate_key_detection = function () {
       if (val.length === 0) {
         Hue.goto_bottom(true)
       } else {
-        Hue.process_message({ message: val })
-
-        if (Hue.footer_expanded) {
-          Hue.disable_footer_expand()
-        }
+        Hue.input_submit()
       }
 
       e.preventDefault()

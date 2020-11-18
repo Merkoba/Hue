@@ -24,12 +24,17 @@ Hue.setup_footer = function () {
     Hue.show_media_menu()
   })
 
-  $("#footer_expand").click(function () {
-    Hue.toggle_footer_expand()
-  })
-
   $("#footer_search").click(function () {
     Hue.show_chat_search()
+  })
+
+  $("#footer_enter").click(function () {
+    Hue.input_submit()
+  })
+
+  $("#footer_clear").click(function () {
+    Hue.clear_input()
+    Hue.disable_footer_expand()
   })
 
   Hue.horizontal_separator_no_margin.separate("footer_media_items")
@@ -46,15 +51,23 @@ Hue.toggle_footer_expand = function () {
 
 // Enabled footer expand
 Hue.enable_footer_expand = function () {
+  if (Hue.footer_expanded) {
+    return
+  }
+
   $("#footer").addClass("footer_expanded")
-  $("#footer_expand").text("Restore")
+  $(`#footer_expand`).find("use").eq(0).attr("href", "#icon_down")
   Hue.after_footer_expand_change()
 }
 
 // Disable footer expand
 Hue.disable_footer_expand = function () {
+  if (!Hue.footer_expanded) {
+    return
+  }
+
   $("#footer").removeClass("footer_expanded")
-  $("#footer_expand").text("Expand")
+  $(`#footer_expand`).find("use").eq(0).attr("href", "#icon_up")
   Hue.after_footer_expand_change()
 }
 
