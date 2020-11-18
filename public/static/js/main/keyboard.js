@@ -260,10 +260,10 @@ Hue.activate_key_detection = function () {
         return
       }
 
-      if (val.length === 0) {
-        Hue.goto_bottom(true)
-      } else {
+      if (val) {
         Hue.input_submit()
+      } else {
+        Hue.goto_bottom(true)
       }
 
       e.preventDefault()

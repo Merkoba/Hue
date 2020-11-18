@@ -2381,15 +2381,9 @@ pre {
 	padding: 0.5rem;
 }
 
-.precode {
+.code {
 	background-color: var(--color_4_a);
 	padding: 0.5rem;
-	-moz-tab-size: var(--tab_size);
-	tab-size: var(--tab_size);
-}
-
-.precode code {
-	font-family: var(--app_font_family);
 }
 
 .expanded_modal_image {

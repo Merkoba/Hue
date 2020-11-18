@@ -68,7 +68,7 @@ Hue.setup_markdown_regexes = function () {
     let n = g3.length
 
     if (n === 3) {
-      return `${g2}<pre class='precode'><code>${g4}</code></pre>${g5}`
+      return `${g2}<div class='code'>${Hue.utilz.untab_string(g4)}</div>${g5}`
     }
 
     return g1
