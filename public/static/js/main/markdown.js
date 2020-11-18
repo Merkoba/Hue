@@ -1,14 +1,21 @@
 // Regex generator for character based markdown
 // For example **this** or _this_
-Hue.make_markdown_char_regex = function (char) {
-  // Raw regex if "=" was the char
-  // (^|\s|\[)(\=+)(?!\s)(.*[^\=\s])\2($|\s)
-  let regex = `(^|\\s)(${Hue.utilz.escape_special_characters(
-    char
-  )}+)(?!\\s)(.*[^${Hue.utilz.escape_special_characters(
-    char
-  )}\\s])\\2($|\\s|\:)`
-  return new RegExp(regex, "gm")
+Hue.make_markdown_char_regex = function (char, mode = 1) {
+  if (mode === 1) {
+    let regex = `(^|\\s)(${Hue.utilz.escape_special_characters(
+      char
+    )}+)(?!\\s)(.*[^${Hue.utilz.escape_special_characters(
+      char
+    )}\\s])\\2($|\\s|\:)`
+    return new RegExp(regex, "gm")
+  } else if (mode === 2) {
+    let regex = `(^|\\s)(${Hue.utilz.escape_special_characters(
+      char
+    )}+)(.*[^${Hue.utilz.escape_special_characters(
+      char
+    )}\\s])\\2($|\\s|\:)`
+    return new RegExp(regex, "gms")
+  }
 }
 
 // Makes and prepares the markdown regexes
@@ -50,6 +57,18 @@ Hue.setup_markdown_regexes = function () {
 
     if (n === 2) {
       return `${g2}<span class='yuge'>${g4}</span>${g5}`
+    }
+
+    return g1
+  }
+
+  Hue.markdown_regexes["`"] = {}
+  Hue.markdown_regexes["`"].regex = Hue.make_markdown_char_regex("`", 2)
+  Hue.markdown_regexes["`"].replace_function = function (g1, g2, g3, g4, g5) {
+    let n = g3.length
+
+    if (n === 3) {
+      return `${g2}<pre class='precode'><code>${g4}</code></pre>${g5}`
     }
 
     return g1
@@ -145,18 +164,27 @@ Hue.replace_markdown = function (text, filter = false) {
     Hue.markdown_regexes["*"].regex,
     Hue.markdown_regexes["*"].replace_function
   )
+
   text = text.replace(
     Hue.markdown_regexes["_"].regex,
     Hue.markdown_regexes["_"].replace_function
   )
+
   text = text.replace(
     Hue.markdown_regexes["!"].regex,
     Hue.markdown_regexes["!"].replace_function
   )
+
+  text = text.replace(
+    Hue.markdown_regexes["`"].regex,
+    Hue.markdown_regexes["`"].replace_function
+  )
+
   text = text.replace(
     Hue.markdown_regexes["$"].regex,
     Hue.markdown_regexes["$"].replace_function
   )
+
   text = text.replace(
     Hue.markdown_regexes[">"].regex,
     Hue.markdown_regexes[">"].replace_function
