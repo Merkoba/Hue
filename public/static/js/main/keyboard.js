@@ -327,18 +327,13 @@ Hue.activate_key_detection = function () {
           return
         }
 
-        if (Hue.chat_scrolled) {
-          Hue.goto_bottom(true)
+        if ($("#input").val()) {
+          Hue.clear_input()
         } else {
-          if ($("#input").val()) {
-            Hue.clear_input()
-          } else {
-            Hue.change_input(Hue.last_input_text)  
-          }
-
-          Hue.reset_input_history_index()
+          Hue.change_input(Hue.last_input_text)  
         }
-        
+
+        Hue.reset_input_history_index()
         e.preventDefault()
         return
       }
