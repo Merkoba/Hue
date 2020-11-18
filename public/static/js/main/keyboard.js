@@ -246,15 +246,19 @@ Hue.activate_key_detection = function () {
     }
 
     if (e.key === "Enter") {
+      let val = $("#input").val()
+
       if (e.shiftKey) {
         if (!Hue.footer_expanded) {
           Hue.enable_footer_expand()
+
+          if (!val.trim()) {
+            e.preventDefault()
+          }
         }
 
         return
       }
-
-      let val = $("#input").val()
 
       if (val.length === 0) {
         Hue.goto_bottom(true)

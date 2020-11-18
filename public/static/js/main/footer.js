@@ -63,6 +63,10 @@ Hue.after_footer_expand_change = function () {
   Hue.footer_expanded = !Hue.footer_expanded
   Hue.goto_bottom()
   Hue.fix_frames()
+
+  if (!$("#input").val().trim()) {
+    Hue.clear_input()
+  }
 }
 
 // Checks how to handle the rotate icon

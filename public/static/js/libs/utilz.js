@@ -52,6 +52,19 @@ const Utilz = function () {
 		return pf
 	}
 
+	utilz.remove_pre_empty_lines = function (s) {
+		let split = s.split("\n")
+		let counter = 0
+
+		for (let line of split) {
+			if (line.trim()) {
+				return split.slice(counter).join("\n")
+			} else {
+				counter += 1
+			}
+		}
+	}
+
 	utilz.clean_string8 = function (s) {
 		return s.replace(/[\n\r]+/g, '\n').trim()
 	}

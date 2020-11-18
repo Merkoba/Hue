@@ -1059,6 +1059,7 @@ Hue.process_message = function (args = {}) {
   let message_split = args.message.split("\n")
   let num_lines = message_split.length
 
+  args.message = Hue.utilz.remove_pre_empty_lines(args.message)
   args.message = Hue.utilz.remove_multiple_empty_lines(args.message)
   args.message = Hue.utilz.untab_string(args.message).trimEnd()
 
