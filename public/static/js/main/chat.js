@@ -1556,6 +1556,14 @@ Hue.scroll_up = function (n) {
   return diff
 }
 
+// Gets scrolled percent
+Hue.get_scrolled_percent = function () {
+  let area = $("#chat_area")
+  let max = area.prop("scrollHeight") - area.innerHeight()
+  let scrolltop = area.scrollTop()
+  return (100 - parseInt((scrolltop / max) * 100))
+}
+
 // Scrolls the chat down
 Hue.scroll_down = function (n) {
   let $ch = $("#chat_area")
@@ -1975,11 +1983,11 @@ Hue.check_scrollers = function () {
 
   if (diff < 5) {
     Hue.hide_bottom_scroller()
-    $("#bottom_scroller_info").html("100%")
+    $("#scroller_info").html("0%")
   } else {
     Hue.show_bottom_scroller()
-    let info = `${(parseInt((scrolltop / max) * 100))}%`
-    $("#bottom_scroller_info").html(info)
+    let info = `${Hue.get_scrolled_percent()}%`
+    $("#scroller_info").html(info)
   }
 }
 
