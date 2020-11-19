@@ -1671,7 +1671,6 @@ svg.action:hover {
 }
 
 #show_profile_buttons {
-	margin-top: 1.6rem;
 	grid-gap: 0.5rem;
 }
 
@@ -1710,7 +1709,6 @@ svg.action:hover {
 }
 
 #show_profile_info {
-	margin-top: 1.6rem;
 	grid-gap: 0.8rem;
 }
 
@@ -2523,4 +2521,10 @@ pre {
 
 #confirm_message {
 	margin-bottom: 1rem;
+}
+
+.profile_separator {
+	border: 1px solid var(--color_4_a);
+	margin-top: 1.6rem;
+	margin-bottom: 1.6rem;
 }
