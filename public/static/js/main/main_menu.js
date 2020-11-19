@@ -1,6 +1,6 @@
 // Setups change events for the room menu widgets
-Hue.setup_room_menu = function () {
-  Hue.setup_togglers("room_menu")
+Hue.setup_main_menu = function () {
+  Hue.setup_togglers("main_menu")
 
   $("#admin_log").change(function () {
     let what = JSON.parse($("#admin_log option:selected").val())
@@ -77,40 +77,48 @@ Hue.setup_room_menu = function () {
     }
   })
 
-  $("#room_menu_more_unban_all").click(function () {
+  $("#main_menu_more_unban_all").click(function () {
     Hue.needs_confirm("unban_all")
   })
 
-  $("#room_menu_more_admin_activity").click(function () {
+  $("#main_menu_more_admin_activity").click(function () {
     Hue.request_admin_activity()
   })
 
-  $("#room_menu_more_admin_list").click(function () {
+  $("#main_menu_more_admin_list").click(function () {
     Hue.request_admin_list()
   })
 
-  $("#room_menu_more_ban_list").click(function () {
+  $("#main_menu_more_ban_list").click(function () {
     Hue.request_ban_list()
   })
 
-  $("#room_menu_more_clear_log").click(function () {
+  $("#main_menu_more_clear_log").click(function () {
     Hue.needs_confirm("clear_log")
   })
 
-  $("#room_menu_more_clear_message_board").click(function () {
+  $("#main_menu_more_clear_message_board").click(function () {
     Hue.needs_confirm("clear_message_board")
   })
 
-  $("#room_menu_create_room").click(function () {
+  $("#main_menu_create_room").click(function () {
     Hue.show_create_room()
   })
 
-  $("#room_menu_status").click(function () {
+  $("#main_menu_status").click(function () {
     Hue.show_room_status()
   })
 
-  $("#room_menu_commands").click(function () {
+  $("#main_menu_commands").click(function () {
     Hue.show_commands()
+  })
+
+  $("#main_menu_user_menu").click(function () {
+    Hue.show_user_menu()
+  })
+
+  $("#main_menu_media_menu").click(function () {
+    Hue.show_media_menu()
   })
 
   $("#admin_background_image").click(function () {
@@ -119,13 +127,13 @@ Hue.setup_room_menu = function () {
 }
 
 // Shows the room menu
-Hue.show_room_menu = function () {
-  Hue.msg_room_menu.show()
+Hue.show_main_menu = function () {
+  Hue.msg_main_menu.show()
 }
 
 // Configures the room menu
 // Updates all widgets with current state
-Hue.config_room_menu = function () {
+Hue.config_main_menu = function () {
   if (Hue.is_admin_or_op()) {
     Hue.config_admin_theme()
     Hue.config_admin_background_mode()

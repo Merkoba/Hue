@@ -309,7 +309,7 @@ Hue.commands = {
   },
   "roommenu": {
     action: (arg, ans) => {
-      Hue.show_room_menu()
+      Hue.show_main_menu()
     },
     description: `Shows the room menu`,
   },

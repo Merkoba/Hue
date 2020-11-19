@@ -3,7 +3,7 @@
 	--panel_font_size: 1rem;
 	--icon_size: 1.4rem;
 	--app_font_family: imported_font, sans-serif;
-	--profile_image_size: 2rem;
+	--profile_image_size: 2.2rem;
 	--tab_size: 1.6rem;
 }
 
@@ -233,8 +233,8 @@ body * {
 }
 
 #chat_area > .message {
-	margin-left: 0.5rem;
-	margin-right: 0.5rem;
+	margin-left: 0.6rem;
+	margin-right: 0.6rem;
 }
 
 #chat_area .chat_content_container,
@@ -387,6 +387,7 @@ body * {
 	font-size: var(--panel_font_size);
 	border: 0rem solid black;
 	padding-right: 1rem;
+	padding-left: 1rem;
 	outline: none;
 	font-family: inherit;
 	flex-grow: 1;
@@ -1645,7 +1646,7 @@ svg.action:hover {
 	margin-top: 0.8rem;
 }
 
-#admin_menu .toggler_main_container:last-child .room_menu_toggle_container {
+#admin_menu .toggler_main_container:last-child .main_menu_toggle_container {
 	margin-bottom: 0;
 }
 
@@ -2086,7 +2087,7 @@ a.special_link:hover {
 	margin: auto;
 }
 
-.room_menu_tree_container {
+.main_menu_tree_container {
 	margin-top: 1rem;
 	padding-top: 1rem;
 	padding-bottom: 1rem;
@@ -2094,33 +2095,33 @@ a.special_link:hover {
 	border: 0.0588rem solid var(--color_4_alpha);
 }
 
-.room_menu_tree_toggler_item {
+.main_menu_tree_toggler_item {
 	padding-top: 0.6rem;
 	padding-bottom: 0.6rem;
 }
 
-.room_menu_tree_toggler_item:first-child {
+.main_menu_tree_toggler_item:first-child {
 	padding-top: 0;
 }
 
-.room_menu_tree_toggler_item:last-child {
+.main_menu_tree_toggler_item:last-child {
 	padding-bottom: 0;
 }
 
-#room_menu_more_container {
+#main_menu_more_container {
 	grid-gap: 0.8rem;
 }
 
-.room_menu_category {
+.main_menu_category {
 	font-size: 1.1rem;
 }
 
-.room_menu_toggle {
+.main_menu_toggle {
 	margin-top: 0.5rem;
 	margin-bottom: 0.5rem;
 }
 
-.room_menu_toggle_container {
+.main_menu_toggle_container {
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 	margin-top: 0.5rem;
@@ -2128,14 +2129,14 @@ a.special_link:hover {
 	background-color: var(--slight_background);
 }
 
-.room_menu_section_container {
+.main_menu_section_container {
 	display: grid;
 	grid-gap: 1.6rem;
 	grid-auto-columns: auto;
 	align-items: center;
 }
 
-.room_menu_label {
+.main_menu_label {
 	padding-bottom: 0.5rem;
 }
 
@@ -2461,10 +2462,6 @@ pre {
 	background-color: var(--background_color_2) !important;
 	color: var(--font_color) !important;
 	white-space: nowrap !important; 
-}
-
-#footer_media_menu {
-	padding-left: 0;
 }
 
 .flex_start {

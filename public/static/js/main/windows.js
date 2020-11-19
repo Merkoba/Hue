@@ -42,14 +42,14 @@ Hue.start_msg = function () {
 
   // Start the instances
 
-  Hue.msg_room_menu = Msg.factory(
+  Hue.msg_main_menu = Msg.factory(
     Object.assign({}, common, titlebar, {
-      id: "room_menu",
+      id: "main_menu",
       window_width: "22rem",
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.close_togglers("room_menu")
-        Hue.close_togglers("room_menu_permissions")
+        Hue.close_togglers("main_menu")
+        Hue.close_togglers("main_menu_permissions")
       },
     })
   )
@@ -435,7 +435,7 @@ Hue.start_msg = function () {
 
   // Set the templates
 
-  Hue.msg_room_menu.set(Hue.template_room_menu())
+  Hue.msg_main_menu.set(Hue.template_main_menu())
   Hue.msg_user_menu.set(Hue.template_user_menu())
   Hue.msg_userlist.set(Hue.template_userlist())
   Hue.msg_played.set(Hue.template_played())
@@ -473,20 +473,11 @@ Hue.start_msg = function () {
 
   // Set the titles
 
-  Hue.msg_highlights.set_title(
-    "<span id='highlights_window_title' class='pointer'>Highlights</span>"
-  )
-  Hue.msg_chat_search.set_title(
-    "<span id='chat_search_window_title' class='pointer'>Chat Search</span>"
-  )
+  Hue.msg_highlights.set_title("Highlights")
+  Hue.msg_chat_search.set_title("Chat Search")
   Hue.msg_played.set_title("Recently Played")
-  Hue.msg_room_menu.set_title(
-    "<span id='room_menu_window_title' class='pointer'>Room Menu</span>"
-  )
-  Hue.msg_user_menu.set_title(
-    "<span id='user_menu_window_title' class='pointer'>User Menu</span>"
-  )
-
+  Hue.msg_main_menu.set_title("Main Menu")
+  Hue.msg_user_menu.set_title("User Menu")
   Hue.msg_settings.set_title("Settings")
   Hue.msg_media_menu.set_title("Media Menu")
   Hue.msg_room_status.set_title("Room Status")
@@ -500,24 +491,6 @@ Hue.start_msg = function () {
   Hue.msg_message_board.set_title("Message Board")
   Hue.msg_profile_image_cropper.set_title("Crop A Circle")
   Hue.msg_confirm.set_title("Confirm Action")
-
-  // Titlebar click events
-
-  $("#room_menu_window_title").click(function () {
-    Hue.toggle_menu_windows()
-  })
-
-  $("#user_menu_window_title").click(function () {
-    Hue.toggle_menu_windows()
-  })
-
-  $("#chat_search_window_title").click(function () {
-    Hue.toggle_search_windows()
-  })
-
-  $("#highlights_window_title").click(function () {
-    Hue.toggle_search_windows()
-  })
 }
 
 // Sets all info window variables to false
@@ -610,63 +583,63 @@ Hue.after_modal_close = function (instance) {
 
 // Gets all Msg modal instances
 Hue.get_modal_instances = function () {
-  return Hue.msg_room_menu.higher_instances()
+  return Hue.msg_main_menu.higher_instances()
 }
 
 // Gets all Msg popup instances
 Hue.get_popup_instances = function () {
-  return Hue.msg_room_menu.lower_instances()
+  return Hue.msg_main_menu.lower_instances()
 }
 
 // Gets all Msg instances
 Hue.get_all_msg_instances = function () {
-  return Hue.msg_room_menu.instances()
+  return Hue.msg_main_menu.instances()
 }
 
 // Checks if any Msg instance is open
 Hue.any_msg_open = function () {
-  return Hue.msg_room_menu.any_open()
+  return Hue.msg_main_menu.any_open()
 }
 
 // Checks if any Msg modal instance is open
 Hue.any_modal_open = function () {
-  return Hue.msg_room_menu.any_higher_open()
+  return Hue.msg_main_menu.any_higher_open()
 }
 
 // Checks if any Msg popup instance is open
 Hue.any_popup_open = function () {
-  return Hue.msg_room_menu.any_lower_open()
+  return Hue.msg_main_menu.any_lower_open()
 }
 
 // Gets the highest open Msg modal
 Hue.get_highest_modal = function () {
-  return Hue.msg_room_menu.highest_instance()
+  return Hue.msg_main_menu.highest_instance()
 }
 
 // Closes all Msg instances
 Hue.close_all_msg = function (callback = false) {
   if (callback) {
-    Hue.msg_room_menu.close_all(callback)
+    Hue.msg_main_menu.close_all(callback)
   } else {
-    Hue.msg_room_menu.close_all()
+    Hue.msg_main_menu.close_all()
   }
 }
 
 // Closes all Msg modal instances
 Hue.close_all_modals = function (callback = false) {
   if (callback) {
-    Hue.msg_room_menu.close_all_higher(callback)
+    Hue.msg_main_menu.close_all_higher(callback)
   } else {
-    Hue.msg_room_menu.close_all_higher()
+    Hue.msg_main_menu.close_all_higher()
   }
 }
 
 // Closes all Msg popup instances
 Hue.close_all_popups = function (callback = false) {
   if (callback) {
-    Hue.msg_room_menu.close_all_lower(callback)
+    Hue.msg_main_menu.close_all_lower(callback)
   } else {
-    Hue.msg_room_menu.close_all_lower()
+    Hue.msg_main_menu.close_all_lower()
   }
 }
 
@@ -882,7 +855,7 @@ Hue.process_msg_close_button = function (button) {
 
 // Function to apply the defined toggles between windows
 Hue.process_window_toggle = function (data) {
-  let highest = Hue.msg_room_menu.highest_instance()
+  let highest = Hue.msg_main_menu.highest_instance()
   let current = highest.options.id
   let next_func = data[current]
 
@@ -893,36 +866,6 @@ Hue.process_window_toggle = function (data) {
   Hue[`msg_${current}`].close(function () {
     next_func()
   })
-}
-
-// Toggles between the chat search and highlights windows when clicking the titlebar
-Hue.toggle_search_windows = function () {
-  let data = {}
-
-  data["chat_search"] = function () {
-    Hue.show_highlights()
-  }
-
-  data["highlights"] = function () {
-    Hue.show_chat_search()
-  }
-
-  Hue.process_window_toggle(data)
-}
-
-// Toggles between the room menu and user menu when clicking the titlebar
-Hue.toggle_menu_windows = function () {
-  let data = {}
-
-  data["room_menu"] = function () {
-    Hue.show_user_menu()
-  }
-
-  data["user_menu"] = function () {
-    Hue.show_room_menu()
-  }
-
-  Hue.process_window_toggle(data)
 }
 
 // Makes action popups like for file upload progress

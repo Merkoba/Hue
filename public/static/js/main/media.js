@@ -797,7 +797,7 @@ Hue.change_media_lock = function(args) {
 Hue.change_media_lock_icon = function (type) {
   if (Hue[`${type}_locked`]) {
     $(`#footer_lock_${type}_icon`).find("use").eq(0).attr("href", "#icon_locked")
-    $(`#footer_lock_${type}_label`).css("display", "block")
+    $(`#footer_lock_${type}_label`).css("display", "flex")
 
     if (Hue[`loaded_${type}`] !== Hue[`current_${type}`]()) {
       $(`#footer_lock_${type}_icon`).addClass("blinking")

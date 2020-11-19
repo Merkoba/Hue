@@ -16,14 +16,6 @@ Hue.setup_footer = function () {
     })
   }
 
-  $("#footer_user_menu").click(function () {
-    Hue.show_user_menu()
-  })
-
-  $("#footer_media_menu").click(function () {
-    Hue.show_media_menu()
-  })
-
   $("#footer_search").click(function () {
     Hue.show_chat_search()
   })

@@ -1,10 +1,10 @@
 // Setups the header
 Hue.setup_header = function () {
-  $("#header_room_menu").click(function () {
-    Hue.show_room_menu()
+  $("#header_main_menu").click(function () {
+    Hue.show_main_menu()
   })
 
-  $("#header_room_menu").on("auxclick", function (e) {
+  $("#header_main_menu").on("auxclick", function (e) {
     if (e.which === 2) {
       let rotated = $("#main_container").data("hue_rotated")
       let degrees = rotated ? 0 : 180
