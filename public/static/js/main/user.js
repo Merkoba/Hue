@@ -474,7 +474,6 @@ Hue.not_an_op = function () {
 Hue.check_firstime = function () {
   if (Hue.get_local_storage(Hue.ls_first_time) === null) {
     Hue.first_time = true
-    Hue.show_intro()
     Hue.request_desktop_notifications_permission()
     Hue.save_local_storage(Hue.ls_first_time, false)
   } else {
@@ -504,37 +503,6 @@ Hue.show_others_disconnected = function (data) {
   }
 
   Hue.feedback(s)
-}
-
-// Show an intro with popups when a user first joins the site
-Hue.show_intro = function () {
-  let s = `
-    You can chat in this area. The icon on the left opens the user menu where you can change your profile image and other settings.`
-
-  Hue.create_popup({ position: "bottomleft" }).show(["Chat and User Menu", s])
-
-  s = `
-    This area has media controls. You can use these to change the room's media or control what is displayed to you.`
-
-  Hue.create_popup({ position: "bottomright" }).show(["Media Controls", s])
-
-  s = `This side shows the users online and recently present users.`
-
-  Hue.create_popup({ position: "topleft" }).show(["Top Left", s])
-
-  s = `Some useful buttons here.`
-
-  Hue.create_popup({ position: "topright" }).show(["Top Right", s])
-
-  s = `Close this to close all the popups.`
-
-  Hue.create_popup({ position: "center" }).show(["Close Popups", s])
-
-  let f = () => {
-    Hue.close_all_popups()
-  }
-
-  Hue.create_popup({ position: "center", after_close: f }).show(["Welcome", s])
 }
 
 // Shows some options for the audio clip
