@@ -324,10 +324,6 @@ Hue.setup_user_menu = function () {
     Hue.needs_confirm("logout")
   })
 
-  $("#user_menu_highlights").click(function () {
-    Hue.show_highlights()
-  })
-
   $("#user_menu_settings").click(function () {
     Hue.show_settings()
   })

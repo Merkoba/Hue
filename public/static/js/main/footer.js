@@ -20,13 +20,8 @@ Hue.setup_footer = function () {
     Hue.show_chat_search()
   })
 
-  $("#footer_enter").click(function () {
-    Hue.input_submit()
-  })
-
-  $("#footer_clear").click(function () {
-    Hue.clear_input()
-    Hue.disable_footer_expand()
+  $("#footer_highlights").click(function () {
+    Hue.show_highlights()
   })
 
   Hue.horizontal_separator_no_margin.separate("footer_media_items")
