@@ -158,11 +158,17 @@ Hue.update_chat = function (args = {}) {
     fmessage.find(".chat_content").eq(0).text(tpt)
     fmessage.find(".chat_content_container").eq(0).data("original_message", tpt)
   } else {
+    let profile_image_classes = "chat_profile_image profile_image"
+
+    if (!Hue.user_is_online_by_user_id(args.user_id)) {
+      profile_image_classes += " profile_image_offline"
+    }
+    
     let s = `
         <div class='${message_classes}'>
             <div class='chat_left_side'>
                 <div class='chat_profile_image_container round_image_container action4'>
-                    <img class='chat_profile_image profile_image' src='${pi}' loading='lazy'>
+                    <img class='${profile_image_classes}' src='${pi}' loading='lazy'>
                 </div>
             </div>
             <div class='chat_right_side'>

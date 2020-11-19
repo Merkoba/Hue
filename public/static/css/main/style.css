@@ -471,6 +471,10 @@ body * {
 	top: 2.5rem;
 }
 
+#chat_area .profile_image_offline {
+	filter: grayscale(100);
+}
+
 .chat_profile_image {
 	width: 99%;
 	cursor: pointer;

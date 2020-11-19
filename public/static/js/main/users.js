@@ -37,6 +37,30 @@ Hue.user_join = function (data) {
   if (Hue.open_profile_username === data.username) {
     Hue.show_profile(data.username, $("#show_profile_image").attr("src"))
   }
+
+  Hue.remove_offline_profile_images(data.user_id)
+}
+
+// Removes the offline effect to a user's profile images
+Hue.remove_offline_profile_images = function (user_id) {
+  $("#chat_area .message").each(function () {
+    if ($(this).data("user_id") === user_id) {
+      $(this).find(".profile_image").each(function () {
+        $(this).removeClass("profile_image_offline")
+      })
+    }
+  })
+}
+
+// Add the offline effect to a user's profile images
+Hue.add_offline_profile_images = function (user_id) {
+  $("#chat_area .message").each(function () {
+    if ($(this).data("user_id") === user_id) {
+      $(this).find(".profile_image").each(function () {
+        $(this).addClass("profile_image_offline")
+      })
+    }
+  })
 }
 
 // Updates the user count in the header and user list
@@ -381,6 +405,12 @@ Hue.user_is_online_by_username = function (username) {
   return Boolean(user)
 }
 
+// Returns true or false depending if the user is online
+Hue.user_is_online_by_user_id = function (user_id) {
+  let user = Hue.get_user_by_user_id(user_id)
+  return Boolean(user)
+}
+
 // Checks if a user is controllable
 // Basically a user's role is below the user's role
 // An admin can control other admins
@@ -482,6 +512,8 @@ Hue.user_disconnect = function (data) {
   if (Hue.open_profile_username === data.username) {
     Hue.show_profile(data.username, $("#show_profile_image").attr("src"))
   }
+
+  Hue.add_offline_profile_images(data.user_id)
 }
 
 // Announces that the operation cannot be applied to a certain user
