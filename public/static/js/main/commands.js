@@ -307,11 +307,11 @@ Hue.commands = {
     },
     description: `Stops and locks all media`,
   },
-  "roommenu": {
+  "mainmenu": {
     action: (arg, ans) => {
       Hue.show_main_menu()
     },
-    description: `Shows the room menu`,
+    description: `Shows the main menu`,
   },
   "usermenu": {
     action: (arg, ans) => {
