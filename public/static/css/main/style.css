@@ -471,8 +471,9 @@ body * {
 	top: 2.5rem;
 }
 
-#chat_area .profile_image_offline {
-	filter: grayscale(100);
+#chat_area .profile_image_online {
+	border: 2px solid var(--color_3);
+	box-sizing: border-box;
 }
 
 .chat_profile_image {
