@@ -472,13 +472,15 @@ body * {
 }
 
 #chat_area .chat_profile_image_container {
+	border-width: 0.2rem;
+	border-color: transparent;
+	border-style: double;
+	box-sizing: border-box;
 	opacity: 0.5;
 }
 
 #chat_area .profile_image_online {
-	border: 0.2rem solid var(--color_3);
-	box-sizing: border-box;
-	border-style: double;
+	border-color: var(--color_3);
 	opacity: 1;
 }
 
