@@ -1672,7 +1672,7 @@ svg.action:hover {
 }
 
 #show_profile_role {
-	margin-bottom: 1rem;
+	margin-bottom: 1.6rem;
 }
 
 #show_profile_buttons {
@@ -1688,7 +1688,7 @@ svg.action:hover {
 }
 
 #show_profile_hearts {
-	margin-top: 1rem;
+	margin-top: 1.6rem;
 }
 
 #show_profile_hearts_x {
@@ -2065,7 +2065,7 @@ a.special_link:hover {
 	height: 0.0588rem;
 	border: none;
 	background-color: currentColor;
-	opacity: 0.2;
+	opacity: 0.3;
 	color: var(--color_4);
 }
 
@@ -2519,7 +2519,8 @@ pre {
 }
 
 .profile_separator {
-	border: 1px solid var(--color_4_a);
+	border: 1px solid var(--color_4);
 	margin-top: 1.6rem;
 	margin-bottom: 1.6rem;
+	opacity: 0.3;
 }
