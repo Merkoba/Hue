@@ -45,11 +45,18 @@ Hue.start_msg = function () {
   Hue.msg_main_menu = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "main_menu",
+      window_width: "22rem"
+    })
+  )
+
+  Hue.msg_room_menu = Msg.factory(
+    Object.assign({}, common, titlebar, {
+      id: "room_menu",
       window_width: "22rem",
       after_close: function (instance) {
         common.after_close(instance)
-        Hue.close_togglers("main_menu")
-        Hue.close_togglers("main_menu_permissions")
+        Hue.close_togglers("room_menu")
+        Hue.close_togglers("room_menu_permissions")
       },
     })
   )
@@ -434,8 +441,9 @@ Hue.start_msg = function () {
   )
 
   // Set the templates
-
+  
   Hue.msg_main_menu.set(Hue.template_main_menu())
+  Hue.msg_room_menu.set(Hue.template_room_menu())
   Hue.msg_user_menu.set(Hue.template_user_menu())
   Hue.msg_userlist.set(Hue.template_userlist())
   Hue.msg_played.set(Hue.template_played())
@@ -477,6 +485,7 @@ Hue.start_msg = function () {
   Hue.msg_chat_search.set_title("Chat Search")
   Hue.msg_played.set_title("Recently Played")
   Hue.msg_main_menu.set_title("Main Menu")
+  Hue.msg_room_menu.set_title("Room Menu")
   Hue.msg_user_menu.set_title("User Menu")
   Hue.msg_settings.set_title("Settings")
   Hue.msg_media_menu.set_title("Media Menu")

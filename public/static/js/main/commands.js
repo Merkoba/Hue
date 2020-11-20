@@ -313,6 +313,12 @@ Hue.commands = {
     },
     description: `Shows the main menu`,
   },
+  "roommenu": {
+    action: (arg, ans) => {
+      Hue.show_room_menu()
+    },
+    description: `Shows the room menu`,
+  },
   "usermenu": {
     action: (arg, ans) => {
       Hue.show_user_menu()

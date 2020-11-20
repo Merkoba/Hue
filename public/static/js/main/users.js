@@ -873,7 +873,7 @@ Hue.set_role = function (rol, config = true) {
   Hue.check_message_board_permissions()
   
   if (config) {
-    Hue.config_main_menu()
+    Hue.config_room_menu()
   }
 }
 
