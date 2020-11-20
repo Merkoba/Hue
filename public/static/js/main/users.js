@@ -671,7 +671,6 @@ Hue.show_profile_by_user_id = function (id) {
 Hue.show_profile = function (username, profile_image = false, user_id = false) {
   let pi
   let role = "Offline"
-  let uid = ""
   let bio = ""
   let hearts = 0
   let skulls = 0
@@ -682,7 +681,6 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
     bio = user.bio
     hearts = user.hearts
     skulls = user.skulls
-    uid = `ID: ${user.user_id}`
 
     if (user.username === Hue.username) {
       same_user = true
@@ -760,23 +758,20 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
     let item = document.createElement("div")
     let nicedate = Hue.utilz.nice_date(user.date_joined)
     let timeago = Hue.get_timeago(user.date_joined)
-    item.textContent = `Joined: ${timeago}`
+    item.textContent = `Got Online: ${timeago}`
     item.title = nicedate
     $("#show_profile_info").append(item)
     show_info = true
-  }
-
-  if (uid) {
-    let item = document.createElement("div")
-    item.textContent = uid
-    $("#show_profile_info").append(item)
-    show_info = true
+  } else {
+    
   }
 
   if (show_info) {
     $("#show_profile_info").css("display", "grid")
+    $("#profile_info_separator").css("display", "block")
   } else {
     $("#show_profile_info").css("display", "none")
+    $("#profile_info_separator").css("display", "none")
   }
   
   Hue.msg_profile.show()
