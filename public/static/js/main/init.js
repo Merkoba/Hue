@@ -188,7 +188,6 @@ Hue.init = function () {
   Hue.start_user_context_menu()
   Hue.start_chat_menu_context_menu()
   Hue.start_msg_close_buttons_context_menu()
-  Hue.start_search_context_menus()
   Hue.setup_show_profile()
   Hue.setup_main_menu()
   Hue.setup_room_menu()

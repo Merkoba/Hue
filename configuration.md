@@ -84,9 +84,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "played_crop_limit"
 >Same as chat_crop limit but for items displayed when "Now Playing" is clicked.
 
-"input_history_crop_limit"
->The maximum amount of items stored in the input history. These are the commands you have issued in the input box, which can be traversed through Up and Down keyboard arrows to repeat them. They can also view viewed in the History window.
-
 "max_input_length"
 >Maximum amount of text for something typed in the input box. If something bigger is inputed it will get cropped to meet this limit.
 

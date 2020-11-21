@@ -796,10 +796,6 @@ a.generic:hover {
 	z-index: 99;
 }
 
-#chat_search_top {
-	margin-bottom: 1.6rem;
-}
-
 .chat_search_result_item {
 	padding-top: 0.8em;
 	padding-bottom: 0.8em;
@@ -810,6 +806,10 @@ a.generic:hover {
 	flex-direction: column;
 	align-items: center;
 	max-width: 26em;
+}
+
+#chat_search_filter {
+	margin-bottom: 1.6rem;
 }
 
 .highlights_item {

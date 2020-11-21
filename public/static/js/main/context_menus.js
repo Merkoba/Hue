@@ -473,19 +473,3 @@ Hue.generate_chat_search_context_items = function () {
 
   return items
 }
-
-// Starts the chat search context menus
-// One for the Search menu option
-// One on the Search window which is triggered by a normal click
-Hue.start_search_context_menus = function () {
-  $.contextMenu({
-    selector: "#chat_search_history_icon",
-    animation: { duration: 250, hide: "fadeOut" },
-    zIndex: 9000000000,
-    events: Hue.context_menu_events,
-    trigger: "left",
-    build: function ($trigger, e) {
-      return { items: Hue.generate_chat_search_context_items() }
-    },
-  })
-}
