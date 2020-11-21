@@ -613,6 +613,12 @@ Hue.commands = {
     },
     description: `Displays a simple feedback information message for the user`,
   },
+  "showmsg": {
+    action: (arg, ans) => {
+      Hue.showmsg(arg)
+    },
+    description: `Shows a simple window with a message`,
+  },
   "theme": {
     action: (arg, ans) => {
       Hue.change_theme(arg)
