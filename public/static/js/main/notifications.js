@@ -146,19 +146,15 @@ Hue.show_popup = function (popup, html="") {
     popup.set(html)
   }
 
-  if (Hue.app_focused) {
-    if (Hue.num_open_info_popups() >= Hue.config.max_info_popups) {
-      return
-    }
-
-    if (popup.hue_date) {
-      popup.set_title(Hue.get_timeago(popup.hue_date))
-    }
-
-    popup.show()
-  } else {
-    Hue.add_to_info_popups(popup)
+  if (Hue.num_open_info_popups() >= Hue.config.max_info_popups) {
+    return
   }
+
+  if (popup.hue_date) {
+    popup.set_title(Hue.get_timeago(popup.hue_date))
+  }
+
+  popup.show()
 }
 
 // Trigger stored notification popups

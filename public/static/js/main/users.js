@@ -17,19 +17,6 @@ Hue.user_join = function (data) {
     audio_clip: data.audio_clip,
   })
 
-  let f = function () {
-    Hue.show_profile(data.username)
-  }
-
-  let item = Hue.make_info_popup_item({
-    icon: "user-plus",
-    message: `${data.username} has joined`,
-    on_click: f,
-    type: "user_join",
-  })
-
-  Hue.show_popup(Hue.make_info_popup(f), item)
-
   if(data.username !== Hue.username) {
       Hue.on_activity("join")
   }
@@ -483,31 +470,13 @@ Hue.user_disconnect = function (data) {
   Hue.remove_from_userlist(data.user_id)
   Hue.update_activity_bar()
 
-  let message
   let type = data.disconnection_type
 
-  if (type === "disconnection") {
-    message = `${data.username} has left`
-  } else if (type === "pinged") {
-    message = `${data.username} has left (Ping Timeout)`
-  } else if (type === "kicked") {
-    message = `${data.username} was kicked by ${data.info1}`
-  } else if (type === "banned") {
-    message = `${data.username} was banned by ${data.info1}`
-
+  if (type === "banned") {
     if (Hue.ban_list_open) {
       Hue.request_ban_list()
     }
   }
-
-  let item = Hue.make_info_popup_item({
-    icon: "sign-out",
-    message: message,
-    action: false,
-    type: "user_part",
-  })
-
-  Hue.show_popup(Hue.make_info_popup(), item)
 
   if (Hue.open_profile_username === data.username) {
     Hue.show_profile(data.username, $("#show_profile_image").attr("src"))
