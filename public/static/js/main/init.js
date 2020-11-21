@@ -112,7 +112,6 @@ Hue.open_profile_username = false
 Hue.open_profile_user = false
 Hue.show_profile_audio_clip_started = false
 Hue.send_badge_disabled = true
-Hue.info_popups = []
 Hue.connected = false
 Hue.connections = 0
 Hue.connecting = true

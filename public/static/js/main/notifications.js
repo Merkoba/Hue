@@ -157,24 +157,6 @@ Hue.show_popup = function (popup, html="") {
   popup.show()
 }
 
-// Trigger stored notification popups
-Hue.show_info_popups = function () {
-  for (popup of Hue.info_popups) {
-    Hue.show_popup(popup)
-  }
-
-  Hue.info_popups = []
-}
-
-// Add popup to info popups list
-Hue.add_to_info_popups = function (popup) {
-  Hue.info_popups.push(popup)
-
-  if (Hue.info_popups.length > Hue.config.max_info_popups) {
-    Hue.info_popups = Hue.info_popups.slice(-Hue.config.max_info_popups)
-  }
-}
-
 // Get the number of visible info popups
 Hue.num_open_info_popups = function () {
   let popups = Hue.get_popup_instances()
