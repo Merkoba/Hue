@@ -20,18 +20,6 @@ Hue.make_markdown_char_regex = function (char, mode = 1) {
 
 // Makes and prepares the markdown regexes
 Hue.setup_markdown_regexes = function () {
-  Hue.markdown_regexes["*"] = {}
-  Hue.markdown_regexes["*"].regex = Hue.make_markdown_char_regex("*")
-  Hue.markdown_regexes["*"].replace_function = function (g1, g2, g3, g4, g5) {
-    return `${g2}<span class='bold italic'>${g4}</span>${g5}`
-  }
-
-  Hue.markdown_regexes["_"] = {}
-  Hue.markdown_regexes["_"].regex = Hue.make_markdown_char_regex("_")
-  Hue.markdown_regexes["_"].replace_function = function (g1, g2, g3, g4, g5) {
-    return `${g2}<span class='bold italic'>${g4}</span>${g5}`
-  }
-
   Hue.markdown_regexes["`"] = {}
   Hue.markdown_regexes["`"].regex = Hue.make_markdown_char_regex("`", 2)
   Hue.markdown_regexes["`"].replace_function = function (g1, g2, g3, g4, g5) {
@@ -123,16 +111,6 @@ Hue.replace_markdown = function (text, filter = false) {
       Hue.markdown_regexes["horizontal_line"].replace_function
     )
   }
-
-  text = text.replace(
-    Hue.markdown_regexes["*"].regex,
-    Hue.markdown_regexes["*"].replace_function
-  )
-
-  text = text.replace(
-    Hue.markdown_regexes["_"].regex,
-    Hue.markdown_regexes["_"].replace_function
-  )
 
   text = text.replace(
     Hue.markdown_regexes["`"].regex,
