@@ -308,7 +308,7 @@ Hue.start_user_context_menu = function () {
         callback: function (key, opt) {
           let el = this
 
-          Hue.show_confirm("Give Op Role", "Give operator rights", function () {
+          Hue.show_confirm("Give Op Role", "Operator rights", function () {
             let arg = el.data("username")
             Hue.change_role(arg, "op")
           })
@@ -319,7 +319,7 @@ Hue.start_user_context_menu = function () {
         callback: function (key, opt) {
           let el = this
 
-          Hue.show_confirm("Give Admin Role", "Give operator rights and ability to add/remove operators ", function () {
+          Hue.show_confirm("Give Admin Role", "Operator rights and ability to add/remove operators ", function () {
             let arg = el.data("username")
             Hue.change_role(arg, "admin")
           })
