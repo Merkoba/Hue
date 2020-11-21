@@ -488,7 +488,7 @@ Hue.user_disconnect = function (data) {
 // Announces that the operation cannot be applied to a certain user
 // This is usually because the user's role is not low enough
 Hue.forbidden_user = function () {
-  Hue.msg_info.show("That operation is forbidden on that user")
+  Hue.showmsg("That operation is forbidden on that user")
 }
 
 // Announces username changes
@@ -897,7 +897,7 @@ Hue.receive_ban_count = function (data) {
     s = `There are ${data.count} users banned`
   }
 
-  Hue.msg_info.show(s)
+  Hue.showmsg(s)
 }
 
 // Kicks a user
@@ -1017,7 +1017,7 @@ Hue.send_badge = function (username, type) {
   if (Hue.send_badge_disabled) {
     let n = Hue.utilz.round2(Hue.config.send_badge_cooldown / 1000, 1)
     let s = n === 1 ? "1 second" : `${n} seconds`
-    Hue.msg_info.show(`You can send a badge every ${s}`)
+    Hue.showmsg(`You can send a badge every ${s}`)
     return false
   }
 

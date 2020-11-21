@@ -821,10 +821,6 @@ a.generic:hover {
 	position: relative;
 }
 
-.chat_menu_button_main_selected .chat_menu_button_container {
-	visibility: visible;
-}
-
 .chat_menu_button_container {
 	display: block;
 	visibility: hidden;
@@ -862,7 +858,7 @@ a.generic:hover {
 	transition-delay: 0.2s;
 }
 
-.chat_menu_button_main:hover, .chat_menu_button_main_selected {
+.chat_menu_button_main:hover {
 	box-shadow: 0 0 0.45rem var(--color_4);
 	transition-delay: 0.2s;
 }

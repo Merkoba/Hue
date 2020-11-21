@@ -440,7 +440,7 @@ Hue.show_modal_image = function (data) {
       Hue.show_current_image_modal(false)
       return false
     } else {
-      Hue.msg_info.show("No image loaded yet")
+      Hue.showmsg("No image loaded yet")
       return false
     }
   }

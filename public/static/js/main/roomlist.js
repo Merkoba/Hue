@@ -82,5 +82,5 @@ Hue.create_room_cooldown_message = function () {
     s = "minutes"
   }
 
-  Hue.msg_info.show(`You must wait ${mins} ${s} between room creation`)
+  Hue.showmsg(`You must wait ${mins} ${s} between room creation`)
 }

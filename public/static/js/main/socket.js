@@ -88,10 +88,10 @@ Hue.server_update_events = {
     Hue.is_already(data.who, data.what)
   },
   user_already_banned: (data) => {
-    Hue.feedback("User is already banned")
+    Hue.showmsg("User is already banned")
   },
   user_already_unbanned: (data) => {
-    Hue.feedback("User is already unbanned")
+    Hue.showmsg("User is already unbanned")
   },
   image_not_found: (data) => {
     Hue.feedback("The image couldn't be found")

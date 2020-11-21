@@ -172,3 +172,7 @@ Hue.on_confirm = function () {
   Hue.msg_confirm.close()
   Hue.confirm_action()
 }
+
+Hue.showmsg = function (s) {
+  Hue.msg_info.show(s)
+}

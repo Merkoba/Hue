@@ -190,14 +190,14 @@ Hue.submit_change_username = function () {
   let uname = $("#change_username_input").val().trim()
 
   if (uname === Hue.username) {
-    Hue.msg_info.show("That's already the username")
+    Hue.showmsg("That's already the username")
     return
   }
 
   if (Hue.change_username(uname, false)) {
     Hue.msg_info2.close()
   } else {
-    Hue.msg_info.show("Invalid username")
+    Hue.showmsg("Invalid username")
   }
 }
 
@@ -227,7 +227,7 @@ Hue.submit_change_password = function () {
   if (Hue.change_password(uname, false)) {
     Hue.msg_info2.close()
   } else {
-    Hue.msg_info.show("Invalid password")
+    Hue.showmsg("Invalid password")
   }
 }
 
@@ -257,7 +257,7 @@ Hue.submit_change_email = function () {
   if (Hue.change_email(uname, false)) {
     Hue.msg_info2.close()
   } else {
-    Hue.msg_info.show("Invalid email")
+    Hue.showmsg("Invalid email")
   }
 }
 
@@ -536,7 +536,7 @@ Hue.audio_clip_selected = function (input) {
   let size = file.size / 1024
 
   if (size > Hue.config.max_audio_clip_size) {
-    Hue.msg_info.show("File is too big")
+    Hue.showmsg("File is too big")
     return false
   }
 

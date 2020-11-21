@@ -1053,8 +1053,6 @@ Hue.stop_edit_message = function () {
     .find(".chat_content")
     .get(0)
 
-  $(Hue.editing_message_container).removeClass("chat_menu_button_main_selected")
-
   $(edit_container).css("display", "none")
 
   if (

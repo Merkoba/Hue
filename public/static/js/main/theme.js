@@ -265,7 +265,7 @@ Hue.background_image_selected = function (input) {
   $("#background_image_input").closest("form").get(0).reset()
 
   if (size > Hue.config.max_image_size) {
-    Hue.msg_info.show("File is too big")
+    Hue.showmsg("File is too big")
     return false
   }
 

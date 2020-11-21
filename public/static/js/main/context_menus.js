@@ -27,20 +27,6 @@ Hue.start_chat_menu_context_menu = function () {
     animation: { duration: 250, hide: "fadeOut" },
     zIndex: 9000000000,
     events: Hue.context_menu_events,
-    events: {
-      show: function (options) {
-        Hue.context_menu_on_show()
-        $(this)
-          .closest(".chat_menu_button_main")
-          .addClass("chat_menu_button_main_selected")
-      },
-      hide: function (options) {
-        Hue.context_menu_on_hide()
-        $(this)
-          .closest(".chat_menu_button_main")
-          .removeClass("chat_menu_button_main_selected")
-      },
-    },
     items: {
       item0: {
         name: "Jump",
@@ -92,7 +78,17 @@ Hue.start_chat_menu_context_menu = function () {
       },
       item4: {
         name: "Change Image",
-        callback: function (key, opt) {},
+        callback: function (key, opt) {
+          let el = this
+
+          Hue.show_confirm("Change Image", "", function () {
+            let first_url = $(el)
+            .closest(".chat_content_container")
+            .data("first_url")
+
+            Hue.change_image_source(first_url)
+          })
+        },
         visible: function (key, opt) {
           let url = $(this).closest(".chat_content_container").data("first_url")
 
@@ -106,21 +102,20 @@ Hue.start_chat_menu_context_menu = function () {
 
           return false
         },
-        items: {
-          opsure: {
-            name: "I'm Sure",
-            callback: function (key, opt) {
-              let first_url = $(this)
-                .closest(".chat_content_container")
-                .data("first_url")
-              Hue.change_image_source(first_url)
-            },
-          },
-        },
       },
       item5: {
         name: "Change TV",
-        callback: function (key, opt) {},
+        callback: function (key, opt) {
+          let el = this
+
+          Hue.show_confirm("Change TV", "", function () {
+            let first_url = $(el)
+            .closest(".chat_content_container")
+            .data("first_url")
+
+            Hue.change_tv_source(first_url)
+          })
+        },
         visible: function (key, opt) {
           let url = $(this).closest(".chat_content_container").data("first_url")
 
@@ -134,33 +129,38 @@ Hue.start_chat_menu_context_menu = function () {
 
           return false
         },
-        items: {
-          opsure: {
-            name: "I'm Sure",
-            callback: function (key, opt) {
-              let first_url = $(this)
-                .closest(".chat_content_container")
-                .data("first_url")
-              Hue.change_tv_source(first_url)
-            },
-          },
-        },
       },
       item7: {
         name: "Hide",
-        callback: function (key, opt) {},
-        items: {
-          opsure: {
-            name: "I'm Sure",
-            callback: function (key, opt) {
-              Hue.remove_message_from_context_menu(this)
-            },
-          },
+        callback: function (key, opt) {
+          let el = this
+
+          Hue.show_confirm("Hide Message", "", function () {
+            Hue.remove_message_from_context_menu(el)
+          })
         },
       },
       itemdel: {
         name: "Delete",
-        callback: function (key, opt) {},
+        callback: function (key, opt) {
+          let el = this
+
+          Hue.show_confirm("Delete Message", "", function () {
+            let id = false
+            let message = $(el).closest(".message")
+            let mode = message.data("mode")
+
+            if (mode === "chat") {
+              id = $(el).closest(".chat_content_container").eq(0).data("id")
+            } else if (mode === "announcement") {
+              id = message.data("id")
+            }
+
+            if (id) {
+              Hue.delete_message(id, true)
+            }
+          })
+        },
         visible: function (key, opt) {
           let message = $(this).closest(".message")
           let mode = message.data("mode")
@@ -208,26 +208,6 @@ Hue.start_chat_menu_context_menu = function () {
 
           return false
         },
-        items: {
-          opsure: {
-            name: "I'm Sure",
-            callback: function (key, opt) {
-              let id = false
-              let message = $(this).closest(".message")
-              let mode = message.data("mode")
-
-              if (mode === "chat") {
-                id = $(this).closest(".chat_content_container").eq(0).data("id")
-              } else if (mode === "announcement") {
-                id = message.data("id")
-              }
-
-              if (id) {
-                Hue.delete_message(id, true)
-              }
-            },
-          },
-        },
       },
       item8: {
         name: "Clear Log",
@@ -235,46 +215,42 @@ Hue.start_chat_menu_context_menu = function () {
         items: {
           above: {
             name: "Above This Point",
-            callback: function (key, opt) {},
-            items: {
-              opsure: {
-                name: "I'm Sure",
-                callback: function (key, opt) {
-                  let id
-                  let message = $(this).closest(".message")
-                  let mode = message.data("mode")
+            callback: function (key, opt) {
+              let el = this
 
-                  if (mode === "chat") {
-                    id = $(this).closest(".chat_content_container").data("id")
-                  } else if (mode === "announcement") {
-                    id = message.data("id")
-                  }
+              Hue.show_confirm("Clear Above", "Delete all message above this point", function () {
+                let id
+                let message = $(el).closest(".message")
+                let mode = message.data("mode")
 
-                  Hue.clear_log("above", id)
-                },
-              },
+                if (mode === "chat") {
+                  id = $(el).closest(".chat_content_container").data("id")
+                } else if (mode === "announcement") {
+                  id = message.data("id")
+                }
+
+                Hue.clear_log("above", id)
+              })
             },
           },
           below: {
             name: "Below This Point",
-            callback: function (key, opt) {},
-            items: {
-              opsure: {
-                name: "I'm Sure",
-                callback: function (key, opt) {
-                  let id
-                  let message = $(this).closest(".message")
-                  let mode = message.data("mode")
+            callback: function (key, opt) {
+              let el = this
 
-                  if (mode === "chat") {
-                    id = $(this).closest(".chat_content_container").data("id")
-                  } else if (mode === "announcement") {
-                    id = message.data("id")
-                  }
+              Hue.show_confirm("Clear Below", "Delete all message below this point", function () {
+                let id
+                let message = $(el).closest(".message")
+                let mode = message.data("mode")
 
-                  Hue.clear_log("below", id)
-                },
-              },
+                if (mode === "chat") {
+                  id = $(el).closest(".chat_content_container").data("id")
+                } else if (mode === "announcement") {
+                  id = message.data("id")
+                }
+
+                Hue.clear_log("below", id)
+              })
             },
           },
         },
@@ -318,59 +294,47 @@ Hue.start_user_context_menu = function () {
     items: {
       d1: {
         name: "Voice",
-        visible: function (key, opt) {
-          if (!Hue.is_admin_or_op(Hue.role)) {
-            return false
-          } else {
-            return true
-          }
-        },
-        items: {
-          opsure: {
-            name: "I'm Sure",
-            callback: function (key, opt) {
-              let arg = this.data("username")
-              Hue.change_role(arg, "voice")
-            },
-          },
+        callback: function (key, opt) {
+          let el = this
+
+          Hue.show_confirm("Give Voice Role", "No operator rights", function () {
+            let arg = el.data("username")
+            Hue.change_role(arg, "voice")
+          })
         },
       },
       cmop1: {
         name: "Op",
-        visible: function (key, opt) {
-          return Hue.role === "admin"
-        },
-        items: {
-          opsure: {
-            name: "I'm Sure",
-            callback: function (key, opt) {
-              let arg = this.data("username")
-              Hue.change_role(arg, "op")
-            },
-          },
+        callback: function (key, opt) {
+          let el = this
+
+          Hue.show_confirm("Give Op Role", "Give operator rights", function () {
+            let arg = el.data("username")
+            Hue.change_role(arg, "op")
+          })
         },
       },
       cmadmin: {
         name: "Admin",
-        visible: function (key, opt) {
-          if (Hue.role !== "admin") {
-            return false
-          } else {
-            return true
-          }
-        },
-        items: {
-          adminsure: {
-            name: "I'm Sure",
-            callback: function (key, opt) {
-              let arg = this.data("username")
-              Hue.change_role(arg, "admin")
-            },
-          },
+        callback: function (key, opt) {
+          let el = this
+
+          Hue.show_confirm("Give Admin Role", "Give operator rights and ability to add/remove operators ", function () {
+            let arg = el.data("username")
+            Hue.change_role(arg, "admin")
+          })
         },
       },
       cmkick: {
         name: "Kick",
+        callback: function (key, opt) {
+          let el = this
+
+          Hue.show_confirm("Kick User", "", function () {
+            let arg = el.data("username")
+            Hue.kick(arg)
+          })
+        },
         visible: function (key, opt) {
           if (!Hue.is_admin_or_op(Hue.role)) {
             return false
@@ -379,33 +343,23 @@ Hue.start_user_context_menu = function () {
             return Hue.user_is_online_by_username(username)
           }
         },
-        items: {
-          kicksure: {
-            name: "I'm Sure",
-            callback: function (key, opt) {
-              let arg = this.data("username")
-              Hue.kick(arg)
-            },
-          },
-        },
       },
       cmban: {
         name: "Ban",
+        callback: function (key, opt) {
+          let el = this
+
+          Hue.show_confirm("Ban User", "", function () {
+            let arg = el.data("username")
+            Hue.ban(arg)
+          })
+        },
         visible: function (key, opt) {
           if (!Hue.is_admin_or_op(Hue.role)) {
             return false
           } else {
             return true
           }
-        },
-        items: {
-          bansure: {
-            name: "I'm Sure",
-            callback: function (key, opt) {
-              let arg = this.data("username")
-              Hue.ban(arg)
-            },
-          },
         },
       },
       cmvoiced: {
