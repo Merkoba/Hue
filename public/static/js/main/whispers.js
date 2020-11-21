@@ -248,7 +248,7 @@ Hue.show_whisper = function (data) {
   modal.set(Hue.template_sent_message())
   modal.set_title(Hue.make_safe({text: title, onclick: title_func }))
   let message_html = Hue.utilz.make_html_safe(data.message)
-  message_html = Hue.replace_markdown(message_html)
+  message_html = Hue.parse_text(message_html)
 
   modal.show(function () {
     let container = modal.content

@@ -214,7 +214,7 @@ Hue.update_chat = function (args = {}) {
       fmessage
         .find(".chat_content")
         .eq(0)
-        .html(Hue.replace_markdown(Hue.utilz.make_html_safe(args.message)))
+        .html(Hue.parse_text(Hue.utilz.make_html_safe(args.message)))
     }
   }
 
@@ -323,7 +323,7 @@ Hue.chat_announce = function (args = {}) {
     comment_icon: true,
     comment_onclick: false,
     user_id: false,
-    replace_markdown: false,
+    parse_text: false,
     in_log: true,
     media_source: ""
   }
@@ -374,7 +374,7 @@ Hue.chat_announce = function (args = {}) {
       }
     }
 
-    let c = Hue.replace_markdown(Hue.utilz.make_html_safe(args.comment))
+    let c = Hue.parse_text(Hue.utilz.make_html_safe(args.comment))
 
     if (args.comment_icon) {
       comment = `<div class='${cls}'><div class='announcement_comment_inner flex_row_center'>
@@ -478,9 +478,9 @@ Hue.chat_announce = function (args = {}) {
     content.find(".link_preview_text").eq(0).addClass(preview_text_classes)
     Hue.setup_link_preview(fmessage, args.link_url)
   } else {
-    if (args.replace_markdown) {
+    if (args.parse_text) {
       content
-        .html(Hue.replace_markdown(Hue.utilz.make_html_safe(args.message)))
+        .html(Hue.parse_text(Hue.utilz.make_html_safe(args.message)))
         .urlize()
     } else {
       content.text(args.message).urlize()
@@ -845,7 +845,7 @@ Hue.start_reply = function (target) {
     return false
   }
 
-  text = $(`<div>${Hue.replace_markdown(text, true)}</div>`).text()
+  text = $(`<div>${Hue.parse_text(text, true)}</div>`).text()
 
   if (!text) {
     Hue.feedback("Can't quote that")
@@ -1824,7 +1824,7 @@ Hue.make_link_preview = function (args = {}) {
   if (link_preview_s) {
     ans.link_preview = link_preview_s
 
-    let text = Hue.replace_markdown(Hue.utilz.make_html_safe(args.message))
+    let text = Hue.parse_text(Hue.utilz.make_html_safe(args.message))
     let stext = `<div class='link_preview_text'>${text}</div>`
 
     ans.link_preview_text = text
@@ -1892,7 +1892,7 @@ Hue.make_image_preview = function (message) {
       // This is in a single line on purpose
       ans.image_preview = `<div class='image_preview action'><img draggable="false" class="image_preview_image" src="${ans.image_preview_src}" loading="lazy"></div>`
 
-      let text = Hue.replace_markdown(Hue.utilz.make_html_safe(message))
+      let text = Hue.parse_text(Hue.utilz.make_html_safe(message))
       let stext = `<div class='image_preview_text'>${text}</div>`
 
       ans.image_preview_text = message

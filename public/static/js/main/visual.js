@@ -93,7 +93,7 @@ Hue.make_safe = function (args = {}) {
 
     if (args.text_as_html) {
       let h = Hue.utilz.make_html_safe(args.text)
-      h = Hue.replace_markdown(h)
+      h = Hue.parse_text(h)
 
       if (args.urlize) {
         c_text.html(h).urlize()

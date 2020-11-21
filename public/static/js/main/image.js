@@ -462,7 +462,7 @@ Hue.show_modal_image = function (data) {
 
   if (data.comment) {
     $("#modal_image_subheader").html(
-      Hue.replace_markdown(Hue.utilz.make_html_safe(data.comment))
+      Hue.parse_text(Hue.utilz.make_html_safe(data.comment))
     )
     $("#modal_image_subheader").css("display", "block")
     Hue.setup_whispers_click($("#modal_image_subheader"), data.setter)

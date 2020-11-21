@@ -102,7 +102,6 @@ Hue.image_upload_comment_type = false
 Hue.just_tabbed = false
 Hue.userlist_mode = "normal"
 Hue.usercount = 0
-Hue.markdown_regexes = {}
 Hue.show_media_history_type = ""
 Hue.add_to_chat_searches_delay = 2000
 Hue.first_media_change = false
@@ -167,7 +166,7 @@ Hue.init = function () {
 
   Hue.create_debouncers()
   Hue.setup_separators()
-  Hue.setup_markdown_regexes()
+  Hue.setup_textparser_regexes()
   Hue.activate_key_detection()
   Hue.setup_templates()
   Hue.get_settings()

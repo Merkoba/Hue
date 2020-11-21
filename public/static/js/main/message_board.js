@@ -51,7 +51,7 @@ Hue.add_post_to_message_board = function (post) {
   
   if (post.username) {
     let safe_uname = Hue.utilz.make_html_safe(post.username || "")
-    uname = Hue.replace_markdown(`$${safe_uname}$`)
+    uname = Hue.parse_text(`$${safe_uname}$`)
   } else {
     uname = "Unknown"
   }
@@ -60,7 +60,7 @@ Hue.add_post_to_message_board = function (post) {
   username.html(`Posted By: ${uname}`)
 
   let text = item.find(".message_board_text").eq(0)
-  text.html(Hue.replace_markdown(Hue.utilz.make_html_safe(post.message))).urlize()
+  text.html(Hue.parse_text(Hue.utilz.make_html_safe(post.message))).urlize()
 
   let title = Hue.utilz.nice_date(post.date)
 
