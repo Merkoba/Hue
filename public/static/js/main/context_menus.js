@@ -439,37 +439,3 @@ Hue.start_msg_close_buttons_context_menu = function () {
     },
   })
 }
-
-// Generate the items for the chat search context menu
-Hue.generate_chat_search_context_items = function () {
-  let items = {}
-
-  if (Hue.room_state.chat_searches.length === 0) {
-    items.item0 = {
-      name: "No searches yet",
-      disabled: true,
-    }
-  } else {
-    let n = 0
-
-    for (let search of Hue.room_state.chat_searches) {
-      items[`item_${n}`] = {
-        name: search,
-        callback: function (key, opt) {
-          Hue.show_chat_search(search)
-        },
-      }
-
-      n += 1
-    }
-
-    items["clear"] = {
-      name: "- Clear Search History -",
-      callback: function (key, opt) {
-        Hue.clear_chat_searches()
-      },
-    }
-  }
-
-  return items
-}

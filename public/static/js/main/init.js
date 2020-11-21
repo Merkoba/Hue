@@ -103,7 +103,6 @@ Hue.just_tabbed = false
 Hue.userlist_mode = "normal"
 Hue.usercount = 0
 Hue.show_media_history_type = ""
-Hue.add_to_chat_searches_delay = 2000
 Hue.first_media_change = false
 Hue.calc_round_places = 10
 Hue.typing_delay = 100

@@ -42,47 +42,9 @@ Hue.show_chat_search = function (filter = false) {
     } else {
       clone.appendTo("#chat_search_container")
     }
-
-    Hue.add_to_chat_searches(filter)
   }
 
   Hue.msg_chat_search.show(function () {
     Hue.scroll_modal_to_top("chat_search")
   })
-}
-
-// Adds an item to the recently searched list for chat searches
-Hue.add_to_chat_searches = function (filter) {
-  clearTimeout(Hue.add_to_chat_searches_timeout)
-
-  Hue.add_to_chat_searches_timeout = setTimeout(function () {
-    Hue.do_add_to_chat_searches(filter)
-  }, Hue.add_to_chat_searches_delay)
-}
-
-// Does the actual addition to the chat searches list
-Hue.do_add_to_chat_searches = function (filter) {
-  for (let i = 0; i < Hue.room_state.chat_searches.length; i++) {
-    if (Hue.room_state.chat_searches[i] === filter) {
-      Hue.room_state.chat_searches.splice(i, 1)
-      break
-    }
-  }
-
-  Hue.room_state.chat_searches.unshift(filter)
-
-  if (Hue.room_state.chat_searches.length > Hue.config.max_chat_searches) {
-    Hue.room_state.chat_searches = Hue.room_state.chat_searches.slice(
-      0,
-      Hue.config.max_chat_searches
-    )
-  }
-
-  Hue.save_room_state()
-}
-
-// Clears the chat searches list
-Hue.clear_chat_searches = function () {
-  Hue.room_state.chat_searches = []
-  Hue.save_room_state()
 }

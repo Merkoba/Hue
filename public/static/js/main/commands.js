@@ -61,13 +61,7 @@ Hue.commands = {
       }
     },
     description: `Opens the search window. Accepts a query as an argument`,
-  },
-  "clearsearches": {
-    action: (arg, ans) => {
-      Hue.clear_chat_searches()
-    },
-    description: `Clears the saved recent searches`,
-  },
+  },  
   "voice": {
     action: (arg, ans) => {
       Hue.change_role(arg, "voice")

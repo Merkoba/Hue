@@ -243,9 +243,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "room_state_default_tv_enabled"
 >Whether tv will be enabled by default.
 
-"room_state_default_chat_searches"
->Default chat searches list.
-
 "room_state_default_last_highlight_date"
 >Default date to check for new highlights to announce at startup.
 
@@ -365,9 +362,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 
 "link_max_title_length"
 >After this the title from fetched link metadata gets cropped.
-
-"max_chat_searches"
->Maximum number of items stored in chat search history.
 
 "url_title_max_length"
 >Maximum length for urls to be shown fully in window titles. After this they get cropped and "..." is added.
