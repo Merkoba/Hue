@@ -38,26 +38,26 @@ Hue.user_join = function (data) {
     Hue.show_profile(data.username, $("#show_profile_image").attr("src"))
   }
 
-  Hue.add_online_profile_images(data.user_id)
+  Hue.remove_offline_profile_images(data.user_id)
 }
 
 // Removes the online effect to a user's profile images
-Hue.remove_online_profile_images = function (user_id) {
+Hue.remove_offline_profile_images = function (user_id) {
   $("#chat_area .message").each(function () {
     if ($(this).data("user_id") === user_id) {
       $(this).find(".chat_profile_image_container").each(function () {
-        $(this).removeClass("profile_image_online")
+        $(this).removeClass("profile_image_offline")
       })
     }
   })
 }
 
 // Add the online effect to a user's profile images
-Hue.add_online_profile_images = function (user_id) {
+Hue.add_offline_profile_images = function (user_id) {
   $("#chat_area .message").each(function () {
     if ($(this).data("user_id") === user_id) {
       $(this).find(".chat_profile_image_container").each(function () {
-        $(this).addClass("profile_image_online")
+        $(this).addClass("profile_image_offline")
       })
     }
   })
@@ -513,7 +513,7 @@ Hue.user_disconnect = function (data) {
     Hue.show_profile(data.username, $("#show_profile_image").attr("src"))
   }
 
-  Hue.remove_online_profile_images(data.user_id)
+  Hue.add_offline_profile_images(data.user_id)
 }
 
 // Announces that the operation cannot be applied to a certain user

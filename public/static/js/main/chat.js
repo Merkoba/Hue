@@ -160,8 +160,8 @@ Hue.update_chat = function (args = {}) {
   } else {
     let profile_image_classes = "chat_profile_image_container round_image_container action4 profile_image"
 
-    if (Hue.user_is_online_by_user_id(args.user_id)) {
-      profile_image_classes += " profile_image_online"
+    if (!Hue.user_is_online_by_user_id(args.user_id)) {
+      profile_image_classes += " profile_image_offline"
     }
 
     let s = `

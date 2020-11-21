@@ -471,17 +471,8 @@ body * {
 	top: 2.5rem;
 }
 
-#chat_area .chat_profile_image_container {
-	border-width: 0.2rem;
-	border-color: transparent;
-	border-style: double;
-	box-sizing: border-box;
-	opacity: 0.5;
-}
-
-#chat_area .profile_image_online {
-	border-color: var(--color_3);
-	opacity: 1;
+#chat_area .profile_image_offline {
+	opacity: 0.6;
 }
 
 .chat_profile_image {
