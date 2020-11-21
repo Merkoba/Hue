@@ -81,7 +81,7 @@ Hue.start_chat_menu_context_menu = function () {
         callback: function (key, opt) {
           let el = this
 
-          Hue.show_confirm("Change Image", "", function () {
+          Hue.show_confirm("Change Image", "This will change it for everyone", function () {
             let first_url = $(el)
             .closest(".chat_content_container")
             .data("first_url")
@@ -108,7 +108,7 @@ Hue.start_chat_menu_context_menu = function () {
         callback: function (key, opt) {
           let el = this
 
-          Hue.show_confirm("Change TV", "", function () {
+          Hue.show_confirm("Change TV", "This will change it for everyone", function () {
             let first_url = $(el)
             .closest(".chat_content_container")
             .data("first_url")
@@ -135,7 +135,7 @@ Hue.start_chat_menu_context_menu = function () {
         callback: function (key, opt) {
           let el = this
 
-          Hue.show_confirm("Hide Message", "", function () {
+          Hue.show_confirm("Hide Message", "This won't delete it", function () {
             Hue.remove_message_from_context_menu(el)
           })
         },
@@ -145,7 +145,7 @@ Hue.start_chat_menu_context_menu = function () {
         callback: function (key, opt) {
           let el = this
 
-          Hue.show_confirm("Delete Message", "", function () {
+          Hue.show_confirm("Delete Message", "Remove message from the chat log", function () {
             let id = false
             let message = $(el).closest(".message")
             let mode = message.data("mode")
@@ -330,7 +330,7 @@ Hue.start_user_context_menu = function () {
         callback: function (key, opt) {
           let el = this
 
-          Hue.show_confirm("Kick User", "", function () {
+          Hue.show_confirm("Kick User", "Disconnect the user from the room", function () {
             let arg = el.data("username")
             Hue.kick(arg)
           })
@@ -349,7 +349,7 @@ Hue.start_user_context_menu = function () {
         callback: function (key, opt) {
           let el = this
 
-          Hue.show_confirm("Ban User", "", function () {
+          Hue.show_confirm("Ban User", "Ban the user from joining the room", function () {
             let arg = el.data("username")
             Hue.ban(arg)
           })
