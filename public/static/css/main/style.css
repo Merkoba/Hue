@@ -1884,6 +1884,10 @@ a.special_link:hover {
 	margin-left: 3rem;
 }
 
+#media_menu_tv_size {
+	margin-bottom: 2rem;
+}
+
 .highlights_item .image_preview,
 .chat_search_result_item .image_preview {
 	align-items: center;
