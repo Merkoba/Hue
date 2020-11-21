@@ -189,10 +189,15 @@ Hue.show_change_username = function () {
 Hue.submit_change_username = function () {
   let uname = $("#change_username_input").val().trim()
 
+  if (uname === Hue.username) {
+    Hue.msg_info.show("That's already the username")
+    return
+  }
+
   if (Hue.change_username(uname, false)) {
     Hue.msg_info2.close()
   } else {
-    alert("Invalid username format")
+    Hue.msg_info.show("Invalid username")
   }
 }
 
@@ -222,7 +227,7 @@ Hue.submit_change_password = function () {
   if (Hue.change_password(uname, false)) {
     Hue.msg_info2.close()
   } else {
-    alert("Invalid password format")
+    Hue.msg_info.show("Invalid password")
   }
 }
 
@@ -252,7 +257,7 @@ Hue.submit_change_email = function () {
   if (Hue.change_email(uname, false)) {
     Hue.msg_info2.close()
   } else {
-    alert("Invalid email format")
+    Hue.msg_info.show("Invalid email")
   }
 }
 
