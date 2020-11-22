@@ -58,7 +58,7 @@ Hue.show_room_status = function () {
 }
 
 // Show the room name
-Hue.show_room = function () {
+Hue.show_room_name = function () {
   Hue.feedback(`Room: ${Hue.room_name}`)
 }
 

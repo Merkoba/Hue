@@ -29,7 +29,7 @@ Hue.commands = {
       if (arg) {
         Hue.change_room_name(arg)
       } else {
-        Hue.show_room()
+        Hue.show_room_name()
       }
     },
     description: `Changes the name of the room`,
@@ -157,12 +157,6 @@ Hue.commands = {
       }
     },
     description: `Changes the topic of the room`,
-  },
-  "room": {
-    action: (arg, ans) => {
-      Hue.show_room()
-    },
-    description: `Shows the room name`,
   },
   "commands": {
     action: (arg, ans) => {
