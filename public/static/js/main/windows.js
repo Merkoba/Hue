@@ -532,7 +532,7 @@ Hue.start_modal_filters = function () {
 // Focuses the filter widget of a modal
 Hue.focus_modal_filter = function (instance) {
   let filter = $(`#Msg-content-${instance.options.id}`)
-    .find(".filter_input, .filter_input_2")
+    .find(".filter_input")
     .eq(0)
 
   if (filter.length) {
@@ -544,7 +544,7 @@ Hue.focus_modal_filter = function (instance) {
 Hue.reset_modal_filter = function (instance) {
   let id = instance.options.id
   let filter = $(`#Msg-content-${id}`)
-    .find(".filter_input, .filter_input_2")
+    .find(".filter_input")
     .eq(0)
 
   if (id === "info" || id === "info2" || filter.data("mode") === "manual") {
@@ -682,7 +682,7 @@ Hue.do_modal_filter = function (id = false) {
   }
 
   let win = $(`#Msg-content-${id}`)
-  let filter = win.find(".filter_input, .filter_input_2").eq(0)
+  let filter = win.find(".filter_input").eq(0)
 
   if (!filter.length) {
     return false

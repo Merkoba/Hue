@@ -773,18 +773,6 @@ a.generic:hover {
 	outline: none;
 }
 
-.filter_input_2 {
-	top: 0rem;
-	width: 14em;
-	border: 0.0588rem solid grey;
-	font-size: 1.2em;
-	text-align: center;
-	position: sticky;
-	z-index: 99;
-	border-radius: 1.7647rem;
-	outline: none;
-}
-
 .filter_padding {
 	margin-left: 0.8rem;
 	margin-right: 0.8rem;
@@ -808,8 +796,8 @@ a.generic:hover {
 	max-width: 26em;
 }
 
-#chat_search_filter {
-	margin-bottom: 1.6rem;
+.chat_search_no_results {
+	text-align: center;
 }
 
 .highlights_item {
@@ -1896,6 +1884,10 @@ a.special_link:hover {
 	align-items: center;
 }
 
+.highlights_no_results {
+	text-align: center;
+}
+
 .message_edit_container {
 	display: none;
 	width: 90%;
@@ -2520,4 +2512,9 @@ pre {
 	margin-top: 1.6rem;
 	margin-bottom: 1.6rem;
 	opacity: 0.3;
+}
+
+.chat_clone_container {
+	margin-top: 0.8rem;
+	margin-bottom: 0.5rem;
 }

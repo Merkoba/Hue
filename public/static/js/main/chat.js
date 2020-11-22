@@ -1704,7 +1704,6 @@ Hue.on_activity = function (type) {
 Hue.reset_highlights_filter = function () {
   $("#highlights_filter").val("")
   $("#highlights_container").html("")
-  $("#highlights_no_results").css("display", "none")
 }
 
 // Show and/or filters highlights window
@@ -1717,7 +1716,6 @@ Hue.show_highlights = function (filter = false) {
 
   $("#highlights_container").html("")
   $("#highlights_filter").val(sfilter)
-  $("#highlights_no_results").css("display", "none")
 
   let clone = $($("#chat_area").children().get().reverse()).clone(true, true)
 
@@ -1756,7 +1754,7 @@ Hue.show_highlights = function (filter = false) {
   }
 
   if (clone.children().length === 0 && !filter) {
-    $("#highlights_no_results").css("display", "block")
+    $("#highlights_container").html("<div class='highlights_no_results'>No Highlights Yet</div>")
   } else {
     clone.appendTo("#highlights_container")
   }

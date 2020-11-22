@@ -2,13 +2,11 @@
 Hue.reset_chat_search_filter = function () {
   $("#chat_search_filter").val("")
   $("#chat_search_container").html("")
-  $("#chat_search_no_results").css("display", "none")
 }
 
 // Shows the chat search window
 Hue.show_chat_search = function (filter = false) {
   $("#chat_search_container").html("")
-  $("#chat_search_no_results").css("display", "none")
   $("#chat_search_filter").val(filter ? filter : "")
 
   if (filter) {
@@ -38,7 +36,7 @@ Hue.show_chat_search = function (filter = false) {
     })
 
     if (clone.children().length === 0) {
-      $("#chat_search_no_results").css("display", "block")
+      $("#chat_search_container").html("<div class='chat_search_no_results'>No Results</div>")
     } else {
       clone.appendTo("#chat_search_container")
     }
