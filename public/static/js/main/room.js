@@ -53,7 +53,7 @@ Hue.save_room_state = function () {
 Hue.show_room_status = function () {
   Hue.msg_room_status.show(function () {
     $("#room_status_name").text(Hue.room_name)
-    $("#room_status_topic").text(Hue.topic)
+    $("#room_status_topic").text(Hue.get_topic())
   })
 }
 
