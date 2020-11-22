@@ -2283,8 +2283,6 @@ pre {
 #whispers_container {
 	display: grid;
 	grid-gap: 1.2rem;
-	margin-top: 1.2rem;
-	margin-bottom: 1rem;
 }
 
 .whisper_info_container {
