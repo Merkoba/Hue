@@ -793,7 +793,7 @@ Hue.change_role = function (username, role) {
 
   if (username.length > 0 && username.length <= Hue.config.max_max_username_length) {
     if (username === Hue.username) {
-      Hue.feedback("You can't assign a role to yourself")
+      Hue.showmsg("You can't assign a role to yourself")
       return false
     }
 
