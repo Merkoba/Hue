@@ -1409,12 +1409,6 @@ Hue.jump_to_chat_message = function (message_id) {
   }
 
   el[0].scrollIntoView({ block: "center" })
-  el.css("opacity", 0)
-
-  setTimeout(() => {
-    el.css("opacity", 1)
-  }, 250);
-
   Hue.close_all_modals()
 }
 
