@@ -87,39 +87,25 @@ Hue.room_name_edit = function () {
   Hue.change_input(`/roomname ${Hue.room_name}`)
 }
 
-// Returns proper default topic
-Hue.get_unset_topic = function () {
-  if (Hue.is_admin_or_op()) {
-    return Hue.config.default_topic_admin
-  } else {
-    return Hue.config.default_topic
-  }
-}
-
 // Gets the topic
 Hue.get_topic = function () {
   if (Hue.topic) {
     return Hue.topic
   } else {
-    return Hue.get_unset_topic()
+    return Hue.config.default_topic
   }
 }
 
 // Shows the topic
 Hue.show_topic = function () {
-  if (Hue.topic) {
-    if (Hue.topic_setter !== "") {
-      Hue.feedback(`Topic: ${Hue.topic}`, {
-        title: `Setter: ${Hue.topic_setter} | ${
-          Hue.topic_date
-        } | ${Hue.utilz.nice_date()}`,
-      })
-    } else {
-      Hue.feedback(`Topic: ${Hue.topic}`)
-    }
-  } else {
-    Hue.feedback(`Topic: ${Hue.get_unset_topic()}`)
+  let topic = `Topic: ${Hue.get_topic()}`
+  let obj = {}
+
+  if (Hue.topic_setter) {
+    obj.title = `Setter: ${Hue.topic_setter} | ${Hue.topic_date} | ${Hue.utilz.nice_date()}`
   }
+
+  Hue.feedback(topic, obj)
 }
 
 // Clears the chat and resets media change state

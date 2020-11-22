@@ -210,12 +210,6 @@ Hue.commands = {
     },
     description: `Ends the user session`,
   },
-  "fill": {
-    action: (arg, ans) => {
-      Hue.fill()
-    },
-    description: `Used for debugging purposes`,
-  },
   "shrug": {
     action: (arg, ans) => {
       Hue.shrug()

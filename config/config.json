@@ -24,7 +24,6 @@
 	"login_title": "Hue | Login",
 	"register_title": "Hue | Register",
 	"default_topic": "No topic",
-	"default_topic_admin": "Check the room menu for administration options",
 	"max_stored_images": 100,
 	"opacity_amount_1": 0.95,
 	"opacity_amount_2": 0.8,

@@ -72,9 +72,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "default_topic"
 >The shown topic when the room is created.
 
-"default_topic_admin"
->Default topic shown to admins.
-
 "opacity_amount_x"
 >Opacity levels used through out the interface.
 
