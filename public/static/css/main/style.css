@@ -773,17 +773,6 @@ a.generic:hover {
 	outline: none;
 }
 
-.filter_padding {
-	margin-left: 0.8rem;
-	margin-right: 0.8rem;
-}
-
-.sticky {
-	top: 0rem;
-	position: sticky;
-	z-index: 99;
-}
-
 .chat_search_result_item {
 	padding-top: 0.8em;
 	padding-bottom: 0.8em;
@@ -1037,16 +1026,12 @@ select {
 	resize: vertical;
 }
 
+.bitbigger {
+	font-size: 1.1em;
+}
+
 .bigger {
 	font-size: 1.2em;
-}
-
-.bigger2 {
-	font-size: 1.4em;
-}
-
-.bigger3 {
-	font-size: 1.1em;
 }
 
 .underlined {
@@ -2282,8 +2267,6 @@ pre {
 #notifications_container {
 	display: grid;
 	grid-gap: 1.5rem;
-	margin-top: 1.2rem;
-	margin-bottom: 1rem;
 }
 
 .notifications_item_content {
@@ -2514,7 +2497,7 @@ pre {
 	opacity: 0.3;
 }
 
-.chat_clone_container {
+.result_container {
 	margin-top: 0.8rem;
 	margin-bottom: 0.5rem;
 }
