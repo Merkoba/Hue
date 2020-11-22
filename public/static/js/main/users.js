@@ -1,8 +1,3 @@
-// Shows the user's username
-Hue.show_username = function () {
-  Hue.feedback(`Username: ${Hue.username}`)
-}
-
 // This handles new users joining the room
 Hue.user_join = function (data) {
   Hue.add_to_userlist({
