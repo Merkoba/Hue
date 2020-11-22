@@ -58,16 +58,17 @@ Hue.show_open_room = function (id) {
 
 // Show feedback to the user after creating a room
 Hue.on_room_created = function (data) {
-  let onclick = function () {
+  let f = function () {
     Hue.show_open_room(data.id)
   }
 
-  Hue.feedback("Room Created", {
-    brk: Hue.get_chat_icon("key"),
-    onclick: onclick,
-    save: true,
+  let item = Hue.make_info_popup_item({
+    message: "Room Created",
+    on_click: f,
+    icon: "key"
   })
 
+  Hue.show_popup(Hue.make_info_popup(f), item)
   Hue.show_open_room(data.id)
 }
 

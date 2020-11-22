@@ -22,11 +22,10 @@ Hue.make_info_popup = function (on_click = function () {}) {
 Hue.make_info_popup_item = function (args = {}) {
   let def_args = {
     icon: "",
-    messgage: "",
+    message: "",
     action: true,
     push: true,
-    on_click: false,
-    type: "",
+    on_click: false
   }
 
   args = Object.assign(def_args, args)
@@ -39,12 +38,6 @@ Hue.make_info_popup_item = function (args = {}) {
 
   if (args.push) {
     Hue.push_notification(args.icon, args.message, args.on_click)
-  }
-
-  let icon = ""
-
-  if (!args.icon) {
-    args.icon = "info"
   }
 
   if (args.icon) {
@@ -134,7 +127,7 @@ Hue.show_room_notification = function (username, message) {
   let item = Hue.make_info_popup_item({
     message: message,
     on_click: f,
-    type: "room",
+    icon: "info"
   })
 
   Hue.show_popup(Hue.make_info_popup(f), item)
