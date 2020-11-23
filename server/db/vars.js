@@ -55,7 +55,7 @@ module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
       background_image_setter: { type: "string", default: "" },
       background_image_date: { type: "number", default: 0 },
       background_image_type: { type: "string", default: "hosted" },
-      background_mode: { type: "string", default: "solid" },
+      background_mode: { type: "string", default: "normal" },
       background_effect: { type: "string", default: "none" },
       background_tile_dimensions: { type: "string", default: "200px auto" },
       message_board_posts: { type: "object", default: [] },
