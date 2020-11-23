@@ -76,8 +76,6 @@ Hue.start_msg = function () {
   Hue.msg_userlist = Msg.factory(
     Object.assign({}, common, titlebar, {
       id: "userlist",
-      window_min_width: "22rem",
-      window_max_width: "45rem",
       after_show: function (instance) {
         common.after_show(instance)
         Hue.userlist_open = true
