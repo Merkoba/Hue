@@ -19,8 +19,8 @@ Hue.setup_separators = function () {
     class: "vertical_separator",
     html: "",
     width: "100%",
-    margin_top: "1.8rem",
-    margin_bottom: "1.8rem",
+    margin_top: "1.6rem",
+    margin_bottom: "1.6rem",
   })
 }
 
