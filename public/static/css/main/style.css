@@ -645,7 +645,6 @@ a.generic:hover {
 	overflow-wrap: break-word;
 	word-break: break-word;
 	display: inline-block;
-	min-width: 8rem;
 }
 
 .userlist_item_details_container {
