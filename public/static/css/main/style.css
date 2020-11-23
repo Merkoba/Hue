@@ -1309,7 +1309,7 @@ select {
 .action,
 .action2,
 .action3,
-.action4 {
+.action4, .action:hover .actionbox {
 	transition: text-shadow 500ms, box-shadow 500ms
 }
 
@@ -1333,7 +1333,7 @@ svg.action:hover {
 	box-shadow: inset 0 0 0.2941rem currentColor;
 }
 
-.action4:hover {
+.action4:hover, .action:hover .actionbox {
 	box-shadow: 0 0 1.1765rem currentColor, inset 0 0 1.1765rem currentColor;
 }
 

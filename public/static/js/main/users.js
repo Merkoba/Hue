@@ -270,7 +270,7 @@ Hue.update_userlist = function (prop = "") {
 // Some configurations for the userlist window
 Hue.setup_userlist_window = function () {
   $("#userlist").on("click", ".userlist_item", function () {
-    let username = $(this).find(".userlist_item_username").eq(0).text()
+    let username = $(this).data("username")
 
     if (Hue.userlist_mode === "normal") {
       Hue.show_profile(username)
@@ -290,18 +290,18 @@ Hue.update_userlist_window = function () {
     let item = Hue.userlist[i]
 
     let h = $(`
-        <div class='modal_item userlist_item'>
+        <div class='modal_item userlist_item action pointer'>
             <div class='userlist_column flex_column_center'>
                 <div>
-                    <div class='userlist_item_profile_image_container round_image_container action4'>
+                    <div class='userlist_item_profile_image_container round_image_container actionbox'>
                         <img class='userlist_item_profile_image profile_image' src='${item.profile_image}' loading='lazy'>
                     </div>
                     <div class='userlist_item_details_container'>
-                        <div class='userlist_item_username action'></div>
-                        <div class='userlist_item_role action'></div>
+                        <div class='userlist_item_username'></div>
+                        <div class='userlist_item_role'></div>
                     </div>
                 </div>
-                <div class='userlist_item_bio action'></div>
+                <div class='userlist_item_bio'></div>
             </div>
         </div>`)
 
@@ -327,6 +327,8 @@ Hue.update_userlist_window = function () {
     } else {
       bio.css("display", "none")
     }
+
+    h.data("username", item.username)
 
     s = s.add(h)
   }
