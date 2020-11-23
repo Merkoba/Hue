@@ -641,7 +641,6 @@ a.generic:hover {
 }
 
 .userlist_item {
-	margin: 1.2rem;
 	overflow-wrap: break-word;
 	word-break: break-word;
 }
@@ -674,7 +673,7 @@ a.generic:hover {
 	margin-top: 0.2rem;
 	font-size: 0.9rem;
 	cursor: pointer;
-	max-width: 10rem;
+	max-width: 12rem;
 }
 
 .userlist_item_profile_image_container {
