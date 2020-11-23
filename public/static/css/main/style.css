@@ -637,14 +637,13 @@ a.generic:hover {
 }
 
 #userlist {
-	text-align: center;
+	grid-gap: 2rem;
 }
 
 .userlist_item {
 	margin: 1.2rem;
 	overflow-wrap: break-word;
 	word-break: break-word;
-	display: inline-block;
 }
 
 .userlist_item_details_container {

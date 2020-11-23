@@ -229,7 +229,6 @@ Hue.init = function () {
   }
 
   Hue.start_socket()
-
   Hue.load_date_2 = Date.now()
 }
 
