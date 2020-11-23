@@ -886,9 +886,6 @@ select {
 
 .modal_select {
 	text-align-last: center;
-	padding-left: 0.25rem;
-	padding-right: 0.25rem;
-	cursor: pointer;
 	min-width: 8rem;
 }
 
