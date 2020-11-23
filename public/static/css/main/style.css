@@ -732,7 +732,7 @@ a.generic:hover {
 	height: 1.5em;
 }
 
-.Msg-container {
+.Msg-container div {
 	scrollbar-color: var(--color_4) transparent !important;
 }
 
