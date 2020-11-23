@@ -669,13 +669,6 @@ a.generic:hover {
 	cursor: pointer;
 }
 
-.userlist_item_bio {
-	margin-top: 0.2rem;
-	font-size: 0.9rem;
-	cursor: pointer;
-	max-width: 12rem;
-}
-
 .userlist_item_profile_image_container {
 	min-width: var(--profile_image_size);
 	max-width: var(--profile_image_size);

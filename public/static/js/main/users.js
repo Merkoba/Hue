@@ -301,7 +301,6 @@ Hue.update_userlist_window = function () {
                         <div class='userlist_item_role'></div>
                     </div>
                 </div>
-                <div class='userlist_item_bio'></div>
             </div>
         </div>`)
 
@@ -316,20 +315,9 @@ Hue.update_userlist_window = function () {
     let role_tag = Hue.role_tag(item.role)
     let role_element = h.find(".userlist_item_role").eq(0)
     role_element.text(role_tag)
-
     let uname = h.find(".userlist_item_username").eq(0)
     uname.text(item.username)
-
-    let bio = h.find(".userlist_item_bio").eq(0)
-
-    if (item.bio) {
-      bio.text(item.bio.substring(0, 50))
-    } else {
-      bio.css("display", "none")
-    }
-
     h.data("username", item.username)
-
     s = s.add(h)
   }
 
