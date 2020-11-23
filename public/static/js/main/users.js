@@ -253,7 +253,7 @@ Hue.update_userlist = function (prop = "") {
     if (prop) {
       uchange = false
 
-      if (prop === "username" || prop == "bio" || prop === "profile_image") {
+      if (prop === "username" || prop === "profile_image") {
         uchange = true
       }
     }
