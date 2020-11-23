@@ -636,13 +636,11 @@ a.generic:hover {
 	border: 0.0588rem solid grey;
 }
 
-#userlist {
-	grid-gap: 2rem;
-}
-
 .userlist_item {
 	overflow-wrap: break-word;
 	word-break: break-word;
+	display: inline-block;
+	padding: 1rem;
 }
 
 .userlist_item_details_container {
