@@ -1396,7 +1396,7 @@ svg.action:hover {
 
 .header_label {
 	font-size: var(--panel_font_size);
-	margin-right: 0.6rem;
+	margin-right: 0.5rem;
 }
 
 #lockscreen_body {
