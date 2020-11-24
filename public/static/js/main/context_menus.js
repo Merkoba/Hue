@@ -302,6 +302,13 @@ Hue.start_user_context_menu = function () {
             Hue.change_role(arg, "voice")
           })
         },
+        visible: function (key, opt) {
+          if (!Hue.is_admin_or_op(Hue.role)) {
+            return false
+          } else {
+            return true
+          }
+        },
       },
       cmop1: {
         name: "Op",
@@ -313,6 +320,13 @@ Hue.start_user_context_menu = function () {
             Hue.change_role(arg, "op")
           })
         },
+        visible: function (key, opt) {
+          if (!Hue.is_admin_or_op(Hue.role)) {
+            return false
+          } else {
+            return true
+          }
+        },
       },
       cmadmin: {
         name: "Admin",
@@ -323,6 +337,13 @@ Hue.start_user_context_menu = function () {
             let arg = el.data("username")
             Hue.change_role(arg, "admin")
           })
+        },
+        visible: function (key, opt) {
+          if (!Hue.is_admin_or_op(Hue.role)) {
+            return false
+          } else {
+            return true
+          }
         },
       },
       cmkick: {

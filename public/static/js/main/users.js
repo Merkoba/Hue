@@ -586,19 +586,23 @@ Hue.setup_show_profile = function () {
     Hue.send_badge(Hue.open_profile_username, "skull")
   })
 
-  $("#show_profile_buttons").click(function () {
-    Hue.stop_profile_audio()
-  })
-
   $("#show_profile_image").click(function () {
-    Hue.stop_profile_audio()
+    if (Hue.profile_audio) {
+      Hue.stop_profile_audio()
+    } else {
+      Hue.play_profile_audio()
+    }
   })
 }
 
 // Stars the profile audio
-Hue.play_profile_audio = function (src) {
+Hue.play_profile_audio = function () {
+  if (Hue.profile_audio) {
+    Hue.stop_profile_audio()
+  }
+
   Hue.profile_audio = document.createElement("audio")
-  Hue.profile_audio.src = src
+  Hue.profile_audio.src = Hue.open_profile_user.audio_clip
   Hue.profile_audio.play()
 }
 
@@ -680,7 +684,9 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   }
 
   if (user && user.audio_clip) {
-    Hue.play_profile_audio(user.audio_clip)
+    $("#show_profile_image_container").addClass("action4 pointer")
+  } else {
+    $("#show_profile_image_container").removeClass("action4 pointer")
   }
 
   if (Hue.room_state["tv_enabled"] 
