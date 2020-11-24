@@ -585,6 +585,10 @@ Hue.setup_show_profile = function () {
   $("#show_profile_skulls_icon").click(function () {
     Hue.send_badge(Hue.open_profile_username, "skull")
   })
+
+  $("#show_profile_buttons").click(function () {
+    Hue.stop_profile_audio()
+  })
 }
 
 // Stars the profile audio
