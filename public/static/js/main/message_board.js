@@ -215,10 +215,6 @@ Hue.remove_message_board_post = function (data) {
         return false
       }
     })
-  
-  if ($(".message_board_item").length === 0) {
-    $("#message_board_container").text("No Posts Yet")
-  }
 
   Hue.check_last_message_board_post()
 }
@@ -232,9 +228,9 @@ Hue.clear_message_board = function () {
   Hue.socket_emit("clear_message_board", {})
 }
 
-// After the message board gets cleared
+// After the message board gets clearedmmmmm
 Hue.on_message_board_cleared = function (data) {
-  $("#message_board_container").text("No Posts Yet")
+  $("#message_board_container").html("")
   Hue.show_room_notification(
     data.username,
     `${data.username} cleared the message board`
