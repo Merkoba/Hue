@@ -589,6 +589,10 @@ Hue.setup_show_profile = function () {
   $("#show_profile_buttons").click(function () {
     Hue.stop_profile_audio()
   })
+
+  $("#show_profile_image").click(function () {
+    Hue.stop_profile_audio()
+  })
 }
 
 // Stars the profile audio
