@@ -597,6 +597,12 @@ Hue.setup_show_profile = function () {
 
 // Stars the profile audio
 Hue.play_profile_audio = function () {
+  let clip = Hue.open_profile_user.audio_clip
+
+  if (!clip) {
+    return
+  }
+
   if (Hue.profile_audio) {
     Hue.stop_profile_audio()
   }
@@ -607,7 +613,7 @@ Hue.play_profile_audio = function () {
     Hue.stop_profile_audio()
   }
 
-  Hue.profile_audio.src = Hue.open_profile_user.audio_clip
+  Hue.profile_audio.src = clip
   Hue.profile_audio.play()
 }
 
