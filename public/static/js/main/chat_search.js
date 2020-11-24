@@ -35,11 +35,12 @@ Hue.show_chat_search = function (filter = false) {
       return text_cmp || source_cmp
     })
 
-    if (clone.children().length === 0) {
-      $("#chat_search_container").html("<div class='chat_search_no_results'>No Results</div>")
-    } else {
+    if (clone.children().length) {
       clone.appendTo("#chat_search_container")
+    } else {
     }
+  } else {
+    $("#chat_search_container").html("<div class='center'>Search recent messages</div>")
   }
 
   Hue.msg_chat_search.show(function () {

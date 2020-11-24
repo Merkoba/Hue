@@ -760,10 +760,6 @@ a.generic:hover {
 	max-width: 26rem;
 }
 
-.chat_search_no_results {
-	text-align: center;
-}
-
 .highlights_item {
 	padding-top: 0.8rem;
 	padding-bottom: 0.8rem;
@@ -1842,10 +1838,6 @@ a.special_link:hover {
 	align-items: center;
 }
 
-.highlights_no_results {
-	text-align: center;
-}
-
 .message_edit_container {
 	display: none;
 	width: 90%;
@@ -2474,4 +2466,8 @@ pre {
 .result_container {
 	margin-top: 0.8rem;
 	margin-bottom: 0.5rem;
+}
+
+.center {
+	text-align: center;
 }

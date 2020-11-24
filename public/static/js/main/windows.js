@@ -260,9 +260,14 @@ Hue.start_msg = function () {
     Object.assign({}, common, titlebar, {
       id: "highlights",
       window_width: "30rem",
+      after_show: function (instance) {
+        common.after_show(instance)
+        Hue.highlights_open = true
+      },
       after_close: function (instance) {
         common.after_close(instance)
         Hue.reset_highlights_filter()
+        Hue.highlights_open = false
       },
     })
   )
