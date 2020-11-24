@@ -585,33 +585,20 @@ Hue.setup_show_profile = function () {
   $("#show_profile_skulls_icon").click(function () {
     Hue.send_badge(Hue.open_profile_username, "skull")
   })
-
-  $("#show_profile_audio_clip").click(function () {
-    if (!Hue.show_profile_audio_clip_started) {
-      Hue.show_profile_audio = document.createElement("audio")
-      Hue.show_profile_audio.src = Hue.open_profile_user.audio_clip
-
-      Hue.show_profile_audio.onended = function () {
-        Hue.stop_show_profile_audio()
-      }
-
-      Hue.show_profile_audio.play()
-
-      $("#show_profile_audio_clip_icon").find("use").eq(0).attr("href", "#icon_pause")
-
-      Hue.show_profile_audio_clip_started = true
-    } else {
-      Hue.stop_show_profile_audio()
-    }
-  })
 }
 
-// Stops the profile audio and restores default state
-Hue.stop_show_profile_audio = function () {
-  if (Hue.show_profile_audio) {
-    Hue.show_profile_audio.pause()
-    Hue.show_profile_audio_clip_started = false
-    $("#show_profile_audio_clip_icon").find("use").eq(0).attr("href", "#icon_play")
+// Stars the profile audio
+Hue.play_profile_audio = function (src) {
+  Hue.profile_audio = document.createElement("audio")
+  Hue.profile_audio.src = src
+  Hue.profile_audio.play()
+}
+
+// Stops the profile audio
+Hue.stop_profile_audio = function () {
+  if (Hue.profile_audio) {
+    Hue.profile_audio.src = ""
+    Hue.profile_audio = undefined
   }
 }
 
@@ -685,9 +672,7 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   }
 
   if (user && user.audio_clip) {
-    $("#show_profile_audio_clip").css("display", "inline-flex")
-  } else {
-    $("#show_profile_audio_clip").css("display", "none")
+    Hue.play_profile_audio(user.audio_clip)
   }
 
   if (Hue.room_state["tv_enabled"] 

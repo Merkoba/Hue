@@ -110,7 +110,6 @@ Hue.loaded_image = {}
 Hue.loaded_tv = {}
 Hue.open_profile_username = false
 Hue.open_profile_user = false
-Hue.show_profile_audio_clip_started = false
 Hue.send_badge_disabled = true
 Hue.connected = false
 Hue.connections = 0

@@ -137,7 +137,7 @@ Hue.start_msg = function () {
         )
         Hue.open_profile_username = false
         Hue.open_profile_user = false
-        Hue.stop_show_profile_audio()
+        Hue.stop_profile_audio()
       },
     })
   )
