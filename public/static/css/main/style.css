@@ -2004,7 +2004,7 @@ a.special_link:hover {
 }
 
 .separator {
-	border: 0.1rem solid var(--color_3);
+	border: 1px solid var(--color_3);
 	opacity: 0.3;
 }
 
