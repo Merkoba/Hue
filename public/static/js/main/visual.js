@@ -80,7 +80,7 @@ Hue.make_safe = function (args = {}) {
     let c_text_classes = "message_info_text inline"
 
     if (args.onclick) {
-      c_text_classes += " pointer action"
+      c_text_classes += " action"
     }
 
     if (args.text_classes) {

@@ -931,7 +931,7 @@ Hue.show_action_popup = function (args = {}) {
   let classes = ""
 
   if (args.on_click) {
-    classes = "pointer action"
+    classes = "action"
   }
 
   let icon = ""

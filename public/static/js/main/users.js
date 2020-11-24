@@ -290,7 +290,7 @@ Hue.update_userlist_window = function () {
     let item = Hue.userlist[i]
 
     let h = $(`
-        <div class='modal_item userlist_item action pointer'>
+        <div class='modal_item userlist_item action'>
             <div class='userlist_column flex_column_center'>
                 <div>
                     <div class='userlist_item_profile_image_container round_image_container actionbox'>
@@ -602,6 +602,11 @@ Hue.play_profile_audio = function () {
   }
 
   Hue.profile_audio = document.createElement("audio")
+
+  Hue.profile_audio.onended = function () {
+    Hue.stop_profile_audio()
+  }
+
   Hue.profile_audio.src = Hue.open_profile_user.audio_clip
   Hue.profile_audio.play()
 }
@@ -684,9 +689,9 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   }
 
   if (user && user.audio_clip) {
-    $("#show_profile_image_container").addClass("action4 pointer")
+    $("#show_profile_image_container").addClass("action4")
   } else {
-    $("#show_profile_image_container").removeClass("action4 pointer")
+    $("#show_profile_image_container").removeClass("action4")
   }
 
   if (Hue.room_state["tv_enabled"] 

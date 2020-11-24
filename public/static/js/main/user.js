@@ -170,7 +170,7 @@ Hue.show_change_username = function () {
   let s = `
     <input type='text' placeholder='New Username' id='change_username_input' class='nice_input_2'>
     <div class='flex_row_center'>
-        <div class='action pointer bigger details_change_submit' id='change_username_submit'>Change</div>
+        <div class='action bigger details_change_submit' id='change_username_submit'>Change</div>
     </div>`
 
   Hue.msg_info2.show(["Change Username", s], function () {
@@ -206,7 +206,7 @@ Hue.show_change_password = function () {
   let s = `
     <input type='password' placeholder='New Password' id='change_password_input' class='nice_input_2'>
     <div class='flex_row_center'>
-        <div class='action pointer bigger details_change_submit' id='change_password_submit'>Change</div>
+        <div class='action bigger details_change_submit' id='change_password_submit'>Change</div>
     </div>`
 
   Hue.msg_info2.show(["Change Password", s], function () {
@@ -236,7 +236,7 @@ Hue.show_change_email = function () {
   let s = `
     <input type='text' placeholder='New Email' id='change_email_input' class='nice_input_2'>
     <div class='flex_row_center'>
-        <div class='action pointer bigger details_change_submit' id='change_email_submit'>Change</div>
+        <div class='action bigger details_change_submit' id='change_email_submit'>Change</div>
     </div>`
 
   Hue.msg_info2.show(["Change Email", s], function () {

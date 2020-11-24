@@ -302,7 +302,7 @@ Hue.show_admin_list = function (data) {
   for (let user of data.list) {
     let hs =
       "<div class='flex_row_center'><div class='admin_list_username'></div>&nbsp;&nbsp;<div class='admin_list_role'></div></div>"
-    let h = $(`<div class='admin_list_item pointer action'>${hs}</div>`)
+    let h = $(`<div class='admin_list_item action'>${hs}</div>`)
 
     h.find(".admin_list_username").eq(0).text(user.username)
     h.find(".admin_list_role")
@@ -338,7 +338,7 @@ Hue.show_ban_list = function (data) {
   for (let user of data.list) {
     let hs =
       "<div class='flex_row_center'><div class='ban_list_username' title='Click To Unban'></div></div>"
-    let h = $(`<div class='ban_list_item pointer action'>${hs}</div>`)
+    let h = $(`<div class='ban_list_item action'>${hs}</div>`)
 
     h.find(".ban_list_username").eq(0).text(user.username)
 

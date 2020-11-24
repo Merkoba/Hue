@@ -380,7 +380,7 @@ Hue.push_whisper = function (message, on_click, read) {
     message
   )}</div>`
   let item = $(
-    `<div class='whispers_item modal_item'><div class='whispers_item_content action pointer dynamic_title'>${message_html}</div>`
+    `<div class='whispers_item modal_item'><div class='whispers_item_content action dynamic_title'>${message_html}</div>`
   )
   let content = item.find(".whispers_item_content").eq(0)
 

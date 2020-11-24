@@ -310,7 +310,7 @@ Hue.show_iframe_video = function (play = true) {
   let item = Hue.loaded_tv
 
   if ($("#media_iframe_video").length === 0) {
-    let s = `<div id='media_iframe_poster' class='pointer action'>Click Here To Load</div>
+    let s = `<div id='media_iframe_poster' class='action'>Click Here To Load</div>
         <iframe sandbox="allow-same-origin allow-scripts allow-popups allow-forms" 
         width="640px" height="360px" id='media_iframe_video' class='video_frame'></iframe>
         ${Hue.get_media_info_html("tv")}`

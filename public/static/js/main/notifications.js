@@ -33,7 +33,7 @@ Hue.make_info_popup_item = function (args = {}) {
   let classes = ""
 
   if (args.action) {
-    classes = "pointer action"
+    classes = "action"
   }
 
   if (args.push) {
@@ -68,7 +68,7 @@ Hue.push_notification = function (icon, message, on_click = false) {
   let content_classes = ""
 
   if (on_click) {
-    content_classes = "pointer action"
+    content_classes = "action"
   }
 
   let item = $(

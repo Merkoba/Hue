@@ -1280,7 +1280,8 @@ select {
 .action2,
 .action3,
 .action4, .action:hover .actionbox {
-	transition: text-shadow 500ms, box-shadow 500ms
+	transition: text-shadow 500ms, box-shadow 500ms;
+	cursor: pointer;
 }
 
 .action:hover {
