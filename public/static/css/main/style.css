@@ -1823,6 +1823,10 @@ a.special_link:hover {
 	margin-bottom: 0.6rem;
 }
 
+#media_menu_top {
+	margin-bottom: 2rem;
+}
+
 #media_menu_tv_size {
 	margin-bottom: 2rem;
 }
