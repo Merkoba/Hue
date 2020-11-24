@@ -1,62 +1,63 @@
 <script id='template_profile' type='text/x-handlebars-template' class='template'>
-    <div id='show_profile_user' class='action pointer inline'>
-        <div id='show_profile_username' class='bigger'>Loading</div>
-        <div id='show_profile_role'></div>
-    </div>
+    <div id='profile_container'>
+        <div id='show_profile_top'>
+            <div id='show_profile_user' class='action pointer inline'>
+                <div id='show_profile_username' class='bigger'>Loading</div>
+                <div id='show_profile_role'></div>
+            </div>
     
-    <div class="bigger_profile_image_container round_image_container">
-        <img id='show_profile_image' class='bigger_profile_image profile_image' src="{{profile_image}}">
+            <div class="bigger_profile_image_container round_image_container">
+                <img id='show_profile_image' class='bigger_profile_image profile_image' src="{{profile_image}}">
+            </div>
+
+            <div id='show_profile_details'>
+                <div id='show_profile_audio_clip' class='flex_row_center pointer action'>
+                    <svg id='show_profile_audio_clip_icon' class='other_icon user_menu_icon'>
+                        <use href='#icon_play'>
+                    </svg>
+
+                    <div>Audio Clip</div>
+                </div>
+
+                <div class='flex_row_center' id='show_profile_hearts'>
+                    <svg class='other_icon action pointer' id='show_profile_hearts_icon'>
+                        <use href='#icon_heart'>
+                    </svg>
+
+                    <div id='show_profile_hearts_x'>x</div>
+                    <div id='show_profile_hearts_counter'>0</div>
+                </div>
+
+                <div class='flex_row_center' id='show_profile_skulls'>
+                    <svg class='other_icon action pointer' id='show_profile_skulls_icon'>
+                        <use href='#icon_skull'>
+                    </svg>
+
+                    <div id='show_profile_skulls_x'>x</div>
+                    <div id='show_profile_skulls_counter'>0</div>
+                </div>
+
+                <div id='show_profile_bio'></div>
+            </div>
+        </div>
+
+        <div id='show_profile_buttons' class='grid_column_center'>
+            <div class='show_profile_button flex_column_center pointer action' id='show_profile_sync_tv'>
+                <svg class='other_icon profile_icon'><use href='#icon_tv'></svg>
+                <div>Sync TV</div>
+            </div>
+
+            <div class='show_profile_button flex_column_center pointer action' id='show_profile_whisper'>
+                <svg class='other_icon profile_icon'><use href='#icon_envelope'></svg>
+                <div>Send Whisper</div>
+            </div>
+
+            <div class='show_profile_button flex_column_center pointer action' id='show_profile_search'>
+                <svg class='other_icon profile_icon'><use href='#icon_search'></svg>
+                <div>Chat Search</div>
+            </div>
+        </div>
+
+        <div id='show_profile_info' class='grid_column_center'></div>
     </div>
-
-    <div id='show_profile_details'>
-        <div id='show_profile_audio_clip' class='flex_row_center pointer action'>
-            <svg id='show_profile_audio_clip_icon' class='other_icon user_menu_icon'>
-                <use href='#icon_play'>
-            </svg>
-
-            <div>Audio Clip</div>
-        </div>
-
-        <div class='flex_row_center' id='show_profile_hearts'>
-            <svg class='other_icon action pointer' id='show_profile_hearts_icon'>
-                <use href='#icon_heart'>
-            </svg>
-
-            <div id='show_profile_hearts_x'>x</div>
-            <div id='show_profile_hearts_counter'>0</div>
-        </div>
-
-        <div class='flex_row_center' id='show_profile_skulls'>
-            <svg class='other_icon action pointer' id='show_profile_skulls_icon'>
-                <use href='#icon_skull'>
-            </svg>
-
-            <div id='show_profile_skulls_x'>x</div>
-            <div id='show_profile_skulls_counter'>0</div>
-        </div>
-
-        <div id='show_profile_bio'></div>
-    </div>
-
-    <div class='profile_separator'></div>
-
-    <div id='show_profile_buttons' class='grid_column_center'>
-        <div class='show_profile_button flex_column_center pointer action' id='show_profile_sync_tv'>
-            <svg class='other_icon profile_icon'><use href='#icon_tv'></svg>
-            <div>Sync TV</div>
-        </div>
-
-        <div class='show_profile_button flex_column_center pointer action' id='show_profile_whisper'>
-            <svg class='other_icon profile_icon'><use href='#icon_envelope'></svg>
-            <div>Send Whisper</div>
-        </div>
-
-        <div class='show_profile_button flex_column_center pointer action' id='show_profile_search'>
-            <svg class='other_icon profile_icon'><use href='#icon_search'></svg>
-            <div>Chat Search</div>
-        </div>
-    </div>
-
-    <div id='profile_info_separator' class='profile_separator'></div>
-    <div id='show_profile_info' class='grid_column_center'></div>
 </script>

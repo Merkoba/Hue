@@ -369,15 +369,6 @@ body * {
 	margin-right: 0.4rem;
 }
 
-.separator {
-	color: var(--color_3);
-}
-
-#footer .separator {
-	margin-left: 0.5rem !important;
-	margin-right: 0.5rem !important;
-}
-
 .footer_actions_item {
 	padding-left: 0.5rem;
 	padding-right: 0.5rem;
@@ -2012,12 +2003,22 @@ a.special_link:hover {
 	border-radius: 50%;
 }
 
-.vertical_separator {
-	height: 0.06rem;
-	border: none;
-	background-color: currentColor;
+.separator {
+	border: 1px solid var(--color_3);
 	opacity: 0.3;
-	color: var(--color_4);
+}
+
+.horizontal_separator div {
+	width: 0;
+}
+
+.vertical_separator div {
+	height: 0;
+}
+
+#footer .horizontal_separator {
+	margin-left: 0.5rem !important;
+	margin-right: 0.5rem !important;
 }
 
 .grid_column_center {
@@ -2463,13 +2464,6 @@ pre {
 
 #confirm_message {
 	margin-bottom: 1rem;
-}
-
-.profile_separator {
-	border: 1px solid var(--color_4);
-	margin-top: 1.6rem;
-	margin-bottom: 1.6rem;
-	opacity: 0.3;
 }
 
 .result_container {

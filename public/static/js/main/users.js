@@ -728,6 +728,7 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
     $("#profile_info_separator").css("display", "none")
   }
   
+  Hue.vertical_separator.separate("profile_container")
   Hue.msg_profile.show()
 }
 
