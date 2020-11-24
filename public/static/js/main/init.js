@@ -140,6 +140,7 @@ Hue.disruptive_media_minutes = 3
 Hue.confirm_open = false
 Hue.footer_expanded = false
 Hue.last_input_text = ""
+Hue.alert_mode = 0
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -241,7 +242,6 @@ Hue.on_join = function (data) {
   Hue.image_changed = []
   Hue.tv_changed = []
   Hue.superuser = data.superuser
-  Hue.alert_mode = 0
 
   Hue.load_date_3 = Date.now()
   Hue.loginfo("Joined Room")
@@ -263,7 +263,7 @@ Hue.on_join = function (data) {
   Hue.set_email(data.email)
   Hue.set_bio(data.bio)
   Hue.setup_profile_image(data.profile_image)
-  Hue.generate_favicon(0)
+  Hue.generate_favicon(Hue.alert_mode)
   Hue.update_userlist()
   Hue.setup_theme_and_background(data)
   Hue.apply_background()

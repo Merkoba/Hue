@@ -2001,8 +2001,8 @@ a.special_link:hover {
 }
 
 .separator {
-	border: 1px solid var(--color_3);
-	opacity: 0.3;
+	border: 1px solid currentColor;
+	opacity: 0.25;
 }
 
 .horizontal_separator div {
