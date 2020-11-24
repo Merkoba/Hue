@@ -1615,6 +1615,10 @@ svg.action:hover {
 
 #show_profile_buttons {
 	grid-gap: 0.5rem;
+	background-color: var(--slight_background);
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	margin-top: 1.6rem;
 }
 
 #show_profile_audio_clip {
@@ -1638,10 +1642,6 @@ svg.action:hover {
 	margin-right: 0.4rem;
 }
 
-#show_profile_skulls {
-	margin-top: 0.8rem;
-}
-
 #show_profile_skulls_x {
 	margin-left: 0.5rem;
 	margin-right: 0.4rem;
@@ -1652,7 +1652,12 @@ svg.action:hover {
 }
 
 #show_profile_info {
+	margin-top: 1.6rem;
 	grid-gap: 0.8rem;
+}
+
+#show_profile_badges {
+	grid-gap: 1rem;
 }
 
 #admin_list_container,

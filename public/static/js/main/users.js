@@ -631,6 +631,8 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   let user = Hue.get_user_by_username(username)
 
   if (user) {
+    $("#show_profile_details").css("display", "block")
+
     role = Hue.get_pretty_role_name(user.role)
     bio = user.bio
     hearts = user.hearts
@@ -642,6 +644,8 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
 
     Hue.open_profile_user = user
   } else {
+    $("#show_profile_details").css("display", "none")
+
     if (user_id) {
       uid = `ID: ${user_id}`
     }
@@ -716,8 +720,6 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
     item.title = nicedate
     $("#show_profile_info").append(item)
     show_info = true
-  } else {
-    
   }
 
   if (show_info) {
@@ -728,7 +730,7 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
     $("#profile_info_separator").css("display", "none")
   }
   
-  Hue.vertical_separator.separate("profile_container")
+  Hue.horizontal_separator.separate("show_profile_badges")
   Hue.msg_profile.show()
 }
 
