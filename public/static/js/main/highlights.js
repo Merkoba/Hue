@@ -150,9 +150,7 @@ Hue.show_highlights = function (filter = false) {
     })
   }
 
-  if (clone.children().length === 0) {
-    $("#highlights_container").html("<div class='center'>No Highlights Yet</div>")
-  } else {
+  if (clone.children().length) {
     clone.appendTo("#highlights_container")
   }
 
