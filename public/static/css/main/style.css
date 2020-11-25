@@ -2362,7 +2362,8 @@ pre {
 }
 
 .bluetext {
-	color: #a9a1d1;
+	color: var(--font_color);
+	background-color: var(--color_4_a);
 }
 
 .redtext {
