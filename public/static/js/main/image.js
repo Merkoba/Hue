@@ -65,10 +65,6 @@ Hue.setup_image = function (mode, odata = {}) {
   data.info_html += `<div>${data.nice_date}</div>`
   data.message = `${data.setter} changed the image`
 
-  data.onclick = function () {
-    Hue.show_modal_image(data)
-  }
-
   if (data.message) {
     data.message_id = Hue.announce_image(data).message_id
   }
@@ -416,48 +412,28 @@ Hue.restore_modal_image = function () {
   $("#modal_image_toolbar_expand").text("Expand")
 }
 
-// Opens the image modal with the current image
-Hue.show_current_image_modal = function (current = true) {
-  if (current) {
-    Hue.show_modal_image(Hue.current_image_data)
-  } else {
-    if (Hue.image_changed.length > 0) {
-      let data = Hue.image_changed[Hue.image_changed.length - 1]
-      Hue.show_modal_image(data)
-    }
-  }
-}
-
 // Clears image information in the modal image window
 Hue.clear_modal_image_info = function () {
   $("#modal_image_header_info").html("")
 }
 
 // Shows the modal image window
-Hue.show_modal_image = function (data) {
+Hue.show_modal_image = function (data = {}) {
   if (!data.source) {
-    if (Hue.image_changed.length > 0) {
-      Hue.show_current_image_modal(false)
-      return false
+    if (Hue.loaded_image.source) {
+      data = Hue.loaded_image
     } else {
-      Hue.showmsg("No image loaded yet")
-      return false
+      return
     }
   }
 
   Hue.loaded_modal_image = data
-
   let img = $("#modal_image")
-
   img.css("display", "none")
-
   $("#modal_image_spinner").css("display", "block")
   $("#modal_image_error").css("display", "none")
-
   img.attr("src", data.source)
-
   $("#modal_image_header_info").html(data.info_html)
-
   Hue.horizontal_separator.separate("modal_image_header_info")
 
   if (data.comment) {
@@ -486,9 +462,7 @@ Hue.show_modal_image = function (data) {
   }
 
   Hue.horizontal_separator.separate("modal_image_header_info_container")
-
-  Hue.msg_modal_image.show(function () {
-  })
+  Hue.msg_modal_image.show()
 }
 
 // Adds modal image resolution information to the modal image's information
@@ -526,6 +500,10 @@ Hue.start_image_events = function () {
 
   $("#media_image_frame").height(0)
   $("#media_image_frame").width(0)
+
+  $("#media_image_frame").click(function () {
+    Hue.show_modal_image()
+  })
 }
 
 // Apply image media info
@@ -535,7 +513,6 @@ Hue.apply_image_media_info = function () {
 
 // This runs after an image successfully loads
 Hue.after_image_load = function (ok = true) {
-  Hue.current_image_data = Hue.loaded_image
   Hue.apply_image_media_info()
 
   if (ok) {
@@ -689,12 +666,5 @@ Hue.image_picker_submit = function () {
   if (val !== "") {
     Hue.change_image_source(val)
     Hue.close_all_modals()
-  }
-}
-
-// Update data on reconnections
-Hue.fix_current_image_data = function () {
-  if (Hue.loaded_image && Hue.loaded_image !== Hue.current_image_data) {
-    Hue.current_image_data = Hue.loaded_image
   }
 }

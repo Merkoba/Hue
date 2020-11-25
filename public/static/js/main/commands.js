@@ -411,15 +411,9 @@ Hue.commands = {
   },
   "openimage": {
     action: (arg, ans) => {
-      Hue.show_current_image_modal()
+      Hue.show_modal_image()
     },
     description: `Opens the image modal with the current image`,
-  },
-  "openlastimage": {
-    action: (arg, ans) => {
-      Hue.show_current_image_modal(false)
-    },
-    description: `Opens the image modal with the latest announced image`,
   },
   "date": {
     action: (arg, ans) => {

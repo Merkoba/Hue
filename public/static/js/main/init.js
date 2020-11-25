@@ -68,7 +68,6 @@ Hue.writing_message = false
 Hue.image_visible = true
 Hue.tv_visible = true
 Hue.modal_image_open = false
-Hue.current_image_data = {}
 Hue.filter_delay = 350
 Hue.resize_delay = 350
 Hue.wheel_delay = 100
@@ -281,7 +280,6 @@ Hue.on_join = function (data) {
   Hue.check_latest_highlight()
   Hue.init_message_board(data)
   Hue.start_active_media()
-  Hue.fix_current_image_data()
   Hue.update_input_placeholder()
 
   Hue.at_startup()

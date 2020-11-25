@@ -1,11 +1,11 @@
 // Setups media
 Hue.setup_media = function () {
   $("#media_image_frame").click(function () {
-    Hue.show_current_image_modal()
+    Hue.show_modal_image()
   })
 
   $("#media_image_error").click(function () {
-    Hue.show_current_image_modal()
+    Hue.show_modal_image()
   })
 }
 
