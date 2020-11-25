@@ -102,7 +102,7 @@ Hue.update_chat = function (args = {}) {
   let fmessage
   let title = ""
 
-  if (args.just_edited) {
+  if (args.edited) {
     title += "Edited | "
   }
 
