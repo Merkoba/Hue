@@ -724,13 +724,13 @@ Hue.apply_media_info = function (element, item, mode) {
   let hover_title = item.info
 
   let html = `
-        <div class='media_info_username action'>${Hue.utilz.make_html_safe(
-          item.setter
-        )}</div>
-        <div class='media_info_details action'>: ${Hue.utilz.make_html_safe(
-          info
-        )}</div>
-    `
+    <div class='media_info_username action'>${Hue.utilz.make_html_safe(
+      item.setter
+    )}</div>
+    <div class='media_info_details action'>: ${Hue.utilz.make_html_safe(
+      info
+    )}</div>
+  `
 
   $(element).html(html)
   $(element).attr("title", hover_title)
