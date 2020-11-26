@@ -834,7 +834,7 @@ Hue.start_reply = function (target) {
     .closest(".chat_content")
     .text()
 
-  text = Hue.deactivate_url(Hue.utilz.clean_string2(text))
+  text = Hue.remove_urls(Hue.utilz.clean_string2(text))
 
   if (!uname || !text) {
     return false

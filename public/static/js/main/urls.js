@@ -278,17 +278,22 @@ Hue.show_links = function () {
   Hue.show_chat_search("http:// https://")
 }
 
-// Removes http or https from urls
-Hue.deactivate_url = function (text) {
+// Replace urls with dummy text
+Hue.remove_urls = function (text) {
   let split = text.split(" ")
   let new_words = []
 
   for (let word of split) {
     if (Hue.utilz.is_url(word)) {
-      if (word.startsWith("http://")) {
-        new_words.push(word.replace("http://", ""))
-      } else if (word.startsWith("https://")) {
-        new_words.push(word.replace("https://", ""))
+      let ext = Hue.utilz.get_extension(word)
+      if (Hue.utilz.video_extensions.includes(ext)) {
+        new_words.push("(Video)")
+      } else if (Hue.utilz.audio_extensions.includes(ext)) {
+        new_words.push("(Audio)")
+      } else if (Hue.utilz.image_extensions.includes(ext)) {
+        new_words.push("(Image)")
+      } else {
+        new_words.push("(Link)")
       }
     } else {
       new_words.push(word)
