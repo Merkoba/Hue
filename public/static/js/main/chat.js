@@ -831,23 +831,12 @@ Hue.start_reply = function (target) {
 
   let uname = $(target).closest(".chat_message").data("uname")
   let text = $(target)
-    .closest(".chat_content_container")
-    .data("original_message")
-  let selection = window.getSelection().toString()
+    .closest(".chat_content")
+    .text()
 
-  if (selection) {
-    if (text.includes(selection)) {
-      text = selection
-    }
-  }
+  text = Hue.deactivate_url(Hue.utilz.clean_string2(text))
 
   if (!uname || !text) {
-    return false
-  }
-
-  text = $(`<div>${Hue.parse_text(text, true)}</div>`).text()
-
-  if (!text) {
     return false
   }
 

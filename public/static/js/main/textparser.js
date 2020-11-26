@@ -40,9 +40,9 @@ Hue.setup_textparser_regexes = function () {
   }
 
   Hue.textparser_regexes[">"] = {}
-  Hue.textparser_regexes[">"].regex = new RegExp("(?:^)(?:&gt;+)(.*)", "gm")
+  Hue.textparser_regexes[">"].regex = new RegExp("(?:^)(?:&gt;)+(.*)", "gm")
   Hue.textparser_regexes[">"].replace_function = function (g1, g2) {
-    return `<div class='colortext'>${g2}</div>`
+    return `<div class='colortext'>${g2.trim()}</div>`
   }
 
   Hue.textparser_regexes["whisper_link"] = {}
@@ -77,27 +77,21 @@ Hue.setup_textparser_regexes = function () {
 }
 
 // Passes text through all textparser regexes doing the appropiate replacements
-// It runs in recursion until no more replacements are found
-// This is to allow replacements in any order
-Hue.parse_text = function (text, filter = false) {
-  if (filter) {
-    text = text.replace(Hue.textparser_regexes["whisper_link"].regex, "")
-    text = text.replace(Hue.textparser_regexes["anchor_link"].regex, "")
-    text = text.replace(Hue.textparser_regexes["horizontal_line"].regex, "")
-  } else {
-    text = text.replace(
-      Hue.textparser_regexes["whisper_link"].regex,
-      Hue.textparser_regexes["whisper_link"].replace_function
-    )
-    text = text.replace(
-      Hue.textparser_regexes["anchor_link"].regex,
-      Hue.textparser_regexes["anchor_link"].replace_function
-    )
-    text = text.replace(
-      Hue.textparser_regexes["horizontal_line"].regex,
-      Hue.textparser_regexes["horizontal_line"].replace_function
-    )
-  }
+Hue.parse_text = function (text) {
+  text = text.replace(
+    Hue.textparser_regexes["whisper_link"].regex,
+    Hue.textparser_regexes["whisper_link"].replace_function
+  )
+
+  text = text.replace(
+    Hue.textparser_regexes["anchor_link"].regex,
+    Hue.textparser_regexes["anchor_link"].replace_function
+  )
+
+  text = text.replace(
+    Hue.textparser_regexes["horizontal_line"].regex,
+    Hue.textparser_regexes["horizontal_line"].replace_function
+  )
 
   text = text.replace(
     Hue.textparser_regexes["`"].regex,

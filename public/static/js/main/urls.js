@@ -277,3 +277,23 @@ Hue.open_url_menu = function (args = {}) {
 Hue.show_links = function () {
   Hue.show_chat_search("http:// https://")
 }
+
+// Removes http or https from urls
+Hue.deactivate_url = function (text) {
+  let split = text.split(" ")
+  let new_words = []
+
+  for (let word of split) {
+    if (Hue.utilz.is_url(word)) {
+      if (word.startsWith("http://")) {
+        new_words.push(word.replace("http://", ""))
+      } else if (word.startsWith("https://")) {
+        new_words.push(word.replace("https://", ""))
+      }
+    } else {
+      new_words.push(word)
+    }
+  }
+
+  return new_words.join(" ")
+}
