@@ -287,11 +287,11 @@ Hue.remove_urls = function (text) {
     if (Hue.utilz.is_url(word)) {
       let ext = Hue.utilz.get_extension(word).toLowerCase()
       if (Hue.utilz.video_extensions.includes(ext)) {
-        new_words.push("(Video)")
+        new_words.push("(Video Link)")
       } else if (Hue.utilz.audio_extensions.includes(ext)) {
-        new_words.push("(Audio)")
+        new_words.push("(Audio Link)")
       } else if (Hue.utilz.image_extensions.includes(ext)) {
-        new_words.push("(Image)")
+        new_words.push("(Image Link)")
       } else {
         new_words.push("(Link)")
       }
