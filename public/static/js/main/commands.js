@@ -1044,13 +1044,13 @@ Hue.process_message = function (args = {}) {
 
   args = Object.assign(def_args, args)
 
-  let message_split = args.message.split("\n")
-  let num_lines = message_split.length
-
   args.message = Hue.utilz.remove_pre_empty_lines(args.message)
   args.message = Hue.utilz.remove_multiple_empty_lines(args.message)
   args.message = Hue.utilz.untab_string(args.message).trimEnd()
 
+  let message_split = args.message.split("\n")
+  let num_lines = message_split.length
+  
   if (num_lines === 1 && Hue.is_command(args.message) && !args.edit_id) {
     let and_split = args.message.split(" && ")
     let lc_message = args.message.toLowerCase()
