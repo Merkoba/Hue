@@ -2353,21 +2353,13 @@ pre {
 	background-color: #171515;
 }
 
-.colortext .generic_uname {
-	text-decoration: underline;
-}
-
-.greentext {
-	color: #99cf99;
-}
-
-.bluetext {
+.colortext {
 	color: var(--font_color);
 	background-color: var(--color_4_a);
 }
 
-.redtext {
-	color: #e28b7b;
+.colortext .generic_uname {
+	text-decoration: underline;
 }
 
 .color_4 {
