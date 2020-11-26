@@ -1598,7 +1598,6 @@ Hue.on_activity = function (type) {
   }
 
   if (!Hue.app_focused || Hue.screen_locked) {
-
     if (type === "message" || type === "media_change") {
       Hue.alert_title(1)
     }

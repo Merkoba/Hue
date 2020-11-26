@@ -17,7 +17,7 @@ Hue.user_join = function (data) {
   }
 
   if (Hue.open_profile_username === data.username) {
-    Hue.show_profile(data.username, $("#show_profile_image").attr("src"))
+    Hue.show_profile_by_user_id(data.user_id)
   }
 
   Hue.remove_offline_profile_images(data.user_id)
@@ -655,10 +655,6 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
     Hue.open_profile_user = user
   } else {
     $("#show_profile_details").css("display", "none")
-
-    if (user_id) {
-      uid = `ID: ${user_id}`
-    }
   }
 
   Hue.open_profile_username = username
