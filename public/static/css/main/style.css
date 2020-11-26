@@ -1983,6 +1983,7 @@ a.special_link:hover {
 	background-color: var(--slight_background);
 	color: var(--font_color);
 	border: 0px solid grey;
+	text-align: center;
 }
 
 #reply_input {
