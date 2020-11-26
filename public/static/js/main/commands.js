@@ -413,7 +413,7 @@ Hue.commands = {
     action: (arg, ans) => {
       Hue.show_modal_image()
     },
-    description: `Opens the image modal with the current image`,
+    description: `Opens the image modal`,
   },
   "date": {
     action: (arg, ans) => {
