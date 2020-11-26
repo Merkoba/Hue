@@ -285,7 +285,7 @@ Hue.remove_urls = function (text) {
 
   for (let word of split) {
     if (Hue.utilz.is_url(word)) {
-      let ext = Hue.utilz.get_extension(word)
+      let ext = Hue.utilz.get_extension(word).toLowerCase()
       if (Hue.utilz.video_extensions.includes(ext)) {
         new_words.push("(Video)")
       } else if (Hue.utilz.audio_extensions.includes(ext)) {
