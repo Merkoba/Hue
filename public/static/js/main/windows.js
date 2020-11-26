@@ -345,9 +345,10 @@ Hue.start_msg = function () {
     Object.assign({}, common, titlebar, {
       id: "reply",
       window_width: "26rem",
+      close_on_escape: false,
       after_show: function (instance) {
         common.after_show(instance)
-        Hue.writing_reply = true
+        Hue.writing_reply = truey
       },
       after_close: function (instance) {
         common.after_close(instance)
