@@ -821,10 +821,6 @@ Hue.setup_reply = function () {
       Hue.old_reply_input_val = value
     }
   })
-
-  $("#reply_text").blur(function () {
-    Hue.check_reply_text()
-  })
 }
 
 // Prepare data to show the reply window
@@ -864,7 +860,6 @@ Hue.show_reply = function (username, text) {
   $("#reply_text").val(text)
   $("#reply_input").val("")
   
-  Hue.check_reply_text()
   Hue.old_reply_input_val = ""
   Hue.msg_reply.set_title(`Re: ${username}`)
 
@@ -885,10 +880,12 @@ Hue.submit_reply = function () {
 
   Hue.msg_reply.close()
   Hue.goto_bottom(true)
-  Hue.check_reply_text()
+
+  let text = Hue.utilz.clean_string2($("#reply_text").val())
+  text = text.substring(0, Hue.config.quote_max_length).trim()
 
   Hue.process_message({
-    message: `> $${Hue.reply_username}$ said: ${$("#reply_text").val()}`,
+    message: `> $${Hue.reply_username}$ said: ${text}`,
     to_history: false
   })
 
@@ -897,13 +894,6 @@ Hue.submit_reply = function () {
       message: reply
     })
   }
-}
-
-// String check for quoted text
-Hue.check_reply_text = function () {
-  let text = Hue.utilz.clean_string2($("#reply_text").val())
-  text = text.substring(0, Hue.config.quote_max_length).trim()
-  $("#reply_text").val(text)
 }
 
 // Adds a message to the fresh message list

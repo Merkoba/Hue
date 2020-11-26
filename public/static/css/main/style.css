@@ -1978,12 +1978,11 @@ a.special_link:hover {
 }
 
 #reply_text {
-	width: 95%;
-	padding: 0.5rem;
+	width: 99%;
 	background-color: var(--slight_background);
 	color: var(--font_color);
-	border: 0px solid grey;
 	text-align: center;
+	border-color: var(--color_4_a);
 }
 
 #reply_input {
