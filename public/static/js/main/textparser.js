@@ -40,15 +40,9 @@ Hue.setup_textparser_regexes = function () {
   }
 
   Hue.textparser_regexes[">"] = {}
-  Hue.textparser_regexes[">"].regex = new RegExp("(?:^)((?:&gt;|\\s)+)(.*)", "gm")
-  Hue.textparser_regexes[">"].replace_function = function (g1, g2, g3) {
-    let m = g2.match(/&gt;/g)
-
-    if (!m) {
-      return false
-    }
-
-    return `<div class='colortext'>${g3}</div>`
+  Hue.textparser_regexes[">"].regex = new RegExp("(?:^)(?:&gt;+)(.*)", "gm")
+  Hue.textparser_regexes[">"].replace_function = function (g1, g2) {
+    return `<div class='colortext'>${g2}</div>`
   }
 
   Hue.textparser_regexes["whisper_link"] = {}
