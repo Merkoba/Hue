@@ -830,8 +830,10 @@ Hue.start_reply = function (target) {
   }
 
   let uname = $(target).closest(".chat_message").data("uname")
+
   let text = $(target)
-    .closest(".chat_content")
+    .closest(".chat_content_container")
+    .find(".chat_content").eq(0)
     .text()
 
   text = Hue.remove_urls(Hue.utilz.clean_string2(text))
