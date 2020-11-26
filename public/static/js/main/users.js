@@ -1008,14 +1008,15 @@ Hue.setup_badges = function () {
 // Sends 1 badge to a user
 // This has a cooldown
 Hue.send_badge = function (username, type) {
+  if (username === Hue.username) {
+    Hue.showmsg("You can't give a badge to yourself")
+    return false
+  }
+  
   if (Hue.send_badge_disabled) {
     let n = Hue.utilz.round2(Hue.config.send_badge_cooldown / 1000, 1)
     let s = n === 1 ? "1 second" : `${n} seconds`
     Hue.showmsg(`You can send a badge every ${s}`)
-    return false
-  }
-
-  if (username === Hue.username) {
     return false
   }
 
