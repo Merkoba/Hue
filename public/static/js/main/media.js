@@ -913,3 +913,14 @@ Hue.load_media = function (type, data) {
     force: true
   })
 }
+
+// Get media item by id
+Hue.get_media_item = function (type, id) {
+  for (let item of Hue[`${type}_changed`]) {
+    if (item.id === id) {
+      return item
+    }
+  }
+
+  return {}
+}

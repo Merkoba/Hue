@@ -65,6 +65,10 @@ Hue.setup_image = function (mode, odata = {}) {
   data.info_html += `<div>${data.nice_date}</div>`
   data.message = `${data.setter} changed the image`
 
+  data.onclick = function () {
+    Hue.show_modal_image(data.id)
+  }
+
   if (data.message) {
     data.message_id = Hue.announce_image(data).message_id
   }
@@ -292,8 +296,7 @@ Hue.modal_image_prev_click = function () {
   }
 
   let prev = Hue.image_changed[index]
-
-  Hue.show_modal_image(prev)
+  Hue.show_modal_image(prev.id)
 }
 
 // When clicking the Next button in the image modal window
@@ -309,8 +312,7 @@ Hue.modal_image_next_click = function (e) {
   }
 
   let next = Hue.image_changed[index]
-
-  Hue.show_modal_image(next)
+  Hue.show_modal_image(next.id)
 }
 
 // Setups image modal window events
@@ -418,8 +420,12 @@ Hue.clear_modal_image_info = function () {
 }
 
 // Shows the modal image window
-Hue.show_modal_image = function (data = {}) {
-  if (!data.source) {
+Hue.show_modal_image = function (id = 0) {
+  let data
+
+  if (id) {
+    data = Hue.get_media_item("image", id)
+  } else {
     if (Hue.loaded_image.source) {
       data = Hue.loaded_image
     } else {
