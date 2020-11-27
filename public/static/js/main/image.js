@@ -506,10 +506,6 @@ Hue.start_image_events = function () {
 
   $("#media_image_frame").height(0)
   $("#media_image_frame").width(0)
-
-  $("#media_image_frame").click(function () {
-    Hue.show_modal_image()
-  })
 }
 
 // Apply image media info
