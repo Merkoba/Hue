@@ -145,15 +145,6 @@ Hue.apply_theme = function () {
   document.documentElement.style.setProperty('--slight_background', slight_background)
   document.documentElement.style.setProperty('--slight_background_a', slight_background_a)
   document.documentElement.style.setProperty('--overlay_color', overlay_color)
-
-  console.log('--altcolor', altcolor)
-  console.log('--altcolor_a', altcolor_a)
-  console.log('--slight_background', slight_background)
-  console.log('--slight_background_a', slight_background_a)
-  console.log('--font_color', font_color)
-  console.log('--background_color', background_color)
-  console.log('--background_color_a', background_color_a)
-  console.log('--overlay_color', overlay_color)
 }
 
 // Changes the theme
