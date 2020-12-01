@@ -110,11 +110,6 @@ Hue.apply_theme = function () {
     )
   }
 
-  let background_color_a = Hue.colorlib.rgb_to_rgba(
-    background_color,
-    Hue.config.opacity_amount_1
-  )
-
   let altcolor = Hue.colorlib.get_lighter_or_darker(
     background_color,
     Hue.config.color_contrast_amount_4
@@ -122,9 +117,9 @@ Hue.apply_theme = function () {
 
   let altcolor_a = Hue.colorlib.rgb_to_rgba(altcolor, Hue.config.opacity_amount_3)
 
-  let overlay_color = Hue.colorlib.rgb_to_rgba(
-    altcolor,
-    Hue.config.opacity_amount_3
+  let background_color_a = Hue.colorlib.rgb_to_rgba(
+    background_color,
+    Hue.config.opacity_amount_1
   )
 
   let altbackground = Hue.colorlib.get_lighter_or_darker(
@@ -144,7 +139,6 @@ Hue.apply_theme = function () {
   document.documentElement.style.setProperty('--background_color_a', background_color_a)
   document.documentElement.style.setProperty('--altbackground', altbackground)
   document.documentElement.style.setProperty('--altbackground_a', altbackground_a)
-  document.documentElement.style.setProperty('--overlay_color', overlay_color)
 }
 
 // Changes the theme

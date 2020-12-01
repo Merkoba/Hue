@@ -2330,7 +2330,7 @@ pre {
 }
 
 .Msg-overlay {
-	background-color: var(--overlay_color) !important;
+	background-color: var(--altcolor_a) !important;
 	color: var(--background_color) !important;
 }
 
