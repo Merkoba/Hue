@@ -72,12 +72,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "default_topic"
 >The shown topic when the room is created.
 
-"opacity_amount_x"
->Opacity levels used through out the interface.
-
-"color_contrast_amount_x"
->Color contrast levels used through out the interface.
-
 "played_crop_limit"
 >Same as chat_crop limit but for items displayed when "Now Playing" is clicked.
 

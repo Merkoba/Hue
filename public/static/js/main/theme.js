@@ -104,33 +104,14 @@ Hue.apply_theme = function () {
   if (Hue.text_color_mode === "custom") {
     font_color = Hue.text_color
   } else {
-    font_color = Hue.colorlib.get_lighter_or_darker(
-      background_color,
-      Hue.config.color_contrast_amount_2
-    )
+    font_color = Hue.colorlib.get_lighter_or_darker(background_color, 0.8)
   }
 
-  let altcolor = Hue.colorlib.get_lighter_or_darker(
-    background_color,
-    Hue.config.color_contrast_amount_4
-  )
-
-  let altcolor_a = Hue.colorlib.rgb_to_rgba(altcolor, Hue.config.opacity_amount_3)
-
-  let background_color_a = Hue.colorlib.rgb_to_rgba(
-    background_color,
-    Hue.config.opacity_amount_1
-  )
-
-  let altbackground = Hue.colorlib.get_lighter_or_darker(
-    background_color,
-    Hue.config.color_contrast_amount_5
-  )
-
-  let altbackground_a = Hue.colorlib.rgb_to_rgba(
-    altbackground,
-    Hue.config.opacity_amount_3
-  )
+  let altcolor = Hue.colorlib.get_lighter_or_darker(background_color, 0.2)
+  let altcolor_a = Hue.colorlib.rgb_to_rgba(altcolor,  0.7)
+  let background_color_a = Hue.colorlib.rgb_to_rgba(background_color, 0.95)
+  let altbackground = Hue.colorlib.get_lighter_or_darker(background_color, 0.09)
+  let altbackground_a = Hue.colorlib.rgb_to_rgba(altbackground, 0.7)
 
   document.documentElement.style.setProperty('--font_color', font_color)
   document.documentElement.style.setProperty('--altcolor', altcolor)
