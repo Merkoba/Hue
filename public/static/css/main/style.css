@@ -200,7 +200,7 @@ body * {
 	flex-direction: row;
 	justify-content: center;
 	align-items: center;
-	background-color: var(--slight_background);
+	background-color: var(--altbackground);
 	color: var(--font_color);
 }
 
@@ -418,7 +418,7 @@ body * {
 	padding-left: 2rem;
 	padding-right: 2rem;
 	border: 0.06rem solid var(--altcolor_a);
-	background-color: var(--slight_background_a);
+	background-color: var(--altbackground_a);
 	color: var(--font_color);
 	flex-grow: 1;
 }
@@ -788,8 +788,8 @@ a.generic:hover {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	background-color: var(--slight_background);
-	border-left: 0.06rem solid var(--slight_background);
+	background-color: var(--altbackground);
+	border-left: 0.06rem solid var(--altbackground);
 	opacity: 0.5;
 }
 
@@ -1398,7 +1398,7 @@ svg.action:hover {
 	width: 100%;
 	height: 3.53rem;
 	overflow: hidden;
-	background-color: var(--slight_background);
+	background-color: var(--altbackground);
 	box-shadow: 0 0 0.06rem grey;
 	border-radius: 0.18rem;
 }
@@ -1434,7 +1434,7 @@ svg.action:hover {
 	left: -0.94rem;
 	width: 3.76rem;
 	height: 3.76rem;
-	background-color: var(--slight_background);
+	background-color: var(--altbackground);
 	opacity: 0.3;
 	z-index: 0;
 	border-radius: 50%;
@@ -1449,7 +1449,7 @@ svg.action:hover {
 	left: -2.71rem;
 	width: 7.53rem;
 	height: 7.53rem;
-	background-color: var(--slight_background);
+	background-color: var(--altbackground);
 	opacity: 0.2;
 	z-index: 0;
 	border-radius: 50%;
@@ -1465,7 +1465,7 @@ svg.action:hover {
 	left: -4.71rem;
 	width: 11.29rem;
 	height: 11.29rem;
-	background-color: var(--slight_background);
+	background-color: var(--altbackground);
 	opacity: 0.1;
 	z-index: 0;
 	border-radius: 50%;
@@ -1481,7 +1481,7 @@ svg.action:hover {
 	left: -6.82rem;
 	width: 15.06rem;
 	height: 15.06rem;
-	background-color: var(--slight_background);
+	background-color: var(--altbackground);
 	opacity: 0.1;
 	z-index: 0;
 	border-radius: 50%;
@@ -1522,7 +1522,7 @@ svg.action:hover {
 }
 
 .highlighted_message {
-	background-color: var(--slight_background_a);
+	background-color: var(--altbackground_a);
 	color: var(--font_color);
 	box-shadow: 0 0 0.12rem currentColor;
 	padding: 0.2rem;
@@ -1602,7 +1602,7 @@ svg.action:hover {
 
 #show_profile_buttons {
 	grid-gap: 0.5rem;
-	background-color: var(--slight_background);
+	background-color: var(--altbackground);
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 	margin-top: 1.6rem;
@@ -1969,7 +1969,7 @@ a.special_link:hover {
 
 #reply_text {
 	width: 99%;
-	background-color: var(--slight_background);
+	background-color: var(--altbackground);
 	color: var(--font_color);
 	text-align: center;
 	border-color: var(--altcolor_a);
@@ -2052,7 +2052,7 @@ a.special_link:hover {
 	padding-bottom: 1rem;
 	margin-top: 0.5rem;
 	margin-bottom: 0.5rem;
-	background-color: var(--slight_background);
+	background-color: var(--altbackground);
 }
 
 .room_menu_section_container {
@@ -2152,7 +2152,7 @@ a.special_link:hover {
 	margin-bottom: 1rem;
 	border: 0 solid grey;
 	outline: none;
-	background-color: var(--slight_background);
+	background-color: var(--altbackground);
 	color: var(--font_color);
 }
 
@@ -2329,18 +2329,6 @@ pre {
 	text-decoration: underline;
 }
 
-.altcolor {
-	color: var(--altcolor);	
-}
-
-.slight_color {
-	color: var(--slight_background);
-}
-
-.slight_background {
-	background-color: var(--slight_background);
-}
-
 .Msg-overlay {
 	background-color: var(--overlay_color) !important;
 	color: var(--background_color) !important;
@@ -2352,7 +2340,7 @@ pre {
 }
 
 .Msg-window-inner-x:hover {
-	background-color: var(--slight_background) !important;
+	background-color: var(--altbackground) !important;
 }
 
 
@@ -2361,7 +2349,7 @@ pre {
 }
 
 .titlebar_inner_x {
-	background-color: var(--slight_background) !important;
+	background-color: var(--altbackground) !important;
 }
 
 .titlebar_inner_x:hover {
@@ -2369,7 +2357,7 @@ pre {
 }
 
 .custom_titlebar {
-	background-color: var(--slight_background) !important;
+	background-color: var(--altbackground) !important;
 	color: var(--font_color) !important;
 }
 
