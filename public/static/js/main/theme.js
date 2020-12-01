@@ -99,10 +99,6 @@ Hue.apply_theme = function () {
   }
 
   let background_color = theme
-  let background_color_2 = Hue.colorlib.get_lighter_or_darker(
-    background_color,
-    Hue.config.color_contrast_amount_1
-  )
   let font_color
 
   if (Hue.text_color_mode === "custom") {
@@ -118,55 +114,46 @@ Hue.apply_theme = function () {
     background_color,
     Hue.config.opacity_amount_1
   )
-  let background_color_2_a_2ha = Hue.colorlib.rgb_to_rgba(
-    background_color_2,
-    Hue.config.opacity_amount_1
-  )
-  let background_color_a_2 = Hue.colorlib.rgb_to_rgba(
-    background_color_2,
-    Hue.config.opacity_amount_3
-  )
-  let color_3 = Hue.colorlib.get_lighter_or_darker(
-    background_color,
-    Hue.config.color_contrast_amount_3
-  )
-  let color_4 = Hue.colorlib.get_lighter_or_darker(
+
+  let altcolor = Hue.colorlib.get_lighter_or_darker(
     background_color,
     Hue.config.color_contrast_amount_4
   )
-  let color_4_a = Hue.colorlib.rgb_to_rgba(color_4, Hue.config.opacity_amount_3)
-  let color_4_alpha = Hue.colorlib.rgb_to_rgba(
-    color_4,
-    Hue.config.opacity_amount_1
-  )
+
+  let altcolor_a = Hue.colorlib.rgb_to_rgba(altcolor, Hue.config.opacity_amount_3)
+
   let overlay_color = Hue.colorlib.rgb_to_rgba(
-    color_3,
+    altcolor,
     Hue.config.opacity_amount_3
   )
+
   let slight_background = Hue.colorlib.get_lighter_or_darker(
     background_color,
     Hue.config.color_contrast_amount_5
   )
-  let slight_background_alpha = Hue.colorlib.rgb_to_rgba(
+
+  let slight_background_a = Hue.colorlib.rgb_to_rgba(
     slight_background,
     Hue.config.opacity_amount_3
   )
 
-  $(".panel").css("background-color", background_color_2_a_2ha)
-  $(".panel").css("color", font_color)
-
-  document.documentElement.style.setProperty('--color_4', color_4)
-  document.documentElement.style.setProperty('--color_4_a', color_4_a)
-  document.documentElement.style.setProperty('--color_4_alpha', color_4_alpha)
-  document.documentElement.style.setProperty('--color_3', color_3)
-  document.documentElement.style.setProperty('--slight_background', slight_background)
-  document.documentElement.style.setProperty('--slight_background_alpha', slight_background_alpha)
   document.documentElement.style.setProperty('--font_color', font_color)
-  document.documentElement.style.setProperty('--background_color_2', background_color_2)
-  document.documentElement.style.setProperty('--background_color_a', background_color_a)
-  document.documentElement.style.setProperty('--background_color_a_2', background_color_a_2)
+  document.documentElement.style.setProperty('--altcolor', altcolor)
+  document.documentElement.style.setProperty('--altcolor_a', altcolor_a)
   document.documentElement.style.setProperty('--background_color', background_color)
+  document.documentElement.style.setProperty('--background_color_a', background_color_a)
+  document.documentElement.style.setProperty('--slight_background', slight_background)
+  document.documentElement.style.setProperty('--slight_background_a', slight_background_a)
   document.documentElement.style.setProperty('--overlay_color', overlay_color)
+
+  console.log('--altcolor', altcolor)
+  console.log('--altcolor_a', altcolor_a)
+  console.log('--slight_background', slight_background)
+  console.log('--slight_background_a', slight_background_a)
+  console.log('--font_color', font_color)
+  console.log('--background_color', background_color)
+  console.log('--background_color_a', background_color_a)
+  console.log('--overlay_color', overlay_color)
 }
 
 // Changes the theme
