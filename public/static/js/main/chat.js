@@ -405,7 +405,7 @@ Hue.chat_announce = function (args = {}) {
                 </svg>
             </div>
             <div class='${split_classes}'>
-                <div class='flex_row_center'>
+                <div class='announcement_top'>
                   <div class='${content_classes}'></div>
                   <div class='chat_timeago'></div>
                 </div>

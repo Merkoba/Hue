@@ -485,6 +485,7 @@ body * {
 	margin-left: 0.5rem;
 	opacity: 0.8;
 	font-size: 0.9rem;
+	white-space: nowrap;
 }
 
 .chat_uname {
@@ -537,6 +538,13 @@ body * {
 .announcement_comment_icon {
 	margin-right: 0.5rem;
 	align-self: flex-start;
+}
+
+.announcement_top {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: center;
 }
 
 .brk {
