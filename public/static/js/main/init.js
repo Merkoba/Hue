@@ -139,6 +139,8 @@ Hue.confirm_open = false
 Hue.footer_expanded = false
 Hue.last_input_text = ""
 Hue.alert_mode = 0
+Hue.top_scroller_visible = false
+Hue.bottom_scroller_visible = false
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false

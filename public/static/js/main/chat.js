@@ -1768,26 +1768,46 @@ Hue.scroll_events = function () {
 // Scrollers are the elements that appear at the top or at the bottom,
 // when the chat area is scrolled
 Hue.show_top_scroller = function () {
+  if (Hue.top_scroller_visible) {
+    return
+  }
+
   $("#top_scroller_container").css("visibility", "visible")
+  Hue.top_scroller_visible = true
 }
 
 // Hides the top scroller
 Hue.hide_top_scroller = function () {
+  if (!Hue.top_scroller_visible) {
+    return
+  }
+  
   $("#top_scroller_container").css("visibility", "hidden")
+  Hue.top_scroller_visible = false
 }
 
 // Shows the bottom scroller
 // Scrollers are the elements that appear at the top or at the bottom,
 // when the chat area is scrolled
 Hue.show_bottom_scroller = function () {
+  if (Hue.bottom_scroller_visible) {
+    return
+  }
+  
   $("#bottom_scroller_container").css("visibility", "visible")
   Hue.chat_scrolled = true
+  Hue.bottom_scroller_visible = true
 }
 
 // Hides the bottom scroller
 Hue.hide_bottom_scroller = function () {
+  if (!Hue.bottom_scroller_visible) {
+    return
+  }
+
   $("#bottom_scroller_container").css("visibility", "hidden")
   Hue.chat_scrolled = false
+  Hue.bottom_scroller_visible = false
 }
 
 // Updates scrollers state based on scroll position
@@ -1808,7 +1828,7 @@ Hue.check_scrollers = function () {
     } else {
       Hue.show_top_scroller()
     }
-    
+
     Hue.show_bottom_scroller()
     let info = `${Hue.get_scrolled_percent()}%`
     $("#scroller_info").html(info)
