@@ -230,7 +230,7 @@ body * {
 
 .chat_area {
 	display: grid;
-	grid-gap: 1.2rem;
+	grid-gap: 1rem;
 }
 
 #chat_area > .message {
