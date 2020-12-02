@@ -1795,19 +1795,20 @@ Hue.check_scrollers = function () {
   let area = $("#chat_area")
   let scrolltop = area.scrollTop()
 
-  if (scrolltop < 5) {
-    Hue.hide_top_scroller()
-  } else {
-    Hue.show_top_scroller()
-  }
-
   let max = area.prop("scrollHeight") - area.innerHeight()
   let diff = max - scrolltop
 
   if (diff < 5) {
+    Hue.hide_top_scroller()
     Hue.hide_bottom_scroller()
     $("#scroller_info").html("0%")
   } else {
+    if (scrolltop < 5) {
+      Hue.hide_top_scroller()
+    } else {
+      Hue.show_top_scroller()
+    }
+    
     Hue.show_bottom_scroller()
     let info = `${Hue.get_scrolled_percent()}%`
     $("#scroller_info").html(info)
