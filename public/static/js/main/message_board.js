@@ -30,6 +30,14 @@ Hue.setup_message_board = function () {
     }
   )
 
+  $("#message_board_container").on(
+    "click",
+    ".message_board_username",
+    function () {
+      Hue.show_profile($(this).data("uname"))
+    }
+  )
+
   $("#message_board_publish").click(function () {
     Hue.submit_message_board_post()
   })
@@ -47,17 +55,10 @@ Hue.add_post_to_message_board = function (post) {
   item.data("id", post.id)
   item.data("date", post.date)
 
-  let uname
-  
-  if (post.username) {
-    let safe_uname = Hue.utilz.make_html_safe(post.username || "")
-    uname = Hue.parse_text(`$${safe_uname}$`)
-  } else {
-    uname = "Unknown"
-  }
-  
+  let uname = Hue.utilz.make_html_safe(post.username || "")
   let username = item.find(".message_board_username").eq(0)
-  username.html(`Posted By: ${uname}`)
+  username.html(uname)
+  username.data("uname", uname)
 
   let text = item.find(".message_board_text").eq(0)
   text.html(Hue.parse_text(Hue.utilz.make_html_safe(post.message))).urlize()

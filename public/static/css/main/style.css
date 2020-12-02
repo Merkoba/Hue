@@ -2272,6 +2272,11 @@ pre {
 	padding: 0.5rem;
 }
 
+.message_board_username {
+	font-size: 1.1rem;
+	cursor: pointer;
+}
+
 .quote {
 	background-color: var(--altcolor_a);
 	padding: 0.25rem;
