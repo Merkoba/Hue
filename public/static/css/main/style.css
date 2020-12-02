@@ -3,7 +3,7 @@
 	--panel_font_size: 1rem;
 	--icon_size: 1.4rem;
 	--app_font_family: imported_font, sans-serif;
-	--profile_image_size: 2.2rem;
+	--profile_image_size: 2rem;
 	--tab_size: 1.6rem;
 }
 
@@ -444,7 +444,7 @@ body * {
 .chat_right_side {
 	display: flex;
 	flex-direction: column;
-	padding-left: 1rem;
+	padding-left: 0.8rem;
 	flex-grow: 1;
 	flex-shrink: 1;
 }
