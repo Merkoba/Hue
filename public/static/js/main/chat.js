@@ -405,7 +405,10 @@ Hue.chat_announce = function (args = {}) {
                 </svg>
             </div>
             <div class='${split_classes}'>
-                <div class='${content_classes}'></div>
+                <div class='flex_row_center'>
+                  <div class='${content_classes}'></div>
+                  <div class='chat_timeago'></div>
+                </div>
                 ${comment}
             </div>
         </div>
@@ -416,6 +419,9 @@ Hue.chat_announce = function (args = {}) {
   let comment_el = fmessage.find(".announcement_comment_inner").eq(0)
   let split = fmessage.find(".announcement_content_split").eq(0)
   let brk = fmessage.find(".brk").eq(0)
+
+  let htimeago = fmessage.find(".chat_timeago").eq(0)
+  htimeago.text(`(${Hue.utilz.timeago(d)})`)
 
   split.attr("title", t)
   split.data("otitle", t)
