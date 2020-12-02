@@ -549,7 +549,7 @@ body * {
 	flex-shrink: 0;
 	flex-grow: 0;
 	text-align: center;
-	margin-right: 1rem;
+	margin-right: 0.8rem;
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;
