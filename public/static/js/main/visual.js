@@ -177,3 +177,8 @@ Hue.on_confirm = function () {
 Hue.showmsg = function (s) {
   Hue.msg_info.show(s)
 }
+
+// Shows feedback with the current date in the nice date format
+Hue.show_current_date = function () {
+  Hue.feedback(Hue.utilz.nice_date())
+}

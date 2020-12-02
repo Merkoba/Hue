@@ -144,7 +144,7 @@ Hue.show_popup = function (popup, html="") {
   }
 
   if (popup.hue_date) {
-    popup.set_title(Hue.get_timeago(popup.hue_date))
+    popup.set_title(Hue.utilz.timeago(popup.hue_date))
   }
 
   popup.show()

@@ -18,10 +18,6 @@ Hue.show_chat_search = function (filter = false) {
     })
 
     clone = clone.filter(function () {
-      if ($(this).hasClass("vseparator_container")) {
-        return false
-      }
-
       let text = $(this).text().toLowerCase()
       let text_cmp = text.includes(lc_value)
       

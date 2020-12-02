@@ -129,20 +129,12 @@ Hue.show_highlights = function (filter = false) {
         return false
       }
 
-      if ($(this).hasClass("vseparator_container")) {
-        return false
-      }
-
       let text = $(this).text().toLowerCase()
       return words.some((word) => text.includes(word))
     })
   } else {
     clone = clone.filter(function () {
       if (!$(this).data("highlighted")) {
-        return false
-      }
-
-      if ($(this).hasClass("vseparator_container")) {
         return false
       }
 

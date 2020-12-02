@@ -1,7 +1,7 @@
 // Starts body events
 Hue.start_body_events = function () {
   $("body").on("mouseenter", ".dynamic_title", function () {
-    let new_title = `${$(this).data("otitle")} (${Hue.get_timeago(
+    let new_title = `${$(this).data("otitle")} (${Hue.utilz.timeago(
       $(this).data("date")
     )})`
 

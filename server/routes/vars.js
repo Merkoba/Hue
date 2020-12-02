@@ -60,7 +60,6 @@ module.exports = function (c, config) {
   c.vars.activity_bar_interval = config.activity_bar_interval
   c.vars.activity_bar_trigger_interval = config.activity_bar_trigger_interval
   c.vars.max_activity_bar_items = config.max_activity_bar_items
-  c.vars.old_activity_min = config.old_activity_min
   c.vars.url_title_max_length = config.url_title_max_length
   c.vars.max_bio_length = config.max_bio_length
   c.vars.max_bio_length = config.max_bio_length

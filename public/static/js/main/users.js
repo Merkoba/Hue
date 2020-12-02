@@ -721,7 +721,7 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   if (user) {
     let item = document.createElement("div")
     let nicedate = Hue.utilz.nice_date(user.date_joined)
-    let timeago = Hue.get_timeago(user.date_joined)
+    let timeago = Hue.utilz.timeago(user.date_joined)
     item.textContent = `Got Online: ${timeago}`
     item.title = nicedate
     $("#show_profile_info").append(item)
