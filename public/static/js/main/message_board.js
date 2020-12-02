@@ -57,7 +57,7 @@ Hue.add_post_to_message_board = function (post) {
 
   let uname = Hue.utilz.make_html_safe(post.username || "")
   let username = item.find(".message_board_username").eq(0)
-  username.html(uname)
+  username.html(`posted by ${uname}`)
   username.data("uname", uname)
 
   let text = item.find(".message_board_text").eq(0)
