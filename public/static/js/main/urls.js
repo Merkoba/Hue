@@ -72,7 +72,7 @@ jQuery.fn.urlize = function (stop_propagation = true) {
 }
 
 // Goes to a url
-Hue.goto_url = function (u, mode = "same", encode = false) {
+Hue.goto_url = function (u, mode = "tab", encode = false) {
   if (encode) {
     u = encodeURIComponent(u)
   }
@@ -90,11 +90,11 @@ Hue.search_on = function (site, q) {
   q = encodeURIComponent(q)
 
   if (site === "google") {
-    Hue.goto_url(`https://www.google.com/search?q=${q}`, "tab")
+    Hue.goto_url(`https://www.google.com/search?q=${q}`)
   } else if (site === "soundcloud") {
-    Hue.goto_url(`https://soundcloud.com/search?q=${q}`, "tab")
+    Hue.goto_url(`https://soundcloud.com/search?q=${q}`)
   } else if (site === "youtube") {
-    Hue.goto_url(`https://www.youtube.com/results?search_query=${q}`, "tab")
+    Hue.goto_url(`https://www.youtube.com/results?search_query=${q}`)
   }
 }
 
@@ -190,7 +190,7 @@ Hue.check_handle_url_options = function (text) {
 // Setups the Open URL picker window
 Hue.setup_open_url = function () {
   $("#open_url_menu_open").click(function () {
-    Hue.goto_url(Hue.open_url_source, "tab")
+    Hue.goto_url(Hue.open_url_source)
     Hue.close_all_modals()
   })
 
@@ -230,7 +230,6 @@ Hue.open_url_menu = function (args = {}) {
   }
 
   args = Object.assign(def_args, args)
-
   Hue.open_url_title = args.title || args.data.title
 
   if (Hue.open_url_title && Hue.open_url_title !== args.source) {
@@ -259,7 +258,6 @@ Hue.open_url_menu = function (args = {}) {
   }
 
   Hue.horizontal_separator.separate("open_url_container")
-
   Hue.open_url_source = args.source
   Hue.open_url_data = args.data
   Hue.open_url_media_type = args.media_type
