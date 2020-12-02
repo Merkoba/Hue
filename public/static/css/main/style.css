@@ -2275,6 +2275,7 @@ pre {
 .message_board_date {
 	opacity: 0.8;
 	margin-bottom: 0.4rem;
+	font-size: 0.9rem;
 }
 
 .message_board_username {
