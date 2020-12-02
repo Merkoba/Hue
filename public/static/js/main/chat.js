@@ -7,7 +7,6 @@ Hue.update_chat = function (args = {}) {
     message: "",
     prof_image: "",
     date: false,
-    third_person: false,
     brk: false,
     public: true,
     link_title: false,
@@ -46,10 +45,8 @@ Hue.update_chat = function (args = {}) {
   let image_preview = false
   let image_preview_src_original = false
   let image_preview_text = false
-  let starts_me =
-    args.message.startsWith(`${Hue.config.commands_prefix}me `) || args.message.startsWith(`${Hue.config.commands_prefix}em `)
 
-  if (!starts_me && Hue.get_setting("show_image_previews")) {
+  if (Hue.get_setting("show_image_previews")) {
     let ans = Hue.make_image_preview(args.message)
 
     image_preview = ans.image_preview
@@ -61,7 +58,6 @@ Hue.update_chat = function (args = {}) {
   let link_preview_text = false
 
   if (
-    !starts_me &&
     !image_preview &&
     (args.link_title || args.link_description) &&
     Hue.get_setting("show_link_previews")
@@ -112,36 +108,34 @@ Hue.update_chat = function (args = {}) {
     title = `${args.id.slice(-3)} | ${title}`
   }
 
-  if (starts_me || args.third_person) {
-    let tpt
+  let profile_image_classes = "chat_profile_image_container round_image_container action4 profile_image"
 
-    if (starts_me) {
-      tpt = args.message.substr(4)
-    } else {
-      tpt = args.message
-    }
+  if (!Hue.user_is_online_by_user_id(args.user_id)) {
+    profile_image_classes += " profile_image_offline"
+  }
 
-    if (!args.brk) {
-      args.brk = Hue.get_chat_icon("user")
-    }
-
-    message_classes += " thirdperson"
-    container_classes += " chat_content_container_third"
-
-    let s = `
-        <div class='${message_classes}'>
-            <div class='chat_third_container'>
-                <div class='brk chat_third_brk'>${args.brk}</div>
+  let s = `
+    <div class='${message_classes}'>
+        <div class='chat_left_side'>
+            <div class='${profile_image_classes}'>
+                <img class='chat_profile_image profile_image' src='${pi}' loading='lazy'>
+            </div>
+        </div>
+        <div class='chat_right_side'>
+            <div class='chat_uname_container'>
+                <div class='chat_uname action'></div>
+                <div class='chat_timeago'></div>
+            </div>
+            <div class='chat_container'>
                 <div class='${container_classes}'>
+
                     <div class='chat_menu_button_container'>
-                      <svg class='other_icon chat_menu_button chat_menu_button_menu'>
-                        <use href='#icon_ellipsis'>
-                      </svg>
+                        <svg class='other_icon chat_menu_button chat_menu_button_menu'>
+                          <use href='#icon_ellipsis'>
+                        </svg>
                     </div>
 
-                    <div class='chat_third_content'>
-                        <span class='chat_uname action'></span><span class='${content_classes}' title='${title}' data-otitle='${title}' data-date='${d}'></span>
-                    </div>
+                    <div class='${content_classes}' title='${title}' data-otitle='${title}' data-date='${d}'></div>
 
                     <div class='message_edit_container'>
                         <textarea class='message_edit_area'></textarea>
@@ -152,76 +146,34 @@ Hue.update_chat = function (args = {}) {
                     </div>
                 </div>
             </div>
-        </div>`
+        </div>
+    </div>`
 
-    fmessage = $(s)
-    fmessage.find(".chat_content").eq(0).text(tpt)
-    fmessage.find(".chat_content_container").eq(0).data("original_message", tpt)
+  fmessage = $(s)
+  fmessage
+    .find(".chat_content_container")
+    .eq(0)
+    .data("original_message", args.message)
+
+  if (image_preview) {
+    fmessage.find(".chat_content").eq(0).html(image_preview)
+    fmessage.find(".image_preview_text").eq(0).addClass(preview_text_classes)
+  } else if (link_preview) {
+    fmessage.find(".chat_content").eq(0).html(link_preview)
+    fmessage.find(".link_preview_text").eq(0).addClass(preview_text_classes)
   } else {
-    let profile_image_classes = "chat_profile_image_container round_image_container action4 profile_image"
-
-    if (!Hue.user_is_online_by_user_id(args.user_id)) {
-      profile_image_classes += " profile_image_offline"
-    }
-
-    let s = `
-        <div class='${message_classes}'>
-            <div class='chat_left_side'>
-                <div class='${profile_image_classes}'>
-                    <img class='chat_profile_image profile_image' src='${pi}' loading='lazy'>
-                </div>
-            </div>
-            <div class='chat_right_side'>
-                <div class='chat_uname_container'>
-                    <div class='chat_uname action'></div>
-                </div>
-                <div class='chat_container'>
-                    <div class='${container_classes}'>
-
-                        <div class='chat_menu_button_container'>
-                            <svg class='other_icon chat_menu_button chat_menu_button_menu'>
-                              <use href='#icon_ellipsis'>
-                            </svg>
-                        </div>
-
-                        <div class='${content_classes}' title='${title}' data-otitle='${title}' data-date='${d}'></div>
-
-                        <div class='message_edit_container'>
-                            <textarea class='message_edit_area'></textarea>
-                            <div class='message_edit_buttons'>
-                                <div class='message_edit_button action message_edit_cancel'>Cancel</div>
-                                <div class='message_edit_button action message_edit_submit'>Submit</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>`
-
-    fmessage = $(s)
     fmessage
-      .find(".chat_content_container")
+      .find(".chat_content")
       .eq(0)
-      .data("original_message", args.message)
-
-    if (image_preview) {
-      fmessage.find(".chat_content").eq(0).html(image_preview)
-      fmessage.find(".image_preview_text").eq(0).addClass(preview_text_classes)
-    } else if (link_preview) {
-      fmessage.find(".chat_content").eq(0).html(link_preview)
-      fmessage.find(".link_preview_text").eq(0).addClass(preview_text_classes)
-    } else {
-      fmessage
-        .find(".chat_content")
-        .eq(0)
-        .html(Hue.parse_text(Hue.utilz.make_html_safe(args.message)))
-    }
+      .html(Hue.parse_text(Hue.utilz.make_html_safe(args.message)))
   }
 
   let huname = fmessage.find(".chat_uname").eq(0)
-
   huname.text(args.username)
   huname.data("prof_image", pi)
+
+  let htimeago = fmessage.find(".chat_timeago").eq(0)
+  htimeago.text(`(${Hue.utilz.timeago(d)})`)
 
   fmessage
     .find(".chat_profile_image")
@@ -603,9 +555,7 @@ Hue.add_to_chat = function (args = {}) {
 
   if (
     args.message.hasClass("chat_message") &&
-    !args.message.hasClass("thirdperson") &&
-    last_message.hasClass("chat_message") &&
-    !last_message.hasClass("thirdperson")
+    last_message.hasClass("chat_message")
   ) {
     if (
       args.message.find(".chat_uname").eq(0).text() ===
@@ -637,19 +587,7 @@ Hue.add_to_chat = function (args = {}) {
   }
 
   if (!appended) {
-    let last = $("#chat_area > .message").last()
-    let last_date = last.data("date")
-
-    if (date && last_date) {
-      if (date - last_date > Hue.config.old_activity_min) {
-        chat_area.append(
-          Hue.generate_vseparator(Hue.get_old_activity_message(last_date, date))
-        )
-      }
-    }
-
     chat_area.append(args.message)
-
     let length = $("#chat_area > .message").length
 
     if (length > Hue.chat_crop_limit) {
@@ -695,62 +633,6 @@ Hue.add_to_chat = function (args = {}) {
   return {
     message_id: message_id
   }
-}
-
-// Generates a string to indicate how much time has passed between one date and another
-Hue.get_old_activity_message = function (last_date, date) {
-  let diff = date - last_date
-  let s
-
-  if (diff < Hue.HOUR) {
-    let n = Math.floor(diff / 60 / 1000)
-
-    if (n === 1) {
-      s = `Over ${n} Minute Passed`
-    } else {
-      s = `Over ${n} Minutes Passed`
-    }
-  } else if (diff >= Hue.HOUR && diff < Hue.DAY) {
-    let n = Math.floor(diff / 60 / 60 / 1000)
-
-    if (n === 1) {
-      s = `Over ${n} Hour Passed`
-    } else {
-      s = `Over ${n} Hours Passed`
-    }
-  } else if (diff >= Hue.DAY && diff < Hue.YEAR) {
-    let n = Math.floor(diff / 24 / 60 / 60 / 1000)
-
-    if (n === 1) {
-      s = `Over ${n} Day Passed`
-    } else {
-      s = `Over ${n} Days Passed`
-    }
-  } else if (diff >= Hue.YEAR) {
-    let n = Math.floor(diff / 365 / 24 / 60 / 60 / 1000)
-
-    if (n === 1) {
-      s = `Over ${n} Year Passed`
-    } else {
-      s = `Over ${n} Years Passed`
-    }
-  }
-
-  return s
-}
-
-// Generates a horizontal line with text in the middle
-// To separate chat messages and convey information
-Hue.generate_vseparator = function (message = "", classes = "") {
-  let s = `
-        <div class='message vseparator_container ${classes}'>
-            <div class='vseparator_line'></div>
-            <div class='vseparator_text'>${message}</div>
-            <div class='vseparator_line'></div>
-        </div>
-    `
-
-  return s
 }
 
 // Starts chat mouse events
@@ -999,11 +881,6 @@ Hue.edit_message = function (container) {
   let area = $(container).find(".message_edit_area").get(0)
   let chat_content = $(container).find(".chat_content").get(0)
 
-  if ($(container).hasClass("chat_content_container_third")) {
-    let uname = $(container).find(".chat_uname").get(0)
-    $(uname).css("display", "none")
-  }
-
   $(edit_container).css("display", "block")
   $(chat_content).css("display", "none")
   $(container).removeClass("chat_menu_button_main")
@@ -1041,25 +918,13 @@ Hue.stop_edit_message = function () {
     .get(0)
 
   $(edit_container).css("display", "none")
-
-  if (
-    $(Hue.editing_message_container).hasClass("chat_content_container_third")
-  ) {
-    let uname = $(Hue.editing_message_container).find(".chat_uname").get(0)
-    $(uname).css("display", "inline-block")
-  }
-
   $(Hue.editing_message_area).val("")
-
   $(chat_content).css("display", "inline-block")
-
   $(Hue.editing_message_container).addClass("chat_menu_button_main")
   $(Hue.editing_message_container).css("display", "flex")
-
   Hue.editing_message = false
   Hue.editing_message_container = false
   Hue.editing_message_area = false
-
   Hue.goto_bottom()
 }
 
@@ -1078,13 +943,6 @@ Hue.send_edit_messsage = function (id) {
   new_message = Hue.utilz.untab_string(new_message).trimEnd()
 
   let edit_id = $(Hue.editing_message_container).data("id")
-  let third_person = false
-
-  if (
-    $(Hue.editing_message_container).hasClass("chat_content_container_third")
-  ) {
-    third_person = true
-  }
 
   Hue.stop_edit_message()
 
@@ -1099,10 +957,6 @@ Hue.send_edit_messsage = function (id) {
   if (new_message.length === 0) {
     Hue.delete_message(edit_id)
     return false
-  }
-
-  if (third_person) {
-    new_message = `/me ${new_message}`
   }
 
   Hue.process_message({
@@ -1187,19 +1041,13 @@ Hue.process_remove_chat_message = function (chat_content_container) {
     if (
       $(this).data("chat_content_container_id") === chat_content_container_id
     ) {
-      let message2 = $(this).closest(".message")
-
-      if (message2.hasClass("thirdperson")) {
-        message2.remove()
+      if (
+        $(this).closest(".chat_container").find(".chat_content_container")
+        .length === 1
+      ) {
+        $(this).closest(".message").remove()
       } else {
-        if (
-          $(this).closest(".chat_container").find(".chat_content_container")
-          .length === 1
-        ) {
-          message2.remove()
-        } else {
-          $(this).remove()
-        }
+        $(this).remove()
       }
     }
   })
@@ -1247,10 +1095,8 @@ Hue.check_typing = function (mode = "input") {
   }
 
   if (tval !== "") {
-    if (tval[0] === Hue.config.commands_prefix) {
-      if (tval[1] !== Hue.config.commands_prefix && !tval.startsWith(`${Hue.config.commands_prefix}me `)) {
-        return false
-      }
+    if (tval[0] === Hue.config.commands_prefix && tval[1] !== Hue.config.commands_prefix) {
+      return false
     }
 
     Hue.typing_timer()
@@ -2102,4 +1948,21 @@ Hue.decrease_chat_percentage = function () {
 // Sets the chat display percentage to default
 Hue.set_default_chat_size = function () {
   Hue.do_chat_size_change("default")
+}
+
+// Start timeago checks
+Hue.start_timeago = function () {
+  setTimeout(() => {
+    Hue.check_timeago()
+  }, Hue.timeago_delay)
+}
+
+// Do the timeago check
+Hue.check_timeago = function () {
+  $(".chat_timeago").each(function () {
+    let message = $(this).closest(".message")
+    $(this).text(`(${Hue.utilz.timeago(message.data("date"))})`)
+  })
+
+  Hue.start_timeago()
 }

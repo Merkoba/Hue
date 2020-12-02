@@ -845,9 +845,7 @@ Hue.is_command = function (message) {
     message.length >= 2 &&
     message[0] === Hue.config.commands_prefix &&
     message[1] !== Hue.config.commands_prefix &&
-    message[1] !== " " &&
-    !message.startsWith(`${Hue.config.commands_prefix}me `) &&
-    !message.startsWith(`${Hue.config.commands_prefix}em `)
+    message[1] !== " "
   ) {
     return true
   }

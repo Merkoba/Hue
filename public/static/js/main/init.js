@@ -83,9 +83,6 @@ Hue.admin_activity_filter_string = ""
 Hue.active_modal = false
 Hue.activity_list = []
 Hue.last_activity_trigger = 0
-Hue.HOUR = 3600000
-Hue.DAY = 86400000
-Hue.YEAR = 31536000000
 Hue.editing_message = false
 Hue.editing_message_container = false
 Hue.editing_message_area = false
@@ -141,6 +138,7 @@ Hue.last_input_text = ""
 Hue.alert_mode = 0
 Hue.top_scroller_visible = false
 Hue.bottom_scroller_visible = false
+Hue.timeago_delay = 30000
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
@@ -224,6 +222,7 @@ Hue.init = function () {
   Hue.start_media_info()
   Hue.start_modal_filters()
   Hue.setup_confirm()
+  Hue.start_timeago()
 
   if (Hue.debug_functions) {
     Hue.wrap_functions()

@@ -726,6 +726,54 @@ const Utilz = function () {
 		return `${uname}@${domain}`
 	}
 
+	utilz.MINUTE = 60000
+	utilz.HOUR = 3600000
+	utilz.DAY = 86400000
+	utilz.YEAR = 31536000000
+
+	utilz.timeago = function (date) {
+		let diff = Date.now() - date
+		let s
+
+		if (diff < utilz.MINUTE) {
+			s = "just now"
+		} else if (diff < utilz.HOUR) {
+			let n = Math.floor(diff / 60 / 1000)
+
+			if (n === 1) {
+				s = `${n} minute ago`
+			} else {
+				s = `${n} minutes ago`
+			}
+		} else if (diff >= utilz.HOUR && diff < utilz.DAY) {
+			let n = Math.floor(diff / 60 / 60 / 1000)
+
+			if (n === 1) {
+				s = `${n} hour ago`
+			} else {
+				s = `${n} hours ago`
+			}
+		} else if (diff >= utilz.DAY && diff < utilz.YEAR) {
+			let n = Math.floor(diff / 24 / 60 / 60 / 1000)
+
+			if (n === 1) {
+				s = `${n} day ago`
+			} else {
+				s = `${n} days ago`
+			}
+		} else if (diff >= utilz.YEAR) {
+			let n = Math.floor(diff / 365 / 24 / 60 / 60 / 1000)
+
+			if (n === 1) {
+				s = `${n} year ago`
+			} else {
+				s = `${n} years ago`
+			}
+		}
+
+		return s
+	}
+
 	utilz.media_types = ["image", "tv"]
 	utilz.clear_log_types = ["all", "above", "below"]
 
