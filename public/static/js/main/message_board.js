@@ -47,7 +47,10 @@ Hue.setup_message_board = function () {
 Hue.add_post_to_message_board = function (post) {
   let item = $(`
     <div class='message_board_item modal_item'>
-        <div class='message_board_username'></div>
+        <div class='message_board_top'>
+          <div class='message_board_username'></div>
+          <div class='message_board_date'></div>
+        </div>
         <div class='message_board_text dynamic_title'></div>
         <div><div class='message_board_delete action inline underlined'>Delete</div></div>
     </div>`)
@@ -55,14 +58,15 @@ Hue.add_post_to_message_board = function (post) {
   item.data("id", post.id)
   item.data("date", post.date)
 
-  let uname = Hue.utilz.make_html_safe(post.username || "")
   let username = item.find(".message_board_username").eq(0)
-  username.text(`${uname}  (${Hue.utilz.nice_date(post.date)})`)
-  username.data("uname", uname)
+  username.text(post.username)
+  username.data("uname", post.username)
+
+  let date = item.find(".message_board_date").eq(0)
+  date.text(Hue.utilz.nice_date(post.date))
 
   let text = item.find(".message_board_text").eq(0)
   text.html(Hue.parse_text(Hue.utilz.make_html_safe(post.message))).urlize()
-
   let title = Hue.utilz.nice_date(post.date)
 
   if (post.id) {
