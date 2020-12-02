@@ -1959,7 +1959,7 @@ Hue.set_default_chat_size = function () {
 // Start timeago checks
 Hue.start_timeago = function () {
   setInterval(() => {
-    $(".chat_timeago").each(function () {
+    $("#chat_area .chat_timeago").each(function () {
       let message = $(this).closest(".message")
       $(this).text(`(${Hue.utilz.timeago(message.data("date"))})`)
     })
