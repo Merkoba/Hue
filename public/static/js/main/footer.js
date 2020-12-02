@@ -24,6 +24,12 @@ Hue.setup_footer = function () {
     Hue.show_highlights()
   })
 
+  $("#footer_items").on("click", function(e) {
+    if (e.target === this) {
+      $("#input").focus()
+    }
+  })
+
   Hue.horizontal_separator_no_margin.separate("footer_media_items")
 }
 
