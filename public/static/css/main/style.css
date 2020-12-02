@@ -811,12 +811,6 @@ a.generic:hover {
 	box-shadow: 0 0 0.45rem var(--altcolor);
 }
 
-.generic_uname {
-	font-size: 1rem;
-	font-weight: bold;
-	cursor: pointer;
-}
-
 .highlights_content {
 	display: flex;
 	flex-direction: column;
@@ -2277,7 +2271,7 @@ pre {
 	padding: 0.5rem;
 }
 
-.code {
+.quote {
 	background-color: var(--altcolor_a);
 	padding: 0.25rem;
 }
@@ -2295,17 +2289,20 @@ pre {
 }
 
 .colortext {
-	display: inline-block;
-	background-color: #171515;
+	padding: 0.25rem;
+	background-color: rgb(31, 31, 31);
 }
 
-.colortext {
-	color: var(--font_color);
-	background-color: var(--altcolor_a);
+.greentext {
+	color: rgb(91, 218, 91);
 }
 
-.colortext .generic_uname {
-	text-decoration: underline;
+.bluetext {
+	color: rgb(119, 119, 240);
+}
+
+.redtext {
+	color: rgb(223, 76, 76);
 }
 
 .Msg-overlay {

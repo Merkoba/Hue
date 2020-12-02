@@ -959,15 +959,6 @@ Hue.is_already = function (who, what) {
   Hue.feedback(`${who} already has ${what}`)
 }
 
-// Starts click events for 'generic usernames'
-// Username elements with this class get included
-Hue.start_generic_uname_click_events = function () {
-  $("body").on("click", ".generic_uname", function () {
-    let uname = $(this).text()
-    Hue.show_profile(uname)
-  })
-}
-
 // Checks if a role is that of an admin or an operator
 // Without arguments it checks the user's role
 Hue.is_admin_or_op = function (rol = false) {

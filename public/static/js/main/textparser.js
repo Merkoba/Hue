@@ -24,25 +24,27 @@ Hue.setup_textparser_regexes = function () {
   Hue.textparser_regexes["`"] = {}
   Hue.textparser_regexes["`"].regex = Hue.make_textparser_char_regex("`", 2)
   Hue.textparser_regexes["`"].replace_function = function (g1, g2, g3, g4, g5) {
-    return `${g2}<div class='code'>${Hue.utilz.untab_string(g4)}</div>${g5}`
-  }
-
-  Hue.textparser_regexes["$"] = {}
-  Hue.textparser_regexes["$"].regex = Hue.make_textparser_char_regex("$")
-  Hue.textparser_regexes["$"].replace_function = function (g1, g2, g3, g4, g5) {
-    let n = g3.length
-
-    if (n === 1) {
-      return `${g2}<span class='generic_uname action'>${g4}</span>${g5}`
-    }
-
-    return g1
+    return `${g2}<div class='quote'>${Hue.utilz.untab_string(g4)}</div>${g5}`
   }
 
   Hue.textparser_regexes[">"] = {}
-  Hue.textparser_regexes[">"].regex = new RegExp("(?:^)(?:&gt;)+(.*)", "gm")
-  Hue.textparser_regexes[">"].replace_function = function (g1, g2) {
-    return `<div class='colortext'>${g2.trim()}</div>`
+  Hue.textparser_regexes[">"].regex = new RegExp("(?:^)((?:&gt;|\\s)+)(.*)", "gm")
+  Hue.textparser_regexes[">"].replace_function = function (g1, g2, g3) {
+    let m = g2.match(/&gt;/g)
+
+    if (!m) {
+      return false
+    }
+
+    let num = m.length
+    
+    if (num === 1) {
+      return `<div class='colortext greentext'>${g1}</div>`
+    } else if (num === 2) {
+      return `<div class='colortext bluetext'>${g1}</div>`
+    } else {
+      return `<div class='colortext redtext'>${g1}</div>`
+    }
   }
 
   Hue.textparser_regexes["whisper_link"] = {}
@@ -96,11 +98,6 @@ Hue.parse_text = function (text) {
   text = text.replace(
     Hue.textparser_regexes["`"].regex,
     Hue.textparser_regexes["`"].replace_function
-  )
-
-  text = text.replace(
-    Hue.textparser_regexes["$"].regex,
-    Hue.textparser_regexes["$"].replace_function
   )
 
   text = text.replace(

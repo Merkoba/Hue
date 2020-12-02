@@ -764,7 +764,7 @@ Hue.submit_reply = function () {
   text = text.substring(0, Hue.config.quote_max_length).trim()
 
   Hue.process_message({
-    message: `> $${Hue.reply_username}$ said: ${text}`,
+    message: `\`${Hue.reply_username} said: ${text}\``,
     to_history: false
   })
 
