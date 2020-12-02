@@ -1952,17 +1952,10 @@ Hue.set_default_chat_size = function () {
 
 // Start timeago checks
 Hue.start_timeago = function () {
-  setTimeout(() => {
-    Hue.check_timeago()
+  setInterval(() => {
+    $(".chat_timeago").each(function () {
+      let message = $(this).closest(".message")
+      $(this).text(`(${Hue.utilz.timeago(message.data("date"))})`)
+    })
   }, Hue.timeago_delay)
-}
-
-// Do the timeago check
-Hue.check_timeago = function () {
-  $(".chat_timeago").each(function () {
-    let message = $(this).closest(".message")
-    $(this).text(`(${Hue.utilz.timeago(message.data("date"))})`)
-  })
-
-  Hue.start_timeago()
 }
