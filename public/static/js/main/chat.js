@@ -173,7 +173,7 @@ Hue.update_chat = function (args = {}) {
   huname.data("prof_image", pi)
 
   let htimeago = fmessage.find(".chat_timeago").eq(0)
-  htimeago.text(`(${Hue.utilz.timeago(d)})`)
+  htimeago.text(Hue.utilz.timeago(d))
 
   fmessage
     .find(".chat_profile_image")
@@ -421,7 +421,7 @@ Hue.chat_announce = function (args = {}) {
   let brk = fmessage.find(".brk").eq(0)
 
   let htimeago = fmessage.find(".chat_timeago").eq(0)
-  htimeago.text(`(${Hue.utilz.timeago(d)})`)
+  htimeago.text(Hue.utilz.timeago(d))
 
   split.attr("title", t)
   split.data("otitle", t)
@@ -1961,7 +1961,7 @@ Hue.start_timeago = function () {
   setInterval(() => {
     $("#chat_area .chat_timeago").each(function () {
       let message = $(this).closest(".message")
-      $(this).text(`(${Hue.utilz.timeago(message.data("date"))})`)
+      $(this).text(Hue.utilz.timeago(message.data("date")))
     })
   }, Hue.timeago_delay)
 }

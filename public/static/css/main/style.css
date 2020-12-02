@@ -5,6 +5,7 @@
 	--app_font_family: imported_font, sans-serif;
 	--profile_image_size: 2rem;
 	--tab_size: 1.6rem;
+	--chat_side_spacing: 0.8rem;
 }
 
 @font-face {
@@ -448,7 +449,7 @@ body * {
 .chat_right_side {
 	display: flex;
 	flex-direction: column;
-	padding-left: 0.8rem;
+	padding-left: var(--chat_side_spacing);
 	flex-grow: 1;
 	flex-shrink: 1;
 }
@@ -488,7 +489,7 @@ body * {
 .chat_timeago {
 	margin-left: 0.5rem;
 	opacity: 0.8;
-	font-size: 0.9rem;
+	font-size: 0.8rem;
 	white-space: nowrap;
 }
 
@@ -547,15 +548,15 @@ body * {
 .announcement_top {
 	display: flex;
 	flex-direction: row;
-	align-items: flex-start;
-	justify-content: center;
+	align-items: center;
+	justify-content: flex-start;
 }
 
 .brk {
 	flex-shrink: 0;
 	flex-grow: 0;
 	text-align: center;
-	margin-right: 0.8rem;
+	margin-right: var(--chat_side_spacing);
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;
