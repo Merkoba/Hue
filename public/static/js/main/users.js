@@ -17,7 +17,7 @@ Hue.user_join = function (data) {
   }
 
   if (Hue.open_profile_username === data.username) {
-    Hue.show_profile_by_user_id(data.user_id)
+    Hue.show_profile(data.username)
   }
 
   Hue.remove_offline_profile_images(data.user_id)
@@ -623,12 +623,6 @@ Hue.stop_profile_audio = function () {
     Hue.profile_audio.src = ""
     Hue.profile_audio = undefined
   }
-}
-
-// Wrapper to show profile  by id
-Hue.show_profile_by_user_id = function (id) {
-  let user = Hue.get_user_by_user_id(id)
-  Hue.show_profile(user.username, false, id)
 }
 
 // Shows a user's profile window
