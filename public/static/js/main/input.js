@@ -162,7 +162,7 @@ Hue.get_input = function () {
   return $("#input").val()
 }
 
-// Turns this *into this*
+// Turns this * into this *
 Hue.input_to_thirdperson = function (text) {
   Hue.process_message({message:`* ${text} *`})
 }

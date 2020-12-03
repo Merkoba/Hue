@@ -795,7 +795,7 @@ Hue.commands = {
         Hue.input_to_thirdperson(arg)
       }
     },
-    description: `Turns this *into this*`,
+    description: `Turns this * into this *`,
   }
 }
 
