@@ -2302,6 +2302,7 @@ pre {
 .colortext {
 	padding: 0.25rem;
 	background-color: rgb(31, 31, 31);
+	display: inline-block;
 }
 
 .greentext {
