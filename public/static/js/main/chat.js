@@ -1083,7 +1083,7 @@ Hue.check_typing = function (mode = "input") {
   let tval
 
   if (mode === "input") {
-    let val = $("#input").val()
+    let val = Hue.get_input()
   
     if (val.length < Hue.old_input_val.length) {
       return false

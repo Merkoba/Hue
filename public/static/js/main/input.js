@@ -53,7 +53,7 @@ Hue.setup_input = function () {
     }
   })
 
-  Hue.old_input_val = $("#input").val()
+  Hue.old_input_val = Hue.get_input()
 }
 
 // Updates the input's placeholder
@@ -64,7 +64,7 @@ Hue.update_input_placeholder = function () {
 
 // Clears the input
 Hue.clear_input = function () {
-  let val = $("#input").val()
+  let val = Hue.get_input()
 
   if (val) {
     Hue.last_input_text = val
@@ -76,7 +76,7 @@ Hue.clear_input = function () {
 
 // Appends to the input
 Hue.add_to_input = function (what) {
-  Hue.change_input(`${$("#input").val() + what}`)
+  Hue.change_input(`${Hue.get_input() + what}`)
 }
 
 // Inserts text on current caret position
@@ -122,7 +122,7 @@ Hue.input_to_end = function () {
 
 // Appends a linebreak to the input
 Hue.add_linebreak_to_input = function () {
-  if (!$("#input").val().trim()) {
+  if (!Hue.get_input().trim()) {
     return false
   }
 
@@ -143,16 +143,26 @@ Hue.input_command = function (arg) {
 }
 
 // Does a submit action from the input
-Hue.input_submit = function () {
-  let val = $("#input").val()
+Hue.submit_input = function () {
+  let val = Hue.get_input()
 
   if (val) {
     Hue.process_message({
-      message: $("#input").val()
+      message: Hue.get_input()
     })
   
     Hue.disable_footer_expand()
   }
 
   Hue.last_input_text = ""
+}
+
+// Get the input value
+Hue.get_input = function () {
+  return $("#input").val()
+}
+
+// Turns this *into this*
+Hue.input_to_thirdperson = function (text) {
+  Hue.process_message({message:`* ${text} *`})
 }

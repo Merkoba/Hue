@@ -788,6 +788,14 @@ Hue.commands = {
       }
     },
     description: `Show a user profile`,
+  },
+  "me": {
+    action: (arg, ans) => {
+      if (arg) {
+        Hue.input_to_thirdperson(arg)
+      }
+    },
+    description: `Turns this *into this*`,
   }
 }
 
@@ -950,7 +958,7 @@ Hue.run_commands_queue = function (id) {
       Hue.run_commands_queue(id)
     })
   } else if (lc_cmd === `${Hue.config.commands_prefix}inputenter`) {
-    let val = $("#input").val()
+    let val = Hue.get_input()
 
     if (val.length > 0) {
       obj.message = val

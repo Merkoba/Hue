@@ -70,7 +70,7 @@ Hue.after_footer_expand_change = function () {
   Hue.goto_bottom()
   Hue.fix_frames()
 
-  if (!$("#input").val().trim()) {
+  if (!Hue.get_input().trim()) {
     Hue.clear_input()
   }
 }

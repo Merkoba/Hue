@@ -246,7 +246,7 @@ Hue.activate_key_detection = function () {
     }
 
     if (e.key === "Enter") {
-      let val = $("#input").val()
+      let val = Hue.get_input()
 
       if (e.shiftKey) {
         if (!Hue.footer_expanded) {
@@ -261,7 +261,7 @@ Hue.activate_key_detection = function () {
       }
 
       if (val) {
-        Hue.input_submit()
+        Hue.submit_input()
       } else {
         Hue.goto_bottom(true)
       }
@@ -327,7 +327,7 @@ Hue.activate_key_detection = function () {
           return
         }
 
-        if ($("#input").val()) {
+        if (Hue.get_input()) {
           Hue.clear_input()
         } else {
           Hue.change_input(Hue.last_input_text)  
