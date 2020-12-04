@@ -538,13 +538,9 @@ Hue.on_image_scroll = function (e) {
 // Scroll decrease action on image
 Hue.image_scroll_action = function (action) {
   if (action === "increase") {
-    if (Hue.room_state.tv_display_percentage > 30) {
-      Hue.decrease_tv_percentage()
-    }
+    Hue.decrease_tv_percentage()
   } else {
-    if (Hue.room_state.tv_display_percentage < 70) {
-      Hue.increase_tv_percentage()
-    }
+    Hue.increase_tv_percentage()
   }
 }
 

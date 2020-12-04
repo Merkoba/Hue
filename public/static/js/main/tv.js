@@ -570,32 +570,22 @@ Hue.refresh_tv = function () {
 // Does the change of tv display percentage
 Hue.do_media_tv_size_change = function (size) {
   if (size === "max") {
-    size = 90
+    size = 70
   } else if (size === "min") {
-    size = 10
+    size = 30
   } else if (size === "default") {
     size = Hue.config.room_state_default_tv_display_percentage
   }
 
   size = Hue.utilz.round2(size, 5)
 
-  if (size < 0 || size > 100) {
+  if (size < 30 || size > 70) {
     return false
   }
 
   Hue.room_state.tv_display_percentage = size
   Hue.save_room_state()
   Hue.apply_media_percentages()
-
-  if (size === 0) {
-    if (!Hue.image_is_maximized()) {
-      Hue.maximize_image()
-    }
-  } else if (size === 100) {
-    if (!Hue.tv_is_maximized()) {
-      Hue.maximize_tv()
-    }
-  }
 }
 
 // Increases the tv display percentage
