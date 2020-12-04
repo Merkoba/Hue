@@ -761,7 +761,7 @@ Hue.receive_tv_progress = function (data) {
 
 // Maximize tv space or restore
 Hue.maximize_tv = function () {
-  if (Hue.room_state.image_enabled) {
+  if (Hue.room_state.image_enabled && Hue.room_state.tv_enabled) {
     Hue.toggle_media({type:"image", what:false})
     Hue.toggle_media({type:"tv", what:true})
     Hue.do_chat_size_change(30)
