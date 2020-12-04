@@ -38,24 +38,6 @@ Hue.send_system_restart_signal = function () {
   Hue.socket_emit("system_restart_signal", {})
 }
 
-// Shows a message saying the client disconnects
-// When clicked the client is refreshed
-Hue.show_reload_button = function () {
-  Hue.feedback(
-    "Disconnected. Click to reload, or middle click to activate auto connect",
-    {
-      onclick: function () {
-        Hue.refresh_client()
-      },
-      on_middle_click: function () {
-        Hue.modify_setting("autoconnect true", false, true)
-        Hue.refresh_client()
-      },
-      brk: Hue.get_chat_icon("plug")
-    }
-  )
-}
-
 // When the system suggests a refresh
 Hue.system_restart_signal = function () {
   let item = Hue.make_info_popup_item({icon: "info", message: "Refresh is recommended"})

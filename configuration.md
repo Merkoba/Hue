@@ -225,9 +225,6 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "settings_default_notifications_close_delay"
 >How long notification popups get displayed before they automatically close, by default.
 
-"settings_default_autoconnect"
->Whether a user re-connects on socket disconnections by default.
-
 "room_state_default_images_enabled"
 >Whether images will be enabled by default.
 

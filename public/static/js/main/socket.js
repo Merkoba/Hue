@@ -370,24 +370,19 @@ Hue.on_disconnect = function () {
   Hue.activity_list = []
   Hue.update_userlist()
   Hue.update_activity_bar()
+  Hue.generate_favicon(-1)
 
   if (Hue.open_profile_username) {
     Hue.show_profile(Hue.open_profile_username)
   }
 
-  if (Hue.get_setting("autoconnect")) {
-    if ($("#reconnecting_feedback").length === 0) {
-      Hue.feedback("Reconnecting...", { container_id: "reconnecting_feedback" })
-    }
-
-    setTimeout(function () {
-      Hue.refresh_client()
-    }, 3000)
-  } else {
-    Hue.show_reload_button()
+  if ($("#reconnecting_feedback").length === 0) {
+    Hue.feedback("Reconnecting...", { container_id: "reconnecting_feedback" })
   }
 
-  Hue.generate_favicon(-1)
+  setTimeout(function () {
+    Hue.refresh_client()
+  }, 5000)
 }
 
 // Disconnects the user's socket

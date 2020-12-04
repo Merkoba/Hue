@@ -81,17 +81,6 @@ Hue.user_settings = {
         Hue.save_settings()
       }
     },
-  },
-  autoconnect: {
-    widget_type: "checkbox",
-    description: `Whether a user should autoconnect automatically after a socket disconnect`,
-    action: (save = true) => {
-      Hue.settings.autoconnect = $(`#settings_autoconnect`).prop("checked")
-
-      if (save) {
-        Hue.save_settings()
-      }
-    },
   }
 }
 
