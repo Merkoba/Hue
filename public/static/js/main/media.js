@@ -957,14 +957,22 @@ Hue.create_media_percentages = function () {
 
 // Maximize media space
 Hue.maximize = function () {
+    // If both
   if (Hue.room_state.image_enabled && Hue.room_state.tv_enabled) {
     Hue.toggle_media({type:"tv", what:true, save:false})
     Hue.toggle_media({type:"image", what:false, save:false})
     Hue.do_chat_size_change(30)
+    // If only TV
   } else if (!Hue.room_state.image_enabled && Hue.room_state.tv_enabled) {
     Hue.toggle_media({type:"tv", what:true, save:false})
     Hue.toggle_media({type:"image", what:true, save:false})
     Hue.set_default_chat_size()
+    // If only Image
+  } else if (Hue.room_state.image_enabled && !Hue.room_state.tv_enabled) {
+    Hue.toggle_media({type:"tv", what:true, save:false})
+    Hue.toggle_media({type:"image", what:true, save:false})
+    Hue.set_default_chat_size()
+    // If none
   } else if (!Hue.room_state.image_enabled && !Hue.room_state.tv_enabled) {
     Hue.toggle_media({type:"tv", what:true, save:false})
     Hue.toggle_media({type:"image", what:true, save:false})
