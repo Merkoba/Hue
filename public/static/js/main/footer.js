@@ -16,12 +16,16 @@ Hue.setup_footer = function () {
     })
   }
 
+  $("#footer_highlights").click(function () {
+    Hue.show_highlights()
+  })
+
   $("#footer_search").click(function () {
     Hue.show_chat_search()
   })
 
-  $("#footer_highlights").click(function () {
-    Hue.show_highlights()
+  $("#footer_maximize").click(function () {
+    Hue.maximize_tv()
   })
 
   $("#footer_items").on("click", function(e) {

@@ -758,3 +758,18 @@ Hue.receive_tv_progress = function (data) {
     $("#media_video")[0].play()
   }
 }
+
+// Maximize tv space or restore
+Hue.maximize_tv = function () {
+  if (Hue.room_state.image_enabled) {
+    Hue.toggle_media({type:"image", what:false})
+    Hue.toggle_media({type:"tv", what:true})
+    Hue.do_chat_size_change(30)
+  } else {
+    Hue.toggle_media({type:"image", what:true})
+    Hue.toggle_media({type:"tv", what:true})
+    Hue.set_default_chat_size()
+    Hue.set_default_tv_size()
+  }
+
+}
