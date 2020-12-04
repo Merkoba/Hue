@@ -528,25 +528,6 @@ Hue.tv_is_maximized = function () {
   return Hue.tv_visible && !Hue.image_visible
 }
 
-// Maximizes the tv, hiding the image
-Hue.maximize_tv = function () {
-  if (Hue.tv_visible) {
-    if (Hue.image_visible) {
-      Hue.toggle_media({type:"image", what:false, save:false})
-    } else {
-      Hue.toggle_media({type:"image", what:true, save:false})
-    }
-  } else {
-    Hue.toggle_media({type:"tv", what:true, save:false})
-
-    if (Hue.image_visible) {
-      Hue.toggle_media({type:"image", what:false, save:false})
-    }
-  }
-
-  Hue.save_room_state()
-}
-
 // Used to change the tv
 // Shows the tv picker window to input a URL
 Hue.show_tv_picker = function () {
@@ -759,7 +740,5 @@ Hue.maximize_tv = function () {
     Hue.toggle_media({type:"image", what:true})
     Hue.toggle_media({type:"tv", what:true})
     Hue.set_default_chat_size()
-    Hue.set_default_tv_size()
   }
-
 }

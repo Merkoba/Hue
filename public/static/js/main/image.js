@@ -563,25 +563,6 @@ Hue.image_is_maximized = function () {
   return Hue.image_visible && !Hue.tv_visible
 }
 
-// Maximizes the image, hiding the tv
-Hue.maximize_image = function () {
-  if (Hue.image_visible) {
-    if (Hue.tv_visible) {
-      Hue.toggle_media({type:"tv", what:false, save:false})
-    } else {
-      Hue.toggle_media({type:"tv", what:true, save:false})
-    }
-  } else {
-    Hue.toggle_media({type:"image", what:true, save:false})
-
-    if (Hue.tv_visible) {
-      Hue.toggle_media({type:"tv", what:false, save:false})
-    }
-  }
-
-  Hue.save_room_state()
-}
-
 // Setups image expansions when clicked
 // When an image in the chat is clicked the image is shown full sized in a window
 Hue.setup_expand_image = function () {

@@ -385,18 +385,6 @@ Hue.commands = {
     },
     description: `Toggles between show and hide the tv`,
   },
-  "maximizeimage": {
-    action: (arg, ans) => {
-      Hue.maximize_image()
-    },
-    description: `Maximize/Restore the image`,
-  },
-  "maximizetv": {
-    action: (arg, ans) => {
-      Hue.maximize_tv()
-    },
-    description: `Maximize/Restore the tv`,
-  },
   "starttv": {
     action: (arg, ans) => {
       Hue.play_tv()
@@ -659,18 +647,6 @@ Hue.commands = {
     },
     description: `Displays a list of banned users`,
   },
-  "unmaximize": {
-    action: (arg, ans) => {
-      Hue.unmaximize_media()
-    },
-    description: `Un-maximizes media`,
-  },
-  "maximizechat": {
-    action: (arg, ans) => {
-      Hue.toggle_media_area()
-    },
-    description: `Maximize/Restore the chat`,
-  },
   "loadnextimage": {
     action: (arg, ans) => {
       Hue.media_load_next("image")
@@ -796,6 +772,12 @@ Hue.commands = {
       }
     },
     description: `Turns this * into this *`,
+  },
+  "maximize": {
+    action: (arg, ans) => {
+      Hue.maximize_tv()
+    },
+    description: `Maximizes TV area`,
   }
 }
 

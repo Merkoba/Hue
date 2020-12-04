@@ -125,15 +125,6 @@ Hue.start_active_media = function () {
   Hue.first_media_change = true
 }
 
-// If the image or tv is maximized it unmaximizes it so both are shown
-Hue.unmaximize_media = function () {
-  if (Hue.tv_is_maximized()) {
-    Hue.maximize_tv()
-  } else if (Hue.image_is_maximized()) {
-    Hue.maximize_image()
-  }
-}
-
 // Removes and item from a media changed array
 Hue.remove_item_from_media_changed = function (type, id) {
   Hue[`${type}_changed`] = Hue[`${type}_changed`].filter((x) => x.id !== id)
@@ -313,15 +304,6 @@ Hue.get_media_object_from_init_data = function (type) {
 Hue.hide_media = function () {
   Hue.stop_tv()
   $("#media").css("display", "none")
-}
-
-// Makes the media area visible or not visible
-Hue.toggle_media_area = function () {
-  if (Hue.tv_visible || Hue.image_visible) {
-    Hue.hide_media_items()
-  } else {
-    Hue.show_media_items()
-  }
 }
 
 // Hides media items if visible
