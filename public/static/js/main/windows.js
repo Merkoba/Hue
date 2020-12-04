@@ -456,7 +456,7 @@ Hue.start_msg = function () {
   
   Hue.msg_media_menu.set(
     Hue.template_media_menu({
-      percentages: Hue.template_media_percentages()
+      percentages: Hue.create_media_percentages()
     })
   )
 

@@ -943,3 +943,14 @@ Hue.apply_media_defaults = function () {
   Hue.set_default_tv_position()
   Hue.refresh_media_menu()
 }
+
+// Media percentages for media menu
+Hue.create_media_percentages = function () {
+  let html = ""
+
+  for (let p=Hue.media_min; p<=Hue.media_max; p+=5) {
+    html += `<option value='${p}'>${p}%</option>`
+  }
+
+  return html
+}

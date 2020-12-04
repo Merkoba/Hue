@@ -551,16 +551,16 @@ Hue.refresh_tv = function () {
 // Does the change of tv display percentage
 Hue.do_media_tv_size_change = function (size) {
   if (size === "max") {
-    size = 70
+    size = Hue.media_max
   } else if (size === "min") {
-    size = 30
+    size = Hue.media_min
   } else if (size === "default") {
     size = Hue.config.room_state_default_tv_display_percentage
   }
 
   size = Hue.utilz.round2(size, 5)
 
-  if (size < 30 || size > 70) {
+  if (size < Hue.media_min || size > Hue.media_max) {
     return false
   }
 
