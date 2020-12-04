@@ -373,6 +373,11 @@ body * {
 	margin-right: 0.4rem;
 }
 
+#footer_actions {
+	background-color: var(--altcolor_a);
+	margin-right: 1rem;
+}
+
 .footer_actions_item {
 	padding-left: 0.5rem;
 	padding-right: 0.5rem;
