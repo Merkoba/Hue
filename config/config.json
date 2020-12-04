@@ -82,7 +82,7 @@
 	"room_state_default_tv_enabled": true,
 	"room_state_default_last_highlight_date": 0,
 	"room_state_default_chat_display_percentage": 35,
-	"room_state_default_tv_display_percentage": 60,
+	"room_state_default_tv_display_percentage": 70,
 	"room_state_default_tv_display_position": "bottom",
 	"room_state_default_media_layout": "column",
 	"room_state_default_last_message_board_post": 0,

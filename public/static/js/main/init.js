@@ -139,7 +139,7 @@ Hue.alert_mode = 0
 Hue.top_scroller_visible = false
 Hue.bottom_scroller_visible = false
 Hue.timeago_delay = 30000
-Hue.media_min = 30
+Hue.media_min = 35
 Hue.media_max = 70
 
 // Initial media-loading variables declarations
