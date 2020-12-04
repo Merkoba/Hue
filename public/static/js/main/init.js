@@ -21,7 +21,7 @@ Hue.load_scripts = true
 // Initial variables declarations
 Hue.config = {}
 Hue.ls_settings = "settings_v1"
-Hue.ls_room_state = "room_state_v1"
+Hue.ls_room_state = "room_state_v2"
 Hue.ls_first_time = "first_time_v2"
 Hue.roles = ["admin", "op", "voice"]
 Hue.topic = ""
