@@ -447,20 +447,26 @@ Hue.start_msg = function () {
   )
 
   // Set the templates
+
+  Hue.msg_profile.set(
+    Hue.template_profile({
+      profile_image: Hue.config.profile_image_loading_url
+    })
+  )
   
+  Hue.msg_media_menu.set(
+    Hue.template_media_menu({
+      percentages: Hue.template_media_percentages()
+    })
+  )
+
   Hue.msg_main_menu.set(Hue.template_main_menu())
   Hue.msg_room_menu.set(Hue.template_room_menu())
   Hue.msg_user_menu.set(Hue.template_user_menu())
   Hue.msg_userlist.set(Hue.template_userlist())
   Hue.msg_played.set(Hue.template_played())
-  Hue.msg_profile.set(
-    Hue.template_profile({
-      profile_image: Hue.config.profile_image_loading_url,
-    })
-  )
   Hue.msg_image_picker.set(Hue.template_image_picker())
   Hue.msg_tv_picker.set(Hue.template_tv_picker())
-  Hue.msg_media_menu.set(Hue.template_media_menu())
   Hue.msg_message.set(Hue.template_message())
   Hue.msg_highlights.set(Hue.template_highlights())
   Hue.msg_chat_search.set(Hue.template_chat_search())

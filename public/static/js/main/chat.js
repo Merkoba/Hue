@@ -1358,7 +1358,7 @@ Hue.do_chat_size_change = function (size) {
     size = Hue.config.room_state_default_chat_display_percentage
   }
 
-  size = Hue.utilz.nearest_ten(parseInt(size))
+  size = Hue.utilz.round2(size, 5)
 
   if (size < 10 || size > 100) {
     return false
@@ -1927,22 +1927,6 @@ Hue.replace_message_vars = function (id, message) {
   }
 
   return message
-}
-
-// Gradually increases the chat display percentage
-Hue.increase_chat_percentage = function () {
-  let size = parseInt(Hue.room_state.chat_display_percentage)
-  size += 10
-  size = Hue.utilz.round2(size, 10)
-  Hue.do_chat_size_change(size)
-}
-
-// Gradually decreases the chat display percentage
-Hue.decrease_chat_percentage = function () {
-  let size = parseInt(Hue.room_state.chat_display_percentage)
-  size -= 10
-  size = Hue.utilz.round2(size, 10)
-  Hue.do_chat_size_change(size)
 }
 
 // Sets the chat display percentage to default

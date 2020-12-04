@@ -577,7 +577,7 @@ Hue.do_media_tv_size_change = function (size) {
     size = Hue.config.room_state_default_tv_display_percentage
   }
 
-  size = Hue.utilz.nearest_ten(parseInt(size))
+  size = Hue.utilz.round2(size, 5)
 
   if (size < 0 || size > 100) {
     return false
@@ -601,16 +601,16 @@ Hue.do_media_tv_size_change = function (size) {
 // Increases the tv display percentage
 Hue.increase_tv_percentage = function () {
   let size = Hue.room_state.tv_display_percentage
-  size += 10
-  size = Hue.utilz.round2(size, 10)
+  size += 5
+  size = Hue.utilz.round2(size, 5)
   Hue.do_media_tv_size_change(size)
 }
 
 // Decreases the tv display percentage
 Hue.decrease_tv_percentage = function () {
   let size = Hue.room_state.tv_display_percentage
-  size -= 10
-  size = Hue.utilz.round2(size, 10)
+  size -= 5
+  size = Hue.utilz.round2(size, 5)
   Hue.do_media_tv_size_change(size)
 }
 

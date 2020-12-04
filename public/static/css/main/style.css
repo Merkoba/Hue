@@ -2401,3 +2401,12 @@ pre {
 .center {
 	text-align: center;
 }
+
+#media_menu_defaults {
+	margin-top: 2rem;
+}
+
+#media_menu_note {
+	margin-top: 2rem;
+	opacity: 0.8;
+}
