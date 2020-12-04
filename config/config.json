@@ -71,7 +71,7 @@
 	"antispam_heartBeatCheck": 4,
 	"session_cookie_max_age": 987654321000,
 	"encryption_cost": 12,
-	"max_url_length": 1000,
+	"": 1000,
 	"settings_default_highlight_current_username": true,
 	"settings_default_case_insensitive_username_highlights": true,
 	"settings_default_open_whispers_automatically": true,

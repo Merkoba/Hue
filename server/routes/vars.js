@@ -79,4 +79,6 @@ module.exports = function (c, config) {
   c.vars.commands_prefix = config.commands_prefix
   c.vars.create_room_cooldown = config.create_room_cooldown
   c.vars.quote_max_length = config.quote_max_length
+  c.vars.media_max_percentage = config.media_max_percentage
+  c.vars.media_min_percentage = config.media_min_percentage
 }
