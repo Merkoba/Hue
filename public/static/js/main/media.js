@@ -70,6 +70,18 @@ Hue.swap_display_positions = function () {
 
 // Shows the media menu
 Hue.show_media_menu = function () {
+  $("#media_menu_tv_size").find("option").each(function () {
+    if ($(this).val() == Hue.room_state.tv_display_percentage) {
+      $(this).prop("selected", true)
+    }
+  })
+
+  $("#media_menu_chat_size").find("option").each(function () {
+    if ($(this).val() == Hue.room_state.chat_display_percentage) {
+      $(this).prop("selected", true)
+    }
+  })
+  
   Hue.msg_media_menu.show()
 }
 
@@ -430,18 +442,6 @@ Hue.setup_media_menu = function () {
 
   $("#media_menu_rotate").click(function () {
     Hue.rotate_media()
-  })
-
-  $("#media_menu_tv_size").find("option").each(function () {
-    if ($(this).val() == Hue.room_state.tv_display_percentage) {
-      $(this).prop("selected", true)
-    }
-  })
-
-  $("#media_menu_chat_size").find("option").each(function () {
-    if ($(this).val() == Hue.room_state.chat_display_percentage) {
-      $(this).prop("selected", true)
-    }
   })
 
   $("#media_menu_tv_size").on("change", function () {
