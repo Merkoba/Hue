@@ -441,11 +441,7 @@ Hue.setup_media_menu = function () {
   })
 
   $("#media_menu_defaults").click(function () {
-    Hue.set_default_chat_size()
-    Hue.set_default_tv_size()
-    Hue.set_default_media_layout()
-    Hue.set_default_tv_position()
-    Hue.refresh_media_menu()
+    Hue.apply_media_defaults()
   })
 }
 
@@ -937,4 +933,13 @@ Hue.get_media_item = function (type, id) {
   }
 
   return {}
+}
+
+// Apply media defaults
+Hue.apply_media_defaults = function () {
+  Hue.set_default_chat_size()
+  Hue.set_default_tv_size()
+  Hue.set_default_media_layout()
+  Hue.set_default_tv_position()
+  Hue.refresh_media_menu()
 }

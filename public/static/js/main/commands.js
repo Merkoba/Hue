@@ -778,6 +778,12 @@ Hue.commands = {
       Hue.maximize_tv()
     },
     description: `Maximizes TV area`,
+  },
+  "default": {
+    action: (arg, ans) => {
+      Hue.apply_media_defaults()
+    },
+    description: `Restore media defaults`,
   }
 }
 
