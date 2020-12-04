@@ -461,6 +461,8 @@ Hue.setup_media_menu = function () {
   $("#media_menu_defaults").click(function () {
     Hue.set_default_chat_size()
     Hue.set_default_tv_size()
+    Hue.set_default_media_layout()
+    Hue.set_default_tv_position()
     Hue.refresh_media_menu()
   })
 }
@@ -841,6 +843,13 @@ Hue.change_media_layout = function (mode = false) {
   Hue.fix_frames()
 }
 
+// Apply default media layout
+Hue.set_default_media_layout = function () {
+  Hue.room_state.media_layout = Hue.config.room_state_default_media_layout
+  Hue.save_room_state()
+  Hue.change_media_layout()
+}
+
 // Switches between row and column media layout mode
 Hue.swap_media_layout = function () {
   Hue.room_state.media_layout = Hue.room_state.media_layout === "row" ? "column" : "row"
@@ -860,6 +869,13 @@ Hue.swap_media = function () {
   }
   
   Hue.swap_display_positions()
+}
+
+// Default image and tv position
+Hue.set_default_tv_position = function () {
+  Hue.room_state.tv_display_position = Hue.config.room_state_default_tv_display_position
+  Hue.save_room_state()
+  Hue.apply_media_positions()
 }
 
 // Rotates media
