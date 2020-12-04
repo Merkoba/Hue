@@ -246,6 +246,12 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "room_state_default_media_layout"
 >Default media area (image, tv) layout, either column or row.
 
+"media_max_percentage"
+>Maximum percentage (height or width) media like TV or Chat can have
+
+"media_min_percentage"
+>Minimum percentage (height or width) media like TV or Chat can have
+
 "jwt_expiration"
 >How long jwt will be valid after login.
 

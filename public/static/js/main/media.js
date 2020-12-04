@@ -948,7 +948,7 @@ Hue.apply_media_defaults = function () {
 Hue.create_media_percentages = function () {
   let html = ""
 
-  for (let p=Hue.media_min; p<=Hue.media_max; p+=5) {
+  for (let p=Hue.config.media_min_percentage; p<=Hue.config.media_max_percentage; p+=5) {
     html += `<option value='${p}'>${p}%</option>`
   }
 
