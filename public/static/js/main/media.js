@@ -39,7 +39,6 @@ Hue.apply_media_percentages = function () {
 
   $("#chat_main").css("width", `${c1}%`)
   $("#media").css("width", `${c2}%`)
-
   Hue.on_resize()
 }
 
@@ -736,7 +735,8 @@ Hue.toggle_media = function (args) {
     type: "",
     what: undefined, 
     save: true,
-    feedback: false
+    feedback: false,
+    mode: ""
   }
 
   args = Object.assign(def_args, args)
@@ -953,4 +953,20 @@ Hue.create_media_percentages = function () {
   }
 
   return html
+}
+
+// Maximize media space
+Hue.maximize = function () {
+  if (Hue.room_state.image_enabled && Hue.room_state.tv_enabled) {
+    Hue.toggle_media({type:"tv", what:true, save:false})
+    Hue.toggle_media({type:"image", what:false, save:false})
+  } else if (!Hue.room_state.image_enabled && Hue.room_state.tv_enabled) {
+    Hue.toggle_media({type:"tv", what:true, save:false})
+    Hue.toggle_media({type:"image", what:true, save:false})
+  } else if (!Hue.room_state.image_enabled && !Hue.room_state.tv_enabled) {
+    Hue.toggle_media({type:"tv", what:true, save:false})
+    Hue.toggle_media({type:"image", what:true, save:false})
+  }
+
+  Hue.save_room_state()
 }

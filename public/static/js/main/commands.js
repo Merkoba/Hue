@@ -775,9 +775,9 @@ Hue.commands = {
   },
   "maximize": {
     action: (arg, ans) => {
-      Hue.maximize_tv()
+      Hue.maximize()
     },
-    description: `Maximizes TV area`,
+    description: `Maximize media space`,
   },
   "default": {
     action: (arg, ans) => {

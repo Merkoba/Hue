@@ -25,7 +25,7 @@ Hue.setup_footer = function () {
   })
 
   $("#footer_maximize").click(function () {
-    Hue.maximize_tv()
+    Hue.maximize()
   })
 
   $("#footer_items").on("click", function(e) {
