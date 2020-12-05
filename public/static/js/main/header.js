@@ -4,16 +4,6 @@ Hue.setup_header = function () {
     Hue.show_main_menu()
   })
 
-  $("#header_main_menu").on("auxclick", function (e) {
-    if (e.which === 2) {
-      let rotated = $("#main_container").data("hue_rotated")
-      let degrees = rotated ? 0 : 180
-
-      $("#main_container").css("transform", `rotateY(${degrees}deg)`)
-      $("#main_container").data("hue_rotated", !Boolean(rotated))
-    }
-  })
-
   $("#header_users").click(function () {
     Hue.show_userlist_window()
   })
