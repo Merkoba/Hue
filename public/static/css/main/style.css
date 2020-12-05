@@ -403,6 +403,7 @@ body * {
 	display: flex;
 	flex-direction: row;
 	visibility: hidden;
+	user-select: none;
 }
 
 .top_scroller_container {
