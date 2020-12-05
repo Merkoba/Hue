@@ -441,6 +441,7 @@ Hue.setup_media_menu = function () {
 
   $("#media_menu_defaults").click(function () {
     Hue.apply_media_defaults()
+    Hue.close_all_modals()
   })
 }
 
