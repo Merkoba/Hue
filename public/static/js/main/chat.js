@@ -257,7 +257,6 @@ Hue.chat_announce = function (args = {}) {
     highlight: false,
     title: false,
     onclick: false,
-    on_middle_click: false,
     container_id: false,
     date: false,
     type: "normal",
@@ -358,11 +357,8 @@ Hue.chat_announce = function (args = {}) {
   }
 
   if (
-    (args.onclick ||
-      args.on_middle_click ||
-      (args.username && args.open_profile)) &&
-    !link_preview &&
-    !image_preview
+    (args.onclick || (args.username && args.open_profile)) &&
+    !link_preview && !image_preview
   ) {
     content_classes += " action"
   }
@@ -465,14 +461,6 @@ Hue.chat_announce = function (args = {}) {
 
   if (args.username) {
     brk.on("click", pif)
-  }
-
-  if (args.on_middle_click) {
-    content.on("auxclick", function (e) {
-      if (e.which === 2) {
-        args.on_middle_click()
-      }
-    })
   }
 
   fmessage.data("id", args.id)

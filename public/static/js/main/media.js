@@ -893,12 +893,6 @@ Hue.start_media_info = function () {
       media_type: mode
     })
   })
-
-  $("#media").on("auxclick", ".media_info_details", function (e) {
-    let media_info = $(this).closest(".media_info")
-    let source = media_info.data("item").source
-    Hue.goto_url(source)
-  })
 }
 
 // Get proper media string

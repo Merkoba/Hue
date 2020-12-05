@@ -105,10 +105,7 @@ Hue.announce_image = function (data) {
     type: "image_change",
     user_id: data.user_id,
     in_log: data.in_log,
-    media_source: data.source,
-    on_middle_click: function () {
-      Hue.goto_url(data.source, "tab")
-    }
+    media_source: data.source
   })
 }
 
@@ -359,12 +356,6 @@ Hue.setup_modal_image = function () {
     }
   })
 
-  $("#modal_image_container").on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.goto_url($("#modal_image").attr("src"), "tab")
-    }
-  })
-
   $("#modal_image_header_info").click(function () {
     Hue.show_image_picker()
   })
@@ -496,12 +487,6 @@ Hue.start_image_events = function () {
     $("#media_image_frame").css("display", "none")
     $("#media_image_error").css("display", "initial")
     Hue.after_image_load()
-  })
-
-  $("#media_image_frame").on("auxclick", function (e) {
-    if (e.which === 2) {
-      Hue.goto_url($("#media_image_frame").attr("src"), "tab")
-    }
   })
 
   $("#media_image_frame")[0].addEventListener("wheel", function (e) {
