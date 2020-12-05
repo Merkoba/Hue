@@ -24,10 +24,6 @@ Hue.setup_footer = function () {
     Hue.show_chat_search()
   })
 
-  $("#footer_maximize").click(function () {
-    Hue.maximize()
-  })
-
   $("#footer_items").on("click", function(e) {
     if (e.target === this) {
       $("#input").focus()

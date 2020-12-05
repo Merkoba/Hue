@@ -520,11 +520,6 @@ Hue.change_tv_visibility = function (play = false) {
   Hue.goto_bottom()
 }
 
-// Checks if tv is maximized
-Hue.tv_is_maximized = function () {
-  return Hue.tv_visible && !Hue.image_visible
-}
-
 // Used to change the tv
 // Shows the tv picker window to input a URL
 Hue.show_tv_picker = function () {

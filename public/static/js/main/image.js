@@ -543,11 +543,6 @@ Hue.after_image_load = function (ok = true) {
   }
 }
 
-// Checks if the image is maximized
-Hue.image_is_maximized = function () {
-  return Hue.image_visible && !Hue.tv_visible
-}
-
 // Setups image expansions when clicked
 // When an image in the chat is clicked the image is shown full sized in a window
 Hue.setup_expand_image = function () {

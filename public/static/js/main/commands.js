@@ -773,12 +773,6 @@ Hue.commands = {
     },
     description: `Turns this * into this *`,
   },
-  "maximize": {
-    action: (arg, ans) => {
-      Hue.maximize()
-    },
-    description: `Maximize media space`,
-  },
   "default": {
     action: (arg, ans) => {
       Hue.apply_media_defaults()
