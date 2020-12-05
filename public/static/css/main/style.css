@@ -374,7 +374,6 @@ body * {
 }
 
 #footer_actions {
-	background-color: var(--altcolor_a);
 	padding-left: 0.5rem;
 	padding-right: 0.5rem;
 	margin-right: 1rem;
