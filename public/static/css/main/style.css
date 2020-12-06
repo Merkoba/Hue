@@ -2080,6 +2080,10 @@ a.special_link:hover {
 	margin-bottom: 1rem;
 }
 
+#user_menu {
+	user-select: none;
+}
+
 #user_menu_change_buttons {
 	margin-bottom: 1rem;
 	grid-gap: 0.8rem;
