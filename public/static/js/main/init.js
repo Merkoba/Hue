@@ -138,7 +138,7 @@ Hue.last_input_text = ""
 Hue.alert_mode = 0
 Hue.top_scroller_visible = false
 Hue.bottom_scroller_visible = false
-Hue.timeago_delay = 30000
+Hue.timeago_delay = 20000
 
 // Initial media-loading variables declarations
 Hue.youtube_loading = false
