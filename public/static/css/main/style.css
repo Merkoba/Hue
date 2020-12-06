@@ -1774,9 +1774,10 @@ a.special_link:hover {
 	display: none;
 }
 
-#media_menu_container {
+#media_menu {
 	margin-top: 0.6rem;
 	margin-bottom: 0.6rem;
+	user-select: none;
 }
 
 #media_menu_top {
@@ -2000,6 +2001,10 @@ a.special_link:hover {
 
 .grid_row_center> * {
 	margin: auto;
+}
+
+#room_menu {
+	user-select: none;
 }
 
 #room_menu_more_container {
@@ -2341,6 +2346,7 @@ pre {
 .custom_titlebar {
 	background-color: var(--altbackground) !important;
 	color: var(--font_color) !important;
+	user-select: none;
 }
 
 .flex_start {
@@ -2410,4 +2416,8 @@ pre {
 
 #media_menu_defaults {
 	margin-top: 2rem;
+}
+
+#main_menu {
+	user-select: none;
 }
