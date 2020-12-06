@@ -1367,6 +1367,7 @@ svg.action:hover {
 	color: var(--font_color);
 	background-color: var(--background-color);
 	flex-direction: column;
+	user-select: none;
 }
 
 #lockscreen_header {
