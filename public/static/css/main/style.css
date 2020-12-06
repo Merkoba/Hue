@@ -884,6 +884,10 @@ select {
 	font-size: 1.2rem;
 }
 
+#modal_image_header {
+	user-select: none;
+}
+
 #modal_image_header_info_container {
 	flex-grow: 1;
 	flex-shrink: 1;
