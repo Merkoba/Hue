@@ -870,8 +870,8 @@ Hue.rotate_media = function () {
 
 // Get html for media info items
 Hue.get_media_info_html = function (type) {
-  return `<div id='media_${type}_info_container' class='media_info_container grid_row_center'>
-    <div id='media_${type}_info' class='media_info dynamic_title'></div>
+  return `<div id='media_${type}_info_container' class='media_info_container grid_row_center dynamic_title'>
+    <div id='media_${type}_info' class='media_info'></div>
     <div class='media_info_timeago'></div>
   </div>`
 }
