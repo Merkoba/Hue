@@ -195,5 +195,10 @@ Hue.start_timeago = function () {
       $(this).find(".media_info_timeago").eq(0)
         .text(Hue.utilz.timeago($(this).data("date")))
     })
+
+    if (Hue.modal_image_open) {
+      $("#modal_image_header_info").find(".modal_image_timeago")
+        .eq(0).text(Hue.utilz.timeago(Hue.loaded_modal_image.date))
+    }
   }, Hue.timeago_delay)
 }

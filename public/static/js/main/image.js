@@ -63,6 +63,7 @@ Hue.setup_image = function (mode, odata = {}) {
 
   data.info += ` | ${data.nice_date}`
   data.info_html += `<div>${data.nice_date}</div>`
+  data.info_html += `<div class='modal_image_timeago'></div>`
   data.message = `${data.setter} changed the image`
 
   data.onclick = function () {
@@ -319,7 +320,6 @@ Hue.setup_modal_image = function () {
   img[0].addEventListener("load", function () {
     $("#modal_image_spinner").css("display", "none")
     $("#modal_image").css("display", "block")
-    Hue.show_modal_image_resolution()
   })
 
   img.on("error", function () {
@@ -430,7 +430,11 @@ Hue.show_modal_image = function (id = 0) {
   $("#modal_image_spinner").css("display", "block")
   $("#modal_image_error").css("display", "none")
   img.attr("src", data.source)
+
   $("#modal_image_header_info").html(data.info_html)
+  $("#modal_image_header_info").find(".modal_image_timeago")
+    .eq(0).text(Hue.utilz.timeago(data.date))
+
   Hue.horizontal_separator.separate("modal_image_header_info")
 
   if (data.comment) {
@@ -460,21 +464,6 @@ Hue.show_modal_image = function (id = 0) {
 
   Hue.horizontal_separator.separate("modal_image_header_info_container")
   Hue.msg_modal_image.show()
-}
-
-// Adds modal image resolution information to the modal image's information
-// This is disaplayed in the modal image window
-Hue.show_modal_image_resolution = function () {
-  let img = $("#modal_image")[0]
-  let w = img.naturalWidth
-  let h = img.naturalHeight
-
-  if (img.src === Hue.loaded_modal_image.source) {
-    $("#modal_image_header_info").html(
-      Hue.loaded_modal_image.info_html + `<div>${w} x ${h}</div>`
-    )
-    Hue.horizontal_separator.separate("modal_image_header_info")
-  }
 }
 
 // Starts events for the image
