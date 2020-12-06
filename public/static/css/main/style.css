@@ -2382,11 +2382,17 @@ pre {
 	white-space: nowrap;
 	cursor: pointer;
 	flex-direction: row;
-	display: flex;   
+	display: flex;
 }
 
 .media_info_username {
 	font-weight: bold;
+}
+
+.media_info_timeago {
+	margin-left: 0.5rem;
+	opacity: 0.8;
+	font-size: 0.85rem;
 }
 
 #confirm_message {

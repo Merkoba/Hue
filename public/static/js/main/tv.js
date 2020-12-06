@@ -335,18 +335,9 @@ Hue.before_show_tv = function (item) {
   Hue.hide_tv(item)
 }
 
-// Apply tv media info
-Hue.apply_tv_media_info = function () {
-  let tv_media_info = $(`#media_${Hue.loaded_tv.type}_video_container`)
-    .find(".media_info")
-    .get(0)
-
-  Hue.apply_media_info(tv_media_info, Hue.loaded_tv, "tv")
-}
-
 // This gets called after any tv video is loaded
 Hue.after_show_tv = function () {
-  Hue.apply_tv_media_info()
+  Hue.apply_media_info("tv")
   Hue.fix_visible_video_frame()
   Hue.focus_input()
 }

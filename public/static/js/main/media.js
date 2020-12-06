@@ -674,12 +674,14 @@ Hue.change = function (args = {}) {
 }
 
 // Sets a media info item with proper information and events
-Hue.apply_media_info = function (element, item, mode) {
+Hue.apply_media_info = function (type) {
+  let container = $(`#media_${type}_info_container`)
+  let item = Hue[`loaded_${type}`]
   let custom_title
 
-  if (mode === "tv") {
+  if (type === "tv") {
     Hue.media_info_tv_data = [...arguments]
-  } else if (mode === "image") {
+  } else if (type === "image") {
     if (item.type === "upload") {
       custom_title = `${Hue.utilz.get_size_string(item.size)} upload`
     }
@@ -710,7 +712,6 @@ Hue.apply_media_info = function (element, item, mode) {
   }
 
   info = info.substring(0, Hue.media_info_max_length).trim()
-
   let hover_title = item.info
 
   let html = `
@@ -722,12 +723,13 @@ Hue.apply_media_info = function (element, item, mode) {
     )}</div>
   `
 
-  $(element).html(html)
-  $(element).attr("title", hover_title)
-  $(element).data("otitle", hover_title)
-  $(element).data("date", item.date)
-  $(element).data("item", item)
-  $(element).data("mode", mode)
+  $(container).find(".media_info").eq(0).html(html)
+  $(container).find(".media_info_timeago").eq(0).text(Hue.utilz.timeago(item.date))
+  $(container).attr("title", hover_title)
+  $(container).data("otitle", hover_title)
+  $(container).data("date", item.date)
+  $(container).data("item", item)
+  $(container).data("type", type)
 }
 
 // Toggles media visibility
@@ -870,6 +872,7 @@ Hue.rotate_media = function () {
 Hue.get_media_info_html = function (type) {
   return `<div id='media_${type}_info_container' class='media_info_container grid_row_center'>
     <div id='media_${type}_info' class='media_info dynamic_title'></div>
+    <div class='media_info_timeago'></div>
   </div>`
 }
 
@@ -886,12 +889,12 @@ Hue.start_media_info = function () {
     z = this
     let media_info = $(this).closest(".media_info")
     let item = media_info.data("item")
-    let mode = media_info.data("mode")
+    let type = media_info.data("type")
 
     Hue.open_url_menu({
       source: item.source,
       data: item,
-      media_type: mode
+      media_type: type
     })
   })
 }

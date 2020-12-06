@@ -1915,13 +1915,3 @@ Hue.replace_message_vars = function (id, message) {
 Hue.set_default_chat_size = function () {
   Hue.do_chat_size_change("default")
 }
-
-// Start timeago checks
-Hue.start_timeago = function () {
-  setInterval(() => {
-    $("#chat_area .chat_timeago").each(function () {
-      let message = $(this).closest(".message")
-      $(this).text(Hue.utilz.timeago(message.data("date")))
-    })
-  }, Hue.timeago_delay)
-}

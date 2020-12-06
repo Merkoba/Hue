@@ -182,3 +182,18 @@ Hue.showmsg = function (s) {
 Hue.show_current_date = function () {
   Hue.feedback(Hue.utilz.nice_date())
 }
+
+// Start timeago checks
+Hue.start_timeago = function () {
+  setInterval(() => {
+    $("#chat_area .chat_timeago").each(function () {
+      let message = $(this).closest(".message")
+      $(this).text(Hue.utilz.timeago(message.data("date")))
+    })
+
+    $("#media .media_info_container").each(function () {
+      $(this).find(".media_info_timeago").eq(0)
+        .text(Hue.utilz.timeago($(this).data("date")))
+    })
+  }, Hue.timeago_delay)
+}

@@ -529,14 +529,9 @@ Hue.image_scroll_action = function (action) {
   }
 }
 
-// Apply image media info
-Hue.apply_image_media_info = function () {
-  Hue.apply_media_info($("#media_image_info")[0], Hue.loaded_image, "image")
-}
-
 // This runs after an image successfully loads
 Hue.after_image_load = function (ok = true) {
-  Hue.apply_image_media_info()
+  Hue.apply_media_info("image")
 
   if (ok) {
     Hue.fix_image_frame()
