@@ -78,9 +78,7 @@ Hue.setup_textparser_regexes = function () {
   }
 
   Hue.textparser_regexes["replies"] = {}
-  Hue.textparser_regexes["replies"].regex = new RegExp(
-    `(\\w+) said: `, "gm"
-  )
+  Hue.textparser_regexes["replies"].regex = new RegExp(`(\\w+) said: `, "gm")
   Hue.textparser_regexes["replies"].replace_function = function (g1, g2, g3) {
     return `<div class='chat_reply_username action'>${g2}</div> said: `
   }
