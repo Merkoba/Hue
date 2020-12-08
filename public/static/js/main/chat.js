@@ -675,6 +675,10 @@ Hue.start_chat_mouse_events = function () {
       }
     }
   })
+
+  $(".chat_area").on("click", ".chat_reply_username", function () {
+    Hue.show_profile($(this).closest(".chat_message").data("uname"))
+  })
 }
 
 // Setup reply

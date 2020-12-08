@@ -76,6 +76,14 @@ Hue.setup_textparser_regexes = function () {
   Hue.textparser_regexes["anchor_link"].replace_function = function (g1, g2, g3) {
     return `<a href="${g2}" class="stop_propagation anchor_link special_link" target="_blank">${g3.trim().replace(/\s+/, "&nbsp;")}</a>`
   }
+
+  Hue.textparser_regexes["replies"] = {}
+  Hue.textparser_regexes["replies"].regex = new RegExp(
+    `(\\w+) said: `, "gm"
+  )
+  Hue.textparser_regexes["replies"].replace_function = function (g1, g2, g3) {
+    return `<div class='chat_reply_username action'>${g2}</div> said: `
+  }
 }
 
 // Passes text through all textparser regexes doing the appropiate replacements
@@ -86,13 +94,18 @@ Hue.parse_text = function (text) {
   )
 
   text = text.replace(
+    Hue.textparser_regexes["horizontal_line"].regex,
+    Hue.textparser_regexes["horizontal_line"].replace_function
+  )
+
+  text = text.replace(
     Hue.textparser_regexes["anchor_link"].regex,
     Hue.textparser_regexes["anchor_link"].replace_function
   )
 
   text = text.replace(
-    Hue.textparser_regexes["horizontal_line"].regex,
-    Hue.textparser_regexes["horizontal_line"].replace_function
+    Hue.textparser_regexes["replies"].regex,
+    Hue.textparser_regexes["replies"].replace_function
   )
 
   text = text.replace(
