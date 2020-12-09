@@ -95,6 +95,10 @@ Hue.update_chat = function (args = {}) {
     }
   }
 
+  if (/^\w+ said\:/.test(args.message)) {
+    content_classes += " quote"
+  }
+
   let fmessage
   let title = ""
 
@@ -750,7 +754,7 @@ Hue.submit_reply = function () {
   text = text.substring(0, Hue.config.quote_max_length).trim()
 
   Hue.process_message({
-    message: `\`${Hue.reply_username} said: ${text}\``,
+    message: `${Hue.reply_username} said: ${text}`,
     to_history: false
   })
 
