@@ -60,14 +60,6 @@ Hue.setup_textparser_regexes = function () {
     return `<span class="whisper_link special_link" data-whisper="${g2}" title="[Whisper] ${g2}">${g3.replace(/\s+/, "&nbsp;")}</span>`
   }
 
-  Hue.textparser_regexes["horizontal_line"] = {}
-  Hue.textparser_regexes["horizontal_line"].regex = new RegExp(
-    `\\[line\\]`, "gm"
-  )
-  Hue.textparser_regexes["horizontal_line"].replace_function = function () {
-    return "<hr class='chat_hr'>"
-  }
-
   Hue.textparser_regexes["anchor_link"] = {}
   Hue.textparser_regexes["anchor_link"].regex = new RegExp(
     `\\[anchor\\s+(.*?)\\](.*?)\\[\/anchor\\]`,
@@ -89,11 +81,6 @@ Hue.parse_text = function (text) {
   text = text.replace(
     Hue.textparser_regexes["whisper_link"].regex,
     Hue.textparser_regexes["whisper_link"].replace_function
-  )
-
-  text = text.replace(
-    Hue.textparser_regexes["horizontal_line"].regex,
-    Hue.textparser_regexes["horizontal_line"].replace_function
   )
 
   text = text.replace(

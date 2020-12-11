@@ -750,8 +750,12 @@ Hue.submit_reply = function () {
   Hue.msg_reply.close()
   Hue.goto_bottom(true)
 
-  let text = Hue.utilz.clean_string2($("#reply_text").val())
-  text = text.substring(0, Hue.config.quote_max_length).trim()
+  let otext = Hue.utilz.clean_string2($("#reply_text").val())
+  let text = otext.substring(0, Hue.config.quote_max_length).trim()
+  
+  if (otext.length > text.length) {
+    text += "..."
+  }
 
   Hue.process_message({
     message: `${Hue.reply_username} said: ${text}`,

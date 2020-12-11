@@ -2367,10 +2367,6 @@ pre {
 	justify-content: flex-start !important;
 }
 
-.chat_hr {
-	border: 0.1rem solid var(--altcolor);
-}
-
 .sent_message_container {
 	grid-gap: 1rem;
 }
