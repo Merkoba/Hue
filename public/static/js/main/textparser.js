@@ -12,7 +12,7 @@ Hue.make_textparser_char_regex = function (char, mode = 1) {
       char
     )}+)(.*[^${Hue.utilz.escape_special_characters(
       char
-    )}\\s])\\2($|\\s|\\:|\\?|\\!)`
+    )}])\\2($|\\s|\\:|\\?|\\!)`
     return new RegExp(regex, "gms")
   }
 }
