@@ -887,7 +887,7 @@ Hue.start_media_info = function () {
 
   $("#media").on("click", ".media_info_details", function () {
     z = this
-    let media_info = $(this).closest(".media_info")
+    let media_info = $(this).closest(".media_info_container")
     let item = media_info.data("item")
     let type = media_info.data("type")
 
