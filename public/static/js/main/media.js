@@ -675,8 +675,13 @@ Hue.change = function (args = {}) {
 
 // Sets a media info item with proper information and events
 Hue.apply_media_info = function (type) {
-  let container = $(`#media_${type}_info_container`)
   let item = Hue[`loaded_${type}`]
+
+  if (!item.type) {
+    return false
+  }
+  
+  let container = $(`#media_${type}_info_container`)
   let custom_title
 
   if (type === "tv") {
@@ -730,6 +735,12 @@ Hue.apply_media_info = function (type) {
   $(container).data("date", item.date)
   $(container).data("item", item)
   $(container).data("type", type)
+}
+
+// Some fixes on reconneciton
+Hue.fix_media_info = function () {
+  Hue.apply_media_info("image")
+  Hue.apply_media_info("tv")
 }
 
 // Toggles media visibility

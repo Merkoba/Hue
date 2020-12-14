@@ -280,6 +280,7 @@ Hue.on_join = function (data) {
   Hue.init_message_board(data)
   Hue.start_active_media()
   Hue.update_input_placeholder()
+  Hue.fix_media_info()
 
   Hue.at_startup()
 }
