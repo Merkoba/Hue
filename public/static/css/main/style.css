@@ -160,10 +160,6 @@ body * {
 	font-size: var(--panel_font_size);
 }
 
-#activity_bar_no_activity {
-	font-size: var(--panel_font_size);
-}
-
 .activity_bar_image_container {
 	min-width: calc(var(--panel_height) * 0.7);
 	max-width: calc(var(--panel_height) * 0.7);

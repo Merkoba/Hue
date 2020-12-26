@@ -70,11 +70,8 @@ Hue.update_activity_bar = function () {
 
   if (Hue.activity_list.length === 0) {
     Hue.clear_activity_bar_items()
-    $("#activity_bar_no_activity").css("display", "block")
     return false
   }
-
-  $("#activity_bar_no_activity").css("display", "none")
 
   let ids_included = []
 
