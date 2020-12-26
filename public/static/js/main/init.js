@@ -5,8 +5,7 @@
 const Hue = {}
 
 // This enables information about socket calls to the server in the console
-// Setting it to true is recommended
-Hue.debug_socket = true
+Hue.debug_socket = false
 
 // This wraps all functions with a function
 // It shows every triggered function name
