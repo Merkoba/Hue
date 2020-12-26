@@ -220,6 +220,10 @@ Hue.init = function () {
   Hue.start_modal_filters()
   Hue.setup_confirm()
   Hue.start_timeago()
+  
+  if (Hue.debug_socket) {
+    Hue.start_socket_stats()
+  }
 
   if (Hue.debug_functions) {
     Hue.wrap_functions()
