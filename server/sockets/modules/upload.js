@@ -11,7 +11,7 @@ module.exports = function (
   // Receives sliced files uploads and requests more slices
   // Sends uploaded files to respective functions
   handler.public.slice_upload = async function (socket, data) {
-    if (data.data.length > config.upload_slice_size) {
+    if (!data || !data.data || data.data.length > config.upload_slice_size) {
       return false
     }
 
