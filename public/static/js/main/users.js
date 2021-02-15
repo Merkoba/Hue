@@ -632,7 +632,13 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
   let bio = ""
   let hearts = 0
   let skulls = 0
-  let user = Hue.get_user_by_username(username)
+  let user = false
+
+  if (username) {
+    user = Hue.get_user_by_username(username)
+  } else if(user_id) {
+    user = Hue.get_user_by_user_id(user_id)
+  }
 
   if (user) {
     $("#show_profile_details").css("display", "block")
@@ -646,13 +652,14 @@ Hue.show_profile = function (username, profile_image = false, user_id = false) {
       same_user = true
     }
 
+    username = user.username
     Hue.open_profile_user = user
   } else {
     $("#show_profile_details").css("display", "none")
   }
-
+  
   Hue.open_profile_username = username
-
+  
   if (profile_image) {
     pi = profile_image
   } else {
