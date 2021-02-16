@@ -148,10 +148,9 @@ Hue.on_message_board_received = function (data) {
   Hue.add_post_to_message_board(data)
   Hue.check_last_message_board_post()
 
-  let func = function () { Hue.show_message_board() }
-  let item = Hue.make_info_popup_item({icon: "pencil", message: "New message board post", on_click:func})
-
-  if (!Hue.message_board_open) {
+  if (data.user_id !== Hue.user_id && !Hue.message_board_open) {
+    let func = function () { Hue.show_message_board() }
+    let item = Hue.make_info_popup_item({icon: "pencil", message: "New message board post", on_click:func})
     Hue.show_popup(Hue.make_info_popup(func), item)
   }
 }
