@@ -102,6 +102,7 @@ Hue.resize_events = function () {
 Hue.on_resize = function () {
   Hue.fix_frames()
   Hue.goto_bottom()
+  Hue.resize_activity_bar()
 }
 
 // Setup events for application close or refresh

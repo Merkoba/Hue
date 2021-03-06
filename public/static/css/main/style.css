@@ -136,6 +136,10 @@ body * {
 	grid-gap: 1.25rem;
 }
 
+#activity_bar_inner.no_usernames .activity_bar_text {
+	display: none;
+}
+
 .activity_bar_item {
 	display: flex;
 	flex-direction: row;

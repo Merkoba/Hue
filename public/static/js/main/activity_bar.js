@@ -32,8 +32,6 @@ Hue.update_activity_bar = function (check = false) {
   }
 
   Hue.last_activity_hash = activity_hash
-
-  let c = $("#activity_bar_inner")
   Hue.clear_activity_bar_items()
 
   for (let user of activity_list) {
@@ -60,7 +58,20 @@ Hue.update_activity_bar = function (check = false) {
     text_el.text(user.username)
     h.data("user_id", user.user_id)
     h.data("uname", user.username)
-    c.append(h)
+    $("#activity_bar_inner").append(h)
+  }
+
+  Hue.resize_activity_bar()
+}
+
+Hue.resize_activity_bar = function () {
+  let ab = $("#activity_bar")
+  let ab_inner = $("#activity_bar_inner")
+
+  if (ab_inner[0].scrollWidth >= ab[0].scrollWidth) {
+    ab_inner.addClass("no_usernames")
+  } else {
+    ab_inner.removeClass("no_usernames")
   }
 }
 
