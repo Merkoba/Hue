@@ -2399,6 +2399,7 @@ pre {
 	cursor: pointer;
 	flex-direction: row;
 	display: flex;
+	line-height: 1.8rem;
 }
 
 .media_info_username {
