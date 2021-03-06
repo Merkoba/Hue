@@ -711,7 +711,6 @@ Hue.start_reply = function (target) {
 // Show the reply window
 Hue.show_reply = function (username, text) {
   $("#reply_text").val(text)
-  $("#reply_input").val("")
   
   Hue.old_reply_input_val = ""
   Hue.msg_reply.set_title(`Re: ${username}`)
@@ -751,6 +750,8 @@ Hue.submit_reply = function () {
       message: reply
     })
   }
+
+  $("#reply_input").val("")
 }
 
 // Adds a message to the fresh message list
