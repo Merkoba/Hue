@@ -230,14 +230,13 @@ Hue.start_msg = function () {
     Object.assign({}, common, titlebar, {
       id: "message",
       window_width: "28rem",
-      close_on_overlay_click: false,
+      close_on_escape: false,
       after_show: function (instance) {
         common.after_show(instance)
         Hue.writing_message = true
       },
       after_close: function (instance) {
         common.after_close(instance)
-        $("#write_message_area").val("")
         $("#write_message_feedback").text("")
         $("#write_message_feedback").css("display", "none")
         Hue.writing_message = false

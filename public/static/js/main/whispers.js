@@ -193,6 +193,7 @@ Hue.send_popup_message = function (force = false) {
   }
 
   let ans = Hue.send_whisper(message, force)
+  $("#write_message_area").val("")
 
   if (ans) {
     Hue.msg_message.close(function () {
