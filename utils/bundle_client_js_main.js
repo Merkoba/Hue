@@ -11,11 +11,11 @@ for (let file of manual) {
 }
 
 for (let file of files) {
-    if (manual.includes(file) || !file.endsWith(".js") || file === "main.bundle.min.js") {
+    if (manual.includes(file) || !file.endsWith(".js") || file === "main.bundle.js") {
         continue
     }
 
     bundle += fs.readFileSync(`${dir_path}${file}`, "utf8") + "\n"
 }
 
-fs.writeFileSync(`${dir_path_target}main.bundle.min.js`, bundle, "utf8")
+fs.writeFileSync(`${dir_path_target}main.bundle.js`, bundle, "utf8")
