@@ -333,14 +333,8 @@ Refer to [config.json](config/config.json) and [config.secret.json](config/confi
 "text_ads_threshold"
 >On how many chat messages sent to try to provide a text ad.
 
-"max_activity_bar_delay"
->How long until an item in the top activity bar becomes obsolete after not being updated.
-
 "activity_bar_interval"
 >How often to check for obsolete items in the top activity bar to remove them.
-
-"activity_bar_trigger_interval"
->How often to send a signal, when focused, that the user has the app focused, to trigger activity.
 
 "max_activity_bar_items"
 >Maximum amount of top activity bar items at the same time.
