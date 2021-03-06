@@ -340,7 +340,7 @@ module.exports = function (
         username: item.username,
         role: item.role,
         profile_image: item.profile_image,
-        last_activity_trigger: item.last_activity_trigger,
+        last_activity: 0,
         date_joined: item.date_joined,
         bio: item.bio,
         hearts: item.hearts,
@@ -484,7 +484,6 @@ module.exports = function (
       user.bio = socket.hue_bio
       user.hearts = socket.hue_hearts
       user.skulls = socket.hue_skulls
-      user.last_activity_trigger = socket.hue_last_activity_trigger
       user.audio_clip = socket.hue_audio_clip
 
       if (first) {

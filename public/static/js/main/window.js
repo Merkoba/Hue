@@ -83,7 +83,6 @@ Hue.on_app_focused = function () {
   Hue.change({type: "tv", force: false, play: false})
   Hue.remove_alert_title()
   Hue.show_fresh_messages()
-  Hue.check_trigger_activity()
   Hue.focus_input()
 }
 

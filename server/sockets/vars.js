@@ -89,8 +89,7 @@ module.exports = function (
   // They add spam manually
   vars.dont_add_spam = [
     "slice_upload",
-    "typing",
-    "activity_trigger"
+    "typing"
   ]
 
   // Check if user is locked from room with these functions

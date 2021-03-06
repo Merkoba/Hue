@@ -20,6 +20,10 @@ Hue.user_join = function (data) {
     Hue.show_profile(data.username)
   }
 
+  if (Hue.started) {
+    Hue.update_activity_bar()
+  }
+
   Hue.remove_offline_profile_images(data.user_id)
 }
 
@@ -68,6 +72,7 @@ Hue.add_to_userlist = function (args = {}) {
     hearts: 0,
     skulls: 0,
     audio_clip: false,
+    last_activity: 0
   }
 
   args = Object.assign(def_args, args)
@@ -82,9 +87,9 @@ Hue.add_to_userlist = function (args = {}) {
       Hue.userlist[i].hearts = args.hearts
       Hue.userlist[i].skulls = args.skulls
       Hue.userlist[i].audio_clip = args.audio_clip
+      Hue.userlist[i].last_activity = args.last_activity
 
       Hue.update_userlist()
-
       return false
     }
   }
@@ -99,6 +104,7 @@ Hue.add_to_userlist = function (args = {}) {
     hearts: args.hearts,
     skulls: args.skulls,
     audio_clip: args.audio_clip,
+    last_activity: args.last_activity
   })
 
   Hue.update_userlist()
@@ -426,12 +432,12 @@ Hue.show_userlist_window = function (mode = "normal", filter = false) {
 }
 
 // Sorts a user list by activity date
-Hue.sort_userlist_by_activity_trigger = function (a, b) {
-  if (a.last_activity_trigger < b.last_activity_trigger) {
+Hue.sort_userlist_by_activity = function (a, b) {
+  if (a.last_activity > b.last_activity) {
     return -1
   }
 
-  if (a.last_activity_trigger > b.last_activity_trigger) {
+  if (a.last_activity < b.last_activity) {
     return 1
   }
 
@@ -453,7 +459,6 @@ Hue.update_user_profile_image = function (id, pi) {
 // What to do when a user disconnects
 Hue.user_disconnect = function (data) {
   Hue.remove_from_userlist(data.user_id)
-  Hue.update_activity_bar()
 
   let type = data.disconnection_type
 
@@ -465,6 +470,10 @@ Hue.user_disconnect = function (data) {
 
   if (Hue.open_profile_username === data.username) {
     Hue.show_profile(data.username, $("#show_profile_image").attr("src"))
+  }
+
+  if (data.user_id !== Hue.user_id) {
+    Hue.update_activity_bar()
   }
 
   Hue.add_offline_profile_images(data.user_id)
@@ -1213,4 +1222,10 @@ Hue.modusername = function (arg) {
   }
 
   Hue.socket_emit("modusername", {original:original_uname, new:new_uname})
+}
+
+// Updates user activity to current date
+Hue.update_user_activity = function (user_id) {
+  let user = Hue.get_user_by_user_id(user_id)
+  user.last_activity = Date.now()
 }

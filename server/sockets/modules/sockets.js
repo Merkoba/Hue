@@ -156,26 +156,6 @@ module.exports = function (
     handler.user_emit(socket, "pong_received", { date: data.date })
   }
 
-  // Handles activity signals
-  handler.public.activity_trigger = async function (socket, data) {
-    socket.hue_activity_counter += 1
-
-    if (socket.hue_activity_counter >= 2) {
-      let spam_ans = await handler.add_spam(socket)
-
-      if (!spam_ans) {
-        return false
-      }
-
-      socket.hue_activity_counter = 0
-    }
-
-    socket.hue_last_activity_trigger = Date.now()
-    handler.update_user_in_userlist(socket)
-
-    handler.room_emit(socket, "activity_trigger", { user_id: socket.hue_user_id })
-  }
-
   // Changes socket properties to all sockets of a user
   handler.modify_socket_properties = function (
     user_id,

@@ -607,6 +607,10 @@ Hue.add_to_chat = function (args = {}) {
         Hue.save_room_state()
       }
     }
+
+    if (is_public && user_id) {
+      Hue.update_user_activity(user_id)
+    }
   }
 
   if (Hue.started && !Hue.app_focused) {
@@ -616,10 +620,6 @@ Hue.add_to_chat = function (args = {}) {
       let container = args.message.find(".announcement_content_container").eq(0)
       Hue.add_fresh_message(container)
     }
-  }
-
-  if (is_public && user_id && date) {
-    Hue.push_to_activity_bar(user_id, date)
   }
 
   return {

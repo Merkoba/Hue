@@ -81,7 +81,6 @@ Hue.user_leaving = false
 Hue.admin_activity_filter_string = ""
 Hue.active_modal = false
 Hue.activity_list = []
-Hue.last_activity_trigger = 0
 Hue.editing_message = false
 Hue.editing_message_container = false
 Hue.editing_message_area = false
@@ -283,6 +282,7 @@ Hue.on_join = function (data) {
   Hue.start_active_media()
   Hue.update_input_placeholder()
   Hue.fix_media_info()
+  Hue.update_activity_bar()
 
   Hue.at_startup()
 }
