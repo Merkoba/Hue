@@ -82,7 +82,8 @@ module.exports = function (
       data.effect !== "grayscale" &&
       data.effect !== "saturate" &&
       data.effect !== "brightness" &&
-      data.effect !== "invert"
+      data.effect !== "invert" &&
+      data.effect !== "zoom"
     ) {
       return false
     }

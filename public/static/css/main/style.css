@@ -75,6 +75,10 @@ body * {
 	filter: invert(1);
 }
 
+.background_image_zoom {
+	transform: scale(2,2);
+}
+
 .background_image_tiled {
 	background-size: var(--bg_tile_dimensions);
 	background-repeat: repeat;

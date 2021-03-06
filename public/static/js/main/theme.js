@@ -45,34 +45,20 @@ Hue.apply_background = function () {
     })
   }
 
-  $(".background_image").each(function () {
-    $(this).removeClass("background_image_blur")
-    $(this).removeClass("background_image_grayscale")
-    $(this).removeClass("background_image_saturate")
-    $(this).removeClass("background_image_brightness")
-    $(this).removeClass("background_image_invert")
-  })
-
-  if (bg_mode !== "solid") {
-    if (Hue.background_effect === "blur") {
+  if (Hue.background_effect) {
+    $(".background_image").each(function () {
+      $(this).removeClass("background_image_none")
+      $(this).removeClass("background_image_blur")
+      $(this).removeClass("background_image_grayscale")
+      $(this).removeClass("background_image_saturate")
+      $(this).removeClass("background_image_brightness")
+      $(this).removeClass("background_image_invert")
+      $(this).removeClass("background_image_zoom")
+    })
+    
+    if (bg_mode !== "solid") {
       $(".background_image").each(function () {
-        $(this).addClass("background_image_blur")
-      })
-    } else if (Hue.background_effect === "grayscale") {
-      $(".background_image").each(function () {
-        $(this).addClass("background_image_grayscale")
-      })
-    } else if (Hue.background_effect === "saturate") {
-      $(".background_image").each(function () {
-        $(this).addClass("background_image_saturate")
-      })
-    } else if (Hue.background_effect === "brightness") {
-      $(".background_image").each(function () {
-        $(this).addClass("background_image_brightness")
-      })
-    } else if (Hue.background_effect === "invert") {
-      $(".background_image").each(function () {
-        $(this).addClass("background_image_invert")
+        $(this).addClass(`background_image_${Hue.background_effect}`)
       })
     }
   }
@@ -375,7 +361,8 @@ Hue.change_background_effect = function (effect) {
     effect !== "grayscale" &&
     effect !== "saturate" &&
     effect !== "brightness" && 
-    effect !== "invert"
+    effect !== "invert" &&
+    effect !== "zoom"
   ) {
     Hue.feedback("Invalid background effect")
     return false
