@@ -444,6 +444,20 @@ Hue.sort_userlist_by_activity = function (a, b) {
   return 0
 }
 
+
+// Sorts a user list by activity username
+Hue.sort_userlist_by_activity = function (a, b) {
+  if (a.username < b.username) {
+    return -1
+  }
+
+  if (a.username > b.username) {
+    return 1
+  }
+
+  return 0
+}
+
 // Updates the profile image of a user in the userlist
 Hue.update_user_profile_image = function (id, pi) {
   for (let i = 0; i < Hue.userlist.length; i++) {

@@ -26,6 +26,7 @@ Hue.update_activity_bar = function () {
   }
 
   Hue.last_activity_hash = activity_hash
+  activity_list.sort(Hue.sort_userlist_by_username)
 
   let c = $("#activity_bar_inner")
   Hue.clear_activity_bar_items()
