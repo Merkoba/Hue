@@ -130,7 +130,7 @@ Hue.commands = {
         Hue.show_media_source("tv")
       }
     },
-    description: "Changes the TV using a search term or URL.",
+    description: "Changes the TV using a search term or URL",
   },
   "image": {
     action: (arg, ans) => {
