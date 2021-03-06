@@ -520,7 +520,7 @@ Hue.add_to_chat = function (args = {}) {
   let is_public = args.message.data("public")
   let highlighted = args.message.data("highlighted")
   let content_container, message_id
-
+  
   if (mode === "chat") {
     content_container = args.message.find(".chat_content_container").eq(0)
     Hue.chat_content_container_id += 1
@@ -606,10 +606,17 @@ Hue.add_to_chat = function (args = {}) {
         Hue.room_state.last_highlight_date = date
         Hue.save_room_state()
       }
+    } else if (user_id) {
+      if (user_id !== Hue.user_id) {
+        if (Hue.last_chat_user_id === Hue.user_id) {
+          Hue.activity_notification()
+        }
+      }
     }
-
+    
     if (is_public && user_id) {
       Hue.update_user_activity(user_id)
+      Hue.last_chat_user_id = user_id
     }
   }
 
@@ -711,7 +718,7 @@ Hue.start_reply = function (target) {
 // Show the reply window
 Hue.show_reply = function (username, text) {
   $("#reply_text").val(text)
-  
+
   Hue.old_reply_input_val = ""
   Hue.msg_reply.set_title(`Re: ${username}`)
 
@@ -735,7 +742,7 @@ Hue.submit_reply = function () {
 
   let otext = Hue.utilz.clean_string2($("#reply_text").val())
   let text = otext.substring(0, Hue.config.quote_max_length).trim()
-  
+
   if (otext.length > text.length) {
     text += "..."
   }
@@ -1063,19 +1070,19 @@ Hue.check_typing = function (mode = "input") {
 
   if (mode === "input") {
     let val = Hue.get_input()
-  
+
     if (val.length < Hue.old_input_val.length) {
       return false
     }
-  
+
     tval = val.trim()
   } else if (mode === "reply") {
     let val = $("#reply_input").val()
-  
+
     if (val.length < Hue.old_reply_input_val.length) {
       return false
     }
-  
+
     tval = val.trim()
   }
 
@@ -1226,7 +1233,9 @@ Hue.jump_to_chat_message = function (message_id) {
     return false
   }
 
-  el[0].scrollIntoView({ block: "center" })
+  el[0].scrollIntoView({
+    block: "center"
+  })
   Hue.close_all_modals()
 }
 
@@ -1379,13 +1388,13 @@ Hue.scroll_down = function (n) {
   let $ch = $("#chat_area")
   let max = $ch.prop("scrollHeight") - $ch.innerHeight()
   let diff
-  
+
   if (max - $ch.scrollTop < n) {
     diff = max + 10
   } else {
     diff = $ch.scrollTop() + n
   }
-  
+
   Hue.scroll_chat_to(diff)
   return diff
 }
@@ -1606,7 +1615,7 @@ Hue.hide_top_scroller = function () {
   if (!Hue.top_scroller_visible) {
     return
   }
-  
+
   $("#top_scroller_container").css("visibility", "hidden")
   Hue.top_scroller_visible = false
 }
@@ -1618,7 +1627,7 @@ Hue.show_bottom_scroller = function () {
   if (Hue.bottom_scroller_visible) {
     return
   }
-  
+
   $("#bottom_scroller_container").css("visibility", "visible")
   Hue.chat_scrolled = true
   Hue.bottom_scroller_visible = true
@@ -1911,4 +1920,19 @@ Hue.replace_message_vars = function (id, message) {
 // Sets the chat display percentage to default
 Hue.set_default_chat_size = function () {
   Hue.do_chat_size_change("default")
+}
+
+// Shows an alert when a message follows a user's message
+Hue.activity_notification = function () {
+  if (!Hue.started) {
+    return false
+  }
+
+  if (!Hue.settings.show_activity_notifications) {
+    return false
+  }
+
+  if (!Hue.app_focused || Hue.screen_locked) {
+    Hue.show_activity_desktop_notification()
+  }
 }

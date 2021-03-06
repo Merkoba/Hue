@@ -53,3 +53,14 @@ Hue.show_highlight_desktop_notification = function () {
     `New highlight in ${Hue.room_name.substring(0, 40)}`
   )
 }
+
+// Shows a browser notification alerting an after message
+Hue.show_activity_desktop_notification = function () {
+  if (!Hue.has_desktop_notifications_permission()) {
+    return false
+  }
+
+  Hue.show_desktop_notification(
+    `Activity in ${Hue.room_name.substring(0, 40)}`
+  )
+}

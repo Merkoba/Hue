@@ -81,6 +81,19 @@ Hue.user_settings = {
         Hue.save_settings()
       }
     },
+  },
+  show_activity_notifications: {
+    widget_type: "checkbox",
+    description: `Whether to show desktop notifications on activity after your last message`,
+    action: (save = true) => {
+      Hue.settings.show_activity_notifications = $(`#settings_show_activity_notifications`).prop(
+        "checked"
+      )
+
+      if (save) {
+        Hue.save_settings()
+      }
+    },
   }
 }
 
