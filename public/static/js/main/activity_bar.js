@@ -25,7 +25,7 @@ Hue.update_activity_bar = function (check = false) {
   activity_list.sort(Hue.sort_userlist_by_username)
   
   let activity_hash = ""
-  activity_list.map(x => activity_hash += x.user_id)
+  activity_list.map(x => activity_hash += x.user_id + x.username)
   
   if (Hue.last_activity_hash === activity_hash) {
     return false

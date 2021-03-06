@@ -446,12 +446,12 @@ Hue.sort_userlist_by_activity = function (a, b) {
 
 
 // Sorts a user list by activity username
-Hue.sort_userlist_by_activity = function (a, b) {
-  if (a.username < b.username) {
+Hue.sort_userlist_by_username = function (a, b) {
+  if (a.username.toLowerCase() < b.username.toLowerCase()) {
     return -1
   }
 
-  if (a.username > b.username) {
+  if (a.username.toLowerCase() > b.username.toLowerCase()) {
     return 1
   }
 
@@ -531,8 +531,7 @@ Hue.announce_new_username = function (data) {
     Hue.request_admin_list()
   }
 
-  let user = Hue.get_user_by_username(data.username)
-  Hue.update_activity_bar_username(user.user_id, user.username)
+  Hue.update_activity_bar()
 }
 
 // Returns feedback on wether a user is in the room or not
