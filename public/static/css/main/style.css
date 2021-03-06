@@ -867,6 +867,11 @@ select {
 	min-width: 8rem;
 }
 
+.modal_color {
+	text-align-last: center;
+	min-width: 8rem;
+}
+
 input[type=text],
 input[type=search],
 input[type=password],
