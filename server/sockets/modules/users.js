@@ -101,7 +101,7 @@ module.exports = function (
 
     db_manager.update_room(info._id, { keys: info.keys })
 
-    handler.room_emit(socket, "announce_role_change", {
+    handler.room_emit(socket, "announce_role_changed", {
       username1: socket.hue_username,
       username2: data.username,
       role: data.role,

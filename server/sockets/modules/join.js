@@ -292,7 +292,7 @@ module.exports = function (
       tv_date: info.tv_date,
       tv_query: info.tv_query,
       profile_image: socket.hue_profile_image,
-      theme: info.theme,
+      background_color: info.background_color,
       background_image: background_image,
       background_image_setter: info.background_image_setter,
       background_image_date: info.background_image_date,

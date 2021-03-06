@@ -48,7 +48,7 @@ module.exports = function (
       topic_date: info.topic_date,
     })
 
-    handler.room_emit(socket, "topic_change", {
+    handler.room_emit(socket, "topic_changed", {
       topic: info.topic,
       topic_setter: info.topic_setter,
       topic_date: info.topic_date,

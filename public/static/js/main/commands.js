@@ -589,11 +589,11 @@ Hue.commands = {
     },
     description: `Shows a simple window with a message`,
   },
-  "theme": {
+  "backgroundcolor": {
     action: (arg, ans) => {
-      Hue.change_theme(arg)
+      Hue.change_background_color(arg)
     },
-    description: `Changes the theme to a specified hex color`,
+    description: `Changes the background color to a specified hex color`,
   },
   "textcolormode": {
     action: (arg, ans) => {

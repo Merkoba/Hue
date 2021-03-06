@@ -30,7 +30,7 @@ Hue.server_update_events = {
   upload_error: (data) => {
     Hue.show_upload_error()
   },
-  topic_change: (data) => {
+  topic_changed: (data) => {
     Hue.announce_topic_change(data)
   },
   room_name_changed: (data) => {
@@ -42,7 +42,7 @@ Hue.server_update_events = {
   log_cleared: (data) => {
     Hue.announce_log_cleared(data)
   },
-  announce_role_change: (data) => {
+  announce_role_changed: (data) => {
     Hue.announce_role_change(data)
   },
   announce_ban: (data) => {
@@ -133,10 +133,10 @@ Hue.server_update_events = {
   email_changed: (data) => {
     Hue.email_changed(data)
   },
-  theme_change: (data) => {
-    Hue.announce_theme_change(data)
+  background_color_changed: (data) => {
+    Hue.announce_background_color_change(data)
   },
-  background_image_change: (data) => {
+  background_image_changed: (data) => {
     Hue.announce_background_image_change(data)
   },
   background_mode_changed: (data) => {

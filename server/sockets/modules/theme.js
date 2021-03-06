@@ -8,8 +8,8 @@ module.exports = function (
   utilz,
   logger
 ) {
-  // Handles theme changes
-  handler.public.change_theme = function (socket, data) {
+  // Handles background color changes
+  handler.public.change_background_color = function (socket, data) {
     if (!handler.is_admin_or_op(socket)) {
       return false
     }
@@ -27,17 +27,17 @@ module.exports = function (
     }
 
     db_manager.update_room(socket.hue_room_id, {
-      theme: data.color,
+      background_color: data.color,
     })
 
-    handler.room_emit(socket, "theme_change", {
+    handler.room_emit(socket, "background_color_changed", {
       color: data.color,
       username: socket.hue_username,
     })
 
     handler.push_admin_log_message(
       socket,
-      `changed the theme to "${data.color}"`
+      `changed the background color to "${data.color}"`
     )
   }
 
@@ -296,7 +296,7 @@ module.exports = function (
       background_image_date: date,
     })
 
-    handler.room_emit(socket, "background_image_change", {
+    handler.room_emit(socket, "background_image_changed", {
       username: socket.hue_username,
       background_image: image_url,
       background_image_setter: socket.hue_username,

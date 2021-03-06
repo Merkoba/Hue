@@ -1,7 +1,7 @@
 // Setups theme and background variables from initial data
-Hue.setup_theme_and_background = function (data) {
+Hue.setup_theme = function (data) {
   Hue.set_background_image(data)
-  Hue.theme = data.theme
+  Hue.background_color = data.background_color
   Hue.background_mode = data.background_mode
   Hue.background_effect = data.background_effect
   Hue.background_tile_dimensions = data.background_tile_dimensions
@@ -80,19 +80,19 @@ Hue.apply_background = function () {
   document.documentElement.style.setProperty('--bg_tile_dimensions', bg_tile_dimensions)
 }
 
-// Theme setter
-Hue.set_theme = function (color) {
-  Hue.theme = color
+// Background color setter
+Hue.set_background_color = function (color) {
+  Hue.background_color = color
   Hue.apply_theme()
-  Hue.config_admin_theme()
+  Hue.config_admin_background_color()
 }
 
 // This is where the color theme gets built and applied
-// This builds CSS declarations based on the current theme color
+// This builds CSS declarations based on the current background color
 // The CSS declarations are inserted into the DOM
 // Older declarations get removed
 Hue.apply_theme = function () {
-  let theme = Hue.theme
+  let theme = Hue.background_color
 
   if (theme.startsWith("#")) {
     theme = Hue.colorlib.array_to_rgb(Hue.colorlib.hex_to_rgb(theme))
@@ -122,8 +122,8 @@ Hue.apply_theme = function () {
   document.documentElement.style.setProperty('--altbackground_a', altbackground_a)
 }
 
-// Changes the theme
-Hue.change_theme = function (color) {
+// Changes the background color
+Hue.change_background_color = function (color) {
   if (!Hue.is_admin_or_op(Hue.role)) {
     return false
   }
@@ -139,21 +139,21 @@ Hue.change_theme = function (color) {
     return false
   }
 
-  if (color === Hue.theme) {
+  if (color === Hue.background_color) {
     Hue.feedback("Theme is already set to that")
     return false
   }
 
-  Hue.socket_emit("change_theme", { color: color })
+  Hue.socket_emit("change_background_color", { color: color })
 }
 
-// Announces theme change
-Hue.announce_theme_change = function (data) {
+// Announces background color change
+Hue.announce_background_color_change = function (data) {
   Hue.show_room_notification(
     data.username,
-    `${data.username} changed the theme to ${data.color}`
+    `${data.username} changed the background color to ${data.color}`
   )
-  Hue.set_theme(data.color)
+  Hue.set_background_color(data.color)
 }
 
 // Picker window to select how to change the background image

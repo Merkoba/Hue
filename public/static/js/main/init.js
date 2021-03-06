@@ -265,7 +265,7 @@ Hue.on_join = function (data) {
   Hue.setup_profile_image(data.profile_image)
   Hue.generate_favicon(Hue.alert_mode)
   Hue.update_userlist()
-  Hue.setup_theme_and_background(data)
+  Hue.setup_theme(data)
   Hue.apply_background()
   Hue.apply_theme()
   Hue.setup_active_media()
