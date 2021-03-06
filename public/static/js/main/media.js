@@ -39,7 +39,7 @@ Hue.apply_media_percentages = function () {
 
   $("#chat_main").css("width", `${c1}%`)
   $("#media").css("width", `${c2}%`)
-  Hue.on_resize()
+  Hue.fix_frames()
 }
 
 // Applies the image and tv positions based on current state
