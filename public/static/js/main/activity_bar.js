@@ -65,13 +65,11 @@ Hue.update_activity_bar = function (check = false) {
 }
 
 Hue.resize_activity_bar = function () {
-  let ab = $("#activity_bar")
   let ab_inner = $("#activity_bar_inner")
+  ab_inner.removeClass("no_usernames")
 
-  if (ab_inner[0].scrollWidth >= ab[0].scrollWidth) {
+  if (ab_inner[0].scrollWidth > ab_inner[0].clientWidth) {
     ab_inner.addClass("no_usernames")
-  } else {
-    ab_inner.removeClass("no_usernames")
   }
 }
 
