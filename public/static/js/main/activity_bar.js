@@ -2,7 +2,7 @@
 // Setups events for the activity bar
 Hue.setup_activity_bar = function () {
   setInterval(function () {
-    Hue.update_activity_bar()
+    Hue.update_activity_bar(true)
   }, Hue.config.activity_bar_interval)
 
   $("#activity_bar").on("click", ".activity_bar_item", function () {
@@ -13,7 +13,12 @@ Hue.setup_activity_bar = function () {
 // Updates the activity bar
 // If items are still in the list they are not removed
 // This is to keep states like profile image rotation from being interrupted
-Hue.update_activity_bar = function () {
+Hue.update_activity_bar = function (check = false) {
+  if (check && !Hue.do_update_activity_bar) {
+    return
+  }
+
+  Hue.do_update_activity_bar = false
   let activity_list = Hue.userlist.slice(0)
   activity_list.sort(Hue.sort_userlist_by_activity)
   activity_list = activity_list.slice(0, Hue.config.max_activity_bar_items)

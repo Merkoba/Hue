@@ -1242,4 +1242,5 @@ Hue.modusername = function (arg) {
 Hue.update_user_activity = function (user_id) {
   let user = Hue.get_user_by_user_id(user_id)
   user.last_activity = Date.now()
+  Hue.do_update_activity_bar = true
 }
