@@ -112,6 +112,13 @@ Hue.setup_room_menu = function () {
   $("#admin_background_image").click(function () {
     Hue.open_background_image_select()
   })
+
+  $("#room_menu_preview").click(function () {
+    $('body').addClass("transparent_modals")
+    setTimeout(() => {
+      $('body').removeClass("transparent_modals")
+    }, 2000)
+  })
 }
 
 // Shows the room menu

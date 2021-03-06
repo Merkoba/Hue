@@ -2330,6 +2330,10 @@ pre {
 	color: rgb(223, 76, 76);
 }
 
+.transparent_modals .Msg-container {
+	opacity: 0;
+}
+
 .Msg-overlay {
 	background-color: var(--altcolor_a) !important;
 	color: var(--background_color) !important;
@@ -2343,7 +2347,6 @@ pre {
 .Msg-window-inner-x:hover {
 	background-color: var(--altbackground) !important;
 }
-
 
 .custom_popup {
 	border: 0.12rem solid var(--altcolor) !important;
