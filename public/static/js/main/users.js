@@ -21,7 +21,7 @@ Hue.user_join = function (data) {
   }
 
   if (Hue.started) {
-    Hue.update_activity_bar()
+    Hue.do_update_activity_bar = true
   }
 
   Hue.remove_offline_profile_images(data.user_id)
@@ -486,10 +486,7 @@ Hue.user_disconnect = function (data) {
     Hue.show_profile(data.username, $("#show_profile_image").attr("src"))
   }
 
-  if (data.user_id !== Hue.user_id) {
-    Hue.update_activity_bar()
-  }
-
+  Hue.do_update_activity_bar = true
   Hue.add_offline_profile_images(data.user_id)
 }
 
