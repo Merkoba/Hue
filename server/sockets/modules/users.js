@@ -101,7 +101,7 @@ module.exports = function (
 
     db_manager.update_room(info._id, { keys: info.keys })
 
-    handler.room_emit(socket, "announce_role_changed", {
+    handler.room_emit(socket, "user_role_changed", {
       username1: socket.hue_username,
       username2: data.username,
       role: data.role,
@@ -226,17 +226,15 @@ module.exports = function (
       }
 
       handler.push_admin_log_message(socket, `banned "${data.username}"`)
-    } else {
-      handler.room_emit(socket, "announce_ban", {
-        username1: socket.hue_username,
-        username2: data.username,
-      })
     }
 
+    handler.room_emit(socket, "user_banned", {
+      username1: socket.hue_username,
+      username2: data.username,
+    })
+
     info.bans.push(id)
-
     delete info.keys[id]
-
     db_manager.update_room(info._id, { bans: info.bans, keys: info.keys })
   }
 
@@ -289,7 +287,7 @@ module.exports = function (
 
     db_manager.update_room(info._id, { bans: info.bans })
 
-    handler.room_emit(socket, "announce_unban", {
+    handler.room_emit(socket, "user_unbanned", {
       username1: socket.hue_username,
       username2: data.username,
     })
@@ -313,7 +311,7 @@ module.exports = function (
 
       db_manager.update_room(info._id, { bans: info.bans })
 
-      handler.room_emit(socket, "announce_unban_all", {
+      handler.room_emit(socket, "all_users_unbanned", {
         username: socket.hue_username,
       })
 

@@ -15,10 +15,10 @@ Hue.server_update_events = {
   upload_ended: (data) => {
     Hue.upload_ended(data)
   },
-  changed_image_source: (data) => {
+  image_source_changed: (data) => {
     Hue.setup_image("change", data)
   },
-  changed_tv_source: (data) => {
+  tv_source_changed: (data) => {
     Hue.setup_tv("change", data)
   },
   profile_image_changed: (data) => {
@@ -42,16 +42,16 @@ Hue.server_update_events = {
   log_cleared: (data) => {
     Hue.announce_log_cleared(data)
   },
-  announce_role_changed: (data) => {
+  user_role_changed: (data) => {
     Hue.announce_role_change(data)
   },
-  announce_ban: (data) => {
+  user_banned: (data) => {
     Hue.announce_ban(data)
   },
-  announce_unban: (data) => {
+  user_unbanned: (data) => {
     Hue.announce_unban(data)
   },
-  announce_unban_all: (data) => {
+  all_users_unbanned: (data) => {
     Hue.announce_unban_all(data)
   },
   receive_ban_count: (data) => {

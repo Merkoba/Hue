@@ -305,7 +305,7 @@ module.exports = function (
       tv_comment: tvinfo.tv_comment,
     })
 
-    handler.room_emit(socket, "changed_tv_source", {
+    handler.room_emit(socket, "tv_source_changed", {
       id: tv_id,
       user_id: user_id,
       type: tvinfo.tv_type,

@@ -272,7 +272,7 @@ module.exports = function (
       return false
     }
 
-    handler.room_emit(room_id, "changed_image_source", {
+    handler.room_emit(room_id, "image_source_changed", {
       id: image_id,
       user_id: user_id,
       source: image_source,
