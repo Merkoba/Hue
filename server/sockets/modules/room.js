@@ -39,19 +39,14 @@ module.exports = function (
     let info = {}
 
     info.topic = data.topic
-    info.topic_setter = socket.hue_username
-    info.topic_date = Date.now()
 
     db_manager.update_room(socket.hue_room_id, {
       topic: info.topic,
-      topic_setter: info.topic_setter,
-      topic_date: info.topic_date,
     })
 
     handler.room_emit(socket, "topic_changed", {
       topic: info.topic,
-      topic_setter: info.topic_setter,
-      topic_date: info.topic_date,
+      username: socket.hue_username,
     })
 
     room.topic = info.topic

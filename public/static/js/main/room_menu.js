@@ -208,16 +208,6 @@ Hue.config_admin_background_image = function () {
       )
     }
   }
-
-  if (Hue.background_image_setter) {
-    let s = `Setter: ${Hue.background_image_setter}`
-
-    if (Hue.background_image_date) {
-      s += ` | ${Hue.utilz.nice_date(Hue.background_image_date)}`
-    }
-
-    $("#admin_background_image").attr("title", s)
-  }
 }
 
 // Updates the background effect widget in the room menu based on current state

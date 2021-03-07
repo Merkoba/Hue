@@ -101,10 +101,6 @@ Hue.show_topic = function () {
   let topic = `Topic: ${Hue.get_topic()}`
   let obj = {}
 
-  if (Hue.topic_setter) {
-    obj.title = `Setter: ${Hue.topic_setter} | ${Hue.topic_date} | ${Hue.utilz.nice_date()}`
-  }
-
   Hue.feedback(topic, obj)
 }
 
@@ -176,8 +172,8 @@ Hue.change_topic = function (dtopic) {
 Hue.announce_topic_change = function (data) {
   if (data.topic !== Hue.topic) {
     Hue.show_room_notification(
-      data.topic_setter,
-      `${data.topic_setter} changed the topic`
+      data.username,
+      `${data.username} changed the topic`
     )
     Hue.set_topic_info(data)
     Hue.update_title()
@@ -192,15 +188,10 @@ Hue.announce_topic_change = function (data) {
 Hue.set_topic_info = function (data) {
   if (!data) {
     data = {}
-
     data.topic = ""
-    data.topic_setter = ""
-    data.topic_date = ""
   }
 
   Hue.topic = data.topic
-  Hue.topic_setter = data.topic_setter
-  Hue.topic_date = Hue.utilz.nice_date(data.topic_date)
   Hue.config_admin_topic()
 }
 

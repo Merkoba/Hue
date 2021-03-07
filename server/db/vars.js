@@ -23,8 +23,6 @@ module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
     return {
       name: { type: "string", default: "No Name" },
       topic: { type: "string", default: "" },
-      topic_setter: { type: "string", default: "" },
-      topic_date: { type: "number", default: 0 },
       keys: { type: "object", default: {} },
       stored_images: { type: "object", default: [] },
       image_id: { type: "string", default: "" },
@@ -52,8 +50,6 @@ module.exports = function (vars, manager, db, config, sconfig, utilz, logger) {
       text_color_mode: { type: "string", default: "automatic" },
       text_color: { type: "string", default: "#dcddde" },
       background_image: { type: "string", default: "" },
-      background_image_setter: { type: "string", default: "" },
-      background_image_date: { type: "number", default: 0 },
       background_image_type: { type: "string", default: "hosted" },
       background_mode: { type: "string", default: "normal" },
       background_effect: { type: "string", default: "none" },

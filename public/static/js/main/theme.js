@@ -1,6 +1,6 @@
 // Setups theme and background variables from initial data
 Hue.setup_theme = function (data) {
-  Hue.set_background_image(data)
+  Hue.set_background_image(data, false)
   Hue.background_color = data.background_color
   Hue.background_mode = data.background_mode
   Hue.background_effect = data.background_effect
@@ -10,17 +10,18 @@ Hue.setup_theme = function (data) {
 }
 
 // Sets an applies background images from data
-Hue.set_background_image = function (data) {
+Hue.set_background_image = function (data, apply = true) {
   if (data.background_image !== "") {
     Hue.background_image = data.background_image
   } else {
     Hue.background_image = Hue.config.default_background_image_url
   }
 
-  Hue.background_image_setter = data.background_image_setter
-  Hue.background_image_date = data.background_image_date
-  Hue.apply_background()
   Hue.config_admin_background_image()
+
+  if (apply) {
+    Hue.apply_background()
+  }
 }
 
 // Applies the background to all background elements
@@ -45,22 +46,20 @@ Hue.apply_background = function () {
     })
   }
 
-  if (Hue.background_effect) {
+  $(".background_image").each(function () {
+    $(this).removeClass("background_image_none")
+    $(this).removeClass("background_image_blur")
+    $(this).removeClass("background_image_grayscale")
+    $(this).removeClass("background_image_saturate")
+    $(this).removeClass("background_image_brightness")
+    $(this).removeClass("background_image_invert")
+    $(this).removeClass("background_image_zoom")
+  })
+  
+  if (bg_mode !== "solid") {
     $(".background_image").each(function () {
-      $(this).removeClass("background_image_none")
-      $(this).removeClass("background_image_blur")
-      $(this).removeClass("background_image_grayscale")
-      $(this).removeClass("background_image_saturate")
-      $(this).removeClass("background_image_brightness")
-      $(this).removeClass("background_image_invert")
-      $(this).removeClass("background_image_zoom")
+      $(this).addClass(`background_image_${Hue.background_effect}`)
     })
-    
-    if (bg_mode !== "solid") {
-      $(".background_image").each(function () {
-        $(this).addClass(`background_image_${Hue.background_effect}`)
-      })
-    }
   }
 
   document.documentElement.style.setProperty('--bg_tile_dimensions', bg_tile_dimensions)

@@ -267,8 +267,6 @@ module.exports = function (
       room_name: info.name,
       username: socket.hue_username,
       topic: info.topic,
-      topic_setter: info.topic_setter,
-      topic_date: info.topic_date,
       userlist: handler.prepare_userlist(
         handler.get_userlist(socket.hue_room_id)
       ),
@@ -294,8 +292,6 @@ module.exports = function (
       profile_image: socket.hue_profile_image,
       background_color: info.background_color,
       background_image: background_image,
-      background_image_setter: info.background_image_setter,
-      background_image_date: info.background_image_date,
       background_mode: info.background_mode,
       background_effect: info.background_effect,
       background_tile_dimensions: info.background_tile_dimensions,

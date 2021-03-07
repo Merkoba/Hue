@@ -288,20 +288,14 @@ module.exports = function (
       type = "hosted"
     }
 
-    let date = Date.now()
-
     await db_manager.update_room(socket.hue_room_id, {
       background_image: fname,
       background_image_type: type,
-      background_image_setter: socket.hue_username,
-      background_image_date: date,
     })
 
     handler.room_emit(socket, "background_image_changed", {
       username: socket.hue_username,
-      background_image: image_url,
-      background_image_setter: socket.hue_username,
-      background_image_date: date,
+      background_image: image_url
     })
 
     if (to_delete) {
