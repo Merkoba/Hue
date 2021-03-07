@@ -60,7 +60,7 @@ module.exports = function (
         type = "disconnection"
       }
 
-      handler.room_emit(socket, "user_disconnect", {
+      handler.room_emit(socket, "user_disconnected", {
         user_id: socket.hue_user_id,
         username: socket.hue_username,
         info1: socket.hue_info1,

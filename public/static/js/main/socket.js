@@ -24,7 +24,7 @@ Hue.server_update_events = {
   profile_image_changed: (data) => {
     Hue.profile_image_changed(data)
   },
-  user_join: (data) => {
+  user_joined: (data) => {
     Hue.user_join(data)
   },
   upload_error: (data) => {
@@ -154,7 +154,7 @@ Hue.server_update_events = {
   text_color_changed: (data) => {
     Hue.announce_text_color_change(data)
   },
-  user_disconnect: (data) => {
+  user_disconnected: (data) => {
     Hue.user_disconnect(data)
   },
   others_disconnected: (data) => {

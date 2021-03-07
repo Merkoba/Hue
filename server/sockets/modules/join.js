@@ -315,7 +315,7 @@ module.exports = function (
     handler.user_emit(socket, "joined", user_data)
 
     if (!already_connected) {
-      handler.broadcast_emit(socket, "user_join", {
+      handler.broadcast_emit(socket, "user_joined", {
         user_id: socket.hue_user_id,
         username: socket.hue_username,
         role: socket.hue_role,
