@@ -10,11 +10,13 @@ module.exports = function (
 ) {
   // Checks if link data is available on Redis or tries to fetch metadata
   handler.process_message_links = function (message, callback) {
-    let url = utilz.get_first_url(message)
+    let urls = utilz.get_urls(message)
 
-    if (!url) {
+    if (urls.length !== 1) {
       return callback({})
     }
+
+    let url = urls[0]
 
     if (url.includes('"') || url.includes("'") || url.includes("*")) {
       return callback({})

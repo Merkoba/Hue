@@ -424,6 +424,25 @@ const Utilz = function () {
 		return false
 	}
 
+	utilz.get_urls = function (s) {
+		let urls = []
+		let split = s.split("\n")
+
+		for (let line of split) {
+			let split2 = line.split(" ")
+
+			for (let word of split2) {
+				if (word) {
+					if (utilz.is_url(word)) {
+						urls.push(word)
+					}
+				}
+			}
+		}
+
+		return urls
+	}
+
 	utilz.slice_string_end = function (s, n = 10) {
 		s = s.trim()
 
