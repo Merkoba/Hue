@@ -84,7 +84,7 @@ Hue.user_settings = {
   },
   show_highlight_notifications: {
     widget_type: "checkbox",
-    description: `Whether to show desktop notifications on highlight after your last message`,
+    description: `Whether to show desktop notifications on highlights`,
     action: (save = true) => {
       Hue.settings.show_highlight_notifications = $(`#settings_show_highlight_notifications`).prop(
         "checked"
