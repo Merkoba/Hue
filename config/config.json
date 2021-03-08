@@ -78,6 +78,7 @@
 	"settings_default_warn_before_closing": false,
 	"settings_default_show_image_previews": true,
 	"settings_default_show_link_previews": true,
+	"settings_default_show_highlight_notifications": true,
 	"settings_default_show_activity_notifications": true,
 	"room_state_default_image_enabled": true,
 	"room_state_default_tv_enabled": true,

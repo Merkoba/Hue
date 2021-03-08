@@ -87,6 +87,10 @@ Hue.on_highlight = function () {
     return false
   }
 
+  if (!Hue.settings.show_highlight_notifications) {
+    return false
+  }
+
   if (!Hue.app_focused || Hue.screen_locked) {
     Hue.alert_title(2)
     Hue.show_highlight_desktop_notification()
