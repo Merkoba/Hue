@@ -1932,7 +1932,7 @@ Hue.activity_notification = function () {
     return false
   }
 
-  if (!Hue.app_focused || Hue.screen_locked) {
+  if (!Hue.app_focused) {
     Hue.show_activity_desktop_notification()
   }
 }

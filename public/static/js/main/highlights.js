@@ -93,6 +93,9 @@ Hue.on_highlight = function () {
 
   if (!Hue.app_focused || Hue.screen_locked) {
     Hue.alert_title(2)
+  }
+
+  if (!Hue.app_focused) {
     Hue.show_highlight_desktop_notification()
   }
 
