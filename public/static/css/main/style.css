@@ -718,7 +718,7 @@ a.generic:hover {
 	background-color: var(--altcolor) !important;
 }
 
-.Msg-window {
+.Msg-window.glowborder {
 	box-shadow: 0 0 2rem var(--font_color);
 }
 

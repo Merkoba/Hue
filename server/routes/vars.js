@@ -66,6 +66,7 @@ module.exports = function (c, config) {
   c.vars.badge_feedback_duration = config.badge_feedback_duration
   c.vars.max_info_popups = config.max_info_popups
   c.vars.notifications_crop_limit = config.notifications_crop_limit
+  c.vars.notifications_close_delay = config.notifications_close_delay
   c.vars.whispers_crop_limit = config.whispers_crop_limit
   c.vars.max_whispers_post_length = config.max_whispers_post_length
   c.vars.max_media_comment_length = config.max_media_comment_length
