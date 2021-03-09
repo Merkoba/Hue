@@ -246,7 +246,7 @@ Hue.show_whisper = function (data) {
     Hue.show_profile(usr[0])
   }
   
-  let modal = Hue.create_modal({window_class: "!whisper_width"}, "whisper")
+  let modal = Hue.create_modal({window_class: "!whisper_width !glowborder"}, "whisper")
   modal.set(Hue.template_sent_message())
   modal.set_title(Hue.make_safe({text: title, onclick: title_func }))
   let message_html = Hue.utilz.make_html_safe(data.message)

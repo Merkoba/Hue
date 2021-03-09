@@ -780,7 +780,7 @@ Hue.create_popup = function (args = {}, ptype = "unset") {
   return popup
 }
 
-// Creates a Msg popup
+// Creates a Msg modal
 Hue.create_modal = function (args = {}, ptype = "unset") {
   if (!args.id) {
     Hue.modal_id += 1
