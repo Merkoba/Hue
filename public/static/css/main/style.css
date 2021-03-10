@@ -2315,7 +2315,7 @@ pre {
 
 .codeblock {
 	font-family: monospace;
-	padding: 0.25rem;
+	font-size: 0.95rem;
 }
 
 .expanded_modal_image {
